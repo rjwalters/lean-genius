@@ -338,8 +338,10 @@ generalized rather than merely replayed.
      is now formal too.  `not_secondOrderDefect_adj_of_commonNeighbor` forbids
      a defect edge whenever a common ambient neighbor is exhibited, and the
      cycle decomposition theorem records its consequence: every non-wrapping
-     distance-two pair on an internal cycle is a defect nonedge.  Thus the
-     second cyclic diagonals are absent from every diagonal defect block.
+     distance-two pair on an internal cycle is a defect nonedge.  The two
+     basepoint-crossing cases are supplied by
+     `not_secondOrderDefect_adj_cycle_wraparound_distanceTwo`.  Thus the full
+     `±2` cyclic diagonals are absent from every diagonal defect block.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

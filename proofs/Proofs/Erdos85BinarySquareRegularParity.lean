@@ -874,6 +874,55 @@ theorem binarySquare_regular_sizeTwoPart_exists_cycle_of_internalComponent
     exact not_secondOrderDefect_adj_of_commonNeighbor G hfree hne
       hadj₁ (by simpa using hadj₂.symm)
 
+/-- The two distance-two pairs crossing the basepoint of a labeled internal
+cycle are defect nonedges as well.  Together with the preceding theorem this
+removes the full `±2` cyclic diagonals. -/
+theorem not_secondOrderDefect_adj_cycle_wraparound_distanceTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {s : Set V} {x : s}
+    {p : (G.induce s).Walk x x} (hp : p.IsCycle) :
+    (¬ (secondOrderDefectGraph G).Adj
+        (p.getVert (p.length - 2)).1 (p.getVert 0).1) ∧
+      ¬ (secondOrderDefectGraph G).Adj
+        (p.getVert (p.length - 1)).1 (p.getVert 1).1 := by
+  have hlen : 3 ≤ p.length := hp.three_le_length
+  have hadjPred := p.adj_getVert_succ
+    (show p.length - 2 < p.length by omega)
+  have hadjLast := p.adj_getVert_succ
+    (show p.length - 1 < p.length by omega)
+  have hadjLastZero : G.Adj
+      (p.getVert (p.length - 1)).1 (p.getVert 0).1 := by
+    have hlenpos : 1 ≤ p.length := by omega
+    simpa [Nat.sub_add_cancel hlenpos, p.getVert_length] using hadjLast
+  have hadjZeroOne : G.Adj (p.getVert 0).1 (p.getVert 1).1 := by
+    simpa using p.adj_getVert_succ (show 0 < p.length by omega)
+  have hadjPredLast : G.Adj
+      (p.getVert (p.length - 2)).1 (p.getVert (p.length - 1)).1 := by
+    have hind : p.length - 2 + 1 = p.length - 1 := by omega
+    simpa [hind] using hadjPred
+  have hnePredZero : (p.getVert (p.length - 2)).1 ≠ (p.getVert 0).1 := by
+    intro heq
+    have heqSubtype : p.getVert (p.length - 2) = p.getVert 0 := Subtype.ext heq
+    have hi := hp.getVert_injOn'
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) heqSubtype
+    omega
+  have hneLastOne : (p.getVert (p.length - 1)).1 ≠ (p.getVert 1).1 := by
+    intro heq
+    have heqSubtype : p.getVert (p.length - 1) = p.getVert 1 := Subtype.ext heq
+    have hi := hp.getVert_injOn'
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) heqSubtype
+    omega
+  constructor
+  · exact not_secondOrderDefect_adj_of_commonNeighbor G hfree hnePredZero
+      hadjPredLast hadjLastZero.symm
+  · exact not_secondOrderDefect_adj_of_commonNeighbor G hfree hneLastOne
+      hadjLastZero hadjZeroOne.symm
+
 /-- **Size-two block capstone.**  On a normalized size-two defect component,
 the internal ambient graph is 2-regular, the internal defect graph is
 `(q-1)`-regular and connected by construction, and their integer adjacency
