@@ -431,6 +431,16 @@ generalized rather than merely replayed.
     not be realizable and the finite calculation has not been reflected into
     a uniform Lean terminal.
 
+    Intersecting this branch relaxation with the independent aggregate defect
+    weight-class equations (`square_order_combined_profile_census.py`) rejects
+    one further profile, `h=12`, `(n₀,…,n₄)=(1,0,48,0,3)`, leaving 51 profiles
+    distributed as `1,3,7,18,19,3`.  More revealingly, every one of the 52
+    branch survivors admits an actual single-center transversal code, and the
+    global pairwise-balanced high-incidence design rejects nothing new beyond
+    the branch screen.  Therefore the missing obstruction must couple branch
+    systems at different centers (or couple them to the same realized `D`),
+    rather than strengthen one-center collision counting alone.
+
     The incidence quadratic is already forced by the same pointwise
     `(D+I)k=h1` system; its two roots consume only `q²-2q+2-2h` of the defect
     square trace, leaving a large residual budget at `q=8`. Thus the revised
