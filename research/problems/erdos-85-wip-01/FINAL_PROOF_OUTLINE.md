@@ -406,6 +406,16 @@ generalized rather than merely replayed.
      Thus, when size-two coordinates are present, `D` is recovered as the
      intersection of their Kneser-style disjointness relations together with
      the analogous relations from the remaining component coordinates.
+     The complementary ownership law is also `PROVEN`:
+     `not_secondOrderDefect_adj_iff_existsUnique_component_selector_inter_nonempty`
+     says that every distinct non-defect pair has selector intersection in
+     exactly one component coordinate.  This coordinate is precisely the
+     defect component containing the pair's unique common ambient neighbor.
+     Hence the simultaneous factor model is an exact owner-colored design:
+     defect pairs are disjoint in all coordinates, while every other pair
+     overlaps in one and only one coordinate.  This is the new local law to
+     impose on the rectangular cycle intertwiners, beyond their row sums and
+     weighted commutation identities.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

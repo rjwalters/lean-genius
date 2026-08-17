@@ -758,6 +758,67 @@ theorem secondOrderDefect_adj_iff_componentNeighborFinset_disjoint_forall
       exact Finset.mem_filter.mpr ⟨hz'.2, rfl⟩
     exact (Finset.disjoint_left.mp (hall c)) hzx hzy
 
+/-- Every non-defect pair has a unique owner component: the unique common
+ambient neighbor of the pair lies in that component, equivalently their two
+component-neighbor selectors overlap in exactly that coordinate. -/
+theorem not_secondOrderDefect_adj_iff_existsUnique_component_selector_inter_nonempty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {x y : V} (hxy : x ≠ y) :
+    ¬ (secondOrderDefectGraph G).Adj x y ↔
+      ∃! c : (secondOrderDefectGraph G).ConnectedComponent,
+        (componentNeighborFinset G (secondOrderDefectGraph G) c x ∩
+          componentNeighborFinset G (secondOrderDefectGraph G) c y).Nonempty := by
+  let D := secondOrderDefectGraph G
+  constructor
+  · intro hnotD
+    have hnotMem : y ∉ D.neighborFinset x := by
+      simpa [SimpleGraph.mem_neighborFinset] using hnotD
+    have hcommon := card_common_eq_if_secondOrderDefect G hfree x y hxy
+    rw [if_neg hnotMem] at hcommon
+    obtain ⟨z, hz⟩ :
+        ∃ z, z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+      Finset.card_pos.mp (by omega)
+    let c := D.connectedComponentMk z
+    have hzData := Finset.mem_inter.mp hz
+    have hzOwner :
+        (componentNeighborFinset G D c x ∩
+          componentNeighborFinset G D c y).Nonempty := by
+      refine ⟨z, Finset.mem_inter.mpr ⟨?_, ?_⟩⟩
+      · rw [componentNeighborFinset]
+        exact Finset.mem_filter.mpr ⟨hzData.1, rfl⟩
+      · rw [componentNeighborFinset]
+        exact Finset.mem_filter.mpr ⟨hzData.2, rfl⟩
+    refine ⟨c, hzOwner, ?_⟩
+    intro c' hc'
+    obtain ⟨w, hw⟩ := hc'
+    have hwData := Finset.mem_inter.mp hw
+    have hwx : w ∈ G.neighborFinset x ∧ D.connectedComponentMk w = c' := by
+      simpa [componentNeighborFinset] using hwData.1
+    have hwy : w ∈ G.neighborFinset y ∧ D.connectedComponentMk w = c' := by
+      simpa [componentNeighborFinset] using hwData.2
+    have hwCommon : w ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨hwx.1, hwy.1⟩
+    have hzw : z = w :=
+      Finset.card_le_one.mp (by omega) z hz w hwCommon
+    calc
+      c' = D.connectedComponentMk w := hwx.2.symm
+      _ = D.connectedComponentMk z := by rw [hzw]
+      _ = c := rfl
+  · rintro ⟨c, hc, _⟩
+    obtain ⟨z, hz⟩ := hc
+    have hzData := Finset.mem_inter.mp hz
+    have hzx : z ∈ G.neighborFinset x ∧ D.connectedComponentMk z = c := by
+      simpa [componentNeighborFinset] using hzData.1
+    have hzy : z ∈ G.neighborFinset y ∧ D.connectedComponentMk z = c := by
+      simpa [componentNeighborFinset] using hzData.2
+    exact not_secondOrderDefect_adj_of_commonNeighbor G hfree hxy
+      ((G.mem_neighborFinset x z).mp hzx.1)
+      ((G.mem_neighborFinset y z).mp hzy.1)
+
 /-- Triangle-free edges stay inside the defect component, so their degree at
 a vertex is bounded by the normalized component part. -/
 theorem binarySquare_regular_triangleFree_degree_le_part
