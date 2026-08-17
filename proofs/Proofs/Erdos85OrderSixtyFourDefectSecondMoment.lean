@@ -11,6 +11,18 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Complex-valued form of the adjacency-square degree-sum identity. -/
+theorem trace_adjMatrix_sq_complex_eq_sum_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] :
+    Matrix.trace (H.adjMatrix ℂ * H.adjMatrix ℂ) =
+      ∑ x : V, (H.degree x : ℂ) := by
+  rw [Matrix.trace]
+  apply Finset.sum_congr rfl
+  intro x _
+  simp only [Matrix.diag_apply]
+  rw [H.adjMatrix_mul_self_apply_self]
+
 /-- In the seven-component order-64 branch, the distinguished order-16
 defect block is seven-regular.  Its adjacency-square trace is therefore
 `16 * 7 = 112`; after removing the principal eigenvalue `7`, the exact
@@ -33,7 +45,13 @@ theorem orderSixtyFour_seven_defect_components_defect_secondMoment
         ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ) = 112 ∧
       Matrix.trace
         (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ *
-        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ) - 7 ^ 2 = 63 := by
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ) - 7 ^ 2 = 63 ∧
+      Matrix.trace
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℂ *
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℂ) = 112 ∧
+      (Matrix.trace
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℂ *
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℂ)).re - 7 ^ 2 = 63 := by
   classical
   let D := secondOrderDefectGraph G
   obtain ⟨c, hc16, _hsmall⟩ :=
@@ -53,9 +71,17 @@ theorem orderSixtyFour_seven_defect_components_defect_secondMoment
       (D.induce c.supp).adjMatrix ℤ) = 112 := by
     rw [trace_adjMatrix_sq_eq_sum_degrees]
     simp [hregH, hcard]
-  refine ⟨c, hc16, htrace, ?_⟩
-  rw [htrace]
-  norm_num
+  have htraceC : Matrix.trace
+      ((D.induce c.supp).adjMatrix ℂ *
+      (D.induce c.supp).adjMatrix ℂ) = 112 := by
+    rw [trace_adjMatrix_sq_complex_eq_sum_degrees]
+    simp [hregH, hcard]
+    norm_num
+  refine ⟨c, hc16, htrace, ?_, htraceC, ?_⟩
+  · rw [htrace]
+    norm_num
+  · rw [htraceC]
+    norm_num
 
 end
 
