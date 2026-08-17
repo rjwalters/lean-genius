@@ -529,10 +529,21 @@ generalized rather than merely replayed.
      Adj(Owner(c)) v = -m_c v
      ```
 
-     for every color `c`.  Because the component-constant lift is injective,
-     this supplies the expected `(number of D-components)-1` dimensional
-     common bottom eigenspace (the dimension statement itself remains to be
-     packaged over a field).
+     for every color `c`.  The dimension statement is now `PROVEN` over
+     `ℚ`, not merely inferred from the integral vectors.  The linear map
+     `binarySquareComponentConstantKernelMap` embeds the kernel of one
+     component-quotient row into `ker A`; its injectivity and the nonvanishing
+     of that quotient row give
+
+     ```text
+     number of D-components - 1 <= dim_Q ker A
+     ```
+
+     in
+     `binarySquare_regular_card_components_sub_one_le_finrank_adj_kernel`.
+     Thus a four-component order-64 candidate has ambient adjacency nullity
+     at least three, in the exact field-valued form needed by the global
+     simultaneous-spectrum ledger.
 
      Minimum defect components interact sharply with this bound.  The
      `PROVEN` theorem
