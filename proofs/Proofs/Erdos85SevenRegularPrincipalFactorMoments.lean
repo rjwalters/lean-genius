@@ -179,6 +179,240 @@ theorem false_of_cycleDefectSexticThirteen_nonprincipal_factor_sevenRegular
   rw [cycleDefectSexticThirteen_complexRootPowerSum_two]
   norm_num
 
+private theorem complex_sum_re_eq_sum_map_re_principal (s : Multiset ℂ) :
+    s.sum.re = (s.map Complex.re).sum := by
+  induction s using Multiset.induction_on with
+  | empty => simp
+  | @cons z s ih => simp [ih]
+
+/-- The C16 quadratic is also impossible as a factor of the nonprincipal
+characteristic polynomial of a 7-regular graph on sixteen vertices.  The
+proof works in the full adjacency matrix: after the principal root `7` and
+the quadratic consume their moments, the thirteen residual real roots would
+have sum `-17` and square sum at most `9`. -/
+theorem false_of_cycleDefectQuadraticSixteen_nonprincipal_factor_sevenRegular
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 16) (hreg : ∀ x : V, G.degree x = 7)
+    {q : ℚ[X]} (hchar : (G.adjMatrix ℚ).charpoly = (X - C 7) * q)
+    (hfdvd : cycleDefectQuadraticSixteen.map (Int.castRingHom ℚ) ∣ q) : False := by
+  obtain ⟨r, hr⟩ := hfdvd
+  let f : ℂ[X] := cycleDefectQuadraticSixteen.map (Int.castRingHom ℂ)
+  let rc : ℂ[X] := r.map (algebraMap ℚ ℂ)
+  have hf : f ≠ 0 := (cycleDefectQuadraticSixteen_monic.map _).ne_zero
+  have hq : q ≠ 0 := by
+    intro hzero
+    rw [hzero, mul_zero] at hchar
+    exact (G.adjMatrix ℚ).charpoly_monic.ne_zero hchar
+  have hr0 : r ≠ 0 := by
+    intro hzero
+    rw [hzero, mul_zero] at hr
+    exact hq hr
+  have hrc : rc ≠ 0 := by
+    dsimp [rc]
+    simpa using (Polynomial.map_injective _ (algebraMap ℚ ℂ).injective).ne hr0
+  have hadj : (G.adjMatrix ℚ).map (algebraMap ℚ ℂ) = G.adjMatrix ℂ := by
+    ext i j
+    simp [SimpleGraph.adjMatrix_apply]
+  have hmapf :
+      (cycleDefectQuadraticSixteen.map (Int.castRingHom ℚ)).map
+          (algebraMap ℚ ℂ) = f := by
+    dsimp [f]
+    rw [Polynomial.map_map]
+    congr 1
+  have hfactor :
+      (G.adjMatrix ℂ).charpoly = (X - C 7) * f * rc := by
+    rw [← hadj, Matrix.charpoly_map, hchar, hr, Polynomial.map_mul,
+      Polynomial.map_mul, hmapf]
+    simp [rc]
+    ring
+  have hherm : (G.adjMatrix ℂ).IsHermitian :=
+    SimpleGraph.isHermitian_adjMatrix ℂ G
+  have hfdeg : f.natDegree = 2 := by
+    dsimp [f]
+    rw [Polynomial.natDegree_map_eq_of_injective Int.cast_injective,
+      cycleDefectQuadraticSixteen_natDegree]
+  have hrcdeg : rc.natDegree = 13 := by
+    have hp : X - C (7 : ℂ) ≠ 0 := X_sub_C_ne_zero 7
+    have hpf : (X - C (7 : ℂ)) * f ≠ 0 := mul_ne_zero hp hf
+    have hdeg := Polynomial.natDegree_mul hpf hrc
+    have hpfdeg := Polynomial.natDegree_mul hp hf
+    rw [← hfactor, Matrix.charpoly_natDegree_eq_dim, hcard, hpfdeg,
+      natDegree_X_sub_C, hfdeg] at hdeg
+    omega
+  have hrcrootcard : rc.roots.card = 13 := by
+    rw [← (IsAlgClosed.splits rc).natDegree_eq_card_roots, hrcdeg]
+  have hone := complexRootPowerSum_charpoly_eq_trace_pow
+    (G.adjMatrix ℂ) hherm 1
+  have hp : X - C (7 : ℂ) ≠ 0 := X_sub_C_ne_zero 7
+  have hpf : (X - C (7 : ℂ)) * f ≠ 0 := mul_ne_zero hp hf
+  have haddpfOne := complexRootPowerSum_mul hp hf 1
+  have haddrcOne := complexRootPowerSum_mul hpf hrc 1
+  rw [hfactor, haddrcOne, haddpfOne, complexRootPowerSum_X_sub_C,
+    cycleDefectQuadraticSixteen_complexRootPowerSum_one] at hone
+  have htrace : Matrix.trace (G.adjMatrix ℂ) = 0 := by
+    rw [SimpleGraph.trace_adjMatrix]
+  simp only [pow_one, htrace] at hone
+  have hrcsum : complexRootPowerSum rc 1 = -17 := by
+    linear_combination hone
+  have htwo := complexRootPowerSum_charpoly_eq_trace_pow
+    (G.adjMatrix ℂ) hherm 2
+  have haddpfTwo := complexRootPowerSum_mul hp hf 2
+  have haddrcTwo := complexRootPowerSum_mul hpf hrc 2
+  have htraceSq := trace_sq_complex_adjMatrix_eq_oneHundredTwelve_of_sevenRegular
+    G hcard hreg
+  rw [hfactor, haddrcTwo, haddpfTwo, complexRootPowerSum_X_sub_C,
+    cycleDefectQuadraticSixteen_complexRootPowerSum_two, htraceSq] at htwo
+  have hrcSq : (complexRootPowerSum rc 2).re ≤ 9 := by
+    have hre := congrArg Complex.re htwo
+    norm_num at hre ⊢
+    linarith
+  have hrootReal : ∀ z ∈ rc.roots, z.im = 0 := by
+    intro z hz
+    have hzchar : z ∈ (G.adjMatrix ℂ).charpoly.roots := by
+      rw [hfactor, roots_mul (mul_ne_zero hpf hrc), Multiset.mem_add]
+      exact Or.inr hz
+    rw [hherm.roots_charpoly_eq_eigenvalues] at hzchar
+    obtain ⟨i, _hi, rfl⟩ := Multiset.mem_map.mp hzchar
+    simp
+  let s : Multiset ℝ := rc.roots.map Complex.re
+  have scard : s.card = 13 := by simp [s, hrcrootcard]
+  have ssum : s.sum = -17 := by
+    dsimp [s]
+    rw [← complex_sum_re_eq_sum_map_re_principal]
+    have hre := congrArg Complex.re hrcsum
+    rw [complexRootPowerSum] at hre
+    simp only [pow_one] at hre
+    change (rc.roots.map id).sum.re = (-17 : ℂ).re at hre
+    simpa using hre
+  have ssq : (s.map fun x ↦ x ^ 2).sum ≤ 9 := by
+    dsimp [s]
+    rw [Multiset.map_map]
+    have hmap :
+        rc.roots.map (fun z ↦ (z.re : ℝ) ^ 2) =
+          rc.roots.map (fun z ↦ (z ^ 2).re) := by
+      apply Multiset.map_congr rfl
+      intro z hz
+      have hzEq : z = (z.re : ℂ) := by
+        apply Complex.ext
+        · simp
+        · simp [hrootReal z hz]
+      rw [hzEq]
+      simp only [pow_two, Complex.mul_re, Complex.ofReal_re,
+        Complex.ofReal_im, mul_zero, sub_zero]
+    change (rc.roots.map (fun z ↦ z.re ^ 2)).sum ≤ 9
+    rw [hmap]
+    change (rc.roots.map (Complex.re ∘ fun z ↦ z ^ 2)).sum ≤ 9
+    rw [← Multiset.map_map, ← complex_sum_re_eq_sum_map_re_principal]
+    exact hrcSq
+  exact false_of_card_thirteen_sum_neg_seventeen_sq_sum_le_nine
+    s scard ssum ssq
+
+/-- The golden quadratic is impossible for the same full-matrix reason.  It
+uses all `63` units left after the principal root, while the residual roots
+must still sum to `-18`. -/
+theorem false_of_cycleDefectQuadraticFive_nonprincipal_factor_sevenRegular
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 16) (hreg : ∀ x : V, G.degree x = 7)
+    {q : ℚ[X]} (hchar : (G.adjMatrix ℚ).charpoly = (X - C 7) * q)
+    (hfdvd : cycleDefectQuadraticFive.map (Int.castRingHom ℚ) ∣ q) : False := by
+  obtain ⟨r, hr⟩ := hfdvd
+  let f : ℂ[X] := cycleDefectQuadraticFive.map (Int.castRingHom ℂ)
+  let rc : ℂ[X] := r.map (algebraMap ℚ ℂ)
+  have hf : f ≠ 0 := (cycleDefectQuadraticFive_monic.map _).ne_zero
+  have hq : q ≠ 0 := by
+    intro hzero
+    rw [hzero, mul_zero] at hchar
+    exact (G.adjMatrix ℚ).charpoly_monic.ne_zero hchar
+  have hr0 : r ≠ 0 := by
+    intro hzero
+    rw [hzero, mul_zero] at hr
+    exact hq hr
+  have hrc : rc ≠ 0 := by
+    dsimp [rc]
+    simpa using (Polynomial.map_injective _ (algebraMap ℚ ℂ).injective).ne hr0
+  have hadj : (G.adjMatrix ℚ).map (algebraMap ℚ ℂ) = G.adjMatrix ℂ := by
+    ext i j
+    simp [SimpleGraph.adjMatrix_apply]
+  have hmapf :
+      (cycleDefectQuadraticFive.map (Int.castRingHom ℚ)).map
+          (algebraMap ℚ ℂ) = f := by
+    dsimp [f]
+    rw [Polynomial.map_map]
+    congr 1
+  have hfactor :
+      (G.adjMatrix ℂ).charpoly = (X - C 7) * f * rc := by
+    rw [← hadj, Matrix.charpoly_map, hchar, hr, Polynomial.map_mul,
+      Polynomial.map_mul, hmapf]
+    simp [rc]
+    ring
+  have hherm : (G.adjMatrix ℂ).IsHermitian :=
+    SimpleGraph.isHermitian_adjMatrix ℂ G
+  have hp : X - C (7 : ℂ) ≠ 0 := X_sub_C_ne_zero 7
+  have hpf : (X - C (7 : ℂ)) * f ≠ 0 := mul_ne_zero hp hf
+  have hone := complexRootPowerSum_charpoly_eq_trace_pow
+    (G.adjMatrix ℂ) hherm 1
+  have haddpfOne := complexRootPowerSum_mul hp hf 1
+  have haddrcOne := complexRootPowerSum_mul hpf hrc 1
+  rw [hfactor, haddrcOne, haddpfOne, complexRootPowerSum_X_sub_C,
+    cycleDefectQuadraticFive_complexRootPowerSum_one] at hone
+  have htrace : Matrix.trace (G.adjMatrix ℂ) = 0 := by
+    rw [SimpleGraph.trace_adjMatrix]
+  simp only [pow_one, htrace] at hone
+  have hrcsum : complexRootPowerSum rc 1 = -18 := by
+    linear_combination hone
+  have htwo := complexRootPowerSum_charpoly_eq_trace_pow
+    (G.adjMatrix ℂ) hherm 2
+  have haddpfTwo := complexRootPowerSum_mul hp hf 2
+  have haddrcTwo := complexRootPowerSum_mul hpf hrc 2
+  have htraceSq := trace_sq_complex_adjMatrix_eq_oneHundredTwelve_of_sevenRegular
+    G hcard hreg
+  rw [hfactor, haddrcTwo, haddpfTwo, complexRootPowerSum_X_sub_C,
+    cycleDefectQuadraticFive_complexRootPowerSum_two, htraceSq] at htwo
+  have hrcSq : (complexRootPowerSum rc 2).re ≤ 0 := by
+    have hre := congrArg Complex.re htwo
+    norm_num at hre ⊢
+    linarith
+  have hrootReal : ∀ z ∈ rc.roots, z.im = 0 := by
+    intro z hz
+    have hzchar : z ∈ (G.adjMatrix ℂ).charpoly.roots := by
+      rw [hfactor, roots_mul (mul_ne_zero hpf hrc), Multiset.mem_add]
+      exact Or.inr hz
+    rw [hherm.roots_charpoly_eq_eigenvalues] at hzchar
+    obtain ⟨i, _hi, rfl⟩ := Multiset.mem_map.mp hzchar
+    simp
+  let s : Multiset ℝ := rc.roots.map Complex.re
+  have ssum : s.sum = -18 := by
+    dsimp [s]
+    rw [← complex_sum_re_eq_sum_map_re_principal]
+    have hre := congrArg Complex.re hrcsum
+    rw [complexRootPowerSum] at hre
+    simp only [pow_one] at hre
+    change (rc.roots.map id).sum.re = (-18 : ℂ).re at hre
+    simpa using hre
+  have ssq : (s.map fun x ↦ x ^ 2).sum ≤ 0 := by
+    dsimp [s]
+    rw [Multiset.map_map]
+    have hmap :
+        rc.roots.map (fun z ↦ (z.re : ℝ) ^ 2) =
+          rc.roots.map (fun z ↦ (z ^ 2).re) := by
+      apply Multiset.map_congr rfl
+      intro z hz
+      have hzEq : z = (z.re : ℂ) := by
+        apply Complex.ext
+        · simp
+        · simp [hrootReal z hz]
+      rw [hzEq]
+      simp only [pow_two, Complex.mul_re, Complex.ofReal_re,
+        Complex.ofReal_im, mul_zero, sub_zero]
+    change (rc.roots.map (fun z ↦ z.re ^ 2)).sum ≤ 0
+    rw [hmap]
+    change (rc.roots.map (Complex.re ∘ fun z ↦ z ^ 2)).sum ≤ 0
+    rw [← Multiset.map_map, ← complex_sum_re_eq_sum_map_re_principal]
+    exact hrcSq
+  exact false_of_sum_neg_eighteen_sq_sum_le_zero s ssum ssq
+
 end
 
 end Erdos85
