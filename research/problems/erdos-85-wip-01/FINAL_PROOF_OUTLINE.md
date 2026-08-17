@@ -595,6 +595,15 @@ generalized rather than merely replayed.
       `cellSum + 2q = q² + |N_D(u)∩N_D(v)| + 2·1_[uv∈E(D)] + k(u)+k(v)`,
       eliminating both defect degrees through `deg_D+k=q-1`.  This is the
       form to impose directly in the surviving `q=8` vertex-level models.
+    - `squareOrder_card_commonDefect_add_highIncidences_le` is the first
+      obstruction extracted from this grid: for distinct low centers with
+      `¬D.Adj u v`,
+      `|N_D(u)∩N_D(v)| + k(u)+k(v) ≤ q`.  The proof isolates the unique common
+      original owner, whose diagonal cell has size at most `q-1` and whose
+      off-diagonal row and column vanish; the remaining `(q-1)²` cells have
+      size at most one.  This exact two-center inequality is now an input to
+      the `q=8` simultaneous `G/D` scout; its finite profile impact is not yet
+      classified.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
