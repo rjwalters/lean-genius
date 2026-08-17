@@ -327,9 +327,13 @@ generalized rather than merely replayed.
      level: `binarySquare_regular_sizeTwoPart_commuting_regular_blocks`
      supplies simultaneously the internal ambient degree `2`, internal defect
      degree `q-1`, and exact integer adjacency commutation.  The remaining
-     subgoal is no longer an interface gap: it is to classify or obstruct a
-     connected `(q-1)`-regular graph commuting with this monochromatic
-     cycle union under the square-order common-neighbor laws.
+     cycle-level equitable reduction is also `PROVEN` in
+     `binarySquare_regular_sizeTwoPart_cycleQuotient`: the defect-over-cycle
+     quotient has row sum `q-1`, satisfies detailed balance weighted by cycle
+     lengths, and those lengths sum to `2q`.  The remaining subgoal is no
+     longer an interface gap: it is to classify or obstruct this connected
+     weighted cycle quotient and its rectangular cycle intertwiners under the
+     square-order common-neighbor laws.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;

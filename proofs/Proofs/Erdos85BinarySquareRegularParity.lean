@@ -881,6 +881,56 @@ theorem binarySquare_regular_sizeTwoPart_commuting_regular_blocks
     adjMatrix_comm_secondOrderDefect_induce_component_of_regular
       G hfree hreg c⟩
 
+/-- The defect block is equitable over the ambient-cycle decomposition of a
+normalized size-two part.  Its cycle quotient has row sum `q-1` and satisfies
+detailed balance weighted by the cycle orders. -/
+theorem binarySquare_regular_sizeTwoPart_cycleQuotient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2)
+    [DecidableEq (G.induce c.supp).ConnectedComponent] :
+    (∀ a : (G.induce c.supp).ConnectedComponent,
+      ∑ b, componentQuotientMatrix
+          ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b =
+        q - 1) ∧
+    (∀ a b : (G.induce c.supp).ConnectedComponent,
+      a.supp.ncard * componentQuotientMatrix
+          ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b =
+        b.supp.ncard * componentQuotientMatrix
+          ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) b a) ∧
+    (∑ a : (G.induce c.supp).ConnectedComponent, a.supp.ncard) = q * 2 := by
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  obtain ⟨hHdegree, hKdegree, _hcommZ⟩ :=
+    binarySquare_regular_sizeTwoPart_commuting_regular_blocks
+      G hfree hq hreg hcard c hc
+  have hcommReal : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm
+      G (secondOrderDefectGraph G) hglobal c).symm
+  refine ⟨?_, ?_, ?_⟩
+  · intro a
+    simpa [H, K, hKdegree] using
+      (sum_componentQuotientMatrix_row K H a)
+  · intro a b
+    exact componentQuotientMatrix_balance K H 2 hHdegree hcommReal a b
+  · calc
+      (∑ a : H.ConnectedComponent, a.supp.ncard) = Fintype.card c.supp :=
+        sum_connectedComponent_supp_ncard H
+      _ = c.supp.ncard := by
+        simpa [Nat.card_eq_fintype_card] using Nat.card_coe_set_eq c.supp
+      _ = q * 2 := hc
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]
