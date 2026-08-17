@@ -628,6 +628,12 @@ generalized rather than merely replayed.
       neighborhoods are disjoint and their unique common original owner is
       high.  At `q=8`, every nonadjacent pair of `k=4` lows therefore has
       disjoint `D`-neighborhoods and shares exactly one high neighbor.
+      `squareOrder_card_commonHigh_of_maxHighIncidence` completes the
+      adjacency dictionary on this sector: for distinct maximal-incidence
+      lows, the common-high count is `0` on a `D`-edge and `1` on a
+      `D`-nonedge.  Hence at `q=8` the induced `D` graph on the `k=4` lows is
+      exactly the disjointness graph of their four-subsets of the `h` highs;
+      this supplies a much smaller coupled-design scout than the full graph.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
