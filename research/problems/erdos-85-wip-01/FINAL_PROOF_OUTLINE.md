@@ -475,7 +475,20 @@ generalized rather than merely replayed.
 
      Hence `J-I-D` is decomposed into commuting-with-`D`, regular integral
      color operators of degrees `m_c(q-1)`, with the local intersection table
-     above fixing their component quotients.
+     above fixing their component quotients.  More precisely, the `PROVEN`
+     theorem `binarySquare_regular_componentOwnerGraph_componentQuotient`
+     computes the quotient of color `c` exactly:
+
+     ```text
+     Q_c(e,f) = m_c (m_f - delta_{ef}).
+     ```
+
+     Consequently its action on component-constant vectors is rank one minus
+     `m_c I`: it has eigenvalue `m_c(q-1)` on the all-ones vector and
+     eigenvalue `-m_c` on the codimension-one subspace
+     `sum_f m_f v_f = 0`.  Thus the component quotient already realizes the
+     prospective lower spectral bound `-m_c`; controlling the remaining
+     within-component directions is the next uniform obstruction layer.
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
