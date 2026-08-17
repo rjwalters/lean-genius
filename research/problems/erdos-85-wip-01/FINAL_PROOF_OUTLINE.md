@@ -1105,7 +1105,23 @@ generalized rather than merely replayed.
 
      Hence the simultaneous Gram resolution is literally a partition of the
      all-ones matrix by component-valued routing labels, suitable for a finite
-     four-coordinate classification.
+     four-coordinate classification.  The first regularity law for that
+     classification is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoRoutingRegularity`.  When `c,d,e` are
+     size-two components, fixing either endpoint and the intermediate label
+     `d` leaves exactly four choices for the other endpoint:
+
+     ```text
+     |{z in e : route(x,z)=d}| = 4,
+     |{x in c : route(x,z)=d}| = 4.
+     ```
+
+     Thus every routing table between two coordinates has each intermediate
+     color occurring exactly four times in every row and every column.  At
+     q=8 in the all-two branch this turns the four component labels into a
+     four-color decomposition of the 16-by-16 endpoint array by 4-regular
+     bipartite relations, rather than merely an unconstrained entrywise
+     partition of `J`.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
