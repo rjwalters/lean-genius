@@ -1247,9 +1247,17 @@ generalized rather than merely replayed.
      every vertex roots exactly `56` ordered `a-b-c` triangles.  At most four
      can keep both other vertices in the root's defect component, so every
      root has at least `52` cross-component colored triangles.  The remaining
-     gap is to refine those `52` by the two possible component-membership
-     patterns (exactly two components versus three distinct components) and
-     force an incompatible routing/incidence pattern.
+     bookkeeping refinement is `PROVEN` in
+     `Erdos85BinarySquareMixedOwnerRootedComponentPatterns`.  It assigns every
+     rooted triangle one of five exhaustive tags: wholly local; only the
+     middle vertex leaves; only the closing vertex leaves; both leave into
+     the same external component; or all three vertices occupy distinct
+     components.  The five fiber cardinalities sum to `56` at every root,
+     and the local fiber is the earlier size-at-most-four finset.  Therefore
+     one of the four nonlocal patterns occurs at least `13` times at every
+     root.  The remaining gap is to bound the first three nonlocal patterns
+     sharply enough that the all-three-distinct pattern is forced, then turn
+     that pattern into an incompatible routing/incidence constraint.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
