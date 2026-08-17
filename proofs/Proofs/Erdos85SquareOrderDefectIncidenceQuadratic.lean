@@ -402,6 +402,59 @@ theorem squareOrder_defectIncidenceQuadratic_dvd_defectCharpoly
     (squareOrder_defectIncidence_span_invariant
       G hfree hd hmin hcover hcard)
 
+/-- In a positive heterogeneous high sector, the `-1` factor and incidence
+quadratic are coprime and therefore their product divides the full rational
+defect characteristic polynomial. -/
+theorem squareOrder_combinedDefectFactors_dvd_defectCharpoly
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a x y : V} (ha : a ∈ squareOrderHighVertices G d)
+    (hx : G.degree x = d) (hy : G.degree y = d)
+    (hxy : squareOrderHighIncidenceCount G d x ≠
+      squareOrderHighIncidenceCount G d y) :
+    (Polynomial.X + 1) ^ ((squareOrderHighVertices G d).card - 1) *
+        (Polynomial.X ^ 2 - Polynomial.C ((d : ℚ) - 2) * Polynomial.X +
+          Polynomial.C
+            (((squareOrderHighVertices G d).card : ℚ) - d + 1)) ∣
+      LinearMap.charpoly ((secondOrderDefectGraph G).adjMatrix ℚ).toLin' := by
+  let h : ℚ := (squareOrderHighVertices G d).card
+  let L : Polynomial ℚ := Polynomial.X + 1
+  let Q : Polynomial ℚ :=
+    Polynomial.X ^ 2 - Polynomial.C ((d : ℚ) - 2) * Polynomial.X +
+      Polynomial.C (h - d + 1)
+  let R : Polynomial ℚ := Polynomial.X - Polynomial.C ((d : ℚ) - 1)
+  have hhpos : 0 < (squareOrderHighVertices G d).card := by
+    rw [Finset.card_pos]
+    exact ⟨a, ha⟩
+  have hhne : h ≠ 0 := by
+    dsimp [h]
+    exact_mod_cast (Nat.ne_of_gt hhpos)
+  have hdecomp : Q = L * R + Polynomial.C h := by
+    simp only [Q, L, R, map_sub, map_add, map_one, map_ofNat]
+    ring
+  have hcop : IsCoprime L Q := by
+    refine ⟨-Polynomial.C h⁻¹ * R, Polynomial.C h⁻¹, ?_⟩
+    rw [hdecomp]
+    have hinv : h⁻¹ * h = 1 := inv_mul_cancel₀ hhne
+    calc
+      -Polynomial.C h⁻¹ * R * L +
+          Polynomial.C h⁻¹ * (L * R + Polynomial.C h) =
+          Polynomial.C h⁻¹ * Polynomial.C h := by ring
+      _ = Polynomial.C (h⁻¹ * h) := by rw [Polynomial.C_mul]
+      _ = 1 := by rw [hinv, Polynomial.C_1]
+  have hminus := squareOrder_defectMinusOneFactor_dvd_defectCharpoly
+    G hfree hd hmin hcover hcard ha
+  have hquad := squareOrder_defectIncidenceQuadratic_dvd_defectCharpoly
+    G hfree hd hmin hcover hcard hx hy hxy
+  change L ^ ((squareOrderHighVertices G d).card - 1) * Q ∣ _
+  exact hcop.pow_left.mul_dvd hminus hquad
+
 theorem squareOrder_defect_incidence_quadratic
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
