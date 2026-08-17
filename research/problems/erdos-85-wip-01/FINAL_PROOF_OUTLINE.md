@@ -611,6 +611,23 @@ generalized rather than merely replayed.
      unit owner colors.  The unresolved step must use compatibility across
      three or more component pairs and the diagonal cycle indexing; pairwise
      collision-freeness itself is closed.
+
+     **Strategic scope correction (2026-08-17):** this unit-color/ODC lane is
+     valid infrastructure but is *vacuous for binary A-REG*.  The earlier
+     `PROVEN` theorem
+     `binarySquare_regular_no_sizeQ_defectComponent_of_even` rules out
+     `m_c=1` for every even `q`, and
+     `binarySquare_regular_two_mul_card_defectComponents_le` gives
+     `2 * #components <= q`.  It must therefore not be treated as the main
+     route for `q=2^k`.  The corrected `q=8` frontier is packaged in
+     `Erdos85OrderSixtyFourRegularPartition`:
+     `orderSixtyFour_regular_defectComponent_partition_package` gives
+     `m_c>=2`, `sum m_c=8`, and at most four components, while
+     `orderSixtyFour_regular_four_defectComponents_all_orderSixteen` proves
+     that the maximal four-component branch consists of four 16-vertex
+     components.  Binary A-REG work should proceed through these mixed
+     partitions and the centered owner/defect resolution below.
+
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
