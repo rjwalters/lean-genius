@@ -634,6 +634,12 @@ generalized rather than merely replayed.
       `D`-nonedge.  Hence at `q=8` the induced `D` graph on the `k=4` lows is
       exactly the disjointness graph of their four-subsets of the `h` highs;
       this supplies a much smaller coupled-design scout than the full graph.
+      One level below, the `PROVEN` theorems
+      `squareOrder_card_commonDefect_le_commonHigh_of_incidence_add_eq_pred`
+      and `squareOrder_card_commonHigh_eq_one_of_incidence_add_eq_pred` say:
+      for a low `D`-nonedge with `k(u)+k(v)=q-1`, `commonD≤commonHigh≤1`, and
+      positive common defect degree forces the unique original owner to be
+      high.  At `q=8` this is the coupled rule for every `k=4/k=3` pair.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
