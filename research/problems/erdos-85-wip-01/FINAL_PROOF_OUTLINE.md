@@ -1054,7 +1054,19 @@ generalized rather than merely replayed.
      vertices; reachability reflection makes it injective, while degree two
      ensures every cross component meets that side and makes it surjective.
      Consequently, at `q=8` every restricted owner factor between distinct
-     binary coordinates has at most five cycle components as well.
+     binary coordinates has at most five cycle components as well.  The exact
+     order correspondence is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossOwnerComponentSize`: source-side
+     membership in a mapped cross component is equivalent to owner-component
+     membership, its left cardinality is the owner-component order, and side
+     balance gives
+
+     ```text
+     |CrossComponent(a)| = 2 * |a|.
+     ```
+
+     Thus an owner cycle of length `r` corresponds canonically to the
+     bipartite cross cycle of length `2r`.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
