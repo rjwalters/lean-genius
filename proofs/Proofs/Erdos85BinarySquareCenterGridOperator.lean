@@ -153,6 +153,48 @@ theorem orderSixtyFour_crossRootSourceCommonCenterPairs_card
     G hfree hreg hxyD
   omega
 
+/-- A defect near-twin nonedge (six common defect neighbors) has the opposite
+extreme ambient profile: the roots have their unique ambient common neighbor,
+but there is exactly one defect edge between their two ambient neighborhoods. -/
+theorem orderSixtyFour_defect_nonedge_codegree_six_terminal
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    {x y : Fin 64} (hxy : x ≠ y)
+    (hnotD : ¬ (secondOrderDefectGraph G).Adj x y)
+    (hcodegree : ((secondOrderDefectGraph G).adjMatrix ℤ *
+      (secondOrderDefectGraph G).adjMatrix ℤ) x y = 6) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card = 1 ∧
+      (crossRootDefectCenterPairs G x y).card = 1 := by
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree x y hxy
+  have hnotMem : y ∉ (secondOrderDefectGraph G).neighborFinset x := by
+    simpa [SimpleGraph.mem_neighborFinset] using hnotD
+  rw [if_neg hnotMem] at hcommon
+  refine ⟨hcommon, ?_⟩
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 7 := by
+    intro z
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree (e := 5) hreg (by norm_num) z
+    omega
+  have hop := adj_defect_adj_apply_eq_degree_terms_sub_defect_sq
+    G hfree hreg hDreg x y
+  have hcount := adj_defect_adj_apply_eq_card_crossRootDefectCenterPairs G x y
+  have hzero : (secondOrderDefectGraph G).adjMatrix ℤ x y = 0 := by
+    simp [SimpleGraph.adjMatrix_apply, hnotD]
+  have hcardZ : ((crossRootDefectCenterPairs G x y).card : ℤ) = 1 := by
+    calc
+      ((crossRootDefectCenterPairs G x y).card : ℤ) =
+          (G.adjMatrix ℤ * (secondOrderDefectGraph G).adjMatrix ℤ *
+            G.adjMatrix ℤ) x y := hcount.symm
+      _ = (8 - 1 : ℤ) *
+            (secondOrderDefectGraph G).adjMatrix ℤ x y + 7 -
+              ((secondOrderDefectGraph G).adjMatrix ℤ *
+                (secondOrderDefectGraph G).adjMatrix ℤ) x y := hop
+      _ = 1 := by rw [hzero, hcodegree]; norm_num
+  exact_mod_cast hcardZ
+
 end
 
 end Erdos85

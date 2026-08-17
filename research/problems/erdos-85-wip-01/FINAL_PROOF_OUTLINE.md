@@ -1401,6 +1401,16 @@ generalized rather than merely replayed.
      factor has degree two on both eight-vertex sides.  It is therefore a
      genuine spanning 2-regular bipartite graph (a disjoint union of even
      cycles), with its `2+λ` source-common edges distinguished as a matching.
+     The classified component representatives suggest a second, nonedge
+     attack through defect near-twins (`(D²)_{xy}=6`).  Its first graph-facing
+     terminal is now `PROVEN` in `Erdos85BinarySquareCenterGridOperator`: for
+     distinct `D`-nonadjacent `x,y` of codegree six, `x,y` have their unique
+     ambient common neighbor, while there is exactly **one** `D`-edge between
+     the two eight-vertex ambient neighborhoods.  Thus any representative
+     with six such near-twin pairs must support six extremely sparse
+     `1-of-64` neighborhood cuts.  The next obstruction target is to combine
+     one such cut with the four two-point component selectors (or show that
+     the six cuts cannot coexist).
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
