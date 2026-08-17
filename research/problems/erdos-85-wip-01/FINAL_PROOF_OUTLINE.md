@@ -629,9 +629,13 @@ generalized rather than merely replayed.
      trace-facing form
      `orderSixtyFour_regular_three_defectComponents_partition_secondMoment`:
      the normalized partition is `4+2+2` or `3+3+2`, equivalently
-     `sum m_c^2` is `24` or `22`.  Binary A-REG work should proceed through
-     these mixed-partition moment values and the centered owner/defect
-     resolution below.
+     `sum m_c^2` is `24` or `22`.  The two-component branch is likewise
+     `PROVEN` by
+     `orderSixtyFour_regular_two_defectComponents_partition_secondMoment`:
+     its partition is `6+2`, `5+3`, or `4+4`, so `sum m_c^2` is respectively
+     `40`, `34`, or `32`.  Binary A-REG work should proceed through these
+     mixed-partition moment values and the centered owner/defect resolution
+     below.
 
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
