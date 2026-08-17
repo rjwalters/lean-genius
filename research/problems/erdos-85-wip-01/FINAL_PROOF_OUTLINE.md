@@ -1140,6 +1140,18 @@ generalized rather than merely replayed.
      array.  Its Lean interface simultaneously states reversal symmetry and
      exact four-per-color row and column fibers.  This is the finite
      four-coordinate object that the remaining classification must rule out.
+     `Erdos85OrderSixtyFourFourComponentRoutingMatrices` retains the stronger
+     algebraic certificate: its four zero-one matrices `R(k)` have constant
+     row and column sum four, pairwise disjoint supports, sum to `J`, transpose
+     under endpoint reversal, and factor exactly as
+
+     ```text
+     R_ce(k) = transpose(B_(E.symm k),c) B_(E.symm k),e.
+     ```
+
+     Hence a future finite classification cannot accidentally admit balanced
+     four-color arrays that do not arise from the underlying 2-regular
+     cross-incidence blocks.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
