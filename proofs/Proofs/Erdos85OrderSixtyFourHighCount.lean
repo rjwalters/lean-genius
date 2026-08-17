@@ -77,6 +77,73 @@ theorem orderSixtyFour_high_incidence_moments
   · simpa using squareOrder_sum_highNeighborCount_sq_eq
       G hfree (d := 8) (by norm_num) hmin hcover hcard
 
+/-- Convert bounded incidence moments into equations for the four positive
+incidence multiplicities. -/
+theorem orderSixtyFour_incidence_count_equations
+    (k : Fin 64 → Nat) (hk : ∀ x, k x ≤ 4) :
+    (∑ x : Fin 64, k x) =
+        (Finset.univ.filter fun x => k x = 1).card +
+        2 * (Finset.univ.filter fun x => k x = 2).card +
+        3 * (Finset.univ.filter fun x => k x = 3).card +
+        4 * (Finset.univ.filter fun x => k x = 4).card ∧
+    (∑ x : Fin 64, (k x) ^ 2) =
+        (Finset.univ.filter fun x => k x = 1).card +
+        4 * (Finset.univ.filter fun x => k x = 2).card +
+        9 * (Finset.univ.filter fun x => k x = 3).card +
+        16 * (Finset.univ.filter fun x => k x = 4).card := by
+  classical
+  have hkform (x : Fin 64) : k x =
+      (if k x = 1 then 1 else 0) +
+      (if k x = 2 then 2 else 0) +
+      (if k x = 3 then 3 else 0) +
+      (if k x = 4 then 4 else 0) := by
+    have hx := hk x
+    interval_cases h : k x <;> simp [h]
+  have hsqform (x : Fin 64) : (k x) ^ 2 =
+      (if k x = 1 then 1 else 0) +
+      (if k x = 2 then 4 else 0) +
+      (if k x = 3 then 9 else 0) +
+      (if k x = 4 then 16 else 0) := by
+    have hx := hk x
+    interval_cases h : k x <;> simp [h]
+  constructor
+  · calc
+      (∑ x : Fin 64, k x) = ∑ x : Fin 64,
+          ((if k x = 1 then 1 else 0) +
+           (if k x = 2 then 2 else 0) +
+           (if k x = 3 then 3 else 0) +
+           (if k x = 4 then 4 else 0)) :=
+        Finset.sum_congr rfl fun x _ => hkform x
+      _ = _ := by simp [Finset.sum_add_distrib, Finset.sum_ite, mul_comm]
+  · calc
+      (∑ x : Fin 64, (k x) ^ 2) = ∑ x : Fin 64,
+          ((if k x = 1 then 1 else 0) +
+           (if k x = 2 then 4 else 0) +
+           (if k x = 3 then 9 else 0) +
+           (if k x = 4 then 16 else 0)) :=
+        Finset.sum_congr rfl fun x _ => hsqform x
+      _ = _ := by simp [Finset.sum_add_distrib, Finset.sum_ite, mul_comm]
+
+/-- The four possible positive-incidence multiplicity profiles when the high
+sector has cardinality four. -/
+theorem orderSixtyFour_four_high_incidence_profiles
+    (k : Fin 64 → Nat)
+    (hk : ∀ x, k x ≤ 4)
+    (hsum : (∑ x : Fin 64, k x) = 36)
+    (hsq : (∑ x : Fin 64, (k x) ^ 2) = 48) :
+    let n := fun i => (Finset.univ.filter fun x => k x = i).card
+    (n 1 = 24 ∧ n 2 = 6 ∧ n 3 = 0 ∧ n 4 = 0) ∨
+    (n 1 = 27 ∧ n 2 = 3 ∧ n 3 = 1 ∧ n 4 = 0) ∨
+    (n 1 = 30 ∧ n 2 = 0 ∧ n 3 = 2 ∧ n 4 = 0) ∨
+    (n 1 = 32 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 1) := by
+  dsimp only
+  have heq := orderSixtyFour_incidence_count_equations k hk
+  have hn4 : (Finset.univ.filter fun x => k x = 4).card ≤ 1 := by omega
+  interval_cases h4 : (Finset.univ.filter fun x => k x = 4).card
+  · have hn3 : (Finset.univ.filter fun x => k x = 3).card ≤ 2 := by omega
+    interval_cases h3 : (Finset.univ.filter fun x => k x = 3).card <;> omega
+  · omega
+
 /-- The numerical profile forced by the order-64 moments when there are two
 high vertices: exactly one vertex sees both high vertices and exactly sixteen
 vertices see one of them. -/
