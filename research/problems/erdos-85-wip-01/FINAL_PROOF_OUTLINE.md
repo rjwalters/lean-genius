@@ -1066,7 +1066,20 @@ generalized rather than merely replayed.
      ```
 
      Thus an owner cycle of length `r` corresponds canonically to the
-     bipartite cross cycle of length `2r`.
+     bipartite cross cycle of length `2r`.  Finally,
+     `Erdos85BinarySquareSizeTwoPairedOwnerComponentEquiv` defines the graph
+     isomorphism `Cross_cd ≃ Cross_dc` obtained by swapping the two sides and
+     composes its component equivalence with the two owner/cross equivalences.
+     This gives a canonical bijection
+
+     ```text
+     ConnectedComponent(F_cd) ≃ ConnectedComponent(F_dc)
+     ```
+
+     which preserves each component order.  Hence paired restricted owner
+     factors have identical cycle-length multisets by an explicit
+     combinatorial correspondence, strictly strengthening the earlier
+     characteristic-polynomial equality.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
