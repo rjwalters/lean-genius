@@ -160,6 +160,48 @@ theorem squareOrder_eight_twoHigh_card_incidenceOne_eq_sixteen
   change ((Finset.univ : Finset V).filter fun y => k y = 1).card = 16
   rw [← heraseFilter, ← hsumFilter, hsumErase]
 
+/-- The unique incidence-two point is low, and after deleting its two high
+neighbors its remaining neighborhood has cardinality six.  This constructs
+the six-point set used in the two-high saturation argument. -/
+theorem squareOrder_eight_twoHigh_exists_low_incidenceTwo_with_six_lowNeighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 8 ∨ G.degree v = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (hhigh : (squareOrderHighVertices G 8).card = 2) :
+    ∃ x : V,
+      G.degree x = 8 ∧
+      squareOrderHighIncidenceCount G 8 x = 2 ∧
+      (G.neighborFinset x \ squareOrderHighVertices G 8).card = 6 := by
+  classical
+  obtain ⟨x, hxTwo, hunique⟩ :=
+    squareOrder_eight_twoHigh_exists_unique_incidenceTwo
+      G hfree hmin hcover hcard hhigh
+  have hxNotHigh : x ∉ squareOrderHighVertices G 8 := by
+    intro hxHigh
+    have hxZero := squareOrder_highNeighborCount_eq_zero_of_high
+      G hcover hxHigh
+    change squareOrderHighIncidenceCount G 8 x = 0 at hxZero
+    omega
+  have hxDegree : G.degree x = 8 := by
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (d := 8) (by omega) hmin hcover hcard x with hx | hx
+    · exact hx
+    · exfalso
+      exact hxNotHigh (Finset.mem_filter.mpr ⟨Finset.mem_univ x, hx⟩)
+  have hsplit := Finset.card_sdiff_add_card_inter
+    (G.neighborFinset x) (squareOrderHighVertices G 8)
+  have hneighborCard : (G.neighborFinset x).card = 8 := by
+    rw [G.card_neighborFinset_eq_degree, hxDegree]
+  change (G.neighborFinset x ∩ squareOrderHighVertices G 8).card = 2 at hxTwo
+  refine ⟨x, hxDegree, hxTwo, ?_⟩
+  rw [hneighborCard] at hsplit
+  omega
+
 end
 
 end Erdos85
