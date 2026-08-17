@@ -713,11 +713,27 @@ generalized rather than merely replayed.
       every one of the 11 combined-census survivors with `h≤6`, so these
       inequalities alone are not a terminal.  Its `--full-graph` mode restores
       the low-low adjacency matrix, exact low degrees, and every remaining
-      C4/common-owner constraint; even the canonically symmetry-reduced `h=2`
-      profile is currently solver-unknown after 120 seconds.  This is negative
-      discovery evidence, not an exclusion or certificate: the next lemma must
-      expose additional global structure (or make the exact model tractable),
-      rather than merely restate the same pairwise owner budget.
+      C4/common-owner constraint.  For the unique `h=2` profile
+      `(n₀,…,n₄)=(45,16,1,0,0)`, let `x` be the `k=2` vertex and let `S` be its
+      six low original neighbors.  The defect equations force the sixteen
+      `k=1` vertices into two high-incidence classes joined by a D-perfect
+      matching, and split the `k=0` vertices into the five D-neighbors `T` of
+      `x` and forty vertices `U`.  Every `S` vertex has no original edge to a
+      `k=1` vertex; every `T` vertex has no neighbor in `S`; every `U` vertex
+      has exactly one.  Counting `S-U` incidences gives
+      `|S∩{k=1}|=2`, one from each high class.  Moreover `U∩S` is internally
+      1-regular, so `|T∩S|∈{0,2,4}`.  These are the first global consequences
+      extracted from the exact model and are candidates for a short uniform
+      lemma.
+
+      After canonically fixing the resulting `S×U` partition, the three exact
+      Boolean cases lower reproducibly to 2.02M, 2.16M, and 2.28M clauses via
+      `--write-dimacs`; Kissat reports UNSAT for all three.  Thus the `h=2`
+      profile is eliminated computationally and the combined q=8 frontier is
+      `51→50`.  This is audited discovery evidence, not a Lean theorem or
+      certificate terminal.  The immediate mathematical task is to extract
+      the contradiction behind those three UNSATs; the broader lesson remains
+      that the pairwise owner budget alone is insufficient.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
