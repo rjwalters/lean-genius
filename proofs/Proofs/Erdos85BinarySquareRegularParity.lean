@@ -321,4 +321,70 @@ theorem binarySquare_regular_componentQuotient_weightedGram_offDiagonal
   exact sum_ncard_mul_componentQuotient_eq_of_ne_of_regular_comm
     G hfree hDdegree hcomm c c' hne
 
+/-- **Uniform binary-square weighted quotient Gram diagonal.**  Detailed
+balance converts the weighted column norm into the diagonal entry of `Q²`.
+At square order the scalar part of the transported defect identity cancels,
+so this norm is exactly the square of the component order. -/
+theorem binarySquare_regular_componentQuotient_weightedGram_diagonal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    (∑ e : (secondOrderDefectGraph G).ConnectedComponent,
+        (e.supp.ncard : ℝ) *
+          ((componentQuotientMatrix G (secondOrderDefectGraph G) e c : ℝ) *
+            (componentQuotientMatrix G (secondOrderDefectGraph G) e c : ℝ))) =
+      (c.supp.ncard : ℝ) * (c.supp.ncard : ℝ) := by
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDdegree : ∀ x : V,
+      (secondOrderDefectGraph G).degree x = q - 1 := by
+    intro x
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus x
+    change (secondOrderDefectGraph G).degree x = (q - 3) + 2 at h
+    omega
+  have hcomm : G.adjMatrix ℝ * (secondOrderDefectGraph G).adjMatrix ℝ =
+      (secondOrderDefectGraph G).adjMatrix ℝ * G.adjMatrix ℝ :=
+    adjMatrix_comm_secondOrderDefect_of_regular_field G hfree hreg
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hsq := componentQuotientMatrixReal_sq_apply_of_regular_comm
+    G hfree hreg hDdegree hcomm c c
+  have hcast : ((q - 1 : ℕ) : ℝ) = (q : ℝ) - 1 := by
+    rw [Nat.cast_sub (by omega : 1 ≤ q)]
+    norm_num
+  rw [hcast] at hsq
+  have hsq' : (∑ e, (Q c e : ℝ) * (Q e c : ℝ)) =
+      (c.supp.ncard : ℝ) := by
+    simpa [Matrix.mul_apply, componentQuotientMatrixReal, D, Q] using hsq
+  calc
+    (∑ e : D.ConnectedComponent,
+        (e.supp.ncard : ℝ) * ((Q e c : ℝ) * (Q e c : ℝ))) =
+        ∑ e : D.ConnectedComponent,
+          (c.supp.ncard : ℝ) * ((Q c e : ℝ) * (Q e c : ℝ)) := by
+      apply Finset.sum_congr rfl
+      intro e _
+      have hbal := componentQuotientMatrix_balance
+        G D (q - 1) hDdegree hcomm c e
+      have hbalR : (c.supp.ncard : ℝ) * (Q c e : ℝ) =
+          (e.supp.ncard : ℝ) * (Q e c : ℝ) := by
+        exact_mod_cast hbal
+      rw [← mul_assoc, ← hbalR]
+      ring
+    _ = (c.supp.ncard : ℝ) *
+        ∑ e : D.ConnectedComponent, (Q c e : ℝ) * (Q e c : ℝ) := by
+      rw [Finset.mul_sum]
+    _ = (c.supp.ncard : ℝ) * (c.supp.ncard : ℝ) := by rw [hsq']
+
 end Erdos85

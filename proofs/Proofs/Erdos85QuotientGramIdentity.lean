@@ -1,4 +1,5 @@
 import Proofs.Erdos85CrossComponentPairCount
+import Proofs.Erdos85PositiveExcessQuotientTrace
 
 /-!
 # The weighted Gram identity for the boundary component quotient
@@ -18,6 +19,85 @@ namespace Erdos85
 noncomputable section
 
 open SimpleGraph
+
+/-- **Degree-independent quotient square equation.**  If the second-order
+defect graph is `k`-regular, transport of
+`A^2 = (d-1)I + J - D` to the equitable component quotient gives the stated
+formula.  Keeping the coefficient in `ℝ` avoids any artificial truncated
+subtraction hypothesis. -/
+theorem componentQuotientMatrixReal_sq_apply_of_regular_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d k : ℕ}
+    (hregG : ∀ x : V, G.degree x = d)
+    (hregD : ∀ x : V, (secondOrderDefectGraph G).degree x = k)
+    (hcomm : G.adjMatrix ℝ * (secondOrderDefectGraph G).adjMatrix ℝ =
+      (secondOrderDefectGraph G).adjMatrix ℝ * G.adjMatrix ℝ)
+    (c f : (secondOrderDefectGraph G).ConnectedComponent) :
+    (componentQuotientMatrixReal G (secondOrderDefectGraph G) *
+        componentQuotientMatrixReal G (secondOrderDefectGraph G)) c f =
+      ((d : ℝ) - 1 - k) * (if c = f then 1 else 0) +
+        (f.supp.ncard : ℝ) := by
+  let D := secondOrderDefectGraph G
+  let S := componentMembershipMatrix D
+  let Q := componentQuotientMatrixReal G D
+  let R : Matrix V D.ConnectedComponent ℝ :=
+    fun _ a => (a.supp.ncard : ℝ)
+  have hAS : G.adjMatrix ℝ * S = S * Q :=
+    adjMatrix_mul_componentMembershipMatrix G D k hregD hcomm
+  have hDS : D.adjMatrix ℝ * S = (k : ℝ) • S :=
+    adjMatrix_mul_componentMembershipMatrix_self D k hregD
+  have hJS : realOnesMatrix V * S = R :=
+    onesMatrix_mul_componentMembershipMatrix D
+  have hsq := adjMatrix_sq_eq_sub_secondOrderDefect_of_regular_real
+    G hfree hregG
+  have hDadj :
+      @SimpleGraph.adjMatrix ℝ V (secondOrderDefectGraph G)
+          (secondOrderDefectGraph.instDecidableAdj G) _ _ = D.adjMatrix ℝ := by
+    ext x y
+    simp [D, SimpleGraph.adjMatrix_apply]
+  have htransport :
+      S * (Q * Q) =
+        ((d - 1 : ℝ) • (1 : Matrix V V ℝ) + realOnesMatrix V -
+          D.adjMatrix ℝ) * S := by
+    calc
+      S * (Q * Q) = (S * Q) * Q := (Matrix.mul_assoc S Q Q).symm
+      _ = (G.adjMatrix ℝ * S) * Q := by rw [hAS]
+      _ = G.adjMatrix ℝ * (S * Q) := Matrix.mul_assoc _ _ _
+      _ = G.adjMatrix ℝ * (G.adjMatrix ℝ * S) := by rw [hAS]
+      _ = (G.adjMatrix ℝ * G.adjMatrix ℝ) * S :=
+        (Matrix.mul_assoc _ _ _).symm
+      _ = ((d - 1 : ℝ) • (1 : Matrix V V ℝ) + realOnesMatrix V -
+          D.adjMatrix ℝ) * S := by
+        rw [hsq]
+        exact congrArg
+          (fun X => ((d - 1 : ℝ) • (1 : Matrix V V ℝ) +
+            realOnesMatrix V - X) * S) hDadj
+  have htransport' : S * (Q * Q) =
+      (d - 1 : ℝ) • S + R - (k : ℝ) • S := by
+    calc
+      S * (Q * Q) =
+          ((d - 1 : ℝ) • (1 : Matrix V V ℝ) + realOnesMatrix V -
+            D.adjMatrix ℝ) * S := htransport
+      _ = (d - 1 : ℝ) • S + R - (k : ℝ) • S := by
+        rw [Matrix.sub_mul, Matrix.add_mul, Matrix.smul_mul, Matrix.one_mul,
+          hJS, hDS]
+  have hentry := congrFun (congrFun htransport'
+    (componentRepresentative D c)) f
+  have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff c
+      (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+  simp [Matrix.mul_apply, S, Q, R, componentMembershipMatrix, hrep] at hentry ⊢
+  by_cases hcf : c = f
+  · simp [hcf] at hentry ⊢
+    linarith
+  · simp [hcf] at hentry ⊢
+    simpa [D] using hentry
 
 /-- **Uniform fiberwise quotient product.**  If `D` is regular and its
 adjacency matrix commutes with that of `G`, grouping a product of component
