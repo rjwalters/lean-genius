@@ -66,7 +66,7 @@ states for the other seven source branches. -/
 def oneHighTableHasSaturatedOddThreePairTurnByParity
     (profile : Nat) (table : OneHighMissTable) : Bool :=
   let choices := List.ofFn fun source : Fin 8 =>
-    oneHighCompatibleSourcePairings profile table source
+    oneHighCompatibleSourcePairings profile (oneHighTableRestrict table) source
   (List.ofFn fun source : Fin 8 => source).any fun source =>
     let rows := choices[source.val]!.filter fun row =>
       !(oneHighSaturatedTurnRowTriples source row).isEmpty

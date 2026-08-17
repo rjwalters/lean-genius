@@ -82,7 +82,7 @@ theorem oneHighTableHasSaturatedOddThreePairTurnByParity_of_refinement
     {profile : Nat} {table : OneHighMissTable}
     {refinement : List (List OneHighLabelPair)}
     (hrefinement : refinement ∈
-      oneHighPairingRefinements profile table)
+      oneHighPairingRefinements profile (oneHighTableRestrict table))
     (hturn : oneHighRefinementHasSaturatedOddThreePairTurn refinement = true) :
     oneHighTableHasSaturatedOddThreePairTurnByParity profile table = true := by
   rw [oneHighRefinementHasSaturatedOddThreePairTurn,
@@ -90,15 +90,17 @@ theorem oneHighTableHasSaturatedOddThreePairTurnByParity_of_refinement
   rcases hturn with ⟨source, a, b, c, row, hget, hperm,
     hsa, hsb, hsc, hab, hbc, hac, hoddAB, hoddBC⟩
   let choices := List.ofFn fun current : Fin 8 =>
-    oneHighCompatibleSourcePairings profile table current
+    oneHighCompatibleSourcePairings profile (oneHighTableRestrict table) current
   have hcompatible : OneHighChoicesCompatible choices refinement := by
-    exact (oneHighPairingRefinements_mem_iff profile table refinement).1
+    exact (oneHighPairingRefinements_mem_iff profile
+      (oneHighTableRestrict table) refinement).1
       hrefinement
   have hrowMemRaw : row ∈ choices[source.val]! :=
     mem_getElem!_of_oneHighChoicesCompatible_getElem?_eq_some
       hcompatible hget
   have hrowMem : row ∈
-      oneHighCompatibleSourcePairings profile table source := by
+      oneHighCompatibleSourcePairings profile
+        (oneHighTableRestrict table) source := by
     fin_cases source <;> simpa [choices] using hrowMemRaw
   have habRow : oneHighCanonicalLabelPair a b ∈ row := by
     rw [hperm.mem_iff]
@@ -186,7 +188,7 @@ theorem mem_oneHighSaturatedOddTurnParityInventoryTables_of_refinement
     (hcapacity : table ∈ oneHighCapacityInventoryTables profile)
     {refinement : List (List OneHighLabelPair)}
     (hrefinement : refinement ∈
-      oneHighPairingRefinements profile.val table)
+      oneHighPairingRefinements profile.val (oneHighTableRestrict table))
     (hturn : oneHighRefinementHasSaturatedOddThreePairTurn refinement = true) :
     table ∈ oneHighSaturatedOddTurnParityInventoryTables profile := by
   rw [oneHighSaturatedOddTurnParityInventoryTables, List.mem_filter]
