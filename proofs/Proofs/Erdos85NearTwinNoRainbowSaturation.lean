@@ -68,6 +68,40 @@ theorem card_filter_ne_le_two_of_six_noRainbow
       exact (Finset.mem_filter.mp hn).2 (Finset.mem_filter.mp he).2
   omega
 
+/-- In fact at least four triangles have a repeated color different from the
+base-edge color.  A base-colored equality is charged to both of the two
+one-element exceptional budgets. -/
+theorem card_filter_eq_ne_base_ge_four_of_six_noRainbow
+    {R C : Type*} [DecidableEq R] [DecidableEq C]
+    (S : Finset R) (left right : R → C) (base : C)
+    (hcard : S.card = 6)
+    (hleft : (S.filter fun r => left r = base).card ≤ 1)
+    (hright : (S.filter fun r => right r = base).card ≤ 1)
+    (hno : ∀ r ∈ S,
+      left r = right r ∨ left r = base ∨ right r = base) :
+    (S.filter fun r => left r = right r ∧ left r ≠ base).card ≥ 4 := by
+  let E := S.filter fun r => left r = right r ∧ left r ≠ base
+  let L := S.filter fun r => left r = base
+  let T := S.filter fun r => right r = base
+  have hsub : S ⊆ E ∪ (L ∪ T) := by
+    intro r hr
+    have hrCases := hno r hr
+    simp only [E, L, T, Finset.mem_union, Finset.mem_filter]
+    by_cases hb : left r = base
+    · exact Or.inr (Or.inl ⟨hr, hb⟩)
+    rcases hrCases with he | hl | ht
+    · exact Or.inl ⟨hr, he, hb⟩
+    · exact (hb hl).elim
+    · exact Or.inr (Or.inr ⟨hr, ht⟩)
+  have htotal := Finset.card_le_card hsub
+  have houter := Finset.card_union_le E (L ∪ T)
+  have hinner := Finset.card_union_le L T
+  change L.card ≤ 1 at hleft
+  change T.card ≤ 1 at hright
+  change S.card = 6 at hcard
+  change E.card ≥ 4
+  omega
+
 end
 
 end Erdos85
