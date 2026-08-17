@@ -112,4 +112,41 @@ theorem rowMaskExclusion_eval_true_of_bounds
         coeff val keys mask hmatch
       omega
 
+/-- All masks on a row that violate its inclusive integer bounds. -/
+def invalidRowMasks (coeff : Nat → Int) (keys : List Nat)
+    (lower upper : Int) : List Nat :=
+  (List.range (2 ^ keys.length)).filter fun mask =>
+    decide (maskedRowValue coeff keys mask < lower ∨
+      upper < maskedRowValue coeff keys mask)
+
+/-- Exact clause block emitted for one bounded integer row. -/
+def rowBoundCnf (coeff : Nat → Int) (keys : List Nat)
+    (lower upper : Int) : CNF Nat where
+  clauses := ((invalidRowMasks coeff keys lower upper).map
+    (rowMaskExclusion keys)).toArray
+
+/-- Soundness of a complete generated row block. -/
+theorem rowBoundCnf_sat_of_bounds
+    (coeff : Nat → Int) (keys : List Nat) (lower upper : Int)
+    (val : Nat → Bool)
+    (hactual : lower ≤ booleanRowValue coeff val keys ∧
+      booleanRowValue coeff val keys ≤ upper) :
+    (rowBoundCnf coeff keys lower upper).Sat val := by
+  rw [CNF.sat_def, CNF.eval, Array.all_eq_true]
+  intro j hj
+  have hmemArray := Array.getElem_mem_toList
+    (xs := (rowBoundCnf coeff keys lower upper).clauses) hj
+  have hmemList :
+      (rowBoundCnf coeff keys lower upper).clauses[j] ∈
+        (invalidRowMasks coeff keys lower upper).map
+          (rowMaskExclusion keys) := by
+    simpa [rowBoundCnf] using hmemArray
+  obtain ⟨mask, hmask, hclause⟩ := List.mem_map.mp hmemList
+  have hinvalid : maskedRowValue coeff keys mask < lower ∨
+      upper < maskedRowValue coeff keys mask := by
+    simpa [invalidRowMasks] using (List.mem_filter.mp hmask).2
+  rw [← hclause]
+  exact rowMaskExclusion_eval_true_of_bounds coeff val keys mask
+    lower upper hactual hinvalid
+
 end Erdos85
