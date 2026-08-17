@@ -60,11 +60,25 @@ def main() -> None:
         type=Path,
         help="write selected table dictionaries for queue_v2.py",
     )
+    parser.add_argument(
+        "--tier1-jobs-output",
+        type=Path,
+        help="write seven-field jobs TSV for run_h1_v2_tier1.py",
+    )
+    parser.add_argument(
+        "--solver-output-dir",
+        type=Path,
+        help="verified queue_v2 output used with --tier1-jobs-output",
+    )
     parser.add_argument("--summary-only", action="store_true")
     args = parser.parse_args()
 
     if bool(args.jsonl_inventory) != bool(args.jsonl_output):
         parser.error("--jsonl-inventory and --jsonl-output must be supplied together")
+    if bool(args.tier1_jobs_output) != bool(args.solver_output_dir):
+        parser.error(
+            "--tier1-jobs-output and --solver-output-dir must be supplied together"
+        )
 
     latest = read_latest_results(args.results)
     selected: list[tuple[str, tuple[int, ...], str]] = []
@@ -132,6 +146,50 @@ def main() -> None:
                 raise ValueError(f"queue serialization changed tag {expected_tag}")
             queue_lines.append(line)
         args.queue_output.write_text("".join(line + "\n" for line in queue_lines))
+
+    if args.tier1_jobs_output:
+        table_dir = args.tier1_jobs_output.parent / "tables"
+        table_dir.mkdir(parents=True, exist_ok=True)
+        job_lines = []
+        for tag, values, _ in selected:
+            cnf = args.solver_output_dir / f"{tag}.v2.cnf"
+            drat_gz = args.solver_output_dir / f"{tag}.v2.drat.gz"
+            verdict = args.solver_output_dir / f"{tag}.v2.verdict"
+            if not cnf.is_file() or not drat_gz.is_file() or not verdict.is_file():
+                raise ValueError(f"solver artifacts are incomplete for {tag}")
+            verdict_fields = verdict.read_text().split()
+            if (
+                len(verdict_fields) < 6
+                or verdict_fields[0] != tag
+                or verdict_fields[1] != "UNSAT"
+                or verdict_fields[3] != "drat:VERIFIED"
+                or verdict_fields[4] != "mode:MONO"
+                or verdict_fields[5] != "arm:v2"
+            ):
+                raise ValueError(f"solver verdict is not verified MONO v2 for {tag}")
+            table_path = table_dir / f"{tag}.table"
+            table_record = [
+                [[pair[0], pair[1]], value]
+                for pair, value in zip(TABLE_PAIRS, values, strict=True)
+                if value != 0
+            ]
+            table_path.write_text(json.dumps(table_record) + "\n")
+            job_lines.append(
+                "\t".join(
+                    (
+                        tag,
+                        str(PROFILE),
+                        "AABB",
+                        "MONO",
+                        str(table_path),
+                        str(cnf),
+                        str(drat_gz),
+                    )
+                )
+            )
+        args.tier1_jobs_output.write_text(
+            "".join(line + "\n" for line in job_lines)
+        )
 
     if not args.summary_only:
         print("profile\ttag\tlatest_status\ttable_values")
