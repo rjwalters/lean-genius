@@ -828,8 +828,27 @@ generalized rather than merely replayed.
      the same statement as `finrank(range(C_c))=q-1`.  It follows by
      normalizing `C_c/q^2` to an idempotent and applying the formal theorem
      that the trace of a projection equals the dimension of its range.  The
-     remaining task is to feed this rigid `(q-1)`-dimensional image back into
-     the self-indexed block.  The
+     first self-indexed feedback is now `PROVEN` in
+     `Erdos85BinarySquareUnitOwnerCliqueFibers`.  Expanding the projection
+     identity for `C_c=q(A_c+I)-J` gives
+
+     ```text
+     (A_c+I)^2 = q(A_c+I).
+     ```
+
+     The theorem `binarySquare_regular_unit_componentOwnerGraph_adj_trans`
+     turns this into adjacency transitivity, so every unit owner graph is a
+     union of `K_q` clique fibers.  The self component is a transversal:
+     `binarySquare_regular_unit_selfComponent_closedOwnerNeighborhood_disjoint`
+     proves that its distinct support vertices select pairwise disjoint closed
+     owner neighborhoods, and
+     `binarySquare_regular_unit_componentOwnerGraph_closedNeighborhood_card`
+     proves each such fiber has order `q`.  Since the support has `q` vertices
+     inside `q^2` total vertices, these are the exact `q×q` fiber coordinates.
+     (This remains unit-color infrastructure, hence relevant to odd-q branches
+     but vacuous in the even binary A-REG branch.)  The remaining task is to
+     combine these clique-fiber transversals across colors/components, while
+     the binary branch must consume its non-unit centered-component ranks.  The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
      `q >= 8`.
