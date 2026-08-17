@@ -77,9 +77,10 @@ theorem orderSixtyFour_seven_components_outsideReturn_eq_sixJ_sub_HQ
       let C := (G.induce q).adjMatrix ℂ
       let Q := B * Matrix.conjTranspose B
       let M := (B * C) * Matrix.conjTranspose B
-      M = (6 : ℂ) •
-          (FriendshipTheoremOQ01.onesMatrix c.supp).map
-            (Int.castRingHom ℂ) - H * Q := by
+      H * B + B * C = (fun _ _ ↦ (1 : ℂ)) ∧
+        M = (6 : ℂ) •
+            (FriendshipTheoremOQ01.onesMatrix c.supp).map
+              (Int.castRingHom ℂ) - H * Q := by
   classical
   obtain ⟨c, hc16, htwo, _hsmall⟩ :=
     orderSixtyFour_seven_defect_components_global_block_degrees
@@ -91,7 +92,7 @@ theorem orderSixtyFour_seven_components_outsideReturn_eq_sixJ_sub_HQ
   let H := (G.induce c.supp).adjMatrix ℂ
   let B := (G.adjMatrix ℂ).toBlock p (fun x ↦ ¬p x)
   let E := Matrix.conjTranspose B
-  let C := (G.induce q).adjMatrix ℂ
+  let C := (G.induce {x | ¬p x}).adjMatrix ℂ
   let JHO : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
   let JHH := (FriendshipTheoremOQ01.onesMatrix c.supp).map
     (Int.castRingHom ℂ)
@@ -189,8 +190,11 @@ theorem orderSixtyFour_seven_components_outsideReturn_eq_sixJ_sub_HQ
         rfl
       _ = 6 := by rw [hScard]; norm_num
       _ = (6 : ℂ) * (Int.castRingHom ℂ) 1 := by norm_num
-  exact rectangularOutsideReturn_eq_smul_sub_internal_mul_gram
-    H B C E (JHO.map (Int.castRingHom ℂ)) JHH 6 hblock hreturn
+  refine ⟨?_, rectangularOutsideReturn_eq_smul_sub_internal_mul_gram
+    H B C E (JHO.map (Int.castRingHom ℂ)) JHH 6 hblock hreturn⟩
+  exact hblock.trans (by
+    ext i j
+    norm_num [JHO])
 
 /-- Combined graph-facing ledger: on the unique H16 block, `M = 6J - HQ`,
 and both `M` and `HQ` have natural entries between zero and six. -/
@@ -221,7 +225,7 @@ theorem orderSixtyFour_seven_components_outsideReturn_gram_entry_ledger
         (∃ n : ℕ, n ≤ 6 ∧ M u v = n) ∧
         (∃ k : ℕ, k ≤ 6 ∧ (H * Q) u v = k) := by
   classical
-  obtain ⟨c, hc16, hid⟩ :=
+  obtain ⟨c, hc16, _hcross, hid⟩ :=
     orderSixtyFour_seven_components_outsideReturn_eq_sixJ_sub_HQ
       G hfree hmin hcover hcount
   obtain ⟨c', hc'16, hcap⟩ :=
