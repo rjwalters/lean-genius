@@ -1292,8 +1292,13 @@ generalized rather than merely replayed.
      statement into distinct closing vertices `z₁,z₂`: both are owner-`b`
      neighbors of the shared middle `y`, both are owner-`c` neighbors of the
      root `x`, and each triangle `x-y-zᵢ` occupies three distinct defect
-     components.  The remaining structural gap is to rule out this forced
-     mixed-owner fork using the cross-block incidence constraints.
+     components.  `Erdos85BinarySquareMixedOwnerNoRainbowAmbientFork` lifts
+     the two `b`-edges and two `c`-edges to ambient common neighbors.  The two
+     `b`-side centers and the two `c`-side centers cannot both coincide:
+     otherwise the distinct closing vertices `z₁,z₂` would share one common
+     neighbor in component `b` and another in component `c`, contradicting
+     `C₄`-freeness.  The remaining structural gap is to combine this forced
+     ambient separation with the exact two-lift identities.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
