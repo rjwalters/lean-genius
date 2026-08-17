@@ -89,6 +89,43 @@ theorem binarySquare_regular_sizeTwoSelectorGraph_eq_componentDefectComplementGr
       (binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
         G hfree hq hreg hcard c hc u v huv).mpr hnotD⟩
 
+/-- Matrix form of the selector-complement identity.  This is the direct
+input for blockwise power traces and eigenvalue transport. -/
+theorem binarySquare_regular_sizeTwoSelectorGraph_adjMatrix_resolution
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) :
+    (1 : Matrix c.supp c.supp ℤ) +
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ +
+        (sizeTwoSelectorGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ =
+      FriendshipTheoremOQ01.onesMatrix c.supp := by
+  ext u v
+  by_cases huv : u = v
+  · subst v
+    simp [Matrix.add_apply, FriendshipTheoremOQ01.onesMatrix,
+      SimpleGraph.adjMatrix_apply]
+  · have hp := binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
+      G hfree hq hreg hcard c hc u v huv
+    by_cases hd : (secondOrderDefectGraph G).Adj u.1 v.1
+    · have hnsel : ¬∃ x : V,
+          componentNeighborFinset G (secondOrderDefectGraph G) c x =
+            {u.1, v.1} := fun hsel => (hp.mp hsel) hd
+      simp [Matrix.add_apply, FriendshipTheoremOQ01.onesMatrix,
+        SimpleGraph.adjMatrix_apply, sizeTwoSelectorGraph, huv, hd, hnsel]
+    · have hsel : ∃ x : V,
+          componentNeighborFinset G (secondOrderDefectGraph G) c x =
+            {u.1, v.1} := hp.mpr hd
+      simp [Matrix.add_apply, FriendshipTheoremOQ01.onesMatrix,
+        SimpleGraph.adjMatrix_apply, sizeTwoSelectorGraph, huv, hd, hsel]
+
 /-- The size-two selector graph is `q`-regular on `2q` component points. -/
 theorem binarySquare_regular_sizeTwoSelectorGraph_degree
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -156,6 +193,112 @@ theorem binarySquare_regular_sizeTwoSelectorGraph_degree
       _ = q * 2 := hc
   rw [hcardSupp]
   omega
+
+/-- The induced defect block and its selector-complement block commute
+integrally.  This supplies simultaneous blockwise power and spectral access. -/
+theorem binarySquare_regular_sizeTwoSelectorGraph_adjMatrix_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) :
+    ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ *
+        (sizeTwoSelectorGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ =
+      (sizeTwoSelectorGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ *
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ := by
+  let A := ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+  let L := (sizeTwoSelectorGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ
+  let J := FriendshipTheoremOQ01.onesMatrix c.supp
+  have hresolution : (1 : Matrix c.supp c.supp ℤ) + A + L = J := by
+    exact binarySquare_regular_sizeTwoSelectorGraph_adjMatrix_resolution
+      G hfree hq hreg hcard c hc
+  have hLreg : ∀ u,
+      (sizeTwoSelectorGraph G (secondOrderDefectGraph G) c).degree u = q :=
+    fun u => binarySquare_regular_sizeTwoSelectorGraph_degree
+      G hfree hq hreg hcard c hc u
+  have hLJ : L * J = (q : ℤ) • J := by
+    exact FriendshipTheoremOQ01.adjMatrix_mul_ones
+      (sizeTwoSelectorGraph G (secondOrderDefectGraph G) c) q hLreg
+  have hJL : J * L = (q : ℤ) • J := by
+    exact onesMatrix_mul_adjMatrix_of_regular
+      (sizeTwoSelectorGraph G (secondOrderDefectGraph G) c) q hLreg
+  have hcommJ : L * J = J * L := hLJ.trans hJL.symm
+  have hA : A = J - 1 - L := by
+    calc
+      A = ((1 : Matrix c.supp c.supp ℤ) + A + L) - 1 - L := by module
+      _ = J - 1 - L := by rw [hresolution]
+  change A * L = L * A
+  rw [hA]
+  noncomm_ring [hcommJ]
+
+/-- On the zero-sum subspace, selector-complement adjacency is `-1` minus
+defect adjacency.  Thus a defect eigenvalue `λ` transports to the selector
+eigenvalue `-1-λ` with the same vector. -/
+theorem binarySquare_regular_sizeTwoSelectorGraph_mulVec_of_sum_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2)
+    (f : c.supp → ℤ) (hsum : ∑ u, f u = 0) :
+    ((sizeTwoSelectorGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ).mulVec f =
+      -f -
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec f := by
+  let A := ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+  let L := (sizeTwoSelectorGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ
+  let J := FriendshipTheoremOQ01.onesMatrix c.supp
+  have hresolution : (1 : Matrix c.supp c.supp ℤ) + A + L = J := by
+    exact binarySquare_regular_sizeTwoSelectorGraph_adjMatrix_resolution
+      G hfree hq hreg hcard c hc
+  have hJ : J.mulVec f = 0 := by
+    ext u
+    simp [J, Matrix.mulVec, dotProduct,
+      FriendshipTheoremOQ01.onesMatrix, hsum]
+  have hv := congrArg (fun M : Matrix c.supp c.supp ℤ => M.mulVec f) hresolution
+  simp only [Matrix.add_mulVec, Matrix.one_mulVec] at hv
+  rw [hJ] at hv
+  change L.mulVec f = -f - A.mulVec f
+  calc
+    L.mulVec f = (f + A.mulVec f + L.mulVec f) - f - A.mulVec f := by module
+    _ = 0 - f - A.mulVec f := by rw [hv]
+    _ = -f - A.mulVec f := by module
+
+/-- Explicit integral eigenvalue transport between the defect block and its
+size-two selector complement. -/
+theorem binarySquare_regular_sizeTwoSelectorGraph_eigenvalue_transport
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2)
+    (f : c.supp → ℤ) (hsum : ∑ u, f u = 0) (mu : ℤ)
+    (hf : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec f =
+      mu • f) :
+    ((sizeTwoSelectorGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ).mulVec f =
+      (-1 - mu) • f := by
+  rw [binarySquare_regular_sizeTwoSelectorGraph_mulVec_of_sum_eq_zero
+    G hfree hq hreg hcard c hc f hsum, hf]
+  ext u
+  simp
+  ring
 
 end
 
