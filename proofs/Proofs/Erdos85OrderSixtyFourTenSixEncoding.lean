@@ -254,6 +254,68 @@ theorem tenSixRCompletenessCnf_unsat : tenSixRCompletenessCnf.Unsat := by
   rw [ht] at hu
   exact hu
 
+/-- The constraint prefix of `r_complete.cnf`, before its six model
+exclusions. -/
+def tenSixRBaseCnf : Std.Sat.CNF Nat where
+  clauses := tenSixRCompletenessCnf.clauses.extract 0 446396
+
+/-- The six semantic exclusion clauses as a standalone CNF. -/
+def tenSixRModelExclusionCnf : Std.Sat.CNF Nat where
+  clauses := Array.ofFn tenSixRModelExclusionClause
+
+set_option maxHeartbeats 0 in
+set_option maxRecDepth 1000000 in
+/-- The parsed completeness CNF splits exactly into its constraint prefix
+and the six audited semantic exclusions. -/
+theorem tenSixRCompletenessCnf_eq_base_append_exclusions :
+    tenSixRCompletenessCnf =
+      tenSixRBaseCnf ++ tenSixRModelExclusionCnf := by
+  have hclauses : tenSixRCompletenessCnf.clauses =
+      (tenSixRBaseCnf ++ tenSixRModelExclusionCnf).clauses := by
+    native_decide
+  exact congrArg Std.Sat.CNF.mk hclauses
+
+/-- Once a valuation satisfies the finite R-ledger prefix, checked UNSAT of
+the completeness formula forces it to be one of the six recorded models. -/
+theorem exists_tenSixRValuationMatchesModel_of_base_sat
+    (val : Nat → Bool) (hbase : tenSixRBaseCnf.Sat val) :
+    ∃ i : Fin 6, TenSixRValuationMatchesModel i val := by
+  by_contra hnone
+  have hnot : ∀ i : Fin 6, ¬TenSixRValuationMatchesModel i val := by
+    simpa only [not_exists] using hnone
+  have hexcl : tenSixRModelExclusionCnf.Sat val := by
+    rw [Std.Sat.CNF.sat_def, Std.Sat.CNF.eval, Array.all_eq_true]
+    intro j hj
+    have hj6 : j < 6 := by simpa [tenSixRModelExclusionCnf] using hj
+    let i : Fin 6 := ⟨j, hj6⟩
+    have hfalse := tenSixRModelExclusionClause_eval_eq_false_iff i val
+    have hnfalse : Std.Sat.CNF.Clause.eval val
+        (tenSixRModelExclusionClause i) ≠ false := by
+      intro heval
+      exact hnot i (hfalse.mp heval)
+    have htrue : Std.Sat.CNF.Clause.eval val
+        (tenSixRModelExclusionClause i) = true := by
+      cases h : Std.Sat.CNF.Clause.eval val
+          (tenSixRModelExclusionClause i) <;> simp_all
+    simpa [tenSixRModelExclusionCnf, i] using htrue
+  have hall : tenSixRCompletenessCnf.Sat val := by
+    rw [tenSixRCompletenessCnf_eq_base_append_exclusions,
+      Std.Sat.CNF.sat_def, Std.Sat.CNF.eval_append]
+    exact Bool.and_eq_true.mpr ⟨hbase, hexcl⟩
+  have hu := tenSixRCompletenessCnf_unsat val
+  rw [Std.Sat.CNF.sat_def] at hall
+  rw [hall] at hu
+  contradiction
+
+/-- Graph-facing form of the completeness-certificate conclusion. -/
+theorem exists_isTenSixRModel_of_base_sat
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (hbase : tenSixRBaseCnf.Sat (tenSixRDimacsValuation R)) :
+    ∃ i : Fin 6, IsTenSixRModel i R := by
+  obtain ⟨i, hi⟩ := exists_tenSixRValuationMatchesModel_of_base_sat
+    (tenSixRDimacsValuation R) hbase
+  exact ⟨i, (tenSixRValuationMatchesModel_iff i R).mp hi⟩
+
 end
 
 end Erdos85
