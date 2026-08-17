@@ -401,6 +401,11 @@ generalized rather than merely replayed.
       one-per-branch cap and the `q` branches at a low owner, this is the
       aggregate perfect-transversal constraint (and the incidence theorem
       supplies the unique remaining neighbor on the `D`-neighbor side).
+    - `squareOrder_card_highNeighbors_inter_defectBranch_eq_one` upgrades that
+      count pointwise: under the same hypotheses, for every `z∈N_G(u)`, the
+      high vertex `v` has exactly one neighbor in `N_G(z)\{u}`. Thus routing
+      through the branch system at a low center is a literal perfect
+      transversal.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
