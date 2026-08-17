@@ -115,6 +115,89 @@ theorem outsideReturn_apply_eq_nat_le
         simp [G.adj_comm, hxy]
     · simp [hux]
 
+/-- A diagonal entry of `B C Bᴴ` is even: it counts both orientations of
+each edge of the outside graph induced on the outside neighbors of `u`. -/
+theorem outsideReturn_diag_eq_twice_nat
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s : Set V) [DecidablePred (· ∈ s)] (u : s) :
+    let p : V → Prop := fun x ↦ x ∈ s
+    let q : Set V := {x | ¬p x}
+    let B := (G.adjMatrix ℂ).toBlock p (fun x ↦ x ∈ q)
+    let C := (G.induce q).adjMatrix ℂ
+    ∃ k : ℕ, ((B * C) * Matrix.conjTranspose B) u u = (2 * k : ℕ) := by
+  classical
+  let p : V → Prop := fun x ↦ x ∈ s
+  let q : Set V := {x | ¬p x}
+  let B := (G.adjMatrix ℂ).toBlock p (fun x ↦ x ∈ q)
+  let C := (G.induce q).adjMatrix ℂ
+  let T : Set q := {x | G.Adj u.1 x.1}
+  let K : SimpleGraph T := (G.induce q).induce T
+  let n : ℕ := ∑ x : q,
+    if G.Adj u.1 x.1 then
+      (Finset.univ.filter fun y : q ↦
+        G.Adj x.1 y.1 ∧ G.Adj y.1 u.1).card
+    else 0
+  have hentry : ((B * C) * Matrix.conjTranspose B) u u = n := by
+    rw [Matrix.mul_apply]
+    simp only [B, C, Matrix.mul_apply, Matrix.toBlock_apply,
+      SimpleGraph.adjMatrix_apply, Matrix.conjTranspose_apply,
+      Complex.star_def]
+    simp_rw [Finset.sum_mul]
+    rw [Finset.sum_comm]
+    simp only [n]
+    rw [Nat.cast_sum]
+    apply Finset.sum_congr rfl
+    intro x _
+    by_cases hux : G.Adj u.1 x.1
+    · simp only [hux, if_true, one_mul]
+      rw [← Finset.sum_boole (R := ℂ)
+        (fun y : q ↦ G.Adj x.1 y.1 ∧ G.Adj y.1 u.1) Finset.univ]
+      apply Finset.sum_congr rfl
+      intro y _
+      change ((if G.Adj x.1 y.1 then 1 else 0) *
+          (starRingEnd ℂ) (if G.Adj u.1 y.1 then 1 else 0)) =
+        if G.Adj x.1 y.1 ∧ G.Adj y.1 u.1 then 1 else 0
+      by_cases hxy : G.Adj x.1 y.1 <;>
+        by_cases huy : G.Adj u.1 y.1 <;>
+        simp [G.adj_comm, hxy]
+    · simp [hux]
+  have hn : n = ∑ z : T, K.degree z := by
+    change n = ∑ z : {x : q // G.Adj u.1 x.1}, K.degree z
+    simp only [n]
+    rw [← Finset.sum_filter]
+    rw [Finset.sum_subtype
+      (Finset.univ.filter fun x : q ↦ G.Adj u.1 x.1)
+      (p := fun x : q ↦ G.Adj u.1 x.1) (by intro x; simp)]
+    apply Finset.sum_congr rfl
+    intro z _
+    let ι : {x : q // G.Adj u.1 x.1} ↪ q :=
+      ⟨Subtype.val, Subtype.val_injective⟩
+    have hmap : (K.neighborFinset z).map ι =
+        Finset.univ.filter (fun x : q ↦
+          G.Adj z.1.1 x.1 ∧ G.Adj x.1 u.1) := by
+      ext x
+      constructor
+      · intro hx
+        rcases Finset.mem_map.mp hx with ⟨y, hy, hyx⟩
+        have hzy := (K.mem_neighborFinset z y).mp hy
+        change G.Adj z.1.1 y.1.1 at hzy
+        subst x
+        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzy, y.2.symm⟩
+      · intro hx
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
+        let y : {x : q // G.Adj u.1 x.1} := ⟨x, hx.2.symm⟩
+        apply Finset.mem_map.mpr
+        refine ⟨y, ?_, rfl⟩
+        apply (K.mem_neighborFinset z y).mpr
+        change G.Adj z.1.1 y.1.1
+        exact hx.1
+    rw [← K.card_neighborFinset_eq_degree, ← hmap, Finset.card_map]
+    rfl
+  refine ⟨K.edgeFinset.card, ?_⟩
+  rw [hentry, hn, K.sum_degrees_eq_twice_card_edges]
+
+
 /-- In the actual seven-component order-64 branch, every entry of the H16
 outside-return operator is the cast of a natural number at most six. -/
 theorem orderSixtyFour_seven_components_outsideReturn_apply_eq_nat_le_six
