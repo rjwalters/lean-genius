@@ -41,6 +41,54 @@ theorem orderSixtyFour_high_count_cases
   rcases heven with ⟨q, hq⟩
   omega
 
+/-- The zero-high branch is exactly the 8-regular branch. -/
+theorem orderSixtyFour_regular_of_no_high
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 0) :
+    ∀ x, G.degree x = 8 := by
+  have hcard : Fintype.card (Fin 64) = 8 * 8 := by norm_num
+  intro x
+  rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+      G hfree (d := 8) (by norm_num) hmin hcover hcard x with hx | hx
+  · exact hx
+  · have hxH : x ∈ squareOrderHighVertices G 8 :=
+      Finset.mem_filter.mpr ⟨Finset.mem_univ x, hx⟩
+    have hempty : squareOrderHighVertices G 8 = ∅ := Finset.card_eq_zero.mp hh
+    simpa [hempty] using hxH
+
+/-- Complete top-level dispatch: a normalized order-64 graph is regular, or
+its high sector has one of the six nonzero cardinalities handled below. -/
+theorem orderSixtyFour_regular_or_positive_high_cases
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8) :
+    (∀ x, G.degree x = 8) ∨
+      (squareOrderHighVertices G 8).card = 2 ∨
+      (squareOrderHighVertices G 8).card = 4 ∨
+      (squareOrderHighVertices G 8).card = 6 ∨
+      (squareOrderHighVertices G 8).card = 8 ∨
+      (squareOrderHighVertices G 8).card = 10 ∨
+      (squareOrderHighVertices G 8).card = 12 := by
+  rcases orderSixtyFour_high_count_cases G hfree hmin hcover with
+    h0 | h2 | h4 | h6 | h8 | h10 | h12
+  · exact Or.inl (orderSixtyFour_regular_of_no_high G hfree hmin hcover h0)
+  · exact Or.inr (Or.inl h2)
+  · exact Or.inr (Or.inr (Or.inl h4))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl h6)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h8))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h10)))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h12)))))
+
 /-- At order 64, let `k(x)` count the degree-nine neighbors of `x` and let
 `h` be the total number of degree-nine vertices.  Every local high incidence
 is at most four, while the first two global moments are exactly `9h` and
