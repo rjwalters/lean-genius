@@ -197,3 +197,26 @@ coordinates force a collision in every twofold cover by common perfect
 matchings.  Such a theorem would kill every partition containing at least
 three size-two parts, including the `2+2+2+2` sector at `q=8`, without
 returning to the 64-vertex ambient graph.
+
+For this translation pair the obstruction simplifies further.  Two distinct
+common perfect matchings intersect in `0`, `2`, or `4` labels, never in one.
+The intersection histogram over the `choose(64,2)=2016` pairs is
+
+```text
+intersection 0: 1244 pairs
+intersection 2:  648 pairs
+intersection 4:  124 pairs.
+```
+
+Thus a family obeying the simple-owner bound `|F intersect F'| <= 1` must in
+fact be pairwise disjoint, and can contain at most `64/8=8` matchings.  A
+third coordinate needs `2q=16` vertex-stars, giving immediate impossibility.
+The maximum compatible-family computation indeed returns `8`.
+
+As a robustness check, `30` independently sampled base matchings on `F_2^4`
+with eight distinct differences and connected nonbipartite Cayley graph all
+had exactly `64` common perfect matchings and none extended to a third
+coordinate.  This strongly suggests a clean sign/parity lemma for the
+translation-starter class: common perfect matchings have even mutual
+intersection.  It still does not establish the corresponding claim for an
+arbitrary ORTH pair.
