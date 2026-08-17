@@ -416,6 +416,20 @@ generalized rather than merely replayed.
      overlaps in one and only one coordinate.  This is the new local law to
      impose on the rectangular cycle intertwiners, beyond their row sums and
      weighted commutation identities.
+     The owner coloring has uniform pointwise intersection numbers, not just a
+     global pair count.  The `PROVEN` theorem
+     `binarySquare_regular_crossComponent_ownerCoordinate_card` states that
+     for `x` in source part `e`, a distinct target part `f`, and owner
+     coordinate `c`, the number of vertices of `f` whose unique common
+     neighbor with `x` lies in `c` is exactly
+
+     ```text
+     m_c m_f.
+     ```
+
+     This refines the weighted Gram product formula into a local orthogonal-
+     array law.  In particular every cross-component row has the same owner
+     distribution, determined solely by the normalized component parts.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
