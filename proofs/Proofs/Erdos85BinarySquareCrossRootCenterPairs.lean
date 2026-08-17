@@ -357,6 +357,178 @@ theorem binarySquare_regular_sizeTwo_crossRootCenterPair_snd_fiber_card_eq_two
   exact binarySquare_regular_sizeTwoPart_selector_card
     G hfree hq hreg hcard e he u.1
 
+/-- Image-level version: every actual first center has degree two in the
+transition graph contributed by a size-two target component. -/
+theorem binarySquare_regular_sizeTwo_crossRootCenterPairFinset_fst_degree_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ z, G.degree z = q) (hcard : Fintype.card V = q * q)
+    {d e c : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (he : e.supp.ncard = q * 2)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1)
+    (u : c.supp) (hxu : G.Adj x.1 u.1) :
+    ((crossRootCenterPairFinset G hfree hde x y).filter fun p =>
+      p.1 = u.1).card = 2 := by
+  classical
+  let F := crossRootCenterPair G hfree hde x y
+  let P := (Finset.univ : Finset e.supp).filter fun w => (F w).1 = u.1
+  have himage :
+      (crossRootCenterPairFinset G hfree hde x y).filter (fun p =>
+        p.1 = u.1) = P.image F := by
+    ext p
+    simp only [crossRootCenterPairFinset, Finset.mem_filter,
+      Finset.mem_image, Finset.mem_univ, true_and, P, F]
+    constructor
+    · rintro ⟨⟨w, _hw, rfl⟩, hfirst⟩
+      exact ⟨w, hfirst, rfl⟩
+    · rintro ⟨w, hfirst, rfl⟩
+      exact ⟨⟨w, rfl⟩, hfirst⟩
+  rw [himage, Finset.card_image_of_injective _
+    (crossRootCenterPair_injective_of_secondOrderDefect_adj
+      G hfree hde x y hxyD)]
+  exact binarySquare_regular_sizeTwo_crossRootCenterPair_fst_fiber_card_eq_two
+    G hfree hq hreg hcard hde he x y u hxu
+
+/-- Symmetric image-level degree-two statement for second centers. -/
+theorem binarySquare_regular_sizeTwo_crossRootCenterPairFinset_snd_degree_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ z, G.degree z = q) (hcard : Fintype.card V = q * q)
+    {d e c : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (he : e.supp.ncard = q * 2)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1)
+    (u : c.supp) (hyu : G.Adj y.1 u.1) :
+    ((crossRootCenterPairFinset G hfree hde x y).filter fun p =>
+      p.2 = u.1).card = 2 := by
+  classical
+  let F := crossRootCenterPair G hfree hde x y
+  let P := (Finset.univ : Finset e.supp).filter fun w => (F w).2 = u.1
+  have himage :
+      (crossRootCenterPairFinset G hfree hde x y).filter (fun p =>
+        p.2 = u.1) = P.image F := by
+    ext p
+    simp only [crossRootCenterPairFinset, Finset.mem_filter,
+      Finset.mem_image, Finset.mem_univ, true_and, P, F]
+    constructor
+    · rintro ⟨⟨w, _hw, rfl⟩, hsecond⟩
+      exact ⟨w, hsecond, rfl⟩
+    · rintro ⟨w, hsecond, rfl⟩
+      exact ⟨⟨w, rfl⟩, hsecond⟩
+  rw [himage, Finset.card_image_of_injective _
+    (crossRootCenterPair_injective_of_secondOrderDefect_adj
+      G hfree hde x y hxyD)]
+  exact binarySquare_regular_sizeTwo_crossRootCenterPair_snd_fiber_card_eq_two
+    G hfree hq hreg hcard hde he x y u hyu
+
+/-- After the three remote size-sixteen factors are removed at order 64, the
+fourth factor still has degree two at every first center. -/
+theorem orderSixtyFour_three_remoteTargets_complement_fst_degree_two
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ z, G.degree z = 8)
+    {d e f g c : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (hdf : d ≠ f) (hdg : d ≠ g)
+    (hef : e ≠ f) (heg : e ≠ g) (hfg : f ≠ g)
+    (he : e.supp.ncard = 16) (hf : f.supp.ncard = 16)
+    (hg : g.supp.ncard = 16)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1)
+    (u : c.supp) (hxu : G.Adj x.1 u.1) :
+    ((crossRootCenterGrid G x.1 y.1 \ ((
+        crossRootCenterPairFinset G hfree hde x y ∪
+          crossRootCenterPairFinset G hfree hdf x y) ∪
+        crossRootCenterPairFinset G hfree hdg x y)).filter fun p =>
+      p.1 = u.1).card = 2 := by
+  classical
+  let Se := crossRootCenterPairFinset G hfree hde x y
+  let Sf := crossRootCenterPairFinset G hfree hdf x y
+  let Sg := crossRootCenterPairFinset G hfree hdg x y
+  let U := (Se ∪ Sf) ∪ Sg
+  let P := fun p : Fin 64 × Fin 64 => p.1 = u.1
+  have hEF : Disjoint Se Sf :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hde hdf hef x y hxyD
+  have hEG : Disjoint Se Sg :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hde hdg heg x y hxyD
+  have hFG : Disjoint Sf Sg :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hdf hdg hfg x y hxyD
+  have hEF' : Disjoint (Se.filter P) (Sf.filter P) :=
+    hEF.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have hEG' : Disjoint (Se.filter P) (Sg.filter P) :=
+    hEG.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have hFG' : Disjoint (Sf.filter P) (Sg.filter P) :=
+    hFG.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have hUfilter : (U.filter P).card = 6 := by
+    rw [show U = (Se ∪ Sf) ∪ Sg by rfl, Finset.filter_union,
+      Finset.filter_union,
+      Finset.card_union_of_disjoint
+        (Finset.disjoint_union_left.mpr ⟨hEG', hFG'⟩),
+      Finset.card_union_of_disjoint hEF']
+    rw [binarySquare_regular_sizeTwo_crossRootCenterPairFinset_fst_degree_two
+        G hfree (q := 8) (by norm_num) hreg (by norm_num)
+          hde he x y hxyD u hxu,
+      binarySquare_regular_sizeTwo_crossRootCenterPairFinset_fst_degree_two
+        G hfree (q := 8) (by norm_num) hreg (by norm_num)
+          hdf hf x y hxyD u hxu,
+      binarySquare_regular_sizeTwo_crossRootCenterPairFinset_fst_degree_two
+        G hfree (q := 8) (by norm_num) hreg (by norm_num)
+          hdg hg x y hxyD u hxu]
+  have hUsub : U ⊆ crossRootCenterGrid G x.1 y.1 := by
+    rw [show U = (Se ∪ Sf) ∪ Sg by rfl,
+      Finset.union_subset_iff, Finset.union_subset_iff]
+    exact ⟨⟨crossRootCenterPairFinset_subset_centerGrid G hfree hde x y,
+      crossRootCenterPairFinset_subset_centerGrid G hfree hdf x y⟩,
+      crossRootCenterPairFinset_subset_centerGrid G hfree hdg x y⟩
+  have hUfilterSub : U.filter P ⊆
+      (crossRootCenterGrid G x.1 y.1).filter P :=
+    by
+      intro p hp
+      exact Finset.mem_filter.mpr
+        ⟨hUsub (Finset.mem_filter.mp hp).1, (Finset.mem_filter.mp hp).2⟩
+  have hgridFilter :
+      ((crossRootCenterGrid G x.1 y.1).filter P).card = 8 := by
+    have huMem : u.1 ∈ G.neighborFinset x.1 :=
+      (G.mem_neighborFinset x.1 u.1).mpr hxu
+    have heq : (crossRootCenterGrid G x.1 y.1).filter P =
+        {u.1} ×ˢ G.neighborFinset y.1 := by
+      ext p
+      simp only [Finset.mem_filter, crossRootCenterGrid,
+        Finset.mem_product, Finset.mem_singleton, P]
+      constructor
+      · rintro ⟨⟨_hp₁, hp₂⟩, hp₁⟩
+        exact ⟨hp₁, hp₂⟩
+      · rintro ⟨hp₁, hp₂⟩
+        exact ⟨⟨by simpa [hp₁] using huMem, hp₂⟩, hp₁⟩
+    rw [heq, Finset.card_product]
+    simp [G.card_neighborFinset_eq_degree, hreg y.1]
+  change ((crossRootCenterGrid G x.1 y.1 \ U).filter P).card = 2
+  have hfilterSdiff :
+      (crossRootCenterGrid G x.1 y.1 \ U).filter P =
+        (crossRootCenterGrid G x.1 y.1).filter P \ U.filter P := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  rw [hfilterSdiff]
+  rw [Finset.card_sdiff_of_subset hUfilterSub, hgridFilter, hUfilter]
+
 end
 
 end Erdos85

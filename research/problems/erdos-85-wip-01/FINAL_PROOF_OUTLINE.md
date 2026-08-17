@@ -1390,7 +1390,15 @@ generalized rather than merely replayed.
      unique.  In particular it has at most eight edges.  The fourth 2-factor
      is therefore decomposed into a matching of size `2+λ` and a residual
      defect-edge graph of size `14-λ`; propagation must preserve this much
-     sharper matching/residual structure.
+     sharper matching/residual structure.  The local degree assertion behind
+     “fourth 2-factor” is now formal on the first coordinate in
+     `Erdos85BinarySquareCrossRootCenterPairs`: each remote target factor has
+     degree exactly two at every actual root center (its two-point selector
+     fiber is transported through the injective center-pair map), so the three
+     disjoint remote factors use degree six of the `K_{8,8}` grid and their
+     complement has degree exactly two at every first center.  The symmetric
+     second-coordinate image-fiber theorem is also proved; only the final
+     symmetric complement corollary remains bookkeeping.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
