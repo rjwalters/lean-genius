@@ -801,6 +801,30 @@ theorem binarySquare_regular_sizeQ_defectComponent_adj
   rw [← hneighbors] at hymem
   exact (D.mem_neighborFinset x y).mp hymem
 
+/-- Distinct vertices of a unit defect part have disjoint ambient
+neighborhoods. -/
+theorem binarySquare_regular_sizeQ_component_commonNeighbors_card_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q) {x y : V}
+    (hx : (secondOrderDefectGraph G).connectedComponentMk x = c)
+    (hy : (secondOrderDefectGraph G).connectedComponentMk y = c)
+    (hxy : x ≠ y) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card = 0 := by
+  have hD := binarySquare_regular_sizeQ_defectComponent_adj
+    G hfree hq hreg hcard c hc hx hy hxy
+  have hmem : y ∈ (secondOrderDefectGraph G).neighborFinset x :=
+    ((secondOrderDefectGraph G).mem_neighborFinset x y).mpr hD
+  rw [card_common_eq_if_secondOrderDefect G hfree x y hxy, if_pos hmem]
+
 /-- Every vertex has exactly one ambient neighbor in a smallest order-`q`
 defect component. -/
 theorem binarySquare_regular_card_componentNeighbors_sizeQ_eq_one
