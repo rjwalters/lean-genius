@@ -255,9 +255,12 @@ ambiguities by checked replay, and returns an ordinary proof suitable for the
 final `LRAT.check` call. -/
 def prepareLratProof (cnf : CNF Nat) (rawProof : Array LRAT.IntAction) :
     Except String (Array LRAT.IntAction) := do
-  let paddedCnf := LratExtensionVariables.padCnfForProof cnf rawProof
   let renumbered ← LratRenumber.renumber cnf.clauses.size rawProof
-  LratAmbiguousRat.restore cnf.numLiterals paddedCnf renumbered
+  if cnf.numLiterals < LratExtensionVariables.proofMaxLiteral rawProof then
+    let paddedCnf := LratExtensionVariables.padCnfForProof cnf rawProof
+    LratAmbiguousRat.restore cnf.numLiterals paddedCnf renumbered
+  else
+    return renumbered
 
 def replayLrat (cnfPath lratPath : System.FilePath) : IO Bool := do
   let cnf ← DimacsRuntime.load cnfPath
