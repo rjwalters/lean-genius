@@ -218,6 +218,68 @@ theorem orderSixtyFour_defect_component_count_le_eight
   rw [hsum] at hbound
   omega
 
+/-- At the extremal component count, every defect component has order eight.
+This is the uniform-block branch on which the quadratic trace obstruction
+acts. -/
+theorem orderSixtyFour_defect_component_order_eq_eight_of_count_eight
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    c.supp.ncard = 8 := by
+  classical
+  let D := secondOrderDefectGraph G
+  have hsize (e : D.ConnectedComponent) : 8 ≤ e.supp.ncard := by
+    apply Nat.le_of_dvd e.nonempty_supp.ncard_pos
+    exact orderSixtyFour_eight_dvd_defect_component_order
+      G hfree hmin hcover e
+  have hsum : (∑ e : D.ConnectedComponent, e.supp.ncard) = 64 := by
+    calc
+      (∑ e : D.ConnectedComponent, e.supp.ncard) =
+          ∑ e : D.ConnectedComponent, Fintype.card e.supp := by
+        apply Finset.sum_congr rfl
+        intro e _
+        simpa [Nat.card_eq_fintype_card] using
+          (Nat.card_coe_set_eq e.supp).symm
+      _ = Fintype.card (Σ e : D.ConnectedComponent, e.supp) :=
+        Fintype.card_sigma.symm
+      _ = Fintype.card (Fin 64) :=
+        (Fintype.card_congr (vertexConnectedComponentEquiv D)).symm
+      _ = 64 := by simp
+  have hc : c ∈ (Finset.univ : Finset D.ConnectedComponent) :=
+    Finset.mem_univ c
+  have hrest : 56 ≤ ∑ e ∈ (Finset.univ.erase c), e.supp.ncard := by
+    calc
+      56 = ∑ _e ∈ (Finset.univ.erase c : Finset D.ConnectedComponent), 8 := by
+        simp [hcount, D]
+      _ ≤ ∑ e ∈ (Finset.univ.erase c), e.supp.ncard := by
+        exact Finset.sum_le_sum fun e _ => hsize e
+  have hsplit := Finset.sum_erase_add (Finset.univ : Finset D.ConnectedComponent)
+    (fun e => e.supp.ncard) hc
+  have hsplit' :
+      (∑ e ∈ (Finset.univ.erase c : Finset D.ConnectedComponent),
+          e.supp.ncard) + c.supp.ncard = 64 := by
+    calc
+      (∑ e ∈ (Finset.univ.erase c : Finset D.ConnectedComponent),
+          e.supp.ncard) + c.supp.ncard =
+          ∑ e : D.ConnectedComponent, e.supp.ncard := hsplit
+      _ = 64 := hsum
+  have hplus : 56 + c.supp.ncard ≤ 64 := by
+    calc
+      56 + c.supp.ncard ≤
+          (∑ e ∈ (Finset.univ.erase c : Finset D.ConnectedComponent),
+            e.supp.ncard) + c.supp.ncard := Nat.add_le_add_right hrest _
+      _ = 64 := hsplit'
+  have hupper : c.supp.ncard ≤ 8 := by omega
+  exact Nat.le_antisymm hupper (hsize c)
+
 end
 
 end Erdos85
