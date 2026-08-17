@@ -334,6 +334,12 @@ generalized rather than merely replayed.
      irreducible, not merely assumed connected:
      `binarySquare_regular_sizeTwoPart_cycleQuotient_irreducible` lifts paths
      in the connected defect block to positive-entry paths in the quotient.
+     The first graph-specific restriction beyond those abstract quotient laws
+     is now formal too.  `not_secondOrderDefect_adj_of_commonNeighbor` forbids
+     a defect edge whenever a common ambient neighbor is exhibited, and the
+     cycle decomposition theorem records its consequence: every non-wrapping
+     distance-two pair on an internal cycle is a defect nonedge.  Thus the
+     second cyclic diagonals are absent from every diagonal defect block.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

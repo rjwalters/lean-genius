@@ -672,6 +672,30 @@ theorem triangleFreeNeighbors_subset_componentNeighborFinset
   exact Finset.mem_filter.mpr
     ⟨(G.mem_neighborFinset x y).mpr hyData.1, hyc⟩
 
+/-- Any exhibited common neighbor forbids a second-order defect edge.  This is
+the pointwise graph-specific constraint later applied to distance-two pairs on
+the internal cycles of a normalized size-two component. -/
+theorem not_secondOrderDefect_adj_of_commonNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {x y z : V} (hxy : x ≠ y)
+    (hxz : G.Adj x z) (hyz : G.Adj y z) :
+    ¬ (secondOrderDefectGraph G).Adj x y := by
+  intro hD
+  have hmem : y ∈ (secondOrderDefectGraph G).neighborFinset x :=
+    ((secondOrderDefectGraph G).mem_neighborFinset x y).mpr hD
+  have hzero : (G.neighborFinset x ∩ G.neighborFinset y).card = 0 := by
+    rw [card_common_eq_if_secondOrderDefect G hfree x y hxy, if_pos hmem]
+  have hz : z ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+    exact Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset x z).mpr hxz,
+        (G.mem_neighborFinset y z).mpr hyz⟩
+  have hpos : 0 < (G.neighborFinset x ∩ G.neighborFinset y).card :=
+    Finset.card_pos.mpr ⟨z, hz⟩
+  omega
+
 /-- Triangle-free edges stay inside the defect component, so their degree at
 a vertex is bounded by the normalized component part. -/
 theorem binarySquare_regular_triangleFree_degree_le_part
@@ -818,20 +842,37 @@ theorem binarySquare_regular_sizeTwoPart_exists_cycle_of_internalComponent
     ∃ (x : c.supp) (p : (G.induce c.supp).Walk x x),
       p.IsCycle ∧ p.toSubgraph.verts = a.supp ∧
       p.toSubgraph.coe = (G.induce c.supp).induce p.toSubgraph.verts ∧
-      p.length ≠ 4 := by
+      p.length ≠ 4 ∧
+      ∀ i : ℕ, i + 2 < p.length →
+        ¬ ((secondOrderDefectGraph G).induce c.supp).Adj
+          ⟨(p.getVert i).1, (p.getVert i).2⟩
+          ⟨(p.getVert (i + 2)).1, (p.getVert (i + 2)).2⟩ := by
   have hdeg : ∀ x : c.supp, (G.induce c.supp).degree x = 2 :=
     fun x => binarySquare_regular_degree_induce_defectComponent_eq_part
       G hfree hq hreg hcard c hc x
   obtain ⟨x, p, hp, hpverts, hpgraph⟩ :=
     twoRegular_component_induce_eq_cycleSubgraph (G.induce c.supp) hdeg a
-  refine ⟨x, p, hp, hpverts, hpgraph, ?_⟩
-  intro hlen
-  have hC4induced : containsC4 c.supp (G.induce c.supp) :=
-    containsC4_of_isCycle_length_four hp hlen
-  apply hfree
-  rcases hC4induced with ⟨f, hf, hadj⟩
-  exact ⟨fun i => (f i).1, Subtype.val_injective.comp hf,
-    fun i j hij => hadj i j hij⟩
+  refine ⟨x, p, hp, hpverts, hpgraph, ?_, ?_⟩
+  · intro hlen
+    have hC4induced : containsC4 c.supp (G.induce c.supp) :=
+      containsC4_of_isCycle_length_four hp hlen
+    apply hfree
+    rcases hC4induced with ⟨f, hf, hadj⟩
+    exact ⟨fun i => (f i).1, Subtype.val_injective.comp hf,
+      fun i j hij => hadj i j hij⟩
+  · intro i hi
+    have hadj₁ := p.adj_getVert_succ (show i < p.length by omega)
+    have hadj₂ := p.adj_getVert_succ (show i + 1 < p.length by omega)
+    have hne : (p.getVert i).1 ≠ (p.getVert (i + 2)).1 := by
+      intro heq
+      have heqSubtype : p.getVert i = p.getVert (i + 2) := Subtype.ext heq
+      have := hp.getVert_injOn'
+        (by simp only [Set.mem_setOf_eq]; omega)
+        (by simp only [Set.mem_setOf_eq]; omega)
+        heqSubtype
+      omega
+    exact not_secondOrderDefect_adj_of_commonNeighbor G hfree hne
+      hadj₁ (by simpa using hadj₂.symm)
 
 /-- **Size-two block capstone.**  On a normalized size-two defect component,
 the internal ambient graph is 2-regular, the internal defect graph is
