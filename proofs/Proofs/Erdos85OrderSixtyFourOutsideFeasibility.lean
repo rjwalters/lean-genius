@@ -1,4 +1,5 @@
 import Proofs.Erdos85OutsideReturnGramIdentity
+import Proofs.Erdos85OrderSixtyFourExteriorPairGraph
 
 /-! # A single graph-facing package for the order-64 outside block -/
 
@@ -27,6 +28,7 @@ theorem orderSixtyFour_seven_components_outside_feasibility
       let p : Fin 64 → Prop := fun x ↦ x ∈ c.supp
       let q : Set (Fin 64) := {x | ¬p x}
       let H := (G.induce c.supp).adjMatrix ℂ
+      let R := exteriorPairGraph G c.supp
       let B := (G.adjMatrix ℂ).toBlock p (fun x ↦ x ∈ q)
       let Cg := G.induce q
       let C := Cg.adjMatrix ℂ
@@ -36,6 +38,7 @@ theorem orderSixtyFour_seven_components_outside_feasibility
         (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2) ∧
       Function.Injective
         (componentNeighborFinset G (secondOrderDefectGraph G) c) ∧
+      (∀ u : c.supp, R.degree u = 6) ∧
       (∀ z : q, Cg.degree z = 6) ∧
       (¬containsC4 q Cg) ∧
       H * B + B * C = (fun _ _ ↦ (1 : ℂ)) := by
@@ -49,6 +52,9 @@ theorem orderSixtyFour_seven_components_outside_feasibility
   obtain ⟨c'', hc''16, hinc, _hsmall⟩ :=
     orderSixtyFour_seven_defect_components_global_block_degrees
       G hfree hmin hcover hcount
+  obtain ⟨cR, hcR16, _hQ, hRreg⟩ :=
+    orderSixtyFour_seven_components_exteriorGram_eq_six_add_sixRegular
+      G hfree hmin hcover hcount
   obtain ⟨d, _hd16, hsmall⟩ :=
     orderSixtyFour_seven_defect_components_partition
       G hfree hmin hcover hcount
@@ -61,8 +67,11 @@ theorem orderSixtyFour_seven_components_outside_feasibility
     (heq_of_16 hc16).trans (heq_of_16 hc'16).symm
   have hcc'' : c = c'' :=
     (heq_of_16 hc16).trans (heq_of_16 hc''16).symm
+  have hccR : c = cR :=
+    (heq_of_16 hc16).trans (heq_of_16 hcR16).symm
   subst c'
   subst c''
+  subst cR
   have hqcard : Fintype.card {x : Fin 64 // x ∉ c.supp} = 48 := by
     calc
       Fintype.card {x : Fin 64 // x ∉ c.supp} = c.suppᶜ.ncard := by
@@ -94,7 +103,7 @@ theorem orderSixtyFour_seven_components_outside_feasibility
     have hle := Finset.card_le_card hsub
     have hone := common_le_one_of_not_containsC4 hfree y z hyz
     omega
-  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hinj, hout, ?_, hcross⟩
+  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hinj, hRreg, hout, ?_, hcross⟩
   intro hC4
   obtain ⟨f, hf, hadj⟩ := hC4
   apply hfree
