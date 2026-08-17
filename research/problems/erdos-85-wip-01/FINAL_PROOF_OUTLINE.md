@@ -334,10 +334,22 @@ generalized rather than merely replayed.
     immediate GAP is **vertex-level structure**, not more low-order spectral
     bookkeeping: branch partitions, induced matching/miss constraints, or a
     new uniform relation coupling `D` back to common-neighbor ownership in
-    `G`. A vertex-level `q=8` model search is being used only to discover the
-    first such obstruction, not as a certificate terminal. This is the largest
-    mathematical hole in the binary branch. Generalizing certificate families
-    is not a substitute for finding these statements.
+    `G`. The basic design interface for that coupling is now `PROVEN`:
+
+    - `not_defectAdj_of_mem_squareOrderDefectOwnerBlock`: every original
+      neighborhood is independent in `D`;
+    - `not_defectAdj_iff_existsUnique_squareOrderDefectOwner`: every distinct
+      `D`-nonedge pair lies in exactly one original neighborhood;
+    - `squareOrder_card_defectOwnerBlock_eq_or_succ`: all owner blocks have
+      size `q` or `q+1`.
+
+    Thus the complement pairs of `D` admit a unique decomposition into a
+    symmetric family of owner blocks. The next GAP is a classification or
+    obstruction for this weighted symmetric neighborhood design, not merely
+    for `D` alone. A vertex-level `q=8` model search is being used only to
+    discover the first such obstruction, not as a certificate terminal. This
+    is the largest mathematical hole in the binary branch. Generalizing
+    certificate families is not a substitute for finding these statements.
 
 ### A6. Binary branch capstone
 
