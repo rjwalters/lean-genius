@@ -882,6 +882,37 @@ generalized rather than merely replayed.
      the available upper endpoint `m_c q^2` when `m_c>1`.  The remaining
      non-unit terminal must therefore control the rank or distribution of the
      interior eigenvalues, rather than invoke endpoint equality unchanged.
+
+     The rank side is now exact, not merely bounded.  The centered rectangular
+     component-incidence block `B_c` satisfies the `PROVEN` row-Gram identity
+
+     ```text
+     B_c B_c^T = q C_c
+     ```
+
+     in
+     `centeredDefectComponentNeighborIncidenceMatrix_mul_transpose_eq_centeredOwnerGram`.
+     Combining this with the component Laplacian factorization and its
+     one-dimensional constant kernel gives the `PROVEN` theorem
+     `binarySquare_regular_real_centeredOwnerGram_rank`:
+
+     ```text
+     rank(C_c) = |c|-1 = q m_c - 1.
+     ```
+
+     Consequently
+     `binarySquare_regular_sum_real_centeredOwnerGram_rank` proves
+
+     ```text
+     sum_c rank(C_c) = q^2 - number of defect components.
+     ```
+
+     Since distinct centered owner sectors mutually annihilate, their ranges
+     therefore saturate the entire complement of the component-constant
+     directions.  There is no unused ambient rank slack.  The remaining
+     non-unit terminal can work with a genuine direct-sum decomposition: it
+     must constrain the internal spectrum on these exact `q m_c-1`
+     dimensional summands or exploit their self-indexed row-Gram geometry.
      The abstract equality case is now `PROVEN` in
      `Erdos85BinarySquareEndpointRigidity`:
      `posSemidef_mul_self_eq_smul_of_upper_of_trace_sq_eq` gives
