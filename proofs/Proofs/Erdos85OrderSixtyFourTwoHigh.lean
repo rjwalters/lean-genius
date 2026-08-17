@@ -33,6 +33,30 @@ theorem orderSixtyFour_existsUnique_two_high_contact
   rw [hxS] at hymem
   simpa using hymem
 
+/-- Geometrically, the canonical double-contact vertex is adjacent to the
+entire two-vertex high sector, and it is the unique vertex with this property. -/
+theorem orderSixtyFour_existsUnique_neighbor_inter_high_eq_high
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 2) :
+    ∃! x : Fin 64,
+      G.neighborFinset x ∩ squareOrderHighVertices G 8 =
+        squareOrderHighVertices G 8 := by
+  obtain ⟨x, hx, hunique⟩ :=
+    orderSixtyFour_existsUnique_two_high_contact G hfree hmin hcover hh
+  have hxEq : G.neighborFinset x ∩ squareOrderHighVertices G 8 =
+      squareOrderHighVertices G 8 :=
+    Finset.eq_of_subset_of_card_le Finset.inter_subset_right (by omega)
+  refine ⟨x, hxEq, ?_⟩
+  intro y hy
+  apply hunique y
+  rw [hy, hh]
+
 /-- The same branch has exactly sixteen single-contact vertices. -/
 theorem orderSixtyFour_card_one_high_contact_eq_sixteen
     (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
