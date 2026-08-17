@@ -265,8 +265,19 @@ generalized rather than merely replayed.
 
     and `squareOrder_defectIncidenceQuadratic_dvd_defectCharpoly` proves that
     the displayed quadratic divides the full rational defect characteristic
-    polynomial. The remaining work is to combine its conjugate roots with the
-    `-1` multiplicity and defect trace moments.
+    polynomial. The `-1` sector is likewise upgraded from a finrank bound to
+    the factor `(X+1)^(h-1)` by
+    `squareOrder_defectMinusOneFactor_dvd_defectCharpoly`. Since
+
+    ```text
+    X²-(q-2)X+(h-q+1) = (X+1)(X-(q-1)) + h
+    ```
+
+    and `h>0`, the factors are coprime;
+    `squareOrder_combinedDefectFactors_dvd_defectCharpoly` proves their product
+    divides the full defect characteristic polynomial. The remaining work is
+    to construct the residual polynomial and consume its degree and trace/root
+    moments.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
@@ -304,12 +315,13 @@ generalized rather than merely replayed.
     for every high-vertex sector. The most concrete current candidate is to
     combine the exact Dirichlet/third-moment budget with the proved `h-1`
     multiplicity of the defect eigenvalue `-1` and the proved incidence
-    charpoly factor of discriminant `q²-4h`. The immediate GAP is now a
-    spectral consumer: derive defect trace/root constraints after removing
-    `(X+1)^(h-1)` and this quadratic, and test whether they eliminate all
-    parameterized heterogeneous profiles. This is the largest mathematical
-    hole in the binary branch. Generalizing certificate families is not a
-    substitute for finding these statements.
+    charpoly factor of discriminant `q²-4h`. Their coprime product divisibility
+    is now proved. The immediate GAP is the residual spectral consumer: derive
+    its exact degree and defect trace/root constraints after removing both
+    factors, and test whether they eliminate all parameterized heterogeneous
+    profiles. This is the largest mathematical hole in the binary branch.
+    Generalizing certificate families is not a substitute for finding these
+    statements.
 
 ### A6. Binary branch capstone
 
