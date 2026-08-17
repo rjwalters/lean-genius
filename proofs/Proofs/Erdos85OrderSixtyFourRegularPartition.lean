@@ -187,4 +187,70 @@ theorem orderSixtyFour_regular_two_defectComponents_partition_secondMoment
     rw [← hreindexSq]
     exact hs
 
+/-- Trace-facing form of the maximal four-component branch: four normalized
+parts equal to two have second moment sixteen. -/
+theorem orderSixtyFour_regular_four_defectComponents_partition_secondMoment
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 4) :
+    ∃ m : (secondOrderDefectGraph G).ConnectedComponent → ℕ,
+      (∀ c, c.supp.ncard = 8 * m c) ∧
+      (∑ c, m c = 8) ∧
+      (∀ c, 2 ≤ m c) ∧
+      (∑ c, (m c) ^ 2) = 16 := by
+  classical
+  obtain ⟨m, hmSize, hmSum, hmLower, _hcountLe⟩ :=
+    orderSixtyFour_regular_defectComponent_partition_package G hfree hreg
+  have horders := orderSixtyFour_regular_four_defectComponents_all_orderSixteen
+    G hfree hreg hcount
+  have hmTwo : ∀ c, m c = 2 := by
+    intro c
+    have hs := hmSize c
+    rw [horders c] at hs
+    omega
+  refine ⟨m, hmSize, hmSum, hmLower, ?_⟩
+  simp_rw [hmTwo]
+  simp [hcount]
+
+/-- In the connected-defect regular branch, the sole normalized part is
+eight, so the second moment is sixty-four. -/
+theorem orderSixtyFour_regular_one_defectComponent_partition_secondMoment
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 1) :
+    ∃ m : (secondOrderDefectGraph G).ConnectedComponent → ℕ,
+      (∀ c, c.supp.ncard = 8 * m c) ∧
+      (∑ c, m c = 8) ∧
+      (∀ c, 2 ≤ m c) ∧
+      (∑ c, (m c) ^ 2) = 64 := by
+  classical
+  obtain ⟨m, hmSize, hmSum, hmLower, _hcountLe⟩ :=
+    orderSixtyFour_regular_defectComponent_partition_package G hfree hreg
+  let E : (secondOrderDefectGraph G).ConnectedComponent ≃ Fin 1 :=
+    Fintype.equivFinOfCardEq hcount
+  let a := m (E.symm 0)
+  have ha : a = 8 := by
+    have hreindex := Equiv.sum_comp E.symm m
+    rw [Fin.sum_univ_one] at hreindex
+    exact hreindex.trans hmSum
+  have hreindexSq := Equiv.sum_comp E.symm (fun d => (m d) ^ 2)
+  rw [Fin.sum_univ_one] at hreindexSq
+  refine ⟨m, hmSize, hmSum, hmLower, ?_⟩
+  rw [← hreindexSq]
+  change a ^ 2 = 64
+  rw [ha]
+  norm_num
+
 end Erdos85

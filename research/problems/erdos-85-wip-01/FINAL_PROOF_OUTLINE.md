@@ -633,9 +633,14 @@ generalized rather than merely replayed.
      `PROVEN` by
      `orderSixtyFour_regular_two_defectComponents_partition_secondMoment`:
      its partition is `6+2`, `5+3`, or `4+4`, so `sum m_c^2` is respectively
-     `40`, `34`, or `32`.  Binary A-REG work should proceed through these
-     mixed-partition moment values and the centered owner/defect resolution
-     below.
+     `40`, `34`, or `32`.  The endpoint strata now use the same interface:
+     `orderSixtyFour_regular_four_defectComponents_partition_secondMoment`
+     gives moment `16`, and
+     `orderSixtyFour_regular_one_defectComponent_partition_secondMoment`
+     gives moment `64`.  Thus every possible regular order-64 component count
+     has a formal trace-facing moment classification.  Binary A-REG work
+     should proceed through these mixed-partition moment values and the
+     centered owner/defect resolution below.
 
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
