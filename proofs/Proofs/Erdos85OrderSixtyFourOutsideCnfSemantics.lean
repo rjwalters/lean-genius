@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderSixtyFourOutsideEdgeBijection
+import Proofs.Erdos85OutsideCommonNeighborRouting
 
 /-! # Semantic core of the order-64 outside-block CNFs
 
@@ -87,6 +88,55 @@ theorem outsideCClauseSemantics_of_exact_service
     · intro i j hij
       fin_cases i <;> fin_cases j <;>
         simp_all [C4, SimpleGraph.Adj.symm]
+
+/-- The abstract service finset is exactly the outside half of the common-
+neighbour partition used by the graph-facing routing theorem. -/
+theorem outsideServiceFinset_induce_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : Set V) [DecidablePred (· ∈ c)]
+    (u : c) (z : {x : V // x ∉ c}) :
+    (outsideServiceFinset (G.induce cᶜ)
+      (fun u' y ↦ G.Adj u'.1 y.1) u z).card =
+      ((G.neighborFinset u.1 ∩ G.neighborFinset z.1).filter
+        fun y ↦ y ∉ c).card := by
+  classical
+  apply Finset.card_bij (fun y _ ↦ y.1)
+  · intro y hy
+    simp only [outsideServiceFinset, Finset.mem_filter,
+      Finset.mem_univ, true_and] at hy
+    exact Finset.mem_filter.mpr ⟨Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset _ _).mpr hy.2,
+      (G.mem_neighborFinset _ _).mpr hy.1⟩, y.2⟩
+  · intro y _ w _ hyw
+    exact Subtype.ext hyw
+  · intro y hy
+    have hy' := Finset.mem_filter.mp hy
+    refine ⟨⟨y, hy'.2⟩, ?_, rfl⟩
+    have hadj := Finset.mem_inter.mp hy'.1
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, ⟨
+      (G.mem_neighborFinset _ _).mp hadj.2,
+      (G.mem_neighborFinset _ _).mp hadj.1⟩⟩
+
+/-- Pointwise graph routing gives the exact `inside + outside = 1` service
+count consumed by the certificate target `1 - H B`. -/
+theorem card_insideCommon_add_outsideService_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : c.supp) (z : {x : V // x ∉ c.supp}) :
+    ((G.neighborFinset u.1 ∩ G.neighborFinset z.1).filter
+        fun w ↦ w ∈ c.supp).card +
+      (outsideServiceFinset (G.induce c.suppᶜ)
+        (fun u' y ↦ G.Adj u'.1 y.1) u z).card = 1 := by
+  classical
+  rw [outsideServiceFinset_induce_card]
+  simpa only using
+    (card_insideCommon_add_card_outsideCommon_eq_one
+      G hfree c u z.1 z.2)
 
 end
 
