@@ -529,6 +529,101 @@ theorem orderSixtyFour_three_remoteTargets_complement_fst_degree_two
   rw [hfilterSdiff]
   rw [Finset.card_sdiff_of_subset hUfilterSub, hgridFilter, hUfilter]
 
+/-- Symmetrically, the fourth factor has degree two at every second center. -/
+theorem orderSixtyFour_three_remoteTargets_complement_snd_degree_two
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ z, G.degree z = 8)
+    {d e f g c : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (hdf : d ≠ f) (hdg : d ≠ g)
+    (hef : e ≠ f) (heg : e ≠ g) (hfg : f ≠ g)
+    (he : e.supp.ncard = 16) (hf : f.supp.ncard = 16)
+    (hg : g.supp.ncard = 16)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1)
+    (u : c.supp) (hyu : G.Adj y.1 u.1) :
+    ((crossRootCenterGrid G x.1 y.1 \ ((
+        crossRootCenterPairFinset G hfree hde x y ∪
+          crossRootCenterPairFinset G hfree hdf x y) ∪
+        crossRootCenterPairFinset G hfree hdg x y)).filter fun p =>
+      p.2 = u.1).card = 2 := by
+  classical
+  let Se := crossRootCenterPairFinset G hfree hde x y
+  let Sf := crossRootCenterPairFinset G hfree hdf x y
+  let Sg := crossRootCenterPairFinset G hfree hdg x y
+  let U := (Se ∪ Sf) ∪ Sg
+  let P := fun p : Fin 64 × Fin 64 => p.2 = u.1
+  have hEF : Disjoint Se Sf :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hde hdf hef x y hxyD
+  have hEG : Disjoint Se Sg :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hde hdg heg x y hxyD
+  have hFG : Disjoint Sf Sg :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hdf hdg hfg x y hxyD
+  have hEF' : Disjoint (Se.filter P) (Sf.filter P) :=
+    hEF.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have hEG' : Disjoint (Se.filter P) (Sg.filter P) :=
+    hEG.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have hFG' : Disjoint (Sf.filter P) (Sg.filter P) :=
+    hFG.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have hUfilter : (U.filter P).card = 6 := by
+    rw [show U = (Se ∪ Sf) ∪ Sg by rfl, Finset.filter_union,
+      Finset.filter_union,
+      Finset.card_union_of_disjoint
+        (Finset.disjoint_union_left.mpr ⟨hEG', hFG'⟩),
+      Finset.card_union_of_disjoint hEF']
+    rw [binarySquare_regular_sizeTwo_crossRootCenterPairFinset_snd_degree_two
+        G hfree (q := 8) (by norm_num) hreg (by norm_num)
+          hde he x y hxyD u hyu,
+      binarySquare_regular_sizeTwo_crossRootCenterPairFinset_snd_degree_two
+        G hfree (q := 8) (by norm_num) hreg (by norm_num)
+          hdf hf x y hxyD u hyu,
+      binarySquare_regular_sizeTwo_crossRootCenterPairFinset_snd_degree_two
+        G hfree (q := 8) (by norm_num) hreg (by norm_num)
+          hdg hg x y hxyD u hyu]
+  have hUsub : U ⊆ crossRootCenterGrid G x.1 y.1 := by
+    rw [show U = (Se ∪ Sf) ∪ Sg by rfl,
+      Finset.union_subset_iff, Finset.union_subset_iff]
+    exact ⟨⟨crossRootCenterPairFinset_subset_centerGrid G hfree hde x y,
+      crossRootCenterPairFinset_subset_centerGrid G hfree hdf x y⟩,
+      crossRootCenterPairFinset_subset_centerGrid G hfree hdg x y⟩
+  have hUfilterSub : U.filter P ⊆
+      (crossRootCenterGrid G x.1 y.1).filter P := by
+    intro p hp
+    exact Finset.mem_filter.mpr
+      ⟨hUsub (Finset.mem_filter.mp hp).1, (Finset.mem_filter.mp hp).2⟩
+  have hgridFilter :
+      ((crossRootCenterGrid G x.1 y.1).filter P).card = 8 := by
+    have huMem : u.1 ∈ G.neighborFinset y.1 :=
+      (G.mem_neighborFinset y.1 u.1).mpr hyu
+    have heq : (crossRootCenterGrid G x.1 y.1).filter P =
+        G.neighborFinset x.1 ×ˢ {u.1} := by
+      ext p
+      simp only [Finset.mem_filter, crossRootCenterGrid,
+        Finset.mem_product, Finset.mem_singleton, P]
+      constructor
+      · rintro ⟨⟨hp₁, _hp₂⟩, hp₂⟩
+        exact ⟨hp₁, hp₂⟩
+      · rintro ⟨hp₁, hp₂⟩
+        exact ⟨⟨hp₁, by simpa [hp₂] using huMem⟩, hp₂⟩
+    rw [heq, Finset.card_product]
+    simp [G.card_neighborFinset_eq_degree, hreg x.1]
+  change ((crossRootCenterGrid G x.1 y.1 \ U).filter P).card = 2
+  have hfilterSdiff :
+      (crossRootCenterGrid G x.1 y.1 \ U).filter P =
+        (crossRootCenterGrid G x.1 y.1).filter P \ U.filter P := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  rw [hfilterSdiff]
+  rw [Finset.card_sdiff_of_subset hUfilterSub, hgridFilter, hUfilter]
+
 end
 
 end Erdos85

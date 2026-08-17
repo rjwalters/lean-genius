@@ -1397,8 +1397,10 @@ generalized rather than merely replayed.
      fiber is transported through the injective center-pair map), so the three
      disjoint remote factors use degree six of the `K_{8,8}` grid and their
      complement has degree exactly two at every first center.  The symmetric
-     second-coordinate image-fiber theorem is also proved; only the final
-     symmetric complement corollary remains bookkeeping.
+     image-fiber and complement theorems are now also `PROVEN`, so the fourth
+     factor has degree two on both eight-vertex sides.  It is therefore a
+     genuine spanning 2-regular bipartite graph (a disjoint union of even
+     cycles), with its `2+λ` source-common edges distinguished as a matching.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
