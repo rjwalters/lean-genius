@@ -98,6 +98,68 @@ theorem ownerRainbow_exists_monochromatic_routing_completion
   exact ⟨x, z, w, hroute₁, hroute₂, hroute₃,
     hcenter₁, hcenter₂, hcenter₃⟩
 
+/-- The endpoint triple realizing a fixed owner rainbow is unique.  Thus the
+owner-rainbow/routing-completion bridge loses no multiplicity in either
+direction and is suitable for exact counting. -/
+theorem ownerRainbow_existsUnique_routing_endpointTriple
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {c d e f : (secondOrderDefectGraph G).ConnectedComponent}
+    (hce : c ≠ e) (hef : e ≠ f) (hcf : c ≠ f)
+    (y₁ y₂ y₃ : d.supp)
+    (h12 : y₁ ≠ y₂) (h23 : y₂ ≠ y₃) (h31 : y₃ ≠ y₁)
+    (hE : (componentOwnerGraph G (secondOrderDefectGraph G) e).Adj y₁.1 y₂.1)
+    (hF : (componentOwnerGraph G (secondOrderDefectGraph G) f).Adj y₂.1 y₃.1)
+    (hC : (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj y₃.1 y₁.1) :
+    ∃! p : c.supp × (e.supp × f.supp),
+      crossCommonNeighbor G hfree hce p.1 p.2.1 = y₁.1 ∧
+      crossCommonNeighbor G hfree hef p.2.1 p.2.2 = y₂.1 ∧
+      crossCommonNeighbor G hfree hcf p.1 p.2.2 = y₃.1 := by
+  obtain ⟨x, z, w, _hr₁, _hr₂, _hr₃, hy₁, hy₂, hy₃⟩ :=
+    ownerRainbow_exists_monochromatic_routing_completion
+      G hfree hce hef hcf y₁ y₂ y₃ hE hF hC
+  refine ⟨(x, (z, w)), ⟨hy₁, hy₂, hy₃⟩, ?_⟩
+  rintro ⟨x', z', w'⟩ ⟨hy₁', hy₂', hy₃'⟩
+  have unique_common {a b u v : V} (hab : a ≠ b)
+      (hau : G.Adj a u) (hbu : G.Adj b u)
+      (hav : G.Adj a v) (hbv : G.Adj b v) : u = v := by
+    by_contra huv
+    exact hfree (containsC4_of_rim hau hbu.symm hbv hav.symm hab huv
+      (G.ne_of_adj hau).symm (G.ne_of_adj hbu).symm
+      (G.ne_of_adj hav).symm (G.ne_of_adj hbv).symm)
+  have hxz := crossCommonNeighbor_spec G hfree hce x z
+  have hzw := crossCommonNeighbor_spec G hfree hef z w
+  have hxw := crossCommonNeighbor_spec G hfree hcf x w
+  have hxz' := crossCommonNeighbor_spec G hfree hce x' z'
+  have hzw' := crossCommonNeighbor_spec G hfree hef z' w'
+  have hxw' := crossCommonNeighbor_spec G hfree hcf x' w'
+  rw [hy₁] at hxz
+  rw [hy₂] at hzw
+  rw [hy₃] at hxw
+  rw [hy₁'] at hxz'
+  rw [hy₂'] at hzw'
+  rw [hy₃'] at hxw'
+  have ex : x = x' := by
+    apply Subtype.ext
+    exact unique_common (show y₃.1 ≠ y₁.1 from fun h => h31 (Subtype.ext h))
+      hxw.1.symm hxz.1.symm hxw'.1.symm hxz'.1.symm
+  have ez : z = z' := by
+    apply Subtype.ext
+    exact unique_common (show y₁.1 ≠ y₂.1 from fun h => h12 (Subtype.ext h))
+      hxz.2.symm hzw.1.symm hxz'.2.symm hzw'.1.symm
+  have ew : w = w' := by
+    apply Subtype.ext
+    exact unique_common (show y₂.1 ≠ y₃.1 from fun h => h23 (Subtype.ext h))
+      hzw.2.symm hxw.2.symm hzw'.2.symm hxw'.2.symm
+  subst x'
+  subst z'
+  subst w'
+  rfl
+
 end
 
 end Erdos85
