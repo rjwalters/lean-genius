@@ -5,7 +5,7 @@ import Proofs.Erdos85OneHighSameMissParityConsumer
 import Proofs.Erdos85QuotientCutParity
 import Proofs.Erdos85OneHighRepeatedSourceCapacity
 import Proofs.Erdos85OneHighGraphPairingRefinement
-import Proofs.Erdos85OneHighAllEvenRowInventory
+import Proofs.Erdos85OneHighReciprocalTwoCycleInventory
 
 /-! # Reduction of the one-high all-even terminal -/
 
@@ -529,6 +529,37 @@ theorem exists_oneHighReciprocalSameMissEdges
   · simpa [hxMateMiss] using (Finset.mem_filter.mp hxmMem).2
   · simpa [haMiss] using (Finset.mem_filter.mp haMem).2
   · simpa [haMateMiss] using (Finset.mem_filter.mp hamMem).2
+
+/-- Complete graph-facing residual for the all-even sector: either global
+same-miss behavior yields reciprocal concrete edges, or the repeated
+exchanged-key branch yields two concrete source edges with the exact
+owner/capacity trichotomy. -/
+theorem oneHigh_reciprocal_or_repeatedResidual_of_all_even
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (heven : ∀ key ∈ exchangedMissPairKeys (Fin 8),
+      Even (exchangedMissPairMultiplicity
+        (oneHighGlobalInternalMate G hfree v)
+        (fun x => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj x)) key)) :
+    Nonempty (OneHighReciprocalSameMissEdges G hfree hv p) ∨
+      Nonempty (OneHighOddProfileRepeatedPairResidual G hfree hv p) := by
+  rcases oneHigh_globalSameMiss_or_repeated_exchangedPair_of_all_even
+      G hfree hv p heven with hsame | hrepeated
+  · exact Or.inl (exists_oneHighReciprocalSameMissEdges G hfree hv p hsame)
+  · right
+    obtain ⟨key, hkey, x, hx, y, hy, hxy, hxkey, hykey⟩ := hrepeated
+    refine ⟨⟨key, hkey, x, y, hx, hy, hxy, hxkey, hykey, ?_⟩⟩
+    by_cases howner : x.1 = y.1
+    · exact Or.inl ⟨howner,
+        oneHighFamilyInternalEdges_eq_two_of_distinct_sources_sameOwner
+          G hfree hv p hx hy hxy howner⟩
+    by_cases hmateOwner : x.1 = p.mate y.1
+    · exact Or.inr (Or.inl hmateOwner)
+    · exact Or.inr (Or.inr ⟨howner, hmateOwner⟩)
 
 /-- In every positive profile (in particular the surviving profiles `2` and
 `4`), the canonical source branch in the reciprocal witness has exactly one
@@ -1487,6 +1518,30 @@ theorem OneHighReciprocalSameMissEdges.graphTable_has_sourceZeroDiagonalSingleto
         p.profile) = true :=
   oneHighTableHasSourceZeroDiagonalSingleton_of_mem
     (q.source_singleton_mem_compatible hprofile)
+
+/-- In the one-edge reciprocal-target arm, the graph table carries the full
+two-sided diagonal cycle: source zero pairs only toward `u`, and source `u`
+pairs only back toward zero.  This is the sound graph-facing socket for the
+78-row profile-2 finite inventory. -/
+theorem OneHighReciprocalSameMissEdges.graphTable_has_reciprocalDiagonalTwoCycle
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile)
+    (huEdge : oneHighFamilyInternalEdges p.profile (p.branchLabel q.u) = 1) :
+    oneHighTableHasReciprocalDiagonalTwoCycle p.profile
+      (oneHighGraphRelevantMissTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) = true := by
+  apply oneHighTableHasReciprocalDiagonalTwoCycle_of_mem huEdge
+      (q.source_singleton_mem_compatible hprofile)
+  have hmem := oneHighGraphSourcePairing_mem_compatible G hfree hv p
+    (p.branchLabel q.u)
+  rw [q.reverse_pairing_eq_singleton huEdge, q.s_label] at hmem
+  exact hmem
 
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
