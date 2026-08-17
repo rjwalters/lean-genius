@@ -5,6 +5,7 @@ import Proofs.Erdos85ComponentLocalObstruction
 import Proofs.Erdos85QuotientGramIdentity
 import Proofs.Erdos85ExcessEigenspace
 import Proofs.Erdos85ResidueSignedCount
+import Proofs.Erdos85GlobalLocalTriangleCount
 
 /-!
 # Characteristic-two parity for regular square-order cores
@@ -845,6 +846,150 @@ theorem binarySquare_regular_card_componentNeighbors_sizeQ_eq_one
     G hfree hq hreg hcard e c (x := x) (by rfl)
   rw [hc] at h
   exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) (by simpa using h)
+
+/-- In the all-unit partition, the triangle-free edges at a vertex are
+exactly its unique ambient edge inside its own defect component. -/
+theorem binarySquare_regular_allUnit_triangleFree_degree_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = q) (x : V) :
+    (triangleFreeEdgeGraph G).degree x = 1 := by
+  let D := secondOrderDefectGraph G
+  let c := D.connectedComponentMk x
+  have heq : triangleFreeNeighbors G x = componentNeighborFinset G D c x := by
+    ext y
+    constructor
+    · intro hy
+      have hyData := (mem_triangleFreeNeighbors G x y).mp hy
+      have hDxy : D.Adj x y := by
+        change (secondOrderDefectGraph G).Adj x y
+        rw [secondOrderDefectGraph, SimpleGraph.sup_adj]
+        exact Or.inr ((triangleFreeEdgeGraph_adj G x y).mpr hy)
+      have hyc : D.connectedComponentMk y = c :=
+        (SimpleGraph.ConnectedComponent.connectedComponentMk_eq_of_adj hDxy).symm
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset x y).mpr hyData.1, hyc⟩
+    · intro hy
+      have hyData : G.Adj x y ∧ D.connectedComponentMk y = c := by
+        rw [componentNeighborFinset] at hy
+        exact ⟨(G.mem_neighborFinset x y).mp (Finset.mem_filter.mp hy).1,
+          (Finset.mem_filter.mp hy).2⟩
+      have hxy : x ≠ y := G.ne_of_adj hyData.1
+      have hzero := binarySquare_regular_sizeQ_component_commonNeighbors_card_zero
+        G hfree hq hreg hcard c (hall c) (by rfl) hyData.2 hxy
+      exact (mem_triangleFreeNeighbors G x y).mpr ⟨hyData.1, hzero⟩
+  rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+    triangleFreeEdgeGraph_neighborFinset, heq]
+  exact binarySquare_regular_card_componentNeighbors_sizeQ_eq_one
+    G hfree hq hreg hcard c (hall c) x
+
+/-- Consequently the spanning graph of edges which lie in triangles is
+`(q-1)`-regular in the all-unit partition. -/
+theorem binarySquare_regular_allUnit_triangularEdge_degree_eq_pred
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = q) (x : V) :
+    (triangularEdgeGraph G).degree x = q - 1 := by
+  have hlocal := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree x
+  have htf := binarySquare_regular_allUnit_triangleFree_degree_eq_one
+    G hfree hq hreg hcard hall x
+  have htri := two_mul_localTriangleEdges_eq_triangularEdgeGraph_degree
+    G hfree x
+  have htfcard : (triangleFreeNeighbors G x).card = 1 := by
+    rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset] at htf
+    exact htf
+  rw [hreg x, htfcard, htri] at hlocal
+  omega
+
+/-- **All-unit mod-three terminal.**  If every normalized component part is
+one, the triangular-edge graph is `(q-1)`-regular and locally linear.  Its
+handshake identity therefore makes `q²(q-1)` divisible by six, contradicting
+`q ≡ 2 (mod 3)`. -/
+theorem binarySquare_regular_not_allUnit_of_mod_three_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hmod : q % 3 = 2)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = q) : False := by
+  let H := triangularEdgeGraph G
+  have hHreg : ∀ x : V, H.degree x = q - 1 :=
+    binarySquare_regular_allUnit_triangularEdge_degree_eq_pred
+      G hfree hq hreg hcard hall
+  have hhand := H.sum_degrees_eq_twice_card_edges
+  simp_rw [hHreg] at hhand
+  have hhand' : q * q * (q - 1) = 2 * H.edgeFinset.card := by
+    simpa [hcard, mul_assoc] using hhand
+  have hlinear : H.LocallyLinear :=
+    triangularEdgeGraph_locallyLinear_of_not_containsC4 G hfree
+  have hedge : H.edgeFinset.card =
+      3 * (H.cliqueFinset 3).card := hlinear.card_edgeFinset
+  rw [hedge] at hhand'
+  have hpred : (q - 1) % 3 = 1 := by omega
+  have hleft : (q * q * (q - 1)) % 3 = 1 := by
+    simp [Nat.mul_mod, hmod, hpred]
+  have hright : (2 * (3 * (H.cliqueFinset 3).card)) % 3 = 0 := by
+    simp [Nat.mul_mod]
+  have := congrArg (fun n : ℕ => n % 3) hhand'
+  rw [hleft, hright] at this
+  omega
+
+/-- For square degree `q = 2^k`, the all-unit defect-component partition is
+impossible whenever the exponent is odd. -/
+theorem binarySquare_regular_not_allUnit_of_two_pow_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hk : Odd k)
+    (hq : 3 ≤ 2 ^ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcard : Fintype.card V = (2 ^ k) * (2 ^ k))
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 2 ^ k) : False := by
+  have hb : ((2 : ℕ) ^ 2) ≡ 1 [MOD 3] := by decide
+  obtain ⟨m, rfl⟩ := hk
+  have h4 : ((2 : ℕ) ^ 2) ^ m % 3 = 1 := by
+    have hpow := hb.pow m
+    simpa [Nat.ModEq] using hpow
+  have hmod : 2 ^ (2 * m + 1) % 3 = 2 := by
+    calc
+      2 ^ (2 * m + 1) % 3 = ((2 : ℕ) ^ 2) ^ m * 2 % 3 := by
+        rw [pow_succ, pow_mul]
+      _ = (((2 : ℕ) ^ 2) ^ m % 3) * (2 % 3) % 3 := by
+        rw [Nat.mul_mod]
+      _ = 2 := by rw [h4]
+  exact binarySquare_regular_not_allUnit_of_mod_three_eq_two
+    G hfree hq hmod hreg hcard hall
 
 /-- The normalized defect-component orders form an honest partition of `q`.
 Concretely, one may take the parts to be any row of the component quotient. -/

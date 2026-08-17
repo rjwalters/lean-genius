@@ -280,8 +280,20 @@ generalized rather than merely replayed.
      ambient vertex has exactly one `G`-neighbor in `c`.  Thus every unit part
      is a defect clique carrying perfect one-neighbor routing from all of
      `V`; this is the uniform replacement for the order-64 size-eight block
-     lemmas and is a concrete starting point for eliminating partitions with
-     unit parts.
+     lemmas.  Distinct vertices of such a unit block have disjoint ambient
+     `G`-neighborhoods
+     (`binarySquare_regular_sizeQ_component_commonNeighbors_card_zero`).
+
+     The all-unit partition is now excluded for every odd binary exponent,
+     uniformly and in Lean.  In the all-unit case the triangle-free-edge graph
+     is 1-regular, so `binarySquare_regular_allUnit_triangularEdge_degree_eq_pred`
+     makes the complementary triangular-edge graph `(q-1)`-regular.  That
+     graph is locally linear; its edges therefore occur in triples, while the
+     handshake identity gives `q²(q-1)` oriented edge ends.  For `q = 2^k`
+     with odd `k`, this contradicts `q ≡ 2 (mod 3)`.  The terminal is packaged
+     as `binarySquare_regular_not_allUnit_of_two_pow_odd`.  Hence
+     `GAP A-REG-COMPONENTS` has been narrowed to mixed partitions and, for the
+     all-unit cell, even exponents (`q ≡ 1 (mod 3)`).
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
