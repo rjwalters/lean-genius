@@ -476,3 +476,16 @@ above was not checked against (19), so it does not refute this stronger
 self-indexed statement.  This diagonal cycle constraint is the first
 graph-specific datum in the size-two reduction that is absent from ordinary
 ODC theory and from all preceding spectral transports.
+
+The `q=4` calibration can in fact be completed all the way through this
+stronger condition.  Starting from the eight-vertex self-ODC above, an exact
+search found a partition of its sixteen edge labels into two eight-element
+ground sets such that both diagonal blocks are Hamilton-cycle instances of
+(19), the cross blocks are symmetric, and the assembled ambient graph is
+4-regular and C4-free.  A graph-isomorphism check identifies the result with
+the already formalized `sixteenRegular`; its defect graph has two connected
+components of order eight.  Thus the owner/ODC/self-indexed-cycle reduction
+recovers the known square-order exception exactly, rather than admitting a
+spurious relaxation.  The missing terminal must explain why this coherent
+two-coordinate object at `q=4` cannot extend to the required larger binary
+orders.
