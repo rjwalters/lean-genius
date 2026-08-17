@@ -6,7 +6,7 @@ trace specialization is not a terminal for the hardest `q = 8`,
 
 ## Formal results
 
-The branch `feature/erdos85-sol3-owner-next` contains:
+The integrated proof branch contains:
 
 - `86599cab02`: `sum_c C_c^3 = (q((q-1)I-D))^3`, including its trace form;
 - `7454419a3d`: the one-color evaluation
@@ -15,6 +15,20 @@ The branch `feature/erdos85-sol3-owner-next` contains:
   `q^2 | tr(D^3) + sum_c tr(O_c^3)`.
 
 All three modules compile under Lean 4.31 without warnings.
+
+The graph-level object surviving the scalar audit is now formalized in
+`Erdos85BinarySquareSizeTwoSelectorGraph`.  The `PROVEN` theorem
+`binarySquare_regular_sizeTwoSelectorGraph_eq_componentDefectComplementGraph`
+packages the selector graph `L_c` and proves
+
+```text
+L_c = complement(D[c]).
+```
+
+The companion theorem `binarySquare_regular_sizeTwoSelectorGraph_degree`
+proves that `L_c` is `q`-regular on the `2q` points of `c`.  Thus subsequent
+blockwise spectral or fourth-moment work can consume an actual Lean graph,
+not only the pairwise prose interpretation.
 
 ## Triangle interpretation
 
@@ -74,4 +88,3 @@ trace, for example:
    shared ambient vertex indexing;
 3. a fourth moment that counts paired Berge triangles/4-walk collisions; or
 4. the self-indexed diagonal-cycle constraint inside each `L_c`.
-
