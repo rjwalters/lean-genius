@@ -355,3 +355,40 @@ orthogonal.  For `q/2` size-two coordinates their dimensions sum to
 So a bare mod-two rank count is again tight; a successful characteristic-two
 argument must use the induced alternating/quadratic forms or the exclusion
 of the split `K_(q,q)` model.
+
+### 8.1 The first `F_2` radical is also visible blockwise
+
+Let `K_c` be the adjacency matrix of `H_c` over `F_2`.  Because `q` is even,
+`K_c` is alternating and kills the constant vector.  Its rank is even, so
+
+```text
+nullity(K_c) is even and at least 2.                              (15)
+```
+
+There is a useful sharp dichotomy.  Either `ker K_c` contains a nonconstant
+even-weight vector, or `nullity(K_c)=2` and every nonconstant radical vector
+has odd weight.  This follows by restricting the coordinate-sum functional
+to the even-dimensional kernel: its even-weight kernel already contains the
+constant vector.
+
+If `a` is a nonconstant even-weight radical vector and `u=B_c a`, then
+`u` is nonzero (the connected graph `H_c` has incidence kernel equal to the
+constant line), and (14) gives
+
+```text
+u^T B_d = a^T J = 0       for every d != c,
+u^T B_c = a^T K_c = 0.
+```
+
+Thus `u` lies in `im(A) cap ker(A)` for the ambient adjacency matrix reduced
+modulo two.  This initially looks like extra global kernel pressure, but the
+square relation shows exactly where it lives: on the `c` block,
+
+```text
+A^2|_c = I + J + D_c = adjacency(H_c) = K_c   (mod 2).           (16)
+```
+
+Consequently (15) is already the blockwise nullity of `A^2`; counting these
+radicals without their quadratic form is tautological.  A viable next test
+must distinguish the Witt/Arf type of these radicals, or prove that the
+connected-complement condition forbids the nullity-two odd-radical escape.
