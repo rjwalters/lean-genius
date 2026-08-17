@@ -112,7 +112,9 @@ theorem tenSixOutsideC4ClausesAt_eval
 
 theorem mem_tenSixOutsidePairs_lt {p : Fin 48 × Fin 48}
     (hp : p ∈ tenSixOutsidePairs.toList) : p.1 < p.2 := by
-  simpa [tenSixOutsidePairs] using hp
+  simp [tenSixOutsidePairs] at hp
+  obtain ⟨a, b, hab, rfl⟩ := hp
+  exact hab
 
 /-- Every generated four-negative C4 clause evaluates to true. -/
 theorem tenSixOutsideC4Clause_eval
@@ -124,7 +126,7 @@ theorem tenSixOutsideC4Clause_eval
     CNF.Clause.eval (tenSixOutsideDimacsValuation i C) clause = true := by
   simp only [tenSixOutsideC4Clauses, List.mem_flatMap] at hclause
   obtain ⟨p, hp, hclause⟩ := hclause
-  have hab : p.1 ≠ p.2 := ne_of_lt (mem_tenSixOutsidePairs_lt hp)
+  have hab : p.1 ≠ p.2 := _root_.ne_of_lt (mem_tenSixOutsidePairs_lt hp)
   exact tenSixOutsideC4ClausesAt_eval i C hs p.1 p.2 hab hclause
 
 end Erdos85
