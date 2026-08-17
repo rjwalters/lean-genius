@@ -120,6 +120,8 @@ theorem OneHighReciprocalSameMissEdges.profileThree_targetOneEdge_or_two_isolate
     oneHighFamilyInternalEdges p.profile (p.branchLabel q.u) = 1 ∨
       ∃ w₁ w₂ : {r : V // r ∈ G.neighborSet v},
         w₁ ≠ w₂ ∧ w₁ ≠ q.u ∧ w₂ ≠ q.u ∧
+        w₁ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+        w₂ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₁) = 1 ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₂) = 1 ∧
         Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₁) ∧
@@ -175,7 +177,8 @@ theorem OneHighReciprocalSameMissEdges.profileThree_targetOneEdge_or_two_isolate
     have hw₂Edge : oneHighFamilyInternalEdges p.profile
         (p.branchLabel w₂) = 1 := by
       simpa [hprofile, w₂] using hi2Edge
-    refine ⟨w₁, w₂, ?_, hw₁u, hw₂u, hw₁Edge, hw₂Edge,
+    refine ⟨w₁, w₂, ?_, hw₁u, hw₂u,
+      farMem i₁ hi10 hi11, farMem i₂ hi20 hi21, hw₁Edge, hw₂Edge,
       q.nonempty_isolatedTarget (by omega) (farMem i₁ hi10 hi11) hw₁u hw₁Edge,
       q.nonempty_isolatedTarget (by omega) (farMem i₂ hi20 hi21) hw₂u hw₂Edge⟩
     intro heq
@@ -200,6 +203,8 @@ theorem OneHighReciprocalSameMissEdges.storedTable_mem_profileThreeInventory_or_
     stored ∈ oneHighProfileThreeReciprocalEntryInventoryTables ∨
       ∃ w₁ w₂ : {r : V // r ∈ G.neighborSet v},
         w₁ ≠ w₂ ∧ w₁ ≠ q.u ∧ w₂ ≠ q.u ∧
+        w₁ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+        w₂ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₁) = 1 ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₂) = 1 ∧
         Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₁) ∧
@@ -235,6 +240,8 @@ theorem OneHighReciprocalSameMissEdges.exists_two_isolatedTargets_of_profileThre
       OneHighFamilyV2CheckedUnsat 3 table) :
     ∃ w₁ w₂ : {r : Fin 49 // r ∈ G.neighborSet v},
       w₁ ≠ w₂ ∧ w₁ ≠ q.u ∧ w₂ ≠ q.u ∧
+      w₁ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+      w₂ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel w₁) = 1 ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel w₂) = 1 ∧
       Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₁) ∧

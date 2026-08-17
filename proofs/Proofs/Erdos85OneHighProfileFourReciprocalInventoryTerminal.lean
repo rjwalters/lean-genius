@@ -155,6 +155,9 @@ theorem OneHighReciprocalSameMissEdges.profileFour_targetOneEdge_or_three_isolat
       ∃ w₁ w₂ w₃ : {r : V // r ∈ G.neighborSet v},
         w₁ ≠ w₂ ∧ w₁ ≠ w₃ ∧ w₂ ≠ w₃ ∧
         w₁ ≠ q.u ∧ w₂ ≠ q.u ∧ w₃ ≠ q.u ∧
+        w₁ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+        w₂ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+        w₃ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₁) = 1 ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₂) = 1 ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₃) = 1 ∧
@@ -221,6 +224,7 @@ theorem OneHighReciprocalSameMissEdges.profileFour_targetOneEdge_or_three_isolat
         (p.branchLabel w₃) = 1 := by simpa [hprofile, w₃] using hi3Edge
     exact ⟨w₁, w₂, w₃, distinctOf hi12, distinctOf hi13,
       distinctOf hi23, hw₁u, hw₂u, hw₃u,
+      farMem i₁ hi10 hi11, farMem i₂ hi20 hi21, farMem i₃ hi30 hi31,
       hw₁Edge, hw₂Edge, hw₃Edge,
       q.nonempty_isolatedTarget (by omega) (farMem i₁ hi10 hi11) hw₁u hw₁Edge,
       q.nonempty_isolatedTarget (by omega) (farMem i₂ hi20 hi21) hw₂u hw₂Edge,
@@ -244,6 +248,9 @@ theorem OneHighReciprocalSameMissEdges.storedTable_mem_profileFourInventory_or_t
       ∃ w₁ w₂ w₃ : {r : V // r ∈ G.neighborSet v},
         w₁ ≠ w₂ ∧ w₁ ≠ w₃ ∧ w₂ ≠ w₃ ∧
         w₁ ≠ q.u ∧ w₂ ≠ q.u ∧ w₃ ≠ q.u ∧
+        w₁ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+        w₂ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+        w₃ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₁) = 1 ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₂) = 1 ∧
         oneHighFamilyInternalEdges p.profile (p.branchLabel w₃) = 1 ∧
@@ -282,6 +289,9 @@ theorem OneHighReciprocalSameMissEdges.exists_three_isolatedTargets_of_profileFo
     ∃ w₁ w₂ w₃ : {r : Fin 49 // r ∈ G.neighborSet v},
       w₁ ≠ w₂ ∧ w₁ ≠ w₃ ∧ w₂ ≠ w₃ ∧
       w₁ ≠ q.u ∧ w₂ ≠ q.u ∧ w₃ ≠ q.u ∧
+      w₁ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+      w₂ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+      w₃ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel w₁) = 1 ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel w₂) = 1 ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel w₃) = 1 ∧
@@ -318,12 +328,19 @@ theorem exists_sameSide_isolatedTarget_pair_of_three
     (hw₁Edge : oneHighFamilyInternalEdges p.profile (p.branchLabel w₁) = 1)
     (hw₂Edge : oneHighFamilyInternalEdges p.profile (p.branchLabel w₂) = 1)
     (hw₃Edge : oneHighFamilyInternalEdges p.profile (p.branchLabel w₃) = 1)
+    (hw₁Far : w₁ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hw₂Far : w₂ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hw₃Far : w₃ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hw₁u : w₁ ≠ q.u) (hw₂u : w₂ ≠ q.u) (hw₃u : w₃ ≠ q.u)
     (hT₁ : Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₁))
     (hT₂ : Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₂))
     (hT₃ : Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₃)) :
     ∃ wa wb : {r : V // r ∈ G.neighborSet v}, wa ≠ wb ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel wa) = 1 ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel wb) = 1 ∧
+      wa ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+      wb ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+      wa ≠ q.u ∧ wb ≠ q.u ∧
       ∃ (Ta : OneHighReciprocalIsolatedTarget G hfree hv p q wa)
         (Tb : OneHighReciprocalIsolatedTarget G hfree hv p q wb),
         (((G.neighborFinset Ta.y ∩ secondLayerBranch G v wa).card = 0 ∧
@@ -335,20 +352,20 @@ theorem exists_sameSide_isolatedTarget_pair_of_three
   rcases hT₃ with ⟨T₃⟩
   rcases T₁.isolated with h₁ | h₁
   · rcases T₂.isolated with h₂ | h₂
-    · exact ⟨w₁, w₂, hw12, hw₁Edge, hw₂Edge,
+    · exact ⟨w₁, w₂, hw12, hw₁Edge, hw₂Edge, hw₁Far, hw₂Far, hw₁u, hw₂u,
         T₁, T₂, Or.inl ⟨h₁, h₂⟩⟩
     · rcases T₃.isolated with h₃ | h₃
-      · exact ⟨w₁, w₃, hw13, hw₁Edge, hw₃Edge,
+      · exact ⟨w₁, w₃, hw13, hw₁Edge, hw₃Edge, hw₁Far, hw₃Far, hw₁u, hw₃u,
           T₁, T₃, Or.inl ⟨h₁, h₃⟩⟩
-      · exact ⟨w₂, w₃, hw23, hw₂Edge, hw₃Edge,
+      · exact ⟨w₂, w₃, hw23, hw₂Edge, hw₃Edge, hw₂Far, hw₃Far, hw₂u, hw₃u,
           T₂, T₃, Or.inr ⟨h₂, h₃⟩⟩
   · rcases T₂.isolated with h₂ | h₂
     · rcases T₃.isolated with h₃ | h₃
-      · exact ⟨w₂, w₃, hw23, hw₂Edge, hw₃Edge,
+      · exact ⟨w₂, w₃, hw23, hw₂Edge, hw₃Edge, hw₂Far, hw₃Far, hw₂u, hw₃u,
           T₂, T₃, Or.inl ⟨h₂, h₃⟩⟩
-      · exact ⟨w₁, w₃, hw13, hw₁Edge, hw₃Edge,
+      · exact ⟨w₁, w₃, hw13, hw₁Edge, hw₃Edge, hw₁Far, hw₃Far, hw₁u, hw₃u,
           T₁, T₃, Or.inr ⟨h₁, h₃⟩⟩
-    · exact ⟨w₁, w₂, hw12, hw₁Edge, hw₂Edge,
+    · exact ⟨w₁, w₂, hw12, hw₁Edge, hw₂Edge, hw₁Far, hw₂Far, hw₁u, hw₂u,
         T₁, T₂, Or.inr ⟨h₁, h₂⟩⟩
 
 /-- Certificate-backed profile-four capstone in same-side packing form. -/
@@ -374,17 +391,21 @@ theorem OneHighReciprocalSameMissEdges.exists_sameSide_isolatedTarget_pair_of_pr
     ∃ wa wb : {r : Fin 49 // r ∈ G.neighborSet v}, wa ≠ wb ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel wa) = 1 ∧
       oneHighFamilyInternalEdges p.profile (p.branchLabel wb) = 1 ∧
+      wa ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+      wb ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) ∧
+      wa ≠ q.u ∧ wb ≠ q.u ∧
       ∃ (Ta : OneHighReciprocalIsolatedTarget G hfree hv p q wa)
         (Tb : OneHighReciprocalIsolatedTarget G hfree hv p q wb),
         (((G.neighborFinset Ta.y ∩ secondLayerBranch G v wa).card = 0 ∧
           (G.neighborFinset Tb.y ∩ secondLayerBranch G v wb).card = 0) ∨
          ((G.neighborFinset Ta.y' ∩ secondLayerBranch G v wa).card = 0 ∧
           (G.neighborFinset Tb.y' ∩ secondLayerBranch G v wb).card = 0)) := by
-  obtain ⟨w₁, w₂, w₃, hw12, hw13, hw23, _, _, _,
-    hw₁Edge, hw₂Edge, hw₃Edge, hT₁, hT₂, hT₃⟩ :=
+  obtain ⟨w₁, w₂, w₃, hw12, hw13, hw23, hw₁u, hw₂u, hw₃u,
+    hw₁Far, hw₂Far, hw₃Far, hw₁Edge, hw₂Edge, hw₃Edge, hT₁, hT₂, hT₃⟩ :=
     q.exists_three_isolatedTargets_of_profileFour_checked G hfree hmin
       hprofile stored hstored hagree hchecked
   exact exists_sameSide_isolatedTarget_pair_of_three
-    hw12 hw13 hw23 hw₁Edge hw₂Edge hw₃Edge hT₁ hT₂ hT₃
+    hw12 hw13 hw23 hw₁Edge hw₂Edge hw₃Edge
+      hw₁Far hw₂Far hw₃Far hw₁u hw₂u hw₃u hT₁ hT₂ hT₃
 
 end Erdos85
