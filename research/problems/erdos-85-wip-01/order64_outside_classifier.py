@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 from itertools import combinations
+from pathlib import Path
 
 import numpy as np
 import z3
@@ -191,7 +192,54 @@ def c_feasible(h: np.ndarray, redges: list[tuple[int, int]]):
     return "ALIVE", chosen, len(allowed), common_term_count
 
 
-def classify(parts: list[int], limit: int, show_witness: bool):
+def emit_c_cnf(h: np.ndarray, redges: list[tuple[int, int]], path: Path):
+    """Write the outside-C necessary conditions as an elementary CNF."""
+    incidence = np.zeros((16, 48), dtype=int)
+    for e, (u, v) in enumerate(redges):
+        incidence[u, e] = incidence[v, e] = 1
+    target = 1 - h @ incidence
+    if target.min() < 0 or target.max() > 1:
+        path.write_text("p cnf 1 2\n1 0\n-1 0\n")
+        return 1, 2
+    allowed = []
+    for e, f in combinations(range(48), 2):
+        if np.all(incidence[:, f] <= target[:, e]) and \
+                np.all(incidence[:, e] <= target[:, f]):
+            allowed.append((e, f))
+    cindex = {edge: i + 1 for i, edge in enumerate(allowed)}
+    clauses: list[list[int]] = []
+    # Each (outside edge e, inside vertex u) receives exactly target[u,e]
+    # service neighbors through endpoints of C-neighbors.
+    for e in range(48):
+        for u in range(16):
+            terms = []
+            for f in range(48):
+                p = tuple(sorted((e, f)))
+                if e != f and incidence[u, f] and p in cindex:
+                    terms.append(cindex[p])
+            if target[u, e] == 0:
+                clauses.extend([[-term] for term in terms])
+            else:
+                clauses.append(terms)
+                clauses.extend([[-a, -b] for a, b in combinations(terms, 2)])
+    # No pair of outside vertices has two common C-neighbors.
+    for a, b in combinations(range(48), 2):
+        common = []
+        for c in range(48):
+            ac, bc = tuple(sorted((a, c))), tuple(sorted((b, c)))
+            if c not in (a, b) and ac in cindex and bc in cindex:
+                common.append((cindex[ac], cindex[bc]))
+        for (ac, bc), (ad, bd) in combinations(common, 2):
+            clauses.append([-ac, -bc, -ad, -bd])
+    with path.open("w") as out:
+        out.write(f"p cnf {len(allowed)} {len(clauses)}\n")
+        for clause in clauses:
+            out.write(" ".join(map(str, clause)) + " 0\n")
+    return len(allowed), len(clauses)
+
+
+def classify(parts: list[int], limit: int, show_witness: bool,
+             emit_cnf_dir: Path | None = None):
     h = cycle_adjacency(parts)
     pairs, base_rows, base_lo, base_hi = r_base_model(h)
     nogood_rows: list[dict[int, int]] = []
@@ -209,6 +257,9 @@ def classify(parts: list[int], limit: int, show_witness: bool):
             return tested, c_alive, c_unknown, result.status == 2
         bits = np.rint(result.x).astype(int)
         redges = [pairs[i] for i, bit in enumerate(bits) if bit]
+        if emit_cnf_dir is not None:
+            emit_cnf_dir.mkdir(parents=True, exist_ok=True)
+            emit_c_cnf(h, redges, emit_cnf_dir / f"r{tested + 1:03}.cnf")
         verdict, chosen, allowed_count, c4terms = c_feasible(h, redges)
         tested += 1
         if verdict == "ALIVE":
@@ -240,12 +291,13 @@ def main():
     parser.add_argument("partition", choices=[*PARTITIONS, "all"])
     parser.add_argument("--limit", type=int, default=10000)
     parser.add_argument("--show-witness", action="store_true")
+    parser.add_argument("--emit-cnf-dir", type=Path)
     args = parser.parse_args()
     names = PARTITIONS if args.partition == "all" else {args.partition: PARTITIONS[args.partition]}
     for name, parts in names.items():
         print(f"=== {name} ===", flush=True)
         tested, alive, unknown, exhausted = classify(
-            parts, args.limit, args.show_witness)
+            parts, args.limit, args.show_witness, args.emit_cnf_dir)
         print(f"SUMMARY {name}: R_tested={tested} C_alive={alive} "
               f"C_unknown={unknown} "
               f"R_exhausted={exhausted}", flush=True)
