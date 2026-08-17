@@ -128,12 +128,14 @@ This gives an exact two-level reformulation of collision-freeness:
    permutations form a complete 1-factorization.
 
 The field ansatz should therefore seek a coherent family of Latin squares,
-not isolated matchings. On `X=P¹(F_q)`, a Singer cycle of order `q+1` supplies
-one canonical 1-factorization: the graphs of its regular permutation action
-are pairwise disjoint. The unresolved compatibility problem is to choose
-fiber-dependent conjugates/cosets of such actions whose transition
-factorizations agree simultaneously. Allowing the conjugates to depend on the
-fiber pair is precisely what escapes the Cayley no-go results.
+not isolated matchings. Any regular permutation group of order `q+1` supplies
+one canonical 1-factorization: the graphs of its regular action are pairwise
+disjoint. The unresolved compatibility problem is to choose fiber-dependent
+conjugates/cosets of such actions whose transition factorizations agree
+simultaneously. Allowing the conjugates to depend on the fiber pair is
+precisely what escapes the Cayley no-go results. A Singer cycle on
+`P¹(F_q)` is one tempting regular action, but the next audit shows that it is
+not the action used by the known witness.
 
 The checked q=7 edge list verifies this reformulation directly. For each of
 the 15 unordered pairs of eight-point fibers, every one of the 64 cross-fiber
@@ -141,6 +143,25 @@ vertex pairs has exactly one common neighbor. Grouping those common neighbors
 by their fiber gives blocks of size 8 or 16 exactly as predicted by the one-
 or two-matching channel multiplicities above. Thus all 15 routing families in
 the known witness really do partition `K_{8,8}`.
+
+There is a sharper coordinatization. Each of the three doubled blocks is two
+eight-cycles and has four alternating decompositions into two matchings.
+`near_latin_q7_routing.py` enumerates all `4³=64` simultaneous choices, forms
+the eight routing permutations for all 15 fiber pairs, and asks whether each
+factorization is a coset of a regular permutation group. Exactly eight choices
+make all 15 factorizations group cosets. In every case the group has element-
+order multiset
+
+```text
+1, 2, 2, 2, 2, 2, 4, 4,
+```
+
+so it is the dihedral group of order eight. No choice makes even one routing
+factorization cyclic, and hence no choice makes all of them Singer-cyclic.
+The q=7 witness is therefore best viewed as a coherent atlas of dihedral
+torsors. For general odd `q`, this points first to regular actions of the
+dihedral group of order `q+1` (with rotation subgroup of order `(q+1)/2`),
+rather than to a cyclic order-`q+1` action.
 
 ## 3. Precise candidate axiom for B-EXIST
 
