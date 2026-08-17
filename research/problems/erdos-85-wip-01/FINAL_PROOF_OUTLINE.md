@@ -541,9 +541,22 @@ generalized rather than merely replayed.
 
      in
      `binarySquare_regular_card_components_sub_one_le_finrank_adj_kernel`.
+     The lower bound is now sharp.  The `PROVEN` representation theorem
+     `binarySquare_regular_adj_kernel_vector_component_representation` shows
+     conversely that every rational adjacency-kernel vector is constant on
+     each defect component and that its representative coefficients
+     annihilate the same quotient row.  The reverse injection
+     `binarySquareAdjKernelToComponentRowKernel` therefore gives the capstone
+
+     ```text
+     dim_Q ker A = number of D-components - 1
+     ```
+
+     in
+     `binarySquare_regular_finrank_adj_kernel_eq_card_components_sub_one`.
      Thus a four-component order-64 candidate has ambient adjacency nullity
-     at least three, in the exact field-valued form needed by the global
-     simultaneous-spectrum ledger.
+     exactly three: the global spectral ledger has no additional zero-root
+     multiplicity available beyond the component-constant directions.
      This kernel is not merely an ambient spectral statistic.  The rational
      owner identity is now `PROVEN` in
      `binarySquare_regular_componentOwnerGraph_adjMatrix_eq_rat`, and
