@@ -286,4 +286,66 @@ theorem binarySquare_regular_sizeQ_ownerColor_exists_matchingEquiv
   intro x
   exact hφadj x
 
+/-- Matching equivalences carried by distinct owner colors disagree at every
+source vertex.  Equivalently, the owner-color permutations have maximum
+Hamming distance on each ordered pair of defect components. -/
+theorem ownerColor_matchingEquiv_pointwise_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (e f c d : (secondOrderDefectGraph G).ConnectedComponent) (hcd : c ≠ d)
+    (σ τ : f.supp ≃ e.supp)
+    (hσ : ∀ x : f.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x.1 (σ x).1)
+    (hτ : ∀ x : f.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) d).Adj x.1 (τ x).1)
+    (x : f.supp) : σ x ≠ τ x := by
+  intro heq
+  have hdis := componentOwnerGraph_componentNeighborFinset_disjoint
+    G hfree c d e hcd x.1
+  have hσmem : (σ x).1 ∈ componentNeighborFinset
+      (componentOwnerGraph G (secondOrderDefectGraph G) c)
+      (secondOrderDefectGraph G) e x.1 := by
+    rw [componentNeighborFinset]
+    exact Finset.mem_filter.mpr
+      ⟨((componentOwnerGraph G (secondOrderDefectGraph G) c).mem_neighborFinset
+          x.1 (σ x).1).mpr (hσ x),
+        (SimpleGraph.ConnectedComponent.mem_supp_iff e (σ x).1).mp (σ x).2⟩
+  have hτmem : (σ x).1 ∈ componentNeighborFinset
+      (componentOwnerGraph G (secondOrderDefectGraph G) d)
+      (secondOrderDefectGraph G) e x.1 := by
+    rw [componentNeighborFinset]
+    have hval : (σ x).1 = (τ x).1 := congrArg Subtype.val heq
+    exact Finset.mem_filter.mpr
+      ⟨((componentOwnerGraph G (secondOrderDefectGraph G) d).mem_neighborFinset
+          x.1 (σ x).1).mpr (by simpa [hval] using hτ x),
+        (SimpleGraph.ConnectedComponent.mem_supp_iff e (σ x).1).mp (σ x).2⟩
+  exact (Finset.disjoint_left.mp hdis) hσmem hτmem
+
+/-- In particular, distinct owner colors cannot induce the same matching
+equivalence between a fixed ordered pair of components. -/
+theorem ownerColor_matchingEquiv_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (e f c d : (secondOrderDefectGraph G).ConnectedComponent) (hcd : c ≠ d)
+    (σ τ : f.supp ≃ e.supp)
+    (hσ : ∀ x : f.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x.1 (σ x).1)
+    (hτ : ∀ x : f.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) d).Adj x.1 (τ x).1)
+    [Nonempty f.supp] : σ ≠ τ := by
+  intro heq
+  let x : f.supp := Classical.choice inferInstance
+  exact ownerColor_matchingEquiv_pointwise_ne G hfree e f c d hcd σ τ hσ hτ x
+    (Equiv.congr_fun heq x)
+
 end Erdos85

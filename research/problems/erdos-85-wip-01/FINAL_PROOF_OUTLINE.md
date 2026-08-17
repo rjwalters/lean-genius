@@ -602,6 +602,15 @@ generalized rather than merely replayed.
      consists entirely of owner-color edges.  The remaining ODC gap is solely
      the compatibility of this family of component equivalences with its
      self-indexed diagonal cycle blocks.
+     One compatibility law is now `PROVEN`: the theorems
+     `ownerColor_matchingEquiv_pointwise_ne` and
+     `ownerColor_matchingEquiv_ne` show that equivalences carried by distinct
+     owner colors disagree at every source point (maximum Hamming distance)
+     and are therefore distinct permutations.  Thus each pair of order-`q`
+     components carries a sharply separated permutation code indexed by the
+     unit owner colors.  The unresolved step must use compatibility across
+     three or more component pairs and the diagonal cycle indexing; pairwise
+     collision-freeness itself is closed.
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
@@ -627,6 +636,28 @@ generalized rather than merely replayed.
      not merely commuting: they mutually annihilate integrally.  The live task
      is to combine this orthogonal-sector decomposition with the self-indexed
      diagonal cycle blocks and simultaneous equitable cells.
+     The first such algebra-to-cycle bridge is now `PROVEN` in
+     `Erdos85BinarySquareCenteredOwnerResolution`.  For the normalized
+     component sizes `m_c`, the theorem
+     `binarySquare_regular_sum_centeredOwnerGrams` proves
+
+     ```text
+     sum_c C_c = q ((q-1) I - D).
+     ```
+
+     Combining this resolution with pairwise annihilation,
+     `binarySquare_regular_centeredOwnerGram_mul_defectResolution` gives the
+     colorwise projector equation
+
+     ```text
+     C_c · q ((q-1) I - D) = C_c^2.
+     ```
+
+     Hence every owner sector is an actual algebraic summand of the defect
+     cycle polynomial, rather than only a commuting auxiliary operator.  The
+     remaining classification must exploit the self-indexed diagonal block
+     of each summand (or its rank/spectrum) to distinguish `q=4` from
+     `q >= 8`.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
