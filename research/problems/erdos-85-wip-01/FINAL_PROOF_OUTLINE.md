@@ -1423,6 +1423,15 @@ generalized rather than merely replayed.
      blocks.  The next obstruction target is to combine these forced blocks
      with the owner 2-factor budgets (or show that the six near-twin cuts
      cannot coexist).
+     A complementary no-rainbow consequence is `PROVEN` in
+     `Erdos85NearTwinOwnerFork`: an induced-component codegree-six nonedge
+     forces two distinct complement-common vertices that close through the
+     same non-base owner at both roots.  The global interface is now `PROVEN`
+     in `Erdos85OrderSixtyFourNearTwinForkAdapter`: matrix codegree six puts
+     the roots in one defect component, preserves their codegree after
+     induction, and feeds the result directly to that repeated-owner-fork
+     endpoint.  Thus the graph-facing near-twin hypothesis no longer has an
+     ambient-to-component gap in the no-rainbow branch.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
