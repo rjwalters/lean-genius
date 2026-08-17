@@ -168,3 +168,32 @@ ambient graph not encoded by a single pair of owner incidence systems.  For
 the `2+2+2+2` sector the correct next question is whether four such systems
 can coexist with the same ambient adjacency/defect square identity; pairwise
 nonexistence is false.
+
+### First triple-compatibility scout
+
+The displayed translation pair was tested for extension by a third size-two
+coordinate.  A vertex-star of the third coordinate would have to be a set of
+eight labels that is simultaneously a perfect matching in both copies of
+`H`.  Direct backtracking finds exactly `64` such common perfect matchings.
+
+Introduce one binary variable for each of these `64` matchings.  A third
+coordinate requires:
+
+```text
+each of the 64 labels occurs in exactly two selected matchings;
+two selected matchings share at most one label.
+```
+
+The first condition alone is feasible (with `16` selected matchings).  Adding
+the second condition makes the `64`-variable integer system infeasible
+(checked with SciPy/HiGHS).  The second condition is essential: if two stars
+shared two labels, the third owner graph would have a multiple edge rather
+than being simple.  Thus this explicit pair cannot extend even to three
+size-two coordinates.
+
+This is a scout, not a general proof or a checked certificate.  Its value is
+that it isolates the likely terminal statement: prove that any two ORTH
+coordinates force a collision in every twofold cover by common perfect
+matchings.  Such a theorem would kill every partition containing at least
+three size-two parts, including the `2+2+2+2` sector at `q=8`, without
+returning to the 64-vertex ambient graph.
