@@ -274,6 +274,79 @@ theorem squareOrder_highIncidence_energy_laplacian
       (D.degree x : ℤ) * k x
   nlinarith
 
+/-- The Laplacian identity gives a strict local ascent below the mean energy
+and a strict local descent above it. -/
+theorem squareOrder_highIncidence_exists_defectNeighbor_strict
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {x : V} (hx : G.degree x = d) :
+    (squareOrderHighIncidenceCount G d x *
+          (d - squareOrderHighIncidenceCount G d x) <
+        (squareOrderHighVertices G d).card →
+      ∃ y, (secondOrderDefectGraph G).Adj x y ∧
+        squareOrderHighIncidenceCount G d x <
+          squareOrderHighIncidenceCount G d y) ∧
+    ((squareOrderHighVertices G d).card <
+          squareOrderHighIncidenceCount G d x *
+            (d - squareOrderHighIncidenceCount G d x) →
+      ∃ y, (secondOrderDefectGraph G).Adj x y ∧
+        squareOrderHighIncidenceCount G d y <
+          squareOrderHighIncidenceCount G d x) := by
+  let D := secondOrderDefectGraph G
+  let k := squareOrderHighIncidenceCount G d
+  let h := (squareOrderHighVertices G d).card
+  have hlap := squareOrder_highIncidence_energy_laplacian
+    G hfree hd hmin hcover hcard hx
+  change (h : ℤ) - (k x : ℤ) * ((d : ℤ) - k x) =
+    ∑ y ∈ D.neighborFinset x, ((k y : ℤ) - k x) at hlap
+  constructor
+  · intro hbelow
+    have hk_le : k x ≤ d := by
+      have htwo : 2 * k x ≤ d := by
+        simpa [k, squareOrderHighIncidenceCount] using
+          squareOrder_two_mul_highNeighborCount_le_degree
+            G hfree hd hmin hcover hcard hx
+      omega
+    have hpos : 0 < ∑ y ∈ D.neighborFinset x, ((k y : ℤ) - k x) := by
+      rw [← hlap]
+      have hbelow' : k x * (d - k x) < h := by simpa [k, h] using hbelow
+      have hbelowZ : ((k x * (d - k x) : ℕ) : ℤ) < (h : ℤ) := by
+        exact_mod_cast hbelow'
+      rw [Nat.cast_mul, Nat.cast_sub hk_le] at hbelowZ
+      linarith
+    have hex : ∃ y ∈ D.neighborFinset x,
+        (0 : ℤ) < (k y : ℤ) - k x := by
+      apply Finset.exists_lt_of_sum_lt
+      simpa using hpos
+    obtain ⟨y, hyN, hylt⟩ := hex
+    exact ⟨y, by simpa [D] using hyN, by exact_mod_cast (sub_pos.mp hylt)⟩
+  · intro habove
+    have hk_le : k x ≤ d := by
+      have htwo : 2 * k x ≤ d := by
+        simpa [k, squareOrderHighIncidenceCount] using
+          squareOrder_two_mul_highNeighborCount_le_degree
+            G hfree hd hmin hcover hcard hx
+      omega
+    have hneg : (∑ y ∈ D.neighborFinset x, ((k y : ℤ) - k x)) < 0 := by
+      rw [← hlap]
+      have habove' : h < k x * (d - k x) := by simpa [k, h] using habove
+      have haboveZ : (h : ℤ) < ((k x * (d - k x) : ℕ) : ℤ) := by
+        exact_mod_cast habove'
+      rw [Nat.cast_mul, Nat.cast_sub hk_le] at haboveZ
+      linarith
+    have hex : ∃ y ∈ D.neighborFinset x,
+        (k y : ℤ) - k x < 0 := by
+      apply Finset.exists_lt_of_sum_lt
+      simpa using hneg
+    obtain ⟨y, hyN, hylt⟩ := hex
+    exact ⟨y, by simpa [D] using hyN, by exact_mod_cast (sub_neg.mp hylt)⟩
+
 /-- The componentwise terminal in its useful final form: every nonempty
 defect-closed low set either forces a factorization of the global high count,
 or contains incidence energies strictly on both sides of that count. -/
