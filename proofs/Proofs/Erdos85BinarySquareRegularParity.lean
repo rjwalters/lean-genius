@@ -7,6 +7,7 @@ import Proofs.Erdos85ExcessEigenspace
 import Proofs.Erdos85ResidueSignedCount
 import Proofs.Erdos85GlobalLocalTriangleCount
 import Proofs.Erdos85IsCyclesComponentCharpoly
+import Proofs.Erdos85DefectComponentBlockCommute
 
 /-!
 # Characteristic-two parity for regular square-order cores
@@ -831,6 +832,54 @@ theorem binarySquare_regular_sizeTwoPart_exists_cycle_of_internalComponent
   rcases hC4induced with ⟨f, hf, hadj⟩
   exact ⟨fun i => (f i).1, Subtype.val_injective.comp hf,
     fun i j hij => hadj i j hij⟩
+
+/-- **Size-two block capstone.**  On a normalized size-two defect component,
+the internal ambient graph is 2-regular, the internal defect graph is
+`(q-1)`-regular and connected by construction, and their integer adjacency
+matrices commute. -/
+theorem binarySquare_regular_sizeTwoPart_commuting_regular_blocks
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) :
+    (∀ x : c.supp, (G.induce c.supp).degree x = 2) ∧
+    (∀ x : c.supp,
+      ((secondOrderDefectGraph G).induce c.supp).degree x = q - 1) ∧
+    (G.induce c.supp).adjMatrix ℤ *
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ =
+      ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ *
+        (G.induce c.supp).adjMatrix ℤ := by
+  have hGdegree : ∀ x : c.supp, (G.induce c.supp).degree x = 2 :=
+    fun x => binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree hq hreg hcard c hc x
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by
+        rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDdegree : ∀ x : V, (secondOrderDefectGraph G).degree x = q - 1 := by
+    intro x
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus x
+    change (secondOrderDefectGraph G).degree x = (q - 3) + 2 at h
+    omega
+  have hDcomponent : ∀ x : c.supp,
+      ((secondOrderDefectGraph G).induce c.supp).degree x = q - 1 := by
+    intro x
+    rw [degree_induce_connectedComponent_supp]
+    exact hDdegree x.1
+  exact ⟨hGdegree, hDcomponent,
+    adjMatrix_comm_secondOrderDefect_induce_component_of_regular
+      G hfree hreg c⟩
 
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq

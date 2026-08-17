@@ -323,7 +323,13 @@ generalized rather than merely replayed.
      `binarySquare_regular_sizeTwoPart_exists_cycle_of_internalComponent`
      produces a spanning simple closed walk for every connected piece of
      `G[c]` and proves its length is not four.  Packaging these monochromatic
-     cycles with the commuting defect block is the next precise subgoal.
+     cycles with the defect block is now complete at the abstract matrix
+     level: `binarySquare_regular_sizeTwoPart_commuting_regular_blocks`
+     supplies simultaneously the internal ambient degree `2`, internal defect
+     degree `q-1`, and exact integer adjacency commutation.  The remaining
+     subgoal is no longer an interface gap: it is to classify or obstruct a
+     connected `(q-1)`-regular graph commuting with this monochromatic
+     cycle union under the square-order common-neighbor laws.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
