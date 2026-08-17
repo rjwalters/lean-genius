@@ -345,7 +345,14 @@ generalized rather than merely replayed.
      now feeds a quantitative quotient inequality rather than remaining a
      pattern observation: for every internal cycle `a` of length at least five,
      `binarySquare_regular_sizeTwoPart_cycleQuotient_diagonal_le` proves
-     `Q(a,a) ≤ |a|-3`.
+     `Q(a,a) ≤ |a|-3`.  Combining this with the row sum gives the `PROVEN`
+     cross-mass inequality
+
+     ```text
+     q + 2 ≤ |a| + sum_{b≠a} Q(a,b),
+     ```
+
+     in `binarySquare_regular_sizeTwoPart_cycleQuotient_cross_mass`.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

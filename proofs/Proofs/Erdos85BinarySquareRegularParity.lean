@@ -1191,6 +1191,53 @@ theorem binarySquare_regular_sizeTwoPart_cycleQuotient_diagonal_le
   rw [componentQuotientMatrix_apply_eq K H 2 hHdegree hcommReal a a hx0mem]
   exact (Finset.card_le_card hsub).trans_eq hTcard
 
+/-- Consequently a length-`r` ambient cycle must send enough defect quotient
+mass to the other cycles to compensate for its two forbidden distance-two
+diagonals. -/
+theorem binarySquare_regular_sizeTwoPart_cycleQuotient_cross_mass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a : (G.induce c.supp).ConnectedComponent) (ha : 5 ≤ a.supp.ncard) :
+    q + 2 ≤ a.supp.ncard +
+      ∑ b ∈ (Finset.univ.erase a), componentQuotientMatrix
+        ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b := by
+  let Q := componentQuotientMatrix
+    ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp)
+  have hrow :=
+    (binarySquare_regular_sizeTwoPart_cycleQuotient
+      G hfree hq hreg hcard c hc).1 a
+  have hdiag := binarySquare_regular_sizeTwoPart_cycleQuotient_diagonal_le
+    G hfree hq hreg hcard c hc a ha
+  have haUniv : a ∈ (Finset.univ :
+      Finset (G.induce c.supp).ConnectedComponent) := Finset.mem_univ a
+  have hsplit := Finset.sum_erase_add (Finset.univ)
+    (fun b => Q a b) haUniv
+  change (∑ b, Q a b) = q - 1 at hrow
+  change Q a a ≤ a.supp.ncard - 3 at hdiag
+  have hsumEq : (∑ b ∈ Finset.univ.erase a, Q a b) + Q a a = q - 1 := by
+    calc
+      (∑ b ∈ Finset.univ.erase a, Q a b) + Q a a = ∑ b, Q a b := hsplit
+      _ = q - 1 := hrow
+  have hle : q - 1 ≤
+      (∑ b ∈ Finset.univ.erase a, Q a b) + (a.supp.ncard - 3) := by
+    rw [← hsumEq]
+    exact Nat.add_le_add_left hdiag _
+  change q - 1 ≤
+    (∑ b ∈ Finset.univ.erase a, componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b) +
+      (a.supp.ncard - 3) at hle
+  omega
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]
