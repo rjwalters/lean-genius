@@ -76,9 +76,27 @@ B_c^T B_d = J                       (c != d),
 B_c^T B_c = qI + A(L_c)             (m_c = 2).
 ```
 
-The next terminal attempt should use positivity/rank or a fourth-power trace
-of this whole block Gram, since treating each diagonal block separately loses
-the shared ambient-row compatibility again.
+There is an important audit boundary here.  If all `B_c` are stacked side by
+side, the resulting matrix is not a new incidence object: its columns are the
+entire vertex set, grouped by defect component, so it is exactly the ambient
+adjacency matrix with its columns reindexed.  This is now `PROVEN` by
+`stackedDefectComponentNeighborIncidenceMatrix_eq_adjMatrix_reindexed`, and
+`transpose_stackedDefectComponentNeighborIncidenceMatrix_mul_self` gives
+
+```text
+[B_c]^T [B_c] = reindex(A_G^2).
+```
+
+Therefore positivity, rank, determinant, or a fourth-power trace of the
+*whole* Gram matrix alone merely repackages the already-known ambient
+adjacency-square identity.  The component-constant kernel consequences of
+that identity are also already formalized by
+`binarySquare_regular_defectComponentLinearCombinationInt_mem_kernel` and,
+at order 64, `orderSixtyFour_adj_det_eq_zero_of_two_defect_components`.
+Any new terminal must use structure not invariant under simply regrouping
+the columns—for example entrywise coupling of several component blocks,
+the cross-rectangle ownership labels, or the self-indexed diagonal-cycle
+constraint.
 
 ## Triangle interpretation
 
