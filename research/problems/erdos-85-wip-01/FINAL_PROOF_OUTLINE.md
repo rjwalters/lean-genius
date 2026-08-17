@@ -226,12 +226,26 @@ generalized rather than merely replayed.
      ```
 
      Together with the off-diagonal identities this proves entrywise that the
-     full weighted Gram matrix is `s s^T`, where `s_c=|c|`.  The remaining
-     precise `GAP A-REG-GRAM` is the rank-one/integrality consumer: positivity
-     should force all quotient columns to be proportional; the row sum and
-     detailed balance then predict the exact integral formula
-     `Q(e,c)=|c|/q`, and hence `q divides |c|` for every defect component.
-     These last consequences are not yet claimed theorems.
+     full weighted Gram matrix is `s s^T`, where `s_c=|c|`.  The rank-one and
+     integrality consumers are now also `PROVEN`.
+     `binarySquare_regular_componentQuotient_cross_mul` derives proportional
+     quotient columns by expanding the weighted squared difference and using
+     positivity of every component order.  Summing that proportionality over
+     a quotient row gives the exact integral formula
+
+     ```text
+     q * Q(e,c) = |c|
+     ```
+
+     in `binarySquare_regular_mul_componentQuotient_eq_componentCard`, and
+     `binarySquare_regular_dvd_defectComponent_card` concludes `q divides |c|`
+     for every defect component.  Thus every quotient row is identical and
+     the component orders are `q` times a partition of `q`.  This closes the
+     former `A-REG-GRAM` gap but is not itself a contradiction.  The next
+     `GAP A-REG-COMPONENTS` is to combine this rigid integral quotient with
+     the internal `(q-1)`-regular defect graphs and the coupled proper parity
+     set, or derive an additional local block constraint that rules out every
+     partition of `q` when `q` is a power of two.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;

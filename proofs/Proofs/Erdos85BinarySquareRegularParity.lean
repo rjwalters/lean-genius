@@ -4,6 +4,7 @@ import Proofs.Erdos85ComponentFactorization
 import Proofs.Erdos85ComponentLocalObstruction
 import Proofs.Erdos85QuotientGramIdentity
 import Proofs.Erdos85ExcessEigenspace
+import Proofs.Erdos85ResidueSignedCount
 
 /-!
 # Characteristic-two parity for regular square-order cores
@@ -386,5 +387,180 @@ theorem binarySquare_regular_componentQuotient_weightedGram_diagonal
         ∑ e : D.ConnectedComponent, (Q c e : ℝ) * (Q e c : ℝ) := by
       rw [Finset.mul_sum]
     _ = (c.supp.ncard : ℝ) * (c.supp.ncard : ℝ) := by rw [hsq']
+
+/-- The diagonal and off-diagonal formulas combine into the full weighted
+Gram identity. -/
+theorem binarySquare_regular_componentQuotient_weightedGram
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c c' : (secondOrderDefectGraph G).ConnectedComponent) :
+    (∑ e : (secondOrderDefectGraph G).ConnectedComponent,
+        (e.supp.ncard : ℝ) *
+          ((componentQuotientMatrix G (secondOrderDefectGraph G) e c : ℝ) *
+            (componentQuotientMatrix G (secondOrderDefectGraph G) e c' : ℝ))) =
+      (c.supp.ncard : ℝ) * (c'.supp.ncard : ℝ) := by
+  by_cases hcc' : c = c'
+  · subst c'
+    exact binarySquare_regular_componentQuotient_weightedGram_diagonal
+      G hfree hq hreg hcard c
+  · exact_mod_cast binarySquare_regular_componentQuotient_weightedGram_offDiagonal
+      G hfree hq hreg hcard c c' hcc'
+
+/-- **Rank-one consumer.**  Equality in the full weighted Gram identity
+forces every two quotient columns to be proportional after scaling by their
+component orders. -/
+theorem binarySquare_regular_componentQuotient_cross_mul
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e c c' : (secondOrderDefectGraph G).ConnectedComponent) :
+    c'.supp.ncard *
+        componentQuotientMatrix G (secondOrderDefectGraph G) e c =
+      c.supp.ncard *
+        componentQuotientMatrix G (secondOrderDefectGraph G) e c' := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hcc := binarySquare_regular_componentQuotient_weightedGram
+    G hfree hq hreg hcard c c
+  have hcc' := binarySquare_regular_componentQuotient_weightedGram
+    G hfree hq hreg hcard c' c'
+  have hcross := binarySquare_regular_componentQuotient_weightedGram
+    G hfree hq hreg hcard c c'
+  have hsum : (∑ x : D.ConnectedComponent,
+      (x.supp.ncard : ℝ) *
+        ((c'.supp.ncard : ℝ) * (Q x c : ℝ) -
+          (c.supp.ncard : ℝ) * (Q x c' : ℝ)) ^ 2) = 0 := by
+    calc
+      (∑ x : D.ConnectedComponent,
+          (x.supp.ncard : ℝ) *
+            ((c'.supp.ncard : ℝ) * (Q x c : ℝ) -
+              (c.supp.ncard : ℝ) * (Q x c' : ℝ)) ^ 2) =
+          (c'.supp.ncard : ℝ) ^ 2 *
+              (∑ x : D.ConnectedComponent,
+                (x.supp.ncard : ℝ) * ((Q x c : ℝ) * (Q x c : ℝ))) -
+            2 * (c.supp.ncard : ℝ) * (c'.supp.ncard : ℝ) *
+              (∑ x : D.ConnectedComponent,
+                (x.supp.ncard : ℝ) * ((Q x c : ℝ) * (Q x c' : ℝ))) +
+            (c.supp.ncard : ℝ) ^ 2 *
+              (∑ x : D.ConnectedComponent,
+                (x.supp.ncard : ℝ) * ((Q x c' : ℝ) * (Q x c' : ℝ))) := by
+        have hterm : ∀ x : D.ConnectedComponent,
+            (x.supp.ncard : ℝ) *
+                ((c'.supp.ncard : ℝ) * (Q x c : ℝ) -
+                  (c.supp.ncard : ℝ) * (Q x c' : ℝ)) ^ 2 =
+              (c'.supp.ncard : ℝ) ^ 2 *
+                  ((x.supp.ncard : ℝ) * ((Q x c : ℝ) * (Q x c : ℝ))) -
+                (2 * (c.supp.ncard : ℝ) * (c'.supp.ncard : ℝ)) *
+                  ((x.supp.ncard : ℝ) * ((Q x c : ℝ) * (Q x c' : ℝ))) +
+                (c.supp.ncard : ℝ) ^ 2 *
+                  ((x.supp.ncard : ℝ) * ((Q x c' : ℝ) * (Q x c' : ℝ))) := by
+          intro x
+          ring
+        rw [Finset.sum_congr rfl (fun x _ => hterm x),
+          Finset.sum_add_distrib, Finset.sum_sub_distrib,
+          ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum]
+      _ = 0 := by
+        rw [show (∑ x : D.ConnectedComponent,
+              (x.supp.ncard : ℝ) * ((Q x c : ℝ) * (Q x c : ℝ))) =
+            (c.supp.ncard : ℝ) * (c.supp.ncard : ℝ) by simpa [D, Q] using hcc,
+          show (∑ x : D.ConnectedComponent,
+              (x.supp.ncard : ℝ) * ((Q x c : ℝ) * (Q x c' : ℝ))) =
+            (c.supp.ncard : ℝ) * (c'.supp.ncard : ℝ) by
+              simpa [D, Q] using hcross,
+          show (∑ x : D.ConnectedComponent,
+              (x.supp.ncard : ℝ) * ((Q x c' : ℝ) * (Q x c' : ℝ))) =
+            (c'.supp.ncard : ℝ) * (c'.supp.ncard : ℝ) by
+              simpa [D, Q] using hcc']
+        ring
+  have hterm := (Finset.sum_eq_zero_iff_of_nonneg (fun x _ =>
+      mul_nonneg (Nat.cast_nonneg x.supp.ncard) (sq_nonneg _))).mp
+      hsum e (Finset.mem_univ e)
+  have hepos : (0 : ℝ) < (e.supp.ncard : ℝ) := by
+    exact_mod_cast e.nonempty_supp.ncard_pos
+  have hsqzero :
+      ((c'.supp.ncard : ℝ) * (Q e c : ℝ) -
+        (c.supp.ncard : ℝ) * (Q e c' : ℝ)) ^ 2 = 0 :=
+    (mul_eq_zero.mp hterm).resolve_left (ne_of_gt hepos)
+  have hreal : (c'.supp.ncard : ℝ) * (Q e c : ℝ) =
+      (c.supp.ncard : ℝ) * (Q e c' : ℝ) := by
+    nlinarith [sq_nonneg
+      ((c'.supp.ncard : ℝ) * (Q e c : ℝ) -
+        (c.supp.ncard : ℝ) * (Q e c' : ℝ))]
+  exact_mod_cast hreal
+
+/-- **Exact quotient formula.**  At square order every row of the component
+quotient sees a component `c` in exactly `|c|/q` vertices.  The integral
+form avoids division and immediately exposes component-size divisibility. -/
+theorem binarySquare_regular_mul_componentQuotient_eq_componentCard
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e c : (secondOrderDefectGraph G).ConnectedComponent) :
+    q * componentQuotientMatrix G (secondOrderDefectGraph G) e c =
+      c.supp.ncard := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hsize : (∑ c' : D.ConnectedComponent, c'.supp.ncard) = q * q := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hrow : (∑ c' : D.ConnectedComponent, Q e c') = q := by
+    rw [sum_componentQuotientMatrix_row, hreg]
+  have hsumCross :
+      (∑ c' : D.ConnectedComponent, c'.supp.ncard * Q e c) =
+        ∑ c' : D.ConnectedComponent, c.supp.ncard * Q e c' := by
+    apply Finset.sum_congr rfl
+    intro c' _
+    exact binarySquare_regular_componentQuotient_cross_mul
+      G hfree hq hreg hcard e c c'
+  have heq : q * q * Q e c = c.supp.ncard * q := by
+    calc
+      q * q * Q e c = (∑ c' : D.ConnectedComponent, c'.supp.ncard) * Q e c := by
+        rw [hsize]
+      _ = ∑ c' : D.ConnectedComponent, c'.supp.ncard * Q e c := by
+        rw [Finset.sum_mul]
+      _ = ∑ c' : D.ConnectedComponent, c.supp.ncard * Q e c' := hsumCross
+      _ = c.supp.ncard * (∑ c' : D.ConnectedComponent, Q e c') := by
+        rw [Finset.mul_sum]
+      _ = c.supp.ncard * q := by rw [hrow]
+  have heq' : q * (q * Q e c) = q * c.supp.ncard := by
+    simpa [mul_assoc, mul_comm, mul_left_comm] using heq
+  exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) heq'
+
+/-- Every defect-component order in a regular binary square-order candidate
+is divisible by the square root `q` of the ambient order. -/
+theorem binarySquare_regular_dvd_defectComponent_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    q ∣ c.supp.ncard := by
+  let e := c
+  refine ⟨componentQuotientMatrix G (secondOrderDefectGraph G) e c, ?_⟩
+  exact (binarySquare_regular_mul_componentQuotient_eq_componentCard
+    G hfree hq hreg hcard e c).symm
 
 end Erdos85
