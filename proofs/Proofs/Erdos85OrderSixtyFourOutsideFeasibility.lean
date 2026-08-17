@@ -39,6 +39,7 @@ theorem orderSixtyFour_seven_components_outside_feasibility
       Function.Injective
         (componentNeighborFinset G (secondOrderDefectGraph G) c) ∧
       (∀ u : c.supp, R.degree u = 6) ∧
+      R.edgeFinset.card = 48 ∧
       (∀ z : q, Cg.degree z = 6) ∧
       (¬containsC4 q Cg) ∧
       H * B + B * C = (fun _ _ ↦ (1 : ℂ)) := by
@@ -103,7 +104,16 @@ theorem orderSixtyFour_seven_components_outside_feasibility
     have hle := Finset.card_le_card hsub
     have hone := common_le_one_of_not_containsC4 hfree y z hyz
     omega
-  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hinj, hRreg, hout, ?_, hcross⟩
+  have hRedges : (exteriorPairGraph G c.supp).edgeFinset.card = 48 := by
+    have hs := (exteriorPairGraph G c.supp).sum_degrees_eq_twice_card_edges
+    simp_rw [hRreg] at hs
+    have hc : Fintype.card c.supp = 16 := by
+      simpa [Nat.card_eq_fintype_card] using
+        (Nat.card_coe_set_eq c.supp).trans hc16
+    simp [hc] at hs
+    omega
+  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hinj, hRreg, hRedges,
+    hout, ?_, hcross⟩
   intro hC4
   obtain ⟨f, hf, hadj⟩ := hC4
   apply hfree
