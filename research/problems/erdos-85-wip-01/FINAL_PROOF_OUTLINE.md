@@ -580,10 +580,17 @@ generalized rather than merely replayed.
      order-`q` target component.  Consequently, between any two order-`q`
      components the owner colors restrict to edge-disjoint `m_c`-regular
      bipartite factors; every normalized-size-one color is a perfect
-     matching.  The remaining GAP is now the global classification or parity
-     obstruction for this self-indexed simultaneous factorization, not its
-     local regularity/disjointness.
-     A stronger pairwise-owner identity is now reduced to an exact bridge.
+     matching.  The covering half is exact as well:
+     `biUnion_componentOwnerGraph_componentNeighborFinset_eq_component`
+     proves that from any vertex outside a target defect component, the union
+     of all owner-color slices is the entire target component.  Combined with
+     disjointness, the restrictions between distinct order-`q` components are
+     therefore genuine edge-colorings of `K_{q,q}` by regular factors of
+     degrees `(m_c)_c` (whose sum is `q`), not partial designs.  The remaining
+     GAP is now the global classification or parity obstruction for this
+     self-indexed simultaneous factorization, not its coverage, local
+     regularity, or disjointness.
+     A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
      the proposed formula
@@ -593,14 +600,21 @@ generalized rather than merely replayed.
      hence O_c O_e = O_e O_c.
      ```
 
-     The noncommutative calculation is `PROVEN` abstractly in
-     `Erdos85BinarySquareOwnerAlgebra` as
-     `ownerGram_cross_product_of_square_relation`; its shifted-product
-     commutation consumer is `ownerMatrices_comm_of_shifted_cross_product`.
-     The remaining graph-facing step is only to instantiate the projector and
-     rank-one routing hypotheses.  This would promote the regular owner colors
-     to a commutative integral association algebra rather than merely a family
-     of operators separately commuting with `D`.
+     `Erdos85BinarySquareOwnerCross` instantiates the abstract calculation:
+     `binarySquare_regular_ownerGram_cross_product` proves the rank-one
+     product, and `binarySquare_regular_ownerMatrices_comm` proves the owner
+     colors commute.  `Erdos85BinarySquareCenteredOwnerCross` strengthens this
+     further.  For `C_c = q M_c - m_c J`, the `PROVEN` theorem
+     `binarySquare_regular_centeredOwnerGrams_mul_eq_zero` gives
+
+     ```text
+     C_c C_e = 0  for every c != e.
+     ```
+
+     Thus the nonconstant centered owner sectors of distinct coordinates are
+     not merely commuting: they mutually annihilate integrally.  The live task
+     is to combine this orthogonal-sector decomposition with the self-indexed
+     diagonal cycle blocks and simultaneous equitable cells.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

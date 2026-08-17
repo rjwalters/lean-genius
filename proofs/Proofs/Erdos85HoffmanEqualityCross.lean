@@ -111,4 +111,55 @@ theorem binarySquare_regular_sizeQ_component_ownerNeighborSlice_card
   rw [hsum] at hmul
   exact_mod_cast hmul
 
+/-- **Exact owner-color cover.**  From a vertex outside a defect component
+`e`, the owner-color neighbor slices partition all of `e`.  Together with
+`componentOwnerGraph_componentNeighborFinset_disjoint`, this says that the
+owner colors give an exact edge-coloring between distinct defect components.
+No regularity or square-order hypothesis is needed for the covering half. -/
+theorem biUnion_componentOwnerGraph_componentNeighborFinset_eq_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (x : V) (hx : x ∉ e.supp) :
+    (Finset.univ.biUnion fun c :
+        (secondOrderDefectGraph G).ConnectedComponent =>
+      componentNeighborFinset
+        (componentOwnerGraph G (secondOrderDefectGraph G) c)
+        (secondOrderDefectGraph G) e x) = e.supp.toFinite.toFinset := by
+  let D := secondOrderDefectGraph G
+  ext y
+  constructor
+  · intro hy
+    obtain ⟨c, _hc, hyc⟩ := Finset.mem_biUnion.mp hy
+    have hyData := Finset.mem_filter.mp hyc
+    exact by simpa [SimpleGraph.ConnectedComponent.mem_supp_iff] using hyData.2
+  · intro hy
+    have hySupp : y ∈ e.supp := by simpa using hy
+    have hyComp : D.connectedComponentMk y = e :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff e y).mp hySupp
+    have hxComp : D.connectedComponentMk x ≠ e := by
+      intro hxe
+      exact hx ((SimpleGraph.ConnectedComponent.mem_supp_iff e x).mpr hxe)
+    have hxy : x ≠ y := by
+      intro h
+      subst y
+      exact hxComp hyComp
+    have hnotD : ¬ D.Adj x y := by
+      intro hDxy
+      exact hxComp
+        ((SimpleGraph.ConnectedComponent.connectedComponentMk_eq_of_adj hDxy).trans hyComp)
+    obtain ⟨c, hc, _huniq⟩ :=
+      (not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj
+        G hfree hxy).mp hnotD
+    apply Finset.mem_biUnion.mpr
+    refine ⟨c, Finset.mem_univ c, ?_⟩
+    rw [componentNeighborFinset]
+    exact Finset.mem_filter.mpr
+      ⟨((componentOwnerGraph G D c).mem_neighborFinset x y).mpr hc, hyComp⟩
+
 end Erdos85
