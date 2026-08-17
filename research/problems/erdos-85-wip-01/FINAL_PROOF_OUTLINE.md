@@ -1439,6 +1439,18 @@ generalized rather than merely replayed.
      restricted owner 2-factor.  The remaining local step is to exploit the
      degree-two saturation of this closed four-cycle.
 
+     The resulting abstract terminal is now `PROVEN` in
+     `Erdos85DegreeTwoThreeEqualRowsImpossible`: a 2-regular simple graph
+     cannot have three distinct vertices with identical neighborhood rows,
+     since any vertex in the common row would have degree at least three.
+     Equivalently, two repeated forks of the same owner color that share one
+     root and have three distinct roots are impossible.  External model data
+     sharpen the λ=6 geometry further: in both covered component classes the
+     six near-twin pairs form two disjoint triangles on six vertices, and the
+     private-pair map cycles between the two triangles.  Thus the remaining
+     classification bridge is to propagate one owner color around a whole
+     twin triangle; the three-equal-row theorem then closes it immediately.
+
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
      codegree-six nonedge, so the near-twin terminal covers those strata once
