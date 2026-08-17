@@ -498,7 +498,18 @@ generalized rather than merely replayed.
      Hence every owner-color eigenvalue is at least `-m_c`, while the quotient
      supplies a full component-constant equality space.  Classifying the
      additional equality directions inside components is the next uniform
-     obstruction layer.
+     obstruction layer.  The equality condition is also now explicit:
+     `binarySquare_regular_componentOwnerGraph_shifted_quadratic_eq_sum_sq`
+     writes the shifted quadratic form as
+
+     ```text
+     v^T(Adj(Owner(c)) + m_c I)v = sum_{z in c} (Av)_z^2,
+     ```
+
+     and `binarySquare_regular_componentOwnerGraph_shifted_quadratic_eq_zero_iff`
+     proves that equality holds exactly when `(Av)_z=0` throughout component
+     `c`.  Thus any extra `-m_c` eigendirection is forced into a concrete
+     componentwise adjacency-kernel condition.
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give

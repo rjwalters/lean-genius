@@ -2110,6 +2110,90 @@ theorem binarySquare_regular_componentOwnerGraph_adjMatrix_add_posSemidef
   rw [hA] at hGram
   exact hGram
 
+/-- Exact sum-of-squares witness for shifted owner positivity.  Equality in
+the lower bound is equivalent to vanishing of the ambient adjacency image on
+the selected defect component. -/
+theorem binarySquare_regular_componentOwnerGraph_shifted_quadratic_eq_sum_sq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c) (v : V → ℤ) :
+    star v ⬝ᵥ
+        (((componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ +
+          (m_c : ℤ) • 1).mulVec v) =
+      ∑ z : V, if (secondOrderDefectGraph G).connectedComponentMk z = c then
+        ((G.adjMatrix ℤ).mulVec v z) ^ 2 else 0 := by
+  rw [binarySquare_regular_componentOwnerGraph_adjMatrix_eq
+    G hfree hq hreg hcard c hc, sub_add_cancel]
+  let A := G.adjMatrix ℤ
+  let P := defectComponentDiagonalMatrix (K := ℤ) (secondOrderDefectGraph G) c
+  have hA : Matrix.conjTranspose A = A := by
+    ext x y
+    by_cases hxy : G.Adj x y
+    · simp [A, Matrix.conjTranspose_apply, SimpleGraph.adjMatrix_apply, hxy, hxy.symm]
+    · have hyx : ¬ G.Adj y x := fun hyx => hxy hyx.symm
+      simp [A, Matrix.conjTranspose_apply, SimpleGraph.adjMatrix_apply, hxy, hyx]
+  change star v ⬝ᵥ (A * P * A).mulVec v = _
+  rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
+  calc
+    star v ⬝ᵥ A.mulVec (P.mulVec (A.mulVec v)) =
+        star (A.mulVec v) ⬝ᵥ P.mulVec (A.mulVec v) := by
+      rw [Matrix.star_mulVec, hA, Matrix.dotProduct_mulVec]
+    _ = ∑ z : V, if (secondOrderDefectGraph G).connectedComponentMk z = c then
+          ((G.adjMatrix ℤ).mulVec v z) ^ 2 else 0 := by
+      rw [dotProduct]
+      apply Finset.sum_congr rfl
+      intro z _hz
+      have hPmul : P.mulVec (A.mulVec v) z =
+          if (secondOrderDefectGraph G).connectedComponentMk z = c then
+            A.mulVec v z else 0 := by
+        simp [P, defectComponentDiagonalMatrix, Matrix.mulVec]
+      rw [hPmul]
+      by_cases hz : (secondOrderDefectGraph G).connectedComponentMk z = c <;>
+        simp [hz, A, pow_two]
+
+/-- Equality case of shifted owner positivity: the quadratic form vanishes
+exactly when the adjacency image vanishes on the chosen defect component. -/
+theorem binarySquare_regular_componentOwnerGraph_shifted_quadratic_eq_zero_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c) (v : V → ℤ) :
+    star v ⬝ᵥ
+        (((componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ +
+          (m_c : ℤ) • 1).mulVec v) = 0 ↔
+      ∀ z, (secondOrderDefectGraph G).connectedComponentMk z = c →
+        (G.adjMatrix ℤ).mulVec v z = 0 := by
+  rw [binarySquare_regular_componentOwnerGraph_shifted_quadratic_eq_sum_sq
+    G hfree hq hreg hcard c hc v]
+  constructor
+  · intro hsum z hz
+    have hterm := (Finset.sum_eq_zero_iff_of_nonneg (s := Finset.univ)
+      (fun x _ => by
+        by_cases hx : (secondOrderDefectGraph G).connectedComponentMk x = c <;>
+          simp [hx, sq_nonneg])).mp hsum z (Finset.mem_univ z)
+    simpa [hz] using hterm
+  · intro hzero
+    apply Finset.sum_eq_zero
+    intro z _hz
+    by_cases hz : (secondOrderDefectGraph G).connectedComponentMk z = c
+    · simp [hz, hzero z hz]
+    · simp [hz]
+
 /-- Every owner-color adjacency matrix commutes with the defect adjacency
 matrix.  This follows from the Gram-block formula because ambient adjacency
 commutes with defect adjacency and the component projector is defect-block
