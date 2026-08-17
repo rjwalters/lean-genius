@@ -392,6 +392,12 @@ generalized rather than merely replayed.
     - `card_neighbors_inter_squareOrderDefectBranch_le_one`: every vertex
       distinct from a branch owner has at most one original neighbor inside
       that branch, so non-owner vertices route as partial transversals.
+    - `squareOrder_card_highNeighbors_inter_defectNonneighbors_eq`: if `u` is
+      low, `v` is high, and `u,v` are nonadjacent in `G`, then `v` has exactly
+      `q` neighbors in the branch union at `u`; together with the preceding
+      one-per-branch cap and the `q` branches at a low owner, this is the
+      aggregate perfect-transversal constraint (and the incidence theorem
+      supplies the unique remaining neighbor on the `D`-neighbor side).
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
@@ -444,6 +450,16 @@ currently has two uniform jaws missing. Its `q = 7` instance is complete.
     - a geometric/incidence interpretation of the 48-vertex witness;
     - a non-Cayley lift or quotient of a polarity/incidence graph; or
     - a bipartite-incidence surgery with a proved degree-repair rule.
+
+    The q=7 witness now supplies a precise non-Cayley construction candidate,
+    recorded in `ODD_EXISTENCE_GEOMETRY.md`. Its defect graph has `q-1=6`
+    components of order `q+1=8`, and the original graph is a matching lift of
+    the quotient `J₆+P`: one matching inside each fiber, one between ordinary
+    fiber pairs, and two between the pairs selected by a fixed-point-free
+    involution `P`. This motivates **AXIOM B-NEAR-LATIN-LIFT**: collision-free
+    lifts of this `(q-1)×(q+1)` form exist for an unbounded set of odd prime
+    powers. General lifts are not Cayley, so the q=9/11 Cayley exhaustions do
+    not test the axiom. The decisive smallest experiment is existence at q=9.
 
     Small orders sharply constrain the gap: existence is impossible at `q=3`
     and `q=5` because the required edge counts exceed `ex(8,C4)=11` and
