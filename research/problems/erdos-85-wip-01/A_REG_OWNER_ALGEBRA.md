@@ -392,3 +392,42 @@ Consequently (15) is already the blockwise nullity of `A^2`; counting these
 radicals without their quadratic form is tautological.  A viable next test
 must distinguish the Witt/Arf type of these radicals, or prove that the
 connected-complement condition forbids the nullity-two odd-radical escape.
+
+### 8.2 Prior art and counterchecks
+
+The perfect-matching cover above has established terminology.  When
+`H_c=H_d`, the matchings indexed by `V(H_c)` form an **orthogonal double
+cover (ODC)** of `H_c` by independent-edge pages: every host edge occurs in
+exactly two pages, and two pages meet in one edge exactly when their indices
+are adjacent.  For distinct `H_c,H_d`, our structure is the corresponding
+cross/mutual version.  The directly relevant prior-art source is:
+
+```text
+S. Hartmann and U. Schumacher,
+"Orthogonal double covers of general graphs",
+Discrete Applied Mathematics 138 (2004), 107-116,
+doi:10.1016/S0166-218X(03)00274-9.
+```
+
+Its abstract explicitly singles out ODCs whose pages are isomorphic sets of
+independent edges.  Before building a new parity theory, its existence and
+classification results should be checked against degree `q`, order `2q`, and
+page `q K_2`.  Our multi-coordinate object asks for several mutually
+compatible such covers, which is stronger than one ODC.
+
+Two cheap computational checks prevent overstatement:
+
+* Connectedness of `D_c` does not by itself exclude the nullity-two
+  odd-radical case.  Random `q`-regular graphs with connected complements
+  realize both Arf values already at `q=8`.
+* The full matching-cover compatibility exists at `q=4` with connected
+  complement: an exact SAT model found a self-ODC of a 4-regular graph on
+  eight vertices by four-edge perfect matchings.  Thus (13)-(14) plus
+  connected `D_c` are not uniformly contradictory.  This is consistent with
+  `q=4` being an exceptional order, and shows that a terminal must use either
+  the binary range `q>=8` in an essential way or compatibility among more
+  than two coordinates.
+
+The `q=8` self-ODC feasibility test is much harder; a direct permutation SAT
+encoding did not reach a verdict in a short run.  No conclusion should be
+drawn from that timeout.
