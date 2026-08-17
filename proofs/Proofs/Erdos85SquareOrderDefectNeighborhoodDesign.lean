@@ -174,6 +174,61 @@ theorem squareOrder_defectBranches_pairwise_disjoint
   have huw : G.Adj u w := by simpa [SimpleGraph.mem_neighborFinset] using hwu
   exact hfree (containsC4_of_two_common hzw hvu.symm huz huw hvz'.symm hvw'.symm)
 
+/-- A branch through an adjacent owner `z` has size `deg(z)-1`. -/
+theorem card_squareOrderDefectBranch_eq_degree_sub_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {u z : V}
+    (huz : G.Adj u z) :
+    (squareOrderDefectBranch G u z).card = G.degree z - 1 := by
+  have humem : u ∈ G.neighborFinset z := by
+    simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using huz
+  rw [squareOrderDefectBranch, Finset.card_erase_of_mem humem,
+    G.card_neighborFinset_eq_degree]
+
+/-- At square order a branch is large (size `d`) exactly when its owner is
+high (degree `d+1`). -/
+theorem squareOrder_card_defectBranch_eq_iff_owner_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) {u z : V} (huz : G.Adj u z) :
+    (squareOrderDefectBranch G u z).card = d ↔ G.degree z = d + 1 := by
+  rw [card_squareOrderDefectBranch_eq_degree_sub_one G huz]
+  rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+      G hfree hd hmin hcover hcard z with hz | hz <;> omega
+
+/-- The incidence weight `k(u)` is exactly the number of large branches in
+the local defect-nonneighbor partition at `u`. -/
+theorem squareOrder_card_largeDefectBranches_eq_highIncidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) (u : V) :
+    ((G.neighborFinset u).filter fun z =>
+        (squareOrderDefectBranch G u z).card = d).card =
+      squareOrderHighIncidenceCount G d u := by
+  unfold squareOrderHighIncidenceCount
+  congr 1
+  ext z
+  simp only [Finset.mem_filter, Finset.mem_inter,
+    SimpleGraph.mem_neighborFinset]
+  constructor
+  · rintro ⟨huz, hbranch⟩
+    exact ⟨huz, Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+      (squareOrder_card_defectBranch_eq_iff_owner_high
+        G hfree hd hmin hcover hcard huz).mp hbranch⟩⟩
+  · rintro ⟨huz, hz⟩
+    exact ⟨huz, (squareOrder_card_defectBranch_eq_iff_owner_high
+      G hfree hd hmin hcover hcard huz).mpr (Finset.mem_filter.mp hz).2⟩
+
 /-- At square order every owner block has size `d` or `d+1`. -/
 theorem squareOrder_card_defectOwnerBlock_eq_or_succ
     {V : Type*} [Fintype V] [DecidableEq V]
