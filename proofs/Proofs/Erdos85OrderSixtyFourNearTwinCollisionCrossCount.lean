@@ -143,6 +143,38 @@ theorem orderSixtyFour_nearTwin_rowCollision_crossComponentCount_ne_five
     G hfree hreg source owner hso hsource howner x y p q hxy hpq hxyNot
       (by simpa [D] using hp) hxyRows hpqRows
 
+/-- Numerical form of the direct λ=6 cross-count obstruction. -/
+theorem orderSixtyFour_nearTwin_rowCollision_crossComponentCount_le_four
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ z, G.degree z = 8)
+    (source owner : (secondOrderDefectGraph G).ConnectedComponent)
+    (hso : source ≠ owner)
+    (hsource : source.supp.ncard = 16)
+    (howner : owner.supp.ncard = 16)
+    (x y : source.supp) (hxy : x ≠ y)
+    (hxyNot : ¬ ((secondOrderDefectGraph G).induce source.supp).Adj x y)
+    (hcommon :
+      ((((secondOrderDefectGraph G).induce source.supp).neighborFinset x) ∩
+        (((secondOrderDefectGraph G).induce source.supp).neighborFinset y)).card = 6)
+    (hxyRows :
+      (restrictedComponentOwnerGraph G source owner).neighborFinset x =
+        (restrictedComponentOwnerGraph G source owner).neighborFinset y) :
+    Fintype.card
+      (componentCrossBipartiteGraph G source owner).ConnectedComponent ≤ 4 := by
+  have hle5 :=
+    orderSixtyFour_twoSizeTwoParts_crossBipartiteComponent_count_le_five
+      G hfree hreg (by norm_num) source owner hso hsource howner
+  have hne5 :=
+    orderSixtyFour_nearTwin_rowCollision_crossComponentCount_ne_five
+      G hfree hreg source owner hso hsource howner x y hxy hxyNot
+        hcommon hxyRows
+  omega
+
 end
 
 end Erdos85
