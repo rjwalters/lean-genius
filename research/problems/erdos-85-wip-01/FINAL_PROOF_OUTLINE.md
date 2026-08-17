@@ -614,6 +614,12 @@ generalized rather than merely replayed.
       `commonD+k(u)+k(v) ≤ q-1+|N_G(u)∩N_G(v)∩H|`.  Thus the budget is only
       `q-1` when the unique owner is low and rises to `q` exactly for a high
       owner; the preceding owner-free statement is a corollary.
+      Its equality case is `PROVEN` as
+      `squareOrder_maxHighIncidence_not_defectAdj_rigidity`: if two low
+      vertices both attain `2k=q` and are nonadjacent in `D`, their defect
+      neighborhoods are disjoint and their unique common original owner is
+      high.  At `q=8`, every nonadjacent pair of `k=4` lows therefore has
+      disjoint `D`-neighborhoods and shares exactly one high neighbor.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
