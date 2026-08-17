@@ -53,6 +53,10 @@ def oneHighRefinementHasNonSameOwnerOddTurn
       oneHighRootPair a ≠ oneHighRootPair b ∧
       oneHighRootPair b ≠ oneHighRootPair c ∧
       oneHighRootPair a ≠ oneHighRootPair c ∧
+      oneHighRootPair sourceAB ≠ oneHighRootPair a ∧
+      oneHighRootPair sourceAB ≠ oneHighRootPair b ∧
+      oneHighRootPair sourceBC ≠ oneHighRootPair b ∧
+      oneHighRootPair sourceBC ≠ oneHighRootPair c ∧
       oneHighMultiplicityOdd refinement a b = true ∧
       oneHighMultiplicityOdd refinement b c = true ∧
       (sourceAB = oneHighStandardMate sourceBC ∨
@@ -134,6 +138,14 @@ theorem OneHighPinnedThreePairTurn.graphPairingRefinement_hasNonSameOwnerOddTurn
   · exact ordered_mem_oneHighLabelPairOrientations_canonical _ _
   rw [decide_eq_true_eq]
   refine ⟨rfl, T.ab_pair_ne, T.bc_pair_ne, T.ac_pair_ne,
+    oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+      p.branch_mate T.qAB.sourceEdge.1 T.a T.qAB.left_far,
+    oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+      p.branch_mate T.qAB.sourceEdge.1 T.b T.qAB.right_far,
+    oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+      p.branch_mate T.qBC.sourceEdge.1 T.b T.qBC.left_far,
+    oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+      p.branch_mate T.qBC.sourceEdge.1 T.c T.qBC.right_far,
     (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
       (T.graphPairingMultiplicity_ab_odd G hfree hv p),
     (oneHighMultiplicityOdd_eq_true_iff _ _ _).2

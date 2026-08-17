@@ -27,6 +27,10 @@ def oneHighNonSameOwnerOrientedTurnShape
     oneHighRootPair a ≠ oneHighRootPair b ∧
     oneHighRootPair b ≠ oneHighRootPair c ∧
     oneHighRootPair a ≠ oneHighRootPair c ∧
+    oneHighRootPair sourceAB ≠ oneHighRootPair a ∧
+    oneHighRootPair sourceAB ≠ oneHighRootPair b ∧
+    oneHighRootPair sourceBC ≠ oneHighRootPair b ∧
+    oneHighRootPair sourceBC ≠ oneHighRootPair c ∧
     (sourceAB = oneHighStandardMate sourceBC ∨
      sourceAB = c ∨ sourceAB = oneHighStandardMate c ∨
      sourceBC = a ∨ sourceBC = oneHighStandardMate a))
@@ -60,6 +64,8 @@ def oneHighNonSameOwnerOddTurnParityInventoryTables (profile : Fin 5) :
   (oneHighCapacityInventoryTables profile).filter
     (oneHighTableHasNonSameOwnerOddTurnByParity profile.val)
 
+/-- Even after retaining all four graph-forced source-far inequalities, the
+sound local-shape/global-parity abstraction accepts the following rows. -/
 theorem oneHighNonSameOwnerOddTurnParityInventory_profile_lengths :
     (List.finRange 5).map (fun profile =>
       (oneHighNonSameOwnerOddTurnParityInventoryTables profile).length) =
@@ -101,6 +107,8 @@ theorem oneHighTableHasNonSameOwnerOddTurnByParity_of_refinement
     pairAB, hpairAB, pairBC, hpairBC, orientedAB, horientedAB,
     orientedBC, horientedBC, hshape⟩
   rw [decide_eq_true_eq] at hshape
+  rcases hshape with ⟨hjoin, hab, hbc, hac, hsourceABa, hsourceABb,
+    hsourceBCb, hsourceBCc, hoddAB', hoddBC', hrelation⟩
   let choices := List.ofFn fun source : Fin 8 =>
     oneHighCompatibleSourcePairings profile (oneHighTableRestrict table) source
   have hcompatible : OneHighChoicesCompatible choices refinement :=
@@ -134,12 +142,12 @@ theorem oneHighTableHasNonSameOwnerOddTurnByParity_of_refinement
       (oneHighPairingRefinementParityMask refinement)
         orientedAB.1 orientedAB.2 = true := by
     rw [oneHighParityMaskOdd_refinement]
-    exact hshape.2.2.2.2.1
+    exact hoddAB'
   have hoddBC : oneHighParityMaskOdd
       (oneHighPairingRefinementParityMask refinement)
         orientedBC.1 orientedBC.2 = true := by
     rw [oneHighParityMaskOdd_refinement]
-    simpa [hshape.1] using hshape.2.2.2.2.2.1
+    simpa [hjoin] using hoddBC'
   rw [oneHighTableHasNonSameOwnerOddTurnByParity]
   simp only [List.any_eq_true, Bool.and_eq_true]
   refine ⟨sourceAB, hsourceAB, sourceBC, hsourceBC, rowAB, ?_, rowBC, ?_,
@@ -149,8 +157,8 @@ theorem oneHighTableHasNonSameOwnerOddTurnByParity_of_refinement
   · fin_cases sourceAB <;> simpa [choices] using hrowABMem
   · fin_cases sourceBC <;> simpa [choices] using hrowBCMem
   · rw [oneHighNonSameOwnerOrientedTurnShape, decide_eq_true_eq]
-    exact ⟨hshape.1, hshape.2.1, hshape.2.2.1, hshape.2.2.2.1,
-      hshape.2.2.2.2.2.2⟩
+    exact ⟨hjoin, hab, hbc, hac, hsourceABa, hsourceABb,
+      hsourceBCb, hsourceBCc, hrelation⟩
 
 /-- The semantic inventory is contained in the fast parity inventory. -/
 theorem mem_oneHighNonSameOwnerOddTurnParityInventoryTables_of_semantic
