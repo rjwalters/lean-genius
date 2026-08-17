@@ -1467,6 +1467,14 @@ generalized rather than merely replayed.
      base owner on both sides.  The residual λ=5 leaf is therefore the
      compatibility of this rigid `3+1+1` pattern with the four owner
      2-factors, rather than an unconstrained exact-cardinality case.
+     The commuting-operator restriction on the same pair is `PROVEN` in
+     `Erdos85SevenRegularNearTwinLiteOwnerOverlapBound`: for every owner graph
+     and test vertex, the difference between its overlaps with the two root
+     defect neighborhoods has absolute value at most two.  The all-owner
+     graph-facing form is `PROVEN` in
+     `Erdos85OrderSixtyFourNearTwinLiteGlobalOverlap`, which discharges both
+     the matrix-to-cardinality conversion and every component's order-sixteen
+     premise from the four-component hypothesis.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
