@@ -285,6 +285,85 @@ theorem card_inter_squareOrderDefectBranch_eq_if_owner_ne
       change A.card = 1
       rw [heq, hcommon]
 
+/-- The common defect-nonneighbor region of two centers is the full grid of
+pairwise intersections of their local branches.  Together with the exact
+same-owner and different-owner cell formulas, this is the two-center gluing
+interface. -/
+theorem squareOrder_defectBranchGrid_biUnion_eq_inter_nonneighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (u v : V) :
+    (G.neighborFinset u).biUnion (fun z =>
+        (G.neighborFinset v).biUnion (fun w =>
+          squareOrderDefectBranch G u z ∩
+            squareOrderDefectBranch G v w)) =
+      squareOrderDefectNonneighbors G u ∩
+        squareOrderDefectNonneighbors G v := by
+  ext x
+  constructor
+  · intro hx
+    obtain ⟨z, hzu, w, hwv, hxz, hxw⟩ := by
+      simpa only [Finset.mem_biUnion, Finset.mem_inter] using hx
+    apply Finset.mem_inter.mpr
+    constructor
+    · rw [← squareOrder_defectBranches_biUnion_eq_nonneighbors G hfree u]
+      exact Finset.mem_biUnion.mpr ⟨z, hzu, hxz⟩
+    · rw [← squareOrder_defectBranches_biUnion_eq_nonneighbors G hfree v]
+      exact Finset.mem_biUnion.mpr ⟨w, hwv, hxw⟩
+  · intro hx
+    have hxu := (Finset.mem_inter.mp hx).1
+    have hxv := (Finset.mem_inter.mp hx).2
+    rw [← squareOrder_defectBranches_biUnion_eq_nonneighbors G hfree u,
+      Finset.mem_biUnion] at hxu
+    rw [← squareOrder_defectBranches_biUnion_eq_nonneighbors G hfree v,
+      Finset.mem_biUnion] at hxv
+    obtain ⟨z, hzu, hxz⟩ := hxu
+    obtain ⟨w, hwv, hxw⟩ := hxv
+    exact Finset.mem_biUnion.mpr ⟨z, hzu,
+      Finset.mem_biUnion.mpr ⟨w, hwv,
+        Finset.mem_inter.mpr ⟨hxz, hxw⟩⟩⟩
+
+/-- Cardinality form of the two-center branch grid.  Every point in the
+common defect-nonneighbor region belongs to a unique owner-pair cell. -/
+theorem squareOrder_sum_card_defectBranchGrid_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (u v : V) :
+    (∑ z ∈ G.neighborFinset u, ∑ w ∈ G.neighborFinset v,
+        (squareOrderDefectBranch G u z ∩
+          squareOrderDefectBranch G v w).card) =
+      (squareOrderDefectNonneighbors G u ∩
+        squareOrderDefectNonneighbors G v).card := by
+  let C := fun z w => squareOrderDefectBranch G u z ∩
+    squareOrderDefectBranch G v w
+  let R := fun z => (G.neighborFinset v).biUnion (C z)
+  have hinner : ∀ z : V,
+      (G.neighborFinset v : Set V).PairwiseDisjoint (C z) := by
+    intro z w hw t ht hwt
+    exact (squareOrder_defectBranches_pairwise_disjoint G hfree v
+      w hw t ht hwt).mono Finset.inter_subset_right Finset.inter_subset_right
+  have hRsub : ∀ z : V, R z ⊆ squareOrderDefectBranch G u z := by
+    intro z x hx
+    obtain ⟨w, _hw, hxw⟩ := Finset.mem_biUnion.mp hx
+    exact (Finset.mem_inter.mp hxw).1
+  have houter :
+      (G.neighborFinset u : Set V).PairwiseDisjoint R := by
+    intro z hz t ht hzt
+    exact (squareOrder_defectBranches_pairwise_disjoint G hfree u
+      z hz t ht hzt).mono (hRsub z) (hRsub t)
+  rw [← squareOrder_defectBranchGrid_biUnion_eq_inter_nonneighbors
+    G hfree u v]
+  change (∑ z ∈ G.neighborFinset u, ∑ w ∈ G.neighborFinset v,
+      (C z w).card) = ((G.neighborFinset u).biUnion R).card
+  rw [Finset.card_biUnion houter]
+  apply Finset.sum_congr rfl
+  intro z _hz
+  exact (Finset.card_biUnion (hinner z)).symm
+
 /-- Branches at two distinct centers with the same owner overlap in exactly
 the owner's neighborhood with those two centers deleted. -/
 theorem card_inter_squareOrderDefectBranch_same_owner
