@@ -544,6 +544,25 @@ generalized rather than merely replayed.
      Thus a four-component order-64 candidate has ambient adjacency nullity
      at least three, in the exact field-valued form needed by the global
      simultaneous-spectrum ledger.
+     This kernel is not merely an ambient spectral statistic.  The rational
+     owner identity is now `PROVEN` in
+     `binarySquare_regular_componentOwnerGraph_adjMatrix_eq_rat`, and
+     `binarySquare_regular_componentOwnerGraph_mulVec_of_adj_mulVec_eq_zero_rat`
+     shows that every `v in ker A` satisfies
+
+     ```text
+     Adj(Owner(c)) v = -m_c v
+     ```
+
+     simultaneously for every owner color `c`.  The inclusion is packaged as
+     `binarySquareAdjKernelToOwnerBottomKernel`; its injectivity combines with
+     the component-nullity bound in
+     `binarySquare_regular_card_components_sub_one_le_finrank_owner_bottom`.
+     Hence every owner color has bottom-eigenvalue multiplicity at least
+     `#components-1`, realized by one common subspace.  In the q=8 all-two
+     branch, all four owner colors therefore share a common `-2` eigenspace
+     of dimension at least three.  This is the precise simultaneous
+     multiplicity constraint that the next finite spectral consumer may use.
 
      Minimum defect components interact sharply with this bound.  The
      `PROVEN` theorem
@@ -811,8 +830,25 @@ generalized rather than merely replayed.
      Hence unit-color sectors satisfy the genuine spectral interval
      `0 <= C_c <= q^2 I`.  Together with the moment identity, this is exactly
      the equality-case mechanism forcing any eventual real spectral
-     decomposition to live at the interval endpoints.  The abstract equality
-     case is now `PROVEN` in `Erdos85BinarySquareEndpointRigidity`:
+     decomposition to live at the interval endpoints.
+
+     The upper interval is now uniform in the normalized component size, not
+     restricted to the unit case.  The `PROVEN` theorem
+     `binarySquare_regular_centeredOwnerGram_upper_posSemidef` establishes
+
+     ```text
+     0 <= C_c <= m_c q^2 I,
+     m_c q^2 I - C_c = q Lap(Owner(c)) + m_c J >= 0.
+     ```
+
+     This applies directly to every surviving binary part `m_c>=2`.  It also
+     isolates why the unit endpoint argument does not automatically extend:
+     the calibrated ratio `trace(C_c^2)/trace(C_c)` is `q^2`, strictly below
+     the available upper endpoint `m_c q^2` when `m_c>1`.  The remaining
+     non-unit terminal must therefore control the rank or distribution of the
+     interior eigenvalues, rather than invoke endpoint equality unchanged.
+     The abstract equality case is now `PROVEN` in
+     `Erdos85BinarySquareEndpointRigidity`:
      `posSemidef_mul_self_eq_smul_of_upper_of_trace_sq_eq` gives
      `A^2 = r A`, and
      `eigenvalue_eq_zero_or_endpoint_of_posSemidef_of_upper_of_trace_sq_eq`
