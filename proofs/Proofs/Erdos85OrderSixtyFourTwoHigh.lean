@@ -6,6 +6,30 @@ open SimpleGraph
 
 namespace Erdos85
 
+/-- In a `C₄`-free graph, two distinct neighbors of a base vertex have that
+base as their unique common neighbor. -/
+theorem orderSixtyFour_common_neighbor_eq_base
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    {a y z : Fin 64}
+    (hay : G.Adj a y) (haz : G.Adj a z) (hyz : y ≠ z) :
+    G.neighborFinset y ∩ G.neighborFinset z = {a} := by
+  have hamem : a ∈ G.neighborFinset y ∩ G.neighborFinset z := by
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset]
+    exact ⟨hay.symm, haz.symm⟩
+  have hle : (G.neighborFinset y ∩ G.neighborFinset z).card ≤ 1 :=
+    card_inter_neighborFinset_le_one hfree hyz
+  have hone : (G.neighborFinset y ∩ G.neighborFinset z).card = 1 := by
+    have hpos : 0 < (G.neighborFinset y ∩ G.neighborFinset z).card :=
+      Finset.card_pos.mpr ⟨a, hamem⟩
+    omega
+  obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hone
+  have haw : a = w := by
+    rw [hw, Finset.mem_singleton] at hamem
+    exact hamem
+  simpa [haw] using hw
+
 /-- In the two-high branch there is a unique vertex incident with both high
 vertices.  This canonical double-contact vertex is the pivot for the ensuing
 slide-saturation geometry. -/
@@ -284,6 +308,47 @@ theorem orderSixtyFour_two_high_single_contact_eq_wings
   have hSW : S = W :=
     Finset.eq_of_subset_of_card_le hWsub (by omega) |>.symm
   exact ⟨a, b, x, hab, hH, hSW⟩
+
+/-- Same-wing pairs have no additional common neighbor: their unique common
+neighbor is the high vertex defining that wing. -/
+theorem orderSixtyFour_two_high_wing_pair_rigidity
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 2) :
+    ∃ a b x : Fin 64,
+      a ≠ b ∧
+      squareOrderHighVertices G 8 = {a, b} ∧
+      (∀ y ∈ G.neighborFinset a \ {x},
+        ∀ z ∈ G.neighborFinset a \ {x}, y ≠ z →
+          G.neighborFinset y ∩ G.neighborFinset z = {a}) ∧
+      (∀ y ∈ G.neighborFinset b \ {x},
+        ∀ z ∈ G.neighborFinset b \ {x}, y ≠ z →
+          G.neighborFinset y ∩ G.neighborFinset z = {b}) := by
+  obtain ⟨a, b, x, hab, hH, _hxDegree, _haWing, _hbWing, _hwings⟩ :=
+    orderSixtyFour_two_high_disjoint_eight_wings
+      G hfree hmin hcover hh
+  refine ⟨a, b, x, hab, hH, ?_, ?_⟩
+  · intro y hy z hz hyz
+    have hay : G.Adj a y := by
+      simpa [SimpleGraph.mem_neighborFinset] using
+        (Finset.mem_sdiff.mp hy).1
+    have haz : G.Adj a z := by
+      simpa [SimpleGraph.mem_neighborFinset] using
+        (Finset.mem_sdiff.mp hz).1
+    exact orderSixtyFour_common_neighbor_eq_base G hfree hay haz hyz
+  · intro y hy z hz hyz
+    have hby : G.Adj b y := by
+      simpa [SimpleGraph.mem_neighborFinset] using
+        (Finset.mem_sdiff.mp hy).1
+    have hbz : G.Adj b z := by
+      simpa [SimpleGraph.mem_neighborFinset] using
+        (Finset.mem_sdiff.mp hz).1
+    exact orderSixtyFour_common_neighbor_eq_base G hfree hby hbz hyz
 
 /-- The same branch has exactly sixteen single-contact vertices. -/
 theorem orderSixtyFour_card_one_high_contact_eq_sixteen
