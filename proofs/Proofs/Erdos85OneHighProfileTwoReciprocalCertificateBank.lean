@@ -11,6 +11,7 @@ import Proofs.Erdos85H1V2CertP2I00560
 import Proofs.Erdos85H1V2CertP2I00590
 import Proofs.Erdos85H1V2CertP2I00596
 import Proofs.Erdos85H1V2CertP2I00647
+import Proofs.Erdos85H1V2CertP2I00852
 import Proofs.Erdos85OneHighProfileTwoReciprocalInventoryTerminal
 import Proofs.Erdos85OneHighV2ResidualCertificateAggregation
 
@@ -34,7 +35,8 @@ def oneHighProfileTwoReciprocalCheckedBank :
     h1V2P2I00560Entry,
     h1V2P2I00590Entry,
     h1V2P2I00596Entry,
-    h1V2P2I00647Entry ]
+    h1V2P2I00647Entry,
+    h1V2P2I00852Entry ]
 
 /-- The still-unchecked suffix of the authoritative reciprocal inventory.
 This definition shrinks as new checked entries are appended to the bank. -/
@@ -42,7 +44,7 @@ def oneHighProfileTwoReciprocalCertificateResidual : List OneHighMissTable :=
   oneHighProfileTwoReciprocalEntryInventoryTables.drop
     oneHighProfileTwoReciprocalCheckedBank.length
 
-/-- Proof erasure of the checked entries gives exactly the first thirteen rows
+/-- Proof erasure of the checked entries gives exactly the first fourteen rows
 of the authoritative reciprocal inventory. -/
 theorem oneHighProfileTwoReciprocalCheckedBank_tables_eq_take :
     oneHighFamilyV2CheckedBankTables oneHighProfileTwoReciprocalCheckedBank =
@@ -53,7 +55,7 @@ theorem oneHighProfileTwoReciprocalCheckedBank_tables_eq_take :
       oneHighProfileTwoReciprocalCheckedBank,
       oneHighProfileTwoReciprocalEntryInventoryTables_length]
   · intro n hbank htake
-    have hn : n < 13 := by
+    have hn : n < 14 := by
       simpa [oneHighFamilyV2CheckedBankTables,
         oneHighProfileTwoReciprocalCheckedBank] using hbank
     interval_cases n
@@ -78,9 +80,10 @@ theorem oneHighProfileTwoReciprocalCheckedBank_tables_eq_take :
         h1V2P2I00560Entry, h1V2P2I00560Table,
         h1V2P2I00590Entry, h1V2P2I00590Table,
         h1V2P2I00596Entry, h1V2P2I00596Table,
-        h1V2P2I00647Entry, h1V2P2I00647Table]
+        h1V2P2I00647Entry, h1V2P2I00647Table,
+        h1V2P2I00852Entry, h1V2P2I00852Table]
 
-/-- The checked thirteen-row prefix and its residual are an exact ordered
+/-- The checked fourteen-row prefix and its residual are an exact ordered
 partition of the authoritative 78-row inventory. -/
 theorem oneHighProfileTwoReciprocalCheckedBank_append_residual :
     oneHighFamilyV2CheckedBankTables oneHighProfileTwoReciprocalCheckedBank ++
@@ -90,7 +93,7 @@ theorem oneHighProfileTwoReciprocalCheckedBank_append_residual :
   exact List.take_append_drop _ _
 
 theorem oneHighProfileTwoReciprocalCertificateResidual_length :
-    oneHighProfileTwoReciprocalCertificateResidual.length = 65 := by
+    oneHighProfileTwoReciprocalCertificateResidual.length = 64 := by
   native_decide
 
 /-- Once the residual is discharged, the incremental bank supplies exactly
