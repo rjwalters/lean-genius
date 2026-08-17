@@ -70,6 +70,16 @@ def main() -> None:
         type=Path,
         help="verified queue_v2 output used with --tier1-jobs-output",
     )
+    parser.add_argument(
+        "--tier1-lean-exact",
+        action="store_true",
+        help="leave the tier-1 source-CNF field empty so Lean emits its authoritative CNF",
+    )
+    parser.add_argument(
+        "--tier1-limit",
+        type=int,
+        help="emit only the first N validated tier-1 jobs (for replay probes)",
+    )
     parser.add_argument("--summary-only", action="store_true")
     args = parser.parse_args()
 
@@ -79,6 +89,8 @@ def main() -> None:
         parser.error(
             "--tier1-jobs-output and --solver-output-dir must be supplied together"
         )
+    if args.tier1_limit is not None and not 1 <= args.tier1_limit <= EXPECTED_COUNT:
+        parser.error(f"--tier1-limit must lie in [1, {EXPECTED_COUNT}]")
 
     latest = read_latest_results(args.results)
     selected: list[tuple[str, tuple[int, ...], str]] = []
@@ -151,7 +163,12 @@ def main() -> None:
         table_dir = args.tier1_jobs_output.parent / "tables"
         table_dir.mkdir(parents=True, exist_ok=True)
         job_lines = []
-        for tag, values, _ in selected:
+        tier1_selected = (
+            selected[: args.tier1_limit]
+            if args.tier1_limit is not None
+            else selected
+        )
+        for tag, values, _ in tier1_selected:
             cnf = args.solver_output_dir / f"{tag}.v2.cnf"
             drat_gz = args.solver_output_dir / f"{tag}.v2.drat.gz"
             verdict = args.solver_output_dir / f"{tag}.v2.verdict"
@@ -182,7 +199,7 @@ def main() -> None:
                         "AABB",
                         "MONO",
                         str(table_path),
-                        str(cnf),
+                        "" if args.tier1_lean_exact else str(cnf),
                         str(drat_gz),
                     )
                 )
