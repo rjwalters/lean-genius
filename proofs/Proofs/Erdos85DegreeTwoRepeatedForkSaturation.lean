@@ -60,6 +60,26 @@ theorem degreeTwo_repeatedFork_adjMatrix_rows_eq
   · rw [if_pos hxz, if_pos (hz.mp hxz)]
   · rw [if_neg hxz, if_neg (fun hyz => hxz (hz.mpr hyz))]
 
+/-- Full isolated `K₂,₂` normal form forced by a repeated fork.  Since every
+one of the four vertices already has its two prescribed neighbors, the block
+has no edges leaving it. -/
+theorem degreeTwo_repeatedFork_isolatedK22
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (hdeg : ∀ z, H.degree z = 2)
+    {x y r₁ r₂ : V} (hxy : x ≠ y) (hr : r₁ ≠ r₂)
+    (hxr₁ : H.Adj x r₁) (hyr₁ : H.Adj y r₁)
+    (hxr₂ : H.Adj x r₂) (hyr₂ : H.Adj y r₂) :
+    H.neighborFinset x = {r₁, r₂} ∧
+      H.neighborFinset y = {r₁, r₂} ∧
+      H.neighborFinset r₁ = {x, y} ∧
+      H.neighborFinset r₂ = {x, y} := by
+  refine ⟨
+    degreeTwo_neighborFinset_eq_pair_of_adj H hdeg hr hxr₁ hxr₂,
+    degreeTwo_neighborFinset_eq_pair_of_adj H hdeg hr hyr₁ hyr₂,
+    degreeTwo_neighborFinset_eq_pair_of_adj H hdeg hxy hxr₁.symm hyr₁.symm,
+    degreeTwo_neighborFinset_eq_pair_of_adj H hdeg hxy hxr₂.symm hyr₂.symm⟩
+
 end
 
 end Erdos85
