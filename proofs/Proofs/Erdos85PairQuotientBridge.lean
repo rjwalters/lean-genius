@@ -1,5 +1,6 @@
 import Proofs.Erdos85SecondOrderQuotient
 import Proofs.Erdos85ConflictRegular
+import Proofs.Erdos85OrderSixtyFourComponentComplexGram
 
 /-! # From cycle--pair separation to the component quotient bounds -/
 
@@ -8,6 +9,27 @@ open SimpleGraph
 namespace Erdos85
 
 noncomputable section
+
+/-- Commutation of two graph adjacency matrices descends from `ℂ` to `ℝ`.
+This lets the complex H16 Gram calculation feed the real Laplacian quotient
+API. -/
+theorem adjMatrix_comm_real_of_complex
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R H : SimpleGraph V) [DecidableRel R.Adj] [DecidableRel H.Adj]
+    (hcomm : R.adjMatrix ℂ * H.adjMatrix ℂ =
+      H.adjMatrix ℂ * R.adjMatrix ℂ) :
+    R.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * R.adjMatrix ℝ := by
+  have hz : R.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * R.adjMatrix ℤ := by
+    have hm : (R.adjMatrix ℤ * H.adjMatrix ℤ).map (Int.castRingHom ℂ) =
+        (H.adjMatrix ℤ * R.adjMatrix ℤ).map (Int.castRingHom ℂ) := by
+      simpa only [Matrix.map_mul, adjMatrix_map_intCast] using hcomm
+    ext x y
+    apply (Int.cast_injective : Function.Injective (fun z : ℤ => (z : ℂ)))
+    simpa using congrFun (congrFun hm x) y
+  have hr := congrArg (fun M ↦ M.map (Int.castRingHom ℝ)) hz
+  simpa only [Matrix.map_mul, adjMatrix_map_intCast] using hr
 
 /-- In a C4-free two-factor, a commuting pair graph separated from all
 two-step conflicts has at most `|c|-3` neighbors inside each cycle component.
