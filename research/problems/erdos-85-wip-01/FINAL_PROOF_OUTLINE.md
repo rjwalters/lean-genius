@@ -1197,7 +1197,12 @@ generalized rather than merely replayed.
 
      The only freedom left per direct edge and third coordinate is therefore
      zero, one, or two explicitly witnessed rainbow owner triangles beyond
-     the forced two-star core.
+     the forced two-star core.  This excess is attached to the undirected
+     direct edge, not its orientation:
+     `Erdos85OrderSixtyFourRoutingRainbowExcessSymmetry` proves that the
+     canonical common neighbor is invariant under endpoint reversal and that
+     reversing the direct edge leaves the rainbow-excess finset through a
+     fixed third component literally equal (hence with the same cardinality).
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
