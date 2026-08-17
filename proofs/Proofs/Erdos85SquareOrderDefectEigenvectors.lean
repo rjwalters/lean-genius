@@ -1,6 +1,7 @@
 import Proofs.Erdos85SquareOrderDefectIncidence
 import Proofs.Erdos85SquareOrderHighIncidenceGram
 import Proofs.Erdos85SquareOrderHighDifferenceQuadratic
+import Proofs.Erdos85SquareOrderHighQuadraticCharpoly
 import Mathlib.LinearAlgebra.AffineSpace.Independent
 
 /-!
@@ -346,6 +347,152 @@ theorem squareOrder_high_card_sub_one_le_finrank_defectShift_ker
   have hIcard : Fintype.card I = (squareOrderHighVertices G d).card - 1 := by
     rw [Fintype.card_coe, Finset.card_erase_of_mem ha]
   simpa [hIcard] using hle
+
+def squareOrderDefectMinusOneFamily
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) (a : V) :
+    {x // x ∈ (squareOrderHighVertices G d).erase a} → V → ℚ :=
+  fun b => squareOrderHighRowDifferenceRat G b.1 a
+
+/-- The rational span of the fixed-base high-row differences is invariant
+under defect adjacency. -/
+theorem squareOrder_defectMinusOne_span_invariant
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    ∀ v ∈ Submodule.span ℚ
+        (Set.range (squareOrderDefectMinusOneFamily G d a)),
+      ((secondOrderDefectGraph G).adjMatrix ℚ).toLin' v ∈
+        Submodule.span ℚ
+          (Set.range (squareOrderDefectMinusOneFamily G d a)) := by
+  let S := Submodule.span ℚ
+    (Set.range (squareOrderDefectMinusOneFamily G d a))
+  intro v hv
+  have hle : S ≤ S.comap ((secondOrderDefectGraph G).adjMatrix ℚ).toLin' := by
+    refine Submodule.span_le.mpr ?_
+    intro w hw
+    obtain ⟨b, rfl⟩ := hw
+    change ((secondOrderDefectGraph G).adjMatrix ℚ).toLin'
+      (squareOrderDefectMinusOneFamily G d a b) ∈ S
+    have hdegB : G.degree b.1 = d + 1 :=
+      (Finset.mem_filter.mp (Finset.mem_of_mem_erase b.2)).2
+    have hdegA : G.degree a = d + 1 := (Finset.mem_filter.mp ha).2
+    rw [Matrix.toLin'_apply]
+    rw [show ((secondOrderDefectGraph G).adjMatrix ℚ).mulVec
+        (squareOrderDefectMinusOneFamily G d a b) =
+          -squareOrderDefectMinusOneFamily G d a b by
+      simpa [squareOrderDefectMinusOneFamily] using
+        squareOrder_defect_mulVec_highRowDifferenceRat
+          G hfree hd hmin hcover hcard hdegB hdegA]
+    exact S.neg_mem (Submodule.subset_span (Set.mem_range_self b))
+  exact hle hv
+
+noncomputable def squareOrderDefectMinusOneBasis
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    Module.Basis {x // x ∈ (squareOrderHighVertices G d).erase a} ℚ
+      (Submodule.span ℚ
+        (Set.range (squareOrderDefectMinusOneFamily G d a))) :=
+  Module.Basis.span (by
+    change LinearIndependent ℚ
+      (fun b : {x // x ∈ (squareOrderHighVertices G d).erase a} =>
+        squareOrderHighRowDifferenceRat G b.1 a)
+    exact squareOrder_highRowDifferencesRat_linearIndependent
+      G hfree hd hmin hcard ha)
+
+theorem squareOrder_defectMinusOne_restrict_toMatrix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    let B := squareOrderDefectMinusOneBasis G hfree hd hmin hcard ha
+    LinearMap.toMatrix B B
+        (LinearMap.restrict ((secondOrderDefectGraph G).adjMatrix ℚ).toLin'
+          (squareOrder_defectMinusOne_span_invariant
+            G hfree hd hmin hcover hcard ha)) =
+      (-1 : ℚ) • (1 : Matrix
+        {x // x ∈ (squareOrderHighVertices G d).erase a}
+        {x // x ∈ (squareOrderHighVertices G d).erase a} ℚ) := by
+  classical
+  dsimp only
+  ext i j
+  rw [LinearMap.toMatrix_apply]
+  have hdegJ : G.degree j.1 = d + 1 :=
+    (Finset.mem_filter.mp (Finset.mem_of_mem_erase j.2)).2
+  have hdegA : G.degree a = d + 1 := (Finset.mem_filter.mp ha).2
+  have heigen := squareOrder_defect_mulVec_highRowDifferenceRat
+    G hfree hd hmin hcover hcard hdegJ hdegA
+  have hrestrict :
+      LinearMap.restrict ((secondOrderDefectGraph G).adjMatrix ℚ).toLin'
+          (squareOrder_defectMinusOne_span_invariant
+            G hfree hd hmin hcover hcard ha)
+          (squareOrderDefectMinusOneBasis G hfree hd hmin hcard ha j) =
+        -squareOrderDefectMinusOneBasis G hfree hd hmin hcard ha j := by
+    apply Subtype.ext
+    simpa [squareOrderDefectMinusOneBasis,
+      squareOrderDefectMinusOneFamily, Matrix.toLin'_apply] using heigen
+  rw [hrestrict]
+  by_cases hij : i = j <;> simp [hij]
+
+/-- The `h-1` fixed-base defect eigenvectors contribute the full factor
+`(X+1)^(h-1)` to the rational defect characteristic polynomial. -/
+theorem squareOrder_defectMinusOneFactor_dvd_defectCharpoly
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    (Polynomial.X + 1) ^ ((squareOrderHighVertices G d).card - 1) ∣
+      LinearMap.charpoly ((secondOrderDefectGraph G).adjMatrix ℚ).toLin' := by
+  let B := squareOrderDefectMinusOneBasis G hfree hd hmin hcard ha
+  have hrestrictDvd := restrict_charpoly_dvd_charpoly
+    ((secondOrderDefectGraph G).adjMatrix ℚ).toLin'
+    (Submodule.span ℚ
+      (Set.range (squareOrderDefectMinusOneFamily G d a)))
+    (squareOrder_defectMinusOne_span_invariant
+      G hfree hd hmin hcover hcard ha)
+  rw [← LinearMap.charpoly_toMatrix
+    (LinearMap.restrict ((secondOrderDefectGraph G).adjMatrix ℚ).toLin'
+      (squareOrder_defectMinusOne_span_invariant
+        G hfree hd hmin hcover hcard ha)) B] at hrestrictDvd
+  rw [squareOrder_defectMinusOne_restrict_toMatrix
+    G hfree hd hmin hcover hcard ha] at hrestrictDvd
+  have hdiag : ((-1 : ℚ) • (1 : Matrix
+      {x // x ∈ (squareOrderHighVertices G d).erase a}
+      {x // x ∈ (squareOrderHighVertices G d).erase a} ℚ)) =
+      Matrix.diagonal (fun _ => (-1 : ℚ)) := by
+    ext i j
+    by_cases hij : i = j <;> simp [hij]
+  rw [hdiag] at hrestrictDvd
+  rw [Matrix.charpoly_diagonal] at hrestrictDvd
+  simp only [Finset.prod_const, Finset.card_univ] at hrestrictDvd
+  have hIcard :
+      Fintype.card {x // x ∈ (squareOrderHighVertices G d).erase a} =
+        (squareOrderHighVertices G d).card - 1 := by
+    rw [Fintype.card_coe, Finset.card_erase_of_mem ha]
+  rw [hIcard] at hrestrictDvd
+  simpa using hrestrictDvd
 
 end
 
