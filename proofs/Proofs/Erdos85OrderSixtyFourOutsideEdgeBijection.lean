@@ -71,6 +71,28 @@ noncomputable def outsidePair
       componentNeighborSubtypeFinset G D c z.1 := by
   simp [outsidePair]
 
+/-- Endpoint membership in the owned pair is exactly ambient adjacency to
+the outside owner.  This is the incidence-matrix bridge used by the CNF
+label transport. -/
+theorem mem_outsidePair_toFinset_iff_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (c : D.ConnectedComponent) [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V, (componentNeighborFinset G D c x).card = 2)
+    (z : {x : V // x ∉ c.supp}) (u : c.supp) :
+    u ∈ (outsidePair G D c hcard z).toFinset ↔ G.Adj u.1 z.1 := by
+  rw [outsidePair_toFinset, componentNeighborSubtypeFinset,
+    Finset.mem_subtype]
+  constructor
+  · intro hu
+    exact ((G.mem_neighborFinset z.1 u.1).mp
+      (Finset.mem_filter.mp hu).1).symm
+  · intro huz
+    apply Finset.mem_filter.mpr
+    exact ⟨(G.mem_neighborFinset z.1 u.1).mpr huz.symm,
+      (ConnectedComponent.mem_supp_iff c u.1).mp u.2⟩
+
 theorem outsidePair_mem_exteriorPairGraph_edgeFinset
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -171,6 +193,19 @@ noncomputable def outsidePairEdgeEquiv
       outsidePairEdge_injective G D c hcard hinc, by
         rw [hqcard, Fintype.card_coe]
         exact hRedges.symm⟩)
+
+@[simp] theorem outsidePairEdgeEquiv_apply
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (D : SimpleGraph V) [DecidableEq D.ConnectedComponent]
+    (c : D.ConnectedComponent) [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V, (componentNeighborFinset G D c x).card = 2)
+    (hinc : Function.Injective (componentNeighborFinset G D c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (z : {x : V // x ∉ c.supp}) :
+    outsidePairEdgeEquiv G D c hcard hinc hqcard hRedges z =
+      outsidePairEdge G D c hcard z := rfl
 
 /-- In the seven-component order-64 branch, outside vertices are canonically
 the 48 edges of the exterior-pair graph on the unique 16-vertex component. -/
