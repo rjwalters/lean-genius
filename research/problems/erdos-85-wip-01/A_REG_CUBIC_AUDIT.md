@@ -57,6 +57,29 @@ vertex.  In the all-two branch each ambient vertex therefore contributes a
 rectangle partition into a restriction on the four commuting complement
 blocks, rather than merely count it.
 
+The complete incidence Gram system behind those rectangles is now `PROVEN`.
+For the ambient-by-component incidence matrix `B_c`,
+`transpose_defectComponentNeighborIncidenceMatrix_mul_self` gives uniformly
+
+```text
+B_c^T B_c = qI + A(complement D[c]),
+```
+
+and `binarySquare_regular_sizeTwo_incidenceGram_eq_selector` identifies the
+last term with `A(L_c)` in a size-two component.  Together with the earlier
+cross-component theorem
+`transpose_defectComponentNeighborIncidenceMatrix_mul_eq_ones`, the full
+block system is
+
+```text
+B_c^T B_d = J                       (c != d),
+B_c^T B_c = qI + A(L_c)             (m_c = 2).
+```
+
+The next terminal attempt should use positivity/rank or a fourth-power trace
+of this whole block Gram, since treating each diagonal block separately loses
+the shared ambient-row compatibility again.
+
 ## Triangle interpretation
 
 For a component `c`, the selector of an ambient vertex `x` is
