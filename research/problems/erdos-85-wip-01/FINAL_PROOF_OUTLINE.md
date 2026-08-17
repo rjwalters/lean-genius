@@ -140,7 +140,19 @@ generalized rather than merely replayed.
     `adjMatrix_sq_eq_degreePredDiagonal_add_ones_sub_secondOrderDefect`, its
     commutator formula, tight-edge-cover regularity implications, local branch
     counting, saver/miss ledgers, and clean-high-root obstructions are structural
-    and not tied to 49.
+    and not tied to 49. The high-difference sector also forces
+    `(X²-q)^(h-1)` to divide the adjacency characteristic polynomial. The
+    scale-free residual theorem
+    `exists_squareOrder_residualCharpoly_rootMoments` computes, after removing
+    this factor,
+
+    ```text
+    p₂ = q³ + 2q + (1-2q)h,
+    p₄ = 2q⁴ - q³ + 2q² + (4q+1-2q²)h.
+    ```
+
+    Thus real-rootedness/Newton terminals can now be posed uniformly rather
+    than separately at orders 49 and 64.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
