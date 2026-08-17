@@ -761,6 +761,39 @@ theorem squareOrder_card_commonDefect_add_highIncidences_le
   have hhigh := (Finset.card_le_card hsub).trans_eq hcommon
   omega
 
+/-- Equality-case rigidity at the incidence cap.  If two low vertices both
+satisfy `2k=d` and are defect-nonadjacent, then their defect neighborhoods are
+disjoint and their unique common original owner is high. -/
+theorem squareOrder_maxHighIncidence_not_defectAdj_rigidity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {x y}, G.Adj x y → G.degree x = d ∨ G.degree y = d)
+    (hcard : Fintype.card V = d * d) {u v : V}
+    (huv : u ≠ v) (hu : G.degree u = d) (hv : G.degree v = d)
+    (hku : 2 * squareOrderHighIncidenceCount G d u = d)
+    (hkv : 2 * squareOrderHighIncidenceCount G d v = d)
+    (hD : ¬ (secondOrderDefectGraph G).Adj u v) :
+    ((secondOrderDefectGraph G).neighborFinset u ∩
+        (secondOrderDefectGraph G).neighborFinset v).card = 0 ∧
+      (G.neighborFinset u ∩ G.neighborFinset v ∩
+        squareOrderHighVertices G d).card = 1 := by
+  have hsharp :=
+    squareOrder_card_commonDefect_add_highIncidences_le_pred_add_commonHigh
+      G hfree hd hmin hcover hcard huv hu hv hD
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree u v huv
+  have hnotmem : v ∉ (secondOrderDefectGraph G).neighborFinset u := by
+    simpa [SimpleGraph.mem_neighborFinset] using hD
+  rw [if_neg hnotmem] at hcommon
+  have hsub : G.neighborFinset u ∩ G.neighborFinset v ∩
+      squareOrderHighVertices G d ⊆
+        G.neighborFinset u ∩ G.neighborFinset v := Finset.inter_subset_left
+  have hhigh := (Finset.card_le_card hsub).trans_eq hcommon
+  constructor <;> omega
+
 /-- Branches at two distinct centers with the same owner overlap in exactly
 the owner's neighborhood with those two centers deleted. -/
 theorem card_inter_squareOrderDefectBranch_same_owner
