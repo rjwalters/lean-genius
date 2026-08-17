@@ -995,6 +995,13 @@ generalized rather than merely replayed.
      reverse coordinate uses the same edges with orientation transposed.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
+     Its row-Gram/owner consequence is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoOwnerFactorization`: every size-two owner
+     color restricts to a 2-regular factor on every size-two ground
+     component, and the restricted owner colors uniquely edge-partition the
+     selector complement of that component.  In the order-64 all-two branch,
+     each 8-regular selector complement is therefore canonically decomposed
+     into the four 2-factors indexed by the four defect coordinates.
      It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
