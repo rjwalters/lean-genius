@@ -1002,6 +1002,13 @@ generalized rather than merely replayed.
      selector complement of that component.  In the order-64 all-two branch,
      each 8-regular selector complement is therefore canonically decomposed
      into the four 2-factors indexed by the four defect coordinates.
+     The inherited girth restriction is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossBlockNoRectangle`: distinct rows of a
+     cross block overlap in at most one target point, so no cross block
+     contains a `K_{2,2}` (ambient four-cycle).  Moreover the overlap is one
+     exactly on the corresponding restricted owner-factor edge and zero
+     otherwise.  Thus each owner 2-factor is precisely the simple row-Gram
+     graph of a rectangle-free 2-regular bipartite cross block.
      It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
