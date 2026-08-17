@@ -913,6 +913,22 @@ generalized rather than merely replayed.
      non-unit terminal can work with a genuine direct-sum decomposition: it
      must constrain the internal spectrum on these exact `q m_c-1`
      dimensional summands or exploit their self-indexed row-Gram geometry.
+     The spectral identification is also now explicit and `PROVEN` in
+     `Erdos85BinarySquareCenteredOwnerSpectrumTransfer`.  Writing `L_c` for
+     the induced defect-component Laplacian, the two Gram identities give
+
+     ```text
+     C_c B_c = q B_c L_c.
+     ```
+
+     Hence every nonzero eigenpair `L_c v = a v` transfers to the nonzero
+     owner eigenpair `C_c(B_c v) = q a (B_c v)`, while every nonzero owner
+     eigenpair `C_c w = a w` transfers through `B_c^T` to
+     `(q L_c)(B_c^T w) = a (B_c^T w)`.  Thus the nonzero owner-sector spectrum
+     is exactly `q` times the component-Laplacian spectrum, with no loss of
+     eigenvectors in either direction.  This reduces the remaining interior
+     spectral distribution problem to the spectra of the connected defect
+     components themselves.
      The abstract equality case is now `PROVEN` in
      `Erdos85BinarySquareEndpointRigidity`:
      `posSemidef_mul_self_eq_smul_of_upper_of_trace_sq_eq` gives
