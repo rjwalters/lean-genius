@@ -253,4 +253,62 @@ theorem orderSixtyFour_regular_one_defectComponent_partition_secondMoment
   rw [ha]
   norm_num
 
+/-- The complete finite ledger of normalized component-size second moments at
+the regular order-64 endpoint. -/
+def OrderSixtyFourRegularPartitionMoment (s : ℕ) : Prop :=
+  s = 16 ∨ s = 22 ∨ s = 24 ∨ s = 32 ∨ s = 34 ∨ s = 40 ∨ s = 64
+
+/-- **Unified regular partition census.**  Every regular C4-free graph on 64
+vertices has normalized defect-component sizes whose second moment belongs to
+the seven-value ledger above. -/
+theorem orderSixtyFour_regular_defectComponent_partition_secondMoment_census
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8) :
+    ∃ m : (secondOrderDefectGraph G).ConnectedComponent → ℕ,
+      (∀ c, c.supp.ncard = 8 * m c) ∧
+      (∑ c, m c = 8) ∧
+      (∀ c, 2 ≤ m c) ∧
+      OrderSixtyFourRegularPartitionMoment (∑ c, (m c) ^ 2) := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨_m0, _hmSize0, _hmSum0, _hmLower0, hcountLe⟩ :=
+    orderSixtyFour_regular_defectComponent_partition_package G hfree hreg
+  change Fintype.card D.ConnectedComponent ≤ 4 at hcountLe
+  have hcountPos : 0 < Fintype.card D.ConnectedComponent := by
+    rw [Fintype.card_pos_iff]
+    exact ⟨D.connectedComponentMk 0⟩
+  have hcases : Fintype.card D.ConnectedComponent = 1 ∨
+      Fintype.card D.ConnectedComponent = 2 ∨
+      Fintype.card D.ConnectedComponent = 3 ∨
+      Fintype.card D.ConnectedComponent = 4 := by
+    omega
+  rcases hcases with h1 | h2 | h3 | h4
+  · obtain ⟨m, hs, hsum, hlo, hmom⟩ :=
+      orderSixtyFour_regular_one_defectComponent_partition_secondMoment
+        G hfree hreg h1
+    exact ⟨m, hs, hsum, hlo, by simp [OrderSixtyFourRegularPartitionMoment, hmom]⟩
+  · obtain ⟨m, hs, hsum, hlo, hmom⟩ :=
+      orderSixtyFour_regular_two_defectComponents_partition_secondMoment
+        G hfree hreg h2
+    refine ⟨m, hs, hsum, hlo, ?_⟩
+    rcases hmom with hmom | hmom | hmom
+    · simp [OrderSixtyFourRegularPartitionMoment, hmom]
+    · simp [OrderSixtyFourRegularPartitionMoment, hmom]
+    · simp [OrderSixtyFourRegularPartitionMoment, hmom]
+  · obtain ⟨m, hs, hsum, hlo, hmom⟩ :=
+      orderSixtyFour_regular_three_defectComponents_partition_secondMoment
+        G hfree hreg h3
+    refine ⟨m, hs, hsum, hlo, ?_⟩
+    rcases hmom with hmom | hmom
+    · simp [OrderSixtyFourRegularPartitionMoment, hmom]
+    · simp [OrderSixtyFourRegularPartitionMoment, hmom]
+  · obtain ⟨m, hs, hsum, hlo, hmom⟩ :=
+      orderSixtyFour_regular_four_defectComponents_partition_secondMoment
+        G hfree hreg h4
+    exact ⟨m, hs, hsum, hlo, by simp [OrderSixtyFourRegularPartitionMoment, hmom]⟩
+
 end Erdos85

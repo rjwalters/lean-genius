@@ -638,9 +638,16 @@ generalized rather than merely replayed.
      gives moment `16`, and
      `orderSixtyFour_regular_one_defectComponent_partition_secondMoment`
      gives moment `64`.  Thus every possible regular order-64 component count
-     has a formal trace-facing moment classification.  Binary A-REG work
-     should proceed through these mixed-partition moment values and the
-     centered owner/defect resolution below.
+     has a formal trace-facing moment classification.  The single consumer
+     `orderSixtyFour_regular_defectComponent_partition_secondMoment_census`
+     packages the complete ledger
+
+     ```text
+     sum m_c^2 in {16,22,24,32,34,40,64}.
+     ```
+
+     Binary A-REG work should proceed by intersecting this finite ledger with
+     the centered owner/defect trace resolution below.
 
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
