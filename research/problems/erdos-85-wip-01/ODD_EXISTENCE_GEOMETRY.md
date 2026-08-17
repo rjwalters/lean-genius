@@ -85,6 +85,63 @@ fiber-dependent analogue of the Latin-square/Sidon collision condition.
 Call a datum **collision-free** when this common-neighbor condition holds.
 Then its graph is q-regular and C4-free by construction.
 
+### The routing-factorization reformulation
+
+The global collision condition is not an amorphous SAT constraint. For
+distinct fibers `i,j`, put `d_ij=2` when `j=p(i)` and `d_ij=1` otherwise.
+Every possible channel for a common neighbor of `(i,x)` and `(j,y)` induces a
+permutation from the `x`-copy of `X` to the `y`-copy:
+
+- a third fiber `k` contributes `d_ik d_jk` transition permutations, one for
+  each choice of a matching on `i--k` and `j--k`;
+- the endpoint fiber `i` contributes `d_ij` permutations obtained by composing
+  the matching(s) on `i--j` with the internal involution `μ_i`;
+- the endpoint fiber `j` contributes another `d_ij` permutations.
+
+There are exactly `q+1` channels. If `i,j` are paired, the count is
+
+```text
+(q-3) + 2·2 = q+1.
+```
+
+If they are not paired, the third fibers `p(i),p(j)` contribute two channels
+each, the other `q-5` third fibers contribute one each, and the endpoints
+contribute two:
+
+```text
+2 + 2 + (q-5) + 2 = q+1.
+```
+
+C4-freeness says that two channel permutations never take the same value at
+the same `x`. Each permutation has `q+1` graph edges, so the `q+1` disjoint
+permutations have `(q+1)²` edges and therefore partition the complete
+bipartite graph `X×X`. Equivalently, the channel labels form a 1-factorization
+of `K_{q+1,q+1}`, or a Latin square of order `q+1`, for **every** fiber pair.
+
+This gives an exact two-level reformulation of collision-freeness:
+
+1. **Same-fiber condition.** Each doubled fiber pair, viewed just as a
+   2-regular bipartite graph between its two fibers, has no 4-cycle. This is
+   exactly what prevents two vertices in one fiber from acquiring two common
+   neighbors in its paired fiber.
+2. **Global condition.** For every two distinct fibers, their `q+1` routing
+   permutations form a complete 1-factorization.
+
+The field ansatz should therefore seek a coherent family of Latin squares,
+not isolated matchings. On `X=P¹(F_q)`, a Singer cycle of order `q+1` supplies
+one canonical 1-factorization: the graphs of its regular permutation action
+are pairwise disjoint. The unresolved compatibility problem is to choose
+fiber-dependent conjugates/cosets of such actions whose transition
+factorizations agree simultaneously. Allowing the conjugates to depend on the
+fiber pair is precisely what escapes the Cayley no-go results.
+
+The checked q=7 edge list verifies this reformulation directly. For each of
+the 15 unordered pairs of eight-point fibers, every one of the 64 cross-fiber
+vertex pairs has exactly one common neighbor. Grouping those common neighbors
+by their fiber gives blocks of size 8 or 16 exactly as predicted by the one-
+or two-matching channel multiplicities above. Thus all 15 routing families in
+the known witness really do partition `K_{8,8}`.
+
 ## 3. Precise candidate axiom for B-EXIST
 
 **AXIOM B-NEAR-LATIN-LIFT.** There are collision-free near-Latin lift data of
@@ -163,11 +220,10 @@ cycle type       compatible pairs out of 945²
 
 Every left matching has at least 56 compatible right matchings (the minimum
 over all four types). Thus no doubled-pair type has a local obstruction. The
-missing condition is global orthogonality: the ordinary perfect matchings
-between different doubled pairs must be coordinated so that no vertex pair
-acquires common neighbors through two distinct fibers. Future reductions
-should target this matching-array condition rather than prune local cycle
-types.
+missing condition is the routing factorization above: the ordinary perfect
+matchings between different doubled pairs must be coordinated into a Latin
+square for every fiber pair. Future reductions should target compatibility of
+these factorizations rather than prune local cycle types.
 
 ## 6. Honest status in the final tree
 
