@@ -187,21 +187,14 @@ it is not ruled out by the vertex-transitive Cayley searches at q=9 and q=11.
 The next decisive existence test should search this holomorph-valued model at
 q=9, where `H_q` is the dihedral group of order ten.
 
-`near_latin_holomorph.py` implements the first exact relaxation of that test.
-It restricts every datum permutation to `Hol(H_q)` and imposes all C4 clauses,
-but does not yet impose that each completed routing factorization is one coset
-of the common regular `H_q`. Independent holomorph relabelings of the fibers
-justify a star-tree gauge fixing seven q=9 cross matchings to the identity.
-The encoding calibrates at q=7, finding a fresh witness in under six seconds
-both before and after the gauge. At q=9 the gauged instance has 9,640 variables
-and 5,516,707 clauses and returns `UNKNOWN-TIMEOUT` after ten minutes. The
-ungauged instance likewise times out, so there is no q=9 verdict yet.
-
-The omitted coset condition has a smaller quotient formulation. Write each
-holomorph element uniquely as a translation followed by an automorphism. A
-routing family is a coset of the common regular group exactly when all its
-members have the same automorphism part. Hence the next encoding should add
-one `Aut(H_q)`-valued routing label `β_ij` for every fiber pair and enforce
+`near_latin_holomorph.py` implements this test exactly. It restricts every
+datum permutation to `Hol(H_q)`, imposes all C4 clauses, and imposes the common-
+coset condition through a small quotient formulation. Write each holomorph
+element uniquely as a translation followed by an automorphism. A routing
+family is a coset of the common regular group exactly when all its members
+have the same automorphism part: C4-freeness makes the `q+1` translations
+distinct, so they exhaust the regular group. The encoding adds one
+`Aut(H_q)`-valued routing label `β_ij` for every fiber pair and enforces
 
 ```text
 β_ij = aut(π_ij) aut(μ_i)
@@ -210,9 +203,23 @@ one `Aut(H_q)`-valued routing label `β_ij` for every fiber pair and enforce
 ```
 
 for every applicable matching choice and third fiber `k` (and similarly for
-the second matching on doubled blocks). These are finite cocycle equations in
-`Aut(D₁₀)`, of order 20, and should prune the exact search before any longer
-raw SAT run is attempted.
+the second matching on doubled blocks).
+
+Independent holomorph relabelings of the fibers justify a star-tree gauge
+fixing seven q=9 cross matchings to the identity. The full encoding calibrates
+at q=7, finding a fresh C4-free witness in under four seconds. At q=9 it has
+11,000 variables and 5,648,975 clauses; Kissat returns `UNSAT` in under twenty
+seconds. Thus the precise **common-dihedral-holomorph ansatz fails already at
+q=9**. This is a reproducible computational verdict, not a promoted proof
+certificate. It does not refute the general near-Latin axiom: a q=9 datum may
+use non-holomorph permutations or routing Latin squares which are not group
+tables, and an unbounded family need not contain q=9 at all.
+
+For comparison, before the cocycle clauses were added, the necessary
+holomorph-valued relaxation had 9,640 variables and 5,516,707 clauses and
+timed out after ten minutes both with and without the star gauge. The quotient
+equations therefore supply real mathematical propagation rather than merely
+more solver time.
 
 ## 3. Precise candidate axiom for B-EXIST
 

@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Exact SAT scout for a relaxation of the dihedral-holomorph ansatz.
+"""Exact SAT scout for the common-coset dihedral-holomorph ansatz.
 
 For odd q, let H be the dihedral group of order q+1.  Every within-fiber and
 cross-fiber matching is required to be a permutation in Hol(H), the normalizer
 of the regular H-action.  This is the precise reduced class extracted from the
 checked q=7 witness by ``near_latin_q7_routing.py``.
 
-The model requires all datum permutations to lie in Hol(H) and the resulting
-graph to be C4-free.  It does *not* yet require every routing factorization to
-be one coset of the common regular H.  Thus SAT would be useful positive
-evidence, while UNSAT would refute the full ansatz; UNKNOWN proves neither.
+The model requires all datum permutations to lie in Hol(H), the resulting
+graph to be C4-free, and every routing factorization to be one coset of the
+common regular H.  The last condition is imposed on automorphism parts: in the
+unique decomposition ``p = translation * alpha``, all routes for one fiber
+pair must have the same alpha.
 """
 
 from __future__ import annotations
@@ -25,6 +26,33 @@ from near_latin_q9 import Datum, objective, serializable
 
 
 Permutation = tuple[int, ...]
+
+
+def compose(p: Permutation, q: Permutation) -> Permutation:
+    """Return p after q."""
+    return tuple(p[q[x]] for x in range(len(p)))
+
+
+def inverse(p: Permutation) -> Permutation:
+    answer = [0] * len(p)
+    for x, y in enumerate(p):
+        answer[y] = x
+    return tuple(answer)
+
+
+def left_translation(h: int, n: int) -> Permutation:
+    ha, hb = divmod(h, 2)
+    return tuple(
+        ((ha + (-1 if hb else 1) * a) % n) * 2 + (hb + b) % 2
+        for a in range(n) for b in range(2)
+    )
+
+
+def automorphism_part(p: Permutation, n: int) -> Permutation:
+    """The unique alpha fixing 1 such that p = left(p(1)) after alpha."""
+    alpha = compose(inverse(left_translation(p[0], n)), p)
+    assert alpha[0] == 0
+    return alpha
 
 
 def holomorph(n: int) -> list[Permutation]:
@@ -87,10 +115,28 @@ def sat_search(q: int, timeout: int) -> tuple[str, Datum | None, dict[str, int]]
             selector_var[slot, index] = next_var
             next_var += 1
 
+    automorphisms = sorted({automorphism_part(p, r // 2) for p in hol})
+    assert len(automorphisms) * r == len(hol)
+    automorphism_index = {a: k for k, a in enumerate(automorphisms)}
+    slot_auto_var: dict[tuple[tuple[str, int, int, int], int], int] = {}
+    for slot in slot_candidates:
+        for index in range(len(automorphisms)):
+            slot_auto_var[slot, index] = next_var
+            next_var += 1
+    routing_auto_var: dict[tuple[int, int, int], int] = {}
+    for i in range(m):
+        for j in range(i + 1, m):
+            for index in range(len(automorphisms)):
+                routing_auto_var[i, j, index] = next_var
+                next_var += 1
+
     stats = {
         "holomorph_size": len(hol),
         "within_candidates": len(involutions),
+        "automorphism_group_size": len(automorphisms),
         "selection_clauses": 0,
+        "automorphism_link_clauses": 0,
+        "routing_cocycle_clauses": 0,
         "gauge_clauses": 0,
         "link_clauses": 0,
         "disjointness_clauses": 0,
@@ -131,6 +177,78 @@ def sat_search(q: int, timeout: int) -> tuple[str, Datum | None, dict[str, int]]
             for a, b in itertools.combinations(selectors, 2):
                 emit([-a, -b])
                 stats["selection_clauses"] += 1
+
+        def exactly_one(lits: list[int], stat: str) -> None:
+            emit(lits)
+            stats[stat] += 1
+            for a, b in itertools.combinations(lits, 2):
+                emit([-a, -b])
+                stats[stat] += 1
+
+        # Project each selected holomorph permutation to its automorphism part.
+        for slot, candidates in slot_candidates.items():
+            autos = [slot_auto_var[slot, k] for k in range(len(automorphisms))]
+            exactly_one(autos, "automorphism_link_clauses")
+            by_auto = [[] for _ in automorphisms]
+            for index, p in enumerate(candidates):
+                k = automorphism_index[automorphism_part(p, r // 2)]
+                selector = selector_var[slot, index]
+                emit([-selector, slot_auto_var[slot, k]])
+                stats["automorphism_link_clauses"] += 1
+                by_auto[k].append(selector)
+            for k, selectors in enumerate(by_auto):
+                emit([-slot_auto_var[slot, k], *selectors])
+                stats["automorphism_link_clauses"] += 1
+
+        for i in range(m):
+            for j in range(i + 1, m):
+                exactly_one(
+                    [routing_auto_var[i, j, k] for k in range(len(automorphisms))],
+                    "routing_cocycle_clauses",
+                )
+
+        def force_route(
+            i: int,
+            j: int,
+            left_slot: tuple[str, int, int, int],
+            right_slot: tuple[str, int, int, int],
+            operation,
+        ) -> None:
+            for a, alpha in enumerate(automorphisms):
+                for b, beta in enumerate(automorphisms):
+                    result = automorphism_index[operation(alpha, beta)]
+                    emit([
+                        -slot_auto_var[left_slot, a],
+                        -slot_auto_var[right_slot, b],
+                        routing_auto_var[i, j, result],
+                    ])
+                    stats["routing_cocycle_clauses"] += 1
+
+        # Every channel for a fixed fiber pair must have one automorphism part.
+        # Since the C4 clauses make the q+1 routes disjoint, this is equivalent
+        # to saying that the routing factorization is a coset of regular H.
+        for i in range(m):
+            for j in range(i + 1, m):
+                for s in range(2 if paired(i, j) else 1):
+                    cross = ("cross", i, j, s)
+                    force_route(i, j, cross, ("within", i, i, 0), compose)
+                    force_route(i, j, ("within", j, j, 0), cross, compose)
+                for k in range(m):
+                    if k in (i, j):
+                        continue
+                    ik_pair = (min(i, k), max(i, k))
+                    jk_pair = (min(j, k), max(j, k))
+                    for a in range(2 if paired(*ik_pair) else 1):
+                        for b in range(2 if paired(*jk_pair) else 1):
+                            ik = ("cross", *ik_pair, a)
+                            jk = ("cross", *jk_pair, b)
+
+                            def third(alpha, beta, i=i, j=j, k=k):
+                                oriented_ik = alpha if i < k else inverse(alpha)
+                                oriented_jk = beta if j < k else inverse(beta)
+                                return compose(inverse(oriented_jk), oriented_ik)
+
+                            force_route(i, j, ik, jk, third)
 
         # Independent relabeling of fiber j by an element of Hol(H) sends a
         # cross map p_ij to g_j p_ij g_i^-1.  Along a spanning tree these
