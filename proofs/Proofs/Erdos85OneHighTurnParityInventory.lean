@@ -33,6 +33,12 @@ def oneHighPairingParityStatesWithoutSourceChoices
     (source : Fin 8) : List Nat :=
   oneHighChooseEachParityStates (choices.set source.val [[]])
 
+/-- Precomputed-choice fixed-row state image. -/
+def oneHighPairingParityStatesWithSourceRowChoices
+    (choices : List (List (List OneHighLabelPair)))
+    (source : Fin 8) (row : List OneHighLabelPair) : List Nat :=
+  oneHighChooseEachParityStates (choices.set source.val [row])
+
 /-- Turn labelings realized by one fixed owner row, computed before any
 global parity states.  Most compatible rows have no such labeling, so this
 local prefilter avoids running the state fold for them. -/
@@ -65,12 +71,10 @@ def oneHighTableHasSaturatedOddThreePairTurnByParity
     let rows := choices[source.val]!.filter fun row =>
       !(oneHighSaturatedTurnRowTriples source row).isEmpty
     !rows.isEmpty &&
-      let states := oneHighPairingParityStatesWithoutSourceChoices
-        choices source
       rows.any fun row =>
         let triples := oneHighSaturatedTurnRowTriples source row
-        states.any fun restMask =>
-          let mask := oneHighSourcePairingParityMask row ^^^ restMask
+        (oneHighPairingParityStatesWithSourceRowChoices
+          choices source row).any fun mask =>
           triples.any fun triple =>
             oneHighParityMaskOdd mask triple.1 triple.2.1 &&
               oneHighParityMaskOdd mask triple.2.1 triple.2.2
