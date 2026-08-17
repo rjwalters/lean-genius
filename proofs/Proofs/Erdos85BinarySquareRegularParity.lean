@@ -1074,6 +1074,123 @@ theorem binarySquare_regular_sizeTwoPart_cycleQuotient_irreducible
       (componentRepresentative_mem H b)
   simpa [H, K, x, y, hxa, hyb] using hlift
 
+/-- A cycle of length at least five loses its two distance-two vertices from
+the diagonal defect block, so its diagonal cycle-quotient entry is at most
+`r-3`. -/
+theorem binarySquare_regular_sizeTwoPart_cycleQuotient_diagonal_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a : (G.induce c.supp).ConnectedComponent) (ha : 5 ≤ a.supp.ncard) :
+    componentQuotientMatrix
+        ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a a ≤
+      a.supp.ncard - 3 := by
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  obtain ⟨x, p, hp, hpverts, _hpgraph, _hlen4, hnonwrap⟩ :=
+    binarySquare_regular_sizeTwoPart_exists_cycle_of_internalComponent
+      G hfree hq hreg hcard c hc a
+  have hplen : p.length = a.supp.ncard := by
+    calc
+      p.length = Nat.card p.toSubgraph.verts :=
+        (isCycle_card_verts_eq_length hp).symm
+      _ = p.toSubgraph.verts.ncard := Nat.card_coe_set_eq _
+      _ = a.supp.ncard := congrArg Set.ncard hpverts
+  let x0 : c.supp := p.getVert 0
+  let u : c.supp := p.getVert 2
+  let v : c.supp := p.getVert (p.length - 2)
+  have hnotU : ¬ K.Adj x0 u := by
+    exact hnonwrap 0 (by omega)
+  have hwrap :=
+    (not_secondOrderDefect_adj_cycle_wraparound_distanceTwo G hfree hp).1
+  have hnotV : ¬ K.Adj x0 v := by
+    intro hxv
+    exact hwrap hxv.symm
+  have hx0mem : x0 ∈ a.supp := by
+    change p.getVert 0 ∈ a.supp
+    rw [← hpverts]
+    simpa only [Walk.mem_verts_toSubgraph] using p.getVert_mem_support 0
+  have humem : u ∈ a.supp := by
+    change p.getVert 2 ∈ a.supp
+    rw [← hpverts]
+    simpa only [Walk.mem_verts_toSubgraph] using p.getVert_mem_support 2
+  have hvmem : v ∈ a.supp := by
+    change p.getVert (p.length - 2) ∈ a.supp
+    rw [← hpverts]
+    simpa only [Walk.mem_verts_toSubgraph] using
+      p.getVert_mem_support (p.length - 2)
+  have hxu : x0 ≠ u := by
+    intro heq
+    have hi := hp.getVert_injOn'
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) heq
+    omega
+  have hxv : x0 ≠ v := by
+    intro heq
+    have hi := hp.getVert_injOn'
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) heq
+    omega
+  have huv : u ≠ v := by
+    intro heq
+    have hi := hp.getVert_injOn'
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) heq
+    omega
+  let S : Finset c.supp := a.supp.toFinite.toFinset
+  let T : Finset c.supp := ((S.erase x0).erase u).erase v
+  have hsub : componentNeighborFinset K H a x0 ⊆ T := by
+    intro z hz
+    have hzData := Finset.mem_filter.mp hz
+    have hzS : z ∈ S := by
+      simp only [S, Set.Finite.mem_toFinset]
+      exact (SimpleGraph.ConnectedComponent.mem_supp_iff a z).mpr hzData.2
+    have hzx : z ≠ x0 := K.ne_of_adj
+      ((K.mem_neighborFinset x0 z).mp hzData.1) |>.symm
+    have hzu : z ≠ u := by
+      intro hzu
+      subst z
+      exact hnotU ((K.mem_neighborFinset x0 u).mp hzData.1)
+    have hzv : z ≠ v := by
+      intro hzv
+      subst z
+      exact hnotV ((K.mem_neighborFinset x0 v).mp hzData.1)
+    simp [T, hzS, hzx, hzu, hzv]
+  have hTcard : T.card = a.supp.ncard - 3 := by
+    have hxS : x0 ∈ S := by simpa [S] using hx0mem
+    have huS : u ∈ S := by simpa [S] using humem
+    have hvS : v ∈ S := by simpa [S] using hvmem
+    have huErase : u ∈ S.erase x0 := Finset.mem_erase.mpr ⟨hxu.symm, huS⟩
+    have hvErase : v ∈ (S.erase x0).erase u := by
+      exact Finset.mem_erase.mpr
+        ⟨huv.symm, Finset.mem_erase.mpr ⟨hxv.symm, hvS⟩⟩
+    change (((S.erase x0).erase u).erase v).card = a.supp.ncard - 3
+    rw [Finset.card_erase_of_mem hvErase,
+      Finset.card_erase_of_mem huErase, Finset.card_erase_of_mem hxS]
+    have hScard : S.card = a.supp.ncard := by
+      exact (Set.ncard_eq_toFinset_card a.supp a.supp.toFinite).symm
+    omega
+  obtain ⟨hHdegree, _hKdegree, _hcommZ⟩ :=
+    binarySquare_regular_sizeTwoPart_commuting_regular_blocks
+      G hfree hq hreg hcard c hc
+  have hcommReal : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm
+      G (secondOrderDefectGraph G) hglobal c).symm
+  rw [componentQuotientMatrix_apply_eq K H 2 hHdegree hcommReal a a hx0mem]
+  exact (Finset.card_le_card hsub).trans_eq hTcard
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]

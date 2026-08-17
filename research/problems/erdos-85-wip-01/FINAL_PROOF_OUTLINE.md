@@ -341,7 +341,11 @@ generalized rather than merely replayed.
      distance-two pair on an internal cycle is a defect nonedge.  The two
      basepoint-crossing cases are supplied by
      `not_secondOrderDefect_adj_cycle_wraparound_distanceTwo`.  Thus the full
-     `±2` cyclic diagonals are absent from every diagonal defect block.
+     `±2` cyclic diagonals are absent from every diagonal defect block.  This
+     now feeds a quantitative quotient inequality rather than remaining a
+     pattern observation: for every internal cycle `a` of length at least five,
+     `binarySquare_regular_sizeTwoPart_cycleQuotient_diagonal_le` proves
+     `Q(a,a) ≤ |a|-3`.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
