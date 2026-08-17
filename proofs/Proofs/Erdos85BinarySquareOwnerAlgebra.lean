@@ -74,6 +74,25 @@ theorem ownerMatrices_comm_of_shifted_cross_product
   rw [hleft, hright] at h
   exact add_right_cancel h
 
+/-- Integral centering removes the common all-ones direction.  If two Gram
+blocks have the rank-one cross product and the expected constant row/column
+sums, then their centered operators annihilate one another.  The formula uses
+`q M - m J`, so it remains meaningful in characteristic two without dividing
+by `q`. -/
+theorem centeredOwnerGrams_mul_eq_zero
+    {K V : Type*} [CommRing K] [Fintype V] [DecidableEq V]
+    (M N J : Matrix V V K) (q m n : K)
+    (hMN : M * N = (m * n) • J)
+    (hMJ : M * J = (q * m) • J)
+    (hJN : J * N = (q * n) • J)
+    (hJJ : J * J = (q * q) • J) :
+    (q • M - m • J) * (q • N - n • J) = 0 := by
+  rw [sub_mul, mul_sub, mul_sub]
+  simp only [Matrix.smul_mul, Matrix.mul_smul, smul_smul]
+  rw [hMN, hMJ, hJN, hJJ]
+  simp only [smul_smul]
+  module
+
 end
 
 end Erdos85
