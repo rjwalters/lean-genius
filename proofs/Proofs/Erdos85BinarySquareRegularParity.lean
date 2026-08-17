@@ -2074,6 +2074,42 @@ theorem binarySquare_regular_componentOwnerGraph_adjMatrix_eq
         simpa [D] using hempty
       simp [SimpleGraph.adjMatrix_apply, hxy, hempty']
 
+/-- The shifted owner adjacency matrix is positive semidefinite.  Equivalently,
+every real eigenvalue of the owner graph is at least `-m_c`; the component
+quotient realizes equality on its weighted-zero subspace. -/
+theorem binarySquare_regular_componentOwnerGraph_adjMatrix_add_posSemidef
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c) :
+    ((componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ +
+      (m_c : ℤ) • 1).PosSemidef := by
+  rw [binarySquare_regular_componentOwnerGraph_adjMatrix_eq
+    G hfree hq hreg hcard c hc, sub_add_cancel]
+  have hP :
+      (defectComponentDiagonalMatrix (K := ℤ)
+        (secondOrderDefectGraph G) c).PosSemidef := by
+    apply Matrix.PosSemidef.diagonal
+    intro x
+    by_cases hx : (secondOrderDefectGraph G).connectedComponentMk x = c <;>
+      simp [hx]
+  have hGram := hP.conjTranspose_mul_mul_same (G.adjMatrix ℤ)
+  have hA : Matrix.conjTranspose (G.adjMatrix ℤ) = G.adjMatrix ℤ := by
+    ext x y
+    by_cases hxy : G.Adj x y
+    · simp [Matrix.conjTranspose_apply, SimpleGraph.adjMatrix_apply, hxy, hxy.symm]
+    · have hyx : ¬ G.Adj y x := fun hyx => hxy hyx.symm
+      simp [Matrix.conjTranspose_apply, SimpleGraph.adjMatrix_apply, hxy, hyx]
+  rw [hA] at hGram
+  exact hGram
+
 /-- Every owner-color adjacency matrix commutes with the defect adjacency
 matrix.  This follows from the Gram-block formula because ambient adjacency
 commutes with defect adjacency and the component projector is defect-block

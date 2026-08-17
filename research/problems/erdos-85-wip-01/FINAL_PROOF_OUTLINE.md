@@ -487,8 +487,18 @@ generalized rather than merely replayed.
      `m_c I`: it has eigenvalue `m_c(q-1)` on the all-ones vector and
      eigenvalue `-m_c` on the codimension-one subspace
      `sum_f m_f v_f = 0`.  Thus the component quotient already realizes the
-     prospective lower spectral bound `-m_c`; controlling the remaining
-     within-component directions is the next uniform obstruction layer.
+     lower spectral bound `-m_c`.  That bound is now `PROVEN`, not merely
+     prospective: `binarySquare_regular_componentOwnerGraph_adjMatrix_add_posSemidef`
+     proves over the integers that
+
+     ```text
+     Adj(Owner(c)) + m_c I = A P_c A >= 0.
+     ```
+
+     Hence every owner-color eigenvalue is at least `-m_c`, while the quotient
+     supplies a full component-constant equality space.  Classifying the
+     additional equality directions inside components is the next uniform
+     obstruction layer.
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
