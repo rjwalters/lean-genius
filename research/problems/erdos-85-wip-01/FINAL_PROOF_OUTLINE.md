@@ -1485,12 +1485,20 @@ generalized rather than merely replayed.
      `Erdos85ClosedOrbitForkCollision` proves that whenever two incident
      orbit blocks do close on their paired triangle edges, their owner colors
      must agree because both factors contain the same cross edge; hence two
-     distinct rainbow colors cannot both take this closed branch.  The live
-     GAP is correspondingly narrower: in the rainbow escape, analyze the
-     remaining separated/open fork blocks and show that at least two close
-     (or derive a different owner collision).  The involution table and the
-     assembly from its three orbit branches still need graph-facing Lean
-     statements.
+     distinct rainbow colors cannot both take this closed branch.  Moreover,
+     `Erdos85DegreeTwoSeparatedTwinComponents` now proves unconditionally
+     that a distinct equal-row pair in a two-factor is an entire order-four
+     component, and that two vertex-disjoint equal-row pairs with a missing
+     cross edge give two distinct such components.  Combined with private-pair
+     separation, every propagated orbit therefore supplies two distinct owner
+     four-cycles.  The PROVEN theorem
+     `orderSixtyFour_twoOwnerFourCycles_crossComponent_count_le_four` then
+     bounds the paired cross graph by four components (the five-component
+     profile has a unique owner four-cycle).  The live GAP is correspondingly
+     narrower: assemble this per-orbit `≤ 4` constraint across the three
+     rainbow colors and contradict the classified cross-component/routing
+     profiles.  The involution table and that three-orbit assembly still need
+     graph-facing Lean statements.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
