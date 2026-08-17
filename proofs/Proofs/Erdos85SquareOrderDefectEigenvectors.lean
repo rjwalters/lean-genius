@@ -38,6 +38,47 @@ def squareOrderHighRowDifference
     (G : SimpleGraph V) [DecidableRel G.Adj] (x z : V) : V → ℤ :=
   fun y => G.adjMatrix ℤ x y - G.adjMatrix ℤ z y
 
+/-- Distinct high vertices have distinct adjacency rows, so their row
+difference is nonzero. -/
+theorem squareOrder_highRowDifference_ne_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) {x z : V}
+    (hx : G.degree x = d + 1) (hz : G.degree z = d + 1)
+    (hxz : x ≠ z) :
+    squareOrderHighRowDifference G x z ≠ 0 := by
+  have hcommon := squareOrder_card_common_degree_succ_eq_one
+    G hfree hd hmin hcover hcard hx hz hxz
+  rcases Finset.card_eq_one.mp hcommon with ⟨y, hy⟩
+  have hxcard : (G.neighborFinset x).card = d + 1 := by
+    rw [G.card_neighborFinset_eq_degree, hx]
+  have hex : ∃ w ∈ G.neighborFinset x, w ≠ y := by
+    by_contra hnone
+    push Not at hnone
+    have hsub : G.neighborFinset x ⊆ {y} := by
+      intro w hw
+      simp [hnone w hw]
+    have hle := Finset.card_le_card hsub
+    simp [hxcard] at hle
+    omega
+  obtain ⟨w, hwx, hwy⟩ := hex
+  have hwz : ¬ G.Adj z w := by
+    intro hzw
+    have hwcommon : w ∈ G.neighborFinset x ∩ G.neighborFinset z := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨by simpa [SimpleGraph.mem_neighborFinset] using hwx, hzw⟩
+    have : w = y := by simpa [hy] using hwcommon
+    exact hwy this
+  intro hzero
+  have hw := congrFun hzero w
+  simp [squareOrderHighRowDifference, SimpleGraph.adjMatrix_apply,
+    (by simpa [SimpleGraph.mem_neighborFinset] using hwx : G.Adj x w), hwz] at hw
+
 /-- Every difference of two high adjacency rows is a `-1` eigenvector of the
 square-order defect adjacency matrix. -/
 theorem squareOrder_defect_mulVec_highRowDifference
