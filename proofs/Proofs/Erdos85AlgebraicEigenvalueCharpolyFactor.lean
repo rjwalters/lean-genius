@@ -1,4 +1,5 @@
-import Proofs.Erdos85CyclePrimaryHermitianMomentBridge
+import Proofs.Erdos85CyclePrimaryQuadraticTerminals
+import Proofs.Erdos85CycleDefectPrimaryClassification
 
 /-! # Algebraic eigenvalues force rational characteristic factors -/
 
@@ -62,6 +63,81 @@ theorem algebraic_eigenvector_minpoly_ne_large_cycle_primaries
   · intro h
     apply false_of_cycleDefectSexticThirteen_dvd_rational_charpoly D
       (h ▸ hdvd) hD htrace
+
+/-- The same eigenvector-to-divisibility bridge closes the C16 quadratic
+once the 15-dimensional trace `-7` and square-trace budget are supplied. -/
+theorem algebraic_eigenvector_minpoly_ne_cycleDefectQuadraticSixteen
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (D : Matrix n n ℚ) (μ : AlgebraicClosure ℚ)
+    (v : n → AlgebraicClosure ℚ) (hv0 : v ≠ 0)
+    (heigen :
+      (D.map (algebraMap ℚ (AlgebraicClosure ℚ))).mulVec v = μ • v)
+    (hcard : Fintype.card n = 15)
+    (hD : (D.map (algebraMap ℚ ℂ)).IsHermitian)
+    (htrace : Matrix.trace (D.map (algebraMap ℚ ℂ)) = -7)
+    (htraceSq :
+      (Matrix.trace ((D.map (algebraMap ℚ ℂ)) ^ 2)).re ≤ 63) :
+    minpoly ℚ μ ≠
+      cycleDefectQuadraticSixteen.map (Int.castRingHom ℚ) := by
+  intro hmin
+  have hdvd := minpoly_dvd_matrix_charpoly_of_algebraic_eigenvector
+    D μ v hv0 heigen
+  exact false_of_cycleDefectQuadraticSixteen_dvd_rational_charpoly
+    D hcard (hmin ▸ hdvd) hD htrace htraceSq
+
+theorem algebraic_eigenvector_minpoly_ne_cycleDefectQuadraticFive
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (D : Matrix n n ℚ) (μ : AlgebraicClosure ℚ)
+    (v : n → AlgebraicClosure ℚ) (hv0 : v ≠ 0)
+    (heigen :
+      (D.map (algebraMap ℚ (AlgebraicClosure ℚ))).mulVec v = μ • v)
+    (hD : (D.map (algebraMap ℚ ℂ)).IsHermitian)
+    (htrace : Matrix.trace (D.map (algebraMap ℚ ℂ)) = -7)
+    (htraceSq :
+      (Matrix.trace ((D.map (algebraMap ℚ ℂ)) ^ 2)).re ≤ 63) :
+    minpoly ℚ μ ≠ cycleDefectQuadraticFive.map (Int.castRingHom ℚ) := by
+  intro hmin
+  have hdvd := minpoly_dvd_matrix_charpoly_of_algebraic_eigenvector
+    D μ v hv0 heigen
+  exact false_of_cycleDefectQuadraticFive_dvd_rational_charpoly
+    D (hmin ▸ hdvd) hD htrace htraceSq
+
+/-- Intersecting the complete cycle-primary census with all six nonlinear
+moment exclusions leaves only the four rational linear primaries. -/
+theorem cycle_primary_of_budget_forces_rational_linear
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (D : Matrix n n ℚ) (μ : AlgebraicClosure ℚ)
+    (v : n → AlgebraicClosure ℚ) (hv0 : v ≠ 0)
+    (heigen :
+      (D.map (algebraMap ℚ (AlgebraicClosure ℚ))).mulVec v = μ • v)
+    (hprimary : OrderSixteenCycleDefectPrimaryClass μ)
+    (hcard : Fintype.card n = 15)
+    (hD : (D.map (algebraMap ℚ ℂ)).IsHermitian)
+    (htrace : Matrix.trace (D.map (algebraMap ℚ ℂ)) = -7)
+    (htraceSq :
+      (Matrix.trace ((D.map (algebraMap ℚ ℂ)) ^ 2)).re ≤ 63) :
+    minpoly ℚ μ = X - C 3 ∨
+    minpoly ℚ μ = X - C 5 ∨
+    minpoly ℚ μ = X - C 6 ∨
+    minpoly ℚ μ = X - C 7 := by
+  have hlarge := algebraic_eigenvector_minpoly_ne_large_cycle_primaries
+    D μ v hv0 heigen hD htraceSq
+  have hsixteen :=
+    algebraic_eigenvector_minpoly_ne_cycleDefectQuadraticSixteen
+      D μ v hv0 heigen hcard hD htrace htraceSq
+  have hfive := algebraic_eigenvector_minpoly_ne_cycleDefectQuadraticFive
+    D μ v hv0 heigen hD htrace htraceSq
+  rcases hprimary with h | h | h | h | h | h | h | h | h | h
+  · exact Or.inl h
+  · exact Or.inr (Or.inl h)
+  · exact Or.inr (Or.inr (Or.inl h))
+  · exact Or.inr (Or.inr (Or.inr h))
+  · exact absurd h hfive
+  · exact absurd h hsixteen
+  · exact absurd h hlarge.1
+  · exact absurd h hlarge.2.1
+  · exact absurd h hlarge.2.2.1
+  · exact absurd h hlarge.2.2.2
 
 /-- The rational matrix polynomial `7I - A²` used by the order-64 defect
 branch. -/
