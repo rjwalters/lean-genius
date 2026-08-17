@@ -1408,9 +1408,16 @@ generalized rather than merely replayed.
      ambient common neighbor, while there is exactly **one** `D`-edge between
      the two eight-vertex ambient neighborhoods.  Thus any representative
      with six such near-twin pairs must support six extremely sparse
-     `1-of-64` neighborhood cuts.  The next obstruction target is to combine
-     one such cut with the four two-point component selectors (or show that
-     the six cuts cannot coexist).
+     `1-of-64` neighborhood cuts.  The component localization is now also
+     `PROVEN` there: the unique cross-neighborhood `D`-edge occupies one
+     defect component, and every other component's two-by-two selector block
+     is `D`-anticomplete.  After also excluding the component of the unique
+     ambient common neighbor, every pair in each remaining selector block is
+     distinct and has exactly one component-owner color.  Hence every
+     nonexceptional component supplies a complete `K_{2,2}` block uniquely
+     edge-colored by the four owner graphs.  The next obstruction target is
+     to combine these forced owner-colored blocks with the owner 2-factor
+     budgets (or show that the six near-twin cuts cannot coexist).
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in

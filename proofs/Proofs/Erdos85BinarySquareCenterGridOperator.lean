@@ -195,6 +195,104 @@ theorem orderSixtyFour_defect_nonedge_codegree_six_terminal
       _ = 1 := by rw [hzero, hcodegree]; norm_num
   exact_mod_cast hcardZ
 
+/-- The unique defect edge in a near-twin neighborhood cut lies in one defect
+component; every other component's two selector rows are completely
+defect-anticomplete. -/
+theorem orderSixtyFour_nearTwin_unique_defectBridge_otherComponents_empty
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    {x y : Fin 64} (hxy : x ≠ y)
+    (hnotD : ¬ (secondOrderDefectGraph G).Adj x y)
+    (hcodegree : ((secondOrderDefectGraph G).adjMatrix ℤ *
+      (secondOrderDefectGraph G).adjMatrix ℤ) x y = 6) :
+    ∃ p : Fin 64 × Fin 64,
+      p ∈ crossRootDefectCenterPairs G x y ∧
+      ∀ k : (secondOrderDefectGraph G).ConnectedComponent,
+        k ≠ (secondOrderDefectGraph G).connectedComponentMk p.1 →
+        ∀ u ∈ componentNeighborFinset G (secondOrderDefectGraph G) k x,
+          ∀ v ∈ componentNeighborFinset G (secondOrderDefectGraph G) k y,
+            ¬ (secondOrderDefectGraph G).Adj u v := by
+  classical
+  have hone := (orderSixtyFour_defect_nonedge_codegree_six_terminal
+    G hfree hreg hxy hnotD hcodegree).2
+  obtain ⟨p, hpSet⟩ := Finset.card_eq_one.mp hone
+  refine ⟨p, ?_, ?_⟩
+  · rw [hpSet]
+    exact Finset.mem_singleton_self p
+  · intro k hk u hu v hv huvD
+    have huData := Finset.mem_filter.mp hu
+    have hvData := Finset.mem_filter.mp hv
+    have hpair : (u, v) ∈ crossRootDefectCenterPairs G x y := by
+      apply Finset.mem_filter.mpr
+      refine ⟨?_, huvD⟩
+      rw [crossRootCenterGrid, Finset.mem_product]
+      exact ⟨huData.1, hvData.1⟩
+    rw [hpSet, Finset.mem_singleton] at hpair
+    apply hk
+    have hucomp :
+        (secondOrderDefectGraph G).connectedComponentMk u = k := huData.2
+    exact hucomp.symm.trans (congrArg
+      (secondOrderDefectGraph G).connectedComponentMk
+        (congrArg Prod.fst hpair))
+
+/-- A defect near-twin pair has two exceptional defect components: the one
+containing its unique cross-neighborhood defect edge and the one containing
+its unique ambient common neighbor.  In every other component, each pair of
+the two component selectors has a unique owner color.  Thus those remaining
+selector blocks are complete bipartite blocks in the owner decomposition. -/
+theorem orderSixtyFour_nearTwin_otherComponents_unique_owner_blocks
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    {x y : Fin 64} (hxy : x ≠ y)
+    (hnotD : ¬ (secondOrderDefectGraph G).Adj x y)
+    (hcodegree : ((secondOrderDefectGraph G).adjMatrix ℤ *
+      (secondOrderDefectGraph G).adjMatrix ℤ) x y = 6) :
+    ∃ p : Fin 64 × Fin 64, ∃ w : Fin 64,
+      p ∈ crossRootDefectCenterPairs G x y ∧
+      w ∈ G.neighborFinset x ∩ G.neighborFinset y ∧
+      ∀ k : (secondOrderDefectGraph G).ConnectedComponent,
+        k ≠ (secondOrderDefectGraph G).connectedComponentMk p.1 →
+        k ≠ (secondOrderDefectGraph G).connectedComponentMk w →
+        ∀ u ∈ componentNeighborFinset G (secondOrderDefectGraph G) k x,
+          ∀ v ∈ componentNeighborFinset G (secondOrderDefectGraph G) k y,
+            ∃! c : (secondOrderDefectGraph G).ConnectedComponent,
+              (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj u v := by
+  classical
+  obtain ⟨p, hp, hpempty⟩ :=
+    orderSixtyFour_nearTwin_unique_defectBridge_otherComponents_empty
+      G hfree hreg hxy hnotD hcodegree
+  have honeCommon := (orderSixtyFour_defect_nonedge_codegree_six_terminal
+    G hfree hreg hxy hnotD hcodegree).1
+  obtain ⟨w, hwSet⟩ := Finset.card_eq_one.mp honeCommon
+  have hw : w ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+    rw [hwSet]
+    exact Finset.mem_singleton_self w
+  refine ⟨p, w, hp, hw, ?_⟩
+  intro k hkBridge hkCommon u hu v hv
+  have huData := Finset.mem_filter.mp hu
+  have hvData := Finset.mem_filter.mp hv
+  have huv : u ≠ v := by
+    intro huvEq
+    have huInter : u ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+      apply Finset.mem_inter.mpr
+      exact ⟨huData.1, by simpa [huvEq] using hvData.1⟩
+    rw [hwSet, Finset.mem_singleton] at huInter
+    apply hkCommon
+    exact huData.2.symm.trans (congrArg
+      (secondOrderDefectGraph G).connectedComponentMk huInter)
+  have hnotDuv : ¬ (secondOrderDefectGraph G).Adj u v :=
+    hpempty k hkBridge u hu v hv
+  exact (not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj
+    G hfree huv).mp hnotDuv
+
 end
 
 end Erdos85
