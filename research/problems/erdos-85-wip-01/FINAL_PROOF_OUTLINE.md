@@ -1241,10 +1241,15 @@ generalized rather than merely replayed.
      component fiber by `64`, hence the whole same-component term by `256`.
      Since the global count is `3584`, at least `3328` exactly colored triples
      are cross-component.  Thus local routing rainbows are necessarily a
-     small minority of the global cubic trace.  The remaining gap is to use
-     the overwhelmingly cross-component term (or evaluate the small local
-     fibers via rainbow excess) to force an incompatible routing/incidence
-     pattern.
+     small minority of the global cubic trace.  This separation is pointwise,
+     not merely averaged: `Erdos85BinarySquareMixedOwnerRootedCensus` expands
+     the distinct-owner product identity on each diagonal and proves that
+     every vertex roots exactly `56` ordered `a-b-c` triangles.  At most four
+     can keep both other vertices in the root's defect component, so every
+     root has at least `52` cross-component colored triangles.  The remaining
+     gap is to refine those `52` by the two possible component-membership
+     patterns (exactly two components versus three distinct components) and
+     force an incompatible routing/incidence pattern.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
