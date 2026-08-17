@@ -376,6 +376,78 @@ theorem squareOrder_card_highNeighbors_inter_defectBranch_eq_one
   rw [Finset.card_erase_of_mem hzS, hScard] at herase
   omega
 
+/-- A point in the branch owned by `z` has no common neighbor with the center
+other than `z`.  After restricting to high common neighbors, the intersection
+is therefore the singleton owner exactly when the owner is high. -/
+theorem squareOrder_card_highCommonNeighbors_of_mem_defectBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} {u z x : V}
+    (huz : G.Adj u z) (hx : x ∈ squareOrderDefectBranch G u z) :
+    (G.neighborFinset x ∩ squareOrderHighVertices G d ∩
+        G.neighborFinset u).card =
+      if G.degree z = d + 1 then 1 else 0 := by
+  have hzx : G.Adj z x := by
+    simpa [squareOrderDefectBranch, SimpleGraph.mem_neighborFinset] using
+      Finset.mem_of_mem_erase hx
+  have hxu : x ≠ u := Finset.ne_of_mem_erase hx
+  have hunique : ∀ {y : V}, G.Adj x y → G.Adj u y → y = z := by
+    intro y hxy huy
+    by_contra hyz
+    exact hfree (containsC4_of_two_common hxu (Ne.symm hyz)
+      hzx huz.symm hxy.symm huy.symm)
+  by_cases hzHigh : G.degree z = d + 1
+  · rw [if_pos hzHigh]
+    have heq : G.neighborFinset x ∩ squareOrderHighVertices G d ∩
+        G.neighborFinset u = {z} := by
+      ext y
+      constructor
+      · intro hy
+        have hydata := Finset.mem_inter.mp hy
+        have hyxu := Finset.mem_inter.mp hydata.1
+        have hyx : G.Adj x y := by
+          simpa [SimpleGraph.mem_neighborFinset] using hyxu.1
+        have hyu : G.Adj u y := by
+          simpa [SimpleGraph.mem_neighborFinset] using hydata.2
+        simpa using hunique hyx hyu
+      · intro hy
+        have hyz : y = z := by simpa using hy
+        subst y
+        simp [SimpleGraph.mem_neighborFinset, hzx, huz, G.adj_comm,
+          squareOrderHighVertices, hzHigh]
+    rw [heq]
+    simp
+  · rw [if_neg hzHigh, Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro y hy
+    have hydata := Finset.mem_inter.mp hy
+    have hyxu := Finset.mem_inter.mp hydata.1
+    have hyx : G.Adj x y := by
+      simpa [SimpleGraph.mem_neighborFinset] using hyxu.1
+    have hyu : G.Adj u y := by
+      simpa [SimpleGraph.mem_neighborFinset] using hydata.2
+    have hyz := hunique hyx hyu
+    subst y
+    exact hzHigh (Finset.mem_filter.mp hyxu.2).2
+
+/-- Pointwise code multiplicity inside a branch: the number of high neighbors
+of `x` which are not adjacent to the center is `k(x)`, less the high owner
+when the owner is high. -/
+theorem squareOrder_card_noncenterHighNeighbors_of_mem_defectBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} {u z x : V}
+    (huz : G.Adj u z) (hx : x ∈ squareOrderDefectBranch G u z) :
+    ((G.neighborFinset x ∩ squareOrderHighVertices G d) \
+        G.neighborFinset u).card =
+      squareOrderHighIncidenceCount G d x -
+        if G.degree z = d + 1 then 1 else 0 := by
+  rw [Finset.card_sdiff]
+  rw [Finset.inter_comm (G.neighborFinset u)]
+  rw [squareOrder_card_highCommonNeighbors_of_mem_defectBranch
+    G hfree huz hx]
+  rfl
+
 /-- Branchwise refinement of the high-incidence equation.  A branch at a low
 center receives one incidence from every high vertex not adjacent to the
 center.  If its owner is itself high, that owner contributes all `d` points
