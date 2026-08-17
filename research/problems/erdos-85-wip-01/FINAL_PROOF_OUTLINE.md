@@ -1047,7 +1047,14 @@ generalized rather than merely replayed.
      equivalently the owner-factor connected-component partition is exactly
      the restriction of the cross-block component partition to either
      coordinate side.  The cycle-length correspondence is therefore
-     combinatorial, not merely a consequence of cospectrality.
+     combinatorial, not merely a consequence of cospectrality.  This quotient
+     statement is packaged as an actual equivalence in
+     `Erdos85BinarySquareSizeTwoCrossOwnerComponentEquiv`.  The canonical map
+     sends an `F_cd` component to the cross component containing its left-side
+     vertices; reachability reflection makes it injective, while degree two
+     ensures every cross component meets that side and makes it surjective.
+     Consequently, at `q=8` every restricted owner factor between distinct
+     binary coordinates has at most five cycle components as well.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
