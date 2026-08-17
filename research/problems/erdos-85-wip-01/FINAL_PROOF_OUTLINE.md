@@ -395,6 +395,17 @@ generalized rather than merely replayed.
      complement edges of `D[c]` with defect adjacency mapping to pair
      disjointness.  Any surviving weighted cycle quotient must therefore lift
      to this simultaneous regular-factor/disjointness representation.
+     In fact the simultaneous representation is exact, not one-way:
+     `secondOrderDefect_adj_iff_componentNeighborFinset_disjoint_forall`
+     proves for distinct ambient vertices `x,y` that
+
+     ```text
+     D.Adj x y  iff  their selectors are disjoint in every defect component.
+     ```
+
+     Thus, when size-two coordinates are present, `D` is recovered as the
+     intersection of their Kneser-style disjointness relations together with
+     the analogous relations from the remaining component coordinates.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

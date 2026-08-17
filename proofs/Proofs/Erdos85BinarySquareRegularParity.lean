@@ -719,6 +719,45 @@ theorem componentNeighborFinset_disjoint_of_secondOrderDefect_adj
     ((G.mem_neighborFinset x z).mp hzx.1)
     ((G.mem_neighborFinset y z).mp hzy.1)) hxy
 
+/-- Exact simultaneous-coordinate form of the defect relation.  Two distinct
+vertices form a defect edge precisely when their ambient-neighbor selectors
+are disjoint in every defect component. -/
+theorem secondOrderDefect_adj_iff_componentNeighborFinset_disjoint_forall
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {x y : V} (hxy : x ≠ y) :
+    (secondOrderDefectGraph G).Adj x y ↔
+      ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+        Disjoint
+          (componentNeighborFinset G (secondOrderDefectGraph G) c x)
+          (componentNeighborFinset G (secondOrderDefectGraph G) c y) := by
+  constructor
+  · intro hD c
+    exact componentNeighborFinset_disjoint_of_secondOrderDefect_adj
+      G hfree hD c
+  · intro hall
+    by_contra hD
+    have hnotMem : y ∉ (secondOrderDefectGraph G).neighborFinset x := by
+      simpa [SimpleGraph.mem_neighborFinset] using hD
+    have hcommon := card_common_eq_if_secondOrderDefect G hfree x y hxy
+    rw [if_neg hnotMem] at hcommon
+    have hpos : 0 < (G.neighborFinset x ∩ G.neighborFinset y).card := by omega
+    obtain ⟨z, hz⟩ := Finset.card_pos.mp hpos
+    have hz' := Finset.mem_inter.mp hz
+    let c := (secondOrderDefectGraph G).connectedComponentMk z
+    have hzx : z ∈
+        componentNeighborFinset G (secondOrderDefectGraph G) c x := by
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr ⟨hz'.1, rfl⟩
+    have hzy : z ∈
+        componentNeighborFinset G (secondOrderDefectGraph G) c y := by
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr ⟨hz'.2, rfl⟩
+    exact (Finset.disjoint_left.mp (hall c)) hzx hzy
+
 /-- Triangle-free edges stay inside the defect component, so their degree at
 a vertex is bounded by the normalized component part. -/
 theorem binarySquare_regular_triangleFree_degree_le_part
