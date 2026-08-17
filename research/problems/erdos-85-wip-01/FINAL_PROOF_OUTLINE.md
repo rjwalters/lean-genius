@@ -636,6 +636,20 @@ generalized rather than merely replayed.
      not merely commuting: they mutually annihilate integrally.  The live task
      is to combine this orthogonal-sector decomposition with the self-indexed
      diagonal cycle blocks and simultaneous equitable cells.
+     For unit colors this matrix identity now has a `PROVEN` combinatorial
+     consumer in `Erdos85UnitOwnerRoute`:
+     `binarySquare_regular_unitOwnerColors_existsUnique_mixedRoute` states
+     that for distinct unit colors `c,d` and every ordered vertex pair `x,z`
+     there is exactly one `y` with
+
+     ```text
+     (x=y or Owner(c)(x,y)) and (y=z or Owner(d)(y,z)).
+     ```
+
+     In other words, the reflexive closures of the two color relations compose
+     to the complete relation with multiplicity one.  This is the precise
+     mixed permutation-composition law needed for a three-coordinate parity
+     argument; the matrix-to-combinatorics bridge is no longer a GAP.
      The first such algebra-to-cycle bridge is now `PROVEN` in
      `Erdos85BinarySquareCenteredOwnerResolution`.  For the normalized
      component sizes `m_c`, the theorem
@@ -655,6 +669,17 @@ generalized rather than merely replayed.
 
      Hence every owner sector is an actual algebraic summand of the defect
      cycle polynomial, rather than only a commuting auxiliary operator.  The
+     additive square law is also `PROVEN`:
+     `binarySquare_regular_sum_centeredOwnerGrams_sq` gives
+
+     ```text
+     sum_c C_c^2 = (q ((q-1) I - D))^2.
+     ```
+
+     This is the exact Parseval/Frobenius-mass interface for a trace or rank
+     terminal: all nonconstant defect-operator mass splits additively among
+     mutually annihilating owner colors.
+     The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
      `q >= 8`.
