@@ -151,6 +151,36 @@ theorem binarySquare_regular_trace_centeredOwnerGram_sq
   push_cast
   ring
 
+/-- Every centered owner color satisfies the sharp moment-ratio equality
+`trace(C_c²) = q² trace(C_c)`.  Any rank terminal must exploit the equality
+case of this identity rather than its scalar sum. -/
+theorem binarySquare_regular_trace_centeredOwnerGram_sq_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c) :
+    let C_c :=
+      (q : ℤ) •
+          ((componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ +
+            (m_c : ℤ) • (1 : Matrix V V ℤ)) -
+        (m_c : ℤ) • FriendshipTheoremOQ01.onesMatrix V
+    Matrix.trace (C_c * C_c) =
+      ((q : ℤ) ^ 2) * Matrix.trace C_c := by
+  dsimp
+  rw [binarySquare_regular_trace_centeredOwnerGram_sq
+      G hfree hq hreg hcard c hc,
+    binarySquare_regular_trace_centeredOwnerGram
+      G hfree hq hreg hcard c hc]
+  push_cast
+  ring
+
 end
 
 end Erdos85

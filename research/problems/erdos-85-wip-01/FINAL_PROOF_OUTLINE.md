@@ -722,7 +722,17 @@ generalized rather than merely replayed.
      distinguish `q=4` from `q>=8`; the terminal must use an equality-case
      rank statement, the distribution of eigenvalues within colors, or the
      self-indexed diagonal cycle blocks.  This rules out a tempting but
-     genuinely tautological scalar lane.
+     genuinely tautological scalar lane.  The surviving equality datum is
+     packaged by
+     `binarySquare_regular_trace_centeredOwnerGram_sq_eq` as
+
+     ```text
+     trace(C_c^2) = q^2 trace(C_c).
+     ```
+
+     A useful next theorem must turn this sharp moment ratio plus positivity
+     into eigenvalue/rank rigidity, then feed the result back into the
+     self-indexed block.
      The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
