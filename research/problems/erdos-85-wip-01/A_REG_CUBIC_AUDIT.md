@@ -30,6 +30,23 @@ proves that `L_c` is `q`-regular on the `2q` points of `c`.  Thus subsequent
 blockwise spectral or fourth-moment work can consume an actual Lean graph,
 not only the pairwise prose interpretation.
 
+The first blockwise spectral layer is also `PROVEN`.  Theorems
+`binarySquare_regular_sizeTwoSelectorGraph_adjMatrix_resolution` and
+`binarySquare_regular_sizeTwoSelectorGraph_adjMatrix_comm` give
+
+```text
+I + A(D[c]) + A(L_c) = J,
+A(D[c]) A(L_c) = A(L_c) A(D[c]).
+```
+
+On the zero-sum subspace,
+`binarySquare_regular_sizeTwoSelectorGraph_mulVec_of_sum_eq_zero` specializes
+this to `A(L_c)f = -f-A(D[c])f`.  The explicit theorem
+`binarySquare_regular_sizeTwoSelectorGraph_eigenvalue_transport` therefore
+sends every integral defect eigenvalue `mu` to selector eigenvalue `-1-mu`
+on the same vector.  This retains information discarded by scalar trace and
+is the current interface for simultaneous block constraints.
+
 ## Triangle interpretation
 
 For a component `c`, the selector of an ambient vertex `x` is
