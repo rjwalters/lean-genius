@@ -136,7 +136,9 @@ def main() -> None:
         (i, j): {} for i in range(6) for j in range(i + 1, 6)
     }
     simultaneous = {"all_group": 0, "all_cyclic": 0}
-    for choices in itertools.product(*decompositions):
+    successful_choices = []
+    for choice_indices in itertools.product(*(range(len(ds)) for ds in decompositions)):
+        choices = [ds[index] for ds, index in zip(decompositions, choice_indices)]
         chosen = dict(blocks)
         chosen.update({pair: list(ms) for pair, ms in zip(doubled, choices)})
 
@@ -164,12 +166,15 @@ def main() -> None:
                 kinds.append(kind)
         simultaneous["all_group"] += all(k != "non-group" for k in kinds)
         simultaneous["all_cyclic"] += all(k == "cyclic" for k in kinds)
+        if all(k != "non-group" for k in kinds):
+            successful_choices.append(choice_indices)
 
     print("doubled_pairs", doubled)
     print("decomposition_choices", 4 ** 3)
     for pair, hist in verdict_hist.items():
         print("pair", pair, hist)
     print("simultaneous", simultaneous)
+    print("successful_choices", successful_choices)
 
 
 if __name__ == "__main__":

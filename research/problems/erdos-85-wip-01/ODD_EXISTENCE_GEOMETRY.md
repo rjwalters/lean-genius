@@ -149,8 +149,10 @@ eight-cycles and has four alternating decompositions into two matchings.
 `near_latin_q7_routing.py` enumerates all `4³=64` simultaneous choices, forms
 the eight routing permutations for all 15 fiber pairs, and asks whether each
 factorization is a coset of a regular permutation group. Exactly eight choices
-make all 15 factorizations group cosets. In every case the group has element-
-order multiset
+make all 15 factorizations group cosets. They are the independent exchanges of
+the two matching labels in the three doubled blocks, so the successful
+decomposition is unique as an unordered pair of matchings on each block. In
+every case the group has element-order multiset
 
 ```text
 1, 2, 2, 2, 2, 2, 4, 4,
