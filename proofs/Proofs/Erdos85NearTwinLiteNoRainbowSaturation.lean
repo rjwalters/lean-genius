@@ -79,6 +79,61 @@ theorem fiveCore_repeated_color_or_exact_three
   · exact hr₁data.2.1.symm
   · exact hr₂data.2.1.symm.trans hcolor.symm
 
+/-- Fully rigid sharp boundary: if there is no repeated-color fork, the
+three non-base repetitions use the three non-base colors bijectively. -/
+theorem fiveCore_repeated_color_or_bijective_boundary
+    {R C : Type*} [DecidableEq R] [DecidableEq C]
+    (S : Finset R) (left right : R → C) (base : C)
+    (palette : Finset C) (hpalette : palette.card = 3)
+    (hcard : S.card = 5)
+    (hleft : (S.filter fun r => left r = base).card ≤ 1)
+    (hright : (S.filter fun r => right r = base).card ≤ 1)
+    (hno : ∀ r ∈ S,
+      left r = right r ∨ left r = base ∨ right r = base)
+    (hmem : ∀ r ∈ S, left r = right r → left r ≠ base →
+      left r ∈ palette) :
+    (∃ c r₁ r₂, c ≠ base ∧ r₁ ≠ r₂ ∧ r₁ ∈ S ∧ r₂ ∈ S ∧
+      left r₁ = c ∧ right r₁ = c ∧
+      left r₂ = c ∧ right r₂ = c) ∨
+      let E := S.filter fun r => left r = right r ∧ left r ≠ base
+      E.card = 3 ∧
+        (∀ r₁ ∈ E, ∀ r₂ ∈ E, left r₁ = left r₂ → r₁ = r₂) ∧
+        E.image left = palette := by
+  classical
+  let E := S.filter fun r => left r = right r ∧ left r ≠ base
+  let Fork : Prop := ∃ c r₁ r₂, c ≠ base ∧ r₁ ≠ r₂ ∧
+    r₁ ∈ S ∧ r₂ ∈ S ∧ left r₁ = c ∧ right r₁ = c ∧
+      left r₂ = c ∧ right r₂ = c
+  by_cases hfork : Fork
+  · exact Or.inl hfork
+  right
+  have hE : E.card = 3 := by
+    rcases fiveCore_repeated_color_or_exact_three
+      S left right base palette hpalette hcard hleft hright hno hmem with hf | he
+    · exact (hfork hf).elim
+    · exact he
+  have hinj : ∀ r₁ ∈ E, ∀ r₂ ∈ E,
+      left r₁ = left r₂ → r₁ = r₂ := by
+    intro r₁ hr₁ r₂ hr₂ hc
+    by_contra hrne
+    have hr₁data := Finset.mem_filter.mp hr₁
+    have hr₂data := Finset.mem_filter.mp hr₂
+    apply hfork
+    exact ⟨left r₁, r₁, r₂, hr₁data.2.2, hrne,
+      hr₁data.1, hr₂data.1, rfl, hr₁data.2.1.symm,
+      hc.symm, hr₂data.2.1.symm.trans hc.symm⟩
+  have himageSub : E.image left ⊆ palette := by
+    intro c hc
+    obtain ⟨r, hr, rfl⟩ := Finset.mem_image.mp hc
+    have hrdata := Finset.mem_filter.mp hr
+    exact hmem r hrdata.1 hrdata.2.1 hrdata.2.2
+  have himageCard : (E.image left).card = 3 := by
+    rw [Finset.card_image_iff.mpr]
+    · exact hE
+    · exact fun r₁ hr₁ r₂ hr₂ hc => hinj r₁ hr₁ r₂ hr₂ hc
+  refine ⟨hE, hinj, Finset.eq_of_subset_of_card_le himageSub ?_⟩
+  rw [himageCard, hpalette]
+
 end
 
 end Erdos85
