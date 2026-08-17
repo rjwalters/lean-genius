@@ -218,6 +218,60 @@ theorem squareOrder_lowIncidence_orientedDirichlet_eq_thirdMomentSlack
   exact defectIncidence_orientedDirichlet_eq_thirdMomentSlack
     D L k d h (by omega) hclosed hpoint hdegree hfirst hsecond
 
+/-- The low-sector third incidence moment is bounded by the exact Dirichlet
+budget `h(d²-h)`. -/
+theorem squareOrder_sum_low_highIncidence_cube_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) :
+    let H := squareOrderHighVertices G d
+    let L := (Finset.univ : Finset V) \ H
+    let k := squareOrderHighIncidenceCount G d
+    (∑ x ∈ L, (k x) ^ 3) ≤ H.card * (d * d - H.card) := by
+  classical
+  let H := squareOrderHighVertices G d
+  let L := (Finset.univ : Finset V) \ H
+  let D := secondOrderDefectGraph G
+  let k := squareOrderHighIncidenceCount G d
+  let h := H.card
+  dsimp only
+  have hid := squareOrder_lowIncidence_orientedDirichlet_eq_thirdMomentSlack
+    G hfree hd hmin hcover hcard
+  change (∑ x ∈ L, ∑ y ∈ D.neighborFinset x,
+      ((k x : ℤ) - k y) ^ 2) =
+    2 * ((h : ℤ) * ((d : ℤ) ^ 2 - h) -
+      ∑ x ∈ L, (k x : ℤ) ^ 3) at hid
+  have henergy_nonneg :
+      0 ≤ ∑ x ∈ L, ∑ y ∈ D.neighborFinset x,
+        ((k x : ℤ) - k y) ^ 2 := by positivity
+  have hslackZ :
+      (∑ x ∈ L, (k x : ℤ) ^ 3) ≤
+        (h : ℤ) * ((d : ℤ) ^ 2 - h) := by nlinarith
+  have hsubset : H ⊆ (Finset.univ : Finset V) := by simp
+  have hhcard : h ≤ d * d := by
+    calc
+      h = H.card := rfl
+      _ ≤ Fintype.card V := by simpa using Finset.card_le_card hsubset
+      _ = d * d := hcard
+  have hsumCast :
+      ((∑ x ∈ L, (k x) ^ 3 : ℕ) : ℤ) =
+        ∑ x ∈ L, (k x : ℤ) ^ 3 := by norm_cast
+  have hbudgetCast :
+      ((h * (d * d - h) : ℕ) : ℤ) =
+        (h : ℤ) * ((d : ℤ) ^ 2 - h) := by
+    rw [Nat.cast_mul, Nat.cast_sub hhcard]
+    push_cast
+    ring
+  rw [← hsumCast, ← hbudgetCast] at hslackZ
+  have hNat : (∑ x ∈ L, (k x) ^ 3) ≤ h * (d * d - h) := by
+    exact_mod_cast hslackZ
+  simpa [H, L, k, h] using hNat
+
 end
 
 end Erdos85
