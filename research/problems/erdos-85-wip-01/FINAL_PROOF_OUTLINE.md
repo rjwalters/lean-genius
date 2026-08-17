@@ -993,6 +993,12 @@ generalized rather than merely replayed.
 
      Hence every cross block is a 2-regular bipartite cycle system, and the
      reverse coordinate uses the same edges with orientation transposed.
+     This is now a first-class graph theorem, not only matrix prose:
+     `Erdos85BinarySquareSizeTwoCrossBipartiteCycles` defines the canonical
+     graph on `c.supp ⊕ d.supp`, identifies its left and right degrees with
+     the corresponding cross-neighbor finsets, and proves that it is
+     2-regular and `IsCycles`.  Its connected components can therefore be
+     consumed directly by the existing cycle-component classification API.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
