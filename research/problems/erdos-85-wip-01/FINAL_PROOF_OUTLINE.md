@@ -367,7 +367,10 @@ generalized rather than merely replayed.
      Thus the `q²` ambient vertices select precisely the edges of the
      complement of the `(q-1)`-regular defect graph on `2q` vertices.  This is
      the scalable pair-design interpretation previously available only in the
-     order-64 sixteen-block modules.
+     order-64 sixteen-block modules.  The selector is unique, not merely
+     existent: `binarySquare_regular_sizeTwoPart_existsUnique_pair_iff_not_defectAdj`
+     upgrades the equivalence using the exact-one common-neighbor law.  Hence
+     the ambient vertices and complement edges form an exact bijective design.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

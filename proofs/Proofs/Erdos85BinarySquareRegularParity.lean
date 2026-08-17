@@ -1316,6 +1316,67 @@ theorem binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
     · rw [htwo x]
       simp [huvval]
 
+/-- The selector in the pair-complement theorem is unique.  Thus ambient
+vertices and complement edges of the size-two defect block are related by an
+exact pair design, not merely a surjection. -/
+theorem binarySquare_regular_sizeTwoPart_existsUnique_pair_iff_not_defectAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) (u v : c.supp) (huv : u ≠ v) :
+    ((∃! x : V,
+        componentNeighborFinset G (secondOrderDefectGraph G) c x =
+          {u.1, v.1}) ↔
+      ¬ (secondOrderDefectGraph G).Adj u.1 v.1) := by
+  let D := secondOrderDefectGraph G
+  have huvval : u.1 ≠ v.1 := fun h => huv (Subtype.ext h)
+  constructor
+  · rintro ⟨x, hx, _hunique⟩
+    exact (binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
+      G hfree hq hreg hcard c hc u v huv).mp ⟨x, hx⟩
+  · intro hnotD
+    obtain ⟨x, hx⟩ :=
+      (binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
+        G hfree hq hreg hcard c hc u v huv).mpr hnotD
+    refine ⟨x, hx, ?_⟩
+    intro y hy
+    have selector_mem (z : V)
+        (hz : componentNeighborFinset G D c z = {u.1, v.1}) :
+        z ∈ G.neighborFinset u.1 ∩ G.neighborFinset v.1 := by
+      have hzu : G.Adj z u.1 := by
+        have : u.1 ∈ componentNeighborFinset G D c z := by
+          rw [hz]
+          simp [huvval]
+        exact (G.mem_neighborFinset z u.1).mp (Finset.mem_filter.mp this).1
+      have hzv : G.Adj z v.1 := by
+        have : v.1 ∈ componentNeighborFinset G D c z := by
+          rw [hz]
+          simp
+        exact (G.mem_neighborFinset z v.1).mp (Finset.mem_filter.mp this).1
+      exact Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset u.1 z).mpr hzu.symm,
+          (G.mem_neighborFinset v.1 z).mpr hzv.symm⟩
+    have hcommon := card_common_eq_if_secondOrderDefect
+      G hfree u.1 v.1 huvval
+    have hnotmemD : v.1 ∉ D.neighborFinset u.1 := by
+      intro hmem
+      exact hnotD ((D.mem_neighborFinset u.1 v.1).mp hmem)
+    rw [if_neg hnotmemD] at hcommon
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hcommon
+    have hxmem := selector_mem x hx
+    have hymem := selector_mem y hy
+    rw [hz] at hxmem hymem
+    have hxz : x = z := by simpa using hxmem
+    have hyz : y = z := by simpa using hymem
+    exact hyz.trans hxz.symm
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]
