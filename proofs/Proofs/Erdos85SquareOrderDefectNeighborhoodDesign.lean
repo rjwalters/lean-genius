@@ -794,6 +794,36 @@ theorem squareOrder_maxHighIncidence_not_defectAdj_rigidity
   have hhigh := (Finset.card_le_card hsub).trans_eq hcommon
   constructor <;> omega
 
+/-- On the maximal-incidence low sector, defect adjacency is exactly
+disjointness of the corresponding high-neighbor blocks. -/
+theorem squareOrder_card_commonHigh_of_maxHighIncidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {x y}, G.Adj x y → G.degree x = d ∨ G.degree y = d)
+    (hcard : Fintype.card V = d * d) {u v : V}
+    (huv : u ≠ v) (hu : G.degree u = d) (hv : G.degree v = d)
+    (hku : 2 * squareOrderHighIncidenceCount G d u = d)
+    (hkv : 2 * squareOrderHighIncidenceCount G d v = d) :
+    (G.neighborFinset u ∩ G.neighborFinset v ∩
+        squareOrderHighVertices G d).card =
+      if (secondOrderDefectGraph G).Adj u v then 0 else 1 := by
+  by_cases hD : (secondOrderDefectGraph G).Adj u v
+  · rw [if_pos hD]
+    have hzero :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree huv).mp hD
+    have hsub : G.neighborFinset u ∩ G.neighborFinset v ∩
+        squareOrderHighVertices G d ⊆
+          G.neighborFinset u ∩ G.neighborFinset v := Finset.inter_subset_left
+    have hle := (Finset.card_le_card hsub).trans_eq hzero
+    omega
+  · rw [if_neg hD]
+    exact (squareOrder_maxHighIncidence_not_defectAdj_rigidity
+      G hfree hd hmin hcover hcard huv hu hv hku hkv hD).2
+
 /-- Branches at two distinct centers with the same owner overlap in exactly
 the owner's neighborhood with those two centers deleted. -/
 theorem card_inter_squareOrderDefectBranch_same_owner
