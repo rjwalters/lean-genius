@@ -226,6 +226,54 @@ theorem squareOrder_defectClosed_energy_constant_or_crosses
     (squareOrder_defectClosed_low_incidence_balance
       G hfree hd hmin hcover hcard S hSlow hSclosed)
 
+/-- The deviation of the local incidence energy from the global high count is
+exactly the defect-graph Laplacian of the incidence function. -/
+theorem squareOrder_highIncidence_energy_laplacian
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {x : V} (hx : G.degree x = d) :
+    ((squareOrderHighVertices G d).card : ℤ) -
+        (squareOrderHighIncidenceCount G d x : ℤ) *
+          ((d : ℤ) - squareOrderHighIncidenceCount G d x) =
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x,
+        ((squareOrderHighIncidenceCount G d y : ℤ) -
+          squareOrderHighIncidenceCount G d x) := by
+  let D := secondOrderDefectGraph G
+  let k := squareOrderHighIncidenceCount G d
+  let h := (squareOrderHighVertices G d).card
+  have hpoint := squareOrder_sum_highIncidence_over_defectNeighbors_add_self
+    G hfree hd hmin hcard hx
+  have hdeg := squareOrder_defectDegree_add_highIncidence_eq_pred
+    G hfree hd hmin hcover hcard hx
+  change (∑ y ∈ D.neighborFinset x, k y) + k x = h at hpoint
+  change D.degree x + k x = d - 1 at hdeg
+  have hdpos : 1 ≤ d := by omega
+  have hcast_point :
+      ((∑ y ∈ D.neighborFinset x, k y : ℕ) : ℤ) + k x = h := by
+    exact_mod_cast hpoint
+  have hcast_deg : (D.degree x : ℤ) + k x = (d : ℤ) - 1 := by
+    have hcast_deg' : (D.degree x : ℤ) + k x = ((d - 1 : ℕ) : ℤ) := by
+      exact_mod_cast hdeg
+    rw [Nat.cast_sub hdpos] at hcast_deg'
+    simpa using hcast_deg'
+  rw [Finset.sum_sub_distrib]
+  simp only [Finset.sum_const, nsmul_eq_mul]
+  have hcast_sum :
+      (∑ y ∈ D.neighborFinset x, (k y : ℤ)) =
+        ((∑ y ∈ D.neighborFinset x, k y : ℕ) : ℤ) := by
+    norm_cast
+  rw [hcast_sum]
+  change (h : ℤ) - (k x : ℤ) * ((d : ℤ) - k x) =
+    ((∑ y ∈ D.neighborFinset x, k y : ℕ) : ℤ) -
+      (D.degree x : ℤ) * k x
+  nlinarith
+
 /-- The componentwise terminal in its useful final form: every nonempty
 defect-closed low set either forces a factorization of the global high count,
 or contains incidence energies strictly on both sides of that count. -/
