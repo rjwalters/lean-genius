@@ -596,8 +596,11 @@ generalized rather than merely replayed.
      `binarySquare_regular_sizeQ_ownerColor_existsUnique_crossComponent_neighbor`
      packages this across any ordered pair of distinct order-`q` components.
      Hence each unit color supplies an honest perfect matching (and therefore
-     a canonical bijection) between every such pair; the remaining ODC gap is
-     solely the compatibility of this family of matchings with its
+     a canonical bijection) between every such pair.  This is now exposed as
+     a literal Lean equivalence by the `PROVEN` theorem
+     `binarySquare_regular_sizeQ_ownerColor_exists_matchingEquiv`, whose graph
+     consists entirely of owner-color edges.  The remaining ODC gap is solely
+     the compatibility of this family of component equivalences with its
      self-indexed diagonal cycle blocks.
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal

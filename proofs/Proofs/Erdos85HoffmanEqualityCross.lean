@@ -231,4 +231,59 @@ theorem binarySquare_regular_sizeQ_ownerColor_existsUnique_crossComponent_neighb
     (SimpleGraph.ConnectedComponent.mem_supp_iff e x.1).mp hxe
   exact hef (hxComp'.symm.trans hxComp)
 
+/-- A unit owner color is represented by an actual equivalence between every
+ordered pair of distinct order-`q` components, and its graph is exactly made
+of owner-color edges. -/
+theorem binarySquare_regular_sizeQ_ownerColor_exists_matchingEquiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e f c : (secondOrderDefectGraph G).ConnectedComponent) (hef : e ≠ f)
+    (hc : c.supp.ncard = q) (he : e.supp.ncard = q)
+    (hf : f.supp.ncard = q) :
+    ∃ σ : f.supp ≃ e.supp, ∀ x : f.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x.1 (σ x).1 := by
+  classical
+  let O := componentOwnerGraph G (secondOrderDefectGraph G) c
+  have huniq (x : f.supp) : ∃! y : V, y ∈ e.supp ∧ O.Adj x.1 y := by
+    exact binarySquare_regular_sizeQ_ownerColor_existsUnique_crossComponent_neighbor
+      G hfree hq hreg hcard e f c hef hc he x
+  let φ : f.supp → e.supp := fun x =>
+    ⟨Classical.choose (huniq x), (Classical.choose_spec (huniq x)).1.1⟩
+  have hφadj (x : f.supp) : O.Adj x.1 (φ x).1 :=
+    (Classical.choose_spec (huniq x)).1.2
+  have hφinj : Function.Injective φ := by
+    intro x x' hxx'
+    have hφSupp : (φ x).1 ∈ e.supp := (φ x).2
+    have hφNotF : (φ x).1 ∉ f.supp := by
+      intro hmem
+      have heqF : (secondOrderDefectGraph G).connectedComponentMk (φ x).1 = f :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff f (φ x).1).mp hmem
+      have heqE : (secondOrderDefectGraph G).connectedComponentMk (φ x).1 = e :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff e (φ x).1).mp hφSupp
+      exact hef (heqE.symm.trans heqF)
+    have hrev := binarySquare_regular_sizeQ_ownerColor_existsUnique_neighbor
+      G hfree hq hreg hcard f c hc hf (φ x).1 hφNotF
+    apply Subtype.ext
+    apply hrev.unique
+    · exact ⟨x.2, (hφadj x).symm⟩
+    · have hadj' : O.Adj (φ x).1 x'.1 := by
+        rw [hxx']
+        exact (hφadj x').symm
+      exact ⟨x'.2, hadj'⟩
+  have hcardEq : Fintype.card f.supp = Fintype.card e.supp := by
+    rw [Set.fintypeCard_eq_ncard, Set.fintypeCard_eq_ncard, hf, he]
+  have hφbij : Function.Bijective φ :=
+    (Fintype.bijective_iff_injective_and_card φ).mpr ⟨hφinj, hcardEq⟩
+  let σ : f.supp ≃ e.supp := Equiv.ofBijective φ hφbij
+  refine ⟨σ, ?_⟩
+  intro x
+  exact hφadj x
+
 end Erdos85
