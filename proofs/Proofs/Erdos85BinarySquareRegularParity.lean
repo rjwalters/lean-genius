@@ -5,8 +5,8 @@ import Proofs.Erdos85EvenExcessOneDefectKernel
 
 The mod-two defect-kernel argument is not peculiar to the order-64 endpoint
 or to the excess-one order.  On any even square order, an even-regular
-`C₄`-free graph has a second adjacency-kernel vector, hence a nonconstant
-kernel vector of `I + J + D`.  This is the uniform parity input for the
+`C₄`-free graph has a second adjacency-kernel vector, hence the same
+nonconstant vector lies in the kernel of `I + J + D`.  This is the uniform parity input for the
 regular binary square-order branch.
 -/
 
@@ -16,8 +16,8 @@ namespace Erdos85
 
 /-- **Uniform binary-square defect kernel.**  Let `G` be an even-regular
 `C₄`-free graph on `q²` vertices, with `q > 0`.  Over `𝔽₂`, the matrix
-`I + J + D` has a kernel vector distinct from both zero and the all-ones
-vector.
+`A` has a kernel vector distinct from both zero and the all-ones vector, and
+that same vector is killed by `I + J + D`.
 
 The proof uses only that `q²` is even.  Thus every hypothetical regular core
 in the characteristic-two square-order branch carries this extra parity
@@ -31,6 +31,7 @@ theorem binarySquare_regular_exists_nontrivial_defect_kernel_vector
     (hreg : ∀ x, G.degree x = q)
     (hcard : Fintype.card V = q * q) :
     ∃ w : V → ZMod 2, w ≠ 0 ∧ w ≠ (fun _ => 1) ∧
+      (G.adjMatrix (ZMod 2)).mulVec w = 0 ∧
       ((1 : Matrix V V (ZMod 2)) + Matrix.of (fun _ _ => (1 : ZMod 2)) +
         (secondOrderDefectGraph G).adjMatrix (ZMod 2)).mulVec w = 0 := by
   haveI : Nonempty V := by
@@ -54,7 +55,7 @@ theorem binarySquare_regular_exists_nontrivial_defect_kernel_vector
   have hones := adjMatrix_zmodTwo_mulVec_ones_eq_zero G heven hreg
   obtain ⟨w, hker, hw0, hw1⟩ := exists_kernel_vector_ne_zero_ne_ones
     hnEven (G.adjMatrix (ZMod 2)) hsymm hdiag hones
-  refine ⟨w, hw0, hw1, ?_⟩
+  refine ⟨w, hw0, hw1, hker, ?_⟩
   rw [← adjMatrix_sq_eq_defect_mod_two_of_even_regular G hfree heven hreg,
     ← Matrix.mulVec_mulVec, hker, Matrix.mulVec_zero]
 

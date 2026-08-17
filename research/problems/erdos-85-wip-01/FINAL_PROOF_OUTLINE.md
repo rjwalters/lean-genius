@@ -147,14 +147,16 @@ generalized rather than merely replayed.
      vertices has a vector `w` over `𝔽₂`, distinct from both `0` and `1`, with
 
      ```text
-     (I + J + D)w = 0.
+     Aw = 0,                 (I + J + D)w = 0.
      ```
 
      It follows from `A²=I+J+D` modulo two and the second-kernel-vector theorem
      for an even-dimensional alternating matrix killing `1`. This is a real
-     uniform constraint on every binary regular core, but it is not yet a
-     contradiction: the next A-REG task is to combine this proper parity set
-     with defect components or the integral/complex Gram identities.
+     uniform constraint on every binary regular core: the support of `w` has
+     even `G`-neighborhood at every vertex while simultaneously satisfying the
+     defect parity equation. It is not yet a contradiction; the next A-REG
+     task is to combine this coupled proper parity set with defect components
+     or the integral/complex Gram identities.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
