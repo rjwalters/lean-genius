@@ -1,5 +1,6 @@
 import Proofs.Erdos85EvenExcessOneDefectKernel
 import Proofs.Erdos85AdjacencyCharpolySquareModTwo
+import Proofs.Erdos85ComponentFactorization
 
 /-!
 # Characteristic-two parity for regular square-order cores
@@ -200,5 +201,24 @@ theorem binarySquare_defect_charpoly_factorization_even_zmodTwo
   obtain ⟨p, hp⟩ :=
     binarySquare_defect_charpoly_isSquare_zmodTwo G heven hcard
   exact factorization_even_of_eq_sq hp r
+
+/-- Componentwise form of the mod-two factor parity: for each polynomial
+factor, the sum of its valuations in the induced defect-component
+characteristic polynomials is even. -/
+theorem binarySquare_sum_defectComponent_charpoly_factorization_even_zmodTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    {q : ℕ} (heven : Even q) (hcard : Fintype.card V = q * q)
+    (r : Polynomial (ZMod 2)) :
+    Even (∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+      factorization
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix
+          (ZMod 2)).charpoly r) := by
+  rw [← adjMatrix_charpoly_factorization_eq_sum_connectedComponents]
+  exact binarySquare_defect_charpoly_factorization_even_zmodTwo
+    G heven hcard r
 
 end Erdos85

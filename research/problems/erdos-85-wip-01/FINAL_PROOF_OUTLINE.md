@@ -177,12 +177,19 @@ generalized rather than merely replayed.
      layer is partly `PROVEN`: the generic UFD lemma
      `factorization_even_of_eq_sq` and its graph specialization
      `binarySquare_defect_charpoly_factorization_even_zmodTwo` show that every
-     normalized mod-two polynomial factor has even valuation in `χ_D`. The
-     remaining component consumer is to combine this with a general
-     componentwise charpoly product theorem, then find a factor parity forced
-     odd by the square-order Gram or component equations. Squarehood and even
-     global valuations alone are universal for even-order graphs and therefore
-     are infrastructure, not the terminal.
+     normalized mod-two polynomial factor has even valuation in `χ_D`.
+     Component decomposition is now also `PROVEN`:
+     `adjMatrix_charpoly_eq_prod_connectedComponents` gives the general
+     characteristic-polynomial product, and
+     `adjMatrix_charpoly_factorization_eq_sum_connectedComponents` turns each
+     global valuation into the sum of component valuations. Consequently
+     `binarySquare_sum_defectComponent_charpoly_factorization_even_zmodTwo`
+     proves that component sum is even for every factor. The sole remaining
+     terminal in this subroute is now graph-specific: find a factor whose
+     component valuation sum is forced odd by the square-order Gram or
+     component equations. Squarehood and even global valuations alone are
+     universal for even-order graphs and therefore are infrastructure, not the
+     terminal.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;

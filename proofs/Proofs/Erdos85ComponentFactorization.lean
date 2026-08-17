@@ -1,5 +1,6 @@
 import Proofs.Erdos85CycleGraphIso
 import Proofs.RationalCanonicalFormExists
+import Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp
 
 namespace Erdos85
 
@@ -78,5 +79,56 @@ theorem det_resolvent_eq_prod_connectedComponents
   rw [hreindex, hscalar, reindex_adjMatrix_eq_componentBlockDiagonal]
   rw [← Matrix.blockDiagonal'_sub]
   exact RationalCanonicalFormExists.RCF.det_blockDiagonal' _
+
+/-- The adjacency characteristic polynomial is the product of the adjacency
+characteristic polynomials of the induced connected components. -/
+theorem adjMatrix_charpoly_eq_prod_connectedComponents
+    {V R : Type*} [Fintype V] [DecidableEq V]
+    [CommRing R] (D : SimpleGraph V) [DecidableRel D.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent] :
+    (D.adjMatrix R).charpoly =
+      ∏ c : D.ConnectedComponent,
+        ((D.induce c.supp).adjMatrix R).charpoly := by
+  have hglobal : D.adjMatrix (Polynomial R) =
+      (Polynomial.C : R →+* Polynomial R).mapMatrix (D.adjMatrix R) := by
+    ext i j
+    simp only [SimpleGraph.adjMatrix_apply, RingHom.mapMatrix_apply,
+      Matrix.map_apply]
+    split <;> simp
+  have hcomponent : ∀ c : D.ConnectedComponent,
+      (D.induce c.supp).adjMatrix (Polynomial R) =
+        (Polynomial.C : R →+* Polynomial R).mapMatrix
+          ((D.induce c.supp).adjMatrix R) := by
+    intro c
+    ext i j
+    simp only [SimpleGraph.adjMatrix_apply, RingHom.mapMatrix_apply,
+      Matrix.map_apply]
+    split <;> simp
+  have h := det_resolvent_eq_prod_connectedComponents
+    (R := Polynomial R) D (Polynomial.X : Polynomial R)
+  simpa only [Matrix.charpoly, Matrix.charmatrix, hglobal, hcomponent] using h
+
+/-- Factor valuations of the full adjacency characteristic polynomial are the
+sum of the corresponding valuations over connected components. -/
+theorem adjMatrix_charpoly_factorization_eq_sum_connectedComponents
+    {V K : Type*} [Fintype V] [DecidableEq V]
+    [Field K] [NormalizationMonoid K] [DecidableEq K]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (r : Polynomial K) :
+    factorization (D.adjMatrix K).charpoly r =
+      ∑ c : D.ConnectedComponent,
+        factorization ((D.induce c.supp).adjMatrix K).charpoly r := by
+  classical
+  rw [adjMatrix_charpoly_eq_prod_connectedComponents]
+  induction (Finset.univ : Finset D.ConnectedComponent) using Finset.induction with
+  | empty => simp
+  | @insert c s hc ih =>
+      rw [Finset.prod_insert hc,
+        factorization_mul
+          ((D.induce c.supp).adjMatrix K).charpoly_monic.ne_zero
+          (Finset.prod_ne_zero_iff.mpr fun e he =>
+            ((D.induce e.supp).adjMatrix K).charpoly_monic.ne_zero),
+        Finsupp.add_apply, Finset.sum_insert hc, ih]
 
 end Erdos85
