@@ -847,6 +847,77 @@ theorem binarySquare_regular_card_componentNeighbors_sizeQ_eq_one
   rw [hc] at h
   exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) (by simpa using h)
 
+/-- At every vertex of a unit defect component, the unique ambient neighbor
+inside that component is exactly the unique triangle-free neighbor. -/
+theorem binarySquare_regular_sizeQ_component_triangleFree_degree_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q) (x : V)
+    (hx : (secondOrderDefectGraph G).connectedComponentMk x = c) :
+    (triangleFreeEdgeGraph G).degree x = 1 := by
+  let D := secondOrderDefectGraph G
+  have heq : triangleFreeNeighbors G x = componentNeighborFinset G D c x := by
+    ext y
+    constructor
+    · intro hy
+      have hyData := (mem_triangleFreeNeighbors G x y).mp hy
+      have hDxy : D.Adj x y := by
+        change (secondOrderDefectGraph G).Adj x y
+        rw [secondOrderDefectGraph, SimpleGraph.sup_adj]
+        exact Or.inr ((triangleFreeEdgeGraph_adj G x y).mpr hy)
+      have hyc : D.connectedComponentMk y = c :=
+        (SimpleGraph.ConnectedComponent.connectedComponentMk_eq_of_adj hDxy).symm.trans hx
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset x y).mpr hyData.1, hyc⟩
+    · intro hy
+      have hyData : G.Adj x y ∧ D.connectedComponentMk y = c := by
+        rw [componentNeighborFinset] at hy
+        exact ⟨(G.mem_neighborFinset x y).mp (Finset.mem_filter.mp hy).1,
+          (Finset.mem_filter.mp hy).2⟩
+      have hxy : x ≠ y := G.ne_of_adj hyData.1
+      have hzero := binarySquare_regular_sizeQ_component_commonNeighbors_card_zero
+        G hfree hq hreg hcard c hc hx hyData.2 hxy
+      exact (mem_triangleFreeNeighbors G x y).mpr ⟨hyData.1, hzero⟩
+  rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+    triangleFreeEdgeGraph_neighborFinset, heq]
+  exact binarySquare_regular_card_componentNeighbors_sizeQ_eq_one
+    G hfree hq hreg hcard c hc x
+
+/-- No unit defect component can occur at even regular degree. -/
+theorem binarySquare_regular_no_sizeQ_defectComponent_of_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hqEven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    c.supp.ncard ≠ q := by
+  intro hc
+  obtain ⟨x, hx⟩ := c.nonempty_supp
+  have htf := binarySquare_regular_sizeQ_component_triangleFree_degree_eq_one
+    G hfree hq hreg hcard c hc x hx
+  have hlocal := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree x
+  have htfcard : (triangleFreeNeighbors G x).card = 1 := by
+    rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset] at htf
+    exact htf
+  rw [hreg x, htfcard] at hlocal
+  obtain ⟨m, hm⟩ := hqEven
+  omega
+
 /-- In the all-unit partition, the triangle-free edges at a vertex are
 exactly its unique ambient edge inside its own defect component. -/
 theorem binarySquare_regular_allUnit_triangleFree_degree_eq_one
@@ -1107,6 +1178,43 @@ theorem binarySquare_regular_card_defectComponents_le
         have : m c = 0 := by omega
         rw [hmSize c, this, mul_zero] at hcpos
         omega
+      omega
+    _ = q := hmSum
+
+/-- At even degree every normalized component order is at least two, so twice
+the number of defect components is at most `q`. -/
+theorem binarySquare_regular_two_mul_card_defectComponents_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hqEven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q) :
+    2 * Fintype.card (secondOrderDefectGraph G).ConnectedComponent ≤ q := by
+  obtain ⟨m, hmSize, hmSum⟩ :=
+    binarySquare_regular_exists_defectComponent_partition
+      G hfree hq hreg hcard
+  calc
+    2 * Fintype.card (secondOrderDefectGraph G).ConnectedComponent =
+        ∑ _c : (secondOrderDefectGraph G).ConnectedComponent, 2 := by simp [mul_comm]
+    _ ≤ ∑ c : (secondOrderDefectGraph G).ConnectedComponent, m c := by
+      apply Finset.sum_le_sum
+      intro c _
+      have hmpos : 0 < m c := by
+        have hcpos : 0 < c.supp.ncard := c.nonempty_supp.ncard_pos
+        by_contra hm0
+        push Not at hm0
+        have : m c = 0 := by omega
+        rw [hmSize c, this, mul_zero] at hcpos
+        omega
+      have hmne : m c ≠ 1 := by
+        intro hm
+        have hc : c.supp.ncard = q := by simpa [hm] using hmSize c
+        exact binarySquare_regular_no_sizeQ_defectComponent_of_even
+          G hfree hq hqEven hreg hcard c hc
       omega
     _ = q := hmSum
 

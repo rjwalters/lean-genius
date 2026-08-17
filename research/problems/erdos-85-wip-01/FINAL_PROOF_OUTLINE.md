@@ -294,6 +294,10 @@ generalized rather than merely replayed.
      route remains available as
      `binarySquare_regular_not_allUnit_of_two_pow_odd`.  Hence
      `GAP A-REG-COMPONENTS` has been narrowed to mixed partitions only.
+     In fact the parity argument is component-local: the `PROVEN` theorem
+     `binarySquare_regular_no_sizeQ_defectComponent_of_even` excludes even one
+     unit part.  Thus for binary `q`, every remaining normalized part satisfies
+     `m_c ≥ 2`; in particular there are at most `q/2` defect components.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
