@@ -117,6 +117,82 @@ theorem false_of_even_highRoot_saturation
   obtain ⟨b, hb⟩ := hTeven
   omega
 
+/-- At square order, the existence of a degree-`q+1` vertex forces `q` odd.
+The zero-slack high-root theorem makes its open neighborhood one-regular, so
+handshaking makes the neighborhood size `q+1` even. -/
+theorem squareOrder_degree_succ_forces_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 2 ≤ q)
+    (hmin : ∀ x : V, q ≤ G.degree x)
+    (hcard : Fintype.card V = q * q) {v : V}
+    (hv : G.degree v = q + 1) :
+    Odd q := by
+  let H := G.induce (G.neighborSet v)
+  have hlocal :=
+    (squareOrder_degree_succ_highRoot_structure
+      G hfree hq hmin hcard hv).2.2
+  have hsum : ∑ x : {z : V // z ∈ G.neighborSet v}, H.degree x = q + 1 := by
+    calc
+      (∑ x : {z : V // z ∈ G.neighborSet v}, H.degree x) =
+          ∑ _x : {z : V // z ∈ G.neighborSet v}, 1 := by
+        apply Finset.sum_congr rfl
+        intro x _
+        exact hlocal x
+      _ = Fintype.card {z : V // z ∈ G.neighborSet v} := by simp
+      _ = G.degree v := by
+        rw [Fintype.card_subtype]
+        have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+            G.neighborFinset v := by ext z; simp
+        rw [heq, G.card_neighborFinset_eq_degree]
+      _ = q + 1 := hv
+  have hhand := H.sum_degrees_eq_twice_card_edges
+  rw [hsum] at hhand
+  obtain ⟨k, hk⟩ : Even (q + 1) :=
+    ⟨H.edgeFinset.card, by omega⟩
+  refine ⟨k - 1, ?_⟩
+  omega
+
+/-- Consequently an even square-order candidate has no degree-`q+1` vertex. -/
+theorem squareOrder_no_degree_succ_of_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 2 ≤ q) (heven : Even q)
+    (hmin : ∀ x : V, q ≤ G.degree x)
+    (hcard : Fintype.card V = q * q) (v : V) :
+    G.degree v ≠ q + 1 := by
+  intro hv
+  have hodd := squareOrder_degree_succ_forces_odd
+    G hfree hq hmin hcard hv
+  obtain ⟨a, ha⟩ := heven
+  obtain ⟨b, hb⟩ := hodd
+  omega
+
+/-- **Uniform even square-order nonregular exclusion.**  Under the tight-edge
+cover, every degree is `q` or `q+1`; the preceding parity terminal removes the
+second case for even `q`, so the graph is regular. -/
+theorem squareOrder_regular_of_even_tightEdgeCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 2 ≤ q) (heven : Even q)
+    (hmin : ∀ x : V, q ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = q ∨ G.degree v = q)
+    (hcard : Fintype.card V = q * q) :
+    ∀ x : V, G.degree x = q := by
+  intro x
+  rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+    G hfree hq hmin hcover hcard x with hx | hx
+  · exact hx
+  · exact (squareOrder_no_degree_succ_of_even
+      G hfree hq heven hmin hcard x hx).elim
+
 end
 
 end Erdos85
