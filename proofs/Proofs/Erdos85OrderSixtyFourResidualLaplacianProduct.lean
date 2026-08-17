@@ -308,6 +308,81 @@ theorem exists_componentResidual_det_eq_eight_pow_seven_of_order_eight
       (by simpa [Set.fintypeCard_eq_ncard] using hc8)
   simpa only [hmat] using hdet
 
+/-- Instance-explicit form of degree preservation on a connected-component
+support. -/
+theorem degree_induce_connectedComponent_supp_explicit
+    (D : SimpleGraph (Fin 64)) [DecidableRel D.Adj]
+    (c : D.ConnectedComponent) [Fintype c.supp] (x : c.supp) :
+    (D.induce c.supp).degree x = D.degree x.1 := by
+  let e : (D.induce c.supp).neighborSet x ≃ D.neighborSet x.1 :=
+    { toFun := fun z => ⟨z.1.1, z.2⟩
+      invFun := fun z =>
+        ⟨⟨z.1, neighborSet_subset_connectedComponent_supp D c x z.2⟩,
+          z.2⟩
+      left_inv := fun z => by ext; rfl
+      right_inv := fun z => by ext; rfl }
+  rw [← (D.induce c.supp).card_neighborSet_eq_degree,
+    ← D.card_neighborSet_eq_degree]
+  exact Fintype.card_congr e
+
+/-- If the global graph is seven-regular, every stable component Laplacian
+preserves its mean-zero sector. -/
+theorem sevenRegularComponentLaplacian_maps_meanZero
+    (D : SimpleGraph (Fin 64)) [DecidableRel D.Adj]
+    (hreg : ∀ x : Fin 64, D.degree x = 7)
+    (c : D.ConnectedComponent) [Fintype c.supp] :
+    ∀ v ∈ LinearMap.ker (coordinateSumLinearMap c.supp),
+      (sevenRegularLaplacianMatrix (D.induce c.supp)).toLin' v ∈
+        LinearMap.ker (coordinateSumLinearMap c.supp) := by
+  have hregInd : ∀ x : c.supp, (D.induce c.supp).degree x = 7 := by
+    intro x
+    rw [degree_induce_connectedComponent_supp_explicit D c x, hreg]
+  have hmat := sevenRegularLaplacianMatrix_eq_lapMatrix
+    (D.induce c.supp) hregInd
+  simpa only [hmat] using componentLaplacian_maps_meanZero D c
+
+/-- If a seven-factor product is square and six factors are `8^7`, then the
+distinguished factor is square over the rationals. -/
+theorem isSquare_distinguished_of_seven_product_and_six_eightFactors
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (hcard : Fintype.card C = 7) (f : C → ℚ) (c : C)
+    (hsmall : ∀ e, e ≠ c → f e = (8 : ℚ) ^ 7)
+    (hsq : IsSquare (∏ e : C, f e)) :
+    IsSquare (f c) := by
+  have hrest :
+      (∏ e ∈ (Finset.univ.erase c : Finset C), f e) =
+        ((8 : ℚ) ^ 7) ^ 6 := by
+    calc
+      (∏ e ∈ (Finset.univ.erase c : Finset C), f e) =
+          ∏ _e ∈ (Finset.univ.erase c : Finset C), (8 : ℚ) ^ 7 := by
+        apply Finset.prod_congr rfl
+        intro e he
+        exact hsmall e (Finset.ne_of_mem_erase he)
+      _ = ((8 : ℚ) ^ 7) ^
+          (Finset.univ.erase c : Finset C).card := by
+        rw [Finset.prod_const]
+      _ = ((8 : ℚ) ^ 7) ^ 6 := by
+        rw [Finset.card_erase_of_mem (Finset.mem_univ c)]
+        simp [hcard]
+  have hsplit :
+      f c * (∏ e ∈ (Finset.univ.erase c : Finset C), f e) =
+        ∏ e : C, f e := by
+    simpa using Finset.mul_prod_erase (Finset.univ : Finset C) f
+      (Finset.mem_univ c)
+  obtain ⟨a, ha⟩ := hsq
+  have heq : a ^ 2 = f c * ((8 : ℚ) ^ 21) ^ 2 := by
+    calc
+      a ^ 2 = a * a := pow_two a
+      _ = ∏ e : C, f e := ha.symm
+      _ = f c * (∏ e ∈ (Finset.univ.erase c : Finset C), f e) :=
+        hsplit.symm
+      _ = f c * ((8 : ℚ) ^ 21) ^ 2 := by
+        rw [hrest]
+        ring
+  refine ⟨a / ((8 : ℚ) ^ 21), ?_⟩
+  field_simp
+  nlinarith
+
 end
 
 end Erdos85
