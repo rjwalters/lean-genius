@@ -929,6 +929,22 @@ generalized rather than merely replayed.
      eigenvectors in either direction.  This reduces the remaining interior
      spectral distribution problem to the spectra of the connected defect
      components themselves.
+     For the binary-surviving normalized size-two parts, the first
+     graph-specific refinement beyond this spectrally tautological transport
+     is now `PROVEN` in
+     `Erdos85BinarySquareSizeTwoOwnerLineGraph`.  The canonical bijection from
+     ambient vertices to non-defect selector pairs is a graph isomorphism
+
+     ```text
+     Owner(c) ~= intersection graph of the selector pairs in c.
+     ```
+
+     Moreover, for distinct size-two coordinates `c,d`, the two isomorphisms
+     are orthogonal: intersecting selector edges in coordinate `c` map to
+     disjoint selector edges in coordinate `d`.  This is the precise
+     line-graph/orthogonal-double-cover structure that ordinary spectra and
+     trace moments forget, and exposes the perfect-matching compatibility
+     problem as the next combinatorial terminal for the all-size-two branch.
      The abstract equality case is now `PROVEN` in
      `Erdos85BinarySquareEndpointRigidity`:
      `posSemidef_mul_self_eq_smul_of_upper_of_trace_sq_eq` gives
