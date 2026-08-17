@@ -110,6 +110,49 @@ theorem sevenRegular_codegreeFive_compl_codegree_eq_five
     Finset.card_sdiff_of_subset (Finset.subset_univ _), Finset.card_univ,
     hcard, hclosed]
 
+/-- For a nonadjacent pair, the complement neighborhood of `x` splits into
+`y`, the common complement core, and the neighbors private to `y` in the
+original graph. -/
+theorem compl_neighborFinset_eq_insert_complCommon_union_reversePrivate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    {x y : V} (hxy : x ≠ y) (hnot : ¬ H.Adj x y) :
+    Hᶜ.neighborFinset x = insert y
+      ((Hᶜ.neighborFinset x ∩ Hᶜ.neighborFinset y) ∪
+        (H.neighborFinset y \ H.neighborFinset x)) := by
+  ext z
+  simp only [SimpleGraph.mem_neighborFinset, compl_adj,
+    Finset.mem_insert, Finset.mem_union, Finset.mem_inter,
+    Finset.mem_sdiff]
+  constructor
+  · rintro ⟨hxz, hnotxz⟩
+    by_cases hzy : z = y
+    · exact Or.inl hzy
+    by_cases hyz : H.Adj y z
+    · exact Or.inr (Or.inr ⟨hyz, hnotxz⟩)
+    · exact Or.inr (Or.inl ⟨⟨hxz, hnotxz⟩, Ne.symm hzy, hyz⟩)
+  · rintro (hzy | hcommon | hprivate)
+    · subst z
+      exact ⟨hxy, hnot⟩
+    · exact hcommon.1
+    · have hxz : x ≠ z := by
+        intro hxz
+        subst z
+        exact hnot hprivate.1.symm
+      exact ⟨hxz, hprivate.2⟩
+
+/-- Symmetric version at `y`. -/
+theorem compl_neighborFinset_eq_insert_complCommon_union_forwardPrivate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    {x y : V} (hxy : x ≠ y) (hnot : ¬ H.Adj x y) :
+    Hᶜ.neighborFinset y = insert x
+      ((Hᶜ.neighborFinset x ∩ Hᶜ.neighborFinset y) ∪
+        (H.neighborFinset x \ H.neighborFinset y)) := by
+  have h := compl_neighborFinset_eq_insert_complCommon_union_reversePrivate
+    H (x := y) (y := x) hxy.symm (fun h => hnot h.symm)
+  simpa only [Finset.inter_comm] using h
+
 end
 
 end Erdos85
