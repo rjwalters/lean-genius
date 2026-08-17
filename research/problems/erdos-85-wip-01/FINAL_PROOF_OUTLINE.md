@@ -972,7 +972,17 @@ generalized rather than merely replayed.
      distinct labels give pairwise disjoint cubes, and
      `binarySquare_regular_threeSizeTwoParts_cubeSupport_allAxisLines_exactlyTwo`
      proves that every axis-parallel line in their union has exactly two
-     points.  It is therefore the
+     points.  The stronger self-indexing constraint, absent from an abstract
+     cube system, is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoSelfIndexedBlock`:
+
+     ```text
+     B_c[c,c] = Adj(G[c]),       degree(G[c]) = 2.
+     ```
+
+     Thus the sixteen distinguished labels of an order-64 size-two coordinate
+     encode its internal cycle 2-factor on the same sixteen ground points.
+     It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
      coordinates (at `q=8`).
