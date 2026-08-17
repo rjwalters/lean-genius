@@ -422,6 +422,12 @@ generalized rather than merely replayed.
       high vertex `v` has exactly one neighbor in `N_G(z)\{u}`. Thus routing
       through the branch system at a low center is a literal perfect
       transversal.
+    - `squareOrder_sum_highIncidence_over_defectBranch` refines the scalar
+      equation branchwise: for low `u` and `z∈N_G(u)`, the sum of high-incidence
+      weights `k(x)` over `x∈N_G(z)\{u}` is
+      `h-k(u) + (if z is high then q else 0)`.  Hence every small branch has
+      weight `h-k(u)` and every large branch has weight `h-k(u)+q`, a constraint
+      invisible to the earlier weight-class defect-edge census.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
