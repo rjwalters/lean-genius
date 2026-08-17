@@ -187,6 +187,33 @@ it is not ruled out by the vertex-transitive Cayley searches at q=9 and q=11.
 The next decisive existence test should search this holomorph-valued model at
 q=9, where `H_q` is the dihedral group of order ten.
 
+`near_latin_holomorph.py` implements the first exact relaxation of that test.
+It restricts every datum permutation to `Hol(H_q)` and imposes all C4 clauses,
+but does not yet impose that each completed routing factorization is one coset
+of the common regular `H_q`. Independent holomorph relabelings of the fibers
+justify a star-tree gauge fixing seven q=9 cross matchings to the identity.
+The encoding calibrates at q=7, finding a fresh witness in under six seconds
+both before and after the gauge. At q=9 the gauged instance has 9,640 variables
+and 5,516,707 clauses and returns `UNKNOWN-TIMEOUT` after ten minutes. The
+ungauged instance likewise times out, so there is no q=9 verdict yet.
+
+The omitted coset condition has a smaller quotient formulation. Write each
+holomorph element uniquely as a translation followed by an automorphism. A
+routing family is a coset of the common regular group exactly when all its
+members have the same automorphism part. Hence the next encoding should add
+one `Aut(H_q)`-valued routing label `β_ij` for every fiber pair and enforce
+
+```text
+β_ij = aut(π_ij) aut(μ_i)
+     = aut(μ_j) aut(π_ij)
+     = aut(π_jk)⁻¹ aut(π_ik)
+```
+
+for every applicable matching choice and third fiber `k` (and similarly for
+the second matching on doubled blocks). These are finite cocycle equations in
+`Aut(D₁₀)`, of order 20, and should prune the exact search before any longer
+raw SAT run is attempted.
+
 ## 3. Precise candidate axiom for B-EXIST
 
 **AXIOM B-NEAR-LATIN-LIFT.** There are collision-free near-Latin lift data of
