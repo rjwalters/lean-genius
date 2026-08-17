@@ -1,4 +1,3 @@
-import Proofs.Erdos85OrderSixtyFourCofactorSquare
 import Mathlib.LinearAlgebra.Matrix.SchurComplement
 
 /-! # Row-sum change of basis for the Laplacian cofactor bridge -/
