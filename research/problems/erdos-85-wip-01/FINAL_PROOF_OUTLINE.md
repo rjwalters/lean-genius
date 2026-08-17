@@ -952,9 +952,15 @@ generalized rather than merely replayed.
      `d`-selectors are pairwise disjoint two-element sets and every point of
      `d` occurs in exactly one of them.  Thus each `c`-star becomes an actual
      perfect matching of `d`, not merely a family of disjoint edges.  The
-     remaining all-size-two terminal is the compatibility/classification of
-     these simultaneous two-fold perfect-matching covers for at least four
-     connected-complement coordinates (at `q=8`).
+     exact page-overlap law is now also `PROVEN` in
+     `Erdos85BinarySquareSizeTwoMatchingOverlap`: the matchings indexed by
+     distinct source points `u,v` share a target edge iff `u,v` are adjacent
+     in the selector complement (equivalently, are not defect-adjacent).
+     This holds even for the self-coordinate cover and is precisely the ODC
+     incidence axiom.  The remaining all-size-two terminal is therefore the
+     compatibility/classification of these simultaneous two-fold
+     perfect-matching covers for at least four connected-complement
+     coordinates (at `q=8`).
      The abstract equality case is now `PROVEN` in
      `Erdos85BinarySquareEndpointRigidity`:
      `posSemidef_mul_self_eq_smul_of_upper_of_trace_sq_eq` gives
