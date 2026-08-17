@@ -36,6 +36,52 @@ theorem twoRegular_component_induce_eq_cycleSubgraph
   exact isCycle_toSubgraph_coe_eq_induce_of_degree_two hp
     (fun v _hv ↦ hdeg v)
 
+/-- A simple closed walk of length four is a copy of `C4` in the host
+graph. -/
+theorem containsC4_of_isCycle_length_four
+    {V : Type*} {G : SimpleGraph V} {x : V} {p : G.Walk x x}
+    (hp : p.IsCycle) (hlen : p.length = 4) : containsC4 V G := by
+  let f : Fin 4 → V := fun i ↦ p.getVert i.val
+  have hf : Function.Injective f := by
+    intro i j hij
+    apply Fin.ext
+    exact hp.getVert_injOn'
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) hij
+  have h01 : G.Adj (p.getVert 0) (p.getVert 1) :=
+    p.adj_getVert_succ (by omega)
+  have h12 : G.Adj (p.getVert 1) (p.getVert 2) :=
+    p.adj_getVert_succ (by omega)
+  have h23 : G.Adj (p.getVert 2) (p.getVert 3) :=
+    p.adj_getVert_succ (by omega)
+  have h30 : G.Adj (p.getVert 3) (p.getVert 0) := by
+    have h34 := p.adj_getVert_succ (show 3 < p.length by omega)
+    norm_num at h34
+    rw [show 4 = p.length by omega, p.getVert_length] at h34
+    simpa using h34
+  refine ⟨f, hf, ?_⟩
+  intro i j hij
+  fin_cases i <;> fin_cases j <;>
+    simp [C4] at hij ⊢ <;> simp_all [f, adj_comm]
+
+/-- A finite 2-regular graph with a component of order four contains a
+copy of `C4`. -/
+theorem twoRegular_containsC4_of_component_order_four
+    {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hdeg : ∀ x, G.degree x = 2)
+    (c : G.ConnectedComponent) (hc4 : c.supp.ncard = 4) :
+    containsC4 V G := by
+  obtain ⟨x, p, hp, hpverts, _hgraph⟩ :=
+    twoRegular_component_induce_eq_cycleSubgraph G hdeg c
+  have hlen : p.length = 4 := by
+    calc
+      p.length = Nat.card p.toSubgraph.verts :=
+        (isCycle_card_verts_eq_length hp).symm
+      _ = p.toSubgraph.verts.ncard := Nat.card_coe_set_eq _
+      _ = c.supp.ncard := congrArg Set.ncard hpverts
+      _ = 4 := hc4
+  exact containsC4_of_isCycle_length_four hp hlen
+
 /-- The adjacency characteristic polynomial of a component of a finite
 2-regular graph is `C_r - 2`, where `r` is the component order. -/
 theorem twoRegular_component_charpoly_chebyshev

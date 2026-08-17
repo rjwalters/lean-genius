@@ -65,6 +65,20 @@ theorem exists_orderSixteenCyclePartition_of_twoRegular
     orderSixteen_cycle_partition_classification rs hrsum hrparts hrsorted, ?_⟩
   exact hrsizes
 
+/-- C4-freeness supplies the no-order-four hypothesis automatically. -/
+theorem exists_orderSixteenCyclePartition_of_twoRegular_of_not_containsC4
+    {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hcard : Fintype.card V = 16)
+    (hdeg : ∀ x, G.degree x = 2) (hfree : ¬ containsC4 V G) :
+    ∃ rs : List ℕ,
+      OrderSixteenCyclePartition rs ∧
+      (↑rs : Multiset ℕ) =
+        (Finset.univ : Finset G.ConnectedComponent).val.map
+          (fun c ↦ c.supp.ncard) := by
+  apply exists_orderSixteenCyclePartition_of_twoRegular G hcard hdeg
+  intro c hc4
+  exact hfree (twoRegular_containsC4_of_component_order_four G hdeg c hc4)
+
 end
 
 end Erdos85
