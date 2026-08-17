@@ -1335,6 +1335,20 @@ generalized rather than merely replayed.
      gap must therefore relate two different color decompositions of these
      rows, or impose a global compatibility condition across roots.  A local
      contradiction from saturation alone is not a valid remaining target.
+     The first cross-root replacement is `PROVEN` in
+     `Erdos85BinarySquareCrossRootCenterPairs`.  For two roots joined by a
+     second-order-defect edge and any remote target component, send each
+     target vertex to the ordered pair of its canonical ambient centers with
+     the two roots.  This center-pair map is injective: coincident centers
+     would give the defect-adjacent roots a common neighbor, while two target
+     vertices with the same distinct center pair would give an ambient
+     four-cycle.  Each coordinate fiber is exactly the corresponding
+     component selector and hence has cardinality two in the normalized
+     size-two branch.  Thus every defect edge and remote component canonically
+     produces a simple 2-regular bipartite transition graph between the two
+     eight-center root neighborhoods.  The remaining global obstruction can
+     now be posed as compatibility of these transition cycle covers around a
+     defect-component cycle, rather than as local row saturation.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
