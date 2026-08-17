@@ -1151,7 +1151,19 @@ generalized rather than merely replayed.
 
      Hence a future finite classification cannot accidentally admit balanced
      four-color arrays that do not arise from the underlying 2-regular
-     cross-incidence blocks.
+     cross-incidence blocks.  The first genuinely ternary closure law is
+     `PROVEN` in
+     `Erdos85OrderSixtyFourRoutingMonochromaticTriangleMultiplicity`, using
+     the routing-color composition identity.  For three pairwise distinct
+     endpoint components `c,e,f`, if `route_cf(x,w)=k`, then
+
+     ```text
+     2 ≤ |{z in e : route_ce(x,z)=k and route_ef(z,w)=k}| ≤ 4.
+     ```
+
+     Thus every colored endpoint edge extends through every third coordinate
+     to at least two monochromatic routing triangles.  This rules out many
+     balanced four-color arrays that satisfy only the binary line-sum laws.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
