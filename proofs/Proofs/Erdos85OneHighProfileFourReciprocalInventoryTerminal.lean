@@ -293,4 +293,74 @@ theorem OneHighReciprocalSameMissEdges.exists_three_isolatedTargets_of_profileFo
         p.branch_mate p.leafLabel p.profile p.constraints hcertGraph)
   · exact hisolated
 
+/-- Among three isolated-target witnesses, two use the same endpoint of the
+reciprocal source edge as their isolated vertex.  This is the packing form
+needed downstream: the same source vertex reaches isolated vertices in two
+distinct branches. -/
+theorem exists_sameSide_isolatedTarget_pair_of_three
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    {q : OneHighReciprocalSameMissEdges G hfree hv p}
+    {w₁ w₂ w₃ : {r : V // r ∈ G.neighborSet v}}
+    (hw12 : w₁ ≠ w₂) (hw13 : w₁ ≠ w₃) (hw23 : w₂ ≠ w₃)
+    (hT₁ : Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₁))
+    (hT₂ : Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₂))
+    (hT₃ : Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₃)) :
+    ∃ wa wb : {r : V // r ∈ G.neighborSet v}, wa ≠ wb ∧
+      ∃ (Ta : OneHighReciprocalIsolatedTarget G hfree hv p q wa)
+        (Tb : OneHighReciprocalIsolatedTarget G hfree hv p q wb),
+        (((G.neighborFinset Ta.y ∩ secondLayerBranch G v wa).card = 0 ∧
+          (G.neighborFinset Tb.y ∩ secondLayerBranch G v wb).card = 0) ∨
+         ((G.neighborFinset Ta.y' ∩ secondLayerBranch G v wa).card = 0 ∧
+          (G.neighborFinset Tb.y' ∩ secondLayerBranch G v wb).card = 0)) := by
+  rcases hT₁ with ⟨T₁⟩
+  rcases hT₂ with ⟨T₂⟩
+  rcases hT₃ with ⟨T₃⟩
+  rcases T₁.isolated with h₁ | h₁
+  · rcases T₂.isolated with h₂ | h₂
+    · exact ⟨w₁, w₂, hw12, T₁, T₂, Or.inl ⟨h₁, h₂⟩⟩
+    · rcases T₃.isolated with h₃ | h₃
+      · exact ⟨w₁, w₃, hw13, T₁, T₃, Or.inl ⟨h₁, h₃⟩⟩
+      · exact ⟨w₂, w₃, hw23, T₂, T₃, Or.inr ⟨h₂, h₃⟩⟩
+  · rcases T₂.isolated with h₂ | h₂
+    · rcases T₃.isolated with h₃ | h₃
+      · exact ⟨w₂, w₃, hw23, T₂, T₃, Or.inl ⟨h₂, h₃⟩⟩
+      · exact ⟨w₁, w₃, hw13, T₁, T₃, Or.inr ⟨h₁, h₃⟩⟩
+    · exact ⟨w₁, w₂, hw12, T₁, T₂, Or.inr ⟨h₁, h₂⟩⟩
+
+/-- Certificate-backed profile-four capstone in same-side packing form. -/
+theorem OneHighReciprocalSameMissEdges.exists_sameSide_isolatedTarget_pair_of_profileFour_checked
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    {v : Fin 49} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : p.profile = 4)
+    (stored : OneHighMissTable)
+    (hstored : stored ∈ oneHighCapacityInventoryTables 4)
+    (hagree : OneHighTableRelevantAgree
+      (oneHighFamilyGraphTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) stored)
+    (hchecked : ∀ table ∈ oneHighProfileFourReciprocalEntryInventoryTables,
+      OneHighFamilyV2CheckedUnsat 4 table) :
+    ∃ wa wb : {r : Fin 49 // r ∈ G.neighborSet v}, wa ≠ wb ∧
+      ∃ (Ta : OneHighReciprocalIsolatedTarget G hfree hv p q wa)
+        (Tb : OneHighReciprocalIsolatedTarget G hfree hv p q wb),
+        (((G.neighborFinset Ta.y ∩ secondLayerBranch G v wa).card = 0 ∧
+          (G.neighborFinset Tb.y ∩ secondLayerBranch G v wb).card = 0) ∨
+         ((G.neighborFinset Ta.y' ∩ secondLayerBranch G v wa).card = 0 ∧
+          (G.neighborFinset Tb.y' ∩ secondLayerBranch G v wb).card = 0)) := by
+  obtain ⟨w₁, w₂, w₃, hw12, hw13, hw23, _, _, _, hT₁, hT₂, hT₃⟩ :=
+    q.exists_three_isolatedTargets_of_profileFour_checked G hfree hmin
+      hprofile stored hstored hagree hchecked
+  exact exists_sameSide_isolatedTarget_pair_of_three
+    hw12 hw13 hw23 hT₁ hT₂ hT₃
+
 end Erdos85
