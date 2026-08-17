@@ -100,4 +100,37 @@ theorem exists_tenSixOutsideVar_of_adj
       exact False.elim ((List.idxOf?_eq_none_iff.mp hopt) hp)
   | some id => exact ⟨id, rfl⟩
 
+/-- A semantic service neighbour occurs in the exact positive-clause term
+list, with its certified variable identifier. -/
+theorem exists_mem_tenSixOutsideServiceTerms_of_adj
+    (i : Fin 6) (C : SimpleGraph (Fin 48)) [DecidableRel C.Adj]
+    (hs : OutsideCClauseSemantics C
+      (fun u e ↦ tenSixIncidence i u e = true) (tenSixOutsideTarget i))
+    (u : Fin 16) (e f : Fin 48) (hef : C.Adj e f)
+    (huf : tenSixIncidence i u f = true) :
+    ∃ id, id ∈ tenSixOutsideServiceTerms i e u ∧
+      tenSixOutsideVar? i e f = some id := by
+  obtain ⟨id, hid⟩ := exists_tenSixOutsideVar_of_adj i C hs e f hef
+  refine ⟨id, ?_, hid⟩
+  simp only [tenSixOutsideServiceTerms, List.mem_filterMap]
+  exact ⟨f, by simp, by simp [huf, hid]⟩
+
+/-- Conversely, every service-term ID decodes to an incident candidate and
+the graph-induced DIMACS valuation reads its actual C adjacency. -/
+theorem tenSixOutsideServiceTerm_reifies
+    (i : Fin 6) (C : SimpleGraph (Fin 48)) [DecidableRel C.Adj]
+    (u : Fin 16) (e : Fin 48) {id : Nat}
+    (hid : id ∈ tenSixOutsideServiceTerms i e u) :
+    ∃ f : Fin 48, tenSixIncidence i u f = true ∧
+      tenSixOutsideVar? i e f = some id ∧
+      tenSixOutsideDimacsValuation i C id = decide (C.Adj e f) := by
+  simp only [tenSixOutsideServiceTerms, List.mem_filterMap] at hid
+  obtain ⟨f, _hf, hterm⟩ := hid
+  split at hterm
+  next huf =>
+    cases hvar : tenSixOutsideVar? i e f <;> simp_all
+    exact ⟨f, huf, hvar,
+      tenSixOutsideDimacsValuation_var i C e f hvar⟩
+  next huf => simp at hterm
+
 end Erdos85
