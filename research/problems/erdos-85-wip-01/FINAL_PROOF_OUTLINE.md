@@ -709,6 +709,20 @@ generalized rather than merely replayed.
 
      Thus any colorwise rank/Frobenius estimate now has a fixed global budget,
      with no remaining trace computation hidden in the interface.
+     The scalar budget has now been fully calibrated—and by itself is not a
+     contradiction.  `Erdos85BinarySquareCenteredOwnerTrace` proves
+
+     ```text
+     trace(C_c)   = m_c q^2 (q-1),
+     trace(C_c^2) = m_c q^4 (q-1).
+     ```
+
+     Summing the second formula and using `sum m_c = q` recovers exactly
+     `q^5(q-1)`.  Therefore no argument based only on total Frobenius mass can
+     distinguish `q=4` from `q>=8`; the terminal must use an equality-case
+     rank statement, the distribution of eigenvalues within colors, or the
+     self-indexed diagonal cycle blocks.  This rules out a tempting but
+     genuinely tautological scalar lane.
      The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
