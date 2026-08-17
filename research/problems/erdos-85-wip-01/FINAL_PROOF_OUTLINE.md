@@ -1500,10 +1500,12 @@ generalized rather than merely replayed.
      profiles.  The first three-orbit assembly step is PROVEN in
      `Erdos85OrderSixtyFourThreeCollisionCrossCounts`: among three pairwise
      distinct collision colors, at most one equals the source component, so
-     at least two off-source colors have cross-component count different from
-     five.  What remains is to contradict the simultaneous presence of those
-     two (indeed, where defined, `≤ 4`) profiles using the routing/cross-block
-     identities.  A further packing obstruction is PROVEN in
+     at least two off-source colors have cross-component count at most four
+     (the quantitative theorem is
+     `orderSixtyFour_threeDistinctCollisions_two_crossCounts_le_four`).  What
+     remains is to contradict the simultaneous presence of those two low-count
+     profiles using the routing/cross-block identities.  A further packing
+     obstruction is PROVEN in
      `Erdos85OrderSixteenTwoFourCyclesTriangleBound`: an order-sixteen factor
      with two distinct four-cycle components cannot also contain two triangle
      components, since those four parts already consume fourteen vertices and
