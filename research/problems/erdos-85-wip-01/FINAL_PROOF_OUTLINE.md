@@ -360,6 +360,10 @@ generalized rather than merely replayed.
       `D`-nonedge pair lies in exactly one original neighborhood;
     - `squareOrder_card_defectOwnerBlock_eq_or_succ`: all owner blocks have
       size `q` or `q+1`.
+    - `squareOrder_defectBranches_biUnion_eq_nonneighbors` and
+      `squareOrder_defectBranches_pairwise_disjoint`: for every fixed `u`, the
+      punctured branches `N_G(z)\{u}` indexed by `z∈N_G(u)` form an exact
+      disjoint partition of `(V\{u})\N_D(u)`.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
