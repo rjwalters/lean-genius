@@ -1186,7 +1186,18 @@ generalized rather than merely replayed.
      completion either satisfies that equality (and all three centers
      coincide) or its three named centers are pairwise distinct and carry
      the three endpoint-colored owner edges; the two alternatives are proved
-     disjoint.
+     disjoint.  `Erdos85OrderSixtyFourRoutingRainbowExcess` completes the
+     local accounting.  For every direct color-`k` edge it defines the
+     rainbow-excess finset and proves
+
+     ```text
+     number of monochromatic completions = 2 + rainbow excess,
+     rainbow excess ≤ 2.
+     ```
+
+     The only freedom left per direct edge and third coordinate is therefore
+     zero, one, or two explicitly witnessed rainbow owner triangles beyond
+     the forced two-star core.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
