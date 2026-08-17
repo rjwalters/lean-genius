@@ -1,4 +1,5 @@
 import Proofs.Erdos85OutsideReturnGramIdentity
+import Proofs.Erdos85OrderSixtyFourExteriorPairGraph
 
 /-! # Even overlap between the internal two-factor and exterior pairs -/
 
@@ -121,6 +122,80 @@ theorem even_edgeOverlapDegree_of_even_outsideReturn_diagonal
     exact_mod_cast hc
   refine ⟨3 - k, ?_⟩
   omega
+
+/-- In the actual order-64 seven-component branch, factorization of the
+outside return rules out overlap degree one between the H16 two-factor and
+its exterior-pair graph. -/
+theorem orderSixtyFour_seven_components_even_exteriorPair_overlap
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 7) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16 ∧
+      let H := G.induce c.supp
+      let R := exteriorPairGraph G c.supp
+      (∀ u : c.supp, H.degree u = 2) ∧
+      (∀ u : c.supp, Even (edgeOverlapDegree H R u)) := by
+  classical
+  obtain ⟨c, hc16, _hcross, hM⟩ :=
+    orderSixtyFour_seven_components_outsideReturn_eq_sixJ_sub_HQ
+      G hfree hmin hcover hcount
+  obtain ⟨c', hc'16, hQ, _hRreg⟩ :=
+    orderSixtyFour_seven_components_exteriorGram_eq_six_add_sixRegular
+      G hfree hmin hcover hcount
+  have hcc' : c = c' := by
+    obtain ⟨d, _hd16, hsmall⟩ :=
+      orderSixtyFour_seven_defect_components_partition
+        G hfree hmin hcover hcount
+    have hcd : c = d := by
+      by_contra hne
+      exact (by have := hsmall c hne; omega)
+    have hc'd : c' = d := by
+      by_contra hne
+      exact (by have := hsmall c' hne; omega)
+    exact hcd.trans hc'd.symm
+  subst c'
+  let H := G.induce c.supp
+  let R := exteriorPairGraph G c.supp
+  let p : Fin 64 → Prop := fun x ↦ x ∈ c.supp
+  let q : Set (Fin 64) := {x | ¬p x}
+  let B := (G.adjMatrix ℂ).toBlock p (fun x ↦ x ∈ q)
+  let C := (G.induce q).adjMatrix ℂ
+  let Q := B * Matrix.conjTranspose B
+  let M := (B * C) * Matrix.conjTranspose B
+  have htwo : ∀ u : c.supp, H.degree u = 2 := by
+    intro u
+    have hmul := orderSixtyFour_eight_mul_componentNeighborFinset_card
+      G hfree hmin hcover c u.1
+    rw [hc16] at hmul
+    change 8 * ((G.neighborFinset u.1).filter fun y ↦
+      (secondOrderDefectGraph G).connectedComponentMk y = c).card = 16 at hmul
+    have hfilter : ((G.neighborFinset u.1).filter fun y ↦
+        (secondOrderDefectGraph G).connectedComponentMk y = c).card = 2 := by
+      omega
+    have hmap := G.map_neighborFinset_induce u
+    have hdegree : H.degree u =
+        (G.neighborFinset u.1 ∩ c.supp.toFinset).card := by
+      rw [← H.card_neighborFinset_eq_degree, ← hmap, Finset.card_map]
+    have hinter : G.neighborFinset u.1 ∩ c.supp.toFinset =
+        (G.neighborFinset u.1).filter (fun y ↦
+          (secondOrderDefectGraph G).connectedComponentMk y = c) := by
+      ext y
+      simp [SimpleGraph.ConnectedComponent.mem_supp_iff]
+    rw [hdegree, hinter, hfilter]
+  refine ⟨c, hc16, htwo, ?_⟩
+  have hdiag : ∀ u : c.supp, ∃ k : ℕ, M u u = (2 * k : ℕ) := by
+    intro u
+    exact outsideReturn_diag_eq_twice_nat G c.supp u
+  exact even_edgeOverlapDegree_of_even_outsideReturn_diagonal
+    H R Q M hQ hM hdiag
 
 end
 
