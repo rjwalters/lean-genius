@@ -57,6 +57,117 @@ theorem orderSixtyFour_existsUnique_neighbor_inter_high_eq_high
   apply hunique y
   rw [hy, hh]
 
+/-- The canonical common neighbor of the two high vertices is low: tight
+edge cover forces its degree to be exactly eight.  This identifies the
+double-contact pivot inside the low sector, which is the degree direction
+needed by slide saturation. -/
+theorem orderSixtyFour_existsUnique_low_neighbor_inter_high_eq_high
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 2) :
+    ∃! x : Fin 64,
+      G.neighborFinset x ∩ squareOrderHighVertices G 8 =
+          squareOrderHighVertices G 8 ∧
+        G.degree x = 8 := by
+  obtain ⟨x, hx, hunique⟩ :=
+    orderSixtyFour_existsUnique_neighbor_inter_high_eq_high
+      G hfree hmin hcover hh
+  have hHne : squareOrderHighVertices G 8 ≠ ∅ := by
+    intro hzero
+    rw [hzero] at hh
+    simp at hh
+  obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hHne
+  have hax : a ∈ G.neighborFinset x := by
+    have : a ∈ G.neighborFinset x ∩ squareOrderHighVertices G 8 := by
+      rw [hx]
+      exact ha
+    exact (Finset.mem_inter.mp this).1
+  have hAdj : G.Adj x a := by
+    simpa [SimpleGraph.mem_neighborFinset] using hax
+  have haDegree : G.degree a = 9 := by
+    simpa [squareOrderHighVertices] using (Finset.mem_filter.mp ha).2
+  have hxDegree : G.degree x = 8 := by
+    rcases hcover hAdj with hxLow | haLow
+    · exact hxLow
+    · omega
+  refine ⟨x, ⟨hx, hxDegree⟩, ?_⟩
+  intro y hy
+  exact hunique y hy.1
+
+/-- Concrete skeleton of the two-high branch: the high sector consists of
+two distinct degree-nine vertices, and their common-neighbor set is the
+singleton containing the canonical degree-eight pivot. -/
+theorem orderSixtyFour_two_high_common_neighbor_skeleton
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 2) :
+    ∃ a b x : Fin 64,
+      a ≠ b ∧
+      squareOrderHighVertices G 8 = {a, b} ∧
+      G.degree a = 9 ∧ G.degree b = 9 ∧ ¬ G.Adj a b ∧
+      G.degree x = 8 ∧
+      G.neighborFinset a ∩ G.neighborFinset b = {x} := by
+  obtain ⟨a, b, hab, hH⟩ := Finset.card_eq_two.mp hh
+  obtain ⟨x, hx, _⟩ :=
+    orderSixtyFour_existsUnique_low_neighbor_inter_high_eq_high
+      G hfree hmin hcover hh
+  have haH : a ∈ squareOrderHighVertices G 8 := by
+    rw [hH]
+    simp
+  have hbH : b ∈ squareOrderHighVertices G 8 := by
+    rw [hH]
+    simp
+  have haDegree : G.degree a = 9 := by
+    simpa [squareOrderHighVertices] using (Finset.mem_filter.mp haH).2
+  have hbDegree : G.degree b = 9 := by
+    simpa [squareOrderHighVertices] using (Finset.mem_filter.mp hbH).2
+  have hnab : ¬ G.Adj a b := by
+    intro habAdj
+    rcases hcover habAdj with haLow | hbLow <;> omega
+  have hxa : G.Adj x a := by
+    have haInter : a ∈
+        G.neighborFinset x ∩ squareOrderHighVertices G 8 := by
+      rw [hx.1]
+      exact haH
+    simpa [SimpleGraph.mem_neighborFinset] using
+      (Finset.mem_inter.mp haInter).1
+  have hxb : G.Adj x b := by
+    have hbInter : b ∈
+        G.neighborFinset x ∩ squareOrderHighVertices G 8 := by
+      rw [hx.1]
+      exact hbH
+    simpa [SimpleGraph.mem_neighborFinset] using
+      (Finset.mem_inter.mp hbInter).1
+  have hxmem : x ∈ G.neighborFinset a ∩ G.neighborFinset b := by
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset]
+    exact ⟨hxa.symm, hxb.symm⟩
+  have hle :
+      (G.neighborFinset a ∩ G.neighborFinset b).card ≤ 1 :=
+    card_inter_neighborFinset_le_one hfree hab
+  have hone :
+      (G.neighborFinset a ∩ G.neighborFinset b).card = 1 := by
+    have hpos : 0 <
+        (G.neighborFinset a ∩ G.neighborFinset b).card :=
+      Finset.card_pos.mpr ⟨x, hxmem⟩
+    omega
+  obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hone
+  have hxw : x = w := by
+    rw [hw, Finset.mem_singleton] at hxmem
+    exact hxmem
+  refine ⟨a, b, x, hab, hH, haDegree, hbDegree, hnab, hx.2, ?_⟩
+  simpa [hxw] using hw
+
 /-- The same branch has exactly sixteen single-contact vertices. -/
 theorem orderSixtyFour_card_one_high_contact_eq_sixteen
     (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
