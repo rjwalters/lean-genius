@@ -162,4 +162,73 @@ theorem biUnion_componentOwnerGraph_componentNeighborFinset_eq_component
     exact Finset.mem_filter.mpr
       ⟨((componentOwnerGraph G D c).mem_neighborFinset x y).mpr hc, hyComp⟩
 
+/-- A normalized-size-one owner color restricts to a perfect matching into
+every order-`q` defect component: each outside vertex has a unique neighbor
+in the target component.  Symmetry gives the corresponding uniqueness from
+the other side between any two distinct order-`q` components. -/
+theorem binarySquare_regular_sizeQ_ownerColor_existsUnique_neighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q) (he : e.supp.ncard = q)
+    (x : V) (hx : x ∉ e.supp) :
+    ∃! y : V, y ∈ e.supp ∧
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x y := by
+  let D := secondOrderDefectGraph G
+  let O := componentOwnerGraph G D c
+  let S := componentNeighborFinset O D e x
+  have hScard : S.card = 1 := by
+    have h := binarySquare_regular_sizeQ_component_ownerNeighborSlice_card
+      G hfree hq hreg hcard e c (m_c := 1) (by simpa using hc) he x hx
+    simpa [S, O, D] using h
+  obtain ⟨y, hy⟩ := Finset.card_eq_one.mp hScard
+  have hyS : y ∈ S := by rw [hy]; simp
+  have hyData := Finset.mem_filter.mp hyS
+  have hySupp : y ∈ e.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff e y).mpr hyData.2
+  have hyAdj : O.Adj x y := (O.mem_neighborFinset x y).mp hyData.1
+  refine ⟨y, ⟨hySupp, hyAdj⟩, ?_⟩
+  intro z hz
+  have hzComp : D.connectedComponentMk z = e :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff e z).mp hz.1
+  have hzS : z ∈ S := by
+    change z ∈ componentNeighborFinset O D e x
+    rw [componentNeighborFinset]
+    exact Finset.mem_filter.mpr ⟨(O.mem_neighborFinset x z).mpr hz.2, hzComp⟩
+  rw [hy] at hzS
+  simpa using hzS
+
+/-- Component-facing perfect-matching form: a unit owner color gives a unique
+neighbor across any ordered pair of distinct order-`q` defect components. -/
+theorem binarySquare_regular_sizeQ_ownerColor_existsUnique_crossComponent_neighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e f c : (secondOrderDefectGraph G).ConnectedComponent) (hef : e ≠ f)
+    (hc : c.supp.ncard = q) (he : e.supp.ncard = q)
+    (x : f.supp) :
+    ∃! y : V, y ∈ e.supp ∧
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x.1 y := by
+  apply binarySquare_regular_sizeQ_ownerColor_existsUnique_neighbor
+    G hfree hq hreg hcard e c hc he x.1
+  intro hxe
+  have hxComp : (secondOrderDefectGraph G).connectedComponentMk x.1 = f :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff f x.1).mp x.2
+  have hxComp' : (secondOrderDefectGraph G).connectedComponentMk x.1 = e :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff e x.1).mp hxe
+  exact hef (hxComp'.symm.trans hxComp)
+
 end Erdos85

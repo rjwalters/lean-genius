@@ -590,6 +590,15 @@ generalized rather than merely replayed.
      GAP is now the global classification or parity obstruction for this
      self-indexed simultaneous factorization, not its coverage, local
      regularity, or disjointness.
+     The unit-color matching interface is also `PROVEN`:
+     `binarySquare_regular_sizeQ_ownerColor_existsUnique_neighbor` gives a
+     unique color-`c` neighbor in every order-`q` target whenever `m_c=1`, and
+     `binarySquare_regular_sizeQ_ownerColor_existsUnique_crossComponent_neighbor`
+     packages this across any ordered pair of distinct order-`q` components.
+     Hence each unit color supplies an honest perfect matching (and therefore
+     a canonical bijection) between every such pair; the remaining ODC gap is
+     solely the compatibility of this family of matchings with its
+     self-indexed diagonal cycle blocks.
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
