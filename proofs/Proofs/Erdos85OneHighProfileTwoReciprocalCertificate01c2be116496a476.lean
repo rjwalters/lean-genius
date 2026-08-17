@@ -1,4 +1,4 @@
-import Proofs.Erdos85OneHighV2Exclusion
+import Proofs.Erdos85OneHighV2CertificateAggregation
 import Proofs.Erdos85OrderFortyNineLratCertificateBase
 
 /-! # Checked profile-2 reciprocal inventory certificate 01c2be116496a476 -/
@@ -7,14 +7,8 @@ namespace Erdos85
 
 open Std.Tactic.BVDecide
 
-def oneHighProfileTwoReciprocalTable01c2be116496a476 : OneHighMissTable := fun c j =>
-  if c = 0 ∧ j = 2 then 2 else
-  if c = 1 ∧ j = 6 then 1 else
-  if c = 1 ∧ j = 7 then 3 else
-  if c = 3 ∧ j = 4 then 1 else
-  if c = 3 ∧ j = 5 then 3 else
-  if c = 4 ∧ j = 6 then 3 else
-  if c = 5 ∧ j = 7 then 1 else 0
+def oneHighProfileTwoReciprocalTable01c2be116496a476 : OneHighMissTable :=
+  (oneHighInventoryTables (2 : Fin 5)).get ⟨30, by native_decide⟩
 
 def oneHighProfileTwoReciprocalProofText01c2be116496a476 : String :=
   include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/v2-lrat/01c2be116496a476.v2.compact.lrat"
@@ -55,5 +49,10 @@ theorem oneHighProfileTwoReciprocalChecked01c2be116496a476 :
     oneHighProfileTwoReciprocalProof01c2be116496a476_nonzero
     oneHighProfileTwoReciprocalProof01c2be116496a476
     oneHighProfileTwoReciprocalProof01c2be116496a476_check
+
+def oneHighProfileTwoReciprocalEntry01c2be116496a476 :
+    OneHighFamilyV2CheckedEntry 2 where
+  table := oneHighProfileTwoReciprocalTable01c2be116496a476
+  checked := oneHighProfileTwoReciprocalChecked01c2be116496a476
 
 end Erdos85
