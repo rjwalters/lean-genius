@@ -229,6 +229,31 @@ theorem tenSixRValuationMatchesModel_iff
     rw [hval]
     cases hb : tenSixRModelBit i k <;> simp_all
 
+set_option maxHeartbeats 0 in
+set_option maxRecDepth 1000000 in
+/-- The checked padded formula is exactly the parsed completeness CNF plus
+one inert extension-variable tautology. -/
+theorem tenSixRCompletenessPaddedCnf_eq_add_tautology :
+    tenSixRCompletenessPaddedCnf =
+      tenSixRCompletenessCnf.add [(138, true), (138, false)] := by
+  have hclauses : tenSixRCompletenessPaddedCnf.clauses =
+      (tenSixRCompletenessCnf.add [(138, true), (138, false)]).clauses := by
+    native_decide
+  exact congrArg Std.Sat.CNF.mk hclauses
+
+/-- Remove the LRAT checker's inert padding and expose UNSAT for the actual
+parsed `r_complete.cnf`. -/
+theorem tenSixRCompletenessCnf_unsat : tenSixRCompletenessCnf.Unsat := by
+  intro val
+  have hu := tenSixRCompletenessPaddedCnf_unsat val
+  rw [tenSixRCompletenessPaddedCnf_eq_add_tautology,
+    Std.Sat.CNF.eval_add] at hu
+  have ht : Std.Sat.CNF.Clause.eval val
+      [(138, true), (138, false)] = true := by
+    cases h : val 138 <;> simp [Std.Sat.CNF.Clause.eval, h]
+  rw [ht] at hu
+  exact hu
+
 end
 
 end Erdos85
