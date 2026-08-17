@@ -1019,7 +1019,12 @@ generalized rather than merely replayed.
      In the order-64 all-two branch (`q=8`), every off-diagonal cross block
      therefore has at most five cycle components.  This supplies a finite
      cycle-partition search space for each of the six unordered coordinate
-     pairs.
+     pairs.  The needed half-cycle arithmetic is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossBipartiteComponentBalance`: within each
+     connected cross-block cycle, the source-side and target-side vertex
+     finsets have equal cardinality.  The proof is an exact degree-sum double
+     count on the induced component.  Hence every block component of order
+     `2r` canonically contributes `r` vertices on each coordinate side.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
