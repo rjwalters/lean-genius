@@ -2472,6 +2472,45 @@ theorem binarySquare_regular_sameComponent_ownerCoordinate_card
     _ = S.card * (m_e - 1) := by simp
     _ = m_c * (m_e - 1) := by rw [hScard]
 
+/-- A defect component of the minimum possible order `q` is an independent
+set in every owner-color graph. -/
+theorem binarySquare_regular_sizeQ_component_not_componentOwnerGraph_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c) (he : e.supp.ncard = q)
+    {x y : V}
+    (hx : (secondOrderDefectGraph G).connectedComponentMk x = e)
+    (hy : (secondOrderDefectGraph G).connectedComponentMk y = e) :
+    ¬ (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x y := by
+  intro hxy
+  have hxmem : x ∈ e.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff e x).mpr hx
+  have hymem : y ∈ e.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff e y).mpr hy
+  let T := (e.supp.toFinite.toFinset).filter fun z =>
+    z ≠ x ∧
+    (componentNeighborFinset G (secondOrderDefectGraph G) c x ∩
+      componentNeighborFinset G (secondOrderDefectGraph G) c z).Nonempty
+  have hTcard : T.card = 0 := by
+    have h := binarySquare_regular_sameComponent_ownerCoordinate_card
+      G hfree hq hreg hcard e c (m_e := 1) hc (by simpa using he) ⟨x, hxmem⟩
+    simpa [T] using h
+  have hxyData := (componentOwnerGraph_adj G (secondOrderDefectGraph G) c x y).mp hxy
+  have hyT : y ∈ T := by
+    apply Finset.mem_filter.mpr
+    exact ⟨by simpa using hymem,
+      hxyData.1.symm, hxyData.2⟩
+  have hpos : 0 < T.card := Finset.card_pos.mpr ⟨y, hyT⟩
+  omega
+
 /-- Exact defect-component quotient of an owner graph.  Its row from `e` to
 `f` is `m_c m_f` off the diagonal and `m_c (m_e-1)` on the diagonal. -/
 theorem binarySquare_regular_componentOwnerGraph_componentQuotient

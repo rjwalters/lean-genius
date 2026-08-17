@@ -533,6 +533,22 @@ generalized rather than merely replayed.
      this supplies the expected `(number of D-components)-1` dimensional
      common bottom eigenspace (the dimension statement itself remains to be
      packaged over a field).
+
+     Minimum defect components interact sharply with this bound.  The
+     `PROVEN` theorem
+     `binarySquare_regular_sizeQ_component_not_componentOwnerGraph_adj`
+     says that every defect component of order exactly `q` is an independent
+     set in every owner-color graph.  Since color `c` is
+     `m_c(q-1)`-regular on `q^2` vertices and has least eigenvalue at least
+     `-m_c`, Hoffman's ratio bound predicts
+
+     ```text
+     alpha(Owner(c)) <= q,
+     ```
+
+     so every such defect component is a maximum coclique attaining equality
+     simultaneously in all colors.  Formalizing this sharp Hoffman step and
+     exploiting its equality partition is the next GAP in this operator lane.
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
