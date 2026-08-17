@@ -1,5 +1,6 @@
 import Proofs.Erdos85SevenRegularNearTwinLiteCommutingBalance
 import Proofs.Erdos85AlternatingFourthMoment
+import Proofs.Erdos85BinarySquareRegularParity
 
 /-! # Unit-two owner overlap bound for codegree-five pairs -/
 
@@ -68,6 +69,47 @@ theorem sevenRegular_codegreeFive_commutingGraph_overlapDifference_le_two
   rw [← h]
   apply abs_le.mpr
   constructor <;> omega
+
+/-- Direct order-64 component-owner specialization of the codegree-five
+overlap bound. -/
+theorem orderSixtyFour_codegreeFive_ownerGraph_overlapDifference_le_two
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 16)
+    {x y : Fin 64}
+    (hcommon : ((secondOrderDefectGraph G).neighborFinset x ∩
+      (secondOrderDefectGraph G).neighborFinset y).card = 5) :
+    ∀ z : Fin 64,
+      |(((componentOwnerGraph G (secondOrderDefectGraph G) c).neighborFinset x ∩
+          (secondOrderDefectGraph G).neighborFinset z).card : ℤ) -
+        (((componentOwnerGraph G (secondOrderDefectGraph G) c).neighborFinset y ∩
+          (secondOrderDefectGraph G).neighborFinset z).card : ℤ)| ≤ 2 := by
+  let D := secondOrderDefectGraph G
+  let R := componentOwnerGraph G D c
+  have hcensus : Fintype.card (Fin 64) = 8 * (8 - 1) + 3 + (8 - 3) := by
+    norm_num
+  have hDreg : ∀ z : Fin 64, D.degree z = 7 := by
+    intro z
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus z
+    change D.degree z = (8 - 3) + 2 at h
+    norm_num at h ⊢
+    exact h
+  have hcomm : D.adjMatrix ℤ * R.adjMatrix ℤ =
+      R.adjMatrix ℤ * D.adjMatrix ℤ := by
+    symm
+    exact binarySquare_regular_componentOwnerGraph_adjMatrix_comm_defect
+      G hfree (q := 8) (by omega) hreg (by norm_num) c (m_c := 2) (by
+        norm_num
+        exact hc)
+  exact sevenRegular_codegreeFive_commutingGraph_overlapDifference_le_two
+    D R hDreg hcommon hcomm
 
 end
 
