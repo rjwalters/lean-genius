@@ -16,10 +16,13 @@ routing-array axioms do not by themselves close the branch.  Both displayed
 SAT atlases become UNSAT when the ten symmetric 2-regular incidence blocks
 and the exact Gram factorization ``R_ce(d)=B_dc^T B_de`` are imposed.  This
 confirms computationally that the next full model must retain that certificate.
+The final probe drops circulancy altogether and asks whether any such exact
+ten-block certificate exists at this abstraction level.
 """
 
 from __future__ import annotations
 
+import argparse
 import itertools
 
 import z3
@@ -169,7 +172,123 @@ def check_incidence_factorization(witness: list[list[int]]) -> z3.CheckSatResult
     return solver.check()
 
 
+def solve_free_incidence_factorization(
+    first_cycle_type: tuple[int, ...] | None = None,
+    timeout_ms: int = 300_000,
+    enforce_minimum_lifts: bool = False,
+) -> tuple[z3.CheckSatResult, list[list[list[int]]]]:
+    """Search for an exact certificate, optionally normalizing block (0,0)."""
+    solver = z3.Solver()
+    solver.set(timeout=timeout_ms)
+    blocks = {
+        (i, j, x, y): z3.Bool(f"u_{i}_{j}_{x}_{y}")
+        for i in range(4)
+        for j in range(i, 4)
+        for x in range(16)
+        for y in range(16)
+    }
+
+    def incidence(left: int, right: int, x: int, y: int):
+        if left <= right:
+            return blocks[left, right, x, y]
+        return blocks[right, left, y, x]
+
+    for i in range(4):
+        for x in range(16):
+            solver.add(z3.Not(blocks[i, i, x, x]))
+            for y in range(x):
+                solver.add(blocks[i, i, x, y] == blocks[i, i, y, x])
+    if first_cycle_type is not None:
+        if sum(first_cycle_type) != 16 or any(length < 3 for length in first_cycle_type):
+            raise ValueError("a 2-factor cycle type must partition 16 into parts at least 3")
+        canonical_edges: set[tuple[int, int]] = set()
+        start = 0
+        for length in first_cycle_type:
+            cycle = list(range(start, start + length))
+            canonical_edges.update(
+                (min(cycle[t], cycle[(t + 1) % length]),
+                 max(cycle[t], cycle[(t + 1) % length]))
+                for t in range(length)
+            )
+            start += length
+        for x in range(16):
+            for y in range(16):
+                solver.add(blocks[0, 0, x, y] == ((min(x, y), max(x, y)) in canonical_edges))
+    for left in range(4):
+        for right in range(4):
+            for x in range(16):
+                solver.add(z3.PbEq(
+                    [(incidence(left, right, x, y), 1) for y in range(16)], 2
+                ))
+
+    routing_cache: dict[tuple[int, int, int, int, int], z3.BoolRef] = {}
+
+    def routing(owner: int, left: int, right: int, x: int, z: int):
+        key = owner, left, right, x, z
+        if key not in routing_cache:
+            routing_cache[key] = z3.Or([
+                z3.And(
+                    incidence(owner, left, y, x),
+                    incidence(owner, right, y, z),
+                )
+                for y in range(16)
+            ])
+        return routing_cache[key]
+
+    # Across every pair of endpoint components, the four owner-coordinate
+    # Gram products partition the complete 16-by-16 routing array exactly.
+    for left, right in itertools.combinations(range(4), 2):
+        for x in range(16):
+            for z in range(16):
+                terms = [
+                    z3.And(
+                        incidence(owner, left, y, x),
+                        incidence(owner, right, y, z),
+                    )
+                    for owner in range(4)
+                    for y in range(16)
+                ]
+                solver.add(z3.PbEq([(term, 1) for term in terms], 1))
+    if enforce_minimum_lifts:
+        for left, middle, right in itertools.permutations(range(4), 3):
+            for owner in range(4):
+                for x in range(16):
+                    for w in range(16):
+                        solver.add(z3.Implies(
+                            routing(owner, left, right, x, w),
+                            z3.PbGe([
+                                (z3.And(
+                                    routing(owner, left, middle, x, z),
+                                    routing(owner, middle, right, z, w),
+                                ), 1)
+                                for z in range(16)
+                            ], 2),
+                        ))
+
+    result = solver.check()
+    if result != z3.sat:
+        return result, []
+    model = solver.model()
+    witness = [
+        [
+            [y for y in range(16) if z3.is_true(model.eval(incidence(i, j, x, y)))]
+            for x in range(16)
+        ]
+        for i in range(4)
+        for j in range(i, 4)
+    ]
+    return result, witness
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--free-cycle-type",
+        help="also solve the free exact system with block (0,0) normalized, e.g. 16 or 8,8",
+    )
+    parser.add_argument("--minimum-lifts", action="store_true")
+    parser.add_argument("--timeout-ms", type=int, default=300_000)
+    args = parser.parse_args()
     common_results = {"common": solve_common(False), "common-even": solve_common(True)}
     for name, result in common_results.items():
         print(f"{name}: {result}")
@@ -191,6 +310,21 @@ def main() -> None:
         print(f"  exact-incidence-factorization: {factorization}")
         if factorization != z3.unsat:
             raise SystemExit(f"expected {name}'s factorization to be UNSAT")
+
+    if args.free_cycle_type:
+        cycle_type = tuple(int(part) for part in args.free_cycle_type.split(","))
+        free_result, free_witness = solve_free_incidence_factorization(
+            cycle_type, args.timeout_ms, args.minimum_lifts
+        )
+        print(
+            f"free-exact-incidence-factorization[{cycle_type},"
+            f" minimum-lifts={args.minimum_lifts}]: {free_result}"
+        )
+        if free_result == z3.sat:
+            for pair, rows in zip(
+                itertools.combinations_with_replacement(range(4), 2), free_witness
+            ):
+                print(f"  block {pair}: {rows}")
 
 
 if __name__ == "__main__":
