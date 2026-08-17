@@ -18,7 +18,7 @@ classifier rather than a replayable proof certificate.
 from __future__ import annotations
 
 import argparse
-from itertools import combinations
+from itertools import combinations, permutations, product
 from pathlib import Path
 
 import numpy as np
@@ -46,6 +46,44 @@ def cycle_adjacency(parts: list[int]) -> np.ndarray:
         base += length
     assert base == 16
     return h
+
+
+def cycle_automorphism_edge_maps(parts: list[int], pairs: list[tuple[int, int]]):
+    """Precompute the action of every cycle-union automorphism on pairs."""
+    offsets, base = [], 0
+    for length in parts:
+        offsets.append(base)
+        base += length
+    groups: dict[int, list[int]] = {}
+    for i, length in enumerate(parts):
+        groups.setdefault(length, []).append(i)
+    partial_groups = []
+    for length, components in groups.items():
+        group_maps = []
+        transforms = list(product(range(length), (1, -1)))
+        for component_perm in permutations(range(len(components))):
+            for choices in product(transforms, repeat=len(components)):
+                mapping = {}
+                for source_pos, source_component in enumerate(components):
+                    target_component = components[component_perm[source_pos]]
+                    rotation, sign = choices[source_pos]
+                    for i in range(length):
+                        mapping[offsets[source_component] + i] = \
+                            offsets[target_component] + (rotation + sign * i) % length
+                group_maps.append(mapping)
+        partial_groups.append(group_maps)
+    vertex_maps = []
+    for pieces in product(*partial_groups):
+        mapping = {}
+        for piece in pieces:
+            mapping.update(piece)
+        vertex_maps.append(mapping)
+    pair_index = {pair: i for i, pair in enumerate(pairs)}
+    edge_maps = np.empty((len(vertex_maps), len(pairs)), dtype=np.int16)
+    for a, mapping in enumerate(vertex_maps):
+        for i, (u, v) in enumerate(pairs):
+            edge_maps[a, i] = pair_index[tuple(sorted((mapping[u], mapping[v])))]
+    return edge_maps
 
 
 def solve_binary(nvars: int, rows: list[dict[int, int]],
@@ -316,6 +354,8 @@ def classify(parts: list[int], limit: int, show_witness: bool,
              emit_r_completeness: Path | None = None):
     h = cycle_adjacency(parts)
     pairs, rvars, rsolver = make_r_solver(h)
+    edge_maps = cycle_automorphism_edge_maps(parts, pairs)
+    seen_orbits: set[bytes] = set()
     tested = 0
     c_alive = 0
     c_unknown = 0
@@ -327,12 +367,21 @@ def classify(parts: list[int], limit: int, show_witness: bool,
             if exhausted and emit_r_completeness is not None:
                 emit_r_completeness.parent.mkdir(parents=True, exist_ok=True)
                 emit_r_completeness_cnf(h, models, emit_r_completeness)
-            return tested, c_alive, c_unknown, exhausted
+            return tested, len(seen_orbits), c_alive, c_unknown, exhausted
         model = rsolver.model()
         bits = np.array([1 if z3.is_true(model.eval(x)) else 0
-                         for x in rvars])
+                         for x in rvars], dtype=np.uint8)
         models.append(bits)
         redges = [pairs[i] for i, bit in enumerate(bits) if bit]
+        ones = np.flatnonzero(bits)
+        orbit_rows = np.sort(edge_maps[:, ones], axis=1)
+        orbit_key = min(row.tobytes() for row in orbit_rows)
+        if orbit_key in seen_orbits:
+            tested += 1
+            rsolver.add(z3.Or(*[x != bool(bit)
+                                for x, bit in zip(rvars, bits)]))
+            continue
+        seen_orbits.add(orbit_key)
         if emit_cnf_dir is not None:
             emit_cnf_dir.mkdir(parents=True, exist_ok=True)
             emit_c_cnf(h, redges, emit_cnf_dir / f"r{tested + 1:03}.cnf")
@@ -341,20 +390,23 @@ def classify(parts: list[int], limit: int, show_witness: bool,
         if verdict == "ALIVE":
             c_alive += 1
             detail = f" R={redges} C={chosen}" if show_witness else ""
-            print(f"R#{tested}: C4-FEASIBLE allowed={allowed_count} "
+            print(f"R#{tested}/orbit#{len(seen_orbits)}: "
+                  f"C4-FEASIBLE allowed={allowed_count} "
                   f"c4_terms={c4terms}{detail}", flush=True)
         elif verdict == "UNKNOWN":
             c_unknown += 1
-            print(f"R#{tested}: C4-UNKNOWN allowed={allowed_count} "
+            print(f"R#{tested}/orbit#{len(seen_orbits)}: "
+                  f"C4-UNKNOWN allowed={allowed_count} "
                   f"c4_terms={c4terms}", flush=True)
         elif tested <= 10 or tested % 100 == 0:
             detail = f" R={redges}" if show_witness else ""
-            print(f"R#{tested}: C4-DEAD allowed={allowed_count} "
+            print(f"R#{tested}/orbit#{len(seen_orbits)}: "
+                  f"C4-DEAD allowed={allowed_count} "
                   f"c4_terms={c4terms}{detail}", flush=True)
 
         rsolver.add(z3.Or(*[x != bool(bit)
                             for x, bit in zip(rvars, bits)]))
-    return tested, c_alive, c_unknown, False
+    return tested, len(seen_orbits), c_alive, c_unknown, False
 
 
 def main():
@@ -368,10 +420,11 @@ def main():
     names = PARTITIONS if args.partition == "all" else {args.partition: PARTITIONS[args.partition]}
     for name, parts in names.items():
         print(f"=== {name} ===", flush=True)
-        tested, alive, unknown, exhausted = classify(
+        tested, orbits, alive, unknown, exhausted = classify(
             parts, args.limit, args.show_witness, args.emit_cnf_dir,
             args.emit_r_completeness_cnf)
-        print(f"SUMMARY {name}: R_tested={tested} C_alive={alive} "
+        print(f"SUMMARY {name}: R_tested={tested} R_orbits={orbits} "
+              f"C_alive={alive} "
               f"C_unknown={unknown} "
               f"R_exhausted={exhausted}", flush=True)
 
