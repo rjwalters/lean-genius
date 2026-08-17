@@ -209,6 +209,7 @@ def lean_source(row: IndexRow, payload: Path) -> str:
     stem = f"h1V2P{row.profile}I{row.local_index:05d}"
     path_literal = json.dumps(str(payload))
     return f'''import Proofs.Erdos85OneHighV2CertificateAggregation
+import Proofs.Erdos85OneHighV2ExtensionCertificate
 import Proofs.Erdos85OrderFortyNineLratCertificateBase
 
 /-! GENERATED exact-v2 certificate stub.
@@ -234,9 +235,14 @@ def {stem}Table : OneHighMissTable :=
 private def {stem}ProofText : String :=
   include_str {path_literal}
 
-private def {stem}Proof : Array LRAT.IntAction :=
+private def {stem}RawProof : Array LRAT.IntAction :=
   parsePackedLz4OrderFortyNineLratProof {stem}ProofText
     {row.frame_bytes} {row.binary_bytes}
+
+private def {stem}Proof : Array LRAT.IntAction :=
+  (prepareLratProof
+    (oneHighFamilyV2SatCnf {row.profile} {stem}Table)
+    {stem}RawProof).toOption.get!
 
 private theorem {stem}Nonzero :
     ∀ clause ∈ (oneHighFamilyV2Clauses {row.profile} {stem}Table).clauses,
@@ -255,13 +261,15 @@ set_option maxHeartbeats 0 in
 set_option maxRecDepth 1000000 in
 private theorem {stem}Check :
     LRAT.check {stem}Proof
-      (oneHighFamilyV2SatCnf {row.profile} {stem}Table) := by
+      (LratExtensionVariables.padCnfForProof
+        (oneHighFamilyV2SatCnf {row.profile} {stem}Table)
+        {stem}RawProof) := by
   native_decide
 
 theorem {stem}Checked :
     OneHighFamilyV2CheckedUnsat {row.profile} {stem}Table :=
-  oneHighFamilyV2CheckedUnsat_of_lrat {stem}Nonzero
-    {stem}Proof {stem}Check
+  oneHighFamilyV2CheckedUnsat_of_extension_lrat {stem}Nonzero
+    {stem}RawProof {stem}Proof {stem}Check
 
 def {stem}Entry : OneHighFamilyV2CheckedEntry {row.profile} where
   table := {stem}Table
