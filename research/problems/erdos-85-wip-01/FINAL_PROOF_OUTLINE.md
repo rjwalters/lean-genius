@@ -554,8 +554,22 @@ generalized rather than merely replayed.
      `binarySquare_regular_sizeQ_component_isMaximumIndepSet_componentOwnerGraph`
      proves that every order-`q` defect component is a maximum coclique
      attaining equality simultaneously in every nonzero owner color.
-     Exploiting the resulting simultaneous equality partitions is the next
-     GAP in this operator lane.
+     The equality partition itself is now `PROVEN`, not merely predicted:
+     `binarySquare_regular_sizeQ_component_centeredIndicator_mulVec_eq_zero`
+     puts the centered component indicator in the `-m_c` eigenspace, and
+     `binarySquare_regular_sizeQ_component_ownerIndicator_mulVec` gives the
+     entrywise equitable law
+
+     ```text
+     |N_{Owner(c)}(x) intersect e| = 0   if x is in e,
+                                    m_c otherwise.
+     ```
+
+     Thus every order-`q` defect component is simultaneously an equitable
+     Hoffman cell for every owner color.  The next GAP is to combine two or
+     more of these simultaneous equitable partitions (or prove that every
+     component has order `q`) to contradict the self-indexed owner design for
+     `q >= 8`.
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
