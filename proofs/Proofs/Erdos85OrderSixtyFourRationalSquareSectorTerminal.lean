@@ -14,11 +14,12 @@ moment cap supplies `b ≤ 3`; trace gives `p + 2q + 3r = -8`; and the cubic
 color identity gives `p + 8q + 27r = -2C`.  The graph-side support theorem
 gives `0 ≤ C ≤ 16`.  These linear constraints are inconsistent.
 
-Important scope correction: `36a + 9b + 4c` is the raw `Σμ²` contribution.
-For adjacency roots with squares `7-μ`, the second adjacency moment is
-instead `a + 4b + 9c`.  The corrected inequality is consistent with the
-other displayed constraints, so the theorem below is not a graph-level
-terminal unless a separate raw-`μ` square bound is proved.
+Here `36a + 9b + 4c` is the raw `Σμ²` contribution in the 7-regular
+defect block, so it is the relevant `63`-budget.  For the distinct
+two-regular cycle operator, the corresponding adjacency-square expression
+would instead be `a + 4b + 9c`; the consistency witness recorded below only
+documents that this alternate invariant cannot replace the defect-block
+one.
 -/
 
 namespace Erdos85
@@ -44,8 +45,9 @@ theorem false_of_orderSixtyFour_rationalSquareSector_constraints
 def rationalSquareSectorAdjacencySecondMoment (a b c : ℤ) : ℤ :=
   a + 4 * b + 9 * c
 
-/-- The corrected adjacency-moment version of the displayed constraints is
-not contradictory: this explicit profile satisfies every one of them. -/
+/-- The alternate cycle-adjacency-moment version of the displayed
+constraints is not contradictory; this does not affect the raw `μ` budget
+for the distinct defect-block operator. -/
 theorem corrected_rationalSquareSector_constraints_consistent :
     ∃ a b c p q r colorOrder : ℤ,
       0 ≤ b ∧ b ≤ 3 ∧

@@ -4,8 +4,10 @@ import Proofs.Erdos85OrderSixtyFourCyclePrimaryMomentTerminal
 
 The registered cycle factors have roots `μ = 7 - α²`.  Consequently an
 irreducible `μ`-primary contributes `Σ(7-μ) = Σα²`, not `Σμ²`, to the
-ambient adjacency square trace.  This ledger records both `Σα²` and `Σα⁴`
-directly from the top coefficients of each factor. -/
+two-regular cycle-operator square trace.  The order-64 moment terminal uses
+the distinct 7-regular defect-block operator, where `μ` itself is an actual
+eigenvalue and `Σμ²` is the relevant invariant.  This diagnostic ledger records
+both `Σα²` and `Σα⁴` directly from the top coefficients. -/
 
 open Polynomial
 
