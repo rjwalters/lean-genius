@@ -138,6 +138,53 @@ theorem card_insideCommon_add_outsideService_eq_one
     (card_insideCommon_add_card_outsideCommon_eq_one
       G hfree c u z.1 z.2)
 
+/-- The generator's entrywise target `1 - H B`, expressed without matrix
+casts as the one remaining service after internal common neighbors. -/
+def outsideCertificateTarget
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : c.supp) (z : {x : V // x ∉ c.supp}) : Nat :=
+  1 - ((G.neighborFinset u.1 ∩ G.neighborFinset z.1).filter
+    fun w ↦ w ∈ c.supp).card
+
+theorem outsideServiceFinset_card_eq_certificateTarget
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : c.supp) (z : {x : V // x ∉ c.supp}) :
+    (outsideServiceFinset (G.induce c.suppᶜ)
+      (fun u' y ↦ G.Adj u'.1 y.1) u z).card =
+      outsideCertificateTarget G c u z := by
+  have hroute := card_insideCommon_add_outsideService_eq_one
+    G hfree c u z
+  unfold outsideCertificateTarget
+  omega
+
+/-- A C4-free ambient graph satisfies every abstract clause family emitted
+by the outside-C certificate generator, with its exact `1 - H B` target. -/
+theorem outsideCClauseSemantics_of_ambient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    OutsideCClauseSemantics (G.induce c.suppᶜ)
+      (fun u y ↦ G.Adj u.1 y.1) (outsideCertificateTarget G c) := by
+  classical
+  apply outsideCClauseSemantics_of_exact_service
+  · exact outsideServiceFinset_card_eq_certificateTarget G hfree c
+  · intro hC4
+    obtain ⟨f, hf, hadj⟩ := hC4
+    apply hfree
+    refine ⟨Subtype.val ∘ f, Subtype.val_injective.comp hf, ?_⟩
+    intro i j hij
+    exact hadj i j hij
+
 end
 
 end Erdos85
