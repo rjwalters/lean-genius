@@ -1238,6 +1238,84 @@ theorem binarySquare_regular_sizeTwoPart_cycleQuotient_cross_mass
       (a.supp.ncard - 3) at hle
   omega
 
+/-- **Uniform pair-complement theorem for a size-two part.**  Every ambient
+vertex selects exactly two neighbors in `c`, and a distinct pair in `c` is
+selected by some ambient vertex exactly when it is a nonedge of the defect
+graph. -/
+theorem binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) (u v : c.supp) (huv : u ≠ v) :
+    ((∃ x : V,
+        componentNeighborFinset G (secondOrderDefectGraph G) c x =
+          {u.1, v.1}) ↔
+      ¬ (secondOrderDefectGraph G).Adj u.1 v.1) := by
+  let D := secondOrderDefectGraph G
+  have huvval : u.1 ≠ v.1 := fun h => huv (Subtype.ext h)
+  have htwo (x : V) : (componentNeighborFinset G D c x).card = 2 := by
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard (D.connectedComponentMk x) c (x := x) (by rfl)
+    rw [hc] at hmul
+    exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+  constructor
+  · rintro ⟨x, hx⟩ hDuv
+    have hxu : G.Adj x u.1 := by
+      have hu : u.1 ∈ componentNeighborFinset G D c x := by
+        rw [hx]
+        simp [huvval]
+      exact (G.mem_neighborFinset x u.1).mp (Finset.mem_filter.mp hu).1
+    have hxv : G.Adj x v.1 := by
+      have hv : v.1 ∈ componentNeighborFinset G D c x := by
+        rw [hx]
+        simp
+      exact (G.mem_neighborFinset x v.1).mp (Finset.mem_filter.mp hv).1
+    have hxmem : x ∈ G.neighborFinset u.1 ∩ G.neighborFinset v.1 :=
+      Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset u.1 x).mpr hxu.symm,
+          (G.mem_neighborFinset v.1 x).mpr hxv.symm⟩
+    have hcommon := card_common_eq_if_secondOrderDefect
+      G hfree u.1 v.1 huvval
+    have hmemD : v.1 ∈ D.neighborFinset u.1 :=
+      (D.mem_neighborFinset u.1 v.1).mpr hDuv
+    rw [if_pos hmemD] at hcommon
+    have hpos : 0 < (G.neighborFinset u.1 ∩ G.neighborFinset v.1).card :=
+      Finset.card_pos.mpr ⟨x, hxmem⟩
+    omega
+  · intro hDuv
+    have hcommon := card_common_eq_if_secondOrderDefect
+      G hfree u.1 v.1 huvval
+    have hnotmemD : v.1 ∉ D.neighborFinset u.1 := by
+      intro hmem
+      exact hDuv ((D.mem_neighborFinset u.1 v.1).mp hmem)
+    rw [if_neg hnotmemD] at hcommon
+    obtain ⟨x, hx⟩ :
+        ∃ x, x ∈ G.neighborFinset u.1 ∩ G.neighborFinset v.1 :=
+      Finset.card_pos.mp (by omega)
+    refine ⟨x, ?_⟩
+    symm
+    apply Finset.eq_of_subset_of_card_le
+    · intro y hy
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+      rcases hy with rfl | rfl
+      · apply Finset.mem_filter.mpr
+        refine ⟨(G.mem_neighborFinset x u.1).mpr
+          ((G.mem_neighborFinset u.1 x).mp (Finset.mem_inter.mp hx).1).symm, ?_⟩
+        exact (SimpleGraph.ConnectedComponent.mem_supp_iff c u.1).mp u.2
+      · apply Finset.mem_filter.mpr
+        refine ⟨(G.mem_neighborFinset x v.1).mpr
+          ((G.mem_neighborFinset v.1 x).mp (Finset.mem_inter.mp hx).2).symm, ?_⟩
+        exact (SimpleGraph.ConnectedComponent.mem_supp_iff c v.1).mp v.2
+    · rw [htwo x]
+      simp [huvval]
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]

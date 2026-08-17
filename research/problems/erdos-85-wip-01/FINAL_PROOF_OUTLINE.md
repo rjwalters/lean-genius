@@ -353,6 +353,21 @@ generalized rather than merely replayed.
      ```
 
      in `binarySquare_regular_sizeTwoPart_cycleQuotient_cross_mass`.
+
+     More importantly, the order-64 pair-complement phenomenon is now uniform
+     in `q`, not a finite-instance artifact.  The `PROVEN` theorem
+     `binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj` says that for
+     distinct `u,v` in a normalized size-two component `c`,
+
+     ```text
+     some ambient vertex has exactly {u,v} as its c-neighbors
+       iff u and v are nonadjacent in D.
+     ```
+
+     Thus the `q²` ambient vertices select precisely the edges of the
+     complement of the `(q-1)`-regular defect graph on `2q` vertices.  This is
+     the scalable pair-design interpretation previously available only in the
+     order-64 sixteen-block modules.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
