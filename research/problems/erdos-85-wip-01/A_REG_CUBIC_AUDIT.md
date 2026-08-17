@@ -47,6 +47,16 @@ sends every integral defect eigenvalue `mu` to selector eigenvalue `-1-mu`
 on the same vector.  This retains information discarded by scalar trace and
 is the current interface for simultaneous block constraints.
 
+The first shared-indexing constraint is now `PROVEN` uniformly, not merely
+for size-two parts.  For distinct defect components `c,d`,
+`existsUnique_mem_cross_componentNeighborFinsets` says that every
+`(u,v) in c×d` lies in the two corresponding selectors of a unique ambient
+vertex.  In the all-two branch each ambient vertex therefore contributes a
+`2×2` rectangle, and these `q²` rectangles partition the full
+`(2q)×(2q)` cross-product.  The remaining compatibility gap is to turn this
+rectangle partition into a restriction on the four commuting complement
+blocks, rather than merely count it.
+
 ## Triangle interpretation
 
 For a component `c`, the selector of an ambient vertex `x` is
