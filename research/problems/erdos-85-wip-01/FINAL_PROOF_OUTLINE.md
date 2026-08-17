@@ -318,8 +318,12 @@ generalized rather than merely replayed.
      `binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_adj`
      shows that the degree-two color status is identical across every internal
      `G`-edge.  Hence each cycle of `G[c]` is wholly triangle-free or wholly
-     triangular.  Packaging these monochromatic cycles with the commuting
-     defect block is the next precise subgoal.
+     triangular.  The cycle decomposition is exposed in the exact form needed
+     by the older cycle APIs:
+     `binarySquare_regular_sizeTwoPart_exists_cycle_of_internalComponent`
+     produces a spanning simple closed walk for every connected piece of
+     `G[c]` and proves its length is not four.  Packaging these monochromatic
+     cycles with the commuting defect block is the next precise subgoal.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;

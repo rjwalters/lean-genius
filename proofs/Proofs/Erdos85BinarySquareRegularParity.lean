@@ -6,6 +6,7 @@ import Proofs.Erdos85QuotientGramIdentity
 import Proofs.Erdos85ExcessEigenspace
 import Proofs.Erdos85ResidueSignedCount
 import Proofs.Erdos85GlobalLocalTriangleCount
+import Proofs.Erdos85IsCyclesComponentCharpoly
 
 /-!
 # Characteristic-two parity for regular square-order cores
@@ -796,6 +797,40 @@ theorem binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_adj
     · omega
     · exact hv
   exact ⟨forward x y hxy, forward y x hxy.symm⟩
+
+/-- Every connected piece of the internal ambient graph of a normalized
+size-two defect component is a spanning simple cycle, and C4-freeness excludes
+cycle length four. -/
+theorem binarySquare_regular_sizeTwoPart_exists_cycle_of_internalComponent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2)
+    (a : (G.induce c.supp).ConnectedComponent) :
+    ∃ (x : c.supp) (p : (G.induce c.supp).Walk x x),
+      p.IsCycle ∧ p.toSubgraph.verts = a.supp ∧
+      p.toSubgraph.coe = (G.induce c.supp).induce p.toSubgraph.verts ∧
+      p.length ≠ 4 := by
+  have hdeg : ∀ x : c.supp, (G.induce c.supp).degree x = 2 :=
+    fun x => binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree hq hreg hcard c hc x
+  obtain ⟨x, p, hp, hpverts, hpgraph⟩ :=
+    twoRegular_component_induce_eq_cycleSubgraph (G.induce c.supp) hdeg a
+  refine ⟨x, p, hp, hpverts, hpgraph, ?_⟩
+  intro hlen
+  have hC4induced : containsC4 c.supp (G.induce c.supp) :=
+    containsC4_of_isCycle_length_four hp hlen
+  apply hfree
+  rcases hC4induced with ⟨f, hf, hadj⟩
+  exact ⟨fun i => (f i).1, Subtype.val_injective.comp hf,
+    fun i j hij => hadj i j hij⟩
 
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
