@@ -1284,9 +1284,13 @@ generalized rather than merely replayed.
      `Erdos85BinarySquareMixedOwnerNoRainbowMiddleConcentration` combines the
      sharper sixteen-cycle root bound with the three possible external middle
      components: at every root, some one external component carries at least
-     six prescribed routing cycles.  The remaining structural gap is to
-     exploit the incidence constraints imposed by this concentration and
-     derive a contradiction.
+     six prescribed routing cycles.  Routing-row regularity leaves only four
+     possible route-`a` middle vertices in that component, so
+     `Erdos85BinarySquareMixedOwnerNoRainbowMiddleCollision` further forces
+     two of those cycles to share the same owner-`a` middle vertex.  The
+     remaining structural gap is to exploit the two distinct closing
+     endpoints forced by this repeated-middle incidence and derive a
+     contradiction.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
