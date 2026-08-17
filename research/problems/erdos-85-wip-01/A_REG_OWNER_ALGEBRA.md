@@ -67,6 +67,25 @@ In particular all `O_c` commute pairwise. They also commute with `D`, since
 The regular A-REG core therefore carries a simultaneous symmetric matrix
 algebra, not merely an edge coloring.
 
+Equation (1) has an exact graph-facing form:
+
+```text
+O_c O_d = m_c m_d (J-I) - m_d O_c - m_c O_d.             (1')
+```
+
+Thus, for distinct vertices `x,y`, the number of mixed two-walks whose first
+edge is owned by `c` and second edge by `d` is
+
+```text
+m_d(m_c-1)   if xy is c-owned,
+m_c(m_d-1)   if xy is d-owned,
+m_c m_d      if xy is a D-edge or is owned by a third coordinate.
+```
+
+It is zero on the diagonal. This local intersection table is a fusion-scheme
+law and is likely a more useful graph-theoretic interface than bare matrix
+commutation.
+
 ## 3. Simultaneous spectral form
 
 On the hyperplane `1^perp`, `J=0`, so OWNER-CROSS becomes
