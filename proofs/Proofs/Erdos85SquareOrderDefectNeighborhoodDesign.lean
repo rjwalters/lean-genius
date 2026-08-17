@@ -204,6 +204,87 @@ theorem card_inter_squareOrderDefectBranch_le_one_of_owner_ne
   exact (Finset.card_le_card hsub).trans
     (common_le_one_of_not_containsC4 hfree z w hzw)
 
+/-- Exact different-owner gluing law.  Two branches meet once precisely when
+their owners are defect-nonadjacent and neither branch center is the unique
+common neighbor of the two owners. -/
+theorem card_inter_squareOrderDefectBranch_eq_if_owner_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {u v z w : V}
+    (huz : G.Adj u z) (hvw : G.Adj v w) (hzw : z ≠ w) :
+    (squareOrderDefectBranch G u z ∩
+        squareOrderDefectBranch G v w).card =
+      if (secondOrderDefectGraph G).Adj z w then 0
+      else if G.Adj u w ∨ G.Adj v z then 0 else 1 := by
+  let A := squareOrderDefectBranch G u z ∩
+    squareOrderDefectBranch G v w
+  by_cases hD : (secondOrderDefectGraph G).Adj z w
+  · rw [if_pos hD]
+    have hcommon :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree hzw).mp hD
+    have hsub : A ⊆ G.neighborFinset z ∩ G.neighborFinset w := by
+      intro x hx
+      exact Finset.mem_inter.mpr ⟨
+        Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).1,
+        Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).2⟩
+    exact Finset.card_eq_zero.mpr (Finset.eq_empty_iff_forall_notMem.mpr fun x hx => by
+      have := Finset.card_pos.mpr ⟨x, hsub hx⟩
+      omega)
+  · rw [if_neg hD]
+    by_cases hcross : G.Adj u w ∨ G.Adj v z
+    · rw [if_pos hcross, Finset.card_eq_zero]
+      apply Finset.eq_empty_iff_forall_notMem.mpr
+      intro x hx
+      have hxz : G.Adj x z := by
+        simpa [squareOrderDefectBranch, SimpleGraph.mem_neighborFinset,
+          G.adj_comm] using
+            Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).1
+      have hxw : G.Adj x w := by
+        simpa [squareOrderDefectBranch, SimpleGraph.mem_neighborFinset,
+          G.adj_comm] using
+            Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).2
+      rcases hcross with huw | hvz
+      · have hxu : x ≠ u := Finset.ne_of_mem_erase (Finset.mem_inter.mp hx).1
+        exact hfree (containsC4_of_two_common hzw hxu.symm
+          huz huw hxz hxw)
+      · have hxv : x ≠ v := Finset.ne_of_mem_erase (Finset.mem_inter.mp hx).2
+        exact hfree (containsC4_of_two_common hzw hxv.symm
+          hvz hvw hxz hxw)
+    · rw [if_neg hcross]
+      have huw : ¬ G.Adj u w := fun h => hcross (Or.inl h)
+      have hvz : ¬ G.Adj v z := fun h => hcross (Or.inr h)
+      have hcommon := card_common_eq_if_secondOrderDefect
+        G hfree z w hzw
+      have hnotmem : w ∉ (secondOrderDefectGraph G).neighborFinset z := by
+        simpa [SimpleGraph.mem_neighborFinset] using hD
+      rw [if_neg hnotmem] at hcommon
+      have heq : A = G.neighborFinset z ∩ G.neighborFinset w := by
+        ext x
+        constructor
+        · intro hx
+          exact Finset.mem_inter.mpr ⟨
+            Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).1,
+            Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).2⟩
+        · intro hx
+          have hxdata := Finset.mem_inter.mp hx
+          have hxu : x ≠ u := by
+            intro h
+            subst x
+            exact huw (by
+              simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using hxdata.2)
+          have hxv : x ≠ v := by
+            intro h
+            subst x
+            exact hvz (by
+              simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using hxdata.1)
+          exact Finset.mem_inter.mpr ⟨
+            Finset.mem_erase.mpr ⟨hxu, hxdata.1⟩,
+            Finset.mem_erase.mpr ⟨hxv, hxdata.2⟩⟩
+      change A.card = 1
+      rw [heq, hcommon]
+
 /-- Branches at two distinct centers with the same owner overlap in exactly
 the owner's neighborhood with those two centers deleted. -/
 theorem card_inter_squareOrderDefectBranch_same_owner
