@@ -95,6 +95,165 @@ theorem dependentBlockDiagonal_mulVec_apply
     exact zero_mul _
   · simp
 
+/-- The instance-stable form of a seven-regular graph Laplacian. -/
+def sevenRegularLaplacianMatrix
+    {V : Type*} [Fintype V] [DecidableEq V] (D : SimpleGraph V)
+    [DecidableRel D.Adj] : Matrix V V ℚ :=
+  Matrix.scalar V 7 - D.adjMatrix ℚ
+
+/-- For a seven-regular graph, `7I-A` is its graph Laplacian. -/
+theorem sevenRegularLaplacianMatrix_eq_lapMatrix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (hreg : ∀ x, D.degree x = 7) :
+    sevenRegularLaplacianMatrix D = D.lapMatrix ℚ := by
+  ext x y
+  simp only [sevenRegularLaplacianMatrix, Matrix.scalar_apply,
+    SimpleGraph.lapMatrix, SimpleGraph.degMatrix, Matrix.sub_apply,
+    Matrix.diagonal_apply]
+  by_cases hxy : x = y
+  · subst y
+    simp [hreg x, SimpleGraph.adjMatrix_apply]
+  · simp [hxy]
+
+/-- The stable seven-regular Laplacian form block diagonalizes over connected
+components without depending on how their finite support instances were
+chosen. -/
+theorem reindex_sevenRegularLaplacianMatrix_eq_componentBlockDiagonal
+    (D : SimpleGraph (Fin 64)) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent] :
+    (sevenRegularLaplacianMatrix D).reindex
+        (vertexConnectedComponentEquiv D)
+        (vertexConnectedComponentEquiv D) =
+      Matrix.blockDiagonal'
+        (fun c : D.ConnectedComponent =>
+          sevenRegularLaplacianMatrix (D.induce c.supp)) := by
+  let e := vertexConnectedComponentEquiv D
+  have hscalar : (Matrix.scalar (Fin 64) (7 : ℚ)).reindex e e =
+      Matrix.blockDiagonal'
+        (fun c : D.ConnectedComponent => Matrix.scalar c.supp (7 : ℚ)) := by
+    ext ⟨c, u⟩ ⟨c', v⟩
+    by_cases hcc : c = c'
+    · subst c'
+      by_cases huv : u = v
+      · subst v
+        simp [Matrix.reindex_apply, e, vertexConnectedComponentEquiv,
+          Matrix.blockDiagonal'_apply_eq, Matrix.scalar_apply]
+      · have hval : u.1 ≠ v.1 := fun h => huv (Subtype.ext h)
+        simp [Matrix.reindex_apply, e, vertexConnectedComponentEquiv,
+          Matrix.blockDiagonal'_apply_eq, Matrix.scalar_apply, huv, hval]
+    · have hval : u.1 ≠ v.1 := by
+        intro huv
+        apply hcc
+        rw [← u.2, ← v.2, huv]
+      simp [Matrix.reindex_apply, e, vertexConnectedComponentEquiv,
+        Matrix.blockDiagonal'_apply_ne _ _ _ hcc,
+        Matrix.scalar_apply, hval]
+  have hreindex :
+      ((Matrix.scalar (Fin 64) (7 : ℚ) - D.adjMatrix ℚ).reindex e e) =
+        (Matrix.scalar (Fin 64) (7 : ℚ)).reindex e e -
+          (D.adjMatrix ℚ).reindex e e := by
+    ext
+    rfl
+  rw [sevenRegularLaplacianMatrix, hreindex, hscalar,
+    reindex_adjMatrix_eq_componentBlockDiagonal,
+    ← Matrix.blockDiagonal'_sub]
+  rfl
+
+/-- The stable regular Laplacian action reindexes componentwise. -/
+theorem componentFunctionLinearEquiv_sevenRegularLaplacian_mulVec
+    (D : SimpleGraph (Fin 64)) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    [∀ c : D.ConnectedComponent, Fintype c.supp]
+    (v : Fin 64 → ℚ) :
+    componentFunctionLinearEquiv D
+        ((sevenRegularLaplacianMatrix D).mulVec v) =
+      fun c => (sevenRegularLaplacianMatrix (D.induce c.supp)).mulVec
+        (componentFunctionLinearEquiv D v c) := by
+  let hdec := ‹DecidableEq D.ConnectedComponent›
+  classical
+  letI : DecidableEq D.ConnectedComponent := hdec
+  funext c y
+  have hmat :=
+    reindex_sevenRegularLaplacianMatrix_eq_componentBlockDiagonal D
+  have happ := congrFun
+    (congrArg (fun M => M.mulVec
+      (fun z => v ((vertexConnectedComponentEquiv D).symm z))) hmat)
+    (Sigma.mk c y)
+  rw [reindex_mulVec_comp_symm_apply,
+    dependentBlockDiagonal_mulVec_apply] at happ
+  have he : (vertexConnectedComponentEquiv D).symm (Sigma.mk c y) = y.1 :=
+    rfl
+  rw [he] at happ
+  have hfun :
+      (fun z : c.supp =>
+        v ((vertexConnectedComponentEquiv D).symm (Sigma.mk c z))) =
+        componentFunctionLinearEquiv D v c := by
+    funext z
+    rw [componentFunctionLinearEquiv_apply]
+    rfl
+  rw [hfun] at happ
+  rw [componentFunctionLinearEquiv_apply]
+  exact happ
+
+/-- Once the stable regular Laplacian preserves the global and component
+mean-zero spaces, its global residual determinant is the product of the
+component residual determinants. -/
+theorem det_sevenRegularLaplacian_restrict_eq_prod_components
+    (D : SimpleGraph (Fin 64)) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    [∀ c : D.ConnectedComponent, Fintype c.supp]
+    (hW : ∀ v ∈ LinearMap.ker
+        (defectComponentNormalizedProjection D).toLin',
+      (sevenRegularLaplacianMatrix D).toLin' v ∈
+        LinearMap.ker (defectComponentNormalizedProjection D).toLin')
+    (hC : ∀ c : D.ConnectedComponent,
+      ∀ v ∈ LinearMap.ker (coordinateSumLinearMap c.supp),
+        (sevenRegularLaplacianMatrix (D.induce c.supp)).toLin' v ∈
+          LinearMap.ker (coordinateSumLinearMap c.supp)) :
+    LinearMap.det
+        ((sevenRegularLaplacianMatrix D).toLin'.restrict hW) =
+      ∏ c : D.ConnectedComponent,
+        LinearMap.det
+          ((sevenRegularLaplacianMatrix (D.induce c.supp)).toLin'.restrict
+            (hC c)) := by
+  let E := residualComponentMeanZeroLinearEquiv D
+  let g := (sevenRegularLaplacianMatrix D).toLin'.restrict hW
+  let f (c : D.ConnectedComponent) :=
+    (sevenRegularLaplacianMatrix (D.induce c.supp)).toLin'.restrict (hC c)
+  have hconj :
+      (E : _ →ₗ[ℚ] _) ∘ₗ g ∘ₗ (E.symm : _ →ₗ[ℚ] _) =
+        LinearMap.pi (fun c => (f c).comp (LinearMap.proj c)) := by
+    apply LinearMap.ext
+    intro w
+    funext c
+    apply Subtype.ext
+    have ha := congrFun
+      (componentFunctionLinearEquiv_sevenRegularLaplacian_mulVec D
+        ((E.symm w).1)) c
+    have hinv := E.apply_symm_apply w
+    have hc := congrFun hinv c
+    have hcval := congrArg Subtype.val hc
+    change componentFunctionLinearEquiv D (E.symm w).1 c = (w c).1 at hcval
+    change
+      componentFunctionLinearEquiv D
+          ((sevenRegularLaplacianMatrix D).mulVec (E.symm w).1) c =
+        (sevenRegularLaplacianMatrix (D.induce c.supp)).mulVec (w c).1
+    rw [ha, hcval]
+  calc
+    LinearMap.det g =
+        LinearMap.det ((E : _ →ₗ[ℚ] _) ∘ₗ g ∘ₗ
+          (E.symm : _ →ₗ[ℚ] _)) := by
+      symm
+      exact LinearMap.det_conj g E
+    _ = LinearMap.det
+        (LinearMap.pi (fun c => (f c).comp (LinearMap.proj c))) := by
+      rw [hconj]
+    _ = ∏ c : D.ConnectedComponent, LinearMap.det (f c) := by
+      exact LinearMap.det_dependent_pi
+        (fun c : D.ConnectedComponent =>
+          LinearMap.ker (coordinateSumLinearMap c.supp)) f
+
 end
 
 end Erdos85
