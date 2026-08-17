@@ -241,7 +241,24 @@ generalized rather than merely replayed.
     Thus the missing terminal may assume a defect `-1` eigenspace of dimension
     at least `h-1`; the open work is to make that multiplicity incompatible
     with every surviving heterogeneous profile or to identify the further
-    graph constraint needed.
+    graph constraint needed. A second `PROVEN` spectral sector now comes
+    directly from the incidence profile. If `ℓ` is the low-sector indicator,
+    `k` the high-incidence vector, and `D` the defect adjacency matrix, then
+
+    ```text
+    Dℓ = (q-1)ℓ-k,
+    Dk = hℓ-k,
+    [D²-(q-2)D+(h-q+1)I]k = 0.
+    ```
+
+    These are `squareOrder_defect_mulVec_lowIndicatorRat`,
+    `squareOrder_defect_mulVec_highIncidenceRat`, and
+    `squareOrder_defect_incidence_quadratic`. The candidate quotient polynomial
+    is `X²-(q-2)X+(h-q+1)`, with discriminant `q²-4h`. In the heterogeneous
+    branch `ℓ,k` should be independent, so the next precise subgoal is to turn
+    this annihilator into a certified two-dimensional invariant sector and a
+    defect-charpoly factor, then combine its conjugate roots with the `-1`
+    multiplicity and defect trace moments.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
@@ -278,10 +295,13 @@ generalized rather than merely replayed.
 20. **`GAP A-NONREG-TERMINALS`.** There is not yet a proposed scalable terminal
     for every high-vertex sector. The most concrete current candidate is to
     combine the exact Dirichlet/third-moment budget with the proved `h-1`
-    multiplicity of the defect eigenvalue `-1`; neither constraint has yet
-    been shown to eliminate all parameterized profiles. This is the largest
-    mathematical hole in the binary branch. Generalizing certificate families
-    is not a substitute for finding these statements.
+    multiplicity of the defect eigenvalue `-1` and the proved incidence
+    quadratic of discriminant `q²-4h`. The immediate GAP is the heterogeneous
+    independence/charpoly-factor theorem for the latter; the resulting spectral
+    constraints have not yet been shown to eliminate all parameterized
+    profiles. This is the largest mathematical hole in the binary branch.
+    Generalizing certificate families is not a substitute for finding these
+    statements.
 
 ### A6. Binary branch capstone
 
