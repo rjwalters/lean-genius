@@ -249,12 +249,21 @@ def restore (originalNumLiterals : Nat) (cnf : CNF Nat)
 
 end LratAmbiguousRat
 
+/-- Pure preparation shared by the runtime executable and generated
+certificate modules.  It renumbers derived IDs, resolves `0 0` RUP/RAT
+ambiguities by checked replay, and returns an ordinary proof suitable for the
+final `LRAT.check` call. -/
+def prepareLratProof (cnf : CNF Nat) (rawProof : Array LRAT.IntAction) :
+    Except String (Array LRAT.IntAction) := do
+  let paddedCnf := LratExtensionVariables.padCnfForProof cnf rawProof
+  let renumbered ← LratRenumber.renumber cnf.clauses.size rawProof
+  LratAmbiguousRat.restore cnf.numLiterals paddedCnf renumbered
+
 def replayLrat (cnfPath lratPath : System.FilePath) : IO Bool := do
   let cnf ← DimacsRuntime.load cnfPath
   let rawProof ← LRAT.loadLRATProof lratPath
   let paddedCnf := LratExtensionVariables.padCnfForProof cnf rawProof
-  let renumbered ← IO.ofExcept (LratRenumber.renumber cnf.clauses.size rawProof)
-  let proof ← IO.ofExcept (LratAmbiguousRat.restore cnf.numLiterals paddedCnf renumbered)
+  let proof ← IO.ofExcept (prepareLratProof cnf rawProof)
   return LRAT.check proof paddedCnf
 
 partial def cnfSegmentEq (cnf : Sat.CNF Nat) (offset : Nat)
@@ -345,10 +354,7 @@ def main (args : List String) : IO UInt32 := do
       let cnf ← Erdos85.DimacsRuntime.load cnfPath
       let rawProof ← Std.Tactic.BVDecide.LRAT.loadLRATProof lratPath
       let paddedCnf := Erdos85.LratExtensionVariables.padCnfForProof cnf rawProof
-      let renumbered ← IO.ofExcept
-        (Erdos85.LratRenumber.renumber cnf.clauses.size rawProof)
-      let proof ← IO.ofExcept (Erdos85.LratAmbiguousRat.restore
-        cnf.numLiterals paddedCnf renumbered)
+      let proof ← IO.ofExcept (Erdos85.prepareLratProof cnf rawProof)
       IO.println s!"CNF clauses: {cnf.clauses.size}; padded clauses: {paddedCnf.clauses.size}; LRAT actions: {proof.size}"
       IO.println s!"CNF literals: {cnf.numLiterals}; proof maximum literal: {Erdos85.LratExtensionVariables.proofMaxLiteral rawProof}; padded literals: {paddedCnf.numLiterals}"
       let accepted := Std.Tactic.BVDecide.LRAT.check proof paddedCnf
