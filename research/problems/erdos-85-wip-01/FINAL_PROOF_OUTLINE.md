@@ -1447,27 +1447,38 @@ generalized rather than merely replayed.
      root and have three distinct roots are impossible.  External model data
      sharpen the λ=6 geometry further: in both covered component classes the
      six near-twin pairs form two disjoint triangles on six vertices, and the
-     private-pair map cycles between the two triangles.  The analytic
+     private-pair map is an involution pairing each edge of the first triangle
+     with one edge of the second triangle (three two-element orbits).  The analytic
      propagation interface is now PROVEN in
      `Erdos85NearTwinPrivateRowPropagation`: equal rows of any integral matrix
      commuting with the seven-regular adjacency matrix on a codegree-six pair
      force equal rows on its uniquely identified private-neighbor pair, with
      the two directed private-side memberships included in the conclusion so
-     the step can be iterated.  The corresponding abstract terminal is also
+     the step can be iterated.  A useful conditional abstract terminal is also
      PROVEN in `Erdos85NearTwinPrivateCycleTerminal`: two successive λ=6
      pairs whose directed private neighbors route `(x,y)` to `(u,v)` and then
      `(u,v)` to `(y,z)` contradict any commuting two-regular owner color when
-     `x,y,z` are distinct and the owner rows at `x,y` agree.  Thus the
-     remaining classification bridge is purely structural: formalize the
-     asserted private-pair cycle and instantiate the terminal with its four
-     directed membership facts and two codegree-six facts.  The full
-     graph-facing adapter is PROVEN in
+     `x,y,z` are distinct and the owner rows at `x,y` agree.  Its graph-facing
+     adapter is PROVEN in
      `Erdos85OrderSixtyFourNearTwinPrivateCycle`: in the no-rainbow branch it
      obtains the initial equal row from the forced repeated owner fork,
      restricts the global owner/defect commutation theorem to the chosen
      component, proves the owner factor is two-regular, and invokes the
-     abstract terminal.  No owner choice, matrix hypothesis, or row-equality
-     hypothesis remains for the classifier to supply.
+     abstract terminal.  However, the classified involution returns each
+     private pair to its original edge rather than to an incident edge, so it
+     does NOT instantiate this two-step terminal.
+
+     The corrected remaining terminal is an owner-color pigeonhole.  Give
+     each of the three involution-orbits a non-base owner color using the
+     forced repeated fork on its first-triangle edge; propagation gives equal
+     rows for the paired second-triangle edge in the same factor.  If two
+     first-triangle edges receive the same color, their shared vertex and the
+     three-equal-row theorem give an immediate contradiction.  The sole
+     escape is a rainbow assignment of the three non-base colors, inherited
+     by the second triangle.  GAP: exclude this explicit rainbow configuration
+     using compatibility among the three restricted owner 2-factors (or a
+     stronger owner-cross identity).  The involution table and this color
+     dichotomy still need graph-facing Lean statements.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
