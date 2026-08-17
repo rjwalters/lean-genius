@@ -386,6 +386,15 @@ generalized rather than merely replayed.
      `m` selected pairs incident with each vertex of `c`.  Thus its selected
      pairs form a spanning `m`-regular layer, and the source-component layers
      partition the complement of `D[c]` through the selector bijection.
+     There is also a Kneser-type constraint, now `PROVEN` in
+     `componentNeighborFinset_disjoint_of_secondOrderDefect_adj`: endpoints of
+     every defect edge have disjoint selectors in every target component.
+     The size-two capstone
+     `binarySquare_regular_sizeTwoPart_exists_selectorEquiv_maps_defectAdj_to_disjoint`
+     packages this with the equivalence above, representing `D` on the
+     complement edges of `D[c]` with defect adjacency mapping to pair
+     disjointness.  Any surviving weighted cycle quotient must therefore lift
+     to this simultaneous regular-factor/disjointness representation.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

@@ -696,6 +696,29 @@ theorem not_secondOrderDefect_adj_of_commonNeighbor
     Finset.card_pos.mpr ⟨z, hz⟩
   omega
 
+/-- A second-order defect edge has disjoint neighbor selectors in every defect
+component: any vertex in both selectors would be a common ambient neighbor of
+the endpoints, contradicting the defining zero-common-neighbor relation. -/
+theorem componentNeighborFinset_disjoint_of_secondOrderDefect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {x y : V} (hxy : (secondOrderDefectGraph G).Adj x y)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    Disjoint
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x)
+      (componentNeighborFinset G (secondOrderDefectGraph G) c y) := by
+  rw [Finset.disjoint_left]
+  intro z hzx hzy
+  rw [componentNeighborFinset, Finset.mem_filter] at hzx hzy
+  exact (not_secondOrderDefect_adj_of_commonNeighbor G hfree
+    ((secondOrderDefectGraph G).ne_of_adj hxy)
+    ((G.mem_neighborFinset x z).mp hzx.1)
+    ((G.mem_neighborFinset y z).mp hzy.1)) hxy
+
 /-- Triangle-free edges stay inside the defect component, so their degree at
 a vertex is bounded by the normalized component part. -/
 theorem binarySquare_regular_triangleFree_degree_le_part
@@ -1535,6 +1558,36 @@ theorem binarySquare_regular_sizeTwoPart_selector_equiv_nondefectPairs
   refine ⟨Equiv.ofBijective f ⟨hfinj, hfsurj⟩, ?_⟩
   intro x
   rfl
+
+/-- Kneser-style representation furnished by a normalized size-two component:
+under the selector equivalence, every defect edge is sent to a pair of
+disjoint two-element non-defect pairs. -/
+theorem binarySquare_regular_sizeTwoPart_exists_selectorEquiv_maps_defectAdj_to_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) :
+    ∃ E : V ≃ {s : Finset V // ∃ u v : c.supp,
+        u ≠ v ∧ ¬(secondOrderDefectGraph G).Adj u.1 v.1 ∧ s = {u.1, v.1}},
+      (∀ x, (E x).1 =
+        componentNeighborFinset G (secondOrderDefectGraph G) c x) ∧
+      ∀ ⦃x y : V⦄, (secondOrderDefectGraph G).Adj x y →
+        Disjoint (E x).1 (E y).1 := by
+  obtain ⟨E, hE⟩ :=
+    binarySquare_regular_sizeTwoPart_selector_equiv_nondefectPairs
+      G hfree hq hreg hcard c hc
+  refine ⟨E, hE, ?_⟩
+  intro x y hxy
+  rw [hE x, hE y]
+  exact componentNeighborFinset_disjoint_of_secondOrderDefect_adj
+    G hfree hxy c
 
 /-- Fix a vertex of a target defect component `c`.  The component-neighbor
 selectors coming from a source defect component of normalized size `m`
