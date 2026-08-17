@@ -388,6 +388,16 @@ generalized rather than merely replayed.
     - all 77 survive the `-1` multiplicity plus defect trace-two/Cauchy budget;
       `BᵀB=qI+J` supplies no additional class-level equation.
 
+    The subsequently proved branchwise incidence law is materially stronger
+    than those scalar screens.  The reproducible discovery census
+    `square_order_branch_profile_census.py` imposes only its necessary
+    multiset-partition consequences at every occurring vertex weight and
+    rejects 25 of the 77 profiles, leaving 52, distributed by
+    `h=2,4,6,8,10,12` as `1,3,7,18,19,4`.  This is not yet a proof artifact:
+    rejection by the relaxation is mathematically sound, but survivors need
+    not be realizable and the finite calculation has not been reflected into
+    a uniform Lean terminal.
+
     The incidence quadratic is already forced by the same pointwise
     `(D+I)k=h1` system; its two roots consume only `q²-2q+2-2h` of the defect
     square trace, leaving a large residual budget at `q=8`. Thus the revised
