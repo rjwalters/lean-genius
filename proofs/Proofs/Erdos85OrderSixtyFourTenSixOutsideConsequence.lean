@@ -20,7 +20,10 @@ theorem tenSixOutsideTarget_eq_one_of_adj_incidence
 
 theorem tenSixOutsidePairs_mem_sorted (e f : Fin 48) (hef : e ≠ f) :
     (if e < f then (e, f) else (f, e)) ∈ tenSixOutsidePairs.toList := by
-  native_decide +revert
+  by_cases hlt : e < f
+  · simp [tenSixOutsidePairs, hlt]
+  · have hgt : f < e := _root_.lt_of_le_of_ne (_root_.not_lt.mp hlt) hef.symm
+    simp [tenSixOutsidePairs, hlt, hgt]
 
 /-- Every actual C-edge passes the generator's dominance filter.  This is
 the key fact ensuring semantic service witnesses always have DIMACS IDs. -/
