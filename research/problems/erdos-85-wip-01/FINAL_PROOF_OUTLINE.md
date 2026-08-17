@@ -1276,9 +1276,12 @@ generalized rather than merely replayed.
      neighbor route is the component `a`.  Consequently the all-three-
      distinct pattern finset is literally the finset of ordered endpoint
      pairs whose three routes are `a,b,c`, and every root supports at least
-     `12` such prescribed routing cycles.  The remaining structural gap is
-     to exploit the incidence constraints imposed by these ubiquitous
-     routing cycles and derive a contradiction.
+     `12` such prescribed routing cycles.  Summing the rooted fibers in
+     `Erdos85BinarySquareMixedOwnerRoutingCycleCensus` gives a global sigma-
+     finset of at least `64 * 12 = 768` prescribed rooted routing-cycle
+     incidences for every ordered triple of distinct colors.  The remaining
+     structural gap is to exploit the incidence constraints imposed by these
+     ubiquitous routing cycles and derive a contradiction.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
