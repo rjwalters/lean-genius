@@ -664,6 +664,13 @@ generalized rather than merely replayed.
      order-`q` target has at most `q` members.  Evaluation at one source vertex
      is injective by unique-route rigidity.  Equality and near-equality cases
      are now the relevant frontier; the base cardinal bound is formalized.
+     The equality case is `PROVEN` as
+     `binarySquare_regular_unitOwnerColors_intermediateFamily_eval_bijective`:
+     a `q`-member family evaluates bijectively onto the target at every source
+     vertex.  Thus saturation forces an exact Latin/transversal law, not just
+     cardinal equality.  The remaining task is to force saturation (or extract
+     a contradiction from its deficit) using the normalized component
+     partition and diagonal cycle data.
      The first such algebra-to-cycle bridge is now `PROVEN` in
      `Erdos85BinarySquareCenteredOwnerResolution`.  For the normalized
      component sizes `m_c`, the theorem
