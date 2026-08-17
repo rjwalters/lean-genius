@@ -122,6 +122,45 @@ theorem tenSixRDimacsValuation_pair
   simp [tenSixRDimacsValuation, hidx,
     tenSixPairs_getD_pairIndex u v huv]
 
+/-- The six labeled `R` models excluded by the final six clauses of
+`r_complete.cnf`, recorded as zero-based indices into `tenSixPairs`. -/
+def tenSixRModelEdgeIndices : Fin 6 → List Nat := ![
+  [0, 4, 8, 10, 12, 14, 15, 19, 23, 25, 27, 29, 33, 37, 39, 41,
+    42, 46, 48, 50, 52, 54, 58, 60, 62, 64, 65, 69, 71, 73, 75, 79,
+    81, 83, 84, 86, 88, 90, 92, 94, 96, 98, 99, 101, 103, 107, 112, 116],
+  [2, 4, 6, 10, 12, 14, 17, 19, 21, 23, 25, 27, 31, 33, 35, 37,
+    39, 41, 44, 46, 48, 50, 52, 56, 58, 60, 62, 64, 67, 69, 71, 73,
+    77, 79, 81, 83, 86, 88, 90, 94, 96, 98, 99, 101, 103, 107, 112, 116],
+  [2, 4, 6, 9, 11, 13, 17, 19, 21, 24, 26, 28, 31, 33, 35, 36,
+    38, 40, 44, 46, 49, 51, 53, 56, 58, 59, 61, 63, 67, 70, 72, 74,
+    77, 78, 80, 82, 87, 89, 91, 93, 95, 97, 100, 102, 104, 107, 112, 116],
+  [0, 4, 8, 9, 11, 13, 15, 19, 24, 26, 28, 29, 33, 36, 38, 40,
+    42, 46, 49, 51, 53, 54, 58, 59, 61, 63, 65, 70, 72, 74, 75, 78,
+    80, 82, 84, 87, 89, 91, 92, 93, 95, 97, 100, 102, 104, 107, 112, 116],
+  [3, 4, 5, 9, 11, 13, 18, 19, 20, 24, 26, 28, 32, 33, 34, 36,
+    38, 40, 45, 46, 47, 49, 51, 53, 57, 58, 59, 61, 63, 68, 70, 72,
+    74, 78, 80, 82, 87, 89, 91, 93, 95, 97, 100, 102, 104, 107, 112, 116],
+  [3, 4, 5, 10, 12, 14, 18, 19, 20, 23, 25, 27, 32, 33, 34, 37,
+    39, 41, 45, 46, 47, 48, 50, 52, 57, 58, 60, 62, 64, 68, 69, 71,
+    73, 79, 81, 83, 86, 88, 90, 94, 96, 98, 99, 101, 103, 107, 112, 116]
+]
+
+theorem tenSixRModelEdgeIndices_audit :
+    ∀ i : Fin 6,
+      (tenSixRModelEdgeIndices i).length = 48 ∧
+      (tenSixRModelEdgeIndices i).Nodup ∧
+      ∀ k ∈ tenSixRModelEdgeIndices i, k < 120 := by
+  native_decide
+
+/-- Boolean bit of model `i` at a zero-based unordered-pair index. -/
+def tenSixRModelBit (i : Fin 6) (k : Nat) : Bool :=
+  decide (k ∈ tenSixRModelEdgeIndices i)
+
+/-- Equality of a labeled graph with one of the six certificate models. -/
+def IsTenSixRModel (i : Fin 6) (R : SimpleGraph (Fin 16)) : Prop :=
+  ∀ u v : Fin 16, u < v →
+    R.Adj u v ↔ tenSixRModelBit i (tenSixPairIndex u v) = true
+
 end
 
 end Erdos85
