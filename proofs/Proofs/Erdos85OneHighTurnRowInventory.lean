@@ -29,6 +29,37 @@ def oneHighSaturatedTurnRowInventoryTables (profile : Fin 5) :
   (oneHighCapacityInventoryTables profile).filter
     (oneHighTableHasSaturatedTurnRow profile.val)
 
+/-- A table admits the full same-owner turn signature when one of its exact
+pairing refinements contains the saturated `AB, BC` owner row and both keys
+have odd global multiplicity.  Unlike the row-only predicate above, this
+retains the parity information needed by the turn terminal. -/
+def oneHighTableHasSaturatedOddThreePairTurn
+    (profile : Nat) (table : OneHighMissTable) : Bool :=
+  (oneHighPairingRefinements profile table).any
+    oneHighRefinementHasSaturatedOddThreePairTurn
+
+/-- Capacity-admissible representatives having an exact compatible odd-turn
+refinement. -/
+def oneHighSaturatedOddTurnInventoryTables (profile : Fin 5) :
+    List OneHighMissTable :=
+  (oneHighCapacityInventoryTables profile).filter
+    (oneHighTableHasSaturatedOddThreePairTurn profile.val)
+
+/-- Any explicitly exhibited compatible refinement with the full odd-turn
+signature puts its table in the executable odd-turn inventory. -/
+theorem mem_oneHighSaturatedOddTurnInventoryTables_of_refinement
+    {profile : Fin 5} {table : OneHighMissTable}
+    (hcapacity : table ∈ oneHighCapacityInventoryTables profile)
+    {refinement : List (List OneHighLabelPair)}
+    (hrefinement : refinement ∈
+      oneHighPairingRefinements profile.val table)
+    (hturn : oneHighRefinementHasSaturatedOddThreePairTurn refinement = true) :
+    table ∈ oneHighSaturatedOddTurnInventoryTables profile := by
+  rw [oneHighSaturatedOddTurnInventoryTables, List.mem_filter]
+  refine ⟨hcapacity, ?_⟩
+  rw [oneHighTableHasSaturatedOddThreePairTurn, List.any_eq_true]
+  exact ⟨refinement, hrefinement, hturn⟩
+
 /-- A same-owner turn in a graph presentation lands in the saturated-turn
 subinventory whenever its raw graph table agrees with a capacity
 representative. -/
