@@ -1223,7 +1223,16 @@ generalized rather than merely replayed.
      nonempty).  The remaining work can therefore decompose a concrete
      global exactly-colored triangle finset by defect-component membership
      and identify its same-component summands with the local routing-rainbow
-     census.
+     census.  The first half of that decomposition is now `PROVEN` in
+     `Erdos85BinarySquareMixedOwnerComponentSplit`: the global finset is the
+     disjoint cardinal sum of same-defect-component and cross-component
+     triples, so their order-64 cardinalities add to `3584`; the
+     same-component part is in turn the sum of its uniquely indexed defect-
+     component fibers.  A fixed fiber is nonempty iff its component supports
+     the corresponding `routingOwnerRainbow`.  The remaining quantitative
+     gap is to count each such fiber (rather than merely detect nonemptiness)
+     in terms of the local rainbow-excess objects and control the complementary
+     cross-component term.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
