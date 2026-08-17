@@ -231,15 +231,25 @@ theorem tenSixRValuationMatchesModel_iff
 
 set_option maxHeartbeats 0 in
 set_option maxRecDepth 1000000 in
+/-- Equality of a CNF is determined by its clause array. Kept abstract here
+so large parsed arrays are not unfolded by structure equality elaboration. -/
+private theorem cnf_eq_of_clauses_eq {a b : Std.Sat.CNF Nat}
+    (h : a.clauses = b.clauses) : a = b := by
+  cases a with
+  | mk ac =>
+      cases b with
+      | mk bc =>
+          exact (Std.Sat.CNF.mk.injEq ac bc).mpr h
+
+set_option maxHeartbeats 0 in
+set_option maxRecDepth 1000000 in
 /-- The checked padded formula is exactly the parsed completeness CNF plus
 one inert extension-variable tautology. -/
 theorem tenSixRCompletenessPaddedCnf_eq_add_tautology :
     tenSixRCompletenessPaddedCnf =
       tenSixRCompletenessCnf.add [(138, true), (138, false)] := by
-  have hclauses : tenSixRCompletenessPaddedCnf.clauses =
-      (tenSixRCompletenessCnf.add [(138, true), (138, false)]).clauses := by
-    native_decide
-  exact congrArg Std.Sat.CNF.mk hclauses
+  apply cnf_eq_of_clauses_eq
+  native_decide
 
 /-- Remove the LRAT checker's inert padding and expose UNSAT for the actual
 parsed `r_complete.cnf`. -/
@@ -270,10 +280,8 @@ and the six audited semantic exclusions. -/
 theorem tenSixRCompletenessCnf_eq_base_append_exclusions :
     tenSixRCompletenessCnf =
       tenSixRBaseCnf ++ tenSixRModelExclusionCnf := by
-  have hclauses : tenSixRCompletenessCnf.clauses =
-      (tenSixRBaseCnf ++ tenSixRModelExclusionCnf).clauses := by
-    native_decide
-  exact congrArg Std.Sat.CNF.mk hclauses
+  apply cnf_eq_of_clauses_eq
+  native_decide
 
 /-- Once a valuation satisfies the finite R-ledger prefix, checked UNSAT of
 the completeness formula forces it to be one of the six recorded models. -/
@@ -301,7 +309,8 @@ theorem exists_tenSixRValuationMatchesModel_of_base_sat
   have hall : tenSixRCompletenessCnf.Sat val := by
     rw [tenSixRCompletenessCnf_eq_base_append_exclusions,
       Std.Sat.CNF.sat_def, Std.Sat.CNF.eval_append]
-    exact Bool.and_eq_true.mpr ⟨hbase, hexcl⟩
+    rw [hbase, hexcl]
+    rfl
   have hu := tenSixRCompletenessCnf_unsat val
   rw [Std.Sat.CNF.sat_def] at hall
   rw [hall] at hu
