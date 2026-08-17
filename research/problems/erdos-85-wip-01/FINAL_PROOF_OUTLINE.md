@@ -1261,11 +1261,17 @@ generalized rather than merely replayed.
      of the other distinct colors.  Combining this with the local degree-two
      owner factors bounds each “only one vertex leaves” pattern by `8`.
      Hence at every root either the “both leave together” pattern or the
-     all-three-distinct pattern has size at least `18`.  The next quantitative
-     leaf is the expected bound `both-leave-together ≤ 24`, obtained from the
-     three external components, four first-color neighbors into each, and two
-     second-color neighbors inside it; after that, the incidence structure of
-     the two surviving large patterns must be compared with the routing array.
+     all-three-distinct pattern has size at least `18`.
+     `Erdos85BinarySquareMixedOwnerRootedAllDistinct` closes the remaining
+     numerical leaf.  Each owner color has exactly two neighbors inside a
+     vertex's defect component and twelve outside it.  Therefore the
+     “both-leave-together” pattern injects into twelve external first-color
+     neighbors times two same-component second-color choices and has size at
+     most `24`.  Combining all four upper bounds with the exact total `56`
+     forces at least `12` prescribed-color triangles through three pairwise-
+     distinct defect components at every root.  The remaining structural gap
+     is to translate this ubiquitous all-three-distinct pattern into the
+     cross-block/routing-array language and derive an incidence obstruction.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
