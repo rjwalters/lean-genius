@@ -430,6 +430,17 @@ generalized rather than merely replayed.
      This refines the weighted Gram product formula into a local orthogonal-
      array law.  In particular every cross-component row has the same owner
      distribution, determined solely by the normalized component parts.
+     Its diagonal companion is `PROVEN` in
+     `binarySquare_regular_sameComponent_ownerCoordinate_card`: for `x∈e`,
+     owner coordinate `c` routes exactly `m_c(m_e-1)` other vertices of `e`.
+     The two theorems therefore give the complete pointwise table
+
+     ```text
+     # {y∈f, y≠x : owner(x,y)=c} = m_c (m_f - delta(e,f)).
+     ```
+
+     This is an integral association-scheme-style constraint on every
+     component partition, valid uniformly in `q`.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

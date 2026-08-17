@@ -1851,6 +1851,124 @@ theorem binarySquare_regular_crossComponent_ownerCoordinate_card
     _ = S.card * m_f := by simp
     _ = m_c * m_f := by rw [hScard]
 
+/-- Diagonal companion to the cross-component owner count.  For `x` in a
+normalized part `e`, owner coordinate `c` routes exactly `m_c (m_e - 1)`
+other vertices of `e`; the subtraction removes `x` from every neighbor fiber
+through a vertex of its selector in `c`. -/
+theorem binarySquare_regular_sameComponent_ownerCoordinate_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e c : (secondOrderDefectGraph G).ConnectedComponent)
+    {m_c m_e : ℕ} (hc : c.supp.ncard = q * m_c)
+    (he : e.supp.ncard = q * m_e) (x : e.supp) :
+    ((e.supp.toFinite.toFinset).filter fun y =>
+      y ≠ x.1 ∧
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x.1 ∩
+        componentNeighborFinset G (secondOrderDefectGraph G) c y).Nonempty).card =
+      m_c * (m_e - 1) := by
+  let D := secondOrderDefectGraph G
+  let S := componentNeighborFinset G D c x.1
+  let F := fun z : V => (componentNeighborFinset G D e z).erase x.1
+  let T := (e.supp.toFinite.toFinset).filter fun y =>
+    y ≠ x.1 ∧
+    (componentNeighborFinset G D c x.1 ∩
+      componentNeighborFinset G D c y).Nonempty
+  have hUnion : S.biUnion F = T := by
+    ext y
+    constructor
+    · intro hy
+      obtain ⟨z, hzS, hyF⟩ := Finset.mem_biUnion.mp hy
+      have hzData : z ∈ G.neighborFinset x.1 ∧ D.connectedComponentMk z = c := by
+        simpa [S, componentNeighborFinset] using hzS
+      have hyErase := Finset.mem_erase.mp hyF
+      have hyData : y ∈ G.neighborFinset z ∧ D.connectedComponentMk y = e := by
+        simpa [F, componentNeighborFinset] using hyErase.2
+      apply Finset.mem_filter.mpr
+      refine ⟨by
+        simpa [SimpleGraph.ConnectedComponent.mem_supp_iff] using hyData.2,
+        hyErase.1, ?_⟩
+      refine ⟨z, Finset.mem_inter.mpr ⟨hzS, ?_⟩⟩
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset y z).mpr
+            ((G.mem_neighborFinset z y).mp hyData.1).symm,
+          hzData.2⟩
+    · intro hy
+      have hyData := Finset.mem_filter.mp hy
+      obtain ⟨z, hz⟩ := hyData.2.2
+      have hzData := Finset.mem_inter.mp hz
+      have hzy : z ∈ G.neighborFinset y ∧ D.connectedComponentMk z = c := by
+        simpa [componentNeighborFinset] using hzData.2
+      have hyComp : D.connectedComponentMk y = e :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff e y).mp
+          (by simpa using hyData.1)
+      apply Finset.mem_biUnion.mpr
+      refine ⟨z, hzData.1, ?_⟩
+      apply Finset.mem_erase.mpr
+      refine ⟨hyData.2.1, ?_⟩
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset z y).mpr
+            ((G.mem_neighborFinset y z).mp hzy.1).symm,
+          hyComp⟩
+  have hPairwise : (S : Set V).PairwiseDisjoint F := by
+    intro z hz w hw hzw
+    change Disjoint (F z) (F w)
+    rw [Finset.disjoint_left]
+    intro y hyz hyw
+    have hzData : z ∈ G.neighborFinset x.1 ∧ D.connectedComponentMk z = c := by
+      simpa [S, componentNeighborFinset] using hz
+    have hwData : w ∈ G.neighborFinset x.1 ∧ D.connectedComponentMk w = c := by
+      simpa [S, componentNeighborFinset] using hw
+    have hyzErase := Finset.mem_erase.mp hyz
+    have hywErase := Finset.mem_erase.mp hyw
+    have hyzData : y ∈ G.neighborFinset z ∧ D.connectedComponentMk y = e := by
+      simpa [F, componentNeighborFinset] using hyzErase.2
+    have hywData : y ∈ G.neighborFinset w ∧ D.connectedComponentMk y = e := by
+      simpa [F, componentNeighborFinset] using hywErase.2
+    exact hfree (containsC4_of_two_common hzw hyzErase.1.symm
+      ((G.mem_neighborFinset x.1 z).mp hzData.1)
+      ((G.mem_neighborFinset x.1 w).mp hwData.1)
+      ((G.mem_neighborFinset z y).mp hyzData.1).symm
+      ((G.mem_neighborFinset w y).mp hywData.1).symm)
+  have hScard : S.card = m_c := by
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard e c (x := x.1) x.2
+    rw [hc] at hmul
+    exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+  have hFcard (z : V) (hz : z ∈ S) : (F z).card = m_e - 1 := by
+    have hzData : z ∈ G.neighborFinset x.1 ∧ D.connectedComponentMk z = c := by
+      simpa [S, componentNeighborFinset] using hz
+    have hxMem : x.1 ∈ componentNeighborFinset G D e z := by
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset z x.1).mpr
+            ((G.mem_neighborFinset x.1 z).mp hzData.1).symm,
+          (SimpleGraph.ConnectedComponent.mem_supp_iff e x.1).mp x.2⟩
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard (D.connectedComponentMk z) e (x := z) (by rfl)
+    rw [he] at hmul
+    have hcardNe : (componentNeighborFinset G D e z).card = m_e :=
+      Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+    change ((componentNeighborFinset G D e z).erase x.1).card = m_e - 1
+    rw [Finset.card_erase_of_mem hxMem, hcardNe]
+  change T.card = m_c * (m_e - 1)
+  rw [← hUnion, Finset.card_biUnion hPairwise]
+  calc
+    ∑ z ∈ S, (F z).card = ∑ _z ∈ S, (m_e - 1) := by
+      apply Finset.sum_congr rfl
+      intro z hz
+      exact hFcard z hz
+    _ = S.card * (m_e - 1) := by simp
+    _ = m_c * (m_e - 1) := by rw [hScard]
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]
