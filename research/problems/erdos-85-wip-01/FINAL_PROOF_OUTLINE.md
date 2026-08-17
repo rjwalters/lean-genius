@@ -99,18 +99,21 @@ generalized rather than merely replayed.
    `squareOrder_degree_succ_highRoot_structure`, and
    `false_of_squareOrder_clean_highRoot`.
 
-10. **`AXIOM A-SPLIT` — exhaustive uniform sector decomposition.** For every
-    `k ≥ 3`, every `SquareOrderTightCoreExists (2^k)` admits a root and falls
-    into a finite list of structural sectors, each described solely by:
+10. **`PROVEN` — exhaustive parameterized sector split.**
+    `squareOrder_regular_or_nonregularSectorProfile` proves that every
+    tight-edge-cover square-order core is either regular or belongs to a
+    scale-stable nonregular profile. In the latter sector all degrees are
+    `q` or `q+1`; the high set is nonempty and independent; its incidence
+    counts `k_x` satisfy exact first and second moments
     
-    - which vertices have degree `q+1` or higher;
-    - the matching structure in a high vertex's neighborhood;
-    - the partition of the remaining vertices by first-layer ownership; and
-    - the second-order defect graph plus its incidence with the high set.
+    ```text
+    Σ k_x = (q+1)h,       Σ k_x² = h(h+q),
+    ```
     
-    The list must include the regular sector and must be stable as `q` grows.
-    Current files prove many consequences after a sector is assumed, but no
-    theorem presently states an exhaustive uniform list.
+    handshake parity, `2k_x ≤ q` at every low vertex, and
+    `h² + (3q+1)h ≤ q³`. This replaces the earlier, unjustified suggestion
+    of a finite orbit list independent of `q`: the known bound allows `h` to
+    grow with `q`, so the honest split is parameterized.
 
 ### A4. Regular sector
 
@@ -167,8 +170,9 @@ generalized rather than merely replayed.
 
 19. **`AXIOM A-NONREG` — uniform nonregular exclusion.** For every `k ≥ 3`,
     no nonregular `SquareOrderTightCoreExists (2^k)` exists. A satisfactory
-    refinement should split this into finitely many uniform sector lemmas from
-    A-SPLIT, with at least one analytic terminal per sector.
+    refinement must consume the parameterized profile from Node 10 and either
+    derive a stronger bounded family of profiles or give an analytic terminal
+    that works for all admissible `h` and incidence distributions.
 
 20. **`GAP A-NONREG-TERMINALS`.** There is not yet a proposed scalable terminal
     for every high-vertex sector. This is the largest mathematical hole in the
@@ -300,7 +304,7 @@ The shortest current proof tree is:
 └── BinarySquareOrderTightCoreExclusion                 [AXIOM A-CAPSTONE]
     ├── q²-1 characteristic-two witnesses              [PROVEN]
     └── no square-order tight core for q = 2^k
-        ├── exhaustive uniform sector split             [AXIOM A-SPLIT]
+        ├── regular / parameterized nonregular split     [PROVEN]
         ├── regular-sector exclusion                    [AXIOM A-REG]
         └── nonregular-sector exclusion                 [AXIOM A-NONREG]
             └── scalable terminals for every sector     [GAP]
@@ -319,12 +323,11 @@ The parallel odd-prime tree is:
 According to the top-down rule, the next mathematical work should target, in
 order:
 
-1. `A-SPLIT`: state an exhaustive, scale-stable sector decomposition for a
-   normalized square-order core. This tells us what must actually be killed.
-2. `A-NONREG-TERMINALS`: propose analytic terminals for every sector exposed
-   by the split, using 49/64 only as experiments.
-3. `A-REG`: isolate and attack the regular binary square-order theorem.
-4. In parallel, `B-EXIST`: turn the 48-vertex witness into a precise geometric
+1. `A-NONREG-TERMINALS`: strengthen or consume the parameterized incidence
+   profile, using 49/64 only as experiments, until all admissible nonregular
+   cores have analytic terminals.
+2. `A-REG`: isolate and attack the regular binary square-order theorem.
+3. In parallel, `B-EXIST`: turn the 48-vertex witness into a precise geometric
    construction conjecture or record a decisive obstruction.
 
 Certificate generation, LRAT promotion, and graph-to-CNF semantic bridges are
@@ -338,7 +341,7 @@ below are proved and the final theorem is cold-built with an axiom audit:
 | Binary route | Odd-prime route |
 |---|---|
 | Uniform `q²-1` witnesses — done | Uniform/cofinal `q²-1` witnesses — open |
-| Exhaustive square-core split — open | Exhaustive square-core split — open |
+| Parameterized square-core split — done | Parameterized square-core split — done |
 | Regular square-core exclusion — open | Square-order nonexistence — open |
 | Nonregular square-core exclusion — open | Same unbounded set on both jaws — open |
 | `BinarySquareOrderTightCoreExclusion` | `CofinalPlaneOrderDropFamily` |
