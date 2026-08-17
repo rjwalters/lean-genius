@@ -161,6 +161,27 @@ theorem orderSixtyFour_adj_det_eq_zero_of_defect_not_preconnected
   intro heq
   exact hxy (SimpleGraph.ConnectedComponent.exact heq)
 
+/-- Exact endpoint dichotomy: the defect graph is preconnected precisely
+when the original adjacency matrix is nonsingular over the reals. -/
+theorem orderSixtyFour_defect_preconnected_iff_adj_det_ne_zero
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8) :
+    (secondOrderDefectGraph G).Preconnected ↔
+      Matrix.det (G.adjMatrix ℝ) ≠ 0 := by
+  constructor
+  · exact orderSixtyFour_adj_det_ne_zero_of_defect_preconnected
+      G hfree hmin hcover
+  · intro hdet
+    by_contra hdisc
+    exact hdet
+      (orderSixtyFour_adj_det_eq_zero_of_defect_not_preconnected
+        G hfree hmin hcover hdisc)
+
 end
 
 end Erdos85
