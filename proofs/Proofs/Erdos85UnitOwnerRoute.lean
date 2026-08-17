@@ -139,4 +139,66 @@ theorem unitOwnerColors_matchingCompositions_pointwise_ne_of_intermediate_ne
       _ = f' := hf'Comp
   exact hff' hfeq
 
+/-- **Sharp composition-code bound.**  A family of mixed `c`-then-`d` routes
+indexed injectively by intermediate defect components has size at most `q`
+when its outputs lie in an order-`q` target component.  Evaluation at any
+fixed source vertex is injective by unique-route rigidity. -/
+theorem binarySquare_regular_unitOwnerColors_intermediateFamily_card_le
+    {V I : Type*} [Fintype V] [DecidableEq V] [Fintype I]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e g c d : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcd : c ≠ d) (hc : c.supp.ncard = q) (hd : d.supp.ncard = q)
+    (he : e.supp.ncard = q)
+    (mid : I → (secondOrderDefectGraph G).ConnectedComponent)
+    (hmid : Function.Injective mid)
+    (route : ∀ i : I, g.supp → (mid i).supp)
+    (out : I → g.supp → e.supp)
+    (hfirst : ∀ (i : I) (x : g.supp),
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj
+        x.1 (route i x).1)
+    (hsecond : ∀ (i : I) (x : g.supp),
+      (componentOwnerGraph G (secondOrderDefectGraph G) d).Adj
+        (route i x).1 (out i x).1)
+    (x : g.supp) : Fintype.card I ≤ q := by
+  let Oc := componentOwnerGraph G (secondOrderDefectGraph G) c
+  let Od := componentOwnerGraph G (secondOrderDefectGraph G) d
+  have heval : Function.Injective (fun i : I => out i x) := by
+    intro i j hij
+    have huniq := binarySquare_regular_unitOwnerColors_existsUnique_mixedRoute
+      G hfree hq hreg hcard c d hcd hc hd x.1 (out i x).1
+    have hi :
+        (x.1 = (route i x).1 ∨ Oc.Adj x.1 (route i x).1) ∧
+        ((route i x).1 = (out i x).1 ∨ Od.Adj (route i x).1 (out i x).1) :=
+      ⟨Or.inr (hfirst i x), Or.inr (hsecond i x)⟩
+    have hj :
+        (x.1 = (route j x).1 ∨ Oc.Adj x.1 (route j x).1) ∧
+        ((route j x).1 = (out i x).1 ∨ Od.Adj (route j x).1 (out i x).1) := by
+      refine ⟨Or.inr (hfirst j x), Or.inr ?_⟩
+      have hout : (out j x).1 = (out i x).1 := congrArg Subtype.val hij.symm
+      rw [← hout]
+      exact hsecond j x
+    have hry : (route i x).1 = (route j x).1 := huniq.unique hi hj
+    have hmi : (secondOrderDefectGraph G).connectedComponentMk (route i x).1 = mid i :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff (mid i) (route i x).1).mp
+        (route i x).2
+    have hmj : (secondOrderDefectGraph G).connectedComponentMk (route j x).1 = mid j :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff (mid j) (route j x).1).mp
+        (route j x).2
+    apply hmid
+    calc
+      mid i = (secondOrderDefectGraph G).connectedComponentMk (route i x).1 := hmi.symm
+      _ = (secondOrderDefectGraph G).connectedComponentMk (route j x).1 := by rw [hry]
+      _ = mid j := hmj
+  have hle : Fintype.card I ≤ Fintype.card e.supp :=
+    Fintype.card_le_of_injective (fun i : I => out i x) heval
+  rw [Set.fintypeCard_eq_ncard, he] at hle
+  exact hle
+
 end Erdos85

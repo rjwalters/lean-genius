@@ -658,6 +658,12 @@ generalized rather than merely replayed.
      index a second maximum-distance permutation code.  The live parity task
      can now count/compare these composition codes against the color-indexed
      code and the diagonal cycle permutations.
+     The sharp counting consumer is `PROVEN` as
+     `binarySquare_regular_unitOwnerColors_intermediateFamily_card_le`:
+     any injectively component-indexed family of such mixed routes into an
+     order-`q` target has at most `q` members.  Evaluation at one source vertex
+     is injective by unique-route rigidity.  Equality and near-equality cases
+     are now the relevant frontier; the base cardinal bound is formalized.
      The first such algebra-to-cycle bridge is now `PROVEN` in
      `Erdos85BinarySquareCenteredOwnerResolution`.  For the normalized
      component sizes `m_c`, the theorem
