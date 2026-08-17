@@ -1323,9 +1323,18 @@ generalized rather than merely replayed.
      lie in distinct components); whichever pair separates forces saturation
      of its corresponding four-point row.  Thus every forced fork saturates
      either the `b`-side row from `y` through the root component or the
-     `c`-side row from `x` through the middle component.  The remaining
-     structural gap is to obtain a rectangle or degree contradiction from
-     this unavoidable two-sided saturation alternative.
+     `c`-side row from `x` through the middle component.  A subsequent audit
+     shows that this terminal is structural rather than contradictory:
+     `Erdos85BinarySquareRoutingRowStarDecomposition` proves that every
+     fixed-color routing row is exactly the union of the target-component
+     neighbor rows indexed by the corresponding intermediate-component
+     neighbors of its root, and that the indexed star rows are pairwise
+     disjoint.  Consequently, when those two selectors have sizes two and
+     two, their saturation of the four-point routing row is automatic; it
+     supplies no exceptional pressure by itself.  The remaining structural
+     gap must therefore relate two different color decompositions of these
+     rows, or impose a global compatibility condition across roots.  A local
+     contradiction from saturation alone is not a valid remaining target.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
