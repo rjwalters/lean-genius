@@ -121,7 +121,34 @@ The following tests are ordered by mathematical value.
    special case in which all matchings are translates of one connection set.
    They cannot decide B-NEAR-LATIN-LIFT.
 
-## 5. Honest status in the final tree
+## 5. First exact q=9 scout
+
+`near_latin_q9.py` encodes the model directly. It fixes the within-fiber
+matchings by independent fiber relabeling, represents every ordinary fiber
+pair by a perfect matching and every paired fiber pair by a 2-regular
+bipartite graph, and forbids each of the three possible 4-cycles on every
+four-vertex set. Its CNF objective is exact: SAT reconstructs a q-regular
+graph and independently rechecks that every vertex pair has at most one common
+neighbor.
+
+The trust calibration succeeds at q=7: Kissat finds a new collision-free datum
+from a 960-variable, 343,440-clause CNF, and reconstruction reports zero C4s.
+
+At q=9 the unrestricted model has 2,800 variables and 3,114,580 clauses. A
+30-minute Kissat run returned `UNKNOWN-TIMEOUT`; this is neither positive nor
+negative evidence. The doubled fiber pair must have cycle type `20`, `6+14`,
+`8+12`, or `10+10`. Four further five-minute positive scouts normalized all
+four doubled pairs to one of these types while correctly leaving the internal
+fiber matchings variable. All four also timed out. Mixed cycle-type tuples
+remain untested.
+
+The honest result is therefore that q=9 remains open even inside the
+near-Latin model. The exact formulation is reproducible and the next solver
+work should add mathematically justified symmetry breaking or enumerate the
+`4^4` doubled-pair cycle-type tuples; simply extending the timeout would not
+clarify the construction.
+
+## 6. Honest status in the final tree
 
 - `PROVEN-AT-49-ONLY`: the q=7 datum exists, via `boza48Graph`.
 - `PROVEN-COMPUTATIONALLY`: the displayed six-fiber decomposition and quotient
