@@ -1459,7 +1459,14 @@ generalized rather than merely replayed.
      `orderSixtyFour_global_codegreeFive_ownerFork_or_exactThree` in the
      adapter.  Thus the remaining λ=5 task is precisely to eliminate or
      propagate the exact-three boundary; the fork alternative feeds the same
-     closed owner-`K_{2,2}` machinery as λ=6.
+     closed owner-`K_{2,2}` machinery as λ=6.  The exact boundary itself is
+     sharpened in `Erdos85NearTwinLiteExactThreeStructure`: `PROVEN`, the five
+     closures form a disjoint `3+1+1` partition—three equal-nonbase closures,
+     exactly one left-base closure, and exactly one right-base closure.  In
+     particular the two base charges are distinct and no closure uses the
+     base owner on both sides.  The residual λ=5 leaf is therefore the
+     compatibility of this rigid `3+1+1` pattern with the four owner
+     2-factors, rather than an unconstrained exact-cardinality case.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
