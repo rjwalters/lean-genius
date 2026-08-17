@@ -1213,9 +1213,17 @@ generalized rather than merely replayed.
      ```
 
      Hence in the order-64 all-two branch every ordered triple of distinct
-     owner colors has mixed cubic trace exactly `3584`.  The remaining work
-     can therefore compare the component-local routing-rainbow census against
-     a fixed global exactly-colored triangle count.
+     owner colors has mixed cubic trace exactly `3584`.
+     `Erdos85BinarySquareMixedOwnerTriangleCensus` makes this budget fully
+     combinatorial: it proves for arbitrary finite simple graphs that the
+     mixed cubic trace is the cardinality of the finset of ordered cyclic
+     triples carrying the three prescribed edge colors.  Consequently, in
+     the order-64 four-component branch this finset has cardinality `3584`
+     for each ordered triple of distinct owner colors (and in particular is
+     nonempty).  The remaining work can therefore decompose a concrete
+     global exactly-colored triangle finset by defect-component membership
+     and identify its same-component summands with the local routing-rainbow
+     census.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
