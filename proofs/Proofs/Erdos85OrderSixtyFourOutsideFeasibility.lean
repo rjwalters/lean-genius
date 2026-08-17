@@ -38,6 +38,8 @@ theorem orderSixtyFour_seven_components_outside_feasibility
         (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2) ∧
       Function.Injective
         (componentNeighborFinset G (secondOrderDefectGraph G) c) ∧
+      ((Finset.univ.filter (fun x : Fin 64 ↦ x ∉ c.supp)).image
+        (componentNeighborFinset G (secondOrderDefectGraph G) c)).card = 48 ∧
       (∀ u : c.supp, R.degree u = 6) ∧
       R.edgeFinset.card = 48 ∧
       (∀ z : q, Cg.degree z = 6) ∧
@@ -112,8 +114,20 @@ theorem orderSixtyFour_seven_components_outside_feasibility
         (Nat.card_coe_set_eq c.supp).trans hc16
     simp [hc] at hs
     omega
-  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hinj, hRreg, hRedges,
-    hout, ?_, hcross⟩
+  have hpairImage :
+      ((Finset.univ.filter (fun x : Fin 64 ↦ x ∉ c.supp)).image
+        (componentNeighborFinset G (secondOrderDefectGraph G) c)).card = 48 := by
+    rw [Finset.card_image_of_injective _ hinj]
+    have hfilter :
+        (Finset.univ.filter (fun x : Fin 64 ↦ x ∉ c.supp)) =
+          Finset.univ \ c.supp.toFinset := by
+      ext x
+      simp
+    rw [hfilter, Finset.card_sdiff, Finset.inter_univ,
+      Finset.card_univ, Fintype.card_fin,
+      ← Set.ncard_eq_toFinset_card', hc16]
+  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hinj, hpairImage,
+    hRreg, hRedges, hout, ?_, hcross⟩
   intro hC4
   obtain ⟨f, hf, hadj⟩ := hC4
   apply hfree
