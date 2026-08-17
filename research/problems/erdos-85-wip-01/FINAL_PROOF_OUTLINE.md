@@ -1023,6 +1023,17 @@ generalized rather than merely replayed.
      restricted owner factors `F_cd` and `F_dc` are cospectral.  Thus the
      coordinate-indexed 2-factorizations on different components cannot be
      chosen independently even at the level of cycle-length multisets.
+     A stronger module-level compatibility is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossFactorIntertwining`:
+
+     ```text
+     Adj(F_cd) B_cd = B_cd Adj(F_dc).
+     ```
+
+     Hence the actual cross-incidence block, not merely an abstract spectral
+     bijection, transports the paired factor actions.  This is the exact
+     vertex-level intertwining constraint available to a simultaneous-block
+     classification.
      It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
