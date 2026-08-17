@@ -1415,9 +1415,14 @@ generalized rather than merely replayed.
      ambient common neighbor, every pair in each remaining selector block is
      distinct and has exactly one component-owner color.  Hence every
      nonexceptional component supplies a complete `K_{2,2}` block uniquely
-     edge-colored by the four owner graphs.  The next obstruction target is
-     to combine these forced owner-colored blocks with the owner 2-factor
-     budgets (or show that the six near-twin cuts cannot coexist).
+     edge-colored by the four owner graphs.  The four-component cardinal
+     consequence is `PROVEN` in
+     `Erdos85OrderSixtyFourNearTwinOwnerBlocks`: deleting the bridge and
+     overlap components leaves at least two distinct components, so every
+     near-twin forces at least two such uniquely owner-colored `K_{2,2}`
+     blocks.  The next obstruction target is to combine these forced blocks
+     with the owner 2-factor budgets (or show that the six near-twin cuts
+     cannot coexist).
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
