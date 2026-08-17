@@ -464,6 +464,24 @@ generalized rather than merely replayed.
      `Adj(Owner(c)) D = D Adj(Owner(c))` for every component color.  Thus each
      owner graph preserves every defect-component eigenspace, providing a
      simultaneous integral spectral constraint beyond the scalar part table.
+     A stronger pairwise-owner identity is now reduced to an exact bridge.
+     For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
+     projectors, defect block-diagonality, and uniform component routing give
+     the proposed formula
+
+     ```text
+     M_c M_e = m_c m_e J,
+     hence O_c O_e = O_e O_c.
+     ```
+
+     The noncommutative calculation is `PROVEN` abstractly in
+     `Erdos85BinarySquareOwnerAlgebra` as
+     `ownerGram_cross_product_of_square_relation`; its shifted-product
+     commutation consumer is `ownerMatrices_comm_of_shifted_cross_product`.
+     The remaining graph-facing step is only to instantiate the projector and
+     rank-one routing hypotheses.  This would promote the regular owner colors
+     to a commutative integral association algebra rather than merely a family
+     of operators separately commuting with `D`.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
