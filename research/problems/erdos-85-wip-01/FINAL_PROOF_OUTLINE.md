@@ -1503,8 +1503,12 @@ generalized rather than merely replayed.
      at least two off-source colors have cross-component count different from
      five.  What remains is to contradict the simultaneous presence of those
      two (indeed, where defined, `≤ 4`) profiles using the routing/cross-block
-     identities.  The involution table and the final profile contradiction
-     still need graph-facing Lean statements.
+     identities.  A further packing obstruction is PROVEN in
+     `Erdos85OrderSixteenTwoFourCyclesTriangleBound`: an order-sixteen factor
+     with two distinct four-cycle components cannot also contain two triangle
+     components, since those four parts already consume fourteen vertices and
+     leave an impossible remainder of two.  The involution table and the final
+     profile contradiction still need graph-facing Lean statements.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
