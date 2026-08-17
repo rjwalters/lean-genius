@@ -221,6 +221,70 @@ theorem orderSixtyFour_two_high_disjoint_eight_wings
     exact (Finset.mem_sdiff.mp hya).2 (by simp [hyx])
   exact ⟨a, b, x, hab, hH, hxDegree, haWing, hbWing, hwings⟩
 
+/-- The two concrete wings are exactly the vertices with one high neighbor. -/
+theorem orderSixtyFour_two_high_single_contact_eq_wings
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 2) :
+    ∃ a b x : Fin 64,
+      a ≠ b ∧
+      squareOrderHighVertices G 8 = {a, b} ∧
+      (Finset.univ.filter fun y : Fin 64 =>
+          (G.neighborFinset y ∩ squareOrderHighVertices G 8).card = 1) =
+        (G.neighborFinset a \ {x}) ∪ (G.neighborFinset b \ {x}) := by
+  obtain ⟨a, b, x, hab, hH, _hxDegree, haWing, hbWing, hwings⟩ :=
+    orderSixtyFour_two_high_disjoint_eight_wings
+      G hfree hmin hcover hh
+  let S := Finset.univ.filter fun y : Fin 64 =>
+    (G.neighborFinset y ∩ squareOrderHighVertices G 8).card = 1
+  let W := (G.neighborFinset a \ {x}) ∪ (G.neighborFinset b \ {x})
+  have hWsub : W ⊆ S := by
+    intro y hyW
+    rw [Finset.mem_union] at hyW
+    rw [Finset.mem_filter]
+    refine ⟨Finset.mem_univ y, ?_⟩
+    rcases hyW with hya | hyb
+    · have hyaAdj : G.Adj a y := by
+        simpa [SimpleGraph.mem_neighborFinset] using
+          (Finset.mem_sdiff.mp hya).1
+      have hyx : y ≠ x := by
+        simpa using (Finset.mem_sdiff.mp hya).2
+      have hnyb : ¬ G.Adj y b := by
+        intro hybAdj
+        have hybWing : y ∈ G.neighborFinset b \ {x} :=
+          Finset.mem_sdiff.mpr
+            ⟨by simpa [SimpleGraph.mem_neighborFinset] using hybAdj.symm,
+              by simpa⟩
+        exact (Finset.disjoint_left.mp hwings hya hybWing)
+      simp [hH, SimpleGraph.mem_neighborFinset, hyaAdj.symm, hnyb]
+    · have hybAdj : G.Adj b y := by
+        simpa [SimpleGraph.mem_neighborFinset] using
+          (Finset.mem_sdiff.mp hyb).1
+      have hyx : y ≠ x := by
+        simpa using (Finset.mem_sdiff.mp hyb).2
+      have hnya : ¬ G.Adj y a := by
+        intro hyaAdj
+        have hyaWing : y ∈ G.neighborFinset a \ {x} :=
+          Finset.mem_sdiff.mpr
+            ⟨by simpa [SimpleGraph.mem_neighborFinset] using hyaAdj.symm,
+              by simpa⟩
+        exact (Finset.disjoint_left.mp hwings hyaWing hyb)
+      simp [hH, SimpleGraph.mem_neighborFinset, hybAdj.symm, hnya]
+  have hWcard : W.card = 16 := by
+    dsimp [W]
+    rw [Finset.card_union_of_disjoint hwings, haWing, hbWing]
+  have hScard : S.card = 16 := by
+    have hp := orderSixtyFour_two_high_graph_profile G hfree hmin hcover hh
+    exact hp.2.2
+  have hSW : S = W :=
+    Finset.eq_of_subset_of_card_le hWsub (by omega) |>.symm
+  exact ⟨a, b, x, hab, hH, hSW⟩
+
 /-- The same branch has exactly sixteen single-contact vertices. -/
 theorem orderSixtyFour_card_one_high_contact_eq_sixteen
     (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
