@@ -29,10 +29,13 @@ theorem orderSixtyFour_seven_defect_components_H_edge_label_separation
         ∃ ℓ : ∀ i : Fin 6, Fin 64 → (κ i).1.supp,
           (∀ i (x : (κ i).1.supp) z, G.Adj x.1 z ↔ ℓ i z = x) ∧
           (∀ y : c.supp, (G.induce c.supp).degree y = 2) ∧
-          ∀ (y u : c.supp), (G.induce c.supp).Adj y u →
+          (∀ (y u : c.supp), (G.induce c.supp).Adj y u →
             ∀ i j,
               (¬ G.Adj (ℓ i y.1).1 (ℓ j u.1).1) ∧
-              ℓ i (ℓ j u.1).1 ≠ ℓ i y.1 := by
+              ℓ i (ℓ j u.1).1 ≠ ℓ i y.1) ∧
+          ∀ y : c.supp, 2 ≤
+            ((Finset.univ : Finset c.supp).filter fun u =>
+              ∀ i j, ℓ i (ℓ j u.1).1 ≠ ℓ i y.1).card := by
   classical
   let D := secondOrderDefectGraph G
   obtain ⟨c, hc16, κ, ℓ, _hpair, hiff, _hbalance⟩ :=
@@ -64,25 +67,44 @@ theorem orderSixtyFour_seven_defect_components_H_edge_label_separation
     have hcEq : c = (κ i).1 :=
       hycomp.symm.trans ((congrArg D.connectedComponentMk h).trans hxcomp)
     exact (κ i).2 hcEq.symm
-  refine ⟨c, hc16, κ, ℓ, hiff, hdeg', ?_⟩
-  intro y u hyu i j
-  let x : (κ i).1.supp := ℓ i y.1
-  let x' : (κ j).1.supp := ℓ j u.1
-  have hyx : G.Adj y.1 x.1 := ((hiff i x y.1).mpr rfl).symm
-  have hx'u : G.Adj x'.1 u.1 := (hiff j x' u.1).mpr rfl
-  have huy : u.1 ≠ y.1 := by
-    intro h
-    exact (G.induce c.supp).ne_of_adj hyu (Subtype.ext h.symm)
-  have hnon : ¬ G.Adj x.1 x'.1 := by
-    intro hcross
-    have hxx' : x.1 ≠ x'.1 := G.ne_of_adj hcross
-    exact hfree (containsC4_of_rim hyx hcross hx'u hyu.symm
-      (hH_K j y x') ((hH_K i u x).symm) ((hH_K i y x).symm)
-      hxx' huy (hH_K j u x'))
-  refine ⟨hnon, ?_⟩
-  intro heq
-  apply hnon
-  exact (hiff i x x'.1).mpr heq
+  have hedge : ∀ (y u : c.supp), (G.induce c.supp).Adj y u →
+      ∀ i j,
+        (¬ G.Adj (ℓ i y.1).1 (ℓ j u.1).1) ∧
+        ℓ i (ℓ j u.1).1 ≠ ℓ i y.1 := by
+    intro y u hyu i j
+    let x : (κ i).1.supp := ℓ i y.1
+    let x' : (κ j).1.supp := ℓ j u.1
+    have hyx : G.Adj y.1 x.1 := ((hiff i x y.1).mpr rfl).symm
+    have hx'u : G.Adj x'.1 u.1 := (hiff j x' u.1).mpr rfl
+    have huy : u.1 ≠ y.1 := by
+      intro h
+      exact (G.induce c.supp).ne_of_adj hyu (Subtype.ext h.symm)
+    have hnon : ¬ G.Adj x.1 x'.1 := by
+      intro hcross
+      have hxx' : x.1 ≠ x'.1 := G.ne_of_adj hcross
+      exact hfree (containsC4_of_rim hyx hcross hx'u hyu.symm
+        (hH_K j y x') ((hH_K i u x).symm) ((hH_K i y x).symm)
+        hxx' huy (hH_K j u x'))
+    refine ⟨hnon, ?_⟩
+    intro heq
+    apply hnon
+    exact (hiff i x x'.1).mpr heq
+  refine ⟨c, hc16, κ, ℓ, hiff, hdeg', hedge, ?_⟩
+  intro y
+  let A : Finset c.supp :=
+    (Finset.univ : Finset c.supp).filter fun u =>
+      ∀ i j, ℓ i (ℓ j u.1).1 ≠ ℓ i y.1
+  have hsub : (G.induce c.supp).neighborFinset y ⊆ A := by
+    intro u hu
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_univ _, ?_⟩
+    intro i j
+    exact (hedge y u
+      (((G.induce c.supp).mem_neighborFinset y u).mp hu) i j).2
+  have hcard := Finset.card_le_card hsub
+  change 2 ≤ A.card
+  rw [(G.induce c.supp).card_neighborFinset_eq_degree, hdeg' y] at hcard
+  exact hcard
 
 end
 
