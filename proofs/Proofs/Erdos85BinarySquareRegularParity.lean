@@ -931,6 +931,59 @@ theorem binarySquare_regular_sizeTwoPart_cycleQuotient
         simpa [Nat.card_eq_fintype_card] using Nat.card_coe_set_eq c.supp
       _ = q * 2 := hc
 
+/-- The cycle quotient above is irreducible: positive quotient entries connect
+every ordered pair of ambient cycles, because the defect block itself is
+connected. -/
+theorem binarySquare_regular_sizeTwoPart_cycleQuotient_irreducible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a b : (G.induce c.supp).ConnectedComponent) :
+    Relation.ReflTransGen
+      (fun u v => 0 < componentQuotientMatrix
+        ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) u v)
+      a b := by
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  obtain ⟨hHdegree, _hKdegree, _hcommZ⟩ :=
+    binarySquare_regular_sizeTwoPart_commuting_regular_blocks
+      G hfree hq hreg hcard c hc
+  have hcommReal : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm
+      G (secondOrderDefectGraph G) hglobal c).symm
+  let x := componentRepresentative H a
+  let y := componentRepresentative H b
+  have hKconn : K.Connected := by
+    exact c.connected_toSimpleGraph
+  have hreach : K.Reachable x y := hKconn.preconnected x y
+  have hwalk : Relation.ReflTransGen K.Adj x y :=
+    (K.reachable_iff_reflTransGen x y).mp hreach
+  have hlift : Relation.ReflTransGen
+      (fun u v : H.ConnectedComponent =>
+        0 < componentQuotientMatrix K H u v)
+      (H.connectedComponentMk x) (H.connectedComponentMk y) :=
+    hwalk.lift H.connectedComponentMk (fun u v huv =>
+      componentQuotientMatrix_pos_of_adj K H 2 hHdegree hcommReal huv)
+  have hxa : H.connectedComponentMk x = a :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff a x).mp
+      (componentRepresentative_mem H a)
+  have hyb : H.connectedComponentMk y = b :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff b y).mp
+      (componentRepresentative_mem H b)
+  simpa [H, K, x, y, hxa, hyb] using hlift
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]

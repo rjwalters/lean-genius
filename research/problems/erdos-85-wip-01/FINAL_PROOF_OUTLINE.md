@@ -330,10 +330,13 @@ generalized rather than merely replayed.
      cycle-level equitable reduction is also `PROVEN` in
      `binarySquare_regular_sizeTwoPart_cycleQuotient`: the defect-over-cycle
      quotient has row sum `q-1`, satisfies detailed balance weighted by cycle
-     lengths, and those lengths sum to `2q`.  The remaining subgoal is no
-     longer an interface gap: it is to classify or obstruct this connected
-     weighted cycle quotient and its rectangular cycle intertwiners under the
-     square-order common-neighbor laws.
+     lengths, and those lengths sum to `2q`.  Its support is genuinely
+     irreducible, not merely assumed connected:
+     `binarySquare_regular_sizeTwoPart_cycleQuotient_irreducible` lifts paths
+     in the connected defect block to positive-entry paths in the quotient.
+     The remaining subgoal is no longer an interface gap: it is to classify or
+     obstruct this connected weighted cycle quotient and its rectangular
+     cycle intertwiners under the square-order common-neighbor laws.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
