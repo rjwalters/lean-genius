@@ -686,7 +686,16 @@ generalized rather than merely replayed.
 
      This is the exact Parseval/Frobenius-mass interface for a trace or rank
      terminal: all nonconstant defect-operator mass splits additively among
-     mutually annihilating owner colors.
+     mutually annihilating owner colors.  Its right-hand side is evaluated
+     exactly by the `PROVEN` theorem
+     `binarySquare_regular_trace_defectResolution_sq`:
+
+     ```text
+     trace((q ((q-1) I - D))^2) = q^5 (q-1).
+     ```
+
+     Thus any colorwise rank/Frobenius estimate now has a fixed global budget,
+     with no remaining trace computation hidden in the interface.
      The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
