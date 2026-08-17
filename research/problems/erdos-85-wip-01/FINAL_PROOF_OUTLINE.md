@@ -174,7 +174,18 @@ generalized rather than merely replayed.
     ```
 
     for every low vertex (`squareOrder_sum_highIncidence_over_defectNeighbors_add_self`
-    and `squareOrder_defectDegree_add_highIncidence_eq_pred`).
+    and `squareOrder_defectDegree_add_highIncidence_eq_pred`). These laws now
+    localize to every defect-closed low set `S`:
+
+    ```text
+    |S| h = Σ_{x∈S} k(x)(q-k(x)).
+    ```
+
+    This is `squareOrder_defectClosed_low_incidence_balance`. In particular,
+    `squareOrder_constant_incidence_defectClosed_factorization` proves that a
+    nonempty defect component with constant incidence `k(x)=c` forces the exact
+    global factorization `h=c(q-c)`. This is a proved terminal for equitable
+    components; the nonconstant-component branch remains open.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
