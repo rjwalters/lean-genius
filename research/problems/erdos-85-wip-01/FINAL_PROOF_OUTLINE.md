@@ -570,6 +570,19 @@ generalized rather than merely replayed.
      more of these simultaneous equitable partitions (or prove that every
      component has order `q`) to contradict the self-indexed owner design for
      `q >= 8`.
+     The local cross-color factor interface needed for that combination is
+     also `PROVEN`.  In `Erdos85HoffmanEqualityCross`,
+     `componentOwnerGraph_componentNeighborFinset_disjoint` says that
+     distinct owner colors have disjoint neighbor slices in every target
+     defect component, while
+     `binarySquare_regular_sizeQ_component_ownerNeighborSlice_card` says that
+     an outside vertex has exactly `m_c` color-`c` neighbors in every
+     order-`q` target component.  Consequently, between any two order-`q`
+     components the owner colors restrict to edge-disjoint `m_c`-regular
+     bipartite factors; every normalized-size-one color is a perfect
+     matching.  The remaining GAP is now the global classification or parity
+     obstruction for this self-indexed simultaneous factorization, not its
+     local regularity/disjointness.
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
