@@ -1269,9 +1269,16 @@ generalized rather than merely replayed.
      neighbors times two same-component second-color choices and has size at
      most `24`.  Combining all four upper bounds with the exact total `56`
      forces at least `12` prescribed-color triangles through three pairwise-
-     distinct defect components at every root.  The remaining structural gap
-     is to translate this ubiquitous all-three-distinct pattern into the
-     cross-block/routing-array language and derive an incidence obstruction.
+     distinct defect components at every root.  The translation into routing
+     language is now `PROVEN` in
+     `Erdos85BinarySquareMixedOwnerRootedRoutingCycles`.  Across distinct
+     defect components, an edge has owner `a` exactly when its unique common-
+     neighbor route is the component `a`.  Consequently the all-three-
+     distinct pattern finset is literally the finset of ordered endpoint
+     pairs whose three routes are `a,b,c`, and every root supports at least
+     `12` such prescribed routing cycles.  The remaining structural gap is
+     to exploit the incidence constraints imposed by these ubiquitous
+     routing cycles and derive a contradiction.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
