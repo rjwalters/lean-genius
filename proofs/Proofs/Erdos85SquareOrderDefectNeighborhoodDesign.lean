@@ -546,7 +546,7 @@ theorem squareOrder_sum_card_defectBranchGrid_add_two_mul_degree
 /-- When two low centers are defect-nonadjacent, their unique common original
 owner contributes the only large grid cell.  Its off-diagonal row and column
 vanish, while the remaining `(d-1)²` cells have size at most one. -/
-theorem squareOrder_sum_card_defectBranchGrid_le_mul_pred_of_not_defectAdj
+theorem squareOrder_sum_card_defectBranchGrid_add_one_le_of_not_defectAdj
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -559,7 +559,10 @@ theorem squareOrder_sum_card_defectBranchGrid_le_mul_pred_of_not_defectAdj
     (hD : ¬ (secondOrderDefectGraph G).Adj u v) :
     (∑ z ∈ G.neighborFinset u, ∑ w ∈ G.neighborFinset v,
         (squareOrderDefectBranch G u z ∩
-          squareOrderDefectBranch G v w).card) ≤ d * (d - 1) := by
+          squareOrderDefectBranch G v w).card) + 1 ≤
+      d * (d - 1) +
+        (G.neighborFinset u ∩ G.neighborFinset v ∩
+          squareOrderHighVertices G d).card := by
   let S := G.neighborFinset u
   let T := G.neighborFinset v
   let F := fun z w => (squareOrderDefectBranch G u z ∩
@@ -585,28 +588,39 @@ theorem squareOrder_sum_card_defectBranchGrid_le_mul_pred_of_not_defectAdj
       exact Finset.mem_inter.mpr ⟨haS, haT⟩
     rw [hzcommon] at ha
     simpa using ha
-  have hdiag : F z z ≤ d - 1 := by
-    have hsub : squareOrderDefectBranch G u z ∩
-        squareOrderDefectBranch G v z ⊆
+  have hdiagEq : F z z = G.degree z - 2 := by
+    have heq : squareOrderDefectBranch G u z ∩
+        squareOrderDefectBranch G v z =
           ((G.neighborFinset z).erase u).erase v := by
-      intro x hx
-      have hxu := (Finset.mem_inter.mp hx).1
-      have hxv := (Finset.mem_inter.mp hx).2
-      exact Finset.mem_erase.mpr ⟨Finset.ne_of_mem_erase hxv,
-        hxu⟩
-    have hle := Finset.card_le_card hsub
-    change F z z ≤ (((G.neighborFinset z).erase u).erase v).card at hle
+      ext x
+      simp [squareOrderDefectBranch, and_left_comm]
     have humem : u ∈ G.neighborFinset z := by
       simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using hzu
     have hvmem : v ∈ (G.neighborFinset z).erase u := by
       exact Finset.mem_erase.mpr ⟨huv.symm, by
         simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using hzv⟩
-    rw [Finset.card_erase_of_mem hvmem,
+    dsimp [F]
+    rw [heq, Finset.card_erase_of_mem hvmem,
       Finset.card_erase_of_mem humem,
-      G.card_neighborFinset_eq_degree] at hle
+      G.card_neighborFinset_eq_degree]
+    omega
+  have hcommonHigh :
+      (G.neighborFinset u ∩ G.neighborFinset v ∩
+          squareOrderHighVertices G d).card =
+        if G.degree z = d + 1 then 1 else 0 := by
+    rw [hzcommon]
+    by_cases hzHigh : G.degree z = d + 1 <;>
+      simp [squareOrderHighVertices, hzHigh]
+  have hdiag : F z z + 1 ≤ d - 1 +
+      (G.neighborFinset u ∩ G.neighborFinset v ∩
+        squareOrderHighVertices G d).card := by
     rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
-        G hfree hd hmin hcover hcard z with hzdeg | hzdeg <;>
-      rw [hzdeg] at hle <;> omega
+        G hfree hd hmin hcover hcard z with hzdeg | hzdeg
+    · rw [hdiagEq, hcommonHigh, hzdeg]
+      simp
+      omega
+    · rw [hdiagEq, hcommonHigh, hzdeg]
+      simp
   have hrowZero : ∀ w ∈ T.erase z, F z w = 0 := by
     intro w hw
     have hwT : w ∈ T := Finset.mem_of_mem_erase hw
@@ -680,7 +694,10 @@ theorem squareOrder_sum_card_defectBranchGrid_le_mul_pred_of_not_defectAdj
     rw [Finset.card_erase_of_mem hzT]
     change G.degree v - 1 = d - 1
     rw [hv]
-  change (∑ a ∈ S, ∑ w ∈ T, F a w) ≤ d * (d - 1)
+  change (∑ a ∈ S, ∑ w ∈ T, F a w) + 1 ≤
+    d * (d - 1) +
+      (G.neighborFinset u ∩ G.neighborFinset v ∩
+        squareOrderHighVertices G d).card
   rw [hScard, hTcard] at hrest
   rw [htotal]
   have hpred : d - 1 + 1 = d := Nat.sub_add_cancel (by omega)
@@ -689,6 +706,33 @@ theorem squareOrder_sum_card_defectBranchGrid_le_mul_pred_of_not_defectAdj
 /-- Cross-center defect-nonedge obstruction extracted from the sparse grid.
 For two low centers which are nonadjacent in `D`, their common defect degree
 and their two high-incidence weights fit inside a single `d`-budget. -/
+theorem squareOrder_card_commonDefect_add_highIncidences_le_pred_add_commonHigh
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {x y}, G.Adj x y → G.degree x = d ∨ G.degree y = d)
+    (hcard : Fintype.card V = d * d) {u v : V}
+    (huv : u ≠ v) (hu : G.degree u = d) (hv : G.degree v = d)
+    (hD : ¬ (secondOrderDefectGraph G).Adj u v) :
+    ((secondOrderDefectGraph G).neighborFinset u ∩
+        (secondOrderDefectGraph G).neighborFinset v).card +
+      squareOrderHighIncidenceCount G d u +
+      squareOrderHighIncidenceCount G d v ≤ d - 1 +
+        (G.neighborFinset u ∩ G.neighborFinset v ∩
+          squareOrderHighVertices G d).card := by
+  have heq := squareOrder_sum_card_defectBranchGrid_add_two_mul_degree
+    G hfree hd hmin hcover hcard huv hu hv
+  rw [if_neg hD, add_zero] at heq
+  have hle :=
+    squareOrder_sum_card_defectBranchGrid_add_one_le_of_not_defectAdj
+      G hfree hd hmin hcover hcard huv hu hv hD
+  have hpred : d - 1 + 1 = d := Nat.sub_add_cancel (by omega)
+  nlinarith
+
+/-- Coarser owner-free form of the preceding inequality. -/
 theorem squareOrder_card_commonDefect_add_highIncidences_le
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -704,14 +748,18 @@ theorem squareOrder_card_commonDefect_add_highIncidences_le
         (secondOrderDefectGraph G).neighborFinset v).card +
       squareOrderHighIncidenceCount G d u +
       squareOrderHighIncidenceCount G d v ≤ d := by
-  have heq := squareOrder_sum_card_defectBranchGrid_add_two_mul_degree
-    G hfree hd hmin hcover hcard huv hu hv
-  rw [if_neg hD, add_zero] at heq
-  have hle :=
-    squareOrder_sum_card_defectBranchGrid_le_mul_pred_of_not_defectAdj
+  have hsharp :=
+    squareOrder_card_commonDefect_add_highIncidences_le_pred_add_commonHigh
       G hfree hd hmin hcover hcard huv hu hv hD
-  have hpred : d - 1 + 1 = d := Nat.sub_add_cancel (by omega)
-  nlinarith
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree u v huv
+  have hnotmem : v ∉ (secondOrderDefectGraph G).neighborFinset u := by
+    simpa [SimpleGraph.mem_neighborFinset] using hD
+  rw [if_neg hnotmem] at hcommon
+  have hsub : G.neighborFinset u ∩ G.neighborFinset v ∩
+      squareOrderHighVertices G d ⊆
+        G.neighborFinset u ∩ G.neighborFinset v := Finset.inter_subset_left
+  have hhigh := (Finset.card_le_card hsub).trans_eq hcommon
+  omega
 
 /-- Branches at two distinct centers with the same owner overlap in exactly
 the owner's neighborhood with those two centers deleted. -/
