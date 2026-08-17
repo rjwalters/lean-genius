@@ -966,7 +966,13 @@ generalized rather than merely replayed.
      Pairwise ODCs do exist at `q=8`, so the remaining all-size-two terminal
      must use three-way compatibility: the same ambient labels must furnish
      Cartesian selector cubes whose every two-coordinate projection is the
-     corresponding rectangle partition.  It is therefore the
+     corresponding rectangle partition.  This triple object is now `PROVEN`
+     and first-class in `Erdos85BinarySquareThreeSelectorCubeLines`:
+     `threeSelectorCube` attaches the Cartesian cube to each ambient label,
+     distinct labels give pairwise disjoint cubes, and
+     `binarySquare_regular_threeSizeTwoParts_cubeSupport_allAxisLines_exactlyTwo`
+     proves that every axis-parallel line in their union has exactly two
+     points.  It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
      coordinates (at `q=8`).
