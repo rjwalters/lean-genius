@@ -1,5 +1,6 @@
 import Proofs.Erdos85ExteriorDefectDecomposition
 import Proofs.Erdos85SquareOrderSectorProfile
+import Proofs.Erdos85SquareOrderDefectIncidence
 
 /-!
 # Original neighborhoods as a design on the defect complement
@@ -245,6 +246,48 @@ theorem card_neighbors_inter_squareOrderDefectBranch_le_one
       Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).2⟩
   exact (Finset.card_le_card hsub).trans
     (common_le_one_of_not_containsC4 hfree v z hzv.symm)
+
+/-- A high vertex nonadjacent to a low center has exactly `d` neighbors in
+the center's branch union (and its remaining unique neighbor in the center's
+defect neighborhood).  Together with the one-per-branch bound, this is the
+perfect-transversal count. -/
+theorem squareOrder_card_highNeighbors_inter_defectNonneighbors_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcard : Fintype.card V = d * d) {u v : V}
+    (hu : G.degree u = d) (hv : G.degree v = d + 1)
+    (huv : ¬ G.Adj u v) :
+    (G.neighborFinset v ∩ squareOrderDefectNonneighbors G u).card = d := by
+  let D := secondOrderDefectGraph G
+  let A := G.neighborFinset v
+  let B := D.neighborFinset u
+  have hleak := squareOrder_card_highNeighbors_inter_defectNeighbors
+    G hfree hd hmin hcard hv hu
+  rw [if_neg (by simpa [G.adj_comm] using huv)] at hleak
+  change (A ∩ B).card = 1 at hleak
+  have husplit : A \ B = A ∩ squareOrderDefectNonneighbors G u := by
+    ext x
+    by_cases hxv : G.Adj v x
+    · have hxu : x ≠ u := by
+        intro h
+        subst x
+        exact huv (by simpa [G.adj_comm] using hxv)
+      simp [A, B, D, squareOrderDefectNonneighbors,
+        SimpleGraph.mem_neighborFinset, hxv, hxu]
+    · simp [A, B, D, squareOrderDefectNonneighbors,
+        SimpleGraph.mem_neighborFinset, hxv]
+  have hpartition := Finset.card_sdiff_add_card_inter A B
+  rw [husplit, hleak] at hpartition
+  have hAcard : A.card = d + 1 := by
+    change (G.neighborFinset v).card = d + 1
+    rw [G.card_neighborFinset_eq_degree, hv]
+  rw [hAcard] at hpartition
+  change (A ∩ squareOrderDefectNonneighbors G u).card = d
+  omega
 
 /-- At square order every owner block has size `d` or `d+1`. -/
 theorem squareOrder_card_defectOwnerBlock_eq_or_succ
