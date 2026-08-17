@@ -1431,6 +1431,62 @@ theorem binarySquare_regular_sizeTwoPart_componentNeighborFinset_injective
   have hyz : y = z := hzunique y hyPair
   exact hxz.trans hyz.symm
 
+/-- Fix a vertex of a target defect component `c`.  The component-neighbor
+selectors coming from a source defect component of normalized size `m`
+contain that vertex exactly `m` times.  When `c` has normalized size two, the
+complement-edge interpretation of the selector bijection says that each
+source component gives an `m`-regular spanning edge layer on `c`. -/
+theorem binarySquare_regular_selector_incidence_from_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    {m : ℕ} (he : e.supp.ncard = q * m) (u : c.supp) :
+    ((e.supp.toFinite.toFinset).filter fun x =>
+      u.1 ∈ componentNeighborFinset G (secondOrderDefectGraph G) c x).card = m := by
+  let D := secondOrderDefectGraph G
+  let S : Finset V := e.supp.toFinite.toFinset
+  have hfinset :
+      S.filter (fun x => u.1 ∈ componentNeighborFinset G D c x) =
+        componentNeighborFinset G D e u.1 := by
+    ext x
+    constructor
+    · intro hx
+      have hx' := Finset.mem_filter.mp hx
+      have hxSupp : x ∈ e.supp := by simpa [S] using hx'.1
+      have hxComp : D.connectedComponentMk x = e :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff e x).mp hxSupp
+      have huSel := Finset.mem_filter.mp hx'.2
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset u.1 x).mpr
+            ((G.mem_neighborFinset x u.1).mp huSel.1).symm,
+          hxComp⟩
+    · intro hx
+      rw [componentNeighborFinset] at hx
+      have hx' := Finset.mem_filter.mp hx
+      have hxSupp : x ∈ e.supp :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff e x).mpr hx'.2
+      apply Finset.mem_filter.mpr
+      refine ⟨by simpa [S] using hxSupp, ?_⟩
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset x u.1).mpr
+            ((G.mem_neighborFinset u.1 x).mp hx'.1).symm,
+          (SimpleGraph.ConnectedComponent.mem_supp_iff c u.1).mp u.2⟩
+  change (S.filter fun x => u.1 ∈ componentNeighborFinset G D c x).card = m
+  rw [hfinset]
+  have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+    G hfree hq hreg hcard c e (x := u.1) u.2
+  rw [he] at hmul
+  exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]

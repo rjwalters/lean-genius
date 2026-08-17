@@ -374,7 +374,12 @@ generalized rather than merely replayed.
      `binarySquare_regular_sizeTwoPart_componentNeighborFinset_injective`
      records the injective half directly as a reusable selector-map theorem.
      This is the concrete interface for decomposing the complement edges into
-     regular layers indexed by source defect components.
+     regular layers indexed by source defect components.  The `PROVEN` theorem
+     `binarySquare_regular_selector_incidence_from_component` supplies the
+     degree calculation: a source component of order `q m` contributes exactly
+     `m` selected pairs incident with each vertex of `c`.  Thus its selected
+     pairs form a spanning `m`-regular layer, and the source-component layers
+     partition the complement of `D[c]` through the selector bijection.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
