@@ -1497,8 +1497,14 @@ generalized rather than merely replayed.
      profile has a unique owner four-cycle).  The live GAP is correspondingly
      narrower: assemble this per-orbit `≤ 4` constraint across the three
      rainbow colors and contradict the classified cross-component/routing
-     profiles.  The involution table and that three-orbit assembly still need
-     graph-facing Lean statements.
+     profiles.  The first three-orbit assembly step is PROVEN in
+     `Erdos85OrderSixtyFourThreeCollisionCrossCounts`: among three pairwise
+     distinct collision colors, at most one equals the source component, so
+     at least two off-source colors have cross-component count different from
+     five.  What remains is to contradict the simultaneous presence of those
+     two (indeed, where defined, `≤ 4`) profiles using the routing/cross-block
+     identities.  The involution table and the final profile contradiction
+     still need graph-facing Lean statements.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
