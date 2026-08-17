@@ -312,9 +312,14 @@ generalized rather than merely replayed.
      Thus on an `m_c=2` block every vertex has triangle-free degree exactly
      zero or two
      (`binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_zero_or_two`).
-     Equivalently, along each internal ambient cycle the triangle-free color
-     is forced toward an all-or-none propagation; packaging that propagation
-     with the commuting defect block is the next precise subgoal.
+     The all-or-none propagation along internal ambient cycles is now itself
+     `PROVEN`: `triangleFreeNeighbors_subset_componentNeighborFinset` records
+     that triangle-free edges cannot leave their defect component, and
+     `binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_adj`
+     shows that the degree-two color status is identical across every internal
+     `G`-edge.  Hence each cycle of `G[c]` is wholly triangle-free or wholly
+     triangular.  Packaging these monochromatic cycles with the commuting
+     defect block is the next precise subgoal.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
