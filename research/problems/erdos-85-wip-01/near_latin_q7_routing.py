@@ -94,8 +94,10 @@ def alternating_decompositions(
     return answers
 
 
-def group_type(perms: list[tuple[int, ...]]) -> str | None:
-    """Classify a factorization as a regular-group coset, if possible."""
+def normalized_group(
+    perms: list[tuple[int, ...]],
+) -> frozenset[tuple[int, ...]] | None:
+    """Return the regular group underlying a factorization coset, if any."""
     ident = tuple(range(8))
     for base in perms:
         normalized = {compose(inverse(base), p) for p in perms}
@@ -105,9 +107,22 @@ def group_type(perms: list[tuple[int, ...]]) -> str | None:
             continue
         if any(sum(p[x] == x for x in range(8)) for p in normalized if p != ident):
             continue
-        orders = sorted(permutation_order(p) for p in normalized)
-        return "cyclic" if 8 in orders else "regular-noncyclic:" + ",".join(map(str, orders))
+        return frozenset(normalized)
     return None
+
+
+def group_type(perms: list[tuple[int, ...]]) -> str | None:
+    """Classify a factorization as a regular-group coset, if possible."""
+    group = normalized_group(perms)
+    if group is None:
+        return None
+    orders = sorted(permutation_order(p) for p in group)
+    return "cyclic" if 8 in orders else "regular-noncyclic:" + ",".join(map(str, orders))
+
+
+def normalizes(p: tuple[int, ...], group: frozenset[tuple[int, ...]]) -> bool:
+    pinv = inverse(p)
+    return {compose(compose(p, h), pinv) for h in group} == set(group)
 
 
 def main() -> None:
@@ -137,6 +152,8 @@ def main() -> None:
     }
     simultaneous = {"all_group": 0, "all_cyclic": 0}
     successful_choices = []
+    successful_group_counts = []
+    successful_normalizer_counts = []
     for choice_indices in itertools.product(*(range(len(ds)) for ds in decompositions)):
         choices = [ds[index] for ds, index in zip(decompositions, choice_indices)]
         chosen = dict(blocks)
@@ -147,7 +164,7 @@ def main() -> None:
                 return chosen[i, j]
             return [inverse(p) for p in chosen[j, i]]
 
-        kinds = []
+        kinds, groups = [], []
         for i in range(6):
             for j in range(i + 1, 6):
                 routes = []
@@ -164,10 +181,18 @@ def main() -> None:
                 kind = group_type(routes) or "non-group"
                 verdict_hist[i, j][kind] = verdict_hist[i, j].get(kind, 0) + 1
                 kinds.append(kind)
+                groups.append(normalized_group(routes))
         simultaneous["all_group"] += all(k != "non-group" for k in kinds)
         simultaneous["all_cyclic"] += all(k == "cyclic" for k in kinds)
         if all(k != "non-group" for k in kinds):
             successful_choices.append(choice_indices)
+            successful_group_counts.append(len(set(groups)))
+            group = groups[0]
+            assert group is not None
+            datum_perms = internal + [p for pair in sorted(chosen) for p in chosen[pair]]
+            successful_normalizer_counts.append(
+                (sum(normalizes(p, group) for p in datum_perms), len(datum_perms))
+            )
 
     print("doubled_pairs", doubled)
     print("decomposition_choices", 4 ** 3)
@@ -175,6 +200,8 @@ def main() -> None:
         print("pair", pair, hist)
     print("simultaneous", simultaneous)
     print("successful_choices", successful_choices)
+    print("distinct_coordinate_groups", successful_group_counts)
+    print("datum_perms_in_common_normalizer", successful_normalizer_counts)
 
 
 if __name__ == "__main__":

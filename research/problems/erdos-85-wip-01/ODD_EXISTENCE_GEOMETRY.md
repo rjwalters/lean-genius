@@ -165,6 +165,28 @@ torsors. For general odd `q`, this points first to regular actions of the
 dihedral group of order `q+1` (with rotation subgroup of order `(q+1)/2`),
 rather than to a cyclic order-`q+1` action.
 
+The natural coordinates of the checked edge list make the structure more
+rigid still. For every successful decomposition, all 15 routing
+factorizations have the **same** embedded regular subgroup of `Sym(8)`, not
+merely conjugate copies of abstractly isomorphic dihedral groups. Moreover,
+all 24 permutations occurring in the datum—the six internal involutions and
+the 18 cross-fiber matchings—normalize that common subgroup. Thus they lie in
+the holomorph
+
+```text
+Hol(D₈) = D₈ ⋊ Aut(D₈) ≤ Sym(D₈).
+```
+
+This suggests the sharper **dihedral-holomorph ansatz** for odd `q`. Take `X`
+to be the underlying set of the dihedral group `H_q` of order `q+1`; require
+every datum permutation to lie in `Hol(H_q)`, and require every routing
+factorization to be a left or right coset of the one common regular copy of
+`H_q`. The q=7 witness satisfies this ansatz exactly. It is much smaller than
+the arbitrary near-Latin search space while still being fiber-dependent, so
+it is not ruled out by the vertex-transitive Cayley searches at q=9 and q=11.
+The next decisive existence test should search this holomorph-valued model at
+q=9, where `H_q` is the dihedral group of order ten.
+
 ## 3. Precise candidate axiom for B-EXIST
 
 **AXIOM B-NEAR-LATIN-LIFT.** There are collision-free near-Latin lift data of
