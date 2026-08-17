@@ -370,7 +370,11 @@ generalized rather than merely replayed.
      order-64 sixteen-block modules.  The selector is unique, not merely
      existent: `binarySquare_regular_sizeTwoPart_existsUnique_pair_iff_not_defectAdj`
      upgrades the equivalence using the exact-one common-neighbor law.  Hence
-     the ambient vertices and complement edges form an exact bijective design.
+     the ambient vertices and complement edges form an exact bijective design;
+     `binarySquare_regular_sizeTwoPart_componentNeighborFinset_injective`
+     records the injective half directly as a reusable selector-map theorem.
+     This is the concrete interface for decomposing the complement edges into
+     regular layers indexed by source defect components.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.

@@ -1377,6 +1377,60 @@ theorem binarySquare_regular_sizeTwoPart_existsUnique_pair_iff_not_defectAdj
     have hyz : y = z := by simpa using hymem
     exact hyz.trans hxz.symm
 
+/-- The two-neighbor selector map into a normalized size-two component is
+injective on all ambient vertices. -/
+theorem binarySquare_regular_sizeTwoPart_componentNeighborFinset_injective
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) :
+    Function.Injective
+      (fun x : V => componentNeighborFinset G (secondOrderDefectGraph G) c x) := by
+  let D := secondOrderDefectGraph G
+  intro x y hxy
+  have htwo : (componentNeighborFinset G D c x).card = 2 := by
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard (D.connectedComponentMk x) c (x := x) (by rfl)
+    rw [hc] at hmul
+    exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+  obtain ⟨u, v, huv, hpair⟩ := Finset.card_eq_two.mp htwo
+  have huMem : u ∈ componentNeighborFinset G D c x := by
+    rw [hpair]
+    simp [huv]
+  have hvMem : v ∈ componentNeighborFinset G D c x := by
+    rw [hpair]
+    simp
+  have huSupp : u ∈ c.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff c u).mpr
+      (Finset.mem_filter.mp huMem).2
+  have hvSupp : v ∈ c.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff c v).mpr
+      (Finset.mem_filter.mp hvMem).2
+  let u' : c.supp := ⟨u, huSupp⟩
+  let v' : c.supp := ⟨v, hvSupp⟩
+  have huv' : u' ≠ v' := by
+    intro h
+    exact huv (congrArg Subtype.val h)
+  have hnotD : ¬ D.Adj u v :=
+    (binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
+      G hfree hq hreg hcard c hc u' v' huv').mp ⟨x, hpair⟩
+  obtain ⟨z, hz, hzunique⟩ :=
+    (binarySquare_regular_sizeTwoPart_existsUnique_pair_iff_not_defectAdj
+      G hfree hq hreg hcard c hc u' v' huv').mpr hnotD
+  have hxz : x = z := hzunique x hpair
+  have hyPair : componentNeighborFinset G D c y = {u, v} := by
+    change componentNeighborFinset G D c x = componentNeighborFinset G D c y at hxy
+    exact hxy.symm.trans hpair
+  have hyz : y = z := hzunique y hyPair
+  exact hxz.trans hyz.symm
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]
