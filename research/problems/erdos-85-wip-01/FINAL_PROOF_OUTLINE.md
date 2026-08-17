@@ -1092,7 +1092,20 @@ generalized rather than merely replayed.
      Thus the cross blocks through every intermediate coordinate jointly
      resolve the unique-common-neighbor design.  In the all-two q=8 branch
      this is a genuine constraint coupling all four coordinates, rather than
-     six independent paired cycle systems.
+     six independent paired cycle systems.  Its entrywise strengthening is
+     `PROVEN` in `Erdos85BinarySquareCrossBlockUniqueRouting`.  For every
+     `x∈c,z∈e` with `c≠e`, there is a unique intermediate defect component
+     containing their unique common neighbor.  Writing this component as
+     `route(x,z)`, each resolved summand satisfies
+
+     ```text
+     (transpose(B_dc) B_de)[x,z] = 1  if d = route(x,z),
+                                  0  otherwise.
+     ```
+
+     Hence the simultaneous Gram resolution is literally a partition of the
+     all-ones matrix by component-valued routing labels, suitable for a finite
+     four-coordinate classification.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
