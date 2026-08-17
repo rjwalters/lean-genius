@@ -34,6 +34,7 @@ def surviving_profiles():
 def coupled_solver(
     h, counts, timeout_ms, coupling=True, omit_block=False, omit_defect=False,
     full_graph=False, h2_split=None, low_high_c4=True, owner_direction="both",
+    omit_owner_weight_pairs=(),
 ):
     weights = [k for k, count in enumerate(counts) for _ in range(count)]
     n = len(weights)
@@ -94,7 +95,7 @@ def coupled_solver(
     # Every low pair has at most one common high.  A D-edge has none.  For a
     # D-nonedge the proved owner-sensitive grid inequality is
     #   commonD + k(u)+k(v) <= 7 + commonHigh.
-    if omit_block or omit_defect:
+    if omit_block or (omit_defect and not full_graph):
         return solver
     if full_graph:
         # Incidence totals equal 9h, so the column upper bounds above are all
@@ -167,6 +168,10 @@ def coupled_solver(
                         cursor += quota
                     assert cursor == len(external_u)
                     for s in s_rows:
+                        for z in range(45, 61):
+                            solver.add(low_adj[s][z] == False)
+                        for z in range(5):
+                            solver.add(low_adj[s][z] == False)
                         for z in selected_u:
                             expected_internal = (
                                 s in selected_u
@@ -175,6 +180,21 @@ def coupled_solver(
                             solver.add(low_adj[s][z] == expected_internal)
                         for z in external_u:
                             solver.add(low_adj[s][z] == (owner[z] == s))
+                    # Summing the exact owner counts for L-L and L-Z pairs
+                    # gives 14 edges inside the k=1 sector; the pointwise
+                    # form forces the two S-points to have L-degree zero and
+                    # every other k=1 point to have L-degree two.
+                    for y in range(45, 61):
+                        solver.add(
+                            z3.PbEq(
+                                [
+                                    (low_adj[y][z], 1)
+                                    for z in range(45, 61)
+                                    if z != y
+                                ],
+                                0 if y in (45, 54) else 2,
+                            )
+                        )
         for u in range(n):
             for v in range(u + 1, n):
                 common = [
@@ -183,6 +203,9 @@ def coupled_solver(
                     if w != u and w != v
                 ] + [z3.And(block[u][a], block[v][a]) for a in range(h)]
                 solver.add(z3.PbLe([(x, 1) for x in common], 1))
+                weight_pair = tuple(sorted((weights[u], weights[v])))
+                if weight_pair in omit_owner_weight_pairs:
+                    continue
                 if owner_direction in ("both", "defect"):
                     solver.add(
                         z3.Implies(
@@ -248,6 +271,13 @@ def main():
         help="directions of D iff zero common low/high neighbors to impose",
     )
     parser.add_argument(
+        "--omit-owner-weight-pair",
+        action="append",
+        default=[],
+        choices=("00", "01", "02", "11", "12"),
+        help="omit ownership implications for this low-weight pair (repeatable)",
+    )
+    parser.add_argument(
         "--h2-split",
         nargs=3,
         type=int,
@@ -284,6 +314,9 @@ def main():
             h2_split=tuple(args.h2_split) if args.h2_split is not None else None,
             low_high_c4=not args.omit_low_high_c4,
             owner_direction=args.owner_direction,
+            omit_owner_weight_pairs={
+                (int(pair[0]), int(pair[1])) for pair in args.omit_owner_weight_pair
+            },
         )
         if args.write_dimacs is not None:
             goal = z3.Goal()
