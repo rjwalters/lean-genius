@@ -510,6 +510,13 @@ generalized rather than merely replayed.
       distinct centers overlap in exactly `deg(z)-2` points.  Any next model
       must realize these shared-owner overlaps globally, not instantiate the
       local transversal codes independently.
+    - `card_inter_squareOrderDefectBranch_eq_if_owner_ne` makes the
+      different-owner case exact and couples it back to `D`: for centers
+      `u,v` incident to distinct owners `z,w`, the two branches meet once iff
+      `z,w` are nonadjacent in `D` and neither cross-edge `u-w` nor `v-z`
+      exists; otherwise they are disjoint.  This is the first explicit
+      cross-center equation involving both graphs and is the intended next
+      input to the vertex-level scout.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
