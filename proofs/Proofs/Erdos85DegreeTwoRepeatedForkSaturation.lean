@@ -1,0 +1,65 @@
+import Mathlib
+
+/-! # A repeated fork saturates a two-regular graph row -/
+
+open SimpleGraph
+
+namespace Erdos85
+
+noncomputable section
+
+/-- Two distinct specified neighbors exhaust the neighborhood of a vertex of
+degree two. -/
+theorem degreeTwo_neighborFinset_eq_pair_of_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (hdeg : ∀ z, H.degree z = 2)
+    {x r₁ r₂ : V} (hr : r₁ ≠ r₂)
+    (h₁ : H.Adj x r₁) (h₂ : H.Adj x r₂) :
+    H.neighborFinset x = {r₁, r₂} := by
+  have hsub : {r₁, r₂} ⊆ H.neighborFinset x := by
+    intro r hrmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hrmem
+    rcases hrmem with rfl | rfl
+    · exact (H.mem_neighborFinset x _).mpr h₁
+    · exact (H.mem_neighborFinset x _).mpr h₂
+  have hcardN : (H.neighborFinset x).card = 2 := by
+    rw [H.card_neighborFinset_eq_degree, hdeg x]
+  have hcardPair : ({r₁, r₂} : Finset V).card = 2 := by simp [hr]
+  exact (Finset.eq_of_subset_of_card_le hsub (by omega)).symm
+
+/-- A repeated fork in a two-regular graph forces the two fork tips to have
+identical, completely saturated neighborhood rows. -/
+theorem degreeTwo_repeatedFork_neighborFinset_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (hdeg : ∀ z, H.degree z = 2)
+    {x y r₁ r₂ : V} (hr : r₁ ≠ r₂)
+    (hxr₁ : H.Adj x r₁) (hyr₁ : H.Adj y r₁)
+    (hxr₂ : H.Adj x r₂) (hyr₂ : H.Adj y r₂) :
+    H.neighborFinset x = H.neighborFinset y := by
+  rw [degreeTwo_neighborFinset_eq_pair_of_adj H hdeg hr hxr₁ hxr₂,
+    degreeTwo_neighborFinset_eq_pair_of_adj H hdeg hr hyr₁ hyr₂]
+
+/-- Integral adjacency-matrix row form of repeated-fork saturation. -/
+theorem degreeTwo_repeatedFork_adjMatrix_rows_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (hdeg : ∀ z, H.degree z = 2)
+    {x y r₁ r₂ : V} (hr : r₁ ≠ r₂)
+    (hxr₁ : H.Adj x r₁) (hyr₁ : H.Adj y r₁)
+    (hxr₂ : H.Adj x r₂) (hyr₂ : H.Adj y r₂) :
+    ∀ z : V, H.adjMatrix ℤ x z = H.adjMatrix ℤ y z := by
+  have hN := degreeTwo_repeatedFork_neighborFinset_eq
+    H hdeg hr hxr₁ hyr₁ hxr₂ hyr₂
+  intro z
+  rw [SimpleGraph.adjMatrix_apply, SimpleGraph.adjMatrix_apply]
+  have hz : H.Adj x z ↔ H.Adj y z := by
+    rw [← H.mem_neighborFinset, ← H.mem_neighborFinset, hN]
+  by_cases hxz : H.Adj x z
+  · rw [if_pos hxz, if_pos (hz.mp hxz)]
+  · rw [if_neg hxz, if_neg (fun hyz => hxz (hz.mpr hyz))]
+
+end
+
+end Erdos85
