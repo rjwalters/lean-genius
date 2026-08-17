@@ -230,10 +230,18 @@ generalized rather than merely replayed.
     `squareOrder_highIncidence_columns_linearIndependent`,
     `squareOrder_highIncidence_columnDifferences_linearIndependent`,
     `squareOrder_highRowDifferences_linearIndependent`, and
-    `squareOrder_defect_mulVec_highRowDifference`. Thus the missing terminal
-    may assume a defect `-1` eigenspace of dimension at least `h-1`; the open
-    work is to make that multiplicity incompatible with every surviving
-    heterogeneous profile or to identify the further graph constraint needed.
+    `squareOrder_defect_mulVec_highRowDifference`. The rational, dimension-level
+    statement is now explicit as
+    `squareOrder_high_card_sub_one_le_finrank_defectShift_ker`:
+
+    ```text
+    h - 1 ≤ finrank_ℚ ker(A_D + I).
+    ```
+
+    Thus the missing terminal may assume a defect `-1` eigenspace of dimension
+    at least `h-1`; the open work is to make that multiplicity incompatible
+    with every surviving heterogeneous profile or to identify the further
+    graph constraint needed.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
