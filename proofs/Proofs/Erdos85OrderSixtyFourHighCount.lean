@@ -124,6 +124,47 @@ theorem orderSixtyFour_incidence_count_equations
         Finset.sum_congr rfl fun x _ => hsqform x
       _ = _ := by simp [Finset.sum_add_distrib, Finset.sum_ite, mul_comm]
 
+/-- A function bounded by four partitions the 64 vertices into its five value
+classes. -/
+theorem orderSixtyFour_incidence_count_partition
+    (k : Fin 64 → Nat) (hk : ∀ x, k x ≤ 4) :
+    let n := fun i => (Finset.univ.filter fun x => k x = i).card
+    n 0 + n 1 + n 2 + n 3 + n 4 = 64 := by
+  classical
+  dsimp only
+  have hpoint (x : Fin 64) :
+      (if k x = 0 then 1 else 0) +
+      (if k x = 1 then 1 else 0) +
+      (if k x = 2 then 1 else 0) +
+      (if k x = 3 then 1 else 0) +
+      (if k x = 4 then 1 else 0) = 1 := by
+    have hx := hk x
+    interval_cases h : k x <;> simp [h]
+  have hsum : (∑ x : Fin 64,
+      ((if k x = 0 then 1 else 0) +
+       (if k x = 1 then 1 else 0) +
+       (if k x = 2 then 1 else 0) +
+       (if k x = 3 then 1 else 0) +
+       (if k x = 4 then 1 else 0))) = ∑ _x : Fin 64, 1 :=
+    Finset.sum_congr rfl fun x _ => hpoint x
+  simpa [Finset.sum_add_distrib, Finset.sum_ite, mul_comm] using hsum
+
+/-- Tight-edge cover makes the high sector independent, so every high vertex
+belongs to the zero high-incidence class. -/
+theorem squareOrder_card_high_le_zero_incidence
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8) :
+    let H := squareOrderHighVertices G 8
+    let k : Fin 64 → Nat := fun x => (G.neighborFinset x ∩ H).card
+    H.card ≤ (Finset.univ.filter fun x => k x = 0).card := by
+  classical
+  dsimp only
+  apply Finset.card_le_card
+  intro x hx
+  exact Finset.mem_filter.mpr ⟨Finset.mem_univ x,
+    squareOrder_highNeighborCount_eq_zero_of_high G hcover hx⟩
+
 /-- The four possible positive-incidence multiplicity profiles when the high
 sector has cardinality four. -/
 theorem orderSixtyFour_four_high_incidence_profiles
@@ -241,17 +282,24 @@ theorem orderSixtyFour_eight_high_graph_parameters
     let H := squareOrderHighVertices G 8
     let k : Fin 64 → Nat := fun x => (G.neighborFinset x ∩ H).card
     let n := fun i => (Finset.univ.filter fun x => k x = i).card
-    n 3 + 2 * n 4 ≤ 9 ∧
+    n 3 + 3 * n 4 ≤ 12 ∧
+      n 3 + 2 * n 4 ≤ 9 ∧
       n 2 + 3 * n 3 + 6 * n 4 = 28 ∧
       n 1 = 16 + 3 * n 3 + 8 * n 4 := by
   classical
   dsimp only
   have hm := orderSixtyFour_high_incidence_moments G hfree hmin hcover
   dsimp only at hm
-  apply orderSixtyFour_eight_high_incidence_parameters
-  · exact hm.1
-  · simpa [hh] using hm.2.1
-  · simpa [hh] using hm.2.2
+  have hp := orderSixtyFour_eight_high_incidence_parameters
+    (fun x => (G.neighborFinset x ∩ squareOrderHighVertices G 8).card)
+    hm.1 (by simpa [hh] using hm.2.1) (by simpa [hh] using hm.2.2)
+  dsimp only at hp
+  have hpart := orderSixtyFour_incidence_count_partition
+    (fun x => (G.neighborFinset x ∩ squareOrderHighVertices G 8).card) hm.1
+  dsimp only at hpart
+  have hzero := squareOrder_card_high_le_zero_incidence G hcover
+  dsimp only at hzero
+  omega
 
 /-- The numerical profile forced by the order-64 moments when there are two
 high vertices: exactly one vertex sees both high vertices and exactly sixteen
