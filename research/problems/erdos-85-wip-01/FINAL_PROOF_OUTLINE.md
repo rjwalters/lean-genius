@@ -481,6 +481,16 @@ generalized rather than merely replayed.
     not be realizable and the finite calculation has not been reflected into
     a uniform Lean terminal.
 
+    Claude's first exact vertex-level UNSAT exposed a uniform sub-obstruction,
+    now `PROVEN` as
+    `squareOrder_highIncidenceCount_add_le_card_high_add_one`: distinct
+    vertices satisfy `k(u)+k(v)≤h+1`, since their high-neighbor sets intersect
+    in at most one point.  Alone this rejects three arithmetic profiles
+    (`77→74`, with `h=4:4→3` and `h=6:12→10`); all three were already among
+    the 25 branch-partition rejections, so the combined frontier remains 51.
+    The value is a short uniform proof replacing the scout's first finite
+    UNSAT and a reusable template for extracting further overlap lemmas.
+
     Intersecting this branch relaxation with the independent aggregate defect
     weight-class equations (`square_order_combined_profile_census.py`) rejects
     one further profile, `h=12`, `(n₀,…,n₄)=(1,0,48,0,3)`, leaving 51 profiles
