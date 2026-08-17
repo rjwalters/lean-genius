@@ -1025,6 +1025,14 @@ generalized rather than merely replayed.
      finsets have equal cardinality.  The proof is an exact degree-sum double
      count on the induced component.  Hence every block component of order
      `2r` canonically contributes `r` vertices on each coordinate side.
+     The local owner-cycle bridge is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoOwnerEdgeSubdivision`: an edge of `F_cd` is
+     exactly a distinct source pair joined through a unique target vertex by
+     a two-edge path in the cross-block graph.  Conversely every such
+     subdivided cross path is an owner-factor edge.  In particular, owner
+     edges preserve the connected-component label of their source-side
+     embeddings in the cross graph.  This reduces the remaining full
+     component correspondence to compression of alternating cross walks.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
