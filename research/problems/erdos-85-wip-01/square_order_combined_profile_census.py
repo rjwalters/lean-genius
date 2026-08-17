@@ -48,8 +48,21 @@ def defect_weight_class_feasible(h, counts):
     return solver.check() == z3.sat
 
 
+def high_overlap_feasible(h, counts):
+    """Necessary consequence of k(u)+k(v) <= h+1 for distinct lows."""
+    weights = [weight for weight, count in enumerate(counts) for _ in range(count)]
+    return all(
+        weights[i] + weights[j] <= h + 1
+        for i in range(len(weights))
+        for j in range(i + 1, len(weights))
+    )
+
+
 def main():
     profiles = arithmetic_profiles()
+    overlap_survivors = [
+        (h, counts) for h, counts in profiles if high_overlap_feasible(h, counts)
+    ]
     branch_survivors = []
     for h, counts in profiles:
         if all(
@@ -73,10 +86,16 @@ def main():
         for h in expected
     }
     assert len(branch_survivors) == 52
+    assert len(overlap_survivors) == 74
+    assert {
+        h: sum(profile_h == h for profile_h, _ in overlap_survivors)
+        for h in expected
+    } == {2: 1, 4: 3, 6: 10, 8: 29, 10: 22, 12: 9}
     assert len(combined_survivors) == 51
     assert by_h == expected
     assert additionally_rejected == [(12, (1, 0, 48, 0, 3))]
 
+    print(f"high-overlap survivors: {len(overlap_survivors)}")
     print(f"branch-partition survivors: {len(branch_survivors)}")
     print(f"combined necessary-system survivors: {len(combined_survivors)} {by_h}")
     print("additional defect-class rejection:")
