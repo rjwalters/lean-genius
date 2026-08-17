@@ -34,6 +34,8 @@ theorem orderSixtyFour_seven_components_outside_feasibility
       Fintype.card q = 48 ∧
       (∀ x : Fin 64,
         (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2) ∧
+      Function.Injective
+        (componentNeighborFinset G (secondOrderDefectGraph G) c) ∧
       (∀ z : q, Cg.degree z = 6) ∧
       (¬containsC4 q Cg) ∧
       H * B + B * C = (fun _ _ ↦ (1 : ℂ)) := by
@@ -70,7 +72,29 @@ theorem orderSixtyFour_seven_components_outside_feasibility
       _ = 48 := by simp [hc16]
   have houtsideLabel : {x : Fin 64 // x ∉ c.supp} ≃ Fin 48 :=
     Fintype.equivOfCardEq (by simpa using hqcard)
-  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hout, ?_, hcross⟩
+  have hinj : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c) := by
+    intro y z heq
+    by_contra hyz
+    let Sy := componentNeighborFinset G (secondOrderDefectGraph G) c y
+    have hSycard : Sy.card = 2 := hinc y
+    have hsub : Sy ⊆ G.neighborFinset y ∩ G.neighborFinset z := by
+      intro w hw
+      have hwy : G.Adj y w :=
+        (G.mem_neighborFinset y w).mp ((Finset.mem_filter.mp hw).1)
+      have hwzS : w ∈
+          componentNeighborFinset G (secondOrderDefectGraph G) c z := by
+        rw [← heq]
+        exact hw
+      have hwz : G.Adj z w :=
+        (G.mem_neighborFinset z w).mp ((Finset.mem_filter.mp hwzS).1)
+      exact Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset y w).mpr hwy,
+          (G.mem_neighborFinset z w).mpr hwz⟩
+    have hle := Finset.card_le_card hsub
+    have hone := common_le_one_of_not_containsC4 hfree y z hyz
+    omega
+  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hinj, hout, ?_, hcross⟩
   intro hC4
   obtain ⟨f, hf, hadj⟩ := hC4
   apply hfree
