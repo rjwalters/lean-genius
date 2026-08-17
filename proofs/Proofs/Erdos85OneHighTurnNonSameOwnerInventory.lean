@@ -18,21 +18,38 @@ noncomputable section
 set_option maxRecDepth 10000
 set_option maxHeartbeats 1000000
 
+/-- Both endpoint orders represented by a stored canonical label pair. -/
+def oneHighLabelPairOrientations (pair : OneHighLabelPair) :
+    List OneHighLabelPair :=
+  [pair, (pair.2, pair.1)]
+
+theorem ordered_mem_oneHighLabelPairOrientations_canonical
+    (a b : Fin 8) :
+    (a, b) ∈ oneHighLabelPairOrientations
+      (oneHighCanonicalLabelPair a b) := by
+  rcases le_total a b with hab | hba
+  · simp [oneHighLabelPairOrientations, oneHighCanonicalLabelPair,
+      min_eq_left hab, max_eq_right hab]
+  · simp [oneHighLabelPairOrientations, oneHighCanonicalLabelPair,
+      min_eq_right hba, max_eq_left hba]
+
 /-- An exact refinement contains a three-pair odd turn whose two source rows
-satisfy one of the five decoded non-same-owner relations. -/
+satisfy one of the five decoded non-same-owner relations.  The evaluator only
+visits pairs actually stored in the two rows and their two orientations. -/
 def oneHighRefinementHasNonSameOwnerOddTurn
     (refinement : List (List OneHighLabelPair)) : Bool :=
   let labels := List.ofFn (fun i : Fin 8 ↦ i)
   labels.any fun sourceAB =>
   labels.any fun sourceBC =>
-  labels.any fun a =>
-  labels.any fun b =>
-  labels.any fun c =>
+  (refinement.getD sourceAB.val []).any fun pairAB =>
+  (refinement.getD sourceBC.val []).any fun pairBC =>
+  (oneHighLabelPairOrientations pairAB).any fun orientedAB =>
+  (oneHighLabelPairOrientations pairBC).any fun orientedBC =>
     decide (
-      oneHighCanonicalLabelPair a b ∈
-        refinement.getD sourceAB.val [] ∧
-      oneHighCanonicalLabelPair b c ∈
-        refinement.getD sourceBC.val [] ∧
+      orientedAB.2 = orientedBC.1 ∧
+      let a := orientedAB.1
+      let b := orientedAB.2
+      let c := orientedBC.2
       oneHighRootPair a ≠ oneHighRootPair b ∧
       oneHighRootPair b ≠ oneHighRootPair c ∧
       oneHighRootPair a ≠ oneHighRootPair c ∧
@@ -85,20 +102,18 @@ theorem OneHighPinnedThreePairTurn.graphPairingRefinement_hasNonSameOwnerOddTurn
   simp only [List.any_eq_true]
   let sourceAB := p.branchLabel T.qAB.sourceEdge.1
   let sourceBC := p.branchLabel T.qBC.sourceEdge.1
-  refine ⟨sourceAB, ?_, sourceBC, ?_, p.branchLabel T.a, ?_,
-    p.branchLabel T.b, ?_, p.branchLabel T.c, ?_, ?_⟩
+  let pairAB := oneHighCanonicalLabelPair
+    (p.branchLabel T.a) (p.branchLabel T.b)
+  let pairBC := oneHighCanonicalLabelPair
+    (p.branchLabel T.b) (p.branchLabel T.c)
+  let orientedAB : OneHighLabelPair :=
+    (p.branchLabel T.a, p.branchLabel T.b)
+  let orientedBC : OneHighLabelPair :=
+    (p.branchLabel T.b, p.branchLabel T.c)
+  refine ⟨sourceAB, ?_, sourceBC, ?_, pairAB, ?_, pairBC, ?_,
+    orientedAB, ?_, orientedBC, ?_, ?_⟩
   · rw [List.mem_ofFn]; exact ⟨sourceAB, rfl⟩
   · rw [List.mem_ofFn]; exact ⟨sourceBC, rfl⟩
-  · rw [List.mem_ofFn]; exact ⟨p.branchLabel T.a, rfl⟩
-  · rw [List.mem_ofFn]; exact ⟨p.branchLabel T.b, rfl⟩
-  · rw [List.mem_ofFn]; exact ⟨p.branchLabel T.c, rfl⟩
-  rw [decide_eq_true_eq]
-  refine ⟨?_, ?_,
-    T.ab_pair_ne, T.bc_pair_ne, T.ac_pair_ne,
-    (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
-      (T.graphPairingMultiplicity_ab_odd G hfree hv p),
-    (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
-      (T.graphPairingMultiplicity_bc_odd G hfree hv p), ?_⟩
   · change oneHighCanonicalLabelPair (p.branchLabel T.a)
       (p.branchLabel T.b) ∈
         (List.ofFn fun s : Fin 8 ↦
@@ -115,6 +130,14 @@ theorem OneHighPinnedThreePairTurn.graphPairingRefinement_hasNonSameOwnerOddTurn
       List.getElem?_eq_getElem (by simp [sourceBC]),
       Option.getD_some, List.getElem_ofFn]
     exact T.qBC.canonicalPair_mem_graphSourcePairing G hfree hv p
+  · exact ordered_mem_oneHighLabelPairOrientations_canonical _ _
+  · exact ordered_mem_oneHighLabelPairOrientations_canonical _ _
+  rw [decide_eq_true_eq]
+  refine ⟨rfl, T.ab_pair_ne, T.bc_pair_ne, T.ac_pair_ne,
+    (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
+      (T.graphPairingMultiplicity_ab_odd G hfree hv p),
+    (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
+      (T.graphPairingMultiplicity_bc_odd G hfree hv p), ?_⟩
   · rcases hsector with hmate | hc | hmc | ha | hma
     · left
       dsimp [sourceAB, sourceBC]
