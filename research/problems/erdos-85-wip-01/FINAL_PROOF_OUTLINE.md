@@ -1179,7 +1179,14 @@ generalized rather than merely replayed.
      automatically color-`d` completions on the two new sides.  Thus every
      direct colored edge has a canonical two-element star-completion core;
      any third or fourth completion allowed by the preceding `2..4` bound
-     must come from the rainbow-owner alternative.
+     must come from the rainbow-owner alternative.  This separation is made
+     canonical in `Erdos85BinarySquareRoutingCompletionDichotomy`: a third
+     endpoint belongs to the star core iff its canonical pairwise common
+     neighbor equals the direct edge's center.  Every monochromatic
+     completion either satisfies that equality (and all three centers
+     coincide) or its three named centers are pairwise distinct and carry
+     the three endpoint-colored owner edges; the two alternatives are proved
+     disjoint.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
