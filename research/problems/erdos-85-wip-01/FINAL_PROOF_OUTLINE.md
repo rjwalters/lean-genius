@@ -646,8 +646,23 @@ generalized rather than merely replayed.
      sum m_c^2 in {16,22,24,32,34,40,64}.
      ```
 
-     Binary A-REG work should proceed by intersecting this finite ledger with
-     the centered owner/defect trace resolution below.
+     The quadratic centered-owner trace does **not** intersect this ledger.
+     The `PROVEN` colorwise calibrations
+     `binarySquare_regular_trace_centeredOwnerGram` and
+     `binarySquare_regular_trace_centeredOwnerGram_sq` give
+
+     ```text
+     tr(C_c)   = m_c q^2(q-1),
+     tr(C_c^2) = m_c q^4(q-1) = q^2 tr(C_c).
+     ```
+
+     Both are linear in `m_c`, so after summing they see only `sum m_c=q`,
+     not `sum m_c^2`.  The global Frobenius resolution is therefore a
+     calibration, not a partition obstruction.  Binary A-REG must consume the
+     finite ledger through a genuinely nonlinear statistic (a controlled
+     cubic/higher trace, rank/equality structure, or the self-indexed block
+     geometry); claiming an intersection from the quadratic trace alone would
+     be invalid.
 
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
