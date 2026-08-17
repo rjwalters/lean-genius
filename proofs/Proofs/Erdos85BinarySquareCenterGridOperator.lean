@@ -8,6 +8,45 @@ namespace Erdos85
 
 noncomputable section
 
+/-- The `A D A` entry is exactly the number of defect edges between the two
+ambient root neighborhoods, i.e. the defect-pair part of the center grid. -/
+theorem adj_defect_adj_apply_eq_card_crossRootDefectCenterPairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (x y : V) :
+    (G.adjMatrix ℤ * (secondOrderDefectGraph G).adjMatrix ℤ *
+        G.adjMatrix ℤ) x y =
+      ((crossRootDefectCenterPairs G x y).card : ℤ) := by
+  classical
+  rw [crossRootDefectCenterPairs, crossRootCenterGrid,
+    Finset.card_filter]
+  push_cast
+  rw [Finset.sum_product]
+  simp [Matrix.mul_apply, SimpleGraph.adjMatrix_apply,
+    -Finset.sum_const, -Finset.sum_boole, G.adj_comm,
+    (secondOrderDefectGraph G).adj_comm, neighborFinset_eq_filter,
+    Finset.sum_filter]
+  trans (∑ v : V, ∑ u : V,
+    if G.Adj y v then
+      if (secondOrderDefectGraph G).Adj v u then
+        if G.Adj x u then (1 : ℤ) else 0 else 0 else 0)
+  · apply Finset.sum_congr rfl
+    intro v _hv
+    by_cases hyv : G.Adj y v <;> simp [hyv]
+  · rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl
+    intro u _hu
+    by_cases hxu : G.Adj x u
+    · simp only [hxu, ↓reduceIte]
+      apply Finset.sum_congr rfl
+      intro v _hv
+      by_cases hyv : G.Adj y v <;>
+        by_cases huv : (secondOrderDefectGraph G).Adj u v <;>
+          simp [hyv, huv, (secondOrderDefectGraph G).adj_comm]
+    · simp [hxu]
+
 /-- The adjacency-defect-adjacency sandwich is controlled pointwise by the
 defect square.  Combinatorially, the left side counts defect edges between
 the two ambient neighborhoods. -/
@@ -70,6 +109,49 @@ theorem orderSixtyFour_adj_defect_adj_apply_of_defect_adj
   rw [adj_defect_adj_apply_eq_degree_terms_sub_defect_sq
     G hfree hreg hDreg x y]
   simp [SimpleGraph.adjMatrix_apply, hxyD]
+
+/-- Exact defect-pair cardinality in the fourth center-grid factor. -/
+theorem orderSixtyFour_crossRootDefectCenterPairs_card
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    {x y : Fin 64} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    ((crossRootDefectCenterPairs G x y).card : ℤ) =
+      14 - ((secondOrderDefectGraph G).adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) x y := by
+  rw [← adj_defect_adj_apply_eq_card_crossRootDefectCenterPairs G x y]
+  exact orderSixtyFour_adj_defect_adj_apply_of_defect_adj
+    G hfree hreg hxyD
+
+/-- Exact complementary source-common cardinality: two plus the adjacent
+defect codegree. -/
+theorem orderSixtyFour_crossRootSourceCommonCenterPairs_card
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ z, G.degree z = 8)
+    {d e f g : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (hdf : d ≠ f) (hdg : d ≠ g)
+    (hef : e ≠ f) (heg : e ≠ g) (hfg : f ≠ g)
+    (he : e.supp.ncard = 16) (hf : f.supp.ncard = 16)
+    (hg : g.supp.ncard = 16)
+    (hexhaust : ∀ k : (secondOrderDefectGraph G).ConnectedComponent,
+      k = d ∨ k = e ∨ k = f ∨ k = g)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1) :
+    ((crossRootSourceCommonCenterPairs G d x.1 y.1).card : ℤ) =
+      2 + ((secondOrderDefectGraph G).adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) x.1 y.1 := by
+  have hsplit :=
+    orderSixtyFour_sourceCommon_add_defect_centerPairs_card_eq_sixteen
+      G hfree hreg hde hdf hdg hef heg hfg he hf hg hexhaust x y hxyD
+  have hdefect := orderSixtyFour_crossRootDefectCenterPairs_card
+    G hfree hreg hxyD
+  omega
 
 end
 

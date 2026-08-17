@@ -1369,12 +1369,19 @@ generalized rather than merely replayed.
      (A D A)_{xy} = 14 - (D²)_{xy}.
      ```
 
-     Here the left side is the pending matrix encoding of the defect-pair
-     part of the center grid, while `(D²)_{xy}` is the number of common
-     defect neighbors of the roots.  Once that combinatorial encoding is
-     connected, the internal split becomes `14-λ` defect pairs and `2+λ`
-     source-common pairs, reducing propagation to adjacent-codegrees in the
-     7-regular sixteen-vertex defect component.
+     The combinatorial encoding is now also `PROVEN`: `A D A` counts exactly
+     the defect-pair part of the center grid.  Writing
+     `λ=(D²)_{xy}` for the number of common defect neighbors of the roots,
+     `Erdos85BinarySquareCenterGridOperator` therefore gives the exact split
+
+     ```text
+     defect pairs       = 14 - λ,
+     source-common pairs = 2 + λ.
+     ```
+
+     Thus propagation has been reduced to adjacent-codegrees in the
+     7-regular sixteen-vertex defect component, with no remaining matrix-to-
+     combinatorics interface gap.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
