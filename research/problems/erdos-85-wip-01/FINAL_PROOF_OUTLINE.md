@@ -957,7 +957,16 @@ generalized rather than merely replayed.
      distinct source points `u,v` share a target edge iff `u,v` are adjacent
      in the selector complement (equivalently, are not defect-adjacent).
      This holds even for the self-coordinate cover and is precisely the ODC
-     incidence axiom.  The remaining all-size-two terminal is therefore the
+     incidence axiom.  Finally,
+     `Erdos85BinarySquareSizeTwoMatchingTwoFoldCover` proves the exact cover
+     multiplicity: every target selector edge lies in precisely the two
+     source matching pages indexed by the endpoints of its source selector.
+     Thus perfect pages, page overlaps, and the two-fold edge cover—the full
+     ODC axiom package—are all formal consequences of a size-two pair.
+     Pairwise ODCs do exist at `q=8`, so the remaining all-size-two terminal
+     must use three-way compatibility: the same ambient labels must furnish
+     Cartesian selector cubes whose every two-coordinate projection is the
+     corresponding rectangle partition.  It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
      coordinates (at `q=8`).
