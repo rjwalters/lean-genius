@@ -1460,7 +1460,14 @@ generalized rather than merely replayed.
      `x,y,z` are distinct and the owner rows at `x,y` agree.  Thus the
      remaining classification bridge is purely structural: formalize the
      asserted private-pair cycle and instantiate the terminal with its four
-     directed membership facts and two codegree-six facts.
+     directed membership facts and two codegree-six facts.  The full
+     graph-facing adapter is PROVEN in
+     `Erdos85OrderSixtyFourNearTwinPrivateCycle`: in the no-rainbow branch it
+     obtains the initial equal row from the forced repeated owner fork,
+     restricts the global owner/defect commutation theorem to the chosen
+     component, proves the owner factor is two-regular, and invokes the
+     abstract terminal.  No owner choice, matrix hypothesis, or row-equality
+     hypothesis remains for the classifier to supply.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a

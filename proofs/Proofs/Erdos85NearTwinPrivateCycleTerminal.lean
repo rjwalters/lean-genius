@@ -87,8 +87,15 @@ theorem sevenRegular_privateCycle_twoStep_ownerColor_false
     rw [H.mem_neighborFinset, H.mem_neighborFinset]
     have hrow := hyzMatrixRows w
     rw [SimpleGraph.adjMatrix_apply, SimpleGraph.adjMatrix_apply] at hrow
-    by_cases hyw : H.Adj y w <;> by_cases hzw : H.Adj z w <;>
-      simp_all
+    by_cases hyw : H.Adj y w
+    · by_cases hzw : H.Adj z w
+      · simp [hyw, hzw]
+      · have : (1 : ℤ) = 0 := by simpa [hyw, hzw] using hrow
+        omega
+    · by_cases hzw : H.Adj z w
+      · have : (0 : ℤ) = 1 := by simpa [hyw, hzw] using hrow
+        omega
+      · simp [hyw, hzw]
   exact degreeTwo_no_three_distinct_equal_neighborFinsets
     H hHreg hxy hxz hyz hxyRows (hxyRows.trans hyzRows)
 
