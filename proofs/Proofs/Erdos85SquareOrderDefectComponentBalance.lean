@@ -51,6 +51,20 @@ theorem eq_constant_or_exists_lt_and_gt_of_card_mul_eq_sum
       obtain ⟨y, hyS, hylt⟩ := hy
       exact ⟨y, hyS, x, hxS, hylt, hxgt⟩
 
+/-- The quadratic `x ↦ x(d-x)` is injective on the natural interval
+`2x ≤ d`. -/
+theorem mul_sub_injective_of_two_mul_le
+    {a b d : ℕ} (ha : 2 * a ≤ d) (hb : 2 * b ≤ d)
+    (heq : a * (d - a) = b * (d - b)) : a = b := by
+  have had : a ≤ d := by omega
+  have hbd : b ≤ d := by omega
+  have ha_sub : d - a + a = d := Nat.sub_add_cancel had
+  have hb_sub : d - b + b = d := Nat.sub_add_cancel hbd
+  by_contra hab
+  rcases lt_or_gt_of_ne hab with hab | hba
+  · nlinarith
+  · nlinarith
+
 /-- Weighted double counting on a vertex set closed under graph adjacency. -/
 theorem sum_closed_neighbor_weights
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -211,6 +225,50 @@ theorem squareOrder_defectClosed_energy_constant_or_crosses
     (squareOrderHighVertices G d).card
     (squareOrder_defectClosed_low_incidence_balance
       G hfree hd hmin hcover hcard S hSlow hSclosed)
+
+/-- The componentwise terminal in its useful final form: every nonempty
+defect-closed low set either forces a factorization of the global high count,
+or contains incidence energies strictly on both sides of that count. -/
+theorem squareOrder_defectClosed_factorization_or_energy_crosses
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (S : Finset V) (hSne : S.Nonempty)
+    (hSlow : ∀ x ∈ S, G.degree x = d)
+    (hSclosed : ∀ ⦃x y : V⦄, x ∈ S →
+      (secondOrderDefectGraph G).Adj x y → y ∈ S) :
+    (∃ c : ℕ, (squareOrderHighVertices G d).card = c * (d - c)) ∨
+      ∃ x ∈ S, ∃ y ∈ S,
+        squareOrderHighIncidenceCount G d x *
+            (d - squareOrderHighIncidenceCount G d x) <
+          (squareOrderHighVertices G d).card ∧
+        (squareOrderHighVertices G d).card <
+          squareOrderHighIncidenceCount G d y *
+            (d - squareOrderHighIncidenceCount G d y) := by
+  rcases squareOrder_defectClosed_energy_constant_or_crosses
+      G hfree hd hmin hcover hcard S hSlow hSclosed with henergy | hcross
+  · left
+    let z := hSne.choose
+    have hzS : z ∈ S := hSne.choose_spec
+    let c := squareOrderHighIncidenceCount G d z
+    have hconstant : ∀ x ∈ S, squareOrderHighIncidenceCount G d x = c := by
+      intro x hxS
+      apply mul_sub_injective_of_two_mul_le
+      · simpa [squareOrderHighIncidenceCount] using
+          squareOrder_two_mul_highNeighborCount_le_degree
+            G hfree hd hmin hcover hcard (hSlow x hxS)
+      · simpa [c, squareOrderHighIncidenceCount] using
+          squareOrder_two_mul_highNeighborCount_le_degree
+            G hfree hd hmin hcover hcard (hSlow z hzS)
+      · exact (henergy x hxS).trans (henergy z hzS).symm
+    exact ⟨c, squareOrder_constant_incidence_defectClosed_factorization
+      G hfree hd hmin hcover hcard S hSne hSlow hSclosed c hconstant⟩
+  · exact Or.inr hcross
 
 end
 
