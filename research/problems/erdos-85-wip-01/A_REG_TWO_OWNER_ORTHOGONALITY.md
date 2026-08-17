@@ -123,3 +123,48 @@ require four pairwise orthogonal systems of this kind.
    the fact that every edge of `H_d` occurs twice.
 3. For the `q=8`, `2+2+2+2` sector, search at the rectangle/one-factor level
    rather than at the original 64-vertex graph level.
+
+## Decisive audit: the pairwise object exists at `q=8`
+
+The pairwise rectangle system alone is **not** a terminal.  There is an
+explicit translation construction at `q=8`.  Identify the `16` vertices with
+`F_2^4` (written as integers `0,...,15` under bitwise xor), and take the base
+perfect matching
+
+```text
+P = {(4,12), (5,7), (15,8), (9,2),
+     (0,1),  (3,10), (6,11), (13,14)}.
+```
+
+Its eight edge differences are distinct:
+
+```text
+S = {1,2,3,7,8,9,11,13}.
+```
+
+Let `H=K=Cay(F_2^4,S)` and, for every `a in F_2^4`, let `F_a=P+a` be the
+translated perfect matching.  Every edge of `K` occurs in exactly two of the
+`F_a`.  Distinct translated matchings satisfy
+
+```text
+|F_a intersect F_b| = 1  iff  a+b in S,
+|F_a intersect F_b| = 0  otherwise.
+```
+
+Indeed, translation by `t` can carry a base edge to a base edge only when
+their differences agree.  The differences in `P` are unique, so for
+`t in S` the unique edge of difference `t` is fixed setwise, and no other
+edge is shared.
+
+The set `S` spans `F_2^4`, so the Cayley graph is connected.  It is
+nonbipartite: there is no nonzero linear functional taking the value `1` on
+every element of `S` (already `1,2,3 in S` contradict linearity, since
+`3=1+2`).  Thus this construction meets even the connected/nonbipartite
+conditions inherited from a defect-component complement.
+
+Consequently ORTH is valuable structural compression, but a proof must use
+compatibility among **three or more** coordinates, or another property of the
+ambient graph not encoded by a single pair of owner incidence systems.  For
+the `2+2+2+2` sector the correct next question is whether four such systems
+can coexist with the same ambient adjacency/defect square identity; pairwise
+nonexistence is false.
