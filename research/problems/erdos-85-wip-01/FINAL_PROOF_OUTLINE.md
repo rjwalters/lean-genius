@@ -1033,6 +1033,21 @@ generalized rather than merely replayed.
      edges preserve the connected-component label of their source-side
      embeddings in the cross graph.  This reduces the remaining full
      component correspondence to compression of alternating cross walks.
+     That compression is now `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossOwnerReachability`.  Induction on a
+     cross walk pairs successive left-right-left edges, discards immediate
+     backtracks, and replaces every other pair by the corresponding owner
+     edge.  Consequently
+
+     ```text
+     Reachable(F_cd, x, y)
+       iff Reachable(Cross_cd, inl x, inl y),
+     ```
+
+     equivalently the owner-factor connected-component partition is exactly
+     the restriction of the cross-block component partition to either
+     coordinate side.  The cycle-length correspondence is therefore
+     combinatorial, not merely a consequence of cospectrality.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
