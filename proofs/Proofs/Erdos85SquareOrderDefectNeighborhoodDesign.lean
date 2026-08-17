@@ -480,6 +480,36 @@ theorem squareOrder_sum_card_defectBranchGrid_add_degrees
   rw [squareOrder_sum_card_defectBranchGrid_eq G hfree u v]
   exact card_inter_squareOrderDefectNonneighbors_add_degrees G huv
 
+/-- Normalized two-low-center grid equation at square order, after replacing
+the two defect degrees by `d-1-k` via the incidence budget. -/
+theorem squareOrder_sum_card_defectBranchGrid_add_two_mul_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {x y}, G.Adj x y → G.degree x = d ∨ G.degree y = d)
+    (hcard : Fintype.card V = d * d) {u v : V}
+    (huv : u ≠ v) (hu : G.degree u = d) (hv : G.degree v = d) :
+    (∑ z ∈ G.neighborFinset u, ∑ w ∈ G.neighborFinset v,
+        (squareOrderDefectBranch G u z ∩
+          squareOrderDefectBranch G v w).card) + 2 * d =
+    d * d +
+      ((secondOrderDefectGraph G).neighborFinset u ∩
+        (secondOrderDefectGraph G).neighborFinset v).card +
+      (if (secondOrderDefectGraph G).Adj u v then 2 else 0) +
+      squareOrderHighIncidenceCount G d u +
+      squareOrderHighIncidenceCount G d v := by
+  have hgrid := squareOrder_sum_card_defectBranchGrid_add_degrees
+    G hfree huv
+  rw [hcard] at hgrid
+  have hdu := squareOrder_defectDegree_add_highIncidence_eq_pred
+    G hfree hd hmin hcover hcard hu
+  have hdv := squareOrder_defectDegree_add_highIncidence_eq_pred
+    G hfree hd hmin hcover hcard hv
+  omega
+
 /-- Branches at two distinct centers with the same owner overlap in exactly
 the owner's neighborhood with those two centers deleted. -/
 theorem card_inter_squareOrderDefectBranch_same_owner
