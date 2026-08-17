@@ -109,6 +109,40 @@ theorem squareOrder_defectClosed_low_incidence_balance
   rw [hcombine] at hsum
   simpa [h, Nat.mul_comm] using hsum.symm
 
+/-- A nonempty defect-closed low set on which the high-incidence count is
+constant forces a factorization of the total number of high vertices. -/
+theorem squareOrder_constant_incidence_defectClosed_factorization
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (S : Finset V) (hSne : S.Nonempty)
+    (hSlow : ∀ x ∈ S, G.degree x = d)
+    (hSclosed : ∀ ⦃x y : V⦄, x ∈ S →
+      (secondOrderDefectGraph G).Adj x y → y ∈ S)
+    (c : ℕ)
+    (hconstant : ∀ x ∈ S, squareOrderHighIncidenceCount G d x = c) :
+    (squareOrderHighVertices G d).card = c * (d - c) := by
+  have hbalance := squareOrder_defectClosed_low_incidence_balance
+    G hfree hd hmin hcover hcard S hSlow hSclosed
+  have hcard_pos : 0 < S.card := Finset.card_pos.mpr hSne
+  have hsum :
+      (∑ x ∈ S, squareOrderHighIncidenceCount G d x *
+          (d - squareOrderHighIncidenceCount G d x)) =
+        ∑ _x ∈ S, c * (d - c) := by
+    apply Finset.sum_congr rfl
+    intro x hx
+    rw [hconstant x hx]
+  rw [hsum] at hbalance
+  have hconst_sum : (∑ _x ∈ S, c * (d - c)) =
+      S.card * (c * (d - c)) := by simp
+  rw [hconst_sum] at hbalance
+  exact Nat.eq_of_mul_eq_mul_left hcard_pos hbalance
+
 end
 
 end Erdos85
