@@ -468,6 +468,12 @@ generalized rather than merely replayed.
       `h-k(u) + (if z is high then q else 0)`.  Hence every small branch has
       weight `h-k(u)` and every large branch has weight `h-k(u)+q`, a constraint
       invisible to the earlier weight-class defect-edge census.
+    - `squareOrder_card_noncenterHighNeighbors_of_mem_defectBranch` identifies
+      the pointwise code multiplicities: for `x∈N_G(z)\{u}`, exactly
+      `k(x)-1_[z high]` high neighbors of `x` are nonadjacent to `u`.  The only
+      high common neighbor of `x,u` that was removed is the owner `z`, when it
+      is high.  This is the proved bridge from weighted branches to a family of
+      transversal words with prescribed symbol multiplicities.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
