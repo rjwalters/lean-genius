@@ -301,6 +301,77 @@ theorem orderSixtyFour_eight_high_graph_parameters
   dsimp only at hzero
   omega
 
+/-- Exact compact parameters for the twenty-two incidence profiles in the
+ten-high branch. -/
+theorem orderSixtyFour_ten_high_graph_parameters
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 10) :
+    let H := squareOrderHighVertices G 8
+    let k : Fin 64 → Nat := fun x => (G.neighborFinset x ∩ H).card
+    let n := fun i => (Finset.univ.filter fun x => k x = i).card
+    n 3 + 3 * n 4 ≤ 9 ∧
+      n 2 + 3 * n 3 + 6 * n 4 = 45 ∧
+      n 1 = 3 * n 3 + 8 * n 4 := by
+  classical
+  dsimp only
+  have hm := orderSixtyFour_high_incidence_moments G hfree hmin hcover
+  dsimp only at hm
+  have hsum : (∑ x : Fin 64,
+      (G.neighborFinset x ∩ squareOrderHighVertices G 8).card) = 90 := by
+    simpa [hh] using hm.2.1
+  have hsq : (∑ x : Fin 64,
+      ((G.neighborFinset x ∩ squareOrderHighVertices G 8).card) ^ 2) = 180 := by
+    simpa [hh] using hm.2.2
+  have heq := orderSixtyFour_incidence_count_equations
+    (fun x => (G.neighborFinset x ∩ squareOrderHighVertices G 8).card) hm.1
+  have hpart := orderSixtyFour_incidence_count_partition
+    (fun x => (G.neighborFinset x ∩ squareOrderHighVertices G 8).card) hm.1
+  have hzero := squareOrder_card_high_le_zero_incidence G hcover
+  dsimp only at heq hpart hzero
+  omega
+
+/-- Exact compact parameters for the nine incidence profiles in the
+twelve-high branch. -/
+theorem orderSixtyFour_twelve_high_graph_parameters
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 12) :
+    let H := squareOrderHighVertices G 8
+    let k : Fin 64 → Nat := fun x => (G.neighborFinset x ∩ H).card
+    let n := fun i => (Finset.univ.filter fun x => k x = i).card
+    n 3 + 3 * n 4 ≤ 10 ∧
+      24 ≤ 3 * n 3 + 8 * n 4 ∧
+      n 2 + 3 * n 3 + 6 * n 4 = 66 ∧
+      n 1 + 24 = 3 * n 3 + 8 * n 4 := by
+  classical
+  dsimp only
+  have hm := orderSixtyFour_high_incidence_moments G hfree hmin hcover
+  dsimp only at hm
+  have hsum : (∑ x : Fin 64,
+      (G.neighborFinset x ∩ squareOrderHighVertices G 8).card) = 108 := by
+    simpa [hh] using hm.2.1
+  have hsq : (∑ x : Fin 64,
+      ((G.neighborFinset x ∩ squareOrderHighVertices G 8).card) ^ 2) = 240 := by
+    simpa [hh] using hm.2.2
+  have heq := orderSixtyFour_incidence_count_equations
+    (fun x => (G.neighborFinset x ∩ squareOrderHighVertices G 8).card) hm.1
+  have hpart := orderSixtyFour_incidence_count_partition
+    (fun x => (G.neighborFinset x ∩ squareOrderHighVertices G 8).card) hm.1
+  have hzero := squareOrder_card_high_le_zero_incidence G hcover
+  dsimp only at heq hpart hzero
+  omega
+
 /-- The numerical profile forced by the order-64 moments when there are two
 high vertices: exactly one vertex sees both high vertices and exactly sixteen
 vertices see one of them. -/
