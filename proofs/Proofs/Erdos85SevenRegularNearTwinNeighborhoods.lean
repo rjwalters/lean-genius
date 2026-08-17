@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareExactAdjacencyKernel
+import Proofs.Erdos85BinarySquareRegularParity
 
 /-! # Near-twin neighborhoods in a seven-regular graph
 
@@ -109,6 +110,35 @@ theorem orderSixtyFour_defect_codegree_six_private_neighbors
   have hz := secondOrderDefectGraph_degree_eq_excess_add_two
     G hfree (d := 8) (e := 5) hreg (by norm_num) z
   simpa using hz
+
+/-- Every vertex in the six-element common defect neighborhood has its
+selector disjoint from the union of the two near-twin selectors, in every
+target component.  This is the direct bridge from defect codegree to the
+selector-packing constraints. -/
+theorem commonDefectNeighbor_selector_disjoint_nearTwin_union
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {x y z : V}
+    (hz : z ∈ (secondOrderDefectGraph G).neighborFinset x ∩
+      (secondOrderDefectGraph G).neighborFinset y)
+    (target : (secondOrderDefectGraph G).ConnectedComponent) :
+    Disjoint
+      (componentNeighborFinset G (secondOrderDefectGraph G) target x ∪
+        componentNeighborFinset G (secondOrderDefectGraph G) target y)
+      (componentNeighborFinset G (secondOrderDefectGraph G) target z) := by
+  have hzdata := Finset.mem_inter.mp hz
+  have hxz : (secondOrderDefectGraph G).Adj x z :=
+    ((secondOrderDefectGraph G).mem_neighborFinset x z).mp hzdata.1
+  have hyz : (secondOrderDefectGraph G).Adj y z :=
+    ((secondOrderDefectGraph G).mem_neighborFinset y z).mp hzdata.2
+  exact Finset.disjoint_union_left.mpr
+    ⟨componentNeighborFinset_disjoint_of_secondOrderDefect_adj
+        G hfree hxz target,
+      componentNeighborFinset_disjoint_of_secondOrderDefect_adj
+        G hfree hyz target⟩
 
 end
 
