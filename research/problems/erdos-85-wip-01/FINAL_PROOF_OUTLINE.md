@@ -464,6 +464,18 @@ generalized rather than merely replayed.
      `Adj(Owner(c)) D = D Adj(Owner(c))` for every component color.  Thus each
      owner graph preserves every defect-component eigenspace, providing a
      simultaneous integral spectral constraint beyond the scalar part table.
+     The colors also resolve the whole complement operator exactly.  The
+     `PROVEN` identity
+     `sum_componentOwnerGraph_adjMatrix_eq_ones_sub_one_sub_secondOrderDefect`
+     is
+
+     ```text
+     sum_c Adj(Owner(c)) = J - I - D.
+     ```
+
+     Hence `J-I-D` is decomposed into commuting-with-`D`, regular integral
+     color operators of degrees `m_c(q-1)`, with the local intersection table
+     above fixing their component quotients.
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give

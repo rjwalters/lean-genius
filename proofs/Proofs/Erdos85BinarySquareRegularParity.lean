@@ -935,6 +935,65 @@ theorem not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj
     (not_secondOrderDefect_adj_iff_existsUnique_component_selector_inter_nonempty
       G hfree hxy)
 
+/-- The owner graphs resolve the complement of the defect graph entrywise:
+their adjacency matrices are pairwise color classes whose sum is `J-I-D`. -/
+theorem sum_componentOwnerGraph_adjMatrix_eq_ones_sub_one_sub_secondOrderDefect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) :
+    (∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+        (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ) =
+      Matrix.of (fun _ _ => (1 : ℤ)) - 1 -
+        (secondOrderDefectGraph G).adjMatrix ℤ := by
+  let D := secondOrderDefectGraph G
+  ext x y
+  simp only [Matrix.sum_apply, Matrix.sub_apply, Matrix.of_apply,
+    Matrix.one_apply]
+  by_cases hxy : x = y
+  · subst y
+    simp [SimpleGraph.adjMatrix_apply]
+  · by_cases hD : D.Adj x y
+    · have hnone (c : D.ConnectedComponent) :
+          ¬(componentOwnerGraph G D c).Adj x y := by
+        intro ho
+        have hdis := componentNeighborFinset_disjoint_of_secondOrderDefect_adj
+          G hfree hD c
+        exact (Finset.disjoint_left.mp hdis)
+          (Finset.mem_inter.mp ho.2.choose_spec).1
+          (Finset.mem_inter.mp ho.2.choose_spec).2
+      have hsum : (∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+          (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ x y) = 0 := by
+        apply Finset.sum_eq_zero
+        intro c _hc
+        have hnone' : ¬(componentOwnerGraph G (secondOrderDefectGraph G) c).Adj
+            x y := by simpa [D] using hnone c
+        rw [SimpleGraph.adjMatrix_apply, if_neg hnone']
+      rw [hsum]
+      have hD' : (secondOrderDefectGraph G).Adj x y := by simpa [D] using hD
+      simp [SimpleGraph.adjMatrix_apply, hxy, hD']
+    · obtain ⟨c, hc, huniq⟩ :=
+        (not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj
+          G hfree hxy).mp hD
+      have hsum : (∑ b : (secondOrderDefectGraph G).ConnectedComponent,
+          (componentOwnerGraph G (secondOrderDefectGraph G) b).adjMatrix ℤ x y) = 1 := by
+        rw [Finset.sum_eq_single c]
+        · rw [SimpleGraph.adjMatrix_apply, if_pos hc]
+        · intro b _hb hbc
+          have hbnone : ¬(componentOwnerGraph G (secondOrderDefectGraph G) b).Adj
+              x y := by
+            intro hb
+            exact hbc (huniq b hb)
+          rw [SimpleGraph.adjMatrix_apply, if_neg hbnone]
+        · intro hcnot
+          exact (hcnot (Finset.mem_univ c)).elim
+      rw [hsum]
+      have hD' : ¬(secondOrderDefectGraph G).Adj x y := by simpa [D] using hD
+      simp [SimpleGraph.adjMatrix_apply, hxy, hD']
+
 /-- Triangle-free edges stay inside the defect component, so their degree at
 a vertex is bounded by the normalized component part. -/
 theorem binarySquare_regular_triangleFree_degree_le_part
