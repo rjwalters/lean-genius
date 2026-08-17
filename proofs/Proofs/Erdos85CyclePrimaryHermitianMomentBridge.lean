@@ -4,6 +4,14 @@ import Proofs.Erdos85HermitianFactorSecondMoment
 
 /-! # Cycle-primary moments inside a Hermitian characteristic polynomial -/
 
+/-!
+These theorems are deliberately conditional on the characteristic matrix
+having raw root-square trace at most `63`.  For cycle roots
+`μ = 7 - α²`, an ambient `Σα² ≤ 63` bound does not imply `Σμ² ≤ 63`.
+No graph-level use is valid until the stated Hermitian matrix and its raw
+`μ`-square trace bound have been constructed explicitly.
+-/
+
 open Polynomial
 
 namespace Erdos85

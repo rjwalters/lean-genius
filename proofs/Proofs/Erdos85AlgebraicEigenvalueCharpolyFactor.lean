@@ -3,6 +3,14 @@ import Proofs.Erdos85CycleDefectPrimaryClassification
 
 /-! # Algebraic eigenvalues force rational characteristic factors -/
 
+/-!
+The general eigenvalue-to-divisibility theorem below is unconditional.  The
+later primary-exclusion consumers assume explicit trace identities for the
+matrix `D`; they must not be instantiated with `D = 7I-A²` merely from an
+ambient adjacency moment bound.  In that transformation the raw `D` roots
+are `μ = 7-α²`, and their square moments are different invariants.
+-/
+
 open Polynomial
 
 namespace Erdos85

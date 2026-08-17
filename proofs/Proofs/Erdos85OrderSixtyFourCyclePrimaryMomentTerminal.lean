@@ -2,6 +2,16 @@ import Proofs.Erdos85CycleDefectFactorIrreducibility
 
 /-! # Moment terminal for the cycle-derived order-64 primaries -/
 
+/-!
+The moments in this file are moments of the transformed roots `μ` themselves.
+For the cycle transport used elsewhere, `μ = 7 - α²`; hence these numbers are
+**not** ambient adjacency square moments.  Any use of the bound `63` below
+requires a separately proved bound on `Σμ²`.  The literal two-regular H16
+adjacency matrix does not provide such a bound.  See
+`Erdos85CyclePrimaryAdjacencyMomentLedger` for the correctly transformed
+`Σα²` and `Σα⁴` values.
+-/
+
 open Polynomial
 
 namespace Erdos85
@@ -108,9 +118,10 @@ def OrderSixtyFourSquareCyclePrimaryMoment
   (dimension = 5 ∧ squareMoment = 144) ∨
   (dimension = 6 ∧ squareMoment = 171)
 
-/-- The H16 nonprincipal defect-square budget is only `63`; hence the sole
-cycle-derived square primary which can fit even once is the golden
-quadratic, and it exhausts the budget. -/
+/-- Conditional arithmetic endpoint: if a raw `Σμ²` budget of `63` is
+available, the sole listed square primary which fits is the golden
+quadratic.  This theorem does not assert that the H16 cycle operator has
+that raw transformed-root budget. -/
 theorem squareCyclePrimary_moment_le_sixtyThree_forces_golden
     {dimension squareMoment : ℕ}
     (hprimary : OrderSixtyFourSquareCyclePrimaryMoment
