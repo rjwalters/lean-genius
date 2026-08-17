@@ -1,4 +1,5 @@
 import Proofs.Erdos85SquareOrderDefectIncidence
+import Proofs.Erdos85SquareOrderHighIncidenceGram
 
 /-!
 # Uniform defect eigenvectors from the square-order high sector
@@ -78,6 +79,43 @@ theorem squareOrder_highRowDifference_ne_zero
   have hw := congrFun hzero w
   simp [squareOrderHighRowDifference, SimpleGraph.adjMatrix_apply,
     (by simpa [SimpleGraph.mem_neighborFinset] using hwx : G.Adj x w), hwz] at hw
+
+/-- The high-incidence columns are linearly independent over the integers.
+This is the direct algebraic consequence of the nonsingular Gram matrix. -/
+theorem squareOrder_highIncidence_columns_linearIndependent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (hpositive : 0 < (squareOrderHighVertices G d).card) :
+    let B := squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+      (squareOrderHighVertices G d)
+    LinearIndependent ℤ B.col := by
+  classical
+  let B := squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+    (squareOrderHighVertices G d)
+  let Q := Matrix.transpose B * B
+  dsimp only
+  have hdet : Q.det ≠ 0 := by
+    simpa [Q, B] using squareOrder_highIncidence_gram_det_ne_zero
+      G hfree hd hmin hcover hcard hpositive
+  have hQ : LinearIndependent ℤ Q.col :=
+    Matrix.linearIndependent_cols_of_det_ne_zero hdet
+  apply LinearIndependent.of_comp (Matrix.mulVecLin (Matrix.transpose B))
+  have heq :
+      (Matrix.mulVecLin (Matrix.transpose B)) ∘ B.col = Q.col := by
+    funext j
+    ext i
+    rw [Function.comp_apply, Matrix.mulVecLin_apply]
+    change (∑ r, B r i * B r j) = (B.transpose * B) i j
+    rw [Matrix.mul_apply]
+    rfl
+  rw [heq]
+  exact hQ
 
 /-- Every difference of two high adjacency rows is a `-1` eigenvector of the
 square-order defect adjacency matrix. -/

@@ -1,5 +1,5 @@
 import Proofs.Erdos85SquareOrderHighIncidence
-import Proofs.Erdos85OneTwentyThreeResidualTerminal
+import Proofs.FriendshipTheoremOQ01
 
 /-!
 # The square-order high-incidence Gram matrix
@@ -16,6 +16,42 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Lightweight adjacency incidence between two finite vertex cells. -/
+def squareOrderFinsetAdjIncidenceMatrix
+    {V K : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Zero K] [One K] (A B : Finset V) :
+    Matrix (A : Set V) (B : Set V) K :=
+  fun a b => if G.Adj a.1 b.1 then 1 else 0
+
+/-- The column Gram of the lightweight incidence matrix counts common
+neighbors in its row cell. -/
+theorem squareOrderFinsetAdjIncidence_transpose_mul_apply
+    {V K : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Semiring K] (A B : Finset V) (x y : (B : Set V)) :
+    (Matrix.transpose (squareOrderFinsetAdjIncidenceMatrix (K := K) G A B) *
+      squareOrderFinsetAdjIncidenceMatrix (K := K) G A B) x y =
+      ((Finset.univ.filter fun z : (A : Set V) =>
+        G.Adj z.1 x.1 ∧ G.Adj z.1 y.1).card : K) := by
+  classical
+  simp only [Matrix.mul_apply, Matrix.transpose_apply,
+    squareOrderFinsetAdjIncidenceMatrix]
+  calc
+    (∑ z : (A : Set V), (if G.Adj z.1 x.1 then (1 : K) else 0) *
+      if G.Adj z.1 y.1 then 1 else 0) =
+        ∑ z : (A : Set V),
+          if G.Adj z.1 x.1 ∧ G.Adj z.1 y.1 then (1 : K) else 0 := by
+      apply Finset.sum_congr rfl
+      intro z hz
+      by_cases hzx : G.Adj z.1 x.1 <;>
+        by_cases hzy : G.Adj z.1 y.1 <;> simp [hzx, hzy]
+    _ = ((Finset.univ.filter fun z : (A : Set V) =>
+          G.Adj z.1 x.1 ∧ G.Adj z.1 y.1).card : K) := by
+      simpa using (Finset.sum_boole (R := K)
+        (fun z : (A : Set V) => G.Adj z.1 x.1 ∧ G.Adj z.1 y.1)
+          Finset.univ)
+
 /-- Entrywise form of the high-incidence Gram identity `BᵀB = dI + J`.
 Here `B` has all vertices as rows and the high vertices as columns.  High
 vertices are pairwise nonadjacent, so its nonzero rows are in fact carried
@@ -31,15 +67,15 @@ theorem squareOrder_highIncidence_gram_apply
     (hcard : Fintype.card V = d * d)
     (x y : (squareOrderHighVertices G d : Set V)) :
     (Matrix.transpose
-        (finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+        (squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
           (squareOrderHighVertices G d)) *
-      finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+      squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
         (squareOrderHighVertices G d)) x y =
       (d : ℤ) * ((1 : Matrix
         (squareOrderHighVertices G d : Set V)
         (squareOrderHighVertices G d : Set V) ℤ) x y) + 1 := by
   classical
-  rw [finsetAdjIncidence_transpose_mul_apply]
+  rw [squareOrderFinsetAdjIncidence_transpose_mul_apply]
   have hx : G.degree x.1 = d + 1 := (Finset.mem_filter.mp x.2).2
   have hy : G.degree y.1 = d + 1 := (Finset.mem_filter.mp y.2).2
   by_cases hxy : x = y
@@ -94,9 +130,9 @@ theorem squareOrder_highIncidence_gram
     (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
     (hcard : Fintype.card V = d * d) :
     Matrix.transpose
-        (finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+        (squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
           (squareOrderHighVertices G d)) *
-      finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+      squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
         (squareOrderHighVertices G d) =
       (d : ℤ) • (1 : Matrix
         (squareOrderHighVertices G d : Set V)
@@ -122,9 +158,9 @@ theorem squareOrder_highIncidence_gram_det
     (hcard : Fintype.card V = d * d)
     (hpositive : 0 < (squareOrderHighVertices G d).card) :
     (Matrix.transpose
-        (finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+        (squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
           (squareOrderHighVertices G d)) *
-      finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+      squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
         (squareOrderHighVertices G d)).det =
       (d : ℤ) ^ ((squareOrderHighVertices G d).card - 1) *
         ((d : ℤ) + (squareOrderHighVertices G d).card) := by
@@ -180,9 +216,9 @@ theorem squareOrder_highIncidence_gram_det_ne_zero
     (hcard : Fintype.card V = d * d)
     (hpositive : 0 < (squareOrderHighVertices G d).card) :
     (Matrix.transpose
-        (finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+        (squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
           (squareOrderHighVertices G d)) *
-      finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+      squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
         (squareOrderHighVertices G d)).det ≠ 0 := by
   rw [squareOrder_highIncidence_gram_det G hfree hd hmin hcover hcard hpositive]
   apply mul_ne_zero
