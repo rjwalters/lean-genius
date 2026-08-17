@@ -8,7 +8,9 @@ The general eigenvalue-to-divisibility theorem below is unconditional.  In
 the order-64 application, `D` should be the 7-regular defect-block operator,
 not the separate two-regular cycle operator.  The helper based on the full
 matrix identity `D = 7I-A²` is generic and is not the simultaneous-sector
-connector used by that graph branch.
+connector used by that graph branch.  The graph block identity has an
+additional positive-semidefinite exterior Gram term; this helper applies to a
+graph direction only when that term vanishes.
 -/
 
 open Polynomial
@@ -147,15 +149,16 @@ theorem cycle_primary_of_budget_forces_rational_linear
   · exact absurd h hlarge.2.2.1
   · exact absurd h hlarge.2.2.2
 
-/-- The rational matrix polynomial `7I - A²` used by the order-64 defect
-branch. -/
+/-- The generic rational matrix polynomial `7I - A²`.  It models the
+order-64 defect relation only on the exterior-incidence kernel. -/
 def sevenMinusSquareMatrix {n : Type*} [Fintype n] [DecidableEq n]
     (A : Matrix n n ℚ) : Matrix n n ℚ :=
   7 • (1 : Matrix n n ℚ) - A ^ 2
 
-/-- An adjacency eigenvalue `α` transports to the defect eigenvalue
-`7-α²`; under the H16 budget its minimal polynomial therefore avoids all
-four oversized cycle primaries. -/
+/-- For the generic matrix polynomial above, an eigenvalue `α` transports to
+`7-α²`; under the stated H16-style budget its minimal polynomial therefore
+avoids all four oversized cycle primaries.  In the graph application this is
+the exterior-incidence-kernel specialization, not the general block relation. -/
 theorem seven_sub_sq_eigenvalue_minpoly_ne_large_cycle_primaries
     {n : Type*} [Fintype n] [DecidableEq n]
     (A : Matrix n n ℚ) (α : AlgebraicClosure ℚ)

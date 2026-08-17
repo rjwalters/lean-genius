@@ -2,12 +2,14 @@ import Proofs.Erdos85OrderSixtyFourCyclePrimaryMomentTerminal
 
 /-! # Correct transformed moments for cycle primaries
 
-The registered cycle factors have roots `μ = 7 - α²`.  Consequently an
-irreducible `μ`-primary contributes `Σ(7-μ) = Σα²`, not `Σμ²`, to the
-two-regular cycle-operator square trace.  The order-64 moment terminal uses
-the distinct 7-regular defect-block operator, where `μ` itself is an actual
-eigenvalue and `Σμ²` is the relevant invariant.  This diagnostic ledger records
-both `Σα²` and `Σα⁴` directly from the top coefficients. -/
+If the exterior Gram term vanishes, the registered cycle factors have roots
+`μ = 7 - α²`; only in that kernel sector does an irreducible `μ`-primary
+contribute `Σ(7-μ) = Σα²` to the two-regular cycle-operator square trace.
+Generally the block relation is `μ = 7 - α² - g` with `g ≥ 0`.  The order-64
+moment terminal instead uses the distinct 7-regular defect-block operator,
+where `μ` itself is an actual eigenvalue and `Σμ²` is the relevant invariant.
+This diagnostic ledger records the formal transformed sums `Σ(7-μ)` and
+`Σ(7-μ)²`; they equal `Σα²` and `Σα⁴` only in the kernel sector. -/
 
 open Polynomial
 

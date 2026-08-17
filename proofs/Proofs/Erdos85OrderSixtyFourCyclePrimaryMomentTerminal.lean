@@ -6,9 +6,11 @@ import Proofs.Erdos85CycleDefectFactorIrreducibility
 The moments in this file are moments of the transformed roots `μ` themselves.
 In the order-64 branch, `μ` is an actual eigenvalue of the connected
 7-regular order-16 defect block, whose nonprincipal square trace is `63`.
-The separate two-regular cycle operator supplies `α` through a simultaneous
-eigenvector relation `μ = 7 - α²`; it is not the matrix whose trace budget is
-used here.  See
+The separate two-regular cycle operator supplies `α`, but the block identity
+gives `μ = 7 - α² - g` on a mean-zero simultaneous direction, where the
+exterior Gram contribution `g` is nonnegative.  Equality `μ = 7 - α²` holds
+only on the exterior-incidence kernel.  The cycle operator is not the matrix
+whose trace budget is used here.  See
 `Erdos85CyclePrimaryAdjacencyMomentLedger` for the correctly transformed
 `Σα²` and `Σα⁴` values of that distinct cycle operator.
 -/

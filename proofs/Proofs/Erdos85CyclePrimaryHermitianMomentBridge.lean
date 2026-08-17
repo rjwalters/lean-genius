@@ -8,7 +8,9 @@ import Proofs.Erdos85HermitianFactorSecondMoment
 These theorems consume the characteristic matrix of the 7-regular H16
 defect block, for which `μ` is an actual eigenvalue and the nonprincipal raw
 root-square trace is `63`.  This is distinct from the two-regular cycle
-operator whose simultaneous eigenvalue `α` satisfies `μ = 7-α²`.
+operator.  On a mean-zero simultaneous direction the actual block relation is
+`μ = 7-α²-g` with nonnegative exterior Gram term `g`; the simpler equality
+`μ = 7-α²` requires that direction to lie in the exterior-incidence kernel.
 -/
 
 open Polynomial
