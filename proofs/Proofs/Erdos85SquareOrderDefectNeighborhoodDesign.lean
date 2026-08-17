@@ -24,6 +24,16 @@ def squareOrderDefectOwnerBlock
     (G : SimpleGraph V) [DecidableRel G.Adj] (z : V) : Finset V :=
   G.neighborFinset z
 
+def squareOrderDefectBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (u z : V) : Finset V :=
+  (G.neighborFinset z).erase u
+
+def squareOrderDefectNonneighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (u : V) : Finset V :=
+  (Finset.univ.erase u) \ (secondOrderDefectGraph G).neighborFinset u
+
 /-- Two distinct points in one original neighborhood cannot be adjacent in
 the second-order defect graph. -/
 theorem not_defectAdj_of_mem_squareOrderDefectOwnerBlock
@@ -102,6 +112,67 @@ theorem not_defectAdj_iff_existsUnique_squareOrderDefectOwner
   · rintro ⟨z, hz, _hunique⟩
     exact not_defectAdj_of_mem_squareOrderDefectOwnerBlock
       G hfree hz.1 hz.2 huv
+
+/-- Around a fixed point `u`, the punctured neighborhoods of its original
+neighbors cover exactly the distinct defect nonneighbors of `u`. -/
+theorem squareOrder_defectBranches_biUnion_eq_nonneighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (u : V) :
+    (G.neighborFinset u).biUnion (squareOrderDefectBranch G u) =
+      squareOrderDefectNonneighbors G u := by
+  ext v
+  constructor
+  · intro hv
+    rw [Finset.mem_biUnion] at hv
+    obtain ⟨z, hzu, hvz⟩ := hv
+    have hvne : v ≠ u := Finset.ne_of_mem_erase hvz
+    have huz : u ∈ squareOrderDefectOwnerBlock G z := by
+      simpa [squareOrderDefectOwnerBlock, SimpleGraph.mem_neighborFinset,
+        G.adj_comm] using hzu
+    have hvowner : v ∈ squareOrderDefectOwnerBlock G z := by
+      exact Finset.mem_of_mem_erase hvz
+    have hnot := not_defectAdj_of_mem_squareOrderDefectOwnerBlock
+      G hfree huz hvowner hvne.symm
+    simp [squareOrderDefectNonneighbors, hvne, hnot,
+      SimpleGraph.mem_neighborFinset]
+  · intro hv
+    have hvdata : v ≠ u ∧ ¬ (secondOrderDefectGraph G).Adj u v := by
+      simpa [squareOrderDefectNonneighbors, SimpleGraph.mem_neighborFinset]
+        using hv
+    obtain ⟨z, hz, _hunique⟩ :=
+      existsUnique_squareOrderDefectOwner_of_not_adj
+        G hfree hvdata.1.symm hvdata.2
+    rw [Finset.mem_biUnion]
+    refine ⟨z, ?_, ?_⟩
+    · simpa [squareOrderDefectOwnerBlock, SimpleGraph.mem_neighborFinset,
+        G.adj_comm] using hz.1
+    · exact Finset.mem_erase.mpr ⟨hvdata.1, by
+        simpa [squareOrderDefectOwnerBlock] using hz.2⟩
+
+/-- The branches in the preceding cover are pairwise disjoint. -/
+theorem squareOrder_defectBranches_pairwise_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (u : V) :
+    ∀ z ∈ G.neighborFinset u, ∀ w ∈ G.neighborFinset u,
+      z ≠ w → Disjoint (squareOrderDefectBranch G u z)
+        (squareOrderDefectBranch G u w) := by
+  intro z hzu w hwu hzw
+  rw [Finset.disjoint_left]
+  intro v hvz hvw
+  have hvz' : G.Adj z v := by
+    simpa [squareOrderDefectBranch, SimpleGraph.mem_neighborFinset] using
+      Finset.mem_of_mem_erase hvz
+  have hvw' : G.Adj w v := by
+    simpa [squareOrderDefectBranch, SimpleGraph.mem_neighborFinset] using
+      Finset.mem_of_mem_erase hvw
+  have hvu : v ≠ u := Finset.ne_of_mem_erase hvz
+  have huz : G.Adj u z := by simpa [SimpleGraph.mem_neighborFinset] using hzu
+  have huw : G.Adj u w := by simpa [SimpleGraph.mem_neighborFinset] using hwu
+  exact hfree (containsC4_of_two_common hzw hvu.symm huz huw hvz'.symm hvw'.symm)
 
 /-- At square order every owner block has size `d` or `d+1`. -/
 theorem squareOrder_card_defectOwnerBlock_eq_or_succ
