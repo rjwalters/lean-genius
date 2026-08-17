@@ -232,6 +232,19 @@ timed out after ten minutes both with and without the star gauge. The quotient
 equations therefore supply real mathematical propagation rather than merely
 more solver time.
 
+Clause-stratification locates the group-model obstruction globally. With the
+cocycle equations retained, both q=9 group types are SAT if all C4 clauses are
+omitted. They also remain SAT after imposing every C4 clause whose four
+vertices occupy at most three fibers. Conversely, imposing only the clauses
+on four distinct fibers is SAT as well. For the cyclic model, even the union
+of the two-fiber and four-fiber clauses is SAT; the three-plus-four-fiber run
+remains `UNKNOWN-TIMEOUT`. The full model is UNSAT. Thus the failure is not a
+local doubled-block obstruction, a standalone cocycle obstruction, or a pure
+quartet obstruction. It is a compatibility failure involving the quartet
+constraints together with lower-fiber routing consistency. The script exposes
+`--c4-min-fibers`, `--c4-max-fibers`, and `--c4-fiber-counts` to reproduce
+these diagnostics.
+
 ## 3. Precise candidate axiom for B-EXIST
 
 **AXIOM B-NEAR-LATIN-LIFT.** There are collision-free near-Latin lift data of

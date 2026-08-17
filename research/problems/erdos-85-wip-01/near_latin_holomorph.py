@@ -96,7 +96,8 @@ def paired(i: int, j: int) -> bool:
 
 
 def sat_search(
-    q: int, timeout: int, group: str = "dihedral",
+    q: int, timeout: int, group: str = "dihedral", c4_max_fibers: int = 4,
+    c4_min_fibers: int = 1, c4_fiber_counts: set[int] | None = None,
 ) -> tuple[str, Datum | None, dict[str, int]]:
     m, r, vertex_count = q - 1, q + 1, q * q - 1
     if r % 2:
@@ -166,6 +167,10 @@ def sat_search(
         "link_clauses": 0,
         "disjointness_clauses": 0,
         "c4_clauses": 0,
+        "c4_clauses_fibers_1": 0,
+        "c4_clauses_fibers_2": 0,
+        "c4_clauses_fibers_3": 0,
+        "c4_clauses_fibers_4": 0,
     }
 
     def edge(u: int, v: int) -> bool | int:
@@ -321,15 +326,24 @@ def sat_search(
         def negated(e: bool | int) -> bool | int:
             return (not e) if isinstance(e, bool) else -e
 
-        for a, b, c, d in itertools.combinations(range(vertex_count), 4):
-            for cycle in (
-                ((a, b), (b, c), (c, d), (d, a)),
-                ((a, b), (b, d), (d, c), (c, a)),
-                ((a, c), (c, b), (b, d), (d, a)),
-            ):
-                before = clause_count
-                emit([negated(edge(u, v)) for u, v in cycle])
-                stats["c4_clauses"] += clause_count - before
+        if c4_max_fibers:
+            for a, b, c, d in itertools.combinations(range(vertex_count), 4):
+                fiber_count = len({a // r, b // r, c // r, d // r})
+                if c4_fiber_counts is not None:
+                    if fiber_count not in c4_fiber_counts:
+                        continue
+                elif fiber_count < c4_min_fibers or fiber_count > c4_max_fibers:
+                    continue
+                for cycle in (
+                    ((a, b), (b, c), (c, d), (d, a)),
+                    ((a, b), (b, d), (d, c), (c, a)),
+                    ((a, c), (c, b), (b, d), (d, a)),
+                ):
+                    before = clause_count
+                    emit([negated(edge(u, v)) for u, v in cycle])
+                    added = clause_count - before
+                    stats["c4_clauses"] += added
+                    stats[f"c4_clauses_fibers_{fiber_count}"] += added
 
         cnf.flush()
         cnf.seek(0)
@@ -370,7 +384,9 @@ def sat_search(
                 for s in range(2 if paired(i, j) else 1)
             ]
     datum = Datum(q, blocks, within)
-    assert objective(datum) == 0
+    if (c4_fiber_counts is None and c4_min_fibers == 1 and c4_max_fibers == 4) or \
+            c4_fiber_counts == {1, 2, 3, 4}:
+        assert objective(datum) == 0
     return "SAT", datum, stats
 
 
@@ -379,14 +395,32 @@ def main() -> None:
     parser.add_argument("--q", type=int, default=9)
     parser.add_argument("--timeout", type=int, default=3600)
     parser.add_argument("--group", choices=("dihedral", "cyclic"), default="dihedral")
+    parser.add_argument("--omit-c4", action="store_true",
+                        help="diagnostic: retain the cocycle/local model but omit C4 clauses")
+    parser.add_argument("--c4-max-fibers", type=int, choices=(1, 2, 3, 4), default=4,
+                        help="diagnostic: impose only C4 clauses using at most this many fibers")
+    parser.add_argument("--c4-min-fibers", type=int, choices=(1, 2, 3, 4), default=1,
+                        help="diagnostic: impose only C4 clauses using at least this many fibers")
+    parser.add_argument("--c4-fiber-counts",
+                        help="diagnostic: comma-separated exact fiber counts, e.g. 2,4")
     parser.add_argument("--output")
     args = parser.parse_args()
     if args.q < 3 or args.q % 2 == 0:
         parser.error("q must be an odd integer at least 3")
-    status, datum, stats = sat_search(args.q, args.timeout, args.group)
+    fiber_counts = None
+    if args.c4_fiber_counts:
+        fiber_counts = {int(x) for x in args.c4_fiber_counts.split(",")}
+        if not fiber_counts <= {1, 2, 3, 4}:
+            parser.error("--c4-fiber-counts entries must lie in 1..4")
+    status, datum, stats = sat_search(
+        args.q, args.timeout, args.group,
+        c4_max_fibers=0 if args.omit_c4 else args.c4_max_fibers,
+        c4_min_fibers=args.c4_min_fibers,
+        c4_fiber_counts=fiber_counts,
+    )
     result: dict[str, object] = {"q": args.q, "status": status, "stats": stats}
     if datum is not None:
-        result |= serializable(datum) | {"C4_count": 0}
+        result |= serializable(datum) | {"C4_count": objective(datum)}
     print(json.dumps(result, sort_keys=True))
     if args.output:
         with open(args.output, "w") as stream:
