@@ -297,7 +297,15 @@ generalized rather than merely replayed.
      In fact the parity argument is component-local: the `PROVEN` theorem
      `binarySquare_regular_no_sizeQ_defectComponent_of_even` excludes even one
      unit part.  Thus for binary `q`, every remaining normalized part satisfies
-     `m_c ≥ 2`; in particular there are at most `q/2` defect components.
+     `m_c ≥ 2`; in particular there are at most `q/2` defect components, as
+     stated precisely by
+     `binarySquare_regular_two_mul_card_defectComponents_le`.  The normalized
+     part also has a direct internal meaning:
+     `binarySquare_regular_degree_induce_defectComponent_eq_part` proves that
+     `G` induced on the component is exactly `m_c`-regular.  Consequently the
+     new smallest case `m_c=2` is a disjoint union of cycles on `2q` vertices,
+     giving a uniform cycle/intertwiner target rather than an arbitrary
+     `2q`-vertex block.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;

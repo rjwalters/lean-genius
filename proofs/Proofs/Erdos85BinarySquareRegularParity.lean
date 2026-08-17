@@ -603,6 +603,49 @@ theorem binarySquare_regular_mul_componentNeighborCard_eq_componentCard
   exact binarySquare_regular_mul_componentQuotient_eq_componentCard
     G hfree hq hreg hcard e c
 
+/-- A normalized component part `m` is also the exact internal ambient degree:
+the graph induced by `G` on that defect component is `m`-regular. -/
+theorem binarySquare_regular_degree_induce_defectComponent_eq_part
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m : ℕ}
+    (hc : c.supp.ncard = q * m) (x : c.supp) :
+    (G.induce c.supp).degree x = m := by
+  have hinduced : (G.induce c.supp).degree x =
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x.1).card := by
+    show ((G.induce c.supp).neighborFinset x).card = _
+    apply Finset.card_bij (fun y _ => y.1)
+    · intro y hy
+      rw [SimpleGraph.mem_neighborFinset] at hy
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset x.1 y.1).mpr hy,
+          (SimpleGraph.ConnectedComponent.mem_supp_iff c y.1).mp y.2⟩
+    · intro y₁ h₁ y₂ h₂ hy
+      exact Subtype.ext hy
+    · intro y hy
+      rw [componentNeighborFinset, Finset.mem_filter] at hy
+      have hySupp : y ∈ c.supp :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff c y).mpr hy.2
+      refine ⟨⟨y, hySupp⟩, ?_, rfl⟩
+      apply ((G.induce c.supp).mem_neighborFinset x ⟨y, hySupp⟩).mpr
+      exact (G.mem_neighborFinset x.1 y).mp hy.1
+  have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+    G hfree hq hreg hcard
+    ((secondOrderDefectGraph G).connectedComponentMk x.1) c (x := x.1) (by rfl)
+  rw [hc] at hmul
+  calc
+    (G.induce c.supp).degree x =
+        (componentNeighborFinset G (secondOrderDefectGraph G) c x.1).card := hinduced
+    _ = m := Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+
 /-- Every row of the defect-component quotient is identical. -/
 theorem binarySquare_regular_componentQuotient_row_eq
     {V : Type*} [Fintype V] [DecidableEq V]
