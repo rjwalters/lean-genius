@@ -118,6 +118,52 @@ theorem card_ownerBlocks_le_four_of_pairwiseDisjoint
   rw [hsum] at hunionLe
   omega
 
+/-- Two cardinality-four blocks inside a common six-point universe cannot be
+disjoint.  Thus an equal-or-disjoint block theorem collapses them to the same
+block. -/
+theorem cardFour_blocks_eq_of_common_cardSix_support
+    {V : Type*} [DecidableEq V]
+    (S T U : Finset V)
+    (hS : S.card = 4) (hT : T.card = 4) (hU : U.card = 6)
+    (hSU : S ⊆ U) (hTU : T ⊆ U)
+    (heqdisj : S = T ∨ Disjoint S T) : S = T := by
+  rcases heqdisj with heq | hdisj
+  · exact heq
+  · exfalso
+    have hunionCard : (S ∪ T).card = 8 := by
+      rw [Finset.card_union_of_disjoint hdisj, hS, hT]
+    have hunionSub : S ∪ T ⊆ U := Finset.union_subset hSU hTU
+    have hle := Finset.card_le_card hunionSub
+    omega
+
+/-- Two isolated `K₂,₂` witnesses supported inside the same six vertices are
+therefore the identical owner block. -/
+theorem isolatedK22_blocks_eq_of_common_cardSix_support
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    {x₁ y₁ r₁ s₁ x₂ y₂ r₂ s₂ : V}
+    (hrows₁ :
+      H.neighborFinset x₁ = {r₁, s₁} ∧
+      H.neighborFinset y₁ = {r₁, s₁} ∧
+      H.neighborFinset r₁ = {x₁, y₁} ∧
+      H.neighborFinset s₁ = {x₁, y₁})
+    (hrows₂ :
+      H.neighborFinset x₂ = {r₂, s₂} ∧
+      H.neighborFinset y₂ = {r₂, s₂} ∧
+      H.neighborFinset r₂ = {x₂, y₂} ∧
+      H.neighborFinset s₂ = {x₂, y₂})
+    (hcard₁ : ({x₁, y₁, r₁, s₁} : Finset V).card = 4)
+    (hcard₂ : ({x₂, y₂, r₂, s₂} : Finset V).card = 4)
+    (U : Finset V) (hU : U.card = 6)
+    (hsub₁ : ({x₁, y₁, r₁, s₁} : Finset V) ⊆ U)
+    (hsub₂ : ({x₂, y₂, r₂, s₂} : Finset V) ⊆ U) :
+    ({x₁, y₁, r₁, s₁} : Finset V) = {x₂, y₂, r₂, s₂} := by
+  apply cardFour_blocks_eq_of_common_cardSix_support
+    _ _ U hcard₁ hcard₂ hU hsub₁ hsub₂
+  exact isolatedK22_blocks_eq_or_disjoint H
+    hrows₁.1 hrows₁.2.1 hrows₁.2.2.1 hrows₁.2.2.2
+    hrows₂.1 hrows₂.2.1 hrows₂.2.2.1 hrows₂.2.2.2
+
 end
 
 end Erdos85
