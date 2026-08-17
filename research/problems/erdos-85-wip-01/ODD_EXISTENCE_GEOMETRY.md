@@ -215,6 +215,17 @@ certificate. It does not refute the general near-Latin axiom: a q=9 datum may
 use non-holomorph permutations or routing Latin squares which are not group
 tables, and an unbounded family need not contain q=9 at all.
 
+The same program also supports the cyclic regular group. This gives a useful
+cross-check at q=7: the cyclic model is `UNSAT`, agreeing with the independent
+routing audit that the known witness is dihedral rather than cyclic. At q=9
+the full common-cyclic-holomorph model has 4,760 variables and 4,795,071
+clauses and is also `UNSAT` in under thirty seconds. Up to isomorphism, the
+only groups of order ten are `C₁₀` and `D₁₀`. Consequently **every q=9 common-
+group-holomorph model is computationally eliminated**. A q=9 near-Latin datum,
+if one exists, must use routing Latin squares which are genuinely nongroup, or
+use group structures/conjugacy gauges which cannot be made common across all
+fiber pairs.
+
 For comparison, before the cocycle clauses were added, the necessary
 holomorph-valued relaxation had 9,640 variables and 5,516,707 clauses and
 timed out after ten minutes both with and without the star gauge. The quotient

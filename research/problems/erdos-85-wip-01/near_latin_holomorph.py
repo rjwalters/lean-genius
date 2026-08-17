@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Exact SAT scout for the common-coset dihedral-holomorph ansatz.
+"""Exact SAT scout for common-coset group-holomorph ansatzes.
 
-For odd q, let H be the dihedral group of order q+1.  Every within-fiber and
-cross-fiber matching is required to be a permutation in Hol(H), the normalizer
-of the regular H-action.  This is the precise reduced class extracted from the
-checked q=7 witness by ``near_latin_q7_routing.py``.
+For odd q, let H be either the dihedral or cyclic group of order q+1. Every
+within-fiber and cross-fiber matching is required to be a permutation in
+Hol(H), the normalizer of the regular H-action. The dihedral choice is the
+precise reduced class extracted from the checked q=7 witness by
+``near_latin_q7_routing.py``; the cyclic choice tests the other group of order
+ten at q=9.
 
 The model requires all datum permutations to lie in Hol(H), the resulting
 graph to be C4-free, and every routing factorization to be one coset of the
@@ -72,6 +74,19 @@ def holomorph(n: int) -> list[Permutation]:
     return sorted(answer)
 
 
+def cyclic_holomorph(order: int) -> list[Permutation]:
+    """Hol(C_order), the affine maps x ↦ h + u*x modulo order."""
+    units = [u for u in range(order) if math.gcd(u, order) == 1]
+    return [
+        tuple((h + u * x) % order for x in range(order))
+        for h in range(order) for u in units
+    ]
+
+
+def cyclic_automorphism_part(p: Permutation) -> Permutation:
+    return tuple((y - p[0]) % len(p) for y in p)
+
+
 def fixed_point_free_involutions(perms: list[Permutation]) -> list[Permutation]:
     return [p for p in perms if all(p[x] != x and p[p[x]] == x for x in range(len(p)))]
 
@@ -80,11 +95,20 @@ def paired(i: int, j: int) -> bool:
     return (i ^ 1) == j
 
 
-def sat_search(q: int, timeout: int) -> tuple[str, Datum | None, dict[str, int]]:
+def sat_search(
+    q: int, timeout: int, group: str = "dihedral",
+) -> tuple[str, Datum | None, dict[str, int]]:
     m, r, vertex_count = q - 1, q + 1, q * q - 1
     if r % 2:
         raise ValueError("q must be odd")
-    hol = holomorph(r // 2)
+    if group == "dihedral":
+        hol = holomorph(r // 2)
+        auto_part = lambda p: automorphism_part(p, r // 2)
+    elif group == "cyclic":
+        hol = cyclic_holomorph(r)
+        auto_part = cyclic_automorphism_part
+    else:
+        raise ValueError(f"unknown regular group: {group}")
     involutions = fixed_point_free_involutions(hol)
 
     next_var = 1
@@ -115,7 +139,7 @@ def sat_search(q: int, timeout: int) -> tuple[str, Datum | None, dict[str, int]]
             selector_var[slot, index] = next_var
             next_var += 1
 
-    automorphisms = sorted({automorphism_part(p, r // 2) for p in hol})
+    automorphisms = sorted({auto_part(p) for p in hol})
     assert len(automorphisms) * r == len(hol)
     automorphism_index = {a: k for k, a in enumerate(automorphisms)}
     slot_auto_var: dict[tuple[tuple[str, int, int, int], int], int] = {}
@@ -131,6 +155,7 @@ def sat_search(q: int, timeout: int) -> tuple[str, Datum | None, dict[str, int]]
                 next_var += 1
 
     stats = {
+        "regular_group": group,
         "holomorph_size": len(hol),
         "within_candidates": len(involutions),
         "automorphism_group_size": len(automorphisms),
@@ -191,7 +216,7 @@ def sat_search(q: int, timeout: int) -> tuple[str, Datum | None, dict[str, int]]
             exactly_one(autos, "automorphism_link_clauses")
             by_auto = [[] for _ in automorphisms]
             for index, p in enumerate(candidates):
-                k = automorphism_index[automorphism_part(p, r // 2)]
+                k = automorphism_index[auto_part(p)]
                 selector = selector_var[slot, index]
                 emit([-selector, slot_auto_var[slot, k]])
                 stats["automorphism_link_clauses"] += 1
@@ -353,11 +378,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--q", type=int, default=9)
     parser.add_argument("--timeout", type=int, default=3600)
+    parser.add_argument("--group", choices=("dihedral", "cyclic"), default="dihedral")
     parser.add_argument("--output")
     args = parser.parse_args()
     if args.q < 3 or args.q % 2 == 0:
         parser.error("q must be an odd integer at least 3")
-    status, datum, stats = sat_search(args.q, args.timeout)
+    status, datum, stats = sat_search(args.q, args.timeout, args.group)
     result: dict[str, object] = {"q": args.q, "status": status, "stats": stats}
     if datum is not None:
         result |= serializable(datum) | {"C4_count": 0}
