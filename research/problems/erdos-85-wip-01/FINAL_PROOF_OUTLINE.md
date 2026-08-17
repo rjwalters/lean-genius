@@ -761,10 +761,20 @@ generalized rather than merely replayed.
      trace(C_c^2) = q^2 trace(C_c).
      ```
 
-     A useful next theorem must turn this sharp moment ratio plus positivity
-     into eigenvalue/rank rigidity, then feed the result back into the
-     self-indexed block.
-     The
+     Positivity is now `PROVEN` in
+     `Erdos85BinarySquareCenteredOwnerPositivity`.
+     The reusable division-free theorem
+     `centered_posSemidef_of_const_eigen` proves that `n M - r J` is PSD
+     whenever `M` is PSD and `M 1 = r 1`; its graph specialization
+     `binarySquare_regular_centeredOwnerGram_posSemidef` proves every `C_c`
+     is PSD.  Thus the next theorem must turn the now-complete package
+
+     ```text
+     C_c >= 0,   trace(C_c^2) = q^2 trace(C_c)
+     ```
+
+     into eigenvalue/rank rigidity, then feed the equality case back into the
+     self-indexed block.  The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
      `q >= 8`.
