@@ -72,6 +72,48 @@ theorem edgeOverlap_propagates_across_adj
   exact all_incident_mem_of_even_edgeOverlap H R hHdeg heven
     hHuv.symm hRuv.symm hHvw
 
+/-- Once all incident `H`-edges at one vertex lie in `R`, this property
+propagates along every `H`-reachable path. -/
+theorem all_incident_overlap_of_reachable
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (hHdeg : ∀ u, H.degree u = 2)
+    (heven : ∀ u, Even (edgeOverlapDegree H R u))
+    {u x : V} (hux : H.Reachable u x)
+    (hu : ∀ {v}, H.Adj u v → R.Adj u v) :
+    ∀ {y}, H.Adj x y → R.Adj x y := by
+  rw [reachable_eq_reflTransGen] at hux
+  induction hux with
+  | refl => exact hu
+  | tail hreach hadj ih =>
+      have hR : R.Adj _ _ := ih hadj
+      intro y hxy
+      exact all_incident_mem_of_even_edgeOverlap H R hHdeg heven
+        hadj.symm hR.symm hxy
+
+/-- On each connected component of a two-factor, overlap with `R` is
+all-or-none: either every `H`-edge of the component lies in `R`, or none. -/
+theorem connectedComponent_all_or_no_edgeOverlap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (hHdeg : ∀ u, H.degree u = 2)
+    (heven : ∀ u, Even (edgeOverlapDegree H R u))
+    (a : H.ConnectedComponent) :
+    (∀ {u v : a.supp}, H.Adj u.1 v.1 → R.Adj u.1 v.1) ∨
+      (∀ {u v : a.supp}, H.Adj u.1 v.1 → ¬R.Adj u.1 v.1) := by
+  by_cases hex : ∃ u v : a.supp, H.Adj u.1 v.1 ∧ R.Adj u.1 v.1
+  · left
+    obtain ⟨u, v, hHuv, hRuv⟩ := hex
+    have hu : ∀ {w}, H.Adj u.1 w → R.Adj u.1 w :=
+      all_incident_mem_of_even_edgeOverlap H R hHdeg heven hHuv hRuv
+    intro x y hHxy
+    have hreach : H.Reachable u.1 x.1 :=
+      a.reachable_of_mem_supp u.2 x.2
+    exact all_incident_overlap_of_reachable H R hHdeg heven hreach hu hHxy
+  · right
+    intro u v hHuv hRuv
+    exact hex ⟨u, v, hHuv, hRuv⟩
+
 /-- Diagonal parity of the factored outside return transfers, through
 `M = 6J - H(6I+R)`, to parity of the local `H`/`R` edge overlap. -/
 theorem even_edgeOverlapDegree_of_even_outsideReturn_diagonal
