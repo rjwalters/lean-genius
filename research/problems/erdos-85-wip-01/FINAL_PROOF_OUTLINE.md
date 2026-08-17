@@ -1476,9 +1476,21 @@ generalized rather than merely replayed.
      three-equal-row theorem give an immediate contradiction.  The sole
      escape is a rainbow assignment of the three non-base colors, inherited
      by the second triangle.  GAP: exclude this explicit rainbow configuration
-     using compatibility among the three restricted owner 2-factors (or a
-     stronger owner-cross identity).  The involution table and this color
-     dichotomy still need graph-facing Lean statements.
+     using compatibility among the three restricted owner 2-factors.  Two
+     important boundaries are now PROVEN.  First,
+     `Erdos85PrivatePairOwnerCrossExclusion` shows that the directed private
+     defect pair lies outside all four cross edges of the propagated owner
+     block; propagation therefore does not by itself identify the two forced
+     `K₂,₂` blocks in an involution-orbit.  Second,
+     `Erdos85ClosedOrbitForkCollision` proves that whenever two incident
+     orbit blocks do close on their paired triangle edges, their owner colors
+     must agree because both factors contain the same cross edge; hence two
+     distinct rainbow colors cannot both take this closed branch.  The live
+     GAP is correspondingly narrower: in the rainbow escape, analyze the
+     remaining separated/open fork blocks and show that at least two close
+     (or derive a different owner collision).  The involution table and the
+     assembly from its three orbit branches still need graph-facing Lean
+     statements.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
