@@ -247,6 +247,34 @@ theorem card_neighbors_inter_squareOrderDefectBranch_le_one
   exact (Finset.card_le_card hsub).trans
     (common_le_one_of_not_containsC4 hfree v z hzv.symm)
 
+/-- A vertex adjacent to the center misses every branch except its own; in
+its own branch it sees the entire punctured neighborhood. -/
+theorem card_neighbors_inter_squareOrderDefectBranch_of_adj_center
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {u v z : V}
+    (huv : G.Adj u v) (huz : G.Adj u z) :
+    (G.neighborFinset v ∩ squareOrderDefectBranch G u z).card =
+      if v = z then G.degree z - 1 else 0 := by
+  by_cases hvz : v = z
+  · subst v
+    rw [if_pos rfl]
+    have hsub : squareOrderDefectBranch G u z ⊆ G.neighborFinset z := by
+      exact Finset.erase_subset _ _
+    rw [Finset.inter_eq_right.mpr hsub,
+      card_squareOrderDefectBranch_eq_degree_sub_one G huz]
+  · rw [if_neg hvz, Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro x hx
+    have hxv : G.Adj v x := by
+      simpa [SimpleGraph.mem_neighborFinset] using (Finset.mem_inter.mp hx).1
+    have hxz : G.Adj z x := by
+      simpa [squareOrderDefectBranch, SimpleGraph.mem_neighborFinset] using
+        Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).2
+    have hxu : x ≠ u := Finset.ne_of_mem_erase (Finset.mem_inter.mp hx).2
+    exact hfree (containsC4_of_two_common hvz hxu.symm
+      huv huz hxv.symm hxz.symm)
+
 /-- A high vertex nonadjacent to a low center has exactly `d` neighbors in
 the center's branch union (and its remaining unique neighbor in the center's
 defect neighborhood).  Together with the one-per-branch bound, this is the
@@ -347,6 +375,81 @@ theorem squareOrder_card_highNeighbors_inter_defectBranch_eq_one
   rw [hz0, add_zero] at hsum'
   rw [Finset.card_erase_of_mem hzS, hScard] at herase
   omega
+
+/-- Branchwise refinement of the high-incidence equation.  A branch at a low
+center receives one incidence from every high vertex not adjacent to the
+center.  If its owner is itself high, that owner contributes all `d` points
+of the branch as one additional full row. -/
+theorem squareOrder_sum_highIncidence_over_defectBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcard : Fintype.card V = d * d) {u z : V}
+    (hu : G.degree u = d) (huz : G.Adj u z) :
+    (∑ x ∈ squareOrderDefectBranch G u z,
+        squareOrderHighIncidenceCount G d x) =
+      (squareOrderHighVertices G d).card -
+          squareOrderHighIncidenceCount G d u +
+        if G.degree z = d + 1 then d else 0 := by
+  let H := squareOrderHighVertices G d
+  let B := squareOrderDefectBranch G u z
+  have hswap := sum_card_neighbor_inter_comm G B H
+  have hterm : ∀ v ∈ H,
+      (G.neighborFinset v ∩ B).card =
+        (if ¬ G.Adj u v then 1 else 0) + (if v = z then d else 0) := by
+    intro v hv
+    have hvHigh : G.degree v = d + 1 := (Finset.mem_filter.mp hv).2
+    by_cases huv : G.Adj u v
+    · have hadj := card_neighbors_inter_squareOrderDefectBranch_of_adj_center
+        G hfree huv huz
+      change (G.neighborFinset v ∩ B).card = _ at hadj ⊢
+      rw [hadj]
+      by_cases hvz : v = z
+      · subst v
+        simp [huz, hvHigh]
+      · simp [huv, hvz]
+    · have hone := squareOrder_card_highNeighbors_inter_defectBranch_eq_one
+        G hfree hd hmin hcard hu hvHigh huv
+        (by simpa [SimpleGraph.mem_neighborFinset] using huz)
+      change (G.neighborFinset v ∩ B).card = _ at hone ⊢
+      have hvz : v ≠ z := by
+        intro h
+        subst v
+        exact huv huz
+      simp [hone, huv, hvz]
+  have hfirst :
+      (∑ v ∈ H, if ¬ G.Adj u v then 1 else 0) =
+        (H \ G.neighborFinset u).card := by
+    rw [Finset.sum_boole]
+    apply congrArg Finset.card
+    ext v
+    simp [SimpleGraph.mem_neighborFinset]
+  have hsecond :
+      (∑ v ∈ H, if v = z then d else 0) =
+        if z ∈ H then d else 0 := by
+    by_cases hzH : z ∈ H
+    · simp [hzH]
+    · simp [hzH]
+  change
+    (∑ x ∈ B, (G.neighborFinset x ∩ H).card) =
+      H.card - (G.neighborFinset u ∩ H).card +
+        if G.degree z = d + 1 then d else 0
+  rw [hswap]
+  calc
+    (∑ v ∈ H, (G.neighborFinset v ∩ B).card) =
+        ∑ v ∈ H, ((if ¬ G.Adj u v then 1 else 0) +
+          (if v = z then d else 0)) := by
+      apply Finset.sum_congr rfl
+      exact hterm
+    _ = (H \ G.neighborFinset u).card + (if z ∈ H then d else 0) := by
+      rw [Finset.sum_add_distrib, hfirst, hsecond]
+    _ = H.card - (G.neighborFinset u ∩ H).card +
+          if G.degree z = d + 1 then d else 0 := by
+      rw [Finset.card_sdiff]
+      simp [H, squareOrderHighVertices]
 
 /-- At square order every owner block has size `d` or `d+1`. -/
 theorem squareOrder_card_defectOwnerBlock_eq_or_succ
