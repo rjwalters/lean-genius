@@ -1348,7 +1348,15 @@ generalized rather than merely replayed.
      produces a simple 2-regular bipartite transition graph between the two
      eight-center root neighborhoods.  The remaining global obstruction can
      now be posed as compatibility of these transition cycle covers around a
-     defect-component cycle, rather than as local row saturation.
+     defect-component cycle, rather than as local row saturation.  Distinct
+     remote target components give edge-disjoint transition graphs: a center
+     pair reused by vertices in two components would again form a four-cycle.
+     Hence the three remote sixteen-vertex components occupy exactly `48`
+     distinct edges of the common `8 × 8` center grid, leaving a canonical
+     sixteen-edge complement.  This `48+16=64` packing law is also `PROVEN`
+     in `Erdos85BinarySquareCrossRootCenterPairs`; identifying the complement
+     and propagating the resulting four-factor grid decomposition around the
+     defect cycle is the next finite structural target.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in

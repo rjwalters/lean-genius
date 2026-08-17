@@ -21,6 +21,43 @@ def crossRootCenterPair
   (crossCommonNeighbor G hfree hde x w,
     crossCommonNeighbor G hfree hde y w)
 
+/-- The edge set of center pairs contributed by one remote target component. -/
+def crossRootCenterPairFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d e : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (x y : d.supp) : Finset (V × V) :=
+  (Finset.univ : Finset e.supp).image
+    (crossRootCenterPair G hfree hde x y)
+
+/-- The full grid of possible ordered centers at two roots. -/
+def crossRootCenterGrid
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) : Finset (V × V) :=
+  G.neighborFinset x ×ˢ G.neighborFinset y
+
+/-- Every canonical center pair lies in the ambient neighbor grid. -/
+theorem crossRootCenterPairFinset_subset_centerGrid
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d e : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (x y : d.supp) :
+    crossRootCenterPairFinset G hfree hde x y ⊆
+      crossRootCenterGrid G x.1 y.1 := by
+  intro p hp
+  obtain ⟨w, _hw, rfl⟩ := Finset.mem_image.mp hp
+  rw [crossRootCenterGrid, Finset.mem_product]
+  exact ⟨(G.mem_neighborFinset x.1 _).mpr
+      (crossCommonNeighbor_spec G hfree hde x w).1,
+    (G.mem_neighborFinset y.1 _).mpr
+      (crossCommonNeighbor_spec G hfree hde y w).1⟩
+
 /-- If the two roots are adjacent in the second-order defect graph, their
 center-pair encoding of a remote component is injective.  Equality of both
 centers for two different target vertices would give a four-cycle; equality
@@ -68,6 +105,157 @@ theorem crossRootCenterPair_injective_of_secondOrderDefect_adj
   apply hfree
   exact containsC4_of_two_common huv hw
     huSpec.2 hvSpec.2 huSpec₂.2 hvSpec₂.2
+
+/-- The target component contributes exactly one transition edge per target
+vertex. -/
+theorem card_crossRootCenterPairFinset_of_secondOrderDefect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {d e : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1) :
+    (crossRootCenterPairFinset G hfree hde x y).card = e.supp.ncard := by
+  rw [crossRootCenterPairFinset,
+    Finset.card_image_of_injective _
+      (crossRootCenterPair_injective_of_secondOrderDefect_adj
+        G hfree hde x y hxyD), Finset.card_univ]
+  simpa [Nat.card_eq_fintype_card] using Nat.card_coe_set_eq e.supp
+
+/-- Distinct remote target components contribute edge-disjoint transition
+graphs for the same defect-adjacent root pair. -/
+theorem crossRootCenterPairFinset_disjoint_of_target_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {d e f : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (hdf : d ≠ f) (hef : e ≠ f)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1) :
+    Disjoint (crossRootCenterPairFinset G hfree hde x y)
+      (crossRootCenterPairFinset G hfree hdf x y) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro p hpe hpf
+  obtain ⟨w, _hw, rfl⟩ := Finset.mem_image.mp hpe
+  obtain ⟨z, _hz, hpairs⟩ := Finset.mem_image.mp hpf
+  let u := crossCommonNeighbor G hfree hde x w
+  let v := crossCommonNeighbor G hfree hde y w
+  have hxy : x.1 ≠ y.1 := (secondOrderDefectGraph G).ne_of_adj hxyD
+  have huSpec := crossCommonNeighbor_spec G hfree hde x w
+  have hvSpec := crossCommonNeighbor_spec G hfree hde y w
+  have huv : u ≠ v := by
+    intro huv
+    have hyu : G.Adj y.1 u := by
+      rw [huv]
+      exact hvSpec.1
+    exact (not_secondOrderDefect_adj_of_commonNeighbor G hfree hxy
+      huSpec.1 hyu) hxyD
+  have hwz : w.1 ≠ z.1 := by
+    intro hwz
+    apply hef
+    have hwe := (ConnectedComponent.mem_supp_iff e w.1).mp w.2
+    have hzf := (ConnectedComponent.mem_supp_iff f z.1).mp z.2
+    exact hwe.symm.trans ((congrArg
+      (secondOrderDefectGraph G).connectedComponentMk hwz).trans hzf)
+  have huEq :
+      crossCommonNeighbor G hfree hde x w =
+        crossCommonNeighbor G hfree hdf x z :=
+    (congrArg Prod.fst hpairs).symm
+  have hvEq :
+      crossCommonNeighbor G hfree hde y w =
+        crossCommonNeighbor G hfree hdf y z :=
+    (congrArg Prod.snd hpairs).symm
+  have huSpecZ := crossCommonNeighbor_spec G hfree hdf x z
+  have hvSpecZ := crossCommonNeighbor_spec G hfree hdf y z
+  rw [← huEq] at huSpecZ
+  rw [← hvEq] at hvSpecZ
+  exact hfree (containsC4_of_two_common huv hwz
+    huSpec.2 hvSpec.2 huSpecZ.2 hvSpecZ.2)
+
+/-- Three distinct remote size-sixteen components pack forty-eight distinct
+transition edges into the common center-pair grid of a defect edge. -/
+theorem three_crossRootCenterPairFinsets_union_card_eq_fortyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {d e f g : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (hdf : d ≠ f) (hdg : d ≠ g)
+    (hef : e ≠ f) (heg : e ≠ g) (hfg : f ≠ g)
+    (he : e.supp.ncard = 16) (hf : f.supp.ncard = 16)
+    (hg : g.supp.ncard = 16)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1) :
+    ((crossRootCenterPairFinset G hfree hde x y ∪
+        crossRootCenterPairFinset G hfree hdf x y) ∪
+      crossRootCenterPairFinset G hfree hdg x y).card = 48 := by
+  let Se := crossRootCenterPairFinset G hfree hde x y
+  let Sf := crossRootCenterPairFinset G hfree hdf x y
+  let Sg := crossRootCenterPairFinset G hfree hdg x y
+  have hEF : Disjoint Se Sf :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hde hdf hef x y hxyD
+  have hEG : Disjoint Se Sg :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hde hdg heg x y hxyD
+  have hFG : Disjoint Sf Sg :=
+    crossRootCenterPairFinset_disjoint_of_target_ne
+      G hfree hdf hdg hfg x y hxyD
+  have hUG : Disjoint (Se ∪ Sf) Sg :=
+    Finset.disjoint_union_left.mpr ⟨hEG, hFG⟩
+  rw [Finset.card_union_of_disjoint hUG,
+    Finset.card_union_of_disjoint hEF]
+  rw [card_crossRootCenterPairFinset_of_secondOrderDefect_adj
+      G hfree hde x y hxyD,
+    card_crossRootCenterPairFinset_of_secondOrderDefect_adj
+      G hfree hdf x y hxyD,
+    card_crossRootCenterPairFinset_of_secondOrderDefect_adj
+      G hfree hdg x y hxyD, he, hf, hg]
+
+/-- At order sixty-four, three remote size-sixteen components leave exactly
+sixteen unused pairs in the `8 × 8` center grid of a defect edge. -/
+theorem orderSixtyFour_three_remoteTargets_centerGrid_complement_card_eq_sixteen
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ z, G.degree z = 8)
+    {d e f g : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (hdf : d ≠ f) (hdg : d ≠ g)
+    (hef : e ≠ f) (heg : e ≠ g) (hfg : f ≠ g)
+    (he : e.supp.ncard = 16) (hf : f.supp.ncard = 16)
+    (hg : g.supp.ncard = 16)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1) :
+    (crossRootCenterGrid G x.1 y.1 \ ((
+        crossRootCenterPairFinset G hfree hde x y ∪
+          crossRootCenterPairFinset G hfree hdf x y) ∪
+        crossRootCenterPairFinset G hfree hdg x y)).card = 16 := by
+  let U := (crossRootCenterPairFinset G hfree hde x y ∪
+      crossRootCenterPairFinset G hfree hdf x y) ∪
+    crossRootCenterPairFinset G hfree hdg x y
+  have hUcard : U.card = 48 :=
+    three_crossRootCenterPairFinsets_union_card_eq_fortyEight
+      G hfree hde hdf hdg hef heg hfg he hf hg x y hxyD
+  have hUsub : U ⊆ crossRootCenterGrid G x.1 y.1 := by
+    rw [Finset.union_subset_iff, Finset.union_subset_iff]
+    exact ⟨⟨crossRootCenterPairFinset_subset_centerGrid G hfree hde x y,
+      crossRootCenterPairFinset_subset_centerGrid G hfree hdf x y⟩,
+      crossRootCenterPairFinset_subset_centerGrid G hfree hdg x y⟩
+  change (crossRootCenterGrid G x.1 y.1 \ U).card = 16
+  rw [Finset.card_sdiff_of_subset hUsub, hUcard, crossRootCenterGrid,
+    Finset.card_product, G.card_neighborFinset_eq_degree,
+    G.card_neighborFinset_eq_degree, hreg x.1, hreg y.1]
 
 /-- The fiber of the first-center coordinate is exactly that center's target
 selector.  Together with injectivity, this identifies the cross-root encoding
