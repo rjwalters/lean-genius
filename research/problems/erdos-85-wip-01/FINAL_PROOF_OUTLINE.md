@@ -7,6 +7,8 @@ an omitted branch is not. The labels mean:
 - `PROVEN`: a uniform Lean theorem exists; the theorem name is given.
 - `PROVEN-AT-49-ONLY`: proved for the `q = 7`, orders `48/49` instance.
 - `AT-64-ONLY`: proved or exhaustively established only for `q = 8`, order 64.
+- `PROVEN-COMPUTATIONALLY`: exhaustive computation with the stated finite
+  scope; not a uniform mathematical theorem.
 - `AXIOM`: a precise conjectural statement which would close its parent node.
 - `GAP`: no adequate candidate statement is currently known.
 
@@ -55,6 +57,10 @@ Fix `q = 2^k`, `k ≥ 3`.
    orthogonal-polarity graph gives a C4-free graph on `q² - 1` vertices of
    minimum degree `q`:
    `Polarity.c4FreeMinDegreeWitness_even_delete_absolute_nucleus`.
+   The first pincer instance is also concrete: commit `a7c0542252` provides
+   the kernel-checked explicit theorem
+   `c4FreeMinDegreeWitness_sixtyThree_eight`, an 8-regular C4-free graph on
+   63 vertices.
 
 6. **`PROVEN` — cofinality.** `cofinalEvenFieldSquareExclusion_of_binary`
    uses `GaloisField 2 k`; the orders `2^k` are cofinal. There is no remaining
@@ -128,11 +134,19 @@ generalized rather than merely replayed.
     A viable proof should use the defect spectrum/component quotient and the
     characteristic-two arithmetic, not a finite census.
 
-13. **Evidence, not a uniform proof.** The order-64 investigation derives
-    strong component constraints and exhaustively eliminates several named
-    component patterns. The `[10,6]` census and its six residual models are
-    `AT-64-ONLY`; they do not imply A-REG for arbitrary `k`, and the final
-    graph-to-CNF semantic bridge is intentionally paused.
+13a. **`PROVEN` — uniform regular infrastructure.** The defect operator,
+     commutation, Gram identities, and moment budgets used at order 64 are
+     parameterized structural theorems. In a component decomposition they
+     constrain the incidence blocks through identities of the form
+     `A_H² + BB* = (q-1)I + J - D`.
+
+13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
+     the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
+     quotient arguments kill eight, and R-classification plus exhaustive
+     computation kills the four survivors. The `[10,6]` cell has Lean-replayed
+     LRATs. Thus the seven-component cell is closed at order 64 modulo its
+     graph-level assembly. None of these finite classifications proves A-REG
+     for arbitrary `k`; certificate/semantic assembly remains paused.
 
 ### A5. Nonregular sectors
 
@@ -152,7 +166,15 @@ generalized rather than merely replayed.
     ```
 
     Thus real-rootedness/Newton terminals can now be posed uniformly rather
-    than separately at orders 49 and 64.
+    than separately at orders 49 and 64. The pointwise defect-incidence package
+    adds the stronger profile-sensitive laws
+
+    ```text
+    (D+I)k = h·1,              deg_D(y) + k(y) = q-1
+    ```
+
+    for every low vertex (`squareOrder_sum_highIncidence_over_defectNeighbors_add_self`
+    and `squareOrder_defectDegree_add_highIncidence_eq_pred`).
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
@@ -193,7 +215,7 @@ generalized rather than merely replayed.
 
 ### A6. Binary branch capstone
 
-21. **`AXIOM A-CAPSTONE`.** A-SPLIT + A-REG + A-NONREG imply
+21. **`AXIOM A-CAPSTONE`.** Node 10 + A-REG + A-NONREG imply
     `BinarySquareOrderTightCoreExclusion`.
 
 22. **`PROVEN` conditional finish.** From A-CAPSTONE,
@@ -211,10 +233,21 @@ currently has two uniform jaws missing. Its `q = 7` instance is complete.
     C4-free graph on 48 vertices. Its known Cayley description on
     `Z24 semidirect Z2` has been exhaustively checked.
 
-24. **Negative evidence.** Cayley-Sidon searches at `q = 9,11,13` close only
-    the searched construction classes. Deleting vertices from the standard
-    Erdős-Rényi polarity graph also fails in the tested form. Neither result is
-    a nonexistence theorem for the desired graphs.
+24. **`PROVEN-COMPUTATIONALLY` — Cayley route exhausted at 9 and 11.** The
+    Cayley-Sidon campaign is exhaustive over all groups of orders 80 and 120:
+    all 52 groups of order 80 and all symmetric 9-subsets at `q=9`; all 47
+    groups of order 120 at `q=11`. No q-regular C4-free Cayley graph occurs.
+    At `q=13`, the non-solvable candidate `PSL(2,7)` is exhausted, but not all
+    groups of order 168. The mechanism is structural: a commuting generator
+    pair creates a C4, while a symmetric odd-size generating set contains an
+    involution and demands a large pairwise-noncommuting family. Artifacts are
+    stored under `erdos85-cayley-sidon/`.
+
+24a. **`AXIOM B-CAYLEY-DEAD`.** For every odd prime power `q ≥ 9`, no
+     q-regular C4-free Cayley graph exists on `q²-1` vertices. This is proved
+     computationally at `q=9,11`, partially tested at 13, and open uniformly.
+     Even if proved, it excludes only Cayley constructions; B-EXIST would then
+     require a genuinely non-vertex-transitive mechanism.
 
 25. **`GAP B-EXIST`.** No precise uniform construction is currently known for
     C4-free minimum-degree-`q` graphs on `q² - 1` vertices for an unbounded set
@@ -223,7 +256,12 @@ currently has two uniform jaws missing. Its `q = 7` instance is complete.
     - a geometric/incidence interpretation of the 48-vertex witness;
     - a non-Cayley lift or quotient of a polarity/incidence graph; or
     - a bipartite-incidence surgery with a proved degree-repair rule.
-    
+
+    Small orders sharply constrain the gap: existence is impossible at `q=3`
+    and `q=5` because the required edge counts exceed `ex(8,C4)=11` and
+    `ex(24,C4)=59`, respectively. The only known odd instance is `q=7`;
+    nothing above 7 is known either way beyond Cayley-death at 9 and 11.
+
     Before this gap is replaced by an explicit construction statement, the
     odd branch cannot be a proof of infinitely many drops.
 
@@ -240,9 +278,9 @@ currently has two uniform jaws missing. Its `q = 7` instance is complete.
     lemmas used at 49 are formulated substantially more generally. They are
     necessary inputs to B-NONEXIST, not an assembly of it.
 
-29. **`GAP B-CLASSIFY`.** There is no exhaustive uniform classification of
-    square-order tight cores for odd `q`. The same A-SPLIT hole appears here,
-    and odd parity changes which sectors survive.
+29. **`GAP B-CLASSIFY`.** The regular/parameterized-nonregular split is
+    uniform, but there is no analytic terminal covering every resulting
+    square-order profile for odd `q`; odd parity changes which profiles survive.
 
 ### B3. Odd branch capstone
 
@@ -345,7 +383,33 @@ order:
 Certificate generation, LRAT promotion, and graph-to-CNF semantic bridges are
 paused until one of these parent nodes explicitly requires a finite endpoint.
 
-## F. Completion checklist
+## F. What the drop-family hypothesis predicts
+
+41. **Observed finite pattern.** Among the tested odd plane orders, both jaws
+    are present only at `q=7`, producing the proved drop `48 -> 49`. The
+    existence jaw is impossible at `q=3,5`; hence the same mechanism cannot
+    create drops at `8 -> 9` or `24 -> 25`. At `q=9,11`, the Cayley jaw is
+    computationally absent, while general non-Cayley existence remains open.
+
+42. **Falsifiable binary prediction.** The characteristic-two construction
+    predicts drops at
+
+    ```text
+    (2^(2k)-1) -> 2^(2k),   k ≥ 3,
+    ```
+
+    beginning with `63 -> 64`, exactly when the square-order exclusion jaw is
+    proved. A single C4-free minimum-degree-`2^k` graph on `2^(2k)` vertices
+    would falsify that instance of A-REG/A-NONREG; infinitely many such
+    counterexamples would refute the proposed binary route.
+
+43. **Falsifiable odd-family question.** Either a genuinely non-Cayley family
+    exists for unbounded odd `q`, or the isolated `q=7` witness is exceptional.
+    The next decisive evidence is an explicit construction or full
+    nonexistence result at `q=9`; further Cayley searches alone cannot decide
+    this dichotomy.
+
+## G. Completion checklist
 
 The campaign may claim “Erdős 85 is false” only after all items in one column
 below are proved and the final theorem is cold-built with an axiom audit:
