@@ -820,9 +820,16 @@ generalized rather than merely replayed.
      `binarySquare_regular_unit_centeredOwnerGram_real_eigenvalue_eq_zero_or_sq`
      proves every real eigenvalue is `0` or `q^2`.  The proof reconstructs
      real Gram/centering positivity, the real Laplacian upper bound, and casts
-     the exact integer trace moment.  The remaining interface is to extract
-     the endpoint multiplicities/rank (the trace predicts rank `q-1`) and feed
-     that equality case back into the self-indexed block.  The
+     the exact integer trace moment.  Exact multiplicity/rank is now `PROVEN`
+     in `Erdos85BinarySquareUnitOwnerRank`:
+     `binarySquare_regular_unit_centeredOwnerGram_real_rank` gives
+     `rank(C_c)=q-1`, and
+     `binarySquare_regular_unit_centeredOwnerGram_real_range_finrank` exposes
+     the same statement as `finrank(range(C_c))=q-1`.  It follows by
+     normalizing `C_c/q^2` to an idempotent and applying the formal theorem
+     that the trace of a projection equals the dimension of its range.  The
+     remaining task is to feed this rigid `(q-1)`-dimensional image back into
+     the self-indexed block.  The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
      `q >= 8`.
