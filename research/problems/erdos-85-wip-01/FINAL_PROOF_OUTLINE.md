@@ -620,14 +620,18 @@ generalized rather than merely replayed.
     terminal, and its SAT family do not directly scale. The order-64 component
     analyses are incomplete as an exhaustive graph-level classification.
 
-19. **`AXIOM A-NONREG` — uniform nonregular exclusion.** For every `k ≥ 3`,
-    no nonregular `SquareOrderTightCoreExists (2^k)` exists. A satisfactory
-    refinement must consume the parameterized profile from Node 10 and either
-    derive a stronger bounded family of profiles or give an analytic terminal
-    that works for all admissible `h` and incidence distributions.
+19. **`PROVEN` — uniform even-parameter nonregular exclusion.**
+    `squareOrder_regular_of_even` proves that every tight-edge-cover C4-free
+    graph on `q²` vertices is `q`-regular when `q` is even. The key theorem
+    `squareOrder_odd_of_exists_degree_succ` says a degree-`q+1` vertex forces
+    `q` odd: its neighbors all have degree `q`, so its conflict degree is
+    `(q+1)(q-1)=q²-1`; its conflict neighborhood exhausts the punctured vertex
+    set, and its ordinary neighborhood is 1-regular. Hence `q+1` is even.
+    This closes A-NONREG for all binary parameters without a census.
 
-20. **`GAP A-NONREG-TERMINALS`.** There is not yet a proposed scalable terminal
-    for every high-vertex sector. The most concrete current candidate is to
+20. **`PROVEN` for the binary branch; diagnostic structure retained.** The
+    former A-NONREG terminal campaign is no longer needed for even `q`, but its
+    structure remains useful for odd square orders. It attempted to
     combine the exact Dirichlet/third-moment budget with the proved `h-1`
     multiplicity of the defect eigenvalue `-1` and the proved incidence
     charpoly factor of discriminant `q²-4h`. Their coprime product divisibility
@@ -834,13 +838,13 @@ generalized rather than merely replayed.
     symmetric family of owner blocks. The next GAP is a classification or
     obstruction for this weighted symmetric neighborhood design, not merely
     for `D` alone. A vertex-level `q=8` model search is being used only to
-    discover the first such obstruction, not as a certificate terminal. This
-    is the largest mathematical hole in the binary branch. Generalizing
-    certificate families is not a substitute for finding these statements.
+    discover the first such obstruction, not as a certificate terminal. The
+    new parity theorem bypasses this classification in the binary branch;
+    these statements remain diagnostic rather than required terminals.
 
 ### A6. Binary branch capstone
 
-21. **`AXIOM A-CAPSTONE`.** Node 10 + A-REG + A-NONREG imply
+21. **`AXIOM A-CAPSTONE`.** Node 10 + A-REG + the proved A-NONREG imply
     `BinarySquareOrderTightCoreExclusion`.
 
 22. **`PROVEN` conditional finish.** From A-CAPSTONE,
@@ -991,8 +995,7 @@ The shortest current proof tree is:
     └── no square-order tight core for q = 2^k
         ├── regular / parameterized nonregular split     [PROVEN]
         ├── regular-sector exclusion                    [AXIOM A-REG]
-        └── nonregular-sector exclusion                 [AXIOM A-NONREG]
-            └── scalable terminals for every sector     [GAP]
+        └── nonregular-sector exclusion                 [PROVEN]
 ```
 
 The parallel odd-prime tree is:
@@ -1008,11 +1011,9 @@ The parallel odd-prime tree is:
 According to the top-down rule, the next mathematical work should target, in
 order:
 
-1. `A-NONREG-TERMINALS`: strengthen or consume the parameterized incidence
-   profile, using 49/64 only as experiments, until all admissible nonregular
-   cores have analytic terminals.
-2. `A-REG`: isolate and attack the regular binary square-order theorem.
-3. In parallel, `B-EXIST`: turn the 48-vertex witness into a precise geometric
+1. `A-REG`: isolate and attack the regular binary square-order theorem; it is
+   now the only open square-order sector in the binary branch.
+2. In parallel, `B-EXIST`: turn the 48-vertex witness into a precise geometric
    construction conjecture or record a decisive obstruction.
 
 Certificate generation, LRAT promotion, and graph-to-CNF semantic bridges are
