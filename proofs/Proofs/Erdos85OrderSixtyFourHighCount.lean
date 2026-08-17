@@ -77,6 +77,87 @@ theorem orderSixtyFour_high_incidence_moments
   · simpa using squareOrder_sum_highNeighborCount_sq_eq
       G hfree (d := 8) (by norm_num) hmin hcover hcard
 
+/-- The numerical profile forced by the order-64 moments when there are two
+high vertices: exactly one vertex sees both high vertices and exactly sixteen
+vertices see one of them. -/
+theorem orderSixtyFour_two_high_incidence_profile
+    (k : Fin 64 → Nat)
+    (hk : ∀ x, k x ≤ 4)
+    (hsum : (∑ x : Fin 64, k x) = 18)
+    (hsq : (∑ x : Fin 64, (k x) ^ 2) = 20) :
+    (∀ x, k x ≤ 2) ∧
+      (Finset.univ.filter fun x => k x = 2).card = 1 ∧
+      (Finset.univ.filter fun x => k x = 1).card = 16 := by
+  classical
+  let t : Fin 64 → Nat := fun x => k x * (k x - 1)
+  have hpoint (x : Fin 64) : (k x) ^ 2 = k x + t x := by
+    have hx := hk x
+    interval_cases h : k x <;> simp [t, h]
+  have hdecomp : (∑ x : Fin 64, (k x) ^ 2) =
+      (∑ x : Fin 64, k x) + ∑ x : Fin 64, t x := by
+    rw [← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun x _ => hpoint x
+  have htsum : (∑ x : Fin 64, t x) = 2 := by omega
+  have ht_le (x : Fin 64) : t x ≤ 2 := by
+    have hx : t x ≤ ∑ y : Fin 64, t y :=
+      Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ x)
+    omega
+  have hk2 : ∀ x, k x ≤ 2 := by
+    intro x
+    have hx := hk x
+    have ht := ht_le x
+    interval_cases h : k x <;> simp [t, h] at ht ⊢
+  have htform (x : Fin 64) : t x = if k x = 2 then 2 else 0 := by
+    have hx := hk2 x
+    interval_cases h : k x <;> simp [t, h]
+  have hkform (x : Fin 64) : k x =
+      (if k x = 2 then 2 else 0) + (if k x = 1 then 1 else 0) := by
+    have hx := hk2 x
+    interval_cases h : k x <;> simp [h]
+  have htcard : (∑ x : Fin 64, t x) =
+      2 * (Finset.univ.filter fun x => k x = 2).card := by
+    simp_rw [htform]
+    simp [Finset.sum_ite, mul_comm]
+  have hkcard : (∑ x : Fin 64, k x) =
+      2 * (Finset.univ.filter fun x => k x = 2).card +
+        (Finset.univ.filter fun x => k x = 1).card := by
+    calc
+      (∑ x : Fin 64, k x) = ∑ x : Fin 64,
+          ((if k x = 2 then 2 else 0) + (if k x = 1 then 1 else 0)) :=
+        Finset.sum_congr rfl fun x _ => hkform x
+      _ = (∑ x : Fin 64, if k x = 2 then 2 else 0) +
+          ∑ x : Fin 64, if k x = 1 then 1 else 0 := Finset.sum_add_distrib
+      _ = 2 * (Finset.univ.filter fun x => k x = 2).card +
+          (Finset.univ.filter fun x => k x = 1).card := by
+        simp [Finset.sum_ite, mul_comm]
+  have hn2 : (Finset.univ.filter fun x => k x = 2).card = 1 := by omega
+  refine ⟨hk2, hn2, ?_⟩
+  omega
+
+/-- Graph-level specialization of the two-high numerical profile. -/
+theorem orderSixtyFour_two_high_graph_profile
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 2) :
+    let H := squareOrderHighVertices G 8
+    let k : Fin 64 → Nat := fun x => (G.neighborFinset x ∩ H).card
+    (∀ x, k x ≤ 2) ∧
+      (Finset.univ.filter fun x => k x = 2).card = 1 ∧
+      (Finset.univ.filter fun x => k x = 1).card = 16 := by
+  classical
+  dsimp only
+  have hm := orderSixtyFour_high_incidence_moments G hfree hmin hcover
+  dsimp only at hm
+  apply orderSixtyFour_two_high_incidence_profile
+  · exact hm.1
+  · simpa [hh] using hm.2.1
+  · simpa [hh] using hm.2.2
+
 end
 
 end Erdos85
