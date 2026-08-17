@@ -160,6 +160,23 @@ generalized rather than merely replayed.
      a contradiction; the next A-REG task is to combine this coupled proper
      parity set with defect components or the integral/complex Gram identities.
 
+     There is also a stronger `PROVEN` characteristic-polynomial form.
+     `adjMatrix_charpoly_odd_coeff_eq_zero_zmodTwo` proves that every
+     odd-degree coefficient of an even-order adjacency characteristic
+     polynomial vanishes over `𝔽₂`, and
+     `adjMatrix_charpoly_isSquare_zmodTwo` packages the result as
+
+     ```text
+     χ_A(X) = p(X)²  in 𝔽₂[X].
+     ```
+
+     The next precise spectral subgoal is to transport this through
+     `A²=I+J+D`. Since `D1=1`, `J²=0`, and `(I+D)J=J(I+D)=0` modulo two, the
+     expected statement is that `χ_D mod 2` is itself a square. If proved,
+     every irreducible mod-two defect-component factor must occur with even
+     total multiplicity, giving a uniform component-pairing obstruction rather
+     than an order-64 census.
+
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
      quotient arguments kill eight, and R-classification plus exhaustive
