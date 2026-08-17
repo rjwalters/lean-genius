@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Solve profile-3/4 reciprocal rows against Lean-exact v2 CNFs.
+"""Solve profile-1/3/4 reciprocal rows against Lean-exact v2 CNFs.
 
 This is intentionally separate from the live profile-2 campaign runner.  It
-accepts one uniform AAAB/profile-3 or AAAA/profile-4 seed queue, emits and
-checks Lean's authoritative CNF, disables Kissat's fresh-variable BVA passes,
-and requires drat-trim verification before writing a resumable verdict.
+accepts one uniform ABBB/profile-1, AAAB/profile-3, or AAAA/profile-4 seed
+queue, emits and checks Lean's authoritative CNF, disables Kissat's
+fresh-variable BVA passes, and requires drat-trim verification before writing
+a resumable verdict.
 """
 
 from __future__ import annotations
@@ -18,7 +19,7 @@ from pathlib import Path
 BASE = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49")
 IMAGE = "lean4-arm64:v4.31.0"
 DRAT_TRIM = BASE / "v2-tier1-work/bin/drat-trim"
-FAMILY = {"3": "AAAB", "4": "AAAA"}
+FAMILY = {"1": "ABBB", "3": "AAAB", "4": "AAAA"}
 
 
 def to_data(path: Path) -> str:
