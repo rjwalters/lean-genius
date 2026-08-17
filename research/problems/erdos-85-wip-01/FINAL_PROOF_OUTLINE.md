@@ -305,7 +305,16 @@ generalized rather than merely replayed.
      `G` induced on the component is exactly `m_c`-regular.  Consequently the
      new smallest case `m_c=2` is a disjoint union of cycles on `2q` vertices,
      giving a uniform cycle/intertwiner target rather than an arbitrary
-     `2q`-vertex block.
+     `2q`-vertex block.  There is already a further `PROVEN` color restriction:
+     `binarySquare_regular_triangleFree_degree_even` makes the triangle-free
+     degree even at every vertex, while
+     `binarySquare_regular_triangleFree_degree_le_part` bounds it by `m_c`.
+     Thus on an `m_c=2` block every vertex has triangle-free degree exactly
+     zero or two
+     (`binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_zero_or_two`).
+     Equivalently, along each internal ambient cycle the triangle-free color
+     is forced toward an all-or-none propagation; packaging that propagation
+     with the commuting defect block is the next precise subgoal.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
