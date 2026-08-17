@@ -744,6 +744,84 @@ theorem binarySquare_regular_add_defectComponentIndicators_mem_kernel
   funext x
   simpa using hparity
 
+/-- A smallest defect component, of order `q`, is a clique in the
+`(q-1)`-regular defect graph. -/
+theorem binarySquare_regular_sizeQ_defectComponent_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q) {x y : V}
+    (hx : (secondOrderDefectGraph G).connectedComponentMk x = c)
+    (hy : (secondOrderDefectGraph G).connectedComponentMk y = c)
+    (hxy : x ≠ y) :
+    (secondOrderDefectGraph G).Adj x y := by
+  classical
+  let D := secondOrderDefectGraph G
+  change D.connectedComponentMk x = c at hx
+  change D.connectedComponentMk y = c at hy
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDdegree : ∀ z : V, D.degree z = q - 1 := by
+    intro z
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus z
+    change D.degree z = (q - 3) + 2 at h
+    omega
+  let cs : Finset V := Finset.univ.filter (fun z => D.connectedComponentMk z = c)
+  have hcardcs : cs.card = q := by
+    calc
+      cs.card = c.supp.ncard := by
+        rw [← Set.ncard_coe_finset]
+        congr 1
+        ext z
+        simp [cs, D, SimpleGraph.ConnectedComponent.mem_supp_iff]
+      _ = q := hc
+  have hxmem : x ∈ cs := by simp [cs, hx]
+  have hneighbors : D.neighborFinset x = cs.erase x := by
+    apply Finset.eq_of_subset_of_card_le
+    · intro z hz
+      have hxz : D.Adj x z := (D.mem_neighborFinset x z).mp hz
+      have hcomp : D.connectedComponentMk z = c :=
+        (SimpleGraph.ConnectedComponent.connectedComponentMk_eq_of_adj hxz).symm.trans hx
+      exact Finset.mem_erase.mpr ⟨(D.ne_of_adj hxz).symm, by simp [cs, hcomp]⟩
+    · rw [D.card_neighborFinset_eq_degree, hDdegree,
+        Finset.card_erase_of_mem hxmem, hcardcs]
+  have hymem : y ∈ cs.erase x := by simp [cs, hy, hxy.symm]
+  rw [← hneighbors] at hymem
+  exact (D.mem_neighborFinset x y).mp hymem
+
+/-- Every vertex has exactly one ambient neighbor in a smallest order-`q`
+defect component. -/
+theorem binarySquare_regular_card_componentNeighbors_sizeQ_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q) (x : V) :
+    (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 1 := by
+  let e := (secondOrderDefectGraph G).connectedComponentMk x
+  have h := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+    G hfree hq hreg hcard e c (x := x) (by rfl)
+  rw [hc] at h
+  exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) (by simpa using h)
+
 /-- The normalized defect-component orders form an honest partition of `q`.
 Concretely, one may take the parts to be any row of the component quotient. -/
 theorem binarySquare_regular_exists_defectComponent_partition

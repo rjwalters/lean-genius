@@ -271,6 +271,18 @@ generalized rather than merely replayed.
      terminal must address that split rather than merely reuse nullity greater
      than one.
 
+     Smallest parts now have a uniform graph-level classification, also
+     `PROVEN`.  If `m_c=1`, equivalently `|c|=q`, then
+     `binarySquare_regular_sizeQ_defectComponent_adj` shows that the induced
+     defect component is the clique `K_q`, because it is `(q-1)`-regular on
+     `q` vertices.  At the same time
+     `binarySquare_regular_card_componentNeighbors_sizeQ_eq_one` says every
+     ambient vertex has exactly one `G`-neighbor in `c`.  Thus every unit part
+     is a defect clique carrying perfect one-neighbor routing from all of
+     `V`; this is the uniform replacement for the order-64 size-eight block
+     lemmas and is a concrete starting point for eliminating partitions with
+     unit parts.
+
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
      quotient arguments kill eight, and R-classification plus exhaustive
@@ -556,6 +568,11 @@ generalized rather than merely replayed.
       Thus every cell can be expanded by the proved owner formula while the
       total is expressed entirely through local data of `D`; this is the
       current strongest uniform cross-center constraint.
+      For distinct low centers the normalized theorem
+      `squareOrder_sum_card_defectBranchGrid_add_two_mul_degree` reads
+      `cellSum + 2q = q² + |N_D(u)∩N_D(v)| + 2·1_[uv∈E(D)] + k(u)+k(v)`,
+      eliminating both defect degrees through `deg_D+k=q-1`.  This is the
+      form to impose directly in the surviving `q=8` vertex-level models.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
