@@ -1,4 +1,5 @@
 import Proofs.Erdos85EvenExcessOneDefectKernel
+import Proofs.Erdos85AdjacencyCharpolySquareModTwo
 
 /-!
 # Characteristic-two parity for regular square-order cores
@@ -168,5 +169,22 @@ theorem binarySquare_regular_exists_coupled_parity_set
     rw [hJ, hD] at hcomp
     rw [← hval v]
     exact hcomp
+
+/-- On an even square order, the mod-two characteristic polynomial of the
+second-order defect graph is a square.  No transfer through the adjacency
+square identity is needed: the defect graph is itself a simple graph on the
+same even vertex type. -/
+theorem binarySquare_defect_charpoly_isSquare_zmodTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    {q : ℕ} (heven : Even q) (hcard : Fintype.card V = q * q) :
+    ∃ p : Polynomial (ZMod 2),
+      ((secondOrderDefectGraph G).adjMatrix (ZMod 2)).charpoly = p ^ 2 := by
+  apply adjMatrix_charpoly_isSquare_zmodTwo
+  obtain ⟨k, hk⟩ := heven
+  refine ⟨k * q, ?_⟩
+  rw [hcard, hk]
+  ring
 
 end Erdos85

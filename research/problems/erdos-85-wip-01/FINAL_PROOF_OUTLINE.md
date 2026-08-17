@@ -170,12 +170,16 @@ generalized rather than merely replayed.
      χ_A(X) = p(X)²  in 𝔽₂[X].
      ```
 
-     The next precise spectral subgoal is to transport this through
-     `A²=I+J+D`. Since `D1=1`, `J²=0`, and `(I+D)J=J(I+D)=0` modulo two, the
-     expected statement is that `χ_D mod 2` is itself a square. If proved,
-     every irreducible mod-two defect-component factor must occur with even
-     total multiplicity, giving a uniform component-pairing obstruction rather
-     than an order-64 census.
+     Squarehood for the defect polynomial needs no delicate transfer through
+     `A²=I+J+D`: the defect graph is itself a simple graph on the same even
+     vertex set. Accordingly `binarySquare_defect_charpoly_isSquare_zmodTwo`
+     is `PROVEN` and gives `χ_D(X)=r(X)²` over `𝔽₂`. The next precise spectral
+     subgoal is the factor consumer: combine componentwise charpoly
+     factorization with unique factorization to show that every irreducible
+     mod-two factor occurs with even total multiplicity across the defect
+     components, then find a factor parity forced odd by the square-order Gram
+     or component equations. Squarehood alone is universal for even-order
+     graphs and therefore is infrastructure, not the terminal.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
