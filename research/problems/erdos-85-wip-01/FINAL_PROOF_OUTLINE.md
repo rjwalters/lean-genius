@@ -1447,9 +1447,16 @@ generalized rather than merely replayed.
      root and have three distinct roots are impossible.  External model data
      sharpen the λ=6 geometry further: in both covered component classes the
      six near-twin pairs form two disjoint triangles on six vertices, and the
-     private-pair map cycles between the two triangles.  Thus the remaining
-     classification bridge is to propagate one owner color around a whole
-     twin triangle; the three-equal-row theorem then closes it immediately.
+     private-pair map cycles between the two triangles.  The analytic
+     propagation interface is now PROVEN in
+     `Erdos85NearTwinPrivateRowPropagation`: equal rows of any integral matrix
+     commuting with the seven-regular adjacency matrix on a codegree-six pair
+     force equal rows on its uniquely identified private-neighbor pair, with
+     the two directed private-side memberships included in the conclusion so
+     the step can be iterated.  Thus the remaining classification bridge is
+     purely structural: formalize the asserted private-pair cycle and show
+     that it carries one owner color around a whole twin triangle; the
+     three-equal-row theorem then closes it immediately.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
