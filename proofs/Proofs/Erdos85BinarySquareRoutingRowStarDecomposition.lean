@@ -87,6 +87,51 @@ theorem routingRow_starRows_pairwise_disjoint
     G hfree u₁ u₂ hne (Finset.mem_filter.mp hu₁).2.symm
       (Finset.mem_filter.mp hu₂).2.symm hxoutside
 
+/-- Star rows belonging to *different* routing colors at the same root are
+also disjoint.  This is the first compatibility law between the canonical
+decompositions of distinct routing rows: all their centers share the root,
+so a target point common to two stars would create a four-cycle. -/
+theorem routingRow_crossColor_starRows_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {d e c f : (secondOrderDefectGraph G).ConnectedComponent}
+    (hde : d ≠ e) (hcf : c ≠ f) (x : d.supp)
+    (u : c.supp) (v : f.supp)
+    (hu : u ∈ componentCrossNeighborFinset G c x)
+    (hv : v ∈ componentCrossNeighborFinset G f x) :
+    Disjoint (componentCrossNeighborFinset G e u)
+      (componentCrossNeighborFinset G e v) := by
+  classical
+  have huv : u.1 ≠ v.1 := by
+    intro huv
+    apply hcf
+    have huc :
+        (secondOrderDefectGraph G).connectedComponentMk u.1 = c :=
+      (ConnectedComponent.mem_supp_iff c u.1).mp u.2
+    have hvf :
+        (secondOrderDefectGraph G).connectedComponentMk v.1 = f :=
+      (ConnectedComponent.mem_supp_iff f v.1).mp v.2
+    exact huc.symm.trans ((congrArg
+      (secondOrderDefectGraph G).connectedComponentMk huv).trans hvf)
+  have hxoutside :
+      (secondOrderDefectGraph G).connectedComponentMk x.1 ≠ e := by
+    rw [(ConnectedComponent.mem_supp_iff d x.1).mp x.2]
+    exact hde
+  have hamb := componentNeighborFinset_disjoint_of_distinct_sharedNeighbor_outside
+    G (secondOrderDefectGraph G) hfree e huv
+      (Finset.mem_filter.mp hu).2.symm (Finset.mem_filter.mp hv).2.symm hxoutside
+  rw [Finset.disjoint_left]
+  intro w hwu hwv
+  apply Finset.disjoint_left.mp hamb
+  · rw [componentNeighborFinset, Finset.mem_filter]
+    exact ⟨(G.mem_neighborFinset u.1 w.1).mpr (Finset.mem_filter.mp hwu).2,
+      (ConnectedComponent.mem_supp_iff e w.1).mp w.2⟩
+  · rw [componentNeighborFinset, Finset.mem_filter]
+    exact ⟨(G.mem_neighborFinset v.1 w.1).mpr (Finset.mem_filter.mp hwv).2,
+      (ConnectedComponent.mem_supp_iff e w.1).mp w.2⟩
+
 end
 
 end Erdos85
