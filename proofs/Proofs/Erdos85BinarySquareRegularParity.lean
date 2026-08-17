@@ -783,6 +783,71 @@ noncomputable instance componentOwnerGraph.instDecidableAdj
     (c : D.ConnectedComponent) :
     DecidableRel (componentOwnerGraph G D c).Adj := Classical.decRel _
 
+/-- Diagonal coordinate projector onto one connected component of `D`. -/
+def defectComponentDiagonalMatrix
+    {K V : Type*} [Zero K] [One K] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableEq D.ConnectedComponent]
+    (c : D.ConnectedComponent) : Matrix V V K :=
+  Matrix.diagonal fun x => if D.connectedComponentMk x = c then 1 else 0
+
+/-- The defect adjacency matrix commutes with every diagonal projector onto
+one of its connected components. -/
+theorem adjMatrix_comm_defectComponentDiagonalMatrix
+    {K V : Type*} [CommRing K] [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent] (c : D.ConnectedComponent) :
+    D.adjMatrix K * defectComponentDiagonalMatrix D c =
+      defectComponentDiagonalMatrix D c * D.adjMatrix K := by
+  ext x y
+  simp only [defectComponentDiagonalMatrix, Matrix.mul_diagonal,
+    Matrix.diagonal_mul]
+  by_cases hxy : D.Adj x y
+  · have hcomp : D.connectedComponentMk x = D.connectedComponentMk y :=
+      SimpleGraph.ConnectedComponent.sound hxy.reachable
+    simp [SimpleGraph.adjMatrix_apply, hxy, hcomp, mul_comm]
+  · simp [SimpleGraph.adjMatrix_apply, hxy]
+
+/-- Entrywise Gram-block formula: inserting the component projector between
+two ambient adjacency matrices counts common neighbors in that component. -/
+theorem adjMatrix_mul_defectComponentDiagonalMatrix_mul_adjMatrix_apply
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq D.ConnectedComponent] (c : D.ConnectedComponent)
+    (x y : V) :
+    (G.adjMatrix ℤ * (defectComponentDiagonalMatrix (K := ℤ) D c) *
+      G.adjMatrix ℤ) x y =
+      ((componentNeighborFinset G D c x ∩
+        componentNeighborFinset G D c y).card : ℤ) := by
+  rw [Matrix.mul_apply]
+  simp only [defectComponentDiagonalMatrix, Matrix.mul_diagonal,
+    SimpleGraph.adjMatrix_apply,
+    mul_ite, mul_one, mul_zero]
+  calc
+    (∑ z : V, if G.Adj z y then
+        if D.connectedComponentMk z = c then if G.Adj x z then 1 else 0 else 0
+        else 0) =
+        ∑ z : V, if G.Adj z y ∧ D.connectedComponentMk z = c ∧ G.Adj x z
+          then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro z _hz
+      by_cases hzy : G.Adj z y <;>
+        by_cases hzc : D.connectedComponentMk z = c <;>
+        by_cases hxz : G.Adj x z <;> simp [hzy, hzc, hxz]
+    _ = ((componentNeighborFinset G D c x ∩
+        componentNeighborFinset G D c y).card : ℤ) := by
+      rw [Finset.sum_boole]
+      have hfilter : (Finset.univ : Finset V).filter
+          (fun z => G.Adj z y ∧ D.connectedComponentMk z = c ∧ G.Adj x z) =
+          componentNeighborFinset G D c x ∩
+            componentNeighborFinset G D c y := by
+        ext z
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+          Finset.mem_inter, componentNeighborFinset,
+          SimpleGraph.mem_neighborFinset]
+        rw [G.adj_comm z y]
+        tauto
+      rw [hfilter]
+
 @[simp] theorem componentOwnerGraph_adj
     {V : Type*} [Fintype V] [DecidableEq V]
     (G D : SimpleGraph V) [DecidableRel G.Adj]
@@ -1882,6 +1947,127 @@ theorem binarySquare_regular_componentOwnerGraph_degree
       exact hFcard z hz
     _ = S.card * (q - 1) := by simp
     _ = m_c * (q - 1) := by rw [hScard]
+
+/-- Matrix form of an owner coordinate.  The component incidence Gram block
+has diagonal `m_c`; deleting that diagonal leaves exactly the owner graph. -/
+theorem binarySquare_regular_componentOwnerGraph_adjMatrix_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c) :
+    (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ =
+      G.adjMatrix ℤ *
+          (defectComponentDiagonalMatrix (K := ℤ)
+            (secondOrderDefectGraph G) c) * G.adjMatrix ℤ -
+        (m_c : ℤ) • 1 := by
+  let D := secondOrderDefectGraph G
+  let O := componentOwnerGraph G D c
+  ext x y
+  rw [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+    adjMatrix_mul_defectComponentDiagonalMatrix_mul_adjMatrix_apply]
+  by_cases hxy : x = y
+  · subst y
+    have hsel : (componentNeighborFinset G D c x).card = m_c := by
+      have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+        G hfree hq hreg hcard (D.connectedComponentMk x) c (x := x) (by rfl)
+      rw [hc] at hmul
+      exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+    have hsel' : (componentNeighborFinset G (secondOrderDefectGraph G) c x).card =
+        m_c := by simpa [D] using hsel
+    rw [Finset.inter_self, hsel']
+    simp [SimpleGraph.adjMatrix_apply]
+  · have hsub : componentNeighborFinset G D c x ∩
+        componentNeighborFinset G D c y ⊆
+        G.neighborFinset x ∩ G.neighborFinset y := by
+      intro z hz
+      have hzData := Finset.mem_inter.mp hz
+      exact Finset.mem_inter.mpr
+        ⟨(Finset.mem_filter.mp hzData.1).1,
+          (Finset.mem_filter.mp hzData.2).1⟩
+    have hle : (componentNeighborFinset G D c x ∩
+        componentNeighborFinset G D c y).card ≤ 1 :=
+      (Finset.card_le_card hsub).trans
+        (common_le_one_of_not_containsC4 hfree x y hxy)
+    by_cases hnon : (componentNeighborFinset G D c x ∩
+        componentNeighborFinset G D c y).Nonempty
+    · have hpos : 0 < (componentNeighborFinset G D c x ∩
+          componentNeighborFinset G D c y).card := Finset.card_pos.mpr hnon
+      have hone : (componentNeighborFinset G D c x ∩
+          componentNeighborFinset G D c y).card = 1 := by omega
+      have hnon' : (componentNeighborFinset G (secondOrderDefectGraph G) c x ∩
+          componentNeighborFinset G (secondOrderDefectGraph G) c y).Nonempty := by
+        simpa [D] using hnon
+      have hone' : (componentNeighborFinset G (secondOrderDefectGraph G) c x ∩
+          componentNeighborFinset G (secondOrderDefectGraph G) c y).card = 1 := by
+        simpa [D] using hone
+      simp [SimpleGraph.adjMatrix_apply, hxy, hnon', hone']
+    · have hempty : componentNeighborFinset G D c x ∩
+          componentNeighborFinset G D c y = ∅ := Finset.not_nonempty_iff_eq_empty.mp hnon
+      have hempty' : componentNeighborFinset G (secondOrderDefectGraph G) c x ∩
+          componentNeighborFinset G (secondOrderDefectGraph G) c y = ∅ := by
+        simpa [D] using hempty
+      simp [SimpleGraph.adjMatrix_apply, hxy, hempty']
+
+/-- Every owner-color adjacency matrix commutes with the defect adjacency
+matrix.  This follows from the Gram-block formula because ambient adjacency
+commutes with defect adjacency and the component projector is defect-block
+diagonal. -/
+theorem binarySquare_regular_componentOwnerGraph_adjMatrix_comm_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c) :
+    (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ =
+      (secondOrderDefectGraph G).adjMatrix ℤ *
+        (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ := by
+  let A := G.adjMatrix ℤ
+  let B := (secondOrderDefectGraph G).adjMatrix ℤ
+  let P := defectComponentDiagonalMatrix (K := ℤ) (secondOrderDefectGraph G) c
+  let R := (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ
+  have hR : R = A * P * A - (m_c : ℤ) • 1 :=
+    binarySquare_regular_componentOwnerGraph_adjMatrix_eq
+      G hfree hq hreg hcard c hc
+  have hAB : A * B = B * A :=
+    adjMatrix_comm_secondOrderDefect_of_regular G hfree hreg
+  have hBP : B * P = P * B :=
+    adjMatrix_comm_defectComponentDiagonalMatrix
+      (K := ℤ) (secondOrderDefectGraph G) c
+  have hGram : (A * P * A) * B = B * (A * P * A) := by
+    calc
+      (A * P * A) * B = A * P * (A * B) := by
+        simp only [Matrix.mul_assoc]
+      _ = A * P * (B * A) := by rw [hAB]
+      _ = A * (P * B) * A := by simp only [Matrix.mul_assoc]
+      _ = A * (B * P) * A := by rw [← hBP]
+      _ = (A * B) * P * A := by simp only [Matrix.mul_assoc]
+      _ = (B * A) * P * A := by rw [hAB]
+      _ = B * (A * P * A) := by simp only [Matrix.mul_assoc]
+  have hscalar : ((m_c : ℤ) • (1 : Matrix V V ℤ)) * B =
+      B * ((m_c : ℤ) • (1 : Matrix V V ℤ)) := by
+    rw [Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one]
+  change R * B = B * R
+  rw [hR]
+  calc
+    (A * P * A - (m_c : ℤ) • 1) * B =
+        A * P * A * B - ((m_c : ℤ) • 1) * B := by rw [sub_mul]
+    _ = B * (A * P * A) - B * ((m_c : ℤ) • 1) := by
+      rw [hGram, hscalar]
+    _ = B * (A * P * A - (m_c : ℤ) • 1) := by rw [Matrix.mul_sub]
 
 /-- Pointwise owner-coordinate intersection number across distinct defect
 components.  If `x` lies in a normalized part `e`, then among the vertices of

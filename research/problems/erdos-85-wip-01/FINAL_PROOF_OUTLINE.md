@@ -448,7 +448,22 @@ generalized rather than merely replayed.
      `binarySquare_regular_componentOwnerGraph_degree` proves that the graph
      for a normalized part `m_c` is exactly `m_c(q-1)`-regular.  This exposes
      adjacency matrices and spectra of the owner-color classes as the next
-     uniform obstruction layer.
+     uniform obstruction layer.  That layer is now algebraically connected to
+     the original operator: `defectComponentDiagonalMatrix` is the diagonal
+     projector `P_c`,
+     `adjMatrix_mul_defectComponentDiagonalMatrix_mul_adjMatrix_apply` proves
+     the component Gram-entry formula, and the `PROVEN` identity
+
+     ```text
+     Adj(Owner(c)) = A P_c A - m_c I
+     ```
+
+     is `binarySquare_regular_componentOwnerGraph_adjMatrix_eq`.
+     Because both `A` and `P_c` commute with `D`, the `PROVEN` theorem
+     `binarySquare_regular_componentOwnerGraph_adjMatrix_comm_defect` gives
+     `Adj(Owner(c)) D = D Adj(Owner(c))` for every component color.  Thus each
+     owner graph preserves every defect-component eigenspace, providing a
+     simultaneous integral spectral constraint beyond the scalar part table.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
