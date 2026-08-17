@@ -809,16 +809,26 @@ generalized rather than merely replayed.
       `--write-dimacs`; Kissat reports UNSAT for all three.  Thus the `h=2`
       profile is eliminated computationally and the combined q=8 frontier is
       `51→50`.  This is audited discovery evidence, not a Lean theorem or
-      certificate terminal.  The immediate mathematical task is to extract
-      the contradiction behind those three UNSATs; the broader lesson remains
-      that the pairwise owner budget alone is insufficient.  An ablation
-      confirms that all low-high C4 constraints may be removed while the
-      `t=0` case remains UNSAT: the contradiction already lies in the low
-      graph, its prescribed degrees, the D degree/weight equations, and the
-      exact low-pair ownership law (`D`-edges have zero common low neighbor,
-      D-nonedges exactly one).  Keeping only either direction of that last
-      equivalence is solver-unknown, so the current proof-extraction target is
-      specifically their interaction rather than a hidden high-sector bound.
+      certificate terminal.  The contradiction has now been extracted,
+      however.  Fix one high vertex and let `A` be its `q` incidence-one
+      neighbors (apart from the shared `k=2` point).  C4-freeness makes the
+      `q(q-1)` low-neighbor incidences from `A` hit distinct low vertices.  The
+      `q-2` points of `S` have no neighbor in `A`, so they exhaust the misses;
+      every low point outside `S` has exactly one neighbor in `A`.  Since
+      `S∩A={p}`, the graph induced on `A\{p}` is one-regular.  Its order is
+      `q-1`, odd for even `q`, contradicting handshaking.
+
+      The endpoint is `PROVEN` abstractly in Lean as
+      `false_of_even_highRoot_saturation`, with the reusable parity lemma
+      `even_card_of_card_neighbors_inter_eq_one`, in
+      `Erdos85SquareOrderTwoHighTerminal`.  The scout confirms that after the
+      saturation/one-regular structure is imposed, all three cases are Z3
+      UNSAT in about eight seconds even with every remaining owner implication
+      and all D constraints removed.  The remaining `GAP` for a fully formal
+      h=2 exclusion is now only the profile-to-terminal bridge: derive the
+      distinct-incidence saturation and `S∩A={p}` hypotheses from the proved
+      square-order owner counts.  This is a short structural application, not
+      a finite classification or certificate task.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
