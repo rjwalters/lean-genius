@@ -982,6 +982,19 @@ generalized rather than merely replayed.
 
      Thus the sixteen distinguished labels of an order-64 size-two coordinate
      encode its internal cycle 2-factor on the same sixteen ground points.
+     The off-diagonal compatibility is likewise `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossIndexedBlocks`.  For two size-two
+     coordinates,
+
+     ```text
+     B_cd = transpose(B_dc),
+     every row and column of B_cd has exactly two ones.
+     ```
+
+     Hence every cross block is a 2-regular bipartite cycle system, and the
+     reverse coordinate uses the same edges with orientation transposed.
+     This ambient-adjacency symmetry is another constraint not present in an
+     arbitrary family of ODC pages or a bare line-sum-two tensor.
      It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
