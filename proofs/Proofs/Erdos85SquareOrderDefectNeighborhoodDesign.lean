@@ -824,6 +824,63 @@ theorem squareOrder_card_commonHigh_of_maxHighIncidence
     exact (squareOrder_maxHighIncidence_not_defectAdj_rigidity
       G hfree hd hmin hcover hcard huv hu hv hku hkv hD).2
 
+/-- One-below-maximal threshold.  If a defect-nonadjacent low pair has
+`k(u)+k(v)=d-1`, every common defect neighbor must be paid for by the (unique)
+common original owner being high. -/
+theorem squareOrder_card_commonDefect_le_commonHigh_of_incidence_add_eq_pred
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {x y}, G.Adj x y → G.degree x = d ∨ G.degree y = d)
+    (hcard : Fintype.card V = d * d) {u v : V}
+    (huv : u ≠ v) (hu : G.degree u = d) (hv : G.degree v = d)
+    (hk : squareOrderHighIncidenceCount G d u +
+      squareOrderHighIncidenceCount G d v = d - 1)
+    (hD : ¬ (secondOrderDefectGraph G).Adj u v) :
+    ((secondOrderDefectGraph G).neighborFinset u ∩
+        (secondOrderDefectGraph G).neighborFinset v).card ≤
+      (G.neighborFinset u ∩ G.neighborFinset v ∩
+        squareOrderHighVertices G d).card := by
+  have hsharp :=
+    squareOrder_card_commonDefect_add_highIncidences_le_pred_add_commonHigh
+      G hfree hd hmin hcover hcard huv hu hv hD
+  omega
+
+/-- Positive common defect degree at the preceding threshold forces the
+unique common original owner to be high. -/
+theorem squareOrder_card_commonHigh_eq_one_of_incidence_add_eq_pred
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {x y}, G.Adj x y → G.degree x = d ∨ G.degree y = d)
+    (hcard : Fintype.card V = d * d) {u v : V}
+    (huv : u ≠ v) (hu : G.degree u = d) (hv : G.degree v = d)
+    (hk : squareOrderHighIncidenceCount G d u +
+      squareOrderHighIncidenceCount G d v = d - 1)
+    (hD : ¬ (secondOrderDefectGraph G).Adj u v)
+    (hcommonD : 0 < ((secondOrderDefectGraph G).neighborFinset u ∩
+      (secondOrderDefectGraph G).neighborFinset v).card) :
+    (G.neighborFinset u ∩ G.neighborFinset v ∩
+        squareOrderHighVertices G d).card = 1 := by
+  have hle :=
+    squareOrder_card_commonDefect_le_commonHigh_of_incidence_add_eq_pred
+      G hfree hd hmin hcover hcard huv hu hv hk hD
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree u v huv
+  have hnotmem : v ∉ (secondOrderDefectGraph G).neighborFinset u := by
+    simpa [SimpleGraph.mem_neighborFinset] using hD
+  rw [if_neg hnotmem] at hcommon
+  have hsub : G.neighborFinset u ∩ G.neighborFinset v ∩
+      squareOrderHighVertices G d ⊆
+        G.neighborFinset u ∩ G.neighborFinset v := Finset.inter_subset_left
+  have hhigh := (Finset.card_le_card hsub).trans_eq hcommon
+  omega
+
 /-- Branches at two distinct centers with the same owner overlap in exactly
 the owner's neighborhood with those two centers deleted. -/
 theorem card_inter_squareOrderDefectBranch_same_owner
