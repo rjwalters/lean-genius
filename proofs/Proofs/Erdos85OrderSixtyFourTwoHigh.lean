@@ -168,6 +168,59 @@ theorem orderSixtyFour_two_high_common_neighbor_skeleton
   refine ⟨a, b, x, hab, hH, haDegree, hbDegree, hnab, hx.2, ?_⟩
   simpa [hxw] using hw
 
+/-- Removing the common pivot leaves two disjoint eight-vertex wings, one
+for each high vertex.  These sixteen vertices are precisely the geometric
+source of the numerical single-contact count below. -/
+theorem orderSixtyFour_two_high_disjoint_eight_wings
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 2) :
+    ∃ a b x : Fin 64,
+      a ≠ b ∧
+      squareOrderHighVertices G 8 = {a, b} ∧
+      G.degree x = 8 ∧
+      (G.neighborFinset a \ {x}).card = 8 ∧
+      (G.neighborFinset b \ {x}).card = 8 ∧
+      Disjoint (G.neighborFinset a \ {x})
+        (G.neighborFinset b \ {x}) := by
+  obtain ⟨a, b, x, hab, hH, haDegree, hbDegree, _hnab, hxDegree,
+      hcommon⟩ :=
+    orderSixtyFour_two_high_common_neighbor_skeleton
+      G hfree hmin hcover hh
+  have hxa : x ∈ G.neighborFinset a := by
+    have hxmem : x ∈ G.neighborFinset a ∩ G.neighborFinset b := by
+      rw [hcommon]
+      simp
+    exact (Finset.mem_inter.mp hxmem).1
+  have hxb : x ∈ G.neighborFinset b := by
+    have hxmem : x ∈ G.neighborFinset a ∩ G.neighborFinset b := by
+      rw [hcommon]
+      simp
+    exact (Finset.mem_inter.mp hxmem).2
+  have haWing : (G.neighborFinset a \ {x}).card = 8 := by
+    rw [Finset.sdiff_singleton_eq_erase, Finset.card_erase_of_mem hxa,
+      G.card_neighborFinset_eq_degree, haDegree]
+  have hbWing : (G.neighborFinset b \ {x}).card = 8 := by
+    rw [Finset.sdiff_singleton_eq_erase, Finset.card_erase_of_mem hxb,
+      G.card_neighborFinset_eq_degree, hbDegree]
+  have hwings : Disjoint (G.neighborFinset a \ {x})
+      (G.neighborFinset b \ {x}) := by
+    rw [Finset.disjoint_left]
+    intro y hya hyb
+    have hyCommon : y ∈ G.neighborFinset a ∩ G.neighborFinset b :=
+      Finset.mem_inter.mpr
+        ⟨(Finset.mem_sdiff.mp hya).1, (Finset.mem_sdiff.mp hyb).1⟩
+    have hyx : y = x := by
+      rw [hcommon, Finset.mem_singleton] at hyCommon
+      exact hyCommon
+    exact (Finset.mem_sdiff.mp hya).2 (by simp [hyx])
+  exact ⟨a, b, x, hab, hH, hxDegree, haWing, hbWing, hwings⟩
+
 /-- The same branch has exactly sixteen single-contact vertices. -/
 theorem orderSixtyFour_card_one_high_contact_eq_sixteen
     (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
