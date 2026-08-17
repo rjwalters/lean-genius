@@ -1172,6 +1172,14 @@ generalized rather than merely replayed.
      case the three owner-edge colors are exactly the three endpoint defect
      components.  Consequently the finite routing classification must also
      support this star-versus-rainbow lift for every monochromatic triangle.
+     The star side is quantitatively rigid by
+     `Erdos85BinarySquareRoutingStarCompletions`: for a direct routing edge
+     `x,w` of color `d`, its unique common neighbor `y∈d` has exactly two
+     neighbors in every third size-two component `e`, and both are
+     automatically color-`d` completions on the two new sides.  Thus every
+     direct colored edge has a canonical two-element star-completion core;
+     any third or fourth completion allowed by the preceding `2..4` bound
+     must come from the rainbow-owner alternative.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
