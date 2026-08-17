@@ -531,6 +531,13 @@ generalized rather than merely replayed.
       exists; otherwise they are disjoint.  This is the first explicit
       cross-center equation involving both graphs and is the intended next
       input to the vertex-level scout.
+    - `squareOrder_defectBranchGrid_biUnion_eq_inter_nonneighbors` and
+      `squareOrder_sum_card_defectBranchGrid_eq` assemble the cells for two
+      centers: their disjoint owner-pair grid covers exactly the intersection
+      of the two defect-nonneighbor regions, and its double sum of cell sizes
+      is exactly that region's cardinality.  Hence the same-owner
+      `deg(z)-2` cells and the off-diagonal zero/one formula now feed a single
+      exact two-center counting equation rather than isolated local facts.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
