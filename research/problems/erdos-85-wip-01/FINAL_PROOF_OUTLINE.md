@@ -1355,8 +1355,13 @@ generalized rather than merely replayed.
      distinct edges of the common `8 × 8` center grid, leaving a canonical
      sixteen-edge complement.  This `48+16=64` packing law is also `PROVEN`
      in `Erdos85BinarySquareCrossRootCenterPairs`; identifying the complement
-     and propagating the resulting four-factor grid decomposition around the
-     defect cycle is the next finite structural target.
+     is now `PROVEN` in `Erdos85BinarySquareCenterGridComplement`.  The fourth
+     factor is exactly the disjoint union of (i) center pairs having a common
+     neighbor back in the roots' own defect component and (ii) center pairs
+     which are themselves second-order-defect edges.  Their cardinalities
+     therefore sum to `16` at order 64.  The next finite structural target is
+     to determine that internal split and propagate the resulting graph-
+     native four-factor grid decomposition around the defect cycle.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
