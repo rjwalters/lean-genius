@@ -35,6 +35,101 @@ def squareOrderDefectNonneighbors
     (G : SimpleGraph V) [DecidableRel G.Adj] (u : V) : Finset V :=
   (Finset.univ.erase u) \ (secondOrderDefectGraph G).neighborFinset u
 
+/-- The intersection of two closed neighborhoods in a simple graph consists
+of their common open neighbors, plus both centers exactly when they are
+adjacent.  The additive form is convenient for two-center complement counts. -/
+theorem card_inter_insert_neighborFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] {u v : V} (huv : u ≠ v) :
+    (insert u (D.neighborFinset u) ∩
+        insert v (D.neighborFinset v)).card =
+      (D.neighborFinset u ∩ D.neighborFinset v).card +
+        if D.Adj u v then 2 else 0 := by
+  by_cases hadj : D.Adj u v
+  · rw [if_pos hadj]
+    have heq : insert u (D.neighborFinset u) ∩
+        insert v (D.neighborFinset v) =
+          insert u (insert v (D.neighborFinset u ∩ D.neighborFinset v)) := by
+      ext x
+      by_cases hxu : x = u
+      · subst x
+        simp [huv, hadj, D.adj_comm, SimpleGraph.mem_neighborFinset]
+      · by_cases hxv : x = v
+        · subst x
+          simp [hadj, SimpleGraph.mem_neighborFinset]
+        · simp [hxu, hxv]
+    rw [heq]
+    have huNot : u ∉ D.neighborFinset u ∩ D.neighborFinset v := by
+      simp [SimpleGraph.mem_neighborFinset]
+    have hvNot : v ∉ D.neighborFinset u ∩ D.neighborFinset v := by
+      simp [SimpleGraph.mem_neighborFinset]
+    rw [Finset.card_insert_of_notMem (by simp [huv, huNot]),
+      Finset.card_insert_of_notMem hvNot]
+  · rw [if_neg hadj, add_zero]
+    have heq : insert u (D.neighborFinset u) ∩
+        insert v (D.neighborFinset v) =
+          D.neighborFinset u ∩ D.neighborFinset v := by
+      ext x
+      by_cases hxu : x = u
+      · subst x
+        simp [huv, hadj, D.adj_comm, SimpleGraph.mem_neighborFinset]
+      · by_cases hxv : x = v
+        · subst x
+          simp [huv, hadj, D.adj_comm, SimpleGraph.mem_neighborFinset]
+        · simp [hxu, hxv]
+    rw [heq]
+
+/-- Exact size of the common defect-nonneighbor region, in an additive form
+without truncated subtraction. -/
+theorem card_inter_squareOrderDefectNonneighbors_add_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    {u v : V} (huv : u ≠ v) :
+    (squareOrderDefectNonneighbors G u ∩
+        squareOrderDefectNonneighbors G v).card +
+      (secondOrderDefectGraph G).degree u +
+      (secondOrderDefectGraph G).degree v + 2 =
+    Fintype.card V +
+      ((secondOrderDefectGraph G).neighborFinset u ∩
+        (secondOrderDefectGraph G).neighborFinset v).card +
+      if (secondOrderDefectGraph G).Adj u v then 2 else 0 := by
+  let D := secondOrderDefectGraph G
+  let Cu := insert u (D.neighborFinset u)
+  let Cv := insert v (D.neighborFinset v)
+  let U := Cu ∪ Cv
+  have hregion : squareOrderDefectNonneighbors G u ∩
+      squareOrderDefectNonneighbors G v = (Finset.univ : Finset V) \ U := by
+    ext x
+    simp [squareOrderDefectNonneighbors, U, Cu, Cv, D,
+      and_assoc, and_left_comm, and_comm]
+  have hpartition : ((Finset.univ : Finset V) \ U).card + U.card =
+      Fintype.card V := by
+    have h := Finset.card_sdiff_add_card_inter (Finset.univ : Finset V) U
+    simpa using h
+  have hunion := Finset.card_union_add_card_inter Cu Cv
+  have hCu : Cu.card = D.degree u + 1 := by
+    rw [Finset.card_insert_of_notMem (by
+      simp [SimpleGraph.mem_neighborFinset]),
+      D.card_neighborFinset_eq_degree]
+  have hCv : Cv.card = D.degree v + 1 := by
+    rw [Finset.card_insert_of_notMem (by
+      simp [SimpleGraph.mem_neighborFinset]),
+      D.card_neighborFinset_eq_degree]
+  have hinter := card_inter_insert_neighborFinset D huv
+  change (Cu ∩ Cv).card =
+      (D.neighborFinset u ∩ D.neighborFinset v).card +
+        (if D.Adj u v then 2 else 0) at hinter
+  change U.card + (Cu ∩ Cv).card = Cu.card + Cv.card at hunion
+  rw [hCu, hCv, hinter] at hunion
+  rw [hregion]
+  change ((Finset.univ : Finset V) \ U).card + D.degree u +
+      D.degree v + 2 = Fintype.card V +
+        (D.neighborFinset u ∩ D.neighborFinset v).card +
+          (if D.Adj u v then 2 else 0)
+  omega
+
 /-- Two distinct points in one original neighborhood cannot be adjacent in
 the second-order defect graph. -/
 theorem not_defectAdj_of_mem_squareOrderDefectOwnerBlock
@@ -363,6 +458,27 @@ theorem squareOrder_sum_card_defectBranchGrid_eq
   apply Finset.sum_congr rfl
   intro z _hz
   exact (Finset.card_biUnion (hinner z)).symm
+
+/-- The complete two-center counting equation: the sparse branch-grid cell
+sum is determined by defect degrees, common defect neighbors, and defect
+adjacency of the centers. -/
+theorem squareOrder_sum_card_defectBranchGrid_add_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {u v : V} (huv : u ≠ v) :
+    (∑ z ∈ G.neighborFinset u, ∑ w ∈ G.neighborFinset v,
+        (squareOrderDefectBranch G u z ∩
+          squareOrderDefectBranch G v w).card) +
+      (secondOrderDefectGraph G).degree u +
+      (secondOrderDefectGraph G).degree v + 2 =
+    Fintype.card V +
+      ((secondOrderDefectGraph G).neighborFinset u ∩
+        (secondOrderDefectGraph G).neighborFinset v).card +
+      if (secondOrderDefectGraph G).Adj u v then 2 else 0 := by
+  rw [squareOrder_sum_card_defectBranchGrid_eq G hfree u v]
+  exact card_inter_squareOrderDefectNonneighbors_add_degrees G huv
 
 /-- Branches at two distinct centers with the same owner overlap in exactly
 the owner's neighborhood with those two centers deleted. -/
