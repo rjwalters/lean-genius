@@ -1,6 +1,7 @@
 import Proofs.Erdos85SecondOrderQuotient
 import Proofs.Erdos85ConflictRegular
 import Proofs.Erdos85OrderSixtyFourComponentComplexGram
+import Proofs.Erdos85OrderSixteenPairQuotientArithmetic
 
 /-! # From cycle--pair separation to the component quotient bounds -/
 
@@ -153,6 +154,42 @@ theorem componentQuotientMatrix_sixRegular_pair_conditions
     have hcardSupp : e.supp.toFinite.toFinset.card = e.supp.ncard := by
       exact (Set.ncard_eq_toFinset_card e.supp e.supp.toFinite).symm
     rwa [hAcard, hcardSupp] at hc
+
+/-- Transport an abstract component-indexed quotient ledger across a finite
+enumeration.  This is the final interface from graph components to the
+explicit `Fin k` arithmetic terminals. -/
+theorem exists_sixRegularPairQuotientFeasible_of_equiv
+    {C : Type*} [Fintype C] {k : ℕ}
+    (size : C → ℕ) (Q : C → C → ℕ)
+    (s : Fin k → ℕ) (e : Fin k ≃ C)
+    (hsize : ∀ i, size (e i) = s i)
+    (hrow : ∀ c, ∑ d, Q c d = 6)
+    (hbal : ∀ c d, size c * Q c d = size d * Q d c)
+    (hdiag : ∀ c, Q c c + 3 ≤ size c)
+    (hbound : ∀ c d, Q c d ≤ size d) :
+    ∃ q : Fin k → Fin k → ℕ,
+      SixRegularPairQuotientFeasible s q := by
+  let q : Fin k → Fin k → ℕ := fun i j ↦ Q (e i) (e j)
+  refine ⟨q, ?_⟩
+  constructor
+  · intro i
+    change (∑ j, Q (e i) (e j)) = 6
+    rw [e.sum_comp]
+    exact hrow (e i)
+  constructor
+  · intro i j
+    change s i * Q (e i) (e j) = s j * Q (e j) (e i)
+    rw [← hsize i, ← hsize j]
+    exact hbal (e i) (e j)
+  constructor
+  · intro i
+    change Q (e i) (e i) + 3 ≤ s i
+    rw [← hsize i]
+    exact hdiag (e i)
+  · intro i j
+    change Q (e i) (e j) ≤ s j
+    rw [← hsize j]
+    exact hbound (e i) (e j)
 
 end
 
