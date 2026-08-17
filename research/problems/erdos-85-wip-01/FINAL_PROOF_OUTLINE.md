@@ -768,7 +768,14 @@ generalized rather than merely replayed.
       `51→50`.  This is audited discovery evidence, not a Lean theorem or
       certificate terminal.  The immediate mathematical task is to extract
       the contradiction behind those three UNSATs; the broader lesson remains
-      that the pairwise owner budget alone is insufficient.
+      that the pairwise owner budget alone is insufficient.  An ablation
+      confirms that all low-high C4 constraints may be removed while the
+      `t=0` case remains UNSAT: the contradiction already lies in the low
+      graph, its prescribed degrees, the D degree/weight equations, and the
+      exact low-pair ownership law (`D`-edges have zero common low neighbor,
+      D-nonedges exactly one).  Keeping only either direction of that last
+      equivalence is solver-unknown, so the current proof-extraction target is
+      specifically their interaction rather than a hidden high-sector bound.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
