@@ -153,6 +153,157 @@ theorem binarySquare_regular_trace_centeredOwnerGram_cube
   rw [Nat.cast_sub (by omega : 1 ≤ q)]
   ring
 
+/-- Cubic trace of the centered defect resolution. -/
+theorem binarySquare_regular_trace_defectResolution_cube
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q) :
+    let D := secondOrderDefectGraph G
+    let R := (q : ℤ) •
+      (((q - 1 : ℕ) : ℤ) • (1 : Matrix V V ℤ) - D.adjMatrix ℤ)
+    Matrix.trace (R * R * R) =
+      (q : ℤ) ^ 3 *
+        ((q : ℤ) ^ 2 * ((q - 1 : ℕ) : ℤ) ^ 2 * ((q + 2 : ℕ) : ℤ) -
+          Matrix.trace (D.adjMatrix ℤ * D.adjMatrix ℤ * D.adjMatrix ℤ)) := by
+  dsimp
+  let D := secondOrderDefectGraph G
+  let A := D.adjMatrix ℤ
+  let a : ℤ := (q - 1 : ℕ)
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by
+        rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDreg : ∀ x : V, D.degree x = q - 1 := by
+    intro x
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus x
+    change D.degree x = (q - 3) + 2 at h
+    omega
+  have htrA : Matrix.trace A = 0 :=
+    SimpleGraph.trace_adjMatrix (α := ℤ) D
+  have htrA2 : Matrix.trace (A * A) =
+      ((q * q : ℕ) : ℤ) * a := by
+    rw [← hcard]
+    exact FriendshipTheoremOQ01.trace_adjMatrix_sq D (q - 1) hDreg
+  have hexpand :
+      ((q : ℤ) • (a • (1 : Matrix V V ℤ) - A)) *
+          ((q : ℤ) • (a • (1 : Matrix V V ℤ) - A)) *
+          ((q : ℤ) • (a • (1 : Matrix V V ℤ) - A)) =
+        ((q : ℤ) ^ 3 * a ^ 3) • (1 : Matrix V V ℤ) -
+          (3 * (q : ℤ) ^ 3 * a ^ 2) • A +
+          (3 * (q : ℤ) ^ 3 * a) • (A * A) -
+          ((q : ℤ) ^ 3) • (A * A * A) := by
+    simp only [sub_mul, mul_sub, Matrix.smul_mul, Matrix.mul_smul,
+      Matrix.one_mul, Matrix.mul_one, smul_smul]
+    module
+  change Matrix.trace
+      (((q : ℤ) • (a • (1 : Matrix V V ℤ) - A)) *
+        ((q : ℤ) • (a • (1 : Matrix V V ℤ) - A)) *
+        ((q : ℤ) • (a • (1 : Matrix V V ℤ) - A))) = _
+  rw [hexpand, Matrix.trace_sub, Matrix.trace_add, Matrix.trace_sub,
+    Matrix.trace_smul, Matrix.trace_smul, Matrix.trace_smul,
+    Matrix.trace_smul, Matrix.trace_one, htrA, htrA2, hcard]
+  dsimp [a]
+  rw [Nat.cast_sub (by omega : 1 ≤ q)]
+  push_cast
+  ring
+
+/-- **Owner/defect cubic trace equation.**  After cancelling the common
+`q^3` factor in the centered cubic resolution, all graph-dependent terms are
+the adjacency-cube traces.  In particular their sum is congruent to zero
+modulo `q^2`, which is the large two-primary triangle divisibility available
+in the binary branch. -/
+theorem binarySquare_regular_owner_defect_cube_trace_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = q * m c)
+    (hsum : ∑ c, m c = q) :
+    (∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+      (Matrix.trace
+          ((componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ *
+            (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ *
+            (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ) +
+        (q : ℤ) ^ 2 * ((q - 1 : ℕ) : ℤ) * (m c : ℤ) ^ 2 *
+          (3 - (m c : ℤ)))) =
+      (q : ℤ) ^ 2 * ((q - 1 : ℕ) : ℤ) ^ 2 * ((q + 2 : ℕ) : ℤ) -
+        Matrix.trace
+          ((secondOrderDefectGraph G).adjMatrix ℤ *
+            (secondOrderDefectGraph G).adjMatrix ℤ *
+            (secondOrderDefectGraph G).adjMatrix ℤ) := by
+  have htrace := binarySquare_regular_sum_trace_centeredOwnerGrams_cube
+    G hfree hq hreg hcard m hm hsum
+  have hcolor := fun c => binarySquare_regular_trace_centeredOwnerGram_cube
+    G hfree hq hreg hcard c (hm c)
+  simp_rw [hcolor] at htrace
+  rw [binarySquare_regular_trace_defectResolution_cube
+    G hfree hq hreg hcard] at htrace
+  rw [← Finset.mul_sum] at htrace
+  apply mul_left_cancel₀ (a := (q : ℤ) ^ 3)
+  · exact pow_ne_zero 3 (by exact_mod_cast (show q ≠ 0 by omega))
+  · exact htrace
+
+/-- The graph-dependent cubic traces have a common `q²` divisibility.  Since
+an adjacency-cube trace is six times a triangle count, this becomes a strong
+two-primary divisibility when `q` is a power of two. -/
+theorem binarySquare_regular_sq_dvd_sum_owner_defect_cube_traces
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = q * m c)
+    (hsum : ∑ c, m c = q) :
+    (q : ℤ) ^ 2 ∣
+      Matrix.trace
+          ((secondOrderDefectGraph G).adjMatrix ℤ *
+            (secondOrderDefectGraph G).adjMatrix ℤ *
+            (secondOrderDefectGraph G).adjMatrix ℤ) +
+        ∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+          Matrix.trace
+            ((componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ *
+              (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ *
+              (componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ) := by
+  have heq := binarySquare_regular_owner_defect_cube_trace_eq
+    G hfree hq hreg hcard m hm hsum
+  let correction := fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+    ((q - 1 : ℕ) : ℤ) * (m c : ℤ) ^ 2 * (3 - (m c : ℤ))
+  let total : ℤ := ((q - 1 : ℕ) : ℤ) ^ 2 * ((q + 2 : ℕ) : ℤ)
+  refine ⟨total - ∑ c, correction c, ?_⟩
+  have hcorr :
+      (∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+        (q : ℤ) ^ 2 * ((q - 1 : ℕ) : ℤ) * (m c : ℤ) ^ 2 *
+          (3 - (m c : ℤ))) =
+        (q : ℤ) ^ 2 * ∑ c, correction c := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro c _hc
+    dsimp [correction]
+    ring
+  rw [Finset.sum_add_distrib, hcorr] at heq
+  dsimp [total]
+  push_cast at heq ⊢
+  linarith
+
 end
 
 end Erdos85
