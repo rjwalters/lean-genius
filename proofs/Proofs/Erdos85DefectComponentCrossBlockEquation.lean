@@ -314,6 +314,47 @@ theorem binarySquare_regular_normalizedComponent_internalAdj_gram_saturates
     (q - m : ℕ) at hbudget
   omega
 
+/-- Matrix form of the no-exterior-service consequence: an internal edge has
+no three-step return that leaves the component, takes an exterior edge, and
+comes back to the other endpoint. -/
+theorem binarySquare_regular_normalizedComponent_internalAdj_outsideReturn_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q m : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * m) (u v : c.supp)
+    (huv : (G.induce c.supp).Adj u v) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    ((B * C) * B.transpose) u v = 0 := by
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  have hid := binarySquare_regular_normalizedComponent_outsideReturn_eq
+    G hfree hq hreg hcard c hc
+  have hsat :=
+    binarySquare_regular_normalizedComponent_internalAdj_gram_saturates
+      G hfree hq hreg hcard c hc u v huv
+  change ((B * C) * B.transpose) u v = 0
+  have hid' : (B * C) * B.transpose =
+      ((q - m : ℕ) : ℤ) • FriendshipTheoremOQ01.onesMatrix c.supp -
+        H * (B * B.transpose) := by
+    simpa [H, B, C, p] using hid
+  have huvId := congr_fun₂ hid' u v
+  simp only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul,
+    FriendshipTheoremOQ01.onesMatrix, Matrix.of_apply, mul_one] at huvId
+  change (H * (B * B.transpose)) u v = (q - m : ℕ) at hsat
+  rw [huvId, hsat]
+  simp
+
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
@@ -322,5 +363,7 @@ end
   Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_entry_budget
 #print axioms
   Erdos85.binarySquare_regular_normalizedComponent_internalAdj_gram_saturates
+#print axioms
+  Erdos85.binarySquare_regular_normalizedComponent_internalAdj_outsideReturn_zero
 
 end Erdos85
