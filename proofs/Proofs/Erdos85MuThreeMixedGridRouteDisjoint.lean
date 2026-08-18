@@ -1,4 +1,4 @@
-import Proofs.Erdos85MuThreeMixedGridRouteEquiv
+import Proofs.Erdos85MuThreeMixedGridRoutePermutation
 
 /-!
 # Disjoint route codewords for rook-related sources
@@ -58,9 +58,31 @@ theorem mixedGridRowRoute_ne_of_sameColumn
     (Or.inr hcolumn)] at hx
   simpa using hx
 
+/-- Coordinate-permutation form of route disjointness: two distinct sources
+in one column assign different output columns to every commonly allowed row. -/
+theorem mixedGridRowPermutationFun_ne_of_sameColumn
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u v : muThreeMixedCell K) (huv : u ≠ v)
+    (hcolumn : u.1.2 = v.1.2) (x : X)
+    (hux : ¬ H x u.1.2) (hvx : ¬ H x v.1.2) :
+    (mixedGridRowPermutationFun H K C code u ⟨x, hux⟩).1 ≠
+      (mixedGridRowPermutationFun H K C code v ⟨x, hvx⟩).1 := by
+  intro hcol
+  apply mixedGridRowRoute_ne_of_sameColumn H K C code u v huv hcolumn x hux hvx
+  apply Subtype.ext
+  apply Prod.ext
+  · rw [mixedGridRowRoute_row H K C code u x hux,
+      mixedGridRowRoute_row H K C code v x hvx]
+  · exact hcol
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.mixedGridRouteAgreementRows_eq_empty_of_rook
 #print axioms Erdos85.mixedGridRowRoute_ne_of_sameColumn
+#print axioms Erdos85.mixedGridRowPermutationFun_ne_of_sameColumn
