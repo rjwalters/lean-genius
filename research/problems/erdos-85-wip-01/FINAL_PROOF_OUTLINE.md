@@ -2148,6 +2148,13 @@ generalized rather than merely replayed.
      `(33,33,33)`.  These are the five remaining cases for the future
      all-triangle `K`-geometry consumer; the three exactly-two-`(33)` cases
      are eliminated before any certificate or coordinate choice.
+     A sharper normalized finite discriminator is **PROVEN**
+     (`fac840586d`): the commutator has cycle type `{5}` in the all-`(42)`
+     case, `{3,3}` or `{3}` in every exactly-one-`(33)` case, and `0` or
+     `{2,2}` in the all-`(33)` case (Mathlib cycle types omit fixed points).
+     Thus a label-free lift would let the `K` geometry attack commutator order
+     `5`, `3`, or `2` rather than five raw labelled cases.  The normalized
+     kernels are standard-axiom Lean; the rectangle-fiber lift remains open.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
