@@ -137,6 +137,51 @@ theorem binarySquare_regular_oneComponent_finrank_adj_kernel_eq_zero
   rw [binarySquare_regular_finrank_adj_kernel_eq_card_components_sub_one
     G hfree hq hreg hcard a, hcount]
 
+/-- **Ambient/defect coupling at square order.**  The full defect Laplacian is
+the square of ambient adjacency with the principal all-ones direction
+removed.  Unlike the connected centered-Gram identity, this holds for every
+defect-component partition. -/
+theorem binarySquare_regular_defect_lapMatrix_eq_adjMatrix_sq_sub_ones
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q) :
+    (secondOrderDefectGraph G).lapMatrix ℚ =
+      G.adjMatrix ℚ * G.adjMatrix ℚ - ratOnesMatrix V := by
+  let D := secondOrderDefectGraph G
+  have hDdegree : ∀ x : V, D.degree x = q - 1 := by
+    intro x
+    have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+      rw [hcard]
+      calc
+        q * q = q * ((q - 1) + 1) := by
+          rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+        _ = q * (q - 1) + q := by ring
+        _ = q * (q - 1) + 3 + (q - 3) := by omega
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus x
+    change D.degree x = (q - 3) + 2 at h
+    omega
+  have hLap : D.lapMatrix ℚ =
+      (((q : ℚ) - 1) • (1 : Matrix V V ℚ)) - D.adjMatrix ℚ := by
+    ext x y
+    simp only [SimpleGraph.lapMatrix, SimpleGraph.degMatrix,
+      Matrix.sub_apply, Matrix.diagonal_apply, Matrix.smul_apply,
+      Matrix.one_apply, smul_eq_mul]
+    by_cases hxy : x = y
+    · subst y
+      simp [hDdegree]
+      rw [Nat.cast_sub (by omega : 1 ≤ q)]
+      norm_num
+    · simp [hxy]
+  have hsq := adjMatrix_sq_eq_sub_secondOrderDefect_of_regular_rat
+    G hfree hreg
+  rw [hLap, hsq]
+  abel
+
 end
 
 end Erdos85
@@ -144,3 +189,4 @@ end Erdos85
 #print axioms Erdos85.componentOwnerGraph_eq_compl_secondOrderDefect_of_oneComponent
 #print axioms Erdos85.centeredOwnerGram_eq_q_smul_defect_lapMatrix_of_oneComponent
 #print axioms Erdos85.binarySquare_regular_oneComponent_finrank_adj_kernel_eq_zero
+#print axioms Erdos85.binarySquare_regular_defect_lapMatrix_eq_adjMatrix_sq_sub_ones

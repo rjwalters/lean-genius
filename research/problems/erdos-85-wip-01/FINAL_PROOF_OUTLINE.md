@@ -1949,7 +1949,14 @@ generalized rather than merely replayed.
      connected.  This is an immediate specialization of the exact global
      nullity theorem, but it places the two `[8]` facts side by side:
      `C=qL_D` is internally tautological, whereas `ker(A_G)=0` is a genuine
-     restriction on the coupled ambient/defect spectrum.
+     restriction on the coupled ambient/defect spectrum.  The coupling itself
+     is now packaged q-generically as
+     `binarySquare_regular_defect_lapMatrix_eq_adjMatrix_sq_sub_ones`:
+     `L_D=A_G²-J` over `ℚ`, for every component partition.  In `[8]`, where
+     `D` is connected, this says the only zero mode of `A_G²-J` is the
+     principal constant direction, while `A_G` itself has no zero mode.  This
+     exact polynomial relation—not the owner-density inequality—is the clean
+     spectral input for the remaining connected-stratum consumer.
      The residual **GAP** is to turn this extreme single-color closure into an
      ambient C4/routing contradiction when every center belongs to the same
      defect component.  The two-component
