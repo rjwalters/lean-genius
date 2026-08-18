@@ -2025,6 +2025,20 @@ generalized rather than merely replayed.
      the literal deficit partition.  The graph-facing 48 count, support, and
      modular conclusion are all standard-axiom Lean.
 
+     Calibration warning (**PROVEN**, `75467e7ebe`): the 48 triangles above
+     are the contribution incident to the selected all-triangle-free
+     component, not the cardinality of the entire global multi-component
+     ambient census.  The latter splits exactly as total ordered ambient
+     triangles minus ordered same-component triangles
+     (`multiComponentAmbientCyclicTriangles_eq_crossComponentCyclicColoredTriples`).
+     In particular, 480 total ordered triangles and at most 90 ordered
+     same-component triangles force the global mixed-ambient cardinality to
+     be at least 390, and hence not 288
+     (`card_multiComponentAmbient_ne_288_of_total_480_same_le_90`).  Therefore
+     a consumer assuming global `multiComponentAmbient.card = 288` cannot be
+     the missing leaf; the required decomposition must retain the chosen
+     component's local contribution separately.
+
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
      a contradiction consumer, while `[4,2,2]` additionally retains one
