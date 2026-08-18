@@ -1871,10 +1871,20 @@ generalized rather than merely replayed.
      shifted-owner product gives
      `tr(A_a^2 A_b)=q^2(q-1)m_a m_b(m_a-1)` for any two distinct owner
      components (`binarySquare_regular_trace_firstOwner_sq_mul_secondOwner`,
-     `f3fdc17e72`).  At q=8 the exact censuses are respectively 5376, 13440,
-     and 21504.  Whenever `m_a,m_b ≥ 2`, this exceeds the directed first-owner
-     edge set, so a generic collision theorem forces a repeated closing and a
-     C4-separated ambient owner fork (`e0f4b97c27`, `ed273b9d30`).  Subtracting
+     `f3fdc17e72`).  The same algebra is now pointwise, not merely a trace
+     census (`55faecce50`, `ebf3bdb771`): for distinct displayed owners
+     `a,b`, an `a`-edge has exactly `m_b(m_a-1)` `a`-then-`b` middles, a
+     `b`-edge has exactly `m_a(m_b-1)`, and a distinct pair with neither
+     displayed owner has the full `m_a m_b` rectangle.  In particular the
+     repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
+     orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
+     row and is therefore **PROVEN q-GENERIC but not itself contradictory**;
+     compatibility of these rectangles across roots remains part of the
+     routing GAP.  At q=8 the exact global censuses are respectively 5376,
+     13440, and 21504.  Whenever `m_a,m_b ≥ 2`, this exceeds the directed
+     first-owner edge set, so a generic collision theorem forces a repeated
+     closing and a C4-separated ambient owner fork (`e0f4b97c27`,
+     `ed273b9d30`).  Subtracting
      the q-generic same-component fiber bound sharpens this to cross budgets
      512, 6816, and 12288 (`e8254b9147`).  In `[5,3]` and `[4,4]`, eight-pattern
      pressure forces a nonlocal block, and cyclic rotation always places its
