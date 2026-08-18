@@ -51,6 +51,49 @@ theorem RelationTwoRegular.exists_columns_common_card_eq_one
   change S.card = 1
   omega
 
+/-- `C₄`-freeness of the bipartite relation graph supplies the pairwise
+column-overlap bound, hence an overlap-one column pair. -/
+theorem RelationTwoRegular.exists_columns_common_card_eq_one_of_c4Free
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Nonempty X]
+    (H : X → Y → Prop) [DecidableRel H] (hreg : RelationTwoRegular H)
+    (hc4 : ¬ containsC4 (X ⊕ Y) (relationBipartiteGraph H)) :
+    ∃ b b' : Y, b ≠ b' ∧
+      ((Finset.univ : Finset X).filter fun x => H x b ∧ H x b').card = 1 := by
+  letI : DecidableRel (relationBipartiteGraph H).Adj := by
+    intro u v
+    cases u <;> cases v <;> simp [relationBipartiteGraph] <;> infer_instance
+  apply hreg.exists_columns_common_card_eq_one H
+  intro b b' hbb'
+  let S : Finset X :=
+    (Finset.univ : Finset X).filter fun x => H x b ∧ H x b'
+  let T : Finset (X ⊕ Y) :=
+    (relationBipartiteGraph H).neighborFinset (Sum.inr b) ∩
+      (relationBipartiteGraph H).neighborFinset (Sum.inr b')
+  have hcard : S.card = T.card := by
+    apply Finset.card_bij (fun x _hx => Sum.inl x)
+    · intro x hx
+      have hx' := (Finset.mem_filter.mp hx).2
+      exact Finset.mem_inter.mpr ⟨
+        ((relationBipartiteGraph H).mem_neighborFinset _ _).mpr hx'.1,
+        ((relationBipartiteGraph H).mem_neighborFinset _ _).mpr hx'.2⟩
+    · intro x hx y hy hxy
+      exact Sum.inl_injective hxy
+    · intro z hz
+      rcases z with x | y
+      · refine ⟨x, ?_, rfl⟩
+        have hz' := Finset.mem_inter.mp hz
+        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+          ((relationBipartiteGraph H).mem_neighborFinset _ _).mp hz'.1,
+          ((relationBipartiteGraph H).mem_neighborFinset _ _).mp hz'.2⟩
+      · have hz' := Finset.mem_inter.mp hz
+        have := ((relationBipartiteGraph H).mem_neighborFinset _ _).mp hz'.1
+        simp [relationBipartiteGraph] at this
+  change S.card ≤ 1
+  rw [hcard]
+  exact common_le_one_of_not_containsC4 hc4 (Sum.inr b) (Sum.inr b')
+    (Sum.inr_injective.ne hbb')
+
 /-- The graph-code specialization: the pairwise H-overlap bound forces an
 overlap-one column pair. -/
 theorem MuThreeMixedGridCode.exists_columns_common_card_eq_one
@@ -135,6 +178,8 @@ end Erdos85
 
 #print axioms Erdos85.exists_three_pairwise_ne_eq_intUnits_of_card_five
 #print axioms Erdos85.RelationTwoRegular.exists_columns_common_card_eq_one
+#print axioms
+  Erdos85.RelationTwoRegular.exists_columns_common_card_eq_one_of_c4Free
 #print axioms
   Erdos85.MuThreeMixedGridCode.exists_columns_common_card_eq_one
 #print axioms
