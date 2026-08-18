@@ -2172,6 +2172,13 @@ generalized rather than merely replayed.
      eligible rows whose actual rectangle commutator satisfies
      `κ^5 = 1 ∨ κ^3 = 1 ∨ κ^2 = 1`.  A future `K`-geometry contradiction can
      consume this theorem without reopening parity or cycle-type bookkeeping.
+     The precise downstream socket is now also **PROVEN** (`0eabdf3a41`):
+     `RectangleCommutatorsAvoidTwoThreeFive` states that every eligible
+     three-row rectangle avoids all three power identities, and
+     `false_of_c4Free_of_rectangleCommutatorsAvoidTwoThreeFive` derives
+     `False` from that single proposition plus H-C4-freeness.  Establishing
+     this socket (or a weaker prohibition only on the forced rectangle) from
+     all-triangle `K` geometry is the remaining substantive obligation.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
