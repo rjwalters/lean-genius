@@ -5,7 +5,8 @@ This repeats the direct 120-variable equations from
 ``check_lambda6_classification.py`` and computes the degree sequence of
 ``H ∩ D`` for every labeled solution.  In a graph realization this is the
 triangle-free edge graph on the defect component, so every degree must be
-zero or two.  Requires ``z3-solver`` and ``networkx``.
+zero or two.  It also computes the exact multiplicity of the defect
+eigenvalue three.  Requires ``z3-solver``, ``networkx``, and ``sympy``.
 """
 
 from __future__ import annotations
@@ -14,12 +15,13 @@ from collections import Counter
 import itertools
 
 import networkx as nx
+import sympy as sp
 import z3
 
 from check_lambda6_classification import N, cycle_matrix, matrix_square
 
 
-Record = tuple[int, bool, int, bool, tuple[tuple[int, int], ...]]
+Record = tuple[int, bool, int, int, bool, tuple[tuple[int, int], ...]]
 
 
 def census(parts: tuple[int, ...]) -> Counter[Record]:
@@ -69,6 +71,7 @@ def census(parts: tuple[int, ...]) -> Counter[Record]:
         record = (
             sum(nx.triangles(graph).values()) // 3,
             nx.is_bipartite(graph),
+            N - (sp.Matrix(defect) - 3 * sp.eye(N)).rank(),
             sum(degree == 2 for degree in color_degrees),
             all(degree in (0, 2) for degree in color_degrees),
             tuple(sorted(Counter(color_degrees).items())),
@@ -88,16 +91,16 @@ def census(parts: tuple[int, ...]) -> Counter[Record]:
 EXPECTED_VALID = {
     (10, 6): Counter(
         {
-            (0, True, 16, True, ((2, 16),)): 2,
-            (30, False, 16, True, ((2, 16),)): 2,
-            (40, False, 6, True, ((0, 10), (2, 6))): 2,
+            (0, True, 0, 16, True, ((2, 16),)): 2,
+            (30, False, 1, 16, True, ((2, 16),)): 2,
+            (40, False, 1, 6, True, ((0, 10), (2, 6))): 2,
         }
     ),
     (5, 5, 3, 3): Counter(
         {
-            (0, True, 0, True, ((0, 16),)): 120,
-            (30, False, 10, True, ((0, 6), (2, 10))): 120,
-            (40, False, 10, True, ((0, 6), (2, 10))): 120,
+            (0, True, 0, 0, True, ((0, 16),)): 120,
+            (30, False, 1, 10, True, ((0, 6), (2, 10))): 120,
+            (40, False, 1, 10, True, ((0, 6), (2, 10))): 120,
         }
     ),
 }
@@ -107,7 +110,7 @@ def main() -> int:
     ok = True
     for parts, expected in EXPECTED_VALID.items():
         full = census(parts)
-        valid = Counter({record: count for record, count in full.items() if record[3]})
+        valid = Counter({record: count for record, count in full.items() if record[4]})
         print(f"{parts}: total={sum(full.values())}, valid={sum(valid.values())}")
         for record, count in sorted(valid.items()):
             print(f"  {count}: {record}")
