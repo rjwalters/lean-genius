@@ -73,6 +73,83 @@ theorem MuThreeMixedGridCode.HSupport_column_card_eq_zero_or_two
     rw [hcard]
     exact code.H_twoRegular.2 b
 
+/-- On a witnessed H-edge, forbidden status characterizes the zero-support
+column sector. -/
+theorem MuThreeMixedGridCode.HSupport_column_card_eq_zero_of_H_K
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    {x : X} {b : Y} (hH : H x b) (hK : K x b) :
+    ((mixedGridHSupport H K).filter fun u => u.1.2 = b).card = 0 := by
+  classical
+  let c := (relationBipartiteGraph H).connectedComponentMk (Sum.inl x)
+  have hxC : Sum.inl x ∈ c.supp :=
+    (ConnectedComponent.mem_supp_iff c _).mpr rfl
+  have hall := code.cycleComponent_all_K_of_edge H K C c hH hK hxC
+  apply Finset.card_eq_zero.mpr
+  ext u
+  simp only [Finset.notMem_empty, iff_false]
+  intro hu
+  have hu' := Finset.mem_filter.mp hu
+  have huH := (Finset.mem_filter.mp hu'.1).2
+  have huCol := hu'.2
+  have hbC : Sum.inr b ∈ c.supp := by
+    apply (ConnectedComponent.mem_supp_congr_adj c
+      (show (relationBipartiteGraph H).Adj (Sum.inl x) (Sum.inr b) from hH)).mp
+    exact hxC
+  have huC : Sum.inl u.1.1 ∈ c.supp := by
+    apply (ConnectedComponent.mem_supp_congr_adj c
+      (show (relationBipartiteGraph H).Adj (Sum.inr b) (Sum.inl u.1.1) by
+        change H u.1.1 b
+        simpa [huCol] using huH)).mp
+    exact hbC
+  have hhall := hall u.1.1 b (by simpa [huCol] using huH) huC
+  exact u.2 (by simpa [huCol] using hhall)
+
+/-- On a witnessed occupied H-edge, the column contains exactly the two
+occupied H-cells of its component sector. -/
+theorem MuThreeMixedGridCode.HSupport_column_card_eq_two_of_H_not_K
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    {x : X} {b : Y} (hH : H x b) (hK : ¬ K x b) :
+    ((mixedGridHSupport H K).filter fun u => u.1.2 = b).card = 2 := by
+  rcases code.HSupport_column_card_eq_zero_or_two H K C b with hzero | htwo
+  · let u : muThreeMixedCell K := ⟨(x, b), hK⟩
+    have hu : u ∈ (mixedGridHSupport H K).filter fun u => u.1.2 = b := by
+      exact Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, hH⟩, rfl⟩
+    rw [Finset.card_eq_zero.mp hzero] at hu
+    simp at hu
+  · exact htwo
+
+/-- Columns sharing an H-neighbor lie in the same H/K sector, so their
+distinguished occupied H-support subsets have equal cardinality. -/
+theorem MuThreeMixedGridCode.HSupport_column_cards_eq_of_common_H
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    {x : X} {b b' : Y} (hHb : H x b) (hHb' : H x b') :
+    ((mixedGridHSupport H K).filter fun u => u.1.2 = b).card =
+      ((mixedGridHSupport H K).filter fun u => u.1.2 = b').card := by
+  let c := (relationBipartiteGraph H).connectedComponentMk (Sum.inl x)
+  have hxC : Sum.inl x ∈ c.supp :=
+    (ConnectedComponent.mem_supp_iff c _).mpr rfl
+  have hKiff := code.K_iff_K_of_H_edges_same_component H K C c
+    hHb hHb' hxC hxC
+  by_cases hK : K x b
+  · rw [code.HSupport_column_card_eq_zero_of_H_K H K C hHb hK,
+      code.HSupport_column_card_eq_zero_of_H_K H K C hHb' (hKiff.mp hK)]
+  · rw [code.HSupport_column_card_eq_two_of_H_not_K H K C hHb hK,
+      code.HSupport_column_card_eq_two_of_H_not_K H K C hHb'
+        (fun h => hK (hKiff.mpr h))]
+
 /-- Every row contains either zero or two occupied H-support cells. -/
 theorem MuThreeMixedGridCode.HSupport_row_card_eq_zero_or_two
     {X Y : Type*} [Fintype X] [Fintype Y]
@@ -128,5 +205,11 @@ end Erdos85
 
 #print axioms
   Erdos85.MuThreeMixedGridCode.HSupport_column_card_eq_zero_or_two
+#print axioms
+  Erdos85.MuThreeMixedGridCode.HSupport_column_card_eq_zero_of_H_K
+#print axioms
+  Erdos85.MuThreeMixedGridCode.HSupport_column_card_eq_two_of_H_not_K
+#print axioms
+  Erdos85.MuThreeMixedGridCode.HSupport_column_cards_eq_of_common_H
 #print axioms
   Erdos85.MuThreeMixedGridCode.HSupport_row_card_eq_zero_or_two
