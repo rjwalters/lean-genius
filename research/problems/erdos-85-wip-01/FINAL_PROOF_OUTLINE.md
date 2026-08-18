@@ -2084,7 +2084,14 @@ generalized rather than merely replayed.
      complementary negative class is also exact (**PROVEN**, `15ead5630e`):
      an odd six-point derangement has cycle type `(6)` or `(2,2,2)`.  Hence
      rectangle sign gives a complete axiom-clean partition of all four
-     possible derangement cycle types.
+     possible derangement cycle types.  For fixed columns this parity data is
+     now globally organized (**PROVEN**, `dee1346f9d`): after fixing one base
+     eligible row `r`,
+     `sign M(a,a') = sign M(r,a) · sign M(r,a')`.  Thus eligible rows carry a
+     two-coloring, canonical up to global flip; within-color pairs are exactly
+     the even `(4,2)/(3,3)` rectangles and cross-color pairs are exactly the
+     odd `(6)/(2,2,2)` rectangles.  This is the finite interface for a
+     common-eligible-row pigeonhole count coupled to the `K` sectors.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
