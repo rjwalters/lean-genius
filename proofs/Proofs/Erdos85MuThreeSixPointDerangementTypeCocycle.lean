@@ -34,6 +34,12 @@ def permTransport {α β : Type*} (e : α ≃ β) (σ : Equiv.Perm α) :
   ext x
   simp [permTransport]
 
+@[simp] theorem permTransport_inv {α β : Type*} (e : α ≃ β)
+    (σ : Equiv.Perm α) :
+    permTransport e σ⁻¹ = (permTransport e σ)⁻¹ := by
+  ext x
+  simp [permTransport]
+
 @[simp] theorem permTransport_pow {α β : Type*} (e : α ≃ β)
     (σ : Equiv.Perm α) (n : ℕ) :
     permTransport e (σ ^ n) = permTransport e σ ^ n := by
