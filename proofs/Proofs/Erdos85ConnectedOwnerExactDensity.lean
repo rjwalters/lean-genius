@@ -1,5 +1,6 @@
 import Proofs.Erdos85BinarySquareConnectedOwnerDensity
 import Proofs.Erdos85OrderSixtyFourRegularKernel
+import Proofs.Erdos85BinarySquareSameOwnerCenterGridCapacity
 import Mathlib.Combinatorics.SimpleGraph.StronglyRegular
 
 /-! # Exact owner density in the connected-defect stratum -/
@@ -162,6 +163,61 @@ theorem orderSixtyFour_regular_oneComponent_owner_common_exact
     rw [hnx, hny]
     exact sixtyFour_sevenRegular_compl_common_card_of_not_adj
       (secondOrderDefectGraph G) hDreg hne hnot
+
+/-- On a defect edge in the connected stratum, the unique owner route and
+the defect cells split the `8×8` selector grid exactly. -/
+theorem orderSixtyFour_regular_oneComponent_defectEdge_centerGrid_exact
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 1) :
+    ∃ a : (secondOrderDefectGraph G).ConnectedComponent,
+      ∀ {x y}, (secondOrderDefectGraph G).Adj x y →
+        (coloredTwoStepMiddles
+          (componentOwnerGraph G (secondOrderDefectGraph G) a)
+          (componentOwnerGraph G (secondOrderDefectGraph G) a) x y).card =
+            50 + (((secondOrderDefectGraph G).neighborFinset x) ∩
+              (secondOrderDefectGraph G).neighborFinset y).card ∧
+        (sameOwnerDefectCenterPairs G a x y).card +
+            (((secondOrderDefectGraph G).neighborFinset x) ∩
+              (secondOrderDefectGraph G).neighborFinset y).card = 14 := by
+  obtain ⟨a, _ha, hadjExact, _⟩ :=
+    orderSixtyFour_regular_oneComponent_owner_common_exact
+      G hfree hreg hcount
+  refine ⟨a, ?_⟩
+  intro x y hxy
+  let O := componentOwnerGraph G (secondOrderDefectGraph G) a
+  have hcolored : coloredTwoStepMiddles O O x y =
+      O.neighborFinset x ∩ O.neighborFinset y := by
+    ext z
+    simp only [coloredTwoStepMiddles, Finset.mem_filter, Finset.mem_univ,
+      true_and, Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact and_congr_right fun _ => O.adj_comm z y
+  have hroute : (coloredTwoStepMiddles O O x y).card =
+      50 + (((secondOrderDefectGraph G).neighborFinset x) ∩
+        (secondOrderDefectGraph G).neighborFinset y).card := by
+    rw [hcolored]
+    exact hadjExact hxy
+  have hownerSize : a.supp.ncard = 8 * 8 := by
+    obtain ⟨m, _E, hm, hma⟩ :=
+      orderSixtyFour_regular_one_defectComponent_partition_shape
+        G hfree hreg hcount
+    have haE : a = _E.symm 0 := by
+      apply _E.injective
+      exact Subsingleton.elim _ _
+    rw [hm a, haE, hma]
+  have hledger :=
+    binarySquare_regular_sameOwner_defectEdge_card_add_defectCells_eq_sq
+      G hfree (q := 8) (by norm_num) hreg (by norm_num) a hownerSize hxy
+  change (coloredTwoStepMiddles O O x y).card +
+    (sameOwnerDefectCenterPairs G a x y).card = 8 * 8 at hledger
+  refine ⟨hroute, ?_⟩
+  omega
 
 end
 
