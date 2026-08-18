@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareRegularParity
+import Proofs.Erdos85CrossComponentPairCount
 
 /-!
 # Cross edges between defect components are triangle edges
@@ -146,6 +147,95 @@ theorem exterior_triangle_dichotomy
     refine ⟨key z z' hz hz' hzz' huz huz' hnadj hpair, ?_⟩
     exact key z' z hz' hz hzz'.symm huz' huz (fun h => hnadj h.symm)
       (fun y hy hyc => (hpair y hy hyc).symm)
+
+/-- **Row-hit law.**  For `x` in a defect component `c` and `u` outside `c`,
+the unique common neighbour of `x` and `u` lies either in `c` (an internal
+neighbour of `x` adjacent to `u`) or outside `c` (an exterior neighbour of `u`
+adjacent to `x`), and exactly one of the two happens:
+`#{y ∈ N(x) ∩ c : u ~ y} + #{y ∈ N(u) ∖ c : x ~ y} = 1`. -/
+theorem card_internal_common_add_card_exterior_common_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    {x u : V} (hx : x ∈ c.supp) (hu : u ∉ c.supp) :
+    ((G.neighborFinset x).filter (fun y => y ∈ c.supp ∧ G.Adj u y)).card +
+      ((G.neighborFinset u).filter (fun y => y ∉ c.supp ∧ G.Adj x y)).card = 1 := by
+  have hne : (secondOrderDefectGraph G).connectedComponentMk x ≠
+      (secondOrderDefectGraph G).connectedComponentMk u := by
+    intro h
+    exact hu ((ConnectedComponent.mem_supp_iff c u).mpr
+      (h.symm.trans ((ConnectedComponent.mem_supp_iff c x).mp hx)))
+  have hone := card_common_eq_one_of_componentMk_ne G hfree hne
+  have hsplit := Finset.card_filter_add_card_filter_not
+    (s := G.neighborFinset x ∩ G.neighborFinset u) (fun y => y ∈ c.supp)
+  rw [hone] at hsplit
+  have h1 : (G.neighborFinset x ∩ G.neighborFinset u).filter (fun y => y ∈ c.supp) =
+      (G.neighborFinset x).filter (fun y => y ∈ c.supp ∧ G.Adj u y) := by
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_inter, mem_neighborFinset]
+    tauto
+  have h2 : (G.neighborFinset x ∩ G.neighborFinset u).filter (fun y => ¬ y ∈ c.supp) =
+      (G.neighborFinset u).filter (fun y => y ∉ c.supp ∧ G.Adj x y) := by
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_inter, mem_neighborFinset]
+    tauto
+  rw [h1, h2] at hsplit
+  exact hsplit
+
+/-- Row-hit law, iff form: `u` has an exterior neighbour adjacent to `x` iff no
+internal neighbour of `x` is adjacent to `u`; and in that case the exterior
+neighbour is unique. -/
+theorem exists_exterior_common_iff_no_internal_common
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    {x u : V} (hx : x ∈ c.supp) (hu : u ∉ c.supp) :
+    ((∃ y, G.Adj u y ∧ y ∉ c.supp ∧ G.Adj x y) ↔
+      ¬ ∃ y, G.Adj x y ∧ y ∈ c.supp ∧ G.Adj u y) ∧
+    ((∃ y, G.Adj u y ∧ y ∉ c.supp ∧ G.Adj x y) →
+      ∃! y, G.Adj u y ∧ y ∉ c.supp ∧ G.Adj x y) := by
+  have h := card_internal_common_add_card_exterior_common_eq_one G hfree c hx hu
+  set A := (G.neighborFinset x).filter (fun y => y ∈ c.supp ∧ G.Adj u y) with hA
+  set B := (G.neighborFinset u).filter (fun y => y ∉ c.supp ∧ G.Adj x y) with hB
+  have hAmem : ∀ y, y ∈ A ↔ G.Adj x y ∧ y ∈ c.supp ∧ G.Adj u y := by
+    intro y; simp only [hA, Finset.mem_filter, mem_neighborFinset]
+  have hBmem : ∀ y, y ∈ B ↔ G.Adj u y ∧ y ∉ c.supp ∧ G.Adj x y := by
+    intro y; simp only [hB, Finset.mem_filter, mem_neighborFinset]
+  constructor
+  · constructor
+    · rintro ⟨y, hy⟩ ⟨y', hy'⟩
+      have hyB : y ∈ B := (hBmem y).mpr hy
+      have hy'A : y' ∈ A := (hAmem y').mpr hy'
+      have := Finset.card_pos.mpr ⟨y, hyB⟩
+      have := Finset.card_pos.mpr ⟨y', hy'A⟩
+      omega
+    · intro hno
+      have hA0 : A.card = 0 := by
+        rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
+        intro y hy
+        exact hno ⟨y, (hAmem y).mp hy⟩
+      have hB1 : B.card = 1 := by omega
+      obtain ⟨y, hy⟩ := Finset.card_eq_one.mp hB1
+      refine ⟨y, (hBmem y).mp ?_⟩
+      rw [hy]; exact Finset.mem_singleton_self y
+  · rintro ⟨y, hy⟩
+    have hyB : y ∈ B := (hBmem y).mpr hy
+    have hBpos := Finset.card_pos.mpr ⟨y, hyB⟩
+    have hB1 : B.card = 1 := by omega
+    obtain ⟨y₀, hy₀⟩ := Finset.card_eq_one.mp hB1
+    refine ⟨y, hy, ?_⟩
+    intro y' hy'
+    have h1 : y' ∈ B := (hBmem y').mpr hy'
+    rw [hy₀, Finset.mem_singleton] at hyB h1
+    exact h1.trans hyB.symm
 
 end
 
