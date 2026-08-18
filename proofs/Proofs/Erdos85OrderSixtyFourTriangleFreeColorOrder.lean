@@ -71,6 +71,75 @@ theorem orderSixtyFour_allSixteen_triangleFree_degree_zero_or_two
     simpa [T] using heven
   omega
 
+/-- On an internal ambient edge of a size-sixteen defect component, the
+triangle-free degree-two predicate propagates in both directions.  Thus the
+colored support is a union of whole cycles of the internal ambient
+two-factor. -/
+theorem orderSixtyFour_allSixteen_triangleFree_degree_two_iff_of_internal_adj
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hsize : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    {x y : Fin 64} (hx : x ∈ c.supp) (hy : y ∈ c.supp)
+    (hxy : G.Adj x y) :
+    (triangleFreeEdgeGraph G).degree x = 2 ↔
+      (triangleFreeEdgeGraph G).degree y = 2 := by
+  let D := secondOrderDefectGraph G
+  let T := triangleFreeEdgeGraph G
+  have htarget (z : Fin 64) (hz : z ∈ c.supp) :
+      (componentNeighborFinset G D c z).card = 2 := by
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree (q := 8) (by norm_num) hreg (by norm_num)
+      c c (x := z) hz
+    rw [hsize c] at hmul
+    have hcard :
+        (componentNeighborFinset G (secondOrderDefectGraph G) c z).card = 2 := by
+      omega
+    simpa [D] using hcard
+  have hforward {u v : Fin 64} (hu : u ∈ c.supp) (hv : v ∈ c.supp)
+      (huv : G.Adj u v) (hTu : T.degree u = 2) : T.degree v = 2 := by
+    have hsub : T.neighborFinset u ⊆ componentNeighborFinset G D c u := by
+      intro z hz
+      have hTuz : T.Adj u z := (T.mem_neighborFinset u z).mp hz
+      have hDuz : D.Adj u z := by
+        change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj u z
+        exact Or.inr hTuz
+      rw [componentNeighborFinset, Finset.mem_filter]
+      refine ⟨?_, ?_⟩
+      · exact (G.mem_neighborFinset u z).mpr
+          (((mem_triangleFreeNeighbors G u z).mp
+            ((triangleFreeEdgeGraph_adj G u z).mp hTuz)).1)
+      · rw [← ConnectedComponent.mem_supp_iff]
+        exact (ConnectedComponent.mem_supp_congr_adj c hDuz).mp hu
+    have hTeq : T.neighborFinset u = componentNeighborFinset G D c u := by
+      apply Finset.eq_of_subset_of_card_le hsub
+      rw [T.card_neighborFinset_eq_degree, hTu, htarget u hu]
+    have hvTarget : v ∈ componentNeighborFinset G D c u := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset u v).mpr huv,
+        (ConnectedComponent.mem_supp_iff c v).mp hv⟩
+    have hTuv : T.Adj u v := by
+      exact (T.mem_neighborFinset u v).mp (hTeq.symm ▸ hvTarget)
+    have hpos : 0 < T.degree v := by
+      rw [← T.card_neighborFinset_eq_degree]
+      exact Finset.card_pos.mpr ⟨u,
+        (T.mem_neighborFinset v u).mpr hTuv.symm⟩
+    rcases orderSixtyFour_allSixteen_triangleFree_degree_zero_or_two
+      G hfree hreg hsize v with hv0 | hv2
+    · simp [T, hv0] at hpos
+    · simpa [T] using hv2
+  constructor
+  · intro hTx
+    exact hforward hx hy hxy (by simpa [T] using hTx)
+  · intro hTy
+    exact hforward hy hx hxy.symm (by simpa [T] using hTy)
+
 /-- At the order-64 degree-eight boundary, if every triangle-free degree is
 zero or two and the ambient graph has eighty triangles, then exactly sixteen
 vertices have triangle-free degree two. -/
