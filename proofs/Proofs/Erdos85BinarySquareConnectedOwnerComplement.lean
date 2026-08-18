@@ -182,6 +182,27 @@ theorem binarySquare_regular_defect_lapMatrix_eq_adjMatrix_sq_sub_ones
   rw [hLap, hsq]
   abel
 
+/-- Determinant form of the ambient/defect coupling: the determinant of the
+rank-one-corrected defect Laplacian is an exact rational square. -/
+theorem binarySquare_regular_det_defect_lap_add_ones_eq_det_adj_sq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q) :
+    ((secondOrderDefectGraph G).lapMatrix ℚ + ratOnesMatrix V).det =
+      (G.adjMatrix ℚ).det * (G.adjMatrix ℚ).det := by
+  have hL := binarySquare_regular_defect_lapMatrix_eq_adjMatrix_sq_sub_ones
+    G hfree hq hreg hcard
+  have hmatrix :
+      (secondOrderDefectGraph G).lapMatrix ℚ + ratOnesMatrix V =
+        G.adjMatrix ℚ * G.adjMatrix ℚ := by
+    rw [hL]
+    abel
+  rw [hmatrix, Matrix.det_mul]
+
 end
 
 end Erdos85
@@ -190,3 +211,4 @@ end Erdos85
 #print axioms Erdos85.centeredOwnerGram_eq_q_smul_defect_lapMatrix_of_oneComponent
 #print axioms Erdos85.binarySquare_regular_oneComponent_finrank_adj_kernel_eq_zero
 #print axioms Erdos85.binarySquare_regular_defect_lapMatrix_eq_adjMatrix_sq_sub_ones
+#print axioms Erdos85.binarySquare_regular_det_defect_lap_add_ones_eq_det_adj_sq

@@ -1956,7 +1956,17 @@ generalized rather than merely replayed.
      `D` is connected, this says the only zero mode of `A_G²-J` is the
      principal constant direction, while `A_G` itself has no zero mode.  This
      exact polynomial relation—not the owner-density inequality—is the clean
-     spectral input for the remaining connected-stratum consumer.
+     spectral input for the remaining connected-stratum consumer.  Its first
+     arithmetic consequence is now **PROVEN q-GENERIC**:
+     `binarySquare_regular_det_defect_lap_add_ones_eq_det_adj_sq` gives
+     `det(L_D+J)=det(A_G)^2` over `ℚ`.  The next precise leaf is **GAP
+     A-REG-8-MATRIX-TREE**: formalize the rank-one Matrix–Tree evaluation
+     `det(L_D+J)=|V|² τ(D)` for connected `D`.  Combined with the proved square
+     identity and `|V|=q²`, elementary valuations force the spanning-tree
+     count `τ(D)` to be a perfect square.  That necessary arithmetic condition
+     can then be tested against structural candidates for the connected
+     `(q-1)`-regular defect graph.  The Matrix–Tree bridge and the final
+     exclusion are not yet Lean-proven here, so the stratum remains a GAP.
      The residual **GAP** is to turn this extreme single-color closure into an
      ambient C4/routing contradiction when every center belongs to the same
      defect component.  The two-component
