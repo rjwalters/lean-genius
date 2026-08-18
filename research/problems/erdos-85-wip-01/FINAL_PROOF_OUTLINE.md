@@ -2141,6 +2141,13 @@ generalized rather than merely replayed.
      on the actual six-cell column fiber of any three distinct eligible rows,
      using the exact rectangle cocycle.  Coupling this type-parity constraint
      to the varying all-triangle `K` two-factor remains open.
+     The unavoidable triangle now has an exhaustive graph-facing type split
+     (**PROVEN**, `632e1a3420`): H-C4-freeness, overlap-one, and parity
+     pigeonholing force three eligible rows whose labelled monodromy types are
+     `(42,42,42)`, exactly one `(33)` in any of the three positions, or
+     `(33,33,33)`.  These are the five remaining cases for the future
+     all-triangle `K`-geometry consumer; the three exactly-two-`(33)` cases
+     are eliminated before any certificate or coordinate choice.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
