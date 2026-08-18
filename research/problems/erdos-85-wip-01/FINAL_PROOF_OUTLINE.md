@@ -1955,9 +1955,22 @@ generalized rather than merely replayed.
      `orderSixtyFour_fourFour_twoOwner_exists_ownerDensity` prove, from the
      established cross-pressure bounds, that owner `a` or owner `b` carries a
      certified dense routing fragment.  The remaining GAP is compatibility
-     or a second fragment, not production of the first.  `[6,2]` remains
-     earlier: its cross budget 512 does not yet
-     dominate all block edge capacities.  The obstruction is now routing
+     or a second fragment, not production of the first.  `[6,2]` no longer
+     stops at its weak cross budget 512.  The q-free multiplicity lemma
+     `exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt` says that
+     if the global triple census is more than twice the directed first-edge
+     space and the defect graph has two components, then one edge has at least
+     three closings and two share a component, forcing a repeated closing in
+     one actual component block.  In `[6,2]`, orienting the repeated owner
+     toward the size-two component gives 5376 triples over 896 directed edges,
+     so `orderSixtyFour_sixTwo_exists_repeatedClosingInBlock` applies.
+     Cyclic invariance of the global census gives the stronger
+     `orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks`: block
+     repeated closings exist in both `A,A,B` and `A,B,A` orientations.  Thus
+     the former cross-budget capacity failure is bypassed.  The new `[6,2]`
+     **GAP** is consumption of these two block forks by their component shapes
+     (including the all-same block), not production of a block collision.
+     Across the two-component strata, the obstruction is now routing
      saturation/contradiction, not a rectangular classification, finite
      census, or same-owner center lemma.  The last two
      are now **AT-64-ONLY, PARTIAL**: partition-agnostic mixed-owner trace and
