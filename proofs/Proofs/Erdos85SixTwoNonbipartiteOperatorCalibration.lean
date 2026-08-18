@@ -85,7 +85,9 @@ theorem sixTwoCalibrationDefect_degree : ∀ x : Fin 16,
 theorem sixTwoCalibrationSmallOwner_degree : ∀ x : Fin 16,
     sixTwoCalibrationSmallOwner.degree x = 2 := by decide
 
-/-- The internal two-factor calibration is C4-free. -/
+/-- The small-owner two-factor calibration is C4-free.  This is not the
+internal ambient graph; `4da8c82eed` supplies the stronger self-source
+calibration with an explicit C4-free internal factor. -/
 theorem sixTwoCalibrationSmallOwner_c4Free :
     ¬ containsC4 (Fin 16) sixTwoCalibrationSmallOwner := by
   have heq : sixTwoCalibrationSmallOwner = cycleGraph 16 := by
