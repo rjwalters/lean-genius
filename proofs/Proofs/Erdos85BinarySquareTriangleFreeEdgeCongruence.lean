@@ -20,6 +20,15 @@ namespace Erdos85
 
 noncomputable section
 
+private theorem reachable_induction_of_adj_closed_binarySquare
+    {V : Type*} (D : SimpleGraph V) (P : V → Prop)
+    (hP : ∀ x y, D.Adj x y → P x → P y) {u v : V}
+    (h : D.Reachable u v) (hu : P u) : P v := by
+  obtain ⟨p⟩ := h
+  induction p with
+  | nil => exact hu
+  | cons hadj _ ih => exact ih (hP _ _ hadj hu)
+
 /-- Exact binary square-order triangle-free edge ledger. -/
 theorem binarySquare_regular_triangleFreeEdge_card_eq_pow_sub_three_mul_triangles
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -105,6 +114,39 @@ theorem binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty
   rw [hthree, zero_mul, zero_add] at hzmod
   exact (pow_ne_zero (3 * k - 1) (by decide : (2 : ZMod 3) ≠ 0)) hzmod.symm
 
+/-- Triangle-free degree two is constant on each connected component of the
+internal ambient two-factor of a normalized size-two defect component. -/
+theorem binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_reachable
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hqEven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) (x y : c.supp)
+    (hxy : (G.induce c.supp).Reachable x y) :
+    (triangleFreeEdgeGraph G).degree x.1 = 2 ↔
+      (triangleFreeEdgeGraph G).degree y.1 = 2 := by
+  let H := G.induce c.supp
+  have hstep : ∀ u v : c.supp, H.Adj u v →
+      (triangleFreeEdgeGraph G).degree u.1 = 2 →
+        (triangleFreeEdgeGraph G).degree v.1 = 2 := by
+    intro u v huv hu
+    exact
+      (binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_adj
+        G hfree hq hqEven hreg hcard c hc u v huv).mp hu
+  constructor
+  · exact reachable_induction_of_adj_closed_binarySquare H
+      (fun u => (triangleFreeEdgeGraph G).degree u.1 = 2)
+      hstep hxy
+  · exact reachable_induction_of_adj_closed_binarySquare H
+      (fun u => (triangleFreeEdgeGraph G).degree u.1 = 2)
+      hstep hxy.symm
+
 /-- In an all-size-two defect partition at binary square order, some
 component contains a vertex of triangle-free degree two.  Thus the uniform
 nonempty-edge theorem seeds an all-triangle-free internal cycle in one of the
@@ -159,6 +201,41 @@ theorem binarySquare_regular_allSizeTwo_exists_triangleFreeDegreeTwo
     omega
   · exact ⟨c, x, hxmem, htwo⟩
 
+/-- Cycle-level form of the all-size-two seed: one internal ambient connected
+component is entirely triangle-free-degree two. -/
+theorem binarySquare_regular_allSizeTwo_exists_allTf_internalComponent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hk : 2 ≤ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcard : Fintype.card V = (2 ^ k) * (2 ^ k))
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = (2 ^ k) * 2) :
+    ∃ (c : (secondOrderDefectGraph G).ConnectedComponent) (x : c.supp),
+      (triangleFreeEdgeGraph G).degree x.1 = 2 ∧
+      ∀ y : c.supp, (G.induce c.supp).Reachable x y →
+        (triangleFreeEdgeGraph G).degree y.1 = 2 := by
+  obtain ⟨c, x, hxmem, hx⟩ :=
+    binarySquare_regular_allSizeTwo_exists_triangleFreeDegreeTwo
+      G hfree hk hreg hcard hall
+  let xs : c.supp := ⟨x, hxmem⟩
+  refine ⟨c, xs, hx, ?_⟩
+  intro y hxy
+  exact
+    (binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_reachable
+      G hfree (q := 2 ^ k) (by
+        have : 4 ≤ 2 ^ k := by
+          calc
+            4 = 2 ^ 2 := by norm_num
+            _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk
+        omega)
+      (by rw [Nat.even_pow]; exact ⟨even_two, by omega⟩)
+      hreg hcard c (hall c) xs y hxy).mp hx
+
 end
 
 
@@ -171,4 +248,8 @@ end Erdos85
 #print axioms
   Erdos85.binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty
 #print axioms
+  Erdos85.binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_reachable
+#print axioms
   Erdos85.binarySquare_regular_allSizeTwo_exists_triangleFreeDegreeTwo
+#print axioms
+  Erdos85.binarySquare_regular_allSizeTwo_exists_allTf_internalComponent
