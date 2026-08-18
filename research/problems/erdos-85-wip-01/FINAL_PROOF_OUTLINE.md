@@ -2087,6 +2087,20 @@ generalized rather than merely replayed.
      synchronized model uses the stated bipartition alignment.  If verified,
      the last known 16-vertex abstract countermodel is eliminated by
      self-indexing rather than by another spectral inequality.
+     The first half of that proposed exclusion is now **PROVEN abstractly**
+     (`0472481101`).  The theorem
+     `twoRegular_no_cross_adj_of_commonNeighbor_no_cross` says that whenever
+     the defect relation contains every cross-part pair except at most one per
+     vertex, an edge-disjoint 2-factor whose distinct-common-neighbor graph
+     has no cross-part edge can itself have no cross-part edge.  Hence, under
+     the advertised alignment, the internal 2-factor `A` must split over the
+     two eight-point classes; it cannot be the alternating `C_16` square root.
+     The residual local fact is smaller and alignment-independent: a
+     2-regular graph on eight vertices cannot have connected
+     distinct-common-neighbor graph `C_8` (connectedness first forces the
+     two-factor itself to be `C_8`, whose distance-two graph is two `C_4`s).
+     Formalizing this eight-vertex cycle-root fact, plus checking the explicit
+     model alignment, completes the proposed countermodel exclusion.
      The residual `[6,2]` target must couple the transported
      defect blocks to this line-graph edge partition; commute, degrees, and
      the entry cap alone cannot close it.
