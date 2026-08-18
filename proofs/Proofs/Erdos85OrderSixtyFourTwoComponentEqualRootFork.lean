@@ -1,5 +1,6 @@
 import Proofs.Erdos85OrderSixtyFourTwoComponentRepeatedClosing
 import Proofs.Erdos85BinarySquareOwnerBlockRotatedRepeatedClosing
+import Proofs.Erdos85BinarySquareSeparatedForkRowDensity
 
 /-! # Equal-root normalization of two-component owner forks -/
 
@@ -56,6 +57,58 @@ theorem twoComponents_hasCyclicEqualRootRepeatedClosing
   · exact Or.inr (Or.inr ⟨hge,
       exists_twiceRotated_repeatedClosing_of_thirdOwnerEdge_card_lt_block_card
         D A B C e f g hthird⟩)
+
+/-- For the two-owner color pattern `(a,a,b)`, every nonlocal cyclic
+equal-root repeated closing yields a dense routing fragment of owner `a` or
+owner `b`.  The third cyclic orientation uses the same-route adapter. -/
+theorem binarySquare_regular_twoOwner_cyclicEqualRootRepeatedClosing_forces_ownerDensity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (a b e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b)
+    (hnonlocal : ¬ (e = f ∧ f = g))
+    (hcyclic : HasCyclicEqualRootRepeatedClosing (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b) e f g) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m a ∨
+      HasTwoCenterRoutingRowDensityForOwner G hfree m b := by
+  rcases hcyclic with ⟨hef, hr⟩ | ⟨hfg, hr⟩ | ⟨hge, hr⟩
+  · have hfg' : f ≠ g := by
+      intro h
+      exact hnonlocal ⟨hef, h⟩
+    have hd :=
+      binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRowDensity
+        G hfree hq hreg hcard m hm a a b e f g hab hef hfg' hr
+    rcases hd with ⟨x, hx⟩ | ⟨x, hx⟩
+    · exact Or.inl ⟨e, g, hef ▸ hfg', x, hx⟩
+    · exact Or.inr ⟨e, g, hef ▸ hfg', x, hx⟩
+  · have hge' : g ≠ e := by
+      intro h
+      apply hnonlocal
+      exact ⟨(hfg.trans h).symm, hfg⟩
+    have hd :=
+      binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRowDensity
+        G hfree hq hreg hcard m hm a b a f g e hab.symm hfg hge' hr
+    rcases hd with ⟨x, hx⟩ | ⟨x, hx⟩
+    · exact Or.inr ⟨f, e, hfg ▸ hge', x, hx⟩
+    · exact Or.inl ⟨f, e, hfg ▸ hge', x, hx⟩
+  · have hef' : e ≠ f := by
+      intro h
+      apply hnonlocal
+      exact ⟨h, h.symm.trans hge.symm⟩
+    exact Or.inl
+      (binarySquare_regular_equalRootsSameRouteRepeatedClosing_forces_ownerDensity
+        G hfree hq hreg hcard m hm b a g e f hab.symm hge hef' hr)
 
 /-- `[5,3]` always has an equal-root repeated closing after cyclic
 normalization of its pressured nonlocal block. -/
@@ -178,11 +231,74 @@ theorem orderSixtyFour_fourFour_twoOwner_exists_equalRootRepeatedClosing
     twoComponents_hasCyclicEqualRootRepeatedClosing
       _ _ _ _ hcount e f g hrepeat hsecond hthird⟩
 
+/-- The `[5,3]` pressure route reaches a dense fragment for one of its two
+owner colors. -/
+theorem orderSixtyFour_threeFive_twoOwner_exists_ownerDensity
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 3) (hmb : m b = 5)
+    (hcross : 6816 ≤
+      (crossComponentCyclicColoredTriples (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)).card) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m a ∨
+      HasTwoCenterRoutingRowDensityForOwner G hfree m b := by
+  obtain ⟨e, f, g, hnonlocal, hcyclic⟩ :=
+    orderSixtyFour_threeFive_twoOwner_exists_equalRootRepeatedClosing
+      G hfree hreg hcount m hm a b hab hma hmb hcross
+  exact binarySquare_regular_twoOwner_cyclicEqualRootRepeatedClosing_forces_ownerDensity
+    G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+      a b e f g hab hnonlocal hcyclic
+
+/-- The `[4,4]` pressure route likewise reaches a dense fragment for one of
+its two owner colors. -/
+theorem orderSixtyFour_fourFour_twoOwner_exists_ownerDensity
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 4) (hmb : m b = 4)
+    (hcross : 12288 ≤
+      (crossComponentCyclicColoredTriples (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)).card) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m a ∨
+      HasTwoCenterRoutingRowDensityForOwner G hfree m b := by
+  obtain ⟨e, f, g, hnonlocal, hcyclic⟩ :=
+    orderSixtyFour_fourFour_twoOwner_exists_equalRootRepeatedClosing
+      G hfree hreg hcount m hm a b hab hma hmb hcross
+  exact binarySquare_regular_twoOwner_cyclicEqualRootRepeatedClosing_forces_ownerDensity
+    G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+      a b e f g hab hnonlocal hcyclic
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.componentTriple_has_equal_pair_of_card_eq_two
 #print axioms Erdos85.twoComponents_hasCyclicEqualRootRepeatedClosing
+#print axioms Erdos85.binarySquare_regular_twoOwner_cyclicEqualRootRepeatedClosing_forces_ownerDensity
 #print axioms Erdos85.orderSixtyFour_threeFive_twoOwner_exists_equalRootRepeatedClosing
 #print axioms Erdos85.orderSixtyFour_fourFour_twoOwner_exists_equalRootRepeatedClosing
+#print axioms Erdos85.orderSixtyFour_threeFive_twoOwner_exists_ownerDensity
+#print axioms Erdos85.orderSixtyFour_fourFour_twoOwner_exists_ownerDensity

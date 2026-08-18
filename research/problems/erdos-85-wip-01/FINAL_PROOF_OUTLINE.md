@@ -1930,7 +1930,19 @@ generalized rather than merely replayed.
      A-centers distinct, after which C4-freeness separates a center pair across
      closings (`sameRouteOwnerFork_canonicalCenter_separation`, `49542583e3`).
      Thus `[5,3]` and `[4,4]` reach the common downstream routing GAP in every
-     orientation.  `[6,2]` remains earlier: its cross budget 512 does not yet
+     orientation.  This route now has an explicit density capstone.  The
+     q-generic
+     `binarySquare_regular_equalRootsSameRouteRepeatedClosing_forces_ownerDensity`
+     handles the cyclic orientation whose two closing routes share an owner;
+     together with the distinct-route equal-root adapter,
+     `binarySquare_regular_twoOwner_cyclicEqualRootRepeatedClosing_forces_ownerDensity`
+     covers all three orientations.  Consequently the AT-64 theorems
+     `orderSixtyFour_threeFive_twoOwner_exists_ownerDensity` and
+     `orderSixtyFour_fourFour_twoOwner_exists_ownerDensity` prove, from the
+     established cross-pressure bounds, that owner `a` or owner `b` carries a
+     certified dense routing fragment.  The remaining GAP is compatibility
+     or a second fragment, not production of the first.  `[6,2]` remains
+     earlier: its cross budget 512 does not yet
      dominate all block edge capacities.  The obstruction is now routing
      saturation/contradiction, not a rectangular classification, finite
      census, or same-owner center lemma.  The last two

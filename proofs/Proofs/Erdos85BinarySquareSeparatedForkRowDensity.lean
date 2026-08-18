@@ -1,6 +1,7 @@
 import Proofs.Erdos85BinarySquareRoutingRowStarDecomposition
 import Proofs.Erdos85BinarySquareOwnerBlockEquitable
 import Proofs.Erdos85BinarySquareMixedOwnerCanonicalForkCenters
+import Proofs.Erdos85BinarySquareSameRouteOwnerForkCenters
 import Proofs.Erdos85BinarySquareOppositeOwnerBowtieCenters
 import Proofs.Erdos85OrderSixtyFourThreeComponentForkAdapter
 
@@ -316,6 +317,77 @@ theorem binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRo
         (crossCommonNeighbor_spec G hfree hfg x z₁).1
         (crossCommonNeighbor_spec G hfree hfg x z₂).1
 
+/-- If an equal-root fork has the same owner on both closing routes, its
+q-generic same-route center separation still forces a density fragment for
+that repeated route owner. -/
+theorem binarySquare_regular_equalRootsSameRouteRepeatedClosing_forces_ownerDensity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (a b e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hef : e = f) (hfg : f ≠ g)
+    (hrepeat : HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b) e f g) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m b := by
+  subst f
+  obtain ⟨x, y, z₁, z₂, hz, hx, hy, hz₁, hz₂,
+    haxy, hby₁, hbx₁, hby₂, hbx₂⟩ :=
+      (hasRepeatedClosingInBlock_iff_exists_ownerFork
+        (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b) e e g).mp hrepeat
+  let xs : e.supp := ⟨x, (ConnectedComponent.mem_supp_iff e x).mpr hx⟩
+  let ys : e.supp := ⟨y, (ConnectedComponent.mem_supp_iff e y).mpr hy⟩
+  let z₁s : g.supp := ⟨z₁, (ConnectedComponent.mem_supp_iff g z₁).mpr hz₁⟩
+  let z₂s : g.supp := ⟨z₂, (ConnectedComponent.mem_supp_iff g z₂).mpr hz₂⟩
+  let uy₁ : b.supp := ⟨crossCommonNeighbor G hfree hfg ys z₁s,
+    crossCommonNeighbor_mem_owner_of_componentOwnerGraph_adj
+      G hfree hfg ys z₁s hby₁⟩
+  let uy₂ : b.supp := ⟨crossCommonNeighbor G hfree hfg ys z₂s,
+    crossCommonNeighbor_mem_owner_of_componentOwnerGraph_adj
+      G hfree hfg ys z₂s hby₂⟩
+  let ux₁ : b.supp := ⟨crossCommonNeighbor G hfree hfg xs z₁s,
+    crossCommonNeighbor_mem_owner_of_componentOwnerGraph_adj
+      G hfree hfg xs z₁s
+        (((componentOwnerGraph G
+          (secondOrderDefectGraph G) b).adj_comm _ _).mpr hbx₁)⟩
+  let ux₂ : b.supp := ⟨crossCommonNeighbor G hfree hfg xs z₂s,
+    crossCommonNeighbor_mem_owner_of_componentOwnerGraph_adj
+      G hfree hfg xs z₂s
+        (((componentOwnerGraph G
+          (secondOrderDefectGraph G) b).adj_comm _ _).mpr hbx₂)⟩
+  have hsep := sameRouteOwnerFork_canonicalCenter_separation
+    G hfree hfg hab xs ys z₁s z₂s hz haxy hby₁ hbx₁ hby₂ hbx₂
+  change uy₁.1 ≠ uy₂.1 ∨ ux₁.1 ≠ ux₂.1 at hsep
+  rcases hsep with hysep | hxsep
+  · have hysep' : uy₁ ≠ uy₂ := fun h => hysep (congrArg Subtype.val h)
+    refine ⟨e, g, hfg, ys, uy₁, uy₂, hysep',
+      (crossCommonNeighbor_spec G hfree hfg ys z₁s).1,
+      (crossCommonNeighbor_spec G hfree hfg ys z₂s).1, ?_⟩
+    exact binarySquare_regular_twoSeparatedCenters_routingRow_density
+      G hfree hq hreg hcard m hm hfg ys uy₁ uy₂ hysep'
+        (crossCommonNeighbor_spec G hfree hfg ys z₁s).1
+        (crossCommonNeighbor_spec G hfree hfg ys z₂s).1
+  · have hxsep' : ux₁ ≠ ux₂ := fun h => hxsep (congrArg Subtype.val h)
+    refine ⟨e, g, hfg, xs, ux₁, ux₂, hxsep',
+      (crossCommonNeighbor_spec G hfree hfg xs z₁s).1,
+      (crossCommonNeighbor_spec G hfree hfg xs z₂s).1, ?_⟩
+    exact binarySquare_regular_twoSeparatedCenters_routingRow_density
+      G hfree hq hreg hcard m hm hfg xs ux₁ ux₂ hxsep'
+        (crossCommonNeighbor_spec G hfree hfg xs z₁s).1
+        (crossCommonNeighbor_spec G hfree hfg xs z₂s).1
+
 end
 
 end Erdos85
@@ -324,3 +396,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_regular_ownerFork_forces_twoCenterRoutingRowDensity
 #print axioms Erdos85.binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
 #print axioms Erdos85.binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRowDensity
+#print axioms Erdos85.binarySquare_regular_equalRootsSameRouteRepeatedClosing_forces_ownerDensity
