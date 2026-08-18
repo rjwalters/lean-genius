@@ -58,9 +58,70 @@ theorem exists_int_negativeAdjacencyEigenvector_of_complex
   have hneg := eq_neg_of_add_eq_zero_left hMZw
   simpa only [AZ, neg_smul] using hneg
 
+/-- The usual spectral bipartiteness criterion, connected to the campaign's
+complex adjacency convention: a connected regular graph carrying a nonzero
+mode at the negative degree is bipartite. -/
+theorem isBipartite_of_connected_regular_complex_negativeDegree_eigenvector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hconn : G.Connected) (k : ℕ) (hreg : ∀ x, G.degree x = k)
+    (v : V → ℂ) (hv : v ≠ 0)
+    (heig : (G.adjMatrix ℂ).mulVec v = (-(k : ℤ) : ℂ) • v) :
+    G.IsBipartite := by
+  obtain ⟨w, hw, hwEig⟩ :=
+    exists_int_negativeAdjacencyEigenvector_of_complex G (k : ℤ) v hv heig
+  have hwSum : ∀ x,
+      ∑ y ∈ G.neighborFinset x, w y = -(k : ℤ) * w x := by
+    intro x
+    have hx := congrFun hwEig x
+    rw [SimpleGraph.adjMatrix_mulVec_apply] at hx
+    simpa [Pi.smul_apply, smul_eq_mul] using hx
+  obtain ⟨a, ha0, habs, hflip⟩ :=
+    negativeDegree_harmonic_constant_abs_and_edge_neg
+      G hconn k hreg w hwSum
+  have hapos : 0 < a := by
+    have hane : a ≠ 0 := by
+      intro ha
+      apply hw
+      funext x
+      exact abs_eq_zero.mp (by rw [habs x, ha])
+    omega
+  let P : Set V := {x | 0 < w x}
+  let N : Set V := {x | w x < 0}
+  apply SimpleGraph.isBipartite_iff_exists_isBipartiteWith.mpr
+  refine ⟨P, N, ?_⟩
+  refine ⟨?_, ?_⟩
+  · rw [Set.disjoint_left]
+    intro x hxP hxN
+    change 0 < w x at hxP
+    change w x < 0 at hxN
+    omega
+  · intro x y hxy
+    have hxne : w x ≠ 0 := by
+      intro hx
+      have := habs x
+      rw [hx, abs_zero] at this
+      omega
+    have hyflip := hflip x y hxy
+    by_cases hxpos : 0 < w x
+    · left
+      constructor
+      · exact hxpos
+      · change w y < 0
+        rw [hyflip]
+        omega
+    · right
+      have hxneg : w x < 0 := by omega
+      constructor
+      · exact hxneg
+      · change 0 < w y
+        rw [hyflip]
+        omega
+
 end
 
 
 end Erdos85
 
 #print axioms Erdos85.exists_int_negativeAdjacencyEigenvector_of_complex
+#print axioms Erdos85.isBipartite_of_connected_regular_complex_negativeDegree_eigenvector
