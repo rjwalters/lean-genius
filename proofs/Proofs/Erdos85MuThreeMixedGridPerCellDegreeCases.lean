@@ -123,9 +123,71 @@ theorem MuThreeMixedGridCode.residualMatesInColumn_card_eq_two_iff
     · rintro ⟨_, hbad⟩
       exact (hK hbad).elim
 
+/-- Column-dual degree-one split. -/
+theorem MuThreeMixedGridCode.residualMatesInColumn_card_eq_one_iff
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y) (hyu : y ≠ u.1.2) :
+    (mixedGridGraphMatesInColumn
+        (mixedGridSquareResidualGraph K C) u y).card = 1 ↔
+      ((mixedGridHCommonRows H u.1.2 y).card = 1 ∧ K u.1.1 y) ∨
+      ((mixedGridHCommonRows H u.1.2 y).card = 0 ∧ ¬ K u.1.1 y) := by
+  have h := code.residualMatesInColumn_add_overlap_add_indicator
+    H K C u y hyu
+  by_cases hK : K u.1.1 y
+  · rw [if_pos hK] at h
+    constructor
+    · intro hone
+      exact Or.inl ⟨by omega, hK⟩
+    · rintro (⟨hoverlap, _⟩ | ⟨_, hnK⟩)
+      · omega
+      · exact (hnK hK).elim
+  · rw [if_neg hK] at h
+    constructor
+    · intro hone
+      exact Or.inr ⟨by omega, hK⟩
+    · rintro (⟨_, hbad⟩ | ⟨hoverlap, _⟩)
+      · exact (hK hbad).elim
+      · omega
+
+/-- Column-dual degree-zero split. -/
+theorem MuThreeMixedGridCode.residualMatesInColumn_card_eq_zero_iff
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y) (hyu : y ≠ u.1.2) :
+    (mixedGridGraphMatesInColumn
+        (mixedGridSquareResidualGraph K C) u y).card = 0 ↔
+      ((mixedGridHCommonRows H u.1.2 y).card = 2 ∧ K u.1.1 y) ∨
+      ((mixedGridHCommonRows H u.1.2 y).card = 1 ∧ ¬ K u.1.1 y) := by
+  have h := code.residualMatesInColumn_add_overlap_add_indicator
+    H K C u y hyu
+  by_cases hK : K u.1.1 y
+  · rw [if_pos hK] at h
+    constructor
+    · intro hzero
+      exact Or.inl ⟨by omega, hK⟩
+    · rintro (⟨hoverlap, _⟩ | ⟨_, hnK⟩)
+      · omega
+      · exact (hnK hK).elim
+  · rw [if_neg hK] at h
+    constructor
+    · intro hzero
+      exact Or.inr ⟨by omega, hK⟩
+    · rintro (⟨_, hbad⟩ | ⟨hoverlap, _⟩)
+      · exact (hK hbad).elim
+      · omega
+
 end Erdos85
 
 #print axioms Erdos85.MuThreeMixedGridCode.residualMatesInRow_card_eq_two_iff
 #print axioms Erdos85.MuThreeMixedGridCode.residualMatesInRow_card_eq_one_iff
 #print axioms Erdos85.MuThreeMixedGridCode.residualMatesInRow_card_eq_zero_iff
 #print axioms Erdos85.MuThreeMixedGridCode.residualMatesInColumn_card_eq_two_iff
+#print axioms Erdos85.MuThreeMixedGridCode.residualMatesInColumn_card_eq_one_iff
+#print axioms Erdos85.MuThreeMixedGridCode.residualMatesInColumn_card_eq_zero_iff
