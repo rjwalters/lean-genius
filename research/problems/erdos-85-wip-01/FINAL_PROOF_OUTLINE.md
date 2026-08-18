@@ -1860,13 +1860,18 @@ generalized rather than merely replayed.
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
      graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.
-     The first four remain **GAP** with no contradiction theorem.  More
-     precisely: `[8]` has only the connected-component alternative and moment
-     `64`; `[6,2]` has moment `40` plus the q-generic cycle/triangle-free
-     structure on its size-two block, but no rectangular-intertwiner
-     obstruction; `[5,3]` has moment `34` and no local block classification;
-     `[4,4]` has moment `32` and symmetric equal-size cross factors, but no
-     theorem converts that symmetry into a contradiction.  The last two
+     The connected `[8]` stratum remains **GAP**, with only the
+     connected-component alternative and moment `64`.  The two-component
+     strata `[6,2]`, `[5,3]`, `[4,4]` are now **q-GENERIC, PARTIAL**: the
+     shifted-owner product gives
+     `tr(A_a^2 A_b)=q^2(q-1)m_a m_b(m_a-1)` for any two distinct owner
+     components (`binarySquare_regular_trace_firstOwner_sq_mul_secondOwner`,
+     `f3fdc17e72`).  At q=8 the exact censuses are respectively 5376, 13440,
+     and 21504.  Whenever `m_a,m_b ≥ 2`, this exceeds the directed first-owner
+     edge set, so a generic collision theorem forces a repeated closing and a
+     C4-separated ambient owner fork (`e0f4b97c27`, `ed273b9d30`).  Their
+     residual **GAP** is routing-equation incompatibility, not a rectangular
+     classification or finite census.  The last two
      are now **AT-64-ONLY, PARTIAL**: partition-agnostic mixed-owner trace and
      fiber bounds give exact cross-component budgets (`≥ 5888` for `[4,2,2]`,
      `≥ 6816` for `[3,3,2]`); the exact 27-block decomposition then selects a
@@ -1876,7 +1881,7 @@ generalized rather than merely replayed.
      edge (`orderSixtyFour_regular_threeComponents_repeatedClosing`,
      `4860af978f`).  The graph-facing adapter (`fc451d83df`, `e781dba602`)
      exposes an ambient owner fork and classifies its component pattern.  A
-     A rainbow pattern reaches canonical cross-center separation.  The
+     rainbow pattern reaches canonical cross-center separation.  The
      equal-root two-equal pattern `e=f≠g` now does too: the q-generic theorem
      `ownerFork_canonicalCenter_separation_without_root_separation` removes an
      unused root-component inequality from the canonical-center argument, and
@@ -1897,7 +1902,8 @@ generalized rather than merely replayed.
      certificate/semantic assembly remains paused.
 
 13c. **`AXIOM A-REG-EXTENSION` — uniform replacement for finite component
-     enumerations.**  The partition law, mixed cubic-trace census, arbitrary
+     enumerations.**  The partition law, distinct- and repeated-color mixed
+     cubic-trace census, arbitrary
      component-size owner-fiber bounds, exact owner-block equitability,
      component-pattern decomposition, and repeated-closing pigeonhole are
      q-generic (their q=8 consumers only instantiate numerical thresholds).
@@ -2482,8 +2488,9 @@ The shortest current proof tree is:
         ├── regular / parameterized nonregular split     [PROVEN]
         ├── regular-sector exclusion                    [AXIOM A-REG — the ONLY axiom of Branch A]
         │   ├── q=8: [2,2,2,2] finite census            [AT-64-ONLY, assembly GAP]
+        │   ├── q=8: [6,2], [5,3], [4,4] A²B fork      [q-GENERIC reduction, routing GAP]
         │   ├── q=8: [4,2,2], [3,3,2] pressure/fork     [AT-64-ONLY, 2 asymmetric fork GAPs]
-        │   ├── q=8: [8], [6,2], [5,3], [4,4]          [GAP]
+        │   ├── q=8: [8] connected defect              [GAP]
         │   └── arbitrary q component obstruction       [AXIOM A-REG-EXTENSION]
         └── nonregular-sector exclusion                 [PROVEN, uniform parity theorem]
 ```
