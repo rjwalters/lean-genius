@@ -2041,6 +2041,10 @@ generalized rather than merely replayed.
      either coordinate when the other is fixed, hence is a Latin square of
      order six.  Since such Latin squares exist, the remaining obstruction
      must use compatibility with the row-dual table or the `K`-sector data.
+     The row-dual monodromy law is now available (**PROVEN**, `5d24fb7521`):
+     column transport between distinct row fibers, routed through distinct
+     common eligible columns, also disagrees pointwise by C4-freeness.  Thus
+     both transport directions are formalized; their coupling is the gap.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
