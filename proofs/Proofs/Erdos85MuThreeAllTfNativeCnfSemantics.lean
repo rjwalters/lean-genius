@@ -676,4 +676,88 @@ theorem mu3NativeFinalSpecState_eq_finalState :
       mu3NativeFinalSpecState shape == mu3NativeFinalState shape) = true := by
   native_decide
 
+theorem mu3NativeFinalSpecState_eq_finalState_of_shape
+    (shape : Mu3AllTfShape) :
+    mu3NativeFinalSpecState shape = mu3NativeFinalState shape := by
+  cases shape <;> native_decide
+
+def mu3NativeHitSpecVal (shape : Mu3AllTfShape)
+    (edgeVal : DimacsValuation) : Mu3NativeCnfState × DimacsValuation :=
+  mu3NativeRunExactSpecsVal edgeVal (mu3NativeHitSpecs shape) {} edgeVal
+
+def mu3NativeFinalSpecVal (shape : Mu3AllTfShape)
+    (edgeVal : DimacsValuation) : Mu3NativeCnfState × DimacsValuation :=
+  let hit := mu3NativeHitSpecVal shape edgeVal
+  mu3NativeRunC4PairSpecsVal edgeVal mu3NativePairs hit.1 hit.2
+
+/-- Generator-level semantic capstone: exact hit counts plus every C4
+at-most-one condition construct a valuation satisfying the certificate CNF. -/
+theorem mu3NativeFinalState_formulaSatisfiable
+    (shape : Mu3AllTfShape) (edgeVal : DimacsValuation)
+    (hhitNonzero : ∀ spec ∈ mu3NativeHitSpecs shape,
+      ∀ lit ∈ spec.1, lit ≠ 0)
+    (hhitBound : ∀ spec ∈ mu3NativeHitSpecs shape,
+      ∀ lit ∈ spec.1, lit.natAbs ≤ 1128)
+    (hhitCounts : ∀ spec ∈ mu3NativeHitSpecs shape,
+      seqPrefixTrue (mu3NativeVarsRow edgeVal spec.1) spec.1.size = spec.2)
+    (hc4 :
+      let hit := mu3NativeHitSpecVal shape edgeVal
+      Mu3NativeC4FoldConditions 1128 edgeVal mu3NativePairs hit.1 hit.2) :
+    ∃ val, dimacsFormulaSatisfied val (mu3NativeFinalState shape).clauses := by
+  let hit := mu3NativeHitSpecVal shape edgeVal
+  have hhit := mu3NativeRunExactSpecsVal_formulaSatisfied
+    1128 edgeVal (mu3NativeHitSpecs shape) {} edgeVal
+    (by rfl) (dimacsFormulaSatisfied_empty edgeVal)
+    (dimacsFormulaBounded_empty 1128) (by simp)
+    hhitNonzero hhitBound hhitCounts
+  have hfinal := mu3NativeRunC4PairSpecsVal_formulaSatisfied
+    1128 edgeVal mu3NativePairs hit.1 hit.2 hhit.2.2.1
+      hhit.1 hhit.2.1 hhit.2.2.2 hc4
+  refine ⟨(mu3NativeFinalSpecVal shape edgeVal).2, ?_⟩
+  rw [← mu3NativeFinalSpecState_eq_finalState_of_shape shape,
+    show mu3NativeFinalSpecState shape =
+      (mu3NativeFinalSpecVal shape edgeVal).1 by
+        rw [mu3NativeFinalSpecVal, mu3NativeFinalSpecState,
+          mu3NativeRunC4PairSpecsVal_state]
+        apply congrArg (mu3NativeRunC4PairSpecs mu3NativePairs)
+        exact (mu3NativeRunExactSpecsVal_state edgeVal
+          (mu3NativeHitSpecs shape) {} edgeVal).symm]
+  exact hfinal.1
+
+theorem satCnf_of_dimacsFormulaSatisfied
+    {formula : Array DimacsClause} {val : DimacsValuation}
+    (hnz : ∀ clause ∈ formula, DimacsClauseNonzero clause)
+    (hsat : dimacsFormulaSatisfied val formula) :
+    (show Std.Sat.CNF Nat from
+      { clauses := dimacsFormulaToSatClauses formula }).Sat
+      (satAssignmentOfDimacs val) := by
+  rw [Std.Sat.CNF.sat_def, Std.Sat.CNF.eval, Array.all_eq_true]
+  intro i hi
+  have hi' : i < formula.size := by
+    simpa [dimacsFormulaToSatClauses] using hi
+  simp only [dimacsFormulaToSatClauses, Array.getElem_map]
+  exact satClause_of_dimacsClauseSatisfied
+    (hnz formula[i] (Array.getElem_mem hi'))
+    (hsat formula[i] (Array.getElem_mem hi'))
+
+theorem mu3AllTfNativeSatCnf_satisfiable
+    (shape : Mu3AllTfShape) (edgeVal : DimacsValuation)
+    (hnz : ∀ clause ∈ (mu3NativeFinalState shape).clauses,
+      DimacsClauseNonzero clause)
+    (hhitNonzero : ∀ spec ∈ mu3NativeHitSpecs shape,
+      ∀ lit ∈ spec.1, lit ≠ 0)
+    (hhitBound : ∀ spec ∈ mu3NativeHitSpecs shape,
+      ∀ lit ∈ spec.1, lit.natAbs ≤ 1128)
+    (hhitCounts : ∀ spec ∈ mu3NativeHitSpecs shape,
+      seqPrefixTrue (mu3NativeVarsRow edgeVal spec.1) spec.1.size = spec.2)
+    (hc4 :
+      let hit := mu3NativeHitSpecVal shape edgeVal
+      Mu3NativeC4FoldConditions 1128 edgeVal mu3NativePairs hit.1 hit.2) :
+    ∃ assignment, (mu3AllTfNativeSatCnf shape).Sat assignment := by
+  obtain ⟨val, hsat⟩ := mu3NativeFinalState_formulaSatisfiable
+    shape edgeVal hhitNonzero hhitBound hhitCounts hc4
+  refine ⟨satAssignmentOfDimacs val, ?_⟩
+  exact satCnf_of_dimacsFormulaSatisfied
+    hnz hsat
+
 end Erdos85
