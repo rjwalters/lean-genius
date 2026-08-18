@@ -1590,6 +1590,12 @@ generalized rather than merely replayed.
      generated tags and permutations are checked by closed kernel reduction;
      each permutation is injective and transports the forced
      `D = I+J-A_H²-R` to the bipartite, `t_D=30`, or `t_D=40` target.
+     The semantic extraction from these two checked tables is now also
+     PROVEN in `Erdos85LambdaSixClassificationTerminal`:
+     `lambdaSixTenSix_admissible_classified` and
+     `lambdaSixFiveFiveThreeThree_admissible_classified` compose the census
+     completeness theorems with the per-entry label checks, and return an
+     explicit class tag and injective relabeling for every admissible `R`.
      The remaining graph-level interface is therefore narrow: show that the
      ambient labeled component supplies `lambdaSixAdmissibleR`, transport its
      four restricted owner factors through the checked permutation, dispatch
