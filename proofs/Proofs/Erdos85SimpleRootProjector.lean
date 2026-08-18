@@ -1,5 +1,6 @@
 import Proofs.Erdos85QuadraticTrace
 import Proofs.Erdos85RationalPrimaryTraceSplit
+import Proofs.Erdos85PrincipalIndicatorTrace
 import Mathlib.LinearAlgebra.Eigenspace.Minpoly
 
 /-! # A polynomial projector onto a simple root sector
@@ -151,6 +152,29 @@ theorem trace_three_sector_eq_neg_two_of_polynomial_certificate
   rw [simpleRootProjector, Algebra.mul_smul_comm, map_smul, htrace]
   change (p.eval 3)⁻¹ * ((-2 : ℚ) * p.eval 3) = -2
   field_simp
+
+/-- Matrix-level wrapper for finite record certificates. -/
+theorem matrix_trace_three_sector_eq_neg_two_of_polynomial_certificate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A D : Matrix V V ℚ) (p : Polynomial ℚ)
+    (hcomm : A * D = D * A)
+    (hann : Polynomial.aeval D
+      ((Polynomial.X - Polynomial.C (3 : ℚ)) * p) = 0)
+    (hp : p.eval 3 ≠ 0)
+    (htrace : Matrix.trace (A * Polynomial.aeval D p) =
+      (-2 : ℚ) * p.eval 3) :
+    LinearMap.trace ℚ _
+      (kerAevalRestrict (Matrix.toLin' A) (Matrix.toLin' D)
+        (toLin'_comm_of_matrix_comm hcomm)
+        (Polynomial.X - Polynomial.C (3 : ℚ))) = -2 := by
+  apply trace_three_sector_eq_neg_two_of_polynomial_certificate
+    (Matrix.toLin' A) (Matrix.toLin' D)
+    (toLin'_comm_of_matrix_comm hcomm) p
+  · rw [aeval_toLin', hann, map_zero]
+  · exact hp
+  · rw [aeval_toLin']
+    simp only [Module.End.mul_eq_comp, ← Matrix.toLin'_mul,
+      trace_toLin'_eq_matrix_trace, htrace]
 
 end
 
