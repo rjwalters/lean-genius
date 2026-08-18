@@ -207,7 +207,8 @@ def HasTwoCenterRoutingRowDensityWithUniqueThirdCenterForOwner
       let R := (Finset.univ : Finset target.supp).filter fun y =>
         owner = crossIntermediateComponent G hfree hst x y
       Disjoint S₁ S₂ ∧ (S₁ ∪ S₂).card = 2 * m target ∧
-        S₁ ∪ S₂ ⊆ R ∧ R.card = m owner * m target
+        S₁ ∪ S₂ ⊆ R ∧ R.card = m owner * m target ∧
+        R \ (S₁ ∪ S₂) = componentCrossNeighborFinset G target u₃
 
 /-- For a normalized size-three owner, the two centers in every density
 fragment leave exactly one unused center at the same root. -/
@@ -257,8 +258,60 @@ theorem twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three
     rw [Finset.card_sdiff_of_subset hpairSub, hCcard]
     simp [hne]
   obtain ⟨u₃, hu₃⟩ := Finset.card_eq_one.mp hsdiffCard
+  have hu₃sdiff : u₃ ∈ C \ {u₁, u₂} := by
+    rw [hu₃]
+    exact Finset.mem_singleton_self u₃
+  have hu₃C : u₃ ∈ C := (Finset.mem_sdiff.mp hu₃sdiff).1
+  have hu₃pair : u₃ ∉ ({u₁, u₂} : Finset owner.supp) :=
+    (Finset.mem_sdiff.mp hu₃sdiff).2
+  have hu₃ne₁ : u₃ ≠ u₁ := by
+    intro h
+    apply hu₃pair
+    simp [h]
+  have hu₃ne₂ : u₃ ≠ u₂ := by
+    intro h
+    apply hu₃pair
+    simp [h]
+  let S₁ := componentCrossNeighborFinset G target u₁
+  let S₂ := componentCrossNeighborFinset G target u₂
+  let S₃ := componentCrossNeighborFinset G target u₃
+  let R := (Finset.univ : Finset target.supp).filter fun y =>
+    owner = crossIntermediateComponent G hfree hst x y
+  have hdecomp := routingRow_eq_biUnion_componentCrossNeighborFinset
+    G hfree hst owner x
+  change R = C.biUnion (componentCrossNeighborFinset G target) at hdecomp
+  have hcomplement : R \ (S₁ ∪ S₂) = S₃ := by
+    ext y
+    constructor
+    · intro hy
+      have hyData := Finset.mem_sdiff.mp hy
+      rw [hdecomp] at hyData
+      obtain ⟨u, huC, hyu⟩ := Finset.mem_biUnion.mp hyData.1
+      by_cases hupair : u ∈ ({u₁, u₂} : Finset owner.supp)
+      · simp only [Finset.mem_insert, Finset.mem_singleton] at hupair
+        rcases hupair with rfl | rfl
+        · exact False.elim (hyData.2 (Finset.mem_union_left _ hyu))
+        · exact False.elim (hyData.2 (Finset.mem_union_right _ hyu))
+      · have husdiff : u ∈ C \ {u₁, u₂} :=
+          Finset.mem_sdiff.mpr ⟨huC, hupair⟩
+        rw [hu₃] at husdiff
+        have huu₃ := Finset.mem_singleton.mp husdiff
+        simpa [S₃, huu₃] using hyu
+    · intro hy
+      apply Finset.mem_sdiff.mpr
+      constructor
+      · rw [hdecomp]
+        exact Finset.mem_biUnion.mpr ⟨u₃, hu₃C, hy⟩
+      · intro hyunion
+        rcases Finset.mem_union.mp hyunion with hy₁ | hy₂
+        · have hdis₃₁ := routingRow_starRows_pairwise_disjoint
+            G hfree hst x hu₃C hu₁ hu₃ne₁
+          exact (Finset.disjoint_left.mp hdis₃₁ hy hy₁)
+        · have hdis₃₂ := routingRow_starRows_pairwise_disjoint
+            G hfree hst x hu₃C hu₂ hu₃ne₂
+          exact (Finset.disjoint_left.mp hdis₃₂ hy hy₂)
   exact ⟨source, target, hst, x, u₁, u₂, u₃, hne, hx₁, hx₂,
-    by simpa [C] using hu₃, hdis, hunionCard, hsub, hrowCard⟩
+    by simpa [C] using hu₃, hdis, hunionCard, hsub, hrowCard, hcomplement⟩
 
 /-- Correct q-generic successor of canonical fork separation: one of its two
 owner colors contributes a two-star routing-row fragment with exact density

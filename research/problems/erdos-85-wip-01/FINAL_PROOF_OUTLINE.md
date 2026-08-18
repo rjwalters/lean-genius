@@ -2083,7 +2083,9 @@ generalized rather than merely replayed.
      normalization.  The q-generic theorem
      `twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three`
      proves that the root has exactly one owner-center outside the displayed
-     separated pair.  Therefore
+     separated pair; moreover its target star is exactly the routing row minus
+     the two displayed stars, by the canonical star decomposition and
+     pairwise disjointness.  Therefore
      `orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoUniqueThirdCenters`
      yields either the size-two saturation or one canonical unused third
      center for each of `b,c`.  Comparing the stars of these canonical missing
