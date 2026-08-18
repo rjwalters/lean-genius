@@ -2085,6 +2085,26 @@ generalized rather than merely replayed.
      of internal cycles whose total order lies in `{7,10,13,...,64}` and is
      `1 mod 3`; orders `1` through `6` are formally excluded.
 
+     The color parameter now has an exact triangle ledger (**PROVEN**,
+     `81294d4a0e`).  Since the triangle-free graph is two-regular on its
+     support and isolated elsewhere,
+     `orderSixtyFour_allSixteen_triangleFreeColorOrder_eq_edgeFinset_card`
+     identifies support order with triangle-free edge count.  The cubic trace
+     then becomes
+
+     ```text
+     |triangle-free color| + 3 · (# ambient triangles) = 256.
+     ```
+
+     This is
+     `orderSixtyFour_allSixteen_colorOrder_add_three_mul_triangleCount_eq_256`.
+     Together with `7 ≤ |color| ≤ 64`, it gives the formal range
+     `64 ≤ #ambient triangles ≤ 83`
+     (`orderSixtyFour_allSixteen_triangleCount_between_sixtyFour_eightyThree`).
+     Hence mixed-sector casework can be indexed by the single exact parameter
+     `|color| = 256 - 3t`, rather than treating color order and triangle count
+     independently.
+
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
      a contradiction consumer, while `[4,2,2]` additionally retains one
