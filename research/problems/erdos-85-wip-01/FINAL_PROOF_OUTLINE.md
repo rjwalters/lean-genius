@@ -1927,6 +1927,13 @@ generalized rather than merely replayed.
      owner graph is 56-regular on 64 vertices, so every vertex pair has at
      least 48 common owner neighbors by inclusion-exclusion
      (`orderSixtyFour_regular_oneComponent_ownerDensity`, `5e93827453`).
+     Its operator meaning is now **PROVEN q-GENERIC**:
+     `componentOwnerGraph_eq_compl_secondOrderDefect_of_oneComponent` says
+     that whenever the defect graph has one component, the unique owner graph
+     is exactly the simple-graph complement of the defect graph.  Thus the
+     `[8]` density terminal is not an independent auxiliary graph; it is a
+     direct high-codegree constraint on `Dᶜ`, and the missing consumer can be
+     formulated purely in the defect spectrum/algebra.
      The residual **GAP** is to turn this extreme single-color closure into an
      ambient C4/routing contradiction when every center belongs to the same
      defect component.  The two-component
