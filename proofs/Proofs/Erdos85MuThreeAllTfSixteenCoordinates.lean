@@ -11,6 +11,35 @@ structure SixteenCycleLabeling {V : Type*} (H : SimpleGraph V) where
   map_adj_iff : ∀ u v,
     H.Adj u v ↔ (cycleGraph 16).Adj (toEquiv u) (toEquiv v)
 
+/-- A spanning order-sixteen component of a two-factor supplies the standard
+`C16` labeling. -/
+theorem exists_sixteenCycleLabeling_of_spanning_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (hdeg : ∀ x, H.degree x = 2)
+    (c : H.ConnectedComponent) (hc : c.supp.ncard = 16)
+    (hspan : ∀ x : V, x ∈ c.supp) :
+    Nonempty (SixteenCycleLabeling H) := by
+  classical
+  obtain ⟨e, he⟩ := exists_componentCycleEquiv H hdeg c 16 hc
+  let toFin : V → Fin 16 := fun x => e.symm ⟨x, hspan x⟩
+  have hbij : Function.Bijective toFin := by
+    constructor
+    · intro x y hxy
+      simpa [toFin] using congrArg Subtype.val (congrArg e hxy)
+    · intro i
+      let x := (e i).1
+      refine ⟨x, ?_⟩
+      apply e.injective
+      simp [toFin, x]
+  let θ : V ≃ Fin 16 := Equiv.ofBijective toFin hbij
+  refine ⟨⟨θ, ?_⟩⟩
+  intro u v
+  have huv := he (θ u) (θ v)
+  have hu : (e (θ u)).1 = u := by simp [θ, toFin]
+  have hv : (e (θ v)).1 = v := by simp [θ, toFin]
+  simpa [hu, hv] using huv.symm
+
 def sixteenParityShift (shift : Bool) (i : Fin 16) : Fin 16 :=
   ⟨(i.val + if shift then 1 else 0) % 16,
     Nat.mod_lt _ (by omega)⟩
