@@ -717,6 +717,20 @@ generalized rather than merely replayed.
      LRATs. Thus the seven-component cell is closed at order 64 modulo its
      graph-level assembly.
 
+     One mixed-sector shape is now excluded uniformly, before any exterior
+     component census.  The `PROVEN` theorem
+     `relationFactor_mixed_triComponent_rightFiber_card_ge_four` formalizes
+     the hole-saturation argument: in two covering `H`-components, if the
+     triangle-free component has `H = K` on its edges while the
+     triangle-bearing component has `H` disjoint from `K`, then the latter
+     has at least four vertices on the right shore.  Indeed, the two `H`
+     entries of a triangle-free column exhaust its `K`-degree two, so a
+     triangle-component row's two `K` holes remain in the triangle component
+     and are disjoint from its two `H` neighbours.  Consequently a mixed
+     `(triangle-free C10, triangle-bearing C6)` sector is impossible in every
+     stratum; only the mixed `C8+C8` and `(triangle-bearing C10,
+     triangle-free C6)` orientations survive this shape-level count.
+
      The all-size-sixteen triangle-free leaf is now closed without a finite
      census.  The `PROVEN` chain
 
