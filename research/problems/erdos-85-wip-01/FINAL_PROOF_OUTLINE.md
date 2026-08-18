@@ -1981,7 +1981,11 @@ generalized rather than merely replayed.
      vertices has at most 35 edges (`948383fafc`), and the exact induced/cut
      degree identity therefore forces at least 26 exterior incidences from
      the `H`-cells into the non-`H` partner sector
-     (`twentySix_le_HCell_cutIncidenceCount`, `3fe5be2440`).  **GAP
+     (`twentySix_le_HCell_cutIncidenceCount`, `3fe5be2440`).  Pigeonholing
+     those incidences now produces a literal routing fragment
+     (`exists_HCell_two_cross_nonrook_neighbors`, `42be8234f6`): some H-root
+     has two distinct non-H exterior neighbours, necessarily in different
+     rows and different columns.  **GAP
      A-REG-MU3-MIXED-QUOTIENT** is to turn these capacity and alternating-cycle
      constraints into a contradiction (or a finite, separately trusted
      certificate).  No q=8 stratum is marked killed by this reduction.
