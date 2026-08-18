@@ -1620,10 +1620,18 @@ generalized rather than merely replayed.
      glues four component-cycle equivalences through the dependent component
      sigma decomposition and a kernel-checked flattening to the exact census
      `H` matrix.
+     The graph-to-Boolean factor bridge is PROVEN in
+     `Erdos85LambdaSixGraphFourFactorization`.  Its theorem
+     `graph_commutingTwoFactor_relabel` converts graph degree two,
+     edge-disjointness, and integral adjacency-matrix commutation into the
+     exact filtered-cardinality Boolean predicate after a `Fin 16` relabeling;
+     `graph_fourFactorization_relabel` packages four factors plus their exact
+     complement partition into `LambdaSixBoolFourFactorization`.
      The remaining graph-level interface is therefore narrow: show that the
      ambient labeled component supplies `lambdaSixAdmissibleR` and the local
-     four-factorization hypotheses, then dispatch the forced bipartite tag by
-     the existing arithmetic terminal.
+     `GraphFourFactorization` hypotheses for the four restricted owner graphs,
+     then dispatch the forced bipartite tag by the existing arithmetic
+     terminal.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
