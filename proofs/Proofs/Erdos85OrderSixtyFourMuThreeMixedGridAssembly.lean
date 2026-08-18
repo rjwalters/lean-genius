@@ -351,6 +351,90 @@ theorem orderSixtyFourMuThreeInternalRel_twoRegular
     simpa [SimpleGraph.card_neighborFinset_eq_degree] using
       hdeg ⟨y.1, y.2.1⟩
 
+/-- The transported exterior graph satisfies the mixed-grid rook law. -/
+theorem orderSixtyFourMuThreeExteriorCellGraph_rook
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {cSupp : Set V} {s : V → ℤ}
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hinj : Function.Injective label)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1) :
+    let C := orderSixtyFourMuThreeExteriorCellGraph G label hinj
+    ∀ u v w, C.Adj u v → C.Adj u w → v ≠ w →
+      v.1.1 ≠ w.1.1 ∧ v.1.2 ≠ w.1.2 := by
+  dsimp
+  intro u v w huv huw hvw
+  let e := orderSixtyFourMuThreeExteriorCellEquiv label hinj
+  let u' := e.symm u
+  let v' := e.symm v
+  let w' := e.symm w
+  have huv' : G.Adj u'.1 v'.1 := by
+    exact huv
+  have huw' : G.Adj u'.1 w'.1 := by
+    exact huw
+  have hvw' : v' ≠ w' := by
+    intro h
+    exact hvw (e.symm.injective h)
+  have hposinj : Function.Injective
+      (fun z : {z : muThreeExterior cSupp // G.Adj u'.1 z.1} =>
+        (label z.1).1) := by
+    intro a b hab
+    apply Subtype.ext
+    apply Subtype.ext
+    let p := (label a.1).1
+    have hpu : p.1 ≠ u'.1 := by
+      intro h
+      exact u'.2 (h ▸ p.2.1)
+    apply c4Free_commonNeighborPair_injective G hfree hpu
+    · exact (hadj a.1).1.symm
+    · change G.Adj (label a.1).1.1 b.1.1
+      have habv : (label a.1).1.1 = (label b.1).1.1 :=
+        congrArg (fun z => z.1) hab
+      rw [habv]
+      exact (hadj b.1).1.symm
+    · exact a.2
+    · exact b.2
+  have hneginj : Function.Injective
+      (fun z : {z : muThreeExterior cSupp // G.Adj u'.1 z.1} =>
+        (label z.1).2) := by
+    intro a b hab
+    apply Subtype.ext
+    apply Subtype.ext
+    let n := (label a.1).2
+    have hnu : n.1 ≠ u'.1 := by
+      intro h
+      exact u'.2 (h ▸ n.2.1)
+    apply c4Free_commonNeighborPair_injective G hfree hnu
+    · exact (hadj a.1).2.symm
+    · change G.Adj (label a.1).2.1 b.1.1
+      have habv : (label a.1).2.1 = (label b.1).2.1 :=
+        congrArg (fun z => z.1) hab
+      rw [habv]
+      exact (hadj b.1).2.symm
+    · exact a.2
+    · exact b.2
+  have hlabel_v : label v' = v.1 := by
+    exact congrArg (fun p => p.1) (e.apply_symm_apply v)
+  have hlabel_w : label w' = w.1 := by
+    exact congrArg (fun p => p.1) (e.apply_symm_apply w)
+  constructor
+  · intro hcoord
+    let vv : {z : muThreeExterior cSupp // G.Adj u'.1 z.1} := ⟨v', huv'⟩
+    let ww : {z : muThreeExterior cSupp // G.Adj u'.1 z.1} := ⟨w', huw'⟩
+    have heq : (label vv.1).1 = (label ww.1).1 := by
+      simpa [vv, ww, hlabel_v, hlabel_w] using hcoord
+    have := hposinj heq
+    exact hvw' (congrArg (fun z => z.1) this)
+  · intro hcoord
+    let vv : {z : muThreeExterior cSupp // G.Adj u'.1 z.1} := ⟨v', huv'⟩
+    let ww : {z : muThreeExterior cSupp // G.Adj u'.1 z.1} := ⟨w', huw'⟩
+    have heq : (label vv.1).2 = (label ww.1).2 := by
+      simpa [vv, ww, hlabel_v, hlabel_w] using hcoord
+    have := hneginj heq
+    exact hvw' (congrArg (fun z => z.1) this)
+
 end
 
 end Erdos85
@@ -359,3 +443,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFourMuThreeExteriorCellGraph_c4Free
 #print axioms Erdos85.orderSixtyFourMuThreeHole_twoRegular
 #print axioms Erdos85.orderSixtyFourMuThreeInternalRel_twoRegular
+#print axioms Erdos85.orderSixtyFourMuThreeExteriorCellGraph_rook
