@@ -50,6 +50,39 @@ theorem orderSixtyFour_regular_sum_triangleFreeDegrees_eq_six_mul_add_two
   rw [orderSixtyFour_regular_sum_triangleFreeDegrees_eq G hfree hreg]
   ring
 
+/-- Equivalently, the number of triangle-free edges is one modulo three. -/
+theorem orderSixtyFour_regular_triangleFreeEdge_card_eq_three_mul_add_one
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8) :
+    ∃ z : ℤ,
+      ((triangleFreeEdgeGraph G).edgeFinset.card : ℤ) = 3 * z + 1 := by
+  obtain ⟨z, hz⟩ :=
+    orderSixtyFour_regular_sum_triangleFreeDegrees_eq_six_mul_add_two
+      G hfree hreg
+  have hhand := (triangleFreeEdgeGraph G).sum_degrees_eq_twice_card_edges
+  have hhandZ :
+      (∑ x : Fin 64, ((triangleFreeEdgeGraph G).degree x : ℤ)) =
+        2 * ((triangleFreeEdgeGraph G).edgeFinset.card : ℤ) := by
+    exact_mod_cast hhand
+  refine ⟨z, ?_⟩
+  omega
+
+theorem orderSixtyFour_regular_triangleFreeEdge_card_mod_three_eq_one
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8) :
+    ((triangleFreeEdgeGraph G).edgeFinset.card : ℤ) % 3 = 1 := by
+  obtain ⟨z, hz⟩ :=
+    orderSixtyFour_regular_triangleFreeEdge_card_eq_three_mul_add_one
+      G hfree hreg
+  rw [hz]
+  omega
+
 /-- Every order-64 degree-eight candidate contains a triangle-free ambient
 edge.  Thus no defect stratum can consist solely of antipodal edges. -/
 theorem orderSixtyFour_regular_exists_triangleFreeEdge
@@ -82,4 +115,8 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_regular_sum_triangleFreeDegrees_eq
 #print axioms
   Erdos85.orderSixtyFour_regular_sum_triangleFreeDegrees_eq_six_mul_add_two
+#print axioms
+  Erdos85.orderSixtyFour_regular_triangleFreeEdge_card_eq_three_mul_add_one
+#print axioms
+  Erdos85.orderSixtyFour_regular_triangleFreeEdge_card_mod_three_eq_one
 #print axioms Erdos85.orderSixtyFour_regular_exists_triangleFreeEdge
