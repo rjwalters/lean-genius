@@ -1555,7 +1555,17 @@ generalized rather than merely replayed.
      the owner-cycle contradiction is closed.  It is not universal for
      `[16]`: 270 of 392 classified models are near-twin-free.  That stratum
      therefore still needs a second terminal, naturally through codegree-five
-     nonedges or codegree-four edges.  The `[8,8]` structural cut also remains
+     nonedges or codegree-four edges.  A new honest owner-factor CSP screen
+     (external computation, not yet banked or kernel checked) partitions the
+     26 spectral classes / 392 models as follows: 8 classes / 160 models are
+     UNSAT for a four-way commuting two-factorization of `Dᶜ`; 17 classes /
+     230 models are SAT; and one class / 2 models has disconnected `D` and is
+     already structurally dead.  The SAT side includes the 8-model
+     `K₈,₈`-minus-matching class already killed arithmetically, leaving 222
+     genuinely live models after the two filters.  Thus commutation alone is
+     a substantial but nonterminal `[16]` sieve; the surviving concrete owner
+     factorizations should feed the λ=5/routing constraints rather than be
+     treated as a branch closure.  The `[8,8]` structural cut also remains
      separate.  The ambient interface for the first option is already
      `PROVEN`: `defect_positive_codegree_component_adapter` preserves every
      positive defect codegree after passing to the common connected
