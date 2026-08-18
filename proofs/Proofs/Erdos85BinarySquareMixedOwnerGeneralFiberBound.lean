@@ -79,9 +79,57 @@ theorem binarySquare_regular_sameComponent_mixedOwner_card_le
       G hfree hq hreg hcard source a b c
         (hm source) (hm a) (hm b)
 
+/-- At order 64, subtracting the global same-component bound from the exact
+mixed cubic trace gives a uniform lower bound on the cross-component census.
+The coefficient `448 = 8² * 7` is the binary-square mixed-trace constant. -/
+theorem orderSixtyFour_regular_crossComponent_mixedOwner_card_ge
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    448 * m a * m b * m c -
+        (∑ source : (secondOrderDefectGraph G).ConnectedComponent,
+          8 * m source * (m a * (m source - 1)) *
+            (m b * (m source - 1))) ≤
+      (crossComponentCyclicColoredTriples (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) c)).card := by
+  let D := secondOrderDefectGraph G
+  let A := componentOwnerGraph G D a
+  let B := componentOwnerGraph G D b
+  let C := componentOwnerGraph G D c
+  have hsame := binarySquare_regular_sameComponent_mixedOwner_card_le
+    G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm a b c
+  have htrace := binarySquare_regular_trace_three_distinct_ownerMatrices
+    G hfree (q := 8) (by norm_num) hreg (by norm_num)
+      a b c hab hac hbc (hm a) (hm b) (hm c)
+  have htotal : (cyclicColoredTriples A B C).card =
+      448 * m a * m b * m c := by
+    rw [trace_three_adjMatrices_eq_card_cyclicColoredTriples] at htrace
+    change (cyclicColoredTriples A B C).card = _
+    exact_mod_cast htrace
+  have hsplit :=
+    card_sameComponent_add_card_crossComponent_eq_card_cyclicColoredTriples
+      D A B C
+  change (sameComponentCyclicColoredTriples D A B C).card +
+      (crossComponentCyclicColoredTriples D A B C).card =
+        (cyclicColoredTriples A B C).card at hsplit
+  rw [htotal] at hsplit
+  dsimp [D, A, B, C] at hsame hsplit ⊢
+  omega
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_mixedOwnerFiber_card_le
 #print axioms Erdos85.binarySquare_regular_sameComponent_mixedOwner_card_le
+#print axioms Erdos85.orderSixtyFour_regular_crossComponent_mixedOwner_card_ge
