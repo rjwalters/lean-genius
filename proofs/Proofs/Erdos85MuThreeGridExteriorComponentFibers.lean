@@ -51,6 +51,87 @@ theorem defectComponentCoordinateRowPairs_card_le_four
       Finset.card_filter_le _ _
     _ = 4 := by simp [hx, hx']
 
+/-- In a 7-regular component with two cells in each row, the ordered
+cross-row loads from a fixed row sum to `2 * 7 = 14`. -/
+theorem sum_defectComponentCoordinateRowPairs_card_eq_fourteen
+    {V X Y : Type*} [Fintype V] [Fintype X] [Fintype Y]
+    [DecidableEq V] [DecidableEq X]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (φ : V ≃ X × Y) (c : D.ConnectedComponent) (x : X)
+    (hx : (defectComponentCoordinateRowFiber D φ c x).card = 2)
+    (hdeg : ∀ u : V, u ∈ c.supp → D.degree u = 7) :
+    (∑ x' : X,
+      (defectComponentCoordinateRowPairs D φ c x x').card) = 14 := by
+  let A := defectComponentCoordinateRowFiber D φ c x
+  let P := ((A.product (Finset.univ : Finset V)).filter fun p =>
+    p.2 ∈ c.supp ∧ D.Adj p.1 p.2)
+  have hP_by_row : P.card =
+      ∑ x' : X, (defectComponentCoordinateRowPairs D φ c x x').card := by
+    have hmaps : ∀ p ∈ P, (φ p.2).1 ∈ (Finset.univ : Finset X) := by
+      intro p _
+      exact Finset.mem_univ _
+    rw [Finset.card_eq_sum_card_fiberwise hmaps]
+    apply Finset.sum_congr rfl
+    intro x' _
+    congr 1
+    ext p
+    simp [P, A, defectComponentCoordinateRowPairs,
+      defectComponentCoordinateRowFiber, and_assoc, and_left_comm, and_comm]
+  have hP_by_source : P.card = 14 := by
+    have hmaps : ∀ p ∈ P, p.1 ∈ A := by
+      intro p hp
+      have hp' : p ∈ (A.product (Finset.univ : Finset V)).filter
+          (fun q => q.2 ∈ c.supp ∧ D.Adj q.1 q.2) := by simpa [P] using hp
+      exact (Finset.mem_product.mp (Finset.mem_filter.mp hp').1).1
+    rw [Finset.card_eq_sum_card_fiberwise hmaps]
+    have hfiber : ∀ u ∈ A,
+        ((P.filter fun p => p.1 = u).card) = 7 := by
+      intro u hu
+      have huc : u ∈ c.supp := by
+        exact (Finset.mem_filter.mp hu).2.1
+      have heq : (P.filter fun p => p.1 = u) =
+          (({u} : Finset V).product (D.neighborFinset u)) := by
+        ext p
+        constructor
+        · intro hp
+          have hpOuter := Finset.mem_filter.mp hp
+          have hpP : p ∈ (A.product (Finset.univ : Finset V)).filter
+              (fun q => q.2 ∈ c.supp ∧ D.Adj q.1 q.2) := by
+            simpa [P] using hpOuter.1
+          have hpPred := (Finset.mem_filter.mp hpP).2
+          apply Finset.mem_product.mpr
+          exact ⟨Finset.mem_singleton.mpr hpOuter.2,
+            by simpa [hpOuter.2] using
+              (D.mem_neighborFinset p.1 p.2).mpr hpPred.2⟩
+        · intro hp
+          have hpProd := Finset.mem_product.mp hp
+          have hpu := Finset.mem_singleton.mp hpProd.1
+          have hadj_u : D.Adj u p.2 :=
+            (D.mem_neighborFinset u p.2).mp hpProd.2
+          have hadj : D.Adj p.1 p.2 := by simpa [hpu] using hadj_u
+          have hpc : p.2 ∈ c.supp := by
+            rw [ConnectedComponent.mem_supp_iff] at huc ⊢
+            rw [hpu] at hadj
+            exact (ConnectedComponent.connectedComponentMk_eq_of_adj hadj).symm.trans huc
+          apply Finset.mem_filter.mpr
+          constructor
+          · show p ∈ P
+            change p ∈ (A.product (Finset.univ : Finset V)).filter
+              (fun q => q.2 ∈ c.supp ∧ D.Adj q.1 q.2)
+            exact Finset.mem_filter.mpr
+              ⟨Finset.mem_product.mpr
+                ⟨by simpa [hpu] using hu, Finset.mem_univ _⟩, hpc, hadj⟩
+          · exact hpu
+      rw [heq]
+      simp [D.card_neighborFinset_eq_degree, hdeg u huc]
+    calc
+      (∑ u ∈ A, (P.filter fun p => p.1 = u).card) =
+          ∑ u ∈ A, 7 := by apply Finset.sum_congr rfl hfiber
+      _ = A.card * 7 := by simp
+      _ = 14 := by simp [A, hx]
+  omega
+
 /-- At order 64 and degree 8, every vertex has exactly two neighbours in an
 order-16 defect component. -/
 theorem orderSixtyFour_regular_componentNeighbor_card_eq_two
@@ -120,6 +201,8 @@ end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_regular_componentNeighbor_card_eq_two
 #print axioms Erdos85.defectComponentCoordinateRowPairs_card_le_four
+#print axioms
+  Erdos85.sum_defectComponentCoordinateRowPairs_card_eq_fourteen
 #print axioms
   Erdos85.orderSixtyFour_regular_coordinate_componentRowFiber_card_eq_two
 #print axioms Erdos85.secondOrderDefectGraph_adj_mem_component
