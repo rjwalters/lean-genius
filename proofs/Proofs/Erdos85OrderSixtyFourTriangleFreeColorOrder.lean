@@ -10,6 +10,25 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Four order-sixteen defect components partition the sixty-four
+vertices. -/
+theorem orderSixtyFour_defectComponent_count_eq_four_of_allSixteen
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    (hsize : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16) :
+    Fintype.card (secondOrderDefectGraph G).ConnectedComponent = 4 := by
+  let D := secondOrderDefectGraph G
+  have hsum := sum_connectedComponent_supp_ncard D
+  have hsum' :
+      (∑ c : D.ConnectedComponent, c.supp.ncard) = 64 := by
+    simpa [Nat.card_eq_fintype_card] using hsum
+  simp_rw [hsize] at hsum'
+  have hmul : Fintype.card D.ConnectedComponent * 16 = 64 := by
+    simpa [Finset.sum_const, Nat.nsmul_eq_mul] using hsum'
+  have hcardD : Fintype.card D.ConnectedComponent = 4 := by omega
+  simpa [D] using hcardD
+
 /-- If every defect component has order sixteen at the order-64 degree-eight
 boundary, triangle-free degree is pointwise zero or two.  The valid input is
 only that every triangle-free neighbor stays in the vertex's defect
