@@ -198,9 +198,11 @@ theorem binarySquare_regular_sameOwner_defectCenterPairs_card_eq_ownerDefect_add
   push_cast at hgridZ
   nlinarith
 
-/-- In a two-owner stratum, every owner-then-defect entry on a defect edge
-is at most `q-2`.  This is the owner-by-owner consequence of residue pressure,
-not merely the tautological bound on their sum. -/
+/-- In a two-owner stratum, residue pressure recovers the pointwise bound
+`(O_c D)_{xy} ≤ q-2` on a defect edge.  This corollary is useful as a checked
+consistency test for the recurrence, but the inequality itself is elementary:
+`N_D(y)` has `q-1` vertices, contains `x`, and looplessness excludes `x` from
+`N_{O_c}(x)`. -/
 theorem binarySquare_regular_twoComponents_defectEdge_ownerDefect_card_le
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
