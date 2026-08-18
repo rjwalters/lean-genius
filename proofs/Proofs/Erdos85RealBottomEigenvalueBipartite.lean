@@ -342,6 +342,101 @@ theorem isBipartite_of_complex_negativeDegree_eigenvector_of_card_lt_three_mul_a
   · exact isBipartite_of_real_negativeDegree_eigenvector_of_card_lt_three_mul_add_one
       D k hk hreg hcard wr hwr hre
 
+/-- A nonempty bipartite `k`-regular graph below order `4k` is connected:
+every connected component contains two disjoint full neighborhoods and hence
+at least `2k` vertices. -/
+theorem connected_of_isBipartite_regular_of_card_lt_four_mul
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (k : ℕ) (hk : 0 < k) (hreg : ∀ x, D.degree x = k)
+    (hbip : D.IsBipartite) (hcard : Fintype.card V < 4 * k) :
+    D.Connected := by
+  classical
+  obtain ⟨col, hcol⟩ := hbip
+  have hcomponent : ∀ a : D.ConnectedComponent, 2 * k ≤ a.supp.ncard := by
+    intro a
+    obtain ⟨x, hxa⟩ := a.exists_rep
+    have hxmem : x ∈ a.supp := by
+      rw [SimpleGraph.ConnectedComponent.mem_supp_iff]
+      change D.connectedComponentMk x = a at hxa
+      exact hxa
+    have hxcard : (D.neighborFinset x).card = k := by
+      rw [D.card_neighborFinset_eq_degree, hreg]
+    have hxpos : 0 < (D.neighborFinset x).card := by omega
+    obtain ⟨y, hy⟩ := Finset.card_pos.mp hxpos
+    have hxy : D.Adj x y := (D.mem_neighborFinset x y).mp hy
+    have hymem : y ∈ a.supp :=
+      a.mem_supp_of_adj_mem_supp hxmem hxy
+    have hycard : (D.neighborFinset y).card = k := by
+      rw [D.card_neighborFinset_eq_degree, hreg]
+    let hs : a.supp.Finite := Set.toFinite _
+    let A : Finset V := hs.toFinset
+    have hsub : D.neighborFinset x ∪ D.neighborFinset y ⊆
+        A := by
+      intro z hz
+      change z ∈ hs.toFinset
+      rw [Set.Finite.mem_toFinset]
+      rcases Finset.mem_union.mp hz with hz | hz
+      · exact a.mem_supp_of_adj_mem_supp hxmem
+          ((D.mem_neighborFinset x z).mp hz)
+      · exact a.mem_supp_of_adj_mem_supp hymem
+          ((D.mem_neighborFinset y z).mp hz)
+    have hdisj : Disjoint (D.neighborFinset x) (D.neighborFinset y) := by
+      rw [Finset.disjoint_left]
+      intro z hzx hzy
+      have hxz : D.Adj x z := (D.mem_neighborFinset x z).mp hzx
+      have hyz : D.Adj y z := (D.mem_neighborFinset y z).mp hzy
+      have hxyc : col x ≠ col y := by simpa using hcol hxy
+      have hxzc : col x ≠ col z := by simpa using hcol hxz
+      have hyzc : col y ≠ col z := by simpa using hcol hyz
+      have hxyb : finTwoEquiv (col x) ≠ finTwoEquiv (col y) :=
+        fun h => hxyc (finTwoEquiv.injective h)
+      have hxzb : finTwoEquiv (col x) ≠ finTwoEquiv (col z) :=
+        fun h => hxzc (finTwoEquiv.injective h)
+      have hyzb : finTwoEquiv (col y) ≠ finTwoEquiv (col z) :=
+        fun h => hyzc (finTwoEquiv.injective h)
+      cases hx : finTwoEquiv (col x) <;>
+        cases hy' : finTwoEquiv (col y) <;>
+        cases hz' : finTwoEquiv (col z) <;> simp_all
+    have hle := Finset.card_le_card hsub
+    rw [Finset.card_union_of_disjoint hdisj, hxcard, hycard] at hle
+    have heq : A.card = a.supp.ncard :=
+      (Set.ncard_eq_toFinset_card a.supp
+        hs).symm
+    omega
+  refine { preconnected := ?_ }
+  intro x y
+  apply SimpleGraph.ConnectedComponent.exact
+  by_contra hne
+  let a := D.connectedComponentMk x
+  let b := D.connectedComponentMk y
+  let haFinite : a.supp.Finite := Set.toFinite _
+  let hbFinite : b.supp.Finite := Set.toFinite _
+  let A : Finset V := haFinite.toFinset
+  let B : Finset V := hbFinite.toFinset
+  have habdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro z hza hzb
+    apply hne
+    change z ∈ haFinite.toFinset at hza
+    change z ∈ hbFinite.toFinset at hzb
+    rw [Set.Finite.mem_toFinset] at hza
+    rw [Set.Finite.mem_toFinset] at hzb
+    exact SimpleGraph.ConnectedComponent.eq_of_common_vertex
+      hza hzb
+  have hsub : A ∪ B ⊆ Finset.univ :=
+    Finset.subset_univ _
+  have hle := Finset.card_le_card hsub
+  rw [Finset.card_union_of_disjoint habdisj] at hle
+  have ha := hcomponent a
+  have hb := hcomponent b
+  have heqa : A.card = a.supp.ncard :=
+    (Set.ncard_eq_toFinset_card a.supp haFinite).symm
+  have heqb : B.card = b.supp.ncard :=
+    (Set.ncard_eq_toFinset_card b.supp hbFinite).symm
+  simp at hle
+  omega
+
 end Erdos85
 
 #print axioms Erdos85.real_negativeDegree_eigenvector_constant_abs_and_edge_neg
@@ -349,3 +444,4 @@ end Erdos85
 #print axioms Erdos85.isBipartite_of_complex_negativeDegree_eigenvector
 #print axioms Erdos85.isBipartite_of_real_negativeDegree_eigenvector_of_card_lt_three_mul_add_one
 #print axioms Erdos85.isBipartite_of_complex_negativeDegree_eigenvector_of_card_lt_three_mul_add_one
+#print axioms Erdos85.connected_of_isBipartite_regular_of_card_lt_four_mul
