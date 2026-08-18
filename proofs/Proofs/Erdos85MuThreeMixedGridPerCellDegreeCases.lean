@@ -1,4 +1,5 @@
 import Proofs.Erdos85MuThreeMixedGridPerCellCommonMates
+import Proofs.Erdos85MuThreeMixedGridPerCellColumnMates
 
 /-! # Degree cases of the exact per-cell residual row law -/
 
@@ -95,8 +96,36 @@ theorem MuThreeMixedGridCode.residualMatesInRow_card_eq_zero_iff
       · exact (hK hbad).elim
       · omega
 
+/-- Column-dual degree-two trigger. -/
+theorem MuThreeMixedGridCode.residualMatesInColumn_card_eq_two_iff
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y) (hyu : y ≠ u.1.2) :
+    (mixedGridGraphMatesInColumn
+        (mixedGridSquareResidualGraph K C) u y).card = 2 ↔
+      (mixedGridHCommonRows H u.1.2 y).card = 0 ∧ K u.1.1 y := by
+  have h := code.residualMatesInColumn_add_overlap_add_indicator
+    H K C u y hyu
+  by_cases hK : K u.1.1 y
+  · rw [if_pos hK] at h
+    constructor
+    · intro htwo
+      exact ⟨by omega, hK⟩
+    · rintro ⟨hzero, _⟩
+      omega
+  · rw [if_neg hK] at h
+    constructor
+    · intro htwo
+      omega
+    · rintro ⟨_, hbad⟩
+      exact (hK hbad).elim
+
 end Erdos85
 
 #print axioms Erdos85.MuThreeMixedGridCode.residualMatesInRow_card_eq_two_iff
 #print axioms Erdos85.MuThreeMixedGridCode.residualMatesInRow_card_eq_one_iff
 #print axioms Erdos85.MuThreeMixedGridCode.residualMatesInRow_card_eq_zero_iff
+#print axioms Erdos85.MuThreeMixedGridCode.residualMatesInColumn_card_eq_two_iff
