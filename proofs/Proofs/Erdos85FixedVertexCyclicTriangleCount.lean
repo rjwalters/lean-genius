@@ -95,6 +95,68 @@ theorem card_cyclicTriangles_filter_first_eq_six_of_degree_eight_tfdegree_two
   rw [htfcard, hdegree] at hlocal
   omega
 
+/-- At degree eight with triangle-free degree zero, every vertex is the first
+coordinate of exactly eight ordered cyclic triangles (four unoriented local
+triangles). -/
+theorem card_cyclicTriangles_filter_first_eq_eight_of_degree_eight_tfdegree_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (hdegree : G.degree x = 8)
+    (htfdegree : (triangleFreeEdgeGraph G).degree x = 0) :
+    ((cyclicColoredTriples G G G).filter fun p => p.1 = x).card = 8 := by
+  rw [card_cyclicTriangles_filter_first_eq_two_mul_localEdges]
+  have hlocal := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree x
+  have htfcard : (triangleFreeNeighbors G x).card = 0 := by
+    rw [← triangleFreeEdgeGraph_neighborFinset G x,
+      SimpleGraph.card_neighborFinset_eq_degree, htfdegree]
+  rw [htfcard, hdegree] at hlocal
+  omega
+
+/-- Local mixed-sector interface: at degree eight, triangle-free degree zero
+or two means exactly eight or six fixed-first ordered triangle orientations. -/
+theorem card_cyclicTriangles_filter_first_eq_six_or_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (hdegree : G.degree x = 8)
+    (htfdegree : (triangleFreeEdgeGraph G).degree x = 0 ∨
+      (triangleFreeEdgeGraph G).degree x = 2) :
+    ((cyclicColoredTriples G G G).filter fun p => p.1 = x).card = 6 ∨
+      ((cyclicColoredTriples G G G).filter fun p => p.1 = x).card = 8 := by
+  rcases htfdegree with hzero | htwo
+  · exact Or.inr
+      (card_cyclicTriangles_filter_first_eq_eight_of_degree_eight_tfdegree_zero
+        G hfree x hdegree hzero)
+  · exact Or.inl
+      (card_cyclicTriangles_filter_first_eq_six_of_degree_eight_tfdegree_two
+        G hfree x hdegree htwo)
+
+/-- Every vertex of a normalized size-two component at order 64 roots either
+three or four ambient triangles. -/
+theorem orderSixtyFour_sizeTwoPart_fixedFirst_cyclic_card_eq_six_or_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 64)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 16) (x : c.supp) :
+    ((cyclicColoredTriples G G G).filter fun p => p.1 = x.1).card = 6 ∨
+      ((cyclicColoredTriples G G G).filter fun p => p.1 = x.1).card = 8 := by
+  apply card_cyclicTriangles_filter_first_eq_six_or_eight
+    G hfree x.1 (hreg x.1)
+  exact binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_zero_or_two
+    G hfree (q := 8) (by norm_num) (by exact ⟨4, by norm_num⟩)
+      hreg (by norm_num at hcard ⊢; exact hcard) c
+      (by norm_num at hc ⊢; exact hc) x
+
 /-- The all-internal-triangle-free, triangle-free-degree-two local model in a
 two-component order-64 branch forces the mixed-nonambient residue. -/
 theorem orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_tfdegree_two
@@ -133,5 +195,10 @@ end Erdos85
 #print axioms Erdos85.card_cyclicTriangles_filter_first_eq_two_mul_localEdges
 #print axioms
   Erdos85.card_cyclicTriangles_filter_first_eq_six_of_degree_eight_tfdegree_two
+#print axioms
+  Erdos85.card_cyclicTriangles_filter_first_eq_eight_of_degree_eight_tfdegree_zero
+#print axioms Erdos85.card_cyclicTriangles_filter_first_eq_six_or_eight
+#print axioms
+  Erdos85.orderSixtyFour_sizeTwoPart_fixedFirst_cyclic_card_eq_six_or_eight
 #print axioms
   Erdos85.orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_tfdegree_two
