@@ -1956,6 +1956,16 @@ generalized rather than merely replayed.
      regularity is now also formalized (`ad9cf06db2`): a source of normalized
      size `m` gives an `m`-regular layer, with an explicit order-64 theorem
      producing the 6-factor plus 2-factor in `[6,2]`.
+     The missing transport from that edge partition back to the ambient owner
+     operator is now **PROVEN q-GENERIC** (`528a8a9610`): for every source
+     component, the owner graph induced on the source vertices is isomorphic
+     to the intersection graph induced on precisely that source's selector
+     edges
+     (`binarySquare_regular_sizeTwoPart_exists_restrictedOwnerGraph_iso_sourceIntersection`).
+     Thus the 48-by-48 and 16-by-16 restricted `O_b` blocks in `[6,2]` are not
+     arbitrary commuting regular graphs: they are the line graphs of the
+     6-factor and 2-factor layers, respectively, with the canonical selector
+     labels retained.
      The residual `[6,2]` target must couple the transported
      defect blocks to this line-graph edge partition; commute, degrees, and
      the entry cap alone cannot close it.
