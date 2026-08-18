@@ -43,6 +43,47 @@ private theorem crossIncidence_mul_transpose_apply
         simp [componentCrossNeighborFinset]
       rw [hfilt]
 
+/-- Row Gram of a cross block into any normalized defect component: its
+diagonal is the normalized target size, while its Boolean off-diagonal part
+is the corresponding restricted owner graph.  The size-two formula below is
+the specialization `m = 2`; in `[6,2]`, the reverse cross block gives the
+exterior `6I + R` Gram identity. -/
+theorem binarySquare_regular_normalizedTarget_crossIncidence_mul_transpose
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (source target : (secondOrderDefectGraph G).ConnectedComponent)
+    {m : ℕ} (htarget : target.supp.ncard = q * m) :
+    defectComponentCrossIncidenceMatrix (K := ℤ) G source target *
+        (defectComponentCrossIncidenceMatrix (K := ℤ) G source target).transpose =
+      Matrix.diagonal (fun _ => (m : ℤ)) +
+        (restrictedComponentOwnerGraph G source target).adjMatrix ℤ := by
+  ext x y
+  rw [crossIncidence_mul_transpose_apply]
+  by_cases hxy : x = y
+  · subst y
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard
+        ((secondOrderDefectGraph G).connectedComponentMk x.1) target
+        (x := x.1) rfl
+    rw [htarget] at hmul
+    have htargetCard :
+        (componentCrossNeighborFinset G target x).card = m := by
+      rw [card_componentCrossNeighborFinset_eq_componentNeighborFinset]
+      exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+    simp [htargetCard, SimpleGraph.adjMatrix_apply]
+  · have hinter := binarySquare_regular_sizeTwoTarget_crossRow_inter_card_eq_ite
+      G hfree target x y hxy
+    rw [hinter]
+    by_cases hadj : (restrictedComponentOwnerGraph G source target).Adj x y <;>
+      simp [hadj, hxy, SimpleGraph.adjMatrix_apply]
+
 /-- Row Gram of a size-two cross block: diagonal `2` plus the corresponding
 restricted owner 2-factor. -/
 theorem binarySquare_regular_sizeTwoTarget_crossIncidence_mul_transpose
@@ -61,20 +102,8 @@ theorem binarySquare_regular_sizeTwoTarget_crossIncidence_mul_transpose
         (defectComponentCrossIncidenceMatrix (K := ℤ) G source target).transpose =
       Matrix.diagonal (fun _ => (2 : ℤ)) +
         (restrictedComponentOwnerGraph G source target).adjMatrix ℤ := by
-  ext x y
-  rw [crossIncidence_mul_transpose_apply]
-  by_cases hxy : x = y
-  · subst y
-    have hcardCross : (componentCrossNeighborFinset G target x).card = 2 := by
-      rw [card_componentCrossNeighborFinset_eq_componentNeighborFinset]
-      exact binarySquare_regular_sizeTwoPart_selector_card
-        G hfree hq hreg hcard target htarget x.1
-    simp [hcardCross, SimpleGraph.adjMatrix_apply]
-  · have hinter := binarySquare_regular_sizeTwoTarget_crossRow_inter_card_eq_ite
-      G hfree target x y hxy
-    rw [hinter]
-    by_cases hadj : (restrictedComponentOwnerGraph G source target).Adj x y <;>
-      simp [hadj, hxy, SimpleGraph.adjMatrix_apply]
+  exact binarySquare_regular_normalizedTarget_crossIncidence_mul_transpose
+    G hfree hq hreg hcard source target (m := 2) htarget
 
 /-- Reversing a square size-two cross block gives the column Gram and the
 reverse restricted owner factor. -/
@@ -154,5 +183,8 @@ theorem binarySquare_regular_twoSizeTwoParts_restrictedOwner_charpoly_eq
   simpa [Polynomial.comp_assoc] using hinv
 
 end
+
+#print axioms
+  Erdos85.binarySquare_regular_normalizedTarget_crossIncidence_mul_transpose
 
 end Erdos85
