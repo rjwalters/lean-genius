@@ -1983,6 +1983,16 @@ generalized rather than merely replayed.
      arbitrary commuting regular graphs: they are the line graphs of the
      6-factor and 2-factor layers, respectively, with the canonical selector
      labels retained.
+     The associated lower spectral constraint is now also **PROVEN
+     q-GENERIC** (`a6d13f1c09`): every source-restricted size-two owner block
+     satisfies `O_{b,S}+2I ⪰ 0`
+     (`binarySquare_regular_sizeTwoPart_restrictedOwner_adjMatrix_add_two_posSemidef`).
+     This is a principal-submatrix consequence of the global owner Gram and
+     formally excludes any abstract block model that omits the line-graph
+     positivity (including the 48-vertex circulant example above).  It does
+     not exclude the synchronized-cycle 16-vertex example, whose least
+     eigenvalue is already `-2`; the remaining terminal must still use the
+     shared selector labels or their coupling to `D_S`.
      The residual `[6,2]` target must couple the transported
      defect blocks to this line-graph edge partition; commute, degrees, and
      the entry cap alone cannot close it.
