@@ -749,8 +749,12 @@ generalized rather than merely replayed.
      `oneRegularRelation_exists_equiv` identifies that residual relation with
      the graph of an equivalence of the two five-point shores.  Therefore
      `K = (K_{5,5} \ H) \ graph(f)` for a permutation `f`; the remaining
-     bounded normalization is a perfect-matching orbit problem, not an
-     arbitrary two-factor search.
+     bounded normalization is a perfect-matching problem, not an arbitrary
+     two-factor search.  Its exact size is also `PROVEN` by the ordinary
+     kernel-decided theorem `tenCycleAvoidingMatchings_card`: precisely
+     thirteen permutations avoid the standard bipartite `C10`.  Hence this
+     mixed orientation reduces to thirteen fixed hole models before any
+     further dihedral symmetry quotient.
 
      In the all-triangle-free `[2,2,2,2]` cell, the `C10+C6` fiber-margin
      terminal is now `PROVEN` without SAT or `native_decide`.
