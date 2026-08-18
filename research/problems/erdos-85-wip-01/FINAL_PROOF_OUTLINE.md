@@ -2094,9 +2094,12 @@ generalized rather than merely replayed.
      common-eligible-row pigeonhole count coupled to the `K` sectors.  The
      required row count is now exact (**PROVEN**, `b52c5c31ff`): two columns
      have `4 + |N_H(b) ∩ N_H(b')|` common eligible rows.  In particular an
-     overlap-one pair has five eligible rows, so its two parity colors contain
-     a three-row monochromatic class by pigeonhole; formalizing that final
-     extraction and coupling its three even monodromies to `K` is next.
+     overlap-one pair has five eligible rows.  The exact pigeonhole extraction
+     is now **PROVEN** (`0a21614c5e`): there are three pairwise distinct common
+     eligible rows in one parity class, so all three pairwise rectangle
+     monodromies have positive sign and hence cycle type `(4,2)` or `(3,3)`.
+     The remaining task is to couple this forced even-monodromy triangle to
+     the `K`-sector geometry.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
