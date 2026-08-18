@@ -140,6 +140,126 @@ theorem exists_mu3KSectorChoice_H16
       mu3EmptyRows, Finset.notMem_empty, iff_false]
     exact fun hkxy => hk (hrel.mpr hkxy)
 
+theorem mu3H88_K_status_iff_representative
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H88Row) K)
+    (x y : Fin 8) (hxy : mu3HRel mu3H88Row x y) :
+    K (if x.val < 4 then 0 else 4) (if x.val < 4 then 0 else 4) ↔ K x y := by
+  have hrep : mu3HRel mu3H88Row
+      (if x.val < 4 then 0 else 4) (if x.val < 4 then 0 else 4) := by
+    fin_cases x <;> decide
+  exact hcycle.edge_status_eq_of_reachable
+    (H := mu3HRel mu3H88Row) (K := K) hrep hxy
+    (mu3H88Rel_reachable_representative x)
+
+theorem exists_mu3KSectorChoice_H88
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H88Row) K) :
+    ∃ sector : Mu3KSectorChoice,
+      sector.HRows = mu3H88Row ∧
+      ∀ x y, y.val ∈ sector.HRows x.val →
+        (K x y ↔ y.val ∈ sector.TRows x.val) := by
+  by_cases hfirst : K 0 0 <;> by_cases hsecond : K 4 4
+  · refine ⟨.c88AllTf, rfl, ?_⟩
+    intro x y hxy
+    have hs := mu3H88_K_status_iff_representative K hcycle x y hxy
+    simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows] at hxy ⊢
+    refine ⟨fun _ => hxy, fun _ => ?_⟩
+    by_cases hx : x.val < 4
+    · apply hs.mp
+      simpa [hx] using hfirst
+    · apply hs.mp
+      simpa [hx] using hsecond
+  · refine ⟨.c88FirstTf, rfl, ?_⟩
+    intro x y hxy
+    have hs := mu3H88_K_status_iff_representative K hcycle x y hxy
+    by_cases hx : x.val < 4
+    · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+        mu3H88FirstTfRows, if_pos hx]
+      exact ⟨fun _ => hxy, fun _ => hs.mp (by simpa [hx] using hfirst)⟩
+    · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+        mu3H88FirstTfRows, if_neg hx, Finset.notMem_empty, iff_false]
+      exact fun hkxy => hsecond (by simpa [hx] using hs.mpr hkxy)
+  · refine ⟨.c88SecondTf, rfl, ?_⟩
+    intro x y hxy
+    have hs := mu3H88_K_status_iff_representative K hcycle x y hxy
+    by_cases hx : x.val < 4
+    · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+        mu3H88SecondTfRows, if_pos hx, Finset.notMem_empty, iff_false]
+      exact fun hkxy => hfirst (by simpa [hx] using hs.mpr hkxy)
+    · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+        mu3H88SecondTfRows, if_neg hx]
+      exact ⟨fun _ => hxy, fun _ => hs.mp (by simpa [hx] using hsecond)⟩
+  · refine ⟨.c88AllTriangle, rfl, ?_⟩
+    intro x y hxy
+    have hs := mu3H88_K_status_iff_representative K hcycle x y hxy
+    simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+      mu3EmptyRows, Finset.notMem_empty, iff_false]
+    intro hkxy
+    by_cases hx : x.val < 4
+    · exact hfirst (by simpa [hx] using hs.mpr hkxy)
+    · exact hsecond (by simpa [hx] using hs.mpr hkxy)
+
+theorem mu3H106_K_status_iff_representative
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H106Row) K)
+    (x y : Fin 8) (hxy : mu3HRel mu3H106Row x y) :
+    K (if x.val < 5 then 0 else 5) (if x.val < 5 then 0 else 5) ↔ K x y := by
+  have hrep : mu3HRel mu3H106Row
+      (if x.val < 5 then 0 else 5) (if x.val < 5 then 0 else 5) := by
+    fin_cases x <;> decide
+  exact hcycle.edge_status_eq_of_reachable
+    (H := mu3HRel mu3H106Row) (K := K) hrep hxy
+    (mu3H106Rel_reachable_representative x)
+
+theorem exists_mu3KSectorChoice_H106
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H106Row) K) :
+    ∃ sector : Mu3KSectorChoice,
+      sector.HRows = mu3H106Row ∧
+      ∀ x y, y.val ∈ sector.HRows x.val →
+        (K x y ↔ y.val ∈ sector.TRows x.val) := by
+  by_cases hten : K 0 0 <;> by_cases hsix : K 5 5
+  · refine ⟨.c106AllTf, rfl, ?_⟩
+    intro x y hxy
+    have hs := mu3H106_K_status_iff_representative K hcycle x y hxy
+    simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows] at hxy ⊢
+    refine ⟨fun _ => hxy, fun _ => ?_⟩
+    by_cases hx : x.val < 5
+    · apply hs.mp
+      simpa [hx] using hten
+    · apply hs.mp
+      simpa [hx] using hsix
+  · refine ⟨.c106TenTf, rfl, ?_⟩
+    intro x y hxy
+    have hs := mu3H106_K_status_iff_representative K hcycle x y hxy
+    by_cases hx : x.val < 5
+    · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+        mu3H106TenTfRows, if_pos hx]
+      exact ⟨fun _ => hxy, fun _ => hs.mp (by simpa [hx] using hten)⟩
+    · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+        mu3H106TenTfRows, if_neg hx, Finset.notMem_empty, iff_false]
+      exact fun hkxy => hsix (by simpa [hx] using hs.mpr hkxy)
+  · refine ⟨.c106SixTf, rfl, ?_⟩
+    intro x y hxy
+    have hs := mu3H106_K_status_iff_representative K hcycle x y hxy
+    by_cases hx : x.val < 5
+    · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+        mu3H106SixTfRows, if_pos hx, Finset.notMem_empty, iff_false]
+      exact fun hkxy => hten (by simpa [hx] using hs.mpr hkxy)
+    · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+        mu3H106SixTfRows, if_neg hx]
+      exact ⟨fun _ => hxy, fun _ => hs.mp (by simpa [hx] using hsix)⟩
+  · refine ⟨.c106AllTriangle, rfl, ?_⟩
+    intro x y hxy
+    have hs := mu3H106_K_status_iff_representative K hcycle x y hxy
+    simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
+      mu3EmptyRows, Finset.notMem_empty, iff_false]
+    intro hkxy
+    by_cases hx : x.val < 5
+    · exact hten (by simpa [hx] using hs.mpr hkxy)
+    · exact hsix (by simpa [hx] using hs.mpr hkxy)
+
 end Erdos85
 
 #print axioms Erdos85.RelationFactorCycleCompatible.edge_status_eq_of_reachable
@@ -147,3 +267,5 @@ end Erdos85
 #print axioms Erdos85.mu3H88Rel_reachable_representative
 #print axioms Erdos85.mu3H106Rel_reachable_representative
 #print axioms Erdos85.exists_mu3KSectorChoice_H16
+#print axioms Erdos85.exists_mu3KSectorChoice_H88
+#print axioms Erdos85.exists_mu3KSectorChoice_H106
