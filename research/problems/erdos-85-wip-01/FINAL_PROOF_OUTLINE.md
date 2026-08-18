@@ -1995,7 +1995,10 @@ generalized rather than merely replayed.
      on the `H`-edges of a component.  Coordinate-level closure is also
      **PROVEN** (`f0dc25a772`): every `H`-edge sharing the row or column of an
      occupied `H \ K` cell is itself occupied.  Hence the occupied `H` support
-     is a union of whole bipartite `H`-cycles.
+     is a union of whole bipartite `H`-cycles.  Numerically, each support row
+     and column through such a cell has size exactly two, leaving exactly one
+     partner after deleting the cell (**PROVEN**, `5235385859`); the occupied
+     `H` support therefore carries an explicit rook two-factor.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
