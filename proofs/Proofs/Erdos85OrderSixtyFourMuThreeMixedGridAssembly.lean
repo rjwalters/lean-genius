@@ -597,6 +597,74 @@ def orderSixtyFourMuThreeLabelColumnFiberEquiv
   left_inv u := by rfl
   right_inv u := by rfl
 
+def orderSixtyFourMuThreeOutsideNeighborEquiv
+    {V : Type*} (G : SimpleGraph V) (cSupp : Set V) (z : V) :
+    {u : muThreeExterior cSupp // G.Adj z u.1} ≃
+      {u : V // G.Adj z u ∧ u ∉ cSupp} where
+  toFun u := ⟨u.1.1, u.2, u.1.2⟩
+  invFun u := ⟨⟨u.1, u.2.2⟩, u.2.1⟩
+  left_inv u := by rfl
+  right_inv u := by rfl
+
+/-- The ambient exterior-neighbor count supplies the required six-element
+positive label fiber. -/
+theorem orderSixtyFourMuThreeLabelRowFiber_card_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [DecidablePred (fun z : V => z ∈ cSupp)]
+    [Fintype (muThreeExterior cSupp)]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (hunique : ∀ u p, G.Adj u.1 p.1 → (label u).1 = p)
+    (p : muThreePositiveShore cSupp s)
+    (hout : ((G.neighborFinset p.1).filter fun u => u ∉ cSupp).card = 6) :
+    Fintype.card {u : muThreeExterior cSupp // (label u).1 = p} = 6 := by
+  rw [Fintype.card_congr
+      (orderSixtyFourMuThreeLabelRowFiberEquiv G label hadj hunique p),
+    Fintype.card_congr
+      (orderSixtyFourMuThreeOutsideNeighborEquiv G cSupp p.1),
+    Fintype.card_subtype]
+  change ((Finset.univ : Finset V).filter fun u =>
+    G.Adj p.1 u ∧ u ∉ cSupp).card = 6
+  rw [show ((Finset.univ : Finset V).filter fun u =>
+      G.Adj p.1 u ∧ u ∉ cSupp) =
+      (G.neighborFinset p.1).filter (fun u => u ∉ cSupp) by
+    ext u
+    simp [SimpleGraph.mem_neighborFinset, G.adj_comm]]
+  exact hout
+
+/-- Column-dual six-element label fiber. -/
+theorem orderSixtyFourMuThreeLabelColumnFiber_card_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [DecidablePred (fun z : V => z ∈ cSupp)]
+    [Fintype (muThreeExterior cSupp)]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (hunique : ∀ u n, G.Adj u.1 n.1 → (label u).2 = n)
+    (n : muThreeNegativeShore cSupp s)
+    (hout : ((G.neighborFinset n.1).filter fun u => u ∉ cSupp).card = 6) :
+    Fintype.card {u : muThreeExterior cSupp // (label u).2 = n} = 6 := by
+  rw [Fintype.card_congr
+      (orderSixtyFourMuThreeLabelColumnFiberEquiv G label hadj hunique n),
+    Fintype.card_congr
+      (orderSixtyFourMuThreeOutsideNeighborEquiv G cSupp n.1),
+    Fintype.card_subtype]
+  change ((Finset.univ : Finset V).filter fun u =>
+    G.Adj n.1 u ∧ u ∉ cSupp).card = 6
+  rw [show ((Finset.univ : Finset V).filter fun u =>
+      G.Adj n.1 u ∧ u ∉ cSupp) =
+      (G.neighborFinset n.1).filter (fun u => u ∉ cSupp) by
+    ext u
+    simp [SimpleGraph.mem_neighborFinset, G.adj_comm]]
+  exact hout
+
 end
 
 end Erdos85
@@ -609,3 +677,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFourMuThree_mixedGridCode_of_hitLaws
 #print axioms Erdos85.orderSixtyFourMuThree_label_positive_eq_of_adj
 #print axioms Erdos85.orderSixtyFourMuThreeLabelRowFiberEquiv
+#print axioms Erdos85.orderSixtyFourMuThreeLabelRowFiber_card_eq_six
