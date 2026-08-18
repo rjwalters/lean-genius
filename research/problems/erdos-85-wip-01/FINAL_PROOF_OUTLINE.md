@@ -1934,18 +1934,32 @@ generalized rather than merely replayed.
      all-size-two corollary applies directly to `[2,2,2,2]`; the same theorem
      removes the bipartite size-two branch from `[6,2]`, `[4,2,2]`, and
      `[3,3,2]` without a finite census or an internal-color hypothesis.
+     This has now been strengthened to a complete q=8 structural invariant
+     (`eeebcee6a4`): **no defect component in any of the seven normalized
+     strata is bipartite.**  The q-generic propagation theorems
+     `binarySquare_regular_bipartite_defectComponent_false_of_others_not_bipartite`
+     and
+     `binarySquare_regular_bipartite_defectComponent_odd_forces_others_bipartite`
+     handle the size-two-containing shapes; the one-component consumer is
+     `orderSixtyFour_regular_oneComponent_not_bipartite`, and the remaining
+     `[4,4]` and `[5,3]` arithmetic is discharged by
+     `orderSixtyFour_fourFour_not_bipartite` and
+     `orderSixtyFour_fiveThree_sizeThree_not_bipartite`.  The residue,
+     propagation, and the nonsquare condition `t² ≠ 2(q-1)` are q-generic
+     (the latter holds uniformly for binary `q`); the final `[4,4]` and
+     `[5,3]` count consumers are q=8-specific.
 
      The operator-requested algebra ledger is now explicit.  “Reduction” is
      deliberately not labeled as a stratum kill:
 
      | stratum | theorem-backed status at q=8 | uniform content | exact remaining leaf |
      |---|---|---|---|
-     | `[8]` | **AT-64-ONLY, PARTIAL**: `orderSixtyFour_regular_oneComponent_ownerDensity` gives owner codegree at least 48 | inclusion-exclusion itself is generic, but the `48` threshold is order-64 arithmetic | **GAP A-REG-8-DENSITY**: contradict extreme one-owner closure using defect/Gram algebra |
-     | `[6,2]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_sixTwo_largeDensity_or_smallSaturation` | repeated-closing consumers, center collapse, residual-star decomposition, and incidence packing are **q-GENERIC** | **GAP A-REG-ROUTING**: exclude size-six density or size-two saturation by cross-root/cross-row compatibility |
-     | `[5,3]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_threeFive_twoOwner_exists_ownerDensity` | equal-root/same-route fork-to-density consumers are **q-GENERIC** | **GAP A-REG-ROUTING**: compatibility or production of a coupled second fragment |
-     | `[4,4]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_fourFour_twoOwner_exists_ownerDensity` | density and exact complementary residual-pair decomposition are **q-GENERIC** | **GAP A-REG-ROUTING**: compatibility of the two complementary pairs across rows |
-     | `[4,2,2]` | **AT-64-ONLY, PARTIAL**: all ordinary patterns reach routing; opposite bowtie reaches an exact selector rectangle/commuting block; both size-two components are **PROVEN non-bipartite** | bowtie geometry, row-density consumers, and the size-two bipartite exclusion are **q-GENERIC** | **AXIOM A-REG-422-BOWTIE** for the opposite bowtie, followed by the shared **GAP A-REG-ROUTING** |
-     | `[3,3,2]` | **AT-64-ONLY pressure reduction, PROVEN** in the rainbow branch: saturation or two common-source large densities (`orderSixtyFour_threeThreeTwo_rainbow_saturation_or_commonSourceLargeDensities`); the size-two component is **PROVEN non-bipartite** | saturation at normalized size two, unique third centers at size three, residual-star algebra, and the size-two bipartite exclusion are **q-GENERIC** | **GAP A-REG-332-PATTERNS** for non-rainbow pattern assembly, then common-root/cross-root **GAP A-REG-ROUTING** |
+     | `[8]` | **AT-64-ONLY, PARTIAL**: the unique defect component is **PROVEN non-bipartite**; `orderSixtyFour_regular_oneComponent_ownerDensity` gives owner codegree at least 48 | signed-residue nonsquare obstruction is q-generic; the `48` threshold is order-64 arithmetic | **GAP A-REG-8-DENSITY-NONBIP**: contradict extreme one-owner closure in the surviving nonbipartite geometry |
+     | `[6,2]` | **AT-64-ONLY pressure reduction, PROVEN**; both defect components are **PROVEN non-bipartite** | bipartite exclusion, repeated-closing consumers, center collapse, residual-star decomposition, and incidence packing are **q-GENERIC** | **GAP A-REG-62-NONBIP**, then **GAP A-REG-ROUTING**: exterior selector compatibility must exclude the calibrated nonbipartite size-two geometry and the density/saturation fork |
+     | `[5,3]` | **AT-64-ONLY pressure reduction, PROVEN**; both components are **PROVEN non-bipartite** | equal-root/same-route fork-to-density and the odd-component propagation kernel are **q-GENERIC**; the terminal size count is q=8-specific | **GAP A-REG-53-ROUTING-NONBIP**: compatibility or production of a coupled second fragment in the nonbipartite geometry |
+     | `[4,4]` | **AT-64-ONLY pressure reduction, PROVEN**; both components are **PROVEN non-bipartite** | density and exact complementary residual-pair decomposition are **q-GENERIC**; the bipartite terminal count is q=8-specific | **GAP A-REG-44-ROUTING-NONBIP**: compatibility of the two complementary pairs across rows |
+     | `[4,2,2]` | **AT-64-ONLY, PARTIAL**: all three components are **PROVEN non-bipartite**; all ordinary patterns reach routing; the opposite bowtie reaches an exact selector rectangle/commuting block | bipartite exclusion, bowtie geometry, and row-density consumers are **q-GENERIC** | **AXIOM A-REG-422-BOWTIE**, followed by **GAP A-REG-422-ROUTING-NONBIP** |
+     | `[3,3,2]` | **AT-64-ONLY pressure reduction, PROVEN** in the rainbow branch; all three components are **PROVEN non-bipartite** | bipartite exclusion, saturation at size two, unique third centers at size three, and residual-star algebra are **q-GENERIC** | **GAP A-REG-332-PATTERNS**, then **GAP A-REG-332-ROUTING-NONBIP** |
 
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
