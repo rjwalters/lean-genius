@@ -23,6 +23,24 @@ def mixedGridPartnerGraph
     SimpleGraph (muThreeMixedCell K) :=
   C ⊓ mixedGridRowColumnGraph K
 
+noncomputable instance mixedGridPartnerGraphLocallyFinite
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (K : X → Y → Prop) [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj] :
+    (mixedGridPartnerGraph K C).LocallyFinite :=
+  by classical exact fun _u => Fintype.ofFinite _
+
+instance mixedGridPartnerGraphAdjDecidable
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (K : X → Y → Prop) [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj] :
+    DecidableRel (mixedGridPartnerGraph K C).Adj := by
+  intro u v
+  change Decidable (C.Adj u v ∧ (mixedGridRowColumnGraph K).Adj u v)
+  exact inferInstance
+
 /-- The partner graph has degree zero on an `H`-cell and degree two on every
 other occupied cell. -/
 theorem MuThreeMixedGridCode.partnerGraph_degree
@@ -43,13 +61,11 @@ theorem MuThreeMixedGridCode.partnerGraph_degree
       mixedGridRowColumnGraph, Finset.mem_union, A, B, Finset.mem_filter]
     constructor
     · rintro ⟨huv, _hne, hrow | hcol⟩
-      · exact Or.inl ⟨(C.mem_neighborFinset u v).mpr huv, hrow⟩
-      · exact Or.inr ⟨(C.mem_neighborFinset u v).mpr huv, hcol⟩
+      · exact Or.inl ⟨huv, hrow.symm⟩
+      · exact Or.inr ⟨huv, hcol.symm⟩
     · rintro (⟨huv, hrow⟩ | ⟨huv, hcol⟩)
-      · have hadj := (C.mem_neighborFinset u v).mp huv
-        exact ⟨hadj, C.ne_of_adj hadj, Or.inl hrow⟩
-      · have hadj := (C.mem_neighborFinset u v).mp huv
-        exact ⟨hadj, C.ne_of_adj hadj, Or.inr hcol⟩
+      · exact ⟨huv, C.ne_of_adj huv, Or.inl hrow.symm⟩
+      · exact ⟨huv, C.ne_of_adj huv, Or.inr hcol.symm⟩
   have hdisjoint : Disjoint A B := by
     rw [Finset.disjoint_left]
     intro v hvA hvB
@@ -59,7 +75,7 @@ theorem MuThreeMixedGridCode.partnerGraph_degree
       apply Subtype.ext
       exact Prod.ext hrow hcol
     have hadj := (C.mem_neighborFinset u v).mp (Finset.mem_filter.mp hvA).1
-    exact C.loopless u (hvu ▸ hadj)
+    exact C.irrefl (hvu ▸ hadj)
   rw [← (mixedGridPartnerGraph K C).card_neighborFinset_eq_degree,
     hneighbors, Finset.card_union_of_disjoint hdisjoint]
   change A.card + B.card = _
@@ -83,8 +99,10 @@ theorem MuThreeMixedGridCode.partnerGraph_adj_nonH
     rw [if_pos huH] at hdeg
     have hmem : v ∈ (mixedGridPartnerGraph K C).neighborFinset u :=
       ((mixedGridPartnerGraph K C).mem_neighborFinset u v).mpr huv
-    rw [← (mixedGridPartnerGraph K C).card_neighborFinset_eq_degree,
-      hdeg, Finset.card_eq_zero] at hmem
+    have hc : (mixedGridPartnerGraph K C).neighborFinset u = ∅ := by
+      apply Finset.card_eq_zero.mp
+      rw [(mixedGridPartnerGraph K C).card_neighborFinset_eq_degree, hdeg]
+    rw [hc] at hmem
     exact Finset.notMem_empty v hmem
   · intro hvH
     have hdeg := code.partnerGraph_degree H K C v
@@ -92,8 +110,10 @@ theorem MuThreeMixedGridCode.partnerGraph_adj_nonH
     have hmem : u ∈ (mixedGridPartnerGraph K C).neighborFinset v :=
       ((mixedGridPartnerGraph K C).mem_neighborFinset v u).mpr
         ((mixedGridPartnerGraph K C).adj_symm huv)
-    rw [← (mixedGridPartnerGraph K C).card_neighborFinset_eq_degree,
-      hdeg, Finset.card_eq_zero] at hmem
+    have hc : (mixedGridPartnerGraph K C).neighborFinset v = ∅ := by
+      apply Finset.card_eq_zero.mp
+      rw [(mixedGridPartnerGraph K C).card_neighborFinset_eq_degree, hdeg]
+    rw [hc] at hmem
     exact Finset.notMem_empty u hmem
 
 /-- Occupied cells whose coordinates form an `H`-edge. -/
@@ -192,16 +212,35 @@ theorem MuThreeMixedGridCode.partnerGraph_card_edges_eq_thirtyTwo
   have hhand := P.sum_degrees_eq_twice_card_edges
   have hsum : ∑ u, P.degree u = 64 := by
     calc
-      ∑ u, P.degree u = ∑ u, if H u.1.1 u.1.2 then 0 else 2 := by
+      ∑ u, P.degree u =
+          ∑ u : muThreeMixedCell K, if H u.1.1 u.1.2 then 0 else 2 := by
         apply Finset.sum_congr rfl
         intro u _hu
         exact code.partnerGraph_degree H K C u
-      _ = 2 * (mixedGridNonHCells H K).card := by
-        classical
-        simp [mixedGridNonHCells, Finset.mul_sum]
+      _ = ∑ _u ∈ mixedGridNonHCells H K, 2 := by
+        unfold mixedGridNonHCells
+        rw [Finset.sum_filter]
+        apply Finset.sum_congr rfl
+        intro u _hu
+        by_cases hu : H u.1.1 u.1.2 <;> simp [hu]
+      _ = 2 * (mixedGridNonHCells H K).card := by simp [Nat.mul_comm]
       _ = 64 := by rw [code.card_nonHCells_eq_thirtyTwo H K C hdisjoint]
-  change (∑ u, P.degree u) = 2 * P.edgeFinset.card at hhand
-  rw [hsum] at hhand
+  simp_rw [← P.card_neighborFinset_eq_degree] at hsum hhand
+  have hhand' :
+      (∑ x, (@SimpleGraph.neighborFinset (muThreeMixedCell K) P x
+        (mixedGridPartnerGraphLocallyFinite K C x)).card) =
+        2 * P.edgeFinset.card := by
+    convert hhand using 1
+    apply Finset.sum_congr rfl
+    intro x _hx
+    congr 1
+    ext y
+    simp
+  have hhand64 : 64 = 2 * P.edgeFinset.card := by
+    calc
+      64 = ∑ x, (P.neighborFinset x).card := hsum.symm
+      _ = 2 * P.edgeFinset.card := hhand'
+  change P.edgeFinset.card = 32
   omega
 
 end Erdos85
