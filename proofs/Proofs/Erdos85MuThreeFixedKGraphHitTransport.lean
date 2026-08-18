@@ -20,7 +20,7 @@ theorem false_of_c4Free_mu3FixedKGraphHitCounts
     {W : Type*} [Fintype W] [DecidableEq W]
     (G : SimpleGraph W) [DecidableRel G.Adj]
     (hfree : ¬ containsC4 W G) (e : Fin 48 ≃ W)
-    (i : Fin 19)
+    (i : Fin 22)
     (hhitCounts : ∀ spec ∈ mu3GridHitSpecs (mu3FixedKGrid i),
       seqPrefixTrue
           (mu3NativeVarsRow

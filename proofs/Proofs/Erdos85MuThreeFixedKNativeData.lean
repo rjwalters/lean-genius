@@ -1,10 +1,14 @@
 import Proofs.Erdos85MuThreeFixedKNativeCnfSemantics
 
-/-! # Lean-native data for the 19 new fixed-K grids -/
+/-! # Lean-native data for all 22 fixed-K grids -/
 
 namespace Erdos85
 
-private def mu3FixedKCells : Fin 19 → List Nat
+/-- Embed the original nineteen non-all-TF certificate indices into the
+uniform twenty-two-slot manifest. -/
+def mu3FixedKOldIndex (i : Fin 19) : Fin 22 := ⟨i.val, by omega⟩
+
+private def mu3FixedKCells : Fin 22 → List Nat
   | 0 => [0, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13, 14, 17, 18, 20, 21, 22, 23, 24, 26, 27, 29, 30, 31, 32, 33, 35, 36, 38, 39, 40, 41, 42, 44, 45, 47, 48, 49, 50, 51, 53, 54, 57, 58, 59, 60, 62, 63]
   | 1 => [0, 1, 3, 4, 6, 7, 8, 9, 10, 12, 13, 15, 16, 17, 18, 19, 21, 22, 25, 26, 27, 28, 30, 31, 32, 34, 35, 36, 37, 39, 40, 41, 43, 44, 45, 46, 49, 50, 52, 53, 54, 55, 56, 58, 59, 61, 62, 63]
   | 2 => [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 23, 24, 25, 26, 27, 28, 29, 33, 34, 35, 36, 37, 38, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 60, 61, 62, 63]
@@ -24,9 +28,12 @@ private def mu3FixedKCells : Fin 19 → List Nat
   | 16 => [1, 2, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39, 40, 41, 42, 43, 44, 45, 48, 49, 50, 51, 53, 54, 56, 57, 58, 59, 62, 63]
   | 17 => [0, 2, 4, 5, 6, 7, 8, 9, 11, 13, 14, 15, 17, 18, 20, 21, 22, 23, 24, 26, 27, 29, 30, 31, 33, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 48, 49, 50, 51, 52, 55, 56, 57, 58, 59, 60, 61]
   | 18 => [0, 3, 4, 5, 6, 7, 8, 9, 12, 13, 14, 15, 17, 18, 20, 21, 22, 23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 40, 41, 42, 43, 46, 47, 48, 49, 50, 51, 52, 55, 56, 57, 58, 59, 60, 61]
+  | 19 => mu3AllTfCells .c16
+  | 20 => mu3AllTfCells .c8c8
+  | 21 => mu3AllTfCells .c10c6
   | _ => [0, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13, 14, 17, 18, 20, 21, 22, 23, 24, 26, 27, 29, 30, 31, 32, 33, 35, 36, 38, 39, 40, 41, 42, 44, 45, 47, 48, 49, 50, 51, 53, 54, 57, 58, 59, 60, 62, 63]
 
-private def mu3FixedKShape : Fin 19 → Mu3AllTfShape
+private def mu3FixedKShape : Fin 22 → Mu3AllTfShape
   | 0 => .c16
   | 1 => .c16
   | 2 => .c16
@@ -46,15 +53,18 @@ private def mu3FixedKShape : Fin 19 → Mu3AllTfShape
   | 16 => .c8c8
   | 17 => .c10c6
   | 18 => .c8c8
+  | 19 => .c16
+  | 20 => .c8c8
+  | 21 => .c10c6
   | _ => .c16
 
 /-- The ordered occupied cells and fixed internal H relation for certificate i. -/
-def mu3FixedKGrid (i : Fin 19) : Mu3NativeGridSpec where
+def mu3FixedKGrid (i : Fin 22) : Mu3NativeGridSpec where
   cells := mu3FixedKCells i
   internal := mu3AllTfInternal (mu3FixedKShape i)
 
 set_option maxRecDepth 100000 in
-theorem mu3FixedKGrid_cells_length (i : Fin 19) :
+theorem mu3FixedKGrid_cells_length (i : Fin 22) :
     (mu3FixedKGrid i).cells.length = 48 := by
   fin_cases i <;> native_decide
 
@@ -62,7 +72,7 @@ set_option maxHeartbeats 0 in
 set_option maxRecDepth 100000 in
 /-- For every concrete fixed-K record, the specification fold used by the
 semantic proof is exactly the executable generator state. -/
-theorem mu3FixedKGrid_spec_eq_generator (i : Fin 19) :
+theorem mu3FixedKGrid_spec_eq_generator (i : Fin 22) :
     mu3GridFinalSpecState (mu3FixedKGrid i) =
       mu3GridFinalState (mu3FixedKGrid i) := by
   fin_cases i <;> native_decide

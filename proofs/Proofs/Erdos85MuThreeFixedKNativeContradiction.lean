@@ -16,7 +16,7 @@ set_option maxHeartbeats 0 in
 set_option maxRecDepth 100000 in
 /-- The fixed hit rows use only nonzero base literals in the allocated base-ID
 range. -/
-theorem mu3FixedKGrid_hit_ids_valid (i : Fin 19) :
+theorem mu3FixedKGrid_hit_ids_valid (i : Fin 22) :
     (∀ spec ∈ mu3GridHitSpecs (mu3FixedKGrid i),
       ∀ lit ∈ spec.1, lit ≠ 0) ∧
     (∀ spec ∈ mu3GridHitSpecs (mu3FixedKGrid i),
@@ -47,7 +47,7 @@ set_option maxHeartbeats 0 in
 set_option maxRecDepth 1000000 in
 /-- Every clause emitted for a concrete fixed grid contains only nonzero
 DIMACS literals, as required by the DIMACS-to-`Std.Sat` bridge. -/
-theorem mu3FixedKGrid_clauses_nonzero (i : Fin 19) :
+theorem mu3FixedKGrid_clauses_nonzero (i : Fin 22) :
     ∀ clause ∈ (mu3GridFinalState (mu3FixedKGrid i)).clauses,
       DimacsClauseNonzero clause := by
   have hcheck : (mu3GridFinalState (mu3FixedKGrid i)).clauses.toList.all
@@ -64,7 +64,7 @@ theorem mu3FixedKGrid_clauses_nonzero (i : Fin 19) :
 exactly the Boolean consequences supplied by a C4-free exterior graph with
 the prescribed row and column hit laws. -/
 theorem false_of_mu3FixedKNativeStaticConstraints
-    (i : Fin 19) (edgeVal : DimacsValuation)
+    (i : Fin 22) (edgeVal : DimacsValuation)
     (hhitCounts : ∀ spec ∈ mu3GridHitSpecs (mu3FixedKGrid i),
       seqPrefixTrue (mu3NativeVarsRow edgeVal spec.1) spec.1.size = spec.2)
     (hbaseC4 : Mu3NativeBaseC4 edgeVal) : False := by

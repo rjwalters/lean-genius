@@ -42,18 +42,18 @@ theorem mu3Fin8CellCode_injective : Function.Injective mu3Fin8CellCode := by
     simpa [mu3Fin8CellCode_mod] using this
 
 set_option maxRecDepth 100000 in
-theorem mu3FixedKGrid_cells_nodup (i : Fin 19) :
+theorem mu3FixedKGrid_cells_nodup (i : Fin 22) :
     (mu3FixedKGrid i).cells.Nodup := by
   fin_cases i <;> native_decide
 
 set_option maxRecDepth 100000 in
-theorem mu3FixedKGrid_cells_lt_64 (i : Fin 19) :
+theorem mu3FixedKGrid_cells_lt_64 (i : Fin 22) :
     ∀ cell ∈ (mu3FixedKGrid i).cells, cell < 64 := by
   have hcheck : (mu3FixedKGrid i).cells.all fun cell => decide (cell < 64) := by
     fin_cases i <;> native_decide
   simpa only [List.all_eq_true, decide_eq_true_eq] using hcheck
 
-def mu3FixedKCellPair (i : Fin 19) (u : Fin 48) : Fin 8 × Fin 8 :=
+def mu3FixedKCellPair (i : Fin 22) (u : Fin 48) : Fin 8 × Fin 8 :=
   let cell := (mu3FixedKGrid i).cells[u.val]'(by
     simpa [mu3FixedKGrid_cells_length i] using u.isLt)
   (⟨cell / 8, by
@@ -62,7 +62,7 @@ def mu3FixedKCellPair (i : Fin 19) (u : Fin 48) : Fin 8 × Fin 8 :=
       omega⟩,
     ⟨cell % 8, Nat.mod_lt _ (by omega)⟩)
 
-theorem mu3FixedKCellPair_code (i : Fin 19) (u : Fin 48) :
+theorem mu3FixedKCellPair_code (i : Fin 22) (u : Fin 48) :
     mu3Fin8CellCode (mu3FixedKCellPair i u) =
       (mu3FixedKGrid i).cells[u.val]'(by
         simpa [mu3FixedKGrid_cells_length i] using u.isLt) := by
@@ -75,7 +75,7 @@ theorem mu3FixedKCellPair_code (i : Fin 19) (u : Fin 48) :
 /-- The increasing native cell list canonically enumerates the abstract
 occupied-cell subtype whenever `K` has that exact complement. -/
 def mu3FixedKCellEquiv
-    (i : Fin 19) (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (i : Fin 22) (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
     (hoccupied : ∀ x y, ¬ K x y ↔
       mu3Fin8CellCode (x, y) ∈ (mu3FixedKGrid i).cells) :
     Fin 48 ≃ muThreeMixedCell K where
@@ -101,7 +101,7 @@ def mu3FixedKCellEquiv
       ((hoccupied _ _).1 p.2))
 
 @[simp] theorem mu3FixedKCellEquiv_code
-    (i : Fin 19) (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (i : Fin 22) (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
     (hoccupied : ∀ x y, ¬ K x y ↔
       mu3Fin8CellCode (x, y) ∈ (mu3FixedKGrid i).cells)
     (u : Fin 48) :
@@ -140,7 +140,7 @@ theorem mu3GridNativeColumnVars_count_eq
   intro cell hcell
   exact dimacsLitValue_natCast val (by simp [mu3NativeEdgeId])
 
-theorem mu3FixedKGridCellIndex_lt_48 (i : Fin 19) (cell : Nat)
+theorem mu3FixedKGridCellIndex_lt_48 (i : Fin 22) (cell : Nat)
     (hcell : cell ∈ (mu3FixedKGrid i).cells) :
     mu3GridCellIndex (mu3FixedKGrid i) cell < 48 := by
   rw [← mu3FixedKGrid_cells_length i]
@@ -150,7 +150,7 @@ theorem mu3FixedKGridCellIndex_lt_48 (i : Fin 19) (cell : Nat)
 grid, with vertices enumerated in native cell-list order. -/
 structure Mu3FixedKGraphGridHitCounts
     {W : Type*} [DecidableEq W]
-    (i : Fin 19) (G : SimpleGraph W) [DecidableRel G.Adj]
+    (i : Fin 22) (G : SimpleGraph W) [DecidableRel G.Adj]
     (e : Fin 48 ≃ W) : Prop where
   row : ∀ u, u < 48 → ∀ x, x < 8 →
     (((mu3FixedKGrid i).cells.filter fun cell =>
@@ -171,7 +171,7 @@ structure Mu3FixedKGraphGridHitCounts
 
 theorem mu3FixedKGraphGridHitCounts_to_native
     {W : Type*} [DecidableEq W]
-    (i : Fin 19) (G : SimpleGraph W) [DecidableRel G.Adj]
+    (i : Fin 22) (G : SimpleGraph W) [DecidableRel G.Adj]
     (e : Fin 48 ≃ W) (h : Mu3FixedKGraphGridHitCounts i G e) :
     ∀ spec ∈ mu3GridHitSpecs (mu3FixedKGrid i),
       seqPrefixTrue
@@ -238,7 +238,7 @@ theorem mu3FixedKGraphGridHitCounts_to_native
       _ = _ := h.column u hu y hy
 
 theorem mu3FixedKGrid_cells_eq_finRange_map
-    (i : Fin 19) (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (i : Fin 22) (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
     (hoccupied : ∀ x y, ¬ K x y ↔
       mu3Fin8CellCode (x, y) ∈ (mu3FixedKGrid i).cells) :
     (mu3FixedKGrid i).cells =
@@ -252,7 +252,7 @@ theorem mu3FixedKGrid_cells_eq_finRange_map
     exact mu3FixedKCellEquiv_code i K hoccupied ⟨n, by simpa using hright⟩
 
 theorem mu3FixedKGrid_cellIndex_equiv_code
-    (i : Fin 19) (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (i : Fin 22) (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
     (hoccupied : ∀ x y, ¬ K x y ↔
       mu3Fin8CellCode (x, y) ∈ (mu3FixedKGrid i).cells)
     (u : Fin 48) :
@@ -300,7 +300,7 @@ theorem mu3NormalizedGraphAdj_pair_eq_decide_adj
     simp [min_eq_right h', max_eq_left h', G.adj_comm]
 
 theorem MuThreeMixedGridCode.fixedKGraphGridHitCounts
-    (i : Fin 19) (H K : Fin 8 → Fin 8 → Prop)
+    (i : Fin 22) (H K : Fin 8 → Fin 8 → Prop)
     [DecidableRel H] [DecidableRel K]
     (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
     (code : MuThreeMixedGridCode H K C)
@@ -475,7 +475,7 @@ coordinate hypotheses say that the candidate's occupied cells and internal
 relation are the concrete native record; all graph-to-CNF transport follows
 from the fields of `MuThreeMixedGridCode` itself. -/
 theorem false_of_muThreeMixedGridCode_fixedK
-    (i : Fin 19) (H K : Fin 8 → Fin 8 → Prop)
+    (i : Fin 22) (H K : Fin 8 → Fin 8 → Prop)
     [DecidableRel H] [DecidableRel K]
     (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
     (code : MuThreeMixedGridCode H K C)

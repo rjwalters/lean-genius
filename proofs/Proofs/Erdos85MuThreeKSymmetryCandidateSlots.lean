@@ -191,6 +191,17 @@ def Mu3KCandidateSlot.certificateTarget :
   | .c106TenTf i => Fin.elim0 i
   | .c106SixTf _ => .fixed 17
 
+/-- Uniform index into the twenty-two native grid certificates.  The original
+nineteen fixed survivors retain indices `0` through `18`; the three all-TF
+singletons occupy `19` (C16), `20` (C8+C8), and `21` (C10+C6). -/
+def Mu3KCandidateSlot.certificateGridIndex
+    (slot : Mu3KCandidateSlot) : Fin 22 :=
+  match slot.certificateTarget with
+  | .fixed i => ⟨i.val, by omega⟩
+  | .allTfC16 => 19
+  | .allTfC88 => 20
+  | .allTfC106 => 21
+
 theorem mu3KCertificateTarget_card :
     Fintype.card Mu3KCertificateTarget = 22 := by decide
 
