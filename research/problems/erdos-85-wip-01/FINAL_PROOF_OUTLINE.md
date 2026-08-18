@@ -1869,6 +1869,23 @@ generalized rather than merely replayed.
      `[16]` owner factors are 16-cycles while `[8,8]` owner factors never
      are.  Thus, at the record level and modulo semantic replay, the
      `[2,2,2,2]` stratum at order 64 has no survivor.
+     The algebra behind the all-`[16]` search is now separated from q=8 and
+     **PROVEN q-GENERIC** in `Erdos85BinarySquareAllSizeTwoViaTiling`.
+     For distinct size-two components `S_i,S_j`, let
+     `via_k(i,j)` be the ordered endpoint pairs whose unique common neighbor
+     lies in `S_k`.  The finsets for distinct `k` are disjoint, their biunion
+     is the complete grid `S_i×S_j`, and every one has exact cardinal `8q`.
+     Thus the assembly condition is an exact equal-tile partition, not an
+     order-64 census artifact.  Structured search adds strong evidence that
+     at q=8 every all-`[16]` branch already dies when the third cross block is
+     imposed.  The precise extension leaf is therefore **AXIOM
+     A-REG-SIZE2-VIA-TRIPLE**: for three normalized size-two components whose
+     restricted owner factors are single `2q`-cycles, the three induced via
+     tiles on each ordered component grid cannot simultaneously be pairwise
+     disjoint.  This is independent of a fourth component and is the uniform
+     algebraic replacement sought for the all-`[16]` enumeration.  A proof
+     must use the cyclic interleavings/self-indexing of the owner factors;
+     equal tile sizes and pairwise ODC axioms alone are insufficient.
      **`GAP A-REG-STRATA` (q=8).**  The PROVEN
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
