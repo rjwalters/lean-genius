@@ -2042,7 +2042,17 @@ generalized rather than merely replayed.
      therefore replaces the opaque repeated closing with
      `HasCollapsedAllSameAABFork`: one fixed `A`-center, one shared closing
      `A`-center, and two distinct `B`-centers.  Excluding this explicit center
-     skeleton is the remaining all-same leaf.
+     skeleton was the remaining all-same leaf, and is now **PROVEN**.
+     `binarySquare_regular_twoComponents_collapsedAllSame_forces_smallOwnerSaturation`
+     splits on the host component.  If the host is size-two `a`, the shared
+     `A`-center has three distinct internal neighbors, contradicting its exact
+     component degree two.  If the host is size-six `b`, the two distinct
+     `A`-centers at the root saturate the `b→a` routing row.  Consequently
+     `orderSixtyFour_sixTwo_largeDensity_or_smallSaturation` reduces the full
+     `[6,2]` pressure route to exactly two shared terminals: size-six-owner
+     density or size-two-owner saturation.  Thus `[6,2]` has joined `[5,3]`
+     and `[4,4]` at the downstream routing GAP; its former cross-budget and
+     component-pattern gaps are closed.
      Across the two-component strata, the obstruction is now routing
      saturation/contradiction, not a rectangular classification, finite
      census, or same-owner center lemma.  The last two

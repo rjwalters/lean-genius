@@ -140,7 +140,7 @@ def HasCollapsedAllSameAABFork
     [DecidableEq D.ConnectedComponent]
     (a b d : D.ConnectedComponent) : Prop :=
   ∃ x y z₁ z₂ u₀ ua v₁ v₂ : V,
-    z₁ ≠ z₂ ∧
+    z₁ ≠ z₂ ∧ y ≠ z₁ ∧ y ≠ z₂ ∧
     D.connectedComponentMk x = d ∧ D.connectedComponentMk y = d ∧
     D.connectedComponentMk z₁ = d ∧ D.connectedComponentMk z₂ = d ∧
     D.connectedComponentMk u₀ = a ∧ D.connectedComponentMk ua = a ∧
@@ -261,7 +261,8 @@ theorem binarySquare_regular_allSameAABRepeatedClosing_forces_collapsedCenters
       exact (G.adj_comm v₂ z₂).mpr hv₂.2.1
     exact hfree (containsC4_of_two_common hz
       (owner_ne hua₁.1 hv₁.1) hz₁u hz₂u hz₁v hz₂v)
-  refine ⟨x, y, z₁, z₂, u₀, ua₁, v₁, v₂, hz, hx, hy, hz₁, hz₂,
+  refine ⟨x, y, z₁, z₂, u₀, ua₁, v₁, v₂, hz,
+    hayz₁.ne, hayz₂.ne, hx, hy, hz₁, hz₂,
     (ConnectedComponent.mem_supp_iff a u₀).mp hu₀.1,
     (ConnectedComponent.mem_supp_iff a ua₁).mp hua₁.1,
     (ConnectedComponent.mem_supp_iff b v₁).mp hv₁.1,
@@ -270,6 +271,80 @@ theorem binarySquare_regular_allSameAABRepeatedClosing_forces_collapsedCenters
     hv₁.2.1, hv₁.2.2, hv₂.2.1, hv₂.2.2⟩
   rw [huaeq]
   exact hua₂.2.2
+
+/-- The collapsed all-same skeleton always returns to small-owner saturation.
+If its host component is `a`, its shared `A`-center has three distinct
+neighbors inside a component where every vertex has only two.  If its host is
+`b`, its two distinct `A`-centers directly saturate the row from `b` to `a`. -/
+theorem binarySquare_regular_twoComponents_collapsedAllSame_forces_smallOwnerSaturation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (a b d : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 2)
+    (h : HasCollapsedAllSameAABFork G (secondOrderDefectGraph G) a b d) :
+    HasTwoCenterRoutingRowSaturationForOwner G hfree a := by
+  classical
+  let D := secondOrderDefectGraph G
+  obtain ⟨x, y, z₁, z₂, u₀, ua, v₁, v₂, hz, hyz₁, hyz₂,
+    hx, hy, hz₁, hz₂, hu₀a, huaa, hv₁b, hv₂b, hu, _hv,
+    hxu₀, hyu₀, hyua, hz₁ua, hz₂ua, _hz₁v₁, _hxv₁,
+    _hz₂v₂, _hxv₂⟩ := h
+  have hd := eq_first_or_second_of_card_eq_two hcount a b d hab
+  rcases hd with hda | hdb
+  · let C := componentNeighborFinset G D a ua
+    have hCcard : C.card = 2 := by
+      change (componentNeighborFinset G D a ua).card = 2
+      have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+        G hfree hq hreg hcard a a (x := ua)
+          ((ConnectedComponent.mem_supp_iff a ua).mpr huaa)
+      rw [hm a, hma] at hmul
+      exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+    have hyC : y ∈ C := by
+      change y ∈ componentNeighborFinset G D a ua
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset ua y).mpr
+          ((G.adj_comm ua y).mpr hyua), hy.trans hda⟩
+    have hz₁C : z₁ ∈ C := by
+      change z₁ ∈ componentNeighborFinset G D a ua
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset ua z₁).mpr
+          ((G.adj_comm ua z₁).mpr hz₁ua), hz₁.trans hda⟩
+    have hz₂C : z₂ ∈ C := by
+      change z₂ ∈ componentNeighborFinset G D a ua
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset ua z₂).mpr
+          ((G.adj_comm ua z₂).mpr hz₂ua), hz₂.trans hda⟩
+    have hsub : ({y, z₁, z₂} : Finset V) ⊆ C := by
+      intro w hw
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+      rcases hw with hwy | hwz₁ | hwz₂
+      · simpa [hwy] using hyC
+      · simpa [hwz₁] using hz₁C
+      · simpa [hwz₂] using hz₂C
+    have hle := Finset.card_le_card hsub
+    simp [hyz₁, hyz₂, hz, hCcard] at hle
+  · let ys : b.supp := ⟨y,
+      (ConnectedComponent.mem_supp_iff b y).mpr (hy.trans hdb)⟩
+    let u₀s : a.supp := ⟨u₀, (ConnectedComponent.mem_supp_iff a u₀).mpr hu₀a⟩
+    let uas : a.supp := ⟨ua, (ConnectedComponent.mem_supp_iff a ua).mpr huaa⟩
+    have hus : u₀s ≠ uas := fun heq => hu (congrArg Subtype.val heq)
+    have hdensity : HasTwoCenterRoutingRowDensity G hfree m b a a hab.symm ys := by
+      refine ⟨u₀s, uas, hus, hyu₀, hyua, ?_⟩
+      exact binarySquare_regular_twoSeparatedCenters_routingRow_density
+        G hfree hq hreg hcard m hm hab.symm ys u₀s uas hus hyu₀ hyua
+    exact twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
+      G hfree m a hma ⟨b, a, hab.symm, ys, hdensity⟩
 
 /-- If a colored-triple census is more than twice the directed first-edge
 space and the defect graph has two components, then three triples share one
@@ -745,6 +820,35 @@ theorem orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_collapsedAllSam
         G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
           a b d hab hma hr⟩)
 
+/-- The complete pressure reduction for `[6,2]`: every branch reaches one of
+the two shared routing terminals. -/
+theorem orderSixtyFour_sixTwo_largeDensity_or_smallSaturation
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 2) (hmb : m b = 6) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m b ∨
+      HasTwoCenterRoutingRowSaturationForOwner G hfree a := by
+  have h :=
+    orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_collapsedAllSame
+      G hfree hreg hcount m hm a b hab hma hmb
+  rcases h with hd | hs | ⟨d, hc⟩
+  · exact Or.inl hd
+  · exact Or.inr hs
+  · exact Or.inr
+      (binarySquare_regular_twoComponents_collapsedAllSame_forces_smallOwnerSaturation
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) hcount m hm
+          a b d hab hma hc)
+
 end
 
 end Erdos85
@@ -753,6 +857,7 @@ end Erdos85
 #print axioms Erdos85.hasRepeatedClosingInBlock_reverse
 #print axioms Erdos85.binarySquare_regular_alternatingAABRepeatedClosing_forces_smallOwnerSaturation
 #print axioms Erdos85.binarySquare_regular_allSameAABRepeatedClosing_forces_collapsedCenters
+#print axioms Erdos85.binarySquare_regular_twoComponents_collapsedAllSame_forces_smallOwnerSaturation
 #print axioms Erdos85.exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_repeatedClosingInBlock
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks
@@ -761,3 +866,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeOwnerDensity_or_normalizedResidual
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_allSame
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_collapsedAllSame
+#print axioms Erdos85.orderSixtyFour_sixTwo_largeDensity_or_smallSaturation
