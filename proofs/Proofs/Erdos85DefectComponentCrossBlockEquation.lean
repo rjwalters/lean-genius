@@ -1,4 +1,5 @@
 import Proofs.Erdos85ExcessDefectRegular
+import Proofs.Erdos85BinarySquareRegularParity
 
 /-! # The exact adjacency equation across a defect-component cut
 
@@ -62,8 +63,158 @@ theorem binarySquare_regular_defectComponent_crossBlock_eq_ones
   rw [hA11, hA12, hA22, hright] at hblock
   exact hblock
 
+/-- **Normalized-component outside-return identity.**  If the cut component
+has order `q*m`, then it has internal degree `m` and exterior degree `q-m`.
+Returning the cross-block equation through `Bᵀ` therefore gives the exact
+square identity `(BC)Bᵀ = (q-m)J - H(BBᵀ)`. -/
+theorem binarySquare_regular_normalizedComponent_outsideReturn_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q m : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * m) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    (B * C) * B.transpose =
+      ((q - m : ℕ) : ℤ) • FriendshipTheoremOQ01.onesMatrix c.supp -
+        H * (B * B.transpose) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  let JHO : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+  let JHH := FriendshipTheoremOQ01.onesMatrix c.supp
+  have hcross : H * B + B * C = JHO := by
+    simpa [H, B, C, JHO, p] using
+      binarySquare_regular_defectComponent_crossBlock_eq_ones
+        G hfree hreg c
+  have hout : ∀ u : c.supp,
+      ((G.neighborFinset u.1).filter fun x ↦ x ∉ c.supp).card = q - m := by
+    intro u
+    have hu := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard c c (x := u.1)
+        ((ConnectedComponent.mem_supp_iff c u.1).mp u.2)
+    rw [hc] at hu
+    have hsel : (componentNeighborFinset G D c u.1).card = m :=
+      Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hu
+    have hins : ((G.neighborFinset u.1).filter fun x ↦
+        x ∈ c.supp).card = m := by
+      have heq : (G.neighborFinset u.1).filter (fun x ↦ x ∈ c.supp) =
+          componentNeighborFinset G D c u.1 := by
+        ext y
+        simp [componentNeighborFinset, D,
+          SimpleGraph.ConnectedComponent.mem_supp_iff]
+      rw [heq, hsel]
+    have hsplit := Finset.card_filter_add_card_filter_not
+      (s := G.neighborFinset u.1) (fun x ↦ x ∈ c.supp)
+    rw [hins, G.card_neighborFinset_eq_degree, hreg u.1] at hsplit
+    omega
+  have hreturn : JHO * B.transpose =
+      ((q - m : ℕ) : ℤ) • JHH := by
+    ext i j
+    let S : Finset {x // ¬p x} :=
+      Finset.univ.filter fun x ↦ G.Adj x.1 j.1
+    let ι : {x // ¬p x} ↪ V :=
+      ⟨Subtype.val, Subtype.val_injective⟩
+    have hmap : S.map ι =
+        (G.neighborFinset j.1).filter fun x ↦ x ∉ c.supp := by
+      ext x
+      simp [S, ι, p, G.adj_comm,
+        SimpleGraph.ConnectedComponent.mem_supp_iff]
+    have hScard : S.card = q - m := by
+      rw [← Finset.card_map ι, hmap, hout j]
+    simp only [Matrix.mul_apply, JHO, JHH, B,
+      FriendshipTheoremOQ01.onesMatrix, Matrix.transpose_apply,
+      Matrix.toBlock_apply, SimpleGraph.adjMatrix_apply,
+      Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]
+    calc
+      (∑ x : {x // ¬p x}, 1 * if G.Adj j.1 x.1 then 1 else 0) =
+          ∑ x : {x // ¬p x}, if G.Adj x.1 j.1 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro x _hx
+        simp [G.adj_comm]
+      _ = (S.card : ℤ) := by simp [S]
+      _ = (q - m : ℕ) := by rw [hScard]
+      _ = (q - m : ℕ) * 1 := by ring
+  have hBC : B * C = JHO - H * B := eq_sub_of_add_eq' hcross
+  change (B * C) * B.transpose =
+    ((q - m : ℕ) : ℤ) • JHH - H * (B * B.transpose)
+  rw [hBC, Matrix.sub_mul, hreturn, Matrix.mul_assoc]
+
+/-- Pointwise budget form of the normalized outside-return identity.  Every
+entry of `H(BBᵀ)` is completed to the exterior degree `q-m` by a natural
+number counting three-step paths that leave the component, take one exterior
+edge, and return. -/
+theorem binarySquare_regular_normalizedComponent_outsideReturn_entry_budget
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q m : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * m) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    ∀ u v : c.supp, ∃ n : ℕ,
+      (H * (B * B.transpose)) u v + (n : ℤ) = (q - m : ℕ) := by
+  classical
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  have hid := binarySquare_regular_normalizedComponent_outsideReturn_eq
+    G hfree hq hreg hcard c hc
+  change ∀ u v : c.supp, ∃ n : ℕ,
+    (H * (B * B.transpose)) u v + (n : ℤ) = (q - m : ℕ)
+  intro u v
+  let M := (B * C) * B.transpose
+  have hnon : 0 ≤ M u v := by
+    dsimp only [M]
+    rw [Matrix.mul_apply]
+    apply Finset.sum_nonneg
+    intro z _hz
+    apply mul_nonneg
+    · rw [Matrix.mul_apply]
+      apply Finset.sum_nonneg
+      intro y _hy
+      simp only [B, C, Matrix.toBlock_apply, SimpleGraph.adjMatrix_apply]
+      split_ifs <;> norm_num
+    · simp only [B, Matrix.toBlock_apply, Matrix.transpose_apply,
+        SimpleGraph.adjMatrix_apply]
+      split_ifs <;> norm_num
+  refine ⟨Int.toNat (M u v), ?_⟩
+  have hnat : ((Int.toNat (M u v) : ℕ) : ℤ) = M u v :=
+    Int.toNat_of_nonneg hnon
+  have hid' : M = ((q - m : ℕ) : ℤ) •
+      FriendshipTheoremOQ01.onesMatrix c.supp -
+        H * (B * B.transpose) := by
+    simpa [M, H, B, C, p] using hid
+  have huv := congr_fun₂ hid' u v
+  simp only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul,
+    FriendshipTheoremOQ01.onesMatrix, Matrix.of_apply, mul_one] at huv
+  rw [hnat]
+  omega
+
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
+#print axioms Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_eq
+#print axioms
+  Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_entry_budget
 
 end Erdos85
