@@ -1599,6 +1599,14 @@ generalized rather than merely replayed.
      `lambdaSixFiveFiveThreeThree_admissible_classified` compose the census
      completeness theorems with the per-entry label checks, and return an
      explicit class tag and injective relabeling for every admissible `R`.
+     The permutation transport core is PROVEN in
+     `Erdos85LambdaSixOwnerFactorTransport`: relabeling by an equivalence
+     preserves both the commuting two-factor predicate and the complete
+     four-factor partition predicate, including degree and commutator-cardinal
+     constraints.  Its lightweight predicates intentionally duplicate the
+     SAT module's relations so this algebraic proof does not replay the large
+     `bv_decide` certificates; a definitional adapter to the SAT-facing names
+     remains part of the interface work.
      The remaining graph-level interface is therefore narrow: show that the
      ambient labeled component supplies `lambdaSixAdmissibleR`, transport its
      four restricted owner factors through the checked permutation, dispatch
