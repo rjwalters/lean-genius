@@ -858,8 +858,15 @@ generalized rather than merely replayed.
      `H B + B C = J`, `rectangular_cross_square_transport_two_six` gives
      `B C² = 4J + H²B`; the graph-facing theorem
      `orderSixtyFour_seven_components_outside_cross_square_transport`
-     supplies it for the actual `16+48` cut.  What remains a **`GAP`** is a
-     terminal extracting a contradiction from this transport when the
+     supplies it for the actual `16+48` cut.  The centered spectral form is
+     now **`PROVEN / AT-64-ONLY`** as well:
+     `orderSixtyFour_seven_components_outside_nonprincipal_spectral_dichotomy`
+     says that every internal two-factor eigenmode with `lambda != 2` either
+     crosses nontrivially to an exterior adjacency eigenmode at `-lambda`, or
+     lies in the `-6` bottom eigenspace of the six-regular exterior-pair
+     graph.  The zero-sum hypothesis follows automatically from
+     two-regularity.  What remains a **`GAP`** is a terminal excluding both
+     sides of this dichotomy when the
      size-two block has no alternating adjacency eigenline (and the analogous
      terminal for the negative joint eigenvalues `-1,-3,-5`).
 
