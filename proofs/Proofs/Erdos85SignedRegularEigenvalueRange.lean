@@ -102,6 +102,62 @@ theorem signed_regular_eigenvalue_range_parity_on
   · rw [hxv] at hsum
     refine ⟨by linarith, by linarith, ⟨n, by linarith⟩⟩
 
+/-- Equality at the negative endpoint forces every edge to join opposite
+signs. -/
+theorem signed_negativeDegree_eigenvector_flips_on_edges_on
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (C : Set V) (hclosed : ∀ x y, x ∈ C → D.Adj x y → y ∈ C)
+    (k : ℕ) (hreg : ∀ x, D.degree x = k)
+    (v : V → ℤ) (hv : ∀ x, x ∈ C → v x = -1 ∨ v x = 1)
+    (heig : ∀ x, x ∈ C →
+      ∑ y ∈ D.neighborFinset x, v y = -(k : ℤ) * v x) :
+    ∀ x y, x ∈ C → D.Adj x y → v y = -v x := by
+  intro x y hx hxy
+  let S := D.neighborFinset x
+  have hyS : y ∈ S := (D.mem_neighborFinset x y).mpr hxy
+  have hSin : ∀ z ∈ S, z ∈ C := by
+    intro z hz
+    exact hclosed x z hx ((D.mem_neighborFinset x z).mp hz)
+  have hcard : S.card = k := by
+    exact D.card_neighborFinset_eq_degree x |>.trans (hreg x)
+  have hformula := sum_eq_card_sub_two_mul_filter_neg_one S v
+    (fun z hz => hv z (hSin z hz))
+  rw [heig x hx, hcard] at hformula
+  rcases hv x hx with hxv | hxv
+  · have hzero : (S.filter fun z => v z = -1).card = 0 := by
+      rw [hxv] at hformula
+      omega
+    have hynot := (Finset.card_filter_eq_zero_iff.mp hzero) y hyS
+    rcases hv y (hclosed x y hx hxy) with hyv | hyv
+    · exact (hynot hyv).elim
+    · rw [hxv, hyv]
+      norm_num
+  · have hall : ∀ z ∈ S, v z = -1 := by
+      apply Finset.filter_card_eq
+      rw [hxv] at hformula
+      omega
+    rw [hall y hyS, hxv]
+
+/-- The negative-degree signed eigenline supplies an explicit bipartition of
+the adjacency-closed set. -/
+theorem exists_boolColor_of_signed_negativeDegree_eigenvector_on
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (C : Set V) (hclosed : ∀ x y, x ∈ C → D.Adj x y → y ∈ C)
+    (k : ℕ) (hreg : ∀ x, D.degree x = k)
+    (v : V → ℤ) (hv : ∀ x, x ∈ C → v x = -1 ∨ v x = 1)
+    (heig : ∀ x, x ∈ C →
+      ∑ y ∈ D.neighborFinset x, v y = -(k : ℤ) * v x) :
+    ∃ col : V → Bool,
+      ∀ x y, x ∈ C → y ∈ C → D.Adj x y → col x ≠ col y := by
+  refine ⟨fun x => decide (v x = 1), ?_⟩
+  intro x y hx hy hxy
+  have hflip := signed_negativeDegree_eigenvector_flips_on_edges_on
+    D C hclosed k hreg v hv heig x y hx hxy
+  rcases hv x hx with hxv | hxv <;> rcases hv y hy with hyv | hyv <;>
+    simp_all
+
 /-- At order `64`, the support equation and signed seven-regular defect
 eigenline leave only the six odd values from `-7` through `3`. -/
 theorem orderSixtyFour_signed_sizeTwo_eigenvalue_candidates
@@ -164,5 +220,7 @@ end Erdos85
 #print axioms Erdos85.sum_eq_card_sub_two_mul_filter_neg_one
 #print axioms Erdos85.signed_regular_eigenvalue_range_parity
 #print axioms Erdos85.signed_regular_eigenvalue_range_parity_on
+#print axioms Erdos85.signed_negativeDegree_eigenvector_flips_on_edges_on
+#print axioms Erdos85.exists_boolColor_of_signed_negativeDegree_eigenvector_on
 #print axioms Erdos85.orderSixtyFour_signed_sizeTwo_eigenvalue_candidates
 #print axioms Erdos85.orderSixtyFour_sizeTwo_jointEigenvalue_candidates
