@@ -1988,6 +1988,11 @@ generalized rather than merely replayed.
      existing degree theorem every local permutation agrees once with 30
      others and with none of the remaining 17.  Thus the raw block-packing
      count is sharp and supplies no contradiction by itself.
+     The previously implicit sector input is now exposed in usable form
+     (**PROVEN**, `ab18fcfc73`): one `H ∩ K` edge forces its whole
+     `H`-component into `K`, while one occupied `H \ K` cell forces its whole
+     `H`-component disjoint from `K`; equivalently `K`-membership is constant
+     on the `H`-edges of a component.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
