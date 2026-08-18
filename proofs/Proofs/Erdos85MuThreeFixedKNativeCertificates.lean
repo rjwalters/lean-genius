@@ -2,7 +2,7 @@ import Proofs.Erdos85LratRuntime
 import Proofs.Erdos85OrderFortyNineLratCertificateBase
 
 /-!
-# Checked certificates for the 18 K-symmetry survivors
+# Checked certificates for the 19 new K-symmetry survivors
 
 The K-symmetry law and finite enumeration reduce the all-triangle and mixed
 mu=3 sectors to these eighteen fixed 48-cell grids.  Every instance encodes
@@ -16,7 +16,7 @@ namespace Erdos85
 open Std Sat
 open Std.Tactic.BVDecide
 
-private def mu3FixedKCnfText : Fin 18 → String
+private def mu3FixedKCnfText : Fin 19 → String
   | 0 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/cnf/fixedk_0.cnf"
   | 1 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/cnf/fixedk_1.cnf"
   | 2 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/cnf/fixedk_2.cnf"
@@ -35,9 +35,10 @@ private def mu3FixedKCnfText : Fin 18 → String
   | 15 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/cnf/fixedk_15.cnf"
   | 16 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/cnf/fixedk_16.cnf"
   | 17 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/cnf/fixedk_17.cnf"
+  | 18 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/cnf/fixedk_18.cnf"
   | _ => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/cnf/fixedk_0.cnf"
 
-private def mu3FixedKProofText : Fin 18 → String
+private def mu3FixedKProofText : Fin 19 → String
   | 0 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/lrat/fixedk_0.lrat"
   | 1 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/lrat/fixedk_1.lrat"
   | 2 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/lrat/fixedk_2.lrat"
@@ -56,36 +57,37 @@ private def mu3FixedKProofText : Fin 18 → String
   | 15 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/lrat/fixedk_15.lrat"
   | 16 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/lrat/fixedk_16.lrat"
   | 17 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/lrat/fixedk_17.lrat"
+  | 18 => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/lrat/fixedk_18.lrat"
   | _ => include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-order64-fixedk/lrat/fixedk_0.lrat"
 
 /-- The deterministic fixed-K exterior-grid instance at index i. -/
-def mu3FixedKCnf (i : Fin 18) : CNF Nat :=
+def mu3FixedKCnf (i : Fin 19) : CNF Nat :=
   match DimacsRuntime.parse (mu3FixedKCnfText i).toUTF8 with
   | .ok cnf => cnf
   | .error _ => { clauses := #[] }
 
-private def mu3FixedKRawProof (i : Fin 18) : Array LRAT.IntAction :=
+private def mu3FixedKRawProof (i : Fin 19) : Array LRAT.IntAction :=
   parseOrderFortyNineLratProof (mu3FixedKProofText i)
 
-private def mu3FixedKProof (i : Fin 18) : Array LRAT.IntAction :=
+private def mu3FixedKProof (i : Fin 19) : Array LRAT.IntAction :=
   (prepareLratProof (mu3FixedKCnf i) (mu3FixedKRawProof i)).toOption.get!
 
 /-- Padding accounts only for fresh variables introduced inside the LRAT
 derivation and therefore preserves satisfiability. -/
-def mu3FixedKPaddedCnf (i : Fin 18) : CNF Nat :=
+def mu3FixedKPaddedCnf (i : Fin 19) : CNF Nat :=
   LratExtensionVariables.padCnfForProof (mu3FixedKCnf i)
     (mu3FixedKRawProof i)
 
 set_option maxHeartbeats 0 in
 set_option maxRecDepth 1000000 in
-private theorem mu3FixedKCheck (i : Fin 18) :
+private theorem mu3FixedKCheck (i : Fin 19) :
     LRAT.check (mu3FixedKProof i) (mu3FixedKPaddedCnf i) := by
   fin_cases i <;> native_decide
 
 set_option maxHeartbeats 0 in
 set_option maxRecDepth 1000000 in
 /-- Trusted-checker conclusion for every K-symmetry survivor. -/
-theorem mu3FixedKPaddedCnf_unsat (i : Fin 18) :
+theorem mu3FixedKPaddedCnf_unsat (i : Fin 19) :
     (mu3FixedKPaddedCnf i).Unsat :=
   LRAT.check_sound (mu3FixedKProof i) (mu3FixedKPaddedCnf i)
     (mu3FixedKCheck i)
