@@ -774,4 +774,47 @@ theorem false_of_mu3AllTfNativeConstraints
   rw [hsat] at hfalse
   contradiction
 
+/-! ## Fixed base-ID facts -/
+
+theorem mu3NativeHitSpecs_ids_valid (shape : Mu3AllTfShape) :
+    (∀ spec ∈ mu3NativeHitSpecs shape, ∀ lit ∈ spec.1, lit ≠ 0) ∧
+    (∀ spec ∈ mu3NativeHitSpecs shape, ∀ lit ∈ spec.1,
+      lit.natAbs ≤ 1128) := by
+  have hcheck : (mu3NativeHitSpecs shape).all fun spec =>
+      spec.1.all fun lit => decide (lit ≠ 0 ∧ lit.natAbs ≤ 1128) := by
+    cases shape <;> native_decide
+  simp only [List.all_eq_true] at hcheck
+  constructor
+  · intro spec hspec lit hlit
+    have hsarr := hcheck spec hspec
+    simp only [Array.all_eq_true] at hsarr
+    obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hlit
+    have hs := hsarr i hi
+    have hp : spec.1[i] ≠ 0 ∧ spec.1[i].natAbs ≤ 1128 := by
+      simpa only [decide_eq_true_eq] using hs
+    exact hp.1
+  · intro spec hspec lit hlit
+    have hsarr := hcheck spec hspec
+    simp only [Array.all_eq_true] at hsarr
+    obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hlit
+    have hs := hsarr i hi
+    have hp : spec.1[i] ≠ 0 ∧ spec.1[i].natAbs ≤ 1128 := by
+      simpa only [decide_eq_true_eq] using hs
+    exact hp.2
+
+theorem mu3NativeCommonSpecs_ids_valid
+    (pair : Nat × Nat) (hpair : pair ∈ mu3NativePairs) :
+    ∀ spec ∈ mu3NativeCommonSpecs pair.1 pair.2,
+      0 < spec.1 ∧ spec.1 ≤ 1128 ∧
+      0 < spec.2 ∧ spec.2 ≤ 1128 := by
+  have hcheck : mu3NativePairs.all fun p =>
+      (mu3NativeCommonSpecs p.1 p.2).all fun spec =>
+        decide (0 < spec.1 ∧ spec.1 ≤ 1128 ∧
+          0 < spec.2 ∧ spec.2 ≤ 1128) := by
+    native_decide
+  simp only [List.all_eq_true] at hcheck
+  intro spec hspec
+  have hs := hcheck pair hpair spec hspec
+  simpa only [decide_eq_true_eq] using hs
+
 end Erdos85
