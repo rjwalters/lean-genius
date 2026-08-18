@@ -1961,6 +1961,19 @@ generalized rather than merely replayed.
      | `[4,2,2]` | **AT-64-ONLY, PARTIAL**: all three components are **PROVEN non-bipartite**; all ordinary patterns reach routing; the opposite bowtie reaches an exact selector rectangle/commuting block | bipartite exclusion, bowtie geometry, and row-density consumers are **q-GENERIC** | **AXIOM A-REG-422-BOWTIE**, followed by **GAP A-REG-422-ROUTING-NONBIP** |
      | `[3,3,2]` | **AT-64-ONLY pressure reduction, PROVEN** in the rainbow branch; all three components are **PROVEN non-bipartite** | bipartite exclusion, saturation at size two, unique third centers at size three, and residual-star algebra are **q-GENERIC** | **GAP A-REG-332-PATTERNS**, then **GAP A-REG-332-ROUTING-NONBIP** |
 
+     The μ=3 grid now has a sector-independent own/foreign-fiber skeleton
+     (**PROVEN**, `3181aa3c33`, `23db7c4f48`).  For every occupied cell `u`,
+     its own-row and own-column exterior-neighbour counts are each zero when
+     `H(u)` and one when `¬H(u)`; the complementary foreign-row and
+     foreign-column counts are respectively six and five.  In the non-`H`
+     case the unique own-row and own-column neighbours are distinct
+     (`MuThreeMixedGridCode.existsUnique_ownRow_ownColumn_ne_of_not_H`).
+     These results use only `MuThreeMixedGridCode`, so they apply uniformly
+     to all-triangle, all-triangle-free, and genuinely mixed `H/K` sectors.
+     Consequently any mixed-sector contradiction must occur in the foreign
+     row/column bijections or their C4-free compatibility; the own-fiber
+     geometry is exact and internally consistent.
+
      One surviving `μ=3` mixed-grid subcase now has a separate
      **PROVEN, standard-axiom structural reduction**, but not a contradiction.
      In the all-triangle (`H ∩ K = ∅`) sector, the 48 occupied cells split
