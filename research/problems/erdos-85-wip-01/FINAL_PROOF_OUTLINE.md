@@ -1999,6 +1999,11 @@ generalized rather than merely replayed.
      and column through such a cell has size exactly two, leaving exactly one
      partner after deleting the cell (**PROVEN**, `5235385859`); the occupied
      `H` support therefore carries an explicit rook two-factor.
+     This two-factor now meets the permutation code directly (**PROVEN**,
+     `c249f0b811`): any two distinct centers sharing a row or column have
+     zero common-domain permutation agreements (not merely at most one).
+     In particular every row/column partner edge of the occupied `H`-support
+     two-factor is a forced zero-agreement pair.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
