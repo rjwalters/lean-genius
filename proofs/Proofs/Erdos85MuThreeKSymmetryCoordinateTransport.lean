@@ -235,6 +235,131 @@ theorem mu3PullbackCandidate_exhaustive
   intro x y
   simpa [mu3PullbackCandidate] using hi (row x) (column y)
 
+theorem mu3NormalizedRowInter_card_eq
+    (Hrows : Nat → Mu3KRow)
+    (H K : Fin 8 → Fin 8 → Prop) [DecidableRel H] [DecidableRel K]
+    (hH : ∀ x y, H x y ↔ y.val ∈ Hrows x.val)
+    (x x' : Fin 8) :
+    (((Finset.univ.filter fun y => K x y).image Fin.val) ∩
+        Hrows x'.val).card =
+      ((Finset.univ.filter fun y => K x y) ∩
+        (Finset.univ.filter fun y => H x' y)).card := by
+  have heq :
+      ((Finset.univ.filter fun y => K x y).image Fin.val) ∩ Hrows x'.val =
+        (((Finset.univ.filter fun y => K x y) ∩
+          (Finset.univ.filter fun y => H x' y)).image Fin.val) := by
+    ext n
+    constructor
+    · intro hn
+      obtain ⟨hnK, hnH⟩ := Finset.mem_inter.mp hn
+      obtain ⟨y, hyK, hyn⟩ := Finset.mem_image.mp hnK
+      apply Finset.mem_image.mpr
+      refine ⟨y, Finset.mem_inter.mpr ⟨hyK, ?_⟩, hyn⟩
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, (hH x' y).2 ?_⟩
+      simpa [hyn] using hnH
+    · intro hn
+      obtain ⟨y, hy, hyn⟩ := Finset.mem_image.mp hn
+      obtain ⟨hyK, hyH⟩ := Finset.mem_inter.mp hy
+      apply Finset.mem_inter.mpr
+      refine ⟨Finset.mem_image.mpr ⟨y, hyK, hyn⟩, ?_⟩
+      have := (hH x' y).1 (Finset.mem_filter.mp hyH).2
+      simpa [hyn] using this
+  rw [heq, Finset.card_image_of_injective _ Fin.val_injective]
+
+theorem mu3NormalizedColumnInter_card_eq
+    (Hrows : Nat → Mu3KRow)
+    (H K : Fin 8 → Fin 8 → Prop) [DecidableRel H] [DecidableRel K]
+    (hH : ∀ x y, H x y ↔ y.val ∈ Hrows x.val)
+    (y y' : Fin 8) :
+    (((Finset.univ.filter fun x => K x y).image Fin.val) ∩
+        mu3HColumn Hrows y'.val).card =
+      ((Finset.univ.filter fun x => K x y) ∩
+        (Finset.univ.filter fun x => H x y')).card := by
+  have heq :
+      ((Finset.univ.filter fun x => K x y).image Fin.val) ∩
+          mu3HColumn Hrows y'.val =
+        (((Finset.univ.filter fun x => K x y) ∩
+          (Finset.univ.filter fun x => H x y')).image Fin.val) := by
+    ext n
+    constructor
+    · intro hn
+      obtain ⟨hnK, hnH⟩ := Finset.mem_inter.mp hn
+      obtain ⟨x, hxK, hxn⟩ := Finset.mem_image.mp hnK
+      apply Finset.mem_image.mpr
+      refine ⟨x, Finset.mem_inter.mpr ⟨hxK, ?_⟩, hxn⟩
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, (hH x y').2 ?_⟩
+      have hnH' := Finset.mem_filter.mp hnH
+      simpa [mu3HColumn, hxn] using hnH'.2
+    · intro hn
+      obtain ⟨x, hx, hxn⟩ := Finset.mem_image.mp hn
+      obtain ⟨hxK, hxH⟩ := Finset.mem_inter.mp hx
+      apply Finset.mem_inter.mpr
+      refine ⟨Finset.mem_image.mpr ⟨x, hxK, hxn⟩, ?_⟩
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_range.mpr (by simpa [hxn] using x.isLt), ?_⟩
+      have := (hH x y').1 (Finset.mem_filter.mp hxH).2
+      simpa [hxn] using this
+  rw [heq, Finset.card_image_of_injective _ Fin.val_injective]
+
+/-- Shape-facing exhaustive-provider socket.  Once coordinates identify the
+ambient factor `H` and cycle compatibility supplies the sector equation, all
+remaining degree/symmetry transport and candidate pullback is automatic. -/
+theorem exists_mu3KSectorCandidate_of_coordinates
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (Hrows T : Nat → Mu3KRow)
+    (hHtwo : RelationTwoRegular H) (hKtwo : RelationTwoRegular K)
+    (hHcoord : ∀ x y,
+      mu3NormalizeRelation row column H x y ↔ y.val ∈ Hrows x.val)
+    (hsector : ∀ x : Fin 8,
+      ((Finset.univ.filter fun y =>
+          mu3NormalizeRelation row column K x y).image Fin.val) ∩
+        Hrows x.val = T x.val)
+    (hrowSymm : ∀ x x',
+      Fintype.card {y : Y // H x' y ∧ ¬ K x y} =
+        Fintype.card {y : Y // H x y ∧ ¬ K x' y})
+    (hcolumnSymm : ∀ y y',
+      Fintype.card {x : X // H x y' ∧ ¬ K x y} =
+        Fintype.card {x : X // H x y ∧ ¬ K x y'}) :
+    ∃ i : {rows : Mu3KRows // rows ∈ mu3KSectorEnumeration Hrows T},
+      ∀ x y, K x y ↔
+        mu3PullbackCandidate row column
+          (fun i : {rows : Mu3KRows // rows ∈ mu3KSectorEnumeration Hrows T} =>
+            mu3KRowsCandidate i.1) i x y = true := by
+  let Kn := mu3NormalizeRelation row column K
+  let Hn := mu3NormalizeRelation row column H
+  have hKnTwo : RelationTwoRegular Kn :=
+    mu3NormalizeRelation_twoRegular row column K hKtwo
+  have hrowI : ∀ x x' : Fin 8,
+      (((Finset.univ.filter fun y => Kn x y).image Fin.val) ∩
+          Hrows x'.val).card =
+        (((Finset.univ.filter fun y => Kn x' y).image Fin.val) ∩
+          Hrows x.val).card := by
+    intro x x'
+    rw [mu3NormalizedRowInter_card_eq Hrows Hn Kn hHcoord x x',
+      mu3NormalizedRowInter_card_eq Hrows Hn Kn hHcoord x' x]
+    exact mu3NormalizeRelation_row_inter_symmetry
+      row column H K hHtwo hrowSymm x x'
+  have hcolumnI : ∀ y y' : Fin 8,
+      (((Finset.univ.filter fun x => Kn x y).image Fin.val) ∩
+          mu3HColumn Hrows y'.val).card =
+        (((Finset.univ.filter fun x => Kn x y').image Fin.val) ∩
+          mu3HColumn Hrows y.val).card := by
+    intro y y'
+    rw [mu3NormalizedColumnInter_card_eq Hrows Hn Kn hHcoord y y',
+      mu3NormalizedColumnInter_card_eq Hrows Hn Kn hHcoord y' y]
+    exact mu3NormalizeRelation_column_inter_symmetry
+      row column H K hHtwo hcolumnSymm y y'
+  apply mu3PullbackCandidate_exhaustive row column K
+    (fun i : {rows : Mu3KRows // rows ∈ mu3KSectorEnumeration Hrows T} =>
+      mu3KRowsCandidate i.1)
+  exact exists_mu3KSectorCandidate_of_normalized Hrows T Kn
+    hKnTwo.1 hKnTwo.2 hsector hrowI hcolumnI
+
 end Erdos85
 
 #print axioms Erdos85.mu3NormalizeRelation_twoRegular
@@ -243,3 +368,6 @@ end Erdos85
 #print axioms Erdos85.mu3NormalizeRelation_row_inter_symmetry
 #print axioms Erdos85.mu3NormalizeRelation_column_inter_symmetry
 #print axioms Erdos85.mu3PullbackCandidate_exhaustive
+#print axioms Erdos85.mu3NormalizedRowInter_card_eq
+#print axioms Erdos85.mu3NormalizedColumnInter_card_eq
+#print axioms Erdos85.exists_mu3KSectorCandidate_of_coordinates
