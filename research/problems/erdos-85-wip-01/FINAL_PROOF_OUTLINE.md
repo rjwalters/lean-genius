@@ -2203,6 +2203,15 @@ generalized rather than merely replayed.
      boundary evidence, not a Lean exclusion theorem; it sharpens **GAP
      A-REG-62-NONBIP** to an abstract proof that the forced exterior
      routing/matching design contains a four-cycle.
+     A complementary spectral leaf is also now PROVEN dead (`918cb43e2a`):
+     `orderSixtyFour_sizeTwoPart_signedJointEigenvector_muOne_false` excludes
+     a normalized size-two block carrying a `{±1}` vector with internal
+     eigenvalue `-2` and defect eigenvalue `μ=1`.  Its exterior residue has
+     exactly four `+2` vertices, each of induced degree at least two, forcing
+     a C4.  This is a genuine q=8 exclusion, but not a uniform spectral
+     solution: the surviving signed joint-eigenline values are `μ=3,-1,-3,-5`,
+     and several classified nonbipartite blocks have no suitable simple
+     integral eigenline at all.
      In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
