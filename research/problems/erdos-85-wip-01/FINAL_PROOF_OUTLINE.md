@@ -1565,9 +1565,13 @@ generalized rather than merely replayed.
      into three classes of 120.  In each stratum one class is the bipartite
      `K₈,₈`-minus-matching defect already killed arithmetically; the other two
      are exactly the `t_D=40` and `t_D=30` matrices checked above.  This makes
-     the remaining GAP precise: certify the script's exhaustive enumeration
-     of the symmetric zero-one commutant, then transport its class labeling
-     into the four Boolean-relation terminals.
+     the remaining GAP precise.  The reproducible
+     `check_lambda6_classification.py` now independently confirms this census
+     using all 120 unordered-edge variables and the defining Z3 equations
+     directly, without `r_classify.py`'s hand-written commutant basis.  It
+     returns exactly the `48+48+48` and `120+120+120` class counts above.
+     What remains is to kernel-certify that exact enumeration and transport
+     its class labeling into the four Boolean-relation terminals.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
