@@ -1525,16 +1525,21 @@ generalized rather than merely replayed.
      two-factor, and `R = Dᶜ \ H` for the remaining six-regular graph.  An
      exact SAT enumeration finds no two-factor `F ⊆ R` whose adjacency matrix
      commutes with `D` (although `R` has ordinary three-way two-factorizations,
-     and both `R` and `H` commute with `D`).  The hypothesis mapping is
-     formally PROVEN: `orderSixtyFour_restrictedOwner_adjMatrix_comm_inducedDefect`
-     makes every restricted owner factor commute with `D`, while
-     `sum_restrictedComponentOwnerGraph_adjMatrix_eq_inducedDefect_compl`
-     makes the four restricted factors partition `Dᶜ`; after removing `H`,
-     the other three must partition `R`.  Therefore the four representatives
-     are computationally excluded.  GAP: replay a compact exhaustive/CNF
-     certificate in Lean and connect the representative bank to the existing
-     graph labeling; until then this is external finite evidence, not a
-     `PROVEN` branch closure.
+     and both `R` and `H` commute with `D`).  **This does not yet exclude the
+     representatives.**  The formally proved statements
+     `orderSixtyFour_restrictedOwner_adjMatrix_comm_inducedDefect` and
+     `sum_restrictedComponentOwnerGraph_adjMatrix_eq_inducedDefect_compl` say
+     that the four restricted owner factors commute with `D` and partition
+     `Dᶜ`.  They do *not* identify the distinguished spectral factor `H`
+     with one owner color: owner colors record the component of the unique
+     common neighbor of each selector pair, and may mix `H`- and `R`-edges.
+     GAP: run the honest CSP partitioning all of `Dᶜ` into four commuting
+     two-factors (without fixing `H` as a color).  If that is UNSAT, replay a
+     compact exhaustive/CNF certificate in Lean and connect the representative
+     bank to the existing graph labeling.  Alternatively prove the currently
+     missing theorem that `H` is one restricted owner factor.  Until one of
+     these routes is complete, the present `F ⊆ R` computation is useful
+     conditional evidence, not a branch closure.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
