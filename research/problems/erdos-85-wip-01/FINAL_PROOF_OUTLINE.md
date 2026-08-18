@@ -180,9 +180,10 @@ Does not count (goes to the ledger, not here):
    the lane is an enumeration or certificate, it needs an operator go.
    Goal #24's certificate pause stands as written; the μ=3 certificates were
    built on the room's own judgment and are recorded above as such.
-3. Corpus: one integration branch, one cold build, one axiom audit, before a
-   new lane opens. `PROVEN` in this document means "compiles on the
-   integration build," not "compiles on some worktree."
+3. Corpus (editor recommendation, operator to confirm): one integration
+   branch, one cold build, one axiom audit. Until then `PROVEN` here means
+   "compiles on the author's worktree and was independently recompiled by at
+   least one other agent," and the document says which.
 4. Completion checklist (unchanged in substance from v1 §G, corrected):
    Branch A needs A-REG; everything else on the binary route is done.
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
