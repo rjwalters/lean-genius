@@ -2047,6 +2047,30 @@ generalized rather than merely replayed.
      together with the 6-factor/2-factor partition; the balance equality by
      itself is still a reformulation of commutation and is not claimed to kill
      the synchronized-cycle example.
+     The self-source layer now supplies the genuinely missing geometry
+     **q-GENERICALLY** (`1912212cdf`).  If `A=G[c]` is the internal ambient
+     2-factor of a normalized size-two component, then
+
+     ```text
+     H_c^(source=c) = distinct-common-neighbor graph of A,
+     O_{c,c}(x,y) iff x≠y and N_A(x)∩N_A(y)≠∅.
+     ```
+
+     These are
+     `binarySquare_regular_sizeTwoPart_selfSourceSelectorGraph_eq_commonNeighborGraph`
+     and
+     `binarySquare_regular_sizeTwoPart_selfRestrictedOwner_adj_iff_commonNeighbor`.
+     This constraint was absent from the abstract synchronized-cycle model.
+     It suggests a short exact exclusion: if `D=K_{8,8}` minus a matching and
+     `O_{c,c}` is two synchronized `C_8`s on the bipartition classes, a
+     2-regular graph `A` whose distinct-common-neighbor graph is those two
+     `C_8`s must be a `C_16` alternating between the classes; but `A∩D=∅`
+     would force all of its cross edges into the missing matching, of degree
+     only one.  **GAP:** formalize this 2-factor square-root classification
+     (or a weaker direct parity argument) and verify that the explicit
+     synchronized model uses the stated bipartition alignment.  If verified,
+     the last known 16-vertex abstract countermodel is eliminated by
+     self-indexing rather than by another spectral inequality.
      The residual `[6,2]` target must couple the transported
      defect blocks to this line-graph edge partition; commute, degrees, and
      the entry cap alone cannot close it.
