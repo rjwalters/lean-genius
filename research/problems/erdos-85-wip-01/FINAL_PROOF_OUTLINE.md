@@ -779,15 +779,23 @@ generalized rather than merely replayed.
      inside `MuThreeKSymmetryClassification`, so the theorem concludes
      `False` on the original shores and exterior graph.
 
-     The exhaustive-enumeration leaf is now structurally **`PROVEN`** through
-     the checked sector tables and the coordinate-facing theorem
-     `exists_mu3KSectorCandidate_of_coordinates`.  It covers the candidate
-     counts `1/3` for C16 (all-TF/all-triangle), `1/1/1/13` for C8+C8, and
-     `1/0/1/0` for C10+C6; packaging the three coordinate models into the
-     single `MuThreeKSymmetryClassification.exhaustive` field is in progress.
-     The other finite provider leaf remains **`AT-64-ONLY / IN PROGRESS`**:
-     replay the 19 new fixed-K exterior-grid UNSAT certificates (the three
-     all-TF candidates already close through `c53be70596`).  Thus the finite
+     The exhaustive-enumeration leaf and its family-tagged packaging are now
+     structurally **`PROVEN`**.  The checked sector tables and
+     `exists_mu3KSectorCandidate_of_coordinates` cover candidate counts `1/3`
+     for C16 (all-TF/all-triangle), `1/1/1/13` for C8+C8, and `1/0/1/0` for
+     C10+C6.  The tagged providers
+     `exists_mu3SlotCandidate_H16_tagged`, `_H88_tagged`, and `_H106_tagged`
+     preserve the internal-family equality, and
+     `muThreeKSymmetryClassification_H16_tagged`, `_H88_tagged`, and
+     `_H106_tagged` package them into the classification interface.
+
+     The finite impossibility provider is **`AT-64-ONLY / IN PROGRESS`**.
+     The native manifest has been extended uniformly from `Fin 19` to
+     `Fin 22`: indices 19--21 are the C16, C8+C8, and C10+C6 all-TF models,
+     so all candidates use `false_of_muThreeMixedGridCode_fixedK` rather than
+     a second abstract adapter.  The source-level occupied-cell and internal
+     manifests cover all 22 slots; the enlarged native CNF equality replay
+     and its batch commit are the current verification gate.  Thus the finite
      target is exactly 22 candidate instances, not the former 1,867,000-case
      two-factor census.
 
@@ -800,9 +808,22 @@ generalized rather than merely replayed.
      hole factor, transported exterior graph, and complete
      `MuThreeMixedGridCode` directly from the signed size-two `μ=3` data.
      Finally `false_of_orderSixtyFour_mu3_jointEigenline` feeds that actual
-     code into the classification socket.  Consequently the only remaining
-     work in this joint-eigenline sublane is the two finite provider
-     packagings above.
+     code into the classification socket.  The upper native consumer is
+     source-complete (pending the same Fin22 replay): it normalizes a tagged
+     slot, dispatches it by `certificateGridIndex : Fin 22`, and constructs
+     native H16/H88/H106 classifications.
+
+     **`GAP / STRUCTURAL`**: the graph-facing hypotheses still do not supply
+     the coordinate normal-form disjunction for the internal ambient-
+     adjacency two-factor: H16, H88, or H106.  Connectedness of `c` is in
+     `secondOrderDefectGraph`, whereas this internal relation is adjacency in
+     `G`, so connectedness does not reduce the relation to H16.  The precise
+     missing statement must produce row/column equivalences and one of the
+     three `mu3NormalizeRelation` equalities.  Once supplied,
+     `nonempty_muThreeKSymmetryClassification_native_of_shape` constructs the
+     exact classification consumed by the graph capstone.  Therefore this
+     structural trichotomy, not merely finite certificate packaging, remains
+     necessary for graph-level closure of the `μ=3` sublane.
 
      Beyond the `μ=3` sublane, the honest size-two ledger has two further
      nodes.  First are alternating joint eigenlines with
