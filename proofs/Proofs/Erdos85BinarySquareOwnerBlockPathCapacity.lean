@@ -122,8 +122,80 @@ theorem binarySquare_regular_card_cyclicColoredTriplesInBlocks_le
           simp [Nat.mul_assoc]
         _ = _ := by rfl
 
+/-- The `|Comp|³` component-membership blocks partition the entire mixed
+colored-triple census exactly. -/
+theorem sum_card_cyclicColoredTriplesInBlocks_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D A B C : SimpleGraph V) [DecidableRel D.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    [DecidableRel A.Adj] [DecidableRel B.Adj] [DecidableRel C.Adj] :
+    (∑ e : D.ConnectedComponent,
+      ∑ f : D.ConnectedComponent,
+        ∑ g : D.ConnectedComponent,
+          (cyclicColoredTriplesInBlocks D A B C e f g).card) =
+      (cyclicColoredTriples A B C).card := by
+  classical
+  let S := cyclicColoredTriples A B C
+  let Sx := fun e : D.ConnectedComponent =>
+    S.filter fun p => D.connectedComponentMk p.1 = e
+  let Sxy := fun e f : D.ConnectedComponent =>
+    (Sx e).filter fun p => D.connectedComponentMk p.2.2 = f
+  have hx : S.card = ∑ e : D.ConnectedComponent, (Sx e).card := by
+    rw [Finset.card_eq_sum_card_fiberwise
+      (s := S) (t := (Finset.univ : Finset D.ConnectedComponent))
+      (f := fun p => D.connectedComponentMk p.1)
+      (fun _ _ => Finset.mem_univ _)]
+  have hxy : (∑ e : D.ConnectedComponent, (Sx e).card) =
+      ∑ e : D.ConnectedComponent, ∑ f : D.ConnectedComponent,
+        (Sxy e f).card := by
+    apply Finset.sum_congr rfl
+    intro e _he
+    rw [Finset.card_eq_sum_card_fiberwise
+      (s := Sx e) (t := (Finset.univ : Finset D.ConnectedComponent))
+      (f := fun p => D.connectedComponentMk p.2.2)
+      (fun _ _ => Finset.mem_univ _)]
+  have hxyz :
+      (∑ e : D.ConnectedComponent, ∑ f : D.ConnectedComponent,
+        (Sxy e f).card) =
+      ∑ e : D.ConnectedComponent, ∑ f : D.ConnectedComponent,
+        ∑ g : D.ConnectedComponent,
+          ((Sxy e f).filter fun p =>
+            D.connectedComponentMk p.2.1 = g).card := by
+    apply Finset.sum_congr rfl
+    intro e _he
+    apply Finset.sum_congr rfl
+    intro f _hf
+    rw [Finset.card_eq_sum_card_fiberwise
+      (s := Sxy e f) (t := (Finset.univ : Finset D.ConnectedComponent))
+      (f := fun p => D.connectedComponentMk p.2.1)
+      (fun _ _ => Finset.mem_univ _)]
+  symm
+  calc
+    (cyclicColoredTriples A B C).card = S.card := by rfl
+    _ = ∑ e : D.ConnectedComponent, (Sx e).card := hx
+    _ = ∑ e : D.ConnectedComponent, ∑ f : D.ConnectedComponent,
+          (Sxy e f).card := hxy
+    _ = ∑ e : D.ConnectedComponent, ∑ f : D.ConnectedComponent,
+          ∑ g : D.ConnectedComponent,
+            ((Sxy e f).filter fun p =>
+              D.connectedComponentMk p.2.1 = g).card := hxyz
+    _ = ∑ e : D.ConnectedComponent, ∑ f : D.ConnectedComponent,
+          ∑ g : D.ConnectedComponent,
+            (cyclicColoredTriplesInBlocks D A B C e f g).card := by
+      apply Finset.sum_congr rfl
+      intro e _he
+      apply Finset.sum_congr rfl
+      intro f _hf
+      apply Finset.sum_congr rfl
+      intro g _hg
+      congr 1
+      ext p
+      simp [Sxy, Sx, S, cyclicColoredTriplesInBlocks,
+        ConnectedComponent.mem_supp_iff, and_assoc, and_left_comm, and_comm]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_card_cyclicColoredTriplesInBlocks_le
+#print axioms Erdos85.sum_card_cyclicColoredTriplesInBlocks_eq
