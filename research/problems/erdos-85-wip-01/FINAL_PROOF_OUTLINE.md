@@ -1875,7 +1875,14 @@ generalized rather than merely replayed.
      census (`55faecce50`, `ebf3bdb771`): for distinct displayed owners
      `a,b`, an `a`-edge has exactly `m_b(m_a-1)` `a`-then-`b` middles, a
      `b`-edge has exactly `m_a(m_b-1)`, and a distinct pair with neither
-     displayed owner has the full `m_a m_b` rectangle.  In particular the
+     displayed owner has the full `m_a m_b` rectangle.  The last statement
+     now also has a **q-free cellwise realization**
+     (`mixedOwnerRectangle_existsUnique_middle`, `1d00fc74c8`): every
+     prescribed `a`-center at the left root and `b`-center at the right root
+     determines a unique mixed-owner middle, provided the root pair has
+     neither displayed owner.  Thus the remaining issue is compatibility of
+     these exact routed rectangles across roots, not existence or cardinal
+     saturation of their cells.  In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
      row and is therefore **PROVEN q-GENERIC but not itself contradictory**;
