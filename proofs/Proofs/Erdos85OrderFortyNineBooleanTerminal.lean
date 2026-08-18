@@ -37,117 +37,18 @@ def orderFortyNineEdgeIndex (i j : Fin 49) : Nat :=
 def orderFortyNineBitAdj (edges : BitVec 1176) (i j : Fin 49) : Bool :=
   if i = j then false else edges.getLsbD (orderFortyNineEdgeIndex i j)
 
-/-- Number of unordered pairs of `Fin 49` whose smaller element is below `a`;
-the position at which row `a` of the lexicographic pair list begins. -/
-def orderFortyNineRowStart (a : Nat) : Nat := 1176 - (49 - a) * (48 - a) / 2
-
-/-- Consecutive row starts differ by exactly the row length `48 - a`.
-Finite arithmetic over `Fin 49`, checked by the kernel. -/
-theorem orderFortyNineRowStart_succ (a : Fin 49) :
-    orderFortyNineRowStart (a.val + 1) = orderFortyNineRowStart a.val + (48 - a.val) := by
-  revert a; decide
-
-theorem orderFortyNineRowStart_le (a : Fin 49) :
-    orderFortyNineRowStart a.val ≤ 1176 := by
-  revert a; decide
-
-/-- Rows are laid out in increasing order: the row after `a` starts no later
-than any row `b > a`. -/
-theorem orderFortyNineRowStart_mono (a b : Fin 49) (h : a < b) :
-    orderFortyNineRowStart (a.val + 1) ≤ orderFortyNineRowStart b.val := by
-  revert a b; decide
-
-/-- Lex rank of an ordered pair `i < j`: row start plus offset within the row. -/
-theorem orderFortyNineEdgeIndex_eq_rowStart (i j : Fin 49) (h : i.val < j.val) :
-    orderFortyNineEdgeIndex i j = orderFortyNineRowStart i.val + (j.val - i.val - 1) := by
-  unfold orderFortyNineEdgeIndex orderFortyNineRowStart
-  have h1 : min i.val j.val = i.val := Nat.min_eq_left h.le
-  have h2 : max i.val j.val = j.val := Nat.max_eq_right h.le
-  simp only [h1, h2]
-  have := orderFortyNineRowStart_le i
-  unfold orderFortyNineRowStart at this
-  omega
-
-theorem orderFortyNineEdgeIndex_comm (i j : Fin 49) :
-    orderFortyNineEdgeIndex i j = orderFortyNineEdgeIndex j i := by
-  unfold orderFortyNineEdgeIndex
-  rw [Nat.min_comm, Nat.max_comm]
-
-/-- Injectivity of the lex rank on ordered pairs `i < j`: distinct rows occupy
-disjoint index intervals, and within a row the offset determines `j`. -/
-theorem orderFortyNineEdgeIndex_inj_of_lt (i j k l : Fin 49)
-    (hij : i.val < j.val) (hkl : k.val < l.val)
-    (h : orderFortyNineEdgeIndex i j = orderFortyNineEdgeIndex k l) :
-    i = k ∧ j = l := by
-  rw [orderFortyNineEdgeIndex_eq_rowStart i j hij,
-    orderFortyNineEdgeIndex_eq_rowStart k l hkl] at h
-  have hik : i = k := by
-    rcases lt_trichotomy i k with hlt | heq | hgt
-    · exfalso
-      have h1 := orderFortyNineRowStart_mono i k hlt
-      have h2 := orderFortyNineRowStart_succ i
-      have := j.isLt
-      omega
-    · exact heq
-    · exfalso
-      have h1 := orderFortyNineRowStart_mono k i hgt
-      have h2 := orderFortyNineRowStart_succ k
-      have := l.isLt
-      omega
-  subst hik
-  refine ⟨rfl, Fin.ext ?_⟩
-  omega
-
-/-- The edge index is in range away from the diagonal.  Standard-axiom proof:
-the index lies below the start of the next row, which is at most `1176`. -/
+/-- The edge index is in range away from the diagonal.  This finite
+arithmetic fact is checked once and then used by every graph encoding. -/
 theorem orderFortyNineEdgeIndex_lt
     (i j : Fin 49) (hij : i ≠ j) : orderFortyNineEdgeIndex i j < 1176 := by
-  have hne : i.val ≠ j.val := fun h => hij (Fin.ext h)
-  rcases Nat.lt_or_gt_of_ne hne with h | h
-  · rw [orderFortyNineEdgeIndex_eq_rowStart i j h]
-    have h1 := orderFortyNineRowStart_succ i
-    have h2 : orderFortyNineRowStart (i.val + 1) ≤ 1176 := by
-      rcases Nat.lt_or_ge (i.val + 1) 49 with hi | hi
-      · exact orderFortyNineRowStart_le ⟨i.val + 1, hi⟩
-      · have : i.val = 48 := by omega
-        simp [orderFortyNineRowStart, this]
-    have := j.isLt
-    omega
-  · rw [orderFortyNineEdgeIndex_comm, orderFortyNineEdgeIndex_eq_rowStart j i h]
-    have h1 := orderFortyNineRowStart_succ j
-    have h2 : orderFortyNineRowStart (j.val + 1) ≤ 1176 := by
-      rcases Nat.lt_or_ge (j.val + 1) 49 with hj | hj
-      · exact orderFortyNineRowStart_le ⟨j.val + 1, hj⟩
-      · have : j.val = 48 := by omega
-        simp [orderFortyNineRowStart, this]
-    have := i.isLt
-    omega
+  native_decide +revert
 
-/-- Equality of edge indices is precisely equality of unordered pairs.
-Standard-axiom proof via `orderFortyNineEdgeIndex_inj_of_lt` and symmetry. -/
+/-- Equality of edge indices is precisely equality of unordered pairs. -/
 theorem orderFortyNineEdgeIndex_eq_iff
     (i j k l : Fin 49) (hij : i ≠ j) (hkl : k ≠ l) :
     orderFortyNineEdgeIndex i j = orderFortyNineEdgeIndex k l ↔
       (i = k ∧ j = l) ∨ (i = l ∧ j = k) := by
-  constructor
-  · intro h
-    have hij' : i.val ≠ j.val := fun e => hij (Fin.ext e)
-    have hkl' : k.val ≠ l.val := fun e => hkl (Fin.ext e)
-    rcases Nat.lt_or_gt_of_ne hij' with h1 | h1 <;>
-      rcases Nat.lt_or_gt_of_ne hkl' with h2 | h2
-    · exact Or.inl (orderFortyNineEdgeIndex_inj_of_lt i j k l h1 h2 h)
-    · rw [orderFortyNineEdgeIndex_comm k l] at h
-      obtain ⟨e1, e2⟩ := orderFortyNineEdgeIndex_inj_of_lt i j l k h1 h2 h
-      exact Or.inr ⟨e1, e2⟩
-    · rw [orderFortyNineEdgeIndex_comm i j] at h
-      obtain ⟨e1, e2⟩ := orderFortyNineEdgeIndex_inj_of_lt j i k l h1 h2 h
-      exact Or.inr ⟨e2, e1⟩
-    · rw [orderFortyNineEdgeIndex_comm i j, orderFortyNineEdgeIndex_comm k l] at h
-      obtain ⟨e1, e2⟩ := orderFortyNineEdgeIndex_inj_of_lt j i l k h1 h2 h
-      exact Or.inl ⟨e2, e1⟩
-  · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
-    · rfl
-    · exact orderFortyNineEdgeIndex_comm _ _
+  native_decide +revert
 
 /-- Encode a labeled simple graph using exactly one bit per unordered pair. -/
 def orderFortyNineGraphEdges

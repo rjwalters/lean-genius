@@ -61,6 +61,89 @@ theorem twoStepPeriodic_of_no_threeRootPair_turn
   · exact (hno h).elim
   · exact h
 
+theorem exists_threeColor_turn_fin3
+    {C : Type*} (color : Fin 3 → C)
+    (hadj : ∀ i, color i ≠ color (i + 1)) :
+    ∃ i, color i ≠ color (i + 1) ∧
+      color (i + 1) ≠ color (i + 1 + 1) ∧
+      color i ≠ color (i + 1 + 1) := by
+  rcases exists_threeColor_turn_or_twoStepPeriodic
+    (fun i : Fin 3 => i + 1) color hadj with h | h
+  · simpa [add_assoc] using h
+  · have h0 := h (0 : Fin 3)
+    have h2 := h (2 : Fin 3)
+    norm_num [Fin.add_def] at h0 h2
+    exfalso
+    exact (hadj 0) (h0.trans h2)
+
+theorem exists_threeColor_turn_fin5
+    {C : Type*} (color : Fin 5 → C)
+    (hadj : ∀ i, color i ≠ color (i + 1)) :
+    ∃ i, color i ≠ color (i + 1) ∧
+      color (i + 1) ≠ color (i + 1 + 1) ∧
+      color i ≠ color (i + 1 + 1) := by
+  rcases exists_threeColor_turn_or_twoStepPeriodic
+    (fun i : Fin 5 => i + 1) color hadj with h | h
+  · simpa [add_assoc] using h
+  · have h0 := h (0 : Fin 5)
+    have h2 := h (2 : Fin 5)
+    have h4 := h (4 : Fin 5)
+    norm_num [Fin.add_def] at h0 h2 h4
+    exfalso
+    exact (hadj 0) (h0.trans (h2.trans h4))
+
+theorem exists_threeColor_turn_fin7
+    {C : Type*} (color : Fin 7 → C)
+    (hadj : ∀ i, color i ≠ color (i + 1)) :
+    ∃ i, color i ≠ color (i + 1) ∧
+      color (i + 1) ≠ color (i + 1 + 1) ∧
+      color i ≠ color (i + 1 + 1) := by
+  rcases exists_threeColor_turn_or_twoStepPeriodic
+    (fun i : Fin 7 => i + 1) color hadj with h | h
+  · simpa [add_assoc] using h
+  · have h0 := h (0 : Fin 7)
+    have h2 := h (2 : Fin 7)
+    have h4 := h (4 : Fin 7)
+    have h6 := h (6 : Fin 7)
+    norm_num [Fin.add_def] at h0 h2 h4 h6
+    exfalso
+    exact (hadj 0) (h0.trans (h2.trans (h4.trans h6)))
+
+/-- Every odd-length H1 root-pair cycle (length 3, 5, or 7) has a turn
+through three distinct mate-pairs. -/
+theorem exists_threeRootPair_turn_fin3
+    (label : Fin 3 → Fin 8)
+    (hadj : ∀ i, oneHighRootPair (label i) ≠
+      oneHighRootPair (label (i + 1))) :
+    ∃ i, oneHighRootPair (label i) ≠ oneHighRootPair (label (i + 1)) ∧
+      oneHighRootPair (label (i + 1)) ≠
+        oneHighRootPair (label (i + 1 + 1)) ∧
+      oneHighRootPair (label i) ≠
+        oneHighRootPair (label (i + 1 + 1)) :=
+  exists_threeColor_turn_fin3 (fun i => oneHighRootPair (label i)) hadj
+
+theorem exists_threeRootPair_turn_fin5
+    (label : Fin 5 → Fin 8)
+    (hadj : ∀ i, oneHighRootPair (label i) ≠
+      oneHighRootPair (label (i + 1))) :
+    ∃ i, oneHighRootPair (label i) ≠ oneHighRootPair (label (i + 1)) ∧
+      oneHighRootPair (label (i + 1)) ≠
+        oneHighRootPair (label (i + 1 + 1)) ∧
+      oneHighRootPair (label i) ≠
+        oneHighRootPair (label (i + 1 + 1)) :=
+  exists_threeColor_turn_fin5 (fun i => oneHighRootPair (label i)) hadj
+
+theorem exists_threeRootPair_turn_fin7
+    (label : Fin 7 → Fin 8)
+    (hadj : ∀ i, oneHighRootPair (label i) ≠
+      oneHighRootPair (label (i + 1))) :
+    ∃ i, oneHighRootPair (label i) ≠ oneHighRootPair (label (i + 1)) ∧
+      oneHighRootPair (label (i + 1)) ≠
+        oneHighRootPair (label (i + 1 + 1)) ∧
+      oneHighRootPair (label i) ≠
+        oneHighRootPair (label (i + 1 + 1)) :=
+  exists_threeColor_turn_fin7 (fun i => oneHighRootPair (label i)) hadj
+
 end
 
 end Erdos85

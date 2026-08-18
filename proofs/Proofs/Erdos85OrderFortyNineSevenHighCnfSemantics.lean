@@ -1,5 +1,4 @@
 import Proofs.Erdos85OrderFortyNineSevenHighCnf
-import Proofs.Erdos85OrderFortyNineDegreeBlocksNonzero
 
 /-! # Semantic bridge for the exact h=7 order-49 CNF -/
 
@@ -317,10 +316,22 @@ theorem orderFortyNineH7FixedClauses_nonzero (masks : Array Nat) :
     unfold orderFortyNineH7SupportUnitLiteral
     split <;> simp [orderFortyNineEdgeLiteral] <;> omega
 
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 2000000 in
 theorem orderFortyNineDegreeBlocks_seven_nonzero :
     ∀ clause ∈ (orderFortyNineDegreeBlocks 7).clauses,
-      DimacsClauseNonzero clause :=
-  orderFortyNineDegreeBlocks_nonzero_all 7
+      DimacsClauseNonzero clause := by
+  have hcheck :
+      (orderFortyNineDegreeBlocks 7).clauses.all fun clause =>
+        clause.all fun lit => lit != 0 := by
+    native_decide
+  simp only [Array.all_eq_true] at hcheck
+  intro clause hclause lit hlit
+  obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hclause
+  have hclauseCheck := hcheck i hi
+  simp only [List.all_eq_true] at hclauseCheck
+  have hlitCheck := hclauseCheck lit hlit
+  simpa using hlitCheck
 
 theorem orderFortyNineH7PartitionClauses_nonzero (masks : Array Nat) :
     ∀ clause ∈ orderFortyNineH7PartitionClauses masks,

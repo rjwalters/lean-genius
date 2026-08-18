@@ -99,18 +99,11 @@ def build(high_count: int, system: tuple[tuple[int, ...], ...]) -> CNF:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output_dir", type=Path)
-    parser.add_argument("--high-count", type=int, choices=sorted(SYSTEMS))
-    parser.add_argument("--index", type=int,
-                        help="emit only this canonical system index")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     manifest = []
     for high_count, systems in SYSTEMS.items():
-        if args.high_count is not None and high_count != args.high_count:
-            continue
         for index, system in enumerate(systems):
-            if args.index is not None and index != args.index:
-                continue
             name = f"h{high_count}_t{len(system)}"
             path = args.output_dir / f"{name}.base.cnf"
             build(high_count, system).to_file(path)

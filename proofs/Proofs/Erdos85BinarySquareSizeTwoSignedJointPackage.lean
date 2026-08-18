@@ -20,9 +20,14 @@ noncomputable section
 structure SizeTwoSignedJointDerived
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (c : (secondOrderDefectGraph G).ConnectedComponent)
     (s : V → ℤ) (mu : ℤ) : Prop where
   defectDegree : ∀ x, (secondOrderDefectGraph G).degree x = 7
+  componentNeighborCard : ∀ x, ((G.neighborFinset x).filter
+    (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c)).card = 2
+  componentSum_eq_zero : ∑ x ∈ Finset.univ.filter
+    (fun x => (secondOrderDefectGraph G).connectedComponentMk x = c), s x = 0
   sum_eq_zero : ∑ x, s x = 0
   defectAction : ∀ x,
     ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y = mu * s x
@@ -178,7 +183,8 @@ theorem orderSixtyFour_sizeTwo_signedJoint_derived
           simp)).2
     rcases hs_in u hu with hu' | hu' <;>
       rcases hs_in v hv with hv' | hv' <;> simp [hu', hv']
-  refine ⟨hDdeg, hsum, hDs, ?_, ?_⟩
+  refine ⟨hDdeg, htwo, ?_, hsum, hDs, ?_, ?_⟩
+  · simpa only [Sc] using hsum_c
   · intro x hx
     rw [SimpleGraph.adjMatrix_mulVec_apply]
     exact ha_in x hx

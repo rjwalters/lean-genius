@@ -1,5 +1,4 @@
 import Proofs.Erdos85OrderFortyNineVariableHighCnf
-import Proofs.Erdos85OrderFortyNineDegreeBlocksNonzero
 
 /-! # Semantics of the variable-high order-49 CNF -/
 
@@ -391,10 +390,22 @@ theorem orderFortyNineVariablePartitionClauses_nonzero
   obtain ⟨x, _, rfl⟩ := hlit
   simp [orderFortyNineEdgeLiteral] <;> omega
 
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 2000000 in
 theorem orderFortyNineDegreeBlocks_five_nonzero :
     ∀ clause ∈ (orderFortyNineDegreeBlocks 5).clauses,
-      DimacsClauseNonzero clause :=
-  orderFortyNineDegreeBlocks_nonzero_all 5
+      DimacsClauseNonzero clause := by
+  have hcheck :
+      (orderFortyNineDegreeBlocks 5).clauses.all fun clause =>
+        clause.all fun lit => lit != 0 := by
+    native_decide
+  simp only [Array.all_eq_true] at hcheck
+  intro clause hclause lit hlit
+  obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hclause
+  have hclauseCheck := hcheck i hi
+  simp only [List.all_eq_true] at hclauseCheck
+  have hlitCheck := hclauseCheck lit hlit
+  simpa using hlitCheck
 
 structure OrderFortyNineVariableCnfCoveredBySegments
     (h : OrderFortyNineHighCount) (masks : Array Nat) (cnf : CNF Nat) : Prop where

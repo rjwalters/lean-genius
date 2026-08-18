@@ -140,38 +140,6 @@ def ThreeHighDistOneC2ScoutAlignedLabeling
     [5, 18, 19, 20, 21, 22, 23, 25]
     [(5, 18), (19, 25), (20, 21), (22, 23)]
 
-def ThreeHighDistOneB1ScoutAlignedLabeling
-    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
-    (E : Equiv.Perm (Fin 49)) : Prop :=
-  let H := orderFortyNineRelabeledGraph G E
-  SmallHighAlignedLabeling 3 G E
-    orderFortyNineThreeHighDistOneNoCoincidenceMasks ∧
-  OrderFortyNineGraphPinnedMatchingRealized H
-    [3, 4, 6, 7, 8, 9, 10, 11]
-    [(3, 4), (6, 7), (8, 9), (10, 11)] ∧
-  OrderFortyNineGraphPinnedMatchingRealized H
-    [3, 5, 12, 13, 14, 15, 16, 17]
-    [(3, 12), (5, 13), (14, 15), (16, 17)] ∧
-  OrderFortyNineGraphPinnedMatchingRealized H
-    [4, 5, 18, 19, 20, 21, 22, 23]
-    [(4, 18), (5, 19), (20, 21), (22, 23)]
-
-def ThreeHighDistOneC1ScoutAlignedLabeling
-    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
-    (E : Equiv.Perm (Fin 49)) : Prop :=
-  let H := orderFortyNineRelabeledGraph G E
-  SmallHighAlignedLabeling 3 G E
-    orderFortyNineThreeHighDistOneNoCoincidenceMasks ∧
-  OrderFortyNineGraphPinnedMatchingRealized H
-    [3, 4, 6, 7, 8, 9, 10, 11]
-    [(3, 6), (4, 7), (8, 9), (10, 11)] ∧
-  OrderFortyNineGraphPinnedMatchingRealized H
-    [3, 5, 12, 13, 14, 15, 16, 17]
-    [(3, 12), (5, 13), (14, 15), (16, 17)] ∧
-  OrderFortyNineGraphPinnedMatchingRealized H
-    [4, 5, 18, 19, 20, 21, 22, 23]
-    [(4, 18), (5, 19), (20, 21), (22, 23)]
-
 theorem false_of_threeHighDistTwoScoutAlignedLabeling_lrat
     (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
     (hfree : ¬ containsC4 (Fin 49) G)
@@ -210,50 +178,6 @@ theorem false_of_threeHighDistOneC2ScoutAlignedLabeling_lrat
     (orderFortyNineBooleanConstraints_of_smallHighAlignedLabeling
       (h := 3) (by omega) G hfree E orderFortyNineThreeHighDistOneC2Masks hlabel)
     (orderFortyNineThreeHighDistOneC2GeometryClauses_satisfied
-      (orderFortyNineGraphPinnedMatchingRealized_edges H h0)
-      (orderFortyNineGraphPinnedMatchingRealized_edges H h1)
-      (orderFortyNineGraphPinnedMatchingRealized_edges H h2))
-    proof hcheck
-
-theorem false_of_threeHighDistOneB1ScoutAlignedLabeling_lrat
-    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
-    (hfree : ¬ containsC4 (Fin 49) G)
-    (E : Equiv.Perm (Fin 49))
-    (haligned : ThreeHighDistOneB1ScoutAlignedLabeling G E)
-    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
-    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
-      orderFortyNineGeneratedThreeHighDistOneB1ScoutCnf) : False := by
-  rcases haligned with ⟨hlabel, h0, h1, h2⟩
-  let H := orderFortyNineRelabeledGraph G E
-  let edges := orderFortyNineGraphEdges H
-  apply false_of_orderFortyNine_generated_h3_distOneB1_scout_lrat
-    (edges := edges)
-    (orderFortyNineBooleanConstraints_of_smallHighAlignedLabeling
-      (h := 3) (by omega) G hfree E
-        orderFortyNineThreeHighDistOneNoCoincidenceMasks hlabel)
-    (orderFortyNineThreeHighDistOneB1GeometryClauses_satisfied
-      (orderFortyNineGraphPinnedMatchingRealized_edges H h0)
-      (orderFortyNineGraphPinnedMatchingRealized_edges H h1)
-      (orderFortyNineGraphPinnedMatchingRealized_edges H h2))
-    proof hcheck
-
-theorem false_of_threeHighDistOneC1ScoutAlignedLabeling_lrat
-    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
-    (hfree : ¬ containsC4 (Fin 49) G)
-    (E : Equiv.Perm (Fin 49))
-    (haligned : ThreeHighDistOneC1ScoutAlignedLabeling G E)
-    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
-    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
-      orderFortyNineGeneratedThreeHighDistOneC1ScoutCnf) : False := by
-  rcases haligned with ⟨hlabel, h0, h1, h2⟩
-  let H := orderFortyNineRelabeledGraph G E
-  let edges := orderFortyNineGraphEdges H
-  apply false_of_orderFortyNine_generated_h3_distOneC1_scout_lrat
-    (edges := edges)
-    (orderFortyNineBooleanConstraints_of_smallHighAlignedLabeling
-      (h := 3) (by omega) G hfree E
-        orderFortyNineThreeHighDistOneNoCoincidenceMasks hlabel)
-    (orderFortyNineThreeHighDistOneC1GeometryClauses_satisfied
       (orderFortyNineGraphPinnedMatchingRealized_edges H h0)
       (orderFortyNineGraphPinnedMatchingRealized_edges H h1)
       (orderFortyNineGraphPinnedMatchingRealized_edges H h2))

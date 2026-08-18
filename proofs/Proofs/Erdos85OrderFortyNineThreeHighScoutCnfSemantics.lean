@@ -1,5 +1,4 @@
 import Proofs.Erdos85OrderFortyNineThreeHighScoutCnf
-import Proofs.Erdos85OrderFortyNineDegreeBlocksNonzero
 
 /-!
 # Semantics for normalized three-high scout CNFs
@@ -29,10 +28,22 @@ structure OrderFortyNineThreeHighScoutCnfCovered
     (∃ source ∈ orderFortyNineVariablePartitionClauses (3 : Fin 50) masks,
       DimacsClauseNonzero source ∧ clause = dimacsClauseToSatClause source)
 
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 2000000 in
 theorem orderFortyNineDegreeBlocks_three_nonzero :
     ∀ clause ∈ (orderFortyNineDegreeBlocks 3).clauses,
-      DimacsClauseNonzero clause :=
-  orderFortyNineDegreeBlocks_nonzero_all 3
+      DimacsClauseNonzero clause := by
+  have hcheck :
+      (orderFortyNineDegreeBlocks 3).clauses.all fun clause =>
+        clause.all fun lit => lit != 0 := by
+    native_decide
+  simp only [Array.all_eq_true] at hcheck
+  intro clause hclause lit hlit
+  obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hclause
+  have hclauseCheck := hcheck i hi
+  simp only [List.all_eq_true] at hclauseCheck
+  have hlitCheck := hclauseCheck lit hlit
+  simpa using hlitCheck
 
 theorem orderFortyNineGeneratedThreeHighScoutCnf_covered
     (masks : Array Nat) (geometry : Array DimacsClause)
@@ -134,147 +145,29 @@ private theorem dimacsFormulaBounded_of_all
   simp only [List.all_eq_true] at hclauseCheck
   exact of_decide_eq_true (hclauseCheck lit hlit)
 
-private theorem orderFortyNinePinnedMatchingClauses_nonzero
-    (vertices : List (Fin 49)) (matching : List (Fin 49 × Fin 49)) :
-    ∀ clause ∈ orderFortyNinePinnedMatchingClauses vertices matching,
-      DimacsClauseNonzero clause := by
-  intro clause hclause lit hlit
-  simp only [orderFortyNinePinnedMatchingClauses, List.mem_toArray,
-    List.mem_map] at hclause
-  obtain ⟨ab, _hab, rfl⟩ := hclause
-  simp only [List.mem_singleton] at hlit
-  subst lit
-  split <;> simp [orderFortyNineEdgeLiteral] <;> omega
-
-private theorem orderFortyNinePinnedMatchingClauses_bounded
-    (vertices : List (Fin 49)) (matching : List (Fin 49 × Fin 49)) :
-    dimacsFormulaBounded 1176
-      (orderFortyNinePinnedMatchingClauses vertices matching) := by
-  intro clause hclause lit hlit
-  simp only [orderFortyNinePinnedMatchingClauses, List.mem_toArray,
-    List.mem_map] at hclause
-  obtain ⟨ab, hab, rfl⟩ := hclause
-  simp only [List.mem_singleton] at hlit
-  subst lit
-  have hne : ab.1 ≠ ab.2 := by
-    exact _root_.ne_of_lt (orderFortyNineStrictPairs_lt hab)
-  have hlt := orderFortyNineEdgeIndex_lt ab.1 ab.2 hne
-  split <;> simp [orderFortyNineEdgeLiteral] <;> omega
-
-private theorem orderFortyNineConditionalEdgeUnitClauses_nonzero
-    (i : Fin 49) (vertices : List (Fin 49)) (p : Fin 49 → Prop)
-    [DecidablePred p] (hne : ∀ z ∈ vertices, i ≠ z) :
-    ∀ clause ∈ (vertices.map fun z =>
-      [if p z then orderFortyNineEdgeLiteral i z
-        else -orderFortyNineEdgeLiteral i z]).toArray,
-      DimacsClauseNonzero clause := by
-  intro clause hclause lit hlit
-  simp only [List.mem_toArray, List.mem_map] at hclause
-  obtain ⟨z, hz, rfl⟩ := hclause
-  simp only [List.mem_singleton] at hlit
-  subst lit
-  split <;> simp [orderFortyNineEdgeLiteral, hne z hz] <;> omega
-
-private theorem orderFortyNineConditionalEdgeUnitClauses_bounded
-    (i : Fin 49) (vertices : List (Fin 49)) (p : Fin 49 → Prop)
-    [DecidablePred p] (hne : ∀ z ∈ vertices, i ≠ z) :
-    dimacsFormulaBounded 1176 (vertices.map fun z =>
-      [if p z then orderFortyNineEdgeLiteral i z
-        else -orderFortyNineEdgeLiteral i z]).toArray := by
-  intro clause hclause lit hlit
-  simp only [List.mem_toArray, List.mem_map] at hclause
-  obtain ⟨z, hz, rfl⟩ := hclause
-  simp only [List.mem_singleton] at hlit
-  subst lit
-  have hlt := orderFortyNineEdgeIndex_lt i z (hne z hz)
-  split <;> simp [orderFortyNineEdgeLiteral] <;> omega
-
-private theorem dimacsFormulaNonzero_append
-    {a b : Array DimacsClause}
-    (ha : ∀ clause ∈ a, DimacsClauseNonzero clause)
-    (hb : ∀ clause ∈ b, DimacsClauseNonzero clause) :
-    ∀ clause ∈ a ++ b, DimacsClauseNonzero clause := by
-  intro clause hclause
-  rcases Array.mem_append.mp hclause with h | h
-  · exact ha clause h
-  · exact hb clause h
-
 theorem orderFortyNineThreeHighDistTwoGeometryClauses_nonzero :
     ∀ clause ∈ orderFortyNineThreeHighDistTwoGeometryClauses,
       DimacsClauseNonzero clause := by
-  apply dimacsFormulaNonzero_append
-  · apply dimacsFormulaNonzero_append
-    · apply dimacsFormulaNonzero_append <;>
-        apply orderFortyNinePinnedMatchingClauses_nonzero
-    · apply orderFortyNinePinnedMatchingClauses_nonzero
-  · intro clause hclause lit hlit
-    exact orderFortyNineConditionalEdgeUnitClauses_nonzero
-      3 [13, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
-        38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48] (fun z => z = 13)
-      (by intro z hz heq; subst z; simp at hz)
-      clause (by simpa [orderFortyNineThreeHighDistTwoRootEmptyClauses]
-        using hclause) lit hlit
+  apply dimacsFormulaNonzero_of_all
+  native_decide
 
 theorem orderFortyNineThreeHighDistOneC2GeometryClauses_nonzero :
     ∀ clause ∈ orderFortyNineThreeHighDistOneC2GeometryClauses,
       DimacsClauseNonzero clause := by
-  apply dimacsFormulaNonzero_append
-  · apply dimacsFormulaNonzero_append <;>
-      apply orderFortyNinePinnedMatchingClauses_nonzero
-  · apply orderFortyNinePinnedMatchingClauses_nonzero
-
-theorem orderFortyNineThreeHighDistOneB1GeometryClauses_nonzero :
-    ∀ clause ∈ orderFortyNineThreeHighDistOneB1GeometryClauses,
-      DimacsClauseNonzero clause := by
-  apply dimacsFormulaNonzero_append
-  · apply dimacsFormulaNonzero_append <;>
-      apply orderFortyNinePinnedMatchingClauses_nonzero
-  · apply orderFortyNinePinnedMatchingClauses_nonzero
-
-theorem orderFortyNineThreeHighDistOneC1GeometryClauses_nonzero :
-    ∀ clause ∈ orderFortyNineThreeHighDistOneC1GeometryClauses,
-      DimacsClauseNonzero clause := by
-  apply dimacsFormulaNonzero_append
-  · apply dimacsFormulaNonzero_append <;>
-      apply orderFortyNinePinnedMatchingClauses_nonzero
-  · apply orderFortyNinePinnedMatchingClauses_nonzero
+  apply dimacsFormulaNonzero_of_all
+  native_decide
 
 theorem orderFortyNineThreeHighDistTwoGeometryClauses_bounded :
     dimacsFormulaBounded 1176
       orderFortyNineThreeHighDistTwoGeometryClauses := by
-  apply dimacsFormulaBounded_append
-  · apply dimacsFormulaBounded_append
-    · apply dimacsFormulaBounded_append <;>
-        apply orderFortyNinePinnedMatchingClauses_bounded
-    · apply orderFortyNinePinnedMatchingClauses_bounded
-  · exact orderFortyNineConditionalEdgeUnitClauses_bounded
-      3 [13, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
-        38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48] (fun z => z = 13)
-      (by intro z hz heq; subst z; simp at hz)
+  apply dimacsFormulaBounded_of_all
+  native_decide
 
 theorem orderFortyNineThreeHighDistOneC2GeometryClauses_bounded :
     dimacsFormulaBounded 1176
       orderFortyNineThreeHighDistOneC2GeometryClauses := by
-  apply dimacsFormulaBounded_append
-  · apply dimacsFormulaBounded_append <;>
-      apply orderFortyNinePinnedMatchingClauses_bounded
-  · apply orderFortyNinePinnedMatchingClauses_bounded
-
-theorem orderFortyNineThreeHighDistOneB1GeometryClauses_bounded :
-    dimacsFormulaBounded 1176
-      orderFortyNineThreeHighDistOneB1GeometryClauses := by
-  apply dimacsFormulaBounded_append
-  · apply dimacsFormulaBounded_append <;>
-      apply orderFortyNinePinnedMatchingClauses_bounded
-  · apply orderFortyNinePinnedMatchingClauses_bounded
-
-theorem orderFortyNineThreeHighDistOneC1GeometryClauses_bounded :
-    dimacsFormulaBounded 1176
-      orderFortyNineThreeHighDistOneC1GeometryClauses := by
-  apply dimacsFormulaBounded_append
-  · apply dimacsFormulaBounded_append <;>
-      apply orderFortyNinePinnedMatchingClauses_bounded
-  · apply orderFortyNinePinnedMatchingClauses_bounded
+  apply dimacsFormulaBounded_of_all
+  native_decide
 
 theorem false_of_orderFortyNine_generated_h3_distTwo_scout_lrat
     {edges : BitVec 1176}
@@ -306,38 +199,6 @@ theorem false_of_orderFortyNine_generated_h3_distOneC2_scout_lrat
     orderFortyNineThreeHighDistOneC2Masks_partitionExcluded
     orderFortyNineThreeHighDistOneC2GeometryClauses_nonzero
     orderFortyNineThreeHighDistOneC2GeometryClauses_bounded
-    hgeometrySat proof hcheck
-
-theorem false_of_orderFortyNine_generated_h3_distOneB1_scout_lrat
-    {edges : BitVec 1176}
-    (hc : orderFortyNineBooleanConstraints 3
-      orderFortyNineThreeHighDistOneNoCoincidenceMasks edges)
-    (hgeometrySat : dimacsFormulaSatisfied
-      (orderFortyNineDimacsEdgeVal edges)
-      orderFortyNineThreeHighDistOneB1GeometryClauses)
-    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
-    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
-      orderFortyNineGeneratedThreeHighDistOneB1ScoutCnf) : False :=
-  false_of_orderFortyNine_generated_h3_scout_lrat hc
-    orderFortyNineThreeHighDistOneNoCoincidenceMasks_partitionExcluded
-    orderFortyNineThreeHighDistOneB1GeometryClauses_nonzero
-    orderFortyNineThreeHighDistOneB1GeometryClauses_bounded
-    hgeometrySat proof hcheck
-
-theorem false_of_orderFortyNine_generated_h3_distOneC1_scout_lrat
-    {edges : BitVec 1176}
-    (hc : orderFortyNineBooleanConstraints 3
-      orderFortyNineThreeHighDistOneNoCoincidenceMasks edges)
-    (hgeometrySat : dimacsFormulaSatisfied
-      (orderFortyNineDimacsEdgeVal edges)
-      orderFortyNineThreeHighDistOneC1GeometryClauses)
-    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
-    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
-      orderFortyNineGeneratedThreeHighDistOneC1ScoutCnf) : False :=
-  false_of_orderFortyNine_generated_h3_scout_lrat hc
-    orderFortyNineThreeHighDistOneNoCoincidenceMasks_partitionExcluded
-    orderFortyNineThreeHighDistOneC1GeometryClauses_nonzero
-    orderFortyNineThreeHighDistOneC1GeometryClauses_bounded
     hgeometrySat proof hcheck
 
 end Erdos85

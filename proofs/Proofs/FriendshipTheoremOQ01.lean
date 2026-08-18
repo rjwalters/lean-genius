@@ -1020,6 +1020,18 @@ lemma X_sub_k_dvd_adjMatrix_charpoly (hF : IsFriendshipGraph G) (k : ℕ) (hk : 
   rw [dvd_iff_isRoot, IsRoot]
   exact adjMatrix_charpoly_eval_k G hF k hk hreg
 
+/-- Regularity alone supplies the trivial adjacency eigenvalue. -/
+lemma X_sub_degree_dvd_adjMatrix_charpoly
+    (k : ℕ) (hreg : ∀ v : V, G.degree v = k) [Nonempty V] :
+    (X - C (↑k : ℤ)) ∣ (G.adjMatrix ℤ).charpoly := by
+  rw [dvd_iff_isRoot, IsRoot, Matrix.eval_charpoly]
+  apply det_eq_zero_of_kernel (v := fun _ => (1 : ℤ))
+  · intro h
+    exact absurd (congr_fun h (Classical.arbitrary V)) (by norm_num)
+  · ext i
+    simp only [Matrix.sub_mulVec, Pi.sub_apply, Pi.zero_apply, sub_eq_zero]
+    rw [adjMatrix_mulVec_ones G k hreg i, scalar_mulVec_const]
+
 /-- **det(I - t·J) = 1 - n·t** for the all-ones matrix J.
     Uses the Weinstein-Aronszajn identity: det(I - AB) = det(I - BA).
     With A : V×(Fin 1) all t's, B : (Fin 1)×V all 1's: BA is [nt]. -/
@@ -1043,7 +1055,7 @@ private lemma det_one_sub_smul_onesMatrix (t : ℤ) :
   ring
 
 /-- Generalized det(I - tJ) = 1 - nt over any commutative ring. -/
-private lemma det_one_sub_smul_ones_gen {R : Type*} [CommRing R] (t : R) :
+lemma det_one_sub_smul_ones_gen {R : Type*} [CommRing R] (t : R) :
     ((1 : Matrix V V R) - t • Matrix.of (fun (_ : V) (_ : V) => (1 : R))).det =
     1 - ↑(Fintype.card V) * t := by
   set A : Matrix V (Fin 1) R := Matrix.of (fun _ _ => t) with hA_def
@@ -1060,7 +1072,7 @@ private lemma det_one_sub_smul_ones_gen {R : Type*} [CommRing R] (t : R) :
 
 /-- **J is singular**: det(onesMatrix V) = 0 for |V| ≥ 2.
     All rows are identical (all 1's), so two distinct rows are equal. -/
-private lemma det_onesMatrix_eq_zero (hn : Fintype.card V ≥ 2) :
+lemma det_onesMatrix_eq_zero (hn : Fintype.card V ≥ 2) :
     (onesMatrix V).det = 0 := by
   have ⟨a, b, hab⟩ : ∃ a b : V, a ≠ b := by
     by_contra h; push_neg at h

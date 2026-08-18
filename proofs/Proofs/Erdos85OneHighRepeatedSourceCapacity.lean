@@ -12,15 +12,6 @@ noncomputable section
 
 set_option maxHeartbeats 800000
 
-/-- In every canonical mate pair, at least one endpoint is a profile
-two-edge branch.  Only the low endpoint can belong to the one-edge prefix. -/
-theorem oneHighFamilyInternalEdges_eq_two_or_mate_eq_two
-    (profile : Nat) (i : Fin 8) :
-    oneHighFamilyInternalEdges profile i = 2 ∨
-      oneHighFamilyInternalEdges profile (oneHighStandardMate i) = 2 := by
-  fin_cases i <;>
-    simp [oneHighFamilyInternalEdges, oneHighStandardMate_val_eq_xor]
-
 /-- Two distinct globally oriented internal matching edges owned by the same
 root branch force that branch to be one of the profile's two-edge branches. -/
 theorem oneHighFamilyInternalEdges_eq_two_of_distinct_sources_sameOwner

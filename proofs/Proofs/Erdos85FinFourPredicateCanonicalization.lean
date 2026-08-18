@@ -1,5 +1,5 @@
+import Proofs.Erdos85OneHighCanonicalMate
 import Mathlib.Data.Fintype.Sum
-import Mathlib.Data.Fintype.Fin
 
 /-! # Structural canonicalization of predicates on four points -/
 

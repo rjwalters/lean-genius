@@ -1,6 +1,5 @@
 import Proofs.Erdos85PairedBlockRigidity
 import Proofs.Erdos85OrderFortyNineOneHighOverlap
-import Proofs.Erdos85FinEightPairCoordinates
 
 /-!
 # Canonical labeling of the one-high mate involution
@@ -17,31 +16,6 @@ noncomputable section
 /-- The standard four-pair involution used by the family encoders. -/
 def oneHighStandardMate : Equiv.Perm (Fin 8) :=
   Equiv.swap 0 1 * Equiv.swap 2 3 * Equiv.swap 4 5 * Equiv.swap 6 7
-
-@[simp] theorem finEightPairCoordinates_standardMate (i : Fin 8) :
-    finEightPairCoordinates (oneHighStandardMate i) =
-      (finEightPairCoordinates i).map id finTwoSwap := by
-  fin_cases i <;> decide
-
-/-- Every lifted pair-coordinate permutation is an automorphism of the
-standard four-pair matching. -/
-theorem finEightLiftPairPerm_standardMate
-    (σ : Equiv.Perm (Fin 4)) (flip : Fin 4 → Bool) (i : Fin 8) :
-    finEightLiftPairPerm σ flip (oneHighStandardMate i) =
-      oneHighStandardMate (finEightLiftPairPerm σ flip i) := by
-  apply finEightPairCoordinates.injective
-  simp only [finEightLiftPairPerm, Equiv.trans_apply,
-    Equiv.apply_symm_apply]
-  simp_rw [finEightPairCoordinates_standardMate]
-  rcases finEightPairCoordinates i with ⟨p, b⟩
-  simp only [Equiv.apply_symm_apply, Prod.map, id_eq,
-    finFourPairEndpointPerm]
-  change (σ p, if flip p then finTwoSwap (finTwoSwap b) else finTwoSwap b) =
-    (σ p, finTwoSwap (if flip p then finTwoSwap b else b))
-  by_cases h : flip p = true
-  · simp [h]
-  · have hf : flip p = false := Bool.eq_false_of_not_eq_true h
-    simp [hf]
 
 theorem oneHighStandardMate_involutive :
     Function.Involutive oneHighStandardMate := by
@@ -165,71 +139,6 @@ theorem finEight_fixedPointFreeInvolution_conjugate_standard
     simpa [σ, orient, rep, hi, hpi, hpp, hnip, hnle, hinv, hrepp] using
       (hmate1 (eR ⟨rep i, hrep i⟩)).symm
 
-theorem finEight_marked_card_eq_pairMarked_card
-    (marked : Fin 8 → Bool)
-    (hpair : ∀ i, marked i = true →
-      marked (oneHighStandardMate i) = false) :
-    ((Finset.univ : Finset (Fin 8)).filter fun i => marked i).card =
-      ((Finset.univ : Finset (Fin 4)).filter fun p =>
-        marked (finEightPairCoordinates.symm (p, 0)) ||
-          marked (finEightPairCoordinates.symm (p, 1))).card := by
-  classical
-  let M8 := (Finset.univ : Finset (Fin 8)).filter fun i => marked i
-  apply Finset.card_bij (fun i _ => (finEightPairCoordinates i).1)
-  · intro i hi
-    have him : marked i = true := (Finset.mem_filter.mp hi).2
-    rcases hcoord : finEightPairCoordinates i with ⟨p, b⟩
-    have hiEq : i = finEightPairCoordinates.symm (p, b) := by
-      apply finEightPairCoordinates.injective
-      simp [hcoord]
-    fin_cases b
-    · apply Finset.mem_filter.mpr
-      refine ⟨Finset.mem_univ _, ?_⟩
-      simp only [Bool.or_eq_true]
-      exact Or.inl (by simpa [hiEq] using him)
-    · apply Finset.mem_filter.mpr
-      refine ⟨Finset.mem_univ _, ?_⟩
-      simp only [Bool.or_eq_true]
-      exact Or.inr (by simpa [hiEq] using him)
-  · intro i hi j hj heq
-    have him : marked i = true := (Finset.mem_filter.mp hi).2
-    have hjm : marked j = true := (Finset.mem_filter.mp hj).2
-    rcases hci : finEightPairCoordinates i with ⟨p, bi⟩
-    rcases hcj : finEightPairCoordinates j with ⟨q, bj⟩
-    have hpq : p = q := by simpa [hci, hcj] using heq
-    subst q
-    have hiEq : i = finEightPairCoordinates.symm (p, bi) := by
-      apply finEightPairCoordinates.injective
-      simp [hci]
-    have hjEq : j = finEightPairCoordinates.symm (p, bj) := by
-      apply finEightPairCoordinates.injective
-      simp [hcj]
-    fin_cases bi <;> fin_cases bj
-    · simpa [hiEq, hjEq]
-    · have hm := hpair i him
-      have hmate : oneHighStandardMate i = j := by
-        apply finEightPairCoordinates.injective
-        simp [finEightPairCoordinates_standardMate, hci, hcj]
-      rw [hmate, hjm] at hm
-      contradiction
-    · have hm := hpair j hjm
-      have hmate : oneHighStandardMate j = i := by
-        apply finEightPairCoordinates.injective
-        simp [finEightPairCoordinates_standardMate, hci, hcj]
-      rw [hmate, him] at hm
-      contradiction
-    · simpa [hiEq, hjEq]
-  · intro p hp
-    have hpm := (Finset.mem_filter.mp hp).2
-    simp only [Bool.or_eq_true] at hpm
-    rcases hpm with hlow | hhigh
-    · refine ⟨finEightPairCoordinates.symm (p, 0), ?_, ?_⟩
-      · simp [M8, hlow]
-      · simp
-    · refine ⟨finEightPairCoordinates.symm (p, 1), ?_, ?_⟩
-      · simp [M8, hhigh]
-      · simp
-
 /-- Automorphisms of the standard four-pair matching can place every marked
 endpoint at the even end of an initial mate pair.  The hypothesis says no
 mate pair has two marked endpoints. -/
@@ -243,71 +152,7 @@ theorem finEight_standardMate_canonicalize_marked
         marked (τ.symm i) =
           decide (i.val % 2 = 0 ∧
             i.val / 2 < (Finset.univ.filter fun j => marked j).card) := by
-  classical
-  let pairMarked : Fin 4 → Bool := fun p =>
-    marked (finEightPairCoordinates.symm (p, 0)) ||
-      marked (finEightPairCoordinates.symm (p, 1))
-  obtain ⟨σ, hσ⟩ := exists_finFour_perm_canonicalizing_bool pairMarked
-  let flip : Fin 4 → Bool := fun p =>
-    marked (finEightPairCoordinates.symm (p, 1))
-  let τ := finEightLiftPairPerm σ flip
-  refine ⟨τ, finEightLiftPairPerm_standardMate σ flip, ?_⟩
-  intro i
-  have hcard := finEight_marked_card_eq_pairMarked_card marked hpair
-  rcases hci : finEightPairCoordinates i with ⟨q, b⟩
-  have hiEq : i = finEightPairCoordinates.symm (q, b) := by
-    apply finEightPairCoordinates.injective
-    simp [hci]
-  let p := σ.symm q
-  have hpairMarked := hσ q
-  change pairMarked p = _ at hpairMarked
-  have hpreEq : τ.symm i = finEightPairCoordinates.symm
-      (p, if flip p then finTwoSwap b else b) := by
-    apply finEightPairCoordinates.injective
-    simpa [τ, p, hci] using
-      (finEightPairCoordinates_liftPairPerm_symm σ flip i)
-  fin_cases b
-  · have hrhs :
-        decide (i.val % 2 = 0 ∧
-          i.val / 2 < (Finset.univ.filter fun j => marked j).card) =
-        decide (q.val < (Finset.univ.filter fun j => marked j).card) := by
-      simp [hiEq, finEightPairCoordinates]
-    rw [hrhs, hpreEq]
-    have hpm : pairMarked p =
-        decide (q.val < (Finset.univ.filter fun j => marked j).card) := by
-      rw [hcard]
-      exact hpairMarked
-    dsimp only [flip]
-    by_cases hodd : marked (finEightPairCoordinates.symm (p, 1)) = true
-    · have hpmTrue : pairMarked p = true := by
-        simp [pairMarked, hodd]
-      rw [hpmTrue] at hpm
-      simpa [hodd] using hpm
-    · have hoddf : marked (finEightPairCoordinates.symm (p, 1)) = false :=
-        Bool.eq_false_of_not_eq_true hodd
-      have hpmEven : pairMarked p =
-          marked (finEightPairCoordinates.symm (p, 0)) := by
-        simp [pairMarked, hoddf]
-      rw [hpmEven] at hpm
-      simpa [hoddf] using hpm
-  · have hrhs :
-        decide (i.val % 2 = 0 ∧
-          i.val / 2 < (Finset.univ.filter fun j => marked j).card) = false := by
-      simp [hiEq, finEightPairCoordinates]
-    rw [hrhs, hpreEq]
-    dsimp only [flip]
-    by_cases hodd : marked (finEightPairCoordinates.symm (p, 1)) = true
-    · have heven := hpair (finEightPairCoordinates.symm (p, 1)) hodd
-      have hmate : oneHighStandardMate
-          (finEightPairCoordinates.symm (p, 1)) =
-          finEightPairCoordinates.symm (p, 0) := by
-        apply finEightPairCoordinates.injective
-        simp [finEightPairCoordinates_standardMate]
-      rw [hmate] at heven
-      simp [hodd, heven]
-    · have hoddf : marked (finEightPairCoordinates.symm (p, 1)) = false :=
-        Bool.eq_false_of_not_eq_true hodd
-      simp [hoddf]
+  native_decide +revert
 
 /-- Abstract eight-point form used for the graph neighborhood subtype. -/
 theorem exists_equiv_finEight_intertwining_involution
@@ -487,31 +332,15 @@ def oneHighBranchEdgeIndex (i j : Fin 5) : Nat :=
 def oneHighBranchBitAdj (edges : BitVec 10) (i j : Fin 5) : Bool :=
   if i = j then false else edges.getLsbD (oneHighBranchEdgeIndex i j)
 
-theorem oneHighBranchEdgeIndex_comm (i j : Fin 5) :
-    oneHighBranchEdgeIndex i j = oneHighBranchEdgeIndex j i := by
-  simp [oneHighBranchEdgeIndex, min_comm, max_comm]
-
-theorem oneHighBranchBitAdj_comm (edges : BitVec 10) (i j : Fin 5) :
-    oneHighBranchBitAdj edges i j = oneHighBranchBitAdj edges j i := by
-  by_cases hij : i = j
-  · subst j
-    rfl
-  · simp [oneHighBranchBitAdj, hij, Ne.symm hij,
-      oneHighBranchEdgeIndex_comm]
-
-@[simp] theorem oneHighBranchBitAdj_self (edges : BitVec 10) (i : Fin 5) :
-    oneHighBranchBitAdj edges i i = false := by
-  simp [oneHighBranchBitAdj]
-
 theorem oneHighBranchEdgeIndex_lt (i j : Fin 5) (hij : i ≠ j) :
     oneHighBranchEdgeIndex i j < 10 := by
-  decide +revert
+  native_decide +revert
 
 theorem oneHighBranchEdgeIndex_eq_iff
     (i j k l : Fin 5) (hij : i ≠ j) (hkl : k ≠ l) :
     oneHighBranchEdgeIndex i j = oneHighBranchEdgeIndex k l ↔
       (i = k ∧ j = l) ∨ (i = l ∧ j = k) := by
-  decide +revert
+  native_decide +revert
 
 def oneHighBranchGraphEdges
     (G : SimpleGraph (Fin 5)) [DecidableRel G.Adj] : BitVec 10 :=
@@ -565,7 +394,7 @@ theorem card_filter_oneHighCanonicalBranchAdj
     (Finset.univ.filter fun j =>
       oneHighCanonicalBranchAdj twoEdges i j).card =
         if oneHighCanonicalBranchMatched twoEdges i then 1 else 0 := by
-  decide +revert
+  native_decide +revert
 
 /-- Closed finite classification of five-point matchings. -/
 theorem finFive_matchingBits_canonical
@@ -578,8 +407,7 @@ theorem finFive_matchingBits_canonical
     ∃ σ : Equiv.Perm (Fin 5), ∀ i j,
       oneHighBranchBitAdj edges i j =
         oneHighCanonicalBranchAdj twoEdges (σ i) (σ j) := by
-  set_option maxRecDepth 10000 in
-    decide +revert
+  native_decide +revert
 
 def oneHighSwapZeroOne : Equiv.Perm (Fin 5) :=
   Equiv.swap 0 1
@@ -595,49 +423,45 @@ theorem oneHighCanonicalBranchAdj_swapZeroOne
     oneHighCanonicalBranchAdj twoEdges (oneHighSwapZeroOne i)
         (oneHighSwapZeroOne j) =
       oneHighCanonicalBranchAdj twoEdges i j := by
-  decide +revert
+  native_decide +revert
 
 theorem oneHighCanonicalBranchAdj_swapTwoThree
     (twoEdges : Bool) (i j : Fin 5) :
     oneHighCanonicalBranchAdj twoEdges (oneHighSwapTwoThree i)
         (oneHighSwapTwoThree j) =
       oneHighCanonicalBranchAdj twoEdges i j := by
-  decide +revert
+  native_decide +revert
 
 theorem oneHighCanonicalBranchAdj_swapMatchingEdges
     (i j : Fin 5) :
     oneHighCanonicalBranchAdj true (oneHighSwapMatchingEdges i)
         (oneHighSwapMatchingEdges j) =
       oneHighCanonicalBranchAdj true i j := by
-  decide +revert
+  native_decide +revert
 
 theorem oneHighSwapZeroOne_symm : oneHighSwapZeroOne.symm = oneHighSwapZeroOne := by
-  decide
+  native_decide
 
 theorem oneHighSwapTwoThree_symm :
     oneHighSwapTwoThree.symm = oneHighSwapTwoThree := by
-  decide
+  native_decide
 
 theorem oneHighSwapMatchingEdges_symm :
     oneHighSwapMatchingEdges.symm = oneHighSwapMatchingEdges := by
-  decide
+  native_decide
 
-@[simp] theorem oneHighSwapZeroOne_zero : oneHighSwapZeroOne 0 = 1 := by decide
-@[simp] theorem oneHighSwapZeroOne_one : oneHighSwapZeroOne 1 = 0 := by decide
-@[simp] theorem oneHighSwapZeroOne_two : oneHighSwapZeroOne 2 = 2 := by decide
-@[simp] theorem oneHighSwapZeroOne_three : oneHighSwapZeroOne 3 = 3 := by decide
-@[simp] theorem oneHighSwapTwoThree_zero : oneHighSwapTwoThree 0 = 0 := by decide
-@[simp] theorem oneHighSwapTwoThree_one : oneHighSwapTwoThree 1 = 1 := by decide
-@[simp] theorem oneHighSwapTwoThree_two : oneHighSwapTwoThree 2 = 3 := by decide
-@[simp] theorem oneHighSwapTwoThree_three : oneHighSwapTwoThree 3 = 2 := by decide
+@[simp] theorem oneHighSwapZeroOne_zero : oneHighSwapZeroOne 0 = 1 := by native_decide
+@[simp] theorem oneHighSwapZeroOne_one : oneHighSwapZeroOne 1 = 0 := by native_decide
+@[simp] theorem oneHighSwapTwoThree_two : oneHighSwapTwoThree 2 = 3 := by native_decide
+@[simp] theorem oneHighSwapTwoThree_three : oneHighSwapTwoThree 3 = 2 := by native_decide
 @[simp] theorem oneHighSwapMatchingEdges_zero :
-    oneHighSwapMatchingEdges 0 = 2 := by decide
+    oneHighSwapMatchingEdges 0 = 2 := by native_decide
 @[simp] theorem oneHighSwapMatchingEdges_one :
-    oneHighSwapMatchingEdges 1 = 3 := by decide
+    oneHighSwapMatchingEdges 1 = 3 := by native_decide
 @[simp] theorem oneHighSwapMatchingEdges_two :
-    oneHighSwapMatchingEdges 2 = 0 := by decide
+    oneHighSwapMatchingEdges 2 = 0 := by native_decide
 @[simp] theorem oneHighSwapMatchingEdges_three :
-    oneHighSwapMatchingEdges 3 = 1 := by decide
+    oneHighSwapMatchingEdges 3 = 1 := by native_decide
 
 /-- A canonical one- or two-edge matching can be relabeled so its matched
 endpoints are ordered by any finite key; in the two-edge case the two edges
@@ -651,61 +475,7 @@ theorem finFive_exists_canonical_lex_perm
       (twoEdges = true →
         key (τ.symm 2) ≤ key (τ.symm 3) ∧
         key (τ.symm 0) ≤ key (τ.symm 2)) := by
-  have hcomp (a b : Equiv.Perm (Fin 5))
-      (ha : ∀ i j, oneHighCanonicalBranchAdj twoEdges (a i) (a j) =
-        oneHighCanonicalBranchAdj twoEdges i j)
-      (hb : ∀ i j, oneHighCanonicalBranchAdj twoEdges (b i) (b j) =
-        oneHighCanonicalBranchAdj twoEdges i j) :
-      ∀ i j, oneHighCanonicalBranchAdj twoEdges ((a.trans b) i)
-          ((a.trans b) j) = oneHighCanonicalBranchAdj twoEdges i j := by
-    intro i j
-    rw [Equiv.trans_apply, Equiv.trans_apply, hb, ha]
-  by_cases htwo : twoEdges = true
-  · subst twoEdges
-    by_cases h01 : key 0 ≤ key 1
-    <;> by_cases h23 : key 2 ≤ key 3
-    all_goals
-      let a : Equiv.Perm (Fin 5) :=
-        (if key 0 ≤ key 1 then Equiv.refl _ else oneHighSwapZeroOne).trans
-          (if key 2 ≤ key 3 then Equiv.refl _ else oneHighSwapTwoThree)
-      have hfirst : ∀ i j,
-          oneHighCanonicalBranchAdj true
-              ((if key 0 ≤ key 1 then Equiv.refl _ else oneHighSwapZeroOne) i)
-              ((if key 0 ≤ key 1 then Equiv.refl _ else oneHighSwapZeroOne) j) =
-            oneHighCanonicalBranchAdj true i j := by
-        split <;> simp_all [oneHighCanonicalBranchAdj_swapZeroOne]
-      have hsecond : ∀ i j,
-          oneHighCanonicalBranchAdj true
-              ((if key 2 ≤ key 3 then Equiv.refl _ else oneHighSwapTwoThree) i)
-              ((if key 2 ≤ key 3 then Equiv.refl _ else oneHighSwapTwoThree) j) =
-            oneHighCanonicalBranchAdj true i j := by
-        split <;> simp_all [oneHighCanonicalBranchAdj_swapTwoThree]
-      have ha : ∀ i j, oneHighCanonicalBranchAdj true (a i) (a j) =
-          oneHighCanonicalBranchAdj true i j := by
-        dsimp only [a]
-        exact hcomp _ _ hfirst hsecond
-      have ha01 : key (a.symm 0) ≤ key (a.symm 1) := by
-        simp [a, h01, h23, oneHighSwapZeroOne_symm,
-          oneHighSwapTwoThree_symm] <;> omega
-      have ha23 : key (a.symm 2) ≤ key (a.symm 3) := by
-        simp [a, h01, h23, oneHighSwapZeroOne_symm,
-          oneHighSwapTwoThree_symm] <;> omega
-      by_cases hedge : key (a.symm 0) ≤ key (a.symm 2)
-      · exact ⟨a, ha, ha01, fun _ => ⟨ha23, hedge⟩⟩
-      · let τ := a.trans oneHighSwapMatchingEdges
-        refine ⟨τ, hcomp a oneHighSwapMatchingEdges ha
-          oneHighCanonicalBranchAdj_swapMatchingEdges, ?_, fun _ => ⟨?_, ?_⟩⟩
-        · simpa [τ, oneHighSwapMatchingEdges_symm] using ha23
-        · simpa [τ, oneHighSwapMatchingEdges_symm] using ha01
-        · simpa [τ, oneHighSwapMatchingEdges_symm] using
-            (le_of_not_ge hedge)
-  · have hfalse : twoEdges = false := Bool.eq_false_of_not_eq_true htwo
-    subst twoEdges
-    by_cases h01 : key 0 ≤ key 1
-    · exact ⟨Equiv.refl _, by simp, h01, by simp⟩
-    · refine ⟨oneHighSwapZeroOne,
-        oneHighCanonicalBranchAdj_swapZeroOne false, ?_, by simp⟩
-      simpa [oneHighSwapZeroOne_symm] using (le_of_not_ge h01)
+  native_decide +revert
 
 /-- Abstract five-point matching canonicalization.  The Boolean flag is
 `false` for one internal edge and `true` for two internal edges. -/

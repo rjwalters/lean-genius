@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighMateMissHexagon
+import Proofs.Erdos85OneHighRepeatedMissPairObstruction
 import Proofs.Erdos85OneHighGlobalMissLabelCounting
 
 /-! # Graph specialization of the mate-miss hexagon -/
@@ -8,28 +9,6 @@ namespace Erdos85
 open SimpleGraph
 
 noncomputable section
-
-private theorem mateHexagon_eq_or_swap_of_minMax_pair_eq
-    {L : Type*} [LinearOrder L]
-    {a b c d : L} (hab : a ≠ b) (hcd : c ≠ d)
-    (hpair : (min a b, max a b) = (min c d, max c d)) :
-    (a = c ∧ b = d) ∨ (a = d ∧ b = c) := by
-  rcases lt_or_gt_of_ne hab with hablt | hbalt <;>
-    rcases lt_or_gt_of_ne hcd with hcdlt | hdclt
-  · rw [min_eq_left hablt.le, max_eq_right hablt.le,
-      min_eq_left hcdlt.le, max_eq_right hcdlt.le] at hpair
-    exact Or.inl (Prod.mk.inj hpair)
-  · rw [min_eq_left hablt.le, max_eq_right hablt.le,
-      min_eq_right hdclt.le, max_eq_left hdclt.le] at hpair
-    exact Or.inr (Prod.mk.inj hpair)
-  · have h := Prod.mk.inj hpair
-    rw [min_eq_right hbalt.le, max_eq_left hbalt.le,
-      min_eq_left hcdlt.le, max_eq_right hcdlt.le] at h
-    exact Or.inr ⟨h.2, h.1⟩
-  · have h := Prod.mk.inj hpair
-    rw [min_eq_right hbalt.le, max_eq_left hbalt.le,
-      min_eq_right hdclt.le, max_eq_left hdclt.le] at h
-    exact Or.inl ⟨h.2, h.1⟩
 
 /-- A concrete global internal matching edge whose two unique miss labels are
 an adjacent root pair produces the mate-miss hexagon configuration. -/
@@ -66,7 +45,7 @@ theorem exists_oneHighMateMissHexagon_of_globalEdge
   have horient :
       (label x = u ∧ label xm = w) ∨
         (label x = w ∧ label xm = u) := by
-    exact mateHexagon_eq_or_swap_of_minMax_pair_eq hlabelNe huwNe hpair
+    exact eq_or_swap_of_minMax_pair_eq hlabelNe huwNe hpair
   have hxMem := oneHighGlobalMissLabel_mem G hfree hv hexternal
     houterDegree rootMate hrootAdj x
   have hxmMem := oneHighGlobalMissLabel_mem G hfree hv hexternal
