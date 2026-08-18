@@ -167,7 +167,7 @@ theorem mu3SectorEquation_of_edge_iff
     (H T : Nat → Mu3KRow)
     (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
     (hTsub : ∀ x, T x ⊆ H x)
-    (hTbound : ∀ x n, n ∈ T x → n < 8)
+    (hTbound : ∀ x, x < 8 → ∀ n, n ∈ T x → n < 8)
     (hiff : ∀ x y, y.val ∈ H x.val → (K x y ↔ y.val ∈ T x.val))
     (x : Fin 8) :
     ((Finset.univ.filter fun y => K x y).image Fin.val) ∩ H x.val =
@@ -181,7 +181,7 @@ theorem mu3SectorEquation_of_edge_iff
     have hyT := (hiff x y hyH).1 (Finset.mem_filter.mp hyK).2
     simpa [hyn] using hyT
   · intro hnT
-    have hn8 : n < 8 := hTbound x.val n hnT
+    have hn8 : n < 8 := hTbound x.val x.isLt n hnT
     let y : Fin 8 := ⟨n, hn8⟩
     have hyH : y.val ∈ H x.val := hTsub x.val hnT
     have hyK : K x y := (hiff x y hyH).2 hnT

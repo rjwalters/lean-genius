@@ -99,7 +99,58 @@ theorem mu3SectorTableValid_H106_sixTf :
         simp [mu3H106SixTfRows] at hz ⊢
         split at * <;> simp_all [mu3H106Row]) hn)
 
+/-- The ten component-colour sectors across the three internal shapes. -/
+inductive Mu3KSectorChoice where
+  | c16AllTf | c16AllTriangle
+  | c88AllTf | c88AllTriangle | c88FirstTf | c88SecondTf
+  | c106AllTf | c106AllTriangle | c106TenTf | c106SixTf
+  deriving DecidableEq, Repr
+
+def Mu3KSectorChoice.HRows : Mu3KSectorChoice → Nat → Mu3KRow
+  | .c16AllTf | .c16AllTriangle => mu3H16Row
+  | .c88AllTf | .c88AllTriangle | .c88FirstTf | .c88SecondTf => mu3H88Row
+  | .c106AllTf | .c106AllTriangle | .c106TenTf | .c106SixTf => mu3H106Row
+
+def Mu3KSectorChoice.TRows : Mu3KSectorChoice → Nat → Mu3KRow
+  | .c16AllTf => mu3H16Row
+  | .c16AllTriangle => mu3EmptyRows
+  | .c88AllTf => mu3H88Row
+  | .c88AllTriangle => mu3EmptyRows
+  | .c88FirstTf => mu3H88FirstTfRows
+  | .c88SecondTf => mu3H88SecondTfRows
+  | .c106AllTf => mu3H106Row
+  | .c106AllTriangle => mu3EmptyRows
+  | .c106TenTf => mu3H106TenTfRows
+  | .c106SixTf => mu3H106SixTfRows
+
+theorem Mu3KSectorChoice.valid (sector : Mu3KSectorChoice) :
+    Mu3SectorTableValid sector.HRows sector.TRows := by
+  cases sector
+  · exact mu3SectorTableValid_H16_self
+  · exact mu3SectorTableValid_empty _
+  · exact mu3SectorTableValid_H88_self
+  · exact mu3SectorTableValid_empty _
+  · exact mu3SectorTableValid_H88_firstTf
+  · exact mu3SectorTableValid_H88_secondTf
+  · exact mu3SectorTableValid_H106_self
+  · exact mu3SectorTableValid_empty _
+  · exact mu3SectorTableValid_H106_tenTf
+  · exact mu3SectorTableValid_H106_sixTf
+
+theorem mu3SectorEquation_of_choice_edge_iff
+    (sector : Mu3KSectorChoice)
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hiff : ∀ x y, y.val ∈ sector.HRows x.val →
+      (K x y ↔ y.val ∈ sector.TRows x.val))
+    (x : Fin 8) :
+    ((Finset.univ.filter fun y => K x y).image Fin.val) ∩
+        sector.HRows x.val = sector.TRows x.val := by
+  exact mu3SectorEquation_of_edge_iff sector.HRows sector.TRows K
+    sector.valid.1 sector.valid.2 hiff x
+
 end Erdos85
 
 #print axioms Erdos85.mu3SectorTableValid_H88_firstTf
 #print axioms Erdos85.mu3SectorTableValid_H106_sixTf
+#print axioms Erdos85.Mu3KSectorChoice.valid
+#print axioms Erdos85.mu3SectorEquation_of_choice_edge_iff
