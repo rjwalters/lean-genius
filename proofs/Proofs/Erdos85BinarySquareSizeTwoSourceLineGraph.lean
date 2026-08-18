@@ -22,6 +22,14 @@ def sourceIndexedSelectorEdgeSet
   {s | ∃ x : source.supp,
     s.1 = componentNeighborFinset G (secondOrderDefectGraph G) owner x.1}
 
+noncomputable instance sourceIndexedSelectorEdgeSet.instFintype
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (source owner : (secondOrderDefectGraph G).ConnectedComponent) :
+    Fintype (sourceIndexedSelectorEdgeSet G source owner) :=
+  Fintype.ofFinite _
+
 /-- Intersection graph induced on the selector edges colored by one source
 defect component. -/
 def sourceIndexedSelectorIntersectionGraph
@@ -95,6 +103,38 @@ theorem binarySquare_regular_sizeTwoPart_exists_restrictedOwnerGraph_iso_sourceI
   refine ⟨E, ?_⟩
   intro x
   exact he x.1
+
+/-- The source-colored selector intersection graph has the degree forced by
+its line-graph realization: a normalized size-`m` source layer gives degree
+`2(m-1)`.  This records the regularity of the transported restricted owner
+block on the selector-edge side. -/
+theorem binarySquare_regular_sourceIndexedSelectorIntersectionGraph_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q m : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (source owner : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsource : source.supp.ncard = q * m)
+    (howner : owner.supp.ncard = q * 2)
+    (s : sourceIndexedSelectorEdgeSet G source owner) :
+    (sourceIndexedSelectorIntersectionGraph G source owner).degree s =
+      2 * (m - 1) := by
+  classical
+  obtain ⟨E, _hE⟩ :=
+    binarySquare_regular_sizeTwoPart_exists_restrictedOwnerGraph_iso_sourceIntersection
+      G hfree hq hreg hcard source owner howner
+  calc
+    (sourceIndexedSelectorIntersectionGraph G source owner).degree s =
+        (restrictedComponentOwnerGraph G source owner).degree (E.symm s) := by
+      simpa using (E.degree_eq (E.symm s)).symm
+    _ = 2 * (m - 1) := by
+      exact binarySquare_regular_restrictedComponentOwnerGraph_degree
+        G hfree hq hreg hcard source owner hsource howner (E.symm s)
 
 end
 
