@@ -3,6 +3,7 @@ import Proofs.Erdos85MuThreeKSymmetryTaggedClassification
 import Proofs.Erdos85MuThreeMixedGridCodeNativeAdapter
 import Proofs.Erdos85OrderSixtyFourMuThreeInternalShapeCoordinates
 import Proofs.Erdos85OrderSixtyFourMuThreeJointEigenlineCapstone
+import Proofs.Erdos85BinarySquareSizeTwoSignedJointPackage
 
 /-!
 # Native certificate consumers for the tagged K-symmetry classifications
@@ -167,6 +168,50 @@ theorem false_of_orderSixtyFour_mu3_jointEigenline_native
     G hfree hreg hcardV c hc s hs_in hs_out hsum hDs hA_in hA_out
     classification
 
+/-- Campaign-facing closure with the redundant exterior adjacency-action
+hypothesis removed.  The signed support and the exactly-two selector law force
+every exterior adjacency sum to be `-2`, `0`, or `2`. -/
+theorem false_of_orderSixtyFour_mu3_jointEigenline_native_without_hA_out
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcardV : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x,
+      s y = 3 * s x)
+    (hA_in : ∀ x, x ∈ c.supp →
+      (G.adjMatrix ℤ).mulVec s x = -2 * s x) : False := by
+  have hH : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (G.neighborFinset z).filter
+        (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c),
+          s y = -2 * s z := by
+    intro z hz
+    rw [← hA_in z hz, SimpleGraph.adjMatrix_mulVec_apply,
+      Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro y _hy
+    by_cases hy : (secondOrderDefectGraph G).connectedComponentMk y = c
+    · simp [hy]
+    · rw [if_neg hy, hs_out y]
+      intro hyc
+      exact hy ((SimpleGraph.ConnectedComponent.mem_supp_iff c y).mp hyc)
+  have P := orderSixtyFour_sizeTwo_signedJoint_derived
+    G hfree hreg hcardV c hc s 3 hs_out hs_in hH
+      (fun z _hz => hDs z)
+  exact false_of_orderSixtyFour_mu3_jointEigenline_native
+    G hfree hreg hcardV c hc s hs_in hs_out hsum hDs hA_in
+      P.ambientAction_out
+
 end
 
 end Erdos85
@@ -177,3 +222,4 @@ end Erdos85
 #print axioms Erdos85.muThreeKSymmetryClassification_H106_native
 #print axioms Erdos85.nonempty_muThreeKSymmetryClassification_native_of_shape
 #print axioms Erdos85.false_of_orderSixtyFour_mu3_jointEigenline_native
+#print axioms Erdos85.false_of_orderSixtyFour_mu3_jointEigenline_native_without_hA_out
