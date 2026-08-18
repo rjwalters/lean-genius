@@ -2105,6 +2105,10 @@ generalized rather than merely replayed.
      common neighbor, the two columns incident with any chosen row are
      distinct and have common-neighbor count exactly one.  Hence H-C4-freeness
      globally supplies at least one of these forced even-monodromy triangles.
+     The H-C4 interface itself is now formal (**PROVEN**, `db66da941b`):
+     common H-neighbor finsets are identified with graph common-neighbor
+     finsets in `relationBipartiteGraph H`, so graph C4-freeness directly
+     supplies the required overlap-at-most-one hypothesis.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
