@@ -12,6 +12,157 @@ valuation which still agrees with the incoming valuation on every old ID.
 
 namespace Erdos85
 
+abbrev Mu3NativeCardSpec := Array Int × Nat
+
+/-- The row and column exact-cardinality blocks, flattened in precisely the
+same order as `mu3NativeHitBlocks`. -/
+def mu3NativeHitSpecs (shape : Mu3AllTfShape) : List Mu3NativeCardSpec :=
+  (List.range 48).flatMap fun u =>
+    let cell := (mu3AllTfCells shape).getD u 0
+    let xu := cell / 8
+    let yu := cell % 8
+    (List.range 8).map (fun x =>
+      (mu3NativeRowVars shape u x,
+        if mu3AllTfInternal shape x yu then 0 else 1)) ++
+    (List.range 8).map (fun y =>
+      (mu3NativeColumnVars shape u y,
+        if mu3AllTfInternal shape xu y then 0 else 1))
+
+def mu3NativeRunExactSpecs (specs : List Mu3NativeCardSpec)
+    (st : Mu3NativeCnfState) : Mu3NativeCnfState :=
+  specs.foldl (fun st spec => mu3NativeEquals spec.1 spec.2 st) st
+
+set_option maxRecDepth 100000 in
+theorem mu3NativeHitSpecs_generate_hitBlocks :
+    ([Mu3AllTfShape.c16, .c10c6, .c8c8].all fun shape =>
+      mu3NativeRunExactSpecs (mu3NativeHitSpecs shape) {} ==
+        mu3NativeHitBlocks shape) = true := by
+  native_decide
+
+/-- The Boolean row denoted by a signed DIMACS literal array. -/
+def mu3NativeVarsRow (val : DimacsValuation) (vars : Array Int) :
+    Fin vars.size → Bool := fun i => dimacsLitValue val vars[i]
+
+theorem mu3NativeVarsRow_reifies
+    (val : DimacsValuation) (top : Nat) (vars : Array Int)
+    (hnonzero : ∀ lit ∈ vars, lit ≠ 0)
+    (hbounded : ∀ lit ∈ vars, lit.natAbs ≤ top) :
+    SeqCounterInputReifies val top vars (mu3NativeVarsRow val vars) := by
+  refine ⟨rfl, ?_, ?_, ?_⟩
+  · intro i hi
+    apply hnonzero (vars.getD i 0)
+    simp [Array.getD, hi]
+  · intro i hi
+    apply hbounded (vars.getD i 0)
+    simp [Array.getD, hi]
+  · intro i hi
+    simp [mu3NativeVarsRow, Array.getD, hi]
+
+/-- Run exact-cardinality blocks while constructing their canonical auxiliary
+valuation.  The first projection is definitionally the executable CNF run. -/
+def mu3NativeRunExactSpecsVal (baseVal : DimacsValuation) :
+    List Mu3NativeCardSpec → Mu3NativeCnfState → DimacsValuation →
+      Mu3NativeCnfState × DimacsValuation
+  | [], st, val => (st, val)
+  | spec :: rest, st, val =>
+      let x := mu3NativeVarsRow baseVal spec.1
+      let nextVal := seqCounterEqualsVal val st.top spec.1 x spec.2
+      mu3NativeRunExactSpecsVal baseVal rest
+        (mu3NativeEquals spec.1 spec.2 st) nextVal
+
+theorem mu3NativeRunExactSpecsVal_state
+    (baseVal : DimacsValuation) (specs : List Mu3NativeCardSpec)
+    (st : Mu3NativeCnfState) (val : DimacsValuation) :
+    (mu3NativeRunExactSpecsVal baseVal specs st val).1 =
+      mu3NativeRunExactSpecs specs st := by
+  induction specs generalizing st val with
+  | nil => rfl
+  | cons spec rest ih =>
+      simp only [mu3NativeRunExactSpecsVal, mu3NativeRunExactSpecs,
+        List.foldl_cons]
+      exact ih _ _
+
+/-- Semantic induction for a list of exact-cardinality blocks whose inputs
+all lie in a fixed base-ID range. -/
+theorem mu3NativeRunExactSpecsVal_formulaSatisfied
+    (baseTop : Nat) (baseVal : DimacsValuation)
+    (specs : List Mu3NativeCardSpec)
+    (st : Mu3NativeCnfState) (inputVal : DimacsValuation)
+    (htop : baseTop ≤ st.top)
+    (hprefixSat : dimacsFormulaSatisfied inputVal st.clauses)
+    (hprefixBound : dimacsFormulaBounded st.top st.clauses)
+    (hagree : ∀ id, id ≤ baseTop → inputVal id = baseVal id)
+    (hnonzero : ∀ spec ∈ specs, ∀ lit ∈ spec.1, lit ≠ 0)
+    (hbaseBound : ∀ spec ∈ specs, ∀ lit ∈ spec.1,
+      lit.natAbs ≤ baseTop)
+    (hcounts : ∀ spec ∈ specs,
+      seqPrefixTrue (mu3NativeVarsRow baseVal spec.1) spec.1.size = spec.2) :
+    let out := mu3NativeRunExactSpecsVal baseVal specs st inputVal
+    dimacsFormulaSatisfied out.2 out.1.clauses ∧
+    dimacsFormulaBounded out.1.top out.1.clauses ∧
+    baseTop ≤ out.1.top ∧
+    ∀ id, id ≤ baseTop → out.2 id = baseVal id := by
+  induction specs generalizing st inputVal with
+  | nil =>
+      exact ⟨hprefixSat, hprefixBound, htop, hagree⟩
+  | cons spec rest ih =>
+      let x := mu3NativeVarsRow baseVal spec.1
+      let nextSt := mu3NativeEquals spec.1 spec.2 st
+      let nextVal := seqCounterEqualsVal inputVal st.top spec.1 x spec.2
+      have hspecNonzero : ∀ lit ∈ spec.1, lit ≠ 0 := by
+        intro lit hlit
+        exact hnonzero spec (by simp) lit hlit
+      have hspecBaseBound : ∀ lit ∈ spec.1, lit.natAbs ≤ baseTop := by
+        intro lit hlit
+        exact hbaseBound spec (by simp) lit hlit
+      have hinput : SeqCounterInputReifies inputVal st.top spec.1 x := by
+        refine ⟨rfl, ?_, ?_, ?_⟩
+        · intro i hi
+          apply hspecNonzero (spec.1.getD i 0)
+          simp [Array.getD, hi]
+        · intro i hi
+          exact (hspecBaseBound (spec.1.getD i 0)
+            (by simp [Array.getD, hi])).trans htop
+        · intro i hi
+          change dimacsLitValue inputVal (spec.1.getD i 0) =
+            dimacsLitValue baseVal spec.1[⟨i, hi⟩]
+          have hlit := hspecBaseBound (spec.1.getD i 0)
+            (by simp [Array.getD, hi])
+          rw [dimacsLitValue_eq_of_agree inputVal baseVal
+            (hagree _ hlit)]
+          simp [Array.getD, hi]
+      have hcount : seqPrefixTrue x spec.1.size = spec.2 := by
+        exact hcounts spec (by simp)
+      have hstep := mu3NativeEquals_formulaSatisfied_append st inputVal
+        spec.1 x hprefixSat hprefixBound hinput spec.2 hcount
+      have hstepSat : dimacsFormulaSatisfied nextVal nextSt.clauses := by
+        simpa [nextVal, nextSt] using hstep.1
+      have hstepBound : dimacsFormulaBounded nextSt.top nextSt.clauses := by
+        simpa [nextSt] using hstep.2.1
+      have hnextTop : baseTop ≤ nextSt.top := by
+        exact htop.trans (by
+          simpa [nextSt, mu3NativeEquals, mu3NativeAppendCounter] using
+            seqCounterEquals_top_bound st.top spec.1 spec.2)
+      have hnextAgree : ∀ id, id ≤ baseTop → nextVal id = baseVal id := by
+        intro id hid
+        rw [show nextVal id = inputVal id by
+          exact hstep.2.2 id (hid.trans htop)]
+        exact hagree id hid
+      have hrestNonzero : ∀ s ∈ rest, ∀ lit ∈ s.1, lit ≠ 0 := by
+        intro s hs
+        exact hnonzero s (by simp [hs])
+      have hrestBound : ∀ s ∈ rest, ∀ lit ∈ s.1,
+          lit.natAbs ≤ baseTop := by
+        intro s hs
+        exact hbaseBound s (by simp [hs])
+      have hrestCounts : ∀ s ∈ rest,
+          seqPrefixTrue (mu3NativeVarsRow baseVal s.1) s.1.size = s.2 := by
+        intro s hs
+        exact hcounts s (by simp [hs])
+      simpa [mu3NativeRunExactSpecsVal, x, nextSt, nextVal] using
+        ih nextSt nextVal hnextTop hstepSat hstepBound hnextAgree
+          hrestNonzero hrestBound hrestCounts
+
 /-- Add one exact-cardinality block to a satisfied native-generator prefix.
 The returned canonical valuation satisfies the enlarged prefix, its clauses
 are bounded by the new top, and all old variable values are unchanged. -/
