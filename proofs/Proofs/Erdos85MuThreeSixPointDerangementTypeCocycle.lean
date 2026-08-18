@@ -14,6 +14,60 @@ namespace Erdos85
 
 open Equiv
 
+/-- Transport a permutation across an equivalence of its underlying type. -/
+def permTransport {α β : Type*} (e : α ≃ β) (σ : Equiv.Perm α) :
+    Equiv.Perm β :=
+  e.symm.trans (σ.trans e)
+
+@[simp] theorem permTransport_apply {α β : Type*} (e : α ≃ β)
+    (σ : Equiv.Perm α) (x : β) :
+    permTransport e σ x = e (σ (e.symm x)) := rfl
+
+@[simp] theorem permTransport_one {α β : Type*} (e : α ≃ β) :
+    permTransport e 1 = 1 := by
+  ext x
+  simp [permTransport]
+
+@[simp] theorem permTransport_mul {α β : Type*} (e : α ≃ β)
+    (σ τ : Equiv.Perm α) :
+    permTransport e (σ * τ) = permTransport e σ * permTransport e τ := by
+  ext x
+  simp [permTransport]
+
+@[simp] theorem permTransport_pow {α β : Type*} (e : α ≃ β)
+    (σ : Equiv.Perm α) (n : ℕ) :
+    permTransport e (σ ^ n) = permTransport e σ ^ n := by
+  induction n with
+  | zero => simp
+  | succ n ih => simp [pow_succ, ih]
+
+theorem permTransport_injective {α β : Type*} (e : α ≃ β) :
+    Function.Injective (permTransport e) := by
+  intro σ τ h
+  ext x
+  have hx := Equiv.congr_fun h (e x)
+  simpa using congrArg e.symm hx
+
+/-- A fixed-point-free order-three permutation of a six-element type consists
+of exactly two three-cycles. -/
+theorem cycleType_eq_threeThree_of_card_six_fixedPointFree_pow_three
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (hcard : Fintype.card α = 6) (σ : Equiv.Perm α)
+    (hfree : ∀ x, σ x ≠ x) (hthree : σ ^ 3 = 1) :
+    σ.cycleType = {3, 3} := by
+  have hsupport : σ.support = Finset.univ := by
+    ext x
+    simp [Equiv.Perm.mem_support, hfree x]
+  have hsum : σ.cycleType.sum = 6 := by
+    rw [Equiv.Perm.sum_cycleType, hsupport, Finset.card_univ, hcard]
+  have hrep := Equiv.Perm.cycleType_of_pow_prime_eq_one hthree
+  have hcycles : σ.cycleType.card = 2 := by
+    rw [hrep, Multiset.sum_replicate] at hsum
+    norm_num at hsum
+    omega
+  rw [hrep, hcycles]
+  rfl
+
 /-- A canonical `(3,3)` permutation on six labelled points. -/
 def finSixThreeThree : Equiv.Perm (Fin 6) :=
   (Equiv.swap 0 1 * Equiv.swap 1 2) *
@@ -152,8 +206,116 @@ theorem finSix_threeThree_cocycle_pairwise_closure
     exact finSix_threeThree_product_threeThree_of_derangement
       σ⁻¹ (τ * σ) hσinvType hprod hprodFree (by simpa [hτeq] using hτfree)
 
+/-- Type-generic form of the two-factor closure theorem.  This is the version
+usable on six-cell row or column fibers without choosing persistent labels. -/
+theorem sixElement_threeThree_product_threeThree_of_derangement
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (hcard : Fintype.card α = 6)
+    (σ τ : Equiv.Perm α)
+    (hσtype : σ.cycleType = {3, 3})
+    (hτtype : τ.cycleType = {3, 3})
+    (hσfree : ∀ x, σ x ≠ x) (hτfree : ∀ x, τ x ≠ x)
+    (hprodFree : ∀ x, (τ * σ) x ≠ x) :
+    (τ * σ).cycleType = {3, 3} := by
+  let e : α ≃ Fin 6 := (Fintype.equivFin α).trans (finCongr hcard)
+  let σF : Equiv.Perm (Fin 6) := permTransport e σ
+  let τF : Equiv.Perm (Fin 6) := permTransport e τ
+  have hσthree : σ ^ 3 = 1 := by
+    rw [Equiv.Perm.pow_prime_eq_one_iff]
+    intro n hn
+    rw [hσtype] at hn
+    simp at hn
+    omega
+  have hτthree : τ ^ 3 = 1 := by
+    rw [Equiv.Perm.pow_prime_eq_one_iff]
+    intro n hn
+    rw [hτtype] at hn
+    simp at hn
+    omega
+  have hσFthree : σF ^ 3 = 1 := by
+    change permTransport e σ ^ 3 = 1
+    rw [← permTransport_pow, hσthree, permTransport_one]
+  have hτFthree : τF ^ 3 = 1 := by
+    change permTransport e τ ^ 3 = 1
+    rw [← permTransport_pow, hτthree, permTransport_one]
+  have hσFfree : ∀ x, σF x ≠ x := by
+    intro x hx
+    have := congrArg e.symm hx
+    exact hσfree (e.symm x) (by simpa [σF] using this)
+  have hτFfree : ∀ x, τF x ≠ x := by
+    intro x hx
+    have := congrArg e.symm hx
+    exact hτfree (e.symm x) (by simpa [τF] using this)
+  have hprodFfree : ∀ x, (τF * σF) x ≠ x := by
+    intro x hx
+    have := congrArg e.symm hx
+    exact hprodFree (e.symm x) (by simpa [σF, τF] using this)
+  have hσFtype := cycleType_eq_threeThree_of_card_six_fixedPointFree_pow_three
+    (by decide : Fintype.card (Fin 6) = 6) σF hσFfree hσFthree
+  have hτFtype := cycleType_eq_threeThree_of_card_six_fixedPointFree_pow_three
+    (by decide : Fintype.card (Fin 6) = 6) τF hτFfree hτFthree
+  have hprodFtype := finSix_threeThree_product_threeThree_of_derangement
+    σF τF hσFtype hτFtype hτFfree hprodFfree
+  have hprodFthree : (τF * σF) ^ 3 = 1 := by
+    rw [Equiv.Perm.pow_prime_eq_one_iff]
+    intro n hn
+    rw [hprodFtype] at hn
+    simp at hn
+    omega
+  have hprodthree : (τ * σ) ^ 3 = 1 := by
+    apply permTransport_injective e
+    rw [permTransport_pow, permTransport_one, permTransport_mul]
+    exact hprodFthree
+  exact cycleType_eq_threeThree_of_card_six_fixedPointFree_pow_three
+    hcard (τ * σ) hprodFree hprodthree
+
+/-- Label-free pairwise closure for a derangement cocycle on any six-element
+fiber. -/
+theorem sixElement_threeThree_cocycle_pairwise_closure
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (hcard : Fintype.card α = 6)
+    (σ τ : Equiv.Perm α)
+    (hσfree : ∀ x, σ x ≠ x)
+    (hτfree : ∀ x, τ x ≠ x)
+    (hprodFree : ∀ x, (τ * σ) x ≠ x) :
+    (σ.cycleType = {3, 3} ∧ τ.cycleType = {3, 3} →
+      (τ * σ).cycleType = {3, 3}) ∧
+    (τ.cycleType = {3, 3} ∧ (τ * σ).cycleType = {3, 3} →
+      σ.cycleType = {3, 3}) ∧
+    (σ.cycleType = {3, 3} ∧ (τ * σ).cycleType = {3, 3} →
+      τ.cycleType = {3, 3}) := by
+  constructor
+  · rintro ⟨hσ, hτ⟩
+    exact sixElement_threeThree_product_threeThree_of_derangement
+      hcard σ τ hσ hτ hσfree hτfree hprodFree
+  constructor
+  · rintro ⟨hτ, hprod⟩
+    have hτinvType : τ⁻¹.cycleType = {3, 3} := by simpa using hτ
+    have hτinvFree : ∀ x, τ⁻¹ x ≠ x := by
+      intro x hx
+      have := congrArg τ hx
+      exact hτfree x (by simpa using this.symm)
+    have hσeq : τ⁻¹ * (τ * σ) = σ := by group
+    rw [← hσeq]
+    exact sixElement_threeThree_product_threeThree_of_derangement
+      hcard (τ * σ) τ⁻¹ hprod hτinvType hprodFree hτinvFree
+        (by simpa [hσeq] using hσfree)
+  · rintro ⟨hσ, hprod⟩
+    have hσinvType : σ⁻¹.cycleType = {3, 3} := by simpa using hσ
+    have hσinvFree : ∀ x, σ⁻¹ x ≠ x := by
+      intro x hx
+      have := congrArg σ hx
+      exact hσfree x (by simpa using this.symm)
+    have hτeq : (τ * σ) * σ⁻¹ = τ := by group
+    rw [← hτeq]
+    exact sixElement_threeThree_product_threeThree_of_derangement
+      hcard σ⁻¹ (τ * σ) hσinvType hprod hσinvFree hprodFree
+        (by simpa [hτeq] using hτfree)
+
 end Erdos85
 
 #print axioms Erdos85.finSixThreeThree_mul_orderThree_of_derangements
 #print axioms Erdos85.finSix_threeThree_product_threeThree_of_derangement
 #print axioms Erdos85.finSix_threeThree_cocycle_pairwise_closure
+#print axioms Erdos85.sixElement_threeThree_product_threeThree_of_derangement
+#print axioms Erdos85.sixElement_threeThree_cocycle_pairwise_closure
