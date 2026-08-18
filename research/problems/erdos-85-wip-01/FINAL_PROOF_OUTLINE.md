@@ -2179,6 +2179,13 @@ generalized rather than merely replayed.
      `False` from that single proposition plus H-C4-freeness.  Establishing
      this socket (or a weaker prohibition only on the forced rectangle) from
      all-triangle `K` geometry is the remaining substantive obligation.
+     An even simpler equivalent target is now **PROVEN** (`78b08208c5`):
+     because `2`, `3`, and `5` divide `30`, H-C4-freeness forces one concrete
+     rectangle commutator with `κ^30 = 1`
+     (`exists_rectangle_commutator_pow_thirty_of_c4Free`).  The single-socket
+     predicate `RectangleCommutatorsAvoidThirty` therefore suffices for the
+     conditional contradiction.  Fixed-`K` probes need test only this one
+     exponent identity.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
