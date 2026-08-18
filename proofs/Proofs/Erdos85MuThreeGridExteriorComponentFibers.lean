@@ -51,6 +51,50 @@ theorem defectComponentCoordinateRowPairs_card_le_four
       Finset.card_filter_le _ _
     _ = 4 := by simp [hx, hx']
 
+/-- Cross-row component loads are symmetric because defect adjacency is
+undirected. -/
+theorem defectComponentCoordinateRowPairs_card_comm
+    {V X Y : Type*} [Fintype V] [DecidableEq V] [DecidableEq X]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (φ : V ≃ X × Y) (c : D.ConnectedComponent) (x x' : X) :
+    (defectComponentCoordinateRowPairs D φ c x x').card =
+      (defectComponentCoordinateRowPairs D φ c x' x).card := by
+  apply Finset.card_bij (fun p _ => (p.2, p.1))
+  · intro p hp
+    have hp' := Finset.mem_filter.mp hp
+    have hpProd := Finset.mem_product.mp hp'.1
+    apply Finset.mem_filter.mpr
+    exact ⟨Finset.mem_product.mpr ⟨hpProd.2, hpProd.1⟩, D.adj_symm hp'.2⟩
+  · intro p hp q hq heq
+    exact Prod.ext (congrArg Prod.snd heq) (congrArg Prod.fst heq)
+  · intro q hq
+    refine ⟨(q.2, q.1), ?_, by simp⟩
+    have hq' := Finset.mem_filter.mp hq
+    have hqProd := Finset.mem_product.mp hq'.1
+    apply Finset.mem_filter.mpr
+    exact ⟨Finset.mem_product.mpr ⟨hqProd.2, hqProd.1⟩, D.adj_symm hq'.2⟩
+
+/-- If `D` has no edge inside coordinate row `x`, the diagonal load at `x`
+is zero. -/
+theorem defectComponentCoordinateRowPairs_self_card_eq_zero
+    {V X Y : Type*} [Fintype V] [DecidableEq V] [DecidableEq X]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (φ : V ≃ X × Y) (c : D.ConnectedComponent) (x : X)
+    (hrow : ∀ u v : V, (φ u).1 = x → (φ v).1 = x → ¬ D.Adj u v) :
+    (defectComponentCoordinateRowPairs D φ c x x).card = 0 := by
+  apply Finset.card_eq_zero.mpr
+  ext p
+  constructor
+  · intro hp
+    have hp' := Finset.mem_filter.mp hp
+    have hpProd := Finset.mem_product.mp hp'.1
+    have hu := (Finset.mem_filter.mp hpProd.1).2.2
+    have hv := (Finset.mem_filter.mp hpProd.2).2.2
+    exact (hrow p.1 p.2 hu hv hp'.2).elim
+  · simp
+
 /-- In a 7-regular component with two cells in each row, the ordered
 cross-row loads from a fixed row sum to `2 * 7 = 14`. -/
 theorem sum_defectComponentCoordinateRowPairs_card_eq_fourteen
@@ -201,6 +245,8 @@ end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_regular_componentNeighbor_card_eq_two
 #print axioms Erdos85.defectComponentCoordinateRowPairs_card_le_four
+#print axioms Erdos85.defectComponentCoordinateRowPairs_card_comm
+#print axioms Erdos85.defectComponentCoordinateRowPairs_self_card_eq_zero
 #print axioms
   Erdos85.sum_defectComponentCoordinateRowPairs_card_eq_fourteen
 #print axioms
