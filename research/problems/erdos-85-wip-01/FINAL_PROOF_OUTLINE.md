@@ -2012,11 +2012,18 @@ generalized rather than merely replayed.
      local triangles, hence 48 over a 16-vertex component (`acdd29c1e2`).
      Moreover, if internal component neighbours are triangle-free, both
      other endpoints of every rooted triangle are exterior (`066feaaccb`).
-     Thus **GAP A-REG-MU3-DEFICIT-DECOMPOSITION** is purely combinatorial:
-     connect the graph-facing all-tf component hypothesis to this support
-     socket, identify `R` with the non-adjacent mixed complement triangles,
-     and prove the literal deficit partition.  The 48 count and modular
-     conclusion are already standard-axiom Lean.
+     The graph-facing connection is now also **PROVEN** (`917110e037`):
+     `orderSixtyFour_allSixteen_tfComponent_internal_neighbor_triangleFree`
+     shows that triangle-free degree two exhausts the two internal ambient
+     neighbours;
+     `orderSixtyFour_allSixteen_tfComponent_sum_localTriangleEdges_eq_fortyEight`
+     gives the exact rooted count 48; and
+     `orderSixtyFour_allSixteen_tfComponent_rooted_triangle_endpoints_exterior`
+     gives exterior support.  Thus
+     **GAP A-REG-MU3-DEFICIT-DECOMPOSITION** is now only the literal census:
+     identify `R` with the non-adjacent mixed complement triangles and prove
+     the literal deficit partition.  The graph-facing 48 count, support, and
+     modular conclusion are all standard-axiom Lean.
 
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
