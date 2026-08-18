@@ -92,13 +92,77 @@ def check_representative(name: str, record: dict[str, object]) -> z3.CheckSatRes
     return result
 
 
+def count_individual_factors(name: str, record: dict[str, object]) -> int:
+    """Enumerate single 2-factors inside D-complement that commute with D."""
+    defect = {edge(*pair) for pair in record["D_edges"]}
+    complement = [
+        (u, v)
+        for u in range(N)
+        for v in range(u + 1, N)
+        if (u, v) not in defect
+    ]
+    edge_index = {pair: i for i, pair in enumerate(complement)}
+    selected = [z3.Bool(f"{name}_single_edge_{i}") for i in range(64)]
+
+    def factor_edge(u: int, v: int) -> z3.BoolRef:
+        if u == v or edge(u, v) not in edge_index:
+            return z3.BoolVal(False)
+        return selected[edge_index[edge(u, v)]]
+
+    def defect_entry(u: int, v: int) -> int:
+        return int(u != v and edge(u, v) in defect)
+
+    solver = z3.Solver()
+    for u in range(N):
+        solver.add(
+            z3.PbEq(
+                [
+                    (factor_edge(u, v), 1)
+                    for v in range(N)
+                    if u != v and edge(u, v) in edge_index
+                ],
+                2,
+            )
+        )
+    for u in range(N):
+        for v in range(N):
+            solver.add(
+                z3.Sum(
+                    [
+                        z3.If(factor_edge(u, w), defect_entry(w, v), 0)
+                        for w in range(N)
+                    ]
+                )
+                == z3.Sum(
+                    [
+                        z3.If(factor_edge(w, v), defect_entry(u, w), 0)
+                        for w in range(N)
+                    ]
+                )
+            )
+
+    masks: list[int] = []
+    while solver.check() == z3.sat:
+        model = solver.model()
+        bits = [z3.is_true(model[value]) for value in selected]
+        masks.append(sum(1 << i for i, value in enumerate(bits) if value))
+        solver.add(
+            z3.Or(
+                [z3.Not(value) if bit else value for value, bit in zip(selected, bits)]
+            )
+        )
+    print(f"{name}: {len(masks)} individual factor(s): {[hex(mask) for mask in masks]}")
+    return len(masks)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("representatives", type=Path)
     args = parser.parse_args()
     data = json.loads(args.representatives.read_text())
     results = [check_representative(name, record) for name, record in data.items()]
-    return 0 if all(result == z3.unsat for result in results) else 1
+    counts = [count_individual_factors(name, record) for name, record in data.items()]
+    return 0 if all(result == z3.unsat for result in results) and counts == [1, 1, 1, 1] else 1
 
 
 if __name__ == "__main__":
