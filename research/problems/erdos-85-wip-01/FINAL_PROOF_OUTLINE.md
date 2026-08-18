@@ -2129,28 +2129,37 @@ generalized rather than merely replayed.
      `twoRegular_no_cross_adj_of_commonNeighbor_no_cross` says that whenever
      the defect relation contains every cross-part pair except at most one per
      vertex, an edge-disjoint 2-factor whose distinct-common-neighbor graph
-     has no cross-part edge can itself have no cross-part edge.  Hence, under
-     the advertised alignment, the internal 2-factor `A` must split over the
-     two eight-point classes; it cannot be the alternating `C_16` square root.
-     The residual local fact is smaller and alignment-independent: a
+     has no cross-part edge can itself have no cross-part edge.  This
+     implication applies only in the branch `A ∩ D = ∅`.  It therefore
+     excludes the proposed alternating `C_16` square root when all of its
+     edges lie in `Dᶜ`; it does **not** exclude the distinct branch in which
+     the whole alternating factor lies in `D` (all sixteen internal edges are
+     triangle-free).  That latter branch is consistent with the current
+     pointwise law `tf-degree ∈ {0,2}` and is the honest synchronized-model
+     residual.  The local cycle-root fact needed in the split branch is
+     smaller and alignment-independent: a
      2-regular graph on eight vertices cannot have connected
      distinct-common-neighbor graph `C_8` (connectedness first forces the
      two-factor itself to be `C_8`, whose distance-two graph is two `C_4`s).
-     Formalizing this eight-vertex cycle-root fact, plus checking the explicit
-     model alignment, completes the proposed countermodel exclusion.
+     Formalizing this eight-vertex cycle-root fact closes the local split
+     branch; excluding the alternating `A ⊆ D` branch still requires an
+     ambient trace/owner-factor argument.
      The standard-cycle parity core of that local fact is now **PROVEN**
      (`122fa94bd7`):
      `not_connected_distinctCommonNeighborGraph_cycleGraph_eight` shows that
      the distinct-common-neighbor graph of `cycleGraph 8` is disconnected,
      because every such edge preserves label parity while `0` and `1` have
-     opposite parity.  The only remaining proof-engineering bridge in the
-     local fact is to transport an arbitrary connected 2-regular graph on
-     eight vertices through `twoRegular_component_induce_eq_cycleSubgraph`
-     and `isCycle_cycleGraphIsoToSubgraph`; there is no longer an unproved
-     assertion about the standard `C_8` itself.
-     The residual `[6,2]` target must couple the transported
-     defect blocks to this line-graph edge partition; commute, degrees, and
-     the entry cap alone cannot close it.
+     opposite parity.  The transport bridge is now also **PROVEN**
+     (`29ae6ada4c`):
+     `twoRegular_card_eight_not_commonNeighbor_connected` handles every
+     2-regular graph on eight vertices via
+     `twoRegular_component_induce_eq_cycleSubgraph` and
+     `isCycle_cycleGraphIsoToSubgraph`, with no `sorry`, `admit`, extra axiom,
+     or `native_decide`.  Thus the residual `[6,2]` target is specifically the
+     alternating `A ⊆ D` branch together with the downstream routing
+     terminals: it must couple the defect blocks to the line-graph edge
+     partition; commute, degrees, the entry cap, and the split-branch parity
+     obstruction alone cannot close it.
      In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
