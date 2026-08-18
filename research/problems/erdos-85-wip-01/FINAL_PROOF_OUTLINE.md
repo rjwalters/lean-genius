@@ -741,6 +741,17 @@ generalized rather than merely replayed.
      triangle-free `C8` block, the mixed sector therefore has one fixed hole
      model; there is no residual two-factor enumeration at this shape.
 
+     The other surviving orientation, `(triangle-bearing C10,
+     triangle-free C6)`, is reduced to perfect matchings.  The `PROVEN`
+     theorem `complement_of_disjoint_twoRegular_relations_is_oneRegular`
+     says that on the triangle-bearing `5×5` block the entries outside both
+     `H` and `K` have degree one on both shores.  The `PROVEN` theorem
+     `oneRegularRelation_exists_equiv` identifies that residual relation with
+     the graph of an equivalence of the two five-point shores.  Therefore
+     `K = (K_{5,5} \ H) \ graph(f)` for a permutation `f`; the remaining
+     bounded normalization is a perfect-matching orbit problem, not an
+     arbitrary two-factor search.
+
      In the all-triangle-free `[2,2,2,2]` cell, the `C10+C6` fiber-margin
      terminal is now `PROVEN` without SAT or `native_decide`.
      `false_of_tenSix_columnMargins_of_fiberStripCounts` assumes precisely
