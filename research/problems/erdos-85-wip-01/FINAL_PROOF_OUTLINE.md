@@ -2135,8 +2135,12 @@ generalized rather than merely replayed.
      (`5266dda60c`): for fixed-point-free permutations `σ`, `τ`, and `τσ`,
      any two cycle types `(3,3)` force the third to be `(3,3)`.  Therefore an
      even-monodromy triangle has zero, one, or three `(3,3)` members, never
-     exactly two.  Coupling this type-parity constraint to the varying
-     all-triangle `K` two-factor remains open.
+     exactly two.  The label-free lift and direct rectangle consumer are now
+     also **PROVEN** (`4eb7f062b3`):
+     `foreignRectangleMonodromy_threeThree_pairwise_closure` applies this law
+     on the actual six-cell column fiber of any three distinct eligible rows,
+     using the exact rectangle cocycle.  Coupling this type-parity constraint
+     to the varying all-triangle `K` two-factor remains open.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
