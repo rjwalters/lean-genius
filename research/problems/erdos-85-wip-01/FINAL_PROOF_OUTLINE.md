@@ -1605,13 +1605,18 @@ generalized rather than merely replayed.
      four-factor partition predicate, including degree and commutator-cardinal
      constraints.  Its lightweight predicates intentionally duplicate the
      SAT module's relations so this algebraic proof does not replay the large
-     `bv_decide` certificates; a definitional adapter to the SAT-facing names
-     remains part of the interface work.
+     `bv_decide` certificates.  The same module now proves the required
+     local-to-bit-vector bridge, kernel-checks four explicit isomorphisms from
+     the classification targets to the SAT representatives, and dispatches
+     all four nonbipartite cases.  In particular,
+     `lambdaSixTenSix_admissible_fourFactorization_forces_bipartite` and
+     `lambdaSixFiveFiveThreeThree_admissible_fourFactorization_forces_bipartite`
+     prove that admissibility plus an honest four-factorization forces the
+     canonical bipartite tag; the `t_D=30` and `t_D=40` tags are contradictory.
      The remaining graph-level interface is therefore narrow: show that the
-     ambient labeled component supplies `lambdaSixAdmissibleR`, transport its
-     four restricted owner factors through the checked permutation, dispatch
-     the bipartite tag by the existing arithmetic terminal, and invoke the
-     four Boolean-relation UNSAT terminals on the other tags.
+     ambient labeled component supplies `lambdaSixAdmissibleR` and the local
+     four-factorization hypotheses, then dispatch the forced bipartite tag by
+     the existing arithmetic terminal.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
