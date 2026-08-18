@@ -2165,6 +2165,13 @@ generalized rather than merely replayed.
      on the actual column fiber to the three identities `κ^5 = 1`, `κ^3 = 1`,
      or `κ^2 = 1`; coupling these commutator orders to `K` geometry is the
      remaining step.
+     The entire upstream chain is now packaged as one graph-facing theorem
+     **PROVEN** (`90beac2ef3`):
+     `exists_rectangle_commutator_pow_five_or_three_or_two_of_c4Free` takes
+     only H-C4-freeness and returns concrete endpoint columns and three common
+     eligible rows whose actual rectangle commutator satisfies
+     `κ^5 = 1 ∨ κ^3 = 1 ∨ κ^2 = 1`.  A future `K`-geometry contradiction can
+     consume this theorem without reopening parity or cycle-type bookkeeping.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
