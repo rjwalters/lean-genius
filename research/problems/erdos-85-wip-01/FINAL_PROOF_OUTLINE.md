@@ -2075,7 +2075,12 @@ generalized rather than merely replayed.
      number of odd derangements.  Any cycle-type classification must respect
      this parity-flatness constraint.  Moreover sign is unchanged by either
      row or column reversal (**PROVEN**, `c20279877e`), so it descends to a
-     genuine invariant of the unoriented H-empty rectangle.
+     genuine invariant of the unoriented H-empty rectangle.  The positive
+     parity class is classified without finite enumeration (**PROVEN**,
+     `7151860c48`): an even fixed-point-free permutation of a six-element
+     fiber has exactly two nontrivial cycles, and its cycle type is precisely
+     `(4,2)` or `(3,3)`.  Thus every positive-sign rectangle excludes the
+     six-cycle and triple-transposition classes axiom-cleanly.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
