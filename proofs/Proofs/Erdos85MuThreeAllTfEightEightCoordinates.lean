@@ -42,6 +42,107 @@ structure EightEightCycleLabeling {V : Type*} (H : SimpleGraph V) where
   map_adj_iff : ∀ u v,
     H.Adj u v ↔ eightEightCycleGraph.Adj (toEquiv u) (toEquiv v)
 
+theorem eightEightCycleGraph_left : ∀ i j : Fin 8,
+    eightEightCycleGraph.Adj (Fin.castAdd 8 i) (Fin.castAdd 8 j) ↔
+      (cycleGraph 8).Adj i j := by native_decide
+
+theorem eightEightCycleGraph_right : ∀ i j : Fin 8,
+    eightEightCycleGraph.Adj (Fin.natAdd 8 i) (Fin.natAdd 8 j) ↔
+      (cycleGraph 8).Adj i j := by native_decide
+
+theorem eightEightCycleGraph_cross : ∀ i j : Fin 8,
+    ¬eightEightCycleGraph.Adj (Fin.castAdd 8 i) (Fin.natAdd 8 j) := by
+  native_decide
+
+/-- Two complementary order-eight cycle components glue to the fixed
+`C8 + C8` labeling. -/
+theorem exists_eightEightCycleLabeling_of_two_components
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (hdeg : ∀ x, H.degree x = 2)
+    (a b : H.ConnectedComponent) (hab : a ≠ b)
+    (ha : a.supp.ncard = 8) (hb : b.supp.ncard = 8)
+    (hcover : ∀ x : V, x ∈ a.supp ∨ x ∈ b.supp) :
+    Nonempty (EightEightCycleLabeling H) := by
+  classical
+  have hbcompl : b.supp = a.suppᶜ := by
+    ext x
+    constructor
+    · intro hxb hxa
+      exact hab (ConnectedComponent.eq_of_common_vertex hxa hxb)
+    · intro hxa
+      rcases hcover x with hxa' | hxb
+      · exact False.elim (hxa hxa')
+      · exact hxb
+  obtain ⟨ea, hea⟩ := exists_componentCycleEquiv H hdeg a 8 ha
+  obtain ⟨eb, heb⟩ := exists_componentCycleEquiv H hdeg b 8 hb
+  let ebc : Fin 8 ≃ (a.suppᶜ : Set V) :=
+    eb.trans (Equiv.setCongr hbcompl)
+  let split : V ≃ a.supp ⊕ (a.suppᶜ : Set V) :=
+    (Equiv.Set.sumCompl a.supp).symm
+  let coords : a.supp ⊕ (a.suppᶜ : Set V) ≃ Fin 8 ⊕ Fin 8 :=
+    Equiv.sumCongr ea.symm ebc.symm
+  let θ : V ≃ Fin 16 := split.trans (coords.trans finSumFinEquiv)
+  have hθleft (x : V) (hx : x ∈ a.supp) :
+      θ x = Fin.castAdd 8 (ea.symm ⟨x, hx⟩) := by
+    change finSumFinEquiv (coords (split x)) = _
+    rw [show split x = Sum.inl ⟨x, hx⟩ by
+      exact Equiv.Set.sumCompl_symm_apply_of_mem hx]
+    rfl
+  have hθright (x : V) (hx : x ∉ a.supp) :
+      θ x = Fin.natAdd 8 (ebc.symm ⟨x, hx⟩) := by
+    change finSumFinEquiv (coords (split x)) = _
+    rw [show split x = Sum.inr ⟨x, hx⟩ by
+      exact Equiv.Set.sumCompl_symm_apply_of_notMem hx]
+    rfl
+  refine ⟨⟨θ, ?_⟩⟩
+  intro u v
+  by_cases hu : u ∈ a.supp <;> by_cases hv : v ∈ a.supp
+  · let i := ea.symm ⟨u, hu⟩
+    let j := ea.symm ⟨v, hv⟩
+    rw [hθleft u hu, hθleft v hv]
+    simpa [i, j] using
+      (hea i j).symm.trans (eightEightCycleGraph_left i j).symm
+  · constructor
+    · intro huv
+      exact False.elim (hv ((ConnectedComponent.mem_supp_congr_adj a huv).mp hu))
+    · intro hθ
+      let i := ea.symm ⟨u, hu⟩
+      let j := ebc.symm ⟨v, hv⟩
+      rw [hθleft u hu, hθright v hv] at hθ
+      exact False.elim (eightEightCycleGraph_cross i j hθ)
+  · constructor
+    · intro huv
+      exact False.elim (hu ((ConnectedComponent.mem_supp_congr_adj a huv.symm).mp hv))
+    · intro hθ
+      let i := ebc.symm ⟨u, hu⟩
+      let j := ea.symm ⟨v, hv⟩
+      rw [hθright u hu, hθleft v hv] at hθ
+      exact False.elim (eightEightCycleGraph_cross j i hθ.symm)
+  · have hub : u ∈ b.supp := by
+      rw [hbcompl]
+      exact hu
+    have hvb : v ∈ b.supp := by
+      rw [hbcompl]
+      exact hv
+    let i := eb.symm ⟨u, hub⟩
+    let j := eb.symm ⟨v, hvb⟩
+    let ic := ebc.symm ⟨u, hu⟩
+    let jc := ebc.symm ⟨v, hv⟩
+    have hic : ic = i := by
+      apply eb.injective
+      apply Subtype.ext
+      rfl
+    have hjc : jc = j := by
+      apply eb.injective
+      apply Subtype.ext
+      rfl
+    have hθu : θ u = Fin.natAdd 8 ic := hθright u hu
+    have hθv : θ v = Fin.natAdd 8 jc := hθright v hv
+    rw [hθu, hθv, hic, hjc]
+    simpa [i, j] using
+      (heb i j).symm.trans (eightEightCycleGraph_right i j).symm
+
 def eightEightParityShift (shift0 shift1 : Bool) (i : Fin 16) : Fin 16 :=
   if hi : i.val < 8 then
     ⟨(i.val + if shift0 then 1 else 0) % 8, by
