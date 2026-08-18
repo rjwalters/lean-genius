@@ -14,6 +14,111 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Two signed entries with total `2` are both positive. -/
+theorem signedPair_sum_two_positiveCard
+    {α : Type*} [DecidableEq α] (T : Finset α) (s : α → ℤ)
+    (hcard : T.card = 2)
+    (hsign : ∀ x ∈ T, s x = -1 ∨ s x = 1)
+    (hsum : ∑ x ∈ T, s x = 2) :
+    (T.filter fun x => s x = 1).card = 2 := by
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+  have ha := hsign a (by simp)
+  have hb := hsign b (by simp)
+  have hab' : a ∉ ({b} : Finset α) := by simpa using hab
+  rcases ha with ha | ha <;> rcases hb with hb | hb
+  · rw [Finset.sum_insert hab', Finset.sum_singleton, ha, hb] at hsum
+    omega
+  · rw [Finset.sum_insert hab', Finset.sum_singleton, ha, hb] at hsum
+    omega
+  · rw [Finset.sum_insert hab', Finset.sum_singleton, ha, hb] at hsum
+    omega
+  · have heq : ({a, b} : Finset α).filter (fun x => s x = 1) = {a, b} := by
+      ext z
+      simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · exact fun h => h.1
+      · intro h
+        rcases h with rfl | rfl <;> simp [ha, hb]
+    rw [heq]
+    simp [hab]
+
+/-- A negative vertex of the signed size-two component has exactly two
+positive neighbours inside that component.  This is the two-row forbidden
+set used by the exact row-hit theorem. -/
+theorem orderSixtyFour_signedSizeTwo_negative_positiveNeighborCard_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcardV : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hA_in : ∀ x, x ∈ c.supp →
+      (G.adjMatrix ℤ).mulVec s x = -2 * s x)
+    (x : V) (hxc : x ∈ c.supp) (hsx : s x = -1) :
+    (Finset.univ.filter fun p : {z : V // z ∈ c.supp ∧ s z = 1} =>
+      G.Adj p.1 x).card = 2 := by
+  classical
+  let T := componentNeighborFinset G (secondOrderDefectGraph G) c x
+  have hTcard : T.card = 2 := by
+    have h := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree (q := 8) (by norm_num) hreg hcardV c c
+      (x := x) hxc
+    rw [hc] at h
+    change 8 * T.card = 8 * 2 at h
+    omega
+  have hTsign : ∀ y ∈ T, s y = -1 ∨ s y = 1 := by
+    intro y hy
+    exact hs_in y (by
+      rw [ConnectedComponent.mem_supp_iff]
+      exact (Finset.mem_filter.mp hy).2)
+  have hxsum : ∑ y ∈ G.neighborFinset x, s y = 2 := by
+    have h := hA_in x hxc
+    rw [SimpleGraph.adjMatrix_mulVec_apply, hsx] at h
+    norm_num at h
+    exact h
+  have hTsum : ∑ y ∈ T, s y = 2 := by
+    calc
+      ∑ y ∈ T, s y = ∑ y ∈ G.neighborFinset x, s y := by
+        change (∑ y ∈ (G.neighborFinset x).filter
+          (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c), s y) = _
+        rw [Finset.sum_filter]
+        apply Finset.sum_congr rfl
+        intro y hy
+        by_cases hyc : (secondOrderDefectGraph G).connectedComponentMk y = c
+        · simp [hyc]
+        · have hyn : y ∉ c.supp := by
+            rw [ConnectedComponent.mem_supp_iff]
+            exact hyc
+          simp [hyc, hs_out y hyn]
+      _ = 2 := hxsum
+  have hpos := signedPair_sum_two_positiveCard T s hTcard hTsign hTsum
+  let A := Finset.univ.filter fun p : {z : V // z ∈ c.supp ∧ s z = 1} =>
+    G.Adj p.1 x
+  have heq : A.attach.image (fun p => p.1.1) = T.filter fun y => s y = 1 := by
+    ext y
+    simp [A, T, componentNeighborFinset, ConnectedComponent.mem_supp_iff,
+      SimpleGraph.mem_neighborFinset, G.adj_comm]
+    tauto
+  have hattach : A.attach.card = A.card := Finset.card_attach
+  have hinj : Set.InjOn (fun p : {p // p ∈ A} => p.1.1) (A.attach : Set _) := by
+    intro p hp q hq hpq
+    apply Subtype.ext
+    apply Subtype.ext
+    exact hpq
+  have himage : (A.attach.image fun p => p.1.1).card = A.card := by
+    rw [Finset.card_image_iff.mpr hinj, hattach]
+  rw [heq] at himage
+  change A.card = 2
+  omega
+
 /-- The positive coordinates hit by the exterior neighbours of `u` are
 exactly the positive coordinates not adjacent to the negative coordinate of
 `u`.  This is the row half of the six-rook partial-permutation law. -/
@@ -101,4 +206,6 @@ end
 
 end Erdos85
 
+#print axioms Erdos85.signedPair_sum_two_positiveCard
+#print axioms Erdos85.orderSixtyFour_signedSizeTwo_negative_positiveNeighborCard_two
 #print axioms Erdos85.c4Free_exteriorGridLabel_positiveHit_image
