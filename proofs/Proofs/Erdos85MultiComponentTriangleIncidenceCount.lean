@@ -179,6 +179,52 @@ theorem multiComponentAmbient_exactlyOne_mem_component_of_hit_of_internal_triang
     · intro hy
       exact not_two hy hz htri.2.1.symm htri.2.2 htri.1.symm
 
+/-- In a two-element finite type, any two elements distinct from a fixed one
+are equal. -/
+theorem eq_of_ne_fixed_of_fintype_card_eq_two
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (hcard : Fintype.card α = 2) (c a b : α)
+    (ha : a ≠ c) (hb : b ≠ c) : a = b := by
+  have hmemA : a ∈ (Finset.univ.erase c : Finset α) := by simp [ha]
+  have hmemB : b ∈ (Finset.univ.erase c : Finset α) := by simp [hb]
+  have hone : (Finset.univ.erase c : Finset α).card = 1 := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ c)]
+    simpa using hcard
+  obtain ⟨d, hd⟩ := Finset.card_eq_one.mp hone
+  rw [hd] at hmemA hmemB
+  simp only [Finset.mem_singleton] at hmemA hmemB
+  exact hmemA.trans hmemB.symm
+
+/-- With exactly two defect components, every multi-component ambient
+triangle meets either chosen component. -/
+theorem multiComponentAmbient_hits_component_of_component_count_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    ∀ p ∈ multiComponentAmbientCyclicTriangles G,
+      p.1 ∈ c.supp ∨ p.2.1 ∈ c.supp ∨ p.2.2 ∈ c.supp := by
+  intro p hp
+  by_contra hnone
+  push Not at hnone
+  have hcompX : (secondOrderDefectGraph G).connectedComponentMk p.1 ≠ c := by
+    intro heq
+    exact hnone.1 ((ConnectedComponent.mem_supp_iff c p.1).mpr heq)
+  have hcompY : (secondOrderDefectGraph G).connectedComponentMk p.2.1 ≠ c := by
+    intro heq
+    exact hnone.2.1 ((ConnectedComponent.mem_supp_iff c p.2.1).mpr heq)
+  have hcompZ : (secondOrderDefectGraph G).connectedComponentMk p.2.2 ≠ c := by
+    intro heq
+    exact hnone.2.2 ((ConnectedComponent.mem_supp_iff c p.2.2).mpr heq)
+  have hxy := eq_of_ne_fixed_of_fintype_card_eq_two hcount c _ _ hcompX hcompY
+  have hxz := eq_of_ne_fixed_of_fintype_card_eq_two hcount c _ _ hcompX hcompZ
+  exact (Finset.mem_filter.mp hp).2 ⟨hxy, hxz⟩
+
 /-- If every multi-component ambient triangle meets component `c` in exactly
 one vertex and each of the three ordered coordinate positions contributes 96
 triangles, then the global ordered multi-component count is 288. -/
@@ -324,6 +370,34 @@ theorem orderSixtyFour_mixedNonambient_add_96_dvd_192_of_hit_internalTF_anchored
       G c hhit hinternal
   · exact hfirst
 
+/-- Two-component specialization: the hit hypothesis is automatic. -/
+theorem orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_internalTF_anchored
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 64)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = 8 * m c)
+    (hsum : ∑ c, m c = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hinternal : ∀ {x y : V}, x ∈ c.supp → y ∈ c.supp → G.Adj x y →
+      (triangleFreeEdgeGraph G).Adj x y)
+    (hfirst : ((multiComponentAmbientCyclicTriangles G).filter
+      fun p => p.1 ∈ c.supp).card = 96) :
+    (192 : ℤ) ∣
+      ((literalMixedOwnerNonambientCyclicTriples G).card : ℤ) + 96 := by
+  exact orderSixtyFour_mixedNonambient_add_96_dvd_192_of_hit_internalTF_anchored
+    G hfree hreg hcard m hm hsum c
+      (multiComponentAmbient_hits_component_of_component_count_two G hcount c)
+      hinternal hfirst
+
 end
 
 end Erdos85
@@ -344,3 +418,6 @@ end Erdos85
   Erdos85.multiComponentAmbient_exactlyOne_mem_component_of_hit_of_internal_triangleFree
 #print axioms
   Erdos85.orderSixtyFour_mixedNonambient_add_96_dvd_192_of_hit_internalTF_anchored
+#print axioms Erdos85.multiComponentAmbient_hits_component_of_component_count_two
+#print axioms
+  Erdos85.orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_internalTF_anchored
