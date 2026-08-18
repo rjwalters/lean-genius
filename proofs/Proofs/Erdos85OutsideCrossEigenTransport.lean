@@ -14,6 +14,21 @@ namespace Erdos85
 
 noncomputable section
 
+/-- A complex adjacency block is entrywise real, so its conjugate transpose
+is its ordinary transpose. -/
+theorem adjMatrix_complex_toBlock_conjTranspose_eq_transpose
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (p q : V → Prop) :
+    Matrix.conjTranspose
+        ((G.adjMatrix ℂ).toBlock p q) =
+      Matrix.transpose ((G.adjMatrix ℂ).toBlock p q) := by
+  ext x y
+  simp only [Matrix.conjTranspose_apply, Matrix.transpose_apply,
+    Matrix.toBlock_apply]
+  by_cases hxy : G.Adj y.1 x.1 <;>
+    simp [SimpleGraph.adjMatrix_apply, hxy]
+
 /-- Centered eigenvectors cross the rectangular block with their eigenvalue
 negated.  Nonzeroness of the transported vector is deliberately separate: it
 is the only additional condition needed to obtain a genuine exterior
@@ -168,6 +183,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.rectangular_cross_centered_eigenvector_transport
+#print axioms Erdos85.adjMatrix_complex_toBlock_conjTranspose_eq_transpose
 #print axioms Erdos85.rectangular_cross_centered_eigenpair_transport
 #print axioms Erdos85.rectangular_incidence_kernel_forces_negative_gram_residual
 #print axioms Erdos85.rectangular_cross_centered_eigenpair_or_negative_gram_residual
