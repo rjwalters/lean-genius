@@ -62,4 +62,25 @@ theorem false_of_finFour_lambdaSixColoredRecords
     (muThreeMultiplicity 2) (muThreeMultiplicity 3)
     (hrecord 0) (hrecord 1) (hrecord 2) (hrecord 3) horder hmult
 
+/-- Equivalence-invariant form for an arbitrary four-element component
+index type. -/
+theorem false_of_card_four_lambdaSixColoredRecords
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (hcard : Fintype.card C = 4)
+    (coloredOrder muThreeMultiplicity : C → ℕ)
+    (hrecord : ∀ c, IsLambdaSixColoredRecord
+      (coloredOrder c) (muThreeMultiplicity c))
+    (horder : ∑ c, coloredOrder c = 16)
+    (hmult : 4 ≤ ∑ c, muThreeMultiplicity c) : False := by
+  let e : C ≃ Fin 4 := Fintype.equivFinOfCardEq hcard
+  apply false_of_finFour_lambdaSixColoredRecords
+    (fun i => coloredOrder (e.symm i))
+    (fun i => muThreeMultiplicity (e.symm i))
+  · intro i
+    exact hrecord (e.symm i)
+  · rw [Equiv.sum_comp e.symm]
+    exact horder
+  · rw [Equiv.sum_comp e.symm]
+    exact hmult
+
 end Erdos85
