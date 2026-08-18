@@ -1976,7 +1976,12 @@ generalized rather than merely replayed.
      vertices joined by an exterior edge cannot form another rook pair
      (`partnerPairBoundary_not_rowColumn_adj`, `a79d391a84`).  Hence the honest
      quotient has 16 singleton `H` blocks and 16 non-`H` partner-pair blocks;
-     it is not a 10-regular graph on only the partner pairs.  **GAP
+     it is not a 10-regular graph on only the partner pairs.  The first global
+     coupling to the singleton side is now **PROVEN**: a C4-free graph on 16
+     vertices has at most 35 edges (`948383fafc`), and the exact induced/cut
+     degree identity therefore forces at least 26 exterior incidences from
+     the `H`-cells into the non-`H` partner sector
+     (`twentySix_le_HCell_cutIncidenceCount`, `3fe5be2440`).  **GAP
      A-REG-MU3-MIXED-QUOTIENT** is to turn these capacity and alternating-cycle
      constraints into a contradiction (or a finite, separately trusted
      certificate).  No q=8 stratum is marked killed by this reduction.
