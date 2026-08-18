@@ -779,17 +779,46 @@ generalized rather than merely replayed.
      inside `MuThreeKSymmetryClassification`, so the theorem concludes
      `False` on the original shores and exterior graph.
 
-     The two finite provider leaves remain **`AT-64-ONLY / IN PROGRESS`**:
-     (i) kernel-replay the per-shape/per-sector enumeration of every
-     two-regular, cycle-compatible K satisfying both symmetry laws; expected
-     candidate counts are `1/3` for C16 (all-TF/all-triangle),
-     `1/1/1/13` for C8+C8, and `1/0/1/0` for C10+C6;
-     (ii) replay the 19 new fixed-K exterior-grid UNSAT certificates (the
-     three all-TF candidates already close through `c53be70596`).  Thus the
-     finite target is exactly 22 candidate instances, not the former
-     1,867,000-case two-factor census.  After these providers instantiate the
-     proven socket, the only graph-level residual hypothesis in the μ=3 lane
-     is the upstream joint-eigenline-to-grid-code construction.
+     The exhaustive-enumeration leaf is now structurally **`PROVEN`** through
+     the checked sector tables and the coordinate-facing theorem
+     `exists_mu3KSectorCandidate_of_coordinates`.  It covers the candidate
+     counts `1/3` for C16 (all-TF/all-triangle), `1/1/1/13` for C8+C8, and
+     `1/0/1/0` for C10+C6; packaging the three coordinate models into the
+     single `MuThreeKSymmetryClassification.exhaustive` field is in progress.
+     The other finite provider leaf remains **`AT-64-ONLY / IN PROGRESS`**:
+     replay the 19 new fixed-K exterior-grid UNSAT certificates (the three
+     all-TF candidates already close through `c53be70596`).  Thus the finite
+     target is exactly 22 candidate instances, not the former 1,867,000-case
+     two-factor census.
+
+     The upstream graph construction is no longer a residual hypothesis.
+     `orderSixtyFourMuThree_cycleCompatible` proves that the canonical hole
+     relation is constant around every internal cycle: on internal edges a
+     hole is exactly a triangle-free edge, and triangle-free degree `0` or
+     `2` propagates through each cycle.  The **`PROVEN`** theorem
+     `orderSixtyFour_muThree_exists_mixedGridCode` now constructs the label,
+     hole factor, transported exterior graph, and complete
+     `MuThreeMixedGridCode` directly from the signed size-two `μ=3` data.
+     Finally `false_of_orderSixtyFour_mu3_jointEigenline` feeds that actual
+     code into the classification socket.  Consequently the only remaining
+     work in this joint-eigenline sublane is the two finite provider
+     packagings above.
+
+     Beyond the `μ=3` sublane, the honest size-two ledger has two further
+     nodes.  First are alternating joint eigenlines with
+     `μ ∈ {-1,-3,-5}`; here an exterior vertex may see two component
+     neighbours of the same sign, so the balanced signed grid argument does
+     not apply unchanged.  Second are size-two blocks with no alternating
+     adjacency eigenline (including a non-bipartite internal two-factor).
+     The label-free replacement records each exterior vertex by the unordered
+     pair of its two component neighbours.  Its 48 occupied pairs are the
+     complement, among the 120 component pairs, of defect pairs and internal
+     distance-two pairs.  For an occupied pair `{z,z'}` and
+     `t ∉ {z,z'}`, the expected hit law is one exterior neighbour containing
+     `t` exactly when `t ∉ N_H(z) ∪ N_H(z')`; the own-pair neighbour count
+     is `|N_H(z) ∪ N_H(z') \ {z,z'}| - 2 ∈ {0,1,2}`.  This unordered-pair
+     model is the next graph-facing generalization after the μ=3 providers
+     are joined.
 
      In the all-triangle-free `[2,2,2,2]` cell, the `C10+C6` fiber-margin
      terminal is now `PROVEN` without SAT or `native_decide`.
