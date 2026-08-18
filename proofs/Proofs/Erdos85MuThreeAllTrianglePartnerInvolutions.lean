@@ -136,7 +136,8 @@ theorem MuThreeMixedGridCode.rowMate_ne
     code.rowMate H K C u ≠ u := by
   intro h
   have hadj := code.rowMate_adj H K C u
-  exact C.irrefl u.1 (by simpa [h] using hadj.1)
+  have hloop : C.Adj u.1 u.1 := by simpa [h] using hadj.1
+  exact C.irrefl hloop
 
 theorem MuThreeMixedGridCode.columnMate_ne
     {X Y : Type*} [Fintype X] [Fintype Y]
@@ -147,7 +148,8 @@ theorem MuThreeMixedGridCode.columnMate_ne
     code.columnMate H K C u ≠ u := by
   intro h
   have hadj := code.columnMate_adj H K C u
-  exact C.irrefl u.1 (by simpa [h] using hadj.1)
+  have hloop : C.Adj u.1 u.1 := by simpa [h] using hadj.1
+  exact C.irrefl hloop
 
 /-- Row mate is an involution. -/
 theorem MuThreeMixedGridCode.rowMate_rowMate
@@ -160,8 +162,8 @@ theorem MuThreeMixedGridCode.rowMate_rowMate
   apply Subtype.ext
   have huniq := Classical.choose_spec
     (code.existsUnique_rowPartner H K C (code.rowMate H K C u)) |>.2
-  exact huniq u.1 ((mixedGridRowPartnerGraph K C).adj_symm
-    (code.rowMate_adj H K C u))
+  exact (huniq u.1 ((mixedGridRowPartnerGraph K C).adj_symm
+    (code.rowMate_adj H K C u))).symm
 
 /-- Column mate is an involution. -/
 theorem MuThreeMixedGridCode.columnMate_columnMate
@@ -174,8 +176,8 @@ theorem MuThreeMixedGridCode.columnMate_columnMate
   apply Subtype.ext
   have huniq := Classical.choose_spec
     (code.existsUnique_columnPartner H K C (code.columnMate H K C u)) |>.2
-  exact huniq u.1 ((mixedGridColumnPartnerGraph K C).adj_symm
-    (code.columnMate_adj H K C u))
+  exact (huniq u.1 ((mixedGridColumnPartnerGraph K C).adj_symm
+    (code.columnMate_adj H K C u))).symm
 
 /-- The two mates of a cell are distinct. -/
 theorem MuThreeMixedGridCode.rowMate_ne_columnMate
@@ -245,6 +247,7 @@ theorem MuThreeMixedGridCode.card_nonHCell_eq_thirtyTwo
     (code : MuThreeMixedGridCode H K C)
     (hdisjoint : ∀ x y, H x y → ¬ K x y) :
     Fintype.card (mixedGridNonHCell H K) = 32 := by
+  unfold mixedGridNonHCell
   rw [Fintype.card_subtype]
   exact code.card_nonHCells_eq_thirtyTwo H K C hdisjoint
 
