@@ -1983,10 +1983,16 @@ generalized rather than merely replayed.
      distinct centers the local permutations agree on at most one row that
      is eligible for both (`foreignRowColumnEquiv_agree_at_most_one`).  Two
      agreements would be two distinct common neighbors and hence a C4.
+     The global agreement graph is also identified exactly (**PROVEN**,
+     `94a08d62c2`): it is `mixedGridCommonNeighborGraph K C`, hence by the
+     existing degree theorem every local permutation agrees once with 30
+     others and with none of the remaining 17.  Thus the raw block-packing
+     count is sharp and supplies no contradiction by itself.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
-     incompatibility or code-size bound is yet proved.
+     incompatibility using the *location* of the 30 agreements is yet proved;
+     a Fisher-style code-size bound that ignores `H/K` cannot suffice.
      Consequently any mixed-sector contradiction must occur in this foreign
      permutation compatibility; the own-fiber geometry is exact and
      internally consistent.
