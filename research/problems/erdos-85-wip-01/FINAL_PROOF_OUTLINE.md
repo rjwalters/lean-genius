@@ -2099,7 +2099,12 @@ generalized rather than merely replayed.
      eligible rows in one parity class, so all three pairwise rectangle
      monodromies have positive sign and hence cycle type `(4,2)` or `(3,3)`.
      The remaining task is to couple this forced even-monodromy triangle to
-     the `K`-sector geometry.
+     the `K`-sector geometry.  Moreover the overlap-one hypothesis is
+     unavoidable in the graph-realizable regime (**PROVEN**, `90562958bc`):
+     in any two-regular `H` relation where distinct columns have at most one
+     common neighbor, the two columns incident with any chosen row are
+     distinct and have common-neighbor count exactly one.  Hence H-C4-freeness
+     globally supplies at least one of these forced even-monodromy triangles.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
