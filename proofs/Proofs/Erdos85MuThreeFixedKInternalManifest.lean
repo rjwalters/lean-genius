@@ -21,7 +21,7 @@ theorem Mu3KCandidateSlot.internal_iff_fixed_grid
       (mu3FixedKGrid slot.certificateGridIndex).internal
         x.val y.val = true := by
   cases slot <;> rename_i j
-  all_goals first | exact Fin.elim0 j | fin_cases j <;> native_decide
+  all_goals first | exact Fin.elim0 j | fin_cases j <;> native_decide +revert
 
 end Erdos85
 
