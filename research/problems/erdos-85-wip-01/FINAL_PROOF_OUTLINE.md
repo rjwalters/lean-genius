@@ -1604,11 +1604,16 @@ generalized rather than merely replayed.
      imposes the PROVEN triangle-free-sector degree law (`0` or `2` at every
      vertex).  It leaves 20 of the 392 labeled `[16]` models, and every one of
      those 20 admits the honest commuting four-factorization.  For `[8,8]`
-     the same screen leaves 2688 labeled models, of which 1936 admit the full
+     the same screen leaves 2688 labeled models, of which 1424 admit the full
      CSP; this is the dominant surviving tail.  Across four components, the
-     externally enumerated records satisfying colored-order sum `16`, total
-     `μ=3` multiplicity at least four and even, and the full CSP number 3279
-     (only 76 are all-`[16]`; 572 are all-`[8,8]`).  Thus commutation is not a
+     raw colored-order / multiplicity / CSP screen produced 3279 records, but
+     this count is now superseded by the intrinsic component trace ledger.
+     For each defect eigenvalue `μ`, block-diagonality of its projector gives
+     `tr(A|E_μ) = Σ_S tr(A[S] Π_μ(S))`.  The external exact ledger forces the
+     four `μ=3` component traces all to equal `-2` and every other
+     nonprincipal `μ` trace sum to zero, leaving exactly 11 record-level
+     quadruples (8 record types, 116 labeled models); only one quadruple is
+     all-`[16]`.  No bipartite defect component survives.  Thus commutation is not a
      terminal for these strata: their concrete owner factorizations must feed
      the λ=5/routing/sign-lift constraints.  The arithmetic screen further suggests a
      sharp cubic target: after all case-B conjugate pairs cancel from odd
