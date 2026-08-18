@@ -210,11 +210,117 @@ theorem binarySquare_regular_normalizedComponent_outsideReturn_entry_budget
   rw [hnat]
   omega
 
+/-- An internal ambient edge already consumes the entire exterior-return
+budget.  Equivalently, if `u` and `v` are adjacent inside a normalized defect
+component, then the `(u,v)` entry of `H(BBᵀ)` is exactly the exterior degree
+`q-m`; consequently the exterior three-step return entry is zero. -/
+theorem binarySquare_regular_normalizedComponent_internalAdj_gram_saturates
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q m : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * m) (u v : c.supp)
+    (huv : (G.induce c.supp).Adj u v) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    (H * (B * B.transpose)) u v = (q - m : ℕ) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  have hsel := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+    G hfree hq hreg hcard c c (x := v.1)
+      ((ConnectedComponent.mem_supp_iff c v.1).mp v.2)
+  rw [hc] at hsel
+  have hin : (componentNeighborFinset G D c v.1).card = m :=
+    Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hsel
+  have hout : ((G.neighborFinset v.1).filter fun x ↦
+      x ∉ c.supp).card = q - m := by
+    have hins : ((G.neighborFinset v.1).filter fun x ↦
+        x ∈ c.supp).card = m := by
+      have heq : (G.neighborFinset v.1).filter (fun x ↦ x ∈ c.supp) =
+          componentNeighborFinset G D c v.1 := by
+        ext y
+        simp [componentNeighborFinset, D,
+          SimpleGraph.ConnectedComponent.mem_supp_iff]
+      rw [heq, hin]
+    have hsplit := Finset.card_filter_add_card_filter_not
+      (s := G.neighborFinset v.1) (fun x ↦ x ∈ c.supp)
+    rw [hins, G.card_neighborFinset_eq_degree, hreg v.1] at hsplit
+    omega
+  let S : Finset {x // ¬p x} :=
+    Finset.univ.filter fun x ↦ G.Adj v.1 x.1
+  let ι : {x // ¬p x} ↪ V :=
+    ⟨Subtype.val, Subtype.val_injective⟩
+  have hmap : S.map ι =
+      (G.neighborFinset v.1).filter fun x ↦ x ∉ c.supp := by
+    ext x
+    simp [S, ι, p, SimpleGraph.mem_neighborFinset]
+  have hScard : S.card = q - m := by
+    rw [← Finset.card_map ι, hmap, hout]
+  have hQdiag : (B * B.transpose) v v = (q - m : ℕ) := by
+    rw [Matrix.mul_apply]
+    simp only [B, Matrix.transpose_apply, Matrix.toBlock_apply,
+      SimpleGraph.adjMatrix_apply]
+    calc
+      (∑ y : {x // ¬p x},
+          (if G.Adj v.1 y.1 then 1 else 0) *
+            if G.Adj v.1 y.1 then 1 else 0) =
+          ∑ y : {x // ¬p x}, if G.Adj v.1 y.1 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro y _hy
+        split_ifs <;> norm_num
+      _ = (S.card : ℤ) := by simp [S]
+      _ = (((G.neighborFinset v.1).filter fun x ↦
+          x ∉ c.supp).card : ℤ) := by
+        exact_mod_cast hScard.trans hout.symm
+      _ = (q - m : ℕ) := by rw [hout]
+  have hQnonneg (z : c.supp) : 0 ≤ (B * B.transpose) z v := by
+    rw [Matrix.mul_apply]
+    apply Finset.sum_nonneg
+    intro y _hy
+    simp only [B, Matrix.transpose_apply, Matrix.toBlock_apply,
+      SimpleGraph.adjMatrix_apply]
+    split_ifs <;> norm_num
+  have hlower : ((q - m : ℕ) : ℤ) ≤
+      (H * (B * B.transpose)) u v := by
+    rw [Matrix.mul_apply]
+    calc
+      ((q - m : ℕ) : ℤ) =
+          H u v * (B * B.transpose) v v := by
+        change G.Adj u.1 v.1 at huv
+        simp [H, SimpleGraph.adjMatrix_apply, huv, hQdiag]
+      _ ≤ ∑ z : c.supp, H u z * (B * B.transpose) z v := by
+        apply Finset.single_le_sum
+          (f := fun z ↦ H u z * (B * B.transpose) z v)
+          (fun z _hz ↦ ?_) (Finset.mem_univ v)
+        have hHnonneg : 0 ≤ H u z := by
+          simp only [H, SimpleGraph.adjMatrix_apply]
+          split_ifs <;> norm_num
+        exact mul_nonneg hHnonneg (hQnonneg z)
+  obtain ⟨n, hbudget⟩ :=
+    binarySquare_regular_normalizedComponent_outsideReturn_entry_budget
+      G hfree hq hreg hcard c hc u v
+  change (H * (B * B.transpose)) u v = (q - m : ℕ)
+  change (H * (B * B.transpose)) u v + (n : ℤ) =
+    (q - m : ℕ) at hbudget
+  omega
+
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
 #print axioms Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_eq
 #print axioms
   Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_entry_budget
+#print axioms
+  Erdos85.binarySquare_regular_normalizedComponent_internalAdj_gram_saturates
 
 end Erdos85
