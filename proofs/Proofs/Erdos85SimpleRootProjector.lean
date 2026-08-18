@@ -129,6 +129,29 @@ theorem trace_kerAevalRestrict_eq_trace_mul_simpleRootProjector
       LinearMap.trace_conj' _ e
     _ = LinearMap.trace ℚ E₂ (S * P) := htrace
 
+/-- Minimal exact certificate consumer for the order-64 `μ = 3` ledger.
+It suffices to check one polynomial annihilation, one nonzero scalar, and one
+unnormalized trace identity; normalization then forces local sector trace
+`-2`. -/
+theorem trace_three_sector_eq_neg_two_of_polynomial_certificate
+    {E₂ : Type*} [AddCommGroup E₂] [Module ℚ E₂]
+    [FiniteDimensional ℚ E₂]
+    (S T : E₂ →ₗ[ℚ] E₂) (hcomm : S * T = T * S)
+    (p : Polynomial ℚ)
+    (hann : Polynomial.aeval T
+      ((Polynomial.X - Polynomial.C (3 : ℚ)) * p) = 0)
+    (hp : p.eval 3 ≠ 0)
+    (htrace : LinearMap.trace ℚ E₂ (S * Polynomial.aeval T p) =
+      (-2 : ℚ) * p.eval 3) :
+    LinearMap.trace ℚ _
+      (kerAevalRestrict S T hcomm
+        (Polynomial.X - Polynomial.C (3 : ℚ))) = -2 := by
+  rw [trace_kerAevalRestrict_eq_trace_mul_simpleRootProjector
+    S T hcomm 3 p hann hp]
+  rw [simpleRootProjector, Algebra.mul_smul_comm, map_smul, htrace]
+  change (p.eval 3)⁻¹ * ((-2 : ℚ) * p.eval 3) = -2
+  field_simp
+
 end
 
 end Erdos85
