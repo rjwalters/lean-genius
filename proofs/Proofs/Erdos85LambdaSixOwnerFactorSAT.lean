@@ -131,4 +131,43 @@ theorem no_fourFactorization_fiveFiveThreeThreeT30 :
   simp (config := { maxSteps := 100000000 }) [Fin.forall_fin_succ]
   bv_decide (config := { timeout := 600 })
 
+theorem not_boolFourFactorization_of_matrixBV_eq_of_no
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool} {dBV : BitVec 256}
+    (hd : matrixBV d = dBV)
+    (hno : ∀ g0 g1 g2 g3 : BitVec 256,
+      ¬ isFourFactorization dBV g0 g1 g2 g3) :
+    ¬ BoolFourFactorization d f0 f1 f2 f3 := by
+  intro h
+  have hb := isFourFactorization_matrixBV h
+  rw [hd] at hb
+  exact hno _ _ _ _ hb
+
+theorem not_boolFourFactorization_tenSixT40
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    (hd : matrixBV d = lambdaSixTenSixT40) :
+    ¬ BoolFourFactorization d f0 f1 f2 f3 :=
+  not_boolFourFactorization_of_matrixBV_eq_of_no hd
+    no_fourFactorization_tenSixT40
+
+theorem not_boolFourFactorization_tenSixT30
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    (hd : matrixBV d = lambdaSixTenSixT30) :
+    ¬ BoolFourFactorization d f0 f1 f2 f3 :=
+  not_boolFourFactorization_of_matrixBV_eq_of_no hd
+    no_fourFactorization_tenSixT30
+
+theorem not_boolFourFactorization_fiveFiveThreeThreeT40
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    (hd : matrixBV d = lambdaSixFiveFiveThreeThreeT40) :
+    ¬ BoolFourFactorization d f0 f1 f2 f3 :=
+  not_boolFourFactorization_of_matrixBV_eq_of_no hd
+    no_fourFactorization_fiveFiveThreeThreeT40
+
+theorem not_boolFourFactorization_fiveFiveThreeThreeT30
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    (hd : matrixBV d = lambdaSixFiveFiveThreeThreeT30) :
+    ¬ BoolFourFactorization d f0 f1 f2 f3 :=
+  not_boolFourFactorization_of_matrixBV_eq_of_no hd
+    no_fourFactorization_fiveFiveThreeThreeT30
+
 end Erdos85
