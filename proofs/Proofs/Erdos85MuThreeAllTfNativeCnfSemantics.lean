@@ -925,4 +925,72 @@ theorem mu3NativeRunConjSpecsVal_values
       rw [hnextValues]
       simp [mu3NativeCommonTruthValues, List.append_assoc]
 
+theorem mu3NativeVarsRow_ofFn_eq_arrayLitValues
+    (val : DimacsValuation) (xs : Array Int) :
+    List.ofFn (mu3NativeVarsRow val xs) =
+      mu3NativeArrayLitValues val xs := by
+  apply List.ext_get
+  · simp [mu3NativeArrayLitValues]
+  · intro n hleft hright
+    simp [mu3NativeVarsRow, mu3NativeArrayLitValues]
+
+theorem mu3Native_seqPrefixTrue_eq_count
+    {n : Nat} (x : Fin n → Bool) :
+    seqPrefixTrue x n = (List.ofFn x).count true := by
+  rw [seqPrefixTrue_full_eq_filter_card]
+  let v : List.Vector Bool n := ⟨List.ofFn x, by simp⟩
+  have h := Fin.card_filter_univ_eq_vector_get_eq_count true v
+  convert h using 1 <;> simp [v, List.Vector.get]
+
+def Mu3NativeBaseC4 (edgeVal : DimacsValuation) : Prop :=
+  ∀ pair ∈ mu3NativePairs,
+    (mu3NativeCommonTruthValues edgeVal
+      (mu3NativeCommonSpecs pair.1 pair.2)).count true ≤ 1
+
+/-- A static base-edge common-neighbor bound supplies every stage-indexed
+condition required by the executable C4 fold. -/
+theorem mu3NativeC4FoldConditions_of_base
+    (baseVal : DimacsValuation) (pairs : List (Nat × Nat))
+    (st : Mu3NativeCnfState) (inputVal : DimacsValuation)
+    (htop : 1128 ≤ st.top)
+    (hprefixSat : dimacsFormulaSatisfied inputVal st.clauses)
+    (hprefixBound : dimacsFormulaBounded st.top st.clauses)
+    (hagree : ∀ id, id ≤ 1128 → inputVal id = baseVal id)
+    (hpairs : ∀ pair ∈ pairs, pair ∈ mu3NativePairs)
+    (hbaseC4 : Mu3NativeBaseC4 baseVal) :
+    Mu3NativeC4FoldConditions 1128 baseVal pairs st inputVal := by
+  induction pairs generalizing st inputVal with
+  | nil => trivial
+  | cons pair rest ih =>
+      have hpair : pair ∈ mu3NativePairs := hpairs pair (by simp)
+      have hspec := mu3NativeCommonSpecs_ids_valid pair hpair
+      let conj := mu3NativeRunConjSpecsVal baseVal
+        (mu3NativeCommonSpecs pair.1 pair.2) (#[], st) inputVal
+      have hconjSem := mu3NativeRunConjSpecsVal_formulaSatisfied
+        1128 baseVal (mu3NativeCommonSpecs pair.1 pair.2) (#[], st)
+          inputVal htop hprefixSat hprefixBound hagree (by simp) hspec
+      have hvalues := mu3NativeRunConjSpecsVal_values
+        1128 baseVal (mu3NativeCommonSpecs pair.1 pair.2) (#[], st)
+          inputVal htop hprefixSat hprefixBound hagree (by simp) hspec
+      have hcommon : seqPrefixTrue
+          (mu3NativeVarsRow conj.2 conj.1.1) conj.1.1.size ≤ 1 := by
+        rw [mu3Native_seqPrefixTrue_eq_count]
+        rw [mu3NativeVarsRow_ofFn_eq_arrayLitValues]
+        have hv : mu3NativeArrayLitValues conj.2 conj.1.1 =
+            mu3NativeCommonTruthValues baseVal
+              (mu3NativeCommonSpecs pair.1 pair.2) := by
+          simpa [conj, mu3NativeArrayLitValues] using hvalues
+        rw [hv]
+        exact hbaseC4 pair hpair
+      let next := mu3NativeC4PairSpecStepVal baseVal pair st inputVal
+      have hstep := mu3NativeC4PairSpecStepVal_formulaSatisfied
+        1128 baseVal pair st inputVal htop hprefixSat hprefixBound hagree
+          hspec hcommon
+      have hrestPairs : ∀ p ∈ rest, p ∈ mu3NativePairs := by
+        intro p hp
+        exact hpairs p (by simp [hp])
+      refine ⟨hspec, hcommon, ?_⟩
+      exact ih next.1 next.2 hstep.2.2.1 hstep.1 hstep.2.1
+        hstep.2.2.2 hrestPairs
+
 end Erdos85
