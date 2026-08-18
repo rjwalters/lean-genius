@@ -848,6 +848,21 @@ generalized rather than merely replayed.
      model is the next graph-facing generalization after the μ=3 providers
      are joined.
 
+     The local unordered-pair routing interface is now **`PROVEN /
+     AT-64-ONLY`**.  `existsUnique_outsidePair_service_iff_endpoint_avoidance`
+     identifies the unique outside service with avoidance of the two owned
+     endpoints, while `outsideOwnPairNeighborFinset_card` packages the literal
+     own-pair neighbour count as `0` for an occupied internal edge and `2` for
+     an occupied internal nonedge.  The corresponding scalable operator step
+     is also **`PROVEN`**: from the cross-block equation
+     `H B + B C = J`, `rectangular_cross_square_transport_two_six` gives
+     `B C² = 4J + H²B`; the graph-facing theorem
+     `orderSixtyFour_seven_components_outside_cross_square_transport`
+     supplies it for the actual `16+48` cut.  What remains a **`GAP`** is a
+     terminal extracting a contradiction from this transport when the
+     size-two block has no alternating adjacency eigenline (and the analogous
+     terminal for the negative joint eigenvalues `-1,-3,-5`).
+
      In the all-triangle-free `[2,2,2,2]` cell, the `C10+C6` fiber-margin
      terminal is now `PROVEN` without SAT or `native_decide`.
      `false_of_tenSix_columnMargins_of_fiberStripCounts` assumes precisely
