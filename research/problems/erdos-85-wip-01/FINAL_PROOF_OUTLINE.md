@@ -1897,6 +1897,32 @@ generalized rather than merely replayed.
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
      graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.
+
+     The operator-requested algebra ledger is now explicit.  “Reduction” is
+     deliberately not labeled as a stratum kill:
+
+     | stratum | theorem-backed status at q=8 | uniform content | exact remaining leaf |
+     |---|---|---|---|
+     | `[8]` | **AT-64-ONLY, PARTIAL**: `orderSixtyFour_regular_oneComponent_ownerDensity` gives owner codegree at least 48 | inclusion-exclusion itself is generic, but the `48` threshold is order-64 arithmetic | **GAP A-REG-8-DENSITY**: contradict extreme one-owner closure using defect/Gram algebra |
+     | `[6,2]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_sixTwo_largeDensity_or_smallSaturation` | repeated-closing consumers, center collapse, residual-star decomposition, and incidence packing are **q-GENERIC** | **GAP A-REG-ROUTING**: exclude size-six density or size-two saturation by cross-root/cross-row compatibility |
+     | `[5,3]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_threeFive_twoOwner_exists_ownerDensity` | equal-root/same-route fork-to-density consumers are **q-GENERIC** | **GAP A-REG-ROUTING**: compatibility or production of a coupled second fragment |
+     | `[4,4]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_fourFour_twoOwner_exists_ownerDensity` | density and exact complementary residual-pair decomposition are **q-GENERIC** | **GAP A-REG-ROUTING**: compatibility of the two complementary pairs across rows |
+     | `[4,2,2]` | **AT-64-ONLY, PARTIAL**: all ordinary patterns reach routing; opposite bowtie reaches an exact selector rectangle/commuting block | bowtie geometry and row-density consumers are **q-GENERIC** | **AXIOM A-REG-422-BOWTIE** for the opposite bowtie, followed by the shared **GAP A-REG-ROUTING** |
+     | `[3,3,2]` | **AT-64-ONLY pressure reduction, PROVEN** in the rainbow branch: saturation or two common-source large densities (`orderSixtyFour_threeThreeTwo_rainbow_saturation_or_commonSourceLargeDensities`) | saturation at normalized size two, unique third centers at size three, and residual-star algebra are **q-GENERIC** | **GAP A-REG-332-PATTERNS** for non-rainbow pattern assembly, then common-root/cross-root **GAP A-REG-ROUTING** |
+
+     Thus none of the six strata is yet **PROVEN impossible**.  Four have
+     complete q=8 pressure reductions to named routing terminals; `[8]` lacks
+     a contradiction consumer, while `[4,2,2]` additionally retains one
+     precise bowtie principle.  For general binary `q`, the uniform
+     replacement for all q=8 census/threshold steps is **AXIOM
+     A-REG-EXTENSION-PRESSURE**: every non-unit normalized partition must
+     produce either (i) a size-two via-triple forbidden by
+     `A-REG-SIZE2-VIA-TRIPLE`, or (ii) two canonical routing fragments whose
+     source/root data are coupled strongly enough that the q-generic
+     residual-star and cross-root intersection laws contradict one another.
+     This is the exact point at which a future q=16/128 campaign must begin;
+     replaying the order-64 colored-triple thresholds is not a uniform proof.
+
      The connected `[8]` stratum is now **AT-64-ONLY, PARTIAL**: its unique
      owner graph is 56-regular on 64 vertices, so every vertex pair has at
      least 48 common owner neighbors by inclusion-exclusion
