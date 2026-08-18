@@ -2152,9 +2152,12 @@ generalized rather than merely replayed.
      (`fac840586d`): the commutator has cycle type `{5}` in the all-`(42)`
      case, `{3,3}` or `{3}` in every exactly-one-`(33)` case, and `0` or
      `{2,2}` in the all-`(33)` case (Mathlib cycle types omit fixed points).
-     Thus a label-free lift would let the `K` geometry attack commutator order
-     `5`, `3`, or `2` rather than five raw labelled cases.  The normalized
-     kernels are standard-axiom Lean; the rectangle-fiber lift remains open.
+     The all-`(42)` branch now has its label-free lift and direct rectangle
+     consumer **PROVEN** (`a8aa383f37`): on the actual six-cell source column
+     fiber, the commutator `κ` of the two consecutive row monodromies satisfies
+     `κ^5 = 1`.  Thus `K` geometry can attack a concrete order-five identity
+     rather than raw labels.  The analogous label-free order-three and
+     order-two lifts for the other four patterns remain open.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
