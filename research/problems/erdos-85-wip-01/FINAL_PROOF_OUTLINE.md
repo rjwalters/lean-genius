@@ -1533,13 +1533,19 @@ generalized rather than merely replayed.
      `Dᶜ`.  They do *not* identify the distinguished spectral factor `H`
      with one owner color: owner colors record the component of the unique
      common neighbor of each selector pair, and may mix `H`- and `R`-edges.
-     GAP: run the honest CSP partitioning all of `Dᶜ` into four commuting
-     two-factors (without fixing `H` as a color).  If that is UNSAT, replay a
-     compact exhaustive/CNF certificate in Lean and connect the representative
-     bank to the existing graph labeling.  Alternatively prove the currently
-     missing theorem that `H` is one restricted owner factor.  Until one of
-     these routes is complete, the present `F ⊆ R` computation is useful
-     conditional evidence, not a branch closure.
+     The honest CSP has now also been run: partition all 64 edges of `Dᶜ`
+     into four commuting two-factors, without fixing `H` as a color.  It is
+     UNSAT for all four representatives.  A smaller exhaustive formulation
+     enumerates the individual commuting two-factors: the four class counts
+     are respectively `4`, `48`, `1`, and `1`, and in every class every pair
+     of such factors shares an edge.  Hence even two edge-disjoint commuting
+     factors are impossible, much less the required four.  This matches the
+     formal owner-factor hypotheses exactly and removes the earlier
+     monochromatic-`H` assumption.  GAP: replay the finite enumeration (or an
+     LRAT certificate for its classification constraints) in Lean and connect
+     the representative bank to the existing graph labeling.  Until then the
+     honest UNSAT result is strong external finite evidence, not a `PROVEN`
+     branch closure.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
