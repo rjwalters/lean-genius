@@ -1535,11 +1535,12 @@ generalized rather than merely replayed.
      common neighbor of each selector pair, and may mix `H`- and `R`-edges.
      The honest CSP has now also been run: partition all 64 edges of `Dᶜ`
      into four commuting two-factors, without fixing `H` as a color.  It is
-     UNSAT for all four representatives.  A smaller exhaustive formulation
-     enumerates the individual commuting two-factors: the four class counts
-     are respectively `4`, `48`, `1`, and `1`, and in every class every pair
-     of such factors shares an edge.  Hence even two edge-disjoint commuting
-     factors are impossible, much less the required four.  This matches the
+     UNSAT for all four representatives.  The reproducible checker
+     `check_lambda6_owner_factorization.py` also enumerates the individual
+     two-factors `F ⊆ Dᶜ` commuting with `D`: there is exactly one in each
+     of the four classes (in every case it is the distinguished `H`).  Hence
+     even two distinct commuting owner factors are impossible, much less the
+     required four.  This matches the
      formal owner-factor hypotheses exactly and removes the earlier
      monochromatic-`H` assumption.  GAP: replay the finite enumeration (or an
      LRAT certificate for its classification constraints) in Lean and connect
