@@ -2011,7 +2011,15 @@ generalized rather than merely replayed.
      are specializations of one algebraic residual-star decomposition.  This
      removes local row completion as a separate GAP; the honest unresolved
      input is now entirely cross-root/cross-row compatibility of these
-     canonical decompositions.
+     canonical decompositions.  The first genuinely cross-root restriction is
+     also **PROVEN q-GENERIC**:
+     `componentCrossNeighborFinset_inter_card_le_one_of_distinct_roots` says
+     that two distinct roots in one source component share at most one center
+     of any fixed owner color.  Indeed, two common centers together with the
+     two roots are a `C₄`.  Thus a separated center pair from one density
+     fragment cannot recur intact at a different root.  What remains is to
+     combine this pairwise intersection bound with the regular incidence
+     counts to force recurrence (or an equivalent global obstruction).
      `[6,2]` no longer
      stops at its weak cross budget 512.  The q-free multiplicity lemma
      `exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt` says that
