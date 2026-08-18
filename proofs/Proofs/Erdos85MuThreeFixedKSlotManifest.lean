@@ -25,8 +25,35 @@ theorem Mu3KCandidateSlot.fixed_grid_cells
     (slot : Mu3KCandidateSlot) (i : Fin 19)
     (h : slot.certificateTarget = .fixed i) :
     (mu3FixedKGrid i).cells = mu3KCandidateSlotCells slot := by
-  cases slot <;> simp_all [Mu3KCandidateSlot.certificateTarget] <;>
-    first | native_decide | (fin_cases i <;> native_decide)
+  cases slot with
+  | c16AllTf j => simp [Mu3KCandidateSlot.certificateTarget] at h
+  | c16AllTriangle j =>
+      fin_cases j <;>
+        simp [Mu3KCandidateSlot.certificateTarget] at h <;>
+        subst i <;> native_decide
+  | c88AllTf j => simp [Mu3KCandidateSlot.certificateTarget] at h
+  | c88AllTriangle j =>
+      fin_cases j <;>
+        simp [Mu3KCandidateSlot.certificateTarget] at h <;>
+        subst i <;> native_decide
+  | c88FirstTf j =>
+      fin_cases j
+      simp [Mu3KCandidateSlot.certificateTarget] at h
+      subst i
+      native_decide
+  | c88SecondTf j =>
+      fin_cases j
+      simp [Mu3KCandidateSlot.certificateTarget] at h
+      subst i
+      native_decide
+  | c106AllTf j => simp [Mu3KCandidateSlot.certificateTarget] at h
+  | c106AllTriangle j => exact Fin.elim0 j
+  | c106TenTf j => exact Fin.elim0 j
+  | c106SixTf j =>
+      fin_cases j
+      simp [Mu3KCandidateSlot.certificateTarget] at h
+      subst i
+      native_decide
 
 end Erdos85
 
