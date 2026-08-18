@@ -1627,11 +1627,17 @@ generalized rather than merely replayed.
      exact filtered-cardinality Boolean predicate after a `Fin 16` relabeling;
      `graph_fourFactorization_relabel` packages four factors plus their exact
      complement partition into `LambdaSixBoolFourFactorization`.
+     The owner-specific instantiation is PROVEN in
+     `Erdos85LambdaSixRestrictedOwnerFactorization`:
+     `orderSixtyFour_restrictedOwners_graphFourFactorization` derives all of
+     those hypotheses for the four restricted owner graphs from the existing
+     degree/commutation lemmas and the unique-owner complement theorem, and
+     `orderSixtyFour_restrictedOwners_lambdaSixBoolFourFactorization` composes
+     this with an arbitrary source labeling.
      The remaining graph-level interface is therefore narrow: show that the
      ambient labeled component supplies `lambdaSixAdmissibleR` and the local
-     `GraphFourFactorization` hypotheses for the four restricted owner graphs,
-     then dispatch the forced bipartite tag by the existing arithmetic
-     terminal.
+     four-component enumeration, then dispatch the forced bipartite tag by the
+     existing arithmetic terminal.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
