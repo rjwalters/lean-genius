@@ -1542,11 +1542,16 @@ generalized rather than merely replayed.
      even two distinct commuting owner factors are impossible, much less the
      required four.  This matches the
      formal owner-factor hypotheses exactly and removes the earlier
-     monochromatic-`H` assumption.  GAP: replay the finite enumeration (or an
-     LRAT certificate for its classification constraints) in Lean and connect
-     the representative bank to the existing graph labeling.  Until then the
-     honest UNSAT result is strong external finite evidence, not a `PROVEN`
-     branch closure.
+     monochromatic-`H` assumption.  The finite obstruction itself is now
+     PROVEN by the trusted bit-vector decision procedure in
+     `Erdos85LambdaSixOwnerFactorSAT`: the four theorems
+     `no_fourFactorization_tenSixT40`, `no_fourFactorization_tenSixT30`,
+     `no_fourFactorization_fiveFiveThreeThreeT40`, and
+     `no_fourFactorization_fiveFiveThreeThreeT30` exclude exactly those four
+     labeled defect matrices under the honest four-factor predicate.  GAP:
+     connect these concrete bit-vector representatives to the existing graph
+     labeling/completeness classification.  Thus the finite UNSAT leaf is
+     kernel checked, but the graph-level branch closure is not yet `PROVEN`.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
