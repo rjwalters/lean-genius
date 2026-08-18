@@ -2013,6 +2013,11 @@ generalized rather than merely replayed.
      and an `H`-eligible target column `y`, inverse evaluation bijects the six
      row-centers with the six occupied rows `{x | ¬K x y}`.  Thus the foreign
      code has a full dual Latin/transversal interface.
+     Equivalently, every `H`-nonedge `(x,b)` canonically indexes a perfect
+     `C`-matching between the six occupied cells in column `b` and the six
+     occupied cells in row `x` (**PROVEN**, `e987488c7c`), with the two hit
+     uniqueness laws giving the inverse matching maps.  This is the natural
+     48-matching decomposition for a cycle-composition/monodromy attack.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
