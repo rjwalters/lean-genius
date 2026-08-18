@@ -2001,6 +2001,19 @@ generalized rather than merely replayed.
      shows that it removes exactly the opposite-orientation leaf and returns
      the branch to the shared repeated-closing routing terminal.  It does not
      by itself exclude `[4,2,2]`, because that shared terminal remains GAP.
+     That shared terminal now has a corrected q-generic quantitative form.
+     `binarySquare_regular_twoSeparatedCenters_routingRow_density` proves that
+     two separated same-color centers contribute disjoint star rows of total
+     size `2 m_target` inside an owner-routing row of exact size
+     `m_owner m_target`; the union is a certified subset of that row.
+     `binarySquare_regular_ownerFork_forces_twoCenterRoutingRowDensity`
+     attaches this conclusion to whichever side of any canonical owner fork
+     separates.  Hence the density fraction is exactly `2/m_owner`.
+     Four-component saturation was not a general contradiction mechanism: it
+     was the special case `m_owner=2`.  For the `[3,3,2]` size-three sides and
+     the size-four side of `[4,2,2]`, the proven conclusion is a strict partial
+     routing row, and the missing terminal must use compatibility between
+     several such dense fragments or an additional routing equation.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
@@ -2032,16 +2045,18 @@ generalized rather than merely replayed.
      canonical centers on the cross-component side, including when the other
      two vertex labels lie in one defect component.
 
-     A second, sharper formulation worth attacking first is **`AXIOM
-     A-REG-UNIT`**: for every `k≥3`, with `q=2^k`, every q-regular C4-free
+     A second formally precise but **not logically sharper** formulation is
+     **`AXIOM A-REG-UNIT`**: for every `k≥3`, with `q=2^k`, every q-regular C4-free
      graph on `Fin(q²)` has a second-order defect component of order exactly
      `q` (a normalized unit part).  This may be false, but it is fully precise
-     and genuinely q-generic.  If true, the already PROVEN theorem
+     and q-generic.  If true, the already PROVEN theorem
      `binarySquare_regular_no_sizeQ_defectComponent_of_even` contradicts it
-     immediately, proving A-REG without any finite component enumeration.  If
-     false, a counterexample supplies an all-`m_c≥2` self-indexed owner system
-     and thereby isolates the extra invariant the broader A-REG-EXTENSION
-     axiom must express.  In this audit the q-generic inputs are the partition
+     immediately.  Conversely that same theorem says every hypothetical
+     candidate has no unit component, so over the binary square-order
+     hypotheses A-REG-UNIT is equivalent to A-REG itself: proving that a unit
+     part exists is already proving nonexistence by contradiction.  It is a
+     useful machine-checked restatement/capstone, not an independent invariant
+     or easier intermediate target.  In this audit the q-generic inputs are the partition
      law, exclusion of unit parts, internal degree formula, owner-slice
      coverage/disjointness, size-two cycle structure, and projector trace
      split; the numerical `219/253` thresholds and every H16/SAT ledger are
