@@ -772,6 +772,177 @@ theorem orderSixtyFourMuThree_exteriorLabelColumnHit
     have hApos : 0 < A.card := Finset.card_pos.mpr hnonempty
     omega
 
+/-- Relabel the row-constrained neighbor fiber of an occupied cell back to
+the corresponding exterior-label fiber. -/
+def orderSixtyFourMuThreeCellRowNeighborEquiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) {cSupp : Set V} {s : V → ℤ}
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hinj : Function.Injective label)
+    (u : muThreeMixedCell (orderSixtyFourMuThreeHole label))
+    (x : muThreePositiveShore cSupp s) :
+    {v : muThreeMixedCell (orderSixtyFourMuThreeHole label) //
+      (orderSixtyFourMuThreeExteriorCellGraph G label hinj).Adj u v ∧
+        v.1.1 = x} ≃
+    {v : muThreeExterior cSupp //
+      G.Adj ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1 v.1 ∧
+        (label v).1 = x} where
+  toFun v := ⟨(orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm v.1,
+    v.2.1, by
+      have h := congrArg (fun p => p.1.1)
+        ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).apply_symm_apply v.1)
+      exact h.trans v.2.2⟩
+  invFun v := ⟨orderSixtyFourMuThreeExteriorCellEquiv label hinj v.1,
+    by
+      change G.Adj
+        ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1
+        ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm
+          (orderSixtyFourMuThreeExteriorCellEquiv label hinj v.1)).1
+      simpa using v.2.1,
+    by exact v.2.2⟩
+  left_inv v := by
+    apply Subtype.ext
+    exact (orderSixtyFourMuThreeExteriorCellEquiv label hinj).apply_symm_apply v.1
+  right_inv v := by
+    apply Subtype.ext
+    exact (orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm_apply_apply v.1
+
+/-- Column-dual constrained-neighbor relabeling. -/
+def orderSixtyFourMuThreeCellColumnNeighborEquiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) {cSupp : Set V} {s : V → ℤ}
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hinj : Function.Injective label)
+    (u : muThreeMixedCell (orderSixtyFourMuThreeHole label))
+    (y : muThreeNegativeShore cSupp s) :
+    {v : muThreeMixedCell (orderSixtyFourMuThreeHole label) //
+      (orderSixtyFourMuThreeExteriorCellGraph G label hinj).Adj u v ∧
+        v.1.2 = y} ≃
+    {v : muThreeExterior cSupp //
+      G.Adj ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1 v.1 ∧
+        (label v).2 = y} where
+  toFun v := ⟨(orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm v.1,
+    v.2.1, by
+      have h := congrArg (fun p => p.1.2)
+        ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).apply_symm_apply v.1)
+      exact h.trans v.2.2⟩
+  invFun v := ⟨orderSixtyFourMuThreeExteriorCellEquiv label hinj v.1,
+    by
+      change G.Adj
+        ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1
+        ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm
+          (orderSixtyFourMuThreeExteriorCellEquiv label hinj v.1)).1
+      simpa using v.2.1,
+    by exact v.2.2⟩
+  left_inv v := by
+    apply Subtype.ext
+    exact (orderSixtyFourMuThreeExteriorCellEquiv label hinj).apply_symm_apply v.1
+  right_inv v := by
+    apply Subtype.ext
+    exact (orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm_apply_apply v.1
+
+/-- Transport exterior zero/one row counts to the occupied-cell graph. -/
+theorem orderSixtyFourMuThreeExteriorCellGraph_rowHit
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [Fintype (muThreeExterior cSupp)]
+    [Fintype (muThreePositiveShore cSupp s)]
+    [Fintype (muThreeNegativeShore cSupp s)]
+    (H : muThreePositiveShore cSupp s →
+      muThreeNegativeShore cSupp s → Prop) [DecidableRel H]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hinj : Function.Injective label)
+    (hext : ∀ (u : muThreeExterior cSupp) x,
+      ((Finset.univ.filter fun v : muThreeExterior cSupp =>
+        G.Adj u.1 v.1).filter fun v => (label v).1 = x).card =
+          if H x (label u).2 then 0 else 1) :
+    ∀ (u : muThreeMixedCell (orderSixtyFourMuThreeHole label)) x,
+      (((orderSixtyFourMuThreeExteriorCellGraph G label hinj).neighborFinset u).filter
+        fun v => v.1.1 = x).card = if H x u.1.2 then 0 else 1 := by
+  intro u x
+  have hcard :
+      (((orderSixtyFourMuThreeExteriorCellGraph G label hinj).neighborFinset u).filter
+        fun v => v.1.1 = x).card =
+      Fintype.card {v //
+        (orderSixtyFourMuThreeExteriorCellGraph G label hinj).Adj u v ∧
+          v.1.1 = x} := by
+    rw [Fintype.card_subtype]
+    congr 1
+    ext v
+    simp [SimpleGraph.mem_neighborFinset]
+  rw [hcard]
+  rw [Fintype.card_congr
+    (orderSixtyFourMuThreeCellRowNeighborEquiv G label hinj u x),
+    Fintype.card_subtype]
+  change ((Finset.univ : Finset (muThreeExterior cSupp)).filter fun v =>
+    G.Adj ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1 v.1 ∧
+      (label v).1 = x).card = _
+  rw [show ((Finset.univ : Finset (muThreeExterior cSupp)).filter fun v =>
+      G.Adj ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1 v.1 ∧
+        (label v).1 = x) =
+      (Finset.univ.filter fun v : muThreeExterior cSupp =>
+        G.Adj ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1 v.1).filter
+          (fun v => (label v).1 = x) by ext v; simp]
+  have h := hext ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u) x
+  have hu := congrArg (fun p => p.1.2)
+    ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).apply_symm_apply u)
+  rw [← hu]
+  exact h
+
+/-- Column-dual transport of exterior zero/one counts. -/
+theorem orderSixtyFourMuThreeExteriorCellGraph_columnHit
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [Fintype (muThreeExterior cSupp)]
+    [Fintype (muThreePositiveShore cSupp s)]
+    [Fintype (muThreeNegativeShore cSupp s)]
+    (H : muThreePositiveShore cSupp s →
+      muThreeNegativeShore cSupp s → Prop) [DecidableRel H]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hinj : Function.Injective label)
+    (hext : ∀ (u : muThreeExterior cSupp) y,
+      ((Finset.univ.filter fun v : muThreeExterior cSupp =>
+        G.Adj u.1 v.1).filter fun v => (label v).2 = y).card =
+          if H (label u).1 y then 0 else 1) :
+    ∀ (u : muThreeMixedCell (orderSixtyFourMuThreeHole label)) y,
+      (((orderSixtyFourMuThreeExteriorCellGraph G label hinj).neighborFinset u).filter
+        fun v => v.1.2 = y).card = if H u.1.1 y then 0 else 1 := by
+  intro u y
+  have hcard :
+      (((orderSixtyFourMuThreeExteriorCellGraph G label hinj).neighborFinset u).filter
+        fun v => v.1.2 = y).card =
+      Fintype.card {v //
+        (orderSixtyFourMuThreeExteriorCellGraph G label hinj).Adj u v ∧
+          v.1.2 = y} := by
+    rw [Fintype.card_subtype]
+    congr 1
+    ext v
+    simp [SimpleGraph.mem_neighborFinset]
+  rw [hcard]
+  rw [Fintype.card_congr
+    (orderSixtyFourMuThreeCellColumnNeighborEquiv G label hinj u y),
+    Fintype.card_subtype]
+  change ((Finset.univ : Finset (muThreeExterior cSupp)).filter fun v =>
+    G.Adj ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1 v.1 ∧
+      (label v).2 = y).card = _
+  rw [show ((Finset.univ : Finset (muThreeExterior cSupp)).filter fun v =>
+      G.Adj ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1 v.1 ∧
+        (label v).2 = y) =
+      (Finset.univ.filter fun v : muThreeExterior cSupp =>
+        G.Adj ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u).1 v.1).filter
+          (fun v => (label v).2 = y) by ext v; simp]
+  have h := hext ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm u) y
+  have hu := congrArg (fun p => p.1.1)
+    ((orderSixtyFourMuThreeExteriorCellEquiv label hinj).apply_symm_apply u)
+  rw [← hu]
+  exact h
+
 end
 
 end Erdos85
@@ -786,3 +957,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFourMuThreeLabelRowFiberEquiv
 #print axioms Erdos85.orderSixtyFourMuThreeLabelRowFiber_card_eq_six
 #print axioms Erdos85.orderSixtyFourMuThree_exteriorLabelRowHit
+#print axioms Erdos85.orderSixtyFourMuThreeExteriorCellGraph_rowHit
