@@ -13,6 +13,65 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Under an injective grid label, membership of the labelled point `label v`
+in the codeword at `u` is exactly graph adjacency of `u` and `v`. -/
+theorem exteriorGridLabel_mem_codeword_iff_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (d : (secondOrderDefectGraph G).ConnectedComponent)
+    (s : V → ℤ)
+    (label : {u : V // u ∉ d.supp} →
+      {z : V // z ∈ d.supp ∧ s z = 1} ×
+        {z : V // z ∈ d.supp ∧ s z = -1})
+    (hinj : Function.Injective label)
+    (u v : {u : V // u ∉ d.supp}) :
+    label v ∈ (Finset.univ.filter fun w : {w : V // w ∉ d.supp} =>
+        G.Adj u.1 w.1).image label ↔ G.Adj u.1 v.1 := by
+  classical
+  constructor
+  · intro h
+    obtain ⟨w, hw, hwv⟩ := Finset.mem_image.mp h
+    have : w = v := hinj hwv
+    simpa [this] using (Finset.mem_filter.mp hw).2
+  · intro huv
+    exact Finset.mem_image.mpr
+      ⟨v, Finset.mem_filter.mpr ⟨Finset.mem_univ _, huv⟩, rfl⟩
+
+/-- Exterior code incidence is symmetric. -/
+theorem exteriorGridLabel_codeword_mem_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (d : (secondOrderDefectGraph G).ConnectedComponent)
+    (s : V → ℤ)
+    (label : {u : V // u ∉ d.supp} →
+      {z : V // z ∈ d.supp ∧ s z = 1} ×
+        {z : V // z ∈ d.supp ∧ s z = -1})
+    (hinj : Function.Injective label)
+    (u v : {u : V // u ∉ d.supp}) :
+    label v ∈ (Finset.univ.filter fun w : {w : V // w ∉ d.supp} =>
+        G.Adj u.1 w.1).image label ↔
+      label u ∈ (Finset.univ.filter fun w : {w : V // w ∉ d.supp} =>
+        G.Adj v.1 w.1).image label := by
+  rw [exteriorGridLabel_mem_codeword_iff_adj G d s label hinj,
+    exteriorGridLabel_mem_codeword_iff_adj G d s label hinj]
+  exact G.adj_comm u.1 v.1
+
+/-- No exterior codeword contains its own labelled grid point. -/
+theorem exteriorGridLabel_not_mem_own_codeword
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (d : (secondOrderDefectGraph G).ConnectedComponent)
+    (s : V → ℤ)
+    (label : {u : V // u ∉ d.supp} →
+      {z : V // z ∈ d.supp ∧ s z = 1} ×
+        {z : V // z ∈ d.supp ∧ s z = -1})
+    (hinj : Function.Injective label)
+    (u : {u : V // u ∉ d.supp}) :
+    label u ∉ (Finset.univ.filter fun w : {w : V // w ∉ d.supp} =>
+      G.Adj u.1 w.1).image label := by
+  rw [exteriorGridLabel_mem_codeword_iff_adj G d s label hinj]
+  exact G.irrefl
+
 /-- **C4 code-distance law.**  Under an injective exterior grid label, the
 labelled exterior neighbourhoods of two distinct centers share at most one
 grid cell. -/
@@ -72,3 +131,6 @@ end
 end Erdos85
 
 #print axioms Erdos85.c4Free_exteriorGridLabel_codeword_inter_card_le_one
+#print axioms Erdos85.exteriorGridLabel_mem_codeword_iff_adj
+#print axioms Erdos85.exteriorGridLabel_codeword_mem_comm
+#print axioms Erdos85.exteriorGridLabel_not_mem_own_codeword
