@@ -34,6 +34,75 @@ def defectComponentCoordinateRowPairs
     (defectComponentCoordinateRowFiber D φ c x')).filter
       fun p => D.Adj p.1 p.2
 
+/-- All ordered defect edges between two coordinate rows, without first
+choosing their connected component. -/
+def defectCoordinateRowPairs
+    {V X Y : Type*} [Fintype V] [DecidableEq V] [DecidableEq X]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (φ : V ≃ X × Y) (x x' : X) : Finset (V × V) :=
+  (((Finset.univ : Finset V).filter fun u => (φ u).1 = x).product
+    ((Finset.univ : Finset V).filter fun v => (φ v).1 = x')).filter
+      fun p => D.Adj p.1 p.2
+
+/-- Connected components partition the defect pairs between any two rows. -/
+theorem sum_componentCoordinateRowPairs_card_eq
+    {V X Y : Type*} [Fintype V] [Fintype X]
+    [DecidableEq V] [DecidableEq X]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (φ : V ≃ X × Y) (x x' : X) :
+    (∑ c : D.ConnectedComponent,
+      (defectComponentCoordinateRowPairs D φ c x x').card) =
+      (defectCoordinateRowPairs D φ x x').card := by
+  let P := defectCoordinateRowPairs D φ x x'
+  have hmaps : ∀ p ∈ P,
+      D.connectedComponentMk p.1 ∈
+        (Finset.univ : Finset D.ConnectedComponent) := by
+    intro p _
+    exact Finset.mem_univ _
+  change (∑ c : D.ConnectedComponent,
+    (defectComponentCoordinateRowPairs D φ c x x').card) = P.card
+  rw [Finset.card_eq_sum_card_fiberwise hmaps]
+  apply Finset.sum_congr rfl
+  intro c _
+  congr 1
+  ext p
+  constructor
+  · intro hp
+    have hp' := Finset.mem_filter.mp hp
+    have hpProd := Finset.mem_product.mp hp'.1
+    have hu := Finset.mem_filter.mp hpProd.1
+    have hv := Finset.mem_filter.mp hpProd.2
+    apply Finset.mem_filter.mpr
+    constructor
+    · show p ∈ P
+      change p ∈ defectCoordinateRowPairs D φ x x'
+      apply Finset.mem_filter.mpr
+      exact ⟨Finset.mem_product.mpr
+        ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hu.2.2⟩,
+         Finset.mem_filter.mpr ⟨Finset.mem_univ _, hv.2.2⟩⟩, hp'.2⟩
+    · rw [← ConnectedComponent.mem_supp_iff]
+      exact hu.2.1
+  · intro hp
+    have hpOuter := Finset.mem_filter.mp hp
+    have hpP : p ∈ defectCoordinateRowPairs D φ x x' := by
+      simpa [P] using hpOuter.1
+    have hpGlobal := Finset.mem_filter.mp hpP
+    have hpRows := Finset.mem_product.mp hpGlobal.1
+    have hpc1 : p.1 ∈ c.supp := by
+      rw [ConnectedComponent.mem_supp_iff]
+      exact hpOuter.2
+    have hpc2 : p.2 ∈ c.supp := by
+      rw [ConnectedComponent.mem_supp_iff]
+      exact (ConnectedComponent.connectedComponentMk_eq_of_adj hpGlobal.2).symm.trans hpOuter.2
+    apply Finset.mem_filter.mpr
+    exact ⟨Finset.mem_product.mpr
+      ⟨Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, hpc1, (Finset.mem_filter.mp hpRows.1).2⟩,
+       Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, hpc2, (Finset.mem_filter.mp hpRows.2).2⟩⟩,
+      hpGlobal.2⟩
+
 /-- Two cells in each of two rows give capacity at most four for the
 component's ordered cross-row defect pairs. -/
 theorem defectComponentCoordinateRowPairs_card_le_four
@@ -245,6 +314,7 @@ end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_regular_componentNeighbor_card_eq_two
 #print axioms Erdos85.defectComponentCoordinateRowPairs_card_le_four
+#print axioms Erdos85.sum_componentCoordinateRowPairs_card_eq
 #print axioms Erdos85.defectComponentCoordinateRowPairs_card_comm
 #print axioms Erdos85.defectComponentCoordinateRowPairs_self_card_eq_zero
 #print axioms
