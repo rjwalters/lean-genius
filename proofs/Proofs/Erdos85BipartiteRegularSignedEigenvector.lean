@@ -64,7 +64,31 @@ theorem commutingGraph_exists_eigenvalue_on_bipartiteRegular_sign
     (fun x => boolColorSign_eq_one_or_neg_one (col x))
     (bipartiteRegular_boolColorSign_negativeDegree H k hreg col hcol) hcomm
 
+/-- Native Mathlib-bipartite form of the commuting signed-line theorem. -/
+theorem commutingGraph_exists_eigenvalue_of_connected_bipartite_regular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H D : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel D.Adj]
+    (hconn : H.Connected) (hbip : H.IsBipartite)
+    (k : ℕ) (hreg : ∀ x, H.degree x = k)
+    (hcomm : D.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * D.adjMatrix ℤ) :
+    ∃ (mu : ℤ) (v : V → ℤ),
+      (∀ x, v x = -1 ∨ v x = 1) ∧
+      (∀ x, ∑ y ∈ H.neighborFinset x, v y = -(k : ℤ) * v x) ∧
+      (D.adjMatrix ℤ).mulVec v = mu • v := by
+  obtain ⟨c, hc⟩ := hbip
+  let col : V → Bool := fun x => finTwoEquiv (c x)
+  have hcol : ∀ x y, H.Adj x y → col x ≠ col y := by
+    intro x y hxy heq
+    exact hc hxy (finTwoEquiv.injective heq)
+  obtain ⟨mu, hmu⟩ := commutingGraph_exists_eigenvalue_on_bipartiteRegular_sign
+    H D hconn k hreg col hcol hcomm
+  exact ⟨mu, fun x => boolColorSign (col x),
+    fun x => boolColorSign_eq_one_or_neg_one (col x),
+    bipartiteRegular_boolColorSign_negativeDegree H k hreg col hcol, hmu⟩
+
 end Erdos85
 
 #print axioms Erdos85.bipartiteRegular_boolColorSign_negativeDegree
 #print axioms Erdos85.commutingGraph_exists_eigenvalue_on_bipartiteRegular_sign
+#print axioms Erdos85.commutingGraph_exists_eigenvalue_of_connected_bipartite_regular
