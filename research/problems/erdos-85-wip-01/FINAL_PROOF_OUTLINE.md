@@ -1909,8 +1909,18 @@ generalized rather than merely replayed.
      `BB`, giving the sandwich
      `q²-2(q-1)-2m_a m_b ≤ |AA∪BB| ≤ m_a²+m_b²`
      (`48f0a3573c`, `a5a62951dc`).  This local inequality is compatible with
-     every q=8 two-part shape; the next leaf is compatibility of the center-
-     grid injections across adjacent defect edges.  In particular the
+     every q=8 two-part shape.  The upper side is now upgraded to an
+     **exact q-generic cross-edge law** (`b40a431033`, `964dcfec83`): same-owner
+     middles are precisely the nondefect cells of their owner-selector grids;
+     in a two-component defect graph the two complementary defect-cell blocks
+     partition the full cross-root defect-center grid.  Hence, on every defect
+     edge `xy`,
+     `|AA(x,y)|+|BB(x,y)|+2(q-1)-(D²)_{xy}=m_a²+m_b²`.
+     Thus the total same-owner closing count varies exactly with the adjacent
+     defect codegree.  The residual leaf is no longer compatibility of local
+     center-grid injections themselves, but extraction of a contradiction
+     from this codegree law together with the lower residue pressure and the
+     global component/trace constraints on `D`.  In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
      row and is therefore **PROVEN q-GENERIC but not itself contradictory**;
