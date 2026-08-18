@@ -37,6 +37,26 @@ theorem mu3ExteriorEquivOfCoordinateBijection_coord
   exact (Equiv.ofBijective coord hcoord).apply_symm_apply
     (mu3AllTfShapeCellEquiv shape i)
 
+theorem mu3CoordinateBijection_of_injective
+    (shape : Mu3AllTfShape) {W : Type*} [Fintype W]
+    (hcard : Fintype.card W = 48)
+    (coord : W → {cell : Nat // cell ∈ mu3AllTfCells shape})
+    (hinj : Function.Injective coord) : Function.Bijective coord := by
+  apply (Fintype.bijective_iff_injective_and_card coord).2
+  refine ⟨hinj, hcard.trans ?_⟩
+  exact Fintype.card_congr (mu3AllTfShapeCellEquiv shape)
+
+/-- At order 64, no separate surjectivity proof is needed: an injective map
+from the 48 exterior vertices into the 48 occupied cells is automatically the
+coordinate bijection used to enumerate the exterior. -/
+def mu3ExteriorEquivOfCoordinateInjection
+    (shape : Mu3AllTfShape) {W : Type*} [Fintype W]
+    (hcard : Fintype.card W = 48)
+    (coord : W → {cell : Nat // cell ∈ mu3AllTfCells shape})
+    (hinj : Function.Injective coord) : Fin 48 ≃ W :=
+  mu3ExteriorEquivOfCoordinateBijection shape coord
+    (mu3CoordinateBijection_of_injective shape hcard coord hinj)
+
 end
 
 end Erdos85
