@@ -1,4 +1,4 @@
-import Proofs.Erdos85SignedSRGBridge
+import Proofs.Erdos85LambdaSixOwnerFactorRelation
 
 /-! # Finite owner-factor obstruction for the four lambda-six representatives -/
 
@@ -6,33 +6,6 @@ namespace Erdos85
 
 set_option maxHeartbeats 0
 set_option maxRecDepth 1000000
-
-def isCommutingTwoFactor (d f : BitVec 256) : Prop :=
-  (∀ x : Fin 16, bitAdj256 f x x = false) ∧
-  (∀ x y : Fin 16, bitAdj256 f x y = bitAdj256 f y x) ∧
-  (∀ x : Fin 16, (row256 f x).cpop = 2) ∧
-  (∀ x y : Fin 16, bitAdj256 f x y = true → bitAdj256 d x y = false) ∧
-  (∀ x y : Fin 16,
-    ((row256 f x) &&& (row256 d y)).cpop =
-      ((row256 d x) &&& (row256 f y)).cpop)
-
-def isFourFactorization
-    (d f0 f1 f2 f3 : BitVec 256) : Prop :=
-  isCommutingTwoFactor d f0 ∧ isCommutingTwoFactor d f1 ∧
-  isCommutingTwoFactor d f2 ∧ isCommutingTwoFactor d f3 ∧
-  ∀ x y : Fin 16, x ≠ y →
-    if bitAdj256 d x y then
-      bitAdj256 f0 x y = false ∧ bitAdj256 f1 x y = false ∧
-      bitAdj256 f2 x y = false ∧ bitAdj256 f3 x y = false
-    else
-      (bitAdj256 f0 x y = true ∧ bitAdj256 f1 x y = false ∧
-        bitAdj256 f2 x y = false ∧ bitAdj256 f3 x y = false) ∨
-      (bitAdj256 f0 x y = false ∧ bitAdj256 f1 x y = true ∧
-        bitAdj256 f2 x y = false ∧ bitAdj256 f3 x y = false) ∨
-      (bitAdj256 f0 x y = false ∧ bitAdj256 f1 x y = false ∧
-        bitAdj256 f2 x y = true ∧ bitAdj256 f3 x y = false) ∨
-      (bitAdj256 f0 x y = false ∧ bitAdj256 f1 x y = false ∧
-        bitAdj256 f2 x y = false ∧ bitAdj256 f3 x y = true)
 
 def lambdaSixTenSixT40 : BitVec 256 :=
   0x4555a2aa51552aaa15558aaa546ca836541baa0d5706a98356c1ab6055b0a8d8
