@@ -162,6 +162,62 @@ theorem orderSixtyFour_sizeTwoComponent_exteriorNeighborCard_six
   simpa using binarySquare_regular_sizeTwoComponent_exteriorNeighborCard
     G hfree (q := 8) (by norm_num) hreg hcardV c hc x
 
+/-- Every vertex outside a normalized size-two component has exactly `q-2`
+neighbours outside it.  Thus the induced exterior graph is `(q-2)`-regular,
+without any order-64 or `mu = 3` specialization. -/
+theorem binarySquare_regular_sizeTwoComponent_outsideNeighborCard
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcardV : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) (u : V) (hu : u ∉ c.supp) :
+    ((G.neighborFinset u).filter fun y => y ∉ c.supp).card = q - 2 := by
+  let inside := (G.neighborFinset u).filter fun y => y ∈ c.supp
+  let outside := (G.neighborFinset u).filter fun y => y ∉ c.supp
+  have hins : inside.card = 2 := by
+    have h := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcardV
+      ((secondOrderDefectGraph G).connectedComponentMk u) c
+      (x := u) ((ConnectedComponent.mem_supp_iff _ u).mpr rfl)
+    rw [hc] at h
+    have hsel : (componentNeighborFinset G (secondOrderDefectGraph G) c u).card = 2 :=
+      Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) h
+    have heq : inside = componentNeighborFinset G (secondOrderDefectGraph G) c u := by
+      ext y
+      simp [inside, componentNeighborFinset,
+        ConnectedComponent.mem_supp_iff]
+    rw [heq, hsel]
+  have hsplit : inside.card + outside.card = (G.neighborFinset u).card := by
+    simpa [inside, outside] using Finset.card_filter_add_card_filter_not
+      (s := G.neighborFinset u) (fun y => y ∈ c.supp)
+  change outside.card = q - 2
+  rw [G.card_neighborFinset_eq_degree, hreg u, hins] at hsplit
+  omega
+
+/-- Order-64 form: every cell in the exterior grid has exactly six exterior
+neighbours. -/
+theorem orderSixtyFour_sizeTwoComponent_outsideNeighborCard_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcardV : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2) (u : V) (hu : u ∉ c.supp) :
+    ((G.neighborFinset u).filter fun y => y ∉ c.supp).card = 6 := by
+  simpa using binarySquare_regular_sizeTwoComponent_outsideNeighborCard
+    G hfree (q := 8) (by norm_num) hreg hcardV c hc u hu
+
 end
 
 end Erdos85
@@ -171,3 +227,5 @@ end Erdos85
 #print axioms Erdos85.componentNeighborFiber_exists_explicit_signedPair
 #print axioms Erdos85.binarySquare_regular_sizeTwoComponent_exteriorNeighborCard
 #print axioms Erdos85.orderSixtyFour_sizeTwoComponent_exteriorNeighborCard_six
+#print axioms Erdos85.binarySquare_regular_sizeTwoComponent_outsideNeighborCard
+#print axioms Erdos85.orderSixtyFour_sizeTwoComponent_outsideNeighborCard_six
