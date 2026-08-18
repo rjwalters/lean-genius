@@ -110,4 +110,88 @@ theorem tenSixSignAlignedEquiv_preserves_adj
       tenSixCycleGraph.Adj u v :=
   tenSixParityShift_preserves_adj _ _ _ _
 
+def tenSixLabelSign
+    {V : Type*} {H : SimpleGraph V}
+    (label : TenSixComponentLabeling H) (s : V → ℤ) : Fin 16 → Bool :=
+  fun i => decide (s (label.toEquiv.symm i) = 1)
+
+noncomputable def tenSixAlignedVertexEquiv
+    {V : Type*} {H : SimpleGraph V}
+    (label : TenSixComponentLabeling H) (s : V → ℤ) : V ≃ Fin 16 :=
+  label.toEquiv.trans (tenSixSignAlignedEquiv (tenSixLabelSign label s))
+
+theorem tenSixLabelSign_flips
+    {V : Type*} (H : SimpleGraph V)
+    (label : TenSixComponentLabeling H) (s : V → ℤ)
+    (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hflip : ∀ ⦃x y⦄, H.Adj x y → s x = -s y) :
+    ∀ u v, tenSixCycleGraph.Adj u v →
+      tenSixLabelSign label s u ≠ tenSixLabelSign label s v := by
+  intro u v huv
+  have huvH : H.Adj (label.toEquiv.symm u) (label.toEquiv.symm v) := by
+    apply (label.map_adj_iff _ _).2
+    simpa using huv
+  have hf := hflip huvH
+  have hu := hsign (label.toEquiv.symm u)
+  have hv := hsign (label.toEquiv.symm v)
+  rcases hu with hu | hu <;> rcases hv with hv | hv <;>
+    simp [tenSixLabelSign, hu, hv] at hf ⊢
+
+theorem tenSixAlignedVertexEquiv_sign_iff_parity
+    {V : Type*} (H : SimpleGraph V)
+    (label : TenSixComponentLabeling H) (s : V → ℤ)
+    (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hflip : ∀ ⦃x y⦄, H.Adj x y → s x = -s y) (x : V) :
+    (s x = 1 ↔ (tenSixAlignedVertexEquiv label s x).val % 2 = 0) ∧
+      (s x = -1 ↔ (tenSixAlignedVertexEquiv label s x).val % 2 = 1) := by
+  let sign := tenSixLabelSign label s
+  let i := label.toEquiv x
+  have hp := tenSixSignAlignedIndex_parity sign
+    (tenSixLabelSign_flips H label s hsign hflip) i
+  have hs := hsign x
+  rcases hs with hs | hs
+  · have hsigni : sign i = false := by
+      simp [sign, i, tenSixLabelSign, hs]
+    simp [tenSixAlignedVertexEquiv, tenSixSignAlignedEquiv,
+      tenSixSignAlignedIndex, sign, i, hs, hsigni] at hp ⊢
+    exact hp
+  · have hsigni : sign i = true := by
+      simp [sign, i, tenSixLabelSign, hs]
+    simp [tenSixAlignedVertexEquiv, tenSixSignAlignedEquiv,
+      tenSixSignAlignedIndex, sign, i, hs, hsigni] at hp ⊢
+    exact hp
+
+/-- A signed `[10,6]` component labeling supplies the exact native grid
+coordinate model. -/
+noncomputable def tenSixInternalCoordinateModel
+    {V : Type*} [DecidableEq V] (H : SimpleGraph V)
+    (label : TenSixComponentLabeling H) (s : V → ℤ)
+    (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hflip : ∀ ⦃x y⦄, H.Adj x y → s x = -s y) :
+    Mu3InternalCoordinateModel H
+      {x : V // s x = 1} {x : V // s x = -1}
+      Subtype.val Subtype.val .c10c6 := by
+  let aligned := tenSixAlignedVertexEquiv label s
+  have hpos : ∀ x, s x = 1 ↔ (aligned x).val % 2 = 0 := fun x =>
+    (tenSixAlignedVertexEquiv_sign_iff_parity H label s hsign hflip x).1
+  have hneg : ∀ x, s x = -1 ↔ (aligned x).val % 2 = 1 := fun x =>
+    (tenSixAlignedVertexEquiv_sign_iff_parity H label s hsign hflip x).2
+  let row : {x : V // s x = 1} ≃ Fin 8 :=
+    (aligned.subtypeEquiv hpos).trans evenFin16EquivFin8
+  let column : {x : V // s x = -1} ≃ Fin 8 :=
+    (aligned.subtypeEquiv hneg).trans oddFin16EquivFin8
+  refine { row := row, column := column, hole_iff := ?_ }
+  intro p n
+  have hp : (aligned p.1).val % 2 = 0 := (hpos p.1).mp p.2
+  have hn : (aligned n.1).val % 2 = 1 := (hneg n.1).mp n.2
+  have hadjLabel := label.map_adj_iff p.1 n.1
+  have hadjShift := tenSixSignAlignedEquiv_preserves_adj
+    (tenSixLabelSign label s) (label.toEquiv p.1) (label.toEquiv n.1)
+  have hnative := tenSixCycleGraph_even_odd_iff_mu3Internal
+    (aligned p.1) (aligned n.1) hp hn
+  change H.Adj p.1 n.1 ↔
+    mu3AllTfInternal .c10c6 ((aligned p.1).val / 2)
+      ((aligned n.1).val / 2)
+  exact hadjLabel.trans (hadjShift.symm.trans hnative)
+
 end Erdos85
