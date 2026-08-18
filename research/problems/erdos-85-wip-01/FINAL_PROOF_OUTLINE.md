@@ -789,13 +789,13 @@ generalized rather than merely replayed.
      `muThreeKSymmetryClassification_H16_tagged`, `_H88_tagged`, and
      `_H106_tagged` package them into the classification interface.
 
-     The finite impossibility provider is **`AT-64-ONLY / IN PROGRESS`**.
+     The finite impossibility provider is **`PROVEN / AT-64-ONLY`**.
      The native manifest has been extended uniformly from `Fin 19` to
      `Fin 22`: indices 19--21 are the C16, C8+C8, and C10+C6 all-TF models,
      so all candidates use `false_of_muThreeMixedGridCode_fixedK` rather than
      a second abstract adapter.  The source-level occupied-cell and internal
-     manifests cover all 22 slots; the enlarged native CNF equality replay
-     and its batch commit are the current verification gate.  Thus the finite
+     manifests and the enlarged native CNF equality replay cover all 22 slots.
+     Thus the finite
      target is exactly 22 candidate instances, not the former 1,867,000-case
      two-factor census.
 
@@ -808,8 +808,8 @@ generalized rather than merely replayed.
      hole factor, transported exterior graph, and complete
      `MuThreeMixedGridCode` directly from the signed size-two `μ=3` data.
      Finally `false_of_orderSixtyFour_mu3_jointEigenline` feeds that actual
-     code into the classification socket.  The upper native consumer is
-     source-complete (pending the same Fin22 replay): it normalizes a tagged
+     code into the classification socket.  The upper native consumer
+     normalizes a tagged
      slot, dispatches it by `certificateGridIndex : Fin 22`, and constructs
      native H16/H88/H106 classifications.
 
@@ -824,9 +824,13 @@ generalized rather than merely replayed.
      kernel audit has no `sorryAx` (standard logical axioms plus the existing
      finite `native_decide` coordinate audits).  Consequently
      `nonempty_muThreeKSymmetryClassification_native_of_shape` supplies the
-     exact classification consumed by the graph capstone; only the Fin22
-     provider replay and final upper-consumer elaboration remain in this
-     `μ=3` sublane.
+     exact classification consumed by the graph capstone.  The direct theorem
+     `false_of_orderSixtyFour_mu3_jointEigenline_native` now composes the
+     graph-facing mixed-grid construction, the three shape coordinates, the
+     tagged `Fin 22` enumeration, and every checked native certificate into
+     `False`.  Its Lean audit contains the expected finite native-decision
+     certificate axioms and no `sorryAx`.  Hence the alternating signed
+     size-two `μ=3` joint-eigenline sublane is **`PROVEN / AT-64-ONLY`**.
 
      Beyond the `μ=3` sublane, the honest size-two ledger has two further
      nodes.  First are alternating joint eigenlines with
