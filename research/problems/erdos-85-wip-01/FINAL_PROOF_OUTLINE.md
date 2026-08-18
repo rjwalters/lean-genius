@@ -1579,8 +1579,17 @@ generalized rather than merely replayed.
      using all 120 unordered-edge variables and the defining Z3 equations
      directly, without `r_classify.py`'s hand-written commutant basis.  It
      returns exactly the `48+48+48` and `120+120+120` class counts above.
-     What remains is to kernel-certify that exact enumeration and transport
-     its class labeling into the four Boolean-relation terminals.
+     The labeled enumeration is now also PROVEN in
+     `Erdos85LambdaSixClassificationSAT`: explicit arrays contain all 144 and
+     360 labeled `R` matrices, and `lambdaSixTenSixRModels_complete` /
+     `lambdaSixFiveFiveThreeThreeRModels_complete` use `bv_decide` to prove
+     that every matrix satisfying the direct symmetry, degree-six,
+     `A_H²`-support, and commutation equations occurs in the appropriate
+     array.  What remains is the finite per-model class table: compute the
+     forced `D = I+J-A_H²-R`, certify that the bipartite models enter the
+     existing arithmetic terminal and that every other model is a relabeling
+     of its `t_D=30` or `t_D=40` constant, then invoke the four Boolean-
+     relation terminals.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
