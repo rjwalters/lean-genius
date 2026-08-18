@@ -48,6 +48,39 @@ theorem sum_localTriangleEdges_eq_fortyEight_of_card_sixteen_degree_eight_tf_two
         G hfree x.1 (hdegree x) (htf x)
     _ = 48 := by simp [hcard]
 
+/-- If every ambient edge internal to `S` is triangle-free, then every
+triangle rooted in `S` has both of its other vertices outside `S`.  This is
+the support lemma needed to interpret the rooted count 48 as an exterior
+cross-triangle contribution. -/
+theorem rooted_triangle_endpoints_not_mem_of_internal_neighbors_triangleFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S : Set V) [DecidablePred (· ∈ S)]
+    (hinternal : ∀ (x : S) {y : V}, G.Adj x.1 y → y ∈ S →
+      y ∈ triangleFreeNeighbors G x.1)
+    (x : S) {y z : V}
+    (hxy : G.Adj x.1 y) (hxz : G.Adj x.1 z) (hyz : G.Adj y z) :
+    y ∉ S ∧ z ∉ S := by
+  constructor
+  · intro hyS
+    have hyTF := (mem_triangleFreeNeighbors G x.1 y).mp
+      (hinternal x hxy hyS)
+    have hzmem : z ∈ G.neighborFinset x.1 ∩ G.neighborFinset y := by
+      exact Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset x.1 z).mpr hxz,
+          (G.mem_neighborFinset y z).mpr hyz⟩
+    rw [Finset.card_eq_zero.mp hyTF.2] at hzmem
+    exact Finset.notMem_empty z hzmem
+  · intro hzS
+    have hzTF := (mem_triangleFreeNeighbors G x.1 z).mp
+      (hinternal x hxz hzS)
+    have hymem : y ∈ G.neighborFinset x.1 ∩ G.neighborFinset z := by
+      exact Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset x.1 y).mpr hxy,
+          (G.mem_neighborFinset z y).mpr hyz.symm⟩
+    rw [Finset.card_eq_zero.mp hzTF.2] at hymem
+    exact Finset.notMem_empty y hymem
+
 end
 
 end Erdos85
@@ -56,3 +89,5 @@ end Erdos85
   Erdos85.localTriangleEdges_eq_three_of_degree_eight_of_triangleFree_card_eq_two
 #print axioms
   Erdos85.sum_localTriangleEdges_eq_fortyEight_of_card_sixteen_degree_eight_tf_two
+#print axioms
+  Erdos85.rooted_triangle_endpoints_not_mem_of_internal_neighbors_triangleFree
