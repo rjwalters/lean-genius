@@ -11,6 +11,39 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Puncturing a permutation at one input-output pair leaves an equivalence of
+the complements.  This is the abstract five-symbol bijection in C2. -/
+def Equiv.puncture {α β : Type*} (e : α ≃ β) (a : α) :
+    {x : α // x ≠ a} ≃ {y : β // y ≠ e a} :=
+  e.subtypeEquiv fun x => by
+    constructor
+    · intro h hx
+      exact h (e.injective hx)
+    · intro h hx
+      exact h (congrArg e hx)
+
+@[simp]
+theorem Equiv.puncture_apply {α β : Type*} (e : α ≃ β) (a : α)
+    (x : {x : α // x ≠ a}) :
+    (Equiv.puncture e a x).1 = e x.1 := rfl
+
+/-- If the original coordinate set has six elements, puncturing one pair
+leaves the five-symbol domain and codomain used by C2. -/
+theorem Equiv.puncture_card_five
+    {α β : Type*} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β]
+    (e : α ≃ β) (a : α) (hcard : Fintype.card α = 6) :
+    Fintype.card {x : α // x ≠ a} = 5 ∧
+      Fintype.card {y : β // y ≠ e a} = 5 := by
+  have hα := Fintype.card_subtype_compl (fun x : α => x = a)
+  have hβ := Fintype.card_subtype_compl (fun y : β => y = e a)
+  have hecard : Fintype.card β = 6 := by
+    rw [← Fintype.card_congr e, hcard]
+  have honeα : Fintype.card {x : α // x = a} = 1 := by simp
+  have honeβ : Fintype.card {y : β // y = e a} = 1 := by simp
+  rw [honeα, hcard] at hα
+  rw [honeβ, hecard] at hβ
+  constructor <;> omega
+
 /-- Two injective coordinate maps on a finite set induce an equivalence of
 their images, pairing precisely the two coordinates belonging to each source
 element. -/
@@ -130,3 +163,4 @@ end Erdos85
 #print axioms Erdos85.finset_injectiveCoordinateImages_equiv
 #print axioms Erdos85.finset_injectiveCoordinateImages_equiv_card
 #print axioms Erdos85.c4Free_exteriorGridLabel_neighbor_partialPermutation
+#print axioms Erdos85.Equiv.puncture_card_five
