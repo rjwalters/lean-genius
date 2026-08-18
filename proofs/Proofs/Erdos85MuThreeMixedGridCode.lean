@@ -144,6 +144,52 @@ theorem MuThreeMixedGridCode.existsUnique_column_neighbor_iff
     rw [hvEq] at hwR
     simpa using hwR
 
+/-- Every exterior cell has exactly six exterior neighbours.  This is already
+forced by either hit law: precisely the two `H`-neighbour rows are missed. -/
+theorem MuThreeMixedGridCode.degree_eq_six
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) : C.degree u = 6 := by
+  have hmaps : ∀ v ∈ C.neighborFinset u,
+      v.1.1 ∈ (Finset.univ : Finset X) := by
+    intro v _hv
+    exact Finset.mem_univ _
+  rw [show C.degree u = (C.neighborFinset u).card by rfl,
+    Finset.card_eq_sum_card_fiberwise hmaps]
+  simp_rw [code.row_hit u]
+  let y : Y := u.1.2
+  change (∑ x : X, if H x y then 0 else 1) = 6
+  have hH := code.H_twoRegular.2 y
+  have hpartition := Finset.card_filter_add_card_filter_not
+    (s := (Finset.univ : Finset X)) (p := fun x => H x y)
+  simp only [Finset.card_univ, code.card_left] at hpartition
+  rw [hH] at hpartition
+  have hcomplement :
+      ((Finset.univ : Finset X).filter fun x => ¬ H x y).card = 6 := by
+    omega
+  calc
+    (∑ x : X, if H x y then 0 else 1) =
+        ((Finset.univ : Finset X).filter fun x => ¬ H x y).card := by
+      classical
+      rw [Finset.sum_ite]
+      simp
+    _ = 6 := hcomplement
+
+/-- C4-freeness in the pairwise common-neighbour form used by counting
+arguments. -/
+theorem MuThreeMixedGridCode.common_neighbor_card_le_one
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u v : muThreeMixedCell K) (huv : u ≠ v) :
+    (C.neighborFinset u ∩ C.neighborFinset v).card ≤ 1 := by
+  exact common_le_one_of_not_containsC4 code.c4Free u v huv
+
 /-- The precise uniform combinatorial terminal still to prove. -/
 def MuThreeMixedGridCodeImpossible : Prop :=
   ∀ {X Y : Type*} [Fintype X] [Fintype Y]
@@ -156,3 +202,5 @@ end Erdos85
 
 #print axioms Erdos85.MuThreeMixedGridCode.existsUnique_row_neighbor_iff
 #print axioms Erdos85.MuThreeMixedGridCode.existsUnique_column_neighbor_iff
+#print axioms Erdos85.MuThreeMixedGridCode.degree_eq_six
+#print axioms Erdos85.MuThreeMixedGridCode.common_neighbor_card_le_one
