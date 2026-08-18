@@ -1875,6 +1875,9 @@ generalized rather than merely replayed.
      `via_k(i,j)` be the ordered endpoint pairs whose unique common neighbor
      lies in `S_k`.  The finsets for distinct `k` are disjoint, their biunion
      is the complete grid `S_i×S_j`, and every one has exact cardinal `8q`.
+     The cardinal theorem has now been sharpened to require only the three
+     local size-two hypotheses on source, via, and target; no all-size-two
+     global partition or fourth component is used.
      Thus the assembly condition is an exact equal-tile partition, not an
      order-64 census artifact.  Structured search adds strong evidence that
      at q=8 every all-`[16]` branch already dies when the third cross block is
@@ -1883,7 +1886,11 @@ generalized rather than merely replayed.
      restricted owner factors are single `2q`-cycles, the three induced via
      tiles on each ordered component grid cannot simultaneously be pairwise
      disjoint.  This is independent of a fourth component and is the uniform
-     algebraic replacement sought for the all-`[16]` enumeration.  A proof
+     algebraic replacement sought for the all-`[16]` enumeration.  This leaf
+     is now a literal Lean `Prop`, `ThreeSizeTwoViaTripleExclusionPrinciple`,
+     with the machine-checked conditional consumer
+     `false_of_threeSizeTwoViaTripleExclusionPrinciple`; the principle is not
+     asserted as an axiom.  A proof
      must use the cyclic interleavings/self-indexing of the owner factors;
      equal tile sizes and pairwise ODC axioms alone are insufficient.
      **`GAP A-REG-STRATA` (q=8).**  The PROVEN
