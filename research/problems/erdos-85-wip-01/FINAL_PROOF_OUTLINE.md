@@ -1990,7 +1990,19 @@ generalized rather than merely replayed.
      `orderSixtyFour_fourFour_twoOwner_exists_ownerDensity` prove, from the
      established cross-pressure bounds, that owner `a` or owner `b` carries a
      certified dense routing fragment.  The remaining GAP is compatibility
-     or a second fragment, not production of the first.  `[6,2]` no longer
+     or a second fragment, not production of the first.  The local row
+     description no longer stops at an opaque cardinal lower bound either.
+     The q-generic theorem
+     `twoCenterRoutingRowDensity_residual_eq_biUnion_unusedCenters` gives the
+     exact normal form of every density witness: after deleting the two
+     displayed center-stars, the routing row is precisely the biunion of the
+     target-stars of all unused owner-centers at that root.  Thus the
+     size-three unique-third-center and size-four complementary-pair packages
+     are specializations of one algebraic residual-star decomposition.  This
+     removes local row completion as a separate GAP; the honest unresolved
+     input is now entirely cross-root/cross-row compatibility of these
+     canonical decompositions.
+     `[6,2]` no longer
      stops at its weak cross budget 512.  The q-free multiplicity lemma
      `exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt` says that
      if the global triple census is more than twice the directed first-edge
