@@ -2053,7 +2053,9 @@ generalized rather than merely replayed.
      permutation of the six-cell source fiber with no fixed points
      (**PROVEN**, `867525b9f3`).  Rectangle constraints are therefore
      concrete order-six derangements, ready for cycle-type/sign/composition
-     analysis rather than only pointwise inequalities.
+     analysis rather than only pointwise inequalities.  Row-orientation
+     coherence is also **PROVEN** (`b262a13416`): swapping the two endpoint
+     rows replaces the monodromy by its inverse.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
