@@ -1888,9 +1888,11 @@ generalized rather than merely replayed.
      and these mixed rectangles leaves at least
      `q²-2(q-1)-2m_a m_b` eligible vertices (`b2c0cf996a`): at q=8 the local
      residues are 26/20/18 in `[6,2]`/`[5,3]`/`[4,4]`.  In a two-owner
-     stratum, owner exhaustion must place this residue in the same-owner
-     `AA` or `BB` cells; formalizing that exhaustion and exploiting the
-     resulting same-owner pressure is the next q-generic leaf.  In particular the
+     stratum, owner exhaustion now **PROVEN q-GENERIC** places this residue in
+     the same-owner `AA` or `BB` cells
+     (`binarySquare_regular_twoComponents_defectEdge_sameOwner_card_lower`,
+     `2cda16a821`).  Exploiting that certified same-owner pressure against
+     its center-grid capacity is the next q-generic leaf.  In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
      row and is therefore **PROVEN q-GENERIC but not itself contradictory**;
