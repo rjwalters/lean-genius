@@ -1933,9 +1933,14 @@ generalized rather than merely replayed.
      all four centers pairwise distinct.  Same-color separation uses the
      internal `c`-owned edge and unique ownership, while cross-color
      separation is forced directly by the distinct owner components.  The
-     remaining terminal must therefore exclude the resulting alternating
-     ambient 8-cycle/routing configuration; it cannot rely on a center
-     collision.
+     graph-facing capstone `hasOppositeThirdEdgeInBlock_routingSkeleton`
+     further proves all four opposite-root chords absent: neither center over
+     `x` meets `z`, and neither center over `z` meets `x`
+     (`commonNeighbor_mem_distinct_owner_not_adj_otherEndpoint`).  The
+     remaining terminal must therefore exclude this induced alternating
+     ambient 8-cycle/routing skeleton, likely using the internal degree-two
+     cycle law on whichever size-two component contains `y₁,y₂`; it cannot
+     rely on a center collision or a shortcut through the internal edge.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
