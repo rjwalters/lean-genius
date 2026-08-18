@@ -1589,7 +1589,16 @@ generalized rather than merely replayed.
      genuinely live models after the two filters.  Thus commutation alone is
      a substantial but nonterminal `[16]` sieve; the surviving concrete owner
      factorizations should feed the λ=5/routing constraints rather than be
-     treated as a branch closure.  The `[8,8]` structural cut also remains
+     treated as a branch closure.  The arithmetic screen further suggests a
+     sharp cubic target: after all case-B conjugate pairs cancel from odd
+     moments, the rational `μ=3` lifts satisfy `α²=4`; if their global linear
+     sum is `-8`, then the ambient triangle count is exactly `80`.  This final
+     arithmetic implication is PROVEN in
+     `Erdos85OrderSixtyFourMuThreeCubicTerminal` as
+     `orderSixtyFour_muThree_only_triangleCount_eq_eighty`.  The remaining
+     interface is to justify, for the surviving four-component assembly, that
+     all other odd-moment contributions do cancel and that the displayed
+     linear/cubic trace equations apply.  The `[8,8]` structural cut also remains
      separate.  The ambient interface for the first option is already
      `PROVEN`: `defect_positive_codegree_component_adapter` preserves every
      positive defect codegree after passing to the common connected
