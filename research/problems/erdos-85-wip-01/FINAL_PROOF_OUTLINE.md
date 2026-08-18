@@ -731,6 +731,21 @@ generalized rather than merely replayed.
      stratum; only the mixed `C8+C8` and `(triangle-bearing C10,
      triangle-free C6)` orientations survive this shape-level count.
 
+     In the all-triangle-free `[2,2,2,2]` cell, the `C10+C6` fiber-margin
+     terminal is now `PROVEN` without SAT or `native_decide`.
+     `false_of_tenSix_columnMargins_of_fiberStripCounts` assumes precisely
+     the component column-margin equations, component order sixteen, and the
+     induced six cells in the three `C6` rows and six in the three `C6`
+     columns.  The margins force the three occupied `C6` cells to share one
+     component color and force two disjoint five-cell diagonals in the `C10`
+     block to be monochromatic.  Inclusion-exclusion gives color capacities
+     `7,4,4` in that block, contradicting the two monochromatic five-sets.
+     The remaining graph-level assembly for this cell is explicit: transport
+     the order-16 component row/column fiber-cardinality-two theorems through
+     the `C10+C6` coordinate model, yielding the `16/6/6` counts and the
+     `tenSixColumnMargin` family.  No finite enumeration remains inside the
+     terminal itself.
+
      The all-size-sixteen triangle-free leaf is now closed without a finite
      census.  The `PROVEN` chain
 
