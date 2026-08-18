@@ -1968,11 +1968,22 @@ generalized rather than merely replayed.
      foreign-column counts are respectively six and five.  In the non-`H`
      case the unique own-row and own-column neighbours are distinct
      (`MuThreeMixedGridCode.existsUnique_ownRow_ownColumn_ne_of_not_H`).
+     The foreign fibers are now canonical, not merely counted (**PROVEN**,
+     `ff4556e574`): for every cell `u`,
+     `MuThreeMixedGridCode.foreignRowEquivNeighbor` identifies the six
+     `H`-nonneighbor rows with `N_C(u)`, while
+     `MuThreeMixedGridCode.foreignColumnEquivNeighbor` independently
+     identifies the six `H`-nonneighbor columns with the same neighborhood.
+     Their composite is therefore a canonical six-point row-to-column
+     permutation at `u`.
      These results use only `MuThreeMixedGridCode`, so they apply uniformly
      to all-triangle, all-triangle-free, and genuinely mixed `H/K` sectors.
-     Consequently any mixed-sector contradiction must occur in the foreign
-     row/column bijections or their C4-free compatibility; the own-fiber
-     geometry is exact and internally consistent.
+     **GAP A-REG-MIXED-PERMUTATION:** extract and compare those local
+     permutations along an exterior edge; C4-freeness must forbid repeated
+     row-column pairings, but no global incompatibility theorem is yet proved.
+     Consequently any mixed-sector contradiction must occur in this foreign
+     permutation compatibility; the own-fiber geometry is exact and
+     internally consistent.
 
      One surviving `μ=3` mixed-grid subcase now has a separate
      **PROVEN, standard-axiom structural reduction**, but not a contradiction.
