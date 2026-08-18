@@ -1952,8 +1952,10 @@ generalized rather than merely replayed.
      whose 64 edges split by source component into a 6-regular 48-edge graph
      and a 2-factor.  The source coloring of those edges is now packaged
      q-generically (`b5ed6aa30d`): every selector edge has a unique source
-     defect component, distinct source layers are edge-disjoint, and the
-     earlier exact selector-incidence theorem gives their per-center degrees.
+     defect component and distinct source layers are edge-disjoint.  Their
+     regularity is now also formalized (`ad9cf06db2`): a source of normalized
+     size `m` gives an `m`-regular layer, with an explicit order-64 theorem
+     producing the 6-factor plus 2-factor in `[6,2]`.
      The residual `[6,2]` target must couple the transported
      defect blocks to this line-graph edge partition; commute, degrees, and
      the entry cap alone cannot close it.
