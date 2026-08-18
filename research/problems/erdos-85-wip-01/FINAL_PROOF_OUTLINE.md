@@ -2156,8 +2156,11 @@ generalized rather than merely replayed.
      consumer **PROVEN** (`a8aa383f37`): on the actual six-cell source column
      fiber, the commutator `κ` of the two consecutive row monodromies satisfies
      `κ^5 = 1`.  Thus `K` geometry can attack a concrete order-five identity
-     rather than raw labels.  The analogous label-free order-three and
-     order-two lifts for the other four patterns remain open.
+     rather than raw labels.  The opposite all-`(33)` extreme now also has a
+     label-free lift and direct rectangle consumer **PROVEN** (`090d13fdf8`):
+     its commutator satisfies `κ^2 = 1` on the actual source fiber.  Only the
+     three exactly-one-`(33)` orientations still need the analogous
+     label-free order-three lift.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
