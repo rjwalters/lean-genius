@@ -13,6 +13,53 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Ordered cyclic triples whose first root lies in `S`. -/
+def cyclicColoredTriplesFirstRootIn
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A B C : SimpleGraph V)
+    [DecidableRel A.Adj] [DecidableRel B.Adj] [DecidableRel C.Adj]
+    (S : Set V) [DecidablePred (· ∈ S)] : Finset (V × V × V) :=
+  (cyclicColoredTriples A B C).filter fun p => p.1 ∈ S
+
+/-- First-root fiber decomposition over a vertex set. -/
+theorem card_cyclicColoredTriplesFirstRootIn_eq_sum_rooted
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A B C : SimpleGraph V)
+    [DecidableRel A.Adj] [DecidableRel B.Adj] [DecidableRel C.Adj]
+    (S : Set V) [DecidablePred (· ∈ S)] :
+    (cyclicColoredTriplesFirstRootIn A B C S).card =
+      ∑ x : S, (rootedCyclicColoredPairs A B C x.1).card := by
+  classical
+  let e : {p // p ∈ cyclicColoredTriplesFirstRootIn A B C S} ≃
+      Σ x : S, {q // q ∈ rootedCyclicColoredPairs A B C x.1} :=
+    { toFun := fun p => by
+        have hp := p.2
+        simp only [cyclicColoredTriplesFirstRootIn, Finset.mem_filter,
+          cyclicColoredTriples, Finset.mem_univ, true_and] at hp
+        exact ⟨⟨p.1.1, hp.2⟩, ⟨(p.1.2.1, p.1.2.2), by
+          simp only [rootedCyclicColoredPairs, Finset.mem_filter,
+            Finset.mem_univ, true_and]
+          exact hp.1⟩⟩
+      invFun := fun q => by
+        refine ⟨(q.1.1, q.2.1.1, q.2.1.2), ?_⟩
+        have hq := q.2.2
+        simp only [rootedCyclicColoredPairs, Finset.mem_filter,
+          Finset.mem_univ, true_and] at hq
+        simp only [cyclicColoredTriplesFirstRootIn, Finset.mem_filter,
+          cyclicColoredTriples, Finset.mem_univ, true_and]
+        exact ⟨hq, q.1.2⟩
+      left_inv := by
+        intro p
+        apply Subtype.ext
+        rcases p with ⟨⟨x, z, y⟩, hp⟩
+        rfl
+      right_inv := by
+        intro q
+        rcases q with ⟨⟨x, hx⟩, ⟨⟨z, y⟩, hzy⟩⟩
+        rfl }
+  have hcard := Fintype.card_congr e
+  simpa [Fintype.card_sigma] using hcard
+
 /-- The global ordered cyclic census is the sum of its first-root fibers. -/
 theorem card_cyclicColoredTriples_eq_sum_rootedCyclicColoredPairs
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -68,6 +115,8 @@ end
 
 end Erdos85
 
+#print axioms
+  Erdos85.card_cyclicColoredTriplesFirstRootIn_eq_sum_rooted
 #print axioms
   Erdos85.card_cyclicColoredTriples_eq_sum_rootedCyclicColoredPairs
 #print axioms
