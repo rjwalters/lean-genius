@@ -2192,6 +2192,17 @@ generalized rather than merely replayed.
      matrix commutation, and this local self-source common-neighbor interface
      cannot force bipartiteness; the next proof must couple the exterior
      component through the selector bijection or stronger ambient geometry.
+     That coupling is now formalized q-generically (`351c6f62b2`,
+     `7f5ee218f6`, `9a1ad7c56b`, `e1c6653979`): across any normalized
+     component cut, `HB+BC=J`; the returned operator satisfies
+     `(BC)Bᵀ=(q-m)J-H(BBᵀ)`; and every internal ambient edge saturates the
+     Gram budget, forcing its exterior return entry to vanish.  A reproducible
+     SAT audit of the circulant calibration (`143390db83`, `39205dd634`)
+     shows that degree six plus `HB+BC=J` is satisfiable, but requiring the
+     exterior graph `C` itself to be C4-free is UNSAT.  This is experimental
+     boundary evidence, not a Lean exclusion theorem; it sharpens **GAP
+     A-REG-62-NONBIP** to an abstract proof that the forced exterior
+     routing/matching design contains a four-cycle.
      In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
