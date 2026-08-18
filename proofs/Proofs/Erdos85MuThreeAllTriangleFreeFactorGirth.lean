@@ -3,10 +3,12 @@ import Proofs.Erdos85MuThreeAllTriangleFreeResidualRowBlocks
 /-!
 # The all-triangle-free factor has no four-cycle
 
-The twin-row pigeonhole obstruction is translated here into the natural
-classification-facing statement: the two-regular bipartite relation `H`
-cannot contain a `K₂,₂`.  Thus no factor component has bipartite length four
-(partition part `[2]`).
+The twin-row pigeonhole obstruction is translated here into the statement
+that the auxiliary two-regular bipartite relation `H` cannot contain a
+`K₂,₂`.  In the graph-facing application this is redundant with ambient
+C4-freeness.  It does **not** exclude a `[2]` part of the defect-component
+partition: such a part denotes a size-two normalized defect component, not
+a four-cycle of `H`.
 -/
 
 open SimpleGraph
@@ -30,8 +32,8 @@ private theorem eq_or_eq_of_mem_card_two
     · exact Or.inr rfl
     · exact Or.inl rfl
 
-/-- **Factor-girth bridge.**  In the all-triangle-free mixed grid (`K = H`),
-the two-regular factor relation contains no four-cycle. -/
+/-- In the all-triangle-free mixed grid (`K = H`), the auxiliary
+two-regular relation contains no four-cycle. -/
 theorem MuThreeMixedGridCode.no_factor_fourCycle
     {X Y : Type*} [Fintype X] [Fintype Y]
     [DecidableEq X] [DecidableEq Y]

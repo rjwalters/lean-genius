@@ -9,8 +9,10 @@ whose columns avoid those two neighbours each determine a pair of exterior
 neighbours, one in either row.  The rook law puts these pairs among the 30
 different-column pairs, while C4-freeness makes the assignment injective.
 
-This uniformly excludes every factor stratum containing a four-cycle; it is
-not an enumeration of the order-eight instances.
+This excludes a four-cycle inside the auxiliary bipartite relation `H`.
+In the graph-facing application that conclusion is redundant with ambient
+C4-freeness; in particular, it must not be confused with excluding a
+size-two *defect component* in the order-eight stratum classification.
 -/
 
 open SimpleGraph
@@ -179,7 +181,7 @@ theorem MuThreeMixedGridCode.rowNeighbor_spec
   Classical.choose_spec ((code.existsUnique_row_neighbor_iff H H C u x).mpr h) |>.1
 
 /-- A C4-free mixed grid with `K = H` has no two distinct twin rows.  This
-is the uniform pigeonhole obstruction `36 ≤ 30`. -/
+is the pigeonhole obstruction `36 ≤ 30` for the fixed order-eight code. -/
 theorem MuThreeMixedGridCode.no_distinct_twin_rows
     (code : MuThreeMixedGridCode H H C) {x x' : X} (hxx' : x ≠ x') :
     ¬ (∀ y, H x y ↔ H x' y) := by
