@@ -2130,6 +2130,13 @@ generalized rather than merely replayed.
      transport preserves the apex subset; current local margin laws do not
      force that preservation.  It is the ready consumer if a later
      all-triangle structural argument supplies it.
+     The three rectangle types in a cocycle triangle are not independent.
+     A conjugacy-normalized six-point calculation is now **PROVEN**
+     (`5266dda60c`): for fixed-point-free permutations `σ`, `τ`, and `τσ`,
+     any two cycle types `(3,3)` force the third to be `(3,3)`.  Therefore an
+     even-monodromy triangle has zero, one, or three `(3,3)` members, never
+     exactly two.  Coupling this type-parity constraint to the varying
+     all-triangle `K` two-factor remains open.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
