@@ -15,6 +15,8 @@ namespace Erdos85
 
 noncomputable section
 
+set_option maxHeartbeats 0
+
 /-- **Defect-cut cross-block equation.**  If `H` and `C` are the ambient
 adjacency blocks inside and outside a second-order defect component and `B`
 is the cross-incidence block, then every cross pair has exactly one common
@@ -505,6 +507,85 @@ theorem orderSixtyFour_sizeTwoComponent_crossBlock_sq
   norm_num at h
   exact h
 
+/-- Transposed form of the defect-cut equation. -/
+theorem binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hreg : ∀ x, G.degree x = q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    C * B.transpose + B.transpose * H = fun _ _ ↦ (1 : ℤ) := by
+  classical
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  let JHO : Matrix c.supp {x // ¬p x} ℤ := fun _ _ ↦ 1
+  have hcross := binarySquare_regular_defectComponent_crossBlock_eq_ones
+    G hfree hreg c
+  have hcross' : H * B + B * C = JHO := by
+    simpa [H, B, C, JHO, p] using hcross
+  have hHt : H.transpose = H := by
+    ext x y
+    simp [H, Matrix.transpose_apply, SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have hCt : C.transpose = C := by
+    ext x y
+    simp [C, Matrix.transpose_apply, Matrix.toBlock_apply,
+      SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have ht := congrArg Matrix.transpose hcross'
+  change C * B.transpose + B.transpose * H = fun _ _ ↦ (1 : ℤ)
+  have ht' : C * B.transpose + B.transpose * H = JHO.transpose := by
+    simpa [Matrix.transpose_add, Matrix.transpose_mul, hHt, hCt, add_comm]
+      using ht
+  rw [ht']
+  rfl
+
+/-- **Exterior eigenvector transfer.**  On zero-sum vectors, transposed
+cross-incidence sends an internal `H`-eigenvector of eigenvalue `λ` to an
+exterior `C`-eigenvector of eigenvalue `-λ`. -/
+theorem binarySquare_regular_defectComponent_exterior_eigenvector_transfer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hreg : ∀ x, G.degree x = q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (f : c.supp → ℤ) (mu : ℤ)
+    (hsum : ∑ x, f x = 0)
+    (hf : ((G.induce c.supp).adjMatrix ℤ).mulVec f = mu • f) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    C.mulVec (B.transpose.mulVec f) = (-mu) • B.transpose.mulVec f := by
+  classical
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  let J : Matrix {x // ¬p x} c.supp ℤ := fun _ _ ↦ 1
+  have htrans : C * B.transpose + B.transpose * H = J := by
+    simpa [H, B, C, J, p] using
+      binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
+        G hfree hreg c
+  have hJzero : J.mulVec f = 0 := by
+    funext z
+    simp [J, Matrix.mulVec, dotProduct, hsum]
+  have hv := congrArg (fun M : Matrix {x // ¬p x} c.supp ℤ ↦ M.mulVec f) htrans
+  change C.mulVec (B.transpose.mulVec f) = (-mu) • B.transpose.mulVec f
+  rw [Matrix.add_mulVec, ← Matrix.mulVec_mulVec,
+    ← Matrix.mulVec_mulVec, hf, Matrix.mulVec_smul, hJzero] at hv
+  ext z
+  have hz := congrFun hv z
+  simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, add_eq_zero_iff_eq_neg] at hz
+  simpa [neg_smul] using hz
+
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
@@ -517,5 +598,9 @@ end
   Erdos85.binarySquare_regular_normalizedComponent_internalAdj_outsideReturn_zero
 #print axioms Erdos85.binarySquare_regular_normalizedComponent_crossBlock_sq
 #print axioms Erdos85.orderSixtyFour_sizeTwoComponent_crossBlock_sq
+#print axioms
+  Erdos85.binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
+#print axioms
+  Erdos85.binarySquare_regular_defectComponent_exterior_eigenvector_transfer
 
 end Erdos85
