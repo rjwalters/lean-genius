@@ -2049,6 +2049,11 @@ generalized rather than merely replayed.
      obtained by following three matching sides differs from the direct mate
      on the fourth side.  The remaining gap is a global OA/Latin obstruction
      from these rectangle inequalities together with `K`-sector structure.
+     Algebraically, comparing the three-step and direct equivalences gives a
+     permutation of the six-cell source fiber with no fixed points
+     (**PROVEN**, `867525b9f3`).  Rectangle constraints are therefore
+     concrete order-six derangements, ready for cycle-type/sign/composition
+     analysis rather than only pointwise inequalities.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
