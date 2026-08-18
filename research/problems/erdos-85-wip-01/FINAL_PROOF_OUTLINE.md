@@ -2106,9 +2106,12 @@ generalized rather than merely replayed.
      columns in the triangle shore.  Equivalently every triangle cycle in a
      genuinely mixed sector has length at least eight.  This excludes a
      triangle `C6`, hence the mixed
-     `(triangle-free C10, triangle C6)` orientation.  The remaining wrapper
-     is only to expose the classified component shores as the three-column
-     block and its all-triangle-free complement.
+     `(triangle-free C10, triangle C6)` orientation.  The component wrapper
+     is now also **PROVEN** (`d28355d3f0`) without certificate coordinates:
+     internal-edge double-counting shows that every connected component of a
+     bipartite two-factor has equal shore sizes, hence a six-vertex component
+     has three rows and three columns; component support plus outside
+     triangle-free saturation then feeds the obstruction directly.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
