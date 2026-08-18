@@ -185,6 +185,24 @@ theorem adj_bipartiteMissingEquivOfSucc_apply_iff_ne
     apply Subtype.ext
     exact heq.symm
 
+/-- Equivalently, the only missing cross pairs are the pairs identified by
+the canonical matching.  This is the direct consumer form for a second graph
+whose cross edges avoid the bipartite defect graph. -/
+theorem not_adj_bipartiteMissingEquivOfSucc_apply_iff_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (L R : Finset V) (n : ℕ)
+    (hLcard : L.card = n + 1) (hRcard : R.card = n + 1)
+    (hLR : ∀ x ∈ L, (G.neighborFinset x ∩ R).card = n)
+    (hRL : ∀ y ∈ R, (G.neighborFinset y ∩ L).card = n)
+    (x x' : (L : Set V)) :
+    ¬ G.Adj x.1
+        ((bipartiteMissingEquivOfSucc G L R n hLcard hRcard hLR hRL x').1) ↔
+      x = x' := by
+  rw [adj_bipartiteMissingEquivOfSucc_apply_iff_ne
+    G L R n hLcard hRcard hLR hRL]
+  exact not_ne_iff
+
 /-- If both shores have size eight and every vertex has seven cross
 neighbours, the unique misses form a bijection (a perfect matching in the
 cross-complement). -/
@@ -298,6 +316,7 @@ def sixteenMissingEquiv
 #print axioms Erdos85.card_missingAcross_eq_one_of_succ
 #print axioms Erdos85.bipartiteMissingEquivOfSucc
 #print axioms Erdos85.adj_bipartiteMissingEquivOfSucc_apply_iff_ne
+#print axioms Erdos85.not_adj_bipartiteMissingEquivOfSucc_apply_iff_eq
 
 end
 
