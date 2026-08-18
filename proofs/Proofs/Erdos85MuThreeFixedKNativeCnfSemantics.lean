@@ -66,7 +66,68 @@ theorem mu3GridHitSpecs_ofAllTfShape (shape : Mu3AllTfShape) :
     mu3GridHitSpecs (.ofAllTfShape shape) = mu3NativeHitSpecs shape := by
   rfl
 
+def mu3GridFinalSpecState (grid : Mu3NativeGridSpec) : Mu3NativeCnfState :=
+  mu3NativeRunC4PairSpecs mu3NativePairs
+    (mu3NativeRunExactSpecs (mu3GridHitSpecs grid) {})
+
+def mu3GridHitSpecVal (grid : Mu3NativeGridSpec)
+    (edgeVal : DimacsValuation) : Mu3NativeCnfState × DimacsValuation :=
+  mu3NativeRunExactSpecsVal edgeVal (mu3GridHitSpecs grid) {} edgeVal
+
+def mu3GridFinalSpecVal (grid : Mu3NativeGridSpec)
+    (edgeVal : DimacsValuation) : Mu3NativeCnfState × DimacsValuation :=
+  let hit := mu3GridHitSpecVal grid edgeVal
+  mu3NativeRunC4PairSpecsVal edgeVal mu3NativePairs hit.1 hit.2
+
+set_option maxHeartbeats 0 in
+/-- Shape-free semantic capstone.  Exact row/column counts and the static
+base-edge C4 bound construct a satisfying valuation for the complete
+parametric specification state. -/
+theorem mu3GridFinalSpecState_formulaSatisfiable
+    (grid : Mu3NativeGridSpec) (edgeVal : DimacsValuation)
+    (hhitNonzero : ∀ spec ∈ mu3GridHitSpecs grid,
+      ∀ lit ∈ spec.1, lit ≠ 0)
+    (hhitBound : ∀ spec ∈ mu3GridHitSpecs grid,
+      ∀ lit ∈ spec.1, lit.natAbs ≤ 1128)
+    (hhitCounts : ∀ spec ∈ mu3GridHitSpecs grid,
+      seqPrefixTrue (mu3NativeVarsRow edgeVal spec.1) spec.1.size = spec.2)
+    (hbaseC4 : Mu3NativeBaseC4 edgeVal) :
+    ∃ val, dimacsFormulaSatisfied val
+      (mu3GridFinalSpecState grid).clauses := by
+  let hit := mu3GridHitSpecVal grid edgeVal
+  have hhit := mu3NativeRunExactSpecsVal_formulaSatisfied
+    1128 edgeVal (mu3GridHitSpecs grid) {} edgeVal
+    (by rfl) (dimacsFormulaSatisfied_empty edgeVal)
+    (dimacsFormulaBounded_empty 1128) (by simp)
+    hhitNonzero hhitBound hhitCounts
+  have hc4 : Mu3NativeC4FoldConditions 1128 edgeVal
+      mu3NativePairs hit.1 hit.2 := by
+    apply mu3NativeC4FoldConditions_of_base edgeVal mu3NativePairs
+      hit.1 hit.2 hhit.2.2.1 hhit.1 hhit.2.1 hhit.2.2.2
+    · intro pair hpair
+      exact hpair
+    · exact hbaseC4
+  have hfinal := mu3NativeRunC4PairSpecsVal_formulaSatisfied
+    1128 edgeVal mu3NativePairs hit.1 hit.2 hhit.2.2.1
+      hhit.1 hhit.2.1 hhit.2.2.2 hc4
+  refine ⟨(mu3GridFinalSpecVal grid edgeVal).2, ?_⟩
+  rw [show mu3GridFinalSpecState grid =
+      (mu3GridFinalSpecVal grid edgeVal).1 by
+        rw [mu3GridFinalSpecVal, mu3GridFinalSpecState,
+          mu3NativeRunC4PairSpecsVal_state]
+        apply congrArg (mu3NativeRunC4PairSpecs mu3NativePairs)
+        exact (mu3NativeRunExactSpecsVal_state edgeVal
+          (mu3GridHitSpecs grid) {} edgeVal).symm]
+  exact hfinal.1
+
+theorem mu3GridFinalSpecState_ofAllTfShape (shape : Mu3AllTfShape) :
+    mu3GridFinalSpecState (.ofAllTfShape shape) =
+      mu3NativeFinalSpecState shape := by
+  rfl
+
 end Erdos85
 
 #print axioms Erdos85.mu3GridHitSpecs_formulaSatisfiable
 #print axioms Erdos85.mu3GridHitSpecs_ofAllTfShape
+#print axioms Erdos85.mu3GridFinalSpecState_formulaSatisfiable
+#print axioms Erdos85.mu3GridFinalSpecState_ofAllTfShape
