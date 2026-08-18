@@ -665,6 +665,113 @@ theorem orderSixtyFourMuThreeLabelColumnFiber_card_eq_six
     simp [SimpleGraph.mem_neighborFinset, G.adj_comm]]
   exact hout
 
+/-- An exact coordinate-image formula plus rook injectivity turns into the
+literal zero/one row-hit count used by `MuThreeMixedGridCode`. -/
+theorem orderSixtyFourMuThree_exteriorLabelRowHit
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [Fintype (muThreeExterior cSupp)]
+    [Fintype (muThreePositiveShore cSupp s)]
+    (H : muThreePositiveShore cSupp s →
+      muThreeNegativeShore cSupp s → Prop) [DecidableRel H]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (u : muThreeExterior cSupp)
+    (hinj : Set.InjOn (fun v => (label v).1)
+      ((Finset.univ.filter fun v : muThreeExterior cSupp =>
+        G.Adj u.1 v.1) : Set _))
+    (himage : (Finset.univ.filter fun v : muThreeExterior cSupp =>
+        G.Adj u.1 v.1).image (fun v => (label v).1) =
+      Finset.univ.filter fun x => ¬ H x (label u).2)
+    (x : muThreePositiveShore cSupp s) :
+    ((Finset.univ.filter fun v : muThreeExterior cSupp =>
+      G.Adj u.1 v.1).filter fun v => (label v).1 = x).card =
+        if H x (label u).2 then 0 else 1 := by
+  classical
+  let L := Finset.univ.filter fun v : muThreeExterior cSupp => G.Adj u.1 v.1
+  let A := L.filter fun v => (label v).1 = x
+  have hAle : A.card ≤ 1 := by
+    apply Finset.card_le_one.mpr
+    intro v hv w hw
+    apply hinj (Finset.mem_filter.mp hv).1 (Finset.mem_filter.mp hw).1
+    exact (Finset.mem_filter.mp hv).2.trans (Finset.mem_filter.mp hw).2.symm
+  by_cases hx : H x (label u).2
+  · rw [if_pos hx]
+    change A.card = 0
+    rw [Finset.card_eq_zero]
+    apply Finset.not_nonempty_iff_eq_empty.mp
+    intro hnonempty
+    obtain ⟨v, hv⟩ := hnonempty
+    have hximage : x ∈ L.image (fun z => (label z).1) :=
+      Finset.mem_image.mpr ⟨v, (Finset.mem_filter.mp hv).1,
+        (Finset.mem_filter.mp hv).2⟩
+    rw [himage] at hximage
+    exact (Finset.mem_filter.mp hximage).2 hx
+  · rw [if_neg hx]
+    change A.card = 1
+    have hxrhs : x ∈ Finset.univ.filter fun z => ¬ H z (label u).2 := by
+      simp [hx]
+    rw [← himage] at hxrhs
+    obtain ⟨v, hvL, hvx⟩ := Finset.mem_image.mp hxrhs
+    have hnonempty : A.Nonempty :=
+      ⟨v, Finset.mem_filter.mpr ⟨hvL, hvx⟩⟩
+    have hApos : 0 < A.card := Finset.card_pos.mpr hnonempty
+    omega
+
+/-- Column-dual exterior zero/one hit count. -/
+theorem orderSixtyFourMuThree_exteriorLabelColumnHit
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [Fintype (muThreeExterior cSupp)]
+    [Fintype (muThreeNegativeShore cSupp s)]
+    (H : muThreePositiveShore cSupp s →
+      muThreeNegativeShore cSupp s → Prop) [DecidableRel H]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (u : muThreeExterior cSupp)
+    (hinj : Set.InjOn (fun v => (label v).2)
+      ((Finset.univ.filter fun v : muThreeExterior cSupp =>
+        G.Adj u.1 v.1) : Set _))
+    (himage : (Finset.univ.filter fun v : muThreeExterior cSupp =>
+        G.Adj u.1 v.1).image (fun v => (label v).2) =
+      Finset.univ.filter fun y => ¬ H (label u).1 y)
+    (y : muThreeNegativeShore cSupp s) :
+    ((Finset.univ.filter fun v : muThreeExterior cSupp =>
+      G.Adj u.1 v.1).filter fun v => (label v).2 = y).card =
+        if H (label u).1 y then 0 else 1 := by
+  classical
+  let L := Finset.univ.filter fun v : muThreeExterior cSupp => G.Adj u.1 v.1
+  let A := L.filter fun v => (label v).2 = y
+  have hAle : A.card ≤ 1 := by
+    apply Finset.card_le_one.mpr
+    intro v hv w hw
+    apply hinj (Finset.mem_filter.mp hv).1 (Finset.mem_filter.mp hw).1
+    exact (Finset.mem_filter.mp hv).2.trans (Finset.mem_filter.mp hw).2.symm
+  by_cases hy : H (label u).1 y
+  · rw [if_pos hy]
+    change A.card = 0
+    rw [Finset.card_eq_zero]
+    apply Finset.not_nonempty_iff_eq_empty.mp
+    intro hnonempty
+    obtain ⟨v, hv⟩ := hnonempty
+    have hyimage : y ∈ L.image (fun z => (label z).2) :=
+      Finset.mem_image.mpr ⟨v, (Finset.mem_filter.mp hv).1,
+        (Finset.mem_filter.mp hv).2⟩
+    rw [himage] at hyimage
+    exact (Finset.mem_filter.mp hyimage).2 hy
+  · rw [if_neg hy]
+    change A.card = 1
+    have hyrhs : y ∈ Finset.univ.filter fun z => ¬ H (label u).1 z := by
+      simp [hy]
+    rw [← himage] at hyrhs
+    obtain ⟨v, hvL, hvy⟩ := Finset.mem_image.mp hyrhs
+    have hnonempty : A.Nonempty :=
+      ⟨v, Finset.mem_filter.mpr ⟨hvL, hvy⟩⟩
+    have hApos : 0 < A.card := Finset.card_pos.mpr hnonempty
+    omega
+
 end
 
 end Erdos85
@@ -678,3 +785,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFourMuThree_label_positive_eq_of_adj
 #print axioms Erdos85.orderSixtyFourMuThreeLabelRowFiberEquiv
 #print axioms Erdos85.orderSixtyFourMuThreeLabelRowFiber_card_eq_six
+#print axioms Erdos85.orderSixtyFourMuThree_exteriorLabelRowHit
