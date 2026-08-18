@@ -1893,6 +1893,17 @@ generalized rather than merely replayed.
      asserted as an axiom.  A proof
      must use the cyclic interleavings/self-indexing of the owner factors;
      equal tile sizes and pairwise ODC axioms alone are insufficient.
+     The first-moment rotation calculation behind that search is now
+     **PROVEN q-GENERIC** as `sum_cyclicCorrelation_eq_mul_sum`: the sum over
+     all cyclic shifts of an overlap correlation is exactly the product of
+     the two total masses.  This formalizes the observed average overlap
+     (16 in the sampled q=8 third-block coordinates), but deliberately does
+     **not** close the axiom: a positive average gives an overlapping shift,
+     whereas the assembly exclusion needs positive overlap for every
+     admissible interleaving shift.  The sharpened missing lemma is therefore
+     a uniform positive lower bound (or equivalent rigidity/variance-zero
+     statement) for correlations coming from the two competing Hamiltonian
+     owner-factor coordinates, not an additional first-moment count.
      **`GAP A-REG-STRATA` (q=8).**  The PROVEN
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
