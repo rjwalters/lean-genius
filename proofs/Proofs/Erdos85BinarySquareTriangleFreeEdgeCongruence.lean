@@ -219,6 +219,30 @@ theorem binarySquare_regular_allSizeTwo_colorOrder_eq_pow_sub_three_mul_triangle
     binarySquare_regular_triangleFreeEdge_card_eq_pow_sub_three_mul_triangles
       G hfree (by omega) hreg hcard
 
+/-- Order-64 cycle-record consumer: in the all-size-two stratum, the total
+length of the all-TF internal cycles is one modulo three. -/
+theorem orderSixtyFour_regular_allSizeTwo_colorOrder_mod_three_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 64)
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16) :
+    ((((Finset.univ : Finset V).filter fun x =>
+        (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) % 3) = 1 := by
+  have h :=
+    binarySquare_regular_allSizeTwo_colorOrder_eq_pow_sub_three_mul_triangles
+      G hfree (k := 3) (by norm_num) hreg
+        (by norm_num at hcard ⊢; exact hcard)
+        (by norm_num at hall ⊢; exact hall)
+  rw [h]
+  omega
+
 /-- In an all-size-two defect partition at binary square order, some
 component contains a vertex of triangle-free degree two.  Thus the uniform
 nonempty-edge theorem seeds an all-triangle-free internal cycle in one of the
@@ -325,6 +349,8 @@ end Erdos85
   Erdos85.binarySquare_regular_allSizeTwo_triangleFreeEdge_card_eq_colorOrder
 #print axioms
   Erdos85.binarySquare_regular_allSizeTwo_colorOrder_eq_pow_sub_three_mul_triangles
+#print axioms
+  Erdos85.orderSixtyFour_regular_allSizeTwo_colorOrder_mod_three_eq_one
 #print axioms
   Erdos85.binarySquare_regular_allSizeTwo_exists_triangleFreeDegreeTwo
 #print axioms
