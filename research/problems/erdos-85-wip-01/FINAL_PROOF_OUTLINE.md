@@ -1879,13 +1879,16 @@ generalized rather than merely replayed.
      512, 6816, and 12288 (`e8254b9147`).  In `[5,3]` and `[4,4]`, eight-pattern
      pressure forces a nonlocal block, and cyclic rotation always places its
      repeated closing on an equal component pair (`2a92639cb4`, `a4da9697a2`).
-     Two orientations reach distinct-owner canonical separation; the exact
-     residual **GAP** is the third orientation, where the equal roots are the
-     endpoints of the unique B-colored edge and both remaining route colors
-     are A.  `[6,2]` also remains GAP because its cross budget 512 does not yet
-     dominate all block edge capacities.  Thus the obstruction is a
-     same-route-owner fork lemma, not a rectangular classification or finite
-     census.  The last two
+     Two orientations reach distinct-owner canonical separation.  The third,
+     where both remaining route colors are A, now reaches the same separation
+     q-generically: the B-center of the root edge forces the two within-closing
+     A-centers distinct, after which C4-freeness separates a center pair across
+     closings (`sameRouteOwnerFork_canonicalCenter_separation`, `49542583e3`).
+     Thus `[5,3]` and `[4,4]` reach the common downstream routing GAP in every
+     orientation.  `[6,2]` remains earlier: its cross budget 512 does not yet
+     dominate all block edge capacities.  The obstruction is now routing
+     saturation/contradiction, not a rectangular classification, finite
+     census, or same-owner center lemma.  The last two
      are now **AT-64-ONLY, PARTIAL**: partition-agnostic mixed-owner trace and
      fiber bounds give exact cross-component budgets (`≥ 5888` for `[4,2,2]`,
      `≥ 6816` for `[3,3,2]`); the exact 27-block decomposition then selects a
