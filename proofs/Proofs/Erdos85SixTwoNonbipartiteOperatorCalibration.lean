@@ -6,6 +6,7 @@ The elementary operator package in a normalized size-two component does not
 by itself force the defect block to be bipartite.  The explicit circulants
 below give a connected non-bipartite 7-regular graph `D` on sixteen vertices
 whose off-diagonal complement splits into commuting 6- and 2-regular graphs.
+The 2-regular graph is a sixteen-cycle, so it is itself C4-free.
 Consequently, a proof of bipartiteness in the order-64 `[6,2]` stratum must use
 the selector/line-graph or ambient common-neighbor geometry, not only degrees,
 edge partition, and matrix commutation.
@@ -21,13 +22,13 @@ set_option maxHeartbeats 0
 def fin16CyclicDiff (x y : Fin 16) : ℕ := (y.val + 16 - x.val) % 16
 
 /-- Seven-regular defect calibration: connection steps
-`±1, ±2, ±3, 8`. -/
+`±2, ±3, ±4, 8`. -/
 def sixTwoCalibrationDefect : SimpleGraph (Fin 16) where
   Adj x y :=
-    fin16CyclicDiff x y = 1 ∨ fin16CyclicDiff x y = 2 ∨
-    fin16CyclicDiff x y = 3 ∨ fin16CyclicDiff x y = 8 ∨
-    fin16CyclicDiff x y = 13 ∨ fin16CyclicDiff x y = 14 ∨
-    fin16CyclicDiff x y = 15
+    fin16CyclicDiff x y = 2 ∨ fin16CyclicDiff x y = 3 ∨
+    fin16CyclicDiff x y = 4 ∨ fin16CyclicDiff x y = 8 ∨
+    fin16CyclicDiff x y = 12 ∨ fin16CyclicDiff x y = 13 ∨
+    fin16CyclicDiff x y = 14
   symm := by
     constructor
     intro x y
@@ -37,9 +38,9 @@ def sixTwoCalibrationDefect : SimpleGraph (Fin 16) where
     intro x
     fin_cases x <;> simp_all [fin16CyclicDiff]
 
-/-- Two-factor calibration: connection steps `±4`. -/
+/-- Two-factor calibration: connection steps `±1`, hence a sixteen-cycle. -/
 def sixTwoCalibrationSmallOwner : SimpleGraph (Fin 16) where
-  Adj x y := fin16CyclicDiff x y = 4 ∨ fin16CyclicDiff x y = 12
+  Adj x y := fin16CyclicDiff x y = 1 ∨ fin16CyclicDiff x y = 15
   symm := by
     constructor
     intro x y
@@ -84,6 +85,15 @@ theorem sixTwoCalibrationDefect_degree : ∀ x : Fin 16,
 theorem sixTwoCalibrationSmallOwner_degree : ∀ x : Fin 16,
     sixTwoCalibrationSmallOwner.degree x = 2 := by decide
 
+/-- The internal two-factor calibration is C4-free. -/
+theorem sixTwoCalibrationSmallOwner_c4Free :
+    ¬ containsC4 (Fin 16) sixTwoCalibrationSmallOwner := by
+  have heq : sixTwoCalibrationSmallOwner = cycleGraph 16 := by
+    ext x y
+    fin_cases x <;> fin_cases y <;> decide
+  rw [heq]
+  exact cycleGraph_not_containsC4 (by omega)
+
 theorem sixTwoCalibrationLargeOwner_degree : ∀ x : Fin 16,
     sixTwoCalibrationLargeOwner.degree x = 6 := by decide
 
@@ -103,27 +113,23 @@ theorem sixTwoCalibration_exact_edge_partition (x y : Fin 16) (hxy : x ≠ y) :
 
 /-- The defect calibration is connected. -/
 theorem sixTwoCalibrationDefect_connected : sixTwoCalibrationDefect.Connected := by
-  apply (pathGraph_connected 15).mono
-  intro x y hxy
-  rw [pathGraph_adj] at hxy
-  fin_cases x <;> fin_cases y <;> simp_all [sixTwoCalibrationDefect,
-    fin16CyclicDiff]
+  decide
 
-/-- The vertices `0,1,2` form a triangle, so the defect calibration is not
+/-- The vertices `0,2,4` form a triangle, so the defect calibration is not
 bipartite. -/
 theorem sixTwoCalibrationDefect_not_bipartite :
     ¬ sixTwoCalibrationDefect.IsBipartite := by
   intro h
   obtain ⟨col, hcol⟩ := h
-  have h01 : col (0 : Fin 16) ≠ col (1 : Fin 16) := hcol (by decide)
-  have h12 : col (1 : Fin 16) ≠ col (2 : Fin 16) := hcol (by decide)
   have h02 : col (0 : Fin 16) ≠ col (2 : Fin 16) := hcol (by decide)
-  have h01v : (col (0 : Fin 16)).val ≠ (col (1 : Fin 16)).val :=
-    fun h => h01 (Fin.ext h)
-  have h12v : (col (1 : Fin 16)).val ≠ (col (2 : Fin 16)).val :=
-    fun h => h12 (Fin.ext h)
+  have h24 : col (2 : Fin 16) ≠ col (4 : Fin 16) := hcol (by decide)
+  have h04 : col (0 : Fin 16) ≠ col (4 : Fin 16) := hcol (by decide)
   have h02v : (col (0 : Fin 16)).val ≠ (col (2 : Fin 16)).val :=
     fun h => h02 (Fin.ext h)
+  have h24v : (col (2 : Fin 16)).val ≠ (col (4 : Fin 16)).val :=
+    fun h => h24 (Fin.ext h)
+  have h04v : (col (0 : Fin 16)).val ≠ (col (4 : Fin 16)).val :=
+    fun h => h04 (Fin.ext h)
   omega
 
 /-- All three adjacency matrices commute pairwise over the integers. -/
@@ -156,6 +162,7 @@ theorem sixTwoCalibration_adjMatrices_commute :
 
 #print axioms Erdos85.sixTwoCalibrationDefect_degree
 #print axioms Erdos85.sixTwoCalibrationSmallOwner_degree
+#print axioms Erdos85.sixTwoCalibrationSmallOwner_c4Free
 #print axioms Erdos85.sixTwoCalibrationLargeOwner_degree
 #print axioms Erdos85.sixTwoCalibration_exact_edge_partition
 #print axioms Erdos85.sixTwoCalibrationDefect_connected
