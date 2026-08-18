@@ -2186,6 +2186,13 @@ generalized rather than merely replayed.
      predicate `RectangleCommutatorsAvoidThirty` therefore suffices for the
      conditional contradiction.  Fixed-`K` probes need test only this one
      exponent identity.
+     The same target has a geometric cycle formulation **PROVEN**
+     (`168cdc87d5`): `κ^30 = 1` implies `4 ∉ κ.cycleType`, so H-C4-freeness
+     forces a concrete rectangle commutator with no four-cycle.  Conversely,
+     `RectangleCommutatorsHaveFourCycle` (every eligible `κ` contains a
+     four-cycle) contradicts H-C4-freeness.  This is currently the most direct
+     candidate statement for a fixed-`K` orbit computation or structural
+     `K`-geometry lemma.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
