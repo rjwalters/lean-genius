@@ -1924,7 +1924,16 @@ generalized rather than merely replayed.
      no longer compatibility of local center-grid injections themselves, but
      an *independent* restriction on the individual `AA`/`BB` terms or on
      adjacent defect codegrees, plausibly from the centered-owner selection
-     identities or global trace constraints on `D`.  In particular the
+     identities or global trace constraints on `D`.  The first individual
+     identity is now **PROVEN q-GENERIC** (`8da21f2998`): for every owner `c`
+     and defect edge `xy`,
+     `|AA_c(x,y)|+(O_cD)_{xy}=m_c(m_c-1)`, equivalently the number of defect
+     cells in `S_c(x)×S_c(y)` is `m_c+(O_cD)_{xy}`.  This is an exact bridge
+     from the center grid to the commuting owner/defect operator.  Its first
+     numerical corollary `(O_cD)_{xy}≤q-2` is checked in `13af8e34ae` but is
+     elementary (the `(q-1)`-vertex set `N_D(y)` contains the loop-forbidden
+     vertex `x`), so it is not yet the required independent obstruction.
+     In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
      row and is therefore **PROVEN q-GENERIC but not itself contradictory**;
