@@ -1917,10 +1917,14 @@ generalized rather than merely replayed.
      edge `xy`,
      `|AA(x,y)|+|BB(x,y)|+2(q-1)-(D²)_{xy}=m_a²+m_b²`.
      Thus the total same-owner closing count varies exactly with the adjacent
-     defect codegree.  The residual leaf is no longer compatibility of local
-     center-grid injections themselves, but extraction of a contradiction
-     from this codegree law together with the lower residue pressure and the
-     global component/trace constraints on `D`.  In particular the
+     defect codegree.  A red-team substitution shows that combining this
+     equality with the preceding residue lower bound gives only
+     `(D²)_{xy} ≥ q²-(m_a+m_b)²=0`, since `m_a+m_b=q`; the old sandwich
+     therefore contributes no additional constraint.  The residual leaf is
+     no longer compatibility of local center-grid injections themselves, but
+     an *independent* restriction on the individual `AA`/`BB` terms or on
+     adjacent defect codegrees, plausibly from the centered-owner selection
+     identities or global trace constraints on `D`.  In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
      row and is therefore **PROVEN q-GENERIC but not itself contradictory**;
