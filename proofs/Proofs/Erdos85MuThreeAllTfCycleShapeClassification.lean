@@ -62,4 +62,68 @@ theorem exists_mu3AllTfShape_of_twoRegular_evenComponents
     exists_mu3AllTfShape_of_cyclePartition rs hrs hrEven
   exact ⟨shape, rs, hshape, hrsizes⟩
 
+/-- A `{±1}` labeling flipped by every edge is an explicit bipartite
+coloring.  This is the abstract content of the adjacency eigenvalue `-2` on
+a 2-regular internal factor. -/
+def signedFlipColoring
+    {V : Type*} (G : SimpleGraph V) (s : V → ℤ)
+    (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hflip : ∀ ⦃x y⦄, G.Adj x y → s x = -s y) :
+    G.Coloring (Fin 2) :=
+  SimpleGraph.Coloring.mk
+    (fun x => if s x = 1 then 0 else 1)
+    (by
+      intro x y hxy
+      have hx := hsign x
+      have hy := hsign y
+      have hf := hflip hxy
+      rcases hx with hx | hx <;> rcases hy with hy | hy <;>
+        simp_all)
+
+theorem signedFlip_isBipartite
+    {V : Type*} (G : SimpleGraph V) (s : V → ℤ)
+    (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hflip : ∀ ⦃x y⦄, G.Adj x y → s x = -s y) :
+    G.IsBipartite :=
+  ⟨signedFlipColoring G s hsign hflip⟩
+
+/-- Every component of a bipartite 2-factor has even order. -/
+theorem twoRegular_bipartite_component_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hdeg : ∀ x, G.degree x = 2) (hbip : G.IsBipartite)
+    (c : G.ConnectedComponent) : Even c.supp.ncard := by
+  obtain ⟨x, p, hp, hpverts, _hgraph⟩ :=
+    twoRegular_component_induce_eq_cycleSubgraph G hdeg c
+  have hloopEven : Even p.length :=
+    (SimpleGraph.two_colorable_iff_forall_loop_even.mp hbip) x p
+  have hlen : p.length = c.supp.ncard := by
+    calc
+      p.length = Nat.card p.toSubgraph.verts :=
+        (isCycle_card_verts_eq_length hp).symm
+      _ = p.toSubgraph.verts.ncard := Nat.card_coe_set_eq _
+      _ = c.supp.ncard := congrArg Set.ncard hpverts
+  rwa [hlen] at hloopEven
+
+/-- Shape classification directly from an alternating signed labeling. -/
+theorem exists_mu3AllTfShape_of_twoRegular_signedFlip
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 16)
+    (hdeg : ∀ x, G.degree x = 2)
+    (hfree : ¬ containsC4 V G)
+    (s : V → ℤ) (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hflip : ∀ ⦃x y⦄, G.Adj x y → s x = -s y) :
+    ∃ (shape : Mu3AllTfShape) (rs : List Nat),
+      (rs = match shape with
+        | .c16 => [16]
+        | .c10c6 => [10, 6]
+        | .c8c8 => [8, 8]) ∧
+      (↑rs : Multiset Nat) =
+        (Finset.univ : Finset G.ConnectedComponent).val.map
+          (fun c => c.supp.ncard) := by
+  apply exists_mu3AllTfShape_of_twoRegular_evenComponents G hcard hdeg hfree
+  exact twoRegular_bipartite_component_even G hdeg
+    (signedFlip_isBipartite G s hsign hflip)
+
 end Erdos85
