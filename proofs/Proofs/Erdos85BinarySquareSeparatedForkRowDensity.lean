@@ -2,6 +2,7 @@ import Proofs.Erdos85BinarySquareRoutingRowStarDecomposition
 import Proofs.Erdos85BinarySquareOwnerBlockEquitable
 import Proofs.Erdos85BinarySquareMixedOwnerCanonicalForkCenters
 import Proofs.Erdos85BinarySquareOppositeOwnerBowtieCenters
+import Proofs.Erdos85OrderSixtyFourThreeComponentForkAdapter
 
 /-! # Generic routing-row density from two separated fork centers -/
 
@@ -195,9 +196,50 @@ theorem binarySquare_regular_ownerFork_forces_twoCenterRoutingRowDensity
         (crossCommonNeighbor_spec G hfree hdf₁ x z₁).1
         (crossCommonNeighbor_spec G hfree hdf₂ x z₂).1
 
+/-- A rainbow-pattern repeated closing reaches the generic density terminal
+without exposing its witnesses manually. -/
+theorem binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hef : e ≠ f) (hfg : f ≠ g) (heg : e ≠ g) (hbc : b ≠ c)
+    (hrepeat : HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g) :
+    (∃ x : e.supp, HasTwoCenterRoutingRowDensity G hfree m e f c hef x) ∨
+      (∃ y : f.supp, HasTwoCenterRoutingRowDensity G hfree m f e b hef.symm y) := by
+  obtain ⟨x, y, z₁, z₂, hz, hx, hy, hz₁, hz₂,
+    _haxy, hby₁, hcx₁, hby₂, hcx₂⟩ :=
+    (hasRepeatedClosingInBlock_iff_exists_ownerFork
+      (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g).mp hrepeat
+  let xs : e.supp := ⟨x, (ConnectedComponent.mem_supp_iff e x).mpr hx⟩
+  let ys : f.supp := ⟨y, (ConnectedComponent.mem_supp_iff f y).mpr hy⟩
+  let z₁s : g.supp := ⟨z₁, (ConnectedComponent.mem_supp_iff g z₁).mpr hz₁⟩
+  let z₂s : g.supp := ⟨z₂, (ConnectedComponent.mem_supp_iff g z₂).mpr hz₂⟩
+  have hdensity := binarySquare_regular_ownerFork_forces_twoCenterRoutingRowDensity
+    G hfree hq hreg hcard m hm hef hfg hfg heg heg hbc
+      xs ys z₁s z₂s hz hby₁ hby₂ hcx₁ hcx₂
+  rcases hdensity with h | h
+  · exact Or.inl ⟨xs, h⟩
+  · exact Or.inr ⟨ys, h⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_twoSeparatedCenters_routingRow_density
 #print axioms Erdos85.binarySquare_regular_ownerFork_forces_twoCenterRoutingRowDensity
+#print axioms Erdos85.binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity

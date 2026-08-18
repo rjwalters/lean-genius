@@ -2031,7 +2031,19 @@ generalized rather than merely replayed.
      was the special case `m_owner=2`.  For the `[3,3,2]` size-three sides and
      the size-four side of `[4,2,2]`, the proven conclusion is a strict partial
      routing row, and the missing terminal must use compatibility between
-     several such dense fragments or an additional routing equation.
+     several such dense fragments or an additional routing equation.  There
+     is now a concrete source of multiple fragments in `[3,3,2]`.
+     `orderSixtyFour_threeThreeTwo_ownerColoredEdgesInBlocks_card_le` proves
+     every directed owner-edge block has size at most 216, below the selected
+     block's 253 triangles.  Consequently
+     `orderSixtyFour_threeThreeTwo_tripleRepeatedClosing` forces repeated
+     closings simultaneously in all three cyclic orientations, not merely the
+     first.  In a rainbow component pattern, the q-generic adapter
+     `binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity`
+     sends each of those three forks directly to its density disjunction.
+     The new shared **GAP** is to combine these three cyclic density choices;
+     the two-equal component pattern instead needs a same-component analogue
+     because its root/target routing row is not cross-component.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
