@@ -1968,7 +1968,16 @@ generalized rather than merely replayed.
      each such edge at its closing vertex to the other edge of the internal
      2-regular cycle.  The remaining **GAP** is the interaction of those two
      forced local cycle arcs with the four owner routes/nonchords, not the
-     identification of the relevant size-two block.
+     identification of the relevant size-two block.  The equivalent selector
+     formulation is also now exact.  The AT-64 theorem
+     `orderSixtyFour_fourTwoTwo_oppositeBowtie_selectorRectangle` produces
+     four two-element selectors `X,Z,Y₁,Y₂`.  If `f=a`, then
+     `X∩Y₁` and `Z∩Y₂` are nonempty while `X⊥Z`, `Y₁⊥Z`, and `Y₂⊥X`;
+     if `f=b`, the same rectangle is reversed.  These disjointness statements
+     use the q-generic orthogonal owner-line-graph law, not enumeration.  This
+     local two-subset rectangle is itself consistent, so the next lemma must
+     add the internal-cycle or commuting-block constraint; selector
+     intersection alone does not close the branch.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
