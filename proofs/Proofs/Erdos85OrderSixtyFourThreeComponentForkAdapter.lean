@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderSixtyFourThreeComponentRepeatedClosing
+import Proofs.Erdos85BinarySquareMixedOwnerNoRainbowAmbientFork
 import Proofs.Erdos85BinarySquareMixedOwnerCanonicalForkCenters
 
 /-! # Graph-facing adapter for a three-component repeated closing -/
@@ -74,6 +75,46 @@ theorem componentTriple_nonlocal_shape
   · exact Or.inr (Or.inr (Or.inl ⟨heg, hef⟩))
   · exact Or.inr (Or.inr (Or.inr ⟨hef, hfg, heg⟩))
 
+/-- Every repeated closing, including the three two-equal component shapes,
+has four owner-labelled ambient centers and separation on at least one side. -/
+theorem hasRepeatedClosingInBlock_ambientCenter_separation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (a b c e f g : D.ConnectedComponent) (hbc : b ≠ c)
+    (hrepeat : HasRepeatedClosingInBlock D
+      (componentOwnerGraph G D a) (componentOwnerGraph G D b)
+      (componentOwnerGraph G D c) e f g) :
+    ∃ x y z₁ z₂ ub₁ ub₂ uc₁ uc₂ : V,
+      z₁ ≠ z₂ ∧
+      D.connectedComponentMk x = e ∧
+      D.connectedComponentMk y = f ∧
+      D.connectedComponentMk z₁ = g ∧
+      D.connectedComponentMk z₂ = g ∧
+      G.Adj y ub₁ ∧ G.Adj z₁ ub₁ ∧
+      G.Adj y ub₂ ∧ G.Adj z₂ ub₂ ∧
+      G.Adj z₁ uc₁ ∧ G.Adj x uc₁ ∧
+      G.Adj z₂ uc₂ ∧ G.Adj x uc₂ ∧
+      D.connectedComponentMk ub₁ = b ∧
+      D.connectedComponentMk ub₂ = b ∧
+      D.connectedComponentMk uc₁ = c ∧
+      D.connectedComponentMk uc₂ = c ∧
+      (ub₁ ≠ ub₂ ∨ uc₁ ≠ uc₂) := by
+  obtain ⟨x, y, z₁, z₂, hz, hx, hy, hz₁, hz₂,
+    _haxy, hbyz₁, hcz₁x, hbyz₂, hcz₂x⟩ :=
+      (hasRepeatedClosingInBlock_iff_exists_ownerFork D
+        (componentOwnerGraph G D a) (componentOwnerGraph G D b)
+        (componentOwnerGraph G D c) e f g).mp hrepeat
+  obtain ⟨ub₁, ub₂, uc₁, uc₂, hyub₁, hz₁ub₁, hyub₂, hz₂ub₂,
+      hz₁uc₁, hxuc₁, hz₂uc₂, hxuc₂, hub₁, hub₂, huc₁, huc₂, hsep⟩ :=
+    ownerFork_commonNeighbor_separation G D hfree b c hbc hz
+      hbyz₁ hbyz₂ hcz₁x hcz₂x
+  exact ⟨x, y, z₁, z₂, ub₁, ub₂, uc₁, uc₂, hz, hx, hy, hz₁, hz₂,
+    hyub₁, hz₁ub₁, hyub₂, hz₂ub₂, hz₁uc₁, hxuc₁, hz₂uc₂, hxuc₂,
+    hub₁, hub₂, huc₁, huc₂, hsep⟩
+
 /-- In the rainbow component-pattern branch, the repeated closing feeds the
 canonical ambient-fork separation theorem directly. -/
 theorem hasRepeatedClosingInBlock_rainbow_canonicalCenter_separation
@@ -123,4 +164,5 @@ end Erdos85
 
 #print axioms Erdos85.hasRepeatedClosingInBlock_iff_exists_ownerFork
 #print axioms Erdos85.componentTriple_nonlocal_shape
+#print axioms Erdos85.hasRepeatedClosingInBlock_ambientCenter_separation
 #print axioms Erdos85.hasRepeatedClosingInBlock_rainbow_canonicalCenter_separation
