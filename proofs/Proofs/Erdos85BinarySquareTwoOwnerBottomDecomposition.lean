@@ -115,9 +115,50 @@ theorem binarySquare_regular_twoOwner_bottom_decomposition_difference_adjKernel
     G hfree hq hreg hcard m hm hsumM] at hcommon
   exact hcommon
 
+/-- The adjacency kernel acts on two-owner decompositions by opposite shifts.
+This is the converse to
+`binarySquare_regular_twoOwner_bottom_decomposition_difference_adjKernel`:
+the kernel is not merely an upper bound on the ambiguity, but exactly the
+space of allowed changes of decomposition. -/
+theorem binarySquare_regular_twoOwner_shift_bottom_decomposition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = q * m c)
+    (hsumM : ∑ c, m c = q)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    {v_a v_b w : V → ℝ}
+    (hva : v_a ∈ realComponentOwnerBottomSubmodule G a (m a))
+    (hvb : v_b ∈ realComponentOwnerBottomSubmodule G b (m b))
+    (hw : w ∈ LinearMap.ker (G.adjMatrix ℝ).mulVecLin) :
+    v_a + w ∈ realComponentOwnerBottomSubmodule G a (m a) ∧
+      v_b - w ∈ realComponentOwnerBottomSubmodule G b (m b) ∧
+      (v_a + w) + (v_b - w) = v_a + v_b := by
+  have hwCommon : w ∈ realBinarySquareOwnerCommonBottomSubmodule G m := by
+    rw [binarySquare_regular_realOwnerCommonBottomSubmodule_eq_adjKernel
+      G hfree hq hreg hcard m hm hsumM]
+    exact hw
+  have hwBottom (c : (secondOrderDefectGraph G).ConnectedComponent) :
+      w ∈ realComponentOwnerBottomSubmodule G c (m c) := by
+    rw [realBinarySquareOwnerCommonBottomSubmodule,
+      Submodule.mem_iInf] at hwCommon
+    exact hwCommon c
+  refine ⟨Submodule.add_mem _ hva (hwBottom a), ?_, ?_⟩
+  · exact Submodule.sub_mem _ hvb (hwBottom b)
+  · ext x
+    simp [sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_twoOwner_exists_bottom_decomposition
 #print axioms Erdos85.binarySquare_regular_twoOwner_bottom_decomposition_difference_adjKernel
+#print axioms Erdos85.binarySquare_regular_twoOwner_shift_bottom_decomposition
