@@ -142,6 +142,49 @@ def bipartiteMissingEquivOfSucc
           ((G.adj_comm x.1 y.1).mp ((G.mem_neighborFinset x.1 y.1).mp hyx)))
       exact hyxNonadj
 
+/-- After relabeling the right shore by the generic missing equivalence, the
+cross graph is literally the complete bipartite graph with the diagonal
+matching removed. -/
+theorem adj_bipartiteMissingEquivOfSucc_apply_iff_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (L R : Finset V) (n : ℕ)
+    (hLcard : L.card = n + 1) (hRcard : R.card = n + 1)
+    (hLR : ∀ x ∈ L, (G.neighborFinset x ∩ R).card = n)
+    (hRL : ∀ y ∈ R, (G.neighborFinset y ∩ L).card = n)
+    (x x' : (L : Set V)) :
+    G.Adj x.1
+        ((bipartiteMissingEquivOfSucc G L R n hLcard hRcard hLR hRL x').1) ↔
+      x ≠ x' := by
+  let hRone := card_missingAcross_eq_one_of_succ G R x'.1 n hRcard
+    (hLR x'.1 x'.2)
+  have hmatched :
+      (bipartiteMissingEquivOfSucc G L R n hLcard hRcard hLR hRL x').1 =
+        (bipartiteMiss G R x'.1 hRone).1 := rfl
+  constructor
+  · intro hadj hxx'
+    subst x'
+    rw [hmatched] at hadj
+    have hmiss := bipartiteMiss_mem_missingAcross G R x.1 hRone
+    exact (mem_sdiff.mp hmiss).2 ((G.mem_neighborFinset x.1 _).mpr hadj)
+  · intro hne
+    rw [hmatched]
+    by_contra hnon
+    have hmiss : (bipartiteMiss G R x'.1 hRone).1 ∈ missingAcross G R x.1 :=
+      mem_sdiff.mpr ⟨(bipartiteMiss G R x'.1 hRone).2,
+        by simpa [mem_neighborFinset] using hnon⟩
+    let hRoneX := card_missingAcross_eq_one_of_succ G R x.1 n hRcard
+      (hLR x.1 x.2)
+    have heq := eq_bipartiteMiss_of_mem_missingAcross G R x.1
+      (bipartiteMiss G R x'.1 hRone).1 hRoneX hmiss
+    have hinj : Function.Injective
+        (bipartiteMissingEquivOfSucc G L R n hLcard hRcard hLR hRL) :=
+      (bipartiteMissingEquivOfSucc G L R n hLcard hRcard hLR hRL).injective
+    apply hne
+    apply hinj
+    apply Subtype.ext
+    exact heq.symm
+
 /-- If both shores have size eight and every vertex has seven cross
 neighbours, the unique misses form a bijection (a perfect matching in the
 cross-complement). -/
@@ -254,6 +297,7 @@ def sixteenMissingEquiv
 
 #print axioms Erdos85.card_missingAcross_eq_one_of_succ
 #print axioms Erdos85.bipartiteMissingEquivOfSucc
+#print axioms Erdos85.adj_bipartiteMissingEquivOfSucc_apply_iff_ne
 
 end
 
