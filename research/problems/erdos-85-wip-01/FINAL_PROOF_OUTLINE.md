@@ -2031,7 +2031,11 @@ generalized rather than merely replayed.
      `6e69af49ba`): if the two columns have identical `H`-neighborhoods, then
      for every source cell the six row transports biject onto the entire
      six-cell target column.  The remaining issue there is compatibility as
-     the source varies / around the induced `H` four-cycle.
+     the source varies.  The underlying geometry is exact (**PROVEN**,
+     `3a7b814130`): distinct twin columns are the opposite column vertices of
+     an isolated `K₂,₂`, with two common rows whose H-neighborhoods are
+     exactly those columns.  Thus this issue is monodromy around a concrete
+     `H` four-cycle, not an abstract twin-neighborhood case.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
