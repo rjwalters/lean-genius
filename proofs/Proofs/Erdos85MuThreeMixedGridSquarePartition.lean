@@ -70,6 +70,31 @@ def mixedGridSquareResidualGraph {X Y : Type*} [Fintype X] [Fintype Y]
     intro u h
     exact h.1 rfl
 
+/-- Canonical local-finiteness instances for the three constructed graphs.
+Lean 4.31 no longer infers these uniformly at uses of `degree`, even though
+their ambient cell type is finite. -/
+noncomputable instance mixedGridRowColumnGraphLocallyFinite
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    (K : X → Y → Prop) [DecidableRel K] :
+    (mixedGridRowColumnGraph K).LocallyFinite :=
+  by classical exact fun _u => Fintype.ofFinite _
+
+noncomputable instance mixedGridCommonNeighborGraphLocallyFinite
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (K : X → Y → Prop) [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj] :
+    (mixedGridCommonNeighborGraph K C).LocallyFinite :=
+  by classical exact fun _u => Fintype.ofFinite _
+
+noncomputable instance mixedGridSquareResidualGraphLocallyFinite
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (K : X → Y → Prop) [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj] :
+    (mixedGridSquareResidualGraph K C).LocallyFinite :=
+  by classical exact fun _u => Fintype.ofFinite _
+
 /-- A rook-related pair cannot have a common exterior neighbour. -/
 theorem MuThreeMixedGridCode.rowColumn_common_neighbor_card_eq_zero
     {X Y : Type*} [Fintype X] [Fintype Y]
