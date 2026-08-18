@@ -168,6 +168,70 @@ theorem exists_mu3SlotCandidate_of_allSectorCandidate
   simp only [mu3AllSectorCandidate, mu3SlotCandidate]
   rw [hrows]
 
+/-- The external contradiction provider consists of three legacy all-TF
+terminals and nineteen fixed-K LRAT records. -/
+inductive Mu3KCertificateTarget where
+  | allTfC16 | allTfC88 | allTfC106
+  | fixed (i : Fin 19)
+  deriving DecidableEq, Fintype
+
+/-- Exact manifest ordering used by the nineteen fixed-K artifacts:
+C16 all-triangle first, then the thirteen C8+C8 all-triangle candidates,
+then first-TF, C10+C6 six-TF, and second-TF. -/
+def Mu3KCandidateSlot.certificateTarget :
+    Mu3KCandidateSlot → Mu3KCertificateTarget
+  | .c16AllTf _ => .allTfC16
+  | .c16AllTriangle i => .fixed ⟨i.val, by omega⟩
+  | .c88AllTf _ => .allTfC88
+  | .c88AllTriangle i => .fixed ⟨i.val + 3, by omega⟩
+  | .c88FirstTf _ => .fixed 16
+  | .c88SecondTf _ => .fixed 18
+  | .c106AllTf _ => .allTfC106
+  | .c106AllTriangle i => Fin.elim0 i
+  | .c106TenTf i => Fin.elim0 i
+  | .c106SixTf _ => .fixed 17
+
+theorem mu3KCertificateTarget_card :
+    Fintype.card Mu3KCertificateTarget = 22 := by decide
+
+theorem Mu3KCandidateSlot.certificateTarget_bijective :
+    Function.Bijective Mu3KCandidateSlot.certificateTarget := by
+  apply (Fintype.bijective_iff_surjective_and_card
+    Mu3KCandidateSlot.certificateTarget).2
+  constructor
+  · intro target
+    cases target with
+  | allTfC16 => exact ⟨.c16AllTf 0, rfl⟩
+  | allTfC88 => exact ⟨.c88AllTf 0, rfl⟩
+  | allTfC106 => exact ⟨.c106AllTf 0, rfl⟩
+  | fixed i =>
+      fin_cases i
+      · exact ⟨.c16AllTriangle 0, rfl⟩
+      · exact ⟨.c16AllTriangle 1, rfl⟩
+      · exact ⟨.c16AllTriangle 2, rfl⟩
+      · exact ⟨.c88AllTriangle 0, rfl⟩
+      · exact ⟨.c88AllTriangle 1, rfl⟩
+      · exact ⟨.c88AllTriangle 2, rfl⟩
+      · exact ⟨.c88AllTriangle 3, rfl⟩
+      · exact ⟨.c88AllTriangle 4, rfl⟩
+      · exact ⟨.c88AllTriangle 5, rfl⟩
+      · exact ⟨.c88AllTriangle 6, rfl⟩
+      · exact ⟨.c88AllTriangle 7, rfl⟩
+      · exact ⟨.c88AllTriangle 8, rfl⟩
+      · exact ⟨.c88AllTriangle 9, rfl⟩
+      · exact ⟨.c88AllTriangle 10, rfl⟩
+      · exact ⟨.c88AllTriangle 11, rfl⟩
+      · exact ⟨.c88AllTriangle 12, rfl⟩
+      · exact ⟨.c88FirstTf 0, rfl⟩
+      · exact ⟨.c106SixTf 0, rfl⟩
+      · exact ⟨.c88SecondTf 0, rfl⟩
+  · exact mu3KCandidateSlot_card.trans mu3KCertificateTarget_card.symm
+
+noncomputable def mu3KCandidateSlotEquivCertificateTarget :
+    Mu3KCandidateSlot ≃ Mu3KCertificateTarget :=
+  Equiv.ofBijective Mu3KCandidateSlot.certificateTarget
+    Mu3KCandidateSlot.certificateTarget_bijective
+
 end Erdos85
 
 #print axioms Erdos85.mu3KCandidateSlot_card
@@ -176,3 +240,4 @@ end Erdos85
 #print axioms Erdos85.Mu3KCandidateSlot.rows_mem
 #print axioms Erdos85.mu3AllSectorCandidate_toAllSectorIndex
 #print axioms Erdos85.exists_mu3SlotCandidate_of_allSectorCandidate
+#print axioms Erdos85.Mu3KCandidateSlot.certificateTarget_bijective
