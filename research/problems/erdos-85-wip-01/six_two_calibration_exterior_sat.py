@@ -7,8 +7,9 @@ with steps ±5, ±6, ±7.  The 48 exterior vertices are identified with E(R).
 
 We ask for a simple 6-regular graph C on E(R) satisfying the exact cross-block
 equation H B + B C = J, where B is the unsigned vertex-edge incidence matrix
-of R.  That system is satisfiable.  Adding the remaining C4-free condition on
-pairs of exterior vertices makes it unsatisfiable.
+of R.  That system is satisfiable.  The constraints on intersecting R-edges
+remain satisfiable; requiring only that C itself be C4-free (the constraints
+on disjoint R-edges) already makes the system unsatisfiable.
 
 Requires the Python `z3-solver` package.
 """
@@ -39,7 +40,8 @@ EXTERIOR = [
 ]
 
 
-def make_solver(require_c4_free: bool) -> Solver:
+def make_solver(c4_mode: str) -> Solver:
+    assert c4_mode in ("none", "intersecting", "disjoint", "all")
     count = len(EXTERIOR)
     variables = {
         (i, j): Bool(f"c_{i}_{j}")
@@ -76,13 +78,17 @@ def make_solver(require_c4_free: bool) -> Solver:
                 )
             )
 
-    if require_c4_free:
+    if c4_mode != "none":
         # Two exterior vertices already have one common small neighbor exactly
         # when their R-edges intersect.  Their number of common C-neighbors is
         # therefore at most one minus that intersection indicator.
         for i in range(count):
             for j in range(i + 1, count):
                 common_small = len(set(EXTERIOR[i]) & set(EXTERIOR[j]))
+                if c4_mode == "intersecting" and common_small == 0:
+                    continue
+                if c4_mode == "disjoint" and common_small == 1:
+                    continue
                 common_exterior = [
                     And(edge(i, k), edge(j, k))
                     for k in range(count)
@@ -97,13 +103,17 @@ def make_solver(require_c4_free: bool) -> Solver:
 
 def main() -> None:
     assert len(EXTERIOR) == 48
-    base = make_solver(require_c4_free=False).check()
-    full = make_solver(require_c4_free=True).check()
     print(f"exterior vertices: {len(EXTERIOR)}")
-    print(f"degree + HB+BC=J: {base}")
-    print(f"degree + HB+BC=J + C4-free: {full}")
-    assert base == sat
-    assert full == unsat
+    results = {mode: make_solver(mode).check() for mode in
+               ("none", "intersecting", "disjoint", "all")}
+    for mode, result in results.items():
+        print(f"C4 mode {mode:>12}: {result}")
+    assert results == {
+        "none": sat,
+        "intersecting": sat,
+        "disjoint": unsat,
+        "all": unsat,
+    }
 
 
 if __name__ == "__main__":
