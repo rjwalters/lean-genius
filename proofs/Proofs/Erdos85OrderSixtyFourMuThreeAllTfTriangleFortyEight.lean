@@ -29,9 +29,8 @@ theorem orderSixtyFour_allSixteen_tfComponent_internal_neighbor_triangleFree
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 (Fin 64) G)
     (hreg : ∀ x, G.degree x = 8)
-    (hsize : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
-      c.supp.ncard = 16)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsize : c.supp.ncard = 16)
     (htf : ∀ x : c.supp, (triangleFreeEdgeGraph G).degree x.1 = 2)
     (x : c.supp) {y : Fin 64} (hxy : G.Adj x.1 y) (hy : y ∈ c.supp) :
     y ∈ triangleFreeNeighbors G x.1 := by
@@ -41,7 +40,7 @@ theorem orderSixtyFour_allSixteen_tfComponent_internal_neighbor_triangleFree
     have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
       G hfree (q := 8) (by norm_num) hreg (by norm_num)
       c c (x := x.1) x.2
-    rw [hsize c] at hmul
+    rw [hsize] at hmul
     have hcard :
         (componentNeighborFinset G (secondOrderDefectGraph G) c x.1).card = 2 := by
       omega
@@ -129,9 +128,8 @@ theorem orderSixtyFour_allSixteen_tfComponent_rooted_triangle_endpoints_exterior
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 (Fin 64) G)
     (hreg : ∀ x, G.degree x = 8)
-    (hsize : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
-      c.supp.ncard = 16)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsize : c.supp.ncard = 16)
     (htf : ∀ x : c.supp, (triangleFreeEdgeGraph G).degree x.1 = 2)
     (x : c.supp) {y z : Fin 64}
     (hxy : G.Adj x.1 y) (hxz : G.Adj x.1 z) (hyz : G.Adj y z) :
@@ -139,7 +137,7 @@ theorem orderSixtyFour_allSixteen_tfComponent_rooted_triangle_endpoints_exterior
   apply rooted_triangle_endpoints_not_mem_of_internal_neighbors_triangleFree
     G c.supp
     (orderSixtyFour_allSixteen_tfComponent_internal_neighbor_triangleFree
-      G hfree hreg hsize c htf)
+      G hfree hreg c hsize htf)
     x hxy hxz hyz
 
 end
