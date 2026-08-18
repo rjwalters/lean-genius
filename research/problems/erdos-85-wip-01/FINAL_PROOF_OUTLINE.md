@@ -2197,12 +2197,22 @@ generalized rather than merely replayed.
 
 ### A6. Binary branch capstone
 
-21. **`AXIOM A-CAPSTONE`.** Node 10 + A-REG + the proved A-NONREG imply
-    `BinarySquareOrderTightCoreExclusion`.
+21. **`PROVEN` — A-CAPSTONE is a theorem (commit `ed0c90be80`).**
+    `Erdos85BinarySquareRegularCapstone` states A-REG as the proposition
+    `BinarySquareRegularExclusion` (for every `k ≥ 3`, no `2^k`-regular
+    C4-free graph on `4^k` vertices) and proves
+    `binarySquareOrderTightCoreExclusion_of_regularExclusion :
+    BinarySquareRegularExclusion → BinarySquareOrderTightCoreExclusion`,
+    using only the uniform parity theorem `squareOrder_regular_of_even`
+    (node 10 / A-NONREG): every normalized binary tight core is regular, so
+    the regular exclusion is the sole remaining hypothesis of Branch A.
+    Axioms of the theorem: `propext, Classical.choice, Quot.sound` only.
 
-22. **`PROVEN` conditional finish.** From A-CAPSTONE,
-    `not_erdos85Question_of_binarySquareOrderTightCoreExclusion` proves the
-    desired negation of Erdős 85.
+22. **`PROVEN` conditional finish.**
+    `not_erdos85Question_of_binarySquareRegularExclusion :
+    BinarySquareRegularExclusion → ¬ Erdos85Question` chains node 21 with
+    `not_erdos85Question_of_binarySquareOrderTightCoreExclusion`; Erdős 85 is
+    false assuming only `AXIOM A-REG`.
 
 ## B. Odd-prime / plane-order branch
 
@@ -2343,12 +2353,13 @@ The shortest current proof tree is:
 
 ```text
 ¬ Erdos85Question                                      [conditional root]
-└── BinarySquareOrderTightCoreExclusion                 [AXIOM A-CAPSTONE]
+└── BinarySquareOrderTightCoreExclusion                 [PROVEN from A-REG, ed0c90be80]
     ├── q²-1 characteristic-two witnesses              [PROVEN]
     └── no square-order tight core for q = 2^k
         ├── regular / parameterized nonregular split     [PROVEN]
-        ├── regular-sector exclusion                    [AXIOM A-REG]
-        └── nonregular-sector exclusion                 [PROVEN]
+        ├── regular-sector exclusion                    [AXIOM A-REG — the ONLY axiom of Branch A]
+        │   └── q=8: seven strata by defect partition   [GAP A-REG-STRATA: only [2,2,2,2] attacked]
+        └── nonregular-sector exclusion                 [PROVEN, uniform parity theorem]
 ```
 
 The parallel odd-prime tree is:
