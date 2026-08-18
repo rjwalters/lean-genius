@@ -1509,8 +1509,15 @@ generalized rather than merely replayed.
      `Erdos85OrderSixteenTwoFourCyclesTriangleBound`: an order-sixteen factor
      with two distinct four-cycle components cannot also contain two triangle
      components, since those four parts already consume fourteen vertices and
-     leave an impossible remainder of two.  The involution table and the final
-     profile contradiction still need graph-facing Lean statements.
+     leave an impossible remainder of two.  The owner pattern on the first
+     twin triangle is now graph-facing PROVEN in
+     `Erdos85OrderSixtyFourCollisionRainbowOwnerPattern`: four-component
+     exhaustion supplies the palette, owner uniqueness identifies the three
+     canonical triangle-edge colors, and the collision rows reduce them to
+     exactly one monochromatic-fourth-color pattern or one of three `2+1`
+     patterns (the doubled canonical owner is the opposite collision color).
+     The involution table and the contradiction in each of these four exact
+     routing/profile cases still need graph-facing Lean statements.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
