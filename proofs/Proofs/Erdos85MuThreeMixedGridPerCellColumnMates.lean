@@ -179,6 +179,217 @@ theorem MuThreeMixedGridCode.rookMatesInColumn_card
           Or.inl rfl⟩
     simp [hK, hsingleton]
 
+def mixedGridEligibleIntermediateNeighborsForColumn
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (u : muThreeMixedCell K) (y : Y) : Finset (muThreeMixedCell K) :=
+  (C.neighborFinset u).filter fun m => ¬ H m.1.1 y
+
+theorem MuThreeMixedGridCode.eligibleIntermediateNeighborsForColumn_card
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y) :
+    (mixedGridEligibleIntermediateNeighborsForColumn H K C u y).card =
+      (mixedGridCommonAllowedRows' H u.1.2 y).card := by
+  apply Finset.card_bij (fun m _ => m.1.1)
+  · intro m hm
+    have hm' := Finset.mem_filter.mp hm
+    have hum : C.Adj u m := (C.mem_neighborFinset u m).mp hm'.1
+    apply Finset.mem_filter.mpr
+    exact ⟨Finset.mem_univ _,
+      mixedGrid_neighbor_row_allowed H K C code u m hum, hm'.2⟩
+  · intro m hm n hn hrow
+    by_contra hmn
+    have hm' := Finset.mem_filter.mp hm
+    have hn' := Finset.mem_filter.mp hn
+    have hsep := code.rook u m n
+      ((C.mem_neighborFinset u m).mp hm'.1)
+      ((C.mem_neighborFinset u n).mp hn'.1) hmn
+    exact hsep.1 hrow
+  · intro x hx
+    have hx' := (Finset.mem_filter.mp hx).2
+    obtain ⟨m, hum, _⟩ :=
+      (code.existsUnique_row_neighbor_iff H K C u x).mpr hx'.1
+    refine ⟨m, ?_, hum.2⟩
+    apply Finset.mem_filter.mpr
+    exact ⟨(C.mem_neighborFinset u m).mpr hum.1,
+      by simpa [hum.2] using hx'.2⟩
+
+/-- The unique neighbour of `m` in an allowed target column. -/
+noncomputable def mixedGridColumnRoute
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (m : muThreeMixedCell K) (y : Y) (hy : ¬ H m.1.1 y) :
+    muThreeMixedCell K :=
+  Classical.choose
+    ((code.existsUnique_column_neighbor_iff H K C m y).mpr hy)
+
+theorem mixedGridColumnRoute_spec
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (m : muThreeMixedCell K) (y : Y) (hy : ¬ H m.1.1 y) :
+    C.Adj m (mixedGridColumnRoute H K C code m y hy) ∧
+      (mixedGridColumnRoute H K C code m y hy).1.2 = y :=
+  (Classical.choose_spec
+    ((code.existsUnique_column_neighbor_iff H K C m y).mpr hy)).1
+
+theorem mixedGridColumnRoute_eq_of_adj_of_column
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (m v : muThreeMixedCell K) (y : Y) (hy : ¬ H m.1.1 y)
+    (hmv : C.Adj m v) (hvcol : v.1.2 = y) :
+    mixedGridColumnRoute H K C code m y hy = v := by
+  exact ((Classical.choose_spec
+    ((code.existsUnique_column_neighbor_iff H K C m y).mpr hy)).2
+      v ⟨hmv, hvcol⟩).symm
+
+noncomputable def mixedGridIntermediateToColumnMate
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y)
+    (m : {m // m ∈ mixedGridEligibleIntermediateNeighborsForColumn H K C u y}) :
+    muThreeMixedCell K :=
+  mixedGridColumnRoute H K C code m.1 y (Finset.mem_filter.mp m.2).2
+
+theorem mixedGridIntermediateToColumnMate_spec
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y)
+    (m : {m // m ∈ mixedGridEligibleIntermediateNeighborsForColumn H K C u y}) :
+    C.Adj m.1 (mixedGridIntermediateToColumnMate H K C code u y m) ∧
+      (mixedGridIntermediateToColumnMate H K C code u y m).1.2 = y :=
+  mixedGridColumnRoute_spec H K C code m.1 y (Finset.mem_filter.mp m.2).2
+
+theorem MuThreeMixedGridCode.commonNeighborMatesInColumn_card_eq_eligible
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y) (hyu : y ≠ u.1.2) :
+    (mixedGridGraphMatesInColumn (mixedGridCommonNeighborGraph K C) u y).card =
+      (mixedGridEligibleIntermediateNeighborsForColumn H K C u y).card := by
+  symm
+  apply Finset.card_bij (fun m hm =>
+    mixedGridIntermediateToColumnMate H K C code u y ⟨m, hm⟩)
+  · intro m hm
+    let ms : {m // m ∈ mixedGridEligibleIntermediateNeighborsForColumn H K C u y} :=
+      ⟨m, hm⟩
+    let v := mixedGridIntermediateToColumnMate H K C code u y ms
+    have hum : C.Adj u m := (C.mem_neighborFinset u m).mp
+      (Finset.mem_filter.mp hm).1
+    have hmv : C.Adj m v :=
+      (mixedGridIntermediateToColumnMate_spec H K C code u y ms).1
+    have hvcol : v.1.2 = y :=
+      (mixedGridIntermediateToColumnMate_spec H K C code u y ms).2
+    have huv : u ≠ v := by
+      intro huv
+      apply hyu
+      simpa [huv] using hvcol.symm
+    have hmcommon : m ∈ C.neighborFinset u ∩ C.neighborFinset v :=
+      Finset.mem_inter.mpr ⟨(C.mem_neighborFinset u m).mpr hum,
+        (C.mem_neighborFinset v m).mpr (C.adj_symm hmv)⟩
+    have hpos : 0 < (C.neighborFinset u ∩ C.neighborFinset v).card :=
+      Finset.card_pos.mpr ⟨m, hmcommon⟩
+    have hle := code.common_neighbor_card_le_one H K C u v huv
+    have hone : (C.neighborFinset u ∩ C.neighborFinset v).card = 1 := by omega
+    exact Finset.mem_filter.mpr
+      ⟨((mixedGridCommonNeighborGraph K C).mem_neighborFinset u v).mpr
+        ⟨huv, hone⟩, hvcol⟩
+  · intro m hm n hn hmn
+    let ms : {m // m ∈ mixedGridEligibleIntermediateNeighborsForColumn H K C u y} :=
+      ⟨m, hm⟩
+    let ns : {m // m ∈ mixedGridEligibleIntermediateNeighborsForColumn H K C u y} :=
+      ⟨n, hn⟩
+    let v := mixedGridIntermediateToColumnMate H K C code u y ms
+    have hvcol : v.1.2 = y :=
+      (mixedGridIntermediateToColumnMate_spec H K C code u y ms).2
+    have huv : u ≠ v := by
+      intro huv
+      apply hyu
+      simpa [huv] using hvcol.symm
+    have hmcommon : m ∈ C.neighborFinset u ∩ C.neighborFinset v := by
+      apply Finset.mem_inter.mpr
+      refine ⟨(Finset.mem_filter.mp hm).1, ?_⟩
+      exact (C.mem_neighborFinset v m).mpr (C.adj_symm
+        (mixedGridIntermediateToColumnMate_spec H K C code u y ms).1)
+    have hncommon : n ∈ C.neighborFinset u ∩ C.neighborFinset v := by
+      apply Finset.mem_inter.mpr
+      refine ⟨(Finset.mem_filter.mp hn).1, ?_⟩
+      have hnv := (mixedGridIntermediateToColumnMate_spec H K C code u y ns).1
+      have heq : mixedGridIntermediateToColumnMate H K C code u y ns = v := hmn.symm
+      rw [heq] at hnv
+      exact (C.mem_neighborFinset v n).mpr (C.adj_symm hnv)
+    exact Finset.card_le_one.mp
+      (code.common_neighbor_card_le_one H K C u v huv) m hmcommon n hncommon
+  · intro v hv
+    have hv' := Finset.mem_filter.mp hv
+    have hq := ((mixedGridCommonNeighborGraph K C).mem_neighborFinset u v).mp hv'.1
+    change u ≠ v ∧ (C.neighborFinset u ∩ C.neighborFinset v).card = 1 at hq
+    have hnonempty : (C.neighborFinset u ∩ C.neighborFinset v).Nonempty :=
+      Finset.card_pos.mp (by rw [hq.2]; omega)
+    obtain ⟨m, hm⟩ := hnonempty
+    have hm' := Finset.mem_inter.mp hm
+    have hvm : C.Adj v m := (C.mem_neighborFinset v m).mp hm'.2
+    have hmEligible : m ∈ mixedGridEligibleIntermediateNeighborsForColumn H K C u y := by
+      apply Finset.mem_filter.mpr
+      refine ⟨hm'.1, ?_⟩
+      have hallowed := mixedGrid_neighbor_row_allowed H K C code v m hvm
+      simpa [hv'.2] using hallowed
+    refine ⟨m, hmEligible, ?_⟩
+    apply mixedGridColumnRoute_eq_of_adj_of_column H K C code
+    · exact C.adj_symm hvm
+    · exact hv'.2
+
+theorem MuThreeMixedGridCode.commonNeighborMatesInColumn_card
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y) (hyu : y ≠ u.1.2) :
+    (mixedGridGraphMatesInColumn (mixedGridCommonNeighborGraph K C) u y).card =
+      4 + (mixedGridHCommonRows H u.1.2 y).card := by
+  rw [code.commonNeighborMatesInColumn_card_eq_eligible H K C u y hyu,
+    code.eligibleIntermediateNeighborsForColumn_card H K C u y,
+    code.commonAllowedRows_card H K C u.1.2 y]
+
+theorem MuThreeMixedGridCode.residualMatesInColumn_add_overlap_add_indicator
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (u : muThreeMixedCell K) (y : Y) (hyu : y ≠ u.1.2) :
+    (mixedGridGraphMatesInColumn (mixedGridSquareResidualGraph K C) u y).card +
+      (mixedGridHCommonRows H u.1.2 y).card +
+      (if K u.1.1 y then 0 else 1) = 2 := by
+  have hledger := code.columnLedger_card H K C u y hyu
+  have hQ := code.commonNeighborMatesInColumn_card H K C u y hyu
+  have hR := code.rookMatesInColumn_card H K C u y hyu
+  rw [hQ, hR] at hledger
+  omega
+
 end
 
 end Erdos85
@@ -186,3 +397,9 @@ end Erdos85
 #print axioms Erdos85.MuThreeMixedGridCode.commonAllowedRows_card
 #print axioms Erdos85.MuThreeMixedGridCode.columnLedger_card
 #print axioms Erdos85.MuThreeMixedGridCode.rookMatesInColumn_card
+#print axioms
+  Erdos85.MuThreeMixedGridCode.eligibleIntermediateNeighborsForColumn_card
+#print axioms Erdos85.mixedGridIntermediateToColumnMate_spec
+#print axioms Erdos85.MuThreeMixedGridCode.commonNeighborMatesInColumn_card
+#print axioms
+  Erdos85.MuThreeMixedGridCode.residualMatesInColumn_add_overlap_add_indicator
