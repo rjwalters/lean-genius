@@ -59,6 +59,78 @@ theorem hasRepeatedClosingInBlock_reverse
     (B.adj_comm z₁ y).mpr hyz₁, (C.adj_comm x z₂).mpr hz₂x,
     (B.adj_comm z₂ y).mpr hyz₂⟩
 
+/-- An `A,A,B` repeated closing on the alternating component shape `e,f,e`
+forces two distinct `A`-centers at the `f`-root.  If the normalized size of
+owner `a` is two, they saturate the cross routing row from `f` into `e`. -/
+theorem binarySquare_regular_alternatingAABRepeatedClosing_forces_smallOwnerSaturation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (a b e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hef : e ≠ f) (hma : m a = 2)
+    (hrepeat : HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b) e f e) :
+    HasTwoCenterRoutingRowSaturationForOwner G hfree a := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨x, y, z₁, _z₂, _hz, hx, hy, hz₁, _hz₂,
+    haxy, hayz₁, hbz₁x, _hayz₂, _hbz₂x⟩ :=
+      (hasRepeatedClosingInBlock_iff_exists_ownerFork D
+        (componentOwnerGraph G D a) (componentOwnerGraph G D a)
+        (componentOwnerGraph G D b) e f e).mp hrepeat
+  let ys : f.supp := ⟨y, (ConnectedComponent.mem_supp_iff f y).mpr hy⟩
+  let u₀ : a.supp := ⟨componentOwnerCenter G D a x y,
+    (componentOwnerCenter_spec G D a haxy).1⟩
+  let u₁ : a.supp := ⟨componentOwnerCenter G D a y z₁,
+    (componentOwnerCenter_spec G D a hayz₁).1⟩
+  let v : b.supp := ⟨componentOwnerCenter G D b z₁ x,
+    (componentOwnerCenter_spec G D b hbz₁x).1⟩
+  have hu₀v : u₀.1 ≠ v.1 := by
+    intro h
+    apply hab
+    have hu₀comp := (ConnectedComponent.mem_supp_iff a u₀.1).mp u₀.2
+    have hvcomp := (ConnectedComponent.mem_supp_iff b v.1).mp v.2
+    exact hu₀comp.symm.trans ((congrArg D.connectedComponentMk h).trans hvcomp)
+  have hu : u₀ ≠ u₁ := by
+    intro h
+    have hxu₁ : G.Adj x u₁.1 := by
+      rw [← congrArg Subtype.val h]
+      exact (componentOwnerCenter_spec G D a haxy).2.1
+    have hz₁u₀ : G.Adj u₀.1 z₁ := by
+      apply (G.adj_comm u₀.1 z₁).mpr
+      rw [congrArg Subtype.val h]
+      exact (componentOwnerCenter_spec G D a hayz₁).2.2
+    have hxu₀ : G.Adj u₀.1 x :=
+      (G.adj_comm u₀.1 x).mpr
+        (by simpa [h] using hxu₁)
+    have hz₁v : G.Adj v.1 z₁ :=
+      (G.adj_comm v.1 z₁).mpr
+        (componentOwnerCenter_spec G D b hbz₁x).2.1
+    have hxv : G.Adj v.1 x :=
+      (G.adj_comm v.1 x).mpr
+        (componentOwnerCenter_spec G D b hbz₁x).2.2
+    exact hfree (containsC4_of_two_common hbz₁x.ne hu₀v
+      hz₁u₀ hxu₀ hz₁v hxv)
+  have hyu₀ : G.Adj ys.1 u₀.1 :=
+    (componentOwnerCenter_spec G D a haxy).2.2
+  have hyu₁ : G.Adj ys.1 u₁.1 :=
+    (componentOwnerCenter_spec G D a hayz₁).2.1
+  have hd : HasTwoCenterRoutingRowDensity G hfree m f e a hef.symm ys := by
+    refine ⟨u₀, u₁, hu, hyu₀, hyu₁, ?_⟩
+    exact binarySquare_regular_twoSeparatedCenters_routingRow_density
+      G hfree hq hreg hcard m hm hef.symm ys u₀ u₁ hu hyu₀ hyu₁
+  exact twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
+    G hfree m a hma ⟨f, e, hef.symm, ys, hd⟩
+
 /-- If a colored-triple census is more than twice the directed first-edge
 space and the defect graph has two components, then three triples share one
 first edge; two of their closing vertices share a defect component, producing
@@ -466,15 +538,55 @@ theorem orderSixtyFour_sixTwo_largeOwnerDensity_or_normalizedResidual
       · exact Or.inr (Or.inr (Or.inr hr))
       · exact False.elim (hef rfl)
 
+/-- Final consumer of the alternating normalized blocks: only the all-same
+repeated-closing block remains beside the large-owner density and small-owner
+saturation terminals. -/
+theorem orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_allSame
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 2) (hmb : m b = 6) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m b ∨
+      HasTwoCenterRoutingRowSaturationForOwner G hfree a ∨
+      ∃ d,
+        HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+          (componentOwnerGraph G (secondOrderDefectGraph G) a)
+          (componentOwnerGraph G (secondOrderDefectGraph G) a)
+          (componentOwnerGraph G (secondOrderDefectGraph G) b) d d d := by
+  have h := orderSixtyFour_sixTwo_largeOwnerDensity_or_normalizedResidual
+    G hfree hreg hcount m hm a b hab hma hmb
+  rcases h with hd | hall | haba | hbab
+  · exact Or.inl hd
+  · exact Or.inr (Or.inr hall)
+  · exact Or.inr (Or.inl
+      (binarySquare_regular_alternatingAABRepeatedClosing_forces_smallOwnerSaturation
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+          a b a b hab hab hma haba))
+  · exact Or.inr (Or.inl
+      (binarySquare_regular_alternatingAABRepeatedClosing_forces_smallOwnerSaturation
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+          a b b a hab hab.symm hma hbab))
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.card_cyclicColoredTriples_rotate
 #print axioms Erdos85.hasRepeatedClosingInBlock_reverse
+#print axioms Erdos85.binarySquare_regular_alternatingAABRepeatedClosing_forces_smallOwnerSaturation
 #print axioms Erdos85.exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_repeatedClosingInBlock
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks
 #print axioms Erdos85.orderSixtyFour_sixTwo_rootClosingSameComponent_or_largeOwnerDensity
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeOwnerDensity_or_normalizedResidual
+#print axioms Erdos85.orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_allSame

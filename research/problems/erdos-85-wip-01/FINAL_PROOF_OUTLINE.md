@@ -2018,6 +2018,16 @@ generalized rather than merely replayed.
      `e,f` against the two actual components: outside the density branch, the
      residual is exactly all-same, `a,b,a` (size-two repeated), or `b,a,b`
      (size-six repeated).  There are no remaining anonymous component labels.
+     Both alternating blocks now feed a common q-generic terminal:
+     `binarySquare_regular_alternatingAABRepeatedClosing_forces_smallOwnerSaturation`
+     compares the `A`-center of the fixed root edge with an `A`-center of a
+     closing edge; equality would create a C4 with the `B`-center, so the two
+     distinct size-two-owner centers saturate the cross routing row.  Hence
+     `orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_allSame`
+     reduces the entire `[6,2]` pressure route to exactly: size-six-owner
+     density, size-two-owner saturation, or an all-same `A,A,B` repeated
+     closing.  The last of these and the shared routing terminals are the
+     remaining `[6,2]` GAPs.
      Across the two-component strata, the obstruction is now routing
      saturation/contradiction, not a rectangular classification, finite
      census, or same-owner center lemma.  The last two
