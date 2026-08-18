@@ -1933,6 +1933,16 @@ generalized rather than merely replayed.
      numerical corollary `(O_cD)_{xy}≤q-2` is checked in `13af8e34ae` but is
      elementary (the `(q-1)`-vertex set `N_D(y)` contains the loop-forbidden
      vertex `x`), so it is not yet the required independent obstruction.
+     Summing the recurrence over directed defect edges likewise gives
+     `tr(O_c²D)+tr(O_cD²)=q²(q-1)m_c(m_c-1)`, but this is only the trace
+     projection of the already-proved centered-owner selection identity.
+     The potentially nontrivial specialization is `[6,2]`: for the size-two
+     owner `b`, every defect edge has `(O_bD)_{xy}≤2` and
+     `|BB(x,y)|=2-(O_bD)_{xy}`.  On the 48- and 16-vertex defect components,
+     the restricted `O_b` blocks are respectively 10- and 2-regular and
+     commute with the 7-regular defect blocks.  A contradiction would now
+     follow from showing that this commuting block system cannot keep all its
+     defect-edge product entries at most two; no such theorem is yet proved.
      In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
