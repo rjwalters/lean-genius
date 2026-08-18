@@ -17,19 +17,19 @@ namespace Erdos85
 
 noncomputable section
 
-/-- A three-column `H \ K` block cannot coexist with `H ⊆ K` on every
-outside column.  This is the abstract-code form of “a triangle-sector cycle
-has length at least eight in a genuinely mixed sector.” -/
-theorem MuThreeMixedGridCode.no_threeColumn_notK_block_of_outside_all_K
+/-- An `H \ K` block whose outside columns all satisfy `H ⊆ K` has at
+least four columns.  This is the abstract-code form of “a triangle-sector
+cycle has length at least eight in a genuinely mixed sector.” -/
+theorem MuThreeMixedGridCode.four_le_card_notK_block_of_outside_all_K
     {X Y : Type*} [Fintype X] [Fintype Y]
     [DecidableEq X] [DecidableEq Y]
     (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
     (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
     (code : MuThreeMixedGridCode H K C)
-    (S : Finset Y) (hScard : S.card = 3) (x : X)
+    (S : Finset Y) (x : X)
     (hHinside : ∀ y, H x y → y ∈ S)
     (hHnotK : ∀ y, H x y → ¬ K x y)
-    (houtside : ∀ y, y ∉ S → ∀ z, H z y → K z y) : False := by
+    (houtside : ∀ y, y ∉ S → ∀ z, H z y → K z y) : 4 ≤ S.card := by
   classical
   have hKinside : ∀ y, K x y → y ∈ S := by
     intro y hKxy
@@ -72,12 +72,29 @@ theorem MuThreeMixedGridCode.no_threeColumn_notK_block_of_outside_all_K
   have hunionCard : (RH ∪ RK).card = 4 := by
     rw [Finset.card_union_of_disjoint hdisj, hRHcard, hRKcard]
   have hle := Finset.card_le_card hunionSub
-  rw [hunionCard, hScard] at hle
+  rwa [hunionCard] at hle
+
+/-- In particular, a three-column `H \ K` block cannot coexist with
+`H ⊆ K` on every outside column. -/
+theorem MuThreeMixedGridCode.no_threeColumn_notK_block_of_outside_all_K
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (S : Finset Y) (hScard : S.card = 3) (x : X)
+    (hHinside : ∀ y, H x y → y ∈ S)
+    (hHnotK : ∀ y, H x y → ¬ K x y)
+    (houtside : ∀ y, y ∉ S → ∀ z, H z y → K z y) : False := by
+  have hle := code.four_le_card_notK_block_of_outside_all_K H K C
+    S x hHinside hHnotK houtside
   omega
 
 end
 
 end Erdos85
 
+#print axioms
+  Erdos85.MuThreeMixedGridCode.four_le_card_notK_block_of_outside_all_K
 #print axioms
   Erdos85.MuThreeMixedGridCode.no_threeColumn_notK_block_of_outside_all_K
