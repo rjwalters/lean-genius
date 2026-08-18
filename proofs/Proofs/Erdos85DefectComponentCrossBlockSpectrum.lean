@@ -151,6 +151,35 @@ theorem binarySquare_regular_defectComponent_nonzero_exterior_eigenvector
   simp only [Pi.smul_apply, Pi.zero_apply] at hx
   exact (mul_eq_zero.mp hx).resolve_left hnonsat
 
+/-- At order 64, the campaign-relevant internal eigenvalue `-2` has exterior
+energy `3-mu`.  Hence `mu = 3` is the unique saturated value; every other
+value produces a nonzero exterior eigenvector of eigenvalue `2`. -/
+theorem orderSixtyFour_internalMinusTwo_nonzero_exterior_eigenvector_of_mu_ne_three
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (f : c.supp → ℤ) (mu : ℤ)
+    (hsum : ∑ x, f x = 0) (hf0 : f ≠ 0)
+    (hH : ((G.induce c.supp).adjMatrix ℤ).mulVec f = (-2 : ℤ) • f)
+    (hD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec f =
+      mu • f)
+    (hmu : mu ≠ 3) :
+    let p : Fin 64 → Prop := fun x ↦ x ∈ c.supp
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    B.transpose.mulVec f ≠ 0 ∧
+      C.mulVec (B.transpose.mulVec f) = (2 : ℤ) • B.transpose.mulVec f := by
+  have hnonsat : (8 : ℤ) - 1 - mu - (-2 : ℤ) ^ 2 ≠ 0 := by
+    norm_num
+    omega
+  have h := binarySquare_regular_defectComponent_nonzero_exterior_eigenvector
+    G hfree hreg c f (-2) mu hsum hf0 hH hD hnonsat
+  norm_num at h ⊢
+  exact h
+
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossGram_eq
@@ -158,5 +187,7 @@ end
   Erdos85.binarySquare_regular_defectComponent_crossGram_jointEigenvector
 #print axioms
   Erdos85.binarySquare_regular_defectComponent_nonzero_exterior_eigenvector
+#print axioms
+  Erdos85.orderSixtyFour_internalMinusTwo_nonzero_exterior_eigenvector_of_mu_ne_three
 
 end Erdos85
