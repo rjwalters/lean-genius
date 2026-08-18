@@ -1,5 +1,6 @@
 import Proofs.Erdos85FifthMomentBridge
 import Proofs.Erdos85OrderSixtyFourAllTwoTriangleLedger
+import Proofs.Erdos85BinarySquareRegularParity
 
 /-!
 # A binary square-order congruence for triangle-free edges
@@ -104,6 +105,60 @@ theorem binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty
   rw [hthree, zero_mul, zero_add] at hzmod
   exact (pow_ne_zero (3 * k - 1) (by decide : (2 : ZMod 3) ≠ 0)) hzmod.symm
 
+/-- In an all-size-two defect partition at binary square order, some
+component contains a vertex of triangle-free degree two.  Thus the uniform
+nonempty-edge theorem seeds an all-triangle-free internal cycle in one of the
+size-two blocks. -/
+theorem binarySquare_regular_allSizeTwo_exists_triangleFreeDegreeTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hk : 2 ≤ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcard : Fintype.card V = (2 ^ k) * (2 ^ k))
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = (2 ^ k) * 2) :
+    ∃ (c : (secondOrderDefectGraph G).ConnectedComponent) (x : V),
+      x ∈ c.supp ∧ (triangleFreeEdgeGraph G).degree x = 2 := by
+  let T := triangleFreeEdgeGraph G
+  have hnonempty : T.edgeFinset.Nonempty :=
+    binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty
+      G hfree (by omega) hreg hcard
+  have hcardPos : 0 < T.edgeFinset.card := Finset.card_pos.mpr hnonempty
+  have hhand := T.sum_degrees_eq_twice_card_edges
+  have hsumPos : 0 < ∑ x : V, T.degree x := by
+    rw [hhand]
+    omega
+  have hexists : ∃ x : V, 0 < T.degree x := by
+    by_contra hnone
+    push Not at hnone
+    have hzero : ∀ x : V, T.degree x = 0 := by
+      intro x
+      have hx := hnone x
+      omega
+    simp_rw [hzero] at hsumPos
+    simp at hsumPos
+  obtain ⟨x, hxpos⟩ := hexists
+  let c := (secondOrderDefectGraph G).connectedComponentMk x
+  have hxmem : x ∈ c.supp := ConnectedComponent.connectedComponentMk_mem
+  have hq : 3 ≤ 2 ^ k := by
+    have hfour : 4 ≤ 2 ^ k := by
+      calc
+        4 = 2 ^ 2 := by norm_num
+        _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk
+    omega
+  have heven : Even (2 ^ k) := by
+    rw [Nat.even_pow]
+    exact ⟨even_two, by omega⟩
+  rcases binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_zero_or_two
+      G hfree hq heven hreg hcard c (hall c) ⟨x, hxmem⟩ with hzero | htwo
+  · have : T.degree x = 0 := by simpa [T] using hzero
+    omega
+  · exact ⟨c, x, hxmem, htwo⟩
+
 end
 
 
@@ -115,3 +170,5 @@ end Erdos85
   Erdos85.binarySquare_regular_triangleFreeEdge_card_eq_three_mul_add_pow
 #print axioms
   Erdos85.binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty
+#print axioms
+  Erdos85.binarySquare_regular_allSizeTwo_exists_triangleFreeDegreeTwo
