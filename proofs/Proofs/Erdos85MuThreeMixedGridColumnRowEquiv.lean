@@ -2,7 +2,7 @@ import Proofs.Erdos85MuThreeMixedGridRouteDisjoint
 import Proofs.Erdos85MuThreeMixedGridSquareDegrees
 
 /-!
-# Foreign-fiber bijections in a mixed μ=3 grid
+# Column-to-row bijections in a mixed μ=3 grid
 
 Fix an `H`-allowed coordinate pair `(x,y)`.  Every occupied cell in column
 `y` has a unique exterior neighbour in row `x`.  Rook disjointness makes

@@ -1,4 +1,4 @@
-import Proofs.Erdos85MuThreeMixedGridForeignFiberEquiv
+import Proofs.Erdos85MuThreeMixedGridColumnRowEquiv
 
 /-!
 # C4-free rectangle holonomy
