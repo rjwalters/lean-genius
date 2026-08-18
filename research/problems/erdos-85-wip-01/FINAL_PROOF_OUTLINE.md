@@ -789,6 +789,18 @@ generalized rather than merely replayed.
      are non-bipartite is also q-generic, although substituting `q=8` and
      `14` is order-specific.
 
+     A further q-generic constraint is now `PROVEN`: unique ownership of every
+     complement-defect edge injects the disjoint union of owner-monochromatic
+     triangles into all complement-defect triangles
+     (`sum_componentOwner_triangleMinorCount_le_defectComplement`).  Hence the
+     signed mixed-owner triangle deficit is nonnegative
+     (`binarySquareMixedOwnerTriangleDeficit_nonneg`).  Combined with the
+     binary cubic trace congruence, its order-64 specialization is
+     `orderSixtyFour_thirtyTwo_dvd_mixedOwnerTriangleDeficit`: the deficit is a
+     multiple of `32`, and the companion theorem makes any strict upper bound
+     below `32` force equality.  This is a new cross-stratum arithmetic
+     interface, not by itself a contradiction for any row above.
+
      By contrast, the 16-vertex two-factor partition census, pair-quotient
      feasibility tables, `[10,6]` LRATs, the 11 positive-triangle record
      screen, and composition-specific routing/bowtie case splits are
