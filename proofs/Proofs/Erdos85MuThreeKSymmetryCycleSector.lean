@@ -5,6 +5,12 @@ import Proofs.Erdos85MuThreeMixedGridCode
 
 namespace Erdos85
 
+def RelationEdgeStatusComponentwise
+    {X Y : Type*} (H K : X → Y → Prop) : Prop :=
+  ∀ ⦃x x' : X⦄ ⦃y y' : Y⦄, H x y → H x' y' →
+    (relationBipartiteGraph H).Reachable (Sum.inl x) (Sum.inl x') →
+      (K x y ↔ K x' y')
+
 theorem RelationFactorCycleCompatible.edge_status_eq_of_reachable
     {X Y : Type*} (H K : X → Y → Prop)
     (hcycle : RelationFactorCycleCompatible H K)
@@ -25,6 +31,39 @@ theorem RelationFactorCycleCompatible.edge_status_eq_of_reachable
       fun _ => hall x y hxy hxc⟩
   · exact ⟨fun hk => absurd hk (hnone x y hxy hxc),
       fun hk => absurd hk (hnone x' y' hx'y' hx'c)⟩
+
+theorem RelationFactorCycleCompatible.edgeStatusComponentwise
+    {X Y : Type*} (H K : X → Y → Prop)
+    (hcycle : RelationFactorCycleCompatible H K) :
+    RelationEdgeStatusComponentwise H K := by
+  intro x x' y y' hxy hx'y' hreach
+  exact hcycle.edge_status_eq_of_reachable
+    (H := H) (K := K) hxy hx'y' hreach
+
+def mu3NormalizeRelationBipartiteHom
+    {X Y : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (H : X → Y → Prop) :
+    relationBipartiteGraph (mu3NormalizeRelation row column H) →g
+      relationBipartiteGraph H where
+  toFun
+    | Sum.inl x => Sum.inl (row.symm x)
+    | Sum.inr y => Sum.inr (column.symm y)
+  map_rel' := by
+    intro a b hab
+    cases a <;> cases b <;>
+      simp only [relationBipartiteGraph, mu3NormalizeRelation] at hab ⊢
+    · exact hab
+    · exact hab
+
+theorem RelationEdgeStatusComponentwise.normalize
+    {X Y : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (H K : X → Y → Prop) (h : RelationEdgeStatusComponentwise H K) :
+    RelationEdgeStatusComponentwise
+      (mu3NormalizeRelation row column H)
+      (mu3NormalizeRelation row column K) := by
+  intro x x' y y' hxy hx'y' hreach
+  exact h hxy hx'y'
+    (hreach.map (mu3NormalizeRelationBipartiteHom row column H))
 
 theorem relationBipartiteGraph_left_reachable_of_common_right
     {X Y : Type*} (H : X → Y → Prop) {x x' : X} {y : Y}
@@ -114,7 +153,7 @@ theorem mu3H106Rel_reachable_representative (x : Fin 8) :
 
 theorem exists_mu3KSectorChoice_H16
     (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
-    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H16Row) K) :
+    (hstatus : RelationEdgeStatusComponentwise (mu3HRel mu3H16Row) K) :
     ∃ sector : Mu3KSectorChoice,
       sector.HRows = mu3H16Row ∧
       ∀ x y, y.val ∈ sector.HRows x.val →
@@ -123,8 +162,7 @@ theorem exists_mu3KSectorChoice_H16
   · refine ⟨.c16AllTf, rfl, ?_⟩
     intro x y hxy
     have h00 : mu3HRel mu3H16Row 0 0 := by decide
-    have hrel := hcycle.edge_status_eq_of_reachable
-      (H := mu3HRel mu3H16Row) (K := K) h00 hxy
+    have hrel := hstatus h00 hxy
       (mu3H16Rel_reachable_zero x)
     change K 0 0 ↔ K x y at hrel
     simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows] at hxy ⊢
@@ -132,8 +170,7 @@ theorem exists_mu3KSectorChoice_H16
   · refine ⟨.c16AllTriangle, rfl, ?_⟩
     intro x y hxy
     have h00 : mu3HRel mu3H16Row 0 0 := by decide
-    have hrel := hcycle.edge_status_eq_of_reachable
-      (H := mu3HRel mu3H16Row) (K := K) h00 hxy
+    have hrel := hstatus h00 hxy
       (mu3H16Rel_reachable_zero x)
     change K 0 0 ↔ K x y at hrel
     simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
@@ -142,19 +179,18 @@ theorem exists_mu3KSectorChoice_H16
 
 theorem mu3H88_K_status_iff_representative
     (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
-    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H88Row) K)
+    (hstatus : RelationEdgeStatusComponentwise (mu3HRel mu3H88Row) K)
     (x y : Fin 8) (hxy : mu3HRel mu3H88Row x y) :
     K (if x.val < 4 then 0 else 4) (if x.val < 4 then 0 else 4) ↔ K x y := by
   have hrep : mu3HRel mu3H88Row
       (if x.val < 4 then 0 else 4) (if x.val < 4 then 0 else 4) := by
     fin_cases x <;> decide
-  exact hcycle.edge_status_eq_of_reachable
-    (H := mu3HRel mu3H88Row) (K := K) hrep hxy
+  exact hstatus hrep hxy
     (mu3H88Rel_reachable_representative x)
 
 theorem exists_mu3KSectorChoice_H88
     (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
-    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H88Row) K) :
+    (hstatus : RelationEdgeStatusComponentwise (mu3HRel mu3H88Row) K) :
     ∃ sector : Mu3KSectorChoice,
       sector.HRows = mu3H88Row ∧
       ∀ x y, y.val ∈ sector.HRows x.val →
@@ -162,7 +198,7 @@ theorem exists_mu3KSectorChoice_H88
   by_cases hfirst : K 0 0 <;> by_cases hsecond : K 4 4
   · refine ⟨.c88AllTf, rfl, ?_⟩
     intro x y hxy
-    have hs := mu3H88_K_status_iff_representative K hcycle x y hxy
+    have hs := mu3H88_K_status_iff_representative K hstatus x y hxy
     simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows] at hxy ⊢
     refine ⟨fun _ => hxy, fun _ => ?_⟩
     by_cases hx : x.val < 4
@@ -172,7 +208,7 @@ theorem exists_mu3KSectorChoice_H88
       simpa [hx] using hsecond
   · refine ⟨.c88FirstTf, rfl, ?_⟩
     intro x y hxy
-    have hs := mu3H88_K_status_iff_representative K hcycle x y hxy
+    have hs := mu3H88_K_status_iff_representative K hstatus x y hxy
     by_cases hx : x.val < 4
     · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
         mu3H88FirstTfRows, if_pos hx]
@@ -182,7 +218,7 @@ theorem exists_mu3KSectorChoice_H88
       exact fun hkxy => hsecond (by simpa [hx] using hs.mpr hkxy)
   · refine ⟨.c88SecondTf, rfl, ?_⟩
     intro x y hxy
-    have hs := mu3H88_K_status_iff_representative K hcycle x y hxy
+    have hs := mu3H88_K_status_iff_representative K hstatus x y hxy
     by_cases hx : x.val < 4
     · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
         mu3H88SecondTfRows, if_pos hx, Finset.notMem_empty, iff_false]
@@ -192,7 +228,7 @@ theorem exists_mu3KSectorChoice_H88
       exact ⟨fun _ => hxy, fun _ => hs.mp (by simpa [hx] using hsecond)⟩
   · refine ⟨.c88AllTriangle, rfl, ?_⟩
     intro x y hxy
-    have hs := mu3H88_K_status_iff_representative K hcycle x y hxy
+    have hs := mu3H88_K_status_iff_representative K hstatus x y hxy
     simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
       mu3EmptyRows, Finset.notMem_empty, iff_false]
     intro hkxy
@@ -202,19 +238,18 @@ theorem exists_mu3KSectorChoice_H88
 
 theorem mu3H106_K_status_iff_representative
     (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
-    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H106Row) K)
+    (hstatus : RelationEdgeStatusComponentwise (mu3HRel mu3H106Row) K)
     (x y : Fin 8) (hxy : mu3HRel mu3H106Row x y) :
     K (if x.val < 5 then 0 else 5) (if x.val < 5 then 0 else 5) ↔ K x y := by
   have hrep : mu3HRel mu3H106Row
       (if x.val < 5 then 0 else 5) (if x.val < 5 then 0 else 5) := by
     fin_cases x <;> decide
-  exact hcycle.edge_status_eq_of_reachable
-    (H := mu3HRel mu3H106Row) (K := K) hrep hxy
+  exact hstatus hrep hxy
     (mu3H106Rel_reachable_representative x)
 
 theorem exists_mu3KSectorChoice_H106
     (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
-    (hcycle : RelationFactorCycleCompatible (mu3HRel mu3H106Row) K) :
+    (hstatus : RelationEdgeStatusComponentwise (mu3HRel mu3H106Row) K) :
     ∃ sector : Mu3KSectorChoice,
       sector.HRows = mu3H106Row ∧
       ∀ x y, y.val ∈ sector.HRows x.val →
@@ -222,7 +257,7 @@ theorem exists_mu3KSectorChoice_H106
   by_cases hten : K 0 0 <;> by_cases hsix : K 5 5
   · refine ⟨.c106AllTf, rfl, ?_⟩
     intro x y hxy
-    have hs := mu3H106_K_status_iff_representative K hcycle x y hxy
+    have hs := mu3H106_K_status_iff_representative K hstatus x y hxy
     simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows] at hxy ⊢
     refine ⟨fun _ => hxy, fun _ => ?_⟩
     by_cases hx : x.val < 5
@@ -232,7 +267,7 @@ theorem exists_mu3KSectorChoice_H106
       simpa [hx] using hsix
   · refine ⟨.c106TenTf, rfl, ?_⟩
     intro x y hxy
-    have hs := mu3H106_K_status_iff_representative K hcycle x y hxy
+    have hs := mu3H106_K_status_iff_representative K hstatus x y hxy
     by_cases hx : x.val < 5
     · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
         mu3H106TenTfRows, if_pos hx]
@@ -242,7 +277,7 @@ theorem exists_mu3KSectorChoice_H106
       exact fun hkxy => hsix (by simpa [hx] using hs.mpr hkxy)
   · refine ⟨.c106SixTf, rfl, ?_⟩
     intro x y hxy
-    have hs := mu3H106_K_status_iff_representative K hcycle x y hxy
+    have hs := mu3H106_K_status_iff_representative K hstatus x y hxy
     by_cases hx : x.val < 5
     · simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
         mu3H106SixTfRows, if_pos hx, Finset.notMem_empty, iff_false]
@@ -252,7 +287,7 @@ theorem exists_mu3KSectorChoice_H106
       exact ⟨fun _ => hxy, fun _ => hs.mp (by simpa [hx] using hsix)⟩
   · refine ⟨.c106AllTriangle, rfl, ?_⟩
     intro x y hxy
-    have hs := mu3H106_K_status_iff_representative K hcycle x y hxy
+    have hs := mu3H106_K_status_iff_representative K hstatus x y hxy
     simp only [Mu3KSectorChoice.HRows, Mu3KSectorChoice.TRows,
       mu3EmptyRows, Finset.notMem_empty, iff_false]
     intro hkxy
@@ -260,12 +295,82 @@ theorem exists_mu3KSectorChoice_H106
     · exact hten (by simpa [hx] using hs.mpr hkxy)
     · exact hsix (by simpa [hx] using hs.mpr hkxy)
 
+theorem exists_mu3KSectorSelection_H16_of_coordinates
+    {X Y : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (hcycle : RelationFactorCycleCompatible H K)
+    (hHcoord : ∀ x y, mu3NormalizeRelation row column H x y ↔
+      y.val ∈ mu3H16Row x.val) :
+    Nonempty (Mu3KSectorSelection row column H K) := by
+  have hHeq : mu3NormalizeRelation row column H = mu3HRel mu3H16Row := by
+    funext x y
+    exact propext (hHcoord x y)
+  have hstatus := (hcycle.edgeStatusComponentwise H K).normalize row column
+  rw [hHeq] at hstatus
+  obtain ⟨sector, hsectorH, hedge⟩ :=
+    exists_mu3KSectorChoice_H16 (mu3NormalizeRelation row column K) hstatus
+  refine ⟨{
+    sector := sector
+    H_coordinate := ?_
+    edge_iff := hedge }⟩
+  intro x y
+  rw [hsectorH]
+  exact hHcoord x y
+
+theorem exists_mu3KSectorSelection_H88_of_coordinates
+    {X Y : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (hcycle : RelationFactorCycleCompatible H K)
+    (hHcoord : ∀ x y, mu3NormalizeRelation row column H x y ↔
+      y.val ∈ mu3H88Row x.val) :
+    Nonempty (Mu3KSectorSelection row column H K) := by
+  have hHeq : mu3NormalizeRelation row column H = mu3HRel mu3H88Row := by
+    funext x y
+    exact propext (hHcoord x y)
+  have hstatus := (hcycle.edgeStatusComponentwise H K).normalize row column
+  rw [hHeq] at hstatus
+  obtain ⟨sector, hsectorH, hedge⟩ :=
+    exists_mu3KSectorChoice_H88 (mu3NormalizeRelation row column K) hstatus
+  refine ⟨{
+    sector := sector
+    H_coordinate := ?_
+    edge_iff := hedge }⟩
+  intro x y
+  rw [hsectorH]
+  exact hHcoord x y
+
+theorem exists_mu3KSectorSelection_H106_of_coordinates
+    {X Y : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (hcycle : RelationFactorCycleCompatible H K)
+    (hHcoord : ∀ x y, mu3NormalizeRelation row column H x y ↔
+      y.val ∈ mu3H106Row x.val) :
+    Nonempty (Mu3KSectorSelection row column H K) := by
+  have hHeq : mu3NormalizeRelation row column H = mu3HRel mu3H106Row := by
+    funext x y
+    exact propext (hHcoord x y)
+  have hstatus := (hcycle.edgeStatusComponentwise H K).normalize row column
+  rw [hHeq] at hstatus
+  obtain ⟨sector, hsectorH, hedge⟩ :=
+    exists_mu3KSectorChoice_H106 (mu3NormalizeRelation row column K) hstatus
+  refine ⟨{
+    sector := sector
+    H_coordinate := ?_
+    edge_iff := hedge }⟩
+  intro x y
+  rw [hsectorH]
+  exact hHcoord x y
+
 end Erdos85
 
 #print axioms Erdos85.RelationFactorCycleCompatible.edge_status_eq_of_reachable
+#print axioms Erdos85.RelationEdgeStatusComponentwise.normalize
 #print axioms Erdos85.mu3H16Rel_reachable_zero
 #print axioms Erdos85.mu3H88Rel_reachable_representative
 #print axioms Erdos85.mu3H106Rel_reachable_representative
 #print axioms Erdos85.exists_mu3KSectorChoice_H16
 #print axioms Erdos85.exists_mu3KSectorChoice_H88
 #print axioms Erdos85.exists_mu3KSectorChoice_H106
+#print axioms Erdos85.exists_mu3KSectorSelection_H16_of_coordinates
+#print axioms Erdos85.exists_mu3KSectorSelection_H88_of_coordinates
+#print axioms Erdos85.exists_mu3KSectorSelection_H106_of_coordinates
