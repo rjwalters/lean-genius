@@ -2007,10 +2007,16 @@ generalized rather than merely replayed.
      contribution is exactly 48.  The conditional socket
      `orderSixtyFour_mixedOwnerResidual_sub_sixteen_dvd` (`3bb61e8638`) proves
      that any literal decomposition `deficit = 48 + R` forces
-     `32 ∣ (R-16)`.  Thus **GAP A-REG-MU3-DEFICIT-DECOMPOSITION** is purely
-     combinatorial: identify `R` with the non-adjacent mixed complement
-     triangles and prove the `48+R` count.  The modular conclusion is already
-     standard-axiom Lean.
+     `32 ∣ (R-16)`.  The numerical 48 is now independently **PROVEN**:
+     degree eight plus triangle-free degree two gives exactly three rooted
+     local triangles, hence 48 over a 16-vertex component (`acdd29c1e2`).
+     Moreover, if internal component neighbours are triangle-free, both
+     other endpoints of every rooted triangle are exterior (`066feaaccb`).
+     Thus **GAP A-REG-MU3-DEFICIT-DECOMPOSITION** is purely combinatorial:
+     connect the graph-facing all-tf component hypothesis to this support
+     socket, identify `R` with the non-adjacent mixed complement triangles,
+     and prove the literal deficit partition.  The 48 count and modular
+     conclusion are already standard-axiom Lean.
 
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
