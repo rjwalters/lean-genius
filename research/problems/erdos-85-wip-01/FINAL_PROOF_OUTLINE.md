@@ -1999,6 +1999,19 @@ generalized rather than merely replayed.
      constraints into a contradiction (or a finite, separately trusted
      certificate).  No q=8 stratum is marked killed by this reduction.
 
+     A parallel cubic-count consumer is now exact on the algebraic side.
+     The q-generic mixed-owner deficit is nonnegative and, for `q=2^k`, is
+     divisible by `2^(2k-1)`; at order 64 its positive quantum is 32
+     (`binarySquare_regular_two_pow_pred_dvd_mixedOwnerTriangleDeficit`).
+     In the all-triangle `μ=3` model the expected ambient cross-triangle
+     contribution is exactly 48.  The conditional socket
+     `orderSixtyFour_mixedOwnerResidual_sub_sixteen_dvd` (`3bb61e8638`) proves
+     that any literal decomposition `deficit = 48 + R` forces
+     `32 ∣ (R-16)`.  Thus **GAP A-REG-MU3-DEFICIT-DECOMPOSITION** is purely
+     combinatorial: identify `R` with the non-adjacent mixed complement
+     triangles and prove the `48+R` count.  The modular conclusion is already
+     standard-axiom Lean.
+
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
      a contradiction consumer, while `[4,2,2]` additionally retains one
