@@ -153,7 +153,7 @@ def ThreeSizeTwoViaTripleExclusionPrinciple
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G) : Prop :=
   ∀ {q : ℕ},
-    (∀ x, G.degree x = q) → Fintype.card V = q * q →
+    8 ≤ q → (∀ x, G.degree x = q) → Fintype.card V = q * q →
     ∀ (a b c : (secondOrderDefectGraph G).ConnectedComponent),
     ∀ (hab : a ≠ b) (_hac : a ≠ c) (_hbc : b ≠ c),
     a.supp.ncard = q * 2 → b.supp.ncard = q * 2 →
@@ -176,13 +176,14 @@ theorem false_of_threeSizeTwoViaTripleExclusionPrinciple
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G) {q : ℕ}
     (hprinciple : ThreeSizeTwoViaTripleExclusionPrinciple G hfree)
-    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (hq : 8 ≤ q) (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
     (a b c : (secondOrderDefectGraph G).ConnectedComponent)
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
     (ha : a.supp.ncard = q * 2) (hb : b.supp.ncard = q * 2)
     (hc : c.supp.ncard = q * 2)
     (hcyclic : HasThreeCyclicRestrictedOwnerFactors G a b c) : False := by
-  apply hprinciple hreg hcard a b c hab hac hbc ha hb hc hcyclic
+  apply hprinciple hq hreg hcard a b c hab hac hbc ha hb hc hcyclic
   exact ⟨
     crossRoutingViaFinset_disjoint_of_ne G hfree hab hab,
     crossRoutingViaFinset_disjoint_of_ne G hfree hab hac,

@@ -1882,7 +1882,7 @@ generalized rather than merely replayed.
      order-64 census artifact.  Structured search adds strong evidence that
      at q=8 every all-`[16]` branch already dies when the third cross block is
      imposed.  The precise extension leaf is therefore **AXIOM
-     A-REG-SIZE2-VIA-TRIPLE**: for three normalized size-two components whose
+     A-REG-SIZE2-VIA-TRIPLE**: for `q≥8`, three normalized size-two components whose
      restricted owner factors are single `2q`-cycles, the three induced via
      tiles on each ordered component grid cannot simultaneously be pairwise
      disjoint.  This is independent of a fourth component and is the uniform
