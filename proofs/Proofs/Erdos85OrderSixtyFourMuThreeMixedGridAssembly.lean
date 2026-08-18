@@ -506,6 +506,97 @@ theorem orderSixtyFourMuThree_mixedGridCode_of_hitLaws
   c4Free := orderSixtyFourMuThreeExteriorCellGraph_c4Free
     G hfree label hinj
 
+/-- Uniqueness of the positive signed internal neighbor identifies any such
+neighbor with the positive label coordinate. -/
+theorem orderSixtyFourMuThree_label_positive_eq_of_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [DecidablePred (fun z : V => z ∈ cSupp)]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (hone : ∀ u : muThreeExterior cSupp,
+      ((G.neighborFinset u.1).filter fun z => z ∈ cSupp ∧ s z = 1).card = 1)
+    (u : muThreeExterior cSupp) (p : muThreePositiveShore cSupp s)
+    (hup : G.Adj u.1 p.1) : (label u).1 = p := by
+  let A := (G.neighborFinset u.1).filter fun z => z ∈ cSupp ∧ s z = 1
+  apply Subtype.ext
+  have hle : A.card ≤ 1 := by rw [show A.card = 1 by simpa [A] using hone u]
+  apply Finset.card_le_one.mp hle
+  · exact Finset.mem_filter.mpr
+      ⟨(G.mem_neighborFinset u.1 (label u).1.1).mpr (hadj u).1,
+        (label u).1.2⟩
+  · exact Finset.mem_filter.mpr
+      ⟨(G.mem_neighborFinset u.1 p.1).mpr hup, p.2⟩
+
+/-- Negative-coordinate dual of
+`orderSixtyFourMuThree_label_positive_eq_of_adj`. -/
+theorem orderSixtyFourMuThree_label_negative_eq_of_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [DecidablePred (fun z : V => z ∈ cSupp)]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (hone : ∀ u : muThreeExterior cSupp,
+      ((G.neighborFinset u.1).filter fun z => z ∈ cSupp ∧ s z = -1).card = 1)
+    (u : muThreeExterior cSupp) (n : muThreeNegativeShore cSupp s)
+    (hun : G.Adj u.1 n.1) : (label u).2 = n := by
+  let A := (G.neighborFinset u.1).filter fun z => z ∈ cSupp ∧ s z = -1
+  apply Subtype.ext
+  have hle : A.card ≤ 1 := by rw [show A.card = 1 by simpa [A] using hone u]
+  apply Finset.card_le_one.mp hle
+  · exact Finset.mem_filter.mpr
+      ⟨(G.mem_neighborFinset u.1 (label u).2.1).mpr (hadj u).2,
+        (label u).2.2⟩
+  · exact Finset.mem_filter.mpr
+      ⟨(G.mem_neighborFinset u.1 n.1).mpr hun, n.2⟩
+
+/-- A label row fiber is the same set as the exterior neighbor fiber of its
+internal positive vertex. -/
+def orderSixtyFourMuThreeLabelRowFiberEquiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (hunique : ∀ u p, G.Adj u.1 p.1 → (label u).1 = p)
+    (p : muThreePositiveShore cSupp s) :
+    {u : muThreeExterior cSupp // (label u).1 = p} ≃
+      {u : muThreeExterior cSupp // G.Adj p.1 u.1} where
+  toFun u := ⟨u.1, by
+    convert (hadj u.1).1.symm using 1
+    exact (congrArg (fun z => z.1) u.2).symm⟩
+  invFun u := ⟨u.1, hunique u.1 p ((G.adj_comm _ _).mp u.2)⟩
+  left_inv u := by rfl
+  right_inv u := by rfl
+
+/-- Column-dual label fiber equivalence. -/
+def orderSixtyFourMuThreeLabelColumnFiberEquiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (hunique : ∀ u n, G.Adj u.1 n.1 → (label u).2 = n)
+    (n : muThreeNegativeShore cSupp s) :
+    {u : muThreeExterior cSupp // (label u).2 = n} ≃
+      {u : muThreeExterior cSupp // G.Adj n.1 u.1} where
+  toFun u := ⟨u.1, by
+    convert (hadj u.1).2.symm using 1
+    exact (congrArg (fun z => z.1) u.2).symm⟩
+  invFun u := ⟨u.1, hunique u.1 n ((G.adj_comm _ _).mp u.2)⟩
+  left_inv u := by rfl
+  right_inv u := by rfl
+
 end
 
 end Erdos85
@@ -516,3 +607,5 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFourMuThreeInternalRel_twoRegular
 #print axioms Erdos85.orderSixtyFourMuThreeExteriorCellGraph_rook
 #print axioms Erdos85.orderSixtyFourMuThree_mixedGridCode_of_hitLaws
+#print axioms Erdos85.orderSixtyFourMuThree_label_positive_eq_of_adj
+#print axioms Erdos85.orderSixtyFourMuThreeLabelRowFiberEquiv
