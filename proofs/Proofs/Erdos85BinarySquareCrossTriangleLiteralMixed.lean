@@ -246,6 +246,57 @@ theorem int_card_literalMixedOwnerAmbient_add_nonambient_eq_six_mul_deficit
     G hfree hcard]
   exact_mod_cast hsplit
 
+/-- Exact form with the ambient term expressed intrinsically as
+multi-component ambient triangles. -/
+theorem int_card_multiComponentAmbient_add_mixedNonambient_eq_six_mul_deficit
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hcard : 3 ≤ Fintype.card V) :
+    ((multiComponentAmbientCyclicTriangles G).card : ℤ) +
+      ((literalMixedOwnerNonambientCyclicTriples G).card : ℤ) =
+        6 * binarySquareMixedOwnerTriangleDeficit G := by
+  rw [← literalMixedOwnerAmbientCyclicTriangles_eq_multiComponentAmbient
+    G hfree]
+  exact int_card_literalMixedOwnerAmbient_add_nonambient_eq_six_mul_deficit
+    G hfree hcard
+
+/-- Uniform sharp modular constraint on the two literal sources of mixed
+triangles: their combined ordered count is divisible by `3q^2`. -/
+theorem binarySquare_regular_six_mul_two_pow_pred_dvd_multiComponentAmbient_add_mixedNonambient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hk : 2 ≤ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcard : Fintype.card V = (2 ^ k) * (2 ^ k))
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = (2 ^ k) * m c)
+    (hsum : ∑ c, m c = 2 ^ k) :
+    (6 * (2 : ℤ) ^ (2 * k - 1)) ∣
+      ((multiComponentAmbientCyclicTriangles G).card : ℤ) +
+        ((literalMixedOwnerNonambientCyclicTriples G).card : ℤ) := by
+  obtain ⟨z, hz⟩ :=
+    binarySquare_regular_two_pow_pred_dvd_mixedOwnerTriangleDeficit
+      G hfree hk hreg hcard m hm hsum
+  refine ⟨z, ?_⟩
+  rw [int_card_multiComponentAmbient_add_mixedNonambient_eq_six_mul_deficit
+    G hfree (by
+      rw [hcard]
+      have hq4 : 4 ≤ 2 ^ k := by
+        calc
+          4 = 2 ^ 2 := by norm_num
+          _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk
+      nlinarith), hz]
+  ring
+
 end
 
 end Erdos85
@@ -260,3 +311,7 @@ end Erdos85
   Erdos85.card_crossComponentAmbientCyclicTriangles_le_literalMixedOwnerAmbient
 #print axioms
   Erdos85.literalMixedOwnerAmbientCyclicTriangles_eq_multiComponentAmbient
+#print axioms
+  Erdos85.int_card_multiComponentAmbient_add_mixedNonambient_eq_six_mul_deficit
+#print axioms
+  Erdos85.binarySquare_regular_six_mul_two_pow_pred_dvd_multiComponentAmbient_add_mixedNonambient
