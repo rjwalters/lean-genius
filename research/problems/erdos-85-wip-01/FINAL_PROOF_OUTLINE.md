@@ -2197,6 +2197,11 @@ generalized rather than merely replayed.
      component cut, `HB+BC=J`; the returned operator satisfies
      `(BC)Bᵀ=(q-m)J-H(BBᵀ)`; and every internal ambient edge saturates the
      Gram budget, forcing its exterior return entry to vanish.  A reproducible
+     The second iteration is also PROVEN (`f4ffc61ec8`, `0a39ba88e3`):
+     `BC²=((q-m)-m)J+H²B`, specializing at order 64 and normalized size two
+     to `BC²=4J+H²B`.  Under C4-freeness the off-diagonal entries of `C²` are
+     Boolean, so this is the exact distance-two selector-star ledger needed
+     by the remaining combinatorial consumer.  A reproducible
      SAT audit of the circulant calibration (`143390db83`, `39205dd634`)
      shows that degree six plus `HB+BC=J` is satisfiable, but requiring the
      exterior graph `C` itself to be C4-free is UNSAT.  This is experimental
