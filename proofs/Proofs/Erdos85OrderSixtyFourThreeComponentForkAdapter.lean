@@ -158,6 +158,52 @@ theorem hasRepeatedClosingInBlock_rainbow_canonicalCenter_separation
   exact ⟨xs, ys, z₁s, z₂s, hz, haxy, hbyz₁, hcz₁x,
     hbyz₂, hcz₂x, hsep⟩
 
+/-- The two-equal pattern in which the two fork roots share a component is
+just as strong as the rainbow case: both root-to-closing sides are cross
+component, so the canonical centers exist and one pair must separate. -/
+theorem hasRepeatedClosingInBlock_equalRoots_canonicalCenter_separation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hbc : b ≠ c) (hef : e = f) (hfg : f ≠ g)
+    (hrepeat : HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g) :
+    ∃ (x y : e.supp) (z₁ z₂ : g.supp),
+      z₁.1 ≠ z₂.1 ∧
+      (componentOwnerGraph G (secondOrderDefectGraph G) a).Adj x.1 y.1 ∧
+      (componentOwnerGraph G (secondOrderDefectGraph G) b).Adj y.1 z₁.1 ∧
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj z₁.1 x.1 ∧
+      (componentOwnerGraph G (secondOrderDefectGraph G) b).Adj y.1 z₂.1 ∧
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj z₂.1 x.1 ∧
+      (let ub₁ := crossCommonNeighbor G hfree (hef ▸ hfg) y z₁
+       let ub₂ := crossCommonNeighbor G hfree (hef ▸ hfg) y z₂
+       let uc₁ := crossCommonNeighbor G hfree (hef ▸ hfg) x z₁
+       let uc₂ := crossCommonNeighbor G hfree (hef ▸ hfg) x z₂
+       ub₁ ≠ ub₂ ∨ uc₁ ≠ uc₂) := by
+  subst f
+  obtain ⟨x, y, z₁, z₂, hz, hx, hy, hz₁, hz₂,
+    haxy, hbyz₁, hcz₁x, hbyz₂, hcz₂x⟩ :=
+      (hasRepeatedClosingInBlock_iff_exists_ownerFork
+        (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) c) e e g).mp hrepeat
+  let xs : e.supp := ⟨x, (ConnectedComponent.mem_supp_iff e x).mpr hx⟩
+  let ys : e.supp := ⟨y, (ConnectedComponent.mem_supp_iff e y).mpr hy⟩
+  let z₁s : g.supp := ⟨z₁, (ConnectedComponent.mem_supp_iff g z₁).mpr hz₁⟩
+  let z₂s : g.supp := ⟨z₂, (ConnectedComponent.mem_supp_iff g z₂).mpr hz₂⟩
+  have hsep := ownerFork_canonicalCenter_separation_without_root_separation
+    G hfree hfg hfg hfg hfg hbc xs ys z₁s z₂s hz
+      hbyz₁ hbyz₂ hcz₁x hcz₂x
+  exact ⟨xs, ys, z₁s, z₂s, hz, haxy, hbyz₁, hcz₁x,
+    hbyz₂, hcz₂x, hsep⟩
+
 end
 
 end Erdos85

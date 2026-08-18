@@ -1876,9 +1876,14 @@ generalized rather than merely replayed.
      edge (`orderSixtyFour_regular_threeComponents_repeatedClosing`,
      `4860af978f`).  The graph-facing adapter (`fc451d83df`, `e781dba602`)
      exposes an ambient owner fork and classifies its component pattern.  A
-     rainbow pattern reaches canonical cross-center separation; the precise
-     residual **GAP** is a two-equal pattern, where only one fork side is
-     cross-component but C4 separation may select the within-component side.
+     A rainbow pattern reaches canonical cross-center separation.  The
+     equal-root two-equal pattern `e=f≠g` now does too: the q-generic theorem
+     `ownerFork_canonicalCenter_separation_without_root_separation` removes an
+     unused root-component inequality from the canonical-center argument, and
+     `hasRepeatedClosingInBlock_equalRoots_canonicalCenter_separation` applies
+     it graph-facing.  The precise residual **GAP** is therefore only the two
+     asymmetric patterns `f=g≠e` and `e=g≠f`, where exactly one fork side is
+     cross-component and C4 separation may select the within-component side.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
@@ -2477,7 +2482,7 @@ The shortest current proof tree is:
         ├── regular / parameterized nonregular split     [PROVEN]
         ├── regular-sector exclusion                    [AXIOM A-REG — the ONLY axiom of Branch A]
         │   ├── q=8: [2,2,2,2] finite census            [AT-64-ONLY, assembly GAP]
-        │   ├── q=8: [4,2,2], [3,3,2] pressure/fork     [AT-64-ONLY, two-equal fork GAP]
+        │   ├── q=8: [4,2,2], [3,3,2] pressure/fork     [AT-64-ONLY, 2 asymmetric fork GAPs]
         │   ├── q=8: [8], [6,2], [5,3], [4,4]          [GAP]
         │   └── arbitrary q component obstruction       [AXIOM A-REG-EXTENSION]
         └── nonregular-sector exclusion                 [PROVEN, uniform parity theorem]

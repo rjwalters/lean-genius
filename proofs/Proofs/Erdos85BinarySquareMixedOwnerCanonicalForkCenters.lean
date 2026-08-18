@@ -9,8 +9,9 @@ namespace Erdos85
 noncomputable section
 
 /-- The four canonical common-neighbor centers of an owner fork cannot
-coincide in pairs on both sides. -/
-theorem ownerFork_canonicalCenter_separation
+coincide in pairs on both sides.  No separation between the two fork roots is
+needed; only each root must lie outside the closing components. -/
+theorem ownerFork_canonicalCenter_separation_without_root_separation
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -19,7 +20,7 @@ theorem ownerFork_canonicalCenter_separation
     (hfree : ¬ containsC4 V G)
     {d e f₁ f₂ b c :
       (secondOrderDefectGraph G).ConnectedComponent}
-    (hde : d ≠ e) (hef₁ : e ≠ f₁) (hef₂ : e ≠ f₂)
+    (hef₁ : e ≠ f₁) (hef₂ : e ≠ f₂)
     (hdf₁ : d ≠ f₁) (hdf₂ : d ≠ f₂) (hbc : b ≠ c)
     (x : d.supp) (y : e.supp) (z₁ : f₁.supp) (z₂ : f₂.supp)
     (hz : z₁.1 ≠ z₂.1)
@@ -92,6 +93,33 @@ theorem ownerFork_canonicalCenter_separation
         (G.mem_neighborFinset z₂.1 uc₁).mpr hz₂uc₁⟩
   exact hubc (Finset.card_le_one.mp
     (card_inter_neighborFinset_le_one hfree hz) ub₁ hubMem uc₁ hucMem)
+
+/-- Backwards-compatible form retaining the formerly superfluous hypothesis
+that the two fork roots lie in different defect components. -/
+theorem ownerFork_canonicalCenter_separation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {d e f₁ f₂ b c :
+      (secondOrderDefectGraph G).ConnectedComponent}
+    (_hde : d ≠ e) (hef₁ : e ≠ f₁) (hef₂ : e ≠ f₂)
+    (hdf₁ : d ≠ f₁) (hdf₂ : d ≠ f₂) (hbc : b ≠ c)
+    (x : d.supp) (y : e.supp) (z₁ : f₁.supp) (z₂ : f₂.supp)
+    (hz : z₁.1 ≠ z₂.1)
+    (hby₁ : (componentOwnerGraph G (secondOrderDefectGraph G) b).Adj y.1 z₁.1)
+    (hby₂ : (componentOwnerGraph G (secondOrderDefectGraph G) b).Adj y.1 z₂.1)
+    (hcx₁ : (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj z₁.1 x.1)
+    (hcx₂ : (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj z₂.1 x.1) :
+    let ub₁ := crossCommonNeighbor G hfree hef₁ y z₁
+    let ub₂ := crossCommonNeighbor G hfree hef₂ y z₂
+    let uc₁ := crossCommonNeighbor G hfree hdf₁ x z₁
+    let uc₂ := crossCommonNeighbor G hfree hdf₂ x z₂
+    ub₁ ≠ ub₂ ∨ uc₁ ≠ uc₂ :=
+  ownerFork_canonicalCenter_separation_without_root_separation
+    G hfree hef₁ hef₂ hdf₁ hdf₂ hbc x y z₁ z₂ hz hby₁ hby₂ hcx₁ hcx₂
 
 end
 
