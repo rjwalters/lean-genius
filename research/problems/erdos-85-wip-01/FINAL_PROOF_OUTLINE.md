@@ -1855,8 +1855,21 @@ generalized rather than merely replayed.
      exactly 11 record-level four-component targets remain (8 record types,
      116 labeled models, one all-`[16]`).  Their direct assembly SAT (fixed
      component blocks, free cross blocks, exact common-neighbour counts) is
-     running externally; UNSAT on all 11 closes this stratum at order 64
-     modulo semantic replay.  **`GAP A-REG-STRATA` (q=8).**  The PROVEN
+     `UNKNOWN` at 3000 s in the raw edge-variable encoding, but after adding
+     the PROVEN owner-factor structure — for each source `S` and owner `T`
+     the `R_S`-edges owned by `T` form a 2-factor commuting with `D_S`
+     (`Erdos85RestrictedOwnerCommutesInducedDefect`), enumerated exhaustively
+     (each `[16]` survivor has exactly three `D_S`-commuting 2-factors, a
+     unique partition into 16-cycles; `[8,8]` survivors 13 or 771) — kissat
+     reports **UNSAT on all 11 targets** (external signal only, no DRAT;
+     certificate lane paused under goal #24).  The five mixed `[16]/[8,8]`
+     targets also die at proof level by the q-generic **cycle-type matching
+     lemma**: `B_{ST}` is a 2-regular bipartite graph, so its two shadows
+     `F_S^T`, `F_T^S` (the owner factors) have equal cycle-type multisets, and
+     `[16]` owner factors are 16-cycles while `[8,8]` owner factors never
+     are.  Thus, at the record level and modulo semantic replay, the
+     `[2,2,2,2]` stratum at order 64 has no survivor.
+     **`GAP A-REG-STRATA` (q=8).**  The PROVEN
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
      graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.
