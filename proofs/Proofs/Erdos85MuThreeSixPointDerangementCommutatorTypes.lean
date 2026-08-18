@@ -74,9 +74,23 @@ theorem finSixThreeThree_allThreeThree_commutator_cycleType
   revert τ
   decide
 
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 800000 in
+/-- If the canonical first factor is the unique `(3,3)` member, the
+commutator again has 3-primary type. -/
+theorem finSixThreeThree_uniqueThreeThree_commutator_cycleType
+    (τ : Equiv.Perm (Fin 6))
+    (hτ : τ.cycleType = {2, 4})
+    (hprod : (τ * finSixThreeThree).cycleType = {2, 4}) :
+    (permCommutator finSixThreeThree τ).cycleType = {3, 3} ∨
+      (permCommutator finSixThreeThree τ).cycleType = {3} := by
+  revert τ
+  decide
+
 end Erdos85
 
 #print axioms Erdos85.finSixFourTwo_allFourTwo_commutator_cycleType
 #print axioms Erdos85.finSixFourTwo_productThreeThree_commutator_cycleType
 #print axioms Erdos85.finSixFourTwo_factorThreeThree_commutator_cycleType
 #print axioms Erdos85.finSixThreeThree_allThreeThree_commutator_cycleType
+#print axioms Erdos85.finSixThreeThree_uniqueThreeThree_commutator_cycleType
