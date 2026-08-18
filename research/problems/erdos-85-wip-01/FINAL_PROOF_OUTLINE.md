@@ -2035,7 +2035,12 @@ generalized rather than merely replayed.
      `3a7b814130`): distinct twin columns are the opposite column vertices of
      an isolated `K₂,₂`, with two common rows whose H-neighborhoods are
      exactly those columns.  Thus this issue is monodromy around a concrete
-     `H` four-cycle, not an abstract twin-neighborhood case.
+     `H` four-cycle, not an abstract twin-neighborhood case.  The
+     source-varying object is now exact (**PROVEN**, `f04ff14df7`): the
+     `6 × 6` table `(source cell, eligible row) ↦ target cell` is bijective in
+     either coordinate when the other is fixed, hence is a Latin square of
+     order six.  Since such Latin squares exist, the remaining obstruction
+     must use compatibility with the row-dual table or the `K`-sector data.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
