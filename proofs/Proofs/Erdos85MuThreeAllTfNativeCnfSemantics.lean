@@ -516,4 +516,84 @@ theorem mu3NativeRunConjSpecsVal_formulaSatisfied
         ih nextAcc nextVal hnextTop hstepSat hstepBound hnextAgree
           hnextIds hrestIds
 
+/-! ## One complete C4-pair block -/
+
+def mu3NativeC4PairSpecStep (pair : Nat × Nat)
+    (st : Mu3NativeCnfState) : Mu3NativeCnfState :=
+  let conj := mu3NativeRunConjSpecs
+    (mu3NativeCommonSpecs pair.1 pair.2) (#[], st)
+  mu3NativeAtMost conj.1 1 conj.2
+
+def mu3NativeC4PairSpecStepVal (baseVal : DimacsValuation)
+    (pair : Nat × Nat) (st : Mu3NativeCnfState)
+    (inputVal : DimacsValuation) : Mu3NativeCnfState × DimacsValuation :=
+  let conj := mu3NativeRunConjSpecsVal baseVal
+    (mu3NativeCommonSpecs pair.1 pair.2) (#[], st) inputVal
+  let x := mu3NativeVarsRow conj.2 conj.1.1
+  (mu3NativeAtMost conj.1.1 1 conj.1.2,
+    mu3NativeAtMostVal conj.1.2 conj.2 conj.1.1 x 1)
+
+theorem mu3NativeC4PairSpecStepVal_state
+    (baseVal : DimacsValuation) (pair : Nat × Nat)
+    (st : Mu3NativeCnfState) (inputVal : DimacsValuation) :
+    (mu3NativeC4PairSpecStepVal baseVal pair st inputVal).1 =
+      mu3NativeC4PairSpecStep pair st := by
+  simp only [mu3NativeC4PairSpecStepVal, mu3NativeC4PairSpecStep]
+  rw [mu3NativeRunConjSpecsVal_state]
+
+/-- Semantic soundness of one vertex-pair block.  `hcommon` is exactly the
+C4-free condition on the freshly reified common-neighbor row. -/
+theorem mu3NativeC4PairSpecStepVal_formulaSatisfied
+    (baseTop : Nat) (baseVal : DimacsValuation)
+    (pair : Nat × Nat) (st : Mu3NativeCnfState)
+    (inputVal : DimacsValuation)
+    (htop : baseTop ≤ st.top)
+    (hprefixSat : dimacsFormulaSatisfied inputVal st.clauses)
+    (hprefixBound : dimacsFormulaBounded st.top st.clauses)
+    (hagree : ∀ id, id ≤ baseTop → inputVal id = baseVal id)
+    (hspecIds : ∀ spec ∈ mu3NativeCommonSpecs pair.1 pair.2,
+      0 < spec.1 ∧ spec.1 ≤ baseTop ∧
+      0 < spec.2 ∧ spec.2 ≤ baseTop)
+    (hcommon :
+      let conj := mu3NativeRunConjSpecsVal baseVal
+        (mu3NativeCommonSpecs pair.1 pair.2) (#[], st) inputVal
+      seqPrefixTrue (mu3NativeVarsRow conj.2 conj.1.1) conj.1.1.size ≤ 1) :
+    let out := mu3NativeC4PairSpecStepVal baseVal pair st inputVal
+    dimacsFormulaSatisfied out.2 out.1.clauses ∧
+    dimacsFormulaBounded out.1.top out.1.clauses ∧
+    baseTop ≤ out.1.top ∧
+    ∀ id, id ≤ baseTop → out.2 id = baseVal id := by
+  let conj := mu3NativeRunConjSpecsVal baseVal
+    (mu3NativeCommonSpecs pair.1 pair.2) (#[], st) inputVal
+  let x := mu3NativeVarsRow conj.2 conj.1.1
+  let out := mu3NativeC4PairSpecStepVal baseVal pair st inputVal
+  have hconj := mu3NativeRunConjSpecsVal_formulaSatisfied
+    baseTop baseVal (mu3NativeCommonSpecs pair.1 pair.2) (#[], st) inputVal
+    htop hprefixSat hprefixBound hagree (by simp) hspecIds
+  have hinput : SeqCounterInputReifies conj.2 conj.1.2.top conj.1.1 x := by
+    apply mu3NativeVarsRow_reifies
+    · intro lit hlit
+      exact (hconj.2.2.2.2 lit hlit).1
+    · intro lit hlit
+      exact (hconj.2.2.2.2 lit hlit).2
+  have hstep := mu3NativeAtMost_formulaSatisfied_append
+    conj.1.2 conj.2 conj.1.1 x hconj.1 hconj.2.1 hinput 1 hcommon
+  have houtState : out.1 = mu3NativeAtMost conj.1.1 1 conj.1.2 := by
+    simp [out, mu3NativeC4PairSpecStepVal, conj]
+  have houtVal : out.2 = mu3NativeAtMostVal conj.1.2 conj.2 conj.1.1 x 1 := by
+    simp [out, mu3NativeC4PairSpecStepVal, conj, x]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [houtState, houtVal]
+    exact hstep.1
+  · rw [houtState]
+    exact hstep.2.1
+  · rw [houtState]
+    exact hconj.2.2.1.trans
+      (by simpa [mu3NativeAtMost, mu3NativeAppendCounter] using
+        seqCounterAtMost_top_bound conj.1.2.top conj.1.1 1)
+  · intro id hid
+    rw [houtVal, show mu3NativeAtMostVal conj.1.2 conj.2 conj.1.1 x 1 id =
+        conj.2 id by exact hstep.2.2 id (hid.trans hconj.2.2.1)]
+    exact hconj.2.2.2.1 id hid
+
 end Erdos85
