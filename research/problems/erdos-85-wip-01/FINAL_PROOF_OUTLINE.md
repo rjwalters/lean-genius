@@ -1950,7 +1950,11 @@ generalized rather than merely replayed.
      (`Erdos85BinarySquareSizeTwoOwnerLineGraph`): globally `O_b` is the line
      graph of the 8-regular selector-complement graph on the 16 `b`-centers,
      whose 64 edges split by source component into a 6-regular 48-edge graph
-     and a 2-factor.  The residual `[6,2]` target must couple the transported
+     and a 2-factor.  The source coloring of those edges is now packaged
+     q-generically (`b5ed6aa30d`): every selector edge has a unique source
+     defect component, distinct source layers are edge-disjoint, and the
+     earlier exact selector-incidence theorem gives their per-center degrees.
+     The residual `[6,2]` target must couple the transported
      defect blocks to this line-graph edge partition; commute, degrees, and
      the entry cap alone cannot close it.
      In particular the
