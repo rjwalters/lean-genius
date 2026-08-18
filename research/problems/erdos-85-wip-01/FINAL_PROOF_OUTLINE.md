@@ -1923,6 +1923,14 @@ generalized rather than merely replayed.
      coverage/disjointness, size-two cycle structure, and projector trace
      split; the numerical `219/253` thresholds and every H16/SAT ledger are
      q=8-only consumers.
+     The implication is now machine-checked in
+     `Erdos85BinarySquareUnitComponentCapstone`: the proposed hypothesis is
+     defined (not asserted) as `BinarySquareUnitComponentPrinciple`, and
+     `binarySquareRegularExclusion_of_unitComponentPrinciple` proves it implies
+     A-REG using only standard axioms.  The composed theorem
+     `not_erdos85Question_of_binarySquareUnitComponentPrinciple` therefore
+     makes this single structural conjecture a sufficient condition for the
+     negative answer to Erdős 85.
 
 ### A5. Nonregular sectors
 
