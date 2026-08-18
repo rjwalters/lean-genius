@@ -482,6 +482,29 @@ theorem binarySquare_regular_normalizedComponent_crossBlock_sq
     _ = (((q - m : ℕ) : ℤ) - (m : ℤ)) • J + (H * H) * B := by
       module
 
+/-- Order-64 normalized-size-two specialization of the second-order routing
+identity. -/
+theorem orderSixtyFour_sizeTwoComponent_crossBlock_sq
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2) :
+    let p : Fin 64 → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    let J : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+    B * (C * C) = (4 : ℤ) • J + (H * H) * B := by
+  have h := binarySquare_regular_normalizedComponent_crossBlock_sq
+    G hfree (q := 8) (m := 2) (by norm_num) hreg (by norm_num) c hc
+  norm_num at h
+  exact h
+
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
@@ -493,5 +516,6 @@ end
 #print axioms
   Erdos85.binarySquare_regular_normalizedComponent_internalAdj_outsideReturn_zero
 #print axioms Erdos85.binarySquare_regular_normalizedComponent_crossBlock_sq
+#print axioms Erdos85.orderSixtyFour_sizeTwoComponent_crossBlock_sq
 
 end Erdos85
