@@ -1915,7 +1915,7 @@ generalized rather than merely replayed.
      | stratum | theorem-backed status at q=8 | uniform content | exact remaining leaf |
      |---|---|---|---|
      | `[8]` | **AT-64-ONLY, PARTIAL**: `orderSixtyFour_regular_oneComponent_ownerDensity` gives owner codegree at least 48 | inclusion-exclusion itself is generic, but the `48` threshold is order-64 arithmetic | **GAP A-REG-8-DENSITY**: contradict extreme one-owner closure using defect/Gram algebra |
-     | `[6,2]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_sixTwo_largeDensity_or_smallSaturation` | repeated-closing consumers, center collapse, residual-star decomposition, and incidence packing are **q-GENERIC** | **GAP A-REG-ROUTING**: exclude size-six density or size-two saturation by cross-root/cross-row compatibility |
+     | `[6,2]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_sixTwo_largeDensity_or_smallSaturation`; the bipartite uniform-alternating size-two branch is **PROVEN q-GENERIC impossible** | repeated-closing consumers, center collapse, residual-star decomposition, incidence packing, componentwise `0/2` coloring, and the bipartite signed-vector exclusion are **q-GENERIC** | **GAP A-REG-62-SIZE2**: force bipartiteness or exclude non-bipartite/mixed multi-cycle size-two components; then **GAP A-REG-ROUTING** excludes size-six density or size-two saturation |
      | `[5,3]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_threeFive_twoOwner_exists_ownerDensity` | equal-root/same-route fork-to-density consumers are **q-GENERIC** | **GAP A-REG-ROUTING**: compatibility or production of a coupled second fragment |
      | `[4,4]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_fourFour_twoOwner_exists_ownerDensity` | density and exact complementary residual-pair decomposition are **q-GENERIC** | **GAP A-REG-ROUTING**: compatibility of the two complementary pairs across rows |
      | `[4,2,2]` | **AT-64-ONLY, PARTIAL**: all ordinary patterns reach routing; opposite bowtie reaches an exact selector rectangle/commuting block | bowtie geometry and row-density consumers are **q-GENERIC** | **AXIOM A-REG-422-BOWTIE** for the opposite bowtie, followed by the shared **GAP A-REG-ROUTING** |
@@ -2134,16 +2134,23 @@ generalized rather than merely replayed.
      excludes the proposed alternating `C_16` square root when all of its
      edges lie in `Dᶜ`; it does **not** exclude the distinct branch in which
      the whole alternating factor lies in `D` (all sixteen internal edges are
-     triangle-free).  That latter branch is consistent with the current
-     pointwise law `tf-degree ∈ {0,2}` and is the honest synchronized-model
-     residual.  The local cycle-root fact needed in the split branch is
+     triangle-free).  That warning was necessary, but the latter branch is
+     now independently **PROVEN impossible when the size-two defect component
+     is bipartite** (`9516cc31b8`).  The q-generic theorem
+     `binarySquare_regular_sizeTwoPart_bipartite_internal_subset_defect_connected_complement_false`
+     uses the signed bipartition vector and the exact square/commutation laws;
+     its two-component adapter
+     `binarySquare_regular_sizeTwoPart_bipartite_alternating_two_components_false`
+     applies directly to `[q-2,2]`.  Thus the synchronized
+     `K_{8,8}-PM` alternating `A ⊆ D` model is dead without a census.
+     The local cycle-root fact needed in the split branch is
      smaller and alignment-independent: a
      2-regular graph on eight vertices cannot have connected
      distinct-common-neighbor graph `C_8` (connectedness first forces the
      two-factor itself to be `C_8`, whose distance-two graph is two `C_4`s).
      Formalizing this eight-vertex cycle-root fact closes the local split
-     branch; excluding the alternating `A ⊆ D` branch still requires an
-     ambient trace/owner-factor argument.
+     branch; the signed-vector theorem above now closes the synchronized
+     alternating `A ⊆ D` branch as well.
      The standard-cycle parity core of that local fact is now **PROVEN**
      (`122fa94bd7`):
      `not_connected_distinctCommonNeighborGraph_cycleGraph_eight` shows that
@@ -2155,11 +2162,18 @@ generalized rather than merely replayed.
      2-regular graph on eight vertices via
      `twoRegular_component_induce_eq_cycleSubgraph` and
      `isCycle_cycleGraphIsoToSubgraph`, with no `sorry`, `admit`, extra axiom,
-     or `native_decide`.  Thus the residual `[6,2]` target is specifically the
-     alternating `A ⊆ D` branch together with the downstream routing
-     terminals: it must couple the defect blocks to the line-graph edge
-     partition; commute, degrees, the entry cap, and the split-branch parity
-     obstruction alone cannot close it.
+     or `native_decide`.  The coloring interface is also now **PROVEN
+     q-GENERIC** (`f53311b427`, `c5ba755101`): triangle-free degree is constant
+     on each connected component of the internal ambient graph of a
+     normalized size-two defect component, and a mixed `0/2` coloring forces
+     that internal graph to be disconnected.  Therefore the honest `[6,2]`
+     structural residual is no longer the synchronized alternating model.  It
+     is exactly (a) a non-bipartite normalized size-two defect component, or
+     (b) a bipartite component with a genuinely mixed collection of internal
+     cycles, some lying in `D` and some in `Dᶜ`, together with the downstream
+     routing terminals.  No banked theorem currently forces bipartiteness of
+     an arbitrary size-two defect component or excludes that mixed multi-cycle
+     case.
      In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
