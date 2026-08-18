@@ -813,17 +813,20 @@ generalized rather than merely replayed.
      slot, dispatches it by `certificateGridIndex : Fin 22`, and constructs
      native H16/H88/H106 classifications.
 
-     **`GAP / STRUCTURAL`**: the graph-facing hypotheses still do not supply
-     the coordinate normal-form disjunction for the internal ambient-
-     adjacency two-factor: H16, H88, or H106.  Connectedness of `c` is in
-     `secondOrderDefectGraph`, whereas this internal relation is adjacency in
-     `G`, so connectedness does not reduce the relation to H16.  The precise
-     missing statement must produce row/column equivalences and one of the
-     three `mu3NormalizeRelation` equalities.  Once supplied,
-     `nonempty_muThreeKSymmetryClassification_native_of_shape` constructs the
-     exact classification consumed by the graph capstone.  Therefore this
-     structural trichotomy, not merely finite certificate packaging, remains
-     necessary for graph-level closure of the `μ=3` sublane.
+     The coordinate normal-form disjunction for the internal ambient-
+     adjacency two-factor is now **`PROVEN`** by
+     `orderSixtyFour_muThreeInternalRel_exists_nativeShapeCoordinates`.
+     Connectedness of `c` is only in `secondOrderDefectGraph`, so the proof
+     correctly does not reduce the relation to H16.  Instead it reuses the
+     already-proven order-sixteen two-factor census and the signed coordinate
+     models for all three surviving shapes to produce row/column equivalences
+     and the exact H16, H88, or H106 `mu3NormalizeRelation` equality.  Its
+     kernel audit has no `sorryAx` (standard logical axioms plus the existing
+     finite `native_decide` coordinate audits).  Consequently
+     `nonempty_muThreeKSymmetryClassification_native_of_shape` supplies the
+     exact classification consumed by the graph capstone; only the Fin22
+     provider replay and final upper-consumer elaboration remain in this
+     `μ=3` sublane.
 
      Beyond the `μ=3` sublane, the honest size-two ledger has two further
      nodes.  First are alternating joint eigenlines with
