@@ -993,4 +993,30 @@ theorem mu3NativeC4FoldConditions_of_base
       exact ih next.1 next.2 hstep.2.2.1 hstep.1 hstep.2.1
         hstep.2.2.2 hrestPairs
 
+/-- Static contradiction interface: after discharging fixed ID facts, the
+only Boolean content is the hit counts and the base common-neighbor bound. -/
+theorem false_of_mu3AllTfNativeStaticConstraints
+    (shape : Mu3AllTfShape) (edgeVal : DimacsValuation)
+    (hnz : ∀ clause ∈ (mu3NativeFinalState shape).clauses,
+      DimacsClauseNonzero clause)
+    (hhitCounts : ∀ spec ∈ mu3NativeHitSpecs shape,
+      seqPrefixTrue (mu3NativeVarsRow edgeVal spec.1) spec.1.size = spec.2)
+    (hbaseC4 : Mu3NativeBaseC4 edgeVal) : False := by
+  obtain ⟨hhitNonzero, hhitBound⟩ := mu3NativeHitSpecs_ids_valid shape
+  let hit := mu3NativeHitSpecVal shape edgeVal
+  have hhit := mu3NativeRunExactSpecsVal_formulaSatisfied
+    1128 edgeVal (mu3NativeHitSpecs shape) {} edgeVal
+    (by rfl) (dimacsFormulaSatisfied_empty edgeVal)
+    (dimacsFormulaBounded_empty 1128) (by simp)
+    hhitNonzero hhitBound hhitCounts
+  have hc4 : Mu3NativeC4FoldConditions 1128 edgeVal
+      mu3NativePairs hit.1 hit.2 := by
+    apply mu3NativeC4FoldConditions_of_base edgeVal mu3NativePairs
+      hit.1 hit.2 hhit.2.2.1 hhit.1 hhit.2.1 hhit.2.2.2
+    · intro pair hpair
+      exact hpair
+    · exact hbaseC4
+  exact false_of_mu3AllTfNativeConstraints shape edgeVal hnz
+    hhitNonzero hhitBound hhitCounts hc4
+
 end Erdos85
