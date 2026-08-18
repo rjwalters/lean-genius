@@ -125,6 +125,45 @@ def bipartiteMissingEquiv
           ((G.adj_comm x.1 y.1).mp ((G.mem_neighborFinset x.1 y.1).mp hyx)))
       exact hyxNonadj
 
+/-- A left vertex is adjacent to the matched image of another left vertex
+exactly when the two left vertices differ. -/
+theorem adj_bipartiteMissingEquiv_apply_iff_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (L R : Finset V)
+    (hLcard : L.card = 8) (hRcard : R.card = 8)
+    (hLR : ∀ x ∈ L, (G.neighborFinset x ∩ R).card = 7)
+    (hRL : ∀ y ∈ R, (G.neighborFinset y ∩ L).card = 7)
+    (x x' : (L : Set V)) :
+    G.Adj x.1 ((bipartiteMissingEquiv G L R hLcard hRcard hLR hRL x').1) ↔
+      x ≠ x' := by
+  let hRone := card_missingAcross_eq_one G R x'.1 hRcard (hLR x'.1 x'.2)
+  have hmatched :
+      (bipartiteMissingEquiv G L R hLcard hRcard hLR hRL x').1 =
+        (bipartiteMiss G R x'.1 hRone).1 := rfl
+  constructor
+  · intro hadj hxx'
+    subst x'
+    rw [hmatched] at hadj
+    have hmiss := bipartiteMiss_mem_missingAcross G R x.1 hRone
+    exact (mem_sdiff.mp hmiss).2 ((G.mem_neighborFinset x.1 _).mpr hadj)
+  · intro hne
+    rw [hmatched]
+    by_contra hnon
+    have hmiss : (bipartiteMiss G R x'.1 hRone).1 ∈ missingAcross G R x.1 :=
+      mem_sdiff.mpr ⟨(bipartiteMiss G R x'.1 hRone).2,
+        by simpa [mem_neighborFinset] using hnon⟩
+    let hRoneX := card_missingAcross_eq_one G R x.1 hRcard (hLR x.1 x.2)
+    have heq := eq_bipartiteMiss_of_mem_missingAcross G R x.1
+      (bipartiteMiss G R x'.1 hRone).1 hRoneX hmiss
+    have hinj : Function.Injective
+        (bipartiteMissingEquiv G L R hLcard hRcard hLR hRL) :=
+      (bipartiteMissingEquiv G L R hLcard hRcard hLR hRL).injective
+    apply hne
+    apply hinj
+    apply Subtype.ext
+    exact heq.symm
+
 /-- The cross-complement of the two sides extracted from a residual star is
 therefore a perfect matching. -/
 def sixteenMissingEquiv
