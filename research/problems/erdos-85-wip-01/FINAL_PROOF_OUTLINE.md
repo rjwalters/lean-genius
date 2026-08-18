@@ -1926,7 +1926,16 @@ generalized rather than merely replayed.
      differ (`oppositeThirdEdge_closings_ne_of_distinct_owners`).  Thus the
      sole remaining pressure-pattern **GAP** is no longer a capacity failure:
      it is the routing incompatibility of this explicit opposite-orientation
-     bowtie.
+     bowtie.  Its first graph-facing geometry is now **q-GENERIC, PROVEN**.
+     `hasOppositeThirdEdgeInBlock_canonicalCenter_separation` lifts the four
+     alternating owner edges to their canonical ambient common neighbors
+     `u₁,v₁,u₂,v₂`; `oppositeOwnerBowtie_canonicalCenter_separation` proves
+     all four centers pairwise distinct.  Same-color separation uses the
+     internal `c`-owned edge and unique ownership, while cross-color
+     separation is forced directly by the distinct owner components.  The
+     remaining terminal must therefore exclude the resulting alternating
+     ambient 8-cycle/routing configuration; it cannot rely on a center
+     collision.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
