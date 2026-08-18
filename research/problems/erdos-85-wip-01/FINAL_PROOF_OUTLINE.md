@@ -2159,8 +2159,12 @@ generalized rather than merely replayed.
      rather than raw labels.  The opposite all-`(33)` extreme now also has a
      label-free lift and direct rectangle consumer **PROVEN** (`090d13fdf8`):
      its commutator satisfies `κ^2 = 1` on the actual source fiber.  Only the
-     three exactly-one-`(33)` orientations still need the analogous
-     label-free order-three lift.
+     three exactly-one-`(33)` orientations now also have their uniform
+     label-free lift and direct rectangle consumer **PROVEN** (`cd89e99f0c`):
+     each satisfies `κ^3 = 1`.  Hence all five type patterns are compressed
+     on the actual column fiber to the three identities `κ^5 = 1`, `κ^3 = 1`,
+     or `κ^2 = 1`; coupling these commutator orders to `K` geometry is the
+     remaining step.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
