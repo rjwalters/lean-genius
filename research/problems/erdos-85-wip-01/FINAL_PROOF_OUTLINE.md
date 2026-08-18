@@ -2108,7 +2108,10 @@ generalized rather than merely replayed.
      The H-C4 interface itself is now formal (**PROVEN**, `db66da941b`):
      common H-neighbor finsets are identified with graph common-neighbor
      finsets in `relationBipartiteGraph H`, so graph C4-freeness directly
-     supplies the required overlap-at-most-one hypothesis.
+     supplies the required overlap-at-most-one hypothesis.  The full chain is
+     packaged as one graph-facing theorem (**PROVEN**, `bc67939e62`), returning
+     the two columns and the three pairwise-even eligible rows directly from
+     H-bipartite C4-freeness.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
