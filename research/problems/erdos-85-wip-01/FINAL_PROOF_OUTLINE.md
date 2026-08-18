@@ -2069,6 +2069,22 @@ generalized rather than merely replayed.
      identify and bound the *sum* of the residual ambient contribution `A`
      and nonambient contribution `B`; setting `A=0` is not justified.
 
+     The live mixed sector now has a global standard-axiom quantization
+     independent of that large nonambient census.  In the all-size-sixteen
+     stratum, triangle-free degrees are pointwise zero or two, while the
+     cubic trace forces their total to be `2 mod 6`.  Hence the number of
+     degree-two vertices is `3k+1`, equivalently one modulo three
+     (`orderSixtyFour_allSixteen_triangleFreeColorOrder_eq_three_mul_add_one`,
+     `orderSixtyFour_allSixteen_triangleFreeColorOrder_mod_three_eq_one`,
+     `e42ff51d9a`).  The globally forced triangle-free edge makes this support
+     nonempty; degree-two propagation plus the absence of triangle-free
+     triangles and ambient four-cycles constructs five distinct support
+     vertices, and the congruence sharpens this to **at least seven**
+     (`orderSixtyFour_allSixteen_seven_le_triangleFreeColorOrder`,
+     `5bf7060ba1`).  Thus any mixed classification need only consider unions
+     of internal cycles whose total order lies in `{7,10,13,...,64}` and is
+     `1 mod 3`; orders `1` through `6` are formally excluded.
+
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
      a contradiction consumer, while `[4,2,2]` additionally retains one
