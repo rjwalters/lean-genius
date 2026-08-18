@@ -29,6 +29,13 @@ def mixedGridRowColumnGraph {X Y : Type*} (K : X → Y → Prop) :
     intro u h
     exact h.1 rfl
 
+instance mixedGridRowColumnGraph_adjDecidable
+    {X Y : Type*} [DecidableEq X] [DecidableEq Y]
+    (K : X → Y → Prop) :
+    DecidableRel (mixedGridRowColumnGraph K).Adj :=
+  fun u v => inferInstanceAs
+    (Decidable (u ≠ v ∧ (u.1.1 = v.1.1 ∨ u.1.2 = v.1.2)))
+
 /-- The graph joining two cells when they have exactly one common exterior
 neighbour.  Under C4-freeness, this is the support of the off-diagonal square
 of the adjacency matrix. -/
@@ -47,6 +54,15 @@ def mixedGridCommonNeighborGraph {X Y : Type*} [Fintype X] [Fintype Y]
     constructor
     intro u h
     exact h.1 rfl
+
+instance mixedGridCommonNeighborGraph_adjDecidable
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (K : X → Y → Prop) [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj] :
+    DecidableRel (mixedGridCommonNeighborGraph K C).Adj :=
+  fun u v => inferInstanceAs (Decidable (u ≠ v ∧
+    (C.neighborFinset u ∩ C.neighborFinset v).card = 1))
 
 /-- The residual relation in the square partition: distinct cross-cells with
 no common exterior neighbour. -/
@@ -69,6 +85,16 @@ def mixedGridSquareResidualGraph {X Y : Type*} [Fintype X] [Fintype Y]
     constructor
     intro u h
     exact h.1 rfl
+
+instance mixedGridSquareResidualGraph_adjDecidable
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (K : X → Y → Prop) [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj] :
+    DecidableRel (mixedGridSquareResidualGraph K C).Adj :=
+  fun u v => inferInstanceAs (Decidable (u ≠ v ∧
+    ¬ (mixedGridRowColumnGraph K).Adj u v ∧
+    (C.neighborFinset u ∩ C.neighborFinset v).card = 0))
 
 /-- A rook-related pair cannot have a common exterior neighbour. -/
 theorem MuThreeMixedGridCode.rowColumn_common_neighbor_card_eq_zero
