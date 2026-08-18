@@ -2493,6 +2493,18 @@ generalized rather than merely replayed.
      component-size owner-fiber bounds, exact owner-block equitability,
      component-pattern decomposition, and repeated-closing pigeonhole are
      q-generic (their q=8 consumers only instantiate numerical thresholds).
+     The bipartite half of the component analysis is also nearly uniform.
+     For every even `q`, normalized size-two parts are never bipartite
+     (`binarySquare_regular_sizeTwoPart_bipartite_false`), and
+     `binarySquare_regular_bipartite_evenPart_false_of_others_even_or_not_bipartite`
+     (`645f384a06`) rules out an even bipartite part whenever every other part
+     is even-sized or non-bipartite.  Conversely the signed-residue
+     propagation theorem says that one odd bipartite part forces every other
+     part to be bipartite.  Thus the only uniform bipartite residual is the
+     precise candidate **`BIP-ODD(q)`**: exclude a partition consisting
+     entirely of odd normalized parts whose defect components are all
+     bipartite.  At `q=8` its sole stratum `[5,3]` is already PROVEN dead;
+     its general even-`q` exclusion remains part of A-REG-EXTENSION.
      The H16 four-factor classifications and the 11 assembly targets are
      finite enumerations and do not extend.  A precise uniform replacement is:
      for every binary `q = 2^k ≥ 8`, every partition `m : C → ℕ` with
