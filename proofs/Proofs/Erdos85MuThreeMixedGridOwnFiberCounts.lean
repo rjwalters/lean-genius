@@ -106,6 +106,40 @@ theorem MuThreeMixedGridCode.foreignColumn_neighbor_card
       omega
     simpa [hH] using hforeign
 
+/-- A non-`H` cell has canonical, distinct neighbours in its own row and its
+own column.  Their distinctness is forced by looplessness: a cell sharing
+both coordinates with `u` would be `u` itself. -/
+theorem MuThreeMixedGridCode.existsUnique_ownRow_ownColumn_ne_of_not_H
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C) (u : muThreeMixedCell K)
+    (huH : ¬ H u.1.1 u.1.2) :
+    ∃ v w : muThreeMixedCell K,
+      C.Adj u v ∧ v.1.1 = u.1.1 ∧
+      C.Adj u w ∧ w.1.2 = u.1.2 ∧ v ≠ w ∧
+      (∀ v', C.Adj u v' → v'.1.1 = u.1.1 → v' = v) ∧
+      (∀ w', C.Adj u w' → w'.1.2 = u.1.2 → w' = w) := by
+  have hrow :=
+    (code.existsUnique_row_neighbor_iff H K C u u.1.1).mpr huH
+  have hcolumn :=
+    (code.existsUnique_column_neighbor_iff H K C u u.1.2).mpr huH
+  obtain ⟨v, hv, hvuniq⟩ := hrow
+  obtain ⟨w, hw, hwuniq⟩ := hcolumn
+  have hvw : v ≠ w := by
+    intro hvw
+    subst w
+    have hvu : v = u := by
+      apply Subtype.ext
+      apply Prod.ext
+      · exact hv.2
+      · exact hw.2
+    subst v
+    exact C.loopless.irrefl u hv.1
+  exact ⟨v, w, hv.1, hv.2, hw.1, hw.2, hvw,
+    fun v' hv' hv'row => hvuniq v' ⟨hv', hv'row⟩,
+    fun w' hw' hw'column => hwuniq w' ⟨hw', hw'column⟩⟩
 end
 
 end Erdos85
@@ -114,3 +148,5 @@ end Erdos85
 #print axioms Erdos85.MuThreeMixedGridCode.ownColumn_neighbor_card
 #print axioms Erdos85.MuThreeMixedGridCode.foreignRow_neighbor_card
 #print axioms Erdos85.MuThreeMixedGridCode.foreignColumn_neighbor_card
+#print axioms
+  Erdos85.MuThreeMixedGridCode.existsUnique_ownRow_ownColumn_ne_of_not_H
