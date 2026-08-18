@@ -2044,7 +2044,11 @@ generalized rather than merely replayed.
      The row-dual monodromy law is now available (**PROVEN**, `5d24fb7521`):
      column transport between distinct row fibers, routed through distinct
      common eligible columns, also disagrees pointwise by C4-freeness.  Thus
-     both transport directions are formalized; their coupling is the gap.
+     both transport directions are formalized.  Their first coupling is now
+     **PROVEN** (`84b38dcf5f`): around any `H`-empty rectangle, the endpoint
+     obtained by following three matching sides differs from the direct mate
+     on the fourth side.  The remaining gap is a global OA/Latin obstruction
+     from these rectangle inequalities together with `K`-sector structure.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
