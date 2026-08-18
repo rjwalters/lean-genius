@@ -129,6 +129,56 @@ theorem card_multiComponentAmbient_filter_first_eq_second
     · exact Finset.mem_filter.mpr ⟨hpM, hq.2⟩
     · simp [p]
 
+/-- If every multi-component triangle meets `c` and every ambient edge inside
+`c` is triangle-free, then each such triangle meets `c` exactly once. -/
+theorem multiComponentAmbient_exactlyOne_mem_component_of_hit_of_internal_triangleFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hhit : ∀ p ∈ multiComponentAmbientCyclicTriangles G,
+      p.1 ∈ c.supp ∨ p.2.1 ∈ c.supp ∨ p.2.2 ∈ c.supp)
+    (hinternal : ∀ {x y : V}, x ∈ c.supp → y ∈ c.supp → G.Adj x y →
+      (triangleFreeEdgeGraph G).Adj x y) :
+    ∀ p ∈ multiComponentAmbientCyclicTriangles G,
+      (p.1 ∈ c.supp ∧ p.2.1 ∉ c.supp ∧ p.2.2 ∉ c.supp) ∨
+      (p.1 ∉ c.supp ∧ p.2.1 ∈ c.supp ∧ p.2.2 ∉ c.supp) ∨
+      (p.1 ∉ c.supp ∧ p.2.1 ∉ c.supp ∧ p.2.2 ∈ c.supp) := by
+  intro p hp
+  have htri := (Finset.mem_filter.mp hp).1
+  simp only [cyclicColoredTriples, Finset.mem_filter,
+    Finset.mem_univ, true_and] at htri
+  have not_two {x y z : V} (hx : x ∈ c.supp) (hy : y ∈ c.supp)
+      (hxy : G.Adj x y) (hxz : G.Adj x z) (hyz : G.Adj y z) : False := by
+    have htf := hinternal hx hy hxy
+    have hdata := (mem_triangleFreeNeighbors G x y).mp htf
+    have hzmem : z ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨hxz, hyz⟩
+    rw [Finset.card_eq_zero.mp hdata.2] at hzmem
+    exact Finset.notMem_empty z hzmem
+  rcases hhit p hp with hx | hy | hz
+  · left
+    refine ⟨hx, ?_, ?_⟩
+    · intro hy
+      exact not_two hx hy htri.2.2.symm htri.1 htri.2.1.symm
+    · intro hz
+      exact not_two hx hz htri.1 htri.2.2.symm htri.2.1
+  · right; left
+    refine ⟨?_, hy, ?_⟩
+    · intro hx
+      exact not_two hx hy htri.2.2.symm htri.1 htri.2.1.symm
+    · intro hz
+      exact not_two hy hz htri.2.1.symm htri.2.2 htri.1.symm
+  · right; right
+    refine ⟨?_, ?_, hz⟩
+    · intro hx
+      exact not_two hx hz htri.1 htri.2.2.symm htri.2.1
+    · intro hy
+      exact not_two hy hz htri.2.1.symm htri.2.2 htri.1.symm
+
 /-- If every multi-component ambient triangle meets component `c` in exactly
 one vertex and each of the three ordered coordinate positions contributes 96
 triangles, then the global ordered multi-component count is 288. -/
@@ -243,6 +293,37 @@ theorem orderSixtyFour_mixedNonambient_add_96_dvd_192_of_first_anchored_count
   exact multiComponentAmbientCyclicTriangles_card_eq_288_of_first_anchored_count
     G c hexact hfirst
 
+/-- Graph-structural local interface: it is enough that every multi-component
+triangle hits `c`, internal `c`-edges are triangle-free, and the one anchored
+count is 96. -/
+theorem orderSixtyFour_mixedNonambient_add_96_dvd_192_of_hit_internalTF_anchored
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 64)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = 8 * m c)
+    (hsum : ∑ c, m c = 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hhit : ∀ p ∈ multiComponentAmbientCyclicTriangles G,
+      p.1 ∈ c.supp ∨ p.2.1 ∈ c.supp ∨ p.2.2 ∈ c.supp)
+    (hinternal : ∀ {x y : V}, x ∈ c.supp → y ∈ c.supp → G.Adj x y →
+      (triangleFreeEdgeGraph G).Adj x y)
+    (hfirst : ((multiComponentAmbientCyclicTriangles G).filter
+      fun p => p.1 ∈ c.supp).card = 96) :
+    (192 : ℤ) ∣
+      ((literalMixedOwnerNonambientCyclicTriples G).card : ℤ) + 96 := by
+  apply orderSixtyFour_mixedNonambient_add_96_dvd_192_of_first_anchored_count
+    G hfree hreg hcard m hm hsum c
+  · exact multiComponentAmbient_exactlyOne_mem_component_of_hit_of_internal_triangleFree
+      G c hhit hinternal
+  · exact hfirst
+
 end
 
 end Erdos85
@@ -259,3 +340,7 @@ end Erdos85
   Erdos85.multiComponentAmbientCyclicTriangles_card_eq_288_of_first_anchored_count
 #print axioms
   Erdos85.orderSixtyFour_mixedNonambient_add_96_dvd_192_of_first_anchored_count
+#print axioms
+  Erdos85.multiComponentAmbient_exactlyOne_mem_component_of_hit_of_internal_triangleFree
+#print axioms
+  Erdos85.orderSixtyFour_mixedNonambient_add_96_dvd_192_of_hit_internalTF_anchored
