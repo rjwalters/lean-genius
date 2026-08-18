@@ -17,6 +17,59 @@ namespace Erdos85
 
 noncomputable section
 
+theorem muThree_signedFlip_of_degree_two_neighborSum
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (J : SimpleGraph W) [DecidableRel J.Adj]
+    (hdeg : ∀ x, J.degree x = 2)
+    (t : W → ℤ) (hsign : ∀ x, t x = -1 ∨ t x = 1)
+    (hsum : ∀ x, ∑ y ∈ J.neighborFinset x, t y = -2 * t x) :
+    ∀ ⦃x y⦄, J.Adj x y → t x = -t y := by
+  intro x y hxy
+  have hcard : (J.neighborFinset x).card = 2 := by
+    rw [J.card_neighborFinset_eq_degree, hdeg]
+  obtain ⟨a, b, hab, hset⟩ := Finset.card_eq_two.mp hcard
+  have hy : y ∈ J.neighborFinset x := by simpa using hxy
+  rw [hset] at hy
+  have hsumx := hsum x
+  rw [hset, Finset.sum_pair hab] at hsumx
+  have hxsign := hsign x
+  have hasign := hsign a
+  have hbsign := hsign b
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+  rcases hy with rfl | rfl <;>
+    rcases hxsign with hx | hx <;>
+    rcases hasign with ha | ha <;>
+    rcases hbsign with hb | hb <;>
+    omega
+
+theorem muThree_adjMatrix_mulVec_eq_induce_mulVec_of_support_int
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (J : SimpleGraph W) [DecidableRel J.Adj] (S : Set W) [Fintype S]
+    (t : W → ℤ) (ht : ∀ y, y ∉ S → t y = 0) (x : S) :
+    (J.adjMatrix ℤ).mulVec t x.1 =
+      ((J.induce S).adjMatrix ℤ).mulVec (fun y : S => t y.1) x := by
+  classical
+  rw [Matrix.mulVec, dotProduct, Matrix.mulVec, dotProduct]
+  calc
+    (∑ y : W, J.adjMatrix ℤ x.1 y * t y) =
+        ∑ y : W, if y ∈ S then J.adjMatrix ℤ x.1 y * t y else 0 := by
+      apply Finset.sum_congr rfl
+      intro y _
+      by_cases hy : y ∈ S
+      · simp [hy]
+      · simp [hy, ht y hy]
+    _ = ∑ y ∈ (Finset.univ : Finset W).filter (fun y => y ∈ S),
+        J.adjMatrix ℤ x.1 y * t y := by rw [← Finset.sum_filter]
+    _ = ∑ y : S, J.adjMatrix ℤ x.1 y.1 * t y.1 := by
+      simpa using (Finset.sum_subtype_eq_sum_filter
+        (s := (Finset.univ : Finset W)) (p := fun y => y ∈ S)
+        (fun y => J.adjMatrix ℤ x.1 y * t y)).symm
+    _ = ∑ y : S, (J.induce S).adjMatrix ℤ x y * t y.1 := by
+      apply Finset.sum_congr rfl
+      intro y _
+      simp only [SimpleGraph.adjMatrix_apply]
+      rfl
+
 abbrev muThreePositiveShore
     {V : Type*} (cSupp : Set V) (s : V → ℤ) :=
   {x : V // x ∈ cSupp ∧ s x = 1}
@@ -943,6 +996,185 @@ theorem orderSixtyFourMuThreeExteriorCellGraph_columnHit
   rw [← hu]
   exact h
 
+/-- Graph-facing constructor with only cycle compatibility left explicit.
+All cardinality, sign-fiber, exact-hit, rook, and C4 fields are derived from
+the signed order-64 mu=3 data and the chosen canonical exterior label. -/
+theorem orderSixtyFour_muThree_mixedGridCode_of_label
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcardV : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x,
+      s y = 3 * s x)
+    (hA_in : ∀ x, x ∈ c.supp →
+      (G.adjMatrix ℤ).mulVec s x = -2 * s x)
+    (hA_out : ∀ x, x ∉ c.supp →
+      (G.adjMatrix ℤ).mulVec s x = -2 ∨
+      (G.adjMatrix ℤ).mulVec s x = 0 ∨
+      (G.adjMatrix ℤ).mulVec s x = 2)
+    (label : muThreeExterior c.supp →
+      muThreePositiveShore c.supp s × muThreeNegativeShore c.supp s)
+    (hinj : Function.Injective label)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (hcycle : RelationFactorCycleCompatible
+      (orderSixtyFourMuThreeInternalRel G (cSupp := c.supp) (s := s))
+      (orderSixtyFourMuThreeHole label)) :
+    MuThreeMixedGridCode
+      (orderSixtyFourMuThreeInternalRel G (cSupp := c.supp) (s := s))
+      (orderSixtyFourMuThreeHole label)
+      (orderSixtyFourMuThreeExteriorCellGraph G label hinj) := by
+  classical
+  let H := G.induce c.supp
+  let t : c.supp → ℤ := fun x => s x.1
+  have hdeg : ∀ x, H.degree x = 2 := by
+    intro x
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcardV c hc x
+  have hsign : ∀ x, t x = -1 ∨ t x = 1 := by
+    intro x
+    exact hs_in x.1 x.2
+  have hneighborSum : ∀ x, ∑ y ∈ H.neighborFinset x, t y = -2 * t x := by
+    intro x
+    rw [← SimpleGraph.adjMatrix_mulVec_apply]
+    rw [← muThree_adjMatrix_mulVec_eq_induce_mulVec_of_support_int
+      G c.supp s hs_out x]
+    exact hA_in x.1 x.2
+  have hflip : ∀ ⦃x y⦄, H.Adj x y → t x = -t y :=
+    muThree_signedFlip_of_degree_two_neighborSum H hdeg t hsign hneighborSum
+  have hcards := orderSixtyFour_signedSizeTwo_signClass_cards
+    G c hc s hs_in hs_out hsum
+  have hP : Fintype.card (muThreePositiveShore c.supp s) = 8 := by
+    rw [Fintype.card_subtype]
+    rw [show (Finset.univ.filter fun x : V => x ∈ c.supp ∧ s x = 1) =
+        (Finset.univ.filter fun x : V => x ∈ c.supp).filter
+          (fun x => s x = 1) by ext x; simp]
+    exact hcards.1
+  have hN : Fintype.card (muThreeNegativeShore c.supp s) = 8 := by
+    rw [Fintype.card_subtype]
+    rw [show (Finset.univ.filter fun x : V => x ∈ c.supp ∧ s x = -1) =
+        (Finset.univ.filter fun x : V => x ∈ c.supp).filter
+          (fun x => s x = -1) by ext x; simp]
+    exact hcards.2
+  have hbalanced := fun u : muThreeExterior c.supp =>
+    orderSixtyFour_signedSizeTwo_muThree_exterior_balancedPair
+      G hfree hreg hcardV c hc s hs_in hs_out hsum hDs hA_in hA_out u.1 u.2
+  have honeP : ∀ u : muThreeExterior c.supp,
+      ((G.neighborFinset u.1).filter fun z => z ∈ c.supp ∧ s z = 1).card = 1 := by
+    intro u
+    rw [show ((G.neighborFinset u.1).filter fun z => z ∈ c.supp ∧ s z = 1) =
+        ((G.neighborFinset u.1).filter fun z =>
+          (secondOrderDefectGraph G).connectedComponentMk z = c).filter
+            (fun z => s z = 1) by
+      ext z
+      simp [ConnectedComponent.mem_supp_iff, and_assoc]]
+    exact (hbalanced u).1
+  have honeN : ∀ u : muThreeExterior c.supp,
+      ((G.neighborFinset u.1).filter fun z => z ∈ c.supp ∧ s z = -1).card = 1 := by
+    intro u
+    rw [show ((G.neighborFinset u.1).filter fun z => z ∈ c.supp ∧ s z = -1) =
+        ((G.neighborFinset u.1).filter fun z =>
+          (secondOrderDefectGraph G).connectedComponentMk z = c).filter
+            (fun z => s z = -1) by
+      ext z
+      simp [ConnectedComponent.mem_supp_iff, and_assoc]]
+    exact (hbalanced u).2
+  have huniqueP : ∀ u p, G.Adj u.1 p.1 → (label u).1 = p :=
+    fun u p hup => orderSixtyFourMuThree_label_positive_eq_of_adj
+      G label hadj honeP u p hup
+  have huniqueN : ∀ u n, G.Adj u.1 n.1 → (label u).2 = n :=
+    fun u n hun => orderSixtyFourMuThree_label_negative_eq_of_adj
+      G label hadj honeN u n hun
+  have hrowFiber : ∀ p, Fintype.card
+      {u : muThreeExterior c.supp // (label u).1 = p} = 6 := by
+    intro p
+    apply orderSixtyFourMuThreeLabelRowFiber_card_eq_six G label hadj huniqueP p
+    simpa [ConnectedComponent.mem_supp_iff] using
+      orderSixtyFour_sizeTwoComponent_exteriorNeighborCard_six
+        G hfree hreg hcardV c hc ⟨p.1, p.2.1⟩
+  have hcolumnFiber : ∀ n, Fintype.card
+      {u : muThreeExterior c.supp // (label u).2 = n} = 6 := by
+    intro n
+    apply orderSixtyFourMuThreeLabelColumnFiber_card_eq_six G label hadj huniqueN n
+    simpa [ConnectedComponent.mem_supp_iff] using
+      orderSixtyFour_sizeTwoComponent_exteriorNeighborCard_six
+        G hfree hreg hcardV c hc ⟨n.1, n.2.1⟩
+  have hout : ∀ u : muThreeExterior c.supp,
+      (Finset.univ.filter fun v : muThreeExterior c.supp =>
+        G.Adj u.1 v.1).card = 6 := by
+    intro u
+    rw [← Fintype.card_subtype,
+      Fintype.card_congr
+        (orderSixtyFourMuThreeOutsideNeighborEquiv G c.supp u.1),
+      Fintype.card_subtype]
+    change ((Finset.univ : Finset V).filter fun v =>
+      G.Adj u.1 v ∧ v ∉ c.supp).card = 6
+    rw [show ((Finset.univ : Finset V).filter fun v =>
+        G.Adj u.1 v ∧ v ∉ c.supp) =
+        (G.neighborFinset u.1).filter (fun v => v ∉ c.supp) by
+      ext v
+      simp [SimpleGraph.mem_neighborFinset, G.adj_comm]]
+    exact orderSixtyFour_sizeTwoComponent_outsideNeighborCard_six
+      G hfree hreg hcardV c hc u.1 u.2
+  have hextRow : ∀ (u : muThreeExterior c.supp) x,
+      ((Finset.univ.filter fun v : muThreeExterior c.supp =>
+        G.Adj u.1 v.1).filter fun v => (label v).1 = x).card =
+          if orderSixtyFourMuThreeInternalRel G x (label u).2 then 0 else 1 := by
+    intro u x
+    apply orderSixtyFourMuThree_exteriorLabelRowHit G _ label u
+    · intro v hv w hw hvw
+      let vv : {z : muThreeExterior c.supp // G.Adj u.1 z.1} :=
+        ⟨v, (Finset.mem_filter.mp hv).2⟩
+      let ww : {z : muThreeExterior c.supp // G.Adj u.1 z.1} :=
+        ⟨w, (Finset.mem_filter.mp hw).2⟩
+      have heq := (c4Free_exteriorGridLabel_neighbor_coordinate_injective
+        G hfree c s label hadj u).1 (show (label vv.1).1 = (label ww.1).1 by
+          exact hvw)
+      exact congrArg (fun z => z.1) heq
+    · apply c4Free_exteriorGridLabel_positiveHit_image
+        G hfree c s label hadj u (hout u) hP
+      exact orderSixtyFour_signedSizeTwo_negative_positiveNeighborCard_two
+        G hfree hreg hcardV c hc s hs_in hs_out hA_in
+          (label u).2.1 (label u).2.2.1 (label u).2.2.2
+  have hextColumn : ∀ (u : muThreeExterior c.supp) y,
+      ((Finset.univ.filter fun v : muThreeExterior c.supp =>
+        G.Adj u.1 v.1).filter fun v => (label v).2 = y).card =
+          if orderSixtyFourMuThreeInternalRel G (label u).1 y then 0 else 1 := by
+    intro u y
+    apply orderSixtyFourMuThree_exteriorLabelColumnHit G _ label u
+    · intro v hv w hw hvw
+      let vv : {z : muThreeExterior c.supp // G.Adj u.1 z.1} :=
+        ⟨v, (Finset.mem_filter.mp hv).2⟩
+      let ww : {z : muThreeExterior c.supp // G.Adj u.1 z.1} :=
+        ⟨w, (Finset.mem_filter.mp hw).2⟩
+      have heq := (c4Free_exteriorGridLabel_neighbor_coordinate_injective
+        G hfree c s label hadj u).2 (show (label vv.1).2 = (label ww.1).2 by
+          exact hvw)
+      exact congrArg (fun z => z.1) heq
+    · have hi := c4Free_exteriorGridLabel_negativeHit_image
+        G hfree c s label hadj u (hout u) hN
+          (orderSixtyFour_signedSizeTwo_positive_negativeNeighborCard_two
+            G hfree hreg hcardV c hc s hs_in hs_out hA_in
+              (label u).1.1 (label u).1.2.1 (label u).1.2.2)
+      simpa [orderSixtyFourMuThreeInternalRel, G.adj_comm] using hi
+  apply orderSixtyFourMuThree_mixedGridCode_of_hitLaws
+    G hfree label hinj hadj hP hN hdeg hflip hrowFiber hcolumnFiber hcycle
+  · exact orderSixtyFourMuThreeExteriorCellGraph_rowHit
+      G _ label hinj hextRow
+  · exact orderSixtyFourMuThreeExteriorCellGraph_columnHit
+      G _ label hinj hextColumn
+
 end
 
 end Erdos85
@@ -958,3 +1190,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFourMuThreeLabelRowFiber_card_eq_six
 #print axioms Erdos85.orderSixtyFourMuThree_exteriorLabelRowHit
 #print axioms Erdos85.orderSixtyFourMuThreeExteriorCellGraph_rowHit
+#print axioms Erdos85.orderSixtyFour_muThree_mixedGridCode_of_label
