@@ -749,6 +749,70 @@ generalized rather than merely replayed.
      those records is in progress.  None of these finite classifications proves
      A-REG for arbitrary `k`.
 
+13c. **`GAP A-REG-STRATA` — explicit status of the six non-unit order-64
+     strata (operator audit, 2026-08-18).**  The normalized defect-component
+     orders are `8` times a partition of `8`.  After the q-generic exclusion
+     of unit parts, the six strata outside the all-size-two census are
+
+     ```text
+     [8], [6,2], [5,3], [4,4], [4,2,2], [3,3,2].
+     ```
+
+     Their honest terminal status is:
+
+     | stratum | terminal status | strongest proved input currently specific to it |
+     |---|---|---|
+     | `[8]` | **GAP** | connected-defect determinant/kernel package; no contradiction |
+     | `[6,2]` | **GAP** | centered-owner nullities `17,49`; no bipartite defect component |
+     | `[5,3]` | **GAP** | centered-owner nullities `25,41`; the size-three component is not bipartite |
+     | `[4,4]` | **GAP** | centered-owner nullities `33,33`; neither component is bipartite |
+     | `[4,2,2]` | **GAP** | size-two cycle/selector laws plus non-bipartiteness of every component |
+     | `[3,3,2]` | **GAP** | odd-part propagation plus size-two exclusion makes every component non-bipartite |
+
+     Here “no bipartite defect component” is the conclusion of the
+     `Erdos85BinarySquareBipartiteDefectComponentStrataConsumers` chain, not
+     nonexistence of the stratum.  Likewise the exact centered-owner nullities
+     in `Erdos85BinarySquareCenteredOwnerNullity` are constraints, not
+     terminals.  Therefore none of these six rows may be marked `PROVEN`.
+     No row currently has a conjectural lemma stronger than the common
+     A-REG conjecture, so each is a **GAP**, rather than an **AXIOM**, at the
+     stratum level.
+
+     The audit separates scalable algebra from the order-64 siege.  The
+     following inputs are q-generic: component orders `q m_c` forming a
+     positive partition of `q`; exclusion of unit parts for even `q`; internal
+     ambient degree `m_c`; the size-two cycle decomposition and selector
+     equivalence; the owner-colored exact-one-overlap law; the owner matrices
+     `A P_c A - m_c I`; their commutation, orthogonality, PSD/kernel formulas,
+     and the centered-owner rank/nullity formula.  The theorem excluding a
+     bipartite component when `2(q-1)` is nonsquare and all fellow components
+     are non-bipartite is also q-generic, although substituting `q=8` and
+     `14` is order-specific.
+
+     By contrast, the 16-vertex two-factor partition census, pair-quotient
+     feasibility tables, `[10,6]` LRATs, the 11 positive-triangle record
+     screen, and composition-specific routing/bowtie case splits are
+     enumerations or `AT-64-ONLY`.  They must not silently become the plan for
+     `q=16` (order 256), much less an iterative siege at later powers.
+
+     The precise uniform statement replacing every such enumeration is:
+
+     ```text
+     AXIOM A-REG-MIXED-PARTITION.
+     For k >= 3 and q = 2^k, there is no q-regular C4-free simple graph G on
+     q^2 vertices whose second-order defect components have orders q*m_c,
+     where every m_c >= 2 and sum_c m_c = q.
+     ```
+
+     In Lean-facing form this should take hypotheses `q = 2^k`, `3 ≤ k`,
+     `Fintype.card V = q*q`, `∀x, G.degree x = q`, and
+     `¬containsC4 V G`, and conclude `False`; the already-proved partition and
+     no-unit theorems synthesize the displayed mixed-partition hypotheses.
+     Proving it is exactly the remaining regular square-core exclusion
+     `A-REG`, not a finite-census deliverable.  A proposed proof must consume
+     at least one q-generic owner/selector identity above in a way that
+     strengthens with `q`; otherwise it has not supplied the extension.
+
 ### A5. Nonregular sectors
 
 14. **`PROVEN` — uniform operator/counting layer.** The nonregular identity
