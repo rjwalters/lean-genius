@@ -1860,8 +1860,13 @@ generalized rather than merely replayed.
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
      graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.
-     The connected `[8]` stratum remains **GAP**, with only the
-     connected-component alternative and moment `64`.  The two-component
+     The connected `[8]` stratum is now **AT-64-ONLY, PARTIAL**: its unique
+     owner graph is 56-regular on 64 vertices, so every vertex pair has at
+     least 48 common owner neighbors by inclusion-exclusion
+     (`orderSixtyFour_regular_oneComponent_ownerDensity`, `5e93827453`).
+     The residual **GAP** is to turn this extreme single-color closure into an
+     ambient C4/routing contradiction when every center belongs to the same
+     defect component.  The two-component
      strata `[6,2]`, `[5,3]`, `[4,4]` are now **q-GENERIC, PARTIAL**: the
      shifted-owner product gives
      `tr(A_a^2 A_b)=q^2(q-1)m_a m_b(m_a-1)` for any two distinct owner
@@ -2499,7 +2504,7 @@ The shortest current proof tree is:
         │   ├── q=8: [2,2,2,2] finite census            [AT-64-ONLY, assembly GAP]
         │   ├── q=8: [6,2], [5,3], [4,4] A²B fork      [q-GENERIC reduction, routing GAP]
         │   ├── q=8: [4,2,2], [3,3,2] pressure/fork     [AT-64-ONLY, residual [4,2,2] e=g=c]
-        │   ├── q=8: [8] connected defect              [GAP]
+        │   ├── q=8: [8] owner density ≥48             [AT-64-ONLY, routing GAP]
         │   └── arbitrary q component obstruction       [AXIOM A-REG-EXTENSION]
         └── nonregular-sector exclusion                 [PROVEN, uniform parity theorem]
 ```
