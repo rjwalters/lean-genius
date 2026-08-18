@@ -1975,12 +1975,18 @@ generalized rather than merely replayed.
      `MuThreeMixedGridCode.foreignColumnEquivNeighbor` independently
      identifies the six `H`-nonneighbor columns with the same neighborhood.
      Their composite is therefore a canonical six-point row-to-column
-     permutation at `u`.
+     permutation at `u` (**PROVEN**, `0de51da1ad`), and on every exterior
+     edge `u~v` it sends the row of `v` to the column of `v`.
      These results use only `MuThreeMixedGridCode`, so they apply uniformly
      to all-triangle, all-triangle-free, and genuinely mixed `H/K` sectors.
-     **GAP A-REG-MIXED-PERMUTATION:** extract and compare those local
-     permutations along an exterior edge; C4-freeness must forbid repeated
-     row-column pairings, but no global incompatibility theorem is yet proved.
+     C4 compatibility is now exact (**PROVEN**, `d30ab09b11`): at two
+     distinct centers the local permutations agree on at most one row that
+     is eligible for both (`foreignRowColumnEquiv_agree_at_most_one`).  Two
+     agreements would be two distinct common neighbors and hence a C4.
+     **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
+     the 48 occupied cells cannot support this family of six-point,
+     pairwise-low-agreement partial-domain permutations.  No global
+     incompatibility or code-size bound is yet proved.
      Consequently any mixed-sector contradiction must occur in this foreign
      permutation compatibility; the own-fiber geometry is exact and
      internally consistent.
