@@ -2123,6 +2123,13 @@ generalized rather than merely replayed.
      an H-neighbor therefore carry equal support cardinalities.  Thus the
      unavoidable overlap-one monodromy configuration connects fibers of the
      same sector type; pointwise subset transport remains the next question.
+     A precise conditional discriminator is now **PROVEN** (`728cf77d0d`):
+     an even six-point derangement preserving a two-element subset must have
+     cycle type `(4,2)`, since the preserved pair supplies a square-fixed
+     point and excludes `(3,3)`.  This does **not** assert that rectangle
+     transport preserves the apex subset; current local margin laws do not
+     force that preservation.  It is the ready consumer if a later
+     all-triangle structural argument supplies it.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
