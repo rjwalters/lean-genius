@@ -43,4 +43,23 @@ theorem false_of_four_lambdaSixColoredRecords_of_muThreeMultiplicity_ge_four
     o₀ o₁ o₂ o₃ m₀ m₁ m₂ m₃ h₀ h₁ h₂ h₃ horder
   omega
 
+private theorem sum_fin_four (f : Fin 4 → ℕ) :
+    (∑ i, f i) = f 0 + f 1 + f 2 + f 3 := by
+  simp [Fin.sum_univ_succ, add_assoc]
+
+/-- Component-indexed form used by the graph-level four-component
+assembly. -/
+theorem false_of_finFour_lambdaSixColoredRecords
+    (coloredOrder muThreeMultiplicity : Fin 4 → ℕ)
+    (hrecord : ∀ i, IsLambdaSixColoredRecord
+      (coloredOrder i) (muThreeMultiplicity i))
+    (horder : ∑ i, coloredOrder i = 16)
+    (hmult : 4 ≤ ∑ i, muThreeMultiplicity i) : False := by
+  rw [sum_fin_four] at horder hmult
+  exact false_of_four_lambdaSixColoredRecords_of_muThreeMultiplicity_ge_four
+    (coloredOrder 0) (coloredOrder 1) (coloredOrder 2) (coloredOrder 3)
+    (muThreeMultiplicity 0) (muThreeMultiplicity 1)
+    (muThreeMultiplicity 2) (muThreeMultiplicity 3)
+    (hrecord 0) (hrecord 1) (hrecord 2) (hrecord 3) horder hmult
+
 end Erdos85
