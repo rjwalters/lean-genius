@@ -36,6 +36,55 @@ def literalMixedOwnerCyclicTriples
           (componentOwnerGraph G (secondOrderDefectGraph G) c)
           (componentOwnerGraph G (secondOrderDefectGraph G) c)
 
+/-- A cyclic triangle whose first two edges have distinct owner colors is a
+literal mixed-owner triangle.  This is the direct constructor used by sharp
+cross-triangle counts. -/
+theorem mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (a b c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (p : V × V × V)
+    (hp : p ∈ cyclicColoredTriples
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) c)) :
+    p ∈ literalMixedOwnerCyclicTriples G := by
+  classical
+  let D := secondOrderDefectGraph G
+  simp only [cyclicColoredTriples, Finset.mem_filter,
+    Finset.mem_univ, true_and] at hp
+  have hnot (owner : D.ConnectedComponent) (x y : V)
+      (hO : (componentOwnerGraph G D owner).Adj x y) : ¬ D.Adj x y := by
+    intro hD
+    have hdis := componentNeighborFinset_disjoint_of_secondOrderDefect_adj
+      G hfree hD owner
+    have hdata := (componentOwnerGraph_adj G D owner x y).mp hO
+    obtain ⟨z, hz⟩ := hdata.2
+    have hz' := Finset.mem_inter.mp hz
+    exact (Finset.disjoint_left.mp hdis) hz'.1 hz'.2
+  simp only [literalMixedOwnerCyclicTriples, Finset.mem_filter,
+    cyclicColoredTriples, Finset.mem_univ, true_and]
+  constructor
+  · exact ⟨⟨hp.1.ne, hnot a p.1 p.2.2 hp.1⟩,
+      ⟨hp.2.1.ne, hnot b p.2.2 p.2.1 hp.2.1⟩,
+      ⟨hp.2.2.ne, hnot c p.2.1 p.1 hp.2.2⟩⟩
+  · rintro ⟨d, hdxy, hdyz, hdzx⟩
+    have owner_unique {owner₁ owner₂ : D.ConnectedComponent} {x y : V}
+        (h₁ : (componentOwnerGraph G D owner₁).Adj x y)
+        (h₂ : (componentOwnerGraph G D owner₂).Adj x y) : owner₁ = owner₂ := by
+      obtain ⟨owner, howner, huniq⟩ :=
+        (not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj
+          G hfree h₁.ne).mp (hnot owner₁ x y h₁)
+      exact (huniq owner₁ h₁).trans (huniq owner₂ h₂).symm
+    have had : a = d := owner_unique hp.1 hdxy
+    have hbd : b = d := owner_unique hp.2.1 hdyz
+    exact hab (had.trans hbd.symm)
+
 /-- The owner-monochromatic ordered complement triangles are counted by the
 sum of the individual owner-triangle finsets. -/
 theorem card_ownerMonochromatic_cyclicTriples_eq_sum
@@ -217,6 +266,8 @@ end
 
 end Erdos85
 
+#print axioms
+  Erdos85.mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_ne
 #print axioms Erdos85.card_ownerMonochromatic_cyclicTriples_eq_sum
 #print axioms
   Erdos85.int_card_literalMixedOwnerCyclicTriples_eq_six_mul_deficit
