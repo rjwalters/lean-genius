@@ -159,7 +159,11 @@ theorem exists_boolColor_of_signed_negativeDegree_eigenvector_on
     simp_all
 
 /-- At order `64`, the support equation and signed seven-regular defect
-eigenline leave only the six odd values from `-7` through `3`. -/
+eigenline leave only the six odd values from `-7` through `3`.
+
+This is a pure arithmetic form requiring a globally signed vector.  The
+campaign vector is zero off its defect component, so downstream graph proofs
+must use `orderSixtyFour_sizeTwo_jointEigenvalue_candidates` instead. -/
 theorem orderSixtyFour_signed_sizeTwo_eigenvalue_candidates
     {V : Type*} [Fintype V] [DecidableEq V]
     (D : SimpleGraph V) [DecidableRel D.Adj]
