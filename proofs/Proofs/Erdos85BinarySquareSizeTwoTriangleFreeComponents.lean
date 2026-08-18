@@ -80,10 +80,37 @@ theorem binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_of_reachable
     omega
   · omega
 
+/-- If both triangle-free colors occur in a normalized size-two defect
+component, then its internal ambient graph is disconnected.  Thus after the
+two uniform branches are excluded, the residual is genuinely a multi-cycle
+problem rather than another connected-factor case. -/
+theorem binarySquare_regular_sizeTwoPart_internal_not_connected_of_mixed_triangleFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hqEven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) (x y : c.supp)
+    (hx : (triangleFreeEdgeGraph G).degree x.1 = 0)
+    (hy : (triangleFreeEdgeGraph G).degree y.1 = 2) :
+    ¬ (G.induce c.supp).Connected := by
+  intro hconn
+  have hdeg :=
+    binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_of_reachable
+      G hfree hq hqEven hreg hcard c hc x y (hconn.preconnected x y)
+  omega
+
 #print axioms
   Erdos85.binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_reachable
 #print axioms
   Erdos85.binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_of_reachable
+#print axioms
+  Erdos85.binarySquare_regular_sizeTwoPart_internal_not_connected_of_mixed_triangleFree
 
 end
 
