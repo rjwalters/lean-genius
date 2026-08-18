@@ -1597,17 +1597,20 @@ generalized rather than merely replayed.
      the owner-cycle contradiction is closed.  It is not universal for
      `[16]`: 270 of 392 classified models are near-twin-free.  That stratum
      therefore still needs a second terminal, naturally through codegree-five
-     nonedges or codegree-four edges.  A new honest owner-factor CSP screen
-     (external computation, not yet banked or kernel checked) partitions the
-     26 spectral classes / 392 models as follows: 8 classes / 160 models are
-     UNSAT for a four-way commuting two-factorization of `Dᶜ`; 17 classes /
-     230 models are SAT; and one class / 2 models has disconnected `D` and is
-     already structurally dead.  The SAT side includes the 8-model
-     `K₈,₈`-minus-matching class already killed arithmetically, leaving 222
-     genuinely live models after the two filters.  Thus commutation alone is
-     a substantial but nonterminal `[16]` sieve; the surviving concrete owner
-     factorizations should feed the λ=5/routing constraints rather than be
-     treated as a branch closure.  The arithmetic screen further suggests a
+     nonedges or codegree-four edges.  The earlier external claim that the
+     honest four-factor CSP kills 8 `[16]` classes / 160 models is RETRACTED:
+     it depended on an unnamed extra constraint and is not reproduced by the
+     defining owner-factor equations.  The corrected pointwise screen first
+     imposes the PROVEN triangle-free-sector degree law (`0` or `2` at every
+     vertex).  It leaves 20 of the 392 labeled `[16]` models, and every one of
+     those 20 admits the honest commuting four-factorization.  For `[8,8]`
+     the same screen leaves 2688 labeled models, of which 1936 admit the full
+     CSP; this is the dominant surviving tail.  Across four components, the
+     externally enumerated records satisfying colored-order sum `16`, total
+     `μ=3` multiplicity at least four and even, and the full CSP number 3279
+     (only 76 are all-`[16]`; 572 are all-`[8,8]`).  Thus commutation is not a
+     terminal for these strata: their concrete owner factorizations must feed
+     the λ=5/routing/sign-lift constraints.  The arithmetic screen further suggests a
      sharp cubic target: after all case-B conjugate pairs cancel from odd
      moments, the rational `μ=3` lifts satisfy `α²=4`; if their global linear
      sum is `-8`, then the ambient triangle count is exactly `80`.  This final
