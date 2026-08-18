@@ -343,4 +343,59 @@ theorem not_mu3KSectorSearchAdmissible_H106_tenTf (rows : Mu3KRows) :
   not_mu3KSectorSearchAdmissible_of_count_zero _ _
     mu3KSectorEnumeration_H106_tenTf_count rows
 
+/-! ## Explicit survivor lists
+
+These are ordered exactly as the executable search returns them.  They are
+also the row-support presentation used by the fixed-K certificate instances.
+-/
+
+def mu3KSurvivorsH16AllTriangle : List Mu3KRows := [
+  [{1, 6}, {2, 7}, {0, 3}, {1, 4}, {2, 5}, {3, 6}, {4, 7}, {0, 5}],
+  [{2, 5}, {3, 6}, {4, 7}, {0, 5}, {1, 6}, {2, 7}, {0, 3}, {1, 4}],
+  [{3, 4}, {4, 5}, {5, 6}, {6, 7}, {0, 7}, {0, 1}, {1, 2}, {2, 3}]]
+
+def mu3KSurvivorsH88AllTriangle : List Mu3KRows := [
+  [{1, 2}, {2, 3}, {0, 3}, {0, 1}, {5, 6}, {6, 7}, {4, 7}, {4, 5}],
+  [{4, 5}, {4, 7}, {6, 7}, {5, 6}, {0, 1}, {0, 3}, {2, 3}, {1, 2}],
+  [{4, 5}, {5, 6}, {6, 7}, {4, 7}, {2, 3}, {0, 3}, {0, 1}, {1, 2}],
+  [{4, 6}, {5, 7}, {4, 6}, {5, 7}, {0, 2}, {1, 3}, {0, 2}, {1, 3}],
+  [{4, 6}, {5, 7}, {4, 6}, {5, 7}, {1, 3}, {0, 2}, {1, 3}, {0, 2}],
+  [{4, 7}, {4, 5}, {5, 6}, {6, 7}, {0, 3}, {0, 1}, {1, 2}, {2, 3}],
+  [{4, 7}, {6, 7}, {5, 6}, {4, 5}, {0, 3}, {2, 3}, {1, 2}, {0, 1}],
+  [{5, 6}, {4, 5}, {4, 7}, {6, 7}, {1, 2}, {0, 1}, {0, 3}, {2, 3}],
+  [{5, 6}, {6, 7}, {4, 7}, {4, 5}, {1, 2}, {2, 3}, {0, 3}, {0, 1}],
+  [{5, 7}, {4, 6}, {5, 7}, {4, 6}, {0, 2}, {1, 3}, {0, 2}, {1, 3}],
+  [{5, 7}, {4, 6}, {5, 7}, {4, 6}, {1, 3}, {0, 2}, {1, 3}, {0, 2}],
+  [{6, 7}, {4, 7}, {4, 5}, {5, 6}, {0, 1}, {1, 2}, {2, 3}, {0, 3}],
+  [{6, 7}, {5, 6}, {4, 5}, {4, 7}, {2, 3}, {1, 2}, {0, 1}, {0, 3}]]
+
+def mu3KSurvivorH88FirstTf : Mu3KRows :=
+  [{0, 3}, {0, 1}, {1, 2}, {2, 3}, {5, 6}, {6, 7}, {4, 7}, {4, 5}]
+
+def mu3KSurvivorH88SecondTf : Mu3KRows :=
+  [{1, 2}, {2, 3}, {0, 3}, {0, 1}, {4, 7}, {4, 5}, {5, 6}, {6, 7}]
+
+def mu3KSurvivorH106SixTf : Mu3KRows :=
+  [{1, 3}, {2, 4}, {0, 3}, {1, 4}, {0, 2}, {5, 7}, {5, 6}, {6, 7}]
+
+theorem mu3KSectorEnumeration_H16_allTriangle_eq :
+    mu3KSectorEnumeration mu3H16Row mu3EmptyRows =
+      mu3KSurvivorsH16AllTriangle := by decide
+
+theorem mu3KSectorEnumeration_H88_allTriangle_eq :
+    mu3KSectorEnumeration mu3H88Row mu3EmptyRows =
+      mu3KSurvivorsH88AllTriangle := by decide
+
+theorem mu3KSectorEnumeration_H88_firstTf_eq :
+    mu3KSectorEnumeration mu3H88Row mu3H88FirstTfRows =
+      [mu3KSurvivorH88FirstTf] := by decide
+
+theorem mu3KSectorEnumeration_H88_secondTf_eq :
+    mu3KSectorEnumeration mu3H88Row mu3H88SecondTfRows =
+      [mu3KSurvivorH88SecondTf] := by decide
+
+theorem mu3KSectorEnumeration_H106_sixTf_eq :
+    mu3KSectorEnumeration mu3H106Row mu3H106SixTfRows =
+      [mu3KSurvivorH106SixTf] := by decide
+
 end Erdos85
