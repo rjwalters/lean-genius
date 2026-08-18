@@ -84,8 +84,9 @@ theorem binarySquare_regular_normalizedTarget_crossIncidence_mul_transpose
     by_cases hadj : (restrictedComponentOwnerGraph G source target).Adj x y <;>
       simp [hadj, hxy, SimpleGraph.adjMatrix_apply]
 
-/-- Row Gram of a size-two cross block: diagonal `2` plus the corresponding
-restricted owner 2-factor. -/
+/-- Row Gram of a cross block into a size-two target: diagonal `2` plus the
+corresponding restricted owner graph.  This graph is a 2-factor only when the
+source component is itself normalized size two. -/
 theorem binarySquare_regular_sizeTwoTarget_crossIncidence_mul_transpose
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
