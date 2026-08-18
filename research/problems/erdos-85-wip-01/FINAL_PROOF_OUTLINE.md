@@ -2098,12 +2098,14 @@ generalized rather than merely replayed.
      a three-row monochromatic class by pigeonhole; formalizing that final
      extraction and coupling its three even monodromies to `K` is next.
      A separate stratum-independent hole-counting obstruction is now
-     **PROVEN** (`7d0d696dd8`): a three-column `H \ K` block cannot coexist
-     with `H ⊆ K` on every outside column.  Outside-column saturation traps
+     **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
+     block coexisting with `H ⊆ K` on every outside column has at least four
+     columns.  Outside-column saturation traps
      both `K`-holes of a triangle row inside the three-column block, while
      its two disjoint `H`-neighbors are there as well, forcing four distinct
-     columns into a three-set.  This is the abstract-code core excluding a
-     triangle `C6` in a genuinely mixed sector, hence the mixed
+     columns in the triangle shore.  Equivalently every triangle cycle in a
+     genuinely mixed sector has length at least eight.  This excludes a
+     triangle `C6`, hence the mixed
      `(triangle-free C10, triangle C6)` orientation.  The remaining wrapper
      is only to expose the classified component shores as the three-column
      block and its all-triangle-free complement.
