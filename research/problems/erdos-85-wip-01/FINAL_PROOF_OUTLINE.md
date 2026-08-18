@@ -2027,7 +2027,11 @@ generalized rather than merely replayed.
      eligible rows embed into distinct cells of the six-cell target fiber
      (**PROVEN**, `693ee7a7cf`).  The source has size `4`, `5`, or `6`
      according as the two size-two `H`-neighborhoods overlap in `0`, `1`, or
-     `2` rows; the overlap-two case is the saturated monodromy regime.
+     `2` rows.  The overlap-two case is now saturated (**PROVEN**,
+     `6e69af49ba`): if the two columns have identical `H`-neighborhoods, then
+     for every source cell the six row transports biject onto the entire
+     six-cell target column.  The remaining issue there is compatibility as
+     the source varies / around the induced `H` four-cycle.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
