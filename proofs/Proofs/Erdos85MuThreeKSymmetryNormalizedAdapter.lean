@@ -114,7 +114,53 @@ theorem mem_mu3KSectorEnumeration_rowsOfRelation
     (mu3KSectorGlobalAdmissible_rowsOfRelation H T K hrow hcolumn hsector
       hrowSymm hcolumnSymm)
 
+/-- A canonical Boolean table for a row-list candidate. -/
+def mu3KRowsCandidate (rows : Mu3KRows) (x y : Fin 8) : Bool :=
+  decide (y.val ∈ rows.getD x.val ∅)
+
+@[simp] theorem mu3KRowsCandidate_eq_true_iff
+    (rows : Mu3KRows) (x y : Fin 8) :
+    mu3KRowsCandidate rows x y = true ↔ y.val ∈ rows.getD x.val ∅ := by
+  simp [mu3KRowsCandidate]
+
+theorem mu3KRowsOfRelation_candidate_iff
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K] (x y : Fin 8) :
+    K x y ↔ mu3KRowsCandidate (mu3KRowsOfRelation K) x y = true := by
+  rw [mu3KRowsCandidate_eq_true_iff,
+    mu3KRowsOfRelation_getD_eq_image K x,
+    mem_image_finVal_filter_iff K x y]
+
+/-- The executable enumeration as a genuine exhaustive Boolean candidate
+family.  The subtype index remembers the checked membership proof, while the
+candidate relation itself is just lookup in the represented row list. -/
+theorem exists_mu3KSectorCandidate_of_normalized
+    (H T : Nat → Mu3KRow)
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hrow : ∀ x,
+      ((Finset.univ : Finset (Fin 8)).filter fun y => K x y).card = 2)
+    (hcolumn : ∀ y,
+      ((Finset.univ : Finset (Fin 8)).filter fun x => K x y).card = 2)
+    (hsector : ∀ x : Fin 8,
+      ((Finset.univ.filter fun y => K x y).image Fin.val) ∩ H x.val =
+        T x.val)
+    (hrowSymm : ∀ x x' : Fin 8,
+      (((Finset.univ.filter fun y => K x y).image Fin.val) ∩ H x'.val).card =
+        (((Finset.univ.filter fun y => K x' y).image Fin.val) ∩ H x.val).card)
+    (hcolumnSymm : ∀ y y' : Fin 8,
+      (((Finset.univ.filter fun x => K x y).image Fin.val) ∩
+          mu3HColumn H y'.val).card =
+        (((Finset.univ.filter fun x => K x y').image Fin.val) ∩
+          mu3HColumn H y.val).card) :
+    ∃ i : {rows : Mu3KRows // rows ∈ mu3KSectorEnumeration H T},
+      ∀ x y, K x y ↔ mu3KRowsCandidate i.1 x y = true := by
+  let rows := mu3KRowsOfRelation K
+  have hmem : rows ∈ mu3KSectorEnumeration H T :=
+    mem_mu3KSectorEnumeration_rowsOfRelation H T K hrow hcolumn hsector
+      hrowSymm hcolumnSymm
+  exact ⟨⟨rows, hmem⟩, mu3KRowsOfRelation_candidate_iff K⟩
+
 end Erdos85
 
 #print axioms Erdos85.mu3KSectorGlobalAdmissible_rowsOfRelation
 #print axioms Erdos85.mem_mu3KSectorEnumeration_rowsOfRelation
+#print axioms Erdos85.exists_mu3KSectorCandidate_of_normalized
