@@ -5,10 +5,11 @@ import Proofs.Erdos85BinarySquareRegularParity
 
 Let `G` be a `q`-regular `C₄`-free graph on `q²` vertices and `D` its
 second-order defect graph, so `A² = (q-1)I + J - D` and `A` commutes with `D`.
-Suppose the defect graph has a *size-two* component `c` (order `2q`) whose
-complement is defect-connected (e.g. exactly two defect components, the
-`[q-2, 2]` strata).  If `D[c]` is bipartite, then no such graph exists — with
-**no hypothesis on the internal ambient factor of `c`**.
+Suppose the defect graph has a *size-two* component `c` (order `2q`) and no
+other defect component of order exactly `q` (true in every stratum without a
+size-one part: the two-component `[q-2, 2]` strata, `[q-4, 2, 2]`, …, and the
+all-size-two stratum).  If `D[c]` is bipartite, then no such graph exists —
+with **no hypothesis on the internal ambient factor of `c`**.
 
 The proof is a short eigenvector argument.  Let `v = 1_X - 1_Y` (zero off
 `c`), so `D v = -(q-1) v`, `Σ v = 0` and `A² v = 2(q-1) v`.  Every vertex of
@@ -21,8 +22,10 @@ defect adjacency; since `c` is defect-connected, `ε ≡ λ` is constant.  Put
 vertex has exactly two neighbours in `c`).  Then `A w = (2(q-1) - λ²) v - λ w`
 and `D w = -(q-1) w`.  For `λ = 0` the first identity is already impossible at
 a vertex of `c` (`2(q-1) > 2(q-2)`).  For `λ = ±2` it forces some outside
-neighbour with `w = 0`; the second identity makes the zero fibre of `w`
-closed under defect adjacency, so `w` vanishes identically off `c` — again
+neighbour `u₀` with `w = 0`; the second identity makes the zero fibre of `w`
+closed under defect adjacency, so `w` vanishes on the whole defect component
+`c₁` of `u₀`.  By the equitable law the base vertex has `|c₁|/q ≥ 2`
+neighbours in `c₁`, so `|Σ w| ≤ 2(q-4)` over its outside neighbours — again
 contradicting the first identity for `q ≥ 4`.
 
 Everything is uniform in `q`; nothing is enumerated.  In the order-64
@@ -47,10 +50,12 @@ theorem reachable_induction_of_adj_closed {V : Type*} (D : SimpleGraph V)
   | nil => exact hu
   | cons hadj _ ih => exact ih (hP _ _ hadj hu)
 
-/-- **Bipartite size-two defect component with defect-connected complement:
-impossible.**  No hypothesis on the internal ambient factor is needed; see the
-module docstring for the argument. -/
-theorem binarySquare_regular_sizeTwoPart_bipartite_connected_complement_false
+/-- **Bipartite size-two defect component: impossible whenever no other defect
+component has order exactly `q`.**  No hypothesis on the internal ambient
+factor is needed; see the module docstring for the argument.  The hypothesis
+`hother` holds in every stratum without a size-one part — in particular in the
+two-component `[q-2, 2]` strata and in the all-size-two stratum. -/
+theorem binarySquare_regular_sizeTwoPart_bipartite_false
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -62,8 +67,8 @@ theorem binarySquare_regular_sizeTwoPart_bipartite_connected_complement_false
     (hcard : Fintype.card V = q * q)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
     (hc : c.supp.ncard = q * 2)
-    (hrest : ∀ x y, x ∉ c.supp → y ∉ c.supp →
-      (secondOrderDefectGraph G).Reachable x y)
+    (hother : ∀ c' : (secondOrderDefectGraph G).ConnectedComponent,
+      c' ≠ c → c'.supp.ncard ≠ q)
     (col : V → Bool)
     (hbip : ∀ x y, x ∈ c.supp → y ∈ c.supp →
       (secondOrderDefectGraph G).Adj x y → col x ≠ col y) :
@@ -471,20 +476,104 @@ theorem binarySquare_regular_sizeTwoPart_bipartite_connected_complement_false
     rcases hs_sq z₀ hz₀ with h | h <;> rw [h] at hdvd <;> omega
   obtain ⟨u₀, hu₀T, hwu₀⟩ := hexists
   have hu₀ : u₀ ∉ c.supp := fun h => (Finset.mem_filter.mp hu₀T).2 ((hmem u₀).mp h)
-  -- Step 10: propagate to the whole complement, then contradict at `z₀`
-  have hall : ∀ u, u ∉ c.supp → w u = 0 := by
+  have hu₀N : u₀ ∈ G.neighborFinset z₀ := (Finset.mem_filter.mp hu₀T).1
+  -- Step 10: `w` vanishes on the whole defect component `c₁` of `u₀`
+  set c₁ := (secondOrderDefectGraph G).connectedComponentMk u₀ with hc₁
+  have hc₁ne : c₁ ≠ c := fun h => hu₀ ((hmem u₀).mpr h)
+  have hall₁ : ∀ u, (secondOrderDefectGraph G).connectedComponentMk u = c₁ → w u = 0 := by
     intro u hu
-    have hreach := hrest u₀ u hu₀ hu
+    have hreach : (secondOrderDefectGraph G).Reachable u₀ u :=
+      ConnectedComponent.exact hu.symm
     have := reachable_induction_of_adj_closed (secondOrderDefectGraph G)
       (fun x => x ∉ c.supp ∧ w x = 0)
       (fun x y hxy hx => ⟨hDout x y hx.1 hxy, hclosed x y hx.1 hx.2 hxy⟩) hreach ⟨hu₀, hwu₀⟩
     exact this.2
-  have hTzero : ∑ y ∈ T, w y = 0 := by
-    apply Finset.sum_eq_zero
+  -- `z₀` has at least two neighbours in `c₁` (equitable law and `|c₁| ≠ q`)
+  set T₁ := (G.neighborFinset z₀).filter
+    (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c₁) with hT₁
+  have hT₁card : 2 ≤ T₁.card := by
+    have h := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq3 hreg hcard c c₁ (x := z₀) hz₀
+    have hpos : 0 < T₁.card :=
+      Finset.card_pos.mpr ⟨u₀, Finset.mem_filter.mpr ⟨hu₀N, rfl⟩⟩
+    by_contra hlt
+    have hone : T₁.card = 1 := by omega
+    apply hother c₁ hc₁ne
+    rw [← h]
+    change q * T₁.card = q
+    rw [hone, mul_one]
+  have hT₁sub : T₁ ⊆ T := by
     intro y hy
-    exact hall y (fun h => (Finset.mem_filter.mp hy).2 ((hmem y).mp h))
-  rw [hTzero] at hzsumT
+    rw [Finset.mem_filter] at hy ⊢
+    exact ⟨hy.1, fun hyc => hc₁ne (hy.2.symm.trans hyc)⟩
+  have hsplit : ∑ y ∈ T \ T₁, w y + ∑ y ∈ T₁, w y = ∑ y ∈ T, w y :=
+    Finset.sum_sdiff hT₁sub
+  have hT₁zero : ∑ y ∈ T₁, w y = 0 :=
+    Finset.sum_eq_zero (fun y hy => hall₁ y (Finset.mem_filter.mp hy).2)
+  have hsdcard : (T \ T₁).card = T.card - T₁.card := Finset.card_sdiff_of_subset hT₁sub
+  have hcast : ((T \ T₁).card : ℤ) ≤ (q : ℤ) - 4 := by
+    rw [hsdcard, hTcard]
+    omega
+  have hup : ∑ y ∈ T \ T₁, w y ≤ 2 * ((T \ T₁).card : ℤ) := by
+    have hle : ∀ y ∈ T \ T₁, w y ≤ 2 := by
+      intro y _
+      rcases hw_val y with hy | hy | hy <;> rw [hy] <;> norm_num
+    have := Finset.sum_le_card_nsmul (T \ T₁) w 2 hle
+    rw [nsmul_eq_mul] at this
+    linarith
+  have hlow : -(2 * ((T \ T₁).card : ℤ)) ≤ ∑ y ∈ T \ T₁, w y := by
+    have hle : ∀ y ∈ T \ T₁, -2 ≤ w y := by
+      intro y _
+      rcases hw_val y with hy | hy | hy <;> rw [hy] <;> norm_num
+    have := Finset.card_nsmul_le_sum (T \ T₁) w (-2) hle
+    rw [nsmul_eq_mul] at this
+    linarith
   rcases hs_sq z₀ hz₀ with h | h <;> rw [h] at hzsumT <;> linarith
+
+/-- Connected-complement form: if the complement of `c` is defect-connected it
+is a single component of order `q(q-2) ≠ q`, so `hother` holds. -/
+theorem binarySquare_regular_sizeTwoPart_bipartite_connected_complement_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 4 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2)
+    (hrest : ∀ x y, x ∉ c.supp → y ∉ c.supp →
+      (secondOrderDefectGraph G).Reachable x y)
+    (col : V → Bool)
+    (hbip : ∀ x y, x ∈ c.supp → y ∈ c.supp →
+      (secondOrderDefectGraph G).Adj x y → col x ≠ col y) :
+    False := by
+  apply binarySquare_regular_sizeTwoPart_bipartite_false
+    G hfree hq hreg hcard c hc _ col hbip
+  intro c' hc' hcard'
+  -- `c'.supp` is the complement of `c.supp`
+  obtain ⟨x₀, hx₀⟩ := c'.exists_rep
+  have hx₀c' : x₀ ∈ c'.supp := (ConnectedComponent.mem_supp_iff c' x₀).mpr hx₀
+  have hx₀c : x₀ ∉ c.supp := fun h =>
+    hc' (hx₀.symm.trans ((ConnectedComponent.mem_supp_iff c x₀).mp h))
+  have hcompl : c'.supp = (c.supp)ᶜ := by
+    ext y
+    constructor
+    · intro hy hyc
+      exact hc' (((ConnectedComponent.mem_supp_iff c' y).mp hy).symm.trans
+        ((ConnectedComponent.mem_supp_iff c y).mp hyc))
+    · intro hy
+      have hreach := hrest x₀ y hx₀c hy
+      rw [ConnectedComponent.mem_supp_iff, ← hx₀]
+      exact (ConnectedComponent.sound hreach).symm
+  have hsum := Set.ncard_add_ncard_compl c.supp
+  rw [← hcompl, hc, hcard', Nat.card_eq_fintype_card, hcard] at hsum
+  -- `q * 2 + q = q * q` forces `q = 3`
+  have : q * 3 = q * q := by linarith
+  have := Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) this
+  omega
 
 /-- Two-component form: if the defect graph has exactly two components, the
 complement of `c` is automatically defect-connected. -/
@@ -525,6 +614,27 @@ theorem binarySquare_regular_sizeTwoPart_bipartite_two_components_false
     rw [hcount, Fintype.card_fin] at this
     omega
   exact ConnectedComponent.exact (hthree _ _ hx' hy')
+
+/-- All-size-two form: if every defect component has order `2q` (the
+`[2,2,…,2]` stratum), no defect component is bipartite. -/
+theorem binarySquare_regular_allSizeTwo_not_bipartite
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 4 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hsize : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, c.supp.ncard = q * 2)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (col : V → Bool)
+    (hbip : ∀ x y, x ∈ c.supp → y ∈ c.supp →
+      (secondOrderDefectGraph G).Adj x y → col x ≠ col y) :
+    False :=
+  binarySquare_regular_sizeTwoPart_bipartite_false G hfree hq hreg hcard c (hsize c)
+    (fun c' _ h => by rw [hsize c'] at h; omega) col hbip
 
 /-! ### Specialisations kept for the outline ledger
 
