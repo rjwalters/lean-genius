@@ -1519,6 +1519,23 @@ generalized rather than merely replayed.
      The involution table and the contradiction in each of these four exact
      routing/profile cases still need graph-facing Lean statements.
 
+     New exhaustive finite evidence bypasses those four cases for the four
+     λ=6-covered class representatives.  For each representative, write
+     `D` for its seven-regular defect block, `H` for the distinguished
+     two-factor, and `R = Dᶜ \ H` for the remaining six-regular graph.  An
+     exact SAT enumeration finds no two-factor `F ⊆ R` whose adjacency matrix
+     commutes with `D` (although `R` has ordinary three-way two-factorizations,
+     and both `R` and `H` commute with `D`).  The hypothesis mapping is
+     formally PROVEN: `orderSixtyFour_restrictedOwner_adjMatrix_comm_inducedDefect`
+     makes every restricted owner factor commute with `D`, while
+     `sum_restrictedComponentOwnerGraph_adjMatrix_eq_inducedDefect_compl`
+     makes the four restricted factors partition `Dᶜ`; after removing `H`,
+     the other three must partition `R`.  Therefore the four representatives
+     are computationally excluded.  GAP: replay a compact exhaustive/CNF
+     certificate in Lean and connect the representative bank to the existing
+     graph labeling; until then this is external finite evidence, not a
+     `PROVEN` branch closure.
+
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
      codegree-six nonedge, so the near-twin terminal covers those strata once
