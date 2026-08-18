@@ -2068,7 +2068,12 @@ generalized rather than merely replayed.
      derangements form a coherent relative-transport groupoid; the remaining
      task is to classify such six-point transport families subject to the
      simultaneous `K`-sector constraints, rather than treating rectangle
-     permutations independently.
+     permutations independently.  Its first finite invariant is also
+     **PROVEN** (`f136c7c21e`): permutation sign obeys the same cocycle, and
+     the three oriented monodromy signs around every triangle of eligible rows
+     multiply to `+1`.  Equivalently, every such triangle contains an even
+     number of odd derangements.  Any cycle-type classification must respect
+     this parity-flatness constraint.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
