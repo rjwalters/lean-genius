@@ -1585,11 +1585,16 @@ generalized rather than merely replayed.
      `lambdaSixFiveFiveThreeThreeRModels_complete` use `bv_decide` to prove
      that every matrix satisfying the direct symmetry, degree-six,
      `A_H²`-support, and commutation equations occurs in the appropriate
-     array.  What remains is the finite per-model class table: compute the
-     forced `D = I+J-A_H²-R`, certify that the bipartite models enter the
-     existing arithmetic terminal and that every other model is a relabeling
-     of its `t_D=30` or `t_D=40` constant, then invoke the four Boolean-
-     relation terminals.
+     array.  The finite class table and label transport are now PROVEN in
+     `Erdos85LambdaSixClassificationLabels`: for all 504 labeled models,
+     generated tags and permutations are checked by closed kernel reduction;
+     each permutation is injective and transports the forced
+     `D = I+J-A_H²-R` to the bipartite, `t_D=30`, or `t_D=40` target.
+     The remaining graph-level interface is therefore narrow: show that the
+     ambient labeled component supplies `lambdaSixAdmissibleR`, transport its
+     four restricted owner factors through the checked permutation, dispatch
+     the bipartite tag by the existing arithmetic terminal, and invoke the
+     four Boolean-relation UNSAT terminals on the other tags.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
