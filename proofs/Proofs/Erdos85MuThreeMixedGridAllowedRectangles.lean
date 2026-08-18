@@ -74,9 +74,31 @@ theorem MuThreeMixedGridCode.exists_allowedRectangle_on_columns
   have hx₂' := (Finset.mem_filter.mp hx₂).2
   exact ⟨hy, x₁, x₂, hne, hx₁'.1, hx₁'.2, hx₂'.2, hx₂'.1⟩
 
+/-- Every distinct column pair therefore carries a six-point derangement
+obtained as the holonomy around some allowed rectangle. -/
+theorem MuThreeMixedGridCode.exists_fixedPointFree_rectangleHolonomy_on_columns
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C) (y₁ y₂ : Y) (hy : y₁ ≠ y₂) :
+    ∃ (x₁ x₂ : X) (hx : x₁ ≠ x₂)
+        (h11 : ¬ H x₁ y₁) (h12 : ¬ H x₁ y₂)
+        (h22 : ¬ H x₂ y₂) (h21 : ¬ H x₂ y₁),
+      ∀ u : mixedGridOccupiedColumn K y₁,
+        mixedGridRectangleHolonomy H K C code x₁ x₂ y₁ y₂
+          h11 h12 h22 h21 u ≠ u := by
+  obtain ⟨_, x₁, x₂, hx, h11, h12, h22, h21⟩ :=
+    code.exists_allowedRectangle_on_columns H K C y₁ y₂ hy
+  exact ⟨x₁, x₂, hx, h11, h12, h22, h21,
+    fun u => mixedGridRectangleHolonomy_ne H K C code
+      x₁ x₂ y₁ y₂ hx hy h11 h12 h22 h21 u⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.MuThreeMixedGridCode.four_le_commonAllowedRows_card
 #print axioms Erdos85.MuThreeMixedGridCode.exists_allowedRectangle_on_columns
+#print axioms
+  Erdos85.MuThreeMixedGridCode.exists_fixedPointFree_rectangleHolonomy_on_columns
