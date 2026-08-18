@@ -34,6 +34,34 @@ theorem sum_cyclicCorrelation_eq_mul_sum
           simpa using
             (Finset.sum_mul Finset.univ f (∑ y : ZMod n, g y)).symm
 
+set_option maxHeartbeats 3000000 in
+/-- The second moment of cyclic correlation is the product pairing of the
+two cyclic autocorrelations.  This is the additive-energy identity behind a
+variance attack on the three-owner obstruction. -/
+theorem sum_sq_cyclicCorrelation_eq_sum_mul_autocorrelation
+    (n : ℕ) [NeZero n] (f g : ZMod n → ℕ) :
+    (∑ r : ZMod n, (∑ x : ZMod n, f x * g (x + r)) ^ 2) =
+      ∑ d : ZMod n,
+        (∑ x : ZMod n, f x * f (x + d)) *
+          ∑ y : ZMod n, g y * g (y + d) := by
+  let e : (ZMod n × ZMod n) × ZMod n ≃ (ZMod n × ZMod n) × ZMod n :=
+    { toFun := fun p => ((p.1.2 - p.2, p.2 + p.1.1), p.2)
+      invFun := fun p => ((p.1.2 - p.2, p.2 + p.1.1), p.2)
+      left_inv := by
+        rintro ⟨⟨r, x⟩, y⟩
+        simp [sub_eq_add_neg, add_assoc]
+      right_inv := by
+        rintro ⟨⟨d, x⟩, y⟩
+        simp [sub_eq_add_neg, add_assoc] }
+  simp only [pow_two, Finset.sum_mul, Finset.mul_sum]
+  repeat rw [← Fintype.sum_prod_type']
+  apply Fintype.sum_equiv e
+  rintro ⟨⟨r, x⟩, y⟩
+  simp only [e, sub_add_cancel, add_sub_cancel_right, add_sub_cancel_left,
+    add_assoc, add_comm, add_left_comm]
+  ac_rfl
+
 end Erdos85
 
 #print axioms Erdos85.sum_cyclicCorrelation_eq_mul_sum
+#print axioms Erdos85.sum_sq_cyclicCorrelation_eq_sum_mul_autocorrelation

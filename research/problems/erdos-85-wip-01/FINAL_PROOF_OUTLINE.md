@@ -1903,7 +1903,14 @@ generalized rather than merely replayed.
      admissible interleaving shift.  The sharpened missing lemma is therefore
      a uniform positive lower bound (or equivalent rigidity/variance-zero
      statement) for correlations coming from the two competing Hamiltonian
-     owner-factor coordinates, not an additional first-moment count.
+     owner-factor coordinates, not an additional first-moment count.  The
+     exact second-moment reduction is also **PROVEN q-GENERIC** as
+     `sum_sq_cyclicCorrelation_eq_sum_mul_autocorrelation`: the sum of the
+     squared overlap correlations is the pairing of the two cyclic
+     autocorrelation profiles.  Thus the remaining rigidity leaf can be
+     attacked entirely through the autocorrelation profiles of the competing
+     Hamiltonian-coordinate tiles; the identity alone still does not imply
+     positivity at every admissible shift.
      **`GAP A-REG-STRATA` (q=8).**  The PROVEN
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
