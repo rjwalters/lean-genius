@@ -1,36 +1,38 @@
 import Proofs.Erdos85LambdaSixColoredOrderTerminal
 
-/-! # Arithmetic interface for the full size-two component screen -/
+/-! # Arithmetic interface for the non-[8,8] size-two component screen -/
 
 namespace Erdos85
 
 /-- Compact record set containing exactly the locally valid colored-order
 and `μ=3` multiplicity pairs from the `[16]`, `[10,6]`, and `[5,5,3,3]`
-screens.  For order zero or sixteen the exact multiplicity may be `0,1,2`;
-the mixed-cycle orders six and ten have multiplicity exactly one. -/
-def IsSizeTwoScreenRecord (coloredOrder muThreeMultiplicity : ℕ) : Prop :=
+screens.  It deliberately excludes the `[8,8]` stratum, whose multiplicity
+can reach three and whose colored order can also be eight.  For order zero
+or sixteen here the exact multiplicity may be `0,1,2`; the mixed-cycle
+orders six and ten have multiplicity exactly one. -/
+def IsNonEightEightScreenRecord (coloredOrder muThreeMultiplicity : ℕ) : Prop :=
   ((coloredOrder = 0 ∨ coloredOrder = 16) ∧ muThreeMultiplicity ≤ 2) ∨
   (coloredOrder = 6 ∧ muThreeMultiplicity = 1) ∨
   (coloredOrder = 10 ∧ muThreeMultiplicity = 1)
 
-theorem sizeTwoScreenRecord_muThreeMultiplicity_le_two
-    {o m : ℕ} (h : IsSizeTwoScreenRecord o m) : m ≤ 2 := by
+theorem nonEightEightScreenRecord_muThreeMultiplicity_le_two
+    {o m : ℕ} (h : IsNonEightEightScreenRecord o m) : m ≤ 2 := by
   rcases h with h | h | h <;> omega
 
-theorem sizeTwoScreenRecord_order_six_or_ten_muThreeMultiplicity_eq_one
-    {o m : ℕ} (h : IsSizeTwoScreenRecord o m)
+theorem nonEightEightScreenRecord_order_six_or_ten_muThreeMultiplicity_eq_one
+    {o m : ℕ} (h : IsNonEightEightScreenRecord o m)
     (ho : o = 6 ∨ o = 10) : m = 1 := by
   rcases h with h | h | h <;> omega
 
 /-- If four screened colored orders sum to sixteen, either one component
 has colored order sixteen, or both exceptional orders ten and six occur.
 These are precisely the global patterns `16+0+0+0` and `10+6+0+0`. -/
-theorem four_sizeTwoScreenRecords_coloredOrder_pattern
+theorem four_nonEightEightScreenRecords_coloredOrder_pattern
     (o₀ o₁ o₂ o₃ m₀ m₁ m₂ m₃ : ℕ)
-    (h₀ : IsSizeTwoScreenRecord o₀ m₀)
-    (h₁ : IsSizeTwoScreenRecord o₁ m₁)
-    (h₂ : IsSizeTwoScreenRecord o₂ m₂)
-    (h₃ : IsSizeTwoScreenRecord o₃ m₃)
+    (h₀ : IsNonEightEightScreenRecord o₀ m₀)
+    (h₁ : IsNonEightEightScreenRecord o₁ m₁)
+    (h₂ : IsNonEightEightScreenRecord o₂ m₂)
+    (h₃ : IsNonEightEightScreenRecord o₃ m₃)
     (horder : o₀ + o₁ + o₂ + o₃ = 16) :
     (o₀ = 16 ∨ o₁ = 16 ∨ o₂ = 16 ∨ o₃ = 16) ∨
       ((o₀ = 10 ∨ o₁ = 10 ∨ o₂ = 10 ∨ o₃ = 10) ∧
@@ -54,13 +56,13 @@ bound of four forces the other three components to contribute at least two.
 
 The three remaining components are kept abstract here so that a caller may
 choose the order-sixteen component before reindexing its component type. -/
-theorem sizeTwoScreenRecord_order_sixteen_forces_other_muThreeMultiplicity
+theorem nonEightEightScreenRecord_order_sixteen_forces_other_muThreeMultiplicity
     (o m m₁ m₂ m₃ : ℕ)
-    (h : IsSizeTwoScreenRecord o m)
+    (h : IsNonEightEightScreenRecord o m)
     (_ho : o = 16)
     (hmul : 4 ≤ m + m₁ + m₂ + m₃) :
     2 ≤ m₁ + m₂ + m₃ := by
-  have hm : m ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h
+  have hm : m ≤ 2 := nonEightEightScreenRecord_muThreeMultiplicity_le_two h
   omega
 
 /-- In the `10+6+0+0` branch, each exceptional component contributes exactly
@@ -69,18 +71,18 @@ contribute at least two when the global multiplicity is at least four.
 
 As above, the arguments are deliberately order-independent: callers can use
 this after selecting and reindexing the order-ten and order-six components. -/
-theorem two_sizeTwoScreenRecords_ten_six_force_other_muThreeMultiplicity
+theorem two_nonEightEightScreenRecords_ten_six_force_other_muThreeMultiplicity
     (o₁ o₂ m₁ m₂ m₃ m₄ : ℕ)
-    (h₁ : IsSizeTwoScreenRecord o₁ m₁)
-    (h₂ : IsSizeTwoScreenRecord o₂ m₂)
+    (h₁ : IsNonEightEightScreenRecord o₁ m₁)
+    (h₂ : IsNonEightEightScreenRecord o₂ m₂)
     (ho₁ : o₁ = 10)
     (ho₂ : o₂ = 6)
     (hmul : 4 ≤ m₁ + m₂ + m₃ + m₄) :
     2 ≤ m₃ + m₄ := by
   have hm₁ : m₁ = 1 :=
-    sizeTwoScreenRecord_order_six_or_ten_muThreeMultiplicity_eq_one h₁ (Or.inr ho₁)
+    nonEightEightScreenRecord_order_six_or_ten_muThreeMultiplicity_eq_one h₁ (Or.inr ho₁)
   have hm₂ : m₂ = 1 :=
-    sizeTwoScreenRecord_order_six_or_ten_muThreeMultiplicity_eq_one h₂ (Or.inl ho₂)
+    nonEightEightScreenRecord_order_six_or_ten_muThreeMultiplicity_eq_one h₂ (Or.inl ho₂)
   omega
 
 /-- Four screened components whose total `μ=3` multiplicity is at least four
@@ -88,19 +90,19 @@ either contain a multiplicity-two component, or every component has
 multiplicity exactly one.  The first alternative can only arise from the
 single-cycle `[16]` screen; the mixed-cycle screens always have multiplicity
 zero or one. -/
-theorem four_sizeTwoScreenRecords_muThreeMultiplicity_two_or_all_one
+theorem four_nonEightEightScreenRecords_muThreeMultiplicity_two_or_all_one
     (o₀ o₁ o₂ o₃ m₀ m₁ m₂ m₃ : ℕ)
-    (h₀ : IsSizeTwoScreenRecord o₀ m₀)
-    (h₁ : IsSizeTwoScreenRecord o₁ m₁)
-    (h₂ : IsSizeTwoScreenRecord o₂ m₂)
-    (h₃ : IsSizeTwoScreenRecord o₃ m₃)
+    (h₀ : IsNonEightEightScreenRecord o₀ m₀)
+    (h₁ : IsNonEightEightScreenRecord o₁ m₁)
+    (h₂ : IsNonEightEightScreenRecord o₂ m₂)
+    (h₃ : IsNonEightEightScreenRecord o₃ m₃)
     (hmul : 4 ≤ m₀ + m₁ + m₂ + m₃) :
     (m₀ = 2 ∨ m₁ = 2 ∨ m₂ = 2 ∨ m₃ = 2) ∨
       (m₀ = 1 ∧ m₁ = 1 ∧ m₂ = 1 ∧ m₃ = 1) := by
-  have hm₀ : m₀ ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h₀
-  have hm₁ : m₁ ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h₁
-  have hm₂ : m₂ ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h₂
-  have hm₃ : m₃ ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h₃
+  have hm₀ : m₀ ≤ 2 := nonEightEightScreenRecord_muThreeMultiplicity_le_two h₀
+  have hm₁ : m₁ ≤ 2 := nonEightEightScreenRecord_muThreeMultiplicity_le_two h₁
+  have hm₂ : m₂ ≤ 2 := nonEightEightScreenRecord_muThreeMultiplicity_le_two h₂
+  have hm₃ : m₃ ≤ 2 := nonEightEightScreenRecord_muThreeMultiplicity_le_two h₃
   omega
 
 end Erdos85
