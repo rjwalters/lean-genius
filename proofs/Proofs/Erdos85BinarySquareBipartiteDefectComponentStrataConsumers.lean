@@ -175,6 +175,135 @@ theorem binarySquare_regular_bipartite_defectComponent_odd_forces_others_biparti
     omega
   exact bipartite_of_alternating_of_ne_zero (secondOrderDefectGraph G) c₁ w halt₁ hx₀c₁ hne
 
+/-- **(A′)** For even `q`: an even-sized bipartite defect component all of whose
+fellow components are non-bipartite or even-sized is impossible (no
+"not a square" hypothesis needed).  Mod 4: `w ≡ 0` on non-bipartite parts and
+`w = ±t₁` with `t₁` even on even bipartite parts, so every part contributes a
+multiple of `4` to `Σ_{y ∼ z} w y`, whereas `2(q−1) − λ² ≡ 2 (mod 4)`. -/
+theorem binarySquare_regular_bipartite_evenPart_false_of_others_even_or_not_bipartite
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hqeven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m : ℕ}
+    (hc : c.supp.ncard = q * m) (hmeven : Even m)
+    (col : V → Bool)
+    (hbip : ∀ x y, x ∈ c.supp → y ∈ c.supp →
+      (secondOrderDefectGraph G).Adj x y → col x ≠ col y)
+    (hothers : ∀ c₁ : (secondOrderDefectGraph G).ConnectedComponent, c₁ ≠ c →
+      (∀ col₁ : V → Bool, ¬ (∀ x y, x ∈ c₁.supp → y ∈ c₁.supp →
+        (secondOrderDefectGraph G).Adj x y → col₁ x ≠ col₁ y)) ∨
+      ∃ m₁ : ℕ, Even m₁ ∧ c₁.supp.ncard = q * m₁) :
+    False := by
+  obtain ⟨lam, w, hlam_par, -, -, hw_in, -, hw_par, halt, hrow⟩ :=
+    binarySquare_regular_bipartite_defectComponent_signed_residue
+      G hfree hq hreg hcard c hc col hbip
+  obtain ⟨z₀, hz₀⟩ := c.exists_rep
+  have hz₀' : (secondOrderDefectGraph G).connectedComponentMk z₀ = c := hz₀
+  have hz₀c : z₀ ∈ c.supp := (ConnectedComponent.mem_supp_iff c z₀).mpr hz₀'
+  -- split the neighbourhood sum by defect component
+  have hfib : ∑ y ∈ G.neighborFinset z₀, w y =
+      ∑ c₁ : (secondOrderDefectGraph G).ConnectedComponent,
+        ∑ y ∈ (G.neighborFinset z₀).filter
+          (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c₁), w y :=
+    (Finset.sum_fiberwise (G.neighborFinset z₀)
+      (fun y => (secondOrderDefectGraph G).connectedComponentMk y) w).symm
+  have hdvd : (4 : ℤ) ∣ ∑ y ∈ G.neighborFinset z₀, w y := by
+    rw [hfib]
+    apply Finset.dvd_sum
+    intro c₁ _
+    by_cases hc₁ : c₁ = c
+    · subst hc₁
+      have : ∑ y ∈ (G.neighborFinset z₀).filter
+          (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c₁), w y = 0 := by
+        apply Finset.sum_eq_zero
+        intro y hy
+        exact hw_in y ((ConnectedComponent.mem_supp_iff c₁ y).mpr (Finset.mem_filter.mp hy).2)
+      rw [this]
+      exact dvd_zero _
+    · have hnotc : ∀ u, u ∈ c₁.supp → u ∉ c.supp := by
+        intro u hu huc
+        exact hc₁ (((ConnectedComponent.mem_supp_iff c₁ u).mp hu).symm.trans
+          ((ConnectedComponent.mem_supp_iff c u).mp huc))
+      have halt₁ : ∀ u v, u ∈ c₁.supp → (secondOrderDefectGraph G).Adj u v → w v = -w u :=
+        fun u v hu huv => halt u v (hnotc u hu) huv
+      have hmemF : ∀ y ∈ (G.neighborFinset z₀).filter
+          (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c₁), y ∈ c₁.supp :=
+        fun y hy => (ConnectedComponent.mem_supp_iff c₁ y).mpr (Finset.mem_filter.mp hy).2
+      rcases hothers c₁ hc₁ with hnb | ⟨m₁, hm₁e, hm₁⟩
+      · -- non-bipartite: `w ≡ 0` on `c₁`
+        have hzero : ∀ y ∈ (G.neighborFinset z₀).filter
+            (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c₁), w y = 0 := by
+          intro y hy
+          by_contra hne
+          obtain ⟨col₁, hcol₁⟩ := bipartite_of_alternating_of_ne_zero
+            (secondOrderDefectGraph G) c₁ w halt₁ (hmemF y hy) hne
+          exact hnb col₁ hcol₁
+        rw [Finset.sum_eq_zero hzero]
+        exact dvd_zero _
+      · -- even part: `w = ±t` with `t` even on `m₁` (even) neighbours
+        set F := (G.neighborFinset z₀).filter
+          (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c₁) with hF
+        have hFcard : F.card = m₁ := by
+          have h := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+            G hfree hq hreg hcard c c₁ (x := z₀) hz₀c
+          rw [hm₁] at h
+          change q * F.card = q * m₁ at h
+          exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) h
+        by_cases hFne : F.Nonempty
+        · obtain ⟨y₀, hy₀⟩ := hFne
+          set t := |w y₀| with ht
+          have habs : ∀ y ∈ F, |w y| = t := fun y hy =>
+            abs_eq_on_component_of_alternating (secondOrderDefectGraph G) c₁ w halt₁
+              y y₀ (hmemF y hy) (hmemF y₀ hy₀)
+          have hteven : Even t := by
+            have hwe : Even (w y₀) := by
+              obtain ⟨k, hk⟩ := (hw_par y₀ (hnotc y₀ (hmemF y₀ hy₀))).1
+              obtain ⟨r, hr⟩ := hmeven
+              exact ⟨k - r, by push_cast at hk; omega⟩
+            rw [ht]
+            rcases abs_choice (w y₀) with h | h <;> rw [h]
+            · exact hwe
+            · exact hwe.neg
+          obtain ⟨k, hk⟩ := hteven
+          have h1 : (4 : ℤ) ∣ ∑ y ∈ F, (w y + t) := by
+            apply Finset.dvd_sum
+            intro y hy
+            rcases abs_eq (by positivity : (0 : ℤ) ≤ t) |>.mp (habs y hy) with h | h
+            · rw [h, hk]; exact ⟨k, by ring⟩
+            · rw [h]; simp
+          have h2 : (4 : ℤ) ∣ (F.card : ℤ) * t := by
+            obtain ⟨r, hr⟩ := hm₁e
+            rw [hFcard, hr, hk]
+            exact ⟨r * k, by push_cast; ring⟩
+          rw [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul] at h1
+          exact (Int.dvd_add_right h2).mp (by rwa [add_comm] at h1)
+        · rw [Finset.not_nonempty_iff_eq_empty] at hFne
+          rw [hFne, Finset.sum_empty]
+          exact dvd_zero _
+  -- the row identity: `2(q−1) − λ² ≡ 2 (mod 4)` for even `q`, even `λ`
+  rw [hrow z₀ hz₀c] at hdvd
+  have hs : bipartiteSignVector G c col z₀ = 1 ∨ bipartiteSignVector G c col z₀ = -1 := by
+    unfold bipartiteSignVector
+    rw [if_pos hz₀']
+    cases col z₀ <;> simp
+  have hlam_even : Even lam := by
+    obtain ⟨k, hk⟩ := hlam_par
+    obtain ⟨r, hr⟩ := hmeven
+    exact ⟨k - r, by push_cast at hk; omega⟩
+  obtain ⟨k, hk⟩ := hlam_even
+  obtain ⟨r, hr⟩ := hqeven
+  have hsq : lam * lam = 4 * (k * k) := by rw [hk]; ring
+  rw [hsq, hr] at hdvd
+  obtain ⟨a, ha⟩ := hdvd
+  push_cast at ha
+  rcases hs with hs | hs <;> rw [hs] at ha <;> omega
+
 /-! ### Order 64 (`q = 8`) -/
 
 /-- `14` is not a perfect square. -/
