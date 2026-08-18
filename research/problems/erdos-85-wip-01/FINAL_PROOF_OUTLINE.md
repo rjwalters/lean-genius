@@ -2019,7 +2019,17 @@ generalized rather than merely replayed.
      two roots are a `C₄`.  Thus a separated center pair from one density
      fragment cannot recur intact at a different root.  What remains is to
      combine this pairwise intersection bound with the regular incidence
-     counts to force recurrence (or an equivalent global obstruction).
+     counts to force recurrence (or an equivalent global obstruction).  The
+     first aggregate consequence is now **PROVEN q-GENERIC** as
+     `binarySquare_regular_componentIncidence_cherry_bound`:
+     `q m_source choose(m_owner,2) ≤ choose(q m_owner,2)`.  It counts the
+     owner-center pairs selected by all roots in one source component; no pair
+     can recur.  Direct evaluation on all six q=8 strata shows this bare
+     inequality is never tight enough (the smallest slack is 72, in the
+     `[6,2]` source-six/owner-two orientation).  Therefore pairwise linearity
+     plus equitable degrees cannot close the routing GAP by itself.  The next
+     input must retain which target-stars the nonrepeating center pairs induce,
+     or couple two owner colors/ordered component rows in the same count.
      `[6,2]` no longer
      stops at its weak cross budget 512.  The q-free multiplicity lemma
      `exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt` says that
