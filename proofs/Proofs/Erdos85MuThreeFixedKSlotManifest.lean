@@ -55,6 +55,23 @@ theorem Mu3KCandidateSlot.fixed_grid_cells
       subst i
       native_decide
 
+/-- Assembly-facing form of the manifest audit: the complement of the slot's
+Boolean K relation is precisely the occupied-cell predicate expected by the
+fixed-K mixed-grid adapter. -/
+theorem Mu3KCandidateSlot.not_candidate_iff_fixed_grid_mem
+    (slot : Mu3KCandidateSlot) (i : Fin 19)
+    (h : slot.certificateTarget = .fixed i) (x y : Fin 8) :
+    ¬ mu3KRowsCandidate slot.rows x y = true ↔
+      x.val * 8 + y.val ∈ (mu3FixedKGrid i).cells := by
+  rw [slot.fixed_grid_cells i h]
+  simp only [mu3KCandidateSlotCells, List.mem_filter, List.mem_range,
+    decide_eq_true_eq, mu3KRowsCandidate_eq_true_iff]
+  have hcode : x.val * 8 + y.val < 64 := by omega
+  have hdiv : (x.val * 8 + y.val) / 8 = x.val := by omega
+  have hmod : (x.val * 8 + y.val) % 8 = y.val := by omega
+  simp [hcode, hdiv, hmod]
+
 end Erdos85
 
 #print axioms Erdos85.Mu3KCandidateSlot.fixed_grid_cells
+#print axioms Erdos85.Mu3KCandidateSlot.not_candidate_iff_fixed_grid_mem
