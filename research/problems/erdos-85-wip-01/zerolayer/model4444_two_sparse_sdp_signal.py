@@ -1,0 +1,393 @@
+#!/usr/bin/env python3
+"""Fixed-WIT Shor SDP signal for two sparse same-block centers.
+
+This is a numerical relaxation only.  The 0/1 neighborhood vectors X,Z are
+lifted into one PSD moment matrix with Boolean diagonal identities.  All
+known linear neighborhood laws and quadratic row/spectral moments become
+linear constraints on that lift.  Numerical infeasibility is not a proof;
+it must be converted to an exact rational certificate before use.
+"""
+
+import argparse
+import time
+
+import cvxpy as cp
+import numpy as np
+from scipy import sparse as sp
+
+from test_symbolic_hlift_service import WIT
+from verify_stage1_color_action import graphs, ORPHANS, N, vid
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("distance", type=int, choices=range(1, 7))
+parser.add_argument("--max-iters", type=int, default=50_000)
+parser.add_argument("--eps", type=float, default=1e-5)
+parser.add_argument("--solver", choices=("SCS", "CLARABEL"), default="SCS")
+parser.add_argument("--rlt", action="store_true")
+parser.add_argument("--moment-depth", type=int, choices=range(7), default=6)
+parser.add_argument("--lp-cuts", type=int, default=0,
+                    help="replace PSD by this many integer-vector cuts")
+parser.add_argument("--cut-support", type=int, default=48)
+parser.add_argument("--lp-time", type=float, default=300)
+parser.add_argument("--lp-solver", choices=("simplex", "ipm"), default="ipm")
+parser.add_argument("--lp-direct", action="store_true")
+args = parser.parse_args()
+
+A = np.zeros((N, N), dtype=float)
+A_pairs = graphs(WIT)
+neighbors = [set() for _ in range(N)]
+for pair in A_pairs:
+    left, right = tuple(pair)
+    A[left, right] = A[right, left] = 1
+    neighbors[left].add(right)
+    neighbors[right].add(left)
+
+# Indices in the lifted vector (1, X, Z).
+xi = np.arange(1, N + 1)
+zi = np.arange(N + 1, 2 * N + 1)
+Y = cp.Variable((2 * N + 1, 2 * N + 1), symmetric=True)
+x, z = Y[0, xi], Y[0, zi]
+XX = Y[np.ix_(xi, xi)]
+XZ = Y[np.ix_(xi, zi)]
+ZX = Y[np.ix_(zi, xi)]
+ZZ = Y[np.ix_(zi, zi)]
+W = XX - XZ - ZX + ZZ
+
+constraints = [Y[0, 0] == 1,
+               cp.diag(XX) == x, cp.diag(ZZ) == z,
+               x >= 0, x <= 1, z >= 0, z <= 1,
+               cp.sum(x) == 13, cp.sum(z) == 13]
+if args.lp_cuts == 0:
+    constraints.insert(0, Y >> 0)
+elif not args.rlt:
+    raise ValueError("--lp-cuts requires --rlt to bound the lifted entries")
+
+if args.rlt:
+    # First-level reformulation-linearization constraints for Boolean
+    # products.  These are exact for rank-one 0/1 lifts and materially
+    # stronger than PSD plus Boolean diagonals alone.
+    constraints += [
+        XX >= 0, XX <= cp.reshape(x, (N, 1), order="C"),
+        XX <= cp.reshape(x, (1, N), order="C"),
+        XX >= cp.reshape(x, (N, 1), order="C") +
+        cp.reshape(x, (1, N), order="C") - 1,
+        ZZ >= 0, ZZ <= cp.reshape(z, (N, 1), order="C"),
+        ZZ <= cp.reshape(z, (1, N), order="C"),
+        ZZ >= cp.reshape(z, (N, 1), order="C") +
+        cp.reshape(z, (1, N), order="C") - 1,
+        XZ >= 0, XZ <= cp.reshape(x, (N, 1), order="C"),
+        XZ <= cp.reshape(z, (1, N), order="C"),
+        XZ >= cp.reshape(x, (N, 1), order="C") +
+        cp.reshape(z, (1, N), order="C") - 1,
+        cp.sum(XX, axis=1) == 13 * x,
+        cp.sum(ZZ, axis=1) == 13 * z,
+        cp.sum(XZ, axis=1) == 13 * x,
+        cp.sum(XZ, axis=0) == 13 * z,
+    ]
+    for pair in A_pairs:
+        left, right = tuple(pair)
+        constraints += [XX[left, right] == 0, ZZ[left, right] == 0]
+
+left_center = vid((0, 0), 0)
+right_center = vid((0, 0), args.distance)
+
+
+def neighborhood_constraints(selected, center):
+    result = [selected[center] == 0]
+    for pair in A_pairs:
+        left, right = tuple(pair)
+        result.append(selected[left] + selected[right] <= 1)
+    result.append(cp.sum(selected[list(neighbors[center])]) == 1)
+
+    source_type = ORPHANS[center // 12][0]
+    paired = {0: 1, 1: 0, 2: 3, 3: 2}[source_type]
+    center_color = center % 3
+    for vertex in neighbors[center]:
+        orphan = ORPHANS[vertex // 12]
+        if 1 not in WIT[orphan] or \
+                (vertex % 12 + WIT[orphan][1]) % 3 != center_color:
+            result.append(selected[vertex] == 0)
+    for target_type in range(4):
+        fiber = [v for v in range(N)
+                 if ORPHANS[v // 12][0] == target_type]
+        result.append(cp.sum(selected[fiber]) ==
+                      (1 if target_type == paired else 4))
+    for component in range(4):
+        for color in range(3):
+            fiber = [
+                v for v in range(N)
+                if component in WIT[ORPHANS[v // 12]] and
+                (v % 12 + WIT[ORPHANS[v // 12]][component]) % 3 == color
+            ]
+            result.append(cp.sum(selected[fiber]) ==
+                          (4 if component == paired else 3))
+    # Every reconstructed B entry is at most nine.
+    result.extend(cp.sum(selected[list(neighbors[target])]) <= 9
+                  for target in range(N))
+    return result
+
+
+constraints += neighborhood_constraints(x, left_center)
+constraints += neighborhood_constraints(z, right_center)
+constraints.append(x[right_center] == z[left_center])
+
+# H^2 and BH support masses, expressed through the X-Z cross block.
+constraints.append(cp.trace(XZ) == (0 if args.distance == 1 else 1))
+constraints.append(cp.sum(cp.multiply(A, XZ)) ==
+                   [44, 31, 29, 32, 32, 29][args.distance - 1])
+
+A2 = A @ A
+constraints += [cp.sum(cp.multiply(A2, XX)) == 1255,
+                cp.sum(cp.multiply(A2, ZZ)) == 1255,
+                cp.sum(cp.multiply(A2, XZ)) ==
+                [997, 1093, 1068, 1081, 1081, 1069][args.distance - 1]]
+
+# B-row type and color masses are linear in the neighborhood vectors.
+for selected in (x, z):
+    mixed_row = A @ selected
+    for target_type in range(4):
+        fiber = [v for v in range(N)
+                 if ORPHANS[v // 12][0] == target_type]
+        constraints.append(cp.sum(mixed_row[fiber]) ==
+                           (107 if target_type == 1 else 116))
+    for component in range(4):
+        for color in range(3):
+            fiber = [
+                v for v in range(N)
+                if component in WIT[ORPHANS[v // 12]] and
+                (v % 12 + WIT[ORPHANS[v // 12]][component]) % 3 == color
+            ]
+            constraints.append(cp.sum(mixed_row[fiber]) ==
+                               (116 if component == 1 else 113))
+
+moment_rows = [
+    [516, -1182, 14282, 7610, 578818, 2530930, 33790878],
+    [324, -130, 10440, 52430, 681420, 5734298, 58358040],
+    [374, -198, 13654, 53786, 851346, 6463858, 70899854],
+    [348, -460, 11160, 37832, 676776, 5291984, 59501760],
+    [348, -462, 11186, 36986, 676450, 5185138, 58858110],
+    [372, -174, 13104, 53910, 804276, 6240618, 67005144],
+]
+power = A2.copy()
+for moment in moment_rows[args.distance - 1][:args.moment_depth + 1]:
+    # Scaling improves SCS conditioning while preserving the equality.
+    scale = max(1.0, abs(float(moment)))
+    constraints.append(cp.sum(cp.multiply(power / scale, W)) ==
+                       moment / scale)
+    power = power @ A
+
+problem = None
+value = None
+integer_cuts = []
+
+
+def rounded_violated_cut(symmetric, eigenvector):
+    """Round an eigenvector, expanding support until its exact cut separates."""
+    dimension = len(eigenvector)
+    support_size = min(args.cut_support, dimension)
+    order = np.argsort(np.abs(eigenvector))
+    while True:
+        support = order[-support_size:]
+        integer = np.zeros(dimension, dtype=np.int64)
+        scale = 100 / np.max(np.abs(eigenvector[support]))
+        integer[support] = np.rint(
+            scale * eigenvector[support]).astype(np.int64)
+        divisor = np.gcd.reduce(np.abs(integer[integer != 0]))
+        integer //= max(1, divisor)
+        cut_value = float(integer @ symmetric @ integer)
+        if cut_value < -args.eps:
+            return integer, cut_value
+        if support_size == dimension:
+            raise RuntimeError("rounded eigenvector does not yield a violated cut")
+        support_size = min(dimension, 2 * support_size)
+
+
+if args.lp_cuts and args.lp_direct:
+    import highspy
+    from cvxpy import settings as cvx_settings
+
+    problem = cp.Problem(cp.Minimize(0), constraints)
+    compiled_at = time.perf_counter()
+    data, _, _ = problem.get_problem_data("HIGHS")
+    print("lp_direct_compiled", time.perf_counter() - compiled_at, flush=True)
+    print("lp_direct_data_keys", sorted(map(str, data)), flush=True)
+    infinity = highspy.Highs().inf
+    # CVXPY's HiGHS reduction normally uses QP stuffing even for this
+    # constant-objective LP: A x = b contains only equalities, while
+    # F x <= G contains every inequality.  Older/conic layouts instead put
+    # the two cones into one A/b block.  Preserve both layouts explicitly;
+    # omitting F/G silently drops the RLT relaxation.
+    if cvx_settings.F in data:
+        equality = data[cvx_settings.A]
+        inequality = data[cvx_settings.F]
+        matrix = sp.vstack([equality, inequality]).tocsc()
+        row_lower = np.concatenate([
+            data[cvx_settings.B],
+            -infinity * np.ones(data[cvx_settings.G].shape),
+        ])
+        row_upper = np.concatenate([
+            data[cvx_settings.B], data[cvx_settings.G],
+        ])
+        objective = data[cvx_settings.Q]
+        quadratic = data[cvx_settings.P]
+        if quadratic.count_nonzero():
+            raise ValueError("direct LP path received a quadratic objective")
+        layout = "qp_A_b_F_G"
+    else:
+        matrix = data[cvx_settings.A].tocsc()
+        dims = data[cvx_settings.DIMS]
+        equality_rows = dims.zero
+        row_lower = np.concatenate([
+            data[cvx_settings.B][:equality_rows],
+            -infinity * np.ones(matrix.shape[0] - equality_rows),
+        ])
+        row_upper = data[cvx_settings.B]
+        objective = data.get(cvx_settings.C)
+        if objective is None:
+            objective = np.zeros(matrix.shape[1])
+        layout = "conic_A_b"
+    print("lp_direct_layout", layout, "equalities",
+          len(data[cvx_settings.B]), "inequalities",
+          matrix.shape[0] - len(data[cvx_settings.B]), flush=True)
+    model = highspy.HighsModel()
+    lp = model.lp_
+    lp.num_col_ = matrix.shape[1]
+    lp.num_row_ = matrix.shape[0]
+    # CVXPY versions differ on whether a constant-zero feasibility objective
+    # gets an explicit `c` entry.  Its mathematical objective vector is zero
+    # in either representation.
+    lp.col_cost_ = objective
+    lp.row_lower_ = row_lower
+    lp.row_upper_ = row_upper
+    lower_bounds = data.get(cvx_settings.LOWER_BOUNDS)
+    upper_bounds = data.get(cvx_settings.UPPER_BOUNDS)
+    lp.col_lower_ = (np.full(lp.num_col_, -infinity)
+                     if lower_bounds is None else lower_bounds.copy())
+    lp.col_upper_ = (np.full(lp.num_col_, infinity)
+                     if upper_bounds is None else upper_bounds.copy())
+    lp.a_matrix_.format_ = highspy.MatrixFormat.kColwise
+    lp.a_matrix_.start_ = matrix.indptr
+    lp.a_matrix_.index_ = matrix.indices
+    lp.a_matrix_.value_ = matrix.data
+    solver = highspy.Highs()
+    solver.setOptionValue("log_to_console", False)
+    solver.setOptionValue("solver", args.lp_solver)
+    solver.setOptionValue("time_limit", args.lp_time)
+    solver.passModel(model)
+
+    triangle = (2 * N + 1) * (2 * N + 2) // 2
+    assert lp.num_col_ == triangle
+    tri_rows, tri_cols = np.triu_indices(2 * N + 1)
+    for iteration in range(args.lp_cuts + 1):
+        # HiGHS accounts time cumulatively across repeated `run` calls on one
+        # live solver, so increase the absolute limit by one per cut round.
+        solver.setOptionValue("time_limit", (iteration + 1) * args.lp_time)
+        solver.run()
+        status = solver.getModelStatus().name
+        print("lp_direct_iteration", iteration, "status", status,
+              "time", solver.getRunTime(), flush=True)
+        if status != "kOptimal":
+            break
+        lowered = np.asarray(solver.getSolution().col_value[:triangle])
+        symmetric = np.zeros((2 * N + 1, 2 * N + 1))
+        symmetric[tri_rows, tri_cols] = lowered
+        symmetric += symmetric.T
+        symmetric[np.diag_indices_from(symmetric)] /= 2
+        # These two rows are forced to zero before PSD is imposed: each
+        # center is excluded from its own neighborhood, Boolean diagonals
+        # identify Y_ii with Y_0i, and the RLT upper bounds then kill the
+        # whole row.  This is also a hard guard against silently unpacking
+        # the HiGHS column vector in the wrong symmetric-variable order.
+        forced_zero_rows = (1 + left_center, 1 + N + right_center)
+        forced_zero_max = max(
+            float(np.max(np.abs(symmetric[index, :])))
+            for index in forced_zero_rows)
+        print("lp_direct_unpack_audit", "Y00", float(symmetric[0, 0]),
+              "forced_zero_row_max", forced_zero_max,
+              "max_primal_infeasibility",
+              float(solver.getInfo().max_primal_infeasibility), flush=True)
+        if abs(symmetric[0, 0] - 1) > 1e-5 or forced_zero_max > 1e-5:
+            raise RuntimeError("direct HiGHS symmetric unpack audit failed")
+        eigenvalues, eigenvectors = np.linalg.eigh(symmetric)
+        print("lp_direct_min_eigenvalue", float(eigenvalues[0]), flush=True)
+        if eigenvalues[0] >= -args.eps or iteration == args.lp_cuts:
+            break
+        integer, cut_value = rounded_violated_cut(
+            symmetric, eigenvectors[:, 0])
+        nz_rows, nz_cols = np.nonzero(np.triu(np.outer(integer, integer)))
+        indices = (nz_rows * (2 * N + 1) -
+                   nz_rows * (nz_rows - 1) // 2 + nz_cols - nz_rows)
+        coefficients = integer[nz_rows] * integer[nz_cols]
+        coefficients = coefficients.astype(float)
+        coefficients[nz_rows != nz_cols] *= 2
+        solver.addRow(0, infinity, len(indices),
+                      indices.astype(np.int32), coefficients)
+        integer_cuts.append(integer)
+        print("lp_direct_cut", iteration, "value", cut_value,
+              [(int(index), int(entry))
+               for index, entry in enumerate(integer) if entry], flush=True)
+    print("integer_cuts", [
+        [(int(index), int(entry)) for index, entry in enumerate(vector)
+         if entry] for vector in integer_cuts
+    ])
+    raise SystemExit(0)
+elif args.lp_cuts:
+    for iteration in range(args.lp_cuts + 1):
+        problem = cp.Problem(cp.Minimize(0), constraints)
+        compiled_at = time.perf_counter()
+        data, _, _ = problem.get_problem_data("HIGHS")
+        compile_seconds = time.perf_counter() - compiled_at
+        matrix = data.get("A")
+        print("lp_compiled", iteration, "seconds", compile_seconds,
+              "variables", len(data.get("c", [])),
+              "rows", None if matrix is None else matrix.shape[0],
+              "nonzeros", None if matrix is None else matrix.nnz,
+              flush=True)
+        value = problem.solve(solver="HIGHS", verbose=False,
+                              highs_options={"time_limit": args.lp_time,
+                                             "solver": args.lp_solver})
+        print("lp_iteration", iteration, "status", problem.status, flush=True)
+        if problem.status not in (cp.OPTIMAL, cp.OPTIMAL_INACCURATE) or \
+                iteration == args.lp_cuts:
+            break
+        symmetric = (Y.value + Y.value.T) / 2
+        eigenvalues, eigenvectors = np.linalg.eigh(symmetric)
+        print("lp_min_eigenvalue", float(eigenvalues[0]), flush=True)
+        if eigenvalues[0] >= -args.eps:
+            break
+        integer, cut_value = rounded_violated_cut(
+            symmetric, eigenvectors[:, 0])
+        cut_matrix = np.outer(integer, integer).astype(float)
+        constraints.append(cp.sum(cp.multiply(cut_matrix, Y)) >= 0)
+        integer_cuts.append(integer)
+        print("lp_cut_value", cut_value, flush=True)
+else:
+    problem = cp.Problem(cp.Minimize(0), constraints)
+    if args.solver == "SCS":
+        value = problem.solve(solver="SCS", eps=args.eps,
+                              max_iters=args.max_iters, verbose=False)
+    else:
+        value = problem.solve(solver="CLARABEL", max_iter=args.max_iters,
+                              tol_gap_abs=args.eps, tol_feas=args.eps,
+                              tol_gap_rel=args.eps, verbose=False)
+print("status", problem.status, "value", value)
+print("solver", problem.solver_stats.solver_name,
+      "iters", problem.solver_stats.num_iters,
+      "time", problem.solver_stats.solve_time)
+if integer_cuts:
+    print("integer_cuts", [
+        [(int(index), int(value)) for index, value in enumerate(vector)
+         if value]
+        for vector in integer_cuts
+    ])
+if Y.value is not None and problem.status in (cp.OPTIMAL,
+                                               cp.OPTIMAL_INACCURATE):
+    eigenvalues = np.linalg.eigvalsh((Y.value + Y.value.T) / 2)
+    print("min_eigenvalue", float(eigenvalues[0]))
+    violations = sorted(
+        ((float(np.max(np.abs(c.violation()))), index,
+          type(c).__name__)
+         for index, c in enumerate(constraints)), reverse=True)
+    print("max_constraint_violation", violations[0][0])
+    print("largest_violations", violations[:5])

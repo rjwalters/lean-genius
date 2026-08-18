@@ -1,0 +1,111 @@
+import Proofs.Erdos85OrderFortyNineThreeRootedWedgeGluing
+import Proofs.Erdos85OrderFortyNineThreeHighScoutGraphBridge
+
+/-! # Transporting local standard mates to the three-high scout -/
+
+namespace Erdos85
+
+open SimpleGraph
+
+def OrderFortyNineStandardMatchingTarget
+    (target : Fin 8 → Fin 49) (vertices : List (Fin 49))
+    (matching : List (Fin 49 × Fin 49)) : Prop :=
+  ∀ ab ∈ orderFortyNineStrictPairs vertices,
+    ∃ i j : Fin 8,
+      target i = ab.1 ∧ target j = ab.2 ∧
+      (ab ∈ matching ↔ j = oneHighStandardMate i)
+
+set_option maxRecDepth 100000 in
+theorem orderFortyNineDistTwoFirstTarget_standard :
+    OrderFortyNineStandardMatchingTarget
+      orderFortyNineDistTwoFirstTarget
+      [3, 4, 5, 6, 7, 8, 9, 10]
+      [(3, 4), (5, 6), (7, 8), (9, 10)] := by
+  unfold OrderFortyNineStandardMatchingTarget
+  decide
+
+set_option maxRecDepth 100000 in
+theorem orderFortyNineDistTwoSecondTarget_standard :
+    OrderFortyNineStandardMatchingTarget
+      orderFortyNineDistTwoSecondTarget
+      [3, 11, 14, 15, 16, 17, 18, 19]
+      [(3, 11), (14, 15), (16, 17), (18, 19)] := by
+  unfold OrderFortyNineStandardMatchingTarget
+  decide
+
+set_option maxRecDepth 100000 in
+theorem orderFortyNineDistTwoThirdTarget_standard :
+    OrderFortyNineStandardMatchingTarget
+      orderFortyNineDistTwoThirdTarget
+      [3, 12, 20, 21, 22, 23, 24, 25]
+      [(3, 12), (20, 21), (22, 23), (24, 25)] := by
+  unfold OrderFortyNineStandardMatchingTarget
+  decide
+
+/-- A coordinate map on a normalized local neighborhood remembers more than
+the induced matching: it identifies the entire relabeled neighborhood with
+the image of the target map.  This is the support-alignment fact needed by
+the small-high Boolean bridge. -/
+theorem orderFortyNineRelabeledGraph_neighborFinset_eq_targetImage
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {v : V} (e : {x : V // x ∈ G.neighborSet v} ≃ Fin 8)
+    (E : V ≃ Fin 49) (target : Fin 8 → Fin 49)
+    (hmap : ∀ i, E (e.symm i).1 = target i) :
+    (orderFortyNineRelabeledGraph G E).neighborFinset (E v) =
+      Finset.univ.image target := by
+  rw [orderFortyNineRelabeledGraph_neighborFinset]
+  ext z
+  simp only [Finset.mem_map, Finset.mem_image, Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    let x' : {x : V // x ∈ G.neighborSet v} :=
+      ⟨x, by simpa using hx⟩
+    refine ⟨e x', ?_⟩
+    simpa [x'] using (hmap (e x')).symm
+  · rintro ⟨i, rfl⟩
+    refine ⟨(e.symm i).1, ?_, hmap i⟩
+    exact (G.mem_neighborFinset v _).mpr (e.symm i).2
+
+theorem orderFortyNineGraphPinnedMatchingRealized_of_localNormalization
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {v : V} (e : {x : V // x ∈ G.neighborSet v} ≃ Fin 8)
+    (E : V ≃ Fin 49) (target : Fin 8 → Fin 49)
+    (vertices : List (Fin 49)) (matching : List (Fin 49 × Fin 49))
+    (hcanonical : ∀ x y,
+      decide ((G.induce (G.neighborSet v)).Adj x y) =
+        decide (e y = oneHighStandardMate (e x)))
+    (hmap : ∀ i, E (e.symm i).1 = target i)
+    (htarget : OrderFortyNineStandardMatchingTarget
+      target vertices matching) :
+    OrderFortyNineGraphPinnedMatchingRealized
+      (orderFortyNineRelabeledGraph G E) vertices matching := by
+  intro ab hab
+  obtain ⟨i, j, hi, hj, hm⟩ := htarget ab hab
+  have hEi : E (e.symm i).1 = ab.1 := (hmap i).trans hi
+  have hEj : E (e.symm j).1 = ab.2 := (hmap j).trans hj
+  have hsymi : E.symm ab.1 = (e.symm i).1 := by
+    apply E.injective
+    simp [hEi]
+  have hsymj : E.symm ab.2 = (e.symm j).1 := by
+    apply E.injective
+    simp [hEj]
+  rw [orderFortyNineRelabeledGraph_adj, hsymi, hsymj]
+  have hc := hcanonical (e.symm i) (e.symm j)
+  simp only [SimpleGraph.induce_adj, e.apply_symm_apply] at hc
+  have hiff : G.Adj (e.symm i).1 (e.symm j).1 ↔
+      j = oneHighStandardMate i := by
+    constructor
+    · intro h
+      have ht : decide (G.Adj (e.symm i).1 (e.symm j).1) = true := by
+        simp [h]
+      rw [hc] at ht
+      simpa using ht
+    · intro h
+      have ht : decide (j = oneHighStandardMate i) = true := by simp [h]
+      rw [← hc] at ht
+      simpa using ht
+  exact hiff.trans hm.symm
+
+end Erdos85

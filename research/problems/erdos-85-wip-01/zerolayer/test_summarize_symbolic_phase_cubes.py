@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""End-to-end provenance tests for exhaustive phase-cube aggregation."""
+
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+
+from summarize_symbolic_phase_cubes import expected_cube_hashes
+from verify_symbolic_hlift_assignment import phase_variable_map
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write(path, doc):
+    path.write_text(json.dumps(doc, indent=1) + "\n")
+
+
+with tempfile.TemporaryDirectory() as raw:
+    root = Path(raw)
+    mapping, _ = phase_variable_map()
+    alternate_literals = [mapping[((1, 0), 2, phase)] for phase in range(3)]
+    alternate_parent = root / "alternate.cnf"
+    alternate_parent.write_text(
+        f"p cnf 20000 4\n{' '.join(map(str, alternate_literals))} 0\n" +
+        "".join(f"-{left} -{right} 0\n" for left, right in
+                ((alternate_literals[0], alternate_literals[1]),
+                 (alternate_literals[0], alternate_literals[2]),
+                 (alternate_literals[1], alternate_literals[2])))
+    )
+    expected_alternate = expected_cube_hashes(alternate_parent,
+                                               alternate_literals)
+    for phase, literal in enumerate(alternate_literals):
+        child = root / f"alternate-{phase}.cnf"
+        child.write_text(alternate_parent.read_text().replace(
+            "p cnf 20000 4\n", "p cnf 20000 5\n") + f"{literal} 0\n")
+        assert sha(child) == expected_alternate[phase]
+
+    parent_cnf = root / "parent.cnf"
+    parent_cnf.write_text(
+        "p cnf 20000 4\n18349 18350 18351 0\n"
+        "-18349 -18350 0\n-18349 -18351 0\n-18350 -18351 0\n")
+    parent_manifest = root / "parent.manifest.json"
+    write(parent_manifest, {"scope": "toy parent", "sha256": sha(parent_cnf)})
+    parent_manifest_sha = sha(parent_manifest)
+    for phase in range(3):
+        stem = root / f"parent.anchor_o0c0_e2_p{phase}"
+        cnf = Path(str(stem) + ".cnf")
+        cnf.write_text(
+            parent_cnf.read_text().replace("p cnf 20000 4\n", "p cnf 20000 5\n")
+            + f"{18349 + phase} 0\n")
+        manifest = Path(str(stem) + ".manifest.json")
+        write(manifest, {
+            "scope": f"toy parent AND tau[(0,0),2]={phase}",
+            "parent_manifest_sha256": parent_manifest_sha,
+            "parent_cnf_sha256": sha(parent_cnf),
+            "sha256": sha(cnf), "cube_phase": phase,
+            "cube_literal": 18349 + phase,
+            "exhaustive_anchor_literals": [18349, 18350, 18351],
+            "exhaustive_clause_verified": True,
+            "mutual_exclusion_clauses_verified": True,
+            "cube_partition_verified": True,
+        })
+        cert_dir = root / f"cert-{phase}"
+        cert_dir.mkdir()
+        proof = cert_dir / "proof.drat"
+        proof.write_text(f"proof {phase}\n")
+        log = cert_dir / "drat-trim.log"
+        log.write_text("c checked\ns VERIFIED\n")
+        cert = cert_dir / "certificate.json"
+        write(cert, {
+            "verdict": "SYMBOLIC_CLASS_UNSAT_DRAT_VERIFIED",
+            "cnf": str(cnf), "cnf_sha256": sha(cnf),
+            "manifest_sha256": sha(manifest),
+            "proof": str(proof), "proof_sha256": sha(proof),
+            "solver_command": ["kissat", str(cnf), str(proof)],
+            "drat_trim_command": ["drat-trim", str(cnf), str(proof)],
+            "drat_trim_exit": 0, "drat_trim_log_sha256": sha(log),
+        })
+
+    script = Path(__file__).with_name("summarize_symbolic_phase_cubes.py")
+    output = root / "summary.json"
+    subprocess.run([sys.executable, str(script), str(parent_manifest), str(root),
+                    "--output", str(output)], check=True)
+    report = json.loads(output.read_text())
+    assert report["verdict"] == (
+        "SYMBOLIC_PARENT_UNSAT_BY_EXHAUSTIVE_DRAT_VERIFIED_CUBES")
+    assert [item["phase"] for item in report["cube_certificates"]] == [0, 1, 2]
+
+    cert0 = root / "cert-0" / "certificate.json"
+    cert0_doc = json.loads(cert0.read_text())
+    valid_solver_command = cert0_doc["solver_command"]
+    cert0_doc["solver_command"] = ["kissat", str(parent_cnf), cert0_doc["proof"]]
+    write(cert0, cert0_doc)
+    failed = subprocess.run(
+        [sys.executable, str(script), str(parent_manifest), str(root),
+         "--output", str(root / "wrong-command.json")],
+        capture_output=True, text=True)
+    assert failed.returncode != 0
+    assert "solver command artifact mismatch" in failed.stderr
+    cert0_doc["solver_command"] = valid_solver_command
+    write(cert0, cert0_doc)
+
+    missing = root / "cert-2" / "certificate.json"
+    missing.rename(missing.with_suffix(".absent"))
+    failed = subprocess.run(
+        [sys.executable, str(script), str(parent_manifest), str(root),
+         "--output", str(root / "bad.json")], capture_output=True, text=True)
+    assert failed.returncode != 0
+    assert "missing verified certificate phase(s): [2]" in failed.stderr
+
+print("SYMBOLIC PHASE CUBE SUMMARY ALL OK")

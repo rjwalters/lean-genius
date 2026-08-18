@@ -1,0 +1,271 @@
+import Mathlib
+
+/-!
+# Degree-sixteen zero-layer reduced partition classification
+
+This module isolates the finite Presburger classification used by the
+zero-layer census.  A sorted eight-slot partition of sixteen whose nonzero
+parts are at least two is one of exactly fifty-five patterns.
+-/
+
+namespace Erdos85
+
+/-- Lift an equality of mapped multisets to an ordering of the source
+multiset.  This is the generic naming device used after the numerical
+census: equal target values still produce distinct source entries when the
+source multiset is noduplicated. -/
+theorem exists_nodup_list_of_multiset_map_eq_coe
+    {α β : Type*} [DecidableEq α] (s : Multiset α) (w : α → β)
+    (ks : List β) (hs : s.Nodup) (hmap : s.map w = ↑ks) :
+    ∃ xs : List α, xs.Nodup ∧ (↑xs : Multiset α) = s ∧ xs.map w = ks := by
+  induction ks generalizing s with
+  | nil =>
+      have hs0 : s = 0 := by
+        apply Multiset.card_eq_zero.mp
+        have hc := congrArg Multiset.card hmap
+        simpa using hc
+      exact ⟨[], by simp, by simpa [hs0], by simp⟩
+  | cons k ks ih =>
+      obtain ⟨a, ha, hwa, hrest⟩ :=
+        (Multiset.map_eq_cons w s (↑ks) k).mpr hmap
+      obtain ⟨xs, hxsNodup, hxs, hxsw⟩ :=
+        ih (s.erase a) (Multiset.Nodup.erase a hs) hrest
+      refine ⟨a :: xs, ?_, ?_, ?_⟩
+      · simp only [List.nodup_cons]
+        refine ⟨?_, hxsNodup⟩
+        intro hax
+        have haErase : a ∈ s.erase a := by
+          rw [← hxs]
+          exact hax
+        have hsCons : (a ::ₘ s.erase a).Nodup := by
+          rw [Multiset.cons_erase ha]
+          exact hs
+        exact (Multiset.nodup_cons.mp hsCons).1 haErase
+      · change a ::ₘ (↑xs : Multiset α) = s
+        rw [hxs, Multiset.cons_erase ha]
+      · simp [hwa, hxsw]
+
+/-- The fifty-five positive partitions of sixteen with every part at least
+two, represented in nonincreasing order and padded by zeroes to eight
+slots. -/
+def ZeroLayerReducedPartitionPattern
+    (a b c d e f g h : ℕ) : Prop :=
+  match a with
+  | 16 =>
+      (b = 0 ∧ c = 0 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 14 =>
+      (b = 2 ∧ c = 0 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 13 =>
+      (b = 3 ∧ c = 0 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 12 =>
+      (b = 4 ∧ c = 0 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 2 ∧ c = 2 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 11 =>
+      (b = 5 ∧ c = 0 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 2 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 10 =>
+      (b = 6 ∧ c = 0 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 2 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 3 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 2 ∧ c = 2 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 9 =>
+      (b = 7 ∧ c = 0 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 5 ∧ c = 2 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 3 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 2 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 8 =>
+      (b = 8 ∧ c = 0 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 6 ∧ c = 2 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 5 ∧ c = 3 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 4 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 2 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 3 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 2 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 7 =>
+      (b = 7 ∧ c = 2 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 6 ∧ c = 3 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 5 ∧ c = 4 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 5 ∧ c = 2 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 3 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 3 ∧ d = 3 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0)
+  | 6 =>
+      (b = 6 ∧ c = 4 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 6 ∧ c = 2 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 5 ∧ c = 5 ∧ d = 0 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 5 ∧ c = 3 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 4 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 3 ∧ d = 3 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 3 ∧ d = 2 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 2 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 2 ∧ g = 0 ∧ h = 0)
+  | 5 =>
+      (b = 5 ∧ c = 4 ∧ d = 2 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 5 ∧ c = 3 ∧ d = 3 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 5 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 4 ∧ d = 3 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 3 ∧ d = 2 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 3 ∧ d = 3 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 2 ∧ g = 0 ∧ h = 0)
+  | 4 =>
+      (b = 4 ∧ c = 4 ∧ d = 4 ∧ e = 0 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 4 ∧ d = 2 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 3 ∧ d = 3 ∧ e = 2 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 4 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 2 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 3 ∧ d = 3 ∧ e = 3 ∧ f = 0 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 3 ∧ d = 2 ∧ e = 2 ∧ f = 2 ∧ g = 0 ∧ h = 0) ∨
+      (b = 2 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 2 ∧ g = 2 ∧ h = 0)
+  | 3 =>
+      (b = 3 ∧ c = 3 ∧ d = 3 ∧ e = 2 ∧ f = 2 ∧ g = 0 ∧ h = 0) ∨
+      (b = 3 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 2 ∧ g = 2 ∧ h = 0)
+  | 2 =>
+      (b = 2 ∧ c = 2 ∧ d = 2 ∧ e = 2 ∧ f = 2 ∧ g = 2 ∧ h = 2)
+  | _ => False
+set_option maxHeartbeats 2000000 in
+/-- Every sorted reduced used-order list at degree sixteen belongs to the
+explicit fifty-five-pattern census. -/
+theorem zeroLayer_reduced_partition_classification
+    (a b c d e f g h : ℕ)
+    (hsum : a + b + c + d + e + f + g + h = 16)
+    (hsorted : a ≥ b ∧ b ≥ c ∧ c ≥ d ∧ d ≥ e ∧ e ≥ f ∧ f ≥ g ∧ g ≥ h)
+    (hparts : (a = 0 ∨ 2 ≤ a) ∧ (b = 0 ∨ 2 ≤ b) ∧
+      (c = 0 ∨ 2 ≤ c) ∧ (d = 0 ∨ 2 ≤ d) ∧
+      (e = 0 ∨ 2 ≤ e) ∧ (f = 0 ∨ 2 ≤ f) ∧
+      (g = 0 ∨ 2 ≤ g) ∧ (h = 0 ∨ 2 ≤ h)) :
+    ZeroLayerReducedPartitionPattern a b c d e f g h := by
+  have ha : a ≤ 16 := by omega
+  have hb : b ≤ 16 := by omega
+  have hc : c ≤ 16 := by omega
+  have hd : d ≤ 16 := by omega
+  have he : e ≤ 16 := by omega
+  have hf : f ≤ 16 := by omega
+  have hg : g ≤ 16 := by omega
+  have hh : h ≤ 16 := by omega
+  interval_cases a <;> try omega
+  all_goals interval_cases b <;> try omega
+  all_goals interval_cases c <;> try omega
+  all_goals interval_cases d <;> try omega
+  all_goals interval_cases e <;> try omega
+  all_goals interval_cases f <;> try omega
+  all_goals interval_cases g <;> try omega
+  all_goals interval_cases h <;>
+    simp [ZeroLayerReducedPartitionPattern] at *
+
+/-- List-facing adapter for the zero-layer census.  A nonincreasing list of
+at most eight reduced orders, all at least two and of total mass sixteen,
+can be padded by zeroes to one of the explicit eight-slot patterns. -/
+theorem exists_zeroLayer_reduced_partition_pattern_of_list
+    (l : List ℕ) (hlen : l.length ≤ 8) (hsum : l.sum = 16)
+    (hparts : ∀ k ∈ l, 2 ≤ k) (hsorted : l.Pairwise (· ≥ ·)) :
+    ∃ a b c d e f g h,
+      ZeroLayerReducedPartitionPattern a b c d e f g h ∧
+        l = ([a, b, c, d, e, f, g, h].take l.length) := by
+  rcases l with _ | ⟨a, l⟩
+  · simp at hsum
+  rcases l with _ | ⟨b, l⟩
+  · refine ⟨a, 0, 0, 0, 0, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨c, l⟩
+  · refine ⟨a, b, 0, 0, 0, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨d, l⟩
+  · refine ⟨a, b, c, 0, 0, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨e, l⟩
+  · refine ⟨a, b, c, d, 0, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨f, l⟩
+  · refine ⟨a, b, c, d, e, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨g, l⟩
+  · refine ⟨a, b, c, d, e, f, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨h, l⟩
+  · refine ⟨a, b, c, d, e, f, g, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨i, l⟩
+  · refine ⟨a, b, c, d, e, f, g, h, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  simp at hlen
+  omega
+
+/-- Multiset-facing adapter.  Sorting retains every occurrence, so the
+result records the original weighted family with multiplicity rather than
+only its set of distinct reduced orders. -/
+theorem exists_zeroLayer_reduced_partition_pattern_of_multiset
+    (s : Multiset ℕ) (hcard : s.card ≤ 8) (hsum : s.sum = 16)
+    (hparts : ∀ k ∈ s, 2 ≤ k) :
+    ∃ a b c d e f g h,
+      ZeroLayerReducedPartitionPattern a b c d e f g h ∧
+        s = ↑([a, b, c, d, e, f, g, h].take s.card) := by
+  let l := s.sort (· ≥ ·)
+  have hsort : (↑l : Multiset ℕ) = s := by
+    exact Multiset.sort_eq s (· ≥ ·)
+  have hlen : l.length ≤ 8 := by
+    simpa [l] using hcard
+  have hsuml : l.sum = 16 := by
+    change (↑l : Multiset ℕ).sum = 16
+    rw [hsort]
+    exact hsum
+  have hpartsl : ∀ k ∈ l, 2 ≤ k := by
+    intro k hk
+    apply hparts k
+    rw [← hsort]
+    exact hk
+  obtain ⟨a, b, c, d, e, f, g, h, hp, hl⟩ :=
+    exists_zeroLayer_reduced_partition_pattern_of_list
+      l hlen hsuml hpartsl (Multiset.pairwise_sort s (· ≥ ·))
+  refine ⟨a, b, c, d, e, f, g, h, hp, ?_⟩
+  rw [← hsort, hl]
+  simp [l, Nat.min_eq_left hcard]
+
+/-- Finset-facing adapter used by the graph census.  The image is a
+multiset, so distinct components of equal reduced order remain distinct
+occurrences. -/
+theorem exists_zeroLayer_reduced_partition_pattern_of_finset
+    {α : Type*} [DecidableEq α] (E : Finset α) (w : α → ℕ)
+    (hcard : E.card ≤ 8) (hsum : (∑ e ∈ E, w e) = 16)
+    (hparts : ∀ e ∈ E, 2 ≤ w e) :
+    ∃ a b c d e f g h,
+      ZeroLayerReducedPartitionPattern a b c d e f g h ∧
+        E.val.map w = ↑([a, b, c, d, e, f, g, h].take E.card) := by
+  have hm := exists_zeroLayer_reduced_partition_pattern_of_multiset
+    (E.val.map w) (by simpa using hcard) (by simpa using hsum) (by
+      intro k hk
+      obtain ⟨x, hxE, rfl⟩ := Multiset.mem_map.mp hk
+      exact hparts x hxE)
+  simpa using hm
+
+set_option maxHeartbeats 2000000 in
+/-- Remove the zero padding from a classified eight-slot pattern.  The
+mapped family has total mass sixteen and positive entries, so its cardinal
+is exactly the number of nonzero slots in the classifier witness. -/
+theorem finset_map_eq_nonzero_list_of_reduced_partition_pattern
+    {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
+    (hcard : E.card ≤ 8) (hsum : (∑ e ∈ E, K e) = 16)
+    (hparts : ∀ e ∈ E, 2 ≤ K e)
+    (a b c d e f g h : ℕ)
+    (hp : ZeroLayerReducedPartitionPattern a b c d e f g h)
+    (hmap : E.val.map K =
+      (↑([a, b, c, d, e, f, g, h].take E.card) : Multiset ℕ)) :
+    E.val.map K =
+      (↑([a, b, c, d, e, f, g, h].filter (fun k => k ≠ 0)) :
+        Multiset ℕ) := by
+  have hsumMap : (E.val.map K).sum = 16 := by simpa using hsum
+  have hzero : 0 ∉ E.val.map K := by
+    intro hz
+    obtain ⟨x, hx, hK⟩ := Multiset.mem_map.mp hz
+    have := hparts x hx
+    omega
+  have ha : a ≤ 16 := by
+    by_contra hnot
+    have h17 : 17 ≤ a := by omega
+    obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h17
+    have hadd : 17 + k = k + 17 := by omega
+    rw [hadd] at hp
+    simp [ZeroLayerReducedPartitionPattern] at hp
+  interval_cases a <;> simp [ZeroLayerReducedPartitionPattern] at hp
+  all_goals repeat' first | rcases hp with hp | hp
+  all_goals interval_cases hc : E.card <;> simp_all
+
+end Erdos85

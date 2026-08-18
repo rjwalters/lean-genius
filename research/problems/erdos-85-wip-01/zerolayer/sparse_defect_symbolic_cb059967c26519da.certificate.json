@@ -1,0 +1,24 @@
+{
+  "verdict": "SYMBOLIC_SPARSE_OVERLAP_WRONG_PAIRED_COLOR_UNSAT_DRAT_VERIFIED",
+  "scope": "all corrected Stage-1 (4,4,4,4) phases with a sparse center whose unique overlap omits the paired component or has a different paired color",
+  "encoder_commit": "b214d9a72d",
+  "manifest_sha256": "09fca0272d69858eeccb914363ad4b7126505ab0d9a61c9e416b9cd7e3b5f0cc",
+  "cnf_sha256": "cb059967c26519da275ed71c5718c29ab5b58c4941645e29ca6a5671ff0e8f80",
+  "vars": 35097,
+  "clauses": 188651,
+  "proof_sha256": "b6c372b4a9cbd6b934dab7b3e6f7251ff74cfee396fe7a41b83efe2b6d9bfb13",
+  "solver": {
+    "name": "cadical",
+    "source_commit": "c60730422e758ef1cebe7aeddf2dda31c996bf04",
+    "executable_sha256": "f7585c87c8ad45561ad1f0beeb4566ba2dee522a21e8b298d636924666fa2503",
+    "status": "s UNSATISFIABLE"
+  },
+  "checker": {
+    "name": "drat-trim",
+    "source_commit": "2e3b2dc0ecf938addbd779d42877b6ed69d9a985",
+    "executable_sha256": "f58f63b0f76945d4c4c9ff6e87afaf870f579e67c0f7cca589492df8fc7ebd47",
+    "log_sha256": "c263ec8fbf7db0ecbc49c745109f142e86511bd45784a114e289491535becc18",
+    "status": "s VERIFIED"
+  },
+  "durable_artifact_dir": "/Volumes/Stripe/lean-genius/artifacts/erdos85-zerolayer/symbolic-hlift/sparse-wrong-color-certificate-cb059967c26519da"
+}

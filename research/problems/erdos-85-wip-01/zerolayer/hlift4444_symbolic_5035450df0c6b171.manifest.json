@@ -1,0 +1,31 @@
+{
+ "scope": "all corrected Stage-1 (4,4,4,4) service witnesses",
+ "encoder_sha256": "21044b19828a70b7a62cae436a062e970c1fbd6219e6c8c36244b34f2d919ad5",
+ "sat_verifier_sha256": "70ded99b15ab12a60fabca9efc6e4723f20156daf3aaee38da6a454534ecab07",
+ "vars": 7613664,
+ "clauses": 26832595,
+ "sha256": "5035450df0c6b17108f3a5545f142eacea2f8263b859e308431f0844120634a7",
+ "edge_variables": 18336,
+ "phase_variables": 576,
+ "delta_variables": 3168,
+ "service_variables": 17280,
+ "common_and_variables": 3447360,
+ "rule_counts": {
+  "stage1_phase_onehot_gauge_row_residues": 5536,
+  "stage1_copy_and_used_rotation_symmetry": 795,
+  "stage1_delta_definition_and_pair_injectivity": 57720,
+  "symbolic_service_adjacency": 55296,
+  "defect_zero_common": 36480,
+  "conditional_common_neighbor_partition": 23912928,
+  "symbolic_local_A_incidence_odd": 191040,
+  "paired_omitted_type_equitable_quotient": 594048,
+  "degree_13_exact": 1978752
+ },
+ "options": {
+  "local_parity": true,
+  "phase_symmetry": true,
+  "type_balance": false,
+  "type_profile": false,
+  "paired_type_quotient": true
+ }
+}

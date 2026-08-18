@@ -1,0 +1,24 @@
+{
+ "verdict": "SYMBOLIC_SPARSE_DEFECT_CLASS_UNSAT_DRAT_VERIFIED",
+ "scope": "all corrected Stage-1 (4,4,4,4) phases with a sparse center using its forward defect neighbor",
+ "encoder_commit": "6e66c87890",
+ "manifest_sha256": "f33e84403decf8b1feddfd2abc14a3950dc48aca6a2ad1b55b5316465b361545",
+ "cnf_sha256": "32d286cb91d4a712ddc11aceb108a5853bcf3ebaab83878e6a0616515f3657ad",
+ "vars": 34554,
+ "clauses": 186315,
+ "proof_sha256": "f75a9c07cb15bf24e0d48d727b190bf5683efd5ffb2cf4c68b8b3e6d41b36ba1",
+ "solver": {
+  "name": "cadical",
+  "source_commit": "c60730422e758ef1cebe7aeddf2dda31c996bf04",
+  "executable_sha256": "f7585c87c8ad45561ad1f0beeb4566ba2dee522a21e8b298d636924666fa2503",
+  "status": "s UNSATISFIABLE"
+ },
+ "checker": {
+  "name": "drat-trim",
+  "source_commit": "2e3b2dc0ecf938addbd779d42877b6ed69d9a985",
+  "executable_sha256": "f58f63b0f76945d4c4c9ff6e87afaf870f579e67c0f7cca589492df8fc7ebd47",
+  "log_sha256": "0cfab0528431e21a1b669b0b7b51da4f770cc5fd9fe33867383ed8a2b663a7ac",
+  "status": "s VERIFIED"
+ },
+ "durable_artifact_dir": "/Volumes/Stripe/lean-genius/artifacts/erdos85-zerolayer/symbolic-hlift/sparse-defect-certificate-32d286cb91d4a712"
+}

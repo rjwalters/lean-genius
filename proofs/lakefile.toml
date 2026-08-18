@@ -15,3 +15,11 @@ name = "Proofs"
 # new-proof PR edited it, so siblings conflicted en masse). Globbing removes the
 # shared file from PR diffs entirely. See fix/proofs-glob-no-import-conflict.
 globs = ["Proofs", "Proofs.*"]
+
+[[lean_exe]]
+name = "v2cnf"
+root = "Proofs.Erdos85OneHighV2CnfEmit"
+
+[[lean_exe]]
+name = "lratreplay"
+root = "Proofs.Erdos85LratRuntime"

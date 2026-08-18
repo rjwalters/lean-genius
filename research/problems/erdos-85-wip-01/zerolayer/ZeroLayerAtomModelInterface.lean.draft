@@ -1,0 +1,92 @@
+-- Sketch: finite atom model interface for the s=0 dispatch (squad 2693).
+-- DRAFT for codex; not wired into the build.  Mirrors zerolayer_cpsat v12
+-- (v10 core + certified refinements), constraint-to-theorem map in
+-- zerolayer_cpsat_v12.py's docstring.
+--
+-- DESIGN DECISIONS (rationale at bottom):
+--  * The model is a RELAXATION: soundness direction is graph -> counts
+--    satisfying the equations.  Only certified laws become equations.
+--  * Do NOT state "feasible -> pattern ∈ survivors" as one bounded decide:
+--    count boxes are ≤ 192 per variable with up to ~16 variables per
+--    pattern -- far beyond kernel decide.  Keep the EXISTING 42 arithmetic
+--    `false_of_zeroLayer_..._atom_ledger` endpoints (each already proves
+--    False from its pattern's counts+equations); the bridge feeds them.
+--  * Orphan typing must be EXHAUSTIVE over rows, not census-expected
+--    shapes: the row-sum-3 split is (3)/(2,1)/(1,1,1) and each branch's
+--    order set must come from the certified classifications
+--    (quotientThree/Two/One + D-atom + equal-LCM), with impossible orders
+--    excluded by theorems, not by fiat.
+
+namespace Erdos85
+
+/-- Orphan atom type over a used-component index type `ι` (the components
+of the zero-layer used family, `Fintype ι`, with reduced orders `K i`
+so actual cycle order is `3 * K i`).  One constructor per certified
+row shape; each carries exactly the data the ledger equations need. -/
+inductive ZeroLayerAtom (ι : Type*) where
+  /-- concentrated q3 row on `e`; certified orders: |o| = 3*(K e) (C, m=k)
+      or |o| = K e with 3 ∤ K e (D).  Split into two constructors so the
+      ledger sees the load/excess difference. -/
+  | C (e : ι)                       -- |o| = 3*K e, load 3m on e, excess 6
+  | D (e : ι)                       -- |o| = K e (3∤K e), load k, excess 2
+  /-- 2+1 row: 2-leg on `e`, unit leg on `f`; certified m = K e with
+      K f ∣ m (doubled-owner branch is graph-dead).  load 2m on e, m on f,
+      excess 2 on e. -/
+  | B (e f : ι)
+  /-- unit triple row; certified: pairwise lcms of (K a, K b, K c) equal,
+      m = that lcm; load m on each leg, excess 0. -/
+  | A (a b c : ι)
+
+/-- The bridge output: a typing of every orphan component plus the count
+function.  `orphanType` is the surjection codex is building; `count` is
+its fiber size. -/
+structure ZeroLayerAtomCensus
+    {V : Type*} [Fintype V] (G : SimpleGraph V) (ι : Type*) [Fintype ι]
+    (K : ι → ℕ) where
+  orphanType : OrphanComponent G → ZeroLayerAtom ι   -- schematic
+  count : ZeroLayerAtom ι → ℕ
+  count_eq : ∀ t, count t = (Finset.univ.filter (orphanType · = t)).card
+
+/- Master soundness theorem (the ONE packaging theorem; every clause is
+an existing certified law, names in v12 docstring):
+
+theorem degree_sixteen_zeroLayer_atom_census_sound
+    (…zero-layer context: hfree hmin hcard c₀ hregChild hcardChild…)
+    (ι := usedComponents …) (K := reducedOrder …) :
+    ∃ census : ZeroLayerAtomCensus G ι K,
+      -- load row, per used comp e   [used_to_orphan_quotient_sum_eq_twelve]
+      (∀ e, census.count (.C e) * (3*K e) + census.count (.D e) * (K e)
+          + Σ f, census.count (.B e f) * (2*K e)
+          + Σ f, census.count (.B f e) * (K e)      -- unit-leg load: m = K f? NO —
+            -- careful: B f e loads e with m = K f; keep loads as data on
+            -- the constructor or index the sum by the certified m values
+          + Σ (a b c with e ∈ {a,b,c}), census.count (.A a b c) * (mABC a b c)
+          = 12 * (3*K e))    -- comp-level: per-vertex 12 × |e|; divide by 3
+      -- excess row, per used comp e  [row_after_contact_excess + amat terms]
+      ∧ (∀ e, 2 * census.count (.C e) * … )  -- shape as in v12
+      -- (amat enters as the used-used matrix a : ι → ι → ℕ with its own
+      --  certified row-sum-3 / balance / diag laws — carry it in the
+      --  census structure or as a second ∃)
+
+Then each of the 42 endpoints applies:
+  false_of_zeroLayer_reduced_used_orders_fourteen_two_atom_ledger
+    (census.count …) (census_sound.load_row …) (…)
+-/
+
+/- WHY NOT a decidable feasibility predicate + one classification decide:
+   `Feasible K := ∃ counts ≤ bounds, equations` is decidable but the
+   witness space is ~192^(#atoms) per pattern; kernel decide cannot
+   enumerate it.  The CP-SAT infeasibility results are exactly the 42
+   arithmetic endpoints already proved by omega/linarith — reuse them.
+
+   ALTERNATIVE worth 30 minutes before building the full surjection:
+   check whether the 42 endpoints' hypotheses can be weakened to consume
+   RAW per-comp aggregate loads/excesses (not atom counts).  For most
+   census deaths the kill is a load/excess linear combination — if an
+   endpoint's proof only uses count-sums that collapse into aggregate
+   loads, restate it on aggregates and the bridge shrinks to the four
+   already-certified row laws with NO atom surjection at all.  The 7f57
+   endpoints have this shape.  Patterns whose kill genuinely needs the
+   atom split (e.g. parity of D-counts) keep the surjection route. -/
+
+end Erdos85

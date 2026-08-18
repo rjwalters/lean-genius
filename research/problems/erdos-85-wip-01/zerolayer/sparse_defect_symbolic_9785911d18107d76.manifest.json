@@ -1,0 +1,30 @@
+{
+ "scope": "all corrected Stage-1 (4,4,4,4) phases with a sparse center using its forward defect neighbor",
+ "encoder_sha256": "db1bba0445bd8ad524ab48b6a2732904a03f2dfdbde37137ecff1f7c46fccbe3",
+ "sat_verifier_sha256": "b0cda03a3e28899c3f88e98a54d64333affa4db40ef5feac680421fa06eac260",
+ "vars": 60174,
+ "clauses": 271734,
+ "sha256": "9785911d18107d76981fcf515c3e035e03aab33092d3af0fda8c430d2f26e932",
+ "phase_variables": 576,
+ "delta_variables": 3168,
+ "service_variables": 17280,
+ "selection_variables": 192,
+ "rule_counts": {
+  "stage1_phase_onehot_gauge_row_residues": 5536,
+  "stage1_delta_definition_and_pair_injectivity": 57720,
+  "symbolic_service_adjacency": 55296,
+  "candidate_size_and_defect_overlap_pin": 10511,
+  "candidate_A_independent": 17472,
+  "defect_neighbor_is_unique_center_overlap": 180,
+  "paired_component_exact_color_balance": 125019
+ },
+ "normalization": {
+  "source_omit": 0,
+  "paired_component": 1,
+  "source_copy": 0,
+  "center_coordinate": 0,
+  "defect_neighbor_coordinate": 1,
+  "copy_ordering": false,
+  "phase_symmetry": false
+ }
+}

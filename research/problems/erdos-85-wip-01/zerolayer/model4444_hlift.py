@@ -1,0 +1,389 @@
+#!/usr/bin/env python3
+"""(4,4,4,4) H-lift STAGE 2: sound RELAXATION SAT encoding (msg 1853).
+
+Given a stage-1 service witness (taus; all slopes +1 WLOG by per-orphan
+reflection, msg 1857), S and D are determined on the 192 orphan
+vertices.  Encode existence of H:
+  - H simple graph on 192 vertices, 13-regular
+  - for every distinct pair (u,v):
+      #common_H(u,v) = 0 if D.Adj(u,v) or S(u,v)   [zero-pairs]
+      #common_H(u,v) = 1 otherwise                  [one-pairs]
+(Exact necessary content of degree_sixteen_zeroLayer_orphan_common_
+neighbor_partition / ad40009cb4.  UNSAT => this service configuration
+excluded (class kill needs all stage-1 orbits or a WLOG argument).
+SAT => inconclusive relaxation model only — NOT a graph witness.)
+
+Structure checks on emit: zero-pairs 3360 = 192 D + 3168 S, S is
+33-regular (matches msg 1789 counting identity).  Spectral precheck of
+S∪D passed independently (Sol, msg 1858): 12I − A_{S∪D} PSD with
+nullity 6, trace identities consistent — no cheap spectral kill, SAT
+genuinely required.
+
+Output with --emit: DIMACS CNF hlift4444_<sha256_16>.cnf + manifest
+(witness, sizes, hash).  Pilot protocol (msg 1857): signal run without
+proof logging, 30-min cutoff; if UNSAT, rerun the identical hashed CNF
+with DRAT and verify; then enumerate stage-1 orbits.
+
+Emitted instances (2026-08-10):
+  v1 (pre counter-repair, signal pilot only, NOT certificate grade):
+     hlift4444_477ff4422e5e4fa2.cnf — 6,190,176 vars / 18,689,664
+     clauses.  Equisatisfiable to exact-degree-13 by the 156
+     double-count argument (msgs 1862/1863): each vertex has 156
+     one-pairs, each requiring one common H-neighbor, and
+     156 = sum_{w in N_H(v)} #{one-paired u in N(w)} <= 12*deg(v)
+     under at-most-13, forcing deg(v) = 13.
+  v2 (counter repaired + 264 cut, certificate grade):
+     hlift4444_b229c6f11ab1bcad.cnf — 7,045,596 vars / 23,066,016
+     clauses; full SHA-256
+     b229c6f11ab1bcad... (see manifest for full digest + rule counts:
+     zero_common 638400, one_common_and_exactly_one 17027712,
+     degree_13_exact 1978752, A_edge_total_264 3421152; sums to total).
+  v3 (THIS encoder, v2 + local odd A-incidence cuts):
+     hlift4444_a27456953947a173.cnf — 7,052,124 vars / 23,092,320
+     clauses.  For every vertex v, `a_v = |N_H(v) intersect N_A(v)|`
+     is odd because `2 t_v = 13 - a_v`, where t_v is the number of
+     H-edges induced by N_H(v).  Each 35-literal parity is encoded by a
+     chain of 34 equivalence XOR gates and one final unit.  See the
+     manifest for the full SHA-256 and test_parity_odd.py for exhaustive
+     small-chain tests.  Formally, these are the triangle-free incident
+     H-edges, and their parity is certified by the cold-verified theorem
+     `triangleFreeNeighbors_card_mod_two_eq_vertexDegree`.
+
+Optional `--comm-anchor` adds the 191 row-zero equations from `HA = AH`,
+which follows from the encoded square identity and regularity.  Identical
+literals are canceled before equivalence-defined unary cardinality
+comparisons.  This adds 238,210 variables and 939,540 clauses; its generic
+equality encoder is exhaustively checked by test_equal_cardinality.py.
+The matrix implication is formalized by the cold-verified Lean theorem
+`matrix_comm_of_sq_eq_smul_one_add_sub`.
+The emitted v4 candidate is `hlift4444_e21525e9a610e8c3.cnf`, full
+SHA-256 `e21525e9a610e8c383f71e5836d2359878b7b43198e3b6cfe7b9f228c5094661`.
+
+Optional `--translation-lex` selects the lexicographically minimum H-edge
+vector in each orbit of the explicitly checked global Z/12 translation
+automorphism of A.  It adds 201,611 variables and 1,209,611 clauses and
+does not assume that H itself is translation-invariant.  The lex encoder
+is exhaustively checked by test_lex_leq.py.
+
+For an orbit sweep, replace the embedded pilot witness with a canonical
+representative using `--wit-json PATH --wit-sha256 HEX --orbit-index I`.
+The external artifact is hash-pinned, the selected representative is
+revalidated against the complete pure-Python stage-1 constraint system,
+and its artifact hash/index/count are recorded in the CNF manifest.
+"""
+import sys, hashlib, json
+from itertools import combinations
+from hlift_witness import load_orbit_witness
+
+# stage-1 witness (taus), slopes all +1, gauge eta=1,c=0
+WIT = {
+ (0,0): {1:0, 2:4, 3:2}, (0,1): {1:0, 2:5, 3:4},
+ (0,2): {1:0, 2:8, 3:1}, (0,3): {1:0, 2:10, 3:5},
+ (1,0): {0:0, 2:2, 3:4}, (1,1): {0:0, 2:4, 3:5},
+ (1,2): {0:0, 2:7, 3:11}, (1,3): {0:0, 2:11, 3:7},
+ (2,0): {0:0, 1:5, 3:1}, (2,1): {0:0, 1:7, 3:2},
+ (2,2): {0:0, 1:10, 3:8}, (2,3): {0:0, 1:11, 3:10},
+ (3,0): {0:0, 1:1, 2:8}, (3,1): {0:0, 1:2, 2:1},
+ (3,2): {0:0, 1:4, 2:5}, (3,3): {0:0, 1:8, 2:10},
+}
+WIT_PROVENANCE = {"source": "embedded_baseline"}
+if "--wit-json" in sys.argv:
+    def option_value(name):
+        try:
+            return sys.argv[sys.argv.index(name) + 1]
+        except (ValueError, IndexError):
+            raise SystemExit(f"{name} requires a value")
+    if "--wit-sha256" not in sys.argv or "--orbit-index" not in sys.argv:
+        raise SystemExit("--wit-json requires --wit-sha256 and --orbit-index")
+    WIT, WIT_PROVENANCE = load_orbit_witness(
+        option_value("--wit-json"), option_value("--wit-sha256"),
+        int(option_value("--orbit-index")))
+ORPHANS = sorted(WIT)
+oidx = {o: i for i, o in enumerate(ORPHANS)}
+N = 192
+def vid(o, x): return 12 * oidx[o] + (x % 12)
+
+Dset = set()
+for o in ORPHANS:
+    for x in range(12):
+        Dset.add(frozenset((vid(o, x), vid(o, x + 1))))
+Sset = set()
+for o1, o2 in combinations(ORPHANS, 2):
+    shared = [e for e in WIT[o1] if e in WIT[o2]]
+    for e in shared:
+        for x in range(12):
+            xp = (x + WIT[o1][e] - WIT[o2][e]) % 12
+            Sset.add(frozenset((vid(o1, x), vid(o2, xp))))
+assert not (Dset & Sset), "S/D overlap would contradict the identity"
+deg_S = {}
+for fs in Sset:
+    for v in fs: deg_S[v] = deg_S.get(v, 0) + 1
+assert all(d == 33 for d in deg_S.values()), sorted(set(deg_S.values()))
+
+zero_pairs = Dset | Sset
+all_pairs = [frozenset(p) for p in combinations(range(N), 2)]
+one_pairs = [p for p in all_pairs if p not in zero_pairs]
+print(f"zero-pairs {len(zero_pairs)}  one-pairs {len(one_pairs)}  total {len(all_pairs)}")
+
+RULE_COUNTS = {}
+def bump(rule, n=1):
+    RULE_COUNTS[rule] = RULE_COUNTS.get(rule, 0) + n
+
+nv = 0
+def newvar():
+    global nv; nv += 1; return nv
+E = {}
+for p in all_pairs:
+    E[p] = newvar()
+clauses = []
+mark = len(clauses)
+
+for p in zero_pairs:
+    u, v = sorted(p)
+    for w in range(N):
+        if w == u or w == v: continue
+        clauses.append((-E[frozenset((u, w))], -E[frozenset((v, w))]))
+bump("zero_common", len(clauses) - mark)
+mark = len(clauses)
+
+aux_and = 0
+aux_cnt = 0
+for p in one_pairs:
+    u, v = sorted(p)
+    ts = []
+    for w in range(N):
+        if w == u or w == v: continue
+        a, b = E[frozenset((u, w))], E[frozenset((v, w))]
+        t = newvar(); aux_and += 1
+        clauses.append((-t, a)); clauses.append((-t, b))
+        clauses.append((t, -a, -b))
+        ts.append(t)
+    clauses.append(tuple(ts))
+    prev = None
+    for t in ts[:-1]:
+        s = newvar(); aux_cnt += 1
+        if prev is None:
+            clauses.append((-t, s))
+        else:
+            clauses.append((-prev, s)); clauses.append((-t, s))
+            clauses.append((-t, -prev))
+        prev = s
+    if prev is not None:
+        clauses.append((-ts[-1], -prev))
+bump("one_common_and_exactly_one", len(clauses) - mark)
+mark = len(clauses)
+
+def card_eq(lits, k):
+    """Exact-k via EQUIVALENCE sequential counter (Sol audit 1862 repair):
+    counter bits defined both directions, so the final >=k unit is sound.
+    Unit-tested: model count C(n,k) exactly (test_card_eq.py)."""
+    global aux_cnt
+    # s[i][j] <-> (among first i lits, at least j are true)
+    prev = [None] * (k + 2)
+    for i, lit in enumerate(lits, 1):
+        cur = [None] * (k + 2)
+        for j in range(1, min(i, k + 1) + 1):
+            cur[j] = newvar(); aux_cnt += 1
+            # forward: prev[j] -> cur[j];  lit & prev[j-1] -> cur[j]
+            if prev[j] is not None:
+                clauses.append((-prev[j], cur[j]))
+            if j == 1:
+                clauses.append((-lit, cur[1]))
+            elif prev[j - 1] is not None:
+                clauses.append((-lit, -prev[j - 1], cur[j]))
+            # reverse: cur[j] -> prev[j] | (lit & prev[j-1])
+            pj = prev[j]
+            pj1 = prev[j - 1] if j >= 2 else None
+            if j == 1:
+                if pj is None:
+                    clauses.append((-cur[1], lit))
+                else:
+                    clauses.append((-cur[1], pj, lit))
+            else:
+                if pj is None and pj1 is None:
+                    clauses.append((-cur[j],))     # unreachable count
+                elif pj is None:
+                    clauses.append((-cur[j], lit))
+                    clauses.append((-cur[j], pj1))
+                else:
+                    clauses.append((-cur[j], pj, lit))
+                    clauses.append((-cur[j], pj, pj1))
+        # at-most-k: lit & prev[k] -> false
+        if prev[k] is not None:
+            clauses.append((-lit, -prev[k]))
+        prev = cur
+    if prev[k] is None or k == 0:
+        raise RuntimeError
+    clauses.append((prev[k],))   # >= k (now sound: bits are equivalences)
+
+for v in range(N):
+    lits = [E[frozenset((v, w))] for w in range(N) if w != v]
+    card_eq(lits, 13)
+bump("degree_13_exact", len(clauses) - mark)
+mark = len(clauses)
+# ---- redundant derived cuts (Sol msg 1861; logically implied, aid
+# propagation): |E(H) ∩ (S∪D)| = 264 globally.
+A_lits = [E[p] for p in zero_pairs]
+card_eq(A_lits, 264)
+bump("A_edge_total_264", len(clauses) - mark)
+mark = len(clauses)
+
+def xor_odd(lits):
+    """Assert XOR(lits) = true using equivalence Tseitin gates.
+
+    Each new gate z is defined by z <-> (x XOR y), so every input
+    assignment has exactly one extension to the auxiliaries.  The final
+    positive unit selects precisely the odd-parity inputs.
+    """
+    if not lits:
+        clauses.append(())
+        return
+    acc = lits[0]
+    for lit in lits[1:]:
+        z = newvar()
+        # z <-> acc XOR lit
+        clauses.append((-acc, -lit, -z))
+        clauses.append((-acc, lit, z))
+        clauses.append((acc, -lit, z))
+        clauses.append((acc, lit, -z))
+        acc = z
+    clauses.append((acc,))
+
+for v in range(N):
+    A_neighbor_lits = [E[frozenset((v, w))]
+                       for w in range(N)
+                       if w != v and frozenset((v, w)) in zero_pairs]
+    assert len(A_neighbor_lits) == 35
+    xor_odd(A_neighbor_lits)
+bump("local_A_incidence_odd", len(clauses) - mark)
+
+def threshold_bits(lits):
+    """Return equivalence-defined bits `count(lits) >= j`, j=1..n."""
+    prev = [None] * (len(lits) + 1)
+    for i, lit in enumerate(lits, 1):
+        cur = [None] * (len(lits) + 1)
+        for j in range(1, i + 1):
+            cur[j] = newvar()
+            p = prev[j]
+            q = prev[j - 1] if j > 1 else True
+            if p is None:
+                if q is True:
+                    # cur <-> lit
+                    clauses.append((-lit, cur[j]))
+                    clauses.append((lit, -cur[j]))
+                else:
+                    # cur <-> lit & q
+                    clauses.append((-lit, -q, cur[j]))
+                    clauses.append((-cur[j], lit))
+                    clauses.append((-cur[j], q))
+            elif q is True:
+                # cur <-> p | lit
+                clauses.append((-p, cur[j]))
+                clauses.append((-lit, cur[j]))
+                clauses.append((-cur[j], p, lit))
+            else:
+                # cur <-> p | (lit & q)
+                clauses.append((-p, cur[j]))
+                clauses.append((-lit, -q, cur[j]))
+                clauses.append((-cur[j], p, lit))
+                clauses.append((-cur[j], p, q))
+        prev = cur
+    return prev[1:len(lits) + 1]
+
+def equal_cardinality(left, right):
+    """Assert equal cardinality through equivalent unary thresholds."""
+    if len(left) != len(right):
+        raise ValueError("equal-cardinality domains must have equal size")
+    left_bits = threshold_bits(left)
+    right_bits = threshold_bits(right)
+    for a, b in zip(left_bits, right_bits):
+        clauses.append((-a, b))
+        clauses.append((a, -b))
+
+def lex_leq(left, right):
+    """Assert the Boolean vector `left <=lex right` (False < True)."""
+    if len(left) != len(right):
+        raise ValueError("lexicographic domains must have equal size")
+    prefix = newvar()
+    clauses.append((prefix,))
+    for x, y in zip(left, right):
+        if x == y:
+            continue
+        # A strict 1/0 difference is forbidden while the prefix agrees.
+        clauses.append((-prefix, -x, y))
+        nxt = newvar()
+        # nxt <-> prefix & (x <-> y)
+        clauses.append((-nxt, prefix))
+        clauses.append((-nxt, -x, y))
+        clauses.append((-nxt, x, -y))
+        clauses.append((-prefix, x, y, nxt))
+        clauses.append((-prefix, -x, -y, nxt))
+        prefix = nxt
+
+if "--comm-anchor" in sys.argv:
+    # H^2 = 12I + J - A and 13-regularity imply HA = AH.  Add the
+    # row-zero entries only: every equation is redundant (hence sound),
+    # while this small anchor family exposes the linear commutant structure
+    # without assuming that H itself is translation-invariant.
+    mark = len(clauses)
+    A_neighbors = [
+        {w for w in range(N) if w != v and
+         frozenset((v, w)) in zero_pairs}
+        for v in range(N)
+    ]
+    for v in range(1, N):
+        left = {E[frozenset((0, w))] for w in A_neighbors[v] if w != 0}
+        right = {E[frozenset((w, v))] for w in A_neighbors[0] if w != v}
+        common = left & right
+        left_only = sorted(left - common)
+        right_only = sorted(right - common)
+        assert len(left_only) == len(right_only)
+        equal_cardinality(left_only, right_only)
+    bump("commutation_anchor_row_zero", len(clauses) - mark)
+
+if "--translation-lex" in sys.argv:
+    # The fixed A is invariant under simultaneously translating the Z/12
+    # coordinate in every orphan block.  Every solution orbit therefore has
+    # a lexicographically minimum edge vector; requiring that representative
+    # against all eleven nonidentity translations preserves satisfiability.
+    mark = len(clauses)
+    edge_vector = [E[pair] for pair in all_pairs]
+    def translate_vertex(v, shift):
+        block, x = divmod(v, 12)
+        return 12 * block + (x + shift) % 12
+    for shift in range(1, 12):
+        translated_A = {
+            frozenset(translate_vertex(v, shift) for v in pair)
+            for pair in zero_pairs
+        }
+        assert translated_A == zero_pairs
+        shifted = [E[frozenset((translate_vertex(u, shift),
+                                translate_vertex(v, shift)))]
+                   for u, v in map(sorted, all_pairs)]
+        lex_leq(edge_vector, shifted)
+    bump("global_translation_lex_leader", len(clauses) - mark)
+
+print(f"vars {nv}  clauses {len(clauses)}  (edge {len(all_pairs)}, and-aux {aux_and}, cnt-aux {aux_cnt})")
+
+if "--emit" in sys.argv:
+    import io
+    buf = io.StringIO()
+    buf.write(f"p cnf {nv} {len(clauses)}\n")
+    for c in clauses:
+        buf.write(" ".join(map(str, c)) + " 0\n")
+    data = buf.getvalue().encode()
+    h = hashlib.sha256(data).hexdigest()[:16]
+    fn = f"hlift4444_{h}.cnf"
+    open(fn, "wb").write(data)
+    json.dump({"witness": {str(k): v for k, v in WIT.items()},
+               "witness_provenance": WIT_PROVENANCE,
+               "options": {
+                   "comm_anchor": "--comm-anchor" in sys.argv,
+                   "translation_lex": "--translation-lex" in sys.argv,
+               },
+               "zero_pairs": len(zero_pairs), "one_pairs": len(one_pairs),
+               "vars": nv, "clauses": len(clauses),
+               "sha256": hashlib.sha256(data).hexdigest(),
+               "rule_counts": RULE_COUNTS},
+              open(f"hlift4444_{h}.manifest.json", "w"), indent=1)
+    print("wrote", fn)
