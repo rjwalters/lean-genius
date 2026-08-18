@@ -88,6 +88,64 @@ theorem even_fixedPointFree_cycleType_eq_fourTwo_or_threeThree
     change 4 ::ₘ 2 ::ₘ 0 = 2 ::ₘ 4 ::ₘ 0
     exact Multiset.cons_swap 4 2 0
 
+/-- Complementary exact classification: an odd derangement on six points is
+a single 6-cycle or a product of three transpositions. -/
+theorem odd_fixedPointFree_cycleType_eq_six_or_twoTwoTwo
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (hcard : Fintype.card α = 6) (σ : Equiv.Perm α)
+    (hfree : ∀ x, σ x ≠ x) (hodd : Equiv.Perm.sign σ = -1) :
+    σ.cycleType = {6} ∨ σ.cycleType = {2, 2, 2} := by
+  have hsupp : σ.support = Finset.univ := by
+    ext x
+    simp [Equiv.Perm.mem_support, hfree x]
+  have hsum : σ.cycleType.sum = 6 := by
+    rw [Equiv.Perm.sum_cycleType, hsupp, Finset.card_univ, hcard]
+  have hbound_aux : ∀ m : Multiset ℕ,
+      (∀ n ∈ m, 2 ≤ n) → 2 * m.card ≤ m.sum := by
+    intro m hm
+    induction m using Multiset.induction_on with
+    | empty => simp
+    | @cons n s ih =>
+        rw [Multiset.card_cons, Multiset.sum_cons]
+        have hn : 2 ≤ n := hm n (by simp)
+        have ih' : ∀ k ∈ s, 2 ≤ k := by
+          intro k hk
+          exact hm k (by simp [hk])
+        have hi := ih ih'
+        omega
+  have hbound : 2 * σ.cycleType.card ≤ σ.cycleType.sum :=
+    hbound_aux σ.cycleType (fun n hn => Equiv.Perm.two_le_of_mem_cycleType hn)
+  have hpositive : 0 < σ.cycleType.card := by
+    by_contra h
+    have hc : σ.cycleType.card = 0 := Nat.eq_zero_of_not_pos h
+    have hm : σ.cycleType = 0 := Multiset.card_eq_zero.mp hc
+    simp [hm] at hsum
+  have hcard_le : σ.cycleType.card ≤ 3 := by omega
+  have hpow : (-1 : ℤˣ) ^ (6 + σ.cycleType.card) = -1 := by
+    rw [← hsum]
+    exact (Equiv.Perm.sign_of_cycleType σ).symm.trans hodd
+  have hparity : Odd (6 + σ.cycleType.card) :=
+    (neg_one_pow_eq_neg_one_iff_odd (by norm_num)).mp hpow
+  have hcard_cases : σ.cycleType.card = 1 ∨ σ.cycleType.card = 3 := by
+    rcases hparity with ⟨k, hk⟩
+    omega
+  rcases hcard_cases with hc | hc
+  · rcases Multiset.card_eq_one.mp hc with ⟨x, hx⟩
+    have : x = 6 := by simpa [hx] using hsum
+    subst x
+    exact Or.inl hx
+  · rcases Multiset.card_eq_three.mp hc with ⟨x, y, z, hxyz⟩
+    have hs : x + y + z = 6 := by simpa [hxyz, add_assoc] using hsum
+    have hxmem : x ∈ σ.cycleType := by rw [hxyz]; simp
+    have hymem : y ∈ σ.cycleType := by rw [hxyz]; simp
+    have hzmem : z ∈ σ.cycleType := by rw [hxyz]; simp
+    have hx : 2 ≤ x := Equiv.Perm.two_le_of_mem_cycleType hxmem
+    have hy : 2 ≤ y := Equiv.Perm.two_le_of_mem_cycleType hymem
+    have hz : 2 ≤ z := Equiv.Perm.two_le_of_mem_cycleType hzmem
+    have : x = 2 ∧ y = 2 ∧ z = 2 := by omega
+    rcases this with ⟨rfl, rfl, rfl⟩
+    exact Or.inr hxyz
+
 /-- A positive-sign H-empty rectangle monodromy has exactly two cycles. -/
 theorem MuThreeMixedGridCode.foreignRectangleMonodromy_even_cycleType_card
     {X Y : Type*} [Fintype X] [Fintype Y]
@@ -133,13 +191,40 @@ theorem MuThreeMixedGridCode.foreignRectangleMonodromy_even_cycleType
   exact code.foreignRectangleMonodromyEquiv_ne H K C haa' hbb'
     hab hab' ha'b ha'b'
 
+/-- Exact cycle-type alternative for a negative-sign H-empty rectangle. -/
+theorem MuThreeMixedGridCode.foreignRectangleMonodromy_odd_cycleType
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    {a a' : X} (haa' : a ≠ a') {b b' : Y} (hbb' : b ≠ b')
+    (hab : ¬ H a b) (hab' : ¬ H a b')
+    (ha'b : ¬ H a' b) (ha'b' : ¬ H a' b')
+    (hodd : Equiv.Perm.sign
+      (code.foreignRectangleMonodromyEquiv H K C a a' b b'
+        hab hab' ha'b ha'b') = -1) :
+    Equiv.Perm.cycleType
+        (code.foreignRectangleMonodromyEquiv H K C a a' b b'
+          hab hab' ha'b ha'b') = {6} ∨
+      Equiv.Perm.cycleType
+        (code.foreignRectangleMonodromyEquiv H K C a a' b b'
+          hab hab' ha'b ha'b') = {2, 2, 2} := by
+  apply odd_fixedPointFree_cycleType_eq_six_or_twoTwoTwo
+    (code.card_occupiedColumnFiber_eq_six H K C b) _ _ hodd
+  exact code.foreignRectangleMonodromyEquiv_ne H K C haa' hbb'
+    hab hab' ha'b ha'b'
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.even_fixedPointFree_cycleType_card_eq_two
 #print axioms Erdos85.even_fixedPointFree_cycleType_eq_fourTwo_or_threeThree
+#print axioms Erdos85.odd_fixedPointFree_cycleType_eq_six_or_twoTwoTwo
 #print axioms
   Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_even_cycleType_card
 #print axioms
   Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_even_cycleType
+#print axioms
+  Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_odd_cycleType
