@@ -245,6 +245,112 @@ theorem orderSixtyFourMuThreeHole_twoRegular
     rw [hP] at hcompl
     omega
 
+/-- The internal bipartite relation between positive and negative sign
+shores. -/
+def orderSixtyFourMuThreeInternalRel
+    {V : Type*} (G : SimpleGraph V) {cSupp : Set V} {s : V → ℤ} :
+    muThreePositiveShore cSupp s → muThreeNegativeShore cSupp s → Prop :=
+  fun x y => G.Adj x.1 y.1
+
+instance orderSixtyFourMuThreeInternalRel_decidable
+    {V : Type*} (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ} :
+    DecidableRel (orderSixtyFourMuThreeInternalRel G
+      (cSupp := cSupp) (s := s)) := by
+  intro x y
+  unfold orderSixtyFourMuThreeInternalRel
+  infer_instance
+
+/-- A positive-shore relation fiber is the full induced-graph neighbor
+fiber, because every internal edge flips the sign. -/
+def orderSixtyFourMuThreePositiveNeighborEquiv
+    {V : Type*} [DecidableEq V] (G : SimpleGraph V)
+    {cSupp : Set V} {s : V → ℤ}
+    (hflip : ∀ ⦃x y : {z : V // z ∈ cSupp}⦄,
+      (G.induce cSupp).Adj x y → s x.1 = -s y.1)
+    (x : muThreePositiveShore cSupp s) :
+    {y : muThreeNegativeShore cSupp s // G.Adj x.1 y.1} ≃
+      {z : {z : V // z ∈ cSupp} //
+        (G.induce cSupp).Adj ⟨x.1, x.2.1⟩ z} where
+  toFun y := ⟨⟨y.1.1, y.1.2.1⟩, y.2⟩
+  invFun z := ⟨⟨z.1.1, z.1.2, by
+    have h := hflip z.2
+    have hx : s x.1 = 1 := x.2.2
+    have h' : (1 : ℤ) = -s z.1.1 := by simpa only [hx] using h
+    omega⟩, z.2⟩
+  left_inv y := by rfl
+  right_inv z := by rfl
+
+/-- Column-dual identification of a negative-shore relation fiber with the
+full internal neighbor fiber. -/
+def orderSixtyFourMuThreeNegativeNeighborEquiv
+    {V : Type*} [DecidableEq V] (G : SimpleGraph V)
+    {cSupp : Set V} {s : V → ℤ}
+    (hflip : ∀ ⦃x y : {z : V // z ∈ cSupp}⦄,
+      (G.induce cSupp).Adj x y → s x.1 = -s y.1)
+    (y : muThreeNegativeShore cSupp s) :
+    {x : muThreePositiveShore cSupp s // G.Adj x.1 y.1} ≃
+      {z : {z : V // z ∈ cSupp} //
+        (G.induce cSupp).Adj ⟨y.1, y.2.1⟩ z} where
+  toFun x := ⟨⟨x.1.1, x.1.2.1⟩, (G.adj_comm _ _).mp x.2⟩
+  invFun z := ⟨⟨z.1.1, z.1.2, by
+    have h := hflip z.2
+    have hy : s y.1 = -1 := y.2.2
+    have h' : (-1 : ℤ) = -s z.1.1 := by simpa only [hy] using h
+    omega⟩, (G.adj_comm _ _).mpr z.2⟩
+  left_inv x := by rfl
+  right_inv z := by rfl
+
+/-- A two-regular signed internal component whose edges flip sign gives a
+two-regular bipartite relation on its sign shores. -/
+theorem orderSixtyFourMuThreeInternalRel_twoRegular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    [Fintype {z : V // z ∈ cSupp}]
+    [Fintype (muThreePositiveShore cSupp s)]
+    [Fintype (muThreeNegativeShore cSupp s)]
+    (hdeg : ∀ z : {z : V // z ∈ cSupp},
+      (G.induce cSupp).degree z = 2)
+    (hflip : ∀ ⦃x y : {z : V // z ∈ cSupp}⦄,
+      (G.induce cSupp).Adj x y → s x.1 = -s y.1) :
+    RelationTwoRegular (orderSixtyFourMuThreeInternalRel G
+      (cSupp := cSupp) (s := s)) := by
+  classical
+  constructor
+  · intro x
+    change ((Finset.univ : Finset (muThreeNegativeShore cSupp s)).filter
+      fun y => G.Adj x.1 y.1).card = 2
+    rw [← Fintype.card_subtype,
+      Fintype.card_congr
+        (orderSixtyFourMuThreePositiveNeighborEquiv G hflip x),
+      Fintype.card_subtype]
+    change ((Finset.univ : Finset {z : V // z ∈ cSupp}).filter fun z =>
+      (G.induce cSupp).Adj ⟨x.1, x.2.1⟩ z).card = 2
+    rw [show ((Finset.univ : Finset {z : V // z ∈ cSupp}).filter fun z =>
+        (G.induce cSupp).Adj ⟨x.1, x.2.1⟩ z) =
+        (G.induce cSupp).neighborFinset ⟨x.1, x.2.1⟩ by
+      ext z
+      simp [SimpleGraph.mem_neighborFinset]]
+    simpa [SimpleGraph.card_neighborFinset_eq_degree] using
+      hdeg ⟨x.1, x.2.1⟩
+  · intro y
+    change ((Finset.univ : Finset (muThreePositiveShore cSupp s)).filter
+      fun x => G.Adj x.1 y.1).card = 2
+    rw [← Fintype.card_subtype,
+      Fintype.card_congr
+        (orderSixtyFourMuThreeNegativeNeighborEquiv G hflip y),
+      Fintype.card_subtype]
+    change ((Finset.univ : Finset {z : V // z ∈ cSupp}).filter fun z =>
+      (G.induce cSupp).Adj ⟨y.1, y.2.1⟩ z).card = 2
+    rw [show ((Finset.univ : Finset {z : V // z ∈ cSupp}).filter fun z =>
+        (G.induce cSupp).Adj ⟨y.1, y.2.1⟩ z) =
+        (G.induce cSupp).neighborFinset ⟨y.1, y.2.1⟩ by
+      ext z
+      simp [SimpleGraph.mem_neighborFinset]]
+    simpa [SimpleGraph.card_neighborFinset_eq_degree] using
+      hdeg ⟨y.1, y.2.1⟩
+
 end
 
 end Erdos85
@@ -252,3 +358,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFourMuThreeExteriorCellEquiv
 #print axioms Erdos85.orderSixtyFourMuThreeExteriorCellGraph_c4Free
 #print axioms Erdos85.orderSixtyFourMuThreeHole_twoRegular
+#print axioms Erdos85.orderSixtyFourMuThreeInternalRel_twoRegular
