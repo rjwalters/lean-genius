@@ -198,6 +198,114 @@ theorem binarySquare_regular_sameOwner_defectCenterPairs_card_eq_ownerDefect_add
   push_cast at hgridZ
   nlinarith
 
+/-- In a two-owner stratum, every owner-then-defect entry on a defect edge
+is at most `q-2`.  This is the owner-by-owner consequence of residue pressure,
+not merely the tautological bound on their sum. -/
+theorem binarySquare_regular_twoComponents_defectEdge_ownerDefect_card_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = q * m c)
+    (hsum : ∑ c, m c = q)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent) (hab : a ≠ b)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    (coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (secondOrderDefectGraph G) x y).card ≤ q - 2 := by
+  let D := secondOrderDefectGraph G
+  let A := componentOwnerGraph G D a
+  let B := componentOwnerGraph G D b
+  let AA := coloredTwoStepMiddles A A x y
+  let BB := coloredTwoStepMiddles B B x y
+  let AD := coloredTwoStepMiddles A D x y
+  let BD := coloredTwoStepMiddles B D x y
+  have huniv : (Finset.univ : Finset D.ConnectedComponent) = {a, b} := by
+    ext c
+    simp only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton,
+      true_iff]
+    exact eq_or_eq_of_fintype_card_eq_two a b hab hcount c
+  have habSum : m a + m b = q := by
+    calc
+      m a + m b = ∑ c ∈ ({a, b} : Finset D.ConnectedComponent), m c := by
+        simp [hab]
+      _ = ∑ c : D.ConnectedComponent, m c := by rw [← huniv]
+      _ = q := hsum
+  have hma : 1 ≤ m a := by
+    have hpos := a.nonempty_supp.ncard_pos
+    rw [hm a] at hpos
+    have hmne : m a ≠ 0 := by
+      intro hm0
+      rw [hm0, mul_zero] at hpos
+      omega
+    omega
+  have hmb : 1 ≤ m b := by
+    have hpos := b.nonempty_supp.ncard_pos
+    rw [hm b] at hpos
+    have hmne : m b ≠ 0 := by
+      intro hm0
+      rw [hm0, mul_zero] at hpos
+      omega
+    omega
+  have hlo := binarySquare_regular_twoComponents_defectEdge_sameOwner_card_lower
+    G hfree hq hreg hcard hcount a b hab (hm a) (hm b) hxyD
+  have hdis : Disjoint AA BB := by
+    exact coloredTwoStepMiddles_disjoint_of_orderedOwners_ne
+      G hfree a a b b (by simpa using hab) x y
+  change _ ≤ (AA ∪ BB).card at hlo
+  rw [Finset.card_union_of_disjoint hdis] at hlo
+  have hrecA := binarySquare_regular_sameOwner_defectEdge_card_add_ownerDefect
+    G hfree hq hreg hcard m hm hsum a hxyD
+  have hrecB := binarySquare_regular_sameOwner_defectEdge_card_add_ownerDefect
+    G hfree hq hreg hcard m hm hsum b hxyD
+  rw [mul_two_adjMatrices_apply_eq_card_coloredTwoStepMiddles A D x y] at hrecA
+  rw [mul_two_adjMatrices_apply_eq_card_coloredTwoStepMiddles B D x y] at hrecB
+  change (AA.card : ℤ) + (AD.card : ℤ) = _ at hrecA
+  change (BB.card : ℤ) + (BD.card : ℤ) = _ at hrecB
+  have hfirst : 2 * (q - 1) ≤ q * q := by
+    have htwoq : 2 * q ≤ q * q := Nat.mul_le_mul_right q (by omega : 2 ≤ q)
+    omega
+  have hsecond : 2 * m a * m b ≤ q * q - 2 * (q - 1) := by
+    have hsq : q * q = m a * m a + 2 * m a * m b + m b * m b := by
+      rw [← habSum]
+      ring
+    have hsquares : 2 * (q - 1) ≤ m a * m a + m b * m b := by
+      have haSq : 2 * m a ≤ m a * m a + 1 := by nlinarith
+      have hbSq : 2 * m b ≤ m b * m b + 1 := by nlinarith
+      omega
+    omega
+  have hloZ :
+      (q * q : ℤ) - 2 * ((q - 1 : ℕ) : ℤ) -
+          2 * (m a : ℤ) * (m b : ℤ) ≤
+        (AA.card : ℤ) + (BB.card : ℤ) := by
+    have hz : (((q * q - 2 * (q - 1)) - 2 * m a * m b : ℕ) : ℤ) ≤
+        (AA.card : ℤ) + (BB.card : ℤ) := by exact_mod_cast hlo
+    rw [Nat.cast_sub hsecond, Nat.cast_sub hfirst] at hz
+    push_cast at hz
+    exact hz
+  have habSumZ : (m a : ℤ) + (m b : ℤ) = q := by exact_mod_cast habSum
+  have hqminus1Z : ((q - 1 : ℕ) : ℤ) = (q : ℤ) - 1 := by
+    rw [Nat.cast_sub (by omega : 1 ≤ q)]
+    norm_num
+  rw [hqminus1Z] at hloZ
+  have hqsubZ : ((q - 2 : ℕ) : ℤ) = (q : ℤ) - 2 := by
+    rw [Nat.cast_sub (by omega : 2 ≤ q)]
+    norm_num
+  have hrouteZ : (AD.card : ℤ) ≤ ((q - 2 : ℕ) : ℤ) := by
+    rw [hqsubZ]
+    push_cast at hrecA hrecB
+    nlinarith [show (0 : ℤ) ≤ BD.card by positivity]
+  change AD.card ≤ q - 2
+  exact_mod_cast hrouteZ
+
 end
 
 end Erdos85
