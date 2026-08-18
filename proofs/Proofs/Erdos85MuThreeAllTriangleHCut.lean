@@ -147,6 +147,75 @@ theorem MuThreeMixedGridCode.exists_HCell_two_cross_nonrook_neighbors
   have hsep := code.rook h.1 x y hhx hhy hxy
   exact hrook.2.elim hsep.1 hsep.2
 
+/-- **Two distinct rich H-roots.**  At least two H-cells have two or more
+neighbours across the H/non-H cut.  Indeed, if only one root were rich, its
+degree-six cap and the fifteen remaining degree-one caps would total at most
+`6 + 15 = 21`, below the forced cut size 26. -/
+theorem MuThreeMixedGridCode.exists_two_HCells_with_two_cross_neighbors
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (hdisjoint : ∀ x y, H x y → ¬ K x y) :
+    ∃ h₁ h₂ : mixedGridHCellSet H K, h₁ ≠ h₂ ∧
+      1 < (C.neighborFinset h₁.1 \ (mixedGridHCellSet H K).toFinset).card ∧
+      1 < (C.neighborFinset h₂.1 \ (mixedGridHCellSet H K).toFinset).card := by
+  classical
+  let cutDegree := fun h : mixedGridHCellSet H K =>
+    (C.neighborFinset h.1 \ (mixedGridHCellSet H K).toFinset).card
+  have hcut : 26 ≤ ∑ h : mixedGridHCellSet H K, cutDegree h := by
+    simpa [graphCutIncidenceCount, cutDegree] using
+      code.twentySix_le_HCell_cutIncidenceCount H K C hdisjoint
+  have hcard := code.card_mixedGridHCellSet_eq_sixteen H K C hdisjoint
+  have hex₁ : ∃ h : mixedGridHCellSet H K, 1 < cutDegree h := by
+    by_contra hnone
+    push Not at hnone
+    have hsum : (∑ h : mixedGridHCellSet H K, cutDegree h) ≤ 16 := by
+      calc
+        ∑ h : mixedGridHCellSet H K, cutDegree h ≤
+            ∑ _h : mixedGridHCellSet H K, 1 := by
+          apply Finset.sum_le_sum
+          intro h _hh
+          exact hnone h
+        _ = 16 := by simp [hcard]
+    omega
+  obtain ⟨h₁, hh₁⟩ := hex₁
+  by_cases hex₂ : ∃ h₂ : mixedGridHCellSet H K, h₁ ≠ h₂ ∧ 1 < cutDegree h₂
+  · obtain ⟨h₂, hh₂, hrich₂⟩ := hex₂
+    exact ⟨h₁, h₂, hh₂, hh₁, hrich₂⟩
+  · push Not at hex₂
+    have hcap₁ : cutDegree h₁ ≤ 6 := by
+      calc
+        cutDegree h₁ ≤ (C.neighborFinset h₁.1).card :=
+          Finset.card_le_card (Finset.sdiff_subset)
+        _ = C.degree h₁.1 := C.card_neighborFinset_eq_degree h₁.1
+        _ = 6 := code.degree_eq_six H K C h₁.1
+    have hsum : (∑ h : mixedGridHCellSet H K, cutDegree h) ≤ 21 := by
+      calc
+        ∑ h : mixedGridHCellSet H K, cutDegree h ≤
+            ∑ h : mixedGridHCellSet H K, if h = h₁ then 6 else 1 := by
+          apply Finset.sum_le_sum
+          intro h _hh
+          by_cases heq : h = h₁
+          · simpa [heq] using hcap₁
+          · rw [if_neg heq]
+            exact hex₂ h (Ne.symm heq)
+        _ = ∑ h : mixedGridHCellSet H K,
+              (1 + if h = h₁ then 5 else 0) := by
+          apply Finset.sum_congr rfl
+          intro h _hh
+          split <;> omega
+        _ = 21 := by
+          rw [Finset.sum_add_distrib]
+          have hones : (∑ _h : mixedGridHCellSet H K, 1) = 16 := by
+            simp [hcard]
+          have hfive :
+              (∑ h : mixedGridHCellSet H K, if h = h₁ then 5 else 0) = 5 := by
+            simp
+          rw [hones, hfive]
+    omega
+
 end Erdos85
 
 #print axioms Erdos85.MuThreeMixedGridCode.card_mixedGridHCellSet_eq_sixteen
@@ -156,3 +225,5 @@ end Erdos85
   Erdos85.MuThreeMixedGridCode.twentySix_le_HCell_cutIncidenceCount
 #print axioms
   Erdos85.MuThreeMixedGridCode.exists_HCell_two_cross_nonrook_neighbors
+#print axioms
+  Erdos85.MuThreeMixedGridCode.exists_two_HCells_with_two_cross_neighbors
