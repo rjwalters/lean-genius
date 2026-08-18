@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.0 — 2026-08-18 (operator consolidation).**
+**Version 2.1 — 2026-08-18 (operator consolidation; red-team pass folded in).**
 
 This is the single authoritative outline. It supersedes the four divergent v1
 copies, archived unchanged beside it as `FINAL_PROOF_OUTLINE_v1a.md` (sol-1
@@ -30,7 +30,7 @@ Rules of this document:
 
 ---
 
-## 0. The theorem and the root — PROVEN
+## 0. The theorem and the root — implications PROVEN; root CONDITIONAL on A-REG
 
 Erdős 85 asks whether `f(n) = minDegreeForC4 n` is eventually monotone. The
 campaign's claim: it is not; `f` drops at plane-order squares infinitely often.
@@ -73,8 +73,11 @@ Everything below this line is inside A.5.
   all-unit case `binarySquare_regular_not_allUnit_of_two_pow`).
 - **No bipartite defect component, any size, any partition, for every
   `4 ∣ q`** (`binarySquare_regular_no_bipartite_defectComponent`,
-  2026-08-18). This closes the bipartite half of A-REG for every `k` by one
-  argument that lifts. It is the only part of A-REG proven that way.
+  `Erdos85BinarySquareAllOddBipartitePartsExclusion.lean` on
+  `origin/feature/erdos85-claude-sixtwo`, commit `4bdd5a720a`, 2026-08-18;
+  author-compiled, standard axioms; independent recompile pending
+  integration). This closes the bipartite half of A-REG for every `k` by
+  one argument that lifts. It is the only part of A-REG proven that way.
 - Owner/selector algebra, centered-owner ranks and nullities, cross-block
   identities `HB + BC = J`, `BC² = (q−2m)J + H²B`, cyclic first/second
   moments, signed-eigenline range and support laws — all uniform, none a
@@ -86,7 +89,9 @@ whole of what remains:
 
 > **A-REG (remaining content).** For `k ≥ 3`, `q = 2^k`: no `q`-regular
 > C4-free graph on `q²` vertices whose defect components all have order
-> `q·m_c`, `m_c ≥ 2`, `Σ m_c = q`, and are all non-bipartite.
+> `q·m_c`, `m_c ≥ 2`, `Σ m_c = q`, and are all non-bipartite. This
+> includes the connected one-part case `[q]` (one component of order `q²`)
+> as well as the mixed cases `r ≥ 2`.
 
 The names `A-REG-EXTENSION`, `A-REG-UNIT`, `A-REG-MIXED-PARTITION` in v1 are
 restatements of this same node, not sub-nodes. They are retired here.
@@ -98,7 +103,7 @@ The seven partitions of 8 into parts ≥ 2: `[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`,
 
 | stratum | status at 64 | note |
 |---|---|---|
-| `[2,2,2,2]` | `EXTERNAL` — 11 assembly targets UNSAT | kissat, no certificates; the finite reduction to 11 targets is Lean/q-generic in parts (via-tiling law) |
+| `[2,2,2,2]` | `EXTERNAL` — 11 assembly targets UNSAT | kissat, no certificates; the finite reduction to 11 targets is Lean/q-generic in parts (via-tiling law); the size-two μ=3 CERT kill below also applies here |
 | size-two block carrying a signed joint eigenline with `μ = 3` | `PROVEN-AT-64 CERT` | `false_of_orderSixtyFour_mu3_jointEigenline_native_without_hA_out` (2026-08-18 14:21Z; K-law + enumeration + 22 LRAT certificates; residual = the eigenline hypothesis `hs_in, hs_out, hsum, hDs, hA_in`) — kills that block in every stratum containing a size-two part |
 | size-two block, `μ ∈ {−1,−3,−5}` or no alternating eigenline | `GAP` | active lane; nothing terminal |
 | `[3,3,2]`, `[4,2,2]`, `[6,2]` | `GAP` | non-bipartite blocks; only size-two/`μ=3` inputs above |
@@ -113,10 +118,28 @@ plan.
 ### A.5.3 The gap, stated plainly
 
 **GAP A-REG-NONBIP.** No candidate mechanism, uniform in `k`, is known for
-excluding an all-non-bipartite mixed partition. Nobody in the room has
-proposed one; the only kills of non-bipartite structure to date are order-64
-enumerations. This is the critical path. A proposal counts only if it
-strengthens with `q` and is strictly weaker than A-REG itself.
+excluding a partition with all parts `≥ 2` and all components non-bipartite.
+Nobody in the room has proposed one; the only kills of non-bipartite
+structure to date are order-64 enumerations. This is the critical path. A
+proposal counts only if it strengthens with `q` and is strictly weaker than
+A-REG itself. Its children, by shape (a completeness split, not a theorem):
+
+- **NONBIP-CONNECTED `[q]`** — one defect component of order `q²`
+  (`[8]` at q=8). `GAP`. Uniform inputs: `C = q·L_D`, `L_D = A² − J`,
+  `det(L_D + J) = det(A)²`; none a contradiction.
+- **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
+  owner/selector algebra of A.5.1; every binary candidate has a triangle-free
+  edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
+  - **SIZE-TWO-EIGENLINE(q)** — a size-two part (`m_c = 2`) carrying the
+    alternating vector `s` with `Bs = 0`, hence `Ds = (q−5)s`. The exterior
+    grid model (`q×q`, two holes per row/column, `q(q−2)` cells), the
+    row/column-hit laws, the per-cell `D` law and the K-law `K·Hᵀ = H·Kᵀ`
+    are all proved by q-generic arguments; the shape census, enumeration and
+    certificates are order-64. Status: `PROVEN-AT-64 CERT` (A.5.2), `GAP`
+    for `k ≥ 4`. A sub-case of NONBIP-MIXED, not a decomposition of it; the
+    first q-generic statement strictly beneath A-REG-NONBIP.
+  - size-two parts with `μ ∈ {−1,−3,−5}` or no alternating eigenline;
+    parts of size `≥ 3` — `GAP`, no q-generic statement yet.
 
 ---
 
@@ -150,8 +173,12 @@ C-TO-SQUARE`. They stay in the ledger.
     ├── tight core, regular for even q                [PROVEN]
     └── AXIOM A-REG                                   [OPEN — the only node]
         ├── bipartite half                            [PROVEN, uniform, 4 | q]
-        └── non-bipartite mixed partitions            [GAP A-REG-NONBIP]
-            └── q = 8 instances                       [see A.5.2; not the path]
+        └── all-non-bipartite partitions              [GAP A-REG-NONBIP]
+            ├── connected [q]                         [GAP]
+            └── mixed r ≥ 2                           [GAP]
+                ├── SIZE-TWO-EIGENLINE(q)             [PROVEN-AT-64 CERT; GAP k ≥ 4]
+                └── other parts / other μ             [GAP]
+            (q = 8 instances: see A.5.2; not the path)
 Branch B (parked): B-EXIST [GAP] ∧ B-NONEXIST [AXIOM] ⇒ B-COFINAL [AXIOM]
 ```
 
@@ -190,6 +217,14 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.1** (2026-08-18, editor; red-team by sol-1, sol-3, Claude within
+  four minutes of 2.0): §0 relabelled — implications proven, root
+  conditional on A-REG. A-REG-NONBIP now explicitly includes the connected
+  one-part case `[q]`; split into NONBIP-CONNECTED / NONBIP-MIXED. New
+  q-generic child SIZE-TWO-EIGENLINE(q) recorded (Claude). `[2,2,2,2]` row
+  notes the μ=3 CERT kill applies. Bipartite capstone given file/branch/
+  commit and marked author-compiled pending independent recompile (sol-3's
+  provenance challenge; theorem located at `4bdd5a720a`).
 - **2.0** (2026-08-18, editor, operator direction): consolidation. Four v1
   copies archived as v1a–v1d. Tree collapsed to the critical path.
   Recorded: A-NONREG closed (`squareOrder_regular_of_even`); capstone
