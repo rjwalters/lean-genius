@@ -1940,9 +1940,19 @@ generalized rather than merely replayed.
      owner `b`, every defect edge has `(O_bD)_{xy}≤2` and
      `|BB(x,y)|=2-(O_bD)_{xy}`.  On the 48- and 16-vertex defect components,
      the restricted `O_b` blocks are respectively 10- and 2-regular and
-     commute with the 7-regular defect blocks.  A contradiction would now
-     follow from showing that this commuting block system cannot keep all its
-     defect-edge product entries at most two; no such theorem is yet proved.
+     commute with the 7-regular defect blocks.  Those bare conditions are
+     **insufficient**: `D=K_{8,8}` minus a matching together with two
+     synchronized 8-cycles gives a 16-vertex 7/2-regular commuting,
+     edge-disjoint model with all `O_bD` defect-edge entries one or two; a
+     connected 48-vertex circulant 7/10-regular model exists as well if the
+     owner-Gram positivity is omitted.  The honest missing input is the
+     PROVEN size-two selector line-graph realization
+     (`Erdos85BinarySquareSizeTwoOwnerLineGraph`): globally `O_b` is the line
+     graph of the 8-regular selector-complement graph on the 16 `b`-centers,
+     whose 64 edges split by source component into a 6-regular 48-edge graph
+     and a 2-factor.  The residual `[6,2]` target must couple the transported
+     defect blocks to this line-graph edge partition; commute, degrees, and
+     the entry cap alone cannot close it.
      In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
