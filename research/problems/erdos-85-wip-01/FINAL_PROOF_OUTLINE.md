@@ -2039,6 +2039,22 @@ generalized rather than merely replayed.
      the missing leaf; the required decomposition must retain the chosen
      component's local contribution separately.
 
+     Stratum qualification: the global equality `=288` remains the correct
+     target in `[6,2]`, where there are exactly two defect components and
+     every multi-component triangle necessarily meets the selected size-two
+     component.  It is not the correct target in `[4,2,2]`, `[3,3,2]`, or
+     `[2,2,2,2]`.  The orientation plumbing toward the `[6,2]` equality is
+     now **PROVEN**: `card_rootedCyclicColoredPairs_self_eq_two_mul_localTriangleEdges`
+     identifies rooted ordered pairs with neighborhood-graph darts
+     (`827a09b67b`), and
+     `orderSixtyFour_allSixteen_tfComponent_sum_rootedCyclicPairs_eq_ninetySix`
+     gives the selected component's first-root count 96 (`4c10fb150a`).
+     `card_cyclicColoredTriples_eq_sum_rootedCyclicColoredPairs`
+     (`b3f2f27b60`) supplies the global root-fiber partition.  The remaining
+     `[6,2]` bookkeeping step is the cyclic factor three, yielding
+     `3·96=288` from the unique selected-component vertex in each cross
+     triangle.
+
      The corrected modular socket is now **PROVEN** (`dec2271326`).  If the
      global ordered mixed-ambient census is written `288 + 6A` and the
      ordered mixed-nonambient census is `6B`, then
