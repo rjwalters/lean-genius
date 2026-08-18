@@ -43,6 +43,10 @@ theorem orderSixtyFour_threeFive_twoOwner_exists_nonlocalRepeatedClosing
         (componentOwnerGraph G (secondOrderDefectGraph G) b)).card) :
     ∃ e f g : (secondOrderDefectGraph G).ConnectedComponent,
       ¬ (e = f ∧ f = g) ∧
+      852 ≤ (cyclicColoredTriplesInBlocks (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b) e f g).card ∧
       HasRepeatedClosingInBlock (secondOrderDefectGraph G)
         (componentOwnerGraph G (secondOrderDefectGraph G) a)
         (componentOwnerGraph G (secondOrderDefectGraph G) a)
@@ -64,7 +68,7 @@ theorem orderSixtyFour_threeFive_twoOwner_exists_nonlocalRepeatedClosing
     rcases he with he | he <;> rcases hf with hf | hf
     all_goals subst e; subst f
     all_goals simp [hma, hmb, hab, Ne.symm hab] at hedge ⊢ <;> omega
-  refine ⟨e, f, g, hnonlocal, ?_⟩
+  refine ⟨e, f, g, hnonlocal, by omega, ?_⟩
   apply exists_repeatedClosing_of_ownerEdge_card_lt_block_card
   omega
 
@@ -91,6 +95,10 @@ theorem orderSixtyFour_fourFour_twoOwner_exists_nonlocalRepeatedClosing
         (componentOwnerGraph G (secondOrderDefectGraph G) b)).card) :
     ∃ e f g : (secondOrderDefectGraph G).ConnectedComponent,
       ¬ (e = f ∧ f = g) ∧
+      1536 ≤ (cyclicColoredTriplesInBlocks (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b) e f g).card ∧
       HasRepeatedClosingInBlock (secondOrderDefectGraph G)
         (componentOwnerGraph G (secondOrderDefectGraph G) a)
         (componentOwnerGraph G (secondOrderDefectGraph G) a)
@@ -112,7 +120,7 @@ theorem orderSixtyFour_fourFour_twoOwner_exists_nonlocalRepeatedClosing
     rcases he with he | he <;> rcases hf with hf | hf
     all_goals subst e; subst f
     all_goals simp [hma, hmb, hab, Ne.symm hab] at hedge ⊢ <;> omega
-  refine ⟨e, f, g, hnonlocal, ?_⟩
+  refine ⟨e, f, g, hnonlocal, by omega, ?_⟩
   apply exists_repeatedClosing_of_ownerEdge_card_lt_block_card
   omega
 
