@@ -1,7 +1,7 @@
 import Proofs.Erdos85BinarySquareTwoOwnerDefectEdgeResidue
 import Proofs.Erdos85BinarySquareMixedOwnerRectangleRouting
 import Proofs.Erdos85RoutingOwnerRainbowHexagon
-import Proofs.Erdos85BinarySquareCenterGridComplement
+import Proofs.Erdos85BinarySquareCenterGridOperator
 
 /-! # Same-owner middles inject into the center grid -/
 
@@ -225,6 +225,94 @@ theorem sameOwner_coloredTwoStepMiddles_card_add_defectCenterPairs
         componentNeighborFinset G (secondOrderDefectGraph G) owner y)
       (fun p : V × V => ¬ (secondOrderDefectGraph G).Adj p.1 p.2))
 
+/-- With exactly two defect components, their two diagonal selector blocks
+partition every defect cell of the ambient cross-root center grid. -/
+theorem twoComponents_union_sameOwnerDefectCenterPairs_eq_crossRoot
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent) (hab : a ≠ b)
+    (x y : V) :
+    sameOwnerDefectCenterPairs G a x y ∪
+        sameOwnerDefectCenterPairs G b x y =
+      crossRootDefectCenterPairs G x y := by
+  classical
+  let D := secondOrderDefectGraph G
+  have hexhaust (c : D.ConnectedComponent) : c = a ∨ c = b := by
+    by_contra hc
+    simp only [not_or] at hc
+    have hsub : ({a, b, c} : Finset D.ConnectedComponent) ⊆ Finset.univ :=
+      Finset.subset_univ _
+    have hle := Finset.card_le_card hsub
+    have hthree : ({a, b, c} : Finset D.ConnectedComponent).card = 3 := by
+      rw [Finset.card_insert_of_notMem (by
+          simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+          exact ⟨hab, Ne.symm hc.1⟩),
+        Finset.card_insert_of_notMem (by
+          simpa only [Finset.mem_singleton] using Ne.symm hc.2)]
+      rfl
+    rw [hthree, Finset.card_univ, hcount] at hle
+    omega
+  ext p
+  constructor
+  · intro hp
+    rw [Finset.mem_union] at hp
+    rcases hp with hp | hp
+    · have hp' := Finset.mem_filter.mp hp
+      have hprod := Finset.mem_product.mp hp'.1
+      apply Finset.mem_filter.mpr
+      refine ⟨?_, hp'.2⟩
+      rw [crossRootCenterGrid, Finset.mem_product]
+      exact ⟨(Finset.mem_filter.mp hprod.1).1,
+        (Finset.mem_filter.mp hprod.2).1⟩
+    · have hp' := Finset.mem_filter.mp hp
+      have hprod := Finset.mem_product.mp hp'.1
+      apply Finset.mem_filter.mpr
+      refine ⟨?_, hp'.2⟩
+      rw [crossRootCenterGrid, Finset.mem_product]
+      exact ⟨(Finset.mem_filter.mp hprod.1).1,
+        (Finset.mem_filter.mp hprod.2).1⟩
+  · intro hp
+    have hp' := Finset.mem_filter.mp hp
+    have hgrid := Finset.mem_product.mp hp'.1
+    have hcomp : D.connectedComponentMk p.2 = D.connectedComponentMk p.1 :=
+      ConnectedComponent.connectedComponentMk_eq_of_adj hp'.2.symm
+    rcases hexhaust (D.connectedComponentMk p.1) with ha | hb
+    · apply Finset.mem_union_left
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_product.mpr ⟨?_, ?_⟩, hp'.2⟩
+      · exact Finset.mem_filter.mpr ⟨hgrid.1, ha⟩
+      · exact Finset.mem_filter.mpr ⟨hgrid.2, hcomp.trans ha⟩
+    · apply Finset.mem_union_right
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_product.mpr ⟨?_, ?_⟩, hp'.2⟩
+      · exact Finset.mem_filter.mpr ⟨hgrid.1, hb⟩
+      · exact Finset.mem_filter.mpr ⟨hgrid.2, hcomp.trans hb⟩
+
+/-- Selector defect blocks belonging to distinct components are disjoint. -/
+theorem sameOwnerDefectCenterPairs_disjoint_of_owner_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    {a b : (secondOrderDefectGraph G).ConnectedComponent} (hab : a ≠ b)
+    (x y : V) :
+    Disjoint (sameOwnerDefectCenterPairs G a x y)
+      (sameOwnerDefectCenterPairs G b x y) := by
+  rw [Finset.disjoint_left]
+  intro p hpa hpb
+  have hpaProd := Finset.mem_product.mp (Finset.mem_filter.mp hpa).1
+  have hpbProd := Finset.mem_product.mp (Finset.mem_filter.mp hpb).1
+  have hpaComp := (Finset.mem_filter.mp hpaProd.1).2
+  have hpbComp := (Finset.mem_filter.mp hpbProd.1).2
+  exact hab (hpaComp.symm.trans hpbComp)
+
 /-- At a defect edge, same-owner middles inject into the product of the two
 owner selectors. -/
 theorem sameOwner_coloredTwoStepMiddles_card_le_centerGrid
@@ -366,6 +454,151 @@ theorem binarySquare_regular_sameOwner_defectEdge_card_add_defectCells_eq_sq
   simpa [hsel x, hsel y] using
     (sameOwner_coloredTwoStepMiddles_card_add_defectCenterPairs
       G hfree owner hxyD)
+
+/-- Exact two-owner center-grid ledger at a defect edge.  The same-owner
+middle counts plus all defect cells between the ambient root neighborhoods
+equal the sum of the two diagonal selector-grid areas. -/
+theorem binarySquare_regular_twoComponents_defectEdge_exact_centerGrid_ledger
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent) (hab : a ≠ b)
+    {m_a m_b : ℕ} (ha : a.supp.ncard = q * m_a)
+    (hb : b.supp.ncard = q * m_b)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    (coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a) x y).card +
+    (coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b) x y).card +
+      (crossRootDefectCenterPairs G x y).card =
+        m_a * m_a + m_b * m_b := by
+  have haExact :=
+    binarySquare_regular_sameOwner_defectEdge_card_add_defectCells_eq_sq
+      G hfree hq hreg hcard a ha hxyD
+  have hbExact :=
+    binarySquare_regular_sameOwner_defectEdge_card_add_defectCells_eq_sq
+      G hfree hq hreg hcard b hb hxyD
+  have hunion := twoComponents_union_sameOwnerDefectCenterPairs_eq_crossRoot
+    G hcount a b hab x y
+  have hdis := sameOwnerDefectCenterPairs_disjoint_of_owner_ne
+    G hab x y
+  have hdefect :
+      (sameOwnerDefectCenterPairs G a x y).card +
+          (sameOwnerDefectCenterPairs G b x y).card =
+        (crossRootDefectCenterPairs G x y).card := by
+    rw [← Finset.card_union_of_disjoint hdis, hunion]
+  omega
+
+/-- Operator form of the exact two-owner ledger.  Consequently the total
+same-owner closing count on a defect edge depends only on its defect
+codegree (the corresponding entry of `D²`). -/
+theorem binarySquare_regular_twoComponents_defectEdge_sameOwner_add_codegree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q r : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hDreg : ∀ x, (secondOrderDefectGraph G).degree x = r)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent) (hab : a ≠ b)
+    {m_a m_b : ℕ} (ha : a.supp.ncard = q * m_a)
+    (hb : b.supp.ncard = q * m_b)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    ((coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a) x y).card : ℤ) +
+    ((coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b) x y).card : ℤ) +
+    (q - 1 : ℤ) + r -
+      ((secondOrderDefectGraph G).adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) x y =
+      (m_a * m_a + m_b * m_b : ℕ) := by
+  have hledger :=
+    binarySquare_regular_twoComponents_defectEdge_exact_centerGrid_ledger
+      G hfree hq hreg hcard hcount a b hab ha hb hxyD
+  have hcross : ((crossRootDefectCenterPairs G x y).card : ℤ) =
+      (q - 1 : ℤ) + r -
+        ((secondOrderDefectGraph G).adjMatrix ℤ *
+          (secondOrderDefectGraph G).adjMatrix ℤ) x y := by
+    rw [← adj_defect_adj_apply_eq_card_crossRootDefectCenterPairs G x y,
+      adj_defect_adj_apply_eq_degree_terms_sub_defect_sq
+        G hfree hreg hDreg x y]
+    simp [SimpleGraph.adjMatrix_apply, hxyD]
+  have hledgerZ :
+      ((coloredTwoStepMiddles
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a) x y).card : ℤ) +
+      ((coloredTwoStepMiddles
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b) x y).card : ℤ) +
+      ((crossRootDefectCenterPairs G x y).card : ℤ) =
+        (m_a * m_a + m_b * m_b : ℕ) := by
+    exact_mod_cast hledger
+  rw [hcross] at hledgerZ
+  omega
+
+/-- Intrinsic q-generic form: on every defect edge, the total same-owner
+closing count plus `2(q-1)` minus the defect codegree is constant. -/
+theorem binarySquare_regular_twoComponents_defectEdge_sameOwner_codegree_constant
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent) (hab : a ≠ b)
+    {m_a m_b : ℕ} (ha : a.supp.ncard = q * m_a)
+    (hb : b.supp.ncard = q * m_b)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    ((coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a) x y).card : ℤ) +
+    ((coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b) x y).card : ℤ) +
+    2 * (q - 1 : ℤ) -
+      ((secondOrderDefectGraph G).adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) x y =
+      (m_a * m_a + m_b * m_b : ℕ) := by
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by
+        rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = q - 1 := by
+    intro z
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus z
+    change (secondOrderDefectGraph G).degree z = (q - 3) + 2 at h
+    omega
+  have h :=
+    binarySquare_regular_twoComponents_defectEdge_sameOwner_add_codegree
+      G hfree hq hreg hcard hDreg hcount a b hab ha hb hxyD
+  norm_num at h ⊢
+  omega
 
 /-- The two-owner defect-edge sandwich: certified same-owner pressure is
 bounded above by the sum of the two center-grid capacities. -/
