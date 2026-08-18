@@ -1859,8 +1859,23 @@ generalized rather than merely replayed.
      modulo semantic replay.  **`GAP A-REG-STRATA` (q=8).**  The PROVEN
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
-     graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.  No node of this
-     outline addresses them: `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
+     graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.
+     The first four remain **GAP** with no candidate terminal.  The last two
+     are now **AT-64-ONLY, PARTIAL**: partition-agnostic mixed-owner trace and
+     fiber bounds give exact cross-component budgets (`≥ 5888` for `[4,2,2]`,
+     `≥ 6816` for `[3,3,2]`); the exact 27-block decomposition then selects a
+     nonlocal block of respectively at least 219 or 253 triangles.  Its first
+     owner-edge space has size at most respectively 192 or 144, so a generic
+     pigeonhole theorem produces two distinct closings of one fixed owner
+     edge (`orderSixtyFour_regular_threeComponents_repeatedClosing`,
+     `4860af978f`).  The graph-facing adapter (`fc451d83df`, `e781dba602`)
+     exposes an ambient owner fork and classifies its component pattern.  A
+     rainbow pattern reaches canonical cross-center separation; the precise
+     residual **GAP** is a two-equal pattern, where only one fork side is
+     cross-component but C4 separation may select the within-component side.
+     Thus these strata have a uniform algebraic pressure reduction, not yet a
+     contradiction.  In contrast,
+     `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
      and the whole H16/owner-factor/λ6/τ-ledger machinery are conditional on
      every component having size 16, and nothing derives that hypothesis.  The
      τ trace lemma is partition-agnostic (`tr(A|E_μ) = Σ_c tr(A[c] Π_μ(c))`
@@ -1869,6 +1884,24 @@ generalized rather than merely replayed.
      not yet exist outside `m_c=2`.  Even a complete kill of `[2,2,2,2]`
      therefore does not close A-REG at `q=8`, let alone for arbitrary `k`;
      certificate/semantic assembly remains paused.
+
+13c. **`AXIOM A-REG-EXTENSION` — uniform replacement for finite component
+     enumerations.**  The partition law, mixed cubic-trace census, arbitrary
+     component-size owner-fiber bounds, exact owner-block equitability,
+     component-pattern decomposition, and repeated-closing pigeonhole are
+     q-generic (their q=8 consumers only instantiate numerical thresholds).
+     The H16 four-factor classifications and the 11 assembly targets are
+     finite enumerations and do not extend.  A precise uniform replacement is:
+     for every binary `q = 2^k ≥ 8`, every partition `m : C → ℕ` with
+     `m_c ≥ 2` and `Σ_c m_c = q`, the owner graphs of a square-order regular
+     C4-free candidate cannot realize all mixed cubic traces prescribed by
+     the defect-component projectors; equivalently, some nonlocal
+     owner-colored triangle block contains a repeated closing whose ambient
+     fork contradicts the component routing equations.  This statement is an
+     **AXIOM**, not a consequence of the q=8 census.  The proven `[4,2,2]` and
+     `[3,3,2]` pressure route identifies its likely local terminal: separated
+     canonical centers on the cross-component side, including when the other
+     two vertex labels lie in one defect component.
 
 ### A5. Nonregular sectors
 
@@ -2414,7 +2447,10 @@ The shortest current proof tree is:
     └── no square-order tight core for q = 2^k
         ├── regular / parameterized nonregular split     [PROVEN]
         ├── regular-sector exclusion                    [AXIOM A-REG — the ONLY axiom of Branch A]
-        │   └── q=8: seven strata by defect partition   [GAP A-REG-STRATA: only [2,2,2,2] attacked]
+        │   ├── q=8: [2,2,2,2] finite census            [AT-64-ONLY, assembly GAP]
+        │   ├── q=8: [4,2,2], [3,3,2] pressure/fork     [AT-64-ONLY, two-equal fork GAP]
+        │   ├── q=8: [8], [6,2], [5,3], [4,4]          [GAP]
+        │   └── arbitrary q component obstruction       [AXIOM A-REG-EXTENSION]
         └── nonregular-sector exclusion                 [PROVEN, uniform parity theorem]
 ```
 
