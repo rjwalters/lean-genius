@@ -2039,6 +2039,14 @@ generalized rather than merely replayed.
      the missing leaf; the required decomposition must retain the chosen
      component's local contribution separately.
 
+     The corrected modular socket is now **PROVEN** (`dec2271326`).  If the
+     global ordered mixed-ambient census is written `288 + 6A` and the
+     ordered mixed-nonambient census is `6B`, then
+     `orderSixtyFour_mixedTriangleResidual_sum_sub_sixteen_dvd` gives
+     `32 ∣ (A+B-16)`.  Thus the exact remaining combinatorial target is to
+     identify and bound the *sum* of the residual ambient contribution `A`
+     and nonambient contribution `B`; setting `A=0` is not justified.
+
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
      a contradiction consumer, while `[4,2,2]` additionally retains one
