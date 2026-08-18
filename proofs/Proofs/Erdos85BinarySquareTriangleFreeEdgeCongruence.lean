@@ -147,6 +147,78 @@ theorem binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_reachabl
       (fun u => (triangleFreeEdgeGraph G).degree u.1 = 2)
       hstep hxy.symm
 
+/-- In an all-size-two partition, the triangle-free graph is a disjoint union
+of cycles on precisely the triangle-free-degree-two vertices.  Consequently
+its edge count equals the order of that colored sector. -/
+theorem binarySquare_regular_allSizeTwo_triangleFreeEdge_card_eq_colorOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hqEven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = q * 2) :
+    (triangleFreeEdgeGraph G).edgeFinset.card =
+      ((Finset.univ : Finset V).filter fun x =>
+        (triangleFreeEdgeGraph G).degree x = 2).card := by
+  let T := triangleFreeEdgeGraph G
+  let C := ((Finset.univ : Finset V).filter fun x => T.degree x = 2).card
+  have hdegree : ∀ x : V, T.degree x = 0 ∨ T.degree x = 2 := by
+    intro x
+    let c := (secondOrderDefectGraph G).connectedComponentMk x
+    exact binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_zero_or_two
+      G hfree hq hqEven hreg hcard c (hall c)
+        ⟨x, ConnectedComponent.connectedComponentMk_mem⟩
+  have hsum : (∑ x : V, T.degree x) = 2 * C := by
+    calc
+      (∑ x : V, T.degree x) =
+          ∑ x : V, if T.degree x = 2 then 2 else 0 := by
+        apply Finset.sum_congr rfl
+        intro x _
+        rcases hdegree x with hx | hx <;> simp [hx]
+      _ = 2 * C := by
+        simp only [C]
+        rw [← Finset.sum_filter]
+        simp [Nat.mul_comm]
+  have hhand := T.sum_degrees_eq_twice_card_edges
+  change T.edgeFinset.card = C
+  omega
+
+/-- Binary exact form: in an all-size-two partition, the total length of the
+all-TF internal cycles is `2^(3k-1) - 3 t(G)`. -/
+theorem binarySquare_regular_allSizeTwo_colorOrder_eq_pow_sub_three_mul_triangles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hk : 2 ≤ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcard : Fintype.card V = (2 ^ k) * (2 ^ k))
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = (2 ^ k) * 2) :
+    (((Finset.univ : Finset V).filter fun x =>
+        (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) =
+      (2 : ℤ) ^ (3 * k - 1) -
+        3 * (adjacencyTriangleMinorFinset G).card := by
+  rw [← binarySquare_regular_allSizeTwo_triangleFreeEdge_card_eq_colorOrder
+    G hfree (q := 2 ^ k) (by
+      have : 4 ≤ 2 ^ k := by
+        calc
+          4 = 2 ^ 2 := by norm_num
+          _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk
+      omega)
+    (by rw [Nat.even_pow]; exact ⟨even_two, by omega⟩)
+    hreg hcard hall]
+  exact
+    binarySquare_regular_triangleFreeEdge_card_eq_pow_sub_three_mul_triangles
+      G hfree (by omega) hreg hcard
+
 /-- In an all-size-two defect partition at binary square order, some
 component contains a vertex of triangle-free degree two.  Thus the uniform
 nonempty-edge theorem seeds an all-triangle-free internal cycle in one of the
@@ -249,6 +321,10 @@ end Erdos85
   Erdos85.binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty
 #print axioms
   Erdos85.binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_reachable
+#print axioms
+  Erdos85.binarySquare_regular_allSizeTwo_triangleFreeEdge_card_eq_colorOrder
+#print axioms
+  Erdos85.binarySquare_regular_allSizeTwo_colorOrder_eq_pow_sub_three_mul_triangles
 #print axioms
   Erdos85.binarySquare_regular_allSizeTwo_exists_triangleFreeDegreeTwo
 #print axioms
