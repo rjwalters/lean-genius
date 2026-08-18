@@ -1,5 +1,6 @@
 import Proofs.Erdos85OutsideCrossEigenTransport
 import Proofs.Erdos85AdjacencyDefectEigenvector
+import Proofs.Erdos85RealBottomEigenvalueBipartite
 
 /-!
 # Graph-facing spectral dichotomy for the order-64 outside block
@@ -153,6 +154,66 @@ theorem orderSixtyFour_seven_components_outside_nonprincipal_spectral_dichotomy
   have hz := congrFun hzero ⟨x, hx⟩
   simpa [Matrix.mulVec, Jsq] using hz
 
+/-- If the exterior-pair graph is connected, the residual side of the
+nonprincipal spectral dichotomy has the concrete structural consequence that
+the exterior-pair graph is bipartite. -/
+theorem orderSixtyFour_seven_components_outside_transport_or_pairBipartite
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 7) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16 ∧
+      let p : Fin 64 → Prop := fun x ↦ x ∈ c.supp
+      let q : Set (Fin 64) := {x | ¬p x}
+      let H := (G.induce c.supp).adjMatrix ℂ
+      let B := (G.adjMatrix ℂ).toBlock p (fun x ↦ x ∈ q)
+      let C := (G.induce q).adjMatrix ℂ
+      let Rg := exteriorPairGraph G c.supp
+      Rg.Connected →
+      ∀ (v : c.supp → ℂ) (lambda : ℂ),
+        v ≠ 0 → lambda ≠ 2 → H.mulVec v = lambda • v →
+        (B.transpose.mulVec v ≠ 0 ∧
+          C.mulVec (B.transpose.mulVec v) =
+            (-lambda) • B.transpose.mulVec v) ∨ Rg.IsBipartite := by
+  classical
+  obtain ⟨c, hc, hdich⟩ :=
+    orderSixtyFour_seven_components_outside_nonprincipal_spectral_dichotomy
+      G hfree hmin hcover hcount
+  obtain ⟨d, hd, _label, _hqcard, _htwo, _hinj, _himage,
+      hdRreg, _hRedges, _hCreg, _hC4, _hcross⟩ :=
+    orderSixtyFour_seven_components_outside_feasibility
+      G hfree hmin hcover hcount
+  obtain ⟨base, _hbase, hsmall⟩ :=
+    orderSixtyFour_seven_defect_components_partition
+      G hfree hmin hcover hcount
+  have heq_of_16 : ∀ {a : (secondOrderDefectGraph G).ConnectedComponent},
+      a.supp.ncard = 16 → a = base := by
+    intro a ha
+    by_contra hne
+    have := hsmall a hne
+    omega
+  have hcd : c = d := (heq_of_16 hc).trans (heq_of_16 hd).symm
+  subst d
+  refine ⟨c, hc, ?_⟩
+  dsimp only at hdich ⊢
+  intro hRconn v lambda hvne hlambda hHv
+  rcases hdich v lambda hlambda hHv with htransport | hbottom
+  · exact Or.inl htransport
+  · right
+    apply isBipartite_of_complex_negativeDegree_eigenvector
+      (exteriorPairGraph G c.supp) hRconn 6 hdRreg v hvne
+    intro x
+    rw [← SimpleGraph.adjMatrix_mulVec_apply]
+    have hx := congrFun hbottom x
+    simpa [Pi.smul_apply] using hx
+
 end
 
 
@@ -160,3 +221,4 @@ end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_seven_components_outside_centered_spectral_dichotomy
 #print axioms Erdos85.orderSixtyFour_seven_components_outside_nonprincipal_spectral_dichotomy
+#print axioms Erdos85.orderSixtyFour_seven_components_outside_transport_or_pairBipartite
