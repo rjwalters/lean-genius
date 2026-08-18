@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareRegularParity
+import Proofs.Erdos85BinarySquareSizeTwoSelfSourceLayer
 
 /-! # A non-bipartite calibration for the `[6,2]` operator data
 
@@ -28,6 +29,19 @@ def sixTwoCalibrationDefect : SimpleGraph (Fin 16) where
     fin16CyclicDiff x y = 3 ∨ fin16CyclicDiff x y = 8 ∨
     fin16CyclicDiff x y = 13 ∨ fin16CyclicDiff x y = 14 ∨
     fin16CyclicDiff x y = 15
+  symm := by
+    constructor
+    intro x y
+    fin_cases x <;> fin_cases y <;> simp_all [fin16CyclicDiff]
+  loopless := by
+    constructor
+    intro x
+    fin_cases x <;> simp_all [fin16CyclicDiff]
+
+/-- Internal ambient two-factor calibration: connection steps `±2`.  It is
+the disjoint union of two eight-cycles. -/
+def sixTwoCalibrationInternal : SimpleGraph (Fin 16) where
+  Adj x y := fin16CyclicDiff x y = 2 ∨ fin16CyclicDiff x y = 14
   symm := by
     constructor
     intro x y
@@ -69,6 +83,10 @@ instance : DecidableRel sixTwoCalibrationDefect.Adj := by
   intro x y
   change Decidable (_ ∨ _ ∨ _ ∨ _ ∨ _ ∨ _ ∨ _)
   infer_instance
+instance : DecidableRel sixTwoCalibrationInternal.Adj := by
+  intro x y
+  change Decidable (_ ∨ _)
+  infer_instance
 instance : DecidableRel sixTwoCalibrationSmallOwner.Adj := by
   intro x y
   change Decidable (_ ∨ _)
@@ -77,15 +95,41 @@ instance : DecidableRel sixTwoCalibrationLargeOwner.Adj := by
   intro x y
   change Decidable (_ ∨ _ ∨ _ ∨ _ ∨ _ ∨ _)
   infer_instance
+instance : DecidableRel
+    (distinctCommonNeighborGraph sixTwoCalibrationInternal).Adj := by
+  intro x y
+  change Decidable (x ≠ y ∧ ∃ z : Fin 16,
+    sixTwoCalibrationInternal.Adj z x ∧
+      sixTwoCalibrationInternal.Adj z y)
+  infer_instance
 
 theorem sixTwoCalibrationDefect_degree : ∀ x : Fin 16,
     sixTwoCalibrationDefect.degree x = 7 := by decide
+
+theorem sixTwoCalibrationInternal_degree : ∀ x : Fin 16,
+    sixTwoCalibrationInternal.degree x = 2 := by decide
 
 theorem sixTwoCalibrationSmallOwner_degree : ∀ x : Fin 16,
     sixTwoCalibrationSmallOwner.degree x = 2 := by decide
 
 theorem sixTwoCalibrationLargeOwner_degree : ∀ x : Fin 16,
     sixTwoCalibrationLargeOwner.degree x = 6 := by decide
+
+/-- Every internal-factor edge is a defect edge in this calibration. -/
+theorem sixTwoCalibrationInternal_le_defect :
+    sixTwoCalibrationInternal ≤ sixTwoCalibrationDefect := by
+  intro x y hxy
+  fin_cases x <;> fin_cases y <;> simp_all [sixTwoCalibrationInternal,
+    sixTwoCalibrationDefect, fin16CyclicDiff]
+
+/-- The small owner factor is exactly the distinct-common-neighbor graph of
+the internal two-factor.  Thus the calibration survives the local self-source
+common-neighbor/line-graph interface, not merely the operator equations. -/
+theorem sixTwoCalibrationSmallOwner_eq_distinctCommonNeighborGraph_internal :
+    sixTwoCalibrationSmallOwner =
+      distinctCommonNeighborGraph sixTwoCalibrationInternal := by
+  ext x y
+  fin_cases x <;> fin_cases y <;> decide
 
 /-- The three graphs partition every unordered pair. -/
 theorem sixTwoCalibration_exact_edge_partition (x y : Fin 16) (hxy : x ≠ y) :
@@ -155,8 +199,12 @@ theorem sixTwoCalibration_adjMatrices_commute :
   · exact hFB i j
 
 #print axioms Erdos85.sixTwoCalibrationDefect_degree
+#print axioms Erdos85.sixTwoCalibrationInternal_degree
 #print axioms Erdos85.sixTwoCalibrationSmallOwner_degree
 #print axioms Erdos85.sixTwoCalibrationLargeOwner_degree
+#print axioms Erdos85.sixTwoCalibrationInternal_le_defect
+#print axioms
+  Erdos85.sixTwoCalibrationSmallOwner_eq_distinctCommonNeighborGraph_internal
 #print axioms Erdos85.sixTwoCalibration_exact_edge_partition
 #print axioms Erdos85.sixTwoCalibrationDefect_connected
 #print axioms Erdos85.sixTwoCalibrationDefect_not_bipartite
