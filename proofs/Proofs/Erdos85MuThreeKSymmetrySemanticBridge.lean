@@ -15,10 +15,84 @@ theorem image_finVal_mem_mu3KRowChoices
     (row : Finset (Fin 8)) (hcard : row.card = 2) :
     row.image Fin.val ∈ mu3KRowChoices := by
   obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
-  fin_cases a <;> fin_cases b <;> simp_all [mu3KRowChoices]
+  fin_cases a <;> fin_cases b <;> simp_all [mu3KRowChoices] <;> decide
+
+def mu3KRowsOfRelation (K : Fin 8 → Fin 8 → Prop) [DecidableRel K] :
+    Mu3KRows :=
+  List.ofFn fun x : Fin 8 =>
+    (Finset.range 8).filter fun y => K x (Fin.ofNat 8 y)
+
+theorem mu3KRowsOfRelation_length
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K] :
+    (mu3KRowsOfRelation K).length = 8 := by
+  simp [mu3KRowsOfRelation]
+
+theorem mu3KRowsOfRelation_getD
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (x : Nat) (hx : x < 8) :
+    (mu3KRowsOfRelation K).getD x ∅ =
+      ((Finset.range 8).filter fun y => K ⟨x, hx⟩ (Fin.ofNat 8 y)) := by
+  interval_cases x <;> simp [mu3KRowsOfRelation]
+
+theorem mu3KRowsOfRelation_getD_eq_image
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K] (x : Fin 8) :
+    (mu3KRowsOfRelation K).getD x.val ∅ =
+      ((Finset.univ.filter fun y => K x y).image Fin.val) := by
+  rw [mu3KRowsOfRelation_getD K x.val x.isLt]
+  ext y
+  constructor
+  · intro hy
+    obtain ⟨hy8, hK⟩ := Finset.mem_filter.mp hy
+    have hylt : y < 8 := Finset.mem_range.mp hy8
+    let z : Fin 8 := ⟨y, hylt⟩
+    apply Finset.mem_image.mpr
+    refine ⟨z, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩, rfl⟩
+    have hof : Fin.ofNat 8 y = z := by apply Fin.ext; simp [z, hylt]
+    rwa [hof] at hK
+  · intro hy
+    obtain ⟨z, hz, hval⟩ := Finset.mem_image.mp hy
+    have hy8 : y < 8 := by
+      rw [← hval]
+      exact z.isLt
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_range.mpr hy8, ?_⟩
+    have hof : Fin.ofNat 8 z.val = z := by apply Fin.ext; simp
+    rw [← hval, hof]
+    exact (Finset.mem_filter.mp hz).2
+
+@[simp] theorem mem_image_finVal_filter_iff
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K] (x y : Fin 8) :
+    y.val ∈ ((Finset.univ.filter fun z => K x z).image Fin.val) ↔ K x y := by
+  constructor
+  · intro h
+    obtain ⟨z, hz, hval⟩ := Finset.mem_image.mp h
+    have hzy : z = y := Fin.ext hval
+    simpa [hzy] using (Finset.mem_filter.mp hz).2
+  · intro h
+    exact Finset.mem_image.mpr ⟨y, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩, rfl⟩
+
+theorem mu3KRowsOfRelation_row_mem_choices
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hrow : ∀ x,
+      ((Finset.univ : Finset (Fin 8)).filter fun y => K x y).card = 2)
+    (x : Fin 8) :
+    (mu3KRowsOfRelation K).getD x.val ∅ ∈ mu3KRowChoices := by
+  rw [mu3KRowsOfRelation_getD_eq_image K x]
+  exact image_finVal_mem_mu3KRowChoices _ (hrow x)
 
 def mu3KColumnCount (rows : Mu3KRows) (y : Nat) : Nat :=
   (rows.map fun row => if y ∈ row then 1 else 0).sum
+
+theorem mu3KColumnCount_rowsOfRelation
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K] (y : Fin 8) :
+    mu3KColumnCount (mu3KRowsOfRelation K) y.val =
+      ((Finset.univ : Finset (Fin 8)).filter fun x => K x y).card := by
+  have hof (z : Fin 8) : Fin.ofNat 8 z.val = z := by
+    apply Fin.ext
+    simp
+  rw [Finset.card_filter]
+  simp [-Finset.sum_boole, mu3KColumnCount, mu3KRowsOfRelation,
+    Fin.sum_univ_succ, hof] <;> rfl
 
 theorem mu3KAddColumns_getD (counts : List Nat) (row : Mu3KRow)
     (hlen : counts.length = 8) (y : Nat) (hy : y < 8) :
@@ -31,6 +105,21 @@ theorem mu3KAddColumns_getD (counts : List Nat) (row : Mu3KRow)
 theorem mu3KAddColumns_length (counts : List Nat) (row : Mu3KRow) :
     (mu3KAddColumns counts row).length = 8 := by
   simp [mu3KAddColumns]
+
+theorem mu3KFoldColumns_length (rows : Mu3KRows) (counts : List Nat)
+    (hlen : counts.length = 8) :
+    (rows.foldl mu3KAddColumns counts).length = 8 := by
+  induction rows generalizing counts with
+  | nil => simpa using hlen
+  | cons row rows ih =>
+      rw [List.foldl_cons]
+      exact ih (mu3KAddColumns counts row)
+        (mu3KAddColumns_length counts row)
+
+theorem mu3KColumnCounts_length (rows : Mu3KRows) :
+    (mu3KColumnCounts rows).length = 8 := by
+  unfold mu3KColumnCounts
+  exact mu3KFoldColumns_length rows (List.replicate 8 0) (by simp)
 
 theorem mu3KFoldColumns_getD (rows : Mu3KRows) (counts : List Nat)
     (hlen : counts.length = 8) (y : Nat) (hy : y < 8) :
@@ -56,6 +145,35 @@ theorem mu3KColumnCounts_getD (rows : Mu3KRows) (y : Nat) (hy : y < 8) :
   rw [mu3KFoldColumns_getD rows (List.replicate 8 0) (by simp) y hy]
   rw [List.getD_eq_getElem?_getD, List.getElem?_replicate]
   simp [hy]
+
+theorem mu3KColumnCounts_rowsOfRelation_eq_two
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hcolumn : ∀ y,
+      ((Finset.univ : Finset (Fin 8)).filter fun x => K x y).card = 2) :
+    mu3KColumnCounts (mu3KRowsOfRelation K) = List.replicate 8 2 := by
+  apply List.ext_getElem
+  · rw [mu3KColumnCounts_length]
+    simp
+  · intro i hiLeft hiRight
+    have hi8 : i < 8 := by
+      rw [mu3KColumnCounts_length] at hiLeft
+      exact hiLeft
+    have hleft :
+        (mu3KColumnCounts (mu3KRowsOfRelation K))[i] =
+          (mu3KColumnCounts (mu3KRowsOfRelation K)).getD i 0 := by
+      rw [List.getD_eq_getElem?_getD,
+        List.getElem?_eq_getElem (by simpa using hiLeft)]
+      rfl
+    let y : Fin 8 := ⟨i, hi8⟩
+    calc
+      (mu3KColumnCounts (mu3KRowsOfRelation K))[i] =
+          (mu3KColumnCounts (mu3KRowsOfRelation K)).getD i 0 := hleft
+      _ = mu3KColumnCount (mu3KRowsOfRelation K) i :=
+        mu3KColumnCounts_getD _ i hi8
+      _ = ((Finset.univ : Finset (Fin 8)).filter fun x => K x y).card := by
+        exact mu3KColumnCount_rowsOfRelation K y
+      _ = 2 := hcolumn y
+      _ = (List.replicate 8 2)[i] := (List.getElem_replicate hiRight).symm
 
 theorem mu3KColumnCount_take_lt_two_of_full_eq_two
     (rows : Mu3KRows) (n y : Nat)
