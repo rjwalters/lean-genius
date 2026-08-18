@@ -1544,7 +1544,13 @@ generalized rather than merely replayed.
      `no_fourFactorization_tenSixT40`, `no_fourFactorization_tenSixT30`,
      `no_fourFactorization_fiveFiveThreeThreeT40`, and
      `no_fourFactorization_fiveFiveThreeThreeT30` exclude exactly those four
-     labeled defect matrices under the honest four-factor predicate.  GAP:
+     labeled defect matrices under the honest four-factor predicate.  The
+     graph-label consumer no longer needs to manipulate bit vectors:
+     `not_boolFourFactorization_tenSixT40`,
+     `not_boolFourFactorization_tenSixT30`, and the two corresponding
+     `fiveFiveThreeThree` theorems expose the contradiction directly for
+     Boolean relations once `matrixBV d` is identified with the appropriate
+     constant.  GAP:
      connect these concrete bit-vector representatives to the existing graph
      labeling/completeness classification.  Thus the finite UNSAT leaf is
      kernel checked, but the graph-level branch closure is not yet `PROVEN`.
