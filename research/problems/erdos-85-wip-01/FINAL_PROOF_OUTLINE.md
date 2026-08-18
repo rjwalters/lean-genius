@@ -2030,17 +2030,19 @@ generalized rather than merely replayed.
      `2` rows.  The overlap-two case is now saturated (**PROVEN**,
      `6e69af49ba`): if the two columns have identical `H`-neighborhoods, then
      for every source cell the six row transports biject onto the entire
-     six-cell target column.  The remaining issue there is compatibility as
-     the source varies.  The underlying geometry is exact (**PROVEN**,
+     six-cell target column.  **VACUOUS FOR GRAPH-REALIZABLE CODES:** this
+     saturation requires distinct twin `H`-columns, while the underlying
+     geometry is an `H` four-cycle (**PROVEN**,
      `3a7b814130`): distinct twin columns are the opposite column vertices of
      an isolated `K₂,₂`, with two common rows whose H-neighborhoods are
-     exactly those columns.  Thus this issue is monodromy around a concrete
-     `H` four-cycle, not an abstract twin-neighborhood case.  The
-     source-varying object is now exact (**PROVEN**, `f04ff14df7`): the
+     exactly those columns.  In the originating graph model an `H` four-cycle
+     is already a forbidden `G` four-cycle, so this branch contains no graph
+     instances.  The following source-varying statement remains a valid
+     theorem about the weaker abstract `MuThreeMixedGridCode`, but is not a
+     live proof-outline gap (**PROVEN**, `f04ff14df7`): the
      `6 × 6` table `(source cell, eligible row) ↦ target cell` is bijective in
      either coordinate when the other is fixed, hence is a Latin square of
-     order six.  Since such Latin squares exist, the remaining obstruction
-     must use compatibility with the row-dual table or the `K`-sector data.
+     order six.
      The row-dual monodromy law is now available (**PROVEN**, `5d24fb7521`):
      column transport between distinct row fibers, routed through distinct
      common eligible columns, also disagrees pointwise by C4-freeness.  Thus
@@ -2059,7 +2061,14 @@ generalized rather than merely replayed.
      coherence is **PROVEN** (`72fbcbe334`): after identifying the source
      fibers by row transport, swapping endpoint columns gives the conjugate
      inverse.  Hence unoriented rectangles carry a well-defined monodromy
-     cycle type up to inversion/conjugacy.
+     cycle type up to inversion/conjugacy.  For fixed endpoint columns the
+     algebra is now exact (**PROVEN**, `4941b36199`): if `T_a` is row transport
+     through `a`, then `M(a,a') = T_a · T_a'⁻¹`, and therefore
+     `M(a,a') · M(a',a'') = M(a,a'')`.  Thus the live H-empty rectangle
+     derangements form a coherent relative-transport groupoid; the remaining
+     task is to classify such six-point transport families subject to the
+     simultaneous `K`-sector constraints, rather than treating rectangle
+     permutations independently.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
