@@ -1987,6 +1987,13 @@ generalized rather than merely replayed.
      coincide, including the all-same block).  The new `[6,2]` **GAP** is this
      `e=g` residual and the downstream large-owner density terminal, not
      production of a block collision or arbitrary component-shape dispatch.
+     The residual is linked across orientations, not merely accompanied by an
+     unrelated second collision.  The q-free reversal theorem
+     `hasRepeatedClosingInBlock_reverse` swaps the two roots, hence
+     `orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals`
+     gives either the large-owner density fragment or one fork that is both
+     `A,A,B` on `e,f,e` and `A,B,A` on `f,e,e`.  The next local lemma may use
+     both views of the same four vertices and centers.
      Across the two-component strata, the obstruction is now routing
      saturation/contradiction, not a rectangular classification, finite
      census, or same-owner center lemma.  The last two

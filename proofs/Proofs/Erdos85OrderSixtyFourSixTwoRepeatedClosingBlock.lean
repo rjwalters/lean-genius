@@ -38,6 +38,26 @@ theorem card_cyclicColoredTriples_rotate
     · rcases p with ⟨x, z, y⟩
       rfl
 
+/-- Reverse the two roots of a repeated-closing fork.  The first owner color
+is unchanged, the other two owner colors and the first two component labels
+are swapped. -/
+theorem hasRepeatedClosingInBlock_reverse
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D A B C : SimpleGraph V) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    [DecidableRel A.Adj] [DecidableRel B.Adj] [DecidableRel C.Adj]
+    (e f g : D.ConnectedComponent)
+    (h : HasRepeatedClosingInBlock D A B C e f g) :
+    HasRepeatedClosingInBlock D A C B f e g := by
+  obtain ⟨x, y, z₁, z₂, hz, hx, hy, hz₁, hz₂,
+    hxy, hyz₁, hz₁x, hyz₂, hz₂x⟩ :=
+      (hasRepeatedClosingInBlock_iff_exists_ownerFork D A B C e f g).mp h
+  apply (hasRepeatedClosingInBlock_iff_exists_ownerFork D A C B f e g).mpr
+  exact ⟨y, x, z₁, z₂, hz, hy, hx, hz₁, hz₂,
+    (A.adj_comm y x).mpr hxy, (C.adj_comm x z₁).mpr hz₁x,
+    (B.adj_comm z₁ y).mpr hyz₁, (C.adj_comm x z₂).mpr hz₂x,
+    (B.adj_comm z₂ y).mpr hyz₂⟩
+
 /-- If a colored-triple census is more than twice the directed first-edge
 space and the defect graph has two components, then three triples share one
 first edge; two of their closing vertices share a defect component, producing
@@ -362,12 +382,51 @@ theorem orderSixtyFour_sixTwo_rootClosingSameComponent_or_largeOwnerDensity
           xs ub₁s ub₂s hubne' hub₁.2.2
             (by simpa [xs, ub₂s, hxy.1] using hub₂.2.2)
 
+/-- Link the residual to the once-rotated orientation using reversal of the
+same repeated-closing fork. -/
+theorem orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 2) (hmb : m b = 6) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m b ∨
+      ∃ e f,
+        HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+            (componentOwnerGraph G (secondOrderDefectGraph G) a)
+            (componentOwnerGraph G (secondOrderDefectGraph G) a)
+            (componentOwnerGraph G (secondOrderDefectGraph G) b) e f e ∧
+          HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+            (componentOwnerGraph G (secondOrderDefectGraph G) a)
+            (componentOwnerGraph G (secondOrderDefectGraph G) b)
+            (componentOwnerGraph G (secondOrderDefectGraph G) a) f e e := by
+  have h := orderSixtyFour_sixTwo_rootClosingSameComponent_or_largeOwnerDensity
+    G hfree hreg hcount m hm a b hab hma hmb
+  rcases h with ⟨e, f, hr⟩ | hd
+  · exact Or.inr ⟨e, f, hr,
+      hasRepeatedClosingInBlock_reverse
+        (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b) e f e hr⟩
+  · exact Or.inl hd
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.card_cyclicColoredTriples_rotate
+#print axioms Erdos85.hasRepeatedClosingInBlock_reverse
 #print axioms Erdos85.exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_repeatedClosingInBlock
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks
 #print axioms Erdos85.orderSixtyFour_sixTwo_rootClosingSameComponent_or_largeOwnerDensity
+#print axioms Erdos85.orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals
