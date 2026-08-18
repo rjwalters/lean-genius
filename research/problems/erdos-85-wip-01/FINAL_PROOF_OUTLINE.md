@@ -731,6 +731,16 @@ generalized rather than merely replayed.
      stratum; only the mixed `C8+C8` and `(triangle-bearing C10,
      triangle-free C6)` orientations survive this shape-level count.
 
+     The surviving mixed `C8+C8` hole relation is rigid, not a family of
+     cases.  The q-generic finite lemma
+     `relation_eq_compl_of_disjoint_twoRegular_on_right_card_four` is
+     `PROVEN`: on a four-element shore, two degree-two relation fibers that
+     are disjoint have to be exact complements.  Applied to the
+     triangle-bearing `4×4` block, where the `K` holes avoid the `H` edges,
+     this gives `K(x,y) ↔ ¬H(x,y)`.  Together with `K=H` on the
+     triangle-free `C8` block, the mixed sector therefore has one fixed hole
+     model; there is no residual two-factor enumeration at this shape.
+
      In the all-triangle-free `[2,2,2,2]` cell, the `C10+C6` fiber-margin
      terminal is now `PROVEN` without SAT or `native_decide`.
      `false_of_tenSix_columnMargins_of_fiberStripCounts` assumes precisely
