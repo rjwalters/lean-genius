@@ -49,6 +49,61 @@ def Mu3KCandidateSlot.rows (slot : Mu3KCandidateSlot) : Mu3KRows :=
   (mu3KSectorEnumeration slot.sector.HRows slot.sector.TRows).getD
     slot.position []
 
+theorem List.getD_mem_of_lt {α : Type*} (l : List α) (fallback : α)
+    (n : Nat) (hn : n < l.length) : l.getD n fallback ∈ l := by
+  rw [List.getD_eq_getElem?_getD, List.getElem?_eq_getElem hn]
+  exact l.getElem_mem hn
+
+theorem Mu3KCandidateSlot.position_lt (slot : Mu3KCandidateSlot) :
+    slot.position <
+      (mu3KSectorEnumeration slot.sector.HRows slot.sector.TRows).length := by
+  cases slot with
+  | c16AllTf i =>
+      change i.val < (mu3KSectorEnumeration mu3H16Row mu3H16Row).length
+      rw [mu3KSectorEnumeration_H16_allTf_count]; exact i.isLt
+  | c16AllTriangle i =>
+      change i.val < (mu3KSectorEnumeration mu3H16Row mu3EmptyRows).length
+      rw [mu3KSectorEnumeration_H16_allTriangle_count]; exact i.isLt
+  | c88AllTf i =>
+      change i.val < (mu3KSectorEnumeration mu3H88Row mu3H88Row).length
+      rw [mu3KSectorEnumeration_H88_allTf_count]; exact i.isLt
+  | c88AllTriangle i =>
+      change i.val < (mu3KSectorEnumeration mu3H88Row mu3EmptyRows).length
+      rw [mu3KSectorEnumeration_H88_allTriangle_count]; exact i.isLt
+  | c88FirstTf i =>
+      change i.val < (mu3KSectorEnumeration mu3H88Row mu3H88FirstTfRows).length
+      rw [mu3KSectorEnumeration_H88_firstTf_count]; exact i.isLt
+  | c88SecondTf i =>
+      change i.val < (mu3KSectorEnumeration mu3H88Row mu3H88SecondTfRows).length
+      rw [mu3KSectorEnumeration_H88_secondTf_count]; exact i.isLt
+  | c106AllTf i =>
+      change i.val < (mu3KSectorEnumeration mu3H106Row mu3H106Row).length
+      rw [mu3KSectorEnumeration_H106_allTf_count]; exact i.isLt
+  | c106AllTriangle i => exact Fin.elim0 i
+  | c106TenTf i => exact Fin.elim0 i
+  | c106SixTf i =>
+      change i.val < (mu3KSectorEnumeration mu3H106Row mu3H106SixTfRows).length
+      rw [mu3KSectorEnumeration_H106_sixTf_count]; exact i.isLt
+
+theorem Mu3KCandidateSlot.rows_mem (slot : Mu3KCandidateSlot) :
+    slot.rows ∈ mu3KSectorEnumeration slot.sector.HRows slot.sector.TRows := by
+  exact List.getD_mem_of_lt _ [] slot.position slot.position_lt
+
+def Mu3KCandidateSlot.toAllSectorIndex
+    (slot : Mu3KCandidateSlot) : Mu3AllSectorCandidateIndex :=
+  ⟨slot.sector, ⟨slot.rows, slot.rows_mem⟩⟩
+
+def mu3SlotCandidate
+    {X Y : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (slot : Mu3KCandidateSlot) (x : X) (y : Y) : Bool :=
+  mu3KRowsCandidate slot.rows (row x) (column y)
+
+@[simp] theorem mu3AllSectorCandidate_toAllSectorIndex
+    {X Y : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (slot : Mu3KCandidateSlot) (x : X) (y : Y) :
+    mu3AllSectorCandidate row column slot.toAllSectorIndex x y =
+      mu3SlotCandidate row column slot x y := rfl
+
 theorem exists_fin_getD_eq_of_mem_of_length_eq
     {α : Type*} (l : List α) (x fallback : α) (n : Nat)
     (hx : x ∈ l) (hlen : l.length = n) :
@@ -98,8 +153,26 @@ theorem exists_mu3KCandidateSlot_of_allSectorIndex
       _ rows [] 1 hrows mu3KSectorEnumeration_H106_sixTf_count
     exact ⟨.c106SixTf j, rfl, hj⟩
 
+theorem exists_mu3SlotCandidate_of_allSectorCandidate
+    {X Y : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (K : X → Y → Prop)
+    (h : ∃ i : Mu3AllSectorCandidateIndex,
+      ∀ x y, K x y ↔ mu3AllSectorCandidate row column i x y = true) :
+    ∃ slot : Mu3KCandidateSlot,
+      ∀ x y, K x y ↔ mu3SlotCandidate row column slot x y = true := by
+  obtain ⟨i, hi⟩ := h
+  obtain ⟨slot, _, hrows⟩ := exists_mu3KCandidateSlot_of_allSectorIndex i
+  refine ⟨slot, ?_⟩
+  intro x y
+  rw [hi x y]
+  simp only [mu3AllSectorCandidate, mu3SlotCandidate]
+  rw [hrows]
+
 end Erdos85
 
 #print axioms Erdos85.mu3KCandidateSlot_card
 #print axioms Erdos85.mu3KCandidateSlotEquivFin
 #print axioms Erdos85.exists_mu3KCandidateSlot_of_allSectorIndex
+#print axioms Erdos85.Mu3KCandidateSlot.rows_mem
+#print axioms Erdos85.mu3AllSectorCandidate_toAllSectorIndex
+#print axioms Erdos85.exists_mu3SlotCandidate_of_allSectorCandidate
