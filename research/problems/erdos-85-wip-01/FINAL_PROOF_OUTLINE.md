@@ -1977,7 +1977,20 @@ generalized rather than merely replayed.
      use the q-generic orthogonal owner-line-graph law, not enumeration.  This
      local two-subset rectangle is itself consistent, so the next lemma must
      add the internal-cycle or commuting-block constraint; selector
-     intersection alone does not close the branch.
+     intersection alone does not close the branch.  The enriched AT-64
+     package
+     `orderSixtyFour_fourTwoTwo_oppositeBowtie_selectorRectangle_commutingBlock`
+     now supplies exactly that ambient degree 2, defect degree 7, and integer
+     adjacency commutation, while
+     `componentNeighborFinset_pair_not_secondOrderDefect_adj` records that
+     every selector pair is a defect nonedge.  The remaining statement is
+     named precisely as **AXIOM A-REG-422-BOWTIE**:
+     `OrderSixtyFourFourTwoTwoBowtieExclusionPrinciple`.  It is a `Prop`, not
+     an asserted Lean axiom.  The machine-checked conditional capstone
+     `orderSixtyFour_fourTwoTwo_unorderedClosing_forces_repeatedClosing_of_principle`
+     shows that it removes exactly the opposite-orientation leaf and returns
+     the branch to the shared repeated-closing routing terminal.  It does not
+     by itself exclude `[4,2,2]`, because that shared terminal remains GAP.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
