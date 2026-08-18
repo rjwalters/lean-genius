@@ -16,6 +16,57 @@ namespace Erdos85
 
 noncomputable section
 
+/-- In a two-regular relation, if distinct columns have at most one common
+neighbor, then some pair has exactly one common neighbor: take the two
+columns incident with any row. -/
+theorem RelationTwoRegular.exists_columns_common_card_eq_one
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Nonempty X]
+    (H : X → Y → Prop) [DecidableRel H] (hreg : RelationTwoRegular H)
+    (hle : ∀ b b' : Y, b ≠ b' →
+      ((Finset.univ : Finset X).filter fun x => H x b ∧ H x b').card ≤ 1) :
+    ∃ b b' : Y, b ≠ b' ∧
+      ((Finset.univ : Finset X).filter fun x => H x b ∧ H x b').card = 1 := by
+  classical
+  let x : X := Classical.choice (inferInstance : Nonempty X)
+  have hxcard := hreg.1 x
+  rcases Finset.card_eq_two.mp hxcard with ⟨b, b', hbb', hneighbors⟩
+  have hxb : H x b := by
+    have : b ∈ (Finset.univ : Finset Y).filter fun y => H x y := by
+      rw [hneighbors]
+      simp
+    exact (Finset.mem_filter.mp this).2
+  have hxb' : H x b' := by
+    have : b' ∈ (Finset.univ : Finset Y).filter fun y => H x y := by
+      rw [hneighbors]
+      simp
+    exact (Finset.mem_filter.mp this).2
+  let S : Finset X :=
+    (Finset.univ : Finset X).filter fun z => H z b ∧ H z b'
+  have hxS : x ∈ S := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, hxb, hxb'⟩
+  have hpos : 0 < S.card := Finset.card_pos.mpr ⟨x, hxS⟩
+  have hupp : S.card ≤ 1 := hle b b' hbb'
+  refine ⟨b, b', hbb', ?_⟩
+  change S.card = 1
+  omega
+
+/-- The graph-code specialization: the pairwise H-overlap bound forces an
+overlap-one column pair. -/
+theorem MuThreeMixedGridCode.exists_columns_common_card_eq_one
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (hle : ∀ b b' : Y, b ≠ b' →
+      ((Finset.univ : Finset X).filter fun x => H x b ∧ H x b').card ≤ 1) :
+    ∃ b b' : Y, b ≠ b' ∧
+      ((Finset.univ : Finset X).filter fun x => H x b ∧ H x b').card = 1 := by
+  have hcard := code.card_left
+  letI : Nonempty X := Fintype.card_pos_iff.mp (by omega)
+  exact code.H_twoRegular.exists_columns_common_card_eq_one H hle
+
 /-- Any map from a five-element type to the two integer units has a
 three-element monochromatic fiber. -/
 theorem exists_three_pairwise_ne_eq_intUnits_of_card_five
@@ -83,5 +134,8 @@ end
 end Erdos85
 
 #print axioms Erdos85.exists_three_pairwise_ne_eq_intUnits_of_card_five
+#print axioms Erdos85.RelationTwoRegular.exists_columns_common_card_eq_one
+#print axioms
+  Erdos85.MuThreeMixedGridCode.exists_columns_common_card_eq_one
 #print axioms
   Erdos85.MuThreeMixedGridCode.exists_three_commonRows_pairwise_even_monodromy
