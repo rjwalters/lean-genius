@@ -865,8 +865,18 @@ generalized rather than merely replayed.
      crosses nontrivially to an exterior adjacency eigenmode at `-lambda`, or
      lies in the `-6` bottom eigenspace of the six-regular exterior-pair
      graph.  The zero-sum hypothesis follows automatically from
-     two-regularity.  What remains a **`GAP`** is a terminal excluding both
-     sides of this dichotomy when the
+     two-regularity.  The equality case on the kernel side is also
+     **`PROVEN`**: `isBipartite_of_complex_negativeDegree_eigenvector`
+     turns any nonzero bottom mode of a connected regular graph into a proper
+     bipartition, and
+     `orderSixtyFour_seven_components_outside_transport_or_pairBipartite`
+     applies it to the exterior-pair graph.  Connectivity need not ultimately
+     be a new axiom: a bipartite six-regular component needs at least twelve
+     vertices, while any further six-regular component needs at least seven,
+     exceeding the available sixteen.  Formalizing this last component-size
+     count would remove the wrapper's current connectivity hypothesis.
+     What remains a **`GAP`** is a terminal excluding both
+     sides of the resulting transport-or-bipartite dichotomy when the
      size-two block has no alternating adjacency eigenline (and the analogous
      terminal for the negative joint eigenvalues `-1,-3,-5`).
 
