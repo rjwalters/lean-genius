@@ -180,6 +180,7 @@ theorem MuThreeMixedGridCode.exists_two_HCells_with_two_cross_neighbors
           exact hnone h
         _ = 16 := by simp [hcard]
     omega
+
   obtain ⟨h₁, hh₁⟩ := hex₁
   by_cases hex₂ : ∃ h₂ : mixedGridHCellSet H K, h₁ ≠ h₂ ∧ 1 < cutDegree h₂
   · obtain ⟨h₂, hh₂, hrich₂⟩ := hex₂
@@ -216,6 +217,70 @@ theorem MuThreeMixedGridCode.exists_two_HCells_with_two_cross_neighbors
           rw [hones, hfive]
     omega
 
+/-- **Private branches for two rich roots.**  The two forced rich H-roots can
+be chosen with distinct non-H neighbours `x` and `y` such that `x` is not
+adjacent to the second root and `y` is not adjacent to the first.  The input
+is exactly C4-freeness: two distinct roots have at most one common neighbour,
+while each rich cut-neighbourhood has size at least two. -/
+theorem MuThreeMixedGridCode.exists_two_HCells_with_private_cross_neighbors
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (hdisjoint : ∀ x y, H x y → ¬ K x y) :
+    ∃ h₁ h₂ : mixedGridHCellSet H K, ∃ x y : muThreeMixedCell K,
+      h₁ ≠ h₂ ∧ x ≠ y ∧
+      x ∈ C.neighborFinset h₁.1 \ (mixedGridHCellSet H K).toFinset ∧
+      x ∉ C.neighborFinset h₂.1 ∧
+      y ∈ C.neighborFinset h₂.1 \ (mixedGridHCellSet H K).toFinset ∧
+      y ∉ C.neighborFinset h₁.1 := by
+  classical
+  obtain ⟨h₁, h₂, hh₁₂, hrich₁, hrich₂⟩ :=
+    code.exists_two_HCells_with_two_cross_neighbors H K C hdisjoint
+  let A := C.neighborFinset h₁.1 \ (mixedGridHCellSet H K).toFinset
+  let B := C.neighborFinset h₂.1 \ (mixedGridHCellSet H K).toFinset
+  have hinter : (A ∩ B).card ≤ 1 := by
+    have hsub : A ∩ B ⊆ C.neighborFinset h₁.1 ∩ C.neighborFinset h₂.1 := by
+      intro z hz
+      have hz' := Finset.mem_inter.mp hz
+      exact Finset.mem_inter.mpr
+        ⟨(Finset.mem_sdiff.mp hz'.1).1, (Finset.mem_sdiff.mp hz'.2).1⟩
+    calc
+      (A ∩ B).card ≤
+          (C.neighborFinset h₁.1 ∩ C.neighborFinset h₂.1).card :=
+        Finset.card_le_card hsub
+      _ ≤ 1 := code.common_neighbor_card_le_one H K C h₁.1 h₂.1
+        (fun h => hh₁₂ (Subtype.ext h))
+  have hxnonempty : (A \ B).Nonempty := by
+    by_contra hempty
+    rw [Finset.not_nonempty_iff_eq_empty] at hempty
+    have hsub : A ⊆ B := Finset.sdiff_eq_empty_iff_subset.mp hempty
+    have heq : A ∩ B = A := Finset.inter_eq_left.mpr hsub
+    rw [heq] at hinter
+    change 1 < A.card at hrich₁
+    omega
+  have hynonempty : (B \ A).Nonempty := by
+    by_contra hempty
+    rw [Finset.not_nonempty_iff_eq_empty] at hempty
+    have hsub : B ⊆ A := Finset.sdiff_eq_empty_iff_subset.mp hempty
+    have heq : A ∩ B = B := Finset.inter_eq_right.mpr hsub
+    rw [heq] at hinter
+    change 1 < B.card at hrich₂
+    omega
+  obtain ⟨x, hx⟩ := hxnonempty
+  obtain ⟨y, hy⟩ := hynonempty
+  have hx' := Finset.mem_sdiff.mp hx
+  have hy' := Finset.mem_sdiff.mp hy
+  refine ⟨h₁, h₂, x, y, hh₁₂, ?_, hx'.1, ?_, hy'.1, ?_⟩
+  · intro hxy
+    subst y
+    exact hy'.2 hx'.1
+  · exact fun hxB => hx'.2
+      (Finset.mem_sdiff.mpr ⟨hxB, (Finset.mem_sdiff.mp hx'.1).2⟩)
+  · exact fun hyA => hy'.2
+      (Finset.mem_sdiff.mpr ⟨hyA, (Finset.mem_sdiff.mp hy'.1).2⟩)
+
 end Erdos85
 
 #print axioms Erdos85.MuThreeMixedGridCode.card_mixedGridHCellSet_eq_sixteen
@@ -227,3 +292,5 @@ end Erdos85
   Erdos85.MuThreeMixedGridCode.exists_HCell_two_cross_nonrook_neighbors
 #print axioms
   Erdos85.MuThreeMixedGridCode.exists_two_HCells_with_two_cross_neighbors
+#print axioms
+  Erdos85.MuThreeMixedGridCode.exists_two_HCells_with_private_cross_neighbors
