@@ -1,6 +1,7 @@
 import Proofs.Erdos85BinarySquareConnectedOwnerDensity
 import Proofs.Erdos85OrderSixtyFourRegularKernel
 import Proofs.Erdos85BinarySquareSameOwnerCenterGridCapacity
+import Proofs.Erdos85OrderSixtyFourDefectEdgeCodegreeLedger
 import Mathlib.Combinatorics.SimpleGraph.StronglyRegular
 
 /-! # Exact owner density in the connected-defect stratum -/
@@ -218,6 +219,66 @@ theorem orderSixtyFour_regular_oneComponent_defectEdge_centerGrid_exact
     (sameOwnerDefectCenterPairs G a x y).card = 8 * 8 at hledger
   refine ⟨hroute, ?_⟩
   omega
+
+/-- Global connected-stratum defect-cell ledger.  The entire directed
+center-grid defect mass is controlled by the defect triangle count. -/
+theorem orderSixtyFour_regular_oneComponent_sum_defectCenterPairs
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 1) :
+    ∃ a : (secondOrderDefectGraph G).ConnectedComponent,
+      (∑ x : Fin 64,
+        ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x,
+          ((sameOwnerDefectCenterPairs G a x y).card : ℤ)) =
+        6272 - 6 *
+          (adjacencyTriangleMinorFinset (secondOrderDefectGraph G)).card := by
+  obtain ⟨a, hpoint⟩ :=
+    orderSixtyFour_regular_oneComponent_defectEdge_centerGrid_exact
+      G hfree hreg hcount
+  refine ⟨a, ?_⟩
+  let D := secondOrderDefectGraph G
+  have hDreg : ∀ x, D.degree x = 7 :=
+    (orderSixtyFour_regular_defect_kernel G hfree
+      (fun x => by rw [hreg]) (fun {_ _} _ => Or.inl (hreg _))).2.2.1
+  have hrewrite :
+      (∑ x : Fin 64, ∑ y ∈ D.neighborFinset x,
+        ((sameOwnerDefectCenterPairs G a x y).card : ℤ)) =
+      ∑ x : Fin 64, ∑ y ∈ D.neighborFinset x,
+        ((14 : ℤ) - (D.neighborFinset x ∩ D.neighborFinset y).card) := by
+    apply Finset.sum_congr rfl
+    intro x _
+    apply Finset.sum_congr rfl
+    intro y hy
+    have hadj : D.Adj x y := (D.mem_neighborFinset x y).mp hy
+    have hp := (hpoint hadj).2
+    change (sameOwnerDefectCenterPairs G a x y).card +
+      (D.neighborFinset x ∩ D.neighborFinset y).card = 14 at hp
+    omega
+  rw [hrewrite]
+  have hcommon :=
+    sum_directedEdge_commonNeighbor_card_eq_six_mul_triangleCount D (by norm_num)
+  calc
+    (∑ x : Fin 64, ∑ y ∈ D.neighborFinset x,
+        ((14 : ℤ) - (D.neighborFinset x ∩ D.neighborFinset y).card)) =
+      (∑ x : Fin 64, (14 : ℤ) * (D.neighborFinset x).card) -
+        ∑ x : Fin 64, ∑ y ∈ D.neighborFinset x,
+          ((D.neighborFinset x ∩ D.neighborFinset y).card : ℤ) := by
+      simp_rw [Finset.sum_sub_distrib]
+      simp
+      ring_nf
+    _ = 6272 - 6 * (adjacencyTriangleMinorFinset D).card := by
+      rw [hcommon]
+      have hdeg : ∀ x, (D.neighborFinset x).card = 7 := by
+        intro x
+        rw [D.card_neighborFinset_eq_degree, hDreg]
+      simp_rw [hdeg]
+      norm_num
 
 end
 
