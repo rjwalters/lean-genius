@@ -126,6 +126,27 @@ theorem mu3ExteriorOccupiedCoord_injective
         (model.column (label v).2).val at hval
     omega
 
+/-- The complete exterior enumeration produced by an internal coordinate
+model in the all-TF sector. -/
+def mu3ExteriorEquivOfInternalCoordinateModel
+    {V P N W : Type*} [Fintype V] [DecidableEq V] [Fintype W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq P] [DecidableEq N]
+    (pval : P → V) (nval : N → V) (shape : Mu3AllTfShape)
+    (model : Mu3InternalCoordinateModel G P N pval nval shape)
+    (label : W → P × N) (hlabel : Function.Injective label)
+    (center : W → V)
+    (hadj : ∀ w, G.Adj (center w) (pval (label w).1) ∧
+      G.Adj (center w) (nval (label w).2))
+    (hallTf : ∀ p n, G.Adj (pval p) (nval n) →
+      (triangleFreeEdgeGraph G).Adj (pval p) (nval n))
+    (hcard : Fintype.card W = 48) : Fin 48 ≃ W :=
+  mu3ExteriorEquivOfCoordinateInjection shape hcard
+    (mu3ExteriorOccupiedCoord G pval nval shape model label center hadj hallTf)
+    (mu3ExteriorOccupiedCoord_injective G pval nval shape model label hlabel
+      center hadj hallTf)
+
 end
 
 end Erdos85
