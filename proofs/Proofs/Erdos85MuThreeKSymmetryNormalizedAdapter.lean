@@ -159,8 +159,39 @@ theorem exists_mu3KSectorCandidate_of_normalized
       hrowSymm hcolumnSymm
   exact ⟨⟨rows, hmem⟩, mu3KRowsOfRelation_candidate_iff K⟩
 
+/-- Convert the pointwise statement furnished by cycle-component
+compatibility into the exact natural-valued row equation used by the sector
+enumerator.  The bounds hypothesis is automatic for all explicit sector
+tables in this development. -/
+theorem mu3SectorEquation_of_edge_iff
+    (H T : Nat → Mu3KRow)
+    (K : Fin 8 → Fin 8 → Prop) [DecidableRel K]
+    (hTsub : ∀ x, T x ⊆ H x)
+    (hTbound : ∀ x n, n ∈ T x → n < 8)
+    (hiff : ∀ x y, y.val ∈ H x.val → (K x y ↔ y.val ∈ T x.val))
+    (x : Fin 8) :
+    ((Finset.univ.filter fun y => K x y).image Fin.val) ∩ H x.val =
+      T x.val := by
+  ext n
+  constructor
+  · intro hn
+    obtain ⟨hnK, hnH⟩ := Finset.mem_inter.mp hn
+    obtain ⟨y, hyK, hyn⟩ := Finset.mem_image.mp hnK
+    have hyH : y.val ∈ H x.val := by simpa [hyn] using hnH
+    have hyT := (hiff x y hyH).1 (Finset.mem_filter.mp hyK).2
+    simpa [hyn] using hyT
+  · intro hnT
+    have hn8 : n < 8 := hTbound x.val n hnT
+    let y : Fin 8 := ⟨n, hn8⟩
+    have hyH : y.val ∈ H x.val := hTsub x.val hnT
+    have hyK : K x y := (hiff x y hyH).2 hnT
+    apply Finset.mem_inter.mpr
+    exact ⟨Finset.mem_image.mpr
+      ⟨y, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hyK⟩, rfl⟩, hyH⟩
+
 end Erdos85
 
 #print axioms Erdos85.mu3KSectorGlobalAdmissible_rowsOfRelation
 #print axioms Erdos85.mem_mu3KSectorEnumeration_rowsOfRelation
 #print axioms Erdos85.exists_mu3KSectorCandidate_of_normalized
+#print axioms Erdos85.mu3SectorEquation_of_edge_iff
