@@ -2048,9 +2048,15 @@ generalized rather than merely replayed.
      proves that at least two distinct owner colors carry such dense fragments.
      The remaining rainbow **GAP** is compatibility: the two fragments may
      live on different ordered component rows and have different roots, so
-     their certified subsets cannot yet be added or intersected.  The
-     two-equal component pattern separately needs a same-component analogue
-     because its root/target routing row is not cross-component.
+     their certified subsets cannot yet be added or intersected.  The earlier
+     concern about two-equal equal-root patterns was spurious: although both
+     fork roots lie in one component, each separated center pair routes from
+     that root component into the distinct closing component.  The q-generic
+     theorem
+     `binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRowDensity`
+     therefore sends every `e=f≠g` repeated closing to a density fragment for
+     owner `b` or owner `c`.  What remains for two-equal patterns is cyclic
+     composition/compatibility, not a new same-component routing definition.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`

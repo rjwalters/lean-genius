@@ -251,6 +251,71 @@ theorem binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDe
   · exact Or.inl ⟨xs, h⟩
   · exact Or.inr ⟨ys, h⟩
 
+/-- An equal-root repeated closing also reaches a cross-component routing-row
+density terminal.  Although both fork roots lie in `e`, either separated
+center pair shares one of those roots and routes into the distinct closing
+component `g`. -/
+theorem binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRowDensity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hbc : b ≠ c) (hef : e = f) (hfg : f ≠ g)
+    (hrepeat : HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g) :
+    (∃ y : e.supp, HasTwoCenterRoutingRowDensity G hfree m e g b
+        (hef ▸ hfg) y) ∨
+      (∃ x : e.supp, HasTwoCenterRoutingRowDensity G hfree m e g c
+        (hef ▸ hfg) x) := by
+  subst f
+  obtain ⟨x, y, z₁, z₂, _hz, _haxy, hby₁, hcx₁, hby₂, hcx₂, hsep⟩ :=
+    hasRepeatedClosingInBlock_equalRoots_canonicalCenter_separation
+      G hfree a b c e e g hbc rfl hfg hrepeat
+  let ub₁ : b.supp := ⟨crossCommonNeighbor G hfree hfg y z₁,
+    crossCommonNeighbor_mem_owner_of_componentOwnerGraph_adj
+      G hfree hfg y z₁ hby₁⟩
+  let ub₂ : b.supp := ⟨crossCommonNeighbor G hfree hfg y z₂,
+    crossCommonNeighbor_mem_owner_of_componentOwnerGraph_adj
+      G hfree hfg y z₂ hby₂⟩
+  let uc₁ : c.supp := ⟨crossCommonNeighbor G hfree hfg x z₁,
+    crossCommonNeighbor_mem_owner_of_componentOwnerGraph_adj
+      G hfree hfg x z₁
+        (((componentOwnerGraph G
+          (secondOrderDefectGraph G) c).adj_comm _ _).mpr hcx₁)⟩
+  let uc₂ : c.supp := ⟨crossCommonNeighbor G hfree hfg x z₂,
+    crossCommonNeighbor_mem_owner_of_componentOwnerGraph_adj
+      G hfree hfg x z₂
+        (((componentOwnerGraph G
+          (secondOrderDefectGraph G) c).adj_comm _ _).mpr hcx₂)⟩
+  change ub₁.1 ≠ ub₂.1 ∨ uc₁.1 ≠ uc₂.1 at hsep
+  rcases hsep with hb | hc
+  · have hb' : ub₁ ≠ ub₂ := fun h => hb (congrArg Subtype.val h)
+    refine Or.inl ⟨y, ub₁, ub₂, hb',
+      (crossCommonNeighbor_spec G hfree hfg y z₁).1,
+      (crossCommonNeighbor_spec G hfree hfg y z₂).1, ?_⟩
+    exact binarySquare_regular_twoSeparatedCenters_routingRow_density
+      G hfree hq hreg hcard m hm hfg y ub₁ ub₂ hb'
+        (crossCommonNeighbor_spec G hfree hfg y z₁).1
+        (crossCommonNeighbor_spec G hfree hfg y z₂).1
+  · have hc' : uc₁ ≠ uc₂ := fun h => hc (congrArg Subtype.val h)
+    refine Or.inr ⟨x, uc₁, uc₂, hc',
+      (crossCommonNeighbor_spec G hfree hfg x z₁).1,
+      (crossCommonNeighbor_spec G hfree hfg x z₂).1, ?_⟩
+    exact binarySquare_regular_twoSeparatedCenters_routingRow_density
+      G hfree hq hreg hcard m hm hfg x uc₁ uc₂ hc'
+        (crossCommonNeighbor_spec G hfree hfg x z₁).1
+        (crossCommonNeighbor_spec G hfree hfg x z₂).1
+
 end
 
 end Erdos85
@@ -258,3 +323,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_regular_twoSeparatedCenters_routingRow_density
 #print axioms Erdos85.binarySquare_regular_ownerFork_forces_twoCenterRoutingRowDensity
 #print axioms Erdos85.binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
+#print axioms Erdos85.binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRowDensity
