@@ -20,6 +20,49 @@ def mixedGridGraphMatesInRow
     (u : muThreeMixedCell K) (x : X) : Finset (muThreeMixedCell K) :=
   (F.neighborFinset u).filter fun v => v.1.1 = x
 
+def mixedGridHCommonColumns
+    {X Y : Type*} [Fintype Y] [DecidableEq Y]
+    (H : X → Y → Prop) [DecidableRel H] (x x' : X) : Finset Y :=
+  Finset.univ.filter fun y => H x y ∧ H x' y
+
+def mixedGridCommonAllowedColumns
+    {X Y : Type*} [Fintype Y] [DecidableEq Y]
+    (H : X → Y → Prop) [DecidableRel H] (x x' : X) : Finset Y :=
+  Finset.univ.filter fun y => ¬ H x y ∧ ¬ H x' y
+
+/-- Inclusion-exclusion for two rows of the two-factor `H`: the number of
+columns allowed for both is four plus their number of common `H` columns. -/
+theorem MuThreeMixedGridCode.commonAllowedColumns_card
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C) (x x' : X) :
+    (mixedGridCommonAllowedColumns H x x').card =
+      4 + (mixedGridHCommonColumns H x x').card := by
+  let A := (Finset.univ : Finset Y).filter fun y => H x y
+  let B := (Finset.univ : Finset Y).filter fun y => H x' y
+  let T := mixedGridCommonAllowedColumns H x x'
+  have hA : A.card = 2 := code.H_twoRegular.1 x
+  have hB : B.card = 2 := code.H_twoRegular.1 x'
+  have hIE := Finset.card_union_add_card_inter A B
+  have hpartition := Finset.card_filter_add_card_filter_not
+    (s := (Finset.univ : Finset Y)) (p := fun y => y ∈ A ∪ B)
+  have hnot : ((Finset.univ : Finset Y).filter fun y => ¬ y ∈ A ∪ B) = T := by
+    ext y
+    simp [A, B, T, mixedGridCommonAllowedColumns]
+  have hinter : A ∩ B = mixedGridHCommonColumns H x x' := by
+    ext y
+    simp [A, B, mixedGridHCommonColumns]
+  have hunion : ((Finset.univ : Finset Y).filter fun y => y ∈ A ∪ B) = A ∪ B := by
+    ext y
+    simp
+  simp only [Finset.card_univ, code.card_right] at hpartition
+  rw [hnot, hunion] at hpartition
+  rw [hA, hB, hinter] at hIE
+  change T.card = 4 + (mixedGridHCommonColumns H x x').card
+  omega
+
 /-- In a foreign row the square-partition relations split all six occupied
 cells exactly. -/
 theorem MuThreeMixedGridCode.rowLedger_card
@@ -151,4 +194,5 @@ theorem MuThreeMixedGridCode.rookMatesInRow_card
 end Erdos85
 
 #print axioms Erdos85.MuThreeMixedGridCode.rowLedger_card
+#print axioms Erdos85.MuThreeMixedGridCode.commonAllowedColumns_card
 #print axioms Erdos85.MuThreeMixedGridCode.rookMatesInRow_card
