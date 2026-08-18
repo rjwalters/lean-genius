@@ -1899,10 +1899,22 @@ generalized rather than merely replayed.
      rotates to an equal-root closing; every `e=g≠f` pattern in `[3,3,2]` does
      likewise.  In `[4,2,2]` the latter rotation also works unless the repeated
      component is precisely the normalized size-four component.  Thus all
-     `[3,3,2]` pressure patterns now reach canonical center separation, while
-     the `[4,2,2]` pressure route has one precise residual **GAP**:
-     `e=g=c`, where `m_c=4` and the third-owner diagonal edge space has size
-     384, too large for the block lower bound 219.
+     `[3,3,2]` pressure patterns now reach canonical center separation.  The
+     formerly exceptional `[4,2,2]` pattern `e=g=c`, `m_c=4`, also admits a
+     sharper **AT-64-ONLY, PARTIAL** reduction: although its directed
+     third-owner edge space has size 384, it has only 192 unordered edges.
+     The generic factor-of-two theorem
+     `two_mul_card_ownerColoredEdgesInBlockLT` and unordered-key pigeonhole
+     therefore force a collision among the 219 triangles.  The exact consumer
+     `orderSixtyFour_fourTwoTwo_sizeFour_unorderedClosing_dichotomy` proves
+     that either the two uses have the same orientation, hence rotate to the
+     existing equal-root repeated-closing terminal, or they have opposite
+     orientation.  In the latter case they form a cross-colored bowtie
+     `(x,y₁,z)` / `(z,y₂,x)` with `y₁≠y₂` whenever the first two owner colors
+     differ (`oppositeThirdEdge_closings_ne_of_distinct_owners`).  Thus the
+     sole remaining pressure-pattern **GAP** is no longer a capacity failure:
+     it is the routing incompatibility of this explicit opposite-orientation
+     bowtie.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
