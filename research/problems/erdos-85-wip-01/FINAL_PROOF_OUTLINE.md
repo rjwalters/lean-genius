@@ -1634,10 +1634,23 @@ generalized rather than merely replayed.
      degree/commutation lemmas and the unique-owner complement theorem, and
      `orderSixtyFour_restrictedOwners_lambdaSixBoolFourFactorization` composes
      this with an arbitrary source labeling.
-     The remaining graph-level interface is therefore narrow: show that the
-     ambient labeled component supplies `lambdaSixAdmissibleR` and the local
-     four-component enumeration, then dispatch the forced bipartite tag by the
-     existing arithmetic terminal.
+     The exterior admissibility interface is now PROVEN in
+     `Erdos85LambdaSixExteriorAdmissibility`.  C4-freeness shows that an
+     exterior-pair edge cannot also lie in the internal square support; the
+     component Gram identity `B Bᴴ = 6I + R` and its verified commutation with
+     the internal cycle block give `RH = HR`; and the existing exterior row-sum
+     theorem gives degree six.  `orderSixtyFour_exteriorPair_lambdaSixAdmissibleR`
+     packages all five relation-level clauses after an arbitrary labeling.
+     The two exact-coordinate corollaries
+     `orderSixtyFour_tenSix_exteriorPair_lambdaSixAdmissibleR` and
+     `orderSixtyFour_fiveFiveThreeThree_exteriorPair_lambdaSixAdmissibleR`
+     kernel-check the canonical `H` and `A_H²`-support encodings and produce
+     the precise bit-vector predicate consumed by the classification.
+     The remaining graph-level interface is therefore narrower still: prove
+     that the relabeled induced defect is exactly
+     `lambdaSixForcedDefect A_H²-support R`, construct the local `Fin 4`
+     component enumeration from cardinality four, and dispatch the forced
+     bipartite tag by the existing arithmetic terminal.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
