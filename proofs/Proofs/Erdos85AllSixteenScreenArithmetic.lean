@@ -83,4 +83,24 @@ theorem two_sizeTwoScreenRecords_ten_six_force_other_muThreeMultiplicity
     sizeTwoScreenRecord_order_six_or_ten_muThreeMultiplicity_eq_one h₂ (Or.inl ho₂)
   omega
 
+/-- Four screened components whose total `μ=3` multiplicity is at least four
+either contain a multiplicity-two component, or every component has
+multiplicity exactly one.  The first alternative can only arise from the
+single-cycle `[16]` screen; the mixed-cycle screens always have multiplicity
+zero or one. -/
+theorem four_sizeTwoScreenRecords_muThreeMultiplicity_two_or_all_one
+    (o₀ o₁ o₂ o₃ m₀ m₁ m₂ m₃ : ℕ)
+    (h₀ : IsSizeTwoScreenRecord o₀ m₀)
+    (h₁ : IsSizeTwoScreenRecord o₁ m₁)
+    (h₂ : IsSizeTwoScreenRecord o₂ m₂)
+    (h₃ : IsSizeTwoScreenRecord o₃ m₃)
+    (hmul : 4 ≤ m₀ + m₁ + m₂ + m₃) :
+    (m₀ = 2 ∨ m₁ = 2 ∨ m₂ = 2 ∨ m₃ = 2) ∨
+      (m₀ = 1 ∧ m₁ = 1 ∧ m₂ = 1 ∧ m₃ = 1) := by
+  have hm₀ : m₀ ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h₀
+  have hm₁ : m₁ ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h₁
+  have hm₂ : m₂ ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h₂
+  have hm₃ : m₃ ≤ 2 := sizeTwoScreenRecord_muThreeMultiplicity_le_two h₃
+  omega
+
 end Erdos85
