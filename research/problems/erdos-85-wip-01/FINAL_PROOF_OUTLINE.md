@@ -1882,7 +1882,15 @@ generalized rather than merely replayed.
      determines a unique mixed-owner middle, provided the root pair has
      neither displayed owner.  Thus the remaining issue is compatibility of
      these exact routed rectangles across roots, not existence or cardinal
-     saturation of their cells.  In particular the
+     saturation of their cells.  Distinct ordered owner pairs give disjoint
+     middle sets, so the two orientations occupy exactly `2m_a m_b` vertices
+     (`5ca315aa31`).  At a defect edge, removing its two defect neighborhoods
+     and these mixed rectangles leaves at least
+     `q²-2(q-1)-2m_a m_b` eligible vertices (`b2c0cf996a`): at q=8 the local
+     residues are 26/20/18 in `[6,2]`/`[5,3]`/`[4,4]`.  In a two-owner
+     stratum, owner exhaustion must place this residue in the same-owner
+     `AA` or `BB` cells; formalizing that exhaustion and exploiting the
+     resulting same-owner pressure is the next q-generic leaf.  In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
      row and is therefore **PROVEN q-GENERIC but not itself contradictory**;
