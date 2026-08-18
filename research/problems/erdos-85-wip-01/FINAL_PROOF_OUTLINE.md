@@ -1961,6 +1961,26 @@ generalized rather than merely replayed.
      | `[4,2,2]` | **AT-64-ONLY, PARTIAL**: all three components are **PROVEN non-bipartite**; all ordinary patterns reach routing; the opposite bowtie reaches an exact selector rectangle/commuting block | bipartite exclusion, bowtie geometry, and row-density consumers are **q-GENERIC** | **AXIOM A-REG-422-BOWTIE**, followed by **GAP A-REG-422-ROUTING-NONBIP** |
      | `[3,3,2]` | **AT-64-ONLY pressure reduction, PROVEN** in the rainbow branch; all three components are **PROVEN non-bipartite** | bipartite exclusion, saturation at size two, unique third centers at size three, and residual-star algebra are **q-GENERIC** | **GAP A-REG-332-PATTERNS**, then **GAP A-REG-332-ROUTING-NONBIP** |
 
+     One surviving `μ=3` mixed-grid subcase now has a separate
+     **PROVEN, standard-axiom structural reduction**, but not a contradiction.
+     In the all-triangle (`H ∩ K = ∅`) sector, the 48 occupied cells split
+     into 16 `H`-cells and 32 non-`H` cells.  On the latter, exterior rook
+     edges split into row and column fixed-point-free involutions; the two
+     involutions do not commute pointwise, their alternating cycles have
+     length at least six, and every row and column contains exactly two
+     partner pairs (`2be7b235dd`, `724eff3771`, `e90fc2c915`, `6e20a59c38`,
+     `40eb7fa5d6`).  Between two disjoint partner pairs there is at most one
+     exterior cross edge (`partnerCrossEdges_card_le_one`).  Locally, every
+     partner pair has exactly ten exterior boundary vertices
+     (`partnerPairBoundary_card_eq_ten`, `7cf38d5b6b`), and two boundary
+     vertices joined by an exterior edge cannot form another rook pair
+     (`partnerPairBoundary_not_rowColumn_adj`, `a79d391a84`).  Hence the honest
+     quotient has 16 singleton `H` blocks and 16 non-`H` partner-pair blocks;
+     it is not a 10-regular graph on only the partner pairs.  **GAP
+     A-REG-MU3-MIXED-QUOTIENT** is to turn these capacity and alternating-cycle
+     constraints into a contradiction (or a finite, separately trusted
+     certificate).  No q=8 stratum is marked killed by this reduction.
+
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
      a contradiction consumer, while `[4,2,2]` additionally retains one
