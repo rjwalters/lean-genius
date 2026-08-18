@@ -1985,7 +1985,12 @@ generalized rather than merely replayed.
      those incidences now produces a literal routing fragment
      (`exists_HCell_two_cross_nonrook_neighbors`, `42be8234f6`): some H-root
      has two distinct non-H exterior neighbours, necessarily in different
-     rows and different columns.  **GAP
+     rows and different columns.  The cut is too large for this to be an
+     isolated accident: `exists_two_HCells_with_two_cross_neighbors`
+     (`adfb0b35aa`) proves that two distinct H-roots each have cut-degree at
+     least two (one degree-six root plus fifteen degree-one roots would give
+     only 21 incidences).  Thus two routing fragments are forced; the missing
+     content is now their cross-root/source-data coupling.  **GAP
      A-REG-MU3-MIXED-QUOTIENT** is to turn these capacity and alternating-cycle
      constraints into a contradiction (or a finite, separately trusted
      certificate).  No q=8 stratum is marked killed by this reduction.
