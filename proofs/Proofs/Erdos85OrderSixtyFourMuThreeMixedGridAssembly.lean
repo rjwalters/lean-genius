@@ -88,6 +88,18 @@ def orderSixtyFourMuThreeExteriorCellGraph
     (orderSixtyFourMuThreeExteriorCellEquiv label hinj).symm
     (G.induce {u | u ∉ cSupp})
 
+noncomputable instance orderSixtyFourMuThreeExteriorCellGraph_decidable
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hinj : Function.Injective label) :
+    DecidableRel (orderSixtyFourMuThreeExteriorCellGraph G label hinj).Adj := by
+  intro u v
+  unfold orderSixtyFourMuThreeExteriorCellGraph
+  infer_instance
+
 theorem orderSixtyFourMuThreeExteriorCellGraph_adj_iff
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) {cSupp : Set V} {s : V → ℤ}
@@ -435,6 +447,65 @@ theorem orderSixtyFourMuThreeExteriorCellGraph_rook
     have := hneginj heq
     exact hvw' (congrArg (fun z => z.1) this)
 
+/-- Assembly boundary for the graph-facing constructor.  All type transport,
+two-regularity, rook separation, and C4-freeness are discharged here.  The
+three remaining hypotheses are precisely the graph-specific sector
+propagation and exact row/column hit counts. -/
+theorem orderSixtyFourMuThree_mixedGridCode_of_hitLaws
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {cSupp : Set V} {s : V → ℤ}
+    [Fintype {z : V // z ∈ cSupp}]
+    [Fintype (muThreePositiveShore cSupp s)]
+    [Fintype (muThreeNegativeShore cSupp s)]
+    [Fintype (muThreeExterior cSupp)]
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hinj : Function.Injective label)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (hP : Fintype.card (muThreePositiveShore cSupp s) = 8)
+    (hN : Fintype.card (muThreeNegativeShore cSupp s) = 8)
+    (hdeg : ∀ z : {z : V // z ∈ cSupp},
+      (G.induce cSupp).degree z = 2)
+    (hflip : ∀ ⦃x y : {z : V // z ∈ cSupp}⦄,
+      (G.induce cSupp).Adj x y → s x.1 = -s y.1)
+    (hrowFiber : ∀ x, Fintype.card
+      {u : muThreeExterior cSupp // (label u).1 = x} = 6)
+    (hcolumnFiber : ∀ y, Fintype.card
+      {u : muThreeExterior cSupp // (label u).2 = y} = 6)
+    (hcycle : RelationFactorCycleCompatible
+      (orderSixtyFourMuThreeInternalRel G (cSupp := cSupp) (s := s))
+      (orderSixtyFourMuThreeHole label))
+    (hrowHit : ∀
+      (u : muThreeMixedCell (orderSixtyFourMuThreeHole label))
+      (x : muThreePositiveShore cSupp s),
+      (((orderSixtyFourMuThreeExteriorCellGraph G label hinj).neighborFinset u).filter
+        fun v => v.1.1 = x).card =
+          if orderSixtyFourMuThreeInternalRel G x u.1.2 then 0 else 1)
+    (hcolumnHit : ∀
+      (u : muThreeMixedCell (orderSixtyFourMuThreeHole label))
+      (y : muThreeNegativeShore cSupp s),
+      (((orderSixtyFourMuThreeExteriorCellGraph G label hinj).neighborFinset u).filter
+        fun v => v.1.2 = y).card =
+          if orderSixtyFourMuThreeInternalRel G u.1.1 y then 0 else 1) :
+    MuThreeMixedGridCode
+      (orderSixtyFourMuThreeInternalRel G (cSupp := cSupp) (s := s))
+      (orderSixtyFourMuThreeHole label)
+      (orderSixtyFourMuThreeExteriorCellGraph G label hinj) where
+  card_left := hP
+  card_right := hN
+  H_twoRegular := orderSixtyFourMuThreeInternalRel_twoRegular G hdeg hflip
+  K_twoRegular := orderSixtyFourMuThreeHole_twoRegular label hinj hP hN
+    hrowFiber hcolumnFiber
+  cycle_compatible := hcycle
+  row_hit := hrowHit
+  column_hit := hcolumnHit
+  rook := orderSixtyFourMuThreeExteriorCellGraph_rook
+    G hfree label hinj hadj
+  c4Free := orderSixtyFourMuThreeExteriorCellGraph_c4Free
+    G hfree label hinj
+
 end
 
 end Erdos85
@@ -444,3 +515,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFourMuThreeHole_twoRegular
 #print axioms Erdos85.orderSixtyFourMuThreeInternalRel_twoRegular
 #print axioms Erdos85.orderSixtyFourMuThreeExteriorCellGraph_rook
+#print axioms Erdos85.orderSixtyFourMuThree_mixedGridCode_of_hitLaws
