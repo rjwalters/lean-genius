@@ -13,6 +13,21 @@ namespace Erdos85
 
 noncomputable section
 
+/-- The global ordered cyclic census is the sum of its first-root fibers. -/
+theorem card_cyclicColoredTriples_eq_sum_rootedCyclicColoredPairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A B C : SimpleGraph V)
+    [DecidableRel A.Adj] [DecidableRel B.Adj] [DecidableRel C.Adj] :
+    (cyclicColoredTriples A B C).card =
+      ∑ x : V, (rootedCyclicColoredPairs A B C x).card := by
+  have htrace := trace_three_adjMatrices_eq_card_cyclicColoredTriples A B C
+  change (∑ x : V,
+      (A.adjMatrix ℤ * B.adjMatrix ℤ * C.adjMatrix ℤ) x x) =
+        ((cyclicColoredTriples A B C).card : ℤ) at htrace
+  simp_rw [mul_three_adjMatrices_apply_eq_card_rootedCyclicColoredPairs]
+    at htrace
+  exact_mod_cast htrace.symm
+
 /-- Ordered ambient triangles rooted at `x` are counted twice by the local
 unoriented triangle-edge count. -/
 theorem card_rootedCyclicColoredPairs_self_eq_two_mul_localTriangleEdges
@@ -53,5 +68,7 @@ end
 
 end Erdos85
 
+#print axioms
+  Erdos85.card_cyclicColoredTriples_eq_sum_rootedCyclicColoredPairs
 #print axioms
   Erdos85.card_rootedCyclicColoredPairs_self_eq_two_mul_localTriangleEdges
