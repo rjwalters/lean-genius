@@ -1910,7 +1910,19 @@ generalized rather than merely replayed.
      autocorrelation profiles.  Thus the remaining rigidity leaf can be
      attacked entirely through the autocorrelation profiles of the competing
      Hamiltonian-coordinate tiles; the identity alone still does not imply
-     positivity at every admissible shift.
+     positivity at every admissible shift.  The q=8 per-shift artifact
+     `assembly/per_shift_overlaps.json` (16,384 passing first-two-block
+     records, hence 524,288 tested third interleavings, over 24 sampled owner
+     assignments) gives stronger finite evidence: the number of violated
+     pairs on the newly joined endpoint grid is always one of
+     `{16,32,48,64} = {2q,4q,6q,8q}`.  This suggests an **AT-64 candidate**
+     lower bound of `2q`, but is not presently q-generic: the new block is
+     shifted in one pair of owner-factor Hamiltonian coordinates while the
+     old via tile is expressed in a competing pair, and no uniform
+     equivariance between those coordinates has been proved.  The observed
+     quantization may depend on the classified q=8 representatives.  The
+     honest extension leaf remains a coordinate-rigidity theorem, not an
+     unsupported translation-orbit assertion.
      **`GAP A-REG-STRATA` (q=8).**  The PROVEN
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
