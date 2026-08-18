@@ -62,6 +62,75 @@ theorem orderSixtyFour_allSixteen_triangleFreeColorOrder_eq_three_mul_add_one
   refine ⟨k, ?_⟩
   simpa [C, T] using (by omega : C = 3 * k + 1)
 
+/-- In the all-size-sixteen stratum, the triangle-free graph is two-regular
+on its colored support and isolated elsewhere, so its edge count equals the
+support order. -/
+theorem orderSixtyFour_allSixteen_triangleFreeColorOrder_eq_edgeFinset_card
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hsize : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16) :
+    (Finset.univ.filter fun x : Fin 64 =>
+      (triangleFreeEdgeGraph G).degree x = 2).card =
+        (triangleFreeEdgeGraph G).edgeFinset.card := by
+  let T := triangleFreeEdgeGraph G
+  let C := (Finset.univ.filter fun x : Fin 64 => T.degree x = 2).card
+  have hdegree (x : Fin 64) : T.degree x = 0 ∨ T.degree x = 2 := by
+    simpa [T] using
+      orderSixtyFour_allSixteen_triangleFree_degree_zero_or_two
+        G hfree hreg hsize x
+  have hsum : (∑ x : Fin 64, T.degree x) = 2 * C := by
+    calc
+      (∑ x : Fin 64, T.degree x) =
+          ∑ x : Fin 64, if T.degree x = 2 then 2 else 0 := by
+        apply Finset.sum_congr rfl
+        intro x _hx
+        rcases hdegree x with hx0 | hx2
+        · simp [hx0]
+        · simp [hx2]
+      _ = 2 * C := by
+        rw [← Finset.sum_filter]
+        simp [C, Nat.mul_comm]
+  have hhand := T.sum_degrees_eq_twice_card_edges
+  change C = T.edgeFinset.card
+  omega
+
+/-- Exact tradeoff between the mixed color order and ambient triangle count:
+each extra triangle removes three triangle-free colored vertices. -/
+theorem orderSixtyFour_allSixteen_colorOrder_add_three_mul_triangleCount_eq_256
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hsize : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16) :
+    (Finset.univ.filter fun x : Fin 64 =>
+      (triangleFreeEdgeGraph G).degree x = 2).card +
+        3 * (adjacencyTriangleMinorFinset G).card = 256 := by
+  have hcolor :=
+    orderSixtyFour_allSixteen_triangleFreeColorOrder_eq_edgeFinset_card
+      G hfree hreg hsize
+  have hsum := orderSixtyFour_regular_sum_triangleFreeDegrees_eq
+    G hfree hreg
+  have hhand := (triangleFreeEdgeGraph G).sum_degrees_eq_twice_card_edges
+  have hsumZ :
+      (∑ x : Fin 64, ((triangleFreeEdgeGraph G).degree x : ℤ)) =
+        2 * ((triangleFreeEdgeGraph G).edgeFinset.card : ℤ) := by
+    exact_mod_cast hhand
+  rw [hsumZ] at hsum
+  rw [hcolor]
+  exact_mod_cast (by omega :
+    (triangleFreeEdgeGraph G).edgeFinset.card +
+      3 * (adjacencyTriangleMinorFinset G).card = 256)
+
 /-- Congruence form of the mixed-sector color-order constraint. -/
 theorem orderSixtyFour_allSixteen_triangleFreeColorOrder_mod_three_eq_one
     (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
@@ -202,6 +271,33 @@ theorem orderSixtyFour_allSixteen_seven_le_triangleFreeColorOrder
         G hfree hreg hsize
   simpa [S, T] using (by omega : 7 ≤ S.card)
 
+/-- Numerical triangle range forced by the mixed color identity. -/
+theorem orderSixtyFour_allSixteen_triangleCount_between_sixtyFour_eightyThree
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hsize : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16) :
+    64 ≤ (adjacencyTriangleMinorFinset G).card ∧
+      (adjacencyTriangleMinorFinset G).card ≤ 83 := by
+  let C := (Finset.univ.filter fun x : Fin 64 =>
+    (triangleFreeEdgeGraph G).degree x = 2).card
+  have hid :=
+    orderSixtyFour_allSixteen_colorOrder_add_three_mul_triangleCount_eq_256
+      G hfree hreg hsize
+  have hseven :=
+    orderSixtyFour_allSixteen_seven_le_triangleFreeColorOrder
+      G hfree hreg hsize
+  have hCle : C ≤ 64 := by
+    exact Finset.card_le_univ _
+  change 64 ≤ (adjacencyTriangleMinorFinset G).card ∧
+    (adjacencyTriangleMinorFinset G).card ≤ 83
+  omega
+
 end
 
 end Erdos85
@@ -209,6 +305,12 @@ end Erdos85
 #print axioms
   Erdos85.orderSixtyFour_allSixteen_triangleFreeColorOrder_eq_three_mul_add_one
 #print axioms
+  Erdos85.orderSixtyFour_allSixteen_triangleFreeColorOrder_eq_edgeFinset_card
+#print axioms
+  Erdos85.orderSixtyFour_allSixteen_colorOrder_add_three_mul_triangleCount_eq_256
+#print axioms
   Erdos85.orderSixtyFour_allSixteen_triangleFreeColorOrder_mod_three_eq_one
 #print axioms
   Erdos85.orderSixtyFour_allSixteen_seven_le_triangleFreeColorOrder
+#print axioms
+  Erdos85.orderSixtyFour_allSixteen_triangleCount_between_sixtyFour_eightyThree
