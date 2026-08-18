@@ -154,9 +154,9 @@ theorem orderSixtyFour_seven_components_outside_nonprincipal_spectral_dichotomy
   have hz := congrFun hzero ⟨x, hx⟩
   simpa [Matrix.mulVec, Jsq] using hz
 
-/-- If the exterior-pair graph is connected, the residual side of the
-nonprincipal spectral dichotomy has the concrete structural consequence that
-the exterior-pair graph is bipartite. -/
+/-- The residual side of the nonprincipal spectral dichotomy forces the
+exterior-pair graph to be bipartite.  No connectivity assumption is needed:
+order sixteen lies below the `3 * 6 + 1` component-size threshold. -/
 theorem orderSixtyFour_seven_components_outside_transport_or_pairBipartite
     (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -176,7 +176,6 @@ theorem orderSixtyFour_seven_components_outside_transport_or_pairBipartite
       let B := (G.adjMatrix ℂ).toBlock p (fun x ↦ x ∈ q)
       let C := (G.induce q).adjMatrix ℂ
       let Rg := exteriorPairGraph G c.supp
-      Rg.Connected →
       ∀ (v : c.supp → ℂ) (lambda : ℂ),
         v ≠ 0 → lambda ≠ 2 → H.mulVec v = lambda • v →
         (B.transpose.mulVec v ≠ 0 ∧
@@ -203,12 +202,16 @@ theorem orderSixtyFour_seven_components_outside_transport_or_pairBipartite
   subst d
   refine ⟨c, hc, ?_⟩
   dsimp only at hdich ⊢
-  intro hRconn v lambda hvne hlambda hHv
+  intro v lambda hvne hlambda hHv
   rcases hdich v lambda hlambda hHv with htransport | hbottom
   · exact Or.inl htransport
   · right
-    apply isBipartite_of_complex_negativeDegree_eigenvector
-      (exteriorPairGraph G c.supp) hRconn 6 hdRreg v hvne
+    apply isBipartite_of_complex_negativeDegree_eigenvector_of_card_lt_three_mul_add_one
+      (exteriorPairGraph G c.supp) 6 (by omega) hdRreg (by
+        have hcardc : Fintype.card c.supp = c.supp.ncard := by
+          simpa [Nat.card_eq_fintype_card] using Nat.card_coe_set_eq c.supp
+        rw [hcardc, hc]
+        omega) v hvne
     intro x
     rw [← SimpleGraph.adjMatrix_mulVec_apply]
     have hx := congrFun hbottom x
