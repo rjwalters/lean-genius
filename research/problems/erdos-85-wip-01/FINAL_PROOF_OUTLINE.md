@@ -1891,8 +1891,13 @@ generalized rather than merely replayed.
      stratum, owner exhaustion now **PROVEN q-GENERIC** places this residue in
      the same-owner `AA` or `BB` cells
      (`binarySquare_regular_twoComponents_defectEdge_sameOwner_card_lower`,
-     `2cda16a821`).  Exploiting that certified same-owner pressure against
-     its center-grid capacity is the next q-generic leaf.  In particular the
+     `2cda16a821`).  The matching upper bound is also **PROVEN q-GENERIC**:
+     canonical centers inject `AA` into an `m_a×m_a` grid, and similarly for
+     `BB`, giving the sandwich
+     `q²-2(q-1)-2m_a m_b ≤ |AA∪BB| ≤ m_a²+m_b²`
+     (`48f0a3573c`, `a5a62951dc`).  This local inequality is compatible with
+     every q=8 two-part shape; the next leaf is compatibility of the center-
+     grid injections across adjacent defect edges.  In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
      row and is therefore **PROVEN q-GENERIC but not itself contradictory**;
