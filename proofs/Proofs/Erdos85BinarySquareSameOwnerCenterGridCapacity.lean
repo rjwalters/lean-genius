@@ -1,6 +1,7 @@
 import Proofs.Erdos85BinarySquareTwoOwnerDefectEdgeResidue
 import Proofs.Erdos85BinarySquareMixedOwnerRectangleRouting
 import Proofs.Erdos85RoutingOwnerRainbowHexagon
+import Proofs.Erdos85BinarySquareCenterGridComplement
 
 /-! # Same-owner middles inject into the center grid -/
 
@@ -37,6 +38,192 @@ theorem componentOwnerCenter_spec
   have hu := Classical.choose_spec
     (componentOwnerGraph_adj_exists_owner_commonNeighbor G D owner h)
   exact ⟨u.2, hu.1, hu.2⟩
+
+theorem componentOwnerCenter_eq_of_commonNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (D : SimpleGraph V) [DecidableEq D.ConnectedComponent]
+    (owner : D.ConnectedComponent) {x z u : V}
+    (h : (componentOwnerGraph G D owner).Adj x z)
+    (hxu : G.Adj x u) (hzu : G.Adj z u) :
+    componentOwnerCenter G D owner x z = u := by
+  have hc := componentOwnerCenter_spec G D owner h
+  by_contra hne
+  apply hfree
+  exact containsC4_of_two_common hne h.ne hc.2.1 hxu hc.2.2 hzu
+
+/-- The nondefect part of the owner-selector center grid. -/
+def sameOwnerNondefectCenterPairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (owner : (secondOrderDefectGraph G).ConnectedComponent)
+    (x y : V) : Finset (V × V) :=
+  ((componentNeighborFinset G (secondOrderDefectGraph G) owner x) ×ˢ
+    componentNeighborFinset G (secondOrderDefectGraph G) owner y).filter
+      fun p => ¬ (secondOrderDefectGraph G).Adj p.1 p.2
+
+/-- The defect cells in an owner-selector center grid. -/
+def sameOwnerDefectCenterPairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (owner : (secondOrderDefectGraph G).ConnectedComponent)
+    (x y : V) : Finset (V × V) :=
+  ((componentNeighborFinset G (secondOrderDefectGraph G) owner x) ×ˢ
+    componentNeighborFinset G (secondOrderDefectGraph G) owner y).filter
+      fun p => (secondOrderDefectGraph G).Adj p.1 p.2
+
+/-- Exact center-grid realization: same-owner middles are in bijection with
+the nondefect pairs in the two owner selectors. -/
+theorem sameOwner_coloredTwoStepMiddles_card_eq_nondefectCenterPairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (owner : (secondOrderDefectGraph G).ConnectedComponent)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    (coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) owner)
+      (componentOwnerGraph G (secondOrderDefectGraph G) owner) x y).card =
+      (sameOwnerNondefectCenterPairs G owner x y).card := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := componentOwnerGraph G D owner
+  let S := coloredTwoStepMiddles O O x y
+  let T := sameOwnerNondefectCenterPairs G owner x y
+  let f : V → V × V := fun z =>
+    (componentOwnerCenter G D owner x z,
+      componentOwnerCenter G D owner y z)
+  apply Finset.card_bij (fun z _ => f z)
+  · intro z hz
+    have hz' := (Finset.mem_filter.mp hz).2
+    have hu := componentOwnerCenter_spec G D owner hz'.1
+    have hv := componentOwnerCenter_spec G D owner hz'.2.symm
+    have huv : (f z).1 ≠ (f z).2 := by
+      intro huv
+      have huv' : componentOwnerCenter G D owner x z =
+          componentOwnerCenter G D owner y z := by simpa [f] using huv
+      apply (not_secondOrderDefect_adj_of_commonNeighbor G hfree hxyD.ne
+        hu.2.1 (huv' ▸ hv.2.1)) hxyD
+    have hnotD := not_secondOrderDefect_adj_of_commonNeighbor
+      G hfree huv hu.2.2.symm hv.2.2.symm
+    apply Finset.mem_filter.mpr
+    refine ⟨?_, hnotD⟩
+    rw [Finset.mem_product]
+    constructor
+    · rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset x _).mpr hu.2.1,
+          (ConnectedComponent.mem_supp_iff owner _).mp hu.1⟩
+    · rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset y _).mpr hv.2.1,
+          (ConnectedComponent.mem_supp_iff owner _).mp hv.1⟩
+  · intro z₁ hz₁ z₂ hz₂ hpair
+    have hz₁' := (Finset.mem_filter.mp hz₁).2
+    have hz₂' := (Finset.mem_filter.mp hz₂).2
+    have hu₁ := componentOwnerCenter_spec G D owner hz₁'.1
+    have hv₁ := componentOwnerCenter_spec G D owner hz₁'.2.symm
+    have hu₂ := componentOwnerCenter_spec G D owner hz₂'.1
+    have hv₂ := componentOwnerCenter_spec G D owner hz₂'.2.symm
+    have huEq : componentOwnerCenter G D owner x z₁ =
+        componentOwnerCenter G D owner x z₂ := by
+      simpa [f] using congrArg Prod.fst hpair
+    have hvEq : componentOwnerCenter G D owner y z₁ =
+        componentOwnerCenter G D owner y z₂ := by
+      simpa [f] using congrArg Prod.snd hpair
+    rw [← huEq] at hu₂
+    rw [← hvEq] at hv₂
+    have huv : (f z₁).1 ≠ (f z₁).2 := by
+      intro huv
+      have huv' : componentOwnerCenter G D owner x z₁ =
+          componentOwnerCenter G D owner y z₁ := by simpa [f] using huv
+      apply (not_secondOrderDefect_adj_of_commonNeighbor G hfree hxyD.ne
+        hu₁.2.1 (huv' ▸ hv₁.2.1)) hxyD
+    by_contra hne
+    apply hfree
+    exact containsC4_of_two_common huv hne
+      hu₁.2.2 hv₁.2.2 hu₂.2.2 hv₂.2.2
+  · intro p hp
+    have hp' := Finset.mem_filter.mp hp
+    have hpProd := Finset.mem_product.mp hp'.1
+    have hxp : G.Adj x p.1 := by
+      exact (G.mem_neighborFinset x p.1).mp
+        (Finset.mem_filter.mp hpProd.1).1
+    have hyp : G.Adj y p.2 := by
+      exact (G.mem_neighborFinset y p.2).mp
+        (Finset.mem_filter.mp hpProd.2).1
+    have hp1mem : p.1 ∈ owner.supp :=
+      (ConnectedComponent.mem_supp_iff owner p.1).mpr
+        (Finset.mem_filter.mp hpProd.1).2
+    have hp2mem : p.2 ∈ owner.supp :=
+      (ConnectedComponent.mem_supp_iff owner p.2).mpr
+        (Finset.mem_filter.mp hpProd.2).2
+    let d := D.connectedComponentMk x
+    let xs : d.supp := ⟨x, ConnectedComponent.connectedComponentMk_mem⟩
+    let ys : d.supp := ⟨y, (ConnectedComponent.mem_supp_iff d y).mpr
+      (ConnectedComponent.connectedComponentMk_eq_of_adj hxyD.symm)⟩
+    have hpGrid : p ∈ crossRootCenterGrid G x y := by
+      rw [crossRootCenterGrid, Finset.mem_product]
+      exact ⟨(G.mem_neighborFinset x p.1).mpr hxp,
+        (G.mem_neighborFinset y p.2).mpr hyp⟩
+    obtain hDp | ⟨z, hpz⟩ := centerGrid_pair_defect_or_exists_commonNeighbor
+      G hfree xs ys hxyD hpGrid
+    · exact False.elim (hp'.2 hDp)
+    · have hzx : z ≠ x := by
+        intro h
+        subst z
+        exact (not_secondOrderDefect_adj_of_commonNeighbor G hfree hxyD.ne
+          hpz.2.symm hyp) hxyD
+      have hzy : z ≠ y := by
+        intro h
+        subst z
+        exact (not_secondOrderDefect_adj_of_commonNeighbor G hfree hxyD.ne
+          hxp hpz.1.symm) hxyD
+      have hOxz := componentOwnerGraph_adj_of_commonNeighbor_mem_owner
+        G D owner hzx.symm hp1mem hxp hpz.1.symm
+      have hOzy := componentOwnerGraph_adj_of_commonNeighbor_mem_owner
+        G D owner hzy hp2mem hpz.2.symm hyp
+      refine ⟨z, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hOxz, hOzy⟩, ?_⟩
+      apply Prod.ext
+      · exact componentOwnerCenter_eq_of_commonNeighbor
+          G hfree D owner hOxz hxp hpz.1.symm
+      · exact componentOwnerCenter_eq_of_commonNeighbor
+          G hfree D owner hOzy.symm hyp hpz.2.symm
+
+/-- Exact complement identity: the same-owner middles and the defect cells
+partition the full owner-selector center grid. -/
+theorem sameOwner_coloredTwoStepMiddles_card_add_defectCenterPairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (owner : (secondOrderDefectGraph G).ConnectedComponent)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    (coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) owner)
+      (componentOwnerGraph G (secondOrderDefectGraph G) owner) x y).card +
+      (sameOwnerDefectCenterPairs G owner x y).card =
+      (componentNeighborFinset G (secondOrderDefectGraph G) owner x).card *
+        (componentNeighborFinset G (secondOrderDefectGraph G) owner y).card := by
+  rw [sameOwner_coloredTwoStepMiddles_card_eq_nondefectCenterPairs
+    G hfree owner hxyD]
+  simpa [sameOwnerNondefectCenterPairs, sameOwnerDefectCenterPairs,
+    Finset.card_product] using
+    (Finset.card_filter_add_card_filter_not
+      (s := (componentNeighborFinset G (secondOrderDefectGraph G) owner x) ×ˢ
+        componentNeighborFinset G (secondOrderDefectGraph G) owner y)
+      (fun p : V × V => ¬ (secondOrderDefectGraph G).Adj p.1 p.2))
 
 /-- At a defect edge, same-owner middles inject into the product of the two
 owner selectors. -/
@@ -148,6 +335,36 @@ theorem binarySquare_regular_sameOwner_defectEdge_card_le_sq
     exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
   simpa [hsel x, hsel y] using
     (sameOwner_coloredTwoStepMiddles_card_le_centerGrid
+      G hfree owner hxyD)
+
+/-- In a normalized component of size `qm`, the exact complement of the
+same-owner middles inside the `m × m` center grid is its defect-cell count. -/
+theorem binarySquare_regular_sameOwner_defectEdge_card_add_defectCells_eq_sq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (owner : (secondOrderDefectGraph G).ConnectedComponent) {m : ℕ}
+    (howner : owner.supp.ncard = q * m)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    (coloredTwoStepMiddles
+      (componentOwnerGraph G (secondOrderDefectGraph G) owner)
+      (componentOwnerGraph G (secondOrderDefectGraph G) owner) x y).card +
+      (sameOwnerDefectCenterPairs G owner x y).card = m * m := by
+  have hsel (z : V) :
+      (componentNeighborFinset G (secondOrderDefectGraph G) owner z).card = m := by
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard
+      ((secondOrderDefectGraph G).connectedComponentMk z) owner (x := z) (by rfl)
+    rw [howner] at hmul
+    exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+  simpa [hsel x, hsel y] using
+    (sameOwner_coloredTwoStepMiddles_card_add_defectCenterPairs
       G hfree owner hxyD)
 
 /-- The two-owner defect-edge sandwich: certified same-owner pressure is
