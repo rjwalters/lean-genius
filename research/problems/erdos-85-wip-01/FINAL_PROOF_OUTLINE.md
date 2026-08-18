@@ -2026,6 +2026,20 @@ generalized rather than merely replayed.
      not exclude the synchronized-cycle 16-vertex example, whose least
      eigenvalue is already `-2`; the remaining terminal must still use the
      shared selector labels or their coupling to `D_S`.
+     That coupling is now exposed **q-GENERICALLY** rather than only at order
+     64.  `binarySquare_regular_restrictedOwner_adjMatrix_comm_inducedDefect`
+     (`3f2b87077c`) lifts restricted owner/defect commutation to every binary
+     square order; the former order-64 theorem is now just a specialization.
+     More concretely, `1aa29e66ce` proves the canonically labeled pointwise
+     balance
+     `#(selector-intersection then D-step) = #(D-step then
+     selector-intersection)` for every ordered pair of source vertices
+     (`binarySquare_regular_sizeTwoPart_source_selector_defect_path_card_eq`).
+     This removes “translate matrix commutation into the selector model” as a
+     GAP.  The residual is to extract an incompatibility from these balances
+     together with the 6-factor/2-factor partition; the balance equality by
+     itself is still a reformulation of commutation and is not claimed to kill
+     the synchronized-cycle example.
      The residual `[6,2]` target must couple the transported
      defect blocks to this line-graph edge partition; commute, degrees, and
      the entry cap alone cannot close it.
