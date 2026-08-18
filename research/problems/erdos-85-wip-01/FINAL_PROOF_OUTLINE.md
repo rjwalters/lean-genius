@@ -2008,7 +2008,11 @@ generalized rather than merely replayed.
      center-column `b` and an `H`-eligible input row `x`, evaluation at `x`
      gives a bijection from the six occupied centers in column `b` to the six
      occupied columns `{y | ¬K x y}` in row `x`.  Injection is rook
-     zero-agreement and surjection is the column-hit uniqueness law.
+     zero-agreement and surjection is the column-hit uniqueness law.  The
+     exact row-dual is also **PROVEN** (`6de4b656ac`): fixing center-row `a`
+     and an `H`-eligible target column `y`, inverse evaluation bijects the six
+     row-centers with the six occupied rows `{x | ¬K x y}`.  Thus the foreign
+     code has a full dual Latin/transversal interface.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
