@@ -1,4 +1,5 @@
 import Proofs.Erdos85MuThreeAllTfNativeCnf
+import Proofs.Erdos85MuThreeAllTfNativeCertificates
 import Proofs.Erdos85SequentialCounterReification
 
 /-! # Semantic building blocks for the native all-triangle-free CNF
@@ -724,22 +725,6 @@ theorem mu3NativeFinalState_formulaSatisfiable
           (mu3NativeHitSpecs shape) {} edgeVal).symm]
   exact hfinal.1
 
-theorem satCnf_of_dimacsFormulaSatisfied
-    {formula : Array DimacsClause} {val : DimacsValuation}
-    (hnz : ∀ clause ∈ formula, DimacsClauseNonzero clause)
-    (hsat : dimacsFormulaSatisfied val formula) :
-    (show Std.Sat.CNF Nat from
-      { clauses := dimacsFormulaToSatClauses formula }).Sat
-      (satAssignmentOfDimacs val) := by
-  rw [Std.Sat.CNF.sat_def, Std.Sat.CNF.eval, Array.all_eq_true]
-  intro i hi
-  have hi' : i < formula.size := by
-    simpa [dimacsFormulaToSatClauses] using hi
-  simp only [dimacsFormulaToSatClauses, Array.getElem_map]
-  exact satClause_of_dimacsClauseSatisfied
-    (hnz formula[i] (Array.getElem_mem hi'))
-    (hsat formula[i] (Array.getElem_mem hi'))
-
 theorem mu3AllTfNativeSatCnf_satisfiable
     (shape : Mu3AllTfShape) (edgeVal : DimacsValuation)
     (hnz : ∀ clause ∈ (mu3NativeFinalState shape).clauses,
@@ -758,6 +743,35 @@ theorem mu3AllTfNativeSatCnf_satisfiable
     shape edgeVal hhitNonzero hhitBound hhitCounts hc4
   refine ⟨satAssignmentOfDimacs val, ?_⟩
   exact satCnf_of_dimacsFormulaSatisfied
-    hnz hsat
+    hsat hnz
+
+/-- Certificate-facing contradiction endpoint.  All generator semantics are
+above this boundary; only the selected shape's checked LRAT theorem enters
+here. -/
+theorem false_of_mu3AllTfNativeConstraints
+    (shape : Mu3AllTfShape) (edgeVal : DimacsValuation)
+    (hnz : ∀ clause ∈ (mu3NativeFinalState shape).clauses,
+      DimacsClauseNonzero clause)
+    (hhitNonzero : ∀ spec ∈ mu3NativeHitSpecs shape,
+      ∀ lit ∈ spec.1, lit ≠ 0)
+    (hhitBound : ∀ spec ∈ mu3NativeHitSpecs shape,
+      ∀ lit ∈ spec.1, lit.natAbs ≤ 1128)
+    (hhitCounts : ∀ spec ∈ mu3NativeHitSpecs shape,
+      seqPrefixTrue (mu3NativeVarsRow edgeVal spec.1) spec.1.size = spec.2)
+    (hc4 :
+      let hit := mu3NativeHitSpecVal shape edgeVal
+      Mu3NativeC4FoldConditions 1128 edgeVal mu3NativePairs hit.1 hit.2) :
+    False := by
+  obtain ⟨assignment, hsat⟩ := mu3AllTfNativeSatCnf_satisfiable
+    shape edgeVal hnz hhitNonzero hhitBound hhitCounts hc4
+  have hunsat : (mu3AllTfNativeSatCnf shape).Unsat := by
+    cases shape
+    · exact mu3AllTfNativeC16_unsat
+    · exact mu3AllTfNativeC10C6_unsat
+    · exact mu3AllTfNativeC8C8_unsat
+  have hfalse := hunsat assignment
+  rw [Std.Sat.CNF.sat_def] at hsat
+  rw [hsat] at hfalse
+  contradiction
 
 end Erdos85
