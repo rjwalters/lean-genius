@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareSizeTwoMuThreeCollapse
+import Proofs.Erdos85CrossEdgeTriangleDichotomy
 
 /-!
 # Grid structure behind the `μ = 3` exterior routing branch
@@ -106,6 +107,39 @@ theorem componentNeighborFiber_exists_explicit_signedPair
   exact Finset.mem_filter.mpr ⟨(G.mem_neighborFinset x y).mpr hxy,
     (ConnectedComponent.mem_supp_iff c y).mp hyc⟩
 
+/-- The explicit signed-pair interface composed with the exact exterior
+triangle dichotomy.  This is the graph-facing local normal form used by the
+`μ = 3` grid: an occupied cell is split according to whether its signed label
+is an internal ambient edge, with no stronger triangle-degree claim. -/
+theorem exterior_signedPair_triangleDichotomy_of_filter_cards
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (s : V → ℤ) (u : V) (hu : u ∉ c.supp)
+    (hsign : ∀ y, y ∈ c.supp → s y = -1 ∨ s y = 1)
+    (hpos : (((G.neighborFinset u).filter
+      (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c)).filter
+        fun y => s y = 1).card = 1)
+    (hneg : (((G.neighborFinset u).filter
+      (fun y => (secondOrderDefectGraph G).connectedComponentMk y = c)).filter
+        fun y => s y = -1).card = 1) :
+    ∃ z z', G.Adj u z ∧ G.Adj u z' ∧ z ∈ c.supp ∧ z' ∈ c.supp ∧
+      z ≠ z' ∧ s z = 1 ∧ s z' = -1 ∧
+      (∀ y, G.Adj u y → y ∈ c.supp → y = z ∨ y = z') ∧
+      (G.Adj z z' →
+        ∀ y, G.Adj u y → y ∉ c.supp → ¬ G.Adj z y ∧ ¬ G.Adj z' y) ∧
+      (¬ G.Adj z z' →
+        (∃! y, G.Adj u y ∧ y ∉ c.supp ∧ G.Adj z y) ∧
+        (∃! y, G.Adj u y ∧ y ∉ c.supp ∧ G.Adj z' y)) := by
+  obtain ⟨z, z', huz, huz', hz, hz', hzz', hsz, hsz', hpair⟩ :=
+    componentNeighborFiber_exists_explicit_signedPair G c s u hsign hpos hneg
+  have hdich := exterior_triangle_dichotomy G hfree c hu hz hz' hzz' huz huz' hpair
+  exact ⟨z, z', huz, huz', hz, hz', hzz', hsz, hsz', hpair, hdich.1, hdich.2⟩
+
 /-- A normalized size-two component at square order has exactly `q-2`
 ambient neighbours outside the component at every vertex.  At `q=8` these
 are the six occupied cells in each sign row or column. -/
@@ -169,5 +203,6 @@ end Erdos85
 #print axioms Erdos85.c4Free_commonNeighborPair_injective
 #print axioms Erdos85.signedPair_exists_of_filter_cards
 #print axioms Erdos85.componentNeighborFiber_exists_explicit_signedPair
+#print axioms Erdos85.exterior_signedPair_triangleDichotomy_of_filter_cards
 #print axioms Erdos85.binarySquare_regular_sizeTwoComponent_exteriorNeighborCard
 #print axioms Erdos85.orderSixtyFour_sizeTwoComponent_exteriorNeighborCard_six
