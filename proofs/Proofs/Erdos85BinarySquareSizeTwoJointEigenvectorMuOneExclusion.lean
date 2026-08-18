@@ -6,10 +6,11 @@ import Proofs.Erdos85BinarySquareRegularParity
 At order 64 (`q = 8`), let `c` be a size-two defect component (16 vertices)
 carrying a `±1`-valued vector `v` (zero off `c`) which is an eigenvector of the
 internal ambient 2-factor `H = A[c]` with eigenvalue `−2` and of the defect
-graph `D` with eigenvalue `μ = 1`.  (Such `v` exists for every size-two block
-whose internal factor is a union of even cycles: the alternating vector of a
-Hamiltonian internal cycle, or a joint eigenvector on the plane spanned by the
-two alternating vectors when the factor is `C₈ ⊔ C₈`.)
+graph `D` with eigenvalue `μ = 1`.  Connected bipartite `H` supplies such a
+joint eigenline by commutation and negative-eigenline rigidity.  For a
+disconnected union of even cycles, commutation only preserves the whole
+multi-dimensional `−2` eigenspace; producing a global `±1` joint eigenvector
+is a separate hypothesis, exactly as reflected in the theorem statement.
 
 Then `w := A v − (−2) v` is supported off `c` with values in `{−2, 0, 2}`, and
 `A w = (q − 5 − μ) v + 2 w = 2 v + 2 w`.  Reading this at a vertex `u` with
@@ -19,9 +20,9 @@ a vertex `z` of `c` with `v z = 1` shows `z` has exactly one neighbour with
 `v = 1`.  Hence `#{w = 2} = 8/2 = 4`, and the four vertices with `w = 2` span a
 graph of minimum degree `≥ 2` on four vertices — which contains a `C₄`.
 
-So `μ = 1` is impossible.  This kills the `μ = 1` joint eigenline for every
-`[8,8]`-type size-two block at `q = 8` (the `[16]`-type blocks never have
-`μ = 1`).
+So `μ = 1` is impossible whenever the displayed signed joint eigenvector has
+been produced.  In particular this kills the connected-internal branch at
+`q = 8`; disconnected even-cycle factors still require a production argument.
 -/
 
 open SimpleGraph Matrix
