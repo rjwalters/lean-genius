@@ -1549,6 +1549,15 @@ generalized rather than merely replayed.
      `no_fourFactorization_fiveFiveThreeThreeT40`, and
      `no_fourFactorization_fiveFiveThreeThreeT30` exclude exactly those four
      labeled defect matrices under the honest four-factor predicate.  The
+     smaller kernel census `Erdos85LambdaSixUniqueFactorSAT` represents a
+     candidate factor by the 64 possible edges of `Dᶜ`; its four
+     `unique_commutingTwoFactor64_*` theorems prove directly that each labeled
+     defect matrix has exactly one commuting two-factor.  These proofs build
+     substantially faster and feed the graph-facing consumer
+     `orderSixtyFour_false_of_unique_commuting_twoFactor`, which derives the
+     contradiction from any two distinct owner colors.  The unique factor is
+     a canonical `Dᶜ` mask, not the distinguished spectral relation `H`
+     (which need not be disjoint from `D`).  The
      graph-label consumer no longer needs to manipulate bit vectors:
      `not_boolFourFactorization_tenSixT40`,
      `not_boolFourFactorization_tenSixT30`, and the two corresponding
