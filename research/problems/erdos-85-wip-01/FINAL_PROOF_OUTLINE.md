@@ -1990,7 +1990,11 @@ generalized rather than merely replayed.
      (`adfb0b35aa`) proves that two distinct H-roots each have cut-degree at
      least two (one degree-six root plus fifteen degree-one roots would give
      only 21 incidences).  Thus two routing fragments are forced; the missing
-     content is now their cross-root/source-data coupling.  **GAP
+     content is now their stronger source-data coupling.  A first cross-root
+     separation is **PROVEN** by
+     `exists_two_HCells_with_private_cross_neighbors` (`aa71b76735`): since
+     two roots share at most one neighbour, each rich root has a private
+     non-H branch not adjacent to the other root.  **GAP
      A-REG-MU3-MIXED-QUOTIENT** is to turn these capacity and alternating-cycle
      constraints into a contradiction (or a finite, separately trusted
      certificate).  No q=8 stratum is marked killed by this reduction.
