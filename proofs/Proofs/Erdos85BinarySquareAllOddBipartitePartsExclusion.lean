@@ -60,16 +60,19 @@ theorem zmod8_odd_mul_self {n : ℤ} (hn : Odd n) : ((n : ZMod 8) * (n : ZMod 8)
   push_cast
   exact h _
 
-set_option maxHeartbeats 800000 in
 /-- Odd naturals square to `1` in `ZMod 8`. -/
 theorem zmod8_odd_mul_self_nat {n : ℕ} (hn : Odd n) : ((n : ZMod 8) * (n : ZMod 8)) = 1 := by
   have := zmod8_odd_mul_self (n := (n : ℤ)) (by exact_mod_cast hn)
   push_cast at this
   exact this
 
-/-- **BIP-ODD.**  All defect parts odd-sized and bipartite is impossible when
-`4 ∣ q`. -/
-theorem binarySquare_regular_allOddBipartiteParts_false
+set_option maxHeartbeats 800000 in
+/-- **BIP-ODD (general form).**  If every defect part is bipartite and at least
+one part has odd size, then `4 ∣ q` is impossible.  Only the odd base part `c₀`
+needs odd size: the coupling coefficients `L j c₀` are odd because `w_{c₀}` is,
+and reciprocity `m_j L_{j c₀} = m_{c₀} L_{c₀ j}` gives
+`L_{j c₀} L_{c₀ j} ≡ m_{c₀} m_j (mod 8)` for EVERY `j`, whatever the parity of `m_j`. -/
+theorem binarySquare_regular_allBipartiteParts_oddPart_false
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -80,7 +83,8 @@ theorem binarySquare_regular_allOddBipartiteParts_false
     (hreg : ∀ x, G.degree x = q)
     (hcard : Fintype.card V = q * q)
     (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
-    (hm : ∀ c, c.supp.ncard = q * m c) (hodd : ∀ c, Odd (m c))
+    (hm : ∀ c, c.supp.ncard = q * m c)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent) (hodd₀ : Odd (m c₀))
     (col : (secondOrderDefectGraph G).ConnectedComponent → V → Bool)
     (hbip : ∀ c x y, x ∈ c.supp → y ∈ c.supp →
       (secondOrderDefectGraph G).Adj x y → col c x ≠ col c y) :
@@ -147,18 +151,17 @@ theorem binarySquare_regular_allOddBipartiteParts_false
       (fun u v hu hv huv => hs_alt j u v hu hv huv) x (rep j) hx (hrep j)
     simp only [hL]
     rw [← hconst, mul_assoc, hs_sq j x hx, mul_one]
-  -- oddness
-  have hlam_odd : ∀ i, Odd (lam i) := by
-    intro i
-    obtain ⟨k, hk⟩ := hlam_par i
-    obtain ⟨r, hr⟩ := hodd i
+  -- oddness at the odd base part `c₀`
+  have hlam_odd : Odd (lam c₀) := by
+    obtain ⟨k, hk⟩ := hlam_par c₀
+    obtain ⟨r, hr⟩ := hodd₀
     exact ⟨k - r - 1, by push_cast at hk; omega⟩
-  have hL_odd : ∀ i j, j ≠ i → Odd (L j i) := by
-    intro i j hji
-    have hw := (hw_par i (rep j) (hdisj i j (Ne.symm hji) _ (hrep j))).1
-    have hwodd : Odd (w i (rep j)) := by
+  have hL_odd : ∀ j, j ≠ c₀ → Odd (L j c₀) := by
+    intro j hji
+    have hw := (hw_par c₀ (rep j) (hdisj c₀ j (Ne.symm hji) _ (hrep j))).1
+    have hwodd : Odd (w c₀ (rep j)) := by
       obtain ⟨k, hk⟩ := hw
-      obtain ⟨r, hr⟩ := hodd i
+      obtain ⟨r, hr⟩ := hodd₀
       exact ⟨k - r - 1, by push_cast at hk; omega⟩
     simp only [hL]
     rcases hs_in j (rep j) (hrep j) with h | h <;> rw [h]
@@ -244,12 +247,11 @@ theorem binarySquare_regular_allOddBipartiteParts_false
     have hqpos : (q : ℤ) ≠ 0 := by exact_mod_cast (by omega : q ≠ 0)
     have : (q : ℤ) * ((m j : ℤ) * L j i) = (q : ℤ) * ((m i : ℤ) * L i j) := by linarith
     exact mul_left_cancel₀ hqpos this
-  -- pick a part `i`
-  have hV : Nonempty V := by
-    rw [← Fintype.card_pos_iff, hcard]; positivity
-  obtain ⟨x₀⟩ := hV
-  set i := (secondOrderDefectGraph G).connectedComponentMk x₀ with hi
-  have hx₀i : x₀ ∈ i.supp := (hmem i x₀).mpr rfl
+  -- the odd base part `i := c₀` and a representative
+  set i := c₀ with hi
+  obtain ⟨x₀, hx₀⟩ := i.exists_rep
+  have hx₀' : (secondOrderDefectGraph G).connectedComponentMk x₀ = i := hx₀
+  have hx₀i : x₀ ∈ i.supp := (hmem i x₀).mpr hx₀'
   -- diagonal identity: `2(q−1) − λ_i² = Σ_{j ≠ i} L_{ji} L_{ij}`
   have hdiag : 2 * ((q : ℤ) - 1) - lam i * lam i =
       ∑ j ∈ Finset.univ.erase i, L j i * L i j := by
@@ -316,12 +318,12 @@ theorem binarySquare_regular_allOddBipartiteParts_false
     have hji : j ≠ i := Finset.ne_of_mem_erase hj
     have hr := congrArg (Int.cast : ℤ → ZMod 8) (hrec i j hji)
     push_cast at hr
-    have hmj := zmod8_odd_mul_self_nat (hodd j)
-    have hLij := zmod8_odd_mul_self (hL_odd j i (Ne.symm hji))
-    linear_combination (m j : ZMod 8) * (L i j : ZMod 8) * hr
-      - ((L j i : ZMod 8) * (L i j : ZMod 8)) * hmj + ((m i : ZMod 8) * (m j : ZMod 8)) * hLij
-  have hlam8 := zmod8_odd_mul_self (hlam_odd i)
-  have hmi8 := zmod8_odd_mul_self_nat (hodd i)
+    have hmi8' := zmod8_odd_mul_self_nat hodd₀
+    have hLji := zmod8_odd_mul_self (hL_odd j hji)
+    linear_combination (-(L j i : ZMod 8) * (m i : ZMod 8)) * hr
+      + ((m i : ZMod 8) * (m j : ZMod 8)) * hLji - ((L j i : ZMod 8) * (L i j : ZMod 8)) * hmi8'
+  have hlam8 := zmod8_odd_mul_self hlam_odd
+  have hmi8 := zmod8_odd_mul_self_nat hodd₀
   rw [Finset.sum_congr rfl hterm8, ← Finset.mul_sum] at hcast
   -- `Σ_{j ≠ i} m_j = q − m_i`
   have hsum_erase : ∑ j ∈ Finset.univ.erase i, (m j : ZMod 8) =
@@ -342,6 +344,30 @@ theorem binarySquare_regular_allOddBipartiteParts_false
   have hfinal : ∀ (kk mm : ZMod 8), mm * mm = 1 →
       2 * (4 * kk - 1) - 1 ≠ mm * (4 * kk - mm) := by decide
   exact hfinal (k : ZMod 8) (m i : ZMod 8) hmi8 hcast
+
+/-- **BIP-ODD (all-odd form).**  All defect parts odd-sized and bipartite is
+impossible when `4 ∣ q`. -/
+theorem binarySquare_regular_allOddBipartiteParts_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hq4 : 4 ∣ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = q * m c) (hodd : ∀ c, Odd (m c))
+    (col : (secondOrderDefectGraph G).ConnectedComponent → V → Bool)
+    (hbip : ∀ c x y, x ∈ c.supp → y ∈ c.supp →
+      (secondOrderDefectGraph G).Adj x y → col c x ≠ col c y) :
+    False := by
+  have hV : Nonempty V := by
+    rw [← Fintype.card_pos_iff, hcard]; positivity
+  obtain ⟨x₀⟩ := hV
+  exact binarySquare_regular_allBipartiteParts_oddPart_false G hfree hq hq4 hreg hcard m hm
+    ((secondOrderDefectGraph G).connectedComponentMk x₀) (hodd _) col hbip
 
 /-- Existential form of `binarySquare_regular_allOddBipartiteParts_false`. -/
 theorem binarySquare_regular_allOddBipartiteParts_false'
@@ -368,6 +394,72 @@ theorem binarySquare_regular_allOddBipartiteParts_false'
   choose col hbip using h2
   exact binarySquare_regular_allOddBipartiteParts_false G hfree hq hq4 hreg hcard m
     (fun c => (hm c).2) (fun c => (hm c).1) col hbip
+
+/-- **CAPSTONE (uniform for `4 ∣ q`).**  No defect component of a `q`-regular
+`C₄`-free graph on `q²` vertices is bipartite — no stratum hypothesis at all.
+Proof: if some odd-sized part is bipartite, then every part is bipartite
+(`..._odd_forces_others_bipartite`) and the general BIP-ODD kills it; otherwise
+the bipartite part `c` is even-sized and every other part is non-bipartite or
+even-sized, and the even-`q` mod-4 theorem kills it. -/
+theorem binarySquare_regular_no_bipartite_defectComponent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hq4 : 4 ∣ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = q * m c)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (col : V → Bool)
+    (hbip : ∀ x y, x ∈ c.supp → y ∈ c.supp →
+      (secondOrderDefectGraph G).Adj x y → col x ≠ col y) :
+    False := by
+  classical
+  have hqeven : Even q := by
+    obtain ⟨k, hk⟩ := hq4
+    exact ⟨2 * k, by omega⟩
+  -- Case A: some odd-sized part is bipartite
+  by_cases hA : ∃ c₁ : (secondOrderDefectGraph G).ConnectedComponent, Odd (m c₁) ∧
+      ∃ col₁ : V → Bool, ∀ x y, x ∈ c₁.supp → y ∈ c₁.supp →
+        (secondOrderDefectGraph G).Adj x y → col₁ x ≠ col₁ y
+  · obtain ⟨c₁, hodd₁, col₁, hbip₁⟩ := hA
+    -- every part is bipartite
+    have hall : ∀ c₂ : (secondOrderDefectGraph G).ConnectedComponent,
+        ∃ col₂ : V → Bool, ∀ x y, x ∈ c₂.supp → y ∈ c₂.supp →
+          (secondOrderDefectGraph G).Adj x y → col₂ x ≠ col₂ y := by
+      intro c₂
+      by_cases h : c₂ = c₁
+      · subst h; exact ⟨col₁, hbip₁⟩
+      · exact binarySquare_regular_bipartite_defectComponent_odd_forces_others_bipartite
+          G hfree hq hreg hcard c₁ (hm c₁) hodd₁ col₁ hbip₁ c₂ h
+    choose cols hcols using hall
+    exact binarySquare_regular_allBipartiteParts_oddPart_false G hfree hq hq4 hreg hcard m hm
+      c₁ hodd₁ cols hcols
+  · -- Case B: no odd-sized part is bipartite, so `c` is even and every other
+    -- part is non-bipartite or even
+    push Not at hA
+    have hmeven : Even (m c) := by
+      by_contra hne
+      obtain ⟨x, y, hx, hy, hxy, heq⟩ := hA c (Nat.not_even_iff_odd.mp hne) col
+      exact hbip x y hx hy hxy heq
+    apply binarySquare_regular_bipartite_evenPart_false_of_others_even_or_not_bipartite
+      G hfree hq hqeven hreg hcard c (hm c) hmeven col hbip
+    intro c₁ _
+    by_cases hb : ∃ col₁ : V → Bool, ∀ x y, x ∈ c₁.supp → y ∈ c₁.supp →
+        (secondOrderDefectGraph G).Adj x y → col₁ x ≠ col₁ y
+    · obtain ⟨col₁, hbip₁⟩ := hb
+      right
+      refine ⟨m c₁, ?_, hm c₁⟩
+      by_contra hne
+      obtain ⟨x, y, hx, hy, hxy, heq⟩ := hA c₁ (Nat.not_even_iff_odd.mp hne) col₁
+      exact hbip₁ x y hx hy hxy heq
+    · left
+      intro col₁ hbip₁
+      exact hb ⟨col₁, hbip₁⟩
 
 end
 
