@@ -1963,10 +1963,19 @@ generalized rather than merely replayed.
      A-REG-8-MATRIX-TREE**: formalize the rank-one Matrix–Tree evaluation
      `det(L_D+J)=|V|² τ(D)` for connected `D`.  Combined with the proved square
      identity and `|V|=q²`, elementary valuations force the spanning-tree
-     count `τ(D)` to be a perfect square.  That necessary arithmetic condition
-     can then be tested against structural candidates for the connected
-     `(q-1)`-regular defect graph.  The Matrix–Tree bridge and the final
-     exclusion are not yet Lean-proven here, so the stratum remains a GAP.
+     count `τ(D)` to be a perfect square.  The determinant/cofactor part of
+     this leaf is now **PROVEN q-GENERIC** (and does not require
+     connectedness): `det_laplacian_add_ones_eq_card_sq_mul_minor` proves for
+     every rational matrix with zero row and column sums that
+     `det(L+J)=|V|² det(L_r)`.  Its integral order-64 consumer
+     `orderSixtyFour_defect_laplacian_cofactor_identity`, followed by
+     `orderSixtyFour_defect_laplacian_cofactor_isSquare`, proves that every
+     principal defect-Laplacian cofactor is an integer square.  Thus the
+     remaining **GAP A-REG-8-MATRIX-TREE-COMBINATORIAL** is specifically the
+     Kirchhoff identification `det(L_r)=τ(D)`, plus a structural exclusion of
+     connected 7-regular defect candidates whose cofactor/tree count is a
+     square.  The rank-one algebra and square-valuation step are no longer
+     gaps, but the stratum itself remains a GAP.
      The residual **GAP** is to turn this extreme single-color closure into an
      ambient C4/routing contradiction when every center belongs to the same
      defect component.  The two-component
