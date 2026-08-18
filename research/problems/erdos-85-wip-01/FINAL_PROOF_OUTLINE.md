@@ -756,6 +756,41 @@ generalized rather than merely replayed.
      mixed orientation reduces to thirteen fixed hole models before any
      further dihedral symmetry quotient.
 
+     A stronger uniform reduction now supersedes those separate shape-local
+     counts as the intended order-64 endpoint.  The row and column
+     **K-symmetry law is `PROVEN`** in
+     `Erdos85MuThreeMixedGridKSymmetry`:
+
+     ```text
+     card_H_and_not_K_row_symm:
+       #{y | H x' y and not K x y} = #{y | H x y and not K x' y},
+     card_H_and_not_K_column_symm:
+       #{x | H x y' and not K x y} = #{x | H x y and not K x y'}.
+     ```
+
+     These are graph consequences of the existing exterior row/column hit
+     laws, proved by explicit foreign-fiber equivalences; they are not an
+     extra matrix hypothesis.  The uniform assembly socket is also
+     **`PROVEN`**:
+     `false_of_muThreeMixedGridCode_of_kSymmetryClassification` packages the
+     actual `MuThreeMixedGridCode` into `MuThreeKSymmetryData`, applies an
+     exhaustive K-table classification, and dispatches the resulting fixed-K
+     code to its impossibility certificate.  Coordinate relabeling is hidden
+     inside `MuThreeKSymmetryClassification`, so the theorem concludes
+     `False` on the original shores and exterior graph.
+
+     The two finite provider leaves remain **`AT-64-ONLY / IN PROGRESS`**:
+     (i) kernel-replay the per-shape/per-sector enumeration of every
+     two-regular, cycle-compatible K satisfying both symmetry laws; expected
+     candidate counts are `1/3` for C16 (all-TF/all-triangle),
+     `1/1/1/13` for C8+C8, and `1/0/1/0` for C10+C6;
+     (ii) replay the 19 new fixed-K exterior-grid UNSAT certificates (the
+     three all-TF candidates already close through `c53be70596`).  Thus the
+     finite target is exactly 22 candidate instances, not the former
+     1,867,000-case two-factor census.  After these providers instantiate the
+     proven socket, the only graph-level residual hypothesis in the μ=3 lane
+     is the upstream joint-eigenline-to-grid-code construction.
+
      In the all-triangle-free `[2,2,2,2]` cell, the `C10+C6` fiber-margin
      terminal is now `PROVEN` without SAT or `native_decide`.
      `false_of_tenSix_columnMargins_of_fiberStripCounts` assumes precisely
