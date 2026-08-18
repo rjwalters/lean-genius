@@ -2091,7 +2091,12 @@ generalized rather than merely replayed.
      two-coloring, canonical up to global flip; within-color pairs are exactly
      the even `(4,2)/(3,3)` rectangles and cross-color pairs are exactly the
      odd `(6)/(2,2,2)` rectangles.  This is the finite interface for a
-     common-eligible-row pigeonhole count coupled to the `K` sectors.
+     common-eligible-row pigeonhole count coupled to the `K` sectors.  The
+     required row count is now exact (**PROVEN**, `b52c5c31ff`): two columns
+     have `4 + |N_H(b) ∩ N_H(b')|` common eligible rows.  In particular an
+     overlap-one pair has five eligible rows, so its two parity colors contain
+     a three-row monochromatic class by pigeonhole; formalizing that final
+     extraction and coupling its three even monodromies to `K` is next.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
