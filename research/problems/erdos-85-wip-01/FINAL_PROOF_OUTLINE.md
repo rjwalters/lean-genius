@@ -1927,6 +1927,13 @@ generalized rather than merely replayed.
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
      graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.
+     The q-generic theorem
+     `binarySquare_regular_sizeTwoPart_bipartite_false` (`7a6c3715a9`)
+     now shows, whenever there is no normalized size-one component, that
+     every normalized size-two defect component is non-bipartite.  Its
+     all-size-two corollary applies directly to `[2,2,2,2]`; the same theorem
+     removes the bipartite size-two branch from `[6,2]`, `[4,2,2]`, and
+     `[3,3,2]` without a finite census or an internal-color hypothesis.
 
      The operator-requested algebra ledger is now explicit.  “Reduction” is
      deliberately not labeled as a stratum kill:
@@ -1937,8 +1944,8 @@ generalized rather than merely replayed.
      | `[6,2]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_sixTwo_largeDensity_or_smallSaturation` | repeated-closing consumers, center collapse, residual-star decomposition, and incidence packing are **q-GENERIC** | **GAP A-REG-ROUTING**: exclude size-six density or size-two saturation by cross-root/cross-row compatibility |
      | `[5,3]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_threeFive_twoOwner_exists_ownerDensity` | equal-root/same-route fork-to-density consumers are **q-GENERIC** | **GAP A-REG-ROUTING**: compatibility or production of a coupled second fragment |
      | `[4,4]` | **AT-64-ONLY pressure reduction, PROVEN**: `orderSixtyFour_fourFour_twoOwner_exists_ownerDensity` | density and exact complementary residual-pair decomposition are **q-GENERIC** | **GAP A-REG-ROUTING**: compatibility of the two complementary pairs across rows |
-     | `[4,2,2]` | **AT-64-ONLY, PARTIAL**: all ordinary patterns reach routing; opposite bowtie reaches an exact selector rectangle/commuting block | bowtie geometry and row-density consumers are **q-GENERIC** | **AXIOM A-REG-422-BOWTIE** for the opposite bowtie, followed by the shared **GAP A-REG-ROUTING** |
-     | `[3,3,2]` | **AT-64-ONLY pressure reduction, PROVEN** in the rainbow branch: saturation or two common-source large densities (`orderSixtyFour_threeThreeTwo_rainbow_saturation_or_commonSourceLargeDensities`) | saturation at normalized size two, unique third centers at size three, and residual-star algebra are **q-GENERIC** | **GAP A-REG-332-PATTERNS** for non-rainbow pattern assembly, then common-root/cross-root **GAP A-REG-ROUTING** |
+     | `[4,2,2]` | **AT-64-ONLY, PARTIAL**: all ordinary patterns reach routing; opposite bowtie reaches an exact selector rectangle/commuting block; both size-two components are **PROVEN non-bipartite** | bowtie geometry, row-density consumers, and the size-two bipartite exclusion are **q-GENERIC** | **AXIOM A-REG-422-BOWTIE** for the opposite bowtie, followed by the shared **GAP A-REG-ROUTING** |
+     | `[3,3,2]` | **AT-64-ONLY pressure reduction, PROVEN** in the rainbow branch: saturation or two common-source large densities (`orderSixtyFour_threeThreeTwo_rainbow_saturation_or_commonSourceLargeDensities`); the size-two component is **PROVEN non-bipartite** | saturation at normalized size two, unique third centers at size three, residual-star algebra, and the size-two bipartite exclusion are **q-GENERIC** | **GAP A-REG-332-PATTERNS** for non-rainbow pattern assembly, then common-root/cross-root **GAP A-REG-ROUTING** |
 
      Thus none of the six strata is yet **PROVEN impossible**.  Four have
      complete q=8 pressure reductions to named routing terminals; `[8]` lacks
@@ -2148,10 +2155,22 @@ generalized rather than merely replayed.
      `twoRegular_no_cross_adj_of_commonNeighbor_no_cross` says that whenever
      the defect relation contains every cross-part pair except at most one per
      vertex, an edge-disjoint 2-factor whose distinct-common-neighbor graph
-     has no cross-part edge can itself have no cross-part edge.  Hence, under
-     the advertised alignment, the internal 2-factor `A` must split over the
-     two eight-point classes; it cannot be the alternating `C_16` square root.
-     The residual local fact is smaller and alignment-independent: a
+     has no cross-part edge can itself have no cross-part edge.  This
+     implication applies only in the branch `A ∩ D = ∅`.  It therefore
+     excludes the proposed alternating `C_16` square root when all of its
+     edges lie in `Dᶜ`; it does **not** exclude the distinct branch in which
+     the whole alternating factor lies in `D` (all sixteen internal edges are
+     triangle-free).  That warning was necessary, but the stronger q-generic
+     theorem `binarySquare_regular_sizeTwoPart_bipartite_false` now proves
+     **every bipartite size-two defect component impossible** in any stratum
+     without a normalized size-one component, with no hypothesis at all on
+     its internal ambient factor (`7a6c3715a9`).  Its
+     adapter `binarySquare_regular_sizeTwoPart_bipartite_two_components_false`
+     applies directly to `[q-2,2]`.  Thus all bipartite internal-color cases —
+     uniform `0`, uniform `2`, and mixed multi-cycle — are dead without a
+     census.
+     The local cycle-root fact needed in the split branch is
+     smaller and alignment-independent: a
      2-regular graph on eight vertices cannot have connected
      distinct-common-neighbor graph `C_8` (connectedness first forces the
      two-factor itself to be `C_8`, whose distance-two graph is two `C_4`s).
@@ -2162,14 +2181,29 @@ generalized rather than merely replayed.
      `not_connected_distinctCommonNeighborGraph_cycleGraph_eight` shows that
      the distinct-common-neighbor graph of `cycleGraph 8` is disconnected,
      because every such edge preserves label parity while `0` and `1` have
-     opposite parity.  The only remaining proof-engineering bridge in the
-     local fact is to transport an arbitrary connected 2-regular graph on
-     eight vertices through `twoRegular_component_induce_eq_cycleSubgraph`
-     and `isCycle_cycleGraphIsoToSubgraph`; there is no longer an unproved
-     assertion about the standard `C_8` itself.
-     The residual `[6,2]` target must couple the transported
-     defect blocks to this line-graph edge partition; commute, degrees, and
-     the entry cap alone cannot close it.
+     opposite parity.  The transport bridge is now also **PROVEN**
+     (`29ae6ada4c`):
+     `twoRegular_card_eight_not_commonNeighbor_connected` handles every
+     2-regular graph on eight vertices via
+     `twoRegular_component_induce_eq_cycleSubgraph` and
+     `isCycle_cycleGraphIsoToSubgraph`, with no `sorry`, `admit`, extra axiom,
+     or `native_decide`.  The coloring interface is also now **PROVEN
+     q-GENERIC** (`f53311b427`, `c5ba755101`): triangle-free degree is constant
+     on each connected component of the internal ambient graph of a
+     normalized size-two defect component, and a mixed `0/2` coloring forces
+     that internal graph to be disconnected.  The unconditional bipartite
+     theorem supersedes the need to split those coloring cases.  Therefore
+     the honest `[6,2]` structural residual is exactly a **non-bipartite**
+     normalized size-two defect component, together with the downstream
+     routing terminals.  Moreover `sixTwoCalibrationDefect` (`4da8c82eed`)
+     is a checked connected non-bipartite 7-regular graph on sixteen vertices
+     whose off-diagonal complement splits into commuting 6- and 2-regular
+     factors.  It also contains an internal 2-factor whose
+     distinct-common-neighbor graph is exactly the small owner factor.
+     Hence component order/degree, complementary owner-factor partition,
+     matrix commutation, and this local self-source common-neighbor interface
+     cannot force bipartiteness; the next proof must couple the exterior
+     component through the selector bijection or stronger ambient geometry.
      In particular the
      repeated-edge values at q=8 are 6/10/12 in the small repeated-owner
      orientations of `[6,2]`/`[5,3]`/`[4,4]`.  This fills all but one selector
