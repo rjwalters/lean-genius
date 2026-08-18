@@ -117,6 +117,65 @@ theorem orderSixtyFour_signedSizeTwo_muThree_exterior_gridEmbedding
   · intro u
     exact ⟨huzp u, huzn u⟩
 
+/-- **Rook/partial-permutation law.**  For any exterior grid labeling whose
+two coordinates are actual neighbours, the positive and negative coordinate
+projections are each injective on the exterior neighbourhood of every cell.
+This is the essential `C₄`-sensitive constraint: two different neighbours
+cannot agree in a row or in a column. -/
+theorem c4Free_exteriorGridLabel_neighbor_coordinate_injective
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (s : V → ℤ)
+    (label : {u : V // u ∉ c.supp} →
+      {z : V // z ∈ c.supp ∧ s z = 1} ×
+        {z : V // z ∈ c.supp ∧ s z = -1})
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
+      G.Adj u.1 (label u).2.1)
+    (u : {u : V // u ∉ c.supp}) :
+    Function.Injective (fun v : {v : {v : V // v ∉ c.supp} //
+        G.Adj u.1 (v : V)} => (label v.1).1) ∧
+      Function.Injective (fun v : {v : {v : V // v ∉ c.supp} //
+        G.Adj u.1 (v : V)} => (label v.1).2) := by
+  constructor
+  · intro v w hvw
+    change (label v.1).1 = (label w.1).1 at hvw
+    let p := (label v.1).1
+    have hpu : p.1 ≠ u.1 := by
+      intro h
+      exact u.2 (h ▸ p.2.1)
+    have hpv : G.Adj p.1 v.1.1 := (hadj v.1).1.symm
+    have hpw : G.Adj p.1 w.1.1 := by
+      change G.Adj (label v.1).1.1 w.1.1
+      rw [hvw]
+      exact (hadj w.1).1.symm
+    have huv : G.Adj u.1 v.1.1 := v.2
+    have huw : G.Adj u.1 w.1.1 := w.2
+    have hvwval := c4Free_commonNeighborPair_injective
+      G hfree hpu hpv hpw huv huw
+    apply Subtype.ext
+    exact Subtype.ext hvwval
+  · intro v w hvw
+    change (label v.1).2 = (label w.1).2 at hvw
+    let n := (label v.1).2
+    have hnu : n.1 ≠ u.1 := by
+      intro h
+      exact u.2 (h ▸ n.2.1)
+    have hnv : G.Adj n.1 v.1.1 := (hadj v.1).2.symm
+    have hnw : G.Adj n.1 w.1.1 := by
+      change G.Adj (label v.1).2.1 w.1.1
+      rw [hvw]
+      exact (hadj w.1).2.symm
+    have huv : G.Adj u.1 v.1.1 := v.2
+    have huw : G.Adj u.1 w.1.1 := w.2
+    have hvwval := c4Free_commonNeighborPair_injective
+      G hfree hnu hnv hnw huv huw
+    apply Subtype.ext
+    exact Subtype.ext hvwval
+
 /-- The signed size-two component supplies exactly eight grid rows and eight
 grid columns. -/
 theorem orderSixtyFour_signedSizeTwo_signClass_cards
@@ -187,6 +246,8 @@ end Erdos85
 
 #print axioms
   Erdos85.orderSixtyFour_signedSizeTwo_muThree_exterior_gridEmbedding
+#print axioms
+  Erdos85.c4Free_exteriorGridLabel_neighbor_coordinate_injective
 #print axioms Erdos85.signedFinset_zeroSum_filter_cards
 #print axioms Erdos85.orderSixtyFour_signedSizeTwo_signClass_cards
 #print axioms Erdos85.orderSixtyFour_sizeTwoComponent_exterior_card
