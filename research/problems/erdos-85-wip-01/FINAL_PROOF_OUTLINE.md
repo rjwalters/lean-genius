@@ -2003,7 +2003,11 @@ generalized rather than merely replayed.
      `orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals`
      gives either the large-owner density fragment or one fork that is both
      `A,A,B` on `e,f,e` and `A,B,A` on `f,e,e`.  The next local lemma may use
-     both views of the same four vertices and centers.
+     both views of the same four vertices and centers.  Finally
+     `orderSixtyFour_sixTwo_largeOwnerDensity_or_normalizedResidual` resolves
+     `e,f` against the two actual components: outside the density branch, the
+     residual is exactly all-same, `a,b,a` (size-two repeated), or `b,a,b`
+     (size-six repeated).  There are no remaining anonymous component labels.
      Across the two-component strata, the obstruction is now routing
      saturation/contradiction, not a rectangular classification, finite
      census, or same-owner center lemma.  The last two

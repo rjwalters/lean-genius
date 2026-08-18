@@ -1,5 +1,6 @@
 import Proofs.Erdos85BinarySquareTwoOwnerRepeatedClosing
 import Proofs.Erdos85OrderSixtyFourThreeComponentForkAdapter
+import Proofs.Erdos85OrderSixtyFourTwoComponentRepeatedClosing
 import Proofs.Erdos85BinarySquareSameOwnerCenterGridCapacity
 import Proofs.Erdos85BinarySquareSeparatedForkRowDensity
 
@@ -419,6 +420,52 @@ theorem orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals
         (componentOwnerGraph G (secondOrderDefectGraph G) b) e f e hr⟩
   · exact Or.inl hd
 
+/-- Resolve the anonymous `e,f,e` residual against the two normalized
+components.  Apart from the density branch, only the all-same block and the
+two alternating normalized blocks remain. -/
+theorem orderSixtyFour_sixTwo_largeOwnerDensity_or_normalizedResidual
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 2) (hmb : m b = 6) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m b ∨
+      (∃ d,
+        HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+          (componentOwnerGraph G (secondOrderDefectGraph G) a)
+          (componentOwnerGraph G (secondOrderDefectGraph G) a)
+          (componentOwnerGraph G (secondOrderDefectGraph G) b) d d d) ∨
+      HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b) a b a ∨
+      HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b) b a b := by
+  have h := orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals
+    G hfree hreg hcount m hm a b hab hma hmb
+  rcases h with hd | ⟨e, f, hr, _hrrev⟩
+  · exact Or.inl hd
+  · by_cases hef : e = f
+    · subst f
+      exact Or.inr (Or.inl ⟨e, hr⟩)
+    · have he := eq_first_or_second_of_card_eq_two hcount a b e hab
+      have hf := eq_first_or_second_of_card_eq_two hcount a b f hab
+      rcases he with rfl | rfl <;> rcases hf with rfl | rfl
+      · exact False.elim (hef rfl)
+      · exact Or.inr (Or.inr (Or.inl hr))
+      · exact Or.inr (Or.inr (Or.inr hr))
+      · exact False.elim (hef rfl)
+
 end
 
 end Erdos85
@@ -430,3 +477,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks
 #print axioms Erdos85.orderSixtyFour_sixTwo_rootClosingSameComponent_or_largeOwnerDensity
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals
+#print axioms Erdos85.orderSixtyFour_sixTwo_largeOwnerDensity_or_normalizedResidual
