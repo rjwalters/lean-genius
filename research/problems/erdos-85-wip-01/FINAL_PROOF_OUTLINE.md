@@ -1646,11 +1646,33 @@ generalized rather than merely replayed.
      `orderSixtyFour_fiveFiveThreeThree_exteriorPair_lambdaSixAdmissibleR`
      kernel-check the canonical `H` and `A_H²`-support encodings and produce
      the precise bit-vector predicate consumed by the classification.
-     The remaining graph-level interface is therefore narrower still: prove
-     that the relabeled induced defect is exactly
-     `lambdaSixForcedDefect A_H²-support R`, construct the local `Fin 4`
-     component enumeration from cardinality four, and dispatch the forced
-     bipartite tag by the existing arithmetic terminal.
+     The forced-defect and enumeration interfaces are now PROVEN in
+     `Erdos85LambdaSixForcedDefectBridge`.
+     `relabeled_inducedSecondOrderDefect_matrixBV_eq_forcedDefect` proves
+     entrywise (including the diagonal) that the relabeled induced defect is
+     exactly `lambdaSixForcedDefect A_H²-support R`: every ambient common
+     neighbor lies either inside the component or outside it, and positive
+     internal degree supplies the diagonal support.  Its two exact-label
+     corollaries rewrite the internal support to the canonical census
+     constants.  `orderSixtyFour_exists_finFour_equiv_components_of_allSixteen`
+     constructs the owner enumeration from the already-proved component-card
+     identity.  Finally,
+     `orderSixtyFour_tenSix_ownerFactors_force_bipartite` and
+     `orderSixtyFour_fiveFiveThreeThree_ownerFactors_force_bipartite` compose
+     the exterior admissibility, exact defect identity, restricted-owner
+     four-factorization, and finite classification: both nontrivial cycle
+     strata force the canonical bipartite defect tag.
+
+     GAP (correcting the earlier phrase “existing arithmetic terminal”): no
+     Lean theorem currently excludes either canonical bipartite tag; indeed no
+     theorem outside the classification/transport modules even referenced
+     `lambdaSixTenSixBipartiteD` or
+     `lambdaSixFiveFiveThreeThreeBipartiteD` before the bridge above.  The
+     external four-component trace ledger reports that no bipartite component
+     occurs in a surviving global assembly, but that global arithmetic
+     exclusion still needs a precise graph-facing statement and proof.  Thus
+     the λ6 local pipeline is complete up to exactly this global bipartite-tag
+     exclusion, not a closed contradiction.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a

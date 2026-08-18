@@ -324,6 +324,33 @@ private theorem relabeledCommonNeighborBool_eq_of_fiveFiveThreeThreeLabeling
       (label.map_adj_iff _ _).mpr (by simpa using hxz),
       (label.map_adj_iff _ _).mpr (by simpa using hyz)⟩
 
+/-- Both fixed bit-vector encodings transported by a `[10,6]` component
+labeling. -/
+theorem tenSixComponentLabeling_matrixBV_encodings
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (label : TenSixComponentLabeling H) :
+    matrixBV (relabeledGraphBool label.toEquiv H) = lambdaSixTenSixH256 ∧
+      matrixBV (relabeledCommonNeighborBool label.toEquiv H) =
+        lambdaSixTenSixH2Support256 := by
+  rw [relabeledGraphBool_eq_of_tenSixLabeling,
+    relabeledCommonNeighborBool_eq_of_tenSixLabeling]
+  exact tenSix_fixed_encodings
+
+/-- Both fixed bit-vector encodings transported by a `[5,5,3,3]` component
+labeling. -/
+theorem fiveFiveThreeThreeComponentLabeling_matrixBV_encodings
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (label : FiveFiveThreeThreeComponentLabeling H) :
+    matrixBV (relabeledGraphBool label.toEquiv H) =
+        lambdaSixFiveFiveThreeThreeH256 ∧
+      matrixBV (relabeledCommonNeighborBool label.toEquiv H) =
+        lambdaSixFiveFiveThreeThreeH2Support256 := by
+  rw [relabeledGraphBool_eq_of_fiveFiveThreeThreeLabeling,
+    relabeledCommonNeighborBool_eq_of_fiveFiveThreeThreeLabeling]
+  exact fiveFiveThreeThree_fixed_encodings
+
 /-- Exact census-coordinate admissibility for a `[10,6]` component. -/
 theorem orderSixtyFour_tenSix_exteriorPair_lambdaSixAdmissibleR
     (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
