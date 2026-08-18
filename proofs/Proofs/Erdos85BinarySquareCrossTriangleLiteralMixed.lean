@@ -121,6 +121,88 @@ def literalMixedOwnerNonambientCyclicTriples
   (literalMixedOwnerCyclicTriples G).filter fun p =>
     p ∉ cyclicColoredTriples G G G
 
+/-- Ordered ambient triangles whose vertices are not all in one defect
+component. -/
+def multiComponentAmbientCyclicTriangles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent] :
+    Finset (V × V × V) :=
+  (cyclicColoredTriples G G G).filter fun p =>
+    ¬ ((secondOrderDefectGraph G).connectedComponentMk p.1 =
+          (secondOrderDefectGraph G).connectedComponentMk p.2.1 ∧
+        (secondOrderDefectGraph G).connectedComponentMk p.1 =
+          (secondOrderDefectGraph G).connectedComponentMk p.2.2)
+
+/-- Exact identification: the ambient half of the literal mixed census is
+precisely the set of ambient triangles spanning multiple defect components. -/
+theorem literalMixedOwnerAmbientCyclicTriangles_eq_multiComponentAmbient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) :
+    literalMixedOwnerAmbientCyclicTriangles G =
+      multiComponentAmbientCyclicTriangles G := by
+  classical
+  let D := secondOrderDefectGraph G
+  ext p
+  simp only [literalMixedOwnerAmbientCyclicTriangles,
+    multiComponentAmbientCyclicTriangles, Finset.mem_filter]
+  constructor
+  · rintro ⟨hlit, htri⟩
+    refine ⟨htri, ?_⟩
+    rintro ⟨hxyComp, hxzComp⟩
+    simp only [literalMixedOwnerCyclicTriples, Finset.mem_filter] at hlit
+    apply hlit.2
+    have ht := htri
+    simp only [cyclicColoredTriples, Finset.mem_filter,
+      Finset.mem_univ, true_and] at ht
+    refine ⟨D.connectedComponentMk p.1, ?_⟩
+    simp only [cyclicColoredTriples, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    have h₁ := componentOwnerGraph_adj_of_common_neighbor_component G D
+      ht.1.ne ht.2.2.symm ht.2.1
+    have h₂ := componentOwnerGraph_adj_of_common_neighbor_component G D
+      ht.2.1.ne ht.1.symm ht.2.2
+    have h₃ := componentOwnerGraph_adj_of_common_neighbor_component G D
+      ht.2.2.ne ht.2.1.symm ht.1
+    rw [← hxyComp] at h₁
+    rw [← hxzComp] at h₃
+    exact ⟨h₁, h₂, h₃⟩
+  · rintro ⟨htri, hmulti⟩
+    refine ⟨?_, htri⟩
+    have ht := htri
+    simp only [cyclicColoredTriples, Finset.mem_filter,
+      Finset.mem_univ, true_and] at ht
+    have h₁ : (componentOwnerGraph G D (D.connectedComponentMk p.2.1)).Adj
+        p.1 p.2.2 :=
+      componentOwnerGraph_adj_of_common_neighbor_component G D ht.1.ne
+        ht.2.2.symm ht.2.1
+    have h₂ : (componentOwnerGraph G D (D.connectedComponentMk p.1)).Adj
+        p.2.2 p.2.1 :=
+      componentOwnerGraph_adj_of_common_neighbor_component G D ht.2.1.ne
+        ht.1.symm ht.2.2
+    have h₃ : (componentOwnerGraph G D (D.connectedComponentMk p.2.2)).Adj
+        p.2.1 p.1 :=
+      componentOwnerGraph_adj_of_common_neighbor_component G D ht.2.2.ne
+        ht.2.1.symm ht.1
+    have howner : p ∈ cyclicColoredTriples
+        (componentOwnerGraph G D (D.connectedComponentMk p.2.1))
+        (componentOwnerGraph G D (D.connectedComponentMk p.1))
+        (componentOwnerGraph G D (D.connectedComponentMk p.2.2)) := by
+      simp only [cyclicColoredTriples, Finset.mem_filter,
+        Finset.mem_univ, true_and]
+      exact ⟨h₁, h₂, h₃⟩
+    apply mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_not_all_eq
+      G hfree _ _ _ _ p howner
+    rintro ⟨hyx, hyz⟩
+    exact hmulti ⟨hyx.symm, hyx.symm.trans hyz⟩
+
 /-- Cross-component ambient triangles land specifically in the ambient half
 of the sharp mixed-owner decomposition. -/
 theorem card_crossComponentAmbientCyclicTriangles_le_literalMixedOwnerAmbient
@@ -176,3 +258,5 @@ end Erdos85
   Erdos85.int_card_literalMixedOwnerAmbient_add_nonambient_eq_six_mul_deficit
 #print axioms
   Erdos85.card_crossComponentAmbientCyclicTriangles_le_literalMixedOwnerAmbient
+#print axioms
+  Erdos85.literalMixedOwnerAmbientCyclicTriangles_eq_multiComponentAmbient

@@ -39,7 +39,7 @@ def literalMixedOwnerCyclicTriples
 /-- A cyclic triangle whose first two edges have distinct owner colors is a
 literal mixed-owner triangle.  This is the direct constructor used by sharp
 cross-triangle counts. -/
-theorem mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_ne
+theorem mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_not_all_eq
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -48,7 +48,7 @@ theorem mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_ne
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G)
     (a b c : (secondOrderDefectGraph G).ConnectedComponent)
-    (hab : a ≠ b) (p : V × V × V)
+    (hcolors : ¬ (a = b ∧ a = c)) (p : V × V × V)
     (hp : p ∈ cyclicColoredTriples
       (componentOwnerGraph G (secondOrderDefectGraph G) a)
       (componentOwnerGraph G (secondOrderDefectGraph G) b)
@@ -83,7 +83,28 @@ theorem mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_ne
       exact (huniq owner₁ h₁).trans (huniq owner₂ h₂).symm
     have had : a = d := owner_unique hp.1 hdxy
     have hbd : b = d := owner_unique hp.2.1 hdyz
-    exact hab (had.trans hbd.symm)
+    have hcd : c = d := owner_unique hp.2.2 hdzx
+    exact hcolors ⟨had.trans hbd.symm, had.trans hcd.symm⟩
+
+/-- A convenient two-color specialization of the general literal-mixed
+constructor. -/
+theorem mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (a b c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (p : V × V × V)
+    (hp : p ∈ cyclicColoredTriples
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) c)) :
+    p ∈ literalMixedOwnerCyclicTriples G :=
+  mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_not_all_eq
+    G hfree a b c (fun h => hab h.1) p hp
 
 /-- The owner-monochromatic ordered complement triangles are counted by the
 sum of the individual owner-triangle finsets. -/
@@ -266,6 +287,8 @@ end
 
 end Erdos85
 
+#print axioms
+  Erdos85.mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_not_all_eq
 #print axioms
   Erdos85.mem_literalMixedOwnerCyclicTriples_of_mem_ownerColored_of_ne
 #print axioms Erdos85.card_ownerMonochromatic_cyclicTriples_eq_sum
