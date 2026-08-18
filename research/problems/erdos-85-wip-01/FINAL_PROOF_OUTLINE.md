@@ -293,7 +293,10 @@ generalized rather than merely replayed.
      `binarySquare_regular_not_allUnit_of_even`.  An earlier, weaker mod-three
      route remains available as
      `binarySquare_regular_not_allUnit_of_two_pow_odd`.  Hence
-     `GAP A-REG-COMPONENTS` has been narrowed to mixed partitions only.
+     `GAP A-REG-COMPONENTS` has been narrowed to mixed partitions only —
+     concretely, at `q=8`, to the seven partitions of `8` into parts `≥ 2`
+     (`[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`, `[4,4]`, `[5,3]`, `[6,2]`, `[8]`);
+     only the first is currently under attack (node 13b).
      In fact the parity argument is component-local: the `PROVEN` theorem
      `binarySquare_regular_no_sizeQ_defectComponent_of_even` excludes even one
      unit part.  Thus for binary `q`, every remaining normalized part satisfies
@@ -1772,13 +1775,31 @@ generalized rather than merely replayed.
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
 
-13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
-     the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
-     quotient arguments kill eight, and R-classification plus exhaustive
-     computation kills the four survivors. The `[10,6]` cell has Lean-replayed
-     LRATs. Thus the seven-component cell is closed at order 64 modulo its
-     graph-level assembly. None of these finite classifications proves A-REG
-     for arbitrary `k`; certificate/semantic assembly remains paused.
+13b. **`AT-64-ONLY` — finite component census, `[2,2,2,2]` stratum only.**
+     For the first binary case `q=8` and the partition in which every defect
+     component has normalized size `m_c=2` (four components of order 16), the
+     16-vertex defect subproblem was reduced to 12 two-factor partitions;
+     quotient arguments kill eight, `[10,6]` and `[5,5,3,3]` are killed by the
+     honest commuting four-factor CSP (kernel-backed for the λ6 chain), while
+     `[16]` and `[8,8]` are LIVE: after the pointwise triangle-free degree law,
+     the four-factor CSP and the intrinsic component trace ledger of node 13a
+     exactly 11 record-level four-component targets remain (8 record types,
+     116 labeled models, one all-`[16]`).  Their direct assembly SAT (fixed
+     component blocks, free cross blocks, exact common-neighbour counts) is
+     running externally; UNSAT on all 11 closes this stratum at order 64
+     modulo semantic replay.  **`GAP A-REG-STRATA` (q=8).**  The PROVEN
+     partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
+     leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
+     graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.  No node of this
+     outline addresses them: `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
+     and the whole H16/owner-factor/λ6/τ-ledger machinery are conditional on
+     every component having size 16, and nothing derives that hypothesis.  The
+     τ trace lemma is partition-agnostic (`tr(A|E_μ) = Σ_c tr(A[c] Π_μ(c))`
+     with `A[c]` an `m_c`-regular graph on `q m_c` vertices), so it can be
+     posed for each stratum, but the local component classification inputs do
+     not yet exist outside `m_c=2`.  Even a complete kill of `[2,2,2,2]`
+     therefore does not close A-REG at `q=8`, let alone for arbitrary `k`;
+     certificate/semantic assembly remains paused.
 
 ### A5. Nonregular sectors
 
