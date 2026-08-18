@@ -147,6 +147,46 @@ theorem orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity
     · exact Or.inl ⟨⟨f, g, hfg, y, hy⟩, hb⟩
     · exact Or.inr (Or.inr ⟨hb, ⟨g, f, hfg.symm, z, hz⟩⟩)
 
+/-- Sharpen the two-owner conclusion using the normalized sizes: either the
+size-two owner `a` saturates a routing row, or both size-three owners carry
+dense two-star fragments. -/
+theorem orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensities
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 3)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hma : m a = 2) (hmb : m b = 3) (hmc : m c = 3)
+    (hef : e ≠ f) (hfg : f ≠ g) (heg : e ≠ g)
+    (hblock : 253 ≤
+      (cyclicColoredTriplesInBlocks (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g).card) :
+    HasTwoCenterRoutingRowSaturationForOwner G hfree a ∨
+      (HasTwoCenterRoutingRowDensityForOwner G hfree m b ∧
+        HasTwoCenterRoutingRowDensityForOwner G hfree m c) := by
+  have hd :=
+    orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity
+      G hfree hreg hcount m hm a b c e f g hab hac hbc hma hmb hmc
+        hef hfg heg hblock
+  rcases hd with ⟨ha, _hb⟩ | ⟨ha, _hc⟩ | hbcDensity
+  · exact Or.inl
+      (twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
+        G hfree m a hma ha)
+  · exact Or.inl
+      (twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
+        G hfree m a hma ha)
+  · exact Or.inr hbcDensity
+
 end
 
 end Erdos85
@@ -154,3 +194,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_ownerColoredEdgesInBlocks_card_le
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_tripleRepeatedClosing
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity
+#print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensities

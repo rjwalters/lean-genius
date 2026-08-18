@@ -148,6 +148,44 @@ def HasTwoCenterRoutingRowDensityForOwner
       (hst : source ≠ target) (x : source.supp),
     HasTwoCenterRoutingRowDensity G hfree m source target owner hst x
 
+/-- Owner-level saturation by two distinct star centers: their target stars
+equal the entire routing row. -/
+def HasTwoCenterRoutingRowSaturationForOwner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (owner : (secondOrderDefectGraph G).ConnectedComponent) : Prop :=
+  ∃ (source target : (secondOrderDefectGraph G).ConnectedComponent)
+      (hst : source ≠ target) (x : source.supp) (u₁ u₂ : owner.supp),
+    u₁ ≠ u₂ ∧ G.Adj x.1 u₁.1 ∧ G.Adj x.1 u₂.1 ∧
+      componentCrossNeighborFinset G target u₁ ∪
+          componentCrossNeighborFinset G target u₂ =
+        ((Finset.univ : Finset target.supp).filter fun y =>
+          owner = crossIntermediateComponent G hfree hst x y)
+
+/-- A two-center density fragment owned by a normalized size-two component
+must saturate its routing row. -/
+theorem twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (owner : (secondOrderDefectGraph G).ConnectedComponent)
+    (hmo : m owner = 2)
+    (h : HasTwoCenterRoutingRowDensityForOwner G hfree m owner) :
+    HasTwoCenterRoutingRowSaturationForOwner G hfree owner := by
+  rcases h with ⟨source, target, hst, x, u₁, u₂, hne, hx₁, hx₂,
+    _hdis, hunionCard, hsub, hrowCard⟩
+  refine ⟨source, target, hst, x, u₁, u₂, hne, hx₁, hx₂, ?_⟩
+  apply Finset.eq_of_subset_of_card_le hsub
+  rw [hrowCard, hunionCard, hmo]
+
 /-- Correct q-generic successor of canonical fork separation: one of its two
 owner colors contributes a two-star routing-row fragment with exact density
 `2/m_owner`. -/
@@ -393,6 +431,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_twoSeparatedCenters_routingRow_density
+#print axioms Erdos85.twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
 #print axioms Erdos85.binarySquare_regular_ownerFork_forces_twoCenterRoutingRowDensity
 #print axioms Erdos85.binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
 #print axioms Erdos85.binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRowDensity

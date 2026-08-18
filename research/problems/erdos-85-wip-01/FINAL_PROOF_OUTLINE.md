@@ -2058,6 +2058,14 @@ generalized rather than merely replayed.
      and root while retaining the owner color, and
      `orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity`
      proves that at least two distinct owner colors carry such dense fragments.
+     The normalized sizes sharpen this to an exact case split.  The q-generic
+     `twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two` proves that a
+     density fragment owned by a size-two component exhausts its whole routing
+     row.  Hence the AT-64 theorem
+     `orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensities`
+     gives either a routing-row saturation owned by the size-two component
+     `a`, or simultaneous strict `2/3` fragments owned by both size-three
+     components `b,c`.
      The remaining rainbow **GAP** is compatibility: the two fragments may
      live on different ordered component rows and have different roots, so
      their certified subsets cannot yet be added or intersected.  The earlier
