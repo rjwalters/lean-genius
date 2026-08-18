@@ -784,10 +784,14 @@ generalized rather than merely replayed.
      ambient degree `m_c`; the size-two cycle decomposition and selector
      equivalence; the owner-colored exact-one-overlap law; the owner matrices
      `A P_c A - m_c I`; their commutation, orthogonality, PSD/kernel formulas,
-     and the centered-owner rank/nullity formula.  The theorem excluding a
-     bipartite component when `2(q-1)` is nonsquare and all fellow components
-     are non-bipartite is also q-generic, although substituting `q=8` and
-     `14` is order-specific.
+     and the centered-owner rank/nullity formula.  The bipartite branch is now
+     closed uniformly, not merely stratum by stratum:
+     `binarySquare_regular_no_bipartite_defectComponent` proves that when
+     `4 ∣ q`, no defect component admits a proper two-colouring.  Its proof
+     combines the all-bipartite/one-odd-part mod-8 obstruction with the
+     even-part consumer.  Thus for every binary `q ≥ 4`, the remaining
+     A-REG-MIXED-PARTITION axiom is precisely an all-non-bipartite component
+     system.
 
      A further q-generic constraint is now `PROVEN`: unique ownership of every
      complement-defect edge injects the disjoint union of owner-monochromatic
@@ -795,11 +799,28 @@ generalized rather than merely replayed.
      (`sum_componentOwner_triangleMinorCount_le_defectComplement`).  Hence the
      signed mixed-owner triangle deficit is nonnegative
      (`binarySquareMixedOwnerTriangleDeficit_nonneg`).  Combined with the
-     binary cubic trace congruence, its order-64 specialization is
-     `orderSixtyFour_thirtyTwo_dvd_mixedOwnerTriangleDeficit`: the deficit is a
-     multiple of `32`, and the companion theorem makes any strict upper bound
-     below `32` force equality.  This is a new cross-stratum arithmetic
-     interface, not by itself a contradiction for any row above.
+     binary cubic trace congruence gives the q-generic theorem
+     `binarySquare_regular_two_pow_pred_dvd_mixedOwnerTriangleDeficit`:
+     `q²/2 ∣ Δ`.  More concretely,
+     `literalMixedOwnerCyclicTriples` is the finset of ordered complement
+     triangles whose unique edge-owner colours are not all equal, and its
+     cardinality is exactly `6Δ`.  The ambient part of this finset is exactly
+     `multiComponentAmbientCyclicTriangles`, the ordered `G`-triangles meeting
+     more than one defect component.  Therefore the scalable sharp-count
+     interface is
+
+     ```text
+     3q² ∣ (# multi-component ambient G-triangles
+             + # mixed nonambient complement triangles).
+     ```
+
+     This is `binarySquare_regular_six_mul_two_pow_pred_dvd_multiComponentAmbient_add_mixedNonambient`.
+     At order 64 the modulus is `192` (or `32` after dividing the six
+     orientations).  The deficit is generally not small in multi-component
+     strata, so the intended consumer is an exact or congruence-level count
+     of these two literal classes, not a global `Δ < q²/2` estimate.  This is
+     a new cross-stratum arithmetic interface, not by itself a contradiction
+     for any row above.
 
      By contrast, the 16-vertex two-factor partition census, pair-quotient
      feasibility tables, `[10,6]` LRATs, the 11 positive-triangle record
