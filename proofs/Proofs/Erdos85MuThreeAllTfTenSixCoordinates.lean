@@ -53,4 +53,61 @@ theorem tenSixCycleGraph_even_odd_iff_mu3Internal :
         mu3AllTfInternal .c10c6 (i.val / 2) (j.val / 2)) := by
   native_decide
 
+/-- Independently rotate the ten- and six-cycles by zero or one step. -/
+def tenSixParityShift (shift10 shift6 : Bool) (i : Fin 16) : Fin 16 :=
+  if hi : i.val < 10 then
+    ⟨(i.val + if shift10 then 1 else 0) % 10, by
+      have := Nat.mod_lt (i.val + if shift10 then 1 else 0) (by omega : 0 < 10)
+      omega⟩
+  else
+    ⟨10 + ((i.val - 10 + if shift6 then 1 else 0) % 6), by
+      have := Nat.mod_lt (i.val - 10 + if shift6 then 1 else 0) (by omega : 0 < 6)
+      omega⟩
+
+set_option maxRecDepth 100000 in
+theorem tenSixParityShift_bijective :
+    ∀ shift10 shift6,
+      Function.Bijective (tenSixParityShift shift10 shift6) := by
+  native_decide
+
+noncomputable def tenSixParityShiftEquiv (shift10 shift6 : Bool) :
+    Fin 16 ≃ Fin 16 :=
+  Equiv.ofBijective (tenSixParityShift shift10 shift6)
+    (tenSixParityShift_bijective shift10 shift6)
+
+set_option maxRecDepth 100000 in
+theorem tenSixParityShift_preserves_adj :
+    ∀ shift10 shift6 u v,
+      tenSixCycleGraph.Adj
+          (tenSixParityShift shift10 shift6 u)
+          (tenSixParityShift shift10 shift6 v) ↔
+        tenSixCycleGraph.Adj u v := by
+  native_decide
+
+/-- Choose the component rotations from the signs at standard vertices zero
+and ten. -/
+def tenSixSignAlignedIndex (sign : Fin 16 → Bool) (i : Fin 16) : Fin 16 :=
+  tenSixParityShift (!sign 0) (!sign 10) i
+
+/- Finite propagation audit: any Boolean signing flipped across every edge
+becomes `true = even`, `false = odd` after the chosen component rotations. -/
+set_option maxRecDepth 100000 in
+theorem tenSixSignAlignedIndex_parity :
+    ∀ (sign : Fin 16 → Bool),
+      (∀ u v, tenSixCycleGraph.Adj u v → sign u ≠ sign v) →
+      ∀ i, (tenSixSignAlignedIndex sign i).val % 2 =
+        if sign i then 0 else 1 := by
+  native_decide
+
+noncomputable def tenSixSignAlignedEquiv (sign : Fin 16 → Bool) :
+    Fin 16 ≃ Fin 16 :=
+  (tenSixParityShiftEquiv (!sign 0) (!sign 10))
+
+theorem tenSixSignAlignedEquiv_preserves_adj
+    (sign : Fin 16 → Bool) (u v : Fin 16) :
+    tenSixCycleGraph.Adj (tenSixSignAlignedEquiv sign u)
+        (tenSixSignAlignedEquiv sign v) ↔
+      tenSixCycleGraph.Adj u v :=
+  tenSixParityShift_preserves_adj _ _ _ _
+
 end Erdos85
