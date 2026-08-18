@@ -715,8 +715,39 @@ generalized rather than merely replayed.
      quotient arguments kill eight, and R-classification plus exhaustive
      computation kills the four survivors. The `[10,6]` cell has Lean-replayed
      LRATs. Thus the seven-component cell is closed at order 64 modulo its
-     graph-level assembly. None of these finite classifications proves A-REG
-     for arbitrary `k`; certificate/semantic assembly remains paused.
+     graph-level assembly.
+
+     The all-size-sixteen triangle-free leaf is now closed without a finite
+     census.  The `PROVEN` chain
+
+     ```text
+     triangleFree_sevenRegular_sixteen_aeval_eq_zero
+       -> triangleFree_sevenRegular_sixteenComponents_aeval_eq_zero
+       -> false_of_orderSixtyFour_all_sizeSixteen_triangleFree_defect
+     ```
+
+     classifies every triangle-free 7-regular graph on 16 vertices as
+     `K_{8,8}` minus a perfect matching, lifts its four-root annihilator through
+     the connected-component block diagonal, and invokes the already-proved
+     order-64 sector traces.  Hence the remaining all-size-sixteen obstruction
+     is strictly the positive-defect-triangle branch.
+
+     For that branch an exhaustive external screen currently reduces the
+     component records to 11 global quadruples.  The basis-free trace step
+     behind this reduction is now `PROVEN`: `Matrix.trace_mul_blockDiagonal'`
+     and
+     `trace_reindex_adjMatrix_mul_componentPolynomialBlockDiagonal` show that
+     a componentwise defect spectral projector satisfies
+
+     ```text
+     trace(A Π_mu) = sum_c trace(A[c] Π_mu,c),
+     ```
+
+     so cross-component adjacency blocks contribute nothing to the trace.
+     The enumeration of the 11 records and their numerical local projector
+     traces is not yet kernel-replayed.  A direct graph-assembly SAT check of
+     those records is in progress.  None of these finite classifications proves
+     A-REG for arbitrary `k`.
 
 ### A5. Nonregular sectors
 
@@ -870,12 +901,19 @@ generalized rather than merely replayed.
     - the parity kill for appropriate degree/excess strata;
     - first- and second-layer counting and ownership partitions;
     - the defect-Laplacian/commutator route;
-    - component-size and component-incidence constraints.
+    - component-size and component-incidence constraints;
+    - unconditional classification and global trace elimination of the
+      triangle-free all-size-sixteen defect branch;
+    - an intrinsic component-projector trace decomposition for the surviving
+      positive-triangle census.
 
 18. **`AT-64-ONLY` — what did not yet transport.** The order-49 canonical
-    high-set orbit tables, fixed 40-vertex leaf graph, one-high perfect-code
-    terminal, and its SAT family do not directly scale. The order-64 component
-    analyses are incomplete as an exhaustive graph-level classification.
+     high-set orbit tables, fixed 40-vertex leaf graph, one-high perfect-code
+     terminal, and its SAT family do not directly scale. The order-64 component
+     analyses are incomplete as an exhaustive graph-level classification.  In
+     the all-size-sixteen branch the precise remaining finite gap is to replay
+     the positive-triangle record screen/projector traces in the kernel and to
+     certify or structurally eliminate the 11 surviving graph assemblies.
 
 19. **`PROVEN` — uniform even-parameter nonregular exclusion.**
     `squareOrder_regular_of_even` proves that every tight-edge-cover C4-free
