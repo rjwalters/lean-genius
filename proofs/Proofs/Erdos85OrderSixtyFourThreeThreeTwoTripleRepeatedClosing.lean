@@ -187,6 +187,47 @@ theorem orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensitie
         G hfree m a hma ha)
   · exact Or.inr hbcDensity
 
+/-- Resolve the strict-density branch into its exact size-three form: each of
+the two large owner colors has a unique unused third center at its dense-row
+root. -/
+theorem orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoUniqueThirdCenters
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 3)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hma : m a = 2) (hmb : m b = 3) (hmc : m c = 3)
+    (hef : e ≠ f) (hfg : f ≠ g) (heg : e ≠ g)
+    (hblock : 253 ≤
+      (cyclicColoredTriplesInBlocks (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g).card) :
+    HasTwoCenterRoutingRowSaturationForOwner G hfree a ∨
+      (HasTwoCenterRoutingRowDensityWithUniqueThirdCenterForOwner
+          G hfree m b ∧
+        HasTwoCenterRoutingRowDensityWithUniqueThirdCenterForOwner
+          G hfree m c) := by
+  have hd :=
+    orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensities
+      G hfree hreg hcount m hm a b c e f g hab hac hbc hma hmb hmc
+        hef hfg heg hblock
+  rcases hd with ha | ⟨hb, hc⟩
+  · exact Or.inl ha
+  · exact Or.inr ⟨
+      twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm b hmb hb,
+      twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm c hmc hc⟩
+
 end
 
 end Erdos85
@@ -195,3 +236,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_tripleRepeatedClosing
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensities
+#print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoUniqueThirdCenters

@@ -2075,7 +2075,15 @@ generalized rather than merely replayed.
      `orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensities`
      gives either a routing-row saturation owned by the size-two component
      `a`, or simultaneous strict `2/3` fragments owned by both size-three
-     components `b,c`.
+     components `b,c`.  The strict branch now has an exact missing-center
+     normalization.  The q-generic theorem
+     `twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three`
+     proves that the root has exactly one owner-center outside the displayed
+     separated pair.  Therefore
+     `orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoUniqueThirdCenters`
+     yields either the size-two saturation or one canonical unused third
+     center for each of `b,c`.  Comparing the stars of these canonical missing
+     centers across roots/rows is the next compatibility leaf.
      The remaining rainbow **GAP** is compatibility: the two fragments may
      live on different ordered component rows and have different roots, so
      their certified subsets cannot yet be added or intersected.  The earlier

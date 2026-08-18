@@ -186,6 +186,80 @@ theorem twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
   apply Finset.eq_of_subset_of_card_le hsub
   rw [hrowCard, hunionCard, hmo]
 
+/-- A dense two-center fragment together with the unique unused owner-center
+at its root.  This is the exact normalized-size-three form of the density
+terminal. -/
+def HasTwoCenterRoutingRowDensityWithUniqueThirdCenterForOwner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (owner : (secondOrderDefectGraph G).ConnectedComponent) : Prop :=
+  ∃ (source target : (secondOrderDefectGraph G).ConnectedComponent)
+      (hst : source ≠ target) (x : source.supp) (u₁ u₂ u₃ : owner.supp),
+    u₁ ≠ u₂ ∧ G.Adj x.1 u₁.1 ∧ G.Adj x.1 u₂.1 ∧
+      componentCrossNeighborFinset G owner x \ {u₁, u₂} = {u₃} ∧
+      let S₁ := componentCrossNeighborFinset G target u₁
+      let S₂ := componentCrossNeighborFinset G target u₂
+      let R := (Finset.univ : Finset target.supp).filter fun y =>
+        owner = crossIntermediateComponent G hfree hst x y
+      Disjoint S₁ S₂ ∧ (S₁ ∪ S₂).card = 2 * m target ∧
+        S₁ ∪ S₂ ⊆ R ∧ R.card = m owner * m target
+
+/-- For a normalized size-three owner, the two centers in every density
+fragment leave exactly one unused center at the same root. -/
+theorem twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (owner : (secondOrderDefectGraph G).ConnectedComponent)
+    (hmo : m owner = 3)
+    (h : HasTwoCenterRoutingRowDensityForOwner G hfree m owner) :
+    HasTwoCenterRoutingRowDensityWithUniqueThirdCenterForOwner
+      G hfree m owner := by
+  classical
+  rcases h with ⟨source, target, hst, x, u₁, u₂, hne, hx₁, hx₂,
+    hdis, hunionCard, hsub, hrowCard⟩
+  let C := componentCrossNeighborFinset G owner x
+  have hu₁ : u₁ ∈ C := by
+    change u₁ ∈ componentCrossNeighborFinset G owner x
+    rw [componentCrossNeighborFinset, Finset.mem_filter]
+    exact ⟨Finset.mem_univ _, hx₁⟩
+  have hu₂ : u₂ ∈ C := by
+    change u₂ ∈ componentCrossNeighborFinset G owner x
+    rw [componentCrossNeighborFinset, Finset.mem_filter]
+    exact ⟨Finset.mem_univ _, hx₂⟩
+  have hpairSub : ({u₁, u₂} : Finset owner.supp) ⊆ C := by
+    intro u hu
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hu
+    rcases hu with rfl | rfl
+    · exact hu₁
+    · exact hu₂
+  have hCcard : C.card = 3 := by
+    change (componentCrossNeighborFinset G owner x).card = 3
+    rw [card_componentCrossNeighborFinset_eq_componentNeighborFinset]
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard source owner (x := x.1) x.2
+    rw [hm owner, hmo] at hmul
+    exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+  have hsdiffCard : (C \ {u₁, u₂}).card = 1 := by
+    rw [Finset.card_sdiff_of_subset hpairSub, hCcard]
+    simp [hne]
+  obtain ⟨u₃, hu₃⟩ := Finset.card_eq_one.mp hsdiffCard
+  exact ⟨source, target, hst, x, u₁, u₂, u₃, hne, hx₁, hx₂,
+    by simpa [C] using hu₃, hdis, hunionCard, hsub, hrowCard⟩
+
 /-- Correct q-generic successor of canonical fork separation: one of its two
 owner colors contributes a two-star routing-row fragment with exact density
 `2/m_owner`. -/
@@ -432,6 +506,7 @@ end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_twoSeparatedCenters_routingRow_density
 #print axioms Erdos85.twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
+#print axioms Erdos85.twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three
 #print axioms Erdos85.binarySquare_regular_ownerFork_forces_twoCenterRoutingRowDensity
 #print axioms Erdos85.binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
 #print axioms Erdos85.binarySquare_regular_equalRootsRepeatedClosing_forces_twoCenterRoutingRowDensity
