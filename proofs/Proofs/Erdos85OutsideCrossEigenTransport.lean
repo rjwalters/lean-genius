@@ -87,6 +87,32 @@ theorem rectangular_incidence_kernel_forces_negative_gram_residual
   have hneg := eq_neg_of_add_eq_zero_right hzero
   simpa using hneg
 
+/-- Complete centered-mode dichotomy.  A mode either crosses to a genuine
+exterior eigenpair, or its incidence image vanishes and the Gram residual
+acts on it by the negative row degree. -/
+theorem rectangular_cross_centered_eigenpair_or_negative_gram_residual
+    {H O : Type*} [Fintype H] [Fintype O]
+    [DecidableEq H] [DecidableEq O]
+    {K : Type*} [CommRing K]
+    (A : Matrix H H K) (B : Matrix H O K) (C : Matrix O O K)
+    (J : Matrix H O K) (R : Matrix H H K)
+    (r lambda : K) (v : H → K)
+    (hcross : A * B + B * C = J)
+    (hAv : A.transpose.mulVec v = lambda • v)
+    (hcenter : J.transpose.mulVec v = 0)
+    (hgram : B * B.transpose = r • (1 : Matrix H H K) + R) :
+    (B.transpose.mulVec v ≠ 0 ∧
+      C.transpose.mulVec (B.transpose.mulVec v) =
+        (-lambda) • B.transpose.mulVec v) ∨
+      R.mulVec v = (-r) • v := by
+  by_cases hker : B.transpose.mulVec v = 0
+  · right
+    exact rectangular_incidence_kernel_forces_negative_gram_residual
+      B B.transpose R r v hgram hker
+  · left
+    exact rectangular_cross_centered_eigenpair_transport
+      A B C J v lambda hcross hAv hcenter hker
+
 /-- Graph-facing centered spectral transport for the actual order-64
 `16+48` cut. -/
 theorem orderSixtyFour_seven_components_outside_centered_eigenvector_transport
@@ -144,4 +170,5 @@ end Erdos85
 #print axioms Erdos85.rectangular_cross_centered_eigenvector_transport
 #print axioms Erdos85.rectangular_cross_centered_eigenpair_transport
 #print axioms Erdos85.rectangular_incidence_kernel_forces_negative_gram_residual
+#print axioms Erdos85.rectangular_cross_centered_eigenpair_or_negative_gram_residual
 #print axioms Erdos85.orderSixtyFour_seven_components_outside_centered_eigenvector_transport
