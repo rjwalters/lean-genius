@@ -150,6 +150,45 @@ theorem binarySquare_regular_sameOwner_defectEdge_card_le_sq
     (sameOwner_coloredTwoStepMiddles_card_le_centerGrid
       G hfree owner hxyD)
 
+/-- The two-owner defect-edge sandwich: certified same-owner pressure is
+bounded above by the sum of the two center-grid capacities. -/
+theorem binarySquare_regular_twoComponents_defectEdge_sameOwner_sandwich
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent) (hab : a ≠ b)
+    {m_a m_b : ℕ} (ha : a.supp.ncard = q * m_a)
+    (hb : b.supp.ncard = q * m_b)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    (q * q - 2 * (q - 1)) - 2 * m_a * m_b ≤ m_a * m_a + m_b * m_b := by
+  let A := componentOwnerGraph G (secondOrderDefectGraph G) a
+  let B := componentOwnerGraph G (secondOrderDefectGraph G) b
+  let AA := coloredTwoStepMiddles A A x y
+  let BB := coloredTwoStepMiddles B B x y
+  have hlo : (q * q - 2 * (q - 1)) - 2 * m_a * m_b ≤
+      (AA ∪ BB).card := by
+    exact binarySquare_regular_twoComponents_defectEdge_sameOwner_card_lower
+      G hfree hq hreg hcard hcount a b hab ha hb hxyD
+  have hAA : AA.card ≤ m_a * m_a := by
+    exact binarySquare_regular_sameOwner_defectEdge_card_le_sq
+      G hfree hq hreg hcard a ha hxyD
+  have hBB : BB.card ≤ m_b * m_b := by
+    exact binarySquare_regular_sameOwner_defectEdge_card_le_sq
+      G hfree hq hreg hcard b hb hxyD
+  have hdis : Disjoint AA BB := by
+    exact coloredTwoStepMiddles_disjoint_of_orderedOwners_ne
+      G hfree a a b b (by simpa using hab) x y
+  rw [Finset.card_union_of_disjoint hdis] at hlo
+  omega
+
 end
 
 end Erdos85
