@@ -68,6 +68,46 @@ theorem MuThreeMixedGridCode.foreignRectangleMonodromy_sign_triangle
   rw [Equiv.Perm.sign_symm]
   exact Int.units_mul_self _
 
+/-- Reversing the row orientation does not change monodromy parity. -/
+theorem MuThreeMixedGridCode.foreignRectangleMonodromy_sign_swap_rows
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (a a' : X) (b b' : Y)
+    (hab : ¬ H a b) (hab' : ¬ H a b')
+    (ha'b : ¬ H a' b) (ha'b' : ¬ H a' b') :
+    Equiv.Perm.sign
+        (code.foreignRectangleMonodromyEquiv H K C a' a b b'
+          ha'b ha'b' hab hab') =
+      Equiv.Perm.sign
+        (code.foreignRectangleMonodromyEquiv H K C a a' b b'
+          hab hab' ha'b ha'b') := by
+  rw [code.foreignRectangleMonodromyEquiv_swap_rows H K C
+    a a' b b' hab hab' ha'b ha'b', Equiv.Perm.sign_symm]
+
+/-- Reversing the column orientation does not change monodromy parity, even
+though it changes the source fiber and conjugates the inverse permutation. -/
+theorem MuThreeMixedGridCode.foreignRectangleMonodromy_sign_swap_columns
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (a a' : X) (b b' : Y)
+    (hab : ¬ H a b) (hab' : ¬ H a b')
+    (ha'b : ¬ H a' b) (ha'b' : ¬ H a' b') :
+    Equiv.Perm.sign
+        (code.foreignRectangleMonodromyEquiv H K C a a' b' b
+          hab' hab ha'b' ha'b) =
+      Equiv.Perm.sign
+        (code.foreignRectangleMonodromyEquiv H K C a a' b b'
+          hab hab' ha'b ha'b') := by
+  rw [code.foreignRectangleMonodromyEquiv_swap_columns H K C
+    a a' b b' hab hab' ha'b ha'b']
+  simp
+
 end
 
 end Erdos85
@@ -76,3 +116,7 @@ end Erdos85
   Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_sign_cocycle
 #print axioms
   Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_sign_triangle
+#print axioms
+  Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_sign_swap_rows
+#print axioms
+  Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_sign_swap_columns
