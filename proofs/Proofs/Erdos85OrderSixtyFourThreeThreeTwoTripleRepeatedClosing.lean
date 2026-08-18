@@ -91,6 +91,94 @@ theorem orderSixtyFour_threeThreeTwo_tripleRepeatedClosing
   · apply exists_twiceRotated_repeatedClosing_of_thirdOwnerEdge_card_lt_block_card
     omega
 
+/-- Preserve the exact ordered component row of each of the three cyclic
+density choices forced by a rainbow `[3,3,2]` pressure block. -/
+theorem orderSixtyFour_threeThreeTwo_rainbow_cyclicRoutingRowDensityChoices
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 3)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hma : m a = 2) (hmb : m b = 3) (hmc : m c = 3)
+    (hef : e ≠ f) (hfg : f ≠ g) (heg : e ≠ g)
+    (hblock : 253 ≤
+      (cyclicColoredTriplesInBlocks (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g).card) :
+    ((∃ x : e.supp,
+        HasTwoCenterRoutingRowDensity G hfree m e f c hef x) ∨
+      (∃ y : f.supp,
+        HasTwoCenterRoutingRowDensity G hfree m f e b hef.symm y)) ∧
+    ((∃ y : f.supp,
+        HasTwoCenterRoutingRowDensity G hfree m f g a hfg y) ∨
+      (∃ z : g.supp,
+        HasTwoCenterRoutingRowDensity G hfree m g f c hfg.symm z)) ∧
+    ((∃ z : g.supp,
+        HasTwoCenterRoutingRowDensity G hfree m g e b heg.symm z) ∨
+      (∃ x : e.supp,
+        HasTwoCenterRoutingRowDensity G hfree m e g a heg x)) := by
+  obtain ⟨hr₁, hr₂, hr₃⟩ :=
+    orderSixtyFour_threeThreeTwo_tripleRepeatedClosing G hfree hreg hcount m hm
+      a b c e f g hab hac hbc hma hmb hmc hblock
+  exact ⟨
+    binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
+      G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+        a b c e f g hef hfg heg hbc hr₁,
+    binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
+      G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+        b c a f g e hfg heg.symm hef.symm hac.symm hr₂,
+    binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
+      G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+        c a b g e f heg.symm hef hfg.symm hab hr₃⟩
+
+/-- The first exact cyclic choice is always owned by one of the two
+size-three colors, hence always supplies a canonical missing-star package. -/
+theorem orderSixtyFour_threeThreeTwo_rainbow_exists_largeOwnerUniqueThirdCenter
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 3)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hma : m a = 2) (hmb : m b = 3) (hmc : m c = 3)
+    (hef : e ≠ f) (hfg : f ≠ g) (heg : e ≠ g)
+    (hblock : 253 ≤
+      (cyclicColoredTriplesInBlocks (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g).card) :
+    HasTwoCenterRoutingRowDensityWithUniqueThirdCenterForOwner G hfree m b ∨
+      HasTwoCenterRoutingRowDensityWithUniqueThirdCenterForOwner G hfree m c := by
+  have hd :=
+    (orderSixtyFour_threeThreeTwo_rainbow_cyclicRoutingRowDensityChoices
+      G hfree hreg hcount m hm a b c e f g hab hac hbc hma hmb hmc
+        hef hfg heg hblock).1
+  rcases hd with ⟨x, hx⟩ | ⟨y, hy⟩
+  · exact Or.inr
+      (twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm c hmc
+          ⟨e, f, hef, x, hx⟩)
+  · exact Or.inl
+      (twoCenterRoutingRowDensityForOwner_has_uniqueThirdCenter_of_m_eq_three
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm b hmb
+          ⟨f, e, hef.symm, y, hy⟩)
+
 /-- In a rainbow `[3,3,2]` pressure block, the three cyclic repeated closings
 force dense routing-row fragments for at least two of the three owner colors.
 The fragments may have different roots and different ordered component rows. -/
@@ -234,6 +322,8 @@ end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_ownerColoredEdgesInBlocks_card_le
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_tripleRepeatedClosing
+#print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_cyclicRoutingRowDensityChoices
+#print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_exists_largeOwnerUniqueThirdCenter
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensities
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoUniqueThirdCenters

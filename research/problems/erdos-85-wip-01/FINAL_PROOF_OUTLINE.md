@@ -2089,7 +2089,15 @@ generalized rather than merely replayed.
      `orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoUniqueThirdCenters`
      yields either the size-two saturation or one canonical unused third
      center for each of `b,c`.  Comparing the stars of these canonical missing
-     centers across roots/rows is the next compatibility leaf.
+     centers across roots/rows is the next compatibility leaf.  The cyclic
+     row data is no longer erased by the owner-level wrapper:
+     `orderSixtyFour_threeThreeTwo_rainbow_cyclicRoutingRowDensityChoices`
+     retains the three exact alternatives on rows `e↔f`, `f↔g`, and `g↔e`.
+     Its first alternative is always owned by size-three `b` or `c`, so
+     `orderSixtyFour_threeThreeTwo_rainbow_exists_largeOwnerUniqueThirdCenter`
+     guarantees at least one canonical residual-star package in every rainbow
+     pressure block.  The next comparison can therefore work with fixed row
+     orientations rather than arbitrary existential source/target pairs.
      The remaining rainbow **GAP** is compatibility: the two fragments may
      live on different ordered component rows and have different roots, so
      their certified subsets cannot yet be added or intersected.  The earlier
