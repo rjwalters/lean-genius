@@ -596,4 +596,84 @@ theorem mu3NativeC4PairSpecStepVal_formulaSatisfied
         conj.2 id by exact hstep.2.2 id (hid.trans hconj.2.2.1)]
     exact hconj.2.2.2.1 id hid
 
+/-! ## The complete C4-pair fold -/
+
+def mu3NativeRunC4PairSpecs (pairs : List (Nat × Nat))
+    (st : Mu3NativeCnfState) : Mu3NativeCnfState :=
+  pairs.foldl (fun st pair => mu3NativeC4PairSpecStep pair st) st
+
+def mu3NativeRunC4PairSpecsVal (baseVal : DimacsValuation) :
+    List (Nat × Nat) → Mu3NativeCnfState → DimacsValuation →
+      Mu3NativeCnfState × DimacsValuation
+  | [], st, val => (st, val)
+  | pair :: rest, st, val =>
+      let next := mu3NativeC4PairSpecStepVal baseVal pair st val
+      mu3NativeRunC4PairSpecsVal baseVal rest next.1 next.2
+
+theorem mu3NativeRunC4PairSpecsVal_state
+    (baseVal : DimacsValuation) (pairs : List (Nat × Nat))
+    (st : Mu3NativeCnfState) (val : DimacsValuation) :
+    (mu3NativeRunC4PairSpecsVal baseVal pairs st val).1 =
+      mu3NativeRunC4PairSpecs pairs st := by
+  induction pairs generalizing st val with
+  | nil => rfl
+  | cons pair rest ih =>
+      simp only [mu3NativeRunC4PairSpecsVal, mu3NativeRunC4PairSpecs,
+        List.foldl_cons]
+      rw [ih, mu3NativeC4PairSpecStepVal_state]
+      rfl
+
+/-- The stage-indexed hypotheses needed by the outer semantic fold.  This
+form makes explicit that each at-most-one row is read after allocating its
+own conjunction variables. -/
+def Mu3NativeC4FoldConditions (baseTop : Nat)
+    (baseVal : DimacsValuation) :
+    List (Nat × Nat) → Mu3NativeCnfState → DimacsValuation → Prop
+  | [], _, _ => True
+  | pair :: rest, st, val =>
+      (∀ spec ∈ mu3NativeCommonSpecs pair.1 pair.2,
+        0 < spec.1 ∧ spec.1 ≤ baseTop ∧
+        0 < spec.2 ∧ spec.2 ≤ baseTop) ∧
+      (let conj := mu3NativeRunConjSpecsVal baseVal
+          (mu3NativeCommonSpecs pair.1 pair.2) (#[], st) val;
+        seqPrefixTrue (mu3NativeVarsRow conj.2 conj.1.1) conj.1.1.size ≤ 1) ∧
+      let next := mu3NativeC4PairSpecStepVal baseVal pair st val
+      Mu3NativeC4FoldConditions baseTop baseVal rest next.1 next.2
+
+theorem mu3NativeRunC4PairSpecsVal_formulaSatisfied
+    (baseTop : Nat) (baseVal : DimacsValuation)
+    (pairs : List (Nat × Nat))
+    (st : Mu3NativeCnfState) (inputVal : DimacsValuation)
+    (htop : baseTop ≤ st.top)
+    (hprefixSat : dimacsFormulaSatisfied inputVal st.clauses)
+    (hprefixBound : dimacsFormulaBounded st.top st.clauses)
+    (hagree : ∀ id, id ≤ baseTop → inputVal id = baseVal id)
+    (hconditions : Mu3NativeC4FoldConditions
+      baseTop baseVal pairs st inputVal) :
+    let out := mu3NativeRunC4PairSpecsVal baseVal pairs st inputVal
+    dimacsFormulaSatisfied out.2 out.1.clauses ∧
+    dimacsFormulaBounded out.1.top out.1.clauses ∧
+    baseTop ≤ out.1.top ∧
+    ∀ id, id ≤ baseTop → out.2 id = baseVal id := by
+  induction pairs generalizing st inputVal with
+  | nil => exact ⟨hprefixSat, hprefixBound, htop, hagree⟩
+  | cons pair rest ih =>
+      let next := mu3NativeC4PairSpecStepVal baseVal pair st inputVal
+      have hstep := mu3NativeC4PairSpecStepVal_formulaSatisfied
+        baseTop baseVal pair st inputVal htop hprefixSat hprefixBound hagree
+          hconditions.1 hconditions.2.1
+      simpa [mu3NativeRunC4PairSpecsVal, next] using
+        ih next.1 next.2 hstep.2.2.1 hstep.1 hstep.2.1 hstep.2.2.2
+          hconditions.2.2
+
+def mu3NativeFinalSpecState (shape : Mu3AllTfShape) : Mu3NativeCnfState :=
+  mu3NativeRunC4PairSpecs mu3NativePairs
+    (mu3NativeRunExactSpecs (mu3NativeHitSpecs shape) {})
+
+set_option maxHeartbeats 0 in
+theorem mu3NativeFinalSpecState_eq_finalState :
+    ([Mu3AllTfShape.c16, .c10c6, .c8c8].all fun shape =>
+      mu3NativeFinalSpecState shape == mu3NativeFinalState shape) = true := by
+  native_decide
+
 end Erdos85
