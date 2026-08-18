@@ -141,6 +141,43 @@ theorem binarySquare_regular_twoSizeTwoParts_restrictedOwners_are_shadows
     · rintro ⟨z, hzx, hzy⟩
       exact ⟨z, hzx.symm, hzy.symm⟩
 
+/-- Graph-facing capstone: the two restricted owner factors admit the shadow
+coordinates above, and those coordinates have exactly equal cycle profiles. -/
+theorem binarySquare_regular_twoSizeTwoParts_restrictedOwner_cycleProfiles_match
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (source target : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsource : source.supp.ncard = q * 2)
+    (htarget : target.supp.ncard = q * 2) :
+    ∃ (f : source.supp ≃ target.supp)
+      (h : BipartiteTwoRegularAfterMatching
+        (fun x y => G.Adj x.1 y.1) f),
+      permutationCycleProfile source.supp
+          (bipartiteLeftShadow f h.residualEquiv) =
+        permutationCycleProfile target.supp
+          (bipartiteRightShadow f h.residualEquiv) ∧
+      (∀ x y,
+        (restrictedComponentOwnerGraph G source target).Adj x y ↔
+          x ≠ y ∧
+            (bipartiteLeftShadow f h.residualEquiv x = y ∨
+             bipartiteLeftShadow f h.residualEquiv y = x)) ∧
+      (∀ x y,
+        (restrictedComponentOwnerGraph G target source).Adj x y ↔
+          x ≠ y ∧
+            (bipartiteRightShadow f h.residualEquiv x = y ∨
+             bipartiteRightShadow f h.residualEquiv y = x)) := by
+  obtain ⟨f, h, hleft, hright⟩ :=
+    binarySquare_regular_twoSizeTwoParts_restrictedOwners_are_shadows
+      G hfree hq hreg hcard source target hsource htarget
+  exact ⟨f, h, h.shadow_cycleProfile_eq, hleft, hright⟩
+
 end
 
 end Erdos85
