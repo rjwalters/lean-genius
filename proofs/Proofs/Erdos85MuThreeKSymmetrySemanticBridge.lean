@@ -89,6 +89,25 @@ theorem mu3KColumnCapacity_of_full_counts
     simp [hy8]
   · rw [if_neg hyrow]
 
+theorem mu3KRowSymmetryPrefix_of_indexed
+    (H : Nat → Mu3KRow) (pre : Mu3KRows) (n : Nat) (row : Mu3KRow)
+    (h : ∀ i, i < pre.length →
+      (row ∩ H i).card = ((pre.getD i ∅) ∩ H n).card) :
+    mu3KRowSymmetryPrefix H pre n row = true := by
+  unfold mu3KRowSymmetryPrefix
+  have hzip : pre.zip (List.range pre.length) = pre.zipIdx := by
+    rw [List.zipIdx_eq_zip_range', List.range_eq_range']
+  rw [hzip, List.all_eq_true]
+  intro entry hentry
+  obtain ⟨hi, hvalue⟩ := List.mem_zipIdx' hentry
+  rw [decide_eq_true_eq]
+  rw [hvalue]
+  have hget : pre.getD entry.2 ∅ = pre[entry.2] := by
+    rw [List.getD_eq_getElem?_getD, List.getElem?_eq_getElem hi]
+    rfl
+  rw [← hget]
+  exact h entry.2 hi
+
 /-- Search admissibility with the incremental capacity bookkeeping removed.
 This is the convenient coordinate-adapter input: final column degree two is
 enough to reconstruct every capacity gate. -/
@@ -102,6 +121,41 @@ def Mu3KSectorCapacityFreeAdmissible
     mu3KRowSymmetryPrefix H (rows.take n) n row = true) ∧
   mu3KColumnCounts rows = List.replicate 8 2 ∧
   mu3KColumnSymmetry H rows = true
+
+/-- A fully semantic version of sector admissibility: both symmetry laws are
+stated by row/column indices and no DFS-prefix predicate remains. -/
+def Mu3KSectorGlobalAdmissible
+    (H T : Nat → Mu3KRow) (rows : Mu3KRows) : Prop :=
+  rows.length = 8 ∧
+  (∀ n, n < 8 →
+    let row := rows.getD n ∅
+    row ∈ mu3KRowChoices ∧ row ∩ H n = T n) ∧
+  mu3KColumnCounts rows = List.replicate 8 2 ∧
+  (∀ n i, n < 8 → i < n →
+    ((rows.getD n ∅) ∩ H i).card =
+      ((rows.getD i ∅) ∩ H n).card) ∧
+  mu3KColumnSymmetry H rows = true
+
+theorem mu3KSectorCapacityFreeAdmissible_of_global
+    (H T : Nat → Mu3KRow) (rows : Mu3KRows)
+    (h : Mu3KSectorGlobalAdmissible H T rows) :
+    Mu3KSectorCapacityFreeAdmissible H T rows := by
+  obtain ⟨hlen, hrows, hcounts, hrowSymm, hcolSymm⟩ := h
+  refine ⟨hlen, ?_, hcounts, hcolSymm⟩
+  intro n hn
+  obtain ⟨hchoice, hinter⟩ := hrows n hn
+  refine ⟨hchoice, hinter,
+    mu3KRowSymmetryPrefix_of_indexed H (rows.take n) n
+      (rows.getD n ∅) ?_⟩
+  intro i hi
+  have hnle : n ≤ rows.length := by omega
+  have htakeLen : (rows.take n).length = n := List.length_take_of_le hnle
+  have hin : i < n := by simpa [htakeLen] using hi
+  have hget : (rows.take n).getD i ∅ = rows.getD i ∅ := by
+    simp only [List.getD_eq_getElem?_getD, List.getElem?_take]
+    simp [hin]
+  rw [hget]
+  exact hrowSymm n i hn hin
 
 theorem mu3KSectorSearchAdmissible_of_capacityFree
     (H T : Nat → Mu3KRow) (rows : Mu3KRows)
@@ -121,7 +175,15 @@ theorem mem_mu3KSectorEnumeration_of_capacityFree
   mu3KSectorEnumeration_complete H T rows
     (mu3KSectorSearchAdmissible_of_capacityFree H T rows h)
 
+theorem mem_mu3KSectorEnumeration_of_global
+    (H T : Nat → Mu3KRow) (rows : Mu3KRows)
+    (h : Mu3KSectorGlobalAdmissible H T rows) :
+    rows ∈ mu3KSectorEnumeration H T :=
+  mem_mu3KSectorEnumeration_of_capacityFree H T rows
+    (mu3KSectorCapacityFreeAdmissible_of_global H T rows h)
+
 end Erdos85
 
 #print axioms Erdos85.mu3KColumnCapacity_of_full_counts
 #print axioms Erdos85.mem_mu3KSectorEnumeration_of_capacityFree
+#print axioms Erdos85.mem_mu3KSectorEnumeration_of_global
