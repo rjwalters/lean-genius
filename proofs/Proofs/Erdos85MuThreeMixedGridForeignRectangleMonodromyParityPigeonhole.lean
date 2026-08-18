@@ -172,6 +172,36 @@ theorem MuThreeMixedGridCode.exists_three_commonRows_pairwise_even_monodromy
       r.1 a'.1 a''.1 b b' r.2.1 r.2.2 a'.2.1 a'.2.2 a''.2.1 a''.2.2).2
         (hcolor'.symm.trans hcolor'')
 
+/-- Consolidated graph-facing bridge: C4-freeness of the bipartite H-factor
+forces distinct columns with three pairwise distinct common eligible rows,
+and all three pairwise rectangle monodromies are even. -/
+theorem MuThreeMixedGridCode.exists_columns_three_commonRows_pairwise_even_of_c4Free
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (hc4 : ¬ containsC4 (X ⊕ Y) (relationBipartiteGraph H)) :
+    ∃ b b' : Y, b ≠ b' ∧
+      ∃ a a' a'' : commonForeignRows H b b',
+        a ≠ a' ∧ a ≠ a'' ∧ a' ≠ a'' ∧
+        Equiv.Perm.sign
+          (code.foreignRectangleMonodromyEquiv H K C a.1 a'.1 b b'
+            a.2.1 a.2.2 a'.2.1 a'.2.2) = 1 ∧
+        Equiv.Perm.sign
+          (code.foreignRectangleMonodromyEquiv H K C a.1 a''.1 b b'
+            a.2.1 a.2.2 a''.2.1 a''.2.2) = 1 ∧
+        Equiv.Perm.sign
+          (code.foreignRectangleMonodromyEquiv H K C a'.1 a''.1 b b'
+            a'.2.1 a'.2.2 a''.2.1 a''.2.2) = 1 := by
+  have hcard := code.card_left
+  letI : Nonempty X := Fintype.card_pos_iff.mp (by omega)
+  obtain ⟨b, b', hbb', hcommon⟩ :=
+    code.H_twoRegular.exists_columns_common_card_eq_one_of_c4Free H hc4
+  obtain ⟨a, a', a'', haa', haa'', ha'a'', heven₁, heven₂, heven₃⟩ :=
+    code.exists_three_commonRows_pairwise_even_monodromy H K C b b' hcommon
+  exact ⟨b, b', hbb', a, a', a'', haa', haa'', ha'a'', heven₁, heven₂, heven₃⟩
+
 end
 
 end Erdos85
@@ -184,3 +214,5 @@ end Erdos85
   Erdos85.MuThreeMixedGridCode.exists_columns_common_card_eq_one
 #print axioms
   Erdos85.MuThreeMixedGridCode.exists_three_commonRows_pairwise_even_monodromy
+#print axioms
+  Erdos85.MuThreeMixedGridCode.exists_columns_three_commonRows_pairwise_even_of_c4Free
