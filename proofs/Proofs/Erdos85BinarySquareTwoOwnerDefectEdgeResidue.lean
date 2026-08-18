@@ -130,6 +130,92 @@ theorem binarySquare_regular_defectEdge_twoOwnerMixedResidue_card_lower
   rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hMsub, hMcard]
   omega
 
+/-- Two displayed distinct elements exhaust a finite type of cardinality two. -/
+theorem eq_or_eq_of_fintype_card_eq_two
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (a b : C) (hab : a ≠ b) (hcard : Fintype.card C = 2) (c : C) :
+    c = a ∨ c = b := by
+  have hp : ({a, b} : Finset C).card = Fintype.card C := by
+    simp [hab, hcard]
+  have huniv : ({a, b} : Finset C) = Finset.univ :=
+    Finset.eq_univ_of_card _ hp
+  have hc : c ∈ ({a, b} : Finset C) := by
+    rw [huniv]
+    exact Finset.mem_univ c
+  simpa [eq_comm] using hc
+
+/-- In a genuine two-owner stratum, the entire defect-edge residue consists
+of same-owner `AA` or `BB` middles. -/
+theorem binarySquare_regular_twoComponents_defectEdge_sameOwner_card_lower
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent) (hab : a ≠ b)
+    {m_a m_b : ℕ} (ha : a.supp.ncard = q * m_a)
+    (hb : b.supp.ncard = q * m_b)
+    {x y : V} (hxyD : (secondOrderDefectGraph G).Adj x y) :
+    (q * q - 2 * (q - 1)) - 2 * m_a * m_b ≤
+      (coloredTwoStepMiddles
+          (componentOwnerGraph G (secondOrderDefectGraph G) a)
+          (componentOwnerGraph G (secondOrderDefectGraph G) a) x y ∪
+        coloredTwoStepMiddles
+          (componentOwnerGraph G (secondOrderDefectGraph G) b)
+          (componentOwnerGraph G (secondOrderDefectGraph G) b) x y).card := by
+  let D := secondOrderDefectGraph G
+  let A := componentOwnerGraph G D a
+  let B := componentOwnerGraph G D b
+  let M := coloredTwoStepMiddles A B x y ∪ coloredTwoStepMiddles B A x y
+  let R := twoLegDefectEligible D x y \ M
+  let S := coloredTwoStepMiddles A A x y ∪ coloredTwoStepMiddles B B x y
+  have hRcard : (q * q - 2 * (q - 1)) - 2 * m_a * m_b ≤ R.card := by
+    exact binarySquare_regular_defectEdge_twoOwnerMixedResidue_card_lower
+      G hfree hq hreg hcard a b hab ha hb hxyD
+  have hRsub : R ⊆ S := by
+    intro z hzR
+    have hzData := Finset.mem_sdiff.mp hzR
+    have hzElig := hzData.1
+    have hzNotM := hzData.2
+    have hzLegs : ¬ D.Adj x z ∧ ¬ D.Adj y z := by
+      simpa [twoLegDefectEligible, SimpleGraph.mem_neighborFinset] using hzElig
+    have hxz : x ≠ z := by
+      intro hxz
+      subst z
+      exact hzLegs.2 hxyD.symm
+    have hzy : z ≠ y := by
+      intro hzy
+      subst z
+      exact hzLegs.1 hxyD
+    obtain ⟨c, hcxz, _hcuniq⟩ :=
+      (not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj
+        G hfree hxz).mp hzLegs.1
+    obtain ⟨d, hdzy, _hduniq⟩ :=
+      (not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj
+        G hfree hzy).mp (fun h => hzLegs.2 h.symm)
+    have hc := eq_or_eq_of_fintype_card_eq_two a b hab hcount c
+    have hd := eq_or_eq_of_fintype_card_eq_two a b hab hcount d
+    rcases hc with rfl | rfl <;> rcases hd with rfl | rfl
+    · apply Finset.mem_union_left
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hcxz, hdzy⟩
+    · exfalso
+      apply hzNotM
+      apply Finset.mem_union_left
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hcxz, hdzy⟩
+    · exfalso
+      apply hzNotM
+      apply Finset.mem_union_right
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hcxz, hdzy⟩
+    · apply Finset.mem_union_right
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hcxz, hdzy⟩
+  exact hRcard.trans (Finset.card_le_card hRsub)
+
 end
 
 end Erdos85
