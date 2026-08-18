@@ -11,6 +11,12 @@ the former, removing procedural search bookkeeping from the graph adapter.
 
 namespace Erdos85
 
+theorem image_finVal_mem_mu3KRowChoices
+    (row : Finset (Fin 8)) (hcard : row.card = 2) :
+    row.image Fin.val ∈ mu3KRowChoices := by
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+  fin_cases a <;> fin_cases b <;> simp_all [mu3KRowChoices]
+
 def mu3KColumnCount (rows : Mu3KRows) (y : Nat) : Nat :=
   (rows.map fun row => if y ∈ row then 1 else 0).sum
 
