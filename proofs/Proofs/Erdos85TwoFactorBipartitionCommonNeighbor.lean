@@ -48,6 +48,29 @@ theorem twoRegular_no_cross_adj_of_commonNeighbor_no_cross
   have hyzSide : side y = side z := hcommonSame hyzCommon
   exact hxySide (hyzSide.trans hzSide).symm
 
+/-- The distinct-common-neighbor graph of the standard eight-cycle is not
+connected: every one of its edges preserves the parity of the cyclic label,
+so vertices `0` and `1` lie in different components. -/
+theorem not_connected_distinctCommonNeighborGraph_cycleGraph_eight :
+    ¬ (distinctCommonNeighborGraph (cycleGraph 8)).Connected := by
+  intro hconn
+  letI : DecidableRel (distinctCommonNeighborGraph (cycleGraph 8)).Adj :=
+    fun i j => inferInstanceAs (Decidable (i ≠ j ∧ ∃ x : Fin 8,
+      (cycleGraph 8).Adj x i ∧ (cycleGraph 8).Adj x j))
+  have hedge : ∀ {i j : Fin 8},
+      (distinctCommonNeighborGraph (cycleGraph 8)).Adj i j →
+        i.val % 2 = j.val % 2 := by decide
+  have hreach := hconn.preconnected (0 : Fin 8) (1 : Fin 8)
+  have hwalk : Relation.ReflTransGen
+      (distinctCommonNeighborGraph (cycleGraph 8)).Adj (0 : Fin 8) (1 : Fin 8) :=
+    ((distinctCommonNeighborGraph (cycleGraph 8)).reachable_iff_reflTransGen
+      (0 : Fin 8) (1 : Fin 8)).mp hreach
+  have hparity : Relation.ReflTransGen (fun a b : ℕ => a = b) 0 1 :=
+    hwalk.lift (fun i : Fin 8 => i.val % 2) (fun _ _ h => hedge h)
+  have : (0 : ℕ) = 1 := by
+    simpa only [Relation.reflTransGen_eq_self] using hparity
+  omega
+
 end
 
 end Erdos85
