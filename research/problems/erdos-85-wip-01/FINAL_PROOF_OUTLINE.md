@@ -2080,7 +2080,11 @@ generalized rather than merely replayed.
      `7151860c48`): an even fixed-point-free permutation of a six-element
      fiber has exactly two nontrivial cycles, and its cycle type is precisely
      `(4,2)` or `(3,3)`.  Thus every positive-sign rectangle excludes the
-     six-cycle and triple-transposition classes axiom-cleanly.
+     six-cycle and triple-transposition classes axiom-cleanly.  The
+     complementary negative class is also exact (**PROVEN**, `15ead5630e`):
+     an odd six-point derangement has cycle type `(6)` or `(2,2,2)`.  Hence
+     rectangle sign gives a complete axiom-clean partition of all four
+     possible derangement cycle types.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
