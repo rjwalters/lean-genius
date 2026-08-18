@@ -1933,7 +1933,16 @@ generalized rather than merely replayed.
      is exactly the simple-graph complement of the defect graph.  Thus the
      `[8]` density terminal is not an independent auxiliary graph; it is a
      direct high-codegree constraint on `Dᶜ`, and the missing consumer can be
-     formulated purely in the defect spectrum/algebra.
+     formulated purely in the defect spectrum/algebra.  More strongly, the
+     q-generic theorem
+     `centeredOwnerGram_eq_q_smul_defect_lapMatrix_of_oneComponent` proves the
+     integer matrix identity `C = q L_D` literally, not just equality of
+     nonzero spectra after transport.  Therefore every centered-owner
+     positivity/rank/trace statement in `[8]` collapses to the corresponding
+     ordinary Laplacian statement for the connected `(q-1)`-regular defect
+     graph.  Those generic centered-Gram invariants are tautological in this
+     stratum; a successful consumer must use the additional fact that `D`
+     arises from the square-order common-neighbor equation with `G`.
      The residual **GAP** is to turn this extreme single-color closure into an
      ambient C4/routing contradiction when every center belongs to the same
      defect component.  The two-component
