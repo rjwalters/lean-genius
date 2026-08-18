@@ -12,6 +12,8 @@ valuation which still agrees with the incoming valuation on every old ID.
 
 namespace Erdos85
 
+set_option maxRecDepth 100000
+
 abbrev Mu3NativeCardSpec := Array Int × Nat
 
 /-- The row and column exact-cardinality blocks, flattened in precisely the
@@ -57,6 +59,26 @@ theorem mu3NativeVarsRow_reifies
     simp [Array.getD, hi]
   · intro i hi
     simp [mu3NativeVarsRow, Array.getD, hi]
+
+/-- Add one exact-cardinality block to a satisfied native-generator prefix.
+The returned canonical valuation satisfies the enlarged prefix, its clauses
+are bounded by the new top, and all old variable values are unchanged. -/
+theorem mu3NativeEquals_formulaSatisfied_append
+    (st : Mu3NativeCnfState) (inputVal : DimacsValuation)
+    (vars : Array Int) (x : Fin vars.size → Bool)
+    (hprefixSat : dimacsFormulaSatisfied inputVal st.clauses)
+    (hprefixBound : dimacsFormulaBounded st.top st.clauses)
+    (hinput : SeqCounterInputReifies inputVal st.top vars x)
+    (target : Nat) (hcount : seqPrefixTrue x vars.size = target) :
+    let nextVal := seqCounterEqualsVal inputVal st.top vars x target
+    dimacsFormulaSatisfied nextVal
+      (mu3NativeEquals vars target st).clauses ∧
+    dimacsFormulaBounded (mu3NativeEquals vars target st).top
+      (mu3NativeEquals vars target st).clauses ∧
+    ∀ id, id ≤ st.top → nextVal id = inputVal id := by
+  simpa [mu3NativeEquals, mu3NativeAppendCounter] using
+    seqCounterEqualsVal_formulaSatisfied_append inputVal st.top st.clauses
+      vars x hprefixSat hprefixBound hinput target hcount
 
 /-- Run exact-cardinality blocks while constructing their canonical auxiliary
 valuation.  The first projection is definitionally the executable CNF run. -/
@@ -125,7 +147,7 @@ theorem mu3NativeRunExactSpecsVal_formulaSatisfied
             (by simp [Array.getD, hi])).trans htop
         · intro i hi
           change dimacsLitValue inputVal (spec.1.getD i 0) =
-            dimacsLitValue baseVal spec.1[⟨i, hi⟩]
+            dimacsLitValue baseVal spec.1[i]
           have hlit := hspecBaseBound (spec.1.getD i 0)
             (by simp [Array.getD, hi])
           rw [dimacsLitValue_eq_of_agree inputVal baseVal
@@ -196,26 +218,6 @@ theorem mu3NativeHitSpecs_formulaSatisfiable
   · rw [← mu3NativeRunExactSpecsVal_state edgeVal
       (mu3NativeHitSpecs shape) {} edgeVal]
     exact h.2.1
-
-/-- Add one exact-cardinality block to a satisfied native-generator prefix.
-The returned canonical valuation satisfies the enlarged prefix, its clauses
-are bounded by the new top, and all old variable values are unchanged. -/
-theorem mu3NativeEquals_formulaSatisfied_append
-    (st : Mu3NativeCnfState) (inputVal : DimacsValuation)
-    (vars : Array Int) (x : Fin vars.size → Bool)
-    (hprefixSat : dimacsFormulaSatisfied inputVal st.clauses)
-    (hprefixBound : dimacsFormulaBounded st.top st.clauses)
-    (hinput : SeqCounterInputReifies inputVal st.top vars x)
-    (target : Nat) (hcount : seqPrefixTrue x vars.size = target) :
-    let nextVal := seqCounterEqualsVal inputVal st.top vars x target
-    dimacsFormulaSatisfied nextVal
-      (mu3NativeEquals vars target st).clauses ∧
-    dimacsFormulaBounded (mu3NativeEquals vars target st).top
-      (mu3NativeEquals vars target st).clauses ∧
-    ∀ id, id ≤ st.top → nextVal id = inputVal id := by
-  simpa [mu3NativeEquals, mu3NativeAppendCounter] using
-    seqCounterEqualsVal_formulaSatisfied_append inputVal st.top st.clauses
-      vars x hprefixSat hprefixBound hinput target hcount
 
 /-- Canonical valuation for an at-most block appended to an existing prefix. -/
 def mu3NativeAtMostVal (st : Mu3NativeCnfState)
@@ -388,5 +390,130 @@ theorem mu3NativeConjStep_formulaSatisfied_append
       mu3NativeFresh, aux]
   · intro id hid
     exact mu3NativeConjVal_old st inputVal a b id hid
+
+/-! ## Common-neighbor conjunction folds -/
+
+/-- The 46 pairs of base edge IDs whose conjunctions encode common neighbors
+of `u` and `v`. -/
+def mu3NativeCommonSpecs (u v : Nat) : List (Nat × Nat) :=
+  (List.range 48).filterMap fun m =>
+    if m = u || m = v then none
+    else some (mu3NativeEdgeId u m, mu3NativeEdgeId v m)
+
+def mu3NativeRunConjSpecs (specs : List (Nat × Nat))
+    (acc : Array Int × Mu3NativeCnfState) :
+    Array Int × Mu3NativeCnfState :=
+  specs.foldl (fun acc spec =>
+    let out := mu3NativeConjStep spec.1 spec.2 acc.2
+    (acc.1.push (out.1 : Int), out.2)) acc
+
+set_option maxRecDepth 100000 in
+theorem mu3NativeCommonSpecs_generate_commonFold :
+    (mu3NativePairs.all fun pair =>
+      mu3NativeRunConjSpecs (mu3NativeCommonSpecs pair.1 pair.2)
+        (#[], {}) ==
+      (List.range 48).foldl
+        (fun acc m => mu3NativeCommonStep pair.1 pair.2 m acc)
+        (#[], {})) = true := by
+  native_decide
+
+/-- Semantic execution of the common-neighbor conjunction list. -/
+def mu3NativeRunConjSpecsVal (baseVal : DimacsValuation) :
+    List (Nat × Nat) → Array Int × Mu3NativeCnfState →
+      DimacsValuation → (Array Int × Mu3NativeCnfState) × DimacsValuation
+  | [], acc, val => (acc, val)
+  | spec :: rest, acc, val =>
+      let out := mu3NativeConjStep spec.1 spec.2 acc.2
+      let nextAcc := (acc.1.push (out.1 : Int), out.2)
+      let nextVal := mu3NativeConjVal acc.2 val spec.1 spec.2
+      mu3NativeRunConjSpecsVal baseVal rest nextAcc nextVal
+
+theorem mu3NativeRunConjSpecsVal_state
+    (baseVal : DimacsValuation) (specs : List (Nat × Nat))
+    (acc : Array Int × Mu3NativeCnfState) (val : DimacsValuation) :
+    (mu3NativeRunConjSpecsVal baseVal specs acc val).1 =
+      mu3NativeRunConjSpecs specs acc := by
+  induction specs generalizing acc val with
+  | nil => rfl
+  | cons spec rest ih =>
+      simp only [mu3NativeRunConjSpecsVal, mu3NativeRunConjSpecs,
+        List.foldl_cons]
+      exact ih _ _
+
+/-- The truth row for a conjunction specification list, independent of the
+fresh numeric IDs allocated to represent it. -/
+def mu3NativeCommonTruthRow (baseVal : DimacsValuation)
+    (specs : List (Nat × Nat)) : Fin specs.length → Bool := fun i =>
+  baseVal specs[i].1 && baseVal specs[i].2
+
+/-- Semantic induction through a list of freshly allocated conjunctions. -/
+theorem mu3NativeRunConjSpecsVal_formulaSatisfied
+    (baseTop : Nat) (baseVal : DimacsValuation)
+    (specs : List (Nat × Nat))
+    (acc : Array Int × Mu3NativeCnfState) (inputVal : DimacsValuation)
+    (htop : baseTop ≤ acc.2.top)
+    (hprefixSat : dimacsFormulaSatisfied inputVal acc.2.clauses)
+    (hprefixBound : dimacsFormulaBounded acc.2.top acc.2.clauses)
+    (hagree : ∀ id, id ≤ baseTop → inputVal id = baseVal id)
+    (haccIds : ∀ lit ∈ acc.1,
+      lit ≠ 0 ∧ lit.natAbs ≤ acc.2.top)
+    (hspecIds : ∀ spec ∈ specs,
+      0 < spec.1 ∧ spec.1 ≤ baseTop ∧
+      0 < spec.2 ∧ spec.2 ≤ baseTop) :
+    let out := mu3NativeRunConjSpecsVal baseVal specs acc inputVal
+    dimacsFormulaSatisfied out.2 out.1.2.clauses ∧
+    dimacsFormulaBounded out.1.2.top out.1.2.clauses ∧
+    baseTop ≤ out.1.2.top ∧
+    (∀ id, id ≤ baseTop → out.2 id = baseVal id) ∧
+    ∀ lit ∈ out.1.1, lit ≠ 0 ∧ lit.natAbs ≤ out.1.2.top := by
+  induction specs generalizing acc inputVal with
+  | nil =>
+      exact ⟨hprefixSat, hprefixBound, htop, hagree, haccIds⟩
+  | cons spec rest ih =>
+      let step := mu3NativeConjStep spec.1 spec.2 acc.2
+      let nextAcc : Array Int × Mu3NativeCnfState :=
+        (acc.1.push (step.1 : Int), step.2)
+      let nextVal := mu3NativeConjVal acc.2 inputVal spec.1 spec.2
+      have hspec := hspecIds spec (by simp)
+      have hstep := mu3NativeConjStep_formulaSatisfied_append
+        acc.2 inputVal spec.1 spec.2 hspec.1 (hspec.2.1.trans htop)
+          hspec.2.2.1 (hspec.2.2.2.trans htop) hprefixSat hprefixBound
+      have hstepSat : dimacsFormulaSatisfied nextVal nextAcc.2.clauses := by
+        simpa [nextVal, nextAcc, step] using hstep.1
+      have hstepBound : dimacsFormulaBounded nextAcc.2.top
+          nextAcc.2.clauses := by
+        simpa [nextAcc, step] using hstep.2.1
+      have hnextTopEq : nextAcc.2.top = acc.2.top + 1 := by
+        simp [nextAcc, step, mu3NativeConjStep, mu3NativeFresh,
+          mu3NativeEmit]
+      have hnextTop : baseTop ≤ nextAcc.2.top := by
+        rw [hnextTopEq]
+        omega
+      have hnextAgree : ∀ id, id ≤ baseTop → nextVal id = baseVal id := by
+        intro id hid
+        rw [show nextVal id = inputVal id by
+          simpa [nextVal] using hstep.2.2.2.2 id (hid.trans htop)]
+        exact hagree id hid
+      have hnextIds : ∀ lit ∈ nextAcc.1,
+          lit ≠ 0 ∧ lit.natAbs ≤ nextAcc.2.top := by
+        intro lit hlit
+        simp only [nextAcc, Array.mem_push] at hlit
+        rcases hlit with hold | rfl
+        · obtain ⟨hne, hb⟩ := haccIds lit hold
+          exact ⟨hne, hb.trans (by rw [hnextTopEq]; omega)⟩
+        · have haux : step.1 = acc.2.top + 1 := by
+            simpa [step] using hstep.2.2.1
+          rw [haux]
+          constructor
+          · exact_mod_cast Nat.succ_ne_zero acc.2.top
+          · change acc.2.top + 1 ≤ nextAcc.2.top
+            rw [hnextTopEq]
+      have hrestIds : ∀ s ∈ rest,
+          0 < s.1 ∧ s.1 ≤ baseTop ∧ 0 < s.2 ∧ s.2 ≤ baseTop := by
+        intro s hs
+        exact hspecIds s (by simp [hs])
+      simpa [mu3NativeRunConjSpecsVal, step, nextAcc, nextVal] using
+        ih nextAcc nextVal hnextTop hstepSat hstepBound hnextAgree
+          hnextIds hrestIds
 
 end Erdos85
