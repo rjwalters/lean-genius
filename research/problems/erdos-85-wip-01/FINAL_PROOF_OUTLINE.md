@@ -2043,17 +2043,23 @@ generalized rather than merely replayed.
      target in `[6,2]`, where there are exactly two defect components and
      every multi-component triangle necessarily meets the selected size-two
      component.  It is not the correct target in `[4,2,2]`, `[3,3,2]`, or
-     `[2,2,2,2]`.  The orientation plumbing toward the `[6,2]` equality is
-     now **PROVEN**: `card_rootedCyclicColoredPairs_self_eq_two_mul_localTriangleEdges`
+     `[2,2,2,2]`.  The `[6,2]` equality is now **PROVEN**:
+     `card_rootedCyclicColoredPairs_self_eq_two_mul_localTriangleEdges`
      identifies rooted ordered pairs with neighborhood-graph darts
      (`827a09b67b`), and
      `orderSixtyFour_allSixteen_tfComponent_sum_rootedCyclicPairs_eq_ninetySix`
      gives the selected component's first-root count 96 (`4c10fb150a`).
-     `card_cyclicColoredTriples_eq_sum_rootedCyclicColoredPairs`
-     (`b3f2f27b60`) supplies the global root-fiber partition.  The remaining
-     `[6,2]` bookkeeping step is the cyclic factor three, yielding
-     `3·96=288` from the unique selected-component vertex in each cross
-     triangle.
+     The generic `card_eq_three_mul_card_filter_first_of_cyclic_unique`
+     (`a9467a8ee1`) supplies the cyclic factor three, and the graph-facing
+     `orderSixtyFour_sixTwo_allTf_multiComponentAmbient_card_eq_288`
+     (`83f9dc41e9`) proves the exact global ordered count `3·96=288` from the
+     two-component exhaustion and unique selected-component vertex.
+     This still does **not** close a contradiction: the resulting modular
+     statement is only
+     `192 ∣ (#literalMixedOwnerNonambientCyclicTriples + 96)`.  No current
+     theorem bounds that nonambient cardinality tightly enough to exclude
+     the residue.  The honest certificate-free all-TF `[6,2]` GAP is now this
+     nonambient census bound, not the ambient count.
 
      The corrected modular socket is now **PROVEN** (`dec2271326`).  If the
      global ordered mixed-ambient census is written `288 + 6A` and the
