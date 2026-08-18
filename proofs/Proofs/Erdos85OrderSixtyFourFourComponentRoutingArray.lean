@@ -1,8 +1,6 @@
-import Proofs.Erdos85OrderSixtyFourRegularPartition
 import Proofs.Erdos85BinarySquareSizeTwoRoutingRegularity
-import Proofs.Erdos85BinarySquareCrossRoutingSymmetry
 
-/-! # The four-color routing array at order 64 -/
+/-! # Balanced routing arrays in the four-component order-64 branch -/
 
 open SimpleGraph
 
@@ -10,123 +8,97 @@ namespace Erdos85
 
 noncomputable section
 
-/-- A chosen indexing of the four defect components by `Fin 4`. -/
-def orderSixtyFourDefectComponentEquivFinFour
-    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
-    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
-    (hcount : Fintype.card
-      (secondOrderDefectGraph G).ConnectedComponent = 4) :
-    (secondOrderDefectGraph G).ConnectedComponent ≃ Fin 4 :=
-  Fintype.equivFinOfCardEq hcount
+/-- Endpoints in `e` whose unique route from `x` uses component `d`. -/
+def crossRoutingColorClass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent) (hce : c ≠ e)
+    (x : c.supp) (d : (secondOrderDefectGraph G).ConnectedComponent) :
+    Finset e.supp :=
+  Finset.univ.filter fun z => d = crossIntermediateComponent G hfree hce x z
 
-/-- In the four-component branch, label the unique intermediate component of
-an endpoint pair by `Fin 4`. -/
-def orderSixtyFourRoutingArray
-    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+/-- Every routing color occurs exactly four times in each endpoint row. -/
+theorem orderSixtyFour_fourSizeSixteenComponents_routingColorClass_card_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 (Fin 64) G)
-    (hcount : Fintype.card
-      (secondOrderDefectGraph G).ConnectedComponent = 4)
-    {c e : (secondOrderDefectGraph G).ConnectedComponent}
-    (hce : c ≠ e) : c.supp → e.supp → Fin 4 :=
-  fun x z => orderSixtyFourDefectComponentEquivFinFour G hcount
-    (crossIntermediateComponent G hfree hce x z)
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 64)
+    (hparts : ∀ d : (secondOrderDefectGraph G).ConnectedComponent,
+      d.supp.ncard = 16)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent) (hce : c ≠ e)
+    (x : c.supp) (d : (secondOrderDefectGraph G).ConnectedComponent) :
+    (crossRoutingColorClass G hfree c e hce x d).card = 4 := by
+  exact binarySquare_regular_threeSizeTwoParts_routing_row_card_eq_four
+    G hfree (q := 8) (by omega) hreg (by omega) c d e hce
+      (by simpa using hparts c) (by simpa using hparts d)
+      (by simpa using hparts e) x
 
-/-- Reversing the endpoints leaves the `Fin 4` routing color unchanged. -/
-theorem orderSixtyFourRoutingArray_reverse
-    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+/-- Distinct routing colors have disjoint endpoint classes. -/
+theorem crossRoutingColorClass_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent) (hce : c ≠ e)
+    (x : c.supp) {d₁ d₂ : (secondOrderDefectGraph G).ConnectedComponent}
+    (hdd : d₁ ≠ d₂) :
+    Disjoint (crossRoutingColorClass G hfree c e hce x d₁)
+      (crossRoutingColorClass G hfree c e hce x d₂) := by
+  rw [Finset.disjoint_left]
+  intro z hz₁ hz₂
+  have h₁ := (Finset.mem_filter.mp hz₁).2
+  have h₂ := (Finset.mem_filter.mp hz₂).2
+  exact hdd (h₁.trans h₂.symm)
+
+/-- Routing color classes exhaust the opposite endpoint component. -/
+theorem crossRoutingColorClass_biUnion_eq_univ
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 (Fin 64) G)
-    (hcount : Fintype.card
-      (secondOrderDefectGraph G).ConnectedComponent = 4)
-    {c e : (secondOrderDefectGraph G).ConnectedComponent}
-    (hce : c ≠ e) (x : c.supp) (z : e.supp) :
-    orderSixtyFourRoutingArray G hfree hcount hce x z =
-      orderSixtyFourRoutingArray G hfree hcount hce.symm z x := by
-  simp [orderSixtyFourRoutingArray,
-    crossIntermediateComponent_reverse G hfree hce x z]
-
-/-- Every one of the four colors occurs exactly four times in each row of an
-order-64 routing array. -/
-theorem orderSixtyFourRoutingArray_row_color_card_eq_four
-    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
-    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 (Fin 64) G)
-    (hreg : ∀ x, G.degree x = 8)
-    (hcount : Fintype.card
-      (secondOrderDefectGraph G).ConnectedComponent = 4)
-    {c e : (secondOrderDefectGraph G).ConnectedComponent}
-    (hce : c ≠ e) (x : c.supp) (k : Fin 4) :
-    ((Finset.univ : Finset e.supp).filter fun z =>
-      orderSixtyFourRoutingArray G hfree hcount hce x z = k).card = 4 := by
-  let E := orderSixtyFourDefectComponentEquivFinFour G hcount
-  let d := E.symm k
-  have hall := orderSixtyFour_regular_four_defectComponents_all_orderSixteen
-    G hfree hreg hcount
-  have hroute :=
-    binarySquare_regular_threeSizeTwoParts_routing_row_card_eq_four
-      G hfree (q := 8) (by norm_num) hreg (by norm_num)
-        c d e hce (by simpa using hall c) (by simpa using hall d)
-          (by simpa using hall e) x
-  convert hroute using 1
-  congr 1
+    (hfree : ¬ containsC4 V G)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent) (hce : c ≠ e)
+    (x : c.supp) :
+    Finset.univ.biUnion (crossRoutingColorClass G hfree c e hce x) =
+      (Finset.univ : Finset e.supp) := by
+  classical
   ext z
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and,
-    orderSixtyFourRoutingArray, E, d]
-  change E (crossIntermediateComponent G hfree hce x z) = k ↔
-    E.symm k = crossIntermediateComponent G hfree hce x z
-  constructor
-  · intro h
-    exact E.injective (by simpa using h.symm)
-  · intro h
-    exact E.symm.injective (by simpa using h.symm)
+  simp [crossRoutingColorClass]
 
-/-- Every one of the four colors occurs exactly four times in each column of
-an order-64 routing array. -/
-theorem orderSixtyFourRoutingArray_column_color_card_eq_four
-    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+/-- In the maximal four-component branch the four color-class cardinalities
+sum to all sixteen opposite endpoints. -/
+theorem orderSixtyFour_fourSizeSixteenComponents_routingColorClass_card_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 (Fin 64) G)
-    (hreg : ∀ x, G.degree x = 8)
-    (hcount : Fintype.card
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 64)
+    (hcomponents : Fintype.card
       (secondOrderDefectGraph G).ConnectedComponent = 4)
-    {c e : (secondOrderDefectGraph G).ConnectedComponent}
-    (hce : c ≠ e) (z : e.supp) (k : Fin 4) :
-    ((Finset.univ : Finset c.supp).filter fun x =>
-      orderSixtyFourRoutingArray G hfree hcount hce x z = k).card = 4 := by
-  let E := orderSixtyFourDefectComponentEquivFinFour G hcount
-  let d := E.symm k
-  have hall := orderSixtyFour_regular_four_defectComponents_all_orderSixteen
-    G hfree hreg hcount
-  have hroute :=
-    binarySquare_regular_threeSizeTwoParts_routing_column_card_eq_four
-      G hfree (q := 8) (by norm_num) hreg (by norm_num)
-        c d e hce (by simpa using hall c) (by simpa using hall d)
-          (by simpa using hall e) z
-  convert hroute using 1
-  congr 1
-  ext x
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and,
-    orderSixtyFourRoutingArray, E, d]
-  change E (crossIntermediateComponent G hfree hce x z) = k ↔
-    E.symm k = crossIntermediateComponent G hfree hce x z
-  constructor
-  · intro h
-    exact E.injective (by simpa using h.symm)
-  · intro h
-    exact E.symm.injective (by simpa using h.symm)
+    (hparts : ∀ d : (secondOrderDefectGraph G).ConnectedComponent,
+      d.supp.ncard = 16)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent) (hce : c ≠ e)
+    (x : c.supp) :
+    (∑ d : (secondOrderDefectGraph G).ConnectedComponent,
+      (crossRoutingColorClass G hfree c e hce x d).card) = 16 := by
+  simp_rw [orderSixtyFour_fourSizeSixteenComponents_routingColorClass_card_four
+    G hfree hreg hcard hparts c e hce x]
+  simp [hcomponents]
 
 end
 

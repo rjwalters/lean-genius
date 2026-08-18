@@ -6,7 +6,7 @@ trace specialization is not a terminal for the hardest `q = 8`,
 
 ## Formal results
 
-The integrated proof branch contains:
+The branch `feature/erdos85-sol3-owner-next` contains:
 
 - `86599cab02`: `sum_c C_c^3 = (q((q-1)I-D))^3`, including its trace form;
 - `7454419a3d`: the one-color evaluation
@@ -15,88 +15,6 @@ The integrated proof branch contains:
   `q^2 | tr(D^3) + sum_c tr(O_c^3)`.
 
 All three modules compile under Lean 4.31 without warnings.
-
-The graph-level object surviving the scalar audit is now formalized in
-`Erdos85BinarySquareSizeTwoSelectorGraph`.  The `PROVEN` theorem
-`binarySquare_regular_sizeTwoSelectorGraph_eq_componentDefectComplementGraph`
-packages the selector graph `L_c` and proves
-
-```text
-L_c = complement(D[c]).
-```
-
-The companion theorem `binarySquare_regular_sizeTwoSelectorGraph_degree`
-proves that `L_c` is `q`-regular on the `2q` points of `c`.  Thus subsequent
-blockwise spectral or fourth-moment work can consume an actual Lean graph,
-not only the pairwise prose interpretation.
-
-The first blockwise spectral layer is also `PROVEN`.  Theorems
-`binarySquare_regular_sizeTwoSelectorGraph_adjMatrix_resolution` and
-`binarySquare_regular_sizeTwoSelectorGraph_adjMatrix_comm` give
-
-```text
-I + A(D[c]) + A(L_c) = J,
-A(D[c]) A(L_c) = A(L_c) A(D[c]).
-```
-
-On the zero-sum subspace,
-`binarySquare_regular_sizeTwoSelectorGraph_mulVec_of_sum_eq_zero` specializes
-this to `A(L_c)f = -f-A(D[c])f`.  The explicit theorem
-`binarySquare_regular_sizeTwoSelectorGraph_eigenvalue_transport` therefore
-sends every integral defect eigenvalue `mu` to selector eigenvalue `-1-mu`
-on the same vector.  This retains information discarded by scalar trace and
-is the current interface for simultaneous block constraints.
-
-The first shared-indexing constraint is now `PROVEN` uniformly, not merely
-for size-two parts.  For distinct defect components `c,d`,
-`existsUnique_mem_cross_componentNeighborFinsets` says that every
-`(u,v) in c×d` lies in the two corresponding selectors of a unique ambient
-vertex.  In the all-two branch each ambient vertex therefore contributes a
-`2×2` rectangle, and these `q²` rectangles partition the full
-`(2q)×(2q)` cross-product.  The remaining compatibility gap is to turn this
-rectangle partition into a restriction on the four commuting complement
-blocks, rather than merely count it.
-
-The complete incidence Gram system behind those rectangles is now `PROVEN`.
-For the ambient-by-component incidence matrix `B_c`,
-`transpose_defectComponentNeighborIncidenceMatrix_mul_self` gives uniformly
-
-```text
-B_c^T B_c = qI + A(complement D[c]),
-```
-
-and `binarySquare_regular_sizeTwo_incidenceGram_eq_selector` identifies the
-last term with `A(L_c)` in a size-two component.  Together with the earlier
-cross-component theorem
-`transpose_defectComponentNeighborIncidenceMatrix_mul_eq_ones`, the full
-block system is
-
-```text
-B_c^T B_d = J                       (c != d),
-B_c^T B_c = qI + A(L_c)             (m_c = 2).
-```
-
-There is an important audit boundary here.  If all `B_c` are stacked side by
-side, the resulting matrix is not a new incidence object: its columns are the
-entire vertex set, grouped by defect component, so it is exactly the ambient
-adjacency matrix with its columns reindexed.  This is now `PROVEN` by
-`stackedDefectComponentNeighborIncidenceMatrix_eq_adjMatrix_reindexed`, and
-`transpose_stackedDefectComponentNeighborIncidenceMatrix_mul_self` gives
-
-```text
-[B_c]^T [B_c] = reindex(A_G^2).
-```
-
-Therefore positivity, rank, determinant, or a fourth-power trace of the
-*whole* Gram matrix alone merely repackages the already-known ambient
-adjacency-square identity.  The component-constant kernel consequences of
-that identity are also already formalized by
-`binarySquare_regular_defectComponentLinearCombinationInt_mem_kernel` and,
-at order 64, `orderSixtyFour_adj_det_eq_zero_of_two_defect_components`.
-Any new terminal must use structure not invariant under simply regrouping
-the columns—for example entrywise coupling of several component blocks,
-the cross-rectangle ownership labels, or the self-indexed diagonal-cycle
-constraint.
 
 ## Triangle interpretation
 
@@ -156,3 +74,4 @@ trace, for example:
    shared ambient vertex indexing;
 3. a fourth moment that counts paired Berge triangles/4-walk collisions; or
 4. the self-indexed diagonal-cycle constraint inside each `L_c`.
+
