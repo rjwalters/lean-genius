@@ -131,6 +131,146 @@ theorem binarySquare_regular_alternatingAABRepeatedClosing_forces_smallOwnerSatu
   exact twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
     G hfree m a hma ⟨f, e, hef.symm, ys, hd⟩
 
+/-- Exact geometry left by an all-same `A,A,B` repeated closing when `A` is
+the normalized size-two owner: the two closing `A`-centers collapse to one,
+while the fixed-edge `A`-center and the two `B`-centers stay distinct. -/
+def HasCollapsedAllSameAABFork
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (a b d : D.ConnectedComponent) : Prop :=
+  ∃ x y z₁ z₂ u₀ ua v₁ v₂ : V,
+    z₁ ≠ z₂ ∧
+    D.connectedComponentMk x = d ∧ D.connectedComponentMk y = d ∧
+    D.connectedComponentMk z₁ = d ∧ D.connectedComponentMk z₂ = d ∧
+    D.connectedComponentMk u₀ = a ∧ D.connectedComponentMk ua = a ∧
+    D.connectedComponentMk v₁ = b ∧ D.connectedComponentMk v₂ = b ∧
+    u₀ ≠ ua ∧ v₁ ≠ v₂ ∧
+    G.Adj x u₀ ∧ G.Adj y u₀ ∧
+    G.Adj y ua ∧ G.Adj z₁ ua ∧ G.Adj z₂ ua ∧
+    G.Adj z₁ v₁ ∧ G.Adj x v₁ ∧
+    G.Adj z₂ v₂ ∧ G.Adj x v₂
+
+/-- Every all-same repeated closing has the collapsed-center geometry above. -/
+theorem binarySquare_regular_allSameAABRepeatedClosing_forces_collapsedCenters
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (a b d : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 2)
+    (hrepeat : HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b) d d d) :
+    HasCollapsedAllSameAABFork G (secondOrderDefectGraph G) a b d := by
+  classical
+  let D := secondOrderDefectGraph G
+  obtain ⟨x, y, z₁, z₂, hz, hx, hy, hz₁, hz₂,
+    haxy, hayz₁, hbz₁x, hayz₂, hbz₂x⟩ :=
+      (hasRepeatedClosingInBlock_iff_exists_ownerFork D
+        (componentOwnerGraph G D a) (componentOwnerGraph G D a)
+        (componentOwnerGraph G D b) d d d).mp hrepeat
+  let u₀ := componentOwnerCenter G D a x y
+  let ua₁ := componentOwnerCenter G D a y z₁
+  let ua₂ := componentOwnerCenter G D a y z₂
+  let v₁ := componentOwnerCenter G D b z₁ x
+  let v₂ := componentOwnerCenter G D b z₂ x
+  have hu₀ := componentOwnerCenter_spec G D a haxy
+  have hua₁ := componentOwnerCenter_spec G D a hayz₁
+  have hua₂ := componentOwnerCenter_spec G D a hayz₂
+  have hv₁ := componentOwnerCenter_spec G D b hbz₁x
+  have hv₂ := componentOwnerCenter_spec G D b hbz₂x
+  have owner_ne {u : V} (hua : u ∈ a.supp) {v : V} (hvb : v ∈ b.supp) :
+      u ≠ v := by
+    intro h
+    apply hab
+    have hucomp := (ConnectedComponent.mem_supp_iff a u).mp hua
+    have hvcomp := (ConnectedComponent.mem_supp_iff b v).mp hvb
+    exact hucomp.symm.trans ((congrArg D.connectedComponentMk h).trans hvcomp)
+  have hu₀ua₁ : u₀ ≠ ua₁ := by
+    intro h
+    have hxu : G.Adj u₀ x := (G.adj_comm u₀ x).mpr hu₀.2.1
+    have hzu : G.Adj u₀ z₁ := by
+      rw [h]
+      exact (G.adj_comm ua₁ z₁).mpr hua₁.2.2
+    have hxv : G.Adj v₁ x := (G.adj_comm v₁ x).mpr hv₁.2.2
+    have hzv : G.Adj v₁ z₁ := (G.adj_comm v₁ z₁).mpr hv₁.2.1
+    exact hfree (containsC4_of_two_common hbz₁x.ne
+      (owner_ne hu₀.1 hv₁.1) hzu hxu hzv hxv)
+  have hu₀ua₂ : u₀ ≠ ua₂ := by
+    intro h
+    have hxu : G.Adj u₀ x := (G.adj_comm u₀ x).mpr hu₀.2.1
+    have hzu : G.Adj u₀ z₂ := by
+      rw [h]
+      exact (G.adj_comm ua₂ z₂).mpr hua₂.2.2
+    have hxv : G.Adj v₂ x := (G.adj_comm v₂ x).mpr hv₂.2.2
+    have hzv : G.Adj v₂ z₂ := (G.adj_comm v₂ z₂).mpr hv₂.2.1
+    exact hfree (containsC4_of_two_common hbz₂x.ne
+      (owner_ne hu₀.1 hv₂.1) hzu hxu hzv hxv)
+  let C := componentNeighborFinset G D a y
+  have hCcard : C.card = 2 := by
+    change (componentNeighborFinset G D a y).card = 2
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard d a (x := y)
+        ((ConnectedComponent.mem_supp_iff d y).mpr hy)
+    rw [hm a, hma] at hmul
+    exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+  have hu₀C : u₀ ∈ C := by
+    change u₀ ∈ componentNeighborFinset G D a y
+    rw [componentNeighborFinset, Finset.mem_filter]
+    exact ⟨(G.mem_neighborFinset y u₀).mpr hu₀.2.2,
+      (ConnectedComponent.mem_supp_iff a u₀).mp hu₀.1⟩
+  have hua₁C : ua₁ ∈ C := by
+    change ua₁ ∈ componentNeighborFinset G D a y
+    rw [componentNeighborFinset, Finset.mem_filter]
+    exact ⟨(G.mem_neighborFinset y ua₁).mpr hua₁.2.1,
+      (ConnectedComponent.mem_supp_iff a ua₁).mp hua₁.1⟩
+  have hua₂C : ua₂ ∈ C := by
+    change ua₂ ∈ componentNeighborFinset G D a y
+    rw [componentNeighborFinset, Finset.mem_filter]
+    exact ⟨(G.mem_neighborFinset y ua₂).mpr hua₂.2.1,
+      (ConnectedComponent.mem_supp_iff a ua₂).mp hua₂.1⟩
+  have huaeq : ua₁ = ua₂ := by
+    by_contra hne
+    have hsub : ({u₀, ua₁, ua₂} : Finset V) ⊆ C := by
+      intro u hu
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hu
+      rcases hu with rfl | rfl | rfl
+      · exact hu₀C
+      · exact hua₁C
+      · exact hua₂C
+    have hle := Finset.card_le_card hsub
+    simp [hu₀ua₁, hu₀ua₂, hne, hCcard] at hle
+  have hvne : v₁ ≠ v₂ := by
+    intro h
+    have hz₁u : G.Adj ua₁ z₁ := (G.adj_comm ua₁ z₁).mpr hua₁.2.2
+    have hz₂u : G.Adj ua₁ z₂ := by
+      rw [huaeq]
+      exact (G.adj_comm ua₂ z₂).mpr hua₂.2.2
+    have hz₁v : G.Adj v₁ z₁ := (G.adj_comm v₁ z₁).mpr hv₁.2.1
+    have hz₂v : G.Adj v₁ z₂ := by
+      rw [h]
+      exact (G.adj_comm v₂ z₂).mpr hv₂.2.1
+    exact hfree (containsC4_of_two_common hz
+      (owner_ne hua₁.1 hv₁.1) hz₁u hz₂u hz₁v hz₂v)
+  refine ⟨x, y, z₁, z₂, u₀, ua₁, v₁, v₂, hz, hx, hy, hz₁, hz₂,
+    (ConnectedComponent.mem_supp_iff a u₀).mp hu₀.1,
+    (ConnectedComponent.mem_supp_iff a ua₁).mp hua₁.1,
+    (ConnectedComponent.mem_supp_iff b v₁).mp hv₁.1,
+    (ConnectedComponent.mem_supp_iff b v₂).mp hv₂.1,
+    hu₀ua₁, hvne, hu₀.2.1, hu₀.2.2, hua₁.2.1, hua₁.2.2, ?_,
+    hv₁.2.1, hv₁.2.2, hv₂.2.1, hv₂.2.2⟩
+  rw [huaeq]
+  exact hua₂.2.2
+
 /-- If a colored-triple census is more than twice the directed first-edge
 space and the defect graph has two components, then three triples share one
 first edge; two of their closing vertices share a defect component, producing
@@ -576,6 +716,35 @@ theorem orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_allSame
         G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
           a b b a hab hab.symm hma hbab))
 
+/-- Replace the last all-same repeated-closing branch by its exact collapsed
+center geometry. -/
+theorem orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_collapsedAllSame
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 2) (hmb : m b = 6) :
+    HasTwoCenterRoutingRowDensityForOwner G hfree m b ∨
+      HasTwoCenterRoutingRowSaturationForOwner G hfree a ∨
+      ∃ d, HasCollapsedAllSameAABFork G (secondOrderDefectGraph G) a b d := by
+  have h := orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_allSame
+    G hfree hreg hcount m hm a b hab hma hmb
+  rcases h with hd | hs | ⟨d, hr⟩
+  · exact Or.inl hd
+  · exact Or.inr (Or.inl hs)
+  · exact Or.inr (Or.inr ⟨d,
+      binarySquare_regular_allSameAABRepeatedClosing_forces_collapsedCenters
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+          a b d hab hma hr⟩)
+
 end
 
 end Erdos85
@@ -583,6 +752,7 @@ end Erdos85
 #print axioms Erdos85.card_cyclicColoredTriples_rotate
 #print axioms Erdos85.hasRepeatedClosingInBlock_reverse
 #print axioms Erdos85.binarySquare_regular_alternatingAABRepeatedClosing_forces_smallOwnerSaturation
+#print axioms Erdos85.binarySquare_regular_allSameAABRepeatedClosing_forces_collapsedCenters
 #print axioms Erdos85.exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_repeatedClosingInBlock
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks
@@ -590,3 +760,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeOwnerDensity_or_linkedRootClosingResiduals
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeOwnerDensity_or_normalizedResidual
 #print axioms Erdos85.orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_allSame
+#print axioms Erdos85.orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_collapsedAllSame

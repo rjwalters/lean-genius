@@ -2031,7 +2031,16 @@ generalized rather than merely replayed.
      reduces the entire `[6,2]` pressure route to exactly: size-six-owner
      density, size-two-owner saturation, or an all-same `A,A,B` repeated
      closing.  The last of these and the shared routing terminals are the
-     remaining `[6,2]` GAPs.
+     remaining `[6,2]` GAPs.  The all-same branch is now geometrically exact.
+     `binarySquare_regular_allSameAABRepeatedClosing_forces_collapsedCenters`
+     uses the two-point `A`-neighbor fiber at the fixed root: the fixed-edge
+     `A`-center differs from both closing-edge `A`-centers, so the latter
+     coincide; their two `B`-centers must remain distinct by C4-freeness.
+     `orderSixtyFour_sixTwo_largeDensity_or_smallSaturation_or_collapsedAllSame`
+     therefore replaces the opaque repeated closing with
+     `HasCollapsedAllSameAABFork`: one fixed `A`-center, one shared closing
+     `A`-center, and two distinct `B`-centers.  Excluding this explicit center
+     skeleton is the remaining all-same leaf.
      Across the two-component strata, the obstruction is now routing
      saturation/contradiction, not a rectangular classification, finite
      census, or same-owner center lemma.  The last two
