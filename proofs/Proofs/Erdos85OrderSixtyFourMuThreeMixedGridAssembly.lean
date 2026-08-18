@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareMuThreeExteriorRowHit
+import Proofs.Erdos85BinarySquareTriangleFreeEdgeCongruence
 import Proofs.Erdos85MuThreeKSymmetryCapstone
 
 /-!
@@ -325,6 +326,221 @@ instance orderSixtyFourMuThreeInternalRel_decidable
   intro x y
   unfold orderSixtyFourMuThreeInternalRel
   infer_instance
+
+/-- An occupied signed cell is exactly an exterior common neighbour of its
+two coordinates. -/
+theorem orderSixtyFourMuThree_not_hole_iff_exterior_commonNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧ G.Adj u.1 (label u).2.1)
+    (huniqueP : ∀ u p, G.Adj u.1 p.1 → (label u).1 = p)
+    (huniqueN : ∀ u n, G.Adj u.1 n.1 → (label u).2 = n)
+    (x : muThreePositiveShore cSupp s)
+    (y : muThreeNegativeShore cSupp s) :
+    ¬ orderSixtyFourMuThreeHole label x y ↔
+      ∃ u : muThreeExterior cSupp, G.Adj u.1 x.1 ∧ G.Adj u.1 y.1 := by
+  classical
+  simp only [orderSixtyFourMuThreeHole, not_not]
+  constructor
+  · rintro ⟨u, hu⟩
+    have hxy : (label u).1 = x ∧ (label u).2 = y := by
+      exact ⟨congrArg Prod.fst hu, congrArg Prod.snd hu⟩
+    exact ⟨u, hxy.1 ▸ (hadj u).1, hxy.2 ▸ (hadj u).2⟩
+  · rintro ⟨u, hux, huy⟩
+    refine ⟨u, Prod.ext (huniqueP u x hux) (huniqueN u y huy)⟩
+
+/-- A common neighbour of an internal positive-negative edge cannot itself
+lie in the signed component. -/
+theorem orderSixtyFourMuThree_internalEdge_commonNeighbor_not_mem
+    {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) {cSupp : Set V} {s : V → ℤ}
+    (hflip : ∀ {x y : {z : V // z ∈ cSupp}},
+      (G.induce cSupp).Adj x y → s x.1 = -s y.1)
+    (x : muThreePositiveShore cSupp s)
+    (y : muThreeNegativeShore cSupp s) (z : V)
+    (hxz : G.Adj x.1 z) (hyz : G.Adj y.1 z) : z ∉ cSupp := by
+  intro hz
+  have hpx := hflip (x := ⟨x.1, x.2.1⟩) (y := ⟨z, hz⟩) hxz
+  have hny := hflip (x := ⟨y.1, y.2.1⟩) (y := ⟨z, hz⟩) hyz
+  change s x.1 = -s z at hpx
+  change s y.1 = -s z at hny
+  have hxs : s x.1 = 1 := x.2.2
+  have hys : s y.1 = -1 := y.2.2
+  omega
+
+/-- On an internal signed edge, being a missing cell is equivalent to being
+an ambient triangle-free edge. -/
+theorem orderSixtyFourMuThree_hole_iff_triangleFreeEdge
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {cSupp : Set V} {s : V → ℤ}
+    (label : muThreeExterior cSupp →
+      muThreePositiveShore cSupp s × muThreeNegativeShore cSupp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧ G.Adj u.1 (label u).2.1)
+    (huniqueP : ∀ u p, G.Adj u.1 p.1 → (label u).1 = p)
+    (huniqueN : ∀ u n, G.Adj u.1 n.1 → (label u).2 = n)
+    (hflip : ∀ {x y : {z : V // z ∈ cSupp}},
+      (G.induce cSupp).Adj x y → s x.1 = -s y.1)
+    (x : muThreePositiveShore cSupp s)
+    (y : muThreeNegativeShore cSupp s)
+    (hxy : orderSixtyFourMuThreeInternalRel G x y) :
+    orderSixtyFourMuThreeHole label x y ↔
+      (triangleFreeEdgeGraph G).Adj x.1 y.1 := by
+  rw [triangleFreeEdgeGraph_adj, mem_triangleFreeNeighbors]
+  refine ⟨fun hhole => ⟨hxy, ?_⟩, fun htf => ?_⟩
+  · by_contra hcard
+    have hnon : (G.neighborFinset x.1 ∩ G.neighborFinset y.1).Nonempty :=
+      Finset.card_ne_zero.mp hcard
+    obtain ⟨z, hz⟩ := hnon
+    have hxz : G.Adj x.1 z := by
+      exact (G.mem_neighborFinset x.1 z).mp (Finset.mem_inter.mp hz).1
+    have hyz : G.Adj y.1 z := by
+      exact (G.mem_neighborFinset y.1 z).mp (Finset.mem_inter.mp hz).2
+    have hzout := orderSixtyFourMuThree_internalEdge_commonNeighbor_not_mem
+      G hflip x y z hxz hyz
+    have hnot := (orderSixtyFourMuThree_not_hole_iff_exterior_commonNeighbor
+      G label hadj huniqueP huniqueN x y).2 ⟨⟨z, hzout⟩, hxz.symm, hyz.symm⟩
+    exact hnot hhole
+  · by_contra hnotHole
+    obtain ⟨u, hux, huy⟩ :=
+      (orderSixtyFourMuThree_not_hole_iff_exterior_commonNeighbor
+        G label hadj huniqueP huniqueN x y).1 hnotHole
+    have huMem : u.1 ∈ G.neighborFinset x.1 ∩ G.neighborFinset y.1 := by
+      simp only [Finset.mem_inter, G.mem_neighborFinset]
+      exact ⟨hux.symm, huy.symm⟩
+    have : (G.neighborFinset x.1 ∩ G.neighborFinset y.1).card ≠ 0 := by
+      rw [Finset.card_ne_zero]
+      exact ⟨u.1, huMem⟩
+    exact this htf.2
+
+/-- Forget the shore tag on the bipartite presentation of the internal
+signed graph. -/
+def orderSixtyFourMuThreeInternalBipartiteHom
+    {V : Type*} (G : SimpleGraph V) {cSupp : Set V} {s : V → ℤ} :
+    relationBipartiteGraph (orderSixtyFourMuThreeInternalRel G
+      (cSupp := cSupp) (s := s)) →g G.induce cSupp where
+  toFun
+    | Sum.inl x => ⟨x.1, x.2.1⟩
+    | Sum.inr y => ⟨y.1, y.2.1⟩
+  map_rel' := by
+    intro a b hab
+    cases a <;> cases b <;>
+      simp only [relationBipartiteGraph, orderSixtyFourMuThreeInternalRel] at hab ⊢
+    · exact hab
+    · exact hab.symm
+
+/-- If the ambient triangle-free degree is two at a vertex of a size-two
+component, then each of its two internal ambient edges is triangle-free. -/
+theorem orderSixtyFourMuThree_triangleFreeEdge_of_degree_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hdeg : ∀ x : c.supp, (G.induce c.supp).degree x = 2)
+    (x y : c.supp) (hxy : (G.induce c.supp).Adj x y)
+    (htwo : (triangleFreeEdgeGraph G).degree x.1 = 2) :
+    (triangleFreeEdgeGraph G).Adj x.1 y.1 := by
+  classical
+  let I : Finset V := ((G.induce c.supp).neighborFinset x).map
+    ⟨Subtype.val, Subtype.val_injective⟩
+  have hIcard : I.card = 2 := by
+    simp only [I, Finset.card_map,
+      (G.induce c.supp).card_neighborFinset_eq_degree, hdeg]
+  have hsub : (triangleFreeEdgeGraph G).neighborFinset x.1 ⊆ I := by
+    intro z hz
+    have htf : (triangleFreeEdgeGraph G).Adj x.1 z :=
+      ((triangleFreeEdgeGraph G).mem_neighborFinset x.1 z).mp hz
+    have hD : (secondOrderDefectGraph G).Adj x.1 z := by
+      exact Or.inr htf
+    have hzSupp : z ∈ c.supp := by
+      rw [ConnectedComponent.mem_supp_iff]
+      exact (ConnectedComponent.connectedComponentMk_eq_of_adj hD).symm.trans
+        ((ConnectedComponent.mem_supp_iff c x.1).mp x.2)
+    simp only [I, Finset.mem_map]
+    refine ⟨⟨z, hzSupp⟩, ?_, rfl⟩
+    exact ((G.induce c.supp).mem_neighborFinset x ⟨z, hzSupp⟩).mpr
+      ((mem_triangleFreeNeighbors G x.1 z).mp htf).1
+  have hTFcard : ((triangleFreeEdgeGraph G).neighborFinset x.1).card = 2 := by
+    rw [(triangleFreeEdgeGraph G).card_neighborFinset_eq_degree, htwo]
+  have heq : (triangleFreeEdgeGraph G).neighborFinset x.1 = I :=
+    Finset.eq_of_subset_of_card_le hsub (by omega)
+  apply ((triangleFreeEdgeGraph G).mem_neighborFinset x.1 y.1).mp
+  rw [heq]
+  simp only [I, Finset.mem_map]
+  exact ⟨y, ((G.induce c.supp).mem_neighborFinset x y).mpr hxy, rfl⟩
+
+/-- The canonical missing-cell factor is constant on every cycle of the
+internal ambient two-factor. -/
+theorem orderSixtyFourMuThree_cycleCompatible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcardV : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (label : muThreeExterior c.supp →
+      muThreePositiveShore c.supp s × muThreeNegativeShore c.supp s)
+    (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧ G.Adj u.1 (label u).2.1)
+    (huniqueP : ∀ u p, G.Adj u.1 p.1 → (label u).1 = p)
+    (huniqueN : ∀ u n, G.Adj u.1 n.1 → (label u).2 = n)
+    (hflip : ∀ {x y : {z : V // z ∈ c.supp}},
+      (G.induce c.supp).Adj x y → s x.1 = -s y.1)
+    (hdeg : ∀ x : c.supp, (G.induce c.supp).degree x = 2) :
+    RelationFactorCycleCompatible
+      (orderSixtyFourMuThreeInternalRel G)
+      (orderSixtyFourMuThreeHole label) := by
+  classical
+  intro d
+  by_cases hex : ∃ x y,
+      orderSixtyFourMuThreeInternalRel G x y ∧
+      Sum.inl x ∈ d.supp ∧ orderSixtyFourMuThreeHole label x y
+  · left
+    obtain ⟨x₀, y₀, hx₀y₀, hx₀d, hk₀⟩ := hex
+    have htf₀ : (triangleFreeEdgeGraph G).Adj x₀.1 y₀.1 :=
+      (orderSixtyFourMuThree_hole_iff_triangleFreeEdge
+        G label hadj huniqueP huniqueN hflip x₀ y₀ hx₀y₀).mp hk₀
+    let x₀i : c.supp := ⟨x₀.1, x₀.2.1⟩
+    have hdegTf₀ : (triangleFreeEdgeGraph G).degree x₀.1 = 2 := by
+      rcases binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_zero_or_two
+          G hfree (q := 8) (by omega) (by decide) hreg hcardV c hc x₀i with hzero | htwo
+      · have hpos := htf₀.degree_pos_left
+        change (triangleFreeEdgeGraph G).degree x₀.1 = 0 at hzero
+        omega
+      · exact htwo
+    intro x y hxy hxd
+    let xi : c.supp := ⟨x.1, x.2.1⟩
+    have hreachB :
+        (relationBipartiteGraph (orderSixtyFourMuThreeInternalRel G)).Reachable
+          (Sum.inl x₀) (Sum.inl x) := by
+      apply ConnectedComponent.exact
+      exact ((ConnectedComponent.mem_supp_iff d (Sum.inl x₀)).mp hx₀d).trans
+        ((ConnectedComponent.mem_supp_iff d (Sum.inl x)).mp hxd).symm
+    have hreachI : (G.induce c.supp).Reachable x₀i xi := by
+      exact hreachB.map (orderSixtyFourMuThreeInternalBipartiteHom G)
+    have hdegTfx : (triangleFreeEdgeGraph G).degree x.1 = 2 :=
+      (binarySquare_regular_sizeTwoPart_triangleFree_degree_two_iff_of_reachable
+        G hfree (q := 8) (by omega) (by decide) hreg hcardV c hc x₀i xi hreachI).mp
+          hdegTf₀
+    have htfxy : (triangleFreeEdgeGraph G).Adj x.1 y.1 :=
+      orderSixtyFourMuThree_triangleFreeEdge_of_degree_two G c hdeg xi
+        ⟨y.1, y.2.1⟩ hxy hdegTfx
+    exact (orderSixtyFourMuThree_hole_iff_triangleFreeEdge
+      G label hadj huniqueP huniqueN hflip x y hxy).mpr htfxy
+  · right
+    intro x y hxy hxd hk
+    exact hex ⟨x, y, hxy, hxd, hk⟩
 
 /-- A positive-shore relation fiber is the full induced-graph neighbor
 fiber, because every internal edge flips the sign. -/
@@ -1027,10 +1243,7 @@ theorem orderSixtyFour_muThree_mixedGridCode_of_label
       muThreePositiveShore c.supp s × muThreeNegativeShore c.supp s)
     (hinj : Function.Injective label)
     (hadj : ∀ u, G.Adj u.1 (label u).1.1 ∧
-      G.Adj u.1 (label u).2.1)
-    (hcycle : RelationFactorCycleCompatible
-      (orderSixtyFourMuThreeInternalRel G (cSupp := c.supp) (s := s))
-      (orderSixtyFourMuThreeHole label)) :
+      G.Adj u.1 (label u).2.1) :
     MuThreeMixedGridCode
       (orderSixtyFourMuThreeInternalRel G (cSupp := c.supp) (s := s))
       (orderSixtyFourMuThreeHole label)
@@ -1096,6 +1309,12 @@ theorem orderSixtyFour_muThree_mixedGridCode_of_label
   have huniqueN : ∀ u n, G.Adj u.1 n.1 → (label u).2 = n :=
     fun u n hun => orderSixtyFourMuThree_label_negative_eq_of_adj
       G label hadj honeN u n hun
+  have hcycle : RelationFactorCycleCompatible
+      (orderSixtyFourMuThreeInternalRel G)
+      (orderSixtyFourMuThreeHole label) := by
+    exact orderSixtyFourMuThree_cycleCompatible
+      G hfree hreg hcardV c hc s label hadj huniqueP huniqueN
+        (fun {_ _} h => hflip h) hdeg
   have hrowFiber : ∀ p, Fintype.card
       {u : muThreeExterior c.supp // (label u).1 = p} = 6 := by
     intro p
@@ -1174,6 +1393,48 @@ theorem orderSixtyFour_muThree_mixedGridCode_of_label
       G _ label hinj hextRow
   · exact orderSixtyFourMuThreeExteriorCellGraph_columnHit
       G _ label hinj hextColumn
+
+/-- Full graph-facing assembly: the order-64 signed size-two `μ = 3` data
+canonically supplies a mixed-grid code, with no additional combinatorial
+hypothesis. -/
+theorem orderSixtyFour_muThree_exists_mixedGridCode
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcardV : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x,
+      s y = 3 * s x)
+    (hA_in : ∀ x, x ∈ c.supp →
+      (G.adjMatrix ℤ).mulVec s x = -2 * s x)
+    (hA_out : ∀ x, x ∉ c.supp →
+      (G.adjMatrix ℤ).mulVec s x = -2 ∨
+      (G.adjMatrix ℤ).mulVec s x = 0 ∨
+      (G.adjMatrix ℤ).mulVec s x = 2) :
+    ∃ (label : muThreeExterior c.supp →
+          muThreePositiveShore c.supp s × muThreeNegativeShore c.supp s)
+      (hinj : Function.Injective label),
+      MuThreeMixedGridCode
+        (orderSixtyFourMuThreeInternalRel G)
+        (orderSixtyFourMuThreeHole label)
+        (orderSixtyFourMuThreeExteriorCellGraph G label hinj) := by
+  obtain ⟨label, hinj, hadj⟩ :=
+    orderSixtyFour_signedSizeTwo_muThree_exterior_gridEmbedding
+      G hfree hreg hcardV c hc s hs_in hs_out hsum hDs hA_in hA_out
+  exact ⟨label, hinj,
+    orderSixtyFour_muThree_mixedGridCode_of_label
+      G hfree hreg hcardV c hc s hs_in hs_out hsum hDs hA_in hA_out
+        label hinj hadj⟩
 
 end
 
