@@ -2023,6 +2023,11 @@ generalized rather than merely replayed.
      another, and for distinct endpoint columns the transports through any
      two distinct common eligible rows disagree pointwise.  A coincidence
      would give two distinct intermediate common neighbors and a C4.
+     Simultaneously, for fixed endpoints and a fixed source cell, all common
+     eligible rows embed into distinct cells of the six-cell target fiber
+     (**PROVEN**, `693ee7a7cf`).  The source has size `4`, `5`, or `6`
+     according as the two size-two `H`-neighborhoods overlap in `0`, `1`, or
+     `2` rows; the overlap-two case is the saturated monodromy regime.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
