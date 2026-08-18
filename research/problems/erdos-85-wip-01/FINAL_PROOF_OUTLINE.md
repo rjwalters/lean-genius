@@ -2118,6 +2118,16 @@ generalized rather than merely replayed.
      two-factor itself to be `C_8`, whose distance-two graph is two `C_4`s).
      Formalizing this eight-vertex cycle-root fact, plus checking the explicit
      model alignment, completes the proposed countermodel exclusion.
+     The standard-cycle parity core of that local fact is now **PROVEN**
+     (`122fa94bd7`):
+     `not_connected_distinctCommonNeighborGraph_cycleGraph_eight` shows that
+     the distinct-common-neighbor graph of `cycleGraph 8` is disconnected,
+     because every such edge preserves label parity while `0` and `1` have
+     opposite parity.  The only remaining proof-engineering bridge in the
+     local fact is to transport an arbitrary connected 2-regular graph on
+     eight vertices through `twoRegular_component_induce_eq_cycleSubgraph`
+     and `isCycle_cycleGraphIsoToSubgraph`; there is no longer an unproved
+     assertion about the standard `C_8` itself.
      The residual `[6,2]` target must couple the transported
      defect blocks to this line-graph edge partition; commute, degrees, and
      the entry cap alone cannot close it.
