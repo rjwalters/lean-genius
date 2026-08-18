@@ -1520,29 +1520,25 @@ generalized rather than merely replayed.
      routing/profile cases still need graph-facing Lean statements.
 
      New exhaustive finite evidence bypasses those four cases for the four
-     λ=6-covered class representatives.  For each representative, write
-     `D` for its seven-regular defect block, `H` for the distinguished
-     two-factor, and `R = Dᶜ \ H` for the remaining six-regular graph.  An
-     exact SAT enumeration finds no two-factor `F ⊆ R` whose adjacency matrix
-     commutes with `D` (although `R` has ordinary three-way two-factorizations,
-     and both `R` and `H` commute with `D`).  **This does not yet exclude the
-     representatives.**  The formally proved statements
+     λ=6-covered class representatives.  Write `D` for a representative's
+     seven-regular defect block.  The earlier auxiliary interpretation of
+     the artifact's `H_edges` and `R_edges` as a partition of `Dᶜ` is retired:
+     the current JSON does not satisfy that set-theoretic partition, so those
+     fields are not used in the proof.  The formally proved statements
      `orderSixtyFour_restrictedOwner_adjMatrix_comm_inducedDefect` and
      `sum_restrictedComponentOwnerGraph_adjMatrix_eq_inducedDefect_compl` say
      that the four restricted owner factors commute with `D` and partition
-     `Dᶜ`.  They do *not* identify the distinguished spectral factor `H`
-     with one owner color: owner colors record the component of the unique
-     common neighbor of each selector pair, and may mix `H`- and `R`-edges.
+     `Dᶜ`.
      The honest CSP has now also been run: partition all 64 edges of `Dᶜ`
      into four commuting two-factors, without fixing `H` as a color.  It is
      UNSAT for all four representatives.  The reproducible checker
      `check_lambda6_owner_factorization.py` also enumerates the individual
      two-factors `F ⊆ Dᶜ` commuting with `D`: there is exactly one in each
-     of the four classes (in every case it is the distinguished `H`).  Hence
+     of the four classes.  Hence
      even two distinct commuting owner factors are impossible, much less the
      required four.  This matches the
-     formal owner-factor hypotheses exactly and removes the earlier
-     monochromatic-`H` assumption.  The finite obstruction itself is now
+     formal owner-factor hypotheses exactly and uses only the trusted
+     `D_edges` field.  The finite obstruction itself is now
      PROVEN by the trusted bit-vector decision procedure in
      `Erdos85LambdaSixOwnerFactorSAT`: the four theorems
      `no_fourFactorization_tenSixT40`, `no_fourFactorization_tenSixT30`,
