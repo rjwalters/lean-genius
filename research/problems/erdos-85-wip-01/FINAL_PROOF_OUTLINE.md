@@ -2004,6 +2004,11 @@ generalized rather than merely replayed.
      zero common-domain permutation agreements (not merely at most one).
      In particular every row/column partner edge of the occupied `H`-support
      two-factor is a forced zero-agreement pair.
+     A first Latin law is now exact (**PROVEN**, `d0d7724c20`): fixing a
+     center-column `b` and an `H`-eligible input row `x`, evaluation at `x`
+     gives a bijection from the six occupied centers in column `b` to the six
+     occupied columns `{y | ¬K x y}` in row `x`.  Injection is rook
+     zero-agreement and surjection is the column-hit uniqueness law.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
