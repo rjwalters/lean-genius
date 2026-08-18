@@ -68,6 +68,25 @@ theorem rectangular_cross_centered_eigenpair_transport
   ⟨hnonzero, rectangular_cross_centered_eigenvector_transport
     A B C J v lambda hcross hAv hcenter⟩
 
+/-- The only way incidence transport can vanish is through the negative
+degree eigenspace of the residual Gram graph.  In the order-64 application
+`r = 6` and `R` is the six-regular exterior-pair graph. -/
+theorem rectangular_incidence_kernel_forces_negative_gram_residual
+    {H O : Type*} [Fintype H] [Fintype O]
+    [DecidableEq H] [DecidableEq O]
+    {K : Type*} [CommRing K]
+    (B : Matrix H O K) (E : Matrix O H K) (R : Matrix H H K)
+    (r : K) (v : H → K)
+    (hgram : B * E = r • (1 : Matrix H H K) + R)
+    (hker : E.mulVec v = 0) :
+    R.mulVec v = (-r) • v := by
+  have hzero : (B * E).mulVec v = 0 := by
+    rw [← Matrix.mulVec_mulVec, hker, Matrix.mulVec_zero]
+  rw [hgram, Matrix.add_mulVec, Matrix.smul_mulVec,
+    Matrix.one_mulVec] at hzero
+  have hneg := eq_neg_of_add_eq_zero_right hzero
+  simpa using hneg
+
 /-- Graph-facing centered spectral transport for the actual order-64
 `16+48` cut. -/
 theorem orderSixtyFour_seven_components_outside_centered_eigenvector_transport
@@ -124,4 +143,5 @@ end Erdos85
 
 #print axioms Erdos85.rectangular_cross_centered_eigenvector_transport
 #print axioms Erdos85.rectangular_cross_centered_eigenpair_transport
+#print axioms Erdos85.rectangular_incidence_kernel_forces_negative_gram_residual
 #print axioms Erdos85.orderSixtyFour_seven_components_outside_centered_eigenvector_transport
