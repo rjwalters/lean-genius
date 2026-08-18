@@ -1,5 +1,6 @@
 import Proofs.Erdos85OrderSixtyFourTriangleFreeColorOrder
 import Proofs.Erdos85MuThreeComponentTriangleFortyEight
+import Proofs.Erdos85RootedTriangleCyclicCount
 
 /-!
 # The graph-facing 48 count for an all-triangle-free size-sixteen component
@@ -91,6 +92,33 @@ theorem orderSixtyFour_allSixteen_tfComponent_sum_localTriangleEdges_eq_fortyEig
     rw [← triangleFreeEdgeGraph_neighborFinset,
       (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree, htf x]
 
+/-- The oriented form of the exact 48 count: fixing the component vertex as
+the first root gives exactly 96 ordered closing pairs. -/
+theorem orderSixtyFour_allSixteen_tfComponent_sum_rootedCyclicPairs_eq_ninetySix
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsize : c.supp.ncard = 16)
+    (htf : ∀ x : c.supp, (triangleFreeEdgeGraph G).degree x.1 = 2) :
+    (∑ x : c.supp, (rootedCyclicColoredPairs G G G x.1).card) = 96 := by
+  have hfortyEight :=
+    orderSixtyFour_allSixteen_tfComponent_sum_localTriangleEdges_eq_fortyEight
+      G hfree hreg c hsize htf
+  calc
+    (∑ x : c.supp, (rootedCyclicColoredPairs G G G x.1).card) =
+        ∑ x : c.supp,
+          2 * (G.induce (G.neighborSet x.1)).edgeFinset.card := by
+      apply Finset.sum_congr rfl
+      intro x _hx
+      exact card_rootedCyclicColoredPairs_self_eq_two_mul_localTriangleEdges
+        G x.1
+    _ = 2 * (∑ x : c.supp,
+          (G.induce (G.neighborSet x.1)).edgeFinset.card) := by
+      rw [Finset.mul_sum]
+    _ = 96 := by rw [hfortyEight]
+
 /-- Every triangle rooted in an all-triangle-free size-sixteen defect
 component has its other two vertices outside that component. -/
 theorem orderSixtyFour_allSixteen_tfComponent_rooted_triangle_endpoints_exterior
@@ -122,5 +150,7 @@ end Erdos85
   Erdos85.orderSixtyFour_allSixteen_tfComponent_internal_neighbor_triangleFree
 #print axioms
   Erdos85.orderSixtyFour_allSixteen_tfComponent_sum_localTriangleEdges_eq_fortyEight
+#print axioms
+  Erdos85.orderSixtyFour_allSixteen_tfComponent_sum_rootedCyclicPairs_eq_ninetySix
 #print axioms
   Erdos85.orderSixtyFour_allSixteen_tfComponent_rooted_triangle_endpoints_exterior
