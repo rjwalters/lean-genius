@@ -132,6 +132,21 @@ def HasTwoCenterRoutingRowDensity
     Disjoint S₁ S₂ ∧ (S₁ ∪ S₂).card = 2 * m target ∧
       S₁ ∪ S₂ ⊆ R ∧ R.card = m owner * m target
 
+/-- An owner-level wrapper for a dense two-center routing-row fragment,
+allowing its source, target, and root to vary. -/
+def HasTwoCenterRoutingRowDensityForOwner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (owner : (secondOrderDefectGraph G).ConnectedComponent) : Prop :=
+  ∃ (source target : (secondOrderDefectGraph G).ConnectedComponent)
+      (hst : source ≠ target) (x : source.supp),
+    HasTwoCenterRoutingRowDensity G hfree m source target owner hst x
+
 /-- Correct q-generic successor of canonical fork separation: one of its two
 owner colors contributes a two-star routing-row fragment with exact density
 `2/m_owner`. -/

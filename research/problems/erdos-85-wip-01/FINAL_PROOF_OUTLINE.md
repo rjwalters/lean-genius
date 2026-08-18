@@ -2041,8 +2041,15 @@ generalized rather than merely replayed.
      first.  In a rainbow component pattern, the q-generic adapter
      `binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity`
      sends each of those three forks directly to its density disjunction.
-     The new shared **GAP** is to combine these three cyclic density choices;
-     the two-equal component pattern instead needs a same-component analogue
+     Their propositional combination is now **AT-64-ONLY, PROVEN**.
+     `HasTwoCenterRoutingRowDensityForOwner` hides the varying source, target,
+     and root while retaining the owner color, and
+     `orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity`
+     proves that at least two distinct owner colors carry such dense fragments.
+     The remaining rainbow **GAP** is compatibility: the two fragments may
+     live on different ordered component rows and have different roots, so
+     their certified subsets cannot yet be added or intersected.  The
+     two-equal component pattern separately needs a same-component analogue
      because its root/target routing row is not cross-component.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,

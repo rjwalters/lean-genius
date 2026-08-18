@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareOwnerBlockRotatedRepeatedClosing
+import Proofs.Erdos85BinarySquareSeparatedForkRowDensity
 
 /-! # Three cyclic repeated closings in the `[3,3,2]` pressure block -/
 
@@ -90,9 +91,66 @@ theorem orderSixtyFour_threeThreeTwo_tripleRepeatedClosing
   · apply exists_twiceRotated_repeatedClosing_of_thirdOwnerEdge_card_lt_block_card
     omega
 
+/-- In a rainbow `[3,3,2]` pressure block, the three cyclic repeated closings
+force dense routing-row fragments for at least two of the three owner colors.
+The fragments may have different roots and different ordered component rows. -/
+theorem orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 3)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hma : m a = 2) (hmb : m b = 3) (hmc : m c = 3)
+    (hef : e ≠ f) (hfg : f ≠ g) (heg : e ≠ g)
+    (hblock : 253 ≤
+      (cyclicColoredTriplesInBlocks (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g).card) :
+    (HasTwoCenterRoutingRowDensityForOwner G hfree m a ∧
+        HasTwoCenterRoutingRowDensityForOwner G hfree m b) ∨
+      (HasTwoCenterRoutingRowDensityForOwner G hfree m a ∧
+        HasTwoCenterRoutingRowDensityForOwner G hfree m c) ∨
+      (HasTwoCenterRoutingRowDensityForOwner G hfree m b ∧
+        HasTwoCenterRoutingRowDensityForOwner G hfree m c) := by
+  obtain ⟨hr₁, hr₂, hr₃⟩ :=
+    orderSixtyFour_threeThreeTwo_tripleRepeatedClosing G hfree hreg hcount m hm
+      a b c e f g hab hac hbc hma hmb hmc hblock
+  have hd₁ := binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
+    G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+      a b c e f g hef hfg heg hbc hr₁
+  have hd₂ := binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
+    G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+      b c a f g e hfg heg.symm hef.symm hac.symm hr₂
+  have hd₃ := binarySquare_regular_rainbowRepeatedClosing_forces_twoCenterRoutingRowDensity
+    G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm
+      c a b g e f heg.symm hef hfg.symm hab hr₃
+  rcases hd₁ with ⟨x, hx⟩ | ⟨y, hy⟩
+  · have hc : HasTwoCenterRoutingRowDensityForOwner G hfree m c :=
+      ⟨e, f, hef, x, hx⟩
+    rcases hd₂ with ⟨y, hy⟩ | ⟨z, hz⟩
+    · exact Or.inr (Or.inl ⟨⟨f, g, hfg, y, hy⟩, hc⟩)
+    · rcases hd₃ with ⟨z, hz⟩ | ⟨x, hx⟩
+      · exact Or.inr (Or.inr ⟨⟨g, e, heg.symm, z, hz⟩, hc⟩)
+      · exact Or.inr (Or.inl ⟨⟨e, g, heg, x, hx⟩, hc⟩)
+  · have hb : HasTwoCenterRoutingRowDensityForOwner G hfree m b :=
+      ⟨f, e, hef.symm, y, hy⟩
+    rcases hd₂ with ⟨y, hy⟩ | ⟨z, hz⟩
+    · exact Or.inl ⟨⟨f, g, hfg, y, hy⟩, hb⟩
+    · exact Or.inr (Or.inr ⟨hb, ⟨g, f, hfg.symm, z, hz⟩⟩)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_ownerColoredEdgesInBlocks_card_le
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_tripleRepeatedClosing
+#print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity
