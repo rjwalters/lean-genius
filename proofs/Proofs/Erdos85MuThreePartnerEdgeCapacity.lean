@@ -21,7 +21,8 @@ def mixedGridPartnerCrossEdges
     (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
     (a b c d : muThreeMixedCell K) :
     Finset (muThreeMixedCell K × muThreeMixedCell K) :=
-  ({a, b} ×ˢ {c, d}).filter fun p => C.Adj p.1 p.2
+  (({a, b} : Finset (muThreeMixedCell K)) ×ˢ
+    ({c, d} : Finset (muThreeMixedCell K))).filter fun p => C.Adj p.1 p.2
 
 /-- **Partner-edge capacity one.**  Between two disjoint partner edges there
 is at most one exterior edge. -/
