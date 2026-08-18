@@ -31,6 +31,8 @@ returned `s VERIFIED` for every shape. The backward-core statistics are:
 
 The raw LRATs are 11--12 MiB each, suitable for the existing compact/binary
 Lean LRAT pipeline. Regenerating the C16 CNF produced a byte-identical file.
+All nine proof artifacts are stored durably at
+`/Volumes/Stripe/lean-genius/artifacts/erdos85-cayley-sidon/mu3grid/certificates/`.
 
 Together these certificates cover the complete all-triangle-free sector. The
 all-triangle mixed models remain unresolved and must not be claimed as covered
