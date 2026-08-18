@@ -239,7 +239,8 @@ theorem binarySquare_regular_signedEigenvector_outsideSupport_balance
   change 2 * ((Finset.univ.filter fun x => x ∉ c.supp ∧ a x ≠ 0).card : ℤ) = _ at hmass
   rw [← hSupp] at hmass
   rw [hsupport] at hmass
-  convert hmass using 1 <;> ring
+  push_cast at hmass
+  nlinarith
 
 end
 
