@@ -27,6 +27,13 @@ def internal_neighbours(shape: str) -> dict[int, set[int]]:
             result[i] = {i, (i - 1) % 4}
             result[4 + i] = {4 + i, 4 + ((i - 1) % 4)}
         return result
+    if shape == "C10C6":
+        result = {}
+        for i in range(5):
+            result[i] = {i, (i - 1) % 5}
+        for i in range(3):
+            result[5 + i] = {5 + i, 5 + ((i - 1) % 3)}
+        return result
     raise ValueError(f"unknown shape: {shape}")
 
 
@@ -68,7 +75,7 @@ def build_goal(shape: str) -> tuple[Goal, int, int]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("shape", choices=("C16", "C8C8"))
+    parser.add_argument("shape", choices=("C16", "C10C6", "C8C8"))
     parser.add_argument("output", type=Path)
     args = parser.parse_args()
 
