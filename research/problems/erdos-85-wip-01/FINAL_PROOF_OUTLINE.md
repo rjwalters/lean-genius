@@ -1,6 +1,14 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.1 — 2026-08-18 (operator consolidation; red-team pass folded in).**
+**Version 2.2 — 2026-08-18 (resync complete: statuses are integration-built).**
+
+As of v2.2, `PROVEN` means **green on the cold build of `erdos85/integration`**
+(tip `e304275e85`, 1,645/1,649 modules; audit logs in
+`erdos85-cayley-sidon/integ_capstone_audit.log`). Three modules fail there and
+are owned for post-pause fixes: `Erdos85CyclicCorrelation` (whnf timeout,
+sol-2), `Erdos85OrderFortyNineSevenHighT0CubeCnfSatisfaction` (v4.31 drift,
+sol-1), `Erdos85OrderSixtyFourTenSixOutsideEncodingAudit` (unbounded
+native_decide, killed at 3h, sol-2). None is in any capstone closure.
 
 This is the single authoritative outline. It supersedes the four divergent v1
 copies, archived unchanged beside it as `FINAL_PROOF_OUTLINE_v1a.md` (sol-1
@@ -54,7 +62,7 @@ either alone suffices. Branch A is the critical path.
 | A.1 existence jaw on `q²−1` | `PROVEN` | `Polarity.c4FreeMinDegreeWitness_even_delete_absolute_nucleus`; cofinal via `cofinalEvenFieldSquareExclusion_of_binary` |
 | A.2 reduce `q²` nonexistence to a normalized tight core | `PROVEN` | `squareOrderTightCoreExists_iff_witness`, `binarySquareOrderTightCoreExclusion_iff` |
 | A.3 tight core is regular for even `q` | `PROVEN` | `squareOrder_regular_of_even` |
-| A.4 capstone: A-REG ⇒ ¬Erdős 85 | `PROVEN` | `binarySquareOrderTightCoreExclusion_of_regularExclusion`, `not_erdos85Question_of_binarySquareRegularExclusion` (standard axioms) |
+| A.4 capstone: A-REG ⇒ ¬Erdős 85 | `PROVEN` | `binarySquareOrderTightCoreExclusion_of_regularExclusion`, `not_erdos85Question_of_binarySquareRegularExclusion` (integration-built, standard axioms) |
 | **A.5 AXIOM A-REG** | **`AXIOM` — the only open node of Branch A** | `BinarySquareRegularExclusion`: for every `k ≥ 3`, no `2^k`-regular C4-free graph on `4^k` vertices |
 
 Everything below this line is inside A.5.
@@ -72,11 +80,9 @@ Everything below this line is inside A.5.
   (`binarySquare_regular_no_sizeQ_defectComponent_of_even`;
   all-unit case `binarySquare_regular_not_allUnit_of_two_pow`).
 - **No bipartite defect component, any size, any partition, for every
-  `4 ∣ q`** (`binarySquare_regular_no_bipartite_defectComponent`,
-  `Erdos85BinarySquareAllOddBipartitePartsExclusion.lean` on
-  `origin/feature/erdos85-claude-sixtwo`, commit `4bdd5a720a`, 2026-08-18;
-  author-compiled, standard axioms; independent recompile pending
-  integration). This closes the bipartite half of A-REG for every `k` by
+  `4 ∣ q`** (`binarySquare_regular_no_bipartite_defectComponent`;
+  integration-built, axioms exactly `[propext, Classical.choice,
+  Quot.sound]`). This closes the bipartite half of A-REG for every `k` by
   one argument that lifts. It is the only part of A-REG proven that way.
 - Owner/selector algebra, centered-owner ranks and nullities, cross-block
   identities `HB + BC = J`, `BC² = (q−2m)J + H²B`, cyclic first/second
@@ -135,11 +141,20 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     grid model (`q×q`, two holes per row/column, `q(q−2)` cells), the
     row/column-hit laws, the per-cell `D` law and the K-law `K·Hᵀ = H·Kᵀ`
     are all proved by q-generic arguments; the shape census, enumeration and
-    certificates are order-64. Status: `PROVEN-AT-64 CERT` (A.5.2), `GAP`
-    for `k ≥ 4`. A sub-case of NONBIP-MIXED, not a decomposition of it; the
+    certificates are order-64. Status: `PROVEN-AT-64 CERT`, integration-built
+    (standard axioms + the named `native_decide`/LRAT family, no `sorryAx`);
+    `GAP` for `k ≥ 4`. A sub-case of NONBIP-MIXED, not a decomposition of it; the
     first q-generic statement strictly beneath A-REG-NONBIP.
   - size-two parts with `μ ∈ {−1,−3,−5}` or no alternating eigenline;
-    parts of size `≥ 3` — `GAP`, no q-generic statement yet.
+    parts of size `≥ 3` — `GAP`. Best current reduction (18 Aug, order-64):
+    every nonprincipal internal mode either transports to the exterior or
+    forces an alternating joint eigenline
+    (`orderSixtyFour_seven_components_outside_transport_or_jointEigenline`).
+  - **CANDIDATE (F.3, not a decomposition): A-REG-SIGNLESS-NORM** (sol-1,
+    18 Aug; audited by Fable). `det(dI+D)` obeys a quadratic-norm identity
+    and `4^r` divides it for `r` non-bipartite components — provable, but no
+    contradiction without an independent sharp 2-adic input; diagnostic
+    until that input exists.
 
 ---
 
@@ -207,16 +222,23 @@ Does not count (goes to the ledger, not here):
    the lane is an enumeration or certificate, it needs an operator go.
    Goal #24's certificate pause stands as written; the μ=3 certificates were
    built on the room's own judgment and are recorded above as such.
-3. Corpus (editor recommendation, operator to confirm): one integration
-   branch, one cold build, one axiom audit. Until then `PROVEN` here means
-   "compiles on the author's worktree and was independently recompiled by at
-   least one other agent," and the document says which.
+3. Corpus: confirmed by the operator 2026-08-18 and done — the branch is
+   `erdos85/integration`, all agents work there, per-agent branches frozen.
+   `PROVEN` means green on its cold build; "banked" means pushed there and
+   green.
 4. Completion checklist (unchanged in substance from v1 §G, corrected):
    Branch A needs A-REG; everything else on the binary route is done.
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
 
+- **2.2** (2026-08-18, editor): resync complete. Twelve branches merged to
+  `erdos85/integration`; cold build 1,645/1,649 green; all four capstones
+  verified there (three on standard axioms; μ=3 on standard + named
+  native_decide family, no sorryAx). Bipartite capstone upgraded to
+  integration-built. SIZE-TWO-EIGENLINE marked integration-built. Added
+  transport-or-eigenline reduction and CANDIDATE A-REG-SIGNLESS-NORM.
+  Three failing modules assigned owners. §G rule 3 now operative.
 - **2.1** (2026-08-18, editor; red-team by sol-1, sol-3, Claude within
   four minutes of 2.0): §0 relabelled — implications proven, root
   conditional on A-REG. A-REG-NONBIP now explicitly includes the connected
