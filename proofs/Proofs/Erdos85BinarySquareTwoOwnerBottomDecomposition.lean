@@ -155,6 +155,57 @@ theorem binarySquare_regular_twoOwner_shift_bottom_decomposition
   · ext x
     simp [sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
 
+/-- Every adjacency-image vector is orthogonal to the adjacency kernel.  This
+is the concrete symmetric-matrix bridge used to construct observables on the
+quotient by the two-owner ambiguity. -/
+theorem adjMatrix_mulVec_dotProduct_eq_zero_of_mem_ker
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (z w : V → ℝ)
+    (hz : z ∈ LinearMap.ker (G.adjMatrix ℝ).mulVecLin) :
+    (G.adjMatrix ℝ).mulVec w ⬝ᵥ z = 0 := by
+  have hz0 : (G.adjMatrix ℝ).mulVec z = 0 := by
+    simpa [LinearMap.mem_ker, Matrix.mulVecLin_apply] using hz
+  rw [dotProduct_comm, Matrix.dotProduct_mulVec]
+  have hsymm : (G.adjMatrix ℝ).transpose = G.adjMatrix ℝ :=
+    G.isSymm_adjMatrix.eq
+  rw [← hsymm, Matrix.vecMul_transpose, hz0, zero_dotProduct]
+
+/-- **Adjacency-image observables are decomposition-independent.**  Pairing
+the first owner summand with any vector in the image of ambient adjacency has
+the same value for every decomposition of a fixed centered vector. -/
+theorem binarySquare_regular_twoOwner_adjImage_dotProduct_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = q * m c)
+    (hsumM : ∑ c, m c = q)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent) (hab : a ≠ b)
+    {v_a v_b v_a' v_b' : V → ℝ}
+    (hva : v_a ∈ realComponentOwnerBottomSubmodule G a (m a))
+    (hvb : v_b ∈ realComponentOwnerBottomSubmodule G b (m b))
+    (hva' : v_a' ∈ realComponentOwnerBottomSubmodule G a (m a))
+    (hvb' : v_b' ∈ realComponentOwnerBottomSubmodule G b (m b))
+    (hsum : v_a + v_b = v_a' + v_b') (w : V → ℝ) :
+    (G.adjMatrix ℝ).mulVec w ⬝ᵥ v_a =
+      (G.adjMatrix ℝ).mulVec w ⬝ᵥ v_a' := by
+  have hd := binarySquare_regular_twoOwner_bottom_decomposition_difference_adjKernel
+    G hfree hq hreg hcard m hm hsumM hcount a b hab
+      hva hvb hva' hvb' hsum
+  have horth := adjMatrix_mulVec_dotProduct_eq_zero_of_mem_ker
+    G (v_a - v_a') w hd
+  rw [dotProduct_sub] at horth
+  linarith
+
 end
 
 end Erdos85
@@ -162,3 +213,5 @@ end Erdos85
 #print axioms Erdos85.binarySquare_regular_twoOwner_exists_bottom_decomposition
 #print axioms Erdos85.binarySquare_regular_twoOwner_bottom_decomposition_difference_adjKernel
 #print axioms Erdos85.binarySquare_regular_twoOwner_shift_bottom_decomposition
+#print axioms Erdos85.adjMatrix_mulVec_dotProduct_eq_zero_of_mem_ker
+#print axioms Erdos85.binarySquare_regular_twoOwner_adjImage_dotProduct_eq
