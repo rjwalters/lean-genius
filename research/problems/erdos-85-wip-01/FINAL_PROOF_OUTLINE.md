@@ -2055,7 +2055,11 @@ generalized rather than merely replayed.
      concrete order-six derangements, ready for cycle-type/sign/composition
      analysis rather than only pointwise inequalities.  Row-orientation
      coherence is also **PROVEN** (`b262a13416`): swapping the two endpoint
-     rows replaces the monodromy by its inverse.
+     rows replaces the monodromy by its inverse.  Column-orientation
+     coherence is **PROVEN** (`72fbcbe334`): after identifying the source
+     fibers by row transport, swapping endpoint columns gives the conjugate
+     inverse.  Hence unoriented rectangles carry a well-defined monodromy
+     cycle type up to inversion/conjugacy.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
