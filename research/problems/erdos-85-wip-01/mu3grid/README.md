@@ -49,3 +49,21 @@ respectively. They live beside the raw proof triplets in the artifact folder.
 Together these certificates cover the complete all-triangle-free sector. The
 all-triangle mixed models remain unresolved and must not be claimed as covered
 by these hashes.
+
+## Lean-native encoding
+
+`generate_alltf_native_cnf.py` mirrors the executable Lean definition
+`mu3AllTfNativeSatCnf`. It uses fixed edge identifiers, explicit conjunction
+variables, and the repository's sequential counters. Lean checks that all
+three shapes have 48 cells, 106,560 variables, and 316,320 clauses. The fresh
+native CNFs are about 4.5 MiB and all three proofs independently passed
+`drat-trim` verification.
+
+| shape | actions | CNF SHA-256 | raw LRAT SHA-256 | packed SHA-256 |
+|---|---:|---|---|---|
+| C16 | 8,482 | `94ac5b3b5dc3e4238af4657dbb4ed68173b77611e6a5cb1f4868ab2e21472fcc` | `faa023b44027e820a85b16ee4dbdc69178c9d69af8eaf6a8b4406f6212860d22` | `d4ecc5d39cc20002a0036f413e57edf7e136b5a9644b2715a3066b0415ec8a0b` |
+| C10+C6 | 7,621 | `121be3f96fbad26c8029da089baa8fa31c905b4815d850631e41c74187b8d185` | `0d0609a072f2b291eb72430080f22382119f8b44cd4523929eee68fe6d7064a0` | `d873550ce92d8de720996909f1c93ff08f29acd9c4725b8bd725605fec1df44d` |
+| C8+C8 | 5,829 | `c7a3bdad6945755858b67723cd1460c064fbf05dca354ad19d2c25bce120bc05` | `b4933791ddd44dfcb1b227b5a2ae6cebd5e61ddf52c32496f2a3e883a3990f12` | `129250d6f949918efe977b2388f88995c968032c757d245cbd6b111e4bd364d0` |
+
+The native artifacts live in the sibling `native-certificates/` directory on
+the artifact volume. These are the preferred proofs for Lean ingestion.
