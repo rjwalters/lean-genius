@@ -1521,10 +1521,14 @@ generalized rather than merely replayed.
 
      New exhaustive finite evidence bypasses those four cases for the four
      λ=6-covered class representatives.  Write `D` for a representative's
-     seven-regular defect block.  The earlier auxiliary interpretation of
-     the artifact's `H_edges` and `R_edges` as a partition of `Dᶜ` is retired:
-     the current JSON does not satisfy that set-theoretic partition, so those
-     fields are not used in the proof.  The formally proved statements
+     seven-regular defect block.  The classification uses the exact identity
+     `D = I + J - A_H² - R`: off the diagonal, `Dᶜ` is the disjoint union of
+     `R` and the cycle-distance-two support of `A_H²`, not of `R` and `H`.
+     This explains why the JSON's `H_edges` and `R_edges` do not partition
+     `Dᶜ`; those fields are not used in the finite obstruction proof.  The
+     unique commuting two-factor found by the honest checker is the
+     distance-two factor (for `C₁₀ ⊔ C₆`, a step-two `C₁₀` plus two triangles),
+     rather than `H` itself.  The formally proved statements
      `orderSixtyFour_restrictedOwner_adjMatrix_comm_inducedDefect` and
      `sum_restrictedComponentOwnerGraph_adjMatrix_eq_inducedDefect_compl` say
      that the four restricted owner factors commute with `D` and partition
@@ -1554,6 +1558,16 @@ generalized rather than merely replayed.
      connect these concrete bit-vector representatives to the existing graph
      labeling/completeness classification.  Thus the finite UNSAT leaf is
      kernel checked, but the graph-level branch closure is not yet `PROVEN`.
+
+     The external classification source is `r_classify.py`.  It reports 144
+     labeled `R` solutions in the `[10,6]` stratum, split into three defect
+     spectral classes of 48, and 360 labeled solutions in `[5,5,3,3]`, split
+     into three classes of 120.  In each stratum one class is the bipartite
+     `K₈,₈`-minus-matching defect already killed arithmetically; the other two
+     are exactly the `t_D=40` and `t_D=30` matrices checked above.  This makes
+     the remaining GAP precise: certify the script's exhaustive enumeration
+     of the symmetric zero-one commutant, then transport its class labeling
+     into the four Boolean-relation terminals.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
