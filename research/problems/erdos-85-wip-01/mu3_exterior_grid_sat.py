@@ -24,7 +24,8 @@ def h_edge(a: int, b: int) -> bool:
     return b == a or b == (a - 1) % ORDER
 
 
-def make_solver(with_c4: bool, fixed_occupied=None):
+def make_solver(with_c4, fixed_occupied=None):
+    assert with_c4 in (False, True, "rook", "cross")
     solver = Solver()
     solver.set(timeout=180_000)
     occ = [Bool(f"o_{a}_{b}") for a, b in CELLS]
@@ -72,6 +73,10 @@ def make_solver(with_c4: bool, fixed_occupied=None):
                 a2, b2 = CELLS[j]
                 common_small = int(a == a2) + int(b == b2)
                 assert common_small <= 1
+                if with_c4 == "rook" and common_small == 0:
+                    continue
+                if with_c4 == "cross" and common_small == 1:
+                    continue
                 common_c = [
                     (And(edge(i, k), edge(j, k)), 1)
                     for k in range(len(CELLS))
@@ -185,6 +190,12 @@ def main() -> None:
     fixed, _ = make_solver(True, occupied)
     fixed_result = fixed.check()
     print(f"fixed occupancy, C4=True: {fixed_result}", flush=True)
+
+    h_occupied = [not h_edge(a, b) for a, b in CELLS]
+    for mode in ("rook", "cross", True):
+        split, _ = make_solver(mode, h_occupied)
+        split_result = split.check()
+        print(f"missing H, C4 mode={mode}: {split_result}", flush=True)
 
     # Cyclic representatives for missing 2-factors: the union of the identity
     # matching and shift-k matching.  k=7 is exactly the internal C16 factor H.
