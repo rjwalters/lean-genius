@@ -1968,8 +1968,16 @@ generalized rather than merely replayed.
      `orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks`: block
      repeated closings exist in both `A,A,B` and `A,B,A` orientations.  Thus
      the former cross-budget capacity failure is bypassed.  The new `[6,2]`
-     **GAP** is consumption of these two block forks by their component shapes
-     (including the all-same block), not production of a block collision.
+     component-shape consumer is also partly formal.  Six closings lie over
+     one small-owner edge; at least three share a closing component, and two
+     share one of the root's two small-owner centers.  C4-freeness forces their
+     corresponding large-owner centers distinct.  Therefore
+     `orderSixtyFour_sixTwo_rootClosingSameComponent_or_largeOwnerDensity`
+     proves either a size-six-owner routing-density fragment, or a repeated
+     closing in the precise residual shape `e,f,e` (root and closing component
+     coincide, including the all-same block).  The new `[6,2]` **GAP** is this
+     `e=g` residual and the downstream large-owner density terminal, not
+     production of a block collision or arbitrary component-shape dispatch.
      Across the two-component strata, the obstruction is now routing
      saturation/contradiction, not a rectangular classification, finite
      census, or same-owner center lemma.  The last two

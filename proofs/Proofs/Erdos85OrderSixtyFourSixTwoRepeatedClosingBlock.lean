@@ -1,5 +1,7 @@
 import Proofs.Erdos85BinarySquareTwoOwnerRepeatedClosing
 import Proofs.Erdos85OrderSixtyFourThreeComponentForkAdapter
+import Proofs.Erdos85BinarySquareSameOwnerCenterGridCapacity
+import Proofs.Erdos85BinarySquareSeparatedForkRowDensity
 
 /-! # A component-block repeated closing in the `[6,2]` stratum -/
 
@@ -188,6 +190,178 @@ theorem orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks
   rw [← card_cyclicColoredTriples_rotate A A B, hedge, htri, hma, hmb]
   norm_num
 
+set_option maxRecDepth 10000 in
+/-- Refine the sixfold small-owner edge multiplicity.  Three closings land in
+one defect component; two of their small-owner centers coincide.  Their
+large-owner centers must then be distinct by C4-freeness.  Hence either the
+fixed root lies in the closing component, or those large-owner centers form a
+dense cross-component routing fragment. -/
+theorem orderSixtyFour_sixTwo_rootClosingSameComponent_or_largeOwnerDensity
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hma : m a = 2) (hmb : m b = 6) :
+    (∃ e f,
+      HasRepeatedClosingInBlock (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b) e f e) ∨
+      HasTwoCenterRoutingRowDensityForOwner G hfree m b := by
+  classical
+  let D := secondOrderDefectGraph G
+  let A := componentOwnerGraph G D a
+  let B := componentOwnerGraph G D b
+  let S := cyclicColoredTriples A A B
+  let T := directedColoredEdges A
+  let F : Fin 64 × Fin 64 × Fin 64 → (Σ _x : Fin 64, Fin 64) :=
+    fun p => ⟨p.1, p.2.2⟩
+  have hAreg : ∀ x, A.degree x = m a * (8 - 1) :=
+    binarySquare_regular_componentOwnerGraph_degree
+      G hfree (q := 8) (by norm_num) hreg (by norm_num) a (hm a)
+  have hedge : T.card = 896 := by
+    change (directedColoredEdges A).card = 896
+    rw [card_directedColoredEdges_of_regular A (m a * (8 - 1)) hAreg,
+      hma]
+    norm_num
+  have htri := binarySquare_regular_card_twoOwnerColoredTriples
+    G hfree (q := 8) (by norm_num) hreg (by norm_num) a b hab (hm a) (hm b)
+  have hScard : S.card = 5376 := by
+    simpa [S, hma, hmb] using htri
+  have hmap : ∀ p ∈ S, F p ∈ T := by
+    intro p hp
+    have hpColor := (Finset.mem_filter.mp hp).2
+    simp only [T, F, directedColoredEdges, Finset.mem_sigma,
+      Finset.mem_univ, true_and]
+    exact (A.mem_neighborFinset p.1 p.2.2).mpr hpColor.1
+  have hmore : T.card * 5 < S.card := by omega
+  obtain ⟨key, _hkey, hPcard⟩ :=
+    Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to
+      (f := F) hmap hmore
+  let P := S.filter fun p => F p = key
+  change 5 < P.card at hPcard
+  let K : Fin 64 × Fin 64 × Fin 64 → D.ConnectedComponent := fun p =>
+    D.connectedComponentMk p.2.1
+  have hKmap : ∀ p ∈ P, K p ∈ (Finset.univ : Finset D.ConnectedComponent) :=
+    fun _p _hp => Finset.mem_univ _
+  have hKmore : (Finset.univ : Finset D.ConnectedComponent).card * 2 < P.card := by
+    rw [Finset.card_univ, hcount]
+    omega
+  obtain ⟨g, _hg, hQcard⟩ :=
+    Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to
+      (f := K) hKmap hKmore
+  let Q := P.filter fun p => K p = g
+  change 2 < Q.card at hQcard
+  let U : Fin 64 × Fin 64 × Fin 64 → Fin 64 := fun p =>
+    componentOwnerCenter G D a p.2.2 p.2.1
+  let fkey := D.connectedComponentMk key.2
+  let Ca := componentNeighborFinset G D a key.2
+  have hCaCard : Ca.card = 2 := by
+    change (componentNeighborFinset G D a key.2).card = 2
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree (q := 8) (by norm_num) hreg (by norm_num) fkey a
+        (x := key.2) ConnectedComponent.connectedComponentMk_mem
+    rw [hm a, hma] at hmul
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 8) hmul
+  have hUmap : ∀ p ∈ Q, U p ∈ Ca := by
+    intro p hp
+    have hpQ := Finset.mem_filter.mp hp
+    have hpP := Finset.mem_filter.mp hpQ.1
+    have hpColor := (Finset.mem_filter.mp hpP.1).2
+    have hpy : p.2.2 = key.2 := by
+      exact congrArg Sigma.snd hpP.2
+    have hu := componentOwnerCenter_spec G D a hpColor.2.1
+    change U p ∈ componentNeighborFinset G D a key.2
+    rw [componentNeighborFinset, Finset.mem_filter]
+    refine ⟨?_, (ConnectedComponent.mem_supp_iff a _).mp hu.1⟩
+    exact (G.mem_neighborFinset key.2 _).mpr (by simpa [U, hpy] using hu.2.1)
+  have hUmore : Ca.card * 1 < Q.card := by omega
+  have hUmore' : Ca.card < Q.card := by omega
+  obtain ⟨p, hp, r, hr, hpr, hUeq⟩ :=
+    Finset.exists_ne_map_eq_of_card_lt_of_maps_to hUmore' hUmap
+  have hpQ := Finset.mem_filter.mp hp
+  have hrQ := Finset.mem_filter.mp hr
+  have hpP := Finset.mem_filter.mp hpQ.1
+  have hrP := Finset.mem_filter.mp hrQ.1
+  have hpColor := (Finset.mem_filter.mp hpP.1).2
+  have hrColor := (Finset.mem_filter.mp hrP.1).2
+  have hF : F p = F r := hpP.2.trans hrP.2.symm
+  have hxy : p.1 = r.1 ∧ p.2.2 = r.2.2 := by
+    simpa [F] using congrArg (fun z : (Σ _x : Fin 64, Fin 64) => (z.1, z.2)) hF
+  have hzcomp : D.connectedComponentMk p.2.1 = g := hpQ.2
+  have hrzcomp : D.connectedComponentMk r.2.1 = g := hrQ.2
+  have hz : p.2.1 ≠ r.2.1 := by
+    intro hz
+    apply hpr
+    rcases p with ⟨x, z, y⟩
+    rcases r with ⟨x', z', y'⟩
+    apply Prod.ext hxy.1
+    apply Prod.ext hz hxy.2
+  let ua := U p
+  let ub₁ := componentOwnerCenter G D b p.2.1 p.1
+  let ub₂ := componentOwnerCenter G D b r.2.1 r.1
+  have hua := componentOwnerCenter_spec G D a hpColor.2.1
+  have hub₁ := componentOwnerCenter_spec G D b hpColor.2.2
+  have hub₂ := componentOwnerCenter_spec G D b hrColor.2.2
+  have huacomp : D.connectedComponentMk ua = a :=
+    (ConnectedComponent.mem_supp_iff a ua).mp hua.1
+  have hub₁comp : D.connectedComponentMk ub₁ = b :=
+    (ConnectedComponent.mem_supp_iff b ub₁).mp hub₁.1
+  have huaub₁ : ua ≠ ub₁ := by
+    intro h
+    apply hab
+    exact huacomp.symm.trans ((congrArg D.connectedComponentMk h).trans hub₁comp)
+  have hubne : ub₁ ≠ ub₂ := by
+    intro hub
+    have huaR : G.Adj r.2.1 ua := by
+      have huR := (componentOwnerCenter_spec G D a hrColor.2.1).2.2
+      change componentOwnerCenter G D a p.2.2 p.2.1 =
+        componentOwnerCenter G D a r.2.2 r.2.1 at hUeq
+      rw [← hUeq] at huR
+      exact huR
+    have hubR : G.Adj r.2.1 ub₁ := by
+      simpa [ub₁, ub₂, hub] using hub₂.2.1
+    exact hfree (containsC4_of_two_common huaub₁ hz
+      hua.2.2 hub₁.2.1 huaR hubR)
+  let e := D.connectedComponentMk p.1
+  by_cases heg : e = g
+  · left
+    let f := D.connectedComponentMk p.2.2
+    refine ⟨e, f, p, ?_, r, ?_, hpr, hxy.1, hxy.2, hz⟩
+    · apply Finset.mem_filter.mpr
+      refine ⟨hpP.1, ConnectedComponent.connectedComponentMk_mem,
+        ConnectedComponent.connectedComponentMk_mem, ?_⟩
+      exact (ConnectedComponent.mem_supp_iff e p.2.1).mpr
+        (hzcomp.trans heg.symm)
+    · apply Finset.mem_filter.mpr
+      have hre : D.connectedComponentMk r.1 = e := by
+        simpa [e] using congrArg D.connectedComponentMk hxy.1.symm
+      have hrf : D.connectedComponentMk r.2.2 = f := by
+        simpa [f] using congrArg D.connectedComponentMk hxy.2.symm
+      exact ⟨hrP.1, (ConnectedComponent.mem_supp_iff e r.1).mpr hre,
+        (ConnectedComponent.mem_supp_iff f r.2.2).mpr hrf,
+        (ConnectedComponent.mem_supp_iff e r.2.1).mpr (hrzcomp.trans heg.symm)⟩
+  · right
+    have heg' : e ≠ g := heg
+    let xs : e.supp := ⟨p.1, ConnectedComponent.connectedComponentMk_mem⟩
+    let ub₁s : b.supp := ⟨ub₁, hub₁.1⟩
+    let ub₂s : b.supp := ⟨ub₂, hub₂.1⟩
+    have hubne' : ub₁s ≠ ub₂s := fun h => hubne (congrArg Subtype.val h)
+    refine ⟨e, g, heg', xs, ub₁s, ub₂s, hubne', hub₁.2.2, ?_, ?_⟩
+    · simpa [xs, ub₂s, hxy.1] using hub₂.2.2
+    · exact binarySquare_regular_twoSeparatedCenters_routingRow_density
+        G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm heg'
+          xs ub₁s ub₂s hubne' hub₁.2.2
+            (by simpa [xs, ub₂s, hxy.1] using hub₂.2.2)
+
 end
 
 end Erdos85
@@ -196,3 +370,4 @@ end Erdos85
 #print axioms Erdos85.exists_repeatedClosingInBlock_of_two_mul_directedEdge_card_lt
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_repeatedClosingInBlock
 #print axioms Erdos85.orderSixtyFour_sixTwo_exists_twoCyclicRepeatedClosingInBlocks
+#print axioms Erdos85.orderSixtyFour_sixTwo_rootClosingSameComponent_or_largeOwnerDensity
