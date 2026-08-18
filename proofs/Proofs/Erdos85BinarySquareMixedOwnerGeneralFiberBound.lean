@@ -50,8 +50,38 @@ theorem binarySquare_regular_mixedOwnerFiber_card_le
       _ = q * m_source := hsource
   simpa [hcardSource] using hbound
 
+/-- Summing the size-sensitive fiber bound over every source component gives
+an invariant global bound for the same-component portion of a mixed-owner
+census. -/
+theorem binarySquare_regular_sameComponent_mixedOwner_card_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = q * m d)
+    (a b c : (secondOrderDefectGraph G).ConnectedComponent) :
+    (sameComponentCyclicColoredTriples (secondOrderDefectGraph G)
+      (componentOwnerGraph G (secondOrderDefectGraph G) a)
+      (componentOwnerGraph G (secondOrderDefectGraph G) b)
+      (componentOwnerGraph G (secondOrderDefectGraph G) c)).card ≤
+        ∑ source : (secondOrderDefectGraph G).ConnectedComponent,
+          q * m source * (m a * (m source - 1)) *
+            (m b * (m source - 1)) := by
+  rw [← sum_card_cyclicColoredTriplesInComponent_eq_card_sameComponent]
+  exact Finset.sum_le_sum fun source _ =>
+    binarySquare_regular_mixedOwnerFiber_card_le
+      G hfree hq hreg hcard source a b c
+        (hm source) (hm a) (hm b)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_mixedOwnerFiber_card_le
+#print axioms Erdos85.binarySquare_regular_sameComponent_mixedOwner_card_le
