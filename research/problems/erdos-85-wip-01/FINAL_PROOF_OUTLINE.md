@@ -1860,7 +1860,13 @@ generalized rather than merely replayed.
      partition theorem (`|c| = q m_c`, `Σ m_c = q`, `m_c ≥ 2` for binary `q`)
      leaves, besides `[2,2,2,2]`, the six strata `[8]` (connected defect
      graph), `[6,2]`, `[5,3]`, `[4,4]`, `[4,2,2]`, `[3,3,2]`.
-     The first four remain **GAP** with no candidate terminal.  The last two
+     The first four remain **GAP** with no contradiction theorem.  More
+     precisely: `[8]` has only the connected-component alternative and moment
+     `64`; `[6,2]` has moment `40` plus the q-generic cycle/triangle-free
+     structure on its size-two block, but no rectangular-intertwiner
+     obstruction; `[5,3]` has moment `34` and no local block classification;
+     `[4,4]` has moment `32` and symmetric equal-size cross factors, but no
+     theorem converts that symmetry into a contradiction.  The last two
      are now **AT-64-ONLY, PARTIAL**: partition-agnostic mixed-owner trace and
      fiber bounds give exact cross-component budgets (`≥ 5888` for `[4,2,2]`,
      `≥ 6816` for `[3,3,2]`); the exact 27-block decomposition then selects a
@@ -1902,6 +1908,21 @@ generalized rather than merely replayed.
      `[3,3,2]` pressure route identifies its likely local terminal: separated
      canonical centers on the cross-component side, including when the other
      two vertex labels lie in one defect component.
+
+     A second, sharper formulation worth attacking first is **`AXIOM
+     A-REG-UNIT`**: for every `k≥3`, with `q=2^k`, every q-regular C4-free
+     graph on `Fin(q²)` has a second-order defect component of order exactly
+     `q` (a normalized unit part).  This may be false, but it is fully precise
+     and genuinely q-generic.  If true, the already PROVEN theorem
+     `binarySquare_regular_no_sizeQ_defectComponent_of_even` contradicts it
+     immediately, proving A-REG without any finite component enumeration.  If
+     false, a counterexample supplies an all-`m_c≥2` self-indexed owner system
+     and thereby isolates the extra invariant the broader A-REG-EXTENSION
+     axiom must express.  In this audit the q-generic inputs are the partition
+     law, exclusion of unit parts, internal degree formula, owner-slice
+     coverage/disjointness, size-two cycle structure, and projector trace
+     split; the numerical `219/253` thresholds and every H16/SAT ledger are
+     q=8-only consumers.
 
 ### A5. Nonregular sectors
 
