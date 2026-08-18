@@ -2112,6 +2112,12 @@ generalized rather than merely replayed.
      packaged as one graph-facing theorem (**PROVEN**, `bc67939e62`), returning
      the two columns and the three pairwise-even eligible rows directly from
      H-bipartite C4-freeness.
+     The first explicit `K`-sector datum on these six-point fibers is now
+     **PROVEN** (`435d89bdda`): cycle compatibility forces the occupied
+     H-support inside every row and every column fiber to have cardinality
+     exactly zero or two.  Thus each monodromy fiber carries a distinguished
+     `0/2` subset; the next concrete question is whether and how rectangle
+     transport preserves or exchanges these subsets.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
