@@ -86,7 +86,7 @@ def make_solver(with_c4: bool, fixed_occupied=None):
     return solver, occ
 
 
-def missing_factor_balance_solver(require_noncirculant: bool):
+def missing_factor_balance_solver(require_noncirculant: bool, require_disjoint: bool = False):
     """Classify 2-regular missing matrices satisfying MH^T = HM^T."""
     solver = Solver()
     missing = [[Bool(f"m_{a}_{b}") for b in range(ORDER)] for a in range(ORDER)]
@@ -94,6 +94,11 @@ def missing_factor_balance_solver(require_noncirculant: bool):
         solver.add(PbEq([(missing[a][b], 1) for b in range(ORDER)], 2))
     for b in range(ORDER):
         solver.add(PbEq([(missing[a][b], 1) for a in range(ORDER)], 2))
+    if require_disjoint:
+        for a in range(ORDER):
+            for b in range(ORDER):
+                if h_edge(a, b):
+                    solver.add(~missing[a][b])
     for a in range(ORDER):
         for a2 in range(a + 1, ORDER):
             # |M_row(a) intersect H_row(a2)| = the reversed quantity.
@@ -139,6 +144,29 @@ def main() -> None:
         noncirculant_result = noncirculant.check()
         print(
             f"fixed noncirculant balanced occupancy, C4=True: {noncirculant_result}",
+            flush=True,
+        )
+
+    disjoint_classification, disjoint_vars = missing_factor_balance_solver(True, True)
+    disjoint_result = disjoint_classification.check()
+    print(
+        f"balanced H-disjoint factor, required noncirculant: {disjoint_result}",
+        flush=True,
+    )
+    if disjoint_result == sat:
+        disjoint_model = disjoint_classification.model()
+        disjoint_missing = [
+            (a, b)
+            for a in range(ORDER) for b in range(ORDER)
+            if is_true(disjoint_model.eval(disjoint_vars[a][b], model_completion=True))
+        ]
+        print(f"noncirculant H-disjoint missing cells: {disjoint_missing}", flush=True)
+        disjoint_set = set(disjoint_missing)
+        disjoint_occupied = [cell not in disjoint_set for cell in CELLS]
+        disjoint_c4, _ = make_solver(True, disjoint_occupied)
+        disjoint_c4_result = disjoint_c4.check()
+        print(
+            f"fixed noncirculant H-disjoint occupancy, C4=True: {disjoint_c4_result}",
             flush=True,
         )
 
