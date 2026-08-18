@@ -1942,7 +1942,14 @@ generalized rather than merely replayed.
      ordinary Laplacian statement for the connected `(q-1)`-regular defect
      graph.  Those generic centered-Gram invariants are tautological in this
      stratum; a successful consumer must use the additional fact that `D`
-     arises from the square-order common-neighbor equation with `G`.
+     arises from the square-order common-neighbor equation with `G`.  One
+     such ambient constraint is now recorded explicitly by
+     `binarySquare_regular_oneComponent_finrank_adj_kernel_eq_zero`: the
+     rational adjacency operator of `G` is nonsingular whenever `D` is
+     connected.  This is an immediate specialization of the exact global
+     nullity theorem, but it places the two `[8]` facts side by side:
+     `C=qL_D` is internally tautological, whereas `ker(A_G)=0` is a genuine
+     restriction on the coupled ambient/defect spectrum.
      The residual **GAP** is to turn this extreme single-color closure into an
      ambient C4/routing contradiction when every center belongs to the same
      defect component.  The two-component

@@ -1,4 +1,4 @@
-import Proofs.Erdos85BinarySquareRegularParity
+import Proofs.Erdos85BinarySquareExactAdjacencyKernel
 
 /-! # The unique owner graph in the connected-defect stratum -/
 
@@ -118,9 +118,29 @@ theorem centeredOwnerGram_eq_q_smul_defect_lapMatrix_of_oneComponent
         SimpleGraph.adjMatrix_apply, SimpleGraph.compl_adj,
         FriendshipTheoremOQ01.onesMatrix, hxy, hDxy, D]
 
+/-- The non-tautological ambient companion to `C = q L_D`: connected defect
+forces the rational adjacency operator of `G` to have zero nullity. -/
+theorem binarySquare_regular_oneComponent_finrank_adj_kernel_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 1)
+    (a : (secondOrderDefectGraph G).ConnectedComponent) :
+    Module.finrank ℚ (LinearMap.ker (G.adjMatrix ℚ).mulVecLin) = 0 := by
+  rw [binarySquare_regular_finrank_adj_kernel_eq_card_components_sub_one
+    G hfree hq hreg hcard a, hcount]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.componentOwnerGraph_eq_compl_secondOrderDefect_of_oneComponent
 #print axioms Erdos85.centeredOwnerGram_eq_q_smul_defect_lapMatrix_of_oneComponent
+#print axioms Erdos85.binarySquare_regular_oneComponent_finrank_adj_kernel_eq_zero
