@@ -2117,7 +2117,12 @@ generalized rather than merely replayed.
      H-support inside every row and every column fiber to have cardinality
      exactly zero or two.  Thus each monodromy fiber carries a distinguished
      `0/2` subset; the next concrete question is whether and how rectangle
-     transport preserves or exchanges these subsets.
+     transport preserves or exchanges these subsets.  The first cross-fiber
+     coupling is also **PROVEN** (`fab41ab17a`): on a witnessed H-edge its K
+     truth value determines support size `0` versus `2`, and columns sharing
+     an H-neighbor therefore carry equal support cardinalities.  Thus the
+     unavoidable overlap-one monodromy configuration connects fibers of the
+     same sector type; pointwise subset transport remains the next question.
      A separate stratum-independent hole-counting obstruction is now
      **PROVEN** (`7d0d696dd8`, strengthened in `4361b3bfde`): an `H \ K`
      block coexisting with `H ⊆ K` on every outside column has at least four
