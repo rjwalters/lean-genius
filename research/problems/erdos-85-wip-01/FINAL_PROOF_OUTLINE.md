@@ -2073,7 +2073,9 @@ generalized rather than merely replayed.
      the three oriented monodromy signs around every triangle of eligible rows
      multiply to `+1`.  Equivalently, every such triangle contains an even
      number of odd derangements.  Any cycle-type classification must respect
-     this parity-flatness constraint.
+     this parity-flatness constraint.  Moreover sign is unchanged by either
+     row or column reversal (**PROVEN**, `c20279877e`), so it descends to a
+     genuine invariant of the unoriented H-empty rectangle.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
