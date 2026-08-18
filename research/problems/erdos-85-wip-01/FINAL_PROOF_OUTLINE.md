@@ -1886,9 +1886,18 @@ generalized rather than merely replayed.
      `ownerFork_canonicalCenter_separation_without_root_separation` removes an
      unused root-component inequality from the canonical-center argument, and
      `hasRepeatedClosingInBlock_equalRoots_canonicalCenter_separation` applies
-     it graph-facing.  The precise residual **GAP** is therefore only the two
-     asymmetric patterns `f=g≠e` and `e=g≠f`, where exactly one fork side is
-     cross-component and C4 separation may select the within-component side.
+     it graph-facing.  Cyclic reindexing now removes almost all remaining
+     asymmetry.  `card_cyclicColoredTriplesInBlocks_rotate` and the two generic
+     rotated repeated-closing theorems permit pigeonholing the second or third
+     owner edge without changing the pressure-block cardinality.  Exact
+     q=8 capacity consumers show that every `f=g≠e` pattern in both strata
+     rotates to an equal-root closing; every `e=g≠f` pattern in `[3,3,2]` does
+     likewise.  In `[4,2,2]` the latter rotation also works unless the repeated
+     component is precisely the normalized size-four component.  Thus all
+     `[3,3,2]` pressure patterns now reach canonical center separation, while
+     the `[4,2,2]` pressure route has one precise residual **GAP**:
+     `e=g=c`, where `m_c=4` and the third-owner diagonal edge space has size
+     384, too large for the block lower bound 219.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
@@ -2489,7 +2498,7 @@ The shortest current proof tree is:
         ├── regular-sector exclusion                    [AXIOM A-REG — the ONLY axiom of Branch A]
         │   ├── q=8: [2,2,2,2] finite census            [AT-64-ONLY, assembly GAP]
         │   ├── q=8: [6,2], [5,3], [4,4] A²B fork      [q-GENERIC reduction, routing GAP]
-        │   ├── q=8: [4,2,2], [3,3,2] pressure/fork     [AT-64-ONLY, 2 asymmetric fork GAPs]
+        │   ├── q=8: [4,2,2], [3,3,2] pressure/fork     [AT-64-ONLY, residual [4,2,2] e=g=c]
         │   ├── q=8: [8] connected defect              [GAP]
         │   └── arbitrary q component obstruction       [AXIOM A-REG-EXTENSION]
         └── nonregular-sector exclusion                 [PROVEN, uniform parity theorem]
