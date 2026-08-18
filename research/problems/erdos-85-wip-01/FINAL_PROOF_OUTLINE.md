@@ -2196,12 +2196,27 @@ generalized rather than merely replayed.
      `7f5ee218f6`, `9a1ad7c56b`, `e1c6653979`): across any normalized
      component cut, `HB+BC=J`; the returned operator satisfies
      `(BC)Bᵀ=(q-m)J-H(BBᵀ)`; and every internal ambient edge saturates the
-     Gram budget, forcing its exterior return entry to vanish.  A reproducible
-     The second iteration is also PROVEN (`f4ffc61ec8`, `0a39ba88e3`):
+     Gram budget, forcing its exterior return entry to vanish.  The second
+     iteration is also PROVEN (`f4ffc61ec8`, `0a39ba88e3`):
      `BC²=((q-m)-m)J+H²B`, specializing at order 64 and normalized size two
      to `BC²=4J+H²B`.  Under C4-freeness the off-diagonal entries of `C²` are
      Boolean, so this is the exact distance-two selector-star ledger needed
-     by the remaining combinatorial consumer.  A reproducible
+     by the remaining combinatorial consumer.  Two further exterior
+     interfaces are now PROVEN.  First, the transposed equation and diagonal
+     cut identity (`5a0344124f`, `97e21c6865`, `c53d011649`) give
+     `CBᵀ+BᵀH=J` and `H²+BBᵀ=(q-1)I+J-D[c]`.  Thus a zero-sum joint
+     `(H,D[c])` eigenvector with values `(θ,μ)` maps through `Bᵀ` to a
+     `C`-eigenvector of value `-θ`, and this image is nonzero whenever
+     `q-1-μ-θ² ≠ 0`.  At order 64 with `θ=-2`, the scalar is `3-μ`, so
+     `μ=3` is the unique saturated/kernel value and each of
+     `μ∈{-5,-3,-1}` transfers nontrivially to exterior eigenvalue `2`.
+     Second, the q-generic exterior triangle dichotomy (`26fe94d243`) proves
+     that every cross-component ambient edge lies in a unique triangle and
+     gives the rook property.  If an exterior vertex selects `{z,z'}` in
+     `c`, then `z~z'` forces no exterior row/column partners, while `z≁z'`
+     forces exactly one partner at `z` and exactly one at `z'`.  Hence the
+     exterior matching type is determined by the selected pair itself, not
+     an independent parity choice.  A reproducible
      SAT audit of the circulant calibration (`143390db83`, `39205dd634`)
      shows that degree six plus `HB+BC=J` is satisfiable, but requiring the
      exterior graph `C` itself to be C4-free is UNSAT.  This is experimental
