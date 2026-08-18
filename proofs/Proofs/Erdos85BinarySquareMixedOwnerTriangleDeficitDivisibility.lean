@@ -131,6 +131,33 @@ theorem binarySquare_regular_mixedOwnerTriangleDeficit_eq_zero_of_lt_two_pow_pre
     simpa using mul_le_mul_of_nonneg_left hone hp.le
   omega
 
+/-- Uniform gap theorem: the mixed-owner deficit is either zero or at least
+the first positive quantum `q^2 / 2`. -/
+theorem binarySquare_regular_mixedOwnerTriangleDeficit_eq_zero_or_two_pow_pred_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hk : 2 ≤ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcard : Fintype.card V = (2 ^ k) * (2 ^ k))
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = (2 ^ k) * m c)
+    (hsum : ∑ c, m c = 2 ^ k) :
+    binarySquareMixedOwnerTriangleDeficit G = 0 ∨
+      (2 : ℤ) ^ (2 * k - 1) ≤ binarySquareMixedOwnerTriangleDeficit G := by
+  by_cases hzero : binarySquareMixedOwnerTriangleDeficit G = 0
+  · exact Or.inl hzero
+  · right
+    by_contra hnotle
+    have hlt : binarySquareMixedOwnerTriangleDeficit G <
+        (2 : ℤ) ^ (2 * k - 1) := by omega
+    exact hzero
+      (binarySquare_regular_mixedOwnerTriangleDeficit_eq_zero_of_lt_two_pow_pred
+        G hfree hk hreg hcard m hm hsum hlt)
+
 end
 
 end Erdos85
@@ -139,3 +166,5 @@ end Erdos85
   Erdos85.binarySquare_regular_two_pow_pred_dvd_mixedOwnerTriangleDeficit
 #print axioms
   Erdos85.binarySquare_regular_mixedOwnerTriangleDeficit_eq_zero_of_lt_two_pow_pred
+#print axioms
+  Erdos85.binarySquare_regular_mixedOwnerTriangleDeficit_eq_zero_or_two_pow_pred_le
