@@ -1,4 +1,5 @@
 import Proofs.Erdos85LambdaSixClassificationTerminal
+import Proofs.Erdos85LambdaSixOwnerFactorSAT
 
 /-! # Transport of lambda-six owner factorizations through checked relabelings -/
 
@@ -36,6 +37,35 @@ def LambdaSixBoolFourFactorization
       (f0 x y = false ∧ f1 x y = true ∧ f2 x y = false ∧ f3 x y = false) ∨
       (f0 x y = false ∧ f1 x y = false ∧ f2 x y = true ∧ f3 x y = false) ∨
       (f0 x y = false ∧ f1 x y = false ∧ f2 x y = false ∧ f3 x y = true)
+
+theorem lambdaSix_isFourFactorization_matrixBV
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    (h : LambdaSixBoolFourFactorization d f0 f1 f2 f3) :
+    isFourFactorization (matrixBV d) (matrixBV f0) (matrixBV f1)
+      (matrixBV f2) (matrixBV f3) := by
+  have packageFactor : ∀ {f}, LambdaSixBoolCommutingTwoFactor d f →
+      isCommutingTwoFactor (matrixBV d) (matrixBV f) := by
+    intro f hf
+    rcases hf with ⟨hloop, hsym, hdeg, hsub, hcomm⟩
+    refine ⟨?_, ?_, ?_, ?_, ?_⟩
+    · simpa only [bitAdj_matrixBV] using hloop
+    · simpa only [bitAdj_matrixBV] using hsym
+    · intro x
+      apply BitVec.eq_of_toNat_eq
+      rw [cpop16_eq_filter_card]
+      simp only [row256_matrixBV_getLsbD]
+      simpa using hdeg x
+    · simpa only [bitAdj_matrixBV] using hsub
+    · intro x y
+      apply BitVec.eq_of_toNat_eq
+      rw [cpop16_eq_filter_card, cpop16_eq_filter_card]
+      simp only [BitVec.getLsbD_and, row256_matrixBV_getLsbD]
+      simpa using hcomm x y
+  rcases h with ⟨h0, h1, h2, h3, hpartition⟩
+  refine ⟨packageFactor h0, packageFactor h1, packageFactor h2,
+    packageFactor h3, ?_⟩
+  intro x y hxy
+  simpa only [bitAdj_matrixBV] using hpartition x y hxy
 
 private theorem filter_card_comp_equiv (e : Fin 16 ≃ Fin 16)
     (q : Fin 16 → Bool) :
@@ -127,5 +157,175 @@ theorem LambdaSixBoolFourFactorization.relabel
     simpa using (hd (e.symm x) (e.symm y)).symm
   rw [ht]
   exact hp
+
+noncomputable def lambdaSixTenSixT30TargetEquiv : Fin 16 ≃ Fin 16 :=
+  Equiv.ofBijective
+    (![0, 5, 2, 3, 4, 1, 6, 9, 8, 7, 11, 10, 15, 12, 13, 14] :
+      Fin 16 → Fin 16) (by decide)
+
+noncomputable def lambdaSixTenSixT40TargetEquiv : Fin 16 ≃ Fin 16 :=
+  Equiv.ofBijective
+    (![0, 1, 8, 3, 6, 5, 4, 7, 2, 9, 11, 10, 15, 12, 13, 14] :
+      Fin 16 → Fin 16) (by decide)
+
+noncomputable def lambdaSixFiveFiveThreeThreeT30TargetEquiv : Fin 16 ≃ Fin 16 :=
+  Equiv.ofBijective
+    (![0, 1, 2, 3, 4, 7, 8, 9, 5, 6, 15, 14, 13, 10, 11, 12] :
+      Fin 16 → Fin 16) (by decide)
+
+noncomputable def lambdaSixFiveFiveThreeThreeT40TargetEquiv : Fin 16 ≃ Fin 16 :=
+  Equiv.ofBijective
+    (![0, 1, 2, 3, 4, 6, 5, 9, 8, 7, 15, 14, 13, 10, 11, 12] :
+      Fin 16 → Fin 16) (by decide)
+
+theorem lambdaSixTenSixT30TargetEquiv_correct :
+    lambdaSixRelabelsTo (lambdaSixTenSixDTarget 1) lambdaSixTenSixT30
+      lambdaSixTenSixT30TargetEquiv := by decide
+
+theorem lambdaSixTenSixT40TargetEquiv_correct :
+    lambdaSixRelabelsTo (lambdaSixTenSixDTarget 2) lambdaSixTenSixT40
+      lambdaSixTenSixT40TargetEquiv := by decide
+
+theorem lambdaSixFiveFiveThreeThreeT30TargetEquiv_correct :
+    lambdaSixRelabelsTo (lambdaSixFiveFiveThreeThreeDTarget 1)
+      lambdaSixFiveFiveThreeThreeT30
+      lambdaSixFiveFiveThreeThreeT30TargetEquiv := by decide
+
+theorem lambdaSixFiveFiveThreeThreeT40TargetEquiv_correct :
+    lambdaSixRelabelsTo (lambdaSixFiveFiveThreeThreeDTarget 2)
+      lambdaSixFiveFiveThreeThreeT40
+      lambdaSixFiveFiveThreeThreeT40TargetEquiv := by decide
+
+private noncomputable def fin16EquivOfInjective
+    (p : Fin 16 → Fin 16) (hp : Function.Injective p) : Fin 16 ≃ Fin 16 :=
+  Equiv.ofBijective p ⟨hp, Finite.injective_iff_surjective.mp hp⟩
+
+theorem false_of_lambdaSixTenSix_relabelsTo_t30
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    {p : Fin 16 → Fin 16}
+    (hp : lambdaSixRelabelsTo (matrixBV d) (lambdaSixTenSixDTarget 1) p)
+    (hf : LambdaSixBoolFourFactorization d f0 f1 f2 f3) : False := by
+  let e₁ := fin16EquivOfInjective p hp.1
+  let e := e₁.trans lambdaSixTenSixT30TargetEquiv
+  have he₁ : ∀ x, e₁ x = p x := by
+    intro x
+    rfl
+  have hd : ∀ x y, d x y = bitAdj256 lambdaSixTenSixT30 (e x) (e y) := by
+    intro x y
+    calc
+      d x y = bitAdj256 (matrixBV d) x y := (bitAdj_matrixBV d x y).symm
+      _ = bitAdj256 (lambdaSixTenSixDTarget 1) (p x) (p y) := hp.2 x y
+      _ = bitAdj256 lambdaSixTenSixT30 (e x) (e y) := by
+        simpa only [e, Equiv.trans_apply, he₁] using
+          lambdaSixTenSixT30TargetEquiv_correct.2 (p x) (p y)
+  have ht := hf.relabel e hd
+  have hb := lambdaSix_isFourFactorization_matrixBV ht
+  have hm : matrixBV (bitAdj256 lambdaSixTenSixT30) = lambdaSixTenSixT30 := by
+    native_decide
+  rw [hm] at hb
+  exact no_fourFactorization_tenSixT30 _ _ _ _ hb
+
+private theorem false_of_lambdaSix_relabelsTo_of_no
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    {classTarget satTarget : BitVec 256} {p : Fin 16 → Fin 16}
+    (k : Fin 16 ≃ Fin 16)
+    (hp : lambdaSixRelabelsTo (matrixBV d) classTarget p)
+    (hk : lambdaSixRelabelsTo classTarget satTarget k)
+    (hf : LambdaSixBoolFourFactorization d f0 f1 f2 f3)
+    (hm : matrixBV (bitAdj256 satTarget) = satTarget)
+    (hno : ∀ g0 g1 g2 g3 : BitVec 256,
+      ¬ isFourFactorization satTarget g0 g1 g2 g3) : False := by
+  let e₁ := fin16EquivOfInjective p hp.1
+  let e := e₁.trans k
+  have he₁ : ∀ x, e₁ x = p x := by
+    intro x
+    rfl
+  have hd : ∀ x y, d x y = bitAdj256 satTarget (e x) (e y) := by
+    intro x y
+    calc
+      d x y = bitAdj256 (matrixBV d) x y := (bitAdj_matrixBV d x y).symm
+      _ = bitAdj256 classTarget (p x) (p y) := hp.2 x y
+      _ = bitAdj256 satTarget (e x) (e y) := by
+        simpa only [e, Equiv.trans_apply, he₁] using hk.2 (p x) (p y)
+  have ht := hf.relabel e hd
+  have hb := lambdaSix_isFourFactorization_matrixBV ht
+  rw [hm] at hb
+  exact hno _ _ _ _ hb
+
+theorem false_of_lambdaSixTenSix_relabelsTo_t40
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    {p : Fin 16 → Fin 16}
+    (hp : lambdaSixRelabelsTo (matrixBV d) (lambdaSixTenSixDTarget 2) p)
+    (hf : LambdaSixBoolFourFactorization d f0 f1 f2 f3) : False := by
+  apply false_of_lambdaSix_relabelsTo_of_no lambdaSixTenSixT40TargetEquiv
+    hp lambdaSixTenSixT40TargetEquiv_correct hf
+  · native_decide
+  · exact no_fourFactorization_tenSixT40
+
+theorem false_of_lambdaSixFiveFiveThreeThree_relabelsTo_t30
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    {p : Fin 16 → Fin 16}
+    (hp : lambdaSixRelabelsTo (matrixBV d)
+      (lambdaSixFiveFiveThreeThreeDTarget 1) p)
+    (hf : LambdaSixBoolFourFactorization d f0 f1 f2 f3) : False := by
+  apply false_of_lambdaSix_relabelsTo_of_no
+    lambdaSixFiveFiveThreeThreeT30TargetEquiv hp
+    lambdaSixFiveFiveThreeThreeT30TargetEquiv_correct hf
+  · native_decide
+  · exact no_fourFactorization_fiveFiveThreeThreeT30
+
+theorem false_of_lambdaSixFiveFiveThreeThree_relabelsTo_t40
+    {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    {p : Fin 16 → Fin 16}
+    (hp : lambdaSixRelabelsTo (matrixBV d)
+      (lambdaSixFiveFiveThreeThreeDTarget 2) p)
+    (hf : LambdaSixBoolFourFactorization d f0 f1 f2 f3) : False := by
+  apply false_of_lambdaSix_relabelsTo_of_no
+    lambdaSixFiveFiveThreeThreeT40TargetEquiv hp
+    lambdaSixFiveFiveThreeThreeT40TargetEquiv_correct hf
+  · native_decide
+  · exact no_fourFactorization_fiveFiveThreeThreeT40
+
+theorem lambdaSixTenSix_admissible_fourFactorization_forces_bipartite
+    {r : BitVec 256} {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    (hr : lambdaSixAdmissibleR lambdaSixTenSixH256
+      lambdaSixTenSixH2Support256 r)
+    (hd : matrixBV d =
+      lambdaSixForcedDefect lambdaSixTenSixH2Support256 r)
+    (hf : LambdaSixBoolFourFactorization d f0 f1 f2 f3) :
+    ∃ p : Fin 16 → Fin 16,
+      lambdaSixRelabelsTo (matrixBV d) lambdaSixTenSixBipartiteD p := by
+  obtain ⟨tag, p, hp⟩ := lambdaSixTenSix_admissible_classified hr
+  have hp' : lambdaSixRelabelsTo (matrixBV d)
+      (lambdaSixTenSixDTarget tag) p := by
+    rw [hd]
+    exact hp
+  fin_cases tag
+  · exact ⟨p, hp'⟩
+  · exact (false_of_lambdaSixTenSix_relabelsTo_t30 hp' hf).elim
+  · exact (false_of_lambdaSixTenSix_relabelsTo_t40 hp' hf).elim
+
+theorem lambdaSixFiveFiveThreeThree_admissible_fourFactorization_forces_bipartite
+    {r : BitVec 256} {d f0 f1 f2 f3 : Fin 16 → Fin 16 → Bool}
+    (hr : lambdaSixAdmissibleR lambdaSixFiveFiveThreeThreeH256
+      lambdaSixFiveFiveThreeThreeH2Support256 r)
+    (hd : matrixBV d = lambdaSixForcedDefect
+      lambdaSixFiveFiveThreeThreeH2Support256 r)
+    (hf : LambdaSixBoolFourFactorization d f0 f1 f2 f3) :
+    ∃ p : Fin 16 → Fin 16,
+      lambdaSixRelabelsTo (matrixBV d)
+        lambdaSixFiveFiveThreeThreeBipartiteD p := by
+  obtain ⟨tag, p, hp⟩ :=
+    lambdaSixFiveFiveThreeThree_admissible_classified hr
+  have hp' : lambdaSixRelabelsTo (matrixBV d)
+      (lambdaSixFiveFiveThreeThreeDTarget tag) p := by
+    rw [hd]
+    exact hp
+  fin_cases tag
+  · exact ⟨p, hp'⟩
+  · exact
+      (false_of_lambdaSixFiveFiveThreeThree_relabelsTo_t30 hp' hf).elim
+  · exact
+      (false_of_lambdaSixFiveFiveThreeThree_relabelsTo_t40 hp' hf).elim
 
 end Erdos85
