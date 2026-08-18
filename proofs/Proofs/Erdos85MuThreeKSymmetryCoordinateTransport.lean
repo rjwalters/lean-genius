@@ -216,6 +216,25 @@ theorem mu3NormalizeRelation_column_inter_symmetry
     mu3NormalizeRelation row column R (row x) (column y) ↔ R x y := by
   simp [mu3NormalizeRelation]
 
+/-- Pull a normalized Boolean candidate table back to the original shores. -/
+def mu3PullbackCandidate
+    {X Y I : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (candidate : I → Fin 8 → Fin 8 → Bool) : I → X → Y → Bool :=
+  fun i x y => candidate i (row x) (column y)
+
+theorem mu3PullbackCandidate_exhaustive
+    {X Y I : Type*} (row : X ≃ Fin 8) (column : Y ≃ Fin 8)
+    (K : X → Y → Prop)
+    (candidate : I → Fin 8 → Fin 8 → Bool)
+    (h : ∃ i, ∀ x y,
+      mu3NormalizeRelation row column K x y ↔ candidate i x y = true) :
+    ∃ i, ∀ x y, K x y ↔
+      mu3PullbackCandidate row column candidate i x y = true := by
+  obtain ⟨i, hi⟩ := h
+  refine ⟨i, ?_⟩
+  intro x y
+  simpa [mu3PullbackCandidate] using hi (row x) (column y)
+
 end Erdos85
 
 #print axioms Erdos85.mu3NormalizeRelation_twoRegular
@@ -223,3 +242,4 @@ end Erdos85
 #print axioms Erdos85.mu3NormalizeRelation_column_sdiff_symmetry
 #print axioms Erdos85.mu3NormalizeRelation_row_inter_symmetry
 #print axioms Erdos85.mu3NormalizeRelation_column_inter_symmetry
+#print axioms Erdos85.mu3PullbackCandidate_exhaustive
