@@ -1613,6 +1613,13 @@ generalized rather than merely replayed.
      `lambdaSixFiveFiveThreeThree_admissible_fourFactorization_forces_bipartite`
      prove that admissibility plus an honest four-factorization forces the
      canonical bipartite tag; the `t_D=30` and `t_D=40` tags are contradictory.
+     The cycle-shape labeling input is also PROVEN for both nontrivial
+     strata.  `[10,6]` uses `exists_tenSixComponentLabeling_of_componentSizes`;
+     `[5,5,3,3]` now uses
+     `exists_fiveFiveThreeThreeComponentLabeling_of_componentSizes`, which
+     glues four component-cycle equivalences through the dependent component
+     sigma decomposition and a kernel-checked flattening to the exact census
+     `H` matrix.
      The remaining graph-level interface is therefore narrow: show that the
      ambient labeled component supplies `lambdaSixAdmissibleR` and the local
      four-factorization hypotheses, then dispatch the forced bipartite tag by
