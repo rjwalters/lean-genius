@@ -129,6 +129,94 @@ theorem sixElement_allFourTwo_commutator_pow_five
   rw [permTransport_pow, permTransport_one, permTransport_permCommutator]
   exact hcommFfive
 
+/-- **All-`(3,3)` commutator order at most two, label-free form.** -/
+theorem sixElement_allThreeThree_commutator_pow_two
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (hcard : Fintype.card α = 6)
+    (σ τ : Equiv.Perm α)
+    (hσfree : ∀ x, σ x ≠ x) (hτfree : ∀ x, τ x ≠ x)
+    (hprodFree : ∀ x, (τ * σ) x ≠ x)
+    (hσtype : σ.cycleType = {3, 3})
+    (hτtype : τ.cycleType = {3, 3})
+    (hprodType : (τ * σ).cycleType = {3, 3}) :
+    (permCommutator σ τ) ^ 2 = 1 := by
+  let e : α ≃ Fin 6 := (Fintype.equivFin α).trans (finCongr hcard)
+  let σF : Equiv.Perm (Fin 6) := permTransport e σ
+  let τF : Equiv.Perm (Fin 6) := permTransport e τ
+  have pow_three_of_type {π : Equiv.Perm α}
+      (ht : π.cycleType = {3, 3}) : π ^ 3 = 1 := by
+    rw [Equiv.Perm.pow_prime_eq_one_iff]
+    intro n hn
+    rw [ht] at hn
+    simp at hn
+    omega
+  have transport_free {π : Equiv.Perm α} (hf : ∀ x, π x ≠ x) :
+      ∀ x, permTransport e π x ≠ x := by
+    intro x hx
+    have := congrArg e.symm hx
+    exact hf (e.symm x) (by simpa using this)
+  have transport_three {π : Equiv.Perm α} (hp : π ^ 3 = 1) :
+      (permTransport e π) ^ 3 = 1 := by
+    rw [← permTransport_pow, hp, permTransport_one]
+  have hσFtype : σF.cycleType = {3, 3} :=
+    cycleType_eq_threeThree_of_card_six_fixedPointFree_pow_three
+      (by decide) σF (transport_free hσfree)
+      (transport_three (pow_three_of_type hσtype))
+  have hτFtype : τF.cycleType = {3, 3} :=
+    cycleType_eq_threeThree_of_card_six_fixedPointFree_pow_three
+      (by decide) τF (transport_free hτfree)
+      (transport_three (pow_three_of_type hτtype))
+  have hprodFfree : ∀ x, (τF * σF) x ≠ x := by
+    simpa [σF, τF, ← permTransport_mul] using transport_free hprodFree
+  have hprodFtype : (τF * σF).cycleType = {3, 3} :=
+    cycleType_eq_threeThree_of_card_six_fixedPointFree_pow_three
+      (by decide) (τF * σF) hprodFfree
+      (by simpa [σF, τF, ← permTransport_mul] using
+        transport_three (pow_three_of_type hprodType))
+  have hconj : IsConj finSixThreeThree σF :=
+    Equiv.Perm.isConj_iff_cycleType_eq.2
+      (finSixThreeThree_cycleType.trans hσFtype.symm)
+  obtain ⟨c, hc⟩ := isConj_iff.1 hconj
+  let τ' : Equiv.Perm (Fin 6) := c⁻¹ * τF * c
+  have hτ'type : τ'.cycleType = {3, 3} := by
+    calc
+      τ'.cycleType = τF.cycleType := by
+        dsimp [τ']
+        simpa using (Equiv.Perm.cycleType_conj
+          (σ := τF) (τ := c⁻¹))
+      _ = {3, 3} := hτFtype
+  have hprod'type : (τ' * finSixThreeThree).cycleType = {3, 3} := by
+    have heq : τ' * finSixThreeThree = c⁻¹ * (τF * σF) * c := by
+      rw [← hc]
+      dsimp [τ']
+      group
+    rw [heq, show c⁻¹ * (τF * σF) * c =
+      c⁻¹ * (τF * σF) * (c⁻¹)⁻¹ by simp,
+      Equiv.Perm.cycleType_conj, hprodFtype]
+  have hcommType := finSixThreeThree_allThreeThree_commutator_cycleType
+    τ' hτ'type hprod'type
+  have hcomm'two : (permCommutator finSixThreeThree τ') ^ 2 = 1 := by
+    rcases hcommType with hzero | htwo
+    · have hone : permCommutator finSixThreeThree τ' = 1 :=
+        Equiv.Perm.cycleType_eq_zero.mp hzero
+      simp [hone]
+    · letI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
+      rw [Equiv.Perm.pow_prime_eq_one_iff]
+      intro n hn
+      rw [htwo] at hn
+      simpa using hn
+  have hcommFtwo : (permCommutator σF τF) ^ 2 = 1 := by
+    have heq : permCommutator σF τF =
+        c * permCommutator finSixThreeThree τ' * c⁻¹ := by
+      rw [← hc]
+      dsimp [τ', permCommutator]
+      group
+    rw [heq, conj_pow, hcomm'two]
+    simp
+  apply permTransport_injective e
+  rw [permTransport_pow, permTransport_one, permTransport_permCommutator]
+  exact hcommFtwo
+
 /-- Rectangle specialization: an all-`(4,2)` three-row monodromy triangle has
 an order-five commutator on its six-cell source column fiber. -/
 theorem MuThreeMixedGridCode.foreignRectangleMonodromy_allFourTwo_commutator_pow_five
@@ -184,11 +272,69 @@ theorem MuThreeMixedGridCode.foreignRectangleMonodromy_allFourTwo_commutator_pow
   · exact h12
   · simpa [hmul] using h02
 
+/-- Rectangle specialization: an all-`(3,3)` three-row monodromy triangle has
+commutator order at most two on its six-cell source column fiber. -/
+theorem MuThreeMixedGridCode.foreignRectangleMonodromy_allThreeThree_commutator_pow_two
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (H K : X → Y → Prop) [DecidableRel H] [DecidableRel K]
+    (C : SimpleGraph (muThreeMixedCell K)) [DecidableRel C.Adj]
+    (code : MuThreeMixedGridCode H K C)
+    (a a' a'' : X) (haa' : a ≠ a') (haa'' : a ≠ a'')
+    (ha'a'' : a' ≠ a'')
+    (b b' : Y) (hbb' : b ≠ b')
+    (hab : ¬ H a b) (hab' : ¬ H a b')
+    (ha'b : ¬ H a' b) (ha'b' : ¬ H a' b')
+    (ha''b : ¬ H a'' b) (ha''b' : ¬ H a'' b')
+    (h01 : Equiv.Perm.cycleType
+      (code.foreignRectangleMonodromyEquiv H K C a a' b b'
+        hab hab' ha'b ha'b') = {3, 3})
+    (h12 : Equiv.Perm.cycleType
+      (code.foreignRectangleMonodromyEquiv H K C a' a'' b b'
+        ha'b ha'b' ha''b ha''b') = {3, 3})
+    (h02 : Equiv.Perm.cycleType
+      (code.foreignRectangleMonodromyEquiv H K C a a'' b b'
+        hab hab' ha''b ha''b') = {3, 3}) :
+    (permCommutator
+      (code.foreignRectangleMonodromyEquiv H K C a a' b b'
+        hab hab' ha'b ha'b')
+      (code.foreignRectangleMonodromyEquiv H K C a' a'' b b'
+        ha'b ha'b' ha''b ha''b')) ^ 2 = 1 := by
+  let σ : Equiv.Perm {u : muThreeMixedCell K // u.1.2 = b} :=
+    code.foreignRectangleMonodromyEquiv H K C a a' b b'
+      hab hab' ha'b ha'b'
+  let τ : Equiv.Perm {u : muThreeMixedCell K // u.1.2 = b} :=
+    code.foreignRectangleMonodromyEquiv H K C a' a'' b b'
+      ha'b ha'b' ha''b ha''b'
+  let υ : Equiv.Perm {u : muThreeMixedCell K // u.1.2 = b} :=
+    code.foreignRectangleMonodromyEquiv H K C a a'' b b'
+      hab hab' ha''b ha''b'
+  have hmul : τ * σ = υ := by
+    apply Equiv.ext
+    intro u
+    exact Equiv.congr_fun
+      (code.foreignRectangleMonodromyEquiv_trans H K C a a' a'' b b'
+        hab hab' ha'b ha'b' ha''b ha''b') u
+  apply sixElement_allThreeThree_commutator_pow_two
+    (code.card_occupiedColumnFiber_eq_six H K C b) σ τ
+  · exact code.foreignRectangleMonodromyEquiv_ne H K C haa' hbb'
+      hab hab' ha'b ha'b'
+  · exact code.foreignRectangleMonodromyEquiv_ne H K C ha'a'' hbb'
+      ha'b ha'b' ha''b ha''b'
+  · simpa [hmul] using code.foreignRectangleMonodromyEquiv_ne H K C
+      haa'' hbb' hab hab' ha''b ha''b'
+  · exact h01
+  · exact h12
+  · simpa [hmul] using h02
+
 end
 
 
 end Erdos85
 
 #print axioms Erdos85.sixElement_allFourTwo_commutator_pow_five
+#print axioms Erdos85.sixElement_allThreeThree_commutator_pow_two
 #print axioms
   Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_allFourTwo_commutator_pow_five
+#print axioms
+  Erdos85.MuThreeMixedGridCode.foreignRectangleMonodromy_allThreeThree_commutator_pow_two
