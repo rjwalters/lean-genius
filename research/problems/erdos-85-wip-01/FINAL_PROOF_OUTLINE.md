@@ -1950,7 +1950,18 @@ generalized rather than merely replayed.
      remaining terminal must therefore exclude this induced alternating
      ambient 8-cycle/routing skeleton, likely using the internal degree-two
      cycle law on whichever size-two component contains `y₁,y₂`; it cannot
-     rely on a center collision or a shortcut through the internal edge.
+     rely on a center collision or a shortcut through the internal edge.  The
+     connection to that cycle law is now formal rather than prospective.
+     `orderSixtyFour_fourTwoTwo_closing_eq_first_or_secondOwner` proves the
+     non-`c` closing component is `a` or `b`, and
+     `orderSixtyFour_fourTwoTwo_oppositeBowtie_internalEdgePair` proves it has
+     normalized size two and contains two displayed center–closing ambient
+     edges.  Finally the q-generic
+     `binarySquare_regular_sizeTwoPart_exists_other_internalNeighbor` extends
+     each such edge at its closing vertex to the other edge of the internal
+     2-regular cycle.  The remaining **GAP** is the interaction of those two
+     forced local cycle arcs with the four owner routes/nonchords, not the
+     identification of the relevant size-two block.
      Thus these strata have a uniform algebraic pressure reduction, not yet a
      contradiction.  In contrast,
      `orderSixtyFour_defectComponent_count_eq_four_of_allSixteen`
