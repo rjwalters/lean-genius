@@ -34,6 +34,18 @@ Lean LRAT pipeline. Regenerating the C16 CNF produced a byte-identical file.
 All nine proof artifacts are stored durably at
 `/Volumes/Stripe/lean-genius/artifacts/erdos85-cayley-sidon/mu3grid/certificates/`.
 
+The standard streaming compaction, binary encoder, and reproducible LZ4/7-bit
+packing pipeline was also run on every LRAT:
+
+| shape | actions | compact SHA-256 | binary SHA-256 | packed LZ4 SHA-256 |
+|---|---:|---|---|---|
+| C16 | 20,988 | `98c798df84b90a1927e9fcaf44915e344eeb3be7cb1d8a74f000d47b7c6b782c` | `13d2df2ada3e560b6510b9275ca7e8ee438d22b837fee0df98afa1f31425ae79` | `cd3f7101eac96d5a9fe223816e01d6bbd1889e5c046127803dab7cf1a636c7ad` |
+| C10+C6 | 47,131 | `9a36f144b1e35bf13206289513221c4cc7d333ba0f27c6e42162db3a628adf23` | `cb711689af85b0ff8f41b9a960059ea1ffbbb143ca1293c2b8ae9f2c473b9553` | `d98eeb3c40828db936d0485a33bf8660857cdae066b621b8438e8fa097c66a8c` |
+| C8+C8 | 31,338 | `9ffbca29db873910522bf5142bc3d777193ff037c725a911281eda2e400b852f` | `1fd0b68527892d63f73f3cb41118a07479a63b8748c61e71d6583a11d9beb475` | `da7c39348727008d4f4d8c2faa4a565c196ec5aed0f7ced02ee121f232a7b1ad` |
+
+The final packed files are approximately 518 KiB, 1.1 MiB, and 652 KiB,
+respectively. They live beside the raw proof triplets in the artifact folder.
+
 Together these certificates cover the complete all-triangle-free sector. The
 all-triangle mixed models remain unresolved and must not be claimed as covered
 by these hashes.
