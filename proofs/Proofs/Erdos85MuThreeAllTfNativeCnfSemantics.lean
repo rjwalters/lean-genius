@@ -817,4 +817,112 @@ theorem mu3NativeCommonSpecs_ids_valid
   have hs := hcheck pair hpair spec hspec
   simpa only [decide_eq_true_eq] using hs
 
+/-! ## Conjunction-row value agreement -/
+
+def mu3NativeArrayLitValues (val : DimacsValuation) (xs : Array Int) :
+    List Bool := xs.toList.map (dimacsLitValue val)
+
+def mu3NativeCommonTruthValues (baseVal : DimacsValuation)
+    (specs : List (Nat × Nat)) : List Bool :=
+  specs.map fun spec => baseVal spec.1 && baseVal spec.2
+
+/-- Semantic execution appends, in order, exactly the Boolean conjunction
+values specified by the base edge assignment. -/
+theorem mu3NativeRunConjSpecsVal_values
+    (baseTop : Nat) (baseVal : DimacsValuation)
+    (specs : List (Nat × Nat))
+    (acc : Array Int × Mu3NativeCnfState) (inputVal : DimacsValuation)
+    (htop : baseTop ≤ acc.2.top)
+    (hprefixSat : dimacsFormulaSatisfied inputVal acc.2.clauses)
+    (hprefixBound : dimacsFormulaBounded acc.2.top acc.2.clauses)
+    (hagree : ∀ id, id ≤ baseTop → inputVal id = baseVal id)
+    (haccIds : ∀ lit ∈ acc.1,
+      lit ≠ 0 ∧ lit.natAbs ≤ acc.2.top)
+    (hspecIds : ∀ spec ∈ specs,
+      0 < spec.1 ∧ spec.1 ≤ baseTop ∧
+      0 < spec.2 ∧ spec.2 ≤ baseTop) :
+    let out := mu3NativeRunConjSpecsVal baseVal specs acc inputVal
+    mu3NativeArrayLitValues out.2 out.1.1 =
+      mu3NativeArrayLitValues inputVal acc.1 ++
+        mu3NativeCommonTruthValues baseVal specs := by
+  induction specs generalizing acc inputVal with
+  | nil => simp [mu3NativeRunConjSpecsVal, mu3NativeCommonTruthValues]
+  | cons spec rest ih =>
+      let step := mu3NativeConjStep spec.1 spec.2 acc.2
+      let nextAcc : Array Int × Mu3NativeCnfState :=
+        (acc.1.push (step.1 : Int), step.2)
+      let nextVal := mu3NativeConjVal acc.2 inputVal spec.1 spec.2
+      have hspec := hspecIds spec (by simp)
+      have hstep := mu3NativeConjStep_formulaSatisfied_append
+        acc.2 inputVal spec.1 spec.2 hspec.1 (hspec.2.1.trans htop)
+          hspec.2.2.1 (hspec.2.2.2.trans htop) hprefixSat hprefixBound
+      have hstepSat : dimacsFormulaSatisfied nextVal nextAcc.2.clauses := by
+        simpa [nextVal, nextAcc, step] using hstep.1
+      have hstepBound : dimacsFormulaBounded nextAcc.2.top
+          nextAcc.2.clauses := by
+        simpa [nextAcc, step] using hstep.2.1
+      have hnextTopEq : nextAcc.2.top = acc.2.top + 1 := by
+        simp [nextAcc, step, mu3NativeConjStep, mu3NativeFresh,
+          mu3NativeEmit]
+      have hnextTop : baseTop ≤ nextAcc.2.top := by
+        rw [hnextTopEq]
+        omega
+      have hnextAgree : ∀ id, id ≤ baseTop → nextVal id = baseVal id := by
+        intro id hid
+        rw [show nextVal id = inputVal id by
+          simpa [nextVal] using hstep.2.2.2.2 id (hid.trans htop)]
+        exact hagree id hid
+      have hnextIds : ∀ lit ∈ nextAcc.1,
+          lit ≠ 0 ∧ lit.natAbs ≤ nextAcc.2.top := by
+        intro lit hlit
+        simp only [nextAcc, Array.mem_push] at hlit
+        rcases hlit with hold | rfl
+        · obtain ⟨hne, hb⟩ := haccIds lit hold
+          exact ⟨hne, hb.trans (by rw [hnextTopEq]; omega)⟩
+        · have haux : step.1 = acc.2.top + 1 := by
+            simpa [step] using hstep.2.2.1
+          rw [haux]
+          constructor
+          · exact_mod_cast Nat.succ_ne_zero acc.2.top
+          · change acc.2.top + 1 ≤ nextAcc.2.top
+            rw [hnextTopEq]
+      have hrestIds : ∀ s ∈ rest,
+          0 < s.1 ∧ s.1 ≤ baseTop ∧ 0 < s.2 ∧ s.2 ≤ baseTop := by
+        intro s hs
+        exact hspecIds s (by simp [hs])
+      have ihEq := ih nextAcc nextVal hnextTop hstepSat hstepBound
+        hnextAgree hnextIds hrestIds
+      simp only [mu3NativeRunConjSpecsVal]
+      rw [ihEq]
+      have holdValues : mu3NativeArrayLitValues nextVal acc.1 =
+          mu3NativeArrayLitValues inputVal acc.1 := by
+        unfold mu3NativeArrayLitValues
+        apply List.map_congr_left
+        intro lit hlit
+        rw [dimacsLitValue_eq_of_agree nextVal inputVal]
+        exact hstep.2.2.2.2 lit.natAbs
+          (haccIds lit (by simpa using hlit)).2
+      have hauxValue : dimacsLitValue nextVal (step.1 : Int) =
+          (baseVal spec.1 && baseVal spec.2) := by
+        have hstepPos : 0 < step.1 := by
+          rw [hstep.2.2.1]
+          omega
+        rw [dimacsLitValue_natCast nextVal hstepPos]
+        rw [show nextVal step.1 = (inputVal spec.1 && inputVal spec.2) by
+          simpa [nextVal, step] using hstep.2.2.2.1]
+        rw [hagree spec.1 hspec.2.1, hagree spec.2 hspec.2.2.2]
+      have hnextValues : mu3NativeArrayLitValues nextVal nextAcc.1 =
+          mu3NativeArrayLitValues inputVal acc.1 ++
+            [baseVal spec.1 && baseVal spec.2] := by
+        change mu3NativeArrayLitValues nextVal
+            (acc.1.push (step.1 : Int)) = _
+        rw [show mu3NativeArrayLitValues nextVal
+            (acc.1.push (step.1 : Int)) =
+              mu3NativeArrayLitValues nextVal acc.1 ++
+                [dimacsLitValue nextVal (step.1 : Int)] by
+          simp [mu3NativeArrayLitValues, Array.toList_push]]
+        rw [holdValues, hauxValue]
+      rw [hnextValues]
+      simp [mu3NativeCommonTruthValues, List.append_assoc]
+
 end Erdos85
