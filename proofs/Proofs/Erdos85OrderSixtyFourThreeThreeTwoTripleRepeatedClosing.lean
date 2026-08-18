@@ -179,6 +179,50 @@ theorem orderSixtyFour_threeThreeTwo_rainbow_exists_largeOwnerUniqueThirdCenter
         G hfree (q := 8) (by norm_num) hreg (by norm_num) m hm b hmb
           ⟨f, e, hef.symm, y, hy⟩)
 
+/-- The last two exact cyclic choices give the compatibility-oriented split:
+either the size-two owner saturates a row, or the `b`- and `c`-owned strict
+fragments both start in the same component `g` (though possibly at different
+roots). -/
+theorem orderSixtyFour_threeThreeTwo_rainbow_saturation_or_commonSourceLargeDensities
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 3)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ d, d.supp.ncard = 8 * m d)
+    (a b c e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hma : m a = 2) (hmb : m b = 3) (hmc : m c = 3)
+    (hef : e ≠ f) (hfg : f ≠ g) (heg : e ≠ g)
+    (hblock : 253 ≤
+      (cyclicColoredTriplesInBlocks (secondOrderDefectGraph G)
+        (componentOwnerGraph G (secondOrderDefectGraph G) a)
+        (componentOwnerGraph G (secondOrderDefectGraph G) b)
+        (componentOwnerGraph G (secondOrderDefectGraph G) c) e f g).card) :
+    HasTwoCenterRoutingRowSaturationForOwner G hfree a ∨
+      ((∃ z : g.supp,
+          HasTwoCenterRoutingRowDensity G hfree m g f c hfg.symm z) ∧
+        (∃ z : g.supp,
+          HasTwoCenterRoutingRowDensity G hfree m g e b heg.symm z)) := by
+  have hd :=
+    orderSixtyFour_threeThreeTwo_rainbow_cyclicRoutingRowDensityChoices
+      G hfree hreg hcount m hm a b c e f g hab hac hbc hma hmb hmc
+        hef hfg heg hblock
+  rcases hd.2.1 with ⟨y, hy⟩ | hc
+  · exact Or.inl
+      (twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
+        G hfree m a hma ⟨f, g, hfg, y, hy⟩)
+  · rcases hd.2.2 with hb | ⟨x, hx⟩
+    · exact Or.inr ⟨hc, hb⟩
+    · exact Or.inl
+        (twoCenterRoutingRowDensityForOwner_saturates_of_m_eq_two
+          G hfree m a hma ⟨e, g, heg, x, hx⟩)
+
 /-- In a rainbow `[3,3,2]` pressure block, the three cyclic repeated closings
 force dense routing-row fragments for at least two of the three owner colors.
 The fragments may have different roots and different ordered component rows. -/
@@ -324,6 +368,7 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_tripleRepeatedClosing
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_cyclicRoutingRowDensityChoices
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_exists_largeOwnerUniqueThirdCenter
+#print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_saturation_or_commonSourceLargeDensities
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_forces_twoOwnerRoutingRowDensity
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoLargeOwnerDensities
 #print axioms Erdos85.orderSixtyFour_threeThreeTwo_rainbow_saturation_or_twoUniqueThirdCenters

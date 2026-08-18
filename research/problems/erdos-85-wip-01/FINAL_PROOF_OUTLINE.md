@@ -2098,6 +2098,13 @@ generalized rather than merely replayed.
      guarantees at least one canonical residual-star package in every rainbow
      pressure block.  The next comparison can therefore work with fixed row
      orientations rather than arbitrary existential source/target pairs.
+     More sharply,
+     `orderSixtyFour_threeThreeTwo_rainbow_saturation_or_commonSourceLargeDensities`
+     uses the last two cyclic choices to prove: either size-two owner `a`
+     saturates a row, or the strict `c`-owned `g→f` fragment and `b`-owned
+     `g→e` fragment both start in component `g`.  Their roots may still differ,
+     but the source-component mismatch is eliminated; root coincidence or a
+     cross-root conservation law is now the precise residual GAP.
      The remaining rainbow **GAP** is compatibility: the two fragments may
      live on different ordered component rows and have different roots, so
      their certified subsets cannot yet be added or intersected.  The earlier
