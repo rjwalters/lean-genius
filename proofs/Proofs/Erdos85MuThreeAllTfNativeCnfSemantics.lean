@@ -163,6 +163,40 @@ theorem mu3NativeRunExactSpecsVal_formulaSatisfied
         ih nextSt nextVal hnextTop hstepSat hstepBound hnextAgree
           hrestNonzero hrestBound hrestCounts
 
+/-- The complete row/column hit prefix has a satisfying valuation as soon as
+its base edge assignment has the specified exact counts.  The two elementary
+ID-side hypotheses are separated so they can be discharged once for the
+fixed native edge enumeration. -/
+theorem mu3NativeHitSpecs_formulaSatisfiable
+    (shape : Mu3AllTfShape) (edgeVal : DimacsValuation)
+    (hnonzero : ∀ spec ∈ mu3NativeHitSpecs shape,
+      ∀ lit ∈ spec.1, lit ≠ 0)
+    (hbaseBound : ∀ spec ∈ mu3NativeHitSpecs shape,
+      ∀ lit ∈ spec.1, lit.natAbs ≤ 1128)
+    (hcounts : ∀ spec ∈ mu3NativeHitSpecs shape,
+      seqPrefixTrue (mu3NativeVarsRow edgeVal spec.1) spec.1.size = spec.2) :
+    ∃ val,
+      dimacsFormulaSatisfied val
+        (mu3NativeRunExactSpecs (mu3NativeHitSpecs shape) {}).clauses ∧
+      dimacsFormulaBounded
+        (mu3NativeRunExactSpecs (mu3NativeHitSpecs shape) {}).top
+        (mu3NativeRunExactSpecs (mu3NativeHitSpecs shape) {}).clauses ∧
+      ∀ id, id ≤ 1128 → val id = edgeVal id := by
+  let out := mu3NativeRunExactSpecsVal edgeVal
+    (mu3NativeHitSpecs shape) {} edgeVal
+  have h := mu3NativeRunExactSpecsVal_formulaSatisfied
+    1128 edgeVal (mu3NativeHitSpecs shape) {} edgeVal
+    (by rfl) (dimacsFormulaSatisfied_empty edgeVal)
+    (dimacsFormulaBounded_empty 1128) (by simp)
+    hnonzero hbaseBound hcounts
+  refine ⟨out.2, ?_, ?_, h.2.2.2⟩
+  · rw [← mu3NativeRunExactSpecsVal_state edgeVal
+      (mu3NativeHitSpecs shape) {} edgeVal]
+    exact h.1
+  · rw [← mu3NativeRunExactSpecsVal_state edgeVal
+      (mu3NativeHitSpecs shape) {} edgeVal]
+    exact h.2.1
+
 /-- Add one exact-cardinality block to a satisfied native-generator prefix.
 The returned canonical valuation satisfies the enlarged prefix, its clauses
 are bounded by the new top, and all old variable values are unchanged. -/
