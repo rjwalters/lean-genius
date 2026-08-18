@@ -2018,6 +2018,11 @@ generalized rather than merely replayed.
      occupied cells in row `x` (**PROVEN**, `e987488c7c`), with the two hit
      uniqueness laws giving the inverse matching maps.  This is the natural
      48-matching decomposition for a cycle-composition/monodromy attack.
+     The first cross-matching compatibility is **PROVEN** (`ecf45e214d`):
+     composing through an eligible row transports one column fiber to
+     another, and for distinct endpoint columns the transports through any
+     two distinct common eligible rows disagree pointwise.  A coincidence
+     would give two distinct intermediate common neighbors and a C4.
      **GAP A-REG-MIXED-PERMUTATION:** show that the `H/K` cycle geometry of
      the 48 occupied cells cannot support this family of six-point,
      pairwise-low-agreement partial-domain permutations.  No global
