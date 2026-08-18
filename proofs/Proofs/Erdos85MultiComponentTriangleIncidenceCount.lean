@@ -225,6 +225,116 @@ theorem multiComponentAmbient_hits_component_of_component_count_two
   have hxz := eq_of_ne_fixed_of_fintype_card_eq_two hcount c _ _ hcompX hcompZ
   exact (Finset.mem_filter.mp hp).2 ⟨hxy, hxz⟩
 
+/-- Internal triangle-freeness identifies first-coordinate anchored
+multi-component triangles with all ambient cyclic triangles based at `c`. -/
+theorem mem_multiComponentAmbient_and_first_mem_iff_ambient_and_first_mem_of_internal_triangleFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hinternal : ∀ {x y : V}, x ∈ c.supp → y ∈ c.supp → G.Adj x y →
+      (triangleFreeEdgeGraph G).Adj x y)
+    (p : V × V × V) :
+    (p ∈ multiComponentAmbientCyclicTriangles G ∧ p.1 ∈ c.supp) ↔
+      (p ∈ cyclicColoredTriples G G G ∧ p.1 ∈ c.supp) := by
+  constructor
+  · rintro ⟨hp, hc⟩
+    exact ⟨(Finset.mem_filter.mp hp).1, hc⟩
+  · rintro ⟨htri, hc⟩
+    refine ⟨Finset.mem_filter.mpr ⟨htri, ?_⟩, hc⟩
+    rintro ⟨hxyComp, hxzComp⟩
+    have hyc : p.2.1 ∈ c.supp := by
+      rw [ConnectedComponent.mem_supp_iff, ← hxyComp]
+      exact (ConnectedComponent.mem_supp_iff c p.1).mp hc
+    have hzc : p.2.2 ∈ c.supp := by
+      rw [ConnectedComponent.mem_supp_iff, ← hxzComp]
+      exact (ConnectedComponent.mem_supp_iff c p.1).mp hc
+    have ht := htri
+    simp only [cyclicColoredTriples, Finset.mem_filter,
+      Finset.mem_univ, true_and] at ht
+    have htf := hinternal hc hzc ht.1
+    have hdata := (mem_triangleFreeNeighbors G p.1 p.2.2).mp htf
+    have hymem : p.2.1 ∈ G.neighborFinset p.1 ∩ G.neighborFinset p.2.2 := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨ht.2.2.symm, ht.2.1⟩
+    rw [Finset.card_eq_zero.mp hdata.2] at hymem
+    exact Finset.notMem_empty p.2.1 hymem
+
+/-- `16 × 6 = 96`: a component of order 16 with six fixed-first ordered
+ambient triangle orientations at every vertex has anchored count 96, provided
+internal edges are triangle-free. -/
+theorem multiComponentAmbient_first_anchored_card_eq_96_of_local_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 16)
+    (hinternal : ∀ {x y : V}, x ∈ c.supp → y ∈ c.supp → G.Adj x y →
+      (triangleFreeEdgeGraph G).Adj x y)
+    (hlocal : ∀ x ∈ c.supp,
+      ((cyclicColoredTriples G G G).filter fun p => p.1 = x).card = 6) :
+    ((multiComponentAmbientCyclicTriangles G).filter
+      fun p => p.1 ∈ c.supp).card = 96 := by
+  classical
+  let X := Finset.univ.filter fun x : V => x ∈ c.supp
+  let S := X.sigma fun x =>
+    (cyclicColoredTriples G G G).filter fun p => p.1 = x
+  let A := (multiComponentAmbientCyclicTriangles G).filter
+    fun p => p.1 ∈ c.supp
+  have hcardSA : S.card = A.card := by
+    apply Finset.card_bij (fun q _ => q.2)
+    · intro q hq
+      simp only [S, Finset.mem_sigma] at hq
+      have hx : q.1 ∈ c.supp := (Finset.mem_filter.mp hq.1).2
+      have hpData := Finset.mem_filter.mp hq.2
+      have hpC : q.2.1 ∈ c.supp := hpData.2 ▸ hx
+      simp only [A, Finset.mem_filter]
+      exact ⟨(mem_multiComponentAmbient_and_first_mem_iff_ambient_and_first_mem_of_internal_triangleFree
+        G c hinternal q.2).mpr ⟨hpData.1, hpC⟩ |>.1, hpC⟩
+    · intro q hq r hr heq
+      simp only [S, Finset.mem_sigma] at hq hr
+      have hqfirst := (Finset.mem_filter.mp hq.2).2
+      have hrfirst := (Finset.mem_filter.mp hr.2).2
+      cases q with
+      | mk qx qp =>
+        cases r with
+        | mk rx rp =>
+          simp only at heq hqfirst hrfirst
+          subst rp
+          have : qx = rx := hqfirst.symm.trans hrfirst
+          cases this
+          rfl
+    · intro p hp
+      simp only [A, Finset.mem_filter] at hp
+      refine ⟨⟨p.1, p⟩, ?_, rfl⟩
+      simp only [S, Finset.mem_sigma]
+      exact ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hp.2⟩,
+        Finset.mem_filter.mpr ⟨
+          (mem_multiComponentAmbient_and_first_mem_iff_ambient_and_first_mem_of_internal_triangleFree
+            G c hinternal p).mp ⟨hp.1, hp.2⟩ |>.1, rfl⟩⟩
+  have hXcard : X.card = 16 := by
+    have heq : X = c.supp.toFinite.toFinset := by
+      ext x
+      simp [X]
+    rw [heq, ← Set.ncard_eq_toFinset_card, hc]
+  have hScard : S.card = 96 := by
+    rw [Finset.card_sigma]
+    have hfiber : ∀ x ∈ X,
+        ((cyclicColoredTriples G G G).filter fun p => p.1 = x).card = 6 := by
+      intro x hx
+      exact hlocal x (Finset.mem_filter.mp hx).2
+    calc
+      ∑ x ∈ X, ((cyclicColoredTriples G G G).filter fun p => p.1 = x).card =
+          ∑ x ∈ X, 6 := Finset.sum_congr rfl hfiber
+      _ = 6 * X.card := by simp [mul_comm]
+      _ = 96 := by rw [hXcard]
+  rw [← hcardSA]
+  exact hScard
+
 /-- If every multi-component ambient triangle meets component `c` in exactly
 one vertex and each of the three ordered coordinate positions contributes 96
 triangles, then the global ordered multi-component count is 288. -/
@@ -398,6 +508,37 @@ theorem orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_internalT
       (multiComponentAmbient_hits_component_of_component_count_two G hcount c)
       hinternal hfirst
 
+/-- Fully local two-component interface: component order 16, internal
+triangle-freeness, and six fixed-first orientations at each component vertex
+force the mixed-nonambient residue. -/
+theorem orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_localSix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 64)
+    (m : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (hm : ∀ c, c.supp.ncard = 8 * m c)
+    (hsum : ∑ c, m c = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 2)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 16)
+    (hinternal : ∀ {x y : V}, x ∈ c.supp → y ∈ c.supp → G.Adj x y →
+      (triangleFreeEdgeGraph G).Adj x y)
+    (hlocal : ∀ x ∈ c.supp,
+      ((cyclicColoredTriples G G G).filter fun p => p.1 = x).card = 6) :
+    (192 : ℤ) ∣
+      ((literalMixedOwnerNonambientCyclicTriples G).card : ℤ) + 96 := by
+  apply orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_internalTF_anchored
+    G hfree hreg hcard m hm hsum hcount c hinternal
+  exact multiComponentAmbient_first_anchored_card_eq_96_of_local_six
+    G c hc hinternal hlocal
+
 end
 
 end Erdos85
@@ -421,3 +562,7 @@ end Erdos85
 #print axioms Erdos85.multiComponentAmbient_hits_component_of_component_count_two
 #print axioms
   Erdos85.orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_internalTF_anchored
+#print axioms
+  Erdos85.multiComponentAmbient_first_anchored_card_eq_96_of_local_six
+#print axioms
+  Erdos85.orderSixtyFour_mixedNonambient_add_96_dvd_192_of_twoComponents_localSix
