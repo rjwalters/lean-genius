@@ -355,6 +355,133 @@ theorem binarySquare_regular_normalizedComponent_internalAdj_outsideReturn_zero
   rw [huvId, hsat]
   simp
 
+/-- **Second-order exterior routing identity.**  Iterating `HB + BC = J`
+once and using the internal/exterior row degrees gives
+`BC² = ((q-m)-m)J + H²B`.  For the order-64 `[6,2]` small component this is
+the concrete equation `BC² = 4J + H²B`; when `C` is C4-free its off-diagonal
+square entries are Boolean, turning the identity into an exact distance-two
+incidence ledger. -/
+theorem binarySquare_regular_normalizedComponent_crossBlock_sq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q m : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * m) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    let J : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+    B * (C * C) =
+      (((q - m : ℕ) : ℤ) - (m : ℤ)) • J + (H * H) * B := by
+  classical
+  let D := secondOrderDefectGraph G
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  let J : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+  have hcross : H * B + B * C = J := by
+    simpa [H, B, C, J, p] using
+      binarySquare_regular_defectComponent_crossBlock_eq_ones
+        G hfree hreg c
+  have hinternal : ∀ u : c.supp,
+      ((G.neighborFinset u.1).filter fun x ↦ x ∈ c.supp).card = m := by
+    intro u
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard c c (x := u.1)
+        ((ConnectedComponent.mem_supp_iff c u.1).mp u.2)
+    rw [hc] at hmul
+    have hsel : (componentNeighborFinset G D c u.1).card = m :=
+      Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+    have heq : (G.neighborFinset u.1).filter (fun x ↦ x ∈ c.supp) =
+        componentNeighborFinset G D c u.1 := by
+      ext y
+      simp [componentNeighborFinset, D,
+        SimpleGraph.ConnectedComponent.mem_supp_iff]
+    rw [heq, hsel]
+  have hexternal : ∀ z : {x // ¬p x},
+      ((G.neighborFinset z.1).filter fun x ↦ x ∉ c.supp).card = q - m := by
+    intro z
+    let source := D.connectedComponentMk z.1
+    have hzsource : D.connectedComponentMk z.1 = source := rfl
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard source c (x := z.1) hzsource
+    rw [hc] at hmul
+    have hsel : (componentNeighborFinset G D c z.1).card = m :=
+      Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+    have hins : ((G.neighborFinset z.1).filter fun x ↦
+        x ∈ c.supp).card = m := by
+      have heq : (G.neighborFinset z.1).filter (fun x ↦ x ∈ c.supp) =
+          componentNeighborFinset G D c z.1 := by
+        ext y
+        simp [componentNeighborFinset, D,
+          SimpleGraph.ConnectedComponent.mem_supp_iff]
+      rw [heq, hsel]
+    have hsplit := Finset.card_filter_add_card_filter_not
+      (s := G.neighborFinset z.1) (fun x ↦ x ∈ c.supp)
+    rw [hins, G.card_neighborFinset_eq_degree, hreg z.1] at hsplit
+    omega
+  have hHJ : H * J = (m : ℤ) • J := by
+    ext u z
+    rw [Matrix.mul_apply]
+    simp only [J, mul_one, Matrix.smul_apply, smul_eq_mul]
+    have hsum : (∑ y : c.supp, H u y) = (m : ℤ) := by
+      simp only [H, SimpleGraph.adjMatrix_apply]
+      let T : Finset c.supp :=
+        Finset.univ.filter fun y ↦ G.Adj u.1 y.1
+      let ι : c.supp ↪ V := ⟨Subtype.val, Subtype.val_injective⟩
+      have hmap : T.map ι =
+          (G.neighborFinset u.1).filter fun x ↦ x ∈ c.supp := by
+        ext x
+        simp [T, ι, SimpleGraph.mem_neighborFinset]
+      have hTcard : T.card = m := by
+        rw [← Finset.card_map ι, hmap, hinternal u]
+      rw [Finset.sum_boole]
+      simpa [T] using congrArg (fun n : ℕ ↦ (n : ℤ)) hTcard
+    rw [hsum]
+  have hJC : J * C = ((q - m : ℕ) : ℤ) • J := by
+    ext u z
+    rw [Matrix.mul_apply]
+    simp only [J, one_mul, Matrix.smul_apply, smul_eq_mul]
+    let S : Finset {x // ¬p x} :=
+      Finset.univ.filter fun x ↦ G.Adj x.1 z.1
+    let ι : {x // ¬p x} ↪ V :=
+      ⟨Subtype.val, Subtype.val_injective⟩
+    have hmap : S.map ι =
+        (G.neighborFinset z.1).filter fun x ↦ x ∉ c.supp := by
+      ext x
+      simp [S, ι, p, G.adj_comm,
+        SimpleGraph.ConnectedComponent.mem_supp_iff]
+    have hScard : S.card = q - m := by
+      rw [← Finset.card_map ι, hmap, hexternal z]
+    have hsum : (∑ y : {x // ¬p x}, C y z) = ((q - m : ℕ) : ℤ) := by
+      simp only [C, Matrix.toBlock_apply, SimpleGraph.adjMatrix_apply]
+      rw [Finset.sum_boole]
+      simpa [S, G.adj_comm] using congrArg (fun n : ℕ ↦ (n : ℤ)) hScard
+    rw [hsum]
+    simp
+  have hBC : B * C = J - H * B := eq_sub_of_add_eq' hcross
+  calc
+    B * (C * C) = (B * C) * C := by rw [Matrix.mul_assoc]
+    _ = (J - H * B) * C := by rw [hBC]
+    _ = J * C - H * (B * C) := by
+      rw [Matrix.sub_mul, Matrix.mul_assoc]
+    _ = ((q - m : ℕ) : ℤ) • J - H * (J - H * B) := by
+      rw [hJC, hBC]
+    _ = ((q - m : ℕ) : ℤ) • J - (H * J - (H * H) * B) := by
+      rw [Matrix.mul_sub, Matrix.mul_assoc]
+    _ = ((q - m : ℕ) : ℤ) • J -
+        ((m : ℤ) • J - (H * H) * B) := by rw [hHJ]
+    _ = (((q - m : ℕ) : ℤ) - (m : ℤ)) • J + (H * H) * B := by
+      module
+
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
@@ -365,5 +492,6 @@ end
   Erdos85.binarySquare_regular_normalizedComponent_internalAdj_gram_saturates
 #print axioms
   Erdos85.binarySquare_regular_normalizedComponent_internalAdj_outsideReturn_zero
+#print axioms Erdos85.binarySquare_regular_normalizedComponent_crossBlock_sq
 
 end Erdos85
