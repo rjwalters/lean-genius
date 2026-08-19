@@ -118,9 +118,59 @@ theorem orderSixtyFour_sizeTwoPart_inducedSignedEigenvector_muNegativeSeven_fals
   exact orderSixtyFour_sizeTwoPart_signedJointEigenvector_muNegativeSeven_false
     G hfree hreg hcard c hc hother s hs_in (by simpa [D] using hsD)
 
+/-- A signed joint eigenline on the component cannot have switch target `1`. -/
+theorem orderSixtyFour_sizeTwoPart_inducedSignedJoint_switchTarget_ne_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (t : c.supp → ℤ) (ht : ∀ x, t x = -1 ∨ t x = 1)
+    (theta : ℤ)
+    (hH : ((G.induce c.supp).adjMatrix ℤ).mulVec t = (-2 : ℤ) • t)
+    (hD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec t =
+      theta • t) :
+    theta ≠ 1 := by
+  intro htheta
+  apply orderSixtyFour_sizeTwoPart_inducedSignedJointEigenvector_muOne_false
+    G hfree hreg hcard c hc t ht hH
+  simpa [htheta] using hD
+
+/-- Under the usual other-component size hypothesis, a signed induced
+eigenline cannot have switch target `-7`. -/
+theorem orderSixtyFour_sizeTwoPart_inducedSigned_switchTarget_ne_negativeSeven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (hother : ∀ c' : (secondOrderDefectGraph G).ConnectedComponent,
+      c' ≠ c → c'.supp.ncard ≠ 8)
+    (t : c.supp → ℤ) (ht : ∀ x, t x = -1 ∨ t x = 1)
+    (theta : ℤ)
+    (hD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec t =
+      theta • t) :
+    theta ≠ -7 := by
+  intro htheta
+  apply orderSixtyFour_sizeTwoPart_inducedSignedEigenvector_muNegativeSeven_false
+    G hfree hreg hcard c hc hother t ht
+  simpa [htheta] using hD
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwoPart_inducedSignedJointEigenvector_muOne_false
 #print axioms Erdos85.orderSixtyFour_sizeTwoPart_inducedSignedEigenvector_muNegativeSeven_false
+#print axioms Erdos85.orderSixtyFour_sizeTwoPart_inducedSignedJoint_switchTarget_ne_one
+#print axioms Erdos85.orderSixtyFour_sizeTwoPart_inducedSigned_switchTarget_ne_negativeSeven

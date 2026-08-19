@@ -2,6 +2,7 @@ import Proofs.Erdos85SizeTwoAlignedShoreSwitch
 import Proofs.Erdos85SizeTwoMuNegOneAlignedLedger
 import Proofs.Erdos85SizeTwoMuNegOneRefinedSectorRouting
 import Proofs.Erdos85ComponentSignFlipEigenvector
+import Proofs.Erdos85SizeTwoSwitchedJointExclusions
 
 /-! # Graph-facing aligned shore switch for the μ=-1 lane -/
 
@@ -165,7 +166,9 @@ theorem orderSixtyFour_sizeTwo_muNegOne_refined_shoreSwitch
         (fun x ↦ H.connectedComponentMk x = b)
       let t : c.supp → ℤ := fun x ↦ if x ∈ B then -s x.1 else s x.1
       (K.adjMatrix ℤ).mulVec t = sizeTwoMuSwitchTarget (-1) k r • t ∧
-        (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t ∧ t ≠ 0 := by
+        (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t ∧ t ≠ 0 ∧
+          (∀ x, t x = -1 ∨ t x = 1) ∧
+            sizeTwoMuSwitchTarget (-1) k r ≠ 1 := by
   classical
   dsimp only
   let H := G.induce c.supp
@@ -201,19 +204,46 @@ theorem orderSixtyFour_sizeTwo_muNegOne_refined_shoreSwitch
     simpa [ConnectedComponent.mem_supp_iff, smul_eq_mul] using hx
   have htH := connectedComponent_signFlip_adjMatrix_eigenvector
     H b (fun x : c.supp ↦ s x.1) (-2) hsH
-  constructor
-  · simpa only [hcoeff] using hswitch
-  · constructor
-    · simpa [Finset.mem_filter] using htH
-    · intro ht
-      have hval := congrFun ht (u 0)
-      have hsign0 := hs_in (u 0).1 (u 0).2
-      by_cases hmem : (u 0) ∈ (Finset.univ : Finset c.supp).filter
-          (fun x ↦ H.connectedComponentMk x = b)
-      · simp [hmem] at hval
-        omega
-      · simp [hmem] at hval
-        omega
+  have htK : (K.adjMatrix ℤ).mulVec
+      (fun x ↦ if x ∈ (Finset.univ : Finset c.supp).filter
+        (fun y ↦ H.connectedComponentMk y = b) then -s x.1 else s x.1) =
+      sizeTwoMuSwitchTarget (-1) k r •
+        (fun x ↦ if x ∈ (Finset.univ : Finset c.supp).filter
+          (fun y ↦ H.connectedComponentMk y = b) then -s x.1 else s x.1) := by
+    simpa only [hcoeff] using hswitch
+  have htH' : (H.adjMatrix ℤ).mulVec
+      (fun x ↦ if x ∈ (Finset.univ : Finset c.supp).filter
+        (fun y ↦ H.connectedComponentMk y = b) then -s x.1 else s x.1) =
+      (-2 : ℤ) • (fun x ↦ if x ∈ (Finset.univ : Finset c.supp).filter
+        (fun y ↦ H.connectedComponentMk y = b) then -s x.1 else s x.1) := by
+    simpa [Finset.mem_filter] using htH
+  have htne : (fun x ↦ if x ∈ (Finset.univ : Finset c.supp).filter
+      (fun y ↦ H.connectedComponentMk y = b) then -s x.1 else s x.1) ≠ 0 := by
+    intro ht
+    have hval := congrFun ht (u 0)
+    have hsign0 := hs_in (u 0).1 (u 0).2
+    by_cases hmem : (u 0) ∈ (Finset.univ : Finset c.supp).filter
+        (fun x ↦ H.connectedComponentMk x = b)
+    · simp [hmem] at hval
+      omega
+    · simp [hmem] at hval
+      omega
+  have htsign : ∀ x, (if x ∈ (Finset.univ : Finset c.supp).filter
+      (fun y ↦ H.connectedComponentMk y = b) then -s x.1 else s x.1) = -1 ∨
+      (if x ∈ (Finset.univ : Finset c.supp).filter
+        (fun y ↦ H.connectedComponentMk y = b) then -s x.1 else s x.1) = 1 := by
+    intro x
+    have hx := hs_in x.1 x.2
+    by_cases hmem : x ∈ (Finset.univ : Finset c.supp).filter
+        (fun y ↦ H.connectedComponentMk y = b)
+    · simp only [hmem, if_true]
+      omega
+    · simp only [hmem, if_false]
+      exact hx
+  have htarget := orderSixtyFour_sizeTwoPart_inducedSignedJoint_switchTarget_ne_one
+    G hfree hreg hcard c hc _ htsign (sizeTwoMuSwitchTarget (-1) k r)
+      (by simpa [H] using htH') (by simpa [K] using htK)
+  exact ⟨htK, htH', htne, htsign, htarget⟩
 
 end
 
