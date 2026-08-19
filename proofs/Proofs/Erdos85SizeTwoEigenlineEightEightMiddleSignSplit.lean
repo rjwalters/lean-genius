@@ -129,8 +129,70 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_allTriangleFree_middle
     exact Finset.card_le_card hBsubS
   omega
 
+/-- In a coordinated `8+8` component, quotient parameter five forces both
+internal eight-cycles into the all-triangle sector. -/
+theorem binarySquare_regular_sizeTwoPart_eight_eightEight_parameter_five_both_allTriangle
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      3 * s x)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 8) (hb : b.supp.ncard = 8) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (hab5 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b = 5)
+    (hba5 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) b a = 5) :
+    (∀ x : c.supp, x ∈ a.supp →
+        (triangleFreeEdgeGraph G).degree x.1 = 0) ∧
+      (∀ x : c.supp, x ∈ b.supp →
+        (triangleFreeEdgeGraph G).degree x.1 = 0) := by
+  have shoreA : ∀ x : c.supp, x ∈ a.supp →
+      (triangleFreeEdgeGraph G).degree x.1 = 0 := by
+    rcases binarySquare_regular_sizeTwoPart_internalCycle_sector_dichotomy
+      G hfree (by omega) (by decide) hreg hcard c hc a with hall | htf
+    · exact hall
+    · have h54 :=
+        binarySquare_regular_sizeTwoPart_eight_eightEight_allTriangleFree_middle_parameter_eq_four
+          G hfree hreg hcard c hc s hs_in hs_out hA_in hDs a b ha hb hab
+            u v huinj hvinj hurange hvrange hu hv htf 5 (by omega) hab5
+      omega
+  have shoreB : ∀ x : c.supp, x ∈ b.supp →
+      (triangleFreeEdgeGraph G).degree x.1 = 0 := by
+    rcases binarySquare_regular_sizeTwoPart_internalCycle_sector_dichotomy
+      G hfree (by omega) (by decide) hreg hcard c hc b with hall | htf
+    · exact hall
+    · have h54 :=
+        binarySquare_regular_sizeTwoPart_eight_eightEight_allTriangleFree_middle_parameter_eq_four
+          G hfree hreg hcard c hc s hs_in hs_out hA_in hDs b a hb ha hab.symm
+            v u hvinj huinj hvrange hurange hv hu htf 5 (by omega) hba5
+      omega
+  exact ⟨shoreA, shoreB⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_allTriangleFree_middle_parameter_eq_four
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_parameter_five_both_allTriangle
