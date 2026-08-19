@@ -23,6 +23,56 @@ def MuNegOneRefinedSectorCells
       ((k = 0 ∧ r = 3) ∨ (k = 0 ∧ r = 4) ∨ (k = 0 ∧ r = 5) ∨
        (k = 1 ∧ r = 2) ∨ (k = 1 ∧ r = 3) ∨ (k = 1 ∧ r = 4)))
 
+/-- The μ=-1 sector cells after the switched joint `μ=1` exclusion removes
+the all-zero `(0,7)` and `(1,5)` cells. -/
+def MuNegOnePostMuOneSectorCells
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ) : Prop :=
+  ((MuNegOneC8CycleEntriesZero N₁ ∧ MuNegOneC8CycleEntriesZero N₂) ∧
+      ((k = 0 ∧ r = 5) ∨ (k = 1 ∧ r = 4) ∨ (k = 1 ∧ r = 6))) ∨
+    ((((MuNegOneC8CycleEntriesZero N₁ ∧ MuNegOneC8CycleEntriesOne N₂) ∨
+        (MuNegOneC8CycleEntriesOne N₁ ∧ MuNegOneC8CycleEntriesZero N₂))) ∧
+      ((k = 0 ∧ r = 5) ∨ (k = 1 ∧ r = 4))) ∨
+    ((MuNegOneC8CycleEntriesOne N₁ ∧ MuNegOneC8CycleEntriesOne N₂) ∧
+      ((k = 0 ∧ r = 3) ∨ (k = 0 ∧ r = 4) ∨ (k = 0 ∧ r = 5) ∨
+       (k = 1 ∧ r = 2) ∨ (k = 1 ∧ r = 3) ∨ (k = 1 ∧ r = 4)))
+
+theorem muNegOne_postMuOne_sector_cells_of_target_ne_one
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegOneRefinedSectorCells N₁ N₂ k r)
+    (hne : sizeTwoMuSwitchTarget (-1) k r ≠ 1) :
+    MuNegOnePostMuOneSectorCells N₁ N₂ k r := by
+  rcases hcell with hzero | hmixed | hone
+  · left
+    refine ⟨hzero.1, ?_⟩
+    rcases hzero.2 with h | h | h | h | h
+    · exact Or.inl h
+    · rcases h with ⟨rfl, rfl⟩
+      norm_num [sizeTwoMuSwitchTarget] at hne
+    · exact Or.inr (Or.inl h)
+    · rcases h with ⟨rfl, rfl⟩
+      norm_num [sizeTwoMuSwitchTarget] at hne
+    · exact Or.inr (Or.inr h)
+  · exact Or.inr (Or.inl hmixed)
+  · exact Or.inr (Or.inr hone)
+
+/-- The reduced μ=-1 routing table has only the five remaining switch
+targets. -/
+theorem muNegOne_postMuOne_switch_target
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegOnePostMuOneSectorCells N₁ N₂ k r) :
+    sizeTwoMuSwitchTarget (-1) k r = -7 ∨
+      sizeTwoMuSwitchTarget (-1) k r = -5 ∨
+      sizeTwoMuSwitchTarget (-1) k r = -3 ∨
+      sizeTwoMuSwitchTarget (-1) k r = -1 ∨
+      sizeTwoMuSwitchTarget (-1) k r = 3 := by
+  rcases hcell with hzero | hmixed | hone
+  · rcases hzero.2 with h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · rcases hmixed.2 with h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · rcases hone.2 with h | h | h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+
 /-- After the `(0,6)` contradiction, `(1,4)` is the unique μ=-1 cell fixed
 by the shore-switch involution. -/
 theorem muNegOne_refined_switch_target_eq_self_iff
@@ -225,4 +275,6 @@ end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_sector_cells
 #print axioms Erdos85.muNegOne_refined_switch_target_eq_self_iff
+#print axioms Erdos85.muNegOne_postMuOne_sector_cells_of_target_ne_one
+#print axioms Erdos85.muNegOne_postMuOne_switch_target
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_alignedLedger

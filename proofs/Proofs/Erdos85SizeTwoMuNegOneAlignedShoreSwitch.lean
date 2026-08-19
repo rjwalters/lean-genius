@@ -168,7 +168,13 @@ theorem orderSixtyFour_sizeTwo_muNegOne_refined_shoreSwitch
       (K.adjMatrix ℤ).mulVec t = sizeTwoMuSwitchTarget (-1) k r • t ∧
         (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t ∧ t ≠ 0 ∧
           (∀ x, t x = -1 ∨ t x = 1) ∧
-            sizeTwoMuSwitchTarget (-1) k r ≠ 1 := by
+            sizeTwoMuSwitchTarget (-1) k r ≠ 1 ∧
+              MuNegOnePostMuOneSectorCells N₁ N₂ k r ∧
+                (sizeTwoMuSwitchTarget (-1) k r = -7 ∨
+                 sizeTwoMuSwitchTarget (-1) k r = -5 ∨
+                 sizeTwoMuSwitchTarget (-1) k r = -3 ∨
+                 sizeTwoMuSwitchTarget (-1) k r = -1 ∨
+                 sizeTwoMuSwitchTarget (-1) k r = 3) := by
   classical
   dsimp only
   let H := G.induce c.supp
@@ -243,7 +249,9 @@ theorem orderSixtyFour_sizeTwo_muNegOne_refined_shoreSwitch
   have htarget := orderSixtyFour_sizeTwoPart_inducedSignedJoint_switchTarget_ne_one
     G hfree hreg hcard c hc _ htsign (sizeTwoMuSwitchTarget (-1) k r)
       (by simpa [H] using htH') (by simpa [K] using htK)
-  exact ⟨htK, htH', htne, htsign, htarget⟩
+  have hpost := muNegOne_postMuOne_sector_cells_of_target_ne_one _ _ k r hcell htarget
+  have htargets := muNegOne_postMuOne_switch_target _ _ k r hpost
+  exact ⟨htK, htH', htne, htsign, htarget, hpost, htargets⟩
 
 end
 
