@@ -271,7 +271,7 @@ theorem bipartition_signSwitch_adjMatrix_eigen_three_of_card
 `componentNeighborFinset` cardinalities produced by quotient arguments. -/
 theorem twoComponent_signSwitch_adjMatrix_eigen_three
     {X : Type*} [Fintype X] [DecidableEq X]
-    (D H : SimpleGraph X) [DecidableRel D.Adj]
+    (D H : SimpleGraph X) [DecidableRel D.Adj] [DecidableRel H.Adj]
     [DecidableEq H.ConnectedComponent]
     (a b : H.ConnectedComponent) (hab : a ≠ b)
     (hpartition : ∀ x, x ∈ a.supp ∨ x ∈ b.supp)
@@ -360,6 +360,58 @@ theorem twoComponent_signSwitch_adjMatrix_eigen_three
     exact hBAsame x ((SimpleGraph.ConnectedComponent.mem_supp_iff b x).mpr
       (Finset.mem_filter.mp hx).2)
 
+/-- Quotient-level form of the `(k,r)=(1,4)` switch.  The four quotient
+entries supply the total block degrees, while the signed ledger supplies
+same-sign degrees one on the diagonal and zero across. -/
+theorem twoComponent_quotient_signSwitch_adjMatrix_eigen_three
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D H : SimpleGraph X) [DecidableRel D.Adj] [DecidableRel H.Adj]
+    [DecidableEq H.ConnectedComponent]
+    (a b : H.ConnectedComponent) (hab : a ≠ b)
+    (hdegree : ∀ x, H.degree x = 2)
+    (hcomm : D.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * D.adjMatrix ℝ)
+    (hpartition : ∀ x, x ∈ a.supp ∨ x ∈ b.supp)
+    (s : X → ℤ) (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (haa : componentQuotientMatrix D H a a = 3)
+    (habq : componentQuotientMatrix D H a b = 4)
+    (hbaq : componentQuotientMatrix D H b a = 4)
+    (hbb : componentQuotientMatrix D H b b = 3)
+    (hAAsame : ∀ x, x ∈ a.supp →
+      ((componentNeighborFinset D H a x).filter
+        (fun y ↦ s y = s x)).card = 1)
+    (hABsame : ∀ x, x ∈ a.supp →
+      ((componentNeighborFinset D H b x).filter
+        (fun y ↦ s y = s x)).card = 0)
+    (hBBsame : ∀ x, x ∈ b.supp →
+      ((componentNeighborFinset D H b x).filter
+        (fun y ↦ s y = s x)).card = 1)
+    (hBAsame : ∀ x, x ∈ b.supp →
+      ((componentNeighborFinset D H a x).filter
+        (fun y ↦ s y = s x)).card = 0) :
+    let B := (Finset.univ : Finset X).filter
+      (fun x ↦ H.connectedComponentMk x = b)
+    let t : X → ℤ := fun x ↦ if x ∈ B then -s x else s x
+    (D.adjMatrix ℤ).mulVec t = 3 • t := by
+  apply twoComponent_signSwitch_adjMatrix_eigen_three D H a b hab hpartition
+    s hsign
+  · intro x hx
+    rw [← componentQuotientMatrix_apply_eq D H 2 hdegree hcomm a a hx]
+    exact haa
+  · exact hAAsame
+  · intro x hx
+    rw [← componentQuotientMatrix_apply_eq D H 2 hdegree hcomm a b hx]
+    exact habq
+  · exact hABsame
+  · intro x hx
+    rw [← componentQuotientMatrix_apply_eq D H 2 hdegree hcomm b b hx]
+    exact hbb
+  · exact hBBsame
+  · intro x hx
+    rw [← componentQuotientMatrix_apply_eq D H 2 hdegree hcomm b a hx]
+    exact hbaq
+  · exact hBAsame
+
 end
 
 end Erdos85
@@ -370,3 +422,4 @@ end Erdos85
 #print axioms Erdos85.bipartition_signSwitch_eigen_three_of_card
 #print axioms Erdos85.bipartition_signSwitch_adjMatrix_eigen_three_of_card
 #print axioms Erdos85.twoComponent_signSwitch_adjMatrix_eigen_three
+#print axioms Erdos85.twoComponent_quotient_signSwitch_adjMatrix_eigen_three
