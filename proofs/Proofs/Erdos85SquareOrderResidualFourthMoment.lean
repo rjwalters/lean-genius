@@ -47,7 +47,11 @@ theorem fourth_newton_identity_of_first_power_sum_zero
     (hsecond : 2 * secondCoeff = -secondPower)
     (hfourth : 4 * fourthCoeff = -(secondCoeff * secondPower + fourthPower)) :
     8 * fourthCoeff = secondPower ^ 2 - 2 * fourthPower := by
-  nlinarith
+  calc
+    8 * fourthCoeff = 2 * (4 * fourthCoeff) := by ring
+    _ = -2 * (secondCoeff * secondPower + fourthPower) := by rw [hfourth]; ring
+    _ = -(2 * secondCoeff) * secondPower - 2 * fourthPower := by ring
+    _ = secondPower ^ 2 - 2 * fourthPower := by rw [hsecond]; ring
 
 /-- The resulting exact fourth-coefficient constraint for the order-49
 residual.  Keeping it in denominator-free form makes it usable over `ℤ`. -/
