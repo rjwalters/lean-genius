@@ -259,6 +259,39 @@ structure EightEightLowOwnerFiniteSemantics
     ∀ k l : Fin 48, k ≠ l →
       X e k → X f k → X e l → X f l → False
 
+/-- Convert the generic exact-service/C4 semantic package into the fixed
+high-level owner interface.  Only two coordinate rewrites are required:
+generator targets must select target value one, and fixed incidence must
+agree with the abstract incidence relation.  The stronger zero-common rule
+for intersecting owners is supplied separately. -/
+theorem EightEightLowOwnerFiniteSemantics.of_clauseSemantics
+    {U : Type*}
+    (C : SimpleGraph (Fin 48))
+    (incident : U → Fin 48 → Prop)
+    (target : U → Fin 48 → Nat)
+    (coord : U ≃ Fin 16)
+    (h : OutsideCClauseSemantics C incident target)
+    (htarget : ∀ e : Fin 48, ∀ v : Fin 16,
+      eightEightOwnerTargetContains e v = true →
+        target (coord.symm v) e = 1)
+    (hincident : ∀ e : Fin 48, ∀ v : Fin 16,
+      incident (coord.symm v) e ↔ eightEightOwnerContains e v = true)
+    (hintersect : ∀ e f : Fin 48,
+      e ≠ f → eightEightOwnersIntersect e f = true →
+        ∀ k : Fin 48, C.Adj e k → C.Adj f k → False) :
+    EightEightLowOwnerFiniteSemantics C.Adj := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro e v hev
+    obtain ⟨f, hef, hvf⟩ :=
+      h.one_service_exists (coord.symm v) e (htarget e v hev)
+    exact ⟨f, hef, (hincident f v).mp hvf⟩
+  · intro e v hev f g hef hvf heg hvg
+    exact h.one_service_unique (coord.symm v) e (htarget e v hev)
+      f g hef ((hincident f v).mpr hvf) heg ((hincident g v).mpr hvg)
+  · exact hintersect
+  · intro e f hef k l hkl hek hfk hel hfl
+    exact h.no_two_common e f k l hef hkl hek hfk hel hfl
+
 /-- Clause semantics are invariant under relabeling the exterior vertices.
 The transported graph is the comap along the inverse equivalence, and both
 incidence and target tables are relabeled by the same inverse. -/
