@@ -78,6 +78,7 @@ def main() -> None:
         default="all")
     parser.add_argument("--c4-difference", type=int, action="append",
         help="with same-difference mode, retain only these difference orbits")
+    parser.add_argument("--quiet-model", action="store_true")
     args = parser.parse_args()
     solver, vertices, edge = build(args.q, args.a,
         rows=not args.no_rows, columns=not args.no_columns,
@@ -87,7 +88,7 @@ def main() -> None:
     solver.set(timeout=args.timeout_ms)
     result = solver.check()
     print(f"q={args.q} a={args.a % args.q}: {result}")
-    if result == z3.sat:
+    if result == z3.sat and not args.quiet_model:
         model = solver.model()
         chosen = [(vertices[i], vertices[j]) for (i, j), var in edge.items()
                   if z3.is_true(model.eval(var))]
