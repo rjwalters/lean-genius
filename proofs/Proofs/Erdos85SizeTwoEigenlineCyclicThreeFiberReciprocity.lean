@@ -158,9 +158,51 @@ theorem sizeTwoCyclicRoutingFiberDart_card_symm
       Fintype.card (SizeTwoCyclicRoutingFiberDart data s t) :=
   Fintype.card_congr (sizeTwoCyclicRoutingFiberDartReverseEquiv ht hs)
 
+/-- Restrict fixed-fiber darts to one source-row displacement. -/
+abbrev SizeTwoCyclicRoutingFiberRowDart
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (data : SizeTwoCyclicRoutingData q a)
+    (t s : sizeTwoAllowedDifference q a)
+    (r : ZMod q) :=
+  {w : SizeTwoCyclicRoutingFiberDart data t s // w.row.1 = r}
+
+/-- Displacement-resolved reversal: the `r` slice from `t` to `s` is the
+`-r` slice from `s` back to `t`. -/
+def sizeTwoCyclicRoutingFiberRowDartReverseEquiv
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    {data : SizeTwoCyclicRoutingData q a}
+    {t s : sizeTwoAllowedDifference q a}
+    (ht : data.ReciprocityAt t) (hs : data.ReciprocityAt s)
+    (r : ZMod q) :
+    SizeTwoCyclicRoutingFiberRowDart data t s r ≃
+      SizeTwoCyclicRoutingFiberRowDart data s t (-r) where
+  toFun w := ⟨w.1.reverse ht, by
+    simp [w.2]⟩
+  invFun w := ⟨w.1.reverse hs, by
+    simpa using congrArg Neg.neg w.2⟩
+  left_inv w := by
+    apply Subtype.ext
+    exact SizeTwoCyclicRoutingFiberDart.reverse_reverse ht hs w.1
+  right_inv w := by
+    apply Subtype.ext
+    exact SizeTwoCyclicRoutingFiberDart.reverse_reverse hs ht w.1
+
+/-- Cardinal form of displacement-resolved reciprocity. -/
+theorem sizeTwoCyclicRoutingFiberRowDart_card_reverse
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    {data : SizeTwoCyclicRoutingData q a}
+    {t s : sizeTwoAllowedDifference q a}
+    (ht : data.ReciprocityAt t) (hs : data.ReciprocityAt s)
+    (r : ZMod q) :
+    Fintype.card (SizeTwoCyclicRoutingFiberRowDart data t s r) =
+      Fintype.card (SizeTwoCyclicRoutingFiberRowDart data s t (-r)) :=
+  Fintype.card_congr
+    (sizeTwoCyclicRoutingFiberRowDartReverseEquiv ht hs r)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.SizeTwoCyclicRoutingFiberDart.reverse_reverse
 #print axioms Erdos85.sizeTwoCyclicRoutingFiberDart_card_symm
+#print axioms Erdos85.sizeTwoCyclicRoutingFiberRowDart_card_reverse
