@@ -21,6 +21,39 @@ noncomputable section
 
 set_option maxHeartbeats 0
 
+/-- The graph-facing same-sign degree-one classifier forces the unique
+same-sign defect neighbor to be the C8 half-turn. -/
+theorem graph_zmodEight_sameSign_degreeOne_halfTurn
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (H K : SimpleGraph X) [DecidableRel H.Adj] [DecidableRel K.Adj]
+    (u : ZMod 8 → X) (huinj : Function.Injective u)
+    (hu : ∀ z, H.neighborFinset (u z) = {u (z - 1), u (z + 1)})
+    (s : X → ℤ)
+    (hsign : ∀ i, s (u i) = -1 ∨ s (u i) = 1)
+    (hflip : ∀ i, s (u (i + 1)) = -s (u i))
+    (hcomm : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ)
+    (hdegree : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j) = s (u i) ∧ K.Adj (u i) (u j)).card = 1) :
+    ∀ i, K.Adj (u i) (u (i + 4)) := by
+  have hshape := graph_zmodEight_sameSign_shape_of_comm_le_three
+    H K u huinj hu s 1 (by omega) hsign hflip hcomm hdegree
+  rcases hshape with hsmall | hthree
+  · rcases hsmall with hzero | hone | htwo
+    · omega
+    · rcases hone with ⟨_, hiff⟩
+      intro i
+      have hsame : s (u (i + 4)) = s (u i) :=
+        (zmodEight_alternating_sign_eq_iff_evenOffset
+          (fun j ↦ s (u j)) hsign hflip i (i + 4)).mpr (by
+            rw [show i + 4 - i = (4 : ZMod 8) by ring]
+            decide)
+      have hM := (hiff i (i + 4) hsame).mpr (by ring)
+      simpa [SimpleGraph.adjMatrix_apply] using hM
+    · omega
+  · omega
+
 /-- A quotient-three normalized C8 shore containing its half-turn has one of
 the two exact diagonal supports required by the `(−1,1,4)` owner models. -/
 theorem binarySquare_regular_sizeTwoPart_eight_diagonalThree_halfTurn_exact_supports
@@ -178,3 +211,4 @@ end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalThree_halfTurn_exact_supports
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalThree_halfTurn_exact_exterior_supports
+#print axioms Erdos85.graph_zmodEight_sameSign_degreeOne_halfTurn
