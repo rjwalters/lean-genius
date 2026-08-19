@@ -275,6 +275,16 @@ theorem mem_eightEightOwnerSym2_iff (e : Fin 48) (v : Fin 16) :
   revert e v
   decide
 
+/-- A target-table entry is true precisely far enough from both endpoints
+that no endpoint can be an internal common neighbor. -/
+theorem eightEightOwnerTarget_not_cycleAdj_of_contains
+    (e : Fin 48) (v w : Fin 16)
+    (htarget : eightEightOwnerTargetContains e v = true)
+    (hmem : eightEightOwnerContains e w = true) :
+    eightEightCycleAdj v w = false := by
+  revert e v w
+  decide
+
 /-- In transported owner coordinates, ambient incidence with an exterior
 vertex is exactly the generator's endpoint-incidence table. -/
 theorem outsideOwnerCoordinates_incident_iff
@@ -322,6 +332,60 @@ theorem outsideOwnerCoordinates_incident_iff
     _ ↔ eightEightOwnerContains e v = true := by
       rw [← Sym2.mem_toFinset]
       exact mem_eightEightOwnerSym2_iff e v
+
+/-- The generator target `true` rewrites to certificate target one once the
+chosen internal coordinates identify ambient adjacency with the two fixed
+eight-cycles. -/
+theorem outsideOwnerCoordinates_target_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (modelIso : exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph)
+    (hcycle : ∀ x y : c.supp,
+      G.Adj x.1 y.1 ↔ eightEightCycleAdj (modelIso x).val (modelIso y).val = true)
+    (e : Fin 48) (v : Fin 16)
+    (htarget : eightEightOwnerTargetContains e v = true) :
+    outsideCertificateTarget G c (modelIso.symm v)
+        ((outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges
+          modelIso).symm e) = 1 := by
+  classical
+  let idx := outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso
+  let z := idx.symm e
+  unfold outsideCertificateTarget
+  have empty_target (s : Finset V) (hs : s = ∅) : 1 - s.card = 1 := by
+    simp [hs]
+  apply empty_target
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro w hw
+  have hwdata : w ∈
+      (G.neighborFinset (modelIso.symm v).1 ∩ G.neighborFinset z.1) ∧
+      w ∈ c.supp := by
+    simpa only [Finset.mem_filter] using hw
+  have hwcommon := Finset.mem_inter.mp hwdata.1
+  have hwsupp : w ∈ c.supp := hwdata.2
+  let ws : c.supp := ⟨w, hwsupp⟩
+  have hvw : G.Adj (modelIso.symm v).1 ws.1 :=
+    (G.mem_neighborFinset (modelIso.symm v).1 w).mp hwcommon.1
+  have hzw : G.Adj z.1 ws.1 :=
+    (G.mem_neighborFinset z.1 w).mp (by simpa [z, idx] using hwcommon.2)
+  have hwinc : eightEightOwnerContains e (modelIso ws) = true := by
+    have := (outsideOwnerCoordinates_incident_iff
+      G c hcard hinc hqcard hRedges modelIso e (modelIso ws)).mp
+      (by simpa [idx, z] using hzw.symm)
+    simpa using this
+  have hfalse := eightEightOwnerTarget_not_cycleAdj_of_contains
+    e v (modelIso ws) htarget hwinc
+  have htrue : eightEightCycleAdj v (modelIso ws) = true := by
+    simpa using (hcycle (modelIso.symm v) ws).mp hvw
+  simp_all
 
 /-- High-level finite semantics of the checked owner instance, before any
 DIMACS numbering.  This is the clean handshake between graph transport and
@@ -511,6 +575,7 @@ end Erdos85
 #print axioms Erdos85.outsidePair_map_modelIso_eq_ownerSym2
 #print axioms Erdos85.mem_eightEightOwnerSym2_iff
 #print axioms Erdos85.outsideOwnerCoordinates_incident_iff
+#print axioms Erdos85.outsideOwnerCoordinates_target_eq_one
 #print axioms Erdos85.lowEightExteriorPair_pointwise_model_of_shores
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
 #print axioms Erdos85.outsidePair_intersects_no_exterior_common
