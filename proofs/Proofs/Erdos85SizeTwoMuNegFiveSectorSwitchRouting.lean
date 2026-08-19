@@ -38,6 +38,34 @@ theorem muNegFive_sector_switch_target
   rcases hcell with h | h | h | h | h | h <;>
     rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
 
+/-- The four cells remaining after the switched joint `mu=1` exclusion
+removes `(0,5)` and `(1,3)`. -/
+def MuNegFivePostMuOneSectorCells (k r : ℕ) : Prop :=
+  (k = 0 ∧ r = 3) ∨ (k = 0 ∧ r = 4) ∨
+  (k = 1 ∧ r = 2) ∨ (k = 1 ∧ r = 4)
+
+theorem muNegFive_postMuOne_sector_cells_of_target_ne_one
+    (k r : ℕ) (hcell : MuNegFiveSectorCells k r)
+    (hne : sizeTwoMuSwitchTarget (-5) k r ≠ 1) :
+    MuNegFivePostMuOneSectorCells k r := by
+  rcases hcell with h | h | h | h | h | h
+  · exact Or.inl h
+  · exact Or.inr (Or.inl h)
+  · rcases h with ⟨rfl, rfl⟩
+    norm_num [sizeTwoMuSwitchTarget] at hne
+  · exact Or.inr (Or.inr (Or.inl h))
+  · rcases h with ⟨rfl, rfl⟩
+    norm_num [sizeTwoMuSwitchTarget] at hne
+  · exact Or.inr (Or.inr (Or.inr h))
+
+theorem muNegFive_postMuOne_switch_target
+    (k r : ℕ) (hcell : MuNegFivePostMuOneSectorCells k r) :
+    sizeTwoMuSwitchTarget (-5) k r = -3 ∨
+      sizeTwoMuSwitchTarget (-5) k r = -1 ∨
+      sizeTwoMuSwitchTarget (-5) k r = 3 := by
+  rcases hcell with h | h | h | h <;>
+    rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+
 /-- No exact `mu=-5` sector cell is fixed by the shore switch. -/
 theorem muNegFive_sector_switch_target_ne_self
     (k r : ℕ) (hcell : MuNegFiveSectorCells k r) :
@@ -95,4 +123,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.muNegFive_sector_switch_target
+#print axioms Erdos85.muNegFive_postMuOne_switch_target
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_eightEight_sector_cells
