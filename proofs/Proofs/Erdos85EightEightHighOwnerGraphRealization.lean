@@ -40,6 +40,87 @@ def EightEightHighEnabledOwner
     (active : Fin 64 → Prop) :=
   {e : Fin 64 // eightEightHighOwnerEnabled active e}
 
+instance (active : Fin 64 → Prop) [DecidablePred active] :
+    DecidablePred (eightEightHighOwnerEnabled active) := by
+  intro e
+  unfold eightEightHighOwnerEnabled
+  split <;> infer_instance
+
+noncomputable instance (active : Fin 64 → Prop) :
+    Fintype (EightEightHighEnabledOwner active) := by
+  letI : Finite (EightEightHighEnabledOwner active) :=
+    Finite.of_injective Subtype.val Subtype.val_injective
+  exact Fintype.ofFinite _
+
+/-- An enabled candidate as an edge of a realized `Fin 16` exterior-pair
+graph. -/
+def eightEightHighEnabledOwnerEdge
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (active : Fin 64 → Prop)
+    (hedge : ∀ e : Fin 64,
+      eightEightHighOwnerEnabled active e →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (e : EightEightHighEnabledOwner active) : R.edgeFinset :=
+  ⟨eightEightHighOwnerSym2 e.1, by
+    rw [SimpleGraph.mem_edgeFinset]
+    exact hedge e.1 e.2⟩
+
+theorem eightEightHighEnabledOwnerEdge_injective
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (active : Fin 64 → Prop)
+    (hedge : ∀ e : Fin 64,
+      eightEightHighOwnerEnabled active e →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e)) :
+    Function.Injective
+      (eightEightHighEnabledOwnerEdge R active hedge) := by
+  intro e f hef
+  apply Subtype.ext
+  apply eightEightHighOwnerSym2_injective
+  exact congrArg Subtype.val hef
+
+/-- Equal cardinality upgrades the typed owner-table injection to the exact
+enabled-owner/exterior-edge equivalence needed by the ambient transport. -/
+noncomputable def eightEightHighEnabledOwnerEdgeEquiv
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (active : Fin 64 → Prop) [DecidablePred active]
+    (hedge : ∀ e : Fin 64,
+      eightEightHighOwnerEnabled active e →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (henabledCard : Fintype.card (EightEightHighEnabledOwner active) = 48)
+    (hRedges : R.edgeFinset.card = 48) :
+    EightEightHighEnabledOwner active ≃ R.edgeFinset :=
+  Equiv.ofBijective (eightEightHighEnabledOwnerEdge R active hedge)
+    ((Fintype.bijective_iff_injective_and_card _).2 ⟨
+      eightEightHighEnabledOwnerEdge_injective R active hedge, by
+        rw [henabledCard, Fintype.card_coe]
+        exact hRedges.symm⟩)
+
+/-- Compose the enabled-owner enumeration with a graph isomorphism and an
+independent outside-vertex/edge equivalence.  This is the exact direction
+required by `eightEightHighOwnerServiceSemantics_of_enabledEquiv`. -/
+noncomputable def eightEightHighEnabledOwnerOutsideEquiv
+    {E : Type*} [Fintype E] [DecidableEq E]
+    (S : SimpleGraph E) [DecidableRel S.Adj]
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (active : Fin 64 → Prop) [DecidablePred active]
+    (hedge : ∀ e : Fin 64,
+      eightEightHighOwnerEnabled active e →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (henabledCard : Fintype.card (EightEightHighEnabledOwner active) = 48)
+    (hRedges : R.edgeFinset.card = 48)
+    (modelIso : S ≃g R)
+    (outsideEdge : E ≃ S.edgeFinset) :
+    EightEightHighEnabledOwner active ≃ E :=
+  (eightEightHighEnabledOwnerEdgeEquiv R active hedge
+      henabledCard hRedges).trans
+    ((edgeFinsetEquivEdgeSet R).trans
+      (modelIso.symm.mapEdgeSet.trans
+        ((edgeFinsetEquivEdgeSet S).symm.trans outsideEdge.symm)))
+
 def eightEightHighRealizedRelation
     {E : Type*} (active : Fin 64 → Prop) (C : SimpleGraph E)
     (idx : EightEightHighEnabledOwner active ≃ E)
