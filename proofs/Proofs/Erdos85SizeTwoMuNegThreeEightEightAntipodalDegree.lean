@@ -42,6 +42,40 @@ theorem orderSixtyFour_sizeTwo_antipodal_degree_eq_five_or_seven
   · right; omega
   · left; omega
 
+/-- The antipodal and triangle-free degrees are not merely separately
+restricted: their two possibilities are paired exactly. -/
+theorem orderSixtyFour_sizeTwo_antipodal_triangleFree_degree_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2) (x : c.supp) :
+    ((antipodalGraph G).degree x.1 = 7 ∧
+        (triangleFreeEdgeGraph G).degree x.1 = 0) ∨
+      ((antipodalGraph G).degree x.1 = 5 ∧
+        (triangleFreeEdgeGraph G).degree x.1 = 2) := by
+  have htf := binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_zero_or_two
+    G hfree (q := 8) (by omega) (by decide) hreg hcard c hc x
+  have hcard64 : Fintype.card V = 8 * (8 - 1) + 3 + 5 := by
+    norm_num at hcard ⊢
+    exact hcard
+  have hanti := antipodalGraph_degree_eq_excess_add_two_sub_triangleFree
+    G hfree (d := 8) (e := 5) (by omega) hreg hcard64 x.1
+  have htfcard : (triangleFreeNeighbors G x.1).card =
+      (triangleFreeEdgeGraph G).degree x.1 := by
+    rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset]
+  rw [htfcard] at hanti
+  rcases htf with hzero | htwo
+  · left; constructor <;> omega
+  · right; constructor <;> omega
+
 set_option maxHeartbeats 1200000 in
 /-- The cross-antipodal `r` edges and the diagonal same-sign `k` edges are
 disjoint antipodal neighbors.  Consequently `r+k` is an antipodal subdegree,
@@ -128,4 +162,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_antipodal_degree_eq_five_or_seven
+#print axioms Erdos85.orderSixtyFour_sizeTwo_antipodal_triangleFree_degree_dichotomy
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_eightEight_signed_antipodal_subdegree
