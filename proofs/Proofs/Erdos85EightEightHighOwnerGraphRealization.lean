@@ -36,6 +36,102 @@ theorem eightEightHighOwnerSym2_injective :
     Function.Injective eightEightHighOwnerSym2 := by
   native_decide
 
+theorem eightEightHighOwnerAt_injective :
+    Function.Injective (fun e : Fin 64 ↦ eightEightHighOwnerAt e) := by
+  native_decide
+
+theorem eightEightHighCrossIndex?_le_thirtyTwo
+    {x y id : Nat} (h : eightEightHighCrossIndex? x y = some id) :
+    id ≤ 32 := by
+  simp only [eightEightHighCrossIndex?] at h
+  split at h
+  · obtain ⟨k, hk, rfl⟩ := Option.map_eq_some_iff.mp h
+    obtain ⟨hklt, _, _⟩ := List.idxOf?_eq_some_iff.mp hk
+    simp only [eightEightHighCrossCandidates_size] at hklt
+    omega
+  · contradiction
+
+/-- A bounded cross variable identifies the same candidate in the cross
+table and the full 64-owner table. -/
+theorem eightEightHighCrossIndex?_owner
+    (x y : Fin 8) (id : Fin 33)
+    (h : eightEightHighCrossIndex? x y = some id) :
+    ∃ e : Fin 64,
+      eightEightHighOwnerAt e = (x.val, 8 + y.val) ∧
+      eightEightHighActiveVariable? e = some id := by
+  revert x y id
+  native_decide
+
+theorem eightEightHighOwnerVal_crossIndex_iff
+    (active : Fin 64 → Prop) (X : Fin 64 → Fin 64 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    {x y id : Nat} (hx : x < 8) (hy : y < 8)
+    (hidx : eightEightHighCrossIndex? x y = some id) :
+    eightEightHighOwnerValOfRelations active X id = true ↔
+      ∃ e : Fin 64,
+        eightEightHighOwnerAt e = (x, 8 + y) ∧ active e := by
+  let idf : Fin 33 := ⟨id, by
+    exact Nat.lt_succ_iff.mpr (eightEightHighCrossIndex?_le_thirtyTwo hidx)⟩
+  obtain ⟨e, heowner, hevar⟩ :=
+    eightEightHighCrossIndex?_owner ⟨x, hx⟩ ⟨y, hy⟩ idf (by
+      simpa [idf] using hidx)
+  constructor
+  · intro hval
+    exact ⟨e, by simpa using heowner,
+      eightEightHighOwnerActive_of_val_true active X
+        (by simpa [idf] using hevar) hval⟩
+  · rintro ⟨f, hfowner, hfactive⟩
+    have hef : e = f := eightEightHighOwnerAt_injective
+      (heowner.trans hfowner.symm)
+    subst f
+    exact eightEightHighOwnerVal_active_true_of active X
+      (by simpa [idf] using hevar) hfactive
+
+def eightEightHighCoordinateActive
+    (R : SimpleGraph (Fin 16)) (e : Fin 64) : Prop :=
+  R.Adj (eightEightHighOwnerFirst e) (eightEightHighOwnerSecond e)
+
+instance (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj] :
+    DecidablePred (eightEightHighCoordinateActive R) := by
+  intro e
+  unfold eightEightHighCoordinateActive
+  exact inferInstance
+
+theorem eightEightHighOwnerVal_crossIndex_coordinate_iff
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (X : Fin 64 → Fin 64 → Prop) [DecidableRel X]
+    {x y id : Nat} (hx : x < 8) (hy : y < 8)
+    (hidx : eightEightHighCrossIndex? x y = some id) :
+    eightEightHighOwnerValOfRelations
+        (eightEightHighCoordinateActive R) X id = true ↔
+      R.Adj ⟨x, by omega⟩ ⟨8 + y, by omega⟩ := by
+  rw [eightEightHighOwnerVal_crossIndex_iff
+    (eightEightHighCoordinateActive R) X hx hy hidx]
+  constructor
+  · rintro ⟨e, heowner, heactive⟩
+    have hfirst : eightEightHighOwnerFirst e = ⟨x, by omega⟩ := by
+      apply Fin.ext
+      simpa [eightEightHighOwnerFirst] using congrArg Prod.fst heowner
+    have hsecond : eightEightHighOwnerSecond e = ⟨8 + y, by omega⟩ := by
+      apply Fin.ext
+      simpa [eightEightHighOwnerSecond] using congrArg Prod.snd heowner
+    simpa [eightEightHighCoordinateActive, hfirst, hsecond] using heactive
+  · intro hR
+    let idf : Fin 33 := ⟨id, by
+      exact Nat.lt_succ_iff.mpr
+        (eightEightHighCrossIndex?_le_thirtyTwo hidx)⟩
+    obtain ⟨e, heowner, _hevar⟩ :=
+      eightEightHighCrossIndex?_owner ⟨x, hx⟩ ⟨y, hy⟩ idf (by
+        simpa [idf] using hidx)
+    refine ⟨e, by simpa using heowner, ?_⟩
+    have hfirst : eightEightHighOwnerFirst e = ⟨x, by omega⟩ := by
+      apply Fin.ext
+      simpa [eightEightHighOwnerFirst] using congrArg Prod.fst heowner
+    have hsecond : eightEightHighOwnerSecond e = ⟨8 + y, by omega⟩ := by
+      apply Fin.ext
+      simpa [eightEightHighOwnerSecond] using congrArg Prod.snd heowner
+    simpa [eightEightHighCoordinateActive, hfirst, hsecond] using hR
+
 def EightEightHighEnabledOwner
     (active : Fin 64 → Prop) :=
   {e : Fin 64 // eightEightHighOwnerEnabled active e}
