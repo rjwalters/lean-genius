@@ -8,24 +8,24 @@ namespace Erdos85
 
 noncomputable section
 
-/-- Negating a signed vector on one shore changes block row sums
-`(-1,-4)` into eigenvalue three. -/
-theorem bipartition_signSwitch_eigen_three
+/-- Negating a signed vector on one shore subtracts the cross-block
+coefficient from the diagonal-block coefficient. -/
+theorem bipartition_signSwitch_eigen_sub
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : SimpleGraph X) [DecidableRel D.Adj]
     (A B : Finset X) (hAB : Disjoint A B)
     (hcover : ∀ x, D.neighborFinset x ⊆ A ∪ B)
-    (s : X → ℤ)
+    (s : X → ℤ) (p q : ℤ)
     (hAA : ∀ x ∈ A,
-      ∑ y ∈ (D.neighborFinset x).filter (· ∈ A), s y = -s x)
+      ∑ y ∈ (D.neighborFinset x).filter (· ∈ A), s y = p * s x)
     (hABsum : ∀ x ∈ A,
-      ∑ y ∈ (D.neighborFinset x).filter (· ∈ B), s y = -4 * s x)
+      ∑ y ∈ (D.neighborFinset x).filter (· ∈ B), s y = q * s x)
     (hBB : ∀ x ∈ B,
-      ∑ y ∈ (D.neighborFinset x).filter (· ∈ B), s y = -s x)
+      ∑ y ∈ (D.neighborFinset x).filter (· ∈ B), s y = p * s x)
     (hBAsum : ∀ x ∈ B,
-      ∑ y ∈ (D.neighborFinset x).filter (· ∈ A), s y = -4 * s x) :
+      ∑ y ∈ (D.neighborFinset x).filter (· ∈ A), s y = q * s x) :
     let t : X → ℤ := fun x ↦ if x ∈ B then -s x else s x
-    ∀ x ∈ A ∪ B, ∑ y ∈ D.neighborFinset x, t y = 3 * t x := by
+    ∀ x ∈ A ∪ B, ∑ y ∈ D.neighborFinset x, t y = (p - q) * t x := by
   classical
   dsimp only
   intro x hx
@@ -73,6 +73,7 @@ theorem bipartition_signSwitch_eigen_three
     rw [hsumA, hsumB, hAA x hxA, hABsum x hxA]
     simp [hxnotB]
     ring
+
   · rw [hsplit, Finset.sum_union hfilters]
     have hsumA : ∑ y ∈ (D.neighborFinset x).filter (· ∈ A),
         (if y ∈ B then -s y else s y) =
@@ -95,8 +96,32 @@ theorem bipartition_signSwitch_eigen_three
     simp [hxB]
     ring
 
+/-- The `mu=-5`, `(k,r)=(1,4)` specialization: block sums `(-1,-4)`
+switch to eigenvalue three. -/
+theorem bipartition_signSwitch_eigen_three
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D : SimpleGraph X) [DecidableRel D.Adj]
+    (A B : Finset X) (hAB : Disjoint A B)
+    (hcover : ∀ x, D.neighborFinset x ⊆ A ∪ B)
+    (s : X → ℤ)
+    (hAA : ∀ x ∈ A,
+      ∑ y ∈ (D.neighborFinset x).filter (· ∈ A), s y = -s x)
+    (hABsum : ∀ x ∈ A,
+      ∑ y ∈ (D.neighborFinset x).filter (· ∈ B), s y = -4 * s x)
+    (hBB : ∀ x ∈ B,
+      ∑ y ∈ (D.neighborFinset x).filter (· ∈ B), s y = -s x)
+    (hBAsum : ∀ x ∈ B,
+      ∑ y ∈ (D.neighborFinset x).filter (· ∈ A), s y = -4 * s x) :
+    let t : X → ℤ := fun x ↦ if x ∈ B then -s x else s x
+    ∀ x ∈ A ∪ B, ∑ y ∈ D.neighborFinset x, t y = 3 * t x := by
+  simpa using
+    bipartition_signSwitch_eigen_sub D A B hAB hcover s (-1) (-4)
+      (by simpa using hAA) (by simpa using hABsum)
+      (by simpa using hBB) (by simpa using hBAsum)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.bipartition_signSwitch_eigen_three
+#print axioms Erdos85.bipartition_signSwitch_eigen_sub
