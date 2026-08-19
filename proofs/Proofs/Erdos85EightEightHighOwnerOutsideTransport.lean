@@ -24,6 +24,14 @@ theorem eightEightHighOwnerTarget_not_cycleAdj_of_contains
   revert e v w
   native_decide
 
+theorem eightEightHighOwnerTarget_false_witness
+    (e : Fin 64) (v : Fin 16)
+    (h : eightEightHighOwnerTargetContains e v = false) :
+    ∃ w : Fin 16, eightEightHighOwnerContains e w = true ∧
+      eightEightHighCycleAdj w v = true := by
+  revert e v
+  native_decide
+
 noncomputable def highOwnerOutsideEquiv
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -247,6 +255,72 @@ theorem outsideHighOwnerCoordinates_target_eq_one
   have htrue : eightEightHighCycleAdj v (modelIso ws) = true := by
     simpa using (hcycle (modelIso.symm v) ws).mp hvw
   simp_all
+
+theorem outsideHighOwnerCoordinates_internal_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (hfixed : ∀ e : Fin 64,
+      eightEightHighActiveVariable? e = none →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (hsub : ∀ a b, R.Adj a b →
+      eightEightHighCandidatePair a b = true ∨
+        eightEightHighCandidatePair b a = true)
+    (modelIso : exteriorPairGraph G c ≃g R)
+    (hcycle : ∀ x y : c.supp,
+      G.Adj x.1 y.1 ↔
+        eightEightHighCycleAdj (modelIso x).val (modelIso y).val = true)
+    (e f : EightEightHighEnabledOwner (eightEightHighCoordinateActive R))
+    (v : Fin 16)
+    (htarget : eightEightHighOwnerTargetContains e.1 v = false)
+    (hfcontains : eightEightHighOwnerContains f.1 v = true)
+    (hef : G.Adj
+      ((highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+        hfixed hsub modelIso) e).1
+      ((highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+        hfixed hsub modelIso) f).1) : False := by
+  let out := highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+    hfixed hsub modelIso
+  let ze := out e
+  let zf := out f
+  obtain ⟨w, hecontains, hwvCycle⟩ :=
+    eightEightHighOwnerTarget_false_witness e.1 v htarget
+  let wi : c.supp := modelIso.symm w
+  let vi : c.supp := modelIso.symm v
+  have hzew : G.Adj ze.1 wi.1 := by
+    exact (outsideHighOwnerCoordinates_incident_iff
+      G c hcard hinc hqcard hRedges R hfixed hsub modelIso e w).mpr
+        hecontains |>.symm
+  have hzfv : G.Adj zf.1 vi.1 := by
+    exact (outsideHighOwnerCoordinates_incident_iff
+      G c hcard hinc hqcard hRedges R hfixed hsub modelIso f v).mpr
+        hfcontains |>.symm
+  have hwv : G.Adj wi.1 vi.1 := by
+    exact (hcycle wi vi).mpr (by simpa [wi, vi] using hwvCycle)
+  have hzevi : ze.1 ≠ vi.1 := fun h => ze.2 (h ▸ vi.2)
+  have hzfwi : zf.1 ≠ wi.1 := fun h => zf.2 (h ▸ wi.2)
+  have hwvi : wi.1 ≠ vi.1 := fun h => G.loopless.irrefl wi.1 (h ▸ hwv)
+  have hefd : ze.1 ≠ zf.1 := fun h => G.loopless.irrefl ze.1 (h ▸ hef)
+  have hef' : G.Adj ze.1 zf.1 := by
+    simpa [ze, zf, out] using hef
+  apply hfree
+  refine ⟨![ze.1, wi.1, vi.1, zf.1], ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;>
+      simp_all [C4, SimpleGraph.Adj.symm]
 
 end
 

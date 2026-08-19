@@ -380,14 +380,16 @@ theorem eightEightHighOwnerServiceSemantics_of_enabledEquiv
       (he : eightEightHighOwnerEnabled active e) (v : Fin 16),
       eightEightHighOwnerTargetContains e v = true →
         target (coord.symm v) (idx ⟨e, he⟩) = 1)
-    (htargetZero : ∀ (e : Fin 64)
-      (he : eightEightHighOwnerEnabled active e) (v : Fin 16),
-      eightEightHighOwnerTargetContains e v = false →
-        target (coord.symm v) (idx ⟨e, he⟩) = 0)
     (hincident : ∀ (e : Fin 64)
       (he : eightEightHighOwnerEnabled active e) (v : Fin 16),
       incident (coord.symm v) (idx ⟨e, he⟩) ↔
         eightEightHighOwnerContains e v = true)
+    (hinternalZero : ∀ (e : Fin 64)
+      (he : eightEightHighOwnerEnabled active e) (v : Fin 16)
+      (f : Fin 64) (hf : eightEightHighOwnerEnabled active f),
+      eightEightHighOwnerTargetContains e v = false →
+      eightEightHighOwnerContains f v = true →
+        ¬ C.Adj (idx ⟨e, he⟩) (idx ⟨f, hf⟩))
     (hintersect : ∀ (e f : Fin 64),
       e ≠ f → eightEightHighOwnersIntersect e f = true →
       ∀ he hf k,
@@ -413,10 +415,8 @@ theorem eightEightHighOwnerServiceSemantics_of_enabledEquiv
           -- generated target positions.
           by_cases ht : eightEightHighOwnerTargetContains e v = true
           · exact ht
-          · have hz := htargetZero e he v (Bool.eq_false_iff.mpr ht)
-            have hzero := h.zero_service (coord.symm v) (idx ⟨e, he⟩) hz
-              (idx ⟨f, hf⟩) hefC
-              ((hincident f hf v).mpr hfv)
+          · have hzero := hinternalZero e he v f hf
+              (Bool.eq_false_iff.mpr ht) hfv hefC
             exact False.elim hzero))
         (idx ⟨f, hf⟩) (idx ⟨g, hg⟩) hefC
         ((hincident f hf v).mpr hfv) hegC
@@ -424,9 +424,7 @@ theorem eightEightHighOwnerServiceSemantics_of_enabledEquiv
     exact congrArg Subtype.val (idx.injective hfg)
   · intro e v f htarget hfv hef
     obtain ⟨he, hf, hefC⟩ := hef
-    exact h.zero_service (coord.symm v) (idx ⟨e, he⟩)
-      (htargetZero e he v htarget) (idx ⟨f, hf⟩) hefC
-      ((hincident f hf v).mpr hfv)
+    exact hinternalZero e he v f hf htarget hfv hefC
   · intro e f hef hinter k hek hfk
     obtain ⟨he, hk, hekC⟩ := hek
     obtain ⟨hf, _hk', hfkC⟩ := hfk
