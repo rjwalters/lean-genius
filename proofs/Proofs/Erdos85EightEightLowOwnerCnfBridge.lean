@@ -1,6 +1,7 @@
 import Proofs.Erdos85OrderSixtyFourOutsideCnfSemantics
 import Proofs.Erdos85SizeTwoEigenlineEightEightLowExteriorModel
 import Proofs.Erdos85SizeTwoUnorderedPairServiceCount
+import Proofs.Erdos85EightEightLowOwnerCnf
 
 /-!
 # Transporting exterior-owner clause semantics to finite coordinates
@@ -20,6 +21,40 @@ open SimpleGraph
 namespace Erdos85
 
 noncomputable section
+
+/-- The generator's endpoint table is in range on all forty-eight genuine
+owner indices. -/
+theorem eightEightOwnerAt_lt_sixteen (e : Fin 48) :
+    (eightEightOwnerAt e).1 < 16 ∧ (eightEightOwnerAt e).2 < 16 := by
+  revert e
+  decide
+
+/-- First endpoint of a generated owner as a vertex of the fixed internal
+`Fin 16` model. -/
+def eightEightOwnerFirst (e : Fin 48) : Fin 16 :=
+  ⟨(eightEightOwnerAt e).1, (eightEightOwnerAt_lt_sixteen e).1⟩
+
+/-- Second endpoint of a generated owner as a vertex of the fixed internal
+`Fin 16` model. -/
+def eightEightOwnerSecond (e : Fin 48) : Fin 16 :=
+  ⟨(eightEightOwnerAt e).2, (eightEightOwnerAt_lt_sixteen e).2⟩
+
+/-- The unordered internal pair represented by a generated owner index. -/
+def eightEightOwnerSym2 (e : Fin 48) : Sym2 (Fin 16) :=
+  s(eightEightOwnerFirst e, eightEightOwnerSecond e)
+
+/-- The generated list has no duplicate unordered owner pairs. -/
+theorem eightEightOwnerSym2_injective :
+    Function.Injective eightEightOwnerSym2 := by
+  decide
+
+/-- Membership in the generated pair is exactly the generator's Boolean
+incidence predicate. -/
+theorem mem_eightEightOwnerSym2_iff (e : Fin 48) (v : Fin 16) :
+    v ∈ (eightEightOwnerSym2 e).toFinset ↔
+      eightEightOwnerContains e v := by
+  revert e v
+  decide
 
 /-- Clause semantics are invariant under relabeling the exterior vertices.
 The transported graph is the comap along the inverse equivalence, and both
@@ -115,5 +150,8 @@ end
 end Erdos85
 
 #print axioms Erdos85.OutsideCClauseSemantics.comap_equiv
+#print axioms Erdos85.eightEightOwnerAt_lt_sixteen
+#print axioms Erdos85.eightEightOwnerSym2_injective
+#print axioms Erdos85.mem_eightEightOwnerSym2_iff
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
 #print axioms Erdos85.outsidePair_intersects_no_exterior_common
