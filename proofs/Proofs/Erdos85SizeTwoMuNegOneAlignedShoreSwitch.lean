@@ -1,6 +1,7 @@
 import Proofs.Erdos85SizeTwoAlignedShoreSwitch
 import Proofs.Erdos85SizeTwoMuNegOneAlignedLedger
 import Proofs.Erdos85SizeTwoMuNegOneRefinedSectorRouting
+import Proofs.Erdos85ComponentSignFlipEigenvector
 
 /-! # Graph-facing aligned shore switch for the μ=-1 lane -/
 
@@ -164,7 +165,7 @@ theorem orderSixtyFour_sizeTwo_muNegOne_refined_shoreSwitch
         (fun x ↦ H.connectedComponentMk x = b)
       let t : c.supp → ℤ := fun x ↦ if x ∈ B then -s x.1 else s x.1
       (K.adjMatrix ℤ).mulVec t = sizeTwoMuSwitchTarget (-1) k r • t ∧
-        t ≠ 0 := by
+        (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t ∧ t ≠ 0 := by
   classical
   dsimp only
   let H := G.induce c.supp
@@ -192,17 +193,27 @@ theorem orderSixtyFour_sizeTwo_muNegOne_refined_shoreSwitch
         rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
     · rcases hone.2 with h | h | h | h | h | h <;>
         rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  have hsH : (H.adjMatrix ℤ).mulVec (fun x : c.supp ↦ s x.1) =
+      (-2 : ℤ) • (fun x : c.supp ↦ s x.1) := by
+    funext x
+    rw [induce_adjMatrix_mulVec_restrict_apply]
+    have hx := hH x.1 x.2
+    simpa [ConnectedComponent.mem_supp_iff, smul_eq_mul] using hx
+  have htH := connectedComponent_signFlip_adjMatrix_eigenvector
+    H b (fun x : c.supp ↦ s x.1) (-2) hsH
   constructor
   · simpa only [hcoeff] using hswitch
-  · intro ht
-    have hval := congrFun ht (u 0)
-    have hsign0 := hs_in (u 0).1 (u 0).2
-    by_cases hmem : (u 0) ∈ (Finset.univ : Finset c.supp).filter
-        (fun x ↦ H.connectedComponentMk x = b)
-    · simp [hmem] at hval
-      omega
-    · simp [hmem] at hval
-      omega
+  · constructor
+    · simpa [Finset.mem_filter] using htH
+    · intro ht
+      have hval := congrFun ht (u 0)
+      have hsign0 := hs_in (u 0).1 (u 0).2
+      by_cases hmem : (u 0) ∈ (Finset.univ : Finset c.supp).filter
+          (fun x ↦ H.connectedComponentMk x = b)
+      · simp [hmem] at hval
+        omega
+      · simp [hmem] at hval
+        omega
 
 end
 
