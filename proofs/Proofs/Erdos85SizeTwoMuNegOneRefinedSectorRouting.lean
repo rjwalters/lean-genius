@@ -120,6 +120,24 @@ theorem muNegOne_postEndpoint_switch_target
   · rcases hone.2 with h | h | h | h | h <;>
       rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
 
+/-- Assembly form of the endpoint-reduced table: either the unique
+self-switch cell remains, or switching routes to one of the three other
+unresolved signed lanes. -/
+theorem muNegOne_postEndpoint_self_or_crossLane
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegOnePostEndpointSectorCells N₁ N₂ k r) :
+    (k = 1 ∧ r = 4) ∨
+      sizeTwoMuSwitchTarget (-1) k r = -5 ∨
+      sizeTwoMuSwitchTarget (-1) k r = -3 ∨
+      sizeTwoMuSwitchTarget (-1) k r = 3 := by
+  rcases hcell with hzero | hmixed | hone
+  · rcases hzero.2 with h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · rcases hmixed.2 with h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · rcases hone.2 with h | h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+
 /-- After the `(0,6)` contradiction, `(1,4)` is the unique μ=-1 cell fixed
 by the shore-switch involution. -/
 theorem muNegOne_refined_switch_target_eq_self_iff
@@ -326,4 +344,5 @@ end Erdos85
 #print axioms Erdos85.muNegOne_postMuOne_switch_target
 #print axioms Erdos85.muNegOne_postEndpoint_sector_cells_of_target_ne_negativeSeven
 #print axioms Erdos85.muNegOne_postEndpoint_switch_target
+#print axioms Erdos85.muNegOne_postEndpoint_self_or_crossLane
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_alignedLedger
