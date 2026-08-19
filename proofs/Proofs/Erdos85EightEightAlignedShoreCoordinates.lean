@@ -150,7 +150,7 @@ theorem exists_normalizedEightShoreCoordinates
 
 /-- The explicit two-shore coordinate equivalence is also a labeling by
 the fixed disjoint union of two eight-cycles. -/
-def eightEightCycleLabeling_of_shoreCoordinates
+def alignedEightEightCycleLabeling_of_shoreCoordinates
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (c : (secondOrderDefectGraph G).ConnectedComponent)

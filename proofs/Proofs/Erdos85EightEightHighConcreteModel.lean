@@ -14,6 +14,43 @@ noncomputable section
 
 set_option maxHeartbeats 0
 
+/-- The quotient-class coercion and its explicit support have the same
+vertices; this equivalence makes that boundary explicit for older terminals. -/
+def connectedComponentSupportEquiv
+    {W : Type*} (H : SimpleGraph W) (c : H.ConnectedComponent) :
+    c ≃ c.supp where
+  toFun x := ⟨x.1, (ConnectedComponent.mem_supp_iff c x.1).mpr x.2⟩
+  invFun x := ⟨x.1, (ConnectedComponent.mem_supp_iff c x.1).mp x.2⟩
+  left_inv x := Subtype.ext rfl
+  right_inv x := Subtype.ext rfl
+
+/-- Exterior ownership is unchanged when a connected component is presented
+as its quotient class or as its explicit support set. -/
+noncomputable def connectedComponentExteriorSuppIso
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    exteriorPairGraph G c ≃g exteriorPairGraph G c.supp where
+  toEquiv := connectedComponentSupportEquiv (secondOrderDefectGraph G) c
+  map_rel_iff' := by
+    intro x y
+    simp only [exteriorPairGraph, connectedComponentSupportEquiv]
+    constructor
+    · rintro ⟨hxy, z, hzc, hxz, hyz⟩
+      refine ⟨?_, z, ?_, hxz, hyz⟩
+      · intro h
+        exact hxy (Subtype.ext (congrArg Subtype.val h))
+      · intro hz
+        exact hzc ((ConnectedComponent.mem_supp_iff c z).mp hz)
+    · rintro ⟨hxy, z, hzc, hxz, hyz⟩
+      refine ⟨?_, z, ?_, hxz, hyz⟩
+      · intro h
+        exact hxy (Subtype.ext (congrArg Subtype.val h))
+      · intro hz
+        exact hzc ((ConnectedComponent.mem_supp_iff c z).mpr hz)
+
 def EightEightOddOffset (i j : ZMod 8) : Prop :=
   j - i = 1 ∨ j - i = 3 ∨ j - i = 5 ∨ j - i = 7
 
@@ -250,7 +287,7 @@ theorem eightEightHighCoordinateExteriorGraphIso_cycle
             huinj hvinj hurange hvrange) x).val
           ((eightEightHighCoordinateExteriorGraphIso G c hc a b hab u v
             huinj hvinj hurange hvrange) y).val = true := by
-  let labeling := eightEightCycleLabeling_of_shoreCoordinates
+  let labeling := alignedEightEightCycleLabeling_of_shoreCoordinates
     G c hc a b hab u v huinj hvinj hurange hvrange hu hv
   intro x y
   change (G.induce c.supp).Adj x y ↔ _
