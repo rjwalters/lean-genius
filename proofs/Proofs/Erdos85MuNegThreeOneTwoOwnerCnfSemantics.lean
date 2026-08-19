@@ -59,6 +59,52 @@ theorem muNegThreeFixClauses_satisfied
     refine ⟨-Int.ofNat d, by simp [d], ?_⟩
     simp [dimacsLitValue, hv]
 
+/-- Semantic content of an exactly-one block, separated from its quadratic
+DIMACS expansion. -/
+structure MuNegThreeExactlyOneSemantics
+    (val : DimacsValuation) (lits : List Int) : Prop where
+  exists_true : dimacsClauseSatisfied val lits
+  pairwise : ∀ x ∈ lits, ∀ y ∈ lits, x < y →
+    dimacsClauseSatisfied val [-x, -y]
+
+theorem muNegThreeExactlyOne_satisfied
+    {val : DimacsValuation} {lits : List Int}
+    (h : MuNegThreeExactlyOneSemantics val lits) :
+    ∀ clause ∈ muNegThreeExactlyOne lits,
+      dimacsClauseSatisfied val clause := by
+  intro clause hclause
+  simp only [muNegThreeExactlyOne, List.mem_append, List.mem_singleton,
+    List.mem_flatMap, List.mem_map, List.mem_filter] at hclause
+  rcases hclause with rfl | ⟨x, hx, y, ⟨hy, hxy⟩, rfl⟩
+  · exact h.exists_true
+  · exact h.pairwise x hx y hy (of_decide_eq_true hxy)
+
+theorem muNegThreeOppRowClauses_satisfied
+    {val : DimacsValuation}
+    (hrow : ∀ i, i < 8 → MuNegThreeExactlyOneSemantics val
+      (((List.range 8).filter fun j => !(i % 2 == j % 2)).map
+        fun j => Int.ofNat (muNegThreeDVar (i * 8 + j)))) :
+    ∀ clause ∈ muNegThreeOppRowClauses,
+      dimacsClauseSatisfied val clause := by
+  intro clause hclause
+  simp only [muNegThreeOppRowClauses, List.mem_flatMap,
+    List.mem_range] at hclause
+  obtain ⟨i, hi, hclause⟩ := hclause
+  exact muNegThreeExactlyOne_satisfied (hrow i hi) clause hclause
+
+theorem muNegThreeOppColClauses_satisfied
+    {val : DimacsValuation}
+    (hcol : ∀ j, j < 8 → MuNegThreeExactlyOneSemantics val
+      (((List.range 8).filter fun i => !(i % 2 == j % 2)).map
+        fun i => Int.ofNat (muNegThreeDVar (i * 8 + j)))) :
+    ∀ clause ∈ muNegThreeOppColClauses,
+      dimacsClauseSatisfied val clause := by
+  intro clause hclause
+  simp only [muNegThreeOppColClauses, List.mem_flatMap,
+    List.mem_range] at hclause
+  obtain ⟨j, hj, hclause⟩ := hclause
+  exact muNegThreeExactlyOne_satisfied (hcol j hj) clause hclause
+
 theorem muNegThreeOneTwoOwnerConstraintSemantics_formulaSatisfied
     {fwd : Bool} {c : Nat} {val : DimacsValuation}
     (h : MuNegThreeOneTwoOwnerConstraintSemantics fwd c val) :
