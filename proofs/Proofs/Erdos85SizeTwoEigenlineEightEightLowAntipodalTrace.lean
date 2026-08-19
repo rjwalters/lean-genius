@@ -1,5 +1,6 @@
 import Proofs.Erdos85SizeTwoEigenlineAllTriangleFreeCrossSign
 import Proofs.Erdos85AntipodalCycleReservoir
+import Proofs.Erdos85RegularGraphComplementTriangleLedger
 
 /-!
 # Sign separation in the low eight-plus-eight sector
@@ -17,6 +18,26 @@ open Finset SimpleGraph
 namespace Erdos85
 
 noncomputable section
+
+/-- A 5-regular graph on eight vertices has cubic adjacency trace at most
+`96`; this is the Goodman complement ledger with the nonnegative complement
+triangle contribution discarded. -/
+theorem fiveRegular_eight_trace_adjMatrix_cube_le_96
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (C : SimpleGraph W) [DecidableRel C.Adj] [DecidableRel Cᶜ.Adj]
+    (hcard : Fintype.card W = 8)
+    (hreg : ∀ x, C.degree x = 5) :
+    Matrix.trace (C.adjMatrix ℤ * C.adjMatrix ℤ * C.adjMatrix ℤ) ≤ 96 := by
+  have hledger := regularGraph_trace_adjMatrix_cube_add_compl
+    C 8 5 hcard hreg
+  have hcompl := trace_adjMatrix_cube_eq_six_mul_triangleMinorCount
+    Cᶜ (by omega)
+  have hnonneg : 0 ≤
+      Matrix.trace (Cᶜ.adjMatrix ℤ * Cᶜ.adjMatrix ℤ * Cᶜ.adjMatrix ℤ) := by
+    rw [hcompl]
+    positivity
+  norm_num at hledger
+  omega
 
 /-- After an all-triangle-free internal cycle exhausts the opposite-sign
 defect degree, every nonambient defect edge at that cycle preserves sign. -/
@@ -228,6 +249,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_allTriangleFree_nonambient_defect_preserves_sign
+#print axioms Erdos85.fiveRegular_eight_trace_adjMatrix_cube_le_96
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_allTriangleFree_antipodal_preserves_sign
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_degree_five_sign_support
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_signSector_decomposition
