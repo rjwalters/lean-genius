@@ -38,8 +38,7 @@ instance : DecidableRel sixTenAmbientAdj := by
 def sixTenLowDefectAdj : SixTenVertex → SixTenVertex → Prop
   | Sum.inl i, Sum.inl j => j - i = 1 ∨ j - i = 5
   | Sum.inr i, Sum.inr j =>
-      j - i = 1 ∨ j - i = 2 ∨ j - i = 3 ∨
-        j - i = 7 ∨ j - i = 8 ∨ j - i = 9
+      j - i = 2 ∨ j - i = 3 ∨ j - i = 7 ∨ j - i = 8
   | Sum.inl i, Sum.inr j => sixTenSameSign (Sum.inl i) (Sum.inr j)
   | Sum.inr i, Sum.inl j => sixTenSameSign (Sum.inr i) (Sum.inl j)
 
@@ -50,8 +49,7 @@ instance : DecidableRel sixTenLowDefectAdj := by
 def sixTenHighDefectAdj : SixTenVertex → SixTenVertex → Prop
   | Sum.inl i, Sum.inl j => j - i = 1 ∨ j - i = 5
   | Sum.inr i, Sum.inr j =>
-      j - i = 1 ∨ j - i = 3 ∨ j - i = 4 ∨
-        j - i = 6 ∨ j - i = 7 ∨ j - i = 9
+      j - i = 3 ∨ j - i = 4 ∨ j - i = 6 ∨ j - i = 7
   | Sum.inl i, Sum.inr j => sixTenSameSign (Sum.inl i) (Sum.inr j)
   | Sum.inr i, Sum.inl j => sixTenSameSign (Sum.inr i) (Sum.inl j)
 
@@ -91,11 +89,12 @@ theorem sixTenLow_cross_exteriorPairAdj_iff (i : ZMod 6) (j : ZMod 10) :
   revert i j
   decide
 
-/-- In the surviving `{\u00b12,\u00b13}` branch, long-shore exterior pairs have
-exactly offsets `{\u00b14,5}`. -/
+/-- In the (independently impossible) `{\u00b12,\u00b13}` branch, long-shore
+exterior pairs have offsets `{\u00b11, \u00b14, 5}`. -/
 theorem sixTenLow_long_exteriorPairAdj_iff (i j : ZMod 10) :
     sixTenExteriorPairAdj sixTenLowDefectAdj (Sum.inr i) (Sum.inr j) ↔
-      j - i = 4 ∨ j - i = 5 ∨ j - i = 6 := by
+      j - i = 1 ∨ j - i = 4 ∨ j - i = 5 ∨
+        j - i = 6 ∨ j - i = 9 := by
   revert i j
   decide
 
@@ -113,23 +112,30 @@ theorem sixTenHigh_cross_exteriorPairAdj_iff (i : ZMod 6) (j : ZMod 10) :
   revert i j
   decide
 
-/-- Only the long antipodal matching survives as a high-branch exterior pair. -/
+/-- In the high branch, long exterior pairs have offsets `{\u00b11,5}`. -/
 theorem sixTenHigh_long_exteriorPairAdj_iff (i j : ZMod 10) :
     sixTenExteriorPairAdj sixTenHighDefectAdj (Sum.inr i) (Sum.inr j) ↔
-      j - i = 5 := by
+      j - i = 1 ∨ j - i = 5 ∨ j - i = 9 := by
   revert i j
   decide
 
-/-- The `{\u00b12,\u00b13}` long support gives a six-regular exterior-pair model. -/
-theorem sixTenLow_exteriorPairDegree (x : SixTenVertex) :
-    sixTenExteriorPairDegree sixTenLowDefectAdj x = 6 := by
-  revert x
+/-- Short vertices retain degree six in the low model. -/
+theorem sixTenLow_short_exteriorPairDegree (i : ZMod 6) :
+    sixTenExteriorPairDegree sixTenLowDefectAdj (Sum.inl i) = 6 := by
+  revert i
+  decide
+
+/-- The impossible low branch has long exterior-pair degree eight; this is a
+second obstruction to global exterior-pair six-regularity. -/
+theorem sixTenLow_long_exteriorPairDegree (i : ZMod 10) :
+    sixTenExteriorPairDegree sixTenLowDefectAdj (Sum.inr i) = 8 := by
+  revert i
   decide
 
 /-- In the `{\u00b13,\u00b14}` branch every long vertex has exterior-pair degree
-only four: three opposite-sign short vertices and its long antipode. -/
+six: three opposite-sign short vertices and long offsets `{\u00b11,5}`. -/
 theorem sixTenHigh_long_exteriorPairDegree (i : ZMod 10) :
-    sixTenExteriorPairDegree sixTenHighDefectAdj (Sum.inr i) = 4 := by
+    sixTenExteriorPairDegree sixTenHighDefectAdj (Sum.inr i) = 6 := by
   revert i
   decide
 
@@ -142,7 +148,8 @@ theorem sixTenHigh_short_exteriorPairDegree (i : ZMod 6) :
 
 end Erdos85
 
-#print axioms Erdos85.sixTenLow_exteriorPairDegree
+#print axioms Erdos85.sixTenLow_short_exteriorPairDegree
+#print axioms Erdos85.sixTenLow_long_exteriorPairDegree
 #print axioms Erdos85.sixTenHigh_long_exteriorPairDegree
 #print axioms Erdos85.sixTenHigh_short_exteriorPairDegree
 #print axioms Erdos85.sixTenLow_short_exteriorPairAdj_iff
