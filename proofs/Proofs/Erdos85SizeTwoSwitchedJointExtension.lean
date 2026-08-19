@@ -2,6 +2,7 @@ import Proofs.Erdos85BinarySquareComponentAmbientSquareSpectrum
 import Proofs.Erdos85ComponentSignFlipEigenvector
 import Proofs.Erdos85SizeTwoMuNegOneRefinedSectorRouting
 import Proofs.Erdos85SizeTwoMuNegThreeRefinedSectorRouting
+import Proofs.Erdos85SizeTwoMuNegFiveSectorSwitchRouting
 
 /-! # Extending an induced signed joint eigenvector to its ambient component -/
 
@@ -201,6 +202,48 @@ theorem false_of_muNegThree_self_or_ambientCrossLane
   · exact h1 s hs
   · exact hpos s hs
 
+/-- Every post-μ=1 switch from the μ=-5 lane produces an ambient witness
+in one of the three remaining lanes; there is no self case. -/
+theorem muNegFive_inducedSwitch_ambientCrossLane
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (k r : ℕ) (hcell : MuNegFivePostMuOneSectorCells k r)
+    (t : c.supp → ℤ) (ht : ∀ x, t x = -1 ∨ t x = 1)
+    (hH : ((G.induce c.supp).adjMatrix ℤ).mulVec t = (-2 : ℤ) • t)
+    (hD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec t =
+      sizeTwoMuSwitchTarget (-5) k r • t) :
+    (∃ s, IsAmbientSignedJoint G c (-3) s) ∨
+      (∃ s, IsAmbientSignedJoint G c (-1) s) ∨
+      (∃ s, IsAmbientSignedJoint G c 3 s) := by
+  rcases muNegFive_postMuOne_switch_target k r hcell with h3 | h1 | hpos
+  · left
+    exact exists_isAmbientSignedJoint_of_induced G c t ht (-3) hH (by simpa [h3] using hD)
+  · right; left
+    exact exists_isAmbientSignedJoint_of_induced G c t ht (-1) hH (by simpa [h1] using hD)
+  · right; right
+    exact exists_isAmbientSignedJoint_of_induced G c t ht 3 hH (by simpa [hpos] using hD)
+
+/-- Terminal-callback capstone for the reduced μ=-5 switch. -/
+theorem false_of_muNegFive_ambientCrossLane
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hroute : (∃ s, IsAmbientSignedJoint G c (-3) s) ∨
+      (∃ s, IsAmbientSignedJoint G c (-1) s) ∨
+      (∃ s, IsAmbientSignedJoint G c 3 s))
+    (h3 : ∀ s, IsAmbientSignedJoint G c (-3) s → False)
+    (h1 : ∀ s, IsAmbientSignedJoint G c (-1) s → False)
+    (hpos : ∀ s, IsAmbientSignedJoint G c 3 s → False) : False := by
+  rcases hroute with ⟨s, hs⟩ | ⟨s, hs⟩ | ⟨s, hs⟩
+  · exact h3 s hs
+  · exact h1 s hs
+  · exact hpos s hs
+
 end
 
 end Erdos85
@@ -211,3 +254,5 @@ end Erdos85
 #print axioms Erdos85.muNegThree_inducedSwitch_self_or_ambientCrossLane
 #print axioms Erdos85.false_of_muNegOne_self_or_ambientCrossLane
 #print axioms Erdos85.false_of_muNegThree_self_or_ambientCrossLane
+#print axioms Erdos85.muNegFive_inducedSwitch_ambientCrossLane
+#print axioms Erdos85.false_of_muNegFive_ambientCrossLane
