@@ -74,6 +74,100 @@ theorem MuNegThreeCrossOwnerNormalForm.positive_crossOwner_neighbors_eq_three
   exact Finset.card_eq_three.mpr
     ⟨N.o₀ x, N.oσ x, N.oτ x, h01, h02, h12, rfl⟩
 
+/-- The negative-shore mirror: the three cross owners of `y` are obtained
+by pulling `y` back through `f` and then through the two permutations. -/
+theorem MuNegThreeCrossOwnerNormalForm.negative_crossOwner_neighbors_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (N : MuNegThreeCrossOwnerNormalForm G c s)
+    (y : MuNegThreeNegativeShore (secondOrderDefectGraph G) c s) :
+    ((N.crossOwnerFinset G c s).filter fun z ↦ G.Adj y.1 z) =
+      {N.o₀ (N.f.symm y), N.oσ (N.σ.symm (N.f.symm y)),
+        N.oτ (N.τ.symm (N.f.symm y))} ∧
+    ((N.crossOwnerFinset G c s).filter fun z ↦ G.Adj y.1 z).card = 3 := by
+  classical
+  let u := N.f.symm y
+  have howners := N.owner_maps_injective_disjoint G hfree hreg hcard c hc s
+  have heq : ((N.crossOwnerFinset G c s).filter fun z ↦ G.Adj y.1 z) =
+      {N.o₀ u, N.oσ (N.σ.symm u), N.oτ (N.τ.symm u)} := by
+    ext z
+    simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hzcross, hyz⟩
+      obtain ⟨-, x, _, hxz, _⟩ :=
+        (N.mem_crossOwnerFinset_iff G hfree c s z).mp hzcross
+      rcases (N.exhaust x y).mp
+          ((orderSixtyFour_sizeTwo_muNegThree_cross_owner_rectangle
+            G hfree c s x x y y z ⟨hxz, hyz⟩ ⟨hxz, hyz⟩).1) with hy | hy | hy
+      · left
+        have hxu : x = u := by
+          apply N.f.injective
+          simpa [u] using hy.symm
+        subst x
+        exact (N.owner₀ u z).mp (by simpa [hy] using And.intro hxz hyz)
+      · right; left
+        have hsx : N.σ x = u := by
+          apply N.f.injective
+          simpa [u] using hy.symm
+        have hx : x = N.σ.symm u := by
+          calc
+            x = N.σ.symm (N.σ x) := (N.σ.symm_apply_apply x).symm
+            _ = N.σ.symm u := congrArg N.σ.symm hsx
+        subst x
+        exact (N.ownerσ (N.σ.symm u) z).mp
+          (by simpa [hy] using And.intro hxz hyz)
+      · right; right
+        have htx : N.τ x = u := by
+          apply N.f.injective
+          simpa [u] using hy.symm
+        have hx : x = N.τ.symm u := by
+          calc
+            x = N.τ.symm (N.τ x) := (N.τ.symm_apply_apply x).symm
+            _ = N.τ.symm u := congrArg N.τ.symm htx
+        subst x
+        exact (N.ownerτ (N.τ.symm u) z).mp
+          (by simpa [hy] using And.intro hxz hyz)
+    · intro hz
+      rcases hz with rfl | rfl | rfl
+      · have ho := (N.owner₀ u (N.o₀ u)).2 rfl
+        exact ⟨by simp [MuNegThreeCrossOwnerNormalForm.crossOwnerFinset],
+          by simpa [u] using ho.2⟩
+      · have ho := (N.ownerσ (N.σ.symm u) (N.oσ (N.σ.symm u))).2 rfl
+        exact ⟨by simp [MuNegThreeCrossOwnerNormalForm.crossOwnerFinset],
+          by simpa [u] using ho.2⟩
+      · have ho := (N.ownerτ (N.τ.symm u) (N.oτ (N.τ.symm u))).2 rfl
+        exact ⟨by simp [MuNegThreeCrossOwnerNormalForm.crossOwnerFinset],
+          by simpa [u] using ho.2⟩
+  have h01 : N.o₀ u ≠ N.oσ (N.σ.symm u) := by
+    intro h
+    exact Finset.disjoint_left.mp howners.2.2.2.1
+      (Finset.mem_image.mpr ⟨u, Finset.mem_univ _, rfl⟩)
+      (Finset.mem_image.mpr ⟨N.σ.symm u, Finset.mem_univ _, h.symm⟩)
+  have h02 : N.o₀ u ≠ N.oτ (N.τ.symm u) := by
+    intro h
+    exact Finset.disjoint_left.mp howners.2.2.2.2.1
+      (Finset.mem_image.mpr ⟨u, Finset.mem_univ _, rfl⟩)
+      (Finset.mem_image.mpr ⟨N.τ.symm u, Finset.mem_univ _, h.symm⟩)
+  have h12 : N.oσ (N.σ.symm u) ≠ N.oτ (N.τ.symm u) := by
+    intro h
+    exact Finset.disjoint_left.mp howners.2.2.2.2.2
+      (Finset.mem_image.mpr ⟨N.σ.symm u, Finset.mem_univ _, rfl⟩)
+      (Finset.mem_image.mpr ⟨N.τ.symm u, Finset.mem_univ _, h.symm⟩)
+  refine ⟨by simpa [u] using heq, ?_⟩
+  rw [heq]
+  exact Finset.card_eq_three.mpr
+    ⟨N.o₀ u, N.oσ (N.σ.symm u), N.oτ (N.τ.symm u),
+      h01, h02, h12, rfl⟩
+
 /-- Every positive shore vertex is incident with exactly three vertices of
 the positive-positive extreme owner fibre. -/
 theorem MuNegThreeCrossOwnerNormalForm.positive_extreme_neighbors_card_three
@@ -180,9 +274,116 @@ theorem MuNegThreeCrossOwnerNormalForm.positive_extreme_neighbors_card_three
   change Rp.card = 3
   omega
 
+/-- Every negative shore vertex is incident with exactly three vertices of
+the negative-negative extreme owner fibre. -/
+theorem MuNegThreeCrossOwnerNormalForm.negative_extreme_neighbors_card_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-3 : ℤ) * s z)
+    (N : MuNegThreeCrossOwnerNormalForm G c s)
+    (hshore : Fintype.card
+      (MuNegThreePositiveShore (secondOrderDefectGraph G) c s) = 8)
+    (y : MuNegThreeNegativeShore (secondOrderDefectGraph G) c s) :
+    ((Finset.univ.filter fun z : V ↦
+      (G.adjMatrix ℤ).mulVec s z + 2 * s z = -2).filter
+        fun z ↦ G.Adj y.1 z).card = 3 := by
+  classical
+  let w := fun z => (G.adjMatrix ℤ).mulVec s z + 2 * s z
+  let Sp := (Finset.univ : Finset V).filter fun z ↦ w z = 2
+  let Sm := (Finset.univ : Finset V).filter fun z ↦ w z = -2
+  let X := N.crossOwnerFinset G c s
+  let E := componentExteriorFinset c
+  let Rp := Sp.filter fun z ↦ G.Adj y.1 z
+  let Rm := Sm.filter fun z ↦ G.Adj y.1 z
+  let Rx := X.filter fun z ↦ G.Adj y.1 z
+  let Re := E.filter fun z ↦ G.Adj y.1 z
+  have hpartition :=
+    orderSixtyFour_sizeTwo_muNegThree_extremeFibers_eq_sameSignOwnerHalf
+      G hfree hreg hcard c hc s hs_out hs_in hH hD N hshore
+  have hXsub : X ⊆ E := by
+    intro z hz
+    change z ∈ Finset.univ.filter (fun z ↦ z ∉ c.supp)
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+      (N.mem_crossOwnerFinset_iff G hfree c s z).mp hz |>.1⟩
+  have hE : E = (Sp ∪ Sm) ∪ X := by
+    calc
+      E = (E \ X) ∪ X := (Finset.sdiff_union_of_subset hXsub).symm
+      _ = (Sp ∪ Sm) ∪ X := by rw [hpartition]
+  have hRe : Re = (Rp ∪ Rm) ∪ Rx := by
+    simp only [Re, Rp, Rm, Rx, ← Finset.filter_union, ← hE]
+  have hdpm : Disjoint Sp Sm := by
+    rw [Finset.disjoint_left]
+    intro z hp hm
+    have hp' := (Finset.mem_filter.mp hp).2
+    have hm' := (Finset.mem_filter.mp hm).2
+    omega
+  have hdSX : Disjoint (Sp ∪ Sm) X := by
+    rw [hpartition, Finset.disjoint_left]
+    intro z hzsd hzX
+    exact (Finset.mem_sdiff.mp hzsd).2 hzX
+  have hdrowsPM : Disjoint Rp Rm :=
+    hdpm.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have hdrowsX : Disjoint (Rp ∪ Rm) Rx := by
+    apply hdSX.mono
+    · exact Finset.union_subset_union
+        (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+    · exact Finset.filter_subset _ _
+  have hReCard : Re.card = 6 := by
+    have hout := orderSixtyFour_sizeTwoComponent_exteriorNeighborCard_six
+      G hfree hreg hcard c hc ⟨y.1, y.2.1⟩
+    have heq : Re = (G.neighborFinset y.1).filter
+        (fun z => (secondOrderDefectGraph G).connectedComponentMk z ≠ c) := by
+      ext z
+      simp [Re, E, componentExteriorFinset, SimpleGraph.mem_neighborFinset,
+        ConnectedComponent.mem_supp_iff, G.adj_comm, and_comm]
+    rw [heq, hout]
+  have hRxCard : Rx.card = 3 := by
+    exact (N.negative_crossOwner_neighbors_eq_three
+      G hfree hreg hcard c hc s y).2
+  have hRpCard : Rp.card = 0 := by
+    rw [Finset.card_eq_zero]
+    apply Finset.not_nonempty_iff_eq_empty.mp
+    rintro ⟨z, hz⟩
+    let zp : MuNegThreePositiveExteriorFiber G s :=
+      ⟨z, (Finset.mem_filter.mp (Finset.mem_filter.mp hz).1).2⟩
+    have hneighbors :=
+      orderSixtyFour_sizeTwo_muNegThree_extremeExteriorFiber_neighborProfile
+        G hfree hreg hcard c hc s hs_out hs_in hH hD
+    have hymem : y ∈ ((Finset.univ : Finset
+        (MuNegThreeNegativeShore (secondOrderDefectGraph G) c s)).filter
+          fun u ↦ G.Adj u.1 zp.1) :=
+      Finset.mem_filter.mpr ⟨Finset.mem_univ _, (Finset.mem_filter.mp hz).2⟩
+    have hempty := Finset.card_eq_zero.mp (hneighbors.1 zp).2
+    rw [hempty] at hymem
+    simp at hymem
+  have hsum : Re.card = Rp.card + Rm.card + Rx.card := by
+    rw [hRe, Finset.card_union_of_disjoint hdrowsX,
+      Finset.card_union_of_disjoint hdrowsPM]
+  change Rm.card = 3
+  omega
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.MuNegThreeCrossOwnerNormalForm.positive_crossOwner_neighbors_eq_three
+#print axioms Erdos85.MuNegThreeCrossOwnerNormalForm.negative_crossOwner_neighbors_eq_three
 #print axioms Erdos85.MuNegThreeCrossOwnerNormalForm.positive_extreme_neighbors_card_three
+#print axioms Erdos85.MuNegThreeCrossOwnerNormalForm.negative_extreme_neighbors_card_three
