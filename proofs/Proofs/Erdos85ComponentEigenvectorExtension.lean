@@ -22,6 +22,24 @@ def connectedComponentExtendZero
     connectedComponentExtendZero D c t x.1 = t x := by
   simp [connectedComponentExtendZero, x.2]
 
+@[simp] theorem connectedComponentExtendZero_apply_not_mem
+    {V R : Type*} [Zero R] (D : SimpleGraph V)
+    (c : D.ConnectedComponent) [DecidablePred (· ∈ c.supp)]
+    (t : c.supp → R) (x : V) (hx : x ∉ c.supp) :
+    connectedComponentExtendZero D c t x = 0 := by
+  simp [connectedComponentExtendZero, hx]
+
+/-- If the component vector is pointwise nonzero, its zero extension has
+exactly the component as its support. -/
+theorem connectedComponentExtendZero_eq_zero_iff
+    {V R : Type*} [Zero R] (D : SimpleGraph V)
+    (c : D.ConnectedComponent) [DecidablePred (· ∈ c.supp)]
+    (t : c.supp → R) (ht : ∀ x, t x ≠ 0) (x : V) :
+    connectedComponentExtendZero D c t x = 0 ↔ x ∉ c.supp := by
+  by_cases hx : x ∈ c.supp
+  · simp [connectedComponentExtendZero, hx, ht]
+  · simp [connectedComponentExtendZero, hx]
+
 theorem connectedComponentExtendZero_ne_zero
     {V R : Type*} [Zero R] (D : SimpleGraph V)
     (c : D.ConnectedComponent) [DecidablePred (· ∈ c.supp)]
@@ -132,5 +150,6 @@ end Erdos85
 
 #print axioms Erdos85.adjMatrix_eigenvector_connectedComponentExtendZero
 #print axioms Erdos85.connectedComponentExtendZero_ne_zero
+#print axioms Erdos85.connectedComponentExtendZero_eq_zero_iff
 #print axioms Erdos85.adjMatrix_rat_eigenvector_componentExtendZero_of_int
 #print axioms Erdos85.adjMatrix_rat_nonzero_eigenvector_componentExtendZero_of_int
