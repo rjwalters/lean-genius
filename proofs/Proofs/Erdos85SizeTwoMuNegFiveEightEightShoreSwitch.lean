@@ -267,6 +267,99 @@ theorem bipartition_signSwitch_adjMatrix_eigen_three_of_card
   rw [D.adjMatrix_mulVec_apply]
   simpa [hpartition] using hrows x (by rw [hpartition]; exact Finset.mem_univ x)
 
+/-- Component-row form of the exact `mu=-5` shore switch.  It accepts the
+`componentNeighborFinset` cardinalities produced by quotient arguments. -/
+theorem twoComponent_signSwitch_adjMatrix_eigen_three
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D H : SimpleGraph X) [DecidableRel D.Adj]
+    [DecidableEq H.ConnectedComponent]
+    (a b : H.ConnectedComponent) (hab : a ≠ b)
+    (hpartition : ∀ x, x ∈ a.supp ∨ x ∈ b.supp)
+    (s : X → ℤ) (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hAAcard : ∀ x, x ∈ a.supp →
+      (componentNeighborFinset D H a x).card = 3)
+    (hAAsame : ∀ x, x ∈ a.supp →
+      ((componentNeighborFinset D H a x).filter
+        (fun y ↦ s y = s x)).card = 1)
+    (hABcard : ∀ x, x ∈ a.supp →
+      (componentNeighborFinset D H b x).card = 4)
+    (hABsame : ∀ x, x ∈ a.supp →
+      ((componentNeighborFinset D H b x).filter
+        (fun y ↦ s y = s x)).card = 0)
+    (hBBcard : ∀ x, x ∈ b.supp →
+      (componentNeighborFinset D H b x).card = 3)
+    (hBBsame : ∀ x, x ∈ b.supp →
+      ((componentNeighborFinset D H b x).filter
+        (fun y ↦ s y = s x)).card = 1)
+    (hBAcard : ∀ x, x ∈ b.supp →
+      (componentNeighborFinset D H a x).card = 4)
+    (hBAsame : ∀ x, x ∈ b.supp →
+      ((componentNeighborFinset D H a x).filter
+        (fun y ↦ s y = s x)).card = 0) :
+    let B := (Finset.univ : Finset X).filter
+      (fun x ↦ H.connectedComponentMk x = b)
+    let t : X → ℤ := fun x ↦ if x ∈ B then -s x else s x
+    (D.adjMatrix ℤ).mulVec t = 3 • t := by
+  classical
+  dsimp only
+  let A := (Finset.univ : Finset X).filter
+    (fun x ↦ H.connectedComponentMk x = a)
+  let B := (Finset.univ : Finset X).filter
+    (fun x ↦ H.connectedComponentMk x = b)
+  have hAB : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro x hxA hxB
+    have hxa := (Finset.mem_filter.mp hxA).2
+    have hxb := (Finset.mem_filter.mp hxB).2
+    exact hab (hxa.symm.trans hxb)
+  have hpart : A ∪ B = Finset.univ := by
+    ext x
+    simp only [A, B, Finset.mem_union, Finset.mem_filter, Finset.mem_univ,
+      true_and, iff_true]
+    rcases hpartition x with hxa | hxb
+    · exact Or.inl ((SimpleGraph.ConnectedComponent.mem_supp_iff a x).mp hxa)
+    · exact Or.inr ((SimpleGraph.ConnectedComponent.mem_supp_iff b x).mp hxb)
+  have hrow (d : H.ConnectedComponent) (x : X) :
+      (D.neighborFinset x).filter (fun y ↦ y ∈
+        (Finset.univ : Finset X).filter
+          (fun z ↦ H.connectedComponentMk z = d)) =
+      componentNeighborFinset D H d x := by
+    ext y
+    simp [componentNeighborFinset, SimpleGraph.mem_neighborFinset]
+  apply bipartition_signSwitch_adjMatrix_eigen_three_of_card D A B hAB hpart s hsign
+  · intro x hx
+    rw [hrow a x]
+    exact hAAcard x ((SimpleGraph.ConnectedComponent.mem_supp_iff a x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow a x]
+    exact hAAsame x ((SimpleGraph.ConnectedComponent.mem_supp_iff a x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow b x]
+    exact hABcard x ((SimpleGraph.ConnectedComponent.mem_supp_iff a x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow b x]
+    exact hABsame x ((SimpleGraph.ConnectedComponent.mem_supp_iff a x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow b x]
+    exact hBBcard x ((SimpleGraph.ConnectedComponent.mem_supp_iff b x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow b x]
+    exact hBBsame x ((SimpleGraph.ConnectedComponent.mem_supp_iff b x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow a x]
+    exact hBAcard x ((SimpleGraph.ConnectedComponent.mem_supp_iff b x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow a x]
+    exact hBAsame x ((SimpleGraph.ConnectedComponent.mem_supp_iff b x).mpr
+      (Finset.mem_filter.mp hx).2)
+
 end
 
 end Erdos85
@@ -276,3 +369,4 @@ end Erdos85
 #print axioms Erdos85.signed_sum_eq_two_same_sub_card
 #print axioms Erdos85.bipartition_signSwitch_eigen_three_of_card
 #print axioms Erdos85.bipartition_signSwitch_adjMatrix_eigen_three_of_card
+#print axioms Erdos85.twoComponent_signSwitch_adjMatrix_eigen_three
