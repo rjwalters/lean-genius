@@ -54,7 +54,9 @@ theorem twoRegular_orderEight_component_size_cases
   have hdle : d.supp.ncard ≤
       ∑ e ∈ (Finset.univ : Finset H.ConnectedComponent).erase c,
         e.supp.ncard := by
-    exact Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hd
+    exact Finset.single_le_sum
+      (f := fun e : H.ConnectedComponent ↦ e.supp.ncard)
+      (fun _ _ ↦ Nat.zero_le _) hd
   have hcmin := hmin c
   have hdmin := hmin d
   omega

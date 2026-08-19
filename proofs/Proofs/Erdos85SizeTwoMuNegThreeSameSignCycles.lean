@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoMuNegThreeInternalStructure
+import Proofs.Erdos85OrderEightTwoRegularComponentSizes
 
 /-!
 # The same-sign defect two-factors at `mu = -3`
@@ -120,8 +121,78 @@ theorem orderSixtyFour_sizeTwo_muNegThree_sameSign_defect_twoFactors
       _ = 2 := (hprofile.2.2 x.1 x.2.1).2 x.2.2 |>.2.2.1
   exact ⟨hXpCard, hXmCard, hsamePos, hsameNeg⟩
 
+/-- Every connected cycle in either same-sign defect factor has one of the
+only possible order-eight two-factor component sizes: `3`, `4`, `5`, or `8`. -/
+theorem orderSixtyFour_sizeTwo_muNegThree_sameSign_defect_component_size_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-3 : ℤ) * s z) :
+    let D := secondOrderDefectGraph G
+    let Xp := MuNegThreePositiveShore D c s
+    let Xm := MuNegThreeNegativeShore D c s
+    let Dp := D.comap (fun x : Xp ↦ x.1)
+    let Dm := D.comap (fun x : Xm ↦ x.1)
+    (∀ a : Dp.ConnectedComponent,
+      a.supp.ncard = 3 ∨ a.supp.ncard = 4 ∨
+        a.supp.ncard = 5 ∨ a.supp.ncard = 8) ∧
+    ∀ a : Dm.ConnectedComponent,
+      a.supp.ncard = 3 ∨ a.supp.ncard = 4 ∨
+        a.supp.ncard = 5 ∨ a.supp.ncard = 8 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Xp := MuNegThreePositiveShore D c s
+  let Xm := MuNegThreeNegativeShore D c s
+  let Dp := D.comap (fun x : Xp ↦ x.1)
+  let Dm := D.comap (fun x : Xm ↦ x.1)
+  have hfac := orderSixtyFour_sizeTwo_muNegThree_sameSign_defect_twoFactors
+    G hfree hreg hcard c hc s hs_out hs_in hH hD
+  have hDpdeg : ∀ x, Dp.degree x = 2 := by
+    intro x
+    rw [← Dp.card_neighborFinset_eq_degree]
+    have heq : Dp.neighborFinset x =
+        (Finset.univ : Finset Xp).filter (fun y ↦ D.Adj x.1 y.1) := by
+      ext y
+      simp [Dp]
+    rw [heq]
+    exact hfac.2.2.1 x
+  have hDmdeg : ∀ x, Dm.degree x = 2 := by
+    intro x
+    rw [← Dm.card_neighborFinset_eq_degree]
+    have heq : Dm.neighborFinset x =
+        (Finset.univ : Finset Xm).filter (fun y ↦ D.Adj x.1 y.1) := by
+      ext y
+      simp [Dm]
+    rw [heq]
+    exact hfac.2.2.2 x
+  constructor
+  · intro a
+    exact twoRegular_orderEight_component_size_cases
+      Dp hfac.1 hDpdeg a
+  · intro a
+    exact twoRegular_orderEight_component_size_cases
+      Dm hfac.2.1 hDmdeg a
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_sameSign_defect_twoFactors
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_sameSign_defect_component_size_cases
