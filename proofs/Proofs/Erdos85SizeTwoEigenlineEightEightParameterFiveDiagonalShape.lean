@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoEigenlineEightEightMiddleSignSplit
+import Proofs.Erdos85SizeTwoEigenlineEightEightHighAntipodalMatching
 import Proofs.Erdos85ZModEightMixedSelfIntertwinerExclusion
 
 /-! # The parameter-five diagonal shape in the 8+8 stratum -/
@@ -184,8 +185,282 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFive_firstCyc
   change 0 < (A.filter fun z => s z.1 = s x.1).card
   omega
 
+/-- In an all-triangle first shore at parameter five, diagonal defect
+adjacency is exactly the same-parity offset pair `{±2}`. -/
+theorem binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFive_firstCycle_defectAdj_iff_offset_two_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      3 * s x)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 8) (hb : b.supp.ncard = 8) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (hab5 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b = 5)
+    (haall : ∀ z : c.supp, z ∈ a.supp →
+      (triangleFreeEdgeGraph G).degree z.1 = 0) :
+    ∀ i j : ZMod 8,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (u j) ↔
+        j - i = 2 ∨ j - i = 6 := by
+  classical
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let M : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j => K.adjMatrix ℤ (u i) (u j)
+  obtain ⟨hHdegree, _hKdegree, hcommHK⟩ :=
+    binarySquare_regular_sizeTwoPart_commuting_regular_blocks
+      G hfree (by omega) hreg hcard c hc
+  have hcomm : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ := by
+    simpa [K, H] using hcommHK.symm
+  have hcommReal : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm G
+      (secondOrderDefectGraph G) hglobal c).symm
+  have hupair : ∀ z, u (z - 1) ≠ u (z + 1) := fun z =>
+    huinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) z)
+  have hinter : ∀ i j,
+      M (i - 1) j + M (i + 1) j = M i (j + 1) + M i (j - 1) := by
+    simpa only [M] using entry_cycleIntertwine_of_adjMatrix_comm
+      K H u u (1 : ZMod 8) (1 : ZMod 8) hcomm hu hu hupair hupair
+  have hdiag : ∀ z, M z z = 0 := by
+    intro z
+    simp [M, SimpleGraph.adjMatrix_apply]
+  have hsymm : ∀ i j, M i j = M j i := by
+    intro i j
+    by_cases hij : K.Adj (u i) (u j)
+    · have hji : K.Adj (u j) (u i) := (K.adj_comm _ _).mp hij
+      simp [M, SimpleGraph.adjMatrix_apply, hij, hji]
+    · have hji : ¬K.Adj (u j) (u i) := by
+        intro h
+        exact hij ((K.adj_comm _ _).mp h)
+      simp [M, SimpleGraph.adjMatrix_apply, hij, hji]
+  have hbinary : ∀ i j, M i j = 0 ∨ M i j = 1 := by
+    intro i j
+    simp only [M, SimpleGraph.adjMatrix_apply]
+    split <;> simp
+  obtain ⟨r, _hr2, _hr7, haa, habq, _hbaq, _hbb⟩ :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_cycleQuotient
+      G hfree hreg hcard c hc s hs_in hs_out hA_in a b ha hb hab
+  have hr : r = 5 := by omega
+  have haa2 : componentQuotientMatrix K H a a = 2 := by
+    simpa [K, H, hr] using haa
+  have hua : ∀ i, u i ∈ a.supp := by
+    intro i
+    rw [← hurange]
+    exact ⟨i, rfl⟩
+  have hrowSupportCard : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j => M i j = 1).card = 2 := by
+    intro i
+    let T := (Finset.univ : Finset (ZMod 8)).filter fun j => M i j = 1
+    let A := componentNeighborFinset K H a (u i)
+    have himage : T.image u = A := by
+      ext z
+      constructor
+      · simp only [Finset.mem_image, T, Finset.mem_filter, Finset.mem_univ,
+          true_and]
+        rintro ⟨j, hm, rfl⟩
+        have hadj : K.Adj (u i) (u j) := by
+          simpa [M, SimpleGraph.adjMatrix_apply] using hm
+        exact Finset.mem_filter.mpr
+          ⟨(K.mem_neighborFinset _ _).mpr hadj, hua j⟩
+      · intro hz
+        have hzA := Finset.mem_filter.mp hz
+        have hza : z ∈ a.supp :=
+          (ConnectedComponent.mem_supp_iff a z).mpr hzA.2
+        rw [← hurange] at hza
+        obtain ⟨j, rfl⟩ := hza
+        refine Finset.mem_image.mpr ⟨j, ?_, rfl⟩
+        exact Finset.mem_filter.mpr ⟨Finset.mem_univ j,
+          by simpa [M, SimpleGraph.adjMatrix_apply] using
+            (K.mem_neighborFinset _ _).mp hzA.1⟩
+    have hAcard : A.card = 2 := by
+      rw [← componentQuotientMatrix_apply_eq K H 2 hHdegree hcommReal a a (hua i)]
+      exact haa2
+    rw [← Finset.card_image_of_injective T huinj, himage, hAcard]
+  have hrow : ∀ i, ∑ j, M i j = 2 := by
+    intro i
+    calc
+      ∑ j, M i j = ∑ j, if M i j = 1 then (1 : ℤ) else 0 := by
+        apply Finset.sum_congr rfl
+        intro j _
+        rcases hbinary i j with hz | ho
+        · simp [hz]
+        · simp [ho]
+      _ =
+          (((Finset.univ : Finset (ZMod 8)).filter fun j => M i j = 1).card : ℤ) := by
+        simpa only using
+          (Finset.sum_boole (R := ℤ) (fun j : ZMod 8 => M i j = 1) Finset.univ)
+      _ = 2 := by exact_mod_cast hrowSupportCard i
+  have huflip : ∀ i : ZMod 8, s (u (i + 1)).1 = -s (u i).1 := by
+    intro i
+    have hH : H.Adj (u i) (u (i + 1)) := by
+      rw [← H.mem_neighborFinset, hu]
+      simp
+    have hmem : (u (i + 1)).1 ∈ componentNeighborFinset G
+        (secondOrderDefectGraph G) c (u i).1 := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset _ _).mpr hH, (u (i + 1)).2⟩
+    exact (internal_alternation G hfree (by omega) hreg hcard c hc s
+      hs_in hs_out hA_in (u i).2).2 _ hmem
+  have hsignEven := zmodEight_alternating_sign_eq_iff_evenOffset
+    (fun i => s (u i).1) (fun i => hs_in _ (u i).2) huflip
+  have hposGraph :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFive_firstCycle_diagonalSame_pos
+      G hfree hreg hcard c hc s hs_in hs_out hA_in hDs a b ha hb hab
+        u v huinj hvinj hurange hvrange hu hv hab5
+  have hdegreePos : ∀ i, 0 <
+      ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+        ZModEightEvenOffset (j - i) ∧ M i j = 1).card := by
+    intro i
+    let T := (Finset.univ : Finset (ZMod 8)).filter fun j =>
+      ZModEightEvenOffset (j - i) ∧ M i j = 1
+    let A := (componentNeighborFinset K H a (u i)).filter
+      fun z => s z.1 = s (u i).1
+    have himage : T.image u = A := by
+      ext z
+      constructor
+      · simp only [Finset.mem_image, T, Finset.mem_filter, Finset.mem_univ,
+          true_and]
+        rintro ⟨j, ⟨heven, hm⟩, rfl⟩
+        have hadj : K.Adj (u i) (u j) := by
+          simpa [M, SimpleGraph.adjMatrix_apply] using hm
+        exact Finset.mem_filter.mpr
+          ⟨Finset.mem_filter.mpr
+            ⟨(K.mem_neighborFinset _ _).mpr hadj, hua j⟩,
+            (hsignEven i j).mpr heven⟩
+      · intro hz
+        have hzA := (Finset.mem_filter.mp hz).1
+        have hzSign := (Finset.mem_filter.mp hz).2
+        have hza : z ∈ a.supp :=
+          (ConnectedComponent.mem_supp_iff a z).mpr (Finset.mem_filter.mp hzA).2
+        rw [← hurange] at hza
+        obtain ⟨j, rfl⟩ := hza
+        have hadj := (K.mem_neighborFinset _ _).mp (Finset.mem_filter.mp hzA).1
+        refine Finset.mem_image.mpr ⟨j, ?_, rfl⟩
+        exact Finset.mem_filter.mpr ⟨Finset.mem_univ j,
+          (hsignEven i j).mp hzSign,
+          by simpa [M, SimpleGraph.adjMatrix_apply, hadj]⟩
+    rw [← Finset.card_image_of_injective T huinj, himage]
+    simpa [A, K, H] using hposGraph i
+  have hdegreeLe : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+        ZModEightEvenOffset (j - i) ∧ M i j = 1).card ≤ 2 := by
+    intro i
+    calc
+      ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+        ZModEightEvenOffset (j - i) ∧ M i j = 1).card ≤
+          ((Finset.univ : Finset (ZMod 8)).filter fun j => M i j = 1).card :=
+        Finset.card_le_card (by
+          intro j hj
+          exact Finset.mem_filter.mpr
+            ⟨Finset.mem_univ j, (Finset.mem_filter.mp hj).2.2⟩)
+      _ = 2 := hrowSupportCard i
+  have havoidM : ∀ i, M i (i - 1) = 0 ∧ M i (i + 1) = 0 := by
+    intro i
+    have noD (j : ZMod 8) (hHadj : H.Adj (u i) (u j)) : ¬K.Adj (u i) (u j) := by
+      intro hK
+      rcases hK with hanti | htf
+      · exact ((mem_antipodalNeighbors G (u i).1 (u j).1).mp hanti).2.1 hHadj
+      · have hmem : (u j).1 ∈ (triangleFreeEdgeGraph G).neighborFinset (u i).1 :=
+          ((triangleFreeEdgeGraph G).mem_neighborFinset _ _).mpr htf
+        have hpos := Finset.card_pos.mpr ⟨(u j).1, hmem⟩
+        rw [(triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+          haall (u i) (hua i)] at hpos
+        omega
+    constructor
+    · have hHadj : H.Adj (u i) (u (i - 1)) := by
+        rw [← H.mem_neighborFinset, hu]
+        simp
+      have hn := noD (i - 1) hHadj
+      simp [M, SimpleGraph.adjMatrix_apply, hn]
+    · have hHadj : H.Adj (u i) (u (i + 1)) := by
+        rw [← H.mem_neighborFinset, hu]
+        simp
+      have hn := noD (i + 1) hHadj
+      simp [M, SimpleGraph.adjMatrix_apply, hn]
+  let d := ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+    ZModEightEvenOffset (j - 0) ∧ M 0 j = 1).card
+  have hdegreeEq : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+        ZModEightEvenOffset (j - i) ∧ M i j = 1).card = d := by
+    intro i
+    exact zmodEight_selfIntertwiner_sameParity_card_eq M hdiag hinter i 0
+  have hdpos : 0 < d := by simpa [d] using hdegreePos 0
+  have hdle : d ≤ 2 := by simpa [d] using hdegreeLe 0
+  have hd2 : d = 2 := by
+    by_contra hne
+    have hd1 : d = 1 := by omega
+    have hdegree1 : ∀ i,
+        ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+          ZModEightEvenOffset (j - i) ∧ M i j = 1).card = 1 := by
+      intro i
+      rw [hdegreeEq, hd1]
+    exact zmodEight_selfIntertwiner_sameParity_degreeOne_impossible
+      M hdiag hsymm hinter hbinary hrow hdegree1 havoidM
+  have hdegree2 : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+        ZModEightEvenOffset (j - i) ∧ M i j = 1).card = 2 := by
+    intro i
+    rw [hdegreeEq, hd2]
+  have hoff := zmodEight_selfIntertwiner_sameParity_degreeTwo_offset_two_six
+    M hdiag hsymm hinter hdegree2
+  intro i j
+  have hEvenSupportEq :
+      ((Finset.univ : Finset (ZMod 8)).filter fun z =>
+        ZModEightEvenOffset (z - i) ∧ M i z = 1) =
+      ((Finset.univ : Finset (ZMod 8)).filter fun z => M i z = 1) := by
+    apply Finset.eq_of_subset_of_card_le
+    · intro z hz
+      exact Finset.mem_filter.mpr
+        ⟨Finset.mem_univ z, (Finset.mem_filter.mp hz).2.2⟩
+    · rw [hdegree2, hrowSupportCard]
+  constructor
+  · intro hij
+    change K.Adj (u i) (u j) at hij
+    have hm : M i j = 1 := by
+      simp [M, SimpleGraph.adjMatrix_apply, hij]
+    have hjmem : j ∈ ((Finset.univ : Finset (ZMod 8)).filter fun z =>
+        ZModEightEvenOffset (z - i) ∧ M i z = 1) := by
+      rw [hEvenSupportEq]
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ j, hm⟩
+    have heven := (Finset.mem_filter.mp hjmem).2.1
+    exact (hoff i j heven).mp hm
+  · intro hoffset
+    have heven : ZModEightEvenOffset (j - i) := by
+      rcases hoffset with h2 | h6
+      · exact Or.inr (Or.inl h2)
+      · exact Or.inr (Or.inr (Or.inr h6))
+    have hm : M i j = 1 := (hoff i j heven).mpr hoffset
+    change K.Adj (u i) (u j)
+    simpa [M, SimpleGraph.adjMatrix_apply] using hm
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFive_firstCycle_diagonalSame_pos
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFive_firstCycle_defectAdj_iff_offset_two_six
