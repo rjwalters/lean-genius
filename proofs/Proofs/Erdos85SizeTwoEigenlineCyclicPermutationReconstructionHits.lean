@@ -153,6 +153,130 @@ theorem sizeTwoCyclicCodeGraph_row_hit
   simp only [sizeTwoCyclicCellAt_snd]
   rw [if_congr hiff rfl rfl]
 
+/-- Every admissible absolute target column contains exactly one neighbor of
+a source cell.  Surjectivity and injectivity are precisely those of the
+permutation stored in the code. -/
+theorem sizeTwoCyclicCodeGraph_existsUnique_neighbor_in_admissible_column
+    (q : ℕ) [NeZero q] (a : ZMod q)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (hloop : code.Loopless)
+    (x z : ZMod q) (t : sizeTwoAllowedDifference q a)
+    (hz : z - x ≠ 0 ∧ z - x ≠ -1) :
+    ∃! v : sizeTwoCyclicExteriorCell q a,
+      (sizeTwoCyclicCodeGraph q a code).Adj
+          (sizeTwoCyclicCellAt q a x t) v ∧ v.1.2 = z := by
+  let c : SizeTwoAdmissibleTargetColumn q := ⟨z - x, hz⟩
+  let r := (code.toPermutationCode.perm x t).symm c
+  let v := sizeTwoCyclicCellAt q a (x + r.1)
+    (code.targetDifference x t r)
+  refine ⟨v, ?_, ?_⟩
+  · constructor
+    · rw [sizeTwoCyclicCodeGraph_adj_cellAt_iff q a code hloop]
+      exact ⟨r, rfl⟩
+    · rw [sizeTwoCyclicCellAt_snd]
+      calc
+        x + r.1 + (code.targetDifference x t r).1 =
+            x + (r.1 + (code.targetDifference x t r).1) := by abel
+        _ = x + (code.toPermutationCode.perm x t r).1 := by
+          rw [code.target_column_eq x t r]
+        _ = z := by simp [r, c]
+  · intro w hw
+    rw [sizeTwoCyclicCodeGraph_adj_cellAt_iff q a code hloop] at hw
+    obtain ⟨r', rfl⟩ := hw.1
+    have hcol : x + r'.1 + (code.targetDifference x t r').1 = z := by
+      simpa using hw.2
+    have hperm : code.toPermutationCode.perm x t r' = c := by
+      apply Subtype.ext
+      rw [← code.target_column_eq x t r']
+      calc
+        r'.1 + (code.targetDifference x t r').1 =
+            (x + r'.1 + (code.targetDifference x t r').1) - x := by abel
+        _ = z - x := by rw [hcol]
+    have hre : r' = r := by
+      apply (code.toPermutationCode.perm x t).injective
+      simpa [r] using hperm
+    rw [hre]
+
+theorem sizeTwoCyclicCodeGraph_column_hit_cellAt
+    (q : ℕ) [NeZero q] (a : ZMod q)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (hloop : code.Loopless)
+    [DecidableRel (sizeTwoCyclicCodeGraph q a code).Adj]
+    (x z : ZMod q) (t : sizeTwoAllowedDifference q a) :
+    (((sizeTwoCyclicCodeGraph q a code).neighborFinset
+        (sizeTwoCyclicCellAt q a x t)).filter fun v => v.1.2 = z).card =
+      if x = z ∨ x = z + 1 then 0 else 1 := by
+  by_cases hbad : x = z ∨ x = z + 1
+  · rw [if_pos hbad, Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro w hw
+    have hadj : (sizeTwoCyclicCodeGraph q a code).Adj
+        (sizeTwoCyclicCellAt q a x t) w := by
+      simpa using (Finset.mem_filter.mp hw).1
+    have hcol : w.1.2 = z := (Finset.mem_filter.mp hw).2
+    rw [sizeTwoCyclicCodeGraph_adj_cellAt_iff q a code hloop] at hadj
+    obtain ⟨r, rfl⟩ := hadj
+    have hp : (code.toPermutationCode.perm x t r).1 = z - x := by
+      rw [← code.target_column_eq x t r]
+      have hx : x + r.1 + (code.targetDifference x t r).1 = z := by
+        simpa using hcol
+      calc
+        r.1 + (code.targetDifference x t r).1 =
+            (x + r.1 + (code.targetDifference x t r).1) - x := by abel
+        _ = z - x := by rw [hx]
+    rcases hbad with hbad | hbad
+    · apply (code.toPermutationCode.perm x t r).2.1
+      rw [hp, ← hbad]
+      abel
+    · apply (code.toPermutationCode.perm x t r).2.2
+      rw [hp]
+      calc
+        z - x = z - (z + 1) := by rw [hbad]
+        _ = -1 := by abel
+  · rw [if_neg hbad, Finset.card_eq_one]
+    have hz : z - x ≠ 0 ∧ z - x ≠ -1 := by
+      constructor
+      · intro hz
+        apply hbad (Or.inl (by
+          have := congrArg (fun w : ZMod q => w + x) hz
+          simpa [sub_eq_add_neg, add_assoc] using this.symm))
+      · intro hz
+        apply hbad (Or.inr (by
+          have hz' : z = x - 1 := by
+            calc
+              z = (z - x) + x := by abel
+              _ = (-1) + x := by rw [hz]
+              _ = x - 1 := by abel
+          rw [hz']
+          abel))
+    obtain ⟨v, hv, huniq⟩ :=
+      sizeTwoCyclicCodeGraph_existsUnique_neighbor_in_admissible_column
+        q a code hloop x z t hz
+    refine ⟨v, Finset.ext ?_⟩
+    intro w
+    simp only [Finset.mem_filter, SimpleGraph.mem_neighborFinset,
+      Finset.mem_singleton]
+    constructor
+    · exact huniq w
+    · rintro rfl
+      exact hv
+
+theorem sizeTwoCyclicCodeGraph_column_hit
+    (q : ℕ) [NeZero q] (a : ZMod q)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (hloop : code.Loopless)
+    [DecidableRel (sizeTwoCyclicCodeGraph q a code).Adj]
+    (u : sizeTwoCyclicExteriorCell q a) (z : ZMod q) :
+    (((sizeTwoCyclicCodeGraph q a code).neighborFinset u).filter
+        fun v => v.1.2 = z).card =
+      if u.1.1 = z ∨ u.1.1 = z + 1 then 0 else 1 := by
+  let p := sizeTwoCyclicExteriorCellEquiv q a u
+  have hu : u = sizeTwoCyclicCellAt q a p.1 p.2 := by
+    apply (sizeTwoCyclicExteriorCellEquiv q a).injective
+    simp [p]
+  rw [hu, sizeTwoCyclicCodeGraph_column_hit_cellAt q a code hloop]
+  simp only [sizeTwoCyclicCellAt_fst]
+
 end
 
 end Erdos85
@@ -162,3 +286,6 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicCodeGraph_existsUnique_neighbor_in_admissible_row
 #print axioms Erdos85.sizeTwoCyclicCodeGraph_row_hit_cellAt
 #print axioms Erdos85.sizeTwoCyclicCodeGraph_row_hit
+#print axioms Erdos85.sizeTwoCyclicCodeGraph_existsUnique_neighbor_in_admissible_column
+#print axioms Erdos85.sizeTwoCyclicCodeGraph_column_hit_cellAt
+#print axioms Erdos85.sizeTwoCyclicCodeGraph_column_hit
