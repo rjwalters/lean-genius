@@ -78,6 +78,50 @@ theorem muNegOneOneFour_canonical_shore_mode_cases
   · exact Or.inr (Or.inl (Or.inr hft))
   · exact Or.inr (Or.inr hff)
 
+/-- The signed `2+2` cross condition is invariant under exchanging the two
+shores.  This is the formal symmetry used to send either ordered mixed case
+to the single canonical TF/triangle certificate. -/
+theorem muNegOneOneFour_crossExteriorSplit_swap
+    {X : Type*} (R : SimpleGraph X) [DecidableRel R.Adj]
+    (u v : ZMod 8 → X) (su sv : ZMod 8 → ℤ) :
+    MuNegOneOneFourCrossExteriorSplit R u v su sv ↔
+      MuNegOneOneFourCrossExteriorSplit R v u sv su := by
+  constructor
+  · rintro ⟨hrow, hcol⟩
+    refine ⟨?_, ?_⟩
+    · intro j
+      simpa [eq_comm, R.adj_comm] using hcol j
+    · intro i
+      simpa [eq_comm, R.adj_comm] using hrow i
+  · rintro ⟨hrow, hcol⟩
+    refine ⟨?_, ?_⟩
+    · intro i
+      simpa [eq_comm, R.adj_comm] using hcol i
+    · intro j
+      simpa [eq_comm, R.adj_comm] using hrow j
+
+/-- In the mixed family, orient the coordinates so the TF shore comes
+first, carrying the cross split through the swap when necessary. -/
+theorem muNegOneOneFour_mixed_mode_normalize
+    {X : Type*} (R : SimpleGraph X) [DecidableRel R.Adj]
+    (u v : ZMod 8 → X) (su sv : ZMod 8 → ℤ)
+    (hcross : MuNegOneOneFourCrossExteriorSplit R u v su sv)
+    (hmixed :
+      (MuNegOneOneFourTfShoreMode R u ∧
+        MuNegOneOneFourTriangleShoreMode R v) ∨
+      (MuNegOneOneFourTriangleShoreMode R u ∧
+        MuNegOneOneFourTfShoreMode R v)) :
+    (MuNegOneOneFourTfShoreMode R u ∧
+      MuNegOneOneFourTriangleShoreMode R v ∧
+      MuNegOneOneFourCrossExteriorSplit R u v su sv) ∨
+    (MuNegOneOneFourTfShoreMode R v ∧
+      MuNegOneOneFourTriangleShoreMode R u ∧
+      MuNegOneOneFourCrossExteriorSplit R v u sv su) := by
+  rcases hmixed with huv | hvu
+  · exact Or.inl ⟨huv.1, huv.2, hcross⟩
+  · exact Or.inr ⟨hvu.2, hvu.1,
+      (muNegOneOneFour_crossExteriorSplit_swap R u v su sv).mp hcross⟩
+
 /-- Terminal-facing adapter: retain the exact signed cross split while
 collapsing the two independent shore disjunctions to the three canonical
 certificate families. -/
@@ -148,4 +192,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.muNegOneOneFour_completeExteriorGeometry_modeRouting
+#print axioms Erdos85.muNegOneOneFour_mixed_mode_normalize
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegOne_refined_switch_or_oneFourOwnerModes
