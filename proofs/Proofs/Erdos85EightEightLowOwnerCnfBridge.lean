@@ -71,6 +71,38 @@ instance : DecidableRel eightEightLowExteriorPairGraph.Adj := by
     (eightEightLowOwnerPair a b = true ∨ eightEightLowOwnerPair b a = true)
   infer_instance
 
+/-- First-shore embedding of cyclic `ZMod 8` coordinates into the fixed
+sixteen-vertex model. -/
+def zmodEightLeftFin16 (i : ZMod 8) : Fin 16 :=
+  Fin.castAdd 8 ((ZMod.finEquiv 8).symm i)
+
+/-- Second-shore embedding of cyclic `ZMod 8` coordinates into the fixed
+sixteen-vertex model. -/
+def zmodEightRightFin16 (i : ZMod 8) : Fin 16 :=
+  Fin.natAdd 8 ((ZMod.finEquiv 8).symm i)
+
+theorem eightEightLowExteriorPairGraph_left (i j : ZMod 8) :
+    eightEightLowExteriorPairGraph.Adj
+      (zmodEightLeftFin16 i) (zmodEightLeftFin16 j) ↔
+        j - i = 3 ∨ j - i = 5 := by
+  revert i j
+  decide
+
+theorem eightEightLowExteriorPairGraph_right (i j : ZMod 8) :
+    eightEightLowExteriorPairGraph.Adj
+      (zmodEightRightFin16 i) (zmodEightRightFin16 j) ↔
+        j - i = 3 ∨ j - i = 5 := by
+  revert i j
+  decide
+
+theorem eightEightLowExteriorPairGraph_cross (i j : ZMod 8) :
+    eightEightLowExteriorPairGraph.Adj
+      (zmodEightLeftFin16 i) (zmodEightRightFin16 j) ↔
+        ((ZMod.finEquiv 8).symm i).val % 2 ≠
+          ((ZMod.finEquiv 8).symm j).val % 2 := by
+  revert i j
+  decide
+
 theorem eightEightOwnerSym2_mem_edgeFinset (e : Fin 48) :
     eightEightOwnerSym2 e ∈ eightEightLowExteriorPairGraph.edgeFinset := by
   revert e
@@ -116,7 +148,65 @@ noncomputable def lowEightExteriorPairModelIso
         eightEightLowExteriorPairGraph.Adj (coord x) (coord y)) :
     exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph where
   toEquiv := coord
-  map_rel_iff' := fun x y => (hmodel x y).symm
+  map_rel_iff' := by
+    intro x y
+    exact (hmodel x y).symm
+
+/-- Assemble the pointwise fixed low-`8+8` exterior-pair model from its two
+cyclic shores.  The statement isolates the purely coordinate bookkeeping
+from the graph-specific theorems which provide the three displayed
+relations. -/
+theorem lowEightExteriorPair_pointwise_model_of_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (u v : ZMod 8 → c.supp)
+    (hurange : Set.range u = a.supp)
+    (hvrange : Set.range v = b.supp)
+    (hcover : ∀ x : c.supp, x ∈ a.supp ∨ x ∈ b.supp)
+    (coord : c.supp ≃ Fin 16)
+    (hcoordu : ∀ i, coord (u i) = zmodEightLeftFin16 i)
+    (hcoordv : ∀ j, coord (v j) = zmodEightRightFin16 j)
+    (hleft : ∀ i j,
+      (exteriorPairGraph G c).Adj (u i) (u j) ↔
+        j - i = 3 ∨ j - i = 5)
+    (hright : ∀ i j,
+      (exteriorPairGraph G c).Adj (v i) (v j) ↔
+        j - i = 3 ∨ j - i = 5)
+    (hcross : ∀ i j,
+      (exteriorPairGraph G c).Adj (u i) (v j) ↔
+        ((ZMod.finEquiv 8).symm i).val % 2 ≠
+          ((ZMod.finEquiv 8).symm j).val % 2) :
+    ∀ x y : c.supp,
+      (exteriorPairGraph G c).Adj x y ↔
+        eightEightLowExteriorPairGraph.Adj (coord x) (coord y) := by
+  intro x y
+  rcases hcover x with hxa | hxb <;>
+    rcases hcover y with hya | hyb
+  · rw [← hurange] at hxa hya
+    obtain ⟨i, rfl⟩ := hxa
+    obtain ⟨j, rfl⟩ := hya
+    rw [hcoordu, hcoordu, hleft,
+      eightEightLowExteriorPairGraph_left]
+  · rw [← hurange] at hxa
+    rw [← hvrange] at hyb
+    obtain ⟨i, rfl⟩ := hxa
+    obtain ⟨j, rfl⟩ := hyb
+    rw [hcoordu, hcoordv, hcross,
+      eightEightLowExteriorPairGraph_cross]
+  · rw [← hvrange] at hxb
+    rw [← hurange] at hya
+    obtain ⟨j, rfl⟩ := hxb
+    obtain ⟨i, rfl⟩ := hya
+    rw [(exteriorPairGraph G c).adj_comm,
+      hcoordv, hcoordu, eightEightLowExteriorPairGraph.adj_comm,
+      hcross, eightEightLowExteriorPairGraph_cross]
+  · rw [← hvrange] at hxb hyb
+    obtain ⟨i, rfl⟩ := hxb
+    obtain ⟨j, rfl⟩ := hyb
+    rw [hcoordv, hcoordv, hright,
+      eightEightLowExteriorPairGraph_right]
 
 /-- Once the actual exterior-pair graph is identified with the fixed low
 `8+8` model, the canonical outside-pair bijection and the generator's exact
@@ -247,5 +337,6 @@ end Erdos85
 #print axioms Erdos85.eightEightOwnerAt_lt_sixteen
 #print axioms Erdos85.eightEightOwnerSym2_injective
 #print axioms Erdos85.mem_eightEightOwnerSym2_iff
+#print axioms Erdos85.lowEightExteriorPair_pointwise_model_of_shores
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
 #print axioms Erdos85.outsidePair_intersects_no_exterior_common
