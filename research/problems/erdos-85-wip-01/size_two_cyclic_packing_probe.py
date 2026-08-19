@@ -29,6 +29,8 @@ def build(
     a: int,
     *,
     cross_mode: str = "full",
+    agreement_ts: set[int] | None = None,
+    agreement_ds: set[int] | None = None,
     reciprocity: bool = True,
     loopless: bool = True,
 ) -> tuple[z3.Solver, dict[tuple[int, int, int], z3.IntNumRef]]:
@@ -59,6 +61,10 @@ def build(
         if cross_mode == "same-x" and d != 0:
             continue
         if cross_mode == "none":
+            continue
+        if agreement_ts is not None and t not in agreement_ts:
+            continue
+        if agreement_ds is not None and d not in agreement_ds:
             continue
         agreements = []
         for r in rows[t]:
@@ -103,6 +109,14 @@ def main() -> None:
     )
     parser.add_argument("--no-reciprocity", action="store_true")
     parser.add_argument("--no-loopless", action="store_true")
+    parser.add_argument(
+        "--agreement-t", type=int, action="append",
+        help="retain agreement constraints only for these source differences",
+    )
+    parser.add_argument(
+        "--agreement-d", type=int, action="append",
+        help="retain agreement constraints only for these nonzero source shifts",
+    )
     args = parser.parse_args()
     candidates = [args.a] if args.a is not None else range(1, args.q - 1)
     for a in candidates:
@@ -112,6 +126,12 @@ def main() -> None:
             args.q,
             a,
             cross_mode=args.cross_mode,
+            agreement_ts=None if args.agreement_t is None else {
+                t % args.q for t in args.agreement_t
+            },
+            agreement_ds=None if args.agreement_d is None else {
+                d % args.q for d in args.agreement_d
+            },
             reciprocity=not args.no_reciprocity,
             loopless=not args.no_loopless,
         )
