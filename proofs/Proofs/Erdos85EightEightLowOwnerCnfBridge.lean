@@ -25,6 +25,8 @@ namespace Erdos85
 
 noncomputable section
 
+set_option maxHeartbeats 0
+
 /-- The generator's endpoint table is in range on all forty-eight genuine
 owner indices. -/
 theorem eightEightOwnerAt_lt_sixteen (e : Fin 48) :
@@ -297,6 +299,16 @@ theorem eightEightOwnersIntersect_iff_sym2
   revert e f
   decide
 
+/-- Typed characterization of the generator's compatibility filter. -/
+theorem eightEightOwnerCompatible_iff_endpoints
+    (e f : Fin 48) :
+    eightEightOwnerCompatible e f = true ↔
+      e ≠ f ∧ ∀ u v : Fin 16,
+        u ∈ eightEightOwnerSym2 e → v ∈ eightEightOwnerSym2 f →
+          eightEightCycleAdj u v = false := by
+  revert e f
+  native_decide
+
 /-- In transported owner coordinates, ambient incidence with an exterior
 vertex is exactly the generator's endpoint-incidence table. -/
 theorem outsideOwnerCoordinates_incident_iff
@@ -523,6 +535,274 @@ theorem mem_eightEightOwnerServiceVariables_iff
     · exact hlit
     · have hne : f.val ≠ e.val := fun h ↦ hfe (Fin.ext h)
       simp [hne, hcontains]
+
+theorem eightEightOwnerVariable?_positive
+    {e f : Fin 48} {id : Nat}
+    (hvar : eightEightOwnerVariable? e f = some id) : 0 < id := by
+  unfold eightEightOwnerVariable? at hvar
+  split at hvar
+  · cases hidx : eightEightOwnerVariables.idxOf? (e.val, f.val) <;>
+      simp [hidx] at hvar
+    omega
+  · cases hidx : eightEightOwnerVariables.idxOf? (f.val, e.val) <;>
+      simp [hidx] at hvar
+    omega
+
+theorem eightEightOwnerLiteral?_eq_some
+    {e f : Fin 48} {lit : Int}
+    (hlit : eightEightOwnerLiteral? e f = some lit) :
+    ∃ id : Nat, eightEightOwnerVariable? e f = some id ∧ lit = Int.ofNat id := by
+  unfold eightEightOwnerLiteral? at hlit
+  cases hvar : eightEightOwnerVariable? e f with
+  | none => simp [hvar] at hlit
+  | some id =>
+      simp [hvar] at hlit
+      exact ⟨id, rfl, hlit.symm⟩
+
+/-- The positive exact-service clause is satisfied by an actual relation
+edge supplied by the high-level finite semantics. -/
+theorem eightEightOwnerServiceClauseSatisfied_of_relation
+    (X : Fin 48 → Fin 48 → Prop) [DecidableRel X]
+    (hsem : EightEightLowOwnerFiniteSemantics X)
+    (hirr : ∀ e, ¬ X e e)
+    (hcompat : ∀ e f, X e f → eightEightOwnerCompatible e f = true)
+    (e v : Nat) (he : e < 48) (hv : v < 16)
+    (htarget : eightEightOwnerTargetContains e v = true) :
+    dimacsClauseSatisfied (eightEightOwnerValOfRelation X)
+      (eightEightOwnerServiceVariables e v) := by
+  let ef : Fin 48 := ⟨e, he⟩
+  let vf : Fin 16 := ⟨v, hv⟩
+  obtain ⟨f, hX, hcontains⟩ := hsem.service_exists ef vf (by simpa using htarget)
+  have hfe : f ≠ ef := by
+    intro h
+    subst f
+    exact hirr ef hX
+  obtain ⟨id, hvar⟩ := eightEightOwnerVariable?_exists ef f hfe.symm
+    (hcompat ef f hX)
+  have hlit : eightEightOwnerLiteral? ef f = some (Int.ofNat id) := by
+    simp [eightEightOwnerLiteral?, hvar]
+  have hmem : Int.ofNat id ∈ eightEightOwnerServiceVariables e v :=
+    (mem_eightEightOwnerServiceVariables_iff ef vf (Int.ofNat id)).mpr
+      ⟨f, hfe, hcontains, hlit⟩
+  refine ⟨Int.ofNat id, hmem, ?_⟩
+  have hval := eightEightOwnerValOfRelation_true_of X hvar hX
+  have hid := eightEightOwnerVariable?_positive hvar
+  simp [dimacsLitValue, hid, hval]
+
+/-- Pairwise-negative service clauses follow from uniqueness of the owner
+serving the selected internal vertex. -/
+theorem eightEightOwnerServiceUniqueClauseSatisfied_of_relation
+    (X : Fin 48 → Fin 48 → Prop) [DecidableRel X]
+    (hsem : EightEightLowOwnerFiniteSemantics X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (e v : Nat) (he : e < 48) (hv : v < 16)
+    (htarget : eightEightOwnerTargetContains e v = true)
+    (clause : DimacsClause)
+    (hclause : clause ∈ eightEightPairwiseNegativeClauses
+      (eightEightOwnerServiceVariables e v)) :
+    dimacsClauseSatisfied (eightEightOwnerValOfRelation X) clause := by
+  simp only [eightEightPairwiseNegativeClauses, List.mem_flatMap,
+    List.mem_map, List.mem_filter] at hclause
+  obtain ⟨x, hxrow, y, ⟨hyrow, hxy⟩, rfl⟩ := hclause
+  let ef : Fin 48 := ⟨e, he⟩
+  let vf : Fin 16 := ⟨v, hv⟩
+  obtain ⟨f, hfe, hfcontains, hfx⟩ :=
+    (mem_eightEightOwnerServiceVariables_iff ef vf x).mp hxrow
+  obtain ⟨g, hge, hgcontains, hgy⟩ :=
+    (mem_eightEightOwnerServiceVariables_iff ef vf y).mp hyrow
+  obtain ⟨ix, hvarx, rfl⟩ := eightEightOwnerLiteral?_eq_some hfx
+  obtain ⟨iy, hvary, rfl⟩ := eightEightOwnerLiteral?_eq_some hgy
+  have hix := eightEightOwnerVariable?_positive hvarx
+  have hiy := eightEightOwnerVariable?_positive hvary
+  by_cases hxval : eightEightOwnerValOfRelation X ix = true
+  · have hXf := eightEightOwnerRelation_of_val_true X hsymm hvarx hxval
+    have hyfalse : eightEightOwnerValOfRelation X iy = false := by
+      apply Bool.eq_false_of_not_eq_true
+      intro hyval
+      have hXg := eightEightOwnerRelation_of_val_true X hsymm hvary hyval
+      have hfg := hsem.service_unique ef vf (by simpa using htarget)
+        f g hXf hfcontains hXg hgcontains
+      subst g
+      have : ix = iy := by simpa [hvarx] using hvary
+      subst iy
+      simp at hxy
+    refine ⟨-Int.ofNat iy, by simp, ?_⟩
+    simp [dimacsLitValue, hiy, hyfalse]
+  · have hxf : eightEightOwnerValOfRelation X ix = false :=
+      Bool.eq_false_of_not_eq_true hxval
+    refine ⟨-Int.ofNat ix, by simp, ?_⟩
+    simp [dimacsLitValue, hix, hxf]
+
+/-- Intersecting-owner negative clauses follow from their high-level
+capacity-zero property. -/
+theorem eightEightOwnerNoCommonClauseSatisfied_of_relation
+    (X : Fin 48 → Fin 48 → Prop) [DecidableRel X]
+    (hsem : EightEightLowOwnerFiniteSemantics X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (e f : Nat) (hef : e < f) (hf48 : f < 48)
+    (hintersect : eightEightOwnersIntersect e f = true)
+    (clause : DimacsClause)
+    (hclause : clause ∈ eightEightOwnerNoCommonClauses e f) :
+    dimacsClauseSatisfied (eightEightOwnerValOfRelation X) clause := by
+  simp only [eightEightOwnerNoCommonClauses, List.mem_filterMap] at hclause
+  obtain ⟨k, hkcand, hclause⟩ := hclause
+  simp only [eightEightOwnerCommonCandidates, List.mem_filter,
+    List.mem_range] at hkcand
+  have hk48 := hkcand.1
+  cases hxe : eightEightOwnerLiteral? e k with
+  | none => simp [hxe] at hclause
+  | some x =>
+    cases hyf : eightEightOwnerLiteral? f k with
+    | none => simp [hxe, hyf] at hclause
+    | some y =>
+      simp [hxe, hyf] at hclause
+      subst clause
+      let ef : Fin 48 := ⟨e, by omega⟩
+      let ff : Fin 48 := ⟨f, hf48⟩
+      let kf : Fin 48 := ⟨k, hk48⟩
+      have hxe' : eightEightOwnerLiteral? ef kf = some x := by
+        simpa [ef, kf] using hxe
+      have hyf' : eightEightOwnerLiteral? ff kf = some y := by
+        simpa [ff, kf] using hyf
+      obtain ⟨ix, hvarx, rfl⟩ := eightEightOwnerLiteral?_eq_some hxe'
+      obtain ⟨iy, hvary, rfl⟩ := eightEightOwnerLiteral?_eq_some hyf'
+      by_cases hxval : eightEightOwnerValOfRelation X ix = true
+      · have hXek := eightEightOwnerRelation_of_val_true X hsymm hvarx hxval
+        have hyfalse : eightEightOwnerValOfRelation X iy = false := by
+          apply Bool.eq_false_of_not_eq_true
+          intro hyval
+          have hXfk := eightEightOwnerRelation_of_val_true X hsymm hvary hyval
+          exact hsem.intersecting_no_common ef ff (by
+            intro h
+            have := congrArg Fin.val h
+            dsimp [ef, ff] at this
+            omega)
+            (by simpa using hintersect) kf hXek hXfk
+        refine ⟨-Int.ofNat iy, by simp, ?_⟩
+        simp [dimacsLitValue, hyfalse]
+      · have hxf : eightEightOwnerValOfRelation X ix = false :=
+          Bool.eq_false_of_not_eq_true hxval
+        refine ⟨-Int.ofNat ix, by simp, ?_⟩
+        simp [dimacsLitValue, hxf]
+
+/-- Four-literal ordinary C4 clauses follow from the high-level assertion
+that two distinct owners cannot have two distinct common neighbors. -/
+theorem eightEightOwnerAtMostOneCommonClauseSatisfied_of_relation
+    (X : Fin 48 → Fin 48 → Prop) [DecidableRel X]
+    (hsem : EightEightLowOwnerFiniteSemantics X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (e f : Nat) (hef : e < f) (hf48 : f < 48)
+    (clause : DimacsClause)
+    (hclause : clause ∈ eightEightOwnerAtMostOneCommonClauses e f) :
+    dimacsClauseSatisfied (eightEightOwnerValOfRelation X) clause := by
+  simp only [eightEightOwnerAtMostOneCommonClauses, List.mem_flatMap,
+    List.mem_filterMap, List.mem_filter] at hclause
+  obtain ⟨k, hkcand, l, ⟨hlcand, hkl⟩, hclause⟩ := hclause
+  have hk48 : k < 48 := by
+    have hkdata := hkcand
+    simp only [eightEightOwnerCommonCandidates, List.mem_filter,
+      List.mem_range] at hkdata
+    exact hkdata.1
+  have hl48 : l < 48 := by
+    have hldata := hlcand
+    simp only [eightEightOwnerCommonCandidates, List.mem_filter,
+      List.mem_range] at hldata
+    exact hldata.1
+  have hklNat : k < l := by simpa using hkl
+  cases hxek : eightEightOwnerLiteral? e k with
+  | none => simp [hxek] at hclause
+  | some xek =>
+    cases hxfk : eightEightOwnerLiteral? f k with
+    | none => simp [hxek, hxfk] at hclause
+    | some xfk =>
+      cases hxel : eightEightOwnerLiteral? e l with
+      | none => simp [hxek, hxfk, hxel] at hclause
+      | some xel =>
+        cases hxfl : eightEightOwnerLiteral? f l with
+        | none => simp [hxek, hxfk, hxel, hxfl] at hclause
+        | some xfl =>
+          simp [hxek, hxfk, hxel, hxfl] at hclause
+          subst clause
+          let ef : Fin 48 := ⟨e, by omega⟩
+          let ff : Fin 48 := ⟨f, hf48⟩
+          let kf : Fin 48 := ⟨k, hk48⟩
+          let lf : Fin 48 := ⟨l, hl48⟩
+          have hxek' : eightEightOwnerLiteral? ef kf = some xek := by
+            simpa [ef, kf] using hxek
+          have hxfk' : eightEightOwnerLiteral? ff kf = some xfk := by
+            simpa [ff, kf] using hxfk
+          have hxel' : eightEightOwnerLiteral? ef lf = some xel := by
+            simpa [ef, lf] using hxel
+          have hxfl' : eightEightOwnerLiteral? ff lf = some xfl := by
+            simpa [ff, lf] using hxfl
+          obtain ⟨iek, hvek, rfl⟩ := eightEightOwnerLiteral?_eq_some hxek'
+          obtain ⟨ifk, hvfk, rfl⟩ := eightEightOwnerLiteral?_eq_some hxfk'
+          obtain ⟨iel, hvel, rfl⟩ := eightEightOwnerLiteral?_eq_some hxel'
+          obtain ⟨ifl, hvfl, rfl⟩ := eightEightOwnerLiteral?_eq_some hxfl'
+          by_cases hekval : eightEightOwnerValOfRelation X iek = true
+          · by_cases hfkval : eightEightOwnerValOfRelation X ifk = true
+            · by_cases helval : eightEightOwnerValOfRelation X iel = true
+              · have hflfalse : eightEightOwnerValOfRelation X ifl = false := by
+                  apply Bool.eq_false_of_not_eq_true
+                  intro hflval
+                  have hXek := eightEightOwnerRelation_of_val_true X hsymm hvek hekval
+                  have hXfk := eightEightOwnerRelation_of_val_true X hsymm hvfk hfkval
+                  have hXel := eightEightOwnerRelation_of_val_true X hsymm hvel helval
+                  have hXfl := eightEightOwnerRelation_of_val_true X hsymm hvfl hflval
+                  exact hsem.no_two_common ef ff (by
+                    intro h
+                    have := congrArg Fin.val h
+                    dsimp [ef, ff] at this
+                    omega) kf lf (by
+                      intro h
+                      have := congrArg Fin.val h
+                      dsimp [kf, lf] at this
+                      exact (Nat.ne_of_lt hklNat) this) hXek hXfk hXel hXfl
+                refine ⟨-Int.ofNat ifl, by simp, ?_⟩
+                simp [dimacsLitValue, hflfalse]
+              · have hfalse := Bool.eq_false_of_not_eq_true helval
+                refine ⟨-Int.ofNat iel, by simp, ?_⟩
+                simp [dimacsLitValue, hfalse]
+            · have hfalse := Bool.eq_false_of_not_eq_true hfkval
+              refine ⟨-Int.ofNat ifk, by simp, ?_⟩
+              simp [dimacsLitValue, hfalse]
+          · have hfalse := Bool.eq_false_of_not_eq_true hekval
+            refine ⟨-Int.ofNat iek, by simp, ?_⟩
+            simp [dimacsLitValue, hfalse]
+
+/-- Generator-local adapter from the clean finite relation semantics to the
+four DIMACS clause families consumed by the checked certificate. -/
+theorem EightEightLowOwnerFiniteSemantics.to_constraintSemantics
+    {X : Fin 48 → Fin 48 → Prop} [DecidableRel X]
+    (hsem : EightEightLowOwnerFiniteSemantics X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (hirr : ∀ e, ¬ X e e)
+    (hcompat : ∀ e f, X e f → eightEightOwnerCompatible e f = true) :
+    EightEightLowOwnerConstraintSemantics
+      (eightEightOwnerValOfRelation X) := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact eightEightOwnerServiceClauseSatisfied_of_relation
+      X hsem hirr hcompat
+  · intro e v clause he hv ht hc
+    exact eightEightOwnerServiceUniqueClauseSatisfied_of_relation
+      X hsem hsymm e v he hv ht clause hc
+  · intro e f clause hef hf hi hc
+    exact eightEightOwnerNoCommonClauseSatisfied_of_relation
+      X hsem hsymm e f hef hf hi clause hc
+  · intro e f clause hef hf48 _hdisjoint hclause
+    exact eightEightOwnerAtMostOneCommonClauseSatisfied_of_relation
+      X hsem hsymm e f hef hf48 clause hclause
+
+/-- The high-level finite owner constraints are themselves contradictory
+whenever the relation is a simple compatible owner graph. -/
+theorem EightEightLowOwnerFiniteSemantics.false
+    {X : Fin 48 → Fin 48 → Prop} [DecidableRel X]
+    (hsem : EightEightLowOwnerFiniteSemantics X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (hirr : ∀ e, ¬ X e e)
+    (hcompat : ∀ e f, X e f → eightEightOwnerCompatible e f = true) : False :=
+  eightEightLowOwnerConstraintSemantics_false
+    (hsem.to_constraintSemantics hsymm hirr hcompat)
 
 /-- Convert the generic exact-service/C4 semantic package into the fixed
 high-level owner interface.  Only two coordinate rewrites are required:
@@ -775,6 +1055,7 @@ theorem adjacent_outsidePair_endpoint_not_adj
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidablePred (· ∈ c.supp)]
     (hcard : ∀ x : V,
       (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
     (a b : {x : V // x ∉ c.supp}) (hab : G.Adj a.1 b.1)
@@ -803,6 +1084,104 @@ theorem adjacent_outsidePair_endpoint_not_adj
     fin_cases i <;> fin_cases j <;>
       simp_all [C4, SimpleGraph.Adj.symm]
 
+/-- Every transported exterior adjacency survives the generator's
+compatibility filter. -/
+theorem outsideOwnerCoordinates_compatible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (modelIso : exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph)
+    (hcycle : ∀ x y : c.supp,
+      G.Adj x.1 y.1 ↔ eightEightCycleAdj (modelIso x).val (modelIso y).val = true)
+    (e f : Fin 48)
+    (hef : ((G.induce c.suppᶜ).comap
+      (outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges
+        modelIso).symm).Adj e f) :
+    eightEightOwnerCompatible e f = true := by
+  let idx := outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso
+  let a := idx.symm e
+  let b := idx.symm f
+  have hab : G.Adj a.1 b.1 := hef
+  apply (eightEightOwnerCompatible_iff_endpoints e f).mpr
+  refine ⟨?_, ?_⟩
+  · intro h
+    subst f
+    exact G.loopless.irrefl a.1 hab
+  · intro u v hue hvf
+    let us : c.supp := modelIso.symm u
+    let vs : c.supp := modelIso.symm v
+    have hua : us ∈
+        (outsidePair G (secondOrderDefectGraph G) c hcard a).toFinset := by
+      apply (mem_outsidePair_toFinset_iff_adj
+        G (secondOrderDefectGraph G) c hcard a us).mpr
+      have hincu := (outsideOwnerCoordinates_incident_iff
+        G c hcard hinc hqcard hRedges modelIso e u).mpr
+        ((mem_eightEightOwnerSym2_iff e u).mp
+          (Sym2.mem_toFinset.mpr hue))
+      simpa [idx, a, us] using hincu
+    have hvb : vs ∈
+        (outsidePair G (secondOrderDefectGraph G) c hcard b).toFinset := by
+      apply (mem_outsidePair_toFinset_iff_adj
+        G (secondOrderDefectGraph G) c hcard b vs).mpr
+      have hincv := (outsideOwnerCoordinates_incident_iff
+        G c hcard hinc hqcard hRedges modelIso f v).mpr
+        ((mem_eightEightOwnerSym2_iff f v).mp
+          (Sym2.mem_toFinset.mpr hvf))
+      simpa [idx, b, vs] using hincv
+    have hnot := adjacent_outsidePair_endpoint_not_adj
+      G hfree c hcard a b hab us vs hua hvb
+    cases hcv : eightEightCycleAdj u v with
+    | false => rfl
+    | true =>
+      exfalso
+      apply hnot
+      apply (hcycle us vs).mpr
+      simpa [us, vs] using hcv
+
+/-- Checked low-`8+8` terminal: no C4-free ambient graph can realize the
+fixed exterior-pair model together with its two-cycle internal model. -/
+theorem lowEightExteriorPairModel_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (modelIso : exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph)
+    (hcycle : ∀ x y : c.supp,
+      G.Adj x.1 y.1 ↔ eightEightCycleAdj (modelIso x).val (modelIso y).val = true) :
+    False := by
+  let idx := outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso
+  let C := (G.induce c.suppᶜ).comap idx.symm
+  have hsem : EightEightLowOwnerFiniteSemantics C.Adj :=
+    lowEightOwnerFiniteSemantics_of_modelIso
+      G hfree c hcard hinc hqcard hRedges modelIso hcycle
+  apply hsem.false
+  · intro e f hef
+    exact (C.adj_comm e f).mp hef
+  · intro e hee
+    exact C.loopless.irrefl e hee
+  · intro e f hef
+    exact outsideOwnerCoordinates_compatible
+      G hfree c hcard hinc hqcard hRedges modelIso hcycle e f hef
+
 end
 
 end Erdos85
@@ -812,6 +1191,8 @@ end Erdos85
 #print axioms Erdos85.eightEightOwnerSym2_injective
 #print axioms Erdos85.eightEightOwnerVariable?_eq_injective
 #print axioms Erdos85.mem_eightEightOwnerServiceVariables_iff
+#print axioms Erdos85.EightEightLowOwnerFiniteSemantics.to_constraintSemantics
+#print axioms Erdos85.EightEightLowOwnerFiniteSemantics.false
 #print axioms Erdos85.outsidePair_map_modelIso_eq_ownerSym2
 #print axioms Erdos85.mem_eightEightOwnerSym2_iff
 #print axioms Erdos85.outsideOwnerCoordinates_incident_iff
@@ -822,3 +1203,5 @@ end Erdos85
 #print axioms Erdos85.outsideOwnerCoordinates_intersecting_no_common
 #print axioms Erdos85.lowEightOwnerFiniteSemantics_of_modelIso
 #print axioms Erdos85.adjacent_outsidePair_endpoint_not_adj
+#print axioms Erdos85.outsideOwnerCoordinates_compatible
+#print axioms Erdos85.lowEightExteriorPairModel_false
