@@ -615,6 +615,49 @@ theorem outsideOwnerCoordinates_intersecting_no_common
   · exact hek
   · exact hfk
 
+/-- Complete graph-facing finite semantics for the fixed low-`8+8` owner
+instance.  All DIMACS numbering is absent: the result speaks only about
+the transported exterior adjacency relation on `Fin 48`. -/
+theorem lowEightOwnerFiniteSemantics_of_modelIso
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (modelIso : exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph)
+    (hcycle : ∀ x y : c.supp,
+      G.Adj x.1 y.1 ↔ eightEightCycleAdj (modelIso x).val (modelIso y).val = true) :
+    EightEightLowOwnerFiniteSemantics
+      (((G.induce c.suppᶜ).comap
+        (outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges
+          modelIso).symm).Adj) := by
+  let idx := outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso
+  apply EightEightLowOwnerFiniteSemantics.of_clauseSemantics
+    ((G.induce c.suppᶜ).comap idx.symm)
+    (fun u e ↦ G.Adj u.1 (idx.symm e).1)
+    (fun u e ↦ outsideCertificateTarget G c u (idx.symm e))
+    modelIso.toEquiv
+    (outsideCClauseSemantics_ownerCoordinates G hfree c idx)
+  · intro e v htarget
+    exact outsideOwnerCoordinates_target_eq_one
+      G c hcard hinc hqcard hRedges modelIso hcycle e v htarget
+  · intro e v
+    exact outsideOwnerCoordinates_incident_iff
+      G c hcard hinc hqcard hRedges modelIso e v
+  · intro e f hef hintersect k hek hfk
+    exact outsideOwnerCoordinates_intersecting_no_common
+      G hfree c hcard hinc hqcard hRedges modelIso
+      e f hef hintersect k hek hfk
+
 /-- Adjacent exterior owners are mutually compatible: no endpoint of one
 owned pair is ambient-adjacent to an endpoint of the other.  Such an edge
 would complete a `C4` through the two exterior owners. -/
@@ -667,4 +710,5 @@ end Erdos85
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
 #print axioms Erdos85.outsidePair_intersects_no_exterior_common
 #print axioms Erdos85.outsideOwnerCoordinates_intersecting_no_common
+#print axioms Erdos85.lowEightOwnerFiniteSemantics_of_modelIso
 #print axioms Erdos85.adjacent_outsidePair_endpoint_not_adj
