@@ -1257,6 +1257,147 @@ theorem cell_col_neighbors_card [NeZero q] (hfree : ¬ containsC4 V G)
     rw [if_neg hcase] at hint
     omega
 
+open Classical in
+/-- **Package (all-triangle sector): the eigenline block's hole pattern is a
+reflection circulant.**  From raw graph data — a `q`-regular C4-free graph
+on `q²` vertices (`q` even, `≥ 5`), a size-two defect component with a
+signed alternating joint eigenline, coordinates `pval/nval` making the
+internal 2-factor the standard shape — and the SECTOR hypothesis that every
+internal `H`-edge has an exterior witness (its unique common neighbour is
+exterior; the all-triangle sector), the hole relation on
+`ZMod q × ZMod q` is `{t, -1-t}` for some `t ∉ {0, -1}`. -/
+theorem eigenline_hole_reflectionCirculant [NeZero q] (hfree : ¬ containsC4 V G)
+    (hq : 5 ≤ q) (hq2 : 2 ∣ q)
+    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (hc : c.supp.ncard = q * 2)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      ((q : ℤ) - 5) * s x)
+    (hp : ∀ x, pval x ∈ c.supp ∧ s (pval x) = 1)
+    (hn : ∀ y, nval y ∈ c.supp ∧ s (nval y) = -1)
+    (hpinj : Function.Injective pval) (hninj : Function.Injective nval)
+    (hpsurj : ∀ z, z ∈ c.supp → s z = 1 → ∃ x, pval x = z)
+    (hnsurj : ∀ z, z ∈ c.supp → s z = -1 → ∃ y, nval y = z)
+    (hH : ∀ x y, G.Adj (pval x) (nval y) ↔ (y = x ∨ y = x - 1))
+    (hTri : ∀ x : ZMod q, (∃ u, IsGridWitness G c pval nval u x x) ∧
+      (∃ u, IsGridWitness G c pval nval u x (x - 1))) :
+    ∃ t : ZMod q, t ≠ 0 ∧ t ≠ -1 ∧
+      ∀ x y : ZMod q, (¬ ∃ u, IsGridWitness G c pval nval u x y) ↔
+        (y - x = t ∨ y - x = -1 - t) := by
+  classical
+  set hole : ZMod q → ZMod q → Bool :=
+    fun x y => decide (¬ ∃ u, IsGridWitness G c pval nval u x y) with hhole
+  set C : ZMod q × ZMod q → ZMod q × ZMod q → Bool :=
+    fun uv u'v' => decide (∃ w w', IsGridWitness G c pval nval w uv.1 uv.2 ∧
+      IsGridWitness G c pval nval w' u'v'.1 u'v'.2 ∧ G.Adj w w') with hC
+  have hole_false_iff : ∀ x y, hole x y = false ↔
+      ∃ u, IsGridWitness G c pval nval u x y := by
+    intro x y
+    simp [hhole]
+  have hole_true_iff : ∀ x y, hole x y = true ↔
+      ¬ ∃ u, IsGridWitness G c pval nval u x y := by
+    intro x y
+    simp [hhole]
+  obtain ⟨t, ht0, htm1, hiff⟩ := gridCode_hole_reflectionCirculant
+    (q := q) hole C hq2
+    (by intro u v
+        simp only [hC]
+        congr 1
+        rw [eq_iff_iff]
+        constructor
+        · rintro ⟨w, w', h1, h2, h3⟩; exact ⟨w', w, h2, h1, h3.symm⟩
+        · rintro ⟨w, w', h1, h2, h3⟩; exact ⟨w', w, h2, h1, h3.symm⟩)
+    (by intro u v h
+        simp only [hC, decide_eq_true_eq] at h
+        obtain ⟨w, w', h1, -, -⟩ := h
+        rw [hole_false_iff]
+        exact ⟨w, h1⟩)
+    (by intro x
+        constructor
+        · rw [hole_false_iff]; exact (hTri x).1
+        · rw [hole_false_iff]; exact (hTri x).2)
+    (by intro x
+        have h := hole_row_card G c s pval nval hfree hq hreg hcard hc hs_in
+          hs_out hsum hA_in hDs hp hn hninj hnsurj x
+        rw [← h]
+        congr 1
+        apply Finset.filter_congr
+        intro y _
+        rw [hole_true_iff])
+    (by intro y
+        have h := hole_col_card G c s pval nval hfree hq hreg hcard hc hs_in
+          hs_out hsum hA_in hDs hp hn hpinj hpsurj y
+        rw [← h]
+        congr 1
+        apply Finset.filter_congr
+        intro x _
+        rw [hole_true_iff])
+    (by -- row-hit law
+        rintro ⟨x, y⟩ hu x'
+        rw [hole_false_iff] at hu
+        obtain ⟨w, hw⟩ := hu
+        have h := cell_row_neighbors_card G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hn hninj hnsurj hH hw x'
+        rw [← h]
+        apply Finset.card_bij (fun y' _ => y')
+        · intro y' hy'
+          rw [Finset.mem_filter] at hy' ⊢
+          obtain ⟨-, hy'2⟩ := hy'
+          simp only [hC, decide_eq_true_eq] at hy'2
+          obtain ⟨w₀, w', hw₀, hw', hadj⟩ := hy'2
+          have : w₀ = w := gridWitness_unique G c s pval nval hfree
+            (fun x => (hp x).2) (fun y => (hn y).2) hw₀ hw
+          subst this
+          exact ⟨Finset.mem_univ _, w', hw', hadj⟩
+        · exact fun _ _ _ _ h => h
+        · intro y' hy'
+          rw [Finset.mem_filter] at hy'
+          obtain ⟨-, w', hw', hadj⟩ := hy'
+          refine ⟨y', Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩, rfl⟩
+          simp only [hC, decide_eq_true_eq]
+          exact ⟨w, w', hw, hw', hadj⟩)
+    (by -- column-hit law (convert the if-condition orientation)
+        rintro ⟨x, y⟩ hu y'
+        rw [hole_false_iff] at hu
+        obtain ⟨w, hw⟩ := hu
+        have h := cell_col_neighbors_card G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hn hpinj hpsurj hH hw y'
+        have hcond : ((x, y).1 = y' ∨ (x, y).1 = y' + 1) ↔
+            (y' = x ∨ y' = x - 1) := by
+          have hfst : ((x, y).1 : ZMod q) = x := rfl
+          rw [hfst]
+          constructor
+          · rintro (h | h)
+            · exact Or.inl h.symm
+            · exact Or.inr (by rw [h]; ring)
+          · rintro (h | h)
+            · exact Or.inl h.symm
+            · exact Or.inr (by rw [h]; ring)
+        rw [if_congr hcond rfl rfl, ← h]
+        apply Finset.card_bij (fun x' _ => x')
+        · intro x' hx'
+          rw [Finset.mem_filter] at hx' ⊢
+          obtain ⟨-, hx'2⟩ := hx'
+          simp only [hC, decide_eq_true_eq] at hx'2
+          obtain ⟨w₀, w', hw₀, hw', hadj⟩ := hx'2
+          have : w₀ = w := gridWitness_unique G c s pval nval hfree
+            (fun x => (hp x).2) (fun y => (hn y).2) hw₀ hw
+          subst this
+          exact ⟨Finset.mem_univ _, w', hw', hadj⟩
+        · exact fun _ _ _ _ h => h
+        · intro x' hx'
+          rw [Finset.mem_filter] at hx'
+          obtain ⟨-, w', hw', hadj⟩ := hx'
+          refine ⟨x', Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩, rfl⟩
+          simp only [hC, decide_eq_true_eq]
+          exact ⟨w, w', hw, hw', hadj⟩)
+  refine ⟨t, ht0, htm1, fun x y => ?_⟩
+  have h := hiff x y
+  rw [hole_true_iff] at h
+  exact h
 end Grid
 
 end Alternation
