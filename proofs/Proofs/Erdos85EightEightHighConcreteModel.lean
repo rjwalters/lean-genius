@@ -361,6 +361,328 @@ theorem eightEightHighCoordinateExteriorGraph_fixed_and_candidate
       simpa [R] using hR) hK
   exact eightEightHigh_fixed_and_candidate_support R hleft hright hcross
 
+/-- ZMod row and column counts transport to the `Fin 8` parity-filtered
+fibers consumed by the generated high-owner terminal. -/
+theorem eightEightHighOwner_crossFiber_two_of_zmod_coordinate_degrees
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (X : Fin 64 → Fin 64 → Prop) [DecidableRel X]
+    (hpar : ∀ i j : ZMod 8,
+      R.Adj (zmodEightLeftFin16 i) (zmodEightRightFin16 j) →
+        ((ZMod.finEquiv 8).symm i).val % 2 ≠
+          ((ZMod.finEquiv 8).symm j).val % 2)
+    (hrowZ : ∀ i : ZMod 8,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+        R.Adj (zmodEightLeftFin16 i) (zmodEightRightFin16 j)).card = 2)
+    (hcolZ : ∀ j : ZMod 8,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i =>
+        R.Adj (zmodEightLeftFin16 i) (zmodEightRightFin16 j)).card = 2) :
+    ∀ left z, z < 8 →
+      ((eightEightHighCrossFiberIds left z).filter fun id =>
+        eightEightHighOwnerValOfRelations
+          (eightEightHighCoordinateActive R) X id = true).card = 2 := by
+  apply eightEightHighOwner_crossFiber_two_of_coordinate_degrees R X
+  · intro x
+    let S := (Finset.univ : Finset (Fin 8)).filter fun y =>
+      x.val % 2 ≠ y.val % 2 ∧
+        R.Adj ⟨x.val, by omega⟩ ⟨8 + y.val, by omega⟩
+    let T := (Finset.univ : Finset (ZMod 8)).filter fun j =>
+      R.Adj (zmodEightLeftFin16 ((ZMod.finEquiv 8) x))
+        (zmodEightRightFin16 j)
+    have hleft : zmodEightLeftFin16 ((ZMod.finEquiv 8) x) =
+        (⟨x.val, by omega⟩ : Fin 16) := by
+      apply Fin.ext
+      simp [zmodEightLeftFin16]
+    have hcard : S.card = T.card := by
+      apply Finset.card_bij (fun y _ => (ZMod.finEquiv 8) y)
+      · intro y hy
+        have hy' := (Finset.mem_filter.mp hy).2
+        have hright_y : zmodEightRightFin16 ((ZMod.finEquiv 8) y) =
+            (⟨8 + y.val, by omega⟩ : Fin 16) := by
+          apply Fin.ext
+          simp [zmodEightRightFin16]
+          omega
+        apply Finset.mem_filter.mpr
+        refine ⟨Finset.mem_univ _, ?_⟩
+        simpa [hleft, hright_y] using hy'.2
+      · intro y₁ hy₁ y₂ hy₂ heq
+        exact (ZMod.finEquiv 8).injective heq
+      · intro j hj
+        have hj' := (Finset.mem_filter.mp hj).2
+        let y : Fin 8 := (ZMod.finEquiv 8).symm j
+        have hright : zmodEightRightFin16 j =
+            (⟨8 + y.val, by omega⟩ : Fin 16) := by
+          apply Fin.ext
+          simp [y, zmodEightRightFin16]
+          omega
+        have hR : R.Adj (⟨x.val, by omega⟩ : Fin 16)
+            ⟨8 + y.val, by omega⟩ := by
+          simpa [hleft, hright] using hj'
+        have hparxy : x.val % 2 ≠ y.val % 2 := by
+          simpa [y] using hpar ((ZMod.finEquiv 8) x) j (by
+            simpa [hleft, hright] using hR)
+        refine ⟨y, Finset.mem_filter.mpr
+          ⟨Finset.mem_univ _, hparxy, hR⟩, ?_⟩
+        simp [y]
+    rw [hcard]
+    exact hrowZ ((ZMod.finEquiv 8) x)
+  · intro y
+    let S := (Finset.univ : Finset (Fin 8)).filter fun x =>
+      x.val % 2 ≠ y.val % 2 ∧
+        R.Adj ⟨x.val, by omega⟩ ⟨8 + y.val, by omega⟩
+    let T := (Finset.univ : Finset (ZMod 8)).filter fun i =>
+      R.Adj (zmodEightLeftFin16 i)
+        (zmodEightRightFin16 ((ZMod.finEquiv 8) y))
+    have hright : zmodEightRightFin16 ((ZMod.finEquiv 8) y) =
+        (⟨8 + y.val, by omega⟩ : Fin 16) := by
+      apply Fin.ext
+      simp [zmodEightRightFin16]
+      omega
+    have hcard : S.card = T.card := by
+      apply Finset.card_bij (fun x _ => (ZMod.finEquiv 8) x)
+      · intro x hx
+        have hx' := (Finset.mem_filter.mp hx).2
+        have hleft_x : zmodEightLeftFin16 ((ZMod.finEquiv 8) x) =
+            (⟨x.val, by omega⟩ : Fin 16) := by
+          apply Fin.ext
+          simp [zmodEightLeftFin16]
+        apply Finset.mem_filter.mpr
+        refine ⟨Finset.mem_univ _, ?_⟩
+        simpa [hright, hleft_x] using hx'.2
+      · intro x₁ hx₁ x₂ hx₂ heq
+        exact (ZMod.finEquiv 8).injective heq
+      · intro i hi
+        have hi' := (Finset.mem_filter.mp hi).2
+        let x : Fin 8 := (ZMod.finEquiv 8).symm i
+        have hleft : zmodEightLeftFin16 i =
+            (⟨x.val, by omega⟩ : Fin 16) := by
+          apply Fin.ext
+          simp [x, zmodEightLeftFin16]
+        have hR : R.Adj (⟨x.val, by omega⟩ : Fin 16)
+            ⟨8 + y.val, by omega⟩ := by
+          simpa [hleft, hright] using hi'
+        have hparxy : x.val % 2 ≠ y.val % 2 := by
+          simpa [x] using hpar i ((ZMod.finEquiv 8) y) (by
+            simpa [hleft, hright] using hR)
+        refine ⟨x, Finset.mem_filter.mpr
+          ⟨Finset.mem_univ _, hparxy, hR⟩, ?_⟩
+        simp [x]
+    rw [hcard]
+    exact hcolZ ((ZMod.finEquiv 8) y)
+
+theorem zmodEightLeftFin16_finEquiv_sub_one (x : Fin 8) :
+    zmodEightLeftFin16 ((ZMod.finEquiv 8) x - 1) =
+      (⟨(x.val + 7) % 8, by omega⟩ : Fin 16) := by
+  fin_cases x <;> native_decide
+
+theorem zmodEightLeftFin16_finEquiv_add_one (x : Fin 8) :
+    zmodEightLeftFin16 ((ZMod.finEquiv 8) x + 1) =
+      (⟨(x.val + 1) % 8, by omega⟩ : Fin 16) := by
+  fin_cases x <;> native_decide
+
+theorem zmodEightRightFin16_finEquiv_add_one (y : Fin 8) :
+    zmodEightRightFin16 ((ZMod.finEquiv 8) y + 1) =
+      (⟨8 + (y.val + 1) % 8, by omega⟩ : Fin 16) := by
+  fin_cases y <;> native_decide
+
+theorem zmodEightRightFin16_finEquiv_sub_one (y : Fin 8) :
+    zmodEightRightFin16 ((ZMod.finEquiv 8) y - 1) =
+      (⟨8 + (y.val + 7) % 8, by omega⟩ : Fin 16) := by
+  fin_cases y <;> native_decide
+
+/-- The integral ZMod cycle-intertwining equation transports to the concrete
+Boolean recurrence consumed by the generated high-owner terminal. -/
+theorem eightEightHighOwner_balance_of_zmod_coordinate_balance
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (X : Fin 64 → Fin 64 → Prop) [DecidableRel X]
+    (hbalZ : ∀ i j : ZMod 8,
+      R.adjMatrix ℤ (zmodEightLeftFin16 (i - 1))
+          (zmodEightRightFin16 j) +
+        R.adjMatrix ℤ (zmodEightLeftFin16 (i + 1))
+          (zmodEightRightFin16 j) =
+      R.adjMatrix ℤ (zmodEightLeftFin16 i)
+          (zmodEightRightFin16 (j + 1)) +
+        R.adjMatrix ℤ (zmodEightLeftFin16 i)
+          (zmodEightRightFin16 (j - 1))) :
+    ∀ x y a b c d,
+      eightEightHighCrossIndex? ((x + 7) % 8) y = some a →
+      eightEightHighCrossIndex? ((x + 1) % 8) y = some b →
+      eightEightHighCrossIndex? x ((y + 1) % 8) = some c →
+      eightEightHighCrossIndex? x ((y + 7) % 8) = some d →
+      (eightEightHighOwnerValOfRelations
+          (eightEightHighCoordinateActive R) X a).toNat +
+        (eightEightHighOwnerValOfRelations
+          (eightEightHighCoordinateActive R) X b).toNat =
+      (eightEightHighOwnerValOfRelations
+          (eightEightHighCoordinateActive R) X c).toNat +
+        (eightEightHighOwnerValOfRelations
+          (eightEightHighCoordinateActive R) X d).toNat := by
+  apply eightEightHighOwner_balance_of_coordinate_balance R X
+  intro x y hx hy
+  let xf : Fin 8 := ⟨x, hx⟩
+  let yf : Fin 8 := ⟨y, hy⟩
+  let i : ZMod 8 := (ZMod.finEquiv 8) xf
+  let j : ZMod 8 := (ZMod.finEquiv 8) yf
+  have hxm : zmodEightLeftFin16 (i - 1) =
+      (⟨(x + 7) % 8, by omega⟩ : Fin 16) := by
+    simpa [i, xf] using zmodEightLeftFin16_finEquiv_sub_one xf
+  have hxp : zmodEightLeftFin16 (i + 1) =
+      (⟨(x + 1) % 8, by omega⟩ : Fin 16) := by
+    simpa [i, xf] using zmodEightLeftFin16_finEquiv_add_one xf
+  have hx0 : zmodEightLeftFin16 i =
+      (⟨x, by omega⟩ : Fin 16) := by
+    apply Fin.ext
+    simp [i, xf, zmodEightLeftFin16]
+  have hy0 : zmodEightRightFin16 j =
+      (⟨8 + y, by omega⟩ : Fin 16) := by
+    apply Fin.ext
+    simp [j, yf, zmodEightRightFin16]
+    omega
+  have hyp : zmodEightRightFin16 (j + 1) =
+      (⟨8 + (y + 1) % 8, by omega⟩ : Fin 16) := by
+    simpa [j, yf] using zmodEightRightFin16_finEquiv_add_one yf
+  have hym : zmodEightRightFin16 (j - 1) =
+      (⟨8 + (y + 7) % 8, by omega⟩ : Fin 16) := by
+    simpa [j, yf] using zmodEightRightFin16_finEquiv_sub_one yf
+  have hb := hbalZ i j
+  rw [hxm, hxp, hx0, hy0, hyp, hym] at hb
+  simp only [SimpleGraph.adjMatrix_apply] at hb
+  by_cases ha : R.Adj (⟨(x + 7) % 8, by omega⟩ : Fin 16)
+      ⟨8 + y, by omega⟩ <;>
+    by_cases hb' : R.Adj (⟨(x + 1) % 8, by omega⟩ : Fin 16)
+      ⟨8 + y, by omega⟩ <;>
+    by_cases hc : R.Adj (⟨x, by omega⟩ : Fin 16)
+      ⟨8 + (y + 1) % 8, by omega⟩ <;>
+    by_cases hd : R.Adj (⟨x, by omega⟩ : Fin 16)
+      ⟨8 + (y + 7) % 8, by omega⟩ <;>
+    simp [ha, hb', hc, hd] at hb ⊢
+
+noncomputable def eightEightHighCoordinateClassicalVal
+    (R : SimpleGraph (Fin 16)) (X : Fin 64 → Fin 64 → Prop)
+    (id : Nat) : Bool :=
+  @eightEightHighOwnerValOfRelations (eightEightHighCoordinateActive R) X
+    (Classical.decPred _) (Classical.decRel _) id
+
+theorem eightEightHighOwnerVal_eq_coordinateClassicalVal
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (X : Fin 64 → Fin 64 → Prop) [DecidableRel X] (id : Nat) :
+    eightEightHighOwnerValOfRelations
+        (eightEightHighCoordinateActive R) X id =
+      eightEightHighCoordinateClassicalVal R X id := by
+  apply Bool.eq_iff_iff.mpr
+  simp [eightEightHighOwnerValOfRelations,
+    eightEightHighCoordinateClassicalVal]
+
+/-- The two arithmetic cross laws required by the high-owner terminal follow
+directly from the quotient-six structural block in normalized coordinates. -/
+theorem eightEightHighCoordinateExteriorGraph_cross_laws
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hVcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      3 * s x)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 8) (hb : b.supp.ncard = 8) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (husign : ∀ z, s (u z).1 =
+      (-1 : ℤ) ^ ((ZMod.finEquiv 8).symm z).val)
+    (hvsign : ∀ z, s (v z).1 =
+      (-1 : ℤ) ^ ((ZMod.finEquiv 8).symm z).val)
+    (hab6 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b = 6)
+    (X : Fin 64 → Fin 64 → Prop) :
+    let R := eightEightHighCoordinateExteriorGraph G c (by omega)
+      a b hab u v huinj hvinj hurange hvrange
+    (∀ left z, z < 8 →
+      ((eightEightHighCrossFiberIds left z).filter fun id =>
+        eightEightHighCoordinateClassicalVal R X id = true).card = 2) ∧
+    ∀ x y p q r t,
+      eightEightHighCrossIndex? ((x + 7) % 8) y = some p →
+      eightEightHighCrossIndex? ((x + 1) % 8) y = some q →
+      eightEightHighCrossIndex? x ((y + 1) % 8) = some r →
+      eightEightHighCrossIndex? x ((y + 7) % 8) = some t →
+      (eightEightHighCoordinateClassicalVal R X p).toNat +
+        (eightEightHighCoordinateClassicalVal R X q).toNat =
+      (eightEightHighCoordinateClassicalVal R X r).toNat +
+        (eightEightHighCoordinateClassicalVal R X t).toNat := by
+  classical
+  let R := eightEightHighCoordinateExteriorGraph G c (by omega)
+    a b hab u v huinj hvinj hurange hvrange
+  letI : DecidableRel R.Adj := Classical.decRel R.Adj
+  letI : DecidablePred (eightEightHighCoordinateActive R) :=
+    Classical.decPred _
+  letI : DecidableRel X := Classical.decRel X
+  have hcomp := sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
+    G hfree c a b hab u v hurange hvrange
+  have hsat :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_parameterSix_crossAntipodal_saturation
+      G hfree hreg hVcard c hc s hs_in hs_out hA_in hDs
+        a b ha hb hab u v huinj hvinj hurange hvrange hu hv hab6
+  have hpar : ∀ i j : ZMod 8,
+      R.Adj (zmodEightLeftFin16 i) (zmodEightRightFin16 j) →
+        ((ZMod.finEquiv 8).symm i).val % 2 ≠
+          ((ZMod.finEquiv 8).symm j).val % 2 := by
+    intro i j hR hij
+    have hsign : s (v j).1 = s (u i).1 := by
+      rw [husign, hvsign]
+      exact (zmodEight_negOnePow_eq_iff_parity j i).mpr hij.symm
+    have hK := (hsat.1 i j).mpr (hsat.2 i j hsign)
+    exact (hcomp i j).mp (by simpa [R] using hR) hK
+  have hdegrees :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_parameterSix_crossExterior_degrees
+      G hfree hreg hVcard c hc a b ha hb hab u v huinj hvinj
+        hurange hvrange hab6
+  have hrowZ : ∀ i : ZMod 8,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+        R.Adj (zmodEightLeftFin16 i) (zmodEightRightFin16 j)).card = 2 := by
+    intro i
+    simpa [R] using hdegrees.1 i
+  have hcolZ : ∀ j : ZMod 8,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i =>
+        R.Adj (zmodEightLeftFin16 i) (zmodEightRightFin16 j)).card = 2 := by
+    intro j
+    simpa [R] using hdegrees.2 j
+  have hbal :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_crossExterior_intertwines
+      G hfree hreg c hVcard hc a b hab u v huinj hvinj hurange hvrange hu hv
+  have hbalZ : ∀ i j : ZMod 8,
+      R.adjMatrix ℤ (zmodEightLeftFin16 (i - 1))
+          (zmodEightRightFin16 j) +
+        R.adjMatrix ℤ (zmodEightLeftFin16 (i + 1))
+          (zmodEightRightFin16 j) =
+      R.adjMatrix ℤ (zmodEightLeftFin16 i)
+          (zmodEightRightFin16 (j + 1)) +
+        R.adjMatrix ℤ (zmodEightLeftFin16 i)
+          (zmodEightRightFin16 (j - 1)) := by
+    intro i j
+    simpa [R, SimpleGraph.adjMatrix_apply] using hbal i j
+  constructor
+  · have htwo := eightEightHighOwner_crossFiber_two_of_zmod_coordinate_degrees
+      R X hpar hrowZ hcolZ
+    simpa only [R, eightEightHighOwnerVal_eq_coordinateClassicalVal] using htwo
+  · have hbalance :=
+      eightEightHighOwner_balance_of_zmod_coordinate_balance R X hbalZ
+    simpa only [R, eightEightHighOwnerVal_eq_coordinateClassicalVal] using
+      hbalance
+
 end
 
 end Erdos85
