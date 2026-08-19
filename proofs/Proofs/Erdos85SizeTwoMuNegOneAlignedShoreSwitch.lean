@@ -163,7 +163,8 @@ theorem orderSixtyFour_sizeTwo_muNegOne_refined_shoreSwitch
       let B := (Finset.univ : Finset c.supp).filter
         (fun x ↦ H.connectedComponentMk x = b)
       let t : c.supp → ℤ := fun x ↦ if x ∈ B then -s x.1 else s x.1
-      (K.adjMatrix ℤ).mulVec t = sizeTwoMuSwitchTarget (-1) k r • t := by
+      (K.adjMatrix ℤ).mulVec t = sizeTwoMuSwitchTarget (-1) k r • t ∧
+        t ≠ 0 := by
   classical
   dsimp only
   let H := G.induce c.supp
@@ -191,7 +192,17 @@ theorem orderSixtyFour_sizeTwo_muNegOne_refined_shoreSwitch
         rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
     · rcases hone.2 with h | h | h | h | h | h <;>
         rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
-  simpa only [hcoeff] using hswitch
+  constructor
+  · simpa only [hcoeff] using hswitch
+  · intro ht
+    have hval := congrFun ht (u 0)
+    have hsign0 := hs_in (u 0).1 (u 0).2
+    by_cases hmem : (u 0) ∈ (Finset.univ : Finset c.supp).filter
+        (fun x ↦ H.connectedComponentMk x = b)
+    · simp [hmem] at hval
+      omega
+    · simp [hmem] at hval
+      omega
 
 end
 
