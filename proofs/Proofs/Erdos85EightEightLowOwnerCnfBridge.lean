@@ -381,6 +381,43 @@ theorem outsidePair_intersects_no_exterior_common
     fin_cases i <;> fin_cases j <;>
       simp_all [C4, SimpleGraph.Adj.symm]
 
+/-- Adjacent exterior owners are mutually compatible: no endpoint of one
+owned pair is ambient-adjacent to an endpoint of the other.  Such an edge
+would complete a `C4` through the two exterior owners. -/
+theorem adjacent_outsidePair_endpoint_not_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (a b : {x : V // x ∉ c.supp}) (hab : G.Adj a.1 b.1)
+    (u v : c.supp)
+    (hua : u ∈ (outsidePair G (secondOrderDefectGraph G) c hcard a).toFinset)
+    (hvb : v ∈ (outsidePair G (secondOrderDefectGraph G) c hcard b).toFinset) :
+    ¬ G.Adj u.1 v.1 := by
+  intro huv
+  have hau : G.Adj a.1 u.1 :=
+    ((mem_outsidePair_toFinset_iff_adj
+      G (secondOrderDefectGraph G) c hcard a u).mp hua).symm
+  have hbv : G.Adj b.1 v.1 :=
+    ((mem_outsidePair_toFinset_iff_adj
+      G (secondOrderDefectGraph G) c hcard b v).mp hvb).symm
+  have habne : a.1 ≠ b.1 := G.ne_of_adj hab
+  have huvne : u.1 ≠ v.1 := G.ne_of_adj huv
+  have haune : a.1 ≠ u.1 := fun h => a.2 (h ▸ u.2)
+  have havne : a.1 ≠ v.1 := fun h => a.2 (h ▸ v.2)
+  have hbune : b.1 ≠ u.1 := fun h => b.2 (h ▸ u.2)
+  have hbvne : b.1 ≠ v.1 := fun h => b.2 (h ▸ v.2)
+  apply hfree
+  refine ⟨![a.1, u.1, v.1, b.1], ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;>
+      simp_all [C4, SimpleGraph.Adj.symm]
+
 end
 
 end Erdos85
@@ -392,3 +429,4 @@ end Erdos85
 #print axioms Erdos85.lowEightExteriorPair_pointwise_model_of_shores
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
 #print axioms Erdos85.outsidePair_intersects_no_exterior_common
+#print axioms Erdos85.adjacent_outsidePair_endpoint_not_adj
