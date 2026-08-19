@@ -133,7 +133,7 @@ def eightEightHighCoordinateExteriorGraph
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
     (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
     SimpleGraph (Fin 16) :=
-  (exteriorPairGraph G c).comap
+  (exteriorPairGraph G c.supp).comap
     (eightEightShoreCoordinateEquiv G c hc a b hab u v huinj hvinj
       hurange hvrange).symm
 
@@ -147,7 +147,7 @@ noncomputable def eightEightHighCoordinateExteriorGraphIso
     (u v : ZMod 8 → c.supp)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
     (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
-    exteriorPairGraph G c ≃g
+    exteriorPairGraph G c.supp ≃g
       eightEightHighCoordinateExteriorGraph G c hc a b hab u v huinj hvinj
         hurange hvrange where
   toEquiv := eightEightShoreCoordinateEquiv G c hc a b hab u v huinj hvinj
@@ -169,7 +169,7 @@ noncomputable def eightEightHighCoordinateExteriorGraphIso
     (i j : ZMod 8) :
     (eightEightHighCoordinateExteriorGraph G c hc a b hab u v huinj hvinj
       hurange hvrange).Adj (zmodEightLeftFin16 i) (zmodEightLeftFin16 j) ↔
-      (exteriorPairGraph G c).Adj (u i) (u j) := by
+      (exteriorPairGraph G c.supp).Adj (u i) (u j) := by
   let coord := eightEightShoreCoordinateEquiv G c hc a b hab u v huinj hvinj
     hurange hvrange
   have hi : coord.symm (zmodEightLeftFin16 i) = u i := by
@@ -193,7 +193,7 @@ noncomputable def eightEightHighCoordinateExteriorGraphIso
     (i j : ZMod 8) :
     (eightEightHighCoordinateExteriorGraph G c hc a b hab u v huinj hvinj
       hurange hvrange).Adj (zmodEightRightFin16 i) (zmodEightRightFin16 j) ↔
-      (exteriorPairGraph G c).Adj (v i) (v j) := by
+      (exteriorPairGraph G c.supp).Adj (v i) (v j) := by
   let coord := eightEightShoreCoordinateEquiv G c hc a b hab u v huinj hvinj
     hurange hvrange
   have hi : coord.symm (zmodEightRightFin16 i) = v i := by
@@ -217,7 +217,7 @@ noncomputable def eightEightHighCoordinateExteriorGraphIso
     (i j : ZMod 8) :
     (eightEightHighCoordinateExteriorGraph G c hc a b hab u v huinj hvinj
       hurange hvrange).Adj (zmodEightLeftFin16 i) (zmodEightRightFin16 j) ↔
-      (exteriorPairGraph G c).Adj (u i) (v j) := by
+      (exteriorPairGraph G c.supp).Adj (u i) (v j) := by
   let coord := eightEightShoreCoordinateEquiv G c hc a b hab u v huinj hvinj
     hurange hvrange
   have hi : coord.symm (zmodEightLeftFin16 i) = u i := by
@@ -265,6 +265,101 @@ theorem eightEightHighCoordinateExteriorGraphIso_cycle
     revert p q
     native_decide
   exact hfinite _ _
+
+theorem zmodEight_negOnePow_eq_iff_parity (i j : ZMod 8) :
+    (-1 : ℤ) ^ ((ZMod.finEquiv 8).symm i).val =
+        (-1 : ℤ) ^ ((ZMod.finEquiv 8).symm j).val ↔
+      ((ZMod.finEquiv 8).symm i).val % 2 =
+        ((ZMod.finEquiv 8).symm j).val % 2 := by
+  fin_cases i <;> fin_cases j <;> decide
+
+/-- At quotient parameter six, normalized alternating coordinates realize
+exactly the fixed odd-offset shore support and no same-parity cross edge. -/
+theorem eightEightHighCoordinateExteriorGraph_fixed_and_candidate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hVcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      3 * s x)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 8) (hb : b.supp.ncard = 8) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (husign : ∀ z, s (u z).1 =
+      (-1 : ℤ) ^ ((ZMod.finEquiv 8).symm z).val)
+    (hvsign : ∀ z, s (v z).1 =
+      (-1 : ℤ) ^ ((ZMod.finEquiv 8).symm z).val)
+    (hab6 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b = 6)
+    (hba6 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) b a = 6) :
+    let R := eightEightHighCoordinateExteriorGraph G c (by omega)
+      a b hab u v huinj hvinj hurange hvrange
+    (∀ e : Fin 64, eightEightHighActiveVariable? e = none →
+      R.Adj (eightEightHighOwnerFirst e) (eightEightHighOwnerSecond e)) ∧
+    ∀ x y, R.Adj x y →
+      eightEightHighCandidatePair x y = true ∨
+        eightEightHighCandidatePair y x = true := by
+  let R := eightEightHighCoordinateExteriorGraph G c (by omega)
+    a b hab u v huinj hvinj hurange hvrange
+  have hDu :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_parameterSix_firstCycle_defectAdj_iff_halfTurn
+      G hfree hreg hVcard c hc s hs_in hs_out hA_in hDs
+        a b ha hb hab u v huinj hvinj hurange hvrange hu hv hab6
+  have hDv :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_parameterSix_firstCycle_defectAdj_iff_halfTurn
+      G hfree hreg hVcard c hc s hs_in hs_out hA_in hDs
+        b a hb ha hab.symm v u hvinj huinj hvrange hurange hv hu hba6
+  have hleft : ∀ i j : ZMod 8,
+      R.Adj (zmodEightLeftFin16 i) (zmodEightLeftFin16 j) ↔
+        EightEightOddOffset i j := by
+    intro i j
+    rw [eightEightHighCoordinateExteriorGraph_left_left]
+    exact sizeTwo_eight_halfTurnDefect_exteriorPair_iff_odd_nonzero
+      G hfree c u huinj hu hDu i j
+  have hright : ∀ i j : ZMod 8,
+      R.Adj (zmodEightRightFin16 i) (zmodEightRightFin16 j) ↔
+        EightEightOddOffset i j := by
+    intro i j
+    rw [eightEightHighCoordinateExteriorGraph_right_right]
+    exact sizeTwo_eight_halfTurnDefect_exteriorPair_iff_odd_nonzero
+      G hfree c v hvinj hv hDv i j
+  have hcomp := sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
+    G hfree c a b hab u v hurange hvrange
+  have hsat :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_parameterSix_crossAntipodal_saturation
+      G hfree hreg hVcard c hc s hs_in hs_out hA_in hDs
+        a b ha hb hab u v huinj hvinj hurange hvrange hu hv hab6
+  have hcross : ∀ i j : ZMod 8,
+      R.Adj (zmodEightLeftFin16 i) (zmodEightRightFin16 j) →
+        ((ZMod.finEquiv 8).symm i).val % 2 ≠
+          ((ZMod.finEquiv 8).symm j).val % 2 := by
+    intro i j hR hpar
+    have hsign : s (v j).1 = s (u i).1 := by
+      rw [husign, hvsign]
+      exact (zmodEight_negOnePow_eq_iff_parity j i).mpr hpar.symm
+    have hK := (hsat.1 i j).mpr (hsat.2 i j hsign)
+    exact (hcomp i j).mp (by
+      simpa [R] using hR) hK
+  exact eightEightHigh_fixed_and_candidate_support R hleft hright hcross
 
 end
 
