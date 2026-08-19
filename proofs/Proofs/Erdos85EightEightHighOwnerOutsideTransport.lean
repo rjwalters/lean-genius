@@ -499,9 +499,89 @@ theorem outsideHighOwnerCoordinates_compatible
       apply (hcycle us vs).mpr
       simpa [us, vs] using hcv
 
+/-- The ambient outside graph, indexed by enabled high owners, supplies all
+five guarded service and C4 laws used by the checked high-owner terminal. -/
+theorem highEightOwnerServiceSemantics_of_modelIso
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [hmem : DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (hfixed : ∀ e : Fin 64,
+      eightEightHighActiveVariable? e = none →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (hsub : ∀ a b, R.Adj a b →
+      eightEightHighCandidatePair a b = true ∨
+        eightEightHighCandidatePair b a = true)
+    (modelIso : exteriorPairGraph G c ≃g R)
+    (hcycle : ∀ x y : c.supp,
+      G.Adj x.1 y.1 ↔
+        eightEightHighCycleAdj (modelIso x).val (modelIso y).val = true) :
+    EightEightHighOwnerServiceSemantics
+      (eightEightHighCoordinateActive R)
+      (eightEightHighRealizedRelation
+        (eightEightHighCoordinateActive R) (G.induce c.suppᶜ)
+        (highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+          hfixed hsub modelIso)) := by
+  let active := eightEightHighCoordinateActive R
+  let out := highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+    hfixed hsub modelIso
+  have hambient : OutsideCClauseSemantics (G.induce c.suppᶜ)
+      (fun u z ↦ G.Adj u.1 z.1) (outsideCertificateTarget G c) := by
+    let canonicalMem : DecidablePred (· ∈ c.supp) :=
+      (secondOrderDefectGraph G).instDecidableMemSupp c
+    let canonicalOutside : Fintype {x : V // x ∉ c.supp} :=
+      @Subtype.fintype V (fun x ↦ x ∈ c.suppᶜ)
+        (fun x ↦ @Set.decidableCompl V c.supp x (canonicalMem x)) inferInstance
+    let callerOutside : Fintype {x : V // x ∉ c.supp} :=
+      @Subtype.fintype V (fun x ↦ x ∈ c.suppᶜ)
+        (fun x ↦ @Set.decidableCompl V c.supp x (hmem x)) inferInstance
+    have h : @OutsideCClauseSemantics c.supp {x : V // x ∉ c.supp}
+        canonicalOutside (G.induce c.suppᶜ) (fun u z ↦ G.Adj u.1 z.1)
+        (outsideCertificateTarget G c) := by
+      exact outsideCClauseSemantics_of_ambient G hfree c
+    exact @OutsideCClauseSemantics.mk _ _ callerOutside _ _ _
+      (@OutsideCClauseSemantics.zero_service _ _ canonicalOutside _ _ _ h)
+      (@OutsideCClauseSemantics.one_service_exists _ _ canonicalOutside _ _ _ h)
+      (@OutsideCClauseSemantics.one_service_unique _ _ canonicalOutside _ _ _ h)
+      (@OutsideCClauseSemantics.no_two_common _ _ canonicalOutside _ _ _ h)
+  apply eightEightHighOwnerServiceSemantics_of_enabledEquiv
+    active (G.induce c.suppᶜ)
+    (fun u z ↦ G.Adj u.1 z.1)
+    (outsideCertificateTarget G c)
+    modelIso.toEquiv
+    hambient out
+  · intro e he v htarget
+    exact outsideHighOwnerCoordinates_target_eq_one
+      G c hcard hinc hqcard hRedges R hfixed hsub modelIso hcycle
+        ⟨e, he⟩ v htarget
+  · intro e he v
+    exact outsideHighOwnerCoordinates_incident_iff
+      G c hcard hinc hqcard hRedges R hfixed hsub modelIso ⟨e, he⟩ v
+  · intro e he v f hf htarget hfcontains hef
+    exact outsideHighOwnerCoordinates_internal_zero
+      G hfree c hcard hinc hqcard hRedges R hfixed hsub modelIso hcycle
+        ⟨e, he⟩ ⟨f, hf⟩ v htarget hfcontains hef
+  · intro e f hef hintersect he hf k hek hfk
+    exact outsideHighOwnerCoordinates_intersecting_no_common
+      G hfree c hcard hinc hqcard hRedges R hfixed hsub modelIso
+        ⟨e, he⟩ ⟨f, hf⟩ hef hintersect k hek hfk
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.outsidePair_map_highModelIso_eq_ownerSym2
 #print axioms Erdos85.outsideHighOwnerCoordinates_compatible
+#print axioms Erdos85.highEightOwnerServiceSemantics_of_modelIso
