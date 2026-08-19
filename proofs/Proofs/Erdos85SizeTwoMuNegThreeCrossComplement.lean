@@ -1,5 +1,6 @@
 import Proofs.Erdos85SizeTwoMuNegThreeSameSignCycles
 import Proofs.Erdos85ThreeBiregularDecomposition
+import Proofs.Erdos85ExteriorDefectDecomposition
 
 /-! # The cross nondefect cubic relation at `mu = -3` -/
 
@@ -116,6 +117,36 @@ theorem orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeRegular
       (fun x ↦ ¬ D.Adj x.1 y.1)).card = 3
     omega
 
+/-- Every cross nondefect pair has exactly one ambient common neighbour. -/
+theorem orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_common_card_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (s : V → ℤ)
+    (x : MuNegThreePositiveShore (secondOrderDefectGraph G) c s)
+    (y : MuNegThreeNegativeShore (secondOrderDefectGraph G) c s)
+    (hxy : ¬ (secondOrderDefectGraph G).Adj x.1 y.1) :
+    (G.neighborFinset x.1 ∩ G.neighborFinset y.1).card = 1 := by
+  have hne : x.1 ≠ y.1 := by
+    intro h
+    have hs : s x.1 = s y.1 := congrArg s h
+    omega
+  have hzeroIff := secondOrderDefectGraph_adj_iff_card_common_eq_zero
+    G hfree hne
+  have hneZero :
+      (G.neighborFinset x.1 ∩ G.neighborFinset y.1).card ≠ 0 := by
+    intro hz
+    exact hxy (hzeroIff.mpr hz)
+  have hle :
+      (G.neighborFinset x.1 ∩ G.neighborFinset y.1).card ≤ 1 :=
+    common_le_one_of_not_containsC4 hfree x.1 y.1 hne
+  omega
+
 /-- The cubic cross nondefect relation admits three pairwise-disjoint perfect
 matchings between the positive and negative sign shores. -/
 theorem orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeMatchings
@@ -178,4 +209,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeRegular
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_common_card_one
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeMatchings
