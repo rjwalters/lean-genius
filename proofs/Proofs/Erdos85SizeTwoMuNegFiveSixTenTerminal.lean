@@ -577,6 +577,147 @@ theorem matching_active_source_card_eq
     refine ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ⟨j, ?_⟩⟩, hi⟩
     rw [hi, hj]
 
+/-- Inside a size-two defect component, equal-sign defect adjacency is
+precisely antipodal adjacency: the triangle-free summand is an ambient edge
+and therefore flips the signed internal eigenline. -/
+theorem sizeTwo_equalSign_secondOrderDefect_iff_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (x y : c.supp) (hsame : s y.1 = s x.1) :
+    (secondOrderDefectGraph G).Adj x.1 y.1 ↔
+      (antipodalGraph G).Adj x.1 y.1 := by
+  constructor
+  · intro hD
+    change ((antipodalGraph G) ⊔ triangleFreeEdgeGraph G).Adj x.1 y.1 at hD
+    rcases hD with hanti | htf
+    · exact hanti
+    · exfalso
+      have hG : G.Adj x.1 y.1 :=
+        ((mem_triangleFreeNeighbors G x.1 y.1).mp
+          ((triangleFreeEdgeGraph_adj G x.1 y.1).mp htf)).1
+      have hymem : y.1 ∈ componentNeighborFinset G
+          (secondOrderDefectGraph G) c x.1 := by
+        rw [componentNeighborFinset, Finset.mem_filter]
+        exact ⟨(G.mem_neighborFinset _ _).mpr hG,
+          (ConnectedComponent.mem_supp_iff c y.1).mp y.2⟩
+      have hflip := (internal_alternation G hfree (by omega) hreg hcard
+        c hc s hs_in hs_out hA_in x.2).2 y.1 hymem
+      rcases hs_in x.1 x.2 with hxneg | hxpos <;> omega
+  · intro hanti
+    exact Or.inl hanti
+
+/-- The positive long rows carrying a same-parity antipodal entry are
+exactly the positive matching vertices whose mate remains long; hence there
+are two of them in the `mu=-5`, `6+10` stratum. -/
+theorem orderSixtyFour_sizeTwo_muNegFive_sixTen_positive_active_card_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    [DecidableRel (MuNegFiveNeutralProjection G c s)]
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z, s y =
+        (-5 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (ha : a.supp.ncard = 6) (hb : b.supp.ncard = 10)
+    (coord : SizeTwoCycleGridCoordinates (G.induce c.supp) a.supp
+      (fun z ↦ s z.1) 3)
+    (v : ZMod 10 → c.supp) (hvinj : Function.Injective v)
+    (hvrange : Set.range v = b.supp)
+    (hsame : ∀ i j, ZModTenEvenOffset (j - i) ↔
+      s (v j).1 = s (v i).1) :
+    ((Finset.univ : Finset (ZMod 10)).filter fun i ↦
+      s (v i).1 = 1 ∧ ∃ j, ZModTenEvenOffset (j - i) ∧
+        (antipodalGraph G).Adj (v i).1 (v j).1).card = 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Xp := MuNegFivePositiveShore D c s
+  let Ip := {i : ZMod 10 // s (v i).1 = 1}
+  let long : Ip → Xp := fun i ↦ ⟨(v i.1).1, (v i.1).2, i.2⟩
+  let short : ZMod 3 → Xp := fun i ↦
+    ⟨(coord.pval i).1, (coord.pval i).2, (coord.p_mem_sign i).2⟩
+  let L : Finset Xp := Finset.univ \ Finset.univ.image short
+  obtain ⟨fp, _fm, hfp, _hfm, hpcount, _hmcount⟩ :=
+    orderSixtyFour_sizeTwo_muNegFive_sixTen_long_internalMatching_card_two
+      G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab ha hb coord
+  have himage : Finset.univ.image long = L := by
+    simpa [D, Xp, Ip, long, short, L] using
+      muNegFive_sixTen_positiveLong_image_eq_complement_short
+        G c hc s a b ha hb coord v hvrange
+  have hlonginj : Function.Injective long := by
+    intro i j hij
+    apply Subtype.ext
+    apply hvinj
+    apply Subtype.ext
+    exact congrArg (fun x : Xp ↦ x.1) hij
+  have hsource :
+      ((Finset.univ : Finset Ip).filter fun i ↦
+        ∃ j, fp (long i) = long j).card = 2 := by
+    rw [matching_active_source_card_eq fp long hlonginj L himage]
+    simpa [D, Xp, short, L] using hpcount
+  let S := (Finset.univ : Finset (ZMod 10)).filter fun i ↦
+    s (v i).1 = 1 ∧ ∃ j, ZModTenEvenOffset (j - i) ∧
+      (antipodalGraph G).Adj (v i).1 (v j).1
+  let T := (Finset.univ : Finset Ip).filter fun i ↦
+    ∃ j, fp (long i) = long j
+  have hcardST : S.card = T.card := by
+    apply Finset.card_bij (fun i hi ↦
+      (⟨i, (Finset.mem_filter.mp hi).2.1⟩ : Ip))
+    · intro i hi
+      have hi' := (Finset.mem_filter.mp hi).2
+      obtain ⟨j, hjeven, hjanti⟩ := hi'.2
+      let ii : Ip := ⟨i, hi'.1⟩
+      have hjsign : s (v j).1 = 1 := (hsame i j).mp hjeven |>.trans hi'.1
+      let jj : Ip := ⟨j, hjsign⟩
+      have hDef : D.Adj (v i).1 (v j).1 :=
+        (sizeTwo_equalSign_secondOrderDefect_iff_antipodal
+          G hfree hreg hcard c hc s hs_in hs_out hA_in (v i) (v j)
+            ((hsame i j).mp hjeven)).mpr hjanti
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, ⟨jj, ?_⟩⟩
+      exact (hfp (long ii) (long jj)).mp hDef
+    · intro i hi j hj hij
+      exact congrArg Subtype.val hij
+    · intro i hi
+      obtain ⟨j, hj⟩ := (Finset.mem_filter.mp hi).2
+      have hDef : D.Adj (v i.1).1 (v j.1).1 := (hfp (long i) (long j)).mpr hj
+      have hanti := (sizeTwo_equalSign_secondOrderDefect_iff_antipodal
+        G hfree hreg hcard c hc s hs_in hs_out hA_in (v i.1) (v j.1)
+          (by rw [i.2, j.2])).mp hDef
+      refine ⟨i.1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, i.2,
+        ⟨j.1, ?_, hanti⟩⟩, ?_⟩
+      · exact (hsame i.1 j.1).mpr (by rw [i.2, j.2])
+      · rfl
+  change S.card = 2
+  rw [hcardST]
+  exact hsource
+
 end
 
 end Erdos85
@@ -589,3 +730,5 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_long_sameParity_antipodal_rightUnique
 #print axioms Erdos85.muNegFive_sixTen_positiveLong_image_eq_complement_short
 #print axioms Erdos85.matching_active_source_card_eq
+#print axioms Erdos85.sizeTwo_equalSign_secondOrderDefect_iff_antipodal
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_sixTen_positive_active_card_two
