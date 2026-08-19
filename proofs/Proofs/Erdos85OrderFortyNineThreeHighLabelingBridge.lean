@@ -33,7 +33,7 @@ theorem orderFortyNineBooleanConstraints_of_threeHighAlignedLabeling
       hdegree (orderFortyNineRelabeledGraph_not_containsC4 G E hfree)
       hsupport hpartition
 
-def ThreeHighCanonicalLabelingCover (blocks : Nat) (masks : Array Nat) : Prop :=
+def ThreeHighMaskCanonicalLabelingCover (blocks : Nat) (masks : Array Nat) : Prop :=
   ∀ (G : SimpleGraph (Fin 49)) (_ : DecidableRel G.Adj)
     (_ : DecidableRel (antipodalGraph G).Adj)
     (_ : DecidableRel (triangleFreeEdgeGraph G).Adj),
@@ -45,7 +45,7 @@ def ThreeHighCanonicalLabelingCover (blocks : Nat) (masks : Array Nat) : Prop :=
 
 theorem orderFortyNineTripleCellExcluded_three_of_labelingCover
     {blocks : Nat} {masks : Array Nat}
-    (hcover : ThreeHighCanonicalLabelingCover blocks masks)
+    (hcover : ThreeHighMaskCanonicalLabelingCover blocks masks)
     (hexclude : ∀ edges : BitVec 1176,
       orderFortyNineBooleanConstraints 3 masks edges → False) :
     OrderFortyNineTripleCellExcluded 3 blocks := by
@@ -58,7 +58,7 @@ theorem orderFortyNineTripleCellExcluded_three_of_labelingCover
       G hfree E masks haligned)
 
 theorem orderFortyNineTripleCellExcluded_three_t0_of_labelingCover
-    (hcover : ThreeHighCanonicalLabelingCover 0
+    (hcover : ThreeHighMaskCanonicalLabelingCover 0
       orderFortyNineThreeHighT0Masks)
     (hexclude : ∀ edges : BitVec 1176,
       orderFortyNineBooleanConstraints 3
@@ -67,7 +67,7 @@ theorem orderFortyNineTripleCellExcluded_three_t0_of_labelingCover
   orderFortyNineTripleCellExcluded_three_of_labelingCover hcover hexclude
 
 theorem orderFortyNineTripleCellExcluded_three_t1_of_labelingCover
-    (hcover : ThreeHighCanonicalLabelingCover 1
+    (hcover : ThreeHighMaskCanonicalLabelingCover 1
       orderFortyNineThreeHighT1Masks)
     (hexclude : ∀ edges : BitVec 1176,
       orderFortyNineBooleanConstraints 3
