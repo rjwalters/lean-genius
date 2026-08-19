@@ -2,6 +2,7 @@ import Proofs.Erdos85SizeTwoMuNegThreeRefinedSectorRouting
 import Proofs.Erdos85SizeTwoAlignedShoreSwitch
 import Proofs.Erdos85EightEightCoordinateCover
 import Proofs.Erdos85ComponentEigenvectorExtension
+import Proofs.Erdos85ComponentSignFlipEigenvector
 
 /-! # Graph-facing aligned shore switch for μ=-3 -/
 
@@ -53,7 +54,7 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
         (fun x ↦ H.connectedComponentMk x = b)
       let t : c.supp → ℤ := fun x ↦ if x ∈ B then -s x.1 else s x.1
       (K.adjMatrix ℤ).mulVec t = sizeTwoMuSwitchTarget (-3) k r • t ∧
-        t ≠ 0 ∧
+        (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t ∧ t ≠ 0 ∧
         let T := connectedComponentExtendZero (secondOrderDefectGraph G) c
           (fun x ↦ (t x : ℚ))
         ((secondOrderDefectGraph G).adjMatrix ℚ).mulVec T =
@@ -157,7 +158,18 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
       omega
     · simp [t, hmem] at hval
       omega
-  refine ⟨by simpa [t, B] using heig, by simpa [t, B] using ht, ?_⟩
+  have hsH : (H.adjMatrix ℤ).mulVec (fun x : c.supp ↦ s x.1) =
+      (-2 : ℤ) • (fun x : c.supp ↦ s x.1) := by
+    funext x
+    rw [induce_adjMatrix_mulVec_restrict_apply]
+    have hx := hH x.1 x.2
+    simpa [ConnectedComponent.mem_supp_iff, smul_eq_mul] using hx
+  have htH := connectedComponent_signFlip_adjMatrix_eigenvector
+    H b (fun x : c.supp ↦ s x.1) (-2) hsH
+  have heigH : (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t := by
+    simpa [t] using htH
+  refine ⟨by simpa [t, B] using heig, by simpa [t, B] using heigH,
+    by simpa [t, B] using ht, ?_⟩
   have hglobal := adjMatrix_rat_nonzero_eigenvector_componentExtendZero_of_int
     (secondOrderDefectGraph G) c t
       (sizeTwoMuSwitchTarget (-3) k r) heig ht
