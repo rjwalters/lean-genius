@@ -275,6 +275,54 @@ theorem mem_eightEightOwnerSym2_iff (e : Fin 48) (v : Fin 16) :
   revert e v
   decide
 
+/-- In transported owner coordinates, ambient incidence with an exterior
+vertex is exactly the generator's endpoint-incidence table. -/
+theorem outsideOwnerCoordinates_incident_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (modelIso : exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph)
+    (e : Fin 48) (v : Fin 16) :
+    G.Adj (modelIso.symm v).1
+        ((outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges
+          modelIso).symm e).1 ↔
+      eightEightOwnerContains e v = true := by
+  let idx := outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso
+  let z := idx.symm e
+  have hpair := outsidePair_map_modelIso_eq_ownerSym2
+    G c hcard hinc hqcard hRedges modelIso z
+  have hidx : idx z = e := idx.apply_symm_apply e
+  calc
+    G.Adj (modelIso.symm v).1 z.1 ↔
+        modelIso.symm v ∈
+          outsidePair G (secondOrderDefectGraph G) c hcard z := by
+      rw [← Sym2.mem_toFinset]
+      exact (mem_outsidePair_toFinset_iff_adj
+        G (secondOrderDefectGraph G) c hcard z (modelIso.symm v)).symm
+    _ ↔ v ∈ (outsidePair G (secondOrderDefectGraph G) c hcard z).map
+          modelIso := by
+      rw [Sym2.mem_map]
+      constructor
+      · intro hv
+        exact ⟨modelIso.symm v, hv, modelIso.apply_symm_apply v⟩
+      · rintro ⟨u, hu, huv⟩
+        have : u = modelIso.symm v := modelIso.injective
+          (huv.trans (modelIso.apply_symm_apply v).symm)
+        simpa [this] using hu
+    _ ↔ v ∈ eightEightOwnerSym2 e := by
+      rw [hpair, hidx]
+    _ ↔ eightEightOwnerContains e v = true := by
+      rw [← Sym2.mem_toFinset]
+      exact mem_eightEightOwnerSym2_iff e v
+
 /-- High-level finite semantics of the checked owner instance, before any
 DIMACS numbering.  This is the clean handshake between graph transport and
 the generator-local literal bookkeeping. -/
@@ -462,6 +510,7 @@ end Erdos85
 #print axioms Erdos85.eightEightOwnerSym2_injective
 #print axioms Erdos85.outsidePair_map_modelIso_eq_ownerSym2
 #print axioms Erdos85.mem_eightEightOwnerSym2_iff
+#print axioms Erdos85.outsideOwnerCoordinates_incident_iff
 #print axioms Erdos85.lowEightExteriorPair_pointwise_model_of_shores
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
 #print axioms Erdos85.outsidePair_intersects_no_exterior_common
