@@ -48,7 +48,7 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_alignedLedger
     let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
       fun i j ↦ K.adjMatrix ℤ (v i) (v j)
     ∃ k r : ℕ,
-      k ≤ 1 ∧ 2 ≤ r ∧ r ≤ 7 ∧
+      k ≤ 1 ∧ 2 ≤ r ∧ r ≤ 7 ∧ 3 ≤ r + k ∧ r + k ≤ 6 ∧
       a.supp.ncard = 8 ∧ b.supp.ncard = 8 ∧
       componentQuotientMatrix K H a a = 7 - r ∧
       componentQuotientMatrix K H a b = r ∧
@@ -132,7 +132,100 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_alignedLedger
         rw [hc0] at hpos
         omega
     omega
-  exact ⟨k, r, hk1, hr2, hr7, ha8, hb8, haa, habq, hbaq, hbb,
+  have hHdegree : ∀ z : c.supp, H.degree z = 2 := by
+    intro z
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2) hc z
+  have hcommReal : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm G
+      (secondOrderDefectGraph G) hglobal c).symm
+  let M : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (v j)
+  have hrow₁ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      N₁ 0 j = 1).card = 7 - r := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₁ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          K.Adj (u 0) (u j)) by
+      ext j
+      simp [N₁, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K A u huinj hurangeA (u 0)]
+    have hqcard : (componentNeighborFinset K H a (u 0)).card = 7 - r := by
+      rw [← componentQuotientMatrix_apply_eq K H 2 hHdegree hcommReal
+        a a (by simpa [A] using hu0A)]
+      exact haa
+    have heq : A.filter (fun y ↦ K.Adj (u 0) y) =
+        componentNeighborFinset K H a (u 0) := by
+      ext y
+      simp [A, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq]
+    exact hqcard
+  have hsame₁ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      s (u j).1 = s (u 0).1 ∧ N₁ 0 j = 1).card = k := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j).1 = s (u 0).1 ∧ N₁ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (u j).1 = s (u 0).1 ∧ K.Adj (u 0) (u j)) by
+      ext j
+      simp [N₁, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support K A u huinj hurangeA
+      (fun x : c.supp ↦ s x.1) 0]
+    exact hA (u 0) hu0A
+  have hMrow : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      M 0 j = 1).card = r := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          K.Adj (u 0) (v j)) by
+      ext j
+      simp [M, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K B v hvinj hvrangeB (u 0)]
+    have hqcard : (componentNeighborFinset K H b (u 0)).card = r := by
+      rw [← componentQuotientMatrix_apply_eq K H 2 hHdegree hcommReal
+        a b (by simpa [A] using hu0A)]
+      exact habq
+    have heq : B.filter (fun y ↦ K.Adj (u 0) y) =
+        componentNeighborFinset K H b (u 0) := by
+      ext y
+      simp [B, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq]
+    exact hqcard
+  have hMsame : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      s (v j).1 = s (u 0).1 ∧ M 0 j = 1).card = 2 - k := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (u 0).1 ∧ M 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (v j).1 = s (u 0).1 ∧ K.Adj (u 0) (v j)) by
+      ext j
+      simp [M, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support_from K B v hvinj hvrangeB
+      (fun x : c.supp ↦ s x.1) (u 0)]
+    exact hcrossA (u 0) hu0A
+  have hAfull := sizeTwo_internal_full_sum_of_filtered G c s hs_out hH
+  have flip_of_coordinates
+      (w : ZMod 8 → c.supp)
+      (hw : ∀ z, H.neighborFinset (w z) = {w (z - 1), w (z + 1)}) :
+      ∀ i, s (w (i + 1)).1 = -s (w i).1 := by
+    intro i
+    have hadj : H.Adj (w i) (w (i + 1)) := by
+      rw [← H.mem_neighborFinset, hw]
+      simp
+    have hmem : (w (i + 1)).1 ∈ componentNeighborFinset G
+        (secondOrderDefectGraph G) c (w i).1 := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset _ _).mpr hadj, (w (i + 1)).2⟩
+    exact (internal_alternation G hfree (by omega) hreg hcard c hc s
+      hs_in hs_out hAfull (w i).2).2 _ hmem
+  have hbounds := alternating_C8_internal_cross_parameter_bounds N₁ M
+    (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r hk
+    (fun i ↦ hs_in _ (u i).2) (fun j ↦ hs_in _ (v j).2)
+    (flip_of_coordinates u hu) (flip_of_coordinates v hv)
+    hrow₁ hsame₁ hMrow hMsame
+  exact ⟨k, r, hk1, hr2, hr7, hbounds.1, hbounds.2.1,
+    ha8, hb8, haa, habq, hbaq, hbb,
     hA, hB, hcrossA, hcrossB, hsector₁, hsector₂⟩
 
 end
