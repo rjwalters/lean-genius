@@ -1,4 +1,9 @@
-import Proofs.Erdos85OrderSixtyFourTenSixOutsideEncoding
+import Proofs.Erdos85OrderSixtyFourTenSixOutsideEncodingAudit001
+import Proofs.Erdos85OrderSixtyFourTenSixOutsideEncodingAudit002
+import Proofs.Erdos85OrderSixtyFourTenSixOutsideEncodingAudit003
+import Proofs.Erdos85OrderSixtyFourTenSixOutsideEncodingAudit004
+import Proofs.Erdos85OrderSixtyFourTenSixOutsideEncodingAudit005
+import Proofs.Erdos85OrderSixtyFourTenSixOutsideEncodingAudit006
 
 /-! # Large native audits for the six `[10,6]` outside-C formulas
 
@@ -19,20 +24,15 @@ theorem tenSixOutsideParsed_numLiterals :
     tenSixC006Cnf.numLiterals = (tenSixOutsideAllowedPairs 5).size := by
   native_decide
 
-set_option maxHeartbeats 0 in
-set_option maxRecDepth 1000000 in
-/-- First end-to-end generator audit. -/
-theorem tenSixOutsideGeneratedCnf_zero_eq_parsed :
-    tenSixOutsideGeneratedCnf 0 = tenSixC001Cnf := by
-  apply cnf_eq_of_clauses_eq
-  native_decide
-
-set_option maxHeartbeats 0 in
-set_option maxRecDepth 1000000 in
 /-- All six formulas are reproduced exactly by the Lean generator. -/
 theorem tenSixOutsideGeneratedCnf_eq_parsed (i : Fin 6) :
     tenSixOutsideGeneratedCnf i = tenSixOutsideParsedCnf i := by
-  apply cnf_eq_of_clauses_eq
-  fin_cases i <;> native_decide
+  fin_cases i
+  · exact tenSixOutsideGeneratedCnf_001_eq_parsed
+  · exact tenSixOutsideGeneratedCnf_002_eq_parsed
+  · exact tenSixOutsideGeneratedCnf_003_eq_parsed
+  · exact tenSixOutsideGeneratedCnf_004_eq_parsed
+  · exact tenSixOutsideGeneratedCnf_005_eq_parsed
+  · exact tenSixOutsideGeneratedCnf_006_eq_parsed
 
 end Erdos85
