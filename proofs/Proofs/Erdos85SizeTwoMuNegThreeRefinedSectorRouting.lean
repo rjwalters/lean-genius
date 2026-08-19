@@ -22,6 +22,66 @@ def MuNegThreeRefinedSectorCells
          (k = 1 ∧ r = 2) ∨ (k = 1 ∧ r = 3) ∨
          (k = 1 ∧ r = 4))))
 
+/-- The μ=-3 cells remaining after excluding switched joint eigenvalue `1`. -/
+def MuNegThreePostMuOneSectorCells
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ) : Prop :=
+  (C8CycleEntriesZero N₁ ∧ C8CycleEntriesZero N₂ ∧
+      ((k = 0 ∧ r = 5) ∨ (k = 1 ∧ r = 5))) ∨
+    ((((C8CycleEntriesZero N₁ ∧ C8CycleEntriesOne N₂) ∨
+        (C8CycleEntriesOne N₁ ∧ C8CycleEntriesZero N₂)) ∧
+          (k = 0 ∧ r = 5)) ∨
+      (C8CycleEntriesOne N₁ ∧ C8CycleEntriesOne N₂ ∧
+        ((k = 0 ∧ r = 3) ∨ (k = 0 ∧ r = 5) ∨
+         (k = 1 ∧ r = 2) ∨ (k = 1 ∧ r = 3))))
+
+theorem muNegThree_postMuOne_sector_cells_of_target_ne_one
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegThreeRefinedSectorCells N₁ N₂ k r)
+    (hne : sizeTwoMuSwitchTarget (-3) k r ≠ 1) :
+    MuNegThreePostMuOneSectorCells N₁ N₂ k r := by
+  rcases hcell with hzero | hmixed | hone
+  · left
+    refine ⟨hzero.1, hzero.2.1, ?_⟩
+    dsimp [MuNegThreeBothTriangleCell] at hzero
+    rcases hzero.2.2 with h | h | h | h
+    · exact Or.inl h
+    · rcases h with ⟨rfl, rfl⟩
+      norm_num [sizeTwoMuSwitchTarget] at hne
+    · rcases h with ⟨rfl, rfl⟩
+      norm_num [sizeTwoMuSwitchTarget] at hne
+    · exact Or.inr h
+  · right; left
+    refine ⟨hmixed.1, ?_⟩
+    dsimp [MuNegThreeMixedCell] at hmixed
+    rcases hmixed.2 with h | h
+    · exact h
+    · rcases h with ⟨rfl, rfl⟩
+      norm_num [sizeTwoMuSwitchTarget] at hne
+  · right; right
+    refine ⟨hone.1, hone.2.1, ?_⟩
+    rcases hone.2.2 with h | h | h | h | h
+    · exact Or.inl h
+    · exact Or.inr (Or.inl h)
+    · exact Or.inr (Or.inr (Or.inl h))
+    · exact Or.inr (Or.inr (Or.inr h))
+    · rcases h with ⟨rfl, rfl⟩
+      norm_num [sizeTwoMuSwitchTarget] at hne
+
+theorem muNegThree_postMuOne_switch_target
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegThreePostMuOneSectorCells N₁ N₂ k r) :
+    sizeTwoMuSwitchTarget (-3) k r = -5 ∨
+      sizeTwoMuSwitchTarget (-3) k r = -3 ∨
+      sizeTwoMuSwitchTarget (-3) k r = -1 ∨
+      sizeTwoMuSwitchTarget (-3) k r = 3 := by
+  rcases hcell with hzero | hmixed | hone
+  · rcases hzero.2.2 with h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · rcases hmixed.2 with ⟨rfl, rfl⟩
+    norm_num [sizeTwoMuSwitchTarget]
+  · rcases hone.2.2 with h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+
 /-- After the `(0,4)` contradiction, `(1,2)` is the unique μ=-3 cell fixed
 by the shore-switch involution. -/
 theorem muNegThree_refined_switch_target_eq_self_iff
@@ -216,3 +276,5 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_eightEight_refined_sector_cells
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_eightEight_refined_alignedLedger
 #print axioms Erdos85.muNegThree_refined_switch_target_eq_self_iff
+#print axioms Erdos85.muNegThree_postMuOne_sector_cells_of_target_ne_one
+#print axioms Erdos85.muNegThree_postMuOne_switch_target

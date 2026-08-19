@@ -3,6 +3,7 @@ import Proofs.Erdos85SizeTwoAlignedShoreSwitch
 import Proofs.Erdos85EightEightCoordinateCover
 import Proofs.Erdos85ComponentEigenvectorExtension
 import Proofs.Erdos85ComponentSignFlipEigenvector
+import Proofs.Erdos85SizeTwoSwitchedJointExclusions
 
 /-! # Graph-facing aligned shore switch for μ=-3 -/
 
@@ -55,6 +56,13 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
       let t : c.supp → ℤ := fun x ↦ if x ∈ B then -s x.1 else s x.1
       (K.adjMatrix ℤ).mulVec t = sizeTwoMuSwitchTarget (-3) k r • t ∧
         (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t ∧ t ≠ 0 ∧
+        (∀ x, t x = -1 ∨ t x = 1) ∧
+        sizeTwoMuSwitchTarget (-3) k r ≠ 1 ∧
+        MuNegThreePostMuOneSectorCells N₁ N₂ k r ∧
+        (sizeTwoMuSwitchTarget (-3) k r = -5 ∨
+         sizeTwoMuSwitchTarget (-3) k r = -3 ∨
+         sizeTwoMuSwitchTarget (-3) k r = -1 ∨
+         sizeTwoMuSwitchTarget (-3) k r = 3) ∧
         let T := connectedComponentExtendZero (secondOrderDefectGraph G) c
           (fun x ↦ (t x : ℚ))
         ((secondOrderDefectGraph G).adjMatrix ℚ).mulVec T =
@@ -168,8 +176,21 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
     H b (fun x : c.supp ↦ s x.1) (-2) hsH
   have heigH : (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t := by
     simpa [t] using htH
+  have htsign : ∀ x, t x = -1 ∨ t x = 1 := by
+    intro x
+    have hx := hsign x
+    by_cases hmem : H.connectedComponentMk x = b
+    · simp [t, hmem]
+      omega
+    · simpa [t, hmem] using hx
+  have htarget := orderSixtyFour_sizeTwoPart_inducedSignedJoint_switchTarget_ne_one
+    G hfree hreg hcard c hc t htsign (sizeTwoMuSwitchTarget (-3) k r)
+      (by simpa [H] using heigH) (by simpa [K] using heig)
+  have hpost := muNegThree_postMuOne_sector_cells_of_target_ne_one _ _ k r hcell htarget
+  have htargets := muNegThree_postMuOne_switch_target _ _ k r hpost
   refine ⟨by simpa [t, B] using heig, by simpa [t, B] using heigH,
-    by simpa [t, B] using ht, ?_⟩
+    by simpa [t, B] using ht, by simpa [t, B] using htsign, htarget,
+    hpost, htargets, ?_⟩
   have hglobal := adjMatrix_rat_nonzero_eigenvector_componentExtendZero_of_int
     (secondOrderDefectGraph G) c t
       (sizeTwoMuSwitchTarget (-3) k r) heig ht
