@@ -157,6 +157,18 @@ theorem orderFortyNineThreeHighDistOneC2GeometryClauses_nonzero :
   apply dimacsFormulaNonzero_of_all
   native_decide
 
+theorem orderFortyNineThreeHighDistOneB1GeometryClauses_nonzero :
+    ∀ clause ∈ orderFortyNineThreeHighDistOneB1GeometryClauses,
+      DimacsClauseNonzero clause := by
+  apply dimacsFormulaNonzero_of_all
+  native_decide
+
+theorem orderFortyNineThreeHighDistOneC1GeometryClauses_nonzero :
+    ∀ clause ∈ orderFortyNineThreeHighDistOneC1GeometryClauses,
+      DimacsClauseNonzero clause := by
+  apply dimacsFormulaNonzero_of_all
+  native_decide
+
 theorem orderFortyNineThreeHighDistTwoGeometryClauses_bounded :
     dimacsFormulaBounded 1176
       orderFortyNineThreeHighDistTwoGeometryClauses := by
@@ -166,6 +178,18 @@ theorem orderFortyNineThreeHighDistTwoGeometryClauses_bounded :
 theorem orderFortyNineThreeHighDistOneC2GeometryClauses_bounded :
     dimacsFormulaBounded 1176
       orderFortyNineThreeHighDistOneC2GeometryClauses := by
+  apply dimacsFormulaBounded_of_all
+  native_decide
+
+theorem orderFortyNineThreeHighDistOneB1GeometryClauses_bounded :
+    dimacsFormulaBounded 1176
+      orderFortyNineThreeHighDistOneB1GeometryClauses := by
+  apply dimacsFormulaBounded_of_all
+  native_decide
+
+theorem orderFortyNineThreeHighDistOneC1GeometryClauses_bounded :
+    dimacsFormulaBounded 1176
+      orderFortyNineThreeHighDistOneC1GeometryClauses := by
   apply dimacsFormulaBounded_of_all
   native_decide
 
@@ -199,6 +223,38 @@ theorem false_of_orderFortyNine_generated_h3_distOneC2_scout_lrat
     orderFortyNineThreeHighDistOneC2Masks_partitionExcluded
     orderFortyNineThreeHighDistOneC2GeometryClauses_nonzero
     orderFortyNineThreeHighDistOneC2GeometryClauses_bounded
+    hgeometrySat proof hcheck
+
+theorem false_of_orderFortyNine_generated_h3_distOneB1_scout_lrat
+    {edges : BitVec 1176}
+    (hc : orderFortyNineBooleanConstraints 3
+      orderFortyNineThreeHighDistOneNoCoincidenceMasks edges)
+    (hgeometrySat : dimacsFormulaSatisfied
+      (orderFortyNineDimacsEdgeVal edges)
+      orderFortyNineThreeHighDistOneB1GeometryClauses)
+    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
+      orderFortyNineGeneratedThreeHighDistOneB1ScoutCnf) : False :=
+  false_of_orderFortyNine_generated_h3_scout_lrat hc
+    orderFortyNineThreeHighDistOneNoCoincidenceMasks_partitionExcluded
+    orderFortyNineThreeHighDistOneB1GeometryClauses_nonzero
+    orderFortyNineThreeHighDistOneB1GeometryClauses_bounded
+    hgeometrySat proof hcheck
+
+theorem false_of_orderFortyNine_generated_h3_distOneC1_scout_lrat
+    {edges : BitVec 1176}
+    (hc : orderFortyNineBooleanConstraints 3
+      orderFortyNineThreeHighDistOneNoCoincidenceMasks edges)
+    (hgeometrySat : dimacsFormulaSatisfied
+      (orderFortyNineDimacsEdgeVal edges)
+      orderFortyNineThreeHighDistOneC1GeometryClauses)
+    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
+      orderFortyNineGeneratedThreeHighDistOneC1ScoutCnf) : False :=
+  false_of_orderFortyNine_generated_h3_scout_lrat hc
+    orderFortyNineThreeHighDistOneNoCoincidenceMasks_partitionExcluded
+    orderFortyNineThreeHighDistOneC1GeometryClauses_nonzero
+    orderFortyNineThreeHighDistOneC1GeometryClauses_bounded
     hgeometrySat proof hcheck
 
 end Erdos85

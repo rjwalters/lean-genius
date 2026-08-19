@@ -24,6 +24,24 @@ def orderFortyNineDistOneB1SecondTarget : Fin 8 → Fin 49 :=
 def orderFortyNineDistOneB1ThirdTarget : Fin 8 → Fin 49 :=
   ![4, 18, 5, 19, 20, 21, 22, 23]
 
+theorem orderFortyNineDistOneB1FirstTarget_supportMask (i : Fin 49) :
+    i ∈ Finset.univ.image orderFortyNineDistOneB1FirstTarget ↔
+      (orderFortyNineSupportMask
+        orderFortyNineThreeHighDistOneNoCoincidenceMasks i).getLsbD 0 = true := by
+  native_decide +revert
+
+theorem orderFortyNineDistOneB1SecondTarget_supportMask (i : Fin 49) :
+    i ∈ Finset.univ.image orderFortyNineDistOneB1SecondTarget ↔
+      (orderFortyNineSupportMask
+        orderFortyNineThreeHighDistOneNoCoincidenceMasks i).getLsbD 1 = true := by
+  native_decide +revert
+
+theorem orderFortyNineDistOneB1ThirdTarget_supportMask (i : Fin 49) :
+    i ∈ Finset.univ.image orderFortyNineDistOneB1ThirdTarget ↔
+      (orderFortyNineSupportMask
+        orderFortyNineThreeHighDistOneNoCoincidenceMasks i).getLsbD 2 = true := by
+  native_decide +revert
+
 theorem orderFortyNineDistOneB1FirstTarget_standard :
     OrderFortyNineStandardMatchingTarget
       orderFortyNineDistOneB1FirstTarget
@@ -589,15 +607,15 @@ theorem orderFortyNineThreeHighDistOneB1_smallHighAlignedLabeling
     · rw [Bool.eq_iff_iff, decide_eq_true_eq]
       change H.Adj i 0 ↔ _
       rw [hAdj0]
-      fin_cases i <;> decide
+      exact orderFortyNineDistOneB1FirstTarget_supportMask i
     · rw [Bool.eq_iff_iff, decide_eq_true_eq]
       change H.Adj i 1 ↔ _
       rw [hAdj1]
-      fin_cases i <;> decide
+      exact orderFortyNineDistOneB1SecondTarget_supportMask i
     · rw [Bool.eq_iff_iff, decide_eq_true_eq]
       change H.Adj i 2 ↔ _
       rw [hAdj2]
-      fin_cases i <;> decide
+      exact orderFortyNineDistOneB1ThirdTarget_supportMask i
   refine ⟨orderFortyNineThreeHighDistOneNoCoincidenceMasks_size,
     hdegree, hsupport, ?_⟩
   intro i hi w hw
