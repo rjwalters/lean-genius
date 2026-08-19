@@ -285,6 +285,16 @@ theorem eightEightOwnerTarget_not_cycleAdj_of_contains
   revert e v w
   decide
 
+/-- The generator's Boolean intersection test is exactly nonempty
+intersection of the two typed unordered owner pairs. -/
+theorem eightEightOwnersIntersect_iff_sym2
+    (e f : Fin 48) :
+    eightEightOwnersIntersect e f = true ↔
+      ∃ v : Fin 16, v ∈ eightEightOwnerSym2 e ∧
+        v ∈ eightEightOwnerSym2 f := by
+  revert e f
+  decide
+
 /-- In transported owner coordinates, ambient incidence with an exterior
 vertex is exactly the generator's endpoint-incidence table. -/
 theorem outsideOwnerCoordinates_incident_iff
@@ -501,6 +511,7 @@ theorem outsidePair_intersects_no_exterior_common
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidablePred (· ∈ c.supp)]
     (hcard : ∀ x : V,
       (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
     (a b k : {x : V // x ∉ c.supp}) (hab : a ≠ b)
@@ -527,6 +538,82 @@ theorem outsidePair_intersects_no_exterior_common
   · intro i j hij
     fin_cases i <;> fin_cases j <;>
       simp_all [C4, SimpleGraph.Adj.symm]
+
+/-- Intersecting generated owners transport to genuinely intersecting
+actual outside pairs, so ambient C4-freeness supplies their capacity-zero
+common-neighbor clause. -/
+theorem outsideOwnerCoordinates_intersecting_no_common
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (modelIso : exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph)
+    (e f : Fin 48) (hef : e ≠ f)
+    (hintersect : eightEightOwnersIntersect e f = true)
+    (k : Fin 48)
+    (hek : ((G.induce c.suppᶜ).comap
+      (outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges
+        modelIso).symm).Adj e k)
+    (hfk : ((G.induce c.suppᶜ).comap
+      (outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges
+        modelIso).symm).Adj f k) : False := by
+  let idx := outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso
+  let a := idx.symm e
+  let b := idx.symm f
+  let x := idx.symm k
+  have hab : a ≠ b := by
+    intro h
+    apply hef
+    exact idx.symm.injective (by simpa [a, b] using h)
+  obtain ⟨v, hve, hvf⟩ :=
+    (eightEightOwnersIntersect_iff_sym2 e f).mp hintersect
+  let u : c.supp := modelIso.symm v
+  have hpaira := outsidePair_map_modelIso_eq_ownerSym2
+    G c hcard hinc hqcard hRedges modelIso a
+  have hpairb := outsidePair_map_modelIso_eq_ownerSym2
+    G c hcard hinc hqcard hRedges modelIso b
+  have hia : outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges
+      modelIso a = e := by
+    simpa [idx, a] using idx.apply_symm_apply e
+  have hib : outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges
+      modelIso b = f := by
+    simpa [idx, b] using idx.apply_symm_apply f
+  have hua : u ∈
+      (outsidePair G (secondOrderDefectGraph G) c hcard a).toFinset := by
+    rw [Sym2.mem_toFinset]
+    have hvmap : v ∈
+        (outsidePair G (secondOrderDefectGraph G) c hcard a).map modelIso := by
+      rw [hpaira, hia]
+      exact hve
+    rw [Sym2.mem_map] at hvmap
+    obtain ⟨w, hw, hwv⟩ := hvmap
+    have hwu : w = u := modelIso.injective
+      (hwv.trans (modelIso.apply_symm_apply v).symm)
+    simpa [hwu] using hw
+  have hub : u ∈
+      (outsidePair G (secondOrderDefectGraph G) c hcard b).toFinset := by
+    rw [Sym2.mem_toFinset]
+    have hvmap : v ∈
+        (outsidePair G (secondOrderDefectGraph G) c hcard b).map modelIso := by
+      rw [hpairb, hib]
+      exact hvf
+    rw [Sym2.mem_map] at hvmap
+    obtain ⟨w, hw, hwv⟩ := hvmap
+    have hwu : w = u := modelIso.injective
+      (hwv.trans (modelIso.apply_symm_apply v).symm)
+    simpa [hwu] using hw
+  apply outsidePair_intersects_no_exterior_common
+    G hfree c hcard a b x hab ⟨u, hua, hub⟩
+  · exact hek
+  · exact hfk
 
 /-- Adjacent exterior owners are mutually compatible: no endpoint of one
 owned pair is ambient-adjacent to an endpoint of the other.  Such an edge
@@ -579,4 +666,5 @@ end Erdos85
 #print axioms Erdos85.lowEightExteriorPair_pointwise_model_of_shores
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
 #print axioms Erdos85.outsidePair_intersects_no_exterior_common
+#print axioms Erdos85.outsideOwnerCoordinates_intersecting_no_common
 #print axioms Erdos85.adjacent_outsidePair_endpoint_not_adj
