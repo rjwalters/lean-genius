@@ -6,6 +6,18 @@ import Proofs.Erdos85SizeTwoEigenlineGridInstantiation
 
 Node: `SIZE-TWO-EIGENLINE(8)` beneath outline F.3.
 
+**APPLICABILITY WARNING (sol-2 audit, squad msg 12717).**  The banked
+`binarySquare_regular_sizeTwoPart_eight_sixTen_shortCycle_allTriangleFree`
+forces the C6 shore to be all-triangle-free (`tfDegree = 2`) in every
+genuine 6+10 configuration, so the hypothesis `haall` below (tf-degree
+`0` on the C6 shore) is never satisfiable together with the others: this
+theorem is internally valid but VACUOUS for the real stratum and must
+NOT be cited as the F.3 6+10 terminal.  The genuine surviving branches
+are (A) mixed: C6 all-TF + C10 all-triangle with antipodal support
+`{±3,±4}`, and (B) both-all-TF.  Kept as an archived template for the
+budget-counting technique (the long-shore half — `hlongpair`, the
+budget exhaustion at `±3` — is sound in the mixed branch and reusable).
+
 By the same-side census every component vertex has exactly `2`
 opposite-sign defect neighbours.  In the all-triangle `6+10` stratum the
 surviving long antipodal support is `{±3,±4}` (high reduction), and
