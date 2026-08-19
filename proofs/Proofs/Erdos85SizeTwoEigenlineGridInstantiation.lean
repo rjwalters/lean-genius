@@ -633,6 +633,130 @@ theorem gridWitness_of_exterior_neighbor (hfree : ¬ containsC4 V G)
   rw [hy]
   exact hnmem.1
 
+/-- A witness realizes only one cell of a row. -/
+theorem gridWitness_y_unique (hfree : ¬ containsC4 V G)
+    (hq : 5 ≤ q)
+    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (hc : c.supp.ncard = q * 2)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      ((q : ℤ) - 5) * s x)
+    (hn : ∀ y, nval y ∈ c.supp ∧ s (nval y) = -1)
+    (hninj : Function.Injective nval)
+    {u : V} {x y y' : ZMod q}
+    (hw : IsGridWitness G c pval nval u x y)
+    (hw' : IsGridWitness G c pval nval u x y') : y = y' := by
+  obtain ⟨p, n, hpsupp, hnsupp, hps, hns, heq⟩ := exterior_labels G hfree hq
+    hreg hcard c hc s hs_in hs_out hsum hA_in hDs hw.1
+  have hval : ∀ z : ZMod q, IsGridWitness G c pval nval u x z → nval z = n := by
+    intro z hz
+    have hmem : nval z ∈ componentNeighborFinset G (secondOrderDefectGraph G) c u := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset u (nval z)).mpr hz.2.2,
+        (SimpleGraph.ConnectedComponent.mem_supp_iff c (nval z)).mp (hn z).1⟩
+    rw [heq, Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with h | h
+    · exfalso
+      have := (hn z).2
+      rw [h, hps] at this
+      norm_num at this
+    · exact h
+  exact hninj ((hval y hw).trans (hval y' hw').symm)
+
+open Classical in
+/-- **Hole rows are 2-regular**: each row of the grid has exactly two holes. -/
+theorem hole_row_card [NeZero q] (hfree : ¬ containsC4 V G)
+    (hq : 5 ≤ q)
+    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (hc : c.supp.ncard = q * 2)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      ((q : ℤ) - 5) * s x)
+    (hp : ∀ x, pval x ∈ c.supp ∧ s (pval x) = 1)
+    (hn : ∀ y, nval y ∈ c.supp ∧ s (nval y) = -1)
+    (hninj : Function.Injective nval)
+    (hnsurj : ∀ z, z ∈ c.supp → s z = -1 → ∃ y, nval y = z)
+    (x : ZMod q) :
+    (Finset.univ.filter fun y : ZMod q =>
+      ¬ ∃ u, IsGridWitness G c pval nval u x y).card = 2 := by
+  classical
+  -- exterior neighbours of pval x
+  set F := (G.neighborFinset (pval x)).filter (fun u => u ∉ c.supp) with hF
+  have hFcard : F.card = q - 2 := by
+    have hsplit := Finset.card_filter_add_card_filter_not
+      (s := G.neighborFinset (pval x)) (fun u => u ∈ c.supp)
+    have hin : ((G.neighborFinset (pval x)).filter fun u => u ∈ c.supp) =
+        componentNeighborFinset G (secondOrderDefectGraph G) c (pval x) := by
+      rw [componentNeighborFinset]
+      apply Finset.filter_congr
+      intro u _
+      simp [SimpleGraph.ConnectedComponent.mem_supp_iff]
+    have hint : ((G.neighborFinset (pval x)).filter fun u => u ∈ c.supp).card = 2 := by
+      rw [hin]
+      exact (internal_alternation G hfree (by omega) hreg hcard c hc s hs_in
+        hs_out hA_in (hp x).1).1
+    have hdeg : (G.neighborFinset (pval x)).card = q := by
+      have h := hreg (pval x)
+      rwa [SimpleGraph.degree] at h
+    rw [hint, hdeg] at hsplit
+    have : F = (G.neighborFinset (pval x)).filter fun u => ¬ u ∈ c.supp := rfl
+    rw [this]
+    omega
+  -- bijection between F and the cells of row x
+  have hcells : (Finset.univ.filter fun y : ZMod q =>
+      ∃ u, IsGridWitness G c pval nval u x y).card = q - 2 := by
+    rw [← hFcard]
+    symm
+    apply Finset.card_bij
+      (fun u hu => Classical.choose (gridWitness_of_exterior_neighbor G c s pval
+        nval hfree hq hreg hcard hc hs_in hs_out hsum hA_in hDs hp hnsurj
+        (Finset.mem_filter.mp hu).2
+        ((G.mem_neighborFinset (pval x) u).mp (Finset.mem_filter.mp hu).1).symm))
+    · intro u hu
+      rw [Finset.mem_filter]
+      exact ⟨Finset.mem_univ _, u, Classical.choose_spec
+        (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hnsurj
+          (Finset.mem_filter.mp hu).2
+          ((G.mem_neighborFinset (pval x) u).mp (Finset.mem_filter.mp hu).1).symm)⟩
+    · intro u₁ h₁ u₂ h₂ heq'
+      set w₁ := Classical.choose_spec
+        (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hnsurj
+          (Finset.mem_filter.mp h₁).2
+          ((G.mem_neighborFinset (pval x) u₁).mp (Finset.mem_filter.mp h₁).1).symm)
+      set w₂ := Classical.choose_spec
+        (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hnsurj
+          (Finset.mem_filter.mp h₂).2
+          ((G.mem_neighborFinset (pval x) u₂).mp (Finset.mem_filter.mp h₂).1).symm)
+      exact gridWitness_unique G c s pval nval hfree
+        (fun x => (hp x).2) (fun y => (hn y).2) w₁ (heq' ▸ w₂)
+    · intro y hy
+      obtain ⟨u, hu⟩ := (Finset.mem_filter.mp hy).2
+      have huF : u ∈ F := by
+        rw [hF, Finset.mem_filter, SimpleGraph.mem_neighborFinset]
+        exact ⟨hu.2.1.symm, hu.1⟩
+      refine ⟨u, huF, ?_⟩
+      set w := Classical.choose_spec
+        (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hnsurj
+          (Finset.mem_filter.mp huF).2
+          ((G.mem_neighborFinset (pval x) u).mp (Finset.mem_filter.mp huF).1).symm)
+      exact gridWitness_y_unique G c s pval nval hfree hq hreg hcard hc hs_in
+        hs_out hsum hA_in hDs hn hninj w hu
+  have hsplit := Finset.card_filter_add_card_filter_not
+    (s := (Finset.univ : Finset (ZMod q)))
+    (fun y => ∃ u, IsGridWitness G c pval nval u x y)
+  rw [hcells, Finset.card_univ, ZMod.card] at hsplit
+  omega
+
 end Grid
 
 end Alternation
