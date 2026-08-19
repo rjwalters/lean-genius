@@ -382,6 +382,66 @@ theorem orderSixtyFour_sizeTwo_sixTen_long_allTf_false_of_signed_active_two
   exact (orderSixtyFour_sizeTwo_sixTen_long_allTf_antipodal_sameParity_ne_four
     G hfree hreg hcard c hc b hbtf v hvinj hvrange hv) hfour
 
+/-- At `mu=-5`, same-parity antipodal adjacency in long-cycle coordinates
+has at most one target in every row, because each signed shore is a perfect
+defect matching. -/
+theorem orderSixtyFour_sizeTwo_muNegFive_long_sameParity_antipodal_rightUnique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z, s y =
+        (-5 : ℤ) * s z)
+    (v : ZMod 10 → c.supp) (hvinj : Function.Injective v)
+    (hsame : ∀ i j, ZModTenEvenOffset (j - i) →
+      s (v j).1 = s (v i).1) :
+    ∀ i j k,
+      (ZModTenEvenOffset (j - i) ∧
+        (antipodalGraph G).Adj (v i).1 (v j).1) →
+      (ZModTenEvenOffset (k - i) ∧
+        (antipodalGraph G).Adj (v i).1 (v k).1) → j = k := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Xp := MuNegFivePositiveShore D c s
+  let Xm := MuNegFiveNegativeShore D c s
+  obtain ⟨fp, fm, hfp, _hfpinv, _hfpne, hfm, _hfminv, _hfmne⟩ :=
+    orderSixtyFour_sizeTwo_muNegFive_sameSign_defect_matchings
+      G hfree hreg hcard c hc s hs_out hs_in hH hD
+  intro i j k hj hk
+  have hDj : D.Adj (v i).1 (v j).1 := Or.inl hj.2
+  have hDk : D.Adj (v i).1 (v k).1 := Or.inl hk.2
+  have hsj := hsame i j hj.1
+  have hsk := hsame i k hk.1
+  rcases hs_in (v i).1 (v i).2 with hiNeg | hiPos
+  · let xi : Xm := ⟨(v i).1, (v i).2, hiNeg⟩
+    let xj : Xm := ⟨(v j).1, (v j).2, hsj.trans hiNeg⟩
+    let xk : Xm := ⟨(v k).1, (v k).2, hsk.trans hiNeg⟩
+    have hjmate : fm xi = xj := (hfm xi xj).mp hDj
+    have hkmate : fm xi = xk := (hfm xi xk).mp hDk
+    apply hvinj
+    apply Subtype.ext
+    exact congrArg (fun x : Xm ↦ x.1) (hjmate.symm.trans hkmate)
+  · let xi : Xp := ⟨(v i).1, (v i).2, hiPos⟩
+    let xj : Xp := ⟨(v j).1, (v j).2, hsj.trans hiPos⟩
+    let xk : Xp := ⟨(v k).1, (v k).2, hsk.trans hiPos⟩
+    have hjmate : fp xi = xj := (hfp xi xj).mp hDj
+    have hkmate : fp xi = xk := (hfp xi xk).mp hDk
+    apply hvinj
+    apply Subtype.ext
+    exact congrArg (fun x : Xp ↦ x.1) (hjmate.symm.trans hkmate)
+
 end
 
 end Erdos85
@@ -391,3 +451,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_sizeTwo_sixTen_long_allTf_antipodal_sameParity_ne_four
 #print axioms Erdos85.card_filter_product_eq_card_filter_exists_of_rightUnique
 #print axioms Erdos85.orderSixtyFour_sizeTwo_sixTen_long_allTf_false_of_signed_active_two
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_long_sameParity_antipodal_rightUnique
