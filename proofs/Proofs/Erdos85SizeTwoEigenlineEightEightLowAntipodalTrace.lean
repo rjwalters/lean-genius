@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoEigenlineAllTriangleFreeCrossSign
+import Proofs.Erdos85AntipodalCycleReservoir
 
 /-!
 # Sign separation in the low eight-plus-eight sector
@@ -129,9 +130,59 @@ theorem binarySquare_regular_sizeTwoPart_allTriangleFree_antipodal_preserves_sig
   · exact fun hG =>
       ((mem_antipodalNeighbors G x.1 y.1).mp hxy).2.1 hG
 
+/-- At an all-triangle-free vertex of the order-64 size-two component, the
+five antipodal neighbors all remain in that defect component and in the
+same eigenline sign class. -/
+theorem binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_degree_five_sign_support
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      3 * s x)
+    (a : (G.induce c.supp).ConnectedComponent)
+    (htf : ∀ z : c.supp, z ∈ a.supp →
+      (triangleFreeEdgeGraph G).degree z.1 = 2)
+    (x : c.supp) (hx : x ∈ a.supp) :
+    (antipodalGraph G).degree x.1 = 5 ∧
+      ∀ y, (antipodalGraph G).Adj x.1 y →
+        y ∈ c.supp ∧ s y = s x.1 := by
+  constructor
+  · have hcard64 : Fintype.card V = 64 := by norm_num at hcard ⊢; exact hcard
+    have hdegree := antipodalGraph_degree_eq_excess_add_two_sub_triangleFree
+      G hfree (d := 8) (e := 5) (by omega) hreg hcard64 x.1
+    have hcardTf : (triangleFreeNeighbors G x.1).card =
+        (triangleFreeEdgeGraph G).degree x.1 := by
+      rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+        triangleFreeEdgeGraph_neighborFinset]
+    rw [hdegree, hcardTf, htf x hx]
+  · intro y hxy
+    have hD : (secondOrderDefectGraph G).Adj x.1 y := by
+      change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj x.1 y
+      exact Or.inl hxy
+    have hyc : y ∈ c.supp := (c.mem_supp_congr_adj hD).mp x.2
+    refine ⟨hyc, ?_⟩
+    exact binarySquare_regular_sizeTwoPart_allTriangleFree_antipodal_preserves_sign
+      G hfree (by omega) hreg hcard c hc s hs_in hs_out hA_in hDs a htf
+        x ⟨y, hyc⟩ hx hxy
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_allTriangleFree_nonambient_defect_preserves_sign
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_allTriangleFree_antipodal_preserves_sign
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_degree_five_sign_support
