@@ -509,6 +509,54 @@ theorem sameSign_common_mem_supp (hfree : ¬ containsC4 V G)
       omega
     exact huc (huw ▸ (hImem w hw).1)
 
+/-- **Exterior labels.**  Every vertex outside the block has exactly one
+positive and one negative neighbour in it. -/
+theorem exterior_labels (hfree : ¬ containsC4 V G)
+    {q : ℕ} (hq : 5 ≤ q)
+    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      ((q : ℤ) - 5) * s x)
+    {u : V} (hu : u ∉ c.supp) :
+    ∃ p n : V, p ∈ c.supp ∧ n ∈ c.supp ∧ s p = 1 ∧ s n = -1 ∧
+      componentNeighborFinset G (secondOrderDefectGraph G) c u = {p, n} := by
+  classical
+  have hI2 : (componentNeighborFinset G (secondOrderDefectGraph G) c u).card = 2 := by
+    have h := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree (by omega) hreg hcard
+      ((secondOrderDefectGraph G).connectedComponentMk u) c
+      (SimpleGraph.ConnectedComponent.mem_supp_iff _ u |>.mpr rfl)
+    rw [hc] at h
+    exact Nat.eq_of_mul_eq_mul_left (by omega) h
+  obtain ⟨a, b, hab, habeq⟩ := Finset.card_eq_two.mp hI2
+  have hmem : ∀ y ∈ componentNeighborFinset G (secondOrderDefectGraph G) c u,
+      y ∈ c.supp ∧ G.Adj u y := by
+    intro y hy
+    rw [componentNeighborFinset, Finset.mem_filter] at hy
+    exact ⟨(SimpleGraph.ConnectedComponent.mem_supp_iff c y).mpr hy.2,
+      (G.mem_neighborFinset u y).mp hy.1⟩
+  have ha := hmem a (by rw [habeq]; simp)
+  have hb := hmem b (by rw [habeq]; simp)
+  -- the two neighbours cannot share a sign (census)
+  have hsigns : s a ≠ s b := by
+    intro hsame
+    exact hu (sameSign_common_mem_supp G hfree hq hreg hcard c hc s hs_in
+      hs_out hsum hA_in hDs hb.1 ha.1 hab hsame hb.2 ha.2)
+  rcases hs_in a ha.1 with h1 | h1 <;> rcases hs_in b hb.1 with h2 | h2
+  · exact absurd (h1.trans h2.symm) hsigns
+  · exact ⟨b, a, hb.1, ha.1, h2, h1, by
+      rw [habeq]
+      ext t
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      tauto⟩
+  · exact ⟨a, b, ha.1, hb.1, h1, h2, habeq⟩
+  · exact absurd (h1.trans h2.symm) hsigns
+
 end Alternation
 
 end Erdos85
