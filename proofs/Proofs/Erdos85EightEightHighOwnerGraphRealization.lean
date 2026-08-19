@@ -345,6 +345,24 @@ theorem eightEightHighRealizedRelation_irrefl
   rintro e ⟨he, _he', hee⟩
   exact C.loopless.irrefl (idx ⟨e, he⟩) hee
 
+theorem eightEightHighRealizedRelation_coordinate_endpoints_active
+    {E : Type*} (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (C : SimpleGraph E)
+    (hfixed : ∀ e : Fin 64,
+      eightEightHighActiveVariable? e = none →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (idx : EightEightHighEnabledOwner
+      (eightEightHighCoordinateActive R) ≃ E) :
+    ∀ e f,
+      eightEightHighRealizedRelation
+          (eightEightHighCoordinateActive R) C idx e f →
+        eightEightHighCoordinateActive R e ∧
+          eightEightHighCoordinateActive R f := by
+  rintro e f ⟨he, hf, _⟩
+  exact ⟨eightEightHighCoordinateActive_enabled_edge R hfixed e he,
+    eightEightHighCoordinateActive_enabled_edge R hfixed f hf⟩
+
 /-- Transport an ambient outside-vertex semantic package through an
 enabled-owner equivalence.  The two target hypotheses are the exact
 one/zero coordinate rewrites; the incidence hypothesis identifies the
