@@ -578,6 +578,87 @@ theorem highEightOwnerServiceSemantics_of_modelIso
       G hfree c hcard hinc hqcard hRedges R hfixed hsub modelIso
         ⟨e, he⟩ ⟨f, hf⟩ hef hintersect k hek hfk
 
+noncomputable def eightEightHighOwnerClassicalVal
+    (active : Fin 64 → Prop) (X : Fin 64 → Fin 64 → Prop) (id : Nat) : Bool :=
+  @eightEightHighOwnerValOfRelations active X
+    (Classical.decPred active) (Classical.decRel X) id
+
+/-- Graph-facing checked high-`8+8` terminal.  All ambient service, C4,
+compatibility, symmetry, irreﬂexivity, and endpoint-activity laws are
+internal; only the two cross-block arithmetic laws remain as inputs. -/
+theorem highEightOwnerModel_false_of_cross_laws
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [hmem : DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (hfixed : ∀ e : Fin 64,
+      eightEightHighActiveVariable? e = none →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (hsub : ∀ a b, R.Adj a b →
+      eightEightHighCandidatePair a b = true ∨
+        eightEightHighCandidatePair b a = true)
+    (modelIso : exteriorPairGraph G c ≃g R)
+    (hcycle : ∀ x y : c.supp,
+      G.Adj x.1 y.1 ↔
+        eightEightHighCycleAdj (modelIso x).val (modelIso y).val = true)
+    (htwo :
+      let active := eightEightHighCoordinateActive R
+      let out := highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+        hfixed hsub modelIso
+      let X := eightEightHighRealizedRelation active (G.induce c.suppᶜ) out
+      ∀ left z, z < 8 →
+        ((eightEightHighCrossFiberIds left z).filter fun id =>
+          eightEightHighOwnerClassicalVal active X id = true).card = 2)
+    (hbalance :
+      let active := eightEightHighCoordinateActive R
+      let out := highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+        hfixed hsub modelIso
+      let X := eightEightHighRealizedRelation active (G.induce c.suppᶜ) out
+      ∀ x y a b d e,
+        eightEightHighCrossIndex? ((x + 7) % 8) y = some a →
+        eightEightHighCrossIndex? ((x + 1) % 8) y = some b →
+        eightEightHighCrossIndex? x ((y + 1) % 8) = some d →
+        eightEightHighCrossIndex? x ((y + 7) % 8) = some e →
+        (eightEightHighOwnerClassicalVal active X a).toNat +
+            (eightEightHighOwnerClassicalVal active X b).toNat =
+          (eightEightHighOwnerClassicalVal active X d).toNat +
+            (eightEightHighOwnerClassicalVal active X e).toNat) : False := by
+  classical
+  let active := eightEightHighCoordinateActive R
+  let C := G.induce c.suppᶜ
+  let out := highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+    hfixed hsub modelIso
+  let X := eightEightHighRealizedRelation active C out
+  letI : DecidablePred active := Classical.decPred active
+  letI : DecidableRel X := Classical.decRel X
+  have hsem : EightEightHighOwnerServiceSemantics active X := by
+    simpa [active, C, out, X] using
+      highEightOwnerServiceSemantics_of_modelIso
+        G hfree c hcard hinc hqcard hRedges R hfixed hsub modelIso hcycle
+  apply eightEightHighOwnerRelations_false active X hsem
+  · exact eightEightHighRealizedRelation_symm active C out
+  · exact eightEightHighRealizedRelation_irrefl active C out
+  · rintro e f ⟨he, hf, hef⟩
+    exact outsideHighOwnerCoordinates_compatible
+      G hfree c hcard hinc hqcard hRedges R hfixed hsub modelIso hcycle
+        ⟨e, he⟩ ⟨f, hf⟩ hef
+  · exact eightEightHighRealizedRelation_coordinate_endpoints_active
+      R C hfixed out
+  · simpa [eightEightHighOwnerClassicalVal, active, C, out, X] using htwo
+  · simpa [eightEightHighOwnerClassicalVal, active, C, out, X] using hbalance
+
 end
 
 end Erdos85
@@ -585,3 +666,4 @@ end Erdos85
 #print axioms Erdos85.outsidePair_map_highModelIso_eq_ownerSym2
 #print axioms Erdos85.outsideHighOwnerCoordinates_compatible
 #print axioms Erdos85.highEightOwnerServiceSemantics_of_modelIso
+#print axioms Erdos85.highEightOwnerModel_false_of_cross_laws
