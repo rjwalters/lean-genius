@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoEigenlineCycleCoordinateNormalization
+import Proofs.Erdos85SizeTwoEigenlineGridInstantiation
 import Mathlib.Logic.Equiv.Fin.Basic
 import Mathlib.Data.ZMod.Basic
 
@@ -175,20 +176,20 @@ variable (H : SimpleGraph V) [DecidableRel H.Adj]
 
 /-- The exact coordinate package expected by the graph-derived cyclic grid. -/
 structure SizeTwoCycleGridCoordinates
-    (c : H.ConnectedComponent) (s : V → ℤ) (q : Nat) where
+    (S : Set V) (s : V → ℤ) (q : Nat) where
   pval : ZMod q → V
   nval : ZMod q → V
-  p_mem_sign : ∀ x, pval x ∈ c.supp ∧ s (pval x) = 1
-  n_mem_sign : ∀ y, nval y ∈ c.supp ∧ s (nval y) = -1
+  p_mem_sign : ∀ x, pval x ∈ S ∧ s (pval x) = 1
+  n_mem_sign : ∀ y, nval y ∈ S ∧ s (nval y) = -1
   p_injective : Function.Injective pval
   n_injective : Function.Injective nval
-  p_surjective : ∀ z, z ∈ c.supp → s z = 1 → ∃ x, pval x = z
-  n_surjective : ∀ z, z ∈ c.supp → s z = -1 → ∃ y, nval y = z
+  p_surjective : ∀ z, z ∈ S → s z = 1 → ∃ x, pval x = z
+  n_surjective : ∀ z, z ∈ S → s z = -1 → ∃ y, nval y = z
   adj_iff : ∀ x y, H.Adj (pval x) (nval y) ↔ y = x ∨ y = x - 1
 
 theorem cycleSign_at_pairCoord_zero
-    (c : H.ConnectedComponent) (s : V → ℤ)
-    (e : Fin (2 * q) ≃ c.supp)
+    (S : Set V) (s : V → ℤ)
+    (e : Fin (2 * q) ≃ S)
     (hs : ∀ i, s (e i).1 = (-1 : ℤ) ^ i.val * s (e 0).1)
     (hphase : s (e 0).1 = 1) (x : ZMod q) :
     s (e (sizeTwoCyclePairCoord x 0)).1 = 1 := by
@@ -196,8 +197,8 @@ theorem cycleSign_at_pairCoord_zero
   simp [pow_mul]
 
 theorem cycleSign_at_pairCoord_one
-    (c : H.ConnectedComponent) (s : V → ℤ)
-    (e : Fin (2 * q) ≃ c.supp)
+    (S : Set V) (s : V → ℤ)
+    (e : Fin (2 * q) ≃ S)
     (hs : ∀ i, s (e i).1 = (-1 : ℤ) ^ i.val * s (e 0).1)
     (hphase : s (e 0).1 = 1) (x : ZMod q) :
     s (e (sizeTwoCyclePairCoord x 1)).1 = -1 := by
@@ -208,19 +209,19 @@ theorem cycleSign_at_pairCoord_one
 `pval/nval` coordinate hypotheses used by the graph-side grid theorem. -/
 def SizeTwoCycleGridCoordinates.ofPositiveNormalizedCycle
     (hq : 2 ≤ q)
-    (c : H.ConnectedComponent) (s : V → ℤ)
-    (e : Fin (2 * q) ≃ c.supp)
+    (S : Set V) (s : V → ℤ)
+    (e : Fin (2 * q) ≃ S)
     (he : ∀ i j, (cycleGraph (2 * q)).Adj i j ↔
       H.Adj (e i).1 (e j).1)
     (hs : ∀ i, s (e i).1 = (-1 : ℤ) ^ i.val * s (e 0).1)
     (hphase : s (e 0).1 = 1) :
-    SizeTwoCycleGridCoordinates H c s q where
+    SizeTwoCycleGridCoordinates H S s q where
   pval x := (e (sizeTwoCyclePairCoord x 0)).1
   nval y := (e (sizeTwoCyclePairCoord y 1)).1
   p_mem_sign x := ⟨(e (sizeTwoCyclePairCoord x 0)).2,
-    cycleSign_at_pairCoord_zero H c s e hs hphase x⟩
+    cycleSign_at_pairCoord_zero S s e hs hphase x⟩
   n_mem_sign y := ⟨(e (sizeTwoCyclePairCoord y 1)).2,
-    cycleSign_at_pairCoord_one H c s e hs hphase y⟩
+    cycleSign_at_pairCoord_one S s e hs hphase y⟩
   p_injective := by
     intro x y hxy
     have heq : e (sizeTwoCyclePairCoord x 0) =
@@ -239,7 +240,7 @@ def SizeTwoCycleGridCoordinates.ofPositiveNormalizedCycle
     exact congrArg Prod.fst hp
   p_surjective := by
     intro z hz hsz
-    let zi : c.supp := ⟨z, hz⟩
+    let zi : S := ⟨z, hz⟩
     obtain ⟨⟨x, b⟩, hb⟩ :=
       sizeTwoCyclePairEquiv.surjective (e.symm zi)
     have heq : e (sizeTwoCyclePairCoord x b) = zi := by
@@ -251,14 +252,14 @@ def SizeTwoCycleGridCoordinates.ofPositiveNormalizedCycle
         _ = zi := e.apply_symm_apply zi
     fin_cases b
     · exact ⟨x, congrArg Subtype.val (by simpa using heq)⟩
-    · have hn := cycleSign_at_pairCoord_one H c s e hs hphase x
+    · have hn := cycleSign_at_pairCoord_one S s e hs hphase x
       have heq' : e (sizeTwoCyclePairCoord x 1) = zi := by simpa using heq
       rw [heq'] at hn
       simp only [zi] at hn
       omega
   n_surjective := by
     intro z hz hsz
-    let zi : c.supp := ⟨z, hz⟩
+    let zi : S := ⟨z, hz⟩
     obtain ⟨⟨x, b⟩, hb⟩ :=
       sizeTwoCyclePairEquiv.surjective (e.symm zi)
     have heq : e (sizeTwoCyclePairCoord x b) = zi := by
@@ -269,7 +270,7 @@ def SizeTwoCycleGridCoordinates.ofPositiveNormalizedCycle
         _ = e (e.symm zi) := congrArg e hb
         _ = zi := e.apply_symm_apply zi
     fin_cases b
-    · have hp := cycleSign_at_pairCoord_zero H c s e hs hphase x
+    · have hp := cycleSign_at_pairCoord_zero S s e hs hphase x
       have heq' : e (sizeTwoCyclePairCoord x 0) = zi := by simpa using heq
       rw [heq'] at hp
       simp only [zi] at hp
@@ -283,9 +284,9 @@ def SizeTwoCycleGridCoordinates.ofPositiveNormalizedCycle
 /-- Negating the sign exchanges the two axes.  Reindexing the new negative
 axis by one step restores the standard `{0,-1}` adjacency convention. -/
 def SizeTwoCycleGridCoordinates.ofNegated
-    (c : H.ConnectedComponent) (s : V → ℤ)
-    (base : SizeTwoCycleGridCoordinates H c (fun z => -s z) q) :
-    SizeTwoCycleGridCoordinates H c s q where
+    (S : Set V) (s : V → ℤ)
+    (base : SizeTwoCycleGridCoordinates H S (fun z => -s z) q) :
+    SizeTwoCycleGridCoordinates H S s q where
   pval x := base.nval x
   nval y := base.pval (y + 1)
   p_mem_sign x := by
@@ -318,6 +319,36 @@ def SizeTwoCycleGridCoordinates.ofNegated
       · right; rw [h]; ring
       · left; rw [h]; ring
 
+/-- Flatten a coordinate package on an induced graph back to the ambient
+vertex type.  The source package must cover the whole induced subtype. -/
+def SizeTwoCycleGridCoordinates.ofInduced
+    (G : SimpleGraph V) (S : Set V) (s : V → ℤ)
+    (T : Set S) (hT : T = Set.univ)
+    (base : SizeTwoCycleGridCoordinates (G.induce S) T
+      (fun z => s z.1) q) :
+    SizeTwoCycleGridCoordinates G S s q where
+  pval x := (base.pval x).1
+  nval y := (base.nval y).1
+  p_mem_sign x := ⟨(base.pval x).2, (base.p_mem_sign x).2⟩
+  n_mem_sign y := ⟨(base.nval y).2, (base.n_mem_sign y).2⟩
+  p_injective := by
+    intro x y hxy
+    apply base.p_injective
+    exact Subtype.ext hxy
+  n_injective := by
+    intro x y hxy
+    apply base.n_injective
+    exact Subtype.ext hxy
+  p_surjective := by
+    intro z hz hsz
+    obtain ⟨x, hx⟩ := base.p_surjective ⟨z, hz⟩ (by simp [hT]) hsz
+    exact ⟨x, congrArg Subtype.val hx⟩
+  n_surjective := by
+    intro z hz hsz
+    obtain ⟨y, hy⟩ := base.n_surjective ⟨z, hz⟩ (by simp [hT]) hsz
+    exact ⟨y, congrArg Subtype.val hy⟩
+  adj_iff := base.adj_iff
+
 /-- **Graph-specific `C₂q` consumer bridge.**  A size-`2q` component of a
 finite two-regular graph with a `{±1}` edge-flipping sign admits the complete
 `ZMod q × ZMod q` axis-coordinate package expected by the cyclic eigenline
@@ -330,7 +361,7 @@ theorem exists_sizeTwoCycleGridCoordinates
     (s : V → ℤ)
     (hsign : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
     (hflip : ∀ ⦃x y⦄, H.Adj x y → s x = -s y) :
-    Nonempty (SizeTwoCycleGridCoordinates H c s q) := by
+    Nonempty (SizeTwoCycleGridCoordinates H c.supp s q) := by
   obtain ⟨e, he, hs⟩ :=
     exists_componentCycleEquiv_sign_normalized H hdeg q (by omega) c hc s hflip
   rcases hsign (e 0).1 (e 0).2 with hphase | hphase
@@ -343,10 +374,68 @@ theorem exists_sizeTwoCycleGridCoordinates
         _ = (-1 : ℤ) ^ i.val * (-s (e 0).1) := by ring
     have hphaseNeg : -s (e 0).1 = 1 := by omega
     let base := SizeTwoCycleGridCoordinates.ofPositiveNormalizedCycle
-      H hq c (fun z => -s z) e he hsneg hphaseNeg
-    exact ⟨SizeTwoCycleGridCoordinates.ofNegated H c s base⟩
+      H hq c.supp (fun z => -s z) e he hsneg hphaseNeg
+    exact ⟨SizeTwoCycleGridCoordinates.ofNegated H c.supp s base⟩
   · exact ⟨SizeTwoCycleGridCoordinates.ofPositiveNormalizedCycle
-      H hq c s e he hs hphase⟩
+      H hq c.supp s e he hs hphase⟩
+
+/-- **Defect-component attachment.**  If the internal ambient graph induced
+on a size-two defect component is connected, the signed joint-eigenline
+hypotheses used by `GridInstantiation` automatically produce its complete
+normalized `pval/nval` coordinate package. -/
+theorem exists_sizeTwoCycleGridCoordinates_of_connectedInternal
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (q : Nat) [NeZero q] (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 2 * q)
+    (hconn : (G.induce c.supp).Connected)
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x) :
+    Nonempty (SizeTwoCycleGridCoordinates G c.supp s q) := by
+  classical
+  let H := G.induce c.supp
+  let t : c.supp → ℤ := fun x => s x.1
+  have hdeg : ∀ x, H.degree x = 2 := by
+    intro x
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree hq hreg hcard c (m := 2) (by simpa [Nat.mul_comm] using hc) x
+  have hsign : ∀ x, t x = -1 ∨ t x = 1 := by
+    intro x
+    exact hs_in x.1 x.2
+  have hflip : ∀ ⦃x y⦄, H.Adj x y → t x = -t y := by
+    intro x y hxy
+    have hyI : y.1 ∈ componentNeighborFinset G
+        (secondOrderDefectGraph G) c x.1 := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset x.1 y.1).mpr hxy,
+        (SimpleGraph.ConnectedComponent.mem_supp_iff c y.1).mp y.2⟩
+    have hyx := (internal_alternation G hfree hq hreg hcard c
+      (by simpa [Nat.mul_comm] using hc) s hs_in hs_out hA_in x.2).2 y.1 hyI
+    change s x.1 = -s y.1
+    omega
+  let v0 : c.supp := Classical.choice hconn.nonempty
+  let cH : H.ConnectedComponent := H.connectedComponentMk v0
+  have hsupp : cH.supp = Set.univ := by
+    ext x
+    simp only [Set.mem_univ, iff_true]
+    rw [SimpleGraph.ConnectedComponent.mem_supp_iff]
+    exact SimpleGraph.ConnectedComponent.sound (hconn.preconnected x v0)
+  have hcH : cH.supp.ncard = 2 * q := by
+    rw [hsupp, Set.ncard_univ, Nat.card_coe_set_eq]
+    exact hc
+  obtain ⟨base⟩ := exists_sizeTwoCycleGridCoordinates H hdeg q
+    (by omega) cH hcH t (fun x _ => hsign x) hflip
+  exact ⟨SizeTwoCycleGridCoordinates.ofInduced G c.supp s cH.supp hsupp base⟩
 
 end GraphCoordinates
 
@@ -355,3 +444,4 @@ end
 end Erdos85
 
 #print axioms Erdos85.exists_sizeTwoCycleGridCoordinates
+#print axioms Erdos85.exists_sizeTwoCycleGridCoordinates_of_connectedInternal
