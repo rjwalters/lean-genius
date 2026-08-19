@@ -557,6 +557,82 @@ theorem exterior_labels (hfree : ¬ containsC4 V G)
   · exact ⟨a, b, ha.1, hb.1, h1, h2, habeq⟩
   · exact absurd (h1.trans h2.symm) hsigns
 
-end Alternation
+section Grid
+
+set_option linter.unusedSectionVars false
+
+variable (c : (secondOrderDefectGraph G).ConnectedComponent)
+variable {q : ℕ} (s : V → ℤ) (pval nval : ZMod q → V)
+
+/-- `u` realizes the grid cell `(x, y)`. -/
+def IsGridWitness (u : V) (x y : ZMod q) : Prop :=
+  u ∉ c.supp ∧ G.Adj u (pval x) ∧ G.Adj u (nval y)
+
+/-- Cell witnesses are unique (C4-freedom). -/
+theorem gridWitness_unique (hfree : ¬ containsC4 V G)
+    (hp : ∀ x, s (pval x) = 1) (hn : ∀ y, s (nval y) = -1)
+    {u u' : V} {x y : ZMod q}
+    (hu : IsGridWitness G c pval nval u x y)
+    (hu' : IsGridWitness G c pval nval u' x y) : u = u' := by
+  have hne : pval x ≠ nval y := by
+    intro h
+    have := hp x
+    rw [h, hn y] at this
+    norm_num at this
+  have hcommon := common_le_one_of_not_containsC4 hfree (pval x) (nval y) hne
+  have hmem : ∀ w : V, IsGridWitness G c pval nval w x y →
+      w ∈ G.neighborFinset (pval x) ∩ G.neighborFinset (nval y) := by
+    intro w hw
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset]
+    exact ⟨hw.2.1.symm, hw.2.2.symm⟩
+  by_contra hne'
+  have h2 : 2 ≤ (G.neighborFinset (pval x) ∩ G.neighborFinset (nval y)).card := by
+    have := Finset.card_le_card (Finset.insert_subset (hmem u hu)
+      (Finset.singleton_subset_iff.mpr (hmem u' hu')))
+    rwa [Finset.card_insert_of_notMem (by simpa using hne'),
+      Finset.card_singleton] at this
+  omega
+
+/-- An exterior neighbour of `pval x` witnesses exactly one cell of row `x`. -/
+theorem gridWitness_of_exterior_neighbor (hfree : ¬ containsC4 V G)
+    (hq : 5 ≤ q)
+    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (hc : c.supp.ncard = q * 2)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      ((q : ℤ) - 5) * s x)
+    (hp : ∀ x, pval x ∈ c.supp ∧ s (pval x) = 1)
+    (hnsurj : ∀ z, z ∈ c.supp → s z = -1 → ∃ y, nval y = z)
+    {u : V} {x : ZMod q} (hu : u ∉ c.supp) (hadj : G.Adj u (pval x)) :
+    ∃ y, IsGridWitness G c pval nval u x y := by
+  obtain ⟨p, n, hpsupp, hnsupp, hps, hns, heq⟩ := exterior_labels G hfree hq
+    hreg hcard c hc s hs_in hs_out hsum hA_in hDs hu
+  have hpx : pval x ∈ componentNeighborFinset G (secondOrderDefectGraph G) c u := by
+    rw [componentNeighborFinset, Finset.mem_filter]
+    exact ⟨(G.mem_neighborFinset u (pval x)).mpr hadj,
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c (pval x)).mp (hp x).1⟩
+  rw [heq, Finset.mem_insert, Finset.mem_singleton] at hpx
+  have hpvx : p = pval x := by
+    rcases hpx with h | h
+    · exact h.symm
+    · exfalso
+      have := (hp x).2
+      rw [← h, hns] at this
+      norm_num at this
+  obtain ⟨y, hy⟩ := hnsurj n hnsupp hns
+  refine ⟨y, hu, hadj, ?_⟩
+  have hnmem : n ∈ componentNeighborFinset G (secondOrderDefectGraph G) c u := by
+    rw [heq]
+    simp
+  rw [componentNeighborFinset, Finset.mem_filter,
+    SimpleGraph.mem_neighborFinset] at hnmem
+  rw [hy]
+  exact hnmem.1
+
+end Grid
 
 end Erdos85
