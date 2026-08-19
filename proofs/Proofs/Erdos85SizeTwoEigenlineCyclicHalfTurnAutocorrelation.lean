@@ -74,9 +74,27 @@ theorem sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_eight
   simpa only [zmodEight_neg_four] using
     (sizeTwoCrossShiftedPermutationAgreement_card_swap P x 4 t t)
 
+/-- Each antipodal pair contributes twice either member's half-turn agreement
+count.  This packages the symmetry in the additive form needed by a global
+autocorrelation census. -/
+theorem sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_pair_eight
+    (P : SizeTwoCyclicPermutationFamily 8 (1 : ZMod 8))
+    (x : ZMod 8)
+    (t : sizeTwoAllowedDifference 8 (1 : ZMod 8)) :
+    Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        8 (1 : ZMod 8) P x 4 t t) +
+      Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        8 (1 : ZMod 8) P (x + 4) 4 t t) =
+      2 * Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        8 (1 : ZMod 8) P x 4 t t) := by
+  rw [
+    ← sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_eight P x t,
+    two_mul]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_swap
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_eight
+#print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_pair_eight
