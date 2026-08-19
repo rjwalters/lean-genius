@@ -268,8 +268,92 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
   exact ⟨k, r, hcell, htK, htH, htne, htsign, hneOne, hpost,
     muNegFive_postMuOne_switch_target k r hpost, hroute⟩
 
+/-- Hide the aligned induced switch and expose only the three ambient
+cross-lane witnesses consumed by the final callbacks. -/
+theorem orderSixtyFour_sizeTwo_muNegFive_ambientCrossLane
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    [DecidableRel (MuNegFiveNeutralProjection G c s)]
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-5 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    (∃ w, IsAmbientSignedJoint G c (-3) w) ∨
+      (∃ w, IsAmbientSignedJoint G c (-1) w) ∨
+      (∃ w, IsAmbientSignedJoint G c 3 w) := by
+  obtain ⟨k, r, _hcell, hK, hHt, _htne, htsign, _hneOne, hpost, _htargets⟩ :=
+    orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
+      G hfree hreg hcard c hc s hs_out hs_in hA_in hH hD a b hab
+        u v huinj hvinj hurange hvrange hu hv
+  exact muNegFive_inducedSwitch_ambientCrossLane
+    G c k r hpost _ htsign hHt hK
+
+/-- Final callback form of the general `mu=-5` C8+C8 switch route. -/
+theorem false_of_orderSixtyFour_sizeTwo_muNegFive_eightEight_of_crossLane_terminals
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    [DecidableRel (MuNegFiveNeutralProjection G c s)]
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-5 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (h3 : ∀ w, IsAmbientSignedJoint G c (-3) w → False)
+    (h1 : ∀ w, IsAmbientSignedJoint G c (-1) w → False)
+    (hpos : ∀ w, IsAmbientSignedJoint G c 3 w → False) : False := by
+  apply false_of_muNegFive_ambientCrossLane G c
+    (orderSixtyFour_sizeTwo_muNegFive_ambientCrossLane
+      G hfree hreg hcard c hc s hs_out hs_in hA_in hH hD a b hab
+        u v huinj hvinj hurange hvrange hu hv)
+    h3 h1 hpos
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_ambientCrossLane
+#print axioms Erdos85.false_of_orderSixtyFour_sizeTwo_muNegFive_eightEight_of_crossLane_terminals
