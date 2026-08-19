@@ -17,7 +17,8 @@ import z3
 
 
 def build(q: int, a: int, *, rows: bool = True, columns: bool = True,
-          c4_pair_mode: str = "all") -> tuple[z3.Solver, list[tuple[int, int]], dict[tuple[int, int], z3.BoolRef]]:
+          c4_pair_mode: str = "all",
+          c4_differences: set[int] | None = None) -> tuple[z3.Solver, list[tuple[int, int]], dict[tuple[int, int], z3.BoolRef]]:
     holes = {a % q, (-1 - a) % q}
     vertices = [(x, y) for x in range(q) for y in range(q) if (y - x) % q not in holes]
     index = {v: i for i, v in enumerate(vertices)}
@@ -55,6 +56,9 @@ def build(q: int, a: int, *, rows: bool = True, columns: bool = True,
                     (vertices[i][1] - vertices[i][0]) % q != \
                     (vertices[j][1] - vertices[j][0]) % q:
                 continue
+            if c4_pair_mode == "same-difference" and c4_differences is not None and \
+                    (vertices[i][1] - vertices[i][0]) % q not in c4_differences:
+                continue
             solver.add(z3.PbLe([(z3.And(adj(i, k), adj(j, k)), 1)
                                 for k in range(len(vertices)) if k not in {i, j}], 1))
 
@@ -72,10 +76,14 @@ def main() -> None:
     parser.add_argument("--c4-pair-mode",
         choices=["all", "same-row", "same-column", "same-difference"],
         default="all")
+    parser.add_argument("--c4-difference", type=int, action="append",
+        help="with same-difference mode, retain only these difference orbits")
     args = parser.parse_args()
     solver, vertices, edge = build(args.q, args.a,
         rows=not args.no_rows, columns=not args.no_columns,
-        c4_pair_mode="none" if args.no_c4 else args.c4_pair_mode)
+        c4_pair_mode="none" if args.no_c4 else args.c4_pair_mode,
+        c4_differences=None if args.c4_difference is None else
+            {t % args.q for t in args.c4_difference})
     solver.set(timeout=args.timeout_ms)
     result = solver.check()
     print(f"q={args.q} a={args.a % args.q}: {result}")
