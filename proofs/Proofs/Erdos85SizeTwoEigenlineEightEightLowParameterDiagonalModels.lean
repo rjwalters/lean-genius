@@ -237,7 +237,171 @@ theorem binarySquare_regular_sizeTwoPart_eight_allTriangleFree_diagonal_samePari
   rw [← Finset.card_image_of_injective T huinj, himage]
   exact hAcard
 
+/-- Exact diagonal defect model for the two unresolved low parameters.
+Diagonal quotient four gives offsets `±1,±2`; diagonal quotient five adds
+the half-turn offset `4`. -/
+theorem binarySquare_regular_sizeTwoPart_eight_allTriangleFree_low_diagonal_defectAdj_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      3 * s x)
+    (a : (G.induce c.supp).ConnectedComponent)
+    (u : ZMod 8 → c.supp)
+    (huinj : Function.Injective u)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (htf : ∀ z : c.supp, z ∈ a.supp →
+      (triangleFreeEdgeGraph G).degree z.1 = 2)
+    (d : ℕ) (hd : d = 4 ∨ d = 5)
+    (hdiagQ : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a a = d) :
+    ∀ i j : ZMod 8,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (u j) ↔
+        j - i = 1 ∨ j - i = 7 ∨ j - i = 2 ∨ j - i = 6 ∨
+          (d = 5 ∧ j - i = 4) := by
+  classical
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let M : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j => K.adjMatrix ℤ (u i) (u j)
+  have hHdegree : ∀ z : c.supp, H.degree z = 2 := by
+    intro z
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2)
+        (by simpa [Nat.mul_comm] using hc) z
+  obtain ⟨_hHdegree', _hKdegree, hcommHK⟩ :=
+    binarySquare_regular_sizeTwoPart_commuting_regular_blocks
+      G hfree (by omega) hreg hcard c hc
+  have hcomm : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ := by
+    simpa [K, H] using hcommHK.symm
+  have hupair : ∀ z, u (z - 1) ≠ u (z + 1) := fun z =>
+    huinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) z)
+  have hinter : ∀ i j,
+      M (i - 1) j + M (i + 1) j = M i (j + 1) + M i (j - 1) := by
+    simpa only [M] using entry_cycleIntertwine_of_adjMatrix_comm
+      K H u u (1 : ZMod 8) (1 : ZMod 8) hcomm hu hu hupair hupair
+  have hdiag : ∀ z, M z z = 0 := by
+    intro z
+    simp [M, SimpleGraph.adjMatrix_apply]
+  have hsymm : ∀ i j, M i j = M j i := by
+    intro i j
+    by_cases hij : K.Adj (u i) (u j)
+    · have hji : K.Adj (u j) (u i) := (K.adj_comm _ _).mp hij
+      simp [M, SimpleGraph.adjMatrix_apply, hij, hji]
+    · have hji : ¬K.Adj (u j) (u i) := by
+        intro h
+        exact hij ((K.adj_comm _ _).mp h)
+      simp [M, SimpleGraph.adjMatrix_apply, hij, hji]
+  have hdegree : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+        ZModEightEvenOffset (j - i) ∧ M i j = 1).card = d - 2 := by
+    simpa only [M] using
+      binarySquare_regular_sizeTwoPart_eight_allTriangleFree_diagonal_sameParity_card
+        G hfree hreg hcard c hc s hs_in hs_out hA_in hDs a u huinj
+          hurange hu htf d hdiagQ
+  have hevenKernel : ∀ i j, ZModEightEvenOffset (j - i) →
+      (M i j = 1 ↔ j - i = 2 ∨ j - i = 6 ∨
+        (d = 5 ∧ j - i = 4)) := by
+    intro i j heven
+    rcases hd with rfl | rfl
+    · have h := zmodEight_selfIntertwiner_sameParity_degreeTwo_offset_two_six
+        M hdiag hsymm hinter (by simpa using hdegree)
+      simpa using h i j heven
+    · have h := zmodEight_sameParity_degreeThree_offset_two_four_six
+        M hdiag (by simpa using hdegree)
+      have hh := h i j heven
+      tauto
+  have huflip : ∀ i : ZMod 8, s (u (i + 1)).1 = -s (u i).1 := by
+    intro i
+    have hH : H.Adj (u i) (u (i + 1)) := by
+      rw [← H.mem_neighborFinset, hu]
+      simp
+    have hmem : (u (i + 1)).1 ∈ componentNeighborFinset G
+        (secondOrderDefectGraph G) c (u i).1 := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset _ _).mpr hH, (u (i + 1)).2⟩
+    exact (internal_alternation G hfree (by omega) hreg hcard c hc s
+      hs_in hs_out hA_in (u i).2).2 _ hmem
+  have hsignEven := zmodEight_alternating_sign_eq_iff_evenOffset
+    (fun i => s (u i).1) (fun i => hs_in _ (u i).2) huflip
+  have hplus : ∀ p q : ZMod 8, q - p = 1 → q = p + 1 := by decide
+  have hminus : ∀ p q : ZMod 8, q - p = 7 → q = p - 1 := by decide
+  have hHadj : ∀ i j : ZMod 8,
+      H.Adj (u i) (u j) ↔ j - i = 1 ∨ j - i = 7 := by
+    intro i j
+    rw [← H.mem_neighborFinset, hu]
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · intro h
+      rcases h with h | h
+      · right
+        calc
+          j - i = (i - 1) - i := congrArg (fun z => z - i) (huinj h)
+          _ = -1 := by ring
+          _ = 7 := by decide
+      · left
+        simpa using congrArg (fun z => z - i) (huinj h)
+    · intro h
+      rcases h with h | h
+      · right
+        exact congrArg u (hplus i j h)
+      · left
+        exact congrArg u (hminus i j h)
+  intro i j
+  change K.Adj (u i) (u j) ↔ _
+  constructor
+  · intro hij
+    by_cases hamb : H.Adj (u i) (u j)
+    · rcases (hHadj i j).mp hamb with h | h
+      · exact Or.inl h
+      · exact Or.inr (Or.inl h)
+    · have hsame :=
+        binarySquare_regular_sizeTwoPart_allTriangleFree_nonambient_defect_preserves_sign
+          G hfree (by omega) hreg hcard c hc s hs_in hs_out hA_in hDs a htf
+            (u i) (u j) (by rw [← hurange]; exact ⟨i, rfl⟩) hij hamb
+      have heven := (hsignEven i j).mp hsame
+      have hm : M i j = 1 := by
+        simpa [M, SimpleGraph.adjMatrix_apply] using hij
+      rcases (hevenKernel i j heven).mp hm with h2 | h6 | h4
+      · exact Or.inr (Or.inr (Or.inl h2))
+      · exact Or.inr (Or.inr (Or.inr (Or.inl h6)))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr h4)))
+  · intro h
+    rcases h with h1 | h7 | h2 | h6 | h4
+    · have hamb := (hHadj i j).mpr (Or.inl h1)
+      exact Or.inr (sizeTwo_triangleFreeEdge_of_degree_two G c hHdegree
+        (u i) (u j) hamb (htf (u i) (by rw [← hurange]; exact ⟨i, rfl⟩)))
+    · have hamb := (hHadj i j).mpr (Or.inr h7)
+      exact Or.inr (sizeTwo_triangleFreeEdge_of_degree_two G c hHdegree
+        (u i) (u j) hamb (htf (u i) (by rw [← hurange]; exact ⟨i, rfl⟩)))
+    · have hm := (hevenKernel i j (Or.inr (Or.inl h2))).mpr (Or.inl h2)
+      simpa [M, SimpleGraph.adjMatrix_apply] using hm
+    · have hm := (hevenKernel i j (Or.inr (Or.inr (Or.inr h6)))).mpr
+        (Or.inr (Or.inl h6))
+      simpa [M, SimpleGraph.adjMatrix_apply] using hm
+    · have hm := (hevenKernel i j (Or.inr (Or.inr (Or.inl h4.2)))).mpr
+        (Or.inr (Or.inr h4))
+      simpa [M, SimpleGraph.adjMatrix_apply] using hm
+
 end Erdos85
 
 #print axioms Erdos85.zmodEight_sameParity_degreeThree_offset_two_four_six
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_allTriangleFree_diagonal_sameParity_card
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_allTriangleFree_low_diagonal_defectAdj_iff
