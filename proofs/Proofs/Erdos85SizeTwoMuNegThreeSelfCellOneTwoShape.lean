@@ -154,6 +154,67 @@ theorem binarySquare_regular_sizeTwoPart_eight_diagonalFive_defectAdj_iff_offset
   exact zmodEight_defect_diagonal_rowFive_iff_offset_one_three_four_five_seven
     G hfree c u huinj hu hrow
 
+/-- A diagonal-five C8 shore has no exterior pair internally: every
+nontrivial offset is either a defect edge (`±1,±3,4`) or has an internal
+common neighbor (`±2`). -/
+theorem binarySquare_regular_sizeTwoPart_eight_diagonalFive_no_internal_exteriorPair
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a : (G.induce c.supp).ConnectedComponent)
+    (u : ZMod 8 → c.supp) (huinj : Function.Injective u)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (haa5 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a a = 5) :
+    ∀ i j, ¬ (exteriorPairGraph G c.supp).Adj (u i) (u j) := by
+  classical
+  let H := G.induce c.supp
+  have hD :=
+    binarySquare_regular_sizeTwoPart_eight_diagonalFive_defectAdj_iff_offset_one_three_four_five_seven
+      G hfree hreg hcard c hc a u huinj hurange hu haa5
+  intro i j hext
+  rw [exteriorPairGraph_adj_iff_not_defect_and_no_internal_common
+    G hfree c] at hext
+  have hall : j - i = 0 ∨ j - i = 1 ∨ j - i = 2 ∨
+      j - i = 3 ∨ j - i = 4 ∨ j - i = 5 ∨
+      j - i = 6 ∨ j - i = 7 := by
+    generalize j - i = d
+    revert d
+    decide
+  rcases hall with h0 | h1 | h2 | h3 | h4 | h5 | h6 | h7
+  · have hij : i = j := (sub_eq_zero.mp h0).symm
+    exact hext.1 (congrArg u hij)
+  · exact hext.2.1 ((hD i j).mpr (Or.inl h1))
+  · apply hext.2.2
+    exact (zmodEight_cycle_internalCommon_iff_offset_two_six
+      H u huinj hu i j (by
+        intro hij
+        subst j
+        simp only [sub_self] at h2
+        exact (by decide : (0 : ZMod 8) ≠ 2) h2)).mpr (Or.inl h2)
+  · exact hext.2.1 ((hD i j).mpr (Or.inr (Or.inl h3)))
+  · exact hext.2.1 ((hD i j).mpr (Or.inr (Or.inr (Or.inl h4))))
+  · exact hext.2.1 ((hD i j).mpr
+      (Or.inr (Or.inr (Or.inr (Or.inl h5)))))
+  · apply hext.2.2
+    exact (zmodEight_cycle_internalCommon_iff_offset_two_six
+      H u huinj hu i j (by
+        intro hij
+        subst j
+        simp only [sub_self] at h6
+        exact (by decide : (0 : ZMod 8) ≠ 6) h6)).mpr (Or.inr h6)
+  · exact hext.2.1 ((hD i j).mpr
+      (Or.inr (Or.inr (Or.inr (Or.inr h7)))))
+
 end
 
 
@@ -161,3 +222,4 @@ end Erdos85
 
 #print axioms Erdos85.zmodEight_defect_diagonal_rowFive_iff_offset_one_three_four_five_seven
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalFive_defectAdj_iff_offset_one_three_four_five_seven
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalFive_no_internal_exteriorPair
