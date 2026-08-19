@@ -22,6 +22,22 @@ def MuNegThreeRefinedSectorCells
          (k = 1 ∧ r = 2) ∨ (k = 1 ∧ r = 3) ∨
          (k = 1 ∧ r = 4))))
 
+/-- After the `(0,4)` contradiction, `(1,2)` is the unique μ=-3 cell fixed
+by the shore-switch involution. -/
+theorem muNegThree_refined_switch_target_eq_self_iff
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegThreeRefinedSectorCells N₁ N₂ k r) :
+    sizeTwoMuSwitchTarget (-3) k r = -3 ↔ k = 1 ∧ r = 2 := by
+  rcases hcell with hzero | hmixed | hone
+  · dsimp [MuNegThreeBothTriangleCell] at hzero
+    rcases hzero.2.2 with h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · dsimp [MuNegThreeMixedCell] at hmixed
+    rcases hmixed.2 with h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · rcases hone.2.2 with h | h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+
 /-- Exact μ=-3 sector cells after deleting the impossible all-triangle-free
 `(k,r)=(0,4)` cell.  The witness is the authoritative aligned-ledger witness,
 so the deletion uses its own quotient and signed-row data. -/
@@ -199,3 +215,4 @@ end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_eightEight_refined_sector_cells
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_eightEight_refined_alignedLedger
+#print axioms Erdos85.muNegThree_refined_switch_target_eq_self_iff
