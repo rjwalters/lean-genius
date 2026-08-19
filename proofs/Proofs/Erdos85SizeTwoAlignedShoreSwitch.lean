@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoShoreSwitchCardinality
+import Proofs.Erdos85SecondOrderQuotient
 
 /-! # Generic aligned shore-switch matrix socket -/
 
@@ -51,9 +52,105 @@ theorem bipartition_signSwitch_adjMatrix_eigen_sub_of_card
   rw [D.adjMatrix_mulVec_apply]
   simpa [hpartition] using hrows x (by rw [hpartition]; exact Finset.mem_univ x)
 
+/-- Connected-component row form of the generic shore switch. -/
+theorem twoComponent_signSwitch_adjMatrix_eigen_sub_of_card
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D H : SimpleGraph X) [DecidableRel D.Adj] [DecidableRel H.Adj]
+    [DecidableEq H.ConnectedComponent]
+    (a b : H.ConnectedComponent) (hab : a ≠ b)
+    (hpartition : ∀ x, x ∈ a.supp ∨ x ∈ b.supp)
+    (s : X → ℤ) (diagCard diagSame crossCard crossSame : ℕ)
+    (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hAAcard : ∀ x, x ∈ a.supp →
+      (componentNeighborFinset D H a x).card = diagCard)
+    (hAAsame : ∀ x, x ∈ a.supp →
+      ((componentNeighborFinset D H a x).filter
+        (fun y ↦ s y = s x)).card = diagSame)
+    (hABcard : ∀ x, x ∈ a.supp →
+      (componentNeighborFinset D H b x).card = crossCard)
+    (hABsame : ∀ x, x ∈ a.supp →
+      ((componentNeighborFinset D H b x).filter
+        (fun y ↦ s y = s x)).card = crossSame)
+    (hBBcard : ∀ x, x ∈ b.supp →
+      (componentNeighborFinset D H b x).card = diagCard)
+    (hBBsame : ∀ x, x ∈ b.supp →
+      ((componentNeighborFinset D H b x).filter
+        (fun y ↦ s y = s x)).card = diagSame)
+    (hBAcard : ∀ x, x ∈ b.supp →
+      (componentNeighborFinset D H a x).card = crossCard)
+    (hBAsame : ∀ x, x ∈ b.supp →
+      ((componentNeighborFinset D H a x).filter
+        (fun y ↦ s y = s x)).card = crossSame) :
+    let B := (Finset.univ : Finset X).filter
+      (fun x ↦ H.connectedComponentMk x = b)
+    let t : X → ℤ := fun x ↦ if x ∈ B then -s x else s x
+    (D.adjMatrix ℤ).mulVec t =
+      ((2 * (diagSame : ℤ) - diagCard) -
+        (2 * (crossSame : ℤ) - crossCard)) • t := by
+  classical
+  dsimp only
+  let A := (Finset.univ : Finset X).filter
+    (fun x ↦ H.connectedComponentMk x = a)
+  let B := (Finset.univ : Finset X).filter
+    (fun x ↦ H.connectedComponentMk x = b)
+  have hAB : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro x hxA hxB
+    exact hab ((Finset.mem_filter.mp hxA).2.symm.trans
+      (Finset.mem_filter.mp hxB).2)
+  have hpart : A ∪ B = Finset.univ := by
+    ext x
+    simp only [A, B, Finset.mem_union, Finset.mem_filter, Finset.mem_univ,
+      true_and, iff_true]
+    rcases hpartition x with hxa | hxb
+    · exact Or.inl ((ConnectedComponent.mem_supp_iff a x).mp hxa)
+    · exact Or.inr ((ConnectedComponent.mem_supp_iff b x).mp hxb)
+  have hrow (d : H.ConnectedComponent) (x : X) :
+      (D.neighborFinset x).filter (fun y ↦ y ∈
+        (Finset.univ : Finset X).filter
+          (fun z ↦ H.connectedComponentMk z = d)) =
+      componentNeighborFinset D H d x := by
+    ext y
+    simp [componentNeighborFinset, SimpleGraph.mem_neighborFinset]
+  apply bipartition_signSwitch_adjMatrix_eigen_sub_of_card D A B hAB hpart s
+    diagCard diagSame crossCard crossSame hsign
+  · intro x hx
+    rw [hrow a x]
+    exact hAAcard x ((ConnectedComponent.mem_supp_iff a x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow a x]
+    exact hAAsame x ((ConnectedComponent.mem_supp_iff a x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow b x]
+    exact hABcard x ((ConnectedComponent.mem_supp_iff a x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow b x]
+    exact hABsame x ((ConnectedComponent.mem_supp_iff a x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow b x]
+    exact hBBcard x ((ConnectedComponent.mem_supp_iff b x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow b x]
+    exact hBBsame x ((ConnectedComponent.mem_supp_iff b x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow a x]
+    exact hBAcard x ((ConnectedComponent.mem_supp_iff b x).mpr
+      (Finset.mem_filter.mp hx).2)
+  · intro x hx
+    rw [hrow a x]
+    exact hBAsame x ((ConnectedComponent.mem_supp_iff b x).mpr
+      (Finset.mem_filter.mp hx).2)
+
 end
 
 
 end Erdos85
 
 #print axioms Erdos85.bipartition_signSwitch_adjMatrix_eigen_sub_of_card
+#print axioms Erdos85.twoComponent_signSwitch_adjMatrix_eigen_sub_of_card
