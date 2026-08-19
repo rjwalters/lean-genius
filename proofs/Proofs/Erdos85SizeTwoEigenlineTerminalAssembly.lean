@@ -49,7 +49,7 @@ theorem false_of_sizeTwoEigenline_eight_of_disconnected_terminal
       G hfree hreg hcard c hc hconn s hs_in hs_out hsum hA_in hDs
   · rw [H.connected_iff_exists_forall_reachable] at hconn
     push_neg at hconn
-    have hsupp : c.supp.Nonempty := Set.ncard_pos.mp (by omega)
+    have hsupp : c.supp.Nonempty := (Set.ncard_pos).mp (by omega)
     obtain ⟨x, hx⟩ := hsupp
     let xs : c.supp := ⟨x, hx⟩
     obtain ⟨ys, hxys⟩ := hconn xs
