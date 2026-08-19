@@ -548,6 +548,35 @@ theorem muNegFive_sixTen_positiveLong_image_eq_complement_short
     apply Subtype.ext
     exact congrArg (fun z : c.supp ↦ z.1) hi
 
+/-- Transport an internal-matching cardinal through any injective
+parametrization of the selected subset. -/
+theorem matching_active_source_card_eq
+    {X I : Type*} [Fintype X] [Fintype I] [DecidableEq X] [DecidableEq I]
+    (f : Equiv.Perm X) (long : I → X) (hinj : Function.Injective long)
+    (L : Finset X) (himage : Finset.univ.image long = L) :
+    ((Finset.univ : Finset I).filter fun i ↦ ∃ j, f (long i) = long j).card =
+      (L.filter fun x ↦ f x ∈ L).card := by
+  classical
+  apply Finset.card_bij (fun i _ ↦ long i)
+  · intro i hi
+    obtain ⟨j, hj⟩ := (Finset.mem_filter.mp hi).2
+    apply Finset.mem_filter.mpr
+    constructor
+    · rw [← himage]
+      exact Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩
+    · rw [← himage]
+      exact Finset.mem_image.mpr ⟨j, Finset.mem_univ _, hj.symm⟩
+  · intro i hi j hj hij
+    exact hinj hij
+  · intro x hx
+    have hxL := (Finset.mem_filter.mp hx).1
+    have hfxL := (Finset.mem_filter.mp hx).2
+    rw [← himage] at hxL hfxL
+    obtain ⟨i, _, hi⟩ := Finset.mem_image.mp hxL
+    obtain ⟨j, _, hj⟩ := Finset.mem_image.mp hfxL
+    refine ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ⟨j, ?_⟩⟩, hi⟩
+    rw [hi, hj]
+
 end
 
 end Erdos85
@@ -559,3 +588,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_sizeTwo_sixTen_long_allTf_false_of_signed_active_two
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_long_sameParity_antipodal_rightUnique
 #print axioms Erdos85.muNegFive_sixTen_positiveLong_image_eq_complement_short
+#print axioms Erdos85.matching_active_source_card_eq
