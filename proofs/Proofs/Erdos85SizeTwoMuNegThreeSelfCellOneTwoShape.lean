@@ -85,9 +85,79 @@ theorem zmodEight_defect_diagonal_rowFive_iff_offset_one_three_four_five_seven
         j - i = 5 ∨ j - i = 7 := by simp [S]
   rw [← hmemT, heq, hmemS]
 
+/-- Quotient-native form of the row-five classification.  This is the form
+needed by the `(k,r) = (1,2)` cell: its diagonal quotient entry is
+`7 - r = 5`. -/
+theorem binarySquare_regular_sizeTwoPart_eight_diagonalFive_defectAdj_iff_offset_one_three_four_five_seven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a : (G.induce c.supp).ConnectedComponent)
+    (u : ZMod 8 → c.supp) (huinj : Function.Injective u)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (haa5 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a a = 5) :
+    ∀ i j,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (u j) ↔
+        j - i = 1 ∨ j - i = 3 ∨ j - i = 4 ∨
+          j - i = 5 ∨ j - i = 7 := by
+  classical
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  have hHdegree : ∀ z : c.supp, H.degree z = 2 := by
+    intro z
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2) hc z
+  have hcomm : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm
+      G (secondOrderDefectGraph G) hglobal c).symm
+  have hua (i : ZMod 8) : u i ∈ a.supp := by
+    rw [← hurange]
+    exact ⟨i, rfl⟩
+  have hrow : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        K.Adj (u i) (u j)).card = 5 := by
+    intro i
+    let T := (Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      K.Adj (u i) (u j)
+    let B := componentNeighborFinset K H a (u i)
+    have himage : T.image u = B := by
+      ext z
+      simp only [T, Finset.mem_image, Finset.mem_filter, Finset.mem_univ,
+        true_and, B, componentNeighborFinset]
+      constructor
+      · rintro ⟨j, hj, rfl⟩
+        exact ⟨(K.mem_neighborFinset _ _).mpr hj,
+          (ConnectedComponent.mem_supp_iff a (u j)).mp (hua j)⟩
+      · rintro ⟨hzK, hza⟩
+        have hzA : z ∈ a.supp :=
+          (ConnectedComponent.mem_supp_iff a z).mpr hza
+        rw [← hurange] at hzA
+        obtain ⟨j, rfl⟩ := hzA
+        exact ⟨j, (K.mem_neighborFinset _ _).mp hzK, rfl⟩
+    change T.card = 5
+    rw [← Finset.card_image_of_injective T huinj, himage]
+    rw [← componentQuotientMatrix_apply_eq K H 2 hHdegree hcomm a a (hua i)]
+    exact haa5
+  exact zmodEight_defect_diagonal_rowFive_iff_offset_one_three_four_five_seven
+    G hfree c u huinj hu hrow
+
 end
 
 
 end Erdos85
 
 #print axioms Erdos85.zmodEight_defect_diagonal_rowFive_iff_offset_one_three_four_five_seven
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalFive_defectAdj_iff_offset_one_three_four_five_seven
