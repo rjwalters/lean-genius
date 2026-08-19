@@ -1,14 +1,13 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.2 — 2026-08-18 (resync complete: statuses are integration-built).**
+**Version 2.3 — 2026-08-19 (size-two eigenline split sharpened).**
 
-As of v2.2, `PROVEN` means **green on the cold build of `erdos85/integration`**
-(tip `e304275e85`, 1,645/1,649 modules; audit logs in
-`erdos85-cayley-sidon/integ_capstone_audit.log`). Three modules fail there and
-are owned for post-pause fixes: `Erdos85CyclicCorrelation` (whnf timeout,
-sol-2), `Erdos85OrderFortyNineSevenHighT0CubeCnfSatisfaction` (v4.31 drift,
-sol-1), `Erdos85OrderSixtyFourTenSixOutsideEncodingAudit` (unbounded
-native_decide, killed at 3h, sol-2). None is in any capstone closure.
+As of v2.3, `PROVEN` means **green on a cold build of `erdos85/integration`**.
+The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
+`erdos85-cayley-sidon/integ_capstone_audit.log`). Its three named failures
+have since been repaired and banked; 32 dead importers of deleted roots were
+removed. Cold sweep #3 is running at the v2.3 bump, with one known live drift
+candidate (`Erdos85SquareOrderResidualFourthMoment`) and no capstone failure.
 
 This is the single authoritative outline. It supersedes the four divergent v1
 copies, archived unchanged beside it as `FINAL_PROOF_OUTLINE_v1a.md` (sol-1
@@ -19,7 +18,7 @@ nothing in them is the map any more.
 
 Rules of this document:
 
-- It lives on `main` at this path. There is exactly one copy. Per-branch
+- It lives on `erdos85/integration` at this path. There is exactly one copy. Per-branch
   copies are frozen; do not edit them.
 - It is a critical-path map, not a ledger. A theorem earns a line here only if
   it changes the status of a node below. Everything else is recorded in the
@@ -31,8 +30,8 @@ Rules of this document:
   candidate statement).
 - Version bumps: patch (2.0 → 2.1) when a node's status changes; minor
   (2 → 3) when the tree's shape changes. Every bump appends to the change
-  log at the end. Edits go through the editor (steward) until the operator
-  reassigns; agents post the delta and the theorem name in the room.
+  log at the end. The room is self-directed: any agent may edit, then posts
+  the delta and theorem names for a red-team window.
 - The document must stay short enough for the operator to read in one
   sitting. If it does not, that is the defect to fix first.
 
@@ -140,11 +139,31 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     alternating vector `s` with `Bs = 0`, hence `Ds = (q−5)s`. The exterior
     grid model (`q×q`, two holes per row/column, `q(q−2)` cells), the
     row/column-hit laws, the per-cell `D` law and the K-law `K·Hᵀ = H·Kᵀ`
-    are all proved by q-generic arguments; the shape census, enumeration and
-    certificates are order-64. Status: `PROVEN-AT-64 CERT`, integration-built
-    (standard axioms + the named `native_decide`/LRAT family, no `sorryAx`);
-    `GAP` for `k ≥ 4`. A sub-case of NONBIP-MIXED, not a decomposition of it; the
-    first q-generic statement strictly beneath A-REG-NONBIP.
+    are all proved by q-generic arguments. In the all-triangle sector, the
+    graph-to-grid classification is now q-generic and `PROVEN`:
+    `eigenline_hole_reflectionCirculant` forces the two holes to be the
+    reflection-circulant pair `{a, -1-a}`. Two upstream general-q sublemmas
+    remain open: the sector-refined classification when triangle-free
+    H-edges are present, and normalization of an arbitrary component cycle
+    to the standard `C_{2q}` coordinates (both are available only at q=8).
+    From any classified grid, `sizeTwoCyclicFullPermutationCode_of_grid`
+    extracts the reciprocal partial-permutation code with the full
+    cross-agreement law.
+
+    **Refutation GAP — `BinarySizeTwoCyclicPackingBound`.** The precise
+    candidate says that for `q = 2^k`, `k ≥ 3`, and
+    `a ∉ {0,-1}`, even the reduced same-difference reciprocal code is empty
+    (`SizeTwoCyclicPackingExclusion`). The graph-facing consumer is
+    `false_of_sizeTwoCyclicPackingExclusion`. Computational evidence is
+    `EXTERNAL`: the direct Boolean CNF probe finds the reduced code UNSAT at
+    q=6 and q=8 (all admissible hole pairs), without Loopless; q=4 is SAT.
+    At q=8, three difference fibers `{0,2,4}` already suffice for `a=1`,
+    whereas one fiber and the tested two-fiber restrictions are SAT. This
+    identifies a multi-fiber reciprocity mechanism but is not a proof for
+    any q and does not close the general binary GAP. The old q=8 shape
+    census/LRAT route remains `PROVEN-AT-64 CERT` for its stated μ=3 case.
+    This is a sub-case of NONBIP-MIXED, not a decomposition of it, and is the
+    first q-generic candidate strictly beneath A-REG-NONBIP.
   - size-two parts with `μ ∈ {−1,−3,−5}` or no alternating eigenline;
     parts of size `≥ 3` — `GAP`. Best current reduction (18 Aug, order-64):
     every nonprincipal internal mode either transports to the exterior or
@@ -191,7 +210,10 @@ C-TO-SQUARE`. They stay in the ledger.
         └── all-non-bipartite partitions              [GAP A-REG-NONBIP]
             ├── connected [q]                         [GAP]
             └── mixed r ≥ 2                           [GAP]
-                ├── SIZE-TWO-EIGENLINE(q)             [PROVEN-AT-64 CERT; GAP k ≥ 4]
+                ├── SIZE-TWO-EIGENLINE(q)
+                │   ├── all-triangle graph → circulant grid [PROVEN, general q]
+                │   ├── sector refinement / C_2q normalization [GAP general q]
+                │   └── BinarySizeTwoCyclicPackingBound [GAP; EXTERNAL q=6,8]
                 └── other parts / other μ             [GAP]
             (q = 8 instances: see A.5.2; not the path)
 Branch B (parked): B-EXIST [GAP] ∧ B-NONEXIST [AXIOM] ⇒ B-COFINAL [AXIOM]
@@ -217,7 +239,9 @@ Does not count (goes to the ledger, not here):
 
 ## G. Working rules (operator, 2026-08-18)
 
-1. One outline, on `main`, versioned as above; the editor stewards edits.
+1. One outline, on `erdos85/integration`, versioned as above. The room is
+   self-directed; every edit gets a version bump, changelog entry, and
+   red-team window.
 2. Before taking a lane, name its node in §A–§B. If the node is in A.5.2 and
    the lane is an enumeration or certificate, it needs an operator go.
    Goal #24's certificate pause stands as written; the μ=3 certificates were
@@ -232,6 +256,16 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.3** (2026-08-19, sol-2; awaiting room red-team): sharpened
+  SIZE-TWO-EIGENLINE(q) into its graph-classification and refutation halves.
+  Recorded the general-q all-triangle classification
+  `eigenline_hole_reflectionCirculant`, the open sector-refinement and
+  `C_{2q}` coordinate-normalization sublemmas, and the precise refutation
+  conjecture `BinarySizeTwoCyclicPackingBound` with consumer
+  `false_of_sizeTwoCyclicPackingExclusion`. Updated probe evidence: reduced
+  same-difference reciprocal codes are EXTERNAL-UNSAT at q=6 and q=8
+  without Loopless (q=4 SAT); q=8 has a three-fiber UNSAT core. Updated the
+  outline-edit rule to the operator's self-directed-room policy.
 - **2.2** (2026-08-18, editor): resync complete. Twelve branches merged to
   `erdos85/integration`; cold build 1,645/1,649 green; all four capstones
   verified there (three on standard axioms; μ=3 on standard + named
