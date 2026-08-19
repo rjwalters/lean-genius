@@ -164,6 +164,20 @@ theorem sizeTwoCyclicSelectedOrbitMultiplicity_choose_two_lower_allowedSupport
   rw [hid, sizeTwoCyclicSelectedOrbitMultiplicity_sum code hq1] at hcauchy
   exact hcauchy
 
+/-- Concrete consequence for the minimized q=8 three-fiber core: its
+combined collision mass is at least 144. -/
+theorem sizeTwoCyclicSelectedOrbitMultiplicity_choose_two_sum_ge_144
+    (code : SizeTwoCyclicFullPermutationCode 8 (1 : ZMod 8))
+    (T : Finset (sizeTwoAllowedDifference 8 (1 : ZMod 8)))
+    (hT : T.card = 3) :
+    144 ≤ ∑ e : SizeTwoCyclicAbsoluteGridEdge 8,
+      (sizeTwoCyclicSelectedOrbitMultiplicity code T e).choose 2 := by
+  have h :=
+    sizeTwoCyclicSelectedOrbitMultiplicity_choose_two_lower_allowedSupport
+      code (by decide) (by decide) T
+  norm_num [hT] at h
+  omega
+
 end
 
 end Erdos85
@@ -172,3 +186,4 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicSelectedOrbitSupport_card_le
 #print axioms Erdos85.sizeTwoCyclicSelectedOrbitMultiplicity_cauchy_allowedSupport
 #print axioms Erdos85.sizeTwoCyclicSelectedOrbitMultiplicity_choose_two_lower_allowedSupport
+#print axioms Erdos85.sizeTwoCyclicSelectedOrbitMultiplicity_choose_two_sum_ge_144
