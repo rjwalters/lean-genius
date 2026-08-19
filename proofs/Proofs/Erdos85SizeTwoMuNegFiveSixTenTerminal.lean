@@ -183,9 +183,112 @@ theorem orderSixtyFour_sizeTwo_muNegFive_sixTen_long_internalMatching_card_two
   · simpa [Ap] using hp
   · simpa [Am] using hm
 
+/-- On an all-triangle-free long `C10`, the antipodal residual is a
+self-intertwiner of the cycle.  Hence it cannot have exactly four directed
+same-parity entries. -/
+theorem orderSixtyFour_sizeTwo_sixTen_long_allTf_antipodal_sameParity_ne_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (b : (G.induce c.supp).ConnectedComponent)
+    (hbtf : ∀ z : c.supp, z ∈ b.supp →
+      (triangleFreeEdgeGraph G).degree z.1 = 2)
+    (v : ZMod 10 → c.supp) (hvinj : Function.Injective v)
+    (hvrange : Set.range v = b.supp)
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    ((Finset.univ : Finset (ZMod 10 × ZMod 10)).filter fun p ↦
+      ZModTenEvenOffset (p.2 - p.1) ∧
+        (antipodalGraph G).Adj (v p.1).1 (v p.2).1).card ≠ 4 := by
+  classical
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let M : Matrix (ZMod 10) (ZMod 10) ℤ := fun i j ↦
+    (antipodalGraph G).adjMatrix ℤ (v i).1 (v j).1
+  have hvb : ∀ i, v i ∈ b.supp := by
+    intro i
+    rw [← hvrange]
+    exact ⟨i, rfl⟩
+  have hHdegree : ∀ z : c.supp, H.degree z = 2 := by
+    intro z
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2)
+        (by simpa [Nat.mul_comm] using hc) z
+  have htf_iff_H : ∀ i j,
+      (triangleFreeEdgeGraph G).Adj (v i).1 (v j).1 ↔ H.Adj (v i) (v j) := by
+    intro i j
+    constructor
+    · intro htf
+      exact ((mem_triangleFreeNeighbors G (v i).1 (v j).1).mp
+        ((triangleFreeEdgeGraph_adj G (v i).1 (v j).1).mp htf)).1
+    · intro hH
+      exact sizeTwo_triangleFreeEdge_of_degree_two G c hHdegree
+        (v i) (v j) hH (hbtf (v i) (hvb i))
+  have hentry : ∀ i j,
+      K.adjMatrix ℤ (v i) (v j) =
+        M i j + H.adjMatrix ℤ (v i) (v j) := by
+    intro i j
+    have hKiff : K.Adj (v i) (v j) ↔
+        (antipodalGraph G).Adj (v i).1 (v j).1 ∨ H.Adj (v i) (v j) := by
+      change ((antipodalGraph G) ⊔ triangleFreeEdgeGraph G).Adj
+        (v i).1 (v j).1 ↔ _
+      simpa only [SimpleGraph.sup_adj, htf_iff_H i j]
+    have hdisj : (antipodalGraph G).Adj (v i).1 (v j).1 →
+        ¬ H.Adj (v i) (v j) := by
+      intro hanti hH
+      exact ((mem_antipodalNeighbors G (v i).1 (v j).1).mp hanti).2.1 hH
+    simp only [SimpleGraph.adjMatrix_apply, M]
+    by_cases ha : (antipodalGraph G).Adj (v i).1 (v j).1
+    · rw [if_pos ((hKiff).2 (Or.inl ha)), if_pos ha, if_neg (hdisj ha)]
+      norm_num
+    · by_cases hH : H.Adj (v i) (v j)
+      · rw [if_pos ((hKiff).2 (Or.inr hH)), if_neg ha, if_pos hH]
+        norm_num
+      · rw [if_neg (fun hK ↦ (hKiff.mp hK).elim ha hH), if_neg ha, if_neg hH]
+        norm_num
+  obtain ⟨_hHdegree, _hKdegree, hcommHK⟩ :=
+    binarySquare_regular_sizeTwoPart_commuting_regular_blocks
+      G hfree (by omega) hreg hcard c hc
+  have hcommKH : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ := by
+    simpa [K, H] using hcommHK.symm
+  have hvpair : ∀ z : ZMod 10, v (z - 1) ≠ v (z + 1) := by
+    intro z heq
+    have hz : z - 1 = z + 1 := hvinj heq
+    exact (by decide : (2 : ZMod 10) ≠ 0) (by
+      calc
+        (2 : ZMod 10) = (z + 1) - (z - 1) := by ring
+        _ = 0 := by rw [← hz]; simp)
+  have hinterK := entry_cycleIntertwine_of_adjMatrix_comm K H v v
+    (1 : ZMod 10) (1 : ZMod 10) hcommKH hv hv hvpair hvpair
+  have hinterH := entry_cycleIntertwine_of_adjMatrix_comm H H v v
+    (1 : ZMod 10) (1 : ZMod 10) rfl hv hv hvpair hvpair
+  have hinter : ∀ i j,
+      M (i - 1) j + M (i + 1) j = M i (j + 1) + M i (j - 1) := by
+    intro i j
+    have hK := hinterK i j
+    have hH := hinterH i j
+    rw [hentry, hentry, hentry, hentry] at hK
+    linear_combination hK - hH
+  have hdiag : ∀ z, M z z = 0 := by
+    intro z
+    simp [M, SimpleGraph.adjMatrix_apply]
+  have hne := zmodTen_selfIntertwiner_sameParity_directed_card_ne_four
+    M hdiag hinter
+  simpa [M, SimpleGraph.adjMatrix_apply] using hne
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.involution_complement_internal_card
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_sixTen_long_internalMatching_card_two
+#print axioms Erdos85.orderSixtyFour_sizeTwo_sixTen_long_allTf_antipodal_sameParity_ne_four
