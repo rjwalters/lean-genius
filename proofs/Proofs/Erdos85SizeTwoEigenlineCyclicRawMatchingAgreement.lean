@@ -1,4 +1,6 @@
 import Proofs.Erdos85SizeTwoEigenlineCyclicMatchingSecondMomentCensus
+import Proofs.Erdos85SizeTwoEigenlineCyclicOrderedPairSecondMoment
+import Proofs.Erdos85SizeTwoEigenlineCyclicTwoFiberSubsystem
 
 /-!
 # Matching/agreement equivalence for a raw cyclic permutation family
@@ -221,9 +223,90 @@ theorem sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum
       (Finset.univ : Finset (ZMod q))
       (Finset.univ : Finset (SizeTwoCyclicAbsoluteGridEdge q)))
 
+theorem two_mul_sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (t : sizeTwoAllowedDifference q a) :
+    2 * (∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+      (sizeTwoCyclicRawMatchingOrbitMultiplicity P t e).choose 2) =
+      ∑ p ∈ (Finset.univ : Finset (ZMod q)).offDiag,
+        (sizeTwoCyclicRawSourceMatching P (p.1, t) ∩
+          sizeTwoCyclicRawSourceMatching P (p.2, t)).card := by
+  let Inc : ZMod q → SizeTwoCyclicAbsoluteGridEdge q → Prop :=
+    fun x e => e ∈ sizeTwoCyclicRawSourceMatching P (x, t)
+  calc
+    _ = ∑ p ∈ (Finset.univ : Finset (ZMod q)).offDiag,
+        ((Finset.univ : Finset (SizeTwoCyclicAbsoluteGridEdge q)).filter
+          fun e => e ∈ sizeTwoCyclicRawSourceMatching P (p.1, t) ∧
+            e ∈ sizeTwoCyclicRawSourceMatching P (p.2, t)).card := by
+      simpa [Inc, Erdos101OQ02ST.pointsOn,
+        sizeTwoCyclicRawMatchingOrbitMultiplicity] using
+        (two_mul_sum_choose_two_pointsOn_eq_sum_offDiag_commonTargets Inc
+          (Finset.univ : Finset (ZMod q))
+          (Finset.univ : Finset (SizeTwoCyclicAbsoluteGridEdge q)))
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro p hp
+      congr 1
+      ext e
+      simp
+
+/-- Exact raw autocorrelation identity: the ordered shifted-agreement mass
+is twice the target-multiplicity collision mass. -/
+theorem two_mul_sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum_eq_agreement
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (t : sizeTwoAllowedDifference q a) :
+    2 * (∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+      (sizeTwoCyclicRawMatchingOrbitMultiplicity P t e).choose 2) =
+      ∑ xd : SizeTwoCyclicBaseNonzeroShift q,
+        Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+          q a P xd.1 xd.2.1 t t) := by
+  calc
+    _ = ∑ p ∈ (Finset.univ : Finset (ZMod q)).offDiag,
+        (sizeTwoCyclicRawSourceMatching P (p.1, t) ∩
+          sizeTwoCyclicRawSourceMatching P (p.2, t)).card :=
+      two_mul_sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum P t
+    _ = ∑ p ∈ (Finset.univ : Finset (ZMod q)).offDiag,
+        Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+          q a P p.1 (p.2 - p.1) t t) := by
+      apply Finset.sum_congr rfl
+      intro p hp
+      exact sizeTwoCyclicRawSourceMatching_inter_card_eq_agreement
+        P (p.1, t) (p.2, t)
+    _ = ∑ p : SizeTwoCyclicDistinctBasePair q,
+        Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+          q a P p.1.1 (p.1.2 - p.1.1) t t) := by
+      rw [Finset.sum_subtype
+        ((Finset.univ : Finset (ZMod q)).offDiag)
+        (p := fun p : ZMod q × ZMod q => p.1 ≠ p.2)
+        (fun p => by simp [Finset.mem_offDiag])]
+    _ = _ := sizeTwoCyclicAgreement_sum_distinctPairs_eq_sum_shifts P t
+
+/-- A reduced same-difference agreement law is exactly an upper bound on the
+raw one-fiber matching collision moment. -/
+theorem two_mul_sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum_le
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (data : SizeTwoCyclicRoutingData q a)
+    (t : sizeTwoAllowedDifference q a)
+    (hagreement : data.AgreementAt t) :
+    2 * (∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+      (sizeTwoCyclicRawMatchingOrbitMultiplicity data.perm t e).choose 2) ≤
+      q * (q - 1) := by
+  rw [two_mul_sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum_eq_agreement]
+  calc
+    _ ≤ ∑ _xd : SizeTwoCyclicBaseNonzeroShift q, 1 := by
+      apply Finset.sum_le_sum
+      intro xd hxd
+      exact hagreement xd.1 xd.2.1 xd.2.2
+    _ = q * (q - 1) := by
+      simp [Fintype.card_congr (Equiv.Set.univ _)]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCyclicRawSourceMatching_inter_card_eq_agreement
 #print axioms Erdos85.sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum
+#print axioms Erdos85.two_mul_sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum_eq_agreement
+#print axioms Erdos85.two_mul_sizeTwoCyclicRawMatchingOrbitMultiplicity_choose_two_sum_le
