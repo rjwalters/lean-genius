@@ -187,6 +187,177 @@ theorem binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
       simp [N, SimpleGraph.adjMatrix_apply, hK]
     exact ⟨hcycle (-1) (Or.inl rfl), hcycle 1 (Or.inr rfl)⟩
 
+set_option maxHeartbeats 1200000 in
+/-- Graph-facing shared-parameter sector grid for the normalized `mu=-3`
+C8+C8 branch. -/
+theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_parameter_grid
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-3 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    ∃ k r : ℕ, k ≤ 2 ∧ 2 ≤ r ∧ r ≤ 7 ∧
+      ((C8CycleEntriesZero N₁ ∧ C8CycleEntriesZero N₂ ∧ 5 ≤ r + k) ∨
+        ((((C8CycleEntriesZero N₁ ∧ C8CycleEntriesOne N₂) ∨
+            (C8CycleEntriesOne N₁ ∧ C8CycleEntriesZero N₂)) ∧
+              r + k = 5) ∨
+          (C8CycleEntriesOne N₁ ∧ C8CycleEntriesOne N₂ ∧ r + k ≤ 5))) := by
+  classical
+  dsimp only
+  let Hc := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
+  obtain ⟨_ha8, _hb8, r, hr2, hr7, haa, _habq, _hbaq, hbb⟩ :=
+    orderSixtyFour_sizeTwo_muNegThree_distinctCycles_eightEight
+      G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+  obtain ⟨k, hk, hA, hB, _hcrossA, _hcrossB⟩ :=
+    orderSixtyFour_sizeTwo_muNegThree_eightEight_signedParameter
+      G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+  have hHdegree : ∀ z : c.supp, Hc.degree z = 2 := by
+    intro z
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2)
+        (by simpa [Nat.mul_comm] using hc) z
+  have hcommReal : K.adjMatrix ℝ * Hc.adjMatrix ℝ =
+      Hc.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm G
+      (secondOrderDefectGraph G) hglobal c).symm
+  have hurangeA : Set.range u = ↑A := by
+    rw [hurange]
+    ext x
+    simp [A]
+  have hvrangeB : Set.range v = ↑B := by
+    rw [hvrange]
+    ext x
+    simp [B]
+  have hu0A : u 0 ∈ A := by
+    change u 0 ∈ (↑A : Set c.supp)
+    rw [← hurangeA]
+    exact ⟨0, rfl⟩
+  have hv0B : v 0 ∈ B := by
+    change v 0 ∈ (↑B : Set c.supp)
+    rw [← hvrangeB]
+    exact ⟨0, rfl⟩
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  have hrow₁ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      N₁ 0 j = 1).card = 7 - r := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₁ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (u 0) (u j)) by
+      ext j; simp [N₁, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K A u huinj hurangeA (u 0)]
+    have hqcard : (componentNeighborFinset K Hc a (u 0)).card = 7 - r := by
+      rw [← componentQuotientMatrix_apply_eq K Hc 2 hHdegree hcommReal
+        a a (by simpa [A] using hu0A)]
+      exact haa
+    have heq : A.filter (fun y ↦ K.Adj (u 0) y) =
+        componentNeighborFinset K Hc a (u 0) := by
+      ext y
+      simp [A, Hc, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq]
+    exact hqcard
+  have hrow₂ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      N₂ 0 j = 1).card = 7 - r := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₂ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (v 0) (v j)) by
+      ext j; simp [N₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K B v hvinj hvrangeB (v 0)]
+    have hqcard : (componentNeighborFinset K Hc b (v 0)).card = 7 - r := by
+      rw [← componentQuotientMatrix_apply_eq K Hc 2 hHdegree hcommReal
+        b b (by simpa [B] using hv0B)]
+      exact hbb
+    have heq : B.filter (fun y ↦ K.Adj (v 0) y) =
+        componentNeighborFinset K Hc b (v 0) := by
+      ext y
+      simp [B, Hc, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq]
+    exact hqcard
+  have hsame₁ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      s (u j).1 = s (u 0).1 ∧ N₁ 0 j = 1).card = k := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j).1 = s (u 0).1 ∧ N₁ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (u j).1 = s (u 0).1 ∧ K.Adj (u 0) (u j)) by
+      ext j; simp [N₁, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support K A u huinj hurangeA
+      (fun x : c.supp ↦ s x.1) 0]
+    exact hA (u 0) hu0A
+  have hsame₂ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      s (v j).1 = s (v 0).1 ∧ N₂ 0 j = 1).card = k := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (v 0).1 ∧ N₂ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (v j).1 = s (v 0).1 ∧ K.Adj (v 0) (v j)) by
+      ext j; simp [N₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support K B v hvinj hvrangeB
+      (fun x : c.supp ↦ s x.1) 0]
+    exact hB (v 0) hv0B
+  have hAfull := sizeTwo_internal_full_sum_of_filtered G c s hs_out hH
+  have flip_of_coordinates
+      (w : ZMod 8 → c.supp)
+      (hw : ∀ z, Hc.neighborFinset (w z) = {w (z - 1), w (z + 1)}) :
+      ∀ i, s (w (i + 1)).1 = -s (w i).1 := by
+    intro i
+    have hadj : Hc.Adj (w i) (w (i + 1)) := by
+      rw [← Hc.mem_neighborFinset, hw]
+      simp
+    have hmem : (w (i + 1)).1 ∈ componentNeighborFinset G
+        (secondOrderDefectGraph G) c (w i).1 := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset _ _).mpr hadj, (w (i + 1)).2⟩
+    exact (internal_alternation G hfree (by omega) hreg hcard c hc s
+      hs_in hs_out hAfull (w i).2).2 _ hmem
+  have hsector₁ : C8CycleEntriesZero N₁ ∨ C8CycleEntriesOne N₁ := by
+    simpa [N₁, K] using
+      (binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
+        G hfree hreg hcard c hc a u hurange hu)
+  have hsector₂ : C8CycleEntriesZero N₂ ∨ C8CycleEntriesOne N₂ := by
+    simpa [N₂, K] using
+      (binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
+        G hfree hreg hcard c hc b v hvrange hv)
+  refine ⟨k, r, hk, hr2, hr7, ?_⟩
+  exact alternating_C8_twoShore_sector_parameter_grid N₁ N₂
+    (fun i ↦ s (u i).1) (fun i ↦ s (v i).1) k r
+      (fun i ↦ hs_in _ (u i).2) (fun i ↦ hs_in _ (v i).2)
+      (flip_of_coordinates u hu) (flip_of_coordinates v hv)
+      hrow₁ hrow₂ hsame₁ hsame₂ hsector₁ hsector₂
+
 end
 
 
@@ -194,3 +365,4 @@ end Erdos85
 
 #print axioms Erdos85.alternating_C8_twoShore_sector_parameter_grid
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_parameter_grid
