@@ -39,6 +39,15 @@ theorem eightEightHighOwnersIntersect_iff_sym2 (e f : Fin 64) :
   revert e f
   native_decide
 
+theorem eightEightHighOwnerCompatible_iff_endpoints (e f : Fin 64) :
+    eightEightHighOwnerCompatible e f = true ↔
+      e ≠ f ∧ ∀ u v : Fin 16,
+        u ∈ eightEightHighOwnerSym2 e →
+        v ∈ eightEightHighOwnerSym2 f →
+        eightEightHighCycleAdj u v = false := by
+  revert e f
+  native_decide
+
 noncomputable def highOwnerOutsideEquiv
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -413,8 +422,86 @@ theorem outsideHighOwnerCoordinates_intersecting_no_common
   · simpa [out, a] using hek
   · simpa [out, b] using hfk
 
+/-- Every ambient adjacency transported to enabled high owners survives the
+generator's endpoint-compatibility filter. -/
+theorem outsideHighOwnerCoordinates_compatible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (hfixed : ∀ e : Fin 64,
+      eightEightHighActiveVariable? e = none →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (hsub : ∀ a b, R.Adj a b →
+      eightEightHighCandidatePair a b = true ∨
+        eightEightHighCandidatePair b a = true)
+    (modelIso : exteriorPairGraph G c ≃g R)
+    (hcycle : ∀ x y : c.supp,
+      G.Adj x.1 y.1 ↔
+        eightEightHighCycleAdj (modelIso x).val (modelIso y).val = true)
+    (e f : EightEightHighEnabledOwner (eightEightHighCoordinateActive R))
+    (hef : G.Adj
+      ((highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+        hfixed hsub modelIso) e).1
+      ((highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+        hfixed hsub modelIso) f).1) :
+    eightEightHighOwnerCompatible e.1 f.1 = true := by
+  let out := highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+    hfixed hsub modelIso
+  let a := out e
+  let b := out f
+  have hab : G.Adj a.1 b.1 := by
+    simpa [a, b, out] using hef
+  apply (eightEightHighOwnerCompatible_iff_endpoints e.1 f.1).mpr
+  refine ⟨?_, ?_⟩
+  · intro h
+    have hef' : e = f := Subtype.ext h
+    subst f
+    exact G.loopless.irrefl a.1 hab
+  · intro u v hue hvf
+    let us : c.supp := modelIso.symm u
+    let vs : c.supp := modelIso.symm v
+    have hua : us ∈
+        (outsidePair G (secondOrderDefectGraph G) c hcard a).toFinset := by
+      apply (mem_outsidePair_toFinset_iff_adj
+        G (secondOrderDefectGraph G) c hcard a us).mpr
+      have hincu := (outsideHighOwnerCoordinates_incident_iff
+        G c hcard hinc hqcard hRedges R hfixed hsub modelIso e u).mpr
+          ((mem_eightEightHighOwnerSym2_iff e.1 u).mp
+            (Sym2.mem_toFinset.mpr hue))
+      simpa [a, out, us] using hincu
+    have hvb : vs ∈
+        (outsidePair G (secondOrderDefectGraph G) c hcard b).toFinset := by
+      apply (mem_outsidePair_toFinset_iff_adj
+        G (secondOrderDefectGraph G) c hcard b vs).mpr
+      have hincv := (outsideHighOwnerCoordinates_incident_iff
+        G c hcard hinc hqcard hRedges R hfixed hsub modelIso f v).mpr
+          ((mem_eightEightHighOwnerSym2_iff f.1 v).mp
+            (Sym2.mem_toFinset.mpr hvf))
+      simpa [b, out, vs] using hincv
+    have hnot := adjacent_outsidePair_endpoint_not_adj
+      G hfree c hcard a b hab us vs hua hvb
+    cases hcv : eightEightHighCycleAdj u v with
+    | false => rfl
+    | true =>
+      exfalso
+      apply hnot
+      apply (hcycle us vs).mpr
+      simpa [us, vs] using hcv
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.outsidePair_map_highModelIso_eq_ownerSym2
+#print axioms Erdos85.outsideHighOwnerCoordinates_compatible
