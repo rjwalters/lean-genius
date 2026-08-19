@@ -179,6 +179,50 @@ theorem binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_degree_
       G hfree (by omega) hreg hcard c hc s hs_in hs_out hA_in hDs a htf
         x ⟨y, hyc⟩ hx hxy
 
+/-- Global sign-sector package for an all-triangle-free order-64 size-two
+component: each sign class has eight vertices, and the antipodal graph is
+degree five with no edges between the two classes or leaving the component.
+Thus its restriction to the component is the disjoint union of two
+5-regular graphs on eight vertices. -/
+theorem binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_signSector_decomposition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      3 * s x)
+    (hallTf : ∀ x : c.supp,
+      (triangleFreeEdgeGraph G).degree x.1 = 2) :
+    (Finset.univ.filter fun x => x ∈ c.supp ∧ s x = 1).card = 8 ∧
+      (Finset.univ.filter fun x => x ∈ c.supp ∧ s x = -1).card = 8 ∧
+      ∀ x : c.supp,
+        (antipodalGraph G).degree x.1 = 5 ∧
+          ∀ y, (antipodalGraph G).Adj x.1 y →
+            y ∈ c.supp ∧ s y = s x.1 := by
+  have hcards := signClass_card_eq G c hc s hs_in hs_out hsum
+  refine ⟨hcards.1, hcards.2, ?_⟩
+  intro x
+  let H := G.induce c.supp
+  let a : H.ConnectedComponent := H.connectedComponentMk x
+  have hx : x ∈ a.supp := (ConnectedComponent.mem_supp_iff a x).mpr rfl
+  exact binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_degree_five_sign_support
+    G hfree hreg hcard c hc s hs_in hs_out hA_in hDs a
+      (fun z _ => hallTf z) x hx
+
 end
 
 end Erdos85
@@ -186,3 +230,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_allTriangleFree_nonambient_defect_preserves_sign
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_allTriangleFree_antipodal_preserves_sign
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_degree_five_sign_support
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_allTriangleFree_antipodal_signSector_decomposition
