@@ -79,8 +79,32 @@ theorem sizeTwoDisplacementEdgeCount_add_shift_le
   rw [hA, hB, hI]
   omega
 
+/-- Eliminating the collision variables gives a pure autocorrelation-overload
+inequality for the one-edge displacement tensor. -/
+theorem sizeTwoDisplacementEdgeCount_autocorrelation_overload_le
+    (q : ℕ) [NeZero q] (a : ZMod q)
+    (C : SimpleGraph (sizeTwoCyclicExteriorCell q a)) [DecidableRel C.Adj]
+    (hfree : ¬ containsC4 (sizeTwoCyclicExteriorCell q a) C)
+    (t : sizeTwoAllowedDifference q a) (d : ZMod q) (hd : d ≠ 0) :
+    (∑ s : sizeTwoAllowedDifference q a, ∑ r : ZMod q,
+      (sizeTwoDisplacementEdgeCount q a C t s r +
+        sizeTwoDisplacementEdgeCount q a C t s (r - d) - q)) ≤ q := by
+  calc
+    _ ≤ ∑ s : sizeTwoAllowedDifference q a, ∑ r : ZMod q,
+        sizeTwoDisplacementCollisionCount q a C t d s r := by
+      apply Finset.sum_le_sum
+      intro s _
+      apply Finset.sum_le_sum
+      intro r _
+      have h := sizeTwoDisplacementEdgeCount_add_shift_le
+        q a C t s d r
+      omega
+    _ ≤ q := sizeTwoDisplacementCollisionCount_sum_le
+      q a C hfree t d hd
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.sizeTwoDisplacementEdgeCount_add_shift_le
+#print axioms Erdos85.sizeTwoDisplacementEdgeCount_autocorrelation_overload_le
