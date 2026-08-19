@@ -215,6 +215,21 @@ theorem binarySquare_regular_sizeTwoPart_eight_diagonalFive_no_internal_exterior
   · exact hext.2.1 ((hD i j).mpr
       (Or.inr (Or.inr (Or.inr (Or.inr h7)))))
 
+/-- If a parametrized shore has no internal exterior-pair edge, every
+ambient vertex outside the defect component is adjacent to at most one
+coordinate of that shore. -/
+theorem no_internal_exteriorPair_outside_commonNeighbor_coordinate_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod 8 → c.supp) (huinj : Function.Injective u)
+    (hnone : ∀ i j, ¬ (exteriorPairGraph G c.supp).Adj (u i) (u j))
+    {i j : ZMod 8} {z : V} (hzout : z ∉ c.supp)
+    (hiz : G.Adj (u i).1 z) (hjz : G.Adj (u j).1 z) : i = j := by
+  by_contra hij
+  exact hnone i j ⟨fun h ↦ hij (huinj h),
+    z, hzout, hiz, hjz⟩
+
 end
 
 
@@ -223,3 +238,4 @@ end Erdos85
 #print axioms Erdos85.zmodEight_defect_diagonal_rowFive_iff_offset_one_three_four_five_seven
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalFive_defectAdj_iff_offset_one_three_four_five_seven
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalFive_no_internal_exteriorPair
+#print axioms Erdos85.no_internal_exteriorPair_outside_commonNeighbor_coordinate_eq
