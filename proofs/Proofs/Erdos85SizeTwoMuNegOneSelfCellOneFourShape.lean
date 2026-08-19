@@ -127,7 +127,7 @@ theorem zmodEight_rowsThree_cycleZero_four_sub_iff
   intro i j
   have hc := zmodEight_translated_row_card R i 3 (hcard i)
   have hk := zmodEight_rowThree_cycleZero_four_iff
-    (fun d ↦ R i (i + d)) hc (h0 i) (h1 i) (h2 i) (h4 i)
+    (fun d ↦ R i (i + d)) hc (by simpa using h0 i) (h1 i) (h2 i) (h4 i)
       (h6 i) (h7 i) (j - i)
   have hij : i + (j - i) = j := by ring
   simpa [hij] using hk
