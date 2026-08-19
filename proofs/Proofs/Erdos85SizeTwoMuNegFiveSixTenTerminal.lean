@@ -1,5 +1,8 @@
 import Proofs.Erdos85SizeTwoMuNegFiveSixTenLongSupport
 import Proofs.Erdos85ZModTenMixedSelfIntertwinerExclusion
+import Proofs.Erdos85SizeTwoMuNegThreeSixTenCrossColumnTypes
+import Proofs.Erdos85SizeTwoMuNegFiveSixTenMixedExclusion
+import Proofs.Erdos85SixTenNormalizedCoordinates
 
 /-! # Terminal `mu=-5`, `6+10` obstruction -/
 
@@ -548,6 +551,73 @@ theorem muNegFive_sixTen_positiveLong_image_eq_complement_short
     apply Subtype.ext
     exact congrArg (fun z : c.supp ↦ z.1) hi
 
+/-- The negative vertices in a parametrization of the long component are
+exactly the complement of the three negative short-cycle coordinates. -/
+theorem muNegFive_sixTen_negativeLong_image_eq_complement_short
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 6) (hb : b.supp.ncard = 10)
+    (coord : SizeTwoCycleGridCoordinates (G.induce c.supp) a.supp
+      (fun z ↦ s z.1) 3)
+    (v : ZMod 10 → c.supp) (hvrange : Set.range v = b.supp) :
+    let D := secondOrderDefectGraph G
+    let Xm := MuNegFiveNegativeShore D c s
+    let Im := {i : ZMod 10 // s (v i).1 = -1}
+    let longn : Im → Xm := fun i ↦ ⟨(v i.1).1, (v i.1).2, i.2⟩
+    let shortn : ZMod 3 → Xm := fun i ↦
+      ⟨(coord.nval i).1, (coord.nval i).2, (coord.n_mem_sign i).2⟩
+    Finset.univ.image longn = Finset.univ \ Finset.univ.image shortn := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Xm := MuNegFiveNegativeShore D c s
+  let Im := {i : ZMod 10 // s (v i).1 = -1}
+  let longn : Im → Xm := fun i ↦ ⟨(v i.1).1, (v i.1).2, i.2⟩
+  let shortn : ZMod 3 → Xm := fun i ↦
+    ⟨(coord.nval i).1, (coord.nval i).2, (coord.n_mem_sign i).2⟩
+  have hcomp := sixTen_internalComponent_complement G c (by omega) a b ha hb
+  ext x
+  simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_sdiff]
+  constructor
+  · rintro ⟨i, rfl⟩
+    rintro ⟨j, hj⟩
+    have hva : v i.1 ∈ a.supp := by
+      have hjc : coord.nval j = v i.1 := by
+        apply Subtype.ext
+        exact congrArg (fun z : Xm ↦ z.1) hj
+      rw [← hjc]
+      exact (coord.n_mem_sign j).1
+    have hvb : v i.1 ∈ b.supp := by
+      rw [← hvrange]
+      exact ⟨i.1, rfl⟩
+    have hab : a = b :=
+      ((ConnectedComponent.mem_supp_iff a _).mp hva).symm.trans
+        ((ConnectedComponent.mem_supp_iff b _).mp hvb)
+    rw [hab] at ha
+    omega
+  · intro hxshort
+    have hxa : (⟨x.1, x.2.1⟩ : c.supp) ∉ a.supp := by
+      intro hxa
+      obtain ⟨j, hj⟩ := coord.n_surjective
+        ⟨x.1, x.2.1⟩ hxa x.2.2
+      apply hxshort
+      refine ⟨j, ?_⟩
+      apply Subtype.ext
+      exact congrArg (fun z : c.supp ↦ z.1) hj
+    have hxb : (⟨x.1, x.2.1⟩ : c.supp) ∈ b.supp := (hcomp _).mp hxa
+    rw [← hvrange] at hxb
+    obtain ⟨i, hi⟩ := hxb
+    let ii : Im := ⟨i, by simpa [hi] using x.2.2⟩
+    refine ⟨ii, ?_⟩
+    apply Subtype.ext
+    exact congrArg (fun z : c.supp ↦ z.1) hi
+
 /-- Transport an internal-matching cardinal through any injective
 parametrization of the selected subset. -/
 theorem matching_active_source_card_eq
@@ -718,6 +788,183 @@ theorem orderSixtyFour_sizeTwo_muNegFive_sixTen_positive_active_card_two
   rw [hcardST]
   exact hsource
 
+/-- Negative-shore mirror of the active-row count. -/
+theorem orderSixtyFour_sizeTwo_muNegFive_sixTen_negative_active_card_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    [DecidableRel (MuNegFiveNeutralProjection G c s)]
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z, s y =
+        (-5 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (ha : a.supp.ncard = 6) (hb : b.supp.ncard = 10)
+    (coord : SizeTwoCycleGridCoordinates (G.induce c.supp) a.supp
+      (fun z ↦ s z.1) 3)
+    (v : ZMod 10 → c.supp) (hvinj : Function.Injective v)
+    (hvrange : Set.range v = b.supp)
+    (hsame : ∀ i j, ZModTenEvenOffset (j - i) ↔
+      s (v j).1 = s (v i).1) :
+    ((Finset.univ : Finset (ZMod 10)).filter fun i ↦
+      s (v i).1 = -1 ∧ ∃ j, ZModTenEvenOffset (j - i) ∧
+        (antipodalGraph G).Adj (v i).1 (v j).1).card = 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Xm := MuNegFiveNegativeShore D c s
+  let Im := {i : ZMod 10 // s (v i).1 = -1}
+  let longn : Im → Xm := fun i ↦ ⟨(v i.1).1, (v i.1).2, i.2⟩
+  let shortn : ZMod 3 → Xm := fun i ↦
+    ⟨(coord.nval i).1, (coord.nval i).2, (coord.n_mem_sign i).2⟩
+  let L : Finset Xm := Finset.univ \ Finset.univ.image shortn
+  obtain ⟨_fp, fm, _hfp, hfm, _hpcount, hmcount⟩ :=
+    orderSixtyFour_sizeTwo_muNegFive_sixTen_long_internalMatching_card_two
+      G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab ha hb coord
+  have himage : Finset.univ.image longn = L := by
+    simpa [D, Xm, Im, longn, shortn, L] using
+      muNegFive_sixTen_negativeLong_image_eq_complement_short
+        G c hc s a b ha hb coord v hvrange
+  have hlonginj : Function.Injective longn := by
+    intro i j hij
+    apply Subtype.ext
+    apply hvinj
+    apply Subtype.ext
+    exact congrArg (fun x : Xm ↦ x.1) hij
+  have hsource :
+      ((Finset.univ : Finset Im).filter fun i ↦
+        ∃ j, fm (longn i) = longn j).card = 2 := by
+    rw [matching_active_source_card_eq fm longn hlonginj L himage]
+    simpa [D, Xm, shortn, L] using hmcount
+  let S := (Finset.univ : Finset (ZMod 10)).filter fun i ↦
+    s (v i).1 = -1 ∧ ∃ j, ZModTenEvenOffset (j - i) ∧
+      (antipodalGraph G).Adj (v i).1 (v j).1
+  let T := (Finset.univ : Finset Im).filter fun i ↦
+    ∃ j, fm (longn i) = longn j
+  have hcardST : S.card = T.card := by
+    apply Finset.card_bij (fun i hi ↦
+      (⟨i, (Finset.mem_filter.mp hi).2.1⟩ : Im))
+    · intro i hi
+      have hi' := (Finset.mem_filter.mp hi).2
+      obtain ⟨j, hjeven, hjanti⟩ := hi'.2
+      let ii : Im := ⟨i, hi'.1⟩
+      have hjsign : s (v j).1 = -1 := (hsame i j).mp hjeven |>.trans hi'.1
+      let jj : Im := ⟨j, hjsign⟩
+      have hDef : D.Adj (v i).1 (v j).1 :=
+        (sizeTwo_equalSign_secondOrderDefect_iff_antipodal
+          G hfree hreg hcard c hc s hs_in hs_out hA_in (v i) (v j)
+            ((hsame i j).mp hjeven)).mpr hjanti
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, ⟨jj, ?_⟩⟩
+      exact (hfm (longn ii) (longn jj)).mp hDef
+    · intro i hi j hj hij
+      exact congrArg Subtype.val hij
+    · intro i hi
+      obtain ⟨j, hj⟩ := (Finset.mem_filter.mp hi).2
+      have hDef : D.Adj (v i.1).1 (v j.1).1 :=
+        (hfm (longn i) (longn j)).mpr hj
+      have hanti := (sizeTwo_equalSign_secondOrderDefect_iff_antipodal
+        G hfree hreg hcard c hc s hs_in hs_out hA_in (v i.1) (v j.1)
+          (by rw [i.2, j.2])).mp hDef
+      refine ⟨i.1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, i.2,
+        ⟨j.1, ?_, hanti⟩⟩, ?_⟩
+      · exact (hsame i.1 j.1).mpr (by rw [i.2, j.2])
+      · rfl
+  change S.card = 2
+  rw [hcardST]
+  exact hsource
+
+/-- The `mu=-5`, `C6+C10` internal-cycle stratum is impossible. -/
+theorem orderSixtyFour_sizeTwo_muNegFive_sixTen_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    [DecidableRel (MuNegFiveNeutralProjection G c s)]
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z, s y =
+        (-5 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (ha : a.supp.ncard = 6) (hb : b.supp.ncard = 10) : False := by
+  classical
+  let H := G.induce c.supp
+  have hdeg : ∀ x : c.supp, H.degree x = 2 := by
+    intro x
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2)
+        (by simpa [Nat.mul_comm] using hc) x
+  have hflip : ∀ ⦃x y : c.supp⦄, H.Adj x y → s x.1 = -s y.1 := by
+    intro x y hxy
+    have hymem : y.1 ∈ componentNeighborFinset G
+        (secondOrderDefectGraph G) c x.1 := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset _ _).mpr hxy,
+        (ConnectedComponent.mem_supp_iff c y.1).mp y.2⟩
+    have h := (internal_alternation G hfree (by omega) hreg hcard c hc s
+      hs_in hs_out hA_in x.2).2 y.1 hymem
+    omega
+  let t : c.supp → ℤ := fun z ↦ s z.1
+  obtain ⟨coord⟩ := exists_sizeTwoCycleGridCoordinates H hdeg 3
+    (by omega) a (by omega) t (fun z _ ↦ hs_in z.1 z.2) (by
+      intro x y hxy
+      exact hflip hxy)
+  obtain ⟨cv⟩ := exists_normalizedTenShoreCoordinates
+    H hdeg b hb t (fun z _ ↦ hs_in z.1 z.2) (by
+      intro x y hxy
+      exact hflip hxy)
+  have hsame : ∀ i j, ZModTenEvenOffset (j - i) ↔
+      s (cv.u j).1 = s (cv.u i).1 := by
+    intro i j
+    exact (zmodTen_alternating_sign_eq_iff_evenOffset_sub
+      (fun z ↦ s (cv.u z).1) (fun z ↦ by
+        have hHedge : H.Adj (cv.u z) (cv.u (z + 1)) := by
+          rw [← H.mem_neighborFinset, cv.neighbor]
+          simp
+        have := hflip hHedge
+        omega) (fun z ↦ hs_in _ (cv.u z).2) i j).symm
+  have hbtf := orderSixtyFour_sizeTwo_muNegFive_sixTen_long_allTriangleFree
+    G hfree hreg hcard c hc s hs_out hs_in hA_in hH hD a b hab ha hb
+  have huniq :=
+    orderSixtyFour_sizeTwo_muNegFive_long_sameParity_antipodal_rightUnique
+      G hfree hreg hcard c hc s hs_out hs_in hH hD cv.u cv.injective
+        (fun i j hij ↦ (hsame i j).mp hij)
+  have hpos := orderSixtyFour_sizeTwo_muNegFive_sixTen_positive_active_card_two
+    G hfree hreg hcard c hc s hs_out hs_in hA_in hH hD a b hab ha hb
+      coord cv.u cv.injective cv.range hsame
+  have hneg := orderSixtyFour_sizeTwo_muNegFive_sixTen_negative_active_card_two
+    G hfree hreg hcard c hc s hs_out hs_in hA_in hH hD a b hab ha hb
+      coord cv.u cv.injective cv.range hsame
+  exact orderSixtyFour_sizeTwo_sixTen_long_allTf_false_of_signed_active_two
+    G hfree hreg hcard c hc s b hbtf cv.u cv.injective cv.range cv.neighbor
+      (fun i ↦ hs_in _ (cv.u i).2) huniq hpos hneg
+
 end
 
 end Erdos85
@@ -732,3 +979,6 @@ end Erdos85
 #print axioms Erdos85.matching_active_source_card_eq
 #print axioms Erdos85.sizeTwo_equalSign_secondOrderDefect_iff_antipodal
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_sixTen_positive_active_card_two
+#print axioms Erdos85.muNegFive_sixTen_negativeLong_image_eq_complement_short
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_sixTen_negative_active_card_two
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_sixTen_false
