@@ -32,6 +32,13 @@ theorem eightEightHighOwnerTarget_false_witness
   revert e v
   native_decide
 
+theorem eightEightHighOwnersIntersect_iff_sym2 (e f : Fin 64) :
+    eightEightHighOwnersIntersect e f = true ↔
+      ∃ v : Fin 16, v ∈ eightEightHighOwnerSym2 e ∧
+        v ∈ eightEightHighOwnerSym2 f := by
+  revert e f
+  native_decide
+
 noncomputable def highOwnerOutsideEquiv
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -321,6 +328,90 @@ theorem outsideHighOwnerCoordinates_internal_zero
   · intro i j hij
     fin_cases i <;> fin_cases j <;>
       simp_all [C4, SimpleGraph.Adj.symm]
+
+theorem outsideHighOwnerCoordinates_intersecting_no_common
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (hfixed : ∀ e : Fin 64,
+      eightEightHighActiveVariable? e = none →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (hsub : ∀ a b, R.Adj a b →
+      eightEightHighCandidatePair a b = true ∨
+        eightEightHighCandidatePair b a = true)
+    (modelIso : exteriorPairGraph G c ≃g R)
+    (e f : EightEightHighEnabledOwner (eightEightHighCoordinateActive R))
+    (hef : e.1 ≠ f.1)
+    (hintersect : eightEightHighOwnersIntersect e.1 f.1 = true)
+    (k : {x : V // x ∉ c.supp})
+    (hek : G.Adj
+      ((highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+        hfixed hsub modelIso) e).1 k.1)
+    (hfk : G.Adj
+      ((highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+        hfixed hsub modelIso) f).1 k.1) : False := by
+  let out := highOwnerOutsideEquiv G c hcard hinc hqcard hRedges R
+    hfixed hsub modelIso
+  let a := out e
+  let b := out f
+  have hab : a ≠ b := by
+    intro h
+    apply hef
+    exact congrArg Subtype.val (out.injective h)
+  obtain ⟨v, hve, hvf⟩ :=
+    (eightEightHighOwnersIntersect_iff_sym2 e.1 f.1).mp hintersect
+  let u : c.supp := modelIso.symm v
+  have hpaira := outsidePair_map_highModelIso_eq_ownerSym2
+    G c hcard hinc hqcard hRedges R hfixed hsub modelIso a
+  have hpairb := outsidePair_map_highModelIso_eq_ownerSym2
+    G c hcard hinc hqcard hRedges R hfixed hsub modelIso b
+  have hia : outsideHighOwnerIndexEquiv G c hcard hinc hqcard hRedges R
+      hfixed hsub modelIso a = e := by
+    change out.symm a = e
+    exact out.symm_apply_apply e
+  have hib : outsideHighOwnerIndexEquiv G c hcard hinc hqcard hRedges R
+      hfixed hsub modelIso b = f := by
+    change out.symm b = f
+    exact out.symm_apply_apply f
+  have hua : u ∈
+      (outsidePair G (secondOrderDefectGraph G) c hcard a).toFinset := by
+    rw [Sym2.mem_toFinset]
+    have hvmap : v ∈
+        (outsidePair G (secondOrderDefectGraph G) c hcard a).map modelIso := by
+      rw [hpaira, hia]
+      exact hve
+    rw [Sym2.mem_map] at hvmap
+    obtain ⟨w, hw, hwv⟩ := hvmap
+    have hwu : w = u := modelIso.injective
+      (hwv.trans (modelIso.apply_symm_apply v).symm)
+    simpa [hwu] using hw
+  have hub : u ∈
+      (outsidePair G (secondOrderDefectGraph G) c hcard b).toFinset := by
+    rw [Sym2.mem_toFinset]
+    have hvmap : v ∈
+        (outsidePair G (secondOrderDefectGraph G) c hcard b).map modelIso := by
+      rw [hpairb, hib]
+      exact hvf
+    rw [Sym2.mem_map] at hvmap
+    obtain ⟨w, hw, hwv⟩ := hvmap
+    have hwu : w = u := modelIso.injective
+      (hwv.trans (modelIso.apply_symm_apply v).symm)
+    simpa [hwu] using hw
+  apply outsidePair_intersects_no_exterior_common
+    G hfree c hcard a b k hab ⟨u, hua, hub⟩
+  · simpa [out, a] using hek
+  · simpa [out, b] using hfk
 
 end
 
