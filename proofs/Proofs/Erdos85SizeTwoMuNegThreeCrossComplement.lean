@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoMuNegThreeSameSignCycles
+import Proofs.Erdos85ThreeBiregularDecomposition
 
 /-! # The cross nondefect cubic relation at `mu = -3` -/
 
@@ -115,8 +116,66 @@ theorem orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeRegular
       (fun x ↦ ¬ D.Adj x.1 y.1)).card = 3
     omega
 
+/-- The cubic cross nondefect relation admits three pairwise-disjoint perfect
+matchings between the positive and negative sign shores. -/
+theorem orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeMatchings
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-3 : ℤ) * s z) :
+    let D := secondOrderDefectGraph G
+    let Xp := MuNegThreePositiveShore D c s
+    let Xm := MuNegThreeNegativeShore D c s
+    ∃ f g k : Xp ≃ Xm,
+      (∀ x, ¬ D.Adj x.1 (f x).1) ∧
+      (∀ x, ¬ D.Adj x.1 (g x).1) ∧
+      (∀ x, ¬ D.Adj x.1 (k x).1) ∧
+      (∀ x, f x ≠ g x) ∧ (∀ x, f x ≠ k x) ∧
+      ∀ x, g x ≠ k x := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Xp := MuNegThreePositiveShore D c s
+  let Xm := MuNegThreeNegativeShore D c s
+  let t : Xp → Finset Xm := fun x =>
+    Finset.univ.filter fun y => ¬ D.Adj x.1 y.1
+  have hcubic := orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeRegular
+    G hfree hreg hcard c hc s hs_out hs_in hH hD
+  have ht : HallsTheoremOQ01OQ03.IsBiregular t 3 := by
+    constructor
+    · intro x
+      exact hcubic.1 x
+    · intro y
+      simpa [t] using hcubic.2 y
+  obtain ⟨f, g, k, hf, hg, hk, hfg, hfk, hgk⟩ :=
+    exists_three_disjoint_equiv_of_three_biregular t ht
+  refine ⟨f, g, k, ?_, ?_, ?_, hfg, hfk, hgk⟩
+  · intro x
+    exact (Finset.mem_filter.mp (hf x)).2
+  · intro x
+    exact (Finset.mem_filter.mp (hg x)).2
+  · intro x
+    exact (Finset.mem_filter.mp (hk x)).2
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeRegular
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_cross_nondefect_threeMatchings
