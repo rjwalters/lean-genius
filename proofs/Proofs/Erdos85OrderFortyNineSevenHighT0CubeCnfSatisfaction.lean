@@ -1127,12 +1127,26 @@ theorem sevenHighT0CubeCommonWitnessStepVal_old_mem
       (.edge (min j w) (max j w)) a1.2.1 a1.2.2 hm1
   exact hm2
 
+def sevenHighT0CubeCollectCommonVal
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeCommonAccum :=
+  sevenHighT0CubeLows.foldl (fun input w =>
+    sevenHighT0CubeCommonWitnessStepVal adj i j w input) ([], acc)
+
 structure SevenHighT0CubeCollectedCommonMatch
     (i j : Nat) (ws : List Nat) (input : SevenHighT0CubeCommonAccum) where
   ids : List Nat
   lits_eq : input.1 = List.map (fun id : Nat => (id : Int)) ids
   aligned : List.Forall₂ (fun w id =>
     ((.common i j w), id) ∈ input.2.1.ids) ws ids
+
+theorem sevenHighT0CubeForall₂_append_singleton
+    {α β : Type*} {r : α → β → Prop} {xs : List α} {ys : List β}
+    (h : List.Forall₂ r xs ys) {x : α} {y : β} (hxy : r x y) :
+    List.Forall₂ r (xs ++ [x]) (ys ++ [y]) := by
+  induction h with
+  | nil => exact .cons hxy .nil
+  | cons hab hrest ih => exact .cons hab ih
 
 def sevenHighT0CubeCollectedCommonMatch_empty
     (i j : Nat) (acc : SevenHighT0CubeValState) :
@@ -1148,9 +1162,20 @@ def sevenHighT0CubeCollectedCommonMatch_push
     SevenHighT0CubeCollectedCommonMatch i j (ws ++ [w])
       (sevenHighT0CubeCommonWitnessStepVal adj i j w input) := by
   let out := sevenHighT0CubeCommonWitnessStepVal adj i j w input
-  obtain ⟨id, hlits, hnew⟩ :=
-    sevenHighT0CubeCommonWitnessStepVal_new_common adj i j w input
-  refine ⟨h.ids ++ [id], ?_, ?_⟩
+  let a0 := sevenHighT0CubeCommonIdVal adj i j w input.2
+  let a1 := sevenHighT0CubeEdgeIdVal adj i w a0.2
+  let a2 := sevenHighT0CubeEdgeIdVal adj j w a1.2
+  have hlits : out.1 = input.1 ++ [(a0.1 : Int)] := by rfl
+  have hm0 : (.common i j w, a0.1) ∈ a0.2.1.ids :=
+    (sevenHighT0CubeAtomIdVal_result adj (.common i j w)
+      input.2.1 input.2.2).1
+  have hm1 : (.common i j w, a0.1) ∈ a1.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min i w) (max i w)) a0.2.1 a0.2.2 hm0
+  have hnew : (.common i j w, a0.1) ∈ out.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min j w) (max j w)) a1.2.1 a1.2.2 hm1
+  refine ⟨h.ids ++ [a0.1], ?_, ?_⟩
   · rw [hlits, h.lits_eq]
     simp
   · have hold : List.Forall₂ (fun z oldId =>
@@ -1204,102 +1229,6 @@ theorem sevenHighT0CubeForall₂_exists_left_of_mem
       · rcases ih hy with ⟨x, hx, hr⟩
         exact ⟨x, by simp [hx], hr⟩
 
-theorem sevenHighT0CubeCollectCommonVal_bounded
-    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
-    (acc : SevenHighT0CubeValState)
-    (hacc : SevenHighT0CubeSemanticSound adj acc)
-    (hleft : ∀ w ∈ sevenHighT0CubeLows,
-      sevenHighT0CubeAtomValue adj (.common i j w) = true →
-        sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true)
-    (hright : ∀ w ∈ sevenHighT0CubeLows,
-      sevenHighT0CubeAtomValue adj (.common i j w) = true →
-        sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true) :
-    let common := sevenHighT0CubeCollectCommonVal adj i j acc
-    dimacsClauseBounded common.2.1.top common.1 := by
-  let common := sevenHighT0CubeCollectCommonVal adj i j acc
-  let hm := sevenHighT0CubeCollectCommonVal_match adj i j acc
-  have hs := sevenHighT0CubeCollectCommonVal_semanticSound adj i j
-    hacc hleft hright
-  intro lit hlit
-  rw [hm.lits_eq] at hlit
-  obtain ⟨id, hid, rfl⟩ := List.mem_map.mp hlit
-  obtain ⟨w, hw, hatom⟩ :=
-    sevenHighT0CubeForall₂_exists_left_of_mem hm.aligned hid
-  simpa using (hs.ids.id_bounds _ hatom).2
-
-theorem sevenHighT0CubeCollectCommonVal_positive
-    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
-    (acc : SevenHighT0CubeValState)
-    (hacc : SevenHighT0CubeSemanticSound adj acc)
-    (hleft : ∀ w ∈ sevenHighT0CubeLows,
-      sevenHighT0CubeAtomValue adj (.common i j w) = true →
-        sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true)
-    (hright : ∀ w ∈ sevenHighT0CubeLows,
-      sevenHighT0CubeAtomValue adj (.common i j w) = true →
-        sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true)
-    (hwitness : ∃ w ∈ sevenHighT0CubeLows,
-      sevenHighT0CubeAtomValue adj (.common i j w) = true) :
-    let common := sevenHighT0CubeCollectCommonVal adj i j acc
-    dimacsClauseSatisfied common.2.2 common.1 := by
-  let common := sevenHighT0CubeCollectCommonVal adj i j acc
-  let hm := sevenHighT0CubeCollectCommonVal_match adj i j acc
-  have hs := sevenHighT0CubeCollectCommonVal_semanticSound adj i j
-    hacc hleft hright
-  obtain ⟨w, hw, htrue⟩ := hwitness
-  obtain ⟨id, hid, hatom⟩ :=
-    sevenHighT0CubeForall₂_exists_right_of_mem hm.aligned hw
-  have hlit : (id : Int) ∈ common.1 := by
-    rw [hm.lits_eq]
-    exact List.mem_map.mpr ⟨id, hid, rfl⟩
-  have hpos := (hs.ids.id_bounds _ hatom).1
-  have hval := (hs.named _ _ hatom).trans htrue
-  refine ⟨(id : Int), hlit, ?_⟩
-  simp [dimacsLitValue, hpos, hval]
-
-def sevenHighT0CubeCollectCommonVal
-    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
-    (acc : SevenHighT0CubeValState) : SevenHighT0CubeCommonAccum :=
-  sevenHighT0CubeLows.foldl (fun input w =>
-    sevenHighT0CubeCommonWitnessStepVal adj i j w input) ([], acc)
-
-def sevenHighT0CubeCollectCommon (i j : Nat)
-    (st : SevenHighT0CubeGenState) : List Int × SevenHighT0CubeGenState :=
-  sevenHighT0CubeLows.foldl (fun input w =>
-    sevenHighT0CubeCommonWitnessStep i j w input) ([], st)
-
-theorem sevenHighT0CubeCommonFold_projection
-    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat) (ws : List Nat)
-    (input : SevenHighT0CubeCommonAccum) :
-    let outVal := ws.foldl (fun input w =>
-      sevenHighT0CubeCommonWitnessStepVal adj i j w input) input
-    let outGen := ws.foldl (fun input w =>
-      sevenHighT0CubeCommonWitnessStep i j w input)
-      (input.1, input.2.1)
-    (outVal.1, outVal.2.1) = outGen := by
-  induction ws generalizing input with
-  | nil => rfl
-  | cons w ws ih =>
-      simp only [List.foldl_cons]
-      let nextVal := sevenHighT0CubeCommonWitnessStepVal adj i j w input
-      have hstep := sevenHighT0CubeCommonWitnessStepVal_projection
-        adj i j w input
-      have hrest := ih nextVal
-      change (nextVal.1, nextVal.2.1) =
-        sevenHighT0CubeCommonWitnessStep i j w
-          (input.1, input.2.1) at hstep
-      rw [hstep] at hrest
-      exact hrest
-
-theorem sevenHighT0CubeCollectCommonVal_projection
-    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
-    (acc : SevenHighT0CubeValState) :
-    let out := sevenHighT0CubeCollectCommonVal adj i j acc
-    (out.1, out.2.1) = sevenHighT0CubeCollectCommon i j acc.1 := by
-  simpa only [sevenHighT0CubeCollectCommonVal,
-    sevenHighT0CubeCollectCommon] using
-    (sevenHighT0CubeCommonFold_projection adj i j
-      sevenHighT0CubeLows ([], acc))
-
 theorem sevenHighT0CubeCollectCommonVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
     {acc : SevenHighT0CubeValState}
@@ -1339,31 +1268,166 @@ theorem sevenHighT0CubeCollectCommonVal_semanticSound
           exact hr x (by simp [hx])
   exact hfold sevenHighT0CubeLows ([], acc) hacc hleft hright
 
+theorem sevenHighT0CubeCollectCommonVal_bounded
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState)
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true)
+    (hright : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true) :
+    let common := sevenHighT0CubeCollectCommonVal adj i j acc
+    dimacsClauseBounded common.2.1.top common.1 := by
+  dsimp only
+  have hm : SevenHighT0CubeCollectedCommonMatch i j sevenHighT0CubeLows
+      (sevenHighT0CubeCollectCommonVal adj i j acc) :=
+    sevenHighT0CubeCollectCommonVal_match adj i j acc
+  have hs : SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCollectCommonVal adj i j acc).2 :=
+    sevenHighT0CubeCollectCommonVal_semanticSound adj i j hacc hleft hright
+  intro lit hlit
+  rw [hm.lits_eq] at hlit
+  obtain ⟨id, hid, rfl⟩ := List.mem_map.mp hlit
+  obtain ⟨w, hw, hatom⟩ :=
+    sevenHighT0CubeForall₂_exists_left_of_mem hm.aligned hid
+  simpa using (hs.ids.id_bounds _ hatom).2
+
+theorem sevenHighT0CubeCollectCommonVal_positive
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState)
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true)
+    (hright : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true)
+    (hwitness : ∃ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true) :
+    let common := sevenHighT0CubeCollectCommonVal adj i j acc
+    dimacsClauseSatisfied common.2.2 common.1 := by
+  dsimp only
+  have hm : SevenHighT0CubeCollectedCommonMatch i j sevenHighT0CubeLows
+      (sevenHighT0CubeCollectCommonVal adj i j acc) :=
+    sevenHighT0CubeCollectCommonVal_match adj i j acc
+  have hs : SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCollectCommonVal adj i j acc).2 :=
+    sevenHighT0CubeCollectCommonVal_semanticSound adj i j hacc hleft hright
+  obtain ⟨w, hw, htrue⟩ := hwitness
+  obtain ⟨id, hid, hatom⟩ :=
+    sevenHighT0CubeForall₂_exists_right_of_mem hm.aligned hw
+  have hlit : (id : Int) ∈
+      (sevenHighT0CubeCollectCommonVal adj i j acc).1 := by
+    rw [hm.lits_eq]
+    exact List.mem_map.mpr ⟨id, hid, rfl⟩
+  have hpos := (hs.ids.id_bounds _ hatom).1
+  have hval := (hs.named _ _ hatom).trans htrue
+  refine ⟨(id : Int), hlit, ?_⟩
+  simp [dimacsLitValue, hpos, hval]
+
+def sevenHighT0CubeCollectCommon (i j : Nat)
+    (st : SevenHighT0CubeGenState) : List Int × SevenHighT0CubeGenState :=
+  sevenHighT0CubeLows.foldl (fun input w =>
+    sevenHighT0CubeCommonWitnessStep i j w input) ([], st)
+
+theorem sevenHighT0CubeCommonFold_projection
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat) (ws : List Nat)
+    (input : SevenHighT0CubeCommonAccum) :
+    let outVal := ws.foldl (fun input w =>
+      sevenHighT0CubeCommonWitnessStepVal adj i j w input) input
+    let outGen := ws.foldl (fun input w =>
+      sevenHighT0CubeCommonWitnessStep i j w input)
+      (input.1, input.2.1)
+    (outVal.1, outVal.2.1) = outGen := by
+  induction ws generalizing input with
+  | nil => rfl
+  | cons w ws ih =>
+      simp only [List.foldl_cons]
+      let nextVal := sevenHighT0CubeCommonWitnessStepVal adj i j w input
+      have hstep := sevenHighT0CubeCommonWitnessStepVal_projection
+        adj i j w input
+      have hrest := ih nextVal
+      change (nextVal.1, nextVal.2.1) =
+        sevenHighT0CubeCommonWitnessStep i j w
+          (input.1, input.2.1) at hstep
+      rw [hstep] at hrest
+      exact hrest
+
+theorem sevenHighT0CubeCollectCommonVal_projection
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState) :
+    let out := sevenHighT0CubeCollectCommonVal adj i j acc
+    (out.1, out.2.1) = sevenHighT0CubeCollectCommon i j acc.1 := by
+  simpa only [sevenHighT0CubeCollectCommonVal,
+    sevenHighT0CubeCollectCommon] using
+    (sevenHighT0CubeCommonFold_projection adj i j
+      sevenHighT0CubeLows ([], acc))
+
 def sevenHighT0CubeCommonPairStepVal
     (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
     (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
   let common := sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc
   sevenHighT0CubeEmitVal common.1 common.2
 
-set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeCommonPairStepVal_eq
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    (acc : SevenHighT0CubeValState) :
+    sevenHighT0CubeCommonPairStepVal adj pair acc =
+      sevenHighT0CubeEmitVal
+        (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).1
+        (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).2 := by
+  rfl
+
 theorem sevenHighT0CubeCommonPairStepVal_state
     (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
     (acc : SevenHighT0CubeValState) :
     (sevenHighT0CubeCommonPairStepVal adj pair acc).1 =
       sevenHighT0CubeCommonPairStep pair acc.1 := by
-  let commonVal := sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc
-  let commonGen := sevenHighT0CubeCollectCommon pair.1 pair.2 acc.1
-  have hp : (commonVal.1, commonVal.2.1) = commonGen :=
+  have hp :
+      ((sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).1,
+        (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).2.1) =
+        sevenHighT0CubeCollectCommon pair.1 pair.2 acc.1 :=
     sevenHighT0CubeCollectCommonVal_projection adj pair.1 pair.2 acc
-  rcases commonVal with ⟨lits, st, val⟩
-  rcases commonGen with ⟨genLits, genSt⟩
-  cases hp
-  simp only [sevenHighT0CubeCommonPairStepVal,
-    sevenHighT0CubeCommonPairStep, sevenHighT0CubeCollectCommon,
-    sevenHighT0CubeCommonWitnessStep]
-  rfl
+  have hem := congrArg (fun p : List Int × SevenHighT0CubeGenState =>
+    sevenHighT0CubeEmit p.1 p.2) hp
+  simpa only [sevenHighT0CubeCommonPairStepVal, sevenHighT0CubeEmitVal,
+    sevenHighT0CubeCommonPairStep,
+    sevenHighT0CubeCollectCommon, sevenHighT0CubeCommonWitnessStep] using hem
 
-set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeCommonPairStepVal_emit_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true →
+        sevenHighT0CubeAtomValue adj
+          (.edge (min pair.1 w) (max pair.1 w)) = true)
+    (hright : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true →
+        sevenHighT0CubeAtomValue adj
+          (.edge (min pair.2 w) (max pair.2 w)) = true)
+    (hpositive : dimacsClauseSatisfied
+      (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).2.2
+      (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).1)
+    (hbounded : dimacsClauseBounded
+      (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).2.1.top
+      (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).1) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeEmitVal
+        (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).1
+        (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).2) := by
+  have hs : SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc).2 :=
+    sevenHighT0CubeCollectCommonVal_semanticSound adj pair.1 pair.2
+      (acc := acc) hacc hleft hright
+  generalize hcommon :
+    sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc = common at *
+  rcases common with ⟨clause, st, val⟩
+  exact sevenHighT0CubeEmitVal_semanticSound adj hs
+    clause hpositive hbounded
+
 theorem sevenHighT0CubeCommonPairStepVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
     {acc : SevenHighT0CubeValState}
@@ -1384,16 +1448,11 @@ theorem sevenHighT0CubeCommonPairStepVal_semanticSound
       dimacsClauseBounded common.2.1.top common.1) :
     SevenHighT0CubeSemanticSound adj
       (sevenHighT0CubeCommonPairStepVal adj pair acc) := by
-  let common := sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc
-  have hs : SevenHighT0CubeSemanticSound adj common.2 :=
-    sevenHighT0CubeCollectCommonVal_semanticSound adj pair.1 pair.2
-      hacc hleft hright
-  change SevenHighT0CubeSemanticSound adj
-    (sevenHighT0CubeEmitVal common.1 common.2)
-  exact sevenHighT0CubeEmitVal_semanticSound adj hs common.1
-    hpositive hbounded
+  rw [sevenHighT0CubeCommonPairStepVal_eq]
+  exact sevenHighT0CubeCommonPairStepVal_emit_semanticSound adj pair
+    hacc hleft hright hpositive hbounded
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 1000000 in
 theorem sevenHighT0CubeCommonPairStepVal_semanticSound_of_witness
     (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
     {acc : SevenHighT0CubeValState}
@@ -1440,7 +1499,7 @@ theorem sevenHighT0CubeCommonClausesFromVal_generatorState
   rw [sevenHighT0CubeCommonClausesFromVal_state, hstate]
   rfl
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 1000000 in
 theorem sevenHighT0CubeCommonClausesFromVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
     (hacc : SevenHighT0CubeSemanticSound adj acc)
@@ -1710,14 +1769,6 @@ def sevenHighT0CubeCollectedEdgesMatch_empty
   ids := []
   vars_eq := rfl
   aligned := .nil
-
-theorem sevenHighT0CubeForall₂_append_singleton
-    {α β : Type*} {r : α → β → Prop} {xs : List α} {ys : List β}
-    (h : List.Forall₂ r xs ys) {x : α} {y : β} (hxy : r x y) :
-    List.Forall₂ r (xs ++ [x]) (ys ++ [y]) := by
-  induction h with
-  | nil => exact .cons hxy .nil
-  | cons hab hrest ih => exact .cons hab ih
 
 def sevenHighT0CubeCollectedEdgesMatch_push
     (adj : Fin 49 → Fin 49 → Bool)
@@ -1989,6 +2040,30 @@ def sevenHighT0CubeCollectDegreeInputsVal_match
       (sevenHighT0CubeCollectDegreeInputsVal adj vertex acc) := by
   exact sevenHighT0CubeCollectEdgesListVal_match adj vertex _ acc
 
+theorem sevenHighT0CubeCollectDegreeInputsVal_sound
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc) :
+    SevenHighT0CubeInputAccumSound adj
+      (sevenHighT0CubeCollectDegreeInputsVal adj vertex acc) := by
+  unfold sevenHighT0CubeCollectDegreeInputsVal
+  let incident := sevenHighT0CubeVertices.filter fun x => x ≠ vertex
+  have hfold : ∀ xs : List Nat,
+      ∀ input : Array Int × SevenHighT0CubeValState,
+      SevenHighT0CubeInputAccumSound adj input →
+      SevenHighT0CubeInputAccumSound adj
+        (xs.foldl (fun input x =>
+          sevenHighT0CubeCollectEdgeVal adj vertex x input) input) := by
+    intro xs
+    induction xs with
+    | nil => exact fun _ h => h
+    | cons x xs ih =>
+        intro input hinput
+        simp only [List.foldl_cons]
+        exact ih _ (sevenHighT0CubeCollectEdgeVal_sound adj hinput vertex x)
+  exact hfold incident (#[], acc)
+    (sevenHighT0CubeInputAccumSound_empty adj hacc)
+
 theorem sevenHighT0CubeCollectDegreeInputsVal_count_atoms
     (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
     (acc : SevenHighT0CubeValState)
@@ -2030,7 +2105,8 @@ theorem sevenHighT0CubeAtomValue_edge_bitAdj
     · split <;> rename_i hmax
       · simp only [orderFortyNineBitAdj, hij, if_false]
         congr 1
-        simp [orderFortyNineEdgeIndex]
+        have hval : i.val ≠ j.val := fun h => hij (Fin.ext h)
+        simp [orderFortyNineEdgeIndex, hval]
       · omega
     · omega
 
@@ -2046,6 +2122,7 @@ theorem sevenHighT0CubeCollectDegreeInputsVal_count_bitAdj
         orderFortyNineBitAdj edges vertex j).card := by
   let input := sevenHighT0CubeCollectDegreeInputsVal
     (orderFortyNineBitAdj edges) vertex.val acc
+  dsimp only
   rw [sevenHighT0CubeCollectDegreeInputsVal_count_atoms
     (orderFortyNineBitAdj edges) vertex.val acc hacc]
   rw [sevenHighT0CubeIncidentList_eq_otherVertices vertex]
@@ -2067,30 +2144,6 @@ theorem sevenHighT0CubeCollectDegreeInputsVal_count_bitAdj
         (orderFortyNineCounterRow edges vertex)).symm
     _ = _ := orderFortyNineCounterRow_count edges vertex
 
-theorem sevenHighT0CubeCollectDegreeInputsVal_sound
-    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
-    {acc : SevenHighT0CubeValState}
-    (hacc : SevenHighT0CubeSemanticSound adj acc) :
-    SevenHighT0CubeInputAccumSound adj
-      (sevenHighT0CubeCollectDegreeInputsVal adj vertex acc) := by
-  unfold sevenHighT0CubeCollectDegreeInputsVal
-  let incident := sevenHighT0CubeVertices.filter fun x => x ≠ vertex
-  have hfold : ∀ xs : List Nat,
-      ∀ input : Array Int × SevenHighT0CubeValState,
-      SevenHighT0CubeInputAccumSound adj input →
-      SevenHighT0CubeInputAccumSound adj
-        (xs.foldl (fun input x =>
-          sevenHighT0CubeCollectEdgeVal adj vertex x input) input) := by
-    intro xs
-    induction xs with
-    | nil => exact fun _ h => h
-    | cons x xs ih =>
-        intro input hinput
-        simp only [List.foldl_cons]
-        exact ih _ (sevenHighT0CubeCollectEdgeVal_sound adj hinput vertex x)
-  exact hfold incident (#[], acc)
-    (sevenHighT0CubeInputAccumSound_empty adj hacc)
-
 def sevenHighT0CubeDegreeStepVal
     (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
     (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
@@ -2111,10 +2164,11 @@ theorem sevenHighT0CubeDegreeStepVal_state
     (input.1.push (id : Int), st)) (#[], acc.1)
   have hp : input.1 = raw.1 ∧ input.2.1 = raw.2 :=
     sevenHighT0CubeCollectDegreeInputsVal_projection adj vertex acc
-  rcases input with ⟨vars, st, val⟩
-  rcases raw with ⟨rawVars, rawSt⟩
-  rcases hp with ⟨rfl, rfl⟩
-  unfold sevenHighT0CubeDegreeStepVal sevenHighT0CubeDegreeStep
+  unfold sevenHighT0CubeDegreeStepVal
+  rw [sevenHighT0CubeEqualsBlockVal_state]
+  change sevenHighT0CubeEqualsBlock input.1 _ input.2.1 = _
+  rw [hp.1, hp.2]
+  unfold sevenHighT0CubeDegreeStep
   rfl
 
 theorem sevenHighT0CubeDegreeStepVal_semanticSound
@@ -2232,7 +2286,12 @@ theorem sevenHighT0CubePartitionCollectStepVal_projection
     have hstate := sevenHighT0CubeAtomIdVal_state adj
       (.edge (min y x) (max y x)) st val
     rw [hv, hs] at hid hstate
-    simp_all
+    have hedge : sevenHighT0CubeEdgeId y x st = (id, st') := by
+      simpa [sevenHighT0CubeEdgeId] using hs
+    rw [hedge]
+    have hp : (idVal, stVal) = (id, st') := Prod.ext hid hstate
+    exact congrArg (fun p : Nat × SevenHighT0CubeGenState =>
+      (lits ++ [(p.1 : Int)], p.2)) hp
 
 theorem sevenHighT0CubePartitionCollectStepVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) (y x : Nat)
@@ -2350,8 +2409,10 @@ def sevenHighT0CubeCollectPartitionVal_match
       simp only [List.foldl_cons, List.foldl_nil, List.filter_append,
         List.filter_singleton]
       by_cases hxy : x = y
-      · simpa [hxy] using sevenHighT0CubePartitionMatch_push adj ih
-      · simpa [hxy] using sevenHighT0CubePartitionMatch_push adj ih
+      · simpa [hxy] using
+          (sevenHighT0CubePartitionMatch_push adj (y := y) (x := x) ih)
+      · simpa [hxy] using
+          (sevenHighT0CubePartitionMatch_push adj (y := y) (x := x) ih)
 
 theorem sevenHighT0CubeCollectPartitionVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
@@ -2385,6 +2446,7 @@ theorem sevenHighT0CubeCollectPartitionVal_bounded
   let hm := sevenHighT0CubeCollectPartitionVal_match adj y high acc
   have hs := sevenHighT0CubeCollectPartitionVal_semanticSound
     adj y high hacc
+  change dimacsClauseBounded input.2.1.top input.1
   intro lit hlit
   rw [hm.lits_eq] at hlit
   obtain ⟨id, hid, rfl⟩ := List.mem_map.mp hlit
@@ -2431,7 +2493,7 @@ def sevenHighT0CubePartitionClause (y high : Nat)
     (fun input x => sevenHighT0CubePartitionCollectStep y x input) ([], st)
   sevenHighT0CubeEmit input.1 input.2
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 1000000 in
 theorem sevenHighT0CubePartitionClauseVal_state
     (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
     (acc : SevenHighT0CubeValState) :
@@ -2442,9 +2504,11 @@ theorem sevenHighT0CubePartitionClauseVal_state
     (fun input x => sevenHighT0CubePartitionCollectStep y x input) ([], acc.1)
   have hp : (inputVal.1, inputVal.2.1) = inputGen :=
     sevenHighT0CubeCollectPartitionVal_projection adj y high acc
-  rcases inputVal with ⟨lits, st, val⟩
-  rcases inputGen with ⟨genLits, genSt⟩
-  cases hp
+  unfold sevenHighT0CubePartitionClauseVal sevenHighT0CubeEmitVal
+  change sevenHighT0CubeEmit inputVal.1 inputVal.2.1 = _
+  rw [show inputVal.1 = inputGen.1 from congrArg Prod.fst hp,
+    show inputVal.2.1 = inputGen.2 from congrArg Prod.snd hp]
+  unfold sevenHighT0CubePartitionClause
   rfl
 
 theorem sevenHighT0CubePartitionClauseVal_semanticSound
@@ -2507,7 +2571,7 @@ theorem sevenHighT0CubePartitionClausesFromVal_state
   exact sevenHighT0CubeFoldl_state _ _ _ _
     (fun y acc => sevenHighT0CubePartitionHighFold_state adj y [0, 1] acc)
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 1000000 in
 theorem sevenHighT0CubePartitionClausesFromVal_generatorState
     (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState)
     (hstate : acc.1 = sevenHighT0CubeDegreeClauses) :
@@ -2601,19 +2665,36 @@ structure SevenHighT0CubeRunnerPremises
     sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
       (.edge 9 (index + 15)) = decide (index = cube)
 
+def sevenHighT0CubeRunnerN1 (edges : BitVec 1176) :
+    SevenHighT0CubeValState :=
+  sevenHighT0CubeNormalizeN1Val (orderFortyNineBitAdj edges) (fun _ => false)
+
+def sevenHighT0CubeRunnerCommon (edges : BitVec 1176) :
+    SevenHighT0CubeValState :=
+  sevenHighT0CubeCommonClausesFromVal (orderFortyNineBitAdj edges)
+    (sevenHighT0CubeRunnerN1 edges)
+
+def sevenHighT0CubeRunnerC4 (edges : BitVec 1176) :
+    SevenHighT0CubeValState :=
+  sevenHighT0CubeC4ClausesFromVal (orderFortyNineBitAdj edges)
+    (sevenHighT0CubeRunnerCommon edges)
+
+def sevenHighT0CubeRunnerDegrees (edges : BitVec 1176) :
+    SevenHighT0CubeValState :=
+  sevenHighT0CubeDegreeClausesFromVal (orderFortyNineBitAdj edges)
+    (sevenHighT0CubeRunnerC4 edges)
+
+def sevenHighT0CubeRunnerBeforeFinal (edges : BitVec 1176) :
+    SevenHighT0CubeValState :=
+  sevenHighT0CubePartitionClausesFromVal (orderFortyNineBitAdj edges)
+    (sevenHighT0CubeRunnerDegrees edges)
+
 def sevenHighT0CubeRunner (edges : BitVec 1176) (cube : Nat) :
     SevenHighT0CubeValState :=
-  let adj := orderFortyNineBitAdj edges
-  let initial : DimacsValuation := fun _ => false
-  let n0 := sevenHighT0CubeNormalizeN0Val adj initial
-  let n1 := sevenHighT0CubeNormalizeN1Val adj initial
-  let common := sevenHighT0CubeCommonClausesFromVal adj n1
-  let c4 := sevenHighT0CubeC4ClausesFromVal adj common
-  let degrees := sevenHighT0CubeDegreeClausesFromVal adj c4
-  let partition := sevenHighT0CubePartitionClausesFromVal adj degrees
-  sevenHighT0CubeFinalUnitsVal adj cube partition
+  sevenHighT0CubeFinalUnitsVal (orderFortyNineBitAdj edges) cube
+    (sevenHighT0CubeRunnerBeforeFinal edges)
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 1000000 in
 theorem sevenHighT0CubeRunner_semanticSound
     (edges : BitVec 1176) (cube : Nat)
     (h : SevenHighT0CubeRunnerPremises edges cube) :
@@ -2643,26 +2724,43 @@ theorem sevenHighT0CubeRunner_semanticSound
   exact sevenHighT0CubeFinalUnitsVal_semanticSound adj cube
     hsPartition h.cubeUnits
 
-set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeRunnerN1_state (edges : BitVec 1176) :
+    (sevenHighT0CubeRunnerN1 edges).1 = sevenHighT0CubeNormalizeN1 := by
+  exact sevenHighT0CubeNormalizeN1Val_state
+    (orderFortyNineBitAdj edges) (fun _ => false)
+
+theorem sevenHighT0CubeRunnerCommon_state (edges : BitVec 1176) :
+    (sevenHighT0CubeRunnerCommon edges).1 = sevenHighT0CubeCommonClauses := by
+  exact sevenHighT0CubeCommonClausesFromVal_generatorState
+    (orderFortyNineBitAdj edges) (sevenHighT0CubeRunnerN1 edges)
+    (sevenHighT0CubeRunnerN1_state edges)
+
+theorem sevenHighT0CubeRunnerC4_state (edges : BitVec 1176) :
+    (sevenHighT0CubeRunnerC4 edges).1 = sevenHighT0CubeC4Clauses := by
+  exact sevenHighT0CubeC4ClausesFromVal_generatorState
+    (orderFortyNineBitAdj edges) (sevenHighT0CubeRunnerCommon edges)
+    (sevenHighT0CubeRunnerCommon_state edges)
+
+theorem sevenHighT0CubeRunnerDegrees_state (edges : BitVec 1176) :
+    (sevenHighT0CubeRunnerDegrees edges).1 = sevenHighT0CubeDegreeClauses := by
+  exact sevenHighT0CubeDegreeClausesFromVal_generatorState
+    (orderFortyNineBitAdj edges) (sevenHighT0CubeRunnerC4 edges)
+    (sevenHighT0CubeRunnerC4_state edges)
+
+theorem sevenHighT0CubeRunnerBeforeFinal_state (edges : BitVec 1176) :
+    (sevenHighT0CubeRunnerBeforeFinal edges).1 =
+      sevenHighT0CubePartitionClauses := by
+  exact sevenHighT0CubePartitionClausesFromVal_generatorState
+    (orderFortyNineBitAdj edges) (sevenHighT0CubeRunnerDegrees edges)
+    (sevenHighT0CubeRunnerDegrees_state edges)
+
 theorem sevenHighT0CubeRunner_state
     (edges : BitVec 1176) (cube : Nat) :
     (sevenHighT0CubeRunner edges cube).1 =
       sevenHighT0CubeFinalState cube := by
-  let adj := orderFortyNineBitAdj edges
-  let initial : DimacsValuation := fun _ => false
-  let n0 := sevenHighT0CubeNormalizeN0Val adj initial
-  let n1 := sevenHighT0CubeNormalizeN1Val adj initial
-  let common := sevenHighT0CubeCommonClausesFromVal adj n1
-  let c4 := sevenHighT0CubeC4ClausesFromVal adj common
-  let degrees := sevenHighT0CubeDegreeClausesFromVal adj c4
-  let partition := sevenHighT0CubePartitionClausesFromVal adj degrees
-  have h0 := sevenHighT0CubeNormalizeN0Val_state adj initial
-  have h1 := sevenHighT0CubeNormalizeN1Val_state adj initial
-  have hc := sevenHighT0CubeCommonClausesFromVal_generatorState adj n1 h1
-  have h4 := sevenHighT0CubeC4ClausesFromVal_generatorState adj common hc
-  have hd := sevenHighT0CubeDegreeClausesFromVal_generatorState adj c4 h4
-  have hp := sevenHighT0CubePartitionClausesFromVal_generatorState
-    adj degrees hd
-  exact sevenHighT0CubeFinalUnitsVal_finalState adj cube partition hp
+  exact sevenHighT0CubeFinalUnitsVal_finalState
+    (orderFortyNineBitAdj edges) cube
+    (sevenHighT0CubeRunnerBeforeFinal edges)
+    (sevenHighT0CubeRunnerBeforeFinal_state edges)
 
 end Erdos85
