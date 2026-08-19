@@ -9,6 +9,29 @@ namespace Erdos85
 
 noncomputable section
 
+/-- A finite relation with at most one target in every source fiber has as
+many pairs as sources whose fiber is inhabited. -/
+theorem card_filter_product_eq_card_filter_exists_of_rightUnique
+    {X Y : Type*} [Fintype X] [Fintype Y] [DecidableEq X] [DecidableEq Y]
+    (R : X → Y → Prop) [DecidableRel R]
+    (huniq : ∀ x y z, R x y → R x z → y = z) :
+    ((Finset.univ : Finset (X × Y)).filter fun p ↦ R p.1 p.2).card =
+      ((Finset.univ : Finset X).filter fun x ↦ ∃ y, R x y).card := by
+  classical
+  apply Finset.card_bij (fun p _ ↦ p.1)
+  · intro p hp
+    rw [Finset.mem_filter] at hp ⊢
+    exact ⟨Finset.mem_univ _, ⟨p.2, hp.2⟩⟩
+  · intro p hp q hq heq
+    apply Prod.ext heq
+    exact huniq p.1 p.2 q.2
+      (Finset.mem_filter.mp hp).2
+      (by simpa [heq] using (Finset.mem_filter.mp hq).2)
+  · intro x hx
+    obtain ⟨y, hy⟩ := (Finset.mem_filter.mp hx).2
+    refine ⟨(x, y), ?_, rfl⟩
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hy⟩
+
 /-- If an involution sends every point of `A` outside `A`, the points outside
 `A` whose mates also remain outside number `|X|-2|A|`. -/
 theorem involution_complement_internal_card
@@ -285,6 +308,80 @@ theorem orderSixtyFour_sizeTwo_sixTen_long_allTf_antipodal_sameParity_ne_four
     M hdiag hinter
   simpa [M, SimpleGraph.adjMatrix_apply] using hne
 
+/-- If exactly two positive and two negative long rows carry a same-parity
+antipodal entry, uniqueness of the same-parity entry contradicts the C10
+self-intertwiner obstruction. -/
+theorem orderSixtyFour_sizeTwo_sixTen_long_allTf_false_of_signed_active_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (b : (G.induce c.supp).ConnectedComponent)
+    (hbtf : ∀ z : c.supp, z ∈ b.supp →
+      (triangleFreeEdgeGraph G).degree z.1 = 2)
+    (v : ZMod 10 → c.supp) (hvinj : Function.Injective v)
+    (hvrange : Set.range v = b.supp)
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (hsign : ∀ i, s (v i).1 = -1 ∨ s (v i).1 = 1)
+    (huniq : ∀ i j k,
+      (ZModTenEvenOffset (j - i) ∧
+        (antipodalGraph G).Adj (v i).1 (v j).1) →
+      (ZModTenEvenOffset (k - i) ∧
+        (antipodalGraph G).Adj (v i).1 (v k).1) → j = k)
+    (hpos : ((Finset.univ : Finset (ZMod 10)).filter fun i ↦
+      s (v i).1 = 1 ∧ ∃ j, ZModTenEvenOffset (j - i) ∧
+        (antipodalGraph G).Adj (v i).1 (v j).1).card = 2)
+    (hneg : ((Finset.univ : Finset (ZMod 10)).filter fun i ↦
+      s (v i).1 = -1 ∧ ∃ j, ZModTenEvenOffset (j - i) ∧
+        (antipodalGraph G).Adj (v i).1 (v j).1).card = 2) : False := by
+  classical
+  let R : ZMod 10 → ZMod 10 → Prop := fun i j ↦
+    ZModTenEvenOffset (j - i) ∧
+      (antipodalGraph G).Adj (v i).1 (v j).1
+  let A := (Finset.univ : Finset (ZMod 10)).filter fun i ↦
+    s (v i).1 = 1 ∧ ∃ j, R i j
+  let B := (Finset.univ : Finset (ZMod 10)).filter fun i ↦
+    s (v i).1 = -1 ∧ ∃ j, R i j
+  let T := (Finset.univ : Finset (ZMod 10)).filter fun i ↦ ∃ j, R i j
+  have hAB : A ∪ B = T := by
+    ext i
+    simp only [A, B, T, Finset.mem_union, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    constructor
+    · rintro (⟨_, hi⟩ | ⟨_, hi⟩) <;> exact hi
+    · intro hi
+      rcases hsign i with hiNeg | hiPos
+      · exact Or.inr ⟨hiNeg, hi⟩
+      · exact Or.inl ⟨hiPos, hi⟩
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro i hiA hiB
+    have hp := (Finset.mem_filter.mp hiA).2.1
+    have hn := (Finset.mem_filter.mp hiB).2.1
+    omega
+  have hTcard : T.card = 4 := by
+    rw [← hAB, Finset.card_union_of_disjoint hdisj]
+    have hAcard : A.card = 2 := hpos
+    have hBcard : B.card = 2 := hneg
+    omega
+  have hpairs := card_filter_product_eq_card_filter_exists_of_rightUnique
+    R (by simpa [R] using huniq)
+  have hfour :
+      ((Finset.univ : Finset (ZMod 10 × ZMod 10)).filter fun p ↦
+        ZModTenEvenOffset (p.2 - p.1) ∧
+          (antipodalGraph G).Adj (v p.1).1 (v p.2).1).card = 4 := by
+    simpa [R, T, hTcard] using hpairs.trans hTcard
+  exact (orderSixtyFour_sizeTwo_sixTen_long_allTf_antipodal_sameParity_ne_four
+    G hfree hreg hcard c hc b hbtf v hvinj hvrange hv) hfour
+
 end
 
 end Erdos85
@@ -292,3 +389,5 @@ end Erdos85
 #print axioms Erdos85.involution_complement_internal_card
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_sixTen_long_internalMatching_card_two
 #print axioms Erdos85.orderSixtyFour_sizeTwo_sixTen_long_allTf_antipodal_sameParity_ne_four
+#print axioms Erdos85.card_filter_product_eq_card_filter_exists_of_rightUnique
+#print axioms Erdos85.orderSixtyFour_sizeTwo_sixTen_long_allTf_false_of_signed_active_two
