@@ -75,6 +75,42 @@ theorem zmodEight_sameSignShape_zero_rowOne_avoiding_cycle_impossible
   exact zmodEight_selfIntertwiner_rowOne_odd_avoiding_cycle_impossible
     M hsymm hinter hbinary hrow hodd havoid
 
+/-- Align an independently classified shape witness with an actual empty
+same-sign row. -/
+theorem zmodEight_sameSignShapeUpToThree_eq_zero_of_row_zero
+    (M : Matrix (ZMod 8) (ZMod 8) ℤ) (f : ZMod 8 → ℤ) (k : ℕ)
+    (hsign : ∀ i, f i = -1 ∨ f i = 1)
+    (hflip : ∀ i, f (i + 1) = -f i)
+    (hshape : ZModEightSameSignShapeUpToThree M f k)
+    (hzero : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      f j = f 0 ∧ M 0 j = 1).card = 0) :
+    ZModEightSameSignShapeUpToThree M f 0 := by
+  have heven := zmodEight_alternating_sign_eq_iff_evenOffset f hsign hflip
+  have contradict_entry (j : ZMod 8) (he : ZModEightEvenOffset j)
+      (hM : M 0 j = 1) : False := by
+    have hsame : f j = f 0 := (heven 0 j).2 (by simpa using he)
+    have hj : j ∈ (Finset.univ : Finset (ZMod 8)).filter fun z ↦
+        f z = f 0 ∧ M 0 z = 1 := by simp [hsame, hM]
+    have hp := Finset.card_pos.mpr ⟨j, hj⟩
+    rw [hzero] at hp
+    omega
+  have hshape' := hshape
+  have hk0 : k = 0 := by
+    rcases hshape' with hshape | hthree
+    · rcases hshape with h0 | h1 | h2
+      · exact h0.1
+      · exfalso
+        have hM := (h1.2 0 4 ((heven 0 4).2 (by decide))).2 (by decide)
+        exact contradict_entry 4 (by decide) hM
+      · exfalso
+        have hM := (h2.2 0 2 ((heven 0 2).2 (by decide))).2 (Or.inl (by decide))
+        exact contradict_entry 2 (by decide) hM
+    · exfalso
+      have hM := (hthree.2 0 2 ((heven 0 2).2 (by decide))).2
+        (Or.inl (by decide))
+      exact contradict_entry 2 (by decide) hM
+  simpa [hk0] using hshape
+
 /-- Graph-facing normalized-shore wrapper.  A quotient-one diagonal block
 with empty same-sign shape and no defect cycle edges is impossible. -/
 theorem normalizedC8_quotientOne_sameSignZero_avoidingCycle_false
@@ -172,3 +208,4 @@ end Erdos85
 #print axioms Erdos85.zmodEight_selfIntertwiner_rowOne_odd_avoiding_cycle_impossible
 #print axioms Erdos85.zmodEight_sameSignShape_zero_rowOne_avoiding_cycle_impossible
 #print axioms Erdos85.normalizedC8_quotientOne_sameSignZero_avoidingCycle_false
+#print axioms Erdos85.zmodEight_sameSignShapeUpToThree_eq_zero_of_row_zero
