@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoMuNegOneEightEightDiagonalSameShape
+import Proofs.Erdos85SizeTwoMuNegThreeEightEightParameterBounds
 
 /-! # Eliminating the `mu=-1`, `(k,r)=(0,6)` self-switch cell -/
 
@@ -74,9 +75,100 @@ theorem zmodEight_sameSignShape_zero_rowOne_avoiding_cycle_impossible
   exact zmodEight_selfIntertwiner_rowOne_odd_avoiding_cycle_impossible
     M hsymm hinter hbinary hrow hodd havoid
 
+/-- Graph-facing normalized-shore wrapper.  A quotient-one diagonal block
+with empty same-sign shape and no defect cycle edges is impossible. -/
+theorem normalizedC8_quotientOne_sameSignZero_avoidingCycle_false
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (H K : SimpleGraph X) [DecidableRel H.Adj] [DecidableRel K.Adj]
+    [DecidableEq H.ConnectedComponent]
+    (a : H.ConnectedComponent)
+    (u : ZMod 8 → X) (huinj : Function.Injective u)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, H.neighborFinset (u z) = {u (z - 1), u (z + 1)})
+    (hdegree : ∀ x, H.degree x = 2)
+    (hcommInt : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ)
+    (hcommReal : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ)
+    (haa : componentQuotientMatrix K H a a = 1)
+    (f : ZMod 8 → ℤ)
+    (hsign : ∀ i, f i = -1 ∨ f i = 1)
+    (hflip : ∀ i, f (i + 1) = -f i)
+    (hshape : ZModEightSameSignShapeUpToThree
+      (fun i j ↦ K.adjMatrix ℤ (u i) (u j)) f 0)
+    (havoid : ∀ i, ¬ K.Adj (u i) (u (i - 1)) ∧
+      ¬ K.Adj (u i) (u (i + 1))) : False := by
+  classical
+  let M : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let A := (Finset.univ : Finset X).filter (fun x ↦ x ∈ a.supp)
+  have hurangeA : Set.range u = ↑A := by
+    rw [hurange]
+    ext x
+    simp [A]
+  have hupair : ∀ z, u (z - 1) ≠ u (z + 1) := fun z ↦
+    huinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) z)
+  have hinter : ∀ i j,
+      M (i - 1) j + M (i + 1) j =
+        M i (j + 1) + M i (j - 1) := by
+    simpa only [M] using entry_cycleIntertwine_of_adjMatrix_comm
+      K H u u (1 : ZMod 8) (1 : ZMod 8) hcommInt hu hu hupair hupair
+  have hsymm : ∀ i j, M i j = M j i := by
+    intro i j
+    simp [M, SimpleGraph.adjMatrix_apply, K.adj_comm]
+  have hbinary : ∀ i j, M i j = 0 ∨ M i j = 1 := by
+    intro i j
+    by_cases h : K.Adj (u i) (u j)
+    · right
+      simp [M, SimpleGraph.adjMatrix_apply, h]
+    · left
+      simp [M, SimpleGraph.adjMatrix_apply, h]
+  have hrowCard : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M i j = 1).card = 1 := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (u i) (u j)) by
+      ext j
+      simp [M, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K A u huinj hurangeA (u i)]
+    have hui : u i ∈ a.supp := by
+      rw [← hurange]
+      exact ⟨i, rfl⟩
+    have heq : A.filter (fun y ↦ K.Adj (u i) y) =
+        componentNeighborFinset K H a (u i) := by
+      ext y
+      simp [A, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq, ← componentQuotientMatrix_apply_eq K H 2 hdegree hcommReal
+      a a hui]
+    exact haa
+  have hrow : ∀ i, ∑ j, M i j = 1 := by
+    intro i
+    calc
+      ∑ j, M i j = ∑ j, if M i j = 1 then (1 : ℤ) else 0 := by
+        apply Finset.sum_congr rfl
+        intro j _
+        rcases hbinary i j with h0 | h1
+        · simp [h0]
+        · simp [h1]
+      _ = (((Finset.univ : Finset (ZMod 8)).filter
+          fun j ↦ M i j = 1).card : ℤ) := by
+        simpa only using (Finset.sum_boole (R := ℤ)
+          (fun j : ZMod 8 ↦ M i j = 1) Finset.univ)
+      _ = 1 := by exact_mod_cast hrowCard i
+  have havoidM : ∀ i, M i (i - 1) = 0 ∧ M i (i + 1) = 0 := by
+    intro i
+    constructor
+    · simp [M, SimpleGraph.adjMatrix_apply, (havoid i).1]
+    · simp [M, SimpleGraph.adjMatrix_apply, (havoid i).2]
+  exact zmodEight_sameSignShape_zero_rowOne_avoiding_cycle_impossible
+    M f hsign hflip (by simpa [M] using hshape)
+      hsymm hinter hbinary hrow havoidM
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.zmodEight_selfIntertwiner_rowOne_odd_avoiding_cycle_impossible
 #print axioms Erdos85.zmodEight_sameSignShape_zero_rowOne_avoiding_cycle_impossible
+#print axioms Erdos85.normalizedC8_quotientOne_sameSignZero_avoidingCycle_false
