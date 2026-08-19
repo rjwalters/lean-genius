@@ -74,6 +74,59 @@ structure SizeTwoCyclicTwoFiberCode
   reciprocity_t : data.ReciprocityAt t
   reciprocity_u : data.ReciprocityAt u
 
+/-- Agreement at one fiber, restricted to a selected set of source bases. -/
+def SizeTwoCyclicRoutingData.AgreementAtBases
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (data : SizeTwoCyclicRoutingData q a)
+    (bases : Finset (ZMod q))
+    (t : sizeTwoAllowedDifference q a) : Prop :=
+  ∀ x ∈ bases, ∀ (d : ZMod q), d ≠ 0 →
+    Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+      q a data.perm x d t t) ≤ 1
+
+/-- Reciprocity at one fiber, restricted to selected source bases. -/
+def SizeTwoCyclicRoutingData.ReciprocityAtBases
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (data : SizeTwoCyclicRoutingData q a)
+    (bases : Finset (ZMod q))
+    (t : sizeTwoAllowedDifference q a) : Prop :=
+  ∀ x ∈ bases, ∀ r : SizeTwoAdmissibleTargetRow q t.1,
+    let s := data.targetDifference x t r
+    let reverseRow : SizeTwoAdmissibleTargetRow q s.1 :=
+      ⟨-r.1, data.reverse_admissible x t r⟩
+    (data.perm (x + r.1) s reverseRow).1 = t.1 - r.1
+
+/-- Two-fiber subsystem with assumptions imposed only at `bases`. -/
+structure SizeTwoCyclicTwoFiberBaseCode
+    (q : ℕ) [NeZero q] (a : ZMod q)
+    (bases : Finset (ZMod q))
+    (t u : sizeTwoAllowedDifference q a) where
+  data : SizeTwoCyclicRoutingData q a
+  agreement_t : data.AgreementAtBases bases t
+  agreement_u : data.AgreementAtBases bases u
+  reciprocity_t : data.ReciprocityAtBases bases t
+  reciprocity_u : data.ReciprocityAtBases bases u
+
+def SizeTwoCyclicTwoFiberCode.toBaseCode
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    {t u : sizeTwoAllowedDifference q a}
+    (code : SizeTwoCyclicTwoFiberCode q a t u)
+    (bases : Finset (ZMod q)) :
+    SizeTwoCyclicTwoFiberBaseCode q a bases t u where
+  data := code.data
+  agreement_t := by
+    intro x _ d hd
+    exact code.agreement_t x d hd
+  agreement_u := by
+    intro x _ d hd
+    exact code.agreement_u x d hd
+  reciprocity_t := by
+    intro x _ r
+    exact code.reciprocity_t x r
+  reciprocity_u := by
+    intro x _ r
+    exact code.reciprocity_u x r
+
 /-- Forget a reciprocal code down to raw routing data. -/
 def SizeTwoCyclicReciprocalPermutationCode.toRoutingData
     {q : ℕ} [NeZero q] {a : ZMod q}
@@ -124,6 +177,23 @@ def sizeTwoCyclicSixFiberTwo :
 def SizeTwoCyclicSixTwoFiberExclusion : Prop :=
   IsEmpty (SizeTwoCyclicTwoFiberCode 6 (1 : ZMod 6)
     sizeTwoCyclicSixFiberZero sizeTwoCyclicSixFiberTwo)
+
+/-- Five translated bases used by the minimized q=6 core (the omitted base
+is immaterial by cyclic translation). -/
+def sizeTwoCyclicSixFiveBases : Finset (ZMod 6) :=
+  Finset.univ.erase 5
+
+def SizeTwoCyclicSixFiveBaseTwoFiberExclusion : Prop :=
+  IsEmpty (SizeTwoCyclicTwoFiberBaseCode 6 (1 : ZMod 6)
+    sizeTwoCyclicSixFiveBases
+    sizeTwoCyclicSixFiberZero sizeTwoCyclicSixFiberTwo)
+
+theorem sizeTwoCyclicSixTwoFiberExclusion_of_fiveBase
+    (h : SizeTwoCyclicSixFiveBaseTwoFiberExclusion) :
+    SizeTwoCyclicSixTwoFiberExclusion := by
+  constructor
+  intro code
+  exact h.false (code.toBaseCode sizeTwoCyclicSixFiveBases)
 
 /-- The two-fiber exclusion implies the previously stated q=6 packing
 exclusion at a=1. -/
