@@ -163,6 +163,68 @@ theorem bipartition_signSwitch_eigen_three
       (by simpa using hAA) (by simpa using hABsum)
       (by simpa using hBB) (by simpa using hBAsum)
 
+/-- Cardinality-level form of the `(k,r)=(1,4)` switch.  Each diagonal
+block row has size three with one same-sign entry, while each cross-block
+row has size four with no same-sign entry. -/
+theorem bipartition_signSwitch_eigen_three_of_card
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D : SimpleGraph X) [DecidableRel D.Adj]
+    (A B : Finset X) (hAB : Disjoint A B)
+    (hcover : ∀ x, D.neighborFinset x ⊆ A ∪ B)
+    (s : X → ℤ)
+    (hsign : ∀ x ∈ A ∪ B, s x = -1 ∨ s x = 1)
+    (hAAcard : ∀ x ∈ A,
+      ((D.neighborFinset x).filter (· ∈ A)).card = 3)
+    (hAAsame : ∀ x ∈ A,
+      (((D.neighborFinset x).filter (· ∈ A)).filter
+        (fun y ↦ s y = s x)).card = 1)
+    (hABcard : ∀ x ∈ A,
+      ((D.neighborFinset x).filter (· ∈ B)).card = 4)
+    (hABsame : ∀ x ∈ A,
+      (((D.neighborFinset x).filter (· ∈ B)).filter
+        (fun y ↦ s y = s x)).card = 0)
+    (hBBcard : ∀ x ∈ B,
+      ((D.neighborFinset x).filter (· ∈ B)).card = 3)
+    (hBBsame : ∀ x ∈ B,
+      (((D.neighborFinset x).filter (· ∈ B)).filter
+        (fun y ↦ s y = s x)).card = 1)
+    (hBAcard : ∀ x ∈ B,
+      ((D.neighborFinset x).filter (· ∈ A)).card = 4)
+    (hBAsame : ∀ x ∈ B,
+      (((D.neighborFinset x).filter (· ∈ A)).filter
+        (fun y ↦ s y = s x)).card = 0) :
+    let t : X → ℤ := fun x ↦ if x ∈ B then -s x else s x
+    ∀ x ∈ A ∪ B, ∑ y ∈ D.neighborFinset x, t y = 3 * t x := by
+  apply bipartition_signSwitch_eigen_three D A B hAB hcover s
+  · intro x hx
+    rw [signed_sum_eq_two_same_sub_card _ s x
+      (hsign x (Finset.mem_union_left B hx))]
+    · rw [hAAcard x hx, hAAsame x hx]
+      norm_num
+    · intro y hy
+      exact hsign y (Finset.mem_union_left B (Finset.mem_filter.mp hy).2)
+  · intro x hx
+    rw [signed_sum_eq_two_same_sub_card _ s x
+      (hsign x (Finset.mem_union_left B hx))]
+    · rw [hABcard x hx, hABsame x hx]
+      norm_num
+    · intro y hy
+      exact hsign y (Finset.mem_union_right A (Finset.mem_filter.mp hy).2)
+  · intro x hx
+    rw [signed_sum_eq_two_same_sub_card _ s x
+      (hsign x (Finset.mem_union_right A hx))]
+    · rw [hBBcard x hx, hBBsame x hx]
+      norm_num
+    · intro y hy
+      exact hsign y (Finset.mem_union_right A (Finset.mem_filter.mp hy).2)
+  · intro x hx
+    rw [signed_sum_eq_two_same_sub_card _ s x
+      (hsign x (Finset.mem_union_right A hx))]
+    · rw [hBAcard x hx, hBAsame x hx]
+      norm_num
+    · intro y hy
+      exact hsign y (Finset.mem_union_left B (Finset.mem_filter.mp hy).2)
+
 end
 
 end Erdos85
@@ -170,3 +232,4 @@ end Erdos85
 #print axioms Erdos85.bipartition_signSwitch_eigen_three
 #print axioms Erdos85.bipartition_signSwitch_eigen_sub
 #print axioms Erdos85.signed_sum_eq_two_same_sub_card
+#print axioms Erdos85.bipartition_signSwitch_eigen_three_of_card
