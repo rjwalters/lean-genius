@@ -9,6 +9,34 @@ namespace Erdos85
 
 noncomputable section
 
+/-- The exact μ=-1 sector cells after deleting the all-triangle `(0,6)`
+cell. -/
+def MuNegOneRefinedSectorCells
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ) : Prop :=
+  ((MuNegOneC8CycleEntriesZero N₁ ∧ MuNegOneC8CycleEntriesZero N₂) ∧
+      ((k = 0 ∧ r = 5) ∨ (k = 0 ∧ r = 7) ∨
+       (k = 1 ∧ r = 4) ∨ (k = 1 ∧ r = 5) ∨ (k = 1 ∧ r = 6))) ∨
+    ((((MuNegOneC8CycleEntriesZero N₁ ∧ MuNegOneC8CycleEntriesOne N₂) ∨
+        (MuNegOneC8CycleEntriesOne N₁ ∧ MuNegOneC8CycleEntriesZero N₂))) ∧
+      ((k = 0 ∧ r = 5) ∨ (k = 1 ∧ r = 4))) ∨
+    ((MuNegOneC8CycleEntriesOne N₁ ∧ MuNegOneC8CycleEntriesOne N₂) ∧
+      ((k = 0 ∧ r = 3) ∨ (k = 0 ∧ r = 4) ∨ (k = 0 ∧ r = 5) ∨
+       (k = 1 ∧ r = 2) ∨ (k = 1 ∧ r = 3) ∨ (k = 1 ∧ r = 4)))
+
+/-- After the `(0,6)` contradiction, `(1,4)` is the unique μ=-1 cell fixed
+by the shore-switch involution. -/
+theorem muNegOne_refined_switch_target_eq_self_iff
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegOneRefinedSectorCells N₁ N₂ k r) :
+    sizeTwoMuSwitchTarget (-1) k r = -1 ↔ k = 1 ∧ r = 4 := by
+  rcases hcell with hzero | hmixed | hone
+  · rcases hzero.2 with h | h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · rcases hmixed.2 with h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  · rcases hone.2 with h | h | h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+
 /-- Exact μ=-1 sector cells after deleting the impossible all-triangle
 `(k,r)=(0,6)` cell. -/
 theorem orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_sector_cells
@@ -106,3 +134,4 @@ end
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_sector_cells
+#print axioms Erdos85.muNegOne_refined_switch_target_eq_self_iff
