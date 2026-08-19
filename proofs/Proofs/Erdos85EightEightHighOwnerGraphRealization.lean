@@ -284,8 +284,8 @@ noncomputable def eightEightHighEnabledOwnerEdgeEquivOfCover
 independent outside-vertex/edge equivalence.  This is the exact direction
 required by `eightEightHighOwnerServiceSemantics_of_enabledEquiv`. -/
 noncomputable def eightEightHighEnabledOwnerOutsideEquiv
-    {E : Type*} [Fintype E] [DecidableEq E]
-    (S : SimpleGraph E) [DecidableRel S.Adj]
+    {W E : Type*} [Fintype W] [DecidableEq W]
+    (S : SimpleGraph W) [DecidableRel S.Adj]
     (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
     (active : Fin 64 → Prop) [DecidablePred active]
     (hedge : ∀ e : Fin 64,
@@ -304,8 +304,8 @@ noncomputable def eightEightHighEnabledOwnerOutsideEquiv
         ((edgeFinsetEquivEdgeSet S).symm.trans outsideEdge.symm)))
 
 noncomputable def eightEightHighEnabledOwnerOutsideEquivOfCover
-    {E : Type*} [Fintype E] [DecidableEq E]
-    (S : SimpleGraph E) [DecidableRel S.Adj]
+    {W E : Type*} [Fintype W] [DecidableEq W]
+    (S : SimpleGraph W) [DecidableRel S.Adj]
     (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
     (active : Fin 64 → Prop)
     (hedge : ∀ e : Fin 64,
