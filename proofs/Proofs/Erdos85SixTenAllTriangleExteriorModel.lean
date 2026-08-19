@@ -77,6 +77,49 @@ def sixTenExteriorPairDegree
   ((Finset.univ : Finset SixTenVertex).filter
     (sixTenExteriorPairAdj D x)).card
 
+/-- On the short shore, exterior ownership is the antipodal matching. -/
+theorem sixTenLow_short_exteriorPairAdj_iff (i j : ZMod 6) :
+    sixTenExteriorPairAdj sixTenLowDefectAdj (Sum.inl i) (Sum.inl j) ↔
+      j - i = 3 := by
+  revert i j
+  decide
+
+/-- Across shores, exterior ownership is exactly sign inequality. -/
+theorem sixTenLow_cross_exteriorPairAdj_iff (i : ZMod 6) (j : ZMod 10) :
+    sixTenExteriorPairAdj sixTenLowDefectAdj (Sum.inl i) (Sum.inr j) ↔
+      ¬ sixTenSameSign (Sum.inl i) (Sum.inr j) := by
+  revert i j
+  decide
+
+/-- In the surviving `{\u00b12,\u00b13}` branch, long-shore exterior pairs have
+exactly offsets `{\u00b14,5}`. -/
+theorem sixTenLow_long_exteriorPairAdj_iff (i j : ZMod 10) :
+    sixTenExteriorPairAdj sixTenLowDefectAdj (Sum.inr i) (Sum.inr j) ↔
+      j - i = 4 ∨ j - i = 5 ∨ j - i = 6 := by
+  revert i j
+  decide
+
+/-- The high branch has the same short antipodal exterior matching. -/
+theorem sixTenHigh_short_exteriorPairAdj_iff (i j : ZMod 6) :
+    sixTenExteriorPairAdj sixTenHighDefectAdj (Sum.inl i) (Sum.inl j) ↔
+      j - i = 3 := by
+  revert i j
+  decide
+
+/-- The high branch also has the same opposite-sign cross exterior pairs. -/
+theorem sixTenHigh_cross_exteriorPairAdj_iff (i : ZMod 6) (j : ZMod 10) :
+    sixTenExteriorPairAdj sixTenHighDefectAdj (Sum.inl i) (Sum.inr j) ↔
+      ¬ sixTenSameSign (Sum.inl i) (Sum.inr j) := by
+  revert i j
+  decide
+
+/-- Only the long antipodal matching survives as a high-branch exterior pair. -/
+theorem sixTenHigh_long_exteriorPairAdj_iff (i j : ZMod 10) :
+    sixTenExteriorPairAdj sixTenHighDefectAdj (Sum.inr i) (Sum.inr j) ↔
+      j - i = 5 := by
+  revert i j
+  decide
+
 /-- The `{\u00b12,\u00b13}` long support gives a six-regular exterior-pair model. -/
 theorem sixTenLow_exteriorPairDegree (x : SixTenVertex) :
     sixTenExteriorPairDegree sixTenLowDefectAdj x = 6 := by
@@ -102,3 +145,9 @@ end Erdos85
 #print axioms Erdos85.sixTenLow_exteriorPairDegree
 #print axioms Erdos85.sixTenHigh_long_exteriorPairDegree
 #print axioms Erdos85.sixTenHigh_short_exteriorPairDegree
+#print axioms Erdos85.sixTenLow_short_exteriorPairAdj_iff
+#print axioms Erdos85.sixTenLow_cross_exteriorPairAdj_iff
+#print axioms Erdos85.sixTenLow_long_exteriorPairAdj_iff
+#print axioms Erdos85.sixTenHigh_short_exteriorPairAdj_iff
+#print axioms Erdos85.sixTenHigh_cross_exteriorPairAdj_iff
+#print axioms Erdos85.sixTenHigh_long_exteriorPairAdj_iff
