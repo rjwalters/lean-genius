@@ -2,6 +2,7 @@ import Proofs.Erdos85OrderSixtyFourOutsideCnfSemantics
 import Proofs.Erdos85SizeTwoEigenlineEightEightLowExteriorModel
 import Proofs.Erdos85SizeTwoUnorderedPairServiceCount
 import Proofs.Erdos85EightEightLowOwnerCnf
+import Proofs.Erdos85OrderSixtyFourOutsideEdgeBijection
 
 /-!
 # Transporting exterior-owner clause semantics to finite coordinates
@@ -92,6 +93,40 @@ def eightEightOwnerEdgeEquiv :
 
 @[simp] theorem eightEightOwnerEdgeEquiv_apply_val (e : Fin 48) :
     (eightEightOwnerEdgeEquiv e).1 = eightEightOwnerSym2 e := rfl
+
+/-- The finset subtype and set subtype of edges are canonically equivalent. -/
+def edgeFinsetEquivEdgeSet
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (R : SimpleGraph W) [DecidableRel R.Adj] :
+    R.edgeFinset ≃ R.edgeSet where
+  toFun e := ⟨e.1, SimpleGraph.mem_edgeFinset.mp e.2⟩
+  invFun e := ⟨e.1, SimpleGraph.mem_edgeFinset.mpr e.2⟩
+  left_inv _ := Subtype.ext rfl
+  right_inv _ := Subtype.ext rfl
+
+/-- Once the actual exterior-pair graph is identified with the fixed low
+`8+8` model, the canonical outside-pair bijection and the generator's exact
+edge enumeration compose to label every exterior vertex by `Fin 48`. -/
+noncomputable def outsideLowEightOwnerIndexEquiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (modelIso : exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph) :
+    {x : V // x ∉ c.supp} ≃ Fin 48 :=
+  (outsidePairEdgeEquiv G (secondOrderDefectGraph G) c
+      hcard hinc hqcard hRedges).trans
+    ((edgeFinsetEquivEdgeSet (exteriorPairGraph G c)).trans
+      (modelIso.mapEdgeSet.trans
+        ((edgeFinsetEquivEdgeSet eightEightLowExteriorPairGraph).symm.trans
+          eightEightOwnerEdgeEquiv.symm)))
 
 /-- Membership in the generated pair is exactly the generator's Boolean
 incidence predicate. -/
