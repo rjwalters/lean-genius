@@ -442,6 +442,112 @@ theorem orderSixtyFour_sizeTwo_muNegFive_long_sameParity_antipodal_rightUnique
     apply Subtype.ext
     exact congrArg (fun x : Xp ↦ x.1) (hjmate.symm.trans hkmate)
 
+/-- The positive vertices in any parametrization of the long component are
+exactly the complement, inside the positive shore, of the three positive
+short-cycle coordinates. -/
+theorem muNegFive_sixTen_positiveLong_image_eq_complement_short
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 6) (hb : b.supp.ncard = 10)
+    (coord : SizeTwoCycleGridCoordinates (G.induce c.supp) a.supp
+      (fun z ↦ s z.1) 3)
+    (v : ZMod 10 → c.supp) (hvrange : Set.range v = b.supp) :
+    let D := secondOrderDefectGraph G
+    let Xp := MuNegFivePositiveShore D c s
+    let Ip := {i : ZMod 10 // s (v i).1 = 1}
+    let long : Ip → Xp := fun i ↦ ⟨(v i.1).1, (v i.1).2, i.2⟩
+    let short : ZMod 3 → Xp := fun i ↦
+      ⟨(coord.pval i).1, (coord.pval i).2, (coord.p_mem_sign i).2⟩
+    Finset.univ.image long = Finset.univ \ Finset.univ.image short := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Xp := MuNegFivePositiveShore D c s
+  let Ip := {i : ZMod 10 // s (v i).1 = 1}
+  let long : Ip → Xp := fun i ↦ ⟨(v i.1).1, (v i.1).2, i.2⟩
+  let short : ZMod 3 → Xp := fun i ↦
+    ⟨(coord.pval i).1, (coord.pval i).2, (coord.p_mem_sign i).2⟩
+  have hcomp : ∀ x : c.supp, x ∉ a.supp ↔ x ∈ b.supp := by
+    let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+    let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
+    have hab : a ≠ b := by
+      intro hab
+      rw [hab] at ha
+      omega
+    have hAcard : A.card = 6 := by
+      have heq : A = a.supp.toFinite.toFinset := by ext x; simp [A]
+      rw [heq, ← Set.ncard_eq_toFinset_card, ha]
+    have hBcard : B.card = 10 := by
+      have heq : B = b.supp.toFinite.toFinset := by ext x; simp [B]
+      rw [heq, ← Set.ncard_eq_toFinset_card, hb]
+    have hdisj : Disjoint A B := by
+      rw [Finset.disjoint_left]
+      intro x hxa hxb
+      exact hab <| (ConnectedComponent.mem_supp_iff a x).mp
+        (Finset.mem_filter.mp hxa).2 |>.symm.trans
+          ((ConnectedComponent.mem_supp_iff b x).mp
+            (Finset.mem_filter.mp hxb).2)
+    have hUcard : (Finset.univ : Finset c.supp).card = 16 := by
+      rw [Finset.card_univ]
+      calc
+        Fintype.card c.supp = c.supp.ncard := by
+          simpa [Nat.card_eq_fintype_card] using Nat.card_coe_set_eq c.supp
+        _ = 16 := by omega
+    have hcover : A ∪ B = (Finset.univ : Finset c.supp) := by
+      apply Finset.eq_of_subset_of_card_le (Finset.subset_univ _)
+      rw [Finset.card_union_of_disjoint hdisj, hAcard, hBcard, hUcard]
+    intro x
+    have hxcover : x ∈ A ∪ B := by rw [hcover]; simp
+    simp only [A, B, Finset.mem_union, Finset.mem_filter,
+      Finset.mem_univ, true_and] at hxcover
+    constructor
+    · exact fun hxa ↦ hxcover.resolve_left hxa
+    · intro hxb hxa
+      exact hab <| (ConnectedComponent.mem_supp_iff a x).mp hxa |>.symm.trans
+        ((ConnectedComponent.mem_supp_iff b x).mp hxb)
+  ext x
+  simp only [Finset.mem_image, Finset.mem_univ, true_and,
+    Finset.mem_sdiff]
+  constructor
+  · rintro ⟨i, rfl⟩
+    rintro ⟨j, hj⟩
+    have hva : v i.1 ∈ a.supp := by
+      have hjc : coord.pval j = v i.1 := by
+        apply Subtype.ext
+        exact congrArg (fun z : Xp ↦ z.1) hj
+      rw [← hjc]
+      exact (coord.p_mem_sign j).1
+    have hvb : v i.1 ∈ b.supp := by
+      rw [← hvrange]
+      exact ⟨i.1, rfl⟩
+    have hab : a = b :=
+      ((ConnectedComponent.mem_supp_iff a _).mp hva).symm.trans
+        ((ConnectedComponent.mem_supp_iff b _).mp hvb)
+    rw [hab] at ha
+    omega
+  · intro hxshort
+    have hxa : (⟨x.1, x.2.1⟩ : c.supp) ∉ a.supp := by
+      intro hxa
+      obtain ⟨j, hj⟩ := coord.p_surjective
+        ⟨x.1, x.2.1⟩ hxa x.2.2
+      apply hxshort
+      refine ⟨j, ?_⟩
+      apply Subtype.ext
+      exact congrArg (fun z : c.supp ↦ z.1) hj
+    have hxb : (⟨x.1, x.2.1⟩ : c.supp) ∈ b.supp := (hcomp _).mp hxa
+    rw [← hvrange] at hxb
+    obtain ⟨i, hi⟩ := hxb
+    let ii : Ip := ⟨i, by simpa [hi] using x.2.2⟩
+    refine ⟨ii, ?_⟩
+    apply Subtype.ext
+    exact congrArg (fun z : c.supp ↦ z.1) hi
+
 end
 
 end Erdos85
@@ -452,3 +558,4 @@ end Erdos85
 #print axioms Erdos85.card_filter_product_eq_card_filter_exists_of_rightUnique
 #print axioms Erdos85.orderSixtyFour_sizeTwo_sixTen_long_allTf_false_of_signed_active_two
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_long_sameParity_antipodal_rightUnique
+#print axioms Erdos85.muNegFive_sixTen_positiveLong_image_eq_complement_short
