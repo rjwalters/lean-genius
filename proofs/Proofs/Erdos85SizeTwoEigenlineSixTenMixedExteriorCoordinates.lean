@@ -1,5 +1,7 @@
 import Proofs.Erdos85SizeTwoEigenlineSixTenCrossSignCoordinates
 import Proofs.Erdos85ExteriorPairGraphAdjacency
+import Proofs.Erdos85SizeTwoEigenlineSixTenShortCycleRigidity
+import Proofs.Erdos85SizeTwoEigenlineSixTenInternalCommonPairs
 
 /-!
 # Cross exterior-pair coordinates in the genuine mixed C6+C10 branch
@@ -53,6 +55,7 @@ theorem binarySquare_regular_sizeTwoPart_eight_sixTen_crossExteriorPair_iff_sign
     ∀ i j, (exteriorPairGraph G c.supp).Adj (u i) (v j) ↔
       s (v j).1 = -s (u i).1 := by
   classical
+  letI : DecidableEq (ZMod 6) := ZMod.decidableEq 6
   let H := G.induce c.supp
   let K := (secondOrderDefectGraph G).induce c.supp
   have hua : ∀ i, u i ∈ a.supp := by
@@ -95,8 +98,83 @@ theorem binarySquare_regular_sizeTwoPart_eight_sixTen_crossExteriorPair_iff_sign
   rcases hs_in (u i).1 (u i).2 with huNeg | huPos <;>
     rcases hs_in (v j).1 (v j).2 with hvNeg | hvPos <;> simp_all
 
+/-- On the short `C6` shore, the graph-theoretic exterior pairs are exactly
+the three antipodal coordinate pairs.  This uses the genuine forced
+all-triangle-free short shore: offsets `±1` are defect edges and offsets
+`±2` have an internal common neighbor, leaving only offset `3`. -/
+theorem binarySquare_regular_sizeTwoPart_eight_sixTen_shortExteriorPair_iff_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 6) (hb : b.supp.ncard = 10)
+    (u : ZMod 6 → c.supp) (huinj : Function.Injective u)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)}) :
+    ∀ i j, (exteriorPairGraph G c.supp).Adj (u i) (u j) ↔
+      j - i = 3 := by
+  classical
+  letI : DecidableEq (ZMod 6) := ZMod.decidableEq 6
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  have hua : ∀ i, u i ∈ a.supp := by
+    intro i
+    rw [← hurange]
+    exact ⟨i, rfl⟩
+  intro i j
+  by_cases hij : i = j
+  · subst j
+    constructor
+    · exact fun h => ((exteriorPairGraph G c.supp).loopless.irrefl _ h).elim
+    · intro h
+      have : ¬ ((0 : ZMod 6) = 3) := by decide
+      exact (this (by simpa using h)).elim
+  have huij : u i ≠ u j := fun h => hij (huinj h)
+  have hD : K.Adj (u i) (u j) ↔ j - i = 1 ∨ j - i = 5 := by
+    rw [binarySquare_regular_sizeTwoPart_eight_sixTen_shortCycle_defectAdj_iff
+      G hfree hreg hcard c hc s hs_in hs_out hA_in a b ha hb
+        (u i) (u j) (hua i) (hua j)]
+    rw [← H.mem_neighborFinset, hu]
+    have hueq : ∀ x y, u x = u y ↔ x = y := fun x y => huinj.eq_iff
+    fin_cases i <;> fin_cases j <;> simp [hueq] <;> decide
+  have hcommon : (∃ z : c.supp,
+      G.Adj (u i).1 z.1 ∧ G.Adj (u j).1 z.1) ↔
+      j - i = 2 ∨ j - i = 4 := by
+    have hex := zmodSix_cycle_internalCommon_iff_offset_two_four
+      H u huinj hu i j hij
+    constructor
+    · rintro ⟨z, huz, hvz⟩
+      exact hex.mp ⟨z, huz, hvz⟩
+    · intro h
+      obtain ⟨z, huz, hvz⟩ := hex.mpr h
+      exact ⟨z, huz, hvz⟩
+  rw [exteriorPairGraph_adj_iff_not_defect_and_no_internal_common
+    G hfree c (u i) (u j)]
+  change (u i ≠ u j ∧ ¬ K.Adj (u i) (u j) ∧
+    ¬ (∃ z : c.supp, G.Adj (u i).1 z.1 ∧ G.Adj (u j).1 z.1)) ↔ _
+  rw [hD, hcommon]
+  rw [and_iff_right huij]
+  fin_cases i <;> fin_cases j
+  all_goals first | contradiction | decide
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_sixTen_crossExteriorPair_iff_sign_neg
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_sixTen_shortExteriorPair_iff_antipodal
