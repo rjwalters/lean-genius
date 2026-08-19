@@ -120,19 +120,26 @@ def build_cnf(
     return cnf
 
 
-def solve_with_kissat(cnf: Cnf) -> str:
+def solve_with_kissat(cnf: Cnf) -> tuple[str, set[int]]:
     with tempfile.NamedTemporaryFile(mode="w", suffix=".cnf") as dimacs:
         dimacs.write(f"p cnf {len(cnf.ids)} {len(cnf.clauses)}\n")
         for clause in cnf.clauses:
             dimacs.write(" ".join(map(str, clause)) + " 0\n")
         dimacs.flush()
         result = subprocess.run(
-            ["kissat", "--quiet", dimacs.name], capture_output=True, text=True
+            ["kissat", dimacs.name], capture_output=True, text=True
         )
     if result.returncode == 10:
-        return "sat"
+        positive = {
+            int(token)
+            for line in result.stdout.splitlines()
+            if line.startswith("v ")
+            for token in line.split()[1:]
+            if token != "0" and not token.startswith("-")
+        }
+        return "sat", positive
     if result.returncode == 20:
-        return "unsat"
+        return "unsat", set()
     raise RuntimeError(result.stderr or result.stdout)
 
 
@@ -253,9 +260,23 @@ def main() -> None:
             loopless=not args.no_loopless,
         )
         if args.backend == "kissat":
-            result = solve_with_kissat(build_cnf(args.q, a, **build_args))
+            cnf = build_cnf(args.q, a, **build_args)
+            result, positive = solve_with_kissat(cnf)
             print(f"q={args.q} a={a % args.q}: {result}")
             if result == "sat":
+                selected = {
+                    key for key, variable in cnf.ids.items()
+                    if variable in positive
+                }
+                ts = allowed_differences(args.q, a)
+                for x in range(args.q):
+                    for t in ts:
+                        values = [
+                            (r, next(c for c in range(args.q)
+                                if (x, t, r, c) in selected))
+                            for r in admissible_rows(args.q, t)
+                        ]
+                        print(f"  x={x} t={t}: {values}")
                 break
             continue
         solver, p = build(args.q, a, **build_args)
