@@ -919,6 +919,99 @@ theorem hole_col_card [NeZero q] (hfree : ¬ containsC4 V G)
   rw [hcells, Finset.card_univ, ZMod.card] at hsplit
   omega
 
+/-- Internal common-neighbour count between a cell witness and a target
+positive vertex, resolved by the coordinate `H`-pattern. -/
+theorem internal_common_of_witness (hfree : ¬ containsC4 V G)
+    (hq : 5 ≤ q)
+    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (hc : c.supp.ncard = q * 2)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      ((q : ℤ) - 5) * s x)
+    (hp : ∀ x, pval x ∈ c.supp ∧ s (pval x) = 1)
+    (hn : ∀ y, nval y ∈ c.supp ∧ s (nval y) = -1)
+    (hH : ∀ x y, G.Adj (pval x) (nval y) ↔ (y = x ∨ y = x - 1))
+    {w : V} {x y : ZMod q} (hw : IsGridWitness G c pval nval w x y)
+    (x' : ZMod q) :
+    ((G.neighborFinset (pval x')).filter
+      (fun z => z ∈ c.supp ∧ G.Adj w z)).card =
+      if y = x' ∨ y = x' - 1 then 1 else 0 := by
+  classical
+  -- w's block neighbours are exactly {pval x, nval y}
+  obtain ⟨p, n, hpsupp, hnsupp, hps, hns, heq⟩ := exterior_labels G hfree hq
+    hreg hcard c hc s hs_in hs_out hsum hA_in hDs hw.1
+  have hpvx : p = pval x := by
+    have hmem : pval x ∈ componentNeighborFinset G (secondOrderDefectGraph G) c w := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset w (pval x)).mpr hw.2.1,
+        (SimpleGraph.ConnectedComponent.mem_supp_iff c (pval x)).mp (hp x).1⟩
+    rw [heq, Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with h | h
+    · exact h.symm
+    · exfalso
+      have := (hp x).2
+      rw [h, hns] at this
+      norm_num at this
+  have hnvy : n = nval y := by
+    have hmem : nval y ∈ componentNeighborFinset G (secondOrderDefectGraph G) c w := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset w (nval y)).mpr hw.2.2,
+        (SimpleGraph.ConnectedComponent.mem_supp_iff c (nval y)).mp (hn y).1⟩
+    rw [heq, Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with h | h
+    · exfalso
+      have := (hn y).2
+      rw [h, hps] at this
+      norm_num at this
+    · exact h.symm
+  -- membership in the internal-common filter forces z = nval y
+  have hforce : ∀ z, z ∈ (G.neighborFinset (pval x')).filter
+      (fun z => z ∈ c.supp ∧ G.Adj w z) → z = nval y := by
+    intro z hz
+    rw [Finset.mem_filter, SimpleGraph.mem_neighborFinset] at hz
+    obtain ⟨hadj', hzsupp, hzw⟩ := hz
+    -- z is a block neighbour of w
+    have hzmem : z ∈ componentNeighborFinset G (secondOrderDefectGraph G) c w := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset w z).mpr hzw,
+        (SimpleGraph.ConnectedComponent.mem_supp_iff c z).mp hzsupp⟩
+    rw [heq, Finset.mem_insert, Finset.mem_singleton] at hzmem
+    rcases hzmem with h | h
+    · -- z = p = pval x : positive, but internal neighbours of pval x' are negative
+      exfalso
+      subst h
+      have hzneg := (internal_alternation G hfree (by omega) hreg hcard c hc s
+        hs_in hs_out hA_in (hp x').1).2 z (by
+          rw [componentNeighborFinset, Finset.mem_filter]
+          exact ⟨(G.mem_neighborFinset (pval x') z).mpr hadj',
+            (SimpleGraph.ConnectedComponent.mem_supp_iff c z).mp hzsupp⟩)
+      rw [hps, (hp x').2] at hzneg
+      norm_num at hzneg
+    · exact h.trans hnvy
+  by_cases hcase : y = x' ∨ y = x' - 1
+  · -- the internal common neighbour is exactly nval y
+    have hset : (G.neighborFinset (pval x')).filter
+        (fun z => z ∈ c.supp ∧ G.Adj w z) = {nval y} := by
+      apply Finset.eq_singleton_iff_unique_mem.mpr
+      constructor
+      · rw [Finset.mem_filter, SimpleGraph.mem_neighborFinset]
+        refine ⟨(hH x' y).mpr hcase, (hn y).1, hw.2.2⟩
+      · exact hforce
+    rw [hset, Finset.card_singleton, if_pos hcase]
+  · -- no internal common neighbour
+    have hset : (G.neighborFinset (pval x')).filter
+        (fun z => z ∈ c.supp ∧ G.Adj w z) = ∅ := by
+      rw [Finset.eq_empty_iff_forall_notMem]
+      intro z hz
+      have := hforce z hz
+      subst this
+      rw [Finset.mem_filter, SimpleGraph.mem_neighborFinset] at hz
+      exact hcase ((hH x' y).mp hz.1)
+    rw [hset, Finset.card_empty, if_neg hcase]
+
 end Grid
 
 end Alternation
