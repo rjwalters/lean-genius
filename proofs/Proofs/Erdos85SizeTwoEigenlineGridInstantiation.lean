@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareRegularParity
+import Proofs.Erdos85CrossEdgeTriangleDichotomy
 import Proofs.Erdos85SizeTwoEigenlineGridLaws
 
 /-!
@@ -1011,6 +1012,93 @@ theorem internal_common_of_witness (hfree : ¬ containsC4 V G)
       rw [Finset.mem_filter, SimpleGraph.mem_neighborFinset] at hz
       exact hcase ((hH x' y).mp hz.1)
     rw [hset, Finset.card_empty, if_neg hcase]
+
+open Classical in
+/-- **Row-hit law for the graph-derived grid**: a cell `(x, y)` has exactly
+one `C`-neighbour among the cells of row `x'` iff `y` avoids the two
+`H`-columns `{x', x'-1}` of that row. -/
+theorem cell_row_neighbors_card [NeZero q] (hfree : ¬ containsC4 V G)
+    (hq : 5 ≤ q)
+    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (hc : c.supp.ncard = q * 2)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hsum : ∑ x, s x = 0)
+    (hA_in : ∀ x ∈ c.supp, ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      ((q : ℤ) - 5) * s x)
+    (hp : ∀ x, pval x ∈ c.supp ∧ s (pval x) = 1)
+    (hn : ∀ y, nval y ∈ c.supp ∧ s (nval y) = -1)
+    (hninj : Function.Injective nval)
+    (hnsurj : ∀ z, z ∈ c.supp → s z = -1 → ∃ y, nval y = z)
+    (hH : ∀ x y, G.Adj (pval x) (nval y) ↔ (y = x ∨ y = x - 1))
+    {w : V} {x y : ZMod q} (hw : IsGridWitness G c pval nval w x y)
+    (x' : ZMod q) :
+    (Finset.univ.filter fun y' : ZMod q =>
+      ∃ u', IsGridWitness G c pval nval u' x' y' ∧ G.Adj w u').card =
+      if y = x' ∨ y = x' - 1 then 0 else 1 := by
+  classical
+  -- the exterior common-neighbour finset of w and pval x'
+  set E := (G.neighborFinset w).filter
+    (fun u' => u' ∉ c.supp ∧ G.Adj (pval x') u') with hE
+  have hEcells : (Finset.univ.filter fun y' : ZMod q =>
+      ∃ u', IsGridWitness G c pval nval u' x' y' ∧ G.Adj w u').card = E.card := by
+    symm
+    apply Finset.card_bij (fun u' hu' => Classical.choose
+      (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard hc
+        hs_in hs_out hsum hA_in hDs hp hnsurj
+        (Finset.mem_filter.mp hu').2.1
+        (Finset.mem_filter.mp hu').2.2.symm))
+    · intro u' hu'
+      rw [Finset.mem_filter]
+      refine ⟨Finset.mem_univ _, u', Classical.choose_spec
+        (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hnsurj
+          (Finset.mem_filter.mp hu').2.1
+          (Finset.mem_filter.mp hu').2.2.symm), ?_⟩
+      have := (Finset.mem_filter.mp hu').1
+      exact (G.mem_neighborFinset w u').mp this
+    · intro u₁ h₁ u₂ h₂ heq'
+      set w₁ := Classical.choose_spec
+        (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hnsurj
+          (Finset.mem_filter.mp h₁).2.1
+          (Finset.mem_filter.mp h₁).2.2.symm)
+      set w₂ := Classical.choose_spec
+        (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hnsurj
+          (Finset.mem_filter.mp h₂).2.1
+          (Finset.mem_filter.mp h₂).2.2.symm)
+      exact gridWitness_unique G c s pval nval hfree
+        (fun x => (hp x).2) (fun y => (hn y).2) w₁ (heq' ▸ w₂)
+    · intro y' hy'
+      obtain ⟨u', hu', hadj⟩ := (Finset.mem_filter.mp hy').2
+      have huE : u' ∈ E := by
+        rw [hE, Finset.mem_filter, SimpleGraph.mem_neighborFinset]
+        exact ⟨hadj, hu'.1, hu'.2.1.symm⟩
+      refine ⟨u', huE, ?_⟩
+      set wch := Classical.choose_spec
+        (gridWitness_of_exterior_neighbor G c s pval nval hfree hq hreg hcard
+          hc hs_in hs_out hsum hA_in hDs hp hnsurj
+          (Finset.mem_filter.mp huE).2.1
+          (Finset.mem_filter.mp huE).2.2.symm)
+      exact gridWitness_y_unique G c s pval nval hfree hq hreg hcard hc hs_in
+        hs_out hsum hA_in hDs hn hninj wch hu'
+  rw [hEcells]
+  -- exterior + internal common = 1
+  have hone := card_internal_common_add_card_exterior_common_eq_one G hfree c
+    (hp x').1 hw.1
+  have hint := internal_common_of_witness G c s pval nval hfree hq hreg hcard
+    hc hs_in hs_out hsum hA_in hDs hp hn hH hw x'
+  have hone2 : ((G.neighborFinset (pval x')).filter
+      (fun z => z ∈ c.supp ∧ G.Adj w z)).card + E.card = 1 := hone
+  by_cases hcase : y = x' ∨ y = x' - 1
+  · rw [if_pos hcase]
+    rw [if_pos hcase] at hint
+    omega
+  · rw [if_neg hcase]
+    rw [if_neg hcase] at hint
+    omega
 
 end Grid
 
