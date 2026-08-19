@@ -137,8 +137,30 @@ theorem binary_sixTenCycleIntertwiner_checkerboard
   rcases hbinary (x - 1) y with hm0 | hm1 <;>
     rcases hbinary (x + 1) y with hp0 | hp1 <;> omega
 
+/-- Quotient-ready form of the checkerboard classification.  Exact row
+weight five automatically rules out a constant binary row. -/
+theorem binary_sixTenCycleIntertwiner_sum_five_checkerboard
+    (B : Matrix (ZMod 6) (ZMod 10) ℤ)
+    (hinter : ∀ x y,
+      B (x - 1) y + B (x + 1) y =
+        B x (y + 1) + B x (y - 1))
+    (hbinary : ∀ x y, B x y = 0 ∨ B x y = 1)
+    (hrow : ∀ x, ∑ y, B x y = 5) :
+    (∀ x y, B x (y + 1) = 1 - B x y) ∧
+      (∀ x y, B (x + 1) y = 1 - B x y) := by
+  apply binary_sixTenCycleIntertwiner_checkerboard B hinter hbinary
+  intro x
+  by_contra hconstant
+  push Not at hconstant
+  have hall (y : ZMod 10) : B x y = B x 0 := by
+    exact hconstant y 0
+  have hsum := hrow x
+  rw [Finset.sum_congr rfl (fun y _ ↦ hall y)] at hsum
+  rcases hbinary x 0 with hzero | hone <;> simp_all
+
 end Erdos85
 
 #print axioms Erdos85.binary_sixTenCycleIntertwiner_row_twoPeriodic
 #print axioms Erdos85.zmodTen_binary_twoPeriodic_nonconstant_flip
 #print axioms Erdos85.binary_sixTenCycleIntertwiner_checkerboard
+#print axioms Erdos85.binary_sixTenCycleIntertwiner_sum_five_checkerboard
