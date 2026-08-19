@@ -122,8 +122,116 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFour_crossExt
       rw [← hvrange]; exact ⟨k, rfl⟩) hurange hba4 hcompVU j
     simpa only [R.adj_comm] using h
 
+/-- In the all-triangle-free `(1,4)` shore, diagonal defect support
+`{±1,4}` leaves exactly `{±3}` as within-shore exterior pairs. -/
+theorem zmodEight_diagonal_one_four_seven_exterior_iff_three_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod 8 → c.supp) (huinj : Function.Injective u)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hD : ∀ i j,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (u j) ↔
+        j - i = 1 ∨ j - i = 4 ∨ j - i = 7) :
+    ∀ i j, (exteriorPairGraph G c.supp).Adj (u i) (u j) ↔
+      j - i = 3 ∨ j - i = 5 := by
+  let H := G.induce c.supp
+  intro i j
+  by_cases hij : i = j
+  · subst j
+    simp <;> decide
+  rw [exteriorPairGraph_adj_iff_not_defect_and_no_internal_common
+    G hfree c]
+  have hDg : (secondOrderDefectGraph G).Adj (u i).1 (u j).1 ↔
+      j - i = 1 ∨ j - i = 4 ∨ j - i = 7 := by
+    simpa using hD i j
+  rw [hDg]
+  have hcommon : (∃ z : c.supp,
+      G.Adj (u i).1 z.1 ∧ G.Adj (u j).1 z.1) ↔
+      j - i = 2 ∨ j - i = 6 := by
+    simpa [H] using (zmodEight_cycle_internalCommon_iff_offset_two_six
+      H u huinj hu i j hij)
+  rw [hcommon]
+  have huneq : u i ≠ u j := huinj.ne hij
+  have huneqVal : (u i).1 ≠ (u j).1 := fun h ↦ huneq (Subtype.ext h)
+  constructor
+  · rintro ⟨_, hnotD, hnotC⟩
+    have hpure : ∀ d : ZMod 8,
+        d ≠ 0 → (¬(d = 1 ∨ d = 4 ∨ d = 7)) →
+        (¬(d = 2 ∨ d = 6)) → (d = 3 ∨ d = 5) := by decide
+    have hnot0 : j - i ≠ 0 := by
+      intro hzero
+      exact hij (sub_eq_zero.mp hzero).symm
+    exact hpure (j - i) hnot0 hnotD hnotC
+  · intro hoff
+    refine ⟨huneq, ?_⟩
+    have hpure : ∀ d : ZMod 8, (d = 3 ∨ d = 5) →
+        (¬(d = 1 ∨ d = 4 ∨ d = 7)) ∧
+        (¬(d = 2 ∨ d = 6)) := by decide
+    exact hpure (j - i) hoff
+
+/-- In the all-triangle `(1,4)` shore, diagonal defect support `{±3,4}`
+leaves exactly the two ambient cycle offsets `{±1}` as exterior pairs. -/
+theorem zmodEight_diagonal_three_four_five_exterior_iff_one_seven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod 8 → c.supp) (huinj : Function.Injective u)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hD : ∀ i j,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (u j) ↔
+        j - i = 3 ∨ j - i = 4 ∨ j - i = 5) :
+    ∀ i j, (exteriorPairGraph G c.supp).Adj (u i) (u j) ↔
+      j - i = 1 ∨ j - i = 7 := by
+  let H := G.induce c.supp
+  intro i j
+  by_cases hij : i = j
+  · subst j
+    simp <;> decide
+  rw [exteriorPairGraph_adj_iff_not_defect_and_no_internal_common
+    G hfree c]
+  have hDg : (secondOrderDefectGraph G).Adj (u i).1 (u j).1 ↔
+      j - i = 3 ∨ j - i = 4 ∨ j - i = 5 := by
+    simpa using hD i j
+  rw [hDg]
+  have hcommon : (∃ z : c.supp,
+      G.Adj (u i).1 z.1 ∧ G.Adj (u j).1 z.1) ↔
+      j - i = 2 ∨ j - i = 6 := by
+    simpa [H] using (zmodEight_cycle_internalCommon_iff_offset_two_six
+      H u huinj hu i j hij)
+  rw [hcommon]
+  have huneq : u i ≠ u j := huinj.ne hij
+  have huneqVal : (u i).1 ≠ (u j).1 := fun h ↦ huneq (Subtype.ext h)
+  constructor
+  · rintro ⟨_, hnotD, hnotC⟩
+    have hpure : ∀ d : ZMod 8,
+        d ≠ 0 → (¬(d = 3 ∨ d = 4 ∨ d = 5)) →
+        (¬(d = 2 ∨ d = 6)) → (d = 1 ∨ d = 7) := by decide
+    have hnot0 : j - i ≠ 0 := by
+      intro hzero
+      exact hij (sub_eq_zero.mp hzero).symm
+    exact hpure (j - i) hnot0 hnotD hnotC
+  · intro hoff
+    refine ⟨huneq, ?_⟩
+    have hpure : ∀ d : ZMod 8, (d = 1 ∨ d = 7) →
+        (¬(d = 3 ∨ d = 4 ∨ d = 5)) ∧
+        (¬(d = 2 ∨ d = 6)) := by decide
+    exact hpure (j - i) hoff
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFour_crossExterior_degrees
+#print axioms Erdos85.zmodEight_diagonal_one_four_seven_exterior_iff_three_five
+#print axioms Erdos85.zmodEight_diagonal_three_four_five_exterior_iff_one_seven
