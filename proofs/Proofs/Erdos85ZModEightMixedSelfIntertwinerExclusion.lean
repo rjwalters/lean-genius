@@ -348,9 +348,64 @@ theorem zmodEight_selfIntertwiner_sameParity_degreeTwo_offset_two_six
   rw [hxy0]
   simpa [he] using hf'
 
+/-- The number of same-parity entries is independent of the row in a C8
+self-intertwiner. -/
+theorem zmodEight_selfIntertwiner_sameParity_card_eq
+    (H : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (hdiag : ∀ z, H z z = 0)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (x x' : ZMod 8) :
+    ((Finset.univ : Finset (ZMod 8)).filter fun y =>
+      ZModEightEvenOffset (y - x) ∧ H x y = 1).card =
+    ((Finset.univ : Finset (ZMod 8)).filter fun y =>
+      ZModEightEvenOffset (y - x') ∧ H x' y = 1).card := by
+  classical
+  let S := (Finset.univ : Finset (ZMod 8)).filter fun y =>
+    ZModEightEvenOffset (y - x) ∧ H x y = 1
+  let T := (Finset.univ : Finset (ZMod 8)).filter fun y =>
+    ZModEightEvenOffset (y - x') ∧ H x' y = 1
+  change S.card = T.card
+  apply Finset.card_bij (fun y _ => y - x + x')
+  · intro y hy
+    have hy' := (Finset.mem_filter.mp hy).2
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_univ _, ?_, ?_⟩
+    · simpa only [show (y - x + x') - x' = y - x by ring] using hy'.1
+    · calc
+        H x' (y - x + x') = H x y := by
+          apply selfIntertwiner_eq_of_sub_eq_of_mem_range_two
+            H hdiag hinter ?_ (by ring)
+          rcases hy'.1 with h0 | h2 | h4 | h6
+          · exact ⟨0, by rw [h0]; norm_num⟩
+          · exact ⟨1, by rw [h2]; norm_num⟩
+          · exact ⟨2, by rw [h4]; ring⟩
+          · exact ⟨3, by rw [h6]; ring⟩
+        _ = 1 := hy'.2
+  · intro y₁ hy₁ y₂ hy₂ heq
+    linear_combination heq
+  · intro z hz
+    refine ⟨z - x' + x, ?_, by ring⟩
+    have hz' := (Finset.mem_filter.mp hz).2
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_univ _, ?_, ?_⟩
+    · simpa only [show (z - x' + x) - x = z - x' by ring] using hz'.1
+    · calc
+        H x (z - x' + x) = H x' z := by
+          apply selfIntertwiner_eq_of_sub_eq_of_mem_range_two
+            H hdiag hinter ?_ (by ring)
+          rcases hz'.1 with h0 | h2 | h4 | h6
+          · exact ⟨0, by rw [h0]; norm_num⟩
+          · exact ⟨1, by rw [h2]; norm_num⟩
+          · exact ⟨2, by rw [h4]; ring⟩
+          · exact ⟨3, by rw [h6]; ring⟩
+        _ = 1 := hz'.2
+
 end Erdos85
 
 #print axioms Erdos85.zmodEight_no_oriented_symmetric_odd_matching_avoiding_cycle
 #print axioms Erdos85.zmodEight_selfIntertwiner_sameParity_degreeOne_impossible
 #print axioms Erdos85.zmodEight_symmetric_even_degreeTwo_support
 #print axioms Erdos85.zmodEight_selfIntertwiner_sameParity_degreeTwo_offset_two_six
+#print axioms Erdos85.zmodEight_selfIntertwiner_sameParity_card_eq
