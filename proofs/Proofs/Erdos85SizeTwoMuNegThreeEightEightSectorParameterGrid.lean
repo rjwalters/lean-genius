@@ -225,7 +225,8 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_parameter_grid
       fun i j ↦ K.adjMatrix ℤ (u i) (u j)
     let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
       fun i j ↦ K.adjMatrix ℤ (v i) (v j)
-    ∃ k r : ℕ, k ≤ 2 ∧ 2 ≤ r ∧ r ≤ 7 ∧
+    ∃ k r : ℕ, k ≤ 1 ∧ 2 ≤ r ∧ r ≤ 7 ∧
+      3 ≤ r + k ∧ r + k ≤ 6 ∧
       ((C8CycleEntriesZero N₁ ∧ C8CycleEntriesZero N₂ ∧ 5 ≤ r + k) ∨
         ((((C8CycleEntriesZero N₁ ∧ C8CycleEntriesOne N₂) ∨
             (C8CycleEntriesOne N₁ ∧ C8CycleEntriesZero N₂)) ∧
@@ -237,10 +238,10 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_parameter_grid
   let K := (secondOrderDefectGraph G).induce c.supp
   let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
   let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
-  obtain ⟨_ha8, _hb8, r, hr2, hr7, haa, _habq, _hbaq, hbb⟩ :=
+  obtain ⟨_ha8, _hb8, r, hr2, hr7, haa, habq, _hbaq, hbb⟩ :=
     orderSixtyFour_sizeTwo_muNegThree_distinctCycles_eightEight
       G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
-  obtain ⟨k, hk, hA, hB, _hcrossA, _hcrossB⟩ :=
+  obtain ⟨k, hk, hA, hB, hcrossA, _hcrossB⟩ :=
     orderSixtyFour_sizeTwo_muNegThree_eightEight_signedParameter
       G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
   have hHdegree : ∀ z : c.supp, Hc.degree z = 2 := by
@@ -274,6 +275,8 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_parameter_grid
     fun i j ↦ K.adjMatrix ℤ (u i) (u j)
   let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
     fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  let M : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (v j)
   have hrow₁ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
       N₁ 0 j = 1).card = 7 - r := by
     rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₁ 0 j = 1) =
@@ -328,6 +331,33 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_parameter_grid
     rw [coordinate_sameSign_adj_card_eq_support K B v hvinj hvrangeB
       (fun x : c.supp ↦ s x.1) 0]
     exact hB (v 0) hv0B
+  have hMrow : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      M 0 j = 1).card = r := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (u 0) (v j)) by
+      ext j; simp [M, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K B v hvinj hvrangeB (u 0)]
+    have hqcard : (componentNeighborFinset K Hc b (u 0)).card = r := by
+      rw [← componentQuotientMatrix_apply_eq K Hc 2 hHdegree hcommReal
+        a b (by simpa [A] using hu0A)]
+      exact habq
+    have heq : B.filter (fun y ↦ K.Adj (u 0) y) =
+        componentNeighborFinset K Hc b (u 0) := by
+      ext y
+      simp [B, Hc, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq]
+    exact hqcard
+  have hMsame : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      s (v j).1 = s (u 0).1 ∧ M 0 j = 1).card = 2 - k := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (u 0).1 ∧ M 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (v j).1 = s (u 0).1 ∧ K.Adj (u 0) (v j)) by
+      ext j; simp [M, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support_from K B v hvinj hvrangeB
+      (fun x : c.supp ↦ s x.1) (u 0)]
+    exact hcrossA (u 0) hu0A
   have hAfull := sizeTwo_internal_full_sum_of_filtered G c s hs_out hH
   have flip_of_coordinates
       (w : ZMod 8 → c.supp)
@@ -343,6 +373,43 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_parameter_grid
       exact ⟨(G.mem_neighborFinset _ _).mpr hadj, (w (i + 1)).2⟩
     exact (internal_alternation G hfree (by omega) hreg hcard c hc s
       hs_in hs_out hAfull (w i).2).2 _ hmem
+  have hbounds := alternating_C8_internal_cross_parameter_bounds N₁ M
+    (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r hk
+    (fun i ↦ hs_in _ (u i).2) (fun j ↦ hs_in _ (v j).2)
+    (flip_of_coordinates u hu) (flip_of_coordinates v hv)
+    hrow₁ hsame₁ hMrow hMsame
+  have hk1 : k ≤ 1 := by
+    have hkne2 : k ≠ 2 := by
+      intro hk2
+      obtain ⟨k', r', _hk', _hr2', _hr7', hnf⟩ :=
+        orderSixtyFour_sizeTwo_muNegThree_eightEight_signed_normalForm
+          G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+            u v huinj hvinj hurange hvrange hu hv
+      rcases hnf with ⟨_hk'0, hrowsA, _hrowsB⟩ |
+          ⟨_hk'1, φ, hφ, _horient⟩
+      · have hc0 := hcrossA (u 0) hu0A
+        rw [hk2] at hc0
+        have hc2 := hrowsA (u 0) (by simpa [A] using hu0A)
+        have hc2' : (B.filter fun y ↦
+            K.Adj (u 0) y ∧ s y.1 = s (u 0).1).card = 2 := by
+          simpa [B, K] using hc2
+        rw [hc0] at hc2'
+        omega
+      · have hvφB : v (φ 0) ∈ B := by
+          change v (φ 0) ∈ (↑B : Set c.supp)
+          rw [← hvrangeB]
+          exact ⟨φ 0, rfl⟩
+        have hedge := (hφ 0 (φ 0)).2 rfl
+        have hmem : v (φ 0) ∈ B.filter fun y ↦
+            K.Adj (u 0) y ∧ s y.1 = s (u 0).1 := by
+          rw [Finset.mem_filter]
+          exact ⟨hvφB, hedge.2, hedge.1.symm⟩
+        have hpos := Finset.card_pos.mpr ⟨v (φ 0), hmem⟩
+        have hc0 := hcrossA (u 0) hu0A
+        rw [hk2] at hc0
+        rw [hc0] at hpos
+        omega
+    omega
   have hsector₁ : C8CycleEntriesZero N₁ ∨ C8CycleEntriesOne N₁ := by
     simpa [N₁, K] using
       (binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
@@ -351,7 +418,7 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_parameter_grid
     simpa [N₂, K] using
       (binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
         G hfree hreg hcard c hc b v hvrange hv)
-  refine ⟨k, r, hk, hr2, hr7, ?_⟩
+  refine ⟨k, r, hk1, hr2, hr7, hbounds.1, hbounds.2.1, ?_⟩
   exact alternating_C8_twoShore_sector_parameter_grid N₁ N₂
     (fun i ↦ s (u i).1) (fun i ↦ s (v i).1) k r
       (fun i ↦ hs_in _ (u i).2) (fun i ↦ hs_in _ (v i).2)
