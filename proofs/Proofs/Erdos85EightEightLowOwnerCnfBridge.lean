@@ -104,6 +104,20 @@ def edgeFinsetEquivEdgeSet
   left_inv _ := Subtype.ext rfl
   right_inv _ := Subtype.ext rfl
 
+/-- Package a pointwise coordinate description of the actual exterior-pair
+relation as the graph isomorphism consumed by the owner-index transport. -/
+noncomputable def lowEightExteriorPairModelIso
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (coord : c.supp ≃ Fin 16)
+    (hmodel : ∀ x y : c.supp,
+      (exteriorPairGraph G c).Adj x y ↔
+        eightEightLowExteriorPairGraph.Adj (coord x) (coord y)) :
+    exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph where
+  toEquiv := coord
+  map_rel_iff' := fun x y => (hmodel x y).symm
+
 /-- Once the actual exterior-pair graph is identified with the fixed low
 `8+8` model, the canonical outside-pair bijection and the generator's exact
 edge enumeration compose to label every exterior vertex by `Fin 48`. -/
