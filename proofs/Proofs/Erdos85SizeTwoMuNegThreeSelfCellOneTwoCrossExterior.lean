@@ -124,8 +124,43 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_parameterTwo_crossExte
       rw [← hvrange]; exact ⟨k, rfl⟩) hurange hba2 hcompVU j
     simpa only [R.adj_comm] using h
 
+/-- The saturated exterior incidence is a pointwise bijection: an outside
+vertex has a unique pair of shore coordinates, and every exterior cross
+pair has a unique outside owner. -/
+theorem outside_vertices_and_crossExteriorPairs_unique_incidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u v : ZMod 8 → c.supp)
+    (hu : ∀ z, z ∉ c.supp → ∃! i : ZMod 8, G.Adj (u i).1 z)
+    (hv : ∀ z, z ∉ c.supp → ∃! j : ZMod 8, G.Adj (v j).1 z) :
+    (∀ z : {z : V // z ∉ c.supp},
+      ∃! p : ZMod 8 × ZMod 8,
+        G.Adj (u p.1).1 z.1 ∧ G.Adj (v p.2).1 z.1) ∧
+    (∀ i j, (exteriorPairGraph G c.supp).Adj (u i) (v j) →
+      ∃! z : {z : V // z ∉ c.supp},
+        G.Adj (u i).1 z.1 ∧ G.Adj (v j).1 z.1) := by
+  constructor
+  · intro z
+    obtain ⟨i, hi, hiuniq⟩ := hu z.1 z.2
+    obtain ⟨j, hj, hjuniq⟩ := hv z.1 z.2
+    refine ⟨(i, j), ⟨hi, hj⟩, ?_⟩
+    rintro ⟨i', j'⟩ ⟨hi', hj'⟩
+    exact Prod.ext (hiuniq i' hi') (hjuniq j' hj')
+  · intro i j hij
+    obtain ⟨hne, z, hzout, huz, hvz⟩ := hij
+    refine ⟨⟨z, hzout⟩, ⟨huz, hvz⟩, ?_⟩
+    intro w hw
+    apply Subtype.ext
+    exact (Finset.card_le_one.mp
+      (common_le_one_of_not_containsC4 hfree (u i).1 (v j).1
+        (fun h ↦ hne (Subtype.ext h))) z
+        (by simp [huz, hvz]) w.1 (by simp [hw.1, hw.2])).symm
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_parameterTwo_crossExterior_degrees
+#print axioms Erdos85.outside_vertices_and_crossExteriorPairs_unique_incidence
