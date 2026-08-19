@@ -73,9 +73,47 @@ theorem outsideCClauseSemantics_ownerCoordinates
     (outsideCertificateTarget G c)
     (outsideCClauseSemantics_of_ambient G hfree c) e
 
+/-- Two distinct exterior owners whose internal pairs intersect cannot have
+an exterior common neighbor.  This is the stronger capacity-zero clause
+used by the checked owner CNF: the shared internal endpoint is already one
+common neighbor, so another would create a `C4`. -/
+theorem outsidePair_intersects_no_exterior_common
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (a b k : {x : V // x ∉ c.supp}) (hab : a ≠ b)
+    (hint : ∃ u : c.supp,
+      u ∈ (outsidePair G (secondOrderDefectGraph G) c hcard a).toFinset ∧
+      u ∈ (outsidePair G (secondOrderDefectGraph G) c hcard b).toFinset)
+    (hak : G.Adj a.1 k.1) (hbk : G.Adj b.1 k.1) : False := by
+  obtain ⟨u, hua, hub⟩ := hint
+  have hau : G.Adj a.1 u.1 :=
+    ((mem_outsidePair_toFinset_iff_adj
+      G (secondOrderDefectGraph G) c hcard a u).mp hua).symm
+  have hbu : G.Adj b.1 u.1 :=
+    ((mem_outsidePair_toFinset_iff_adj
+      G (secondOrderDefectGraph G) c hcard b u).mp hub).symm
+  have habval : a.1 ≠ b.1 := fun h => hab (Subtype.ext h)
+  have hau_ne : a.1 ≠ u.1 := fun h => a.2 (h ▸ u.2)
+  have hbu_ne : b.1 ≠ u.1 := fun h => b.2 (h ▸ u.2)
+  have hku_ne : k.1 ≠ u.1 := fun h => k.2 (h ▸ u.2)
+  apply hfree
+  refine ⟨![a.1, u.1, b.1, k.1], ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;>
+      simp_all
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;>
+      simp_all [C4, SimpleGraph.Adj.symm]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.OutsideCClauseSemantics.comap_equiv
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
+#print axioms Erdos85.outsidePair_intersects_no_exterior_common
