@@ -45,6 +45,31 @@ theorem owner_fiber_card_le_three_of_collision_index
       exact (Finset.card_insert_le _ _).trans <|
         (Nat.add_le_add_right (Finset.card_insert_le _ _) 1).trans <| by simp
 
+/-- Eight inputs and fibres of size at most three force at least three
+distinct values in the image. -/
+theorem image_card_ge_three_of_card_eight_of_fibers_le_three
+    {X W : Type*} [Fintype X] [DecidableEq X] [DecidableEq W]
+    (o : X → W) (hcard : Fintype.card X = 8)
+    (hfiber : ∀ x,
+      ((Finset.univ : Finset X).filter fun x' ↦ o x' = o x).card ≤ 3) :
+    3 ≤ ((Finset.univ : Finset X).image o).card := by
+  let I := (Finset.univ : Finset X).image o
+  have hsum := Finset.card_eq_sum_card_image o (Finset.univ : Finset X)
+  have hterm : ∀ w ∈ I,
+      ((Finset.univ : Finset X).filter fun x ↦ o x = w).card ≤ 3 := by
+    intro w hw
+    obtain ⟨x, -, rfl⟩ := Finset.mem_image.mp hw
+    exact hfiber x
+  have hle : 8 ≤ I.card * 3 := by
+    calc
+      8 = (Finset.univ : Finset X).card := by simp [hcard]
+      _ = ∑ w ∈ I, ((Finset.univ : Finset X).filter fun x ↦ o x = w).card :=
+        hsum
+      _ ≤ ∑ _w ∈ I, 3 := Finset.sum_le_sum fun w hw ↦ hterm w hw
+      _ = I.card * 3 := by simp
+  change 3 ≤ I.card
+  omega
+
 /-- Each of the three concrete owner maps in the coherent normal form has
 fibres of cardinality at most three. -/
 theorem MuNegThreeCrossOwnerNormalForm.owner_fiber_cards_le_three
@@ -73,9 +98,34 @@ theorem MuNegThreeCrossOwnerNormalForm.owner_fiber_cards_le_three
     exact owner_fiber_card_le_three_of_collision_index
       N.σ N.τ N.τ N.oτ laws.2.2 x
 
+/-- On an eight-point positive shore, every normalized owner map uses at
+least three distinct exterior vertices. -/
+theorem MuNegThreeCrossOwnerNormalForm.owner_image_cards_ge_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) (s : V → ℤ)
+    (N : MuNegThreeCrossOwnerNormalForm G c s)
+    (hshore : Fintype.card
+      (MuNegThreePositiveShore (secondOrderDefectGraph G) c s) = 8) :
+    3 ≤ (Finset.univ.image N.o₀).card ∧
+    3 ≤ (Finset.univ.image N.oσ).card ∧
+    3 ≤ (Finset.univ.image N.oτ).card := by
+  have hfibers := N.owner_fiber_cards_le_three G hfree c s
+  exact ⟨
+    image_card_ge_three_of_card_eight_of_fibers_le_three N.o₀ hshore hfibers.1,
+    image_card_ge_three_of_card_eight_of_fibers_le_three N.oσ hshore hfibers.2.1,
+    image_card_ge_three_of_card_eight_of_fibers_le_three N.oτ hshore hfibers.2.2⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.owner_fiber_card_le_three_of_collision_index
+#print axioms Erdos85.image_card_ge_three_of_card_eight_of_fibers_le_three
 #print axioms Erdos85.MuNegThreeCrossOwnerNormalForm.owner_fiber_cards_le_three
+#print axioms Erdos85.MuNegThreeCrossOwnerNormalForm.owner_image_cards_ge_three
