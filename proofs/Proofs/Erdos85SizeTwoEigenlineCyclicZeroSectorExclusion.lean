@@ -2,7 +2,7 @@ import Proofs.Erdos85SizeTwoEigenlineTriangleFreeCyclicAttachment
 import Proofs.Erdos85MuThreeKSymmetryNativeClassification
 
 /-!
-# Native exclusion of the q=8 all-triangle-free cyclic sector
+# Native exclusion of every q=8 reflection-cyclic sector
 
 The cyclic and mixed-grid APIs use extensionally identical cell subtypes but
 different `Fintype` instances.  We transport the graph through the canonical
@@ -116,34 +116,64 @@ theorem sizeTwoCyclicAmbientRel_iff_eq_sub_one
     · left; simp
     · right; ring
 
-def sizeTwoCyclicExactZero_to_muThreeMixedGridCode
-    (code : SizeTwoCyclicExactPermutationCode 8 (0 : ZMod 8)) :
+def sizeTwoCyclicExact_to_muThreeMixedGridCode_eight
+    (a : ZMod 8) (code : SizeTwoCyclicExactPermutationCode 8 a) :
     MuThreeMixedGridCode
       (sizeTwoCyclicAmbientRel 8)
-      (sizeTwoReflectionRel 8 0)
+      (sizeTwoReflectionRel 8 a)
       (cyclicExactMixedGraph code) where
   card_left := by decide
   card_right := by decide
   H_twoRegular := by
     constructor <;> intro x <;> fin_cases x <;> native_decide
   K_twoRegular := by
-    constructor <;> intro x <;> fin_cases x <;> native_decide
+    fin_cases a <;>
+      constructor <;> intro x <;> fin_cases x <;> native_decide
   cycle_compatible := by
     intro c
-    left
-    intro x y hxy hx
-    exact (sizeTwoReflectionRel_zero_iff 8 x y).mpr
-      ((sizeTwoCyclicAmbientRel_iff_eq_sub_one 8 x y).mp hxy)
+    fin_cases a
+    · left
+      intro x y hxy hx
+      revert hxy
+      fin_cases x <;> fin_cases y <;> native_decide
+    · right
+      intro x y hxy hx hK
+      revert hxy hK
+      fin_cases x <;> fin_cases y <;> native_decide
+    · right
+      intro x y hxy hx hK
+      revert hxy hK
+      fin_cases x <;> fin_cases y <;> native_decide
+    · right
+      intro x y hxy hx hK
+      revert hxy hK
+      fin_cases x <;> fin_cases y <;> native_decide
+    · right
+      intro x y hxy hx hK
+      revert hxy hK
+      fin_cases x <;> fin_cases y <;> native_decide
+    · right
+      intro x y hxy hx hK
+      revert hxy hK
+      fin_cases x <;> fin_cases y <;> native_decide
+    · right
+      intro x y hxy hx hK
+      revert hxy hK
+      fin_cases x <;> fin_cases y <;> native_decide
+    · left
+      intro x y hxy hx
+      revert hxy
+      fin_cases x <;> fin_cases y <;> native_decide
   row_hit := by
     intro u x
     rw [cyclicExactMixedGraph_filter_card]
-    have hhit := code.graph_row_hit ((cyclicExteriorMixedEquiv 8 0).symm u) x
+    have hhit := code.graph_row_hit ((cyclicExteriorMixedEquiv 8 a).symm u) x
     simpa [cyclicExteriorMixedEquiv,
       sizeTwoCyclicAmbientRel_iff_eq_sub_one] using hhit
   column_hit := by
     intro u y
     rw [cyclicExactMixedGraph_filter_card]
-    have hhit := code.graph_column_hit ((cyclicExteriorMixedEquiv 8 0).symm u) y
+    have hhit := code.graph_column_hit ((cyclicExteriorMixedEquiv 8 a).symm u) y
     have hcond : sizeTwoCyclicAmbientRel 8 u.1.1 y ↔
         u.1.1 = y ∨ u.1.1 = y + 1 := by
       constructor
@@ -163,27 +193,27 @@ def sizeTwoCyclicExactZero_to_muThreeMixedGridCode
     constructor
     · intro hrow
       apply hvw
-      apply (cyclicExteriorMixedEquiv 8 0).symm.injective
+      apply (cyclicExteriorMixedEquiv 8 a).symm.injective
       have huv' : code.graph.Adj
-          ((cyclicExteriorMixedEquiv 8 0).symm u)
-          ((cyclicExteriorMixedEquiv 8 0).symm v) := by
+          ((cyclicExteriorMixedEquiv 8 a).symm u)
+          ((cyclicExteriorMixedEquiv 8 a).symm v) := by
         simpa [cyclicExactMixedGraph] using huv
       have huw' : code.graph.Adj
-          ((cyclicExteriorMixedEquiv 8 0).symm u)
-          ((cyclicExteriorMixedEquiv 8 0).symm w) := by
+          ((cyclicExteriorMixedEquiv 8 a).symm u)
+          ((cyclicExteriorMixedEquiv 8 a).symm w) := by
         simpa [cyclicExactMixedGraph] using huw
       have hcard := code.graph_row_hit
-        ((cyclicExteriorMixedEquiv 8 0).symm u) v.1.1
+        ((cyclicExteriorMixedEquiv 8 a).symm u) v.1.1
       have hvMem := (code.graph.mem_neighborFinset _ _).mpr huv'
       have hwMem := (code.graph.mem_neighborFinset _ _).mpr huw'
-      have : ((cyclicExteriorMixedEquiv 8 0).symm v) =
-          ((cyclicExteriorMixedEquiv 8 0).symm w) := by
+      have : ((cyclicExteriorMixedEquiv 8 a).symm v) =
+          ((cyclicExteriorMixedEquiv 8 a).symm w) := by
         by_contra hne
         let F := (code.graph.neighborFinset
-          ((cyclicExteriorMixedEquiv 8 0).symm u)).filter fun z => z.1.1 = v.1.1
-        have hvF : (cyclicExteriorMixedEquiv 8 0).symm v ∈ F := by
+          ((cyclicExteriorMixedEquiv 8 a).symm u)).filter fun z => z.1.1 = v.1.1
+        have hvF : (cyclicExteriorMixedEquiv 8 a).symm v ∈ F := by
           exact Finset.mem_filter.mpr ⟨hvMem, rfl⟩
-        have hwF : (cyclicExteriorMixedEquiv 8 0).symm w ∈ F := by
+        have hwF : (cyclicExteriorMixedEquiv 8 a).symm w ∈ F := by
           exact Finset.mem_filter.mpr ⟨hwMem, by
             simpa [cyclicExteriorMixedEquiv] using hrow.symm⟩
         have htwo : 1 < F.card := Finset.one_lt_card.mpr ⟨_, hvF, _, hwF, hne⟩
@@ -193,27 +223,27 @@ def sizeTwoCyclicExactZero_to_muThreeMixedGridCode
       exact this
     · intro hcol
       apply hvw
-      apply (cyclicExteriorMixedEquiv 8 0).symm.injective
+      apply (cyclicExteriorMixedEquiv 8 a).symm.injective
       have huv' : code.graph.Adj
-          ((cyclicExteriorMixedEquiv 8 0).symm u)
-          ((cyclicExteriorMixedEquiv 8 0).symm v) := by
+          ((cyclicExteriorMixedEquiv 8 a).symm u)
+          ((cyclicExteriorMixedEquiv 8 a).symm v) := by
         simpa [cyclicExactMixedGraph] using huv
       have huw' : code.graph.Adj
-          ((cyclicExteriorMixedEquiv 8 0).symm u)
-          ((cyclicExteriorMixedEquiv 8 0).symm w) := by
+          ((cyclicExteriorMixedEquiv 8 a).symm u)
+          ((cyclicExteriorMixedEquiv 8 a).symm w) := by
         simpa [cyclicExactMixedGraph] using huw
       have hcard := code.graph_column_hit
-        ((cyclicExteriorMixedEquiv 8 0).symm u) v.1.2
+        ((cyclicExteriorMixedEquiv 8 a).symm u) v.1.2
       have hvMem := (code.graph.mem_neighborFinset _ _).mpr huv'
       have hwMem := (code.graph.mem_neighborFinset _ _).mpr huw'
-      have : ((cyclicExteriorMixedEquiv 8 0).symm v) =
-          ((cyclicExteriorMixedEquiv 8 0).symm w) := by
+      have : ((cyclicExteriorMixedEquiv 8 a).symm v) =
+          ((cyclicExteriorMixedEquiv 8 a).symm w) := by
         by_contra hne
         let F := (code.graph.neighborFinset
-          ((cyclicExteriorMixedEquiv 8 0).symm u)).filter fun z => z.1.2 = v.1.2
-        have hvF : (cyclicExteriorMixedEquiv 8 0).symm v ∈ F := by
+          ((cyclicExteriorMixedEquiv 8 a).symm u)).filter fun z => z.1.2 = v.1.2
+        have hvF : (cyclicExteriorMixedEquiv 8 a).symm v ∈ F := by
           exact Finset.mem_filter.mpr ⟨hvMem, rfl⟩
-        have hwF : (cyclicExteriorMixedEquiv 8 0).symm w ∈ F := by
+        have hwF : (cyclicExteriorMixedEquiv 8 a).symm w ∈ F := by
           exact Finset.mem_filter.mpr ⟨hwMem, by
             simpa [cyclicExteriorMixedEquiv] using hcol.symm⟩
         have htwo : 1 < F.card := Finset.one_lt_card.mpr ⟨_, hvF, _, hwF, hne⟩
@@ -224,17 +254,17 @@ def sizeTwoCyclicExactZero_to_muThreeMixedGridCode
   c4Free := by
     rintro ⟨f, hf, hadj⟩
     apply code.graph_not_containsC4
-    refine ⟨fun i => (cyclicExteriorMixedEquiv 8 0).symm (f i),
-      (cyclicExteriorMixedEquiv 8 0).symm.injective.comp hf, ?_⟩
+    refine ⟨fun i => (cyclicExteriorMixedEquiv 8 a).symm (f i),
+      (cyclicExteriorMixedEquiv 8 a).symm.injective.comp hf, ?_⟩
     intro i j hij
     simpa [cyclicExactMixedGraph] using hadj i j hij
 
-theorem sizeTwoCyclicExactPermutationCode_zero_eight_isEmpty :
-    IsEmpty (SizeTwoCyclicExactPermutationCode 8 (0 : ZMod 8)) := by
+theorem sizeTwoCyclicExactPermutationCode_eight_isEmpty (a : ZMod 8) :
+    IsEmpty (SizeTwoCyclicExactPermutationCode 8 a) := by
   constructor
   intro code
   let H := sizeTwoCyclicAmbientRel 8
-  let K := sizeTwoReflectionRel 8 0
+  let K := sizeTwoReflectionRel 8 a
   have hcoord : ∀ x y,
       mu3NormalizeRelation zmodEightEquivFin zmodEightEquivFin H x y ↔
         y.val ∈ mu3H16Row x.val := by
@@ -245,12 +275,17 @@ theorem sizeTwoCyclicExactPermutationCode_zero_eight_isEmpty :
       zmodEightEquivFin zmodEightEquivFin H hcoord
   exact false_of_muThreeMixedGridCode_of_kSymmetryClassification
     H K (cyclicExactMixedGraph code) classification
-      (sizeTwoCyclicExactZero_to_muThreeMixedGridCode code)
+      (sizeTwoCyclicExact_to_muThreeMixedGridCode_eight a code)
+
+theorem sizeTwoCyclicExactPermutationCode_zero_eight_isEmpty :
+    IsEmpty (SizeTwoCyclicExactPermutationCode 8 (0 : ZMod 8)) :=
+  sizeTwoCyclicExactPermutationCode_eight_isEmpty 0
 
 end
 
 end Erdos85
 
 #print axioms Erdos85.cyclicExactMixedGraph_filter_card
-#print axioms Erdos85.sizeTwoCyclicExactZero_to_muThreeMixedGridCode
+#print axioms Erdos85.sizeTwoCyclicExact_to_muThreeMixedGridCode_eight
+#print axioms Erdos85.sizeTwoCyclicExactPermutationCode_eight_isEmpty
 #print axioms Erdos85.sizeTwoCyclicExactPermutationCode_zero_eight_isEmpty
