@@ -1,5 +1,6 @@
 import Proofs.Erdos85SizeTwoEigenlineEightEightParameterEnumeration
 import Proofs.Erdos85SizeTwoEigenlineEightEightLowParameterExclusion
+import Proofs.Erdos85SizeTwoEigenlineEightEightParameterFiveExclusion
 
 /-!
 # Surviving quotient parameters for the `8+8` stratum
@@ -7,8 +8,10 @@ import Proofs.Erdos85SizeTwoEigenlineEightEightLowParameterExclusion
 Node: `SIZE-TWO-EIGENLINE(8)` beneath outline F.3.
 
 The honest five-way enumeration leaves parameters `2,3,4,5,6`.  The
-offset-two midpoint contradiction removes the first two, so downstream
-terminal assembly only has to branch on `4,5,6`.
+offset-two midpoint contradiction removes the first two.  Parameter five
+forces both shores into the all-triangle sector and then falls to the same
+midpoint obstruction.  Downstream terminal assembly therefore only has to
+branch on `4` and `6`.
 -/
 
 open Finset SimpleGraph
@@ -18,7 +21,7 @@ namespace Erdos85
 noncomputable section
 
 /-- After the low-parameter exclusion, the `8+8` cross quotient is exactly
-four, five, or six, with all quotient equations and the surviving sector
+four or six, with all quotient equations and the surviving sector
 information retained. -/
 theorem binarySquare_regular_sizeTwoPart_eight_eightEight_survivingParameterEnumeration
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -50,7 +53,7 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_survivingParameterEnum
     (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
       {v (z - 1), v (z + 1)}) :
     ∃ r : ℕ,
-      (r = 4 ∨ r = 5 ∨ r = 6) ∧
+      (r = 4 ∨ r = 6) ∧
       componentQuotientMatrix
           ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a a = 7 - r ∧
       componentQuotientMatrix
@@ -69,7 +72,7 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_survivingParameterEnum
     binarySquare_regular_sizeTwoPart_eight_eightEight_parameterEnumeration
       G hfree hreg hcard c hc s hs_in hs_out hA_in hDs a b ha hb hab
         u v huinj hvinj hurange hvrange hu hv
-  have hrSurvive : r = 4 ∨ r = 5 ∨ r = 6 := by
+  have hrSurvive : r = 4 ∨ r = 6 := by
     rcases hr with rfl | rfl | rfl | rfl | rfl
     · exfalso
       rcases hsector with hlow | hmid | hhigh
@@ -86,8 +89,15 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_survivingParameterEnum
       · omega
       · omega
     · exact Or.inl rfl
-    · exact Or.inr (Or.inl rfl)
-    · exact Or.inr (Or.inr rfl)
+    · exfalso
+      have hall :=
+        binarySquare_regular_sizeTwoPart_eight_eightEight_parameter_five_both_allTriangle
+          G hfree hreg hcard c hc s hs_in hs_out hA_in hDs a b ha hb hab
+            u v huinj hvinj hurange hvrange hu hv habq hbaq
+      exact binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFive_false
+        G hfree hreg hcard c hc s hs_in hs_out hA_in hDs a b ha hb hab
+          u v huinj hvinj hurange hvrange hu hv habq hall.1
+    · exact Or.inr rfl
   refine ⟨r, hrSurvive, haa, habq, hbaq, hbb, ?_⟩
   rcases hsector with hlow | hmid | hhigh
   · left; omega
