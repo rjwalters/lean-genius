@@ -57,6 +57,42 @@ noncomputable def eightEightOwnerRangeEquiv :
 @[simp] theorem eightEightOwnerRangeEquiv_apply_val (e : Fin 48) :
     (eightEightOwnerRangeEquiv e).1 = eightEightOwnerSym2 e := rfl
 
+/-- The fixed exterior-pair graph represented by the low-`8+8` generator. -/
+def eightEightLowExteriorPairGraph : SimpleGraph (Fin 16) where
+  Adj a b := eightEightLowOwnerPair a b = true ∨
+    eightEightLowOwnerPair b a = true
+  symm := ⟨by intro a b h; exact h.symm⟩
+  loopless := ⟨by intro a h; simp [eightEightLowOwnerPair] at h⟩
+
+instance : DecidableRel eightEightLowExteriorPairGraph.Adj := by
+  intro a b
+  change Decidable
+    (eightEightLowOwnerPair a b = true ∨ eightEightLowOwnerPair b a = true)
+  infer_instance
+
+theorem eightEightOwnerSym2_mem_edgeFinset (e : Fin 48) :
+    eightEightOwnerSym2 e ∈ eightEightLowExteriorPairGraph.edgeFinset := by
+  revert e
+  decide
+
+/-- A generated owner index as an edge of the fixed exterior-pair graph. -/
+def eightEightOwnerEdge (e : Fin 48) :
+    eightEightLowExteriorPairGraph.edgeFinset :=
+  ⟨eightEightOwnerSym2 e, eightEightOwnerSym2_mem_edgeFinset e⟩
+
+theorem eightEightOwnerEdge_bijective :
+    Function.Bijective eightEightOwnerEdge := by
+  decide
+
+/-- Canonical enumeration of all forty-eight edges of the fixed low-`8+8`
+exterior-pair graph, in exactly the order used by the CNF generator. -/
+def eightEightOwnerEdgeEquiv :
+    Fin 48 ≃ eightEightLowExteriorPairGraph.edgeFinset :=
+  Equiv.ofBijective eightEightOwnerEdge eightEightOwnerEdge_bijective
+
+@[simp] theorem eightEightOwnerEdgeEquiv_apply_val (e : Fin 48) :
+    (eightEightOwnerEdgeEquiv e).1 = eightEightOwnerSym2 e := rfl
+
 /-- Membership in the generated pair is exactly the generator's Boolean
 incidence predicate. -/
 theorem mem_eightEightOwnerSym2_iff (e : Fin 48) (v : Fin 16) :
