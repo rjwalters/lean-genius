@@ -154,6 +154,29 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_cells
   exact muNegThree_sector_grid_discrete _ _ k r hk hr2 hr7
     hlower hupper hgrid
 
+/-- The two self-switching `mu=-3` cells are forced into the both-all-TF
+sector of the grid. -/
+theorem muNegThree_self_cells_bothTriangleFree
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hdisc :
+      (C8CycleEntriesZero N₁ ∧ C8CycleEntriesZero N₂ ∧
+          MuNegThreeBothTriangleCell k r) ∨
+      ((((C8CycleEntriesZero N₁ ∧ C8CycleEntriesOne N₂) ∨
+          (C8CycleEntriesOne N₁ ∧ C8CycleEntriesZero N₂)) ∧
+            MuNegThreeMixedCell k r) ∨
+        (C8CycleEntriesOne N₁ ∧ C8CycleEntriesOne N₂ ∧
+          MuNegThreeBothTriangleFreeCell k r)))
+    (hself : (k = 0 ∧ r = 4) ∨ (k = 1 ∧ r = 2)) :
+    C8CycleEntriesOne N₁ ∧ C8CycleEntriesOne N₂ := by
+  rcases hdisc with hzero | hmixed | hone
+  · exfalso
+    dsimp [MuNegThreeBothTriangleCell] at hzero
+    omega
+  · exfalso
+    dsimp [MuNegThreeMixedCell] at hmixed
+    omega
+  · exact ⟨hone.1, hone.2.1⟩
+
 end
 
 
@@ -163,3 +186,4 @@ end Erdos85
 #print axioms Erdos85.muNegThree_sector_cell_switch_target
 #print axioms Erdos85.muNegThree_switch_target_positive_iff
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_eightEight_sector_cells
+#print axioms Erdos85.muNegThree_self_cells_bothTriangleFree
