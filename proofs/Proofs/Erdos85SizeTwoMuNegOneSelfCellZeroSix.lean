@@ -1,4 +1,4 @@
-import Proofs.Erdos85ZModEightMixedSelfIntertwinerExclusion
+import Proofs.Erdos85SizeTwoMuNegOneEightEightDiagonalSameShape
 
 /-! # Eliminating the `mu=-1`, `(k,r)=(0,6)` self-switch cell -/
 
@@ -44,8 +44,39 @@ theorem zmodEight_selfIntertwiner_rowOne_odd_avoiding_cycle_impossible
   exact zmodEight_no_oriented_symmetric_odd_matching_avoiding_cycle
     f hfInvol hfOdd hfAvoid horient
 
+/-- The normalized self-cell socket: an empty same-sign shape (`k=0`),
+total diagonal degree one (`r=6`), and all-triangle cycle avoidance are
+incompatible. -/
+theorem zmodEight_sameSignShape_zero_rowOne_avoiding_cycle_impossible
+    (M : Matrix (ZMod 8) (ZMod 8) ℤ) (f : ZMod 8 → ℤ)
+    (hsign : ∀ i, f i = -1 ∨ f i = 1)
+    (hflip : ∀ i, f (i + 1) = -f i)
+    (hshape : ZModEightSameSignShapeUpToThree M f 0)
+    (hsymm : ∀ x y, M x y = M y x)
+    (hinter : ∀ x y,
+      M (x - 1) y + M (x + 1) y =
+        M x (y + 1) + M x (y - 1))
+    (hbinary : ∀ x y, M x y = 0 ∨ M x y = 1)
+    (hrow : ∀ x, ∑ y, M x y = 1)
+    (havoid : ∀ x, M x (x - 1) = 0 ∧ M x (x + 1) = 0) : False := by
+  have heven := zmodEight_alternating_sign_eq_iff_evenOffset f hsign hflip
+  have hempty : ∀ i j, f j = f i → M i j ≠ 1 := by
+    rcases hshape with hshape | hthree
+    · rcases hshape with hzero | hone | htwo
+      · exact hzero.2
+      · omega
+      · omega
+    · omega
+  have hodd : ∀ x y, M x y = 1 →
+      ¬ ZModEightEvenOffset (y - x) := by
+    intro x y hM he
+    exact (hempty x y ((heven x y).2 he)) hM
+  exact zmodEight_selfIntertwiner_rowOne_odd_avoiding_cycle_impossible
+    M hsymm hinter hbinary hrow hodd havoid
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.zmodEight_selfIntertwiner_rowOne_odd_avoiding_cycle_impossible
+#print axioms Erdos85.zmodEight_sameSignShape_zero_rowOne_avoiding_cycle_impossible
