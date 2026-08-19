@@ -2,6 +2,7 @@ import Proofs.Erdos85BinarySquareSizeTwoJointEigenvectorMuOneExclusion
 import Proofs.Erdos85BinarySquareSizeTwoMuNegativeSevenExclusion
 import Proofs.Erdos85BinarySquareComponentAmbientSquareSpectrum
 import Proofs.Erdos85ComponentSignFlipEigenvector
+import Proofs.Erdos85SizeTwoMuNegOneRefinedSectorRouting
 
 /-! # Excluding switched joint eigenvectors on a size-two component -/
 
@@ -166,6 +167,32 @@ theorem orderSixtyFour_sizeTwoPart_inducedSigned_switchTarget_ne_negativeSeven
     G hfree hreg hcard c hc hother t ht
   simpa [htheta] using hD
 
+/-- Apply the negative endpoint exclusion directly to a reduced μ=-1
+shore-switch witness, producing the final arithmetic cell table. -/
+theorem orderSixtyFour_sizeTwo_muNegOne_postEndpoint_cells_of_inducedSwitch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (hother : ∀ c' : (secondOrderDefectGraph G).ConnectedComponent,
+      c' ≠ c → c'.supp.ncard ≠ 8)
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegOnePostMuOneSectorCells N₁ N₂ k r)
+    (t : c.supp → ℤ) (ht : ∀ x, t x = -1 ∨ t x = 1)
+    (hD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec t =
+      sizeTwoMuSwitchTarget (-1) k r • t) :
+    MuNegOnePostEndpointSectorCells N₁ N₂ k r := by
+  apply muNegOne_postEndpoint_sector_cells_of_target_ne_negativeSeven
+    N₁ N₂ k r hcell
+  exact orderSixtyFour_sizeTwoPart_inducedSigned_switchTarget_ne_negativeSeven
+    G hfree hreg hcard c hc hother t ht _ hD
+
 end
 
 end Erdos85
@@ -174,3 +201,4 @@ end Erdos85
 #print axioms Erdos85.orderSixtyFour_sizeTwoPart_inducedSignedEigenvector_muNegativeSeven_false
 #print axioms Erdos85.orderSixtyFour_sizeTwoPart_inducedSignedJoint_switchTarget_ne_one
 #print axioms Erdos85.orderSixtyFour_sizeTwoPart_inducedSigned_switchTarget_ne_negativeSeven
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegOne_postEndpoint_cells_of_inducedSwitch
