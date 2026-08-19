@@ -127,6 +127,178 @@ theorem sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
   · intro hnotD
     exact ⟨hne, hnotD, by simpa [H] using hnoCommon⟩
 
+/-- At quotient six the complementary cross exterior block has row and
+column degree two.  This is the exact cardinality constraint used by the
+variable-cross CNF. -/
+theorem binarySquare_regular_sizeTwoPart_eight_eightEight_parameterSix_crossExterior_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 8) (hb : b.supp.ncard = 8) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hab6 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b = 6) :
+    (∀ i, ((Finset.univ : Finset (ZMod 8)).filter fun j =>
+      (exteriorPairGraph G c.supp).Adj (u i) (v j)).card = 2) ∧
+    (∀ j, ((Finset.univ : Finset (ZMod 8)).filter fun i =>
+      (exteriorPairGraph G c.supp).Adj (u i) (v j)).card = 2) := by
+  classical
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let R := exteriorPairGraph G c.supp
+  have hHdegree : ∀ z : c.supp, H.degree z = 2 := by
+    intro z
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2)
+        (by simpa [Nat.mul_comm] using hc) z
+  have hcomm : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm
+      G (secondOrderDefectGraph G) hglobal c).symm
+  have hba6 : componentQuotientMatrix K H b a = 6 := by
+    have hbal := componentQuotientMatrix_balance K H 2 hHdegree hcomm a b
+    change a.supp.ncard * componentQuotientMatrix K H a b =
+      b.supp.ncard * componentQuotientMatrix K H b a at hbal
+    rw [ha, hb] at hbal
+    have hab6' : componentQuotientMatrix K H a b = 6 := by simpa [K, H] using hab6
+    rw [hab6'] at hbal
+    omega
+  have hcompUV := sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
+    G hfree c a b hab u v hurange hvrange
+  have hcompVU : ∀ j i, R.Adj (v j) (u i) ↔ ¬ K.Adj (v j) (u i) := by
+    intro j i
+    rw [R.adj_comm, K.adj_comm]
+    exact hcompUV i j
+  have rowCard
+      (w z : ZMod 8 → c.supp)
+      (hzinj : Function.Injective z)
+      (d e : H.ConnectedComponent)
+      (hwmem : ∀ x, w x ∈ d.supp)
+      (hzrange : Set.range z = e.supp)
+      (hde : componentQuotientMatrix K H d e = 6)
+      (hcomp : ∀ x y, R.Adj (w x) (z y) ↔ ¬ K.Adj (w x) (z y)) :
+      ∀ x, ((Finset.univ : Finset (ZMod 8)).filter fun y =>
+        R.Adj (w x) (z y)).card = 2 := by
+    intro x
+    let T := (Finset.univ : Finset (ZMod 8)).filter fun y => K.Adj (w x) (z y)
+    let B := componentNeighborFinset K H e (w x)
+    have himage : T.image z = B := by
+      ext q
+      simp only [T, B, Finset.mem_image, Finset.mem_filter,
+        Finset.mem_univ, true_and, componentNeighborFinset]
+      constructor
+      · rintro ⟨y, hy, rfl⟩
+        exact ⟨(K.mem_neighborFinset _ _).mpr hy,
+          (ConnectedComponent.mem_supp_iff e (z y)).mp (by
+            rw [← hzrange]; exact ⟨y, rfl⟩)⟩
+      · rintro ⟨hqK, hqe⟩
+        have hqSupp : q ∈ e.supp :=
+          (ConnectedComponent.mem_supp_iff e q).mpr hqe
+        rw [← hzrange] at hqSupp
+        obtain ⟨y, rfl⟩ := hqSupp
+        exact ⟨y, (K.mem_neighborFinset _ _).mp hqK, rfl⟩
+    have hTcard : T.card = 6 := by
+      rw [← Finset.card_image_of_injective T hzinj, himage]
+      rw [← componentQuotientMatrix_apply_eq K H 2 hHdegree hcomm d e
+        (hwmem x)]
+      exact hde
+    have hpartition := Finset.card_filter_add_card_filter_not
+      (s := (Finset.univ : Finset (ZMod 8))) (p := fun y => K.Adj (w x) (z y))
+    have hRfilter :
+        ((Finset.univ : Finset (ZMod 8)).filter fun y => R.Adj (w x) (z y)) =
+          (Finset.univ.filter fun y => ¬ K.Adj (w x) (z y)) := by
+      ext y
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      exact hcomp x y
+    rw [hRfilter]
+    change T.card + _ = 8 at hpartition
+    rw [hTcard] at hpartition
+    omega
+  constructor
+  · apply rowCard u v hvinj a b
+    · intro i
+      rw [← hurange]
+      exact ⟨i, rfl⟩
+    · exact hvrange
+    · simpa [K, H] using hab6
+    · exact hcompUV
+  · intro j
+    have h := rowCard v u huinj b a (fun k => by
+      rw [← hvrange]; exact ⟨k, rfl⟩) hurange hba6 hcompVU j
+    simpa only [R.adj_comm] using h
+
+/-- The complementary cross exterior block intertwines the two C8 adjacency
+operators entrywise.  Complementing changes each cross entry from `d` to
+`1-d`; the two constant terms cancel in the cycle recurrence. -/
+theorem binarySquare_regular_sizeTwoPart_eight_eightEight_crossExterior_intertwines
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcard : Fintype.card V = 8 * 8) (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    ∀ x y,
+      (exteriorPairGraph G c.supp).adjMatrix ℤ (u (x - 1)) (v y) +
+          (exteriorPairGraph G c.supp).adjMatrix ℤ (u (x + 1)) (v y) =
+        (exteriorPairGraph G c.supp).adjMatrix ℤ (u x) (v (y + 1)) +
+          (exteriorPairGraph G c.supp).adjMatrix ℤ (u x) (v (y - 1)) := by
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let R := exteriorPairGraph G c.supp
+  have hcomm : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ := by
+    obtain ⟨_, _, hHK⟩ :=
+      binarySquare_regular_sizeTwoPart_commuting_regular_blocks
+        G hfree (by omega) hreg hcard c hc
+    simpa [K, H] using hHK.symm
+  have hupair : ∀ x, u (x - 1) ≠ u (x + 1) := fun x =>
+    huinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) x)
+  have hvpair : ∀ y, v (y - 1) ≠ v (y + 1) := fun y =>
+    hvinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) y)
+  have hDinter := entry_cycleIntertwine_of_adjMatrix_comm
+    K H u v (1 : ZMod 8) (1 : ZMod 8) hcomm hu hv hupair hvpair
+  have hcomp := sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
+    G hfree c a b hab u v hurange hvrange
+  have hentry (x y : ZMod 8) :
+      R.adjMatrix ℤ (u x) (v y) = 1 - K.adjMatrix ℤ (u x) (v y) := by
+    simp only [SimpleGraph.adjMatrix_apply]
+    by_cases hD : K.Adj (u x) (v y)
+    · have hR : ¬ R.Adj (u x) (v y) := by
+        intro h
+        exact (hcomp x y).mp h hD
+      simp [hD, hR]
+    · have hR : R.Adj (u x) (v y) := (hcomp x y).mpr hD
+      simp [hD, hR]
+  intro x y
+  rw [hentry, hentry, hentry, hentry]
+  have h := hDinter x y
+  linear_combination -h
+
 end
 
 end Erdos85
