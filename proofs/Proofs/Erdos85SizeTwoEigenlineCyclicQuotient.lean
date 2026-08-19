@@ -33,6 +33,14 @@ def sizeTwoAllowedDifference (q : ℕ) (a : ZMod q) :=
 def sizeTwoCyclicExteriorCell (q : ℕ) (a : ZMod q) :=
   {p : ZMod q × ZMod q // ¬ sizeTwoReflectionRel q a p.1 p.2}
 
+noncomputable instance (q : ℕ) [NeZero q] (a : ZMod q) :
+    Fintype (sizeTwoAllowedDifference q a) :=
+  Subtype.fintype _
+
+noncomputable instance (q : ℕ) [NeZero q] (a : ZMod q) :
+    Fintype (sizeTwoCyclicExteriorCell q a) :=
+  @Subtype.fintype _ _ (Classical.decPred _) _
+
 /-- Simultaneous translation preserves the normalized ambient factor. -/
 theorem sizeTwoCyclicAmbientRel_add_add_iff
     (q : ℕ) (g x y : ZMod q) :
@@ -118,9 +126,48 @@ theorem sizeTwoCyclicExteriorCellEquiv_translate
   · apply Subtype.ext
     exact sizeTwoCyclicExteriorTranslate_difference q a g u
 
+/-- When the two forbidden reflection shifts are distinct, exactly two of the
+`q` difference classes are removed. -/
+theorem sizeTwoAllowedDifference_card
+    (q : ℕ) [NeZero q] (a : ZMod q) (ha : a ≠ -1 - a) :
+    Fintype.card (sizeTwoAllowedDifference q a) = q - 2 := by
+  classical
+  change Fintype.card {t : ZMod q // t ≠ a ∧ t ≠ -1 - a} = q - 2
+  rw [Fintype.card_subtype]
+  rw [show ({t : ZMod q | t ≠ a ∧ t ≠ -1 - a} : Finset (ZMod q)) =
+      Finset.univ \ {a, -1 - a} by
+    ext t
+    simp [not_or]]
+  simp [Finset.card_sdiff, ZMod.card, ha]
+
+/-- Consequently the full exterior grid contains `q(q-2)` cells. -/
+theorem sizeTwoCyclicExteriorCell_card
+    (q : ℕ) [NeZero q] (a : ZMod q) (ha : a ≠ -1 - a) :
+    Fintype.card (sizeTwoCyclicExteriorCell q a) = q * (q - 2) := by
+  rw [Fintype.card_congr (sizeTwoCyclicExteriorCellEquiv q a),
+    Fintype.card_prod, ZMod.card, sizeTwoAllowedDifference_card q a ha]
+
+/-- Orbit aggregation for functions of the difference coordinate: every
+allowed difference occurs once over each of the `q` base points. -/
+theorem sizeTwoCyclicExteriorCell_sum_difference
+    (q : ℕ) [NeZero q] (a : ZMod q) {M : Type*} [AddCommMonoid M]
+    (f : sizeTwoAllowedDifference q a → M) :
+    (∑ u : sizeTwoCyclicExteriorCell q a,
+        f (sizeTwoCyclicExteriorCellEquiv q a u).2) =
+      q • ∑ t : sizeTwoAllowedDifference q a, f t := by
+  calc
+    _ = ∑ z : ZMod q × sizeTwoAllowedDifference q a, f z.2 :=
+      (sizeTwoCyclicExteriorCellEquiv q a).sum_comp (fun z => f z.2)
+    _ = _ := by
+      rw [Fintype.sum_prod_type]
+      simp [ZMod.card]
+
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCyclicAmbientRel_add_add_iff
 #print axioms Erdos85.sizeTwoReflectionRel_add_add_iff
 #print axioms Erdos85.sizeTwoCyclicExteriorTranslate_difference
 #print axioms Erdos85.sizeTwoCyclicExteriorCellEquiv_translate
+#print axioms Erdos85.sizeTwoAllowedDifference_card
+#print axioms Erdos85.sizeTwoCyclicExteriorCell_card
+#print axioms Erdos85.sizeTwoCyclicExteriorCell_sum_difference
