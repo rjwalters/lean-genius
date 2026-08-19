@@ -1,4 +1,4 @@
-import Proofs.Erdos85BinarySquareSizeTwoSignedJointPackage
+import Proofs.Erdos85SizeTwoSignedJointNegativeReduction
 import Proofs.Erdos85BinarySquareBipartiteDefectComponentStrataConsumers
 import Proofs.Erdos85OrderSixtyFourSevenComponent
 import Proofs.Erdos85ComponentLocalObstruction
@@ -159,8 +159,47 @@ theorem orderSixtyFour_sevenComponents_sizeTwo_muNegSeven_false
   intro x y hxy
   exact hcol₁ x.1 y.1 x.2 y.2 hxy
 
+/-- Complete signed-mode dispatcher for the seven-component stratum.  The
+positive modes and `-7` are internal; only `-5,-3,-1` remain as callbacks. -/
+theorem orderSixtyFour_sevenComponents_sizeTwo_signedJoint_false_of_three_negative_cases
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 7)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 16)
+    (s : Fin 64 → ℤ) (mu : ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z, s y = mu * s z)
+    (x : Fin 64) (hx : x ∈ c.supp)
+    (hnegFive : mu = -5 → False)
+    (hnegThree : mu = -3 → False)
+    (hnegOne : mu = -1 → False) : False := by
+  apply orderSixtyFour_sizeTwo_signedJoint_false_of_negative_cases
+    G hfree hreg (by norm_num) c (by simpa using hc) s mu hs_out hs_in
+      hH hD x hx
+  · intro hmu
+    subst mu
+    exact orderSixtyFour_sevenComponents_sizeTwo_muNegSeven_false
+      G hfree hreg hcount c hc s hs_out hs_in hH (by
+        intro z hz
+        simpa using hD z hz)
+  · exact hnegFive
+  · exact hnegThree
+  · exact hnegOne
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sevenComponents_sizeTwo_muNegSeven_false
+#print axioms Erdos85.orderSixtyFour_sevenComponents_sizeTwo_signedJoint_false_of_three_negative_cases
