@@ -230,6 +230,85 @@ theorem no_internal_exteriorPair_outside_commonNeighbor_coordinate_eq
   exact hnone i j ⟨fun h ↦ hij (huinj h),
     z, hzout, hiz, hjz⟩
 
+/-- At order 64, a C8 shore with no internal exterior pairs partitions the
+48 vertices outside its size-two defect component into its eight exterior
+neighborhoods of size six. -/
+theorem orderSixtyFour_no_internal_exteriorPair_outside_unique_shoreNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (u : ZMod 8 → c.supp) (huinj : Function.Injective u)
+    (hnone : ∀ i j, ¬ (exteriorPairGraph G c.supp).Adj (u i) (u j)) :
+    ∀ z, z ∉ c.supp → ∃! i : ZMod 8, G.Adj (u i).1 z := by
+  classical
+  let N (i : ZMod 8) := (G.neighborFinset (u i).1).filter fun z ↦
+    z ∉ c.supp
+  let O := (Finset.univ : Finset V).filter fun z ↦ z ∉ c.supp
+  have hNcard (i : ZMod 8) : (N i).card = 6 := by
+    have h := orderSixtyFour_sizeTwoComponent_exteriorNeighborCard_six
+      G hfree hreg hcard c hc (u i)
+    simpa [N, ConnectedComponent.mem_supp_iff] using h
+  have hdisj : ∀ i ∈ (Finset.univ : Finset (ZMod 8)),
+      ∀ j ∈ (Finset.univ : Finset (ZMod 8)), i ≠ j →
+        Disjoint (N i) (N j) := by
+    intro i _ j _ hij
+    rw [Finset.disjoint_left]
+    intro z hzi hzj
+    have hi := Finset.mem_filter.mp hzi
+    have hj := Finset.mem_filter.mp hzj
+    exact hij (no_internal_exteriorPair_outside_commonNeighbor_coordinate_eq
+      G c u huinj hnone hi.2
+        ((G.mem_neighborFinset _ _).mp hi.1)
+        ((G.mem_neighborFinset _ _).mp hj.1))
+  have hUcard : ((Finset.univ : Finset (ZMod 8)).biUnion N).card = 48 := by
+    rw [Finset.card_biUnion hdisj]
+    simp_rw [hNcard]
+    decide
+  have hOcard : O.card = 48 := by
+    have hinside : ((Finset.univ : Finset V).filter fun z ↦
+        z ∈ c.supp).card = 16 := by
+      rw [show ((Finset.univ : Finset V).filter fun z ↦ z ∈ c.supp).card =
+          c.supp.ncard by
+        have heq : ((Finset.univ : Finset V).filter fun z ↦ z ∈ c.supp) =
+            c.supp.toFinite.toFinset := by
+          ext z
+          simp
+        rw [heq, Set.ncard_eq_toFinset_card]]
+      norm_num at hc ⊢
+      exact hc
+    have hsplit := Finset.card_filter_add_card_filter_not
+      (s := (Finset.univ : Finset V)) (fun z ↦ z ∈ c.supp)
+    change _ + O.card = _ at hsplit
+    rw [hinside, Finset.card_univ, hcard] at hsplit
+    norm_num at hsplit ⊢
+    omega
+  have hsub : (Finset.univ : Finset (ZMod 8)).biUnion N ⊆ O := by
+    intro z hz
+    rw [Finset.mem_biUnion] at hz
+    obtain ⟨i, _, hzi⟩ := hz
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ z,
+      (Finset.mem_filter.mp hzi).2⟩
+  have heq : (Finset.univ : Finset (ZMod 8)).biUnion N = O :=
+    Finset.Subset.antisymm hsub
+      (Finset.eq_of_subset_of_card_le hsub (by rw [hUcard, hOcard])).symm.subset
+  intro z hzout
+  have hzO : z ∈ O := Finset.mem_filter.mpr ⟨Finset.mem_univ z, hzout⟩
+  rw [← heq, Finset.mem_biUnion] at hzO
+  obtain ⟨i, _, hzi⟩ := hzO
+  refine ⟨i, (G.mem_neighborFinset _ _).mp (Finset.mem_filter.mp hzi).1, ?_⟩
+  intro j hj
+  exact no_internal_exteriorPair_outside_commonNeighbor_coordinate_eq
+    G c u huinj hnone hzout hj
+      ((G.mem_neighborFinset _ _).mp (Finset.mem_filter.mp hzi).1)
+
 end
 
 
@@ -239,3 +318,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalFive_defectAdj_iff_offset_one_three_four_five_seven
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalFive_no_internal_exteriorPair
 #print axioms Erdos85.no_internal_exteriorPair_outside_commonNeighbor_coordinate_eq
+#print axioms Erdos85.orderSixtyFour_no_internal_exteriorPair_outside_unique_shoreNeighbor
