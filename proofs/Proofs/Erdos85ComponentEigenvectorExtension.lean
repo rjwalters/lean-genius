@@ -103,6 +103,29 @@ theorem adjMatrix_rat_eigenvector_componentExtendZero_of_int
   apply adjMatrix_eigenvector_connectedComponentExtendZero
   exact adjMatrix_rat_eigenvector_of_int (D.induce c.supp) t θ heigen
 
+/-- Bundled nonzero global rational eigenline obtained from a nonzero integral
+component eigenvector. -/
+theorem adjMatrix_rat_nonzero_eigenvector_componentExtendZero_of_int
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (c : D.ConnectedComponent) (t : c.supp → ℤ) (θ : ℤ)
+    (heigen : ((D.induce c.supp).adjMatrix ℤ).mulVec t = θ • t)
+    (ht : t ≠ 0) :
+    (D.adjMatrix ℚ).mulVec
+        (connectedComponentExtendZero D c (fun x ↦ (t x : ℚ))) =
+        (θ : ℚ) • connectedComponentExtendZero D c (fun x ↦ (t x : ℚ)) ∧
+      connectedComponentExtendZero D c (fun x ↦ (t x : ℚ)) ≠ 0 := by
+  constructor
+  · exact adjMatrix_rat_eigenvector_componentExtendZero_of_int
+      D c t θ heigen
+  · apply connectedComponentExtendZero_ne_zero D c
+    intro hcast
+    apply ht
+    funext x
+    have hx := congrFun hcast x
+    have hx' : (t x : ℚ) = 0 := by simpa using hx
+    exact_mod_cast hx'
+
 end
 
 end Erdos85
@@ -110,3 +133,4 @@ end Erdos85
 #print axioms Erdos85.adjMatrix_eigenvector_connectedComponentExtendZero
 #print axioms Erdos85.connectedComponentExtendZero_ne_zero
 #print axioms Erdos85.adjMatrix_rat_eigenvector_componentExtendZero_of_int
+#print axioms Erdos85.adjMatrix_rat_nonzero_eigenvector_componentExtendZero_of_int
