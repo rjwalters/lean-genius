@@ -8,6 +8,50 @@ namespace Erdos85
 
 noncomputable section
 
+/-- For a `{±1}`-valued row, its signed sum is determined by the row size
+and the number of entries having the same sign as the base point. -/
+theorem signed_sum_eq_two_same_sub_card
+    {X : Type*} [DecidableEq X]
+    (F : Finset X) (s : X → ℤ) (x : X)
+    (hx : s x = -1 ∨ s x = 1)
+    (hF : ∀ y ∈ F, s y = -1 ∨ s y = 1) :
+    ∑ y ∈ F, s y =
+      (2 * ((F.filter fun y ↦ s y = s x).card : ℤ) - (F.card : ℤ)) * s x := by
+  classical
+  let P : X → Prop := fun y ↦ s y = s x
+  have hsame : ∑ y ∈ F.filter P, s y =
+      ((F.filter P).card : ℤ) * s x := by
+    calc
+      ∑ y ∈ F.filter P, s y = ∑ _y ∈ F.filter P, s x := by
+        apply Finset.sum_congr rfl
+        intro y hy
+        exact (Finset.mem_filter.mp hy).2
+      _ = ((F.filter P).card : ℤ) * s x := by simp
+  have hopp : ∑ y ∈ F.filter (fun y ↦ ¬ P y), s y =
+      -((F.filter (fun y ↦ ¬ P y)).card : ℤ) * s x := by
+    calc
+      ∑ y ∈ F.filter (fun y ↦ ¬ P y), s y =
+          ∑ _y ∈ F.filter (fun y ↦ ¬ P y), -s x := by
+        apply Finset.sum_congr rfl
+        intro y hy
+        have hyF := (Finset.mem_filter.mp hy).1
+        have hyne := (Finset.mem_filter.mp hy).2
+        rcases hx with hx | hx <;> rcases hF y hyF with hsy | hsy
+        all_goals simp only [P] at hyne
+        all_goals omega
+      _ = -((F.filter (fun y ↦ ¬ P y)).card : ℤ) * s x := by simp
+  have hcard := Finset.card_filter_add_card_filter_not (s := F) P
+  rw [← Finset.sum_filter_add_sum_filter_not F P, hsame]
+  change _ + (∑ y ∈ F.filter (fun y ↦ ¬ P y), s y) = _
+  rw [hopp]
+  rw [show F.filter (fun y ↦ s y = s x) = F.filter P by rfl]
+  ring_nf
+  have hcardZ : ((F.filter P).card : ℤ) +
+      ((F.filter (fun y ↦ ¬ P y)).card : ℤ) = (F.card : ℤ) := by
+    exact_mod_cast hcard
+  rw [← hcardZ]
+  ring
+
 /-- Negating a signed vector on one shore subtracts the cross-block
 coefficient from the diagonal-block coefficient. -/
 theorem bipartition_signSwitch_eigen_sub
@@ -125,3 +169,4 @@ end Erdos85
 
 #print axioms Erdos85.bipartition_signSwitch_eigen_three
 #print axioms Erdos85.bipartition_signSwitch_eigen_sub
+#print axioms Erdos85.signed_sum_eq_two_same_sub_card
