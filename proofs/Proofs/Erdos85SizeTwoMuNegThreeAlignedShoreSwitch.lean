@@ -1,6 +1,7 @@
 import Proofs.Erdos85SizeTwoMuNegThreeRefinedSectorRouting
 import Proofs.Erdos85SizeTwoAlignedShoreSwitch
 import Proofs.Erdos85EightEightCoordinateCover
+import Proofs.Erdos85ComponentEigenvectorExtension
 
 /-! # Graph-facing aligned shore switch for μ=-3 -/
 
@@ -52,7 +53,11 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
         (fun x ↦ H.connectedComponentMk x = b)
       let t : c.supp → ℤ := fun x ↦ if x ∈ B then -s x.1 else s x.1
       (K.adjMatrix ℤ).mulVec t = sizeTwoMuSwitchTarget (-3) k r • t ∧
-        t ≠ 0 := by
+        t ≠ 0 ∧
+        let T := connectedComponentExtendZero (secondOrderDefectGraph G) c
+          (fun x ↦ (t x : ℚ))
+        ((secondOrderDefectGraph G).adjMatrix ℚ).mulVec T =
+            (sizeTwoMuSwitchTarget (-3) k r : ℚ) • T ∧ T ≠ 0 := by
   classical
   dsimp only
   let H := G.induce c.supp
@@ -126,6 +131,8 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
     K H a b hab hdegree hcomm hcover (fun x ↦ s x.1)
       (7 - r) k r (2 - k) hsign haa habq hbaq hbb
       hAA' hAB' hBB' hBA'
+  let t : c.supp → ℤ := fun x ↦
+    if H.connectedComponentMk x = b then -s x.1 else s x.1
   have hcoeff :
       (2 * (k : ℤ) - (7 - r : ℕ)) - (2 * (2 - k : ℕ) - (r : ℤ)) =
         sizeTwoMuSwitchTarget (-3) k r := by
@@ -138,17 +145,23 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
         rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
     · rcases hone.2.2 with h | h | h | h | h <;>
         rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
-  constructor
-  · simpa only [hcoeff] using hswitch
-  · intro ht
+  have heig : (K.adjMatrix ℤ).mulVec t =
+      sizeTwoMuSwitchTarget (-3) k r • t := by
+    simpa [t, hcoeff] using hswitch
+  have ht : t ≠ 0 := by
+    intro ht
     have hval := congrFun ht (u 0)
     have hsign0 := hs_in (u 0).1 (u 0).2
-    by_cases hmem : (u 0) ∈ (Finset.univ : Finset c.supp).filter
-        (fun x ↦ H.connectedComponentMk x = b)
-    · simp [hmem] at hval
+    by_cases hmem : H.connectedComponentMk (u 0) = b
+    · simp [t, hmem] at hval
       omega
-    · simp [hmem] at hval
+    · simp [t, hmem] at hval
       omega
+  refine ⟨by simpa [t, B] using heig, by simpa [t, B] using ht, ?_⟩
+  have hglobal := adjMatrix_rat_nonzero_eigenvector_componentExtendZero_of_int
+    (secondOrderDefectGraph G) c t
+      (sizeTwoMuSwitchTarget (-3) k r) heig ht
+  simpa [t, B] using hglobal
 
 end
 
