@@ -94,6 +94,40 @@ theorem sizeTwoCyclicMatchingOrbitMultiplicity_mul_sum_le
       exact htu (congrArg Prod.snd h)
     _ = q * q := by simp
 
+/-- The complete ordered cross term over a selected set of difference orbits
+is bounded by one `q²` contribution for each ordered distinct orbit pair. -/
+theorem sizeTwoCyclicMatchingOrbitMultiplicity_offDiag_sum_le
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicFullPermutationCode q a)
+    (T : Finset (sizeTwoAllowedDifference q a)) :
+    (∑ p ∈ T.offDiag, ∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+      sizeTwoCyclicMatchingOrbitMultiplicity code p.1 e *
+        sizeTwoCyclicMatchingOrbitMultiplicity code p.2 e) ≤
+      T.offDiag.card * (q * q) := by
+  classical
+  calc
+    _ ≤ ∑ _p ∈ T.offDiag, q * q := by
+      apply Finset.sum_le_sum
+      intro p hp
+      exact sizeTwoCyclicMatchingOrbitMultiplicity_mul_sum_le
+        code p.1 p.2 (Finset.mem_offDiag.mp hp).2.2
+    _ = T.offDiag.card * (q * q) := by simp
+
+/-- Direct upper bound for the selected-orbit collision mass: only the
+within-orbit second moments remain to be controlled more sharply. -/
+theorem sizeTwoCyclicSelectedOrbitMultiplicity_choose_two_sum_le
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicFullPermutationCode q a)
+    (T : Finset (sizeTwoAllowedDifference q a)) :
+    2 * ∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+        (sizeTwoCyclicSelectedOrbitMultiplicity code T e).choose 2 ≤
+      (∑ t ∈ T, 2 * ∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+        (sizeTwoCyclicMatchingOrbitMultiplicity code t e).choose 2) +
+        T.offDiag.card * (q * q) := by
+  rw [sizeTwoCyclicSelectedOrbitMultiplicity_choose_two_sum_decomposition]
+  exact Nat.add_le_add_left
+    (sizeTwoCyclicMatchingOrbitMultiplicity_offDiag_sum_le code T) _
+
 end
 
 end Erdos85
@@ -101,3 +135,5 @@ end Erdos85
 #print axioms Erdos85.sum_pointsOn_card_mul_pointsOn_card_eq_sum_intersections
 #print axioms Erdos85.sizeTwoCyclicMatchingOrbitMultiplicity_mul_sum
 #print axioms Erdos85.sizeTwoCyclicMatchingOrbitMultiplicity_mul_sum_le
+#print axioms Erdos85.sizeTwoCyclicMatchingOrbitMultiplicity_offDiag_sum_le
+#print axioms Erdos85.sizeTwoCyclicSelectedOrbitMultiplicity_choose_two_sum_le
