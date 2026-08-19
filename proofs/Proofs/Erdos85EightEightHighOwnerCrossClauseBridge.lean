@@ -101,6 +101,52 @@ theorem eightEightHighCrossDegreeClauses_satisfied
       (Int.natAbs_pos.mpr (_root_.ne_of_gt hc0))
       habNat hacNat hbcNat).2
 
+theorem eightEightHighCrossIndex?_some_pos
+    {x y id : Nat} (h : eightEightHighCrossIndex? x y = some id) :
+    0 < id := by
+  simp only [eightEightHighCrossIndex?] at h
+  split at h
+  · obtain ⟨k, _, rfl⟩ := Option.map_eq_some_iff.mp h
+    omega
+  · contradiction
+
+/-- The forbidden-mask encoding is sound for any valuation satisfying the
+entrywise two-by-two balance recurrence. -/
+theorem eightEightHighIntertwiningClauses_satisfied
+    (val : DimacsValuation)
+    (hbalance : ∀ x y a b c d,
+      eightEightHighCrossIndex? ((x + 7) % 8) y = some a →
+      eightEightHighCrossIndex? ((x + 1) % 8) y = some b →
+      eightEightHighCrossIndex? x ((y + 1) % 8) = some c →
+      eightEightHighCrossIndex? x ((y + 7) % 8) = some d →
+      (val a).toNat + (val b).toNat = (val c).toNat + (val d).toNat) :
+    ∀ clause, clause ∈ eightEightHighIntertwiningClauses →
+      dimacsClauseSatisfied val clause := by
+  intro clause hclause
+  simp only [eightEightHighIntertwiningClauses, List.mem_flatMap,
+    List.mem_range] at hclause
+  obtain ⟨x, hx, y, hy, hclause⟩ := hclause
+  generalize ha : eightEightHighCrossIndex? ((x + 7) % 8) y = oa at hclause
+  generalize hb : eightEightHighCrossIndex? ((x + 1) % 8) y = ob at hclause
+  generalize hc : eightEightHighCrossIndex? x ((y + 1) % 8) = oc at hclause
+  generalize hd : eightEightHighCrossIndex? x ((y + 7) % 8) = od at hclause
+  cases oa <;> cases ob <;> cases oc <;> cases od <;>
+    simp [ha, hb, hc, hd] at hclause
+  rename_i a b c d
+  obtain ⟨mask, hmask, hclause⟩ := hclause
+  obtain ⟨hbad, hclause⟩ := hclause
+  subst clause
+  simpa using
+    dimacsIntertwiningMaskClauseSatisfied_of_balance val a b c d
+      (eightEightHighCrossIndex?_some_pos ha)
+      (eightEightHighCrossIndex?_some_pos hb)
+      (eightEightHighCrossIndex?_some_pos hc)
+      (eightEightHighCrossIndex?_some_pos hd)
+      (eightEightHighBit mask 3) (eightEightHighBit mask 2)
+      (eightEightHighBit mask 1) (eightEightHighBit mask 0)
+      hbad (hbalance x y a b c d ha hb hc hd)
+
 end Erdos85
 
 #print axioms Erdos85.eightEightHighCrossDegreeClauses_satisfied
+#print axioms Erdos85.eightEightHighIntertwiningClauses_satisfied

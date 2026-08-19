@@ -6,6 +6,8 @@ namespace Erdos85
 
 open Std Sat
 
+set_option maxHeartbeats 0
+
 /-- A four-element Boolean fiber with exactly two true entries satisfies
 every positive and negative triple clause on distinct fiber elements. -/
 theorem dimacsTripleClausesSatisfied_of_four_exactly_two_counting
@@ -70,6 +72,27 @@ theorem dimacsTripleClausesSatisfied_of_four_exactly_two_counting
     · exact ⟨-(b : Int), by simp, by simp [dimacsLitValue, hb']⟩
     · exact ⟨-(c : Int), by simp, by simp [dimacsLitValue, hc']⟩
 
+/-- A truth-table row whose two left bits and two right bits have unequal
+sums is excluded by its four-literal DIMACS clause whenever the actual
+valuation satisfies the balance equation. -/
+theorem dimacsIntertwiningMaskClauseSatisfied_of_balance
+    (val : DimacsValuation) (a b c d : Nat)
+    (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) (hd : 0 < d)
+    (ba bb bc bd : Bool)
+    (hbad : ba.toNat + bb.toNat ≠ bc.toNat + bd.toNat)
+    (hbalance : (val a).toNat + (val b).toNat =
+      (val c).toNat + (val d).toNat) :
+    dimacsClauseSatisfied val
+      [if ba then -(a : Int) else (a : Int),
+       if bb then -(b : Int) else (b : Int),
+       if bc then -(c : Int) else (c : Int),
+       if bd then -(d : Int) else (d : Int)] := by
+  cases hva : val a <;> cases hvb : val b <;>
+    cases hvc : val c <;> cases hvd : val d <;>
+    cases ba <;> cases bb <;> cases bc <;> cases bd <;>
+    simp_all [dimacsClauseSatisfied, dimacsLitValue]
+
 end Erdos85
 
 #print axioms Erdos85.dimacsTripleClausesSatisfied_of_four_exactly_two_counting
+#print axioms Erdos85.dimacsIntertwiningMaskClauseSatisfied_of_balance
