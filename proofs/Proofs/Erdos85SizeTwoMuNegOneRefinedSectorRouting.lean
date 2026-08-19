@@ -128,6 +128,96 @@ theorem orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_sector_cells
   · right; right
     exact ⟨by simpa [allOne, N₁, N₂, K, SimpleGraph.adjMatrix_apply] using ho, hcell⟩
 
+/-- The refined μ=-1 cell paired with the same witness's quotient and signed
+row ledgers, ready for the generic shore-switch adapter. -/
+theorem orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_alignedLedger
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-1 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let H := G.induce c.supp
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+    let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ := fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ := fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    ∃ k r : ℕ, MuNegOneRefinedSectorCells N₁ N₂ k r ∧
+      a.supp.ncard = 8 ∧ b.supp.ncard = 8 ∧
+      componentQuotientMatrix K H a a = 7-r ∧
+      componentQuotientMatrix K H a b = r ∧
+      componentQuotientMatrix K H b a = r ∧
+      componentQuotientMatrix K H b b = 7-r ∧
+      (∀ x ∈ A, (A.filter fun y ↦ K.Adj x y ∧ s y.1 = s x.1).card = k) ∧
+      (∀ x ∈ B, (B.filter fun y ↦ K.Adj x y ∧ s y.1 = s x.1).card = k) ∧
+      (∀ x ∈ A, (B.filter fun y ↦ K.Adj x y ∧ s y.1 = s x.1).card = 3-k) ∧
+      (∀ x ∈ B, (A.filter fun y ↦ K.Adj x y ∧ s y.1 = s x.1).card = 3-k) := by
+  classical
+  dsimp only
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ := fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ := fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  obtain ⟨k, r, hk, hr2, hr7, hbase, hupper, ha8, hb8,
+      haa, habq, hbaq, hbb, hA, hB, hcrossA, hcrossB,
+      _hsector₁, _hsector₂, hgrid⟩ :=
+    orderSixtyFour_sizeTwo_muNegOne_eightEight_alignedLedger
+      G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+        u v huinj hvinj hurange hvrange hu hv
+  let allZero := MuNegOneC8CycleEntriesZero N₁ ∧ MuNegOneC8CycleEntriesZero N₂
+  let mixed := (MuNegOneC8CycleEntriesZero N₁ ∧ MuNegOneC8CycleEntriesOne N₂) ∨
+    (MuNegOneC8CycleEntriesOne N₁ ∧ MuNegOneC8CycleEntriesZero N₂)
+  let allOne := MuNegOneC8CycleEntriesOne N₁ ∧ MuNegOneC8CycleEntriesOne N₂
+  have hgrid' : (allZero ∧ 5 ≤ r+k) ∨ (mixed ∧ r+k=5) ∨
+      (allOne ∧ r+k≤5) := by
+    simpa [allZero, mixed, allOne, N₁, N₂, K, and_assoc] using hgrid
+  have hcases := sizeTwoMuNegOne_sector_parameter_cases k r allZero mixed allOne
+    hk hr2 hr7 hbase hupper hgrid'
+  have hrefined : MuNegOneRefinedSectorCells N₁ N₂ k r := by
+    rcases hcases with ⟨hz, hcells⟩ | ⟨hm, hcells⟩ | ⟨ho, hcells⟩
+    · left
+      refine ⟨by simpa [allZero] using hz, ?_⟩
+      rcases hcells with h | h | h | h | h | h
+      · exact Or.inl h
+      · exfalso
+        exact orderSixtyFour_sizeTwo_muNegOne_zeroSix_false_of_parameters
+          G hfree hreg hcard c hc s hs_out hs_in hH a u huinj hurange hu
+            k r h.1 h.2 haa hA (by simpa [allZero, N₁, N₂, K] using hz.1)
+      · exact Or.inr (Or.inl h)
+      · exact Or.inr (Or.inr (Or.inl h))
+      · exact Or.inr (Or.inr (Or.inr (Or.inl h)))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr h)))
+    · right; left
+      exact ⟨by simpa [mixed] using hm, hcells⟩
+    · right; right
+      exact ⟨by simpa [allOne] using ho, hcells⟩
+  exact ⟨k, r, hrefined, ha8, hb8, haa, habq, hbaq, hbb,
+    hA, hB, hcrossA, hcrossB⟩
+
 end
 
 
@@ -135,3 +225,4 @@ end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_sector_cells
 #print axioms Erdos85.muNegOne_refined_switch_target_eq_self_iff
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_alignedLedger
