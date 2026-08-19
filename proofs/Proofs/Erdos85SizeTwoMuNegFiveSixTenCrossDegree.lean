@@ -180,8 +180,83 @@ theorem orderSixtyFour_sizeTwo_muNegFive_sixTen_short_positive_neutralCross_exis
   simp only [Finset.card_singleton] at hle
   omega
 
+/-- Negative-shore mirror: every negative vertex of the short cycle has a
+neutral-projection partner on the long cycle. -/
+theorem orderSixtyFour_sizeTwo_muNegFive_sixTen_short_negative_neutralCross_exists
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    [DecidableRel (MuNegFiveNeutralProjection G c s)]
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z, s y = (-5 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (ha : a.supp.ncard = 6) (hb : b.supp.ncard = 10)
+    (hshort : ∀ x : c.supp, x ∈ a.supp →
+      (triangleFreeEdgeGraph G).degree x.1 = 2) :
+    let D := secondOrderDefectGraph G
+    let Xp := MuNegFivePositiveShore D c s
+    let Xm := MuNegFiveNegativeShore D c s
+    let N := MuNegFiveNeutralProjection G c s
+    ∀ y : Xm, (⟨y.1, y.2.1⟩ : c.supp) ∈ a.supp →
+      ∃ x : Xp, N x y ∧ (⟨x.1, x.2.1⟩ : c.supp) ∈ b.supp := by
+  classical
+  dsimp only
+  let sn : V → ℤ := fun z => -s z
+  letI : DecidableRel (MuNegFiveNeutralProjection G c sn) :=
+    fun _ _ => Classical.propDecidable _
+  have hs_outn : ∀ x, x ∉ c.supp → sn x = 0 := by
+    intro x hx; simp [sn, hs_out x hx]
+  have hs_inn : ∀ x, x ∈ c.supp → sn x = -1 ∨ sn x = 1 := by
+    intro x hx
+    rcases hs_in x hx with h | h
+    · right; simp [sn, h]
+    · left; simp [sn, h]
+  have hHn : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        sn y = -2 * sn z := by
+    intro z hz
+    simp only [sn, Finset.sum_neg_distrib]
+    have := hH z hz
+    omega
+  have hDn : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z, sn y =
+        (-5 : ℤ) * sn z := by
+    intro z hz
+    simp only [sn, Finset.sum_neg_distrib]
+    have := hD z hz
+    omega
+  have hp := orderSixtyFour_sizeTwo_muNegFive_sixTen_short_positive_neutralCross_exists
+    G hfree hreg hcard c hc sn hs_outn hs_inn hHn hDn a b hab ha hb hshort
+  intro y hya
+  let yn : MuNegFivePositiveShore (secondOrderDefectGraph G) c sn :=
+    ⟨y.1, y.2.1, by simp [sn, y.2.2]⟩
+  obtain ⟨xn, hNn, hxb⟩ := hp yn hya
+  let x : MuNegFivePositiveShore (secondOrderDefectGraph G) c s :=
+    ⟨xn.1, xn.2.1, by have h := xn.2.2; simp [sn] at h; omega⟩
+  refine ⟨x, ?_, hxb⟩
+  rcases hNn with ⟨z, hxz, hyz⟩
+  have hz' : (G.adjMatrix ℤ).mulVec s z.1 + 2 * s z.1 = 0 := by
+    have hz := congrArg Neg.neg z.2.2
+    simpa [sn, Matrix.mulVec_neg, add_comm] using hz
+  let z' : MuNegFiveNeutralFiber G c s := ⟨z.1, z.2.1, hz'⟩
+  exact ⟨z', hyz, hxz⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_sixTen_short_positive_neutralCross_exists
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegFive_sixTen_short_negative_neutralCross_exists
