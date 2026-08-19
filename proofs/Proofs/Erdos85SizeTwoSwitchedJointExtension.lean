@@ -157,6 +157,50 @@ theorem muNegThree_inducedSwitch_self_or_ambientCrossLane
   · right; right; right
     exact exists_isAmbientSignedJoint_of_induced G c t ht 3 hH (by simpa [hpos] using hD)
 
+/-- Terminal-callback capstone for a reduced μ=-1 switch. -/
+theorem false_of_muNegOne_self_or_ambientCrossLane
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent) (k r : ℕ)
+    (hroute : (k = 1 ∧ r = 4) ∨
+      (∃ s, IsAmbientSignedJoint G c (-5) s) ∨
+      (∃ s, IsAmbientSignedJoint G c (-3) s) ∨
+      (∃ s, IsAmbientSignedJoint G c 3 s))
+    (hself : k = 1 → r = 4 → False)
+    (h5 : ∀ s, IsAmbientSignedJoint G c (-5) s → False)
+    (h3 : ∀ s, IsAmbientSignedJoint G c (-3) s → False)
+    (hpos : ∀ s, IsAmbientSignedJoint G c 3 s → False) :
+    False := by
+  rcases hroute with hselfCell | ⟨s, hs⟩ | ⟨s, hs⟩ | ⟨s, hs⟩
+  · exact hself hselfCell.1 hselfCell.2
+  · exact h5 s hs
+  · exact h3 s hs
+  · exact hpos s hs
+
+/-- Terminal-callback capstone for a reduced μ=-3 switch. -/
+theorem false_of_muNegThree_self_or_ambientCrossLane
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent) (k r : ℕ)
+    (hroute : (k = 1 ∧ r = 2) ∨
+      (∃ s, IsAmbientSignedJoint G c (-5) s) ∨
+      (∃ s, IsAmbientSignedJoint G c (-1) s) ∨
+      (∃ s, IsAmbientSignedJoint G c 3 s))
+    (hself : k = 1 → r = 2 → False)
+    (h5 : ∀ s, IsAmbientSignedJoint G c (-5) s → False)
+    (h1 : ∀ s, IsAmbientSignedJoint G c (-1) s → False)
+    (hpos : ∀ s, IsAmbientSignedJoint G c 3 s → False) :
+    False := by
+  rcases hroute with hselfCell | ⟨s, hs⟩ | ⟨s, hs⟩ | ⟨s, hs⟩
+  · exact hself hselfCell.1 hselfCell.2
+  · exact h5 s hs
+  · exact h1 s hs
+  · exact hpos s hs
+
 end
 
 end Erdos85
@@ -165,3 +209,5 @@ end Erdos85
 #print axioms Erdos85.exists_isAmbientSignedJoint_of_induced
 #print axioms Erdos85.muNegOne_inducedSwitch_self_or_ambientCrossLane
 #print axioms Erdos85.muNegThree_inducedSwitch_self_or_ambientCrossLane
+#print axioms Erdos85.false_of_muNegOne_self_or_ambientCrossLane
+#print axioms Erdos85.false_of_muNegThree_self_or_ambientCrossLane
