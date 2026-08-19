@@ -48,6 +48,15 @@ theorem eightEightOwnerSym2_injective :
     Function.Injective eightEightOwnerSym2 := by
   decide
 
+/-- Canonical equivalence between the generator's `Fin 48` owner indices
+and the range of its typed unordered-pair table. -/
+noncomputable def eightEightOwnerRangeEquiv :
+    Fin 48 ≃ Set.range eightEightOwnerSym2 :=
+  Equiv.ofInjective eightEightOwnerSym2 eightEightOwnerSym2_injective
+
+@[simp] theorem eightEightOwnerRangeEquiv_apply_val (e : Fin 48) :
+    (eightEightOwnerRangeEquiv e).1 = eightEightOwnerSym2 e := rfl
+
 /-- Membership in the generated pair is exactly the generator's Boolean
 incidence predicate. -/
 theorem mem_eightEightOwnerSym2_iff (e : Fin 48) (v : Fin 16) :
