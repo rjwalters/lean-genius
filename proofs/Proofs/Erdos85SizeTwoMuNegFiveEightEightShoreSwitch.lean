@@ -203,6 +203,7 @@ theorem bipartition_signSwitch_eigen_three_of_card
       norm_num
     · intro y hy
       exact hsign y (Finset.mem_union_left B (Finset.mem_filter.mp hy).2)
+
   · intro x hx
     rw [signed_sum_eq_two_same_sub_card _ s x
       (hsign x (Finset.mem_union_left B hx))]
@@ -225,6 +226,47 @@ theorem bipartition_signSwitch_eigen_three_of_card
     · intro y hy
       exact hsign y (Finset.mem_union_left B (Finset.mem_filter.mp hy).2)
 
+/-- Matrix form of the exact cardinality switch when the two shores partition
+the whole vertex type.  This is the socket consumed by component extension. -/
+theorem bipartition_signSwitch_adjMatrix_eigen_three_of_card
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D : SimpleGraph X) [DecidableRel D.Adj]
+    (A B : Finset X) (hAB : Disjoint A B)
+    (hpartition : A ∪ B = Finset.univ)
+    (s : X → ℤ)
+    (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (hAAcard : ∀ x ∈ A,
+      ((D.neighborFinset x).filter (· ∈ A)).card = 3)
+    (hAAsame : ∀ x ∈ A,
+      (((D.neighborFinset x).filter (· ∈ A)).filter
+        (fun y ↦ s y = s x)).card = 1)
+    (hABcard : ∀ x ∈ A,
+      ((D.neighborFinset x).filter (· ∈ B)).card = 4)
+    (hABsame : ∀ x ∈ A,
+      (((D.neighborFinset x).filter (· ∈ B)).filter
+        (fun y ↦ s y = s x)).card = 0)
+    (hBBcard : ∀ x ∈ B,
+      ((D.neighborFinset x).filter (· ∈ B)).card = 3)
+    (hBBsame : ∀ x ∈ B,
+      (((D.neighborFinset x).filter (· ∈ B)).filter
+        (fun y ↦ s y = s x)).card = 1)
+    (hBAcard : ∀ x ∈ B,
+      ((D.neighborFinset x).filter (· ∈ A)).card = 4)
+    (hBAsame : ∀ x ∈ B,
+      (((D.neighborFinset x).filter (· ∈ A)).filter
+        (fun y ↦ s y = s x)).card = 0) :
+    let t : X → ℤ := fun x ↦ if x ∈ B then -s x else s x
+    (D.adjMatrix ℤ).mulVec t = 3 • t := by
+  classical
+  dsimp only
+  have hrows := bipartition_signSwitch_eigen_three_of_card D A B hAB
+    (fun _x y _hy ↦ by rw [hpartition]; exact Finset.mem_univ y)
+    s (fun x _hx ↦ hsign x) hAAcard hAAsame hABcard hABsame
+      hBBcard hBBsame hBAcard hBAsame
+  funext x
+  rw [D.adjMatrix_mulVec_apply]
+  simpa [hpartition] using hrows x (by rw [hpartition]; exact Finset.mem_univ x)
+
 end
 
 end Erdos85
@@ -233,3 +275,4 @@ end Erdos85
 #print axioms Erdos85.bipartition_signSwitch_eigen_sub
 #print axioms Erdos85.signed_sum_eq_two_same_sub_card
 #print axioms Erdos85.bipartition_signSwitch_eigen_three_of_card
+#print axioms Erdos85.bipartition_signSwitch_adjMatrix_eigen_three_of_card
