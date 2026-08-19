@@ -48,7 +48,7 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_alignedLedger
     let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
       fun i j ↦ K.adjMatrix ℤ (v i) (v j)
     ∃ k r : ℕ,
-      k ≤ 2 ∧ 2 ≤ r ∧ r ≤ 7 ∧
+      k ≤ 1 ∧ 2 ≤ r ∧ r ≤ 7 ∧
       a.supp.ncard = 8 ∧ b.supp.ncard = 8 ∧
       componentQuotientMatrix K H a a = 7 - r ∧
       componentQuotientMatrix K H a b = r ∧
@@ -88,7 +88,51 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_alignedLedger
     simpa [N₂, K] using
       (binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
         G hfree hreg hcard c hc b v hvrange hv)
-  exact ⟨k, r, hk, hr2, hr7, ha8, hb8, haa, habq, hbaq, hbb,
+  have hurangeA : Set.range u = ↑A := by
+    rw [hurange]
+    ext x
+    simp [A]
+  have hvrangeB : Set.range v = ↑B := by
+    rw [hvrange]
+    ext x
+    simp [B]
+  have hu0A : u 0 ∈ A := by
+    change u 0 ∈ (↑A : Set c.supp)
+    rw [← hurangeA]
+    exact ⟨0, rfl⟩
+  have hk1 : k ≤ 1 := by
+    have hkne2 : k ≠ 2 := by
+      intro hk2
+      obtain ⟨k', r', _hk', _hr2', _hr7', hnf⟩ :=
+        orderSixtyFour_sizeTwo_muNegThree_eightEight_signed_normalForm
+          G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+            u v huinj hvinj hurange hvrange hu hv
+      rcases hnf with ⟨_hk'0, hrowsA, _hrowsB⟩ |
+          ⟨_hk'1, φ, hφ, _horient⟩
+      · have hc0 := hcrossA (u 0) hu0A
+        rw [hk2] at hc0
+        have hc2 := hrowsA (u 0) (by simpa [A] using hu0A)
+        have hc2' : (B.filter fun y ↦
+            K.Adj (u 0) y ∧ s y.1 = s (u 0).1).card = 2 := by
+          simpa [B, K] using hc2
+        rw [hc0] at hc2'
+        omega
+      · have hvφB : v (φ 0) ∈ B := by
+          change v (φ 0) ∈ (↑B : Set c.supp)
+          rw [← hvrangeB]
+          exact ⟨φ 0, rfl⟩
+        have hedge := (hφ 0 (φ 0)).2 rfl
+        have hmem : v (φ 0) ∈ B.filter fun y ↦
+            K.Adj (u 0) y ∧ s y.1 = s (u 0).1 := by
+          rw [Finset.mem_filter]
+          exact ⟨hvφB, hedge.2, hedge.1.symm⟩
+        have hpos := Finset.card_pos.mpr ⟨v (φ 0), hmem⟩
+        have hc0 := hcrossA (u 0) hu0A
+        rw [hk2] at hc0
+        rw [hc0] at hpos
+        omega
+    omega
+  exact ⟨k, r, hk1, hr2, hr7, ha8, hb8, haa, habq, hbaq, hbb,
     hA, hB, hcrossA, hcrossB, hsector₁, hsector₂⟩
 
 end
