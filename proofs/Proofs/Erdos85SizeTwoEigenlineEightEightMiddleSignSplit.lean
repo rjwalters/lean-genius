@@ -81,11 +81,13 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_allTriangleFree_middle
     intro z hz
     have hzK := (Finset.mem_filter.mp hz).1
     have hzb := (Finset.mem_filter.mp hz).2
+    have hzbSupp : z ∈ b.supp :=
+      (ConnectedComponent.mem_supp_iff b z).mpr hzb
     have hzNotA : z ∉ a.supp := by
       intro hza
       apply hab
       rw [← (ConnectedComponent.mem_supp_iff a z).mp hza,
-        ← (ConnectedComponent.mem_supp_iff b z).mp hzb]
+        ← (ConnectedComponent.mem_supp_iff b z).mp hzbSupp]
     exact binarySquare_regular_sizeTwoPart_allTriangleFree_cross_defect_preserves_sign
       G hfree (by omega) hreg hcard c hc s hs_in hs_out hA_in hDs a htf
         x z hxA hzNotA ((K.mem_neighborFinset x z).mp hzK)
@@ -190,9 +192,128 @@ theorem binarySquare_regular_sizeTwoPart_eight_eightEight_parameter_five_both_al
       omega
   exact ⟨shoreA, shoreB⟩
 
+/-- At quotient parameter four, an all-triangle-free first shore has a cross
+defect edge to exactly the four vertices of the second shore with the same
+eigenline sign. -/
+theorem binarySquare_regular_sizeTwoPart_eight_eightEight_allTriangleFree_parameter_four_cross_iff_sameSign
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ)
+    (hs_in : ∀ x ∈ c.supp, s x = -1 ∨ s x = 1)
+    (hs_out : ∀ x ∉ c.supp, s x = 0)
+    (hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x)
+    (hDs : ∀ x, ∑ y ∈ (secondOrderDefectGraph G).neighborFinset x, s y =
+      3 * s x)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (hab : a ≠ b)
+    (v : ZMod 8 → c.supp)
+    (hvinj : Function.Injective v)
+    (hvrange : Set.range v = b.supp)
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (htf : ∀ z : c.supp, z ∈ a.supp →
+      (triangleFreeEdgeGraph G).degree z.1 = 2)
+    (hab4 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b = 4) :
+    ∀ x y : c.supp, x ∈ a.supp → y ∈ b.supp →
+      (((secondOrderDefectGraph G).induce c.supp).Adj x y ↔
+        s y.1 = s x.1) := by
+  classical
+  let H := G.induce c.supp
+  let D := secondOrderDefectGraph G
+  let K := D.induce c.supp
+  have hHdegree : ∀ z : c.supp, H.degree z = 2 := by
+    intro z
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2)
+        (by simpa [Nat.mul_comm] using hc) z
+  have hcomm : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm G D hglobal c).symm
+  intro x y hxA hyB
+  let B := componentNeighborFinset K H b x
+  let S : Finset c.supp := (Finset.univ.image v).filter fun z => s z.1 = s x.1
+  have hBcard : B.card = 4 := by
+    rw [← componentQuotientMatrix_apply_eq K H 2 hHdegree hcomm a b hxA]
+    simpa [K, H] using hab4
+  have hBsubS : B ⊆ S := by
+    intro z hz
+    have hzK := (Finset.mem_filter.mp hz).1
+    have hzb := (Finset.mem_filter.mp hz).2
+    have hzbSupp : z ∈ b.supp :=
+      (ConnectedComponent.mem_supp_iff b z).mpr hzb
+    have hzNotA : z ∉ a.supp := by
+      intro hza
+      apply hab
+      rw [← (ConnectedComponent.mem_supp_iff a z).mp hza,
+        ← (ConnectedComponent.mem_supp_iff b z).mp hzbSupp]
+    have hzsign :=
+      binarySquare_regular_sizeTwoPart_allTriangleFree_cross_defect_preserves_sign
+        G hfree (by omega) hreg hcard c hc s hs_in hs_out hA_in hDs a htf
+          x z hxA hzNotA ((K.mem_neighborFinset x z).mp hzK)
+    rw [← hvrange] at hzbSupp
+    obtain ⟨j, rfl⟩ := hzbSupp
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_image.mpr ⟨j, Finset.mem_univ j, rfl⟩, hzsign⟩
+  have hvflip : ∀ j : ZMod 8, s (v (j + 1)).1 = -s (v j).1 := by
+    intro j
+    have hH : H.Adj (v j) (v (j + 1)) := by
+      rw [← H.mem_neighborFinset, hv]
+      simp
+    have hmem : (v (j + 1)).1 ∈ componentNeighborFinset G D c (v j).1 := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset _ _).mpr hH, (v (j + 1)).2⟩
+    exact (internal_alternation G hfree (by omega) hreg hcard c hc s
+      hs_in hs_out hA_in (v j).2).2 _ hmem
+  obtain ⟨hvSame, hvOpp⟩ := zmodEight_alternating_sign_filter_cards
+    (fun j => s (v j).1) (fun j => hs_in _ (v j).2) hvflip
+  have hScard : S.card = 4 := by
+    have hfilterImage : S =
+        ((Finset.univ : Finset (ZMod 8)).filter
+          fun j => s (v j).1 = s x.1).image v := by
+      ext z
+      simp only [S, Finset.mem_filter, Finset.mem_image, Finset.mem_univ,
+        true_and]
+      constructor
+      · rintro ⟨⟨j, _, rfl⟩, hj⟩
+        exact ⟨j, hj, rfl⟩
+      · rintro ⟨j, hj, rfl⟩
+        exact ⟨⟨j, rfl⟩, hj⟩
+    rw [hfilterImage, Finset.card_image_of_injective _ hvinj]
+    rcases hs_in x.1 x.2 with hxNeg | hxPos <;>
+      rcases hs_in (v 0).1 (v 0).2 with hvNeg | hvPos <;> simp_all
+  have hBS : B = S := Finset.eq_of_subset_of_card_le hBsubS (by omega)
+  rw [← K.mem_neighborFinset]
+  constructor
+  · intro hxy
+    have hyInB : y ∈ B := Finset.mem_filter.mpr ⟨hxy, hyB⟩
+    have hyInS : y ∈ S := by rw [← hBS]; exact hyInB
+    exact (Finset.mem_filter.mp hyInS).2
+  · intro hsign
+    rw [← hvrange] at hyB
+    obtain ⟨j, rfl⟩ := hyB
+    have hyInS : v j ∈ S := Finset.mem_filter.mpr
+      ⟨Finset.mem_image.mpr ⟨j, Finset.mem_univ j, rfl⟩, hsign⟩
+    have hyInB : v j ∈ B := by rw [hBS]; exact hyInS
+    exact (Finset.mem_filter.mp hyInB).1
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_allTriangleFree_middle_parameter_eq_four
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_parameter_five_both_allTriangle
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_allTriangleFree_parameter_four_cross_iff_sameSign
