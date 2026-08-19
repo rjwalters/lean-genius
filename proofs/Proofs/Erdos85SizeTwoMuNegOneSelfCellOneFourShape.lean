@@ -76,6 +76,62 @@ theorem zmodEight_rowThree_cycleZero_four_iff
   have hmemS : j ∈ S ↔ j = 3 ∨ j = 4 ∨ j = 5 := by simp [S]
   rw [← hmemT, heq, hmemS]
 
+private theorem zmodEight_translated_row_card
+    (R : ZMod 8 → ZMod 8 → Prop) [DecidableRel R]
+    (i : ZMod 8) (n : ℕ)
+    (hcard : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ R i j).card = n) :
+    ((Finset.univ : Finset (ZMod 8)).filter fun d ↦ R i (i + d)).card = n := by
+  let T := (Finset.univ : Finset (ZMod 8)).filter fun d ↦ R i (i + d)
+  let U := (Finset.univ : Finset (ZMod 8)).filter fun j ↦ R i j
+  have hTU : T.card = U.card := by
+    apply Finset.card_bij (fun d _ ↦ i + d)
+    · intro d hd
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+        (Finset.mem_filter.mp hd).2⟩
+    · intro d₁ hd₁ d₂ hd₂ heq
+      exact add_left_cancel heq
+    · intro j hj
+      refine ⟨j - i, ?_, ?_⟩
+      · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+          have hij : i + (j - i) = j := by ring
+          simpa [hij] using (Finset.mem_filter.mp hj).2⟩
+      · ring
+  rw [hTU]
+  simpa [U] using hcard
+
+/-- Translated row form of the all-triangle-free support `{±1,4}`. -/
+theorem zmodEight_rowsThree_cycleOne_four_sub_iff
+    (R : ZMod 8 → ZMod 8 → Prop) [DecidableRel R]
+    (hcard : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ R i j).card = 3)
+    (h1 : ∀ i, R i (i + 1)) (h4 : ∀ i, R i (i + 4))
+    (h7 : ∀ i, R i (i + 7)) :
+    ∀ i j, R i j ↔ j - i = 1 ∨ j - i = 4 ∨ j - i = 7 := by
+  intro i j
+  have hc := zmodEight_translated_row_card R i 3 (hcard i)
+  have hk := zmodEight_rowThree_cycleOne_four_iff
+    (fun d ↦ R i (i + d)) hc (h1 i) (h4 i) (h7 i) (j - i)
+  have hij : i + (j - i) = j := by ring
+  simpa [hij] using hk
+
+/-- Translated row form of the all-triangle support `{±3,4}`. -/
+theorem zmodEight_rowsThree_cycleZero_four_sub_iff
+    (R : ZMod 8 → ZMod 8 → Prop) [DecidableRel R]
+    (hcard : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ R i j).card = 3)
+    (h0 : ∀ i, ¬ R i i)
+    (h1 : ∀ i, ¬ R i (i + 1)) (h2 : ∀ i, ¬ R i (i + 2))
+    (h4 : ∀ i, R i (i + 4))
+    (h6 : ∀ i, ¬ R i (i + 6)) (h7 : ∀ i, ¬ R i (i + 7)) :
+    ∀ i j, R i j ↔ j - i = 3 ∨ j - i = 4 ∨ j - i = 5 := by
+  intro i j
+  have hc := zmodEight_translated_row_card R i 3 (hcard i)
+  have hk := zmodEight_rowThree_cycleZero_four_iff
+    (fun d ↦ R i (i + d)) hc (h0 i) (h1 i) (h2 i) (h4 i)
+      (h6 i) (h7 i) (j - i)
+  have hij : i + (j - i) = j := by ring
+  simpa [hij] using hk
+
 end
 
 
@@ -83,3 +139,5 @@ end Erdos85
 
 #print axioms Erdos85.zmodEight_rowThree_cycleOne_four_iff
 #print axioms Erdos85.zmodEight_rowThree_cycleZero_four_iff
+#print axioms Erdos85.zmodEight_rowsThree_cycleOne_four_sub_iff
+#print axioms Erdos85.zmodEight_rowsThree_cycleZero_four_sub_iff
