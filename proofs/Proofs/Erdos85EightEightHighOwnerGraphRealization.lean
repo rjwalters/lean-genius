@@ -40,6 +40,14 @@ theorem eightEightHighOwnerAt_injective :
     Function.Injective (fun e : Fin 64 ↦ eightEightHighOwnerAt e) := by
   native_decide
 
+theorem eightEightHighCandidatePair_owner
+    (a b : Fin 16)
+    (h : eightEightHighCandidatePair a b = true ∨
+      eightEightHighCandidatePair b a = true) :
+    ∃ e : Fin 64, eightEightHighOwnerSym2 e = s(a, b) := by
+  revert a b
+  native_decide
+
 theorem eightEightHighCrossIndex?_le_thirtyTwo
     {x y id : Nat} (h : eightEightHighCrossIndex? x y = some id) :
     id ≤ 32 := by
@@ -96,6 +104,46 @@ instance (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj] :
   intro e
   unfold eightEightHighCoordinateActive
   exact inferInstance
+
+theorem eightEightHighCoordinateActive_enabled_edge
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (hfixed : ∀ e : Fin 64,
+      eightEightHighActiveVariable? e = none →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e)) :
+    ∀ e : Fin 64,
+      eightEightHighOwnerEnabled (eightEightHighCoordinateActive R) e →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e) := by
+  intro e he
+  unfold eightEightHighOwnerEnabled at he
+  cases hvar : eightEightHighActiveVariable? e with
+  | none => exact hfixed e hvar
+  | some id => simpa [hvar, eightEightHighCoordinateActive] using he
+
+theorem eightEightHighCoordinateActive_pairCover
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (hsub : ∀ a b, R.Adj a b →
+      eightEightHighCandidatePair a b = true ∨
+        eightEightHighCandidatePair b a = true) :
+    ∀ a b, R.Adj a b →
+      ∃ e : Fin 64,
+        eightEightHighOwnerEnabled (eightEightHighCoordinateActive R) e ∧
+          eightEightHighOwnerSym2 e = s(a, b) := by
+  intro a b hab
+  obtain ⟨e, he⟩ := eightEightHighCandidatePair_owner a b (hsub a b hab)
+  refine ⟨e, ?_, he⟩
+  unfold eightEightHighOwnerEnabled
+  cases hvar : eightEightHighActiveVariable? e with
+  | none => trivial
+  | some id =>
+      unfold eightEightHighCoordinateActive
+      have hp : s(eightEightHighOwnerFirst e,
+          eightEightHighOwnerSecond e) = s(a, b) := by
+        simpa [eightEightHighOwnerSym2] using he
+      rcases Sym2.eq_iff.mp hp with hp | hp
+      · simpa [hp.1, hp.2] using hab
+      · simpa [hp.1, hp.2] using hab.symm
 
 theorem eightEightHighOwnerVal_crossIndex_coordinate_iff
     (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
@@ -176,6 +224,29 @@ theorem eightEightHighEnabledOwnerEdge_injective
   apply eightEightHighOwnerSym2_injective
   exact congrArg Subtype.val hef
 
+theorem eightEightHighEnabledOwnerEdge_surjective_of_pairCover
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (active : Fin 64 → Prop)
+    (hedge : ∀ e : Fin 64,
+      eightEightHighOwnerEnabled active e →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (hcover : ∀ a b, R.Adj a b →
+      ∃ e : Fin 64,
+        eightEightHighOwnerEnabled active e ∧
+          eightEightHighOwnerSym2 e = s(a, b)) :
+    Function.Surjective
+      (eightEightHighEnabledOwnerEdge R active hedge) := by
+  rintro ⟨p, hp⟩
+  induction p using Sym2.inductionOn with
+  | _ a b =>
+      have hab : R.Adj a b := by
+        simpa only [SimpleGraph.mem_edgeFinset,
+          SimpleGraph.mem_edgeSet] using hp
+      obtain ⟨e, he, heq⟩ := hcover a b hab
+      refine ⟨⟨e, he⟩, Subtype.ext ?_⟩
+      exact heq
+
 /-- Equal cardinality upgrades the typed owner-table injection to the exact
 enabled-owner/exterior-edge equivalence needed by the ambient transport. -/
 noncomputable def eightEightHighEnabledOwnerEdgeEquiv
@@ -193,6 +264,21 @@ noncomputable def eightEightHighEnabledOwnerEdgeEquiv
       eightEightHighEnabledOwnerEdge_injective R active hedge, by
         rw [henabledCard, Fintype.card_coe]
         exact hRedges.symm⟩)
+
+/-- Surjective candidate coverage is an alternative to the cardinality
+argument and is often easier to prove directly from shore coordinates. -/
+noncomputable def eightEightHighEnabledOwnerEdgeEquivOfCover
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (active : Fin 64 → Prop)
+    (hedge : ∀ e : Fin 64,
+      eightEightHighOwnerEnabled active e →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (hcover : Function.Surjective
+      (eightEightHighEnabledOwnerEdge R active hedge)) :
+    EightEightHighEnabledOwner active ≃ R.edgeFinset :=
+  Equiv.ofBijective (eightEightHighEnabledOwnerEdge R active hedge)
+    ⟨eightEightHighEnabledOwnerEdge_injective R active hedge, hcover⟩
 
 /-- Compose the enabled-owner enumeration with a graph isomorphism and an
 independent outside-vertex/edge equivalence.  This is the exact direction
@@ -213,6 +299,25 @@ noncomputable def eightEightHighEnabledOwnerOutsideEquiv
     EightEightHighEnabledOwner active ≃ E :=
   (eightEightHighEnabledOwnerEdgeEquiv R active hedge
       henabledCard hRedges).trans
+    ((edgeFinsetEquivEdgeSet R).trans
+      (modelIso.symm.mapEdgeSet.trans
+        ((edgeFinsetEquivEdgeSet S).symm.trans outsideEdge.symm)))
+
+noncomputable def eightEightHighEnabledOwnerOutsideEquivOfCover
+    {E : Type*} [Fintype E] [DecidableEq E]
+    (S : SimpleGraph E) [DecidableRel S.Adj]
+    (R : SimpleGraph (Fin 16)) [DecidableRel R.Adj]
+    (active : Fin 64 → Prop)
+    (hedge : ∀ e : Fin 64,
+      eightEightHighOwnerEnabled active e →
+        R.Adj (eightEightHighOwnerFirst e)
+          (eightEightHighOwnerSecond e))
+    (hcover : Function.Surjective
+      (eightEightHighEnabledOwnerEdge R active hedge))
+    (modelIso : S ≃g R)
+    (outsideEdge : E ≃ S.edgeFinset) :
+    EightEightHighEnabledOwner active ≃ E :=
+  (eightEightHighEnabledOwnerEdgeEquivOfCover R active hedge hcover).trans
     ((edgeFinsetEquivEdgeSet R).trans
       (modelIso.symm.mapEdgeSet.trans
         ((edgeFinsetEquivEdgeSet S).symm.trans outsideEdge.symm)))
