@@ -50,7 +50,7 @@ theorem sixTenAllTfExteriorPairModel_false_of_shoreCoordinates
         ((ZMod.finEquiv 6).symm i).val % 2 ≠
           ((ZMod.finEquiv 10).symm j).val % 2)
     (hcycle : ∀ x y : c.supp,
-      G.Adj x.1 y.1 ↔ sixTenCycleAdj (coord x).val (coord y).val = true) :
+      G.Adj x.1 y.1 ↔ sixTenAllTfCycleAdj (coord x).val (coord y).val = true) :
     False := by
   have hmodel := sixTenAllTfExteriorPair_pointwise_model_of_shores
     G c a b u v hurange hvrange hcover coord hcoordu hcoordv

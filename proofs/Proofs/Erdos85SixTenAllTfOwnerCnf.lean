@@ -24,7 +24,7 @@ open Std Sat
 
 def sixTenShoreLong (a : Nat) : Bool := 6 ≤ a
 
-def sixTenCycleAdj (a b : Nat) : Bool :=
+def sixTenAllTfCycleAdj (a b : Nat) : Bool :=
   if sixTenShoreLong a != sixTenShoreLong b then false
   else if sixTenShoreLong a then
     ((a - 6 + 1) % 10 == (b - 6) % 10) || ((b - 6 + 1) % 10 == (a - 6) % 10)
@@ -54,7 +54,7 @@ def sixTenAllTfOwnerContains (e v : Nat) : Bool :=
 
 def sixTenAllTfOwnerTargetContains (e v : Nat) : Bool :=
   let p := sixTenAllTfOwnerAt e
-  !sixTenCycleAdj p.1 v && !sixTenCycleAdj p.2 v
+  !sixTenAllTfCycleAdj p.1 v && !sixTenAllTfCycleAdj p.2 v
 
 def sixTenAllTfOwnerCompatible (e f : Nat) : Bool :=
   e != f &&
@@ -88,7 +88,7 @@ def sixTenAllTfOwnerServiceClauses : List DimacsClause :=
   (List.range 48).flatMap fun e =>
     (List.range 16).flatMap fun v =>
       let p := sixTenAllTfOwnerAt e
-      if !sixTenCycleAdj p.1 v && !sixTenCycleAdj p.2 v then
+      if !sixTenAllTfCycleAdj p.1 v && !sixTenAllTfCycleAdj p.2 v then
         let xs := sixTenAllTfOwnerServiceVariables e v
         [xs] ++ sixTenPairwiseNegativeClauses xs
       else []

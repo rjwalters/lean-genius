@@ -287,7 +287,7 @@ theorem sixTenAllTfOwnerTarget_not_cycleAdj_of_contains
     (e : Fin 48) (v w : Fin 16)
     (htarget : sixTenAllTfOwnerTargetContains e v = true)
     (hmem : sixTenAllTfOwnerContains e w = true) :
-    sixTenCycleAdj v w = false := by
+    sixTenAllTfCycleAdj v w = false := by
   revert e v w
   decide
 
@@ -307,7 +307,7 @@ theorem sixTenAllTfOwnerCompatible_iff_endpoints
     sixTenAllTfOwnerCompatible e f = true ↔
       e ≠ f ∧ ∀ u v : Fin 16,
         u ∈ sixTenAllTfOwnerSym2 e → v ∈ sixTenAllTfOwnerSym2 f →
-          sixTenCycleAdj u v = false := by
+          sixTenAllTfCycleAdj u v = false := by
   revert e f
   native_decide
 
@@ -376,7 +376,7 @@ theorem outsideOwnerCoordinates_target_eq_one
     (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
     (modelIso : exteriorPairGraph G c ≃g sixTenAllTfExteriorPairGraph)
     (hcycle : ∀ x y : c.supp,
-      G.Adj x.1 y.1 ↔ sixTenCycleAdj (modelIso x).val (modelIso y).val = true)
+      G.Adj x.1 y.1 ↔ sixTenAllTfCycleAdj (modelIso x).val (modelIso y).val = true)
     (e : Fin 48) (v : Fin 16)
     (htarget : sixTenAllTfOwnerTargetContains e v = true) :
     outsideCertificateTarget G c (modelIso.symm v)
@@ -409,7 +409,7 @@ theorem outsideOwnerCoordinates_target_eq_one
     simpa using this
   have hfalse := sixTenAllTfOwnerTarget_not_cycleAdj_of_contains
     e v (modelIso ws) htarget hwinc
-  have htrue : sixTenCycleAdj v (modelIso ws) = true := by
+  have htrue : sixTenAllTfCycleAdj v (modelIso ws) = true := by
     simpa using (hcycle (modelIso.symm v) ws).mp hvw
   simp_all
 
@@ -1025,7 +1025,7 @@ theorem sixTenAllTfOwnerFiniteSemantics_of_modelIso
     (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
     (modelIso : exteriorPairGraph G c ≃g sixTenAllTfExteriorPairGraph)
     (hcycle : ∀ x y : c.supp,
-      G.Adj x.1 y.1 ↔ sixTenCycleAdj (modelIso x).val (modelIso y).val = true) :
+      G.Adj x.1 y.1 ↔ sixTenAllTfCycleAdj (modelIso x).val (modelIso y).val = true) :
     SixTenAllTfOwnerFiniteSemantics
       (((G.induce c.suppᶜ).comap
         (outsideSixTenAllTfOwnerIndexEquiv G c hcard hinc hqcard hRedges
@@ -1103,7 +1103,7 @@ theorem outsideOwnerCoordinates_compatible
     (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
     (modelIso : exteriorPairGraph G c ≃g sixTenAllTfExteriorPairGraph)
     (hcycle : ∀ x y : c.supp,
-      G.Adj x.1 y.1 ↔ sixTenCycleAdj (modelIso x).val (modelIso y).val = true)
+      G.Adj x.1 y.1 ↔ sixTenAllTfCycleAdj (modelIso x).val (modelIso y).val = true)
     (e f : Fin 48)
     (hef : ((G.induce c.suppᶜ).comap
       (outsideSixTenAllTfOwnerIndexEquiv G c hcard hinc hqcard hRedges
@@ -1141,7 +1141,7 @@ theorem outsideOwnerCoordinates_compatible
       simpa [idx, b, vs] using hincv
     have hnot := adjacent_outsidePair_endpoint_not_adj
       G hfree c hcard a b hab us vs hua hvb
-    cases hcv : sixTenCycleAdj u v with
+    cases hcv : sixTenAllTfCycleAdj u v with
     | false => rfl
     | true =>
       exfalso
@@ -1168,7 +1168,7 @@ theorem sixTenAllTfExteriorPairModel_false
     (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
     (modelIso : exteriorPairGraph G c ≃g sixTenAllTfExteriorPairGraph)
     (hcycle : ∀ x y : c.supp,
-      G.Adj x.1 y.1 ↔ sixTenCycleAdj (modelIso x).val (modelIso y).val = true) :
+      G.Adj x.1 y.1 ↔ sixTenAllTfCycleAdj (modelIso x).val (modelIso y).val = true) :
     False := by
   let idx := outsideSixTenAllTfOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso
   let C := (G.induce c.suppᶜ).comap idx.symm
