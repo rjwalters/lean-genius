@@ -49,6 +49,11 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_alignedLedger
       fun i j ↦ K.adjMatrix ℤ (v i) (v j)
     ∃ k r : ℕ,
       k ≤ 1 ∧ 2 ≤ r ∧ r ≤ 7 ∧ 3 ≤ r + k ∧ r + k ≤ 6 ∧
+      ((C8CycleEntriesZero N₁ ∧ C8CycleEntriesZero N₂ ∧ 5 ≤ r + k) ∨
+        ((((C8CycleEntriesZero N₁ ∧ C8CycleEntriesOne N₂) ∨
+            (C8CycleEntriesOne N₁ ∧ C8CycleEntriesZero N₂)) ∧
+              r + k = 5) ∨
+          (C8CycleEntriesOne N₁ ∧ C8CycleEntriesOne N₂ ∧ r + k ≤ 5))) ∧
       a.supp.ncard = 8 ∧ b.supp.ncard = 8 ∧
       componentQuotientMatrix K H a a = 7 - r ∧
       componentQuotientMatrix K H a b = r ∧
@@ -99,6 +104,10 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_alignedLedger
   have hu0A : u 0 ∈ A := by
     change u 0 ∈ (↑A : Set c.supp)
     rw [← hurangeA]
+    exact ⟨0, rfl⟩
+  have hv0B : v 0 ∈ B := by
+    change v 0 ∈ (↑B : Set c.supp)
+    rw [← hvrangeB]
     exact ⟨0, rfl⟩
   have hk1 : k ≤ 1 := by
     have hkne2 : k ≠ 2 := by
@@ -174,6 +183,36 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_alignedLedger
     rw [coordinate_sameSign_adj_card_eq_support K A u huinj hurangeA
       (fun x : c.supp ↦ s x.1) 0]
     exact hA (u 0) hu0A
+  have hrow₂ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      N₂ 0 j = 1).card = 7 - r := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₂ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          K.Adj (v 0) (v j)) by
+      ext j
+      simp [N₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K B v hvinj hvrangeB (v 0)]
+    have hqcard : (componentNeighborFinset K H b (v 0)).card = 7 - r := by
+      rw [← componentQuotientMatrix_apply_eq K H 2 hHdegree hcommReal
+        b b (by simpa [B] using hv0B)]
+      exact hbb
+    have heq : B.filter (fun y ↦ K.Adj (v 0) y) =
+        componentNeighborFinset K H b (v 0) := by
+      ext y
+      simp [B, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq]
+    exact hqcard
+  have hsame₂ : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      s (v j).1 = s (v 0).1 ∧ N₂ 0 j = 1).card = k := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (v 0).1 ∧ N₂ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (v j).1 = s (v 0).1 ∧ K.Adj (v 0) (v j)) by
+      ext j
+      simp [N₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support K B v hvinj hvrangeB
+      (fun x : c.supp ↦ s x.1) 0]
+    exact hB (v 0) hv0B
   have hMrow : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
       M 0 j = 1).card = r := by
     rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M 0 j = 1) =
@@ -224,7 +263,12 @@ theorem orderSixtyFour_sizeTwo_muNegThree_eightEight_alignedLedger
     (fun i ↦ hs_in _ (u i).2) (fun j ↦ hs_in _ (v j).2)
     (flip_of_coordinates u hu) (flip_of_coordinates v hv)
     hrow₁ hsame₁ hMrow hMsame
-  exact ⟨k, r, hk1, hr2, hr7, hbounds.1, hbounds.2.1,
+  have hgrid := alternating_C8_twoShore_sector_parameter_grid N₁ N₂
+    (fun i ↦ s (u i).1) (fun i ↦ s (v i).1) k r
+    (fun i ↦ hs_in _ (u i).2) (fun i ↦ hs_in _ (v i).2)
+    (flip_of_coordinates u hu) (flip_of_coordinates v hv)
+    hrow₁ hrow₂ hsame₁ hsame₂ hsector₁ hsector₂
+  exact ⟨k, r, hk1, hr2, hr7, hbounds.1, hbounds.2.1, hgrid,
     ha8, hb8, haa, habq, hbaq, hbb,
     hA, hB, hcrossA, hcrossB, hsector₁, hsector₂⟩
 
