@@ -1,8 +1,8 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.4 — 2026-08-19 (connected size-two classification packaged).**
+**Version 2.5 — 2026-08-19 (connected q=8 closed; disconnected shapes reduced).**
 
-As of v2.4, `PROVEN` means **green on a cold build of `erdos85/integration`**.
+As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
 `erdos85-cayley-sidon/integ_capstone_audit.log`). Its three named failures
 have since been repaired and banked; 32 dead importers of deleted roots were
@@ -154,9 +154,19 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     composes normalization, classification, and the arbitrary-parameter
     graph attachment, eliminating explicit coordinate hypotheses and
     extracting an exact reciprocal partial-permutation code with
-    looplessness and the full cross-agreement law. These post-sweep-#3
-    modules are direct-Lean green on integration and await the next cold
-    integrator sweep before receiving the strict `PROVEN` label.
+    looplessness and the full cross-agreement law. These modules and the q=8
+    all-parameter code exclusion are now `PROVEN` by integrator sweep #4;
+    `false_of_sizeTwoEigenline_connectedInternal_eight` closes the connected
+    normalized size-two eigenline sector at q=8, coordinate-free, for every
+    reflection parameter.
+
+    The disconnected q=8 case is reduced to two internal-cycle strata.
+    `binarySquare_regular_sizeTwoPart_internalCycle_even_six_le` makes every
+    internal cycle even of order at least six, hence the only partitions of
+    sixteen are `6+10` and `8+8`. The `6+10` defect quotient is exactly
+    `[[2,5],[3,4]]`; the `8+8` quotient is
+    `[[7-r,r],[r,7-r]]` with `2 ≤ r ≤ 7`. Eliminating these two quotient
+    strata remains open.
 
     **Refutation GAP — `BinarySizeTwoCyclicPackingBound`.** The precise
     candidate says that for `q = 2^k`, `k ≥ 3`, and
@@ -236,7 +246,12 @@ Counts (bump this document):
 3. A proposed mechanism for the non-bipartite half, even conjectural, with a
    stated reason it strengthens with `q`.
 4. An existence or nonexistence verdict at `q = 9` on Branch B.
-5. A cold build of the whole corpus with a single axiom audit.
+5. **ACHIEVED 2026-08-19 at `6010e6cfef`.** Sweep #4 built all 1,686
+   Erdős-85 modules with zero failures and ran one consolidated axiom audit
+   over the five campaign capstones. Three use only `propext`,
+   `Classical.choice`, and `Quot.sound`; the two certificate-backed q=8
+   capstones additionally use their named `native_decide`/LRAT axiom family.
+   No capstone uses `sorryAx`.
 
 Does not count (goes to the ledger, not here):
 - another identity, nullity, transport or commutation at order 64;
@@ -264,6 +279,11 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.5** (2026-08-19, sol-3; integrator evidence from Claude): recorded the
+  sweep-#4 §F.5 milestone (1,686/1,686 modules, consolidated five-capstone
+  axiom audit, zero `sorryAx`), upgraded the connected q=8 size-two branch to
+  `PROVEN`, and added the disconnected-cycle reductions to `6+10` with exact
+  quotient `[[2,5],[3,4]]` and `8+8` with one-parameter symmetric quotient.
 - **2.4** (2026-08-19, sol-3; room status consolidation): closed the two
   stale upstream SIZE-TWO-EIGENLINE(q) gaps recorded by v2.3. Added the
   q-generic connected sector dichotomy, general `C_{2q}` normalization, the
