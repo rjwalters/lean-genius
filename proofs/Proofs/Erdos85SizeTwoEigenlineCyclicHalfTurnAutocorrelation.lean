@@ -57,6 +57,39 @@ theorem sizeTwoCrossShiftedPermutationAgreement_card_swap
   exact Fintype.card_congr
     (sizeTwoCrossShiftedPermutationAgreementSwapEquiv P x d t u)
 
+/-- At any self-negative shift, the same-difference agreement count is
+constant on the two-point translation orbit.  This is the q-generic
+half-turn symmetry; no arithmetic specialization of `q` is needed. -/
+theorem sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (x d : ZMod q) (hd : -d = d)
+    (t : sizeTwoAllowedDifference q a) :
+    Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+      q a P x d t t) =
+      Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P (x + d) d t t) := by
+  simpa only [hd] using
+    (sizeTwoCrossShiftedPermutationAgreement_card_swap P x d t t)
+
+/-- Additive form of the q-generic half-turn symmetry: a translation pair
+contributes twice either member's agreement count. -/
+theorem sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift_pair
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (x d : ZMod q) (hd : -d = d)
+    (t : sizeTwoAllowedDifference q a) :
+    Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P x d t t) +
+      Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P (x + d) d t t) =
+      2 * Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P x d t t) := by
+  rw [
+    ← sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift
+      P x d hd t,
+    two_mul]
+
 /-- In `ZMod 8`, the half-turn is its own negative. -/
 theorem zmodEight_neg_four : -(4 : ZMod 8) = 4 := by decide
 
@@ -71,8 +104,8 @@ theorem sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_eight
       8 (1 : ZMod 8) P x 4 t t) =
       Fintype.card (SizeTwoCrossShiftedPermutationAgreement
         8 (1 : ZMod 8) P (x + 4) 4 t t) := by
-  simpa only [zmodEight_neg_four] using
-    (sizeTwoCrossShiftedPermutationAgreement_card_swap P x 4 t t)
+  exact sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift
+    P x 4 zmodEight_neg_four t
 
 /-- Each antipodal pair contributes twice either member's half-turn agreement
 count.  This packages the symmetry in the additive form needed by a global
@@ -87,14 +120,15 @@ theorem sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_pair_eight
         8 (1 : ZMod 8) P (x + 4) 4 t t) =
       2 * Fintype.card (SizeTwoCrossShiftedPermutationAgreement
         8 (1 : ZMod 8) P x 4 t t) := by
-  rw [
-    ← sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_eight P x t,
-    two_mul]
+  exact sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift_pair
+    P x 4 zmodEight_neg_four t
 
 end
 
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_swap
+#print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift
+#print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift_pair
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_eight
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_pair_eight
