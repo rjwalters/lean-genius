@@ -29,6 +29,36 @@ structure MuNegThreeOneTwoOwnerConstraintSemantics
   exterior_c4 : ∀ clause ∈ muNegThreeC4Clauses,
     dimacsClauseSatisfied val clause
 
+/-- The unit-clause family is satisfied exactly by a valuation whose cross
+cell variables realize the selected orientation and phase. -/
+theorem muNegThreeFixClauses_satisfied
+    {fwd : Bool} {c : Nat} {val : DimacsValuation}
+    (hval : ∀ i j, i < 8 → j < 8 → i % 2 == j % 2 →
+      val (muNegThreeDVar (i * 8 + j)) =
+        (j == muNegThreePhi fwd c i)) :
+    ∀ clause ∈ muNegThreeFixClauses fwd c,
+      dimacsClauseSatisfied val clause := by
+  intro clause hclause
+  simp only [muNegThreeFixClauses, List.mem_flatMap, List.mem_range,
+    List.mem_map, List.mem_filter] at hclause
+  obtain ⟨i, hi, j, ⟨hj, hparity⟩, rfl⟩ := hclause
+  split
+  · next hphase =>
+    let d := muNegThreeDVar (i * 8 + j)
+    have hd : 0 < d := by simp [d, muNegThreeDVar]
+    have hv := hval i j hi hj hparity
+    simp [hphase] at hv
+    change val d = true at hv
+    refine ⟨Int.ofNat d, by simp [d], ?_⟩
+    simp [dimacsLitValue, hd, hv]
+  · next hphase =>
+    let d := muNegThreeDVar (i * 8 + j)
+    have hv := hval i j hi hj hparity
+    simp [hphase] at hv
+    change val d = false at hv
+    refine ⟨-Int.ofNat d, by simp [d], ?_⟩
+    simp [dimacsLitValue, hv]
+
 theorem muNegThreeOneTwoOwnerConstraintSemantics_formulaSatisfied
     {fwd : Bool} {c : Nat} {val : DimacsValuation}
     (h : MuNegThreeOneTwoOwnerConstraintSemantics fwd c val) :
