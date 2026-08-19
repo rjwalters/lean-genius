@@ -4277,20 +4277,6 @@ theorem oneHighPureFamily_constraints_false_of_dimacsUnsat
 def oneHighFamilyPureSatCnf (a : Nat) : Std.Sat.CNF Nat where
   clauses := dimacsFormulaToSatClauses (oneHighFamilyPureClauses a).clauses
 
-theorem satCnf_of_dimacsFormulaSatisfied
-    {formula : Array DimacsClause} {val : DimacsValuation}
-    (hsat : dimacsFormulaSatisfied val formula)
-    (hnz : ∀ clause ∈ formula, DimacsClauseNonzero clause) :
-    ({ clauses := dimacsFormulaToSatClauses formula } : Std.Sat.CNF Nat).Sat
-      (satAssignmentOfDimacs val) := by
-  rw [Std.Sat.CNF.sat_def, Std.Sat.CNF.eval, Array.all_eq_true]
-  intro i hi
-  have hi' : i < formula.size := by
-    simpa [dimacsFormulaToSatClauses] using hi
-  simp only [dimacsFormulaToSatClauses, Array.getElem_map]
-  exact satClause_of_dimacsClauseSatisfied
-    (hnz _ (Array.getElem_mem hi')) (hsat _ (Array.getElem_mem hi'))
-
 theorem oneHighFamilyPureSatCnf_sat_of_constraints
     (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (hc : OneHighPureFamilyCnfConstraints a R)
@@ -4300,6 +4286,6 @@ theorem oneHighFamilyPureSatCnf_sat_of_constraints
       (oneHighFamilyPureSatCnf a).Sat assignment := by
   rcases oneHighFamilyPureClauses_dimacsSatisfiable a R hc with ⟨val, hval⟩
   exact ⟨satAssignmentOfDimacs val,
-    satCnf_of_dimacsFormulaSatisfied hval hnz⟩
+    satCnf_of_dimacsFormulaSatisfied hnz hval⟩
 
 end Erdos85

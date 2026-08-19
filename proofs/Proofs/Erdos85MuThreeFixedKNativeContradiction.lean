@@ -74,8 +74,8 @@ theorem false_of_mu3FixedKNativeStaticConstraints
   rw [mu3FixedKGrid_spec_eq_generator i] at hformula
   have hsat : (mu3GridNativeSatCnf (mu3FixedKGrid i)).Sat
       (satAssignmentOfDimacs val) :=
-    satCnf_of_dimacsFormulaSatisfied hformula
-      (mu3FixedKGrid_clauses_nonzero i)
+    satCnf_of_dimacsFormulaSatisfied
+      (mu3FixedKGrid_clauses_nonzero i) hformula
   have hfalse := mu3FixedKNativeCnf_unsat i (satAssignmentOfDimacs val)
   rw [CNF.sat_def] at hsat
   rw [hsat] at hfalse

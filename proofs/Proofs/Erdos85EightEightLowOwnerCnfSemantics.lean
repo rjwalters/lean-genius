@@ -84,25 +84,6 @@ theorem eightEightLowOwnerDimacsClauses_nonzero
     (eightEightLowOwnerDimacsClauses_all_ne_zero i) lit hlit
   simpa using hne
 
-theorem satCnf_of_dimacsFormulaSatisfied
-    {formula : Array DimacsClause} {val : DimacsValuation}
-    (hnz : ∀ clause ∈ formula, DimacsClauseNonzero clause)
-    (hsat : dimacsFormulaSatisfied val formula) :
-    (show CNF Nat from ⟨dimacsFormulaToSatClauses formula⟩).Sat
-      (satAssignmentOfDimacs val) := by
-  rw [CNF.sat_def, CNF.eval, Array.all_eq_true]
-  intro i hi
-  change CNF.Clause.eval (satAssignmentOfDimacs val)
-    (dimacsFormulaToSatClauses formula)[i] = true
-  have hmem : (dimacsFormulaToSatClauses formula)[i] ∈
-      dimacsFormulaToSatClauses formula := Array.getElem_mem hi
-  simp only [dimacsFormulaToSatClauses, Array.mem_map] at hmem
-  obtain ⟨source, hsource, heq⟩ := hmem
-  simp only [dimacsFormulaToSatClauses]
-  rw [← heq]
-  exact satClause_of_dimacsClauseSatisfied
-    (hnz source hsource) (hsat source hsource)
-
 theorem eightEightLowOwnerDimacsClauses_nonzero_of_mem :
     ∀ clause ∈ eightEightLowOwnerDimacsClauses,
       DimacsClauseNonzero clause := by

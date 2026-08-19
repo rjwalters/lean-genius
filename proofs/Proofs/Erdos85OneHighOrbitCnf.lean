@@ -441,6 +441,6 @@ theorem oneHighFamilyTableSatCnf_sat_of_constraints
         (oneHighFamilyGraphTable R a)).Sat assignment := by
   rcases oneHighFamilyTableClauses_dimacsSatisfiable R a hc with ⟨val, hval⟩
   exact ⟨satAssignmentOfDimacs val,
-    satCnf_of_dimacsFormulaSatisfied hval hnz⟩
+    satCnf_of_dimacsFormulaSatisfied hnz hval⟩
 
 end Erdos85

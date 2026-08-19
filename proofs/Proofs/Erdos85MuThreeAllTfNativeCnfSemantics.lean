@@ -743,7 +743,7 @@ theorem mu3AllTfNativeSatCnf_satisfiable
     shape edgeVal hhitNonzero hhitBound hhitCounts hc4
   refine ⟨satAssignmentOfDimacs val, ?_⟩
   exact satCnf_of_dimacsFormulaSatisfied
-    hsat hnz
+    hnz hsat
 
 /-- Certificate-facing contradiction endpoint.  All generator semantics are
 above this boundary; only the selected shape's checked LRAT theorem enters

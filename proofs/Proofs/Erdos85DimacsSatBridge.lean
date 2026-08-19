@@ -246,4 +246,25 @@ theorem false_of_orderFortyNine_generated_lrat
   false_of_orderFortyNine_lrat hc hzero
     (orderFortyNineGeneratedSatCnf_covered masks) proof hcheck
 
+/-- Canonical home of the generic DIMACS→`Std.Sat.CNF` satisfaction
+transfer (previously duplicated by two downstream modules). -/
+theorem satCnf_of_dimacsFormulaSatisfied
+    {formula : Array DimacsClause} {val : DimacsValuation}
+    (hnz : ∀ clause ∈ formula, DimacsClauseNonzero clause)
+    (hsat : dimacsFormulaSatisfied val formula) :
+    (show CNF Nat from ⟨dimacsFormulaToSatClauses formula⟩).Sat
+      (satAssignmentOfDimacs val) := by
+  rw [CNF.sat_def, CNF.eval, Array.all_eq_true]
+  intro i hi
+  change CNF.Clause.eval (satAssignmentOfDimacs val)
+    (dimacsFormulaToSatClauses formula)[i] = true
+  have hmem : (dimacsFormulaToSatClauses formula)[i] ∈
+      dimacsFormulaToSatClauses formula := Array.getElem_mem hi
+  simp only [dimacsFormulaToSatClauses, Array.mem_map] at hmem
+  obtain ⟨source, hsource, heq⟩ := hmem
+  simp only [dimacsFormulaToSatClauses]
+  rw [← heq]
+  exact satClause_of_dimacsClauseSatisfied
+    (hnz source hsource) (hsat source hsource)
+
 end Erdos85

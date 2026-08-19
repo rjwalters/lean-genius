@@ -38,7 +38,7 @@ theorem oneHighFamilyV2DimacsUnsat_of_checked
   intro val hval
   apply hchecked.unsat (satAssignmentOfDimacs val)
   simpa [oneHighFamilyV2SatCnf] using
-    satCnf_of_dimacsFormulaSatisfied hval hchecked.nonzero
+    satCnf_of_dimacsFormulaSatisfied hchecked.nonzero hval
 
 theorem false_of_rawOneHigh_v2Checked
     {V : Type*} [Fintype V] [DecidableEq V]
