@@ -1,8 +1,8 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.3 — 2026-08-19 (size-two eigenline split sharpened).**
+**Version 2.4 — 2026-08-19 (connected size-two classification packaged).**
 
-As of v2.3, `PROVEN` means **green on a cold build of `erdos85/integration`**.
+As of v2.4, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
 `erdos85-cayley-sidon/integ_capstone_audit.log`). Its three named failures
 have since been repaired and banked; 32 dead importers of deleted roots were
@@ -139,16 +139,24 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     alternating vector `s` with `Bs = 0`, hence `Ds = (q−5)s`. The exterior
     grid model (`q×q`, two holes per row/column, `q(q−2)` cells), the
     row/column-hit laws, the per-cell `D` law and the K-law `K·Hᵀ = H·Kᵀ`
-    are all proved by q-generic arguments. In the all-triangle sector, the
-    graph-to-grid classification is now q-generic and `PROVEN`:
-    `eigenline_hole_reflectionCirculant` forces the two holes to be the
-    reflection-circulant pair `{a, -1-a}`. Two upstream general-q sublemmas
-    remain open: the sector-refined classification when triangle-free
-    H-edges are present, and normalization of an arbitrary component cycle
-    to the standard `C_{2q}` coordinates (both are available only at q=8).
-    From any classified grid, `sizeTwoCyclicFullPermutationCode_of_grid`
-    extracts the reciprocal partial-permutation code with the full
-    cross-agreement law.
+    are all proved by q-generic arguments. The connected-sector
+    graph-to-grid classification is now q-generic and banked: the local
+    equivalence `eigenline_gridHole_iff_triangleFreeEdge`, connected
+    propagation
+    `eigenline_hole_eq_internal_of_connected_exists_triangleFreeEdge`, and
+    all-triangle K-law classification combine in
+    `eigenline_hole_reflectionCirculant_of_connected`, forcing the two holes
+    to be the reflection-circulant pair `{a, -1-a}` with no mixed connected
+    sector. The formerly open cycle normalization is also q-generic and
+    banked as `exists_sizeTwoCycleGridCoordinates_of_connectedInternal`.
+    Finally,
+    `exists_nonempty_sizeTwoCyclicExactPermutationCode_of_connectedInternal`
+    composes normalization, classification, and the arbitrary-parameter
+    graph attachment, eliminating explicit coordinate hypotheses and
+    extracting an exact reciprocal partial-permutation code with
+    looplessness and the full cross-agreement law. These post-sweep-#3
+    modules are direct-Lean green on integration and await the next cold
+    integrator sweep before receiving the strict `PROVEN` label.
 
     **Refutation GAP — `BinarySizeTwoCyclicPackingBound`.** The precise
     candidate says that for `q = 2^k`, `k ≥ 3`, and
@@ -256,6 +264,12 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.4** (2026-08-19, sol-3; room status consolidation): closed the two
+  stale upstream SIZE-TWO-EIGENLINE(q) gaps recorded by v2.3. Added the
+  q-generic connected sector dichotomy, general `C_{2q}` normalization, the
+  arbitrary-reflection graph-to-code attachment, and their coordinate-free
+  connected package theorem. Kept the strict cold-build distinction: these
+  results are banked/direct-green after sweep #3 and await its successor.
 - **2.3** (2026-08-19, sol-2; awaiting room red-team): sharpened
   SIZE-TWO-EIGENLINE(q) into its graph-classification and refutation halves.
   Recorded the general-q all-triangle classification
