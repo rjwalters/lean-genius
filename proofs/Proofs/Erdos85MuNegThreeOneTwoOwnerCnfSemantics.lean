@@ -105,6 +105,25 @@ theorem muNegThreeOppColClauses_satisfied
   obtain ⟨j, hj, hclause⟩ := hclause
   exact muNegThreeExactlyOne_satisfied (hcol j hj) clause hclause
 
+/-- Entrywise satisfaction of the four-neighbor sum encoding lifts to the
+complete `8 × 8` intertwining family. -/
+theorem muNegThreeIntertwineClauses_satisfied
+    {val : DimacsValuation}
+    (hcell : ∀ i j, i < 8 → j < 8 →
+      ∀ clause ∈ muNegThreeSumEq
+        (Int.ofNat (muNegThreeDVar (((i + 7) % 8) * 8 + j)))
+        (Int.ofNat (muNegThreeDVar (((i + 1) % 8) * 8 + j)))
+        (Int.ofNat (muNegThreeDVar (i * 8 + (j + 1) % 8)))
+        (Int.ofNat (muNegThreeDVar (i * 8 + (j + 7) % 8))),
+        dimacsClauseSatisfied val clause) :
+    ∀ clause ∈ muNegThreeIntertwineClauses,
+      dimacsClauseSatisfied val clause := by
+  intro clause hclause
+  simp only [muNegThreeIntertwineClauses, List.mem_flatMap,
+    List.mem_range] at hclause
+  obtain ⟨i, hi, j, hj, hclause⟩ := hclause
+  exact hcell i j hi hj clause hclause
+
 theorem muNegThreeOneTwoOwnerConstraintSemantics_formulaSatisfied
     {fwd : Bool} {c : Nat} {val : DimacsValuation}
     (h : MuNegThreeOneTwoOwnerConstraintSemantics fwd c val) :
