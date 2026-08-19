@@ -240,6 +240,25 @@ theorem mem_eightEightOwnerSym2_iff (e : Fin 48) (v : Fin 16) :
   revert e v
   decide
 
+/-- High-level finite semantics of the checked owner instance, before any
+DIMACS numbering.  This is the clean handshake between graph transport and
+the generator-local literal bookkeeping. -/
+structure EightEightLowOwnerFiniteSemantics
+    (X : Fin 48 → Fin 48 → Prop) : Prop where
+  service_exists : ∀ e : Fin 48, ∀ v : Fin 16,
+    eightEightOwnerTargetContains e v = true →
+      ∃ f : Fin 48, X e f ∧ eightEightOwnerContains f v = true
+  service_unique : ∀ e : Fin 48, ∀ v : Fin 16,
+    eightEightOwnerTargetContains e v = true →
+      ∀ f g : Fin 48, X e f → eightEightOwnerContains f v = true →
+        X e g → eightEightOwnerContains g v = true → f = g
+  intersecting_no_common : ∀ e f : Fin 48,
+    e ≠ f → eightEightOwnersIntersect e f = true →
+      ∀ k : Fin 48, X e k → X f k → False
+  no_two_common : ∀ e f : Fin 48, e ≠ f →
+    ∀ k l : Fin 48, k ≠ l →
+      X e k → X f k → X e l → X f l → False
+
 /-- Clause semantics are invariant under relabeling the exterior vertices.
 The transported graph is the comap along the inverse equivalence, and both
 incidence and target tables are relabeled by the same inverse. -/
