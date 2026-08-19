@@ -162,6 +162,68 @@ theorem zmodEight_crossExterior_two_two_of_complement
       (by decide) (hsameCol j) (hDcol j) (hDsameCol j)
     simpa only [hcomp] using h
 
+/-- Graph-facing adapter for the signed cross split.  It combines the
+distinct-cycle exterior/complement theorem with alternating-sign fiber
+cardinality, so a cell consumer only has to provide the four coordinate
+defect-cardinality ledgers. -/
+theorem sizeTwo_distinctCycle_crossExterior_signed_two_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (s : V → ℤ)
+    (hsu : ∀ i, s (u i).1 = -1 ∨ s (u i).1 = 1)
+    (hsv : ∀ j, s (v j).1 = -1 ∨ s (v j).1 = 1)
+    (hflipu : ∀ i, s (u (i + 1)).1 = -s (u i).1)
+    (hflipv : ∀ j, s (v (j + 1)).1 = -s (v j).1)
+    (hDrow : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (v j)).card = 4)
+    (hDcol : ∀ j,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (v j)).card = 4)
+    (hDsameRow : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (v j) ∧
+          s (v j).1 = s (u i).1).card = 2)
+    (hDsameCol : ∀ j,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (v j) ∧
+          s (u i).1 = s (v j).1).card = 2) :
+    (∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        (exteriorPairGraph G c.supp).Adj (u i) (v j) ∧
+          s (v j).1 = s (u i).1).card = 2 ∧
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        (exteriorPairGraph G c.supp).Adj (u i) (v j) ∧
+          s (v j).1 ≠ s (u i).1).card = 2) ∧
+    (∀ j,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        (exteriorPairGraph G c.supp).Adj (u i) (v j) ∧
+          s (u i).1 = s (v j).1).card = 2 ∧
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        (exteriorPairGraph G c.supp).Adj (u i) (v j) ∧
+          s (u i).1 ≠ s (v j).1).card = 2) := by
+  let D : ZMod 8 → ZMod 8 → Prop := fun i j ↦
+    ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (v j)
+  let R : ZMod 8 → ZMod 8 → Prop := fun i j ↦
+    (exteriorPairGraph G c.supp).Adj (u i) (v j)
+  have hcomp : ∀ i j, R i j ↔ ¬ D i j :=
+    sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
+      G hfree c a b hab u v hurange hvrange
+  have hsame := zmodEight_two_alternating_sign_same_card_four
+    (fun i ↦ s (u i).1) (fun j ↦ s (v j).1)
+      hsu hsv hflipu hflipv
+  exact zmodEight_crossExterior_two_two_of_complement
+    D R (fun i ↦ s (u i).1) (fun j ↦ s (v j).1)
+      hcomp hsame.1 hsame.2 hDrow hDcol hDsameRow hDsameCol
+
 end
 
 end Erdos85
@@ -170,3 +232,4 @@ end Erdos85
 #print axioms Erdos85.zmodEight_alternating_sign_fiber_card_four
 #print axioms Erdos85.zmodEight_two_alternating_sign_same_card_four
 #print axioms Erdos85.zmodEight_crossExterior_two_two_of_complement
+#print axioms Erdos85.sizeTwo_distinctCycle_crossExterior_signed_two_two
