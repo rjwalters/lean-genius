@@ -90,6 +90,16 @@ theorem sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift_pair
       P x d hd t,
     two_mul]
 
+/-- The canonical half-turn in every nontrivial even cyclic group is
+self-negative. -/
+theorem zmodEven_neg_half (m : ℕ) [NeZero m] :
+    -(m : ZMod (2 * m)) = m := by
+  rw [ZMod.neg_eq_self_iff]
+  right
+  have hm : 0 < m := NeZero.pos m
+  rw [ZMod.val_natCast]
+  simp only [Nat.mod_eq_of_lt (by omega : m < 2 * m)]
+
 /-- In `ZMod 8`, the half-turn is its own negative. -/
 theorem zmodEight_neg_four : -(4 : ZMod 8) = 4 := by decide
 
@@ -130,5 +140,6 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_swap
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_selfNegShift_pair
+#print axioms Erdos85.zmodEven_neg_half
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_eight
 #print axioms Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_halfTurn_pair_eight
