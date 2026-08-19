@@ -9,6 +9,55 @@ namespace Erdos85
 
 noncomputable section
 
+/-- A normalized cycle defect entry equal to one rules out the all-triangle
+branch of the internal-cycle dichotomy, hence forces triangle-free degree
+two on the entire shore. -/
+theorem binarySquare_regular_sizeTwoPart_eight_cycleEntriesOne_forces_allTriangleFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (a : (G.induce c.supp).ConnectedComponent)
+    (u : ZMod 8 → c.supp)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hone : C8CycleEntriesOne (fun i j ↦
+      ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ (u i) (u j))) :
+    ∀ z : c.supp, z ∈ a.supp →
+      (triangleFreeEdgeGraph G).degree z.1 = 2 := by
+  classical
+  rcases binarySquare_regular_sizeTwoPart_internalCycle_sector_dichotomy
+    G hfree (q := 8) (by omega) (by decide) hreg hcard c hc a with hall0 | hall2
+  · exfalso
+    have hK : ((secondOrderDefectGraph G).induce c.supp).Adj
+        (u 0) (u 1) := by
+      have hM := hone.2
+      simpa [C8CycleEntriesOne, SimpleGraph.adjMatrix_apply] using hM
+    have hH : (G.induce c.supp).Adj (u 0) (u 1) := by
+      rw [← (G.induce c.supp).mem_neighborFinset, hu]
+      simp
+    have htf : (triangleFreeEdgeGraph G).Adj (u 0).1 (u 1).1 := by
+      rw [triangleFreeEdgeGraph_eq_inf_secondOrderDefectGraph G hfree]
+      exact ⟨hH, hK⟩
+    have hpos : 0 < (triangleFreeEdgeGraph G).degree (u 0).1 := by
+      rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree]
+      exact Finset.card_pos.mpr ⟨(u 1).1,
+        ((triangleFreeEdgeGraph G).mem_neighborFinset _ _).mpr htf⟩
+    have hu0a : u 0 ∈ a.supp := by
+      rw [← hurange]
+      exact ⟨0, rfl⟩
+    rw [hall0 (u 0) hu0a] at hpos
+    omega
+  · exact hall2
+
 /-- The graph-level ledger socket for the `(0,4)` contradiction. -/
 theorem orderSixtyFour_sizeTwo_muNegThree_zeroFour_false_of_ledger
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -172,3 +221,4 @@ end
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_zeroFour_false_of_ledger
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_cycleEntriesOne_forces_allTriangleFree
