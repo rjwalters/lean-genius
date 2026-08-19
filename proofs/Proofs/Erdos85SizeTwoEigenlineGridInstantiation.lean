@@ -621,7 +621,7 @@ theorem gridWitness_of_exterior_neighbor (hfree : ¬ containsC4 V G)
     · exact h.symm
     · exfalso
       have := (hp x).2
-      rw [← h, hns] at this
+      rw [h, hns] at this
       norm_num at this
   obtain ⟨y, hy⟩ := hnsurj n hnsupp hns
   refine ⟨y, hu, hadj, ?_⟩
@@ -634,5 +634,7 @@ theorem gridWitness_of_exterior_neighbor (hfree : ¬ containsC4 V G)
   exact hnmem.1
 
 end Grid
+
+end Alternation
 
 end Erdos85
