@@ -13,6 +13,29 @@ namespace Erdos85
 
 open SimpleGraph
 
+set_option maxHeartbeats 0
+
+theorem eightEightHighOwnerAt_lt_sixteen (e : Fin 64) :
+    (eightEightHighOwnerAt e).1 < 16 ∧
+      (eightEightHighOwnerAt e).2 < 16 := by
+  revert e
+  native_decide
+
+def eightEightHighOwnerFirst (e : Fin 64) : Fin 16 :=
+  ⟨(eightEightHighOwnerAt e).1,
+    (eightEightHighOwnerAt_lt_sixteen e).1⟩
+
+def eightEightHighOwnerSecond (e : Fin 64) : Fin 16 :=
+  ⟨(eightEightHighOwnerAt e).2,
+    (eightEightHighOwnerAt_lt_sixteen e).2⟩
+
+def eightEightHighOwnerSym2 (e : Fin 64) : Sym2 (Fin 16) :=
+  s(eightEightHighOwnerFirst e, eightEightHighOwnerSecond e)
+
+theorem eightEightHighOwnerSym2_injective :
+    Function.Injective eightEightHighOwnerSym2 := by
+  native_decide
+
 def EightEightHighEnabledOwner
     (active : Fin 64 → Prop) :=
   {e : Fin 64 // eightEightHighOwnerEnabled active e}
