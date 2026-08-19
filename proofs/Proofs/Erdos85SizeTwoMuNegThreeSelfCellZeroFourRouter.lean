@@ -216,9 +216,51 @@ theorem orderSixtyFour_sizeTwo_muNegThree_zeroFour_false_of_ledger
     (fun x : c.supp ↦ s x.1) (fun i ↦ hs_in _ (u i).2) hflip hcomm
       hrow3 hsame0coord hcyc
 
+/-- Version of the `(0,4)` router consuming the normalized sector output
+`C8CycleEntriesOne` directly. -/
+theorem orderSixtyFour_sizeTwo_muNegThree_zeroFour_false_of_cycleEntriesOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (a : (G.induce c.supp).ConnectedComponent)
+    (u : ZMod 8 → c.supp) (huinj : Function.Injective u)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (haa3 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a a = 3)
+    (hsame0 : ∀ x ∈ (Finset.univ : Finset c.supp).filter
+        (fun x ↦ x ∈ a.supp),
+      (((Finset.univ : Finset c.supp).filter
+        (fun x ↦ x ∈ a.supp)).filter fun y ↦
+          ((secondOrderDefectGraph G).induce c.supp).Adj x y ∧
+            s y.1 = s x.1).card = 0)
+    (hone : C8CycleEntriesOne (fun i j ↦
+      ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ (u i) (u j))) :
+    False := by
+  exact orderSixtyFour_sizeTwo_muNegThree_zeroFour_false_of_ledger
+    G hfree hreg hcard c hc s hs_out hs_in hH a u huinj hurange hu
+      haa3 hsame0
+      (binarySquare_regular_sizeTwoPart_eight_cycleEntriesOne_forces_allTriangleFree
+        G hfree hreg hcard c hc a u hurange hu hone)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_zeroFour_false_of_ledger
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_cycleEntriesOne_forces_allTriangleFree
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_zeroFour_false_of_cycleEntriesOne
