@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoMuNegOneSelfCellOneFourExterior
+import Proofs.Erdos85SizeTwoMuNegThreeEightEightCrossSameMatching
 
 /-!
 # Signed cross-exterior split in the `mu=-1`, `(k,r)=(1,4)` cell
@@ -224,6 +225,150 @@ theorem sizeTwo_distinctCycle_crossExterior_signed_two_two
     D R (fun i ↦ s (u i).1) (fun j ↦ s (v j).1)
       hcomp hsame.1 hsame.2 hDrow hDcol hDsameRow hDsameCol
 
+/-- Parameter-four cell consumer in the native aligned-ledger language.  The
+quotient supplies cross degree four, while the two support-level signed rows
+supply cross same-sign defect degree two.  The conclusion is the exact
+signed exterior split used by the owner-grid encoding. -/
+theorem binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFour_crossExterior_signed_two_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (ha : a.supp.ncard = 8) (hb : b.supp.ncard = 8) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (s : V → ℤ)
+    (hsu : ∀ i, s (u i).1 = -1 ∨ s (u i).1 = 1)
+    (hsv : ∀ j, s (v j).1 = -1 ∨ s (v j).1 = 1)
+    (hflipu : ∀ i, s (u (i + 1)).1 = -s (u i).1)
+    (hflipv : ∀ j, s (v (j + 1)).1 = -s (v j).1)
+    (hab4 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a b = 4)
+    (hsameA : ∀ x ∈ (Finset.univ : Finset c.supp).filter
+        (fun x ↦ x ∈ a.supp),
+      (((Finset.univ : Finset c.supp).filter (fun y ↦ y ∈ b.supp)).filter
+        (fun y ↦ ((secondOrderDefectGraph G).induce c.supp).Adj x y ∧
+          s y.1 = s x.1)).card = 2)
+    (hsameB : ∀ x ∈ (Finset.univ : Finset c.supp).filter
+        (fun x ↦ x ∈ b.supp),
+      (((Finset.univ : Finset c.supp).filter (fun y ↦ y ∈ a.supp)).filter
+        (fun y ↦ ((secondOrderDefectGraph G).induce c.supp).Adj x y ∧
+          s y.1 = s x.1)).card = 2) :
+    (∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        (exteriorPairGraph G c.supp).Adj (u i) (v j) ∧
+          s (v j).1 = s (u i).1).card = 2 ∧
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        (exteriorPairGraph G c.supp).Adj (u i) (v j) ∧
+          s (v j).1 ≠ s (u i).1).card = 2) ∧
+    (∀ j,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        (exteriorPairGraph G c.supp).Adj (u i) (v j) ∧
+          s (u i).1 = s (v j).1).card = 2 ∧
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        (exteriorPairGraph G c.supp).Adj (u i) (v j) ∧
+          s (u i).1 ≠ s (v j).1).card = 2) := by
+  classical
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let R := exteriorPairGraph G c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
+  have hdegrees :=
+    binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFour_crossExterior_degrees
+      G hfree hreg hcard c hc a b ha hb hab u v huinj hvinj
+        hurange hvrange hab4
+  have hcomp := sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
+    G hfree c a b hab u v hurange hvrange
+  have hDrow : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (u i) (v j)).card = 4 := by
+    intro i
+    have hpartition := Finset.card_filter_add_card_filter_not
+      (s := (Finset.univ : Finset (ZMod 8)))
+      (p := fun j ↦ K.Adj (u i) (v j))
+    have hnot : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        ¬ K.Adj (u i) (v j)).card = 4 := by
+      rw [← hdegrees.1 i]
+      congr 1
+      ext j
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      simpa [K] using (hcomp i j).symm
+    change _ + _ = 8 at hpartition
+    rw [hnot] at hpartition
+    omega
+  have hDcol : ∀ j,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦ K.Adj (u i) (v j)).card = 4 := by
+    intro j
+    have hpartition := Finset.card_filter_add_card_filter_not
+      (s := (Finset.univ : Finset (ZMod 8)))
+      (p := fun i ↦ K.Adj (u i) (v j))
+    have hnot : ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        ¬ K.Adj (u i) (v j)).card = 4 := by
+      rw [← hdegrees.2 j]
+      congr 1
+      ext i
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      simpa [K, R, SimpleGraph.adj_comm] using (hcomp i j).symm
+    change _ + _ = 8 at hpartition
+    rw [hnot] at hpartition
+    omega
+  have hurangeA : Set.range u = ↑A := by
+    rw [hurange]
+    ext x
+    simp [A]
+  have hvrangeB : Set.range v = ↑B := by
+    rw [hvrange]
+    ext x
+    simp [B]
+  have hDsameRow : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        K.Adj (u i) (v j) ∧ s (v j).1 = s (u i).1).card = 2 := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        K.Adj (u i) (v j) ∧ s (v j).1 = s (u i).1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (v j).1 = s (u i).1 ∧ K.Adj (u i) (v j)) by
+      ext j; simp [and_comm]]
+    rw [coordinate_sameSign_adj_card_eq_support_from K B v hvinj hvrangeB
+      (fun x : c.supp ↦ s x.1) (u i)]
+    exact hsameA (u i) (by
+      change u i ∈ A
+      rw [show u i ∈ A ↔ u i ∈ (↑A : Set c.supp) by rfl, ← hurangeA]
+      exact ⟨i, rfl⟩)
+  have hDsameCol : ∀ j,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        K.Adj (u i) (v j) ∧ s (u i).1 = s (v j).1).card = 2 := by
+    intro j
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        K.Adj (u i) (v j) ∧ s (u i).1 = s (v j).1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+          s (u i).1 = s (v j).1 ∧ K.Adj (v j) (u i)) by
+      ext i
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      constructor
+      · rintro ⟨hadj, hs⟩
+        exact ⟨hs, by simpa only [K.adj_comm] using hadj⟩
+      · rintro ⟨hs, hadj⟩
+        exact ⟨by simpa only [K.adj_comm] using hadj, hs⟩]
+    rw [coordinate_sameSign_adj_card_eq_support_from K A u huinj hurangeA
+      (fun x : c.supp ↦ s x.1) (v j)]
+    exact hsameB (v j) (by
+      change v j ∈ B
+      rw [show v j ∈ B ↔ v j ∈ (↑B : Set c.supp) by rfl, ← hvrangeB]
+      exact ⟨j, rfl⟩)
+  exact sizeTwo_distinctCycle_crossExterior_signed_two_two
+    G hfree c a b hab u v hurange hvrange s hsu hsv hflipu hflipv
+      hDrow hDcol hDsameRow hDsameCol
+
 end
 
 end Erdos85
@@ -233,3 +378,4 @@ end Erdos85
 #print axioms Erdos85.zmodEight_two_alternating_sign_same_card_four
 #print axioms Erdos85.zmodEight_crossExterior_two_two_of_complement
 #print axioms Erdos85.sizeTwo_distinctCycle_crossExterior_signed_two_two
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_eightEight_parameterFour_crossExterior_signed_two_two
