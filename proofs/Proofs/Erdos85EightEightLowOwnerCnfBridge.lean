@@ -3,6 +3,7 @@ import Proofs.Erdos85SizeTwoEigenlineEightEightLowExteriorModel
 import Proofs.Erdos85SizeTwoUnorderedPairServiceCount
 import Proofs.Erdos85EightEightLowOwnerCnf
 import Proofs.Erdos85OrderSixtyFourOutsideEdgeBijection
+import Proofs.Erdos85EightEightLowOwnerCnfSemantics
 
 /-!
 # Transporting exterior-owner clause semantics to finite coordinates
@@ -18,6 +19,7 @@ minimized certificate.
 -/
 
 open SimpleGraph
+open Std Sat
 
 namespace Erdos85
 
@@ -416,6 +418,112 @@ structure EightEightLowOwnerFiniteSemantics
     ∀ k l : Fin 48, k ≠ l →
       X e k → X f k → X e l → X f l → False
 
+/-- Truth assignment induced directly by a finite owner adjacency relation.
+Using an existential decoder keeps the definition independent of an
+arbitrary orientation of the unordered generator variables. -/
+def eightEightOwnerValOfRelation
+    (X : Fin 48 → Fin 48 → Prop) [DecidableRel X] : DimacsValuation :=
+  fun id ↦ decide (∃ e f : Fin 48,
+    eightEightOwnerVariable? e f = some id ∧ X e f)
+
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+
+/-- Compatible distinct owners always have a generated DIMACS variable. -/
+theorem eightEightOwnerVariable?_exists
+    (e f : Fin 48) (hef : e ≠ f)
+    (hcompat : eightEightOwnerCompatible e f = true) :
+    ∃ id : Nat, eightEightOwnerVariable? e f = some id := by
+  have hsome : (eightEightOwnerVariable? e f).isSome = true := by
+    revert e f
+    native_decide
+  cases hopt : eightEightOwnerVariable? e f with
+  | none => simp [hopt] at hsome
+  | some id => exact ⟨id, rfl⟩
+
+/-- A generated variable identifier determines its unordered owner pair. -/
+theorem eightEightOwnerVariable?_eq_injective
+    (e f a b : Fin 48)
+    (hsome : (eightEightOwnerVariable? e f).isSome = true)
+    (heq : eightEightOwnerVariable? e f = eightEightOwnerVariable? a b) :
+    (e = a ∧ f = b) ∨ (e = b ∧ f = a) := by
+  let p : Nat × Nat := if e.val < f.val then (e.val, f.val) else (f.val, e.val)
+  let q : Nat × Nat := if a.val < b.val then (a.val, b.val) else (b.val, a.val)
+  have heqIdx : eightEightOwnerVariables.idxOf? p =
+      eightEightOwnerVariables.idxOf? q := by
+    simpa only [eightEightOwnerVariable?, p, q] using
+      Option.map_injective (f := fun n : Nat ↦ n + 1)
+        (fun _ _ h ↦ Nat.add_right_cancel h) heq
+  have hpSome : (eightEightOwnerVariables.idxOf? p).isSome = true := by
+    simpa only [eightEightOwnerVariable?, p, Option.isSome_map] using hsome
+  cases hp : eightEightOwnerVariables.idxOf? p with
+  | none => simp [hp] at hpSome
+  | some i =>
+      have hq : eightEightOwnerVariables.idxOf? q = some i := by
+        rw [← heqIdx, hp]
+      obtain ⟨hi, hgetp, _⟩ := List.idxOf?_eq_some_iff.mp hp
+      obtain ⟨_, hgetq, _⟩ := List.idxOf?_eq_some_iff.mp hq
+      have hpq : p = q := hgetp.symm.trans hgetq
+      dsimp [p, q] at hpq
+      split at hpq <;> split at hpq
+      <;> simp only [Prod.mk.injEq] at hpq
+      <;> omega
+
+theorem eightEightOwnerValOfRelation_true_iff
+    (X : Fin 48 → Fin 48 → Prop) [DecidableRel X] (id : Nat) :
+    eightEightOwnerValOfRelation X id = true ↔
+      ∃ e f : Fin 48, eightEightOwnerVariable? e f = some id ∧ X e f := by
+  simp [eightEightOwnerValOfRelation]
+
+theorem eightEightOwnerValOfRelation_true_of
+    (X : Fin 48 → Fin 48 → Prop) [DecidableRel X]
+    {e f : Fin 48} {id : Nat}
+    (hvar : eightEightOwnerVariable? e f = some id) (hX : X e f) :
+    eightEightOwnerValOfRelation X id = true :=
+  (eightEightOwnerValOfRelation_true_iff X id).mpr ⟨e, f, hvar, hX⟩
+
+theorem eightEightOwnerRelation_of_val_true
+    (X : Fin 48 → Fin 48 → Prop) [DecidableRel X]
+    (hsymm : ∀ e f, X e f → X f e)
+    {e f : Fin 48} {id : Nat}
+    (hvar : eightEightOwnerVariable? e f = some id)
+    (hval : eightEightOwnerValOfRelation X id = true) : X e f := by
+  obtain ⟨a, b, hab, hX⟩ :=
+    (eightEightOwnerValOfRelation_true_iff X id).mp hval
+  have hpairs := eightEightOwnerVariable?_eq_injective e f a b
+    (by simp [hvar]) (hvar.trans hab.symm)
+  rcases hpairs with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · exact hX
+  · exact hsymm _ _ hX
+
+/-- Decode membership in a generated service-variable row back to its
+finite owner endpoint and literal identifier. -/
+theorem mem_eightEightOwnerServiceVariables_iff
+    (e : Fin 48) (v : Fin 16) (lit : Int) :
+    lit ∈ eightEightOwnerServiceVariables e v ↔
+      ∃ f : Fin 48, f ≠ e ∧ eightEightOwnerContains f v = true ∧
+        eightEightOwnerLiteral? e f = some lit := by
+  simp only [eightEightOwnerServiceVariables, List.mem_filterMap,
+    List.mem_range]
+  constructor
+  · rintro ⟨f, hf48, hflit⟩
+    split at hflit
+    · next hcond =>
+      have hc : f ≠ e.val ∧ eightEightOwnerContains f v = true := by
+        simpa using hcond
+      refine ⟨⟨f, hf48⟩, ?_, ?_, ?_⟩
+      · intro h
+        exact hc.1 (congrArg Fin.val h)
+      · simpa using hc.2
+      · simpa using hflit
+    · simp at hflit
+  · rintro ⟨f, hfe, hcontains, hlit⟩
+    refine ⟨f, f.2, ?_⟩
+    rw [if_pos]
+    · exact hlit
+    · have hne : f.val ≠ e.val := fun h ↦ hfe (Fin.ext h)
+      simp [hne, hcontains]
+
 /-- Convert the generic exact-service/C4 semantic package into the fixed
 high-level owner interface.  Only two coordinate rewrites are required:
 generator targets must select target value one, and fixed incidence must
@@ -702,6 +810,8 @@ end Erdos85
 #print axioms Erdos85.OutsideCClauseSemantics.comap_equiv
 #print axioms Erdos85.eightEightOwnerAt_lt_sixteen
 #print axioms Erdos85.eightEightOwnerSym2_injective
+#print axioms Erdos85.eightEightOwnerVariable?_eq_injective
+#print axioms Erdos85.mem_eightEightOwnerServiceVariables_iff
 #print axioms Erdos85.outsidePair_map_modelIso_eq_ownerSym2
 #print axioms Erdos85.mem_eightEightOwnerSym2_iff
 #print axioms Erdos85.outsideOwnerCoordinates_incident_iff
