@@ -64,6 +64,59 @@ theorem card_complement_same_two_two
   change DS.card = 2 at hDS
   omega
 
+/-- Every sign fiber of an alternating `±1` line on `ZMod 8` has four
+elements.  This discharges the two `hsame` hypotheses of the cross-complement
+socket directly from the eigenline alternation laws. -/
+theorem zmodEight_alternating_sign_fiber_card_four
+    (f : ZMod 8 → ℤ)
+    (hsign : ∀ i, f i = -1 ∨ f i = 1)
+    (hflip : ∀ i, f (i + 1) = -f i)
+    (a : ℤ) (ha : a = -1 ∨ a = 1) :
+    ((Finset.univ : Finset (ZMod 8)).filter fun i ↦ f i = a).card = 4 := by
+  classical
+  obtain ⟨x, hx : f x = a⟩ : ∃ x : ZMod 8, f x = a := by
+    have hflip0 := hflip 0
+    rcases hsign 0 with h0 | h0 <;> rcases ha with ha | ha
+    · exact ⟨0, by simpa [h0, ha]⟩
+    · refine ⟨1, ?_⟩
+      norm_num [h0, ha] at hflip0 ⊢
+      exact hflip0
+    · refine ⟨1, ?_⟩
+      norm_num [h0, ha] at hflip0 ⊢
+      exact hflip0
+    · exact ⟨0, by simpa [h0, ha]⟩
+  have heq : ∀ i, f i = a ↔ ZModEightEvenOffset (i - x) := by
+    intro i
+    rw [← hx]
+    exact zmodEight_alternating_sign_eq_iff_evenOffset f hsign hflip x i
+  have hcard :
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        ZModEightEvenOffset (i - x)).card = 4 := by
+    exact (by decide : ∀ x : ZMod 8,
+      ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+        ZModEightEvenOffset (i - x)).card = 4) x
+  simpa only [heq] using hcard
+
+/-- Two alternating `±1` shores automatically have four vertices matching
+the sign of any fixed vertex on the opposite shore, in either direction. -/
+theorem zmodEight_two_alternating_sign_same_card_four
+    (su sv : ZMod 8 → ℤ)
+    (hsu : ∀ i, su i = -1 ∨ su i = 1)
+    (hsv : ∀ j, sv j = -1 ∨ sv j = 1)
+    (hflipu : ∀ i, su (i + 1) = -su i)
+    (hflipv : ∀ j, sv (j + 1) = -sv j) :
+    (∀ i, ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      sv j = su i).card = 4) ∧
+    (∀ j, ((Finset.univ : Finset (ZMod 8)).filter fun i ↦
+      su i = sv j).card = 4) := by
+  constructor
+  · intro i
+    exact zmodEight_alternating_sign_fiber_card_four
+      sv hsv hflipv (su i) (hsu i)
+  · intro j
+    exact zmodEight_alternating_sign_fiber_card_four
+      su hsu hflipu (sv j) (hsv j)
+
 /-- Row-and-column form used by the `(−1,1,4)` variable-cross owner model.
 The exterior predicate is pointwise the complement of the defect predicate;
 the conclusion records the exact signed `2+2` split in both directions. -/
@@ -114,4 +167,6 @@ end
 end Erdos85
 
 #print axioms Erdos85.card_complement_same_two_two
+#print axioms Erdos85.zmodEight_alternating_sign_fiber_card_four
+#print axioms Erdos85.zmodEight_two_alternating_sign_same_card_four
 #print axioms Erdos85.zmodEight_crossExterior_two_two_of_complement
