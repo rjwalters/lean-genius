@@ -1,6 +1,7 @@
 import Proofs.Erdos85SizeTwoSwitchedJointExtension
 import Proofs.Erdos85BinarySquareMuThreeLocalInterface
 import Proofs.Erdos85BinarySquareMuThreeExteriorGridEmbedding
+import Proofs.Erdos85OrderSixtyFourMuThreeJointEigenlineCapstone
 
 /-! # Feeding a switched ambient witness into the μ=3 exterior route -/
 
@@ -63,9 +64,34 @@ theorem orderSixtyFour_sizeTwo_switched_muThree_exterior_gridEmbedding
     G hfree hreg hcard c hc s hs_in hs_out P.sum_eq_zero P.defectAction
       P.ambientAction_in P.ambientAction_out
 
+/-- A checked `K`-symmetry classification closes a switched ambient `μ=3`
+witness through the existing joint-eigenline capstone. -/
+theorem false_of_orderSixtyFour_sizeTwo_switched_muThree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (s : V → ℤ) (hs : IsAmbientSignedJoint G c 3 s)
+    (classification : MuThreeKSymmetryClassification
+      (orderSixtyFourMuThreeInternalRel G (cSupp := c.supp) (s := s))) :
+    False := by
+  rcases hs with ⟨hs_out, hs_in, hH, hD⟩
+  have P := orderSixtyFour_sizeTwo_signedJoint_derived
+    G hfree hreg hcard c hc s 3 hs_out hs_in hH hD
+  exact false_of_orderSixtyFour_mu3_jointEigenline
+    G hfree hreg hcard c hc s hs_in hs_out P.sum_eq_zero P.defectAction
+      P.ambientAction_in P.ambientAction_out classification
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_switched_muThree_exterior_signedPair_dichotomy
 #print axioms Erdos85.orderSixtyFour_sizeTwo_switched_muThree_exterior_gridEmbedding
+#print axioms Erdos85.false_of_orderSixtyFour_sizeTwo_switched_muThree
