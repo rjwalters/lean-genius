@@ -232,6 +232,41 @@ noncomputable def outsideLowEightOwnerIndexEquiv
         ((edgeFinsetEquivEdgeSet eightEightLowExteriorPairGraph).symm.trans
           eightEightOwnerEdgeEquiv.symm)))
 
+/-- The composite owner enumeration really sends an outside vertex's owned
+pair to the generated pair at its finite index.  This is the key equality
+used to rewrite both incidence and target tables below. -/
+theorem outsidePair_map_modelIso_eq_ownerSym2
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidablePred (· ∈ c.supp)]
+    (hcard : ∀ x : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2)
+    (hinc : Function.Injective
+      (componentNeighborFinset G (secondOrderDefectGraph G) c))
+    (hqcard : Fintype.card {x : V // x ∉ c.supp} = 48)
+    (hRedges : (exteriorPairGraph G c).edgeFinset.card = 48)
+    (modelIso : exteriorPairGraph G c ≃g eightEightLowExteriorPairGraph)
+    (z : {x : V // x ∉ c.supp}) :
+    (outsidePair G (secondOrderDefectGraph G) c hcard z).map modelIso =
+      eightEightOwnerSym2
+        (outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso z) := by
+  have h := congrArg Subtype.val
+    (eightEightOwnerEdgeEquiv.apply_symm_apply
+      ((edgeFinsetEquivEdgeSet eightEightLowExteriorPairGraph).symm
+        (modelIso.mapEdgeSet
+          ((edgeFinsetEquivEdgeSet (exteriorPairGraph G c))
+            (outsidePairEdgeEquiv G (secondOrderDefectGraph G) c
+              hcard hinc hqcard hRedges z)))))
+  change ((modelIso.mapEdgeSet
+      ((edgeFinsetEquivEdgeSet (exteriorPairGraph G c))
+        (outsidePairEdgeEquiv G (secondOrderDefectGraph G) c
+          hcard hinc hqcard hRedges z))).1) =
+    (eightEightOwnerEdge
+      (outsideLowEightOwnerIndexEquiv G c hcard hinc hqcard hRedges modelIso z)).1
+  exact h.symm
+
 /-- Membership in the generated pair is exactly the generator's Boolean
 incidence predicate. -/
 theorem mem_eightEightOwnerSym2_iff (e : Fin 48) (v : Fin 16) :
@@ -425,6 +460,7 @@ end Erdos85
 #print axioms Erdos85.OutsideCClauseSemantics.comap_equiv
 #print axioms Erdos85.eightEightOwnerAt_lt_sixteen
 #print axioms Erdos85.eightEightOwnerSym2_injective
+#print axioms Erdos85.outsidePair_map_modelIso_eq_ownerSym2
 #print axioms Erdos85.mem_eightEightOwnerSym2_iff
 #print axioms Erdos85.lowEightExteriorPair_pointwise_model_of_shores
 #print axioms Erdos85.outsideCClauseSemantics_ownerCoordinates
