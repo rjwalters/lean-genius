@@ -14,6 +14,13 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Absolute-grid coordinate of a cyclic matching source. -/
+def sizeTwoCyclicMatchingSourceCell
+    {q : ℕ} {a : ZMod q}
+    (source : SizeTwoCyclicMatchingSource q a) :
+    SizeTwoCyclicAbsoluteGridEdge q :=
+  (source.1, source.1 + source.2.1)
+
 /-- The reverse route sends a matching edge back to its source cell. -/
 theorem sizeTwoCyclicMatchingEdge_reverse
     {q : ℕ} [NeZero q] {a : ZMod q}
@@ -108,6 +115,34 @@ theorem sizeTwoCyclicSourceMatching_mem_reverse_exists_eq_difference
     change x + r.1 = e.1 at hfirst
     simpa only [hfirst] using hreverse
 
+/-- Reciprocity in its intrinsic matching-design form: after identifying
+sources with their absolute cells, matching incidence is symmetric. -/
+theorem sizeTwoCyclicSourceMatching_sourceCell_mem_comm
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicFullPermutationCode q a)
+    (source target : SizeTwoCyclicMatchingSource q a) :
+    sizeTwoCyclicMatchingSourceCell target ∈
+        sizeTwoCyclicSourceMatching code source ↔
+      sizeTwoCyclicMatchingSourceCell source ∈
+        sizeTwoCyclicSourceMatching code target := by
+  constructor
+  · intro h
+    obtain ⟨s, hs, hmem⟩ :=
+      sizeTwoCyclicSourceMatching_mem_reverse_exists_eq_difference
+        code source.1 source.2 (sizeTwoCyclicMatchingSourceCell target) h
+    have hst : s = target.2 := by
+      apply Subtype.ext
+      simpa [sizeTwoCyclicMatchingSourceCell] using hs
+    simpa [sizeTwoCyclicMatchingSourceCell, hst] using hmem
+  · intro h
+    obtain ⟨s, hs, hmem⟩ :=
+      sizeTwoCyclicSourceMatching_mem_reverse_exists_eq_difference
+        code target.1 target.2 (sizeTwoCyclicMatchingSourceCell source) h
+    have hss : s = source.2 := by
+      apply Subtype.ext
+      simpa [sizeTwoCyclicMatchingSourceCell] using hs
+    simpa [sizeTwoCyclicMatchingSourceCell, hss] using hmem
+
 end
 
 end Erdos85
@@ -116,3 +151,4 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicSourceCell_mem_reverseMatching
 #print axioms Erdos85.sizeTwoCyclicSourceMatching_mem_reverse_exists
 #print axioms Erdos85.sizeTwoCyclicSourceMatching_mem_reverse_exists_eq_difference
+#print axioms Erdos85.sizeTwoCyclicSourceMatching_sourceCell_mem_comm
