@@ -1,4 +1,5 @@
 import Proofs.Erdos85ZModTenSymmetricTwoSupport
+import Proofs.Erdos85EvenCycleOrientation
 
 /-!
 # Same-parity degree-two self-intertwiners on C10
@@ -101,6 +102,49 @@ theorem zmodTen_sameParity_degreeTwo_offset_dichotomy
     rw [hxy0]
     simpa [he] using hf'
 
+/-- Recurrence-ready form: looplessness and the cycle self-intertwining
+equation automatically supply even-difference translation invariance. -/
+theorem zmodTen_selfIntertwiner_sameParity_degreeTwo_offset_dichotomy
+    (H : Matrix (ZMod 10) (ZMod 10) ℤ)
+    (hdiag : ∀ z, H z z = 0)
+    (hsymm : ∀ x y, H x y = H y x)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (hdegree : ∀ x,
+      ((Finset.univ : Finset (ZMod 10)).filter fun y =>
+        ZModTenEvenOffset (y - x) ∧ H x y = 1).card = 2) :
+    (∀ x y, ZModTenEvenOffset (y - x) →
+        (H x y = 1 ↔ y - x = 2 ∨ y - x = 8)) ∨
+      (∀ x y, ZModTenEvenOffset (y - x) →
+        (H x y = 1 ↔ y - x = 4 ∨ y - x = 6)) := by
+  apply zmodTen_sameParity_degreeTwo_offset_dichotomy H hdiag hsymm
+  · intro x y x' y' he hsub
+    apply selfIntertwiner_eq_of_sub_eq_of_mem_range_two H hdiag hinter ?_ hsub
+    rcases he with h0 | h2 | h4 | h6 | h8
+    · refine ⟨0, ?_⟩
+      change 2 * (0 : ZMod 10) = y - x
+      rw [h0]
+      norm_num
+    · refine ⟨1, ?_⟩
+      change 2 * (1 : ZMod 10) = y - x
+      rw [h2]
+      norm_num
+    · refine ⟨2, ?_⟩
+      change 2 * (2 : ZMod 10) = y - x
+      rw [h4]
+      decide
+    · refine ⟨3, ?_⟩
+      change 2 * (3 : ZMod 10) = y - x
+      rw [h6]
+      decide
+    · refine ⟨4, ?_⟩
+      change 2 * (4 : ZMod 10) = y - x
+      rw [h8]
+      decide
+  · exact hdegree
+
 end Erdos85
 
 #print axioms Erdos85.zmodTen_sameParity_degreeTwo_offset_dichotomy
+#print axioms Erdos85.zmodTen_selfIntertwiner_sameParity_degreeTwo_offset_dichotomy
