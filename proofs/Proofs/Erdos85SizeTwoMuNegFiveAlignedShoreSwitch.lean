@@ -3,6 +3,7 @@ import Proofs.Erdos85SizeTwoAlignedShoreSwitch
 import Proofs.Erdos85EightEightCoordinateCover
 import Proofs.Erdos85ComponentSignFlipEigenvector
 import Proofs.Erdos85SizeTwoSwitchedJointExclusions
+import Proofs.Erdos85SizeTwoSwitchedJointExtension
 
 /-! # General aligned shore switch for the `mu=-5` lane -/
 
@@ -60,7 +61,10 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
       MuNegFivePostMuOneSectorCells k r ∧
       (sizeTwoMuSwitchTarget (-5) k r = -3 ∨
        sizeTwoMuSwitchTarget (-5) k r = -1 ∨
-       sizeTwoMuSwitchTarget (-5) k r = 3) := by
+       sizeTwoMuSwitchTarget (-5) k r = 3) ∧
+      ((∃ s', IsAmbientSignedJoint G c (-3) s') ∨
+       (∃ s', IsAmbientSignedJoint G c (-1) s') ∨
+       (∃ s', IsAmbientSignedJoint G c 3 s')) := by
   classical
   dsimp only
   let H := G.induce c.supp
@@ -259,8 +263,10 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
       (by simpa [H] using htH) (by simpa [K] using htK)
   have hpost := muNegFive_postMuOne_sector_cells_of_target_ne_one
     k r hcell hneOne
+  have hroute := muNegFive_inducedSwitch_ambientCrossLane
+    G c k r hpost t htsign (by simpa [H] using htH) (by simpa [K] using htK)
   exact ⟨k, r, hcell, htK, htH, htne, htsign, hneOne, hpost,
-    muNegFive_postMuOne_switch_target k r hpost⟩
+    muNegFive_postMuOne_switch_target k r hpost, hroute⟩
 
 end
 
