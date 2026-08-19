@@ -147,6 +147,61 @@ theorem twoComponent_signSwitch_adjMatrix_eigen_sub_of_card
     exact hBAsame x ((ConnectedComponent.mem_supp_iff b x).mpr
       (Finset.mem_filter.mp hx).2)
 
+/-- Quotient-level generic shore switch.  Quotient entries provide the four
+total block degrees; the remaining hypotheses are exactly the signed-row
+counts retained by aligned ledgers. -/
+theorem twoComponent_quotient_signSwitch_adjMatrix_eigen_sub_of_card
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D H : SimpleGraph X) [DecidableRel D.Adj] [DecidableRel H.Adj]
+    [DecidableEq H.ConnectedComponent]
+    (a b : H.ConnectedComponent) (hab : a ≠ b)
+    (hdegree : ∀ x, H.degree x = 2)
+    (hcomm : D.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * D.adjMatrix ℝ)
+    (hpartition : ∀ x, x ∈ a.supp ∨ x ∈ b.supp)
+    (s : X → ℤ) (diagCard diagSame crossCard crossSame : ℕ)
+    (hsign : ∀ x, s x = -1 ∨ s x = 1)
+    (haa : componentQuotientMatrix D H a a = diagCard)
+    (habq : componentQuotientMatrix D H a b = crossCard)
+    (hbaq : componentQuotientMatrix D H b a = crossCard)
+    (hbb : componentQuotientMatrix D H b b = diagCard)
+    (hAAsame : ∀ x, x ∈ a.supp →
+      ((componentNeighborFinset D H a x).filter
+        (fun y ↦ s y = s x)).card = diagSame)
+    (hABsame : ∀ x, x ∈ a.supp →
+      ((componentNeighborFinset D H b x).filter
+        (fun y ↦ s y = s x)).card = crossSame)
+    (hBBsame : ∀ x, x ∈ b.supp →
+      ((componentNeighborFinset D H b x).filter
+        (fun y ↦ s y = s x)).card = diagSame)
+    (hBAsame : ∀ x, x ∈ b.supp →
+      ((componentNeighborFinset D H a x).filter
+        (fun y ↦ s y = s x)).card = crossSame) :
+    let B := (Finset.univ : Finset X).filter
+      (fun x ↦ H.connectedComponentMk x = b)
+    let t : X → ℤ := fun x ↦ if x ∈ B then -s x else s x
+    (D.adjMatrix ℤ).mulVec t =
+      ((2 * (diagSame : ℤ) - diagCard) -
+        (2 * (crossSame : ℤ) - crossCard)) • t := by
+  apply twoComponent_signSwitch_adjMatrix_eigen_sub_of_card
+    D H a b hab hpartition s diagCard diagSame crossCard crossSame hsign
+  · intro x hx
+    rw [← componentQuotientMatrix_apply_eq D H 2 hdegree hcomm a a hx]
+    exact haa
+  · exact hAAsame
+  · intro x hx
+    rw [← componentQuotientMatrix_apply_eq D H 2 hdegree hcomm a b hx]
+    exact habq
+  · exact hABsame
+  · intro x hx
+    rw [← componentQuotientMatrix_apply_eq D H 2 hdegree hcomm b b hx]
+    exact hbb
+  · exact hBBsame
+  · intro x hx
+    rw [← componentQuotientMatrix_apply_eq D H 2 hdegree hcomm b a hx]
+    exact hbaq
+  · exact hBAsame
+
 end
 
 
@@ -154,3 +209,4 @@ end Erdos85
 
 #print axioms Erdos85.bipartition_signSwitch_adjMatrix_eigen_sub_of_card
 #print axioms Erdos85.twoComponent_signSwitch_adjMatrix_eigen_sub_of_card
+#print axioms Erdos85.twoComponent_quotient_signSwitch_adjMatrix_eigen_sub_of_card
