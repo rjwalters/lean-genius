@@ -134,8 +134,47 @@ theorem binarySquare_regular_sizeTwoPart_eight_diagonalThree_halfTurn_exact_supp
         exact (by decide : ∀ i : ZMod 8, i + 7 = i - 1) i]
       exact hm
 
+/-- Exterior form of the exact shore classification.  The two possible
+diagonal defect supports become precisely the two within-shore owner
+supports used by the parameter-four CNFs. -/
+theorem binarySquare_regular_sizeTwoPart_eight_diagonalThree_halfTurn_exact_exterior_supports
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a : (G.induce c.supp).ConnectedComponent)
+    (u : ZMod 8 → c.supp) (huinj : Function.Injective u)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (haa3 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) a a = 3)
+    (hfour : ∀ i,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (u (i + 4))) :
+    (∀ i j, (exteriorPairGraph G c.supp).Adj (u i) (u j) ↔
+      j - i = 3 ∨ j - i = 5) ∨
+    (∀ i j, (exteriorPairGraph G c.supp).Adj (u i) (u j) ↔
+      j - i = 1 ∨ j - i = 7) := by
+  rcases binarySquare_regular_sizeTwoPart_eight_diagonalThree_halfTurn_exact_supports
+      G hfree hreg hcard c hc a u huinj hurange hu haa3 hfour with htf | htri
+  · left
+    exact zmodEight_diagonal_one_four_seven_exterior_iff_three_five
+      G hfree c u huinj hu htf
+  · right
+    exact zmodEight_diagonal_three_four_five_exterior_iff_one_seven
+      G hfree c u huinj hu htri
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalThree_halfTurn_exact_supports
+#print axioms Erdos85.binarySquare_regular_sizeTwoPart_eight_diagonalThree_halfTurn_exact_exterior_supports
