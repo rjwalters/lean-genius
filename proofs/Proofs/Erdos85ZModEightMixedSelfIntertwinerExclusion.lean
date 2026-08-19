@@ -200,7 +200,157 @@ theorem zmodEight_selfIntertwiner_sameParity_degreeOne_impossible
   exact zmodEight_no_oriented_symmetric_odd_matching_avoiding_cycle
     f hfInvol hfOdd hfAvoid horient
 
+/-- A negation-invariant two-element support among the nonzero even offsets
+of `ZMod 8` is exactly `{2,6}`. -/
+theorem zmodEight_symmetric_even_degreeTwo_support
+    (f : ZMod 8 → Bool)
+    (_hzero : f 0 = false)
+    (hneg : ∀ z, f (-z) = f z)
+    (hcard : ((Finset.univ : Finset (ZMod 8)).filter fun z => f z).card = 2)
+    (heven : ∀ z, f z = true → z = 2 ∨ z = 4 ∨ z = 6) :
+    ∀ z, f z = true ↔ z = 2 ∨ z = 6 := by
+  classical
+  let S := (Finset.univ : Finset (ZMod 8)).filter fun z => f z
+  have hmem (z : ZMod 8) : z ∈ S ↔ f z = true := by simp [S]
+  have hScard : S.card = 2 := by simpa [S] using hcard
+  have hnot4 : f 4 = false := by
+    by_contra h
+    have hf4 : f 4 = true := by simpa using h
+    have hm4 : (4 : ZMod 8) ∈ S := (hmem 4).2 hf4
+    have hone : 1 < S.card := by omega
+    obtain ⟨z, hzS, hz4⟩ :=
+      (Finset.one_lt_card_iff_nontrivial.mp hone).exists_ne 4
+    have hfz : f z = true := (hmem z).1 hzS
+    rcases heven z hfz with h2 | h4 | h6
+    · subst z
+      have hf6 : f 6 = true := by
+        calc
+          f 6 = f (-2) := congrArg f (by decide)
+          _ = f 2 := hneg 2
+          _ = true := hfz
+      have hsub : ({2, 4, 6} : Finset (ZMod 8)) ⊆ S := by
+        intro w hw
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+        rcases hw with rfl | rfl | rfl
+        · exact hzS
+        · exact hm4
+        · exact (hmem 6).2 hf6
+      have := Finset.card_le_card hsub
+      have hthree : ({2, 4, 6} : Finset (ZMod 8)).card = 3 := by decide
+      omega
+    · exact (hz4 h4).elim
+    · subst z
+      have hf2 : f 2 = true := by
+        calc
+          f 2 = f (-6) := congrArg f (by decide)
+          _ = f 6 := hneg 6
+          _ = true := hfz
+      have hsub : ({2, 4, 6} : Finset (ZMod 8)) ⊆ S := by
+        intro w hw
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+        rcases hw with rfl | rfl | rfl
+        · exact (hmem 2).2 hf2
+        · exact hm4
+        · exact hzS
+      have := Finset.card_le_card hsub
+      have hthree : ({2, 4, 6} : Finset (ZMod 8)).card = 3 := by decide
+      omega
+  have hsub : S ⊆ ({2, 6} : Finset (ZMod 8)) := by
+    intro z hz
+    have hfz := (hmem z).1 hz
+    rcases heven z hfz with h2 | h4 | h6
+    · simp [h2]
+    · rw [h4, hnot4] at hfz
+      contradiction
+    · simp [h6]
+  have heq : S = ({2, 6} : Finset (ZMod 8)) := by
+    apply Finset.eq_of_subset_of_card_le hsub
+    rw [hScard]
+    decide
+  intro z
+  rw [← hmem, heq]
+  simp
+
+/-- Recurrence-ready form: a symmetric C8 self-intertwiner with two
+same-parity entries per row uses precisely offsets `±2`. -/
+theorem zmodEight_selfIntertwiner_sameParity_degreeTwo_offset_two_six
+    (H : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (hdiag : ∀ z, H z z = 0)
+    (hsymm : ∀ x y, H x y = H y x)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (hdegree : ∀ x,
+      ((Finset.univ : Finset (ZMod 8)).filter fun y =>
+        ZModEightEvenOffset (y - x) ∧ H x y = 1).card = 2) :
+    ∀ x y, ZModEightEvenOffset (y - x) →
+      (H x y = 1 ↔ y - x = 2 ∨ y - x = 6) := by
+  have hdiff : ∀ {x y x' y' : ZMod 8},
+      ZModEightEvenOffset (y - x) → y - x = y' - x' → H x y = H x' y' := by
+    intro x y x' y' he hsub
+    apply selfIntertwiner_eq_of_sub_eq_of_mem_range_two H hdiag hinter ?_ hsub
+    rcases he with h0 | h2 | h4 | h6
+    · exact ⟨0, by rw [h0]; norm_num⟩
+    · exact ⟨1, by rw [h2]; norm_num⟩
+    · exact ⟨2, by rw [h4]; decide⟩
+    · exact ⟨3, by rw [h6]; decide⟩
+  let f : ZMod 8 → Bool := fun z =>
+    decide (ZModEightEvenOffset z ∧ H 0 z = 1)
+  have hzero : f 0 = false := by simp [f, ZModEightEvenOffset, hdiag]
+  have hneg : ∀ z, f (-z) = f z := by
+    intro z
+    have heven_neg : ZModEightEvenOffset (-z) ↔ ZModEightEvenOffset z := by
+      revert z
+      decide
+    apply Bool.eq_iff_iff.mpr
+    simp only [f, decide_eq_true_eq]
+    constructor
+    · rintro ⟨he, hz⟩
+      have he' : ZModEightEvenOffset z := heven_neg.mp he
+      refine ⟨he', ?_⟩
+      calc
+        H 0 z = H (-z) 0 := by
+          symm
+          apply hdiff (x := -z) (y := 0) (x' := 0) (y' := z)
+            (by simpa using he')
+          ring
+        _ = H 0 (-z) := hsymm _ _
+        _ = 1 := hz
+    · rintro ⟨he, hz⟩
+      have he' : ZModEightEvenOffset (-z) := heven_neg.mpr he
+      refine ⟨he', ?_⟩
+      calc
+        H 0 (-z) = H (-z) 0 := hsymm _ _
+        _ = H 0 z := by
+          apply hdiff (x := -z) (y := 0) (x' := 0) (y' := z)
+            (by simpa using he)
+          ring
+        _ = 1 := hz
+  have hcard : ((Finset.univ : Finset (ZMod 8)).filter fun z => f z).card = 2 := by
+    simpa [f] using hdegree 0
+  have heven : ∀ z, f z = true → z = 2 ∨ z = 4 ∨ z = 6 := by
+    intro z hz
+    have hz' : ZModEightEvenOffset z ∧ H 0 z = 1 := by simpa [f] using hz
+    rcases hz'.1 with h0 | h2 | h4 | h6
+    · subst z
+      rw [hdiag] at hz'
+      omega
+    · exact Or.inl h2
+    · exact Or.inr (Or.inl h4)
+    · exact Or.inr (Or.inr h6)
+  have hf := zmodEight_symmetric_even_degreeTwo_support f hzero hneg hcard heven
+  intro x y he
+  have hxy0 : H x y = H 0 (y - x) := by
+    apply hdiff he
+    ring
+  have hf' := hf (y - x)
+  simp only [f, decide_eq_true_eq] at hf'
+  rw [hxy0]
+  simpa [he] using hf'
+
 end Erdos85
 
 #print axioms Erdos85.zmodEight_no_oriented_symmetric_odd_matching_avoiding_cycle
 #print axioms Erdos85.zmodEight_selfIntertwiner_sameParity_degreeOne_impossible
+#print axioms Erdos85.zmodEight_symmetric_even_degreeTwo_support
+#print axioms Erdos85.zmodEight_selfIntertwiner_sameParity_degreeTwo_offset_two_six
