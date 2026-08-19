@@ -201,6 +201,62 @@ theorem normalizedC8_quotientOne_sameSignZero_avoidingCycle_false
     M f hsign hflip (by simpa [M] using hshape)
       hsymm hinter hbinary hrow havoidM
 
+/-- Final normalized router socket for the `(-1,0,6)` cell.  It accepts the
+actual zero same-sign degree instead of a pre-aligned shape witness. -/
+theorem graph_zmodEight_selfCell_zeroSix_false
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (H K : SimpleGraph X) [DecidableRel H.Adj] [DecidableRel K.Adj]
+    [DecidableEq H.ConnectedComponent]
+    (a : H.ConnectedComponent)
+    (u : ZMod 8 → X) (huinj : Function.Injective u)
+    (hurange : Set.range u = a.supp)
+    (hu : ∀ z, H.neighborFinset (u z) = {u (z - 1), u (z + 1)})
+    (hdegree : ∀ x, H.degree x = 2)
+    (hcommInt : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ)
+    (hcommReal : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ)
+    (haa : componentQuotientMatrix K H a a = 1)
+    (s : X → ℤ)
+    (hsign : ∀ i, s (u i) = -1 ∨ s (u i) = 1)
+    (hflip : ∀ i, s (u (i + 1)) = -s (u i))
+    (hsame : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j) = s (u i) ∧ K.Adj (u i) (u j)).card = 0)
+    (havoid : ∀ i, ¬ K.Adj (u i) (u (i - 1)) ∧
+      ¬ K.Adj (u i) (u (i + 1))) : False := by
+  let M : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  have hupair : ∀ z, u (z - 1) ≠ u (z + 1) := fun z ↦
+    huinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) z)
+  have hinter : ∀ i j,
+      M (i - 1) j + M (i + 1) j =
+        M i (j + 1) + M i (j - 1) := by
+    simpa only [M] using entry_cycleIntertwine_of_adjMatrix_comm
+      K H u u (1 : ZMod 8) (1 : ZMod 8) hcommInt hu hu hupair hupair
+  have hdiag : ∀ i, M i i = 0 := by
+    intro i
+    simp [M, SimpleGraph.adjMatrix_apply]
+  have hsymm : ∀ i j, M i j = M j i := by
+    intro i j
+    simp [M, SimpleGraph.adjMatrix_apply, K.adj_comm]
+  have hdegreeM : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j) = s (u i) ∧ M i j = 1).card = 0 := by
+    intro i
+    calc
+      _ = ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (u j) = s (u i) ∧ K.Adj (u i) (u j)).card := by
+        congr 1
+        ext j
+        simp [M, SimpleGraph.adjMatrix_apply]
+      _ = 0 := hsame i
+  have hshape := zmodEight_selfIntertwiner_sameSign_shape_of_degree_le_three
+    M (fun i ↦ s (u i)) 0 (by omega) hsign hflip hdiag hsymm hinter hdegreeM
+  exact normalizedC8_quotientOne_sameSignZero_avoidingCycle_false
+    H K a u huinj hurange hu hdegree hcommInt hcommReal haa
+      (fun i ↦ s (u i)) hsign hflip (by simpa [M] using hshape) havoid
+
 end
 
 end Erdos85
@@ -209,3 +265,4 @@ end Erdos85
 #print axioms Erdos85.zmodEight_sameSignShape_zero_rowOne_avoiding_cycle_impossible
 #print axioms Erdos85.normalizedC8_quotientOne_sameSignZero_avoidingCycle_false
 #print axioms Erdos85.zmodEight_sameSignShapeUpToThree_eq_zero_of_row_zero
+#print axioms Erdos85.graph_zmodEight_selfCell_zeroSix_false
