@@ -21,6 +21,24 @@ def sizeTwoCyclicMatchingSourceCell
     SizeTwoCyclicAbsoluteGridEdge q :=
   (source.1, source.1 + source.2.1)
 
+/-- Absolute-grid coordinates remember the matching source uniquely. -/
+theorem sizeTwoCyclicMatchingSourceCell_injective
+    {q : ℕ} {a : ZMod q} :
+    Function.Injective
+      (sizeTwoCyclicMatchingSourceCell (q := q) (a := a)) := by
+  rintro ⟨x, t⟩ ⟨y, u⟩ h
+  have hfirst := congrArg Prod.fst h
+  have hsecond := congrArg Prod.snd h
+  apply Prod.ext
+  · change x = y at hfirst
+    exact hfirst
+  · apply Subtype.ext
+    dsimp [sizeTwoCyclicMatchingSourceCell] at hsecond
+    change x = y at hfirst
+    change t.1 = u.1
+    rw [hfirst] at hsecond
+    exact add_left_cancel hsecond
+
 /-- The reverse route sends a matching edge back to its source cell. -/
 theorem sizeTwoCyclicMatchingEdge_reverse
     {q : ℕ} [NeZero q] {a : ZMod q}
@@ -148,6 +166,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCyclicMatchingEdge_reverse
+#print axioms Erdos85.sizeTwoCyclicMatchingSourceCell_injective
 #print axioms Erdos85.sizeTwoCyclicSourceCell_mem_reverseMatching
 #print axioms Erdos85.sizeTwoCyclicSourceMatching_mem_reverse_exists
 #print axioms Erdos85.sizeTwoCyclicSourceMatching_mem_reverse_exists_eq_difference
