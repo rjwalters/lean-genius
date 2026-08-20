@@ -157,6 +157,106 @@ theorem squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
       squareOrderNineLowIncidenceBin G 1).card) = 2
   interval_cases m <;> omega
 
+/-- A bin-two vertex cannot be adjacent to three distinct high roots. -/
+theorem squareOrderNine_binTwo_not_three_distinct_high_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {x a b c : V}
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hc : c ∈ squareOrderHighVertices G 9)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hax : G.Adj a x) (hbx : G.Adj b x) (hcx : G.Adj c x) : False := by
+  let I := G.neighborFinset x ∩ squareOrderHighVertices G 9
+  have hIcard : I.card = 2 := (Finset.mem_filter.mp hx).2
+  have haI : a ∈ I := Finset.mem_inter.mpr ⟨
+    (G.mem_neighborFinset x a).mpr hax.symm, ha⟩
+  have hbI : b ∈ I := Finset.mem_inter.mpr ⟨
+    (G.mem_neighborFinset x b).mpr hbx.symm, hb⟩
+  have hcI : c ∈ I := Finset.mem_inter.mpr ⟨
+    (G.mem_neighborFinset x c).mpr hcx.symm, hc⟩
+  have hsub : ({a, b, c} : Finset V) ⊆ I := by
+    intro r hr
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hr
+    rcases hr with rfl | rfl | rfl
+    · exact haI
+    · exact hbI
+    · exact hcI
+  have hthree : ({a, b, c} : Finset V).card = 3 := by
+    simp [hab, hac, hbc]
+  have := Finset.card_le_card hsub
+  omega
+
+/-- The three pair-witnesses of the three high roots in the first profile are
+distinct, and they cannot form a triangle.  Consequently it is impossible
+for all three high-root matchings to pair their two bin-two vertices
+internally. -/
+theorem squareOrderNine_threeHigh_firstProfile_pairWitnesses_not_triangle
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a b c : V}
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hc : c ∈ squareOrderHighVertices G 9)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ∃ x y z,
+      x ∈ squareOrderNineLowIncidenceBin G 2 ∧
+      y ∈ squareOrderNineLowIncidenceBin G 2 ∧
+      z ∈ squareOrderNineLowIncidenceBin G 2 ∧
+      G.Adj a x ∧ G.Adj b x ∧
+      G.Adj a y ∧ G.Adj c y ∧
+      G.Adj b z ∧ G.Adj c z ∧
+      x ≠ y ∧ x ≠ z ∧ y ≠ z ∧
+      ¬ (G.Adj x y ∧ G.Adj x z ∧ G.Adj y z) := by
+  rcases squareOrderNine_threeHigh_firstProfile_existsUnique_pairWitness
+      G hfree hmin hcard hp hc3 hc4 ha hb hab with ⟨x, hx, _⟩
+  rcases squareOrderNine_threeHigh_firstProfile_existsUnique_pairWitness
+      G hfree hmin hcard hp hc3 hc4 ha hc hac with ⟨y, hy, _⟩
+  rcases squareOrderNine_threeHigh_firstProfile_existsUnique_pairWitness
+      G hfree hmin hcard hp hc3 hc4 hb hc hbc with ⟨z, hz, _⟩
+  have hxy : x ≠ y := by
+    intro h
+    subst y
+    exact squareOrderNine_binTwo_not_three_distinct_high_neighbors
+      G hx.1 ha hb hc hab hac hbc hx.2.1 hx.2.2 hy.2.2
+  have hxz : x ≠ z := by
+    intro h
+    subst z
+    exact squareOrderNine_binTwo_not_three_distinct_high_neighbors
+      G hx.1 ha hb hc hab hac hbc hx.2.1 hx.2.2 hz.2.2
+  have hyz : y ≠ z := by
+    intro h
+    subst z
+    exact squareOrderNine_binTwo_not_three_distinct_high_neighbors
+      G hy.1 ha hb hc hab hac hbc hy.2.1 hz.2.1 hy.2.2
+  refine ⟨x, y, z, hx.1, hy.1, hz.1, hx.2.1, hx.2.2,
+    hy.2.1, hy.2.2, hz.2.1, hz.2.2, hxy, hxz, hyz, ?_⟩
+  rintro ⟨_hxyAdj, hxzAdj, hyzAdj⟩
+  have haz : a ≠ z := by
+    intro h
+    subst z
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hz.1).1).2 ha
+  have hle := common_le_one_of_not_containsC4 hfree x y hxy
+  have haCommon : a ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset x a).mpr hx.2.1.symm,
+      (G.mem_neighborFinset y a).mpr hy.2.1.symm⟩
+  have hzCommon : z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset x z).mpr hxzAdj,
+      (G.mem_neighborFinset y z).mpr hyzAdj⟩
+  have hazEq := Finset.card_le_one.mp hle a haCommon z hzCommon
+  exact haz hazEq
+
 end
 
 end Erdos85
@@ -165,3 +265,6 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_localEdges_sum_eq_fifteen
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
+#print axioms Erdos85.squareOrderNine_binTwo_not_three_distinct_high_neighbors
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_pairWitnesses_not_triangle
