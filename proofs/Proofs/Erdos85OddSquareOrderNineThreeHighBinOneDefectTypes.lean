@@ -537,6 +537,82 @@ theorem squareOrderNine_threeHigh_firstProfile_existsUnique_exceptional_binOne_a
   apply huniqY z
   refine ⟨Finset.mem_inter.mpr ⟨(D.mem_neighborFinset x z).mpr hDx'z, hzB⟩, ?_⟩
   exact hcompZ
+
+/-- Each high root has exactly seven ordinary bin-one neighbors.  Thus the
+21-vertex two-regular core has three equal high-incidence color classes. -/
+theorem squareOrderNine_threeHigh_firstProfile_ordinary_binOne_at_high_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a : V} (ha : a ∈ squareOrderHighVertices G 9) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let O := (B 1).filter fun y => (D.neighborFinset y ∩ B 2).card = 0
+    (G.neighborFinset a ∩ O).card = 7 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let E := (B 1).filter fun y =>
+    ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 1
+  let O := (B 1).filter fun y =>
+    ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 0
+  have hB1card : (G.neighborFinset a ∩ B 1).card = 8 :=
+    (squareOrderNine_threeHigh_firstProfile_highRoot_neighbor_split
+      G hfree hmin hcard hp hhigh hc3 hc4 ha).1
+  obtain ⟨y, hy, huniq⟩ :=
+    squareOrderNine_threeHigh_firstProfile_existsUnique_exceptional_binOne_at_high
+      G hfree hmin hcover hcard hp hhigh hc3 hc4 ha
+  have hEinter : G.neighborFinset a ∩ E = {y} := by
+    ext z
+    simp only [Finset.mem_inter, Finset.mem_singleton]
+    constructor
+    · intro hz
+      exact huniq z ⟨hz.2, hz.1⟩
+    · intro hzy
+      subst z
+      exact ⟨hy.2, hy.1⟩
+  have hEcard : (G.neighborFinset a ∩ E).card = 1 := by
+    rw [hEinter]
+    simp
+  have hpartition : G.neighborFinset a ∩ B 1 =
+      (G.neighborFinset a ∩ E) ∪ (G.neighborFinset a ∩ O) := by
+    ext z
+    simp only [Finset.mem_inter, Finset.mem_union]
+    constructor
+    · rintro ⟨haz, hzB⟩
+      have ht :=
+        squareOrderNine_threeHigh_firstProfile_binOne_defect_neighbor_dichotomy
+          G hfree hmin hcover hcard hp hhigh hc3 hc4 hzB
+      dsimp only at ht
+      rcases ht with he | ho
+      · exact Or.inl ⟨haz, Finset.mem_filter.mpr ⟨hzB, he.2.2⟩⟩
+      · exact Or.inr ⟨haz, Finset.mem_filter.mpr ⟨hzB, ho.2.2⟩⟩
+    · rintro (⟨haz, hzE⟩ | ⟨haz, hzO⟩)
+      · exact ⟨haz, (Finset.mem_filter.mp hzE).1⟩
+      · exact ⟨haz, (Finset.mem_filter.mp hzO).1⟩
+  have hdisj : Disjoint (G.neighborFinset a ∩ E)
+      (G.neighborFinset a ∩ O) := by
+    rw [Finset.disjoint_left]
+    intro z hzE hzO
+    have h1 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzE).2).2
+    have h0 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzO).2).2
+    omega
+  have hcards : (G.neighborFinset a ∩ E).card +
+      (G.neighborFinset a ∩ O).card = 8 := by
+    rw [← Finset.card_union_of_disjoint hdisj, ← hpartition]
+    exact hB1card
+  change (G.neighborFinset a ∩ O).card = 7
+  omega
 end
 
 end Erdos85
@@ -557,3 +633,5 @@ end Erdos85
   Erdos85.squareOrderNine_defectAdjacent_binOne_highIncidence_singletons_disjoint
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_existsUnique_exceptional_binOne_at_high
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_ordinary_binOne_at_high_card
