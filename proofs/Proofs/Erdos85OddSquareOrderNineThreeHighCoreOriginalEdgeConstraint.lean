@@ -176,6 +176,37 @@ theorem squareOrderNine_binOne_highRoot_commonNeighbor_card_eq_one
   rw [degree_induce_neighborSet_eq_card_common] at hlocal
   simpa [Finset.inter_comm] using hlocal
 
+/-- Deleting the high root from the local neighborhood graph removes exactly
+one edge.  The residual edge count is therefore the exact number of all-low
+triangles through the bin-one vertex. -/
+theorem squareOrderNine_binOne_residualLocalEdges_add_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81) {y r : V}
+    (_hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hrH : r ∈ squareOrderHighVertices G 9)
+    (hry : G.Adj r y) :
+    let H := G.induce (G.neighborSet y)
+    let r' : {z : V // z ∈ G.neighborSet y} := ⟨r, hry.symm⟩
+    (H.deleteIncidenceSet r').edgeFinset.card + 1 = H.edgeFinset.card := by
+  dsimp only
+  let H := G.induce (G.neighborSet y)
+  let r' : {z : V // z ∈ G.neighborSet y} := ⟨r, hry.symm⟩
+  change (H.deleteIncidenceSet r').edgeFinset.card + 1 = H.edgeFinset.card
+  have hlocal : H.degree r' = 1 := by
+    rw [degree_induce_neighborSet_eq_card_common]
+    simpa [Finset.inter_comm] using
+      squareOrderNine_binOne_highRoot_commonNeighbor_card_eq_one
+        G hfree hmin hcard _hy hrH hry
+  have hdelete := H.card_edgeFinset_deleteIncidenceSet r'
+  have hle := H.degree_le_card_edgeFinset r'
+  rw [hlocal] at hdelete hle
+  omega
+
 end
 
 end Erdos85
@@ -185,3 +216,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_binOne_triangleFree_degree_odd
 #print axioms Erdos85.squareOrderNine_binOne_triangle_defect_profile
 #print axioms Erdos85.squareOrderNine_binOne_highRoot_commonNeighbor_card_eq_one
+#print axioms Erdos85.squareOrderNine_binOne_residualLocalEdges_add_one
