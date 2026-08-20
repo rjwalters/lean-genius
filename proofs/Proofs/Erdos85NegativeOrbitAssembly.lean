@@ -1506,6 +1506,58 @@ theorem exists_muNegFive_exact_rowLedgers_of_firstShore
   rw [hk, hreq] at hcell LR₁ LR₂
   exact ⟨hcell, hmode₁, hmode₂, LR₁, LR₂⟩
 
+/-- Direct-or-transported wrapper around the exact μ=-5 row-ledger kernel.
+This is the callback-ready input package for each canonical μ=-5 leaf. -/
+theorem exists_muNegFive_exact_data_of_source_or_transported
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (k r : ℕ) (hr : r ≤ 7) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let M₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (v j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    let M₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (u j)
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) k r) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) k r) →
+    ∃ s, IsAmbientSignedJoint G c (-5) s ∧
+      MuNegFiveSectorCells k r ∧
+      (C8CycleEntriesZero N₁ ∨ C8CycleEntriesOne N₁) ∧
+      (C8CycleEntriesZero N₂ ∨ C8CycleEntriesOne N₂) ∧
+      MuNegFiveExplicitRowParameterLedger N₁ M₁
+        (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r ∧
+      MuNegFiveExplicitRowParameterLedger N₂ M₂
+        (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) k r := by
+  dsimp only
+  intro h
+  obtain ⟨s, hs, haa, hsame⟩ :=
+    exists_firstShore_coherence_of_source_or_transported
+      G c a b _ _ (-5) k r h
+  exact ⟨s, hs,
+    exists_muNegFive_exact_rowLedgers_of_firstShore
+      G hfree hreg hcard c hc a b hab u v huinj hvinj hurange hvrange
+        hu hv s hs k r hr haa hsame⟩
+
 /-- The checked h503 owner terminal discharges either a direct source or a
 transported endpoint by re-extracting the full row ledgers from the retained
 ambient witness and pinning their parameters with first-shore coherence. -/
@@ -1856,6 +1908,7 @@ end Erdos85
 #print axioms Erdos85.exists_firstShore_coherence_of_source_or_transported
 #print axioms Erdos85.false_of_h312_source_or_transported
 #print axioms Erdos85.exists_muNegFive_exact_rowLedgers_of_firstShore
+#print axioms Erdos85.exists_muNegFive_exact_data_of_source_or_transported
 #print axioms Erdos85.false_of_h503_source_or_transported
 #print axioms Erdos85.false_of_h114_source_or_transported
 #print axioms Erdos85.false_of_negativeEightEightSource_of_six_canonicalTerminals
