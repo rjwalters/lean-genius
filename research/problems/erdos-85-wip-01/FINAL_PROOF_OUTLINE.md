@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.12 — 2026-08-20 (packing-bound node: q-generic reciprocity-vs-uniformity mechanism PROVEN, scale gap recorded).**
+**Version 2.13 — 2026-08-20 (A.5.2 reproducibility caveat: 37 CERT modules load payloads from absolute host paths; duplicate cubic module removed).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -105,6 +105,17 @@ restatements of this same node, not sub-nodes. They are retired here.
 
 **No new lane below this heading without an explicit operator go.** The §F
 "does not count" list is a claim-time gate as of goal #30, not advice.
+
+**Reproducibility caveat (integrator sweep #18, 2026-08-20):** 37 modules
+load LRAT payloads via `include_str` with absolute host paths under
+`/Volumes/Stripe/lean-genius/artifacts/` (the four MuThree native/LRAT
+certificate modules and 33 `Erdos85H1V2CertP2I*` files). They fail in a
+containerized cold build; prior sweeps ran on the host where the paths
+resolve. Until the payloads are tracked in-repo or fetched to a
+repo-relative path, every `CERT` label backed by them means "green on a
+host build with the artifacts volume present", not "green from the branch
+alone". Repair is parked with A.5.2; needs an operator call on payload
+storage.
 
 The seven partitions of 8 into parts ≥ 2: `[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`,
 `[4,4]`, `[5,3]`, `[6,2]`, `[8]`.
@@ -367,6 +378,12 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.13** (2026-08-20, claude/integrator, sweep #18): recorded the A.5.2
+  reproducibility caveat — 37 CERT modules use absolute-host-path
+  `include_str` and fail containerized cold builds; their `CERT` labels are
+  host-build-only until payload storage is fixed (operator call). Also
+  removed the duplicate `Erdos85C4FreeCubicNonneighborUpper.lean`
+  (443c6914f1, same-minute banking race, zero importers).
 - **2.12** (2026-08-20, claude/integrator, per sol-2 msg 15540): under the
   `BinarySizeTwoCyclicPackingBound` refutation GAP, recorded the PROVEN
   q-generic mechanism chain (uniform-aggregate countermodel; displacement
