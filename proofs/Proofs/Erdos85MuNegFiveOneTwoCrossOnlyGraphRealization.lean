@@ -1,6 +1,7 @@
 import Proofs.Erdos85MuNegFiveOneTwoCrossOnlyOwnerServiceBridge
 import Proofs.Erdos85MuNegFiveZeroThreeGraphRealization
 import Proofs.Erdos85MuNegFiveOneTwoShoreGeometry
+import Proofs.Erdos85MuNegFiveCanonicalGraphTerminals
 
 /-!
 # Graph realization of the corrected cross-only h512 owner universe
@@ -136,6 +137,15 @@ theorem muNegFiveOneTwoCrossOnly_oldOwner_cases (f : Fin 72) :
   revert f
   native_decide
 
+theorem muNegFiveOneTwoCrossOnlyCrossIndex?_ownerAt
+    (x y : Fin 8) :
+    ∃ e : Fin 64,
+      muNegFiveOneTwoCrossOnlyActiveVariable? e =
+          muNegFiveZeroThreeCrossIndex? x y ∧
+        muNegFiveOneTwoCrossOnlyOwnerAt e = (x.val, 8 + y.val) := by
+  revert x y
+  native_decide
+
 instance (u v : ZMod 8 → c.supp) :
     DecidablePred (muNegFiveOneTwoCrossOnlyGraphActive G c u v) := by
   intro e
@@ -209,6 +219,171 @@ theorem muNegFiveOneTwoCrossOnly_candidateSupport_of_noSameShore
       apply hnoV ((x - 8 : Nat) : ZMod 8) ((y - 8 : Nat) : ZMod 8)
       simpa [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
         hx8, hy8] using hxy
+
+theorem muNegFiveOneTwoCrossOnlyGraphActive_iff_exteriorPair
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (e : Fin 64) :
+    muNegFiveOneTwoCrossOnlyGraphActive G c u v e ↔
+      (exteriorPairGraph G c.supp).Adj
+        (muNegFiveZeroThreeCodeSub G c u v
+          (muNegFiveOneTwoCrossOnlyOwnerAt e).1)
+        (muNegFiveZeroThreeCodeSub G c u v
+          (muNegFiveOneTwoCrossOnlyOwnerAt e).2) := by
+  rw [muNegFiveOneTwoCrossOnlyGraphActive_eq_old]
+  rw [muNegFiveZeroThreeGraphActive_iff_exteriorPair G c a b u v
+    hfree hab huinj hvinj hurange hvrange]
+  rw [muNegFiveOneTwoCrossOnly_ownerAt_embed]
+
+theorem muNegFiveOneTwoCrossOnlyOwnerVal_cross_true_iff
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    {x y id : Nat} (hx : x < 8) (hy : y < 8)
+    (hidx : muNegFiveZeroThreeCrossIndex? x y = some id) :
+    muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+        (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+        (muNegFiveOneTwoCrossOnlyGraphHit G c u v) id = true ↔
+      (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ)
+          (u (x : ZMod 8)) (v (y : ZMod 8)) ≠ 1 := by
+  letI : DecidablePred (muNegFiveOneTwoCrossOnlyGraphActive G c u v) :=
+    fun _ ↦ Classical.propDecidable _
+  letI : DecidableRel (muNegFiveOneTwoCrossOnlyGraphHit G c u v) :=
+    fun _ _ ↦ Classical.propDecidable _
+  obtain ⟨e, hevar, heAt⟩ :=
+    muNegFiveOneTwoCrossOnlyCrossIndex?_ownerAt ⟨x, hx⟩ ⟨y, hy⟩
+  rw [hidx] at hevar
+  have hval :
+      muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+          (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+          (muNegFiveOneTwoCrossOnlyGraphHit G c u v) id = true ↔
+        muNegFiveOneTwoCrossOnlyGraphActive G c u v e := by
+    constructor
+    · intro hv
+      obtain ⟨f, hfvar, hf⟩ :=
+        (muNegFiveOneTwoCrossOnlyOwnerVal_active_true_iff
+          (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+          (muNegFiveOneTwoCrossOnlyGraphHit G c u v)
+          (muNegFiveOneTwoCrossOnlyActiveVariable?_bounds hevar).2).mp hv
+      rw [muNegFiveOneTwoCrossOnlyActiveVariable?_eq_injective e f hevar hfvar]
+      exact hf
+    · exact fun he ↦ muNegFiveOneTwoCrossOnlyOwnerVal_active_true_of
+        (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+        (muNegFiveOneTwoCrossOnlyGraphHit G c u v) hevar he
+  rw [hval, muNegFiveOneTwoCrossOnlyGraphActive_iff_exteriorPair
+    G c a b u v hfree hab huinj hvinj hurange hvrange]
+  rw [heAt]
+  simp [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex, hx,
+    show ¬ 8 + y < 8 by omega]
+  change (exteriorPairGraph G c.supp).Adj
+      (u (x : ZMod 8)) (v (y : ZMod 8)) ↔ _
+  rw [sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
+    G hfree c a b hab u v hurange hvrange]
+  simp
+
+theorem muNegFiveOneTwoCrossOnlyOwnerVal_cross_eq_old
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    {x y id : Nat} (hidx : muNegFiveZeroThreeCrossIndex? x y = some id) :
+    muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+        (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+        (muNegFiveOneTwoCrossOnlyGraphHit G c u v) id =
+      muNegFiveZeroThreeOwnerValOfRelations
+        (muNegFiveZeroThreeGraphActive G c u v)
+        (muNegFiveZeroThreeGraphHit G c u v) id := by
+  obtain ⟨hx, hy⟩ := muNegFiveZeroThreeCrossIndex?_some_bounds hidx
+  apply Bool.eq_iff_iff.mpr
+  exact (muNegFiveOneTwoCrossOnlyOwnerVal_cross_true_iff G c a b u v
+    hfree hab huinj hvinj hurange hvrange hx hy hidx).trans
+      (muNegFiveZeroThreeOwnerVal_cross_true_iff G c a b u v
+        hfree hab huinj hvinj hurange hvrange hx hy hidx).symm
+
+theorem muNegFiveOneTwoCrossOnlyGraphFiberBitsAllowed
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (s : V → ℤ) (sigma : Bool)
+    (hphase : ∀ x y : Nat, x < 8 → y < 8 →
+      (muNegFiveZeroThreeSameSign sigma x y = true ↔
+        s (v (y : ZMod 8)).1 = s (u (x : ZMod 8)).1))
+    (P : MuNegFiveCrossExteriorProfile
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (v j))
+      (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) 6 4) :
+    ∀ left z, z < 8 →
+      muNegFiveCanonicalFiberBitsAllowed 6 4 sigma left z
+        (muNegFiveZeroThreeFiberBit
+          (muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+            (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+            (muNegFiveOneTwoCrossOnlyGraphHit G c u v)) left z) = true := by
+  intro left z hz
+  have hold := muNegFiveOneTwoGraphFiberBitsAllowed G c a b u v hfree hab
+    huinj hvinj hurange hvrange s sigma hphase P left z hz
+  have hbits :
+      muNegFiveZeroThreeFiberBit
+          (muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+            (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+            (muNegFiveOneTwoCrossOnlyGraphHit G c u v)) left z =
+        muNegFiveZeroThreeFiberBit
+          (muNegFiveZeroThreeOwnerValOfRelations
+            (muNegFiveZeroThreeGraphActive G c u v)
+            (muNegFiveZeroThreeGraphHit G c u v)) left z := by
+    funext w
+    obtain ⟨id, hidx, _⟩ :=
+      muNegFiveZeroThreeCrossFiber_zipIdx left ⟨z, hz⟩ w
+    simp only [muNegFiveZeroThreeFiberBit]
+    cases left <;>
+      simp only [Bool.false_eq_true, if_false, if_true] at hidx ⊢ <;>
+      rw [hidx] <;>
+      exact muNegFiveOneTwoCrossOnlyOwnerVal_cross_eq_old G c a b u v
+        hfree hab huinj hvinj hurange hvrange hidx
+  rw [hbits]
+  exact hold
+
+theorem muNegFiveOneTwoCrossOnlyGraphBalance
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    ∀ x y aId bId cId dId,
+      muNegFiveZeroThreeCrossIndex? ((x + 7) % 8) y = some aId →
+      muNegFiveZeroThreeCrossIndex? ((x + 1) % 8) y = some bId →
+      muNegFiveZeroThreeCrossIndex? x ((y + 1) % 8) = some cId →
+      muNegFiveZeroThreeCrossIndex? x ((y + 7) % 8) = some dId →
+      (muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+        (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+        (muNegFiveOneTwoCrossOnlyGraphHit G c u v) aId).toNat +
+          (muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+            (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+            (muNegFiveOneTwoCrossOnlyGraphHit G c u v) bId).toNat =
+        (muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+          (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+          (muNegFiveOneTwoCrossOnlyGraphHit G c u v) cId).toNat +
+          (muNegFiveOneTwoCrossOnlyOwnerValOfRelations
+            (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+            (muNegFiveOneTwoCrossOnlyGraphHit G c u v) dId).toNat := by
+  intro x y aId bId cId dId ha hb hc hd
+  rw [muNegFiveOneTwoCrossOnlyOwnerVal_cross_eq_old G c a b u v hfree hab
+      huinj hvinj hurange hvrange ha,
+    muNegFiveOneTwoCrossOnlyOwnerVal_cross_eq_old G c a b u v hfree hab
+      huinj hvinj hurange hvrange hb,
+    muNegFiveOneTwoCrossOnlyOwnerVal_cross_eq_old G c a b u v hfree hab
+      huinj hvinj hurange hvrange hc,
+    muNegFiveOneTwoCrossOnlyOwnerVal_cross_eq_old G c a b u v hfree hab
+      huinj hvinj hurange hvrange hd]
+  exact muNegFiveZeroThreeGraphBalance G c a b u v hfree hreg hab huinj
+    hvinj hurange hvrange hu hv x y aId bId cId dId ha hb hc hd
 
 theorem muNegFiveOneTwoCrossOnlyExteriorOwnerCoverage_of_noSameShore
     (hfree : ¬ containsC4 V G)
