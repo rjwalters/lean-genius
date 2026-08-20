@@ -12,7 +12,7 @@ noncomputable section
 /-- After enumerating the three high roots, their ordinary bin-one classes
 partition the 21-vertex two-regular defect core into independent sets of size
 seven.  Exactly seven defect edges join each pair of colors. -/
-theorem squareOrderNine_threeHigh_firstProfile_ordinary_color_edge_ledger
+theorem squareOrderNine_threeHigh_firstProfile_ordinary_color_structure
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -38,9 +38,15 @@ theorem squareOrderNine_threeHigh_firstProfile_ordinary_color_edge_ledger
       y.1 ∈ G.neighborFinset b
     let C := (Finset.univ : Finset ↥(↑O : Set V)).filter fun y =>
       y.1 ∈ G.neighborFinset c
-    (∑ x ∈ A, (K.neighborFinset x ∩ Q).card) = 7 ∧
+    ((∑ x ∈ A, (K.neighborFinset x ∩ Q).card) = 7 ∧
       (∑ x ∈ Q, (K.neighborFinset x ∩ C).card) = 7 ∧
-      (∑ x ∈ C, (K.neighborFinset x ∩ A).card) = 7 := by
+      (∑ x ∈ C, (K.neighborFinset x ∩ A).card) = 7) ∧
+    (∃ x ∈ A, (K.neighborFinset x ∩ Q).card = 1 ∧
+      (K.neighborFinset x ∩ C).card = 1) ∧
+    (∃ x ∈ Q, (K.neighborFinset x ∩ C).card = 1 ∧
+      (K.neighborFinset x ∩ A).card = 1) ∧
+    (∃ x ∈ C, (K.neighborFinset x ∩ A).card = 1 ∧
+      (K.neighborFinset x ∩ Q).card = 1) := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -183,14 +189,104 @@ theorem squareOrderNine_threeHigh_firstProfile_ordinary_color_edge_ledger
       ((G.adj_comm r x.1).mp ((G.mem_neighborFinset r x.1).mp hxr))
       ((G.adj_comm r z.1).mp ((G.mem_neighborFinset r z.1).mp hzr))
     exact hnot hDadj
-  exact threePart_twoRegular_crossEdge_ledger K A Q C 7 hpart hAQ hAC hQC
-    hAcard hQcard hCcard hKdeg
-    (independentColor a haH A rfl)
-    (independentColor b hbH Q rfl)
-    (independentColor c hcH C rfl)
+  have hAind := independentColor a haH A rfl
+  have hQind := independentColor b hbH Q rfl
+  have hCind := independentColor c hcH C rfl
+  have hpartQ : Q ∪ C ∪ A = Finset.univ := by
+    rw [← hpart]
+    ext x
+    simp only [Finset.mem_union]
+    tauto
+  have hpartC : C ∪ A ∪ Q = Finset.univ := by
+    rw [← hpart]
+    ext x
+    simp only [Finset.mem_union]
+    tauto
+  exact ⟨
+    threePart_twoRegular_crossEdge_ledger K A Q C 7 hpart hAQ hAC hQC
+      hAcard hQcard hCcard hKdeg hAind hQind hCind,
+    threePart_twoRegular_exists_cross_wedge_of_odd K A Q C 7 hpart
+      hAQ hAC hQC hAcard hQcard hCcard hKdeg hAind hQind hCind (by norm_num),
+    threePart_twoRegular_exists_cross_wedge_of_odd K Q C A 7 hpartQ
+      hQC hAQ.symm hAC.symm hQcard hCcard hAcard hKdeg hQind hCind hAind
+      (by norm_num),
+    threePart_twoRegular_exists_cross_wedge_of_odd K C A Q 7 hpartC
+      hAC.symm hQC.symm hAQ hCcard hAcard hQcard hKdeg hCind hAind hQind
+      (by norm_num)⟩
+
+/-- The cross-edge ledger projection of the full ordinary-color structure. -/
+theorem squareOrderNine_threeHigh_firstProfile_ordinary_color_edge_ledger
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a b c : V}
+    (hH : squareOrderHighVertices G 9 = {a, b, c})
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let O := (B 1).filter fun y => (D.neighborFinset y ∩ B 2).card = 0
+    let K := D.induce (↑O : Set V)
+    let A := (Finset.univ : Finset ↥(↑O : Set V)).filter fun y =>
+      y.1 ∈ G.neighborFinset a
+    let Q := (Finset.univ : Finset ↥(↑O : Set V)).filter fun y =>
+      y.1 ∈ G.neighborFinset b
+    let C := (Finset.univ : Finset ↥(↑O : Set V)).filter fun y =>
+      y.1 ∈ G.neighborFinset c
+    (∑ x ∈ A, (K.neighborFinset x ∩ Q).card) = 7 ∧
+      (∑ x ∈ Q, (K.neighborFinset x ∩ C).card) = 7 ∧
+      (∑ x ∈ C, (K.neighborFinset x ∩ A).card) = 7 := by
+  exact (squareOrderNine_threeHigh_firstProfile_ordinary_color_structure
+    G hfree hmin hcover hcard hp hhigh hc3 hc4 hH hab hac hbc).1
+
+/-- Each high color contains an ordinary bin-one vertex whose two defect
+neighbors have the other two high colors, one of each. -/
+theorem squareOrderNine_threeHigh_firstProfile_ordinary_rainbow_wedges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a b c : V}
+    (hH : squareOrderHighVertices G 9 = {a, b, c})
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let O := (B 1).filter fun y => (D.neighborFinset y ∩ B 2).card = 0
+    let K := D.induce (↑O : Set V)
+    let A := (Finset.univ : Finset ↥(↑O : Set V)).filter fun y =>
+      y.1 ∈ G.neighborFinset a
+    let Q := (Finset.univ : Finset ↥(↑O : Set V)).filter fun y =>
+      y.1 ∈ G.neighborFinset b
+    let C := (Finset.univ : Finset ↥(↑O : Set V)).filter fun y =>
+      y.1 ∈ G.neighborFinset c
+    (∃ x ∈ A, (K.neighborFinset x ∩ Q).card = 1 ∧
+      (K.neighborFinset x ∩ C).card = 1) ∧
+    (∃ x ∈ Q, (K.neighborFinset x ∩ C).card = 1 ∧
+      (K.neighborFinset x ∩ A).card = 1) ∧
+    (∃ x ∈ C, (K.neighborFinset x ∩ A).card = 1 ∧
+      (K.neighborFinset x ∩ Q).card = 1) := by
+  exact (squareOrderNine_threeHigh_firstProfile_ordinary_color_structure
+    G hfree hmin hcover hcard hp hhigh hc3 hc4 hH hab hac hbc).2
 
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_threeHigh_firstProfile_ordinary_color_edge_ledger
+#print axioms Erdos85.squareOrderNine_threeHigh_firstProfile_ordinary_rainbow_wedges
