@@ -1,5 +1,6 @@
 import Proofs.Erdos85ServiceAmbientMoments
 import Proofs.Erdos85EdgeIndexedServiceResidualCharpoly
+import Proofs.Erdos85EightEightCycleMoments
 
 /-! # Graph-facing residual moment package for the h305 service graph -/
 
@@ -81,8 +82,47 @@ theorem edgeIndexedService_residual_moment_package
       hAone hAtwo hAfour hBone hBtwo hBthree hBfour
   exact ⟨hpmonic, hpdegree, hledger⟩
 
+/-- Consumer form for the actual h305 shore geometry: a labeling by the
+disjoint union `C8 ⊔ C8` supplies both the order-sixteen hypothesis and the
+third and fourth shore moments. -/
+theorem edgeIndexedService_residual_moment_package_of_eightEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge)
+    (label : EightEightCycleLabeling H)
+    (hEcard : Fintype.card R.edgeFinset = 48)
+    (hRinj : Function.Injective (edgeEndpointSumVector R))
+    (hHreg : ∀ x, H.degree x = 2)
+    (hCreg : ∀ x, Cedge.degree x = 6)
+    (hCfree : ¬ containsC4 R.edgeFinset Cedge) :
+    let I := (edgeEndpointIncidenceMatrix R).mulVecLin
+    let T : Module.End ℂ (R.edgeFinset → ℂ) :=
+      (Cedge.adjMatrix ℂ).mulVecLin
+    let W := LinearMap.ker I
+    let hW : W ≤ W.comap T := by
+      intro x hx
+      exact edgeIndexedService_incidenceKernel_invariant
+        H R Cedge hservice x hx
+    let p := (T.restrict hW).charpoly
+    p.Monic ∧ p.natDegree = 32 ∧
+      complexRootPowerSum p 1 = -8 ∧
+      complexRootPowerSum p 2 = 224 ∧
+      complexRootPowerSum p 3 =
+        Matrix.trace ((Cedge.adjMatrix ℂ) ^ 3) - 224 ∧
+      complexRootPowerSum p 4 = 1792 := by
+  have hVcard : Fintype.card V = 16 := by
+    simpa using Fintype.card_congr label.toEquiv
+  obtain ⟨hHthree, hHfour⟩ :=
+    eightEightCycleLabeling_trace_moments H label
+  exact edgeIndexedService_residual_moment_package
+    H R Cedge hservice hVcard hEcard hRinj hHreg hHthree hHfour
+      hCreg hCfree
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.edgeIndexedService_residual_moment_package
+#print axioms
+  Erdos85.edgeIndexedService_residual_moment_package_of_eightEight
