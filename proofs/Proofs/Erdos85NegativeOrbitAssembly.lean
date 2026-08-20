@@ -473,6 +473,44 @@ theorem isAmbientSignedJoint_theta_ne_one
   exact orderSixtyFour_sizeTwoPart_inducedSignedJointEigenvector_muOne_false
     G hfree hreg hcard c hc t htsign htH htD
 
+/-- Ambient form of the size-two negative-degree endpoint exclusion. -/
+theorem isAmbientSignedJoint_theta_ne_negativeSeven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2)
+    (hother : ∀ c' : (secondOrderDefectGraph G).ConnectedComponent,
+      c' ≠ c → c'.supp.ncard ≠ 8)
+    (theta : ℤ) (s : V → ℤ)
+    (hs : IsAmbientSignedJoint G c theta s) : theta ≠ -7 := by
+  intro htheta
+  let t : c.supp → ℤ := fun x ↦ s x.1
+  have htsign : ∀ x, t x = -1 ∨ t x = 1 := by
+    intro x
+    exact hs.2.1 x.1 x.2
+  have htD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec t =
+      (-7 : ℤ) • t := by
+    funext x
+    rw [induce_adjMatrix_mulVec_restrict_apply]
+    have hrow := hs.2.2.2 x.1 x.2
+    have hfilter : ((secondOrderDefectGraph G).neighborFinset x.1).filter
+        (fun y ↦ y ∈ c.supp) =
+        (secondOrderDefectGraph G).neighborFinset x.1 := by
+      apply Finset.filter_eq_self.mpr
+      intro y hy
+      exact c.mem_supp_of_adj_mem_supp x.2
+        (((secondOrderDefectGraph G).mem_neighborFinset x.1 y).mp hy)
+    rw [hfilter]
+    simpa [t, htheta, smul_eq_mul] using hrow
+  exact orderSixtyFour_sizeTwoPart_inducedSignedEigenvector_muNegativeSeven_false
+    G hfree hreg hcard c hc hother t htsign htD
+
 /-- Package a common aligned `mu=-3` ledger as a full orbit source.  The
 post-`mu=1` refinement is derived from the switched ambient witness, so the
 cell and `(k,r)` remain tied to the same source ledger. -/
@@ -670,6 +708,123 @@ theorem exists_negativeEightEightSource_muNegThree
     G hfree hreg hcard c hc a b N₁ N₂ k r w ?_ hdegree hcomm⟩
   exact hrefined
 
+/-- Concrete adapter from the banked graph-facing `mu=-1` aligned ledger
+into the global orbit source, including both switched endpoint exclusions. -/
+theorem exists_negativeEightEightSource_muNegOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (hother : ∀ c' : (secondOrderDefectGraph G).ConnectedComponent,
+      c' ≠ c → c'.supp.ncard ≠ 8)
+    (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-1 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    ∃ k r, Nonempty
+      (NegativeEightEightSourceWitness G c a b N₁ N₂ (-1) k r) := by
+  classical
+  dsimp only
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  obtain ⟨k, r, hrefined, _ha8, _hb8, haa, habq, hbaq, hbb,
+      hAA, hBB, hAB, hBA⟩ :=
+    orderSixtyFour_sizeTwo_muNegOne_eightEight_refined_alignedLedger
+      G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+        u v huinj hvinj hurange hvrange hu hv
+  have hcover : ∀ x : c.supp, x ∈ a.supp ∨ x ∈ b.supp :=
+    eightEight_shores_cover G c (by simpa using hc) a b hab
+      u v huinj hvinj hurange hvrange
+  have hdegree : ∀ x : c.supp, H.degree x = 2 := by
+    intro x
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2) hc x
+  have hcomm : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm G
+      (secondOrderDefectGraph G) hglobal c).symm
+  have hcoeff : (2 * (k : ℤ) - (7 - r : ℕ)) -
+      (2 * (3 - k : ℕ) - (r : ℤ)) = sizeTwoMuSwitchTarget (-1) k r := by
+    rcases hrefined with hzero | hmixed | hone
+    · rcases hzero.2 with h | h | h | h | h <;>
+        rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+    · rcases hmixed.2 with h | h <;>
+        rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+    · rcases hone.2 with h | h | h | h | h | h <;>
+        rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  let w : NegativeEightEightAlignedWitness G c a b (-1) k r := {
+    hab := hab
+    cover := hcover
+    s := s
+    signedJoint := ⟨hs_out, hs_in, hH, hD⟩
+    crossSame := 3 - k
+    quotientAA := haa
+    quotientAB := habq
+    quotientBA := hbaq
+    quotientBB := hbb
+    sameAA := by
+      intro x hx
+      rw [componentNeighbor_sameSign_eq_supportFilter]
+      exact hAA x (by simpa [A] using hx)
+    sameAB := by
+      intro x hx
+      rw [componentNeighbor_sameSign_eq_supportFilter]
+      exact hAB x (by simpa [A] using hx)
+    sameBB := by
+      intro x hx
+      rw [componentNeighbor_sameSign_eq_supportFilter]
+      exact hBB x (by simpa [B] using hx)
+    sameBA := by
+      intro x hx
+      rw [componentNeighbor_sameSign_eq_supportFilter]
+      exact hBA x (by simpa [B] using hx)
+    hcoeff := hcoeff }
+  obtain ⟨t, ht⟩ := w.exists_switched_ambient G c a b (-1) k r hdegree hcomm
+  have hneOne : sizeTwoMuSwitchTarget (-1) k r ≠ 1 :=
+    isAmbientSignedJoint_theta_ne_one G hfree hreg hcard c hc _ t ht
+  have hpostOne := muNegOne_postMuOne_sector_cells_of_target_ne_one
+    N₁ N₂ k r hrefined hneOne
+  have hneSeven : sizeTwoMuSwitchTarget (-1) k r ≠ -7 :=
+    isAmbientSignedJoint_theta_ne_negativeSeven
+      G hfree hreg hcard c hc hother _ t ht
+  have hpost := muNegOne_postEndpoint_sector_cells_of_target_ne_negativeSeven
+    N₁ N₂ k r hpostOne hneSeven
+  exact ⟨k, r, negativeEightEightSource_muNegOne_of_aligned
+    G c a b N₁ N₂ k r w hpost⟩
+
 /-- A full source witness transports to the exact one-step target object.
 This combines the ledger-backed graph switch with all three finite mode
 transport theorems. -/
@@ -779,3 +934,5 @@ end Erdos85
 #print axioms Erdos85.negativeEightEightSource_muNegFive_of_aligned
 #print axioms Erdos85.negativeEightEightSource_muNegOne_of_aligned
 #print axioms Erdos85.exists_negativeEightEightSource_muNegThree
+#print axioms Erdos85.isAmbientSignedJoint_theta_ne_negativeSeven
+#print axioms Erdos85.exists_negativeEightEightSource_muNegOne
