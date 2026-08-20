@@ -446,6 +446,84 @@ theorem squareOrderNine_threeHigh_firstProfile_binTwo_existsUnique_opposite_defe
   rw [hyEq] at hzMem
   simpa using hzMem
 
+/-- The opposite-high defect-mate assignment on bin two is injective: two
+bin-two pair-witnesses cannot share a defect-bin-one mate. -/
+theorem squareOrderNine_threeHigh_firstProfile_opposite_defectMate_rightUnique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x z y : V}
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (hz : z ∈ squareOrderNineLowIncidenceBin G 2)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hDxy : (secondOrderDefectGraph G).Adj x y)
+    (hDzy : (secondOrderDefectGraph G).Adj z y) : x = z := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let Ix := G.neighborFinset x ∩ H
+  let Iz := G.neighborFinset z ∩ H
+  let Iy := G.neighborFinset y ∩ H
+  have hcompX : Ix ∪ Iy = H :=
+    squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
+      G hfree hhigh hx hy hDxy
+  have hcompZ : Iz ∪ Iy = H :=
+    squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
+      G hfree hhigh hz hy hDzy
+  have hdisjX : Disjoint Ix Iy := by
+    rw [Finset.disjoint_left]
+    intro a hax hay
+    have hax' := Finset.mem_inter.mp hax
+    have hay' := Finset.mem_inter.mp hay
+    have hnot := not_secondOrderDefect_adj_of_commonNeighbor
+      G hfree ((secondOrderDefectGraph G).ne_of_adj hDxy)
+      ((G.mem_neighborFinset x a).mp hax'.1)
+      ((G.mem_neighborFinset y a).mp hay'.1)
+    exact hnot hDxy
+  have hIxCard : Ix.card = 2 := (Finset.mem_filter.mp hx).2
+  obtain ⟨a, b, hab, hIx⟩ := Finset.card_eq_two.mp hIxCard
+  have haIx : a ∈ Ix := by rw [hIx]; simp
+  have hbIx : b ∈ Ix := by rw [hIx]; simp
+  have lift_to_Iz : ∀ {c : V}, c ∈ Ix → c ∈ Iz := by
+    intro c hcIx
+    have hcH : c ∈ H := by
+      rw [← hcompX]
+      exact Finset.mem_union_left Iy hcIx
+    have hcNotIy : c ∉ Iy := by
+      intro hcIy
+      exact Finset.disjoint_left.mp hdisjX hcIx hcIy
+    have hcUnion : c ∈ Iz ∪ Iy := by simpa [hcompZ] using hcH
+    rcases Finset.mem_union.mp hcUnion with hcIz | hcIy
+    · exact hcIz
+    · exact (hcNotIy hcIy).elim
+  have haIz := lift_to_Iz haIx
+  have hbIz := lift_to_Iz hbIx
+  have haH := (Finset.mem_inter.mp haIx).2
+  have hbH := (Finset.mem_inter.mp hbIx).2
+  obtain ⟨w, hw, huniq⟩ :=
+    squareOrderNine_threeHigh_firstProfile_existsUnique_pairWitness
+      G hfree hmin hcard hp hc3 hc4 haH hbH hab
+  have hxData : x ∈ squareOrderNineLowIncidenceBin G 2 ∧
+      G.Adj a x ∧ G.Adj b x := ⟨hx,
+        (G.adj_comm x a).mp ((G.mem_neighborFinset x a).mp
+          (Finset.mem_inter.mp haIx).1),
+        (G.adj_comm x b).mp ((G.mem_neighborFinset x b).mp
+          (Finset.mem_inter.mp hbIx).1)⟩
+  have hzData : z ∈ squareOrderNineLowIncidenceBin G 2 ∧
+      G.Adj a z ∧ G.Adj b z := ⟨hz,
+        (G.adj_comm z a).mp ((G.mem_neighborFinset z a).mp
+          (Finset.mem_inter.mp haIz).1),
+        (G.adj_comm z b).mp ((G.mem_neighborFinset z b).mp
+          (Finset.mem_inter.mp hbIz).1)⟩
+  exact (huniq x hxData).trans (huniq z hzData).symm
+
 /-- The full original-neighborhood census of the rare bin-three vertex in
 the second three-high profile is `3H + 3B₁ + 3B₀`. -/
 theorem squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
@@ -569,5 +647,7 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_binTwo_existsUnique_opposite_defectMate
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_opposite_defectMate_rightUnique
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
