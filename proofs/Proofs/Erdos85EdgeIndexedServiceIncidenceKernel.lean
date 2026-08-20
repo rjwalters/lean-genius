@@ -1,4 +1,5 @@
 import Proofs.Erdos85EdgeIndexedServiceSquaredEquation
+import Proofs.Erdos85EdgeIndexedServiceEigenvectorTransfer
 
 /-! # The residual incidence kernel of an edge-indexed service graph -/
 
@@ -116,6 +117,39 @@ theorem edgeIndexedService_incidenceKernel_map_sq_le
   exact edgeIndexedService_incidenceKernel_sq_invariant
     H R Cedge h c hsq x hx
 
+/-- In the h305 dimensions, injectivity of endpoint summation makes the
+residual incidence kernel exactly 32-dimensional. -/
+theorem edgeEndpointIncidenceMatrix_kernel_finrank_thirtyTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (hVcard : Fintype.card V = 16)
+    (hEcard : Fintype.card R.edgeFinset = 48)
+    (hinj : Function.Injective (edgeEndpointSumVector R)) :
+    Module.finrank ℂ
+      (LinearMap.ker (edgeEndpointIncidenceMatrix R).mulVecLin) = 32 := by
+  let I := edgeEndpointIncidenceMatrix R
+  have hinjT : Function.Injective I.transpose.mulVecLin := by
+    intro f g hfg
+    apply hinj
+    exact hfg
+  have hkerT : LinearMap.ker I.transpose.mulVecLin = ⊥ :=
+    LinearMap.ker_eq_bot.mpr hinjT
+  have hrankNullT :=
+    LinearMap.finrank_range_add_finrank_ker I.transpose.mulVecLin
+  have hrankT : I.transpose.rank = 16 := by
+    rw [Matrix.rank]
+    rw [hkerT] at hrankNullT
+    simpa [Module.finrank_fintype_fun_eq_card ℂ, hVcard] using hrankNullT
+  have hrankI : I.rank = 16 := by
+    rw [← Matrix.rank_transpose]
+    exact hrankT
+  have hrankNull := LinearMap.finrank_range_add_finrank_ker I.mulVecLin
+  rw [← Matrix.rank, hrankI,
+    Module.finrank_fintype_fun_eq_card ℂ, hEcard] at hrankNull
+  have hk : Module.finrank ℂ (LinearMap.ker I.mulVecLin) = 32 := by
+    omega
+  simpa [I] using hk
+
 end
 
 end Erdos85
@@ -124,3 +158,5 @@ end Erdos85
   Erdos85.edgeIndexedService_incidenceKernel_sq_invariant_of_sum_zero
 #print axioms Erdos85.edgeIndexedService_incidenceKernel_sq_invariant
 #print axioms Erdos85.edgeIndexedService_incidenceKernel_map_sq_le
+#print axioms
+  Erdos85.edgeEndpointIncidenceMatrix_kernel_finrank_thirtyTwo
