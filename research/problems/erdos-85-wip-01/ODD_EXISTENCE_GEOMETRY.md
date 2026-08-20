@@ -346,7 +346,43 @@ Kissat scout of the maximally heterogeneous representative
 3,160-variable, 4,780,580-clause encoding. This shows that mixed types are not
 immediately easier; it is still not evidence against existence.
 
-### 5.1 The signed-determinant double cover fails uniformly in odd characteristic
+### 5.1 Every plane-minus-two existence witness is necessarily nonbipartite
+
+There is a uniform extremal obstruction which should constrain every algebraic
+ansatz, not just the searches above:
+
+> No `q`-regular C4-free graph on `q^2-1` vertices is bipartite.
+
+Indeed, if such a graph had bipartition `L union R`, regularity and `q > 0`
+would give equal side sizes
+
+```text
+|L| = |R| = n = (q^2-1)/2.
+```
+
+Count unordered pairs of vertices of `L` through their common neighbors in
+`R`.  Every vertex of `R` contributes `choose(q,2)` pairs, while C4-freeness
+says that each pair of `L` occurs at most once.  Hence
+
+```text
+n * choose(q,2) <= choose(n,2),
+q(q-1) <= n-1 = (q^2-3)/2.
+```
+
+After rearranging, this would say
+
+```text
+(q-1)^2 + 2 <= 0,
+```
+
+which is impossible.  Thus the nonbipartite character of the q=7 Boza graph
+is forced at the target order.  In particular, no incidence graph, bipartite
+double cover, or other genuinely bipartite construction can establish
+`B-EXIST`, regardless of the field or coordinatization.  A successful odd-q
+family must build internal edges or identify the two incidence sides in a way
+that retains degree `q` without introducing repeated common neighbors.
+
+### 5.2 The signed-determinant double cover fails uniformly in odd characteristic
 
 There is a tempting algebraic construction which has exactly the required
 order and degree, but it fails for a structural reason.  Let `q` be odd, let
@@ -396,7 +432,7 @@ odd-q incidence construction must break at least one of its three symmetries:
 the full `+-` sign choice, the two-copy bipartition, or the uniform determinant
 level on every projective class.
 
-### 5.2 Finite-field dot-product construction does not repair at q=9
+### 5.3 Finite-field dot-product construction does not repair at q=9
 
 Zhang--Chen--Cheng, *Finite Fields Appl.* **45** (2017), 73--85,
 doi:10.1016/j.ffa.2016.11.012, construct a C4-free graph `Gamma_a` on
@@ -433,7 +469,7 @@ matchings between different doubled pairs must be coordinated into a Latin
 square for every fiber pair. Future reductions should target compatibility of
 these factorizations rather than prune local cycle types.
 
-### 5.3 No induced order-81 witness inside the orthogonal polarity graph
+### 5.4 No induced order-81 witness inside the orthogonal polarity graph
 
 The other immediate projective-plane construction is also closed at q=9.
 The orthogonal polarity graph `ER_9` on `PG(2,9)` is C4-free and has 91
