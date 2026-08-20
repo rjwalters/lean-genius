@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.15 — 2026-08-20 (integrator sweep #18 result recorded; B.2 uniform barriers: nonbipartite, non-abelian-Cayley, forced matching layer).**
+**Version 2.16 — 2026-08-20 (six deprecated vacuous seven-component theorems deleted per goal #30 item 3).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -124,7 +124,7 @@ The seven partitions of 8 into parts ≥ 2: `[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`,
 |---|---|---|
 | `[2,2,2,2]` | `EXTERNAL` — 11 assembly targets UNSAT | kissat, no certificates; the finite reduction to 11 targets is Lean/q-generic in parts (via-tiling law); the size-two μ=3 CERT kill below also applies here |
 | size-two block carrying a signed joint eigenline with `μ = 3` | `PROVEN-AT-64 CERT` | `false_of_orderSixtyFour_mu3_jointEigenline_native_without_hA_out` (2026-08-18 14:21Z; K-law + enumeration + 22 LRAT certificates; residual = the eigenline hypothesis `hs_in, hs_out, hsum, hDs, hA_in`) — kills that block in every stratum containing a size-two part |
-| size-two `μ = 3` block, certificate-free re-derivation | `PROVEN-AT-64 CERT` (honest hypotheses) | connected: `false_of_sizeTwoEigenline_connectedInternal_eight` (`PROVEN`, every reflection parameter). Disconnected: internal cycles are 6+10 or 8+8 with exact quotients; every sub-branch has a terminal — hand kills for 8+8 r∈{2,3,5} and 6+10 long-all-triangle low, checked owner-CNF LRAT terminals for 6+10 mixed / 6+10 all-TF / 8+8 low / mixed / both-triangle / r=6 (640–1,160 vars each, byte-identity-verified). Re-assembled 2026-08-20 on honest hypotheses: `orderSixtyFour_regular_sizeTwoEigenline_false` (f74647dd49) is the no-callback closure from hfree + hreg + component + eigenline only — no component-count hypothesis. The original seven-component wrappers remain in place as deprecated (see scope caveat, now repaired) |
+| size-two `μ = 3` block, certificate-free re-derivation | `PROVEN-AT-64 CERT` (honest hypotheses) | connected: `false_of_sizeTwoEigenline_connectedInternal_eight` (`PROVEN`, every reflection parameter). Disconnected: internal cycles are 6+10 or 8+8 with exact quotients; every sub-branch has a terminal — hand kills for 8+8 r∈{2,3,5} and 6+10 long-all-triangle low, checked owner-CNF LRAT terminals for 6+10 mixed / 6+10 all-TF / 8+8 low / mixed / both-triangle / r=6 (640–1,160 vars each, byte-identity-verified). Re-assembled 2026-08-20 on honest hypotheses: `orderSixtyFour_regular_sizeTwoEigenline_false` (f74647dd49) is the no-callback closure from hfree + hreg + component + eigenline only — no component-count hypothesis. The six deprecated seven-component wrappers are DELETED (eeaa44c4fe, per goal #30 item 3); the regular counterparts are the only assembly |
 | size-two block, `μ ∈ {−7,−5,−3,−1}` or no alternating eigenline | classification complete at 64; terminals partial | signed dispatcher `orderSixtyFour_sizeTwo_signedJoint_false_of_negative_cases` exposes exactly `μ ∈ {−7,−5,−3,−1}`; all three negative-mode 6+10 strata killed certificate-free (eigenline-commutation constancy vs census totals); C8+C8 collapsed to shared `k ≤ 1` (midpoint kill of higher diagonal shapes); shore-switch law `sizeTwoMuSwitchTarget` (μ′ = μ − 2(7+μ−2k−r), Lean-checked table + involutivity) routes every surviving `(μ,k,r)` cell to a closed lane except four self cells + pair representatives; self cells (−1,0,6) and (−3,0,4) closed certificate-free, (−3,1,2) has 8 checked LRAT terminals + constraint semantics, (−1,1,4) certificates embedded through the finite-relation socket, graph bridge in flight. μ=−7 killed companion-free, uniform in 4∣q (`c2449db105`). Assembly: the non-recursive `NegativeSwitchOrbit` eliminator (`negativeSwitchOrbits_false_of_canonical_endpoints`) exposes the HONEST remaining subtree per the 2026-08-20 endpoint audit — seven obligations: five cross-orbit canonical terminals (−5,0,3)/(−5,0,4)/(−5,1,2)/(−3,0,5)/(−3,1,3), the (−3,1,2) graph bridge, the active (−1,1,4) bridge, plus one unconditional switched-μ=3 callback. This is new terminal work, not mere wiring. No-eigenline case: transport-or-eigenline reduction unchanged. **Endpoint status at park (2026-08-20 goal #30):** of the seven obligations, six are closed on the spine — (−5,0,3), (−5,0,4), (−5,1,2), (−3,1,3) canonical terminals, the (−1,1,4) bridge, and the (−3,1,2) bridge (structurally removed from the global list, `09c127e2c6`). The last, (−3,0,5), is OPEN: all three shore-mode certificate/router packages banked, then a real cross-R-degree interface gap found (room 14585, 14647); parked with the gap documented. Its marked-graph lane is recorded conditional on AXIOM H305-EXCESS-CEILING (v2.9), which the room's own spectral audit says has no present derivation — pressure, not a kill |
 | `[3,3,2]`, `[4,2,2]`, `[6,2]` | `GAP` | non-bipartite blocks; only size-two/`μ=3` inputs above |
 | `[4,4]`, `[5,3]` | `GAP` | exact owner nullities only |
@@ -378,6 +378,14 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.16** (2026-08-20, claude/integrator): executed the goal #30 item (3)
+  editor call — the six vacuous seven-component theorems (audit
+  55aefbff93) are deleted at eeaa44c4fe: three single-theorem files and
+  Erdos85SizeTwoMuNegSevenExclusion removed, the abstract 8+8 wrapper
+  excised from EightEightNormalizedCoordinates (its two used coordinate
+  theorems kept), imports repointed. Edited files host-verified green;
+  the regular counterparts (f74647dd49 chain) are now the only size-two
+  assembly.
 - **2.15** (2026-08-20, claude/integrator): (a) Sweep #18 result — the first
   genuinely containerized cold build (docker, 32 GB, 180 min): 16,887/16,899
   jobs green before the timeout stopped the last ~12 mega native_decide
