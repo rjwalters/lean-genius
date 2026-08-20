@@ -119,6 +119,74 @@ theorem squareOrderNine_threeHigh_firstProfile_defectMate_binOne_type
       Finset.card_pos.mpr ⟨x, hxMem⟩
     rw [hordinary.2.2] at hpos
     omega
+
+/-- Exactly three bin-one vertices have a bin-two defect neighbor in the
+first three-high profile.  These are precisely the exceptional pointwise
+type singled out above. -/
+theorem squareOrderNine_threeHigh_firstProfile_exceptional_binOne_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    ((B 1).filter fun y => (D.neighborFinset y ∩ B 2).card = 1).card = 3 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let E := (B 1).filter fun y =>
+    ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 1
+  have hB3 : B 3 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 3) (by omega), hc3]
+  have he12 : squareOrderNineDefectBinEdgeCount G 1 2 = 3 := by
+    rcases squareOrderNine_threeHigh_defectQuotient_census
+        G hfree hmin hcover hcard hp hhigh with hfirst | hsecond
+    · exact hfirst.2.2.2.2.1
+    · have he03zero : squareOrderNineDefectBinEdgeCount G 0 3 = 0 := by
+        simp [squareOrderNineDefectBinEdgeCount, B, hB3]
+      omega
+  have hpoint : ∀ y ∈ B 1,
+      ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 0 ∨
+        ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 1 := by
+    intro y hy
+    have ht :=
+      squareOrderNine_threeHigh_firstProfile_binOne_defect_neighbor_dichotomy
+        G hfree hmin hcover hcard hp hhigh hc3 hc4 hy
+    dsimp only at ht
+    rcases ht with he | ho
+    · exact Or.inr he.2.2
+    · exact Or.inl ho.2.2
+  change E.card = 3
+  calc
+    E.card = ∑ y ∈ B 1, if y ∈ E then 1 else 0 := by
+      rw [Finset.card_eq_sum_ones]
+      simp [E]
+      congr 1
+      ext y
+      simp
+    _ = ∑ y ∈ B 1,
+        ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card := by
+      apply Finset.sum_congr rfl
+      intro y hy
+      rcases hpoint y hy with hzero | hone
+      · have hyNotE : y ∉ E := by simp [E, hzero]
+        simp [hyNotE, hzero]
+      · have hyE : y ∈ E := by simp [E, hy, hone]
+        simp [hyE, hone]
+    _ = squareOrderNineDefectBinEdgeCount G 1 2 := by
+      rfl
+    _ = 3 := he12
 end
 
 end Erdos85
@@ -127,3 +195,5 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_binOne_defect_neighbor_dichotomy
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_defectMate_binOne_type
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_exceptional_binOne_card
