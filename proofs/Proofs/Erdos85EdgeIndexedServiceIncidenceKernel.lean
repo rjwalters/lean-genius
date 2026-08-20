@@ -49,6 +49,50 @@ theorem edgeEndpointIncidenceMatrix_kernel_sum_zero
   simp only [Pi.zero_apply, Finset.sum_const_zero] at hsum
   exact (mul_eq_zero.mp hsum).resolve_left (by norm_num)
 
+/-- The original service intertwiner already makes the residual incidence
+kernel invariant under service adjacency itself. -/
+theorem edgeIndexedService_incidenceKernel_invariant
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge)
+    (x : R.edgeFinset → ℂ)
+    (hIx : (edgeEndpointIncidenceMatrix R).mulVec x = 0) :
+    (edgeEndpointIncidenceMatrix R).mulVec
+      ((Cedge.adjMatrix ℂ).mulVec x) = 0 := by
+  have hxsum := edgeEndpointIncidenceMatrix_kernel_sum_zero R x hIx
+  unfold EdgeIndexedServiceEquation at hservice
+  let J : Matrix V R.edgeFinset ℂ := fun _ _ ↦ 1
+  change H.adjMatrix ℂ * edgeEndpointIncidenceMatrix R +
+    edgeEndpointIncidenceMatrix R * Cedge.adjMatrix ℂ = J at hservice
+  have happ := congrArg
+    (fun M : Matrix V R.edgeFinset ℂ ↦ M.mulVec x) hservice
+  have hJx : J.mulVec x = 0 := by
+    funext u
+    rw [Matrix.mulVec, dotProduct]
+    simp only [J, one_mul, Pi.zero_apply]
+    exact hxsum
+  rw [Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,
+    hIx, Matrix.mulVec_zero, zero_add, hJx] at happ
+  exact happ
+
+/-- Submodule formulation: `ker I` is a `Cedge`-invariant 32-dimensional
+residual sector in the h305 application. -/
+theorem edgeIndexedService_incidenceKernel_map_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge) :
+    (LinearMap.ker (edgeEndpointIncidenceMatrix R).mulVecLin).map
+        (Cedge.adjMatrix ℂ).mulVecLin ≤
+      LinearMap.ker (edgeEndpointIncidenceMatrix R).mulVecLin := by
+  rintro y ⟨x, hx, rfl⟩
+  change (edgeEndpointIncidenceMatrix R).mulVec x = 0 at hx
+  change (edgeEndpointIncidenceMatrix R).mulVec
+    ((Cedge.adjMatrix ℂ).mulVec x) = 0
+  exact edgeIndexedService_incidenceKernel_invariant
+    H R Cedge hservice x hx
+
 /-- On the zero-sum sector, the squared service equation makes the kernel of
 endpoint incidence invariant under the square of the service adjacency. -/
 theorem edgeIndexedService_incidenceKernel_sq_invariant_of_sum_zero
@@ -156,6 +200,8 @@ end Erdos85
 
 #print axioms
   Erdos85.edgeIndexedService_incidenceKernel_sq_invariant_of_sum_zero
+#print axioms Erdos85.edgeIndexedService_incidenceKernel_invariant
+#print axioms Erdos85.edgeIndexedService_incidenceKernel_map_le
 #print axioms Erdos85.edgeIndexedService_incidenceKernel_sq_invariant
 #print axioms Erdos85.edgeIndexedService_incidenceKernel_map_sq_le
 #print axioms
