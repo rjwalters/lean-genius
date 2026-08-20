@@ -78,7 +78,7 @@ def cubicValueFiveEdgeFinset
 attain the sharp six-value/sum-25 square minimum, while every other vertex has
 no residual value five, then the value-five entries are exactly two exterior
 edges pairing those four vertices. -/
-theorem cubicResidual_sharp_fourFibers_valueFiveEdge_card_two
+theorem cubicResidual_sharp_fourFibers_valueFiveEdge_matching
     {V : Type*} [Fintype V] [DecidableEq V]
     (R : SimpleGraph V) [DecidableRel R.Adj]
     (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
@@ -93,8 +93,12 @@ theorem cubicResidual_sharp_fourFibers_valueFiveEdge_card_two
         (∑ t ∈ Finset.range 7, t ^ 2 * c t) ≤ 105)
     (houtside : ∀ x ∉ X,
       cubicResidualFiberHistogram R Cedge x a 5 = 0) :
-    (cubicValueFiveEdgeFinset R Cedge a).card = 2 := by
+    let M := cubicValueFiveEdgeFinset R Cedge a
+    M.card = 2 ∧
+      (∀ b ∈ M, b.1.toFinset ⊆ X) ∧
+      ∀ x ∈ X, ∃! b : R.edgeFinset, b ∈ M ∧ x ∈ b.1.toFinset := by
   classical
+  dsimp only
   let M := cubicValueFiveEdgeFinset R Cedge a
   have hnotadj {b : R.edgeFinset}
       (hb5 : residualFiberCubicWalkCount R Cedge a b = 5) :
@@ -148,13 +152,35 @@ theorem cubicResidual_sharp_fourFibers_valueFiveEdge_card_two
             hnotadj hd5⟩
       rw [hbF] at hdF
       exact Finset.mem_singleton.mp hdF
-  exact four_vertices_unique_markedEdge_card_two
-    R X M hX hinside hunique
+  exact ⟨four_vertices_unique_markedEdge_card_two
+    R X M hX hinside hunique, hinside, hunique⟩
+
+/-- Cardinality projection of the full matching package. -/
+theorem cubicResidual_sharp_fourFibers_valueFiveEdge_card_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hfree : ¬ containsC4 R.edgeFinset Cedge)
+    (hreg : ∀ b, Cedge.degree b = 6)
+    (a : R.edgeFinset) (X : Finset V)
+    (hX : X.card = 4)
+    (hsharp : ∀ x ∈ X,
+      let c := cubicResidualFiberHistogram R Cedge x a
+      (∑ t ∈ Finset.range 7, c t) = 6 ∧
+        (∑ t ∈ Finset.range 7, t * c t) = 25 ∧
+        (∑ t ∈ Finset.range 7, t ^ 2 * c t) ≤ 105)
+    (houtside : ∀ x ∉ X,
+      cubicResidualFiberHistogram R Cedge x a 5 = 0) :
+    (cubicValueFiveEdgeFinset R Cedge a).card = 2 :=
+  (cubicResidual_sharp_fourFibers_valueFiveEdge_matching
+    R Cedge hfree hreg a X hX hsharp houtside).1
 
 end
 
 end Erdos85
 
 #print axioms Erdos85.four_vertices_unique_markedEdge_card_two
+#print axioms
+  Erdos85.cubicResidual_sharp_fourFibers_valueFiveEdge_matching
 #print axioms
   Erdos85.cubicResidual_sharp_fourFibers_valueFiveEdge_card_two
