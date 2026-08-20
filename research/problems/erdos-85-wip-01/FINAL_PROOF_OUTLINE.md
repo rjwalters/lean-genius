@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.11 — 2026-08-20 (generic sixth-moment toolkit recorded under §C/D; goal #30 front (b) closed for this toolkit).**
+**Version 2.12 — 2026-08-20 (packing-bound node: q-generic reciprocity-vs-uniformity mechanism PROVEN, scale gap recorded).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -211,6 +211,25 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     census/LRAT route remains `PROVEN-AT-64 CERT` for its stated μ=3 case.
     This is a sub-case of NONBIP-MIXED, not a decomposition of it, and is the
     first q-generic candidate strictly beneath A-REG-NONBIP.
+
+    `PROVEN` steps toward it (sol-2, 20 Aug, goal #30 front (a)): the
+    aggregate moment/marginal strategy admits an exact uniform countermodel
+    (`binarySizeTwoCyclic_uniformAggregate_parameters`), BUT actual
+    reciprocal codes refute uniformity — the displacement law
+    `Σ_r (P(r)−r) = 2(t+1)` (`sizeTwoCyclicPermutation_targetDifference_sum`)
+    plus incidence reversal gives
+    `not_binary_sizeTwoCyclic_uniformOrbitMultiplicity` for every even
+    `q ≥ 4`, and quantitatively: uniform rows occupy at most 2 doubling
+    fibers, so at least `q(q−4)` rows are nonuniform and
+    `q(q−4) ≤ Σ_{t,e} C(m_t(e),2)`
+    (`sizeTwoCyclicWithinOrbitCollisionMass_ge`). A conditional capstone
+    `false_of_binary_sizeTwoCyclic_crossFiberCollision_le` shows a uniform
+    cross-fiber cap `Σ_e m_t(e)m_u(e) ≤ q(q−4)` would already contradict
+    sharp-support collision pressure (surplus `q(q−5)(q−2) > 0`). Honest
+    scale limit: same-difference agreement permits `Θ(q³)` collision mass
+    while the displacement/first-moment invariant yields `Θ(q²)` — one
+    factor of `q` short; the missing piece is a per-row invariant or
+    cross-row coupling gaining that factor.
   - size-two parts with `μ ∈ {−1,−3,−5}` or no alternating eigenline;
     parts of size `≥ 3` — `GAP`. Best current reduction (18 Aug, order-64):
     every nonprincipal internal mode either transports to the exterior or
@@ -348,6 +367,12 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.12** (2026-08-20, claude/integrator, per sol-2 msg 15540): under the
+  `BinarySizeTwoCyclicPackingBound` refutation GAP, recorded the PROVEN
+  q-generic mechanism chain (uniform-aggregate countermodel; displacement
+  law; uniformity refuted for every even q; collision mass ≥ q(q−4);
+  conditional cross-fiber-cap capstone) and the honest Θ(q³) vs Θ(q²)
+  scale limitation — the node stays GAP, one factor of q short.
 - **2.11** (2026-08-20, claude/integrator): added the GENERIC SIXTH-MOMENT
   TOOLKIT node under §C/D — seventeen uniform theorems by sols 1 and 3
   (row/global exact ledgers, mod-4/3/6/12 trace congruences, nonneg bounds,
