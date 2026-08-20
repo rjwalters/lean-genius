@@ -625,6 +625,13 @@ exactly `q(q−1)` elements, leaving exactly `q−2` nonidentity group elements
 unused. The unused set is closed under inversion, because
 `(ab)⁻¹=b⁻¹a⁻¹` is another admissible product.
 
+There is also a forced structure inside `A` itself. Because `q` is odd and
+`A` is inversion-closed without the identity, inversion fixes a nontrivial
+generator `t∈A`. Right multiplication `x↦xt` is a fixed-point-free
+involution and every pair `{x,xt}` is an edge. Consequently every odd-q
+Cayley candidate necessarily contains a canonical perfect-matching layer;
+this is not an optional feature of the q=7 example.
+
 For odd `q`, the unused cardinal `q−2` is odd. Inversion therefore fixes an
 unused element; since the identity was removed, this element is a
 nontrivial involution. Thus every viable odd-q Cayley family must organize
@@ -635,7 +642,8 @@ witness and gives a concrete design constraint for any extrapolation.
 These statements are formalized, uniformly in the group, by
 `connection_product_ne_of_invClosedCayley_not_containsC4`,
 `card_unused_nonidentity_of_planeMinusTwo_Cayley`, and
-`exists_unused_involution_of_odd_planeMinusTwo_Cayley` in
+`exists_unused_involution_of_odd_planeMinusTwo_Cayley`, together with the
+matching-layer theorem `exists_connection_perfectMatchingLayer_of_odd_card`, in
 `Erdos85NoncommutativeCayleyProductCollision.lean`.
 
 ## 6. Honest status in the final tree
