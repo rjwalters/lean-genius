@@ -513,6 +513,47 @@ theorem exists_connection_perfectMatchingLayer_of_odd_card
     · change (x⁻¹ * (x * t)) ∈ A
       simpa using htA
 
+/-- Every C4-free odd-degree Cayley graph of degree greater than one exhibits
+a noncentral involution already inside its connection set. -/
+theorem exists_noncentral_involution_generator_of_odd_card
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    (hodd : Odd A.card) (hcard : 1 < A.card) :
+    ∃ t s, t ∈ A ∧ s ∈ A ∧ t * t = 1 ∧ t * s ≠ s * t := by
+  obtain ⟨t, htA, _htne, htsq⟩ :=
+    exists_connection_involution_of_odd_card A hinv hone hodd
+  have hEraseCard : (A.erase t).card = A.card - 1 :=
+    Finset.card_erase_of_mem htA
+  have hErasePos : 0 < (A.erase t).card := by
+    rw [hEraseCard]
+    omega
+  obtain ⟨s, hsErase⟩ := Finset.card_pos.mp hErasePos
+  have hsA : s ∈ A := Finset.mem_of_mem_erase hsErase
+  have hst : s ≠ t := (Finset.mem_erase.mp hsErase).1
+  exact ⟨t, s, htA, hsA, htsq,
+    involution_generator_not_commute
+      A hinv hone hfree htA htsq hsA hst⟩
+
+/-- Therefore any group in which every involution is central admits no
+C4-free inverse-closed Cayley graph of odd degree greater than one. -/
+theorem containsC4_of_odd_connection_card_of_all_involutions_central
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hodd : Odd A.card) (hcard : 1 < A.card)
+    (hcentral : ∀ t : Γ, t * t = 1 → ∀ s : Γ, t * s = s * t) :
+    containsC4 Γ (invClosedCayleyGraph (· ∈ A) hinv hone) := by
+  by_contra hfree
+  obtain ⟨t, s, _htA, _hsA, htsq, hnoncomm⟩ :=
+    exists_noncentral_involution_generator_of_odd_card
+      A hinv hone hfree hodd hcard
+  exact hnoncomm (hcentral t htsq s)
+
 /-- Removing an involutory connection element preserves inverse-closure. -/
 theorem mem_erase_involution_iff_inv_mem_erase
     {Γ : Type*} [Group Γ] [DecidableEq Γ]
@@ -665,6 +706,8 @@ end Erdos85
 #print axioms Erdos85.involution_generator_not_commute
 #print axioms Erdos85.erase_involution_disjoint_conjugate_shore
 #print axioms Erdos85.card_erase_involution_union_conjugate_shore
+#print axioms Erdos85.exists_noncentral_involution_generator_of_odd_card
+#print axioms Erdos85.containsC4_of_odd_connection_card_of_all_involutions_central
 #print axioms Erdos85.nonbacktracking_connectionProduct_injective
 #print axioms Erdos85.card_nonbacktrackingConnectionPairs
 #print axioms Erdos85.card_nonbacktracking_connectionProducts
