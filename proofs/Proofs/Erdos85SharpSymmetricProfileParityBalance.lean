@@ -30,16 +30,17 @@ theorem sharpSymmetricProfile_positive_card_eq_parityCard
     (W : V → V → ℕ)
     (hsymm : ∀ v w, W v w = W w v)
     (N : ℕ)
+    (K : ℕ)
     (hparity : ((Finset.univ : Finset V).filter parity).card = N)
     (hnotParity :
       ((Finset.univ : Finset V).filter fun v => ¬parity v).card = N)
     (hdegreeParity : ∀ v,
       (∑ w ∈ (Finset.univ : Finset V).filter parity, (W v w : ℤ)) =
-        (N : ℤ) + if positive v then 1 else -1)
+        (K : ℤ) + if positive v then 1 else -1)
     (hdegreeNotParity : ∀ v,
       (∑ w ∈ (Finset.univ : Finset V).filter (fun w => ¬parity w),
         (W v w : ℤ)) =
-          (N : ℤ) - if positive v then 1 else -1) :
+          (K : ℤ) - if positive v then 1 else -1) :
     ((Finset.univ : Finset V).filter positive).card = N := by
   classical
   let E := (Finset.univ : Finset V).filter parity
@@ -59,8 +60,8 @@ theorem sharpSymmetricProfile_positive_card_eq_parityCard
     have hEO : E.card = N := by simpa [E] using hparity
     have hOO : O.card = N := by simpa [O] using hnotParity
     have hcross' :
-        (∑ v ∈ O, ((N : ℤ) + sign v)) =
-          ∑ w ∈ E, ((N : ℤ) - sign w) := by
+        (∑ v ∈ O, ((K : ℤ) + sign v)) =
+          ∑ w ∈ E, ((K : ℤ) - sign w) := by
       calc
         _ = ∑ v ∈ O, ∑ w ∈ E, (W v w : ℤ) := by
           apply Finset.sum_congr rfl
@@ -155,7 +156,7 @@ theorem sharpSymmetricProfile_duplicateParity_card_eq_parityCard
         rw [Finset.sum_sub_distrib, Finset.sum_add_distrib]
         simp
   apply sharpSymmetricProfile_positive_card_eq_parityCard
-    parity (fun v => parity (duplicate v)) W hsymm N hparity hnotParity
+    parity (fun v => parity (duplicate v)) W hsymm N N hparity hnotParity
   · intro v
     rw [hsum]
     by_cases hd : parity (duplicate v)
