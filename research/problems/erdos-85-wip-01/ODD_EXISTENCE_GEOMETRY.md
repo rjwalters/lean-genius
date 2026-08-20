@@ -342,6 +342,23 @@ and representative 34 reaches Kissat and returns `UNKNOWN-TIMEOUT`; this validat
 but is not evidence for satisfiability or unsatisfiability.  A complete exact
 run is still required for the decisive q=9 datum.
 
+### 5.1 Finite-field dot-product construction does not repair at q=9
+
+Zhang--Chen--Cheng, *Finite Fields Appl.* **45** (2017), 73--85,
+doi:10.1016/j.ffa.2016.11.012, construct a C4-free graph `Gamma_a` on
+`F_q^2 ∖ {0}` by joining distinct `u,v` when `u · v = a`. At q=9 this is
+an exceptionally close candidate: it has 80 vertices, 72 of degree 9, and the
+eight conic points satisfying `u · u = a` of degree 8. Those eight missing
+degrees are exactly the discarded loops, so the cheapest repair would add a
+perfect matching among the conic points.
+
+`gamma_q9_repair.py` implements `F_9 = F_3[t]/(t^2+1)` and exhausts this
+repair for every nonzero `a`. In all eight cases the base graph is C4-free,
+but **none of the 28 individual missing conic edges can be added** without
+creating a C4. Consequently none of the 105 perfect matchings repairs the
+graph. This closes the direct dot-product-plus-matching route, but not more
+general edge-switching repairs and not q=9 existence itself.
+
 An exact local catalog (`near_latin_local_catalog.py`) further locates the
 difficulty. There are 945 perfect matchings on a ten-point fiber. For each
 doubled-pair cycle type, the number of ordered pairs of internal matchings
