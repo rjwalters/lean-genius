@@ -315,6 +315,22 @@ structure NegativeEightEightAlignedWitness
   hcoeff : (2 * (k : ℤ) - (7 - r : ℕ)) -
       (2 * (crossSame : ℤ) - (r : ℤ)) = sizeTwoMuSwitchTarget theta k r
 
+/-- Translation between the support-filter presentation returned by the
+three historical aligned-ledger theorems and the component-neighbor
+presentation used by the common orbit witness. -/
+theorem componentNeighbor_sameSign_eq_supportFilter
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D H : SimpleGraph X) [DecidableRel D.Adj] [DecidableRel H.Adj]
+    [DecidableEq H.ConnectedComponent]
+    (p : H.ConnectedComponent) (s : X → ℤ) (x : X) :
+    (componentNeighborFinset D H p x).filter
+        (fun y ↦ s y = s x) =
+      ((Finset.univ : Finset X).filter (fun y ↦ y ∈ p.supp)).filter
+        (fun y ↦ D.Adj x y ∧ s y = s x) := by
+  ext y
+  simp [componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+    and_left_comm, and_comm, and_assoc]
+
 /-- The common aligned ledger is closed under the graph shore flip at the
 level needed by the orbit eliminator: it creates a genuine ambient signed
 joint witness at the exact arithmetic target while retaining `(k,r)`.
@@ -549,6 +565,111 @@ theorem negativeEightEightSource_muNegOne_of_aligned
   intro h
   norm_num at h
 
+/-- Concrete adapter from the banked graph-facing `mu=-3` aligned-ledger
+theorem into the global orbit source type. -/
+theorem exists_negativeEightEightSource_muNegThree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-3 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    ∃ k r, Nonempty
+      (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) k r) := by
+  classical
+  dsimp only
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  obtain ⟨k, r, hrefined, _ha8, _hb8, haa, habq, hbaq, hbb,
+      hAA, hBB, hAB, hBA⟩ :=
+    orderSixtyFour_sizeTwo_muNegThree_eightEight_refined_alignedLedger
+      G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+        u v huinj hvinj hurange hvrange hu hv
+  have hcover : ∀ x : c.supp, x ∈ a.supp ∨ x ∈ b.supp :=
+    eightEight_shores_cover G c (by simpa using hc) a b hab
+      u v huinj hvinj hurange hvrange
+  have hdegree : ∀ x : c.supp, H.degree x = 2 := by
+    intro x
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2) hc x
+  have hcomm : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm G
+      (secondOrderDefectGraph G) hglobal c).symm
+  have hcoeff : (2 * (k : ℤ) - (7 - r : ℕ)) -
+      (2 * (2 - k : ℕ) - (r : ℤ)) = sizeTwoMuSwitchTarget (-3) k r := by
+    rcases hrefined with hzero | hmixed | hone
+    · rcases hzero.2.2 with h | h | h | h <;>
+        rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+    · rcases hmixed.2 with h | h <;>
+        rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+    · rcases hone.2.2 with h | h | h | h | h <;>
+        rcases h with ⟨rfl, rfl⟩ <;> norm_num [sizeTwoMuSwitchTarget]
+  let w : NegativeEightEightAlignedWitness G c a b (-3) k r := {
+    hab := hab
+    cover := hcover
+    s := s
+    signedJoint := ⟨hs_out, hs_in, hH, hD⟩
+    crossSame := 2 - k
+    quotientAA := haa
+    quotientAB := habq
+    quotientBA := hbaq
+    quotientBB := hbb
+    sameAA := by
+      intro x hx
+      rw [componentNeighbor_sameSign_eq_supportFilter]
+      exact hAA x (by simpa [A] using hx)
+    sameAB := by
+      intro x hx
+      rw [componentNeighbor_sameSign_eq_supportFilter]
+      exact hAB x (by simpa [A] using hx)
+    sameBB := by
+      intro x hx
+      rw [componentNeighbor_sameSign_eq_supportFilter]
+      exact hBB x (by simpa [B] using hx)
+    sameBA := by
+      intro x hx
+      rw [componentNeighbor_sameSign_eq_supportFilter]
+      exact hBA x (by simpa [B] using hx)
+    hcoeff := hcoeff }
+  refine ⟨k, r, negativeEightEightSource_muNegThree_of_aligned
+    G hfree hreg hcard c hc a b N₁ N₂ k r w ?_ hdegree hcomm⟩
+  exact hrefined
+
 /-- A full source witness transports to the exact one-step target object.
 This combines the ledger-backed graph switch with all three finite mode
 transport theorems. -/
@@ -657,3 +778,4 @@ end Erdos85
 #print axioms Erdos85.negativeEightEightSource_muNegThree_of_aligned
 #print axioms Erdos85.negativeEightEightSource_muNegFive_of_aligned
 #print axioms Erdos85.negativeEightEightSource_muNegOne_of_aligned
+#print axioms Erdos85.exists_negativeEightEightSource_muNegThree
