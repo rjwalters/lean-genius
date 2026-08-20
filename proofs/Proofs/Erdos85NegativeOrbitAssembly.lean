@@ -22,6 +22,85 @@ namespace Erdos85
 
 noncomputable section
 
+/-- The exact reduced cell predicate consumed by the negative orbit
+eliminator.  Keeping the shore matrices in this predicate is essential:
+the same arithmetic pair can be legal in one mode and illegal in another. -/
+def NegativeEightEightOrbitCell
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (theta : ℤ) (k r : ℕ) : Prop :=
+  (theta = -5 ∧ MuNegFivePostMuOneSectorCells k r) ∨
+  (theta = -3 ∧ MuNegThreePostMuOneSectorCells N₁ N₂ k r) ∨
+  (theta = -1 ∧ MuNegOnePostEndpointSectorCells N₁ N₂ k r)
+
+/-- Once the explicit `mu=-5` ledgers force both shore modes to be
+all-one, every negative switch target is a valid refined target cell.  The
+remaining `(1,4)` cell is exactly the positive exit. -/
+theorem muNegFive_orbitCell_switch_of_allOne
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hN₁ : C8CycleEntriesOne N₁) (hN₂ : C8CycleEntriesOne N₂)
+    (hcell : MuNegFivePostMuOneSectorCells k r) :
+    NegativeEightEightOrbitCell N₁ N₂
+        (sizeTwoMuSwitchTarget (-5) k r) k r ∨
+      sizeTwoMuSwitchTarget (-5) k r = 3 := by
+  rcases hcell with h | h | h | h <;>
+    rcases h with ⟨rfl, rfl⟩ <;>
+    simp [NegativeEightEightOrbitCell, MuNegThreePostMuOneSectorCells,
+      MuNegOnePostEndpointSectorCells, MuNegFivePostMuOneSectorCells,
+      MuNegOneC8CycleEntriesOne, C8CycleEntriesOne,
+      sizeTwoMuSwitchTarget] at hN₁ hN₂ ⊢ <;> aesop
+
+/-- The reduced `mu=-3` mode table is closed under a negative shore switch;
+its only nonnegative target is the checked `mu=3` exit. -/
+theorem muNegThree_orbitCell_switch
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegThreePostMuOneSectorCells N₁ N₂ k r) :
+    NegativeEightEightOrbitCell N₁ N₂
+        (sizeTwoMuSwitchTarget (-3) k r) k r ∨
+      sizeTwoMuSwitchTarget (-3) k r = 3 := by
+  rcases hcell with hzero | hmixed | hone
+  · rcases hzero.2.2 with h | h <;> rcases h with ⟨rfl, rfl⟩ <;>
+      simp_all [NegativeEightEightOrbitCell,
+        MuNegThreePostMuOneSectorCells, MuNegOnePostEndpointSectorCells,
+        MuNegOneC8CycleEntriesZero, C8CycleEntriesZero,
+        sizeTwoMuSwitchTarget]
+  · rcases hmixed.2 with ⟨rfl, rfl⟩
+    simp_all [NegativeEightEightOrbitCell,
+      MuNegThreePostMuOneSectorCells, MuNegOnePostEndpointSectorCells,
+      MuNegOneC8CycleEntriesZero, MuNegOneC8CycleEntriesOne,
+      C8CycleEntriesZero, C8CycleEntriesOne, sizeTwoMuSwitchTarget]
+  · rcases hone.2.2 with h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;>
+      simp_all [NegativeEightEightOrbitCell,
+        MuNegFivePostMuOneSectorCells, MuNegThreePostMuOneSectorCells,
+        MuNegOnePostEndpointSectorCells, MuNegOneC8CycleEntriesOne,
+        C8CycleEntriesOne, sizeTwoMuSwitchTarget]
+
+/-- The endpoint-reduced `mu=-1` mode table is likewise closed under every
+negative target, with `(1,6)` as its sole positive exit. -/
+theorem muNegOne_orbitCell_switch
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (hcell : MuNegOnePostEndpointSectorCells N₁ N₂ k r) :
+    NegativeEightEightOrbitCell N₁ N₂
+        (sizeTwoMuSwitchTarget (-1) k r) k r ∨
+      sizeTwoMuSwitchTarget (-1) k r = 3 := by
+  rcases hcell with hzero | hmixed | hone
+  · rcases hzero.2 with h | h | h <;> rcases h with ⟨rfl, rfl⟩ <;>
+      simp_all [NegativeEightEightOrbitCell,
+        MuNegThreePostMuOneSectorCells, MuNegOnePostEndpointSectorCells,
+        MuNegOneC8CycleEntriesZero, C8CycleEntriesZero,
+        sizeTwoMuSwitchTarget]
+  · rcases hmixed.2 with h | h <;> rcases h with ⟨rfl, rfl⟩ <;>
+      simp_all [NegativeEightEightOrbitCell,
+        MuNegThreePostMuOneSectorCells, MuNegOnePostEndpointSectorCells,
+        MuNegOneC8CycleEntriesZero, MuNegOneC8CycleEntriesOne,
+        C8CycleEntriesZero, C8CycleEntriesOne, sizeTwoMuSwitchTarget]
+  · rcases hone.2 with h | h | h | h | h <;>
+      rcases h with ⟨rfl, rfl⟩ <;>
+      simp_all [NegativeEightEightOrbitCell,
+        MuNegFivePostMuOneSectorCells, MuNegThreePostMuOneSectorCells,
+        MuNegOnePostEndpointSectorCells, MuNegOneC8CycleEntriesOne,
+        C8CycleEntriesOne, sizeTwoMuSwitchTarget]
+
 /-- The graph-facing data shared by all three negative C8+C8 lanes.
 
 Unlike `P theta k r := ∃ s, IsAmbientSignedJoint G c theta s`, the four
