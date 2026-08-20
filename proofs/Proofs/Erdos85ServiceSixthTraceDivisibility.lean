@@ -86,6 +86,26 @@ theorem sixRegular_fortyEight_strict_trace_six_ge_61254
     ⟨k, hk⟩
   omega
 
+/-- The exact global histogram excess itself is a multiple of six, since
+the constant baseline `61056` is divisible by six. -/
+theorem six_dvd_sixRegular_fortyEight_histogramExcess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 48)
+    (hreg : ∀ x, G.degree x = 6) :
+    let A3 := G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ
+    (6 : ℤ) ∣ ∑ a, ((A3 a a) ^ 2 - 7 * A3 a a + 12 +
+      ∑ b ∈ cubicNonneighborFinset G a,
+        (A3 a b - 3) * (A3 a b - 4)) := by
+  dsimp only
+  rcases six_dvd_sixRegular_fortyEight_trace_pow_six G hcard hreg with
+    ⟨k, hk⟩
+  rw [sixRegular_fortyEight_trace_six_eq_baseline_add_histogramExcess
+    G hfree hcard hreg] at hk
+  refine ⟨k - 10176, ?_⟩
+  omega
+
 /-- In exact histogram coordinates, strictness therefore forces at least
 `198` units of excess rather than merely `194`. -/
 theorem sixRegular_fortyEight_histogramExcess_ge_198
@@ -114,4 +134,5 @@ end Erdos85
 #print axioms Erdos85.three_dvd_sixRegular_fortyEight_trace_pow_six
 #print axioms Erdos85.six_dvd_sixRegular_fortyEight_trace_pow_six
 #print axioms Erdos85.sixRegular_fortyEight_strict_trace_six_ge_61254
+#print axioms Erdos85.six_dvd_sixRegular_fortyEight_histogramExcess
 #print axioms Erdos85.sixRegular_fortyEight_histogramExcess_ge_198
