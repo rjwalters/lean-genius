@@ -118,6 +118,16 @@ def muNegFiveOneTwoCrossOnlyGraphHit
     MuNegFiveOneTwoCrossOnlyOwnerVertex G c u v e z ∧
     MuNegFiveOneTwoCrossOnlyOwnerVertex G c u v f w ∧ G.Adj z w
 
+def MuNegFiveOneTwoCrossOnlyExteriorOwnerCoverage
+    (u v : ZMod 8 → c.supp) : Prop :=
+  ∀ z : V, z ∉ c.supp →
+    ∃ e : Fin 64, MuNegFiveOneTwoCrossOnlyOwnerVertex G c u v e z
+
+theorem muNegFiveOneTwoCrossOnly_activeVariable_some (e : Fin 64) :
+    muNegFiveOneTwoCrossOnlyActiveVariable? e = some (e.val + 1) := by
+  revert e
+  native_decide
+
 instance (u v : ZMod 8 → c.supp) :
     DecidablePred (muNegFiveOneTwoCrossOnlyGraphActive G c u v) := by
   intro e
@@ -273,6 +283,143 @@ theorem muNegFiveOneTwoCrossOnlyGraphHit_no_two_common
   · exact hel
   · exact hfl
 
+theorem muNegFiveOneTwoCrossOnlyGraphHit_service_exists
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (hcover : MuNegFiveOneTwoCrossOnlyExteriorOwnerCoverage G c u v) :
+    ∀ (e : Fin 64) (s : Fin 16),
+      muNegFiveOneTwoCrossOnlyOwnerEnabled
+        (muNegFiveOneTwoCrossOnlyGraphActive G c u v) e →
+      muNegFiveOneTwoCrossOnlyOwnerTargetContains e s = true →
+      ∃ f, muNegFiveOneTwoCrossOnlyGraphHit G c u v e f ∧
+        muNegFiveOneTwoCrossOnlyOwnerContains f s = true := by
+  intro e s henabled htarget
+  have haid := muNegFiveOneTwoCrossOnly_activeVariable_some e
+  have heactive : muNegFiveOneTwoCrossOnlyGraphActive G c u v e := by
+    unfold muNegFiveOneTwoCrossOnlyOwnerEnabled at henabled
+    rw [haid] at henabled
+    exact henabled
+  obtain ⟨te, hte⟩ := heactive
+  have hteComp :
+      (secondOrderDefectGraph G).connectedComponentMk te ≠ c := by
+    intro h
+    apply hte.1
+    exact (SimpleGraph.ConnectedComponent.mem_supp_iff c te).mpr h
+  have hsComp : (secondOrderDefectGraph G).connectedComponentMk
+      (muNegFiveZeroThreeCodeVertex G c u v s) = c :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff c _).mp
+      (muNegFiveZeroThreeCodeVertex_mem_supp G c u v s)
+  obtain ⟨tf, ⟨hetf, htfs⟩, _⟩ :=
+    binarySquare_regular_sizeTwoPart_exteriorOwner_unique_server
+      G hfree (q := 8) (by omega) hreg hcard c hsize hteComp hsComp
+  let ee := muNegFiveOneTwoCrossOnlyToZeroThree e
+  have heBounds := muNegFiveZeroThreeOwnerAt_bounds_ne ee
+  have htargetOld : muNegFiveZeroThreeOwnerTargetContains ee s = true := by
+    rw [muNegFiveOneTwoCrossOnly_ownerTargetContains_embed]
+    exact htarget
+  have htarget' := htargetOld
+  unfold muNegFiveZeroThreeOwnerTargetContains at htarget'
+  simp only [Bool.and_eq_true, Bool.not_eq_true_eq_eq_false] at htarget'
+  have htfOutside : tf ∉ c.supp := by
+    intro htfSupp
+    have hmem := sizeTwoPart_server_mem_tile_of_internal G c hetf htfSupp
+    have htile := sizeTwoPart_tile_eq_pair G hfree (q := 8) (by omega)
+      hreg hcard c hsize
+      (muNegFiveZeroThreeOwnerEndpoints_ne G c a b u v hab huinj hvinj
+        hurange hvrange ee)
+      (muNegFiveZeroThreeCodeVertex_mem_supp G c u v _)
+      (muNegFiveZeroThreeCodeVertex_mem_supp G c u v _)
+      hte.2.1.symm hte.2.2.symm
+    rw [htile] at hmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with h | h
+    · have hadj : G.Adj
+          (muNegFiveZeroThreeCodeVertex G c u v
+            (muNegFiveZeroThreeOwnerAt ee).1)
+          (muNegFiveZeroThreeCodeVertex G c u v s) := by
+        change tf = muNegFiveZeroThreeCodeVertex G c u v
+          (muNegFiveZeroThreeOwnerAt ee).1 at h
+        rw [← h]
+        exact htfs
+      have hcycle := (muNegFiveZeroThreeCodeVertex_adj_iff G c a b u v hab
+        huinj hvinj hurange hvrange hu hv _ heBounds.1 _ s.2).mp hadj
+      exact Bool.false_ne_true (htarget'.1.symm.trans hcycle)
+    · have hadj : G.Adj
+          (muNegFiveZeroThreeCodeVertex G c u v
+            (muNegFiveZeroThreeOwnerAt ee).2)
+          (muNegFiveZeroThreeCodeVertex G c u v s) := by
+        change tf = muNegFiveZeroThreeCodeVertex G c u v
+          (muNegFiveZeroThreeOwnerAt ee).2 at h
+        rw [← h]
+        exact htfs
+      have hcycle := (muNegFiveZeroThreeCodeVertex_adj_iff G c a b u v hab
+        huinj hvinj hurange hvrange hu hv _ heBounds.2.1 _ s.2).mp hadj
+      exact Bool.false_ne_true (htarget'.2.symm.trans hcycle)
+  obtain ⟨f, htf⟩ := hcover tf htfOutside
+  let ff := muNegFiveOneTwoCrossOnlyToZeroThree f
+  have hfBounds := muNegFiveZeroThreeOwnerAt_bounds_ne ff
+  have hfTile := sizeTwoPart_tile_eq_pair G hfree (q := 8) (by omega)
+    hreg hcard c hsize
+    (muNegFiveZeroThreeOwnerEndpoints_ne G c a b u v hab huinj hvinj
+      hurange hvrange ff)
+    (muNegFiveZeroThreeCodeVertex_mem_supp G c u v _)
+    (muNegFiveZeroThreeCodeVertex_mem_supp G c u v _)
+    htf.2.1.symm htf.2.2.symm
+  have hsMem := sizeTwoPart_server_mem_tile_of_internal G c htfs
+    (muNegFiveZeroThreeCodeVertex_mem_supp G c u v s)
+  rw [hfTile] at hsMem
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hsMem
+  have hcontainsOld : muNegFiveZeroThreeOwnerContains ff s = true := by
+    unfold muNegFiveZeroThreeOwnerContains
+    rcases hsMem with h | h
+    · have hs := muNegFiveZeroThreeCodeVertex_inj G c a b u v hab huinj
+        hvinj hurange hvrange s s.2 _ hfBounds.1 h
+      simp [hs]
+    · have hs := muNegFiveZeroThreeCodeVertex_inj G c a b u v hab huinj
+        hvinj hurange hvrange s s.2 _ hfBounds.2.1 h
+      simp [hs]
+  refine ⟨f, ⟨te, tf, hte, htf, hetf⟩, ?_⟩
+  simpa [ff, muNegFiveOneTwoCrossOnly_ownerContains_embed] using hcontainsOld
+
+theorem muNegFiveOneTwoCrossOnlyGraphServiceSemantics
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (hcover : MuNegFiveOneTwoCrossOnlyExteriorOwnerCoverage G c u v) :
+    MuNegFiveOneTwoCrossOnlyOwnerServiceSemantics
+      (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+      (muNegFiveOneTwoCrossOnlyGraphHit G c u v) :=
+  { service_exists :=
+      muNegFiveOneTwoCrossOnlyGraphHit_service_exists G c a b u v hfree hreg
+        hcard hsize hab huinj hvinj hurange hvrange hu hv hcover
+    service_unique :=
+      muNegFiveOneTwoCrossOnlyGraphHit_service_unique G c a b u v hfree hreg
+        hcard hsize hab huinj hvinj hurange hvrange
+    internal_zero :=
+      muNegFiveOneTwoCrossOnlyGraphHit_internal_zero G c a b u v hfree hab
+        huinj hvinj hurange hvrange hu hv
+    intersecting_no_common :=
+      muNegFiveOneTwoCrossOnlyGraphHit_intersecting_no_common G c a b u v
+        hfree hreg hcard hsize hab huinj hvinj hurange hvrange
+    no_two_common :=
+      muNegFiveOneTwoCrossOnlyGraphHit_no_two_common G c a b u v hfree hreg
+        hcard hsize hab huinj hvinj hurange hvrange }
+
 end Shores
 
 end
@@ -284,3 +431,4 @@ end Erdos85
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyGraphHit_symm
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyOwnerCompatible_of_graphHit
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyGraphHit_no_two_common
+#print axioms Erdos85.muNegFiveOneTwoCrossOnlyGraphServiceSemantics
