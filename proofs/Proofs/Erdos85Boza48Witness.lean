@@ -1,4 +1,5 @@
 import Proofs.Erdos85Problem
+import Proofs.Erdos85LocalTriangleParity
 
 /-!
 # The Boza witness: a C4-free graph on 48 vertices with minimum degree 7
@@ -71,6 +72,23 @@ theorem boza48Graph_common_le_one : ∀ x y : Fin 48, x ≠ y →
 theorem boza48Graph_not_containsC4 :
     ¬ containsC4 (Fin 48) boza48Graph :=
   not_containsC4_of_forall_common_le_one boza48Graph_common_le_one
+
+/-- Every vertex of the checked witness lies in exactly three triangles,
+expressed as the three edges of its induced neighborhood.  Thus its triangular
+shadow is the point graph of a `48_3` linear configuration. -/
+theorem boza48Graph_localTriangleEdges : ∀ v : Fin 48,
+    (boza48Graph.induce (boza48Graph.neighborSet v)).edgeFinset.card = 3 := by
+  native_decide
+
+instance : DecidableRel (triangleFreeEdgeGraph boza48Graph).Adj := fun x y => by
+  rw [triangleFreeEdgeGraph_adj]
+  infer_instance
+
+/-- The complementary triangle-free shadow of the checked witness is
+1-regular, hence a perfect matching on the 48 points. -/
+theorem boza48Graph_triangleFreeEdgeGraph_degree : ∀ v : Fin 48,
+    (triangleFreeEdgeGraph boza48Graph).degree v = 1 := by
+  native_decide
 
 /-- The fully checked order-48, minimum-degree-7 witness. -/
 theorem boza48_degreeSeven_witness : C4FreeMinDegreeWitness 48 7 := by
