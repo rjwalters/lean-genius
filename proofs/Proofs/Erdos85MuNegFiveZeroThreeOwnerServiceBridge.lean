@@ -110,6 +110,48 @@ theorem muNegFiveZeroThreeHitActivityClauses_satisfied
           · exact hsatisfy ff b (by simpa [ff] using hfa)
               (fun hX => (hends ef ff hX).2)
 
+/-- Certificate-facing relation terminal.  Cross degree, intertwining, and
+hit activity are discharged here; the graph adapter's exact residual is the
+service and exterior-C4 clause families. -/
+theorem muNegFiveZeroThreeOwnerRelations_false
+    (sigma : Bool)
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsymm : ∀ e f, X e f → X f e)
+    (hends : ∀ e f, X e f → active e ∧ active f)
+    (hfiber : ∀ left z, z < 8 →
+      muNegFiveZeroThreeFiberBitsAllowed sigma left z
+        (muNegFiveZeroThreeFiberBit
+          (muNegFiveZeroThreeOwnerValOfRelations active X) left z) = true)
+    (hbalance : ∀ x y a b c d,
+      muNegFiveZeroThreeCrossIndex? ((x + 7) % 8) y = some a →
+      muNegFiveZeroThreeCrossIndex? ((x + 1) % 8) y = some b →
+      muNegFiveZeroThreeCrossIndex? x ((y + 1) % 8) = some c →
+      muNegFiveZeroThreeCrossIndex? x ((y + 7) % 8) = some d →
+      (muNegFiveZeroThreeOwnerValOfRelations active X a).toNat +
+          (muNegFiveZeroThreeOwnerValOfRelations active X b).toNat =
+        (muNegFiveZeroThreeOwnerValOfRelations active X c).toNat +
+          (muNegFiveZeroThreeOwnerValOfRelations active X d).toNat)
+    (hservice : ∀ clause ∈ muNegFiveZeroThreeServiceClauses,
+      dimacsClauseSatisfied
+        (muNegFiveZeroThreeOwnerValOfRelations active X) clause)
+    (hc4 : ∀ clause ∈ muNegFiveZeroThreeC4Clauses,
+      dimacsClauseSatisfied
+        (muNegFiveZeroThreeOwnerValOfRelations active X) clause) : False := by
+  apply muNegFiveZeroThreeOwnerConstraintSemantics_false
+  exact
+    { cross_degree :=
+        muNegFiveZeroThreeCrossDegreeClauses_satisfied sigma
+          (muNegFiveZeroThreeOwnerValOfRelations active X) hfiber
+      intertwining :=
+        muNegFiveZeroThreeIntertwiningClauses_satisfied
+          (muNegFiveZeroThreeOwnerValOfRelations active X) hbalance
+      hit_activity :=
+        muNegFiveZeroThreeHitActivityClauses_satisfied active X hsymm hends
+      service := hservice
+      exterior_c4 := hc4 }
+
 end Erdos85
 
 #print axioms Erdos85.muNegFiveZeroThreeHitActivityClauses_satisfied
+#print axioms Erdos85.muNegFiveZeroThreeOwnerRelations_false
