@@ -8,6 +8,19 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Cubic adjacency entries are nonnegative because they count walks. -/
+theorem adjMatrix_cube_apply_nonneg
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    0 ≤ (G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ) a b := by
+  have hwalk := G.adjMatrix_pow_apply_eq_card_walk (α := ℤ) 3 a b
+  have heq :
+      (G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ) a b =
+        (Fintype.card {p : G.Walk a b | p.length = 3} : ℤ) := by
+    simpa [pow_succ] using hwalk
+  rw [heq]
+  positivity
+
 /-- On every oriented edge of a `d`-regular C4-free graph, the number of
 length-three walks is exactly `2d-1`. -/
 theorem c4Free_regular_adjMatrix_cube_apply_of_adj
@@ -214,6 +227,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.c4Free_regular_adjMatrix_cube_apply_of_adj
+#print axioms Erdos85.adjMatrix_cube_apply_nonneg
 #print axioms Erdos85.c4Free_regular_adjMatrix_cube_apply_diag_le
 #print axioms Erdos85.c4Free_regular_adjMatrix_cube_apply_of_not_adj_le
 #print axioms Erdos85.regular_adjMatrix_cube_row_sum
