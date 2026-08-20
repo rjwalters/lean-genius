@@ -4,6 +4,7 @@ import Proofs.Erdos85EightEightCoordinateCover
 import Proofs.Erdos85ComponentEigenvectorExtension
 import Proofs.Erdos85ComponentSignFlipEigenvector
 import Proofs.Erdos85SizeTwoSwitchedJointExclusions
+import Proofs.Erdos85MuNegThreeExplicitParameters
 
 /-! # Graph-facing aligned shore switch for μ=-3 -/
 
@@ -48,8 +49,12 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
     let K := (secondOrderDefectGraph G).induce c.supp
     let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
       fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let M₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (v j)
     let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
       fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    let M₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (u j)
     ∃ k r : ℕ, MuNegThreeRefinedSectorCells N₁ N₂ k r ∧
       let B := (Finset.univ : Finset c.supp).filter
         (fun x ↦ H.connectedComponentMk x = b)
@@ -66,7 +71,11 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
         let T := connectedComponentExtendZero (secondOrderDefectGraph G) c
           (fun x ↦ (t x : ℚ))
         ((secondOrderDefectGraph G).adjMatrix ℚ).mulVec T =
-            (sizeTwoMuSwitchTarget (-3) k r : ℚ) • T ∧ T ≠ 0 := by
+            (sizeTwoMuSwitchTarget (-3) k r : ℚ) • T ∧ T ≠ 0 ∧
+        MuNegThreeExplicitParameterLedger N₁ M₁
+          (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r ∧
+        MuNegThreeExplicitParameterLedger N₂ M₂
+          (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) k r := by
   classical
   dsimp only
   let H := G.induce c.supp
@@ -75,8 +84,12 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
   let B := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ b.supp
   let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
     fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let M₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (v j)
   let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
     fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  let M₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (u j)
   obtain ⟨k, r, hcell, _ha8, _hb8, haa, habq, hbaq, hbb,
       hAA, hBB, hAB, hBA⟩ :=
     orderSixtyFour_sizeTwo_muNegThree_eightEight_refined_alignedLedger
@@ -135,6 +148,177 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
     rw [← same_eq a A rfl x]
     apply hBA x
     simpa only [B, Finset.mem_filter, Finset.mem_univ, true_and] using hx
+  have hurangeA : Set.range u = (↑A : Set c.supp) := by
+    rw [hurange]
+    ext x
+    simp [A]
+  have hvrangeB : Set.range v = (↑B : Set c.supp) := by
+    rw [hvrange]
+    ext x
+    simp [B]
+  have huA (i : ZMod 8) : u i ∈ A := by
+    change u i ∈ (↑A : Set c.supp)
+    rw [← hurangeA]
+    exact ⟨i, rfl⟩
+  have hvB (i : ZMod 8) : v i ∈ B := by
+    change v i ∈ (↑B : Set c.supp)
+    rw [← hvrangeB]
+    exact ⟨i, rfl⟩
+  have hN₁row : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₁ i j = 1).card = 7 - r := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₁ i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (u i) (u j)) by
+      ext j
+      simp [N₁, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K A u huinj hurangeA (u i)]
+    have hq := componentQuotientMatrix_apply_eq K H 2 hdegree hcomm a a
+      (by simpa [A] using huA i)
+    have heq : A.filter (fun y ↦ K.Adj (u i) y) =
+        componentNeighborFinset K H a (u i) := by
+      ext y
+      simp [A, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq, ← hq]
+    exact haa
+  have hN₂row : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₂ i j = 1).card = 7 - r := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₂ i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (v i) (v j)) by
+      ext j
+      simp [N₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K B v hvinj hvrangeB (v i)]
+    have hq := componentQuotientMatrix_apply_eq K H 2 hdegree hcomm b b
+      (by simpa [B] using hvB i)
+    have heq : B.filter (fun y ↦ K.Adj (v i) y) =
+        componentNeighborFinset K H b (v i) := by
+      ext y
+      simp [B, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq, ← hq]
+    exact hbb
+  have hM₁row : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M₁ i j = 1).card = r := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M₁ i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (u i) (v j)) by
+      ext j
+      simp [M₁, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K B v hvinj hvrangeB (u i)]
+    have hq := componentQuotientMatrix_apply_eq K H 2 hdegree hcomm a b
+      (by simpa [A] using huA i)
+    have heq : B.filter (fun y ↦ K.Adj (u i) y) =
+        componentNeighborFinset K H b (u i) := by
+      ext y
+      simp [B, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq, ← hq]
+    exact habq
+  have hM₂row : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M₂ i j = 1).card = r := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M₂ i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (v i) (u j)) by
+      ext j
+      simp [M₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K A u huinj hurangeA (v i)]
+    have hq := componentQuotientMatrix_apply_eq K H 2 hdegree hcomm b a
+      (by simpa [B] using hvB i)
+    have heq : A.filter (fun y ↦ K.Adj (v i) y) =
+        componentNeighborFinset K H a (v i) := by
+      ext y
+      simp [A, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq, ← hq]
+    exact hbaq
+  have hN₁same : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j).1 = s (u i).1 ∧ N₁ i j = 1).card = k := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j).1 = s (u i).1 ∧ N₁ i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (u j).1 = s (u i).1 ∧ K.Adj (u i) (u j)) by
+      ext j
+      simp [N₁, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support_from K A u huinj hurangeA
+      (fun x : c.supp ↦ s x.1) (u i)]
+    exact hAA (u i) (huA i)
+  have hN₂same : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (v i).1 ∧ N₂ i j = 1).card = k := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (v i).1 ∧ N₂ i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (v j).1 = s (v i).1 ∧ K.Adj (v i) (v j)) by
+      ext j
+      simp [N₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support_from K B v hvinj hvrangeB
+      (fun x : c.supp ↦ s x.1) (v i)]
+    exact hBB (v i) (hvB i)
+  have hM₁same : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (u i).1 ∧ M₁ i j = 1).card = 2 - k := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (u i).1 ∧ M₁ i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (v j).1 = s (u i).1 ∧ K.Adj (u i) (v j)) by
+      ext j
+      simp [M₁, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support_from K B v hvinj hvrangeB
+      (fun x : c.supp ↦ s x.1) (u i)]
+    exact hAB (u i) (huA i)
+  have hM₂same : ∀ i,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j).1 = s (v i).1 ∧ M₂ i j = 1).card = 2 - k := by
+    intro i
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j).1 = s (v i).1 ∧ M₂ i j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (u j).1 = s (v i).1 ∧ K.Adj (v i) (u j)) by
+      ext j
+      simp [M₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support_from K A u huinj hurangeA
+      (fun x : c.supp ↦ s x.1) (v i)]
+    exact hBA (v i) (hvB i)
+  have hfull := sizeTwo_internal_full_sum_of_filtered G c s hs_out hH
+  have hflip (w : ZMod 8 → c.supp)
+      (hw : ∀ z, H.neighborFinset (w z) = {w (z - 1), w (z + 1)}) :
+      ∀ i, s (w (i + 1)).1 = -s (w i).1 := by
+    intro i
+    have hadj : H.Adj (w i) (w (i + 1)) := by
+      rw [← H.mem_neighborFinset, hw]
+      simp
+    have hmem : (w (i + 1)).1 ∈ componentNeighborFinset G
+        (secondOrderDefectGraph G) c (w i).1 := by
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset _ _).mpr hadj, (w (i + 1)).2⟩
+    exact (internal_alternation G hfree (by omega) hreg hcard c hc s
+      hs_in hs_out hfull (w i).2).2 _ hmem
+  have hledger₁ : MuNegThreeExplicitParameterLedger N₁ M₁
+      (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r := by
+    refine ⟨?_, ?_, (fun i ↦ hs_in _ (u i).2), (fun j ↦ hs_in _ (v j).2),
+      hflip u hu, hflip v hv, hN₁row, hN₁same, hM₁row, hM₁same⟩
+    · rcases hcell with hzero | hmixed | hone
+      · dsimp [MuNegThreeBothTriangleCell] at hzero
+        omega
+      · dsimp [MuNegThreeMixedCell] at hmixed
+        omega
+      · omega
+    · rcases hcell with hzero | hmixed | hone
+      · dsimp [MuNegThreeBothTriangleCell] at hzero
+        omega
+      · dsimp [MuNegThreeMixedCell] at hmixed
+        omega
+      · omega
+  have hledger₂ : MuNegThreeExplicitParameterLedger N₂ M₂
+      (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) k r := by
+    refine ⟨hledger₁.k_le_one, hledger₁.sum_le_six,
+      (fun i ↦ hs_in _ (v i).2), (fun j ↦ hs_in _ (u j).2),
+      hflip v hv, hflip u hu, hN₂row, hN₂same, hM₂row, hM₂same⟩
   refine ⟨k, r, hcell, ?_⟩
   have hswitch := twoComponent_quotient_signSwitch_adjMatrix_eigen_sub_of_card
     K H a b hab hdegree hcomm hcover (fun x ↦ s x.1)
@@ -194,7 +378,9 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
   have hglobal := adjMatrix_rat_nonzero_eigenvector_componentExtendZero_of_int
     (secondOrderDefectGraph G) c t
       (sizeTwoMuSwitchTarget (-3) k r) heig ht
-  simpa [t, B] using hglobal
+  refine ⟨?_, ?_, hledger₁, hledger₂⟩
+  · simpa [t, B] using hglobal.1
+  · simpa [t, B] using hglobal.2
 
 end
 
