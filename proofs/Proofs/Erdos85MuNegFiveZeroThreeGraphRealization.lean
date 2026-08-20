@@ -240,6 +240,15 @@ theorem MuNegFiveExplicitRowParameterLedger.zeroThree_internal_iff_oddOffset
   have := Finset.ext_iff.mp hAO j
   simpa [A, O] using this
 
+theorem MuNegFiveExplicitRowParameterLedger.zeroThree_cycleEntriesOne
+    {N M : Matrix (ZMod 8) (ZMod 8) ℤ}
+    {f g : ZMod 8 → ℤ}
+    (L : MuNegFiveExplicitRowParameterLedger N M f g 0 3) :
+    C8CycleEntriesOne N := by
+  constructor
+  · exact (L.zeroThree_internal_iff_oddOffset 0 (-1)).mpr (by decide)
+  · exact (L.zeroThree_internal_iff_oddOffset 0 1).mpr (by decide)
+
 theorem muNegFiveZeroThreeFixedOwner_shape :
     ∀ e : Fin 72, muNegFiveZeroThreeActiveVariable? e = none →
       (((muNegFiveZeroThreeOwnerAt e).1 < 8 ∧
@@ -1061,6 +1070,7 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeCandidateSupport_of_antipode
 #print axioms Erdos85.exteriorPairGraph_cycle_iff_antipode_of_odd_defect
 #print axioms Erdos85.MuNegFiveExplicitRowParameterLedger.zeroThree_internal_iff_oddOffset
+#print axioms Erdos85.MuNegFiveExplicitRowParameterLedger.zeroThree_cycleEntriesOne
 #print axioms Erdos85.muNegFiveZeroThreeOwnerGeometry_of_rowLedgers
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
