@@ -99,6 +99,47 @@ theorem boza48Graph_triangleFreeEdgeGraph_adj_iff_same_half :
         x.val / 2 = y.val / 2 ∧ x ≠ y := by
   native_decide
 
+/-- Left multiplication in the semidirect coordinates
+`Z/24 x|_{19} Z/2`, transported to the numbering `v = 2*a+b`. -/
+def boza48LeftAction (g v : Fin 48) : Fin 48 :=
+  ⟨2 * ((g.val / 2 +
+        (if g.val % 2 = 0 then 1 else 19) * (v.val / 2)) % 24) +
+      ((g.val % 2 + v.val % 2) % 2), by
+    have ha : (g.val / 2 +
+        (if g.val % 2 = 0 then 1 else 19) * (v.val / 2)) % 24 < 24 :=
+      Nat.mod_lt _ (by norm_num)
+    have hb : (g.val % 2 + v.val % 2) % 2 < 2 :=
+      Nat.mod_lt _ (by norm_num)
+    omega⟩
+
+/-- The single base block whose semidirect translates develop the triangular
+shadow of the Boza witness. -/
+def boza48BaseTriangle : Finset (Fin 48) := {0, 3, 6}
+
+def boza48DevelopedTriangle (g : Fin 48) : Finset (Fin 48) :=
+  boza48BaseTriangle.image (boza48LeftAction g)
+
+/-- Distinct semidirect group elements give distinct developed blocks. -/
+theorem boza48DevelopedTriangle_injective :
+    Function.Injective boza48DevelopedTriangle := by
+  native_decide
+
+/-- Every developed block has three vertices and spans a triangle. -/
+theorem boza48DevelopedTriangle_is_triangle : ∀ g : Fin 48,
+    (boza48DevelopedTriangle g).card = 3 ∧
+      ∀ x ∈ boza48DevelopedTriangle g,
+        ∀ y ∈ boza48DevelopedTriangle g, x ≠ y → boza48Graph.Adj x y := by
+  native_decide
+
+/-- Every triangle of the checked witness is a translate of the one base
+block `{0,3,6}`.  This vertex-triple formulation avoids materializing the
+full powerset used by `cliqueFinset`; together with injectivity it proves that
+the `48_3` configuration is a one-block regular development. -/
+theorem boza48Graph_triangle_exists_development : ∀ x y z : Fin 48,
+    boza48Graph.Adj x y → boza48Graph.Adj y z → boza48Graph.Adj z x →
+      ∃ g : Fin 48, boza48DevelopedTriangle g = {x, y, z} := by
+  native_decide
+
 /-- The fully checked order-48, minimum-degree-7 witness. -/
 theorem boza48_degreeSeven_witness : C4FreeMinDegreeWitness 48 7 := by
   refine ⟨boza48Graph, inferInstance, ?_, boza48Graph_not_containsC4⟩
