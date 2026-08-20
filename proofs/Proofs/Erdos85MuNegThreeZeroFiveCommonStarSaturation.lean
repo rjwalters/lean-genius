@@ -1,5 +1,4 @@
-import Proofs.Erdos85EdgeIndexedServiceCommonStarSaturation
-import Proofs.Erdos85MuNegThreeZeroFiveInternalTwoWalkMass
+import Proofs.Erdos85MuNegThreeZeroFiveAntipodalServiceSaturation
 
 /-! # Antipodal h305 common-star saturation -/
 
@@ -34,15 +33,9 @@ theorem h305_antipodal_commonStar_saturates
     subst j
     apply (by decide : (0 : ZMod 8) ≠ 4)
     simpa using haoffset
-  apply incidentServiceCommonEdgeValues_eq_incidenceFinset_of_six
-    R Cedge hRreg (u k) a
-  rw [h305_incidentServiceCommonEdge_card_eq_coordinate_add_four
-    H R Cedge hservice hHreg hCreg hfree u huinj hu a i j k hij ha hk]
-  have hpure : ∀ i j k : ZMod 8,
-      j - i = 4 → k ∈ h305ServiceNonendpointEligibleCoordinates i j →
-        h305InternalTwoWalkCoordinateMass i j k = 2 := by
-    native_decide
-  rw [hpure i j k haoffset hk]
+  exact h305_antipodal_incidentServiceCommon_saturates
+    H R Cedge hservice hHreg hRreg hCreg hfree u huinj hu
+      a i j k hij ha haoffset hk
 
 end
 
