@@ -431,6 +431,91 @@ theorem muNegThreeFiniteSemantics_intertwining
       muNegThreeValOfRelations_dvar D X hi hj7] using
         h.intertwine i j hi hj
 
+theorem muNegThreeHitPairs_lt {p : Nat × Nat}
+    (hp : p ∈ muNegThreeHitPairs) : p.1 < p.2 ∧ p.2 < 64 := by
+  simp only [muNegThreeHitPairs, List.mem_flatMap, List.mem_range,
+    List.mem_map, List.mem_filter] at hp
+  obtain ⟨a, ha, b, ⟨hb, hab⟩, rfl⟩ := hp
+  exact ⟨((Bool.and_eq_true _ _).mp hab).1 |> of_decide_eq_true, hb⟩
+
+theorem muNegThreeXVar?_bounds {a b x : Nat}
+    (h : muNegThreeXVar? a b = some x) : 65 ≤ x := by
+  unfold muNegThreeXVar? at h
+  rw [Option.map_eq_some_iff] at h
+  obtain ⟨k, _, rfl⟩ := h
+  omega
+
+theorem muNegThreeXVar?_key_mem {a b x : Nat}
+    (h : muNegThreeXVar? a b = some x) :
+    (min a b, max a b) ∈ muNegThreeHitPairs := by
+  unfold muNegThreeXVar? at h
+  rw [Option.map_eq_some_iff] at h
+  obtain ⟨k, hk, _⟩ := h
+  have hget := idxOf?_some_getElem? hk
+  have hmem := List.mem_of_getElem? hget
+  rcases Nat.lt_or_ge a b with hab | hab
+  · simpa [hab, Nat.min_eq_left (Nat.le_of_lt hab),
+      Nat.max_eq_right (Nat.le_of_lt hab)] using hmem
+  · have hnab : ¬ a < b := Nat.not_lt.mpr hab
+    simpa [hnab, Nat.min_eq_right hab, Nat.max_eq_left hab] using hmem
+
+/-- Embed the hit-activity family: a true owner hit forces both cross cells
+to be active, hence their negative defect guards satisfy the two clauses. -/
+theorem muNegThreeFiniteSemantics_hit_activity
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (hsem : MuNegThreeOneTwoFiniteSemantics fwd c D X) :
+    ∀ clause ∈ muNegThreeHitActivityClauses,
+      dimacsClauseSatisfied (muNegThreeValOfRelations D X) clause := by
+  intro clause hclause
+  simp only [muNegThreeHitActivityClauses, List.mem_flatMap] at hclause
+  obtain ⟨p, hp, hin⟩ := hclause
+  have hplt := muNegThreeHitPairs_lt hp
+  cases hx : muNegThreeXVar? p.1 p.2 with
+  | none => rw [hx] at hin; simp at hin
+  | some x =>
+    rw [hx] at hin
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hin
+    have hxpos : 0 < x := by
+      have := muNegThreeXVar?_bounds hx
+      omega
+    have hvalx : muNegThreeValOfRelations D X x = X p.1 p.2 := by
+      have hv := muNegThreeValOfRelations_xvar D X hx
+      simpa [Nat.min_eq_left (Nat.le_of_lt hplt.1),
+        Nat.max_eq_right (Nat.le_of_lt hplt.1)] using hv
+    by_cases hX : X p.1 p.2 = true
+    · have hact := hsem.hit_active p.1 p.2 hp hX
+      have guard (a : Nat) (ha : a < 64)
+          (hactive : muNegThreeOwnerActive D a = true) :
+          dimacsLitValue (muNegThreeValOfRelations D X)
+            (-Int.ofNat (muNegThreeDVar a)) = true := by
+        have hrow : muNegThreeCellRow a < 8 := by
+          unfold muNegThreeCellRow
+          omega
+        have hcol : muNegThreeCellCol a < 8 := by
+          unfold muNegThreeCellCol
+          exact Nat.mod_lt _ (by norm_num)
+        have hD : D (muNegThreeCellRow a) (muNegThreeCellCol a) = false := by
+          simpa [muNegThreeOwnerActive] using hactive
+        have haidx : muNegThreeCellRow a * 8 + muNegThreeCellCol a = a := by
+          simpa [muNegThreeCellRow, muNegThreeCellCol, Nat.mul_comm] using
+            Nat.div_add_mod a 8
+        rw [muNegThree_dimacsLitValue_neg_ofNat (by simp [muNegThreeDVar]),
+          ← haidx,
+          muNegThreeValOfRelations_dvar D X hrow hcol, hD]
+        rfl
+      rcases hin with rfl | rfl
+      · exact ⟨-Int.ofNat (muNegThreeDVar p.1), by simp,
+          guard p.1 (by omega) hact.1⟩
+      · exact ⟨-Int.ofNat (muNegThreeDVar p.2), by simp,
+          guard p.2 hplt.2 hact.2⟩
+    · have hXf : X p.1 p.2 = false := Bool.eq_false_of_not_eq_true hX
+      have hneg : dimacsLitValue (muNegThreeValOfRelations D X)
+          (-Int.ofNat x) = true := by
+        rw [muNegThree_dimacsLitValue_neg_ofNat hxpos, hvalx, hXf]
+        rfl
+      rcases hin with rfl | rfl <;>
+        exact ⟨-Int.ofNat x, by simp, hneg⟩
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeValOfRelations_dvar
@@ -440,3 +525,4 @@ end Erdos85
 #print axioms Erdos85.muNegThreeFiniteSemantics_opposite_rows
 #print axioms Erdos85.muNegThreeFiniteSemantics_opposite_columns
 #print axioms Erdos85.muNegThreeFiniteSemantics_intertwining
+#print axioms Erdos85.muNegThreeFiniteSemantics_hit_activity
