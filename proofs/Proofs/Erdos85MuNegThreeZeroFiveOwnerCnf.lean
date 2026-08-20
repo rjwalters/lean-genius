@@ -19,7 +19,9 @@ open Std Sat
 positive (at most one false), and the all-negative clause excludes four true
 entries. -/
 def muNegThreeExactlyThree (lits : List Int) : List DimacsClause :=
-  muNegOnePairsOf lits [] ++ [lits.map (fun x => -x)]
+  ((List.range lits.length).flatMap fun i =>
+    ((List.range lits.length).filter fun j => i < j).map fun j =>
+      [lits[i]!, lits[j]!]) ++ [lits.map (fun x => -x)]
 
 def muNegThreeZeroFiveCrossRowClauses (σ : Bool) : List DimacsClause :=
   (List.range 8).flatMap fun i =>
