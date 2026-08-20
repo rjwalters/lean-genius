@@ -153,6 +153,29 @@ theorem squareOrderNine_binOne_triangle_defect_profile
   rw [hinc] at htriangle
   omega
 
+/-- A bin-one vertex and its high neighbor lie in exactly one triangle.  This
+is the forced high-root matching edge inside the bin-one vertex's local
+triangle census. -/
+theorem squareOrderNine_binOne_highRoot_commonNeighbor_card_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81) {y r : V}
+    (_hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hrH : r ∈ squareOrderHighVertices G 9)
+    (hry : G.Adj r y) :
+    (G.neighborFinset r ∩ G.neighborFinset y).card = 1 := by
+  have hrDegree : G.degree r = 10 := (Finset.mem_filter.mp hrH).2
+  have hyMem : y ∈ G.neighborSet r := hry
+  have hlocal :=
+    (squareOrder_degree_succ_highRoot_structure
+      G hfree (by norm_num) hmin hcard hrDegree).2.2 ⟨y, hyMem⟩
+  rw [degree_induce_neighborSet_eq_card_common] at hlocal
+  simpa [Finset.inter_comm] using hlocal
+
 end
 
 end Erdos85
@@ -161,3 +184,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_binOne_sameHigh_defectNeighbors_original_card_le_one
 #print axioms Erdos85.squareOrderNine_binOne_triangleFree_degree_odd
 #print axioms Erdos85.squareOrderNine_binOne_triangle_defect_profile
+#print axioms Erdos85.squareOrderNine_binOne_highRoot_commonNeighbor_card_eq_one
