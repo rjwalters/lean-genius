@@ -34,40 +34,14 @@ theorem orderSixtyFour_regular_sizeTwo_signedJoint_false_of_connected_of_h305
       ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z, s y = mu * s z)
     (x : Fin 64) (hx : x ∈ c.supp)
     (hconnected : (G.induce c.supp).Connected → False)
-    (h305 : ∀
-      (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
-      (u v : ZMod 8 → c.supp)
-      (huinj : Function.Injective u) (hvinj : Function.Injective v)
-      (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
-      (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
-        {u (z - 1), u (z + 1)})
-      (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
-        {v (z - 1), v (z + 1)}),
-      let K := (secondOrderDefectGraph G).induce c.supp
-      let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
-        fun i j ↦ K.adjMatrix ℤ (u i) (u j)
-      let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
-        fun i j ↦ K.adjMatrix ℤ (v i) (v j)
-      Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 0 5) ∨
-        NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 0 5 → False) :
+    (h305 : MuNegThreeZeroFiveEndpointCallback G c) :
     False := by
   classical
   let H := G.induce c.supp
   by_cases hconn : H.Connected
   · exact hconnected hconn
-  · rw [H.connected_iff_exists_forall_reachable] at hconn
-    push_neg at hconn
-    have hsupp : c.supp.Nonempty := (Set.ncard_pos).mp (by omega)
-    obtain ⟨x₀, hx₀⟩ := hsupp
-    let xs : c.supp := ⟨x₀, hx₀⟩
-    obtain ⟨ys, hxys⟩ := hconn xs
-    let a := H.connectedComponentMk xs
-    let b := H.connectedComponentMk ys
-    have hab : a ≠ b := by
-      intro hab
-      exact hxys (ConnectedComponent.exact hab)
-    exact orderSixtyFour_regular_sizeTwo_signedJoint_disconnected_false_of_h305
-      G hfree hreg c hc s mu hs_out hs_in hH hD x hx a b hab h305
+  · exact orderSixtyFour_regular_sizeTwo_signedJoint_false_of_not_connected_h305
+      G hfree hreg c hc s mu hs_out hs_in hH hD x hx hconn h305
 
 end
 
