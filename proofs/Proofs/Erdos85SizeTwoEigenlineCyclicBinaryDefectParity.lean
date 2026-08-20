@@ -1,0 +1,89 @@
+import Proofs.Erdos85SizeTwoEigenlineCyclicDefectCirculation
+
+/-!
+# Binary parity of sharp cyclic defects
+
+Node: `BinarySizeTwoCyclicPackingBound` beneath outline A.5.3
+`GAP A-REG-NONBIP`.
+
+For `4 ∣ q`, the forced displacement of a collision-one row has odd
+projection to `ZMod 2`.  Hence its duplicated and missing target fibers have
+opposite parity.  Together with defect circulation, the sharp subsystem is a
+bipartite directed circulation on the allowed difference fibers.
+-/
+
+namespace Erdos85
+
+noncomputable section
+
+private theorem triangular_even_of_four_dvd
+    (q : ℕ) (h4q : 4 ∣ q) : Even (q * (q - 1) / 2) := by
+  obtain ⟨k, rfl⟩ := h4q
+  refine ⟨k * (4 * k - 1), ?_⟩
+  calc
+    4 * k * (4 * k - 1) / 2 =
+        (2 * (2 * k * (4 * k - 1))) / 2 := by congr 1; ring
+    _ = 2 * k * (4 * k - 1) :=
+      Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)
+    _ = k * (4 * k - 1) + k * (4 * k - 1) := by ring
+
+/-- The duplicate and missing fibers of a sharp row have different mod-two
+projections whenever `4 ∣ q`. -/
+theorem sizeTwoCyclic_singleDuplicateMissing_parity_ne
+    {q : ℕ} [NeZero q] (h4q : 4 ∣ q)
+    {duplicate missing t : ZMod q}
+    (hdisp : duplicate - missing =
+      2 * (t + 1) - (((q * (q - 1) / 2 : ℕ) : ZMod q) + 1)) :
+    ZMod.castHom (dvd_trans (by norm_num : 2 ∣ 4) h4q) (ZMod 2) duplicate ≠
+      ZMod.castHom (dvd_trans (by norm_num : 2 ∣ 4) h4q) (ZMod 2) missing := by
+  let h2q : 2 ∣ q := dvd_trans (by norm_num : 2 ∣ 4) h4q
+  let φ : ZMod q →+* ZMod 2 := ZMod.castHom h2q (ZMod 2)
+  have heven := triangular_even_of_four_dvd q h4q
+  have htri : φ (((q * (q - 1) / 2 : ℕ) : ZMod q)) = 0 := by
+    obtain ⟨k, hk⟩ := heven
+    rw [hk, Nat.cast_add, map_add]
+    have htwo : (2 : ZMod 2) = 0 := by decide
+    calc
+      φ (k : ZMod q) + φ (k : ZMod q) = 2 * φ (k : ZMod q) := (two_mul _).symm
+      _ = 0 := by rw [htwo, zero_mul]
+  have htwoMap : φ (2 : ZMod q) = 0 := by
+    simpa only [map_ofNat] using (show (2 : ZMod 2) = 0 by decide)
+  intro heq
+  have h := congrArg φ hdisp
+  rw [map_sub, heq, sub_self, map_sub, map_mul, htwoMap, zero_mul,
+    map_add, htri, map_one, zero_add] at h
+  have hnegOne : -(1 : ZMod 2) = 1 := by decide
+  rw [zero_sub, hnegOne] at h
+  exact zero_ne_one h
+
+/-- Direct cyclic-code form: collision mass one produces a duplicate/missing
+pair crossing the parity partition. -/
+theorem exists_paritySeparated_duplicateMissing_of_collision_eq_one
+    {q : ℕ} [NeZero q] (hq : 2 ≤ q) (h4q : 4 ∣ q) {a : ZMod q}
+    [DecidableEq (sizeTwoAllowedDifference q a)]
+    (ha : a ≠ -1 - a) (hq1 : (1 : ZMod q) ≠ 0)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x : ZMod q) (t : sizeTwoAllowedDifference q a)
+    (hcollision :
+      (∑ u : sizeTwoAllowedDifference q a,
+        (sizeTwoCyclicTargetDifferenceMultiplicity code x t u).choose 2) = 1) :
+    ∃ duplicate missing : sizeTwoAllowedDifference q a,
+      duplicate ≠ missing ∧
+      (∀ u : sizeTwoAllowedDifference q a,
+        sizeTwoCyclicTargetDifferenceMultiplicity code x t u =
+          if u = duplicate then 2 else if u = missing then 0 else 1) ∧
+      ZMod.castHom (dvd_trans (by norm_num : 2 ∣ 4) h4q) (ZMod 2) duplicate.1 ≠
+        ZMod.castHom (dvd_trans (by norm_num : 2 ∣ 4) h4q) (ZMod 2) missing.1 := by
+  obtain ⟨duplicate, missing, hne, hprofile, hdisp⟩ :=
+    exists_singleDuplicateMissing_displacement_of_collision_eq_one
+      hq ha hq1 code x t hcollision
+  exact ⟨duplicate, missing, hne, hprofile,
+    sizeTwoCyclic_singleDuplicateMissing_parity_ne h4q hdisp⟩
+
+end
+
+end Erdos85
+
+#print axioms Erdos85.sizeTwoCyclic_singleDuplicateMissing_parity_ne
+#print axioms
+  Erdos85.exists_paritySeparated_duplicateMissing_of_collision_eq_one
