@@ -240,6 +240,20 @@ theorem MuNegFiveExplicitRowParameterLedger.zeroThree_internal_iff_oddOffset
   have := Finset.ext_iff.mp hAO j
   simpa [A, O] using this
 
+theorem muNegFiveZeroThreeFixedOwner_shape :
+    ∀ e : Fin 72, muNegFiveZeroThreeActiveVariable? e = none →
+      (((muNegFiveZeroThreeOwnerAt e).1 < 8 ∧
+          (muNegFiveZeroThreeOwnerAt e).2 < 8 ∧
+          ((muNegFiveZeroThreeOwnerAt e).2 : ZMod 8) -
+            ((muNegFiveZeroThreeOwnerAt e).1 : ZMod 8) = 4) ∨
+        (8 ≤ (muNegFiveZeroThreeOwnerAt e).1 ∧
+          (muNegFiveZeroThreeOwnerAt e).1 < 16 ∧
+          8 ≤ (muNegFiveZeroThreeOwnerAt e).2 ∧
+          (muNegFiveZeroThreeOwnerAt e).2 < 16 ∧
+          (((muNegFiveZeroThreeOwnerAt e).2 - 8 : Nat) : ZMod 8) -
+            (((muNegFiveZeroThreeOwnerAt e).1 - 8 : Nat) : ZMod 8) = 4)) := by
+  native_decide
+
 theorem muNegFiveZeroThreeOwnerEndpoints_ne
     (hab : a ≠ b)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
@@ -516,6 +530,69 @@ theorem exteriorPairGraph_cycle_iff_antipode_of_odd_defect
       rw [hfour] at hc
       revert hc
       decide
+
+theorem muNegFiveZeroThreeOwnerGeometry_of_rowLedgers
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    {M₁ M₂ : Matrix (ZMod 8) (ZMod 8) ℤ}
+    {fu gu fv gv : ZMod 8 → ℤ}
+    (Lu : MuNegFiveExplicitRowParameterLedger
+      (fun i j ↦ (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ)
+        (u i) (u j)) M₁ fu gu 0 3)
+    (Lv : MuNegFiveExplicitRowParameterLedger
+      (fun i j ↦ (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ)
+        (v i) (v j)) M₂ fv gv 0 3) :
+    MuNegFiveZeroThreeOwnerAvailability G c u v ∧
+      MuNegFiveZeroThreeExteriorOwnerCoverage G c u v := by
+  have hDu : ∀ i j : ZMod 8,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (u i) (u j) ↔
+        j - i = 1 ∨ j - i = 3 ∨ j - i = 5 ∨ j - i = 7 := by
+    intro i j
+    simpa [SimpleGraph.adjMatrix_apply] using
+      (Lu.zeroThree_internal_iff_oddOffset i j)
+  have hDv : ∀ i j : ZMod 8,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (v i) (v j) ↔
+        j - i = 1 ∨ j - i = 3 ∨ j - i = 5 ∨ j - i = 7 := by
+    intro i j
+    simpa [SimpleGraph.adjMatrix_apply] using
+      (Lv.zeroThree_internal_iff_oddOffset i j)
+  have hRu := exteriorPairGraph_cycle_iff_antipode_of_odd_defect
+    G c hfree u huinj hu hDu
+  have hRv := exteriorPairGraph_cycle_iff_antipode_of_odd_defect
+    G c hfree v hvinj hv hDv
+  have hfixed : ∀ e : Fin 72,
+      muNegFiveZeroThreeActiveVariable? e = none →
+      (exteriorPairGraph G c.supp).Adj
+        (muNegFiveZeroThreeCodeSub G c u v
+          (muNegFiveZeroThreeOwnerAt e).1)
+        (muNegFiveZeroThreeCodeSub G c u v
+          (muNegFiveZeroThreeOwnerAt e).2) := by
+    intro e he
+    rcases muNegFiveZeroThreeFixedOwner_shape e he with hleft | hright
+    · simpa only [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
+        if_pos hleft.1, if_pos hleft.2.1] using
+        (hRu _ _).mpr hleft.2.2
+    · simpa only [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
+        if_neg (by omega : ¬ (muNegFiveZeroThreeOwnerAt e).1 < 8),
+        if_neg (by omega : ¬ (muNegFiveZeroThreeOwnerAt e).2 < 8)] using
+        (hRv _ _).mpr hright.2.2.2.2
+  have hsupport := muNegFiveZeroThreeCandidateSupport_of_antipode G c u v
+    (fun i j h ↦ (hRu i j).mp h) (fun i j h ↦ (hRv i j).mp h)
+  have hcomplete : MuNegFiveZeroThreeOwnerPairComplete G c u v :=
+    muNegFiveZeroThreeOwnerPairComplete_of_candidateSupport
+      G c a b u v hsize hab huinj hvinj hurange hvrange hsupport
+  exact ⟨muNegFiveZeroThreeOwnerAvailability_of_fixedExterior G c u v
+      hfree hfixed,
+    muNegFiveZeroThreeExteriorOwnerCoverage_of_pairComplete G c u v
+      hfree hreg hcard hsize hcomplete⟩
 
 theorem muNegFiveZeroThreeOwnerVertex_adj_of_contains
     {e : Fin 72} {z : V}
@@ -984,6 +1061,7 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeCandidateSupport_of_antipode
 #print axioms Erdos85.exteriorPairGraph_cycle_iff_antipode_of_odd_defect
 #print axioms Erdos85.MuNegFiveExplicitRowParameterLedger.zeroThree_internal_iff_oddOffset
+#print axioms Erdos85.muNegFiveZeroThreeOwnerGeometry_of_rowLedgers
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_unique
