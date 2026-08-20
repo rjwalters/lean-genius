@@ -153,6 +153,80 @@ theorem sizeTwoCyclicBaseResolvedRoute_card_column_sum
     _ = sizeTwoCyclicTargetDifferenceMultiplicity code y u t :=
       sizeTwoCyclicBaseResolvedRoute_card_sum code y u t
 
+/-- The fiber blocks are not independent.  For a fixed source cell and
+target base, exactly one target-difference block contains the route when the
+relative row is admissible, and none does at either moving hole. -/
+theorem sizeTwoCyclicBaseResolvedRoute_card_sum_targetDifferences
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x y : ZMod q) (t : sizeTwoAllowedDifference q a) :
+    (∑ u : sizeTwoAllowedDifference q a,
+      Fintype.card (SizeTwoCyclicBaseResolvedRoute code x t y u)) =
+        if t.1 ≠ y - x ∧ t.1 ≠ (y - x) - 1 then 1 else 0 := by
+  classical
+  let Routes := Σ u : sizeTwoAllowedDifference q a,
+    SizeTwoCyclicBaseResolvedRoute code x t y u
+  let Rows := {r : SizeTwoAdmissibleTargetRow q t.1 // x + r.1 = y}
+  let e : Routes ≃ Rows := {
+    toFun := fun p => ⟨p.2.1, p.2.2.1⟩
+    invFun := fun r =>
+      ⟨code.targetDifference x t r.1, ⟨r.1, r.2, rfl⟩⟩
+    left_inv := fun p => by
+      rcases p with ⟨u, r, hy, hu⟩
+      subst u
+      rfl
+    right_inv := fun r => by rfl }
+  rw [show (∑ u : sizeTwoAllowedDifference q a,
+      Fintype.card (SizeTwoCyclicBaseResolvedRoute code x t y u)) =
+        Fintype.card Routes from (Fintype.card_sigma).symm,
+    Fintype.card_congr e]
+  by_cases h : t.1 ≠ y - x ∧ t.1 ≠ (y - x) - 1
+  · rw [if_pos h]
+    let r0 : Rows := ⟨⟨y - x, h⟩, by
+      change x + (y - x) = y
+      abel⟩
+    letI : Unique Rows := {
+      default := r0
+      uniq := by
+        intro r
+        apply Subtype.ext
+        apply Subtype.ext
+        calc
+          r.1.1 = -x + (x + r.1.1) := by abel
+          _ = -x + y := by rw [r.2]
+          _ = y - x := by abel }
+    exact Fintype.card_unique
+  · rw [if_neg h]
+    haveI : IsEmpty Rows := ⟨by
+      intro r
+      apply h
+      have rval : r.1.1 = y - x := by
+        calc
+          r.1.1 = -x + (x + r.1.1) := by abel
+          _ = -x + y := by rw [r.2]
+          _ = y - x := by abel
+      simpa [rval] using r.1.2⟩
+    exact Fintype.card_eq_zero
+
+/-- The transposed partition law: fixing the two bases and the target
+difference also selects exactly one source-difference fiber away from the
+two reverse moving holes. -/
+theorem sizeTwoCyclicBaseResolvedRoute_card_sum_sourceDifferences
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x y : ZMod q) (u : sizeTwoAllowedDifference q a) :
+    (∑ t : sizeTwoAllowedDifference q a,
+      Fintype.card (SizeTwoCyclicBaseResolvedRoute code x t y u)) =
+        if u.1 ≠ x - y ∧ u.1 ≠ (x - y) - 1 then 1 else 0 := by
+  calc
+    _ = ∑ t : sizeTwoAllowedDifference q a,
+        Fintype.card (SizeTwoCyclicBaseResolvedRoute code y u x t) := by
+      apply Finset.sum_congr rfl
+      intro t _
+      exact sizeTwoCyclicBaseResolvedRoute_card_symm code x t y u
+    _ = _ :=
+      sizeTwoCyclicBaseResolvedRoute_card_sum_targetDifferences code y x u
+
 end
 
 end Erdos85
@@ -161,3 +235,7 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicBaseResolvedRoute_card_symm
 #print axioms Erdos85.sizeTwoCyclicBaseResolvedRoute_card_sum
 #print axioms Erdos85.sizeTwoCyclicBaseResolvedRoute_card_column_sum
+#print axioms
+  Erdos85.sizeTwoCyclicBaseResolvedRoute_card_sum_targetDifferences
+#print axioms
+  Erdos85.sizeTwoCyclicBaseResolvedRoute_card_sum_sourceDifferences
