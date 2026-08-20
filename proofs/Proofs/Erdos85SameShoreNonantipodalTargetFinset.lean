@@ -101,7 +101,7 @@ theorem h305SameShoreNonantipodalTarget_exists_oddCoordinates
     (a : R.edgeFinset)
     (ha : a ∈ h305SameShoreNonantipodalTargetFinset R u hmode) :
     ∃ i j : ZMod 8, a.1.toFinset = {u i, u j} ∧
-      (j - i).val % 2 = 1 := by
+      (j - i = 1 ∨ j - i = 3 ∨ j - i = 5 ∨ j - i = 7) := by
   classical
   have hatype : a ∈ shoreTypeEdgeFinset R
       ((Finset.univ : Finset (ZMod 8)).image u) 2 :=
@@ -112,13 +112,13 @@ theorem h305SameShoreNonantipodalTarget_exists_oddCoordinates
     h305_typeTwoEdge_exists_coordinate_endpoints R u hmode a hatype
   refine ⟨i, j, haij, ?_⟩
   rcases hoff with h1 | h3 | h4 | h5 | h7
-  · rw [h1]; decide
-  · rw [h3]; decide
+  · exact Or.inl h1
+  · exact Or.inr (Or.inl h3)
   · exact False.elim (han
       (mem_h305AntipodalCenterFinset_of_offset_four
         R u huinj hmode a i j haij h4))
-  · rw [h5]; decide
-  · rw [h7]; decide
+  · exact Or.inr (Or.inr (Or.inl h5))
+  · exact Or.inr (Or.inr (Or.inr h7))
 
 end
 
