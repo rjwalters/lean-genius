@@ -455,9 +455,11 @@ points and blocks, `|V(G)|`, its point graph `T` is 6-regular, and
 G = T union F,       deg(F) = q-6.
 ```
 
-This is not merely an abstract alternative.  Direct evaluation of the checked
-q=7 Boza witness gives three triangles through every vertex.  Hence its
-triangular shadow is the point graph of a symmetric `48_3` linear
+This is not merely an abstract alternative.  The kernel-checked theorems
+`boza48Graph_localTriangleEdges` and
+`boza48Graph_triangleFreeEdgeGraph_degree` show that the q=7 Boza witness has
+three triangles through every vertex and a 1-regular triangle-free shadow.
+Hence its triangular shadow is the point graph of a symmetric `48_3` linear
 configuration and its triangle-free shadow is a perfect matching.  This
 repackages the known graph as
 
