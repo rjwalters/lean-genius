@@ -75,6 +75,34 @@ theorem h305_sixteen_cubicFiber_squareMass_ge_1100
     1100 ≤ 4 * S25 + 4 * S16 + 8 * S17 := by
   omega
 
+/-- Six bounded values of total mass 24 have square mass at least 96, with
+equality only when all six values equal four. -/
+theorem six_cubicValues_sum_twentyFour_minimum
+    (c : ℕ → ℕ)
+    (hcard : ∑ t ∈ Finset.range 7, c t = 6)
+    (hsum : ∑ t ∈ Finset.range 7, t * c t = 24) :
+    96 ≤ ∑ t ∈ Finset.range 7, t ^ 2 * c t := by
+  norm_num [Finset.sum_range_succ] at hcard hsum ⊢
+  omega
+
+theorem six_cubicValues_sum_twentyFour_eq_minimum
+    (c : ℕ → ℕ)
+    (hcard : ∑ t ∈ Finset.range 7, c t = 6)
+    (hsum : ∑ t ∈ Finset.range 7, t * c t = 24)
+    (hsq : ∑ t ∈ Finset.range 7, t ^ 2 * c t ≤ 96) :
+    c 0 = 0 ∧ c 1 = 0 ∧ c 2 = 0 ∧ c 3 = 0 ∧
+      c 4 = 6 ∧ c 5 = 0 ∧ c 6 = 0 := by
+  norm_num [Finset.sum_range_succ] at hcard hsum hsq ⊢
+  omega
+
+/-- The four `24`-budget fibers and twelve residual `17`-budget fibers of
+an antipodal target have doubled residual square mass at least 1092. -/
+theorem h305_antipodal_sixteen_cubicFiber_squareMass_ge_1092
+    (S24 S17 : ℕ)
+    (h24 : 96 ≤ S24) (h17 : 59 ≤ S17) :
+    1092 ≤ 4 * S24 + 12 * S17 := by
+  omega
+
 end Erdos85
 
 #print axioms Erdos85.six_cubicValues_sum_twentyFive_minimum
@@ -84,3 +112,6 @@ end Erdos85
 #print axioms Erdos85.five_cubicValues_sum_seventeen_minimum
 #print axioms Erdos85.five_cubicValues_sum_seventeen_eq_minimum
 #print axioms Erdos85.h305_sixteen_cubicFiber_squareMass_ge_1100
+#print axioms Erdos85.six_cubicValues_sum_twentyFour_minimum
+#print axioms Erdos85.six_cubicValues_sum_twentyFour_eq_minimum
+#print axioms Erdos85.h305_antipodal_sixteen_cubicFiber_squareMass_ge_1092
