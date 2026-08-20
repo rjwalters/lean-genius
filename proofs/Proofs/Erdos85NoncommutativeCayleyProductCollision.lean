@@ -234,6 +234,54 @@ theorem nonbacktracking_connectionProduct_injective
     rw [← hfirst] at hpq
     exact mul_left_cancel hpq
 
+/-- **Exact noncommutative Sidon characterization.**  An inverse-closed
+Cayley graph is C4-free exactly when multiplication is injective on its
+non-backtracking ordered connection pairs. -/
+theorem not_containsC4_iff_nonbacktracking_connectionProduct_injective
+    {Γ : Type*} [Group Γ]
+    (S : Γ → Prop)
+    (hinv : ∀ g, S g ↔ S g⁻¹)
+    (hone : ¬ S 1) :
+    (¬ containsC4 Γ (invClosedCayleyGraph S hinv hone)) ↔
+      Function.Injective (fun p : {p : Γ × Γ //
+        S p.1 ∧ S p.2 ∧ p.1 * p.2 ≠ 1} => p.1.1 * p.1.2) := by
+  constructor
+  · exact nonbacktracking_connectionProduct_injective S hinv hone
+  · intro hInjective hc4
+    obtain ⟨f, hf, hadj⟩ := hc4
+    let G := invClosedCayleyGraph S hinv hone
+    have h01 : G.Adj (f 0) (f 1) := hadj 0 1 C4_adj_zero_one
+    have h12 : G.Adj (f 1) (f 2) := hadj 1 2 C4_adj_one_two
+    have h03 : G.Adj (f 0) (f 3) :=
+      (hadj 3 0 C4_adj_three_zero).symm
+    have h32 : G.Adj (f 3) (f 2) :=
+      (hadj 2 3 C4_adj_two_three).symm
+    have h02 : f 0 ≠ f 2 := by
+      intro h
+      exact (by decide : (0 : Fin 4) ≠ 2) (hf h)
+    let p : {p : Γ × Γ // S p.1 ∧ S p.2 ∧ p.1 * p.2 ≠ 1} :=
+      ⟨((f 0)⁻¹ * f 1, (f 1)⁻¹ * f 2), h01, h12, by
+        intro hp
+        have hp' := congrArg (fun z => f 0 * z) hp
+        apply h02
+        have hpEq : f 2 = f 0 := by simpa [mul_assoc] using hp'
+        exact hpEq.symm⟩
+    let q : {p : Γ × Γ // S p.1 ∧ S p.2 ∧ p.1 * p.2 ≠ 1} :=
+      ⟨((f 0)⁻¹ * f 3, (f 3)⁻¹ * f 2), h03, h32, by
+        intro hq
+        have hq' := congrArg (fun z => f 0 * z) hq
+        apply h02
+        have hqEq : f 2 = f 0 := by simpa [mul_assoc] using hq'
+        exact hqEq.symm⟩
+    have hpqProduct : p.1.1 * p.1.2 = q.1.1 * q.1.2 := by
+      simp [p, q, mul_assoc]
+    have hpq : p = q := hInjective hpqProduct
+    have hfirst : (f 0)⁻¹ * f 1 = (f 0)⁻¹ * f 3 := by
+      exact congrArg (fun z => z.1.1) hpq
+    have h13 : f 1 = f 3 := by
+      exact mul_left_cancel hfirst
+    exact (by decide : (1 : Fin 4) ≠ 3) (hf h13)
+
 /-- Ordered pairs of connection elements which do not immediately
 backtrack. -/
 def nonbacktrackingConnectionPairs
@@ -709,6 +757,7 @@ end Erdos85
 #print axioms Erdos85.exists_noncentral_involution_generator_of_odd_card
 #print axioms Erdos85.containsC4_of_odd_connection_card_of_all_involutions_central
 #print axioms Erdos85.nonbacktracking_connectionProduct_injective
+#print axioms Erdos85.not_containsC4_iff_nonbacktracking_connectionProduct_injective
 #print axioms Erdos85.card_nonbacktrackingConnectionPairs
 #print axioms Erdos85.card_nonbacktracking_connectionProducts
 #print axioms Erdos85.card_unused_nonidentity_of_planeMinusTwo_Cayley
