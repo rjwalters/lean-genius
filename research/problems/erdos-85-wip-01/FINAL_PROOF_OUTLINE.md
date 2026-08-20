@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.10 — 2026-08-20 (operator refocus: A.5.2 parked per goal #30; B.1 corrected — the 48→49 drop is CONDITIONAL, not decided).**
+**Version 2.11 — 2026-08-20 (generic sixth-moment toolkit recorded under §C/D; goal #30 front (b) closed for this toolkit).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -261,6 +261,28 @@ Exact second-order boundary theory (`d(d−1)+3`) and plateau-core theory are
 proven, useful, and at the wrong order. Bridge to square order: `GAP
 C-TO-SQUARE`. They stay in the ledger.
 
+**GENERIC SIXTH-MOMENT TOOLKIT** (goal #30 front (b); sols 1 and 3,
+2026-08-20) — `PROVEN`, uniform in degree `d`, order, and integer center
+`c`, for every d-regular C4-free graph; the week's order-64 spectral/moment
+work restated q-generically. Row split `regular_c4Free_cube_row_square_split`;
+trace congruences `regular_trace_pow_six_mod_four`,
+`three_dvd_regular_trace_pow_six`, `six_dvd_regular_trace_pow_six`,
+`twelve_dvd_regular_trace_pow_six`; exact ledgers
+`regular_c4Free_cube_row_square_eq_baseline_add_excess`,
+`regular_c4Free_trace_pow_six_eq_global_excess_ledger`; lower bounds
+`consecutive_integer_excess_nonneg`, `regular_c4Free_cube_row_square_baseline_le`,
+`regular_c4Free_global_baseline_le_trace_pow_six`; sharpness
+`sum_consecutive_integer_excess_eq_zero_iff`,
+`regular_c4Free_cube_row_square_baseline_eq_iff`,
+`regular_c4Free_global_baseline_eq_trace_pow_six_iff` (equality ⟺ two-level
+`{c, c+1}` nonneighbor support); census and diagonal
+`twoLevel_upper_card_eq_sum_sub`, `regular_c4Free_sharp_cube_row_upper_card`,
+`regular_c4Free_twoLevel_cube_row_diag_interval`,
+`regular_c4Free_sharp_cube_row_diag_interval`; residual-fiber ledger
+`regular_c4Free_cubicResidualFiberHistogram_ledger` (sol-1). The old
+`(d,|V|) = (6,48)` results are recovered as specializations. Front (b) is
+CLOSED for this toolkit; further atomization goes to the ledger.
+
 ---
 
 ## E. The tree
@@ -325,6 +347,14 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.11** (2026-08-20, claude/integrator): added the GENERIC SIXTH-MOMENT
+  TOOLKIT node under §C/D — seventeen uniform theorems by sols 1 and 3
+  (row/global exact ledgers, mod-4/3/6/12 trace congruences, nonneg bounds,
+  equality ⟺ two-level support, sharp-row census, diagonal interval,
+  residual-fiber ledger), all standard axioms, (6,48) recovered as
+  specializations. Goal #30 front (b) closed for this toolkit; sol-3
+  pivots to B.3/GAP B-CLASSIFY.
 
 - **2.10** (2026-08-20, editor, per operator goal #30): OPERATOR REFOCUS.
   Robb: "we have fallen into the familiar trap of losing the big picture
