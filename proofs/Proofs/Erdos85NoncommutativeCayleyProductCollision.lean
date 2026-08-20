@@ -311,6 +311,64 @@ theorem exists_unused_involution_of_odd_planeMinusTwo_Cayley
       _ = 1 := mul_inv_cancel g
   exact ⟨g, hgne, hgsq, hg⟩
 
+/-- Every odd-cardinality inverse-closed connection set which omits the
+identity contains a nontrivial involution. -/
+theorem exists_connection_involution_of_odd_card
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hodd : Odd A.card) :
+    ∃ t, t ∈ A ∧ t ≠ 1 ∧ t * t = 1 := by
+  classical
+  let I := {g : Γ // g ∈ A}
+  let f : I → I := fun g => ⟨g.1⁻¹, (hinv g.1).mp g.2⟩
+  have hf : Function.Involutive f := by
+    intro g
+    apply Subtype.ext
+    simp [f]
+  have hIodd : Odd (Fintype.card I) := by
+    simpa [I] using hodd
+  obtain ⟨t, ht⟩ := everyInvolutionHasFixedPoint_of_odd hIodd f hf
+  have htinv : t.1⁻¹ = t.1 := congrArg Subtype.val ht
+  have htne : t.1 ≠ 1 := by
+    intro htone
+    exact hone (htone ▸ t.2)
+  have htsq : t.1 * t.1 = 1 := by
+    calc
+      t.1 * t.1 = t.1 * t.1⁻¹ := congrArg (t.1 * ·) htinv.symm
+      _ = 1 := mul_inv_cancel t.1
+  exact ⟨t.1, t.2, htne, htsq⟩
+
+/-- Consequently every odd-degree undirected Cayley graph contains a
+canonical fixed-point-free involutory matching layer, given by right
+multiplication by an involutory connection element. -/
+theorem exists_connection_perfectMatchingLayer_of_odd_card
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hodd : Odd A.card) :
+    ∃ t, t ∈ A ∧ t ≠ 1 ∧ t * t = 1 ∧
+      Function.Involutive (fun x : Γ => x * t) ∧
+      ∀ x, x * t ≠ x ∧
+        (invClosedCayleyGraph (· ∈ A) hinv hone).Adj x (x * t) := by
+  obtain ⟨t, htA, htne, htsq⟩ :=
+    exists_connection_involution_of_odd_card A hinv hone hodd
+  refine ⟨t, htA, htne, htsq, ?_, ?_⟩
+  · intro x
+    change (x * t) * t = x
+    rw [mul_assoc, htsq, mul_one]
+  · intro x
+    constructor
+    · intro hfix
+      apply htne
+      change x * t = x at hfix
+      have hfix' : x * t = x * 1 := by simpa using hfix
+      exact mul_left_cancel hfix'
+    · change (x⁻¹ * (x * t)) ∈ A
+      simpa using htA
+
 end Erdos85
 
 #print axioms Erdos85.invClosedCayley_containsC4_of_product_collision
@@ -322,3 +380,5 @@ end Erdos85
 #print axioms Erdos85.unusedNonidentityConnectionProducts_inv_mem
 #print axioms Erdos85.exists_unused_nontrivial_involution_of_odd_card
 #print axioms Erdos85.exists_unused_involution_of_odd_planeMinusTwo_Cayley
+#print axioms Erdos85.exists_connection_involution_of_odd_card
+#print axioms Erdos85.exists_connection_perfectMatchingLayer_of_odd_card
