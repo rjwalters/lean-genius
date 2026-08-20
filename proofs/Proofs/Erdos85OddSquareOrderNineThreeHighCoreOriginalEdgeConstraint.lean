@@ -1,6 +1,7 @@
 import Proofs.Erdos85DefectPathOwner
 import Proofs.Erdos85OddSquareOrderNineThreeHighBinOneDefectTypes
 import Proofs.Erdos85LocalTriangleParity
+import Proofs.Erdos85SquareOrderLowTriangleDefectIdentity
 
 /-! # Original-edge constraint on the q = 9 three-high ordinary core
 
@@ -103,6 +104,55 @@ theorem squareOrderNine_binOne_triangleFree_degree_odd
   rw [hyDegree] at hmod
   exact Nat.odd_iff.mpr (by omega)
 
+/-- The triangle-corrected two-ball identity leaves exactly four local
+original/antipodal profiles at a q=9 bin-one vertex. -/
+theorem squareOrderNine_binOne_triangle_defect_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81) {y : V}
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1) :
+    ((antipodalNeighbors G y).card = 0 ∧
+        (triangleFreeNeighbors G y).card = 7 ∧
+        (G.induce (G.neighborSet y)).edgeFinset.card = 1) ∨
+      ((antipodalNeighbors G y).card = 2 ∧
+        (triangleFreeNeighbors G y).card = 5 ∧
+        (G.induce (G.neighborSet y)).edgeFinset.card = 2) ∨
+      ((antipodalNeighbors G y).card = 4 ∧
+        (triangleFreeNeighbors G y).card = 3 ∧
+        (G.induce (G.neighborSet y)).edgeFinset.card = 3) ∨
+      ((antipodalNeighbors G y).card = 6 ∧
+        (triangleFreeNeighbors G y).card = 1 ∧
+        (G.induce (G.neighborSet y)).edgeFinset.card = 4) := by
+  have hyLow : y ∈ (Finset.univ : Finset V) \ squareOrderHighVertices G 9 :=
+    (Finset.mem_filter.mp hy).1
+  have hyNotHigh : y ∉ squareOrderHighVertices G 9 :=
+    (Finset.mem_sdiff.mp hyLow).2
+  have hyDegree : G.degree y = 9 := by
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (by norm_num) hmin hcover hcard y with hlo | hhi
+    · exact hlo
+    · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  have hinc : squareOrderHighIncidenceCount G 9 y = 1 :=
+    (Finset.mem_filter.mp hy).2
+  have hdefect := squareOrder_defectDegree_add_highIncidence_eq_pred
+    G hfree (by norm_num) hmin hcover hcard hyDegree
+  rw [hinc] at hdefect
+  have hsplit := congrArg Finset.card
+    (secondOrderDefectGraph_neighborFinset G y)
+  rw [Finset.card_union_of_disjoint
+    (disjoint_antipodal_triangleFreeNeighbors G y),
+    (secondOrderDefectGraph G).card_neighborFinset_eq_degree] at hsplit
+  have htriangle :=
+    squareOrder_low_antipodal_add_highIncidence_add_one_eq_two_mul_localEdges
+      G hfree (by norm_num) hmin hcover hcard hyDegree
+  rw [hinc] at htriangle
+  omega
+
 end
 
 end Erdos85
@@ -110,3 +160,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_binOne_not_both_originalEdges_of_sameHigh_twoPath
 #print axioms Erdos85.squareOrderNine_binOne_sameHigh_defectNeighbors_original_card_le_one
 #print axioms Erdos85.squareOrderNine_binOne_triangleFree_degree_odd
+#print axioms Erdos85.squareOrderNine_binOne_triangle_defect_profile
