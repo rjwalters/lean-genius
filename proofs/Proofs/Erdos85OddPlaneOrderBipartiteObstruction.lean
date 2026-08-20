@@ -211,4 +211,31 @@ theorem planeMinusTwo_localTriangleEdges_nonempty
   rw [hzero] at hid
   omega
 
+/-- For odd `q`, every local neighborhood matching at the plane-minus-two
+order is nonempty but not perfect.  Its edge count lies between `1` and
+`(q-1)/2`; equivalently every vertex lies in a triangle and also has a
+triangle-free incident edge. -/
+theorem planeMinusTwo_localTriangleEdge_card_bounds_of_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (q : ℕ) (hq : 4 ≤ q) (hodd : Odd q)
+    (horder : Fintype.card V + 1 = q * q)
+    (hregular : ∀ v : V, G.degree v = q)
+    (hfree : ¬ containsC4 V G) (x : V) :
+    1 ≤ (G.induce (G.neighborSet x)).edgeFinset.card ∧
+      (G.induce (G.neighborSet x)).edgeFinset.card ≤ (q - 1) / 2 := by
+  have hlocalNonempty := planeMinusTwo_localTriangleEdges_nonempty
+    G q hq horder hregular hfree x
+  have htriangleFree := triangleFreeNeighbors_nonempty_of_odd_degree
+    G hfree (x := x) (by simpa [hregular x] using hodd)
+  have hid := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree x
+  rw [hregular x] at hid
+  have hlocalPos := Finset.card_pos.mpr hlocalNonempty
+  have htriangleFreePos := Finset.card_pos.mpr htriangleFree
+  constructor
+  · exact hlocalPos
+  · omega
+
 end Erdos85
