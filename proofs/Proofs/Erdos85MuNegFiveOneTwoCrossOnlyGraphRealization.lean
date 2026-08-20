@@ -59,6 +59,31 @@ theorem muNegFiveOneTwoCrossOnly_ownerAt_injective :
   revert e f
   native_decide
 
+theorem muNegFiveOneTwoCrossOnly_ownerContains_embed
+    (e : Fin 64) (x : Fin 16) :
+    muNegFiveZeroThreeOwnerContains
+        (muNegFiveOneTwoCrossOnlyToZeroThree e) x =
+      muNegFiveOneTwoCrossOnlyOwnerContains e x := by
+  revert e x
+  native_decide
+
+theorem muNegFiveOneTwoCrossOnly_ownerTargetContains_embed
+    (e : Fin 64) (x : Fin 16) :
+    muNegFiveZeroThreeOwnerTargetContains
+        (muNegFiveOneTwoCrossOnlyToZeroThree e) x =
+      muNegFiveOneTwoCrossOnlyOwnerTargetContains e x := by
+  revert e x
+  native_decide
+
+theorem muNegFiveOneTwoCrossOnly_ownerCompatible_embed
+    (e f : Fin 64) :
+    muNegFiveZeroThreeOwnerCompatible
+        (muNegFiveOneTwoCrossOnlyToZeroThree e)
+        (muNegFiveOneTwoCrossOnlyToZeroThree f) =
+      muNegFiveOneTwoCrossOnlyOwnerCompatible e f := by
+  revert e f
+  native_decide
+
 variable {V : Type*} [Fintype V] [DecidableEq V]
   (G : SimpleGraph V) [DecidableRel G.Adj]
   [DecidableRel (antipodalGraph G).Adj]
@@ -122,6 +147,40 @@ theorem muNegFiveOneTwoCrossOnlyGraphHit_ends
   rintro ⟨z, w, he, hf, _⟩
   exact ⟨⟨z, he⟩, ⟨w, hf⟩⟩
 
+section Shores
+
+variable [DecidableEq (G.induce c.supp).ConnectedComponent]
+  (a b : (G.induce c.supp).ConnectedComponent)
+  (u v : ZMod 8 → c.supp)
+
+theorem muNegFiveOneTwoCrossOnlyGraphHit_irrefl
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ e, ¬ muNegFiveOneTwoCrossOnlyGraphHit G c u v e e := by
+  intro e
+  exact muNegFiveZeroThreeGraphHit_irrefl G c a b u v hfree hab
+    huinj hvinj hurange hvrange (muNegFiveOneTwoCrossOnlyToZeroThree e)
+
+theorem muNegFiveOneTwoCrossOnlyOwnerCompatible_of_graphHit
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    {e f : Fin 64}
+    (hef : muNegFiveOneTwoCrossOnlyGraphHit G c u v e f) :
+    muNegFiveOneTwoCrossOnlyOwnerCompatible e f = true := by
+  rw [← muNegFiveOneTwoCrossOnly_ownerCompatible_embed]
+  exact muNegFiveZeroThreeOwnerCompatible_of_graphHit G c a b u v
+    hfree hab huinj hvinj hurange hvrange hu hv hef
+
+end Shores
+
 end
 
 end Erdos85
@@ -129,3 +188,4 @@ end Erdos85
 #print axioms Erdos85.muNegFiveOneTwoCrossOnly_ownerAt_embed
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyToZeroThree_injective
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyGraphHit_symm
+#print axioms Erdos85.muNegFiveOneTwoCrossOnlyOwnerCompatible_of_graphHit
