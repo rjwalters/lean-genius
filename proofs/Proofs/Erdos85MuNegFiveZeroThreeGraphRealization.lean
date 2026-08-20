@@ -166,6 +166,15 @@ theorem muNegFiveZeroThreeOwnerAt_injective :
   revert e f
   native_decide
 
+theorem muNegFiveZeroThreeCandidatePair_lookup :
+    ∀ x, x < 16 → ∀ y, y < 16 →
+      (muNegFiveZeroThreeCandidatePair x y = true ∨
+        muNegFiveZeroThreeCandidatePair y x = true) →
+      ∃ e : Fin 72,
+        muNegFiveZeroThreeOwnerAt e = (x, y) ∨
+          muNegFiveZeroThreeOwnerAt e = (y, x) := by
+  native_decide
+
 theorem muNegFiveZeroThreeOwnerEndpoints_ne
     (hab : a ≠ b)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
@@ -333,6 +342,40 @@ theorem muNegFiveZeroThreeExteriorOwnerCoverage_of_pairComplete
       exact hxmem.1.symm
     · rw [h]
       exact hymem.1.symm
+
+theorem muNegFiveZeroThreeOwnerPairComplete_of_candidateSupport
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hsupport : ∀ x, x < 16 → ∀ y, y < 16 →
+      (exteriorPairGraph G c.supp).Adj
+        (muNegFiveZeroThreeCodeSub G c u v x)
+        (muNegFiveZeroThreeCodeSub G c u v y) →
+      muNegFiveZeroThreeCandidatePair x y = true ∨
+        muNegFiveZeroThreeCandidatePair y x = true) :
+    MuNegFiveZeroThreeOwnerPairComplete G c u v := by
+  intro x y hR
+  obtain ⟨xc, hxc, hxeq⟩ := muNegFiveZeroThreeCodeSub_surjective G c a b
+    u v hsize hab huinj hvinj hurange hvrange x
+  obtain ⟨yc, hyc, hyeq⟩ := muNegFiveZeroThreeCodeSub_surjective G c a b
+    u v hsize hab huinj hvinj hurange hvrange y
+  have hRcode : (exteriorPairGraph G c.supp).Adj
+      (muNegFiveZeroThreeCodeSub G c u v xc)
+      (muNegFiveZeroThreeCodeSub G c u v yc) := by
+    rw [hxeq, hyeq]
+    exact hR
+  have hxval := congrArg Subtype.val hxeq
+  have hyval := congrArg Subtype.val hyeq
+  change muNegFiveZeroThreeCodeVertex G c u v xc = x.1 at hxval
+  change muNegFiveZeroThreeCodeVertex G c u v yc = y.1 at hyval
+  obtain ⟨e, he | he⟩ := muNegFiveZeroThreeCandidatePair_lookup
+    xc hxc yc hyc (hsupport xc hxc yc hyc hRcode)
+  · refine ⟨e, ?_⟩
+    simp only [muNegFiveZeroThreeOwnerEndpoints, he, hxval, hyval]
+  · refine ⟨e, ?_⟩
+    simpa only [muNegFiveZeroThreeOwnerEndpoints, he, hxval, hyval] using
+      (Finset.pair_comm y.1 x.1)
 
 theorem muNegFiveZeroThreeOwnerVertex_adj_of_contains
     {e : Fin 72} {z : V}
@@ -797,6 +840,7 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_inj
 #print axioms Erdos85.muNegFiveZeroThreeOwnerAvailability_of_fixedExterior
 #print axioms Erdos85.muNegFiveZeroThreeExteriorOwnerCoverage_of_pairComplete
+#print axioms Erdos85.muNegFiveZeroThreeOwnerPairComplete_of_candidateSupport
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_unique
