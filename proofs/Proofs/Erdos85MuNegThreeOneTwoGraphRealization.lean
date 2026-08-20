@@ -278,6 +278,138 @@ theorem muNegThreeGraph_hit_active
     exact muNegThreeOwnerVertex_not_defect G c hfree a b hab u v
       hurange hvrange hy hD.2
 
+/-- Intersecting cross cells cannot share a common adjacent owner. -/
+theorem muNegThreeGraph_c4_intersecting
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp) :
+    ∀ a b g, a < b → b < 64 → g < 64 →
+      g ≠ a → g ≠ b →
+      (muNegThreeCellRow a = muNegThreeCellRow b ∨
+        muNegThreeCellCol a = muNegThreeCellCol b) →
+      (min a g, max a g) ∈ muNegThreeHitPairs →
+      (min b g, max b g) ∈ muNegThreeHitPairs →
+      muNegThreeOwnerHitRel G c u v (min a g) (max a g) = true →
+      muNegThreeOwnerHitRel G c u v (min b g) (max b g) = true → False := by
+  intro a b g hab hb64 hg64 _hga _hgb hcoord _hkag _hkbg hXag hXbg
+  have hit_decode {x y : Nat}
+      (hX : muNegThreeOwnerHitRel G c u v (min x y) (max x y) = true) :
+      ∃ tx ty, MuNegThreeOwnerVertex G c u v x tx ∧
+        MuNegThreeOwnerVertex G c u v y ty ∧ G.Adj tx ty := by
+    obtain ⟨z, w, hz, hw, hzw⟩ :=
+      (muNegThreeOwnerHitRel_eq_true G c u v (min x y) (max x y)).mp hX
+    rcases le_total x y with hxy | hyx
+    · have hz' : MuNegThreeOwnerVertex G c u v x z := by
+        rwa [Nat.min_eq_left hxy] at hz
+      have hw' : MuNegThreeOwnerVertex G c u v y w := by
+        rwa [Nat.max_eq_right hxy] at hw
+      exact ⟨z, w, hz', hw', hzw⟩
+    · have hw' : MuNegThreeOwnerVertex G c u v x w := by
+        rwa [Nat.max_eq_left hyx] at hw
+      have hz' : MuNegThreeOwnerVertex G c u v y z := by
+        rwa [Nat.min_eq_right hyx] at hz
+      exact ⟨w, z, hw', hz', hzw.symm⟩
+  obtain ⟨za, zg, ha, hg, hazg⟩ := hit_decode hXag
+  obtain ⟨zb, zg', hb, hg', hbzg⟩ := hit_decode hXbg
+  have hzgeq : zg = zg' := muNegThreeOwnerVertex_unique G c hfree ca cb
+    hcab u v hurange hvrange g hg hg'
+  subst zg'
+  have hzab : za ≠ zb := by
+    intro hz
+    have := muNegThreeOwnerVertex_inj G c hfree hreg hcard hsize ca cb
+      hcab u v huinj hvinj hurange hvrange (by omega) hb64 ha (hz ▸ hb)
+    omega
+  rcases hcoord with hrow | hcol
+  · let q := (muNegThreeOwnerEndpoints G c u v a).1
+    have hqb : q = (muNegThreeOwnerEndpoints G c u v b).1 := by
+      simp [q, muNegThreeOwnerEndpoints, hrow]
+    have hzbq : G.Adj zb q := by rw [hqb]; exact hb.2.1.symm
+    have heq := commonServer_unique G hfree hzab
+      ha.2.1.symm hzbq hazg hbzg
+    have hqmem : q ∈ c.supp := by
+      exact (u (muNegThreeCellRow a : ZMod 8)).2
+    exact hg.1 (heq ▸ hqmem)
+  · let q := (muNegThreeOwnerEndpoints G c u v a).2
+    have hqb : q = (muNegThreeOwnerEndpoints G c u v b).2 := by
+      simp [q, muNegThreeOwnerEndpoints, hcol]
+    have hzbq : G.Adj zb q := by rw [hqb]; exact hb.2.2.symm
+    have heq := commonServer_unique G hfree hzab
+      ha.2.2.symm hzbq hazg hbzg
+    have hqmem : q ∈ c.supp := by
+      exact (v (muNegThreeCellCol a : ZMod 8)).2
+    exact hg.1 (heq ▸ hqmem)
+
+/-- Two disjoint cross cells cannot have two distinct common adjacent
+owners. -/
+theorem muNegThreeGraph_c4_no_two
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp) :
+    ∀ a b g h, a < b → b < 64 → g < 64 → h < 64 →
+      g ≠ h → g ≠ a → g ≠ b → h ≠ a → h ≠ b →
+      muNegThreeCellRow a ≠ muNegThreeCellRow b →
+      muNegThreeCellCol a ≠ muNegThreeCellCol b →
+      (min a g, max a g) ∈ muNegThreeHitPairs →
+      (min b g, max b g) ∈ muNegThreeHitPairs →
+      (min a h, max a h) ∈ muNegThreeHitPairs →
+      (min b h, max b h) ∈ muNegThreeHitPairs →
+      muNegThreeOwnerHitRel G c u v (min a g) (max a g) = true →
+      muNegThreeOwnerHitRel G c u v (min b g) (max b g) = true →
+      muNegThreeOwnerHitRel G c u v (min a h) (max a h) = true →
+      muNegThreeOwnerHitRel G c u v (min b h) (max b h) = true → False := by
+  intro a b g h hab hb64 hg64 hh64 hgh _ _ _ _ _ _ _ _ _ _
+    hXag hXbg hXah hXbh
+  have hit_decode {x y : Nat}
+      (hX : muNegThreeOwnerHitRel G c u v (min x y) (max x y) = true) :
+      ∃ tx ty, MuNegThreeOwnerVertex G c u v x tx ∧
+        MuNegThreeOwnerVertex G c u v y ty ∧ G.Adj tx ty := by
+    obtain ⟨z, w, hz, hw, hzw⟩ :=
+      (muNegThreeOwnerHitRel_eq_true G c u v (min x y) (max x y)).mp hX
+    rcases le_total x y with hxy | hyx
+    · have hz' : MuNegThreeOwnerVertex G c u v x z := by
+        rwa [Nat.min_eq_left hxy] at hz
+      have hw' : MuNegThreeOwnerVertex G c u v y w := by
+        rwa [Nat.max_eq_right hxy] at hw
+      exact ⟨z, w, hz', hw', hzw⟩
+    · have hw' : MuNegThreeOwnerVertex G c u v x w := by
+        rwa [Nat.max_eq_left hyx] at hw
+      have hz' : MuNegThreeOwnerVertex G c u v y z := by
+        rwa [Nat.min_eq_right hyx] at hz
+      exact ⟨w, z, hw', hz', hzw.symm⟩
+  obtain ⟨ta, tg, ha, hg, hag⟩ := hit_decode hXag
+  obtain ⟨tb, tg', hb, hg', hbg⟩ := hit_decode hXbg
+  obtain ⟨ta', th, ha', hh, hah⟩ := hit_decode hXah
+  obtain ⟨tb', th', hb', hh', hbh⟩ := hit_decode hXbh
+  have hta : ta = ta' := muNegThreeOwnerVertex_unique G c hfree ca cb
+    hcab u v hurange hvrange a ha ha'
+  have htb : tb = tb' := muNegThreeOwnerVertex_unique G c hfree ca cb
+    hcab u v hurange hvrange b hb hb'
+  have htg : tg = tg' := muNegThreeOwnerVertex_unique G c hfree ca cb
+    hcab u v hurange hvrange g hg hg'
+  have hth : th = th' := muNegThreeOwnerVertex_unique G c hfree ca cb
+    hcab u v hurange hvrange h hh hh'
+  subst ta'
+  subst tb'
+  subst tg'
+  subst th'
+  have htab : ta ≠ tb := by
+    intro heq
+    have hab' := muNegThreeOwnerVertex_inj G c hfree hreg hcard hsize ca cb
+      hcab u v huinj hvinj hurange hvrange (by omega) hb64 ha (heq ▸ hb)
+    omega
+  have htgh : tg = th := commonServer_unique G hfree htab hag hbg hah hbh
+  have hgh' := muNegThreeOwnerVertex_inj G c hfree hreg hcard hsize ca cb
+    hcab u v huinj hvinj hurange hvrange hg64 hh64 hg (htgh ▸ hh)
+  exact hgh hgh'
+
 end StructuralFields
 
 end
@@ -288,3 +420,5 @@ end Erdos85
 #print axioms Erdos85.muNegThreeOwnerHitRel_comm
 #print axioms Erdos85.muNegThreeOwnerHitRel_witness
 #print axioms Erdos85.muNegThreeGraph_hit_active
+#print axioms Erdos85.muNegThreeGraph_c4_intersecting
+#print axioms Erdos85.muNegThreeGraph_c4_no_two
