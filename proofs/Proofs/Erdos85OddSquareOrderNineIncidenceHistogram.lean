@@ -1,4 +1,4 @@
-import Proofs.Erdos85OddSquareOrderNonregularProfile
+import Proofs.Erdos85SquareOrderSectorProfile
 import Proofs.Erdos85RegularCubicResidualFiberHistogram
 
 /-! # Five-bin high-incidence census at odd square order q = 9
