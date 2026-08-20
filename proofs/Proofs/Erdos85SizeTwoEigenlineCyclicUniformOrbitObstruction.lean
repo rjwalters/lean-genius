@@ -40,6 +40,61 @@ private theorem allowedDifference_ne_reflection
   rw [map_mul, htwo, zero_mul] at this
   exact zero_ne_one this
 
+private theorem zmod_sum_eq_triangular
+    (q : ℕ) [NeZero q] :
+    (∑ z : ZMod q, z) = ((q * (q - 1) / 2 : ℕ) : ZMod q) := by
+  calc
+    (∑ z : ZMod q, z) = ∑ i : Fin q, ((i : ℕ) : ZMod q) :=
+      (Fintype.sum_equiv (ZMod.finEquiv q) _ _
+        (fun i => by
+          cases q with
+          | zero => exact (NeZero.ne 0 rfl).elim
+          | succ n =>
+              apply Fin.ext
+              exact Nat.mod_eq_of_lt i.isLt)).symm
+    _ = ((∑ i : Fin q, (i : ℕ)) : ℕ) := by simp
+    _ = ((q * (q - 1) / 2 : ℕ) : ZMod q) := by
+      congr 1
+      exact (Fin.sum_univ_eq_sum_range id q).trans (Finset.sum_range_id q)
+
+/-- Exact additive sum of the allowed difference fibers. -/
+theorem sizeTwoAllowedDifference_sum
+    (q : ℕ) [NeZero q] (a : ZMod q) (ha : a ≠ -1 - a) :
+    (∑ t : sizeTwoAllowedDifference q a, t.1) =
+      ((q * (q - 1) / 2 : ℕ) : ZMod q) + 1 := by
+  classical
+  let s := ((Finset.univ : Finset (ZMod q)).erase a).erase (-1 - a)
+  have hmem : ∀ z : ZMod q,
+      z ∈ s ↔ z ≠ a ∧ z ≠ -1 - a := by
+    intro z
+    simp [s, and_comm]
+  change (∑ t : {z : ZMod q // z ≠ a ∧ z ≠ -1 - a}, t.1) = _
+  let allowedFintype : Fintype
+      {z : ZMod q // z ≠ a ∧ z ≠ -1 - a} := by infer_instance
+  have hs := @Finset.sum_subtype (ZMod q) (ZMod q) _
+    (fun z => z ≠ a ∧ z ≠ -1 - a) allowedFintype
+    s hmem (fun z : ZMod q => z)
+  rw [← hs]
+  have hbmem : -1 - a ∈ (Finset.univ : Finset (ZMod q)).erase a := by
+    simpa [Ne.symm ha]
+  have houter := Finset.sum_erase_add
+    (Finset.univ.erase a) (fun z : ZMod q => z) hbmem
+  have hinner := Finset.sum_erase_add
+    (Finset.univ : Finset (ZMod q)) (fun z : ZMod q => z)
+      (Finset.mem_univ a)
+  have hinnerEq : (∑ z ∈ Finset.univ.erase a, z) =
+      (∑ z : ZMod q, z) - a := by
+    rw [eq_sub_iff_add_eq]
+    exact hinner
+  calc
+    (∑ z ∈ s, z) = (∑ z ∈ Finset.univ.erase a, z) - (-1 - a) := by
+      rw [eq_sub_iff_add_eq]
+      exact houter
+    _ = (∑ z : ZMod q, z) - a - (-1 - a) := by rw [hinnerEq]
+    _ = ((q * (q - 1) / 2 : ℕ) : ZMod q) + 1 := by
+      rw [zmod_sum_eq_triangular]
+      abel
+
 /-- A target source sees every source-difference orbit with multiplicity one. -/
 def SizeTwoCyclicUniformIncidenceAt
     {q : ℕ} [NeZero q] {a : ZMod q}
@@ -147,6 +202,55 @@ theorem two_mul_fiber_eq_of_uniformIncidenceAt
     hq ha code y u hu
   rw [hts] at hus
   linear_combination hus
+
+/-- When `4 ∣ q`, the allowed-fiber sum has odd mod-two projection, whereas
+every punctured routing displacement sum has even projection.  Hence no
+source row can have the all-ones incident-fiber vector. -/
+theorem not_sizeTwoCyclicUniformIncidenceAt_of_four_dvd
+    {q : ℕ} [NeZero q] (h4q : 4 ∣ q) {a : ZMod q}
+    (ha : a ≠ -1 - a) (code : SizeTwoCyclicFullPermutationCode q a)
+    (target : SizeTwoCyclicMatchingSource q a) :
+    ¬SizeTwoCyclicUniformIncidenceAt code target := by
+  intro huniform
+  have hq : 2 ≤ q := by
+    obtain ⟨k, hk⟩ := h4q
+    have hk0 : k ≠ 0 := by
+      intro hkzero
+      subst k
+      simp at hk
+      exact NeZero.ne q hk
+    omega
+  have h2q : 2 ∣ q := dvd_trans (by norm_num : 2 ∣ 4) h4q
+  let φ : ZMod q →+* ZMod 2 := ZMod.castHom h2q (ZMod 2)
+  have hsum := sizeTwoCyclicUniformIncidenceAt_fiberSum
+    hq ha code target.1 target.2 huniform
+  rw [sizeTwoAllowedDifference_sum q a ha] at hsum
+  have heven : Even (q * (q - 1) / 2) := by
+    obtain ⟨k, rfl⟩ := h4q
+    refine ⟨k * (4 * k - 1), ?_⟩
+    calc
+      4 * k * (4 * k - 1) / 2 =
+          (2 * (2 * k * (4 * k - 1))) / 2 := by congr 1 <;> ring
+      _ = 2 * k * (4 * k - 1) :=
+        Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)
+      _ = k * (4 * k - 1) + k * (4 * k - 1) := by ring
+  have hmapN : φ (((q * (q - 1) / 2 : ℕ) : ZMod q)) = 0 := by
+    obtain ⟨k, hk⟩ := heven
+    rw [hk]
+    rw [Nat.cast_add, map_add]
+    calc
+      φ (k : ZMod q) + φ (k : ZMod q) =
+          2 * φ (k : ZMod q) := (two_mul _).symm
+      _ = 0 := by rw [show (2 : ZMod 2) = 0 by decide, zero_mul]
+  have hleft : φ ((((q * (q - 1) / 2 : ℕ) : ZMod q) + 1)) = 1 := by
+    rw [map_add, hmapN, map_one, zero_add]
+  have htwo : φ (2 : ZMod q) = 0 := by
+    simpa only [map_ofNat] using (show (2 : ZMod 2) = 0 by decide)
+  have hright : φ (2 * (target.2.1 + 1)) = 0 := by
+    rw [map_mul, htwo, zero_mul]
+  have h := congrArg φ hsum
+  rw [hleft, hright] at h
+  exact one_ne_zero h
 
 /-- Difference fibers supporting at least one pointwise-uniform row. -/
 def sizeTwoCyclicUniformIncidenceFibers
@@ -258,6 +362,21 @@ theorem sizeTwoCyclicNonuniformIncidenceSources_card_ge
   change q * (q - 4) ≤ B.card
   have hsub : q - 4 ≤ (q - 2) - U.card := by omega
   exact (Nat.mul_le_mul_left q hsub).trans hcard
+
+/-- In the binary range (`4 ∣ q`), every source row is nonuniform. -/
+theorem sizeTwoCyclicNonuniformIncidenceSources_card_eq
+    {q : ℕ} [NeZero q] (h4q : 4 ∣ q) {a : ZMod q}
+    (ha : a ≠ -1 - a) (code : SizeTwoCyclicFullPermutationCode q a) :
+    (sizeTwoCyclicNonuniformIncidenceSources code).card = q * (q - 2) := by
+  classical
+  have hbad : sizeTwoCyclicNonuniformIncidenceSources code = Finset.univ := by
+    apply Finset.eq_univ_of_forall
+    intro target
+    rw [sizeTwoCyclicNonuniformIncidenceSources, Finset.mem_filter]
+    exact ⟨Finset.mem_univ _,
+      not_sizeTwoCyclicUniformIncidenceAt_of_four_dvd
+        h4q ha code target⟩
+  rw [hbad, Finset.card_univ, sizeTwoCyclicMatchingSource_card q a ha]
 
 private theorem one_le_sum_choose_two_of_sum_eq_card_of_not_all_one
     {ι : Type*} [Fintype ι] (m : ι → ℕ)
@@ -404,6 +523,29 @@ theorem sizeTwoCyclicWithinOrbitCollisionMass_ge
   (sizeTwoCyclicIncidenceCollisionMass_ge hq h2q ha code).trans
     (sizeTwoCyclicIncidenceCollisionMass_le_withinOrbitCollisionMass code)
 
+/-- Sharpened binary-family collision lower bound: because every row is
+nonuniform when `4 ∣ q`, every one of the `q(q-2)` rows contributes a
+collision. -/
+theorem sizeTwoCyclicWithinOrbitCollisionMass_ge_of_four_dvd
+    {q : ℕ} [NeZero q] (h4q : 4 ∣ q) {a : ZMod q}
+    (ha : a ≠ -1 - a) (code : SizeTwoCyclicFullPermutationCode q a) :
+    q * (q - 2) ≤
+      ∑ u : sizeTwoAllowedDifference q a,
+        ∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+          (sizeTwoCyclicMatchingOrbitMultiplicity code u e).choose 2 := by
+  have hq : 2 ≤ q := by
+    obtain ⟨k, hk⟩ := h4q
+    have hk0 : k ≠ 0 := by
+      intro hkzero
+      subst k
+      simp at hk
+      exact NeZero.ne q hk
+    omega
+  rw [← sizeTwoCyclicNonuniformIncidenceSources_card_eq h4q ha code]
+  exact (sizeTwoCyclicNonuniformIncidenceSources_card_le_collisionMass
+    hq ha code).trans
+      (sizeTwoCyclicIncidenceCollisionMass_le_withinOrbitCollisionMass code)
+
 /-- A reciprocal full code cannot realize the aggregate uniform model in
 which every difference-orbit multiplicity is one at every absolute cell. -/
 theorem not_binary_sizeTwoCyclic_uniformOrbitMultiplicity
@@ -459,3 +601,5 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicUniformIncidenceFibers_card_le_two
 #print axioms Erdos85.sizeTwoCyclicNonuniformIncidenceSources_card_ge
 #print axioms Erdos85.sizeTwoCyclicWithinOrbitCollisionMass_ge
+#print axioms Erdos85.not_sizeTwoCyclicUniformIncidenceAt_of_four_dvd
+#print axioms Erdos85.sizeTwoCyclicWithinOrbitCollisionMass_ge_of_four_dvd
