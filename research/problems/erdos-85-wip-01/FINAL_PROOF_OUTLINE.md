@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.7 — 2026-08-20 (scope caveat REPAIRED same night; honest no-callback q=8 size-two closure; sweep #8 green at 2,000 modules).**
+**Version 2.8 — 2026-08-20 (negative-lane residual enumerated honestly: seven endpoint obligations, not assembly-only).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -111,7 +111,7 @@ The seven partitions of 8 into parts ≥ 2: `[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`,
 | `[2,2,2,2]` | `EXTERNAL` — 11 assembly targets UNSAT | kissat, no certificates; the finite reduction to 11 targets is Lean/q-generic in parts (via-tiling law); the size-two μ=3 CERT kill below also applies here |
 | size-two block carrying a signed joint eigenline with `μ = 3` | `PROVEN-AT-64 CERT` | `false_of_orderSixtyFour_mu3_jointEigenline_native_without_hA_out` (2026-08-18 14:21Z; K-law + enumeration + 22 LRAT certificates; residual = the eigenline hypothesis `hs_in, hs_out, hsum, hDs, hA_in`) — kills that block in every stratum containing a size-two part |
 | size-two `μ = 3` block, certificate-free re-derivation | `PROVEN-AT-64 CERT` (honest hypotheses) | connected: `false_of_sizeTwoEigenline_connectedInternal_eight` (`PROVEN`, every reflection parameter). Disconnected: internal cycles are 6+10 or 8+8 with exact quotients; every sub-branch has a terminal — hand kills for 8+8 r∈{2,3,5} and 6+10 long-all-triangle low, checked owner-CNF LRAT terminals for 6+10 mixed / 6+10 all-TF / 8+8 low / mixed / both-triangle / r=6 (640–1,160 vars each, byte-identity-verified). Re-assembled 2026-08-20 on honest hypotheses: `orderSixtyFour_regular_sizeTwoEigenline_false` (f74647dd49) is the no-callback closure from hfree + hreg + component + eigenline only — no component-count hypothesis. The original seven-component wrappers remain in place as deprecated (see scope caveat, now repaired) |
-| size-two block, `μ ∈ {−7,−5,−3,−1}` or no alternating eigenline | classification complete at 64; terminals partial | signed dispatcher `orderSixtyFour_sizeTwo_signedJoint_false_of_negative_cases` exposes exactly `μ ∈ {−7,−5,−3,−1}`; all three negative-mode 6+10 strata killed certificate-free (eigenline-commutation constancy vs census totals); C8+C8 collapsed to shared `k ≤ 1` (midpoint kill of higher diagonal shapes); shore-switch law `sizeTwoMuSwitchTarget` (μ′ = μ − 2(7+μ−2k−r), Lean-checked table + involutivity) routes every surviving `(μ,k,r)` cell to a closed lane except four self cells + pair representatives; self cells (−1,0,6) and (−3,0,4) closed certificate-free, (−3,1,2) has 8 checked LRAT terminals + constraint semantics, (−1,1,4) has 6 verified solver certificates (embedding in flight). μ=−7 kill currently vacuous as banked (see caveat); companion-free repair via the uniform no-bipartite theorem is available. No-eigenline case: transport-or-eigenline reduction unchanged |
+| size-two block, `μ ∈ {−7,−5,−3,−1}` or no alternating eigenline | classification complete at 64; terminals partial | signed dispatcher `orderSixtyFour_sizeTwo_signedJoint_false_of_negative_cases` exposes exactly `μ ∈ {−7,−5,−3,−1}`; all three negative-mode 6+10 strata killed certificate-free (eigenline-commutation constancy vs census totals); C8+C8 collapsed to shared `k ≤ 1` (midpoint kill of higher diagonal shapes); shore-switch law `sizeTwoMuSwitchTarget` (μ′ = μ − 2(7+μ−2k−r), Lean-checked table + involutivity) routes every surviving `(μ,k,r)` cell to a closed lane except four self cells + pair representatives; self cells (−1,0,6) and (−3,0,4) closed certificate-free, (−3,1,2) has 8 checked LRAT terminals + constraint semantics, (−1,1,4) certificates embedded through the finite-relation socket, graph bridge in flight. μ=−7 killed companion-free, uniform in 4∣q (`c2449db105`). Assembly: the non-recursive `NegativeSwitchOrbit` eliminator (`negativeSwitchOrbits_false_of_canonical_endpoints`) exposes the HONEST remaining subtree per the 2026-08-20 endpoint audit — seven obligations: five cross-orbit canonical terminals (−5,0,3)/(−5,0,4)/(−5,1,2)/(−3,0,5)/(−3,1,3), the (−3,1,2) graph bridge, the active (−1,1,4) bridge, plus one unconditional switched-μ=3 callback. This is new terminal work, not mere wiring. No-eigenline case: transport-or-eigenline reduction unchanged |
 | `[3,3,2]`, `[4,2,2]`, `[6,2]` | `GAP` | non-bipartite blocks; only size-two/`μ=3` inputs above |
 | `[4,4]`, `[5,3]` | `GAP` | exact owner nullities only |
 | `[8]` (connected defect) | `GAP` | determinant/Matrix–Tree package only |
@@ -305,6 +305,14 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.8** (2026-08-20, editor): recorded the negative-lane honest residual
+  per sol-1's endpoint audit (msg 13983, confirmed by Fable): the
+  non-recursive orbit eliminator leaves SEVEN obligations (five cross-orbit
+  terminals + h312 bridge + h114 bridge + unconditional μ=3 callback) —
+  v2.7's "switch-route lane composition" understated this. Same-day state:
+  3c-i count plumbing complete (three-agent chain), mode-independent owner
+  dictionary banked, h312 bridge at increment 2, h503 reduced to one
+  both-all-TF owner CNF (model banked).
 - **2.7** (2026-08-20, editor): the 2.6 scope caveat is REPAIRED — Fable
   banked all four items the same night (regular feasibility `e2a466d600`,
   uniform companion-free μ=−7 kill `c2449db105`, regular re-assembly with
