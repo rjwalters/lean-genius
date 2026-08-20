@@ -401,6 +401,51 @@ theorem squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
   apply Finset.eq_of_subset_of_card_le hsubset
   rw [Finset.card_union_of_disjoint hdisj, hIx, hIy, hhigh]
 
+/-- In the first three-high profile every bin-two pair-witness has a unique
+defect-bin-one mate, and that mate is canonically incident to the opposite
+high root. -/
+theorem squareOrderNine_threeHigh_firstProfile_binTwo_existsUnique_opposite_defectMate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 2) :
+    ∃! y : V,
+      y ∈ (secondOrderDefectGraph G).neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1 ∧
+        (G.neighborFinset x ∩ squareOrderHighVertices G 9) ∪
+            (G.neighborFinset y ∩ squareOrderHighVertices G 9) =
+          squareOrderHighVertices G 9 := by
+  classical
+  have hdec := squareOrderNine_threeHigh_firstProfile_binTwo_neighbors
+    G hfree hmin hcover hcard hp hhigh hc3 hc4 hx
+  dsimp only at hdec
+  have hmateCard : ((secondOrderDefectGraph G).neighborFinset x ∩
+      squareOrderNineLowIncidenceBin G 1).card = 1 := hdec.2.1
+  obtain ⟨y, hyEq⟩ := Finset.card_eq_one.mp hmateCard
+  have hyMem : y ∈ (secondOrderDefectGraph G).neighborFinset x ∩
+      squareOrderNineLowIncidenceBin G 1 := by rw [hyEq]; simp
+  have hyD : (secondOrderDefectGraph G).Adj x y :=
+    ((secondOrderDefectGraph G).mem_neighborFinset x y).mp
+      (Finset.mem_inter.mp hyMem).1
+  have hyB := (Finset.mem_inter.mp hyMem).2
+  have hcomp :=
+    squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
+      G hfree hhigh hx hyB hyD
+  refine ⟨y, ⟨hyMem, hcomp⟩, ?_⟩
+  intro z hz
+  have hzMem := hz.1
+  rw [hyEq] at hzMem
+  simpa using hzMem
+
 /-- The full original-neighborhood census of the rare bin-three vertex in
 the second three-high profile is `3H + 3B₁ + 3B₀`. -/
 theorem squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
@@ -522,5 +567,7 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_binTwo_local_matching_dichotomy
 #print axioms
   Erdos85.squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_binTwo_existsUnique_opposite_defectMate
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
