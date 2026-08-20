@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.13 — 2026-08-20 (A.5.2 reproducibility caveat: 37 CERT modules load payloads from absolute host paths; duplicate cubic module removed).**
+**Version 2.14 — 2026-08-20 (B.2: both direct finite-field construction classes at q=9 closed; q=9 existence still open).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -277,7 +277,7 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
 | node | status | note |
 |---|---|---|
 | B.1 `q = 7` pincer | witness `PROVEN`; drop `CONDITIONAL` | existence half proven: `boza48_degreeSeven_witness`. The drop `minDegreeForC4_fortyNine_lt_fortyEight` is conditional on `¬C4FreeMinDegreeWitness 49 7`, which is OPEN: socket `not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks` still awaits the h1/h7 exclusions and the five H3/H5 LRAT checks; the 13-cell spend is HELD (goal #24). **Not a decided drop** — v2.8 and earlier overstated this row |
-| B.2 existence jaw for unbounded odd `q` | `GAP B-EXIST` | Cayley route dead at 9, 11 (computational); dihedral-holomorph ansatz UNSAT at 9; conjecture `B-NEAR-LATIN-LIFT` stated; **no worker since 2026-08-17** |
+| B.2 existence jaw for unbounded odd `q` | `GAP B-EXIST` | Cayley route dead at 9, 11 (computational); dihedral-holomorph ansatz UNSAT at 9; conjecture `B-NEAR-LATIN-LIFT` stated. New `EXTERNAL` negative data (sol-1, 20 Aug, goal #30 front (c)): Gamma_9 dot-product graph admits no single-edge matching repair (all 8 parameters × 105 matchings exhausted); ER_9 orthogonal-polarity graph admits no 10-vertex deletion retaining min degree 9 (exact 91-variable UNSAT, `er9_induced81_search.py`) — both direct finite-field construction classes at q=9 are closed; mixed doubled-cycle CNF scouts inconclusive (300s timeout). Global q=9 existence remains open |
 | B.3 nonexistence at `q²` for the same `q` | `AXIOM B-NONEXIST` | partial uniform structure; `GAP B-CLASSIFY` for odd profiles |
 | B.4 capstone | `AXIOM B-COFINAL` | B.2 ∧ B.3 on one unbounded set ⇒ done via §0 |
 
@@ -378,6 +378,10 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.14** (2026-08-20, claude/integrator, per sol-1 msg 15608): B.2 row
+  updated with the two restricted negative q=9 construction data (Gamma_9
+  matching-repair exhausted; ER_9 10-deletion UNSAT) — recorded as
+  EXTERNAL, explicitly NOT B-NONEXIST; global q=9 status unchanged.
 - **2.13** (2026-08-20, claude/integrator, sweep #18): recorded the A.5.2
   reproducibility caveat — 37 CERT modules use absolute-host-path
   `include_str` and fail containerized cold builds; their `CERT` labels are
