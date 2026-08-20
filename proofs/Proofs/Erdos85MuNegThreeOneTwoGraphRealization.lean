@@ -1,5 +1,6 @@
 import Proofs.Erdos85MuNegThreeOneTwoOwnerBridge
 import Proofs.Erdos85SizeTwoMuNegThreeAlignedShoreSwitch
+import Proofs.Erdos85SizeTwoOwnerVertexDictionary
 
 /-!
 # Graph realization of the `mu=-3`, `(k,r)=(1,2)` owner relations
@@ -166,6 +167,92 @@ theorem muNegThreeOwnerVertex_not_defect
   rw [Finset.card_eq_zero] at hzero
   rw [hzero] at hzmem
   exact Finset.notMem_empty z hzmem
+
+/-- Each cross cell has at most one exterior owner vertex. -/
+theorem muNegThreeOwnerVertex_unique
+    (hfree : ¬ containsC4 V G)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (x : Nat) {z w : V}
+    (hz : MuNegThreeOwnerVertex G c u v x z)
+    (hw : MuNegThreeOwnerVertex G c u v x w) : z = w :=
+  commonServer_unique G hfree
+    (muNegThreeOwnerEndpoints_ne G c a b hab u v hurange hvrange x)
+    hz.2.1 hz.2.2 hw.2.1 hw.2.2
+
+/-- For size-two components, an exterior owner vertex determines its
+cross-cell coordinate. -/
+theorem muNegThreeOwnerVertex_inj
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    {x y : Nat} (hx64 : x < 64) (hy64 : y < 64) {z : V}
+    (hx : MuNegThreeOwnerVertex G c u v x z)
+    (hy : MuNegThreeOwnerVertex G c u v y z) : x = y := by
+  let ux := u (muNegThreeCellRow x : ZMod 8)
+  let vx := v (muNegThreeCellCol x : ZMod 8)
+  let uy := u (muNegThreeCellRow y : ZMod 8)
+  let vy := v (muNegThreeCellCol y : ZMod 8)
+  have hpair : ({ux.1, vx.1} : Finset V) = {uy.1, vy.1} :=
+    ownerVertex_pair_eq G hfree (by omega) hreg hcard c hsize
+      (muNegThreeOwnerEndpoints_ne G c a b hab u v hurange hvrange x)
+      (muNegThreeOwnerEndpoints_ne G c a b hab u v hurange hvrange y)
+      ux.2 vx.2 uy.2 vy.2 hx.2.1.symm hx.2.2.symm
+      hy.2.1.symm hy.2.2.symm
+  have cross_ne (i j : ZMod 8) : (u i).1 ≠ (v j).1 := by
+    intro huv
+    apply hab
+    have hui : u i ∈ a.supp := by rw [← hurange]; exact ⟨i, rfl⟩
+    have hvj : v j ∈ b.supp := by rw [← hvrange]; exact ⟨j, rfl⟩
+    exact ConnectedComponent.eq_of_common_vertex
+      (Subtype.ext huv ▸ hui) hvj
+  have huxmem : ux.1 ∈ ({uy.1, vy.1} : Finset V) := by
+    rw [← hpair]
+    simp
+  have hvxmem : vx.1 ∈ ({uy.1, vy.1} : Finset V) := by
+    rw [← hpair]
+    simp
+  simp only [Finset.mem_insert, Finset.mem_singleton] at huxmem hvxmem
+  have huu : ux = uy := by
+    rcases huxmem with h | h
+    · exact Subtype.ext h
+    · exact False.elim (cross_ne _ _ h)
+  have hvv : vx = vy := by
+    rcases hvxmem with h | h
+    · exact False.elim (cross_ne _ _ h.symm)
+    · exact Subtype.ext h
+  have hrowZ : (muNegThreeCellRow x : ZMod 8) =
+      (muNegThreeCellRow y : ZMod 8) := huinj huu
+  have hcolZ : (muNegThreeCellCol x : ZMod 8) =
+      (muNegThreeCellCol y : ZMod 8) := hvinj hvv
+  have hrowx : muNegThreeCellRow x < 8 := by
+    unfold muNegThreeCellRow
+    omega
+  have hrowy : muNegThreeCellRow y < 8 := by
+    unfold muNegThreeCellRow
+    omega
+  have hcolx : muNegThreeCellCol x < 8 := Nat.mod_lt _ (by norm_num)
+  have hcoly : muNegThreeCellCol y < 8 := Nat.mod_lt _ (by norm_num)
+  have hrow : muNegThreeCellRow x = muNegThreeCellRow y := by
+    have hz := congrArg ZMod.val hrowZ
+    simpa [ZMod.val_natCast_of_lt hrowx,
+      ZMod.val_natCast_of_lt hrowy] using hz
+  have hcol : muNegThreeCellCol x = muNegThreeCellCol y := by
+    have hz := congrArg ZMod.val hcolZ
+    simpa [ZMod.val_natCast_of_lt hcolx,
+      ZMod.val_natCast_of_lt hcoly] using hz
+  have hxid : muNegThreeCellRow x * 8 + muNegThreeCellCol x = x := by
+    simpa [muNegThreeCellRow, muNegThreeCellCol, Nat.mul_comm] using
+      Nat.div_add_mod x 8
+  have hyid : muNegThreeCellRow y * 8 + muNegThreeCellCol y = y := by
+    simpa [muNegThreeCellRow, muNegThreeCellCol, Nat.mul_comm] using
+      Nat.div_add_mod y 8
+  omega
 
 /-- The graph hit relation satisfies the finite socket's hit-activity
 field. -/
