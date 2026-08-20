@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.6 — 2026-08-19 (disconnected q=8 terminal-complete; negative modes classified; seven-component scope caveat).**
+**Version 2.7 — 2026-08-20 (scope caveat REPAIRED same night; honest no-callback q=8 size-two closure; sweep #8 green at 2,000 modules).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -110,7 +110,7 @@ The seven partitions of 8 into parts ≥ 2: `[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`,
 |---|---|---|
 | `[2,2,2,2]` | `EXTERNAL` — 11 assembly targets UNSAT | kissat, no certificates; the finite reduction to 11 targets is Lean/q-generic in parts (via-tiling law); the size-two μ=3 CERT kill below also applies here |
 | size-two block carrying a signed joint eigenline with `μ = 3` | `PROVEN-AT-64 CERT` | `false_of_orderSixtyFour_mu3_jointEigenline_native_without_hA_out` (2026-08-18 14:21Z; K-law + enumeration + 22 LRAT certificates; residual = the eigenline hypothesis `hs_in, hs_out, hsum, hDs, hA_in`) — kills that block in every stratum containing a size-two part |
-| size-two `μ = 3` block, certificate-free re-derivation | terminal-complete, assembly pending | connected: `false_of_sizeTwoEigenline_connectedInternal_eight` (`PROVEN`, every reflection parameter). Disconnected: internal cycles are 6+10 or 8+8 with exact quotients; every sub-branch has a terminal — hand kills for 8+8 r∈{2,3,5} and 6+10 long-all-triangle low, checked owner-CNF LRAT terminals for 6+10 mixed / 6+10 all-TF / 8+8 low / mixed / both-triangle / r=6 (640–1,160 vars each, byte-identity-verified). General assembly `false_of_sizeTwoEigenline_eight_of_stratum_terminals` exposes two quotient callbacks; the banked concrete wrappers are vacuous (see scope caveat) |
+| size-two `μ = 3` block, certificate-free re-derivation | `PROVEN-AT-64 CERT` (honest hypotheses) | connected: `false_of_sizeTwoEigenline_connectedInternal_eight` (`PROVEN`, every reflection parameter). Disconnected: internal cycles are 6+10 or 8+8 with exact quotients; every sub-branch has a terminal — hand kills for 8+8 r∈{2,3,5} and 6+10 long-all-triangle low, checked owner-CNF LRAT terminals for 6+10 mixed / 6+10 all-TF / 8+8 low / mixed / both-triangle / r=6 (640–1,160 vars each, byte-identity-verified). Re-assembled 2026-08-20 on honest hypotheses: `orderSixtyFour_regular_sizeTwoEigenline_false` (f74647dd49) is the no-callback closure from hfree + hreg + component + eigenline only — no component-count hypothesis. The original seven-component wrappers remain in place as deprecated (see scope caveat, now repaired) |
 | size-two block, `μ ∈ {−7,−5,−3,−1}` or no alternating eigenline | classification complete at 64; terminals partial | signed dispatcher `orderSixtyFour_sizeTwo_signedJoint_false_of_negative_cases` exposes exactly `μ ∈ {−7,−5,−3,−1}`; all three negative-mode 6+10 strata killed certificate-free (eigenline-commutation constancy vs census totals); C8+C8 collapsed to shared `k ≤ 1` (midpoint kill of higher diagonal shapes); shore-switch law `sizeTwoMuSwitchTarget` (μ′ = μ − 2(7+μ−2k−r), Lean-checked table + involutivity) routes every surviving `(μ,k,r)` cell to a closed lane except four self cells + pair representatives; self cells (−1,0,6) and (−3,0,4) closed certificate-free, (−3,1,2) has 8 checked LRAT terminals + constraint semantics, (−1,1,4) has 6 verified solver certificates (embedding in flight). μ=−7 kill currently vacuous as banked (see caveat); companion-free repair via the uniform no-bipartite theorem is available. No-eigenline case: transport-or-eigenline reduction unchanged |
 | `[3,3,2]`, `[4,2,2]`, `[6,2]` | `GAP` | non-bipartite blocks; only size-two/`μ=3` inputs above |
 | `[4,4]`, `[5,3]` | `GAP` | exact owner nullities only |
@@ -133,9 +133,18 @@ The seven-component corpus under min-degree/tight-cover hypotheses (the
 boundary object) is legitimate and unaffected. Repair: re-derive the four
 outside-feasibility facts from the uniform equitable law (no component
 count), swap into the thin wrappers, and kill μ=−7 companion-free via the
-uniform no-bipartite theorem. Until that lands, the disconnected q=8
-size-two closure is **terminal-complete but not assembled**, and the second
-decided drop is not yet claimable from this lane.
+uniform no-bipartite theorem. **REPAIRED 2026-08-20 (Fable, same night):** all four items banked —
+regular outside feasibility `e2a466d600`, companion-free μ=−7 kill
+`c2449db105` (`binarySquare_regular_allOpposite_defectEigenline_false`,
+UNIFORM in every 4∣q — a genuine A.5.1-class addition, no component count,
+no companions), five-theorem regular re-assembly `f74647dd49` ending in the
+honest no-callback closure, and the completed per-theorem audit
+`55aefbff93`: exactly SIX vacuous theorems existed (the editor's three, two
+intermediate 8+8 wrappers, and the μ-value splitter — all now with regular
+counterparts). Sweep #8 verified the whole repaired corpus: 2,000 modules,
+0 errors, 0 sorryAx. The deprecated vacuous theorems are left in place;
+deleting them is an outline/editor call. The q=8 size-two eigenline closure
+now stands on honest hypotheses.
 
 ### A.5.3 The gap, stated plainly
 
@@ -296,6 +305,17 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.7** (2026-08-20, editor): the 2.6 scope caveat is REPAIRED — Fable
+  banked all four items the same night (regular feasibility `e2a466d600`,
+  uniform companion-free μ=−7 kill `c2449db105`, regular re-assembly with
+  honest no-callback closure `orderSixtyFour_regular_sizeTwoEigenline_false`
+  at `f74647dd49`, regular μ-splitter + completed vacuity audit
+  `55aefbff93` — six vacuous theorems total, all with regular
+  counterparts). Sweep #8: 2,000 modules, 0 errors, 0 sorryAx. The μ=3
+  size-two row upgraded to PROVEN-AT-64 CERT on honest hypotheses. The
+  (−1,1,4) certificate embedding is complete (generator + six checked LRATs
+  + semantics socket); the remaining self-cell work is its graph→valuation
+  bridge and the switch-route lane composition.
 - **2.6** (2026-08-19, editor; red-team window open, room msg 13926): recorded
   the disconnected q=8 size-two terminal program (checked owner-CNF LRAT
   terminals for all 6+10 and 8+8 sub-branches; hand kills for r∈{2,3,5} and
