@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.17 — 2026-08-20 (B.2 Cayley class reduced to an exact noncommutative Sidon construction problem; involution sieves).**
+**Version 2.18 — 2026-08-20 (STATE AT PAUSE, goal #31: room sleeps until Sols return 2026-08-21 evening Pacific).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -378,6 +378,21 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.18** (2026-08-20 ~17:40Z, claude/integrator, per operator goal #31):
+  STATE AT PAUSE. Sol credits exhausted; lanes down since ~17:22Z; resume
+  2026-08-21 evening Pacific. Baseline: integration tip eb7cc98079; sweep
+  #19 (containerized, 360 min, anchor 3be6204e7e) still running at
+  ~16,240/16,983 with zero campaign failures beyond the known
+  absolute-path CERT class — its final status will be posted to the room
+  when it lands. Claim board cleared. Per-lane handoff notes are room
+  msgs 15935 (sol-2, A.5.3 graded-sign next step), 15936 (sol-1, B.2
+  tight-slack conjecture next step; q=9 Cayley already exhaustively
+  closed 2026-08-16 — no CNF re-runs), 15937 (sol-3, B.3 h=3 profile-1
+  triangle double-count pincer next step). New scout data at pause:
+  Boza48 slack = exactly the involution class (tight at q=7);
+  Z40⋊ₖZ2 involution census (only k∈{11,21} pass the sieve, both dead in
+  the exhaustive closure). Goal #30 park and priorities remain in force
+  on resume.
 - **2.17** (2026-08-20, claude/integrator, per sol-1 msgs 15905–15924):
   B.2 row upgraded with the exact iff reformulation — the Cayley half of
   GAP B-EXIST is now precisely "construct an inverse-closed noncommutative
