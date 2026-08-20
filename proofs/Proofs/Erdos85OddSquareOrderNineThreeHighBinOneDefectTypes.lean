@@ -319,6 +319,52 @@ theorem squareOrderNine_threeHigh_firstProfile_ordinary_binOne_card
     rw [← Finset.card_union_of_disjoint hdisj, hpartition]
   change O.card = 21
   omega
+
+/-- The 21-vertex ordinary bin-one defect core has an odd-order connected
+component.  Together with two-regularity, this supplies an odd defect-cycle
+component in the first three-high profile. -/
+theorem squareOrderNine_threeHigh_firstProfile_exists_odd_ordinary_binOne_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let O := (B 1).filter fun y => (D.neighborFinset y ∩ B 2).card = 0
+    let K := D.induce (↑O : Set V)
+    ∃ c : K.ConnectedComponent, Odd c.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let O := (B 1).filter fun y =>
+    ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 0
+  let K := D.induce (↑O : Set V)
+  have hOcard : O.card = 21 := by
+    simpa [O, B] using
+      (squareOrderNine_threeHigh_firstProfile_ordinary_binOne_card
+        G hfree hmin hcover hcard hp hhigh hc3 hc4)
+  have hKcard : Fintype.card ↥(↑O : Set V) = 21 := by
+    simpa using hOcard
+  by_contra hnone
+  push Not at hnone
+  have hparts : (∑ c : K.ConnectedComponent, c.supp.ncard) =
+      Fintype.card ↥(↑O : Set V) := by
+    simpa [K] using sum_connectedComponent_supp_ncard K
+  have hdvd : 2 ∣ ∑ c : K.ConnectedComponent, c.supp.ncard := by
+    apply Finset.dvd_sum
+    intro c _
+    exact (Nat.not_odd_iff_even.mp (hnone c)).two_dvd
+  rw [hparts, hKcard] at hdvd
+  omega
 end
 
 end Erdos85
@@ -333,3 +379,5 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_ordinary_binOne_defect_twoRegular
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_ordinary_binOne_card
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_exists_odd_ordinary_binOne_component
