@@ -1,6 +1,7 @@
 import Proofs.Erdos85MuNegFiveZeroThreeOwnerServiceBridge
 import Proofs.Erdos85SizeTwoMuNegFiveAlignedShoreSwitch
 import Proofs.Erdos85SizeTwoOwnerVertexDictionary
+import Proofs.Erdos85MuNegOneOneFourCodeVertexMap
 
 /-!
 # Graph realization of the h503 owner relations
@@ -30,7 +31,15 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 def muNegFiveZeroThreeCodeVertex
     (u v : ZMod 8 → c.supp) (x : Nat) : V :=
   if x < 8 then (u (x : ZMod 8)).1
-  else (v (x - 8 : ZMod 8)).1
+  else (v ((x - 8 : Nat) : ZMod 8)).1
+
+theorem muNegFiveZeroThreeCodeVertex_mem_supp
+    (u v : ZMod 8 → c.supp) (x : Nat) :
+    muNegFiveZeroThreeCodeVertex G c u v x ∈ c.supp := by
+  unfold muNegFiveZeroThreeCodeVertex
+  split
+  · exact (u _).2
+  · exact (v _).2
 
 def muNegFiveZeroThreeOwnerEndpoints
     (u v : ZMod 8 → c.supp) (e : Nat) : V × V :=
@@ -53,6 +62,75 @@ def muNegFiveZeroThreeGraphHit
   ∃ z w : V,
     MuNegFiveZeroThreeOwnerVertex G c u v e z ∧
     MuNegFiveZeroThreeOwnerVertex G c u v f w ∧ G.Adj z w
+
+section Shores
+
+variable [DecidableEq (G.induce c.supp).ConnectedComponent]
+  (a b : (G.induce c.supp).ConnectedComponent)
+  (u v : ZMod 8 → c.supp)
+
+theorem muNegFiveZeroThreeCodeVertex_inj
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ x, x < 16 → ∀ y, y < 16 →
+      muNegFiveZeroThreeCodeVertex G c u v x =
+        muNegFiveZeroThreeCodeVertex G c u v y → x = y := by
+  simpa only [muNegFiveZeroThreeCodeVertex, muNegOneCodeVertex] using
+    muNegOneCodeVertex_inj G c a b u v hab huinj hvinj hurange hvrange
+
+theorem muNegFiveZeroThreeOwnerAt_bounds_ne (e : Fin 72) :
+    (muNegFiveZeroThreeOwnerAt e).1 < 16 ∧
+      (muNegFiveZeroThreeOwnerAt e).2 < 16 ∧
+      (muNegFiveZeroThreeOwnerAt e).1 ≠
+        (muNegFiveZeroThreeOwnerAt e).2 := by
+  revert e
+  native_decide
+
+theorem muNegFiveZeroThreeOwnerEndpoints_ne
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (e : Fin 72) :
+    (muNegFiveZeroThreeOwnerEndpoints G c u v e).1 ≠
+      (muNegFiveZeroThreeOwnerEndpoints G c u v e).2 := by
+  intro h
+  let p := muNegFiveZeroThreeOwnerAt e
+  have hp := muNegFiveZeroThreeOwnerAt_bounds_ne e
+  change muNegFiveZeroThreeCodeVertex G c u v p.1 =
+    muNegFiveZeroThreeCodeVertex G c u v p.2 at h
+  have heq : p.1 = p.2 :=
+    muNegFiveZeroThreeCodeVertex_inj G c a b u v hab huinj hvinj
+      hurange hvrange p.1 hp.1 p.2 hp.2.1 h
+  exact hp.2.2 heq
+
+theorem muNegFiveZeroThreeOwnerVertex_unique
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (e : Fin 72) {z w : V}
+    (hz : MuNegFiveZeroThreeOwnerVertex G c u v e z)
+    (hw : MuNegFiveZeroThreeOwnerVertex G c u v e w) : z = w :=
+  commonServer_unique G hfree
+    (muNegFiveZeroThreeOwnerEndpoints_ne G c a b u v hab huinj hvinj
+      hurange hvrange e)
+    hz.2.1 hz.2.2 hw.2.1 hw.2.2
+
+theorem muNegFiveZeroThreeGraphHit_irrefl
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ e, ¬ muNegFiveZeroThreeGraphHit G c u v e e := by
+  intro e
+  rintro ⟨z, w, hz, hw, hzw⟩
+  have h := muNegFiveZeroThreeOwnerVertex_unique G c a b u v hfree hab
+    huinj hvinj hurange hvrange e hz hw
+  subst w
+  exact G.loopless.irrefl z hzw
+
+end Shores
 
 instance (u v : ZMod 8 → c.supp) :
     DecidablePred (muNegFiveZeroThreeGraphActive G c u v) := by
@@ -98,3 +176,6 @@ end Erdos85
 
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_symm
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_ends
+#print axioms Erdos85.muNegFiveZeroThreeCodeVertex_inj
+#print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_unique
+#print axioms Erdos85.muNegFiveZeroThreeGraphHit_irrefl
