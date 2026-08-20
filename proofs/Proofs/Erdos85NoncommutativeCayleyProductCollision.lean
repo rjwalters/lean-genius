@@ -17,6 +17,36 @@ identifications.
 
 namespace Erdos85
 
+/-- A finite inverse-closed Cayley graph is regular of degree equal to the
+cardinality of its connection set. -/
+theorem invClosedCayleyGraph_degree
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    [DecidableRel (invClosedCayleyGraph (· ∈ A) hinv hone).Adj]
+    (x : Γ) :
+    (invClosedCayleyGraph (· ∈ A) hinv hone).degree x = A.card := by
+  classical
+  let f : Γ ↪ Γ :=
+    ⟨fun a => x * a, by
+      intro a b hab
+      exact mul_left_cancel hab⟩
+  have hneighbors :
+      (invClosedCayleyGraph (· ∈ A) hinv hone).neighborFinset x =
+        A.map f := by
+    ext y
+    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_map]
+    change (x⁻¹ * y ∈ A) ↔ ∃ a, a ∈ A ∧ f a = y
+    constructor
+    · intro hy
+      refine ⟨x⁻¹ * y, hy, ?_⟩
+      simp [f, mul_assoc]
+    · rintro ⟨a, ha, hay⟩
+      have hxy : x * a = y := by simpa [f] using hay
+      simpa [← hxy] using ha
+  rw [SimpleGraph.degree, hneighbors, Finset.card_map]
+
 /-- A collision `a * b = c * d` between two non-backtracking connection
 words with different first letters gives a four-cycle.  No commutativity is
 used. -/
@@ -454,6 +484,30 @@ theorem invClosedCayley_erase_involution_not_containsC4
     exact Finset.mem_of_mem_erase hxy
   · exact hc4
 
+/-- If the erased involution belongs to the connection set, the residual
+Cayley graph is regular of degree exactly one less. -/
+theorem invClosedCayley_erase_involution_degree
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    {t : Γ} (htA : t ∈ A) (htsq : t * t = 1)
+    [DecidableRel (invClosedCayleyGraph (· ∈ A.erase t)
+      (mem_erase_involution_iff_inv_mem_erase A hinv htsq)
+      (by exact fun h => hone (Finset.mem_of_mem_erase h))).Adj]
+    (x : Γ) :
+    (invClosedCayleyGraph (· ∈ A.erase t)
+      (mem_erase_involution_iff_inv_mem_erase A hinv htsq)
+      (by exact fun h => hone (Finset.mem_of_mem_erase h))).degree x =
+        A.card - 1 := by
+  classical
+  have honeErase : (1 : Γ) ∉ A.erase t :=
+    fun h => hone (Finset.mem_of_mem_erase h)
+  rw [invClosedCayleyGraph_degree (A.erase t)
+    (mem_erase_involution_iff_inv_mem_erase A hinv htsq)
+    honeErase x,
+    Finset.card_erase_of_mem htA]
+
 /-- **Odd Cayley peel capstone.**  Every odd-cardinality inverse-closed
 connection set in a C4-free Cayley graph admits an involutory generator whose
 removal leaves a C4-free connection set of cardinality one smaller, and the
@@ -491,6 +545,7 @@ theorem exists_c4Free_evenResidual_matchingDecomposition_of_odd_Cayley
 end Erdos85
 
 #print axioms Erdos85.invClosedCayley_containsC4_of_product_collision
+#print axioms Erdos85.invClosedCayleyGraph_degree
 #print axioms Erdos85.connection_product_ne_of_invClosedCayley_not_containsC4
 #print axioms Erdos85.nonbacktracking_connectionProduct_injective
 #print axioms Erdos85.card_nonbacktrackingConnectionPairs
@@ -504,4 +559,5 @@ end Erdos85
 #print axioms Erdos85.mem_erase_involution_iff_inv_mem_erase
 #print axioms Erdos85.invClosedCayley_erase_involution_adj_iff
 #print axioms Erdos85.invClosedCayley_erase_involution_not_containsC4
+#print axioms Erdos85.invClosedCayley_erase_involution_degree
 #print axioms Erdos85.exists_c4Free_evenResidual_matchingDecomposition_of_odd_Cayley
