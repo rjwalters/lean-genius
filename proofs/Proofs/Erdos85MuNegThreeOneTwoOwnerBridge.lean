@@ -13,6 +13,8 @@ Node: outline F.3, canonical negative switch endpoint `(-3,1,2)`.
 
 namespace Erdos85
 
+open Std Sat
+
 /-- A cross owner cell is active precisely when it is not a defect cell. -/
 def muNegThreeOwnerActive (D : Nat → Nat → Bool) (a : Nat) : Bool :=
   !D (muNegThreeCellRow a) (muNegThreeCellCol a)
@@ -180,9 +182,119 @@ theorem muNegThreeFiniteSemantics_fixed
   rw [muNegThreeValOfRelations_dvar D X hi hj]
   exact h.fixed i j hi hj hparity
 
+private theorem eq_of_countP_eq_one_of_true
+    {α : Type*} (l : List α) (p : α → Bool) {a b : α}
+    (hone : l.countP p = 1) (ha : a ∈ l) (hb : b ∈ l)
+    (hpa : p a = true) (hpb : p b = true) : a = b := by
+  induction l generalizing a b with
+  | nil => simp at ha
+  | cons x xs ih =>
+    by_cases hx : p x = true
+    · have hzero : xs.countP p = 0 := by
+        simpa [List.countP_cons, hx] using hone
+      have hnone := List.countP_eq_zero.mp hzero
+      simp only [List.mem_cons] at ha hb
+      rcases ha with rfl | ha
+      · rcases hb with rfl | hb
+        · rfl
+        · exact False.elim ((hnone b hb) hpb)
+      · exact False.elim ((hnone a ha) hpa)
+    · have hx' : p x = false := Bool.eq_false_of_not_eq_true hx
+      have hone' : xs.countP p = 1 := by
+        simpa [List.countP_cons, hx'] using hone
+      simp only [List.mem_cons] at ha hb
+      have hax : a ≠ x := by rintro rfl; exact hx hpa
+      have hbx : b ≠ x := by rintro rfl; exact hx hpb
+      exact ih hone' (ha.resolve_left hax) (hb.resolve_left hbx) hpa hpb
+
+private theorem dimacs_neg_satisfied_of_false
+    {val : DimacsValuation} {lit : Int} (hpos : 0 < lit)
+    (hfalse : dimacsLitValue val lit = false) :
+    dimacsLitValue val (-lit) = true := by
+  simp only [dimacsLitValue, if_pos hpos] at hfalse
+  rw [dimacsLitValue, if_neg (by omega), Int.natAbs_neg]
+  simp [hfalse]
+
+private theorem muNegThreeExactlyOne_of_count_one
+    (val : DimacsValuation) (coords : List Nat) (p : Nat → Bool)
+    (lit : Nat → Int) (hpos : ∀ j ∈ coords, 0 < lit j)
+    (hdecode : ∀ j ∈ coords, dimacsLitValue val (lit j) = p j)
+    (hone : coords.countP p = 1) :
+    MuNegThreeExactlyOneSemantics val (coords.map lit) := by
+  constructor
+  · obtain ⟨j, hj, hpj⟩ := List.countP_pos_iff.mp (by omega : 0 < coords.countP p)
+    refine ⟨lit j, List.mem_map.mpr ⟨j, hj, rfl⟩, ?_⟩
+    rw [hdecode j hj, hpj]
+  · intro x hx y hy hxy
+    obtain ⟨a, ha, rfl⟩ := List.mem_map.mp hx
+    obtain ⟨b, hb, rfl⟩ := List.mem_map.mp hy
+    by_cases hva : dimacsLitValue val (lit a) = true
+    · by_cases hvb : dimacsLitValue val (lit b) = true
+      · have hpa : p a = true := by simpa [hdecode a ha] using hva
+        have hpb : p b = true := by simpa [hdecode b hb] using hvb
+        have hab := eq_of_countP_eq_one_of_true coords p hone ha hb hpa hpb
+        subst b
+        omega
+      · have hvb' : dimacsLitValue val (lit b) = false :=
+          Bool.eq_false_of_not_eq_true hvb
+        refine ⟨-(lit b), by simp, ?_⟩
+        exact dimacs_neg_satisfied_of_false (hpos b hb) hvb'
+    · have hva' : dimacsLitValue val (lit a) = false :=
+        Bool.eq_false_of_not_eq_true hva
+      refine ⟨-(lit a), by simp, ?_⟩
+      exact dimacs_neg_satisfied_of_false (hpos a ha) hva'
+
+/-- Embed the opposite-sign exactly-one row family. -/
+theorem muNegThreeFiniteSemantics_opposite_rows
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (h : MuNegThreeOneTwoFiniteSemantics fwd c D X) :
+    ∀ clause ∈ muNegThreeOppRowClauses,
+      dimacsClauseSatisfied (muNegThreeValOfRelations D X) clause := by
+  apply muNegThreeOppRowClauses_satisfied
+  intro i hi
+  let coords := (List.range 8).filter fun j => !(i % 2 == j % 2)
+  apply muNegThreeExactlyOne_of_count_one (muNegThreeValOfRelations D X)
+    coords (fun j => D i j)
+    (fun j => Int.ofNat (muNegThreeDVar (i * 8 + j)))
+  · intro j hj
+    change Int.ofNat 0 < Int.ofNat (muNegThreeDVar (i * 8 + j))
+    exact (Int.ofNat_lt).2 (by simp [muNegThreeDVar])
+  · intro j hj
+    have hj8 : j < 8 := List.mem_range.mp (List.mem_filter.mp hj).1
+    have hdpos : 0 < muNegThreeDVar (i * 8 + j) := by
+      simp [muNegThreeDVar]
+    simp [dimacsLitValue, hdpos,
+      muNegThreeValOfRelations_dvar D X hi hj8]
+  · exact h.opposite_rows i hi
+
+/-- Embed the opposite-sign exactly-one column family. -/
+theorem muNegThreeFiniteSemantics_opposite_columns
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (h : MuNegThreeOneTwoFiniteSemantics fwd c D X) :
+    ∀ clause ∈ muNegThreeOppColClauses,
+      dimacsClauseSatisfied (muNegThreeValOfRelations D X) clause := by
+  apply muNegThreeOppColClauses_satisfied
+  intro j hj
+  let coords := (List.range 8).filter fun i => !(i % 2 == j % 2)
+  apply muNegThreeExactlyOne_of_count_one (muNegThreeValOfRelations D X)
+    coords (fun i => D i j)
+    (fun i => Int.ofNat (muNegThreeDVar (i * 8 + j)))
+  · intro i hi
+    change Int.ofNat 0 < Int.ofNat (muNegThreeDVar (i * 8 + j))
+    exact (Int.ofNat_lt).2 (by simp [muNegThreeDVar])
+  · intro i hi
+    have hi8 : i < 8 := List.mem_range.mp (List.mem_filter.mp hi).1
+    have hdpos : 0 < muNegThreeDVar (i * 8 + j) := by
+      simp [muNegThreeDVar]
+    simp [dimacsLitValue, hdpos,
+      muNegThreeValOfRelations_dvar D X hi8 hj]
+  · exact h.opposite_columns j hj
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeValOfRelations_dvar
 #print axioms Erdos85.muNegThreeValOfRelations_xvar
 #print axioms Erdos85.muNegThreeXVar?_isSome_of_mem
 #print axioms Erdos85.muNegThreeFiniteSemantics_fixed
+#print axioms Erdos85.muNegThreeFiniteSemantics_opposite_rows
+#print axioms Erdos85.muNegThreeFiniteSemantics_opposite_columns
