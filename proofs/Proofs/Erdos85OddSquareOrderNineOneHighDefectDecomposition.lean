@@ -214,9 +214,66 @@ theorem squareOrderNine_oneHigh_defect_block_partition
       exact (D.mem_neighborFinset y x).mpr
         ((D.mem_neighborFinset x y).mp hy'.1).symm
 
+/-- The one-incidence bin is exactly the original neighborhood of the unique
+high vertex.  Moreover that ten-vertex neighborhood induces a perfect
+matching, so the defect blocks are anchored at the ten matched neighbors of
+one degree-ten root. -/
+theorem squareOrderNine_oneHigh_bin_one_eq_highRoot_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (_hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 1) :
+    ∃ v : V,
+      squareOrderHighVertices G 9 = {v} ∧
+      squareOrderNineLowIncidenceBin G 1 = G.neighborFinset v ∧
+      ∀ s : {z : V // z ∈ G.neighborSet v},
+        (G.induce (G.neighborSet v)).degree s = 1 := by
+  classical
+  let H := squareOrderHighVertices G 9
+  obtain ⟨v, hH⟩ := Finset.card_eq_one.mp hhigh
+  have hvH : v ∈ H := by
+    change v ∈ squareOrderHighVertices G 9
+    rw [hH]
+    simp
+  have hvdeg : G.degree v = 10 := (Finset.mem_filter.mp hvH).2
+  have hroot := squareOrder_degree_succ_highRoot_structure
+    G hfree (by norm_num) hmin hcard hvdeg
+  refine ⟨v, hH, ?_, hroot.2.2⟩
+  ext x
+  constructor
+  · intro hx
+    have hkx : squareOrderHighIncidenceCount G 9 x = 1 :=
+      (Finset.mem_filter.mp hx).2
+    have hinterCard : (G.neighborFinset x ∩ ({v} : Finset V)).card = 1 := by
+      simpa [squareOrderHighIncidenceCount, hH] using hkx
+    have hvMem : v ∈ G.neighborFinset x := by
+      by_contra hvnot
+      have hinterEmpty : G.neighborFinset x ∩ ({v} : Finset V) = ∅ := by
+        ext y
+        simp [hvnot]
+      rw [hinterEmpty] at hinterCard
+      simp at hinterCard
+    exact (G.mem_neighborFinset v x).mpr
+      ((G.mem_neighborFinset x v).mp hvMem).symm
+  · intro hx
+    have hadj : G.Adj v x := (G.mem_neighborFinset v x).mp hx
+    have hxdeg : G.degree x = 9 := hroot.2.1 x hadj
+    have hxNotHigh : x ∉ H := by
+      intro hxH
+      have hxhigh : G.degree x = 10 := (Finset.mem_filter.mp hxH).2
+      omega
+    refine Finset.mem_filter.mpr ⟨Finset.mem_sdiff.mpr ⟨by simp, hxNotHigh⟩, ?_⟩
+    simp [squareOrderHighIncidenceCount, hH, G.adj_comm, hadj]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_oneHigh_defect_decomposition
 #print axioms Erdos85.squareOrderNine_oneHigh_defect_block_partition
+#print axioms Erdos85.squareOrderNine_oneHigh_bin_one_eq_highRoot_neighbors
