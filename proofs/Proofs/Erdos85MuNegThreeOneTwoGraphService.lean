@@ -191,6 +191,49 @@ theorem mem_muNegThreeHitPairs_of_ownerVertices_adj
         (show b < 64 ∧ a < 64 ∧ b < a ∧ muNegThreeAdm b a = true from
           ⟨hb, ha, hbalt, hadm'⟩)
 
+/-- Every active cross cell has its unique exterior owner vertex.  Distinct
+internal shores rule out an internal common neighbor of the endpoints. -/
+theorem muNegThreeOwnerVertex_of_active
+    (hfree : ¬ containsC4 V G)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    {a : Nat} (ha : a < 64)
+    (hactive : muNegThreeOwnerActive
+      (muNegThreeCrossDefectRel G c u v) a = true) :
+    ∃ t : V, MuNegThreeOwnerVertex G c u v a t := by
+  rw [muNegThreeOwnerActive_graph_iff] at hactive
+  let i : ZMod 8 := muNegThreeCellRow a
+  let j : ZMod 8 := muNegThreeCellCol a
+  have hui : u i ∈ ca.supp := by
+    rw [← hurange]
+    exact ⟨i, rfl⟩
+  have hvj : v j ∈ cb.supp := by
+    rw [← hvrange]
+    exact ⟨j, rfl⟩
+  obtain ⟨t, htout, hut, hvt, _huniq⟩ :=
+    nonDefect_ownerVertex_exterior G hfree c
+      (muNegThreeOwnerEndpoints_ne G c ca cb hcab u v hurange hvrange a)
+      hactive (by
+        intro z hzc hz
+        let zc : c.supp := ⟨z, hzc⟩
+        have huz : (G.induce c.supp).Adj (u i) zc := hz.1
+        have hvz : (G.induce c.supp).Adj (v j) zc := hz.2
+        have huca : (G.induce c.supp).connectedComponentMk (u i) = ca :=
+          (ConnectedComponent.mem_supp_iff ca (u i)).mp hui
+        have hvcb : (G.induce c.supp).connectedComponentMk (v j) = cb :=
+          (ConnectedComponent.mem_supp_iff cb (v j)).mp hvj
+        have hzCa : zc ∈ ca.supp :=
+          (ConnectedComponent.mem_supp_iff ca zc).mpr
+            ((ConnectedComponent.connectedComponentMk_eq_of_adj huz).symm.trans
+              huca)
+        have hzCb : zc ∈ cb.supp :=
+          (ConnectedComponent.mem_supp_iff cb zc).mpr
+            ((ConnectedComponent.connectedComponentMk_eq_of_adj hvz).symm.trans
+              hvcb)
+        exact hcab (ConnectedComponent.eq_of_common_vertex hzCa hzCb))
+  exact ⟨t, htout, hut, hvt⟩
+
 end
 
 end Erdos85
