@@ -8,6 +8,8 @@ import Proofs.Erdos85AmbientMuThreeUnconditional
 import Proofs.Erdos85SizeTwoSwitchedJointExclusions
 import Proofs.Erdos85SizeTwoMuNegFiveAlignedShoreSwitch
 import Proofs.Erdos85MuNegThreeOneTwoOrbitTerminal
+import Proofs.Erdos85MuNegFiveZeroThreeGraphRealization
+import Proofs.Erdos85MuNegOneOneFourEnrichedCapstone
 
 /-!
 # Ledger-backed assembly socket for the negative switch orbit
@@ -1387,6 +1389,129 @@ theorem false_of_h312_source_or_transported
   rw [hk]
   norm_num [sizeTwoMuSwitchTarget]
 
+/-- The checked h503 owner terminal discharges either a direct source or a
+transported endpoint by re-extracting the full row ledgers from the retained
+ambient witness and pinning their parameters with first-shore coherence. -/
+theorem false_of_h503_source_or_transported
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 0 3) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 0 3 →
+    False := by
+  classical
+  dsimp only
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  intro h
+  obtain ⟨s, hs, haa, hsame⟩ :=
+    exists_firstShore_coherence_of_source_or_transported
+      G c a b N₁ N₂ (-5) 0 3 h
+  have hA_in : ∀ x ∈ c.supp,
+      ∑ y ∈ G.neighborFinset x, s y = -2 * s x := by
+    intro x hx
+    rw [← hs.2.2.1 x hx]
+    symm
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro y hy
+    by_cases hyc :
+        (secondOrderDefectGraph G).connectedComponentMk y = c
+    · simp [hyc]
+    · have hyout : y ∉ c.supp := by
+        intro hyin
+        exact hyc ((ConnectedComponent.mem_supp_iff c y).mp hyin)
+      simp [hyc, hs.1 y hyout]
+  obtain ⟨k', r', _hcell, _hmode₁, _hmode₂, _L₁, _L₂, LR₁, LR₂,
+      _hK, _hHt, _htne, _htsign, _hneOne, _hpost, _htargets⟩ :=
+    orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
+      G hfree hreg hcard c hc s hs.1 hs.2.1 hA_in hs.2.2.1 hs.2.2.2
+        a b hab u v huinj hvinj hurange hvrange hu hv
+  have hurangeA : Set.range u = ↑A := by
+    rw [hurange]
+    ext x
+    simp [A]
+  have huA : u 0 ∈ a.supp := by
+    rw [← hurange]
+    exact ⟨0, rfl⟩
+  have hsame' :
+      ((componentNeighborFinset K H a (u 0)).filter
+        (fun y ↦ s y.1 = s (u 0).1)).card = k' := by
+    rw [componentNeighbor_sameSign_eq_supportFilter]
+    rw [← coordinate_sameSign_adj_card_eq_support_from
+      K A u huinj hurangeA (fun x ↦ s x.1) (u 0)]
+    simpa [N₁, K, SimpleGraph.adjMatrix_apply, and_comm] using
+      LR₁.internal_same 0
+  have hk : k' = 0 := by
+    have hs0 := hsame (u 0) huA
+    have htmp : 0 = k' := by
+      simpa [K, H] using hs0.symm.trans hsame'
+    exact htmp.symm
+  have hdegree : ∀ x : c.supp, H.degree x = 2 := by
+    intro x
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2) hc x
+  have hcomm : K.adjMatrix ℝ * H.adjMatrix ℝ =
+      H.adjMatrix ℝ * K.adjMatrix ℝ := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm G
+      (secondOrderDefectGraph G) hglobal c).symm
+  have haa' : componentQuotientMatrix K H a a = 7 - r' :=
+    componentQuotient_eq_of_coordinate_row K H hdegree hcomm
+      a a A u huinj hurangeA hurange (u 0) huA (7 - r') (by
+        simpa [N₁, K, SimpleGraph.adjMatrix_apply] using LR₁.internal_row 0)
+  have hr : r' = 3 := by
+    norm_num at haa
+    have heq : 7 - r' = 4 := haa'.symm.trans haa
+    omega
+  rw [hk, hr] at LR₁ LR₂
+  let su : ZMod 8 → ℤ := fun i ↦ s (u i).1
+  let sv : ZMod 8 → ℤ := fun j ↦ s (v j).1
+  have hphase := zmodEight_two_alternating_sign_phase_routing
+    su sv LR₁.f_sign LR₁.g_sign LR₁.f_flip LR₁.g_flip
+  apply muNegFiveZeroThree_graph_false G c a b u v hfree hreg hcard hc
+    hab huinj hvinj hurange hvrange hu hv s (muNegOneSigmaOf su sv)
+  · intro x y hx hy
+    have hp := muNegOneSigma_coherence su sv LR₁.f_sign LR₁.g_sign
+      hphase x y hx hy
+    have hb : muNegFiveZeroThreeSameSign (muNegOneSigmaOf su sv) x y =
+        (muNegOneSign (muNegOneSigmaOf su sv) x ==
+          muNegOneSign (muNegOneSigmaOf su sv) (8 + y)) := by
+      generalize muNegOneSigmaOf su sv = sigma
+      cases sigma <;> interval_cases x <;> interval_cases y <;>
+        decide
+    rw [hb]
+    exact ⟨fun h ↦ (hp.mpr h).symm, fun h ↦ hp.mp h.symm⟩
+  · simpa [su, sv, N₁, K] using LR₁
+  · simpa [su, sv, N₂, K] using LR₂
+
 /-- Global negative-orbit assembly with the checked h312 leaf discharged
 internally.  Only the six genuinely open canonical callbacks remain. -/
 theorem false_of_negativeEightEightSource_of_six_canonicalTerminals
@@ -1438,6 +1563,55 @@ theorem false_of_negativeEightEightSource_of_six_canonicalTerminals
         a b hab u v huinj hvinj hurange hvrange hu hv)
       h114
 
+/-- Global negative-orbit assembly with both checked graph leaves h503 and
+h312 discharged internally.  The residual callback frontier has size five. -/
+theorem false_of_negativeEightEightSource_of_five_canonicalTerminals
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (theta : ℤ) (k r : ℕ) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 0 4) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 0 4 → False) →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 1 2) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 1 2 → False) →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 0 5) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 0 5 → False) →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 1 3) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 1 3 → False) →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-1) 1 4) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-1) 1 4 → False) →
+    False := by
+  dsimp only
+  intro w h504 h512 h305 h313 h114
+  exact false_of_negativeEightEightSource_of_six_canonicalTerminals
+    G hfree hreg hcard c hc a b hab u v huinj hvinj hurange hvrange hu hv
+      theta k r w
+      (false_of_h503_source_or_transported G hfree hreg hcard c hc
+        a b hab u v huinj hvinj hurange hvrange hu hv)
+      h504 h512 h305 h313 h114
+
 end
 
 end Erdos85
@@ -1461,4 +1635,6 @@ end Erdos85
 #print axioms Erdos85.NegativeEightEightAlignedWitness.exists_switched_ambient_firstShore
 #print axioms Erdos85.exists_firstShore_coherence_of_source_or_transported
 #print axioms Erdos85.false_of_h312_source_or_transported
+#print axioms Erdos85.false_of_h503_source_or_transported
 #print axioms Erdos85.false_of_negativeEightEightSource_of_six_canonicalTerminals
+#print axioms Erdos85.false_of_negativeEightEightSource_of_five_canonicalTerminals
