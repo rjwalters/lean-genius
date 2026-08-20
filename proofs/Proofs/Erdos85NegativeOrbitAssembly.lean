@@ -457,6 +457,79 @@ theorem isAmbientSignedJoint_theta_ne_one
   exact orderSixtyFour_sizeTwoPart_inducedSignedJointEigenvector_muOne_false
     G hfree hreg hcard c hc t htsign htH htD
 
+/-- Package a common aligned `mu=-3` ledger as a full orbit source.  The
+post-`mu=1` refinement is derived from the switched ambient witness, so the
+cell and `(k,r)` remain tied to the same source ledger. -/
+theorem negativeEightEightSource_muNegThree_of_aligned
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (w : NegativeEightEightAlignedWitness G c a b (-3) k r)
+    (hrefined : MuNegThreeRefinedSectorCells N₁ N₂ k r)
+    (hdegree : ∀ x : c.supp, (G.induce c.supp).degree x = 2)
+    (hcomm : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ) *
+        ((G.induce c.supp).adjMatrix ℝ) =
+      ((G.induce c.supp).adjMatrix ℝ) *
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ)) :
+    Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) k r) := by
+  obtain ⟨t, ht⟩ := w.exists_switched_ambient G c a b (-3) k r hdegree hcomm
+  have hne : sizeTwoMuSwitchTarget (-3) k r ≠ 1 :=
+    isAmbientSignedJoint_theta_ne_one G hfree hreg hcard c hc _ t ht
+  refine ⟨⟨w, Or.inr (Or.inl ⟨rfl,
+    muNegThree_postMuOne_sector_cells_of_target_ne_one
+      N₁ N₂ k r hrefined hne⟩), ?_⟩⟩
+  intro h
+  norm_num at h
+
+/-- The analogous source packer for `mu=-5`.  Its two explicit row ledgers
+and mode dichotomies are retained because they are exactly what the h5 finite
+mode transport consumes. -/
+theorem negativeEightEightSource_muNegFive_of_aligned
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (N₁ M₁ N₂ M₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (f₁ f₂ : ZMod 8 → ℤ) (k r : ℕ)
+    (w : NegativeEightEightAlignedWitness G c a b (-5) k r)
+    (hsector : MuNegFiveSectorCells k r)
+    (L₁ : MuNegFiveExplicitRowParameterLedger N₁ M₁ f₁ f₂ k r)
+    (L₂ : MuNegFiveExplicitRowParameterLedger N₂ M₂ f₂ f₁ k r)
+    (hmode₁ : C8CycleEntriesZero N₁ ∨ C8CycleEntriesOne N₁)
+    (hmode₂ : C8CycleEntriesZero N₂ ∨ C8CycleEntriesOne N₂)
+    (hdegree : ∀ x : c.supp, (G.induce c.supp).degree x = 2)
+    (hcomm : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ) *
+        ((G.induce c.supp).adjMatrix ℝ) =
+      ((G.induce c.supp).adjMatrix ℝ) *
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ)) :
+    Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) k r) := by
+  obtain ⟨t, ht⟩ := w.exists_switched_ambient G c a b (-5) k r hdegree hcomm
+  have hne : sizeTwoMuSwitchTarget (-5) k r ≠ 1 :=
+    isAmbientSignedJoint_theta_ne_one G hfree hreg hcard c hc _ t ht
+  have hpost := muNegFive_postMuOne_sector_cells_of_target_ne_one
+    k r hsector hne
+  refine ⟨⟨w, Or.inl ⟨rfl, hpost⟩, ?_⟩⟩
+  intro _
+  exact ⟨M₁, M₂, f₁, f₂, L₁, L₂, hmode₁, hmode₂⟩
+
 /-- A full source witness transports to the exact one-step target object.
 This combines the ledger-backed graph switch with all three finite mode
 transport theorems. -/
@@ -562,3 +635,5 @@ end Erdos85
 #print axioms Erdos85.NegativeEightEightSourceWitness.transport
 #print axioms Erdos85.false_of_negativeEightEightSource_of_canonicalTerminals
 #print axioms Erdos85.isAmbientSignedJoint_theta_ne_one
+#print axioms Erdos85.negativeEightEightSource_muNegThree_of_aligned
+#print axioms Erdos85.negativeEightEightSource_muNegFive_of_aligned
