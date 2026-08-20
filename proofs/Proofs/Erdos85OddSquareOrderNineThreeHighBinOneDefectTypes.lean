@@ -187,6 +187,138 @@ theorem squareOrderNine_threeHigh_firstProfile_exceptional_binOne_card
     _ = squareOrderNineDefectBinEdgeCount G 1 2 := by
       rfl
     _ = 3 := he12
+
+/-- Removing the three exceptional bin-one vertices leaves a two-regular
+induced defect graph: exceptional vertices have no bin-one defect edges, so
+the two bin-one neighbors of every ordinary vertex remain in the ordinary
+core. -/
+theorem squareOrderNine_threeHigh_firstProfile_ordinary_binOne_defect_twoRegular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let O := (B 1).filter fun y => (D.neighborFinset y ∩ B 2).card = 0
+    ∀ y : ↥(↑O : Set V), (D.induce (↑O : Set V)).degree y = 2 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let O := (B 1).filter fun y =>
+    ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 0
+  intro y
+  have hyO : y.1 ∈ O := y.2
+  have hyB : y.1 ∈ B 1 := (Finset.mem_filter.mp hyO).1
+  have hyZero : (D.neighborFinset y.1 ∩ B 2).card = 0 := by
+    simpa [O] using (Finset.mem_filter.mp hyO).2
+  have hyTypes :=
+    squareOrderNine_threeHigh_firstProfile_binOne_defect_neighbor_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc3 hc4 hyB
+  dsimp only at hyTypes
+  have hyOrdinary : (D.neighborFinset y.1 ∩ B 1).card = 2 := by
+    rcases hyTypes with he | ho
+    · rw [he.2.2] at hyZero
+      omega
+    · exact ho.2.1
+  have hinter : D.neighborFinset y.1 ∩ O = D.neighborFinset y.1 ∩ B 1 := by
+    ext z
+    simp only [Finset.mem_inter]
+    constructor
+    · rintro ⟨hyz, hzO⟩
+      exact ⟨hyz, (Finset.mem_filter.mp hzO).1⟩
+    · rintro ⟨hyz, hzB⟩
+      refine ⟨hyz, Finset.mem_filter.mpr ⟨hzB, ?_⟩⟩
+      have hzTypes :=
+        squareOrderNine_threeHigh_firstProfile_binOne_defect_neighbor_dichotomy
+          G hfree hmin hcover hcard hp hhigh hc3 hc4 hzB
+      dsimp only at hzTypes
+      rcases hzTypes with he | ho
+      · have hyMem : y.1 ∈ D.neighborFinset z ∩ B 1 :=
+          Finset.mem_inter.mpr ⟨
+            (D.mem_neighborFinset z y.1).mpr
+              ((D.adj_comm y.1 z).mp ((D.mem_neighborFinset y.1 z).mp hyz)),
+            hyB⟩
+        have hpos : 0 < (D.neighborFinset z ∩ B 1).card :=
+          Finset.card_pos.mpr ⟨y.1, hyMem⟩
+        rw [he.2.1] at hpos
+        omega
+      · exact ho.2.2
+  rw [degree_induce_finset_eq_card_inter]
+  rw [hinter]
+  exact hyOrdinary
+
+/-- The ordinary two-regular bin-one defect core has exactly 21 vertices. -/
+theorem squareOrderNine_threeHigh_firstProfile_ordinary_binOne_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    ((B 1).filter fun y => (D.neighborFinset y ∩ B 2).card = 0).card = 21 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let E := (B 1).filter fun y =>
+    ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 1
+  let O := (B 1).filter fun y =>
+    ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 0
+  have hc1 : squareOrderNineHighIncidenceHistogram G 1 = 24 := by
+    rcases squareOrderNine_highIncidence_profile_of_three_high
+        G hcard hp hhigh with hfirst | hsecond
+    · exact hfirst.2.1
+    · omega
+  have hB1card : (B 1).card = 24 := by
+    dsimp [B]
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 1) (by omega), hc1]
+  have hEcard : E.card = 3 := by
+    simpa [E, B] using
+      (squareOrderNine_threeHigh_firstProfile_exceptional_binOne_card
+        G hfree hmin hcover hcard hp hhigh hc3 hc4)
+  have hpartition : E ∪ O = B 1 := by
+    dsimp [E, O]
+    ext y
+    simp only [Finset.mem_union, Finset.mem_filter]
+    constructor
+    · rintro (⟨hy, _⟩ | ⟨hy, _⟩) <;> exact hy
+    · intro hy
+      have ht :=
+        squareOrderNine_threeHigh_firstProfile_binOne_defect_neighbor_dichotomy
+          G hfree hmin hcover hcard hp hhigh hc3 hc4 hy
+      dsimp only at ht
+      rcases ht with he | ho
+      · exact Or.inl ⟨hy, he.2.2⟩
+      · exact Or.inr ⟨hy, ho.2.2⟩
+  have hdisj : Disjoint E O := by
+    dsimp [E, O]
+    rw [Finset.disjoint_left]
+    intro y hyE hyO
+    have h1 := (Finset.mem_filter.mp hyE).2
+    have h0 := (Finset.mem_filter.mp hyO).2
+    omega
+  have hunionCard : E.card + O.card = (B 1).card := by
+    rw [← Finset.card_union_of_disjoint hdisj, hpartition]
+  change O.card = 21
+  omega
 end
 
 end Erdos85
@@ -197,3 +329,7 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_defectMate_binOne_type
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_exceptional_binOne_card
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_ordinary_binOne_defect_twoRegular
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_ordinary_binOne_card
