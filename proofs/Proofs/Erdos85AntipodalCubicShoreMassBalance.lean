@@ -40,6 +40,34 @@ theorem h305_antipodal_incidentServiceCubicWalkMass_shore_sum_eq_208
   · intro x _ y _ hxy
     exact huinj hxy
 
+/-- On a disjoint eight-vertex shore, vanishing internal cubic contribution
+turns the pointwise cubic census into the complementary total `8·28 = 224`. -/
+theorem h305_incidentServiceCubicWalkMass_other_shore_sum_eq_224
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge)
+    (hHreg : ∀ x, H.degree x = 2)
+    (hCreg : ∀ a, Cedge.degree a = 6)
+    (v : ZMod 8 → V) (hvinj : Function.Injective v)
+    (a : R.edgeFinset)
+    (hzero : ∀ j, internalEndpointCubicWalkMass H R (v j) a = 0) :
+    let W := (Finset.univ : Finset (ZMod 8)).image v
+    (∑ x ∈ W, incidentServiceCubicWalkMass R Cedge x a) = 224 := by
+  classical
+  dsimp only
+  rw [Finset.sum_image]
+  · have hpoint (j : ZMod 8) :
+        incidentServiceCubicWalkMass R Cedge (v j) a = 28 := by
+      have hcensus := edgeIndexedService_cubicWalkCensus
+        H R Cedge hservice hHreg hCreg (v j) a
+      rw [hzero j] at hcensus
+      omega
+    simp_rw [hpoint]
+    norm_num
+  · intro x _ y _ hxy
+    exact hvinj hxy
+
 /-- If the complementary C8 shore contributes its forced `224` cubic mass,
 then an antipodal target has type-zero cubic mass exactly eight larger than
 its type-two cubic mass.  This is the graph-facing specialization of the
@@ -75,6 +103,35 @@ theorem h305_antipodal_shoreTypeCubicWalkMass_zero_eq_two_add_eight
     R Cedge U a 208 224 hshore hcomplement
   omega
 
+/-- Two C8 shore images that partition the vertex set discharge the `224`
+complement premise as soon as internal length-three walks do not cross the
+shores. -/
+theorem h305_antipodal_twoShore_shoreTypeCubicWalkMass_zero_eq_two_add_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge)
+    (hHreg : ∀ x, H.degree x = 2)
+    (hCreg : ∀ a, Cedge.degree a = 6)
+    (u v : ZMod 8 → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hu : ∀ z, H.neighborFinset (u z) = {u (z - 1), u (z + 1)})
+    (a : R.edgeFinset) (i : ZMod 8)
+    (ha : a.1.toFinset = {u i, u (i + 4)})
+    (hpartition :
+      ((Finset.univ : Finset (ZMod 8)).image u)ᶜ =
+        (Finset.univ : Finset (ZMod 8)).image v)
+    (hzero : ∀ j, internalEndpointCubicWalkMass H R (v j) a = 0) :
+    let U := (Finset.univ : Finset (ZMod 8)).image u
+    shoreTypeCubicWalkMass R Cedge U 0 a =
+      shoreTypeCubicWalkMass R Cedge U 2 a + 8 := by
+  apply h305_antipodal_shoreTypeCubicWalkMass_zero_eq_two_add_eight
+    H R Cedge hservice hHreg hCreg u huinj hu a i ha
+  dsimp only
+  rw [hpartition]
+  exact h305_incidentServiceCubicWalkMass_other_shore_sum_eq_224
+    H R Cedge hservice hHreg hCreg v hvinj a hzero
+
 end
 
 end Erdos85
@@ -84,3 +141,5 @@ end Erdos85
   Erdos85.h305_antipodal_incidentServiceCubicWalkMass_shore_sum_eq_208
 #print axioms
   Erdos85.h305_antipodal_shoreTypeCubicWalkMass_zero_eq_two_add_eight
+#print axioms
+  Erdos85.h305_antipodal_twoShore_shoreTypeCubicWalkMass_zero_eq_two_add_eight
