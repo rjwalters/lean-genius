@@ -12,6 +12,7 @@ import Proofs.Erdos85MuNegFiveZeroThreeGraphRealization
 import Proofs.Erdos85MuNegOneOneFourEnrichedCapstone
 import Proofs.Erdos85MuNegOneOneFourOwnerBridge
 import Proofs.Erdos85SizeTwoMuNegThreeSelfCellZeroFourRouter
+import Proofs.Erdos85MuNegThreeOneThreeCommutationTerminal
 
 /-!
 # Ledger-backed assembly socket for the negative switch orbit
@@ -1710,6 +1711,57 @@ theorem false_of_h504_source_or_transported
     G hfree hreg hcard c hc s hs.1 hs.2.1 hs.2.2.1 a u huinj hurange hu
       0 4 rfl rfl haa hsame0 (by simpa [N₁, K] using hone)
 
+/-- Direct and transported h313 endpoints are excluded by subtracting their
+forced antipodal matching and invoking the row-three self-intertwiner kill. -/
+theorem false_of_h313_source_or_transported
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 1 3) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 1 3 →
+    False := by
+  classical
+  dsimp only
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let M₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (v j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  let M₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (u j)
+  intro h
+  obtain ⟨s, _hs, hcell, L₁, _L₂⟩ :=
+    exists_muNegThree_exact_data_of_source_or_transported
+      G hfree hreg hcard c hc a b hab u v huinj hvinj hurange hvrange
+        hu hv 1 3 (by omega) h
+  have hone := muNegThree_oneThree_bothCycleEntriesOne N₁ N₂ hcell
+  exact muNegThreeOneThree_graph_false_of_rowLedger
+    G hfree hreg hcard c hc a u huinj hurange hu M₁
+      (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) L₁ hone.1
+
 /-- The checked h503 owner terminal discharges either a direct source or a
 transported endpoint by re-extracting the full row ledgers from the retained
 ambient witness and pinning their parameters with first-shore coherence. -/
@@ -2081,6 +2133,48 @@ theorem false_of_negativeEightEightSource_of_three_canonicalTerminals
         a b hab u v huinj hvinj hurange hvrange hu hv)
       h512 h305 h313
 
+/-- Global negative-orbit assembly after the algebraic h313 antipode
+subtraction kill.  Only h512 and h305 remain. -/
+theorem false_of_negativeEightEightSource_of_two_canonicalTerminals
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (theta : ℤ) (k r : ℕ) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 1 2) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 1 2 → False) →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 0 5) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 0 5 → False) →
+    False := by
+  dsimp only
+  intro w h512 h305
+  exact false_of_negativeEightEightSource_of_three_canonicalTerminals
+    G hfree hreg hcard c hc a b hab u v huinj hvinj hurange hvrange hu hv
+      theta k r w h512 h305
+      (false_of_h313_source_or_transported G hfree hreg hcard c hc
+        a b hab u v huinj hvinj hurange hvrange hu hv)
+
 end
 
 end Erdos85
@@ -2108,9 +2202,11 @@ end Erdos85
 #print axioms Erdos85.exists_muNegFive_exact_data_of_source_or_transported
 #print axioms Erdos85.exists_muNegThree_exact_data_of_source_or_transported
 #print axioms Erdos85.false_of_h504_source_or_transported
+#print axioms Erdos85.false_of_h313_source_or_transported
 #print axioms Erdos85.false_of_h503_source_or_transported
 #print axioms Erdos85.false_of_h114_source_or_transported
 #print axioms Erdos85.false_of_negativeEightEightSource_of_six_canonicalTerminals
 #print axioms Erdos85.false_of_negativeEightEightSource_of_five_canonicalTerminals
 #print axioms Erdos85.false_of_negativeEightEightSource_of_four_canonicalTerminals
 #print axioms Erdos85.false_of_negativeEightEightSource_of_three_canonicalTerminals
+#print axioms Erdos85.false_of_negativeEightEightSource_of_two_canonicalTerminals
