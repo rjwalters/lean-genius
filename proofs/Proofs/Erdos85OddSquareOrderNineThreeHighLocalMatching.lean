@@ -268,6 +268,98 @@ theorem squareOrderNine_binThree_binOne_partner_sets_disjoint
     · exact hbInc
   exact hab heq
 
+/-- In the first three-high profile, a bin-two vertex in a high root's
+neighborhood uses its unique local matching edge either on bin one or on
+bin two.  The two corresponding cardinalities therefore sum to one. -/
+theorem squareOrderNine_threeHigh_firstProfile_binTwo_local_matching_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x a : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hax : x ∈ G.neighborFinset a) :
+    (G.neighborFinset a ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 1).card +
+      (G.neighborFinset a ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 2).card = 1 := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let k := squareOrderHighIncidenceCount G 9
+  have ha10 : G.degree a = 10 := (Finset.mem_filter.mp ha).2
+  have hlocal := (squareOrder_degree_succ_highRoot_structure
+    G hfree (by norm_num) hmin hcard ha10).2.2
+    ⟨x, (G.mem_neighborFinset a x).mp hax⟩
+  rw [degree_induce_neighborSet_eq_card_common] at hlocal
+  have hcommon : (G.neighborFinset a ∩ G.neighborFinset x).card = 1 := by
+    simpa [Finset.inter_comm] using hlocal
+  have hb3 : B 3 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 3) (by omega), hc3]
+  have hb4 : B 4 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 4) (by omega), hc4]
+  have hpartition : G.neighborFinset a ∩ G.neighborFinset x =
+      (G.neighborFinset a ∩ G.neighborFinset x ∩ B 1) ∪
+        (G.neighborFinset a ∩ G.neighborFinset x ∩ B 2) := by
+    ext y
+    simp only [Finset.mem_inter, Finset.mem_union]
+    constructor
+    · rintro ⟨hya, hyx⟩
+      have hyNotHigh : y ∉ H := by
+        intro hyH
+        exact hp.high_independent ha hyH ((G.mem_neighborFinset a y).mp hya)
+      have hyLow : y ∈ Finset.univ \ H :=
+        Finset.mem_sdiff.mpr ⟨by simp, hyNotHigh⟩
+      have hkpos : 0 < k y := by
+        unfold k squareOrderHighIncidenceCount
+        apply Finset.card_pos.mpr
+        exact ⟨a, Finset.mem_inter.mpr ⟨
+          (G.mem_neighborFinset y a).mpr
+            ((G.adj_comm a y).mp ((G.mem_neighborFinset a y).mp hya)), ha⟩⟩
+      have hkle : k y ≤ 4 := by
+        rcases hp.degree_dichotomy y with hlo | hhi
+        · have := hp.low_incidence_bound hlo
+          change 2 * k y ≤ 9 at this
+          omega
+        · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+      have hkNot3 : k y ≠ 3 := by
+        intro hky
+        have : y ∈ B 3 := Finset.mem_filter.mpr ⟨hyLow, hky⟩
+        simpa [hb3] using this
+      have hkNot4 : k y ≠ 4 := by
+        intro hky
+        have : y ∈ B 4 := Finset.mem_filter.mpr ⟨hyLow, hky⟩
+        simpa [hb4] using this
+      have hk12 : k y = 1 ∨ k y = 2 := by omega
+      rcases hk12 with hk1 | hk2
+      · exact Or.inl ⟨⟨hya, hyx⟩,
+          Finset.mem_filter.mpr ⟨hyLow, hk1⟩⟩
+      · exact Or.inr ⟨⟨hya, hyx⟩,
+          Finset.mem_filter.mpr ⟨hyLow, hk2⟩⟩
+    · rintro (⟨⟨hya, hyx⟩, _⟩ | ⟨⟨hya, hyx⟩, _⟩)
+      · exact ⟨hya, hyx⟩
+      · exact ⟨hya, hyx⟩
+  have hdisj : Disjoint
+      (G.neighborFinset a ∩ G.neighborFinset x ∩ B 1)
+      (G.neighborFinset a ∩ G.neighborFinset x ∩ B 2) := by
+    rw [Finset.disjoint_left]
+    intro y hy1 hy2
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp hy1).2).2
+    have hk2 := (Finset.mem_filter.mp (Finset.mem_inter.mp hy2).2).2
+    omega
+  rw [hpartition, Finset.card_union_of_disjoint hdisj] at hcommon
+  exact hcommon
+
 /-- The full original-neighborhood census of the rare bin-three vertex in
 the second three-high profile is `3H + 3B₁ + 3B₀`. -/
 theorem squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
@@ -385,5 +477,7 @@ end Erdos85
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_unique_binOne_partner_at_highRoot
 #print axioms Erdos85.squareOrderNine_binThree_binOne_partner_sets_disjoint
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_binTwo_local_matching_dichotomy
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
