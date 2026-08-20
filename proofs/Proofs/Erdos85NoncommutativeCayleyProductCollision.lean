@@ -291,7 +291,7 @@ theorem involution_connection_ne_nonbacktracking_product
     (hinv : ∀ g, S g ↔ S g⁻¹)
     (hone : ¬ S 1)
     (hfree : ¬ containsC4 Γ (invClosedCayleyGraph S hinv hone))
-    {t a b : Γ} (_ht : S t) (htsq : t * t = 1)
+    {t a b : Γ} (htsq : t * t = 1)
     (ha : S a) (hb : S b) (hab : a * b ≠ 1) :
     a * b ≠ t := by
   intro habt
@@ -449,8 +449,30 @@ def unusedNonidentityConnectionProducts
   (Finset.univ.erase 1) \
     ((nonbacktrackingConnectionPairs A).image fun p => p.1 * p.2)
 
-/-- In finite-set language, every involutory connection generator belongs to
-the unused product slack. -/
+/-- In finite-set language, every nonidentity involution in the ambient group
+belongs to the unused product slack, whether or not it is a generator. -/
+theorem nontrivial_involution_mem_unusedProducts
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t : Γ} (htne : t ≠ 1) (htsq : t * t = 1) :
+    t ∈ unusedNonidentityConnectionProducts A := by
+  classical
+  apply Finset.mem_sdiff.mpr
+  constructor
+  · exact Finset.mem_erase.mpr ⟨htne, Finset.mem_univ _⟩
+  · intro htImage
+    obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp htImage
+    have hpA := Finset.mem_product.mp (Finset.mem_filter.mp hp).1
+    have hpne := (Finset.mem_filter.mp hp).2
+    exact (involution_connection_ne_nonbacktracking_product
+      (· ∈ A) hinv hone hfree htsq hpA.1 hpA.2 hpne) hpt
+
+/-- In particular, every involutory connection generator lies in the unused
+product slack. -/
 theorem involution_connection_mem_unusedProducts
     {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
     (A : Finset Γ)
@@ -459,17 +481,52 @@ theorem involution_connection_mem_unusedProducts
     (hfree : ¬ containsC4 Γ
       (invClosedCayleyGraph (· ∈ A) hinv hone))
     {t : Γ} (htA : t ∈ A) (htsq : t * t = 1) :
-    t ∈ unusedNonidentityConnectionProducts A := by
-  classical
-  apply Finset.mem_sdiff.mpr
-  constructor
-  · exact Finset.mem_erase.mpr ⟨fun ht => hone (ht ▸ htA), Finset.mem_univ _⟩
-  · intro htImage
-    obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp htImage
-    have hpA := Finset.mem_product.mp (Finset.mem_filter.mp hp).1
-    have hpne := (Finset.mem_filter.mp hp).2
-    exact (involution_connection_ne_nonbacktracking_product
-      (· ∈ A) hinv hone hfree htA htsq hpA.1 hpA.2 hpne) hpt
+    t ∈ unusedNonidentityConnectionProducts A :=
+  nontrivial_involution_mem_unusedProducts A hinv hone hfree
+    (fun ht => hone (ht ▸ htA)) htsq
+
+/-- The ambient group's nonidentity involutions. -/
+def nontrivialInvolutionFinset
+    (Γ : Type*) [Group Γ] [Fintype Γ] [DecidableEq Γ] : Finset Γ :=
+  Finset.univ.filter fun t => t ≠ 1 ∧ t * t = 1
+
+/-- Every ambient nontrivial involution is absorbed by the unused slack. -/
+theorem nontrivialInvolutionFinset_subset_unusedProducts
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone)) :
+    nontrivialInvolutionFinset Γ ⊆ unusedNonidentityConnectionProducts A := by
+  intro t ht
+  have ht' := (Finset.mem_filter.mp ht).2
+  exact nontrivial_involution_mem_unusedProducts
+    A hinv hone hfree ht'.1 ht'.2
+
+/-- At plane-minus-two order, the ambient group has at most `q-2`
+nonidentity involutions. -/
+theorem card_nontrivialInvolutionFinset_le_of_planeMinusTwo_Cayley
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    (q : ℕ) (hq : 2 ≤ q)
+    (hcardΓ : Fintype.card Γ = q * q - 1)
+    (hcardA : A.card = q) :
+    (nontrivialInvolutionFinset Γ).card ≤ q - 2 := by
+  calc
+    (nontrivialInvolutionFinset Γ).card ≤
+        (unusedNonidentityConnectionProducts A).card :=
+      Finset.card_le_card
+        (nontrivialInvolutionFinset_subset_unusedProducts
+          A hinv hone hfree)
+    _ = q - 2 := by
+      simpa [unusedNonidentityConnectionProducts] using
+        card_unused_nonidentity_of_planeMinusTwo_Cayley
+          A hinv hone hfree q hq hcardΓ hcardA
 
 /-- The unused product slack of an inverse-closed connection set is itself
 closed under inversion. -/
@@ -821,7 +878,10 @@ end Erdos85
 #print axioms Erdos85.card_nonbacktrackingConnectionPairs
 #print axioms Erdos85.card_nonbacktracking_connectionProducts
 #print axioms Erdos85.card_unused_nonidentity_of_planeMinusTwo_Cayley
+#print axioms Erdos85.nontrivial_involution_mem_unusedProducts
 #print axioms Erdos85.involution_connection_mem_unusedProducts
+#print axioms Erdos85.nontrivialInvolutionFinset_subset_unusedProducts
+#print axioms Erdos85.card_nontrivialInvolutionFinset_le_of_planeMinusTwo_Cayley
 #print axioms Erdos85.unusedNonidentityConnectionProducts_inv_mem
 #print axioms Erdos85.exists_unused_nontrivial_involution_of_odd_card
 #print axioms Erdos85.exists_unused_involution_of_odd_planeMinusTwo_Cayley
