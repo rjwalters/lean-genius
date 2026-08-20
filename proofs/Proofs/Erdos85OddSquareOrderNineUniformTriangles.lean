@@ -77,6 +77,28 @@ theorem three_dvd_uniform_localTriangleEdge_card_of_three_dvd_planeOrder
   apply Nat.dvd_of_mod_eq_zero
   omega
 
+/-- Direct vertex-transitive form of the mod-three law: when `3 ∣ q`, every
+vertex of a transitive C4-free graph of order `q^2-1` lies in a multiple of
+three triangles. -/
+theorem three_dvd_localTriangleEdge_card_of_vertexTransitive_three_dvd_planeOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (q : ℕ) (hthree : 3 ∣ q)
+    (horder : Fintype.card V + 1 = q * q)
+    (hfree : ¬ containsC4 V G)
+    (htrans : VertexTransitiveByIso G) (v : V) :
+    3 ∣ (G.induce (G.neighborSet v)).edgeFinset.card := by
+  let r := (G.induce (G.neighborSet v)).edgeFinset.card
+  have huniform : ∀ x : V,
+      (G.induce (G.neighborSet x)).edgeFinset.card = r := by
+    intro x
+    exact localTriangleEdge_card_eq_of_vertexTransitiveByIso G htrans x v
+  simpa [r] using
+    (three_dvd_uniform_localTriangleEdge_card_of_three_dvd_planeOrder
+      G q hthree horder hfree r huniform)
+
 /-- A C4-free 9-regular graph on 80 vertices with uniform local triangle
 count has exactly three edges in every induced neighborhood.
 
