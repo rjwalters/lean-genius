@@ -90,6 +90,15 @@ theorem boza48Graph_triangleFreeEdgeGraph_degree : ∀ v : Fin 48,
     (triangleFreeEdgeGraph boza48Graph).degree v = 1 := by
   native_decide
 
+/-- In the natural numbering `v = 2*a+b`, the triangle-free one-factor is
+exactly the coordinate flip within each two-point `a`-fiber.  Equivalently it
+is the Cayley generator `(0,1)` singled out from the other six generators. -/
+theorem boza48Graph_triangleFreeEdgeGraph_adj_iff_same_half :
+    ∀ x y : Fin 48,
+      (triangleFreeEdgeGraph boza48Graph).Adj x y ↔
+        x.val / 2 = y.val / 2 ∧ x ≠ y := by
+  native_decide
+
 /-- The fully checked order-48, minimum-degree-7 witness. -/
 theorem boza48_degreeSeven_witness : C4FreeMinDegreeWitness 48 7 := by
   refine ⟨boza48Graph, inferInstance, ?_, boza48Graph_not_containsC4⟩
