@@ -404,6 +404,15 @@ C4-free minimum-degree-9 graph on 81 vertices. Together with the failed
 `Gamma_a` matching repair, however, it closes both direct finite-field
 constructions presently attached to the q=9 branch.
 
+The canonical deletion is even more rigid. Removing all ten absolute points
+leaves a C4-free 81-vertex graph with degree profile `(8^45,10^36)`.
+`er9_absolute_deletion_repair.py` checks all 2,880 missing edges, using the
+equivalent test that a new edge closes a pre-existing length-three path.
+There are **zero individually safe added edges**: this restriction is already
+edge-maximal C4-free. Therefore its 45 deficient vertices cannot be repaired
+by edge addition at all. Deleting a different ten-set and simultaneously
+switching edges remains outside the scope of both exact checks.
+
 ## 6. Honest status in the final tree
 
 - `PROVEN-AT-49-ONLY`: the q=7 datum exists, via `boza48Graph`.
