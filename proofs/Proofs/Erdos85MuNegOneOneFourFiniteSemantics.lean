@@ -736,6 +736,183 @@ theorem muNegOneServiceClauses_satisfied_of_finite
 
 end ServiceFamily
 
+/-! ## Owner C4 family and assembly -/
+
+section C4Family
+
+variable {uTri vTri σ : Bool} {D X : Nat → Nat → Bool}
+
+/-- Positivity, valuation, and table membership of one generated hit
+literal. -/
+private theorem xlit_props {o1 o2 : Nat} {lit : Int}
+    (h : muNegOneXLit? (muNegOneHitPairs uTri vTri) o1 o2 = some lit) :
+    0 < lit ∧
+    dimacsLitValue (muNegOneValOfRelations uTri vTri D X) lit =
+      X (min o1 o2) (max o1 o2) ∧
+    (min o1 o2, max o1 o2) ∈ muNegOneHitPairs uTri vTri := by
+  obtain ⟨x, hx, rfl⟩ := muNegOneXLit?_eq_some h
+  have hb := muNegOneXVar?_bounds hx
+  refine ⟨by show (0 : Int) < (x : Int); exact_mod_cast by omega, ?_,
+    muNegOneXVar?_key_mem hx⟩
+  rw [dimacsLitValue_ofNat (by omega), valOfRelations_xvar' hx]
+
+/-- Invert one monadic bind of an option do-block. -/
+private theorem option_bind_inv {α β : Type} {o : Option α}
+    {f : α → Option β} {c : β}
+    (h : (o >>= f) = some c) : ∃ x, o = some x ∧ f x = some c := by
+  cases o with
+  | none => simp at h
+  | some x => exact ⟨x, rfl, h⟩
+
+/-- Owner C4 family of the induced valuation. -/
+theorem muNegOneC4Clauses_satisfied_of_finite
+    (hsem : MuNegOneOneFourFiniteSemantics uTri vTri σ D X) :
+    ∀ clause ∈ muNegOneC4Clauses uTri vTri (muNegOneHitPairs uTri vTri),
+      dimacsClauseSatisfied (muNegOneValOfRelations uTri vTri D X)
+        clause := by
+  intro clause hclause
+  simp only [muNegOneC4Clauses, List.mem_flatMap, List.mem_range,
+    List.mem_filter] at hclause
+  obtain ⟨a, ha, b, ⟨hb, hab⟩, hcl⟩ := hclause
+  rw [muNegOneOwners_length] at ha hb
+  have hab' : a < b := of_decide_eq_true hab
+  split at hcl
+  · next hshare =>
+    rw [List.mem_filterMap] at hcl
+    obtain ⟨g, hgmem, hf⟩ := hcl
+    rw [List.mem_filter, List.mem_range, muNegOneOwners_length] at hgmem
+    obtain ⟨hg80, hgcond⟩ := hgmem
+    simp only [Bool.and_eq_true, bne_iff_ne] at hgcond
+    obtain ⟨⟨⟨hga, hgb⟩, _⟩, _⟩ := hgcond
+    obtain ⟨x, hxeq, hf⟩ := option_bind_inv hf
+    obtain ⟨y, hyeq, hf⟩ := option_bind_inv hf
+    have hcl' : clause = [-x, -y] := (Option.some.inj hf).symm
+    obtain ⟨hxpos, hxval, hxkey⟩ := xlit_props (D := D) (X := X) hxeq
+    obtain ⟨hypos, hyval, hykey⟩ := xlit_props (D := D) (X := X) hyeq
+    by_cases hvx : dimacsLitValue
+        (muNegOneValOfRelations uTri vTri D X) x = true
+    · by_cases hvy : dimacsLitValue
+          (muNegOneValOfRelations uTri vTri D X) y = true
+      · exact absurd (hsem.c4_intersecting a b g hab' hb hg80 hga hgb
+          hshare hxkey hykey (by rw [← hxval]; exact hvx)
+          (by rw [← hyval]; exact hvy)) not_false
+      · exact ⟨-y, by rw [hcl']; simp,
+          dimacsLitValue_neg_of_pos hypos hvy⟩
+    · exact ⟨-x, by rw [hcl']; simp,
+        dimacsLitValue_neg_of_pos hxpos hvx⟩
+  · next hnshare =>
+    have hshare_f : muNegOneShare ((muNegOneOwners uTri vTri)[a]!)
+        ((muNegOneOwners uTri vTri)[b]!) = false :=
+      Bool.eq_false_iff.mpr hnshare
+    set ks := (List.range (muNegOneOwners uTri vTri).length).filter
+      (fun g => g != a && g != b &&
+        (muNegOneXVar? (muNegOneHitPairs uTri vTri) a g).isSome &&
+        (muNegOneXVar? (muNegOneHitPairs uTri vTri) b g).isSome)
+      with hks
+    rw [List.mem_flatMap] at hcl
+    obtain ⟨gi, hgi, hcl⟩ := hcl
+    rw [List.mem_range] at hgi
+    rw [List.mem_filterMap] at hcl
+    obtain ⟨hi, hhim, hf⟩ := hcl
+    rw [List.mem_filter, List.mem_range] at hhim
+    obtain ⟨hhi, hgihi⟩ := hhim
+    have hgihi' : gi < hi := of_decide_eq_true hgihi
+    obtain ⟨xag, hxag, hf⟩ := option_bind_inv hf
+    obtain ⟨xbg, hxbg, hf⟩ := option_bind_inv hf
+    obtain ⟨xah, hxah, hf⟩ := option_bind_inv hf
+    obtain ⟨xbh, hxbh, hf⟩ := option_bind_inv hf
+    have hcl' : clause = [-xag, -xbg, -xah, -xbh] :=
+      (Option.some.inj hf).symm
+    have hgmem : ks[gi]! ∈ ks := by
+      rw [getElem!_pos ks gi hgi]
+      exact List.getElem_mem _
+    have hhmem : ks[hi]! ∈ ks := by
+      rw [getElem!_pos ks hi hhi]
+      exact List.getElem_mem _
+    have hgmemf : ks[gi]! ∈
+        (List.range (muNegOneOwners uTri vTri).length).filter
+          (fun g => g != a && g != b &&
+            (muNegOneXVar? (muNegOneHitPairs uTri vTri) a g).isSome &&
+            (muNegOneXVar? (muNegOneHitPairs uTri vTri) b g).isSome) := by
+      rw [← hks]
+      exact hgmem
+    have hhmemf : ks[hi]! ∈
+        (List.range (muNegOneOwners uTri vTri).length).filter
+          (fun g => g != a && g != b &&
+            (muNegOneXVar? (muNegOneHitPairs uTri vTri) a g).isSome &&
+            (muNegOneXVar? (muNegOneHitPairs uTri vTri) b g).isSome) := by
+      rw [← hks]
+      exact hhmem
+    have hksnd : ks.Nodup := by
+      rw [hks]
+      exact List.nodup_range.filter _
+    have hgh : ks[gi]! ≠ ks[hi]! := by
+      rw [getElem!_pos ks gi hgi, getElem!_pos ks hi hhi]
+      exact fun h =>
+        absurd ((List.Nodup.getElem_inj_iff hksnd).mp h) (by omega)
+    obtain ⟨hgr, hgcond⟩ := List.mem_filter.mp hgmemf
+    obtain ⟨hhr, hhcond⟩ := List.mem_filter.mp hhmemf
+    rw [List.mem_range, muNegOneOwners_length] at hgr hhr
+    simp only [Bool.and_eq_true, bne_iff_ne] at hgcond hhcond
+    obtain ⟨⟨⟨hga, hgb⟩, _⟩, _⟩ := hgcond
+    obtain ⟨⟨⟨hha, hhb⟩, _⟩, _⟩ := hhcond
+    obtain ⟨hp1, hv1, hk1⟩ := xlit_props (D := D) (X := X) hxag
+    obtain ⟨hp2, hv2, hk2⟩ := xlit_props (D := D) (X := X) hxbg
+    obtain ⟨hp3, hv3, hk3⟩ := xlit_props (D := D) (X := X) hxah
+    obtain ⟨hp4, hv4, hk4⟩ := xlit_props (D := D) (X := X) hxbh
+    by_cases hb1 : dimacsLitValue
+        (muNegOneValOfRelations uTri vTri D X) xag = true
+    · by_cases hb2 : dimacsLitValue
+          (muNegOneValOfRelations uTri vTri D X) xbg = true
+      · by_cases hb3 : dimacsLitValue
+            (muNegOneValOfRelations uTri vTri D X) xah = true
+        · by_cases hb4 : dimacsLitValue
+              (muNegOneValOfRelations uTri vTri D X) xbh = true
+          · exact absurd (hsem.c4_no_two a b ks[gi]! ks[hi]! hab' hb
+              hgr hhr hgh hga hgb hha hhb hshare_f hk1 hk2 hk3 hk4
+              (by rw [← hv1]; exact hb1) (by rw [← hv2]; exact hb2)
+              (by rw [← hv3]; exact hb3) (by rw [← hv4]; exact hb4))
+              not_false
+          · exact ⟨-xbh, by rw [hcl']; simp,
+              dimacsLitValue_neg_of_pos hp4 hb4⟩
+        · exact ⟨-xah, by rw [hcl']; simp,
+            dimacsLitValue_neg_of_pos hp3 hb3⟩
+      · exact ⟨-xbg, by rw [hcl']; simp,
+          dimacsLitValue_neg_of_pos hp2 hb2⟩
+    · exact ⟨-xag, by rw [hcl']; simp,
+        dimacsLitValue_neg_of_pos hp1 hb1⟩
+
+end C4Family
+
+section Assembly
+
+variable {uTri vTri σ : Bool} {D X : Nat → Nat → Bool}
+
+/-- Assembled constraint semantics of the induced valuation. -/
+theorem muNegOneOneFourConstraintSemantics_of_finite
+    (hsem : MuNegOneOneFourFiniteSemantics uTri vTri σ D X) :
+    MuNegOneOneFourOwnerConstraintSemantics uTri vTri σ
+      (muNegOneValOfRelations uTri vTri D X) where
+  cross_rows := muNegOneCrossRowClauses_satisfied_of_finite hsem
+  cross_columns := muNegOneCrossColClauses_satisfied_of_finite hsem
+  intertwining := muNegOneIntertwineClauses_satisfied_of_finite hsem
+  hit_activity := muNegOneHitActivityClauses_satisfied_of_finite hsem
+  service := muNegOneServiceClauses_satisfied_of_finite hsem
+  exterior_c4 := muNegOneC4Clauses_satisfied_of_finite hsem
+
+/-- **Finite-relation contradiction socket.**  Any pair of `Nat`-coded
+relations meeting the finite semantics of a canonical `(−1,1,4)` sector
+pair is impossible. -/
+theorem muNegOneOneFourFiniteSemantics_false
+    (hcanon : (uTri = false ∧ vTri = false) ∨
+      (uTri = false ∧ vTri = true) ∨ (uTri = true ∧ vTri = true))
+    (hsem : MuNegOneOneFourFiniteSemantics uTri vTri σ D X) : False :=
+  muNegOneOneFourOwnerConstraintSemantics_false' hcanon
+    (muNegOneOneFourConstraintSemantics_of_finite hsem)
+
+end Assembly
+
+
 
 
 end Erdos85
@@ -745,3 +922,5 @@ end Erdos85
 #print axioms Erdos85.muNegOneIntertwineClauses_satisfied_of_finite
 #print axioms Erdos85.muNegOneHitActivityClauses_satisfied_of_finite
 #print axioms Erdos85.muNegOneServiceClauses_satisfied_of_finite
+#print axioms Erdos85.muNegOneC4Clauses_satisfied_of_finite
+#print axioms Erdos85.muNegOneOneFourFiniteSemantics_false
