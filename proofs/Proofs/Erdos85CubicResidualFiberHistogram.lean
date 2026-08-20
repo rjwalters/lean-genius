@@ -31,6 +31,31 @@ def cubicResidualFiber
     (u : V) (a : R.edgeFinset) : Finset R.edgeFinset :=
   (incidentEdgeFiber R u).filter fun b ↦ ¬ Cedge.Adj b a
 
+theorem incidentServiceNeighborFiber_eq_localLawFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (u : V) (a : R.edgeFinset) :
+    incidentServiceNeighborFiber R Cedge u a =
+      incidentServiceNeighborFinset R Cedge u a := by
+  classical
+  ext b
+  simp [incidentServiceNeighborFiber, incidentEdgeFiber,
+    incidentServiceNeighborFinset, SimpleGraph.mem_neighborFinset,
+    Cedge.adj_comm, and_comm]
+
+/-- Local service law in the residual-fiber vocabulary. -/
+theorem internalEndpointNeighbor_card_add_incidentServiceNeighborFiber_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge)
+    (u : V) (a : R.edgeFinset) :
+    (internalEndpointNeighborFinset H R u a).card +
+      (incidentServiceNeighborFiber R Cedge u a).card = 1 := by
+  rw [incidentServiceNeighborFiber_eq_localLawFinset]
+  exact edgeIndexedService_localLaw H R Cedge hservice u a
+
 theorem incidentEdgeFiber_card
     {V : Type*} [Fintype V] [DecidableEq V]
     (R : SimpleGraph V) [DecidableRel R.Adj] (u : V) :
@@ -208,6 +233,9 @@ end
 end Erdos85
 
 #print axioms Erdos85.incidentEdgeFiber_card
+#print axioms Erdos85.incidentServiceNeighborFiber_eq_localLawFinset
+#print axioms
+  Erdos85.internalEndpointNeighbor_card_add_incidentServiceNeighborFiber_card
 #print axioms Erdos85.cubicResidualFiber_card_add_neighbor_card
 #print axioms
   Erdos85.cubicResidualFiber_sum_eq_incidentMass_sub_eleven_neighborCard
