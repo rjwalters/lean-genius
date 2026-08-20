@@ -1,4 +1,5 @@
 import Proofs.Erdos85OddSquareOrderNineOneHighDefectDecomposition
+import Proofs.Erdos85LocalTriangleParity
 
 /-! # The two block systems in the q=9 one-high horn
 
@@ -46,6 +47,97 @@ theorem defectNeighbors_disjoint_secondLayerBranch_of_adjacent_indices
   have hpos : 0 < (G.neighborFinset y.1 ∩ G.neighborFinset x).card :=
     Finset.card_pos.mpr ⟨z.1, hzCommon⟩
   omega
+
+/-- At a root whose neighborhood has no isolated vertex, the diagonal cell
+between the defect neighborhood of an index and its own ordinary branch is
+exactly the triangle-free-edge neighborhood of that index. -/
+theorem defectNeighbors_inter_own_secondLayerBranch_eq_triangleFreeNeighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (v : V)
+    (y : {w : V // w ∈ G.neighborSet v})
+    (hlocal : (G.induce (G.neighborSet v)).degree y = 1) :
+    (secondOrderDefectGraph G).neighborFinset y.1 ∩
+        secondLayerBranch G v y = triangleFreeNeighbors G y.1 := by
+  classical
+  ext x
+  constructor
+  · intro hx
+    have hx' := Finset.mem_inter.mp hx
+    have hD : (secondOrderDefectGraph G).Adj y.1 x :=
+      ((secondOrderDefectGraph G).mem_neighborFinset y.1 x).mp hx'.1
+    have hyx : y.1 ≠ x := (secondOrderDefectGraph G).ne_of_adj hD
+    have hzero :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree hyx).mp hD
+    have hadj : G.Adj y.1 x := by
+      exact (G.mem_neighborFinset y.1 x).mp (Finset.mem_sdiff.mp hx'.2).1
+    exact (mem_triangleFreeNeighbors G y.1 x).mpr ⟨hadj, hzero⟩
+  · intro hx
+    have htf := (mem_triangleFreeNeighbors G y.1 x).mp hx
+    have hyx : y.1 ≠ x := G.ne_of_adj htf.1
+    have hD : (secondOrderDefectGraph G).Adj y.1 x :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+        G hfree hyx).mpr htf.2
+    refine Finset.mem_inter.mpr ⟨
+      ((secondOrderDefectGraph G).mem_neighborFinset y.1 x).mpr hD, ?_⟩
+    refine Finset.mem_sdiff.mpr ⟨
+      (G.mem_neighborFinset y.1 x).mpr htf.1, ?_⟩
+    intro hxClosed
+    rcases Finset.mem_insert.mp hxClosed with hxv | hxNv
+    · subst x
+      have hlocal' := hlocal
+      rw [degree_induce_neighborSet_eq_card_common] at hlocal'
+      have hcomm :
+          (G.neighborFinset y.1 ∩ G.neighborFinset v).card = 1 := by
+        simpa [Finset.inter_comm] using hlocal'
+      omega
+    · have hvCommon : v ∈ G.neighborFinset y.1 ∩ G.neighborFinset x := by
+        exact Finset.mem_inter.mpr ⟨
+          (G.mem_neighborFinset y.1 v).mpr y.2.symm,
+          (G.mem_neighborFinset x v).mpr
+            ((G.mem_neighborFinset v x).mp hxNv).symm⟩
+      have hpos : 0 < (G.neighborFinset y.1 ∩ G.neighborFinset x).card :=
+        Finset.card_pos.mpr ⟨v, hvCommon⟩
+      omega
+
+/-- In the q=9 one-high grid every diagonal cell has odd cardinality. -/
+theorem squareOrderNine_oneHigh_diagonal_defectBranch_cells_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 1) :
+    ∃ v : V,
+      squareOrderHighVertices G 9 = {v} ∧
+      squareOrderNineLowIncidenceBin G 1 = G.neighborFinset v ∧
+      ∀ y : {w : V // w ∈ G.neighborSet v},
+        Odd (((secondOrderDefectGraph G).neighborFinset y.1 ∩
+          secondLayerBranch G v y).card) := by
+  classical
+  obtain ⟨v, hH, hB1, hlocal⟩ :=
+    squareOrderNine_oneHigh_bin_one_eq_highRoot_neighbors
+      G hfree hmin hcard hp hhigh
+  refine ⟨v, hH, hB1, ?_⟩
+  intro y
+  rw [defectNeighbors_inter_own_secondLayerBranch_eq_triangleFreeNeighbors
+    G hfree v y (hlocal y)]
+  apply Nat.odd_iff.mpr
+  have hpar := triangleFreeNeighbors_card_mod_two_eq_vertexDegree
+    G hfree y.1
+  have hydeg : G.degree y.1 = 9 := by
+    have hvH : v ∈ squareOrderHighVertices G 9 := by rw [hH]; simp
+    have hvdeg : G.degree v = 10 := (Finset.mem_filter.mp hvH).2
+    exact (squareOrder_degree_succ_highRoot_structure
+      G hfree (by norm_num) hmin hcard hvdeg).2.1 y.1 y.2
+  rw [hydeg] at hpar
+  norm_num at hpar ⊢
+  exact hpar
 
 /-- In the one-high q=9 horn, choose the unique high root.  Its ten
 one-incidence neighbors index both the seven-point defect blocks and the
@@ -129,4 +221,6 @@ end
 end Erdos85
 
 #print axioms Erdos85.defectNeighbors_disjoint_secondLayerBranch_of_adjacent_indices
+#print axioms Erdos85.defectNeighbors_inter_own_secondLayerBranch_eq_triangleFreeNeighbors
+#print axioms Erdos85.squareOrderNine_oneHigh_diagonal_defectBranch_cells_odd
 #print axioms Erdos85.squareOrderNine_oneHigh_forbidden_matched_defectBranch_cells
