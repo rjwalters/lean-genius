@@ -10,6 +10,7 @@ import Proofs.Erdos85SizeTwoMuNegFiveAlignedShoreSwitch
 import Proofs.Erdos85MuNegThreeOneTwoOrbitTerminal
 import Proofs.Erdos85MuNegFiveZeroThreeGraphRealization
 import Proofs.Erdos85MuNegOneOneFourEnrichedCapstone
+import Proofs.Erdos85MuNegOneOneFourOwnerBridge
 
 /-!
 # Ledger-backed assembly socket for the negative switch orbit
@@ -1512,6 +1513,63 @@ theorem false_of_h503_source_or_transported
   · simpa [su, sv, N₁, K] using LR₁
   · simpa [su, sv, N₂, K] using LR₂
 
+/-- The checked ambient h114 terminal consumes exactly the coherence retained
+by either the direct source or the transported endpoint. -/
+theorem false_of_h114_source_or_transported
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-1) 1 4) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-1) 1 4 →
+    False := by
+  classical
+  dsimp only
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  intro h
+  obtain ⟨s, hs, haa, hsame⟩ :=
+    exists_firstShore_coherence_of_source_or_transported
+      G c a b N₁ N₂ (-1) 1 4 h
+  apply muNegOneOneFour_ambient_false_of_oneFour_ledger
+    G hfree hreg hcard c hc a b hab u v huinj hvinj hurange hvrange
+      hu hv s hs
+  · norm_num at haa ⊢
+    exact haa
+  · refine ⟨u 0, ?_, ?_⟩
+    · simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      exact (ConnectedComponent.mem_supp_iff a (u 0)).mp (by
+        rw [← hurange]
+        exact ⟨0, rfl⟩)
+    · rw [← componentNeighbor_sameSign_eq_supportFilter]
+      exact hsame (u 0) (by
+        rw [← hurange]
+        exact ⟨0, rfl⟩)
+
 /-- Global negative-orbit assembly with the checked h312 leaf discharged
 internally.  Only the six genuinely open canonical callbacks remain. -/
 theorem false_of_negativeEightEightSource_of_six_canonicalTerminals
@@ -1612,6 +1670,52 @@ theorem false_of_negativeEightEightSource_of_five_canonicalTerminals
         a b hab u v huinj hvinj hurange hvrange hu hv)
       h504 h512 h305 h313 h114
 
+/-- Global negative-orbit assembly with h503, h312, and h114 discharged
+internally.  Four canonical callbacks remain. -/
+theorem false_of_negativeEightEightSource_of_four_canonicalTerminals
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (theta : ℤ) (k r : ℕ) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 0 4) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 0 4 → False) →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 1 2) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 1 2 → False) →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 0 5) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 0 5 → False) →
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 1 3) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 1 3 → False) →
+    False := by
+  dsimp only
+  intro w h504 h512 h305 h313
+  exact false_of_negativeEightEightSource_of_five_canonicalTerminals
+    G hfree hreg hcard c hc a b hab u v huinj hvinj hurange hvrange hu hv
+      theta k r w h504 h512 h305 h313
+      (false_of_h114_source_or_transported G hfree hreg hcard c hc
+        a b hab u v huinj hvinj hurange hvrange hu hv)
+
 end
 
 end Erdos85
@@ -1636,5 +1740,7 @@ end Erdos85
 #print axioms Erdos85.exists_firstShore_coherence_of_source_or_transported
 #print axioms Erdos85.false_of_h312_source_or_transported
 #print axioms Erdos85.false_of_h503_source_or_transported
+#print axioms Erdos85.false_of_h114_source_or_transported
 #print axioms Erdos85.false_of_negativeEightEightSource_of_six_canonicalTerminals
 #print axioms Erdos85.false_of_negativeEightEightSource_of_five_canonicalTerminals
+#print axioms Erdos85.false_of_negativeEightEightSource_of_four_canonicalTerminals
