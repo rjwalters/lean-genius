@@ -516,6 +516,166 @@ theorem muNegThreeFiniteSemantics_hit_activity
       rcases hin with rfl | rfl <;>
         exact ⟨-Int.ofNat x, by simp, hneg⟩
 
+private theorem muNegThreeXLit?_eq_some {a b : Nat} {lit : Int}
+    (h : muNegThreeXLit? a b = some lit) :
+    ∃ x : Nat, muNegThreeXVar? a b = some x ∧ lit = Int.ofNat x := by
+  unfold muNegThreeXLit? at h
+  rw [Option.map_eq_some_iff] at h
+  obtain ⟨x, hx, rfl⟩ := h
+  exact ⟨x, hx, rfl⟩
+
+/-- A guarded exact-one block is satisfied when its positive guard is true,
+or when exactly one of its positive service literals is true. -/
+private theorem muNegThreeGuarded_satisfied {val : DimacsValuation}
+    {g : Int} {lits : List Int} {clause : DimacsClause}
+    (hcl : clause ∈ muNegThreeGuarded g lits)
+    (hpos : ∀ lit ∈ lits, 0 < lit)
+    (hdisj : dimacsLitValue val g = true ∨
+      ((∃ lit ∈ lits, dimacsLitValue val lit = true) ∧
+        (∀ l₁ ∈ lits, ∀ l₂ ∈ lits,
+          dimacsLitValue val l₁ = true →
+          dimacsLitValue val l₂ = true → l₁ = l₂))) :
+    dimacsClauseSatisfied val clause := by
+  rw [muNegThreeGuarded] at hcl
+  rcases List.mem_append.mp hcl with hone | hpair
+  · simp only [List.mem_singleton] at hone
+    subst hone
+    rcases hdisj with hg | ⟨⟨lit, hmem, hval⟩, _⟩
+    · exact ⟨g, by simp, hg⟩
+    · exact ⟨lit, by simp [hmem], hval⟩
+  · simp only [List.mem_flatMap, List.mem_map, List.mem_filter] at hpair
+    obtain ⟨x, hx, y, ⟨hy, hxy⟩, rfl⟩ := hpair
+    rcases hdisj with hg | ⟨_, huniq⟩
+    · exact ⟨g, by simp, hg⟩
+    · by_cases hvx : dimacsLitValue val x = true
+      · by_cases hvy : dimacsLitValue val y = true
+        · have hxy' : x = y := huniq x hx y hy hvx hvy
+          subst hxy'
+          simp at hxy
+        · have hvyf := Bool.eq_false_of_not_eq_true hvy
+          exact ⟨-y, by simp, dimacs_neg_satisfied_of_false (hpos y hy) hvyf⟩
+      · have hvxf := Bool.eq_false_of_not_eq_true hvx
+        exact ⟨-x, by simp, dimacs_neg_satisfied_of_false (hpos x hx) hvxf⟩
+
+/-- Embed the guarded service family from existence and uniqueness of an
+active owner's service hit in every non-neighboring row and column. -/
+theorem muNegThreeFiniteSemantics_service
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (hsem : MuNegThreeOneTwoFiniteSemantics fwd c D X) :
+    ∀ clause ∈ muNegThreeServiceClauses,
+      dimacsClauseSatisfied (muNegThreeValOfRelations D X) clause := by
+  have block (a : Nat) (ha : a < 64) (onRow : Bool) (t : Nat)
+      (ht : t < 8)
+      (hoff : (if onRow then
+          muNegThreeOffsetOne (muNegThreeCellRow a) t
+        else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false) :
+      ∀ clause ∈ muNegThreeGuarded
+          (Int.ofNat (muNegThreeDVar a))
+          (muNegThreeServiceLits a onRow t),
+        dimacsClauseSatisfied (muNegThreeValOfRelations D X) clause := by
+    intro clause hcl
+    apply muNegThreeGuarded_satisfied hcl
+    · intro lit hlit
+      rw [muNegThreeServiceLits, List.mem_filterMap] at hlit
+      obtain ⟨b, _, hfb⟩ := hlit
+      by_cases hcond : (b != a &&
+          (if onRow then muNegThreeCellRow b == t
+            else muNegThreeCellCol b == t)) = true
+      · rw [if_pos hcond] at hfb
+        obtain ⟨x, hx, rfl⟩ := muNegThreeXLit?_eq_some hfb
+        have hb := muNegThreeXVar?_bounds hx
+        show (0 : Int) < (x : Int)
+        exact_mod_cast (by omega : 0 < x)
+      · rw [if_neg hcond] at hfb
+        simp at hfb
+    · by_cases hact : muNegThreeOwnerActive D a = true
+      · right
+        constructor
+        · obtain ⟨b, hb64, hbne, hcoord, hkey, hX⟩ :=
+            hsem.service_exists a ha hact onRow t hoff
+          have hsome := muNegThreeXVar?_isSome_of_mem hkey
+          cases hx : muNegThreeXVar? a b with
+          | none => rw [hx] at hsome; simp at hsome
+          | some x =>
+            refine ⟨Int.ofNat x, ?_, ?_⟩
+            · rw [muNegThreeServiceLits, List.mem_filterMap]
+              refine ⟨b, by simpa using hb64, ?_⟩
+              rw [if_pos ((Bool.and_eq_true _ _).mpr
+                ⟨bne_iff_ne.mpr hbne, by simpa using hcoord⟩)]
+              unfold muNegThreeXLit?
+              rw [hx]
+              rfl
+            · rw [muNegThree_dimacsLitValue_ofNat
+                (by have := muNegThreeXVar?_bounds hx; omega),
+                muNegThreeValOfRelations_xvar D X hx]
+              exact hX
+        · intro l₁ hl₁ l₂ hl₂ hv₁ hv₂
+          rw [muNegThreeServiceLits, List.mem_filterMap] at hl₁ hl₂
+          obtain ⟨b₁, hb₁r, hf₁⟩ := hl₁
+          obtain ⟨b₂, hb₂r, hf₂⟩ := hl₂
+          rw [List.mem_range] at hb₁r hb₂r
+          by_cases hc₁ : (b₁ != a &&
+              (if onRow then muNegThreeCellRow b₁ == t
+                else muNegThreeCellCol b₁ == t)) = true
+          · rw [if_pos hc₁] at hf₁
+            by_cases hc₂ : (b₂ != a &&
+                (if onRow then muNegThreeCellRow b₂ == t
+                  else muNegThreeCellCol b₂ == t)) = true
+            · rw [if_pos hc₂] at hf₂
+              simp only [Bool.and_eq_true, bne_iff_ne] at hc₁ hc₂
+              obtain ⟨x₁, hx₁, rfl⟩ := muNegThreeXLit?_eq_some hf₁
+              obtain ⟨x₂, hx₂, rfl⟩ := muNegThreeXLit?_eq_some hf₂
+              have hX₁ : X (min a b₁) (max a b₁) = true := by
+                rw [muNegThree_dimacsLitValue_ofNat
+                    (by have := muNegThreeXVar?_bounds hx₁; omega),
+                  muNegThreeValOfRelations_xvar D X hx₁] at hv₁
+                exact hv₁
+              have hX₂ : X (min a b₂) (max a b₂) = true := by
+                rw [muNegThree_dimacsLitValue_ofNat
+                    (by have := muNegThreeXVar?_bounds hx₂; omega),
+                  muNegThreeValOfRelations_xvar D X hx₂] at hv₂
+                exact hv₂
+              have hb₁₂ : b₁ = b₂ := hsem.service_unique a ha hact onRow t hoff
+                b₁ b₂ hb₁r hc₁.1 (by simpa using hc₁.2)
+                (muNegThreeXVar?_key_mem hx₁) hX₁
+                hb₂r hc₂.1 (by simpa using hc₂.2)
+                (muNegThreeXVar?_key_mem hx₂) hX₂
+              subst hb₁₂
+              rw [hx₁] at hx₂
+              exact congrArg Int.ofNat (Option.some.inj hx₂)
+            · rw [if_neg hc₂] at hf₂
+              simp at hf₂
+          · rw [if_neg hc₁] at hf₁
+            simp at hf₁
+      · left
+        have hD : D (muNegThreeCellRow a) (muNegThreeCellCol a) = true := by
+          have : muNegThreeOwnerActive D a = false := Bool.eq_false_of_not_eq_true hact
+          simpa [muNegThreeOwnerActive] using this
+        have hrow : muNegThreeCellRow a < 8 := by
+          unfold muNegThreeCellRow
+          omega
+        have hcol : muNegThreeCellCol a < 8 := by
+          exact Nat.mod_lt _ (by norm_num)
+        have haidx : muNegThreeCellRow a * 8 + muNegThreeCellCol a = a := by
+          simpa [muNegThreeCellRow, muNegThreeCellCol, Nat.mul_comm] using
+            Nat.div_add_mod a 8
+        rw [muNegThree_dimacsLitValue_ofNat (by simp [muNegThreeDVar]),
+          ← haidx, muNegThreeValOfRelations_dvar D X hrow hcol, hD]
+  intro clause hclause
+  simp only [muNegThreeServiceClauses, List.mem_flatMap, List.mem_range,
+    List.mem_append] at hclause
+  obtain ⟨a, ha, hrow | hcol⟩ := hclause
+  · obtain ⟨t, ht, hmem⟩ := hrow
+    split at hmem
+    · simp at hmem
+    · exact block a ha true t ht (by simpa using ‹¬ muNegThreeOffsetOne
+          (muNegThreeCellRow a) t = true›) clause hmem
+  · obtain ⟨t, ht, hmem⟩ := hcol
+    split at hmem
+    · simp at hmem
+    · exact block a ha false t ht (by simpa using ‹¬ muNegThreeOffsetOne
+          (muNegThreeCellCol a) t = true›) clause hmem
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeValOfRelations_dvar
@@ -526,3 +686,4 @@ end Erdos85
 #print axioms Erdos85.muNegThreeFiniteSemantics_opposite_columns
 #print axioms Erdos85.muNegThreeFiniteSemantics_intertwining
 #print axioms Erdos85.muNegThreeFiniteSemantics_hit_activity
+#print axioms Erdos85.muNegThreeFiniteSemantics_service
