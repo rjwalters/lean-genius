@@ -1,4 +1,5 @@
 import Proofs.Erdos85CubicResidualFiberHistogram
+import Mathlib.Combinatorics.SimpleGraph.Matching
 
 /-!
 # The global graph of marked cubic-value-five pairs
@@ -62,6 +63,25 @@ noncomputable def symmetricMarkedEdgeFinset {α : Type*} [Fintype α]
     Finset (Sym2 α) := by
   classical
   exact (symmetricMarkedGraph P hsymm).edgeFinset
+
+/-- The local two-partner condition is exactly two-regularity of the marked
+simple graph. -/
+theorem symmetricMarkedGraph_isCycles
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (P : α → α → Prop) [DecidableRel P]
+    (hsymm : ∀ ⦃a b⦄, P a b → P b a)
+    (hdegree : ∀ a : α,
+      (Finset.univ.filter (fun b : α ↦ a ≠ b ∧ P a b)).card = 2) :
+    (symmetricMarkedGraph P hsymm).IsCycles := by
+  classical
+  intro a _ha
+  have hn : (symmetricMarkedGraph P hsymm).neighborSet a =
+      ↑(Finset.univ.filter (fun b : α ↦ a ≠ b ∧ P a b)) := by
+    ext b
+    simp [symmetricMarkedGraph]
+  rw [hn]
+  rw [Set.ncard_coe_finset]
+  exact hdegree a
 
 /-- A symmetric marked relation of local valency two on twenty-four objects
 has twenty-four undirected marked pairs.  This is the global handshaking
@@ -137,6 +157,45 @@ theorem restricted_symmetricMarkedGraph_card_edges_eq_twentyFour
     rw [hsubtypeFilter]
     exact hdegree a.1 a.2
 
+/-- Finset-facing two-regularity certificate. -/
+theorem restricted_symmetricMarkedGraph_isCycles
+    {α : Type*} [DecidableEq α]
+    (S : Finset α) (P : α → α → Prop) [DecidableRel P]
+    (hsymm : ∀ ⦃a b⦄, P a b → P b a)
+    (hdegree : ∀ a ∈ S,
+      (S.filter (fun b : α ↦ a ≠ b ∧ P a b)).card = 2) :
+    (symmetricMarkedGraph
+      (fun a b : S ↦ P a.1 b.1)
+      (by intro a b hab; exact hsymm hab)).IsCycles := by
+  classical
+  apply symmetricMarkedGraph_isCycles
+  intro a
+  let e : S ↪ α := ⟨Subtype.val, Subtype.val_injective⟩
+  have hmap :
+      (Finset.univ.filter
+        (fun b : S ↦ a ≠ b ∧ P a.1 b.1)).map e =
+      S.filter (fun b : α ↦ a.1 ≠ b ∧ P a.1 b) := by
+    ext b
+    constructor
+    · intro hb
+      obtain ⟨x, hx, rfl⟩ := Finset.mem_map.mp hb
+      have hx' := Finset.mem_filter.mp hx
+      exact Finset.mem_filter.mpr ⟨x.2, fun hax ↦
+        hx'.2.1 (Subtype.ext hax), hx'.2.2⟩
+    · intro hb
+      have hb' := Finset.mem_filter.mp hb
+      let x : S := ⟨b, hb'.1⟩
+      apply Finset.mem_map.mpr
+      refine ⟨x, ?_, rfl⟩
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ x, ?_, hb'.2.2⟩
+      intro hax
+      exact hb'.2.1 (congrArg Subtype.val hax)
+  have hc := congrArg Finset.card hmap
+  rw [Finset.card_map] at hc
+  rw [hc]
+  exact hdegree a.1 a.2
+
 /-- Graph-facing socket for the global sharp cross-row equality case.  Once
 `S` is identified with the twenty-four cross-type residual edges, local sharp
 equality supplies the two-partner hypothesis.  Symmetry of cubic walk counts
@@ -164,9 +223,33 @@ theorem cubicValueFive_markedPairs_card_twentyFour
         rwa [residualFiberCubicWalkCount_comm R Cedge] at hab)
       hcard hsharp
 
+/-- The same graph-facing hypotheses expose the marked value-five relation as
+an actual two-regular graph on the cross targets. -/
+theorem cubicValueFive_markedGraph_isCycles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (S : Finset R.edgeFinset)
+    (hsharp : ∀ a ∈ S,
+      (S.filter (fun b : R.edgeFinset ↦ a ≠ b ∧
+        residualFiberCubicWalkCount R Cedge a b = 5)).card = 2) :
+    (symmetricMarkedGraph
+      (fun a b : S ↦
+        residualFiberCubicWalkCount R Cedge a.1 b.1 = 5)
+      (by
+        intro a b hab
+        rwa [residualFiberCubicWalkCount_comm R Cedge] at hab)).IsCycles := by
+  exact restricted_symmetricMarkedGraph_isCycles
+    S (fun a b ↦ residualFiberCubicWalkCount R Cedge a b = 5)
+      (by
+        intro a b hab
+        rwa [residualFiberCubicWalkCount_comm R Cedge] at hab)
+      hsharp
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.residualFiberCubicWalkCount_comm
 #print axioms Erdos85.cubicValueFive_markedPairs_card_twentyFour
+#print axioms Erdos85.cubicValueFive_markedGraph_isCycles
