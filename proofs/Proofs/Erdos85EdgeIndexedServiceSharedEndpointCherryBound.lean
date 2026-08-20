@@ -43,9 +43,29 @@ theorem edgeIndexedService_typeTwo_cherry_le_choose_sub_sharedEndpoint
   ext b
   simp [E, shoreTypeEdgeFinset, and_comm]
 
+/-- Numerical form used by the corrected h305 shores: twelve internal edges
+and twenty-four shared-endpoint pairs leave only `66-24=42` possible
+type-two cherries. -/
+theorem edgeIndexedService_typeTwo_cherry_le_42_of_cards
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge)
+    (hfree : ¬ containsC4 R.edgeFinset Cedge) (S : Finset V)
+    (hE : (shoreTypeEdgeFinset R S 2).card = 12)
+    (hF : (sharedEndpointShoreEdgePairFinset R S).card = 24) :
+    (∑ a : R.edgeFinset,
+      (serviceNeighborShoreTypeCount R Cedge a S 2).choose 2) ≤ 42 := by
+  have h := edgeIndexedService_typeTwo_cherry_le_choose_sub_sharedEndpoint
+    H R Cedge hservice hfree S
+  rw [hE, hF] at h
+  norm_num [Nat.choose] at h
+  exact h
+
 end
 
 end Erdos85
 
 #print axioms
   Erdos85.edgeIndexedService_typeTwo_cherry_le_choose_sub_sharedEndpoint
+#print axioms Erdos85.edgeIndexedService_typeTwo_cherry_le_42_of_cards
