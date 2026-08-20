@@ -1414,6 +1414,59 @@ theorem muNegFiveZeroThreeGraphHit_irrefl
   subst w
   exact G.loopless.irrefl z hzw
 
+/-- Graph-facing checked endpoint: the genuine h503 ledgers and phase
+coherence force the complete owner CNF semantics, hence contradiction. -/
+theorem muNegFiveZeroThree_graph_false
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (s : V → ℤ) (sigma : Bool)
+    (hphase : ∀ x y : Nat, x < 8 → y < 8 →
+      (muNegFiveZeroThreeSameSign sigma x y = true ↔
+        s (v (y : ZMod 8)).1 = s (u (x : ZMod 8)).1))
+    (Luv : MuNegFiveExplicitRowParameterLedger
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (u j))
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (v j))
+      (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) 0 3)
+    (Lvu : MuNegFiveExplicitRowParameterLedger
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (v i) (v j))
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (v i) (u j))
+      (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) 0 3) : False := by
+  obtain ⟨havailable, hcover⟩ :=
+    muNegFiveZeroThreeOwnerGeometry_of_rowLedgers G c a b u v
+      hfree hreg hcard hsize hab huinj hvinj hurange hvrange hu hv Luv Lvu
+  apply muNegFiveZeroThreeOwnerRelations_false_of_serviceSemantics sigma
+    (muNegFiveZeroThreeGraphActive G c u v)
+    (muNegFiveZeroThreeGraphHit G c u v)
+  · exact muNegFiveZeroThreeGraphServiceSemantics G c a b u v hfree hreg
+      hcard hsize hab huinj hvinj hurange hvrange hu hv havailable hcover
+  · intro e f
+    rintro ⟨z, w, he, hf, hzw⟩
+    exact ⟨w, z, hf, he, hzw.symm⟩
+  · exact muNegFiveZeroThreeGraphHit_irrefl G c a b u v hfree hab huinj
+      hvinj hurange hvrange
+  · intro e f hef
+    exact muNegFiveZeroThreeOwnerCompatible_of_graphHit G c a b u v hfree hab
+      huinj hvinj hurange hvrange hu hv hef
+  · intro e f
+    rintro ⟨z, w, he, hf, _⟩
+    exact ⟨⟨z, he⟩, ⟨w, hf⟩⟩
+  · exact muNegFiveZeroThreeGraphFiberBitsAllowed G c a b u v hfree hab
+      huinj hvinj hurange hvrange s sigma hphase Luv Lvu
+  · exact muNegFiveZeroThreeGraphBalance G c a b u v hfree hreg hab huinj
+      hvinj hurange hvrange hu hv
+
 end Shores
 
 theorem muNegFiveZeroThreeGraphHit_symm
@@ -1473,5 +1526,6 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_exists
 #print axioms Erdos85.muNegFiveZeroThreeGraphServiceSemantics
 #print axioms Erdos85.muNegFiveZeroThreeOwnerCompatible_of_graphHit
+#print axioms Erdos85.muNegFiveZeroThree_graph_false
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_internal_zero
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_irrefl
