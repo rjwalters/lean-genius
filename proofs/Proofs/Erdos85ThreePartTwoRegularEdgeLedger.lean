@@ -209,9 +209,80 @@ theorem threePart_twoRegular_exists_cross_wedge_of_odd
     D.card_neighborFinset_eq_degree, hdeg x, hAind x hx'.1, hB_one] at hc
   exact ⟨x, hx'.1, hB_one, by omega⟩
 
+/-- In fact an odd number of vertices in the first part are rainbow wedges.
+The parity is the parity of the first cross-edge ledger entry. -/
+theorem threePart_twoRegular_odd_cross_wedge_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (A B C : Finset V) (n : ℕ)
+    (hcover : A ∪ B ∪ C = Finset.univ)
+    (hAB : Disjoint A B) (hAC : Disjoint A C) (hBC : Disjoint B C)
+    (hAcard : A.card = n) (hBcard : B.card = n) (hCcard : C.card = n)
+    (hdeg : ∀ x : V, D.degree x = 2)
+    (hAind : ∀ x ∈ A, (D.neighborFinset x ∩ A).card = 0)
+    (hBind : ∀ x ∈ B, (D.neighborFinset x ∩ B).card = 0)
+    (hCind : ∀ x ∈ C, (D.neighborFinset x ∩ C).card = 0)
+    (hn : Odd n) :
+    Odd ({x ∈ A | (D.neighborFinset x ∩ B).card = 1 ∧
+      (D.neighborFinset x ∩ C).card = 1}.card) := by
+  classical
+  have hledger := threePart_twoRegular_crossEdge_ledger D A B C n
+    hcover hAB hAC hBC hAcard hBcard hCcard hdeg hAind hBind hCind
+  have hsum : Odd (∑ x ∈ A, (D.neighborFinset x ∩ B).card) := by
+    rw [hledger.1]
+    exact hn
+  have hoddCard : Odd ({x ∈ A |
+      Odd ((D.neighborFinset x ∩ B).card)}.card) :=
+    (Finset.odd_sum_iff_odd_card_odd
+      (fun x => (D.neighborFinset x ∩ B).card)).mp hsum
+  have hfilter : {x ∈ A | Odd ((D.neighborFinset x ∩ B).card)} =
+      {x ∈ A | (D.neighborFinset x ∩ B).card = 1 ∧
+        (D.neighborFinset x ∩ C).card = 1} := by
+    ext x
+    simp only [Finset.mem_filter]
+    refine and_congr_right fun hxA => ?_
+    have hneighborPartition : D.neighborFinset x =
+        ((D.neighborFinset x ∩ A) ∪ (D.neighborFinset x ∩ B)) ∪
+          (D.neighborFinset x ∩ C) := by
+      ext y
+      simp only [Finset.mem_union, Finset.mem_inter]
+      constructor
+      · intro hy
+        have hyU : y ∈ A ∪ B ∪ C := by rw [hcover]; simp
+        rcases Finset.mem_union.mp hyU with hyAB | hyC
+        · rcases Finset.mem_union.mp hyAB with hyA | hyB
+          · exact Or.inl (Or.inl ⟨hy, hyA⟩)
+          · exact Or.inl (Or.inr ⟨hy, hyB⟩)
+        · exact Or.inr ⟨hy, hyC⟩
+      · rintro (⟨⟨hy, _⟩ | ⟨hy, _⟩⟩ | ⟨hy, _⟩) <;> exact hy
+    have hdisjAB : Disjoint (D.neighborFinset x ∩ A)
+        (D.neighborFinset x ∩ B) :=
+      hAB.mono Finset.inter_subset_right Finset.inter_subset_right
+    have hdisjABC : Disjoint
+        ((D.neighborFinset x ∩ A) ∪ (D.neighborFinset x ∩ B))
+        (D.neighborFinset x ∩ C) := by
+      rw [Finset.disjoint_union_left]
+      exact ⟨
+        hAC.mono Finset.inter_subset_right Finset.inter_subset_right,
+        hBC.mono Finset.inter_subset_right Finset.inter_subset_right⟩
+    have hc := congrArg Finset.card hneighborPartition
+    rw [Finset.card_union_of_disjoint hdisjABC,
+      Finset.card_union_of_disjoint hdisjAB,
+      D.card_neighborFinset_eq_degree, hdeg x, hAind x hxA] at hc
+    constructor
+    · intro hodd
+      obtain ⟨k, hk⟩ := hodd
+      omega
+    · rintro ⟨hB, _⟩
+      rw [hB]
+      norm_num
+  rw [← hfilter]
+  exact hoddCard
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.threePart_twoRegular_crossEdge_ledger
 #print axioms Erdos85.threePart_twoRegular_exists_cross_wedge_of_odd
+#print axioms Erdos85.threePart_twoRegular_odd_cross_wedge_card
