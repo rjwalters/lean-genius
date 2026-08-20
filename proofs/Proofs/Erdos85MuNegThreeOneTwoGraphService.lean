@@ -459,8 +459,135 @@ theorem muNegThree_column_server_classification
   · rw [Nat.min_eq_right hba', Nat.max_eq_left hba']
     exact ⟨z, ta, htb, hta, htaz.symm⟩
 
+/-- The graph relations satisfy the complete service-existence field once
+the diagonal-five shore partition has supplied unique exterior coordinates. -/
+theorem muNegThree_service_exists_graph
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (huout : ∀ z, z ∉ c.supp → ∃! i : ZMod 8, G.Adj (u i).1 z)
+    (hvout : ∀ z, z ∉ c.supp → ∃! j : ZMod 8, G.Adj (v j).1 z) :
+    ∀ a, a < 64 →
+      muNegThreeOwnerActive (muNegThreeCrossDefectRel G c u v) a = true →
+      ∀ (onRow : Bool) t, t < 8 →
+        (if onRow then muNegThreeOffsetOne (muNegThreeCellRow a) t
+          else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
+        ∃ b, b < 64 ∧ b ≠ a ∧
+          (if onRow then muNegThreeCellRow b = t
+            else muNegThreeCellCol b = t) ∧
+          (min a b, max a b) ∈ muNegThreeHitPairs ∧
+          muNegThreeOwnerHitRel G c u v (min a b) (max a b) = true := by
+  intro a ha hactive onRow t ht hoff
+  obtain ⟨ta, hta⟩ := muNegThreeOwnerVertex_of_active G c hfree ca cb hcab
+    u v hurange hvrange ha hactive
+  cases onRow
+  · simpa only [Bool.false_eq_true, if_false] using
+      muNegThree_column_server_classification G c hfree hreg hcard hsize
+        ca cb hcab u v huinj hvinj hurange hvrange hu hv huout hvout
+        ha hta ht hoff
+  · simpa only [if_true] using
+      muNegThree_row_server_classification G c hfree hreg hcard hsize
+        ca cb hcab u v huinj hvinj hurange hvrange hu hv huout hvout
+        ha hta ht hoff
+
+/-- Normalize an unordered graph hit back to owner vertices at the requested
+input indices. -/
+theorem muNegThreeOwnerHitRel_extract
+    (u v : ZMod 8 → c.supp) {a b : Nat}
+    (hX : muNegThreeOwnerHitRel G c u v (min a b) (max a b) = true) :
+    ∃ ta tb, MuNegThreeOwnerVertex G c u v a ta ∧
+      MuNegThreeOwnerVertex G c u v b tb ∧ G.Adj ta tb := by
+  obtain ⟨z, w, hz, hw, hzw⟩ :=
+    (muNegThreeOwnerHitRel_eq_true G c u v (min a b) (max a b)).mp hX
+  rcases le_total a b with hab | hba
+  · have hz' : MuNegThreeOwnerVertex G c u v a z := by
+      rwa [Nat.min_eq_left hab] at hz
+    have hw' : MuNegThreeOwnerVertex G c u v b w := by
+      rwa [Nat.max_eq_right hab] at hw
+    exact ⟨z, w, hz', hw', hzw⟩
+  · have hw' : MuNegThreeOwnerVertex G c u v a w := by
+      rwa [Nat.max_eq_left hba] at hw
+    have hz' : MuNegThreeOwnerVertex G c u v b z := by
+      rwa [Nat.min_eq_right hba] at hz
+    exact ⟨w, z, hw', hz', hzw.symm⟩
+
+/-- Uniqueness of service is ambient common-server uniqueness, followed by
+injectivity of the cross-owner coordinate dictionary. -/
+theorem muNegThree_service_unique_graph
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp) :
+    ∀ a, a < 64 →
+      muNegThreeOwnerActive (muNegThreeCrossDefectRel G c u v) a = true →
+      ∀ (onRow : Bool) t, t < 8 →
+        (if onRow then muNegThreeOffsetOne (muNegThreeCellRow a) t
+          else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
+        ∀ b d, b < 64 → b ≠ a →
+          (if onRow then muNegThreeCellRow b = t
+            else muNegThreeCellCol b = t) →
+          (min a b, max a b) ∈ muNegThreeHitPairs →
+          muNegThreeOwnerHitRel G c u v (min a b) (max a b) = true →
+          d < 64 → d ≠ a →
+          (if onRow then muNegThreeCellRow d = t
+            else muNegThreeCellCol d = t) →
+          (min a d, max a d) ∈ muNegThreeHitPairs →
+          muNegThreeOwnerHitRel G c u v (min a d) (max a d) = true → b = d := by
+  intro a ha _hactive onRow t _ht _hoff b d hb _hba hbcoord _hkeyb hXb
+    hd _hda hdcoord _hkeyd hXd
+  obtain ⟨ta, tb, hta, htb, hatb⟩ :=
+    muNegThreeOwnerHitRel_extract G c u v hXb
+  obtain ⟨ta', td, hta', htd, hatd⟩ :=
+    muNegThreeOwnerHitRel_extract G c u v hXd
+  have htaa : ta = ta' := muNegThreeOwnerVertex_unique G c hfree ca cb
+    hcab u v hurange hvrange a hta hta'
+  subst ta'
+  let q : V := if onRow then (u (t : ZMod 8)).1 else (v (t : ZMod 8)).1
+  have hqtb : G.Adj q tb := by
+    cases onRow
+    · simp only [Bool.false_eq_true, if_false] at hbcoord
+      dsimp [q]
+      rw [← hbcoord]
+      exact htb.2.2
+    · simp only [if_true] at hbcoord
+      dsimp [q]
+      rw [← hbcoord]
+      exact htb.2.1
+  have hqtd : G.Adj q td := by
+    cases onRow
+    · simp only [Bool.false_eq_true, if_false] at hdcoord
+      dsimp [q]
+      rw [← hdcoord]
+      exact htd.2.2
+    · simp only [if_true] at hdcoord
+      dsimp [q]
+      rw [← hdcoord]
+      exact htd.2.1
+  have htaq : ta ≠ q := by
+    intro h
+    apply hta.1
+    rw [h]
+    cases onRow <;> simp [q]
+  have htbd : tb = td := commonServer_unique G hfree htaq
+    hatb hqtb hatd hqtd
+  exact muNegThreeOwnerVertex_inj G c hfree hreg hcard hsize ca cb hcab
+    u v huinj hvinj hurange hvrange hb hd htb (htbd ▸ htd)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.mem_muNegThreeHitPairs_of_ownerVertices_adj
+#print axioms Erdos85.muNegThree_service_exists_graph
+#print axioms Erdos85.muNegThree_service_unique_graph
