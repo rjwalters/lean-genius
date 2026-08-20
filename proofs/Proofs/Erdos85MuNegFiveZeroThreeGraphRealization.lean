@@ -600,6 +600,35 @@ theorem muNegFiveZeroThreeGraphHit_service_exists
       simp [hs]
   exact ⟨f, ⟨te, tf, hte, htf, hetf⟩, hcontains⟩
 
+theorem muNegFiveZeroThreeGraphServiceSemantics
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (havailable : MuNegFiveZeroThreeOwnerAvailability G c u v)
+    (hcover : MuNegFiveZeroThreeExteriorOwnerCoverage G c u v) :
+    MuNegFiveZeroThreeOwnerServiceSemantics
+      (muNegFiveZeroThreeGraphActive G c u v)
+      (muNegFiveZeroThreeGraphHit G c u v) :=
+  { service_exists := muNegFiveZeroThreeGraphHit_service_exists G c a b u v
+      hfree hreg hcard hsize hab huinj hvinj hurange hvrange hu hv
+      havailable hcover
+    service_unique := muNegFiveZeroThreeGraphHit_service_unique G c a b u v
+      hfree hreg hcard hsize hab huinj hvinj hurange hvrange
+    internal_zero := muNegFiveZeroThreeGraphHit_internal_zero G c a b u v
+      hfree hab huinj hvinj hurange hvrange hu hv
+    intersecting_no_common :=
+      muNegFiveZeroThreeGraphHit_intersecting_no_common G c a b u v
+        hfree hreg hcard hsize hab huinj hvinj hurange hvrange
+    no_two_common := muNegFiveZeroThreeGraphHit_no_two_common G c a b u v
+      hfree hreg hcard hsize hab huinj hvinj hurange hvrange }
+
 theorem muNegFiveZeroThreeGraphHit_irrefl
     (hfree : ¬ containsC4 V G)
     (hab : a ≠ b)
@@ -666,6 +695,7 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_unique
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_exists
+#print axioms Erdos85.muNegFiveZeroThreeGraphServiceSemantics
 #print axioms Erdos85.muNegFiveZeroThreeOwnerCompatible_of_graphHit
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_internal_zero
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_irrefl
