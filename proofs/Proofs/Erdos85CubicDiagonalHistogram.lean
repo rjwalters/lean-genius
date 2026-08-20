@@ -91,8 +91,34 @@ theorem sixRegular_fortyEight_cubicDiagonalHistogram_ledger
   · simp_rw [hc]
     rw [hone, hfirst, htri]
 
+/-- The parity of the triangle count is the parity of the number of
+diagonal cubic entries equal to two or six. -/
+theorem sixRegular_fortyEight_triangleCount_mod_two_eq_diagTwo_add_diagSix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 48)
+    (hreg : ∀ x, G.degree x = 6) :
+    (adjacencyTriangleMinorFinset G).card % 2 =
+      (cubicDiagonalHistogram G 2 + cubicDiagonalHistogram G 6) % 2 := by
+  obtain ⟨_, h1, h3, h5, hmoment⟩ :=
+    sixRegular_fortyEight_cubicDiagonalHistogram_ledger
+      G hfree hcard hreg
+  norm_num [Finset.sum_range_succ] at hmoment
+  rw [h1, h3, h5] at hmoment
+  norm_num at hmoment
+  have hmomentNat :
+      2 * cubicDiagonalHistogram G 2 +
+          4 * cubicDiagonalHistogram G 4 +
+          6 * cubicDiagonalHistogram G 6 =
+        6 * (adjacencyTriangleMinorFinset G).card := by
+    exact_mod_cast hmoment
+  omega
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.sixRegular_fortyEight_cubicDiagonalHistogram_ledger
+#print axioms
+  Erdos85.sixRegular_fortyEight_triangleCount_mod_two_eq_diagTwo_add_diagSix
