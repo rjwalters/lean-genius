@@ -399,6 +399,144 @@ theorem squareOrderNine_defectAdjacent_binOne_highIncidence_singletons_disjoint
     ((G.mem_neighborFinset x a).mp hax'.1)
     ((G.mem_neighborFinset y a).mp hay'.1)
   exact hnot hDxy
+
+/-- In the first three-high profile, every high root has exactly one
+exceptional bin-one neighbor.  It is the canonical defect mate of the
+bin-two witness for the other two high roots. -/
+theorem squareOrderNine_threeHigh_firstProfile_existsUnique_exceptional_binOne_at_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a : V} (ha : a ∈ squareOrderHighVertices G 9) :
+    let D := secondOrderDefectGraph G
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let E := (B 1).filter fun y => (D.neighborFinset y ∩ B 2).card = 1
+    ∃! y : V, y ∈ E ∧ y ∈ G.neighborFinset a := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let E := (B 1).filter fun y =>
+    ((secondOrderDefectGraph G).neighborFinset y ∩ B 2).card = 1
+  have heraseCard : (H.erase a).card = 2 := by
+    rw [Finset.card_erase_of_mem ha, hhigh]
+  obtain ⟨b, c, hbc, herase⟩ := Finset.card_eq_two.mp heraseCard
+  have hbErase : b ∈ H.erase a := by rw [herase]; simp
+  have hcErase : c ∈ H.erase a := by rw [herase]; simp
+  have hbH : b ∈ H := (Finset.mem_erase.mp hbErase).2
+  have hcH : c ∈ H := (Finset.mem_erase.mp hcErase).2
+  have hba : b ≠ a := (Finset.mem_erase.mp hbErase).1
+  have hca : c ≠ a := (Finset.mem_erase.mp hcErase).1
+  obtain ⟨x, hxData, huniqX⟩ :=
+    squareOrderNine_threeHigh_firstProfile_existsUnique_pairWitness
+      G hfree hmin hcard hp hc3 hc4 hbH hcH hbc
+  obtain ⟨y, hyData, huniqY⟩ :=
+    squareOrderNine_threeHigh_firstProfile_binTwo_existsUnique_opposite_defectMate
+      G hfree hmin hcover hcard hp hhigh hc3 hc4 hxData.1
+  have hyDB := hyData.1
+  have hyB : y ∈ B 1 := (Finset.mem_inter.mp hyDB).2
+  have hDxy : D.Adj x y :=
+    (D.mem_neighborFinset x y).mp (Finset.mem_inter.mp hyDB).1
+  have hyType := squareOrderNine_threeHigh_firstProfile_defectMate_binOne_type
+    G hfree hmin hcover hcard hp hhigh hc3 hc4 hxData.1 hyB hDxy
+  dsimp only at hyType
+  have hyE : y ∈ E := by
+    refine Finset.mem_filter.mpr ⟨hyB, ?_⟩
+    simpa [D] using hyType.2.2
+  have hIxCard : (G.neighborFinset x ∩ H).card = 2 :=
+    (Finset.mem_filter.mp hxData.1).2
+  have hbIx : b ∈ G.neighborFinset x ∩ H :=
+    Finset.mem_inter.mpr ⟨(G.mem_neighborFinset x b).mpr hxData.2.1.symm, hbH⟩
+  have hcIx : c ∈ G.neighborFinset x ∩ H :=
+    Finset.mem_inter.mpr ⟨(G.mem_neighborFinset x c).mpr hxData.2.2.symm, hcH⟩
+  have hpairSub : ({b, c} : Finset V) ⊆ G.neighborFinset x ∩ H := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact hbIx
+    · exact hcIx
+  have hIx : G.neighborFinset x ∩ H = {b, c} := by
+    symm
+    apply Finset.eq_of_subset_of_card_le hpairSub
+    rw [hIxCard]
+    simp [hbc]
+  have haNotIx : a ∉ G.neighborFinset x ∩ H := by
+    rw [hIx]
+    simp [Ne.symm hba, Ne.symm hca]
+  have haIy : a ∈ G.neighborFinset y ∩ H := by
+    have haUnion : a ∈ (G.neighborFinset x ∩ H) ∪
+        (G.neighborFinset y ∩ H) := by
+      rw [hyData.2]
+      exact ha
+    rcases Finset.mem_union.mp haUnion with haIx | haIy
+    · exact (haNotIx haIx).elim
+    · exact haIy
+  have hay : y ∈ G.neighborFinset a :=
+    (G.mem_neighborFinset a y).mpr
+      ((G.adj_comm y a).mp ((G.mem_neighborFinset y a).mp
+        (Finset.mem_inter.mp haIy).1))
+  refine ⟨y, ⟨hyE, hay⟩, ?_⟩
+  intro z hz
+  have hzE := hz.1
+  have hzB : z ∈ B 1 := (Finset.mem_filter.mp hzE).1
+  have hzOne := (Finset.mem_filter.mp hzE).2
+  have hzPos : 0 < (D.neighborFinset z ∩ B 2).card := by
+    simpa [E] using (show 0 < 1 by omega).trans_le (Nat.le_of_eq hzOne.symm)
+  obtain ⟨x', hx'Mem⟩ := Finset.card_pos.mp hzPos
+  have hx'B : x' ∈ B 2 := (Finset.mem_inter.mp hx'Mem).2
+  have hDx'z : D.Adj x' z :=
+    ((D.adj_comm z x').mp
+      ((D.mem_neighborFinset z x').mp (Finset.mem_inter.mp hx'Mem).1))
+  have hcompZ :=
+    squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
+      G hfree hhigh hx'B hzB hDx'z
+  have haIz : a ∈ G.neighborFinset z ∩ H :=
+    Finset.mem_inter.mpr ⟨(G.mem_neighborFinset z a).mpr
+      ((G.adj_comm a z).mp ((G.mem_neighborFinset a z).mp hz.2)), ha⟩
+  have hIzCard : (G.neighborFinset z ∩ H).card = 1 :=
+    (Finset.mem_filter.mp hzB).2
+  have hIz : G.neighborFinset z ∩ H = {a} := by
+    symm
+    apply Finset.eq_of_subset_of_card_le
+    · simpa using haIz
+    · rw [hIzCard]
+      simp
+  have hbNotIz : b ∉ G.neighborFinset z ∩ H := by rw [hIz]; simp [hba]
+  have hcNotIz : c ∉ G.neighborFinset z ∩ H := by rw [hIz]; simp [hca]
+  have hbIx' : b ∈ G.neighborFinset x' ∩ H := by
+    have : b ∈ (G.neighborFinset x' ∩ H) ∪ (G.neighborFinset z ∩ H) := by
+      rw [hcompZ]
+      exact hbH
+    rcases Finset.mem_union.mp this with h | h
+    · exact h
+    · exact (hbNotIz h).elim
+  have hcIx' : c ∈ G.neighborFinset x' ∩ H := by
+    have : c ∈ (G.neighborFinset x' ∩ H) ∪ (G.neighborFinset z ∩ H) := by
+      rw [hcompZ]
+      exact hcH
+    rcases Finset.mem_union.mp this with h | h
+    · exact h
+    · exact (hcNotIz h).elim
+  have hx'eq : x' = x := huniqX x' ⟨hx'B,
+    (G.adj_comm x' b).mp ((G.mem_neighborFinset x' b).mp
+      (Finset.mem_inter.mp hbIx').1),
+    (G.adj_comm x' c).mp ((G.mem_neighborFinset x' c).mp
+      (Finset.mem_inter.mp hcIx').1)⟩
+  subst x'
+  apply huniqY z
+  refine ⟨Finset.mem_inter.mpr ⟨(D.mem_neighborFinset x z).mpr hDx'z, hzB⟩, ?_⟩
+  exact hcompZ
 end
 
 end Erdos85
@@ -417,3 +555,5 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_exists_odd_ordinary_binOne_component
 #print axioms
   Erdos85.squareOrderNine_defectAdjacent_binOne_highIncidence_singletons_disjoint
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_existsUnique_exceptional_binOne_at_high
