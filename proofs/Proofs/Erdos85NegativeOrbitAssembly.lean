@@ -4,6 +4,7 @@ import Proofs.Erdos85EightEightCoordinateCover
 import Proofs.Erdos85ComponentSignFlipEigenvector
 import Proofs.Erdos85SizeTwoSwitchedJointExtension
 import Proofs.Erdos85MuNegFiveExplicitRowParameters
+import Proofs.Erdos85AmbientMuThreeUnconditional
 
 /-!
 # Ledger-backed assembly socket for the negative switch orbit
@@ -375,6 +376,136 @@ theorem NegativeEightEightAlignedWitness.exists_switched_ambient
       (by simpa [H] using htH) (by simpa [K] using htK)
   exact ⟨T, hT⟩
 
+/-- Full source object for one orbit step.  Only the `mu=-5` source needs
+extra mode data because its historical public cell predicate erased the
+shore modes; the other two refined predicates already retain them. -/
+structure NegativeEightEightSourceWitness
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (theta : ℤ) (k r : ℕ) where
+  aligned : NegativeEightEightAlignedWitness G c a b theta k r
+  cell : NegativeEightEightOrbitCell N₁ N₂ theta k r
+  muNegFiveData : theta = -5 →
+    ∃ (M₁ M₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (f₁ f₂ : ZMod 8 → ℤ),
+      MuNegFiveExplicitRowParameterLedger N₁ M₁ f₁ f₂ k r ∧
+      MuNegFiveExplicitRowParameterLedger N₂ M₂ f₂ f₁ k r ∧
+      (C8CycleEntriesZero N₁ ∨ C8CycleEntriesOne N₁) ∧
+      (C8CycleEntriesZero N₂ ∨ C8CycleEntriesOne N₂)
+
+/-- Target object after the single switch used by the canonical eliminator.
+Negative targets retain their exact refined cell; the positive target is
+recorded separately and is consumed by the unconditional `mu=3` terminal. -/
+def NegativeEightEightTransportedWitness
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (theta : ℤ) (k r : ℕ) : Prop :=
+  (∃ s, IsAmbientSignedJoint G c theta s) ∧
+    (NegativeEightEightOrbitCell N₁ N₂ theta k r ∨ theta = 3)
+
+/-- A full source witness transports to the exact one-step target object.
+This combines the ledger-backed graph switch with all three finite mode
+transport theorems. -/
+theorem NegativeEightEightSourceWitness.transport
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (theta : ℤ) (k r : ℕ)
+    (hdegree : ∀ x : c.supp, (G.induce c.supp).degree x = 2)
+    (hcomm : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ) *
+        ((G.induce c.supp).adjMatrix ℝ) =
+      ((G.induce c.supp).adjMatrix ℝ) *
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ))
+    (w : NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r) :
+    NegativeEightEightTransportedWitness G c N₁ N₂
+      (sizeTwoMuSwitchTarget theta k r) k r := by
+  refine ⟨w.aligned.exists_switched_ambient G c a b theta k r
+    hdegree hcomm, ?_⟩
+  rcases w.cell with ⟨htheta, h5⟩ | ⟨htheta, h3⟩ | ⟨htheta, h1⟩
+  · subst theta
+    obtain ⟨M₁, M₂, f₁, f₂, L₁, L₂, hm₁, hm₂⟩ := w.muNegFiveData rfl
+    exact muNegFive_orbitCell_switch_of_rowLedgers
+      N₁ M₁ N₂ M₂ f₁ f₂ k r L₁ L₂ hm₁ hm₂ h5
+  · subst theta
+    exact muNegThree_orbitCell_switch N₁ N₂ k r h3
+  · subst theta
+    exact muNegOne_orbitCell_switch N₁ N₂ k r h1
+
+/-- Conditional global assembly for an arbitrary negative C8+C8 source.
+The positive endpoint is discharged internally; the arguments are exactly
+the seven remaining canonical negative graph terminals. -/
+theorem false_of_negativeEightEightSource_of_canonicalTerminals
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (theta : ℤ) (k r : ℕ)
+    (w : NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r)
+    (h503 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 0 3) ∨
+      NegativeEightEightTransportedWitness G c N₁ N₂ (-5) 0 3 → False)
+    (h504 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 0 4) ∨
+      NegativeEightEightTransportedWitness G c N₁ N₂ (-5) 0 4 → False)
+    (h512 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 1 2) ∨
+      NegativeEightEightTransportedWitness G c N₁ N₂ (-5) 1 2 → False)
+    (h305 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 0 5) ∨
+      NegativeEightEightTransportedWitness G c N₁ N₂ (-3) 0 5 → False)
+    (h313 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 1 3) ∨
+      NegativeEightEightTransportedWitness G c N₁ N₂ (-3) 1 3 → False)
+    (h312 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 1 2) ∨
+      NegativeEightEightTransportedWitness G c N₁ N₂ (-3) 1 2 → False)
+    (h114 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-1) 1 4) ∨
+      NegativeEightEightTransportedWitness G c N₁ N₂ (-1) 1 4 → False) :
+    False := by
+  have hdegree : ∀ x : c.supp, (G.induce c.supp).degree x = 2 := by
+    intro x
+    exact binarySquare_regular_degree_induce_defectComponent_eq_part
+      G hfree (by omega) hreg hcard c (m := 2) hc x
+  have hcomm :
+      (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ) *
+          ((G.induce c.supp).adjMatrix ℝ) =
+        ((G.induce c.supp).adjMatrix ℝ) *
+          (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ) := by
+    have hglobal := adjMatrix_comm_secondOrderDefect_of_regular_field
+      (K := ℝ) G hfree hreg
+    exact (induce_component_adjMatrix_comm_of_comm G
+      (secondOrderDefectGraph G) hglobal c).symm
+  apply negativeSwitchOrbits_false_of_canonical_endpoints_oneStep
+    (fun theta k r ↦ Nonempty
+      (NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r))
+    (NegativeEightEightTransportedWitness G c N₁ N₂)
+    N₁ N₂ theta k r ⟨w⟩ w.cell
+    (fun theta i j hw ↦ by
+      obtain ⟨hw⟩ := hw
+      exact hw.transport G c a b N₁ N₂ theta i j hdegree hcomm)
+    h503 h504 h512 h305 h313 h312 h114
+  intro i j hpos
+  obtain ⟨⟨s, hs⟩, _⟩ := hpos
+  exact false_of_orderSixtyFour_sizeTwo_ambient_muThree
+    G hfree hreg hcard c hc s hs
+
 end
 
 end Erdos85
@@ -383,3 +514,5 @@ end Erdos85
 #print axioms Erdos85.MuNegFiveExplicitRowParameterLedger.cycleEntriesOne_of_negativeCell
 #print axioms Erdos85.muNegFive_orbitCell_switch_of_rowLedgers
 #print axioms Erdos85.negativeSwitchOrbits_false_of_canonical_endpoints_oneStep
+#print axioms Erdos85.NegativeEightEightSourceWitness.transport
+#print axioms Erdos85.false_of_negativeEightEightSource_of_canonicalTerminals
