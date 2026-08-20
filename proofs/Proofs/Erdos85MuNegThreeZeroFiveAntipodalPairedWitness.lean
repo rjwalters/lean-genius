@@ -54,6 +54,38 @@ theorem three_of_four_contains_opposite_pair
     have hc := Finset.card_le_card hs
     simp [h23, hcard] at hc
 
+/-- If `a,d` already have the paired witness `y` and a target `b` reaches
+them through witnesses `w₀,w₂`, then either the two target witnesses
+coincide with `y` (so `b` is adjacent to `y`) or the six displayed
+adjacencies form a length-six closed walk.  No simplicity of that walk is
+asserted. -/
+theorem c4Free_pairedCommonTarget_fan_or_sixWalk
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (G : SimpleGraph X) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 X G)
+    (a d b y w₀ w₂ : X) (had : a ≠ d)
+    (haw₀ : G.Adj a w₀) (hbw₀ : G.Adj b w₀)
+    (hdw₂ : G.Adj d w₂) (hbw₂ : G.Adj b w₂)
+    (hay : G.Adj a y) (hdy : G.Adj d y) :
+    G.Adj b y ∨
+      (w₀ ≠ w₂ ∧ G.Adj a w₀ ∧ G.Adj w₀ b ∧ G.Adj b w₂ ∧
+        G.Adj w₂ d ∧ G.Adj d y ∧ G.Adj y a) := by
+  classical
+  by_cases hw : w₀ = w₂
+  · have hwCommon : w₀ ∈ G.neighborFinset a ∩ G.neighborFinset d := by
+      apply Finset.mem_inter.mpr
+      exact ⟨(G.mem_neighborFinset a w₀).mpr haw₀,
+        (G.mem_neighborFinset d w₀).mpr (hw ▸ hdw₂)⟩
+    have hyCommon : y ∈ G.neighborFinset a ∩ G.neighborFinset d := by
+      apply Finset.mem_inter.mpr
+      exact ⟨(G.mem_neighborFinset a y).mpr hay,
+        (G.mem_neighborFinset d y).mpr hdy⟩
+    have hle := common_le_one_of_not_containsC4 hfree a d had
+    have hwy := Finset.card_le_one.mp hle w₀ hwCommon y hyCommon
+    exact Or.inl (hwy ▸ hbw₀)
+  · exact Or.inr ⟨hw, haw₀, hbw₀.symm, hbw₂, hdw₂.symm,
+      hdy, hay.symm⟩
+
 /-- The centers whose starting indices differ by two already share a service
 neighbor: the second center belongs to the first center's forced two-star
 target set. -/
@@ -217,6 +249,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.three_of_four_contains_opposite_pair
+#print axioms Erdos85.c4Free_pairedCommonTarget_fan_or_sixWalk
 #print axioms
   Erdos85.h305_antipodalCenter_oppositePair_has_commonNeighbor
 #print axioms
