@@ -43,8 +43,41 @@ theorem squareOrderNine_binOne_not_both_originalEdges_of_sameHigh_twoPath
   exact not_both_originalEdges_of_induced_secondOrderDefect_path_of_commonOwner
     G hfree hDxy hDyz hxz hnotDxz hrx hrz hyr
 
+/-- More generally, among any collection of defect neighbors of a bin-one
+center that all have one fixed high color, at most one is joined to the
+center by an original edge.  Thus original edges form a matching across every
+monochromatic fan in the ordinary defect core. -/
+theorem squareOrderNine_binOne_sameHigh_defectNeighbors_original_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {y r : V}
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hrH : r ∈ squareOrderHighVertices G 9)
+    (S : Finset V)
+    (hSdefect : S ⊆ (secondOrderDefectGraph G).neighborFinset y)
+    (hScolor : ∀ x ∈ S, G.Adj r x) :
+    (S ∩ G.neighborFinset y).card ≤ 1 := by
+  rw [Finset.card_le_one]
+  intro x hx z hz
+  have hxS := (Finset.mem_inter.mp hx).1
+  have hzS := (Finset.mem_inter.mp hz).1
+  by_contra hxz
+  have hDxy : (secondOrderDefectGraph G).Adj x y :=
+    ((secondOrderDefectGraph G).mem_neighborFinset y x).mp
+      (hSdefect hxS) |>.symm
+  have hDyz : (secondOrderDefectGraph G).Adj y z :=
+    ((secondOrderDefectGraph G).mem_neighborFinset y z).mp (hSdefect hzS)
+  have hnot := squareOrderNine_binOne_not_both_originalEdges_of_sameHigh_twoPath
+    G hfree hy hrH hDxy hDyz hxz (hScolor x hxS) (hScolor z hzS)
+  exact hnot ⟨
+    ((G.mem_neighborFinset y x).mp (Finset.mem_inter.mp hx).2).symm,
+    (G.mem_neighborFinset y z).mp (Finset.mem_inter.mp hz).2⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_binOne_not_both_originalEdges_of_sameHigh_twoPath
+#print axioms Erdos85.squareOrderNine_binOne_sameHigh_defectNeighbors_original_card_le_one
