@@ -175,6 +175,25 @@ theorem muNegFiveZeroThreeCandidatePair_lookup :
           muNegFiveZeroThreeOwnerAt e = (y, x) := by
   native_decide
 
+theorem muNegFiveZeroThreeCandidatePair_left_of_antipode :
+    ∀ x : Nat, x < 8 → ∀ y : Nat, y < 8 →
+      ((y : ZMod 8) - (x : ZMod 8) = 4) →
+      muNegFiveZeroThreeCandidatePair x y = true ∨
+        muNegFiveZeroThreeCandidatePair y x = true := by
+  native_decide
+
+theorem muNegFiveZeroThreeCandidatePair_right_of_antipode :
+    ∀ x, 8 ≤ x → x < 16 → ∀ y, 8 ≤ y → y < 16 →
+      (((y - 8 : Nat) : ZMod 8) - ((x - 8 : Nat) : ZMod 8) = 4) →
+      muNegFiveZeroThreeCandidatePair x y = true ∨
+        muNegFiveZeroThreeCandidatePair y x = true := by
+  native_decide
+
+theorem muNegFiveZeroThreeCandidatePair_cross :
+    ∀ x, x < 8 → ∀ y, 8 ≤ y → y < 16 →
+      muNegFiveZeroThreeCandidatePair x y = true := by
+  native_decide
+
 theorem muNegFiveZeroThreeOwnerEndpoints_ne
     (hab : a ≠ b)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
@@ -376,6 +395,31 @@ theorem muNegFiveZeroThreeOwnerPairComplete_of_candidateSupport
   · refine ⟨e, ?_⟩
     simpa only [muNegFiveZeroThreeOwnerEndpoints, he, hxval, hyval] using
       (Finset.pair_comm y.1 x.1)
+
+theorem muNegFiveZeroThreeCandidateSupport_of_antipode
+    (hleft : ∀ i j : ZMod 8,
+      (exteriorPairGraph G c.supp).Adj (u i) (u j) → j - i = 4)
+    (hright : ∀ i j : ZMod 8,
+      (exteriorPairGraph G c.supp).Adj (v i) (v j) → j - i = 4) :
+    ∀ x, x < 16 → ∀ y, y < 16 →
+      (exteriorPairGraph G c.supp).Adj
+        (muNegFiveZeroThreeCodeSub G c u v x)
+        (muNegFiveZeroThreeCodeSub G c u v y) →
+      muNegFiveZeroThreeCandidatePair x y = true ∨
+        muNegFiveZeroThreeCandidatePair y x = true := by
+  intro x hx y hy hR
+  by_cases hx8 : x < 8 <;> by_cases hy8 : y < 8
+  · apply muNegFiveZeroThreeCandidatePair_left_of_antipode x hx8 y hy8
+    apply hleft
+    simpa only [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
+      if_pos hx8, if_pos hy8] using hR
+  · exact Or.inl (muNegFiveZeroThreeCandidatePair_cross x hx8 y (by omega) hy)
+  · exact Or.inr (muNegFiveZeroThreeCandidatePair_cross y hy8 x (by omega) hx)
+  · apply muNegFiveZeroThreeCandidatePair_right_of_antipode x (by omega) hx y
+      (by omega) hy
+    apply hright
+    simpa only [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
+      if_neg hx8, if_neg hy8] using hR
 
 theorem muNegFiveZeroThreeOwnerVertex_adj_of_contains
     {e : Fin 72} {z : V}
@@ -841,6 +885,7 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeOwnerAvailability_of_fixedExterior
 #print axioms Erdos85.muNegFiveZeroThreeExteriorOwnerCoverage_of_pairComplete
 #print axioms Erdos85.muNegFiveZeroThreeOwnerPairComplete_of_candidateSupport
+#print axioms Erdos85.muNegFiveZeroThreeCandidateSupport_of_antipode
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_unique
