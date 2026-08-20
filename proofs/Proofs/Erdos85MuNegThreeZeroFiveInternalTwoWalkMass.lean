@@ -1,4 +1,4 @@
-import Proofs.Erdos85EdgeIndexedServiceTwoWalkCensus
+import Proofs.Erdos85EdgeIndexedServiceCommonStarCount
 import Proofs.Erdos85MuNegThreeZeroFiveServiceStarMatching
 
 /-! # Internal two-walk mass in h305 cycle coordinates -/
@@ -19,6 +19,10 @@ def h305InternalTwoWalkCoordinateMass (i j k : ZMod 8) : ℕ :=
     zmodEightCycleNeighborCoordinates i).card +
   (zmodEightCycleNeighborCoordinates k ∩
     zmodEightCycleNeighborCoordinates j).card
+
+def h305ServiceNonendpointEligibleCoordinates
+    (i j : ZMod 8) : Finset (ZMod 8) :=
+  ((h305ServiceEligibleCoordinates i j).erase i).erase j
 
 /-- Reindex the abstract H-side of the service two-walk census onto one
 labeled h305 eight-cycle. -/
@@ -90,6 +94,36 @@ theorem h305_incidentServiceTwoWalkMass_eq_coordinate_add_four
   rw [h305_internalEndpointTwoWalkMass_eq_coordinate H R u huinj hu
     a i j k hij ha]
 
+/-- On a genuinely nonendpoint eligible coordinate, C4-freeness converts the
+two-walk mass into the number of exterior edges through that coordinate which
+share a service neighbor with the central edge. -/
+theorem h305_incidentServiceCommonEdge_card_eq_coordinate_add_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge)
+    (hHreg : ∀ x, H.degree x = 2)
+    (hCreg : ∀ a, Cedge.degree a = 6)
+    (hfree : ¬ containsC4 R.edgeFinset Cedge)
+    (u : ZMod 8 → V) (huinj : Function.Injective u)
+    (hu : ∀ z, H.neighborFinset (u z) = {u (z - 1), u (z + 1)})
+    (a : R.edgeFinset) (i j k : ZMod 8) (hij : i ≠ j)
+    (ha : a.1.toFinset = {u i, u j})
+    (hk : k ∈ h305ServiceNonendpointEligibleCoordinates i j) :
+    (incidentServiceCommonEdgeFinset R Cedge (u k) a).card =
+      h305InternalTwoWalkCoordinateMass i j k + 4 := by
+  have hki : k ≠ i := by
+    exact (Finset.mem_erase.mp (Finset.mem_erase.mp hk).2).1
+  have hkj : k ≠ j := (Finset.mem_erase.mp hk).1
+  have hua : u k ∉ a.1.toFinset := by
+    rw [ha]
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨fun h ↦ hki (huinj h), fun h ↦ hkj (huinj h)⟩
+  rw [edgeIndexedService_commonStarCount H R Cedge hservice hHreg hCreg
+    hfree (u k) a hua]
+  rw [h305_internalEndpointTwoWalkMass_eq_coordinate H R u huinj hu
+    a i j k hij ha]
+
 set_option maxRecDepth 100000 in
 /-- Exact distribution of H-side two-walk masses on the four eligible
 same-shore coordinates.  Offsets `±1` give masses `0,0,1,1`, offsets `±3`
@@ -104,10 +138,24 @@ theorem h305_eligible_internalTwoWalkMass_distribution :
       (j - i = 4 → n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 4) := by
   native_decide
 
+set_option maxRecDepth 100000 in
+/-- Removing the central endpoints leaves the exact unsaturated/saturated
+coordinate distribution relevant to the C4-free common-star count. -/
+theorem h305_nonendpointEligible_internalTwoWalkMass_distribution :
+    ∀ i j : ZMod 8,
+      let E := h305ServiceNonendpointEligibleCoordinates i j
+      let n := fun t ↦
+        (E.filter fun k ↦ h305InternalTwoWalkCoordinateMass i j k = t).card
+      ((j - i = 1 ∨ j - i = 7) → n 0 = 2 ∧ n 1 = 2 ∧ n 2 = 0) ∧
+      ((j - i = 3 ∨ j - i = 5) → n 0 = 0 ∧ n 1 = 2 ∧ n 2 = 0) ∧
+      (j - i = 4 → n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 2) := by
+  native_decide
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.h305_internalEndpointTwoWalkMass_eq_coordinate
 #print axioms Erdos85.h305_incidentServiceTwoWalkMass_eq_coordinate_add_four
+#print axioms Erdos85.h305_incidentServiceCommonEdge_card_eq_coordinate_add_four
 #print axioms Erdos85.h305_eligible_internalTwoWalkMass_distribution
