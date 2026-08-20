@@ -625,6 +625,14 @@ exactly `q(q−1)` elements, leaving exactly `q−2` nonidentity group elements
 unused. The unused set is closed under inversion, because
 `(ab)⁻¹=b⁻¹a⁻¹` is another admissible product.
 
+In fact every nonidentity involution of the *ambient group* lies in this
+unused set. If `ab=t=t⁻¹`, the inverse word `b⁻¹a⁻¹` is a second
+representation unless `a=b⁻¹`, which would make the product the identity.
+Consequently a candidate group of order `q²−1` may have at most `q−2`
+nontrivial involutions. This supplies an immediate group-table sieve before
+any connection-set search (at q=9, every order-80 group with at least eight
+involutions is excluded).
+
 This condition is not merely necessary: it is **equivalent** to C4-freeness.
 Any embedded four-cycle, translated so one vertex is the identity, supplies
 two distinct non-backtracking length-two connection words with the same
@@ -682,6 +690,8 @@ disjoint shores `A∖{t}` and `t(A∖{t})t` are packaged by
 `erase_involution_disjoint_conjugate_shore` and its cardinal corollary.
 The equivalence itself is
 `not_containsC4_iff_nonbacktracking_connectionProduct_injective`.
+The ambient involution sieve is
+`card_nontrivialInvolutionFinset_le_of_planeMinusTwo_Cayley`.
 
 ## 6. Honest status in the final tree
 
