@@ -144,6 +144,27 @@ theorem hermitianResidual_sixthMoment_cubic_certificate
   norm_num at hresRe ⊢
   nlinarith
 
+/-- Triangle-count specialization of the Hermitian quantitative certificate. -/
+theorem hermitianResidual_sixthMoment_triangle_certificate
+    {X Y : Type*} [Fintype X] [DecidableEq X]
+    [Fintype Y] [DecidableEq Y]
+    (A : Matrix X X ℂ) (B : Matrix Y Y ℂ) (p : Polynomial ℂ) (T : ℤ)
+    (hA : A.IsHermitian) (hB : B.IsHermitian)
+    (hp : p ≠ 0) (hdegree : p.natDegree = 32)
+    (hfactor : A.charpoly = p * B.charpoly)
+    (h1 : complexRootPowerSum p 1 = -8)
+    (h2 : complexRootPowerSum p 2 = 224)
+    (h3 : complexRootPowerSum p 3 = ((6 * T - 224 : ℤ) : ℂ))
+    (h4 : complexRootPowerSum p 4 = 1792)
+    (hB6 : Matrix.trace (B ^ 6) = 46912) :
+    (24864 : ℝ) * (((6 * T - 160 : ℤ) : ℝ) ^ 2) ≤
+      788544 * ((Matrix.trace (A ^ 6)).re - 61248) := by
+  have hcert := hermitianResidual_sixthMoment_cubic_certificate
+    A B p hA hB hp hdegree hfactor h1 h2 h4 hB6
+  rw [h3] at hcert
+  norm_num at hcert ⊢
+  nlinarith
+
 end
 
 
@@ -153,3 +174,4 @@ end Erdos85
 #print axioms Erdos85.h305_realResidual_sixthMoment_cubic_certificate
 #print axioms Erdos85.h305_realResidual_sixthMoment_strict_of_triangleMoment
 #print axioms Erdos85.hermitianResidual_sixthMoment_cubic_certificate
+#print axioms Erdos85.hermitianResidual_sixthMoment_triangle_certificate
