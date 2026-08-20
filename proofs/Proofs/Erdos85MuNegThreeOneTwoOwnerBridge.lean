@@ -100,8 +100,89 @@ theorem muNegThreeXVar?_isSome_of_mem {a b : Nat}
     rw [hp]
     simpa [Option.isSome_map] using List.isSome_idxOf?.mpr hmem
 
+/-- Graph-shaped finite content of the seven owner-CNF families.  It uses
+only Nat-coded grid/owner relations and generator-independent cardinality or
+uniqueness statements; DIMACS numbering is confined to the valuation above.
+-/
+structure MuNegThreeOneTwoFiniteSemantics (fwd : Bool) (c : Nat)
+    (D X : Nat → Nat → Bool) : Prop where
+  fixed : ∀ i j, i < 8 → j < 8 → i % 2 == j % 2 →
+    D i j = (j == muNegThreePhi fwd c i)
+  opposite_rows : ∀ i, i < 8 →
+    (((List.range 8).filter fun j => !(i % 2 == j % 2)).countP
+      fun j => D i j) = 1
+  opposite_columns : ∀ j, j < 8 →
+    (((List.range 8).filter fun i => !(i % 2 == j % 2)).countP
+      fun i => D i j) = 1
+  intertwine : ∀ i j, i < 8 → j < 8 →
+    (cond (D ((i + 7) % 8) j) 1 0) +
+      (cond (D ((i + 1) % 8) j) 1 0) =
+    (cond (D i ((j + 1) % 8)) 1 0) +
+      (cond (D i ((j + 7) % 8)) 1 0)
+  hit_active : ∀ a b, (a, b) ∈ muNegThreeHitPairs → X a b = true →
+    muNegThreeOwnerActive D a = true ∧
+      muNegThreeOwnerActive D b = true
+  service_exists : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
+    ∀ (onRow : Bool) t,
+      (if onRow then
+        muNegThreeOffsetOne (muNegThreeCellRow a) t
+      else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
+      ∃ b, b < 64 ∧ b ≠ a ∧
+        (if onRow then muNegThreeCellRow b = t
+          else muNegThreeCellCol b = t) ∧
+        (min a b, max a b) ∈ muNegThreeHitPairs ∧
+        X (min a b) (max a b) = true
+  service_unique : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
+    ∀ (onRow : Bool) t,
+      (if onRow then
+        muNegThreeOffsetOne (muNegThreeCellRow a) t
+      else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
+      ∀ b d, b < 64 → b ≠ a →
+        (if onRow then muNegThreeCellRow b = t
+          else muNegThreeCellCol b = t) →
+        (min a b, max a b) ∈ muNegThreeHitPairs →
+        X (min a b) (max a b) = true →
+        d < 64 → d ≠ a →
+        (if onRow then muNegThreeCellRow d = t
+          else muNegThreeCellCol d = t) →
+        (min a d, max a d) ∈ muNegThreeHitPairs →
+        X (min a d) (max a d) = true → b = d
+  c4_intersecting : ∀ a b g, a < b → b < 64 → g < 64 →
+    g ≠ a → g ≠ b →
+    (muNegThreeCellRow a = muNegThreeCellRow b ∨
+      muNegThreeCellCol a = muNegThreeCellCol b) →
+    (min a g, max a g) ∈ muNegThreeHitPairs →
+    (min b g, max b g) ∈ muNegThreeHitPairs →
+    X (min a g) (max a g) = true →
+    X (min b g) (max b g) = true → False
+  c4_no_two : ∀ a b g h, a < b → b < 64 → g < 64 → h < 64 →
+    g ≠ h → g ≠ a → g ≠ b → h ≠ a → h ≠ b →
+    muNegThreeCellRow a ≠ muNegThreeCellRow b →
+    muNegThreeCellCol a ≠ muNegThreeCellCol b →
+    (min a g, max a g) ∈ muNegThreeHitPairs →
+    (min b g, max b g) ∈ muNegThreeHitPairs →
+    (min a h, max a h) ∈ muNegThreeHitPairs →
+    (min b h, max b h) ∈ muNegThreeHitPairs →
+    X (min a g) (max a g) = true →
+    X (min b g) (max b g) = true →
+    X (min a h) (max a h) = true →
+    X (min b h) (max b h) = true → False
+
+/-- The fixed same-sign matching family is already embedded by the relation
+valuation and the first finite-semantics field. -/
+theorem muNegThreeFiniteSemantics_fixed
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (h : MuNegThreeOneTwoFiniteSemantics fwd c D X) :
+    ∀ clause ∈ muNegThreeFixClauses fwd c,
+      dimacsClauseSatisfied (muNegThreeValOfRelations D X) clause := by
+  apply muNegThreeFixClauses_satisfied
+  intro i j hi hj hparity
+  rw [muNegThreeValOfRelations_dvar D X hi hj]
+  exact h.fixed i j hi hj hparity
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeValOfRelations_dvar
 #print axioms Erdos85.muNegThreeValOfRelations_xvar
 #print axioms Erdos85.muNegThreeXVar?_isSome_of_mem
+#print axioms Erdos85.muNegThreeFiniteSemantics_fixed
