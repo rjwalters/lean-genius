@@ -429,6 +429,65 @@ theorem invClosedCayley_erase_involution_adj_iff
   · simp [Finset.mem_erase, hxy, htA]
   · simp [Finset.mem_erase, hxy]
 
+/-- The residual Cayley layer obtained by erasing an involutory generator is
+a subgraph, so C4-freeness is preserved. -/
+theorem invClosedCayley_erase_involution_not_containsC4
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t : Γ} (htsq : t * t = 1) :
+    ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A.erase t)
+        (mem_erase_involution_iff_inv_mem_erase A hinv htsq)
+        (by exact fun h => hone (Finset.mem_of_mem_erase h))) := by
+  intro hc4
+  apply hfree
+  apply containsC4_mono (G := invClosedCayleyGraph (· ∈ A.erase t)
+    (mem_erase_involution_iff_inv_mem_erase A hinv htsq)
+    (by exact fun h => hone (Finset.mem_of_mem_erase h)))
+  · intro x y hxy
+    change x⁻¹ * y ∈ A.erase t at hxy
+    change x⁻¹ * y ∈ A
+    exact Finset.mem_of_mem_erase hxy
+  · exact hc4
+
+/-- **Odd Cayley peel capstone.**  Every odd-cardinality inverse-closed
+connection set in a C4-free Cayley graph admits an involutory generator whose
+removal leaves a C4-free connection set of cardinality one smaller, and the
+erased graph reconstructs by adding exactly its matching layer. -/
+theorem exists_c4Free_evenResidual_matchingDecomposition_of_odd_Cayley
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hodd : Odd A.card)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone)) :
+    ∃ t, ∃ htsq : t * t = 1, t ∈ A ∧ t ≠ 1 ∧
+      (A.erase t).card = A.card - 1 ∧
+      ¬ containsC4 Γ
+        (invClosedCayleyGraph (· ∈ A.erase t)
+          (mem_erase_involution_iff_inv_mem_erase A hinv htsq)
+          (by exact fun h => hone (Finset.mem_of_mem_erase h))) ∧
+      ∀ x y,
+        (invClosedCayleyGraph (· ∈ A) hinv hone).Adj x y ↔
+          (invClosedCayleyGraph (· ∈ A.erase t)
+            (mem_erase_involution_iff_inv_mem_erase A hinv htsq)
+            (by exact fun h => hone (Finset.mem_of_mem_erase h))).Adj x y ∨
+          y = x * t := by
+  obtain ⟨t, htA, htne, htsq⟩ :=
+    exists_connection_involution_of_odd_card A hinv hone hodd
+  refine ⟨t, htsq, htA, htne, ?_, ?_, ?_⟩
+  · exact Finset.card_erase_of_mem htA
+  · exact invClosedCayley_erase_involution_not_containsC4
+      A hinv hone hfree htsq
+  · intro x y
+    exact invClosedCayley_erase_involution_adj_iff
+      A hinv hone htA htsq x y
+
 end Erdos85
 
 #print axioms Erdos85.invClosedCayley_containsC4_of_product_collision
@@ -444,3 +503,5 @@ end Erdos85
 #print axioms Erdos85.exists_connection_perfectMatchingLayer_of_odd_card
 #print axioms Erdos85.mem_erase_involution_iff_inv_mem_erase
 #print axioms Erdos85.invClosedCayley_erase_involution_adj_iff
+#print axioms Erdos85.invClosedCayley_erase_involution_not_containsC4
+#print axioms Erdos85.exists_c4Free_evenResidual_matchingDecomposition_of_odd_Cayley
