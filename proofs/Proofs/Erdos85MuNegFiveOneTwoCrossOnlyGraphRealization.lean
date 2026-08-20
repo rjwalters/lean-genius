@@ -128,6 +128,14 @@ theorem muNegFiveOneTwoCrossOnly_activeVariable_some (e : Fin 64) :
   revert e
   native_decide
 
+theorem muNegFiveOneTwoCrossOnly_oldOwner_cases (f : Fin 72) :
+    (∃ e : Fin 64, muNegFiveOneTwoCrossOnlyToZeroThree e = f) ∨
+      (∃ i j : Fin 8, muNegFiveZeroThreeOwnerAt f = (i.val, j.val)) ∨
+      (∃ i j : Fin 8,
+        muNegFiveZeroThreeOwnerAt f = (8 + i.val, 8 + j.val)) := by
+  revert f
+  native_decide
+
 instance (u v : ZMod 8 → c.supp) :
     DecidablePred (muNegFiveOneTwoCrossOnlyGraphActive G c u v) := by
   intro e
@@ -171,6 +179,76 @@ section Shores
 variable [DecidableEq (G.induce c.supp).ConnectedComponent]
   (a b : (G.induce c.supp).ConnectedComponent)
   (u v : ZMod 8 → c.supp)
+
+theorem muNegFiveOneTwoCrossOnly_candidateSupport_of_noSameShore
+    (hnoU : ∀ i j : ZMod 8,
+      ¬ (exteriorPairGraph G c.supp).Adj (u i) (u j))
+    (hnoV : ∀ i j : ZMod 8,
+      ¬ (exteriorPairGraph G c.supp).Adj (v i) (v j)) :
+    ∀ x, x < 16 → ∀ y, y < 16 →
+      (exteriorPairGraph G c.supp).Adj
+        (muNegFiveZeroThreeCodeSub G c u v x)
+        (muNegFiveZeroThreeCodeSub G c u v y) →
+      muNegFiveZeroThreeCandidatePair x y = true ∨
+        muNegFiveZeroThreeCandidatePair y x = true := by
+  intro x hx y hy hxy
+  by_cases hx8 : x < 8
+  · by_cases hy8 : y < 8
+    · exfalso
+      apply hnoU (x : ZMod 8) (y : ZMod 8)
+      simpa [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
+        hx8, hy8] using hxy
+    · left
+      unfold muNegFiveZeroThreeCandidatePair
+      simp [muNegFiveZeroThreeCrossCandidatePair, hx8, show 8 ≤ y by omega, hy]
+  · by_cases hy8 : y < 8
+    · right
+      unfold muNegFiveZeroThreeCandidatePair
+      simp [muNegFiveZeroThreeCrossCandidatePair, hy8, show 8 ≤ x by omega, hx]
+    · exfalso
+      apply hnoV ((x - 8 : Nat) : ZMod 8) ((y - 8 : Nat) : ZMod 8)
+      simpa [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
+        hx8, hy8] using hxy
+
+theorem muNegFiveOneTwoCrossOnlyExteriorOwnerCoverage_of_noSameShore
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hnoU : ∀ i j : ZMod 8,
+      ¬ (exteriorPairGraph G c.supp).Adj (u i) (u j))
+    (hnoV : ∀ i j : ZMod 8,
+      ¬ (exteriorPairGraph G c.supp).Adj (v i) (v j)) :
+    MuNegFiveOneTwoCrossOnlyExteriorOwnerCoverage G c u v := by
+  have hsupport :=
+    muNegFiveOneTwoCrossOnly_candidateSupport_of_noSameShore G c u v
+      hnoU hnoV
+  have hcomplete : MuNegFiveZeroThreeOwnerPairComplete G c u v :=
+    muNegFiveZeroThreeOwnerPairComplete_of_candidateSupport
+      G c a b u v hsize hab huinj hvinj hurange hvrange hsupport
+  have hcover := muNegFiveZeroThreeExteriorOwnerCoverage_of_pairComplete
+    G c u v hfree hreg hcard hsize hcomplete
+  intro z hz
+  obtain ⟨f, hf⟩ := hcover z hz
+  rcases muNegFiveOneTwoCrossOnly_oldOwner_cases f with ⟨e, rfl⟩ | hfixed
+  · exact ⟨e, hf⟩
+  · have hactive : muNegFiveZeroThreeGraphActive G c u v f := ⟨z, hf⟩
+    have hR := (muNegFiveZeroThreeGraphActive_iff_exteriorPair
+      G c a b u v hfree hab huinj hvinj hurange hvrange f).mp hactive
+    rcases hfixed with ⟨i, j, hij⟩ | ⟨i, j, hij⟩
+    · exfalso
+      apply hnoU (i.val : ZMod 8) (j.val : ZMod 8)
+      rw [hij] at hR
+      simpa [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
+        i.2, j.2] using hR
+    · exfalso
+      apply hnoV (i.val : ZMod 8) (j.val : ZMod 8)
+      rw [hij] at hR
+      simpa [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
+        show ¬ 8 + i.val < 8 by omega,
+        show ¬ 8 + j.val < 8 by omega] using hR
 
 theorem muNegFiveOneTwoCrossOnlyGraphHit_irrefl
     (hfree : ¬ containsC4 V G)
