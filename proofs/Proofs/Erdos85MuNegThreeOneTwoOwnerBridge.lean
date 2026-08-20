@@ -676,6 +676,149 @@ theorem muNegThreeFiniteSemantics_service
     · exact block a ha false t ht (by simpa using ‹¬ muNegThreeOffsetOne
           (muNegThreeCellCol a) t = true›) clause hmem
 
+private theorem muNegThree_option_bind_inv {α β : Type} {o : Option α}
+    {f : α → Option β} {z : β} (h : (o >>= f) = some z) :
+    ∃ x, o = some x ∧ f x = some z := by
+  cases o with
+  | none => simp at h
+  | some x => exact ⟨x, rfl, h⟩
+
+private theorem muNegThree_xlit_props {D X : Nat → Nat → Bool}
+    {a b : Nat} {lit : Int} (h : muNegThreeXLit? a b = some lit) :
+    0 < lit ∧
+      dimacsLitValue (muNegThreeValOfRelations D X) lit =
+        X (min a b) (max a b) ∧
+      (min a b, max a b) ∈ muNegThreeHitPairs := by
+  obtain ⟨x, hx, rfl⟩ := muNegThreeXLit?_eq_some h
+  have hb := muNegThreeXVar?_bounds hx
+  refine ⟨?_, ?_, muNegThreeXVar?_key_mem hx⟩
+  · show (0 : Int) < (x : Int)
+    exact_mod_cast (by omega : 0 < x)
+  · rw [muNegThree_dimacsLitValue_ofNat (by omega),
+      muNegThreeValOfRelations_xvar D X hx]
+
+/-- Embed the exterior C4 family: intersecting cells cannot share a hit,
+and disjoint cells cannot share two distinct hits. -/
+theorem muNegThreeFiniteSemantics_c4
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (hsem : MuNegThreeOneTwoFiniteSemantics fwd c D X) :
+    ∀ clause ∈ muNegThreeC4Clauses,
+      dimacsClauseSatisfied (muNegThreeValOfRelations D X) clause := by
+  intro clause hclause
+  simp only [muNegThreeC4Clauses, List.mem_flatMap, List.mem_range,
+    List.mem_filter] at hclause
+  obtain ⟨a, ha, b, ⟨hb, hab⟩, hcl⟩ := hclause
+  have hab' : a < b := of_decide_eq_true hab
+  split at hcl
+  · next hshare =>
+    rw [List.mem_filterMap] at hcl
+    obtain ⟨g, hg, hf⟩ := hcl
+    have hg' := hg
+    simp only [muNegThreeCommons, List.mem_filter, List.mem_range,
+      Bool.and_eq_true, bne_iff_ne] at hg'
+    obtain ⟨hg64, hgcond⟩ := hg'
+    obtain ⟨⟨⟨hga, hgb⟩, _⟩, _⟩ := hgcond
+    obtain ⟨x, hx, hf⟩ := muNegThree_option_bind_inv hf
+    obtain ⟨y, hy, hf⟩ := muNegThree_option_bind_inv hf
+    have hcl' : clause = [-x, -y] := (Option.some.inj hf).symm
+    obtain ⟨hxpos, hxval, hxkey⟩ :=
+      muNegThree_xlit_props (D := D) (X := X) hx
+    obtain ⟨hypos, hyval, hykey⟩ :=
+      muNegThree_xlit_props (D := D) (X := X) hy
+    have hcoord : muNegThreeCellRow a = muNegThreeCellRow b ∨
+        muNegThreeCellCol a = muNegThreeCellCol b := by
+      simpa only [Bool.or_eq_true, beq_iff_eq] using hshare
+    by_cases hvx : dimacsLitValue (muNegThreeValOfRelations D X) x = true
+    · by_cases hvy : dimacsLitValue (muNegThreeValOfRelations D X) y = true
+      · exact False.elim (hsem.c4_intersecting a b g hab' hb hg64 hga hgb
+          hcoord hxkey hykey (by rw [← hxval]; exact hvx)
+          (by rw [← hyval]; exact hvy))
+      · have hvyf := Bool.eq_false_of_not_eq_true hvy
+        exact ⟨-y, by rw [hcl']; simp,
+          dimacs_neg_satisfied_of_false hypos hvyf⟩
+    · have hvxf := Bool.eq_false_of_not_eq_true hvx
+      exact ⟨-x, by rw [hcl']; simp,
+        dimacs_neg_satisfied_of_false hxpos hvxf⟩
+  · next hnshare =>
+    rw [List.mem_flatMap] at hcl
+    obtain ⟨g, hg, hcl⟩ := hcl
+    rw [List.mem_filterMap] at hcl
+    obtain ⟨h, hh, hf⟩ := hcl
+    obtain ⟨hhks, hgh⟩ := List.mem_filter.mp hh
+    have hg' := hg
+    have hh' := hhks
+    simp only [muNegThreeCommons, List.mem_filter, List.mem_range,
+      Bool.and_eq_true, bne_iff_ne] at hg' hh'
+    obtain ⟨hg64, hgcond⟩ := hg'
+    obtain ⟨hh64, hhcond⟩ := hh'
+    obtain ⟨⟨⟨hga, hgb⟩, _⟩, _⟩ := hgcond
+    obtain ⟨⟨⟨hha, hhb⟩, _⟩, _⟩ := hhcond
+    have hgh' : g ≠ h := by
+      have : g < h := of_decide_eq_true hgh
+      omega
+    have hrow : muNegThreeCellRow a ≠ muNegThreeCellRow b := by
+      intro heq
+      apply hnshare
+      simp [heq]
+    have hcol : muNegThreeCellCol a ≠ muNegThreeCellCol b := by
+      intro heq
+      apply hnshare
+      simp [heq]
+    obtain ⟨xag, hxag, hf⟩ := muNegThree_option_bind_inv hf
+    obtain ⟨xbg, hxbg, hf⟩ := muNegThree_option_bind_inv hf
+    obtain ⟨xah, hxah, hf⟩ := muNegThree_option_bind_inv hf
+    obtain ⟨xbh, hxbh, hf⟩ := muNegThree_option_bind_inv hf
+    have hcl' : clause = [-xag, -xbg, -xah, -xbh] :=
+      (Option.some.inj hf).symm
+    obtain ⟨hp₁, hv₁, hk₁⟩ :=
+      muNegThree_xlit_props (D := D) (X := X) hxag
+    obtain ⟨hp₂, hv₂, hk₂⟩ :=
+      muNegThree_xlit_props (D := D) (X := X) hxbg
+    obtain ⟨hp₃, hv₃, hk₃⟩ :=
+      muNegThree_xlit_props (D := D) (X := X) hxah
+    obtain ⟨hp₄, hv₄, hk₄⟩ :=
+      muNegThree_xlit_props (D := D) (X := X) hxbh
+    by_cases hb₁ : dimacsLitValue (muNegThreeValOfRelations D X) xag = true
+    · by_cases hb₂ : dimacsLitValue (muNegThreeValOfRelations D X) xbg = true
+      · by_cases hb₃ : dimacsLitValue (muNegThreeValOfRelations D X) xah = true
+        · by_cases hb₄ : dimacsLitValue (muNegThreeValOfRelations D X) xbh = true
+          · exact False.elim (hsem.c4_no_two a b g h hab' hb hg64 hh64 hgh'
+              hga hgb hha hhb hrow hcol hk₁ hk₂ hk₃ hk₄
+              (by rw [← hv₁]; exact hb₁) (by rw [← hv₂]; exact hb₂)
+              (by rw [← hv₃]; exact hb₃) (by rw [← hv₄]; exact hb₄))
+          · exact ⟨-xbh, by rw [hcl']; simp,
+              dimacs_neg_satisfied_of_false hp₄ (Bool.eq_false_of_not_eq_true hb₄)⟩
+        · exact ⟨-xah, by rw [hcl']; simp,
+            dimacs_neg_satisfied_of_false hp₃ (Bool.eq_false_of_not_eq_true hb₃)⟩
+      · exact ⟨-xbg, by rw [hcl']; simp,
+          dimacs_neg_satisfied_of_false hp₂ (Bool.eq_false_of_not_eq_true hb₂)⟩
+    · exact ⟨-xag, by rw [hcl']; simp,
+        dimacs_neg_satisfied_of_false hp₁ (Bool.eq_false_of_not_eq_true hb₁)⟩
+
+/-- Assemble the seven generated clause families from their graph-shaped
+finite semantics. -/
+theorem muNegThreeOneTwoConstraintSemantics_of_finite
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (hsem : MuNegThreeOneTwoFiniteSemantics fwd c D X) :
+    MuNegThreeOneTwoOwnerConstraintSemantics fwd c
+      (muNegThreeValOfRelations D X) where
+  fixed := muNegThreeFiniteSemantics_fixed hsem
+  opposite_rows := muNegThreeFiniteSemantics_opposite_rows hsem
+  opposite_columns := muNegThreeFiniteSemantics_opposite_columns hsem
+  intertwining := muNegThreeFiniteSemantics_intertwining hsem
+  hit_activity := muNegThreeFiniteSemantics_hit_activity hsem
+  service := muNegThreeFiniteSemantics_service hsem
+  exterior_c4 := muNegThreeFiniteSemantics_c4 hsem
+
+/-- **Finite-relation contradiction socket for h312.**  No Nat-coded
+relations can meet the seven owner constraints at a certified even phase. -/
+theorem muNegThreeOneTwoFiniteSemantics_false
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (hc : c = 0 ∨ c = 2 ∨ c = 4 ∨ c = 6)
+    (hsem : MuNegThreeOneTwoFiniteSemantics fwd c D X) : False :=
+  muNegThreeOneTwoOwnerConstraintSemantics_false' hc
+    (muNegThreeOneTwoConstraintSemantics_of_finite hsem)
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeValOfRelations_dvar
@@ -687,3 +830,6 @@ end Erdos85
 #print axioms Erdos85.muNegThreeFiniteSemantics_intertwining
 #print axioms Erdos85.muNegThreeFiniteSemantics_hit_activity
 #print axioms Erdos85.muNegThreeFiniteSemantics_service
+#print axioms Erdos85.muNegThreeFiniteSemantics_c4
+#print axioms Erdos85.muNegThreeOneTwoConstraintSemantics_of_finite
+#print axioms Erdos85.muNegThreeOneTwoFiniteSemantics_false
