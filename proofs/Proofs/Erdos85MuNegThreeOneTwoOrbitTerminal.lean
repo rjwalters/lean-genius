@@ -50,10 +50,15 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_switch_ne_self_of_oneTwo_align
     let K := (secondOrderDefectGraph G).induce c.supp
     let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
       fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let M₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (v j)
     let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
       fun i j ↦ K.adjMatrix ℤ (v i) (v j)
     ∃ k r : ℕ, MuNegThreeRefinedSectorCells N₁ N₂ k r ∧
-      sizeTwoMuSwitchTarget (-3) k r ≠ -3 := by
+      sizeTwoMuSwitchTarget (-3) k r ≠ -3 ∧
+      componentQuotientMatrix K (G.induce c.supp) a a = 7 - r ∧
+      MuNegThreeExplicitParameterLedger N₁ M₁
+        (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r := by
   classical
   dsimp only
   let H := G.induce c.supp
@@ -144,10 +149,122 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_switch_ne_self_of_oneTwo_align
       G c hfree hreg hcard hc a b hab u v huinj hvinj hurange hvrange
         hu hv (by simpa [K, H] using haa) (by simpa [K, H] using hbb)
         L₁ L₂ hD₁ hD₂ hpar (horient rfl)
-  · exact ⟨k, r, hcell, hself⟩
+  · exact ⟨k, r, hcell, hself, haa, L₁⟩
+
+/-- Phase-free orbit terminal.  If the two coordinate-zero signs disagree,
+rotate the second C8 by one step, apply the aligned terminal there, and use
+the invariant first-shore ledger and quotient entry to identify the returned
+`k,r` with the original refined witness. -/
+theorem orderSixtyFour_sizeTwo_muNegThree_refined_switch_ne_self_of_oneTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2) (s : V → ℤ)
+    (hs_out : ∀ x, x ∉ c.supp → s x = 0)
+    (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
+    (hH : ∀ z ∈ c.supp, ∑ y ∈ (G.neighborFinset z).filter
+      (fun y ↦ (secondOrderDefectGraph G).connectedComponentMk y = c),
+        s y = -2 * s z)
+    (hD : ∀ z, z ∈ c.supp →
+      ∑ y ∈ (secondOrderDefectGraph G).neighborFinset z,
+        s y = (-3 : ℤ) * s z)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    ∃ k r : ℕ, MuNegThreeRefinedSectorCells N₁ N₂ k r ∧
+      sizeTwoMuSwitchTarget (-3) k r ≠ -3 := by
+  classical
+  dsimp only
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  obtain ⟨k, r, hcell, _heigK, _heigH, _ht, _htsign, _hneOne,
+      _hpost, _htargets, _hglobal, _hT, _horient, haa, _hbb, L₁, _L₂⟩ :=
+    orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
+      G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+        u v huinj hvinj hurange hvrange hu hv
+  by_cases hbase : s (u 0).1 = s (v 0).1
+  · obtain ⟨k', r', _hcell', hne, _haa', _L'⟩ :=
+      orderSixtyFour_sizeTwo_muNegThree_refined_switch_ne_self_of_oneTwo_aligned
+        G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+          u v huinj hvinj hurange hvrange hu hv hbase
+    have hr : r = r' := by
+      have hrsum := L₁.sum_le_six
+      have hrsum' := _L'.sum_le_six
+      have hr6 : r ≤ 6 := by omega
+      have hr6' : r' ≤ 6 := by omega
+      omega
+    have hk : k = k' := by
+      have hk0 := L₁.internal_same 0
+      have hk0' := _L'.internal_same 0
+      omega
+    subst k'
+    subst r'
+    exact ⟨k, r, hcell, hne⟩
+  · have hop : s (u 0).1 = -s (v 0).1 := by
+      rcases L₁.f_sign 0 with hu0 | hu0 <;>
+        rcases L₁.g_sign 0 with hv0 | hv0 <;> omega
+    let vp : ZMod 8 → c.supp := fun j ↦ v (j + 1)
+    have hvpinj : Function.Injective vp := by
+      intro i j hij
+      apply add_right_cancel (b := (1 : ZMod 8))
+      exact hvinj hij
+    have hvprange : Set.range vp = b.supp := by
+      rw [← hvrange]
+      ext z
+      constructor
+      · rintro ⟨j, rfl⟩
+        exact ⟨j + 1, rfl⟩
+      · rintro ⟨j, rfl⟩
+        exact ⟨j - 1, by simp [vp]⟩
+    have hvp : ∀ z, (G.induce c.supp).neighborFinset (vp z) =
+        {vp (z - 1), vp (z + 1)} := by
+      intro z
+      simpa [vp] using hv (z + 1)
+    have hvp0 : s (vp 0).1 = -s (v 0).1 := by
+      simpa [vp] using L₁.g_flip 0
+    have hbasep : s (u 0).1 = s (vp 0).1 := hop.trans hvp0.symm
+    obtain ⟨k', r', _hcell', hne, haa', L'⟩ :=
+      orderSixtyFour_sizeTwo_muNegThree_refined_switch_ne_self_of_oneTwo_aligned
+        G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+          u vp huinj hvpinj hurange hvprange hu hvp hbasep
+    have hr : r = r' := by
+      have hrsum := L₁.sum_le_six
+      have hrsum' := L'.sum_le_six
+      have hr6 : r ≤ 6 := by omega
+      have hr6' : r' ≤ 6 := by omega
+      omega
+    have hk : k = k' := by
+      have hk0 := L₁.internal_same 0
+      have hk0' := L'.internal_same 0
+      omega
+    subst k'
+    subst r'
+    exact ⟨k, r, hcell, hne⟩
 
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_refined_switch_ne_self_of_oneTwo_aligned
+#print axioms Erdos85.orderSixtyFour_sizeTwo_muNegThree_refined_switch_ne_self_of_oneTwo
