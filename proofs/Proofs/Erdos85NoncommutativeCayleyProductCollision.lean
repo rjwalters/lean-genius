@@ -282,6 +282,43 @@ theorem not_containsC4_iff_nonbacktracking_connectionProduct_injective
       exact mul_left_cancel hfirst
     exact (by decide : (1 : Fin 4) ≠ 3) (hf h13)
 
+/-- An involutory connection element is never represented by a
+non-backtracking word of length two.  Otherwise inversion supplies the second
+representation `(b⁻¹,a⁻¹)`. -/
+theorem involution_connection_ne_nonbacktracking_product
+    {Γ : Type*} [Group Γ]
+    (S : Γ → Prop)
+    (hinv : ∀ g, S g ↔ S g⁻¹)
+    (hone : ¬ S 1)
+    (hfree : ¬ containsC4 Γ (invClosedCayleyGraph S hinv hone))
+    {t a b : Γ} (_ht : S t) (htsq : t * t = 1)
+    (ha : S a) (hb : S b) (hab : a * b ≠ 1) :
+    a * b ≠ t := by
+  intro habt
+  have hInjective := nonbacktracking_connectionProduct_injective
+    S hinv hone hfree
+  have htinv : t⁻¹ = t := (eq_inv_of_mul_eq_one_right htsq).symm
+  let p : {p : Γ × Γ // S p.1 ∧ S p.2 ∧ p.1 * p.2 ≠ 1} :=
+    ⟨(a, b), ha, hb, hab⟩
+  let q : {p : Γ × Γ // S p.1 ∧ S p.2 ∧ p.1 * p.2 ≠ 1} :=
+    ⟨(b⁻¹, a⁻¹), (hinv b).mp hb, (hinv a).mp ha, by
+      change b⁻¹ * a⁻¹ ≠ 1
+      rw [← mul_inv_rev]
+      exact inv_ne_one.mpr hab⟩
+  have hpqProduct : p.1.1 * p.1.2 = q.1.1 * q.1.2 := by
+    change a * b = b⁻¹ * a⁻¹
+    calc
+      a * b = t := habt
+      _ = t⁻¹ := htinv.symm
+      _ = (a * b)⁻¹ := congrArg Inv.inv habt.symm
+      _ = b⁻¹ * a⁻¹ := mul_inv_rev a b
+  have hpq : p = q := hInjective hpqProduct
+  have hfirst : a = b⁻¹ := congrArg (fun z => z.1.1) hpq
+  apply hab
+  calc
+    a * b = b⁻¹ * b := congrArg (· * b) hfirst
+    _ = 1 := inv_mul_cancel b
+
 /-- Ordered pairs of connection elements which do not immediately
 backtrack. -/
 def nonbacktrackingConnectionPairs
@@ -411,6 +448,28 @@ def unusedNonidentityConnectionProducts
     (A : Finset Γ) : Finset Γ :=
   (Finset.univ.erase 1) \
     ((nonbacktrackingConnectionPairs A).image fun p => p.1 * p.2)
+
+/-- In finite-set language, every involutory connection generator belongs to
+the unused product slack. -/
+theorem involution_connection_mem_unusedProducts
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t : Γ} (htA : t ∈ A) (htsq : t * t = 1) :
+    t ∈ unusedNonidentityConnectionProducts A := by
+  classical
+  apply Finset.mem_sdiff.mpr
+  constructor
+  · exact Finset.mem_erase.mpr ⟨fun ht => hone (ht ▸ htA), Finset.mem_univ _⟩
+  · intro htImage
+    obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp htImage
+    have hpA := Finset.mem_product.mp (Finset.mem_filter.mp hp).1
+    have hpne := (Finset.mem_filter.mp hp).2
+    exact (involution_connection_ne_nonbacktracking_product
+      (· ∈ A) hinv hone hfree htA htsq hpA.1 hpA.2 hpne) hpt
 
 /-- The unused product slack of an inverse-closed connection set is itself
 closed under inversion. -/
@@ -758,9 +817,11 @@ end Erdos85
 #print axioms Erdos85.containsC4_of_odd_connection_card_of_all_involutions_central
 #print axioms Erdos85.nonbacktracking_connectionProduct_injective
 #print axioms Erdos85.not_containsC4_iff_nonbacktracking_connectionProduct_injective
+#print axioms Erdos85.involution_connection_ne_nonbacktracking_product
 #print axioms Erdos85.card_nonbacktrackingConnectionPairs
 #print axioms Erdos85.card_nonbacktracking_connectionProducts
 #print axioms Erdos85.card_unused_nonidentity_of_planeMinusTwo_Cayley
+#print axioms Erdos85.involution_connection_mem_unusedProducts
 #print axioms Erdos85.unusedNonidentityConnectionProducts_inv_mem
 #print axioms Erdos85.exists_unused_nontrivial_involution_of_odd_card
 #print axioms Erdos85.exists_unused_involution_of_odd_planeMinusTwo_Cayley
