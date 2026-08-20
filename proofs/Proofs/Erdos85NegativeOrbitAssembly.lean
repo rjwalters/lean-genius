@@ -484,6 +484,71 @@ theorem NegativeEightEightAlignedWitness.exists_switched_ambient
       (by simpa [H] using htH) (by simpa [K] using htK)
   exact ⟨T, hT⟩
 
+/-- Canonical switched ambient witness, retaining equality with the source
+sign on the unflipped first shore. -/
+theorem NegativeEightEightAlignedWitness.exists_switched_ambient_firstShore
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a b : (G.induce c.supp).ConnectedComponent) (theta : ℤ) (k r : ℕ)
+    (hdegree : ∀ x : c.supp, (G.induce c.supp).degree x = 2)
+    (hcomm : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ) *
+        ((G.induce c.supp).adjMatrix ℝ) =
+      ((G.induce c.supp).adjMatrix ℝ) *
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ))
+    (w : NegativeEightEightAlignedWitness G c a b theta k r) :
+    ∃ T : V → ℤ,
+      IsAmbientSignedJoint G c (sizeTwoMuSwitchTarget theta k r) T ∧
+      ∀ x : c.supp, x ∈ a.supp → T x.1 = w.s x.1 := by
+  classical
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let B := (Finset.univ : Finset c.supp).filter
+    (fun x ↦ H.connectedComponentMk x = b)
+  let t : c.supp → ℤ := fun x ↦ if x ∈ B then -w.s x.1 else w.s x.1
+  have hsign : ∀ x : c.supp, w.s x.1 = -1 ∨ w.s x.1 = 1 := by
+    intro x
+    exact w.signedJoint.2.1 x.1 x.2
+  have htK : (K.adjMatrix ℤ).mulVec t =
+      sizeTwoMuSwitchTarget theta k r • t := by
+    have hraw := twoComponent_quotient_signSwitch_adjMatrix_eigen_sub_of_card
+      K H a b w.hab hdegree hcomm w.cover (fun x ↦ w.s x.1)
+        (7-r) k r w.crossSame hsign w.quotientAA w.quotientAB
+          w.quotientBA w.quotientBB w.sameAA w.sameAB w.sameBB w.sameBA
+    simpa only [t, B, w.hcoeff] using hraw
+  have hsH : (H.adjMatrix ℤ).mulVec (fun x : c.supp ↦ w.s x.1) =
+      (-2 : ℤ) • (fun x : c.supp ↦ w.s x.1) := by
+    funext x
+    rw [induce_adjMatrix_mulVec_restrict_apply]
+    simpa [ConnectedComponent.mem_supp_iff, smul_eq_mul] using
+      w.signedJoint.2.2.1 x.1 x.2
+  have htH : (H.adjMatrix ℤ).mulVec t = (-2 : ℤ) • t := by
+    simpa [t, B, Finset.mem_filter] using
+      (connectedComponent_signFlip_adjMatrix_eigenvector
+        H b (fun x : c.supp ↦ w.s x.1) (-2) hsH)
+  have htsign : ∀ x, t x = -1 ∨ t x = 1 := by
+    intro x
+    have hx := hsign x
+    by_cases hm : x ∈ B
+    · simp only [t, hm, if_true]
+      omega
+    · simpa only [t, hm, if_false] using hx
+  obtain ⟨T, hT, hrestrict⟩ :=
+    exists_isAmbientSignedJoint_of_induced_with_restrict
+      G c t htsign (sizeTwoMuSwitchTarget theta k r)
+        (by simpa [H] using htH) (by simpa [K] using htK)
+  refine ⟨T, hT, ?_⟩
+  intro x hx
+  rw [hrestrict]
+  have hxa : H.connectedComponentMk x = a :=
+    (ConnectedComponent.mem_supp_iff a x).mp hx
+  have hxB : x ∉ B := by
+    simp [B, hxa, w.hab]
+  simp [t, hxB]
+
 /-- Full source object for one orbit step.  Only the `mu=-5` source needs
 extra mode data because its historical public cell predicate erased the
 shore modes; the other two refined predicates already retain them. -/
@@ -515,9 +580,17 @@ def NegativeEightEightTransportedWitness
     [DecidableRel (secondOrderDefectGraph G).Adj]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a : (G.induce c.supp).ConnectedComponent)
     (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
     (theta : ℤ) (k r : ℕ) : Prop :=
-  (∃ s, IsAmbientSignedJoint G c theta s) ∧
+  ∃ s, IsAmbientSignedJoint G c theta s ∧
+    componentQuotientMatrix ((secondOrderDefectGraph G).induce c.supp)
+      (G.induce c.supp) a a = 7 - r ∧
+    (∀ x, x ∈ a.supp →
+      ((componentNeighborFinset ((secondOrderDefectGraph G).induce c.supp)
+        (G.induce c.supp) a x).filter
+          (fun y ↦ s y.1 = s x.1)).card = k) ∧
     (NegativeEightEightOrbitCell N₁ N₂ theta k r ∨ theta = 3)
 
 /-- Ambient form of the size-two switched `mu=1` exclusion.  This is the
@@ -1102,10 +1175,37 @@ theorem NegativeEightEightSourceWitness.transport
       ((G.induce c.supp).adjMatrix ℝ) *
         (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℝ))
     (w : NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r) :
-    NegativeEightEightTransportedWitness G c N₁ N₂
+    NegativeEightEightTransportedWitness G c a N₁ N₂
       (sizeTwoMuSwitchTarget theta k r) k r := by
-  refine ⟨w.aligned.exists_switched_ambient G c a b theta k r
-    hdegree hcomm, ?_⟩
+  obtain ⟨T, hT, hfirst⟩ :=
+    w.aligned.exists_switched_ambient_firstShore
+      G c a b theta k r hdegree hcomm
+  refine ⟨T, hT, w.aligned.quotientAA, ?_, ?_⟩
+  · intro x hx
+    have heq :
+        ((componentNeighborFinset ((secondOrderDefectGraph G).induce c.supp)
+          (G.induce c.supp) a x).filter
+            (fun y ↦ T y.1 = T x.1)) =
+        ((componentNeighborFinset ((secondOrderDefectGraph G).induce c.supp)
+          (G.induce c.supp) a x).filter
+            (fun y ↦ w.aligned.s y.1 = w.aligned.s x.1)) := by
+      ext y
+      simp only [Finset.mem_filter]
+      constructor
+      · rintro ⟨hy, hsame⟩
+        have hya : y ∈ a.supp :=
+          (ConnectedComponent.mem_supp_iff a y).mpr
+            (Finset.mem_filter.mp hy).2
+        rw [hfirst y hya, hfirst x hx] at hsame
+        exact ⟨hy, hsame⟩
+      · rintro ⟨hy, hsame⟩
+        have hya : y ∈ a.supp :=
+          (ConnectedComponent.mem_supp_iff a y).mpr
+            (Finset.mem_filter.mp hy).2
+        rw [hfirst y hya, hfirst x hx]
+        exact ⟨hy, hsame⟩
+    rw [heq]
+    exact w.aligned.sameAA x hx
   rcases w.cell with ⟨htheta, h5⟩ | ⟨htheta, h3⟩ | ⟨htheta, h1⟩
   · subst theta
     obtain ⟨M₁, M₂, f₁, f₂, L₁, L₂, hm₁, hm₂⟩ := w.muNegFiveData rfl
@@ -1136,19 +1236,19 @@ theorem false_of_negativeEightEightSource_of_canonicalTerminals
     (theta : ℤ) (k r : ℕ)
     (w : NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r)
     (h503 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 0 3) ∨
-      NegativeEightEightTransportedWitness G c N₁ N₂ (-5) 0 3 → False)
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 0 3 → False)
     (h504 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 0 4) ∨
-      NegativeEightEightTransportedWitness G c N₁ N₂ (-5) 0 4 → False)
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 0 4 → False)
     (h512 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-5) 1 2) ∨
-      NegativeEightEightTransportedWitness G c N₁ N₂ (-5) 1 2 → False)
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-5) 1 2 → False)
     (h305 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 0 5) ∨
-      NegativeEightEightTransportedWitness G c N₁ N₂ (-3) 0 5 → False)
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 0 5 → False)
     (h313 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 1 3) ∨
-      NegativeEightEightTransportedWitness G c N₁ N₂ (-3) 1 3 → False)
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 1 3 → False)
     (h312 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 1 2) ∨
-      NegativeEightEightTransportedWitness G c N₁ N₂ (-3) 1 2 → False)
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 1 2 → False)
     (h114 : Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-1) 1 4) ∨
-      NegativeEightEightTransportedWitness G c N₁ N₂ (-1) 1 4 → False) :
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-1) 1 4 → False) :
     False := by
   have hdegree : ∀ x : c.supp, (G.induce c.supp).degree x = 2 := by
     intro x
@@ -1166,14 +1266,14 @@ theorem false_of_negativeEightEightSource_of_canonicalTerminals
   apply negativeSwitchOrbits_false_of_canonical_endpoints_oneStep
     (fun theta k r ↦ Nonempty
       (NegativeEightEightSourceWitness G c a b N₁ N₂ theta k r))
-    (NegativeEightEightTransportedWitness G c N₁ N₂)
+    (NegativeEightEightTransportedWitness G c a N₁ N₂)
     N₁ N₂ theta k r ⟨w⟩ w.cell
     (fun theta i j hw ↦ by
       obtain ⟨hw⟩ := hw
       exact hw.transport G c a b N₁ N₂ theta i j hdegree hcomm)
     h503 h504 h512 h305 h313 h312 h114
   intro i j hpos
-  obtain ⟨⟨s, hs⟩, _⟩ := hpos
+  obtain ⟨s, hs, _haa, _hsame, _⟩ := hpos
   exact false_of_orderSixtyFour_sizeTwo_ambient_muThree
     G hfree hreg hcard c hc s hs
 
@@ -1197,3 +1297,4 @@ end Erdos85
 #print axioms Erdos85.componentQuotient_eq_of_coordinate_row
 #print axioms Erdos85.exists_negativeEightEightSource_muNegFive
 #print axioms Erdos85.exists_isAmbientSignedJoint_of_induced_with_restrict
+#print axioms Erdos85.NegativeEightEightAlignedWitness.exists_switched_ambient_firstShore
