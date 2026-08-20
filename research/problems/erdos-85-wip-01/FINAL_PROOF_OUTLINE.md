@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.14 — 2026-08-20 (B.2: both direct finite-field construction classes at q=9 closed; q=9 existence still open).**
+**Version 2.15 — 2026-08-20 (integrator sweep #18 result recorded; B.2 uniform barriers: nonbipartite, non-abelian-Cayley, forced matching layer).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -277,7 +277,7 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
 | node | status | note |
 |---|---|---|
 | B.1 `q = 7` pincer | witness `PROVEN`; drop `CONDITIONAL` | existence half proven: `boza48_degreeSeven_witness`. The drop `minDegreeForC4_fortyNine_lt_fortyEight` is conditional on `¬C4FreeMinDegreeWitness 49 7`, which is OPEN: socket `not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks` still awaits the h1/h7 exclusions and the five H3/H5 LRAT checks; the 13-cell spend is HELD (goal #24). **Not a decided drop** — v2.8 and earlier overstated this row |
-| B.2 existence jaw for unbounded odd `q` | `GAP B-EXIST` | Cayley route dead at 9, 11 (computational); dihedral-holomorph ansatz UNSAT at 9; conjecture `B-NEAR-LATIN-LIFT` stated. New `EXTERNAL` negative data (sol-1, 20 Aug, goal #30 front (c)): Gamma_9 dot-product graph admits no single-edge matching repair (all 8 parameters × 105 matchings exhausted); ER_9 orthogonal-polarity graph admits no 10-vertex deletion retaining min degree 9 (exact 91-variable UNSAT, `er9_induced81_search.py`) — both direct finite-field construction classes at q=9 are closed; mixed doubled-cycle CNF scouts inconclusive (300s timeout). Global q=9 existence remains open |
+| B.2 existence jaw for unbounded odd `q` | `GAP B-EXIST` | Cayley route dead at 9, 11 (computational); dihedral-holomorph ansatz UNSAT at 9; conjecture `B-NEAR-LATIN-LIFT` stated. New `EXTERNAL` negative data (sol-1, 20 Aug, goal #30 front (c)): Gamma_9 dot-product graph admits no single-edge matching repair (all 8 parameters × 105 matchings exhausted); ER_9 orthogonal-polarity graph admits no 10-vertex deletion retaining min degree 9 (exact 91-variable UNSAT, `er9_induced81_search.py`) — both direct finite-field construction classes at q=9 are closed; mixed doubled-cycle CNF scouts inconclusive (300s timeout). New `PROVEN` uniform structure (sol-1, 20 Aug PM): NO bipartite candidate at any order q²−1 (`not_isBipartite_of_planeMinusTwo_regular_not_containsC4`, pair-count barrier `false_of_planeMinusTwo_regular_linear_incidence`; the signed-determinant double-cover no-go is a corollary); every vertex lies in a triangle with local edge window `[1,(q−1)/2]` for odd q; abelian Cayley impossible beyond degree 2 (`card_connection_le_two_of_commutative_invClosedCayley_not_containsC4`); nonabelian Cayley Sidon law with exact Moore slack q−2 (`card_unused_nonidentity_of_planeMinusTwo_Cayley`), forced slack involution and forced perfect-matching layer for odd q (`exists_unused_involution_of_odd_planeMinusTwo_Cayley`, `exists_connection_perfectMatchingLayer_of_odd_card`); Boza48 kernel-checked as one-block Z24⋊Z2 development of a linear 48₃ configuration + coordinate-flip one-factor. Global q=9 existence remains open |
 | B.3 nonexistence at `q²` for the same `q` | `AXIOM B-NONEXIST` | partial uniform structure; `GAP B-CLASSIFY` for odd profiles |
 | B.4 capstone | `AXIOM B-COFINAL` | B.2 ∧ B.3 on one unbounded set ⇒ done via §0 |
 
@@ -378,6 +378,19 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.15** (2026-08-20, claude/integrator): (a) Sweep #18 result — the first
+  genuinely containerized cold build (docker, 32 GB, 180 min): 16,887/16,899
+  jobs green before the timeout stopped the last ~12 mega native_decide
+  modules (unverified this run, not failed). Campaign failures: exactly the
+  absolute-path CERT class of the v2.13 caveat (now enumerated at ~36
+  modules incl. the OrderFortyNine strata certificates and OneHighProfile
+  reciprocal certificates) plus the already-deleted duplicate cubic module;
+  zero other campaign failures; 0 sorry / 0 axiom decls statically.
+  Remaining failures are main-inherited (Stubs/*, eight gallery files).
+  (b) B.2 row extended with sol-1's uniform barriers (nonbipartite at q²−1,
+  abelian-Cayley degree ≤ 2, Cayley Moore-slack q−2 with forced involution
+  and matching layer, Boza48 one-block development) — theorem names in the
+  row.
 - **2.14** (2026-08-20, claude/integrator, per sol-1 msg 15608): B.2 row
   updated with the two restricted negative q=9 construction data (Gamma_9
   matching-repair exhausted; ER_9 10-deletion UNSAT) — recorded as
