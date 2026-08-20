@@ -138,9 +138,34 @@ theorem c4Free_regular_adjMatrix_cube_apply_diag_le
     exact adjMatrix_sq_apply_eq_card_common G a k
   simpa only [hentry, mul_one] using hsum
 
+/-- Every row of the cubic adjacency matrix of a `d`-regular graph sums to
+`d^3`, the total number of length-three walks starting at that vertex. -/
+theorem regular_adjMatrix_cube_row_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (d : ℕ) (hreg : ∀ x, G.degree x = d) (a : V) :
+    (∑ b, (G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ) a b) =
+      (d : ℤ) ^ 3 := by
+  let A := G.adjMatrix ℤ
+  let one : V → ℤ := Function.const V 1
+  have hAone : A.mulVec one = (d : ℤ) • one := by
+    funext x
+    change (G.adjMatrix ℤ).mulVec (Function.const V (1 : ℤ)) x =
+      ((d : ℤ) • Function.const V (1 : ℤ)) x
+    rw [SimpleGraph.adjMatrix_mulVec_const_apply, mul_one, hreg]
+    simp
+  have hrow :
+      (∑ b, (A * A * A) a b) = ((A * A * A).mulVec one) a := by
+    simp [Matrix.mulVec, dotProduct, one]
+  rw [hrow, ← Matrix.mulVec_mulVec one (A * A) A, hAone,
+    Matrix.mulVec_smul, ← Matrix.mulVec_mulVec one A A, hAone,
+    Matrix.mulVec_smul, hAone]
+  simp [one, pow_succ, mul_comm]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.c4Free_regular_adjMatrix_cube_apply_of_adj
 #print axioms Erdos85.c4Free_regular_adjMatrix_cube_apply_diag_le
+#print axioms Erdos85.regular_adjMatrix_cube_row_sum
