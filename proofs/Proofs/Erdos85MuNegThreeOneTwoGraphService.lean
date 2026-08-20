@@ -46,13 +46,12 @@ theorem mem_muNegThreeHitPairs_iff (a b : Nat) :
       List.mem_filter, Bool.and_eq_true, decide_eq_true_eq]
     exact ⟨a, ha, b, ⟨⟨hb, hab, hadm⟩, rfl⟩⟩
 
-private theorem muNegThreeOffsetOne_zmod
+private theorem muNegThreeOffsetOne_iff_zmod
     {x y : Nat} (hx : x < 8) (hy : y < 8)
-    (h : muNegThreeOffsetOne x y = true) :
+    : muNegThreeOffsetOne x y = true ↔
     (y : ZMod 8) = (x : ZMod 8) - 1 ∨
       (y : ZMod 8) = (x : ZMod 8) + 1 := by
-  interval_cases x <;> interval_cases y <;>
-    simp_all [muNegThreeOffsetOne] <;> decide
+  interval_cases x <;> interval_cases y <;> decide
 
 /-- An endpoint of one realized cross owner cannot be ambient-adjacent to
 an endpoint of an owner-vertex-adjacent partner. -/
@@ -124,7 +123,7 @@ theorem muNegThreeAdm_of_ownerVertices_adj
     apply Bool.eq_false_iff.mpr
     intro hoff
     obtain hminus | hplus :=
-      muNegThreeOffsetOne_zmod hra hrb hoff
+      (muNegThreeOffsetOne_iff_zmod hra hrb).mp hoff
     · exact muNegThree_no_cross_endpoint_edge G c hfree u v hta htb hadj
         (Or.inl rfl) (Or.inl rfl) (by
           change G.Adj (u (muNegThreeCellRow a : ZMod 8)).1
@@ -144,7 +143,7 @@ theorem muNegThreeAdm_of_ownerVertices_adj
     apply Bool.eq_false_iff.mpr
     intro hoff
     obtain hminus | hplus :=
-      muNegThreeOffsetOne_zmod hca hcb hoff
+      (muNegThreeOffsetOne_iff_zmod hca hcb).mp hoff
     · exact muNegThree_no_cross_endpoint_edge G c hfree u v hta htb hadj
         (Or.inr rfl) (Or.inr rfl) (by
           change G.Adj (v (muNegThreeCellCol a : ZMod 8)).1
@@ -233,6 +232,140 @@ theorem muNegThreeOwnerVertex_of_active
               hvcb)
         exact hcab (ConnectedComponent.eq_of_common_vertex hzCa hzCb))
   exact ⟨t, htout, hut, hvt⟩
+
+private theorem muNegThree_sameShore_not_adj_of_not_offset
+    (w : ZMod 8 → c.supp)
+    (hwinj : Function.Injective w)
+    (hw : ∀ z, (G.induce c.supp).neighborFinset (w z) =
+      {w (z - 1), w (z + 1)})
+    {x y : Nat} (hx : x < 8) (hy : y < 8)
+    (hoff : muNegThreeOffsetOne x y = false) :
+    ¬ G.Adj (w (x : ZMod 8)).1 (w (y : ZMod 8)).1 := by
+  intro hadj
+  have hadjH : (G.induce c.supp).Adj
+      (w (x : ZMod 8)) (w (y : ZMod 8)) := hadj
+  have hmem := ((G.induce c.supp).mem_neighborFinset _ _).mpr hadjH
+  rw [hw] at hmem
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+  have hcoords : (y : ZMod 8) = (x : ZMod 8) - 1 ∨
+      (y : ZMod 8) = (x : ZMod 8) + 1 := by
+    rcases hmem with h | h
+    · exact Or.inl (hwinj h)
+    · exact Or.inr (hwinj h)
+  have hone : muNegThreeOffsetOne x y = true :=
+    (muNegThreeOffsetOne_iff_zmod hx hy).mpr hcoords
+  rw [hoff] at hone
+  contradiction
+
+private theorem muNegThree_crossShore_not_adj
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    (i j : ZMod 8) : ¬ G.Adj (u i).1 (v j).1 := by
+  intro hadj
+  have hui : u i ∈ ca.supp := by rw [← hurange]; exact ⟨i, rfl⟩
+  have hvj : v j ∈ cb.supp := by rw [← hvrange]; exact ⟨j, rfl⟩
+  have huca : (G.induce c.supp).connectedComponentMk (u i) = ca :=
+    (ConnectedComponent.mem_supp_iff ca (u i)).mp hui
+  have hvcb : (G.induce c.supp).connectedComponentMk (v j) = cb :=
+    (ConnectedComponent.mem_supp_iff cb (v j)).mp hvj
+  have huv : (G.induce c.supp).connectedComponentMk (u i) =
+      (G.induce c.supp).connectedComponentMk (v j) :=
+    ConnectedComponent.connectedComponentMk_eq_of_adj hadj
+  exact hcab (huca.symm.trans (huv.trans hvcb))
+
+/-- Tiling classification for a row target: the unique server is exterior,
+has one endpoint on each shore, and therefore realizes another cross owner. -/
+theorem muNegThree_row_server_classification
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (huout : ∀ z, z ∉ c.supp → ∃! i : ZMod 8, G.Adj (u i).1 z)
+    (hvout : ∀ z, z ∉ c.supp → ∃! j : ZMod 8, G.Adj (v j).1 z)
+    {a : Nat} (ha : a < 64) {ta : V}
+    (hta : MuNegThreeOwnerVertex G c u v a ta)
+    {t : Nat} (ht : t < 8)
+    (hoff : muNegThreeOffsetOne (muNegThreeCellRow a) t = false) :
+    ∃ b, b < 64 ∧ b ≠ a ∧ muNegThreeCellRow b = t ∧
+      (min a b, max a b) ∈ muNegThreeHitPairs ∧
+      muNegThreeOwnerHitRel G c u v (min a b) (max a b) = true := by
+  have htaComp : (secondOrderDefectGraph G).connectedComponentMk ta ≠ c := by
+    intro h
+    exact hta.1 ((ConnectedComponent.mem_supp_iff c ta).mpr h)
+  have hutComp : (secondOrderDefectGraph G).connectedComponentMk
+      (u (t : ZMod 8)).1 = c :=
+    (ConnectedComponent.mem_supp_iff c (u (t : ZMod 8)).1).mp (u _).2
+  obtain ⟨z, ⟨htaz, hzut⟩, _hzuniq⟩ :=
+    binarySquare_regular_sizeTwoPart_exteriorOwner_unique_server
+      G hfree (by omega) hreg hcard c hsize htaComp hutComp
+  have hzout : z ∉ c.supp := by
+    intro hzc
+    have hzmem := sizeTwoPart_server_mem_tile_of_internal G c htaz hzc
+    have hpair := sizeTwoPart_tile_eq_pair G hfree (by omega : 3 ≤ 8)
+      hreg hcard c hsize
+      (muNegThreeOwnerEndpoints_ne G c ca cb hcab u v hurange hvrange a)
+      (u (muNegThreeCellRow a : ZMod 8)).2
+      (v (muNegThreeCellCol a : ZMod 8)).2
+      hta.2.1.symm hta.2.2.symm
+    rw [hpair] at hzmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hzmem
+    rcases hzmem with hz | hz
+    · have hz' : z = (u (muNegThreeCellRow a : ZMod 8)).1 := hz
+      rw [hz'] at hzut
+      exact muNegThree_sameShore_not_adj_of_not_offset G c u huinj hu
+        (by simp [muNegThreeCellRow]; omega) ht hoff hzut
+    · have hz' : z = (v (muNegThreeCellCol a : ZMod 8)).1 := hz
+      rw [hz'] at hzut
+      exact muNegThree_crossShore_not_adj G c ca cb hcab u v
+        hurange hvrange _ _ hzut.symm
+  obtain ⟨i, hiz, hiuniq⟩ := huout z hzout
+  obtain ⟨j, hjz, _hjuniq⟩ := hvout z hzout
+  have hit : i = (t : ZMod 8) := (hiuniq _ hzut.symm).symm
+  let b : Nat := t * 8 + j.val
+  have hb : b < 64 := by
+    dsimp [b]
+    have := j.val_lt
+    omega
+  have hbrow : muNegThreeCellRow b = t := by
+    change (t * 8 + j.val) / 8 = t
+    rw [Nat.mul_comm t 8, Nat.mul_add_div (by omega)]
+    simp [Nat.div_eq_of_lt j.val_lt]
+  have hbcol : muNegThreeCellCol b = j.val := by
+    change (t * 8 + j.val) % 8 = j.val
+    rw [Nat.mul_comm t 8, Nat.mul_add_mod]
+    exact Nat.mod_eq_of_lt j.val_lt
+  have htb : MuNegThreeOwnerVertex G c u v b z := by
+    refine ⟨hzout, ?_, ?_⟩
+    · simp only [muNegThreeOwnerEndpoints, hbrow]
+      rw [← hit]
+      exact hiz
+    · simp only [muNegThreeOwnerEndpoints, hbcol,
+        ZMod.natCast_zmod_val]
+      exact hjz
+  have hba : b ≠ a := by
+    intro h
+    have htb' : MuNegThreeOwnerVertex G c u v a z := h ▸ htb
+    have hzt := muNegThreeOwnerVertex_unique G c hfree ca cb hcab u v
+      hurange hvrange a htb' hta
+    rw [hzt] at htaz
+    exact G.irrefl htaz
+  have hkey := mem_muNegThreeHitPairs_of_ownerVertices_adj G c hfree u v
+    hu hv ha hb hba.symm hta htb htaz
+  refine ⟨b, hb, hba, hbrow, hkey, ?_⟩
+  rw [muNegThreeOwnerHitRel_eq_true]
+  rcases Nat.le_total a b with hab | hba'
+  · rw [Nat.min_eq_left hab, Nat.max_eq_right hab]
+    exact ⟨ta, z, hta, htb, htaz⟩
+  · rw [Nat.min_eq_right hba', Nat.max_eq_left hba']
+    exact ⟨z, ta, htb, hta, htaz.symm⟩
 
 end
 
