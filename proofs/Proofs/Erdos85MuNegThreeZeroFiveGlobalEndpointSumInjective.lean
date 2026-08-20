@@ -37,6 +37,22 @@ theorem h305_two_correctShoreModes_endpointSum_injective
   · exact sub_eq_zero.mp (hu i)
   · exact sub_eq_zero.mp (hv j)
 
+/-- Explicit zero-kernel form of the two-shore theorem. -/
+theorem h305_two_correctShoreModes_endpointSum_kernel_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (u v : ZMod 8 → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hcover : ∀ x : V, (∃ i, x = u i) ∨ ∃ j, x = v j)
+    (hmodeu : MuNegThreeZeroFiveTriangleShoreMode R u ∨
+      MuNegThreeZeroFiveTfShoreMode R u)
+    (hmodev : MuNegThreeZeroFiveTriangleShoreMode R v ∨
+      MuNegThreeZeroFiveTfShoreMode R v)
+    (f : V → ℂ) (hf : edgeEndpointSumVector R f = 0) : f = 0 := by
+  apply h305_two_correctShoreModes_endpointSum_injective
+    R u v huinj hvinj hcover hmodeu hmodev
+  simpa [edgeEndpointSumVector] using hf
+
 /-- Equivalence-coordinate form of the global injectivity theorem. -/
 theorem h305_equiv_correctShoreModes_endpointSum_injective
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -96,6 +112,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.h305_two_correctShoreModes_endpointSum_injective
+#print axioms Erdos85.h305_two_correctShoreModes_endpointSum_kernel_eq_zero
 #print axioms Erdos85.h305_equiv_correctShoreModes_endpointSum_injective
 #print axioms
   Erdos85.h305_correctShoreModes_endpointSum_preserves_linearIndependent
