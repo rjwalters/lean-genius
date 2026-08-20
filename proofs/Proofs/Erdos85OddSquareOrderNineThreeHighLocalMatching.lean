@@ -136,6 +136,100 @@ theorem squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbo
       exact (hpoint y hy).symm
     _ = 3 := hsum
 
+/-- At each high root, the rare bin-three vertex is matched to a unique
+bin-one vertex in the root's induced neighborhood matching. -/
+theorem squareOrderNine_threeHigh_secondProfile_binThree_unique_binOne_partner_at_highRoot
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x a : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ha : a ∈ squareOrderHighVertices G 9) :
+    (G.neighborFinset a ∩ G.neighborFinset x ∩
+      squareOrderNineLowIncidenceBin G 1).card = 1 := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let k := squareOrderHighIncidenceCount G 9
+  have hkx : k x = 3 := (Finset.mem_filter.mp hx).2
+  have hxAll : G.neighborFinset x ∩ H = H := by
+    apply Finset.eq_of_subset_of_card_le
+    · exact Finset.inter_subset_right
+    · change H.card ≤ k x
+      rw [hkx, hhigh]
+  have hax : G.Adj a x := by
+    have haNx : a ∈ G.neighborFinset x := by
+      have : a ∈ G.neighborFinset x ∩ H := by rw [hxAll]; exact ha
+      exact (Finset.mem_inter.mp this).1
+    exact (G.adj_comm x a).mp ((G.mem_neighborFinset x a).mp haNx)
+  have hcommon : (G.neighborFinset a ∩ G.neighborFinset x).card = 1 := by
+    have ha10 : G.degree a = 10 := (Finset.mem_filter.mp ha).2
+    have hlocal := (squareOrder_degree_succ_highRoot_structure
+      G hfree (by norm_num) hmin hcard ha10).2.2
+      ⟨x, hax⟩
+    rw [degree_induce_neighborSet_eq_card_common] at hlocal
+    simpa [Finset.inter_comm] using hlocal
+  have hb2 : B 2 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 2) (by omega), hc2]
+  have hb3card : (B 3).card = 1 := by
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 3) (by omega), hc3]
+  have hb4 : B 4 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 4) (by omega), hc4]
+  have hsubset : G.neighborFinset a ∩ G.neighborFinset x ⊆ B 1 := by
+    intro y hy
+    have hya := (Finset.mem_inter.mp hy).1
+    have hyx := (Finset.mem_inter.mp hy).2
+    have hyNotHigh : y ∉ H := by
+      intro hyH
+      exact hp.high_independent ha hyH ((G.mem_neighborFinset a y).mp hya)
+    have hyLow : y ∈ Finset.univ \ H :=
+      Finset.mem_sdiff.mpr ⟨by simp, hyNotHigh⟩
+    have hkpos : 0 < k y := by
+      unfold k squareOrderHighIncidenceCount
+      apply Finset.card_pos.mpr
+      exact ⟨a, Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset y a).mpr
+          ((G.adj_comm a y).mp ((G.mem_neighborFinset a y).mp hya)), ha⟩⟩
+    have hkle : k y ≤ 4 := by
+      rcases hp.degree_dichotomy y with hlo | hhi
+      · have := hp.low_incidence_bound hlo
+        change 2 * k y ≤ 9 at this
+        omega
+      · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+    have hkNot2 : k y ≠ 2 := by
+      intro hky
+      have : y ∈ B 2 := Finset.mem_filter.mpr ⟨hyLow, hky⟩
+      simpa [hb2] using this
+    have hkNot3 : k y ≠ 3 := by
+      intro hky
+      have hyB3 : y ∈ B 3 := Finset.mem_filter.mpr ⟨hyLow, hky⟩
+      have hyEq : y = x := Finset.card_le_one.mp (by omega) y hyB3 x hx
+      subst y
+      exact G.loopless.irrefl x ((G.mem_neighborFinset x x).mp hyx)
+    have hkNot4 : k y ≠ 4 := by
+      intro hky
+      have : y ∈ B 4 := Finset.mem_filter.mpr ⟨hyLow, hky⟩
+      simpa [hb4] using this
+    have hky : k y = 1 := by omega
+    exact Finset.mem_filter.mpr ⟨hyLow, hky⟩
+  have heq : G.neighborFinset a ∩ G.neighborFinset x ∩ B 1 =
+      G.neighborFinset a ∩ G.neighborFinset x := by
+    exact Finset.inter_eq_left.mpr hsubset
+  rw [heq, hcommon]
+
 /-- The full original-neighborhood census of the rare bin-three vertex in
 the second three-high profile is `3H + 3B₁ + 3B₀`. -/
 theorem squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
@@ -250,5 +344,7 @@ end Erdos85
 
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_unique_binOne_partner_at_highRoot
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
