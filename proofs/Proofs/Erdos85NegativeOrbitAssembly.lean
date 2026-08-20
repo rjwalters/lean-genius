@@ -530,6 +530,25 @@ theorem negativeEightEightSource_muNegFive_of_aligned
   intro _
   exact ⟨M₁, M₂, f₁, f₂, L₁, L₂, hmode₁, hmode₂⟩
 
+/-- Package the endpoint-reduced `mu=-1` aligned ledger.  The negative-seven
+exclusion is deliberately kept in the lane adapter, where its usual
+other-component hypothesis is available. -/
+theorem negativeEightEightSource_muNegOne_of_aligned
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ) (k r : ℕ)
+    (w : NegativeEightEightAlignedWitness G c a b (-1) k r)
+    (hpost : MuNegOnePostEndpointSectorCells N₁ N₂ k r) :
+    Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-1) k r) := by
+  refine ⟨⟨w, Or.inr (Or.inr ⟨rfl, hpost⟩), ?_⟩⟩
+  intro h
+  norm_num at h
+
 /-- A full source witness transports to the exact one-step target object.
 This combines the ledger-backed graph switch with all three finite mode
 transport theorems. -/
@@ -637,3 +656,4 @@ end Erdos85
 #print axioms Erdos85.isAmbientSignedJoint_theta_ne_one
 #print axioms Erdos85.negativeEightEightSource_muNegThree_of_aligned
 #print axioms Erdos85.negativeEightEightSource_muNegFive_of_aligned
+#print axioms Erdos85.negativeEightEightSource_muNegOne_of_aligned
