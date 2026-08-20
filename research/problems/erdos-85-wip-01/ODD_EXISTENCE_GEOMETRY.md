@@ -467,6 +467,25 @@ repackages the known graph as
 point graph of a 48_3 configuration + one-factor.
 ```
 
+The configuration has a particularly small algebraic description.  Under the
+semidirect group `Z24 x|_{19} Z2`, all 48 triangle blocks are the distinct left
+translates of the single base block
+
+```text
+{(0,0), (1,1), (3,0)}.
+```
+
+The six ordered nonidentity differences of that block are exactly the six
+triangular Cayley generators; the remaining generator `(0,1)` is the
+one-factor.  This is kernel-checked by
+`boza48DevelopedTriangle_injective`,
+`boza48DevelopedTriangle_is_triangle`, and
+`boza48Graph_triangle_exists_development`.  Thus the q=7 seed is not an
+opaque seven-generator graph: it is **one developed triple plus one
+involution**.  A non-Cayley generalization may retain the one-block
+configuration locally while twisting the developments or the sparse shadow
+between orbits.
+
 The q=9 transitive case is now formally rigid in exactly the same language.
 The Lean theorems in `Erdos85OddSquareOrderNineUniformTriangles.lean` prove:
 
