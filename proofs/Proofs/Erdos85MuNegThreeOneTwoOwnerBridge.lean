@@ -125,7 +125,7 @@ structure MuNegThreeOneTwoFiniteSemantics (fwd : Bool) (c : Nat)
     muNegThreeOwnerActive D a = true ∧
       muNegThreeOwnerActive D b = true
   service_exists : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
-    ∀ (onRow : Bool) t,
+    ∀ (onRow : Bool) t, t < 8 →
       (if onRow then
         muNegThreeOffsetOne (muNegThreeCellRow a) t
       else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
@@ -135,7 +135,7 @@ structure MuNegThreeOneTwoFiniteSemantics (fwd : Bool) (c : Nat)
         (min a b, max a b) ∈ muNegThreeHitPairs ∧
         X (min a b) (max a b) = true
   service_unique : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
-    ∀ (onRow : Bool) t,
+    ∀ (onRow : Bool) t, t < 8 →
       (if onRow then
         muNegThreeOffsetOne (muNegThreeCellRow a) t
       else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
@@ -592,7 +592,7 @@ theorem muNegThreeFiniteSemantics_service
       · right
         constructor
         · obtain ⟨b, hb64, hbne, hcoord, hkey, hX⟩ :=
-            hsem.service_exists a ha hact onRow t hoff
+            hsem.service_exists a ha hact onRow t ht hoff
           have hsome := muNegThreeXVar?_isSome_of_mem hkey
           cases hx : muNegThreeXVar? a b with
           | none => rw [hx] at hsome; simp at hsome
@@ -635,7 +635,7 @@ theorem muNegThreeFiniteSemantics_service
                     (by have := muNegThreeXVar?_bounds hx₂; omega),
                   muNegThreeValOfRelations_xvar D X hx₂] at hv₂
                 exact hv₂
-              have hb₁₂ : b₁ = b₂ := hsem.service_unique a ha hact onRow t hoff
+              have hb₁₂ : b₁ = b₂ := hsem.service_unique a ha hact onRow t ht hoff
                 b₁ b₂ hb₁r hc₁.1 (by simpa using hc₁.2)
                 (muNegThreeXVar?_key_mem hx₁) hX₁
                 hb₂r hc₂.1 (by simpa using hc₂.2)

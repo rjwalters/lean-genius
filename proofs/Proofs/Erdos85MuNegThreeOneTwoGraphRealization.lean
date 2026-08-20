@@ -476,7 +476,7 @@ structure MuNegThreeOneTwoGraphResidualSemantics
     (((List.range 8).filter fun i => !(i % 2 == j % 2)).countP
       fun i => D i j) = 1
   service_exists : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
-    ∀ (onRow : Bool) t,
+    ∀ (onRow : Bool) t, t < 8 →
       (if onRow then muNegThreeOffsetOne (muNegThreeCellRow a) t
         else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
       ∃ b, b < 64 ∧ b ≠ a ∧
@@ -485,7 +485,7 @@ structure MuNegThreeOneTwoGraphResidualSemantics
         (min a b, max a b) ∈ muNegThreeHitPairs ∧
         X (min a b) (max a b) = true
   service_unique : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
-    ∀ (onRow : Bool) t,
+    ∀ (onRow : Bool) t, t < 8 →
       (if onRow then muNegThreeOffsetOne (muNegThreeCellRow a) t
         else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
       ∀ b d, b < 64 → b ≠ a →
