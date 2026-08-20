@@ -66,7 +66,31 @@ theorem connection_product_ne_of_invClosedCayley_not_containsC4
   exact hfree (invClosedCayley_containsC4_of_product_collision
     S hinv hone ha hb hc hd hac hprod hcollision)
 
+/-- The non-backtracking ordered-word product map of a C4-free Cayley graph
+is injective.  This is the Cayley-coordinate form of the Moore two-ball
+packing constraint. -/
+theorem nonbacktracking_connectionProduct_injective
+    {Γ : Type*} [Group Γ]
+    (S : Γ → Prop)
+    (hinv : ∀ g, S g ↔ S g⁻¹)
+    (hone : ¬ S 1)
+    (hfree : ¬ containsC4 Γ (invClosedCayleyGraph S hinv hone)) :
+    Function.Injective (fun p : {p : Γ × Γ //
+      S p.1 ∧ S p.2 ∧ p.1 * p.2 ≠ 1} => p.1.1 * p.1.2) := by
+  intro p q hpq
+  have hfirst : p.1.1 = q.1.1 := by
+    by_contra hac
+    exact (connection_product_ne_of_invClosedCayley_not_containsC4
+      S hinv hone hfree p.2.1 p.2.2.1 q.2.1 q.2.2.1 hac p.2.2.2) hpq
+  apply Subtype.ext
+  apply Prod.ext
+  · exact hfirst
+  · change p.1.1 * p.1.2 = q.1.1 * q.1.2 at hpq
+    rw [← hfirst] at hpq
+    exact mul_left_cancel hpq
+
 end Erdos85
 
 #print axioms Erdos85.invClosedCayley_containsC4_of_product_collision
 #print axioms Erdos85.connection_product_ne_of_invClosedCayley_not_containsC4
+#print axioms Erdos85.nonbacktracking_connectionProduct_injective
