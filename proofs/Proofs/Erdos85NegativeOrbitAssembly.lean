@@ -3,6 +3,7 @@ import Proofs.Erdos85SizeTwoAlignedShoreSwitch
 import Proofs.Erdos85EightEightCoordinateCover
 import Proofs.Erdos85ComponentSignFlipEigenvector
 import Proofs.Erdos85SizeTwoSwitchedJointExtension
+import Proofs.Erdos85MuNegFiveExplicitRowParameters
 
 /-!
 # Ledger-backed assembly socket for the negative switch orbit
@@ -48,6 +49,108 @@ theorem muNegFive_orbitCell_switch_of_allOne
       MuNegOnePostEndpointSectorCells, MuNegFivePostMuOneSectorCells,
       MuNegOneC8CycleEntriesOne, C8CycleEntriesOne,
       sizeTwoMuSwitchTarget] at hN₁ hN₂ ⊢ <;> aesop
+
+theorem zmodEight_not_even_not_cycle_imp_middleOdd
+    (d : ZMod 8) (heven : ¬ ZModEightEvenOffset d)
+    (hone : d ≠ 1) (hnegOne : d ≠ -1) : d = 3 ∨ d = 5 := by
+  revert d
+  decide
+
+theorem zmodEight_middleOdd_card_two :
+    ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      j - 0 = 3 ∨ j - 0 = 5).card = 2 := by
+  decide
+
+/-- In each of the three `mu=-5` cells with a negative target, the every-row
+ledger forces both distinguished cycle entries to occur.  If they were
+absent, all opposite-sign internal neighbors of row zero would have to lie
+at offsets 3 and 5, a set of size two; the ledger requires respectively
+four, three, or four such neighbors. -/
+theorem MuNegFiveExplicitRowParameterLedger.cycleEntriesOne_of_negativeCell
+    {N M : Matrix (ZMod 8) (ZMod 8) ℤ}
+    {f g : ZMod 8 → ℤ} {k r : ℕ}
+    (L : MuNegFiveExplicitRowParameterLedger N M f g k r)
+    (hmode : C8CycleEntriesZero N ∨ C8CycleEntriesOne N)
+    (hcell : (k = 0 ∧ r = 3) ∨ (k = 0 ∧ r = 4) ∨
+      (k = 1 ∧ r = 2)) : C8CycleEntriesOne N := by
+  rcases hmode with hzero | hone
+  · exfalso
+    let D := (Finset.univ : Finset (ZMod 8)).filter fun j ↦ N 0 j = 1
+    let O := D.filter fun j ↦ ¬ f j = f 0
+    let T := (Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      j - 0 = 3 ∨ j - 0 = 5
+    have hDcard : D.card = 7 - r := by simpa [D] using L.internal_row 0
+    have hsame : (D.filter fun j ↦ f j = f 0).card = k := by
+      rw [show D.filter (fun j ↦ f j = f 0) =
+          (Finset.univ : Finset (ZMod 8)).filter
+            (fun j ↦ f j = f 0 ∧ N 0 j = 1) by
+        ext j
+        simp [D, and_comm]]
+      exact L.internal_same 0
+    have hpart := Finset.card_filter_add_card_filter_not
+      (fun j ↦ f j = f 0) (s := D)
+    have hOcard : O.card = (7 - r) - k := by
+      rw [hDcard, hsame] at hpart
+      have hp : k + O.card = 7 - r := by simpa [O] using hpart
+      omega
+    have hsub : O ⊆ T := by
+      intro j hj
+      have hj' := Finset.mem_filter.mp hj
+      have hedge : N 0 j = 1 := (Finset.mem_filter.mp hj'.1).2
+      have hsignNe : ¬ f j = f 0 := hj'.2
+      have hnotEven : ¬ ZModEightEvenOffset (j - 0) := by
+        intro heven
+        exact hsignNe ((zmodEight_alternating_sign_eq_iff_evenOffset
+          f L.f_sign L.f_flip 0 j).2 heven)
+      have hoffOne : j - 0 ≠ 1 := by
+        intro hj1
+        have : j = 1 := by simpa using hj1
+        exact hzero.2 (this ▸ hedge)
+      have hoffNegOne : j - 0 ≠ -1 := by
+        intro hj1
+        have : j = -1 := by simpa using hj1
+        exact hzero.1 (this ▸ hedge)
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+        zmodEight_not_even_not_cycle_imp_middleOdd
+          (j - 0) hnotEven hoffOne hoffNegOne⟩
+    have hle : O.card ≤ 2 := by
+      calc
+        O.card ≤ T.card := Finset.card_le_card hsub
+        _ = 2 := by simpa [T] using zmodEight_middleOdd_card_two
+    rcases hcell with h | h | h <;> rcases h with ⟨rfl, rfl⟩ <;>
+      norm_num at hOcard <;> omega
+  · exact hone
+
+/-- Fully coupled `mu=-5` mode transport.  This is the missing strengthening
+of the arithmetic-only public post-cell predicate: both actual row ledgers
+force precisely the modes required by the negative target table. -/
+theorem muNegFive_orbitCell_switch_of_rowLedgers
+    (N₁ M₁ N₂ M₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (f₁ f₂ : ZMod 8 → ℤ) (k r : ℕ)
+    (L₁ : MuNegFiveExplicitRowParameterLedger N₁ M₁ f₁ f₂ k r)
+    (L₂ : MuNegFiveExplicitRowParameterLedger N₂ M₂ f₂ f₁ k r)
+    (hmode₁ : C8CycleEntriesZero N₁ ∨ C8CycleEntriesOne N₁)
+    (hmode₂ : C8CycleEntriesZero N₂ ∨ C8CycleEntriesOne N₂)
+    (hcell : MuNegFivePostMuOneSectorCells k r) :
+    NegativeEightEightOrbitCell N₁ N₂
+        (sizeTwoMuSwitchTarget (-5) k r) k r ∨
+      sizeTwoMuSwitchTarget (-5) k r = 3 := by
+  rcases hcell with h503 | h504 | h512 | h514
+  · apply muNegFive_orbitCell_switch_of_allOne N₁ N₂ k r
+      (L₁.cycleEntriesOne_of_negativeCell hmode₁ (Or.inl h503))
+      (L₂.cycleEntriesOne_of_negativeCell hmode₂ (Or.inl h503))
+      (Or.inl h503)
+  · apply muNegFive_orbitCell_switch_of_allOne N₁ N₂ k r
+      (L₁.cycleEntriesOne_of_negativeCell hmode₁ (Or.inr (Or.inl h504)))
+      (L₂.cycleEntriesOne_of_negativeCell hmode₂ (Or.inr (Or.inl h504)))
+      (Or.inr (Or.inl h504))
+  · apply muNegFive_orbitCell_switch_of_allOne N₁ N₂ k r
+      (L₁.cycleEntriesOne_of_negativeCell hmode₁ (Or.inr (Or.inr h512)))
+      (L₂.cycleEntriesOne_of_negativeCell hmode₂ (Or.inr (Or.inr h512)))
+      (Or.inr (Or.inr (Or.inl h512)))
+  · exact Or.inr (by
+      rcases h514 with ⟨rfl, rfl⟩
+      norm_num [sizeTwoMuSwitchTarget])
 
 /-- The reduced `mu=-3` mode table is closed under a negative shore switch;
 its only nonnegative target is the checked `mu=3` exit. -/
