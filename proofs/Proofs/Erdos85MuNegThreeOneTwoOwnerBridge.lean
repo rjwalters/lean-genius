@@ -290,6 +290,147 @@ theorem muNegThreeFiniteSemantics_opposite_columns
       muNegThreeValOfRelations_dvar D X hi8 hj]
   · exact h.opposite_columns j hj
 
+private theorem muNegThree_bool_sum_eq_cases {A B C E : Bool}
+    (h : (cond A 1 0) + (cond B 1 0) =
+      (cond C 1 0) + (cond E 1 0)) :
+    (A = true → C = true ∨ E = true) ∧
+    (B = true → C = true ∨ E = true) ∧
+    (C = true → A = true ∨ B = true) ∧
+    (E = true → A = true ∨ B = true) ∧
+    (A = true → B = true → C = true) ∧
+    (A = true → B = true → E = true) ∧
+    (C = true → E = true → A = true) ∧
+    (C = true → E = true → B = true) := by
+  revert h
+  cases A <;> cases B <;> cases C <;> cases E <;> decide
+
+private theorem muNegThree_dimacsLitValue_ofNat
+    {val : DimacsValuation} {n : Nat} (hn : 0 < n) :
+    dimacsLitValue val (Int.ofNat n) = val n := by
+  have h : (0 : Int) < Int.ofNat n := by
+    show (0 : Int) < (n : Int)
+    exact_mod_cast hn
+  rw [dimacsLitValue, if_pos h]
+  simp
+
+private theorem muNegThree_dimacsLitValue_neg_ofNat
+    {val : DimacsValuation} {n : Nat} (hn : 0 < n) :
+    dimacsLitValue val (-Int.ofNat n) = !val n := by
+  have h : (0 : Int) < Int.ofNat n := by
+    show (0 : Int) < (n : Int)
+    exact_mod_cast hn
+  rw [dimacsLitValue, if_neg (by omega), Int.natAbs_neg]
+  simp
+
+/-- The eight local intertwining clauses follow from equality of the two
+Boolean neighbor counts. -/
+private theorem muNegThreeSumEq_satisfied
+    {val : DimacsValuation} {a b c d : Nat}
+    (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) (hd : 0 < d)
+    (hcount : (cond (val a) 1 0) + (cond (val b) 1 0) =
+      (cond (val c) 1 0) + (cond (val d) 1 0)) :
+    ∀ clause ∈ muNegThreeSumEq (Int.ofNat a) (Int.ofNat b)
+      (Int.ofNat c) (Int.ofNat d),
+      dimacsClauseSatisfied val clause := by
+  obtain ⟨hAcd, hBcd, hCab, hDab, hABc, hABd, hCDa, hCDb⟩ :=
+    muNegThree_bool_sum_eq_cases hcount
+  intro clause hclause
+  simp only [muNegThreeSumEq, List.mem_cons, List.not_mem_nil, or_false]
+    at hclause
+  rcases hclause with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · by_cases hA : val a = true
+    · rcases hAcd hA with h | h
+      · exact ⟨Int.ofNat c, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hc, h]⟩
+      · exact ⟨Int.ofNat d, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hd, h]⟩
+    · exact ⟨-Int.ofNat a, by simp, by
+        rw [muNegThree_dimacsLitValue_neg_ofNat ha]; simpa using hA⟩
+  · by_cases hB : val b = true
+    · rcases hBcd hB with h | h
+      · exact ⟨Int.ofNat c, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hc, h]⟩
+      · exact ⟨Int.ofNat d, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hd, h]⟩
+    · exact ⟨-Int.ofNat b, by simp, by
+        rw [muNegThree_dimacsLitValue_neg_ofNat hb]; simpa using hB⟩
+  · by_cases hC : val c = true
+    · rcases hCab hC with h | h
+      · exact ⟨Int.ofNat a, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat ha, h]⟩
+      · exact ⟨Int.ofNat b, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hb, h]⟩
+    · exact ⟨-Int.ofNat c, by simp, by
+        rw [muNegThree_dimacsLitValue_neg_ofNat hc]; simpa using hC⟩
+  · by_cases hD : val d = true
+    · rcases hDab hD with h | h
+      · exact ⟨Int.ofNat a, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat ha, h]⟩
+      · exact ⟨Int.ofNat b, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hb, h]⟩
+    · exact ⟨-Int.ofNat d, by simp, by
+        rw [muNegThree_dimacsLitValue_neg_ofNat hd]; simpa using hD⟩
+  · by_cases hA : val a = true
+    · by_cases hB : val b = true
+      · exact ⟨Int.ofNat c, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hc, hABc hA hB]⟩
+      · exact ⟨-Int.ofNat b, by simp, by
+          rw [muNegThree_dimacsLitValue_neg_ofNat hb]; simpa using hB⟩
+    · exact ⟨-Int.ofNat a, by simp, by
+        rw [muNegThree_dimacsLitValue_neg_ofNat ha]; simpa using hA⟩
+  · by_cases hA : val a = true
+    · by_cases hB : val b = true
+      · exact ⟨Int.ofNat d, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hd, hABd hA hB]⟩
+      · exact ⟨-Int.ofNat b, by simp, by
+          rw [muNegThree_dimacsLitValue_neg_ofNat hb]; simpa using hB⟩
+    · exact ⟨-Int.ofNat a, by simp, by
+        rw [muNegThree_dimacsLitValue_neg_ofNat ha]; simpa using hA⟩
+  · by_cases hC : val c = true
+    · by_cases hD : val d = true
+      · exact ⟨Int.ofNat a, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat ha, hCDa hC hD]⟩
+      · exact ⟨-Int.ofNat d, by simp, by
+          rw [muNegThree_dimacsLitValue_neg_ofNat hd]; simpa using hD⟩
+    · exact ⟨-Int.ofNat c, by simp, by
+        rw [muNegThree_dimacsLitValue_neg_ofNat hc]; simpa using hC⟩
+  · by_cases hC : val c = true
+    · by_cases hD : val d = true
+      · exact ⟨Int.ofNat b, by simp, by
+          rw [muNegThree_dimacsLitValue_ofNat hb, hCDb hC hD]⟩
+      · exact ⟨-Int.ofNat d, by simp, by
+          rw [muNegThree_dimacsLitValue_neg_ofNat hd]; simpa using hD⟩
+    · exact ⟨-Int.ofNat c, by simp, by
+        rw [muNegThree_dimacsLitValue_neg_ofNat hc]; simpa using hC⟩
+
+/-- Embed every entrywise C8 intertwining clause. -/
+theorem muNegThreeFiniteSemantics_intertwining
+    {fwd : Bool} {c : Nat} {D X : Nat → Nat → Bool}
+    (h : MuNegThreeOneTwoFiniteSemantics fwd c D X) :
+    ∀ clause ∈ muNegThreeIntertwineClauses,
+      dimacsClauseSatisfied (muNegThreeValOfRelations D X) clause := by
+  apply muNegThreeIntertwineClauses_satisfied
+  intro i j hi hj
+  let a := muNegThreeDVar (((i + 7) % 8) * 8 + j)
+  let b := muNegThreeDVar (((i + 1) % 8) * 8 + j)
+  let cc := muNegThreeDVar (i * 8 + (j + 1) % 8)
+  let d := muNegThreeDVar (i * 8 + (j + 7) % 8)
+  apply muNegThreeSumEq_satisfied
+  · simp [a, muNegThreeDVar]
+  · simp [b, muNegThreeDVar]
+  · simp [cc, muNegThreeDVar]
+  · simp [d, muNegThreeDVar]
+  · have hi7 : (i + 7) % 8 < 8 := Nat.mod_lt _ (by norm_num)
+    have hi1 : (i + 1) % 8 < 8 := Nat.mod_lt _ (by norm_num)
+    have hj1 : (j + 1) % 8 < 8 := Nat.mod_lt _ (by norm_num)
+    have hj7 : (j + 7) % 8 < 8 := Nat.mod_lt _ (by norm_num)
+    simpa [a, b, cc, d,
+      muNegThreeValOfRelations_dvar D X hi7 hj,
+      muNegThreeValOfRelations_dvar D X hi1 hj,
+      muNegThreeValOfRelations_dvar D X hi hj1,
+      muNegThreeValOfRelations_dvar D X hi hj7] using
+        h.intertwine i j hi hj
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeValOfRelations_dvar
@@ -298,3 +439,4 @@ end Erdos85
 #print axioms Erdos85.muNegThreeFiniteSemantics_fixed
 #print axioms Erdos85.muNegThreeFiniteSemantics_opposite_rows
 #print axioms Erdos85.muNegThreeFiniteSemantics_opposite_columns
+#print axioms Erdos85.muNegThreeFiniteSemantics_intertwining
