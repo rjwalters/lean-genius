@@ -90,6 +90,69 @@ theorem sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum
   rw [sizeTwoCyclicTargetDifferenceMultiplicity_weighted_sum hq code x t,
     sizeTwoAllowedDifference_sum q a ha]
 
+/-- In the sharp one-collision regime, a row has one duplicated target
+fiber and one missing target fiber.  Their cyclic displacement is forced by
+the source fiber.  This is the concrete positional datum that reciprocity
+must couple between different rows. -/
+theorem sizeTwoCyclic_singleDuplicateMissing_displacement
+    {q : ℕ} [NeZero q] (hq : 2 ≤ q) {a : ZMod q}
+    [DecidableEq (sizeTwoAllowedDifference q a)]
+    (ha : a ≠ -1 - a)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x : ZMod q) (t duplicate missing : sizeTwoAllowedDifference q a)
+    (hne : duplicate ≠ missing)
+    (hprofile : ∀ u : sizeTwoAllowedDifference q a,
+      sizeTwoCyclicTargetDifferenceMultiplicity code x t u =
+        if u = duplicate then 2 else if u = missing then 0 else 1) :
+    duplicate.1 - missing.1 =
+      2 * (t.1 + 1) -
+        (((q * (q - 1) / 2 : ℕ) : ZMod q) + 1) := by
+  classical
+  have hdev := sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum
+    hq ha code x t
+  have hleft :
+      (∑ u : sizeTwoAllowedDifference q a,
+          (sizeTwoCyclicTargetDifferenceMultiplicity code x t u : ZMod q) * u.1) -
+        (∑ u : sizeTwoAllowedDifference q a, u.1) =
+          duplicate.1 - missing.1 := by
+    rw [← Finset.sum_sub_distrib]
+    calc
+      (∑ u : sizeTwoAllowedDifference q a,
+          ((sizeTwoCyclicTargetDifferenceMultiplicity code x t u : ZMod q) * u.1 -
+            u.1)) =
+          ∑ u : sizeTwoAllowedDifference q a,
+            if u = duplicate then duplicate.1
+            else if u = missing then -missing.1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro u _
+        rw [hprofile u]
+        by_cases hud : u = duplicate
+        · subst u
+          simp
+          ring
+        · by_cases hum : u = missing
+          · subst u
+            simp [hud]
+          · simp [hud, hum]
+      _ = duplicate.1 - missing.1 := by
+        rw [show (∑ u : sizeTwoAllowedDifference q a,
+            if u = duplicate then duplicate.1
+            else if u = missing then -missing.1 else 0) =
+              (∑ u : sizeTwoAllowedDifference q a,
+                if u = duplicate then duplicate.1 else 0) +
+              ∑ u : sizeTwoAllowedDifference q a,
+                if u = missing then -missing.1 else 0 by
+          rw [← Finset.sum_add_distrib]
+          apply Finset.sum_congr rfl
+          intro u _
+          by_cases hud : u = duplicate
+          · subst u
+            simp [hne]
+          · simp [hud]]
+        simp [sub_eq_add_neg]
+  rw [hleft] at hdev
+  exact hdev
+
 end
 
 end Erdos85
@@ -97,3 +160,4 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_sum
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_weighted_sum
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum
+#print axioms Erdos85.sizeTwoCyclic_singleDuplicateMissing_displacement
