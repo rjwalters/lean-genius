@@ -10,7 +10,7 @@ namespace Erdos85
 
 noncomputable section
 
-private theorem complexRootPowerSum_re_eq_realParts
+theorem complexRootPowerSum_re_eq_realParts
     (s : Multiset ℂ) (m : ℕ) (hreal : ∀ z ∈ s, z.im = 0) :
     (s.map fun z ↦ z ^ m).sum.re =
       ((s.map Complex.re).map fun x ↦ x ^ m).sum := by
