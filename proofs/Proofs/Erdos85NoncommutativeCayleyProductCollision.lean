@@ -151,6 +151,66 @@ theorem involution_generator_not_commute
   exact (involution_conjugate_not_mem_connection
     A hinv hone hfree htA htsq hsA hst) hconjA
 
+/-- Conjugation by an involution, packaged as an embedding. -/
+def involutionConjugateEmbedding
+    {Γ : Type*} [Group Γ]
+    (t : Γ) (htsq : t * t = 1) : Γ ↪ Γ where
+  toFun s := t * s * t
+  inj' := by
+    intro a b hab
+    have h := congrArg (fun s => t * s * t) hab
+    simpa [mul_assoc, htsq] using h
+
+/-- The conjugate shore of a finite set under an involution. -/
+def involutionConjugateFinset
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (B : Finset Γ) (t : Γ) (htsq : t * t = 1) : Finset Γ :=
+  B.map (involutionConjugateEmbedding t htsq)
+
+/-- The residual connection shore and its involution-conjugate shore are
+disjoint in every C4-free Cayley graph. -/
+theorem erase_involution_disjoint_conjugate_shore
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t : Γ} (htA : t ∈ A) (htsq : t * t = 1) :
+    Disjoint (A.erase t)
+      (involutionConjugateFinset (A.erase t) t htsq) := by
+  rw [Finset.disjoint_left]
+  intro g hgA hgConj
+  obtain ⟨s, hsA, hsg⟩ := Finset.mem_map.mp hgConj
+  have hsA' : s ∈ A := Finset.mem_of_mem_erase hsA
+  have hst : s ≠ t := (Finset.mem_erase.mp hsA).1
+  have hgA' : g ∈ A := Finset.mem_of_mem_erase hgA
+  have hconjA : t * s * t ∈ A := by
+    change involutionConjugateEmbedding t htsq s ∈ A
+    rw [hsg]
+    exact hgA'
+  exact (involution_conjugate_not_mem_connection
+    A hinv hone hfree htA htsq hsA' hst) hconjA
+
+/-- Consequently the residual and conjugate shores form a `2(d-1)`-element
+set. -/
+theorem card_erase_involution_union_conjugate_shore
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t : Γ} (htA : t ∈ A) (htsq : t * t = 1) :
+    ((A.erase t) ∪ involutionConjugateFinset (A.erase t) t htsq).card =
+      2 * (A.card - 1) := by
+  have hdisj := erase_involution_disjoint_conjugate_shore
+    A hinv hone hfree htA htsq
+  rw [Finset.card_union_of_disjoint hdisj,
+    involutionConjugateFinset, Finset.card_map,
+    Finset.card_erase_of_mem htA]
+  omega
+
 /-- The non-backtracking ordered-word product map of a C4-free Cayley graph
 is injective.  This is the Cayley-coordinate form of the Moore two-ball
 packing constraint. -/
@@ -603,6 +663,8 @@ end Erdos85
 #print axioms Erdos85.connection_product_ne_of_invClosedCayley_not_containsC4
 #print axioms Erdos85.involution_conjugate_not_mem_connection
 #print axioms Erdos85.involution_generator_not_commute
+#print axioms Erdos85.erase_involution_disjoint_conjugate_shore
+#print axioms Erdos85.card_erase_involution_union_conjugate_shore
 #print axioms Erdos85.nonbacktracking_connectionProduct_injective
 #print axioms Erdos85.card_nonbacktrackingConnectionPairs
 #print axioms Erdos85.card_nonbacktracking_connectionProducts
