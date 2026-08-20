@@ -5,6 +5,7 @@ import Proofs.Erdos85ComponentSignFlipEigenvector
 import Proofs.Erdos85SizeTwoSwitchedJointExtension
 import Proofs.Erdos85MuNegFiveExplicitRowParameters
 import Proofs.Erdos85AmbientMuThreeUnconditional
+import Proofs.Erdos85SizeTwoSwitchedJointExclusions
 
 /-!
 # Ledger-backed assembly socket for the negative switch orbit
@@ -412,6 +413,50 @@ def NegativeEightEightTransportedWitness
   (∃ s, IsAmbientSignedJoint G c theta s) ∧
     (NegativeEightEightOrbitCell N₁ N₂ theta k r ∨ theta = 3)
 
+/-- Ambient form of the size-two switched `mu=1` exclusion.  This is the
+bridge needed by source constructors: the common aligned transport produces
+an ambient witness, while the historical exclusion was stated for its
+restriction to the component. -/
+theorem isAmbientSignedJoint_theta_ne_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 8 * 2) (theta : ℤ) (s : V → ℤ)
+    (hs : IsAmbientSignedJoint G c theta s) : theta ≠ 1 := by
+  intro htheta
+  let t : c.supp → ℤ := fun x ↦ s x.1
+  have htsign : ∀ x, t x = -1 ∨ t x = 1 := by
+    intro x
+    exact hs.2.1 x.1 x.2
+  have htH : ((G.induce c.supp).adjMatrix ℤ).mulVec t =
+      (-2 : ℤ) • t := by
+    funext x
+    rw [induce_adjMatrix_mulVec_restrict_apply]
+    simpa [t, ConnectedComponent.mem_supp_iff, smul_eq_mul] using
+      hs.2.2.1 x.1 x.2
+  have htD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec t =
+      (1 : ℤ) • t := by
+    funext x
+    rw [induce_adjMatrix_mulVec_restrict_apply]
+    have hrow := hs.2.2.2 x.1 x.2
+    have hfilter : ((secondOrderDefectGraph G).neighborFinset x.1).filter
+        (fun y ↦ y ∈ c.supp) =
+        (secondOrderDefectGraph G).neighborFinset x.1 := by
+      apply Finset.filter_eq_self.mpr
+      intro y hy
+      exact c.mem_supp_of_adj_mem_supp x.2
+        (((secondOrderDefectGraph G).mem_neighborFinset x.1 y).mp hy)
+    rw [hfilter]
+    simpa [t, htheta, smul_eq_mul] using hrow
+  exact orderSixtyFour_sizeTwoPart_inducedSignedJointEigenvector_muOne_false
+    G hfree hreg hcard c hc t htsign htH htD
+
 /-- A full source witness transports to the exact one-step target object.
 This combines the ledger-backed graph switch with all three finite mode
 transport theorems. -/
@@ -516,3 +561,4 @@ end Erdos85
 #print axioms Erdos85.negativeSwitchOrbits_false_of_canonical_endpoints_oneStep
 #print axioms Erdos85.NegativeEightEightSourceWitness.transport
 #print axioms Erdos85.false_of_negativeEightEightSource_of_canonicalTerminals
+#print axioms Erdos85.isAmbientSignedJoint_theta_ne_one
