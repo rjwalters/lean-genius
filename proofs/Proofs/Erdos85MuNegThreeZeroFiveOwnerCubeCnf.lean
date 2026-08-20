@@ -25,4 +25,15 @@ def muNegThreeZeroFiveZZS0OppCubeCnf (missing : Fin 4) : CNF Nat :=
   cnfWithUnits (muNegThreeZeroFiveOwnerSatCnf false false false)
     (muNegThreeZeroFiveZZS0OppUnits missing)
 
+def muNegThreeZeroFiveZZS1OppUnits (missing : Fin 4) :
+    Array (Literal Nat) :=
+  if missing.val = 0 then #[(0, false), (2, true), (4, true), (6, true)]
+  else if missing.val = 1 then #[(0, true), (2, false), (4, true), (6, true)]
+  else if missing.val = 2 then #[(0, true), (2, true), (4, false), (6, true)]
+  else #[(0, true), (2, true), (4, true), (6, false)]
+
+def muNegThreeZeroFiveZZS1OppCubeCnf (missing : Fin 4) : CNF Nat :=
+  cnfWithUnits (muNegThreeZeroFiveOwnerSatCnf false false true)
+    (muNegThreeZeroFiveZZS1OppUnits missing)
+
 end Erdos85
