@@ -1,5 +1,7 @@
 import Proofs.Erdos85GadgetDegreeSquares
 import Proofs.Erdos101ProblemOQ02
+import Proofs.Erdos85PositiveExcessLocalParity
+import Proofs.Erdos85LocalTriangleParity
 import Mathlib.Combinatorics.SimpleGraph.Bipartite
 
 /-!
@@ -160,5 +162,53 @@ theorem not_isBipartite_of_planeMinusTwo_regular_not_containsC4
   have hqPred : q - 1 + 1 = q := by omega
   have hsidePred : sF.card - 1 + 1 = sF.card := by omega
   nlinarith
+
+/-- At the plane-minus-two order, every vertex has at most `q-2`
+triangle-free incident edges.  Thus a target construction cannot have an
+independent neighborhood at any vertex. -/
+theorem planeMinusTwo_triangleFreeNeighbors_card_le_sub_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (q : ℕ) (hq : 4 ≤ q)
+    (horder : Fintype.card V + 1 = q * q)
+    (hregular : ∀ v : V, G.degree v = q)
+    (hfree : ¬ containsC4 V G) (x : V) :
+    (triangleFreeNeighbors G x).card ≤ q - 2 := by
+  have hqPred : q - 1 + 1 = q := by omega
+  have hmul : q * (q - 1) + q = q * q := by
+    calc
+      _ = q * ((q - 1) + 1) := by ring
+      _ = q * q := by rw [hqPred]
+  have hcard : Fintype.card V = q * (q - 1) + 3 + (q - 4) := by
+    omega
+  have hle := triangleFreeNeighbors_card_le_excess_add_two
+    G hfree (d := q) (e := q - 4) hregular hcard x
+  omega
+
+/-- Every vertex of a plane-minus-two target lies in a triangle, expressed as
+nonemptiness of the edge set induced on its neighborhood. -/
+theorem planeMinusTwo_localTriangleEdges_nonempty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (q : ℕ) (hq : 4 ≤ q)
+    (horder : Fintype.card V + 1 = q * q)
+    (hregular : ∀ v : V, G.degree v = q)
+    (hfree : ¬ containsC4 V G) (x : V) :
+    (G.induce (G.neighborSet x)).edgeFinset.Nonempty := by
+  have hle := planeMinusTwo_triangleFreeNeighbors_card_le_sub_two
+    G q hq horder hregular hfree x
+  have hid := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree x
+  rw [hregular x] at hid
+  rw [Finset.nonempty_iff_ne_empty]
+  intro hempty
+  have hzero : (G.induce (G.neighborSet x)).edgeFinset.card = 0 := by
+    rw [hempty]
+    simp
+  rw [hzero] at hid
+  omega
 
 end Erdos85
