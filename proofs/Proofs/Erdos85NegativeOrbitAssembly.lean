@@ -1558,6 +1558,93 @@ theorem exists_muNegFive_exact_data_of_source_or_transported
       G hfree hreg hcard c hc a b hab u v huinj hvinj hurange hvrange
         hu hv s hs k r hr haa hsame⟩
 
+/-- Callback-ready exact data for any direct or transported μ=-3 endpoint.
+The retained first-shore quotient and same-count identify the parameters of
+the freshly reconstructed aligned ledgers. -/
+theorem exists_muNegThree_exact_data_of_source_or_transported
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (k r : ℕ) (hr : r ≤ 7) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let M₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (v j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    let M₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (u j)
+    (Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) k r) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) k r) →
+    ∃ s, IsAmbientSignedJoint G c (-3) s ∧
+      MuNegThreeRefinedSectorCells N₁ N₂ k r ∧
+      MuNegThreeExplicitParameterLedger N₁ M₁
+        (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r ∧
+      MuNegThreeExplicitParameterLedger N₂ M₂
+        (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) k r := by
+  classical
+  dsimp only
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  intro h
+  obtain ⟨s, hs, haa, hsame⟩ :=
+    exists_firstShore_coherence_of_source_or_transported
+      G c a b N₁ N₂ (-3) k r h
+  obtain ⟨k', r', hcell, _hK, _hH, _htne, _htsign, _hneOne,
+      _hpost, _htargets, _hglobal, _hT, _horient, haa', _hbb, L₁, L₂⟩ :=
+    orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
+      G hfree hreg hcard c hc s hs.1 hs.2.1 hs.2.2.1 hs.2.2.2
+        a b hab u v huinj hvinj hurange hvrange hu hv
+  have hurangeA : Set.range u = ↑A := by
+    rw [hurange]
+    ext x
+    simp [A]
+  have huA : u 0 ∈ a.supp := by
+    rw [← hurange]
+    exact ⟨0, rfl⟩
+  have hsame' :
+      ((componentNeighborFinset K H a (u 0)).filter
+        (fun y ↦ s y.1 = s (u 0).1)).card = k' := by
+    rw [componentNeighbor_sameSign_eq_supportFilter]
+    rw [← coordinate_sameSign_adj_card_eq_support_from
+      K A u huinj hurangeA (fun x ↦ s x.1) (u 0)]
+    simpa [N₁, K, SimpleGraph.adjMatrix_apply, and_comm] using
+      L₁.internal_same 0
+  have hk : k' = k :=
+    hsame'.symm.trans (hsame (u 0) huA)
+  have hr' : r' ≤ 7 := by
+    rcases hcell with hz | hm | ho
+    · rcases hz.2.2 with h | h | h | h <;> omega
+    · rcases hm.2 with h | h <;> omega
+    · rcases ho.2.2 with h | h | h | h | h <;> omega
+  have hreq : r' = r := by
+    have heq : 7 - r' = 7 - r := haa'.symm.trans haa
+    omega
+  rw [hk, hreq] at hcell L₁ L₂
+  exact ⟨s, hs, hcell, L₁, L₂⟩
+
 /-- The checked h503 owner terminal discharges either a direct source or a
 transported endpoint by re-extracting the full row ledgers from the retained
 ambient witness and pinning their parameters with first-shore coherence. -/
@@ -1909,6 +1996,7 @@ end Erdos85
 #print axioms Erdos85.false_of_h312_source_or_transported
 #print axioms Erdos85.exists_muNegFive_exact_rowLedgers_of_firstShore
 #print axioms Erdos85.exists_muNegFive_exact_data_of_source_or_transported
+#print axioms Erdos85.exists_muNegThree_exact_data_of_source_or_transported
 #print axioms Erdos85.false_of_h503_source_or_transported
 #print axioms Erdos85.false_of_h114_source_or_transported
 #print axioms Erdos85.false_of_negativeEightEightSource_of_six_canonicalTerminals
