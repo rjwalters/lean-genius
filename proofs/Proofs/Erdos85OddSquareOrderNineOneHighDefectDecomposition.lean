@@ -51,6 +51,7 @@ theorem squareOrderNine_oneHigh_defect_decomposition
     change (squareOrderNineLowIncidenceBin G 0).card = 70
     rw [hhigh, hprofile.1] at hbzero
     omega
+
   have hb1 : (B 1).card = 10 := by
     change (squareOrderNineLowIncidenceBin G 1).card = 10
     rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
@@ -145,8 +146,77 @@ theorem squareOrderNine_oneHigh_defect_decomposition
       Nat.mul_zero] at hpart
     omega
 
+/-- The ten one-incidence vertices canonically partition the seventy
+zero-incidence vertices by their defect neighborhoods, into ten blocks of
+cardinality seven. -/
+theorem squareOrderNine_oneHigh_defect_block_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 1) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let block := fun y => D.neighborFinset y ∩ B 0
+    (∀ y ∈ B 1, (block y).card = 7) ∧
+      (∀ y ∈ B 1, ∀ z ∈ B 1, y ≠ z → Disjoint (block y) (block z)) ∧
+      (B 1).biUnion block = B 0 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let block := fun y => D.neighborFinset y ∩ B 0
+  have hdec := squareOrderNine_oneHigh_defect_decomposition
+    G hfree hmin hcover hcard hp hhigh
+  dsimp only at hdec
+  refine ⟨?_, ?_, ?_⟩
+  · intro y hy
+    exact (hdec.2.2.2 y hy).1
+  · intro y hy z hz hyz
+    rw [Finset.disjoint_left]
+    intro x hxy hxz
+    have hxB0 : x ∈ B 0 := (Finset.mem_inter.mp hxy).2
+    have hyNeighbor : y ∈ D.neighborFinset x := by
+      have h := (Finset.mem_inter.mp hxy).1
+      exact (D.mem_neighborFinset x y).mpr
+        ((D.mem_neighborFinset y x).mp h).symm
+    have hzNeighbor : z ∈ D.neighborFinset x := by
+      have h := (Finset.mem_inter.mp hxz).1
+      exact (D.mem_neighborFinset x z).mpr
+        ((D.mem_neighborFinset z x).mp h).symm
+    have hyMem : y ∈ D.neighborFinset x ∩ B 1 :=
+      Finset.mem_inter.mpr ⟨hyNeighbor, hy⟩
+    have hzMem : z ∈ D.neighborFinset x ∩ B 1 :=
+      Finset.mem_inter.mpr ⟨hzNeighbor, hz⟩
+    have hcardOne : (D.neighborFinset x ∩ B 1).card = 1 :=
+      (hdec.2.2.1 x hxB0).2
+    have heq := Finset.card_le_one.mp (by omega :
+      (D.neighborFinset x ∩ B 1).card ≤ 1) y hyMem z hzMem
+    exact hyz heq
+  · ext x
+    simp only [Finset.mem_biUnion]
+    constructor
+    · rintro ⟨y, hy, hxy⟩
+      exact (Finset.mem_inter.mp hxy).2
+    · intro hx
+      have hcardOne : (D.neighborFinset x ∩ B 1).card = 1 :=
+        (hdec.2.2.1 x hx).2
+      have hpos : 0 < (D.neighborFinset x ∩ B 1).card := by omega
+      obtain ⟨y, hy⟩ := Finset.card_pos.mp hpos
+      have hy' := Finset.mem_inter.mp hy
+      refine ⟨y, hy'.2, ?_⟩
+      refine Finset.mem_inter.mpr ⟨?_, hx⟩
+      exact (D.mem_neighborFinset y x).mpr
+        ((D.mem_neighborFinset x y).mp hy'.1).symm
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_oneHigh_defect_decomposition
+#print axioms Erdos85.squareOrderNine_oneHigh_defect_block_partition
