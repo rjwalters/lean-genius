@@ -382,8 +382,175 @@ theorem muNegOneIntertwineClauses_satisfied_of_finite
 
 end Families
 
+/-! ## Hit-side helpers -/
+
+set_option maxHeartbeats 0 in
+theorem muNegOneHitPairs_wf :
+    ∀ uTri vTri : Bool, ((muNegOneHitPairs uTri vTri).all fun p =>
+      decide (p.1 < p.2) && decide (p.2 < 80)) = true := by
+  native_decide
+
+theorem muNegOneHitPairs_lt {uTri vTri : Bool} {p : Nat × Nat}
+    (hp : p ∈ muNegOneHitPairs uTri vTri) : p.1 < p.2 ∧ p.2 < 80 := by
+  have h := List.all_eq_true.mp (muNegOneHitPairs_wf uTri vTri) p hp
+  simpa using h
+
+private theorem pair_norm (a b : Nat) :
+    (if a < b then (a, b) else (b, a)) = (min a b, max a b) := by
+  rcases Nat.lt_or_ge a b with h | h
+  · simp [h, Nat.min_eq_left (Nat.le_of_lt h),
+      Nat.max_eq_right (Nat.le_of_lt h)]
+  · simp [Nat.not_lt.mpr h, Nat.min_eq_right h, Nat.max_eq_left h]
+
+theorem muNegOneXVar?_bounds {pairs : List (Nat × Nat)} {a b x : Nat}
+    (h : muNegOneXVar? pairs a b = some x) : 65 ≤ x := by
+  unfold muNegOneXVar? at h
+  rw [Option.map_eq_some_iff] at h
+  obtain ⟨k, _, rfl⟩ := h
+  omega
+
+theorem muNegOneXVar?_key_mem {pairs : List (Nat × Nat)} {a b x : Nat}
+    (h : muNegOneXVar? pairs a b = some x) :
+    (min a b, max a b) ∈ pairs := by
+  unfold muNegOneXVar? at h
+  rw [pair_norm, Option.map_eq_some_iff] at h
+  obtain ⟨k, hk, _⟩ := h
+  exact List.mem_of_getElem? (list_idxOf?_some_getElem? hk)
+
+theorem muNegOneXVar?_inj {pairs : List (Nat × Nat)} {a b b' x : Nat}
+    (h : muNegOneXVar? pairs a b = some x)
+    (h' : muNegOneXVar? pairs a b' = some x) :
+    (min a b, max a b) = (min a b', max a b') := by
+  unfold muNegOneXVar? at h h'
+  rw [pair_norm, Option.map_eq_some_iff] at h h'
+  obtain ⟨k, hk, hkx⟩ := h
+  obtain ⟨k', hk', hk'x⟩ := h'
+  have hkk : k = k' := by omega
+  subst hkk
+  have e1 := list_idxOf?_some_getElem? hk
+  have e2 := list_idxOf?_some_getElem? hk'
+  rw [e1] at e2
+  exact Option.some.inj e2
+
+private theorem eq_of_minmax {a b b' : Nat} (_hb : b ≠ a) (_hb' : b' ≠ a)
+    (h : (min a b, max a b) = (min a b', max a b')) : b = b' := by
+  have h1 : min a b = min a b' := congrArg Prod.fst h
+  have h2 : max a b = max a b' := congrArg Prod.snd h
+  omega
+
+/-- The valuation of a generated hit variable, normalized-pair form. -/
+private theorem valOfRelations_xvar' {uTri vTri : Bool}
+    {D X : Nat → Nat → Bool} {a b x : Nat}
+    (h : muNegOneXVar? (muNegOneHitPairs uTri vTri) a b = some x) :
+    muNegOneValOfRelations uTri vTri D X x = X (min a b) (max a b) :=
+  muNegOneValOfRelations_xvar uTri vTri D X h
+
+section HitFamilies
+
+variable {uTri vTri σ : Bool} {D X : Nat → Nat → Bool}
+
+/-- Hit-activity family of the induced valuation. -/
+theorem muNegOneHitActivityClauses_satisfied_of_finite
+    (hsem : MuNegOneOneFourFiniteSemantics uTri vTri σ D X) :
+    ∀ clause ∈ muNegOneHitActivityClauses uTri vTri
+      (muNegOneHitPairs uTri vTri),
+      dimacsClauseSatisfied (muNegOneValOfRelations uTri vTri D X)
+        clause := by
+  intro clause hclause
+  simp only [muNegOneHitActivityClauses, List.mem_flatMap] at hclause
+  obtain ⟨pr, hpr, hin⟩ := hclause
+  obtain ⟨hlt, hlt80⟩ := muNegOneHitPairs_lt hpr
+  cases hx : muNegOneXVar? (muNegOneHitPairs uTri vTri) pr.1 pr.2 with
+  | none => rw [hx] at hin; simp at hin
+  | some x =>
+  rw [hx] at hin
+  have hxpos : (0 : Int) < Int.ofNat x := by
+    have := muNegOneXVar?_bounds hx
+    show (0 : Int) < (x : Int)
+    exact_mod_cast by omega
+  have hvalx : muNegOneValOfRelations uTri vTri D X x = X pr.1 pr.2 := by
+    have h := valOfRelations_xvar' (D := D) (X := X) hx
+    rwa [Nat.min_eq_left (Nat.le_of_lt hlt),
+      Nat.max_eq_right (Nat.le_of_lt hlt)] at h
+  by_cases hXv : X pr.1 pr.2 = true
+  · -- both endpoints are active; the guarded defect literal is false.
+    have hact := hsem.hit_active pr.1 pr.2 (by simpa using hpr) hXv
+    have hguard : ∀ o : Nat, o < 80 →
+        muNegOneOwnerActive D o = true →
+        ∀ g : Nat, muNegOneGuard? uTri vTri o = some g →
+        clause = [-Int.ofNat x, -Int.ofNat g] →
+          dimacsClauseSatisfied
+            (muNegOneValOfRelations uTri vTri D X) clause := by
+      intro o ho hoact g hg hcl
+      have h16' : 16 ≤ o := by
+        by_contra h16
+        rw [muNegOneGuard?, if_pos (by omega)] at hg
+        exact absurd hg (by simp)
+      have hgeq : g = muNegOneDVar ((muNegOneOwners uTri vTri)[o]!).1
+          (((muNegOneOwners uTri vTri)[o]!).2 - 8) := by
+        rw [muNegOneGuard?, if_neg (by omega)] at hg
+        exact (Option.some.inj hg).symm
+      have howner : (muNegOneOwners uTri vTri)[o]! =
+          ((o - 16) / 8, 8 + (o - 16) % 8) :=
+        muNegOneOwnerAt_cross uTri vTri ⟨o, ho⟩ h16'
+      have hgeq' : g = muNegOneDVar ((o - 16) / 8) ((o - 16) % 8) := by
+        rw [hgeq, howner]
+        simp
+      have hDfalse : D ((o - 16) / 8) ((o - 16) % 8) = false := by
+        have h := hoact
+        unfold muNegOneOwnerActive at h
+        rw [if_neg (by omega)] at h
+        simpa using h
+      refine ⟨-Int.ofNat g, by rw [hcl]; simp, ?_⟩
+      rw [dimacsLitValue_neg_ofNat (by rw [hgeq']; unfold muNegOneDVar; omega),
+        hgeq', muNegOneValOfRelations_dvar uTri vTri D X
+          (i := (o - 16) / 8) (j := (o - 16) % 8) (by omega) (by omega),
+        hDfalse]
+      rfl
+    rcases List.mem_append.mp hin with hin1 | hin1
+    · cases hg : muNegOneGuard? uTri vTri pr.1 with
+      | none => rw [hg] at hin1; simp at hin1
+      | some g =>
+        rw [hg] at hin1
+        simp only [List.mem_cons, List.not_mem_nil, or_false] at hin1
+        exact hguard pr.1 (by omega) hact.1 g hg hin1
+    · cases hg : muNegOneGuard? uTri vTri pr.2 with
+      | none => rw [hg] at hin1; simp at hin1
+      | some g =>
+        rw [hg] at hin1
+        simp only [List.mem_cons, List.not_mem_nil, or_false] at hin1
+        exact hguard pr.2 hlt80 hact.2 g hg hin1
+  · -- the hit variable itself is false.
+    have hneg : dimacsLitValue (muNegOneValOfRelations uTri vTri D X)
+        (-Int.ofNat x) = true := by
+      rw [dimacsLitValue_neg_ofNat (by
+        have := muNegOneXVar?_bounds hx; omega)]
+      rw [hvalx]
+      simpa using hXv
+    have hhead : -Int.ofNat x ∈ clause := by
+      rcases List.mem_append.mp hin with hin1 | hin1
+      · cases hg : muNegOneGuard? uTri vTri pr.1 with
+        | none => rw [hg] at hin1; simp at hin1
+        | some g =>
+          rw [hg] at hin1
+          simp only [List.mem_cons, List.not_mem_nil, or_false] at hin1
+          rw [hin1]
+          simp
+      · cases hg : muNegOneGuard? uTri vTri pr.2 with
+        | none => rw [hg] at hin1; simp at hin1
+        | some g =>
+          rw [hg] at hin1
+          simp only [List.mem_cons, List.not_mem_nil, or_false] at hin1
+          rw [hin1]
+          simp
+    exact ⟨-Int.ofNat x, hhead, hneg⟩
+
+end HitFamilies
+
+
 end Erdos85
 
 #print axioms Erdos85.muNegOneCrossRowClauses_satisfied_of_finite
 #print axioms Erdos85.muNegOneCrossColClauses_satisfied_of_finite
 #print axioms Erdos85.muNegOneIntertwineClauses_satisfied_of_finite
+#print axioms Erdos85.muNegOneHitActivityClauses_satisfied_of_finite
