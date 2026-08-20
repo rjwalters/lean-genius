@@ -383,6 +383,27 @@ matchings between different doubled pairs must be coordinated into a Latin
 square for every fiber pair. Future reductions should target compatibility of
 these factorizations rather than prune local cycle types.
 
+### 5.2 No induced order-81 witness inside the orthogonal polarity graph
+
+The other immediate projective-plane construction is also closed at q=9.
+The orthogonal polarity graph `ER_9` on `PG(2,9)` is C4-free and has 91
+vertices: ten absolute points of degree 9 and 81 nonabsolute points of degree
+10. An induced 81-vertex subgraph of minimum degree 9 would be obtained by
+deleting ten vertices such that every retained absolute point loses no
+neighbor and every retained nonabsolute point loses at most one neighbor.
+
+`er9_induced81_search.py` constructs `PG(2,9)` directly over
+`F_3[t]/(t^2+1)`, verifies the `(9^10,10^81)` degree profile and the common-
+neighbor bound, and solves that exact 91-variable deletion problem. Z3 returns
+`UNSAT`. As an independent geometry diagnostic, the 81 nonabsolute points
+split into 36 with no absolute neighbor and 45 with two; none has exactly one.
+
+This rules out **only induced ten-vertex deletion from `ER_9`**. It does not
+exclude deletion plus edge repair, another polarity, or an arbitrary
+C4-free minimum-degree-9 graph on 81 vertices. Together with the failed
+`Gamma_a` matching repair, however, it closes both direct finite-field
+constructions presently attached to the q=9 branch.
+
 ## 6. Honest status in the final tree
 
 - `PROVEN-AT-49-ONLY`: the q=7 datum exists, via `boza48Graph`.
