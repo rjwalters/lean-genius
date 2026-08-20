@@ -17,6 +17,20 @@ namespace Erdos85
 
 noncomputable section
 
+theorem muNegFiveZeroThree_natMod_pred_cast :
+    ∀ i : Fin 8, (((i.val + 7) % 8 : Nat) : ZMod 8) =
+      (i.val : ZMod 8) - 1 := by
+  decide
+
+theorem muNegFiveZeroThree_natMod_succ_cast :
+    ∀ i : Fin 8, (((i.val + 1) % 8 : Nat) : ZMod 8) =
+      (i.val : ZMod 8) + 1 := by
+  decide
+
+theorem muNegFiveZeroThree_pred_ne_succ :
+    ∀ i : ZMod 8, i - 1 ≠ i + 1 := by
+  decide
+
 set_option linter.unusedSectionVars false
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
@@ -74,6 +88,16 @@ def muNegFiveZeroThreeGraphHit
   ∃ z w : V,
     MuNegFiveZeroThreeOwnerVertex G c u v e z ∧
     MuNegFiveZeroThreeOwnerVertex G c u v f w ∧ G.Adj z w
+
+instance (u v : ZMod 8 → c.supp) :
+    DecidablePred (muNegFiveZeroThreeGraphActive G c u v) := by
+  intro e
+  exact Classical.propDecidable _
+
+instance (u v : ZMod 8 → c.supp) :
+    DecidableRel (muNegFiveZeroThreeGraphHit G c u v) := by
+  intro e f
+  exact Classical.propDecidable _
 
 def MuNegFiveZeroThreeOwnerAvailability
     (u v : ZMod 8 → c.supp) : Prop :=
@@ -164,6 +188,17 @@ theorem muNegFiveZeroThreeOwnerAt_injective :
     Function.Injective (fun e : Fin 72 => muNegFiveZeroThreeOwnerAt e) := by
   intro e f h
   revert e f
+  native_decide
+
+/-- The finite CNF cross coordinate names exactly the corresponding owner
+candidate in the 72-cell table. -/
+theorem muNegFiveZeroThreeCrossIndex?_ownerAt
+    (x y : Fin 8) :
+    ∃ e : Fin 72,
+      muNegFiveZeroThreeActiveVariable? e =
+          muNegFiveZeroThreeCrossIndex? x y ∧
+        muNegFiveZeroThreeOwnerAt e = (x.val, 8 + y.val) := by
+  revert x y
   native_decide
 
 theorem muNegFiveZeroThreeCandidatePair_lookup :
@@ -279,6 +314,371 @@ theorem muNegFiveZeroThreeOwnerEndpoints_ne
     muNegFiveZeroThreeCodeVertex_inj G c a b u v hab huinj hvinj
       hurange hvrange p.1 hp.1 p.2 hp.2.1 h
   exact hp.2.2 heq
+
+/-- Realized owner activity is exactly exterior-pair adjacency of the two
+named endpoints. -/
+theorem muNegFiveZeroThreeGraphActive_iff_exteriorPair
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (e : Fin 72) :
+    muNegFiveZeroThreeGraphActive G c u v e ↔
+      (exteriorPairGraph G c.supp).Adj
+        (muNegFiveZeroThreeCodeSub G c u v
+          (muNegFiveZeroThreeOwnerAt e).1)
+        (muNegFiveZeroThreeCodeSub G c u v
+          (muNegFiveZeroThreeOwnerAt e).2) := by
+  constructor
+  · rintro ⟨z, hzout, hz1, hz2⟩
+    refine ⟨?_, z, hzout, hz1, hz2⟩
+    intro heq
+    exact muNegFiveZeroThreeOwnerEndpoints_ne G c a b u v hab huinj hvinj
+      hurange hvrange e (congrArg Subtype.val heq)
+  · intro hR
+    obtain ⟨z, hzout, hz1, hz2, _⟩ :=
+      exteriorPairGraph_ownerVertex G hfree c.supp hR
+    exact ⟨z, hzout, hz1, hz2⟩
+
+/-- Decode a cross CNF variable all the way to the complement of the
+cross-defect adjacency matrix. -/
+theorem muNegFiveZeroThreeOwnerVal_cross_true_iff
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    {x y id : Nat} (hx : x < 8) (hy : y < 8)
+    (hidx : muNegFiveZeroThreeCrossIndex? x y = some id) :
+    muNegFiveZeroThreeOwnerValOfRelations
+        (muNegFiveZeroThreeGraphActive G c u v)
+        (muNegFiveZeroThreeGraphHit G c u v) id = true ↔
+      (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ)
+          (u (x : ZMod 8)) (v (y : ZMod 8)) ≠ 1 := by
+  letI : DecidablePred (muNegFiveZeroThreeGraphActive G c u v) :=
+    fun _ ↦ Classical.propDecidable _
+  letI : DecidableRel (muNegFiveZeroThreeGraphHit G c u v) :=
+    fun _ _ ↦ Classical.propDecidable _
+  obtain ⟨e, hevar, heAt⟩ :=
+    muNegFiveZeroThreeCrossIndex?_ownerAt ⟨x, hx⟩ ⟨y, hy⟩
+  rw [hidx] at hevar
+  have hval :
+      muNegFiveZeroThreeOwnerValOfRelations
+          (muNegFiveZeroThreeGraphActive G c u v)
+          (muNegFiveZeroThreeGraphHit G c u v) id = true ↔
+        muNegFiveZeroThreeGraphActive G c u v e := by
+    constructor
+    · intro hv
+      obtain ⟨f, hfvar, hf⟩ :=
+        (muNegFiveZeroThreeOwnerVal_active_true_iff
+          (muNegFiveZeroThreeGraphActive G c u v)
+          (muNegFiveZeroThreeGraphHit G c u v)
+          (muNegFiveZeroThreeActiveVariable?_bounds hevar).2).mp hv
+      rw [muNegFiveZeroThreeActiveVariable?_eq_injective e f hevar hfvar]
+      exact hf
+    · exact fun he ↦ muNegFiveZeroThreeOwnerVal_active_true_of
+        (muNegFiveZeroThreeGraphActive G c u v)
+        (muNegFiveZeroThreeGraphHit G c u v) hevar he
+  rw [hval, muNegFiveZeroThreeGraphActive_iff_exteriorPair G c a b u v
+    hfree hab huinj hvinj hurange hvrange]
+  rw [heAt]
+  simp [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex, hx,
+    show ¬ 8 + y < 8 by omega]
+  change (exteriorPairGraph G c.supp).Adj
+      (u (x : ZMod 8)) (v (y : ZMod 8)) ↔ _
+  rw [sizeTwo_distinctCycle_cross_exteriorPair_iff_not_defect
+    G hfree c a b hab u v hurange hvrange]
+  simp
+
+/-- Finite conversion from filter cardinalities to the list/fold encoding
+used by the h503 CNF fiber predicate. -/
+theorem muNegFiveZeroThreeFiberBitsAllowed_of_filterCards
+    (sigma left : Bool) (z : Fin 8) (bits : Fin 8 → Bool)
+    (htotal : ((Finset.univ : Finset (Fin 8)).filter fun w ↦
+      bits w = true).card = 5)
+    (hsame : ((Finset.univ : Finset (Fin 8)).filter fun w ↦
+      muNegFiveZeroThreeSameSign sigma
+        (if left then z.val else w.val)
+        (if left then w.val else z.val) = true ∧
+      bits w = true).card = 3) :
+    muNegFiveZeroThreeFiberBitsAllowed sigma left z bits = true := by
+  revert sigma left z bits
+  native_decide
+
+theorem muNegFiveZeroThreeFiberBitsAllowed_of_zmodFilterCards
+    (sigma left : Bool) (z : Fin 8) (bits : Fin 8 → Bool)
+    (p : ZMod 8 → Bool)
+    (hbits : ∀ w, bits w = true ↔ p (w.val : ZMod 8) = true)
+    (htotal : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      p j = true).card = 5)
+    (hsame : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      muNegFiveZeroThreeSameSign sigma
+        (if left then z.val else j.val)
+        (if left then j.val else z.val) = true ∧ p j = true).card = 3) :
+    muNegFiveZeroThreeFiberBitsAllowed sigma left z bits = true := by
+  revert sigma left z bits p
+  native_decide
+
+/-- The two every-row `(0,3)` ledgers supply the exact five-active,
+three-same cross fiber law in both row and column orientations. -/
+theorem muNegFiveZeroThreeGraphFiberBitsAllowed
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (s : V → ℤ) (sigma : Bool)
+    (hphase : ∀ x y : Nat, x < 8 → y < 8 →
+      (muNegFiveZeroThreeSameSign sigma x y = true ↔
+        s (v (y : ZMod 8)).1 = s (u (x : ZMod 8)).1))
+    (Luv : MuNegFiveExplicitRowParameterLedger
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (u j))
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (v j))
+      (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) 0 3)
+    (Lvu : MuNegFiveExplicitRowParameterLedger
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (v i) (v j))
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (v i) (u j))
+      (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) 0 3) :
+    ∀ left z, z < 8 →
+      muNegFiveZeroThreeFiberBitsAllowed sigma left z
+        (muNegFiveZeroThreeFiberBit
+          (muNegFiveZeroThreeOwnerValOfRelations
+            (muNegFiveZeroThreeGraphActive G c u v)
+            (muNegFiveZeroThreeGraphHit G c u v)) left z) = true := by
+  intro left z hz
+  let bits := muNegFiveZeroThreeFiberBit
+    (muNegFiveZeroThreeOwnerValOfRelations
+      (muNegFiveZeroThreeGraphActive G c u v)
+      (muNegFiveZeroThreeGraphHit G c u v)) left z
+  have hbit : ∀ w : Fin 8, bits w = true ↔
+      if left then
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+          (u (z : ZMod 8)) (v (w.val : ZMod 8)) ≠ 1
+      else
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+          (v (z : ZMod 8)) (u (w.val : ZMod 8)) ≠ 1 := by
+    intro w
+    obtain ⟨id, hidx, _⟩ :=
+      muNegFiveZeroThreeCrossFiber_zipIdx left ⟨z, hz⟩ w
+    simp only [bits, muNegFiveZeroThreeFiberBit, hidx]
+    cases left
+    · have h := muNegFiveZeroThreeOwnerVal_cross_true_iff G c a b u v
+        hfree hab huinj hvinj hurange hvrange w.2 hz hidx
+      have hmat :
+          ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+              (u (w.val : ZMod 8)) (v (z : ZMod 8)) =
+            ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+              (v (z : ZMod 8)) (u (w.val : ZMod 8)) := by
+        by_cases hadj : (secondOrderDefectGraph G).Adj
+            (u (w.val : ZMod 8)).1 (v (z : ZMod 8)).1
+        · have hadj' := (secondOrderDefectGraph G).adj_comm _ _ |>.mp hadj
+          simp [SimpleGraph.adjMatrix_apply, hadj, hadj']
+        · have hadj' : ¬ (secondOrderDefectGraph G).Adj
+              (v (z : ZMod 8)).1 (u (w.val : ZMod 8)).1 :=
+            fun h' ↦ hadj ((secondOrderDefectGraph G).adj_comm _ _ |>.mp h')
+          simp [SimpleGraph.adjMatrix_apply, hadj, hadj']
+      rw [hmat] at h
+      exact h
+    · simpa using muNegFiveZeroThreeOwnerVal_cross_true_iff G c a b u v
+        hfree hab huinj hvinj hurange hvrange hz w.2 hidx
+  cases left
+  · let p : ZMod 8 → Bool := fun j ↦ decide
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+          (v (z : ZMod 8)) (u j) ≠ 1)
+    apply muNegFiveZeroThreeFiberBitsAllowed_of_zmodFilterCards sigma false
+      ⟨z, hz⟩ bits p
+    · intro w; simpa [p] using hbit w
+    · dsimp only [p]
+      simp only [decide_eq_true_eq]
+      change ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+            (v (z : ZMod 8)) (u j) ≠ 1).card = 5
+      have hpart := Finset.card_filter_add_card_filter_not
+          (fun j : ZMod 8 ↦
+            ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+              (v (z : ZMod 8)) (u j) = 1) (s := Finset.univ)
+      have huniv : (Finset.univ : Finset (ZMod 8)).card = 8 := by native_decide
+      have hrow := Lvu.cross_row (z : ZMod 8)
+      rw [hrow, huniv] at hpart
+      change 3 + ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+          (v (z : ZMod 8)) (u j) ≠ 1).card = 8 at hpart
+      omega
+    · dsimp only [p]
+      simp only [decide_eq_true_eq]
+      change ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          muNegFiveZeroThreeSameSign sigma j.val z = true ∧
+          ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+            (v (z : ZMod 8)) (u j) ≠ 1).card = 3
+      have hphase' : ∀ j : ZMod 8,
+          muNegFiveZeroThreeSameSign sigma j.val z = true ↔
+            s (u j).1 = s (v (z : ZMod 8)).1 := by
+        intro j
+        have hp := hphase j.val z j.val_lt hz
+        have hj : (j.val : ZMod 8) = j := ZMod.natCast_zmod_val j
+        constructor
+        · intro h; simpa only [hj] using (hp.mp h).symm
+        · intro h; apply hp.mpr; simpa only [hj] using h.symm
+      simpa only [hphase'] using
+        (Lvu.zeroThree_crossExterior_split (z : ZMod 8)).1
+  · let p : ZMod 8 → Bool := fun j ↦ decide
+        (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+          (u (z : ZMod 8)) (v j) ≠ 1)
+    apply muNegFiveZeroThreeFiberBitsAllowed_of_zmodFilterCards sigma true
+      ⟨z, hz⟩ bits p
+    · intro w; simpa [p] using hbit w
+    · dsimp only [p]
+      simp only [decide_eq_true_eq]
+      change ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+            (u (z : ZMod 8)) (v j) ≠ 1).card = 5
+      have hpart := Finset.card_filter_add_card_filter_not
+          (fun j : ZMod 8 ↦
+            ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+              (u (z : ZMod 8)) (v j) = 1) (s := Finset.univ)
+      have huniv : (Finset.univ : Finset (ZMod 8)).card = 8 := by native_decide
+      have hrow := Luv.cross_row (z : ZMod 8)
+      rw [hrow, huniv] at hpart
+      change 3 + ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+          (u (z : ZMod 8)) (v j) ≠ 1).card = 8 at hpart
+      omega
+    · dsimp only [p]
+      simp only [decide_eq_true_eq, if_true]
+      change ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          muNegFiveZeroThreeSameSign sigma z j.val = true ∧
+          ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+            (u (z : ZMod 8)) (v j) ≠ 1).card = 3
+      have hphase' : ∀ j : ZMod 8,
+          muNegFiveZeroThreeSameSign sigma z j.val = true ↔
+            s (v j).1 = s (u (z : ZMod 8)).1 := by
+        intro j
+        simpa using hphase z j.val hz j.val_lt
+      simpa only [hphase'] using
+        (Luv.zeroThree_crossExterior_split (z : ZMod 8)).1
+
+theorem muNegFiveZeroThreeCrossIndex?_some_bounds
+    {x y id : Nat} (h : muNegFiveZeroThreeCrossIndex? x y = some id) :
+    x < 8 ∧ y < 8 := by
+  simp only [muNegFiveZeroThreeCrossIndex?] at h
+  split at h
+  · rename_i hxy
+    simp only [Bool.and_eq_true] at hxy
+    exact ⟨of_decide_eq_true hxy.1, of_decide_eq_true hxy.2⟩
+  · contradiction
+
+/-- The active exterior cross block intertwines with the two C8 cycles:
+it is the entrywise complement of the defect cross block, whose
+intertwining is already forced by adjacency-matrix commutation. -/
+theorem muNegFiveZeroThreeGraphBalance
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    ∀ x y aId bId cId dId,
+      muNegFiveZeroThreeCrossIndex? ((x + 7) % 8) y = some aId →
+      muNegFiveZeroThreeCrossIndex? ((x + 1) % 8) y = some bId →
+      muNegFiveZeroThreeCrossIndex? x ((y + 1) % 8) = some cId →
+      muNegFiveZeroThreeCrossIndex? x ((y + 7) % 8) = some dId →
+      (muNegFiveZeroThreeOwnerValOfRelations
+        (muNegFiveZeroThreeGraphActive G c u v)
+        (muNegFiveZeroThreeGraphHit G c u v) aId).toNat +
+          (muNegFiveZeroThreeOwnerValOfRelations
+            (muNegFiveZeroThreeGraphActive G c u v)
+            (muNegFiveZeroThreeGraphHit G c u v) bId).toNat =
+        (muNegFiveZeroThreeOwnerValOfRelations
+          (muNegFiveZeroThreeGraphActive G c u v)
+          (muNegFiveZeroThreeGraphHit G c u v) cId).toNat +
+          (muNegFiveZeroThreeOwnerValOfRelations
+            (muNegFiveZeroThreeGraphActive G c u v)
+            (muNegFiveZeroThreeGraphHit G c u v) dId).toNat := by
+  intro x y aId bId cId dId ha hb hc hd
+  have hxy : x < 8 ∧ y < 8 := by
+    exact ⟨(muNegFiveZeroThreeCrossIndex?_some_bounds hc).1,
+      (muNegFiveZeroThreeCrossIndex?_some_bounds ha).2⟩
+  let val := muNegFiveZeroThreeOwnerValOfRelations
+    (muNegFiveZeroThreeGraphActive G c u v)
+    (muNegFiveZeroThreeGraphHit G c u v)
+  let D : Nat → Nat → Bool := fun i j ↦ decide
+    (((secondOrderDefectGraph G).induce c.supp).Adj
+      (u (i : ZMod 8)) (v (j : ZMod 8)))
+  have hcomplement : ∀ {i j id : Nat},
+      muNegFiveZeroThreeCrossIndex? i j = some id →
+      (val id).toNat + (cond (D i j) 1 0) = 1 := by
+    intro i j id hidx
+    obtain ⟨hi, hj⟩ := muNegFiveZeroThreeCrossIndex?_some_bounds hidx
+    have hv := muNegFiveZeroThreeOwnerVal_cross_true_iff G c a b u v
+      hfree hab huinj hvinj hurange hvrange hi hj hidx
+    rw [SimpleGraph.adjMatrix_apply] at hv
+    by_cases hD : ((secondOrderDefectGraph G).induce c.supp).Adj
+        (u (i : ZMod 8)) (v (j : ZMod 8))
+    · have hDbase : (secondOrderDefectGraph G).Adj
+          (u (i : ZMod 8)).1 (v (j : ZMod 8)).1 := hD
+      have hvFalse : val id = false := by
+        apply Bool.eq_false_iff.mpr
+        intro ht
+        exact (hv.mp ht) (by simp [hDbase])
+      simp [D, hDbase, hvFalse]
+    · have hDbase : ¬ (secondOrderDefectGraph G).Adj
+          (u (i : ZMod 8)).1 (v (j : ZMod 8)).1 := fun h ↦ hD h
+      have hvTrue : val id = true :=
+        hv.mpr (by simp [hDbase])
+      simp [D, hDbase, hvTrue]
+  have hA := hcomplement ha
+  have hB := hcomplement hb
+  have hC := hcomplement hc
+  have hD := hcomplement hd
+  have hcomm : ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ *
+      (G.induce c.supp).adjMatrix ℤ =
+      (G.induce c.supp).adjMatrix ℤ *
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ :=
+    (adjMatrix_comm_secondOrderDefect_induce_component_of_regular
+      G hfree hreg c).symm
+  have hua : ∀ i : ZMod 8, u (i - 1) ≠ u (i + 1) := by
+    intro i h
+    exact muNegFiveZeroThree_pred_ne_succ i (huinj h)
+  have hvb : ∀ j : ZMod 8, v (j - 1) ≠ v (j + 1) := by
+    intro j h
+    exact muNegFiveZeroThree_pred_ne_succ j (hvinj h)
+  have hbal := entry_cycleIntertwine_of_adjMatrix_comm
+    ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) u v 1 1
+    hcomm hu hv hua hvb (x : ZMod 8) (y : ZMod 8)
+  have hDdec : ∀ i j : Nat,
+      (((cond (D i j) 1 0 : ℕ) : ℤ)) =
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+          (u (i : ZMod 8)) (v (j : ZMod 8)) := by
+    intro i j
+    by_cases hbase : (secondOrderDefectGraph G).Adj
+        (u (i : ZMod 8)).1 (v (j : ZMod 8)).1
+    · simp [D, hbase, SimpleGraph.adjMatrix_apply]
+    · simp [D, hbase, SimpleGraph.adjMatrix_apply]
+  have hDefect :
+      (cond (D ((x + 7) % 8) y) 1 0) +
+          (cond (D ((x + 1) % 8) y) 1 0) =
+        (cond (D x ((y + 1) % 8)) 1 0) +
+          (cond (D x ((y + 7) % 8)) 1 0) := by
+    have hcast : (((cond (D ((x + 7) % 8) y) 1 0) +
+        (cond (D ((x + 1) % 8) y) 1 0) : ℕ) : ℤ) =
+      (((cond (D x ((y + 1) % 8)) 1 0) +
+        (cond (D x ((y + 7) % 8)) 1 0) : ℕ) : ℤ) := by
+      push_cast
+      rw [hDdec, hDdec, hDdec, hDdec,
+        muNegFiveZeroThree_natMod_pred_cast ⟨x, hxy.1⟩,
+        muNegFiveZeroThree_natMod_succ_cast ⟨x, hxy.1⟩,
+        muNegFiveZeroThree_natMod_succ_cast ⟨y, hxy.2⟩,
+        muNegFiveZeroThree_natMod_pred_cast ⟨y, hxy.2⟩]
+      exact hbal
+    exact_mod_cast hcast
+  change (val aId).toNat + (val bId).toNat =
+    (val cId).toNat + (val dId).toNat
+  omega
 
 theorem muNegFiveZeroThreeOwnerVertex_unique
     (hfree : ¬ containsC4 V G)
@@ -1016,16 +1416,6 @@ theorem muNegFiveZeroThreeGraphHit_irrefl
 
 end Shores
 
-instance (u v : ZMod 8 → c.supp) :
-    DecidablePred (muNegFiveZeroThreeGraphActive G c u v) := by
-  intro e
-  exact Classical.propDecidable _
-
-instance (u v : ZMod 8 → c.supp) :
-    DecidableRel (muNegFiveZeroThreeGraphHit G c u v) := by
-  intro e f
-  exact Classical.propDecidable _
-
 theorem muNegFiveZeroThreeGraphHit_symm
     (u v : ZMod 8 → c.supp) (e f : Fin 72) :
     muNegFiveZeroThreeGraphHit G c u v e f →
@@ -1060,6 +1450,11 @@ end Erdos85
 
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_symm
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_ends
+#print axioms Erdos85.muNegFiveZeroThreeCrossIndex?_ownerAt
+#print axioms Erdos85.muNegFiveZeroThreeGraphActive_iff_exteriorPair
+#print axioms Erdos85.muNegFiveZeroThreeOwnerVal_cross_true_iff
+#print axioms Erdos85.muNegFiveZeroThreeGraphFiberBitsAllowed
+#print axioms Erdos85.muNegFiveZeroThreeGraphBalance
 #print axioms Erdos85.muNegFiveZeroThreeCodeVertex_inj
 #print axioms Erdos85.muNegFiveZeroThreeCodeSub_surjective
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_unique
