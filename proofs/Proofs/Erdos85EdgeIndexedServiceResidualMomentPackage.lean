@@ -35,7 +35,9 @@ theorem edgeIndexedService_residual_moment_package
       exact edgeIndexedService_incidenceKernel_invariant
         H R Cedge hservice x hx
     let p := (T.restrict hW).charpoly
+    let B := (2 : ℂ)⁻¹ • edgeIndexedVertexOnesMatrix V - H.adjMatrix ℂ
     p.Monic ∧ p.natDegree = 32 ∧
+      (Cedge.adjMatrix ℂ).charpoly = p * B.charpoly ∧
       complexRootPowerSum p 1 = -8 ∧
       complexRootPowerSum p 2 = 224 ∧
       complexRootPowerSum p 3 =
@@ -80,7 +82,7 @@ theorem edgeIndexedService_residual_moment_package
   have hledger := h305_residualRootPowerSum_ledger_of_trace_moments
     A B p hAherm hBherm hpmonic.ne_zero hfactor
       hAone hAtwo hAfour hBone hBtwo hBthree hBfour
-  exact ⟨hpmonic, hpdegree, hledger⟩
+  exact ⟨hpmonic, hpdegree, hfactor, hledger⟩
 
 /-- Consumer form for the actual h305 shore geometry: a labeling by the
 disjoint union `C8 ⊔ C8` supplies both the order-sixteen hypothesis and the
@@ -105,7 +107,9 @@ theorem edgeIndexedService_residual_moment_package_of_eightEight
       exact edgeIndexedService_incidenceKernel_invariant
         H R Cedge hservice x hx
     let p := (T.restrict hW).charpoly
+    let B := (2 : ℂ)⁻¹ • edgeIndexedVertexOnesMatrix V - H.adjMatrix ℂ
     p.Monic ∧ p.natDegree = 32 ∧
+      (Cedge.adjMatrix ℂ).charpoly = p * B.charpoly ∧
       complexRootPowerSum p 1 = -8 ∧
       complexRootPowerSum p 2 = 224 ∧
       complexRootPowerSum p 3 =
