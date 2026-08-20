@@ -196,6 +196,104 @@ theorem muNegFiveZeroThreeOwnerVertex_inj
       · exact (hinj _ hfBounds.2.1 _ heBounds.2.1 h2).symm
   exact muNegFiveZeroThreeOwnerAt_injective hpairs
 
+theorem muNegFiveZeroThreeOwnerVertex_adj_of_contains
+    {e : Fin 72} {z : V}
+    (hz : MuNegFiveZeroThreeOwnerVertex G c u v e z)
+    {s : Fin 16} (hs : muNegFiveZeroThreeOwnerContains e s = true) :
+    G.Adj z (muNegFiveZeroThreeCodeVertex G c u v s) := by
+  unfold muNegFiveZeroThreeOwnerContains at hs
+  simp only [Bool.or_eq_true, beq_iff_eq] at hs
+  rcases hs with hs | hs
+  · simpa only [muNegFiveZeroThreeOwnerEndpoints, hs] using hz.2.1.symm
+  · simpa only [muNegFiveZeroThreeOwnerEndpoints, hs] using hz.2.2.symm
+
+theorem muNegFiveZeroThreeGraphHit_intersecting_no_common
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ (e f : Fin 72), e ≠ f →
+      muNegFiveZeroThreeOwnersIntersect e f = true →
+      ∀ k, muNegFiveZeroThreeGraphHit G c u v e k →
+        muNegFiveZeroThreeGraphHit G c u v f k → False := by
+  intro e f hef hinter k hek hfk
+  obtain ⟨te, tk, hte, htk, hetk⟩ := hek
+  obtain ⟨tf, tk', htf, htk', hftk⟩ := hfk
+  have htkeq : tk' = tk := muNegFiveZeroThreeOwnerVertex_unique G c a b u v
+    hfree hab huinj hvinj hurange hvrange k htk' htk
+  rw [htkeq] at hftk
+  have hetf : te ≠ tf := by
+    intro h
+    subst tf
+    exact hef (muNegFiveZeroThreeOwnerVertex_inj G c a b u v hfree hreg
+      hcard hsize hab huinj hvinj hurange hvrange hte htf)
+  unfold muNegFiveZeroThreeOwnersIntersect at hinter
+  rw [Bool.or_eq_true] at hinter
+  obtain ⟨s, hse, hsf⟩ : ∃ s : Fin 16,
+      muNegFiveZeroThreeOwnerContains e s = true ∧
+        muNegFiveZeroThreeOwnerContains f s = true := by
+    rcases hinter with h | h
+    · refine ⟨⟨(muNegFiveZeroThreeOwnerAt e).1,
+          (muNegFiveZeroThreeOwnerAt_bounds_ne e).1⟩, ?_, ?_⟩
+      · unfold muNegFiveZeroThreeOwnerContains
+        simp
+      · simpa using h
+    · refine ⟨⟨(muNegFiveZeroThreeOwnerAt e).2,
+          (muNegFiveZeroThreeOwnerAt_bounds_ne e).2.1⟩, ?_, ?_⟩
+      · unfold muNegFiveZeroThreeOwnerContains
+        simp
+      · simpa using h
+  have htes := muNegFiveZeroThreeOwnerVertex_adj_of_contains G c u v hte hse
+  have htfs := muNegFiveZeroThreeOwnerVertex_adj_of_contains G c u v htf hsf
+  have heq : muNegFiveZeroThreeCodeVertex G c u v s = tk :=
+    commonServer_unique G hfree hetf htes htfs hetk hftk
+  exact htk.1 (heq ▸ muNegFiveZeroThreeCodeVertex_mem_supp G c u v s)
+
+theorem muNegFiveZeroThreeGraphHit_no_two_common
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ (e f : Fin 72), e ≠ f → ∀ (k l : Fin 72), k ≠ l →
+      muNegFiveZeroThreeGraphHit G c u v e k →
+      muNegFiveZeroThreeGraphHit G c u v f k →
+      muNegFiveZeroThreeGraphHit G c u v e l →
+      muNegFiveZeroThreeGraphHit G c u v f l → False := by
+  intro e f hef k l hkl hek hfk hel hfl
+  obtain ⟨te, tk, hte, htk, hetk⟩ := hek
+  obtain ⟨tf, tk', htf, htk', hftk⟩ := hfk
+  obtain ⟨te', tl, hte', htl, hetl⟩ := hel
+  obtain ⟨tf', tl', htf', htl', hftl⟩ := hfl
+  have eqTk : tk' = tk := muNegFiveZeroThreeOwnerVertex_unique G c a b u v
+    hfree hab huinj hvinj hurange hvrange k htk' htk
+  have eqTe : te' = te := muNegFiveZeroThreeOwnerVertex_unique G c a b u v
+    hfree hab huinj hvinj hurange hvrange e hte' hte
+  have eqTf : tf' = tf := muNegFiveZeroThreeOwnerVertex_unique G c a b u v
+    hfree hab huinj hvinj hurange hvrange f htf' htf
+  have eqTl : tl' = tl := muNegFiveZeroThreeOwnerVertex_unique G c a b u v
+    hfree hab huinj hvinj hurange hvrange l htl' htl
+  rw [eqTk] at hftk
+  rw [eqTe] at hetl
+  rw [eqTf, eqTl] at hftl
+  have hetf : te ≠ tf := by
+    intro h
+    apply hef
+    apply muNegFiveZeroThreeOwnerVertex_inj G c a b u v hfree hreg
+      hcard hsize hab huinj hvinj hurange hvrange hte
+    rw [h]
+    exact htf
+  have hktl : tk = tl :=
+    commonServer_unique G hfree hetf hetk hftk hetl hftl
+  apply hkl
+  apply muNegFiveZeroThreeOwnerVertex_inj G c a b u v hfree hreg
+    hcard hsize hab huinj hvinj hurange hvrange htk
+  rw [hktl]
+  exact htl
+
 theorem muNegFiveZeroThreeGraphHit_irrefl
     (hfree : ¬ containsC4 V G)
     (hab : a ≠ b)
@@ -258,4 +356,6 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeCodeVertex_inj
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_unique
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_inj
+#print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
+#print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_irrefl
