@@ -609,6 +609,35 @@ edge-maximal C4-free. Therefore its 45 deficient vertices cannot be repaired
 by edge addition at all. Deleting a different ten-set and simultaneously
 switching edges remains outside the scope of both exact checks.
 
+### 5.6 Exact slack law for any nonabelian Cayley construction
+
+The failure of the abelian route does not leave the nonabelian Cayley search
+unstructured. Let `A` be an inverse-closed connection set of size `q` in a
+group of order `q²−1`. C4-freeness makes the non-backtracking product map
+
+```text
+(a,b) ↦ ab,    a,b ∈ A,    ab ≠ 1
+```
+
+injective: a collision `ab=cd` with `a≠c` gives the rim
+`1—a—ab—c—1`, while `a=c` allows left cancellation. Hence its image has
+exactly `q(q−1)` elements, leaving exactly `q−2` nonidentity group elements
+unused. The unused set is closed under inversion, because
+`(ab)⁻¹=b⁻¹a⁻¹` is another admissible product.
+
+For odd `q`, the unused cardinal `q−2` is odd. Inversion therefore fixes an
+unused element; since the identity was removed, this element is a
+nontrivial involution. Thus every viable odd-q Cayley family must organize
+its small slack around at least one distinguished order-two element. This
+matches the structural role of the `Z₂` coordinate in the q=7 semidirect
+witness and gives a concrete design constraint for any extrapolation.
+
+These statements are formalized, uniformly in the group, by
+`connection_product_ne_of_invClosedCayley_not_containsC4`,
+`card_unused_nonidentity_of_planeMinusTwo_Cayley`, and
+`exists_unused_involution_of_odd_planeMinusTwo_Cayley` in
+`Erdos85NoncommutativeCayleyProductCollision.lean`.
+
 ## 6. Honest status in the final tree
 
 - `PROVEN-AT-49-ONLY`: the q=7 datum exists, via `boza48Graph`.
