@@ -206,7 +206,7 @@ def decompose_two_regular(rows: list[list[int]]) -> list[list[int]]:
     return [first, second]
 
 
-def sat_search(q: int, timeout: int, paired_cycle: str | None = None
+def sat_search(q: int, timeout: int, paired_cycles: list[str] | None = None
                ) -> tuple[str, Datum | None, dict[str, int]]:
     """Exact CNF model of the lift class, solved by Kissat."""
     m, r = q - 1, q + 1
@@ -214,7 +214,9 @@ def sat_search(q: int, timeout: int, paired_cycle: str | None = None
     variables: dict[tuple[int, int], int] = {}
     reverse: dict[int, tuple[int, int]] = {}
     next_var = 1
-    if paired_cycle is not None:
+    if paired_cycles is not None:
+        if len(paired_cycles) != m // 2:
+            raise ValueError(f"expected {m // 2} paired cycle types")
         # Once doubled cross-fiber graphs are put in canonical form, the
         # within-fiber matchings must remain variable; fixing both is not a
         # legitimate use of the same relabeling freedom.
@@ -242,7 +244,7 @@ def sat_search(q: int, timeout: int, paired_cycle: str | None = None
         i, x = divmod(u, r)
         j, y = divmod(v, r)
         if i == j:
-            return variables[u, v] if paired_cycle is not None else x // 2 == y // 2
+            return variables[u, v] if paired_cycles is not None else x // 2 == y // 2
         return variables[u, v]
 
     stats = {"degree_clauses": 0, "gauge_clauses": 0, "c4_clauses": 0}
@@ -278,7 +280,7 @@ def sat_search(q: int, timeout: int, paired_cycle: str | None = None
                 stats["degree_clauses"] += 1
 
         for i in range(m):
-            if paired_cycle is not None:
+            if paired_cycles is not None:
                 for x in range(r):
                     exactly([
                         int(edge(i * r + x, i * r + y))
@@ -291,22 +293,25 @@ def sat_search(q: int, timeout: int, paired_cycle: str | None = None
                 for y in range(r):
                     exactly([int(edge(i * r + x, j * r + y)) for x in range(r)], degree)
 
-        if paired_cycle is not None:
-            parts = [int(x) // 2 for x in paired_cycle.split("+")]
-            if sum(parts) != r or any(length < 3 for length in parts):
-                raise ValueError(
-                    "paired cycle lengths must be even, at least 6, and sum to 2(q+1)"
-                )
-            successor = list(range(r))
-            start = 0
-            for length in parts:
-                for x in range(start, start + length):
-                    successor[x] = start + (x - start + 1) % length
-                start += length
-            # Normalize every doubled pair to the union of the identity
-            # matching and the matching induced by `successor`.
-            for i in range(0, m, 2):
+        if paired_cycles is not None:
+            # Normalize each doubled pair independently.  Its union of two
+            # matchings is an even-cycle decomposition; after fixing one
+            # matching to the identity, half-cycle lengths give the cycles
+            # of the relative permutation.
+            for pair_index, i in enumerate(range(0, m, 2)):
                 j = i ^ 1
+                parts = [int(x) // 2 for x in paired_cycles[pair_index].split("+")]
+                if sum(parts) != r or any(length < 3 for length in parts):
+                    raise ValueError(
+                        "paired cycle lengths must be even, at least 6, "
+                        "and sum to 2(q+1)"
+                    )
+                successor = list(range(r))
+                start = 0
+                for length in parts:
+                    for x in range(start, start + length):
+                        successor[x] = start + (x - start + 1) % length
+                    start += length
                 for x in range(r):
                     for y in range(r):
                         variable = int(edge(i * r + x, j * r + y))
@@ -355,7 +360,7 @@ def sat_search(q: int, timeout: int, paired_cycle: str | None = None
         if line.startswith("v "):
             true_vars.update(int(x) for x in line.split()[1:] if int(x) > 0)
     within = None
-    if paired_cycle is not None:
+    if paired_cycles is not None:
         within = []
         for i in range(m):
             mate = [-1] * r
@@ -394,16 +399,79 @@ def main() -> None:
     parser.add_argument("--method", choices=("sat", "stochastic"), default="sat")
     parser.add_argument("--timeout", type=int, default=3600,
                         help="Kissat timeout in seconds")
+    cycle_types = ("20", "6+14", "8+12", "10+10")
     parser.add_argument(
-        "--paired-cycle", choices=("20", "6+14", "8+12", "10+10"),
-        help="q=9 positive scout: fix every doubled fiber pair to this cycle type",
+        "--paired-cycle", choices=cycle_types,
+        help="q=9 scout: fix every doubled fiber pair to this cycle type",
+    )
+    parser.add_argument(
+        "--paired-cycles",
+        help=("q=9 scout: comma-separated cycle type for each of the four "
+              "doubled fiber pairs, e.g. '20,20,6+14,8+12'"),
+    )
+    parser.add_argument(
+        "--enumerate-cycle-multisets", action="store_true",
+        help="run all 35 symmetry-reduced q=9 mixed cycle-type multisets",
+    )
+    parser.add_argument(
+        "--multiset-start", type=int, default=0,
+        help="zero-based first multiset representative to run",
+    )
+    parser.add_argument(
+        "--multiset-count", type=int,
+        help="maximum number of multiset representatives to run",
     )
     parser.add_argument("--output")
     args = parser.parse_args()
     if args.q < 3 or args.q % 2 == 0:
         parser.error("q must be an odd integer at least 3")
-    if args.method == "sat":
-        status, datum, stats = sat_search(args.q, args.timeout, args.paired_cycle)
+    if args.paired_cycle and args.paired_cycles:
+        parser.error("use at most one of --paired-cycle and --paired-cycles")
+    if args.enumerate_cycle_multisets and (args.paired_cycle or args.paired_cycles):
+        parser.error("cycle multiset enumeration cannot be combined with a fixed type")
+    if args.enumerate_cycle_multisets:
+        if args.q != 9 or args.method != "sat":
+            parser.error("cycle multiset enumeration is an exact q=9 SAT scout")
+        if args.multiset_start < 0:
+            parser.error("--multiset-start must be nonnegative")
+        if args.multiset_count is not None and args.multiset_count < 1:
+            parser.error("--multiset-count must be positive")
+        summaries = []
+        representatives = list(itertools.combinations_with_replacement(
+            cycle_types, 4
+        ))
+        stop = (None if args.multiset_count is None else
+                args.multiset_start + args.multiset_count)
+        for representative_index, cycles in enumerate(
+            representatives[args.multiset_start:stop], args.multiset_start
+        ):
+            status, datum, stats = sat_search(args.q, args.timeout, list(cycles))
+            item = {
+                "representative_index": representative_index,
+                "paired_cycles": cycles,
+                "status": status,
+                "stats": stats,
+            }
+            if datum is not None:
+                item |= serializable(datum) | {"C4_count": 0}
+            summaries.append(item)
+            print(json.dumps(item, sort_keys=True), flush=True)
+            if datum is not None:
+                break
+        result = {
+            "q": args.q,
+            "representative_count": len(representatives),
+            "cycle_multiset_scouts": summaries,
+        }
+    elif args.method == "sat":
+        paired_cycles = None
+        if args.paired_cycle:
+            paired_cycles = [args.paired_cycle] * ((args.q - 1) // 2)
+        elif args.paired_cycles:
+            paired_cycles = args.paired_cycles.split(",")
+            if any(cycle not in cycle_types for cycle in paired_cycles):
+                parser.error(f"cycle types must be chosen from {cycle_types}")
+        status, datum, stats = sat_search(args.q, args.timeout, paired_cycles)
         result = {"q": args.q, "status": status, "stats": stats}
         if datum is not None:
             result |= serializable(datum) | {"C4_count": 0}

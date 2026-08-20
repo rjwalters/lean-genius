@@ -326,6 +326,22 @@ work should add mathematically justified symmetry breaking or enumerate the
 `4^4` doubled-pair cycle-type tuples; simply extending the timeout would not
 clarify the construction.
 
+The exact scout now supports this mixed enumeration.  The four doubled fiber
+pairs may be permuted, so the `4^4` ordered assignments reduce to the 35
+multisets of four types.  For example,
+
+```text
+python3 near_latin_q9.py --paired-cycles '20,20,6+14,8+12' --timeout 300
+python3 near_latin_q9.py --enumerate-cycle-multisets \
+  --multiset-start 0 --multiset-count 5 --timeout 300
+```
+
+fixes a single mixed assignment or runs a resumable shard of the 35 canonical
+representatives.  A one-second end-to-end smoke test of one mixed assignment
+and representative 34 reaches Kissat and returns `UNKNOWN-TIMEOUT`; this validates the new routing
+but is not evidence for satisfiability or unsatisfiability.  A complete exact
+run is still required for the decisive q=9 datum.
+
 An exact local catalog (`near_latin_local_catalog.py`) further locates the
 difficulty. There are 945 perfect matchings on a ten-point fiber. For each
 doubled-pair cycle type, the number of ordered pairs of internal matchings
