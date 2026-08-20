@@ -407,8 +407,64 @@ theorem muNegThreeGraph_c4_no_two
     hcab u v huinj hvinj hurange hvrange hg64 hh64 hg (htgh ▸ hh)
   exact hgh hgh'
 
-/-- The exact residual after the graph-generic owner geometry is removed:
-four defect-algebra fields and the two service fields. -/
+/-- The full cross-defect matrix intertwines the two ambient C8 shore
+actions, giving the residual's entrywise four-neighbor equation. -/
+theorem muNegThreeGraph_intertwine
+    (hfree : ¬ containsC4 V G) (hreg : ∀ z, G.degree z = 8)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    ∀ i j, i < 8 → j < 8 →
+      (cond (muNegThreeCrossDefectRel G c u v ((i + 7) % 8) j) 1 0) +
+          (cond (muNegThreeCrossDefectRel G c u v ((i + 1) % 8) j) 1 0) =
+        (cond (muNegThreeCrossDefectRel G c u v i ((j + 1) % 8)) 1 0) +
+          (cond (muNegThreeCrossDefectRel G c u v i ((j + 7) % 8)) 1 0) := by
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let H := G.induce c.supp
+  let M : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (v j)
+  have hcomm : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ :=
+    (adjMatrix_comm_secondOrderDefect_induce_component_of_regular
+      G hfree hreg c).symm
+  have hupair : ∀ z, u (z - 1) ≠ u (z + 1) := fun z ↦
+    huinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) z)
+  have hvpair : ∀ z, v (z - 1) ≠ v (z + 1) := fun z ↦
+    hvinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) z)
+  have hinter : ∀ i j,
+      M (i - 1) j + M (i + 1) j = M i (j + 1) + M i (j - 1) := by
+    simpa only [M] using entry_cycleIntertwine_of_adjMatrix_comm
+      K H u v (1 : ZMod 8) (1 : ZMod 8) hcomm hu hv hupair hvpair
+  have decode (i j : Nat) :
+      ((cond (muNegThreeCrossDefectRel G c u v i j) 1 0 : Nat) : ℤ) =
+        M (i : ZMod 8) (j : ZMod 8) := by
+    simp only [muNegThreeCrossDefectRel, cond_eq_if, M, K,
+      SimpleGraph.adjMatrix_apply]
+    split <;> simp_all
+  intro i j hi hj
+  have hiprev : (((i + 7) % 8 : Nat) : ZMod 8) = (i : ZMod 8) - 1 := by
+    interval_cases i <;> decide
+  have hinext : (((i + 1) % 8 : Nat) : ZMod 8) = (i : ZMod 8) + 1 := by
+    interval_cases i <;> decide
+  have hjnext : (((j + 1) % 8 : Nat) : ZMod 8) = (j : ZMod 8) + 1 := by
+    interval_cases j <;> decide
+  have hjprev : (((j + 7) % 8 : Nat) : ZMod 8) = (j : ZMod 8) - 1 := by
+    interval_cases j <;> decide
+  apply Int.ofNat_injective
+  change (((cond (muNegThreeCrossDefectRel G c u v ((i + 7) % 8) j) 1 0) +
+      (cond (muNegThreeCrossDefectRel G c u v ((i + 1) % 8) j) 1 0) : Nat) : ℤ) =
+    (((cond (muNegThreeCrossDefectRel G c u v i ((j + 1) % 8)) 1 0) +
+      (cond (muNegThreeCrossDefectRel G c u v i ((j + 7) % 8)) 1 0) : Nat) : ℤ)
+  rw [Nat.cast_add, Nat.cast_add]
+  rw [decode, decode, decode, decode, hiprev, hinext, hjnext, hjprev]
+  exact hinter (i : ZMod 8) (j : ZMod 8)
+
+/-- The exact residual after the graph-generic owner geometry and
+intertwining law are removed: three defect-shape fields and two service
+fields. -/
 structure MuNegThreeOneTwoGraphResidualSemantics
     (fwd : Bool) (phase : Nat) (D X : Nat → Nat → Bool) : Prop where
   fixed : ∀ i j, i < 8 → j < 8 → i % 2 == j % 2 →
@@ -419,11 +475,6 @@ structure MuNegThreeOneTwoGraphResidualSemantics
   opposite_columns : ∀ j, j < 8 →
     (((List.range 8).filter fun i => !(i % 2 == j % 2)).countP
       fun i => D i j) = 1
-  intertwine : ∀ i j, i < 8 → j < 8 →
-    (cond (D ((i + 7) % 8) j) 1 0) +
-        (cond (D ((i + 1) % 8) j) 1 0) =
-      (cond (D i ((j + 1) % 8)) 1 0) +
-        (cond (D i ((j + 7) % 8)) 1 0)
   service_exists : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
     ∀ (onRow : Bool) t,
       (if onRow then muNegThreeOffsetOne (muNegThreeCellRow a) t
@@ -458,6 +509,10 @@ theorem muNegThreeGraph_finiteSemantics
     (u v : ZMod 8 → c.supp)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
     (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
     {fwd : Bool} {phase : Nat}
     (hres : MuNegThreeOneTwoGraphResidualSemantics fwd phase
       (muNegThreeCrossDefectRel G c u v)
@@ -468,7 +523,7 @@ theorem muNegThreeGraph_finiteSemantics
   fixed := hres.fixed
   opposite_rows := hres.opposite_rows
   opposite_columns := hres.opposite_columns
-  intertwine := hres.intertwine
+  intertwine := muNegThreeGraph_intertwine G c hfree hreg u v huinj hvinj hu hv
   hit_active := muNegThreeGraph_hit_active G c hfree ca cb hcab u v
     hurange hvrange
   service_exists := hres.service_exists
@@ -488,6 +543,10 @@ theorem muNegThreeGraph_false_of_residual
     (u v : ZMod 8 → c.supp)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
     (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
     {fwd : Bool} {phase : Nat}
     (hphase : phase = 0 ∨ phase = 2 ∨ phase = 4 ∨ phase = 6)
     (hres : MuNegThreeOneTwoGraphResidualSemantics fwd phase
@@ -495,7 +554,7 @@ theorem muNegThreeGraph_false_of_residual
       (muNegThreeOwnerHitRel G c u v)) : False :=
   muNegThreeOneTwoFiniteSemantics_false hphase
     (muNegThreeGraph_finiteSemantics G c hfree hreg hcard hsize ca cb hcab
-      u v huinj hvinj hurange hvrange hres)
+      u v huinj hvinj hurange hvrange hu hv hres)
 
 end StructuralFields
 
