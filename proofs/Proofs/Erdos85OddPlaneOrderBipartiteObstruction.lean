@@ -1,5 +1,6 @@
 import Proofs.Erdos85GadgetDegreeSquares
 import Proofs.Erdos101ProblemOQ02
+import Mathlib.Combinatorics.SimpleGraph.Bipartite
 
 /-!
 # The plane-minus-two target cannot be a bipartite incidence graph
@@ -65,6 +66,99 @@ theorem false_of_planeMinusTwo_regular_linear_incidence
     Nat.le_of_mul_le_mul_left hscaled hLinePos
   have hqPred : q - 1 + 1 = q := by omega
   have hLinePred : Fintype.card Line - 1 + 1 = Fintype.card Line := by omega
+  nlinarith
+
+/-- **Graph-facing bipartite obstruction at the plane-minus-two order.**
+A `q`-regular C4-free graph on `q^2 - 1` vertices cannot be bipartite.
+
+This is the form consumed by the odd-plane-order existence program.  It also
+shows that the nonbipartite nature of the checked order-48 witness is forced,
+rather than an artifact of its Cayley presentation. -/
+theorem not_isBipartite_of_planeMinusTwo_regular_not_containsC4
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (q : ℕ) (hq : 2 ≤ q)
+    (horder : Fintype.card V + 1 = q * q)
+    (hregular : ∀ v : V, G.degree v = q)
+    (hfree : ¬ containsC4 V G) :
+    ¬ G.IsBipartite := by
+  intro hbip
+  classical
+  obtain ⟨s, t, hst⟩ := hbip.exists_isBipartiteWith
+  let sF : Finset V := Finset.univ.filter (· ∈ s)
+  let tF : Finset V := Finset.univ.filter (· ∈ t)
+  have hstF : G.IsBipartiteWith (sF : Set V) (tF : Set V) := by
+    simpa [sF, tF] using hst
+  have hcover : sF ∪ tF = Finset.univ := by
+    ext v
+    simp only [Finset.mem_union, Finset.mem_univ, iff_true]
+    have hvSupport : v ∈ G.support := by
+      rw [← G.degree_pos_iff_mem_support, hregular v]
+      omega
+    have hv := SimpleGraph.isBipartiteWith_support_subset hst hvSupport
+    simpa [sF, tF] using hv
+  have hdisjoint : Disjoint sF tF := by
+    rw [Finset.disjoint_left]
+    intro v hvs hvt
+    have hvs' : v ∈ s := by simpa [sF] using hvs
+    have hvt' : v ∈ t := by simpa [tF] using hvt
+    exact Set.disjoint_left.mp hst.disjoint hvs' hvt'
+  have hsum := SimpleGraph.isBipartiteWith_sum_degrees_eq hstF
+  simp only [hregular, Finset.sum_const, nsmul_eq_mul] at hsum
+  have hqPos : 0 < q := by omega
+  have hcards : sF.card = tF.card := by
+    exact Nat.eq_of_mul_eq_mul_right hqPos hsum
+  have htotal : Fintype.card V = sF.card + tF.card := by
+    rw [← Finset.card_univ, ← hcover, Finset.card_union_of_disjoint hdisjoint]
+  have hside : 2 * sF.card + 1 = q * q := by
+    rw [htotal, ← hcards] at horder
+    omega
+  have hlineRegular : ∀ ell ∈ tF,
+      (Erdos101OQ02ST.pointsOn G.Adj sF ell).card = q := by
+    intro ell hell
+    rw [← hregular ell, ← G.card_neighborFinset_eq_degree]
+    congr 1
+    simpa [Erdos101OQ02ST.pointsOn] using
+      (SimpleGraph.isBipartiteWith_neighborFinset' hstF hell).symm
+  have huniq : ∀ p ∈ sF, ∀ r ∈ sF, p ≠ r →
+      ∀ ell₁ ∈ tF, ∀ ell₂ ∈ tF,
+      G.Adj p ell₁ → G.Adj r ell₁ →
+      G.Adj p ell₂ → G.Adj r ell₂ → ell₁ = ell₂ := by
+    intro p _ r _ hpr ell₁ _ ell₂ _ hp₁ hr₁ hp₂ hr₂
+    by_contra hell
+    exact hfree (containsC4_of_two_common hpr hell
+      hp₁.symm hr₁.symm hp₂.symm hr₂.symm)
+  have hpair := Erdos101OQ02ST.sum_choose_two_le G.Adj sF tF huniq
+  have hpair' : tF.card * q.choose 2 ≤ sF.card.choose 2 := by
+    calc
+      _ = ∑ _ell ∈ tF, q.choose 2 := by simp
+      _ = ∑ ell ∈ tF,
+          (Erdos101OQ02ST.pointsOn G.Adj sF ell).card.choose 2 := by
+        apply Finset.sum_congr rfl
+        intro ell hell
+        rw [hlineRegular ell hell]
+      _ ≤ _ := hpair
+  rw [← hcards] at hpair'
+  have hsidePos : 0 < sF.card := by
+    by_contra hz
+    have hz' : sF.card = 0 := Nat.eq_zero_of_not_pos hz
+    rw [hz'] at hside
+    norm_num at hside
+    nlinarith
+  have hqChoose := two_mul_choose_two q
+  have hsideChoose := two_mul_choose_two sF.card
+  have hscaled :
+      sF.card * (q * (q - 1)) ≤ sF.card * (sF.card - 1) := by
+    calc
+      _ = 2 * (sF.card * q.choose 2) := by
+        rw [← hqChoose]
+        ring
+      _ ≤ 2 * sF.card.choose 2 := Nat.mul_le_mul_left 2 hpair'
+      _ = _ := hsideChoose
+  have hcancel : q * (q - 1) ≤ sF.card - 1 :=
+    Nat.le_of_mul_le_mul_left hscaled hsidePos
+  have hqPred : q - 1 + 1 = q := by omega
+  have hsidePred : sF.card - 1 + 1 = sF.card := by omega
   nlinarith
 
 end Erdos85
