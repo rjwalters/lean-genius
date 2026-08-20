@@ -39,12 +39,13 @@ def MuNegThreeOwnerVertex (u v : ZMod 8 → c.supp)
     G.Adj (muNegThreeOwnerEndpoints G c u v a).1 z ∧
     G.Adj (muNegThreeOwnerEndpoints G c u v a).2 z
 
-/-- The signed cross-defect relation in cyclic coordinates. -/
-def muNegThreeCrossDefectRel (s : V → ℤ)
+/-- The full cross-defect relation in cyclic coordinates.  Sign parity is
+used later to split this matrix into its fixed and opposite halves; it is
+not part of the defect bit. -/
+def muNegThreeCrossDefectRel
     (u v : ZMod 8 → c.supp) (i j : Nat) : Bool :=
-  decide (s (u (i : ZMod 8)).1 = s (v (j : ZMod 8)).1 ∧
-    (secondOrderDefectGraph G).Adj
-      (u (i : ZMod 8)).1 (v (j : ZMod 8)).1)
+  decide ((secondOrderDefectGraph G).Adj
+    (u (i : ZMod 8)).1 (v (j : ZMod 8)).1)
 
 /-- Two cross-cell owners hit when their exterior owner vertices are
 adjacent in the ambient graph. -/
@@ -56,11 +57,10 @@ noncomputable def muNegThreeOwnerHitRel (u v : ZMod 8 → c.supp)
     MuNegThreeOwnerVertex G c u v b w ∧ G.Adj z w)
 
 @[simp] theorem muNegThreeCrossDefectRel_eq_true
-    (s : V → ℤ) (u v : ZMod 8 → c.supp) (i j : Nat) :
-    muNegThreeCrossDefectRel G c s u v i j = true ↔
-      s (u (i : ZMod 8)).1 = s (v (j : ZMod 8)).1 ∧
-        (secondOrderDefectGraph G).Adj
-          (u (i : ZMod 8)).1 (v (j : ZMod 8)).1 := by
+    (u v : ZMod 8 → c.supp) (i j : Nat) :
+    muNegThreeCrossDefectRel G c u v i j = true ↔
+      (secondOrderDefectGraph G).Adj
+        (u (i : ZMod 8)).1 (v (j : ZMod 8)).1 := by
   simp [muNegThreeCrossDefectRel]
 
 @[simp] theorem muNegThreeOwnerHitRel_eq_true
@@ -81,15 +81,12 @@ theorem muNegThreeOwnerEndpoints_row_col
 /-- In the induced valuation, a cross cell is active exactly when its
 signed defect adjacency is absent. -/
 theorem muNegThreeOwnerActive_graph_iff
-    (s : V → ℤ) (u v : ZMod 8 → c.supp) (a : Nat) :
-    muNegThreeOwnerActive (muNegThreeCrossDefectRel G c s u v) a = true ↔
-      ¬ (s (u (muNegThreeCellRow a : ZMod 8)).1 =
-          s (v (muNegThreeCellCol a : ZMod 8)).1 ∧
-        (secondOrderDefectGraph G).Adj
-          (u (muNegThreeCellRow a : ZMod 8)).1
-          (v (muNegThreeCellCol a : ZMod 8)).1) := by
+    (u v : ZMod 8 → c.supp) (a : Nat) :
+    muNegThreeOwnerActive (muNegThreeCrossDefectRel G c u v) a = true ↔
+      ¬ (secondOrderDefectGraph G).Adj
+        (u (muNegThreeCellRow a : ZMod 8)).1
+        (v (muNegThreeCellCol a : ZMod 8)).1 := by
   simp [muNegThreeOwnerActive, muNegThreeCrossDefectRel]
-  tauto
 
 /-- Hit symmetry is inherited from sharing the same exterior vertex. -/
 theorem muNegThreeOwnerHitRel_comm
@@ -259,12 +256,12 @@ field. -/
 theorem muNegThreeGraph_hit_active
     (hfree : ¬ containsC4 V G)
     (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
-    (s : V → ℤ) (u v : ZMod 8 → c.supp)
+    (u v : ZMod 8 → c.supp)
     (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
     ∀ x y, (x, y) ∈ muNegThreeHitPairs →
       muNegThreeOwnerHitRel G c u v x y = true →
-      muNegThreeOwnerActive (muNegThreeCrossDefectRel G c s u v) x = true ∧
-        muNegThreeOwnerActive (muNegThreeCrossDefectRel G c s u v) y = true := by
+      muNegThreeOwnerActive (muNegThreeCrossDefectRel G c u v) x = true ∧
+        muNegThreeOwnerActive (muNegThreeCrossDefectRel G c u v) y = true := by
   intro x y _hkey hX
   obtain ⟨z, w, hx, hy, _hzw⟩ :=
     (muNegThreeOwnerHitRel_eq_true G c u v x y).mp hX
@@ -272,11 +269,11 @@ theorem muNegThreeGraph_hit_active
   · rw [muNegThreeOwnerActive_graph_iff]
     intro hD
     exact muNegThreeOwnerVertex_not_defect G c hfree a b hab u v
-      hurange hvrange hx hD.2
+      hurange hvrange hx hD
   · rw [muNegThreeOwnerActive_graph_iff]
     intro hD
     exact muNegThreeOwnerVertex_not_defect G c hfree a b hab u v
-      hurange hvrange hy hD.2
+      hurange hvrange hy hD
 
 /-- Intersecting cross cells cannot share a common adjacent owner. -/
 theorem muNegThreeGraph_c4_intersecting
@@ -458,21 +455,21 @@ theorem muNegThreeGraph_finiteSemantics
     (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
     (hsize : c.supp.ncard = 8 * 2)
     (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
-    (s : V → ℤ) (u v : ZMod 8 → c.supp)
+    (u v : ZMod 8 → c.supp)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
     (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
     {fwd : Bool} {phase : Nat}
     (hres : MuNegThreeOneTwoGraphResidualSemantics fwd phase
-      (muNegThreeCrossDefectRel G c s u v)
+      (muNegThreeCrossDefectRel G c u v)
       (muNegThreeOwnerHitRel G c u v)) :
     MuNegThreeOneTwoFiniteSemantics fwd phase
-      (muNegThreeCrossDefectRel G c s u v)
+      (muNegThreeCrossDefectRel G c u v)
       (muNegThreeOwnerHitRel G c u v) where
   fixed := hres.fixed
   opposite_rows := hres.opposite_rows
   opposite_columns := hres.opposite_columns
   intertwine := hres.intertwine
-  hit_active := muNegThreeGraph_hit_active G c hfree ca cb hcab s u v
+  hit_active := muNegThreeGraph_hit_active G c hfree ca cb hcab u v
     hurange hvrange
   service_exists := hres.service_exists
   service_unique := hres.service_unique
@@ -488,17 +485,17 @@ theorem muNegThreeGraph_false_of_residual
     (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
     (hsize : c.supp.ncard = 8 * 2)
     (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
-    (s : V → ℤ) (u v : ZMod 8 → c.supp)
+    (u v : ZMod 8 → c.supp)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
     (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
     {fwd : Bool} {phase : Nat}
     (hphase : phase = 0 ∨ phase = 2 ∨ phase = 4 ∨ phase = 6)
     (hres : MuNegThreeOneTwoGraphResidualSemantics fwd phase
-      (muNegThreeCrossDefectRel G c s u v)
+      (muNegThreeCrossDefectRel G c u v)
       (muNegThreeOwnerHitRel G c u v)) : False :=
   muNegThreeOneTwoFiniteSemantics_false hphase
     (muNegThreeGraph_finiteSemantics G c hfree hreg hcard hsize ca cb hcab
-      s u v huinj hvinj hurange hvrange hres)
+      u v huinj hvinj hurange hvrange hres)
 
 end StructuralFields
 
