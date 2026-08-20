@@ -673,6 +673,81 @@ theorem muNegFiveOneTwoCrossOnlyGraphServiceSemantics
       muNegFiveOneTwoCrossOnlyGraphHit_no_two_common G c a b u v hfree hreg
         hcard hsize hab huinj hvinj hurange hvrange }
 
+/-- Checked graph-facing h512 endpoint over the corrected 64-owner universe. -/
+theorem muNegFiveOneTwoCrossOnly_graph_false
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (s : V → ℤ) (sigma : Bool)
+    (hphase : ∀ x y : Nat, x < 8 → y < 8 →
+      (muNegFiveZeroThreeSameSign sigma x y = true ↔
+        s (v (y : ZMod 8)).1 = s (u (x : ZMod 8)).1))
+    (Luv : MuNegFiveExplicitRowParameterLedger
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (u j))
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (v j))
+      (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) 1 2)
+    (Lvu : MuNegFiveExplicitRowParameterLedger
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (v i) (v j))
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (v i) (u j))
+      (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) 1 2)
+    (hshapeU : ZModEightSameSignShape
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (u j)) (fun i ↦ s (u i).1) 1)
+    (hshapeV : ZModEightSameSignShape
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (v i) (v j)) (fun i ↦ s (v i).1) 1) : False := by
+  have hnoU := muNegFiveOneTwo_no_sameShoreExterior_of_rowLedger
+    G c hfree u huinj hu _ (fun i ↦ s (u i).1) (fun j ↦ s (v j).1)
+      Luv hshapeU
+  have hnoV := muNegFiveOneTwo_no_sameShoreExterior_of_rowLedger
+    G c hfree v hvinj hv _ (fun i ↦ s (v i).1) (fun j ↦ s (u j).1)
+      Lvu hshapeV
+  have hcover :=
+    muNegFiveOneTwoCrossOnlyExteriorOwnerCoverage_of_noSameShore
+      G c a b u v hfree hreg hcard hsize hab huinj hvinj hurange hvrange
+        hnoU hnoV
+  have hprofile : MuNegFiveCrossExteriorProfile
+      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+        (u i) (v j))
+      (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) 6 4 := by
+    apply muNegFive_oneTwo_crossExteriorProfile Luv Lvu
+    intro i j
+    simp only [SimpleGraph.adjMatrix_apply]
+    by_cases h : (secondOrderDefectGraph G).Adj (u i).1 (v j).1
+    · have hr := (secondOrderDefectGraph G).adj_comm (u i).1 (v j).1 |>.mp h
+      simp [h, hr]
+    · have hr : ¬ (secondOrderDefectGraph G).Adj (v j).1 (u i).1 :=
+        fun hv ↦ h ((secondOrderDefectGraph G).adj_comm
+          (v j).1 (u i).1 |>.mp hv)
+      simp [h, hr]
+  apply muNegFiveOneTwoCrossOnlyOwnerRelations_false_of_serviceSemantics sigma
+    (muNegFiveOneTwoCrossOnlyGraphActive G c u v)
+    (muNegFiveOneTwoCrossOnlyGraphHit G c u v)
+  · exact muNegFiveOneTwoCrossOnlyGraphServiceSemantics G c a b u v hfree
+      hreg hcard hsize hab huinj hvinj hurange hvrange hu hv hcover
+  · exact muNegFiveOneTwoCrossOnlyGraphHit_symm G c u v
+  · exact muNegFiveOneTwoCrossOnlyGraphHit_irrefl G c a b u v hfree hab
+      huinj hvinj hurange hvrange
+  · intro e f hef
+    exact muNegFiveOneTwoCrossOnlyOwnerCompatible_of_graphHit
+      G c a b u v hfree hab huinj hvinj hurange hvrange hu hv hef
+  · exact muNegFiveOneTwoCrossOnlyGraphHit_ends G c u v
+  · exact muNegFiveOneTwoCrossOnlyGraphFiberBitsAllowed
+      G c a b u v hfree hab huinj hvinj hurange hvrange s sigma hphase hprofile
+  · exact muNegFiveOneTwoCrossOnlyGraphBalance G c a b u v hfree hreg hab
+      huinj hvinj hurange hvrange hu hv
+
 end Shores
 
 end
@@ -685,3 +760,4 @@ end Erdos85
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyOwnerCompatible_of_graphHit
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyGraphServiceSemantics
+#print axioms Erdos85.muNegFiveOneTwoCrossOnly_graph_false
