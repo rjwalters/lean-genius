@@ -14,6 +14,42 @@ open SimpleGraph
 
 namespace Erdos85
 
+/-- **Uniform local triangle counts are multiples of three when `3 ∣ q`.**
+At order `q^2-1`, the vertex count is `2 mod 3`.  The global rooted triangle
+identity says that the vertex count times the uniform local count is divisible
+by three, so the local count itself is divisible by three. -/
+theorem three_dvd_uniform_localTriangleEdge_card_of_three_dvd_planeOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (q : ℕ) (hthree : 3 ∣ q)
+    (horder : Fintype.card V + 1 = q * q)
+    (hfree : ¬ containsC4 V G)
+    (r : ℕ)
+    (huniform : ∀ v : V,
+      (G.induce (G.neighborSet v)).edgeFinset.card = r) :
+    3 ∣ r := by
+  have hqmod : q % 3 = 0 := Nat.mod_eq_zero_of_dvd hthree
+  have hsquaremod : (q * q) % 3 = 0 := by
+    rw [Nat.mul_mod, hqmod]
+  have hcardSuccMod : (Fintype.card V + 1) % 3 = 0 := by
+    rw [horder]
+    exact hsquaremod
+  have hcardMod : Fintype.card V % 3 = 2 := by omega
+  have hsum := sum_localTriangleEdges_eq_three_mul_triangularCliques G hfree
+  simp_rw [huniform] at hsum
+  simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at hsum
+  have hsumNat : Fintype.card V * r =
+      3 * ((triangularEdgeGraph G).cliqueFinset 3).card := by
+    exact_mod_cast hsum
+  have hprodMod : (Fintype.card V * r) % 3 = 0 := by
+    rw [hsumNat]
+    exact Nat.mul_mod_right 3 _
+  rw [Nat.mul_mod, hcardMod] at hprodMod
+  apply Nat.dvd_of_mod_eq_zero
+  omega
+
 /-- A C4-free 9-regular graph on 80 vertices with uniform local triangle
 count has exactly three edges in every induced neighborhood.
 
@@ -39,9 +75,9 @@ theorem squareOrderNine_uniform_localTriangleEdge_card_eq_three
   have hbounds := planeMinusTwo_localTriangleEdge_card_bounds_of_odd
     G 9 (by norm_num) (by norm_num) (by omega) hregular hfree x
   rw [huniform x] at hbounds
-  have hsum := sum_localTriangleEdges_eq_three_mul_triangularCliques G hfree
-  simp_rw [huniform] at hsum
-  simp [hcard] at hsum
+  have hdiv := three_dvd_uniform_localTriangleEdge_card_of_three_dvd_planeOrder
+    G 9 (by norm_num) (by omega) hfree r huniform
+  obtain ⟨k, hk⟩ := hdiv
   omega
 
 end Erdos85
