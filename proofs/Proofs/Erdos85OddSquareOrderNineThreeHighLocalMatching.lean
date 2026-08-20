@@ -360,6 +360,47 @@ theorem squareOrderNine_threeHigh_firstProfile_binTwo_local_matching_dichotomy
   rw [hpartition, Finset.card_union_of_disjoint hdisj] at hcommon
   exact hcommon
 
+/-- At three highs, a defect edge from bin two to bin one has complementary
+high-incidence sets: the bin-one endpoint is incident to exactly the third
+high root outside the bin-two endpoint's high pair. -/
+theorem squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hDxy : (secondOrderDefectGraph G).Adj x y) :
+    (G.neighborFinset x ∩ squareOrderHighVertices G 9) ∪
+        (G.neighborFinset y ∩ squareOrderHighVertices G 9) =
+      squareOrderHighVertices G 9 := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let Ix := G.neighborFinset x ∩ H
+  let Iy := G.neighborFinset y ∩ H
+  have hIx : Ix.card = 2 := (Finset.mem_filter.mp hx).2
+  have hIy : Iy.card = 1 := (Finset.mem_filter.mp hy).2
+  have hdisj : Disjoint Ix Iy := by
+    rw [Finset.disjoint_left]
+    intro a hax hay
+    have hax' := Finset.mem_inter.mp hax
+    have hay' := Finset.mem_inter.mp hay
+    have hxy : x ≠ y := (secondOrderDefectGraph G).ne_of_adj hDxy
+    have hnot := not_secondOrderDefect_adj_of_commonNeighbor
+      G hfree hxy
+      ((G.mem_neighborFinset x a).mp hax'.1)
+      ((G.mem_neighborFinset y a).mp hay'.1)
+    exact hnot hDxy
+  have hsubset : Ix ∪ Iy ⊆ H := by
+    intro a ha
+    rcases Finset.mem_union.mp ha with hax | hay
+    · exact (Finset.mem_inter.mp hax).2
+    · exact (Finset.mem_inter.mp hay).2
+  apply Finset.eq_of_subset_of_card_le hsubset
+  rw [Finset.card_union_of_disjoint hdisj, hIx, hIy, hhigh]
+
 /-- The full original-neighborhood census of the rare bin-three vertex in
 the second three-high profile is `3H + 3B₁ + 3B₀`. -/
 theorem squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
@@ -479,5 +520,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_binThree_binOne_partner_sets_disjoint
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_binTwo_local_matching_dichotomy
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_binTwo_defectBinOne_highIncidence_complement
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
