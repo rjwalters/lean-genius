@@ -23,8 +23,6 @@ theorem orderSixtyFour_regular_sizeTwo_signedJoint_false_of_h512_h305
     (c : (secondOrderDefectGraph G).ConnectedComponent)
     [DecidableEq (G.induce c.supp).ConnectedComponent]
     (hc : c.supp.ncard = 16)
-    (hother : ∀ c' : (secondOrderDefectGraph G).ConnectedComponent,
-      c' ≠ c → c'.supp.ncard ≠ 8)
     (s : Fin 64 → ℤ) (mu : ℤ)
     (hs_out : ∀ x, x ∉ c.supp → s x = 0)
     (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
@@ -101,7 +99,7 @@ theorem orderSixtyFour_regular_sizeTwo_signedJoint_false_of_h512_h305
   · intro hmu
     subst mu
     obtain ⟨k, r, w⟩ := exists_negativeEightEightSource_muNegOne
-      G hfree hreg (by norm_num) c (by simpa using hc) hother s
+      G hfree hreg (by norm_num) c (by simpa using hc) s
         hs_out hs_in hH (by simpa using hD)
         a b hab u v huinj hvinj hurange hvrange hu hv
     rcases w with ⟨w⟩

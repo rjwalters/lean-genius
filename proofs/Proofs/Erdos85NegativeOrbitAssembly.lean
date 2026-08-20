@@ -13,6 +13,7 @@ import Proofs.Erdos85MuNegOneOneFourEnrichedCapstone
 import Proofs.Erdos85MuNegOneOneFourOwnerBridge
 import Proofs.Erdos85SizeTwoMuNegThreeSelfCellZeroFourRouter
 import Proofs.Erdos85MuNegThreeOneThreeCommutationTerminal
+import Proofs.Erdos85MuNegSevenCompanionFreeKill
 
 /-!
 # Ledger-backed assembly socket for the negative switch orbit
@@ -655,31 +656,13 @@ theorem isAmbientSignedJoint_theta_ne_negativeSeven
     (hcard : Fintype.card V = 8 * 8)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
     (hc : c.supp.ncard = 8 * 2)
-    (hother : ∀ c' : (secondOrderDefectGraph G).ConnectedComponent,
-      c' ≠ c → c'.supp.ncard ≠ 8)
     (theta : ℤ) (s : V → ℤ)
     (hs : IsAmbientSignedJoint G c theta s) : theta ≠ -7 := by
   intro htheta
-  let t : c.supp → ℤ := fun x ↦ s x.1
-  have htsign : ∀ x, t x = -1 ∨ t x = 1 := by
-    intro x
-    exact hs.2.1 x.1 x.2
-  have htD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec t =
-      (-7 : ℤ) • t := by
-    funext x
-    rw [induce_adjMatrix_mulVec_restrict_apply]
-    have hrow := hs.2.2.2 x.1 x.2
-    have hfilter : ((secondOrderDefectGraph G).neighborFinset x.1).filter
-        (fun y ↦ y ∈ c.supp) =
-        (secondOrderDefectGraph G).neighborFinset x.1 := by
-      apply Finset.filter_eq_self.mpr
-      intro y hy
-      exact c.mem_supp_of_adj_mem_supp x.2
-        (((secondOrderDefectGraph G).mem_neighborFinset x.1 y).mp hy)
-    rw [hfilter]
-    simpa [t, htheta, smul_eq_mul] using hrow
-  exact orderSixtyFour_sizeTwoPart_inducedSignedEigenvector_muNegativeSeven_false
-    G hfree hreg hcard c hc hother t htsign htD
+  apply binarySquare_regular_allOpposite_defectEigenline_false
+    G hfree (by omega) (by norm_num) hreg hcard c s hs.2.1
+  intro z hz
+  simpa [htheta] using hs.2.2.2 z hz
 
 /-- Package a common aligned `mu=-3` ledger as a full orbit source.  The
 post-`mu=1` refinement is derived from the switched ambient witness, so the
@@ -892,8 +875,6 @@ theorem exists_negativeEightEightSource_muNegOne
     (c : (secondOrderDefectGraph G).ConnectedComponent)
     [DecidableEq (G.induce c.supp).ConnectedComponent]
     (hc : c.supp.ncard = 8 * 2)
-    (hother : ∀ c' : (secondOrderDefectGraph G).ConnectedComponent,
-      c' ≠ c → c'.supp.ncard ≠ 8)
     (s : V → ℤ)
     (hs_out : ∀ x, x ∉ c.supp → s x = 0)
     (hs_in : ∀ x, x ∈ c.supp → s x = -1 ∨ s x = 1)
@@ -989,7 +970,7 @@ theorem exists_negativeEightEightSource_muNegOne
     N₁ N₂ k r hrefined hneOne
   have hneSeven : sizeTwoMuSwitchTarget (-1) k r ≠ -7 :=
     isAmbientSignedJoint_theta_ne_negativeSeven
-      G hfree hreg hcard c hc hother _ t ht
+      G hfree hreg hcard c hc _ t ht
   have hpost := muNegOne_postEndpoint_sector_cells_of_target_ne_negativeSeven
     N₁ N₂ k r hpostOne hneSeven
   exact ⟨k, r, negativeEightEightSource_muNegOne_of_aligned
