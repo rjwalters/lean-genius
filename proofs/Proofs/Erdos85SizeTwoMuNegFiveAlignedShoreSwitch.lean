@@ -60,6 +60,8 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
         fun i j ↦ K.adjMatrix ℤ (v i) (v j)
       let M₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
         fun i j ↦ K.adjMatrix ℤ (v i) (u j)
+      (C8CycleEntriesZero N₁ ∨ C8CycleEntriesOne N₁) ∧
+      (C8CycleEntriesZero N₂ ∨ C8CycleEntriesOne N₂) ∧
       MuNegFiveExplicitParameterLedger N₁ M₁
           (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r ∧
       MuNegFiveExplicitParameterLedger N₂ M₂
@@ -265,6 +267,14 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
       (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) k r :=
     ⟨hk, (fun i ↦ hs_in _ (v i).2), (fun j ↦ hs_in _ (u j).2),
       hflip v hv, hflip u hu, hN₂row, hN₂same, hM₂row, hM₂same⟩
+  have hsector₁ : C8CycleEntriesZero N ∨ C8CycleEntriesOne N := by
+    simpa [N, K] using
+      (binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
+        G hfree hreg hcard c hc a u hurange hu)
+  have hsector₂ : C8CycleEntriesZero N₂ ∨ C8CycleEntriesOne N₂ := by
+    simpa [N₂, K] using
+      (binarySquare_regular_sizeTwoPart_eight_normalizedCycle_entries_sector
+        G hfree hreg hcard c hc b v hvrange hv)
   have same_eq (p : H.ConnectedComponent)
       (P : Finset c.supp) (hP : P = Finset.univ.filter fun y ↦ y ∈ p.supp)
       (x : c.supp) :
@@ -348,7 +358,8 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
     k r hcell hneOne
   have hroute := muNegFive_inducedSwitch_ambientCrossLane
     G c k r hpost t htsign (by simpa [H] using htH) (by simpa [K] using htK)
-  exact ⟨k, r, hcell, hledger₁, hledger₂, htK, htH, htne, htsign, hneOne, hpost,
+  exact ⟨k, r, hcell, hsector₁, hsector₂, hledger₁, hledger₂,
+    htK, htH, htne, htsign, hneOne, hpost,
     muNegFive_postMuOne_switch_target k r hpost, hroute⟩
 
 /-- Hide the aligned induced switch and expose only the three ambient
@@ -386,7 +397,7 @@ theorem orderSixtyFour_sizeTwo_muNegFive_ambientCrossLane
     (∃ w, IsAmbientSignedJoint G c (-3) w) ∨
       (∃ w, IsAmbientSignedJoint G c (-1) w) ∨
       (∃ w, IsAmbientSignedJoint G c 3 w) := by
-  obtain ⟨k, r, _hcell, _hledger₁, _hledger₂,
+  obtain ⟨k, r, _hcell, _hsector₁, _hsector₂, _hledger₁, _hledger₂,
       hK, hHt, _htne, htsign, _hneOne, hpost, _htargets⟩ :=
     orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
       G hfree hreg hcard c hc s hs_out hs_in hA_in hH hD a b hab

@@ -1,5 +1,6 @@
 import Proofs.Erdos85SizeTwoMuNegFiveEightEightParameterBounds
 import Proofs.Erdos85SizeTwoMuNegThreeEightEightAllTriangleParameterBounds
+import Proofs.Erdos85SizeTwoMuNegThreeEightEightSectorParameterGrid
 
 /-!
 # Explicit parameter ledger for the `mu = -5` canonical endpoints
@@ -65,9 +66,26 @@ theorem MuNegFiveExplicitParameterLedger.zeroThree_cycleEntry
   have := L.sum_eq_five_of_cycleZeros h.1 h.2
   norm_num at this
 
+/-- Combining the graph-facing all-zero/all-one sector dichotomy with the
+explicit h503 ledger upgrades "some cycle entry occurs" to the full
+all-triangle-free sector. -/
+theorem MuNegFiveExplicitParameterLedger.zeroThree_cycleEntriesOne
+    {N M : Matrix (ZMod 8) (ZMod 8) ℤ}
+    {f g : ZMod 8 → ℤ}
+    (L : MuNegFiveExplicitParameterLedger N M f g 0 3)
+    (hsector : C8CycleEntriesZero N ∨ C8CycleEntriesOne N) :
+    C8CycleEntriesOne N := by
+  rcases hsector with hzero | hone
+  · exact False.elim <| by
+      rcases L.zeroThree_cycleEntry with hminus | hplus
+      · exact hzero.1 hminus
+      · exact hzero.2 hplus
+  · exact hone
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.MuNegFiveExplicitParameterLedger.sum_eq_five_of_cycleZeros
 #print axioms Erdos85.MuNegFiveExplicitParameterLedger.zeroThree_cycleEntry
+#print axioms Erdos85.MuNegFiveExplicitParameterLedger.zeroThree_cycleEntriesOne
