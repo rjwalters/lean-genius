@@ -369,6 +369,66 @@ theorem exists_connection_perfectMatchingLayer_of_odd_card
     · change (x⁻¹ * (x * t)) ∈ A
       simpa using htA
 
+/-- Removing an involutory connection element preserves inverse-closure. -/
+theorem mem_erase_involution_iff_inv_mem_erase
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    {t : Γ} (htsq : t * t = 1) (g : Γ) :
+    g ∈ A.erase t ↔ g⁻¹ ∈ A.erase t := by
+  have htinv : t⁻¹ = t := by
+    exact (eq_inv_of_mul_eq_one_right htsq).symm
+  constructor
+  · intro hg
+    have hg' := Finset.mem_erase.mp hg
+    apply Finset.mem_erase.mpr
+    constructor
+    · intro hgit
+      apply hg'.1
+      calc
+        g = (g⁻¹)⁻¹ := by simp
+        _ = t⁻¹ := congrArg Inv.inv hgit
+        _ = t := htinv
+    · exact (hinv g).mp hg'.2
+  · intro hg
+    have hg' := Finset.mem_erase.mp hg
+    apply Finset.mem_erase.mpr
+    constructor
+    · intro hgt
+      apply hg'.1
+      calc
+        g⁻¹ = t⁻¹ := congrArg Inv.inv hgt
+        _ = t := htinv
+    · exact (hinv g).mpr hg'.2
+
+/-- Erasing an involutory generator splits the Cayley adjacency relation
+exactly into the residual Cayley graph and the matching `y = x*t`. -/
+theorem invClosedCayley_erase_involution_adj_iff
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    {t : Γ} (htA : t ∈ A) (htsq : t * t = 1)
+    (x y : Γ) :
+    (invClosedCayleyGraph (· ∈ A) hinv hone).Adj x y ↔
+      (invClosedCayleyGraph (· ∈ A.erase t)
+        (mem_erase_involution_iff_inv_mem_erase A hinv htsq)
+        (by exact fun h => hone (Finset.mem_of_mem_erase h))).Adj x y ∨
+      y = x * t := by
+  have hyiff : y = x * t ↔ x⁻¹ * y = t := by
+    constructor
+    · intro hy
+      simp [hy]
+    · intro hy
+      have h := congrArg (x * ·) hy
+      simpa [mul_assoc] using h
+  change (x⁻¹ * y ∈ A) ↔
+    (x⁻¹ * y ∈ A.erase t) ∨ y = x * t
+  rw [hyiff]
+  by_cases hxy : x⁻¹ * y = t
+  · simp [Finset.mem_erase, hxy, htA]
+  · simp [Finset.mem_erase, hxy]
+
 end Erdos85
 
 #print axioms Erdos85.invClosedCayley_containsC4_of_product_collision
@@ -382,3 +442,5 @@ end Erdos85
 #print axioms Erdos85.exists_unused_involution_of_odd_planeMinusTwo_Cayley
 #print axioms Erdos85.exists_connection_involution_of_odd_card
 #print axioms Erdos85.exists_connection_perfectMatchingLayer_of_odd_card
+#print axioms Erdos85.mem_erase_involution_iff_inv_mem_erase
+#print axioms Erdos85.invClosedCayley_erase_involution_adj_iff
