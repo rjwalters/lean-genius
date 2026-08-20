@@ -14,6 +14,33 @@ open SimpleGraph
 
 namespace Erdos85
 
+/-- An automorphism restricts to an isomorphism between the graphs induced on
+the neighborhoods of a vertex and its image. -/
+def neighborInduceIsoOfAutomorphism
+    {V : Type*} {G : SimpleGraph V}
+    (e : G ≃g G) (x : V) :
+    G.induce (G.neighborSet x) ≃g G.induce (G.neighborSet (e x)) where
+  toEquiv := e.mapNeighborSet x
+  map_rel_iff' := by
+    intro u v
+    exact e.map_rel_iff
+
+/-- Vertex transitivity phrased directly through graph automorphisms. -/
+def VertexTransitiveByIso {V : Type*} (G : SimpleGraph V) : Prop :=
+  ∀ x y : V, ∃ e : G ≃g G, e x = y
+
+/-- Vertex transitivity makes the induced-neighborhood edge count uniform. -/
+theorem localTriangleEdge_card_eq_of_vertexTransitiveByIso
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (htrans : VertexTransitiveByIso G) (x y : V) :
+    (G.induce (G.neighborSet x)).edgeFinset.card =
+      (G.induce (G.neighborSet y)).edgeFinset.card := by
+  obtain ⟨e, he⟩ := htrans x y
+  have hcard := (neighborInduceIsoOfAutomorphism e x).card_edgeFinset_eq
+  rw [he] at hcard
+  exact hcard
+
 /-- **Uniform local triangle counts are multiples of three when `3 ∣ q`.**
 At order `q^2-1`, the vertex count is `2 mod 3`.  The global rooted triangle
 identity says that the vertex count times the uniform local count is divisible
@@ -79,5 +106,28 @@ theorem squareOrderNine_uniform_localTriangleEdge_card_eq_three
     G 9 (by norm_num) (by omega) hfree r huniform
   obtain ⟨k, hk⟩ := hdiv
   omega
+
+/-- Every vertex-transitive C4-free 9-regular graph on 80 vertices has exactly
+three triangles through each vertex.  This is the direct algebraic/Cayley
+candidate interface. -/
+theorem squareOrderNine_vertexTransitive_localTriangleEdge_card_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hcard : Fintype.card V = 80)
+    (hregular : ∀ v : V, G.degree v = 9)
+    (hfree : ¬ containsC4 V G)
+    (htrans : VertexTransitiveByIso G) (v : V) :
+    (G.induce (G.neighborSet v)).edgeFinset.card = 3 := by
+  let r := (G.induce (G.neighborSet v)).edgeFinset.card
+  have huniform : ∀ x : V,
+      (G.induce (G.neighborSet x)).edgeFinset.card = r := by
+    intro x
+    exact localTriangleEdge_card_eq_of_vertexTransitiveByIso G htrans x v
+  have hr := squareOrderNine_uniform_localTriangleEdge_card_eq_three
+    G hcard hregular hfree r huniform
+  simpa [r] using hr
 
 end Erdos85
