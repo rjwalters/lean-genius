@@ -14,6 +14,43 @@ def cubicNonneighborFinset
     (G : SimpleGraph V) [DecidableRel G.Adj] (a : V) : Finset V :=
   (Finset.univ.erase a).filter fun b ↦ ¬ G.Adj a b
 
+/-- The nonneighbor sector has the expected complement cardinality. -/
+theorem cubicNonneighborFinset_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (a : V) :
+    (cubicNonneighborFinset G a).card =
+      Fintype.card V - 1 - G.degree a := by
+  classical
+  let E := (Finset.univ : Finset V).erase a
+  let N := G.neighborFinset a
+  have hNsub : N ⊆ E := by
+    intro b hb
+    apply Finset.mem_erase.mpr
+    refine ⟨?_, Finset.mem_univ _⟩
+    intro hba
+    subst b
+    exact G.loopless.irrefl a ((G.mem_neighborFinset a a).mp hb)
+  have hQ : cubicNonneighborFinset G a = E \ N := by
+    ext b
+    simp [cubicNonneighborFinset, E, N,
+      SimpleGraph.mem_neighborFinset]
+  rw [hQ, Finset.card_sdiff, Finset.inter_eq_left.mpr hNsub]
+  change ((Finset.univ : Finset V).erase a).card -
+    (G.neighborFinset a).card = Fintype.card V - 1 - G.degree a
+  rw [G.card_neighborFinset_eq_degree, Finset.card_erase_of_mem]
+  · simp
+  · exact Finset.mem_univ a
+
+/-- A six-regular graph on 48 vertices has exactly 41 nonneighbors other
+than the marked vertex itself. -/
+theorem sixRegular_fortyEight_cubicNonneighborFinset_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 48)
+    (hreg : ∀ x, G.degree x = 6) (a : V) :
+    (cubicNonneighborFinset G a).card = 41 := by
+  rw [cubicNonneighborFinset_card G a, hcard, hreg]
+
 /-- The cubic row mass outside the diagonal and open neighborhood is what
 remains after subtracting the `d` adjacent entries, each equal to `2d-1`,
 from the total row mass `d^3`. -/
@@ -87,3 +124,5 @@ end Erdos85
 
 #print axioms Erdos85.c4Free_regular_cubicNonneighborMass_eq
 #print axioms Erdos85.sixRegular_fortyEight_cubicNonneighborMass_eq
+#print axioms Erdos85.cubicNonneighborFinset_card
+#print axioms Erdos85.sixRegular_fortyEight_cubicNonneighborFinset_card
