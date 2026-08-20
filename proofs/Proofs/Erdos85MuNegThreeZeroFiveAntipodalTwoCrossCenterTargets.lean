@@ -1,5 +1,5 @@
 import Proofs.Erdos85MuNegThreeZeroFiveAntipodalResidualTypeOneTargets
-import Proofs.Erdos85MuNegThreeZeroFiveAntipodalCrossCenterOverlap
+import Proofs.Erdos85MuNegThreeZeroFiveAntipodalStarPeriodicity
 
 /-! # Two distinct targets routed across antipodal centers -/
 
@@ -35,7 +35,8 @@ theorem h305_antipodal_exists_two_distinct_crossCenter_targets
     ∃ e f : R.edgeFinset, e ≠ f ∧
       e ∈ h305AntipodalResidualTypeOneTargets R Cedge u i a ∧
       f ∈ h305AntipodalResidualTypeOneTargets R Cedge u i a ∧
-      ∃ k l : ZMod 8, k ≠ i ∧ l ≠ i ∧
+      ∃ k l : ZMod 8, k ≠ i ∧ k ≠ i + 4 ∧
+        l ≠ i ∧ l ≠ i + 4 ∧
         e.1 ∈ h305AntipodalSaturatedStarUnion R u k ∧
         f.1 ∈ h305AntipodalSaturatedStarUnion R u l := by
   classical
@@ -53,13 +54,13 @@ theorem h305_antipodal_exists_two_distinct_crossCenter_targets
     have hb' := Finset.mem_filter.mp hb
     have hbT := Finset.mem_filter.mp hb'.1
     exact ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hbT.2⟩, hb'.2⟩
-  obtain ⟨k, hki, hek⟩ :=
-    h305_typeOne_outside_antipodalStar_forced_by_other_coordinate
+  obtain ⟨k, hki, hki4, hek⟩ :=
+    h305_typeOne_outside_antipodalStar_forced_by_other_center
       R u i e (unpack e he).1 (unpack e he).2
-  obtain ⟨l, hli, hfl⟩ :=
-    h305_typeOne_outside_antipodalStar_forced_by_other_coordinate
+  obtain ⟨l, hli, hli4, hfl⟩ :=
+    h305_typeOne_outside_antipodalStar_forced_by_other_center
       R u i f (unpack f hf).1 (unpack f hf).2
-  exact ⟨e, f, hef, he, hf, k, l, hki, hli, hek, hfl⟩
+  exact ⟨e, f, hef, he, hf, k, l, hki, hki4, hli, hli4, hek, hfl⟩
 
 end
 
