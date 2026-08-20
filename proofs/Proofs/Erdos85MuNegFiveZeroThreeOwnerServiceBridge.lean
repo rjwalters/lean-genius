@@ -14,6 +14,151 @@ open Std Sat
 
 set_option maxHeartbeats 0
 
+def muNegFiveZeroThreeOwnerEnabled
+    (active : Fin 72 → Prop) (e : Fin 72) : Prop :=
+  match muNegFiveZeroThreeActiveVariable? e with
+  | some _ => active e
+  | none => True
+
+structure MuNegFiveZeroThreeOwnerServiceSemantics
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop) : Prop where
+  service_exists : ∀ (e : Fin 72) (v : Fin 16),
+    muNegFiveZeroThreeOwnerEnabled active e →
+    muNegFiveZeroThreeOwnerTargetContains e v = true →
+      ∃ f, X e f ∧ muNegFiveZeroThreeOwnerContains f v = true
+  service_unique : ∀ (e : Fin 72) (v : Fin 16) (f g : Fin 72),
+    X e f → muNegFiveZeroThreeOwnerContains f v = true →
+    X e g → muNegFiveZeroThreeOwnerContains g v = true → f = g
+  internal_zero : ∀ (e : Fin 72) (v : Fin 16) (f : Fin 72),
+    muNegFiveZeroThreeOwnerTargetContains e v = false →
+    muNegFiveZeroThreeOwnerContains f v = true → ¬ X e f
+  intersecting_no_common : ∀ (e f : Fin 72),
+    e ≠ f → muNegFiveZeroThreeOwnersIntersect e f = true →
+      ∀ k, X e k → X f k → False
+  no_two_common : ∀ (e f : Fin 72),
+    e ≠ f → ∀ (k l : Fin 72), k ≠ l →
+      X e k → X f k → X e l → X f l → False
+
+theorem mem_muNegFiveZeroThreeServiceVariables_iff
+    (e : Fin 72) (v : Fin 16) (lit : Int) :
+    lit ∈ muNegFiveZeroThreeServiceVariables e v ↔
+      ∃ f : Fin 72, f ≠ e ∧
+        muNegFiveZeroThreeOwnerContains f v = true ∧
+        muNegFiveZeroThreeHitLiteral? e f = some lit := by
+  simp only [muNegFiveZeroThreeServiceVariables, List.mem_filterMap,
+    List.mem_range]
+  constructor
+  · rintro ⟨f, hf72, hflit⟩
+    split at hflit
+    · next hcond =>
+      have hc : f ≠ e.val ∧
+          muNegFiveZeroThreeOwnerContains f v = true := by
+        simpa using hcond
+      refine ⟨⟨f, hf72⟩, ?_, ?_, ?_⟩
+      · intro h
+        exact hc.1 (congrArg Fin.val h)
+      · simpa using hc.2
+      · simpa using hflit
+    · simp at hflit
+  · rintro ⟨f, hfe, hcontains, hlit⟩
+    refine ⟨f, f.2, ?_⟩
+    rw [if_pos]
+    · exact hlit
+    · have hne : f.val ≠ e.val := fun h => hfe (Fin.ext h)
+      simp [hne, hcontains]
+
+theorem muNegFiveZeroThreeHitVariable?_positive
+    {e f : Fin 72} {id : Nat}
+    (hvar : muNegFiveZeroThreeHitVariable? e f = some id) : 0 < id := by
+  exact Nat.lt_trans (by omega : 0 < 64)
+    (muNegFiveZeroThreeHitVariable?_above_active hvar)
+
+theorem muNegFiveZeroThreeHitLiteral?_eq_some
+    {e f : Fin 72} {lit : Int}
+    (hlit : muNegFiveZeroThreeHitLiteral? e f = some lit) :
+    ∃ id : Nat, muNegFiveZeroThreeHitVariable? e f = some id ∧
+      lit = Int.ofNat id := by
+  unfold muNegFiveZeroThreeHitLiteral? at hlit
+  cases hvar : muNegFiveZeroThreeHitVariable? e f with
+  | none => simp [hvar] at hlit
+  | some id =>
+      simp [hvar] at hlit
+      exact ⟨id, rfl, hlit.symm⟩
+
+theorem muNegFiveZeroThreeHitVariable?_exists
+    (e f : Fin 72) (hef : e ≠ f)
+    (hcompat : muNegFiveZeroThreeOwnerCompatible e f = true) :
+    ∃ id, muNegFiveZeroThreeHitVariable? e f = some id := by
+  have hs : (muNegFiveZeroThreeHitVariable? e f).isSome = true := by
+    revert e f
+    native_decide
+  cases hvar : muNegFiveZeroThreeHitVariable? e f with
+  | none => simp [hvar] at hs
+  | some id => exact ⟨id, rfl⟩
+
+theorem muNegFiveZeroThreeActiveGuard_satisfied_of_not_enabled
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (e : Fin 72) (hdisabled : ¬ muNegFiveZeroThreeOwnerEnabled active e) :
+    dimacsClauseSatisfied
+      (muNegFiveZeroThreeOwnerValOfRelations active X)
+      (muNegFiveZeroThreeActiveGuard e) := by
+  unfold muNegFiveZeroThreeOwnerEnabled at hdisabled
+  unfold muNegFiveZeroThreeActiveGuard
+  cases hvar : muNegFiveZeroThreeActiveVariable? e with
+  | none => simp [hvar] at hdisabled
+  | some id =>
+      have hnotactive : ¬ active e := by simpa [hvar] using hdisabled
+      have hvalfalse :
+          muNegFiveZeroThreeOwnerValOfRelations active X id = false := by
+        apply Bool.eq_false_of_not_eq_true
+        intro hval
+        exact hnotactive
+          (muNegFiveZeroThreeOwnerActive_of_val_true active X hvar hval)
+      refine ⟨-Int.ofNat id, by simp, ?_⟩
+      simp [dimacsLitValue, hvalfalse]
+
+theorem muNegFiveZeroThreeServiceExistsClauseSatisfied_of_relation
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsem : MuNegFiveZeroThreeOwnerServiceSemantics active X)
+    (hirr : ∀ e, ¬ X e e)
+    (hcompat : ∀ e f, X e f →
+      muNegFiveZeroThreeOwnerCompatible e f = true)
+    (e v : Nat) (he : e < 72) (hv : v < 16)
+    (htarget : muNegFiveZeroThreeOwnerTargetContains e v = true) :
+    dimacsClauseSatisfied
+      (muNegFiveZeroThreeOwnerValOfRelations active X)
+      (muNegFiveZeroThreeActiveGuard e ++
+        muNegFiveZeroThreeServiceVariables e v) := by
+  let ef : Fin 72 := ⟨e, he⟩
+  let vf : Fin 16 := ⟨v, hv⟩
+  by_cases henabled : muNegFiveZeroThreeOwnerEnabled active ef
+  · obtain ⟨f, hX, hcontains⟩ :=
+      hsem.service_exists ef vf henabled (by simpa using htarget)
+    have hfe : f ≠ ef := by
+      intro h
+      subst f
+      exact hirr ef hX
+    obtain ⟨id, hvar⟩ :=
+      muNegFiveZeroThreeHitVariable?_exists ef f hfe.symm
+        (hcompat ef f hX)
+    have hlit : muNegFiveZeroThreeHitLiteral? ef f =
+        some (Int.ofNat id) := by
+      simp [muNegFiveZeroThreeHitLiteral?, hvar]
+    have hmem : Int.ofNat id ∈
+        muNegFiveZeroThreeServiceVariables e v :=
+      (mem_muNegFiveZeroThreeServiceVariables_iff ef vf
+        (Int.ofNat id)).mpr ⟨f, hfe, hcontains, hlit⟩
+    refine ⟨Int.ofNat id, List.mem_append.mpr (Or.inr hmem), ?_⟩
+    have hval := muNegFiveZeroThreeOwnerVal_hit_true_of active X hvar hX
+    have hid := muNegFiveZeroThreeHitVariable?_positive hvar
+    simp [dimacsLitValue, hid, hval]
+  · obtain ⟨lit, hmem, hsat⟩ :=
+      muNegFiveZeroThreeActiveGuard_satisfied_of_not_enabled
+        active X ef henabled
+    exact ⟨lit, List.mem_append.mpr (Or.inl hmem), hsat⟩
+
 theorem muNegFiveZeroThreeHitVariable?_some_of_mem
     {e f : Nat} (hmem : (e, f) ∈ muNegFiveZeroThreeHitVariables) :
     e < 72 ∧ f < 72 ∧
@@ -154,4 +299,5 @@ theorem muNegFiveZeroThreeOwnerRelations_false
 end Erdos85
 
 #print axioms Erdos85.muNegFiveZeroThreeHitActivityClauses_satisfied
+#print axioms Erdos85.muNegFiveZeroThreeServiceExistsClauseSatisfied_of_relation
 #print axioms Erdos85.muNegFiveZeroThreeOwnerRelations_false
