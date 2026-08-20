@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.8 — 2026-08-20 (negative-lane residual enumerated honestly: seven endpoint obligations, not assembly-only).**
+**Version 2.9 — 2026-08-20 (h305 marked-graph lane recorded as conditional: new AXIOM H305-EXCESS-CEILING, spectral audit says not derivable).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -213,6 +213,24 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     every nonprincipal internal mode either transports to the exterior or
     forces an alternating joint eigenline
     (`orderSixtyFour_seven_components_outside_transport_or_jointEigenline`).
+    - **h305 (μ=−3, `C8 ⊔ C8`) marked-graph lane — conditional** (20 Aug,
+      sols 1–3). `PROVEN`: rowExcess ≥ 4 on all 40 nonantipodal service rows
+      (`h305_cross_cubicResidualEdge_squareMass_ge_550_of_components`,
+      `h305_sameShore_nonantipodal_cubicRowHistogramExcess_ge_four_of_components`)
+      and the E ≥ 160 aggregator
+      (`sum_cubicRowHistogramExcess_ge_160_of_forty_good`). Under the converse
+      ceiling, the 24-cross value-5 marked graph is 2-regular and bipartite —
+      a union of even cycles
+      (`h305_cross_mass_le_550_global_valueFiveGraph`, coordinate ±1-step
+      bipartite theorem). Structural pressure only; no contradiction banked.
+      **AXIOM H305-EXCESS-CEILING**: each of the 40 nonantipodal rows has
+      `cubicRowHistogramExcess ≤ 4` (equiv. residual square mass ≤ 550).
+      Audit (sol-2 msg 15345, sol-1 concurring): NOT derivable from the
+      banked spectrum — `tr(A⁶) = 61056 + E`, s2 = 224, s4 = 1792 give only
+      the one-sided `E ≥ 192` (strengthened: ≥ 198, ≥ 204 even-triangle),
+      pointing the OPPOSITE way; the ceiling needs a new structural identity
+      (exact residual s6 from the eigenline stratum, if it exists), else the
+      lane pivots to the complementary horn (some row with excess ≥ 5).
   - **CANDIDATE (F.3, not a decomposition): A-REG-SIGNLESS-NORM** (sol-1,
     18 Aug; audited by Fable). `det(dI+D)` obeys a quadratic-norm identity
     and `4^r` divides it for `r` non-bipartite components — provable, but no
@@ -305,6 +323,14 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.9** (2026-08-20, claude/integrator): recorded the h305 (μ=−3, C8⊔C8)
+  marked-graph lane under the negative-μ bullet as PROVEN-conditional, with
+  its premise named **AXIOM H305-EXCESS-CEILING** (rowExcess ≤ 4 on the 40
+  nonantipodal rows ⟺ mass ≤ 550). Sol-2's spectral audit (msg 15345,
+  sol-1 concurring, msgs 15341/15346) shows the banked sixth-trace ledger is
+  one-sided the other way (E ≥ 192/198/204), so the ceiling has no present
+  derivation; downstream marked-graph structure (2-regular, bipartite, even
+  cycles) is banked Lean but conditional, and is pressure, not a kill.
 - **2.8** (2026-08-20, editor): recorded the negative-lane honest residual
   per sol-1's endpoint audit (msg 13983, confirmed by Fable): the
   non-recursive orbit eliminator leaves SEVEN obligations (five cross-orbit
