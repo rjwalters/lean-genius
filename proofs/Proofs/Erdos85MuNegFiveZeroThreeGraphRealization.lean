@@ -79,6 +79,29 @@ theorem muNegFiveZeroThreeCodeVertex_inj
   simpa only [muNegFiveZeroThreeCodeVertex, muNegOneCodeVertex] using
     muNegOneCodeVertex_inj G c a b u v hab huinj hvinj hurange hvrange
 
+theorem muNegFiveZeroThreeCycleAdj_eq_muNegOneGAdj :
+    ∀ x, x < 16 → ∀ y, y < 16 →
+      eightEightHighCycleAdj x y = muNegOneGAdj x y := by
+  native_decide
+
+theorem muNegFiveZeroThreeCodeVertex_adj_iff
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    ∀ x, x < 16 → ∀ y, y < 16 →
+      (G.Adj (muNegFiveZeroThreeCodeVertex G c u v x)
+        (muNegFiveZeroThreeCodeVertex G c u v y) ↔
+          eightEightHighCycleAdj x y = true) := by
+  intro x hx y hy
+  rw [muNegFiveZeroThreeCycleAdj_eq_muNegOneGAdj x hx y hy]
+  simpa only [muNegFiveZeroThreeCodeVertex, muNegOneCodeVertex] using
+    muNegOneCodeVertex_adj_iff G c a b u v hab huinj hvinj hurange hvrange
+      hu hv x hx y hy
+
 theorem muNegFiveZeroThreeOwnerAt_bounds_ne (e : Fin 72) :
     (muNegFiveZeroThreeOwnerAt e).1 < 16 ∧
       (muNegFiveZeroThreeOwnerAt e).2 < 16 ∧
@@ -206,6 +229,150 @@ theorem muNegFiveZeroThreeOwnerVertex_adj_of_contains
   rcases hs with hs | hs
   · simpa only [muNegFiveZeroThreeOwnerEndpoints, hs] using hz.2.1.symm
   · simpa only [muNegFiveZeroThreeOwnerEndpoints, hs] using hz.2.2.symm
+
+theorem muNegFiveZeroThree_no_owner_endpoint_edge
+    (hfree : ¬ containsC4 V G)
+    {e f : Fin 72} {te tf : V}
+    (hte : MuNegFiveZeroThreeOwnerVertex G c u v e te)
+    (htf : MuNegFiveZeroThreeOwnerVertex G c u v f tf)
+    (hetf : G.Adj te tf)
+    {x y : V}
+    (hx : x = (muNegFiveZeroThreeOwnerEndpoints G c u v e).1 ∨
+      x = (muNegFiveZeroThreeOwnerEndpoints G c u v e).2)
+    (hy : y = (muNegFiveZeroThreeOwnerEndpoints G c u v f).1 ∨
+      y = (muNegFiveZeroThreeOwnerEndpoints G c u v f).2) :
+    ¬ G.Adj x y := by
+  intro hxy
+  have htex : G.Adj te x := by
+    rcases hx with rfl | rfl
+    · exact hte.2.1.symm
+    · exact hte.2.2.symm
+  have htfy : G.Adj tf y := by
+    rcases hy with rfl | rfl
+    · exact htf.2.1.symm
+    · exact htf.2.2.symm
+  have hne : te ≠ y := by
+    intro h
+    apply hte.1
+    rw [h]
+    rcases hy with rfl | rfl <;>
+      exact muNegFiveZeroThreeCodeVertex_mem_supp G c u v _
+  have heq := commonServer_unique G hfree hne
+    htex hxy.symm hetf htfy.symm
+  apply htf.1
+  rw [← heq]
+  rcases hx with rfl | rfl <;>
+    exact muNegFiveZeroThreeCodeVertex_mem_supp G c u v _
+
+theorem muNegFiveZeroThreeOwnerTargetContains_of_adj
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    {e f : Fin 72} {te tf : V}
+    (hte : MuNegFiveZeroThreeOwnerVertex G c u v e te)
+    (htf : MuNegFiveZeroThreeOwnerVertex G c u v f tf)
+    (hetf : G.Adj te tf) :
+    muNegFiveZeroThreeOwnerTargetContains e
+      (muNegFiveZeroThreeOwnerAt f).1 = true ∧
+    muNegFiveZeroThreeOwnerTargetContains e
+      (muNegFiveZeroThreeOwnerAt f).2 = true := by
+  have heBounds := muNegFiveZeroThreeOwnerAt_bounds_ne e
+  have hfBounds := muNegFiveZeroThreeOwnerAt_bounds_ne f
+  unfold muNegFiveZeroThreeOwnerTargetContains
+  simp only [Bool.and_eq_true]
+  constructor
+  · constructor
+    · rw [Bool.not_eq_true_eq_eq_false]
+      apply Bool.eq_false_of_not_eq_true
+      intro hadj
+      exact muNegFiveZeroThree_no_owner_endpoint_edge G c u v hfree hte htf
+        hetf (Or.inl rfl) (Or.inl rfl)
+        ((muNegFiveZeroThreeCodeVertex_adj_iff G c a b u v hab huinj hvinj
+          hurange hvrange hu hv _ heBounds.1 _ hfBounds.1).mpr hadj)
+    · rw [Bool.not_eq_true_eq_eq_false]
+      apply Bool.eq_false_of_not_eq_true
+      intro hadj
+      exact muNegFiveZeroThree_no_owner_endpoint_edge G c u v hfree hte htf
+        hetf (Or.inr rfl) (Or.inl rfl)
+        ((muNegFiveZeroThreeCodeVertex_adj_iff G c a b u v hab huinj hvinj
+          hurange hvrange hu hv _ heBounds.2.1 _ hfBounds.1).mpr hadj)
+  · constructor
+    · rw [Bool.not_eq_true_eq_eq_false]
+      apply Bool.eq_false_of_not_eq_true
+      intro hadj
+      exact muNegFiveZeroThree_no_owner_endpoint_edge G c u v hfree hte htf
+        hetf (Or.inl rfl) (Or.inr rfl)
+        ((muNegFiveZeroThreeCodeVertex_adj_iff G c a b u v hab huinj hvinj
+          hurange hvrange hu hv _ heBounds.1 _ hfBounds.2.1).mpr hadj)
+    · rw [Bool.not_eq_true_eq_eq_false]
+      apply Bool.eq_false_of_not_eq_true
+      intro hadj
+      exact muNegFiveZeroThree_no_owner_endpoint_edge G c u v hfree hte htf
+        hetf (Or.inr rfl) (Or.inr rfl)
+        ((muNegFiveZeroThreeCodeVertex_adj_iff G c a b u v hab huinj hvinj
+          hurange hvrange hu hv _ heBounds.2.1 _ hfBounds.2.1).mpr hadj)
+
+theorem muNegFiveZeroThreeOwnerCompatible_of_graphHit
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    {e f : Fin 72}
+    (hef : muNegFiveZeroThreeGraphHit G c u v e f) :
+    muNegFiveZeroThreeOwnerCompatible e f = true := by
+  obtain ⟨te, tf, hte, htf, hetf⟩ := hef
+  have hne : e ≠ f := by
+    intro h
+    subst f
+    have heq := muNegFiveZeroThreeOwnerVertex_unique G c a b u v hfree hab
+      huinj hvinj hurange hvrange e hte htf
+    subst tf
+    exact G.loopless.irrefl te hetf
+  have hefTargets := muNegFiveZeroThreeOwnerTargetContains_of_adj G c a b u v
+    hfree hab huinj hvinj hurange hvrange hu hv hte htf hetf
+  have hfeTargets := muNegFiveZeroThreeOwnerTargetContains_of_adj G c a b u v
+    hfree hab huinj hvinj hurange hvrange hu hv htf hte hetf.symm
+  have hneVal : e.val ≠ f.val := fun h => hne (Fin.ext h)
+  unfold muNegFiveZeroThreeOwnerCompatible
+  simp only [bne_iff_ne, Bool.and_eq_true]
+  exact ⟨⟨⟨⟨hneVal, hefTargets.1⟩, hefTargets.2⟩,
+    hfeTargets.1⟩, hfeTargets.2⟩
+
+theorem muNegFiveZeroThreeGraphHit_internal_zero
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    ∀ (e : Fin 72) (s : Fin 16) (f : Fin 72),
+      muNegFiveZeroThreeOwnerTargetContains e s = false →
+      muNegFiveZeroThreeOwnerContains f s = true →
+      ¬ muNegFiveZeroThreeGraphHit G c u v e f := by
+  intro e s f htarget hcontains hhit
+  have hcompat := muNegFiveZeroThreeOwnerCompatible_of_graphHit G c a b u v
+    hfree hab huinj hvinj hurange hvrange hu hv hhit
+  unfold muNegFiveZeroThreeOwnerCompatible at hcompat
+  simp only [Bool.and_eq_true] at hcompat
+  rcases hcompat with ⟨⟨⟨⟨_, he1⟩, he2⟩, _⟩, _⟩
+  unfold muNegFiveZeroThreeOwnerContains at hcontains
+  simp only [Bool.or_eq_true, beq_iff_eq] at hcontains
+  rcases hcontains with h | h
+  · rw [← h] at htarget
+    exact Bool.false_ne_true (htarget.symm.trans he1)
+  · rw [← h] at htarget
+    exact Bool.false_ne_true (htarget.symm.trans he2)
 
 theorem muNegFiveZeroThreeGraphHit_intersecting_no_common
     (hfree : ¬ containsC4 V G)
@@ -358,4 +525,6 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_inj
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
+#print axioms Erdos85.muNegFiveZeroThreeOwnerCompatible_of_graphHit
+#print axioms Erdos85.muNegFiveZeroThreeGraphHit_internal_zero
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_irrefl
