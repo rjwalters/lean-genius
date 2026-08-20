@@ -625,6 +625,19 @@ exactly `q(q−1)` elements, leaving exactly `q−2` nonidentity group elements
 unused. The unused set is closed under inversion, because
 `(ab)⁻¹=b⁻¹a⁻¹` is another admissible product.
 
+This condition is not merely necessary: it is **equivalent** to C4-freeness.
+Any embedded four-cycle, translated so one vertex is the identity, supplies
+two distinct non-backtracking length-two connection words with the same
+opposite endpoint. Therefore the Cayley part of `GAP B-EXIST` has the exact
+algebraic formulation:
+
+> Find, for unbounded odd prime powers `q`, a group of order `q²−1` and an
+> inverse-closed `q`-element subset omitting the identity whose
+> non-backtracking ordered product map is injective.
+
+In other words, the missing object is an inverse-closed noncommutative Sidon
+set at plane-minus-two order. No additional graph-side condition is hidden.
+
 There is also a forced structure inside `A` itself. Because `q` is odd and
 `A` is inversion-closed without the identity, inversion fixes a nontrivial
 generator `t∈A`. Right multiplication `x↦xt` is a fixed-point-free
@@ -667,6 +680,8 @@ capstone `containsC4_of_odd_connection_card_of_all_involutions_central`
 formally eliminates all groups whose involutions are central. The equal-sized
 disjoint shores `A∖{t}` and `t(A∖{t})t` are packaged by
 `erase_involution_disjoint_conjugate_shore` and its cardinal corollary.
+The equivalence itself is
+`not_containsC4_iff_nonbacktracking_connectionProduct_injective`.
 
 ## 6. Honest status in the final tree
 
