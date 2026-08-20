@@ -152,4 +152,64 @@ theorem squareOrderNine_vertexTransitive_localTriangleEdge_card_eq_three
     G hcard hregular hfree r huniform
   simpa [r] using hr
 
+/-- In a vertex-transitive q=9 candidate the spanning graph of triangle-free
+edges is cubic. -/
+theorem squareOrderNine_vertexTransitive_triangleFreeEdgeGraph_degree_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hcard : Fintype.card V = 80)
+    (hregular : ∀ v : V, G.degree v = 9)
+    (hfree : ¬ containsC4 V G)
+    (htrans : VertexTransitiveByIso G) (v : V) :
+    (triangleFreeEdgeGraph G).degree v = 3 := by
+  have hlocal :=
+    squareOrderNine_vertexTransitive_localTriangleEdge_card_eq_three
+      G hcard hregular hfree htrans v
+  have hid := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree v
+  rw [hlocal, hregular v] at hid
+  rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+    triangleFreeEdgeGraph_neighborFinset]
+  omega
+
+/-- Exact global triangle/edge census for a vertex-transitive q=9 candidate:
+120 triangle-free edges, 240 edges lying in triangles, and 80 triangles. -/
+theorem squareOrderNine_vertexTransitive_triangle_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hcard : Fintype.card V = 80)
+    (hregular : ∀ v : V, G.degree v = 9)
+    (hfree : ¬ containsC4 V G)
+    (htrans : VertexTransitiveByIso G) :
+    (triangleFreeEdgeGraph G).edgeFinset.card = 120 ∧
+      (triangularEdgeGraph G).edgeFinset.card = 240 ∧
+      ((triangularEdgeGraph G).cliqueFinset 3).card = 80 := by
+  have hlocal : ∀ v : V,
+      (G.induce (G.neighborSet v)).edgeFinset.card = 3 :=
+    squareOrderNine_vertexTransitive_localTriangleEdge_card_eq_three
+      G hcard hregular hfree htrans
+  have htfDegree : ∀ v : V, (triangleFreeEdgeGraph G).degree v = 3 :=
+    squareOrderNine_vertexTransitive_triangleFreeEdgeGraph_degree_eq_three
+      G hcard hregular hfree htrans
+  have htriDegree : ∀ v : V, (triangularEdgeGraph G).degree v = 6 := by
+    intro v
+    have h := two_mul_localTriangleEdges_eq_triangularEdgeGraph_degree G hfree v
+    rw [hlocal v] at h
+    omega
+  have htfHandshake := (triangleFreeEdgeGraph G).sum_degrees_eq_twice_card_edges
+  simp_rw [htfDegree] at htfHandshake
+  simp [hcard] at htfHandshake
+  have htriHandshake := (triangularEdgeGraph G).sum_degrees_eq_twice_card_edges
+  simp_rw [htriDegree] at htriHandshake
+  simp [hcard] at htriHandshake
+  have htriangle := sum_localTriangleEdges_eq_three_mul_triangularCliques G hfree
+  simp_rw [hlocal] at htriangle
+  simp [hcard] at htriangle
+  omega
+
 end Erdos85
