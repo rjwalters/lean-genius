@@ -367,6 +367,98 @@ theorem muNegThree_row_server_classification
   · rw [Nat.min_eq_right hba', Nat.max_eq_left hba']
     exact ⟨z, ta, htb, hta, htaz.symm⟩
 
+/-- Column-symmetric tiling classification. -/
+theorem muNegThree_column_server_classification
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (huout : ∀ z, z ∉ c.supp → ∃! i : ZMod 8, G.Adj (u i).1 z)
+    (hvout : ∀ z, z ∉ c.supp → ∃! j : ZMod 8, G.Adj (v j).1 z)
+    {a : Nat} (ha : a < 64) {ta : V}
+    (hta : MuNegThreeOwnerVertex G c u v a ta)
+    {t : Nat} (ht : t < 8)
+    (hoff : muNegThreeOffsetOne (muNegThreeCellCol a) t = false) :
+    ∃ b, b < 64 ∧ b ≠ a ∧ muNegThreeCellCol b = t ∧
+      (min a b, max a b) ∈ muNegThreeHitPairs ∧
+      muNegThreeOwnerHitRel G c u v (min a b) (max a b) = true := by
+  have htaComp : (secondOrderDefectGraph G).connectedComponentMk ta ≠ c := by
+    intro h
+    exact hta.1 ((ConnectedComponent.mem_supp_iff c ta).mpr h)
+  have hvtComp : (secondOrderDefectGraph G).connectedComponentMk
+      (v (t : ZMod 8)).1 = c :=
+    (ConnectedComponent.mem_supp_iff c (v (t : ZMod 8)).1).mp (v _).2
+  obtain ⟨z, ⟨htaz, hzvt⟩, _hzuniq⟩ :=
+    binarySquare_regular_sizeTwoPart_exteriorOwner_unique_server
+      G hfree (by omega) hreg hcard c hsize htaComp hvtComp
+  have hzout : z ∉ c.supp := by
+    intro hzc
+    have hzmem := sizeTwoPart_server_mem_tile_of_internal G c htaz hzc
+    have hpair := sizeTwoPart_tile_eq_pair G hfree (by omega : 3 ≤ 8)
+      hreg hcard c hsize
+      (muNegThreeOwnerEndpoints_ne G c ca cb hcab u v hurange hvrange a)
+      (u (muNegThreeCellRow a : ZMod 8)).2
+      (v (muNegThreeCellCol a : ZMod 8)).2
+      hta.2.1.symm hta.2.2.symm
+    rw [hpair] at hzmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hzmem
+    rcases hzmem with hz | hz
+    · have hz' : z = (u (muNegThreeCellRow a : ZMod 8)).1 := hz
+      rw [hz'] at hzvt
+      exact muNegThree_crossShore_not_adj G c ca cb hcab u v
+        hurange hvrange _ _ hzvt
+    · have hz' : z = (v (muNegThreeCellCol a : ZMod 8)).1 := hz
+      rw [hz'] at hzvt
+      exact muNegThree_sameShore_not_adj_of_not_offset G c v hvinj hv
+        (Nat.mod_lt _ (by omega)) ht hoff hzvt
+  obtain ⟨i, hiz, _hiuniq⟩ := huout z hzout
+  obtain ⟨j, hjz, hjuniq⟩ := hvout z hzout
+  have hjt : j = (t : ZMod 8) := (hjuniq _ hzvt.symm).symm
+  let b : Nat := i.val * 8 + t
+  have hb : b < 64 := by
+    dsimp [b]
+    have := i.val_lt
+    omega
+  have hbrow : muNegThreeCellRow b = i.val := by
+    change (i.val * 8 + t) / 8 = i.val
+    rw [Nat.mul_comm i.val 8, Nat.mul_add_div (by omega)]
+    simp [Nat.div_eq_of_lt ht]
+  have hbcol : muNegThreeCellCol b = t := by
+    change (i.val * 8 + t) % 8 = t
+    rw [Nat.mul_comm i.val 8, Nat.mul_add_mod]
+    exact Nat.mod_eq_of_lt ht
+  have htb : MuNegThreeOwnerVertex G c u v b z := by
+    refine ⟨hzout, ?_, ?_⟩
+    · simp only [muNegThreeOwnerEndpoints, hbrow,
+        ZMod.natCast_zmod_val]
+      exact hiz
+    · simp only [muNegThreeOwnerEndpoints, hbcol]
+      rw [← hjt]
+      exact hjz
+  have hba : b ≠ a := by
+    intro h
+    have htb' : MuNegThreeOwnerVertex G c u v a z := h ▸ htb
+    have hzt := muNegThreeOwnerVertex_unique G c hfree ca cb hcab u v
+      hurange hvrange a htb' hta
+    rw [hzt] at htaz
+    exact G.irrefl htaz
+  have hkey := mem_muNegThreeHitPairs_of_ownerVertices_adj G c hfree u v
+    hu hv ha hb hba.symm hta htb htaz
+  refine ⟨b, hb, hba, hbcol, hkey, ?_⟩
+  rw [muNegThreeOwnerHitRel_eq_true]
+  rcases Nat.le_total a b with hab | hba'
+  · rw [Nat.min_eq_left hab, Nat.max_eq_right hab]
+    exact ⟨ta, z, hta, htb, htaz⟩
+  · rw [Nat.min_eq_right hba', Nat.max_eq_left hba']
+    exact ⟨z, ta, htb, hta, htaz.symm⟩
+
 end
 
 end Erdos85
