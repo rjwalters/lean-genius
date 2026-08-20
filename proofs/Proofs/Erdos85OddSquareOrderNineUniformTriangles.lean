@@ -29,6 +29,86 @@ def neighborInduceIsoOfAutomorphism
 def VertexTransitiveByIso {V : Type*} (G : SimpleGraph V) : Prop :=
   ∀ x y : V, ∃ e : G ≃g G, e x = y
 
+/-- An automorphism preserves the triangle-free spanning subgraph. -/
+def triangleFreeEdgeGraphIsoOfAutomorphism
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : G ≃g G) :
+    triangleFreeEdgeGraph G ≃g triangleFreeEdgeGraph G where
+  toEquiv := e.toEquiv
+  map_rel_iff' := by
+    intro x y
+    simp only [triangleFreeEdgeGraph_adj, mem_triangleFreeNeighbors]
+    have hzero :
+        (G.neighborFinset (e x) ∩ G.neighborFinset (e y)).card = 0 ↔
+          (G.neighborFinset x ∩ G.neighborFinset y).card = 0 := by
+      simp only [Finset.card_eq_zero]
+      constructor
+      · intro hmap
+        apply Finset.eq_empty_iff_forall_notMem.mpr
+        intro z hz
+        have hzmap : e z ∈
+            G.neighborFinset (e x) ∩ G.neighborFinset (e y) := by
+          simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hz ⊢
+          exact ⟨e.map_rel_iff.mpr hz.1, e.map_rel_iff.mpr hz.2⟩
+        rw [hmap] at hzmap
+        simp at hzmap
+      · intro horig
+        apply Finset.eq_empty_iff_forall_notMem.mpr
+        intro z hz
+        have hzback : e.symm z ∈
+            G.neighborFinset x ∩ G.neighborFinset y := by
+          simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hz ⊢
+          constructor
+          · apply e.map_rel_iff.mp
+            simpa using hz.1
+          · apply e.map_rel_iff.mp
+            simpa using hz.2
+        rw [horig] at hzback
+        simp at hzback
+    change (G.Adj (e x) (e y) ∧
+        (G.neighborFinset (e x) ∩ G.neighborFinset (e y)).card = 0) ↔ _
+    rw [e.map_rel_iff, hzero]
+
+/-- Vertex transitivity descends to the triangle-free-edge shadow. -/
+theorem triangleFreeEdgeGraph_vertexTransitiveByIso
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (htrans : VertexTransitiveByIso G) :
+    VertexTransitiveByIso (triangleFreeEdgeGraph G) := by
+  intro x y
+  obtain ⟨e, he⟩ := htrans x y
+  exact ⟨triangleFreeEdgeGraphIsoOfAutomorphism G e, he⟩
+
+/-- An automorphism also preserves the complementary spanning subgraph of
+edges which lie in triangles. -/
+def triangularEdgeGraphIsoOfAutomorphism
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : G ≃g G) :
+    triangularEdgeGraph G ≃g triangularEdgeGraph G where
+  toEquiv := e.toEquiv
+  map_rel_iff' := by
+    intro x y
+    change (G.Adj (e x) (e y) ∧
+      ¬(triangleFreeEdgeGraph G).Adj (e x) (e y)) ↔
+        (G.Adj x y ∧ ¬(triangleFreeEdgeGraph G).Adj x y)
+    have htf := (triangleFreeEdgeGraphIsoOfAutomorphism G e).map_rel_iff
+      (a := x) (b := y)
+    change (triangleFreeEdgeGraph G).Adj (e x) (e y) ↔
+      (triangleFreeEdgeGraph G).Adj x y at htf
+    rw [e.map_rel_iff, htf]
+
+/-- Vertex transitivity also descends to the triangular-edge shadow. -/
+theorem triangularEdgeGraph_vertexTransitiveByIso
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (htrans : VertexTransitiveByIso G) :
+    VertexTransitiveByIso (triangularEdgeGraph G) := by
+  intro x y
+  obtain ⟨e, he⟩ := htrans x y
+  exact ⟨triangularEdgeGraphIsoOfAutomorphism G e, he⟩
+
 /-- Vertex transitivity makes the induced-neighborhood edge count uniform. -/
 theorem localTriangleEdge_card_eq_of_vertexTransitiveByIso
     {V : Type*} [Fintype V] [DecidableEq V]
