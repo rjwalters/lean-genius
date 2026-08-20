@@ -1,5 +1,8 @@
 import Proofs.Erdos85OrderSixtyFourRegularOutsideFeasibility
-import Proofs.Erdos85OrderSixtyFourSizeTwoConcreteHighClosure
+import Proofs.Erdos85SizeTwoEigenlineTerminalAssembly
+import Proofs.Erdos85EightEightNormalizedCoordinates
+import Proofs.Erdos85SixTenNormalizedCoordinates
+import Proofs.Erdos85EightEightHighConcreteTerminal
 
 /-!
 # Regular re-assembly of the size-two eigenline closure
