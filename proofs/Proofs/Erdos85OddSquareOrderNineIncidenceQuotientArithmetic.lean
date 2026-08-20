@@ -41,6 +41,57 @@ theorem squareOrderNine_no_hEleven_26_0_55_0_0_quotient
   rw [hsymm 0 4] at h0
   omega
 
+/-- A defect-bin with at most one vertex has no internal directed edge mass. -/
+theorem squareOrderNineDefectBinEdgeCount_self_eq_zero_of_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (i : ℕ)
+    (hcard : (squareOrderNineLowIncidenceBin G i).card ≤ 1) :
+    squareOrderNineDefectBinEdgeCount G i i = 0 := by
+  classical
+  simp only [squareOrderNineDefectBinEdgeCount]
+  apply Finset.sum_eq_zero
+  intro x hx
+  rw [Finset.card_eq_zero]
+  ext y
+  simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+  intro hyD hyB
+  have hyx : y = x :=
+    Finset.card_le_one.mp hcard y hyB x hx
+  subst y
+  exact (secondOrderDefectGraph G).loopless.irrefl x
+    (by simpa [SimpleGraph.mem_neighborFinset] using hyD)
+
+/-- The h=9 low-bin profile `(1,64,0,2,5)` is incompatible with the
+symmetric quotient rows and the loopless singleton zero-bin. -/
+theorem squareOrderNine_no_hNine_10_64_0_2_5_quotient
+    (b : ℕ → ℕ) (e : ℕ → ℕ → ℕ)
+    (hb0 : b 0 = 1) (hb1 : b 1 = 64) (hb2 : b 2 = 0)
+    (hb3 : b 3 = 2) (hb4 : b 4 = 5)
+    (hsymm : ∀ i j, e i j = e j i)
+    (hee : e 0 0 = 0)
+    (hrow : ∀ i,
+      (∑ j ∈ Finset.range 5, e i j) = (8 - i) * b i ∧
+        (∑ j ∈ Finset.range 5, j * e i j) = (9 - i) * b i) : False := by
+  have h0a := (hrow 0).1
+  have h0b := (hrow 0).2
+  have h1a := (hrow 1).1
+  have h2a := (hrow 2).1
+  have h3a := (hrow 3).1
+  have h3b := (hrow 3).2
+  have h4a := (hrow 4).1
+  have h4b := (hrow 4).2
+  rw [hb0] at h0a h0b
+  rw [hb1] at h1a
+  rw [hb2] at h2a
+  rw [hb3] at h3a h3b
+  rw [hb4] at h4a h4b
+  norm_num [Finset.sum_range_succ] at h0a h0b h1a h2a h3a h3b h4a h4b
+  rw [hee] at h0a
+  rw [hsymm 0 1, hsymm 0 2, hsymm 0 3, hsymm 0 4] at h0a h0b
+  rw [hsymm 1 2] at h1a
+  rw [hsymm 2 3, hsymm 2 4] at h2a
+  omega
+
 /-- A nonzero incidence bin contains no high vertices, so its low-bin card is
 the corresponding full histogram card. -/
 theorem squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
@@ -156,9 +207,62 @@ theorem squareOrderNine_not_highIncidence_profile_26_0_55_0_0_of_eleven_high
     b e hb0 hb1 hb3 hb4
     (fun i j => squareOrderNineDefectBinEdgeCount_comm G i j) hrow'
 
+/-- The h=9 scalar histogram `(10,64,0,2,5)` cannot occur in a q=9
+nonregular square-order core. -/
+theorem squareOrderNine_not_highIncidence_profile_10_64_0_2_5_of_nine_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 9)
+    (hc0 : squareOrderNineHighIncidenceHistogram G 0 = 10)
+    (hc1 : squareOrderNineHighIncidenceHistogram G 1 = 64)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 2)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 5) : False := by
+  let b := fun i => (squareOrderNineLowIncidenceBin G i).card
+  let e := squareOrderNineDefectBinEdgeCount G
+  have hbzero := squareOrderNine_lowIncidenceBin_zero_card_add_high_card G hp
+  have hb0 : b 0 = 1 := by
+    dsimp [b]
+    rw [hhigh, hc0] at hbzero
+    omega
+  have hb1 : b 1 = 64 := by
+    dsimp [b]
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero G hp (by omega), hc1]
+  have hb2 : b 2 = 0 := by
+    dsimp [b]
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero G hp (by omega), hc2]
+  have hb3 : b 3 = 2 := by
+    dsimp [b]
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero G hp (by omega), hc3]
+  have hb4 : b 4 = 5 := by
+    dsimp [b]
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero G hp (by omega), hc4]
+  have hee : e 0 0 = 0 := by
+    apply squareOrderNineDefectBinEdgeCount_self_eq_zero_of_card_le_one G 0
+    simpa [b, hb0]
+  have hrow (i : ℕ) := squareOrderNine_lowIncidenceBin_finite_quotient_system
+    G hfree hmin hcover hcard hp i
+  dsimp only at hrow
+  have hrow' : ∀ i,
+      (∑ j ∈ Finset.range 5, e i j) = (8 - i) * b i ∧
+        (∑ j ∈ Finset.range 5, j * e i j) = (9 - i) * b i := by
+    intro i
+    simpa [e, b, hhigh] using hrow i
+  exact squareOrderNine_no_hNine_10_64_0_2_5_quotient
+    b e hb0 hb1 hb2 hb3 hb4
+    (fun i j => squareOrderNineDefectBinEdgeCount_comm G i j) hee hrow'
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_no_hEleven_26_0_55_0_0_quotient
 #print axioms Erdos85.squareOrderNine_not_highIncidence_profile_26_0_55_0_0_of_eleven_high
+#print axioms Erdos85.squareOrderNine_not_highIncidence_profile_10_64_0_2_5_of_nine_high
