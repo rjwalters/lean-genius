@@ -1,6 +1,7 @@
 import Proofs.Erdos85EdgeIndexedServiceMiddleProfileParity
 import Proofs.Erdos85MuNegThreeZeroFiveCorrectShoreGeometry
 import Proofs.Erdos85MuNegThreeZeroFiveServiceShoreTypeProfiles
+import Proofs.Erdos85MuNegThreeZeroFiveShoreTypePopulations
 
 /-! # Graph-facing middle-profile parity for h305 shores -/
 
@@ -90,9 +91,86 @@ theorem h305_typeTwo_middleProfile_even
   · exact Or.inr (Or.inl hp.1)
   · exact Or.inr (Or.inr hp.1)
 
+/-- Service-neighbor type-zero counts in a shore are type-two counts in its
+complement. -/
+theorem serviceNeighborShoreTypeCount_zero_eq_two_compl
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (a : R.edgeFinset) (S : Finset V) :
+    serviceNeighborShoreTypeCount R Cedge a S 0 =
+      serviceNeighborShoreTypeCount R Cedge a Sᶜ 2 := by
+  classical
+  unfold serviceNeighborShoreTypeCount
+  congr 1
+  ext b
+  simp only [Finset.mem_filter]
+  have htype : (b.1.toFinset ∩ S).card = 0 ↔
+      (b.1.toFinset ∩ Sᶜ).card = 2 := by
+    have hm := Finset.ext_iff.mp
+      (shoreTypeEdgeFinset_zero_eq_two_compl R S) b
+    simpa only [shoreTypeEdgeFinset, Finset.mem_filter,
+      Finset.mem_univ, true_and] using hm
+  exact and_congr_right (fun _ ↦ htype)
+
+/-- Symmetric type-zero version of `h305_typeTwo_middleProfile_even`. -/
+theorem h305_typeZero_middleProfile_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H R : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel R.Adj]
+    (Cedge : SimpleGraph R.edgeFinset) [DecidableRel Cedge.Adj]
+    (hservice : EdgeIndexedServiceEquation H R Cedge)
+    (hCreg : ∀ b, Cedge.degree b = 6)
+    (u v : ZMod 8 → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hv : ∀ z, H.neighborFinset (v z) = {v (z - 1), v (z + 1)})
+    (hdisj : ∀ k l, u k ≠ v l)
+    (hcover : ∀ x : V, (∃ k, x = u k) ∨ ∃ l, x = v l)
+    (hmode : MuNegThreeZeroFiveTriangleShoreMode R v ∨
+      MuNegThreeZeroFiveTfShoreMode R v) :
+    let U := (Finset.univ : Finset (ZMod 8)).image u
+    Even ((shoreTypeEdgeFinset R U 0).filter fun a ↦
+      serviceNeighborShoreTypeCount R Cedge a U 0 = 1).card := by
+  classical
+  dsimp only
+  let U := (Finset.univ : Finset (ZMod 8)).image u
+  let W := (Finset.univ : Finset (ZMod 8)).image v
+  change Even ((shoreTypeEdgeFinset R U 0).filter fun a ↦
+    serviceNeighborShoreTypeCount R Cedge a U 0 = 1).card
+  have hdisj' : ∀ k l, v k ≠ u l := by
+    intro k l h
+    exact hdisj l k h.symm
+  have hcover' : ∀ x : V, (∃ k, x = v k) ∨ ∃ l, x = u l := by
+    intro x
+    rcases hcover x with h | h
+    · exact Or.inr h
+    · exact Or.inl h
+  have heven := h305_typeTwo_middleProfile_even H R Cedge hservice hCreg
+    v u hvinj huinj hv hdisj' hcover' hmode
+  have hpart : Uᶜ = W := h305_shoreImages_compl_eq u v hdisj hcover
+  have hcentral : shoreTypeEdgeFinset R U 0 =
+      shoreTypeEdgeFinset R W 2 := by
+    rw [shoreTypeEdgeFinset_zero_eq_two_compl R U, hpart]
+  have hcount : ∀ a, serviceNeighborShoreTypeCount R Cedge a U 0 =
+      serviceNeighborShoreTypeCount R Cedge a W 2 := by
+    intro a
+    rw [serviceNeighborShoreTypeCount_zero_eq_two_compl R Cedge a U,
+      hpart]
+  have heq : (shoreTypeEdgeFinset R U 0).filter (fun a ↦
+      serviceNeighborShoreTypeCount R Cedge a U 0 = 1) =
+      (shoreTypeEdgeFinset R W 2).filter (fun a ↦
+        serviceNeighborShoreTypeCount R Cedge a W 2 = 1) := by
+    ext a
+    simp only [Finset.mem_filter]
+    rw [show a ∈ shoreTypeEdgeFinset R U 0 ↔
+      a ∈ shoreTypeEdgeFinset R W 2 by rw [hcentral], hcount a]
+  rw [heq]
+  simpa [W] using heven
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.h305_typeTwoEdge_exists_coordinate_endpoints
 #print axioms Erdos85.h305_typeTwo_middleProfile_even
+#print axioms Erdos85.serviceNeighborShoreTypeCount_zero_eq_two_compl
+#print axioms Erdos85.h305_typeZero_middleProfile_even
