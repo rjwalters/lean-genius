@@ -159,6 +159,127 @@ theorem muNegFiveZeroThreeServiceExistsClauseSatisfied_of_relation
         active X ef henabled
     exact ⟨lit, List.mem_append.mpr (Or.inl hmem), hsat⟩
 
+theorem muNegFiveZeroThreeServiceUniqueClauseSatisfied_of_relation
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsem : MuNegFiveZeroThreeOwnerServiceSemantics active X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (e v : Nat) (he : e < 72) (hv : v < 16)
+    (_htarget : muNegFiveZeroThreeOwnerTargetContains e v = true)
+    (clause : DimacsClause)
+    (hclause : clause ∈ eightEightPairwiseNegativeClauses
+      (muNegFiveZeroThreeServiceVariables e v)) :
+    dimacsClauseSatisfied
+      (muNegFiveZeroThreeOwnerValOfRelations active X) clause := by
+  simp only [eightEightPairwiseNegativeClauses, List.mem_flatMap,
+    List.mem_map, List.mem_filter] at hclause
+  obtain ⟨x, hxrow, y, ⟨hyrow, hxy⟩, rfl⟩ := hclause
+  let ef : Fin 72 := ⟨e, he⟩
+  let vf : Fin 16 := ⟨v, hv⟩
+  obtain ⟨f, _hfe, hfcontains, hfx⟩ :=
+    (mem_muNegFiveZeroThreeServiceVariables_iff ef vf x).mp hxrow
+  obtain ⟨g, _hge, hgcontains, hgy⟩ :=
+    (mem_muNegFiveZeroThreeServiceVariables_iff ef vf y).mp hyrow
+  obtain ⟨ix, hvarx, rfl⟩ :=
+    muNegFiveZeroThreeHitLiteral?_eq_some hfx
+  obtain ⟨iy, hvary, rfl⟩ :=
+    muNegFiveZeroThreeHitLiteral?_eq_some hgy
+  by_cases hxval :
+      muNegFiveZeroThreeOwnerValOfRelations active X ix = true
+  · have hXf := muNegFiveZeroThreeOwnerRelation_of_val_true
+      active X hsymm hvarx hxval
+    have hyfalse :
+        muNegFiveZeroThreeOwnerValOfRelations active X iy = false := by
+      apply Bool.eq_false_of_not_eq_true
+      intro hyval
+      have hXg := muNegFiveZeroThreeOwnerRelation_of_val_true
+        active X hsymm hvary hyval
+      have hfg := hsem.service_unique ef vf f g
+        hXf hfcontains hXg hgcontains
+      subst g
+      have : ix = iy := by simpa [hvarx] using hvary
+      subst iy
+      simp at hxy
+    refine ⟨-Int.ofNat iy, by simp, ?_⟩
+    simp [dimacsLitValue, hyfalse]
+  · have hxf :
+        muNegFiveZeroThreeOwnerValOfRelations active X ix = false :=
+      Bool.eq_false_of_not_eq_true hxval
+    refine ⟨-Int.ofNat ix, by simp, ?_⟩
+    simp [dimacsLitValue, hxf]
+
+theorem muNegFiveZeroThreeInternalZeroClauseSatisfied_of_relation
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsem : MuNegFiveZeroThreeOwnerServiceSemantics active X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (e v : Nat) (he : e < 72) (hv : v < 16)
+    (htarget : muNegFiveZeroThreeOwnerTargetContains e v = false)
+    (x : Int) (hx : x ∈ muNegFiveZeroThreeServiceVariables e v) :
+    dimacsClauseSatisfied
+      (muNegFiveZeroThreeOwnerValOfRelations active X)
+      (muNegFiveZeroThreeActiveGuard e ++ [-x]) := by
+  let ef : Fin 72 := ⟨e, he⟩
+  let vf : Fin 16 := ⟨v, hv⟩
+  by_cases henabled : muNegFiveZeroThreeOwnerEnabled active ef
+  · obtain ⟨f, _hfe, hfcontains, hfx⟩ :=
+      (mem_muNegFiveZeroThreeServiceVariables_iff ef vf x).mp hx
+    obtain ⟨id, hvar, rfl⟩ :=
+      muNegFiveZeroThreeHitLiteral?_eq_some hfx
+    have hvalfalse :
+        muNegFiveZeroThreeOwnerValOfRelations active X id = false := by
+      apply Bool.eq_false_of_not_eq_true
+      intro hval
+      have hX := muNegFiveZeroThreeOwnerRelation_of_val_true
+        active X hsymm hvar hval
+      exact hsem.internal_zero ef vf f (by simpa using htarget)
+        hfcontains hX
+    refine ⟨-Int.ofNat id, List.mem_append.mpr (Or.inr (by simp)), ?_⟩
+    simp [dimacsLitValue, hvalfalse]
+  · obtain ⟨lit, hmem, hsat⟩ :=
+      muNegFiveZeroThreeActiveGuard_satisfied_of_not_enabled
+        active X ef henabled
+    exact ⟨lit, List.mem_append.mpr (Or.inl hmem), hsat⟩
+
+/-- The clean five-field owner laws imply every generated guarded service
+clause. -/
+theorem muNegFiveZeroThreeServiceClauses_satisfied
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsem : MuNegFiveZeroThreeOwnerServiceSemantics active X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (hirr : ∀ e, ¬ X e e)
+    (hcompat : ∀ e f, X e f →
+      muNegFiveZeroThreeOwnerCompatible e f = true) :
+    ∀ clause ∈ muNegFiveZeroThreeServiceClauses,
+      dimacsClauseSatisfied
+        (muNegFiveZeroThreeOwnerValOfRelations active X) clause := by
+  intro clause hclause
+  simp only [muNegFiveZeroThreeServiceClauses, List.mem_flatMap,
+    List.mem_range] at hclause
+  obtain ⟨e, he72, v, hv16, hclause⟩ := hclause
+  split at hclause
+  · next htarget =>
+    rcases List.mem_append.mp hclause with hexists | hunique
+    · simp only [List.mem_singleton] at hexists
+      subst clause
+      exact muNegFiveZeroThreeServiceExistsClauseSatisfied_of_relation
+        active X hsem hirr hcompat e v he72 hv16 (by
+          simpa only [muNegFiveZeroThreeOwnerTargetContains] using htarget)
+    · exact muNegFiveZeroThreeServiceUniqueClauseSatisfied_of_relation
+        active X hsem hsymm e v he72 hv16 (by
+          simpa only [muNegFiveZeroThreeOwnerTargetContains] using htarget)
+        clause hunique
+  · next hnotTarget =>
+    simp only [List.mem_map] at hclause
+    obtain ⟨x, hx, rfl⟩ := hclause
+    have hfalse :
+        muNegFiveZeroThreeOwnerTargetContains e v = false := by
+      apply Bool.eq_false_iff.mpr
+      simpa only [muNegFiveZeroThreeOwnerTargetContains] using hnotTarget
+    exact muNegFiveZeroThreeInternalZeroClauseSatisfied_of_relation
+      active X hsem hsymm e v he72 hv16 hfalse x hx
+
 theorem muNegFiveZeroThreeHitVariable?_some_of_mem
     {e f : Nat} (hmem : (e, f) ∈ muNegFiveZeroThreeHitVariables) :
     e < 72 ∧ f < 72 ∧
@@ -300,4 +421,5 @@ end Erdos85
 
 #print axioms Erdos85.muNegFiveZeroThreeHitActivityClauses_satisfied
 #print axioms Erdos85.muNegFiveZeroThreeServiceExistsClauseSatisfied_of_relation
+#print axioms Erdos85.muNegFiveZeroThreeServiceClauses_satisfied
 #print axioms Erdos85.muNegFiveZeroThreeOwnerRelations_false
