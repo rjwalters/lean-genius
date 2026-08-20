@@ -7,6 +7,7 @@ import Proofs.Erdos85MuNegFiveExplicitRowParameters
 import Proofs.Erdos85AmbientMuThreeUnconditional
 import Proofs.Erdos85SizeTwoSwitchedJointExclusions
 import Proofs.Erdos85SizeTwoMuNegFiveAlignedShoreSwitch
+import Proofs.Erdos85MuNegThreeOneTwoOrbitTerminal
 
 /-!
 # Ledger-backed assembly socket for the negative switch orbit
@@ -1277,6 +1278,115 @@ theorem false_of_negativeEightEightSource_of_canonicalTerminals
   exact false_of_orderSixtyFour_sizeTwo_ambient_muThree
     G hfree hreg hcard c hc s hs
 
+/-- Common first-shore view of a direct or once-transported endpoint. -/
+theorem exists_firstShore_coherence_of_source_or_transported
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (a b : (G.induce c.supp).ConnectedComponent)
+    (N₁ N₂ : Matrix (ZMod 8) (ZMod 8) ℤ)
+    (theta : ℤ) (k r : ℕ)
+    (h : Nonempty (NegativeEightEightSourceWitness
+          G c a b N₁ N₂ theta k r) ∨
+        NegativeEightEightTransportedWitness G c a N₁ N₂ theta k r) :
+    ∃ s, IsAmbientSignedJoint G c theta s ∧
+      componentQuotientMatrix ((secondOrderDefectGraph G).induce c.supp)
+        (G.induce c.supp) a a = 7 - r ∧
+      ∀ x, x ∈ a.supp →
+        ((componentNeighborFinset ((secondOrderDefectGraph G).induce c.supp)
+          (G.induce c.supp) a x).filter
+            (fun y ↦ s y.1 = s x.1)).card = k := by
+  rcases h with ⟨⟨w⟩⟩ | h
+  · exact ⟨w.aligned.s, w.aligned.signedJoint,
+      w.aligned.quotientAA, w.aligned.sameAA⟩
+  · obtain ⟨s, hs, haa, hsame, _⟩ := h
+    exact ⟨s, hs, haa, hsame⟩
+
+/-- The checked h312 graph terminal discharges both direct and transported
+canonical endpoint objects once their first-shore coherence is retained. -/
+theorem false_of_h312_source_or_transported
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hreg : ∀ x, G.degree x = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (G.induce c.supp).ConnectedComponent]
+    (hc : c.supp.ncard = 8 * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    let K := (secondOrderDefectGraph G).induce c.supp
+    let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+    let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+      fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+    Nonempty (NegativeEightEightSourceWitness G c a b N₁ N₂ (-3) 1 2) ∨
+      NegativeEightEightTransportedWitness G c a N₁ N₂ (-3) 1 2 →
+    False := by
+  classical
+  dsimp only
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let A := (Finset.univ : Finset c.supp).filter fun x ↦ x ∈ a.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  intro h
+  obtain ⟨s, hs, haa, hsame⟩ :=
+    exists_firstShore_coherence_of_source_or_transported
+      G c a b N₁ N₂ (-3) 1 2 h
+  obtain ⟨k', r', hcell, hne, haa', L₁⟩ :=
+    orderSixtyFour_sizeTwo_muNegThree_refined_switch_ne_self_of_oneTwo
+      G hfree hreg hcard c hc s hs.1 hs.2.1 hs.2.2.1 hs.2.2.2
+        a b hab u v huinj hvinj hurange hvrange hu hv
+  have hurangeA : Set.range u = ↑A := by
+    rw [hurange]
+    ext x
+    simp [A]
+  have huA : u 0 ∈ a.supp := by
+    rw [← hurange]
+    exact ⟨0, rfl⟩
+  have hsame' :
+      ((componentNeighborFinset K H a (u 0)).filter
+        (fun y ↦ s y.1 = s (u 0).1)).card = k' := by
+    rw [componentNeighbor_sameSign_eq_supportFilter]
+    rw [← coordinate_sameSign_adj_card_eq_support_from
+      K A u huinj hurangeA (fun x ↦ s x.1) (u 0)]
+    simpa [N₁, K, SimpleGraph.adjMatrix_apply, and_comm] using
+      L₁.internal_same 0
+  have hk : k' = 1 := by
+    have hs0 := hsame (u 0) huA
+    have htmp : 1 = k' := by
+      simpa [K, H] using hs0.symm.trans hsame'
+    exact htmp.symm
+  have hrle : r' ≤ 7 := by
+    rcases hcell with hz | hm | ho
+    · rcases hz.2.2 with h | h | h | h <;> omega
+    · rcases hm.2 with h | h <;> omega
+    · rcases ho.2.2 with h | h | h | h | h <;> omega
+  have hr : r' = 2 := by
+    norm_num at haa
+    have heq : 7 - r' = 5 := haa'.symm.trans haa
+    omega
+  subst k'
+  subst r'
+  apply hne
+  rw [hk]
+  norm_num [sizeTwoMuSwitchTarget]
+
 end
 
 end Erdos85
@@ -1298,3 +1408,5 @@ end Erdos85
 #print axioms Erdos85.exists_negativeEightEightSource_muNegFive
 #print axioms Erdos85.exists_isAmbientSignedJoint_of_induced_with_restrict
 #print axioms Erdos85.NegativeEightEightAlignedWitness.exists_switched_ambient_firstShore
+#print axioms Erdos85.exists_firstShore_coherence_of_source_or_transported
+#print axioms Erdos85.false_of_h312_source_or_transported
