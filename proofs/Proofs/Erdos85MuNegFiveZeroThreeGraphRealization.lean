@@ -421,6 +421,56 @@ theorem muNegFiveZeroThreeCandidateSupport_of_antipode
     simpa only [muNegFiveZeroThreeCodeSub, muNegFiveZeroThreeCodeVertex,
       if_neg hx8, if_neg hy8] using hR
 
+theorem exteriorPairGraph_cycle_iff_antipode_of_odd_defect
+    (hfree : ¬ containsC4 V G)
+    (w : ZMod 8 → c.supp) (hwinj : Function.Injective w)
+    (hw : ∀ z, (G.induce c.supp).neighborFinset (w z) =
+      {w (z - 1), w (z + 1)})
+    (hD : ∀ i j : ZMod 8,
+      ((secondOrderDefectGraph G).induce c.supp).Adj (w i) (w j) ↔
+        j - i = 1 ∨ j - i = 3 ∨ j - i = 5 ∨ j - i = 7) :
+    ∀ i j : ZMod 8,
+      (exteriorPairGraph G c.supp).Adj (w i) (w j) ↔ j - i = 4 := by
+  let H := G.induce c.supp
+  intro i j
+  rw [exteriorPairGraph_adj_iff_not_defect_and_no_internal_common G hfree c]
+  have hcommon (hij : i ≠ j) :
+      (∃ z, H.Adj (w i) z ∧ H.Adj (w j) z) ↔
+        j - i = 2 ∨ j - i = 6 :=
+    zmodEight_cycle_internalCommon_iff_offset_two_six H w hwinj hw i j hij
+  constructor
+  · rintro ⟨hij, hnotD, hnoCommon⟩
+    have hij' : i ≠ j := fun h => hij (congrArg w h)
+    have hnotOdd : ¬ (j - i = 1 ∨ j - i = 3 ∨
+        j - i = 5 ∨ j - i = 7) := fun h => hnotD ((hD i j).mpr h)
+    have hnotCommon : ¬ (j - i = 2 ∨ j - i = 6) := by
+      intro h
+      apply hnoCommon
+      simpa [H] using (hcommon hij').mpr h
+    have hnotZero : j - i ≠ 0 := by
+      intro h
+      exact hij' (sub_eq_zero.mp h).symm
+    generalize j - i = d at hnotOdd hnotCommon hnotZero ⊢
+    revert d
+    decide
+  · intro hfour
+    have hij' : i ≠ j := by
+      intro h
+      subst j
+      have : ¬ ((0 : ZMod 8) = 4) := by decide
+      exact this (by simpa using hfour)
+    refine ⟨hwinj.ne hij', ?_, ?_⟩
+    · intro hDij
+      have hodd := (hD i j).mp (by simpa using hDij)
+      rw [hfour] at hodd
+      revert hodd
+      decide
+    · intro hex
+      have hc := (hcommon hij').mp (by simpa [H] using hex)
+      rw [hfour] at hc
+      revert hc
+      decide
+
 theorem muNegFiveZeroThreeOwnerVertex_adj_of_contains
     {e : Fin 72} {z : V}
     (hz : MuNegFiveZeroThreeOwnerVertex G c u v e z)
@@ -886,6 +936,7 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeExteriorOwnerCoverage_of_pairComplete
 #print axioms Erdos85.muNegFiveZeroThreeOwnerPairComplete_of_candidateSupport
 #print axioms Erdos85.muNegFiveZeroThreeCandidateSupport_of_antipode
+#print axioms Erdos85.exteriorPairGraph_cycle_iff_antipode_of_odd_defect
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_unique
