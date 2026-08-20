@@ -1,12 +1,13 @@
 import Proofs.Erdos85SizeTwoMuNegThreeEightEightDiagonalSameShape
 
 /-!
-# Offset-two exterior pairs in the `k = 1` C8 diagonal shape
+# Offset-two nondefect pairs in the `k = 1` C8 diagonal shape
 
 The `k = 1` same-sign defect support is the antipodal matching.  Hence the
-two offset-two pairs at every coordinate are nondefect.  These are the
-natural fixed same-shore owner candidates for the h512/h313 leaves, where
-the antipodal candidates used by h503 are unavailable.
+two offset-two pairs at every coordinate are nondefect.  This does **not**
+make them exterior-pair edges: the underlying C8 supplies the internal common
+neighbor at the intervening coordinate.  For h512/h313 owner realizations the
+relevant same-shore exterior pairs instead occur at offset `±3`.
 -/
 
 open Matrix
