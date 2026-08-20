@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.16 — 2026-08-20 (six deprecated vacuous seven-component theorems deleted per goal #30 item 3).**
+**Version 2.17 — 2026-08-20 (B.2 Cayley class reduced to an exact noncommutative Sidon construction problem; involution sieves).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -277,7 +277,7 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
 | node | status | note |
 |---|---|---|
 | B.1 `q = 7` pincer | witness `PROVEN`; drop `CONDITIONAL` | existence half proven: `boza48_degreeSeven_witness`. The drop `minDegreeForC4_fortyNine_lt_fortyEight` is conditional on `¬C4FreeMinDegreeWitness 49 7`, which is OPEN: socket `not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks` still awaits the h1/h7 exclusions and the five H3/H5 LRAT checks; the 13-cell spend is HELD (goal #24). **Not a decided drop** — v2.8 and earlier overstated this row |
-| B.2 existence jaw for unbounded odd `q` | `GAP B-EXIST` | Cayley route dead at 9, 11 (computational); dihedral-holomorph ansatz UNSAT at 9; conjecture `B-NEAR-LATIN-LIFT` stated. New `EXTERNAL` negative data (sol-1, 20 Aug, goal #30 front (c)): Gamma_9 dot-product graph admits no single-edge matching repair (all 8 parameters × 105 matchings exhausted); ER_9 orthogonal-polarity graph admits no 10-vertex deletion retaining min degree 9 (exact 91-variable UNSAT, `er9_induced81_search.py`) — both direct finite-field construction classes at q=9 are closed; mixed doubled-cycle CNF scouts inconclusive (300s timeout). New `PROVEN` uniform structure (sol-1, 20 Aug PM): NO bipartite candidate at any order q²−1 (`not_isBipartite_of_planeMinusTwo_regular_not_containsC4`, pair-count barrier `false_of_planeMinusTwo_regular_linear_incidence`; the signed-determinant double-cover no-go is a corollary); every vertex lies in a triangle with local edge window `[1,(q−1)/2]` for odd q; abelian Cayley impossible beyond degree 2 (`card_connection_le_two_of_commutative_invClosedCayley_not_containsC4`); nonabelian Cayley Sidon law with exact Moore slack q−2 (`card_unused_nonidentity_of_planeMinusTwo_Cayley`), forced slack involution and forced perfect-matching layer for odd q (`exists_unused_involution_of_odd_planeMinusTwo_Cayley`, `exists_connection_perfectMatchingLayer_of_odd_card`); Boza48 kernel-checked as one-block Z24⋊Z2 development of a linear 48₃ configuration + coordinate-flip one-factor. Global q=9 existence remains open |
+| B.2 existence jaw for unbounded odd `q` | `GAP B-EXIST` | Cayley route dead at 9, 11 (computational); dihedral-holomorph ansatz UNSAT at 9; conjecture `B-NEAR-LATIN-LIFT` stated. New `EXTERNAL` negative data (sol-1, 20 Aug, goal #30 front (c)): Gamma_9 dot-product graph admits no single-edge matching repair (all 8 parameters × 105 matchings exhausted); ER_9 orthogonal-polarity graph admits no 10-vertex deletion retaining min degree 9 (exact 91-variable UNSAT, `er9_induced81_search.py`) — both direct finite-field construction classes at q=9 are closed; mixed doubled-cycle CNF scouts inconclusive (300s timeout). New `PROVEN` uniform structure (sol-1, 20 Aug PM): NO bipartite candidate at any order q²−1 (`not_isBipartite_of_planeMinusTwo_regular_not_containsC4`, pair-count barrier `false_of_planeMinusTwo_regular_linear_incidence`; the signed-determinant double-cover no-go is a corollary); every vertex lies in a triangle with local edge window `[1,(q−1)/2]` for odd q; abelian Cayley impossible beyond degree 2 (`card_connection_le_two_of_commutative_invClosedCayley_not_containsC4`); nonabelian Cayley Sidon law with exact Moore slack q−2 (`card_unused_nonidentity_of_planeMinusTwo_Cayley`), forced slack involution and forced perfect-matching layer for odd q (`exists_unused_involution_of_odd_planeMinusTwo_Cayley`, `exists_connection_perfectMatchingLayer_of_odd_card`); Boza48 kernel-checked as one-block Z24⋊Z2 development of a linear 48₃ configuration + coordinate-flip one-factor. Global q=9 existence remains open. **Exact reformulation (sol-1, 20 Aug PM): GAP B-EXIST for the Cayley class ⟺ an inverse-closed noncommutative Sidon set of size q in a group of order q²−1** (`not_containsC4_iff_nonbacktracking_connectionProduct_injective`); uniform sieves: groups with all involutions central are impossible (`containsC4_of_odd_connection_card_of_all_involutions_central`), ambient nontrivial involutions ≤ q−2 (`card_nontrivialInvolutionFinset_le_of_planeMinusTwo_Cayley` — screens q=9 order-80 groups with ≥8 involutions), forced matching generator consumes slack and must conjugation-separate the residual shore (`erase_involution_disjoint_conjugate_shore`, union card 2(d−1)) |
 | B.3 nonexistence at `q²` for the same `q` | `AXIOM B-NONEXIST` | partial uniform structure; `GAP B-CLASSIFY` for odd profiles |
 | B.4 capstone | `AXIOM B-COFINAL` | B.2 ∧ B.3 on one unbounded set ⇒ done via §0 |
 
@@ -378,6 +378,14 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.17** (2026-08-20, claude/integrator, per sol-1 msgs 15905–15924):
+  B.2 row upgraded with the exact iff reformulation — the Cayley half of
+  GAP B-EXIST is now precisely "construct an inverse-closed noncommutative
+  Sidon set of size q in a group of order q²−1, unbounded odd q" — plus
+  the central-involution kill, the ambient-involution ≤ q−2 sieve, and
+  the forced matching/conjugation-separation structure. No hidden
+  graph-side condition remains in that class. Sweep #19 (containerized,
+  360 min) launched at 3be6204e7e to validate the v2.16 deletions.
 - **2.16** (2026-08-20, claude/integrator): executed the goal #30 item (3)
   editor call — the six vacuous seven-component theorems (audit
   55aefbff93) are deleted at eeaa44c4fe: three single-theorem files and
