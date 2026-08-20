@@ -4,6 +4,7 @@ import Proofs.Erdos85EightEightCoordinateCover
 import Proofs.Erdos85ComponentSignFlipEigenvector
 import Proofs.Erdos85SizeTwoSwitchedJointExclusions
 import Proofs.Erdos85SizeTwoSwitchedJointExtension
+import Proofs.Erdos85MuNegFiveExplicitParameters
 
 /-! # General aligned shore switch for the `mu=-5` lane -/
 
@@ -51,6 +52,18 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
     let H := G.induce c.supp
     let K := (secondOrderDefectGraph G).induce c.supp
     ∃ k r : ℕ, MuNegFiveSectorCells k r ∧
+      let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+        fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+      let M₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+        fun i j ↦ K.adjMatrix ℤ (u i) (v j)
+      let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+        fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+      let M₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+        fun i j ↦ K.adjMatrix ℤ (v i) (u j)
+      MuNegFiveExplicitParameterLedger N₁ M₁
+          (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r ∧
+      MuNegFiveExplicitParameterLedger N₂ M₂
+          (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) k r ∧
       let B := (Finset.univ : Finset c.supp).filter
         (fun x ↦ H.connectedComponentMk x = b)
       let t : c.supp → ℤ := fun x ↦ if x ∈ B then -s x.1 else s x.1
@@ -108,6 +121,10 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
     fun i j ↦ K.adjMatrix ℤ (u i) (u j)
   let M : Matrix (ZMod 8) (ZMod 8) ℤ :=
     fun i j ↦ K.adjMatrix ℤ (u i) (v j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  let M₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (u j)
   have hNrow : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
       N 0 j = 1).card = 7 - r := by
     rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N 0 j = 1) =
@@ -162,6 +179,64 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
     rw [coordinate_sameSign_adj_card_eq_support_from K B v hvinj hvrangeB
       (fun x : c.supp ↦ s x.1) (u 0)]
     exact hAB (u 0) hu0A
+  have hv0B : v 0 ∈ B := by
+    change v 0 ∈ (↑B : Set c.supp)
+    rw [← hvrangeB]
+    exact ⟨0, rfl⟩
+  have hN₂row : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      N₂ 0 j = 1).card = 7 - r := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ N₂ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (v 0) (v j)) by
+      ext j; simp [N₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K B v hvinj hvrangeB (v 0)]
+    have hq : (componentNeighborFinset K H b (v 0)).card = 7 - r := by
+      rw [← componentQuotientMatrix_apply_eq K H 2 hdegree hcomm
+        b b (by simpa [B] using hv0B)]
+      exact hbb
+    have heq : B.filter (fun y ↦ K.Adj (v 0) y) =
+        componentNeighborFinset K H b (v 0) := by
+      ext y
+      simp [B, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq]
+    exact hq
+  have hM₂row : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      M₂ 0 j = 1).card = r := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ M₂ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦ K.Adj (v 0) (u j)) by
+      ext j; simp [M₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_adj_card_eq_support_from K A u huinj hurangeA (v 0)]
+    have hq : (componentNeighborFinset K H a (v 0)).card = r := by
+      rw [← componentQuotientMatrix_apply_eq K H 2 hdegree hcomm
+        b a (by simpa [B] using hv0B)]
+      exact hbaq
+    have heq : A.filter (fun y ↦ K.Adj (v 0) y) =
+        componentNeighborFinset K H a (v 0) := by
+      ext y
+      simp [A, H, componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+        and_comm]
+    rw [heq]
+    exact hq
+  have hN₂same : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      s (v j).1 = s (v 0).1 ∧ N₂ 0 j = 1).card = k := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (v j).1 = s (v 0).1 ∧ N₂ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (v j).1 = s (v 0).1 ∧ K.Adj (v 0) (v j)) by
+      ext j; simp [N₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support K B v hvinj hvrangeB
+      (fun x : c.supp ↦ s x.1) 0]
+    exact hBB (v 0) hv0B
+  have hM₂same : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+      s (u j).1 = s (v 0).1 ∧ M₂ 0 j = 1).card = 1 - k := by
+    rw [show ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        s (u j).1 = s (v 0).1 ∧ M₂ 0 j = 1) =
+        ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+          s (u j).1 = s (v 0).1 ∧ K.Adj (v 0) (u j)) by
+      ext j; simp [M₂, SimpleGraph.adjMatrix_apply]]
+    rw [coordinate_sameSign_adj_card_eq_support_from K A u huinj hurangeA
+      (fun x : c.supp ↦ s x.1) (v 0)]
+    exact hBA (v 0) hv0B
   have hfull := sizeTwo_internal_full_sum_of_filtered G c s hs_out hH
   have hflip (w : ZMod 8 → c.supp)
       (hw : ∀ z, H.neighborFinset (w z) = {w (z - 1), w (z + 1)}) :
@@ -182,6 +257,14 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
     (hflip u hu) (hflip v hv) hNrow hNsame hMrow hMsame
   have hcell := muNegFive_sector_cells_of_bounds k r hk hr2 hr7
     hbounds.1 hbounds.2.1 hbounds.2.2.1 hbounds.2.2.2
+  have hledger₁ : MuNegFiveExplicitParameterLedger N M
+      (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r :=
+    ⟨hk, (fun i ↦ hs_in _ (u i).2), (fun j ↦ hs_in _ (v j).2),
+      hflip u hu, hflip v hv, hNrow, hNsame, hMrow, hMsame⟩
+  have hledger₂ : MuNegFiveExplicitParameterLedger N₂ M₂
+      (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) k r :=
+    ⟨hk, (fun i ↦ hs_in _ (v i).2), (fun j ↦ hs_in _ (u j).2),
+      hflip v hv, hflip u hu, hN₂row, hN₂same, hM₂row, hM₂same⟩
   have same_eq (p : H.ConnectedComponent)
       (P : Finset c.supp) (hP : P = Finset.univ.filter fun y ↦ y ∈ p.supp)
       (x : c.supp) :
@@ -265,7 +348,7 @@ theorem orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
     k r hcell hneOne
   have hroute := muNegFive_inducedSwitch_ambientCrossLane
     G c k r hpost t htsign (by simpa [H] using htH) (by simpa [K] using htK)
-  exact ⟨k, r, hcell, htK, htH, htne, htsign, hneOne, hpost,
+  exact ⟨k, r, hcell, hledger₁, hledger₂, htK, htH, htne, htsign, hneOne, hpost,
     muNegFive_postMuOne_switch_target k r hpost, hroute⟩
 
 /-- Hide the aligned induced switch and expose only the three ambient
@@ -303,7 +386,8 @@ theorem orderSixtyFour_sizeTwo_muNegFive_ambientCrossLane
     (∃ w, IsAmbientSignedJoint G c (-3) w) ∨
       (∃ w, IsAmbientSignedJoint G c (-1) w) ∨
       (∃ w, IsAmbientSignedJoint G c 3 w) := by
-  obtain ⟨k, r, _hcell, hK, hHt, _htne, htsign, _hneOne, hpost, _htargets⟩ :=
+  obtain ⟨k, r, _hcell, _hledger₁, _hledger₂,
+      hK, hHt, _htne, htsign, _hneOne, hpost, _htargets⟩ :=
     orderSixtyFour_sizeTwo_muNegFive_aligned_shoreSwitch
       G hfree hreg hcard c hc s hs_out hs_in hA_in hH hD a b hab
         u v huinj hvinj hurange hvrange hu hv
