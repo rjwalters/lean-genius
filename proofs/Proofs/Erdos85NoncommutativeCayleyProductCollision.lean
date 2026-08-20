@@ -97,6 +97,60 @@ theorem connection_product_ne_of_invClosedCayley_not_containsC4
   exact hfree (invClosedCayley_containsC4_of_product_collision
     S hinv hone ha hb hc hd hac hprod hcollision)
 
+/-- Conjugation by an involutory connection element sends every other
+connection element outside the connection set.  Otherwise the two words
+`s*t` and `t*(t*s*t)` collide and create a four-cycle. -/
+theorem involution_conjugate_not_mem_connection
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t s : Γ} (htA : t ∈ A) (htsq : t * t = 1)
+    (hsA : s ∈ A) (hst : s ≠ t) :
+    t * s * t ∉ A := by
+  intro hconjA
+  have htinv : t⁻¹ = t := (eq_inv_of_mul_eq_one_right htsq).symm
+  have hprod : s * t ≠ 1 := by
+    intro hstOne
+    apply hst
+    calc
+      s = t⁻¹ := eq_inv_of_mul_eq_one_left hstOne
+      _ = t := htinv
+  have hcollision : s * t = t * (t * s * t) := by
+    calc
+      s * t = 1 * (s * t) := by simp
+      _ = (t * t) * (s * t) := by rw [htsq]
+      _ = t * (t * s * t) := by simp [mul_assoc]
+  exact hfree (invClosedCayley_containsC4_of_product_collision
+    (· ∈ A) hinv hone hsA htA htA hconjA hst hprod hcollision)
+
+/-- Hence an involutory generator in a C4-free Cayley graph commutes with no
+other generator.  The forced odd-degree matching layer must be genuinely
+noncentral. -/
+theorem involution_generator_not_commute
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t s : Γ} (htA : t ∈ A) (htsq : t * t = 1)
+    (hsA : s ∈ A) (hst : s ≠ t) :
+    t * s ≠ s * t := by
+  intro hcomm
+  have hconj : t * s * t = s := by
+    calc
+      t * s * t = (s * t) * t := congrArg (· * t) hcomm
+      _ = s * (t * t) := by rw [mul_assoc]
+      _ = s := by rw [htsq, mul_one]
+  have hconjA : t * s * t ∈ A := by
+    rw [hconj]
+    exact hsA
+  exact (involution_conjugate_not_mem_connection
+    A hinv hone hfree htA htsq hsA hst) hconjA
+
 /-- The non-backtracking ordered-word product map of a C4-free Cayley graph
 is injective.  This is the Cayley-coordinate form of the Moore two-ball
 packing constraint. -/
@@ -547,6 +601,8 @@ end Erdos85
 #print axioms Erdos85.invClosedCayley_containsC4_of_product_collision
 #print axioms Erdos85.invClosedCayleyGraph_degree
 #print axioms Erdos85.connection_product_ne_of_invClosedCayley_not_containsC4
+#print axioms Erdos85.involution_conjugate_not_mem_connection
+#print axioms Erdos85.involution_generator_not_commute
 #print axioms Erdos85.nonbacktracking_connectionProduct_injective
 #print axioms Erdos85.card_nonbacktrackingConnectionPairs
 #print axioms Erdos85.card_nonbacktracking_connectionProducts
