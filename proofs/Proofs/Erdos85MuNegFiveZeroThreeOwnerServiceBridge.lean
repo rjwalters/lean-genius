@@ -339,6 +339,126 @@ theorem muNegFiveZeroThreeNoCommonClauseSatisfied_of_relation
         refine ⟨-Int.ofNat ix, by simp, ?_⟩
         simp [dimacsLitValue, hxf]
 
+theorem muNegFiveZeroThreeAtMostOneCommonClauseSatisfied_of_relation
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsem : MuNegFiveZeroThreeOwnerServiceSemantics active X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (e f : Nat) (hef : e < f) (hf72 : f < 72)
+    (clause : DimacsClause)
+    (hclause : clause ∈
+      muNegFiveZeroThreeAtMostOneCommonClauses e f) :
+    dimacsClauseSatisfied
+      (muNegFiveZeroThreeOwnerValOfRelations active X) clause := by
+  simp only [muNegFiveZeroThreeAtMostOneCommonClauses, List.mem_flatMap,
+    List.mem_filterMap, List.mem_filter] at hclause
+  obtain ⟨k, hkcand, l, ⟨hlcand, hkl⟩, hclause⟩ := hclause
+  have hk72 : k < 72 := by
+    have hkdata := hkcand
+    simp only [muNegFiveZeroThreeCommonCandidates, List.mem_filter,
+      List.mem_range] at hkdata
+    exact hkdata.1
+  have hl72 : l < 72 := by
+    have hldata := hlcand
+    simp only [muNegFiveZeroThreeCommonCandidates, List.mem_filter,
+      List.mem_range] at hldata
+    exact hldata.1
+  have hklNat : k < l := by simpa using hkl
+  cases hxek : muNegFiveZeroThreeHitLiteral? e k with
+  | none => simp [hxek] at hclause
+  | some xek =>
+    cases hxfk : muNegFiveZeroThreeHitLiteral? f k with
+    | none => simp [hxek, hxfk] at hclause
+    | some xfk =>
+      cases hxel : muNegFiveZeroThreeHitLiteral? e l with
+      | none => simp [hxek, hxfk, hxel] at hclause
+      | some xel =>
+        cases hxfl : muNegFiveZeroThreeHitLiteral? f l with
+        | none => simp [hxek, hxfk, hxel, hxfl] at hclause
+        | some xfl =>
+          simp [hxek, hxfk, hxel, hxfl] at hclause
+          subst clause
+          let ef : Fin 72 := ⟨e, by omega⟩
+          let ff : Fin 72 := ⟨f, hf72⟩
+          let kf : Fin 72 := ⟨k, hk72⟩
+          let lf : Fin 72 := ⟨l, hl72⟩
+          have hxek' : muNegFiveZeroThreeHitLiteral? ef kf =
+              some xek := by simpa [ef, kf] using hxek
+          have hxfk' : muNegFiveZeroThreeHitLiteral? ff kf =
+              some xfk := by simpa [ff, kf] using hxfk
+          have hxel' : muNegFiveZeroThreeHitLiteral? ef lf =
+              some xel := by simpa [ef, lf] using hxel
+          have hxfl' : muNegFiveZeroThreeHitLiteral? ff lf =
+              some xfl := by simpa [ff, lf] using hxfl
+          obtain ⟨iek, hvek, rfl⟩ :=
+            muNegFiveZeroThreeHitLiteral?_eq_some hxek'
+          obtain ⟨ifk, hvfk, rfl⟩ :=
+            muNegFiveZeroThreeHitLiteral?_eq_some hxfk'
+          obtain ⟨iel, hvel, rfl⟩ :=
+            muNegFiveZeroThreeHitLiteral?_eq_some hxel'
+          obtain ⟨ifl, hvfl, rfl⟩ :=
+            muNegFiveZeroThreeHitLiteral?_eq_some hxfl'
+          by_cases hekval :
+              muNegFiveZeroThreeOwnerValOfRelations active X iek = true
+          · by_cases hfkval :
+                muNegFiveZeroThreeOwnerValOfRelations active X ifk = true
+            · by_cases helval :
+                  muNegFiveZeroThreeOwnerValOfRelations active X iel = true
+              · have hflfalse :
+                    muNegFiveZeroThreeOwnerValOfRelations active X ifl =
+                      false := by
+                  apply Bool.eq_false_of_not_eq_true
+                  intro hflval
+                  have hXek := muNegFiveZeroThreeOwnerRelation_of_val_true
+                    active X hsymm hvek hekval
+                  have hXfk := muNegFiveZeroThreeOwnerRelation_of_val_true
+                    active X hsymm hvfk hfkval
+                  have hXel := muNegFiveZeroThreeOwnerRelation_of_val_true
+                    active X hsymm hvel helval
+                  have hXfl := muNegFiveZeroThreeOwnerRelation_of_val_true
+                    active X hsymm hvfl hflval
+                  exact hsem.no_two_common ef ff (by
+                    intro h
+                    have := congrArg Fin.val h
+                    dsimp [ef, ff] at this
+                    omega) kf lf (by
+                      intro h
+                      have := congrArg Fin.val h
+                      dsimp [kf, lf] at this
+                      exact (Nat.ne_of_lt hklNat) this)
+                    hXek hXfk hXel hXfl
+                refine ⟨-Int.ofNat ifl, by simp, ?_⟩
+                simp [dimacsLitValue, hflfalse]
+              · have hfalse := Bool.eq_false_of_not_eq_true helval
+                refine ⟨-Int.ofNat iel, by simp, ?_⟩
+                simp [dimacsLitValue, hfalse]
+            · have hfalse := Bool.eq_false_of_not_eq_true hfkval
+              refine ⟨-Int.ofNat ifk, by simp, ?_⟩
+              simp [dimacsLitValue, hfalse]
+          · have hfalse := Bool.eq_false_of_not_eq_true hekval
+            refine ⟨-Int.ofNat iek, by simp, ?_⟩
+            simp [dimacsLitValue, hfalse]
+
+theorem muNegFiveZeroThreeC4Clauses_satisfied
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsem : MuNegFiveZeroThreeOwnerServiceSemantics active X)
+    (hsymm : ∀ e f, X e f → X f e) :
+    ∀ clause ∈ muNegFiveZeroThreeC4Clauses,
+      dimacsClauseSatisfied
+        (muNegFiveZeroThreeOwnerValOfRelations active X) clause := by
+  intro clause hclause
+  simp only [muNegFiveZeroThreeC4Clauses, List.mem_flatMap,
+    List.mem_range, List.mem_filter] at hclause
+  obtain ⟨e, he72, f, ⟨hf72, hef⟩, hclause⟩ := hclause
+  split at hclause
+  · next hintersect =>
+    exact muNegFiveZeroThreeNoCommonClauseSatisfied_of_relation
+      active X hsem hsymm e f (of_decide_eq_true hef) hf72
+      (by simpa using hintersect) clause hclause
+  · exact muNegFiveZeroThreeAtMostOneCommonClauseSatisfied_of_relation
+      active X hsem hsymm e f (of_decide_eq_true hef) hf72 clause hclause
+
 theorem muNegFiveZeroThreeHitVariable?_some_of_mem
     {e f : Nat} (hmem : (e, f) ∈ muNegFiveZeroThreeHitVariables) :
     e < 72 ∧ f < 72 ∧
@@ -476,10 +596,43 @@ theorem muNegFiveZeroThreeOwnerRelations_false
       service := hservice
       exterior_c4 := hc4 }
 
+/-- Fully clean relation terminal: the graph adapter supplies only owner laws
+and the two structural cross-block equations. -/
+theorem muNegFiveZeroThreeOwnerRelations_false_of_serviceSemantics
+    (sigma : Bool)
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsem : MuNegFiveZeroThreeOwnerServiceSemantics active X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (hirr : ∀ e, ¬ X e e)
+    (hcompat : ∀ e f, X e f →
+      muNegFiveZeroThreeOwnerCompatible e f = true)
+    (hends : ∀ e f, X e f → active e ∧ active f)
+    (hfiber : ∀ left z, z < 8 →
+      muNegFiveZeroThreeFiberBitsAllowed sigma left z
+        (muNegFiveZeroThreeFiberBit
+          (muNegFiveZeroThreeOwnerValOfRelations active X) left z) = true)
+    (hbalance : ∀ x y a b c d,
+      muNegFiveZeroThreeCrossIndex? ((x + 7) % 8) y = some a →
+      muNegFiveZeroThreeCrossIndex? ((x + 1) % 8) y = some b →
+      muNegFiveZeroThreeCrossIndex? x ((y + 1) % 8) = some c →
+      muNegFiveZeroThreeCrossIndex? x ((y + 7) % 8) = some d →
+      (muNegFiveZeroThreeOwnerValOfRelations active X a).toNat +
+          (muNegFiveZeroThreeOwnerValOfRelations active X b).toNat =
+        (muNegFiveZeroThreeOwnerValOfRelations active X c).toNat +
+          (muNegFiveZeroThreeOwnerValOfRelations active X d).toNat) : False :=
+  muNegFiveZeroThreeOwnerRelations_false sigma active X hsymm hends
+    hfiber hbalance
+    (muNegFiveZeroThreeServiceClauses_satisfied
+      active X hsem hsymm hirr hcompat)
+    (muNegFiveZeroThreeC4Clauses_satisfied active X hsem hsymm)
+
 end Erdos85
 
 #print axioms Erdos85.muNegFiveZeroThreeHitActivityClauses_satisfied
 #print axioms Erdos85.muNegFiveZeroThreeServiceExistsClauseSatisfied_of_relation
 #print axioms Erdos85.muNegFiveZeroThreeServiceClauses_satisfied
 #print axioms Erdos85.muNegFiveZeroThreeNoCommonClauseSatisfied_of_relation
+#print axioms Erdos85.muNegFiveZeroThreeC4Clauses_satisfied
+#print axioms Erdos85.muNegFiveZeroThreeOwnerRelations_false_of_serviceSemantics
 #print axioms Erdos85.muNegFiveZeroThreeOwnerRelations_false
