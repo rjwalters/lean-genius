@@ -632,6 +632,22 @@ involution and every pair `{x,xt}` is an edge. Consequently every odd-q
 Cayley candidate necessarily contains a canonical perfect-matching layer;
 this is not an optional feature of the q=7 example.
 
+The matching involution must also be genuinely noncentral. If `t∈A` is an
+involution and `s∈A∖{t}`, then C4-freeness forces
+
+```text
+tst ∉ A,
+```
+
+because the two non-backtracking words `st` and `t(tst)` have the same
+product. In particular `ts≠st` for every other generator `s`. Thus groups
+with a central (in particular, unique) involution cannot support an odd-degree
+C4-free Cayley graph of degree greater than one. The required construction
+mechanism is now sharper than merely “use a nonabelian group”: conjugation by
+the matching involution must separate the residual connection set from its
+conjugate. This is the algebraic twist that the doubled-fiber routing must
+encode.
+
 For odd `q`, the unused cardinal `q−2` is odd. Inversion therefore fixes an
 unused element; since the identity was removed, this element is a
 nontrivial involution. Thus every viable odd-q Cayley family must organize
@@ -644,7 +660,9 @@ These statements are formalized, uniformly in the group, by
 `card_unused_nonidentity_of_planeMinusTwo_Cayley`, and
 `exists_unused_involution_of_odd_planeMinusTwo_Cayley`, together with the
 matching-layer theorem `exists_connection_perfectMatchingLayer_of_odd_card`, in
-`Erdos85NoncommutativeCayleyProductCollision.lean`.
+`Erdos85NoncommutativeCayleyProductCollision.lean`. The twist is formalized by
+`involution_conjugate_not_mem_connection` and
+`involution_generator_not_commute` in the same file.
 
 ## 6. Honest status in the final tree
 
