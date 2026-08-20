@@ -292,6 +292,79 @@ theorem h305_correctShoreModes_typePopulations
   refine ⟨hx', ?_, hz⟩
   omega
 
+/-- Two disjoint labeled C8 shores covering the vertex type are finset
+complements. -/
+theorem h305_shoreImages_compl_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (u v : ZMod 8 → V)
+    (hdisj : ∀ i j, u i ≠ v j)
+    (hcover : ∀ x : V, (∃ i, x = u i) ∨ ∃ j, x = v j) :
+    ((Finset.univ : Finset (ZMod 8)).image u)ᶜ =
+      (Finset.univ : Finset (ZMod 8)).image v := by
+  classical
+  ext x
+  constructor
+  · intro hx
+    have hxnot : x ∉ (Finset.univ : Finset (ZMod 8)).image u :=
+      Finset.mem_compl.mp hx
+    rcases hcover x with ⟨i, rfl⟩ | ⟨j, rfl⟩
+    · exact False.elim (hxnot (Finset.mem_image.mpr
+        ⟨i, Finset.mem_univ _, rfl⟩))
+    · exact Finset.mem_image.mpr ⟨j, Finset.mem_univ _, rfl⟩
+  · intro hx
+    obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hx
+    apply Finset.mem_compl.mpr
+    intro hv
+    obtain ⟨i, _, hi⟩ := Finset.mem_image.mp hv
+    exact hdisj i j hi
+
+/-- Cardinality consequence of the two-shore coordinate cover. -/
+theorem h305_card_eq_sixteen_of_shoreCoordinates
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (u v : ZMod 8 → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hdisj : ∀ i j, u i ≠ v j)
+    (hcover : ∀ x : V, (∃ i, x = u i) ∨ ∃ j, x = v j) :
+    Fintype.card V = 16 := by
+  classical
+  let U := (Finset.univ : Finset (ZMod 8)).image u
+  let W := (Finset.univ : Finset (ZMod 8)).image v
+  have hU : U.card = 8 := by
+    rw [Finset.card_image_of_injective _ huinj]
+    decide
+  have hW : W.card = 8 := by
+    rw [Finset.card_image_of_injective _ hvinj]
+    decide
+  have hcomp : Uᶜ = W := h305_shoreImages_compl_eq u v hdisj hcover
+  have hc := Finset.card_compl U
+  rw [hcomp, hW, hU] at hc
+  have hle : 8 ≤ Fintype.card V := by
+    rw [← hU]
+    exact Finset.card_le_univ U
+  omega
+
+/-- Coordinate-native version of the full population census. -/
+theorem h305_correctShoreModes_typePopulations_of_coordinates
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (u v : ZMod 8 → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hdisj : ∀ i j, u i ≠ v j)
+    (hcover : ∀ x : V, (∃ i, x = u i) ∨ ∃ j, x = v j)
+    (humode : MuNegThreeZeroFiveTriangleShoreMode R u ∨
+      MuNegThreeZeroFiveTfShoreMode R u)
+    (hvmode : MuNegThreeZeroFiveTriangleShoreMode R v ∨
+      MuNegThreeZeroFiveTfShoreMode R v)
+    (hreg : ∀ x, R.degree x = 6) :
+    let U := (Finset.univ : Finset (ZMod 8)).image u
+    (shoreTypeEdgeFinset R U 2).card = 12 ∧
+      (shoreTypeEdgeFinset R U 1).card = 24 ∧
+      (shoreTypeEdgeFinset R U 0).card = 12 := by
+  exact h305_correctShoreModes_typePopulations R u v huinj hvinj
+    humode hvmode (h305_shoreImages_compl_eq u v hdisj hcover) hreg
+      (h305_card_eq_sixteen_of_shoreCoordinates
+        u v huinj hvinj hdisj hcover)
+
 end
 
 end Erdos85
@@ -304,3 +377,6 @@ end Erdos85
 #print axioms Erdos85.shoreTypeEdgeFinset_zero_eq_two_compl
 #print axioms Erdos85.edgeFinset_card_eq_fortyEight_of_sixRegular_sixteen
 #print axioms Erdos85.h305_correctShoreModes_typePopulations
+#print axioms Erdos85.h305_shoreImages_compl_eq
+#print axioms Erdos85.h305_card_eq_sixteen_of_shoreCoordinates
+#print axioms Erdos85.h305_correctShoreModes_typePopulations_of_coordinates
