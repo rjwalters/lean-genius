@@ -74,4 +74,28 @@ theorem connection_product_eq_one_of_commutative_invClosedCayley_not_containsC4
     (commutative_invClosedCayley_containsC4_of_two_generators
       S hinv hone ha hb hab hprod)
 
+/-- **Finite capstone.**  An inverse-closed connection finset defining a
+C4-free Cayley graph on an abelian group has cardinality at most two. -/
+theorem card_connection_le_two_of_commutative_invClosedCayley_not_containsC4
+    {Γ : Type*} [CommGroup Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone)) :
+    A.card ≤ 2 := by
+  by_contra hcard
+  have hlt : 2 < A.card := by omega
+  obtain ⟨a, b, c, ha, hb, hc, hab, hac, hbc⟩ :=
+    Finset.two_lt_card_iff.mp hlt
+  have habProd : a * b = 1 :=
+    connection_product_eq_one_of_commutative_invClosedCayley_not_containsC4
+      (· ∈ A) hinv hone hfree ha hb hab
+  have hacProd : a * c = 1 :=
+    connection_product_eq_one_of_commutative_invClosedCayley_not_containsC4
+      (· ∈ A) hinv hone hfree ha hc hac
+  have hbInv : b = a⁻¹ := eq_inv_of_mul_eq_one_right habProd
+  have hcInv : c = a⁻¹ := eq_inv_of_mul_eq_one_right hacProd
+  exact hbc (hbInv.trans hcInv.symm)
+
 end Erdos85
