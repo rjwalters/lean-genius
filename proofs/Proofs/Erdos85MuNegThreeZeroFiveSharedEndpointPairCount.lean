@@ -201,7 +201,9 @@ private theorem shoreTypeTwo_incident_card_eq_internalNeighbor
   rw [hedgeCard.symm, H.card_incidenceFinset_eq_degree,
     ← H.card_neighborFinset_eq_degree, hneighborCard]
 
-private theorem h305_correctShoreMode_incident_three
+/-- Every coordinate of a corrected h305 shore lies on exactly three
+shore-type-two exterior edges. -/
+theorem h305_correctShoreMode_incident_three
     {V : Type*} [Fintype V] [DecidableEq V]
     (R : SimpleGraph V) [DecidableRel R.Adj]
     (u : ZMod 8 → V) (huinj : Function.Injective u)
@@ -279,4 +281,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.sharedEndpointShoreEdgePairFinset_card_of_incident_three
+#print axioms Erdos85.h305_correctShoreMode_incident_three
 #print axioms Erdos85.h305_sharedEndpointShoreEdgePairFinset_card_twentyFour
