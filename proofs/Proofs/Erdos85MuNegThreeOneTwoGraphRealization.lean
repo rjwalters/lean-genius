@@ -45,13 +45,14 @@ def muNegThreeCrossDefectRel (s : V → ℤ)
     (secondOrderDefectGraph G).Adj
       (u (i : ZMod 8)).1 (v (j : ZMod 8)).1)
 
-/-- Two cross-cell owners hit when they share an exterior owner vertex. -/
+/-- Two cross-cell owners hit when their exterior owner vertices are
+adjacent in the ambient graph. -/
 noncomputable def muNegThreeOwnerHitRel (u v : ZMod 8 → c.supp)
     (a b : Nat) : Bool := by
   classical
-  exact decide (∃ z : V,
+  exact decide (∃ z w : V,
     MuNegThreeOwnerVertex G c u v a z ∧
-    MuNegThreeOwnerVertex G c u v b z)
+    MuNegThreeOwnerVertex G c u v b w ∧ G.Adj z w)
 
 @[simp] theorem muNegThreeCrossDefectRel_eq_true
     (s : V → ℤ) (u v : ZMod 8 → c.supp) (i j : Nat) :
@@ -64,8 +65,8 @@ noncomputable def muNegThreeOwnerHitRel (u v : ZMod 8 → c.supp)
 @[simp] theorem muNegThreeOwnerHitRel_eq_true
     (u v : ZMod 8 → c.supp) (a b : Nat) :
     muNegThreeOwnerHitRel G c u v a b = true ↔
-      ∃ z : V, MuNegThreeOwnerVertex G c u v a z ∧
-        MuNegThreeOwnerVertex G c u v b z := by
+      ∃ z w : V, MuNegThreeOwnerVertex G c u v a z ∧
+        MuNegThreeOwnerVertex G c u v b w ∧ G.Adj z w := by
   classical
   simp [muNegThreeOwnerHitRel]
 
@@ -96,21 +97,101 @@ theorem muNegThreeOwnerHitRel_comm
       muNegThreeOwnerHitRel G c u v b a := by
   apply Bool.eq_iff_iff.mpr
   simp only [muNegThreeOwnerHitRel_eq_true]
-  constructor <;> rintro ⟨z, ha, hb⟩ <;> exact ⟨z, hb, ha⟩
+  constructor
+  · rintro ⟨z, w, hz, hw, hzw⟩
+    exact ⟨w, z, hw, hz, hzw.symm⟩
+  · rintro ⟨w, z, hw, hz, hwz⟩
+    exact ⟨z, w, hz, hw, hwz.symm⟩
 
-/-- A true hit decodes to one concrete exterior vertex realizing both
-cross-cell owners. -/
+/-- A true hit decodes to adjacent concrete exterior vertices realizing
+the two cross-cell owners. -/
 theorem muNegThreeOwnerHitRel_witness
     (u v : ZMod 8 → c.supp) {a b : Nat}
     (h : muNegThreeOwnerHitRel G c u v a b = true) :
-    ∃ z : V, z ∉ c.supp ∧
+    ∃ z w : V, z ∉ c.supp ∧ w ∉ c.supp ∧
       G.Adj (muNegThreeOwnerEndpoints G c u v a).1 z ∧
       G.Adj (muNegThreeOwnerEndpoints G c u v a).2 z ∧
-      G.Adj (muNegThreeOwnerEndpoints G c u v b).1 z ∧
-      G.Adj (muNegThreeOwnerEndpoints G c u v b).2 z := by
-  obtain ⟨z, ha, hb⟩ :=
+      G.Adj (muNegThreeOwnerEndpoints G c u v b).1 w ∧
+      G.Adj (muNegThreeOwnerEndpoints G c u v b).2 w ∧ G.Adj z w := by
+  obtain ⟨z, w, ha, hb, hzw⟩ :=
     (muNegThreeOwnerHitRel_eq_true G c u v a b).mp h
-  exact ⟨z, ha.1, ha.2.1, ha.2.2, hb.2.1, hb.2.2⟩
+  exact ⟨z, w, ha.1, hb.1, ha.2.1, ha.2.2, hb.2.1, hb.2.2, hzw⟩
+
+section StructuralFields
+
+variable [DecidableEq (G.induce c.supp).ConnectedComponent]
+
+/-- Cross-cell endpoints lie on distinct internal components. -/
+theorem muNegThreeOwnerEndpoints_ne
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (x : Nat) :
+    (muNegThreeOwnerEndpoints G c u v x).1 ≠
+      (muNegThreeOwnerEndpoints G c u v x).2 := by
+  intro huv
+  apply hab
+  let i : ZMod 8 := muNegThreeCellRow x
+  let j : ZMod 8 := muNegThreeCellCol x
+  have hui : u i ∈ a.supp := by
+    rw [← hurange]
+    exact ⟨i, rfl⟩
+  have hvj : v j ∈ b.supp := by
+    rw [← hvrange]
+    exact ⟨j, rfl⟩
+  have huv' : u i = v j := Subtype.ext huv
+  exact ConnectedComponent.eq_of_common_vertex (huv' ▸ hui) hvj
+
+/-- A realized exterior owner rules out defect adjacency of its endpoint
+pair, since it supplies a common neighbor. -/
+theorem muNegThreeOwnerVertex_not_defect
+    (hfree : ¬ containsC4 V G)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (u v : ZMod 8 → c.supp)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    {x : Nat} {z : V} (hz : MuNegThreeOwnerVertex G c u v x z) :
+    ¬ (secondOrderDefectGraph G).Adj
+      (muNegThreeOwnerEndpoints G c u v x).1
+      (muNegThreeOwnerEndpoints G c u v x).2 := by
+  intro hD
+  have hne := muNegThreeOwnerEndpoints_ne G c a b hab u v hurange hvrange x
+  have hzero := (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+    G hfree hne).mp hD
+  have hzmem : z ∈
+      G.neighborFinset (muNegThreeOwnerEndpoints G c u v x).1 ∩
+        G.neighborFinset (muNegThreeOwnerEndpoints G c u v x).2 := by
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset]
+    exact ⟨hz.2.1, hz.2.2⟩
+  rw [Finset.card_eq_zero] at hzero
+  rw [hzero] at hzmem
+  exact Finset.notMem_empty z hzmem
+
+/-- The graph hit relation satisfies the finite socket's hit-activity
+field. -/
+theorem muNegThreeGraph_hit_active
+    (hfree : ¬ containsC4 V G)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (s : V → ℤ) (u v : ZMod 8 → c.supp)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ x y, (x, y) ∈ muNegThreeHitPairs →
+      muNegThreeOwnerHitRel G c u v x y = true →
+      muNegThreeOwnerActive (muNegThreeCrossDefectRel G c s u v) x = true ∧
+        muNegThreeOwnerActive (muNegThreeCrossDefectRel G c s u v) y = true := by
+  intro x y _hkey hX
+  obtain ⟨z, w, hx, hy, _hzw⟩ :=
+    (muNegThreeOwnerHitRel_eq_true G c u v x y).mp hX
+  constructor
+  · rw [muNegThreeOwnerActive_graph_iff]
+    intro hD
+    exact muNegThreeOwnerVertex_not_defect G c hfree a b hab u v
+      hurange hvrange hx hD.2
+  · rw [muNegThreeOwnerActive_graph_iff]
+    intro hD
+    exact muNegThreeOwnerVertex_not_defect G c hfree a b hab u v
+      hurange hvrange hy hD.2
+
+end StructuralFields
 
 end
 
@@ -119,3 +200,4 @@ end Erdos85
 #print axioms Erdos85.muNegThreeOwnerActive_graph_iff
 #print axioms Erdos85.muNegThreeOwnerHitRel_comm
 #print axioms Erdos85.muNegThreeOwnerHitRel_witness
+#print axioms Erdos85.muNegThreeGraph_hit_active
