@@ -280,6 +280,65 @@ theorem muNegFiveZeroThreeServiceClauses_satisfied
     exact muNegFiveZeroThreeInternalZeroClauseSatisfied_of_relation
       active X hsem hsymm e v he72 hv16 hfalse x hx
 
+theorem muNegFiveZeroThreeNoCommonClauseSatisfied_of_relation
+    (active : Fin 72 → Prop) (X : Fin 72 → Fin 72 → Prop)
+    [DecidablePred active] [DecidableRel X]
+    (hsem : MuNegFiveZeroThreeOwnerServiceSemantics active X)
+    (hsymm : ∀ e f, X e f → X f e)
+    (e f : Nat) (hef : e < f) (hf72 : f < 72)
+    (hintersect : muNegFiveZeroThreeOwnersIntersect e f = true)
+    (clause : DimacsClause)
+    (hclause : clause ∈ muNegFiveZeroThreeNoCommonClauses e f) :
+    dimacsClauseSatisfied
+      (muNegFiveZeroThreeOwnerValOfRelations active X) clause := by
+  simp only [muNegFiveZeroThreeNoCommonClauses, List.mem_filterMap]
+    at hclause
+  obtain ⟨k, hkcand, hclause⟩ := hclause
+  simp only [muNegFiveZeroThreeCommonCandidates, List.mem_filter,
+    List.mem_range] at hkcand
+  have hk72 := hkcand.1
+  cases hxe : muNegFiveZeroThreeHitLiteral? e k with
+  | none => simp [hxe] at hclause
+  | some x =>
+    cases hyf : muNegFiveZeroThreeHitLiteral? f k with
+    | none => simp [hxe, hyf] at hclause
+    | some y =>
+      simp [hxe, hyf] at hclause
+      subst clause
+      let ef : Fin 72 := ⟨e, by omega⟩
+      let ff : Fin 72 := ⟨f, hf72⟩
+      let kf : Fin 72 := ⟨k, hk72⟩
+      have hxe' : muNegFiveZeroThreeHitLiteral? ef kf = some x := by
+        simpa [ef, kf] using hxe
+      have hyf' : muNegFiveZeroThreeHitLiteral? ff kf = some y := by
+        simpa [ff, kf] using hyf
+      obtain ⟨ix, hvarx, rfl⟩ :=
+        muNegFiveZeroThreeHitLiteral?_eq_some hxe'
+      obtain ⟨iy, hvary, rfl⟩ :=
+        muNegFiveZeroThreeHitLiteral?_eq_some hyf'
+      by_cases hxval :
+          muNegFiveZeroThreeOwnerValOfRelations active X ix = true
+      · have hXek := muNegFiveZeroThreeOwnerRelation_of_val_true
+          active X hsymm hvarx hxval
+        have hyfalse :
+            muNegFiveZeroThreeOwnerValOfRelations active X iy = false := by
+          apply Bool.eq_false_of_not_eq_true
+          intro hyval
+          have hXfk := muNegFiveZeroThreeOwnerRelation_of_val_true
+            active X hsymm hvary hyval
+          exact hsem.intersecting_no_common ef ff (by
+            intro h
+            have := congrArg Fin.val h
+            dsimp [ef, ff] at this
+            omega) (by simpa using hintersect) kf hXek hXfk
+        refine ⟨-Int.ofNat iy, by simp, ?_⟩
+        simp [dimacsLitValue, hyfalse]
+      · have hxf :
+            muNegFiveZeroThreeOwnerValOfRelations active X ix = false :=
+          Bool.eq_false_of_not_eq_true hxval
+        refine ⟨-Int.ofNat ix, by simp, ?_⟩
+        simp [dimacsLitValue, hxf]
+
 theorem muNegFiveZeroThreeHitVariable?_some_of_mem
     {e f : Nat} (hmem : (e, f) ∈ muNegFiveZeroThreeHitVariables) :
     e < 72 ∧ f < 72 ∧
@@ -422,4 +481,5 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeHitActivityClauses_satisfied
 #print axioms Erdos85.muNegFiveZeroThreeServiceExistsClauseSatisfied_of_relation
 #print axioms Erdos85.muNegFiveZeroThreeServiceClauses_satisfied
+#print axioms Erdos85.muNegFiveZeroThreeNoCommonClauseSatisfied_of_relation
 #print axioms Erdos85.muNegFiveZeroThreeOwnerRelations_false
