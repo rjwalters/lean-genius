@@ -700,19 +700,57 @@ theorem muNegFiveOneTwoCrossOnly_graph_false
         (v i) (v j))
       (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
         (v i) (u j))
-      (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) 1 2)
-    (hshapeU : ZModEightSameSignShape
-      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
-        (u i) (u j)) (fun i ↦ s (u i).1) 1)
-    (hshapeV : ZModEightSameSignShape
-      (fun i j ↦ ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
-        (v i) (v j)) (fun i ↦ s (v i).1) 1) : False := by
+      (fun i ↦ s (v i).1) (fun j ↦ s (u j).1) 1 2) : False := by
+  let H := G.induce c.supp
+  let K := (secondOrderDefectGraph G).induce c.supp
+  let N₁ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (u i) (u j)
+  let N₂ : Matrix (ZMod 8) (ZMod 8) ℤ :=
+    fun i j ↦ K.adjMatrix ℤ (v i) (v j)
+  have hcomm : K.adjMatrix ℤ * H.adjMatrix ℤ =
+      H.adjMatrix ℤ * K.adjMatrix ℤ :=
+    (adjMatrix_comm_secondOrderDefect_induce_component_of_regular
+      G hfree hreg c).symm
+  have hupair : ∀ z, u (z - 1) ≠ u (z + 1) := fun z ↦
+    huinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) z)
+  have hvpair : ∀ z, v (z - 1) ≠ v (z + 1) := fun z ↦
+    hvinj.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) z)
+  have hinterU : ∀ i j,
+      N₁ (i - 1) j + N₁ (i + 1) j =
+        N₁ i (j + 1) + N₁ i (j - 1) := by
+    simpa only [N₁] using entry_cycleIntertwine_of_adjMatrix_comm
+      K H u u (1 : ZMod 8) (1 : ZMod 8) hcomm hu hu hupair hupair
+  have hinterV : ∀ i j,
+      N₂ (i - 1) j + N₂ (i + 1) j =
+        N₂ i (j + 1) + N₂ i (j - 1) := by
+    simpa only [N₂] using entry_cycleIntertwine_of_adjMatrix_comm
+      K H v v (1 : ZMod 8) (1 : ZMod 8) hcomm hv hv hvpair hvpair
+  have hsymmU : ∀ i j, N₁ i j = N₁ j i := by
+    intro i j
+    simp [N₁, SimpleGraph.adjMatrix_apply, K.adj_comm]
+  have hsymmV : ∀ i j, N₂ i j = N₂ j i := by
+    intro i j
+    simp [N₂, SimpleGraph.adjMatrix_apply, K.adj_comm]
+  have hdiagU : ∀ i, N₁ i i = 0 := by
+    intro i
+    simp [N₁, SimpleGraph.adjMatrix_apply]
+  have hdiagV : ∀ i, N₂ i i = 0 := by
+    intro i
+    simp [N₂, SimpleGraph.adjMatrix_apply]
+  have hshapeU : ZModEightSameSignShape N₁ (fun i ↦ s (u i).1) 1 :=
+    zmodEight_selfIntertwiner_sameSign_shape_of_degree_le_two
+      N₁ (fun i ↦ s (u i).1) 1 (by omega) Luv.f_sign Luv.f_flip
+        hdiagU hsymmU hinterU (by simpa [N₁, K] using Luv.internal_same)
+  have hshapeV : ZModEightSameSignShape N₂ (fun i ↦ s (v i).1) 1 :=
+    zmodEight_selfIntertwiner_sameSign_shape_of_degree_le_two
+      N₂ (fun i ↦ s (v i).1) 1 (by omega) Lvu.f_sign Lvu.f_flip
+        hdiagV hsymmV hinterV (by simpa [N₂, K] using Lvu.internal_same)
   have hnoU := muNegFiveOneTwo_no_sameShoreExterior_of_rowLedger
     G c hfree u huinj hu _ (fun i ↦ s (u i).1) (fun j ↦ s (v j).1)
-      Luv hshapeU
+      Luv (by simpa [N₁, K] using hshapeU)
   have hnoV := muNegFiveOneTwo_no_sameShoreExterior_of_rowLedger
     G c hfree v hvinj hv _ (fun i ↦ s (v i).1) (fun j ↦ s (u j).1)
-      Lvu hshapeV
+      Lvu (by simpa [N₂, K] using hshapeV)
   have hcover :=
     muNegFiveOneTwoCrossOnlyExteriorOwnerCoverage_of_noSameShore
       G c a b u v hfree hreg hcard hsize hab huinj hvinj hurange hvrange
