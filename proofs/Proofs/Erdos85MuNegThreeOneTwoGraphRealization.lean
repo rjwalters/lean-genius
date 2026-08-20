@@ -410,6 +410,96 @@ theorem muNegThreeGraph_c4_no_two
     hcab u v huinj hvinj hurange hvrange hg64 hh64 hg (htgh ▸ hh)
   exact hgh hgh'
 
+/-- The exact residual after the graph-generic owner geometry is removed:
+four defect-algebra fields and the two service fields. -/
+structure MuNegThreeOneTwoGraphResidualSemantics
+    (fwd : Bool) (phase : Nat) (D X : Nat → Nat → Bool) : Prop where
+  fixed : ∀ i j, i < 8 → j < 8 → i % 2 == j % 2 →
+    D i j = (j == muNegThreePhi fwd phase i)
+  opposite_rows : ∀ i, i < 8 →
+    (((List.range 8).filter fun j => !(i % 2 == j % 2)).countP
+      fun j => D i j) = 1
+  opposite_columns : ∀ j, j < 8 →
+    (((List.range 8).filter fun i => !(i % 2 == j % 2)).countP
+      fun i => D i j) = 1
+  intertwine : ∀ i j, i < 8 → j < 8 →
+    (cond (D ((i + 7) % 8) j) 1 0) +
+        (cond (D ((i + 1) % 8) j) 1 0) =
+      (cond (D i ((j + 1) % 8)) 1 0) +
+        (cond (D i ((j + 7) % 8)) 1 0)
+  service_exists : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
+    ∀ (onRow : Bool) t,
+      (if onRow then muNegThreeOffsetOne (muNegThreeCellRow a) t
+        else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
+      ∃ b, b < 64 ∧ b ≠ a ∧
+        (if onRow then muNegThreeCellRow b = t
+          else muNegThreeCellCol b = t) ∧
+        (min a b, max a b) ∈ muNegThreeHitPairs ∧
+        X (min a b) (max a b) = true
+  service_unique : ∀ a, a < 64 → muNegThreeOwnerActive D a = true →
+    ∀ (onRow : Bool) t,
+      (if onRow then muNegThreeOffsetOne (muNegThreeCellRow a) t
+        else muNegThreeOffsetOne (muNegThreeCellCol a) t) = false →
+      ∀ b d, b < 64 → b ≠ a →
+        (if onRow then muNegThreeCellRow b = t
+          else muNegThreeCellCol b = t) →
+        (min a b, max a b) ∈ muNegThreeHitPairs →
+        X (min a b) (max a b) = true →
+        d < 64 → d ≠ a →
+        (if onRow then muNegThreeCellRow d = t
+          else muNegThreeCellCol d = t) →
+        (min a d, max a d) ∈ muNegThreeHitPairs →
+        X (min a d) (max a d) = true → b = d
+
+/-- Assemble the complete finite semantics from the exact algebra/service
+residual and the graph-generic owner geometry proved above. -/
+theorem muNegThreeGraph_finiteSemantics
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (s : V → ℤ) (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    {fwd : Bool} {phase : Nat}
+    (hres : MuNegThreeOneTwoGraphResidualSemantics fwd phase
+      (muNegThreeCrossDefectRel G c s u v)
+      (muNegThreeOwnerHitRel G c u v)) :
+    MuNegThreeOneTwoFiniteSemantics fwd phase
+      (muNegThreeCrossDefectRel G c s u v)
+      (muNegThreeOwnerHitRel G c u v) where
+  fixed := hres.fixed
+  opposite_rows := hres.opposite_rows
+  opposite_columns := hres.opposite_columns
+  intertwine := hres.intertwine
+  hit_active := muNegThreeGraph_hit_active G c hfree ca cb hcab s u v
+    hurange hvrange
+  service_exists := hres.service_exists
+  service_unique := hres.service_unique
+  c4_intersecting := muNegThreeGraph_c4_intersecting G c hfree hreg hcard
+    hsize ca cb hcab u v huinj hvinj hurange hvrange
+  c4_no_two := muNegThreeGraph_c4_no_two G c hfree hreg hcard hsize ca cb
+    hcab u v huinj hvinj hurange hvrange
+
+/-- Graph-facing h312 contradiction, reduced to the explicit six-field
+residual above. -/
+theorem muNegThreeGraph_false_of_residual
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (s : V → ℤ) (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    {fwd : Bool} {phase : Nat}
+    (hphase : phase = 0 ∨ phase = 2 ∨ phase = 4 ∨ phase = 6)
+    (hres : MuNegThreeOneTwoGraphResidualSemantics fwd phase
+      (muNegThreeCrossDefectRel G c s u v)
+      (muNegThreeOwnerHitRel G c u v)) : False :=
+  muNegThreeOneTwoFiniteSemantics_false hphase
+    (muNegThreeGraph_finiteSemantics G c hfree hreg hcard hsize ca cb hcab
+      s u v huinj hvinj hurange hvrange hres)
+
 end StructuralFields
 
 end
@@ -422,3 +512,4 @@ end Erdos85
 #print axioms Erdos85.muNegThreeGraph_hit_active
 #print axioms Erdos85.muNegThreeGraph_c4_intersecting
 #print axioms Erdos85.muNegThreeGraph_c4_no_two
+#print axioms Erdos85.muNegThreeGraph_false_of_residual
