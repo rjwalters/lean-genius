@@ -230,6 +230,44 @@ theorem squareOrderNine_threeHigh_secondProfile_binThree_unique_binOne_partner_a
     exact Finset.inter_eq_left.mpr hsubset
   rw [heq, hcommon]
 
+/-- Distinct high roots give distinct bin-one partners of the rare
+bin-three vertex.  This is the direct separation form of the fact that a
+bin-one vertex is adjacent to only one high vertex. -/
+theorem squareOrderNine_binThree_binOne_partner_sets_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {x a b : V}
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hb : b ∈ squareOrderHighVertices G 9) (hab : a ≠ b) :
+    Disjoint
+      (G.neighborFinset a ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 1)
+      (G.neighborFinset b ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 1) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro y hya hyb
+  have hya' := Finset.mem_inter.mp (Finset.mem_inter.mp hya).1
+  have hyb' := Finset.mem_inter.mp (Finset.mem_inter.mp hyb).1
+  have hyB := (Finset.mem_inter.mp hya).2
+  have hky : squareOrderHighIncidenceCount G 9 y = 1 :=
+    (Finset.mem_filter.mp hyB).2
+  have haInc : a ∈ G.neighborFinset y ∩ squareOrderHighVertices G 9 :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset y a).mpr
+        ((G.adj_comm a y).mp ((G.mem_neighborFinset a y).mp hya'.1)), ha⟩
+  have hbInc : b ∈ G.neighborFinset y ∩ squareOrderHighVertices G 9 :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset y b).mpr
+        ((G.adj_comm b y).mp ((G.mem_neighborFinset b y).mp hyb'.1)), hb⟩
+  have heq : a = b := by
+    apply Finset.card_le_one.mp
+    · change (G.neighborFinset y ∩ squareOrderHighVertices G 9).card ≤ 1
+      exact Nat.le_of_eq hky
+    · exact haInc
+    · exact hbInc
+  exact hab heq
+
 /-- The full original-neighborhood census of the rare bin-three vertex in
 the second three-high profile is `3H + 3B₁ + 3B₀`. -/
 theorem squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
@@ -346,5 +384,6 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_unique_binOne_partner_at_highRoot
+#print axioms Erdos85.squareOrderNine_binThree_binOne_partner_sets_disjoint
 #print axioms
   Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
