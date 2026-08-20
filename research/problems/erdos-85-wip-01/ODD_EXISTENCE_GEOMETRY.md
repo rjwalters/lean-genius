@@ -346,7 +346,57 @@ Kissat scout of the maximally heterogeneous representative
 3,160-variable, 4,780,580-clause encoding. This shows that mixed types are not
 immediately easier; it is still not evidence against existence.
 
-### 5.1 Finite-field dot-product construction does not repair at q=9
+### 5.1 The signed-determinant double cover fails uniformly in odd characteristic
+
+There is a tempting algebraic construction which has exactly the required
+order and degree, but it fails for a structural reason.  Let `q` be odd, let
+`a != 0` in `F_q`, and put
+
+```text
+X = (F_q^2 \ {0}) / {u ~ -u}.
+```
+
+Take two copies `L,R` of `X`, and join `[u] in L` to `[v] in R` when
+
+```text
+det(u,v) in {a,-a}.
+```
+
+The condition is independent of the representatives.  For fixed `[u]`, the
+equation `det(u,v)=a` has `q` solutions, and every signed class satisfying the
+adjacency condition has a unique representative among those solutions.
+Consequently the bipartite graph is `q`-regular on
+
+```text
+2 * (q^2-1)/2 = q^2-1
+```
+
+vertices.  In characteristic two this is essentially the familiar affine
+determinant construction; quotienting by signs appears to repair its odd-
+characteristic orientation problem.
+
+It cannot be C4-free.  Choose linearly independent `u,u'`.  For each
+`(s,t) in {+1,-1}^2`, the nonsingular two-by-two system
+
+```text
+det(u,v)  = s*a,
+det(u',v) = t*a
+```
+
+has a unique solution `v_(s,t)`.  Simultaneously reversing both signs negates
+the solution, so the four solutions give at most two points of `X`.  They give
+exactly two: equality of the two remaining signed classes would force either
+`a=-a` in the first equation or `a=-a` in the second, impossible because the
+characteristic is odd and `a != 0`.  Thus `[u]` and `[u']` have exactly two
+common neighbors in `R`, producing a 4-cycle.
+
+This is a q-generic no-go, not a q=9 census.  It closes the most direct
+projectivized alternating-form analogue of the even-q family.  Any viable
+odd-q incidence construction must break at least one of its three symmetries:
+the full `+-` sign choice, the two-copy bipartition, or the uniform determinant
+level on every projective class.
+
+### 5.2 Finite-field dot-product construction does not repair at q=9
 
 Zhang--Chen--Cheng, *Finite Fields Appl.* **45** (2017), 73--85,
 doi:10.1016/j.ffa.2016.11.012, construct a C4-free graph `Gamma_a` on
@@ -383,7 +433,7 @@ matchings between different doubled pairs must be coordinated into a Latin
 square for every fiber pair. Future reductions should target compatibility of
 these factorizations rather than prune local cycle types.
 
-### 5.2 No induced order-81 witness inside the orthogonal polarity graph
+### 5.3 No induced order-81 witness inside the orthogonal polarity graph
 
 The other immediate projective-plane construction is also closed at q=9.
 The orthogonal polarity graph `ER_9` on `PG(2,9)` is C4-free and has 91
