@@ -662,7 +662,11 @@ These statements are formalized, uniformly in the group, by
 matching-layer theorem `exists_connection_perfectMatchingLayer_of_odd_card`, in
 `Erdos85NoncommutativeCayleyProductCollision.lean`. The twist is formalized by
 `involution_conjugate_not_mem_connection` and
-`involution_generator_not_commute` in the same file.
+`involution_generator_not_commute` in the same file; the group-class
+capstone `containsC4_of_odd_connection_card_of_all_involutions_central`
+formally eliminates all groups whose involutions are central. The equal-sized
+disjoint shores `A∖{t}` and `t(A∖{t})t` are packaged by
+`erase_involution_disjoint_conjugate_shore` and its cardinal corollary.
 
 ## 6. Honest status in the final tree
 
