@@ -1,5 +1,6 @@
 import Proofs.Erdos85NegativeSignedJointConnectedOwnerProfile
 import Proofs.Erdos85OrderSixtyFourOutsideEdgeBijection
+import Proofs.Erdos85OrderSixtyFourRegularOutsideFeasibility
 import Proofs.Erdos85BinarySquareRegularParity
 
 /-! # Coordinate-free outside-pair encoding for negative signed joints -/
@@ -31,6 +32,27 @@ structure NegativeSignedJointOutsidePairEncoding
   negativePair_signs : ∀ z,
     z.1 ∈ negativeSignedJointNegativePairOwners G c s →
       ∀ u ∈ (pair z).toFinset, s u.1 = -1
+
+/-- At regular order 64 the canonical injection exhausts the exterior-pair
+graph: its 48 outside owners are exactly the 48 edges. -/
+theorem orderSixtyFour_regular_sizeSixteen_exists_outsidePairEdgeEquiv
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x : Fin 64, G.degree x = 8)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 16) :
+    Nonempty ({x : Fin 64 // x ∉ c.supp} ≃
+      (exteriorPairGraph G c.supp).edgeFinset) := by
+  classical
+  obtain ⟨_label, hqcard, hcard, hinc, _himage, _hRreg, hRedges,
+      _houtreg, _houtfree, _hcross⟩ :=
+    orderSixtyFour_regular_sizeSixteen_outsidePair_feasibility
+      G hfree hreg c hc
+  exact ⟨outsidePairEdgeEquiv G (secondOrderDefectGraph G) c
+    hcard hinc hqcard hRedges⟩
 
 theorem exists_negativeSignedJointOutsidePairEncoding
     (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
@@ -186,3 +208,4 @@ end
 end Erdos85
 
 #print axioms Erdos85.exists_negativeSignedJointOutsidePairEncoding
+#print axioms Erdos85.orderSixtyFour_regular_sizeSixteen_exists_outsidePairEdgeEquiv
