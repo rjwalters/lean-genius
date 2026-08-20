@@ -37,7 +37,7 @@ private theorem degree_induce_finset_eq_card_inter_local
 /-- In the one-high q=9 horn, any vertex set closed under defect adjacency
 meets the one-incidence bin in even cardinality.  Hence the same holds for
 every union of defect components, in particular for each component. -/
-theorem squareOrderNine_oneHigh_defectClosed_oneBin_card_even
+theorem squareOrderNine_oneHigh_defectClosed_bin_card_ledger
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -51,7 +51,9 @@ theorem squareOrderNine_oneHigh_defectClosed_oneBin_card_even
     (S : Finset V)
     (hclosed : ∀ {x y : V}, x ∈ S →
       (secondOrderDefectGraph G).Adj x y → y ∈ S) :
-    Even ((S ∩ squareOrderNineLowIncidenceBin G 1).card) := by
+    (S ∩ squareOrderNineLowIncidenceBin G 0).card =
+        7 * (S ∩ squareOrderNineLowIncidenceBin G 1).card ∧
+      Even ((S ∩ squareOrderNineLowIncidenceBin G 1).card) := by
   classical
   let D := secondOrderDefectGraph G
   let B0 := squareOrderNineLowIncidenceBin G 0
@@ -141,6 +143,7 @@ theorem squareOrderNine_oneHigh_defectClosed_oneBin_card_even
         _ = 7 * A.card := by simp [Nat.mul_comm]
     rw [← hseven, hsum, K.sum_degrees_eq_twice_card_edges]
     exact ⟨K.edgeFinset.card, by omega⟩
+  refine ⟨hcross, ?_⟩
   change Even C.card
   obtain ⟨w, hw⟩ := hinternalEven
   rw [hcross] at hw
@@ -148,8 +151,53 @@ theorem squareOrderNine_oneHigh_defectClosed_oneBin_card_even
   have hwmod := congrArg (fun n : ℕ => n % 2) hw
   omega
 
+/-- Parity projection of the closed-sector ledger. -/
+theorem squareOrderNine_oneHigh_defectClosed_oneBin_card_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 1)
+    (S : Finset V)
+    (hclosed : ∀ {x y : V}, x ∈ S →
+      (secondOrderDefectGraph G).Adj x y → y ∈ S) :
+    Even ((S ∩ squareOrderNineLowIncidenceBin G 1).card) := by
+  exact (squareOrderNine_oneHigh_defectClosed_bin_card_ledger
+    G hfree hmin hcover hcard hp hhigh S hclosed).2
+
+/-- The total low-bin mass in every defect-closed sector is a multiple of
+sixteen.  For a non-isolated defect component this is its component order. -/
+theorem squareOrderNine_oneHigh_defectClosed_lowBin_mass_multiple_sixteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 1)
+    (S : Finset V)
+    (hclosed : ∀ {x y : V}, x ∈ S →
+      (secondOrderDefectGraph G).Adj x y → y ∈ S) :
+    ∃ t : ℕ,
+      (S ∩ squareOrderNineLowIncidenceBin G 0).card +
+          (S ∩ squareOrderNineLowIncidenceBin G 1).card = 16 * t := by
+  have hledger := squareOrderNine_oneHigh_defectClosed_bin_card_ledger
+    G hfree hmin hcover hcard hp hhigh S hclosed
+  obtain ⟨t, ht⟩ := hledger.2
+  exact ⟨t, by omega⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_oneHigh_defectClosed_oneBin_card_even
+#print axioms Erdos85.squareOrderNine_oneHigh_defectClosed_bin_card_ledger
+#print axioms Erdos85.squareOrderNine_oneHigh_defectClosed_lowBin_mass_multiple_sixteen
