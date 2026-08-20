@@ -1,5 +1,6 @@
 import Proofs.Erdos85DefectPathOwner
 import Proofs.Erdos85OddSquareOrderNineThreeHighBinOneDefectTypes
+import Proofs.Erdos85LocalTriangleParity
 
 /-! # Original-edge constraint on the q = 9 three-high ordinary core
 
@@ -75,9 +76,37 @@ theorem squareOrderNine_binOne_sameHigh_defectNeighbors_original_card_le_one
     ((G.mem_neighborFinset y x).mp (Finset.mem_inter.mp hx).2).symm,
     (G.mem_neighborFinset y z).mp (Finset.mem_inter.mp hz).2⟩
 
+/-- Every bin-one vertex has odd original-edge degree inside the second-order
+defect graph.  Indeed it is a low vertex of original degree nine, and
+`G ∩ D` is the triangle-free-edge graph. -/
+theorem squareOrderNine_binOne_triangleFree_degree_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81) {y : V}
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1) :
+    Odd (triangleFreeNeighbors G y).card := by
+  have hyLow : y ∈ (Finset.univ : Finset V) \ squareOrderHighVertices G 9 :=
+    (Finset.mem_filter.mp hy).1
+  have hyNotHigh : y ∉ squareOrderHighVertices G 9 :=
+    (Finset.mem_sdiff.mp hyLow).2
+  have hyDegree : G.degree y = 9 := by
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (by norm_num) hmin hcover hcard y with hlo | hhi
+    · exact hlo
+    · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  have hmod := triangleFreeNeighbors_card_mod_two_eq_vertexDegree G hfree y
+  rw [hyDegree] at hmod
+  exact Nat.odd_iff.mpr (by omega)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_binOne_not_both_originalEdges_of_sameHigh_twoPath
 #print axioms Erdos85.squareOrderNine_binOne_sameHigh_defectNeighbors_original_card_le_one
+#print axioms Erdos85.squareOrderNine_binOne_triangleFree_degree_odd
