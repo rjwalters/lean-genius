@@ -62,8 +62,42 @@ theorem edgeIndexedService_integralResidual_isSquare_zmodTwo
   rw [hexpand] at hfrob
   simpa [Pbar, p, frobenius_def] using hfrob
 
+theorem polynomial_zmodTwo_square_coeff_eq_zero_of_odd
+    (p : (ZMod 2)[X]) {j : ℕ} (hj : Odd j) :
+    (p ^ 2).coeff j = 0 := by
+  have hfrob := Polynomial.map_frobenius_expand (R := ZMod 2) 2 p
+  have heq : p ^ 2 = Polynomial.expand (ZMod 2) 2 p := by
+    simpa [frobenius_def] using hfrob.symm
+  rw [heq, Polynomial.coeff_expand (by omega)]
+  have hnotdvd : ¬2 ∣ j := by
+    intro hdvd
+    apply (Nat.not_even_iff_odd.mpr hj)
+    obtain ⟨k, hk⟩ := hdvd
+    exact ⟨k, by omega⟩
+  simp [hnotdvd]
+
+/-- Integer-facing form of residual squarehood: every odd-degree coefficient
+of the residual factor is even. -/
+theorem integralPolynomial_odd_coeff_even_of_square_zmodTwo
+    (P : ℤ[X])
+    (hsquare : ∃ p : (ZMod 2)[X],
+      P.map (Int.castRingHom (ZMod 2)) = p ^ 2)
+    {j : ℕ} (hj : Odd j) :
+    Even (P.coeff j) := by
+  obtain ⟨p, hp⟩ := hsquare
+  have hcoeff :
+      (P.map (Int.castRingHom (ZMod 2))).coeff j = 0 := by
+    rw [hp]
+    exact polynomial_zmodTwo_square_coeff_eq_zero_of_odd p hj
+  rw [Polynomial.coeff_map] at hcoeff
+  have hdvd : (2 : ℤ) ∣ P.coeff j :=
+    (ZMod.intCast_zmod_eq_zero_iff_dvd (P.coeff j) 2).mp hcoeff
+  obtain ⟨k, hk⟩ := hdvd
+  exact ⟨k, by omega⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.edgeIndexedService_integralResidual_isSquare_zmodTwo
+#print axioms Erdos85.integralPolynomial_odd_coeff_even_of_square_zmodTwo
