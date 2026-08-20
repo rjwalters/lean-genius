@@ -115,8 +115,70 @@ theorem sharpSymmetricProfile_positive_card_eq_parityCard
   push_cast at hsignZero
   omega
 
+/-- Direct sharp-profile form.  Symmetry, balanced parity classes, and one
+duplicated/one missing entry in opposite classes force exactly half the rows
+to duplicate into the chosen parity class. -/
+theorem sharpSymmetricProfile_duplicateParity_card_eq_parityCard
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (parity : V → Prop) [DecidablePred parity]
+    (W : V → V → ℕ)
+    (duplicate missing : V → V)
+    (hsymm : ∀ v w, W v w = W w v)
+    (N : ℕ)
+    (hparity : ((Finset.univ : Finset V).filter parity).card = N)
+    (hnotParity :
+      ((Finset.univ : Finset V).filter fun v => ¬parity v).card = N)
+    (hne : ∀ v, duplicate v ≠ missing v)
+    (hopposite : ∀ v, parity (duplicate v) ↔ ¬parity (missing v))
+    (hprofile : ∀ v w,
+      W v w = if w = duplicate v then 2
+        else if w = missing v then 0 else 1) :
+    ((Finset.univ : Finset V).filter fun v => parity (duplicate v)).card = N := by
+  classical
+  have hsum (v : V) (S : Finset V) :
+      (∑ w ∈ S, (W v w : ℤ)) =
+        (S.card : ℤ) + (if duplicate v ∈ S then 1 else 0) -
+          (if missing v ∈ S then 1 else 0) := by
+    calc
+      _ = ∑ w ∈ S, ((1 : ℤ) +
+          (if w = duplicate v then 1 else 0) -
+          (if w = missing v then 1 else 0)) := by
+        apply Finset.sum_congr rfl
+        intro w hw
+        rw [hprofile v w]
+        by_cases hd : w = duplicate v
+        · subst w
+          simp [hne v]
+        · by_cases hm : w = missing v <;>
+            simp [hd, hm, (hne v).symm]
+      _ = _ := by
+        rw [Finset.sum_sub_distrib, Finset.sum_add_distrib]
+        simp
+  apply sharpSymmetricProfile_positive_card_eq_parityCard
+    parity (fun v => parity (duplicate v)) W hsymm N hparity hnotParity
+  · intro v
+    rw [hsum]
+    by_cases hd : parity (duplicate v)
+    · have hm : ¬parity (missing v) := (hopposite v).mp hd
+      simp [hd, hm, hparity, sub_eq_add_neg]
+    · have hm : parity (missing v) := by
+        by_contra hnm
+        exact hd ((hopposite v).mpr hnm)
+      simp [hd, hm, hparity, sub_eq_add_neg]
+  · intro v
+    rw [hsum]
+    by_cases hd : parity (duplicate v)
+    · have hm : ¬parity (missing v) := (hopposite v).mp hd
+      simp [hd, hm, hnotParity, sub_eq_add_neg]
+    · have hm : parity (missing v) := by
+        by_contra hnm
+        exact hd ((hopposite v).mpr hnm)
+      simp [hd, hm, hnotParity, sub_eq_add_neg]
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.sharpSymmetricProfile_positive_card_eq_parityCard
+#print axioms
+  Erdos85.sharpSymmetricProfile_duplicateParity_card_eq_parityCard
