@@ -103,9 +103,121 @@ def muNegFiveZeroThreeIntertwiningClauses : List DimacsClause :=
                 if bit then -Int.ofNat v else Int.ofNat v
             else none
 
+def muNegFiveZeroThreeOwnerAt (e : Nat) : EightEightOwner :=
+  (muNegFiveZeroThreeCandidates[e]?).getD (0, 0)
+
+def muNegFiveZeroThreeOwnerContains (e v : Nat) : Bool :=
+  let p := muNegFiveZeroThreeOwnerAt e
+  p.1 == v || p.2 == v
+
+def muNegFiveZeroThreeOwnerTargetContains (e v : Nat) : Bool :=
+  let p := muNegFiveZeroThreeOwnerAt e
+  !eightEightHighCycleAdj p.1 v && !eightEightHighCycleAdj p.2 v
+
+def muNegFiveZeroThreeOwnerCompatible (e f : Nat) : Bool :=
+  e != f &&
+    muNegFiveZeroThreeOwnerTargetContains e (muNegFiveZeroThreeOwnerAt f).1 &&
+    muNegFiveZeroThreeOwnerTargetContains e (muNegFiveZeroThreeOwnerAt f).2 &&
+    muNegFiveZeroThreeOwnerTargetContains f (muNegFiveZeroThreeOwnerAt e).1 &&
+    muNegFiveZeroThreeOwnerTargetContains f (muNegFiveZeroThreeOwnerAt e).2
+
+def muNegFiveZeroThreeHitVariables : List (Nat × Nat) :=
+  (List.range 72).flatMap fun e ↦
+    ((List.range 72).filter fun f ↦
+      e < f && muNegFiveZeroThreeOwnerCompatible e f).map fun f ↦ (e, f)
+
+def muNegFiveZeroThreeActiveVariable? (e : Nat) : Option Nat :=
+  let p := muNegFiveZeroThreeOwnerAt e
+  if p.1 < 8 && 8 ≤ p.2 then
+    (muNegFiveZeroThreeCrossCandidates.idxOf? p).map (· + 1)
+  else none
+
+def muNegFiveZeroThreeHitVariable? (e f : Nat) : Option Nat :=
+  let p := if e < f then (e, f) else (f, e)
+  (muNegFiveZeroThreeHitVariables.idxOf? p).map (· + 65)
+
+def muNegFiveZeroThreeHitLiteral? (e f : Nat) : Option Int :=
+  (muNegFiveZeroThreeHitVariable? e f).map Int.ofNat
+
+def muNegFiveZeroThreeActiveGuard (e : Nat) : List Int :=
+  match muNegFiveZeroThreeActiveVariable? e with
+  | some a => [-Int.ofNat a]
+  | none => []
+
+def muNegFiveZeroThreeHitActivityClauses : List DimacsClause :=
+  muNegFiveZeroThreeHitVariables.flatMap fun (e, f) ↦
+    let h := Int.ofNat ((muNegFiveZeroThreeHitVariable? e f).getD 0)
+    let ce := match muNegFiveZeroThreeActiveVariable? e with
+      | some a => [[-h, Int.ofNat a]]
+      | none => []
+    let cf := match muNegFiveZeroThreeActiveVariable? f with
+      | some a => [[-h, Int.ofNat a]]
+      | none => []
+    ce ++ cf
+
+def muNegFiveZeroThreeServiceVariables (e v : Nat) : List Int :=
+  (List.range 72).filterMap fun f ↦
+    if f != e && muNegFiveZeroThreeOwnerContains f v then
+      muNegFiveZeroThreeHitLiteral? e f
+    else none
+
+def muNegFiveZeroThreeServiceClauses : List DimacsClause :=
+  (List.range 72).flatMap fun e ↦
+    (List.range 16).flatMap fun v ↦
+      let p := muNegFiveZeroThreeOwnerAt e
+      let xs := muNegFiveZeroThreeServiceVariables e v
+      let guard := muNegFiveZeroThreeActiveGuard e
+      if !eightEightHighCycleAdj p.1 v && !eightEightHighCycleAdj p.2 v then
+        [guard ++ xs] ++ eightEightPairwiseNegativeClauses xs
+      else
+        xs.map fun x ↦ guard ++ [-x]
+
+def muNegFiveZeroThreeOwnersIntersect (e f : Nat) : Bool :=
+  let p := muNegFiveZeroThreeOwnerAt e
+  muNegFiveZeroThreeOwnerContains f p.1 ||
+    muNegFiveZeroThreeOwnerContains f p.2
+
+def muNegFiveZeroThreeCommonCandidates (e f : Nat) : List Nat :=
+  (List.range 72).filter fun k ↦ k != e && k != f &&
+    (muNegFiveZeroThreeHitVariable? e k).isSome &&
+    (muNegFiveZeroThreeHitVariable? f k).isSome
+
+def muNegFiveZeroThreeNoCommonClauses (e f : Nat) : List DimacsClause :=
+  (muNegFiveZeroThreeCommonCandidates e f).filterMap fun k ↦ do
+    let x ← muNegFiveZeroThreeHitLiteral? e k
+    let y ← muNegFiveZeroThreeHitLiteral? f k
+    return [-x, -y]
+
+def muNegFiveZeroThreeAtMostOneCommonClauses
+    (e f : Nat) : List DimacsClause :=
+  let ks := muNegFiveZeroThreeCommonCandidates e f
+  ks.flatMap fun k ↦ (ks.filter fun l ↦ k < l).filterMap fun l ↦ do
+    let xek ← muNegFiveZeroThreeHitLiteral? e k
+    let xfk ← muNegFiveZeroThreeHitLiteral? f k
+    let xel ← muNegFiveZeroThreeHitLiteral? e l
+    let xfl ← muNegFiveZeroThreeHitLiteral? f l
+    return [-xek, -xfk, -xel, -xfl]
+
+def muNegFiveZeroThreeC4Clauses : List DimacsClause :=
+  (List.range 72).flatMap fun e ↦
+    ((List.range 72).filter fun f ↦ e < f).flatMap fun f ↦
+      if muNegFiveZeroThreeOwnersIntersect e f then
+        muNegFiveZeroThreeNoCommonClauses e f
+      else muNegFiveZeroThreeAtMostOneCommonClauses e f
+
 def muNegFiveZeroThreeStructuralClauses (sigma : Bool) : Array DimacsClause :=
   (muNegFiveZeroThreeCrossDegreeClauses sigma ++
     muNegFiveZeroThreeIntertwiningClauses).toArray
+
+def muNegFiveZeroThreeDimacsClauses (sigma : Bool) : Array DimacsClause :=
+  (muNegFiveZeroThreeCrossDegreeClauses sigma ++
+    muNegFiveZeroThreeIntertwiningClauses ++
+    muNegFiveZeroThreeHitActivityClauses ++
+    muNegFiveZeroThreeServiceClauses ++
+    muNegFiveZeroThreeC4Clauses).toArray
+
+def muNegFiveZeroThreeSatCnf (sigma : Bool) : CNF Nat where
+  clauses := dimacsFormulaToSatClauses (muNegFiveZeroThreeDimacsClauses sigma)
 
 set_option maxHeartbeats 0 in
 theorem muNegFiveZeroThreeCandidates_size :
