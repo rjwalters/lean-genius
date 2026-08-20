@@ -486,6 +486,25 @@ involution**.  A non-Cayley generalization may retain the one-block
 configuration locally while twisting the developments or the sparse shadow
 between orbits.
 
+The nonabelian semidirect action is essential, not cosmetic.  In an abelian
+group, any two connection elements `a,b` which are not mutual inverses create
+the Cayley parallelogram
+
+```text
+1 -- a -- ab -- b -- 1.
+```
+
+The Lean theorem
+`commutative_invClosedCayley_containsC4_of_two_generators` formalizes this
+4-cycle, and
+`connection_product_eq_one_of_commutative_invClosedCayley_not_containsC4`
+proves the contrapositive: in a C4-free abelian Cayley graph every two
+distinct connection elements are mutual inverses.  Hence an inverse-closed
+abelian Cayley graph has degree at most two.  This uniformly rules out cyclic
+or other abelian one-block extrapolations for every target `q > 2`; a viable
+development must use a nonabelian action, or abandon global Cayley symmetry
+by twisting blocks/shadows between orbits.
+
 The q=9 transitive case is now formally rigid in exactly the same language.
 The Lean theorems in `Erdos85OddSquareOrderNineUniformTriangles.lean` prove:
 
