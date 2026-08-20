@@ -142,7 +142,7 @@ theorem muNegThreeOneTwo_graph_defectShape
     (horient : ∃ t : ZMod 8,
       (∀ i j, (g j = f i ∧ M₁ i j = 1) ↔ j = t + i) ∨
       (∀ i j, (g j = f i ∧ M₁ i j = 1) ↔ j = t - i)) :
-    ∃ fwd phase,
+    ∃ fwd phase, (phase = 0 ∨ phase = 2 ∨ phase = 4 ∨ phase = 6) ∧
       (∀ i j, i < 8 → j < 8 → i % 2 == j % 2 →
         D i j = (j == muNegThreePhi fwd phase i)) ∧
       (∀ i, i < 8 →
@@ -152,7 +152,14 @@ theorem muNegThreeOneTwo_graph_defectShape
         (((List.range 8).filter fun i => !(i % 2 == j % 2)).countP
           fun i => D i j) = 1) := by
   obtain ⟨t, hfwd | hrev⟩ := horient
-  · refine ⟨true, t.val, ?_, ?_, ?_⟩
+  · have hmatch := (hfwd 0 t).mpr (by simp)
+    have heven : t.val % 2 = 0 := by
+      have hp := (hpar 0 t.val (by omega) t.val_lt).mp (by simpa using hmatch.1)
+      omega
+    have hphase : t.val = 0 ∨ t.val = 2 ∨ t.val = 4 ∨ t.val = 6 := by
+      have htlt := t.val_lt
+      omega
+    refine ⟨true, t.val, hphase, ?_, ?_, ?_⟩
     · intro i j hi hj hsame
       rw [hD₁ i j hi hj]
       rw [Bool.eq_iff_iff]
@@ -172,7 +179,14 @@ theorem muNegThreeOneTwo_graph_defectShape
               exact ((hpar i j hi hj).mp h.symm).symm
             · intro h
               exact ((hpar i j hi hj).mpr h.symm).symm) j hj)
-  · refine ⟨false, t.val, ?_, ?_, ?_⟩
+  · have hmatch := (hrev 0 t).mpr (by simp)
+    have heven : t.val % 2 = 0 := by
+      have hp := (hpar 0 t.val (by omega) t.val_lt).mp (by simpa using hmatch.1)
+      omega
+    have hphase : t.val = 0 ∨ t.val = 2 ∨ t.val = 4 ∨ t.val = 6 := by
+      have htlt := t.val_lt
+      omega
+    refine ⟨false, t.val, hphase, ?_, ?_, ?_⟩
     · intro i j hi hj hsame
       rw [hD₁ i j hi hj]
       rw [Bool.eq_iff_iff]

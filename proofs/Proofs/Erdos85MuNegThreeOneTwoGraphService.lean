@@ -618,10 +618,11 @@ theorem muNegThree_graphResidual_of_ledgers_diagonalFive
     (horient : ∃ t : ZMod 8,
       (∀ i j, (g j = f i ∧ M₁ i j = 1) ↔ j = t + i) ∨
       (∀ i j, (g j = f i ∧ M₁ i j = 1) ↔ j = t - i)) :
-    ∃ fwd phase, MuNegThreeOneTwoGraphResidualSemantics fwd phase
+    ∃ fwd phase, (phase = 0 ∨ phase = 2 ∨ phase = 4 ∨ phase = 6) ∧
+      MuNegThreeOneTwoGraphResidualSemantics fwd phase
       (muNegThreeCrossDefectRel G c u v)
       (muNegThreeOwnerHitRel G c u v) := by
-  obtain ⟨fwd, phase, hfixed, hrows, hcols⟩ :=
+  obtain ⟨fwd, phase, hphase, hfixed, hrows, hcols⟩ :=
     muNegThreeOneTwo_graph_defectShape L₁ L₂
       (muNegThreeCrossDefectRel G c u v) hD₁ hD₂ hpar horient
   have hnoneu :=
@@ -636,7 +637,7 @@ theorem muNegThree_graphResidual_of_ledgers_diagonalFive
   have hvout :=
     orderSixtyFour_no_internal_exteriorPair_outside_unique_shoreNeighbor
       G hfree hreg hcard c hsize v hvinj hnonev
-  refine ⟨fwd, phase, {
+  refine ⟨fwd, phase, hphase, {
     fixed := hfixed
     opposite_rows := hrows
     opposite_columns := hcols
