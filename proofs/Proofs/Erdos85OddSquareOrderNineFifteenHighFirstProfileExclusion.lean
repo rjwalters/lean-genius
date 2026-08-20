@@ -13,11 +13,12 @@ namespace Erdos85
 
 noncomputable section
 
-/-- At fifteen high vertices, the profile with one low zero-incidence vertex
-and no one-incidence vertices is impossible.  Its unique low zero-incidence
-vertex would have eight defect neighbors, each of incidence at least two, but
-the exact weighted-neighbor equation gives total weight fifteen. -/
-theorem squareOrderNine_not_first_fifteenHigh_incidence_profile
+/-- If there are at most fifteen high vertices, there cannot be exactly one
+low zero-incidence vertex and no one-incidence vertices.  The unique low
+zero-incidence vertex would have eight defect neighbors, each of incidence at
+least two, while its exact weighted-neighbor sum is the number of high
+vertices. -/
+theorem squareOrderNine_not_unique_low_zero_no_one_incidence
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -27,9 +28,9 @@ theorem squareOrderNine_not_first_fifteenHigh_incidence_profile
     (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
     (hcard : Fintype.card V = 81)
     (hp : SquareOrderNonregularSectorProfile G 9)
-    (hhigh : (squareOrderHighVertices G 9).card = 15) :
+    (hhighle : (squareOrderHighVertices G 9).card ≤ 15) :
     let c := squareOrderNineHighIncidenceHistogram G
-    ¬ (c 0 = 16 ∧ c 1 = 0 ∧ c 2 = 45 ∧ c 3 = 20 ∧ c 4 = 0) := by
+    ¬ (c 0 = (squareOrderHighVertices G 9).card + 1 ∧ c 1 = 0) := by
   classical
   dsimp only
   intro hprofile
@@ -38,6 +39,7 @@ theorem squareOrderNine_not_first_fifteenHigh_incidence_profile
   let k := squareOrderHighIncidenceCount G 9
   let B := squareOrderNineLowIncidenceBin G 0
   let Z := (Finset.univ : Finset V).filter fun x => k x = 0
+  change H.card ≤ 15 at hhighle
   have hHsubsetZ : H ⊆ Z := by
     intro x hx
     have hinter : G.neighborFinset x ∩ H = ∅ := by
@@ -57,24 +59,23 @@ theorem squareOrderNine_not_first_fifteenHigh_incidence_profile
     simp only [B, Z, squareOrderNineLowIncidenceBin, Finset.mem_filter,
       Finset.mem_sdiff, Finset.mem_univ, true_and]
     tauto
-  have hZcard : Z.card = 16 := by
+  have hZcard : Z.card = H.card + 1 := by
     simpa [Z, k, squareOrderNineHighIncidenceHistogram, boundedHistogram]
       using hprofile.1
   have hBcard : B.card = 1 := by
     rw [hB, Finset.card_sdiff, Finset.inter_eq_left.mpr hHsubsetZ, hZcard]
-    change H.card = 15 at hhigh
     omega
   have hledger := squareOrderNine_lowIncidenceBin_quotient_ledger
     G hfree hmin hcover hcard 0
   dsimp only at hledger
   change (∑ x ∈ B, D.degree x) = 8 * B.card ∧
     (∑ x ∈ B, ∑ y ∈ D.neighborFinset x, k y) = H.card * B.card at hledger
-  rw [hBcard, hhigh] at hledger
+  rw [hBcard] at hledger
   obtain ⟨x, hBsingleton⟩ := Finset.card_eq_one.mp hBcard
   rw [hBsingleton] at hledger
   simp only [Finset.sum_singleton, Nat.mul_one] at hledger
   have hxdegree : D.degree x = 8 := hledger.1
-  have hxweight : (∑ y ∈ D.neighborFinset x, k y) = 15 := hledger.2
+  have hxweight : (∑ y ∈ D.neighborFinset x, k y) = H.card := hledger.2
   have hneighborLower {y : V} (hy : y ∈ D.neighborFinset x) : 2 ≤ k y := by
     have hadj : D.Adj x y := (D.mem_neighborFinset x y).mp hy
     have hyNotHigh : y ∉ H := by
@@ -103,7 +104,7 @@ theorem squareOrderNine_not_first_fifteenHigh_incidence_profile
         Finset.mem_filter.mpr ⟨Finset.mem_univ y, hky⟩
       have hc1zero : ((Finset.univ.filter fun z : V => k z = 1)).card = 0 := by
         simpa [k, squareOrderNineHighIncidenceHistogram, boundedHistogram]
-          using hprofile.2.1
+          using hprofile.2
       rw [Finset.card_eq_zero.mp hc1zero] at hyC
       simp at hyC
     omega
@@ -115,6 +116,31 @@ theorem squareOrderNine_not_first_fifteenHigh_incidence_profile
       _ ≤ ∑ y ∈ D.neighborFinset x, k y := by
         exact Finset.sum_le_sum fun y hy => hneighborLower hy
   omega
+
+/-- At fifteen high vertices, the first scalar endpoint profile is excluded
+by the generic unique-zero-bin obstruction. -/
+theorem squareOrderNine_not_first_fifteenHigh_incidence_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 15) :
+    let c := squareOrderNineHighIncidenceHistogram G
+    ¬ (c 0 = 16 ∧ c 1 = 0 ∧ c 2 = 45 ∧ c 3 = 20 ∧ c 4 = 0) := by
+  dsimp only
+  intro hprofile
+  have hnot := squareOrderNine_not_unique_low_zero_no_one_incidence
+    G hfree hmin hcover hcard hp (by omega)
+  dsimp only at hnot
+  apply hnot
+  constructor
+  · simpa [hhigh] using hprofile.1
+  · exact hprofile.2.1
 
 /-- The quotient obstruction sharpens the scalar fifteen-high census from
 five candidates to the four profiles with exactly fifteen zero-incidence
@@ -153,4 +179,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_not_first_fifteenHigh_incidence_profile
+#print axioms Erdos85.squareOrderNine_not_unique_low_zero_no_one_incidence
 #print axioms Erdos85.squareOrderNine_highIncidence_profile_of_fifteen_high_refined
