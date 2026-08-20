@@ -48,6 +48,35 @@ theorem defectNeighbors_disjoint_secondLayerBranch_of_adjacent_indices
     Finset.card_pos.mpr ⟨z.1, hzCommon⟩
   omega
 
+/-- Every ordinary second-layer branch is independent in the second-order
+defect graph: two distinct vertices in the branch already share its index as
+an original common neighbor. -/
+theorem secondLayerBranch_independent_in_secondOrderDefect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (v : V)
+    (s : {w : V // w ∈ G.neighborSet v})
+    {x y : V} (hx : x ∈ secondLayerBranch G v s)
+    (hy : y ∈ secondLayerBranch G v s) (hxy : x ≠ y) :
+    ¬ (secondOrderDefectGraph G).Adj x y := by
+  intro hD
+  have hzero :=
+    (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+      G hfree hxy).mp hD
+  have hsx : G.Adj s.1 x :=
+    (G.mem_neighborFinset s.1 x).mp (Finset.mem_sdiff.mp hx).1
+  have hsy : G.Adj s.1 y :=
+    (G.mem_neighborFinset s.1 y).mp (Finset.mem_sdiff.mp hy).1
+  have hsCommon : s.1 ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset x s.1).mpr hsx.symm,
+      (G.mem_neighborFinset y s.1).mpr hsy.symm⟩
+  have hpos : 0 < (G.neighborFinset x ∩ G.neighborFinset y).card :=
+    Finset.card_pos.mpr ⟨s.1, hsCommon⟩
+  omega
+
 /-- At a root whose neighborhood has no isolated vertex, the diagonal cell
 between the defect neighborhood of an index and its own ordinary branch is
 exactly the triangle-free-edge neighborhood of that index. -/
@@ -216,11 +245,46 @@ theorem squareOrderNine_oneHigh_forbidden_matched_defectBranch_cells
       (defectNeighbors_disjoint_secondLayerBranch_of_adjacent_indices
         G hfree v y z hyz)) (Finset.mem_inter.mp hx).1 hxBranch
 
+/-- At q=9 with one high vertex, `D[B₀]` is explicitly ten-partite: the ten
+ordinary high-root branches are seven-point independent parts and exhaust
+`B₀`. -/
+theorem squareOrderNine_oneHigh_zeroBin_tenPartite_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 1) :
+    ∃ v : V,
+      squareOrderHighVertices G 9 = {v} ∧
+      squareOrderNineLowIncidenceBin G 1 = G.neighborFinset v ∧
+      secondLayer G v = squareOrderNineLowIncidenceBin G 0 ∧
+      ∀ s : {z : V // z ∈ G.neighborSet v},
+        (secondLayerBranch G v s).card = 7 ∧
+        ∀ {x y : V}, x ∈ secondLayerBranch G v s →
+          y ∈ secondLayerBranch G v s → x ≠ y →
+          ¬ (secondOrderDefectGraph G).Adj x y := by
+  classical
+  obtain ⟨v, hH, hB1, hbranchCard, hsecond, _⟩ :=
+    squareOrderNine_oneHigh_forbidden_matched_defectBranch_cells
+      G hfree hmin hcover hcard hp hhigh
+  refine ⟨v, hH, hB1, hsecond, ?_⟩
+  intro s
+  exact ⟨hbranchCard s, fun hx hy hxy =>
+    secondLayerBranch_independent_in_secondOrderDefect
+      G hfree v s hx hy hxy⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.defectNeighbors_disjoint_secondLayerBranch_of_adjacent_indices
+#print axioms Erdos85.secondLayerBranch_independent_in_secondOrderDefect
 #print axioms Erdos85.defectNeighbors_inter_own_secondLayerBranch_eq_triangleFreeNeighbors
 #print axioms Erdos85.squareOrderNine_oneHigh_diagonal_defectBranch_cells_odd
 #print axioms Erdos85.squareOrderNine_oneHigh_forbidden_matched_defectBranch_cells
+#print axioms Erdos85.squareOrderNine_oneHigh_zeroBin_tenPartite_defect
