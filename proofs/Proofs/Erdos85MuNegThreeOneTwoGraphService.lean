@@ -584,6 +584,69 @@ theorem muNegThree_service_unique_graph
   exact muNegThreeOwnerVertex_inj G c hfree hreg hcard hsize ca cb hcab
     u v huinj hvinj hurange hvrange hb hd htb (htbd ▸ htd)
 
+/-- The two explicit `(1,2)` ledgers and diagonal-five geometry assemble the
+entire graph residual: algebra supplies the three defect-shape fields, while
+the absence of internal exterior pairs supplies graph service. -/
+theorem muNegThree_graphResidual_of_ledgers_diagonalFive
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (ca cb : (G.induce c.supp).ConnectedComponent) (hcab : ca ≠ cb)
+    (u v : ZMod 8 → c.supp)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = ca.supp) (hvrange : Set.range v = cb.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (haa5 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) ca ca = 5)
+    (hbb5 : componentQuotientMatrix
+      ((secondOrderDefectGraph G).induce c.supp) (G.induce c.supp) cb cb = 5)
+    {N₁ M₁ N₂ M₂ : Matrix (ZMod 8) (ZMod 8) ℤ}
+    {f g : ZMod 8 → ℤ}
+    (L₁ : MuNegThreeExplicitParameterLedger N₁ M₁ f g 1 2)
+    (L₂ : MuNegThreeExplicitParameterLedger N₂ M₂ g f 1 2)
+    (hD₁ : ∀ i j, i < 8 → j < 8 →
+      muNegThreeCrossDefectRel G c u v i j =
+        decide (M₁ (i : ZMod 8) (j : ZMod 8) = 1))
+    (hD₂ : ∀ i j, i < 8 → j < 8 →
+      muNegThreeCrossDefectRel G c u v i j =
+        decide (M₂ (j : ZMod 8) (i : ZMod 8) = 1))
+    (hpar : ∀ i j : Nat, i < 8 → j < 8 →
+      (g (j : ZMod 8) = f (i : ZMod 8) ↔ i % 2 = j % 2))
+    (horient : ∃ t : ZMod 8,
+      (∀ i j, (g j = f i ∧ M₁ i j = 1) ↔ j = t + i) ∨
+      (∀ i j, (g j = f i ∧ M₁ i j = 1) ↔ j = t - i)) :
+    ∃ fwd phase, MuNegThreeOneTwoGraphResidualSemantics fwd phase
+      (muNegThreeCrossDefectRel G c u v)
+      (muNegThreeOwnerHitRel G c u v) := by
+  obtain ⟨fwd, phase, hfixed, hrows, hcols⟩ :=
+    muNegThreeOneTwo_graph_defectShape L₁ L₂
+      (muNegThreeCrossDefectRel G c u v) hD₁ hD₂ hpar horient
+  have hnoneu :=
+    binarySquare_regular_sizeTwoPart_eight_diagonalFive_no_internal_exteriorPair
+      G hfree hreg hcard c hsize ca u huinj hurange hu haa5
+  have hnonev :=
+    binarySquare_regular_sizeTwoPart_eight_diagonalFive_no_internal_exteriorPair
+      G hfree hreg hcard c hsize cb v hvinj hvrange hv hbb5
+  have huout :=
+    orderSixtyFour_no_internal_exteriorPair_outside_unique_shoreNeighbor
+      G hfree hreg hcard c hsize u huinj hnoneu
+  have hvout :=
+    orderSixtyFour_no_internal_exteriorPair_outside_unique_shoreNeighbor
+      G hfree hreg hcard c hsize v hvinj hnonev
+  refine ⟨fwd, phase, {
+    fixed := hfixed
+    opposite_rows := hrows
+    opposite_columns := hcols
+    service_exists := ?_
+    service_unique := ?_ }⟩
+  · exact muNegThree_service_exists_graph G c hfree hreg hcard hsize ca cb
+      hcab u v huinj hvinj hurange hvrange hu hv huout hvout
+  · exact muNegThree_service_unique_graph G c hfree hreg hcard hsize ca cb
+      hcab u v huinj hvinj hurange hvrange
+
 end
 
 end Erdos85
@@ -591,3 +654,4 @@ end Erdos85
 #print axioms Erdos85.mem_muNegThreeHitPairs_of_ownerVertices_adj
 #print axioms Erdos85.muNegThree_service_exists_graph
 #print axioms Erdos85.muNegThree_service_unique_graph
+#print axioms Erdos85.muNegThree_graphResidual_of_ledgers_diagonalFive
