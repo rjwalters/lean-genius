@@ -41,6 +41,11 @@ theorem muNegFiveZeroThreeCodeVertex_mem_supp
   · exact (u _).2
   · exact (v _).2
 
+def muNegFiveZeroThreeCodeSub
+    (u v : ZMod 8 → c.supp) (x : Nat) : c.supp :=
+  ⟨muNegFiveZeroThreeCodeVertex G c u v x,
+    muNegFiveZeroThreeCodeVertex_mem_supp G c u v x⟩
+
 def muNegFiveZeroThreeOwnerEndpoints
     (u v : ZMod 8 → c.supp) (e : Nat) : V × V :=
   let p := muNegFiveZeroThreeOwnerAt e
@@ -74,6 +79,14 @@ def MuNegFiveZeroThreeExteriorOwnerCoverage
     (u v : ZMod 8 → c.supp) : Prop :=
   ∀ z : V, z ∉ c.supp →
     ∃ e : Fin 72, MuNegFiveZeroThreeOwnerVertex G c u v e z
+
+def MuNegFiveZeroThreeOwnerPairComplete
+    (u v : ZMod 8 → c.supp) : Prop :=
+  ∀ {x y : c.supp}, (exteriorPairGraph G c.supp).Adj x y →
+    ∃ e : Fin 72,
+      ({(muNegFiveZeroThreeOwnerEndpoints G c u v e).1,
+        (muNegFiveZeroThreeOwnerEndpoints G c u v e).2} : Finset V) =
+        {x.1, y.1}
 
 section Shores
 
@@ -230,6 +243,77 @@ theorem muNegFiveZeroThreeOwnerVertex_inj
           omega
       · exact (hinj _ hfBounds.2.1 _ heBounds.2.1 h2).symm
   exact muNegFiveZeroThreeOwnerAt_injective hpairs
+
+theorem muNegFiveZeroThreeOwnerAvailability_of_fixedExterior
+    (hfree : ¬ containsC4 V G)
+    (hfixed : ∀ e : Fin 72,
+      muNegFiveZeroThreeActiveVariable? e = none →
+      (exteriorPairGraph G c.supp).Adj
+        (muNegFiveZeroThreeCodeSub G c u v
+          (muNegFiveZeroThreeOwnerAt e).1)
+        (muNegFiveZeroThreeCodeSub G c u v
+          (muNegFiveZeroThreeOwnerAt e).2)) :
+    MuNegFiveZeroThreeOwnerAvailability G c u v := by
+  intro e henabled
+  unfold muNegFiveZeroThreeOwnerEnabled at henabled
+  split at henabled
+  · exact henabled
+  · next heq =>
+    obtain ⟨z, hzout, hz1, hz2, _⟩ := exteriorPairGraph_ownerVertex
+      G hfree c.supp (hfixed e heq)
+    exact ⟨z, hzout, hz1, hz2⟩
+
+theorem muNegFiveZeroThreeExteriorOwnerCoverage_of_pairComplete
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hcomplete : MuNegFiveZeroThreeOwnerPairComplete G c u v) :
+    MuNegFiveZeroThreeExteriorOwnerCoverage G c u v := by
+  intro z hzout
+  have htileCard := sizeTwoPart_tile_card_two G hfree (q := 8) (by omega)
+    hreg hcard c hsize z
+  obtain ⟨x, y, hxy, htile⟩ := Finset.card_eq_two.mp htileCard
+  have hxmem : x ∈ componentNeighborFinset G (secondOrderDefectGraph G) c z := by
+    rw [htile]
+    exact Finset.mem_insert_self _ _
+  have hymem : y ∈ componentNeighborFinset G (secondOrderDefectGraph G) c z := by
+    rw [htile]
+    exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self _))
+  rw [componentNeighborFinset, Finset.mem_filter, mem_neighborFinset] at hxmem hymem
+  have hxsupp : x ∈ c.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff c x).mpr hxmem.2
+  have hysupp : y ∈ c.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff c y).mpr hymem.2
+  let xs : c.supp := ⟨x, hxsupp⟩
+  let ys : c.supp := ⟨y, hysupp⟩
+  have hR : (exteriorPairGraph G c.supp).Adj xs ys := by
+    refine ⟨?_, z, hzout, ?_, ?_⟩
+    · intro h
+      exact hxy (congrArg Subtype.val h)
+    · exact hxmem.1.symm
+    · exact hymem.1.symm
+  obtain ⟨e, hePair⟩ := hcomplete hR
+  refine ⟨e, hzout, ?_, ?_⟩
+  · have hmem : (muNegFiveZeroThreeOwnerEndpoints G c u v e).1 ∈
+        ({x, y} : Finset V) := by
+      rw [← hePair]
+      exact Finset.mem_insert_self _ _
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with h | h
+    · rw [h]
+      exact hxmem.1.symm
+    · rw [h]
+      exact hymem.1.symm
+  · have hmem : (muNegFiveZeroThreeOwnerEndpoints G c u v e).2 ∈
+        ({x, y} : Finset V) := by
+      rw [← hePair]
+      exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self _))
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with h | h
+    · rw [h]
+      exact hxmem.1.symm
+    · rw [h]
+      exact hymem.1.symm
 
 theorem muNegFiveZeroThreeOwnerVertex_adj_of_contains
     {e : Fin 72} {z : V}
@@ -691,6 +775,8 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeCodeVertex_inj
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_unique
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_inj
+#print axioms Erdos85.muNegFiveZeroThreeOwnerAvailability_of_fixedExterior
+#print axioms Erdos85.muNegFiveZeroThreeExteriorOwnerCoverage_of_pairComplete
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_unique
