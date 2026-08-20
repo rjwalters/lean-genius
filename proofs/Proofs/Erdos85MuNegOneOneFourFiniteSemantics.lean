@@ -547,6 +547,196 @@ theorem muNegOneHitActivityClauses_satisfied_of_finite
 
 end HitFamilies
 
+/-! ## Service family -/
+
+/-- Unfold one generated hit literal to its variable. -/
+theorem muNegOneXLit?_eq_some {pairs : List (Nat × Nat)} {a b : Nat}
+    {lit : Int} (h : muNegOneXLit? pairs a b = some lit) :
+    ∃ x : Nat, muNegOneXVar? pairs a b = some x ∧ lit = Int.ofNat x := by
+  unfold muNegOneXLit? at h
+  rw [Option.map_eq_some_iff] at h
+  obtain ⟨x, hx, rfl⟩ := h
+  exact ⟨x, hx, rfl⟩
+
+/-- One guarded exact-service block is satisfied as soon as either the
+guard fires or the row holds a unique true literal. -/
+private theorem service_shape_satisfied {val : DimacsValuation}
+    {pre lits : List Int} {clause : DimacsClause}
+    (hcl : clause ∈ ([pre ++ lits] ++ muNegOnePairsOf lits pre))
+    (hpos : ∀ lit ∈ lits, 0 < lit)
+    (hnodup : lits.Nodup)
+    (hdisj : (∃ lit ∈ pre, dimacsLitValue val lit = true) ∨
+      ((∃ lit ∈ lits, dimacsLitValue val lit = true) ∧
+        (∀ l1 ∈ lits, ∀ l2 ∈ lits, dimacsLitValue val l1 = true →
+          dimacsLitValue val l2 = true → l1 = l2))) :
+    dimacsClauseSatisfied val clause := by
+  rcases List.mem_append.mp hcl with hone | hpair
+  · -- the at-least-one clause `pre ++ lits`.
+    simp only [List.mem_singleton] at hone
+    subst hone
+    rcases hdisj with ⟨lit, hmem, hval⟩ | ⟨⟨lit, hmem, hval⟩, _⟩
+    · exact ⟨lit, List.mem_append_left _ hmem, hval⟩
+    · exact ⟨lit, List.mem_append_right _ hmem, hval⟩
+  · -- one guarded at-most-one clause.
+    simp only [muNegOnePairsOf, List.mem_flatMap, List.mem_range,
+      List.mem_map, List.mem_filter, List.mem_range] at hpair
+    obtain ⟨i, hi, j, ⟨hj, hij⟩, rfl⟩ := hpair
+    have hij' : i < j := by simpa using hij
+    rcases hdisj with ⟨lit, hmem, hval⟩ | ⟨_, huniq⟩
+    · exact ⟨lit, List.mem_append_left _ hmem, hval⟩
+    · have hgi : lits[i]! = lits[i] := getElem!_pos lits i hi
+      have hgj : lits[j]! = lits[j] := getElem!_pos lits j hj
+      by_cases hvi : dimacsLitValue val lits[i]! = true
+      · by_cases hvj : dimacsLitValue val lits[j]! = true
+        · exfalso
+          have heq : lits[i]! = lits[j]! := by
+            rw [hgi, hgj]
+            exact huniq _ (by rw [← hgi]; rw [hgi]; exact List.getElem_mem _)
+              _ (List.getElem_mem _) (by rwa [← hgi]) (by rwa [← hgj])
+          rw [hgi, hgj] at heq
+          exact absurd ((List.Nodup.getElem_inj_iff hnodup).mp heq)
+            (by omega)
+        · refine ⟨-lits[j]!, List.mem_append_right _ (by simp), ?_⟩
+          exact dimacsLitValue_neg_of_pos
+            (hpos _ (by rw [hgj]; exact List.getElem_mem _)) hvj
+      · refine ⟨-lits[i]!, List.mem_append_right _ (by simp), ?_⟩
+        exact dimacsLitValue_neg_of_pos
+          (hpos _ (by rw [hgi]; exact List.getElem_mem _)) hvi
+
+section ServiceFamily
+
+variable {uTri vTri σ : Bool} {D X : Nat → Nat → Bool}
+
+/-- Service family of the induced valuation. -/
+theorem muNegOneServiceClauses_satisfied_of_finite
+    (hsem : MuNegOneOneFourFiniteSemantics uTri vTri σ D X) :
+    ∀ clause ∈ muNegOneServiceClauses uTri vTri
+      (muNegOneHitPairs uTri vTri),
+      dimacsClauseSatisfied (muNegOneValOfRelations uTri vTri D X)
+        clause := by
+  intro clause hclause
+  simp only [muNegOneServiceClauses, List.mem_flatMap, List.mem_range]
+    at hclause
+  obtain ⟨a, ha, w, hw, hcl⟩ := hclause
+  rw [muNegOneOwners_length] at ha
+  refine service_shape_satisfied hcl ?_ ?_ ?_
+  · -- positivity of the generated row literals.
+    intro lit hlit
+    rw [List.mem_filterMap] at hlit
+    obtain ⟨b, _, hfb⟩ := hlit
+    split at hfb
+    · obtain ⟨x, hxv, rfl⟩ := muNegOneXLit?_eq_some hfb
+      have hb := muNegOneXVar?_bounds hxv
+      show (0 : Int) < (x : Int)
+      exact_mod_cast by omega
+    · exact absurd hfb (by simp)
+  · -- the row literals are pairwise distinct.
+    refine List.Nodup.filterMap ?_ List.nodup_range
+    intro b b' lit hb hb'
+    simp only [Option.mem_def] at hb hb'
+    split at hb
+    · next hcond =>
+      split at hb'
+      · next hcond' =>
+        simp only [Bool.and_eq_true, bne_iff_ne] at hcond hcond'
+        obtain ⟨x, hx, rfl⟩ := muNegOneXLit?_eq_some hb
+        obtain ⟨x', hx', hxx⟩ := muNegOneXLit?_eq_some hb'
+        rw [Int.ofNat.inj hxx] at hx
+        exact eq_of_minmax hcond.1 hcond'.1 (muNegOneXVar?_inj hx hx')
+      · exact absurd hb' (by simp)
+    · exact absurd hb (by simp)
+  · -- guard or unique service.
+    by_cases hact : muNegOneOwnerActive D a = true
+    · right
+      constructor
+      · obtain ⟨b, hb80, hbne, hpm, hkey, hX⟩ :=
+          hsem.service_exists a ha hact w hw
+        have hsome := muNegOneXVar?_isSome_of_mem uTri vTri hkey
+        cases hx : muNegOneXVar? (muNegOneHitPairs uTri vTri) a b with
+        | none => rw [hx] at hsome; simp at hsome
+        | some x =>
+          refine ⟨Int.ofNat x, ?_, ?_⟩
+          · rw [List.mem_filterMap]
+            refine ⟨b, ?_, ?_⟩
+            · rw [List.mem_range, muNegOneOwners_length]
+              exact hb80
+            · rw [if_pos ((Bool.and_eq_true _ _).mpr ⟨bne_iff_ne.mpr hbne, hpm⟩)]
+              unfold muNegOneXLit?
+              rw [hx]
+              rfl
+          · rw [dimacsLitValue_ofNat
+              (by have := muNegOneXVar?_bounds hx; omega),
+              valOfRelations_xvar' hx]
+            exact hX
+      · intro l1 h1 l2 h2 hv1 hv2
+        rw [List.mem_filterMap] at h1 h2
+        obtain ⟨b1, hb1r, hf1⟩ := h1
+        obtain ⟨b2, hb2r, hf2⟩ := h2
+        rw [List.mem_range, muNegOneOwners_length] at hb1r hb2r
+        split at hf1
+        · next hcond1 =>
+          split at hf2
+          · next hcond2 =>
+            simp only [Bool.and_eq_true, bne_iff_ne] at hcond1 hcond2
+            obtain ⟨x1, hx1, rfl⟩ := muNegOneXLit?_eq_some hf1
+            obtain ⟨x2, hx2, rfl⟩ := muNegOneXLit?_eq_some hf2
+            have hX1 : X (min a b1) (max a b1) = true := by
+              rw [dimacsLitValue_ofNat
+                (by have := muNegOneXVar?_bounds hx1; omega),
+                valOfRelations_xvar' hx1] at hv1
+              exact hv1
+            have hX2 : X (min a b2) (max a b2) = true := by
+              rw [dimacsLitValue_ofNat
+                (by have := muNegOneXVar?_bounds hx2; omega),
+                valOfRelations_xvar' hx2] at hv2
+              exact hv2
+            have hb12 : b1 = b2 :=
+              hsem.service_unique a ha hact w hw b1 b2
+                hb1r hcond1.1 hcond1.2 (muNegOneXVar?_key_mem hx1) hX1
+                hb2r hcond2.1 hcond2.2 (muNegOneXVar?_key_mem hx2) hX2
+            subst hb12
+            rw [hx1] at hx2
+            rw [Option.some.inj hx2]
+          · exact absurd hf2 (by simp)
+        · exact absurd hf1 (by simp)
+    · left
+      have h16 : 16 ≤ a := by
+        by_contra h16
+        exact hact (by
+          unfold muNegOneOwnerActive
+          rw [if_pos (by omega)])
+      cases hg : muNegOneGuard? uTri vTri a with
+      | none =>
+        rw [muNegOneGuard?, if_neg (by omega)] at hg
+        exact absurd hg (by simp)
+      | some g =>
+        have hgeq : g = muNegOneDVar ((muNegOneOwners uTri vTri)[a]!).1
+            (((muNegOneOwners uTri vTri)[a]!).2 - 8) := by
+          rw [muNegOneGuard?, if_neg (by omega)] at hg
+          exact (Option.some.inj hg).symm
+        have howner : (muNegOneOwners uTri vTri)[a]! =
+            ((a - 16) / 8, 8 + (a - 16) % 8) :=
+          muNegOneOwnerAt_cross uTri vTri ⟨a, ha⟩ h16
+        have hgeq' : g = muNegOneDVar ((a - 16) / 8) ((a - 16) % 8) := by
+          rw [hgeq, howner]
+          simp
+        have hDtrue : D ((a - 16) / 8) ((a - 16) % 8) = true := by
+          by_contra hDf
+          refine hact ?_
+          unfold muNegOneOwnerActive
+          rw [if_neg (by omega)]
+          simp only [Bool.not_eq_true] at hDf
+          simp [hDf]
+        refine ⟨Int.ofNat g, by simp, ?_⟩
+        rw [dimacsLitValue_ofNat
+            (by rw [hgeq']; unfold muNegOneDVar; omega), hgeq',
+          muNegOneValOfRelations_dvar uTri vTri D X
+            (i := (a - 16) / 8) (j := (a - 16) % 8) (by omega) (by omega),
+          hDtrue]
+
+end ServiceFamily
+
+
 
 end Erdos85
 
@@ -554,3 +744,4 @@ end Erdos85
 #print axioms Erdos85.muNegOneCrossColClauses_satisfied_of_finite
 #print axioms Erdos85.muNegOneIntertwineClauses_satisfied_of_finite
 #print axioms Erdos85.muNegOneHitActivityClauses_satisfied_of_finite
+#print axioms Erdos85.muNegOneServiceClauses_satisfied_of_finite
