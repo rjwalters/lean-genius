@@ -194,6 +194,52 @@ theorem muNegFiveZeroThreeCandidatePair_cross :
       muNegFiveZeroThreeCandidatePair x y = true := by
   native_decide
 
+theorem zmodEight_not_oddOffset_imp_evenOffset :
+    ∀ d : ZMod 8,
+      ¬ (d = 1 ∨ d = 3 ∨ d = 5 ∨ d = 7) → ZModEightEvenOffset d := by
+  decide
+
+theorem zmodEight_oddOffset_card_four :
+    ∀ i : ZMod 8,
+      ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        j - i = 1 ∨ j - i = 3 ∨ j - i = 5 ∨ j - i = 7).card = 4 := by
+  decide
+
+theorem MuNegFiveExplicitRowParameterLedger.zeroThree_internal_iff_oddOffset
+    {N M : Matrix (ZMod 8) (ZMod 8) ℤ}
+    {f g : ZMod 8 → ℤ}
+    (L : MuNegFiveExplicitRowParameterLedger N M f g 0 3) :
+    ∀ i j : ZMod 8, N i j = 1 ↔
+      j - i = 1 ∨ j - i = 3 ∨ j - i = 5 ∨ j - i = 7 := by
+  intro i
+  let A := (Finset.univ : Finset (ZMod 8)).filter fun j ↦ N i j = 1
+  let O := (Finset.univ : Finset (ZMod 8)).filter fun j ↦
+    j - i = 1 ∨ j - i = 3 ∨ j - i = 5 ∨ j - i = 7
+  have hAcard : A.card = 4 := by
+    simpa [A] using L.internal_row i
+  have hOcard : O.card = 4 := by
+    simpa [O] using zmodEight_oddOffset_card_four i
+  have hsub : A ⊆ O := by
+    intro j hj
+    simp only [A, Finset.mem_filter, Finset.mem_univ, true_and] at hj
+    simp only [O, Finset.mem_filter, Finset.mem_univ, true_and]
+    by_contra hnotOdd
+    have heven := zmodEight_not_oddOffset_imp_evenOffset (j - i) hnotOdd
+    have hsignEq := (zmodEight_alternating_sign_eq_iff_evenOffset
+      f L.f_sign L.f_flip i j).mpr heven
+    have hsameMem : j ∈ ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        f j = f i ∧ N i j = 1) := by
+      simp [hsignEq, hj]
+    have hzero : ((Finset.univ : Finset (ZMod 8)).filter fun j ↦
+        f j = f i ∧ N i j = 1) = ∅ :=
+      Finset.card_eq_zero.mp (by simpa using L.internal_same i)
+    rw [hzero] at hsameMem
+    exact Finset.notMem_empty j hsameMem
+  have hAO : A = O := Finset.eq_of_subset_of_card_le hsub (by omega)
+  intro j
+  have := Finset.ext_iff.mp hAO j
+  simpa [A, O] using this
+
 theorem muNegFiveZeroThreeOwnerEndpoints_ne
     (hab : a ≠ b)
     (huinj : Function.Injective u) (hvinj : Function.Injective v)
@@ -937,6 +983,7 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeOwnerPairComplete_of_candidateSupport
 #print axioms Erdos85.muNegFiveZeroThreeCandidateSupport_of_antipode
 #print axioms Erdos85.exteriorPairGraph_cycle_iff_antipode_of_odd_defect
+#print axioms Erdos85.MuNegFiveExplicitRowParameterLedger.zeroThree_internal_iff_oddOffset
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_intersecting_no_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_no_two_common
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_service_unique
