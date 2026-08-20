@@ -84,6 +84,15 @@ theorem muNegFiveOneTwoCrossOnly_ownerCompatible_embed
   revert e f
   native_decide
 
+theorem muNegFiveOneTwoCrossOnly_ownersIntersect_embed
+    (e f : Fin 64) :
+    muNegFiveZeroThreeOwnersIntersect
+        (muNegFiveOneTwoCrossOnlyToZeroThree e)
+        (muNegFiveOneTwoCrossOnlyToZeroThree f) =
+      muNegFiveOneTwoCrossOnlyOwnersIntersect e f := by
+  revert e f
+  native_decide
+
 variable {V : Type*} [Fintype V] [DecidableEq V]
   (G : SimpleGraph V) [DecidableRel G.Adj]
   [DecidableRel (antipodalGraph G).Adj]
@@ -179,6 +188,91 @@ theorem muNegFiveOneTwoCrossOnlyOwnerCompatible_of_graphHit
   exact muNegFiveZeroThreeOwnerCompatible_of_graphHit G c a b u v
     hfree hab huinj hvinj hurange hvrange hu hv hef
 
+theorem muNegFiveOneTwoCrossOnlyGraphHit_service_unique
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ (e : Fin 64) (s : Fin 16) (f g : Fin 64),
+      muNegFiveOneTwoCrossOnlyGraphHit G c u v e f →
+      muNegFiveOneTwoCrossOnlyOwnerContains f s = true →
+      muNegFiveOneTwoCrossOnlyGraphHit G c u v e g →
+      muNegFiveOneTwoCrossOnlyOwnerContains g s = true → f = g := by
+  intro e s f g hef hfs heg hgs
+  apply muNegFiveOneTwoCrossOnlyToZeroThree_injective
+  apply muNegFiveZeroThreeGraphHit_service_unique G c a b u v hfree hreg
+    hcard hsize hab huinj hvinj hurange hvrange
+  · exact hef
+  · simpa [muNegFiveOneTwoCrossOnly_ownerContains_embed] using hfs
+  · exact heg
+  · simpa [muNegFiveOneTwoCrossOnly_ownerContains_embed] using hgs
+
+theorem muNegFiveOneTwoCrossOnlyGraphHit_internal_zero
+    (hfree : ¬ containsC4 V G)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (hu : ∀ z, (G.induce c.supp).neighborFinset (u z) =
+      {u (z - 1), u (z + 1)})
+    (hv : ∀ z, (G.induce c.supp).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)}) :
+    ∀ (e : Fin 64) (s : Fin 16) (f : Fin 64),
+      muNegFiveOneTwoCrossOnlyOwnerTargetContains e s = false →
+      muNegFiveOneTwoCrossOnlyOwnerContains f s = true →
+      ¬ muNegFiveOneTwoCrossOnlyGraphHit G c u v e f := by
+  intro e s f ht hc
+  apply muNegFiveZeroThreeGraphHit_internal_zero G c a b u v hfree hab
+    huinj hvinj hurange hvrange hu hv
+  · simpa [muNegFiveOneTwoCrossOnly_ownerTargetContains_embed] using ht
+  · simpa [muNegFiveOneTwoCrossOnly_ownerContains_embed] using hc
+
+theorem muNegFiveOneTwoCrossOnlyGraphHit_intersecting_no_common
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ (e f : Fin 64), e ≠ f →
+      muNegFiveOneTwoCrossOnlyOwnersIntersect e f = true →
+      ∀ k, muNegFiveOneTwoCrossOnlyGraphHit G c u v e k →
+        muNegFiveOneTwoCrossOnlyGraphHit G c u v f k → False := by
+  intro e f hef hinter k hek hfk
+  apply muNegFiveZeroThreeGraphHit_intersecting_no_common G c a b u v
+    hfree hreg hcard hsize hab huinj hvinj hurange hvrange
+      (muNegFiveOneTwoCrossOnlyToZeroThree e)
+      (muNegFiveOneTwoCrossOnlyToZeroThree f)
+  · exact fun h ↦ hef (muNegFiveOneTwoCrossOnlyToZeroThree_injective h)
+  · simpa [muNegFiveOneTwoCrossOnly_ownersIntersect_embed] using hinter
+  · exact hek
+  · exact hfk
+
+theorem muNegFiveOneTwoCrossOnlyGraphHit_no_two_common
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 8) (hcard : Fintype.card V = 8 * 8)
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp) :
+    ∀ (e f : Fin 64), e ≠ f → ∀ (k l : Fin 64), k ≠ l →
+      muNegFiveOneTwoCrossOnlyGraphHit G c u v e k →
+      muNegFiveOneTwoCrossOnlyGraphHit G c u v f k →
+      muNegFiveOneTwoCrossOnlyGraphHit G c u v e l →
+      muNegFiveOneTwoCrossOnlyGraphHit G c u v f l → False := by
+  intro e f hef k l hkl hek hfk hel hfl
+  apply muNegFiveZeroThreeGraphHit_no_two_common G c a b u v hfree hreg
+    hcard hsize hab huinj hvinj hurange hvrange
+      (muNegFiveOneTwoCrossOnlyToZeroThree e)
+      (muNegFiveOneTwoCrossOnlyToZeroThree f)
+  · exact fun h ↦ hef (muNegFiveOneTwoCrossOnlyToZeroThree_injective h)
+  · exact fun h ↦ hkl (muNegFiveOneTwoCrossOnlyToZeroThree_injective h)
+  · exact hek
+  · exact hfk
+  · exact hel
+  · exact hfl
+
 end Shores
 
 end
@@ -189,3 +283,4 @@ end Erdos85
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyToZeroThree_injective
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyGraphHit_symm
 #print axioms Erdos85.muNegFiveOneTwoCrossOnlyOwnerCompatible_of_graphHit
+#print axioms Erdos85.muNegFiveOneTwoCrossOnlyGraphHit_no_two_common
