@@ -1,7 +1,7 @@
 import Proofs.Erdos85MuNegFiveZeroThreeOwnerServiceBridge
 import Proofs.Erdos85SizeTwoMuNegFiveAlignedShoreSwitch
 import Proofs.Erdos85SizeTwoOwnerVertexDictionary
-import Proofs.Erdos85MuNegOneOneFourCodeVertexMap
+import Proofs.Erdos85MuNegOneOneFourTableCompleteness
 
 /-!
 # Graph realization of the h503 owner relations
@@ -45,6 +45,13 @@ def muNegFiveZeroThreeCodeSub
     (u v : ZMod 8 → c.supp) (x : Nat) : c.supp :=
   ⟨muNegFiveZeroThreeCodeVertex G c u v x,
     muNegFiveZeroThreeCodeVertex_mem_supp G c u v x⟩
+
+theorem muNegFiveZeroThreeCodeSub_eq_muNegOneCodeSub
+    (u v : ZMod 8 → c.supp) (x : Nat) :
+    muNegFiveZeroThreeCodeSub G c u v x = muNegOneCodeSub G c u v x := by
+  unfold muNegFiveZeroThreeCodeSub muNegFiveZeroThreeCodeVertex
+    muNegOneCodeSub
+  split <;> rfl
 
 def muNegFiveZeroThreeOwnerEndpoints
     (u v : ZMod 8 → c.supp) (e : Nat) : V × V :=
@@ -103,6 +110,18 @@ theorem muNegFiveZeroThreeCodeVertex_inj
         muNegFiveZeroThreeCodeVertex G c u v y → x = y := by
   simpa only [muNegFiveZeroThreeCodeVertex, muNegOneCodeVertex] using
     muNegOneCodeVertex_inj G c a b u v hab huinj hvinj hurange hvrange
+
+theorem muNegFiveZeroThreeCodeSub_surjective
+    (hsize : c.supp.ncard = 8 * 2)
+    (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (x : c.supp) :
+    ∃ code : Nat, code < 16 ∧ muNegFiveZeroThreeCodeSub G c u v code = x := by
+  obtain ⟨code, hcode, heq⟩ := muNegOneCodeSub_surjective G c hsize a b hab
+    u v huinj hvinj hurange hvrange x
+  exact ⟨code, hcode,
+    muNegFiveZeroThreeCodeSub_eq_muNegOneCodeSub G c u v code |>.trans heq⟩
 
 theorem muNegFiveZeroThreeCycleAdj_eq_muNegOneGAdj :
     ∀ x, x < 16 → ∀ y, y < 16 →
@@ -773,6 +792,7 @@ end Erdos85
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_symm
 #print axioms Erdos85.muNegFiveZeroThreeGraphHit_ends
 #print axioms Erdos85.muNegFiveZeroThreeCodeVertex_inj
+#print axioms Erdos85.muNegFiveZeroThreeCodeSub_surjective
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_unique
 #print axioms Erdos85.muNegFiveZeroThreeOwnerVertex_inj
 #print axioms Erdos85.muNegFiveZeroThreeOwnerAvailability_of_fixedExterior
