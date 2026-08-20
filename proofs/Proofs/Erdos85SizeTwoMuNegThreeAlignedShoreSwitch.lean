@@ -5,6 +5,7 @@ import Proofs.Erdos85ComponentEigenvectorExtension
 import Proofs.Erdos85ComponentSignFlipEigenvector
 import Proofs.Erdos85SizeTwoSwitchedJointExclusions
 import Proofs.Erdos85MuNegThreeExplicitParameters
+import Proofs.Erdos85SizeTwoMuNegThreeExplicitPhaseNormalForm
 
 /-! # Graph-facing aligned shore switch for μ=-3 -/
 
@@ -72,6 +73,13 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
           (fun x ↦ (t x : ℚ))
         ((secondOrderDefectGraph G).adjMatrix ℚ).mulVec T =
             (sizeTwoMuSwitchTarget (-3) k r : ℚ) • T ∧ T ≠ 0 ∧
+        (k = 1 → ∃ q : ZMod 8,
+          (∀ i j, ((s (v j).1 = s (u i).1 ∧ M₁ i j = 1) ↔
+              j = q + i)) ∨
+          (∀ i j, ((s (v j).1 = s (u i).1 ∧ M₁ i j = 1) ↔
+              j = q - i))) ∧
+        componentQuotientMatrix K H a a = 7 - r ∧
+        componentQuotientMatrix K H b b = 7 - r ∧
         MuNegThreeExplicitParameterLedger N₁ M₁
           (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) k r ∧
         MuNegThreeExplicitParameterLedger N₂ M₂
@@ -378,7 +386,31 @@ theorem orderSixtyFour_sizeTwo_muNegThree_refined_shoreSwitch
   have hglobal := adjMatrix_rat_nonzero_eigenvector_componentExtendZero_of_int
     (secondOrderDefectGraph G) c t
       (sizeTwoMuSwitchTarget (-3) k r) heig ht
-  refine ⟨?_, ?_, hledger₁, hledger₂⟩
+  have horient (hk1 : k = 1) : ∃ q : ZMod 8,
+      (∀ i j, ((s (v j).1 = s (u i).1 ∧ M₁ i j = 1) ↔
+          j = q + i)) ∨
+      (∀ i j, ((s (v j).1 = s (u i).1 ∧ M₁ i j = 1) ↔
+          j = q - i)) := by
+    have hu0A : u 0 ∈ A := by
+      dsimp [A]
+      rw [Finset.mem_filter]
+      exact ⟨Finset.mem_univ _, by rw [← hurange]; exact ⟨0, rfl⟩⟩
+    have hcrossOne : (B.filter fun y ↦
+        K.Adj (u 0) y ∧ s y.1 = s (u 0).1).card = 1 := by
+      simpa [B, K, hk1] using hAB (u 0) hu0A
+    have hphase :=
+      orderSixtyFour_sizeTwo_muNegThree_eightEight_crossSameOne_explicitPhase
+        G hfree hreg hcard c hc s hs_out hs_in hH hD a b hab
+          u v huinj hvinj hurange hvrange hu hv (by
+            simpa [B, K] using hcrossOne)
+    obtain ⟨q, hf | hr⟩ := hphase
+    · refine ⟨q, Or.inl ?_⟩
+      intro i j
+      simpa [M₁, K, SimpleGraph.adjMatrix_apply, eq_comm] using hf i j
+    · refine ⟨q, Or.inr ?_⟩
+      intro i j
+      simpa [M₁, K, SimpleGraph.adjMatrix_apply, eq_comm] using hr i j
+  refine ⟨?_, ?_, horient, haa, hbb, hledger₁, hledger₂⟩
   · simpa [t, B] using hglobal.1
   · simpa [t, B] using hglobal.2
 
