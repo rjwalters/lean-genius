@@ -432,7 +432,77 @@ odd-q incidence construction must break at least one of its three symmetries:
 the full `+-` sign choice, the two-copy bipartition, or the uniform determinant
 level on every projective class.
 
-### 5.3 Finite-field dot-product construction does not repair at q=9
+### 5.3 A nonbipartite replacement: linear triangle configurations
+
+The bipartite obstruction suggests reversing the usual incidence construction.
+Instead of taking the incidence graph itself, take a **point graph of a linear
+triangle configuration** and then add a sparse triangle-free shadow.
+
+For any C4-free graph `G`, split its edges canonically into
+
+```text
+T = edges which lie in a triangle,
+F = edges which lie in no triangle.
+```
+
+Every edge of `T` lies in a unique triangle: two distinct third vertices on
+the same edge would form a 4-cycle.  The triangles are therefore the blocks
+of a linear 3-uniform hypergraph on `V(G)`.  If every vertex lies in exactly
+three triangles, then this hypergraph is also 3-regular.  It has equally many
+points and blocks, `|V(G)|`, its point graph `T` is 6-regular, and
+
+```text
+G = T union F,       deg(F) = q-6.
+```
+
+This is not merely an abstract alternative.  Direct evaluation of the checked
+q=7 Boza witness gives three triangles through every vertex.  Hence its
+triangular shadow is the point graph of a symmetric `48_3` linear
+configuration and its triangle-free shadow is a perfect matching.  This
+repackages the known graph as
+
+```text
+point graph of a 48_3 configuration + one-factor.
+```
+
+The q=9 transitive case is now formally rigid in exactly the same language.
+The Lean theorems in `Erdos85OddSquareOrderNineUniformTriangles.lean` prove:
+
+- `squareOrderNine_vertexTransitive_localTriangleEdge_card_eq_three`:
+  exactly three triangles pass through every vertex;
+- `squareOrderNine_vertexTransitive_triangle_census`: the two shadows have
+  120 and 240 edges and there are exactly 80 triangles;
+- `triangleFreeEdgeGraph_vertexTransitiveByIso` and
+  `triangularEdgeGraph_vertexTransitiveByIso`: both shadows inherit vertex
+  transitivity.
+
+Thus every vertex-transitive q=9 witness would be
+
+```text
+point graph of a vertex-transitive 80_3 linear configuration
+  + a vertex-transitive cubic graph F on the same 80 points,
+```
+
+with the additional cross-condition that the union remains C4-free.  This is
+a substantially smaller and more structural search space than arbitrary
+9-regular graphs, while unlike a Cayley connection-set search it permits the
+two shadows to carry different invariant structures.
+
+This suggests a new general existence ansatz.  For odd `q`, seek a symmetric
+linear `((q^2-1)_3)` configuration together with a `(q-6)`-regular graph `F`
+on its points such that:
+
+1. `F` is edge-disjoint from the configuration point graph;
+2. every edge of `F` lies in no triangle of the union;
+3. the union has no 4-cycle.
+
+At q=7 this datum exists.  At q=9 the formal census above shows that every
+vertex-transitive solution must have exactly this form.  The remaining
+condition is a compatibility problem between a cubic graph and a linear
+configuration, not a bipartite incidence problem; it therefore escapes the
+uniform impossibility in Section 5.1.
+
+### 5.4 Finite-field dot-product construction does not repair at q=9
 
 Zhang--Chen--Cheng, *Finite Fields Appl.* **45** (2017), 73--85,
 doi:10.1016/j.ffa.2016.11.012, construct a C4-free graph `Gamma_a` on
@@ -469,7 +539,7 @@ matchings between different doubled pairs must be coordinated into a Latin
 square for every fiber pair. Future reductions should target compatibility of
 these factorizations rather than prune local cycle types.
 
-### 5.4 No induced order-81 witness inside the orthogonal polarity graph
+### 5.5 No induced order-81 witness inside the orthogonal polarity graph
 
 The other immediate projective-plane construction is also closed at q=9.
 The orthogonal polarity graph `ER_9` on `PG(2,9)` is C4-free and has 91
