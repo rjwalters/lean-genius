@@ -340,7 +340,11 @@ fixes a single mixed assignment or runs a resumable shard of the 35 canonical
 representatives.  A one-second end-to-end smoke test of one mixed assignment
 and representative 34 reaches Kissat and returns `UNKNOWN-TIMEOUT`; this validates the new routing
 but is not evidence for satisfiability or unsatisfiability.  A complete exact
-run is still required for the decisive q=9 datum.
+run is still required for the decisive q=9 datum. A subsequent five-minute
+Kissat scout of the maximally heterogeneous representative
+`(20, 6+14, 8+12, 10+10)` also returned `UNKNOWN-TIMEOUT` on the
+3,160-variable, 4,780,580-clause encoding. This shows that mixed types are not
+immediately easier; it is still not evidence against existence.
 
 ### 5.1 Finite-field dot-product construction does not repair at q=9
 
