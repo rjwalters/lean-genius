@@ -2,6 +2,7 @@ import Proofs.Erdos85CubicTraceParity
 import Proofs.Erdos85C4FreeRegularAdjacencyCube
 import Proofs.Erdos85OrderSixtyFourAllTwoTriangleLedger
 import Proofs.Erdos85CubicTraceHistogramExcess
+import Proofs.Erdos85ServiceSixthTraceDivisibility
 
 /-! # Sixth adjacency trace modulo four -/
 
@@ -131,6 +132,46 @@ theorem sixRegular_fortyEight_histogramExcess_mod_four
   refine ⟨k - 15264, ?_⟩
   linear_combination hk
 
+/-- If the triangle count is even, the mod-four congruence combines with
+sixth-trace divisibility by six to move the strict threshold to the next
+multiple of twelve. -/
+theorem sixRegular_fortyEight_strict_trace_six_ge_61260_of_even_triangles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 48)
+    (hreg : ∀ x, G.degree x = 6)
+    (hstrict : 61248 < Matrix.trace ((G.adjMatrix ℤ) ^ 6))
+    (hTeven : Even (adjacencyTriangleMinorFinset G).card) :
+    61260 ≤ Matrix.trace ((G.adjMatrix ℤ) ^ 6) := by
+  obtain ⟨k, hk⟩ := six_dvd_sixRegular_fortyEight_trace_pow_six
+    G hcard hreg
+  obtain ⟨m, hm⟩ := sixRegular_fortyEight_trace_pow_six_mod_four
+    G hcard hreg
+  obtain ⟨t, ht⟩ := hTeven
+  omega
+
+/-- With even triangle count, the global cubic histogram excess is at least
+`204`, rather than the unconditional congruence threshold `198`. -/
+theorem sixRegular_fortyEight_histogramExcess_ge_204_of_even_triangles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 48)
+    (hreg : ∀ x, G.degree x = 6)
+    (hstrict : 61248 < Matrix.trace ((G.adjMatrix ℤ) ^ 6))
+    (hTeven : Even (adjacencyTriangleMinorFinset G).card) :
+    let A3 := G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ
+    204 ≤ ∑ a, ((A3 a a) ^ 2 - 7 * A3 a a + 12 +
+      ∑ b ∈ cubicNonneighborFinset G a,
+        (A3 a b - 3) * (A3 a b - 4)) := by
+  dsimp only
+  have htrace :=
+    sixRegular_fortyEight_strict_trace_six_ge_61260_of_even_triangles
+      G hcard hreg hstrict hTeven
+  rw [sixRegular_fortyEight_trace_six_eq_baseline_add_histogramExcess
+    G hfree hcard hreg] at htrace
+  omega
+
 end
 
 end Erdos85
@@ -139,3 +180,5 @@ end Erdos85
   Erdos85.four_dvd_sum_sq_sub_sum_add_diag_of_symmetric_even_diag
 #print axioms Erdos85.sixRegular_fortyEight_trace_pow_six_mod_four
 #print axioms Erdos85.sixRegular_fortyEight_histogramExcess_mod_four
+#print axioms
+  Erdos85.sixRegular_fortyEight_histogramExcess_ge_204_of_even_triangles
