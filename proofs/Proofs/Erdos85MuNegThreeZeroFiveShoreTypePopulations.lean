@@ -172,6 +172,126 @@ theorem h305_correctShoreMode_typeTwo_card_twelve
     revert k
     decide
 
+/-- Every graph edge has shore type zero, one, or two, and these three
+classes partition the ambient edge set. -/
+theorem shoreTypeEdgeFinset_card_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj] (S : Finset V) :
+    (shoreTypeEdgeFinset R S 0).card +
+      (shoreTypeEdgeFinset R S 1).card +
+      (shoreTypeEdgeFinset R S 2).card = R.edgeFinset.card := by
+  classical
+  let E := fun t ↦ shoreTypeEdgeFinset R S t
+  have hcover : (Finset.univ : Finset R.edgeFinset) =
+      E 0 ∪ E 1 ∪ E 2 := by
+    ext a
+    simp only [Finset.mem_univ, Finset.mem_union, true_iff]
+    have hle : (a.1.toFinset ∩ S).card ≤ 2 := by
+      calc
+        _ ≤ a.1.toFinset.card :=
+          Finset.card_le_card Finset.inter_subset_left
+        _ = 2 := R.card_toFinset_mem_edgeFinset a
+    unfold E shoreTypeEdgeFinset
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    omega
+  have h01 : Disjoint (E 0) (E 1) := by
+    rw [Finset.disjoint_left]
+    intro a ha0 ha1
+    simp only [E, shoreTypeEdgeFinset, Finset.mem_filter,
+      Finset.mem_univ, true_and] at ha0 ha1
+    omega
+  have h02 : Disjoint (E 0) (E 2) := by
+    rw [Finset.disjoint_left]
+    intro a ha0 ha2
+    simp only [E, shoreTypeEdgeFinset, Finset.mem_filter,
+      Finset.mem_univ, true_and] at ha0 ha2
+    omega
+  have h12 : Disjoint (E 1) (E 2) := by
+    rw [Finset.disjoint_left]
+    intro a ha1 ha2
+    simp only [E, shoreTypeEdgeFinset, Finset.mem_filter,
+      Finset.mem_univ, true_and] at ha1 ha2
+    omega
+  have h0u1_2 : Disjoint (E 0 ∪ E 1) (E 2) :=
+    Finset.disjoint_union_left.mpr ⟨h02, h12⟩
+  have hcardUnion : (E 0 ∪ E 1 ∪ E 2).card =
+      (E 0).card + (E 1).card + (E 2).card := by
+    rw [Finset.card_union_of_disjoint h0u1_2,
+      Finset.card_union_of_disjoint h01]
+  have hc := congrArg Finset.card hcover
+  rw [hcardUnion] at hc
+  simpa [E] using hc.symm
+
+/-- Shore type zero relative to `S` is shore type two relative to its
+complement. -/
+theorem shoreTypeEdgeFinset_zero_eq_two_compl
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj] (S : Finset V) :
+    shoreTypeEdgeFinset R S 0 = shoreTypeEdgeFinset R Sᶜ 2 := by
+  classical
+  ext a
+  simp only [shoreTypeEdgeFinset, Finset.mem_filter, Finset.mem_univ,
+    true_and]
+  have hsplit := Finset.card_inter_add_card_sdiff a.1.toFinset S
+  have hcomp : (a.1.toFinset ∩ Sᶜ).card =
+      (a.1.toFinset \ S).card := by
+    congr 1
+    ext x
+    simp
+  have hedge := R.card_toFinset_mem_edgeFinset a
+  rw [hcomp]
+  omega
+
+/-- A six-regular graph on sixteen vertices has forty-eight edges. -/
+theorem edgeFinset_card_eq_fortyEight_of_sixRegular_sixteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (hreg : ∀ x, R.degree x = 6) (hcard : Fintype.card V = 16) :
+    R.edgeFinset.card = 48 := by
+  have hsum := R.sum_degrees_eq_twice_card_edges
+  have htotal : (∑ x : V, R.degree x) = 96 := by
+    simp_rw [hreg]
+    simp [hcard]
+  rw [htotal] at hsum
+  omega
+
+/-- Full corrected h305 shore-type population census. -/
+theorem h305_correctShoreModes_typePopulations
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (R : SimpleGraph V) [DecidableRel R.Adj]
+    (u v : ZMod 8 → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (humode : MuNegThreeZeroFiveTriangleShoreMode R u ∨
+      MuNegThreeZeroFiveTfShoreMode R u)
+    (hvmode : MuNegThreeZeroFiveTriangleShoreMode R v ∨
+      MuNegThreeZeroFiveTfShoreMode R v)
+    (hpartition : ((Finset.univ : Finset (ZMod 8)).image u)ᶜ =
+      (Finset.univ : Finset (ZMod 8)).image v)
+    (hreg : ∀ x, R.degree x = 6) (hcard : Fintype.card V = 16) :
+    let U := (Finset.univ : Finset (ZMod 8)).image u
+    (shoreTypeEdgeFinset R U 2).card = 12 ∧
+      (shoreTypeEdgeFinset R U 1).card = 24 ∧
+      (shoreTypeEdgeFinset R U 0).card = 12 := by
+  classical
+  dsimp only
+  let U := (Finset.univ : Finset (ZMod 8)).image u
+  let W := (Finset.univ : Finset (ZMod 8)).image v
+  change (shoreTypeEdgeFinset R U 2).card = 12 ∧
+    (shoreTypeEdgeFinset R U 1).card = 24 ∧
+    (shoreTypeEdgeFinset R U 0).card = 12
+  have hx := h305_correctShoreMode_typeTwo_card_twelve R u huinj humode
+  have hw := h305_correctShoreMode_typeTwo_card_twelve R v hvinj hvmode
+  have hx' : (shoreTypeEdgeFinset R U 2).card = 12 := by
+    simpa [U] using hx
+  have hz : (shoreTypeEdgeFinset R U 0).card = 12 := by
+    rw [shoreTypeEdgeFinset_zero_eq_two_compl R U, hpartition]
+    exact hw
+  have hsum := shoreTypeEdgeFinset_card_sum R U
+  have hedge := edgeFinset_card_eq_fortyEight_of_sixRegular_sixteen
+    R hreg hcard
+  refine ⟨hx', ?_, hz⟩
+  omega
+
 end
 
 end Erdos85
@@ -180,3 +300,7 @@ end Erdos85
 #print axioms Erdos85.shoreTypeEdgeFinset_two_card_eq_inter
 #print axioms Erdos85.shoreTypeEdgeFinset_two_card_eq_twelve_of_internal_three
 #print axioms Erdos85.h305_correctShoreMode_typeTwo_card_twelve
+#print axioms Erdos85.shoreTypeEdgeFinset_card_sum
+#print axioms Erdos85.shoreTypeEdgeFinset_zero_eq_two_compl
+#print axioms Erdos85.edgeFinset_card_eq_fortyEight_of_sixRegular_sixteen
+#print axioms Erdos85.h305_correctShoreModes_typePopulations
