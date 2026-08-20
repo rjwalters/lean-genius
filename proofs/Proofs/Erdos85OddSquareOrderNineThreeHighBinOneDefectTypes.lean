@@ -365,6 +365,40 @@ theorem squareOrderNine_threeHigh_firstProfile_exists_odd_ordinary_binOne_compon
     exact (Nat.not_odd_iff_even.mp (hnone c)).two_dvd
   rw [hparts, hKcard] at hdvd
   omega
+
+/-- A defect edge between bin-one vertices joins distinct high-incidence
+colors: both endpoints have singleton high neighborhoods, and those
+singletons are disjoint. -/
+theorem squareOrderNine_defectAdjacent_binOne_highIncidence_singletons_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 1)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hDxy : (secondOrderDefectGraph G).Adj x y) :
+    let H := squareOrderHighVertices G 9
+    Disjoint (G.neighborFinset x ∩ H) (G.neighborFinset y ∩ H) ∧
+      (G.neighborFinset x ∩ H).card = 1 ∧
+      (G.neighborFinset y ∩ H).card = 1 := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  have hxcard : (G.neighborFinset x ∩ H).card = 1 :=
+    (Finset.mem_filter.mp hx).2
+  have hycard : (G.neighborFinset y ∩ H).card = 1 :=
+    (Finset.mem_filter.mp hy).2
+  refine ⟨?_, hxcard, hycard⟩
+  rw [Finset.disjoint_left]
+  intro a hax hay
+  have hax' := Finset.mem_inter.mp hax
+  have hay' := Finset.mem_inter.mp hay
+  have hnot := not_secondOrderDefect_adj_of_commonNeighbor
+    G hfree ((secondOrderDefectGraph G).ne_of_adj hDxy)
+    ((G.mem_neighborFinset x a).mp hax'.1)
+    ((G.mem_neighborFinset y a).mp hay'.1)
+  exact hnot hDxy
 end
 
 end Erdos85
@@ -381,3 +415,5 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_ordinary_binOne_card
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_exists_odd_ordinary_binOne_component
+#print axioms
+  Erdos85.squareOrderNine_defectAdjacent_binOne_highIncidence_singletons_disjoint
