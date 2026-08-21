@@ -208,6 +208,38 @@ theorem sizeTwoReflectedShiftedDisagreement_card_ge_sub_five
     code x d hd t
   omega
 
+/-- Total base-resolved punctured Hamming mass in one difference fibre. -/
+def sizeTwoReflectedShiftedDisagreementMass
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (t : sizeTwoAllowedDifference q a) : ℕ :=
+  ∑ x : ZMod q, ∑ d ∈ (Finset.univ.erase (0 : ZMod q)),
+    Fintype.card (SizeTwoReflectedShiftedDisagreement code x d t)
+
+/-- Summed over ordered distinct base pairs, one fibre contributes at least
+`q(q-1)(q-5)` reflected disagreements.  This is the base-resolved
+order-`q^3` pressure absent from the aggregate first-moment route. -/
+theorem sizeTwoReflectedShiftedDisagreementMass_ge
+    {q : ℕ} [NeZero q] (hq1 : (1 : ZMod q) ≠ 0) {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (t : sizeTwoAllowedDifference q a) :
+    q * (q - 1) * (q - 5) ≤
+      sizeTwoReflectedShiftedDisagreementMass code t := by
+  classical
+  unfold sizeTwoReflectedShiftedDisagreementMass
+  calc
+    q * (q - 1) * (q - 5) =
+        ∑ _x : ZMod q,
+          ∑ _d ∈ (Finset.univ.erase (0 : ZMod q)), (q - 5) := by
+      simp [ZMod.card, Nat.mul_assoc]
+    _ ≤ ∑ x : ZMod q,
+        ∑ d ∈ (Finset.univ.erase (0 : ZMod q)),
+          Fintype.card
+            (SizeTwoReflectedShiftedDisagreement code x d t) := by
+      gcongr with x hx d hd
+      exact sizeTwoReflectedShiftedDisagreement_card_ge_sub_five
+        hq1 code x d (Finset.mem_erase.mp hd).1 t
+
 end
 
 end Erdos85
@@ -215,3 +247,4 @@ end Erdos85
 #print axioms Erdos85.sizeTwoReflectedCommonRows_card_ge_sub_four
 #print axioms
   Erdos85.sizeTwoReflectedShiftedDisagreement_card_ge_sub_five
+#print axioms Erdos85.sizeTwoReflectedShiftedDisagreementMass_ge
