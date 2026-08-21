@@ -94,6 +94,51 @@ theorem sizeTwoReflectedCommonRow_card
   simp only [SizeTwoReflectedCommonRow, sizeTwoReflectedCommonRows,
     Fintype.card_subtype]
 
+/-- Affine agreement of two reflected routes is exactly equality of their
+target-difference fibres.  On reversal, the two routes have the same base
+`x+r`, so a reflected disagreement becomes a genuinely cross-fibre pair at
+one base. -/
+theorem SizeTwoCyclicReciprocalPermutationCode.reflectedPerm_shifted_eq_iff_targetDifference_eq
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x d : ZMod q) (t : sizeTwoAllowedDifference q a)
+    (r : SizeTwoAdmissibleTargetRow q t.1)
+    (hshift : t.1 ≠ r.1 - d ∧ t.1 ≠ (r.1 - d) - 1) :
+    (code.reflectedPerm (x + d) t ⟨r.1 - d, hshift⟩).1 =
+        (code.reflectedPerm x t r).1 + d ↔
+      code.targetDifference (x + d) t ⟨r.1 - d, hshift⟩ =
+        code.targetDifference x t r := by
+  rw [code.reflectedPerm_val, code.reflectedPerm_val]
+  constructor
+  · intro h
+    apply Subtype.ext
+    have h₁ := code.target_column_eq x t r
+    have h₂ := code.target_column_eq (x + d) t ⟨r.1 - d, hshift⟩
+    have hp :
+        (code.toPermutationCode.perm (x + d) t
+          ⟨r.1 - d, hshift⟩).1 =
+        (code.toPermutationCode.perm x t r).1 - d := by
+      calc
+        _ = t.1 - (t.1 - (code.toPermutationCode.perm
+              (x + d) t ⟨r.1 - d, hshift⟩).1) := by abel
+        _ = t.1 - ((t.1 - (code.toPermutationCode.perm x t r).1) + d) := by
+          rw [h]
+        _ = _ := by abel
+    calc
+      _ = (code.toPermutationCode.perm (x + d) t
+          ⟨r.1 - d, hshift⟩).1 - (r.1 - d) :=
+        eq_sub_of_add_eq' h₂
+      _ = ((code.toPermutationCode.perm x t r).1 - d) -
+          (r.1 - d) := by rw [hp]
+      _ = (code.toPermutationCode.perm x t r).1 - r.1 := by abel
+      _ = _ := (eq_sub_of_add_eq' h₁).symm
+  · intro h
+    have hv := congrArg Subtype.val h
+    have h₁ := code.target_column_eq x t r
+    have h₂ := code.target_column_eq (x + d) t ⟨r.1 - d, hshift⟩
+    rw [← h₂, ← h₁, hv]
+    ring
+
 /-- A common row on which the reflected affine agreement equation fails. -/
 structure SizeTwoReflectedShiftedDisagreement
     {q : ℕ} [NeZero q] {a : ZMod q}
@@ -105,6 +150,21 @@ structure SizeTwoReflectedShiftedDisagreement
     (code.reflectedPerm (x + d) t
       ⟨row.1 - d, shifted_admissible⟩).1 ≠
       (code.reflectedPerm x t row).1 + d
+
+/-- A reflected disagreement reverses into two distinct difference fibres
+at their common base. -/
+theorem SizeTwoReflectedShiftedDisagreement.targetDifferences_ne
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    {code : SizeTwoCyclicReciprocalPermutationCode q a}
+    {x d : ZMod q} {t : sizeTwoAllowedDifference q a}
+    (w : SizeTwoReflectedShiftedDisagreement code x d t) :
+    code.targetDifference (x + d) t
+        ⟨w.row.1 - d, w.shifted_admissible⟩ ≠
+      code.targetDifference x t w.row := by
+  intro h
+  apply w.reflected_ne
+  exact (code.reflectedPerm_shifted_eq_iff_targetDifference_eq
+    x d t w.row w.shifted_admissible).mpr h
 
 theorem SizeTwoReflectedShiftedDisagreement.row_injective
     {q : ℕ} [NeZero q] {a : ZMod q}
@@ -245,6 +305,10 @@ end
 end Erdos85
 
 #print axioms Erdos85.sizeTwoReflectedCommonRows_card_ge_sub_four
+#print axioms
+  Erdos85.SizeTwoCyclicReciprocalPermutationCode.reflectedPerm_shifted_eq_iff_targetDifference_eq
+#print axioms
+  Erdos85.SizeTwoReflectedShiftedDisagreement.targetDifferences_ne
 #print axioms
   Erdos85.sizeTwoReflectedShiftedDisagreement_card_ge_sub_five
 #print axioms Erdos85.sizeTwoReflectedShiftedDisagreementMass_ge
