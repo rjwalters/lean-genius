@@ -50,3 +50,22 @@ python3 q9_cubic_shadow_census.py /path/to/cubicvt4-300g6.txt
 The verifier checks the source digest, connectedness, cubicity, and the exact
 survivor lists.  Its girth calculation is a direct repeated breadth-first
 search.
+
+## A first transitive orbit quotient
+
+The smallest surviving shadow type is eight disjoint Petersen graphs.  The
+script `q9_petersen_product_orbit_census.py` tests nine natural transitive
+product actions on this shadow.  Internally it uses `F20`, `A5`, or `S5` on
+the Petersen graph's model as the 2-subsets of five points.  On the eight
+components it uses the regular action of `C8`, `C4 x C2`, or `C2^3`.
+
+There are 56,000 possible triples whose points are pairwise at shadow distance
+at least three.  The nine group actions reduce these to only 7 or 28 possible
+invariant orbit unions of size 80.  None gives a compatible graph: every
+union is non-linear, violates the definition of the triangle-free-edge
+shadow, or creates a four-cycle.
+
+This rules out those nine product actions, not every transitive subgroup of
+the full wreath-product automorphism group of eight Petersen components.
+That distinction matters: the census remains a necessary-condition reduction,
+not a q=9 nonexistence proof.
