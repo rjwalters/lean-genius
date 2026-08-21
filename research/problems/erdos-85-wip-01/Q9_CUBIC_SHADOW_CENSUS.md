@@ -173,3 +173,22 @@ Consequently **all 25 connected cubic-shadow types are impossible** for a
 vertex-transitive q=9 candidate.  Any remaining candidate must have a
 disconnected shadow: equal copies of the surviving order-10, 16, 20, or 40
 component types.
+
+## Disconnected order-40 pairs
+
+For component ordinals 4, 5, 6, and 7, the shadow is two isomorphic
+order-40 components and its full wreath-product automorphism group has order
+3200.  The live GAP-to-Python verifier
+`q9_order40_pair_shadow_exclusion.py` computes 695 subgroup conjugacy classes
+and 34 transitive classes for each type (273 actual transitive subgroups after
+expanding conjugacy classes).
+
+Again, every allowed triple orbit has size at least 80, so each invariant
+80-line configuration must be one orbit.  Depending on the component type,
+there are 8,524 or 8,558 representative line orbits across the 34 transitive
+classes.  Every orbit is non-linear or creates a C4; none survives.  This
+completely eliminates four of the seven order-40-pair shadow types.
+
+The three higher-symmetry order-40 component types—ordinals 3, 8, and 11—have
+doubled-shadow automorphism groups of orders 12,800, 12,800, and 460,800,
+respectively, and remain separate classification leaves.
