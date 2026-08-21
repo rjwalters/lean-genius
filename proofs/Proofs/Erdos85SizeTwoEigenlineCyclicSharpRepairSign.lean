@@ -277,6 +277,81 @@ theorem SharpNearPermutationWitness.repair_relative_sign
       SharpNearPermutationWitness.repairFirstFun,
       SharpNearPermutationWitness.repairSecondFun, hr₁, hr₂]
 
+/-- Against any fixed bijection, switching between the two repairs negates
+the relative sign.  Thus comparisons of two sharp words carry a forced
+checkerboard of signs, independently of how their duplicate rows are
+ordered. -/
+theorem SharpNearPermutationWitness.repair_comparison_sign_toggle
+    {A B : Type*} [Fintype A] [DecidableEq A]
+    (w : SharpNearPermutationWitness A B) (e : A ≃ B) :
+    Equiv.Perm.sign (e.trans w.repairSecondEquiv.symm) =
+      -Equiv.Perm.sign (e.trans w.repairFirstEquiv.symm) := by
+  let pFirst : Equiv.Perm A := e.trans w.repairFirstEquiv.symm
+  let pToggle : Equiv.Perm A :=
+    w.repairFirstEquiv.trans w.repairSecondEquiv.symm
+  let pSecond : Equiv.Perm A := e.trans w.repairSecondEquiv.symm
+  have hcompose : pToggle * pFirst = pSecond := by
+    ext r
+    simp [pFirst, pToggle, pSecond]
+  have hsign := congrArg Equiv.Perm.sign hcompose
+  rw [map_mul] at hsign
+  have htoggle : Equiv.Perm.sign pToggle = -1 := by
+    exact relativeEquiv_sign_eq_neg_one_of_exchange
+      w.repairSecondEquiv w.repairFirstEquiv
+      w.first w.second w.first_ne_second
+      (by
+        simp [SharpNearPermutationWitness.repairFirstEquiv,
+          SharpNearPermutationWitness.repairSecondEquiv,
+          SharpNearPermutationWitness.repairFirstFun,
+          SharpNearPermutationWitness.repairSecondFun])
+      (by
+        have hne : w.second ≠ w.first := w.first_ne_second.symm
+        simp [SharpNearPermutationWitness.repairFirstEquiv,
+          SharpNearPermutationWitness.repairSecondEquiv,
+          SharpNearPermutationWitness.repairFirstFun,
+          SharpNearPermutationWitness.repairSecondFun,
+          w.first_ne_second, hne, w.first_maps, w.second_maps])
+      (by
+        intro r hr₁ hr₂
+        simp [SharpNearPermutationWitness.repairFirstEquiv,
+          SharpNearPermutationWitness.repairSecondEquiv,
+          SharpNearPermutationWitness.repairFirstFun,
+          SharpNearPermutationWitness.repairSecondFun, hr₁, hr₂])
+  rw [htoggle] at hsign
+  simpa using hsign.symm
+
+/-- Switching the repair on the left side of a relative comparison also
+negates its sign. -/
+theorem SharpNearPermutationWitness.repair_comparison_sign_toggle_left
+    {A B : Type*} [Fintype A] [DecidableEq A]
+    (w : SharpNearPermutationWitness A B) (e : A ≃ B) :
+    Equiv.Perm.sign (w.repairSecondEquiv.trans e.symm) =
+      -Equiv.Perm.sign (w.repairFirstEquiv.trans e.symm) := by
+  let pFirst : Equiv.Perm A := w.repairFirstEquiv.trans e.symm
+  let pToggle : Equiv.Perm A :=
+    w.repairSecondEquiv.trans w.repairFirstEquiv.symm
+  let pSecond : Equiv.Perm A := w.repairSecondEquiv.trans e.symm
+  have hcompose : pFirst * pToggle = pSecond := by
+    ext r
+    simp [pFirst, pToggle, pSecond]
+  have hsign := congrArg Equiv.Perm.sign hcompose
+  rw [map_mul, w.repair_relative_sign] at hsign
+  simpa using hsign.symm
+
+/-- The four pairwise repair comparisons of two sharp words form a sign
+checkerboard: toggling one repair negates the sign, while toggling both
+preserves it. -/
+theorem SharpNearPermutationWitness.repair_comparison_sign_checkerboard
+    {A B : Type*} [Fintype A] [DecidableEq A]
+    (w₁ w₂ : SharpNearPermutationWitness A B) :
+    Equiv.Perm.sign
+        (w₂.repairSecondEquiv.trans w₁.repairSecondEquiv.symm) =
+      Equiv.Perm.sign
+        (w₂.repairFirstEquiv.trans w₁.repairFirstEquiv.symm) := by
+  rw [w₁.repair_comparison_sign_toggle w₂.repairSecondEquiv,
+    w₂.repair_comparison_sign_toggle_left w₁.repairFirstEquiv]
+  simp
+
 /-- Every sharp cyclic target-difference word admits two bijective repairs
 whose relative sign is odd.  This specializes the abstract repair lemma to
 the exact multiplicity notion used by the A.5.3 routing code. -/
@@ -323,4 +398,7 @@ end Erdos85
 #print axioms Erdos85.relativeEquiv_sign_eq_neg_one_of_exchange
 #print axioms Erdos85.exists_sharpNearPermutationWitness_of_fiberProfile
 #print axioms Erdos85.SharpNearPermutationWitness.repair_relative_sign
+#print axioms Erdos85.SharpNearPermutationWitness.repair_comparison_sign_toggle
+#print axioms Erdos85.SharpNearPermutationWitness.repair_comparison_sign_toggle_left
+#print axioms Erdos85.SharpNearPermutationWitness.repair_comparison_sign_checkerboard
 #print axioms Erdos85.exists_sizeTwoCyclicTargetDifferenceSharpRepairSign
