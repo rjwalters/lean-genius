@@ -370,6 +370,64 @@ theorem squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect
   · exact Or.inl hfirst.2
   · exact Or.inr hsecond.2
 
+/-- Let `R` be the original bin-zero neighbors of the rare bin-three vertex
+whose incident edge is outside the defect graph.  The exact synchronized
+alternatives are `(local triangles, |R|)=(3,0)` or `(4,2)`. -/
+theorem squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let R := (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧ R.card = 0) ∨
+      ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧ R.card = 2) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let R := S \ (secondOrderDefectGraph G).neighborFinset x
+  have hS : S.card = 3 := by
+    have hcensus :=
+      squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+    dsimp only at hcensus
+    exact hcensus.2.2
+  have hprofile :=
+    squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  have hinter :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  have hRcard : R.card = S.card - (triangleFreeNeighbors G x).card := by
+    rw [Finset.card_sdiff]
+    have heq :
+        (secondOrderDefectGraph G).neighborFinset x ∩ S =
+          triangleFreeNeighbors G x := by
+      simpa [S, B, Finset.inter_assoc, Finset.inter_left_comm,
+        Finset.inter_comm] using hinter
+    rw [heq]
+  change
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧ R.card = 0) ∨
+      ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧ R.card = 2)
+  rcases hprofile with hfirst | hsecond
+  · left
+    refine ⟨hfirst.2.2, ?_⟩
+    rw [hRcard, hS, hfirst.2.1]
+  · right
+    refine ⟨hsecond.2.2, ?_⟩
+    rw [hRcard, hS, hsecond.2.1]
+
 end
 
 end Erdos85
@@ -380,3 +438,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_card
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
