@@ -404,6 +404,62 @@ theorem squareOrderNine_threeHigh_firstProfile_some_highRoot_binTwo_crossMass_eq
       (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass_eq_two_of_not_adj
         G hfree hmin hcard hp hhigh hc3 hc4 hc hy hz hcy hcz hyz hnyz))
 
+/-- The total number of oriented bin-two-to-bin-one matching incidences over
+the three high roots is `2`, `4`, or `6`.  The value zero is excluded by the
+three-witness obstruction. -/
+theorem squareOrderNine_threeHigh_firstProfile_total_binTwo_crossMass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a b c : V}
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hc : c ∈ squareOrderHighVertices G 9)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    let crossMass := fun r : V =>
+      ∑ x ∈ G.neighborFinset r ∩ squareOrderNineLowIncidenceBin G 2,
+        (G.neighborFinset r ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1).card
+    crossMass a + crossMass b + crossMass c = 2 ∨
+      crossMass a + crossMass b + crossMass c = 4 ∨
+      crossMass a + crossMass b + crossMass c = 6 := by
+  classical
+  dsimp only
+  let crossMass := fun r : V =>
+    ∑ x ∈ G.neighborFinset r ∩ squareOrderNineLowIncidenceBin G 2,
+      (G.neighborFinset r ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 1).card
+  change crossMass a + crossMass b + crossMass c = 2 ∨
+    crossMass a + crossMass b + crossMass c = 4 ∨
+    crossMass a + crossMass b + crossMass c = 6
+  have haCases : crossMass a = 0 ∨ crossMass a = 2 := by
+    simpa [crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 ha)
+  have hbCases : crossMass b = 0 ∨ crossMass b = 2 := by
+    simpa [crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 hb)
+  have hcCases : crossMass c = 0 ∨ crossMass c = 2 := by
+    simpa [crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 hc)
+  have hsome : crossMass a = 2 ∨ crossMass b = 2 ∨ crossMass c = 2 := by
+    simpa [crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_some_highRoot_binTwo_crossMass_eq_two
+        G hfree hmin hcard hp hhigh hc3 hc4 ha hb hc hab hac hbc)
+  rcases haCases with ha0 | ha2 <;>
+    rcases hbCases with hb0 | hb2 <;>
+      rcases hcCases with hc0 | hc2 <;> omega
+
 end
 
 end Erdos85
@@ -417,3 +473,5 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_pairWitnesses_not_triangle
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_some_highRoot_binTwo_crossMass_eq_two
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_total_binTwo_crossMass
