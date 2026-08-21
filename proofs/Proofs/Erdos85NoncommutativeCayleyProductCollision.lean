@@ -326,6 +326,29 @@ def nonbacktrackingConnectionPairs
     {Γ : Type*} [Group Γ] [DecidableEq Γ] (A : Finset Γ) : Finset (Γ × Γ) :=
   (A.product A).filter fun p => p.1 * p.2 ≠ 1
 
+/-- The immediately backtracking ordered pairs are in bijection with their
+first connection element. -/
+theorem card_backtrackingConnectionPairs
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A) :
+    ((A.product A).filter fun p => p.1 * p.2 = 1).card = A.card := by
+  classical
+  apply Finset.card_bij (fun p _ => p.1)
+  · intro p hp
+    exact (Finset.mem_product.mp (Finset.mem_filter.mp hp).1).1
+  · intro p hp q hq hpq
+    apply Prod.ext hpq
+    have hpInv : p.2 = p.1⁻¹ :=
+      eq_inv_of_mul_eq_one_right (Finset.mem_filter.mp hp).2
+    have hqInv : q.2 = q.1⁻¹ :=
+      eq_inv_of_mul_eq_one_right (Finset.mem_filter.mp hq).2
+    simpa [hpInv, hqInv, hpq]
+  · intro a ha
+    refine ⟨(a, a⁻¹), ?_, rfl⟩
+    apply Finset.mem_filter.mpr
+    exact ⟨Finset.mem_product.mpr ⟨ha, (hinv a).mp ha⟩, mul_inv_cancel a⟩
+
 /-- An inverse-closed connection set has exactly `d(d-1)` non-backtracking
 ordered words of length two. -/
 theorem card_nonbacktrackingConnectionPairs
@@ -449,6 +472,257 @@ def unusedNonidentityConnectionProducts
     (A : Finset Γ) : Finset Γ :=
   (Finset.univ.erase 1) \
     ((nonbacktrackingConnectionPairs A).image fun p => p.1 * p.2)
+
+/-- The integral group-ring indicator of a finite subset.  This packages the
+exact (multiplicity-sensitive) product ledger of a Cayley connection set. -/
+noncomputable def finsetGroupRingIndicator
+    {Γ : Type*} [Group Γ] (S : Finset Γ) : MonoidAlgebra ℤ Γ :=
+  ∑ g ∈ S, MonoidAlgebra.single g 1
+
+/-- Indicators turn a disjoint union into a sum. -/
+theorem finsetGroupRingIndicator_union_of_disjoint
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    {S T : Finset Γ} (hdisj : Disjoint S T) :
+    finsetGroupRingIndicator (S ∪ T) =
+      finsetGroupRingIndicator S + finsetGroupRingIndicator T := by
+  classical
+  simpa [finsetGroupRingIndicator] using
+    (Finset.sum_union hdisj :
+      ∑ g ∈ S ∪ T, MonoidAlgebra.single g (1 : ℤ) =
+        (∑ g ∈ S, MonoidAlgebra.single g 1) +
+          ∑ g ∈ T, MonoidAlgebra.single g 1)
+
+@[simp] theorem finsetGroupRingIndicator_singleton_one
+    {Γ : Type*} [Group Γ] [DecidableEq Γ] :
+    finsetGroupRingIndicator ({1} : Finset Γ) =
+      (1 : MonoidAlgebra ℤ Γ) := by
+  classical
+  simp [finsetGroupRingIndicator, MonoidAlgebra.one_def]
+
+/-- Multiplication of finite-set indicators enumerates all ordered products,
+with their natural representation multiplicities. -/
+theorem finsetGroupRingIndicator_mul
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (S T : Finset Γ) :
+    finsetGroupRingIndicator S * finsetGroupRingIndicator T =
+      ∑ p ∈ S.product T, MonoidAlgebra.single (p.1 * p.2) 1 := by
+  classical
+  simp only [finsetGroupRingIndicator, Finset.sum_mul, Finset.mul_sum,
+    MonoidAlgebra.single_mul_single, one_mul]
+  rw [Finset.sum_comm]
+  exact (Finset.sum_product' S T
+    (fun s t => MonoidAlgebra.single (s * t) 1)).symm
+
+/-- Right translation permutes the full finite-group indicator. -/
+theorem finsetGroupRingIndicator_univ_mul_single
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ] (s : Γ) :
+    finsetGroupRingIndicator (Finset.univ : Finset Γ) *
+        MonoidAlgebra.single s 1 =
+      finsetGroupRingIndicator (Finset.univ : Finset Γ) := by
+  classical
+  simp only [finsetGroupRingIndicator, Finset.sum_mul,
+    MonoidAlgebra.single_mul_single, one_mul]
+  apply Finset.sum_bij (fun g _ => g * s)
+  · intro g _
+    exact Finset.mem_univ _
+  · intro g₁ _ g₂ _ h
+    exact mul_right_cancel h
+  · intro h _
+    refine ⟨h * s⁻¹, Finset.mem_univ _, ?_⟩
+    simp [mul_assoc]
+  · intro g _
+    rfl
+
+/-- Left translation also permutes the full finite-group indicator. -/
+theorem finsetGroupRingIndicator_single_mul_univ
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ] (s : Γ) :
+    MonoidAlgebra.single s 1 *
+        finsetGroupRingIndicator (Finset.univ : Finset Γ) =
+      finsetGroupRingIndicator (Finset.univ : Finset Γ) := by
+  classical
+  simp only [finsetGroupRingIndicator, Finset.mul_sum,
+    MonoidAlgebra.single_mul_single, one_mul]
+  apply Finset.sum_bij (fun g _ => s * g)
+  · intro g _
+    exact Finset.mem_univ _
+  · intro g₁ _ g₂ _ h
+    exact mul_left_cancel h
+  · intro h _
+    refine ⟨s⁻¹ * h, Finset.mem_univ _, ?_⟩
+    simp [mul_assoc]
+  · intro g _
+    rfl
+
+/-- The full finite-group indicator commutes with every finite-set
+indicator; both products are the cardinality of the set times the full
+indicator. -/
+theorem finsetGroupRingIndicator_univ_commute
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ] (S : Finset Γ) :
+    finsetGroupRingIndicator (Finset.univ : Finset Γ) *
+        finsetGroupRingIndicator S =
+      finsetGroupRingIndicator S *
+        finsetGroupRingIndicator (Finset.univ : Finset Γ) := by
+  classical
+  let F := finsetGroupRingIndicator (Finset.univ : Finset Γ)
+  change F * (∑ s ∈ S, MonoidAlgebra.single s 1) =
+    (∑ s ∈ S, MonoidAlgebra.single s 1) * F
+  rw [Finset.mul_sum, Finset.sum_mul]
+  simp_rw [F, finsetGroupRingIndicator_univ_mul_single,
+    finsetGroupRingIndicator_single_mul_univ]
+
+/-- The identity, a subset of the nonidentity elements, and its unused
+complement form an exact indicator partition of a finite group. -/
+theorem finsetGroupRingIndicator_identity_used_unused_partition
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (used : Finset Γ) (hused : used ⊆ Finset.univ.erase (1 : Γ)) :
+    finsetGroupRingIndicator ({1} : Finset Γ) +
+        finsetGroupRingIndicator used +
+        finsetGroupRingIndicator ((Finset.univ.erase 1) \ used) =
+      finsetGroupRingIndicator (Finset.univ : Finset Γ) := by
+  classical
+  let E := Finset.univ.erase (1 : Γ)
+  have husedDisj : Disjoint used (E \ used) := Finset.disjoint_sdiff
+  have honeDisj : Disjoint ({1} : Finset Γ) E := by
+    simp [E, Finset.disjoint_left]
+  have husedUnion : used ∪ (E \ used) = E :=
+    Finset.union_sdiff_of_subset hused
+  have honeUnion : ({1} : Finset Γ) ∪ E = Finset.univ := by
+    ext g
+    by_cases hg : g = 1 <;> simp [E, hg]
+  rw [add_assoc,
+    ← finsetGroupRingIndicator_union_of_disjoint husedDisj,
+    husedUnion,
+    ← finsetGroupRingIndicator_union_of_disjoint honeDisj,
+    honeUnion]
+
+/-- **Exact group-ring Sidon square.**  In a C4-free inverse-closed Cayley
+graph, the square of the connection indicator has coefficient `#A` at the
+identity and coefficient one at every represented non-backtracking product. -/
+theorem connectionIndicator_sq_eq_backtracking_add_used
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone)) :
+    finsetGroupRingIndicator A * finsetGroupRingIndicator A =
+      A.card • (1 : MonoidAlgebra ℤ Γ) +
+        finsetGroupRingIndicator
+          ((nonbacktrackingConnectionPairs A).image fun p => p.1 * p.2) := by
+  classical
+  let P := A.product A
+  let B := P.filter fun p => p.1 * p.2 = 1
+  let N := nonbacktrackingConnectionPairs A
+  let f : Γ × Γ → Γ := fun p => p.1 * p.2
+  have hsplit :
+      (∑ p ∈ P, MonoidAlgebra.single (f p) (1 : ℤ)) =
+        (∑ p ∈ B, MonoidAlgebra.single (f p) 1) +
+          ∑ p ∈ N, MonoidAlgebra.single (f p) 1 := by
+    have h := Finset.sum_filter_add_sum_filter_not P
+      (fun p => p.1 * p.2 = 1)
+      (fun p => MonoidAlgebra.single (f p) (1 : ℤ))
+    simpa [B, N, P, nonbacktrackingConnectionPairs, f] using h.symm
+  have hback :
+      (∑ p ∈ B, MonoidAlgebra.single (f p) (1 : ℤ)) =
+        A.card • (1 : MonoidAlgebra ℤ Γ) := by
+    calc
+      (∑ p ∈ B, MonoidAlgebra.single (f p) (1 : ℤ)) =
+          ∑ _p ∈ B, MonoidAlgebra.single 1 1 := by
+            apply Finset.sum_congr rfl
+            intro p hp
+            have hpone := (Finset.mem_filter.mp hp).2
+            simpa [B, P, f] using congrArg
+              (fun g => MonoidAlgebra.single g (1 : ℤ)) hpone
+      _ = B.card • MonoidAlgebra.single 1 (1 : ℤ) := by
+            rw [Finset.sum_const]
+      _ = A.card • (1 : MonoidAlgebra ℤ Γ) := by
+            rw [show B.card = A.card by
+              simpa [B, P] using card_backtrackingConnectionPairs A hinv]
+            simp [MonoidAlgebra.one_def]
+  have hinj : Set.InjOn f N := by
+    intro p hp q hq hpq
+    have hpA := Finset.mem_product.mp (Finset.mem_filter.mp hp).1
+    have hqA := Finset.mem_product.mp (Finset.mem_filter.mp hq).1
+    have hpne := (Finset.mem_filter.mp hp).2
+    apply Prod.ext
+    · by_contra hpqFirst
+      exact (connection_product_ne_of_invClosedCayley_not_containsC4
+        (· ∈ A) hinv hone hfree hpA.1 hpA.2 hqA.1 hqA.2
+        hpqFirst hpne) hpq
+    · have hfirst : p.1 = q.1 := by
+        by_contra hpqFirst
+        exact (connection_product_ne_of_invClosedCayley_not_containsC4
+          (· ∈ A) hinv hone hfree hpA.1 hpA.2 hqA.1 hqA.2
+          hpqFirst hpne) hpq
+      change p.1 * p.2 = q.1 * q.2 at hpq
+      rw [← hfirst] at hpq
+      exact mul_left_cancel hpq
+  have hused :
+      (∑ p ∈ N, MonoidAlgebra.single (f p) (1 : ℤ)) =
+        finsetGroupRingIndicator (N.image f) := by
+    unfold finsetGroupRingIndicator
+    exact (Finset.sum_image
+      (f := fun g : Γ => MonoidAlgebra.single g (1 : ℤ)) hinj).symm
+  rw [finsetGroupRingIndicator_mul, hsplit, hback, hused]
+
+/-- **Slack-centralizer algebra.**  If a packed square consists of a scalar
+identity contribution plus the used products, and the used and unused
+products partition the full ambient indicator, then the unused indicator
+commutes with the connection indicator.  The only group-specific input is
+that the full indicator commutes with the connection indicator. -/
+theorem unusedIndicator_commutes_of_square_pack_and_partition
+    {R : Type*} [Ring R]
+    (a used unused full : R) (n : ℕ)
+    (hpack : a * a = n • (1 : R) + used)
+    (hpartition : 1 + used + unused = full)
+    (hfull : a * full = full * a) :
+    a * unused = unused * a := by
+  have hused : used = a * a - n • (1 : R) := by
+    calc
+      used = (n • (1 : R) + used) - n • (1 : R) := by abel
+      _ = a * a - n • (1 : R) := by rw [← hpack]
+  have hunused : unused = full - 1 - used := by
+    calc
+      unused = (1 + used + unused) - 1 - used := by abel
+      _ = full - 1 - used := by rw [hpartition]
+  have hncomm : a * (n • (1 : R)) = (n • (1 : R)) * a := by
+    simpa using (Nat.cast_commute n a).eq.symm
+  rw [hunused, hused]
+  noncomm_ring [hfull, hncomm]
+
+/-- **Cayley slack centralizer.**  The unused nonidentity product indicator
+commutes in the integral group ring with the connection-set indicator.  This
+is a multiplicity-sensitive constraint on every unused inverse pair, strictly
+stronger than inversion closure or the cardinality/parity ledger alone. -/
+theorem connectionIndicator_commutes_unusedProducts
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone)) :
+    finsetGroupRingIndicator A *
+        finsetGroupRingIndicator (unusedNonidentityConnectionProducts A) =
+      finsetGroupRingIndicator (unusedNonidentityConnectionProducts A) *
+        finsetGroupRingIndicator A := by
+  classical
+  let W := (nonbacktrackingConnectionPairs A).image fun p => p.1 * p.2
+  have hWsub : W ⊆ Finset.univ.erase (1 : Γ) := by
+    intro g hg
+    obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp hg
+    exact Finset.mem_erase.mpr
+      ⟨(Finset.mem_filter.mp hp).2, Finset.mem_univ _⟩
+  apply unusedIndicator_commutes_of_square_pack_and_partition
+    (a := finsetGroupRingIndicator A)
+    (used := finsetGroupRingIndicator W)
+    (unused := finsetGroupRingIndicator (unusedNonidentityConnectionProducts A))
+    (full := finsetGroupRingIndicator (Finset.univ : Finset Γ))
+    (n := A.card)
+  · simpa [W] using
+      connectionIndicator_sq_eq_backtracking_add_used A hinv hone hfree
+  · simpa [W, unusedNonidentityConnectionProducts] using
+      finsetGroupRingIndicator_identity_used_unused_partition W hWsub
+  · exact (finsetGroupRingIndicator_univ_commute A).symm
 
 /-- In finite-set language, every nonidentity involution in the ambient group
 belongs to the unused product slack, whether or not it is a generator. -/
@@ -946,6 +1220,9 @@ end Erdos85
 #print axioms Erdos85.card_nonbacktrackingConnectionPairs
 #print axioms Erdos85.card_nonbacktracking_connectionProducts
 #print axioms Erdos85.card_unused_nonidentity_of_planeMinusTwo_Cayley
+#print axioms Erdos85.finsetGroupRingIndicator_univ_commute
+#print axioms Erdos85.connectionIndicator_sq_eq_backtracking_add_used
+#print axioms Erdos85.connectionIndicator_commutes_unusedProducts
 #print axioms Erdos85.nontrivial_involution_mem_unusedProducts
 #print axioms Erdos85.involution_connection_mem_unusedProducts
 #print axioms Erdos85.nontrivialInvolutionFinset_subset_unusedProducts
