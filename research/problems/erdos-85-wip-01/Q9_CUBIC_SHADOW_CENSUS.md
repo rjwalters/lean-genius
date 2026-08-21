@@ -151,3 +151,25 @@ vertex-transitive.  The sole remaining connected type is order-80 census
 ordinal 30, the unique girth-10 survivor, whose automorphism group has order
 960.  Its larger subgroup lattice is handled separately rather than hidden
 inside the small-group sweep.
+
+### The final connected type
+
+For ordinal 30, `q9_f30_transitive_subgroups.g` asks GAP for the conjugacy
+classes of subgroups of the order-960 automorphism group.  GAP finds 132
+subgroup classes, of which exactly five are transitive.  Their representative
+orders and numbers of conjugates are `(160,6)`, `(240,2)`, `(480,1)`,
+`(480,1)`, and `(960,1)`, accounting for all eleven transitive subgroups.
+
+The companion `q9_f30_shadow_orbit_exclusion.py` independently checks that
+the emitted generators act as automorphisms of the pinned census graph,
+generate groups of the stated orders, and act transitively.  Their allowed
+triple orbits again have no size below 80.  The five representatives have
+respectively 30, 9, 3, 3, and 1 possible 80-line orbits.  Every one is
+non-linear, violates the triangle-free-edge definition, or creates a C4.
+Conjugation preserves these properties, so all eleven transitive subgroups
+are excluded.
+
+Consequently **all 25 connected cubic-shadow types are impossible** for a
+vertex-transitive q=9 candidate.  Any remaining candidate must have a
+disconnected shadow: equal copies of the surviving order-10, 16, 20, or 40
+component types.
