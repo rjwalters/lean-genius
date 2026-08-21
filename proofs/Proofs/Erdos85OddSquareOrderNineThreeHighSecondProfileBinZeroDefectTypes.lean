@@ -51,6 +51,56 @@ theorem independent_nonisolated_card_le_edges
   have hcard := Fintype.card_le_of_injective f hf
   simpa only [Fintype.card_coe] using hcard
 
+/-- Every q=9 bin-zero vertex has one of four exact
+`(antipodal, triangle-free, local-triangle)` profiles. -/
+theorem squareOrderNine_binZero_antipodal_triangle_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 0) :
+    ((antipodalNeighbors G x).card = 1 ∧
+        (triangleFreeNeighbors G x).card = 7 ∧
+        (G.induce (G.neighborSet x)).edgeFinset.card = 1) ∨
+      ((antipodalNeighbors G x).card = 3 ∧
+        (triangleFreeNeighbors G x).card = 5 ∧
+        (G.induce (G.neighborSet x)).edgeFinset.card = 2) ∨
+      ((antipodalNeighbors G x).card = 5 ∧
+        (triangleFreeNeighbors G x).card = 3 ∧
+        (G.induce (G.neighborSet x)).edgeFinset.card = 3) ∨
+      ((antipodalNeighbors G x).card = 7 ∧
+        (triangleFreeNeighbors G x).card = 1 ∧
+        (G.induce (G.neighborSet x)).edgeFinset.card = 4) := by
+  have hxLow := (Finset.mem_filter.mp hx).1
+  have hxNotHigh : x ∉ squareOrderHighVertices G 9 :=
+    (Finset.mem_sdiff.mp hxLow).2
+  have hxDegree : G.degree x = 9 := by
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (by norm_num) hmin hcover hcard x with hlo | hhi
+    · exact hlo
+    · exact (hxNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  have hinc : squareOrderHighIncidenceCount G 9 x = 0 :=
+    (Finset.mem_filter.mp hx).2
+  have hdefect := squareOrder_defectDegree_add_highIncidence_eq_pred
+    G hfree (by norm_num) hmin hcover hcard hxDegree
+  rw [hinc] at hdefect
+  have hsplit := congrArg Finset.card
+    (secondOrderDefectGraph_neighborFinset G x)
+  rw [Finset.card_union_of_disjoint
+    (disjoint_antipodal_triangleFreeNeighbors G x),
+    (secondOrderDefectGraph G).card_neighborFinset_eq_degree] at hsplit
+  have hparity := triangleFreeNeighbors_card_mod_two_eq_vertexDegree G hfree x
+  rw [hxDegree] at hparity
+  have htriangle :=
+    squareOrder_low_antipodal_add_highIncidence_add_one_eq_two_mul_localEdges
+      G hfree (by norm_num) hmin hcover hcard hxDegree
+  rw [hinc] at htriangle
+  omega
+
 /-- Every bin-zero vertex in the second three-high profile has defect type
 `(5,3,0)` or `(7,0,1)` across bins zero, one, and three. -/
 theorem squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
@@ -783,6 +833,7 @@ end Erdos85
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
 #print axioms Erdos85.independent_nonisolated_card_le_edges
+#print axioms Erdos85.squareOrderNine_binZero_antipodal_triangle_profile
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
