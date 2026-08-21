@@ -280,6 +280,96 @@ theorem squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
   · right
     exact ⟨hsecond.1, hsecond.2, by omega⟩
 
+/-- At the rare bin-three vertex, the original bin-zero edges which also lie
+in the defect graph are exactly the triangle-free incident edges. -/
+theorem squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset x =
+      triangleFreeNeighbors G x := by
+  classical
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  have hxDefect := squareOrderNine_threeHigh_secondProfile_binThree_neighbors
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hxDefect
+  have hdegreeD : D.degree x = 5 := by
+    have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+      G hfree hmin hcover hcard hx
+    dsimp only at hledger
+    norm_num at hledger
+    exact hledger.1
+  have hDinside : D.neighborFinset x ∩ B 0 = D.neighborFinset x := by
+    apply Finset.eq_of_subset_of_card_le
+    · exact Finset.inter_subset_left
+    · rw [hxDefect.1, D.card_neighborFinset_eq_degree, hdegreeD]
+  ext y
+  constructor
+  · intro hy
+    have hy' := Finset.mem_inter.mp hy
+    have hyG := (Finset.mem_inter.mp hy'.1).1
+    have hyD := hy'.2
+    rw [secondOrderDefectGraph_neighborFinset G x] at hyD
+    rcases Finset.mem_union.mp hyD with hanti | htf
+    · exact (((mem_antipodalNeighbors G x y).mp hanti).2.1
+        ((G.mem_neighborFinset x y).mp hyG)).elim
+    · exact htf
+  · intro htf
+    have hyG : y ∈ G.neighborFinset x :=
+      (G.mem_neighborFinset x y).mpr ((mem_triangleFreeNeighbors G x y).mp htf).1
+    have hyD : y ∈ D.neighborFinset x := by
+      rw [secondOrderDefectGraph_neighborFinset G x]
+      exact Finset.mem_union_right _ htf
+    have hyB : y ∈ B 0 := by
+      have : y ∈ D.neighborFinset x ∩ B 0 := by
+        rw [hDinside]
+        exact hyD
+      exact (Finset.mem_inter.mp this).2
+    exact Finset.mem_inter.mpr ⟨Finset.mem_inter.mpr ⟨hyG, hyB⟩, hyD⟩
+
+/-- Of the three original bin-zero neighbors of the rare bin-three vertex,
+either all three are defect/triangle-free, or exactly one is.  Hence the
+extra-local-triangle branch has exactly two original bin-zero non-defect
+edges. -/
+theorem squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset x).card = 3 ∨
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset x).card = 1 := by
+  rw [squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx]
+  rcases squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx with hfirst | hsecond
+  · exact Or.inl hfirst.2
+  · exact Or.inr hsecond.2
+
 end
 
 end Erdos85
@@ -288,3 +378,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_card
