@@ -128,6 +128,79 @@ theorem sizeTwoTwistedComparisonProduct_eq_one_of_closes
   rw [sizeTwoTwistedComparisonProduct_eq_endpoints]
   simp [sizeTwoTwistedFrame, hshift, hframe]
 
+/-- An involutive shift and a frame returning after two steps have trivial
+two-step twisted holonomy. -/
+theorem sizeTwoTwistedComparisonProduct_two_eq_one_of_involutive
+    {A : Type*} (shift : Equiv.Perm A) (frame : ℕ → Equiv.Perm A)
+    (hshift : Function.Involutive shift) (hframe : frame 2 = frame 0) :
+    sizeTwoTwistedComparisonProduct shift frame 2 = 1 := by
+  apply sizeTwoTwistedComparisonProduct_eq_one_of_closes shift frame 2
+  · ext r
+    exact hshift r
+  · exact hframe
+
+/-- In a closed two-step frame for an involutive shift, the second
+comparison is the inverse of the first, conjugated by the shift.  Thus the
+two comparisons have the same cycle type; the two-step holonomy supplies no
+independent fixed-point constraint. -/
+theorem sizeTwoDoubleShiftComparison_second_eq_conj_inv
+    {A : Type*} (shift : Equiv.Perm A) (frame : ℕ → Equiv.Perm A)
+    (hshift : Function.Involutive shift) (hframe : frame 2 = frame 0) :
+    sizeTwoDoubleShiftComparison shift (frame 2) (frame 1) =
+      shift *
+        (sizeTwoDoubleShiftComparison shift (frame 1) (frame 0))⁻¹ *
+        shift⁻¹ := by
+  have hsquare : shift * shift = 1 := by
+    ext r
+    exact hshift r
+  have hsymm : shift⁻¹ = shift := by
+    ext r
+    calc
+      shift⁻¹ r = shift (shift (shift⁻¹ r)) := (hshift _).symm
+      _ = shift r := congrArg shift (shift.apply_symm_apply r)
+  rw [sizeTwoDoubleShiftComparison_eq_mul,
+    sizeTwoDoubleShiftComparison_eq_mul, hframe]
+  simp only [mul_inv_rev, inv_inv]
+  rw [hsymm]
+  rw [← mul_assoc shift shift, hsquare]
+  group
+
+/-- At an order-two cyclic displacement, the parallel repaired shift closes
+the twisted comparison holonomy after the two bases `x,x+d`. -/
+theorem sizeTwoCyclicParallelCentralShift_holonomy_eq_one
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (hq1 : (1 : ZMod q) ≠ 0)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (d : ZMod q) (t : sizeTwoAllowedDifference q a)
+    (hd : SizeTwoGenericRowShift d) (hd2 : d + d = 0)
+    (x : ZMod q) :
+    sizeTwoTwistedComparisonProduct
+      (sizeTwoCyclicParallelRowShiftCompletion hq1 t.1 d hd)
+      (fun i : ℕ => code.reflectedPerm (x + (i : ZMod q) * d) t) 2 = 1 := by
+  apply sizeTwoTwistedComparisonProduct_two_eq_one_of_involutive
+  · exact sizeTwoCyclicParallelRowShiftCompletion_involutive hq1 t.1 d hd hd2
+  · congr 1
+    congr 1
+    simpa [two_mul] using hd2
+
+/-- The crossed repaired shift has the same two-step central holonomy
+closure. -/
+theorem sizeTwoCyclicCrossCentralShift_holonomy_eq_one
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (hq1 : (1 : ZMod q) ≠ 0)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (d : ZMod q) (t : sizeTwoAllowedDifference q a)
+    (hd : SizeTwoGenericRowShift d) (hd2 : d + d = 0)
+    (x : ZMod q) :
+    sizeTwoTwistedComparisonProduct
+      (sizeTwoCyclicCrossRowShiftCompletion hq1 t.1 d hd)
+      (fun i : ℕ => code.reflectedPerm (x + (i : ZMod q) * d) t) 2 = 1 := by
+  apply sizeTwoTwistedComparisonProduct_two_eq_one_of_involutive
+  · exact sizeTwoCyclicCrossRowShiftCompletion_involutive hq1 t.1 d hd hd2
+  · congr 1
+    congr 1
+    simpa [two_mul] using hd2
+
 end
 
 end Erdos85
@@ -139,3 +212,7 @@ end Erdos85
 #print axioms Erdos85.sizeTwoDoubleShiftComparison_conj_eq_twistedFrame_div
 #print axioms Erdos85.sizeTwoTwistedComparisonProduct_eq_endpoints
 #print axioms Erdos85.sizeTwoTwistedComparisonProduct_eq_one_of_closes
+#print axioms Erdos85.sizeTwoTwistedComparisonProduct_two_eq_one_of_involutive
+#print axioms Erdos85.sizeTwoDoubleShiftComparison_second_eq_conj_inv
+#print axioms Erdos85.sizeTwoCyclicParallelCentralShift_holonomy_eq_one
+#print axioms Erdos85.sizeTwoCyclicCrossCentralShift_holonomy_eq_one
