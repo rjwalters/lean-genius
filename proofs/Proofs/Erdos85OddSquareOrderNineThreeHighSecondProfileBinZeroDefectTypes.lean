@@ -428,6 +428,58 @@ theorem squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
     refine ⟨hsecond.2.2, ?_⟩
     rw [hRcard, hS, hsecond.2.1]
 
+/-- No original bin-zero neighbor of the rare bin-three vertex is adjacent
+to a high vertex.  At every high root, the unique common neighbor with the
+bin-three vertex is the root's bin-one matching partner. -/
+theorem squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y a : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 0)
+    (hxy : G.Adj x y) (ha : a ∈ squareOrderHighVertices G 9) :
+    ¬ G.Adj a y := by
+  intro hay
+  let B := squareOrderNineLowIncidenceBin G
+  have hpartner :=
+    squareOrderNine_threeHigh_secondProfile_binThree_unique_binOne_partner_at_highRoot
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ha
+  have hpartnerNonempty :
+      (G.neighborFinset a ∩ G.neighborFinset x ∩ B 1).Nonempty := by
+    rw [← Finset.card_pos, hpartner]
+    norm_num
+  obtain ⟨p, hp⟩ := hpartnerNonempty
+  have hpParts := Finset.mem_inter.mp hp
+  have hpCommonParts := Finset.mem_inter.mp hpParts.1
+  have hpCommon : p ∈ G.neighborFinset a ∩ G.neighborFinset x :=
+    Finset.mem_inter.mpr hpCommonParts
+  have hyCommon : y ∈ G.neighborFinset a ∩ G.neighborFinset x :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset a y).mpr hay,
+      (G.mem_neighborFinset x y).mpr hxy⟩
+  have hax : a ≠ x := by
+    intro h
+    subst a
+    have hxLow := (Finset.mem_filter.mp hx).1
+    exact (Finset.mem_sdiff.mp hxLow).2 ha
+  have hle := common_le_one_of_not_containsC4 hfree a x hax
+  have hpy : p = y := Finset.card_le_one.mp hle p hpCommon y hyCommon
+  have hkp : squareOrderHighIncidenceCount G 9 p = 1 :=
+    (Finset.mem_filter.mp hpParts.2).2
+  have hky : squareOrderHighIncidenceCount G 9 y = 0 :=
+    (Finset.mem_filter.mp hy).2
+  rw [hpy] at hkp
+  omega
+
 end
 
 end Erdos85
@@ -439,3 +491,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
