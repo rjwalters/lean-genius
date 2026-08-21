@@ -517,6 +517,166 @@ theorem squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_hi
   rw [hpy] at hkp
   omega
 
+/-- In the four-local-triangle branch, the two canonical original bin-zero
+neighbors outside the defect graph are adjacent.  Otherwise those two
+vertices together with the three highs would be five independent
+non-isolated vertices in the four-edge local graph. -/
+theorem squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hloc : (G.induce (G.neighborSet x)).edgeFinset.card = 4) :
+    G.Adj y z := by
+  classical
+  by_contra hnotYZ
+  let H := squareOrderHighVertices G 9
+  let L := G.induce (G.neighborSet x)
+  have hyParts := Finset.mem_sdiff.mp hy
+  have hzParts := Finset.mem_sdiff.mp hz
+  have hxy : G.Adj x y :=
+    (G.mem_neighborFinset x y).mp (Finset.mem_inter.mp hyParts.1).1
+  have hxz : G.Adj x z :=
+    (G.mem_neighborFinset x z).mp (Finset.mem_inter.mp hzParts.1).1
+  have hyB := (Finset.mem_inter.mp hyParts.1).2
+  have hzB := (Finset.mem_inter.mp hzParts.1).2
+  have hxAll : G.neighborFinset x ∩ H = H := by
+    have hkx : squareOrderHighIncidenceCount G 9 x = 3 :=
+      (Finset.mem_filter.mp hx).2
+    apply Finset.eq_of_subset_of_card_le
+    · exact Finset.inter_subset_right
+    · change H.card ≤ squareOrderHighIncidenceCount G 9 x
+      rw [hkx, hhigh]
+  have highAdj (a : V) (ha : a ∈ H) : G.Adj x a := by
+    have haN : a ∈ G.neighborFinset x := by
+      have : a ∈ G.neighborFinset x ∩ H := by rw [hxAll]; exact ha
+      exact (Finset.mem_inter.mp this).1
+    exact (G.mem_neighborFinset x a).mp haN
+  let highEmb : ↥H ↪ ↥(G.neighborSet x) :=
+    ⟨fun a => ⟨a.1, highAdj a.1 a.2⟩, by
+      intro a b hab
+      apply Subtype.ext
+      exact congrArg (fun q : ↥(G.neighborSet x) => q.1) hab⟩
+  let SH : Finset ↥(G.neighborSet x) := Finset.univ.map highEmb
+  let y' : ↥(G.neighborSet x) := ⟨y, hxy⟩
+  let z' : ↥(G.neighborSet x) := ⟨z, hxz⟩
+  let SR : Finset ↥(G.neighborSet x) := {y', z'}
+  let S : Finset ↥(G.neighborSet x) := SH ∪ SR
+  have hSHcard : SH.card = 3 := by
+    rw [Finset.card_map, Finset.card_univ, Fintype.card_coe, hhigh]
+  have hSRcard : SR.card = 2 := by
+    simp [SR, y', z', hyz]
+  have hdisj : Disjoint SH SR := by
+    rw [Finset.disjoint_left]
+    intro u huH huR
+    have huHigh : u.1 ∈ H := by
+      simp only [SH, Finset.mem_map, Finset.mem_univ, true_and] at huH
+      obtain ⟨a, rfl⟩ := huH
+      exact a.2
+    have huPair : u = y' ∨ u = z' := by simpa [SR] using huR
+    rcases huPair with rfl | rfl
+    · have hyLow := (Finset.mem_filter.mp hyB).1
+      exact (Finset.mem_sdiff.mp hyLow).2 huHigh
+    · have hzLow := (Finset.mem_filter.mp hzB).1
+      exact (Finset.mem_sdiff.mp hzLow).2 huHigh
+  have hScard : S.card = 5 := by
+    change (SH ∪ SR).card = 5
+    rw [Finset.card_union_of_disjoint hdisj, hSHcard, hSRcard]
+  have hSind : ∀ ⦃u⦄, u ∈ S → ∀ ⦃v⦄, v ∈ S → u ≠ v → ¬ L.Adj u v := by
+    intro u hu v hv huv huvAdj
+    have hGuv : G.Adj u.1 v.1 := huvAdj
+    rcases Finset.mem_union.mp hu with huH | huR <;>
+      rcases Finset.mem_union.mp hv with hvH | hvR
+    · have huHigh : u.1 ∈ H := by
+        simp only [SH, Finset.mem_map, Finset.mem_univ, true_and] at huH
+        obtain ⟨a, rfl⟩ := huH
+        exact a.2
+      have hvHigh : v.1 ∈ H := by
+        simp only [SH, Finset.mem_map, Finset.mem_univ, true_and] at hvH
+        obtain ⟨a, rfl⟩ := hvH
+        exact a.2
+      have hu10 : G.degree u.1 = 10 := (Finset.mem_filter.mp huHigh).2
+      have hv10 : G.degree v.1 = 10 := (Finset.mem_filter.mp hvHigh).2
+      rcases hcover hGuv with hu9 | hv9 <;> omega
+    · have huHigh : u.1 ∈ H := by
+        simp only [SH, Finset.mem_map, Finset.mem_univ, true_and] at huH
+        obtain ⟨a, rfl⟩ := huH
+        exact a.2
+      have hvPair : v = y' ∨ v = z' := by simpa [SR] using hvR
+      rcases hvPair with rfl | rfl
+      · exact squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
+          G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyB hxy huHigh hGuv
+      · exact squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
+          G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hzB hxz huHigh hGuv
+    · have hvHigh : v.1 ∈ H := by
+        simp only [SH, Finset.mem_map, Finset.mem_univ, true_and] at hvH
+        obtain ⟨a, rfl⟩ := hvH
+        exact a.2
+      have huPair : u = y' ∨ u = z' := by simpa [SR] using huR
+      rcases huPair with rfl | rfl
+      · exact squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
+          G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyB hxy hvHigh hGuv.symm
+      · exact squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
+          G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hzB hxz hvHigh hGuv.symm
+    · have huPair : u = y' ∨ u = z' := by simpa [SR] using huR
+      have hvPair : v = y' ∨ v = z' := by simpa [SR] using hvR
+      rcases huPair with rfl | rfl <;> rcases hvPair with rfl | rfl
+      · exact huv rfl
+      · exact hnotYZ hGuv
+      · exact hnotYZ hGuv.symm
+      · exact huv rfl
+  have hSpos : ∀ u ∈ S, 0 < L.degree u := by
+    intro u hu
+    rcases Finset.mem_union.mp hu with huH | huR
+    · have huHigh : u.1 ∈ H := by
+        simp only [SH, Finset.mem_map, Finset.mem_univ, true_and] at huH
+        obtain ⟨a, rfl⟩ := huH
+        exact a.2
+      have hu10 : G.degree u.1 = 10 := (Finset.mem_filter.mp huHigh).2
+      have hlocal := (squareOrder_degree_succ_highRoot_structure
+        G hfree (by norm_num) hmin hcard hu10).2.2 ⟨x, (highAdj u.1 huHigh).symm⟩
+      rw [degree_induce_neighborSet_eq_card_common] at hlocal
+      rw [degree_induce_neighborSet_eq_card_common]
+      have : (G.neighborFinset x ∩ G.neighborFinset u.1).card = 1 := by
+        simpa [Finset.inter_comm] using hlocal
+      omega
+    · have huPair : u = y' ∨ u = z' := by simpa [SR] using huR
+      rcases huPair with rfl | rfl
+      · rw [degree_induce_neighborSet_eq_card_common]
+        apply Nat.pos_of_ne_zero
+        intro hzero
+        have htf : y ∈ triangleFreeNeighbors G x :=
+          (mem_triangleFreeNeighbors G x y).mpr ⟨hxy, hzero⟩
+        exact hyParts.2 (by
+          rw [secondOrderDefectGraph_neighborFinset G x]
+          exact Finset.mem_union_right _ htf)
+      · rw [degree_induce_neighborSet_eq_card_common]
+        apply Nat.pos_of_ne_zero
+        intro hzero
+        have htf : z ∈ triangleFreeNeighbors G x :=
+          (mem_triangleFreeNeighbors G x z).mpr ⟨hxz, hzero⟩
+        exact hzParts.2 (by
+          rw [secondOrderDefectGraph_neighborFinset G x]
+          exact Finset.mem_union_right _ htf)
+  have hbound := independent_nonisolated_card_le_edges L S hSind hSpos
+  rw [hScard, hloc] at hbound
+  omega
+
 end
 
 end Erdos85
@@ -530,3 +690,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
