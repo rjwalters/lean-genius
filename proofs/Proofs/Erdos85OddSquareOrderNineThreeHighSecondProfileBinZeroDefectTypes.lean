@@ -150,9 +150,92 @@ theorem squareOrderNine_threeHigh_secondProfile_special_binZero_card
     _ = squareOrderNineDefectBinEdgeCount G 0 3 := by rfl
     _ = 5 := he03
 
+/-- The five defect edges from the rare bin-three vertex into its exceptional
+bin-zero reservoir have label counts `(antipodal, triangle-free)=(2,3)` or
+`(4,1)`.  In particular, the all-triangle-free and all-antipodal patterns are
+both impossible. -/
+theorem squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    ((antipodalNeighbors G x).card = 2 ∧
+        (triangleFreeNeighbors G x).card = 3) ∨
+      ((antipodalNeighbors G x).card = 4 ∧
+        (triangleFreeNeighbors G x).card = 1) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  have hxLow := (Finset.mem_filter.mp hx).1
+  have hxNotHigh : x ∉ squareOrderHighVertices G 9 :=
+    (Finset.mem_sdiff.mp hxLow).2
+  have hxDegree : G.degree x = 9 := by
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (by norm_num) hmin hcover hcard x with hlo | hhi
+    · exact hlo
+    · exact (hxNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  have hxDefect := squareOrderNine_threeHigh_secondProfile_binThree_neighbors
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hxDefect
+  have hxOriginal :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hxOriginal
+  have htfSubset : triangleFreeNeighbors G x ⊆ G.neighborFinset x ∩ B 0 := by
+    intro y hy
+    have hyG : y ∈ G.neighborFinset x :=
+      (G.mem_neighborFinset x y).mpr ((mem_triangleFreeNeighbors G x y).mp hy).1
+    have hyD : y ∈ D.neighborFinset x := by
+      rw [secondOrderDefectGraph_neighborFinset G x]
+      exact Finset.mem_union_right _ hy
+    have hDcard : D.degree x = 5 := by
+      have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+        G hfree hmin hcover hcard hx
+      dsimp only at hledger
+      norm_num at hledger
+      exact hledger.1
+    have hinter : D.neighborFinset x ∩ B 0 = D.neighborFinset x := by
+      apply Finset.eq_of_subset_of_card_le
+      · exact Finset.inter_subset_left
+      · rw [hxDefect.1, D.card_neighborFinset_eq_degree, hDcard]
+    have hyB : y ∈ B 0 := by
+      have : y ∈ D.neighborFinset x ∩ B 0 := by
+        rw [hinter]
+        exact hyD
+      exact (Finset.mem_inter.mp this).2
+    exact Finset.mem_inter.mpr ⟨hyG, hyB⟩
+  have htfLe : (triangleFreeNeighbors G x).card ≤ 3 := by
+    exact (Finset.card_le_card htfSubset).trans_eq hxOriginal.2.2
+  have hsplit := congrArg Finset.card
+    (secondOrderDefectGraph_neighborFinset G x)
+  rw [Finset.card_union_of_disjoint
+    (disjoint_antipodal_triangleFreeNeighbors G x),
+    (secondOrderDefectGraph G).card_neighborFinset_eq_degree] at hsplit
+  have hdegreeD : (secondOrderDefectGraph G).degree x = 5 := by
+    have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+      G hfree hmin hcover hcard hx
+    dsimp only at hledger
+    norm_num at hledger
+    exact hledger.1
+  rw [hdegreeD] at hsplit
+  have hparity := triangleFreeNeighbors_card_mod_two_eq_vertexDegree G hfree x
+  rw [hxDegree] at hparity
+  omega
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_card
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
