@@ -126,6 +126,54 @@ def sizeTwoCyclicCrossRowShiftCompletion
   exact ((sizeTwoAdmissibleTargetRowEquivTwoHole q t).trans completion).trans
     (sizeTwoAdmissibleTargetRowEquivTwoHole q t).symm
 
+/-- If the underlying cyclic translation has order two, then so does its
+parallel two-hole completion. -/
+theorem sizeTwoCyclicParallelRowShiftCompletion_involutive
+    {q : ℕ} [NeZero q] (hq1 : (1 : ZMod q) ≠ 0)
+    (t d : ZMod q) (hd : SizeTwoGenericRowShift d)
+    (hd2 : d + d = 0) :
+    Function.Involutive
+      (sizeTwoCyclicParallelRowShiftCompletion hq1 t d hd) := by
+  let tau : Equiv.Perm (ZMod q) := Equiv.subRight d
+  let H := cyclicShiftHoleData hq1 t d hd
+  let E := sizeTwoAdmissibleTargetRowEquivTwoHole q t
+  let P := twoHoleParallelCompletion tau t (t + 1)
+    H.hholes H.hcross H.h₀₀ H.h₀₁ H.h₁₀ H.h₁₁
+  have htau : Function.Involutive tau := by
+    intro r
+    change (r - d) - d = r
+    rw [sub_sub, hd2, sub_zero]
+  have hP : Function.Involutive P :=
+    twoHoleParallelCompletion_involutive tau t (t + 1) htau
+      H.hholes H.hcross H.h₀₀ H.h₀₁ H.h₁₀ H.h₁₁
+  intro r
+  change E.symm (P (P (E r))) = r
+  rw [hP (E r), E.symm_apply_apply]
+
+/-- If the underlying cyclic translation has order two, then so does its
+crossed two-hole completion. -/
+theorem sizeTwoCyclicCrossRowShiftCompletion_involutive
+    {q : ℕ} [NeZero q] (hq1 : (1 : ZMod q) ≠ 0)
+    (t d : ZMod q) (hd : SizeTwoGenericRowShift d)
+    (hd2 : d + d = 0) :
+    Function.Involutive
+      (sizeTwoCyclicCrossRowShiftCompletion hq1 t d hd) := by
+  let tau : Equiv.Perm (ZMod q) := Equiv.subRight d
+  let H := cyclicShiftHoleData hq1 t d hd
+  let E := sizeTwoAdmissibleTargetRowEquivTwoHole q t
+  let C := twoHoleCrossCompletion tau t (t + 1)
+    H.hholes H.hcross H.h₀₀ H.h₀₁ H.h₁₀ H.h₁₁
+  have htau : Function.Involutive tau := by
+    intro r
+    change (r - d) - d = r
+    rw [sub_sub, hd2, sub_zero]
+  have hC : Function.Involutive C :=
+    twoHoleCrossCompletion_involutive tau t (t + 1) htau
+      H.hholes H.hcross H.h₀₀ H.h₀₁ H.h₁₀ H.h₁₁
+  intro r
+  change E.symm (C (C (E r))) = r
+  rw [hC (E r), E.symm_apply_apply]
+
 /-- On the common row domain, the parallel completion is literally
 translation by `-d`. -/
 theorem sizeTwoCyclicParallelRowShiftCompletion_apply

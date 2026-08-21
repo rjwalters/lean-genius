@@ -260,6 +260,98 @@ theorem twoHoleCompletion_relative_sign
       twoHoleParallelCompletion_apply_of_image_avoids tau h₀ h₁
       hholes hcross h₀₀ h₀₁ h₁₀ h₁₁ r him₀ him₁]
 
+/-- Repairing an involution in parallel across two moved holes again gives
+an involution on the punctured complement. -/
+theorem twoHoleParallelCompletion_involutive
+    {A : Type*} [DecidableEq A]
+    (tau : Equiv.Perm A) (h₀ h₁ : A)
+    (hinv : Function.Involutive tau)
+    (hholes : h₀ ≠ h₁) (hcross : tau h₀ ≠ tau h₁)
+    (h₀₀ : tau h₀ ≠ h₀) (h₀₁ : tau h₀ ≠ h₁)
+    (h₁₀ : tau h₁ ≠ h₀) (h₁₁ : tau h₁ ≠ h₁) :
+    Function.Involutive (twoHoleParallelCompletion tau h₀ h₁
+      hholes hcross h₀₀ h₀₁ h₁₀ h₁₁) := by
+  intro r
+  apply Subtype.ext
+  by_cases hr₀ : r.1 = tau h₀
+  · simp [twoHoleParallelCompletion, twoHoleParallelRepair,
+      Equiv.swap_apply_def, hinv h₀, hinv h₁,
+      hr₀,
+      hholes, hholes.symm, hcross, hcross.symm,
+      h₀₀, h₀₀.symm, h₀₁, h₀₁.symm,
+      h₁₀, h₁₀.symm, h₁₁, h₁₁.symm]
+  · by_cases hr₁ : r.1 = tau h₁
+    · simp [twoHoleParallelCompletion, twoHoleParallelRepair,
+        Equiv.swap_apply_def, hinv h₀, hinv h₁,
+        hr₀, hr₁,
+        hholes, hholes.symm, hcross, hcross.symm,
+        h₀₀, h₀₀.symm, h₀₁, h₀₁.symm,
+        h₁₀, h₁₀.symm, h₁₁, h₁₁.symm]
+    · have htr₀ : tau r.1 ≠ h₀ := by
+        intro h
+        apply hr₀
+        calc
+          r.1 = tau (tau r.1) := (hinv r.1).symm
+          _ = tau h₀ := by rw [h]
+      have htr₁ : tau r.1 ≠ h₁ := by
+        intro h
+        apply hr₁
+        calc
+          r.1 = tau (tau r.1) := (hinv r.1).symm
+          _ = tau h₁ := by rw [h]
+      have htrm₀ : tau r.1 ≠ tau h₀ := fun h => r.2.1 (tau.injective h)
+      have htrm₁ : tau r.1 ≠ tau h₁ := fun h => r.2.2 (tau.injective h)
+      simp [twoHoleParallelCompletion, twoHoleParallelRepair,
+        Equiv.swap_apply_def, hr₀, hr₁,
+        r.2.1, r.2.2,
+        htr₀, htr₀.symm, htr₁, htr₁.symm,
+        htrm₀, htrm₀.symm, htrm₁, htrm₁.symm, hinv r.1]
+
+/-- Repairing an involution crosswise across two moved holes again gives
+an involution on the punctured complement.  Its two exceptional preimages
+are exchanged with one another. -/
+theorem twoHoleCrossCompletion_involutive
+    {A : Type*} [DecidableEq A]
+    (tau : Equiv.Perm A) (h₀ h₁ : A)
+    (hinv : Function.Involutive tau)
+    (hholes : h₀ ≠ h₁) (hcross : tau h₀ ≠ tau h₁)
+    (h₀₀ : tau h₀ ≠ h₀) (h₀₁ : tau h₀ ≠ h₁)
+    (h₁₀ : tau h₁ ≠ h₀) (h₁₁ : tau h₁ ≠ h₁) :
+    Function.Involutive (twoHoleCrossCompletion tau h₀ h₁
+      hholes hcross h₀₀ h₀₁ h₁₀ h₁₁) := by
+  intro r
+  apply Subtype.ext
+  by_cases hr₀ : r.1 = tau h₀
+  · simp [twoHoleCrossCompletion, twoHoleCrossRepair,
+      Equiv.swap_apply_def, hinv h₀, hinv h₁, hr₀,
+      hholes, hholes.symm, hcross, hcross.symm,
+      h₀₀, h₀₀.symm, h₀₁, h₀₁.symm,
+      h₁₀, h₁₀.symm, h₁₁, h₁₁.symm]
+  · by_cases hr₁ : r.1 = tau h₁
+    · simp [twoHoleCrossCompletion, twoHoleCrossRepair,
+        Equiv.swap_apply_def, hinv h₀, hinv h₁, hr₀, hr₁,
+        hholes, hholes.symm, hcross, hcross.symm,
+        h₀₀, h₀₀.symm, h₀₁, h₀₁.symm,
+        h₁₀, h₁₀.symm, h₁₁, h₁₁.symm]
+    · have htr₀ : tau r.1 ≠ h₀ := by
+        intro h
+        apply hr₀
+        calc
+          r.1 = tau (tau r.1) := (hinv r.1).symm
+          _ = tau h₀ := by rw [h]
+      have htr₁ : tau r.1 ≠ h₁ := by
+        intro h
+        apply hr₁
+        calc
+          r.1 = tau (tau r.1) := (hinv r.1).symm
+          _ = tau h₁ := by rw [h]
+      have htrm₀ : tau r.1 ≠ tau h₀ := fun h => r.2.1 (tau.injective h)
+      have htrm₁ : tau r.1 ≠ tau h₁ := fun h => r.2.2 (tau.injective h)
+      simp [twoHoleCrossCompletion, twoHoleCrossRepair,
+        Equiv.swap_apply_def, hr₀, hr₁, r.2.1, r.2.2,
+        htr₀, htr₀.symm, htr₁, htr₁.symm,
+        htrm₀, htrm₀.symm, htrm₁, htrm₁.symm, hinv r.1]
+
 end
 
 end Erdos85
