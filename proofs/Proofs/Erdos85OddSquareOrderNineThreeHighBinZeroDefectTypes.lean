@@ -144,6 +144,155 @@ theorem squareOrderNine_threeHigh_firstProfile_special_binZero_card
     _ = squareOrderNineDefectBinEdgeCount G 0 2 := by rfl
     _ = 15 := he02
 
+/-- Every bin-zero vertex has at most one bin-two defect neighbor. -/
+theorem squareOrderNine_threeHigh_firstProfile_binZero_binTwo_defect_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {y : V} (hy : y ∈ squareOrderNineLowIncidenceBin G 0) :
+    ((secondOrderDefectGraph G).neighborFinset y ∩
+      squareOrderNineLowIncidenceBin G 2).card ≤ 1 := by
+  have ht :=
+    squareOrderNine_threeHigh_firstProfile_binZero_defect_neighbor_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc3 hc4 hy
+  dsimp only at ht
+  rcases ht with hregular | hspecial
+  · omega
+  · omega
+
+/-- Each bin-two witness indexes exactly five vertices in the special
+bin-zero reservoir. -/
+theorem squareOrderNine_threeHigh_firstProfile_binTwo_binZero_fiber_card_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 2) :
+    ((secondOrderDefectGraph G).neighborFinset x ∩
+      squareOrderNineLowIncidenceBin G 0).card = 5 := by
+  exact (squareOrderNine_threeHigh_firstProfile_binTwo_neighbors
+    G hfree hmin hcover hcard hp hhigh hc3 hc4 hx).1
+
+/-- The five-point bin-zero defect fibers of distinct bin-two witnesses are
+disjoint. -/
+theorem squareOrderNine_threeHigh_firstProfile_binTwo_binZero_fibers_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x z : V}
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (hz : z ∈ squareOrderNineLowIncidenceBin G 2)
+    (hxz : x ≠ z) :
+    Disjoint
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 0)
+      ((secondOrderDefectGraph G).neighborFinset z ∩
+        squareOrderNineLowIncidenceBin G 0) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  rw [Finset.disjoint_left]
+  intro y hyx hyz
+  have hy0 : y ∈ B 0 := (Finset.mem_inter.mp hyx).2
+  have hle :=
+    squareOrderNine_threeHigh_firstProfile_binZero_binTwo_defect_card_le_one
+      G hfree hmin hcover hcard hp hhigh hc3 hc4 hy0
+  have hxMem : x ∈ D.neighborFinset y ∩ B 2 :=
+    Finset.mem_inter.mpr ⟨
+      (D.mem_neighborFinset y x).mpr
+        ((D.mem_neighborFinset x y).mp (Finset.mem_inter.mp hyx).1).symm,
+      hx⟩
+  have hzMem : z ∈ D.neighborFinset y ∩ B 2 :=
+    Finset.mem_inter.mpr ⟨
+      (D.mem_neighborFinset y z).mpr
+        ((D.mem_neighborFinset z y).mp (Finset.mem_inter.mp hyz).1).symm,
+      hz⟩
+  exact hxz (Finset.card_le_one.mp hle x hxMem z hzMem)
+
+/-- The special bin-zero reservoir is exactly the union of the three
+five-point defect fibers indexed by bin two. -/
+theorem squareOrderNine_threeHigh_firstProfile_special_binZero_eq_biUnion_binTwo_fibers
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    (B 0).filter (fun y => (D.neighborFinset y ∩ B 2).card = 1) =
+      (B 2).biUnion fun x => D.neighborFinset x ∩ B 0 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  ext y
+  constructor
+  · intro hy
+    have hyData := Finset.mem_filter.mp hy
+    have hone : (D.neighborFinset y ∩ B 2).card = 1 := by
+      simpa [D, B] using hyData.2
+    obtain ⟨x, hx⟩ := Finset.card_pos.mp (by omega :
+      0 < (D.neighborFinset y ∩ B 2).card)
+    have hxData := Finset.mem_inter.mp hx
+    rw [Finset.mem_biUnion]
+    exact ⟨x, hxData.2, Finset.mem_inter.mpr ⟨
+      (D.mem_neighborFinset x y).mpr
+        ((D.mem_neighborFinset y x).mp hxData.1).symm,
+      hyData.1⟩⟩
+  · intro hy
+    rw [Finset.mem_biUnion] at hy
+    obtain ⟨x, hx2, hxy⟩ := hy
+    have hxyData := Finset.mem_inter.mp hxy
+    have hy0 : y ∈ B 0 := hxyData.2
+    have hxMem : x ∈ D.neighborFinset y ∩ B 2 :=
+      Finset.mem_inter.mpr ⟨
+        (D.mem_neighborFinset y x).mpr
+          ((D.mem_neighborFinset x y).mp hxyData.1).symm,
+        hx2⟩
+    have hpos : 0 < (D.neighborFinset y ∩ B 2).card :=
+      Finset.card_pos.mpr ⟨x, hxMem⟩
+    have hle :=
+      squareOrderNine_threeHigh_firstProfile_binZero_binTwo_defect_card_le_one
+        G hfree hmin hcover hcard hp hhigh hc3 hc4 hy0
+    have hle' : (D.neighborFinset y ∩ B 2).card ≤ 1 := by
+      simpa [D, B] using hle
+    exact Finset.mem_filter.mpr ⟨hy0, by
+      change (D.neighborFinset y ∩ B 2).card = 1
+      omega⟩
+
 end
 
 end Erdos85
@@ -151,3 +300,11 @@ end Erdos85
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_binZero_defect_neighbor_dichotomy
 #print axioms Erdos85.squareOrderNine_threeHigh_firstProfile_special_binZero_card
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_binZero_binTwo_defect_card_le_one
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_binTwo_binZero_fiber_card_eq_five
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_binTwo_binZero_fibers_disjoint
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_special_binZero_eq_biUnion_binTwo_fibers
