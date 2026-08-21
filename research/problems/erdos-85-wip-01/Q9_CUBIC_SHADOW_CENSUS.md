@@ -128,3 +128,26 @@ The script requires NetworkX and pynauty; the recorded run used NetworkX
 3.6.1 and pynauty 2.8.8.1.  It independently checks the pinned census digest,
 automorphism-group sizes, subgroup-lattice sizes, transitive subgroup orders,
 orbital-union counts, and the final common-neighbor obstruction.
+
+## Exhausting connected cubic shadows
+
+The same group-orbit strategy can start from the cubic shadow instead of the
+configuration.  For each connected census graph `F`, any vertex-transitive
+candidate supplies a transitive subgroup `H <= Aut(F)`.  Its 80 configuration
+lines form an `H`-invariant set of triples whose points are pairwise at
+`F`-distance at least three.
+
+For 24 of the 25 connected shadow types, `|Aut(F)|` is 80 or 160.  The script
+`q9_connected_shadow_orbit_exclusion.py` enumerates every transitive subgroup.
+In every action, each allowed triple orbit has size at least 80, so an
+invariant set of exactly 80 lines must be one orbit of size 80.  There are
+between 31 and 708 such orbits per action.  Every orbit either repeats a point
+pair (so is not a linear configuration), gives an `F` edge a common neighbor,
+or creates a four-cycle in the union graph.  No orbit survives.
+
+Thus 24 connected cubic-shadow types are completely excluded, including
+point-transitive configurations whose Levi graphs need not be
+vertex-transitive.  The sole remaining connected type is order-80 census
+ordinal 30, the unique girth-10 survivor, whose automorphism group has order
+960.  Its larger subgroup lattice is handled separately rather than hidden
+inside the small-group sweep.
