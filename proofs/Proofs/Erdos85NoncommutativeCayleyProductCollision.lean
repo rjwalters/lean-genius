@@ -479,6 +479,28 @@ noncomputable def finsetGroupRingIndicator
     {Γ : Type*} [Group Γ] (S : Finset Γ) : MonoidAlgebra ℤ Γ :=
   ∑ g ∈ S, MonoidAlgebra.single g 1
 
+/-- A finite-set indicator has coefficient one precisely on the set. -/
+@[simp] theorem finsetGroupRingIndicator_coeff_apply
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (S : Finset Γ) (x : Γ) :
+    MonoidAlgebra.coeff (finsetGroupRingIndicator S) x =
+      if x ∈ S then 1 else 0 := by
+  classical
+  simp only [finsetGroupRingIndicator, MonoidAlgebra.coeff_sum]
+  rw [Finsupp.finsetSum_apply]
+  have hsingle (c : Γ) :
+      MonoidAlgebra.coeff (MonoidAlgebra.single c (1 : ℤ)) x =
+        if c = x then 1 else 0 := by
+    exact MonoidAlgebra.single_apply
+  simp_rw [hsingle]
+  by_cases hx : x ∈ S <;> simp [hx]
+
+/-- Ordered representations of `x` as a product from `S × T`. -/
+def finsetProductRepresentations
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (S T : Finset Γ) (x : Γ) : Finset (Γ × Γ) :=
+  (S.product T).filter fun p => p.1 * p.2 = x
+
 /-- Indicators turn a disjoint union into a sum. -/
 theorem finsetGroupRingIndicator_union_of_disjoint
     {Γ : Type*} [Group Γ] [DecidableEq Γ]
@@ -512,6 +534,25 @@ theorem finsetGroupRingIndicator_mul
   rw [Finset.sum_comm]
   exact (Finset.sum_product' S T
     (fun s t => MonoidAlgebra.single (s * t) 1)).symm
+
+/-- A coefficient of an indicator product is the corresponding ordered
+representation count. -/
+theorem finsetGroupRingIndicator_mul_coeff_eq_card_representations
+    {Γ : Type*} [Group Γ] [DecidableEq Γ]
+    (S T : Finset Γ) (x : Γ) :
+    MonoidAlgebra.coeff
+        (finsetGroupRingIndicator S * finsetGroupRingIndicator T) x =
+      (finsetProductRepresentations S T x).card := by
+  classical
+  rw [finsetGroupRingIndicator_mul]
+  simp only [MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]
+  have hsingle (p : Γ × Γ) :
+      MonoidAlgebra.coeff
+          (MonoidAlgebra.single (p.1 * p.2) (1 : ℤ)) x =
+        if p.1 * p.2 = x then 1 else 0 := by
+    exact MonoidAlgebra.single_apply
+  simp_rw [hsingle]
+  simp [finsetProductRepresentations]
 
 /-- Right translation permutes the full finite-group indicator. -/
 theorem finsetGroupRingIndicator_univ_mul_single
@@ -723,6 +764,93 @@ theorem connectionIndicator_commutes_unusedProducts
   · simpa [W, unusedNonidentityConnectionProducts] using
       finsetGroupRingIndicator_identity_used_unused_partition W hWsub
   · exact (finsetGroupRingIndicator_univ_commute A).symm
+
+/-- **Pointwise slack balance.**  For every target group element `x`, the
+number of factorizations `x = a*u` with `a` a connection and `u` unused is
+exactly the number of factorizations `x = u*a`.  This is the coefficientwise
+form of `connectionIndicator_commutes_unusedProducts`. -/
+theorem card_connection_unused_representations_eq_unused_connection
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    (x : Γ) :
+    (finsetProductRepresentations A
+      (unusedNonidentityConnectionProducts A) x).card =
+    (finsetProductRepresentations
+      (unusedNonidentityConnectionProducts A) A x).card := by
+  have hcoeff := congrArg
+    (fun z : MonoidAlgebra ℤ Γ => MonoidAlgebra.coeff z x)
+    (connectionIndicator_commutes_unusedProducts A hinv hone hfree)
+  rw [finsetGroupRingIndicator_mul_coeff_eq_card_representations,
+    finsetGroupRingIndicator_mul_coeff_eq_card_representations] at hcoeff
+  exact_mod_cast hcoeff
+
+/-- **Slack routing forced by the matching involution.**  Fix an involutory
+connection `t`.  Every other connection `s` forces an unused element `u ≠ t`
+whose left translate routes `s*t` back into the connection set.  The obvious
+candidate `u=t` is forbidden precisely by conjugation separation
+`t*s*t ∉ A`. -/
+theorem exists_unused_ne_involution_inv_mul_connection_mul_involution_mem
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t s : Γ} (htA : t ∈ A) (htsq : t * t = 1)
+    (hsA : s ∈ A) (hst : s ≠ t) :
+    ∃ u, u ∈ unusedNonidentityConnectionProducts A ∧ u ≠ t ∧
+      u⁻¹ * s * t ∈ A := by
+  classical
+  let U := unusedNonidentityConnectionProducts A
+  let x := s * t
+  have htU : t ∈ U := by
+    apply Finset.mem_sdiff.mpr
+    constructor
+    · exact Finset.mem_erase.mpr
+        ⟨fun ht => hone (ht ▸ htA), Finset.mem_univ _⟩
+    · intro htImage
+      obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp htImage
+      have hpA := Finset.mem_product.mp (Finset.mem_filter.mp hp).1
+      have hpne := (Finset.mem_filter.mp hp).2
+      exact (involution_connection_ne_nonbacktracking_product
+        (· ∈ A) hinv hone hfree htsq hpA.1 hpA.2 hpne) hpt
+  have hleft : (s, t) ∈ finsetProductRepresentations A U x := by
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_product.mpr ⟨hsA, htU⟩, rfl⟩
+  have hbalance :=
+    card_connection_unused_representations_eq_unused_connection
+      A hinv hone hfree x
+  have hrightPos :
+      0 < (finsetProductRepresentations U A x).card := by
+    rw [← hbalance]
+    exact Finset.card_pos.mpr ⟨(s, t), hleft⟩
+  obtain ⟨p, hp⟩ := Finset.card_pos.mp hrightPos
+  have hpData := Finset.mem_filter.mp hp
+  have hpMem := Finset.mem_product.mp hpData.1
+  have hprod : p.1 * p.2 = s * t := hpData.2
+  have hpNe : p.1 ≠ t := by
+    intro hpt
+    have hpSecond : p.2 = t * s * t := by
+      calc
+        p.2 = 1 * p.2 := by simp
+        _ = (t * t) * p.2 := by rw [htsq]
+        _ = t * (t * p.2) := by simp [mul_assoc]
+        _ = t * (s * t) := by rw [← hprod, hpt]
+        _ = t * s * t := by simp [mul_assoc]
+    exact (involution_conjugate_not_mem_connection
+      A hinv hone hfree htA htsq hsA hst)
+      (hpSecond ▸ hpMem.2)
+  refine ⟨p.1, hpMem.1, hpNe, ?_⟩
+  have hpSecond : p.1⁻¹ * s * t = p.2 := by
+    calc
+      p.1⁻¹ * s * t = p.1⁻¹ * (s * t) := by simp [mul_assoc]
+      _ = p.1⁻¹ * (p.1 * p.2) := by rw [hprod]
+      _ = p.2 := by simp [mul_assoc]
+  exact hpSecond ▸ hpMem.2
 
 /-- In finite-set language, every nonidentity involution in the ambient group
 belongs to the unused product slack, whether or not it is a generator. -/
@@ -1223,6 +1351,9 @@ end Erdos85
 #print axioms Erdos85.finsetGroupRingIndicator_univ_commute
 #print axioms Erdos85.connectionIndicator_sq_eq_backtracking_add_used
 #print axioms Erdos85.connectionIndicator_commutes_unusedProducts
+#print axioms Erdos85.finsetGroupRingIndicator_mul_coeff_eq_card_representations
+#print axioms Erdos85.card_connection_unused_representations_eq_unused_connection
+#print axioms Erdos85.exists_unused_ne_involution_inv_mul_connection_mul_involution_mem
 #print axioms Erdos85.nontrivial_involution_mem_unusedProducts
 #print axioms Erdos85.involution_connection_mem_unusedProducts
 #print axioms Erdos85.nontrivialInvolutionFinset_subset_unusedProducts
