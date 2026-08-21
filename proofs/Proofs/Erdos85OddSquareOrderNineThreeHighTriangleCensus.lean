@@ -607,6 +607,40 @@ theorem antipodal_of_defectMate_crosses_shared_high
   · exact hanti
   · exact (hnotGxy ((mem_triangleFreeNeighbors G x y).mp htf).1).elim
 
+/-- Colored-core specialization: if a bin-two witness incident to highs
+`a,b` crosses at `a` to a bin-one vertex `y`, then every defect edge from
+`y` toward a bin-one vertex of color `b` is antipodal. -/
+theorem squareOrderNine_binTwo_cross_forces_otherColor_defectEdge_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {a b x y p : V}
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hp : p ∈ squareOrderNineLowIncidenceBin G 1)
+    (_hax : G.Adj a x) (hbx : G.Adj b x)
+    (_hay : G.Adj a y) (hby : G.Adj b p)
+    (hyx : G.Adj y x)
+    (hDyp : (secondOrderDefectGraph G).Adj y p) :
+    (antipodalGraph G).Adj y p := by
+  have hpx : p ≠ x := by
+    intro h
+    subst p
+    have h1 := (Finset.mem_filter.mp hp).2
+    have h2 := (Finset.mem_filter.mp hx).2
+    omega
+  have hbyNe : b ≠ y := by
+    intro h
+    subst y
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hy).1).2 hb
+  have hanti : (antipodalGraph G).Adj p y :=
+    antipodal_of_defectMate_crosses_shared_high
+      G hfree hpx hbyNe hby hbx hDyp.symm hyx
+  exact hanti.symm
+
 /-- For the three pair-witnesses `x_ab,x_ac,x_bc`, an exceptional bin-one
 mate opposite `a` is forced antipodal to `x_bc` whenever it is used as a
 crossing partner at `a`. -/
@@ -1029,5 +1063,7 @@ end Erdos85
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_highRoot_triangle_type_vector
 #print axioms Erdos85.antipodal_of_defectMate_crosses_shared_high
+#print axioms
+  Erdos85.squareOrderNine_binTwo_cross_forces_otherColor_defectEdge_antipodal
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_exceptional_cross_forces_antipodal_mate
