@@ -734,6 +734,49 @@ theorem squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
         ((D.adj_comm y x).mp ((D.mem_neighborFinset y x).mp hxDy))
     exact hyNotDx hyDx
 
+/-- If a bin-one vertex lies in both defect fibers of the forced adjacent
+bin-zero pair, at least one of its two incident defect edges is antipodal.
+The defect two-path has the bin-three vertex as an external common owner, so
+its two edges cannot both be original. -/
+theorem squareOrderNine_threeHigh_secondProfile_trianglePair_common_binOne_forces_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {x y z p : V}
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hp : p ∈ squareOrderNineLowIncidenceBin G 1)
+    (hyz : y ≠ z)
+    (hxy : G.Adj x y) (hxz : G.Adj x z)
+    (hDyp : (secondOrderDefectGraph G).Adj y p)
+    (hDpz : (secondOrderDefectGraph G).Adj p z) :
+    (antipodalGraph G).Adj y p ∨ (antipodalGraph G).Adj p z := by
+  have hnotDyz : ¬ (secondOrderDefectGraph G).Adj y z :=
+    not_secondOrderDefect_adj_of_commonNeighbor
+      G hfree hyz hxy.symm hxz.symm
+  have hpx : p ≠ x := by
+    intro h
+    subst p
+    have hkx : squareOrderHighIncidenceCount G 9 x = 3 :=
+      (Finset.mem_filter.mp hx).2
+    have hk1 : squareOrderHighIncidenceCount G 9 x = 1 :=
+      (Finset.mem_filter.mp hp).2
+    omega
+  have hnotBoth :=
+    not_both_originalEdges_of_induced_secondOrderDefect_path_of_commonOwner
+      G hfree hDyp hDpz hyz hnotDyz hxy hxz hpx
+  change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj y p at hDyp
+  change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj p z at hDpz
+  rcases hDyp with hanti | htf
+  · exact Or.inl hanti
+  · rcases hDpz with hanti | htf'
+    · exact Or.inr hanti
+    · exfalso
+      exact hnotBoth ⟨
+        ((mem_triangleFreeNeighbors G y p).mp htf).1,
+        ((mem_triangleFreeNeighbors G p z).mp htf').1⟩
+
 end
 
 end Erdos85
@@ -749,3 +792,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_trianglePair_common_binOne_forces_antipodal
