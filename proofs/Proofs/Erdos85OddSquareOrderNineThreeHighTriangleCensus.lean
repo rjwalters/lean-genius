@@ -641,6 +641,87 @@ theorem squareOrderNine_binTwo_cross_forces_otherColor_defectEdge_antipodal
       G hfree hpx hbyNe hby hbx hDyp.symm hyx
   exact hanti.symm
 
+/-- Every bin-one vertex has even antipodal degree. -/
+theorem squareOrderNine_binOne_antipodalNeighbors_card_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81) {y : V}
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1) :
+    Even (antipodalNeighbors G y).card := by
+  rcases squareOrderNine_binOne_triangle_defect_profile
+      G hfree hmin hcover hcard hy with h | h | h | h
+  · rw [h.1]
+    exact ⟨0, by omega⟩
+  · rw [h.1]
+    exact ⟨1, by omega⟩
+  · rw [h.1]
+    exact ⟨2, by omega⟩
+  · rw [h.1]
+    exact ⟨3, by omega⟩
+
+/-- Once one antipodal neighbor of a bin-one vertex is known, parity forces
+a second, distinct antipodal neighbor. -/
+theorem squareOrderNine_binOne_exists_second_antipodalNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81) {y p : V}
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hp : p ∈ antipodalNeighbors G y) :
+    ∃ q ∈ antipodalNeighbors G y, q ≠ p := by
+  classical
+  have heven := squareOrderNine_binOne_antipodalNeighbors_card_even
+    G hfree hmin hcover hcard hy
+  have hpos : 0 < (antipodalNeighbors G y).card :=
+    Finset.card_pos.mpr ⟨p, hp⟩
+  rcases heven with ⟨k, hk⟩
+  have hgt : 1 < (antipodalNeighbors G y).card := by omega
+  have herase : ((antipodalNeighbors G y).erase p).card =
+      (antipodalNeighbors G y).card - 1 :=
+    Finset.card_erase_of_mem hp
+  have herasePos : 0 < ((antipodalNeighbors G y).erase p).card := by
+    rw [herase]
+    omega
+  obtain ⟨q, hq⟩ := Finset.card_pos.mp herasePos
+  exact ⟨q, Finset.mem_of_mem_erase hq, (Finset.mem_erase.mp hq).1⟩
+
+/-- A crossing endpoint in the colored core has a forced antipodal edge
+toward the witness's other color, and hence a second antipodal neighbor. -/
+theorem squareOrderNine_binTwo_cross_forces_second_antipodalNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    {a b x y p : V}
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hp : p ∈ squareOrderNineLowIncidenceBin G 1)
+    (hax : G.Adj a x) (hbx : G.Adj b x)
+    (hay : G.Adj a y) (hby : G.Adj b p)
+    (hyx : G.Adj y x)
+    (hDyp : (secondOrderDefectGraph G).Adj y p) :
+    ∃ q ∈ antipodalNeighbors G y, q ≠ p := by
+  have hypAnti : (antipodalGraph G).Adj y p :=
+    squareOrderNine_binTwo_cross_forces_otherColor_defectEdge_antipodal
+      G hfree hb hx hy hp hax hbx hay hby hyx hDyp
+  apply squareOrderNine_binOne_exists_second_antipodalNeighbor
+    G hfree hmin hcover hcard hy
+  simpa [antipodalGraph_adj] using hypAnti
+
 /-- For the three pair-witnesses `x_ab,x_ac,x_bc`, an exceptional bin-one
 mate opposite `a` is forced antipodal to `x_bc` whenever it is used as a
 crossing partner at `a`. -/
@@ -1065,5 +1146,8 @@ end Erdos85
 #print axioms Erdos85.antipodal_of_defectMate_crosses_shared_high
 #print axioms
   Erdos85.squareOrderNine_binTwo_cross_forces_otherColor_defectEdge_antipodal
+#print axioms Erdos85.squareOrderNine_binOne_antipodalNeighbors_card_even
+#print axioms Erdos85.squareOrderNine_binOne_exists_second_antipodalNeighbor
+#print axioms Erdos85.squareOrderNine_binTwo_cross_forces_second_antipodalNeighbor
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_exceptional_cross_forces_antipodal_mate
