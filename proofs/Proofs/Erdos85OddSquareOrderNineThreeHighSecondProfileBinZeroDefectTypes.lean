@@ -232,6 +232,54 @@ theorem squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
   rw [hxDegree] at hparity
   omega
 
+/-- The reservoir-label alternatives are equivalently local triangle
+profiles `(antipodal, triangle-free, local edges)=(2,3,3)` or `(4,1,4)` at
+the rare bin-three vertex.  The first branch has no triangle beyond the three
+forced high-root matches; the second has room for exactly one more. -/
+theorem squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    ((antipodalNeighbors G x).card = 2 ∧
+        (triangleFreeNeighbors G x).card = 3 ∧
+        (G.induce (G.neighborSet x)).edgeFinset.card = 3) ∨
+      ((antipodalNeighbors G x).card = 4 ∧
+        (triangleFreeNeighbors G x).card = 1 ∧
+        (G.induce (G.neighborSet x)).edgeFinset.card = 4) := by
+  have hlabels :=
+    squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  have hxLow := (Finset.mem_filter.mp hx).1
+  have hxNotHigh : x ∉ squareOrderHighVertices G 9 :=
+    (Finset.mem_sdiff.mp hxLow).2
+  have hxDegree : G.degree x = 9 := by
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (by norm_num) hmin hcover hcard x with hlo | hhi
+    · exact hlo
+    · exact (hxNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  have hinc : squareOrderHighIncidenceCount G 9 x = 3 :=
+    (Finset.mem_filter.mp hx).2
+  have htriangle :=
+    squareOrder_low_antipodal_add_highIncidence_add_one_eq_two_mul_localEdges
+      G hfree (by norm_num) hmin hcover hcard hxDegree
+  rw [hinc] at htriangle
+  rcases hlabels with hfirst | hsecond
+  · left
+    exact ⟨hfirst.1, hfirst.2, by omega⟩
+  · right
+    exact ⟨hsecond.1, hsecond.2, by omega⟩
+
 end
 
 end Erdos85
@@ -239,3 +287,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
