@@ -400,6 +400,81 @@ theorem squareOrderNine_threeHigh_firstProfile_highRoot_binOne_internal_twice_ad
         squareOrderNineLowIncidenceBin G 1).card) = 8
   omega
 
+/-- The complementary handshake on the two bin-two neighbors is
+`2 * e(B₂,B₂) + crossMass = 2`. -/
+theorem squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_internal_twice_add_crossMass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a : V} (ha : a ∈ squareOrderHighVertices G 9) :
+    let S := G.neighborFinset a ∩ squareOrderNineLowIncidenceBin G 2
+    2 * (G.induce (↑S : Set V)).edgeFinset.card +
+      (∑ x ∈ S, (G.neighborFinset a ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 1).card) = 2 := by
+  classical
+  dsimp only
+  let S := G.neighborFinset a ∩ squareOrderNineLowIncidenceBin G 2
+  let K := G.induce (↑S : Set V)
+  have hScard : S.card = 2 :=
+    (squareOrderNine_threeHigh_firstProfile_highRoot_neighbor_split
+      G hfree hmin hcard hp hhigh hc3 hc4 ha).2
+  have hpoint : ∀ x ∈ S,
+      (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1).card +
+        (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 2).card = 1 := by
+    intro x hx
+    exact squareOrderNine_threeHigh_firstProfile_binTwo_local_matching_dichotomy
+      G hfree hmin hcard hp hc3 hc4
+      (Finset.mem_inter.mp hx).2 ha (Finset.mem_inter.mp hx).1
+  have htotal :
+      (∑ x ∈ S, (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1).card) +
+        (∑ x ∈ S, (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 2).card) = 2 := by
+    rw [← Finset.sum_add_distrib]
+    calc
+      (∑ x ∈ S,
+          ((G.neighborFinset a ∩ G.neighborFinset x ∩
+              squareOrderNineLowIncidenceBin G 1).card +
+            (G.neighborFinset a ∩ G.neighborFinset x ∩
+              squareOrderNineLowIncidenceBin G 2).card)) =
+          ∑ _x ∈ S, 1 := by
+            apply Finset.sum_congr rfl
+            intro x hx
+            exact hpoint x hx
+      _ = S.card := by simp
+      _ = 2 := hScard
+  have hinternal :
+      (∑ x ∈ S, (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 2).card) =
+        2 * K.edgeFinset.card := by
+    have hsum :
+        (∑ x ∈ S, (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 2).card) =
+          ∑ x : ↥(↑S : Set V), K.degree x := by
+      rw [← Finset.sum_attach]
+      apply Finset.sum_congr rfl
+      intro x _hx
+      rw [degree_induce_finset_eq_card_inter]
+      congr 1
+      ext y
+      simp only [S, Finset.mem_inter]
+      tauto
+    rw [hsum, K.sum_degrees_eq_twice_card_edges]
+  change 2 * K.edgeFinset.card +
+      (∑ x ∈ S, (G.neighborFinset a ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 1).card) = 2
+  omega
+
 /-- A bin-two vertex cannot be adjacent to three distinct high roots. -/
 theorem squareOrderNine_binTwo_not_three_distinct_high_neighbors
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -790,6 +865,83 @@ theorem squareOrderNine_threeHigh_firstProfile_highRoot_binOne_internal_edges_su
         G hfree hmin hcard hp hhigh hc3 hc4 ha hb hc hab hac hbc)
   omega
 
+/-- Full high-root triangle-type ledger for the first profile.  Across the
+three high roots, the only possibilities for
+`(B₁-B₁ edges, B₂-B₁ edges, B₂-B₂ edges)` are `(10,4,1)` and `(9,6,0)`. -/
+theorem squareOrderNine_threeHigh_firstProfile_highRoot_triangle_type_vector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a b c : V}
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hc : c ∈ squareOrderHighVertices G 9)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    let internalOne := fun r : V =>
+      (G.induce (↑(G.neighborFinset r ∩
+        squareOrderNineLowIncidenceBin G 1) : Set V)).edgeFinset.card
+    let crossMass := fun r : V =>
+      ∑ x ∈ G.neighborFinset r ∩ squareOrderNineLowIncidenceBin G 2,
+        (G.neighborFinset r ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1).card
+    let internalTwo := fun r : V =>
+      (G.induce (↑(G.neighborFinset r ∩
+        squareOrderNineLowIncidenceBin G 2) : Set V)).edgeFinset.card
+    (internalOne a + internalOne b + internalOne c = 10 ∧
+        crossMass a + crossMass b + crossMass c = 4 ∧
+        internalTwo a + internalTwo b + internalTwo c = 1) ∨
+      (internalOne a + internalOne b + internalOne c = 9 ∧
+        crossMass a + crossMass b + crossMass c = 6 ∧
+        internalTwo a + internalTwo b + internalTwo c = 0) := by
+  classical
+  dsimp only
+  let internalOne := fun r : V =>
+    (G.induce (↑(G.neighborFinset r ∩
+      squareOrderNineLowIncidenceBin G 1) : Set V)).edgeFinset.card
+  let crossMass := fun r : V =>
+    ∑ x ∈ G.neighborFinset r ∩ squareOrderNineLowIncidenceBin G 2,
+      (G.neighborFinset r ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 1).card
+  let internalTwo := fun r : V =>
+    (G.induce (↑(G.neighborFinset r ∩
+      squareOrderNineLowIncidenceBin G 2) : Set V)).edgeFinset.card
+  change (internalOne a + internalOne b + internalOne c = 10 ∧
+      crossMass a + crossMass b + crossMass c = 4 ∧
+      internalTwo a + internalTwo b + internalTwo c = 1) ∨
+    (internalOne a + internalOne b + internalOne c = 9 ∧
+      crossMass a + crossMass b + crossMass c = 6 ∧
+      internalTwo a + internalTwo b + internalTwo c = 0)
+  have oneHandshake (r : V) (hr : r ∈ squareOrderHighVertices G 9) :
+      2 * internalOne r + crossMass r = 8 := by
+    simpa [internalOne, crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binOne_internal_twice_add_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 hr)
+  have twoHandshake (r : V) (hr : r ∈ squareOrderHighVertices G 9) :
+      2 * internalTwo r + crossMass r = 2 := by
+    simpa [internalTwo, crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_internal_twice_add_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 hr)
+  have hcross : crossMass a + crossMass b + crossMass c = 4 ∨
+      crossMass a + crossMass b + crossMass c = 6 := by
+    simpa [crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_total_binTwo_crossMass_eq_four_or_six
+        G hfree hmin hcard hp hhigh hc3 hc4 ha hb hc hab hac hbc)
+  have haOne := oneHandshake a ha
+  have hbOne := oneHandshake b hb
+  have hcOne := oneHandshake c hc
+  have haTwo := twoHandshake a ha
+  have hbTwo := twoHandshake b hb
+  have hcTwo := twoHandshake c hc
+  omega
+
 end
 
 end Erdos85
@@ -809,3 +961,5 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_total_binTwo_crossMass_eq_four_or_six
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_highRoot_binOne_internal_edges_sum
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_highRoot_triangle_type_vector
