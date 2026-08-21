@@ -1,5 +1,6 @@
 import Proofs.Erdos85AbelianCayleyC4Obstruction
 import Proofs.Erdos85DifferenceArray
+import Proofs.SpernerTuckerAntipodalParityEngine
 
 /-!
 # The noncommutative Cayley product-collision obstruction
@@ -562,6 +563,73 @@ theorem unusedNonidentityConnectionProducts_inv_mem
       simpa only [mul_inv_rev, inv_inv] using this
     exact (Finset.mem_sdiff.mp hg).2 hgImage
 
+/-- **Exact parity content of the Cayley slack.**  Inversion pairs every
+unused non-involutory product with a distinct unused inverse.  Consequently
+the parity of the whole unused slack is exactly the parity of the ambient
+nonidentity involutions.  This is the unconditional conclusion available
+from inversion symmetry; equality of the two finsets would require ruling
+out all of those inverse pairs. -/
+theorem card_unusedProducts_modEq_card_nontrivialInvolutions
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone)) :
+    (unusedNonidentityConnectionProducts A).card ≡
+      (nontrivialInvolutionFinset Γ).card [MOD 2] := by
+  classical
+  let U := unusedNonidentityConnectionProducts A
+  have hmaps : ∀ g ∈ U, g⁻¹ ∈ U := by
+    intro g hg
+    exact unusedNonidentityConnectionProducts_inv_mem A hinv hg
+  have hparity :=
+    SpernerTuckerAntipodalParityEngine.card_modEq_card_fixed_of_involution
+      U Inv.inv hmaps (by intro g _; exact inv_inv g)
+  have hfixed :
+      U.filter (fun g => g⁻¹ = g) = nontrivialInvolutionFinset Γ := by
+    ext g
+    constructor
+    · intro hg
+      have hgU := (Finset.mem_filter.mp hg).1
+      have hginv := (Finset.mem_filter.mp hg).2
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ g, ?_⟩
+      constructor
+      · exact (Finset.mem_erase.mp (Finset.mem_sdiff.mp hgU).1).1
+      · calc
+          g * g = g * g⁻¹ := congrArg (g * ·) hginv.symm
+          _ = 1 := mul_inv_cancel g
+    · intro hg
+      have hg' := (Finset.mem_filter.mp hg).2
+      apply Finset.mem_filter.mpr
+      refine ⟨nontrivial_involution_mem_unusedProducts
+        A hinv hone hfree hg'.1 hg'.2, ?_⟩
+      exact (eq_inv_of_mul_eq_one_right hg'.2).symm
+  simpa [U, hfixed] using hparity
+
+/-- At plane-minus-two order, the `q-2` slack and the ambient nonidentity
+involution count have the same parity.  Together with the cardinal upper
+bound, this says that any failure of tight slack occurs in increments of two. -/
+theorem planeMinusTwo_sub_two_modEq_card_nontrivialInvolutions
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    (q : ℕ) (hq : 2 ≤ q)
+    (hcardΓ : Fintype.card Γ = q * q - 1)
+    (hcardA : A.card = q) :
+    q - 2 ≡ (nontrivialInvolutionFinset Γ).card [MOD 2] := by
+  have hcard : (unusedNonidentityConnectionProducts A).card = q - 2 := by
+    simpa [unusedNonidentityConnectionProducts] using
+      card_unused_nonidentity_of_planeMinusTwo_Cayley
+        A hinv hone hfree q hq hcardΓ hcardA
+  rw [← hcard]
+  exact card_unusedProducts_modEq_card_nontrivialInvolutions
+    A hinv hone hfree
+
 /-- If the unused product slack has odd cardinality, inversion fixes one of
 its elements.  Since the slack omits the identity, this is a nontrivial
 involution in the ambient group. -/
@@ -883,6 +951,8 @@ end Erdos85
 #print axioms Erdos85.nontrivialInvolutionFinset_subset_unusedProducts
 #print axioms Erdos85.card_nontrivialInvolutionFinset_le_of_planeMinusTwo_Cayley
 #print axioms Erdos85.unusedNonidentityConnectionProducts_inv_mem
+#print axioms Erdos85.card_unusedProducts_modEq_card_nontrivialInvolutions
+#print axioms Erdos85.planeMinusTwo_sub_two_modEq_card_nontrivialInvolutions
 #print axioms Erdos85.exists_unused_nontrivial_involution_of_odd_card
 #print axioms Erdos85.exists_unused_involution_of_odd_planeMinusTwo_Cayley
 #print axioms Erdos85.exists_connection_involution_of_odd_card
