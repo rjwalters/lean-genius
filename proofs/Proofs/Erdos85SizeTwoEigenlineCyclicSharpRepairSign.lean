@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoEigenlineCyclicReflectedHammingDistance
+import Proofs.Erdos85SizeTwoEigenlineCyclicDisplacementMultiplicityMoment
 import Mathlib.GroupTheory.Perm.Sign
 
 /-!
@@ -69,6 +70,100 @@ structure SharpNearPermutationWitness (A B : Type*) where
   surjective_except_missing : ∀ b, b ≠ missingValue → ∃ r, f r = b
   injective_away_first : ∀ {r s}, r ≠ first → s ≠ first → f r = f s → r = s
   injective_away_second : ∀ {r s}, r ≠ second → s ≠ second → f r = f s → r = s
+
+/-- An exact `2,0,1` fibre profile canonically supplies the two duplicate
+occurrences and hence a sharp near-permutation witness.  This is the bridge
+from the cyclic multiplicity profile to the repair-sign invariant. -/
+theorem exists_sharpNearPermutationWitness_of_fiberProfile
+    {A B : Type*} [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B]
+    (f : A → B) (duplicateValue missingValue : B)
+    (hne : duplicateValue ≠ missingValue)
+    (hprofile : ∀ b : B,
+      ((Finset.univ : Finset A).filter fun r => f r = b).card =
+        if b = duplicateValue then 2 else if b = missingValue then 0 else 1) :
+    ∃ w : SharpNearPermutationWitness A B,
+      w.f = f ∧ w.duplicateValue = duplicateValue ∧
+        w.missingValue = missingValue := by
+  classical
+  have hfiber (b : B) : Nat.card {r : A // f r = b} =
+      if b = duplicateValue then 2 else if b = missingValue then 0 else 1 := by
+    rw [Nat.card_eq_fintype_card, Fintype.card_subtype]
+    exact hprofile b
+  have hdup : Nat.card {r : A // f r = duplicateValue} = 2 := by
+    simpa [hne] using hfiber duplicateValue
+  obtain ⟨first, second, hfirstSecond, hall⟩ := Nat.card_eq_two_iff.mp hdup
+  have hdup_cases (r : A) (hr : f r = duplicateValue) :
+      r = first.1 ∨ r = second.1 := by
+    have hz : (⟨r, hr⟩ : {z : A // f z = duplicateValue}) ∈
+        ({first, second} : Set {z : A // f z = duplicateValue}) := by
+      rw [hall]
+      trivial
+    rcases hz with hz | hz
+    · exact Or.inl (congrArg Subtype.val hz)
+    · exact Or.inr (congrArg Subtype.val hz)
+  have hmissing : Nat.card {r : A // f r = missingValue} = 0 := by
+    simpa [hne.symm] using hfiber missingValue
+  have hother (b : B) (hbd : b ≠ duplicateValue)
+      (hbm : b ≠ missingValue) :
+      Nat.card {r : A // f r = b} = 1 := by
+    simpa [hbd, hbm] using hfiber b
+  refine ⟨{
+    f := f
+    duplicateValue := duplicateValue
+    missingValue := missingValue
+    first := first.1
+    second := second.1
+    first_ne_second := fun h => hfirstSecond (Subtype.ext h)
+    first_maps := first.2
+    second_maps := second.2
+    missing_not_mem := ?_
+    surjective_except_missing := ?_
+    injective_away_first := ?_
+    injective_away_second := ?_ }, rfl, rfl, rfl⟩
+  · intro r hr
+    have hnonempty : Nonempty {z : A // f z = missingValue} := ⟨⟨r, hr⟩⟩
+    have hpos : 0 < Nat.card {z : A // f z = missingValue} :=
+      Nat.card_pos_iff.mpr ⟨hnonempty, inferInstance⟩
+    omega
+  · intro b hbm
+    by_cases hbd : b = duplicateValue
+    · subst b
+      exact ⟨first.1, first.2⟩
+    · have hone := hother b hbd hbm
+      obtain ⟨z⟩ := (Nat.card_eq_one_iff_unique.mp hone).2
+      exact ⟨z.1, z.2⟩
+  · intro r s hrf hsf hrs
+    by_cases hrd : f r = duplicateValue
+    · have hsd : f s = duplicateValue := hrs ▸ hrd
+      rcases hdup_cases r hrd with (hr | hr) <;>
+        rcases hdup_cases s hsd with (hs | hs)
+      · exact (hrf hr).elim
+      · exact (hrf hr).elim
+      · exact (hsf hs).elim
+      · exact hr.trans hs.symm
+    · have hrm : f r ≠ missingValue := by
+        intro h
+        have hpos : 0 < Nat.card {z : A // f z = missingValue} :=
+          Nat.card_pos_iff.mpr ⟨⟨⟨r, h⟩⟩, inferInstance⟩
+        omega
+      have hsub := (Nat.card_eq_one_iff_unique.mp (hother (f r) hrd hrm)).1
+      exact Subtype.ext_iff.mp (hsub.elim ⟨r, rfl⟩ ⟨s, hrs.symm⟩)
+  · intro r s hrs hss heq
+    by_cases hrd : f r = duplicateValue
+    · have hsd : f s = duplicateValue := heq ▸ hrd
+      rcases hdup_cases r hrd with (hr | hr) <;>
+        rcases hdup_cases s hsd with (hs | hs)
+      · exact hr.trans hs.symm
+      · exact (hss hs).elim
+      · exact (hrs hr).elim
+      · exact (hrs hr).elim
+    · have hrm : f r ≠ missingValue := by
+        intro h
+        have hpos : 0 < Nat.card {z : A // f z = missingValue} :=
+          Nat.card_pos_iff.mpr ⟨⟨⟨r, h⟩⟩, inferInstance⟩
+        omega
+      have hsub := (Nat.card_eq_one_iff_unique.mp (hother (f r) hrd hrm)).1
+      exact Subtype.ext_iff.mp (hsub.elim ⟨r, rfl⟩ ⟨s, heq.symm⟩)
 
 /-- Repair the first duplicate occurrence by sending it to the missing
 value. -/
@@ -182,10 +277,50 @@ theorem SharpNearPermutationWitness.repair_relative_sign
       SharpNearPermutationWitness.repairFirstFun,
       SharpNearPermutationWitness.repairSecondFun, hr₁, hr₂]
 
+/-- Every sharp cyclic target-difference word admits two bijective repairs
+whose relative sign is odd.  This specializes the abstract repair lemma to
+the exact multiplicity notion used by the A.5.3 routing code. -/
+theorem exists_sizeTwoCyclicTargetDifferenceSharpRepairSign
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    [DecidableEq (sizeTwoAllowedDifference q a)]
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x : ZMod q) (t : sizeTwoAllowedDifference q a)
+    [DecidableEq (SizeTwoAdmissibleTargetRow q t.1)]
+    (duplicateValue missingValue : sizeTwoAllowedDifference q a)
+    (hne : duplicateValue ≠ missingValue)
+    (hprofile : ∀ u : sizeTwoAllowedDifference q a,
+      sizeTwoCyclicTargetDifferenceMultiplicity code x t u =
+        if u = duplicateValue then 2 else if u = missingValue then 0 else 1) :
+    ∃ w : SharpNearPermutationWitness
+        (SizeTwoAdmissibleTargetRow q t.1) (sizeTwoAllowedDifference q a),
+      w.f = code.targetDifference x t ∧
+      w.duplicateValue = duplicateValue ∧
+      w.missingValue = missingValue ∧
+      @Equiv.Perm.sign _ (Classical.decEq _) inferInstance
+        ((@SharpNearPermutationWitness.repairSecondEquiv _ _
+            (Classical.decEq _) w).trans
+          (@SharpNearPermutationWitness.repairFirstEquiv _ _
+            (Classical.decEq _) w).symm) = -1 := by
+  classical
+  obtain ⟨w, hwf, hwd, hwm⟩ :=
+    exists_sharpNearPermutationWitness_of_fiberProfile
+      (code.targetDifference x t) duplicateValue missingValue hne (by
+        intro u
+        rw [← hprofile u]
+        unfold sizeTwoCyclicTargetDifferenceMultiplicity
+        apply congrArg Finset.card
+        ext r
+        simp)
+  refine ⟨w, hwf, hwd, hwm, ?_⟩
+  exact @SharpNearPermutationWitness.repair_relative_sign _ _ inferInstance
+    (Classical.decEq _) w
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.relativeEquiv_eq_swap_of_exchange
 #print axioms Erdos85.relativeEquiv_sign_eq_neg_one_of_exchange
+#print axioms Erdos85.exists_sharpNearPermutationWitness_of_fiberProfile
 #print axioms Erdos85.SharpNearPermutationWitness.repair_relative_sign
+#print axioms Erdos85.exists_sizeTwoCyclicTargetDifferenceSharpRepairSign
