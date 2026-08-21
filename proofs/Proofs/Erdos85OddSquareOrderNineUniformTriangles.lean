@@ -1,5 +1,6 @@
 import Proofs.Erdos85OddPlaneOrderBipartiteObstruction
 import Proofs.Erdos85GlobalLocalTriangleCount
+import Proofs.Erdos85C4FreeFourthMoment
 
 /-!
 # Uniform local triangle count at the odd square order q = 9
@@ -253,6 +254,84 @@ theorem squareOrderNine_vertexTransitive_triangleFreeEdgeGraph_degree_eq_three
   rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
     triangleFreeEdgeGraph_neighborFinset]
   omega
+
+/-- The triangle-free-edge shadow contains no triangle.  This is independent
+of the order and degree assumptions: an edge in the shadow has no common
+original neighbor. -/
+theorem triangleFreeEdgeGraph_triangle_free
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {x y z : V}
+    (hxy : (triangleFreeEdgeGraph G).Adj x y)
+    (hyz : (triangleFreeEdgeGraph G).Adj y z) :
+    ¬(triangleFreeEdgeGraph G).Adj z x := by
+  intro hzx
+  have hzero : (G.neighborFinset x ∩ G.neighborFinset y).card = 0 :=
+    ((mem_triangleFreeNeighbors G x y).mp
+      ((triangleFreeEdgeGraph_adj G x y).mp hxy)).2
+  have hGyz : G.Adj y z :=
+    ((mem_triangleFreeNeighbors G y z).mp
+      ((triangleFreeEdgeGraph_adj G y z).mp hyz)).1
+  have hGzx : G.Adj z x :=
+    ((mem_triangleFreeNeighbors G z x).mp
+      ((triangleFreeEdgeGraph_adj G z x).mp hzx)).1
+  have hz : z ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨hGzx.symm, hGyz⟩
+  rw [Finset.card_eq_zero.mp hzero] at hz
+  exact Finset.notMem_empty z hz
+
+/-- Endpoints of an edge in the triangular shadow have no common neighbor in
+the triangle-free-edge shadow.  In the configuration interpretation, every
+pair of points on a line is therefore at shadow distance at least three. -/
+theorem triangularEdgeGraph_adj_no_common_triangleFreeNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {x y : V}
+    (hxy : (triangularEdgeGraph G).Adj x y) :
+    Disjoint (triangleFreeNeighbors G x) (triangleFreeNeighbors G y) := by
+  rw [Finset.disjoint_left]
+  intro z hzx hzy
+  have hGxy : G.Adj x y := hxy.1
+  have hzero : (G.neighborFinset x ∩ G.neighborFinset z).card = 0 :=
+    ((mem_triangleFreeNeighbors G x z).mp hzx).2
+  have hGzy : G.Adj z y := ((mem_triangleFreeNeighbors G y z).mp hzy).1.symm
+  have hy : y ∈ G.neighborFinset x ∩ G.neighborFinset z := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨hGxy, hGzy⟩
+  rw [Finset.card_eq_zero.mp hzero] at hy
+  exact Finset.notMem_empty y hy
+
+/-- Complete graph-theoretic interface for the finite `q = 9` shadow census:
+the shadow is vertex-transitive, cubic, triangle-free, and `C₄`-free, while a
+triangular-shadow edge cannot join two vertices with a common shadow
+neighbor. -/
+theorem squareOrderNine_vertexTransitive_triangleFreeEdgeGraph_constraints
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hcard : Fintype.card V = 80)
+    (hregular : ∀ v : V, G.degree v = 9)
+    (hfree : ¬ containsC4 V G)
+    (htrans : VertexTransitiveByIso G) :
+    VertexTransitiveByIso (triangleFreeEdgeGraph G) ∧
+      (∀ v : V, (triangleFreeEdgeGraph G).degree v = 3) ∧
+      (∀ x y z : V, (triangleFreeEdgeGraph G).Adj x y →
+        (triangleFreeEdgeGraph G).Adj y z →
+        ¬(triangleFreeEdgeGraph G).Adj z x) ∧
+      ¬ containsC4 V (triangleFreeEdgeGraph G) ∧
+      ∀ x y : V, (triangularEdgeGraph G).Adj x y →
+        Disjoint (triangleFreeNeighbors G x) (triangleFreeNeighbors G y) := by
+  refine ⟨triangleFreeEdgeGraph_vertexTransitiveByIso G htrans, ?_, ?_,
+    triangleFreeEdgeGraph_not_containsC4 G hfree, ?_⟩
+  · exact squareOrderNine_vertexTransitive_triangleFreeEdgeGraph_degree_eq_three
+      G hcard hregular hfree htrans
+  · intro x y z hxy hyz
+    exact triangleFreeEdgeGraph_triangle_free G hxy hyz
+  · intro x y hxy
+    exact triangularEdgeGraph_adj_no_common_triangleFreeNeighbor G hxy
 
 /-- Exact global triangle/edge census for a vertex-transitive q=9 candidate:
 120 triangle-free edges, 240 edges lying in triangles, and 80 triangles. -/
