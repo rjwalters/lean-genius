@@ -352,6 +352,25 @@ theorem SharpNearPermutationWitness.repair_comparison_sign_checkerboard
     w₂.repair_comparison_sign_toggle_left w₁.repairFirstEquiv]
   simp
 
+/-- A single repaired-word comparison is not invariant under the arbitrary
+ordering of the two duplicate occurrences: the two possible values are
+provably distinct.  Consequently a global product of local comparison signs
+cannot be a canonical invariant until an additional reciprocity-compatible
+rule couples the repair choices. -/
+theorem SharpNearPermutationWitness.repair_comparison_sign_ne
+    {A B : Type*} [Fintype A] [DecidableEq A]
+    (w : SharpNearPermutationWitness A B) (e : A ≃ B) :
+    Equiv.Perm.sign (e.trans w.repairSecondEquiv.symm) ≠
+      Equiv.Perm.sign (e.trans w.repairFirstEquiv.symm) := by
+  intro heq
+  have htoggle := w.repair_comparison_sign_toggle e
+  rw [heq] at htoggle
+  let s := Equiv.Perm.sign (e.trans w.repairFirstEquiv.symm)
+  have hval : (s : ℤ) = -(s : ℤ) := by
+    exact congrArg Units.val htoggle
+  have hszero : (s : ℤ) = 0 := by omega
+  exact s.ne_zero hszero
+
 /-- Every sharp cyclic target-difference word admits two bijective repairs
 whose relative sign is odd.  This specializes the abstract repair lemma to
 the exact multiplicity notion used by the A.5.3 routing code. -/
@@ -401,4 +420,5 @@ end Erdos85
 #print axioms Erdos85.SharpNearPermutationWitness.repair_comparison_sign_toggle
 #print axioms Erdos85.SharpNearPermutationWitness.repair_comparison_sign_toggle_left
 #print axioms Erdos85.SharpNearPermutationWitness.repair_comparison_sign_checkerboard
+#print axioms Erdos85.SharpNearPermutationWitness.repair_comparison_sign_ne
 #print axioms Erdos85.exists_sizeTwoCyclicTargetDifferenceSharpRepairSign
