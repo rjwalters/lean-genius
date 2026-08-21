@@ -99,3 +99,32 @@ This catalogs the vertex-transitive-Levi subfamily.  A point-transitive
 configuration need not have a vertex-transitive Levi graph, so the 17 graphs
 are concrete candidates rather than an exhaustive list of all possible
 triangular shadows.
+
+### Complete exclusion of the 17-member subfamily
+
+For each of the 17 point graphs `T`, the compatibility graph on pairs which
+are neither adjacent nor have a common neighbor in `T` is vertex-transitive
+and 49-regular.  Every possible triangle-free-edge shadow `F` is a cubic
+subgraph of this compatibility graph.
+
+The verifier `q9_vt_levi_shadow_orbit_exclusion.py` computes `Aut(T)`,
+enumerates every transitive subgroup `H`, and then enumerates every union of
+eligible unordered-pair `H`-orbits having valency three.  There is only one
+transitive subgroup for the fourteen point graphs with automorphism-group
+order 80.  Each of the other three point graphs has automorphism-group order
+160 and exactly three transitive subgroups (two of order 80 and the full
+group).  Depending on the action, only 4 to 182 cubic orbital unions occur.
+Every union makes some vertex pair have at least two common neighbors in
+`T union F`, so every union contains a four-cycle.
+
+This exhausts the vertex-transitive completion problem for all 17
+vertex-transitive-Levi configurations.  Indeed, automorphisms of a candidate
+`G` preserve the intrinsic partition into triangular and triangle-free
+edges, so `Aut(G)` would be one of the transitive subgroups of `Aut(T)` and
+`F` would be one of the checked orbital unions.  Hence none of the 17
+configurations extends to a q=9 candidate.
+
+The script requires NetworkX and pynauty; the recorded run used NetworkX
+3.6.1 and pynauty 2.8.8.1.  It independently checks the pinned census digest,
+automorphism-group sizes, subgroup-lattice sizes, transitive subgroup orders,
+orbital-union counts, and the final common-neighbor obstruction.
