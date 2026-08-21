@@ -139,6 +139,60 @@ theorem SizeTwoCyclicReciprocalPermutationCode.reflectedPerm_shifted_eq_iff_targ
     rw [← h₂, ← h₁, hv]
     ring
 
+/-- Aligned rows at two translated bases whose routes land in the same
+target-difference fibre. -/
+structure SizeTwoShiftedTargetDifferenceAgreement
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x d : ZMod q) (t : sizeTwoAllowedDifference q a) where
+  row : SizeTwoAdmissibleTargetRow q t.1
+  shifted_admissible : t.1 ≠ row.1 - d ∧ t.1 ≠ (row.1 - d) - 1
+  target_eq :
+    code.targetDifference (x + d) t
+        ⟨row.1 - d, shifted_admissible⟩ =
+      code.targetDifference x t row
+
+noncomputable instance SizeTwoShiftedTargetDifferenceAgreement.instFintype
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x d : ZMod q) (t : sizeTwoAllowedDifference q a) :
+    Fintype (SizeTwoShiftedTargetDifferenceAgreement code x d t) :=
+  Fintype.ofInjective (fun w => w.row.1) (by
+    intro u v h
+    cases u
+    cases v
+    cases Subtype.ext h
+    rfl)
+
+/-- Same-target-fibre coincidences are exactly reflected affine
+agreements. -/
+def sizeTwoReflectedAgreementEquivTargetDifferenceAgreement
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x d : ZMod q) (t : sizeTwoAllowedDifference q a) :
+    SizeTwoReflectedShiftedAgreement q a code x d t ≃
+      SizeTwoShiftedTargetDifferenceAgreement code x d t where
+  toFun w := ⟨w.row, w.shifted_admissible,
+    (code.reflectedPerm_shifted_eq_iff_targetDifference_eq
+      x d t w.row w.shifted_admissible).mp w.reflected_eq⟩
+  invFun w := ⟨w.row, w.shifted_admissible,
+    (code.reflectedPerm_shifted_eq_iff_targetDifference_eq
+      x d t w.row w.shifted_admissible).mpr w.target_eq⟩
+  left_inv w := by cases w; rfl
+  right_inv w := by cases w; rfl
+
+/-- Coding-theoretic form of the packing law: two translated target-fibre
+words coincide in at most one common coordinate. -/
+theorem sizeTwoShiftedTargetDifferenceAgreement_card_le_one
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x d : ZMod q) (hd : d ≠ 0)
+    (t : sizeTwoAllowedDifference q a) :
+    Fintype.card (SizeTwoShiftedTargetDifferenceAgreement code x d t) ≤ 1 := by
+  rw [← Fintype.card_congr
+    (sizeTwoReflectedAgreementEquivTargetDifferenceAgreement code x d t)]
+  exact sizeTwoReflectedShiftedAgreement_card_le_one code x d hd t
+
 /-- A common row on which the reflected affine agreement equation fails. -/
 structure SizeTwoReflectedShiftedDisagreement
     {q : ℕ} [NeZero q] {a : ZMod q}
@@ -307,6 +361,7 @@ end Erdos85
 #print axioms Erdos85.sizeTwoReflectedCommonRows_card_ge_sub_four
 #print axioms
   Erdos85.SizeTwoCyclicReciprocalPermutationCode.reflectedPerm_shifted_eq_iff_targetDifference_eq
+#print axioms Erdos85.sizeTwoShiftedTargetDifferenceAgreement_card_le_one
 #print axioms
   Erdos85.SizeTwoReflectedShiftedDisagreement.targetDifferences_ne
 #print axioms
