@@ -302,6 +302,64 @@ theorem triangularEdgeGraph_adj_no_common_triangleFreeNeighbor
   rw [Finset.card_eq_zero.mp hzero] at hy
   exact Finset.notMem_empty y hy
 
+/-- Vertices at distance at most two in the triangle-free-edge shadow cannot
+have a common neighbor in the triangular shadow of a `C₄`-free graph.
+
+For distance one, such a common neighbor would contradict the definition of
+a triangle-free edge.  For distance two, the shadow midpoint and the proposed
+triangular neighbor would be two distinct common original neighbors, hence
+would form a four-cycle. -/
+theorem shadow_distance_le_two_no_common_triangularNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {x y : V} (hxy : x ≠ y)
+    (hnear : (triangleFreeEdgeGraph G).Adj x y ∨
+      ∃ z : V, (triangleFreeEdgeGraph G).Adj z x ∧
+        (triangleFreeEdgeGraph G).Adj z y)
+    {w : V} (hwx : (triangularEdgeGraph G).Adj w x)
+    (hwy : (triangularEdgeGraph G).Adj w y) : False := by
+  rcases hnear with hshadow | ⟨z, hzx, hzy⟩
+  · have hzero : (G.neighborFinset x ∩ G.neighborFinset y).card = 0 :=
+      ((mem_triangleFreeNeighbors G x y).mp
+        ((triangleFreeEdgeGraph_adj G x y).mp hshadow)).2
+    have hw : w ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨hwx.1.symm, hwy.1.symm⟩
+    rw [Finset.card_eq_zero.mp hzero] at hw
+    exact Finset.notMem_empty w hw
+  · have hGzx : G.Adj z x :=
+      ((mem_triangleFreeNeighbors G z x).mp
+        ((triangleFreeEdgeGraph_adj G z x).mp hzx)).1
+    have hGzy : G.Adj z y :=
+      ((mem_triangleFreeNeighbors G z y).mp
+        ((triangleFreeEdgeGraph_adj G z y).mp hzy)).1
+    have hzw : z ≠ w := by
+      intro h
+      subst w
+      exact hwx.2 hzx
+    exact hfree (containsC4_of_two_common hxy hzw hGzx hGzy hwx.1 hwy.1)
+
+/-- A set of shadow diameter at most two meets the triangular neighborhood of
+any vertex in at most one point.  Applied to a Petersen component of the
+shadow, this says that every cross-component triangular bipartite graph is a
+matching. -/
+theorem triangularNeighbor_unique_in_shadowDiameterTwoSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (S : Set V)
+    (hdiam : ∀ {x y : V}, x ∈ S → y ∈ S → x ≠ y →
+      (triangleFreeEdgeGraph G).Adj x y ∨
+        ∃ z : V, (triangleFreeEdgeGraph G).Adj z x ∧
+          (triangleFreeEdgeGraph G).Adj z y)
+    {w x y : V} (hx : x ∈ S) (hy : y ∈ S)
+    (hwx : (triangularEdgeGraph G).Adj w x)
+    (hwy : (triangularEdgeGraph G).Adj w y) : x = y := by
+  by_contra hxy
+  exact shadow_distance_le_two_no_common_triangularNeighbor
+    G hfree hxy (hdiam hx hy hxy) hwx hwy
+
 /-- Complete graph-theoretic interface for the finite `q = 9` shadow census:
 the shadow is vertex-transitive, cubic, triangle-free, and `C₄`-free, while a
 triangular-shadow edge cannot join two vertices with a common shadow
