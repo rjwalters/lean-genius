@@ -226,6 +226,89 @@ theorem sizeTwoCyclicTargetDifferenceMultiplicity_self_sum_even
   rw [← sizeTwoCyclicTargetFiberRoute_card_eq_multiplicity_sum code t t]
   exact sizeTwoCyclicTargetFiberRoute_self_card_even code hloop t
 
+/-- In a sharp one-duplicate/one-missing profile over an even number of
+bases, every target fibre is duplicated and missed equally modulo two.
+This is the sharp-profile content of diagonal route parity. -/
+theorem sizeTwoCyclicSharpProfile_selfDuplicate_modEq_selfMissing
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    [DecidableEq (sizeTwoAllowedDifference q a)]
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (hloop : code.Loopless) (hqEven : Even q)
+    (duplicate missing : ZMod q → sizeTwoAllowedDifference q a →
+      sizeTwoAllowedDifference q a)
+    (hne : ∀ x t, duplicate x t ≠ missing x t)
+    (hprofile : ∀ x t u,
+      sizeTwoCyclicTargetDifferenceMultiplicity code x t u =
+        if u = duplicate x t then 2
+        else if u = missing x t then 0 else 1)
+    (t : sizeTwoAllowedDifference q a) :
+    ((Finset.univ : Finset (ZMod q)).filter
+        fun x => duplicate x t = t).card ≡
+      ((Finset.univ : Finset (ZMod q)).filter
+        fun x => missing x t = t).card [MOD 2] := by
+  classical
+  let D := (Finset.univ : Finset (ZMod q)).filter
+    fun x => duplicate x t = t
+  let M := (Finset.univ : Finset (ZMod q)).filter
+    fun x => missing x t = t
+  have hsumEven :=
+    sizeTwoCyclicTargetDifferenceMultiplicity_self_sum_even code hloop t
+  have hsumZero :
+      ((∑ x : ZMod q,
+        sizeTwoCyclicTargetDifferenceMultiplicity code x t t : ℕ) :
+          ZMod 2) = 0 :=
+    ZMod.natCast_eq_zero_iff_even.mpr hsumEven
+  have hqZero : (q : ZMod 2) = 0 :=
+    ZMod.natCast_eq_zero_iff_even.mpr hqEven
+  have hcount :
+      ((∑ x : ZMod q,
+        sizeTwoCyclicTargetDifferenceMultiplicity code x t t : ℕ) :
+          ZMod 2) = (q : ZMod 2) + (D.card : ZMod 2) + M.card := by
+    rw [Nat.cast_sum]
+    simp only [hprofile, Nat.cast_ite, Nat.cast_ofNat]
+    calc
+      (∑ x : ZMod q,
+          (if t = duplicate x t then (2 : ZMod 2)
+            else if t = missing x t then 0 else 1)) =
+          ∑ x : ZMod q,
+            (1 + (if duplicate x t = t then 1 else 0) +
+              (if missing x t = t then 1 else 0)) := by
+        apply Finset.sum_congr rfl
+        intro x _
+        by_cases hd : duplicate x t = t
+        · have hm : missing x t ≠ t := by
+            intro hm
+            apply hne x t
+            exact hd.trans hm.symm
+          have htd : t = duplicate x t := hd.symm
+          have htm : t ≠ missing x t := fun h => hm h.symm
+          rw [if_pos htd, if_pos hd, if_neg hm]
+          decide
+        · have hdt : t ≠ duplicate x t := fun h => hd h.symm
+          by_cases hm : missing x t = t
+          · have hmt : t = missing x t := hm.symm
+            rw [if_neg hdt, if_pos hmt, if_neg hd, if_pos hm]
+            decide
+          · have hmt : t ≠ missing x t := fun h => hm h.symm
+            rw [if_neg hdt, if_neg hmt, if_neg hd, if_neg hm]
+            simp only [add_zero]
+      _ = (q : ZMod 2) + (D.card : ZMod 2) + M.card := by
+        simp only [Finset.sum_add_distrib, Finset.sum_const,
+          Finset.card_univ, nsmul_eq_mul, mul_one, Finset.sum_boole,
+          ZMod.card]
+        rfl
+  have hDM : (D.card : ZMod 2) = (M.card : ZMod 2) := by
+    rw [hqZero] at hcount
+    rw [hsumZero] at hcount
+    have hzero : (0 : ZMod 2) = D.card + M.card := by
+      simpa only [zero_add] using hcount
+    calc
+      (D.card : ZMod 2) = D.card + 0 := (add_zero _).symm
+      _ = D.card + (D.card + M.card) := by rw [← hzero]
+      _ = (D.card + D.card : ZMod 2) + M.card := by rw [add_assoc]
+      _ = M.card := by rw [CharTwo.add_self_eq_zero, zero_add]
+  exact (ZMod.natCast_eq_natCast_iff D.card M.card 2).mp hDM
+
 /-- The target-difference multiplicity matrix has even sum on every affine
 anti-diagonal `t+u=ell`. -/
 theorem sizeTwoCyclicTargetDifferenceMultiplicity_diagonal_sum_even
@@ -249,6 +332,8 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicTargetFiberRoute_self_card_even
 #print axioms
   Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_self_sum_even
+#print axioms
+  Erdos85.sizeTwoCyclicSharpProfile_selfDuplicate_modEq_selfMissing
 #print axioms Erdos85.sizeTwoCyclicRouteLine_card_eq_multiplicity_diagonal_sum
 #print axioms
   Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_diagonal_sum_even
