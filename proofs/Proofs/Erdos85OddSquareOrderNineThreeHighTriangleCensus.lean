@@ -157,6 +157,108 @@ theorem squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
       squareOrderNineLowIncidenceBin G 1).card) = 2
   interval_cases m <;> omega
 
+/-- If the two bin-two neighbors of a high root are not paired together in
+the original graph, then both matching incidences at that root cross to bin
+one.  This is the pointwise bridge from the `0 ∨ 2` census to the global
+three-witness obstruction below. -/
+theorem squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass_eq_two_of_not_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a x y : V} (ha : a ∈ squareOrderHighVertices G 9)
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 2)
+    (hax : G.Adj a x) (hay : G.Adj a y) (hxy : x ≠ y)
+    (hnotxy : ¬ G.Adj x y) :
+    let S := G.neighborFinset a ∩ squareOrderNineLowIncidenceBin G 2
+    ∑ z ∈ S,
+      (G.neighborFinset a ∩ G.neighborFinset z ∩
+        squareOrderNineLowIncidenceBin G 1).card = 2 := by
+  classical
+  dsimp only
+  let S := G.neighborFinset a ∩ squareOrderNineLowIncidenceBin G 2
+  have hxS : x ∈ S := Finset.mem_inter.mpr ⟨
+    (G.mem_neighborFinset a x).mpr hax, hx⟩
+  have hyS : y ∈ S := Finset.mem_inter.mpr ⟨
+    (G.mem_neighborFinset a y).mpr hay, hy⟩
+  have hScard : S.card = 2 :=
+    (squareOrderNine_threeHigh_firstProfile_highRoot_neighbor_split
+      G hfree hmin hcard hp hhigh hc3 hc4 ha).2
+  have hSxy : S = {x, y} := by
+    apply Finset.eq_of_subset_of_card_le
+    · intro z hz
+      have hzEq : z = x ∨ z = y := by
+        by_contra hzNe
+        push Not at hzNe
+        have hthree : ({x, y, z} : Finset V).card = 3 := by
+          simp [hxy, hzNe.1.symm, hzNe.2.symm]
+        have hsub : ({x, y, z} : Finset V) ⊆ S := by
+          intro w hw
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+          rcases hw with rfl | rfl | rfl <;> assumption
+        have := Finset.card_le_card hsub
+        omega
+      simpa [hzEq]
+    · rw [hScard]
+      simp [hxy]
+  have hcrossCases :
+      (∑ z ∈ S, (G.neighborFinset a ∩ G.neighborFinset z ∩
+          squareOrderNineLowIncidenceBin G 1).card) = 0 ∨
+      (∑ z ∈ S, (G.neighborFinset a ∩ G.neighborFinset z ∩
+          squareOrderNineLowIncidenceBin G 1).card) = 2 := by
+    simpa [S] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 ha)
+  rcases hcrossCases with hzero | htwo
+  · exfalso
+    have hpoint :=
+      squareOrderNine_threeHigh_firstProfile_binTwo_local_matching_dichotomy
+        G hfree hmin hcard hp hc3 hc4 hx ha
+          ((G.mem_neighborFinset a x).mpr hax)
+    have hxCrossLe :
+        (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1).card ≤
+        ∑ z ∈ S, (G.neighborFinset a ∩ G.neighborFinset z ∩
+          squareOrderNineLowIncidenceBin G 1).card := by
+      let f : V → ℕ := fun z =>
+        (G.neighborFinset a ∩ G.neighborFinset z ∩
+          squareOrderNineLowIncidenceBin G 1).card
+      exact Finset.single_le_sum (f := f) (fun _ _ => Nat.zero_le _) hxS
+    have hxCross :
+        (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1).card = 0 := by
+      omega
+    have hxInternal :
+        (G.neighborFinset a ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 2).card = 1 := by
+      omega
+    obtain ⟨z, hz⟩ := Finset.card_pos.mp (by omega :
+      0 < (G.neighborFinset a ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 2).card)
+    have hzData := Finset.mem_inter.mp hz
+    have hzS : z ∈ S := Finset.mem_inter.mpr ⟨
+      (Finset.mem_inter.mp hzData.1).1, hzData.2⟩
+    have hzx : z ≠ x := by
+      intro hzx
+      subst z
+      have hloop : G.Adj x x := (G.mem_neighborFinset x x).mp
+        (Finset.mem_inter.mp hzData.1).2
+      exact (G.ne_of_adj hloop) rfl
+    have hzy : z = y := by
+      rw [hSxy] at hzS
+      simpa [hzx] using hzS
+    exact hnotxy (hzy ▸ (G.mem_neighborFinset x z).mp
+      (Finset.mem_inter.mp hzData.1).2)
+  · exact htwo
+
 /-- A bin-two vertex cannot be adjacent to three distinct high roots. -/
 theorem squareOrderNine_binTwo_not_three_distinct_high_neighbors
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -257,6 +359,51 @@ theorem squareOrderNine_threeHigh_firstProfile_pairWitnesses_not_triangle
   have hazEq := Finset.card_le_one.mp hle a haCommon z hzCommon
   exact haz hazEq
 
+/-- In the first three-high profile, at least one high root uses the crossing
+matching option: its two bin-two neighbors are both matched to bin one.
+Indeed the three pair-witnesses cannot form a triangle, and a missing edge at
+one pair's common high root forces cross-mass two there. -/
+theorem squareOrderNine_threeHigh_firstProfile_some_highRoot_binTwo_crossMass_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a b c : V}
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hc : c ∈ squareOrderHighVertices G 9)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    let crossMass := fun r : V =>
+      ∑ x ∈ G.neighborFinset r ∩ squareOrderNineLowIncidenceBin G 2,
+        (G.neighborFinset r ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1).card
+    crossMass a = 2 ∨ crossMass b = 2 ∨ crossMass c = 2 := by
+  classical
+  dsimp only
+  obtain ⟨x, y, z, hx, hy, hz, hax, hbx, hay, hcy, hbz, hcz,
+      hxy, hxz, hyz, hnotTriangle⟩ :=
+    squareOrderNine_threeHigh_firstProfile_pairWitnesses_not_triangle
+      G hfree hmin hcard hp hc3 hc4 ha hb hc hab hac hbc
+  have hmissing : ¬ G.Adj x y ∨ ¬ G.Adj x z ∨ ¬ G.Adj y z := by
+    tauto
+  rcases hmissing with hnxy | hnxz | hnyz
+  · exact Or.inl
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass_eq_two_of_not_adj
+        G hfree hmin hcard hp hhigh hc3 hc4 ha hx hy hax hay hxy hnxy)
+  · exact Or.inr (Or.inl
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass_eq_two_of_not_adj
+        G hfree hmin hcard hp hhigh hc3 hc4 hb hx hz hbx hbz hxz hnxz))
+  · exact Or.inr (Or.inr
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass_eq_two_of_not_adj
+        G hfree hmin hcard hp hhigh hc3 hc4 hc hy hz hcy hcz hyz hnyz))
+
 end
 
 end Erdos85
@@ -268,3 +415,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_binTwo_not_three_distinct_high_neighbors
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_pairWitnesses_not_triangle
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_some_highRoot_binTwo_crossMass_eq_two
