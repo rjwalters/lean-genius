@@ -852,6 +852,104 @@ theorem exists_unused_ne_involution_inv_mul_connection_mul_involution_mem
       _ = p.2 := by simp [mul_assoc]
   exact hpSecond ▸ hpMem.2
 
+/-- A slack route can re-enter the connection set only through its source
+generator.  This is a direct application of nonbacktracking Sidon
+injectivity to the two connection words `s*t` and
+`u*(u⁻¹*s*t)`. -/
+theorem unused_route_mem_connection_eq_source
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t s u : Γ} (htA : t ∈ A) (htsq : t * t = 1)
+    (hsA : s ∈ A) (hst : s ≠ t)
+    (huA : u ∈ A) (hroute : u⁻¹ * s * t ∈ A) :
+    u = s := by
+  have htinv : t⁻¹ = t := (eq_inv_of_mul_eq_one_right htsq).symm
+  have hstProd : s * t ≠ 1 := by
+    intro h
+    apply hst
+    calc
+      s = t⁻¹ := eq_inv_of_mul_eq_one_left h
+      _ = t := htinv
+  by_contra hus
+  have hcollision : s * t = u * (u⁻¹ * s * t) := by
+    simp [mul_assoc]
+  exact (connection_product_ne_of_invClosedCayley_not_containsC4
+    (· ∈ A) hinv hone hfree hsA htA huA hroute (Ne.symm hus) hstProd)
+    hcollision
+
+/-- Consequently, a connection generator which is not itself unused must
+route through a genuinely external unused element. -/
+theorem exists_external_unused_route_of_connection_not_unused
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    {t s : Γ} (htA : t ∈ A) (htsq : t * t = 1)
+    (hsA : s ∈ A) (hst : s ≠ t)
+    (hsUsed : s ∉ unusedNonidentityConnectionProducts A) :
+    ∃ u, u ∈ unusedNonidentityConnectionProducts A ∧ u ∉ A ∧
+      u⁻¹ * s * t ∈ A := by
+  obtain ⟨u, huUnused, _hut, hroute⟩ :=
+    exists_unused_ne_involution_inv_mul_connection_mul_involution_mem
+      A hinv hone hfree htA htsq hsA hst
+  refine ⟨u, huUnused, ?_, hroute⟩
+  intro huA
+  have hus : u = s := unused_route_mem_connection_eq_source
+    A hinv hone hfree htA htsq hsA hst huA hroute
+  exact hsUsed (hus ▸ huUnused)
+
+/-- **Plane-minus-two external slack.**  Since `#A=q` while the unused slack
+has only `q-2` elements, at least one generator is represented rather than
+unused.  Relative to any involutory generator `t`, its forced route therefore
+produces an unused element lying genuinely outside the connection set. -/
+theorem exists_unused_not_mem_connection_of_planeMinusTwo_Cayley
+    {Γ : Type*} [Group Γ] [Fintype Γ] [DecidableEq Γ]
+    (A : Finset Γ)
+    (hinv : ∀ g, g ∈ A ↔ g⁻¹ ∈ A)
+    (hone : (1 : Γ) ∉ A)
+    (hfree : ¬ containsC4 Γ
+      (invClosedCayleyGraph (· ∈ A) hinv hone))
+    (q : ℕ) (hq : 3 ≤ q)
+    (hcardΓ : Fintype.card Γ = q * q - 1)
+    (hcardA : A.card = q)
+    {t : Γ} (htA : t ∈ A) (htsq : t * t = 1) :
+    ∃ u, u ∈ unusedNonidentityConnectionProducts A ∧ u ∉ A := by
+  let U := unusedNonidentityConnectionProducts A
+  have hcardU : U.card = q - 2 := by
+    simpa [U, unusedNonidentityConnectionProducts] using
+      card_unused_nonidentity_of_planeMinusTwo_Cayley
+        A hinv hone hfree q (by omega) hcardΓ hcardA
+  have hnotSubset : ¬ A ⊆ U := by
+    intro hsub
+    have hle := Finset.card_le_card hsub
+    rw [hcardA, hcardU] at hle
+    omega
+  obtain ⟨s, hsA, hsNotU⟩ := Finset.not_subset.mp hnotSubset
+  have hst : s ≠ t := by
+    intro hst
+    subst s
+    exact hsNotU (by
+      apply Finset.mem_sdiff.mpr
+      constructor
+      · exact Finset.mem_erase.mpr
+          ⟨fun ht => hone (ht ▸ htA), Finset.mem_univ _⟩
+      · intro htImage
+        obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp htImage
+        have hpA := Finset.mem_product.mp (Finset.mem_filter.mp hp).1
+        have hpne := (Finset.mem_filter.mp hp).2
+        exact (involution_connection_ne_nonbacktracking_product
+          (· ∈ A) hinv hone hfree htsq hpA.1 hpA.2 hpne) hpt)
+  obtain ⟨u, huU, huA, _hroute⟩ :=
+    exists_external_unused_route_of_connection_not_unused
+      A hinv hone hfree htA htsq hsA hst hsNotU
+  exact ⟨u, huU, huA⟩
+
 /-- In finite-set language, every nonidentity involution in the ambient group
 belongs to the unused product slack, whether or not it is a generator. -/
 theorem nontrivial_involution_mem_unusedProducts
@@ -1354,6 +1452,9 @@ end Erdos85
 #print axioms Erdos85.finsetGroupRingIndicator_mul_coeff_eq_card_representations
 #print axioms Erdos85.card_connection_unused_representations_eq_unused_connection
 #print axioms Erdos85.exists_unused_ne_involution_inv_mul_connection_mul_involution_mem
+#print axioms Erdos85.unused_route_mem_connection_eq_source
+#print axioms Erdos85.exists_external_unused_route_of_connection_not_unused
+#print axioms Erdos85.exists_unused_not_mem_connection_of_planeMinusTwo_Cayley
 #print axioms Erdos85.nontrivial_involution_mem_unusedProducts
 #print axioms Erdos85.involution_connection_mem_unusedProducts
 #print axioms Erdos85.nontrivialInvolutionFinset_subset_unusedProducts
