@@ -69,3 +69,33 @@ This rules out those nine product actions, not every transitive subgroup of
 the full wreath-product automorphism group of eight Petersen components.
 That distinction matters: the census remains a necessary-condition reduction,
 not a q=9 nonexistence proof.
+
+## Vertex-transitive configuration candidates
+
+The triangular shadow is the point graph of a symmetric `80_3` linear
+configuration.  Its Levi graph is cubic and bipartite on 160 vertices.  A
+Levi 6-cycle gives three pairwise-intersecting lines and hence a four-cycle in
+the point graph (using the third point on one line); a Levi 8-cycle gives a
+four-cycle directly.  Conversely, a point-graph four-cycle lifts to a Levi
+6- or 8-cycle.  Thus the point graph is C4-free exactly when the linear
+configuration's Levi graph has girth at least 10.
+
+Among the 104 connected cubic vertex-transitive graphs of order 160 in the
+PSV census, 94 are bipartite and exactly 17 have girth at least 10.  Their
+one-based order-160 ordinals are:
+
+```text
+41 42 43 44 53 56 62 63 64 66 75 76 80 84 100 101 104
+```
+
+All 17 have girth exactly 10.  The script
+`q9_configuration_levi_census.py` reproduces the filter, constructs an
+80-vertex point graph from each bipartition, and checks that it is 6-regular,
+C4-free, and has exactly 80 triangles.  Since a connected bipartite
+vertex-transitive graph has a part-preserving subgroup transitive on each
+side, every resulting point graph is vertex-transitive.
+
+This catalogs the vertex-transitive-Levi subfamily.  A point-transitive
+configuration need not have a vertex-transitive Levi graph, so the 17 graphs
+are concrete candidates rather than an exhaustive list of all possible
+triangular shadows.
