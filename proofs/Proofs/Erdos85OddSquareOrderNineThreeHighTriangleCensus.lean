@@ -575,6 +575,71 @@ theorem squareOrderNine_threeHigh_firstProfile_pairWitnesses_not_triangle
   have hazEq := Finset.card_le_one.mp hle a haCommon z hzCommon
   exact haz hazEq
 
+/-- If two distinct vertices share a high root and one is defect-adjacent to
+a third vertex which is originally adjacent to the other, then that defect
+edge must be antipodal.  Were it also original, the shared high root and the
+third vertex would be two common neighbors. -/
+theorem antipodal_of_defectMate_crosses_shared_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {x u y r : V}
+    (hxu : x ≠ u) (hry : r ≠ y)
+    (hrx : G.Adj r x) (hru : G.Adj r u)
+    (hDxy : (secondOrderDefectGraph G).Adj x y)
+    (hyu : G.Adj y u) :
+    (antipodalGraph G).Adj x y := by
+  have hnotGxy : ¬ G.Adj x y := by
+    intro hxy
+    have hle := common_le_one_of_not_containsC4 hfree x u hxu
+    have hrCommon : r ∈ G.neighborFinset x ∩ G.neighborFinset u :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x r).mpr hrx.symm,
+        (G.mem_neighborFinset u r).mpr hru.symm⟩
+    have hyCommon : y ∈ G.neighborFinset x ∩ G.neighborFinset u :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x y).mpr hxy,
+        (G.mem_neighborFinset u y).mpr hyu.symm⟩
+    exact hry (Finset.card_le_one.mp hle r hrCommon y hyCommon)
+  change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj x y at hDxy
+  rcases hDxy with hanti | htf
+  · exact hanti
+  · exact (hnotGxy ((mem_triangleFreeNeighbors G x y).mp htf).1).elim
+
+/-- For the three pair-witnesses `x_ab,x_ac,x_bc`, an exceptional bin-one
+mate opposite `a` is forced antipodal to `x_bc` whenever it is used as a
+crossing partner at `a`. -/
+theorem squareOrderNine_threeHigh_firstProfile_exceptional_cross_forces_antipodal_mate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {b c xab xac xbc e : V}
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hc : c ∈ squareOrderHighVertices G 9)
+    (he : e ∈ squareOrderNineLowIncidenceBin G 1)
+    (hxab_b : G.Adj b xab) (hxbc_b : G.Adj b xbc)
+    (hxac_c : G.Adj c xac) (hxbc_c : G.Adj c xbc)
+    (hxab_ne_xbc : xab ≠ xbc) (hxac_ne_xbc : xac ≠ xbc)
+    (hDmate : (secondOrderDefectGraph G).Adj xbc e)
+    (hcross : G.Adj e xab ∨ G.Adj e xac) :
+    (antipodalGraph G).Adj xbc e := by
+  have hbe : b ≠ e := by
+    intro h
+    subst e
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp he).1).2 hb
+  have hce : c ≠ e := by
+    intro h
+    subst e
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp he).1).2 hc
+  rcases hcross with heab | heac
+  · exact antipodal_of_defectMate_crosses_shared_high
+      G hfree hxab_ne_xbc.symm hbe hxbc_b hxab_b hDmate heab
+  · exact antipodal_of_defectMate_crosses_shared_high
+      G hfree hxac_ne_xbc.symm hce hxbc_c hxac_c hDmate heac
+
 /-- In the first three-high profile, at least one high root uses the crossing
 matching option: its two bin-two neighbors are both matched to bin one.
 Indeed the three pair-witnesses cannot form a triangle, and a missing edge at
@@ -963,3 +1028,6 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_highRoot_binOne_internal_edges_sum
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_highRoot_triangle_type_vector
+#print axioms Erdos85.antipodal_of_defectMate_crosses_shared_high
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_exceptional_cross_forces_antipodal_mate
