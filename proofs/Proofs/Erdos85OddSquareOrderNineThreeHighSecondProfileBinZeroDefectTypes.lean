@@ -14,6 +14,43 @@ namespace Erdos85
 
 noncomputable section
 
+/-- An independent set of non-isolated vertices injects into the edge set by
+choosing one incident edge at every vertex. -/
+theorem independent_nonisolated_card_le_edges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (K : SimpleGraph V) [DecidableRel K.Adj]
+    (S : Finset V)
+    (hind : ∀ ⦃u⦄, u ∈ S → ∀ ⦃v⦄, v ∈ S → u ≠ v → ¬ K.Adj u v)
+    (hpos : ∀ u ∈ S, 0 < K.degree u) :
+    S.card ≤ K.edgeFinset.card := by
+  classical
+  have hedge : ∀ u : ↥S,
+      (K.incidenceFinset u.1).Nonempty := by
+    intro u
+    rw [← Finset.card_pos, K.card_incidenceFinset_eq_degree]
+    exact hpos u.1 u.2
+  let pick : (u : ↥S) → Sym2 V :=
+    fun u => (hedge u).choose
+  have hpickMem (u : ↥S) :
+      pick u ∈ K.incidenceFinset u.1 := (hedge u).choose_spec
+  let f : ↥S → ↥K.edgeFinset :=
+    fun u => ⟨pick u, K.incidenceFinset_subset u.1 (hpickMem u)⟩
+  have hf : Function.Injective f := by
+    intro u v huv
+    apply Subtype.ext
+    by_contra hne
+    have hpickEq : pick u = pick v := congrArg Subtype.val huv
+    have huInc : pick u ∈ K.incidenceSet u.1 :=
+      (K.mem_incidenceFinset u.1 (pick u)).mp (hpickMem u)
+    have hvInc : pick u ∈ K.incidenceSet v.1 := by
+      rw [hpickEq]
+      exact (K.mem_incidenceFinset v.1 (pick v)).mp (hpickMem v)
+    have huvAdj : K.Adj u.1 v.1 :=
+      K.adj_of_mem_incidenceSet hne huInc hvInc
+    exact hind u.2 v.2 hne huvAdj
+  have hcard := Fintype.card_le_of_injective f hf
+  simpa only [Fintype.card_coe] using hcard
+
 /-- Every bin-zero vertex in the second three-high profile has defect type
 `(5,3,0)` or `(7,0,1)` across bins zero, one, and three. -/
 theorem squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
@@ -485,6 +522,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
+#print axioms Erdos85.independent_nonisolated_card_le_edges
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_reservoir_edgeLabels
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
