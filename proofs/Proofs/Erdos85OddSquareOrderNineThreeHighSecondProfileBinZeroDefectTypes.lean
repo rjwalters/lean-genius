@@ -677,6 +677,63 @@ theorem squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_
   rw [hScard, hloc] at hbound
   omega
 
+/-- Every canonical original bin-zero neighbor outside the bin-three defect
+neighborhood has regular defect type `(B₀,B₁,B₃)=(5,3,0)`.  The exceptional
+type would have a bin-three defect neighbor, necessarily the unique vertex
+`x` itself. -/
+theorem squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    (D.neighborFinset y ∩ B 0).card = 5 ∧
+      (D.neighborFinset y ∩ B 1).card = 3 ∧
+      (D.neighborFinset y ∩ B 3).card = 0 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  have hyParts := Finset.mem_sdiff.mp hy
+  have hyB : y ∈ B 0 := (Finset.mem_inter.mp hyParts.1).2
+  have hyNotDx : y ∉ D.neighborFinset x := hyParts.2
+  have hB3card : (B 3).card = 1 := by
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 3) (by omega), hc3]
+  have htype :=
+    squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc4 hyB
+  dsimp only at htype
+  rcases htype with hregular | hexceptional
+  · exact hregular
+  · exfalso
+    have hinter : D.neighborFinset y ∩ B 3 = B 3 := by
+      apply Finset.eq_of_subset_of_card_le
+      · exact Finset.inter_subset_right
+      · rw [hexceptional.2.2, hB3card]
+    have hxDy : x ∈ D.neighborFinset y := by
+      have hxInter : x ∈ D.neighborFinset y ∩ B 3 := by
+        rw [hinter]
+        exact hx
+      exact (Finset.mem_inter.mp hxInter).1
+    have hyDx : y ∈ D.neighborFinset x :=
+      (D.mem_neighborFinset x y).mpr
+        ((D.adj_comm y x).mp ((D.mem_neighborFinset y x).mp hxDy))
+    exact hyNotDx hyDx
+
 end
 
 end Erdos85
@@ -691,3 +748,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_binZero_neighbor_not_highAdjacent
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
