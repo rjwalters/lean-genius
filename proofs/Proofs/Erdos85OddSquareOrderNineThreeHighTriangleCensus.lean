@@ -259,6 +259,35 @@ theorem squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass_eq_two_
       (Finset.mem_inter.mp hzData.1).2)
   · exact htwo
 
+/-- Conversely, zero crossing mass means that the two bin-two neighbors of
+the high root are paired together. -/
+theorem squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_adj_of_crossMass_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a x y : V} (ha : a ∈ squareOrderHighVertices G 9)
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 2)
+    (hax : G.Adj a x) (hay : G.Adj a y) (hxy : x ≠ y)
+    (hzero :
+      (∑ z ∈ G.neighborFinset a ∩ squareOrderNineLowIncidenceBin G 2,
+        (G.neighborFinset a ∩ G.neighborFinset z ∩
+          squareOrderNineLowIncidenceBin G 1).card) = 0) :
+    G.Adj x y := by
+  by_contra hnotxy
+  have htwo :=
+    squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass_eq_two_of_not_adj
+      G hfree hmin hcard hp hhigh hc3 hc4 ha hx hy hax hay hxy hnotxy
+  omega
+
 /-- A bin-two vertex cannot be adjacent to three distinct high roots. -/
 theorem squareOrderNine_binTwo_not_three_distinct_high_neighbors
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -460,6 +489,141 @@ theorem squareOrderNine_threeHigh_firstProfile_total_binTwo_crossMass
     rcases hbCases with hb0 | hb2 <;>
       rcases hcCases with hc0 | hc2 <;> omega
 
+/-- C4-freeness rules out two internal pairings among the three bin-two
+pair-witnesses.  Therefore at least two high roots use the crossing option,
+and the total crossing mass sharpens from `2/4/6` to `4/6`. -/
+theorem squareOrderNine_threeHigh_firstProfile_total_binTwo_crossMass_eq_four_or_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a b c : V}
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hc : c ∈ squareOrderHighVertices G 9)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    let crossMass := fun r : V =>
+      ∑ x ∈ G.neighborFinset r ∩ squareOrderNineLowIncidenceBin G 2,
+        (G.neighborFinset r ∩ G.neighborFinset x ∩
+          squareOrderNineLowIncidenceBin G 1).card
+    crossMass a + crossMass b + crossMass c = 4 ∨
+      crossMass a + crossMass b + crossMass c = 6 := by
+  classical
+  dsimp only
+  let crossMass := fun r : V =>
+    ∑ x ∈ G.neighborFinset r ∩ squareOrderNineLowIncidenceBin G 2,
+      (G.neighborFinset r ∩ G.neighborFinset x ∩
+        squareOrderNineLowIncidenceBin G 1).card
+  change crossMass a + crossMass b + crossMass c = 4 ∨
+    crossMass a + crossMass b + crossMass c = 6
+  obtain ⟨x, y, z, hx, hy, hz, hax, hbx, hay, hcy, hbz, hcz,
+      hxy, hxz, hyz, _hnotTriangle⟩ :=
+    squareOrderNine_threeHigh_firstProfile_pairWitnesses_not_triangle
+      G hfree hmin hcard hp hc3 hc4 ha hb hc hab hac hbc
+  have hxc : x ≠ c := by
+    intro h
+    subst x
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hx).1).2 hc
+  have hyb : y ≠ b := by
+    intro h
+    subst y
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hy).1).2 hb
+  have hza : z ≠ a := by
+    intro h
+    subst z
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hz).1).2 ha
+  have hn_xy_xz : ¬ (G.Adj x y ∧ G.Adj x z) := by
+    rintro ⟨hxyAdj, hxzAdj⟩
+    have hle := common_le_one_of_not_containsC4 hfree y z hyz
+    have hcCommon : c ∈ G.neighborFinset y ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset y c).mpr hcy.symm,
+        (G.mem_neighborFinset z c).mpr hcz.symm⟩
+    have hxCommon : x ∈ G.neighborFinset y ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset y x).mpr hxyAdj.symm,
+        (G.mem_neighborFinset z x).mpr hxzAdj.symm⟩
+    have hcx := Finset.card_le_one.mp hle c hcCommon x hxCommon
+    exact hxc hcx.symm
+  have hn_xy_yz : ¬ (G.Adj x y ∧ G.Adj y z) := by
+    rintro ⟨hxyAdj, hyzAdj⟩
+    have hle := common_le_one_of_not_containsC4 hfree x z hxz
+    have hbCommon : b ∈ G.neighborFinset x ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x b).mpr hbx.symm,
+        (G.mem_neighborFinset z b).mpr hbz.symm⟩
+    have hyCommon : y ∈ G.neighborFinset x ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x y).mpr hxyAdj,
+        (G.mem_neighborFinset z y).mpr hyzAdj.symm⟩
+    have hby := Finset.card_le_one.mp hle b hbCommon y hyCommon
+    exact hyb hby.symm
+  have hn_xz_yz : ¬ (G.Adj x z ∧ G.Adj y z) := by
+    rintro ⟨hxzAdj, hyzAdj⟩
+    have hle := common_le_one_of_not_containsC4 hfree x y hxy
+    have haCommon : a ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x a).mpr hax.symm,
+        (G.mem_neighborFinset y a).mpr hay.symm⟩
+    have hzCommon : z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x z).mpr hxzAdj,
+        (G.mem_neighborFinset y z).mpr hyzAdj⟩
+    have haz := Finset.card_le_one.mp hle a haCommon z hzCommon
+    exact hza haz.symm
+  have haCases : crossMass a = 0 ∨ crossMass a = 2 := by
+    simpa [crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 ha)
+  have hbCases : crossMass b = 0 ∨ crossMass b = 2 := by
+    simpa [crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 hb)
+  have hcCases : crossMass c = 0 ∨ crossMass c = 2 := by
+    simpa [crossMass] using
+      (squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_crossMass
+        G hfree hmin hcard hp hhigh hc3 hc4 hc)
+  have hn_ab_zero : ¬ (crossMass a = 0 ∧ crossMass b = 0) := by
+    rintro ⟨ha0, hb0⟩
+    apply hn_xy_xz
+    exact ⟨
+      squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_adj_of_crossMass_eq_zero
+        G hfree hmin hcard hp hhigh hc3 hc4 ha hx hy hax hay hxy
+          (by simpa [crossMass] using ha0),
+      squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_adj_of_crossMass_eq_zero
+        G hfree hmin hcard hp hhigh hc3 hc4 hb hx hz hbx hbz hxz
+          (by simpa [crossMass] using hb0)⟩
+  have hn_ac_zero : ¬ (crossMass a = 0 ∧ crossMass c = 0) := by
+    rintro ⟨ha0, hc0⟩
+    apply hn_xy_yz
+    exact ⟨
+      squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_adj_of_crossMass_eq_zero
+        G hfree hmin hcard hp hhigh hc3 hc4 ha hx hy hax hay hxy
+          (by simpa [crossMass] using ha0),
+      squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_adj_of_crossMass_eq_zero
+        G hfree hmin hcard hp hhigh hc3 hc4 hc hy hz hcy hcz hyz
+          (by simpa [crossMass] using hc0)⟩
+  have hn_bc_zero : ¬ (crossMass b = 0 ∧ crossMass c = 0) := by
+    rintro ⟨hb0, hc0⟩
+    apply hn_xz_yz
+    exact ⟨
+      squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_adj_of_crossMass_eq_zero
+        G hfree hmin hcard hp hhigh hc3 hc4 hb hx hz hbx hbz hxz
+          (by simpa [crossMass] using hb0),
+      squareOrderNine_threeHigh_firstProfile_highRoot_binTwo_adj_of_crossMass_eq_zero
+        G hfree hmin hcard hp hhigh hc3 hc4 hc hy hz hcy hcz hyz
+          (by simpa [crossMass] using hc0)⟩
+  rcases haCases with ha0 | ha2 <;>
+    rcases hbCases with hb0 | hb2 <;>
+      rcases hcCases with hc0 | hc2 <;> omega
+
 end
 
 end Erdos85
@@ -475,3 +639,5 @@ end Erdos85
   Erdos85.squareOrderNine_threeHigh_firstProfile_some_highRoot_binTwo_crossMass_eq_two
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_total_binTwo_crossMass
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_total_binTwo_crossMass_eq_four_or_six
