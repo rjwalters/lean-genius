@@ -722,6 +722,92 @@ theorem squareOrderNine_binTwo_cross_forces_second_antipodalNeighbor
     G hfree hmin hcover hcard hy
   simpa [antipodalGraph_adj] using hypAnti
 
+/-- In the first three-high profile, the propagated antipodal neighbor of an
+ordinary crossing endpoint lies either in bin zero or back in the bin-one
+core.  The exact `(5,2,0)` defect type rules out every other destination. -/
+theorem squareOrderNine_threeHigh_firstProfile_cross_propagates_to_binZero_or_binOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hprofile : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 0)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {a b x y p : V}
+    (hb : b ∈ squareOrderHighVertices G 9)
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 2)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 1)
+    (hp : p ∈ squareOrderNineLowIncidenceBin G 1)
+    (hax : G.Adj a x) (hbx : G.Adj b x)
+    (hay : G.Adj a y) (hby : G.Adj b p)
+    (hyx : G.Adj y x)
+    (hDyp : (secondOrderDefectGraph G).Adj y p) :
+    ∃ q, q ≠ p ∧ q ∈ antipodalNeighbors G y ∧
+      (q ∈ squareOrderNineLowIncidenceBin G 0 ∨
+        q ∈ squareOrderNineLowIncidenceBin G 1) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  obtain ⟨q, hqAnti, hqp⟩ :=
+    squareOrderNine_binTwo_cross_forces_second_antipodalNeighbor
+      G hfree hmin hcover hcard hb hx hy hp hax hbx hay hby hyx hDyp
+  have htypes :=
+    squareOrderNine_threeHigh_firstProfile_binOne_defect_neighbor_dichotomy
+      G hfree hmin hcover hcard hprofile hhigh hc3 hc4 hy
+  dsimp only at htypes
+  have hordinary :
+      (D.neighborFinset y ∩ B 0).card = 5 ∧
+        (D.neighborFinset y ∩ B 1).card = 2 ∧
+        (D.neighborFinset y ∩ B 2).card = 0 := by
+    rcases htypes with hexceptional | hord
+    · have hpMem : p ∈ D.neighborFinset y ∩ B 1 :=
+        Finset.mem_inter.mpr ⟨(D.mem_neighborFinset y p).mpr hDyp, hp⟩
+      have hpos : 0 < (D.neighborFinset y ∩ B 1).card :=
+        Finset.card_pos.mpr ⟨p, hpMem⟩
+      rw [hexceptional.2.1] at hpos
+      omega
+    · exact hord
+  have hDdegree : D.degree y = 7 := by
+    have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+      G hfree hmin hcover hcard hy
+    dsimp only at hledger
+    norm_num at hledger
+    exact hledger.1
+  let U := (D.neighborFinset y ∩ B 0) ∪ (D.neighborFinset y ∩ B 1)
+  have hdisj : Disjoint (D.neighborFinset y ∩ B 0)
+      (D.neighborFinset y ∩ B 1) := by
+    rw [Finset.disjoint_left]
+    intro z hz0 hz1
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp hz0).2).2
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp hz1).2).2
+    omega
+  have hUcard : U.card = 7 := by
+    dsimp [U]
+    rw [Finset.card_union_of_disjoint hdisj, hordinary.1, hordinary.2.1]
+  have hUsub : U ⊆ D.neighborFinset y := by
+    intro z hz
+    rcases Finset.mem_union.mp hz with hz0 | hz1
+    · exact (Finset.mem_inter.mp hz0).1
+    · exact (Finset.mem_inter.mp hz1).1
+  have hDcard : (D.neighborFinset y).card = 7 := by
+    simpa [D.card_neighborFinset_eq_degree] using hDdegree
+  have hUeq : U = D.neighborFinset y := by
+    apply Finset.eq_of_subset_of_card_le hUsub
+    rw [hUcard, hDcard]
+  have hDq : D.Adj y q := by
+    change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj y q
+    exact Or.inl (by simpa [antipodalGraph_adj] using hqAnti)
+  have hqD : q ∈ D.neighborFinset y := (D.mem_neighborFinset y q).mpr hDq
+  rw [← hUeq] at hqD
+  rcases Finset.mem_union.mp hqD with hq0 | hq1
+  · exact ⟨q, hqp, hqAnti, Or.inl (Finset.mem_inter.mp hq0).2⟩
+  · exact ⟨q, hqp, hqAnti, Or.inr (Finset.mem_inter.mp hq1).2⟩
+
 /-- For the three pair-witnesses `x_ab,x_ac,x_bc`, an exceptional bin-one
 mate opposite `a` is forced antipodal to `x_bc` whenever it is used as a
 crossing partner at `a`. -/
@@ -1149,5 +1235,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_binOne_antipodalNeighbors_card_even
 #print axioms Erdos85.squareOrderNine_binOne_exists_second_antipodalNeighbor
 #print axioms Erdos85.squareOrderNine_binTwo_cross_forces_second_antipodalNeighbor
+#print axioms
+  Erdos85.squareOrderNine_threeHigh_firstProfile_cross_propagates_to_binZero_or_binOne
 #print axioms
   Erdos85.squareOrderNine_threeHigh_firstProfile_exceptional_cross_forces_antipodal_mate
