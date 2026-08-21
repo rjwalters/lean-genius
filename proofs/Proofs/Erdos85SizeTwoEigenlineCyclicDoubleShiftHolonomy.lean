@@ -64,6 +64,70 @@ theorem sizeTwoCyclicCrossDoubleShift_sign_product_eq_one
     (sizeTwoCyclicCrossRowShiftCompletion hq1 t.1 d hd)
     (fun x => code.reflectedPerm x t)
 
+/-- Group-theoretic normal form of the double-shift comparison. -/
+theorem sizeTwoDoubleShiftComparison_eq_mul
+    {A : Type*} (shift next base : Equiv.Perm A) :
+    sizeTwoDoubleShiftComparison shift next base =
+      base⁻¹ * shift * next * shift := by
+  ext r
+  rfl
+
+/-- The frame obtained after absorbing `i` copies of the two-sided shift. -/
+def sizeTwoTwistedFrame
+    {A : Type*} (shift : Equiv.Perm A) (frame : ℕ → Equiv.Perm A)
+    (i : ℕ) : Equiv.Perm A :=
+  shift ^ i * frame i * shift ^ i
+
+/-- Each conjugated comparison is the ordinary multiplicative difference
+of two consecutive twisted frames. -/
+theorem sizeTwoDoubleShiftComparison_conj_eq_twistedFrame_div
+    {A : Type*} (shift : Equiv.Perm A) (frame : ℕ → Equiv.Perm A)
+    (i : ℕ) :
+    (shift ^ i)⁻¹ *
+        sizeTwoDoubleShiftComparison shift (frame (i + 1)) (frame i) *
+        shift ^ i =
+      (sizeTwoTwistedFrame shift frame i)⁻¹ *
+        sizeTwoTwistedFrame shift frame (i + 1) := by
+  rw [sizeTwoDoubleShiftComparison_eq_mul]
+  simp only [sizeTwoTwistedFrame, pow_succ']
+  group
+
+/-- Ordered product of the conjugated comparisons along the first `n`
+steps. -/
+def sizeTwoTwistedComparisonProduct
+    {A : Type*} (shift : Equiv.Perm A) (frame : ℕ → Equiv.Perm A) :
+    ℕ → Equiv.Perm A
+  | 0 => 1
+  | n + 1 => sizeTwoTwistedComparisonProduct shift frame n *
+      ((shift ^ n)⁻¹ *
+        sizeTwoDoubleShiftComparison shift (frame (n + 1)) (frame n) *
+        shift ^ n)
+
+/-- Exact telescoping formula: the ordered twisted holonomy is the relative
+permutation between its endpoint frames. -/
+theorem sizeTwoTwistedComparisonProduct_eq_endpoints
+    {A : Type*} (shift : Equiv.Perm A) (frame : ℕ → Equiv.Perm A) :
+    ∀ n : ℕ,
+    sizeTwoTwistedComparisonProduct shift frame n =
+      (sizeTwoTwistedFrame shift frame 0)⁻¹ *
+        sizeTwoTwistedFrame shift frame n := by
+  intro n
+  induction n with
+  | zero => simp [sizeTwoTwistedComparisonProduct]
+  | succ n ih =>
+      rw [sizeTwoTwistedComparisonProduct, ih,
+        sizeTwoDoubleShiftComparison_conj_eq_twistedFrame_div]
+      group
+
+/-- If both the frame and the completed shift close after `n` steps, the
+twisted holonomy product is the identity. -/
+theorem sizeTwoTwistedComparisonProduct_eq_one_of_closes
+    {A : Type*} (shift : Equiv.Perm A) (frame : ℕ → Equiv.Perm A)
+    (n : ℕ) (hshift : shift ^ n = 1) (hframe : frame n = frame 0) :
+    sizeTwoTwistedComparisonProduct shift frame n = 1 := by
+  rw [sizeTwoTwistedComparisonProduct_eq_endpoints]
+  simp [sizeTwoTwistedFrame, hshift, hframe]
+
 end
 
 end Erdos85
@@ -71,3 +135,7 @@ end Erdos85
 #print axioms Erdos85.sizeTwoDoubleShiftComparison_sign_product_eq_one
 #print axioms Erdos85.sizeTwoCyclicParallelDoubleShift_sign_product_eq_one
 #print axioms Erdos85.sizeTwoCyclicCrossDoubleShift_sign_product_eq_one
+#print axioms Erdos85.sizeTwoDoubleShiftComparison_eq_mul
+#print axioms Erdos85.sizeTwoDoubleShiftComparison_conj_eq_twistedFrame_div
+#print axioms Erdos85.sizeTwoTwistedComparisonProduct_eq_endpoints
+#print axioms Erdos85.sizeTwoTwistedComparisonProduct_eq_one_of_closes
