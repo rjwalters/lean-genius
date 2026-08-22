@@ -3910,6 +3910,59 @@ theorem squareOrderNine_threeHigh_secondProfile_unmarked_core_color_ledger
   refine ⟨hle, ?_⟩
   rw [← Finset.card_biUnion hpair, hunion, hcard3]
 
+/-- Pointwise saturation of the color ledger: every unmarked bin-one vertex
+has exactly one original neighbor in each of the three high fibers. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_core_each_color_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := fun a => G.neighborFinset a ∩ U1
+    ∀ z ∈ U1, ∀ a ∈ H,
+      (G.neighborFinset z ∩ F a).card = 1 := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := fun a => G.neighborFinset a ∩ U1
+  have hledger :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_core_color_ledger
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hledger
+  intro z hzU a ha
+  let f : V → ℕ := fun r => (G.neighborFinset z ∩ F r).card
+  have hzLedger := hledger z hzU
+  have hfa : f a ≤ 1 := hzLedger.1 a ha
+  have hrest : (∑ r ∈ H.erase a, f r) ≤ 2 := by
+    have hbound := Finset.sum_le_card_nsmul (H.erase a) f 1 (by
+      intro r hr
+      exact hzLedger.1 r (Finset.mem_of_mem_erase hr))
+    rw [Finset.card_erase_of_mem ha, hhigh] at hbound
+    norm_num at hbound
+    exact hbound
+  have hdecomp := Finset.sum_erase_add H f ha
+  change (∑ r ∈ H.erase a, f r) + f a = ∑ r ∈ H, f r at hdecomp
+  have hsum := hzLedger.2
+  change (∑ r ∈ H, f r) = 3 at hsum
+  rw [hsum] at hdecomp
+  change f a = 1
+  omega
+
 end
 
 end Erdos85
@@ -3958,3 +4011,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_pair_budget
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_same_high_fiber_separation
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_color_ledger
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_each_color_one
