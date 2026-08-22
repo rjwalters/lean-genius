@@ -1609,3 +1609,64 @@ potentials are canonically normalized and have zero target sum.  The
 remaining compatibility problem is only across the routing color `d` (and,
 ultimately, across the choice of endpoint pair).  This is strictly smaller
 than the unconstrained state-potential problem in (57).
+
+## 26. Routing-color aggregate as one marked owner operator
+
+The remaining compatibility across `d` also has an exact closed form.  Let
+
+```text
+s_j := |V_j| mod 2,
+g^j := A_e V_j.
+```
+
+Summing the definition of `r_i^d` over all third colors and using
+`SRP(c,e)` gives
+
+```text
+sum_(d != c,e) r_i^d
+  = s_j + (R_ce A_e V_j)(x_i)
+  = s_j + g^j(z_(i-1)) + g^j(z_i).                     (95)
+```
+
+Let `H_e` denote the full selector complement on `e`, equivalently the
+disjoint sum of all owner factors `F_a[e]`.  Over `F_2`,
+
+```text
+sum_(d != c,e) F_d[e] V_j
+  = (H_e + F_c[e] + F_e[e]) V_j
+  = (H_e + A_e^2) V_j.                                 (96)
+```
+
+For the last equality, `F_e[e]=A_e^2-2I` and `F_c[e]V_j=0`; the latter holds
+because `V_j` is a whole cycle component of the cross-shadow owner factor
+`F_c[e]`.
+
+Now sum the canonical primitive (91) over `d`.  The two copies of `s_j`
+cancel, and the consecutive port evaluations in (95) reduce to
+
+```text
+g^j(z_(i-1)) + g^j(z_(i+1))
+  = (F_c[e] A_e V_j)(z_i).
+```
+
+Consequently
+
+```text
+sum_(d != c,e) phi_i^(d,j)
+  = ((F_c[e] A_e + H_e + A_e^2) V_j)(z_i).             (97)
+```
+
+Thus all routing-color compatibility of the canonical primitives is
+concentrated in the single marked operator
+
+```text
+Theta_(c,e) := F_c[e] A_e + H_e + A_e^2                (98)
+```
+
+evaluated on incidence-component indicators and then restricted to the
+owner-port cycle `Z`.  A sufficient next statement is now concrete:
+`Theta_(c,e) V_j` should vanish, or at least be constant, on `Z` in a way
+compatible across endpoint pairs.  Establishing that requires a genuine
+relation between the distinguished cross-shadow factor `F_c[e]`, the
+internal cycle `A_e`, and the full owner sum `H_e`; none of the scalar SRP
+contractions supplies it automatically.
