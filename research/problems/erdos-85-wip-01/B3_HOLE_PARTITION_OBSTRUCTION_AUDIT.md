@@ -360,6 +360,31 @@ exactly one matching edge.  This is the first formulation in the chain that
 uses symmetry of the residual B0 adjacency itself; the max-flow defect probe
 does not model these fiber matchings.
 
+This also identifies exactly what the earlier reduced-`L`
+``diagonal-even'' condition measured.  In that formulation
+
+```text
+Q is 47 by 24,   Q^T A = H-L,   X=(H-L)Q=Q^T A Q.
+```
+
+For every `b in U1`, symmetry and the zero diagonal of `A` give
+
+```text
+X_bb = sum_{t,t' in F_b} A_tt' = 2 |E(A[F_b])|.             (12a)
+```
+
+Thus the imposed range `X_bb in {0,2,4}` is automatic for a residual
+adjacency matrix; equivalently, in the sampled reduced model where
+`(HQ)_bb=5`, it only requires `(LQ)_bb` to be odd.  It does not determine
+whether `|E(A[F_b])|` is odd.  The parity in (12) is instead
+`T_R = trace(X)/2`, so it requires `trace(X) mod 4`, not merely evenness of
+each diagonal entry.  Over `F2`, saying that `X` is alternating is just the
+image of the symmetric-loopless law for `A` and supplies no additional B.3
+constraint.  The previously observed fast infeasibility for one fixed outer
+seed therefore came from coupling these automatic diagonal equations with
+the sparse binary factor `L`, its exact row cardinalities, and integer
+symmetry; diagonal evenness alone was not a hidden parity invariant.
+
 There is a useful linear-algebra test for whether residual degree parity can
 ever determine (12).  Let `H` be the graph of allowed residual B0 edges and
 let `W` be the block-intersection graph
