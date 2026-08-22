@@ -1148,6 +1148,21 @@ reduces the local side of the conjecture to at most two root-own fibers and
 the essentiality of their attached external labels—a small vertex-cover
 condition via Kőnig, rather than an arbitrary matching interaction.
 
+The sampled rows split into two transparent archetypes under (12qs).
+
+- In the six cases with `m_t=d_t-1`, no positive-gain own choice exists.
+  Three rows have no own-touching candidate at all; in the other three,
+  every two-label own candidate has an external-essential second label.
+- In the three cases with `m_t=d_t-2`, positive-gain own candidates exist,
+  but the largest compatible positive-gain family has size one.  In one case
+  a singleton-own candidate and a nonessential two-label candidate both use
+  the same root-own label, so they cannot be selected together.
+
+Thus the deficiency-one phenomenon is exactly either **essential-label
+blocking** or **competition for one of the two root-own labels**.  These are
+the two local configurations a uniform transport argument must charge; no
+higher-order matching pathology occurs in the sample.
+
 At zeroth order, the own transport is an Eulerian flow statement.  Let
 `x_tu` be the fractional multiplicity with which candidate `u` is selected
 in row `t`.  Equal own mass in (12qi) says, for every full signature `sigma`,
