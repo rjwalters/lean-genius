@@ -3419,3 +3419,55 @@ however, identify the exact signed quantity that transport must preserve and
 the exact place where odd run length enters.  This is compatible with the
 dyadic signed-terminal strategy: no division or arbitrary real price is
 needed, only coefficients `+1` and `-1` on consecutive marked centers.
+
+## 62. Rooted transition paths lift from private port to private port
+
+Fix a genuine owner change at a root `x`.  Let the incoming `A_c` edge have
+owner `f` and shared owner port `s_f`, and let the outgoing edge have owner
+`e` and shared owner port `s_e`.  Write the other members of the two fibers
+at `x` as
+
+```text
+Y_f(x) = {s_f,r_f},    Y_e(x) = {s_e,r_e}.             (206)
+```
+
+The endpoint triangle of the rooted transition path `P_x : f --> e` uses
+`r_f`, not `s_f`.  Indeed, if its other exterior port were `y` and the
+triangle used `s_f`, then `x-y-s_f-x_prev-x` would be an ambient four-cycle,
+where `x_prev` is the other root of the incoming edge.  Symmetrically, the
+last triangle of `P_x` uses `r_e`, not `s_e`.
+
+At every intermediate color `d` of `P_x`, its two incident rooted triangles
+use the two distinct members of `Y_d(x)`.  They cannot use one member twice:
+that port and `x` would then be two common neighbors of the two opposite
+exterior ports.  Equivalently, this is the port bijection (60) applied to
+the vertical degree-two state.
+
+Consequently `P_x` has a canonical actual-port lift
+
+```text
+r_f -- triangle -- (port in d_1)
+    -- fiber switch -- (other port in d_1)
+    -- triangle -- ... -- triangle -- r_e,            (207)
+```
+
+where a fiber switch joins the two members of `Y_d(x)` as a formal matching
+edge.  The lift is a path: the color path is simple by Section 43, and its
+two ports in every intermediate component are distinct.  Reversing `P_x`
+reverses (207).
+
+Thus the two signed boundary differences meeting at `x` are
+
+```text
+[s_f]-[r_f]    and    [s_e]-[r_e],                    (208)
+```
+
+and (207) canonically transports their **private** endpoints.  The shared
+endpoints remain attached to the two horizontal edges.  The missing local
+statement in (205) is now precise: assign signs to the formal fiber switches
+in (207) so that transport from `[s_f]-[r_f]` to `[s_e]-[r_e]` preserves the
+boundary phase.  No choice of target port remains.  Proving that statement
+from the simultaneous cross-factor equations would make the alternating
+defects telescope around `C`; disproving it requires a root-local
+countermodel preserving the entire lifted path (207), not merely its color
+sequence.
