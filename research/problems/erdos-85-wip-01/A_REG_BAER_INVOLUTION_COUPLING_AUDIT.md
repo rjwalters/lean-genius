@@ -1063,13 +1063,52 @@ cross-type edges.  This exact routing rule is additional structure beyond
 subcubicity and is the natural entry point for coupling the exceptional
 lines back to the Baer involutions.
 
-Equations (7)--(60) are the first canonical cut detector manufactured from
+The exceptional design is small.  Substituting `s=q^2/2+d` and
+`|B|=q^2-|C|` into (51) gives the exact compression
+
+```text
+|delta_D(S)| + d^2 = (q^2/4)|C|.                            (61)
+```
+
+On the other hand every cut in the `(q-1)`-regular graph D satisfies
+`|delta_D(S)| <= (q-1)min(s,q^2-s)=(q-1)(q^2/2-|d|)`.  Since
+`|d|<=q-1`, the elementary bound
+
+```text
+d^2-(q-1)|d| <= 0
+```
+
+in (61) yields
+
+```text
+2 <= |C| <= 2q-2,       |C| even.                           (62)
+```
+
+Here nonemptiness follows from the nonconstant final digit, and evenness
+from the even weights of both B and V.  The hierarchy has therefore
+compressed a potential q-squared obstruction to an even, nonempty,
+four-typed subcubic graph on at most `2q-2` exceptional lines.
+
+Its line-type imbalance is fixed as well.  If `c=|C|` and `f` exceptional
+lines are full, the final census `|B|/2+f=s`, together with
+`s=q^2/2+d` and `|B|=q^2-c`, gives
+
+```text
+f = c/2+d,
+#full-#empty = 2d,       |d| <= c/2.                        (63)
+```
+
+So the displacement of the shore from half size is exactly half the signed
+imbalance of the two monochromatic line types.  In particular, the small
+exceptional graph carries all of the global shore imbalance.
+
+Equations (7)--(63) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(60), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(63), so these laws alone
 do not conceal an order-independent
 contradiction.
 
