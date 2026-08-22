@@ -556,6 +556,41 @@ transportation between the locally feasible candidate matchings, not an
 extra parity of symmetric matrices.  Equation (12g) is the natural interface
 for a submodular-flow or transportation min--max theorem.
 
+In fact (12g) has a canonical separation theorem.  Let `P_t` be the compact
+local candidate-matching polytope at row `t`, including the equality that
+its total mass is `d_t`, and let
+
+```text
+P = product_t P_t.
+```
+
+Transpose is a linear involution `T` on directed matrices.  Equation (12g)
+is feasible exactly when `P intersect T(P)` is nonempty.  If these two
+compact convex polytopes are disjoint, strong separation supplies a linear
+functional `L` with
+
+```text
+sup_{X in P} L(X) < inf_{X in P} L(TX).
+```
+
+Then `W=L-L after T` is antisymmetric and `W(X)<0` for every `X in P`.
+Conversely, any antisymmetric functional of one strict sign on `P` forbids
+the intersection: if `X,TX in P`, then `W(TX)=-W(X)` has the opposite sign.
+Consequently
+
+```text
+P intersect T(P) is empty
+iff there is W with W^T=-W and max_{X in P} W(X)<0.           (12h)
+```
+
+The optimization in (12h) decomposes over rows.  For fixed `W`, its value is
+the sum of 47 independent maximum-weight degree-`d_t` matchings in the
+augmented bipartite graphs from (12f).  Thus (12h) compresses the
+design-dependent Farkas rays into the correct canonical object: an
+**antisymmetric matching potential**.  The uniform outer-design theorem can
+now be stated precisely as constructing `W(Q,K)` for which the sum of these
+local matching optima is strictly negative.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
