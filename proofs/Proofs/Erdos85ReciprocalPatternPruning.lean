@@ -159,6 +159,23 @@ theorem no_loopless_reciprocal_singleton_choice_of_odd_card
   obtain ⟨k, hk⟩ := hodd
   omega
 
+/-- If pruning forces every surviving pattern to be a singleton, odd
+cardinality rules out a loopless reciprocal choice even when no fiber has
+become empty. -/
+theorem no_reciprocal_choice_of_iterate_prune_all_singleton_odd
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (F : α → Finset (Finset α)) (n : ℕ)
+    (hselfless : ∀ p S, S ∈ F p → p ∉ S)
+    (hsingle : ∀ p S, S ∈ (reciprocalPatternPrune^[n]) F p → S.card = 1)
+    (hodd : Odd (Fintype.card α)) :
+    ¬ ∃ C : α → Finset α,
+      (∀ p, C p ∈ F p) ∧ (∀ p q, q ∈ C p ↔ p ∈ C q) := by
+  rintro ⟨C, hmem, hrecip⟩
+  have hsurvive := reciprocal_choice_mem_iterate_prune F C hmem hrecip n
+  exact no_loopless_reciprocal_singleton_choice_of_odd_card C
+    (fun p => hsingle p (C p) (hsurvive p))
+    (fun p => hselfless p (C p) (hmem p)) hrecip hodd
+
 /-- A small warning example: reverse-support consistency is not complete.
 Each of three vertices may choose either other vertex as its singleton
 pattern.  The system is pruning-stable, but a reciprocal choice would be a
@@ -194,5 +211,6 @@ end Erdos85
 
 #print axioms Erdos85.no_reciprocal_choice_of_iterate_prune_eq_empty
 #print axioms Erdos85.no_loopless_reciprocal_singleton_choice_of_odd_card
+#print axioms Erdos85.no_reciprocal_choice_of_iterate_prune_all_singleton_odd
 #print axioms Erdos85.threePointSingletonPatterns_prune_fixed
 #print axioms Erdos85.threePointSingletonPatterns_no_reciprocal_choice
