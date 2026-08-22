@@ -36,6 +36,14 @@ partition the complement of ``supp(Q_h K)``.  The mode counts such local
 partitions in independently generated outer witnesses.  Zero counts are
 external evidence for a prospective uniform lemma, not a proof that every
 outer design has this property.
+
+The ``--hole-partition-only`` mode asks the corresponding seed-free question:
+it keeps the unrestricted outer ``Q,K`` design and only the residual edges
+incident to exceptional holes.  It imposes the six-neighbor/three-triple
+equality case, trace orthogonality, and the B0 Gram no-shared-neighbor law,
+without constructing the other residual rows.  An UNSAT result would still
+need independent certification; a timeout is only an open computational
+frontier.
 """
 
 from __future__ import annotations
@@ -89,12 +97,15 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
     miss = {}
     for u in range(N):
         degree = Sum([If(adj(u, v), 1, 0) for v in range(N) if v != u])
-        solver.add(degree == (6 if is_hole(u) or u >= N_TRIPLE else 5))
+        if "row-ledger" not in relax:
+            solver.add(degree == (6 if is_hole(u) or u >= N_TRIPLE else 5))
         triple_neighbors = Sum([If(adj(u, v), 1, 0) for v in range(N_TRIPLE) if v != u])
         for g, support in enumerate(pair_groups):
             miss[u, g] = Bool(f"miss_{u}_{g}")
             solver.add(miss[u, g] == (Sum([If(adj(u, v), 1, 0) for v in support]) == 0))
         marked_defect = Sum([If(miss[u, g], 1, 0) for g in range(3)])
+        if "row-ledger" in relax:
+            continue
         if is_hole(u):
             # Exceptional type has no B1 defect neighbors; common(t,U1)=24.
             solver.add(triple_neighbors == 3)
@@ -346,11 +357,15 @@ def main() -> int:
     parser.add_argument("--audit-hole-partitions-seeds", type=int, default=0,
                         help="count local exceptional-hole complement partitions "
                              "for seeds 0..N-1, then exit")
+    parser.add_argument("--hole-partition-only", action="store_true",
+                        help="ask the unrestricted outer model whether every "
+                             "exceptional hole can realize its required local "
+                             "complement partition")
     parser.add_argument("--relax", action="append", default=[],
                         choices=("residual-c4", "b0-c4", "b0-orthogonal",
                                  "dtb-common", "dtb-cap", "dtb-aq-cap",
                                  "dtb-orthogonal", "dtb-zero", "dtb-rows",
-                                 "dtb-columns"))
+                                 "dtb-columns", "row-ledger"))
     parser.add_argument("--kissat", action="store_true",
                         help="bit-blast the model to DIMACS and run Kissat")
     args = parser.parse_args()
@@ -364,9 +379,28 @@ def main() -> int:
         return 0
     seed = make_outer_seed(args.branch, args.timeout_seconds * 1000,
                            args.outer_random_seed) if args.seed_outer else None
+    relax = set(args.relax)
+    if args.hole_partition_only:
+        if args.seed_outer:
+            parser.error("--hole-partition-only uses the unrestricted outer model")
+        relax.update({"row-ledger", "residual-c4", "dtb-aq-cap",
+                      "dtb-zero", "dtb-rows", "dtb-columns"})
     solver, data = build(args.branch, args.timeout_seconds * 1000,
-                         args.full_incidence or args.seed_outer, seed,
-                         set(args.relax))
+                         args.full_incidence or args.seed_outer
+                         or args.hole_partition_only,
+                         seed, relax)
+    if args.hole_partition_only:
+        edges = data["edges"]
+        holes = 2 if args.branch == 3 else 4
+        for h in range(N_TRIPLE - holes, N_TRIPLE):
+            incident = [var for (u, v), var in edges.items()
+                        if u == h or v == h]
+            triple_incident = [var for (u, v), var in edges.items()
+                               if (u == h and v < N_TRIPLE)
+                               or (v == h and u < N_TRIPLE)]
+            solver.add(Sum([If(var, 1, 0) for var in incident]) == 6)
+            solver.add(Sum([If(var, 1, 0)
+                            for var in triple_incident]) == 3)
     started = time.time()
     if args.kissat:
         goal = Goal()
