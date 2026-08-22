@@ -731,6 +731,33 @@ cover of `K`, while only two or three points of `K` can lie in the spike set
 abstract cut-capacity model and are the appropriate next input for excluding
 the dual escape.
 
+In fact the negative-spike subtype is impossible.  Its centered profile
+gives
+
+```text
+L_D 1_Y = 1 - A 1_R - A 1_c.
+```
+
+For `x in X` the left side is zero, while for `y in Y` it is the nonnegative
+number `deg_D(y,W)`.  Since `c in R`, any `A`-edge from either `x` or `y` to
+`c` contributes once through `A 1_R` and once again through `A 1_c`, making
+the right side at most `-1`.  Thus `c` has no `A`-neighbor in `X union Y`.
+All its `A`-neighbors would have to lie in the three-element set `W`,
+contradicting `deg_A(c)=q` for `q>=4`.
+
+Consequently the only dual pattern-B escape is the positive-spike profile
+
+```text
+A 1_Y = b 1 - 1_R + 1_c,
+|R|=q+1, c notin R,
+A 1_W = 1_K + 1_R - 1_c,
+|K|=2q, c in K, |K intersect R|=3.            (B7)
+```
+
+In particular `(A 1_W)_c=0`: the exceptional point `c` is
+`A`-anticomplete to the separator.  This reduces the previously two-pronged
+dual filler problem to the single signed profile (B7).
+
 ## Three-vertex-connectivity
 
 The Mantel bound (16) closes the sole two-separator escape left by maximal
