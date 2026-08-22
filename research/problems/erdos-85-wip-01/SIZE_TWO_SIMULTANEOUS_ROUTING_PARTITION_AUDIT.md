@@ -3927,3 +3927,64 @@ SRP proof need not forbid the closing chord outright.  It is enough to show
 that the incidence-aware transport assigns equal phase to the two
 occurrences of a repeated port.  The Section-70 profile demonstrates that
 this equality is not supplied by rooted owner factors alone.
+
+## 72. Complementary gaps canonically pair all owner-boundary ports
+
+Fix an owner color `e` and retain the marked set `M_e` of Section 59 inside
+the line-cycle factor `B_ec`.  Two marked vertices are consecutive in
+`B_ec` exactly when their labelled `F_e[c]` edges share a root; when both
+are projected `A_c` edges, they are consecutive edges of `C`.  Therefore
+the maximal marked blocks of `M_e` on the `B_ec` cycles are exactly the
+maximal `e`-runs of the owner word (with a fully marked `B_ec` cycle giving
+the closed-run case).
+
+For a proper marked block
+
+```text
+p_1, ..., p_ell,
+```
+
+its two private boundary targets are the adjacent unmarked vertices
+`p_0,p_(ell+1)`, as in (201).  Now decompose the complement of `M_e` on each
+`B_ec` cycle into maximal unmarked gaps.  A vertex `z` occurs in the
+multiset of all `e`-run boundary targets with multiplicity
+
+```text
+deg_(B_ec)(z,M_e) in {0,1,2}.                           (240)
+```
+
+Consequently:
+
+* a one-vertex unmarked gap has two marked neighbors, so the same target
+  occurs twice and cancels in the mod-two boundary;
+* an unmarked gap of order at least two has exactly two vertices with one
+  marked neighbor, namely its two endpoints; these are distinct and are
+  canonically paired by the gap;
+* all internal gap vertices have multiplicity zero.
+
+Thus, after identifying repeated occurrences of one actual port, every
+surviving distinct owner-boundary target belongs to a fixed-point-free
+involution: pair the two endpoints of its complementary unmarked `B_ec`
+gap.  There are no unmatched targets.  In symbols, if `L_e` is the boundary
+target multiset over all proper `e`-runs, then
+
+```text
+L_e mod 2
+  = disjoint union of endpoint pairs of unmarked B_ec gaps of order >=2.
+                                                                  (241)
+```
+
+The two short terminals are the extreme cases of (241).  The three-edge
+closing chord of Section 71 is a marked block whose complementary gap has
+one vertex `z`, producing the doubled target in (239).  A one-edge run has
+distinct `B_ec` neighbors by Section 58, so its two targets are the endpoint
+pair of a nontrivial complementary gap (possibly shared with the boundary
+of other marked blocks on that cycle).
+
+Equation (241) supplies the **combinatorial involution** missing from the
+target-only capacity count and is directly analogous to the complementary
+nonedge matching in the Baer lane.  It does not yet supply equal prices at
+the paired endpoints.  The remaining transport statement is now narrower:
+phase must propagate across each unmarked `B_ec` gap.  Singleton gaps need
+no propagation because their two occurrences are already the same port;
+only gaps of order at least two carry a distinct-port residue.
