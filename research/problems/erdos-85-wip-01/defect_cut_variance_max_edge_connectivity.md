@@ -1332,6 +1332,42 @@ and a D-neighbor of c, impossible.  Thus all A[X]-neighbors of `u` remain
 inside `M_c`.  This is the first edge-level constraint linking the
 path-cycle decomposition to a separator attachment fiber.
 
+The whole separator complement is in fact routed through the three wings.
+For `x in X`, put `t_x=deg_D(x,W)`.  The componentwise equations (B6) and
+the positive-spike flow equation give
+
+```text
+deg_A(x,K)=2-t_x,
+deg_A(x,R)=1+1_(x in N_A(c)).
+```
+
+On the other hand (B7), summed over the neighbors of `x`, says that the
+number of two-edge walks from `x` to `W` is
+
+```text
+sum_(z in N_A(x)) deg_A(z,W)
+  = deg_A(x,K)+deg_A(x,R)-1_(x in N_A(c))
+  = 3-t_x.                                      (B25)
+```
+
+There are exactly `3-t_x` pairs `(x,w)` with `w in W` that are not edges
+of `D`.  Each has exactly one common `A`-neighbor, while a `D`-edge has
+none.  Consequently (B25) is an exact color-preserving routing rule: for
+each missing `D`-attachment `xw`, its unique common neighbor lies in the
+`K/R` wing incident with `w`, and these are all the `K/R`-neighbors of
+`x`, except for `c` itself when `x in N_A(c)`.
+
+This is particularly sharp when `t_x=2`.  Such a point cannot be the
+unique vertex `u=N_A(c) intersect X`, because (B18) gives `t_u=0`; it has
+no K-neighbor by (B6), exactly one R-neighbor, and (B25) forces that point
+to lie in the unique wing `R_w` indexed by the missing attachment `w`.
+Thus every twice-attached X-point is assigned canonically to the opposite
+R-wing.  More generally the one- and zero-attachment X-points route their
+two and three missing colors, respectively, through the corresponding
+wing incidences (a point of `P` simultaneously carries its two incident
+colors).  This extends the endpoint bijections (B13) to a fiberwise routing
+law on the first non-endpoint slice.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
