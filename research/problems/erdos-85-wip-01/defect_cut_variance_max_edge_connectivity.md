@@ -1588,6 +1588,29 @@ q-dependent part of the Y-located slice is organized into alternating
 cycles, while all degree imbalance is supported on at most six named
 vertices.
 
+The red layer also respects the path endpoints in a strong way.  Every
+center `z in N_A(c)` has exactly two K-neighbors: c and its second target
+`phi(z)` from (B18).  This includes `z=u`, because u has no W-attachment.
+Hence a fiber of z contains at most one point of `K intersect X`.  Since
+those points are exactly the path endpoints of `A[X]`,
+
+```text
+no edge of M_c^Y joins two path endpoints of A[X].          (B34)
+```
+
+More precisely, if `F_z subset X` is the one- or two-point fiber centered
+at z, then
+
+```text
+F_z intersect K is empty or {phi(z)}.
+```
+
+Thus every path endpoint covered by the red matching is paired with an
+internal degree-two vertex of `A[X]`; the only endpoints not so paired must
+belong to the two singleton-recipient set `U_K`.  This couples the endpoint
+parity (B16a) to the alternating-core description without losing the
+individual common-neighbor centers.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
