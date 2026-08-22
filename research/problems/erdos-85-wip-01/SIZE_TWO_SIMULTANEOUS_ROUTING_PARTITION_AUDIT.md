@@ -2531,3 +2531,56 @@ transport target can therefore be stated minimally: pair or rule out these
 odd owner paths using their two rooted transition paths.  Equation (154)
 shows why recording only the two endpoint colors cannot do so; the needed
 pairing must use the marked triangle/port data at the endpoints.
+
+## 45. Radius-two packing on an owner path
+
+Let `P` be a proper maximal run of owner color `e` on the mixed cycle `C`.
+If it has `ell` edges, its vertex set `U` has
+
+```text
+m = ell + 1
+```
+
+distinct roots.  For every third owner color `d != c,e`, an edge of
+`F_d[c][U]` cannot join vertices at path distance one or two.  Distance-one
+vertices already share their owner-`e` port, while distance-two vertices
+already share their middle root in `A_c`; a `d`-owner edge would give either
+pair a second common neighbor.
+
+The square of the length-`ell` path has `(m-1)+(m-2)=2m-3` edges.  Therefore
+the union `L_ce` of the third owner factors satisfies
+
+```text
+e_(L_ce)(U)
+  <= binom(m,2) - (2m-3)
+  = (m-2)(m-3)/2
+  = (ell-1)(ell-2)/2.                                  (156)
+```
+
+This remains valid when `U` is all of `C` minus one owner edge: the closing
+edge and its additional distance-two exclusions can only reduce the number
+of allowed third-owner chords.
+
+For a third color `d`, call it `P`-clean when `F_d[c][U]` has no edge.  Each
+nonclean color consumes at least one edge in (156), so
+
+```text
+# {P-clean third colors}
+  >= (q-4)/2 - (ell-1)(ell-2)/2.                       (157)
+```
+
+Equivalently, a clean color is guaranteed whenever
+
+```text
+q - 4 > (ell-1)(ell-2).                                (158)
+```
+
+The first cases are particularly rigid: every third color is clean on a
+one-edge run, and at most one third color is nonclean on a three-edge run.
+For a `P`-clean color, the two-point fibers over all `m` roots are disjoint,
+exactly as in (125), so the clean-lift dichotomy and the consecutive-fiber
+exclusions (126)--(129) apply along the whole path.  The only new data are
+at its two endpoints, precisely where the rooted transition paths of
+Section 43 attach.  Thus the mixed problem now has the same clean-or-long
+shape as the monochromatic branch, but localized to the odd owner runs
+forced by (155).
