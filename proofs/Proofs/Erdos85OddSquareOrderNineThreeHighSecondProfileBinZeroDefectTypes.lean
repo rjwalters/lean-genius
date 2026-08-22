@@ -1739,6 +1739,227 @@ theorem squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
       exact hrow y hy
     _ = 24 := by simp [hScard]
 
+/-- Deleting the special triple from its three disjoint B₀ row supports
+leaves `24 - 2e` ordinary targets, where `e` is the number of original edges
+inside the special triple.  This is the exact support form needed to read the
+two local-triangle branches as 24 versus 22 targets. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_binZero_ordinary_support
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let W := S.biUnion fun y => G.neighborFinset y ∩ B 0
+    (W \ S).card + 2 * (G.induce (↑S : Set V)).edgeFinset.card = 24 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let F : V → Finset V := fun y => G.neighborFinset y ∩ B 0
+  let W := S.biUnion F
+  let K := G.induce (↑S : Set V)
+  change (W \ S).card + 2 * K.edgeFinset.card = 24
+  have hpack :=
+    squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hpack
+  have hpair : ∀ y ∈ S, ∀ z ∈ S, y ≠ z → Disjoint (F y) (F z) := by
+    exact hpack.2.1
+  have hWcard : W.card = 24 := by
+    rw [Finset.card_biUnion hpair]
+    exact hpack.2.2
+  have hinterEq : W ∩ S = S.biUnion (fun y => F y ∩ S) := by
+    ext z
+    simp [W, F, and_assoc, and_left_comm, and_comm]
+  have hpairInter : ∀ y ∈ S, ∀ z ∈ S, y ≠ z →
+      Disjoint (F y ∩ S) (F z ∩ S) := by
+    intro y hy z hz hyz
+    exact (hpair y hy z hz hyz).mono Finset.inter_subset_left
+      Finset.inter_subset_left
+  have hinterCard : (W ∩ S).card =
+      ∑ y ∈ S, (G.neighborFinset y ∩ S).card := by
+    rw [hinterEq, Finset.card_biUnion hpairInter]
+    apply Finset.sum_congr rfl
+    intro y _hy
+    simp only [F]
+    have hsub : S ⊆ B 0 := Finset.inter_subset_right
+    rw [Finset.inter_assoc, Finset.inter_eq_right.mpr hsub]
+  have hdegreeSum : (∑ y ∈ S, (G.neighborFinset y ∩ S).card) =
+      ∑ y : ↥(↑S : Set V), K.degree y := by
+    rw [← Finset.sum_attach]
+    apply Finset.sum_congr rfl
+    intro y _hy
+    exact (degree_induce_finset_eq_card_inter G S y).symm
+  have hhand := K.sum_degrees_eq_twice_card_edges
+  rw [← hdegreeSum, ← hinterCard] at hhand
+  have hintersection : (S ∩ W).card = 2 * K.edgeFinset.card := by
+    rw [Finset.inter_comm]
+    exact hhand
+  have hle := Finset.card_le_card (Finset.inter_subset_right : S ∩ W ⊆ W)
+  rw [hintersection, hWcard] at hle
+  rw [Finset.card_sdiff]
+  rw [hWcard]
+  rw [hintersection]
+  omega
+
+/-- The two local-triangle branches have exactly 24 and 22 ordinary B₀
+targets, respectively, for the three special disjoint support rows. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_binZero_target_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let W := S.biUnion fun y => G.neighborFinset y ∩ B 0
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧ (W \ S).card = 24) ∨
+      ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧ (W \ S).card = 22) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let W := S.biUnion fun y => G.neighborFinset y ∩ B 0
+  let D := secondOrderDefectGraph G
+  let R := S \ D.neighborFinset x
+  let K := G.induce (↑S : Set V)
+  change ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧
+      (W \ S).card = 24) ∨
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧
+      (W \ S).card = 22)
+  have hord :=
+    squareOrderNine_threeHigh_secondProfile_special_binZero_ordinary_support
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  change (W \ S).card + 2 * K.edgeFinset.card = 24 at hord
+  have hbranch :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  change ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧ R.card = 0) ∨
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧ R.card = 2) at hbranch
+  have hedgeR {y z : V} (hy : y ∈ S) (hz : z ∈ S)
+      (hyz : G.Adj y z) : y ∈ R := by
+    refine Finset.mem_sdiff.mpr ⟨hy, ?_⟩
+    intro hyD
+    have hDxy : D.Adj x y := (D.mem_neighborFinset x y).mp hyD
+    change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj x y at hDxy
+    rcases hDxy with hanti | htf
+    · have hxy : G.Adj x y :=
+        (G.mem_neighborFinset x y).mp (Finset.mem_inter.mp hy).1
+      exact ((mem_antipodalNeighbors G x y).mp
+        ((antipodalGraph_adj G x y).mp hanti)).2.1 hxy
+    · have hcommonZero := ((mem_triangleFreeNeighbors G x y).mp
+        ((triangleFreeEdgeGraph_adj G x y).mp htf)).2
+      have hzCommon : z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+        Finset.mem_inter.mpr ⟨
+          (Finset.mem_inter.mp hz).1,
+          (G.mem_neighborFinset y z).mpr hyz⟩
+      rw [Finset.card_eq_zero] at hcommonZero
+      rw [hcommonZero] at hzCommon
+      exact Finset.notMem_empty z hzCommon
+  have hKle : K.edgeFinset.card ≤ 1 := by
+    have hScard : S.card = 3 := by
+      have hcensus :=
+        squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+          G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+      exact hcensus.2.2
+    have hdegLe : ∀ y : ↥(↑S : Set V), K.degree y ≤ 1 := by
+      intro y
+      rw [degree_induce_finset_eq_card_inter]
+      have hyS : y.1 ∈ S := y.2
+      have hyx : y.1 ≠ x := by
+        intro h
+        have hxS : x ∈ S := h ▸ hyS
+        exact G.loopless.irrefl x
+          ((G.mem_neighborFinset x x).mp (Finset.mem_inter.mp hxS).1)
+      have hcommon := (not_containsC4_iff_forall_common_le_one G).mp
+        hfree y.1 x hyx
+      apply (Finset.card_le_card ?_).trans hcommon
+      intro z hz
+      have hzParts := Finset.mem_inter.mp hz
+      exact Finset.mem_inter.mpr ⟨hzParts.1,
+        (Finset.mem_inter.mp hzParts.2).1⟩
+    have hsumLe : (∑ y : ↥(↑S : Set V), K.degree y) ≤ 3 := by
+      calc
+        _ ≤ ∑ _y : ↥(↑S : Set V), 1 := Finset.sum_le_sum fun y _ => hdegLe y
+        _ = 3 := by simp [Fintype.card_coe, hScard]
+    rw [K.sum_degrees_eq_twice_card_edges] at hsumLe
+    omega
+  rcases hbranch with hfirst | hsecond
+  · left
+    refine ⟨hfirst.1, ?_⟩
+    have hKzero : K.edgeFinset.card = 0 := by
+      have hdegZero : ∀ y : ↥(↑S : Set V), K.degree y = 0 := by
+        intro y
+        rw [← K.card_neighborFinset_eq_degree, Finset.card_eq_zero]
+        ext z
+        simp only [Finset.notMem_empty, iff_false]
+        intro hyz
+        have hyzK : K.Adj y z := (K.mem_neighborFinset y z).mp hyz
+        have hyzG : G.Adj y.1 z.1 := hyzK
+        have hyR := hedgeR y.2 z.2 hyzG
+        have hRempty : R = ∅ := Finset.card_eq_zero.mp hfirst.2
+        rw [hRempty] at hyR
+        exact Finset.notMem_empty y.1 hyR
+      have hsumzero : (∑ y : ↥(↑S : Set V), K.degree y) = 0 := by
+        simp [hdegZero]
+      rw [K.sum_degrees_eq_twice_card_edges] at hsumzero
+      omega
+    rw [hKzero] at hord
+    simpa using hord
+  · right
+    refine ⟨hsecond.1, ?_⟩
+    have hRtwo : R.card = 2 := hsecond.2
+    obtain ⟨y, hyR⟩ := Finset.card_pos.mp (by omega : 0 < R.card)
+    have hRerase : (R.erase y).card = 1 := by
+      rw [Finset.card_erase_of_mem hyR, hRtwo]
+    obtain ⟨z, hzErase⟩ := Finset.card_pos.mp (by omega : 0 < (R.erase y).card)
+    have hzR : z ∈ R := (Finset.mem_erase.mp hzErase).2
+    have hyzNe : y ≠ z := by
+      intro h
+      subst z
+      exact (Finset.mem_erase.mp hzErase).1 rfl
+    have hyz :=
+      squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hyR hzR hyzNe
+          hsecond.1
+    have hyS := (Finset.mem_sdiff.mp hyR).1
+    have hzS := (Finset.mem_sdiff.mp hzR).1
+    have hpos : 0 < K.edgeFinset.card := by
+      let y' : ↥(↑S : Set V) := ⟨y, hyS⟩
+      let z' : ↥(↑S : Set V) := ⟨z, hzS⟩
+      have hadj : K.Adj y' z' := hyz
+      have hdegpos : 0 < K.degree y' := by
+        rw [← K.card_neighborFinset_eq_degree, Finset.card_pos]
+        exact ⟨z', (K.mem_neighborFinset y' z').mpr hadj⟩
+      have hterm : K.degree y' ≤ ∑ u : ↥(↑S : Set V), K.degree u :=
+        Finset.single_le_sum (f := fun u => K.degree u)
+          (fun _ _ => Nat.zero_le _) (Finset.mem_univ y')
+      have hhand := K.sum_degrees_eq_twice_card_edges
+      rw [hhand] at hterm
+      omega
+    have hKone : K.edgeFinset.card = 1 := by omega
+    rw [hKone] at hord
+    omega
+
 end
 
 end Erdos85
@@ -1768,3 +1989,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_original_lowBin_quotient
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_original_lowBin_edge_quotient
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_ordinary_support
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_target_dichotomy
