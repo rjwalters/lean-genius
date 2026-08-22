@@ -151,13 +151,69 @@ q=4 control shows why the `k>=3` hypothesis is indispensable.  It remains
 unproved; (3)--(4) reduce it to a concrete missing-line partition theorem
 rather than an analogy with projective planes.
 
+## A canonical odd-degree overlap graph
+
+The failed parallel-class completion nevertheless leaves a global parity
+object that is stronger than the vertexwise statement (1).  Retain the
+incidence-bottleneck matrix
+
+```text
+E = AD - (J-A) = A 1_{N_D[.] } - 1.
+```
+
+For distinct points `P,Y`, put an edge `PY` in `Omega` when `E(P,Y)` is odd.
+This is a simple graph because `E` is symmetric.  Its entries have the direct
+almost-parallel-class interpretation
+
+```text
+E(P,Y) = 0                                      if Y in N_A(P),
+E(P,Y) = |N_A(Y) intersect N_D(P)| - 1          otherwise.       (5)
+```
+
+Indeed, the `q-1` lines `N_A(X)`, for `X in N_D(P)`, all avoid the polar line
+`N_A(P)`.  They have `q(q-1)` incidences in total, exactly the size of its
+complement.  Thus (5) records occupancy minus one: holes have value `-1`,
+single covers value zero, and multiple covers positive value.  Commutation
+`AD=DA` is precisely the reciprocity of these occupancies in `P,Y`.
+
+The diagonal is
+
+```text
+E(P,P) = deg_T(P) - 1,                           (6)
+```
+
+because `N_A(P) intersect N_D(P)` is the set of `T`-neighbors of `P`.
+For binary `q`, the partial Baer involution makes `deg_T(P)` even, so every
+diagonal entry of `E` is odd.  On the other hand every row of `E` sums to
+zero.  Reducing a row modulo two therefore proves the new global law
+
+```text
+deg_Omega(P) is odd for every P.                 (7)
+```
+
+Equivalently, for every vertex set `S`,
+
+```text
+|delta_Omega(S)| = |S|  (mod 2).                 (8)
+```
+
+This is the first canonical cut detector manufactured from the partial Baer
+involutions: every odd shore is crossed oddly.  It also states exactly what
+is still missing.  The edges of `Omega` may be either holes or even-overlap
+pairs and need not lie in `T` (or even in `D`), so (8) cannot yet be combined
+with the Eulerian cut law for `T`.  Any k-dependent terminal can now aim at a
+location theorem for `Omega`, rather than trying to couple the local
+involutions directly.  The q=4 connected control is compatible with (7), so
+this law alone does not conceal an order-independent contradiction.
+
 ## Disposition
 
 The involution-coupling audit does not yield a new theorem beneath
 `A-REG-NONBIP`.  Its durable result is the narrowed target:
 
-> Couple the partial Baer involution orbits to the locations of `T` inside a
-> connected `D`; degree parity and scalar connectivity are already exhausted.
+> Couple the canonical odd-degree overlap graph `Omega` to the locations of
+> `T` inside a connected `D`; degree parity and scalar connectivity are
+> already exhausted.
 
 Equivalently, prove that binary fixed-point-free incidence forces the
 missing-pair graph D to split into its affine parallel-class cliques.  Any
