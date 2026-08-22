@@ -1009,6 +1009,27 @@ m_c=2 implies r_X=0.                          (B17W)
 Thus a separator-located exceptional point has an extremely lopsided pair
 of wings, while a Y-located one has at most one boundary edge.
 
+Parity makes the W-location exact.  As below, the handshake lemma in
+`A[X]` makes `k_X=|K intersect X|` even.  All `m_c` defect neighbors of `c`
+in `X` belong to `K` by (B17'), so `k_X>=m_c`; also `c in K intersect W`.
+If `m_c=2`, (B17W) gives `r_X=0`, while (B16) says
+`k_X+k_W=3`; hence `(k_X,k_W)=(2,1)`.  If `m_c=1` and `r_X=1`, the same
+equation would give `k_X+k_W=2`, impossible because even `k_X>=2` and
+`k_W>=1`.  Therefore this case has `r_X=0` as well and again
+`(k_X,k_W)=(2,1)`.  In both cases
+
+```text
+R intersect X = empty,
+|K intersect X|=2,
+K intersect W={c}.                            (B17W')
+```
+
+Since `deg_A(x,X)=1-1_(x in K)`, the induced graph `A[X]` is consequently
+a perfect matching on `q-4` vertices together with exactly two isolated
+vertices, namely `K intersect X`.  When `m_c=2` both isolates are the
+X-neighbors of `c` in D; when `m_c=1`, one is that D-neighbor and the other
+lies in `Q`.
+
 The Y-location also carries a near-complete transversal.  If `c in Y`,
 then every `x in X` is a D-nonneighbor of `c`, because `X,Y` are different
 components of `D-W`.  Let `psi(x)` be their unique common A-neighbor.
