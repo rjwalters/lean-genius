@@ -173,6 +173,107 @@ theorem squareOrderNine_threeHigh_secondProfile_paired_puncture_design
       squareOrderNine_threeHigh_secondProfile_nondefect_special_defect_eq_missing_rows
         G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hz
 
+/-- Pointwise binary design equation on the paired puncture.  Every unmarked
+bin-one row hits each seven-point support once, except that the hit is
+replaced by the corresponding special defect. -/
+theorem squareOrderNine_threeHigh_secondProfile_paired_puncture_row_equation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hloc : (G.induce (G.neighborSet x)).edgeFinset.card = 4)
+    (hb : b ∈ squareOrderNineLowIncidenceBin G 1 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let Fy := (G.neighborFinset y ∩ B 0) \ S
+    let Fz := (G.neighborFinset z ∩ B 0) \ S
+    let D := secondOrderDefectGraph G
+    (G.neighborFinset b ∩ (Fy ∪ Fz)).card +
+        (if D.Adj y b then 1 else 0) +
+        (if D.Adj z b then 1 else 0) = 2 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let Fy := (G.neighborFinset y ∩ B 0) \ S
+  let Fz := (G.neighborFinset z ∩ B 0) \ S
+  let D := secondOrderDefectGraph G
+  have hdesign :=
+    squareOrderNine_threeHigh_secondProfile_paired_puncture_design
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz hloc
+  dsimp only at hdesign
+  have hbU : b ∈ U1 := hb
+  have endpointHit (e : V) (heB0 : e ∈ B 0) (F : Finset V)
+      (hFsub : F ⊆ G.neighborFinset e)
+      (hmissing : D.neighborFinset e ∩ U1 =
+        U1.filter fun c => (G.neighborFinset c ∩ F).card = 0) :
+      (G.neighborFinset b ∩ F).card +
+        (if D.Adj e b then 1 else 0) = 1 := by
+    have hbe : b ≠ e := by
+      intro h
+      subst e
+      have hkb : squareOrderHighIncidenceCount G 9 b = 1 :=
+        (Finset.mem_filter.mp (Finset.mem_sdiff.mp hb).1).2
+      have hke : squareOrderHighIncidenceCount G 9 b = 0 :=
+        (Finset.mem_filter.mp heB0).2
+      omega
+    have hle : (G.neighborFinset b ∩ F).card ≤ 1 := by
+      apply (Finset.card_le_card ?_).trans
+        (common_le_one_of_not_containsC4 hfree b e hbe)
+      intro w hw
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hw).1,
+        hFsub (Finset.mem_inter.mp hw).2⟩
+    have hzero_iff : (G.neighborFinset b ∩ F).card = 0 ↔ D.Adj e b := by
+      have hmem := Finset.ext_iff.mp hmissing b
+      simp only [Finset.mem_inter, hbU, true_and, Finset.mem_filter] at hmem
+      rw [D.mem_neighborFinset] at hmem
+      simpa using hmem.symm
+    by_cases hD : D.Adj e b
+    · rw [if_pos hD, (hzero_iff.mpr hD)]
+    · rw [if_neg hD]
+      have hpos : 0 < (G.neighborFinset b ∩ F).card :=
+        Nat.pos_of_ne_zero fun hzero => hD (hzero_iff.mp hzero)
+      omega
+  have hyB0 : y ∈ B 0 :=
+    (Finset.mem_inter.mp (Finset.mem_sdiff.mp hy).1).2
+  have hzB0 : z ∈ B 0 :=
+    (Finset.mem_inter.mp (Finset.mem_sdiff.mp hz).1).2
+  have hFySub : Fy ⊆ G.neighborFinset y := fun _ hw =>
+    (Finset.mem_inter.mp (Finset.mem_sdiff.mp hw).1).1
+  have hFzSub : Fz ⊆ G.neighborFinset z := fun _ hw =>
+    (Finset.mem_inter.mp (Finset.mem_sdiff.mp hw).1).1
+  have hyHit := endpointHit y hyB0 Fy hFySub hdesign.2.1
+  have hzHit := endpointHit z hzB0 Fz hFzSub hdesign.2.2
+  have hdisj :=
+    squareOrderNine_threeHigh_secondProfile_special_supports_disjoint
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz hloc
+  dsimp only at hdisj
+  have hhitDisj : Disjoint (G.neighborFinset b ∩ Fy)
+      (G.neighborFinset b ∩ Fz) :=
+    hdisj.mono Finset.inter_subset_right Finset.inter_subset_right
+  rw [Finset.inter_union_distrib_left,
+    Finset.card_union_of_disjoint hhitDisj]
+  simp only [D] at hyHit hzHit ⊢
+  omega
+
 end
 
 end Erdos85
@@ -180,3 +281,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_supports_disjoint
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_support_card_fourteen
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_puncture_design
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_puncture_row_equation
