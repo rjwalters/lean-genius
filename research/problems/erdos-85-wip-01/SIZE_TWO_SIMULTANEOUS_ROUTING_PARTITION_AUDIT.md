@@ -1670,3 +1670,68 @@ compatible across endpoint pairs.  Establishing that requires a genuine
 relation between the distinguished cross-shadow factor `F_c[e]`, the
 internal cycle `A_e`, and the full owner sum `H_e`; none of the scalar SRP
 contractions supplies it automatically.
+
+## 27. Alternating incidence-component compression of `Theta`
+
+Although (98) does not yet imply pointwise constancy on the port cycle, its
+compression to the `R_ce` incidence components is rigid.  Put
+
+```text
+P := F_c[e],                    B := A_e,
+Theta = P B + H_e + B^2.
+```
+
+Every incidence-component indicator lies in the binary kernel of `P`:
+
+```text
+P V_i = 0.                                             (99)
+```
+
+Indeed `P` is the cycle shadow of `R_ce`, and `V_i` is a whole component of
+that shadow.  Define the compressed matrix
+
+```text
+theta_ij := V_i^T Theta V_j.                           (100)
+```
+
+The marked noncommuting term disappears after left compression:
+
+```text
+V_i^T P B V_j = (P V_i)^T B V_j = 0.
+```
+
+Hence
+
+```text
+theta_ij = V_i^T (H_e + B^2) V_j.                     (101)
+```
+
+The matrix `H_e+B^2` is symmetric and has zero diagonal over `F_2`:
+`H_e` is a simple adjacency matrix, while every diagonal entry of `B^2` is
+the internal degree two.  Therefore `theta` is alternating,
+
+```text
+theta_ij = theta_ji,                 theta_ii = 0.      (102)
+```
+
+It also has zero row sums.  The owner sum `H_e` has even degree `q`, and
+`B^2 1 = 4 1`, so `(H_e+B^2)1=0`; since the `V_j` partition `e`,
+
+```text
+sum_j theta_ij = 0.                                    (103)
+```
+
+Thus the total values of the routing-color aggregate potential on the
+incidence components form the adjacency matrix of an Eulerian simple graph
+on those components.  In particular, for the owner-port component `Z=V_0`,
+
+```text
+sum_(z in Z) (Theta V_0)(z) = 0,
+sum_j sum_(z in Z) (Theta V_j)(z) = 0.                  (104)
+```
+
+This is weaker than pointwise constancy: an even-weight nonconstant vector
+on `Z` is still allowed.  It identifies the remaining gap precisely as a
+within-component fluctuation invisible to every component-indicator test.
+Any proof of the proposed constancy target after (98) must control that
+fluctuation, not merely another quotient parity.
