@@ -937,6 +937,28 @@ and necessarily `r_X<=3+c_X`.  Thus almost the whole two-fold cover `K`
 is located in the opposite component `Y`; any realization of the punctured
 parallel class must also satisfy this strong self-location constraint.
 
+The exceptional point produces a second exact matching at this endpoint.
+Here `b=q-1`, so `(A 1_Y)_c=q`; all q neighbors of `c` lie in `Y`.  By
+(B6), every `y in Y` has exactly two neighbors in `K`.  For
+`y in N_A(c)`, one is `c in K`, leaving a unique other point
+`phi(y) in K\{c}`.  If two distinct neighbors of `c` had the same image,
+they would form a 4-cycle with `c` and that image.  Hence
+
+```text
+phi : N_A(c) --> K\{c}
+```
+
+is injective and its image `Q` has size q.  Equivalently, the q paths
+
+```text
+c -- y -- phi(y),       y in N_A(c),          (B17)
+```
+
+match `N_A(c)` to a q-subset of `K\{c}`.  Combining this with (B16), at
+least `q-4` points of `Q` lie in `Y`.  Thus the endpoint contains two
+simultaneous exact matchings: the three `X_w <--> R_w` wing matchings and
+this exceptional-point matching into the overwhelmingly Y-located set K.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
