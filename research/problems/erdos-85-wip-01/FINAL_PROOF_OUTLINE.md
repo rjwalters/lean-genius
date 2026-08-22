@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.33 — 2026-08-22 (λ(D) = q−1 banked; exterior divisibility kills a q=16 witness).**
+**Version 2.34 — 2026-08-22 (first FORCED CONFIGURATION on the node: the mincut dichotomy).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -488,6 +488,36 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   **FULL-EXTERIOR IMPOSSIBLE**. This is a q-generic congruence that kills a
   named finite candidate, which is the shape the size-two lane has been
   missing.
+
+  **(xv) THE MINCUT DICHOTOMY — the node's first FORCED CONFIGURATION**
+  (sol-1, `dde52eae34`, review #20, 19:44Z). Everything on this node until now
+  has been an elimination. This is the opposite shape, and that is why it
+  matters: it says what a counterexample would have to LOOK like.
+
+  Any nontrivial mincut produces an associated `q`-set `R` with
+  `e_D(R) ≥ q²/4 − 1`. For `q ≥ 16`, either `D[R]` contains a triangle, or
+  `D[R]` is forced all the way to **`K_{q/2,q/2}` minus exactly one edge**,
+  with cut-degree partition `(q/2−1, q/2−1, 1)` and common-neighbour blocks
+  of sizes `(q/2, q/2, 2)` exhausting every non-`D` pair. The alternative
+  extremal `K_{q/2−1, q/2+1}` cannot carry that pair-block decomposition and
+  is excluded. The argument is Mantel plus a capped-partition gap: at
+  `e_R = q²/4` one needs `Σ d_i² = M − 2` with `M = 2((q−2)/2)² + 1`, while
+  the second-largest capped partition falls short by `q − 6 > 2`.
+
+  ***`q = 8` is the sole binary exception***, its partition gap being exactly
+  the exceptional 2. Set beside the `q = 4` exception of (ix): **the two
+  smallest binary orders are now each known to be genuinely exceptional, at
+  different points in the argument.** No order-64 endpoint work was done —
+  the owner respected the goal #30 park while recording the exclusion.
+
+  **(xvi) STRICT E-ENERGY RESIDUE, consuming the parity-of-`k` split**
+  (sol-1, `ed8aba6c17`, review #19). The closed-star excesses
+  `e_x = (δ_D(N_D[x]) − q)/2 ≥ 0` satisfy `Σ_x e_x ≡ q (mod 3)`, so **not all
+  rows attain `q`**, and the incidence bottleneck of (vi) is strictly bounded
+  below: `‖E‖² ≥ q³ + 2` for even `k`, `≥ q³ + 4` for odd `k`. First consumer
+  of (xii)'s parity split. Owner's caveat, kept verbatim in spirit: the
+  report explicitly notes that **residual-sector energy remains
+  uncontrolled**, so this sharpens the bound without closing it.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -823,6 +853,20 @@ Does not count (goes to the ledger, not here):
    continuously overnight when editor latency happened to be seconds.
 
 ## Change log
+
+- **2.34** (2026-08-22 ~19:50Z, editor): the node produces its first FORCED
+  CONFIGURATION rather than another elimination. Any nontrivial mincut gives
+  a `q`-set `R` with `e_D(R) ≥ q²/4 − 1`, and for `q ≥ 16` either `D[R]` has
+  a triangle or it is exactly `K_{q/2,q/2}` minus one edge with cut-degree
+  partition `(q/2−1, q/2−1, 1)`. `q = 8` is the sole binary exception, its
+  partition gap being exactly 2 — so with (ix)'s `q = 4` result, both of the
+  smallest binary orders are now known to be genuinely exceptional at
+  different points. Also records the strict E-energy residue
+  `Σ e_x ≡ q (mod 3)` with `‖E‖² ≥ q³ + 2` / `q³ + 4` by parity of `k`, the
+  first consumer of the parity split, with the owner's caveat that residual
+  sector energy is still uncontrolled. Room throughput this hour: roughly 300
+  messages/hour, about quadruple the pre-rule-5 peak, with agents resolving
+  claim collisions between themselves and no permission traffic at all.
 
 - **2.33** (2026-08-22 ~19:30Z, editor): first hour under §G rule 5, and the
   room ran at its highest rate of the campaign — 133 chat messages in 50
