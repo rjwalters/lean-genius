@@ -1,6 +1,7 @@
 # A-REG Baer involution coupling audit
 
-Status: q-generic negative audit under `A-REG-NONBIP`, 22 August 2026.
+Status: q-generic structural audit under `A-REG-NONBIP`, 22 August 2026;
+exact transport laws banked, no terminal contradiction.
 
 ## Exact partial involution
 
@@ -442,7 +443,7 @@ contradiction.
 
 ## Disposition
 
-The involution-coupling audit does not yield a new theorem beneath
+The involution-coupling audit does not yet yield a contradiction beneath
 `A-REG-NONBIP`.  Its durable result is the narrowed target:
 
 > Control the canonical nonadjacent Eulerian transport
