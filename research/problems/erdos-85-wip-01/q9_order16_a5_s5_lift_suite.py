@@ -252,16 +252,29 @@ def main() -> None:
     parser.add_argument("census", type=Path)
     parser.add_argument("--verify", action="store_true")
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument(
+        "--phase", choices=("all", "identity", "nonidentity"), default="all"
+    )
     args = parser.parse_args()
     audit_patterns()
     representative_count, partition_count = audit_component(args.census)
-    all_cases = tuple(cases())
-    assert len(all_cases) == 136
+    complete_cases = tuple(cases())
+    assert len(complete_cases) == 136
+    all_cases = tuple(
+        case for case in complete_cases
+        if args.phase == "all"
+        or (args.phase == "identity" and case[1] == 0)
+        or (args.phase == "nonidentity" and case[1] != 0)
+    )
+    assert len(all_cases) == {"all": 136, "identity": 112, "nonidentity": 24}[
+        args.phase
+    ]
     print(
         "coverage pattern_orbits=star+triangle",
         f"partition_representatives={representative_count}",
         f"partitions={partition_count}",
         "twist_classes=13",
+        f"phase={args.phase}",
         f"sat_branches={len(all_cases)}",
         flush=True,
     )
@@ -275,7 +288,10 @@ def main() -> None:
         }
         for future in as_completed(futures):
             print(future.result(), flush=True)
-    print("excluded_uniform_a5_s5_action_patterns 2")
+    if args.phase == "all":
+        print("excluded_uniform_a5_s5_action_patterns 2")
+    else:
+        print(f"verified_a5_s5_phase {args.phase} branches={len(all_cases)}")
 
 
 if __name__ == "__main__":

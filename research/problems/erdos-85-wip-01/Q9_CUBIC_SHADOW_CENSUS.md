@@ -387,14 +387,20 @@ representative list or interrupted-run inference enters the claim.
 The `A5` and `S5` uniform actions do not lift either.  The independent
 `q9_order16_a5_s5_lift_suite.py` reconstructs the `A4` pattern-orbit and
 component imprimitivity catalogs and excludes both star and triangle
-patterns in all twelve nonidentity twist classes (24 direct formulas).
+patterns in all twelve nonidentity twist classes (24 direct formulas), with
+the sentinel `verified_a5_s5_phase nonidentity branches=24`.
 For the identity twist, `q9_order16_a5_fixed_sweep.py` fixes the four equal
 pattern fibers and quotients their bijections by the full order-96 twist
 centralizer.  There are exactly 16 assignment orbits for each of star and
 triangle, and all 32 formulas are UNSAT.  This fixed-fiber coverage is
 lossless because the independently audited Aut(C)-closure of the transitive
 component subgroup block systems is exactly the pinned list of 19
-partitions.  The `S5` case is covered by the same formulas because its `S4`
+partitions.  As an independent, weaker identity-twist check, the lift suite
+requires only that every point have a star or triangle pattern and splits
+the first chosen line into 56 diagonal seed-line orbits per pattern; all 112
+branches are UNSAT, with sentinel
+`verified_a5_s5_phase identity branches=112`.  The `S5` case is covered by
+the same formulas because its `S4`
 point stabilizer imposes stronger constraints than the encoded `A4`
 star/triangle alternatives.
 
