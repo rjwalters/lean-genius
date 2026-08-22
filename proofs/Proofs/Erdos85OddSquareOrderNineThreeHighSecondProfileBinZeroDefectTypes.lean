@@ -2596,6 +2596,79 @@ theorem squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
       rw [Finset.card_sdiff_of_subset hOsub, hTcard, hOc]
     exact ⟨hsecond.1, by omega, hholes⟩
 
+/-- A bin-one vertex antipodal to a special bin-zero neighbor of the rare
+bin-three vertex cannot be one of the three marked bin-one vertices.  It
+therefore has the unmarked original profile `(B₀,B₁)=(5,3)`, and its
+five-point bin-zero support is disjoint from the special vertex's bin-zero
+row. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)
+    (hb : b ∈ antipodalNeighbors G y ∩
+      squareOrderNineLowIncidenceBin G 1) :
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    b ∉ M ∧
+      (G.neighborFinset b ∩ B 0).card = 5 ∧
+      (G.neighborFinset b ∩ B 1).card = 3 ∧
+      Disjoint (G.neighborFinset y ∩ B 0)
+        (G.neighborFinset b ∩ B 0) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  have hyParts := Finset.mem_inter.mp hy
+  have hbParts := Finset.mem_inter.mp hb
+  have hanti := (mem_antipodalNeighbors G y b).mp hbParts.1
+  have hzero : (G.neighborFinset y ∩ G.neighborFinset b).card = 0 :=
+    hanti.2.2
+  have hnotMarked : b ∉ M := by
+    intro hbM
+    have hbMParts := Finset.mem_inter.mp hbM
+    have hxCommon : x ∈ G.neighborFinset y ∩ G.neighborFinset b :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset y x).mpr
+          ((G.adj_comm x y).mp
+            ((G.mem_neighborFinset x y).mp hyParts.1)),
+        (G.mem_neighborFinset b x).mpr
+          ((G.adj_comm x b).mp
+            ((G.mem_neighborFinset x b).mp hbMParts.1))⟩
+    have hempty := Finset.card_eq_zero.mp hzero
+    simpa [hempty] using hxCommon
+  have hbx : ¬ G.Adj b x := by
+    intro hbx
+    exact hnotMarked (Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset x b).mpr ((G.adj_comm b x).mp hbx), hbParts.2⟩)
+  have hdeg := squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
+    G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hbParts.2
+  dsimp only at hdeg
+  have hB0 : (G.neighborFinset b ∩ B 0).card = 5 := by
+    simpa [hbx] using hdeg.2
+  have hB1 : (G.neighborFinset b ∩ B 1).card = 3 := by
+    simpa [hbx] using hdeg.1
+  have hdisj : Disjoint (G.neighborFinset y ∩ B 0)
+      (G.neighborFinset b ∩ B 0) := by
+    rw [Finset.disjoint_left]
+    intro w hwy hwb
+    have hwCommon : w ∈ G.neighborFinset y ∩ G.neighborFinset b :=
+      Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hwy).1,
+        (Finset.mem_inter.mp hwb).1⟩
+    have hempty := Finset.card_eq_zero.mp hzero
+    simpa [hempty] using hwCommon
+  exact ⟨hnotMarked, hB0, hB1, hdisj⟩
+
 end
 
 end Erdos85
@@ -2631,3 +2704,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_binOne_row_packing
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
