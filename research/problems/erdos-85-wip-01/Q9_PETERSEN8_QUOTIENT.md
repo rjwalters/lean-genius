@@ -36,6 +36,14 @@ Thus a direct subgroup census inside `Aut(Petersen) wr S8` is unnecessary and
 infeasible; the lift stage only needs these eleven quotient actions and the
 finite pattern lists pinned by their SHA-256 digests in the verifier output.
 
+The verifier also exhausts all 2,880 perfect matchings between two Petersen
+blocks which send Petersen edges to nonedges. They form one orbit under the
+two block automorphism groups. For three mutually perfect block matchings,
+the attainable triangle multiplicities are exactly `0,1,2,3,4,5,6` (with
+the full frequency table pinned in the output), never `7,8,9,10`. Applying
+this local lift obstruction reduces the surviving quotient list from 432 to
+324 patterns, without changing the eleven surviving component actions.
+
 Run with:
 
 ```text

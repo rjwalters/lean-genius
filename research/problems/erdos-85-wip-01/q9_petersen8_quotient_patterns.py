@@ -18,13 +18,68 @@ from __future__ import annotations
 
 import subprocess
 import hashlib
+from collections import Counter
 from itertools import combinations
 
+import networkx as nx
 import z3
 
 
 TRIPLES = tuple(combinations(range(8), 3))
 PAIRS = tuple(combinations(range(8), 2))
+
+
+def perfect_matching_agreement_catalog() -> Counter[int]:
+    """Exhaust perfect Petersen anti-matchings and their triple agreements."""
+    petersen = nx.petersen_graph()
+    compatibility = nx.Graph()
+    compatibility.add_nodes_from((left, right) for left in range(10) for right in range(10))
+    for left, image_left in compatibility:
+        for right, image_right in compatibility:
+            if (
+                left < right
+                and image_left != image_right
+                and not (
+                    petersen.has_edge(left, right)
+                    and petersen.has_edge(image_left, image_right)
+                )
+            ):
+                compatibility.add_edge((left, image_left), (right, image_right))
+    anti_matchings = []
+    for clique in nx.find_cliques(compatibility):
+        if len(clique) == 10:
+            matching = [0] * 10
+            for left, right in clique:
+                matching[left] = right
+            anti_matchings.append(tuple(matching))
+    anti_matchings = sorted(set(anti_matchings))
+    assert len(anti_matchings) == 2880
+
+    automorphisms = [
+        tuple(mapping[vertex] for vertex in range(10))
+        for mapping in nx.algorithms.isomorphism.GraphMatcher(
+            petersen, petersen
+        ).isomorphisms_iter()
+    ]
+    assert len(automorphisms) == 120
+    representative = anti_matchings[0]
+    double_orbit = set()
+    for domain_automorphism in automorphisms:
+        for range_automorphism in automorphisms:
+            image = [0] * 10
+            for vertex in range(10):
+                image[domain_automorphism[vertex]] = range_automorphism[
+                    representative[vertex]
+                ]
+            double_orbit.add(tuple(image))
+    assert double_orbit == set(anti_matchings)
+
+    counts: Counter[int] = Counter()
+    for second in anti_matchings:
+        composition = tuple(second[representative[vertex]] for vertex in range(10))
+        for third in anti_matchings:
+            counts[sum(composition[vertex] == third[vertex] for vertex in range(10))] += 1
+    return counts
 
 
 def gap_transitive_generators() -> list[tuple[int, int, list[tuple[int, ...]]]]:
@@ -154,13 +209,36 @@ def patterns(
         support = {pair for pair, deficit in deficits.items() if deficit != 0}
         if any(support == orbit for orbit in pair_orbit_list):
             values = {deficits[pair] for pair in support}
-            if len(values) == 1:
+            # A perfect matching between two Petersen blocks must send every
+            # Petersen edge to a nonedge.  The 2,880 such anti-matchings form
+            # one Aut(P) x Aut(P) orbit.  Exhausting triples of anti-matchings
+            # gives attainable three-block agreement counts exactly 0..6.
+            # Hence a component triple whose three pair codegrees are all ten
+            # can carry at most six triangles.
+            perfect_triples_valid = all(
+                not all(
+                    pair_codegree[tuple(sorted(pair))] == 10
+                    for pair in combinations(triple, 2)
+                )
+                or sum(
+                    weight for orbit, weight in zip(orbits, pattern)
+                    if triple in orbit
+                ) <= 6
+                for triple in TRIPLES
+            )
+            if len(values) == 1 and perfect_triples_valid:
                 omission_orbit_patterns.append(pattern)
         solver.add(z3.Or(*(weight != value for weight, value in zip(weights, pattern))))
     return total, omission_orbit_patterns
 
 
 def main() -> None:
+    agreement_catalog = perfect_matching_agreement_catalog()
+    assert agreement_catalog == Counter(
+        {0: 2855400, 1: 3241200, 2: 1639800, 3: 472800,
+         4: 72600, 5: 10800, 6: 1800}
+    )
+    print(f"perfect_anti_matching_agreements={dict(sorted(agreement_catalog.items()))}")
     survivors = 0
     for index, order, generators in gap_transitive_generators():
         orbits = triple_orbits(generators)
