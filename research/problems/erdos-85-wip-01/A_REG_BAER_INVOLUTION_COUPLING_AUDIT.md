@@ -1694,6 +1694,25 @@ of them, with pair `{E_0,Q_0}` for a unique ordinary private point `Q_0`.
 This is the closest direct interface presently available to an odd family
 of oriented owner-port switches.
 
+The path--cycle core canonically pairs all of these oriented owners except
+`F_0`.  For `X in R`, its exceptional private points are precisely its
+degree-one neighbors in `A[R]`; hence X is mixed-private exactly when it has
+one such neighbor.  A cycle contributes none.  A path component contributes
+two such owners when it has two vertices or at least four vertices (the
+owners adjacent to its two endpoints), and zero when it has three vertices.
+Therefore, if `pi` counts the path components whose order is not three,
+
+```text
+mu = 1 + 2 pi.                                            (73ri)
+```
+
+The two mixed owners contributed by each path have a canonical pairing via
+that path, whereas `F_0` is the unique unpaired mixed owner.  Thus any
+owner-wise telescope that cancels the paired path contributions has a single
+explicit boundary term, oriented from `E_0` to the ordinary private point
+`Q_0`.  Establishing that cancellation in the simultaneous residual
+incidence system is now a precise terminal target.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
