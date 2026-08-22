@@ -3544,6 +3544,150 @@ theorem squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
         ((G.adj_comm z a).mp ((G.mem_neighborFinset z a).mp haParts.1))
   exact ⟨hhigh, hfiber, hpair, hunion⟩
 
+/-- The 47 ordinary bin-zero targets split into 21 targets lying in a marked
+bin-one support, with two unmarked bin-one neighbors each, and 26 remaining
+targets, with three unmarked neighbors each.  Consequently the bin-zero
+centers contribute exactly 99 unordered pairs of unmarked bin-one vertices. -/
+theorem squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    P.card = 21 ∧ (T \ P).card = 26 ∧
+      (∀ y ∈ P, (G.neighborFinset y ∩ U1).card = 2) ∧
+      (∀ y ∈ T \ P, (G.neighborFinset y ∩ U1).card = 3) ∧
+      (∑ y ∈ T, Nat.choose (G.neighborFinset y ∩ U1).card 2) = 99 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  have hpack := squareOrderNine_threeHigh_secondProfile_marked_binOne_row_packing
+    G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hpack
+  have hPcard : P.card = 21 := by
+    rw [Finset.card_biUnion hpack.2.2.1]
+    exact hpack.2.2.2
+  have hPsub : P ⊆ T := by
+    intro y hyP
+    simp only [P, Finset.mem_biUnion] at hyP
+    obtain ⟨m, hmM, hym⟩ := hyP
+    have hmParts := Finset.mem_inter.mp hmM
+    have hymParts := Finset.mem_inter.mp hym
+    refine Finset.mem_sdiff.mpr ⟨hymParts.2, ?_⟩
+    intro hyS
+    have hySParts := Finset.mem_inter.mp hyS
+    have hxy : G.Adj x y :=
+      (G.mem_neighborFinset x y).mp hySParts.1
+    have hymAdj : G.Adj y m :=
+      (G.adj_comm m y).mp ((G.mem_neighborFinset m y).mp hymParts.1)
+    exact (squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+      G hfree hhigh hx hySParts.2 hmParts.2 hxy) hymAdj
+  have hTcard : T.card = 47 := by
+    have hB0card := squareOrderNine_threeHigh_secondProfile_binZero_card
+      G hcard hp hhigh hc3
+    have hScard :=
+      (squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx).2.2
+    rw [Finset.card_sdiff_of_subset Finset.inter_subset_right, hB0card, hScard]
+  have hcompCard : (T \ P).card = 26 := by
+    rw [Finset.card_sdiff_of_subset hPsub, hTcard, hPcard]
+  have hPon : ∀ y ∈ P, (G.neighborFinset y ∩ U1).card = 2 := by
+    intro y hyP
+    simp only [P, Finset.mem_biUnion] at hyP
+    obtain ⟨m, hmM, hym⟩ := hyP
+    have hmatch :=
+      squareOrderNine_threeHigh_secondProfile_marked_support_pair_matching
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hmM
+    dsimp only at hmatch
+    exact hmatch.2.1 y hym
+  have hPoff : ∀ y ∈ T \ P,
+      (G.neighborFinset y ∩ U1).card = 3 := by
+    intro y hy
+    have hyParts := Finset.mem_sdiff.mp hy
+    have hyT := Finset.mem_sdiff.mp hyParts.1
+    have hyNotAdjX : ¬ G.Adj y x := by
+      intro hyx
+      exact hyT.2 (Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x y).mpr hyx.symm, hyT.1⟩)
+    have hservice :=
+      squareOrderNine_threeHigh_secondProfile_binZero_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyT.1
+    have hB1card : (G.neighborFinset y ∩ B 1).card = 3 := by
+      simpa [hyNotAdjX] using hservice
+    have heq : G.neighborFinset y ∩ U1 = G.neighborFinset y ∩ B 1 := by
+      apply Finset.Subset.antisymm
+      · intro m hm
+        have hmParts := Finset.mem_inter.mp hm
+        exact Finset.mem_inter.mpr ⟨hmParts.1,
+          (Finset.mem_sdiff.mp hmParts.2).1⟩
+      · intro m hm
+        have hmParts := Finset.mem_inter.mp hm
+        refine Finset.mem_inter.mpr ⟨hmParts.1,
+          Finset.mem_sdiff.mpr ⟨hmParts.2, ?_⟩⟩
+        intro hmM
+        exact hyParts.2 (by
+          simp only [P, Finset.mem_biUnion]
+          exact ⟨m, hmM, Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset m y).mpr
+              ((G.adj_comm y m).mp
+                ((G.mem_neighborFinset y m).mp hmParts.1)), hyT.1⟩⟩)
+    rw [heq, hB1card]
+  have hTsplit : T = P ∪ (T \ P) := by
+    ext y
+    simp only [Finset.mem_union, Finset.mem_sdiff]
+    constructor
+    · intro hyT
+      by_cases hyP : y ∈ P
+      · exact Or.inl hyP
+      · exact Or.inr ⟨hyT, hyP⟩
+    · rintro (hyP | ⟨hyT, _hyNotP⟩)
+      · exact hPsub hyP
+      · exact hyT
+  have hdisj : Disjoint P (T \ P) := by
+    rw [Finset.disjoint_left]
+    intro y hyP hyComp
+    exact (Finset.mem_sdiff.mp hyComp).2 hyP
+  have hpairs :
+      (∑ y ∈ T, Nat.choose (G.neighborFinset y ∩ U1).card 2) = 99 := by
+    rw [hTsplit, Finset.sum_union hdisj]
+    have hsumP :
+        (∑ y ∈ P, Nat.choose (G.neighborFinset y ∩ U1).card 2) = 21 := by
+      calc
+        _ = ∑ _y ∈ P, Nat.choose 2 2 := by
+          apply Finset.sum_congr rfl
+          intro y hy
+          rw [hPon y hy]
+        _ = 21 := by simp [hPcard]
+    have hsumC :
+        (∑ y ∈ T \ P, Nat.choose (G.neighborFinset y ∩ U1).card 2) = 78 := by
+      calc
+        _ = ∑ _y ∈ T \ P, Nat.choose 3 2 := by
+          apply Finset.sum_congr rfl
+          intro y hy
+          rw [hPoff y hy]
+        _ = 78 := by norm_num [hcompCard]
+    rw [hsumP, hsumC]
+  exact ⟨hPcard, hcompCard, hPon, hPoff, hpairs⟩
+
 end
 
 end Erdos85
@@ -3588,3 +3732,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_binOne_defect_edges
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
