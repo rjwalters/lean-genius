@@ -676,13 +676,40 @@ the explicit second-bit signature (32), lands in a controlled constant
 branch, or produces an iterated even kernel shore carrying the same Baer
 transport.
 
-Equations (7)--(33) are the first canonical cut detector manufactured from
+Symmetry constrains any iterated branch.  For two kernel shores U,V, write
+`u=1_U`, `v=1_V`, and let `c_U=Au/2`, `c_V=Av/2`.  Then
+
+```text
+u dot beta(V)
+  = u^T c_V
+  = (u^T A v)/2
+  = c_U^T v
+  = beta(U) dot v                              (mod 2).          (34)
+```
+
+Thus the half-occupancy lift is self-adjoint on pairs of kernel shores even
+though it is not a linear map on their binary code.  Along any recursive
+chain `u_{i+1}=beta(u_i)` that stays in the kernel,
+
+```text
+u_i dot u_{j+1} = u_{i+1} dot u_j,
+u_i dot u_{i+2} = |supp(u_{i+1})| = 0           (mod 2),         (35)
+```
+
+because every beta-support has even cardinality.  Also
+`u_i dot u_{i+1}=e_A(supp(u_i)) (mod 2)` by the quadratic identity after
+(25).  Hence an iterated shore sequence must carry a symmetric shifted Gram
+pattern; arbitrary cycles of kernel shores are not admissible.  Equations
+(34)--(35) do not yet force linear independence or exclude a two-cycle, so
+no dimension contradiction is claimed.
+
+Equations (7)--(35) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(33), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(35), so these laws alone
 do not conceal an order-independent
 contradiction.
 
