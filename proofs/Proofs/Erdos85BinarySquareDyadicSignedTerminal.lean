@@ -70,6 +70,21 @@ theorem cutSign_adjMatrix_mulVec_eq_sparseSigned
   · simp [hfull]
     ring
 
+/-- The coordinate sum of a shore sign vector records its displacement from
+half the ambient order. -/
+theorem sum_cutSign
+    {V : Type*} [Fintype V] [DecidableEq V] (S : Finset V) :
+    ∑ v : V, (if v ∈ S then (1 : ℤ) else -1) =
+      2 * (S.card : ℤ) - Fintype.card V := by
+  have hpoint (v : V) :
+      (if v ∈ S then (1 : ℤ) else -1) =
+        2 * (if v ∈ S then (1 : ℤ) else 0) - 1 := by
+    by_cases hv : v ∈ S <;> simp [hv]
+  simp_rw [hpoint]
+  rw [Finset.sum_sub_distrib]
+  simp
+  ring
+
 /-- The sparse signed equation `A x = q z`, together with the coordinate sum
 of `x`, gives the companion defect equation pointwise. -/
 theorem binarySquare_sparseSigned_companionDefect_apply
@@ -102,10 +117,51 @@ theorem binarySquare_sparseSigned_companionDefect_apply
   rw [hsum] at hsq
   linarith
 
+/-- Capstone form: an empty/half/full occupancy shore at square order obeys
+the canonical sparse signed defect equation, with `d` its displacement from
+half the vertex set. -/
+theorem binarySquare_trichotomy_companionDefect_apply
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 0 < q)
+    (hreg : ∀ v, G.degree v = q) (hcard : Fintype.card V = q * q)
+    (S : Finset V) (d : ℤ)
+    (hd : 2 * (S.card : ℤ) - (q * q : ℕ) = 2 * d)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      2 * (G.neighborFinset v ∩ S).card = q ∨
+      (G.neighborFinset v ∩ S).card = q)
+    (v : V) :
+    ∑ w ∈ (secondOrderDefectGraph G).neighborFinset v,
+        (if w ∈ S then (1 : ℤ) else -1) =
+      ((q : ℤ) - 1) * (if v ∈ S then (1 : ℤ) else -1) + 2 * d -
+        (q : ℤ) * ∑ w ∈ G.neighborFinset v,
+          (if (G.neighborFinset w ∩ S).card = q then (1 : ℤ)
+           else if (G.neighborFinset w ∩ S).card = 0 then -1 else 0) := by
+  let x : V → ℤ := fun w => if w ∈ S then 1 else -1
+  let z : V → ℤ := fun w =>
+    if (G.neighborFinset w ∩ S).card = q then 1
+    else if (G.neighborFinset w ∩ S).card = 0 then -1 else 0
+  have hAx : (G.adjMatrix ℤ).mulVec x = (q : ℤ) • z := by
+    simpa [x, z] using
+      cutSign_adjMatrix_mulVec_eq_sparseSigned G hq hreg S htri
+  have hsum : ∑ w, x w = 2 * d := by
+    rw [show (∑ w, x w) = 2 * (S.card : ℤ) - Fintype.card V by
+      simpa [x] using sum_cutSign S]
+    rw [hcard]
+    exact hd
+  simpa [x, z] using
+    binarySquare_sparseSigned_companionDefect_apply
+      G hfree hreg x z d hAx hsum v
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.cutSign_adjMatrix_mulVec_apply
 #print axioms Erdos85.cutSign_adjMatrix_mulVec_eq_sparseSigned
+#print axioms Erdos85.sum_cutSign
 #print axioms Erdos85.binarySquare_sparseSigned_companionDefect_apply
+#print axioms Erdos85.binarySquare_trichotomy_companionDefect_apply
