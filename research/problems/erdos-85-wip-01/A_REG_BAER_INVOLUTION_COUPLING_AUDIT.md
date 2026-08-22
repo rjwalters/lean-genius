@@ -744,7 +744,7 @@ which the full package recurses again.  In particular the exact
 complete/cocktail incidence leaves no bottom period-two escape.
 
 More generally, an even-period survivor has a rigid mod-four incidence
-normal form.  Suppose U,V are kernel shores with
+normal form.  Suppose U,V are nonconstant kernel shores with
 
 ```text
 beta(U)=V,       beta(V)=U,
@@ -801,13 +801,28 @@ shore lives near the generic minimum `q+1`: every fixed point is confined
 to a narrow window below or above `3q`.  Equations (39)--(41) are an exact
 normal form, not yet an exclusion of large or asymmetric two-cycles.
 
-Equations (7)--(41) are the first canonical cut detector manufactured from
+The pair inequalities also force at least one shore of every two-cycle into
+that scale.  Let `m=max(s,t)`.  Both shores are nonconstant beta-supports,
+so `s,t>=q+2`.  If `m<3q+1`, use the first inequality in (39), the bounds
+`t<=m`, `s>=q+2`, and
+`a(s)>=(3q+1-m)/2` to obtain
+
+```text
+4m(m-1) >= (q+2)((3q-m)^2-1).                              (42)
+```
+
+Thus a two-cycle cannot have both shores uniformly small: (42) places its
+larger shore within `O(sqrt(q))` of `3q` (the leading-order threshold is
+`3q-6 sqrt(q)`).  This is only a localization; it deliberately leaves the
+large/asymmetric branch open.
+
+Equations (7)--(42) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(41), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(42), so these laws alone
 do not conceal an order-independent
 contradiction.
 
