@@ -377,6 +377,30 @@ three parallel seven-fiber partitions, each with five holes.  This is a
 strictly stronger placement constraint than prescribing only the row and
 column degrees of the B0--U1 defect matrix.
 
+There is already an exact reciprocity law among the three partitions.  Put
+
+```text
+c_gh = |M_g intersect P_h|.
+```
+
+For `g != h`, the residual edges between `P_g` and `P_h` form a matching.
+Viewed from `P_h`, they cover exactly the `7-c_gh` rows which do not miss
+`P_g`; viewed from `P_g`, the same edges cover exactly `7-c_hg` rows.
+Therefore
+
+```text
+c_gh = c_hg.                                                 (12m)
+```
+
+On the diagonal, the induced graph on `P_g` matches precisely the rows
+outside `M_g`, so `7-c_gg` is even and every `c_gg` is odd.  Hence the
+three-by-three marked-miss matrix has symmetric off-diagonal entries and
+odd diagonal.  This refines the earlier scalar parity laws: summing all
+nine cells gives an odd pair-row marked-defect mass because the off-diagonal
+entries occur twice, and subtracting it from the total marked-defect mass
+`3*5=15` leaves the even triple-row mass.  Thus those two parities are the
+aggregate shadow of the stronger symmetric transport law (12m).
+
 The first pairwise count between these partitions is nevertheless exhausted.
 For `g != h`, every row outside `M_g union M_h` selects one fiber from each
 partition, so
