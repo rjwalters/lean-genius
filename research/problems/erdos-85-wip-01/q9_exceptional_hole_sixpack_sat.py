@@ -8,6 +8,13 @@ force these six U1 blocks to be pairwise disjoint and every one of them to
 have no K-edge to the hole triple.  This script asks whether even one such
 local configuration can occur in the full outer 24-point design.
 
+The optional row-family flags strengthen this directed relaxation through
+all exceptional holes, the normalized diagonal class, the other regular
+triple classes, or all 21 pair-center rows.  ``--pair-reciprocity`` adds only
+pair-to-pair symmetry.  This separates local row feasibility from the first
+genuinely global agreement constraint without restoring the full residual
+graph.
+
 Exploratory only: UNSAT still requires an independently checked certificate
 or a kernel proof.
 """
@@ -30,7 +37,8 @@ def exactly_one(xs):
 
 
 def build(branch: int, timeout_ms: int, all_holes: bool,
-          diagonal_rows: bool = False, all_regular_classes: bool = False):
+          diagonal_rows: bool = False, all_regular_classes: bool = False,
+          all_pair_rows: bool = False, pair_reciprocity: bool = False):
     solver, data = outer.build(branch, timeout_ms)
     triples = data["triples"]
     pairs = list(data["marked_pairs"])
@@ -173,6 +181,87 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
             for t in triples:
                 solver.add(Sum([If(anchor[t], 1, 0) for anchor in class_anchors]) ==
                            If(data["classes"][class_index][t], 1, 0))
+    if all_pair_rows:
+        pair_miss_matrix = [[[] for _ in range(3)] for _ in range(3)]
+        pair_pack_data = [[] for _ in range(3)]
+        for anchor_group in range(3):
+            group_pairs = [e for e in pairs
+                           if anchor_group not in {outer.color(e[0]), outer.color(e[1])}]
+            group_anchors = []
+            for r in range(7):
+                anchor = {
+                    e: Bool(f"pairrow_{anchor_group}_{r}_anchor_{e[0]}_{e[1]}")
+                    for e in group_pairs
+                }
+                group_anchors.append(anchor)
+                solver.add(exactly_one(anchor.values()))
+                triple_neighbor = {
+                    t: Bool(f"pairrow_{anchor_group}_{r}_triple_{t[0]}_{t[1]}_{t[2]}")
+                    for t in triples
+                }
+                pair_neighbor = {
+                    e: Bool(f"pairrow_{anchor_group}_{r}_pair_{e[0]}_{e[1]}")
+                    for e in pairs
+                }
+                pair_pack_data[anchor_group].append((anchor, pair_neighbor))
+                for e in group_pairs:
+                    solver.add(Implies(anchor[e], data["marked_pairs"][e]))
+                for t in triples:
+                    solver.add(Implies(triple_neighbor[t], data["selected"][t]))
+                for e in pairs:
+                    solver.add(Implies(pair_neighbor[e], data["marked_pairs"][e]))
+                    if e in anchor:
+                        solver.add(Not(And(anchor[e], pair_neighbor[e])))
+                triple_count = Sum([If(q, 1, 0) for q in triple_neighbor.values()])
+                all_neighbors = list(triple_neighbor.values()) + list(pair_neighbor.values())
+                solver.add(Sum([If(q, 1, 0) for q in all_neighbors]) == 6)
+                misses = []
+                for missing_color in range(3):
+                    support = [pair_neighbor[e] for e in pairs
+                               if missing_color not in {outer.color(e[0]), outer.color(e[1])}]
+                    hit = Sum([If(q, 1, 0) for q in support])
+                    solver.add(hit <= 1)
+                    miss = If(hit == 0, 1, 0)
+                    misses.append(miss)
+                    pair_miss_matrix[anchor_group][missing_color].append(miss)
+                solver.add(Sum(misses) == triple_count - 3)
+                neighbor_point = {}
+                for b in range(outer.N):
+                    uses = ([triple_neighbor[t] for t in triples if b in t]
+                            + [pair_neighbor[e] for e in pairs if b in e])
+                    solver.add(Sum([If(q, 1, 0) for q in uses]) <= 1)
+                    neighbor_point[b] = Or(uses)
+                anchor_point = {
+                    b: Or([anchor[e] for e in group_pairs if b in e])
+                    for b in range(outer.N)
+                }
+                for a in range(outer.N):
+                    for b in range(a + 1, outer.N):
+                        solver.add(Implies(data["k"][outer.edge_key(a, b)],
+                                           Not(Or(And(anchor_point[a], neighbor_point[b]),
+                                                  And(anchor_point[b], neighbor_point[a])))))
+            for e in group_pairs:
+                solver.add(Sum([If(anchor[e], 1, 0) for anchor in group_anchors]) ==
+                           If(data["marked_pairs"][e], 1, 0))
+        # Symmetry of the residual adjacency forces the pair-group miss
+        # matrix to have equal corresponding row and column sums.
+        for g in range(3):
+            solver.add(Sum(sum(pair_miss_matrix[g], [])) ==
+                       Sum(sum([pair_miss_matrix[h][g] for h in range(3)], [])))
+        if pair_reciprocity:
+            def pair_group(e):
+                return next(g for g in range(3)
+                            if g not in {outer.color(e[0]), outer.color(e[1])})
+
+            def directed(e, f):
+                return Or([And(anchor[e], neighbors[f])
+                           for anchor, neighbors in pair_pack_data[pair_group(e)]])
+
+            for i, e in enumerate(pairs):
+                for f in pairs[i + 1:]:
+                    solver.add(directed(e, f) == directed(f, e))
+    elif pair_reciprocity:
+        raise ValueError("pair reciprocity requires all pair rows")
     return solver, data
 
 
@@ -183,9 +272,12 @@ def main() -> int:
     parser.add_argument("--all-holes", action="store_true")
     parser.add_argument("--diagonal-rows", action="store_true")
     parser.add_argument("--all-regular-classes", action="store_true")
+    parser.add_argument("--all-pair-rows", action="store_true")
+    parser.add_argument("--pair-reciprocity", action="store_true")
     args = parser.parse_args()
     solver, _ = build(args.branch, args.timeout_seconds * 1000, args.all_holes,
-                      args.diagonal_rows, args.all_regular_classes)
+                      args.diagonal_rows, args.all_regular_classes,
+                      args.all_pair_rows, args.pair_reciprocity)
     started = time.time()
     result = solver.check()
     elapsed = time.time() - started
