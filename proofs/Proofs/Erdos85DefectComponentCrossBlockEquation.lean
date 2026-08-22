@@ -18,6 +18,51 @@ noncomputable section
 
 set_option maxHeartbeats 0
 
+/-- **Arbitrary-cut nonregular defect equation.**  For any vertex predicate,
+the two ways for a length-two walk to cross the cut account for every cross
+pair except the second-order-defect pairs.  In block notation this is
+`H B + B C = J - R`.  No component, order, degree, or parity hypothesis is
+required. -/
+theorem c4Free_crossCut_eq_ones_sub_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (p : V → Prop) [DecidablePred p] :
+    let A := G.adjMatrix ℤ
+    let D := (secondOrderDefectGraph G).adjMatrix ℤ
+    let H := A.toBlock p p
+    let B := A.toBlock p (fun x ↦ ¬p x)
+    let C := A.toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    let R := D.toBlock p (fun x ↦ ¬p x)
+    let J : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+    H * B + B * C = J - R := by
+  classical
+  let A := G.adjMatrix ℤ
+  let D := (secondOrderDefectGraph G).adjMatrix ℤ
+  let H := A.toBlock p p
+  let B := A.toBlock p (fun x ↦ ¬p x)
+  let C := A.toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  let R := D.toBlock p (fun x ↦ ¬p x)
+  let J : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+  have hsq : A * A = degreePredDiagonal G +
+      FriendshipTheoremOQ01.onesMatrix V - D :=
+    adjMatrix_sq_eq_degreePredDiagonal_add_ones_sub_secondOrderDefect
+      G hfree
+  have hblock := congrArg
+    (fun X ↦ X.toBlock p (fun x ↦ ¬p x)) hsq
+  rw [Matrix.toBlock_mul_eq_add p p (fun x ↦ ¬p x)] at hblock
+  have hright : (degreePredDiagonal G +
+    FriendshipTheoremOQ01.onesMatrix V - D).toBlock
+          p (fun x ↦ ¬p x) = J - R := by
+    ext i j
+    have hij : i.1 ≠ j.1 := fun h ↦ j.2 (h ▸ i.2)
+    simp [J, R, Matrix.toBlock_apply, degreePredDiagonal, hij,
+      FriendshipTheoremOQ01.onesMatrix]
+  change H * B + B * C = J - R
+  simpa [A, D, H, B, C, J] using hblock.trans hright
+
 /-- **Order-free, nonregular defect-cut equation.**  Across a connected
 component of the second-order defect graph, every pair of endpoints has one
 common ambient neighbor.  Splitting that neighbor according to the cut gives
@@ -643,6 +688,7 @@ theorem binarySquare_regular_defectComponent_exterior_eigenvector_transfer
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
+#print axioms Erdos85.c4Free_crossCut_eq_ones_sub_defect
 #print axioms Erdos85.c4Free_defectComponent_crossBlock_eq_ones
 #print axioms Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_eq
 #print axioms
