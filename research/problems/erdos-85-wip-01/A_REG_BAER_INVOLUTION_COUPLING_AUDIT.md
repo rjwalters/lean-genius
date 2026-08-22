@@ -1192,8 +1192,11 @@ The final dyadic terminal can therefore be stated as a sparse signed-image
 problem: exclude a full-support sign vector whose A-image is q times a
 signed vector on at most `2q-2` coordinates, subject to the four-type,
 subcubic, and D-complete structure above.  This formulation is well suited
-to an uncertainty or Smith-normal-form argument and avoids enumerating the
-exceptional designs individually.
+to a signed-support expansion argument and avoids enumerating the exceptional
+designs individually.  The abstract Smith-normal-form/cokernel route is
+already closed in the authoritative outline: the useful extra input here is
+the sparse `{+1,0,-1}` support together with its saturated line types, not
+the invariant factors of A alone.
 
 Equations (7)--(70) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
