@@ -3267,3 +3267,19 @@ two sides of the shared port `p`.  Closing `ell=1` now means proving that the
 admissible crossed price has equal values on these two private ports (or that
 their forced difference has the wrong parity); no target-support ambiguity
 remains.
+
+The two clean sources `y_-` and `y_+` in (197) are distinct as well.  If they
+were one vertex `y`, then the adjacent roots `x_-` and `x_+` would have the
+two common neighbors `p` and `y`, again giving a four-cycle.  Reversal of the
+oriented run edge swaps both ordered pairs
+
+```text
+(x_-,x_+)  |-->  (p_-,p_+) and (y_-,y_+).             (198)
+```
+
+Thus (198) is a canonical oriented private-port mark attached to every
+one-edge owner run.  Its collision count is zero, since `p_- != p_+`; a
+price depending only on total target collisions cannot detect this terminal.
+The missing invariant must retain the orientation of the two private ports
+(possibly together with their distinct clean sources), precisely the
+root--port information absent from the color-only no-go of Section 44.
