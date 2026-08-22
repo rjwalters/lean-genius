@@ -2584,3 +2584,58 @@ at its two endpoints, precisely where the rooted transition paths of
 Section 43 attach.  Thus the mixed problem now has the same clean-or-long
 shape as the monochromatic branch, but localized to the odd owner runs
 forced by (155).
+
+## 46. Endpoint-neutral clean colors
+
+Let the two `A_c` edges immediately before and after the maximal `e`-run
+`P` have owners `f_-` and `f_+`; both differ from `e`, though they may equal
+each other.  For a `P`-clean third color `d`, every internal root `x` of the
+run has
+
+```text
+a_xd = 0,
+```
+
+because its two incident internal edges are both owned by `e`.  At the left
+or right endpoint, the same holds unless `d=f_-` or `d=f_+`, respectively.
+In the exceptional endpoint case `a_xd=1`, so the rooted budget (50)--(52)
+forces
+
+```text
+b_xd = 0,       sum_g tau_xdg = 1.                     (159)
+```
+
+This unique rooted triangle is the vertical state edge incident to the
+owner-`d` horizontal endpoint; equivalently, it is the terminal edge of the
+rooted transition path from Section 43.
+
+Call a `P`-clean color **endpoint-neutral** when it is different from both
+`f_-` and `f_+`.  There are at most two forbidden colors, so (157) guarantees
+an endpoint-neutral clean color as soon as
+
+```text
+(q-4)/2 - (ell-1)(ell-2)/2 >= 3,
+```
+
+or equivalently
+
+```text
+q >= (ell-1)(ell-2) + 10.                              (160)
+```
+
+For such a color `d`, one has `a_xd=0` at every root of `P`, including its
+endpoints.  Hence the exact clean-lift alternative holds uniformly along
+the entire path:
+
+```text
+Y_d(x) is an A_d edge and emits no rooted third-color triangle,
+or
+Y_d(x) is a nonedge and emits exactly two.              (161)
+```
+
+The fibers are pairwise disjoint, and consecutive fibers are anticomplete
+in `A_d`.  Thus a short odd owner run has a reusable two-point lift with no
+endpoint defect once (160) holds.  When (160) fails, either the run is
+quadratically long in `q`, or all clean colors can be concentrated on the
+at most two endpoint owners; the latter is now the finite exceptional
+configuration requiring a marked endpoint count.
