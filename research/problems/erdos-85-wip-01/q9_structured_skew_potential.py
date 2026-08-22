@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 """Fit invariant antisymmetric matching potentials for the q=9 B.3 horn.
 
-The potential class only sees the ordered row types and the intersection
-size of their U1 supports.  A cutting-plane LP minimizes the worst (over
-outer witnesses) sum of the 47 local maximum-weight matching values.  The
-matching oracle is an exact binary MILP, so convergence with a negative
-objective certifies (12h) for every supplied witness.  Objective zero says
-that this deliberately small invariant class is insufficient.
+The basic potential class only sees ordered row types and U1-support
+intersection size.  Optional modes refine a row type by its candidate count
+or by the multiset of its selected-label loads.  A cutting-plane LP minimizes
+the worst (over outer witnesses) sum of the 47 local maximum-weight matching
+values.  The matching oracle is an exact binary MILP, so convergence with a
+negative objective certifies (12h) for every supplied witness.  Objective
+zero says that the selected invariant class is insufficient.
 """
 
 from __future__ import annotations
 
 import argparse
 import sys
+from collections import Counter
 from itertools import combinations
 
 import numpy as np
@@ -95,7 +97,46 @@ def instance(branch: int, seed: dict, colors: tuple[int, int]) -> dict:
         vectors.append(np.array(vs))
         labels.append(ls)
     return {"degree": degree, "candidates": candidates,
-            "vectors": vectors, "labels": labels}
+            "vectors": vectors, "labels": labels, "blocks": blocks,
+            "types": types}
+
+
+def refine_features(instances: list[dict], mode: str) -> None:
+    """Replace the basic vectors by vectors for a finer vertex signature."""
+    global FEATURES
+    signatures = []
+    keys = set()
+    for data in instances:
+        row_signatures = []
+        for t in range(N):
+            signature = (data["types"][t], len(data["candidates"][t]))
+            if mode == "load-profile":
+                loads = Counter(b for support in data["labels"][t]
+                                for b in support)
+                signature += (tuple(sorted(loads.values())),)
+            row_signatures.append(signature)
+        signatures.append(row_signatures)
+        for t in range(N):
+            for u in data["candidates"][t]:
+                if row_signatures[t] != row_signatures[u]:
+                    keys.add((min(row_signatures[t], row_signatures[u]),
+                              max(row_signatures[t], row_signatures[u]),
+                              len(data["blocks"][t] & data["blocks"][u])))
+    FEATURES = {key: i for i, key in enumerate(sorted(keys))}
+    for data, row_signatures in zip(instances, signatures):
+        vectors = []
+        for t in range(N):
+            row_vectors = []
+            for u in data["candidates"][t]:
+                vector = np.zeros(len(FEATURES))
+                a, b = row_signatures[t], row_signatures[u]
+                if a != b:
+                    key = (min(a, b), max(a, b),
+                           len(data["blocks"][t] & data["blocks"][u]))
+                    vector[FEATURES[key]] = 1 if a < b else -1
+                row_vectors.append(vector)
+            vectors.append(np.array(row_vectors))
+        data["vectors"] = vectors
 
 
 def oracle(data: dict, row: int, theta: np.ndarray) -> tuple[float, np.ndarray] | None:
@@ -189,6 +230,9 @@ def main() -> int:
     parser.add_argument("--max-rounds", type=int, default=100)
     parser.add_argument("--individual", action="store_true",
                         help="fit each locally feasible instance separately")
+    parser.add_argument("--features", choices=("basic", "candidate-count",
+                                                "load-profile"),
+                        default="basic")
     args = parser.parse_args()
     data = []
     data_labels = []
@@ -211,6 +255,9 @@ def main() -> int:
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")
         return 0
+    if args.features != "basic":
+        refine_features(data, args.features)
+        print(f"feature_mode={args.features} feature_count={len(FEATURES)}")
     if args.individual:
         for label, candidate in zip(data_labels, data):
             status, objective, _, rounds = fit([candidate], args.max_rounds)
@@ -221,10 +268,13 @@ def main() -> int:
     status, objective, theta, rounds = fit(data, args.max_rounds)
     print(f"instances={len(data)} local_hall_instances={len(hall_labels)} "
           f"status={status} objective={objective:.9g} rounds={rounds}")
-    for feature, i in FEATURES.items():
-        if abs(theta[i]) > 1e-7:
-            a, b, overlap = feature
-            print(f"theta[{TYPE_NAMES[a]},{TYPE_NAMES[b]},overlap={overlap}]={theta[i]:.9g}")
+    if args.features == "basic":
+        for feature, i in FEATURES.items():
+            if abs(theta[i]) > 1e-7:
+                a, b, overlap = feature
+                print(f"theta[{TYPE_NAMES[a]},{TYPE_NAMES[b]},overlap={overlap}]={theta[i]:.9g}")
+    else:
+        print(f"nonzero_coefficients={sum(abs(x) > 1e-7 for x in theta)}")
     if status == "local-hall":
         print("at least one instance has a local Hall obstruction")
     return 0

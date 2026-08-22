@@ -615,6 +615,29 @@ types and support overlap.  The reproducible exact-oracle experiment is
 the feature class on one witness from failure of a single potential shared
 across witnesses.
 
+There is nevertheless a canonical, if still overly detailed, refinement
+which succeeds.  For each row record its five-way type, its number of
+eligible candidate neighbors, and the sorted multiset of the nonzero loads
+of the sixteen selected labels among those candidates.  Let `W_tu` depend
+on the ordered pair of these **local load profiles** and support overlap.
+The candidate-count refinement alone still has optimum zero on all six
+seed-zero instances.  The load-profile refinement, fitted separately,
+strictly separates all six, with normalized optima
+
+```text
+branch 3: -1.20490201, -3.61427179, -1.03339599,
+branch 4: -2.19211409, -8.66096979, -1.87816915.
+```
+
+This locates the information threshold: the potential need not name rows or
+use the full arbitrary Farkas ray, but it must at least detect the imbalance
+pattern of the selected U1 fibers in each local eligibility graph.  The
+profile is almost injective in the first instance (44 profiles on 47 rows),
+so this is not yet a uniform counting lemma.  Its value is as a positive
+target for compression: identify which statistic of the sixteen label loads
+is responsible for the strict sign.  The script modes `--features
+candidate-count` and `--features load-profile` reproduce the boundary.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
