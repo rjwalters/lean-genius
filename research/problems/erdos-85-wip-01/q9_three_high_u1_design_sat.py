@@ -150,6 +150,43 @@ def build(branch: int, timeout_ms: int) -> tuple[Solver, dict]:
                     )
                 )
 
+    # Every unmarked B1 point has exactly five original B0 neighbors.  The
+    # 47 ordinary B0 centers are precisely the 26 selected triples and the
+    # 21 marked-support pair centers, so this is a pointwise degree equation,
+    # not merely the already-implied total incidence mass 26*3 + 21*2 = 120.
+    for u in range(N):
+        triple_incident = [selected[t] for t in triples if u in t]
+        marked_incident = [var for e, var in marked_pairs.items() if u in e]
+        solver.add(
+            Sum([If(q, 1, 0) for q in triple_incident + marked_incident]) == 5
+        )
+
+        # Columnwise projection of the full B0--B1 defect design.  Counting
+        # common-neighbor two-paths from the 47 ordinary B0 vertices to u
+        # shows that exactly two of u's five incident B0 blocks have residual
+        # B0-degree six, plus one for each regular special row missed.  The
+        # degree-six ordinary blocks are precisely the marked-pair centers and
+        # the exceptional hole triples.
+        pair_count = Sum([If(q, 1, 0) for q in marked_incident])
+        hole_count = Sum([If(holes[t], 1, 0) for t in triples if u in t])
+        if branch == 3:
+            solver.add(pair_count + hole_count == 2)
+        else:
+            missed_punctured = Sum(
+                [
+                    If(
+                        Sum(
+                            [If(classes[r][t], 1, 0) for t in triples if u in t]
+                        )
+                        == 0,
+                        1,
+                        0,
+                    )
+                    for r in (1, 2)
+                ]
+            )
+            solver.add(pair_count + hole_count == 2 + missed_punctured)
+
     # Defect graph on U1.
     defect = {edge_key(u, v): Bool(f"defect_{u}_{v}") for u, v in cross_pairs}
 
