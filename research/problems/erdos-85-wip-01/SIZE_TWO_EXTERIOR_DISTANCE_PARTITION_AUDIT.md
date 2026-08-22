@@ -72,6 +72,45 @@ Summing over `z` gives the global form
 Indeed `sum_z p(z)/2` is the number of non-edge traces, while
 `sum_z tau_K(z)=6` times the number of K-triangles.
 
+## Exact relation to the triangle-free-edge graph
+
+The tempting identification of `far_disjoint` with the whole exterior defect
+graph is false: an exterior K-edge with disjoint traces and no K-common-
+neighbor is itself a triangle-free A-edge and hence a D-edge.  Accounting for
+these missing edges gives the correct pointwise identity
+
+```text
+degree_T(z) + p(z) + tau_K(z) = q-2.        (*)
+```
+
+Indeed among the `q-2-p(z)` disjoint-trace K-neighbors, exactly `tau_K(z)`
+lie in a unique K-triangle and all the rest are T-neighbors.  Thus exterior
+K-edges partition uniquely into:
+
+* exterior T-edges;
+* shared-trace resolver edges;
+* the three edges of unique K-triangles.
+
+If `a(C)` is the number of edge-traces, the number of resolver edges is
+`q(q-2)-a(C)`.  Reducing the global edge partition modulo three at binary q
+gives
+
+```text
+a(C) = |E(T[R])| (mod 3).
+```
+
+This is valid but supplies no new global pressure.  The internal ledger gives
+`|E(T[C])| = 2q-a(C) (mod 3)`, so `a(C)` cancels after adding the two regions:
+
+```text
+|E(T)| = 2q (mod 3).
+```
+
+For `q=2^k`, this is exactly the already-banked global triangle-free-edge
+congruence `|E(T)| = 2^(3k-1) (mod 3)`, because the two powers of two differ
+by the even exponent `2k-2`.  Therefore the exterior mod-three route closes
+at the existing global ledger; it does not force cycle synchronization.
+
 ## Relation to the q=16 reduced witness
 
 The `C6 disjoint-union C26` eigenline/desynchronization model in
