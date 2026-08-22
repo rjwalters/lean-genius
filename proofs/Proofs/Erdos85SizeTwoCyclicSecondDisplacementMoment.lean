@@ -176,6 +176,17 @@ theorem sizeTwoCyclicPermutation_targetDifference_secondMoment_modFour
   have hconsecutive : ∀ z : ZMod 4, 2 * z * (z + 1) = 0 := by decide
   simpa only [hconsecutive] using h
 
+/-!
+The mod-four shadow is recorded as a normalization lemma, not as an
+obstruction.  Indeed the admissible domain rows and target columns each have
+equally many even and odd elements.  If `B` routes go from odd rows to even
+columns, the opposite mismatch count is also `B`; the number `O` of odd
+target differences is therefore `2B`, and the displayed congruence reads
+`4B=0`.  Any new pressure from the quadratic identity must retain higher
+2-adic information (or the actual row labels), rather than reduce immediately
+to parity.
+-/
+
 end
 
 end Erdos85
