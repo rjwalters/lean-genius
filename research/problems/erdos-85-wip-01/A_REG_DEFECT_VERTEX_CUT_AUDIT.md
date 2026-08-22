@@ -1,0 +1,102 @@
+# A-REG defect vertex-cut audit
+
+## Setting
+
+Let `A` be a loopless symmetric `q`-regular `C4`-free graph on `q^2`
+vertices, with even `q >= 8`, and let
+
+```text
+D = (q - 1) I + J - A^2.
+```
+
+Assume that `D` is connected.  The cut-variance theorem gives, for a shore
+`S` of order `s = q a + r`, `0 <= r < q`,
+
+```text
+|delta_D(S)| >= r(q-r).
+```
+
+It also proves that `D` has no one- or two-edge cut.  In particular, a
+nontrivial `q`-divisible shore has boundary at least four.
+
+## No articulation vertex
+
+Suppose that deleting a vertex `w` leaves components `S_1,...,S_k`, with
+`k >= 2`.  Their `D`-boundaries are disjoint subsets of the `q-1` edges at
+`w`, so
+
+```text
+sum_i |delta_D(S_i)| <= q - 1.                 (1)
+```
+
+Write `|S_i| = q a_i + r_i`.  Since their orders sum to `q^2-1`, the residues
+sum to `-1` modulo `q`.  If all but one residue vanish, the nonzero residue is
+`q-1`; its cut already has size at least `q-1`, while every zero-residue
+component contributes at least four.  If at least two residues are nonzero,
+the sum of the bounds `r_i(q-r_i)` is strictly greater than `q-1` (the
+minimum split of residue `q-1` starts with `1` and `q-2`, giving
+`(q-1)+2(q-2)`).  Adding further positive residues or a full extra `q` to the
+residue sum cannot lower the total to `q-1`.  Both cases contradict (1).
+
+Thus connected `D` has no articulation vertex: its vertex connectivity is at
+least two.
+
+## Exact two-vertex-separator escape
+
+The same argument does not prove three-connectivity.  If deleting
+`W = {x,y}` leaves at least two components, their boundaries total at most
+`2(q-1)`.  The residue bounds leave one sharp possibility:
+
+- there are exactly two components `S_1,S_2`;
+- `|S_i| = q a_i - 1`, with `a_1+a_2=q`;
+- both cuts have size exactly `q-1`;
+- every `D`-edge at `x` or `y` enters one of the two components, so `xy` is
+  not a `D`-edge.
+
+(The restriction `q >= 8` matters to this uniqueness statement; the small
+`q = 4` residue optimization has an additional `(1,1)` equality pattern.)
+
+Cut-variance equality gives a `q`-set `Z_i` for each component such that
+
+```text
+deg_A(v,S_i) = a_i - 1_Z_i(v).
+```
+
+Because `S_1,S_2,W` partition the vertices, pointwise degree addition yields
+
+```text
+1_Z1(v) + 1_Z2(v) = deg_A(v,W)
+                         = 1_NA(x)(v) + 1_NA(y)(v).       (2)
+```
+
+Consequently the two low sets have the same union, intersection, and
+symmetric difference as `N_A(x),N_A(y)`.  Since `xy` is not a `D`-edge,
+`x,y` have their unique permitted common `A`-neighbor, so both pairs of
+`q`-sets meet in one point.
+
+Put
+
+```text
+P = N_A(x) \ N_A(y),   Q = N_A(y) \ N_A(x),
+p = |P intersect Z_1|.
+```
+
+Then (2) only says that `Z_1` selects `q-1` points from the disjoint union
+`P union Q`, and direct use of `D = (q-1)I+J-A^2` gives
+
+```text
+deg_D(x,S_1) = p,              deg_D(y,S_1) = q-1-p,
+deg_D(x,S_2) = q-1-p,          deg_D(y,S_2) = p.
+```
+
+Every value `0 <= p <= q-1` satisfies all scalar cut, equality, and pair
+codegree constraints.  Hence the cut theorem proves two-connectivity but
+does not exclude a two-vertex separator.  A proof of three-connectivity would
+need location information that distinguishes how the two low sets split the
+two punctured neighborhoods.
+
+## Status
+
+- **Proved mathematically here:** connected `D` has no articulation vertex.
+- **Exact unresolved boundary:** the paired minimum-cut configuration above.
+- **Not claimed:** a Lean theorem or three-vertex-connectivity.
