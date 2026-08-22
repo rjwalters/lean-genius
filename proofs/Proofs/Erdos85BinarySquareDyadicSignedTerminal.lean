@@ -261,6 +261,21 @@ theorem binarySquare_mixedMajority_defect_identity
         _ = f * f := by rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hf)]
   nlinarith
 
+/-- The first two layers of the mixed defect parameter `r=q-f` are forced
+by `2e+u=r²` and `1≤u≤r`. -/
+theorem binarySquare_mixedMajority_first_defect_layers
+    {r u e : ℕ} (hu : 1 ≤ u) (hur : u ≤ r)
+    (hdefect : 2 * e + u = r * r) :
+    (r = 1 → u = 1 ∧ e = 0) ∧
+    (r = 2 → u = 2 ∧ e = 1) := by
+  constructor
+  · intro hr
+    subst r
+    omega
+  · intro hr
+    subst r
+    omega
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -758,6 +773,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_pureExceptional_halfDegree_lt_card
 #print axioms Erdos85.binarySquare_pureExceptional_defect_triple_identity
 #print axioms Erdos85.binarySquare_mixedMajority_defect_identity
+#print axioms Erdos85.binarySquare_mixedMajority_first_defect_layers
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.mixedExceptional_union_card_le_of_replicationAtMostOne

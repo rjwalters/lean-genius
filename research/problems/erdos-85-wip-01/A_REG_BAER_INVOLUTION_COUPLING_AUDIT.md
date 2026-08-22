@@ -1274,6 +1274,25 @@ q/2 < f <= q-1,       u <= (q-f)^2,       c=f+u<=q.      (73c)
 The balanced mixed case retains the still stronger fact that both line types
 have replication at most one, so the whole exceptional support is a D-clique.
 
+Equivalently, put `r=q-f` in the unbalanced case.  Equations (73a)--(73c)
+become the compact parameter normal form
+
+```text
+1 <= u <= r < q/2,
+2e_D(F)=r^2-u,
+2a=q-r-u,
+c=q-r+u.                                                   (73d)
+```
+
+In particular `r` and `u` have the same parity, and the first layers are
+rigid: `r=1` forces `(u,e_D(F),c)=(1,0,q)`; `r=2` forces
+`(u,e_D(F),c)=(2,1,q)`.  This is not a finite-q census: `r` is a uniform
+defect parameter, and (73d) prescribes the majority D-edge count at every
+binary order.  The remaining structural task is to exclude these prescribed
+small-edge majority graphs using the four-type A-routing rule (60) and D
+connectedness, or force `r` large enough to contradict the dyadic stopping
+data.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
