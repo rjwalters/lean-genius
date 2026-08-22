@@ -156,6 +156,24 @@ theorem binarySquare_trichotomy_companionDefect_apply
     binarySquare_sparseSigned_companionDefect_apply
       G hfree hreg x z d hAx hsum v
 
+/-- Arithmetic capstone behind the mixed exceptional-support bound.  At
+`q = 4m`, write the two line-type sizes as `u` and `u + 2a`; the minority
+replication bound and the complete bipartite defect core force total support
+at most `3q/2 - 2 = 6m - 2`. -/
+theorem binarySquare_mixedExceptional_card_le
+    {m a u c : ℕ} (hm : 1 ≤ m)
+    (hc : c = 2 * (u + a))
+    (huBalanced : a = 0 → u ≤ 2 * m)
+    (huUnbalanced : 0 < a → u ≤ 2 * m - 1)
+    (hcore : u + 2 * a ≤ 4 * m - 1) :
+    c ≤ 6 * m - 2 := by
+  by_cases ha : a = 0
+  · have hu := huBalanced ha
+    omega
+  · have haPos : 0 < a := Nat.pos_of_ne_zero ha
+    have hu := huUnbalanced haPos
+    omega
+
 end
 
 end Erdos85
@@ -165,3 +183,4 @@ end Erdos85
 #print axioms Erdos85.sum_cutSign
 #print axioms Erdos85.binarySquare_sparseSigned_companionDefect_apply
 #print axioms Erdos85.binarySquare_trichotomy_companionDefect_apply
+#print axioms Erdos85.binarySquare_mixedExceptional_card_le
