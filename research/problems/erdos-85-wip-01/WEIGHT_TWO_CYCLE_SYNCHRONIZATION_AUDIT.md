@@ -75,6 +75,17 @@ At q=16 their sum is exactly 224.  Thus the integer ledger and its mod-8
 consequence are fully compatible with desynchronization; they merely divide
 the cross-edge owners between the two sides.
 
+The induced defect block is also exact, not a free placeholder.  Each of the
+32 internal vertices supplies one selector pair consisting of its two
+distance-two H-neighbors.  By the banked
+`binarySquare_regular_sizeTwoSelectorGraph_eq_componentDefectComplementGraph`,
+the induced defect graph is the loopless complement of these distance-two
+pairs together with the 224 outside trace pairs.  The script reconstructs it
+directly and verifies that it is 15-regular, connected, and non-bipartite on
+all 32 vertices.  Thus the reduced witness satisfies the defining NONBIP
+defect-component condition; its missing layer is outside adjacency, not the
+component's own defect realization.
+
 The commutator is not an optional strengthening.  If `M` is the component-to-
 outside incidence matrix and `K` the outside induced adjacency matrix, the
 cross block of `A^2` is

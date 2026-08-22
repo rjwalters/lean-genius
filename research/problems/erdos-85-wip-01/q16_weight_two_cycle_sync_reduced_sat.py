@@ -9,6 +9,7 @@ already have an internal common neighbor.  Different internal cycles can
 nevertheless have different trace/T orientations.
 """
 
+from collections import deque
 from itertools import combinations
 
 from z3 import Bool, If, Not, Solver, Sum, is_true, sat
@@ -170,10 +171,48 @@ def main() -> None:
     assert all(len(set(first) & set(second)) == 1 for first, second in outside_edges)
     assert len(chosen & INTERNAL_EDGES) + len(outside_edges) == Q * (Q - 2)
 
+    # Internal vertices themselves select the two distance-two neighbors on
+    # their H-cycle.  The exact selector-complement identity therefore
+    # reconstructs the induced defect block as the complement of F together
+    # with those distance-two selector pairs.
+    defect_edges = set(PAIRS) - chosen - distance_two_pairs
+    defect_neighbors = {vertex: set() for vertex in range(N)}
+    for first, second in defect_edges:
+        defect_neighbors[first].add(second)
+        defect_neighbors[second].add(first)
+    assert all(len(defect_neighbors[vertex]) == Q - 1 for vertex in range(N))
+
+    reached = {0}
+    queue = deque([0])
+    while queue:
+        for neighbor in defect_neighbors[queue.popleft()]:
+            if neighbor not in reached:
+                reached.add(neighbor)
+                queue.append(neighbor)
+    assert reached == set(range(N))
+
+    color: dict[int, int] = {}
+    bipartite = True
+    for root in range(N):
+        if root in color:
+            continue
+        color[root] = 0
+        queue = deque([root])
+        while queue:
+            vertex = queue.popleft()
+            for neighbor in defect_neighbors[vertex]:
+                if neighbor not in color:
+                    color[neighbor] = 1 - color[vertex]
+                    queue.append(neighbor)
+                elif color[neighbor] == color[vertex]:
+                    bipartite = False
+    assert not bipartite
+
     print("verified reduced q=16 selector countermodel")
     print("internal type: C6 + C26 (oppositely oriented)")
     print("outside traces: 224; trace-edges: 26")
     print(f"outside resolution edges: {len(outside_edges)}")
+    print("induced defect block: connected, nonbipartite, 15-regular")
 
 
 if __name__ == "__main__":
