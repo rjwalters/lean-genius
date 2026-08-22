@@ -655,3 +655,55 @@ mode is closed by the defect-selector bridge and the two-regular complement
 quotient above.  Consequently any odd collision residue is now confined to
 the transport/no-full-support-signed-eigenline side of the dispatcher.  The
 remaining task is no longer a signed-mode parity question.
+
+## 9. Exact transport-side trace target
+
+The same defect/exterior-pair adjacency bridge removes the cycle selector
+even without a signed line.  Let `H=A_c` be the internal ambient two-factor,
+let `R` be its exterior-pair graph, and let `t_3(H)` be the number of internal
+`C3` components.  The cycle-sector dichotomy and the adjacency criterion give
+an exact trichotomy.
+
+* A `C3` is all-triangle, but none of its ambient edges belongs to `R`, since
+  the third vertex is an internal common neighbor.
+* On every longer all-triangle cycle, an ambient cycle edge is not a defect
+  edge and has no internal common neighbor, so it is an `R`-edge.
+* On every longer all-triangle-free cycle, an ambient cycle edge is a defect
+  edge, so it is not an `R`-edge.
+
+Consequently
+
+```text
+|E(H) cap E(R)|
+  = total order of the longer all-triangle internal cycles. (39)
+```
+
+The component has even order `2q`.  Partitioning that order among the three
+classes above and using (30) yields
+
+```text
+M_c = |E(H) cap E(R)| + t_3(H)  (mod 2).                (40)
+```
+
+Both terms have canonical trace forms:
+
+```text
+trace(H R) = 2 |E(H) cap E(R)|,
+trace(H^3) = 6 t_3(H).                                  (41)
+```
+
+Thus the entire collision-parity problem, including the transport branch,
+is equivalent to the single mixed trace congruence
+
+```text
+trace(H^3 + 3 H R) = 0  (mod 12).                       (42)
+```
+
+The signed-mode argument above proves (42) whenever the exterior-pair bottom
+line supplies a full-support `{+1,-1}` joint eigenvector.  In the other horn,
+`B^T` transports every relevant nonprincipal internal mode to the exterior
+adjacency block with negated eigenvalue.  Therefore (42), rather than another
+cycle-by-cycle selector analysis, is the precise remaining transport-side
+consumer.  A proof must use the transported exterior spectrum or the
+simultaneous routing partition; commutation and ordinary quotient row sums
+alone do not distinguish the two summands in (40).
