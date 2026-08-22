@@ -1418,6 +1418,22 @@ every other majority line has three.  Hence the sole missing intersection in
 the `r=2` design is visible as one extra private point on each of its two
 lines, a marked pair that the path--cycle self-indexing must respect.
 
+The marked pair cannot be placed arbitrarily in that core.  If `Y-X-Z` is a
+two-step in `A[R]`, then X itself is a common A-neighbor of Y and Z, so the
+codegree identity gives `YZ notin E(D)`.  Consequently
+
+```text
+E(D[F]) contains no distance-two pair of A[R].             (73k)
+```
+
+At `r=2`, if the unique D[F]-edge has both endpoints in R, it is therefore
+either an A[R]-edge (necessarily a triangle-free A-edge, since it is also a
+D-edge) or its endpoints have A[R]-distance at least three or lie in
+different path--cycle components.  At `r=1`, every A[R]-edge is instead a
+triangle edge: D[F] is empty, so its endpoints have their unique additional
+common A-neighbor.  This is the exact interface between the partial-Baer core
+and `T=A intersect D`.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
