@@ -398,6 +398,21 @@ reason that an Eulerian nonadjacent transport with (20) is incompatible
 with connected D).  This is strictly sharper than trying to compare Omega
 and T directly, since their disjointness has now been factored out.
 
+The q=4 fixed-free control calibrates the remaining difficulty exactly.
+The extended verifier finds
+
+```text
+|Omega|=40, |H|=48, |K|=40,
+degree multiset of K = 4^8 6^8,
+|K intersect D|=8, |K setminus D|=32.
+```
+
+Its two nonconstant binary kernel shores are the two D-components, and each
+has 32 crossing K-edges while still satisfying (19) vertexwise.  Thus K need
+not lie in D, avoid D, or preserve D-components; even a large K-cut is
+compatible with the transport identity.  A terminal really must use the
+`k>=3` incidence structure, not a support-containment shortcut.
+
 Equations (7)--(20) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent

@@ -96,8 +96,47 @@ def main() -> None:
     nontrivial_t_components = [part for part in components(t) if len(part) > 1]
     assert nontrivial_t_components == [d_components[1]]
 
+    # Baer-overlap transport calibration.  Modulo two the overlap graph has
+    # adjacency M_Omega = A^3 + J + I, so off the diagonal a pair belongs to
+    # Omega exactly when its number of A-three-walks is even.
+    def three_walks(x: int, y: int) -> int:
+        return sum(1 for u in a[x] for v in a[y] if v in a[u])
+
+    omega_edges = {
+        (x, y)
+        for x in range(N)
+        for y in range(x + 1, N)
+        if (three_walks(x, y) + 1) % 2 == 1
+    }
+    h_edges = omega_edges ^ d_edges
+    k_edges = h_edges ^ t_edges
+    h = adjacency(h_edges)
+    k = adjacency(k_edges)
+
+    assert h_edges & A_EDGES == t_edges
+    assert not (k_edges & A_EDGES)
+    assert all(len(h[x]) % 2 == 0 for x in range(N))
+    assert all(len(k[x]) % 2 == 0 for x in range(N))
+    assert (len(d_edges), len(t_edges), len(omega_edges), len(h_edges), len(k_edges)) == (
+        24, 8, 40, 48, 40
+    )
+    assert sorted(len(k[x]) for x in range(N)) == [4] * 8 + [6] * 8
+    assert len(k_edges & d_edges) == 8
+    assert len(k_edges - d_edges) == 32
+
+    # The two nonconstant F_2 adjacency-kernel shores are exactly the two D
+    # components.  On each, K- and T-incidence agree vertexwise modulo two.
+    for shore in d_components:
+        assert all(len(a[x] & shore) % 2 == 0 for x in range(N))
+        assert all(
+            len(k[x] & shore) % 2 == len(t[x] & shore) % 2
+            for x in range(N)
+        )
+        assert sum(1 for x, y in k_edges if (x in shore) != (y in shore)) == 32
+
     print("verified: symmetric loopless 4-regular C4-free A on 16 vertices")
     print("trace(A) = 0; D components = [8, 8]; T is one C8")
+    print("Baer transport: |Omega|=40, |H|=48, |K|=40; K degrees 4^8 6^8")
 
 
 if __name__ == "__main__":
