@@ -369,3 +369,72 @@ that it identifies the exact spectral consumer of the colored refinement in
 Section 7.  Any useful parity or lower bound for the exterior-rainbow portion
 must refine (22) by owner colors, rather than recomputing the already fixed
 uncolored trace.
+
+## 9. Collision-table and parity localization
+
+The joint moment has a more concrete entrywise form.  Put
+
+```text
+B_c = A_c D_c = D_c A_c.                                (24)
+```
+
+For vertices `x,k in c`, the entry `B_c(x,k)` counts the internal neighbors
+of `x` that are defect-adjacent to `k`.  Since `x` has exactly two internal
+neighbors,
+
+```text
+B_c(x,k) in {0,1,2}.                                    (25)
+```
+
+The self edge indexed by `x` is precisely the pair of those two internal
+neighbors.  Thus `k` is a defect common neighbor of that self edge exactly
+when both are defect-adjacent to `k`, equivalently when `B_c(x,k)=2`.
+Using (19), this gives the exact collision-table identity
+
+```text
+M_c = #{(x,k) in c x c : B_c(x,k)=2}.                   (26)
+```
+
+It also recovers (22) without spectral language.  Every row of `B_c` has sum
+`2(q-1)`, so
+
+```text
+sum_(x,k) B_c(x,k) = 4q(q-1).
+```
+
+For entries in `{0,1,2}`, `b^2=b+2*choose(b,2)`, and `choose(b,2)` is the
+indicator of `b=2`.  Hence
+
+```text
+trace(B_c^2) = sum_(x,k) B_c(x,k)^2
+             = 4q(q-1) + 2M_c,                         (27)
+```
+
+because `B_c` is symmetric.
+
+Symmetry also localizes the parity question.  Off-diagonal entries equal to
+two occur in transposed pairs, so
+
+```text
+M_c mod 2 = #{x in c : B_c(x,x)=2} mod 2.               (28)
+```
+
+Finally, `B_c(x,x)` is the number of the two internal `G[c]` edges incident
+to `x` that are also edges of `D_c`.  Therefore
+
+```text
+B_c(x,x)=2
+  iff both internal cycle edges at x are triangle-free edges of G.  (29)
+```
+
+Here “triangle-free edge” is literal: for an ambient edge `xy`, membership in
+the second-order defect graph says that `x,y` have no common ambient neighbor.
+
+Equations (28)-(29) show exactly why the raw joint trace did not decide
+parity.  Evenness of `M_c` is equivalent to evenness of the number of internal
+cycle vertices whose two incident internal edges are both triangle-free.
+The handshake lemma only makes the number of vertices incident to exactly one
+such edge even; it does not control the degree-two count.  A genuine parity
+terminal must therefore use the already available triangle-free/antipodal
+color trace or a cycle-run constraint.  Commutation and row sums alone stop at
+(28).
