@@ -707,3 +707,30 @@ cycle-by-cycle selector analysis, is the precise remaining transport-side
 consumer.  A proof must use the transported exterior spectrum or the
 simultaneous routing partition; commutation and ordinary quotient row sums
 alone do not distinguish the two summands in (40).
+
+There is also an exact graph interpretation of (42).  Let `B` be the
+incidence block from `c` to its complement and form the spanning subgraph
+which deletes all edges wholly outside `c`, with adjacency matrix
+
+```text
+S = [[H,B],[B^T,0]].
+```
+
+The exterior Gram identity is `B B^T=(q-2)I+R`.  Since `trace(H)=0`, a block
+cube expansion gives
+
+```text
+trace(S^3)
+  = trace(H^3) + 3 trace(H B B^T)
+  = trace(H^3 + 3 H R).                                 (43)
+```
+
+Thus (42) is equivalently the assertion that this canonical spanning
+subgraph has an even number of triangles.  Its degree sequence is especially
+rigid: the `2q` vertices of `c` have degree `q`, every exterior vertex has
+degree two, the exterior vertices form an independent set, and C4-freeness
+is inherited from `G`.  Its triangles are exactly the internal `C3`s and the
+subdivided exterior-pair edges which also lie in `H`, reproducing (40).
+This packages the transport target as a pure parity theorem for a C4-free
+even-degree split graph, while retaining the self-indexed origin of its
+degree-two side.
