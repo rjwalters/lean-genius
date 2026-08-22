@@ -1767,6 +1767,27 @@ sharpened to a path--cycle core with an explicit broken set `B_0` satisfying
 mate `Q_0`).  This is a genuine Baer-involution coupling on the core, rather
 than only a count of its private points.
 
+Equations (73rj)--(73rk) give an exact boundary dichotomy:
+
+```text
+|B_0| even:
+  theta_0=1, both private edges F_0E_0 and F_0Q_0 lie in T,
+  and R setminus B_0 has a perfect nonedge matching;
+
+|B_0| odd:
+  theta_0=0, iota_(F_0) pairs Q_0 with a unique W_(Y_*),
+  and the remaining labels in R setminus (B_0 union {Y_*})
+  have a perfect nonedge matching.                         (73rl)
+```
+
+In the odd case the boundary pair is the actual triangle
+`F_0--Q_0--W_(Y_*)--F_0`; in the even case there is no private point in the
+involution domain, but both private owner edges are broken T-ports.  Thus
+the last local ambiguity is no longer an arbitrary sign: it is the concrete
+alternative **double broken private ports versus one boundary triangle**.
+The residual transport must rule out or consistently propagate these two
+explicit boundary states.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
