@@ -916,3 +916,51 @@ matrices: the coupled routing partitions must pair the marked endpoints with
 even run distance and pair the odd closed owner cycles, after summing over
 all colors.  A countermodel to that statement would likewise be a definitive
 failure certificate for the rooted-parity route.
+
+## 13. The root--color state two-factor
+
+Equation (50) couples the separate owner runs through a canonical state
+graph.  Fix `c`.  Its active states are pairs
+
+```text
+(x,e),   x in c, e != c, b_xe=0.
+```
+
+Give these states two kinds of edges (allowing a multigraph if two rooted
+triangles have the same pair of exterior colors).
+
+* A horizontal edge joins `(x,e)` to `(y,e)` whenever the internal edge
+  `xy` belongs to `K_ce=A_c cap F_e[c]`.
+* A vertical edge joins `(x,e)` to `(x,d)` for every three-component
+  triangle rooted at `x` with its other vertices in `e` and `d`.
+
+At `(x,e)`, the horizontal degree is `a_xe` and the vertical degree is
+`sum_d tau_xed`.  Since `b_xe=0`, equation (50) says their sum is exactly
+two.  States with `b_xe=1` have both degrees zero and were omitted.  Hence
+
+```text
+the active root--color state graph is two-regular.          (55)
+```
+
+Its horizontal components before the vertical edges are precisely the owner
+runs of Section 12.  A degree-one run endpoint receives one vertical edge;
+a degree-zero hole receives two; and a degree-two run interior receives none.
+Thus the vertical triangle edges perform the endpoint pairing which the
+handshake lemma alone did not specify.
+
+The edge census is exact:
+
+```text
+# horizontal edges = sum_(e != c) p_ce,
+# vertical edges   = number of three-distinct-component triangles
+                     having their c-vertex as root.        (56)
+```
+
+This is a genuine cross-color normal form, but two-regularity alone still
+does not force horizontal parity.  An all-horizontal state cycle is exactly
+a closed internal cycle monochromatically owned by one exterior color; more
+generally, a mixed state cycle can wind an odd number of horizontal steps
+around an odd internal cycle.  The final simultaneous invariant must rule
+out or pair those odd-horizontal state cycles.  Equivalently, it must supply
+a bipartition or a zero-holonomy label on the state graph which is not already
+a function only of the completed-shift conjugacy class eliminated earlier.
