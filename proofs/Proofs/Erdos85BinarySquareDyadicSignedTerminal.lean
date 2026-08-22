@@ -1,5 +1,6 @@
 import Proofs.Erdos85BinarySquareAdjacencySquareAction
 import Proofs.Erdos85BranchDeficitSymmetry
+import Proofs.Erdos85C4FreeNeighborBlockPartition
 
 /-!
 # Sparse signed terminal for the binary square-order branch
@@ -351,6 +352,26 @@ theorem regular_emptyLines_mul_card_le_complement_card
     _ = Fintype.card V - S.card := by
       simp [T, Finset.card_sdiff]
 
+/-- Local C4-free packing around a shore point: the punctured shore parts of
+the neighbor blocks are disjoint, so their total size is at most the rest of
+the shore. -/
+theorem c4Free_sum_punctured_shore_blocks_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (S : Finset V) {p : V} (hp : p ∈ S) :
+    (∑ w ∈ G.neighborFinset p,
+        (G.neighborFinset w ∩ S.erase p).card) ≤ S.card - 1 := by
+  have hsum := c4Free_sum_neighbor_block_cards_eq_common_targets
+    G hfree p (S.erase p) (by simp)
+  calc
+    (∑ w ∈ G.neighborFinset p,
+        (G.neighborFinset w ∩ S.erase p).card) =
+        ((S.erase p).filter fun y =>
+          (G.neighborFinset p ∩ G.neighborFinset y).Nonempty).card := hsum
+    _ ≤ (S.erase p).card := Finset.card_filter_le _ _
+    _ = S.card - 1 := Finset.card_erase_of_mem hp
+
 end
 
 end Erdos85
@@ -366,3 +387,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_full_empty_card_le_of_defectRegular
 #print axioms Erdos85.binarySquare_full_empty_card_le
 #print axioms Erdos85.regular_emptyLines_mul_card_le_complement_card
+#print axioms Erdos85.c4Free_sum_punctured_shore_blocks_le
