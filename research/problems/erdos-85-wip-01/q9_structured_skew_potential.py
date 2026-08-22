@@ -131,6 +131,111 @@ def refine_features(instances: list[dict], mode: str) -> None:
     """
     global FEATURES, ORDER_CONSTRAINTS
     ORDER_CONSTRAINTS = []
+    if mode in ("fiber-type-total-incidence-linear-farkas",
+                "fiber-type-total-incidence-quadratic-farkas",
+                "fiber-type-total-incidence-threshold-farkas"):
+        quadratic = mode == "fiber-type-total-incidence-quadratic-farkas"
+        threshold = mode == "fiber-type-total-incidence-threshold-farkas"
+        instance_keys = []
+        all_keys = set()
+        for data in instances:
+            row_signatures = []
+            row_censuses = []
+            for t in range(N):
+                loads = Counter(b for support in data["labels"][t]
+                                for b in support)
+                collisions = sum(x * (x - 1) // 2 for x in loads.values())
+                all_loads = Counter(
+                    b for u in data["candidates"][t] for b in data["blocks"][u]
+                )
+                all_collisions = sum(x * (x - 1) // 2
+                                     for x in all_loads.values())
+                signature = (data["types"][t],
+                             len(data["candidates"][t]),
+                             collisions, all_collisions)
+                row_signatures.append(signature)
+                censuses = {}
+                for b in data["selected"]:
+                    counts = [0] * 5
+                    for u in data["candidates"][t]:
+                        if b in data["blocks"][u]:
+                            counts[data["types"][u]] += 1
+                    censuses[b] = tuple(counts)
+                    incidence = int(b in data["blocks"][t])
+                    all_keys.add(("mu", "intercept", signature, incidence))
+                    for j in range(5):
+                        all_keys.add(("mu", "role", signature, incidence, j))
+                    if threshold:
+                        for j in range(5):
+                            for level in range(1, 6):
+                                all_keys.add(("mu", "threshold", signature,
+                                              incidence, j, level))
+                    if quadratic:
+                        for j in range(5):
+                            for k in range(j, 5):
+                                all_keys.add(("mu", "quadratic", signature,
+                                              incidence, j, k))
+                row_censuses.append(censuses)
+                all_keys.add(("alpha", signature))
+            instance_keys.append((row_signatures, row_censuses))
+        FEATURES = {key: i for i, key in enumerate(sorted(all_keys))}
+        for data, (row_signatures, row_censuses) in zip(instances, instance_keys):
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                own_support = data["blocks"][t] & data["selected"]
+                for j, u in enumerate(data["candidates"][t]):
+                    vector = np.zeros(len(FEATURES))
+                    vector[FEATURES[("alpha", row_signatures[t])]] += 1
+                    vector[FEATURES[("alpha", row_signatures[u])]] -= 1
+                    for b in data["labels"][t][j]:
+                        incidence = int(b in data["blocks"][t])
+                        vector[FEATURES[("mu", "intercept",
+                                         row_signatures[t], incidence)]] += 1
+                        for role, count in enumerate(row_censuses[t][b]):
+                            vector[FEATURES[("mu", "role", row_signatures[t],
+                                             incidence, role)]] += count
+                        if threshold:
+                            counts = row_censuses[t][b]
+                            for role in range(5):
+                                for level in range(1, counts[role] + 1):
+                                    vector[FEATURES[("mu", "threshold",
+                                                     row_signatures[t], incidence,
+                                                     role, level)]] += 1
+                        if quadratic:
+                            counts = row_censuses[t][b]
+                            for role in range(5):
+                                for other in range(role, 5):
+                                    vector[FEATURES[("mu", "quadratic",
+                                                     row_signatures[t], incidence,
+                                                     role, other)]] += (
+                                                         counts[role] * counts[other])
+                    for b in own_support:
+                        incidence = int(b in data["blocks"][u])
+                        vector[FEATURES[("mu", "intercept",
+                                         row_signatures[u], incidence)]] -= 1
+                        for role, count in enumerate(row_censuses[u][b]):
+                            vector[FEATURES[("mu", "role", row_signatures[u],
+                                             incidence, role)]] -= count
+                        if threshold:
+                            counts = row_censuses[u][b]
+                            for role in range(5):
+                                for level in range(1, counts[role] + 1):
+                                    vector[FEATURES[("mu", "threshold",
+                                                     row_signatures[u], incidence,
+                                                     role, level)]] -= 1
+                        if quadratic:
+                            counts = row_censuses[u][b]
+                            for role in range(5):
+                                for other in range(role, 5):
+                                    vector[FEATURES[("mu", "quadratic",
+                                                     row_signatures[u], incidence,
+                                                     role, other)]] -= (
+                                                         counts[role] * counts[other])
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
     if mode in ("fiber-profile-farkas", "fiber-type-profile-farkas",
                 "fiber-type-count-farkas", "fiber-type-uncolored-farkas",
                 "fiber-type-bare-farkas", "fiber-demand-farkas",
@@ -781,7 +886,10 @@ def main() -> int:
                                                 "fiber-type-total-monotone-farkas",
                                                 "fiber-type-collision-monotone-farkas",
                                                 "fiber-type-total-incidence-monotone-farkas",
-                                                "fiber-type-total-color-monotone-farkas"),
+                                                "fiber-type-total-color-monotone-farkas",
+                                                "fiber-type-total-incidence-linear-farkas",
+                                                "fiber-type-total-incidence-quadratic-farkas",
+                                                "fiber-type-total-incidence-threshold-farkas"),
                         default="basic")
     args = parser.parse_args()
     data = []

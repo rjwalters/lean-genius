@@ -1211,6 +1211,29 @@ incur enough essential-label deletion to trigger the Hall inequalities
 (12qr), or else some monotone handoff inequality is strict and supplies the
 price separator.
 
+Low-degree analytic prices do not yet close this cycle system.  Three
+restricted incidence-price classes were tested on the two original
+monotonicity exceptions:
+
+```text
+mu = beta_0 + sum_j beta_j r_j, beta>=0:
+  objectives 0, 0;
+add arbitrary nonnegative univariate thresholds 1[r_j>=k]:
+  objectives 0, 0;
+add all nonnegative quadratic monomials r_j r_k:
+  objectives 0, -0.5709038026.
+```
+
+The corresponding modes are `fiber-type-total-incidence-linear-farkas`,
+`...-threshold-farkas`, and `...-quadratic-farkas`.  Thus first moments and
+separable nonlinear role thresholds are insufficient, while a positive
+quadratic collision charge repairs one case but not the final `(0,1)` case.
+The surviving price requires a genuinely joint nonlinear upper set of the
+five-role census, or a signed interaction whose total evaluation remains
+monotone on the realizable flags.  This rules out the simplest scalar
+root-incidence collision potential and locates the needed invariant at the
+interaction between role coordinates.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
