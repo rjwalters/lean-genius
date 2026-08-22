@@ -1818,3 +1818,45 @@ colors and their coupled SRP partitions.  Thus (109) does not refute the
 target campaign.  It proves that the next theorem must use simultaneous
 reuse and/or the binary-power input; no argument confined to the marked
 two-shore factors `P,A_e` can establish (107).
+
+## 30. The local failure is blocked by the first SRP extension
+
+The model of Section 29 does not extend even to the single missing routing
+color at `q=6`.  Its endpoint residual is
+
+```text
+Q := J - A_c R_ce - R_ce A_e.                          (110)
+```
+
+The two endpoint products are zero-one and support-disjoint, and `Q` is a
+zero-one matrix with every row and column sum four.  Since `q/2=3`, a
+three-component SRP extension would have exactly one third layer and would
+require
+
+```text
+Q = R_cd R_de                                           (111)
+```
+
+for two degree-two incidence blocks.
+
+Every support edge of a product in (111) lies in a `K_(2,2)` support
+rectangle: if a path from `x in c` to `z in e` uses an intermediate vertex
+`y in d`, the two `c`-neighbors and two `e`-neighbors of `y` contribute the
+whole rectangle.  In the explicit residual (110), however, the edge `(0,3)`
+lies in no `K_(2,2)`.  Hence (111) is impossible before any global reuse
+condition is imposed.
+
+The reproducer now verifies this obstruction by enumerating all residual
+rectangles.  This sharpens the lesson of (109): endpoint C4-freeness and
+owner ports permit nonzero marked cubic, but the first SRP factorability
+condition already detects that particular failure.  The next natural
+q-generic theorem target is therefore stronger and narrower than (107):
+
+```text
+does an SRP-factorable endpoint residual force
+  (P(P+A_e)A_e V_j)|_Z = 0 ?                            (112)
+```
+
+If yes, no cross-pair simultaneous comparison is needed for the all-horizontal
+owner-run case; if no, a countermodel must preserve an actual rectangle
+factorization rather than only the two endpoint layers.

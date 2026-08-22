@@ -2,6 +2,7 @@
 """Verify the local q=6 marked-endpoint-cubic failure from audit Section 29."""
 
 import numpy as np
+from itertools import combinations
 
 
 def cycle_adjacency(order: int, cycle: list[int]) -> np.ndarray:
@@ -56,9 +57,31 @@ def main() -> None:
     ) % 2
     assert marked_cubic[components[0]].tolist() == [0, 1, 0, 0, 1]
 
+    source_routes = source_internal @ cross
+    target_routes = cross @ target_internal
+    assert np.all(source_routes <= 1)
+    assert np.all(target_routes <= 1)
+    assert not np.any(source_routes * target_routes)
+    residual = np.ones((order, order), dtype=np.uint8) - source_routes - target_routes
+    assert np.all(residual.sum(axis=0) == 4)
+    assert np.all(residual.sum(axis=1) == 4)
+
+    rectangles: set[tuple[int, int]] = set()
+    for source_pair in combinations(range(order), 2):
+        for target_pair in combinations(range(order), 2):
+            if all(residual[source, target] for source in source_pair for target in target_pair):
+                rectangles.update(
+                    (source, target)
+                    for source in source_pair
+                    for target in target_pair
+                )
+    assert residual[0, 3] == 1
+    assert (0, 3) not in rectangles
+
     print("verified: local q=6 two-shore graph is 4-regular and C4-free")
     print("cross-shadow components: C5 and C7; source internal factor matches shadow")
     print("marked cubic on C5 ports:", marked_cubic[components[0]].tolist())
+    print("SRP extension obstruction: residual edge (0,3) lies in no K2,2")
 
 
 if __name__ == "__main__":
