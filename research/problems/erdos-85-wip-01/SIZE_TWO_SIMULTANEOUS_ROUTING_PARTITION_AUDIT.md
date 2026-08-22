@@ -481,3 +481,27 @@ candidate `-2` eigenvector vanishing on an internal cycle).  This does not
 exclude other signed joint eigenvalues `mu`; it routes the residue away from
 the specifically alternating `mu=-2` cell toward the transport/other-mode
 side of the dispatcher.
+
+The same elementary recurrence sharpens that routing.  Suppose more
+generally that `s` is full-support with values in `{+1,-1}` and
+
+```text
+A_c s = mu s.
+```
+
+At a vertex, the two neighboring signs sum to `-2`, `0`, or `2` times the
+sign at that vertex.  Since `mu` is common to the whole component,
+
+```text
+mu in {-2,0,2}.                                             (32)
+```
+
+For `mu=-2`, signs alternate at every step, so each internal cycle is even.
+For `mu=0`, the cycle recurrence is `s_(i+2)=-s_i`, whose nonzero sign
+pattern has exact period four; every internal cycle therefore has order
+divisible by four.  Both modes force `M_c` even by (30).  Consequently an
+odd collision residue can coexist with a full-support signed joint eigenline
+only in the internal `mu=2` mode (where signs are constant on each internal
+cycle), or else in the no-full-support-signed-eigenline transport branch.
+This isolates the residue more sharply than the `-2` statement alone; it
+does not claim that the `mu=2` mode is itself realizable.
