@@ -973,13 +973,41 @@ Thus (48)--(52) squeeze the final nonconstant layer simultaneously by local
 C4 packing and by an exact D-cut energy.  Extracting a forbidden partial
 design from that squeeze is the remaining terminal.
 
-Equations (7)--(50) are the first canonical cut detector manufactured from
+The final layer also collapses the internal D-degree profile to two levels
+on each shore.  Indeed the exact identity used in (25) is
+
+```text
+D1_S = (q-1)1_S + s1 - 2A(A1_S/2).
+```
+
+At the final level every entry of `A1_S/2` is a multiple of `q/4`, so the
+last term is zero modulo `q/2`.  If `r` is the residue of s modulo `q/2` and
+`rho` is the residue of `r-1` in `{0,...,q/2-1}`, then
+
+```text
+deg_{D[S]}(P) is in {rho,rho+q/2}       for P in S,
+deg_D(P,S) is in {r,r+q/2}              for P outside S.    (53)
+```
+
+If x and y count the vertices taking the higher value on S and its
+complement, respectively, the common cut size determines them exactly:
+
+```text
+|delta_D(S)| = s(q-1-rho) - (q/2)x
+             = (q^2-s)r + (q/2)y.                           (54)
+```
+
+Thus the last stopping digit produces a two-cell degree profile in D, not
+only a line-intersection profile in A.  Equations (51) and (54) couple its
+marked-line count and its two high-degree populations through the same cut.
+
+Equations (7)--(54) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(50), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(54), so these laws alone
 do not conceal an order-independent
 contradiction.
 
