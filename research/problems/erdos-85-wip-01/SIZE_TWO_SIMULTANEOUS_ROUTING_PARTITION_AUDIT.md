@@ -1997,3 +1997,51 @@ owner-factor packing problem.  A countermodel preserving (116) must supply
 four radius-two neighbors, and must realize the resulting large boundary in
 even color classes.  These restrictions are absent from the abstract
 factorization of Section 31.
+
+## 34. Clean third-color abundance
+
+The aggregate packing bound admits a useful colorwise refinement.  For each
+third color `d`, let
+
+```text
+a_d(C) := |E(F_d[c][C])|,
+b_d(C) := |delta_(F_d[c])(C)|.
+```
+
+Since `F_d[c]` is two-regular,
+
+```text
+b_d(C) = 2n - 2 a_d(C),                                (121)
+```
+
+and `b_d(C)` is even.  Summing over third colors and using (119) gives
+
+```text
+sum_(d != c,e) a_d(C) <= n(n-5)/2.                     (122)
+```
+
+Call `d` **clean for `C`** when `a_d(C)=0`, equivalently when all `2n`
+owner incidences of `F_d[c]` at vertices of `C` leave the cycle.  Every
+nonclean color consumes at least one of the internal-edge slots counted in
+(122).  As there are `(q-4)/2` third colors,
+
+```text
+# {d != c,e : d clean for C}
+  >= (q-4)/2 - n(n-5)/2.                               (123)
+```
+
+The right side may be replaced by zero when negative.  Two small-cycle
+specializations are especially rigid:
+
+```text
+n=5: every third color is clean and b_d(C)=10;
+n=7: at most seven third colors are nonclean.           (124)
+```
+
+Thus for every fixed odd owner-cycle length, all but `O(n^2)` routing colors
+have a completely external owner factor on that cycle, uniformly as the
+binary power `q` grows.  A simultaneous argument can now choose a clean
+third color whenever `q-4 > n(n-5)`.  This is stronger than the uncolored
+boundary lower bound: it supplies an individual reused block `R_cd` whose
+shadow has no chord at all inside `C`, which can be inserted into the other
+endpoint partitions.
