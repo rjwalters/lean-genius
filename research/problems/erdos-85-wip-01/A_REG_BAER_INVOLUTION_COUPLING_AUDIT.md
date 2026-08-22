@@ -265,7 +265,44 @@ exactly one and `D[S]` is a perfect matching.  In the odd branch, (11) also
 says every one of the `q^2-|S|` outside vertices sends an odd, and hence
 nonzero, number of D-edges into `S`.
 
-Equations (7)--(13) are the first canonical cut detector manufactured from
+### The k>=3 cut congruence
+
+The kernel shore finally exposes a genuinely k-sensitive residue.  Write
+
+```text
+r_X = |N_A(X) intersect S| = 2 a_X.
+```
+
+Every unordered non-D pair in `S` has a unique common A-neighbor, so it is
+counted on exactly one current line.  Consequently
+
+```text
+C(|S|,2) - e_D(S) = sum_X C(2 a_X,2).                         (14)
+```
+
+Also `sum_X 2a_X=q|S|`, hence `sum_X a_X=q|S|/2`.  If `k>=3`, so
+`8 | q`, this last sum is divisible by four.  Since
+
+```text
+C(2a,2) = 2a^2-a
+```
+
+and `sum a_X^2 = sum a_X (mod 2)`, the right side of (14) is divisible by
+four.  Therefore every binary kernel shore satisfies
+
+```text
+e_D(S) = C(|S|,2)                 (mod 4),
+|delta_D(S)| = |S|(q-|S|)         (mod 8).                     (15)
+```
+
+The second congruence follows from D-regularity:
+`|delta_D(S)|=|S|(q-1)-2e_D(S)`.  This is the first statement in the Baer
+lane that uses `k>=3` rather than only the evenness of q.  It does not by
+itself contradict connectedness, but it puts the nontrivial kernel shore
+into a strict mod-eight cut class while (10)--(11) simultaneously control
+its vertexwise D/Omega incidence parity.
+
+Equations (7)--(15) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The edges of `Omega` are disjoint
 from `A`, hence from `T`, and may be either D-edges or non-D even-overlap
@@ -273,7 +310,7 @@ pairs.  So (10) cannot yet be combined with the Eulerian cut law for `T`.
 Any k-dependent terminal can now aim at locating the symmetric difference
 `Omega triangle D` on the kernel shore `S`, rather than trying to couple the
 local involutions directly.  The q=4 connected control is compatible with
-(7)--(13), so these laws alone do not conceal an order-independent
+(7)--(15), so these laws alone do not conceal an order-independent
 contradiction.
 
 ## Disposition
