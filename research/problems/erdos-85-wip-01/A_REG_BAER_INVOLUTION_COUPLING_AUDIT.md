@@ -1198,13 +1198,41 @@ already closed in the authoritative outline: the useful extra input here is
 the sparse `{+1,0,-1}` support together with its saturated line types, not
 the invariant factors of A alone.
 
-Equations (7)--(70) are the first canonical cut detector manufactured from
+The mixed support is smaller than the coarse bound (62).  Put
+`a=|d|`, `u=min(|F|,|E|)`, and `m=q/2`.  If `a=0`, the relevant cap in (58)
+is one on both shores, so `qu<=q^2/2` and `u<=m`.  If `a>0` and both line
+types occur, (58) first forces `a<=m-1` (at `a>=m` the minority cap is
+zero).  The minority shore then has replication at most one, giving
+
+```text
+qu <= q^2/2-a,       u <= m-1.                              (71)
+```
+
+The D-complete core independently gives
+
+```text
+u+2a <= q-1,       so u <= q-1-2a.                          (72)
+```
+
+Since `c=2(u+a)`, maximizing the minimum of the bounds in (71)--(72), with
+the balanced case included separately, yields
+
+```text
+c <= 3q/2-2                 whenever F and E are both nonempty. (73)
+```
+
+Indeed the two affine bounds cross at `a=q/4`; on either side their maximum
+is `3q/2-2`.  Thus only the pure branch can approach the earlier `2q-2`
+support bound.  The mixed sparse-image terminal already has support at most
+one and a half times q.
+
+Equations (7)--(73) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(70), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(73), so these laws alone
 do not conceal an order-independent
 contradiction.
 
