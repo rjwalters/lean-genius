@@ -3452,6 +3452,98 @@ theorem squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
     omega
   exact ⟨hU1card, hdegree, hedges⟩
 
+/-- The three high roots partition the 24 unmarked bin-one vertices into
+three eight-point fibers.  Each high has nine bin-one neighbors, exactly one
+of which is the marked partner shared with the rare bin-three vertex. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := fun a => G.neighborFinset a ∩ U1
+    H.card = 3 ∧
+      (∀ a ∈ H, (F a).card = 8) ∧
+      (∀ a ∈ H, ∀ b ∈ H, a ≠ b → Disjoint (F a) (F b)) ∧
+      H.biUnion F = U1 := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := fun a => G.neighborFinset a ∩ U1
+  have hfiber : ∀ a ∈ H, (F a).card = 8 := by
+    intro a ha
+    have hsplit := squareOrderNine_threeHigh_secondProfile_highRoot_neighbor_split
+      G hfree hmin hcard hp hhigh hc2 hc4 ha
+    have hB1card : (G.neighborFinset a ∩ B 1).card = 9 := hsplit.1
+    have hpartner :=
+      squareOrderNine_threeHigh_secondProfile_binThree_unique_binOne_partner_at_highRoot
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ha
+    have hinter : M ∩ (G.neighborFinset a ∩ B 1) =
+        G.neighborFinset a ∩ G.neighborFinset x ∩ B 1 := by
+      ext z
+      simp only [M, Finset.mem_inter]
+      tauto
+    have hFeq : F a = (G.neighborFinset a ∩ B 1) \ M := by
+      ext z
+      simp only [F, U1, Finset.mem_inter, Finset.mem_sdiff]
+      tauto
+    rw [hFeq, Finset.card_sdiff, hinter, hpartner, hB1card]
+  have hpair : ∀ a ∈ H, ∀ b ∈ H, a ≠ b → Disjoint (F a) (F b) := by
+    intro a ha b hb hab
+    rw [Finset.disjoint_left]
+    intro z hza hzb
+    have hzaParts := Finset.mem_inter.mp hza
+    have hzbParts := Finset.mem_inter.mp hzb
+    have hzB1 := (Finset.mem_sdiff.mp hzaParts.2).1
+    have haMem : a ∈ G.neighborFinset z ∩ H :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset z a).mpr
+          ((G.adj_comm a z).mp
+            ((G.mem_neighborFinset a z).mp hzaParts.1)), ha⟩
+    have hbMem : b ∈ G.neighborFinset z ∩ H :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset z b).mpr
+          ((G.adj_comm b z).mp
+            ((G.mem_neighborFinset b z).mp hzbParts.1)), hb⟩
+    have hkz : (G.neighborFinset z ∩ H).card = 1 :=
+      (Finset.mem_filter.mp hzB1).2
+    have hle : (G.neighborFinset z ∩ H).card ≤ 1 := by omega
+    exact hab (Finset.card_le_one.mp hle a haMem b hbMem)
+  have hunion : H.biUnion F = U1 := by
+    ext z
+    simp only [Finset.mem_biUnion]
+    constructor
+    · rintro ⟨a, _ha, hza⟩
+      exact (Finset.mem_inter.mp hza).2
+    · intro hzU
+      have hzB1 := (Finset.mem_sdiff.mp hzU).1
+      have hkz : (G.neighborFinset z ∩ H).card = 1 :=
+        (Finset.mem_filter.mp hzB1).2
+      have hnonempty : (G.neighborFinset z ∩ H).Nonempty := by
+        rw [← Finset.card_pos, hkz]
+        norm_num
+      obtain ⟨a, ha⟩ := hnonempty
+      have haParts := Finset.mem_inter.mp ha
+      refine ⟨a, haParts.2, Finset.mem_inter.mpr ⟨?_, hzU⟩⟩
+      exact (G.mem_neighborFinset a z).mpr
+        ((G.adj_comm z a).mp ((G.mem_neighborFinset z a).mp haParts.1))
+  exact ⟨hhigh, hfiber, hpair, hunion⟩
+
 end
 
 end Erdos85
@@ -3495,3 +3587,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_pair_matching
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_binOne_defect_edges
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
