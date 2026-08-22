@@ -1823,6 +1823,143 @@ theorem squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
     hTcard, hcoreCount] at hcards
   have hresidualCount : residualRows.card = 27 + specialDefects := by omega
   exact ⟨hdefectCount, hcoreCount, hresidualCount⟩
+
+/-- The total special-defect mass across the 24 U1 columns is branch-sharp:
+zero in the three-triangle branch and six in the four-triangle branch. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_defect_mass_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧
+        (∑ b ∈ U1, (D.neighborFinset b ∩ S).card) = 0) ∨
+      ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧
+        (∑ b ∈ U1, (D.neighborFinset b ∩ S).card) = 6) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let R := S \ D.neighborFinset x
+  have hrow : ∀ y ∈ S,
+      (D.neighborFinset y ∩ U1).card = if y ∈ R then 3 else 0 := by
+    intro y hyS
+    have hyParts := Finset.mem_inter.mp hyS
+    have hDMzero : D.neighborFinset y ∩ M = ∅ := by
+      apply Finset.eq_empty_iff_forall_notMem.mpr
+      intro m hm
+      have hmAll := Finset.mem_inter.mp hm
+      have hmParts := Finset.mem_inter.mp hmAll.2
+      have hDym := (D.mem_neighborFinset y m).mp
+        hmAll.1
+      have hym : y ≠ m := D.ne_of_adj hDym
+      have hyx : G.Adj y x := (G.adj_comm x y).mp
+        ((G.mem_neighborFinset x y).mp hyParts.1)
+      have hmx : G.Adj m x := (G.adj_comm x m).mp
+        ((G.mem_neighborFinset x m).mp hmParts.1)
+      exact (not_secondOrderDefect_adj_of_commonNeighbor
+        G hfree hym hyx hmx) hDym
+    have hsplit : D.neighborFinset y ∩ B 1 =
+        (D.neighborFinset y ∩ M) ∪ (D.neighborFinset y ∩ U1) := by
+      ext z
+      constructor
+      · intro hz
+        have hzParts := Finset.mem_inter.mp hz
+        by_cases hzM : z ∈ G.neighborFinset x ∩ B 1
+        · exact Finset.mem_union_left _
+            (Finset.mem_inter.mpr ⟨hzParts.1, hzM⟩)
+        · exact Finset.mem_union_right _
+            (Finset.mem_inter.mpr ⟨hzParts.1,
+              Finset.mem_sdiff.mpr ⟨hzParts.2, hzM⟩⟩)
+      · intro hz
+        rcases Finset.mem_union.mp hz with hzM | hzU
+        · have hzParts := Finset.mem_inter.mp hzM
+          exact Finset.mem_inter.mpr ⟨hzParts.1,
+            (Finset.mem_inter.mp hzParts.2).2⟩
+        · have hzParts := Finset.mem_inter.mp hzU
+          exact Finset.mem_inter.mpr ⟨hzParts.1,
+            (Finset.mem_sdiff.mp hzParts.2).1⟩
+    rw [hDMzero, Finset.empty_union] at hsplit
+    have hcards := congrArg Finset.card hsplit
+    by_cases hyR : y ∈ R
+    · have hyRParts := Finset.mem_sdiff.mp hyR
+      have hreg :=
+        squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
+          G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+            (Finset.mem_sdiff.mpr ⟨hyS, hyRParts.2⟩)
+      dsimp only at hreg
+      simp only [if_pos hyR]
+      rw [hreg.2.1] at hcards
+      omega
+    · have hyDx : y ∈ D.neighborFinset x := by
+        by_contra hyNotDx
+        exact hyR (Finset.mem_sdiff.mpr ⟨hyS, hyNotDx⟩)
+      have htype :=
+        squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
+          G hfree hmin hcover hcard hp hhigh hc2 hc4 hyParts.2
+      dsimp only at htype
+      have hDxy : D.Adj x y := (D.mem_neighborFinset x y).mp hyDx
+      rcases htype with hreg | hexc
+      · have hxInter : x ∈ D.neighborFinset y ∩ B 3 :=
+          Finset.mem_inter.mpr ⟨(D.mem_neighborFinset y x).mpr
+            ((D.adj_comm x y).mp hDxy), hx⟩
+        have hpos : 0 < (D.neighborFinset y ∩ B 3).card :=
+          Finset.card_pos.mpr ⟨x, hxInter⟩
+        rw [hreg.2.2] at hpos
+        omega
+      · simp only [if_neg hyR]
+        rw [hexc.2.1] at hcards
+        exact hcards.symm
+  have hsumSwap := sum_card_neighborFinset_inter_comm D U1 S
+  have hsumRow : (∑ y ∈ S, (D.neighborFinset y ∩ U1).card) =
+      3 * R.card := by
+    calc
+      _ = ∑ y ∈ S, if y ∈ R then 3 else 0 := by
+        apply Finset.sum_congr rfl
+        intro y hy
+        exact hrow y hy
+      _ = 3 * R.card := by
+        have hRsub : R ⊆ S := Finset.sdiff_subset
+        rw [← Finset.sum_filter]
+        have hfilter : S.filter (fun y => y ∈ R) = R := by
+          ext y
+          simp only [Finset.mem_filter]
+          exact ⟨fun h => h.2, fun h => ⟨hRsub h, h⟩⟩
+        rw [hfilter]
+        simp [Nat.mul_comm]
+  have htotal : (∑ b ∈ U1, (D.neighborFinset b ∩ S).card) =
+      3 * R.card := hsumSwap.trans hsumRow
+  have hbranch :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  change ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧ R.card = 0) ∨
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧ R.card = 2) at hbranch
+  rcases hbranch with h3 | h4
+  · left
+    have hmass : (∑ b ∈ U1, (D.neighborFinset b ∩ S).card) = 0 := by
+      rw [htotal, h3.2]
+    exact ⟨h3.1, hmass⟩
+  · right
+    have hmass : (∑ b ∈ U1, (D.neighborFinset b ∩ S).card) = 6 := by
+      rw [htotal, h4.2]
+    exact ⟨h4.1, hmass⟩
 end
 
 end Erdos85
@@ -1845,4 +1982,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_defect_mass_dichotomy
 #print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
