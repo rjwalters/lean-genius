@@ -752,6 +752,256 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_d
     have hCcard : C.card = 1 := by omega
     rw [Finset.card_union_of_disjoint hSMdisj] at hCcard
     exact ⟨hDxt, hCcard⟩
+
+/-- Arithmetic-ready graph alignment for an ordinary row.  The regular
+defect type has one special/marked center and hence residual/core degree
+eight; the exceptional type has none and hence residual/core degree nine.
+The weighted target is aligned with the same branch. -/
+theorem squareOrderNine_threeHigh_secondProfile_ordinary_aligned_weighted_row_branches
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let R := G.neighborFinset t ∩ T
+    let D := secondOrderDefectGraph G
+    let weight := 2 * (R.filter fun w => w ∈ P).card +
+      3 * (R.filter fun w => w ∉ P).card +
+      3 * (G.neighborFinset t ∩ U1).card
+    (R.card + (G.neighborFinset t ∩ U1).card = 8 ∧
+        weight = 21 + (D.neighborFinset t ∩ M).card) ∨
+      (R.card + (G.neighborFinset t ∩ U1).card = 9 ∧
+        weight = 24 ∧ (D.neighborFinset t ∩ M).card = 0) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let N := G.neighborFinset t
+  let NS := N ∩ S
+  let R := N ∩ T
+  let NM := N ∩ M
+  let NU := N ∩ U1
+  let D := secondOrderDefectGraph G
+  let mass := ∑ w ∈ N, (G.neighborFinset w ∩ U1).card
+  let weight := 2 * (R.filter fun w => w ∈ P).card +
+    3 * (R.filter fun w => w ∉ P).card + 3 * NU.card
+  have htB0 : t ∈ B 0 := (Finset.mem_sdiff.mp ht).1
+  have hcent :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hcent
+  change (D.Adj x t ∧ NS.card = 0 ∧ NM.card = 0) ∨
+    (¬ D.Adj x t ∧ NS.card + NM.card = 1) at hcent
+  have htype :=
+    squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc4 htB0
+  dsimp only at htype
+  have hB3card : (B 3).card = 1 := by
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 3) (by omega), hc3]
+  have hregular_iff :
+      ((D.neighborFinset t ∩ B 0).card = 5 ∧
+        (D.neighborFinset t ∩ B 1).card = 3 ∧
+        (D.neighborFinset t ∩ B 3).card = 0) ↔ ¬ D.Adj x t := by
+    constructor
+    · intro hreg hxt
+      have hxInter : x ∈ D.neighborFinset t ∩ B 3 :=
+        Finset.mem_inter.mpr ⟨(D.mem_neighborFinset t x).mpr
+          ((D.adj_comm x t).mp hxt), hx⟩
+      have : (D.neighborFinset t ∩ B 3).card ≠ 0 :=
+        Finset.card_ne_zero.mpr ⟨x, hxInter⟩
+      exact this hreg.2.2
+    · intro hnxt
+      rcases htype with hreg | hexc
+      · exact hreg
+      · exfalso
+        have hinter : D.neighborFinset t ∩ B 3 = B 3 := by
+          apply Finset.eq_of_subset_of_card_le
+          · exact Finset.inter_subset_right
+          · rw [hexc.2.2, hB3card]
+        have hxDt : x ∈ D.neighborFinset t := by
+          have : x ∈ D.neighborFinset t ∩ B 3 := by rw [hinter]; exact hx
+          exact (Finset.mem_inter.mp this).1
+        exact hnxt ((D.adj_comm t x).mp ((D.mem_neighborFinset t x).mp hxDt))
+  have hpart :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_neighbor_center_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hpart
+  change N = (NS ∪ R) ∪ (NM ∪ NU) at hpart
+  have hST : Disjoint NS R := by
+    rw [Finset.disjoint_left]
+    intro w hwS hwT
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwT).2).2
+      (Finset.mem_inter.mp hwS).2
+  have hMU : Disjoint NM NU := by
+    rw [Finset.disjoint_left]
+    intro w hwM hwU
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwU).2).2
+      (Finset.mem_inter.mp hwM).2
+  have hcross : Disjoint (NS ∪ R) (NM ∪ NU) := by
+    rw [Finset.disjoint_left]
+    intro w hw0 hw1
+    have hwB0 : w ∈ B 0 := by
+      rcases Finset.mem_union.mp hw0 with hwS | hwT
+      · exact (Finset.mem_inter.mp (Finset.mem_inter.mp hwS).2).2
+      · exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwT).2).1
+    have hwB1 : w ∈ B 1 := by
+      rcases Finset.mem_union.mp hw1 with hwM | hwU
+      · exact (Finset.mem_inter.mp (Finset.mem_inter.mp hwM).2).2
+      · exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwU).2).1
+    have hk0 := (Finset.mem_filter.mp hwB0).2
+    have hk1 := (Finset.mem_filter.mp hwB1).2
+    omega
+  have hNcards := congrArg Finset.card hpart
+  rw [Finset.card_union_of_disjoint hcross,
+    Finset.card_union_of_disjoint hST,
+    Finset.card_union_of_disjoint hMU] at hNcards
+  have htdeg : G.degree t = 9 := by
+    have htL := (Finset.mem_filter.mp htB0).1
+    have htNotHigh : t ∉ squareOrderHighVertices G 9 :=
+      (Finset.mem_sdiff.mp htL).2
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (by norm_num) hmin hcover hcard t with hlo | hhi
+    · exact hlo
+    · exact (htNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  rw [G.card_neighborFinset_eq_degree, htdeg] at hNcards
+  have hweight :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_weighted_row_equation
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hweight
+  change mass = weight at hweight
+  have hrow :=
+    squareOrderNine_threeHigh_secondProfile_binZero_unmarked_row_cover
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx htB0
+  dsimp only at hrow
+  change mass = 24 - (D.neighborFinset t ∩ U1).card at hrow
+  have hMsub : M ⊆ B 1 := Finset.inter_subset_right
+  have hDpartition : D.neighborFinset t ∩ B 1 =
+      (D.neighborFinset t ∩ U1) ∪ (D.neighborFinset t ∩ M) := by
+    ext y
+    constructor
+    · intro hy
+      have hyParts := Finset.mem_inter.mp hy
+      by_cases hyM : y ∈ M
+      · exact Finset.mem_union_right _ (Finset.mem_inter.mpr ⟨hyParts.1, hyM⟩)
+      · exact Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨hyParts.1,
+          Finset.mem_sdiff.mpr ⟨hyParts.2, hyM⟩⟩)
+    · intro hy
+      rcases Finset.mem_union.mp hy with hyU | hyM
+      · have hyParts := Finset.mem_inter.mp hyU
+        exact Finset.mem_inter.mpr ⟨hyParts.1,
+          (Finset.mem_sdiff.mp hyParts.2).1⟩
+      · have hyParts := Finset.mem_inter.mp hyM
+        exact Finset.mem_inter.mpr ⟨hyParts.1, hMsub hyParts.2⟩
+  have hDdisj : Disjoint (D.neighborFinset t ∩ U1)
+      (D.neighborFinset t ∩ M) := by
+    rw [Finset.disjoint_left]
+    intro y hyU hyM
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hyU).2).2
+      (Finset.mem_inter.mp hyM).2
+  have hDcards := congrArg Finset.card hDpartition
+  rw [Finset.card_union_of_disjoint hDdisj] at hDcards
+  rcases hcent with hzero | hone
+  · right
+    have hexc : (D.neighborFinset t ∩ B 0).card = 7 ∧
+        (D.neighborFinset t ∩ B 1).card = 0 ∧
+        (D.neighborFinset t ∩ B 3).card = 1 := by
+      rcases htype with hreg | hexc
+      · exact (hregular_iff.mp hreg hzero.1).elim
+      · exact hexc
+    rw [hexc.2.1] at hDcards
+    change R.card + NU.card = 9 ∧ weight = 24 ∧
+      (D.neighborFinset t ∩ M).card = 0
+    constructor
+    · omega
+    constructor
+    · rw [← hweight, hrow]
+      omega
+    · omega
+  · left
+    have hreg := hregular_iff.mpr hone.1
+    rw [hreg.2.1] at hDcards
+    change R.card + NU.card = 8 ∧
+      weight = 21 + (D.neighborFinset t ∩ M).card
+    constructor
+    · omega
+    · rw [← hweight, hrow]
+      omega
+
+/-- Every ordinary B0 row either meets or is defect-adjacent to exactly three
+of the marked support groups, counted at the aggregate level. -/
+theorem squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let R := G.neighborFinset t ∩ T
+    let D := secondOrderDefectGraph G
+    (R.filter fun w => w ∈ P).card +
+      (D.neighborFinset t ∩ M).card = 3 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let R := G.neighborFinset t ∩ T
+  let D := secondOrderDefectGraph G
+  let a := (R.filter fun w => w ∈ P).card
+  let b := (R.filter fun w => w ∉ P).card
+  let c := (G.neighborFinset t ∩ U1).card
+  let d := (D.neighborFinset t ∩ M).card
+  let r := R.card
+  have hab : a + b = r := by
+    exact Finset.card_filter_add_card_filter_not
+      (s := R) (fun w => w ∈ P)
+  have halign :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_aligned_weighted_row_branches
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at halign
+  change (r + c = 8 ∧ 2 * a + 3 * b + 3 * c = 21 + d) ∨
+    (r + c = 9 ∧ 2 * a + 3 * b + 3 * c = 24 ∧ d = 0) at halign
+  exact weighted_row_arithmetic_forces_pair_defect_three a b c d r hab halign
 end
 
 end Erdos85
@@ -764,4 +1014,6 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_weighted_row_equation
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_weighted_row_dichotomy
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_dichotomy
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_aligned_weighted_row_branches
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
 #print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
