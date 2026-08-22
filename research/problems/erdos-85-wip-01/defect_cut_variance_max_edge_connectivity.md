@@ -1825,6 +1825,27 @@ exactly the three color-specific attachment counts inside the disjoint
 P-fibers.  Together with (B40), this ties both the edges and the missing
 slots of the distinguished design core to separator colors.
 
+The template gives an immediate lower bound on every attachment wing.
+Because `p_w` can meet only c and the `m_w` centers in `K_w`,
+
+```text
+deg_(Gamma_K)(p_w) <= m_w+1.
+```
+
+By (B41'), its deficit is a set of distinct D-neighbors of w in X, so it
+also satisfies `a-deg_(Gamma_K)(p_w)<=m_w`.  Combining the two inequalities
+gives
+
+```text
+m_w >= ceil((a-1)/2)                 for every w in W.      (B42)
+```
+
+Thus from `a>=2` onward no separator vertex can have a vanishing X-wing,
+and each of the three attachment colors consumes a definite fraction of
+the small-shore parameter.  This is the first inequality obtained from the
+coupled fiber intersection graphs rather than directly from a cut or flow
+profile.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
