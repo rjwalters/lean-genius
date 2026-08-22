@@ -3558,3 +3558,59 @@ route to (212) must combine the once-paid collision statistic with a
 root-own versus external fiber-incidence flag (or an equivalent private-port
 orientation).  This keeps the signed-mode and transport-mode sides of the
 dispatcher logically separate.
+
+## 65. Full port-occurrence collision splits into horizontal and vertical parts
+
+Before contracting the horizontal transitions, retain the two port
+occurrences at every state of `Omega`.  There are `2(H+V)` occurrences in
+total.  Map each occurrence to its actual exterior port vertex and let
+
+```text
+kappa_all(Omega) := sum_z binom(load_Omega(z),2).       (214)
+```
+
+Every load is at most two, because an exterior port has exactly two
+neighbors in the root component `c`.  A load-two port has exactly two
+possible forms.
+
+* If it is used horizontally at either root, it is the unique common owner
+  port of those two roots.  The horizontal state edge uses it at both ends,
+  and the port bijection prevents either occurrence from being vertical.
+* Otherwise both occurrences are used by vertical triangle edges at the two
+  roots.  This is a genuine repeated vertical target/source port.
+
+Conversely every horizontal edge contributes its shared port with load two,
+and every vertically repeated port contributes one load-two vertex.  The
+two classes are disjoint.  If `kappa_vert(Omega)` counts the second class,
+then
+
+```text
+kappa_all(Omega) = H(Omega) + kappa_vert(Omega).        (215)
+```
+
+Equivalently, if `Z_all(Omega)` is the set of actual ports used by the
+expanded state cycle, then
+
+```text
+|Z_all(Omega)|
+  = 2(H+V) - kappa_all(Omega)
+  = H + 2V - kappa_vert(Omega).                         (216)
+```
+
+This explains why the clean target-collision statistic alone was blind to
+the one-edge terminal: there `kappa_vert=0`, but the shared horizontal port
+still contributes one unit to `kappa_all`.  The horizontal parity problem
+can now be written
+
+```text
+H == kappa_all - kappa_vert  (mod 2).                   (217)
+```
+
+Thus the transport analogue of the all-color collision feature must count
+**all root--port occurrences**, including the root-own shared labels, and
+then separate its horizontal and vertical strata by the incidence flag.
+Sections 53--56 control the vertical repeated-target term; the missing
+root-incidence constraint is precisely what is needed to control their
+difference in (217).  This is a collision formulation of the same switch
+sign problem, but unlike target-only capacity it retains isolated owner
+edges.
