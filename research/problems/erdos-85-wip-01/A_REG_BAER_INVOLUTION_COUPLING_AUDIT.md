@@ -1348,6 +1348,25 @@ are respectively two and zero.  Thus `r=1` permits only
 `h=(q-2)/2` or `q-1`, and `r=2` only `h=(q-4)/2` or `q-2`.  The low-r layers
 now have both their incidence design and their four-type population fixed.
 
+The `h=f` alternative has an exact routing shape.  Every minority center in
+S has cross-type A-degree one, while every outside-majority center can only
+meet an inside-minority center and has minority replication at most one.
+Since `|F setminus S|=|E intersect S|` when `h=f`, edge balance forces a
+perfect matching between these two types.  Every minority center outside S
+has A-degree one inside the outside-minority type, so that induced graph is
+also a perfect matching.  Consequently
+
+```text
+|E setminus S| is even when h=f.                           (73h)
+```
+
+For `r=u=1`, (73h) forces the unique minority center to lie in S; the unique
+outside-majority center is its A-matched partner.  For `r=u=2`, the `h=f`
+case has either both minority centers inside S (matched to the two
+outside-majority centers) or both outside S (matched to each other).  This
+removes the mixed placement in the first two saturated layers without any
+order-specific search.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
