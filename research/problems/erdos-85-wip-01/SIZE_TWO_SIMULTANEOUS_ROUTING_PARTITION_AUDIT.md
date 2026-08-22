@@ -2224,3 +2224,64 @@ powers, while the untreated cycles have order `Omega(sqrt(q))` and occur
 only `O(sqrt(q))` times.  A closing parity argument may therefore be split
 into a local clean-lift theorem and a global census of the long residual
 cycles, rather than treating every odd run by the same invariant.
+
+## 39. Ambient port lift of a mixed state cycle
+
+The clean-run analysis above treats the all-horizontal obstruction.  A mixed
+odd-horizontal component of the state graph has a different but still exact
+ambient normal form.  Let `Omega` be a cycle of `Gamma_c`, with
+
+```text
+H(Omega) = number of horizontal state edges,
+V(Omega) = number of vertical state edges.
+```
+
+At every state `(x,e)` on `Omega`, its two incident state edges use its two
+distinct ports by (60).  Join those ports by the two-edge ambient path
+
+```text
+port_in -- x -- port_out.                              (138)
+```
+
+Now glue these state paths cyclically.  Across a horizontal state edge the
+two port occurrences are the same ambient vertex, by (61), so no new edge
+is inserted.  Across a vertical state edge the two ports are adjacent—the
+exterior edge of the rooted triangle—so insert that one edge.  The result is
+a canonical closed ambient walk `W(Omega)` of length
+
+```text
+|W(Omega)| = 2(H(Omega)+V(Omega)) + V(Omega)
+           = 2H(Omega) + 3V(Omega).                    (139)
+```
+
+The walk is reduced at every root: its entering and leaving ports are
+distinct.  Across a horizontal transition, the shared port is incident to
+two distinct roots joined by the horizontal state edge, so the two cross
+edges are distinct.  It is also reduced across a vertical transition, whose
+exterior edge cannot be the following cross edge.  Thus the state holonomy is encoded
+by a nonbacktracking closed walk with distinguished exterior transition
+edges.  In particular,
+
+```text
+|W(Omega)| mod 2 = V(Omega) mod 2.                      (140)
+```
+
+When `V(Omega)=0`, the lift is exactly the bipartite incidence cycle `C--Z`
+of Sections 17--19, and the shore indicators are binary kernel vectors for
+`R_ce`.  When `V(Omega)>0`, the exterior transition edges splice incidence
+paths belonging to different owner colors; there is no single pair of shore
+indicators annihilated by one cross block.  This is why the boundary-vector
+transport of (64)--(73) does not automatically cover mixed odd-horizontal
+cycles.
+
+The full parity target therefore retains two distinct residual branches:
+
+```text
+all-horizontal odd cycles: clean-or-long owner-run program;
+mixed odd-horizontal cycles: nonbacktracking port walks W(Omega)
+  with an odd number of horizontal state edges.         (141)
+```
+
+A mixed-cycle closure must exploit the marked exterior transitions in
+`W(Omega)`—for example by a parity law for their owner-color sequence—rather
+than reusing the single-pair kernel contraction.
