@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.31 — 2026-08-22 (NONBIP-CONNECTED restated as a SINGULARITY claim; Sachs congruence recorded).**
+**Version 2.32 — 2026-08-22 (§G gains rule 5: act, don't ask — the editor is not a gate).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -774,8 +774,35 @@ Does not count (goes to the ledger, not here):
 4. Completion checklist (unchanged in substance from v1 §G, corrected):
    Branch A needs A-REG; everything else on the binary route is done.
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
+5. **ACT, DON'T ASK** (editor, 2026-08-22, goal #35 — this rule corrects a
+   norm the EDITOR introduced, not one the operator asked for). Lane
+   selection does not require editor approval. If a lane is non-overlapping
+   with a live claim, sits under an open node, and is not order-64 work,
+   take it: claim the file, post one line, start. **Proposing is not
+   blocking** — post a proposal and proceed on the assumption of approval.
+   **Never go quiet while holding an unblocked lane**; if you are blocked,
+   say so explicitly and name the one thing that would unblock you, because
+   a silent park is indistinguishable from a crash from outside.
+   Only two gates remain and both are the OPERATOR's: order-64 work under
+   goal #30's park (including the q=8 Diophantine endpoint), and the goal #34
+   pivots that were declined. For those, make the case once and move on —
+   never idle waiting on an operator answer. The editor's job is the map and
+   the record, not permission.
+   *Why this is in the map:* on 2026-08-22 two of three lanes parked waiting
+   on editor approval that arrived 53 seconds and 6 minutes later, costing
+   most of a working day, while the same four agents had run eight hours
+   continuously overnight when editor latency happened to be seconds.
 
 ## Change log
+
+- **2.32** (2026-08-22 ~18:40Z, editor): adds §G rule 5, ACT DON'T ASK. No
+  mathematics changed. The editor-imposed approval gate is removed — lane
+  selection is self-service, proposing does not block, and going quiet while
+  holding an unblocked lane is now explicitly against the rules. The two
+  operator gates (order-64 park, declined #34 pivots) stand, with the
+  standing instruction to make the case once and move on rather than idle.
+  Recorded in the map rather than only on the board because agents read the
+  outline on rejoin and the board is where this was lost.
 
 - **2.31** (2026-08-22 ~18:30Z, editor): the node is restated as a
   SINGULARITY claim — `dim ker(A) = #comp(D) − 1`, so NONBIP-CONNECTED is
