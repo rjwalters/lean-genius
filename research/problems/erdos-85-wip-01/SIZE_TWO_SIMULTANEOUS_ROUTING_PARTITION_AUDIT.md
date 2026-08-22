@@ -825,3 +825,52 @@ transfer—equivalently, compare `p_ce` with `p_ec` rather than immediately
 adding them.  Endpoint-marked rows such as (10)--(14), or a nonsymmetric
 test matrix inserted before taking trace, are the remaining routes to that
 information.
+
+## 11. Rooted contraction retains the direction
+
+The direction is recovered by keeping a diagonal coordinate instead of
+taking the full trace.  Fix `x in c` and `e != c`, and define
+
+```text
+a_xe = number of H-neighbors of x whose H-edge is owned by e,
+b_xe = 1 iff the two R_ce-neighbors of x are adjacent in A_e,
+tau_xed = number of triangles (x,y,z), y in e, z in d.
+```
+
+Take the `(x,x)` entry after multiplying `SRP(c,e)` by `R_ec`.  The first
+endpoint term is `a_xe`; the second is `2 b_xe`, because the two distinct
+`e`-neighbors contribute both orders when they are adjacent; and a third
+component contributes `tau_xed`.  The right side is the column sum two of
+`R_ec`.  Hence
+
+```text
+a_xe + 2 b_xe + sum_(d != c,e) tau_xed = 2.             (50)
+```
+
+All terms are nonnegative integers, `a_xe in {0,1,2}`, and `b_xe in {0,1}`.
+Thus (50) gives the exact rooted alternatives
+
+```text
+b_xe=1  ==>  a_xe=0 and all tau_xed=0;
+b_xe=0  ==>  a_xe + sum_d tau_xed=2.                    (51)
+```
+
+In particular
+
+```text
+a_xe = 1  iff  exactly one three-component triangle
+                 through x uses the color e.            (52)
+```
+
+Summing (50) over `x` recovers (48), so the new content is precisely its
+rootwise location data.  Moreover
+
+```text
+sum_x a_xe = 2 p_ce,             sum_x b_xe = p_ec.      (53)
+```
+
+Equation (50) is therefore a directed refinement rather than a new scalar
+count.  To extract `p_ce mod 2`, the next step must pair the `a_xe=1`
+locations or control the `a_xe=2` locations along the internal cycles.  This
+is exactly the endpoint-marked problem anticipated in (10)--(14), now with
+an explicit two-unit budget at every root.
