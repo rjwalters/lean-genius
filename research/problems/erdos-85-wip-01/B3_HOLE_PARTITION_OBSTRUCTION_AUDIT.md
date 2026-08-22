@@ -1234,6 +1234,17 @@ monotone on the realizable flags.  This rules out the simplest scalar
 root-incidence collision potential and locates the needed invariant at the
 interaction between role coordinates.
 
+A simple parity sign on the horizontal part of (12qt) is also unavailable.
+The sampled own-touching transition graphs contain many regular-to-regular
+edges, so root role is not a bipartition.  More strongly, quotient the
+horizontal graph by the full signature `(role,n,c_pair,c_all)`.  In every one
+of the 24 four-seed pair/design instances this quotient graph is
+nonbipartite (although none has a loop).  Hence no sign depending only on the
+root signature can force even horizontal length in (12qt).  Any parity
+refinement must resolve the individual own fiber or its external-essential
+second label—exactly the information retained by `iota` and (12qs), rather
+than another scalar root statistic.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
