@@ -3141,3 +3141,49 @@ Farkas argument.  The endpoint-neutral subsystem remains useful when a
 uniform two-demand row is required, but the deterministic target-capacity
 and transpose-cancellation statements lose nothing by working with all
 clean colors.
+
+## 57. The clean-core threshold and its endpoint parity defect
+
+The full clean core separates two thresholds which were conflated before
+(187).  By (157), the strict inequality
+
+```text
+q - 4 > (ell-1)(ell-2)                                (190)
+```
+
+already guarantees `C_P` is nonempty.  Thus (190), equivalently (158), is
+enough to obtain an actual clean root--port assignment system satisfying
+the global capacity bounds (188)--(189) and the clean--clean transpose
+cancellation.  The stronger bound
+
+```text
+q >= (ell-1)(ell-2) + 10                              (191)
+```
+
+is needed only when one must discard both possible boundary owners and keep
+the uniform zero-or-two demand alternative (161).  In particular, a clean
+color concentrated on a boundary owner is no longer an exceptional failure:
+it supplies the same primal system with one demand at that endpoint.
+
+There is also an exact parity description of the price paid for retaining
+those boundary owners.  Let `lambda_x(C_P)` count rooted triangles with
+exactly one exterior color in `C_P`, as in Section 52.  The rooted handshake
+identity and (187) give
+
+```text
+lambda_x(C_P)
+  == sum_(d in C_P) v_xd
+  == #{sides of P ending at x whose boundary owner lies in C_P}  (mod 2).
+                                                                  (192)
+```
+
+At an internal root the right side is zero.  At either endpoint it is one
+exactly when that endpoint's boundary owner is clean (the two endpoints are
+counted separately even when their owner colors agree).  Consequently the
+full-clean leakage is even at every internal root, while each endpoint has
+at most one unit of odd parity defect.  This does not prove the weighted
+conservation (164a), but it localizes every parity defect of the enlarged
+transpose core to the two rooted transition interfaces.  Together with the
+last paragraph of Section 56, the remaining weighted boundary consists of
+the `h_P` nonclean target colors and at most two endpoint incidences involving
+the run owner `e`.
