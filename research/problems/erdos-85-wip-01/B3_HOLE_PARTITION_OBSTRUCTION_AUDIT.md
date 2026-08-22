@@ -272,3 +272,18 @@ residual-resolved and triangle-free incidence mass.  Unlike the unmasked
 polarization, (7)--(8) preserve exactly the residual/defect distinction
 needed by a prospective connectivity consumer.  They do not yet determine
 that half-parity; a mod-four constraint on `R+Z` is still required.
+
+The residual term has an exact graphical normalization.  Every triangle
+with two ordinary B0 vertices and one vertex of `U1` contributes its two
+B0--U1 incidence cells to `R`, and uniqueness of a common neighbor gives
+the converse.  If `T_R` is the number of these triangles, then
+
+```text
+R = 2 T_R,
+120 = 2 L + 2 T_R + Z,
+L = T_R + Z/2  (mod 2).                                      (9)
+```
+
+In particular `Z` is even.  Equation (9) identifies the remaining consumer
+as a joint parity law for residual B0--B0--U1 triangles and half the number
+of triangle-free B0--U1 incidence edges.
