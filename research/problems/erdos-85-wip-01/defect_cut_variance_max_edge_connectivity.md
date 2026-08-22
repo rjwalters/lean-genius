@@ -1024,6 +1024,8 @@ R intersect X = empty,
 K intersect W={c}.                            (B17W')
 ```
 
+In particular the whole set `R` is located in `Y union W` in this branch.
+
 Since `deg_A(x,X)=1-1_(x in K)`, the induced graph `A[X]` is consequently
 a perfect matching on `q-4` vertices together with exactly two isolated
 vertices, namely `K intersect X`.  When `m_c=2` both isolates are the
