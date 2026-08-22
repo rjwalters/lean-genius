@@ -1074,6 +1074,24 @@ R intersect W = W\{c}       if A[W] has that edge.          (B17W''')
 In particular `R\(P union W)` lies entirely in `Y`; the three pair-centers
 `P` themselves lie there as well.
 
+The wing indexed by `c` has no W-located exception: a point of
+`R intersect W`, when present, has its unique W-neighbor at the other point
+of `W\{c}`, since `c` has no A-neighbor in W.  Hence `R_c subset Y`.
+For `r in R_c`, the Y-profile gives `deg_A(r,Y)=q-2`, while (B13) supplies
+its unique matched point `x in X_c` and the wing definition supplies its
+unique W-neighbor `c`.  These are therefore its only two A-neighbors outside
+Y.  Equivalently,
+
+```text
+X_c <--> R_c
+```
+
+is precisely the unique-common-neighbor bijection for the D-nonadjacent
+pairs `(c,x)`, `x in X_c`.  More generally, for any `r in R_w intersect Y`,
+its only outside-Y neighbors are `w` and its matched point in `X_w`.
+Each `p in P` likewise has exactly its two incident W-vertices outside Y
+and no X-neighbor (because `P subset K`).                 (B17W'''')
+
 The Y-location also carries a near-complete transversal.  If `c in Y`,
 then every `x in X` is a D-nonneighbor of `c`, because `X,Y` are different
 components of `D-W`.  Let `psi(x)` be their unique common A-neighbor.
