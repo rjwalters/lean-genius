@@ -2018,6 +2018,40 @@ respectively.  Hence any attempt to eliminate the bottom middle-third
 slice may start from these exact balanced wing profiles rather than the
 full attachment simplex.
 
+The X- and Y-fiber systems also exclude one another's common-center pairs.
+For fixed w, the B45 injection has image
+
+```text
+I_w subset K_w,   |I_w|=b-1-e_w.
+```
+
+Every `k in I_w` already shares its injected Y-neighbor with `p_w`, so the
+X-fibers of k and `p_w` cannot meet; hence none of these k is adjacent to
+`p_w` in `Gamma_K`.  If `e_w=1`, the same argument excludes the candidate
+edge `{p_w,c}`, because their common neighbor lies in Y.  Starting from the
+template `N_(Gamma_K)(p_w) subset {c} union K_w` in (B41), the surviving
+candidate count is therefore
+
+```text
+deg_(Gamma_K)(p_w)
+  <= (m_w-(b-1-e_w))+(1-e_w)
+  = m_w-b+2.                                      (B49)
+```
+
+By (B41'), the deficit `a-deg_(Gamma_K)(p_w)` is a subset of the `m_w`
+D-attachments from w into X.  Combining this upper bound on the degree
+with that upper bound on the deficit yields
+
+```text
+q-3-m_w=a+b-2-m_w <= a-deg_(Gamma_K)(p_w) <= m_w,
+m_w >= ceil((q-3)/2)                         for every w.  (B49')
+```
+
+This is the first bound obtained by forbidding an X-intersection because
+the same pair is already resolved by a Y-center.  It is independent of a
+and supplements the stronger `m_w>=b-2` bound near the bottom of the
+surviving interval.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
