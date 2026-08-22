@@ -255,6 +255,18 @@ weight `80 - 60 = 20`.  The block quotient is therefore unique, with weights
 `(20,20,20,20)`; every pair of components supports 40 triangular edges.
 This is an exact quotient reduction, not yet an exclusion of its lifts.
 
+`q9_order20_block_action_quotient.py` independently enumerates the five
+transitive component actions of degree four.  For the regular `V4` and `C4`
+actions, a component stabilizer fixes each of the other three components.
+Its transitivity on the 20 points therefore forces every point to occur in
+exactly one line of each incident block triple.  Equivalently, every
+40-edge bipartite triangular graph between two components is the disjoint
+union of the two perfect matchings supplied by the two possible third
+components.  For `D8`, the component stabilizer has orbits of sizes `1+2`
+on the incident triples, forcing point-incidence totals `1+2`; for `A4` and
+`S4`, it has one orbit of size three and gives only the already-known total
+of three.  This five-way action split is the interface for the lift stage.
+
 ## The order-16 five-component shadow
 
 The unique surviving order-16 component type has automorphism group of order
