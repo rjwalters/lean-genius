@@ -581,6 +581,33 @@ is the natural analytic form for proving the Hall-or-price conjecture: (12fa)
 handles failure of the cardinality face, and (12fb) handles every locally
 feasible row.
 
+The free cardinality price can also be eliminated.  For fixed `y`, put
+
+```text
+L_t(y) = max_{u in D_t, labels {a,b}} (w_u-y_a-y_b),
+rho_u(y) = w_u-y_{b(u)}  for u in S_t,
+```
+
+and let `theta_(d_t+1)(y)` be the `(d_t+1)`-st largest singleton residual,
+with value minus infinity if there are fewer than `d_t+1` singletons.  The
+`z`-dependent part of (12fb) is convex piecewise linear, with slope `d_t`
+minus the number of residuals above `z`, subject to `z>=L_t(y)`.  Hence one
+minimizer is
+
+```text
+z_t(y) = max(L_t(y), theta_(d_t+1)(y)).                    (12fc)
+```
+
+If both entries are minus infinity (no two-label candidates and exactly
+`d_t` singleton candidates in the locally feasible case), any real `z`
+below all singleton residuals is minimizing.
+
+Substitution in (12fb) leaves a minimization over only the sixteen
+nonnegative real-label prices.  In particular, both the unweighted Hall
+branch and the weighted simultaneous branch now live on the same label
+space; their difference is a cardinality threshold versus a convex hinge
+objective.
+
 In the four-seed run the local branch is extremely sharp.  There are nine
 failed row/color-pair instances.  Every matching number is exactly one below
 demand.  Eight are demand-six rows with a minimum vertex cover of size five;
