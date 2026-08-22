@@ -1682,6 +1682,26 @@ separate case analysis.  The surviving dual branch therefore carries a
 linear almost-resolution for every a, with all deviations from a partition
 located explicitly in the two small sets C and `U_P`.
 
+Equivalently, this almost-resolution has a sparse tripartite intersection
+graph.  Let `Gamma_R` have vertex set `R\P`, colored by the three wings,
+and join two centers when their X-fibers meet.  Linearity makes it simple,
+and fibers of the same wing are disjoint because they belong to the
+partition of one `S_w`.  By (B36), every intersection point has degree two
+in `H_R` and is exactly a point of `C\U_P`; conversely every such point
+creates one intersection edge.  Therefore
+
+```text
+Gamma_R is simple tripartite,
+|E(Gamma_R)|=|C\U_P|=a-|C intersect U_P| <= a,              (B37)
+|X not covered by H_R|=|U_P\C|=2a+|E(Gamma_R)|.
+```
+
+Thus the q-minus-two large fibers fail to be a genuine parallel class in
+at most a pairwise intersections, and their holes are exactly the baseline
+`2a` plus one for each intersection.  This packages every overlap into a
+sparse graph on the wing centers and provides a finite-defect object to
+couple to the location of c and the K-fibers.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
