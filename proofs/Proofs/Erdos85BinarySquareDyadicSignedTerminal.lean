@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareAdjacencySquareAction
+import Proofs.Erdos85BranchDeficitSymmetry
 
 /-!
 # Sparse signed terminal for the binary square-order branch
@@ -174,6 +175,182 @@ theorem binarySquare_mixedExceptional_card_le
     have hu := huUnbalanced haPos
     omega
 
+/-- A full exceptional line and an empty exceptional line form a defect
+edge: otherwise their unique common ambient neighbor would have to lie both
+inside and outside the shore. -/
+theorem binarySquare_full_empty_secondOrderDefect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 0 < q)
+    (hreg : ∀ v, G.degree v = q) (S : Finset V)
+    {x y : V}
+    (hfull : (G.neighborFinset x ∩ S).card = q)
+    (hempty : (G.neighborFinset y ∩ S).card = 0) :
+    (secondOrderDefectGraph G).Adj x y := by
+  have hxy : x ≠ y := by
+    intro h
+    subst y
+    omega
+  by_contra hD
+  have hnotMem : y ∉ (secondOrderDefectGraph G).neighborFinset x := by
+    simpa [SimpleGraph.mem_neighborFinset] using hD
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree x y hxy
+  rw [if_neg hnotMem] at hcommon
+  obtain ⟨z, hz⟩ :
+      ∃ z, z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+    Finset.card_pos.mp (by omega)
+  have hzData := Finset.mem_inter.mp hz
+  have hNxCard : (G.neighborFinset x).card = q := by
+    rw [G.card_neighborFinset_eq_degree, hreg]
+  have hfullEq : G.neighborFinset x ∩ S = G.neighborFinset x := by
+    apply Finset.eq_of_subset_of_card_le Finset.inter_subset_left
+    omega
+  have hzS : z ∈ S := by
+    have hzInter : z ∈ G.neighborFinset x ∩ S := by
+      rw [hfullEq]
+      exact hzData.1
+    exact (Finset.mem_inter.mp hzInter).2
+  have hzEmpty : z ∈ G.neighborFinset y ∩ S :=
+    Finset.mem_inter.mpr ⟨hzData.2, hzS⟩
+  have : 0 < (G.neighborFinset y ∩ S).card :=
+    Finset.card_pos.mpr ⟨z, hzEmpty⟩
+  omega
+
+/-- At regular square order the second-order defect graph is `(q-1)`-regular. -/
+theorem binarySquare_regular_secondOrderDefect_degree_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q) (v : V) :
+    (secondOrderDefectGraph G).degree v = q - 1 := by
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by
+        rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have h := secondOrderDefectGraph_degree_eq_excess_add_two
+    G hfree hreg hcensus v
+  change (secondOrderDefectGraph G).degree v = (q - 3) + 2 at h
+  omega
+
+/-- Capacity form of the full--empty defect core.  If both exceptional line
+types occur and the defect graph has degree `q-1`, each type has at most
+`q-1` vertices. -/
+theorem binarySquare_full_empty_card_le_of_defectRegular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 0 < q)
+    (hreg : ∀ v, G.degree v = q)
+    (hDreg : ∀ v, (secondOrderDefectGraph G).degree v = q - 1)
+    (S F E : Finset V)
+    (hF : ∀ x ∈ F, (G.neighborFinset x ∩ S).card = q)
+    (hE : ∀ y ∈ E, (G.neighborFinset y ∩ S).card = 0)
+    (hFnonempty : F.Nonempty) (hEnonempty : E.Nonempty) :
+    F.card ≤ q - 1 ∧ E.card ≤ q - 1 := by
+  obtain ⟨x, hxF⟩ := hFnonempty
+  obtain ⟨y, hyE⟩ := hEnonempty
+  have hEsub : E ⊆ (secondOrderDefectGraph G).neighborFinset x := by
+    intro z hzE
+    exact ((secondOrderDefectGraph G).mem_neighborFinset x z).mpr
+      (binarySquare_full_empty_secondOrderDefect_adj
+        G hfree hq hreg S (hF x hxF) (hE z hzE))
+  have hFsub : F ⊆ (secondOrderDefectGraph G).neighborFinset y := by
+    intro z hzF
+    exact ((secondOrderDefectGraph G).mem_neighborFinset y z).mpr
+      (binarySquare_full_empty_secondOrderDefect_adj
+        G hfree hq hreg S (hF z hzF) (hE y hyE)).symm
+  constructor
+  · calc
+      F.card ≤ ((secondOrderDefectGraph G).neighborFinset y).card :=
+        Finset.card_le_card hFsub
+      _ = q - 1 := by
+        rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDreg]
+  · calc
+      E.card ≤ ((secondOrderDefectGraph G).neighborFinset x).card :=
+        Finset.card_le_card hEsub
+      _ = q - 1 := by
+        rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDreg]
+
+/-- Graph-facing square-order specialization of the full--empty capacity
+bound, discharging defect regularity from the ambient hypotheses. -/
+theorem binarySquare_full_empty_card_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S F E : Finset V)
+    (hF : ∀ x ∈ F, (G.neighborFinset x ∩ S).card = q)
+    (hE : ∀ y ∈ E, (G.neighborFinset y ∩ S).card = 0)
+    (hFnonempty : F.Nonempty) (hEnonempty : E.Nonempty) :
+    F.card ≤ q - 1 ∧ E.card ≤ q - 1 := by
+  exact binarySquare_full_empty_card_le_of_defectRegular
+    G hfree (by omega) hreg
+    (binarySquare_regular_secondOrderDefect_degree_eq
+      G hfree hq hreg hcard)
+    S F E hF hE hFnonempty hEnonempty
+
+/-- Incidence form of the minority replication bound.  A family `E` of
+q-valent lines disjoint from a shore `S`, with replication at most one on
+the complementary shore, has at most the complementary-shore incidence
+capacity. -/
+theorem regular_emptyLines_mul_card_le_complement_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {q : ℕ} (hreg : ∀ v, G.degree v = q)
+    (S E : Finset V)
+    (hE : ∀ e ∈ E, (G.neighborFinset e ∩ S).card = 0)
+    (hcap : ∀ v ∉ S, (G.neighborFinset v ∩ E).card ≤ 1) :
+    q * E.card ≤ Fintype.card V - S.card := by
+  let T : Finset V := Finset.univ \ S
+  have hline : ∀ e ∈ E, (G.neighborFinset e ∩ T).card = q := by
+    intro e he
+    have hempty : G.neighborFinset e ∩ S = ∅ :=
+      Finset.card_eq_zero.mp (hE e he)
+    have heq : G.neighborFinset e ∩ T = G.neighborFinset e := by
+      ext v
+      constructor
+      · intro hv
+        exact (Finset.mem_inter.mp hv).1
+      · intro hv
+        have hvNotS : v ∉ S := by
+          intro hvS
+          have : v ∈ G.neighborFinset e ∩ S :=
+            Finset.mem_inter.mpr ⟨hv, hvS⟩
+          rw [hempty] at this
+          simp at this
+        exact Finset.mem_inter.mpr
+          ⟨hv, Finset.mem_sdiff.mpr ⟨Finset.mem_univ v, hvNotS⟩⟩
+    rw [heq, G.card_neighborFinset_eq_degree, hreg]
+  have hswap := sum_card_neighbor_inter_comm G E T
+  calc
+    q * E.card = ∑ e ∈ E, (G.neighborFinset e ∩ T).card := by
+      rw [show (∑ e ∈ E, (G.neighborFinset e ∩ T).card) =
+          ∑ _e ∈ E, q by
+        apply Finset.sum_congr rfl
+        intro e he
+        exact hline e he]
+      simp [Nat.mul_comm]
+    _ = ∑ v ∈ T, (G.neighborFinset v ∩ E).card := hswap
+    _ ≤ ∑ _v ∈ T, 1 := by
+      apply Finset.sum_le_sum
+      intro v hv
+      exact hcap v (Finset.mem_sdiff.mp hv).2
+    _ = T.card := by simp
+    _ = Fintype.card V - S.card := by
+      simp [T, Finset.card_sdiff]
+
 end
 
 end Erdos85
@@ -184,3 +361,8 @@ end Erdos85
 #print axioms Erdos85.binarySquare_sparseSigned_companionDefect_apply
 #print axioms Erdos85.binarySquare_trichotomy_companionDefect_apply
 #print axioms Erdos85.binarySquare_mixedExceptional_card_le
+#print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
+#print axioms Erdos85.binarySquare_regular_secondOrderDefect_degree_eq
+#print axioms Erdos85.binarySquare_full_empty_card_le_of_defectRegular
+#print axioms Erdos85.binarySquare_full_empty_card_le
+#print axioms Erdos85.regular_emptyLines_mul_card_le_complement_card
