@@ -1074,6 +1074,31 @@ price argument may hence assume these smaller external matchings exist at
 every row; those are precisely the transitions carrying the nontrivial
 external transport in (12qk)--(12ql).
 
+The bound (12qn) is only a necessary first layer.  In the four-seed run none
+of the nine Hall-deficient row/pair cases violates it: every external graph
+has matching number at least `d_t-g(t)`.  The observed deficit is the coupling
+cost of adding an own-touching candidate, whose other selected label may
+delete an external option.
+
+That coupling has an exact bounded formula.  Let `G_t^own` contain the
+candidates touching `S_t intersect C`.  For a matching `O` in this graph,
+let `L(O)` be all selected labels occupied by its candidates, and delete from
+`G_t^ext` every candidate meeting `L(O)`.  Every full matching splits
+uniquely into such an `O` and a residual external matching, so
+
+```text
+nu(G_t) = max_{O matching in G_t^own}
+            (|O| + nu(G_t^ext minus L(O))),   with |O|<=g(t)<=2. (12qo)
+```
+
+Thus local Hall failure is equivalent to the finitely many inequalities
+`|O|+nu(G_t^ext minus L(O))<=d_t-1` for own matchings of size zero, one, or
+two.  Formula (12qo) is the sharp local companion to the incidence-split
+transport: the same own candidate that contributes the paired `iota=1` curl
+also removes one or two labels from the external matching system.  A uniform
+Hall-or-price proof can charge this bounded deletion loss against the
+own-versus-external role-flow inequalities (12ql).
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
