@@ -226,8 +226,17 @@ vertex must lie in the order-51 component.  In `[9,26,43]`, it cannot lie in
 the order-nine component.  More locally, the order-nine color type
 `(0,1,1)` is impossible altogether: without `x` it would require a simple
 two-regular graph on two vertices, while with `x` equation (7) is negative.
-The cycle conditions still leave all eleven order rows, so this is a strict
-profile and location refinement rather than a disconnectedness
+
+If `x` does lie in an order-nine component, still more is forced.  Its color
+vector is necessarily `(2,2,2)`, so its bin-one portion has color counts
+`(1,1,1)` and is a triangle.  The order-nine calculation above says that the
+whole component is `K9` minus three edges.  Since bin-one vertices have no
+defect edge to `x`, the three missing edges are exactly the star from `x` to
+that triangle.  Equivalently, the other five vertices are bin-zero, form a
+defect `K5`, and are all five defect neighbors of `x`.  This is an exact
+forced component geometry, although the present packing laws do not exclude
+it.  The cycle conditions still leave all eleven order rows, so the result is
+a strict profile and location refinement rather than a disconnectedness
 contradiction.
 
 ## Scope

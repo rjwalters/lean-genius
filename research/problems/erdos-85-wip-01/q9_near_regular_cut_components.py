@@ -114,6 +114,27 @@ def localized_assignment_counts(
     return len(assignments), len(placements), owner_orders
 
 
+def order_nine_owner_types(
+    partitions: list[tuple[int, ...]], types: dict[int, list[tuple[int, int, int]]]
+) -> set[tuple[int, int, int]]:
+    """Profiles possible when the B3 vertex lies in an order-nine component."""
+    result = set()
+    for partition in partitions:
+        for assignment in product(*(types[order] for order in partition)):
+            if tuple(map(sum, zip(*assignment))) != TARGET_BETA:
+                continue
+            for owner, order in enumerate(partition):
+                color_counts = [
+                    tuple(value - (index == owner) for value in beta)
+                    for index, beta in enumerate(assignment)
+                ]
+                if order == 9 and all(
+                    tripartite_two_factor_necessary(counts) for counts in color_counts
+                ):
+                    result.add(assignment[owner])
+    return result
+
+
 def main() -> None:
     types = admissible_types()
     orders = sorted(types)
@@ -155,6 +176,7 @@ def main() -> None:
         {27, 51},
         {35, 43},
     ]
+    assert order_nine_owner_types(partitions, types) == {(2, 2, 2)}
 
     print(f"verified component orders: {orders}")
     for parts, count, (assignment_count, placement_count, owner_orders) in zip(
