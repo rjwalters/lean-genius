@@ -22,7 +22,7 @@ noncomputable section
 primary restriction of trace `-q`, whose characteristic polynomial is an
 ambient Hermitian factor, produces enough paired defect eigenvalues to invoke
 the connected-nonbipartite growth theorem. -/
-theorem connectedNonbipartite_designatedFactor_rootLength_sq_growth
+theorem connectedNonbipartite_designatedFactor_finrank_sq_growth
     {V : Type*} [Fintype V] [DecidableEq V]
     (D : SimpleGraph V) [DecidableRel D.Adj]
     (hconn : D.Connected) (hnotbip : ¬ D.IsBipartite)
@@ -42,12 +42,8 @@ theorem connectedNonbipartite_designatedFactor_rootLength_sq_growth
         (toLin'_comm_of_matrix_comm hcommM) g) = -(q : ℚ))
     (hdiv : (kerAevalRestrict A.toLin' T.toLin'
       (toLin'_comm_of_matrix_comm hcommM) g).charpoly ∣ A.charpoly) :
-    let f := (kerAevalRestrict A.toLin' T.toLin'
-      (toLin'_comm_of_matrix_comm hcommM) g).charpoly
-    let roots := (f.map (algebraMap ℚ ℂ)).roots
-    let L := roots.toList
-    (q : ℝ) ^ 2 < 2 * ((q : ℝ) - 1) * (L.length : ℝ) ^ 2 := by
-  dsimp only
+    (q : ℝ) ^ 2 < 2 * ((q : ℝ) - 1) *
+      (Module.finrank ℚ (LinearMap.ker (aeval T.toLin' g)) : ℝ) ^ 2 := by
   let hcomm := toLin'_comm_of_matrix_comm hcommM
   let R := kerAevalRestrict A.toLin' T.toLin' hcomm g
   let f := R.charpoly
@@ -147,9 +143,23 @@ theorem connectedNonbipartite_designatedFactor_rootLength_sq_growth
       simpa [smul_eq_mul] using hi)
     (by intro i _; simp [μ])
     (by simpa using hsum')
-  simpa [L, roots, f, R, hcomm] using hgrowth
+  have hrootCard : roots.card =
+      Module.finrank ℚ (LinearMap.ker (aeval T.toLin' g)) := by
+    calc
+      roots.card = (f.map (algebraMap ℚ ℂ)).natDegree :=
+        (IsAlgClosed.splits (f.map (algebraMap ℚ ℂ))).natDegree_eq_card_roots.symm
+      _ = f.natDegree :=
+        Polynomial.natDegree_map_eq_of_injective
+          (algebraMap ℚ ℂ).injective f
+      _ = Module.finrank ℚ (LinearMap.ker (aeval T.toLin' g)) := by
+        exact R.charpoly_natDegree
+  have hlength : L.length =
+      Module.finrank ℚ (LinearMap.ker (aeval T.toLin' g)) := by
+    change roots.toList.length = _
+    rw [Multiset.length_toList, hrootCard]
+  simpa [hlength] using hgrowth
 
-#print axioms connectedNonbipartite_designatedFactor_rootLength_sq_growth
+#print axioms connectedNonbipartite_designatedFactor_finrank_sq_growth
 
 end
 
