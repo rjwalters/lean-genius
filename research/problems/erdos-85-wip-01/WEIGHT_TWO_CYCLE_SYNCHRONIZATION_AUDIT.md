@@ -144,6 +144,15 @@ an infeasibility proof in 120 seconds).  These are exploratory solver results,
 not certificates and not a nonexistence claim.  The exact-cover equation is
 the next honest falsifier for the reduced desynchronization witness.
 
+The first omitted exterior C4-free layer has also been tested explicitly.
+For every pair of outside traces sharing a component endpoint, forbid a
+K-common-neighbor, since that endpoint is already their unique A-common-
+neighbor.  This adds 429,624 binary incompatibilities to the 6,272 exact-one
+equations.  Native CP-SAT still returned UNKNOWN after 180 seconds (219,182
+branches, no incumbent).  Codegree-at-most-one for disjoint trace pairs has
+not yet been added.  Thus even the intersecting-trace C4 layer has no bounded
+solver verdict; no SAT or UNSAT claim is made.
+
 ## Verdict
 
 Cycle synchronization does not follow from the complete component-side
