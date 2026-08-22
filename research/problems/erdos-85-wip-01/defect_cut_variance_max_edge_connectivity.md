@@ -1263,6 +1263,25 @@ Thus the exceptional separator vertex has only O(a) attachments into the
 q-2 residue component; the endpoint `a=0` specializes to the exact
 `m_c in {1,2}` classification in (B17W).
 
+The first non-endpoint slice has a useful intrinsic form.  At `a=1`, the
+X-profile says
+
+```text
+deg_A(x,X)=2-1_(x in K).
+```
+
+Thus `A[X]` has maximum degree two, with degree-one vertices exactly
+`K intersect X`.  By (B16a) their number is even, so
+
+```text
+A[X] is a disjoint union of cycles and |K intersect X|/2 paths,
+and the path endpoints are exactly K intersect X.         (B22)
+```
+
+This path-cycle decomposition is the `a=1` analogue of the matching plus
+two isolates obtained at the endpoint, and is the next location-sensitive
+object to couple to the W-attachment fibers.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
