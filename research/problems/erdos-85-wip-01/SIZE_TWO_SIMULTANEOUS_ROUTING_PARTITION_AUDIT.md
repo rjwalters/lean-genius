@@ -1735,3 +1735,45 @@ on `Z` is still allowed.  It identifies the remaining gap precisely as a
 within-component fluctuation invisible to every component-indicator test.
 Any proof of the proposed constancy target after (98) must control that
 fluctuation, not merely another quotient parity.
+
+## 28. Exact detector for the within-component fluctuation
+
+On the odd owner-port component `Z`, the shadow factor `P=F_c[e]` is an odd
+cycle adjacency.  Its binary kernel on that component consists exactly of
+the constant functions: `P u=0` says `u_(i-1)=u_(i+1)`, and odd cyclic order
+forces all coordinates equal.  Since the `P`-neighbors of a vertex of `Z`
+remain in `Z`, the proposed constancy after (98) is equivalent to
+
+```text
+(P Theta V_j)|_Z = 0.                                  (105)
+```
+
+This detector removes the full owner sum.  Each owner factor commutes with
+the defect adjacency and hence with its selector complement `H_e`; in
+particular
+
+```text
+P H_e = H_e P.
+```
+
+Using `P V_j=0` and `Theta=P B+H_e+B^2`, where `B=A_e`, gives
+
+```text
+P Theta V_j
+  = (P^2 B + P H_e + P B^2) V_j
+  = P (P+B) B V_j.                                     (106)
+```
+
+Therefore the routing-color aggregate potential is constant on the owner
+ports exactly when
+
+```text
+(P (P+B) B V_j)|_Z = 0.                                (107)
+```
+
+The remaining obstruction is now a distinguished endpoint cubic, but unlike
+the ambient cubic of Section 23 it keeps both the cross-shadow cycle `P` and
+the internal cycle `B` marked.  Equation (107) is the sharp next theorem
+target.  Proving it requires an interaction between these two two-factors;
+their separate commutation with `H_e` is enough to remove the background
+owner sum but not enough by itself to annihilate `P(P+B)B`.
