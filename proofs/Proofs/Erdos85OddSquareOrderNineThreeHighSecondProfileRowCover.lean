@@ -616,6 +616,142 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_weighted_row_dichotomy
   rcases hmass with hregular | hexceptional
   · exact Or.inl (hweight.symm.trans hregular)
   · exact Or.inr (hweight.symm.trans hexceptional)
+
+/-- An ordinary B0 row has no special/marked center exactly on the exceptional
+defect fiber of `x`; every other row has exactly one such center. -/
+theorem squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let D := secondOrderDefectGraph G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    ((D.Adj x t ∧ (G.neighborFinset t ∩ S).card = 0 ∧
+        (G.neighborFinset t ∩ M).card = 0) ∨
+      (¬ D.Adj x t ∧ (G.neighborFinset t ∩ S).card +
+        (G.neighborFinset t ∩ M).card = 1)) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let D := secondOrderDefectGraph G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let FS : V → Finset V := fun y => G.neighborFinset y ∩ B 0
+  let W := (S.biUnion FS) ∪ (M.biUnion FS)
+  let T := B 0 \ S
+  let O := W \ S
+  let C := (G.neighborFinset t ∩ S) ∪ (G.neighborFinset t ∩ M)
+  have htParts := Finset.mem_sdiff.mp ht
+  have htT : t ∈ T := Finset.mem_sdiff.mpr htParts
+  have hholes :=
+    squareOrderNine_threeHigh_secondProfile_support_holes_eq_defect_fiber
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hholes
+  change T \ O = (D.neighborFinset x ∩ B 0) \ S at hholes
+  have hOiff : t ∈ O ↔ C.Nonempty := by
+    constructor
+    · intro htO
+      have htW := (Finset.mem_sdiff.mp htO).1
+      rcases Finset.mem_union.mp htW with htWS | htWM
+      · simp only [Finset.mem_biUnion] at htWS
+        obtain ⟨s, hsS, hts⟩ := htWS
+        refine ⟨s, Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨?_, hsS⟩)⟩
+        exact (G.mem_neighborFinset t s).mpr
+          ((G.adj_comm s t).mp ((G.mem_neighborFinset s t).mp
+            (Finset.mem_inter.mp hts).1))
+      · simp only [Finset.mem_biUnion] at htWM
+        obtain ⟨m, hmM, htm⟩ := htWM
+        refine ⟨m, Finset.mem_union_right _ (Finset.mem_inter.mpr ⟨?_, hmM⟩)⟩
+        exact (G.mem_neighborFinset t m).mpr
+          ((G.adj_comm m t).mp ((G.mem_neighborFinset m t).mp
+            (Finset.mem_inter.mp htm).1))
+    · rintro ⟨y, hyC⟩
+      refine Finset.mem_sdiff.mpr ⟨?_, htParts.2⟩
+      rcases Finset.mem_union.mp hyC with hyS | hyM
+      · have hyParts := Finset.mem_inter.mp hyS
+        apply Finset.mem_union_left
+        simp only [Finset.mem_biUnion]
+        exact ⟨y, hyParts.2, Finset.mem_inter.mpr ⟨
+          (G.mem_neighborFinset y t).mpr
+            ((G.adj_comm t y).mp ((G.mem_neighborFinset t y).mp hyParts.1)),
+          htParts.1⟩⟩
+      · have hyParts := Finset.mem_inter.mp hyM
+        apply Finset.mem_union_right
+        simp only [Finset.mem_biUnion]
+        exact ⟨y, hyParts.2, Finset.mem_inter.mpr ⟨
+          (G.mem_neighborFinset y t).mpr
+            ((G.adj_comm t y).mp ((G.mem_neighborFinset t y).mp hyParts.1)),
+          htParts.1⟩⟩
+  have hxt : x ≠ t := by
+    intro h
+    subst t
+    have hk3 := (Finset.mem_filter.mp hx).2
+    have hk0 := (Finset.mem_filter.mp htParts.1).2
+    omega
+  have hCsub : C ⊆ G.neighborFinset x ∩ G.neighborFinset t := by
+    intro y hyC
+    rcases Finset.mem_union.mp hyC with hyS | hyM
+    · have hyParts := Finset.mem_inter.mp hyS
+      have hySParts := Finset.mem_inter.mp hyParts.2
+      exact Finset.mem_inter.mpr ⟨hySParts.1, hyParts.1⟩
+    · have hyParts := Finset.mem_inter.mp hyM
+      have hyMParts := Finset.mem_inter.mp hyParts.2
+      exact Finset.mem_inter.mpr ⟨hyMParts.1, hyParts.1⟩
+  have hCle : C.card ≤ 1 := by
+    exact (Finset.card_le_card hCsub).trans
+      ((not_containsC4_iff_forall_common_le_one G).mp hfree x t hxt)
+  have hSMdisj : Disjoint (G.neighborFinset t ∩ S)
+      (G.neighborFinset t ∩ M) := by
+    rw [Finset.disjoint_left]
+    intro y hyS hyM
+    have hyB0 := (Finset.mem_inter.mp (Finset.mem_inter.mp hyS).2).2
+    have hyB1 := (Finset.mem_inter.mp (Finset.mem_inter.mp hyM).2).2
+    have hk0 := (Finset.mem_filter.mp hyB0).2
+    have hk1 := (Finset.mem_filter.mp hyB1).2
+    omega
+  by_cases hDxt : D.Adj x t
+  · left
+    have htQ : t ∈ (D.neighborFinset x ∩ B 0) \ S :=
+      Finset.mem_sdiff.mpr ⟨Finset.mem_inter.mpr ⟨
+        (D.mem_neighborFinset x t).mpr hDxt, htParts.1⟩, htParts.2⟩
+    have htHole : t ∈ T \ O := by rw [hholes]; exact htQ
+    have htNotO := (Finset.mem_sdiff.mp htHole).2
+    have hCempty : C = ∅ := Finset.not_nonempty_iff_eq_empty.mp
+      (fun hC => htNotO (hOiff.mpr hC))
+    have hcards := congrArg Finset.card hCempty
+    rw [Finset.card_union_of_disjoint hSMdisj, Finset.card_empty] at hcards
+    have hcards' : (G.neighborFinset t ∩ S).card +
+        (G.neighborFinset t ∩ M).card = 0 := by
+      simpa [C] using hcards
+    have hz := Nat.add_eq_zero_iff.mp hcards'
+    exact ⟨hDxt, by simpa [S] using hz.1, by simpa [M] using hz.2⟩
+  · right
+    have htO : t ∈ O := by
+      by_contra htNotO
+      have htHole : t ∈ T \ O := Finset.mem_sdiff.mpr ⟨htT, htNotO⟩
+      have htQ : t ∈ (D.neighborFinset x ∩ B 0) \ S := by
+        rw [← hholes]
+        exact htHole
+      exact hDxt ((D.mem_neighborFinset x t).mp
+        (Finset.mem_inter.mp (Finset.mem_sdiff.mp htQ).1).1)
+    have hCpos : 0 < C.card := Finset.card_pos.mpr (hOiff.mp htO)
+    have hCcard : C.card = 1 := by omega
+    rw [Finset.card_union_of_disjoint hSMdisj] at hCcard
+    exact ⟨hDxt, hCcard⟩
 end
 
 end Erdos85
@@ -627,4 +763,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_neighbor_center_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_weighted_row_equation
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_weighted_row_dichotomy
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_dichotomy
 #print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
