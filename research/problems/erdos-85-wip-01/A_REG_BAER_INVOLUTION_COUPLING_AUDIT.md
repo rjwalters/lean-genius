@@ -1738,6 +1738,35 @@ is a finite core-facing target: a transport law determining the parity of
 `B_0` from the path pairing in (73ri) would determine `theta_0`, or vice
 versa, without assigning K/Omega signs to arbitrary private marks.
 
+The partial Baer involution at `F_0` supplies more than this parity.  Its
+domain on the full line is the complement of the T-neighbors.  After the
+decomposition above, it is
+
+```text
+{W_Y : Y in R setminus B_0}
+  union ({Q_0} if theta_0=0 else empty).                  (73rk)
+```
+
+The involution is fixed-point-free and therefore perfectly matches this
+set.  Via `W_Y -> Y`, it gives a matching on the unmarked core labels
+`R setminus B_0`, except that when `theta_0=0` exactly one such label may be
+matched to the boundary point `Q_0`.  The parity in (73rj) is precisely what
+makes the displayed domain even.
+
+No two labels Y,Z paired through `W_Y W_Z` can be adjacent in `A[R]`:
+otherwise
+
+```text
+Y -- W_Y -- W_Z -- Z -- Y
+```
+
+is an ambient C4.  Hence the induced matching on core labels is edge-disjoint
+from the path--cycle graph `A[R]`.  The surviving low-r object has therefore
+sharpened to a path--cycle core with an explicit broken set `B_0` satisfying
+(73rj) and a complementary nonedge matching (with at most the one boundary
+mate `Q_0`).  This is a genuine Baer-involution coupling on the core, rather
+than only a count of its private points.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
