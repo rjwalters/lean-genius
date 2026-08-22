@@ -247,3 +247,63 @@ commutation with `D[c]` does not imply that they commute with each other.
 Consequently (14) is a normal form, not yet a contradiction; the next useful
 input must constrain these oriented intersections simultaneously as `x`,
 `e`, and `f` vary.
+
+## 7. Marked-triangle / defect-codegree bridge
+
+Let `F_a` denote the owner-`a` factor restricted to `c`.  The owner
+factorization edge-partitions the q-regular selector complement
+
+```text
+H_c = complement(D[c]) = disjoint-union_a F_a,           (15)
+```
+
+and `F_c` is the distinguished self-source distance-two 2-factor.  The two
+summands in (13) are exchanged by swapping `e` and `f`, so
+
+```text
+E_x(e,f) = E_x(f,e).                                    (16)
+```
+
+More intrinsically, let `s_x={u_0,u_1}` be the `F_c` edge indexed by the root
+`x`.  For an unordered pair of distinct exterior colors `{e,f}`, `E_x(e,f)`
+is exactly the number of triangles of `H_c` containing `s_x` whose other two
+edges have colors `e` and `f`.  Hence summing `E_x(e,f)` over exterior color
+pairs counts the exterior-rainbow part of the triangles through the marked
+self edge.
+
+The full number of triangles of `H_c` through `s_x` is
+
+```text
+codeg_(H_c)(u_0,u_1).                                   (17)
+```
+
+It also has an exact defect interpretation.  On `2q` vertices, `D[c]` is
+`(q-1)`-regular and `H_c = J-I-D[c]`.  Expanding the square gives
+
+```text
+H_c^2 = I + D[c]^2 + 2D[c].                             (18)
+```
+
+Since `s_x` is an `H_c` edge, it is not a `D[c]` edge, and its endpoints are
+distinct.  Evaluating (18) at `(u_0,u_1)` therefore yields
+
+```text
+codeg_(H_c)(u_0,u_1) = codeg_(D[c])(u_0,u_1).           (19)
+```
+
+Thus endpoint-marked routing supplies a colored refinement of a defect
+codegree across every self-source edge.  Explicitly, the right side of (19)
+splits on the left into:
+
+1. the exterior-rainbow terms `E_x(e,f)`;
+2. exterior-monochromatic triangles (both remaining edges in one `F_e`);
+3. triangles using another self-color edge and one exterior edge;
+4. triangles lying wholly in the self factor `F_c`.
+
+Equation (19) is exact but does not by itself fix any one class.  In
+particular, symmetry (16) gives no parity: it merely says the rainbow count is
+indexed by unordered exterior color pairs.  A closing q-generic invariant
+must control the other three classes, or compare the colored decomposition of
+(19) at consecutive roots of the internal cycle.  Ordinary triangle totals
+erase precisely this marked-edge information, as already observed in the
+owner triangle inventory.
