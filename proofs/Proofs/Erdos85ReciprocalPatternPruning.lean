@@ -126,6 +126,39 @@ theorem no_reciprocal_choice_of_iterate_prune_eq_empty
   rw [hempty] at hp
   simpa using hp
 
+/-- On an odd finite type there is no loopless reciprocal choice with exactly
+one chosen neighbor at every vertex.  Equivalently, an odd-order simple graph
+cannot be one-regular. -/
+theorem no_loopless_reciprocal_singleton_choice_of_odd_card
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (C : α → Finset α)
+    (hcard : ∀ p, (C p).card = 1)
+    (hloop : ∀ p, p ∉ C p)
+    (hrecip : ∀ p q, q ∈ C p ↔ p ∈ C q)
+    (hodd : Odd (Fintype.card α)) : False := by
+  classical
+  let G := SimpleGraph.fromRel fun p q : α => q ∈ C p
+  have hneighbor : ∀ p, G.neighborFinset p = C p := by
+    intro p
+    ext q
+    simp only [G, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.fromRel_adj]
+    constructor
+    · rintro ⟨_, hpq | hqp⟩
+      · exact hpq
+      · exact (hrecip q p).mp hqp
+    · intro hpq
+      exact ⟨fun hpqEq => hloop p (hpqEq ▸ hpq), Or.inl hpq⟩
+  have hdegree : ∀ p, G.degree p = 1 := by
+    intro p
+    rw [← G.card_neighborFinset_eq_degree, hneighbor p, hcard p]
+  have hsum : (∑ p, G.degree p) = Fintype.card α := by
+    simp [hdegree]
+  have hhandshake := G.sum_degrees_eq_twice_card_edges
+  rw [hsum] at hhandshake
+  obtain ⟨k, hk⟩ := hodd
+  omega
+
 /-- A small warning example: reverse-support consistency is not complete.
 Each of three vertices may choose either other vertex as its singleton
 pattern.  The system is pruning-stable, but a reciprocal choice would be a
@@ -160,5 +193,6 @@ end
 end Erdos85
 
 #print axioms Erdos85.no_reciprocal_choice_of_iterate_prune_eq_empty
+#print axioms Erdos85.no_loopless_reciprocal_singleton_choice_of_odd_card
 #print axioms Erdos85.threePointSingletonPatterns_prune_fixed
 #print axioms Erdos85.threePointSingletonPatterns_no_reciprocal_choice
