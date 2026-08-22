@@ -1272,19 +1272,42 @@ q < 2c,       so q/2 < c <= q in the surviving pure branch. (77)
 This last arithmetic implication is Lean-checked by
 `binarySquare_pureExceptional_halfDegree_lt_card`.
 
+The surviving interval has an exact internal-defect identity.  Let
+`n_i=|{P in S:t_P=i}|` for `i=1,2,3`, and write `e=e_D(F)`.  The cover,
+incidence, and pair equations are
+
+```text
+n_1+n_2+n_3=s,
+n_1+2n_2+3n_3=qc,
+n_2+3n_3=C(c,2)-e.
+```
+
+Eliminating the replication counts and using `2s=q^2+c` gives
+
+```text
+2(e_D(F)+n_3)=(q-c)^2.                                  (78)
+```
+
+This is Lean-checked by
+`binarySquare_pureExceptional_defect_triple_identity`.  In particular the
+endpoint `c=q` forces both `e_D(F)=0` and `n_3=0`: every two full lines meet,
+no three meet, and their union consists of one point for each line-pair plus
+exactly one private point on each line.  More generally (78) quantifies the
+total failure of that endpoint design by the square distance from `c=q`.
+
 The unresolved signed-support terminal has therefore split into two strictly
 smaller regimes: mixed support `c<=3q/2-2`, or pure support `c<=q`.  The latter
 still obeys (74), so every point of its occupied shore has positive
 exceptional replication; eliminating this small pure regime and the mixed
 four-type regime remains necessary.
 
-Equations (7)--(77) are the first canonical cut detector manufactured from
+Equations (7)--(78) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(77), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(78), so these laws alone
 do not conceal an order-independent
 contradiction.
 

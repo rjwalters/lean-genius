@@ -222,6 +222,25 @@ theorem binarySquare_pureExceptional_halfDegree_lt_card
     q < 2 * c := by
   nlinarith
 
+/-- Exact inclusion--exclusion defect identity for the surviving pure
+branch.  Here `nᵢ` counts shore points of exceptional replication `i`, and
+`e` is the number of defect edges inside the pure exceptional support. -/
+theorem binarySquare_pureExceptional_defect_triple_identity
+    {q c s n₁ n₂ n₃ e : ℕ} (hcq : c ≤ q)
+    (hshore : 2 * s = q * q + c)
+    (hclasses : n₁ + n₂ + n₃ = s)
+    (hincidence : n₁ + 2 * n₂ + 3 * n₃ = q * c)
+    (hpairs : 2 * n₂ + 6 * n₃ + 2 * e = c * (c - 1)) :
+    2 * (e + n₃) = (q - c) * (q - c) := by
+  have hqsplit : q - c + c = q := Nat.sub_add_cancel hcq
+  have hcprod : c * (c - 1) + c = c * c := by
+    by_cases hc : c = 0
+    · simp [hc]
+    · calc
+        c * (c - 1) + c = c * ((c - 1) + 1) := by ring
+        _ = c * c := by rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hc)]
+  nlinarith
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -631,6 +650,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedExceptional_card_le
 #print axioms Erdos85.binarySquare_pureLargeExceptional_impossible
 #print axioms Erdos85.binarySquare_pureExceptional_halfDegree_lt_card
+#print axioms Erdos85.binarySquare_pureExceptional_defect_triple_identity
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.binarySquare_regular_secondOrderDefect_degree_eq
 #print axioms Erdos85.binarySquare_full_empty_card_le_of_defectRegular
