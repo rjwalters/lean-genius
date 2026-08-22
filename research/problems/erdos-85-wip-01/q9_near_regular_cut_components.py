@@ -327,6 +327,37 @@ def main() -> None:
         for assembly in articulation
     )
     assert articulation_order_pairs == Counter({(18, 59): 7, (27, 50): 1, (34, 43): 1})
+    equality_profiles = Counter()
+    for assembly in articulation:
+        for exceptional, scale, beta in assembly:
+            order = exceptional + 8 * scale
+            for shore_order, shore_beta in (
+                (order, beta),
+                (N_ORDINARY - order, tuple(HIGH_DEGREE - value for value in beta)),
+            ):
+                if cut_lower(shore_order, shore_beta) != exceptional:
+                    continue
+                total = Q * shore_order - sum(shore_beta)
+                low, high_count = divmod(total, N_ORDINARY)
+                equality_profiles[
+                    (
+                        shore_order,
+                        tuple(sorted(shore_beta)),
+                        low,
+                        N_ORDINARY - high_count,
+                        low + 1,
+                        high_count,
+                        exceptional,
+                    )
+                ] += 1
+    assert equality_profiles == Counter(
+        {
+            (60, (7, 8, 9), 6, 30, 7, 48, 2): 6,
+            (34, (4, 4, 4), 3, 18, 4, 60, 2): 1,
+            (50, (6, 6, 6), 5, 36, 6, 42, 2): 1,
+            (51, (7, 7, 7), 5, 30, 6, 48, 3): 1,
+        }
+    )
 
     bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
     assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
@@ -335,6 +366,7 @@ def main() -> None:
     print(f"verified component orders: {orders}")
     print("verified connectivity terminal: no admissible proper order is divisible by 8")
     print(f"verified B3-articulation assemblies: {articulation_order_pairs}")
+    print(f"verified articulation equality profiles: {equality_profiles}")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
     ):

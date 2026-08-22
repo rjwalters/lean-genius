@@ -367,6 +367,39 @@ Consequently `x` can be an articulation only in these three sharply
 specified branches.  This is not yet a proof that `D0-x` is connected; a
 location-sensitive consumer of (15) is still required.
 
+### Equality shores
+
+Eight of the nine assignments in (15) attain equality in the convex square
+bound on at least one shore.  Equality forces every ordinary center degree
+`b_v=|N_A(v) intersect S|` to take one of two consecutive values.  Up to
+permuting colors, the exact profiles are:
+
+```text
+order 60, beta=(7,8,9), boundary 2:
+  thirty centers of degree 6 and forty-eight of degree 7  (six assignments);
+
+order 34, beta=(4,4,4), boundary 2:
+  eighteen centers of degree 3 and sixty of degree 4;
+
+order 50, beta=(6,6,6), boundary 2:
+  thirty-six centers of degree 5 and forty-two of degree 6;
+
+order 51, beta=(7,7,7), boundary 3:
+  thirty centers of degree 5 and forty-eight of degree 6.
+```
+
+The order-60 shore is `x` together with the order-59 component.  Since `x`
+has exactly six ordinary `A`-neighbors, equality forces all six into that
+shore and none into the order-18 component.  In the `(27,50)` branch the
+order-50 equality instead forces five or six of those neighbors into the
+order-50 component.  In the `(34,43)` branch, three or four lie in the
+order-34 component.  The sole articulation assignment with no equality
+shore is the symmetric `(18,59)` color split `(2,2,2)/(7,7,7)`.
+
+These location statements sharply couple the articulation split to the
+already classified six ordinary neighbors of `x`; they do not yet eliminate
+a branch.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
