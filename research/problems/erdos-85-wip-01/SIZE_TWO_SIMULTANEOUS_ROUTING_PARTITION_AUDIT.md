@@ -3776,3 +3776,45 @@ cuts of the color supports `X_d`.  The rooted transition paths determine
 those supports, while the clean-core capacity controls their repeated
 internal ports.  Equation (228) is the exact cut form in which the two data
 sets must be combined.
+
+## 69. Vertical collisions are the path-rank drop from state runs to owner factors
+
+Let `H_d(Omega)` be the horizontal color-`d` subgraph on `X_d`: its edges
+are the horizontal edges of `Omega` owned by `d`.  It is a subgraph of the
+induced owner factor `F_d[c][X_d]`.  Degree summation in the state cycle and
+in the owner factor gives, respectively,
+
+```text
+|X_d| - |E(H_d)|             = v_d/2,
+|X_d| - |E(F_d[c][X_d])|     = |delta_F(X_d)|/2.        (229)
+```
+
+Subtracting the two identities and using (226),
+
+```text
+kappa_vert(d;Omega)
+  = (|X_d|-|E(H_d)|)
+    - (|X_d|-|E(F_d[c][X_d])|).                        (230)
+```
+
+For an induced subgraph of a two-factor, `|V|-|E|` is the number of path
+components, counting isolated vertices as paths and counting a full cycle
+as zero.  Thus `v_d/2` counts the horizontal state-run components of color
+`d` (including isolated intermediate appearances), while
+`|delta_F(X_d)|/2` counts the path components cut out by the same root set
+inside the owner factor.  Each vertically repeated port is precisely one
+additional owner-factor edge beyond `H_d`; adding it either merges two path
+components or closes one path into a cycle.  Equation (230) says all such
+rank drops are counted once.
+
+Consequently the desired parity can also be stated as
+
+```text
+sum_d pathrank(H_d) == sum_d pathrank(F_d[c][X_d])  (mod 2). (231)
+```
+
+This component form is equivalent to the mod-four cut congruence (228), but
+it exposes the required involution more concretely: pair the owner chords
+which merge or close the rooted state-run components.  A pairing of their
+two endpoint occurrences is insufficient; the pairing must act on these
+component-changing chords themselves.
