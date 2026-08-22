@@ -719,6 +719,25 @@ needs either an exceptional branch or a weaker partial order on the role
 censuses.  Mode `--features fiber-type-monotone-farkas` enforces these order
 constraints inside the master LP.
 
+Crucially, those two failures are not exceptions at the level of an outer
+design.  They belong to the same branch-3 witness, whose third color pair
+already has a direct local Hall obstruction.  Grouping the four-seed run by
+its eight outer witnesses gives the clean dichotomy
+
+```text
+5/8 witnesses: some color pair has a local Hall failure;
+3/8 witnesses: no local Hall failure, and monotone prices separate all
+               three color pairs.                               (12q)
+```
+
+Thus every sampled outer witness is excluded after choosing a favorable
+color pair by **local Hall or monotone flag prices**, with no residual sampled
+case.  This is the sharp seed-free conjecture suggested by the computation:
+prove that every admissible `Q,K` has either a local Hall-deficient candidate
+graph (12f), or a color pair admitting coordinatewise-monotone prices of the
+form (12p).  The exact color coupling (12l) is the natural mechanism for that
+choice.
+
 The smallest invariant ansatz for `W` can also be eliminated exactly on the
 sampled designs.  Normalize the selected colors as low/high and give a row
 one of five types: regular triple, exceptional hole, pair missing low, pair
