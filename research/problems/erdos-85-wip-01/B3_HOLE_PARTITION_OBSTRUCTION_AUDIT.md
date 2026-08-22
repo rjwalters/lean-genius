@@ -911,6 +911,25 @@ invariant.  A proof may therefore work directly with the triple
 `(c_0,c_1,c_2)` and use color permutation instead of treating `c_all` as an
 additional independent statistic.
 
+The omitted-color dependence may be given the expected collision sign.
+Impose, at fixed `(role,n,c_pair,r_tb)`,
+
+```text
+c_all <= c'_all  ==>  mu(role,n,c_pair,c'_all,r_tb)
+                       <= mu(role,n,c_pair,c_all,r_tb).     (12qe)
+```
+
+Thus a more concentrated omitted color receives a weakly smaller incoming
+cap price, while the previous coordinatewise monotonicity in the fiber role
+census is retained.  Both exceptional pairs still separate under (12qe),
+with normalized objectives `-0.04834010158` and `-0.4928963663`.
+At scale `100000` the exact checker gives totals `-4749` and `-49223`.
+Mode `--features fiber-type-collision-monotone-farkas` enforces this signed
+order.  The sign is the useful structural gain: it makes the omitted-color
+coordinate a genuine collision/concentration charge, compatible with a
+Schur-convex proof from (12qd), rather than an arbitrary refinement of the
+root lookup table.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of

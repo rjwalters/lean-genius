@@ -135,7 +135,8 @@ def refine_features(instances: list[dict], mode: str) -> None:
                 "fiber-type-count-farkas", "fiber-type-uncolored-farkas",
                 "fiber-type-bare-farkas", "fiber-demand-farkas",
                 "fiber-role-farkas", "fiber-type-monotone-farkas",
-                "fiber-type-total-monotone-farkas"):
+                "fiber-type-total-monotone-farkas",
+                "fiber-type-collision-monotone-farkas"):
         instance_keys = []
         all_keys = set()
         for data in instances:
@@ -154,7 +155,8 @@ def refine_features(instances: list[dict], mode: str) -> None:
                 if mode == "fiber-role-farkas" and root_type == 3:
                     root_type = 2
                 signature = (root_type, len(data["candidates"][t]), collisions)
-                if mode == "fiber-type-total-monotone-farkas":
+                if mode in ("fiber-type-total-monotone-farkas",
+                            "fiber-type-collision-monotone-farkas"):
                     signature += (all_collisions,)
                 row_signatures.append(signature)
             mu_keys = []
@@ -196,7 +198,8 @@ def refine_features(instances: list[dict], mode: str) -> None:
             instance_keys.append((row_signatures, mu_keys))
         FEATURES = {key: i for i, key in enumerate(sorted(all_keys))}
         if mode in ("fiber-type-monotone-farkas",
-                    "fiber-type-total-monotone-farkas"):
+                    "fiber-type-total-monotone-farkas",
+                    "fiber-type-collision-monotone-farkas"):
             mu_keys_all = [key for key in FEATURES if key[0] == "mu"]
             for i, left in enumerate(mu_keys_all):
                 left_counts = Counter(left[2])
@@ -208,6 +211,17 @@ def refine_features(instances: list[dict], mode: str) -> None:
                         ORDER_CONSTRAINTS.append((FEATURES[left], FEATURES[right]))
                     elif all(right_counts[j] <= left_counts[j] for j in range(5)):
                         ORDER_CONSTRAINTS.append((FEATURES[right], FEATURES[left]))
+            if mode == "fiber-type-collision-monotone-farkas":
+                # At fixed (role,n,c_pair) and fiber census, charge larger
+                # all-color/omitted-color collision by a weakly smaller cap
+                # price.  This is the sign suggested by convex concentration.
+                for left in mu_keys_all:
+                    for right in mu_keys_all:
+                        if (left[1][:3] == right[1][:3]
+                                and left[2] == right[2]
+                                and left[1][3] > right[1][3]):
+                            ORDER_CONSTRAINTS.append(
+                                (FEATURES[left], FEATURES[right]))
         for data, (row_signatures, mu_keys) in zip(instances, instance_keys):
             vectors = []
             for t in range(N):
@@ -746,7 +760,8 @@ def main() -> int:
                                                 "fiber-demand-farkas",
                                                 "fiber-role-farkas",
                                                 "fiber-type-monotone-farkas",
-                                                "fiber-type-total-monotone-farkas"),
+                                                "fiber-type-total-monotone-farkas",
+                                                "fiber-type-collision-monotone-farkas"),
                         default="basic")
     args = parser.parse_args()
     data = []
