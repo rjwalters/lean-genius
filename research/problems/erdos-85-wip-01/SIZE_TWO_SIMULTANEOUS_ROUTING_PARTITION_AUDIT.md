@@ -114,17 +114,18 @@ must simultaneously avoid the two endpoint cycle-route supports in (7), and
 all residual entries must split into the products through the other component
 blocks as in (8).
 
-At `q=8`, (SRP) has exactly four layers: the two forced endpoint layers and
-exactly two exterior layers.  Each row has the rigid partition
+As a calibration only, at `q=8`, (SRP) has exactly four layers: the two forced
+endpoint layers and exactly two exterior layers.  Each row has the rigid partition
 
 ```text
 4 + 4 + 4 + 4 = 16.
 ```
 
-Thus the order-64 all-size-two terminal can be attacked as a four-color
+Thus the parked order-64 all-size-two terminal admits a four-color
 factorization of `K_(16,16)`, with two colors fixed by the internal cycle
-systems and the cross 2-factor.  This is substantially smaller than a fresh
-64-vertex graph census and does not invoke either prohibited endpoint lane.
+systems and the cross 2-factor.  This observation is diagnostic only: the
+order-64 lane is operator-gated, and this note neither proposes nor authorizes
+a `q=8` census, SAT run, or endpoint attack.
 
 ## 4. What this does and does not prove
 
@@ -143,6 +144,8 @@ least two different endpoint pairs, so that one exterior product in one
 partition becomes an endpoint-constrained factor in another.
 
 The next nonduplicative theorem target is therefore the formal matrix package
-for (SRP), followed by a q-generic classification (or countermodel) of four
-size-two coordinates satisfying all six coupled routing partitions.  A
-single-pair spectral, row-sum, or phase argument cannot consume the new data.
+for (SRP), followed by a **q-generic** classification (or uniform
+countermodel) of simultaneous size-two coordinates satisfying all coupled
+routing partitions.  A single-pair spectral, row-sum, or phase argument cannot
+consume the new data.  No order-64-only classification belongs to this lane
+without a new operator direction.
