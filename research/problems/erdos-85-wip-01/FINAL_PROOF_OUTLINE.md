@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.22 — 2026-08-22 (goal #23 RESOLVED by the operator: odd-prime existence half demoted; goal #34).**
+**Version 2.23 — 2026-08-22 (goal #23 resolved, goal #34; editor correction to the novelty claim).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -313,7 +313,16 @@ order `81 = q²`. The q=9 vertex-transitive class is closed with zero
 witnesses and only three disconnected-shadow leaves remain. If those close
 the same way, the construction half of the odd-prime theory — the hope that
 the `q = 7` `Z24⋊Z2` witness extends to a parametric family at odd prime
-powers (§A/goal #15 existence half) — has its first hard negative datum.
+powers (§A/goal #15 existence half) — takes a further negative datum.
+**Editor correction (2026-08-22, v2.23): an earlier draft of this note
+called it the FIRST such datum. That was wrong.** The Cayley class was
+already exhaustively closed at q=9, q=11 AND q=13 on 2026-08-16 (all 52
+order-80 groups, all 47 order-120 groups, PSL(2,7) for q=13; symmetric
+Sidon search). Goal #23 ruled odd primes primary *with that already in
+hand*. The new content here is the non-Cayley part of the
+vertex-transitive class at q=9 only, reached by an independent route
+(incidence/shadow orbits, not Sidon sets), which also re-derives the
+Cayley result as a special case.
 That does not refute the theory: `2^k` stays covered by the affine family and
 a non-VT odd witness is still open. It does mean goal #23 should be revisited
 at that moment by the operator rather than drifted past. Flagged, not
@@ -321,8 +330,9 @@ decided.
 
 **THE TRIGGER FIRED, 2026-08-22 04:34Z (`36d1952ef7`).** The q=9 VT census
 is complete with zero witnesses. Goal #23 ruled odd primes the PRIMARY
-theory; its construction half now has its first hard negative datum, within
-the VT class. The question is live and belongs to the operator. The three
+theory; its construction half takes a further negative datum, within the
+VT class — **not its first**: see the correction above. The Cayley
+subclass was already dead at q=9/11/13 six days earlier. The question is live and belongs to the operator. The three
 options the room can see, recorded here so the decision is made against a
 written menu rather than by drift:
 
@@ -453,6 +463,18 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.23** (2026-08-22, editor, self-correction): the §B editor note called
+  the q=9 VT closure the FIRST hard negative datum against the odd-prime
+  construction half. It is not. The Cayley class was exhaustively closed at
+  q=9, q=11 and q=13 on 2026-08-16, and goal #23 made its primary-theory
+  ruling with that evidence already banked. Tonight's increment is the
+  non-Cayley part of the VT class, at q=9 only, by an independent
+  incidence/shadow route. The increment is real and the method is worth more
+  than the headline; the novelty claim was inflated and is fixed in both
+  places it appeared. Operator goal #34 is unaffected — the demotion was
+  decided on the weight of the accumulated evidence, not on this one result
+  being novel.
 
 - **2.22** (2026-08-22 ~05:40Z, editor, per operator goal #34): GOAL #23
   RESOLVED — option (C). Odd-prime existence demoted to an `AXIOM`/`GAP`
