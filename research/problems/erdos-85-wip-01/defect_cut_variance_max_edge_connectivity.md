@@ -1397,6 +1397,41 @@ points of K into fibers of sizes `2,1,0` over `N_0,N_1,N_2`: indeed
 X-neighbor.  This couples the wing routing to a global exact cover, rather
 than merely bounding the number of each local attachment type.
 
+The routing law also resolves each separator color into an exact mixture of
+singletons and pairs.  Fix `w in W` and let
+
+```text
+S_w={x in X : xw is not an edge of D}.
+```
+
+At `a=1`, every point of K has exactly one X-neighbor.  Every point of
+`R\P` has exactly two X-neighbors, because `A 1_X=2 1-1_K`, while each
+point of `P=K intersect R` has exactly one.  Consequently the centers in
+the w-wing route the set `S_w` as follows:
+
+```text
+K_w:                     m_w singleton fibers,
+R_w:                 n_w-1 disjoint two-point fibers,
+{p in P : p adjacent w}:     two singleton fibers.        (B27)
+```
+
+These fibers are disjoint: an X-point in two fibers for the same color
+would give the non-D pair `(x,w)` two common A-neighbors.  They are also
+exhaustive by (B25).  Numerically,
+
+```text
+|S_w|=|X|-m_w=2q-2-m_w
+     =m_w+2(n_w-1)+2,
+```
+
+where `m_w+n_w=q-1`.  Hence each `R_w` is canonically a matching of
+two-element subsets of the missing-w class, while `K_w` and the two
+incident P-points account for all remaining singleton routes.  In
+particular the three wing colors impose simultaneous partial matchings on
+the same path-cycle vertex set `X`; any surviving realization must make
+these colored matchings compatible with `A[X]` and with the endpoint split
+in (B24).
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
