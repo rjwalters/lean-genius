@@ -789,6 +789,27 @@ energy.  This is a more economical proof interface than arbitrary `Q,K`
 flags: a majorization or compression argument on the columns of `r_t` could
 construct the monotone prices, while (12fa) handles the low-cover boundary.
 
+There are sharp scalar consequences.  Let `p(t)` be the number of eligible
+pair candidates missing one selected color and put `L=2n(t)-p(t)`, the total
+selected-label mass.  Write
+
+```text
+L = 16a+r,  0<=r<16,       and       L = 5q+s,  0<=s<5.
+```
+
+Convexity, integrality, and the column cap five give
+
+```text
+(16-r) binom(a,2) + r binom(a+1,2)
+  <= c(t) <= 10q + binom(s,2).                              (12s)
+```
+
+The lower equality has sixteen loads differing by at most one; the upper
+equality fills `q` fibers to five and one fiber to `s`.  These bounds are
+valid before using the individual role margins, so any proof by compression
+can work inside the substantially smaller `(role,n,p,c)` range cut out by
+(12s).
+
 The smallest invariant ansatz for `W` can also be eliminated exactly on the
 sampled designs.  Normalize the selected colors as low/high and give a row
 one of five types: regular triple, exceptional hole, pair missing low, pair
