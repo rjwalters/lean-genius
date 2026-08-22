@@ -898,6 +898,103 @@ theorem squareOrderNine_threeHigh_secondProfile_special_puncture_hole_rainbow
   change (E ∩ color a).card = 1
   omega
 
+/-- The overlap of the two special holes is exactly their three-color
+agreement count.  In each color the overlap contributes either zero or one. -/
+theorem squareOrderNine_threeHigh_secondProfile_paired_hole_color_agreement
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    let Ey := D.neighborFinset y ∩ U1
+    let Ez := D.neighborFinset z ∩ U1
+    let I := Ey ∩ Ez
+    let color := fun a => G.neighborFinset a ∩ U1
+    (∀ a ∈ H,
+      (Ey ∩ color a).card = 1 ∧
+      (Ez ∩ color a).card = 1 ∧
+      (I ∩ color a).card ≤ 1) ∧
+      (∑ a ∈ H, (I ∩ color a).card) = I.card := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let Ey := D.neighborFinset y ∩ U1
+  let Ez := D.neighborFinset z ∩ U1
+  let I := Ey ∩ Ez
+  let color := fun a => G.neighborFinset a ∩ U1
+  have hyRainbow :=
+    squareOrderNine_threeHigh_secondProfile_special_puncture_hole_rainbow
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  have hzRainbow :=
+    squareOrderNine_threeHigh_secondProfile_special_puncture_hole_rainbow
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hz
+  dsimp only at hyRainbow hzRainbow
+  have hcolors :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcolors
+  have hpoint : ∀ a ∈ H,
+      (Ey ∩ color a).card = 1 ∧
+      (Ez ∩ color a).card = 1 ∧
+      (I ∩ color a).card ≤ 1 := by
+    intro a ha
+    refine ⟨hyRainbow a ha, hzRainbow a ha, ?_⟩
+    calc
+      (I ∩ color a).card ≤ (Ey ∩ color a).card := by
+        apply Finset.card_le_card
+        intro b hb
+        have hbParts := Finset.mem_inter.mp hb
+        exact Finset.mem_inter.mpr ⟨
+          (Finset.mem_inter.mp hbParts.1).1, hbParts.2⟩
+      _ = 1 := hyRainbow a ha
+  have hpair : ∀ a ∈ H, ∀ b ∈ H, a ≠ b →
+      Disjoint (I ∩ color a) (I ∩ color b) := by
+    intro a ha b hb hab
+    exact (hcolors.2.2.1 a ha b hb hab).mono
+      (fun _ h => (Finset.mem_inter.mp h).2)
+      (fun _ h => (Finset.mem_inter.mp h).2)
+  have hISub : I ⊆ U1 := fun _ hb =>
+    (Finset.mem_inter.mp (Finset.mem_inter.mp hb).1).2
+  have hunion : H.biUnion (fun a => I ∩ color a) = I := by
+    ext v
+    constructor
+    · intro hv
+      simp only [Finset.mem_biUnion] at hv
+      obtain ⟨a, _ha, hvParts⟩ := hv
+      exact (Finset.mem_inter.mp hvParts).1
+    · intro hvI
+      have hvU : v ∈ U1 := hISub hvI
+      have hvColors : v ∈ H.biUnion color := by
+        rw [hcolors.2.2.2]
+        exact hvU
+      simp only [Finset.mem_biUnion] at hvColors ⊢
+      obtain ⟨a, ha, hvColor⟩ := hvColors
+      exact ⟨a, ha, Finset.mem_inter.mpr ⟨hvI, hvColor⟩⟩
+  refine ⟨hpoint, ?_⟩
+  rw [← Finset.card_biUnion hpair, hunion]
+
 end
 
 end Erdos85
@@ -913,3 +1010,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_supports_anticomplete
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_puncture_blocks_rainbow
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_puncture_hole_rainbow
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_hole_color_agreement
