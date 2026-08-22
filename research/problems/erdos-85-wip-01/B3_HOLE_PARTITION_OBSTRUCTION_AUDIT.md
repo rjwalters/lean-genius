@@ -1181,6 +1181,36 @@ deletes its other label(s) from the external matching.  This Eulerian-flow
 plus bounded-deletion formulation is a compact graph-theoretic statement of
 the remaining uniform obstruction.
 
+There is an exact alternating-cycle lift of (12qp).  Clear denominators in
+the fractional row matchings and in the own-fiber Strassen transports.  For
+each selected own-touching transition `t->u` through its unique shared label
+`b`, draw a horizontal arc
+
+```text
+positive source flag (t,b)  -->  negative incoming flag (u,b).
+```
+
+For each unit of the transport (12qi), draw a vertical handoff from that
+incoming flag to a source flag `(t',b')` with the same full signature and
+`r_ub <= r_t'b'` coordinatewise.  The transport marginals say that every
+flag-type vertex has equal indegree and outdegree.  Therefore this finite
+directed multigraph decomposes into alternating closed cycles
+
+```text
+source --shared-label transition--> incoming
+       --monotone signature handoff--> source -- ... .       (12qt)
+```
+
+This is the state-cycle normal form of a failed incidence-price separator.
+Horizontal arcs lie in the edge-disjoint selected-label fibers of the linear
+block system; vertical arcs preserve `(role,n,c_pair,c_all,iota=1)` and can
+only increase the role census.  Each horizontal arc also carries the bounded
+external deletion cost in (12qq).  Hence the remaining uniform theorem can
+be stated without LP language: every alternating cycle system (12qt) must
+incur enough essential-label deletion to trigger the Hall inequalities
+(12qr), or else some monotone handoff inequality is strict and supplies the
+price separator.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
