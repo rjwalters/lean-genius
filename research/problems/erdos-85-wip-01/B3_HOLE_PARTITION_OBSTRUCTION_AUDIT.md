@@ -1099,6 +1099,36 @@ also removes one or two labels from the external matching system.  A uniform
 Hall-or-price proof can charge this bounded deletion loss against the
 own-versus-external role-flow inequalities (12ql).
 
+Normalize the bounded loss by putting
+
+```text
+m_t = nu(G_t^ext),
+lambda_t(O) = m_t - nu(G_t^ext minus L(O)).
+```
+
+An own candidate contains at most one non-own selected label, so deleting the
+labels of `O` lowers matching number by at most `|O|`.  Hence
+
+```text
+0 <= lambda_t(O) <= |O| <= 2,
+nu(G_t) = m_t + max_O (|O|-lambda_t(O)).                  (12qq)
+```
+
+Local feasibility is exactly the gain inequality
+
+```text
+max_O (|O|-lambda_t(O)) >= d_t-m_t.                       (12qr)
+```
+
+The nine sampled Hall failures have a uniform profile.  Six have
+`m_t=d_t-1` and best net own gain zero; three have `m_t=d_t-2` and best net
+gain one.  Thus in every case the right side of (12qr) exceeds the best gain
+by exactly one, matching the observed deficiency-one cover.  The two ways to
+lose are now explicit: too few compatible own candidates, or an own
+candidate whose external label is essential and therefore has deletion loss
+one.  Both are root--fiber collision statements visible to `iota` and the
+role census.
+
 At zeroth order, the own transport is an Eulerian flow statement.  Let
 `x_tu` be the fractional multiplicity with which candidate `u` is selected
 in row `t`.  Equal own mass in (12qi) says, for every full signature `sigma`,
