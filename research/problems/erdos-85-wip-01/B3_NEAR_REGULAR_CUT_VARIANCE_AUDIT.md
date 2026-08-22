@@ -442,6 +442,46 @@ B3-articulation frontier shrinks from nine assignments to exactly three:
 (34,43) with beta=(4,4,4)/(5,5,5).              (19)
 ```
 
+The equality low sets in the last two branches are also rigid.  In the
+`(27,50)` branch, let `S` be the order-50 component and let `Z` be the 36
+ordinary centers having five neighbors in `S`.  Equality says
+
+```text
+A 1_S = 6 1 - 1_Z,
+D 1_S = 8 1_S - 4 1 - 6 1_H + A 1_Z.           (20)
+```
+
+Evaluation at each high root gives `|N_A(h) intersect Z|=10`, so `Z`
+contains `x` and all 27 bin-one vertices; its other eight vertices are bin
+zero.  Since `x in Z`, the first equation in (20) gives
+
+```text
+|N_A(x) intersect S| = 5.
+```
+
+Thus the six ordinary neighbors of `x` split exactly `5+1` between the
+order-50 and order-27 components.
+
+In the `(34,43)` branch, take the order-34 component `S` and the 18-center
+low set `Z`.  Here
+
+```text
+A 1_S = 4 1 - 1_Z,
+D 1_S = 8 1_S - 2 1 - 4 1_H + A 1_Z.           (21)
+```
+
+Every high root has six neighbors in `Z`, for total high incidence 18, and
+evaluation at `x` gives `|N_A(x) intersect Z|=4`.  If `x` were not in `Z`,
+all 18 points of `Z` would be bin one, so only the three bin-one partners of
+`x` could be its neighbors in `Z`, a contradiction.  Hence
+
+```text
+Z = {x} union (fifteen B1 points, five of each color) union (two B0 points),
+```
+
+and the first equation in (21) forces exactly three ordinary neighbors of
+`x` on each articulation side.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
