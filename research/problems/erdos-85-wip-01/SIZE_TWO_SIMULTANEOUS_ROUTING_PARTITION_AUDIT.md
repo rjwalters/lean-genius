@@ -3303,16 +3303,17 @@ Indeed, the `F_e[c]` edge labelled by `p` is `x_-x_+`; the other edge at
 oriented mark (198) is exactly an orientation of the two neighbors of the
 marked center `p` in this line-cycle.
 
-The internal two-factor `A_e` has no edge inside this closed
-`B_ec`-neighborhood:
+More generally, this conclusion holds at every marked center `p in M_e`,
+not only at an isolated one.  The internal two-factor `A_e` has no edge
+inside its closed `B_ec`-neighborhood:
 
 ```text
 E(A_e[N_(B_ec)[p]]) = empty.                           (200)
 ```
 
-For the pairs `p p_-` and `p p_+`, this is `b_(x_-,e)=b_(x_+,e)=0`, forced
-by the endpoint budget `a=1` in (159).  If instead `p_- p_+` were an
-`A_e` edge, then
+For the pairs `p p_-` and `p p_+`, the corresponding root has at least one
+incident `e`-owned `A_c` edge, so its rooted budget has `a in {1,2}` and
+forces `b=0`.  If instead `p_- p_+` were an `A_e` edge, then
 
 ```text
 x_- -- p_- -- p_+ -- x_+ -- x_-
@@ -3331,3 +3332,44 @@ factor `A_e`, together with an orientation of its two `B_ec` neighbors.
 This is the self-indexing form of the private-port invariant.  A closing
 argument may now seek a parity rule for these oriented isolated marks in the
 pair `(A_e,B_ec)`, rather than an unconstrained price on ambient ports.
+
+## 60. Consecutive edge marks telescope, but lose run parity
+
+The line-cycle description makes the behavior on a longer `e`-run exact.
+Orient a maximal run of `ell` edges and write consecutive `B_ec` labels as
+
+```text
+p_0, p_1, ..., p_ell, p_(ell+1),                       (201)
+```
+
+where `p_1,...,p_ell` label the run edges and `p_0,p_(ell+1)` label the
+other `F_e[c]` edges at its boundary roots.  The oriented private-port mark
+of the run edge labelled `p_i` is then
+
+```text
+delta_i := [p_(i+1)] - [p_(i-1)]                       (202)
+```
+
+in the free abelian group on `e`-ports.  Reversing the run negates every
+`delta_i`.  Direct cancellation gives
+
+```text
+sum_(i=1)^ell delta_i
+  = [p_ell] + [p_(ell+1)] - [p_0] - [p_1].             (203)
+```
+
+For `ell=1`, the two occurrences of `[p_1]` cancel and (203) is exactly the
+private-target difference `[p_2]-[p_0]` from Section 58.  For longer runs,
+all labels more than one step from the boundary cancel.  Thus the entire
+linear oriented mark compresses to the two adjacent `B_ec` edges at each
+end of the run.
+
+Equation (203) is useful boundary localization, but also a no-go: its form
+does not distinguish odd `ell` from even `ell`.  Applying any scalar port
+potential to (203), or reducing it modulo two, still sees only those four
+boundary labels.  Therefore the odd-run invariant demanded after (155)
+cannot be the unweighted sum of the per-edge private-port differences.  It
+must retain an alternating/root-dependent coefficient, a nonlinear feature
+of the marked centers, or additional source-port transport along the rooted
+paths `P_i`.  This identifies exactly what the self-indexed line-cycle
+compression supplies and what parity information it discards.
