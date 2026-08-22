@@ -44,6 +44,17 @@ the full frequency table pinned in the output), never `7,8,9,10`. Applying
 this local lift obstruction reduces the surviving quotient list from 432 to
 324 patterns, without changing the eleven surviving component actions.
 
+Every one of those 324 patterns has omission outdegree one: the components
+are partitioned into four pairs with no `T` edges inside a pair, and all
+other component pairs carry perfect size-ten matchings. Equivalently, the
+component support is `K_{2,2,2,2}`. The verifier additionally checks the
+vertex-local lift condition: around each vertex, the other six components
+must be paired into the three incident triangles, one of the eight perfect
+matchings of `K_{2,2,2}`; each component multiplicity vector must be a sum of
+ten such local types. All 324 patterns pass this necessary factorization, so
+the next exclusion must use compatibility among the perfect Petersen
+anti-matchings, not another component-count identity.
+
 Run with:
 
 ```text

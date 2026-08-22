@@ -29,6 +29,56 @@ TRIPLES = tuple(combinations(range(8), 3))
 PAIRS = tuple(combinations(range(8), 2))
 
 
+def weak_compositions(total: int, parts: int):
+    if parts == 1:
+        yield (total,)
+        return
+    for first in range(total + 1):
+        for rest in weak_compositions(total - first, parts - 1):
+            yield (first,) + rest
+
+
+TEN_VERTEX_LOCAL_SIGNATURES: set[tuple[int, ...]] | None = None
+
+
+def ten_vertex_local_signatures() -> set[tuple[int, ...]]:
+    """Edge multiplicities obtained from ten 1-factors of K_{2,2,2}."""
+    global TEN_VERTEX_LOCAL_SIGNATURES
+    if TEN_VERTEX_LOCAL_SIGNATURES is not None:
+        return TEN_VERTEX_LOCAL_SIGNATURES
+    nodes = range(6)
+    mates = {0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4}
+    edges = tuple(
+        pair for pair in combinations(nodes, 2) if mates[pair[0]] != pair[1]
+    )
+
+    def matchings(remaining: tuple[int, ...]):
+        if not remaining:
+            yield ()
+            return
+        first = remaining[0]
+        for second in remaining[1:]:
+            if mates[first] == second:
+                continue
+            rest = tuple(vertex for vertex in remaining if vertex not in {first, second})
+            for matching in matchings(rest):
+                yield (tuple(sorted((first, second))),) + matching
+
+    local_matchings = tuple(sorted(set(matchings(tuple(nodes)))))
+    assert len(local_matchings) == 8
+    incidence = [tuple(int(edge in matching) for edge in edges) for matching in local_matchings]
+    signatures = set()
+    for counts in weak_compositions(10, len(local_matchings)):
+        signatures.add(
+            tuple(
+                sum(count * vector[index] for count, vector in zip(counts, incidence))
+                for index in range(len(edges))
+            )
+        )
+    TEN_VERTEX_LOCAL_SIGNATURES = signatures
+    return signatures
+
+
 def perfect_matching_agreement_catalog() -> Counter[int]:
     """Exhaust perfect Petersen anti-matchings and their triple agreements."""
     petersen = nx.petersen_graph()
@@ -226,10 +276,63 @@ def patterns(
                 ) <= 6
                 for triple in TRIPLES
             )
-            if len(values) == 1 and perfect_triples_valid:
+            local_factorizations_valid = False
+            if len(values) == 1 and values == {10}:
+                mate = {
+                    left: next(
+                        right for right in range(8)
+                        if left != right and deficits[left, right] == 10
+                    )
+                    for left in range(8)
+                }
+                local_factorizations_valid = True
+                signatures = ten_vertex_local_signatures()
+                for component in range(8):
+                    remaining = {
+                        vertex for vertex in range(8)
+                        if vertex not in {component, mate[component]}
+                    }
+                    neighbor_pairs = sorted(
+                        tuple(sorted((vertex, mate[vertex])))
+                        for vertex in remaining if vertex < mate[vertex]
+                    )
+                    neighbors = [vertex for pair in neighbor_pairs for vertex in pair]
+                    assert len(neighbors) == 6
+                    neighbor_mates = {
+                        neighbors.index(vertex): neighbors.index(mate[vertex])
+                        for vertex in neighbors
+                    }
+                    local_edges = tuple(
+                        pair for pair in combinations(range(6), 2)
+                        if neighbor_mates[pair[0]] != pair[1]
+                    )
+                    signature = tuple(
+                        next(
+                            weight for orbit, weight in zip(orbits, pattern)
+                            if tuple(sorted((component, neighbors[left], neighbors[right]))) in orbit
+                        )
+                        for left, right in local_edges
+                    )
+                    if signature not in signatures:
+                        local_factorizations_valid = False
+                        break
+            if len(values) == 1 and perfect_triples_valid and local_factorizations_valid:
                 omission_orbit_patterns.append(pattern)
         solver.add(z3.Or(*(weight != value for weight, value in zip(weights, pattern))))
     return total, omission_orbit_patterns
+
+
+def omission_outdegree(
+    orbits: list[tuple[tuple[int, int, int], ...]], pattern: tuple[int, ...]
+) -> int:
+    pair_codegree = {
+        pair: sum(
+            sum(set(pair) <= set(triple) for triple in orbit) * weight
+            for orbit, weight in zip(orbits, pattern)
+        )
+        for pair in PAIRS
+    }
+    return sum(pair_codegree[tuple(sorted((0, other)))] != 10 for other in range(1, 8))
 
 
 def main() -> None:
@@ -246,12 +349,16 @@ def main() -> None:
         if omission_patterns:
             survivors += 1
         pattern_digest = hashlib.sha256(repr(sorted(omission_patterns)).encode()).hexdigest()
+        omission_outdegrees = Counter(
+            omission_outdegree(orbits, pattern) for pattern in omission_patterns
+        )
         print(
             f"transitive_group={index}",
             f"order={order}",
             f"triple_orbit_sizes={tuple(map(len, orbits))}",
             f"integer_patterns={total_patterns}",
             f"omission_orbit_pattern_count={len(omission_patterns)}",
+            f"omission_outdegrees={dict(sorted(omission_outdegrees.items()))}",
             f"omission_orbit_pattern_sha256={pattern_digest}",
         )
     print(f"quotient_survivors={survivors}/50")
