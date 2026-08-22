@@ -359,3 +359,28 @@ parity of the number of U1 columns whose five-point residual fiber contains
 exactly one matching edge.  This is the first formulation in the chain that
 uses symmetry of the residual B0 adjacency itself; the max-flow defect probe
 does not model these fiber matchings.
+
+There is a useful linear-algebra test for whether residual degree parity can
+ever determine (12).  Let `H` be the graph of allowed residual B0 edges and
+let `W` be the block-intersection graph
+
+```text
+W_uv = 1  iff  |S_u intersect S_v|=1.
+```
+
+Then `T_R=|E(A) intersect E(W)|`.  Over `F2`, two subgraphs of `H` with the
+same degree-parity vector differ by an Eulerian subgraph, hence by an element
+of the cycle space of `H`.  It follows that
+
+```text
+T_R mod 2 is determined by the degree-parity vector
+iff every cycle of H meets W in an even number of edges
+iff E(W) intersect E(H) is a cut of H.                        (13)
+```
+
+This criterion concerns degree parity, not realizability with the prescribed
+exact degrees.  If (13) fails, an H-cycle with odd W-intersection is the exact
+parity-switching direction at the linear layer.  If it holds, a cut potential
+expresses `T_R mod 2` directly from the residual degree parities.  Thus (13)
+is a small diagnostic for whether the remaining obstruction is already
+linear or necessarily uses exact-degree/integrality information.
