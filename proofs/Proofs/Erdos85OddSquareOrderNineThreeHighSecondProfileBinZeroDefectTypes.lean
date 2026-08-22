@@ -3229,6 +3229,143 @@ theorem squareOrderNine_threeHigh_secondProfile_marked_support_pair_matching
       exact hQcard w hw
     _ = 14 := by simp [hFcard]
 
+/-- Removing the three marked vertices from the 27-vertex two-regular
+bin-one defect core leaves exactly 21 defect edges.  The marked set is
+defect-independent and contributes exactly six crossing edges. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_binOne_defect_edges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    (D.induce (↑U1 : Set V)).edgeFinset.card = 21 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let K := D.induce (↑U1 : Set V)
+  have hmarked :=
+    squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hmarked
+  have hMsub : M ⊆ B 1 := Finset.inter_subset_right
+  have hMcard : M.card = 3 := hmarked.2
+  have hU1card : U1.card = 24 := by
+    rw [Finset.card_sdiff_of_subset hMsub, hmarked.1, hMcard]
+  have hBsplit : B 1 = M ∪ U1 := by
+    ext z
+    simp only [M, U1, Finset.mem_union, Finset.mem_inter,
+      Finset.mem_sdiff]
+    tauto
+  have hMUdisj : Disjoint M U1 := by
+    rw [Finset.disjoint_left]
+    intro z hzM hzU
+    exact (Finset.mem_sdiff.mp hzU).2 hzM
+  have hsplit (z : V) :
+      (D.neighborFinset z ∩ M).card +
+        (D.neighborFinset z ∩ U1).card =
+          (D.neighborFinset z ∩ B 1).card := by
+    rw [hBsplit, Finset.inter_union_distrib_left,
+      Finset.card_union_of_disjoint
+        (hMUdisj.mono (Finset.inter_subset_right)
+          (Finset.inter_subset_right))]
+  have hmarkedInternalZero : ∀ m ∈ M,
+      (D.neighborFinset m ∩ M).card = 0 := by
+    intro m hm
+    rw [Finset.card_eq_zero]
+    ext z
+    simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+    intro hDmz hzM
+    have hmParts := Finset.mem_inter.mp hm
+    have hzParts := Finset.mem_inter.mp hzM
+    have hmz : m ≠ z := by
+      intro h
+      subst z
+      exact D.loopless.irrefl m ((D.mem_neighborFinset m m).mp hDmz)
+    exact (squareOrderNine_threeHigh_secondProfile_binThree_partners_not_defectAdjacent
+      G hfree hmz
+        ((G.adj_comm x m).mp ((G.mem_neighborFinset x m).mp hmParts.1))
+        ((G.adj_comm x z).mp ((G.mem_neighborFinset x z).mp hzParts.1)))
+      ((D.mem_neighborFinset m z).mp hDmz)
+  have hmarkedCross : ∀ m ∈ M,
+      (D.neighborFinset m ∩ U1).card = 2 := by
+    intro m hm
+    have hmB := (Finset.mem_inter.mp hm).2
+    have htype := squareOrderNine_threeHigh_secondProfile_binOne_defect_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc4 hmB
+    dsimp only at htype
+    have hs := hsplit m
+    rw [hmarkedInternalZero m hm, htype.2.1] at hs
+    omega
+  have hcrossM : (∑ m ∈ M, (D.neighborFinset m ∩ U1).card) = 6 := by
+    calc
+      _ = ∑ _m ∈ M, 2 := by
+        apply Finset.sum_congr rfl
+        intro m hm
+        exact hmarkedCross m hm
+      _ = 6 := by simp [hMcard]
+  have hcrossU : (∑ z ∈ U1, (D.neighborFinset z ∩ M).card) = 6 := by
+    rw [sum_card_neighborFinset_inter_comm D U1 M]
+    exact hcrossM
+  have hunmarkedTotal : ∀ z ∈ U1,
+      (D.neighborFinset z ∩ B 1).card = 2 := by
+    intro z hz
+    have hzB := (Finset.mem_sdiff.mp hz).1
+    have htype := squareOrderNine_threeHigh_secondProfile_binOne_defect_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc4 hzB
+    dsimp only at htype
+    exact htype.2.1
+  have hsumSplit :
+      (∑ z ∈ U1, (D.neighborFinset z ∩ M).card) +
+        (∑ z ∈ U1, (D.neighborFinset z ∩ U1).card) = 48 := by
+    rw [← Finset.sum_add_distrib]
+    calc
+      (∑ z ∈ U1, ((D.neighborFinset z ∩ M).card +
+          (D.neighborFinset z ∩ U1).card)) =
+          ∑ z ∈ U1, (D.neighborFinset z ∩ B 1).card := by
+            apply Finset.sum_congr rfl
+            intro z _hz
+            exact hsplit z
+      _ = ∑ _z ∈ U1, 2 := by
+            apply Finset.sum_congr rfl
+            intro z hz
+            exact hunmarkedTotal z hz
+      _ = 48 := by simp [hU1card]
+  have hinternalSum :
+      (∑ z ∈ U1, (D.neighborFinset z ∩ U1).card) = 42 := by
+    rw [hcrossU] at hsumSplit
+    omega
+  have hdegreeBridge :
+      (∑ z ∈ U1, (D.neighborFinset z ∩ U1).card) =
+        ∑ z : ↥(↑U1 : Set V), K.degree z := by
+    rw [← Finset.sum_attach]
+    apply Finset.sum_congr rfl
+    intro z _hz
+    exact (degree_induce_finset_eq_card_inter D U1 z).symm
+  have hdegreeSum :
+      (∑ z : ↥(↑U1 : Set V), K.degree z) = 42 := by
+    rw [← hdegreeBridge]
+    exact hinternalSum
+  change K.edgeFinset.card = 21
+  have hhand := K.sum_degrees_eq_twice_card_edges
+  rw [hdegreeSum] at hhand
+  omega
+
 end
 
 end Erdos85
@@ -3270,3 +3407,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_antipodal_fiber_eq_missing_rows
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_support_triple_blocks
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_pair_matching
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_binOne_defect_edges
