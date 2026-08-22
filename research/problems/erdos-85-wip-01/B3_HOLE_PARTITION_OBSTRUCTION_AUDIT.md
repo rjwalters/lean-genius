@@ -872,6 +872,34 @@ containing `b`.  The pair collision identity (12l) is exactly additive in
 the two one-color load energies, so it is the natural scalar interface for
 this complementary-pair implication.
 
+A synchronization-free strengthening emerges by retaining that scalar in
+the root signature.  Let
+
+```text
+c_all(t) = sum over all 24 U1 labels b of binom(ell_b(t),2)
+         = (c_01(t)+c_02(t)+c_12(t))/2.                    (12qb)
+```
+
+This is selected-pair independent and is computed directly from `(Q,K)`.
+Refine the monotone prices in (12p) by allowing `f,g` also to depend on
+`c_all(t)`.  In the same four-seed run this refinement separates **all
+seventeen** locally feasible instances, including the two former exceptions:
+
+```text
+branch 3, exceptional witness:
+pair (0,1): -0.08080818997,   pair (1,2): -0.5841385479.
+```
+
+Rounding at scale `100000` and applying the independent integer checker
+gives exact totals `-8012` and `-58348`.  Thus the gain is genuine, not a
+floating tolerance.  Mode `--features fiber-type-total-monotone-farkas`
+reproduces it.  The resulting sharper conjecture is pairwise: for every
+selected pair, either (12fa) gives a local Hall obstruction or there are
+coordinatewise-monotone oriented-role prices with root signature
+`(role,n,c_pair,c_all)`.  Unlike (12qa), this formulation needs no coupling
+of two independently chosen fractional matching witnesses; the three-color
+information is carried by the canonical scalar `c_all` itself.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of

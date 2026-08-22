@@ -134,7 +134,8 @@ def refine_features(instances: list[dict], mode: str) -> None:
     if mode in ("fiber-profile-farkas", "fiber-type-profile-farkas",
                 "fiber-type-count-farkas", "fiber-type-uncolored-farkas",
                 "fiber-type-bare-farkas", "fiber-demand-farkas",
-                "fiber-role-farkas", "fiber-type-monotone-farkas"):
+                "fiber-role-farkas", "fiber-type-monotone-farkas",
+                "fiber-type-total-monotone-farkas"):
         instance_keys = []
         all_keys = set()
         for data in instances:
@@ -144,11 +145,18 @@ def refine_features(instances: list[dict], mode: str) -> None:
                 loads = Counter(b for support in data["labels"][t]
                                 for b in support)
                 collisions = sum(x * (x - 1) // 2 for x in loads.values())
+                all_loads = Counter(
+                    b for u in data["candidates"][t] for b in data["blocks"][u]
+                )
+                all_collisions = sum(x * (x - 1) // 2
+                                     for x in all_loads.values())
                 root_type = data["types"][t]
                 if mode == "fiber-role-farkas" and root_type == 3:
                     root_type = 2
-                row_signatures.append((root_type,
-                                       len(data["candidates"][t]), collisions))
+                signature = (root_type, len(data["candidates"][t]), collisions)
+                if mode == "fiber-type-total-monotone-farkas":
+                    signature += (all_collisions,)
+                row_signatures.append(signature)
             mu_keys = []
             for t in range(N):
                 occupants = {b: [] for b in data["selected"]}
@@ -187,7 +195,8 @@ def refine_features(instances: list[dict], mode: str) -> None:
                 all_keys.add(("alpha", row_signatures[t]))
             instance_keys.append((row_signatures, mu_keys))
         FEATURES = {key: i for i, key in enumerate(sorted(all_keys))}
-        if mode == "fiber-type-monotone-farkas":
+        if mode in ("fiber-type-monotone-farkas",
+                    "fiber-type-total-monotone-farkas"):
             mu_keys_all = [key for key in FEATURES if key[0] == "mu"]
             for i, left in enumerate(mu_keys_all):
                 left_counts = Counter(left[2])
@@ -736,7 +745,8 @@ def main() -> int:
                                                 "fiber-type-bare-farkas",
                                                 "fiber-demand-farkas",
                                                 "fiber-role-farkas",
-                                                "fiber-type-monotone-farkas"),
+                                                "fiber-type-monotone-farkas",
+                                                "fiber-type-total-monotone-farkas"),
                         default="basic")
     args = parser.parse_args()
     data = []
