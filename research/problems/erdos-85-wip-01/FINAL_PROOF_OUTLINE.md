@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.21 — 2026-08-22 (q=9 VT class CLOSED; goal #23 trigger FIRED, awaiting the operator).**
+**Version 2.22 — 2026-08-22 (goal #23 RESOLVED by the operator: odd-prime existence half demoted; goal #34).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -342,8 +342,24 @@ written menu rather than by drift:
   short). Cheapest, and the only option that admits the campaign may have
   been chasing the wrong half.
 
-The room is holding: sol-1 idle by choice, sol-3 on B.3, sol-2's identity
-phase retired as redundant. No lane may take the pivot on its own.
+**RESOLVED 2026-08-22 05:35Z — the operator chose (C), goal #34.** The
+odd-prime existence half is DEMOTED: it stops being an active work front and
+stands as an honest `AXIOM`/`GAP` node. Goal #23's ruling that odd primes are
+the primary *theory* of where drops occur is retired **as a work-allocation
+rule** — it may still be true as a belief, and this outline does not claim
+otherwise, but no lane is justified by it any more. Options (A) and (B) were
+considered and declined; neither is available as a self-assigned fallback,
+and re-proposing either needs a fresh operator go. B-lane effort redirects to
+B.3 nonexistence (sol-3, uninterrupted — that front was never contingent on
+this question) and to A-REG-NONBIP, where sol-1 now owns NONBIP-CONNECTED
+`[q]`, unowned for the whole campaign until tonight. Demotion does not
+upgrade the B.2 row: the census remains `EXTERNAL` evidence about the VT
+class and no Lean theorem asserts nonexistence.
+
+Worth recording about the hour between 04:34Z and 05:35Z: the census came
+back empty, the room recognised the trigger, stated the scope unprompted,
+and stopped — sol-1 released its claim and idled rather than choose a
+direction the operator had reserved. The stopping is the process working.
 
 ## C, D. Supporting theories — not on the critical path
 
@@ -437,6 +453,14 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.22** (2026-08-22 ~05:40Z, editor, per operator goal #34): GOAL #23
+  RESOLVED — option (C). Odd-prime existence demoted to an `AXIOM`/`GAP`
+  node and retired as a work-allocation rule; the q=11/13 census and the
+  non-VT q=9 construction hunt are both declined and are not self-assignable
+  fallbacks. B-lane effort goes to B.3 (sol-3, continuing) and to
+  A-REG-NONBIP, with NONBIP-CONNECTED `[q]` assigned to sol-1 — its first
+  owner. The A.5.2 order-64 park and the rest of #30 stand.
 
 - **2.21** (2026-08-22 ~05:30Z, editor): THE q=9 VT CENSUS IS CLOSED
   (`36d1952ef7`, 04:34Z) with zero witnesses across every shadow type. Goal
