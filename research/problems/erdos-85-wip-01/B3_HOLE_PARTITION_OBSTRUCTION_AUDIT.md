@@ -537,6 +537,17 @@ genuinely simultaneous: locally chosen matchings must be coupled by
 that this simultaneous horn can fail even though every graph in (12f) has a
 large enough matching.
 
+In the four-seed run the local branch is extremely sharp.  There are nine
+failed row/color-pair instances.  Every matching number is exactly one below
+demand.  Eight are demand-six rows with a minimum vertex cover of size five;
+the remaining regular triple row has demand five and cover size four.  Five
+of the eight size-five covers consist of five selected U1 labels; the other
+three observed demand-six covers consist of four selected labels and one
+private dummy (the demand-five cover uses four labels).  Thus the sampled
+local obstruction is not a diffuse Hall deficit: a set of `d_t-1` cap
+vertices covers every eligible candidate edge.  Negating this concrete
+cover pattern is the likely local input to the monotone-price branch.
+
 The simultaneous horn also has an exact directed form which removes matrix
 symmetry from the list of mysteries.  A feasible symmetric fractional `A`
 exists if and only if there is a nonnegative directed matrix `X`, on the
