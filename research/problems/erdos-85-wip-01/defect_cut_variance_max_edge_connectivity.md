@@ -909,6 +909,34 @@ V\(N_A(W) union {c})
 So the endpoint branch is an exact punctured parallel class rooted at the
 near-maximal defect clique.
 
+Finally, symmetry of `A` gives a location balance that is invisible in the
+unsigned wing sizes.  Count the `A`-edges between `X` and `Y` from the two
+sides, using
+
+```text
+A 1_Y=(b 1)-1_R+1_c,
+A 1_X=(a+1)1-1_K.
+```
+
+Writing `k_Y=|K intersect Y|`, `r_X=|R intersect X|`, and
+`c_X=1_(c in X)`, one obtains
+
+```text
+b|X|-r_X+c_X=(a+1)|Y|-k_Y,
+k_Y-r_X+c_X=2b-a-1=2q-3a-3.                 (B15)
+```
+
+Since `|K|=2q`, this is equivalently
+
+```text
+|K intersect (X union W)|=3a+3-r_X+c_X.      (B16)
+```
+
+At the endpoint `a=0`, at most four points of `K` can lie in `X union W`,
+and necessarily `r_X<=3+c_X`.  Thus almost the whole two-fold cover `K`
+is located in the opposite component `Y`; any realization of the punctured
+parallel class must also satisfy this strong self-location constraint.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
