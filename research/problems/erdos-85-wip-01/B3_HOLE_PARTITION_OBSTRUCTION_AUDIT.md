@@ -485,6 +485,19 @@ global residual reciprocity fails.  The reproducible relaxation is
 `q9_two_color_residual_lp.py`; its output is evidence for the uniform lemma,
 not a universal certificate.
 
+Dual extraction also gives a useful negative boundary.  A canonical
+minimum-cap-relaxation LP produces positive separating duals, but their
+extreme rays vary strongly with the outer witness.  Three restricted dual
+families give separation exactly zero on every tested instance: one common
+cap price per row; additive row-plus-fiber prices; and eighteen invariant
+prices indexed by row type, selected fiber color, and incidence versus
+nonincidence (after deleting trace-inactive cells).  Hence the observed
+Farkas certificate does not collapse to fixed row-type, color, or local
+incidence weights.  It sees the detailed two-color eligibility graph.  A
+uniform proof must therefore construct a Hall/min-cut potential from `Q,K`
+or prove directly that the corresponding fractional exact-degree polytope
+is empty; another scalar weighted-row ledger cannot recover this signal.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
