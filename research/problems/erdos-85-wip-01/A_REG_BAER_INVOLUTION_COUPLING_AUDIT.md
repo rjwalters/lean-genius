@@ -1293,6 +1293,21 @@ small-edge majority graphs using the four-type A-routing rule (60) and D
 connectedness, or force `r` large enough to contradict the dyadic stopping
 data.
 
+The occupied-shore replication profile is also fixed by `(q,r,u)`.  If
+`n_1,n_2` count its majority replication-one and replication-two points, then
+
+```text
+n_1 = q(r+1)-r-u,
+2n_2 = q^2-2qr-q+r+u.                                    (73e)
+```
+
+The subtraction-free form of (73e) is Lean-checked by
+`binarySquare_mixedMajority_replication_profile`.  Thus the `r=1` layer has
+exactly `2(q-1)` private points and `C(q-1,2)` pair-intersection points among
+its `q-1` majority lines; the `r=2` layer has `3q-4` private points and one
+missing majority line-pair intersection (the unique D-edge in `F`).  These
+are uniform incidence designs, not order-specific enumerations.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated

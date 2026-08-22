@@ -276,6 +276,22 @@ theorem binarySquare_mixedMajority_first_defect_layers
     subst r
     omega
 
+/-- Exact replication-one/two population profile in the mixed `r=q-f`
+normal form. -/
+theorem binarySquare_mixedMajority_replication_profile
+    {q f r u n₁ n₂ e : ℕ} (hf : 1 ≤ f)
+    (hfr : f + r = q)
+    (hincidence : n₁ + 2 * n₂ = q * f)
+    (hpairs : 2 * n₂ + 2 * e = f * (f - 1))
+    (hdefect : 2 * e + u = r * r) :
+    n₁ + r + u = q * (r + 1) ∧
+    2 * n₂ + 2 * q * r + q = q * q + r + u := by
+  have hfprod : f * (f - 1) + f = f * f := by
+    calc
+      f * (f - 1) + f = f * ((f - 1) + 1) := by ring
+      _ = f * f := by rw [Nat.sub_add_cancel hf]
+  constructor <;> nlinarith
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -774,6 +790,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_pureExceptional_defect_triple_identity
 #print axioms Erdos85.binarySquare_mixedMajority_defect_identity
 #print axioms Erdos85.binarySquare_mixedMajority_first_defect_layers
+#print axioms Erdos85.binarySquare_mixedMajority_replication_profile
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.mixedExceptional_union_card_le_of_replicationAtMostOne
