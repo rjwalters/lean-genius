@@ -1553,3 +1553,59 @@ To close the original state potential (57), one must make these rootwise
 potentials compatible as `d` and the target incidence component vary.  A
 scalar sum cannot see that compatibility, but (88)--(90) retain exactly the
 port label and owner factor needed to formulate it.
+
+## 25. Canonical primitive of the marked curvature row
+
+The two coboundaries in (90) combine without solving a linear system.  For
+fixed `d,j`, define an edge-indexed binary potential around the owner cycle by
+
+```text
+phi_i^(d,j)
+  := r_i^d + r_(i+1)^d + w^d(z_i),
+w^d = F_d[e] V_j.                                      (91)
+```
+
+Let the rootwise residual be
+
+```text
+kappa_i^(d,j)
+  := h_i^d + sum_(f != c,d,e) lambda_i^(f,d).
+```
+
+Then (88)--(90) give the exact adjacent-difference law
+
+```text
+kappa_i^(d,j) = phi_(i-1)^(d,j) + phi_i^(d,j).          (92)
+```
+
+Indeed the two copies of `r_i^d` cancel when the consecutive values of
+`phi` are added, leaving precisely
+`r_(i-1)^d+r_(i+1)^d+w^d(z_(i-1))+w^d(z_i)`.
+
+Thus every marked curvature row has a canonical primitive, not merely even
+total parity.  As usual for the incidence derivative on a connected cycle,
+an abstract primitive of `kappa` is unique up to adding the constant-one
+function; (91) chooses a distinguished representative from the routing and
+owner data.
+
+This choice is already compatible across the target incidence components.
+Since the `V_j` partition `e`, over `F_2`
+
+```text
+sum_j r_i^d
+  = e_(x_i)^T R_cd R_de 1_e = 0,
+sum_j w^d
+  = F_d[e] 1_e = 0,                                    (93)
+```
+
+using degree two of `R_de` and of the owner factor.  Consequently
+
+```text
+sum_j phi_i^(d,j) = 0       for every i,d.              (94)
+```
+
+Equations (91)--(94) remove the target-component ambiguity: the marked
+potentials are canonically normalized and have zero target sum.  The
+remaining compatibility problem is only across the routing color `d` (and,
+ultimately, across the choice of endpoint pair).  This is strictly smaller
+than the unconstrained state-potential problem in (57).
