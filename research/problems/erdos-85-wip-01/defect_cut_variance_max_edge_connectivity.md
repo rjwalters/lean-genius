@@ -933,7 +933,9 @@ Since `|K|=2q`, this is equivalently
 ```
 
 At the endpoint `a=0`, at most four points of `K` can lie in `X union W`,
-and necessarily `r_X<=3+c_X`.  Thus almost the whole two-fold cover `K`
+and necessarily `r_X<=3+c_X`.  Since `c in K`, at most three of those
+points are different from `c`; equality four requires `c in X` and
+`r_X=0`.  Thus almost the whole two-fold cover `K`
 is located in the opposite component `Y`; any realization of the punctured
 parallel class must also satisfy this strong self-location constraint.
 
