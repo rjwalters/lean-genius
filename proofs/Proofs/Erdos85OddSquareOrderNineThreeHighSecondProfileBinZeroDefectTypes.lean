@@ -2423,6 +2423,179 @@ theorem squareOrderNine_threeHigh_secondProfile_marked_binOne_row_packing
       exact hrow y hy
     _ = 21 := by simp [hMcard]
 
+/-- The three special B₀ rows and three marked B₁ rows have six mutually
+disjoint supports in B₀, covering 45 vertices in total.  After removing the
+special triple itself, only two ordinary B₀ vertices remain uncovered in the
+three-triangle branch and four in the four-triangle branch. -/
+theorem squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let WS := S.biUnion fun y => G.neighborFinset y ∩ B 0
+    let WM := M.biUnion fun y => G.neighborFinset y ∩ B 0
+    let T := B 0 \ S
+    let O := (WS ∪ WM) \ S
+    (WS ∪ WM).card = 45 ∧ O ⊆ T ∧
+      (((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧
+          O.card = 45 ∧ (T \ O).card = 2) ∨
+        ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧
+          O.card = 43 ∧ (T \ O).card = 4)) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let FS : V → Finset V := fun y => G.neighborFinset y ∩ B 0
+  let WS := S.biUnion FS
+  let WM := M.biUnion FS
+  let T := B 0 \ S
+  let O := (WS ∪ WM) \ S
+  change (WS ∪ WM).card = 45 ∧ O ⊆ T ∧
+    (((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧
+        O.card = 45 ∧ (T \ O).card = 2) ∨
+      ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧
+        O.card = 43 ∧ (T \ O).card = 4))
+  have hSpack :=
+    squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hSpack
+  have hMpack :=
+    squareOrderNine_threeHigh_secondProfile_marked_binOne_row_packing
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hMpack
+  have hSdisj : ∀ y ∈ S, ∀ z ∈ S, y ≠ z → Disjoint (FS y) (FS z) :=
+    hSpack.2.1
+  have hMdisj : ∀ y ∈ M, ∀ z ∈ M, y ≠ z → Disjoint (FS y) (FS z) :=
+    hMpack.2.2.1
+  have hWScard : WS.card = 24 := by
+    rw [Finset.card_biUnion hSdisj]
+    exact hSpack.2.2
+  have hWMcard : WM.card = 21 := by
+    rw [Finset.card_biUnion hMdisj]
+    exact hMpack.2.2.2
+  have hcross : Disjoint WS WM := by
+    rw [Finset.disjoint_left]
+    intro w hwS hwM
+    simp only [WS, Finset.mem_biUnion] at hwS
+    simp only [WM, Finset.mem_biUnion] at hwM
+    obtain ⟨y, hyS, hwy⟩ := hwS
+    obtain ⟨z, hzM, hwz⟩ := hwM
+    have hyParts := Finset.mem_inter.mp hyS
+    have hzParts := Finset.mem_inter.mp hzM
+    have hwyParts := Finset.mem_inter.mp hwy
+    have hwzParts := Finset.mem_inter.mp hwz
+    have hyz : y ≠ z := by
+      intro h
+      subst z
+      have hky0 := (Finset.mem_filter.mp hyParts.2).2
+      have hky1 := (Finset.mem_filter.mp hzParts.2).2
+      omega
+    have hxCommon : x ∈ G.neighborFinset y ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset y x).mpr
+          ((G.adj_comm x y).mp ((G.mem_neighborFinset x y).mp hyParts.1)),
+        (G.mem_neighborFinset z x).mpr
+          ((G.adj_comm x z).mp ((G.mem_neighborFinset x z).mp hzParts.1))⟩
+    have hwCommon : w ∈ G.neighborFinset y ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hwyParts.1, hwzParts.1⟩
+    have hxw : x ≠ w := by
+      intro h
+      subst w
+      have hkx := (Finset.mem_filter.mp hx).2
+      have hkw := (Finset.mem_filter.mp hwyParts.2).2
+      omega
+    have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree y z hyz
+    exact hxw (Finset.card_le_one.mp hle x hxCommon w hwCommon)
+  have hUnionCard : (WS ∪ WM).card = 45 := by
+    rw [Finset.card_union_of_disjoint hcross, hWScard, hWMcard]
+  have hWSsub : WS ⊆ B 0 := by
+    intro y hy
+    simp only [WS, Finset.mem_biUnion] at hy
+    obtain ⟨z, _hz, hyF⟩ := hy
+    exact (Finset.mem_inter.mp hyF).2
+  have hWMsub : WM ⊆ B 0 := by
+    intro y hy
+    simp only [WM, Finset.mem_biUnion] at hy
+    obtain ⟨z, _hz, hyF⟩ := hy
+    exact (Finset.mem_inter.mp hyF).2
+  have hOsub : O ⊆ T := by
+    intro y hy
+    have hyParts := Finset.mem_sdiff.mp hy
+    have hyUnion := Finset.mem_union.mp hyParts.1
+    rcases hyUnion with hyWS | hyWM
+    · exact Finset.mem_sdiff.mpr ⟨hWSsub hyWS, hyParts.2⟩
+    · exact Finset.mem_sdiff.mpr ⟨hWMsub hyWM, hyParts.2⟩
+  have hMnotS : Disjoint WM S := by
+    rw [Finset.disjoint_left]
+    intro y hyWM hyS
+    simp only [WM, Finset.mem_biUnion] at hyWM
+    obtain ⟨z, hzM, hyF⟩ := hyWM
+    have hySParts := Finset.mem_inter.mp hyS
+    have hzMParts := Finset.mem_inter.mp hzM
+    have hyFParts := Finset.mem_inter.mp hyF
+    have hxy : G.Adj x y := (G.mem_neighborFinset x y).mp hySParts.1
+    have hyz : G.Adj y z :=
+      (G.adj_comm z y).mp ((G.mem_neighborFinset z y).mp hyFParts.1)
+    exact (squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+      G hfree hhigh hx hySParts.2 hzMParts.2 hxy) hyz
+  have htarget :=
+    squareOrderNine_threeHigh_secondProfile_special_binZero_target_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  change ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧
+      (WS \ S).card = 24) ∨
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧
+      (WS \ S).card = 22) at htarget
+  have hTcard : T.card = 47 := by
+    have hB0card := squareOrderNine_threeHigh_secondProfile_binZero_card
+      G hcard hp hhigh hc3
+    have hScard :=
+      (squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx).2.2
+    rw [Finset.card_sdiff_of_subset Finset.inter_subset_right, hB0card, hScard]
+  have hOcard (n : ℕ) (hWSordinary : (WS \ S).card = n) :
+      O.card = n + 21 := by
+    have heq : O = (WS \ S) ∪ WM := by
+      ext y
+      simp only [O, Finset.mem_sdiff, Finset.mem_union]
+      constructor
+      · rintro ⟨hyUnion, hyNotS⟩
+        rcases hyUnion with hyWS | hyWM
+        · exact Or.inl ⟨hyWS, hyNotS⟩
+        · exact Or.inr hyWM
+      · rintro (⟨hyWS, hyNotS⟩ | hyWM)
+        · exact ⟨Or.inl hyWS, hyNotS⟩
+        · exact ⟨Or.inr hyWM,
+            fun hyS => Finset.disjoint_left.mp hMnotS hyWM hyS⟩
+    have hdisj : Disjoint (WS \ S) WM :=
+      hcross.mono Finset.sdiff_subset Finset.Subset.rfl
+    rw [heq, Finset.card_union_of_disjoint hdisj, hWSordinary, hWMcard]
+  refine ⟨hUnionCard, hOsub, ?_⟩
+  rcases htarget with hfirst | hsecond
+  · left
+    have hOc := hOcard 24 hfirst.2
+    have hholes : (T \ O).card = 2 := by
+      rw [Finset.card_sdiff_of_subset hOsub, hTcard, hOc]
+    exact ⟨hfirst.1, by omega, hholes⟩
+  · right
+    have hOc := hOcard 22 hsecond.2
+    have hholes : (T \ O).card = 4 := by
+      rw [Finset.card_sdiff_of_subset hOsub, hTcard, hOc]
+    exact ⟨hsecond.1, by omega, hholes⟩
+
 end
 
 end Erdos85
@@ -2457,3 +2630,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_binZero_residual_census
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_binOne_row_packing
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
