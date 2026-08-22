@@ -925,6 +925,29 @@ more economical proof interface than arbitrary `Q,K` flags: a majorization
 or compression argument on the columns of `r_t` could construct the
 monotone prices, while (12fa) handles the low-cover boundary.
 
+The all-color refinement (12qb) has equally rigid margins.  If `e_3(t)` is
+the number of eligible regular-triple or hole candidates and `e_2(t)` the
+number of eligible pair candidates, then its total 24-label load is
+
+```text
+M_all(t) = 3 e_3(t) + 2 e_2(t) = sum_(all b) ell_b(t).      (12qc)
+```
+
+Write `M_all=24a+r`, `0<=r<24`, and also `M_all=5h+s`,
+`0<=s<5`.  Since every full fiber contains five rows, convexity gives the
+sharp rootwise interval
+
+```text
+(24-r) binom(a,2) + r binom(a+1,2)
+  <= c_all(t) <= 10h + binom(s,2).                          (12qd)
+```
+
+Thus adding `c_all` does not introduce arbitrary design data: it selects one
+integer layer in a short interval determined by the same role margins.  A
+uniform proof can split on equality/near-equality in (12qd), where the 24
+fiber loads are respectively balanced or maximally concentrated, and use
+the selected-pair refinement (12r) inside that layer.
+
 There is an exact primal alternative to constructing those monotone prices.
 Let `I` be the finite set of compressed root--fiber flags in (12p), ordered
 at fixed root signature by coordinatewise inclusion of the role census.
