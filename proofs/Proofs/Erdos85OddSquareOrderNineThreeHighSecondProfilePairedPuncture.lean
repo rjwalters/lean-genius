@@ -1379,6 +1379,192 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_dichoto
     have hr : residualRows.card = 30 := by omega
     exact Or.inr ⟨hs, hd, hr⟩
 
+/-- A common missing row is defect-adjacent to exactly the two nondefect
+special endpoints.  The third special row lies in the defect fiber of the
+bin-three root and its forced exceptional profile has no bin-one defect
+neighbors. -/
+theorem squareOrderNine_threeHigh_secondProfile_common_hole_specialDefects_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hb : b ∈
+      ((secondOrderDefectGraph G).neighborFinset y ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) ∩
+      ((secondOrderDefectGraph G).neighborFinset z ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let D := secondOrderDefectGraph G
+    (D.neighborFinset b ∩ S).card = 2 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let D := secondOrderDefectGraph G
+  let R := S \ D.neighborFinset x
+  let H := D.neighborFinset b ∩ S
+  have hbParts := Finset.mem_inter.mp hb
+  have hbY := Finset.mem_inter.mp hbParts.1
+  have hbZ := Finset.mem_inter.mp hbParts.2
+  have hbB1 : b ∈ B 1 := (Finset.mem_sdiff.mp hbY.2).1
+  have hyR : y ∈ R := hy
+  have hzR : z ∈ R := hz
+  have hbranch :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  change ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧ R.card = 0) ∨
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧ R.card = 2) at hbranch
+  have hRcard : R.card = 2 := by
+    rcases hbranch with h3 | h4
+    · have : 0 < R.card := Finset.card_pos.mpr ⟨y, hyR⟩
+      omega
+    · exact h4.2
+  have hHsubR : H ⊆ R := by
+    intro w hwH
+    have hwParts := Finset.mem_inter.mp hwH
+    have hwS := hwParts.2
+    apply Finset.mem_sdiff.mpr
+    refine ⟨hwS, ?_⟩
+    intro hwDx
+    have hwSParts := Finset.mem_inter.mp hwS
+    have htype :=
+      squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
+        G hfree hmin hcover hcard hp hhigh hc2 hc4 hwSParts.2
+    dsimp only at htype
+    have hDwx : D.Adj w x := ((D.mem_neighborFinset x w).mp hwDx).symm
+    rcases htype with hreg | hexc
+    · have hxInter : x ∈ D.neighborFinset w ∩ B 3 :=
+        Finset.mem_inter.mpr ⟨(D.mem_neighborFinset w x).mpr hDwx, hx⟩
+      have hpos : 0 < (D.neighborFinset w ∩ B 3).card :=
+        Finset.card_pos.mpr ⟨x, hxInter⟩
+      rw [hreg.2.2] at hpos
+      omega
+    · have hwb : D.Adj w b := by
+        exact (D.adj_comm b w).mp ((D.mem_neighborFinset b w).mp hwParts.1)
+      have hbInter : b ∈ D.neighborFinset w ∩ B 1 :=
+        Finset.mem_inter.mpr ⟨(D.mem_neighborFinset w b).mpr hwb, hbB1⟩
+      have hpos : 0 < (D.neighborFinset w ∩ B 1).card :=
+        Finset.card_pos.mpr ⟨b, hbInter⟩
+      rw [hexc.2.1] at hpos
+      omega
+  have hHle : H.card ≤ 2 := by
+    calc H.card ≤ R.card := Finset.card_le_card hHsubR
+      _ = 2 := hRcard
+  have hyH : y ∈ H := by
+    refine Finset.mem_inter.mpr ⟨?_, (Finset.mem_sdiff.mp hy).1⟩
+    exact (D.mem_neighborFinset b y).mpr
+      (((D.mem_neighborFinset y b).mp hbY.1).symm)
+  have hzH : z ∈ H := by
+    refine Finset.mem_inter.mpr ⟨?_, (Finset.mem_sdiff.mp hz).1⟩
+    exact (D.mem_neighborFinset b z).mpr
+      (((D.mem_neighborFinset z b).mp hbZ.1).symm)
+  have htwo : 2 ≤ H.card := by
+    have hsub : ({y, z} : Finset V) ⊆ H := by
+      intro v hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      rcases hv with rfl | rfl
+      · exact hyH
+      · exact hzH
+    have := Finset.card_le_card hsub
+    rw [Finset.card_pair hyz] at this
+    exact this
+  change H.card = 2
+  omega
+
+/-- The mixed column of a common missing row has the unique profile
+`(special defects, ordinary defects, core, residual) = (2, 3, 15, 29)`.
+The nominal three-special-defect alternative cannot occur. -/
+theorem squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_exact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hb : b ∈
+      ((secondOrderDefectGraph G).neighborFinset y ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) ∩
+      ((secondOrderDefectGraph G).neighborFinset z ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    let A := fun t => (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+    let C := fun t => (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+    let defectRows := T.filter fun t => D.Adj t b
+    let residualRows := T.filter fun t => (A t).Nonempty
+    let coreRows := T.filter fun t => (C t).Nonempty
+    let specialDefects := (D.neighborFinset b ∩ S).card
+    specialDefects = 2 ∧ defectRows.card = 3 ∧
+      coreRows.card = 15 ∧ residualRows.card = 29 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let A := fun t => (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+  let C := fun t => (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+  let defectRows := T.filter fun t => D.Adj t b
+  let residualRows := T.filter fun t => (A t).Nonempty
+  let coreRows := T.filter fun t => (C t).Nonempty
+  let specialDefects := (D.neighborFinset b ∩ S).card
+  have hs :=
+    squareOrderNine_threeHigh_secondProfile_common_hole_specialDefects_eq_two
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz hb
+  change specialDefects = 2 at hs
+  have hbU1 : b ∈ B 1 \ (G.neighborFinset x ∩ B 1) :=
+    (Finset.mem_inter.mp (Finset.mem_inter.mp hb).1).2
+  have hmixed :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hbU1
+  dsimp only at hmixed
+  rcases hmixed with ⟨hdefect, hcore, hresidual⟩
+  change defectRows.card + specialDefects = 5 at hdefect
+  change coreRows.card = 15 at hcore
+  change residualRows.card = 27 + specialDefects at hresidual
+  have hd : defectRows.card = 3 := by omega
+  have hr : residualRows.card = 29 := by omega
+  exact ⟨hs, hd, hcore, hr⟩
+
 end
 
 end Erdos85
@@ -1399,3 +1585,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_resolution_matching
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_union
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_dichotomy
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_specialDefects_eq_two
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_exact
