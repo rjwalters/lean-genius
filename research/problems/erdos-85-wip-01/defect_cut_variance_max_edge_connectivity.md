@@ -376,6 +376,13 @@ partition is `(m-1,m-2,2)`, whose square sum is lower by `q-6>2` when
 
 The corresponding common-A-neighbor block sizes on `R` are `(m,m,2)`.
 They exhaust all non-D pairs of `R`, with no pair repeated by C4-freeness.
+The two m-blocks in fact partition `R`.  They can intersect in at most one
+point.  If they intersected once, the one point of `R` outside their union
+would have only the size-two block as a possible non-D partner, hence would
+have D-degree at least `q-2` inside `R`.  This is impossible in either
+bipartite graph in (17), whose largest part has size `m+1<=q-3` for
+`q>=16`.
+
 This pair-block decomposition excludes `K_(m-1,m+1)`: its non-D graph is
 `K_(m-1) disjoint-union K_(m+1)`, and two edge-disjoint m-cliques plus one
 edge cannot cover the `K_(m+1)` component.  Therefore
