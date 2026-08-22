@@ -1562,6 +1562,38 @@ canonical one- or two-valued defect transport marks, not only their residual
 A-incidence rows -- the natural input for coupling (73p) back to the
 Eulerian `K/Omega` transport.
 
+Two exact consumers of the Gram identity make its extra content explicit.
+Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
+`p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
+
+```text
+sum_(w in M) p_w^2
+  = n(n+q-2)-2e_D(P)-2e(Q_priv).                          (73s)
+```
+
+Thus the convex energy of the residual private-point loads is not free: it
+is complementary to the induced D-energy on the private points.  In the
+first two layers this reads
+
+```text
+r=1: sum (1+d_F(w))^2
+       = 2(q-1)(3q-5)-2e_D(P),
+r=2: sum (2+d_F(w))^2
+       = (3q-4)(4q-6)-6q-2e_D(P).                         (73sa)
+```
+
+Likewise, since `R R^T` is PSD, every real vector x orthogonal to 1 obeys
+
+```text
+x^T (D[P]+Q_priv) x <= (q-2) ||x||^2.                    (73t)
+```
+
+Equations (73s)--(73t) are the spectral/convex feasibility test for the
+otherwise locally realizable cores in (73l).  Any proposed path--cycle
+embedding must now extend to a private-point defect graph and a column-load
+sequence satisfying both the exact energy and the compressed eigenvalue
+bound, in addition to the one/two cross-shore marks (73r).
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
