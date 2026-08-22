@@ -3187,3 +3187,51 @@ transpose core to the two rooted transition interfaces.  Together with the
 last paragraph of Section 56, the remaining weighted boundary consists of
 the `h_P` nonclean target colors and at most two endpoint incidences involving
 the run owner `e`.
+
+## 58. Exact boundary normal form for a one-edge owner run
+
+Suppose `ell=1`.  Then `U={x_-,x_+}`, the only pair in `U` is the run edge
+owned by `e`, and (157) gives `h_P=0`: every third color is `P`-clean.  Hence
+`C_P` is the full set of exterior colors other than `e` (and the root color
+`c`).
+
+At `x_-`, let `f_-` be the owner of the preceding `A_c` edge.  In the rooted
+triangle multigraph on exterior colors, (187) gives
+
+```text
+deg_(x_-)(e) = deg_(x_-)(f_-) = 1,
+deg_(x_-)(d) in {0,2} for every other exterior color d. (193)
+```
+
+The same statement holds at `x_+` with `f_+`.  Each rooted color graph has
+maximum degree two, so (193) gives an exact decomposition: one path from
+`e` to the boundary owner `f_\pm`, together with vertex-disjoint cycles and
+isolated vertices.  This is the Section-43 rooted transition path with no
+nonclean color available anywhere along it.
+
+Equivalently, the cut from `C_P` to its complement has exactly one edge at
+each endpoint:
+
+```text
+lambda_(x_-)(C_P) = lambda_(x_+)(C_P) = 1.             (194)
+```
+
+Indeed, `e` is the only exterior color outside `C_P`, and its rooted vertical
+degree is one at either endpoint.  All clean--clean directed assignments
+cancel in reciprocal pairs under an antisymmetric weight.  Therefore the
+entire one-edge run leaves precisely two uncancelled directed assignments,
+one at each endpoint, both targeting an `e`-port:
+
+```text
+clean source at x_-  -->  e-port,
+clean source at x_+  -->  e-port.                      (195)
+```
+
+The clean source need not be `f_\pm`: the transition path may pass through
+other clean colors before reaching `e`.  Thus (195) is an exact two-port
+boundary normal form, not yet a proof that the crossed prices of the two
+ports agree.  Any constant contribution assigned to an `e`-target cancels
+modulo two across the run; the remaining `ell=1` obstruction is only the
+difference between these two rooted `e`-port prices.  This is the smallest
+weighted conservation problem left by (164a), with no nonclean leakage and
+no internal run root.
