@@ -123,3 +123,59 @@ connected internal cycle; that theorem does not apply directly because the
 ambient internal graph here has two components.  Classifying these commuting
 long-cycle hole 2-factors is the next algebraic consumer before the full
 exterior exact cover.
+
+## Commuting-hole classification
+
+The remaining component-side classification is nevertheless uniform.  The
+following elementary centralizer lemma is the useful formulation.
+
+> **Cycle centralizer with edge avoidance.**  Let `W` be a symmetric real
+> matrix commuting with the adjacency matrix of `C_N`.  If `W` vanishes on
+> every cycle edge, and vanishes whenever its two indices have the same
+> parity, then `W` is circulant.
+
+Here is a proof that also records why no connectedness assumption on `W` is
+needed.  In the Fourier basis of `C_N`, the eigenvalue at frequency `a` is
+`2 cos(2 pi a/N)`.  Two such eigenvalues agree exactly when their frequencies
+are equal up to sign.  Consequently every matrix in the cycle centralizer has
+the form
+
+```text
+W_(x,y) = c_(y-x) + r_(x+y),
+```
+
+with a circulant part `c` and a reverse-circulant part `r` (the harmless
+overlap at frequencies `0` and `N/2` can be assigned to either part).  The
+cycle-edge zeros give
+
+```text
+0 = W_(x,x+1) = c_1 + r_(2x+1),
+```
+
+so `r` is constant on the odd residues.  The same-parity zeros similarly give
+`0=c_d+r_s` for every even difference `d` and even sum `s`, so both terms are
+constant on the even residues.  Thus on the only possibly nonzero positions,
+those of odd difference, `r_(x+y)` is a single constant and can be absorbed
+into `c_(y-x)`.  Hence `W` is circulant.
+
+Apply the lemma to the hole adjacency matrix `P` on `C_(2q-6)`.  Symmetry,
+degree two, and bipartiteness now force a single odd step pair
+
+```text
+P = Cay(Z/(2q-6), {+t,-t}),
+```
+
+where `t` is odd; avoidance of the long-cycle edges says `t` is not congruent
+to `+1` or `-1`.  In alternating-sign grid coordinates of size `q-3`, this is
+exactly the rotation-circulant row support
+
+```text
+Q(i) = {i+s, i-1-s}.
+```
+
+Therefore the apparent odd-grid classification gap is closed: every survivor
+is parametrized by one cyclic step, not an arbitrary commuting two-factor.
+This does **not** itself exclude the survivor.  The q=16 step-3 witness is one
+member of the classified family, and the unresolved obstruction remains the
+integral exterior placement (in particular the disjoint-trace codegree laws,
+which were absent from the feasible fractional control).
