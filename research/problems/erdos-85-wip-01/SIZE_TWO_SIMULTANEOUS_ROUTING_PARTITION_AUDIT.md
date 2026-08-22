@@ -2380,3 +2380,54 @@ Only the first is automatically a binary kernel vector for a single
 transport theorem must exploit the color changes on the simple cycle, or
 show that an odd-half multicolored incidence cycle contains a smaller
 monochromatic/kernel obstruction.
+
+## 42. Root projection collapses the mixed geometry
+
+The simple-cycle extraction is stronger after forgetting the exterior port
+vertices.  Contract every exterior-centered two-step of `S(Omega)`.  By
+(144), each such step came from a horizontal state edge, hence projects to
+the corresponding internal edge of `A_c`.  Former vertical transitions
+only concatenate two such edges at their common root.  We obtain a closed
+walk
+
+```text
+pi(Omega) in A_c,       |pi(Omega)| = H(Omega).         (147)
+```
+
+This projected walk is locally nonbacktracking whenever `H(Omega)>0`.
+Indeed, an immediate reversal at a root would use the same internal root
+pair on the two sides of a nonempty vertical run.  The two horizontal edges
+would then assign that pair two different owner colors, contradicting the
+owner-factor edge partition.  With no intervening vertical edge, immediate
+reversal would already repeat the same horizontal state edge in the state
+cycle.
+
+Since `A_c` is two-regular, a locally nonbacktracking closed walk in it winds
+some positive number `k` of times around one internal cycle `C`:
+
+```text
+H(Omega) = k |C|.                                      (148)
+```
+
+In fact `k=1`.  If `k>1`, the projection repeats an internal edge.  Its
+owner color is unique, so both occurrences lift to the same horizontal edge
+of `Gamma_c`, impossible in one cycle component of the state two-factor.
+Therefore
+
+```text
+H(Omega) = |C|,                                        (149)
+```
+
+and the horizontal edges of `Omega` project bijectively onto all edges of a
+single internal `A_c` cycle.  The owner color may change at its vertices,
+along the vertical subpaths of `Omega`, but there is no additional mixed
+root geometry.
+
+Consequently every odd-horizontal obstruction lies over an odd internal
+cycle and traverses it exactly once.  The all-horizontal branch is the
+monochromatic special case; the genuinely mixed branch is precisely an odd
+internal cycle whose consecutive edges have different owners at some
+vertices, with those owner changes realized by rooted triangle paths.  This
+reduces the next invariant from arbitrary multicolored cycles of `B_c` to a
+color-change law on the fixed cyclic edge word of an odd component of
+`A_c`.
