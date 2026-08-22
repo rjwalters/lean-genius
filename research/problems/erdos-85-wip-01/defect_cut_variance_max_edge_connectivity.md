@@ -1565,6 +1565,29 @@ vertex allowed in (B28) and by at most one doubled edge.  This is a second
 bounded-core formulation of the surviving `a=1` branch, complementary to
 the overwhelmingly one-colored pole formulation (B30).
 
+Retaining the two layers as colors makes that bounded core explicit.  Let
+`H` be the two-colored multigraph on X whose red layer is `M_c^Y` and whose
+blue layer is `M_R`; retain the possible common edge in (B32') once in each
+color.  Let `U_K` be the two X-points in the singleton fibers of `M_c^Y`.
+Then the red degree is one off `U_K` and zero on `U_K`.  The blue degrees
+are given by (B28).  Therefore
+
+```text
+u in U_P:      deg_H(x)=2 outside U_K union (U_P\{u});
+u notin U_P:   deg_H(x)=2 outside U_K union U_P union {u}.  (B33)
+```
+
+The exceptional set has size at most four in the first case and at most
+six in the second.  At every nonexceptional vertex the two incident edges
+have different colors.  Consequently every component of H disjoint from
+the exceptional set is an alternating even cycle; after deleting the core,
+all remaining non-cycle pieces are alternating paths with ends adjacent to
+that core.  Parallelism causes no ambiguity: the sole possible common edge
+is simply an alternating two-cycle in this colored multigraph.  Thus every
+q-dependent part of the Y-located slice is organized into alternating
+cycles, while all degree imbalance is supported on at most six named
+vertices.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
