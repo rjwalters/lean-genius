@@ -2669,6 +2669,147 @@ theorem squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
     simpa [hempty] using hwCommon
   exact ⟨hnotMarked, hB0, hB1, hdisj⟩
 
+/-- The unmarked bin-one rows meet an ordinary special-row support as a
+partial transversal.  There are 24 such rows, each meets the support at
+most once, and their total number of hits is exactly three times the support
+size.  In particular, an eight-point ordinary support is met once by every
+unmarked row, while a seven-point support has exactly three missing rows. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_special_support_ledger
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := (G.neighborFinset y ∩ B 0) \ S
+    U1.card = 24 ∧
+      (∀ b ∈ U1, (G.neighborFinset b ∩ F).card ≤ 1) ∧
+      (∑ b ∈ U1, (G.neighborFinset b ∩ F).card) = 3 * F.card := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := (G.neighborFinset y ∩ B 0) \ S
+  have hyParts := Finset.mem_inter.mp hy
+  have hmarked :=
+    squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hmarked
+  have hMcard :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  have hMsub : M ⊆ B 1 := Finset.inter_subset_right
+  have hU1card : U1.card = 24 := by
+    rw [Finset.card_sdiff_of_subset hMsub, hmarked.1, hMcard]
+  have hrowLe : ∀ b ∈ U1, (G.neighborFinset b ∩ F).card ≤ 1 := by
+    intro b hb
+    rw [Finset.card_le_one]
+    intro w hw z hz
+    have hwParts := Finset.mem_inter.mp hw
+    have hzParts := Finset.mem_inter.mp hz
+    have hwF := Finset.mem_sdiff.mp hwParts.2
+    have hzF := Finset.mem_sdiff.mp hzParts.2
+    have hwy := (G.adj_comm y w).mp
+      ((G.mem_neighborFinset y w).mp (Finset.mem_inter.mp hwF.1).1)
+    have hzy := (G.adj_comm y z).mp
+      ((G.mem_neighborFinset y z).mp (Finset.mem_inter.mp hzF.1).1)
+    have hwb := (G.mem_neighborFinset b w).mp hwParts.1
+    have hzb := (G.mem_neighborFinset b z).mp hzParts.1
+    by_contra hwz
+    have hyb : y ≠ b := by
+      intro h
+      subst b
+      have hyB0 := (Finset.mem_filter.mp hyParts.2).2
+      have hyB1 := (Finset.mem_filter.mp (Finset.mem_sdiff.mp hb).1).2
+      omega
+    have hwCommon : w ∈ G.neighborFinset y ∩ G.neighborFinset b :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset y w).mpr hwy.symm,
+        (G.mem_neighborFinset b w).mpr hwb⟩
+    have hzCommon : z ∈ G.neighborFinset y ∩ G.neighborFinset b :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset y z).mpr hzy.symm,
+        (G.mem_neighborFinset b z).mpr hzb⟩
+    have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree y b hyb
+    exact hwz (Finset.card_le_one.mp hle w hwCommon z hzCommon)
+  have htarget : ∀ w ∈ F, (G.neighborFinset w ∩ U1).card = 3 := by
+    intro w hwF
+    have hwParts := Finset.mem_sdiff.mp hwF
+    have hwBase := Finset.mem_inter.mp hwParts.1
+    have hwNotAdjX : ¬ G.Adj w x := by
+      intro hwx
+      exact hwParts.2 (Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x w).mpr hwx.symm, hwBase.2⟩)
+    have hservice :=
+      squareOrderNine_threeHigh_secondProfile_binZero_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hwBase.2
+    have hservice3 : (G.neighborFinset w ∩ B 1).card = 3 := by
+      simpa [hwNotAdjX] using hservice
+    have heq : G.neighborFinset w ∩ U1 = G.neighborFinset w ∩ B 1 := by
+      apply Finset.Subset.antisymm
+      · intro z hz
+        have hzParts := Finset.mem_inter.mp hz
+        exact Finset.mem_inter.mpr ⟨hzParts.1,
+          (Finset.mem_sdiff.mp hzParts.2).1⟩
+      · intro z hz
+        have hzParts := Finset.mem_inter.mp hz
+        refine Finset.mem_inter.mpr ⟨hzParts.1,
+          Finset.mem_sdiff.mpr ⟨hzParts.2, ?_⟩⟩
+        intro hzM
+        have hzMParts := Finset.mem_inter.mp hzM
+        have hxCommon : x ∈ G.neighborFinset y ∩ G.neighborFinset z :=
+          Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset y x).mpr
+              ((G.adj_comm x y).mp
+                ((G.mem_neighborFinset x y).mp hyParts.1)),
+            (G.mem_neighborFinset z x).mpr
+              ((G.adj_comm x z).mp
+                ((G.mem_neighborFinset x z).mp hzMParts.1))⟩
+        have hwCommon : w ∈ G.neighborFinset y ∩ G.neighborFinset z :=
+          Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset y w).mpr
+              ((G.mem_neighborFinset y w).mp hwBase.1),
+            (G.mem_neighborFinset z w).mpr
+              ((G.adj_comm w z).mp
+                ((G.mem_neighborFinset w z).mp hzParts.1))⟩
+        have hyz : y ≠ z := by
+          intro h
+          subst z
+          have hyB0 := (Finset.mem_filter.mp hyParts.2).2
+          have hyB1 := (Finset.mem_filter.mp hzMParts.2).2
+          omega
+        have hxw : x ≠ w := by
+          intro h
+          subst w
+          have hkx := (Finset.mem_filter.mp hx).2
+          have hkw := (Finset.mem_filter.mp hwBase.2).2
+          omega
+        have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree y z hyz
+        exact hxw (Finset.card_le_one.mp hle x hxCommon w hwCommon)
+    rw [heq, hservice3]
+  have hswap := sum_card_neighborFinset_inter_comm G U1 F
+  have hsumTarget : (∑ w ∈ F, (G.neighborFinset w ∩ U1).card) =
+      3 * F.card := by
+    calc
+      _ = ∑ _w ∈ F, 3 := by
+        apply Finset.sum_congr rfl
+        intro w hw
+        exact htarget w hw
+      _ = 3 * F.card := by simp [Nat.mul_comm]
+  exact ⟨hU1card, hrowLe, hswap.trans hsumTarget⟩
+
 end
 
 end Erdos85
@@ -2705,3 +2846,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_binOne_row_packing
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_special_support_ledger
