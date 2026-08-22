@@ -1450,10 +1450,11 @@ exactly one private point on each line.  More generally (78) quantifies the
 total failure of that endpoint design by the square distance from `c=q`.
 
 The unresolved signed-support terminal has therefore split into two strictly
-smaller regimes: mixed support `c<=3q/2-2`, or pure support `c<=q`.  The latter
+smaller regimes: mixed support `c<=q`, with the unbalanced case in the exact
+`(r,u)` normal form (73d)--(73h), or pure support `q/2<c<=q`.  The latter
 still obeys (74), so every point of its occupied shore has positive
-exceptional replication; eliminating this small pure regime and the mixed
-four-type regime remains necessary.
+exceptional replication.  Eliminating the pure partial-linear-space regime
+and the routed mixed low-r designs remains necessary.
 
 Equations (7)--(78) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
