@@ -206,6 +206,30 @@ counts have constant-factor slack (and no pair content when `a=1`), so the
 remaining issue is compatibility of the block labels with their own point
 locations.
 
+That location constraint has a compact Boolean-factorization form.  Put
+`C=V\R`, let `X=A[Z,C]`, let `Y=A[C,S]`, and let `M` be the matrix with
+`M_(z,s)=1` exactly when `s=s_z`.  Then
+
+```text
+X Y = J - M.                                      (5c)
+```
+
+Rows of `X` have weight q, rows of `Y` have weight a, and distinct rows in
+either matrix meet in at most one position.  If t is the number of distinct
+inside cut endpoints, reduction modulo two gives
+
+```text
+rank_F2(J+M) = t,
+rank_F2(X), rank_F2(Y) >= t.                       (5d)
+```
+
+Indeed, the distinct rows `1+e_u` of `J+M` are independent because
+`t<|S|`.  Endpoints with the same omitted point have identical rows in
+`XY`, so their signed A-neighborhood differences lie in the kernel of
+`Y^T`.  Since `t<=q-1` while both ambient matrix dimensions are much larger,
+(5c)--(5d) do not improve the already closed binary-rank route.  They record
+exactly where a future nonlinear point-location argument must enter.
+
 Symmetry supplies one further universal parity.  Taking the quadratic form
 of (5) against `1_S` gives
 
