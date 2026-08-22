@@ -2045,3 +2045,53 @@ third color whenever `q-4 > n(n-5)`.  This is stronger than the uncolored
 boundary lower bound: it supplies an individual reused block `R_cd` whose
 shadow has no chord at all inside `C`, which can be inserted into the other
 endpoint partitions.
+
+## 35. Clean colors give disjoint two-point lifts
+
+Fix a third color `d` which is clean for `C`.  Let
+
+```text
+Y_d := supp(R_dc C) subset d,
+Y_d(x) := N_G(x) cap d,                  x in C.
+```
+
+Every fiber `Y_d(x)` has size two.  Cleanliness says that no vertex of `d`
+has both of its `c`-neighbors in `C`, since such a vertex would index an
+edge of `F_d[c][C]`.  Therefore the fibers are pairwise disjoint and
+
+```text
+Y_d = disjoint_union_(x in C) Y_d(x),
+|Y_d| = 2n.                                              (125)
+```
+
+Thus a clean owner factor is not merely chord-free on `C`: the reused cross
+block `R_cd` restricts to a genuine two-point lift of the cycle roots into
+component `d`.
+
+The rooted SRP budget now constrains the internal geometry of that lift.
+For `x in C`, both internal edges incident to `x` are owned by `e`, so
+`a_xd=0`.  Recall that `b_xd=1` exactly when the two vertices of `Y_d(x)`
+are adjacent in `A_d`.  Equations (50)--(51) specialize to the dichotomy
+
+```text
+Y_d(x) in E(A_d)
+  ==> no three-component triangle through x uses d;
+
+Y_d(x) notin E(A_d)
+  ==> exactly two three-component triangles through x use d.            (126)
+```
+
+If `m_d(C)` is the number of lifted fibers which are internal `A_d` edges,
+then summing (126) over the roots gives
+
+```text
+sum_(x in C) sum_(f != c,d) tau_xdf
+  = 2 (n - m_d(C)).                                     (127)
+```
+
+Equations (125)--(127) are the first direct use of a clean reused block in
+another endpoint component.  For a five-cycle every third color supplies
+such a disjoint ten-point lift.  Any simultaneous countermodel must then,
+for every one of those colors, choose fiber edges in `A_d` or route the
+remaining fibers through exactly two further colors, with no collisions
+allowed by C4-freeness.
