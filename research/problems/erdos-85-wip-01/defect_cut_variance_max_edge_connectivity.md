@@ -2065,6 +2065,32 @@ max(1,q-2a-3) <= n_w <= min(a+2,q/2).          (B49'')
 Here `n_w>=1` (and hence `m_w<=q-2`) also follows directly from
 `|R_w|=n_w-1` in (B8').
 
+The reciprocal exclusion is an exact trichotomy on the candidate set
+`{c} union K_w`, not merely an upper bound.  Among these `m_w+1` K-points,
+exactly `b-1` share a Y-neighbor with `p_w`: the B45 image supplies
+`b-1-e_w` of them and c supplies the remaining one precisely when
+`e_w=1`.  Exactly `deg_(Gamma_K)(p_w)` share an X-neighbor.  No candidate
+pair shares a W-neighbor, while every distinct K-point outside
+`{p_w,c} union K_w` does share one with `p_w`.  Hence all remaining
+candidates, and only those, are D-neighbors of `p_w` inside K:
+
+```text
+deg_D(p_w,K)=m_w-b+2-deg_(Gamma_K)(p_w).       (B50)
+```
+
+Comparing this with (B41') gives the exact reciprocity equation
+
+```text
+|F_(p_w) intersect N_D(w)|
+  = deg_D(p_w,K)+n_w-2.                        (B50')
+```
+
+Indeed the left side is `a-deg_(Gamma_K)(p_w)`, and
+`a-m_w+b-2=q-3-m_w=n_w-2`.  Thus the attachment deficit in the X-fiber and
+the internal-K defect degree of its P-center differ by the explicit wing
+quantity `n_w-2`; future location arguments can use equality rather than
+the inequalities that produced (B49').
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
