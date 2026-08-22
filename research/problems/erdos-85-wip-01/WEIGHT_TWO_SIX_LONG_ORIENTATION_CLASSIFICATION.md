@@ -254,3 +254,34 @@ single-row exact-cover obstruction nor local Hall deficiency can eliminate
 the survivor.  The remaining problem is genuinely simultaneous: choose the
 row matchings mutually so that exterior adjacency is symmetric and all
 disjoint-trace codegrees are at most one.
+
+## The shared-trace reciprocity layer always closes
+
+There is also no obstruction in making all endpoint resolvers reciprocal.
+Delete from `F` the long-cycle edges, which are precisely the edge-traces,
+and call the resulting graph `F_0`.  Its edges are exactly the non-edge
+traces.  At a short-cycle point its degree is `q-2`; at a long-cycle point
+its degree is `q-4`.  Both are even.  Moreover `F_0` is connected: the two
+complete short-to-long parity blocks are joined by the opposite matching on
+the short `C6` (and all their vertices occur in those blocks).
+
+Choose one Euler circuit of `F_0`.  At every component point, pair each
+entering trace-edge with the trace-edge by which the circuit leaves.  Regard
+each edge of `F_0` as its corresponding outside trace vertex and join paired
+trace vertices in the exterior graph.  The result has the exact resolver
+properties:
+
+* every non-edge trace has one resolver through each endpoint, hence resolver
+  degree two;
+* every edge-trace has resolver degree zero;
+* reciprocity is automatic because the local pairings are undirected;
+* the resolver graph is one cycle on
+  `q(q-2)-(2q-6)=q^2-4q+6` vertices.
+
+The last number is greater than four for `q>=8`, so this resolver layer is
+itself C4-free.  Simplicity is automatic because two distinct simple trace
+edges cannot share both component endpoints.  Therefore even the simultaneous
+shared-trace part of the exterior adjacency has a uniform integral
+completion.  Any terminal must couple these resolver choices to the remaining
+`q-4` or `q-2` disjoint-trace neighbors and their codegree-at-most-one laws;
+resolver parity or reciprocity alone cannot exclude the survivor.
