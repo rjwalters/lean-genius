@@ -80,3 +80,50 @@ the cross-saturated hole sector or solve exterior completion.  It does remove
 all T-saturated cycles from that algebraic problem and shows that mixed
 orientation data are encoded exactly as isolated versus edge-avoiding
 components of one global commuting 2-factor.
+
+## Rectangular length-ratio law
+
+The remaining cross-saturated sector has a strong arithmetic restriction.
+Take two of its H-cycles `C_(2a)` and `C_(2b)`, and let `Q` be the rectangular
+block of `P` between them.  Blockwise commutation says
+
+```text
+C_(2a) Q = Q C_(2b).
+```
+
+Multiplying by the all-ones vector shows that the row-degree vector `Q 1` is
+a 2-eigenvector of the connected cycle `C_(2a)`, hence is constant.  Applying
+the transpose gives constant column degree as well.  Write these two degrees
+as `r,s`.  Since the whole hole graph `P` has degree two,
+
+```text
+r,s in {0,1,2}.
+```
+
+Counting the entries of `Q` by rows and columns gives
+
+```text
+2a r = 2b s,              equivalently a r = b s.
+```
+
+If the block is nonzero, the only cases are
+
+| `(r,s)` | forced half-length relation |
+|---|---|
+| `(1,1)` | `a=b` |
+| `(2,2)` | `a=b` |
+| `(1,2)` | `a=2b` |
+| `(2,1)` | `b=2a` |
+
+Thus a commuting degree-two hole factor can connect distinct H-cycles only
+when their half-lengths differ by exactly a factor of two.  All other pairs
+have zero rectangular block.  This turns the formerly arbitrary
+rectangular-intertwiner frontier into components supported on equal-length
+classes and adjacent levels of the doubling graph on the half-lengths.
+
+The law is necessary, not a full block classification.  In the `(1,1)` case
+`Q` is a cycle-intertwining perfect matching (hence a dihedral cycle
+isomorphism); in the factor-two cases it has the margins of a two-fold cycle
+cover.  Proving that these descriptions are forced entrywise, and classifying
+how several such blocks can share the degree-two budget, is the next
+component-side consumer.
