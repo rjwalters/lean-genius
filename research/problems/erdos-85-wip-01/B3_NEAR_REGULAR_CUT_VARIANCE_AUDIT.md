@@ -657,6 +657,65 @@ Therefore the symmetric articulation survivor has `x` as the unique
 degree-5 center into the order-60 shore.  Equivalently, exactly one of the
 six ordinary neighbors of `x` lies in the order-18 component.
 
+The four bin-zero points in the low set now eliminate this last branch.
+Write
+
+```text
+Z = {x} union P union W,  |P|=24 in B1,  |W|=4 in B0,
+p = |P intersect N_A(x) intersect B1|,
+q = |W intersect N_A(x) intersect B0|.
+```
+
+Equation (32) and the preceding conclusion give `p+q=1`, so either
+`(p,q)=(0,1)` or `(1,0)`.  Let `U` again be the three bin-zero neighbors of
+`x`, let `a` and `b` be respectively the numbers of partners and points of
+`U` on the order-18 side.  The one-neighbor shore split gives
+
+```text
+a+b=1.                                                        (33)
+```
+
+Every partner has no bin-one neighbor.  Evaluating (31) at a partner shows
+that it has two neighbors in `W` on the order-18 side and one on the other
+side.  Thus the three partners send exactly
+
+```text
+3+a = 4-b                                                     (34)
+```
+
+edges into `W`.  Distinct partners cannot meet the same point of `W`, since
+they would then have two common neighbors, that point and `x`.
+
+Likewise, a point of `U` has no bin-one neighbor.  Its required `W`-degree
+is one, except that an exceptional point on the order-18 side has degree
+two.  No point of `W` can meet two points of `U`, nor can it meet both a
+partner and a point of `U`, for the same common-neighbor reason.
+
+First take `(p,q)=(0,1)`.  All three partners lie outside `P`, but (34) is
+unchanged.  Their neighbors cannot be the selected point of `U intersect W`
+because the exact local-edge profile at `x` has only the three high--partner
+edges and, in the four-edge branch, the regular `U`-pair edge.  Hence their
+`4-b` distinct neighbors lie in the three-point set `W\U`, forcing `b=1`;
+all three partners are then on the order-59 side and saturate `W\U`.  But
+the points of `U` require at least one further incidence with `W\U`.  In the
+three-edge branch there is no `U`--`U` edge at all.  In the four-edge branch
+the selected point can account for at most one required incidence of the
+other regular point via their unique edge; the selected point itself still
+requires a neighbor in `W\U`.  Either way a point already occupied by a
+partner must also meet a point of `U`, producing a four-cycle.  Thus
+`(0,1)` is impossible.
+
+Finally take `(p,q)=(1,0)`.  All four points of `W` lie outside `U`.
+The partners require `4-b` distinct points of `W`.  In the three-edge
+branch the points of `U` require `3+b` further distinct points of `W`; in
+the four-edge branch they require at least three.  These two sets of points
+must be disjoint, yet their total required cardinality is at least six,
+larger than `|W|=4`.  This contradiction kills `(1,0)`.  Therefore
+
+```text
+deleting the unique bin-three vertex does not disconnect D0.         (35)
+```
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
@@ -672,6 +731,7 @@ The component-order list and the pointwise bin dichotomy together prove that
 three-high profile, not a graph census and not a proof that the full defect
 graph cannot be connected.
 
-The pointwise bin inputs are Lean-checked; the short component-order consumer
-is recorded here and in the exact arithmetic checker, but is not yet
-packaged as a new Lean theorem.  No nonexistence conclusion is claimed.
+The pointwise bin inputs are Lean-checked; the short component-order and
+articulation consumers are recorded here and in the exact arithmetic
+checker, but are not yet packaged as new Lean theorems.  No full
+nonexistence conclusion is claimed.

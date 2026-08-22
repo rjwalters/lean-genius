@@ -457,6 +457,25 @@ def main() -> None:
         tuple(sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly))
         for assembly in articulation_after_two_point_handshake
     ) == Counter({(18, 59): 1})
+    # The symmetric-spike argument gives p+q=1 for the numbers of partner
+    # and U-neighbours in the four-point low set.  The report's disjoint
+    # low-set-neighbour capacity argument eliminates both possibilities.
+    symmetric_low_set_splits = {
+        (partners_in_low_set, b0_neighbors_in_low_set)
+        for partners_in_low_set in range(4)
+        for b0_neighbors_in_low_set in range(4)
+        if partners_in_low_set + b0_neighbors_in_low_set == 1
+    }
+    assert symmetric_low_set_splits == {(0, 1), (1, 0)}
+    articulation_after_low_set_capacity = [
+        assembly
+        for assembly in articulation_after_two_point_handshake
+        if tuple(
+            sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly)
+        )
+        != (18, 59)
+    ]
+    assert not articulation_after_low_set_capacity
 
     bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
     assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
@@ -471,6 +490,7 @@ def main() -> None:
     print("verified post-B0-handshake articulation frontier: (18,59), (34,43)")
     print("verified (34,43) low-set split: (p,q)=(2,2) or (3,1)")
     print("verified post-two-point-handshake articulation frontier: (18,59)")
+    print("verified post-four-point-capacity articulation frontier: empty")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
     ):
