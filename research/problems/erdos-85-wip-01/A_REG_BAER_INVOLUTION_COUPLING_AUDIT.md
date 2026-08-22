@@ -568,13 +568,50 @@ secant lines, so equality holds.  Thus a small kernel shore forces a
 quadratically large half-occupancy support B; the new layer cannot remain a
 sparse correction to the first mod-two kernel vector.
 
-Equations (7)--(28) are the first canonical cut detector manufactured from
+At the two bottom weights this packing is an exact familiar design.  Equality
+in (16) says every line meets S in zero or two points.  Hence the map
+
+```text
+X in B  |->  N_A(X) intersect S
+```
+
+is a bijection from B to the non-D pairs of S: every image is a pair, every
+non-D pair has a unique common A-neighbor, and C4-freeness makes the map
+injective.  Using the bottom defect profiles gives
+
+```text
+|S|=q+1:  B is indexed by E(K_{q+1}),
+|S|=q+2:  B is indexed by E(K_{q+2} setminus M),               (29)
+```
+
+where M is the perfect matching `D[S]`.  In both cases the bipartite
+A-incidence between S and B is exactly vertex-edge incidence in the graph
+shown in (29).  This remains true even when S and B overlap as subsets of
+the ambient vertex set; looplessness merely says that an overlapping label
+X is not an endpoint of the pair it indexes.
+
+The overlap has its own rigid form.  A point `X in S` belongs to B exactly
+when its polar line meets S twice, equivalently when its degree in `A[S]` is
+two.  Any neighbor in `A[S]` also has positive even induced degree, hence
+degree two.  Consequently
+
+```text
+A[S] = a disjoint union of cycles on S intersect B,
+       plus isolated vertices on S setminus B,                 (30)
+```
+
+with no 4-cycle.  Thus any exclusion of a bottom kernel shore has a concrete
+self-indexing target: embed the labels of a complete-graph (or
+cocktail-party) edge-incidence design back into its own point set so that
+the overlapping labels induce only C3 or cycles of length at least five.
+
+Equations (7)--(30) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(28), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(30), so these laws alone
 do not conceal an order-independent
 contradiction.
 
