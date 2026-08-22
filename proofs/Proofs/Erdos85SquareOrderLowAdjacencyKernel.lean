@@ -1,5 +1,6 @@
 import Proofs.Erdos85SquareOrderHighIncidence
 import Proofs.Erdos85SquareOrderHighRootKernel
+import Proofs.Erdos85SquareOrderDefectEigenvectors
 
 /-!
 # High-incidence differences in the low adjacency kernel
@@ -15,6 +16,15 @@ open SimpleGraph
 namespace Erdos85
 
 noncomputable section
+
+/-- Difference of two high-incidence columns, restricted to the low sector. -/
+def squareOrderLowHighIncidenceDifference
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (d : ℕ) (a b : V) :
+    (((Finset.univ : Finset V) \ squareOrderHighVertices G d : Finset V) :
+      Set V) → ℤ :=
+  fun x ↦ G.adjMatrix ℤ x.1 a - G.adjMatrix ℤ x.1 b
 
 /-- The common neighbor of a high vertex and a low vertex is itself low. -/
 theorem squareOrder_card_low_common_high_eq_one
@@ -125,6 +135,101 @@ theorem squareOrder_sum_low_adj_mul_high_incidence_sub_eq_zero
   rw [Finset.sum_sub_distrib]
   omega
 
+/-- Operator form: every high-incidence difference lies in the kernel of
+the adjacency matrix induced on the low sector. -/
+theorem squareOrder_lowAdjacency_mulVec_highIncidenceDifference_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a b : V} (ha : a ∈ squareOrderHighVertices G d)
+    (hb : b ∈ squareOrderHighVertices G d) :
+    let L := (Finset.univ : Finset V) \ squareOrderHighVertices G d
+    ((G.induce (L : Set V)).adjMatrix ℤ).mulVec
+      (squareOrderLowHighIncidenceDifference G d a b) = 0 := by
+  classical
+  let L := (Finset.univ : Finset V) \ squareOrderHighVertices G d
+  funext x
+  have hxlow : x.1 ∉ squareOrderHighVertices G d :=
+    (Finset.mem_sdiff.mp x.2).2
+  have hzero := squareOrder_sum_low_adj_mul_high_incidence_sub_eq_zero
+    G hfree hd hmin hcover hcard ha hb hxlow
+  dsimp only at hzero
+  simp only [Matrix.mulVec, dotProduct, Pi.zero_apply,
+    squareOrderLowHighIncidenceDifference]
+  change (∑ y : (L : Set V),
+      G.adjMatrix ℤ x.1 y.1 *
+        (G.adjMatrix ℤ y.1 a - G.adjMatrix ℤ y.1 b)) = 0
+  exact (Finset.sum_subtype L (fun _ ↦ Iff.rfl)
+    (fun y : V ↦ G.adjMatrix ℤ x.1 y *
+      (G.adjMatrix ℤ y a - G.adjMatrix ℤ y b))).symm.trans hzero
+
+private def extendLowFunction
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) :
+    ((((Finset.univ : Finset V) \ squareOrderHighVertices G d : Finset V) :
+      Set V) → ℤ) →ₗ[ℤ] (V → ℤ) where
+  toFun f x := if hx : x ∉ squareOrderHighVertices G d then
+    f ⟨x, Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hx⟩⟩ else 0
+  map_add' f g := by
+    funext x
+    by_cases hx : x ∈ squareOrderHighVertices G d <;> simp [hx]
+  map_smul' r f := by
+    funext x
+    by_cases hx : x ∈ squareOrderHighVertices G d <;> simp [hx]
+
+/-- The low-adjacency kernel contains `|H|-1` independent incidence
+differences: after choosing a high base vertex, all other high columns give
+an independent kernel family. -/
+theorem squareOrder_lowHighIncidenceDifferences_linearIndependent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (a : ↥(squareOrderHighVertices G d)) :
+    LinearIndependent ℤ
+      (fun b : {x : ↥(squareOrderHighVertices G d) // x ≠ a} ↦
+        squareOrderLowHighIncidenceDifference G d b.1.1 a.1) := by
+  classical
+  let E := extendLowFunction G d
+  apply LinearIndependent.of_comp E
+  have hfull := squareOrder_highRowDifferences_linearIndependent
+    G hfree hd hmin hcover hcard a
+  convert hfull using 1
+  funext b
+  ext x
+  by_cases hxlow : x ∈ ((Finset.univ : Finset V) \
+      squareOrderHighVertices G d)
+  · have hxnot : x ∉ squareOrderHighVertices G d :=
+      (Finset.mem_sdiff.mp hxlow).2
+    simp [E, extendLowFunction, squareOrderLowHighIncidenceDifference,
+      squareOrderHighRowDifference, hxnot, G.adj_comm]
+  · have hxhigh : x ∈ squareOrderHighVertices G d := by
+      simpa using hxlow
+    have hbhigh : b.1.1 ∈ squareOrderHighVertices G d := b.1.2
+    have habase : a.1 ∈ squareOrderHighVertices G d := a.2
+    have hxb : ¬G.Adj x b.1.1 :=
+      squareOrder_not_adj_degree_succ_of_tightEdgeCover G hcover
+        (Finset.mem_filter.mp hxhigh).2 (Finset.mem_filter.mp hbhigh).2
+    have hxa : ¬G.Adj x a.1 :=
+      squareOrder_not_adj_degree_succ_of_tightEdgeCover G hcover
+        (Finset.mem_filter.mp hxhigh).2 (Finset.mem_filter.mp habase).2
+    simp [E, extendLowFunction, squareOrderHighRowDifference, hxhigh,
+      SimpleGraph.adjMatrix_apply,
+      hxb, hxa, G.adj_comm]
+
 end
 
 end Erdos85
+
+#print axioms
+  Erdos85.squareOrder_lowAdjacency_mulVec_highIncidenceDifference_eq_zero
+#print axioms Erdos85.squareOrder_lowHighIncidenceDifferences_linearIndependent
