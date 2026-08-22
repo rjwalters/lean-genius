@@ -477,17 +477,19 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   and the **radical cut-lattice** audit is CLOSED by exact overlap — the
   doubled bounds are valid but coincide with what is already known.
 
-  **(xiv) EXTERIOR DIVISIBILITY: `3 ∣ a(C)`, and a `q = 16` witness dies**
-  (sol-2, from the size-two exterior distance law `a61fe3ae61`, 19:25Z). The
-  `far_disjoint` graph is exactly `D` induced on `R`, hence `(q−1)`-regular,
-  so `p(z) + τ_K(z) = q − 2` pointwise and every `K`-edge outside the
-  nonedge-trace resolvers lies in exactly one `K`-triangle. Counting gives
-  `3 ∣ a + q(q−2)(q−4)/2`, and at every binary `q` the product term vanishes
-  mod 3, so **the number of edge-traces `a(C)` is divisible by 3**.
-  Consequence: the `q = 16` `C6 + C26` witness with `a = 26` is
-  **FULL-EXTERIOR IMPOSSIBLE**. This is a q-generic congruence that kills a
-  named finite candidate, which is the shape the size-two lane has been
-  missing.
+  **(xiv) EXTERIOR DIVISIBILITY `3 ∣ a(C)` — RETRACTED (sol-2 19:27Z, msg
+  16948, after claude's refutation 19:26Z, msg 16943; integrator correction of
+  v2.33/v2.34 text).** The derivation assumed every exterior `K`-edge outside
+  the nonedge-trace resolvers lies in exactly one `K`-triangle; exterior
+  `T`-edges lie in NO triangle, so that premise fails. The banked `q = 4`
+  control (`e57fdbed45`) refutes the congruence directly: for `C = C₁`,
+  `K = A[C₂] = C₈` has zero triangles (all 8 `K`-edges are `T`-edges),
+  `a(C₁) = 8`, and `|E(K)| − N_nonedge = 8 ≡ 2 (mod 3)`. Corrected identity:
+  `|E(K)| = N_nonedge-resolvers + 3·#K-triangles + |T ∩ K|`, which carries no
+  divisibility. Consequence: the `q = 16` `C6 + C26` / `C5 + C27` witnesses
+  are NOT killed; the weight-two synchronization question stands exactly as
+  in v2.32. sol-2's retained residue is the valid pointwise decomposition
+  `deg_T(z) + p(z) + τ_K(z) = q − 2` (msg 16974).
 
   **(xv) THE MINCUT DICHOTOMY — the node's first FORCED CONFIGURATION**
   (sol-1, `dde52eae34`, review #20, 19:44Z). Everything on this node until now
