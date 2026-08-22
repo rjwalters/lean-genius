@@ -539,13 +539,42 @@ Bockstein branches either occupy the interior windows (26), or pay a
 modulus-`4q` cut cost (27).  This is still not a terminal, but it is a
 strictly finer consumer than (16).
 
-Equations (7)--(27) are the first canonical cut detector manufactured from
+The nonconstant branch has a complementary packing bound.  Suppose
+`s=|S|<3q+1` and put
+
+```text
+L = ceil((3q+1-s)/2).
+```
+
+By (24), every point of S has at least L A-neighbors in B.  If
+`r_X=|N_A(X) intersect S|` for `X in B` and
+`I=sum_{X in B} r_X`, then `I>=sL`.  C4-freeness gives
+
+```text
+sum_{X in B} C(r_X,2) <= C(s,2).
+```
+
+Cauchy therefore yields
+
+```text
+I^2/|B| - I <= s(s-1),
+|B| >= I^2/(I+s(s-1))
+     >= s L^2/(L+s-1).                                  (28)
+```
+
+At the minimum possible shore `s=q+1`, one has `L=q`, and (28) gives
+`|B|>=q(q+1)/2`.  Equality in (16) shows that these are exactly all the
+secant lines, so equality holds.  Thus a small kernel shore forces a
+quadratically large half-occupancy support B; the new layer cannot remain a
+sparse correction to the first mod-two kernel vector.
+
+Equations (7)--(28) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(27), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(28), so these laws alone
 do not conceal an order-independent
 contradiction.
 
