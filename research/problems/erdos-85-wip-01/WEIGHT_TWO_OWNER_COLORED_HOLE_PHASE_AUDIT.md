@@ -194,9 +194,37 @@ cross-sign trace block at the level of
 binary + degree two + edge partition + Q_e P^T = P Q_e^T.
 ```
 
-This is not asserted to realize the full ambient graph: it does not impose
-the second equation `Q_e D_- = D_+ Q_e`, the same-shore owner layers, or the
-unique-selector compatibility across different target components.  It does
-prove that the first colored equation and cyclic phase counting cannot close
-`BinarySizeTwoCyclicPackingBound`.  Any valid consumer must use the
-same-shore equation or multi-component selector compatibility.
+In the one-cycle alternating sector, even the second colored equation adds
+no restriction.  Number the positive and negative shores compatibly with the
+ambient cycle.  Two same-sign vertices have an internal common neighbor
+exactly at cyclic separation one, so
+
+```text
+D_+ = D_- = J-I-C_q.
+```
+
+This matrix is circulant.  Every `Q_[a]` above is circulant as well, and hence
+
+```text
+Q_[a] D_- = D_+ Q_[a].
+```
+
+The internal-source selector layer supplies the omitted same-sign cycle
+edges, while the exterior size-two layers `Q_[a]` partition the opposite-sign
+trace block.  Therefore the construction realizes the entire
+single-component owner-factor algebra:
+
+```text
+binary regular layers,
+exact edge partition,
+[O_e,D[c]]=0 for every exterior color e.
+```
+
+It is still not asserted to realize a full ambient graph, because the same
+source color must define compatible selector layers on every other target
+component, with unique ambient selector vertices and C4-free routing between
+them.  The conclusion is sharper: neither colored block equation nor any
+single-component cyclic phase count can close
+`BinarySizeTwoCyclicPackingBound`.  A valid terminal must couple the layers
+of one source component across multiple target components (or use an
+equivalent exterior-routing law).
