@@ -3688,6 +3688,100 @@ theorem squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
     rw [hsumP, hsumC]
   exact ⟨hPcard, hcompCard, hPon, hPoff, hpairs⟩
 
+/-- Numeric capstone for the 24-vertex unmarked bin-one pair budget.  The
+bin-zero centers contribute 99 pairs, bin-one centers 72, high centers 84,
+and the induced defect graph has 21 edges; these exhaust all `C(24,2)=276`
+unordered pairs. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_pair_budget
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let D := secondOrderDefectGraph G
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let K := G.induce (↑U1 : Set V)
+    let L := D.induce (↑U1 : Set V)
+    let F := fun a => G.neighborFinset a ∩ U1
+    U1.card = 24 ∧
+      (∑ y ∈ T, Nat.choose (G.neighborFinset y ∩ U1).card 2) = 99 ∧
+      (∑ z : ↥(↑U1 : Set V), Nat.choose (K.degree z) 2) = 72 ∧
+      (∑ a ∈ H, Nat.choose (F a).card 2) = 84 ∧
+      L.edgeFinset.card = 21 ∧
+      99 + 72 + 84 + L.edgeFinset.card = Nat.choose U1.card 2 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let K := G.induce (↑U1 : Set V)
+  let L := D.induce (↑U1 : Set V)
+  let F := fun a => G.neighborFinset a ∩ U1
+  have hcubic :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcubic
+  change U1.card = 24 ∧ (∀ z : ↥(↑U1 : Set V), K.degree z = 3) ∧
+    K.edgeFinset.card = 36 at hcubic
+  have hB0 :=
+    squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hB0
+  change _ ∧ _ ∧ _ ∧ _ ∧
+    (∑ y ∈ T, Nat.choose (G.neighborFinset y ∩ U1).card 2) = 99 at hB0
+  have hfibers :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hfibers
+  change H.card = 3 ∧ (∀ a ∈ H, (F a).card = 8) ∧
+    (∀ a ∈ H, ∀ b ∈ H, a ≠ b → Disjoint (F a) (F b)) ∧
+    H.biUnion F = U1 at hfibers
+  have hdefect :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_binOne_defect_edges
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hdefect
+  change L.edgeFinset.card = 21 at hdefect
+  have hB1pairs :
+      (∑ z : ↥(↑U1 : Set V), Nat.choose (K.degree z) 2) = 72 := by
+    simp_rw [hcubic.2.1]
+    rw [Finset.sum_const]
+    simp only [Finset.card_univ, nsmul_eq_mul]
+    have hcardSubtype : Fintype.card ↥(↑U1 : Set V) = 24 := by
+      simpa using hcubic.1
+    rw [hcardSubtype]
+    norm_num [Nat.choose]
+  have hHpairs : (∑ a ∈ H, Nat.choose (F a).card 2) = 84 := by
+    calc
+      _ = ∑ _a ∈ H, Nat.choose 8 2 := by
+        apply Finset.sum_congr rfl
+        intro a ha
+        rw [hfibers.2.1 a ha]
+      _ = 84 := by
+        rw [Finset.sum_const, hfibers.1]
+        norm_num [Nat.choose]
+  have htotal : 99 + 72 + 84 + L.edgeFinset.card = Nat.choose U1.card 2 := by
+    rw [hdefect, hcubic.1]
+    norm_num [Nat.choose]
+  exact ⟨hcubic.1, hB0.2.2.2.2, hB1pairs, hHpairs, hdefect, htotal⟩
+
 end
 
 end Erdos85
@@ -3733,3 +3827,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_pair_budget
