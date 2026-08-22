@@ -3850,8 +3850,10 @@ kappa_vert(f)=0,    |delta_(F_f[c])(X_f)|=2.           (234)
 ```
 
 The partial factors extend abstractly to two-factors by continuing the two
-`f` boundary edges through unused roots; the `e` restriction is already a
-cycle.  Equations (225)--(227) hold exactly:
+`f` boundary edges through distinct unused roots and then completing the
+remaining paths; the `e` restriction is already a cycle.  This only uses two
+roots outside `C`, available in the uniform binary range `q>=8` considered
+here.  Equations (225)--(227) hold exactly:
 
 ```text
 2+2 = 2(1) + (0+2),
