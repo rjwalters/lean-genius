@@ -134,14 +134,15 @@ The unrestricted instance is currently **UNKNOWN**: Z3, native Kissat,
 HiGHS MILP, and OR-Tools CP-SAT did not return a verdict in bounded runs
 (120--240 seconds).  CP-SAT's native presolve detected 268 large variable
 orbits and explored millions of branches with no feasible solution, but did
-not prove infeasibility.
-The LP/mod-two interface is feasible, so there is no immediate linear
-certificate.  Symmetry-restricted versions invariant under the explicit
+not prove infeasibility.  Symmetry-restricted versions invariant under the
+explicit
 trace graph's order-39 rotation, its order-13 subgroup, or its order-3
 subgroup are all UNSAT; thus any completion would have to break every visible
-cyclic symmetry.  These are exploratory solver results, not certificates and
-not a nonexistence claim.  The exact-cover equation is the next honest
-falsifier for the reduced desynchronization witness.
+cyclic symmetry.  The exact-cover equations are verified consistent modulo
+2, 3, and 5; the real LP is UNKNOWN (HiGHS found neither a primal point nor
+an infeasibility proof in 120 seconds).  These are exploratory solver results,
+not certificates and not a nonexistence claim.  The exact-cover equation is
+the next honest falsifier for the reduced desynchronization witness.
 
 ## Verdict
 
