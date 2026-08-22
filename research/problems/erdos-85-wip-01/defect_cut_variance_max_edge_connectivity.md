@@ -887,7 +887,27 @@ X_w  <-->  R_w.                               (B13)
 ```
 
 Thus each of the three missing-attachment color classes is paired exactly
-with its opposite R-wing.
+with its opposite R-wing.  In particular every `x in X` has exactly one
+`A`-neighbor in `N_A(W)`, namely its matched point in an R-wing.  Its other
+`q-1` neighbors lie outside `N_A(W)`, and these outside parts are disjoint as
+`x` varies because `X` is a defect clique.  Now
+
+```text
+|V\N_A(W)| = q^2-(3q-3)=q^2-3q+3,
+(q-2)(q-1)=q^2-3q+2.
+```
+
+The exceptional point `c` lies outside `N_A(W)` and belongs to `K`, hence
+is `A`-anticomplete to `X`.  It is therefore the unique unoccupied point:
+
+```text
+V\(N_A(W) union {c})
+  = disjoint-union_(x in X) (N_A(x)\N_A(W)),
+|(N_A(x)\N_A(W))|=q-1.                       (B14)
+```
+
+So the endpoint branch is an exact punctured parallel class rooted at the
+near-maximal defect clique.
 
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
