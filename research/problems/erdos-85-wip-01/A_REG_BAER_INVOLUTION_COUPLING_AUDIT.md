@@ -1380,6 +1380,27 @@ outside-majority centers) or both outside S (matched to each other).  This
 removes the mixed placement in the first two saturated layers without any
 order-specific search.
 
+The majority centers on the occupied shore carry the promised partial Baer
+self-indexing explicitly.  Put `R=F intersect S`.  For `X in R`, the point X
+has majority replication `t_X^F`; by the routing rule (60), an A-neighbor of
+X inside F must also lie in R.  Hence
+
+```text
+deg_(A[R])(X)=t_X^F in {1,2}.                             (73i)
+```
+
+Thus `A[R]` is a disjoint union of paths and cycles.  If X is a path
+endpoint, then as a point of the majority design it lies on the unique full
+line indexed by its sole A[R]-neighbor: X is a private point of that line.
+If X has degree two with neighbors Y,Z, then X is the unique intersection
+point of the full lines indexed by Y and Z.  Conversely symmetry of A makes
+these incidences exactly the A[R] edges.  At `r=1,h=f`, this self-indexed
+path--cycle graph has `q-2` vertices; at `r=2,h=f`, it has `q-4` vertices
+when both minority centers lie in S and `q-2` when both lie outside.  The
+remaining low-r obstruction is therefore a uniformly described partial-Baer
+path--cycle embedding inside the complete-pair (or one-missing-pair)
+majority design, not an unstructured exceptional graph.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
