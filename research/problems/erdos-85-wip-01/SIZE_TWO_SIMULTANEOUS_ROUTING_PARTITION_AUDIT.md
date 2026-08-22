@@ -3235,3 +3235,35 @@ modulo two across the run; the remaining `ell=1` obstruction is only the
 difference between these two rooted `e`-port prices.  This is the smallest
 weighted conservation problem left by (164a), with no nonclean leakage and
 no internal run root.
+
+The two targets in (195) are in fact pinned more sharply.  Since the run
+edge `x_- x_+` is owned by `e`, its two `e`-fibers have the form
+
+```text
+Y_e(x_-) = {p,p_-},    Y_e(x_+) = {p,p_+},             (196)
+```
+
+where `p` is their unique common owner port.  Neither cut assignment can
+target `p`.  For example, if a clean source `y` at `x_-` formed the rooted
+triangle `x_- y p`, then
+
+```text
+x_- -- y -- p -- x_+ -- x_-
+```
+
+would be an ambient four-cycle.  The argument at `x_+` is symmetric.  Hence
+the two surviving targets are necessarily `p_-` and `p_+`.  They are
+distinct: equality would give `x_-` and `x_+` the two common neighbors `p`
+and `p_-=p_+`, again an ambient four-cycle.  Thus (195) refines to
+
+```text
+clean source at x_-  -->  p_-,
+clean source at x_+  -->  p_+,       with p_- != p_+. (197)
+```
+
+The one-edge terminal is therefore not a collision case.  Its entire
+uncancelled datum is the ordered pair of distinct private owner ports on the
+two sides of the shared port `p`.  Closing `ell=1` now means proving that the
+admissible crossed price has equal values on these two private ports (or that
+their forced difference has the wrong parity); no target-support ambiguity
+remains.
