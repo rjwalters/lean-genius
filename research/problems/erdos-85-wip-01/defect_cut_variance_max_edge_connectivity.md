@@ -2091,6 +2091,31 @@ the internal-K defect degree of its P-center differ by the explicit wing
 quantity `n_w-2`; future location arguments can use equality rather than
 the inequalities that produced (B49').
 
+Summing (B50) over the three P-centers gives a particularly small global
+residue.  The points of P are pairwise D-nonadjacent (each pair shares a
+W-neighbor) and independent in `Gamma_K`, so the two degree sums count
+their respective P-to-`K\P` edges once.  Using `sum_w m_w=2q-4` yields
+
+```text
+e_D(P,K\P)+e_(Gamma_K)(P,K\P)
+  =sum_w (m_w-b+2)
+  =3a-q+5.                                      (B51)
+```
+
+This refines the lower endpoint of (B45') into an exact nonnegative edge
+budget.  On the bottom slice of (B48), it becomes
+
+```text
+q=3r+2, a=r-1:  e_D(P,K\P)=e_(Gamma_K)(P,K\P)=0;
+q=3r+1, a=r-1:  e_D(P,K\P)+e_(Gamma_K)(P,K\P)=1. (B51')
+```
+
+Thus for odd binary exponents at the bottom slice, every P-to-K pair is
+resolved outside X and is a D-nonedge; for even binary exponents, exactly
+one such pair across all three P-centers is either unresolved (a D-edge) or
+resolved in X.  The whole P-core interaction with K has collapsed to a
+zero-or-one edge budget.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
