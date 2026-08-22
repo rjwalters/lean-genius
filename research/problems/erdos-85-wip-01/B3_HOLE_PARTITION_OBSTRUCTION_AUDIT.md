@@ -877,7 +877,8 @@ the root signature.  Let
 
 ```text
 c_all(t) = sum over all 24 U1 labels b of binom(ell_b(t),2)
-         = (c_01(t)+c_02(t)+c_12(t))/2.                    (12qb)
+         = (c_01(t)+c_02(t)+c_12(t))/2
+         = c_ij(t) + c_k(t)  for {i,j,k}={0,1,2}.          (12qb)
 ```
 
 This is selected-pair independent and is computed directly from `(Q,K)`.
@@ -899,6 +900,16 @@ coordinatewise-monotone oriented-role prices with root signature
 `(role,n,c_pair,c_all)`.  Unlike (12qa), this formulation needs no coupling
 of two independently chosen fractional matching witnesses; the three-color
 information is carried by the canonical scalar `c_all` itself.
+
+Since `c_pair` was already present, this refinement is equivalently just the
+collision energy `c_k` in the **omitted** color.  In the exceptional witness
+it splits six formerly aliased root signatures for each failed pair,
+involving only fourteen roots for `(0,1)` and thirteen for `(1,2)`.  Thus the
+old monotone failure is localized: it came from forgetting omitted-color
+fiber concentration, not from missing row identities or a large global
+invariant.  A proof may therefore work directly with the triple
+`(c_0,c_1,c_2)` and use color permutation instead of treating `c_all` as an
+additional independent statistic.
 
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
