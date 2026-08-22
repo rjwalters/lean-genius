@@ -1702,6 +1702,39 @@ at most a pairwise intersections, and their holes are exactly the baseline
 sparse graph on the wing centers and provides a finite-defect object to
 couple to the location of c and the K-fibers.
 
+The K-side supplies a dual linear design.  For every `k in K`, retain the
+X-fiber `F_k=N_A(k) intersect X`.  Equation `A 1_X=(a+1)1-1_K` gives
+`|F_k|=a`, while (B6) says that a point `x in X` belongs to exactly
+`2-t_x` such fibers, where `t_x=deg_D(x,W)`.  Hence
+
+```text
+H_K={F_k : k in K}
+```
+
+is a linear family of `2q` a-point fibers: two centers sharing two X-points
+would violate C4-freeness.  Its center-intersection graph `Gamma_K` is
+simple, with edges in bijection with the attachment-free class `N_0`;
+the points not covered by any K-fiber are exactly the twice-attached class
+`N_2`, and the once-attached points lie in one fiber.  Since
+
+```text
+|X|=q(a+1)-2,             sum_x t_x=2q-4,
+```
+
+the attachment counts satisfy
+
+```text
+n_0-n_2=q(a-1)+2,
+|E(Gamma_K)|-|X not covered by H_K|=q(a-1)+2. (B38)
+```
+
+The endpoint `a=0` has no K-fibers and exactly `q-2` uncovered points;
+the first slice `a=1` has the excess-two relation (B26).  For larger a the
+same identity forces a growing surplus of pairwise intersections among the
+K-fibers.  The dual pattern-B escape is therefore constrained by two
+simultaneous linear designs on X: the sparse-overlap R-design (B37) and
+this prescribed-surplus K-design.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
