@@ -176,6 +176,8 @@ def main() -> None:
     parser.add_argument("--f20-pattern", type=int)
     parser.add_argument("--fiber-partition", type=int)
     parser.add_argument("--fiber-bijection", type=int)
+    parser.add_argument("--a5-fiber-partition", type=int)
+    parser.add_argument("--a5-fiber-bijection", type=int)
     args = parser.parse_args()
     raw = args.census.read_bytes()
     assert hashlib.sha256(raw).hexdigest() == EXPECTED_SHA256
@@ -683,6 +685,40 @@ def main() -> None:
                             )
                         )
                     )
+            if args.a5_fiber_partition is not None:
+                assert args.a5_fiber_bijection is not None
+                partition = FIBER_PARTITIONS_4[args.a5_fiber_partition]
+                bijection = list(permutations(range(4)))[args.a5_fiber_bijection]
+                block = 0
+                other_blocks = [1, 2, 3, 4]
+                incident_triples = sorted(
+                    triple for triple in block_triples if block in triple
+                )
+                for fiber_index, fiber in enumerate(partition):
+                    distinguished = other_blocks[bijection[fiber_index]]
+                    pattern = {
+                        triple
+                        for triple in incident_triples
+                        if (
+                            distinguished in triple
+                            if args.stabilizer == "a5-star"
+                            else distinguished not in triple
+                        )
+                    }
+                    for local_point in fiber:
+                        point = local_point
+                        for triple in incident_triples:
+                            solver.add(
+                                z3.PbEq(
+                                    [
+                                        (chosen[index], 1)
+                                        for index in by_point_and_block_triple[
+                                            (point, triple)
+                                        ]
+                                    ],
+                                    int(triple in pattern),
+                                )
+                            )
     for indices in by_pair.values():
         solver.add(z3.PbLe([(chosen[i], 1) for i in indices], 1))
     for pair, indices in by_pair.items():

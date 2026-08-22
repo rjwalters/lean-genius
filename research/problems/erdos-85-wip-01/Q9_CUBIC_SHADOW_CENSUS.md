@@ -383,3 +383,24 @@ orbit.  The exact coverage is 70 representatives for class 0, 518 for class
 the representatives from the 19 `4 x 4` and 7 `2 x 8` partition catalogs,
 asserts catalog closure, and supports atomic checkpoints, so no pasted
 representative list or interrupted-run inference enters the claim.
+
+The `A5` and `S5` uniform actions do not lift either.  The independent
+`q9_order16_a5_s5_lift_suite.py` reconstructs the `A4` pattern-orbit and
+component imprimitivity catalogs and excludes both star and triangle
+patterns in all twelve nonidentity twist classes (24 direct formulas).
+For the identity twist, `q9_order16_a5_fixed_sweep.py` fixes the four equal
+pattern fibers and quotients their bijections by the full order-96 twist
+centralizer.  There are exactly 16 assignment orbits for each of star and
+triangle, and all 32 formulas are UNSAT.  This fixed-fiber coverage is
+lossless because the independently audited Aut(C)-closure of the transitive
+component subgroup block systems is exactly the pinned list of 19
+partitions.  The `S5` case is covered by the same formulas because its `S4`
+point stabilizer imposes stronger constraints than the encoded `A4`
+star/triangle alternatives.
+
+Consequently the order-16-times-five shadow is excluded.  Together with the
+connected, order-40-times-two, order-20-times-four, and Petersen-times-eight
+exclusions above, this closes the complete vertex-transitive q=9 shadow
+census on 80 vertices.  The conclusion is deliberately limited to the
+vertex-transitive class; it is not a nonexistence theorem for arbitrary
+80-vertex q=9 candidates.
