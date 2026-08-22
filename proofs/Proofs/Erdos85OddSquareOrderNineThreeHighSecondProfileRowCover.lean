@@ -1514,6 +1514,64 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_reso
       have hCzero : C.card = 0 := by omega
       exact ⟨hD, hAone, hCzero⟩
 
+/-- Algebraic form of the decisive mixed-center compatibility constraint.
+The residual-center matrix `A Q` and the cubic-core matrix `Q K` have
+disjoint support, so their entrywise inner product (equivalently
+`trace (Qᵀ A Q K)`) is zero.  This conclusion does not use defect row or
+column degrees. -/
+theorem squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    (∑ t ∈ T, ∑ b ∈ U1,
+      (((G.neighborFinset t ∩ T) ∩ G.neighborFinset b).card *
+        ((G.neighborFinset t ∩ U1) ∩ G.neighborFinset b).card)) = 0 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  apply Finset.sum_eq_zero
+  intro t ht
+  apply Finset.sum_eq_zero
+  intro b hb
+  let A := (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+  let C := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+  change A.card * C.card = 0
+  have hresolution :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht hb
+  dsimp only at hresolution
+  change
+    ((secondOrderDefectGraph G).Adj t b ∧ A.card = 0 ∧ C.card = 0) ∨
+      (¬ (secondOrderDefectGraph G).Adj t b ∧ A.card = 1 ∧ C.card = 0) ∨
+      (¬ (secondOrderDefectGraph G).Adj t b ∧ A.card = 0 ∧ C.card = 1)
+    at hresolution
+  rcases hresolution with hD | hA | hC
+  · rw [hD.2.1]
+    simp
+  · rw [hA.2.2]
+    simp
+  · rw [hC.2.1]
+    simp
+
 /-- For each U1 point, exactly fifteen ordinary rows are resolved through a
 U1-core common center: its three cubic neighbors have five ordinary B0
 neighbors each, and these three service fibers are disjoint. -/
@@ -2133,6 +2191,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_common_center_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_defect_mass_dichotomy

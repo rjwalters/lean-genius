@@ -17,6 +17,14 @@ special-support incidence intersections.
 
 Exploratory only: a SAT result is a failure certificate for this abstraction;
 an UNSAT result still needs a checked proof or independently verified CNF.
+
+The mixed common-center constraint can be ablated in two algebraically useful
+pieces: ``dtb-aq-cap`` is the entrywise bound ``A_T Q <= 1``, while
+``dtb-orthogonal`` is the disjoint-support law ``(A_T Q) * (Q K) = 0``.
+For fixed outer witnesses tested on 2026-08-21, the orthogonality law alone
+(with defect variables decoupled via ``dtb-zero``) remained UNSAT in about two
+seconds in both branches; the AQ cap alone timed out.  This is localization,
+not a certificate or a universal UNSAT claim.
 """
 
 from __future__ import annotations
@@ -28,7 +36,7 @@ import time
 from itertools import combinations
 from pathlib import Path
 
-from z3 import And, Bool, Goal, If, SolverFor, Sum, Then, is_true, sat, unknown
+from z3 import And, Bool, Goal, If, Or, SolverFor, Sum, Then, is_true, sat, unknown
 
 
 N_TRIPLE = 26
@@ -206,13 +214,19 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
         dtb = {(u, b): Bool(f"dtb_{u}_{b}") for u in range(N) for b in range(N_U1)}
         for u in range(N):
             for b in range(N_U1):
-                common = (
-                    [And(incidence[u, c], kadj(c, b)) for c in range(N_U1) if c != b]
-                    + [And(adj(u, v), incidence[v, b]) for v in range(N) if v != u]
-                )
-                common_count = Sum([If(q, 1, 0) for q in common])
-                if "dtb-common" not in relax:
-                    solver.add(common_count <= 1)
+                core_common = [And(incidence[u, c], kadj(c, b))
+                               for c in range(N_U1) if c != b]
+                residual_common = [And(adj(u, v), incidence[v, b])
+                                   for v in range(N) if v != u]
+                core_count = Sum([If(q, 1, 0) for q in core_common])
+                residual_count = Sum([If(q, 1, 0) for q in residual_common])
+                common_count = core_count + residual_count
+                if "dtb-common" not in relax and "dtb-cap" not in relax:
+                    if "dtb-aq-cap" not in relax:
+                        solver.add(residual_count <= 1)
+                    if "dtb-orthogonal" not in relax:
+                        solver.add(Or(core_count == 0, residual_count == 0))
+                if "dtb-common" not in relax and "dtb-zero" not in relax:
                     solver.add(dtb[u, b] == (common_count == 0))
             target = 0 if is_hole(u) else 3
             if "dtb-rows" not in relax:
@@ -273,7 +287,9 @@ def main() -> int:
                         help="fix incidence/K to one fast outer-design witness")
     parser.add_argument("--outer-random-seed", type=int, default=0)
     parser.add_argument("--relax", action="append", default=[],
-                        choices=("b0-c4", "dtb-common", "dtb-rows", "dtb-columns"))
+                        choices=("b0-c4", "dtb-common", "dtb-cap", "dtb-aq-cap",
+                                 "dtb-orthogonal", "dtb-zero", "dtb-rows",
+                                 "dtb-columns"))
     parser.add_argument("--kissat", action="store_true",
                         help="bit-blast the model to DIMACS and run Kissat")
     args = parser.parse_args()
