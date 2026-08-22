@@ -1474,3 +1474,82 @@ identity reduces to two copies of the same binary scalar and hence to
 the routing curvature to vanish.  A successful next contraction must retain
 an owner-color mark, a distinguished internal edge, or higher information
 before the component-color sums are taken.
+
+## 24. Root-marked identity and the two endpoint coboundaries
+
+The information discarded in (78) can be located exactly by retaining one
+root of the owner cycle.  Write the odd cycle as
+
+```text
+C = (x_i)_(i mod n)
+```
+
+and label its owner ports in `Z` so that the two `e`-neighbors of `x_i` are
+`z_(i-1),z_i`.  Fix `d != c,e` and a target incidence component `V_j`.  Put
+
+```text
+r_i^d := e_(x_i)^T R_cd R_de V_j,
+h_i^d := (R_dc e_(x_i))^T A_d (R_de V_j),
+lambda_i^(f,d) := e_(x_i)^T R_cf R_fd R_de V_j.         (87)
+```
+
+Apply `SRP(c,d)` to `R_de V_j`, but now pair with the single root `x_i`
+rather than with all of `C`.  The right side still has even mass.  Separating
+the exterior color `f=e` gives
+
+```text
+h_i^d
+  = r_(i-1)^d + r_(i+1)^d
+    + e_(x_i)^T R_ce R_ed R_de V_j
+    + sum_(f != c,d,e) lambda_i^(f,d).                  (88)
+```
+
+The middle endpoint term is already owner-colored.  The individual cross
+Gram identity is
+
+```text
+R_ed R_de = 2 I + F_d[e]
+```
+
+over the integers, where `F_d[e]` is the owner-`d` factor on component `e`.
+Therefore modulo two, if
+
+```text
+w^d := F_d[e] V_j,
+```
+
+then the port term in (88) is exactly
+
+```text
+e_(x_i)^T R_ce R_ed R_de V_j
+  = w^d(z_(i-1)) + w^d(z_i).                            (89)
+```
+
+Thus both endpoint contributions in the root-marked identity are explicit
+cycle coboundaries:
+
+```text
+i |-> r_(i-1)^d + r_(i+1)^d,
+i |-> w^d(z_(i-1)) + w^d(z_i).                          (90)
+```
+
+For the first sequence, assign `r_i^d+r_(i+1)^d` to the cycle edge
+`x_i x_(i+1)`; its vertex divergence is
+`r_(i-1)^d+r_(i+1)^d`.  The second is the ordinary adjacent difference of
+the port labels `w^d(z_i)`.
+
+Their sums around `C` vanish, the first because every `r_i^d` occurs twice
+and the second by telescoping around the port cycle.  Summing (88) therefore
+recovers (78), with no unexplained cancellation.
+
+This exposes the correct owner-sensitive interface.  The curvature row
+
+```text
+i |-> h_i^d + sum_f lambda_i^(f,d)
+```
+
+is the sum of an internal-cycle coboundary and an owner-`d` port coboundary.
+To close the original state potential (57), one must make these rootwise
+potentials compatible as `d` and the target incidence component vary.  A
+scalar sum cannot see that compatibility, but (88)--(90) retain exactly the
+port label and owner factor needed to formulate it.
