@@ -1141,13 +1141,39 @@ case of that earlier variance bound, while the mixed branch has a
 quantized positive excess.  This supplies a scalar detector for the
 structural split in (64)--(65).
 
-Equations (7)--(66) are the first canonical cut detector manufactured from
+Finally, the two line types carry separate bounded-replication linear
+designs.  Put `F=C_full`, `E=C_empty`, and define
+
+```text
+t_P^F = |N_A(P) intersect F|       for P in S,
+t_P^E = |N_A(P) intersect E|       for P outside S.
+```
+
+Full lines have no incidences outside S and empty lines have none inside S.
+Equations (58)--(59), regularity, and the off-diagonal identity
+`A^2=J-D` therefore give
+
+```text
+0 <= t_P^F,t_P^E <= 3,
+sum_(P in S) t_P^F = q|F|,
+sum_(P outside S) t_P^E = q|E|,                            (67)
+
+sum_(P in S) C(t_P^F,2) = C(|F|,2)-e_D(F),
+sum_(P outside S) C(t_P^E,2) = C(|E|,2)-e_D(E).             (68)
+```
+
+Thus the last branch is equivalently two q-uniform linear block systems of
+replication at most three, joined by the D-complete bipartite core (64),
+and decorated by the four-type A-routing rule (60).  This is the precise
+q-generic exceptional-design object still requiring elimination.
+
+Equations (7)--(68) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(66), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(68), so these laws alone
 do not conceal an order-independent
 contradiction.
 
