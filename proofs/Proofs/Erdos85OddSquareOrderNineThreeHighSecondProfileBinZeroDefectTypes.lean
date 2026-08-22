@@ -1315,6 +1315,318 @@ theorem squareOrderNine_threeHigh_secondProfile_binZero_binOne_original_incidenc
       · rw [hB0card]
         rw [hxB0card]
 
+/-- Original neighbors of a low q=9 vertex partition into its high
+neighbors and the five low-incidence bins. -/
+theorem squareOrderNine_originalNeighbor_lowBin_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    {x : V} (hx : x ∉ squareOrderHighVertices G 9) :
+    (∑ j ∈ Finset.range 5,
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G j).card) +
+        squareOrderHighIncidenceCount G 9 x = G.degree x := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let k := squareOrderHighIncidenceCount G 9
+  let S := G.neighborFinset x \ H
+  have hlow {y : V} (hy : y ∈ S) : G.degree y = 9 := by
+    have hyNotHigh := (Finset.mem_sdiff.mp hy).2
+    rcases hp.degree_dichotomy y with hlo | hhi
+    · exact hlo
+    · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  have hklt {y : V} (hy : y ∈ S) : k y < 5 := by
+    have hb := hp.low_incidence_bound (hlow hy)
+    change 2 * k y ≤ 9 at hb
+    omega
+  have hfiber (j : ℕ) :
+      {y ∈ S | k y = j} =
+        G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G j := by
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_inter]
+    constructor
+    · rintro ⟨hyS, hky⟩
+      have hyParts := Finset.mem_sdiff.mp hyS
+      exact ⟨hyParts.1, Finset.mem_filter.mpr
+        ⟨Finset.mem_sdiff.mpr ⟨by simp, hyParts.2⟩, hky⟩⟩
+    · rintro ⟨hyN, hyB⟩
+      have hyLow := (Finset.mem_filter.mp hyB).1
+      exact ⟨Finset.mem_sdiff.mpr
+        ⟨hyN, (Finset.mem_sdiff.mp hyLow).2⟩,
+        (Finset.mem_filter.mp hyB).2⟩
+  have hmaps : (S : Set V).MapsTo k (Finset.range 5) := by
+    intro y hy
+    exact Finset.mem_range.mpr (hklt hy)
+  have hpartition :
+      (∑ j ∈ Finset.range 5,
+        (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G j).card) =
+          S.card := by
+    calc
+      _ = ∑ j ∈ Finset.range 5, #{y ∈ S | k y = j} := by
+        apply Finset.sum_congr rfl
+        intro j _
+        rw [hfiber]
+      _ = S.card := (Finset.card_eq_sum_card_fiberwise hmaps).symm
+  rw [hpartition]
+  dsimp [S]
+  rw [Finset.card_sdiff]
+  rw [Finset.inter_comm H (G.neighborFinset x), G.card_neighborFinset_eq_degree]
+  change G.degree x - k x + k x = G.degree x
+  rw [Nat.sub_add_cancel]
+  exact Finset.card_le_card Finset.inter_subset_left
+
+/-- The second three-high profile contains exactly fifty low bin-zero
+vertices (the zero-incidence histogram also contains the three highs). -/
+theorem squareOrderNine_threeHigh_secondProfile_binZero_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1) :
+    (squareOrderNineLowIncidenceBin G 0).card = 50 := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let k := squareOrderHighIncidenceCount G 9
+  have hc0 : squareOrderNineHighIncidenceHistogram G 0 = 53 := by
+    rcases squareOrderNine_highIncidence_profile_of_three_high
+        G hcard hp hhigh with hfirst | hsecond
+    · rw [hfirst.2.2.2.1] at hc3
+      omega
+    · exact hsecond.1
+  have hkzero : ∀ y ∈ H, k y = 0 := by
+    intro y hyH
+    unfold k squareOrderHighIncidenceCount
+    rw [Finset.card_eq_zero]
+    ext a
+    simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+    intro hya haH
+    exact hp.high_independent hyH haH ((G.mem_neighborFinset y a).mp hya)
+  have hpartition : (Finset.univ.filter fun y => k y = 0) = H ∪ B 0 := by
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+    constructor
+    · intro hky
+      by_cases hyH : y ∈ H
+      · exact Or.inl hyH
+      · exact Or.inr (Finset.mem_filter.mpr
+          ⟨Finset.mem_sdiff.mpr ⟨by simp, hyH⟩, hky⟩)
+    · rintro (hyH | hyB)
+      · exact hkzero y hyH
+      · exact (Finset.mem_filter.mp hyB).2
+  have hdisj : Disjoint H (B 0) := by
+    rw [Finset.disjoint_left]
+    intro y hyH hyB
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hyB).1).2 hyH
+  have hcards := congrArg Finset.card hpartition
+  rw [Finset.card_union_of_disjoint hdisj] at hcards
+  change squareOrderNineHighIncidenceHistogram G 0 = H.card + (B 0).card at hcards
+  rw [hc0, hhigh] at hcards
+  change (B 0).card = 50
+  omega
+
+/-- Complete oriented original-adjacency quotient on the nonempty low bins
+of the second three-high profile.  The entries are
+`B₀B₀=306, B₀B₁=141, B₀B₃=3, B₁B₁=72, B₁B₃=3`; symmetry supplies the
+transposed entries. -/
+theorem squareOrderNine_threeHigh_secondProfile_original_lowBin_quotient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    (∑ y ∈ B 0, (G.neighborFinset y ∩ B 0).card) = 306 ∧
+      (∑ y ∈ B 0, (G.neighborFinset y ∩ B 1).card) = 141 ∧
+      (∑ y ∈ B 0, (G.neighborFinset y ∩ B 3).card) = 3 ∧
+      (∑ y ∈ B 1, (G.neighborFinset y ∩ B 1).card) = 72 ∧
+      (∑ y ∈ B 1, (G.neighborFinset y ∩ B 3).card) = 3 := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  have hb2 : B 2 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 2) (by omega), hc2]
+  have hb4 : B 4 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 4) (by omega), hc4]
+  have hB0card : (B 0).card = 50 :=
+    squareOrderNine_threeHigh_secondProfile_binZero_card
+      G hcard hp hhigh hc3
+  have hmarked :=
+    squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hmarked
+  have hB1card : (B 1).card = 27 := hmarked.1
+  have hB3card : (B 3).card = 1 := by
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 3) (by omega), hc3]
+  have hxCensus :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hxCensus
+  have hxB0 : (G.neighborFinset x ∩ B 0).card = 3 := hxCensus.2.2
+  have hxB1 : (G.neighborFinset x ∩ B 1).card = 3 := hxCensus.2.1
+  have h03 : (∑ y ∈ B 0, (G.neighborFinset y ∩ B 3).card) = 3 := by
+    have hswap := sum_card_neighborFinset_inter_comm G (B 0) (B 3)
+    rw [hswap]
+    have hsingle : B 3 = {x} := Finset.eq_singleton_iff_unique_mem.mpr
+      ⟨hx, fun y hy => Finset.card_le_one.mp (by omega) y hy x hx⟩
+    rw [hsingle]
+    simpa [G.adj_comm, Finset.inter_comm] using hxB0
+  have h13 : (∑ y ∈ B 1, (G.neighborFinset y ∩ B 3).card) = 3 := by
+    have hswap := sum_card_neighborFinset_inter_comm G (B 1) (B 3)
+    rw [hswap]
+    have hsingle : B 3 = {x} := Finset.eq_singleton_iff_unique_mem.mpr
+      ⟨hx, fun y hy => Finset.card_le_one.mp (by omega) y hy x hx⟩
+    rw [hsingle]
+    simpa [G.adj_comm, Finset.inter_comm] using hxB1
+  have h01 : (∑ y ∈ B 0, (G.neighborFinset y ∩ B 1).card) = 141 :=
+    squareOrderNine_threeHigh_secondProfile_binZero_binOne_original_incidence
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  have hrow0point : ∀ y ∈ B 0,
+      (G.neighborFinset y ∩ B 0).card +
+        (G.neighborFinset y ∩ B 1).card +
+        (G.neighborFinset y ∩ B 3).card = 9 := by
+    intro y hy
+    have hyLow := (Finset.mem_filter.mp hy).1
+    have hyNotHigh : y ∉ H := (Finset.mem_sdiff.mp hyLow).2
+    have hyDegree : G.degree y = 9 := by
+      rcases hp.degree_dichotomy y with hlo | hhi
+      · exact hlo
+      · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+    have hky : squareOrderHighIncidenceCount G 9 y = 0 :=
+      (Finset.mem_filter.mp hy).2
+    have hpnt := squareOrderNine_originalNeighbor_lowBin_partition G hp hyNotHigh
+    change (∑ j ∈ Finset.range 5,
+      (G.neighborFinset y ∩ B j).card) +
+        squareOrderHighIncidenceCount G 9 y = G.degree y at hpnt
+    norm_num [Finset.sum_range_succ, hb2, hb4, hky, hyDegree] at hpnt
+    omega
+  have hrow0 :
+      (∑ y ∈ B 0, (G.neighborFinset y ∩ B 0).card) +
+        (∑ y ∈ B 0, (G.neighborFinset y ∩ B 1).card) +
+        (∑ y ∈ B 0, (G.neighborFinset y ∩ B 3).card) = 450 := by
+    calc
+      _ = ∑ y ∈ B 0,
+          ((G.neighborFinset y ∩ B 0).card +
+            (G.neighborFinset y ∩ B 1).card +
+            (G.neighborFinset y ∩ B 3).card) := by
+              simp [Finset.sum_add_distrib]
+      _ = ∑ _y ∈ B 0, 9 := by
+        apply Finset.sum_congr rfl
+        intro y hy
+        exact hrow0point y hy
+      _ = 450 := by simp [hB0card]
+  have h00 : (∑ y ∈ B 0, (G.neighborFinset y ∩ B 0).card) = 306 := by
+    omega
+  have h10 : (∑ y ∈ B 1, (G.neighborFinset y ∩ B 0).card) = 141 := by
+    rw [← sum_card_neighborFinset_inter_comm G (B 0) (B 1)]
+    exact h01
+  have hrow1point : ∀ y ∈ B 1,
+      (G.neighborFinset y ∩ B 0).card +
+        (G.neighborFinset y ∩ B 1).card +
+        (G.neighborFinset y ∩ B 3).card = 8 := by
+    intro y hy
+    have hyLow := (Finset.mem_filter.mp hy).1
+    have hyNotHigh : y ∉ H := (Finset.mem_sdiff.mp hyLow).2
+    have hyDegree : G.degree y = 9 := by
+      rcases hp.degree_dichotomy y with hlo | hhi
+      · exact hlo
+      · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+    have hky : squareOrderHighIncidenceCount G 9 y = 1 :=
+      (Finset.mem_filter.mp hy).2
+    have hpnt := squareOrderNine_originalNeighbor_lowBin_partition G hp hyNotHigh
+    change (∑ j ∈ Finset.range 5,
+      (G.neighborFinset y ∩ B j).card) +
+        squareOrderHighIncidenceCount G 9 y = G.degree y at hpnt
+    norm_num [Finset.sum_range_succ, hb2, hb4, hky, hyDegree] at hpnt
+    omega
+  have hrow1 :
+      (∑ y ∈ B 1, (G.neighborFinset y ∩ B 0).card) +
+        (∑ y ∈ B 1, (G.neighborFinset y ∩ B 1).card) +
+        (∑ y ∈ B 1, (G.neighborFinset y ∩ B 3).card) = 216 := by
+    calc
+      _ = ∑ y ∈ B 1,
+          ((G.neighborFinset y ∩ B 0).card +
+            (G.neighborFinset y ∩ B 1).card +
+            (G.neighborFinset y ∩ B 3).card) := by
+              simp [Finset.sum_add_distrib]
+      _ = ∑ _y ∈ B 1, 8 := by
+        apply Finset.sum_congr rfl
+        intro y hy
+        exact hrow1point y hy
+      _ = 216 := by simp [hB1card]
+  have h11 : (∑ y ∈ B 1, (G.neighborFinset y ∩ B 1).card) = 72 := by
+    omega
+  exact ⟨h00, h01, h03, h11, h13⟩
+
+/-- Undirected form of the complete second-profile original low-bin
+quotient: 153 edges inside B₀, 141 across B₀--B₁, three across B₀--B₃,
+36 edges inside B₁, and three across B₁--B₃. -/
+theorem squareOrderNine_threeHigh_secondProfile_original_lowBin_edge_quotient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    (G.induce (↑(B 0) : Set V)).edgeFinset.card = 153 ∧
+      (∑ y ∈ B 0, (G.neighborFinset y ∩ B 1).card) = 141 ∧
+      (∑ y ∈ B 0, (G.neighborFinset y ∩ B 3).card) = 3 ∧
+      (G.induce (↑(B 1) : Set V)).edgeFinset.card = 36 ∧
+      (∑ y ∈ B 1, (G.neighborFinset y ∩ B 3).card) = 3 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let K0 := G.induce (↑(B 0) : Set V)
+  let K1 := G.induce (↑(B 1) : Set V)
+  have hq := squareOrderNine_threeHigh_secondProfile_original_lowBin_quotient
+    G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hq
+  have hsum0 :
+      (∑ y ∈ B 0, (G.neighborFinset y ∩ B 0).card) =
+        ∑ y : ↥(↑(B 0) : Set V), K0.degree y := by
+    rw [← Finset.sum_attach]
+    apply Finset.sum_congr rfl
+    intro y _hy
+    exact (degree_induce_finset_eq_card_inter G (B 0) y).symm
+  have hsum1 :
+      (∑ y ∈ B 1, (G.neighborFinset y ∩ B 1).card) =
+        ∑ y : ↥(↑(B 1) : Set V), K1.degree y := by
+    rw [← Finset.sum_attach]
+    apply Finset.sum_congr rfl
+    intro y _hy
+    exact (degree_induce_finset_eq_card_inter G (B 1) y).symm
+  have hK0 : K0.edgeFinset.card = 153 := by
+    have hhand := K0.sum_degrees_eq_twice_card_edges
+    rw [← hsum0, hq.1] at hhand
+    omega
+  have hK1 : K1.edgeFinset.card = 36 := by
+    have hhand := K1.sum_degrees_eq_twice_card_edges
+    rw [← hsum1, hq.2.2.2.1] at hhand
+    omega
+  exact ⟨hK0, hq.2.1, hq.2.2.1, hK1, hq.2.2.2.2⟩
+
 end
 
 end Erdos85
@@ -1339,3 +1651,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_sum_highIncidence_over_lowNeighborhood
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_original_binOne_neighbors
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_binOne_original_incidence
+#print axioms Erdos85.squareOrderNine_originalNeighbor_lowBin_partition
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_card
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_original_lowBin_quotient
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_original_lowBin_edge_quotient
