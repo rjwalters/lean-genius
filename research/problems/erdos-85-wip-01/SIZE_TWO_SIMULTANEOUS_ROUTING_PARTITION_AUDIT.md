@@ -462,3 +462,21 @@ The parity residual exists only for a size-two defect component containing at
 least two internal cycles, with an odd total order among the all-triangle-free
 ones.  This cleanly separates the already harmless connected internal-cycle
 case from the genuine mixed-cycle case.
+
+There is a stronger sectorwise conclusion.  Under the full-support
+alternating-eigenline hypotheses, the banked theorem
+`binarySquare_regular_sizeTwoPart_internalCycle_even_six_le` says that
+**every** connected component of `G[c]` has even order.  Consequently every
+all-triangle-free internal cycle has even order separately, and (30) gives
+
+```text
+M_c = 0  (mod 2)                                             (31)
+```
+
+for an arbitrary number of internal cycles.  Thus the multi-cycle parity
+residual is absent throughout `SIZE-TWO-EIGENLINE(q)`, not only in its
+single-cycle subcase.  Any genuinely odd residual in (30) must lie in the
+no-full-support-alternating-eigenline sector (or on internal cycles where a
+candidate `-2` eigenvector vanishes), so it belongs on the transport/no-
+eigenline side of the dispatcher rather than inside the signed eigenline
+classification.
