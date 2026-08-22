@@ -1939,3 +1939,61 @@ matrix factorization is too weak, while this section shows precisely which
 ambient realizability condition rejects it.  A further countermodel to the
 marked cubic must preserve (116); otherwise the plausible next theorem is
 that (116), together with the odd owner run, already forces (107).
+
+## 33. Radius-two exclusion and the third-owner packing bound
+
+Condition (116) has a uniform source-side consequence.  For every third
+color `d`, let
+
+```text
+F_d[c] = (R_cd R_dc) off the diagonal
+```
+
+be its owner factor on `c`.  These factors are edge-disjoint and two-regular.
+Their union over `d != c,e`, denoted `L_ce`, is therefore `(q-4)`-regular,
+because there are `q/2-2` third colors:
+
+```text
+L_ce := disjoint_union_(d != c,e) F_d[c],
+deg(L_ce) = q-4.                                        (117)
+```
+
+Let `C=(x_i)` be an odd internal cycle monochromatically owned by `e`, of
+order `n`.  Such a cycle has `n >= 5`: order four is ambiently forbidden,
+and at order three each internal edge would have both the third cycle vertex
+and its owner port as common neighbors.  Within `C`, consecutive vertices
+already share their owner port in `e`, while vertices at cyclic distance two
+already share their middle internal neighbor in `c`.  Ambient C4-freeness
+therefore forces
+
+```text
+x_i x_j in E(L_ce)  ==>  cyclicDistance(i,j) >= 3.      (118)
+```
+
+Equivalently, the third-owner graph induced on `C` is a subgraph of the
+complement of the square of the `n`-cycle.  Hence
+
+```text
+e_(L_ce)(C) <= n(n-5)/2.                               (119)
+```
+
+If `b_ce(C)` is the number of `L_ce` edges leaving `C`, degree summation and
+(119) give the exact packing consequence
+
+```text
+b_ce(C)
+  = n(q-4) - 2 e_(L_ce)(C)
+  >= n(q-n+1).                                         (120)
+```
+
+The lower bound is informative for `n <= q`; for `n=5`, every one of the
+`5(q-4)` third-owner incidences must leave the cycle.  Moreover each
+individual two-factor `F_d[c]` has an even cut across `C`, so `b_ce(C)` is a
+sum of even colorwise contributions.
+
+This reformulates ambient-compatible rectangle factorization as a constrained
+owner-factor packing problem.  A countermodel preserving (116) must supply
+`q-4` distinct third-owner partners at every cycle vertex while avoiding its
+four radius-two neighbors, and must realize the resulting large boundary in
+even color classes.  These restrictions are absent from the abstract
+factorization of Section 31.
