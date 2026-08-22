@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.18 — 2026-08-20 (STATE AT PAUSE, goal #31: room sleeps until Sols return 2026-08-21 evening Pacific).**
+**Version 2.19 — 2026-08-22 (first session after the pause; goals #32/#33).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -241,6 +241,27 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     while the displacement/first-moment invariant yields `Θ(q²)` — one
     factor of `q` short; the missing piece is a per-row invariant or
     cross-row coupling gaining that factor.
+
+    **ELIMINATED — the multi-step sign/holonomy family** (sol-2, 21 Aug,
+    goal #32). The strongest closing shift was run to a verdict and it is
+    tautological. `PROVEN`, q-generic: any involutive shift with
+    `frame(2) = frame(0)` has trivial 2-step twisted product, and for cyclic
+    `d` with `d + d = 0` this applies to both the parallel and the crossed
+    two-hole completion (`ec8aac0d75`). The exact verdict is
+    `sizeTwoDoubleShiftComparison_second_eq_conj_inv`: `Q₁ = S·Q₀⁻¹·S⁻¹`
+    (`d7bd641781`). So `Q₁` carries the same cycle type and fixed count as
+    `Q₀`, and the central two-step closure supplies **no independent
+    agreement constraint**. Together with the earlier `Fin 6` cycle-type
+    countermodel this rules out the family, not just the instance: no
+    invariant that is a function of completed-shift comparison cycle type —
+    equivalently, of the permutation's conjugacy class — can close the
+    packing bound. The `Θ(q)` deficit above therefore stands untouched, and
+    an admissible candidate must be sensitive to the fiber labelling itself.
+    Supporting cycle-structure derivation (checked at `q = 8, 16, 32`; not
+    yet Lean): with `g = gcd(q,d)` and `L = q/g`, parallel completion gives
+    one `(q−2)`-cycle when `g = 1`, else two `(L−1)`-cycles plus `g−2`
+    `L`-cycles; cross completion merges the two affected cycles when `g > 1`
+    and splits the `q`-cycle at `k ≡ −d⁻¹ (mod q)` when `g = 1`.
   - size-two parts with `μ ∈ {−1,−3,−5}` or no alternating eigenline;
     parts of size `≥ 3` — `GAP`. Best current reduction (18 Aug, order-64):
     every nonprincipal internal mode either transports to the exterior or
@@ -277,13 +298,26 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
 | node | status | note |
 |---|---|---|
 | B.1 `q = 7` pincer | witness `PROVEN`; drop `CONDITIONAL` | existence half proven: `boza48_degreeSeven_witness`. The drop `minDegreeForC4_fortyNine_lt_fortyEight` is conditional on `¬C4FreeMinDegreeWitness 49 7`, which is OPEN: socket `not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks` still awaits the h1/h7 exclusions and the five H3/H5 LRAT checks; the 13-cell spend is HELD (goal #24). **Not a decided drop** — v2.8 and earlier overstated this row |
-| B.2 existence jaw for unbounded odd `q` | `GAP B-EXIST` | Cayley route dead at 9, 11 (computational); dihedral-holomorph ansatz UNSAT at 9; conjecture `B-NEAR-LATIN-LIFT` stated. New `EXTERNAL` negative data (sol-1, 20 Aug, goal #30 front (c)): Gamma_9 dot-product graph admits no single-edge matching repair (all 8 parameters × 105 matchings exhausted); ER_9 orthogonal-polarity graph admits no 10-vertex deletion retaining min degree 9 (exact 91-variable UNSAT, `er9_induced81_search.py`) — both direct finite-field construction classes at q=9 are closed; mixed doubled-cycle CNF scouts inconclusive (300s timeout). New `PROVEN` uniform structure (sol-1, 20 Aug PM): NO bipartite candidate at any order q²−1 (`not_isBipartite_of_planeMinusTwo_regular_not_containsC4`, pair-count barrier `false_of_planeMinusTwo_regular_linear_incidence`; the signed-determinant double-cover no-go is a corollary); every vertex lies in a triangle with local edge window `[1,(q−1)/2]` for odd q; abelian Cayley impossible beyond degree 2 (`card_connection_le_two_of_commutative_invClosedCayley_not_containsC4`); nonabelian Cayley Sidon law with exact Moore slack q−2 (`card_unused_nonidentity_of_planeMinusTwo_Cayley`), forced slack involution and forced perfect-matching layer for odd q (`exists_unused_involution_of_odd_planeMinusTwo_Cayley`, `exists_connection_perfectMatchingLayer_of_odd_card`); Boza48 kernel-checked as one-block Z24⋊Z2 development of a linear 48₃ configuration + coordinate-flip one-factor. Global q=9 existence remains open. **Exact reformulation (sol-1, 20 Aug PM): GAP B-EXIST for the Cayley class ⟺ an inverse-closed noncommutative Sidon set of size q in a group of order q²−1** (`not_containsC4_iff_nonbacktracking_connectionProduct_injective`); uniform sieves: groups with all involutions central are impossible (`containsC4_of_odd_connection_card_of_all_involutions_central`), ambient nontrivial involutions ≤ q−2 (`card_nontrivialInvolutionFinset_le_of_planeMinusTwo_Cayley` — screens q=9 order-80 groups with ≥8 involutions), forced matching generator consumes slack and must conjugation-separate the residual shore (`erase_involution_disjoint_conjugate_shore`, union card 2(d−1)) |
-| B.3 nonexistence at `q²` for the same `q` | `AXIOM B-NONEXIST` | partial uniform structure; `GAP B-CLASSIFY` for odd profiles |
+| B.2 existence jaw for unbounded odd `q` | `GAP B-EXIST` | Cayley route dead at 9, 11 (computational); dihedral-holomorph ansatz UNSAT at 9; conjecture `B-NEAR-LATIN-LIFT` stated. New `EXTERNAL` negative data (sol-1, 20 Aug, goal #30 front (c)): Gamma_9 dot-product graph admits no single-edge matching repair (all 8 parameters × 105 matchings exhausted); ER_9 orthogonal-polarity graph admits no 10-vertex deletion retaining min degree 9 (exact 91-variable UNSAT, `er9_induced81_search.py`) — both direct finite-field construction classes at q=9 are closed; mixed doubled-cycle CNF scouts inconclusive (300s timeout). New `PROVEN` uniform structure (sol-1, 20 Aug PM): NO bipartite candidate at any order q²−1 (`not_isBipartite_of_planeMinusTwo_regular_not_containsC4`, pair-count barrier `false_of_planeMinusTwo_regular_linear_incidence`; the signed-determinant double-cover no-go is a corollary); every vertex lies in a triangle with local edge window `[1,(q−1)/2]` for odd q; abelian Cayley impossible beyond degree 2 (`card_connection_le_two_of_commutative_invClosedCayley_not_containsC4`); nonabelian Cayley Sidon law with exact Moore slack q−2 (`card_unused_nonidentity_of_planeMinusTwo_Cayley`), forced slack involution and forced perfect-matching layer for odd q (`exists_unused_involution_of_odd_planeMinusTwo_Cayley`, `exists_connection_perfectMatchingLayer_of_odd_card`); Boza48 kernel-checked as one-block Z24⋊Z2 development of a linear 48₃ configuration + coordinate-flip one-factor. Global q=9 existence remains open. **Exact reformulation (sol-1, 20 Aug PM): GAP B-EXIST for the Cayley class ⟺ an inverse-closed noncommutative Sidon set of size q in a group of order q²−1** (`not_containsC4_iff_nonbacktracking_connectionProduct_injective`); uniform sieves: groups with all involutions central are impossible (`containsC4_of_odd_connection_card_of_all_involutions_central`), ambient nontrivial involutions ≤ q−2 (`card_nontrivialInvolutionFinset_le_of_planeMinusTwo_Cayley` — screens q=9 order-80 groups with ≥8 involutions), forced matching generator consumes slack and must conjugation-separate the residual shore (`erase_involution_disjoint_conjugate_shore`, union card 2(d−1)). **q=9 VERTEX-TRANSITIVE CLASSIFICATION, 21 Aug (sol-1, goal #32), `EXTERNAL` with independent re-verification:** every one of the 25 CONNECTED cubic-shadow census types is impossible — 24 by exhaustion over transitive subgroups and invariant 80-line orbits at |Aut| ≤ 160 (`17b3cd9d02`), and the exceptional `CubicVT[80,30]` (|Aut| = 960) by a GAP + Python certificate enumerating 132 subgroup conjugacy classes, exactly 5 transitive classes covering all 11 transitive subgroups, and all 30/9/3/3/1 candidate 80-line orbits, each nonlinear, intrinsic-F violating, or C4-creating (`aaec4c5cd5`). Hence any q=9 VT candidate needs a DISCONNECTED shadow. Of those, the order-40 pair families are excluded: the four |Aut| = 3200 types (`6b001f9547`) and the high-symmetry ordinals 3/8/11 (`3b51b0fd54`). Remaining leaves: order-20×4, order-16×5, Petersen×8. Every GAP subgroup/orbit result is independently re-derived in Python against pinned PSV data — that double check is why this is banked. **Scope, stated precisely: this closes the VERTEX-TRANSITIVE class at q=9, not existence at q=9.** A non-VT witness on 80 vertices remains logically open |
+| B.3 nonexistence at `q²` for the same `q` | `AXIOM B-NONEXIST` | partial uniform structure; `GAP B-CLASSIFY` for odd profiles. **q=9 three-high profile (order 81, 9-regular with three degree-10 vertices, 366 edges, D-quotient 297 edges), 21 Aug (sol-3, goal #32).** New `PROVEN` q=9-generic: the forced B3–B0–B0 triangle has both B0 endpoints of exact regular defect type (5,3,0), exporting six defect incidences into the 27-vertex B1 core (`75488904b8`); a B1 point in both fibers of that pair forces an antipodal edge, via `DefectPathOwner` on the induced two-path (`669af6ea3c`); every B0 vertex has (antipodal, triangle-free, local triangles) in {(1,7,1), (3,5,2), (5,3,3), (7,1,4)} (`3b53f09ad3`); at least one high root takes the B2→B1 crossing option (`6ea714427a`). **BOUNDARY, editor-recorded on sol-3's own audit: local classification is exhausted here.** With the antipodal/TF split unfixed, the global rooted-triangle identity does not determine the B0 type counts and cannot kill the B3 3-vs-4 triangle branch; the next decisive input must be global — colored defect mass, a spectral commutator, or a fiber-packing bound — not another local ledger. Recorded failure certificate: the 21-cycle owner-label parity argument is abstractly satisfiable (colors 012 repeated give classes 7/7/7 with all vertices rainbow), so color parity alone is not the coupling. Lane now on the global colored-mass conjecture |E(TF)| ≡ |E(Anti)| ≡ 0 (mod 3), gated on an abstract-satisfiability probe before any formalization |
 | B.4 capstone | `AXIOM B-COFINAL` | B.2 ∧ B.3 on one unbounded set ⇒ done via §0 |
 
 Operator ruling (goal #23): odd primes remain the primary *theory* of where
 drops occur; Branch A is where the *proof* is closest. Decisive next datum on
 B is existence or nonexistence at `q = 9`.
+
+**Editor note (2026-08-22, goal #32) — this ruling now has evidence pointing
+at it.** B.2 and B.3 are the two complementary halves of `q = 9` and are not
+duplicates: B.2 is existence at order `80 = q²−1`, B.3 is nonexistence at
+order `81 = q²`. The q=9 vertex-transitive class is closed with zero
+witnesses and only three disconnected-shadow leaves remain. If those close
+the same way, the construction half of the odd-prime theory — the hope that
+the `q = 7` `Z24⋊Z2` witness extends to a parametric family at odd prime
+powers (§A/goal #15 existence half) — has its first hard negative datum.
+That does not refute the theory: `2^k` stays covered by the affine family and
+a non-VT odd witness is still open. It does mean goal #23 should be revisited
+at that moment by the operator rather than drifted past. Flagged, not
+decided.
 
 ## C, D. Supporting theories — not on the critical path
 
@@ -377,6 +411,25 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.19** (2026-08-22 ~00:20Z, editor, goals #32/#33): FIRST SESSION AFTER
+  THE PAUSE. All three Sols resumed 21 Aug 22:33Z and ran ~2.5h with no
+  editor present — the `claude`/Fable persona had no squad tools the whole
+  time (missing `@modelcontextprotocol/sdk` in `~/GitHub/squad`; repaired,
+  host restart still pending). Recorded here: (a) A.5.3 — the multi-step
+  sign/holonomy family is ELIMINATED for `BinarySizeTwoCyclicPackingBound`,
+  `Q₁ = S·Q₀⁻¹·S⁻¹`, so no conjugacy-class-valued invariant can close it;
+  the `Θ(q)` deficit stands. (b) B.2 — the q=9 VERTEX-TRANSITIVE class is
+  closed for connected shadows (all 25 types) and for the order-40 pair
+  families; three disconnected leaves remain; scope is the VT class, not
+  q=9 existence. (c) B.3 — four new q=9-generic theorems, then a boundary:
+  local classification is exhausted and the lane pivots to a global
+  colored-mass statement, gated on a satisfiability probe. (d) Goal #23 is
+  flagged for operator revisit if the last three B.2 leaves close empty.
+  Integration hygiene: sol-1 had banked 14 commits on a feature branch
+  instead of `erdos85/integration`; all cherry-picked, tip `d6ae41d3c1`.
+  Goal-board correction: #30 front (b) is CLOSED, not unowned (§C/D generic
+  sixth-moment toolkit) — goal #33 retracts that line of #32.
 
 - **2.18** (2026-08-20 ~17:40Z, claude/integrator, per operator goal #31):
   STATE AT PAUSE. Sol credits exhausted; lanes down since ~17:22Z; resume
