@@ -646,6 +646,65 @@ def fit_sparse(instances: list[dict], max_rounds: int) -> tuple[str, float, np.n
     return "round-limit", norm, theta, max_rounds
 
 
+def exact_row_maximum(data: dict, row: int, weights: list[int]) -> int | None:
+    """Exact degree-d matching value, using only integer arithmetic.
+
+    A candidate occupies its one or two real selected labels.  A one-label
+    candidate's other endpoint is a private dummy, so it creates no additional
+    collision and needs no bit in the state.  Thus a dictionary indexed by
+    (chosen cardinality, 16-bit real-label mask) is an exact matching oracle.
+    """
+    selected = sorted(data["selected"])
+    bit = {b: 1 << i for i, b in enumerate(selected)}
+    demand = int(data["degree"][row])
+    states = {(0, 0): 0}
+    for support, weight in zip(data["labels"][row], weights):
+        occupied = sum(bit[b] for b in support)
+        updated = dict(states)
+        for (cardinality, mask), value in states.items():
+            if cardinality < demand and not mask & occupied:
+                key = (cardinality + 1, mask | occupied)
+                updated[key] = max(updated.get(key, -(1 << 100)),
+                                   value + weight)
+        states = updated
+    values = [value for (cardinality, _), value in states.items()
+              if cardinality == demand]
+    return max(values) if values else None
+
+
+def exact_integral_audit(instances: list[dict], theta: np.ndarray,
+                         scale: int) -> tuple[bool, list[int], np.ndarray]:
+    """Round a floating separator and verify the result exactly.
+
+    Feature vectors are integral.  After rounding the coefficients, every
+    candidate weight and every row/instance optimum below is computed with
+    Python integers; the floating MILP oracle is not consulted.
+    """
+    integral = np.rint(theta * scale).astype(object)
+    inverse = {i: key for key, i in FEATURES.items()}
+    signs_ok = all(not (isinstance(inverse[i], tuple)
+                       and inverse[i] and inverse[i][0] == "mu")
+                   or integral[i] >= 0 for i in range(len(integral)))
+    orders_ok = all(integral[lower] <= integral[upper]
+                    for lower, upper in ORDER_CONSTRAINTS)
+    totals = []
+    feasible = True
+    for data in instances:
+        total = 0
+        for row in range(N):
+            weights = [sum(int(x) * int(y) for x, y in zip(vector, integral))
+                       for vector in data["vectors"][row]]
+            value = exact_row_maximum(data, row, weights)
+            if value is None:
+                feasible = False
+                break
+            total += value
+        totals.append(total if feasible else 0)
+        if not feasible:
+            break
+    return feasible and signs_ok and orders_ok and all(x < 0 for x in totals), totals, integral
+
+
 def main() -> int:
     global FEATURES
     parser = argparse.ArgumentParser()
@@ -656,6 +715,9 @@ def main() -> int:
                         help="fit each locally feasible instance separately")
     parser.add_argument("--sparse", action="store_true",
                         help="minimize coefficient L1 norm at margin -1")
+    parser.add_argument("--exact-round-scale", type=int, default=0,
+                        help="round the fitted prices at this positive scale "
+                             "and audit the separator by exact integer DP")
     parser.add_argument("--features", choices=("basic", "candidate-count",
                                                 "total-load", "collisions",
                                                 "load-shape", "load-profile",
@@ -704,11 +766,23 @@ def main() -> int:
                 FEATURES = feature_index()
                 refine_features([candidate], args.features)
             fitter = fit_sparse if args.sparse else fit
-            status, objective, _, rounds = fitter([candidate], args.max_rounds)
+            status, objective, theta, rounds = fitter([candidate], args.max_rounds)
             branch, seed_number, colors = label
             print(f"individual branch={branch} seed={seed_number} colors={colors} "
                   f"features={len(FEATURES)} status={status} "
                   f"objective={objective:.9g} rounds={rounds}")
+            if args.exact_round_scale:
+                if args.exact_round_scale < 1:
+                    parser.error("--exact-round-scale must be positive")
+                exact, totals, integral = exact_integral_audit(
+                    [candidate], theta, args.exact_round_scale)
+                print(f"individual_exact_integral_audit="
+                      f"{'pass' if exact else 'fail'} "
+                      f"scale={args.exact_round_scale} totals={totals} "
+                      f"max_abs_coefficient="
+                      f"{max(abs(int(x)) for x in integral)}")
+                if status == "separates" and not exact:
+                    return 1
         return 0
     if args.features != "basic":
         refine_features(data, args.features)
@@ -724,6 +798,16 @@ def main() -> int:
                 print(f"theta[{TYPE_NAMES[a]},{TYPE_NAMES[b]},overlap={overlap}]={theta[i]:.9g}")
     else:
         print(f"nonzero_coefficients={sum(abs(x) > 1e-7 for x in theta)}")
+    if args.exact_round_scale:
+        if args.exact_round_scale < 1:
+            parser.error("--exact-round-scale must be positive")
+        exact, totals, integral = exact_integral_audit(
+            data, theta, args.exact_round_scale)
+        print(f"exact_integral_audit={'pass' if exact else 'fail'} "
+              f"scale={args.exact_round_scale} totals={totals} "
+              f"max_abs_coefficient={max(abs(int(x)) for x in integral)}")
+        if not exact:
+            return 1
     if status == "local-hall":
         print("at least one instance has a local Hall obstruction")
     return 0

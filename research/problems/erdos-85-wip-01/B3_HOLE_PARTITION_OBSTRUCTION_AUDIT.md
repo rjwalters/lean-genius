@@ -619,6 +619,27 @@ obstruction has a finite integer nested-price certificate.  This matters for
 formalization: a prospective checker needs only integer inequalities, not LP
 tolerances or imported solver duals.
 
+The experiment now contains such an independent integer checker.  After a
+floating separator is found, it rounds every price at a requested scale and
+recomputes each row support function by integer dynamic programming on the
+sixteen-bit occupied-label mask and the exact chosen cardinality.  Singleton
+private dummies need no state bit, since each occurs in only its own edge.
+This check uses neither the floating master LP objective nor its binary MILP
+matching oracle.  At scale `10000`, all six individually fitted seed-zero
+branch/color instances pass, with exact total support values
+
+```text
+branch 3: -44635, -67985, -39396,
+branch 4: -53670, -202275, -45792.
+```
+
+Thus the sampled strict inequalities have genuine finite integer witnesses,
+not numerical-tolerance artifacts.  Conversely, fitting one common
+uncompressed Farkas table to all six cases reaches the zero potential and
+the exact checker returns six zero totals.  This is useful negative scope:
+the evidence supports design-adaptive prices derived from `(Q,K)`, not one
+universal coefficient table shared by unrelated outer designs.
+
 In the four-seed run the local branch is extremely sharp.  There are nine
 failed row/color-pair instances.  Every matching number is exactly one below
 demand.  Eight are demand-six rows with a minimum vertex cover of size five;
