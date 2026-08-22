@@ -225,6 +225,10 @@ def main() -> None:
         (35, 43),
     ]
     assert orders == expected_orders
+    # A component not containing B3 has 3*n0 = 5*n1 by the pointwise
+    # B0/B1 defect-neighbor types, hence order n0+n1 is divisible by eight.
+    # No proper order surviving the cut inequalities has that divisibility.
+    assert all(order % 8 != 0 for order in orders)
     assert partitions == expected_partitions
 
     counts = [color_assignment_count(parts, types) for parts in partitions]
@@ -260,6 +264,7 @@ def main() -> None:
     assert [entry[1] for entry in bin_ledger] == [21, 27, 10, 18, 7, 17, 12, 18, 6, 2, 6]
 
     print(f"verified component orders: {orders}")
+    print("verified connectivity terminal: no admissible proper order is divisible by 8")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
     ):

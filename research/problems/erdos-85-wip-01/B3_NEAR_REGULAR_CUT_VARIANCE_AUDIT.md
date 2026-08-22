@@ -282,83 +282,47 @@ to
 in the displayed order.  Thus it removes six placements in `[9,9,60]`, two
 in `[9,18,51]`, and one in `[9,69]`, without yet eliminating an order row.
 
-## The non-owner order-nine two-hole cover
+## Pointwise bin types force connectivity
 
-The exact non-owner geometry has a useful zero-slack packing consequence.
-Let `C` be its defect `K5` of bin-zero vertices and `P` its colored defect
-`C4` of bin-one vertices.  The five sets `N_A(c)`, `c in C`, are pairwise
-disjoint, so their union `U` has 45 points.  Because every `C`--`P` pair is a
-defect edge, every `N_A(p)` avoids `U`.
-
-Consecutive vertices of the defect `C4` have disjoint `A`-neighborhoods,
-whereas each opposite pair has exactly one common neighbor.  The two common
-centers are distinct.  Therefore
+The aggregate capacity calculation is superseded by the existing Lean
+pointwise theorem
+`squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy`.
+Every bin-zero vertex has defect-neighbor counts
 
 ```text
-|union_(p in P) N_A(p)| = 4*9 - 2 = 34,
+(B0,B1,B3) = (5,3,0) or (7,0,1),               (10)
 ```
 
-and these four neighborhoods cover all but two points of the 36-point
-complement of `U`.
-
-The colors locate part of this two-hole set.  For type `(0,2,2)`, the two
-opposite pairs are monochromatic and their centers are the two used high
-roots; the unused high root is one of the two holes.  For type `(1,1,2)`,
-the repeated-color diagonal is centered at its high root and the other
-diagonal has an ordinary center.  All three high roots then lie in the
-34-point cover, so both holes are ordinary.
-
-The associated global degree count has no slack but gives no contradiction:
-the two diagonal centers have respectively `8+8=16` exterior incidences in
-type `(0,2,2)` and `8+7=15` in type `(1,1,2)`, exactly the deficits obtained
-by routing exterior vertices through the four packed neighborhoods.  Thus
-the two-hole cover is a location-sensitive interface for a later component
-coupling, not a terminal by itself.
-
-## Coupling the three order-nine components
-
-In the row `[9,9,9,51]`, the bin-three vertex is in the order-51 component,
-whose color vector is `(6,6,6)`.  The three non-owner order-nine vectors
-therefore sum to `(4,4,4)`.  Up to permuting components and colors, the 21
-ordered assignments fall into exactly three families:
+and the five vertices of the second type are exactly the defect neighbors
+of the unique bin-three vertex.  Now suppose that `D0` is disconnected and
+choose any component `S` not containing that vertex.  Such a component
+exists because only one component can contain it.  All `n0` bin-zero
+vertices of `S` have the first type in (10), so counting the `B0`--`B1`
+defect edges from the bin-zero side gives `3 n0`.  Every bin-one vertex has
+exactly five bin-zero defect neighbors, all in its own component, so the same
+edge count from the `n1` bin-one vertices is `5 n1`.  Therefore
 
 ```text
-6 : three (0,2,2) types, with their missing colors all distinct;
-9 : one (0,2,2) missing color i and two (1,1,2) types repeated in color i;
-6 : three (1,1,2) types, with their repeated colors all distinct.
+3 n0 = 5 n1,
+n0 = 5k,  n1 = 3k,
+|S| = n0+n1 = 8k.                               (11)
 ```
 
-Accordingly, the multiplicities with which the three high roots occur as
-`C4` diagonal centers are `(2,2,2)`, a permutation of `(2,1,1)`, and
-`(1,1,1)`.  These multiplicities exactly fit the high-root degrees, so they
-do not eliminate a family.
-
-There is nevertheless a genuine cross-component packing constraint.  Let
-`C_i` be the defect `K5` in the `i`th order-nine component and put
-`U_i=union_(c in C_i) N_A(c)`.  Each `U_i` has size 45.  Across two distinct
-components every pair in `C_i x C_j` is a defect nonedge and hence has one
-common neighbor.  C4-freeness makes the 25 pair-centers distinct, so
+But the complete proper-component order list obtained from (6) is
 
 ```text
-|U_i intersect U_j| = 25.                       (10)
+{9,18,19,26,27,35,43,51,52,59,60,69},
 ```
 
-If `t=|U_1 intersect U_2 intersect U_3|`, classify all 81 vertices by how
-many of the three sets contain them.  Equations `|U_i|=45` and (10) force
+which contains no multiple of eight.  This contradiction proves:
 
 ```text
-membership 3 : t,
-membership 2 : 75-3t,
-membership 1 : 3t-15,
-membership 0 : 21-t.
+The ordinary defect graph D0 on 78 vertices is connected.              (12)
 ```
 
-Hence `5 <= t <= 21`.  The lower bound also has a pointwise interpretation:
-for each `c in C_i`, its five centers against `C_j` and five centers against
-`C_k` must overlap at least once inside the nine-point set `N_A(c)`.  The
-three-family color classification and this forced triple-overlap are exact,
-but both endpoints remain combinatorially feasible.  A terminal must control
-which cross-pairs share a triple center, not merely their number.
+In particular, all eleven disconnected order rows are impossible.  The
+earlier order-nine localization calculations are retained only as checks of
+the weaker aggregate layers; (10)--(12) are the decisive consumer.
 
 ## Scope
 
@@ -370,9 +334,11 @@ consumer must choose a location-sensitive shore whose defect boundary is
 already controlled by the row-cover/transversal structure; applying only
 whole-bin totals reproduces known quotient mass rather than a contradiction.
 
-The component-order list and two-factor localization together give a finite
-necessary classification derived symbolically from exact graph identities.
-They are not yet sufficient to prove that `D0` is connected or to eliminate
-any of the eleven component multisets.
+The component-order list and the pointwise bin dichotomy together prove that
+`D0` is connected.  This is a structural conclusion for the q=9 second
+three-high profile, not a graph census and not a proof that the full defect
+graph cannot be connected.
 
-No Lean theorem or nonexistence conclusion is claimed in this audit.
+The pointwise bin inputs are Lean-checked; the short component-order consumer
+is recorded here and in the exact arithmetic checker, but is not yet
+packaged as a new Lean theorem.  No nonexistence conclusion is claimed.
