@@ -852,9 +852,10 @@ graph (12f), or a color pair admitting coordinatewise-monotone prices of the
 form (12p).  The exact color coupling (12l) is the natural mechanism for that
 choice.
 
-The role flags in (12o) are constrained occupancy tables, not independent
-parameters.  Let `e_tj` be the number of eligible candidates of role `j` at
-row `t`, and write `r_tb,j` for the corresponding coordinate of `r_tb`.
+The role flags in (12o)--(12p) are constrained occupancy tables, not
+independent parameters.  Let `e_tj` be the number of eligible candidates of
+role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
+`r_tb`.
 Regular triples, holes, and pairs missing the unselected color carry two
 selected labels, while a pair missing one selected color carries one.
 Therefore
@@ -867,11 +868,14 @@ c(t) = sum_b binom(sum_j r_tb,j,2).                         (12r)
 ```
 
 Also `sum_j r_tb,j=ell_b(t)<=5`, because the whole fiber `F_b` has five
-rows.  Hence the monotone-price conjecture is a finite sixteen-column,
-four-role occupancy inequality with fixed linear margins and fixed convex
-energy.  This is a more economical proof interface than arbitrary `Q,K`
-flags: a majorization or compression argument on the columns of `r_t` could
-construct the monotone prices, while (12fa) handles the low-cover boundary.
+rows.  For the oriented five-role monotone cone, split the
+`pair-missing-selected` coordinate into its two selected-color orientations;
+each split coordinate separately has `sum_b r_tb,j=e_tj`.  Hence the
+monotone-price conjecture is a finite sixteen-column, five-role occupancy
+inequality with fixed linear margins and fixed convex energy.  This is a
+more economical proof interface than arbitrary `Q,K` flags: a majorization
+or compression argument on the columns of `r_t` could construct the
+monotone prices, while (12fa) handles the low-cover boundary.
 
 There is an exact primal alternative to constructing those monotone prices.
 Let `I` be the finite set of compressed root--fiber flags in (12p), ordered
@@ -944,10 +948,10 @@ the fractional row matchings.  Necessity follows by testing upper sets;
 sufficiency is the integral max-flow/min-cut theorem after clearing the
 rational matching weights.  Thus a hypothetical failure of both branches
 has a purely combinatorial normal form: locally feasible fractional
-matchings, exact signature balance, and monotone transports of four-role
-fiber columns.  This is the natural place to apply the fixed column sums and
-strictly convex collision energy in (12r), rather than reason about fitted
-price coefficients.
+matchings, exact signature balance, and monotone transports of oriented
+five-role fiber columns.  This is the natural place to apply the fixed
+column sums and strictly convex collision energy in the oriented refinement
+of (12r), rather than reason about fitted price coefficients.
 
 There are sharp scalar consequences.  Let `p(t)` be the number of eligible
 pair candidates missing one selected color and put `L=2n(t)-p(t)`, the total
