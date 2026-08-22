@@ -977,6 +977,25 @@ isotone in the oriented role census at fixed
 the only added information is omitted-color collision and whether the priced
 fiber is one of the root's own support fibers.
 
+The incidence refinement has fixed margins.  Exactly `g(t)` of the sixteen
+selected columns have `iota_tb=1`, where `g(t)` is two for regular triples,
+holes, and pairs missing the unselected color, and one for pairs missing a
+selected color.  For each oriented role `j`, put
+
+```text
+o_tj = sum_{b in S_t intersect C} r_tb,j.                  (12qh)
+```
+
+The outer block system is linear, so an eligible candidate block meets
+`S_t intersect C` in at most one label.  Hence `o_tj` is exactly the number
+of role-`j` eligible candidates sharing a selected support label with the
+root; the external-column margin is the corresponding total in (12r) minus
+`o_tj`.  Thus (12qg) merely exposes an own-versus-external partition of the
+already fixed role margins.  This is also the native orientation of (12n):
+the negative cap term is summed precisely over the root's own selected
+fibers.  A prospective proof should therefore couple the two column classes
+through (12qh), rather than treat `iota` as an arbitrary binary feature.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
