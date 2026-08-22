@@ -92,8 +92,54 @@ A genuine phase argument needs one of the following new inputs.
   This requires a graph-specific relation between the two commuting
   operators; it does not follow merely from `[D[c],H]=0`.
 
-Until one of these statements is proved, the owner coloring does not impose
-a valid phase constraint on the classified hole blocks.  The useful outcome
-of this audit is the precise interface: the missing information is
-**colorwise commutation or an equivalent simultaneous rectangular law**, not
-another quotient degree count.
+At the level of the separate APIs alone, the owner coloring does not impose
+a valid dihedral phase constraint on the classified hole blocks.  The useful
+interface is **colorwise commutation or an equivalent simultaneous
+rectangular law**, not another quotient degree count.  The next subsection
+extracts the latter law from the block form of the banked defect commutation.
+
+## A simultaneous rectangular law that is already available
+
+The commutant mismatch nevertheless yields a real colorwise equation after
+resolving the alternating sign shores.  Let `e != c` be an exterior source
+component and let `O_e` be its selector layer on `c`.  This is the same
+relation described from the two transposed viewpoints
+
+```text
+restrictedComponentOwnerGraph G c e
+sourceIndexedSizeTwoSelectorGraph G e c.
+```
+
+The first presentation supplies `[O_e,D[c]]=0`; the second supplies its
+source-component meaning and degree.  Because an exterior selector vertex
+has one neighbor in each alternating sign shore, `O_e` is bipartite.  In
+sign-ordered blocks write
+
+```text
+O_e  = [[0, Q_e], [Q_e^T, 0]],
+D[c] = [[D_+, P], [P^T, D_-]].
+```
+
+Here the cross-sign block of `D[c]` is exactly the hole block
+`P=K_(q,q)-F`: opposite-sign pairs cannot have an internal common neighbor,
+so they are defect-adjacent precisely when they are not exterior traces.
+Expanding `[O_e,D[c]]=0` gives, for every exterior source color `e`,
+
+```text
+Q_e P^T = P Q_e^T,             (colored hole equation)
+Q_e D_- = D_+ Q_e.             (same-shore intertwining)
+```
+
+Thus the bank does contain an equivalent simultaneous rectangular law; it
+is weaker than `[H,Q_e]=0` but stronger than the uncolored quotient.  The
+next phase consumer should classify binary biregular matrices `Q_e` that
+simultaneously satisfy these two equations and edge-partition
+`F=K_(q,q)-P`.  Applying the dihedral classification directly to `Q_e`
+remains invalid, but ignoring these two equations would also discard the
+available owner coupling.
+
+The remaining formal task is a shore-block extraction theorem packaging the
+displayed equations from the existing global commutation theorem.  Its
+mathematical content is matrix block multiplication; the graph-facing inputs
+to expose are (i) exterior owner layers are opposite-sign and (ii) the
+cross-sign defect block equals the hole relation.
