@@ -1944,6 +1944,41 @@ component parameter minus two and twice the small parameter plus two, with
 the complementary bounds on Y.  These intervals are available for the
 remaining location-specific analysis of c.
 
+The two component locations of c also have q-generic parallel-class normal
+forms.  First suppose `c in Y`.  Every point of X is a D-nonneighbor of c,
+so the fibers
+
+```text
+N_A(z) intersect X,   z in N_A(c),
+```
+
+partition X.  By (B6), c has exactly two K-neighbors; the fiber-size law
+`A 1_X=(a+1)1-1_K` therefore gives
+
+```text
+c in Y:  two a-point fibers and q-2 (a+1)-point fibers
+         partition X.                                      (B47Y)
+```
+
+Their sizes sum to `2a+(q-2)(a+1)=q(a+1)-2=|X|`.  This is the
+all-a version of the matching normal form (B31).
+
+If instead `c in X`, every point of Y is a D-nonneighbor of c and the
+analogous fibers `N_A(z) intersect Y`, `z in N_A(c)`, partition Y.  Formula
+(B25), evaluated at `x=c` (there is no loop), gives
+`deg_A(c,R)=1`.  Since `A 1_Y=b 1-1_R+1_c` and no neighbor z of c equals
+c, exactly one center has a `(b-1)`-point Y-fiber and all other centers
+have b-point fibers:
+
+```text
+c in X:  one (b-1)-point fiber and q-1 b-point fibers
+         partition Y.                                      (B47X)
+```
+
+Again `(b-1)+(q-1)b=qb-1=|Y|`.  Thus either component location forces an
+exact near-parallel class on the opposite component, with the exceptional
+fiber multiplicities determined by K or R membership.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
