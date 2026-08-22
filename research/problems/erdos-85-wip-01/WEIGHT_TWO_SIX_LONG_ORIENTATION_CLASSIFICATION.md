@@ -285,3 +285,51 @@ shared-trace part of the exterior adjacency has a uniform integral
 completion.  Any terminal must couple these resolver choices to the remaining
 `q-4` or `q-2` disjoint-trace neighbors and their codegree-at-most-one laws;
 resolver parity or reciprocity alone cannot exclude the survivor.
+
+## The scalar disjoint-pair capacity is an identity
+
+Put `d=q-2`.  The exterior has `N=q(q-2)=d^2+2d` trace vertices.  In the
+surviving orientation there are
+
+```text
+a = 2q-6 = 2d-2       edge-traces,
+b = N-a = d^2+2        non-edge traces.
+```
+
+After removing the resolver layer, an edge-trace has residual degree `d`
+and a non-edge trace has residual degree `d-2`.  Hence the number of required
+disjoint-trace exterior edges is forced to be
+
+```text
+E_res = (a d + b(d-2))/2 = (d^3-4)/2.
+```
+
+Could the total codegree capacity rule this out?  No.  Every trace has
+`d^2+1` disjoint partners, while its `d(d-1)` nonbacktracking exterior
+two-walks have distinct disjoint endpoints.  Thus the number of unordered
+disjoint pairs with no exterior common neighbor is exactly
+
+```text
+S = N(d+1)/2.
+```
+
+If the exterior graph has `T` triangles, precisely `3T` residual edges have
+an exterior common neighbor.  The exact distance-partition ledger says that
+the number of far disjoint pairs is `N/2+b+3T`.  Therefore the disjoint pairs
+with no common neighbor split into residual nontriangle edges and far pairs,
+but their total is
+
+```text
+(E_res-3T) + (N/2+b+3T)
+  = E_res + N/2 + b
+  = N(d+1)/2
+  = S.
+```
+
+So the triangle term cancels and the entire scalar capacity inequality is
+always saturated as an algebraic identity.  In particular its parity gives
+nothing beyond the already forced degree counts.  Together with the Euler
+resolver construction, this closes all total-count and resolver-parity routes
+at the classified survivor.  The remaining possible obstruction is the
+entrywise simultaneous placement of the residual edges: symmetric row
+matchings whose disjoint-trace pairs have codegree at most one.
