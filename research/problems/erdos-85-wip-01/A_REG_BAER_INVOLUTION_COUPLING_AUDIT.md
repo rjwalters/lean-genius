@@ -830,13 +830,80 @@ larger shore within `O(sqrt(q))` of `3q` (the leading-order threshold is
 `3q-6 sqrt(q)`).  This is only a localization; it deliberately leaves the
 large/asymmetric branch open.
 
-Equations (7)--(42) are the first canonical cut detector manufactured from
+### The finite dyadic stopping theorem
+
+The half-occupancy lift is the first level of a genuinely k-dependent
+hierarchy.  Let `q=2^k` with `k>=2`.  For `1<=j<=k-1`, suppose every line occupancy
+`b_X=|N_A(X) intersect S|` is divisible by `2^j` (equivalently, all earlier
+binary digits vanished), and define
+
+```text
+beta_j(S)_X = (b_X / 2^j) mod 2.                              (43)
+```
+
+Thus `beta_1=beta`.  Since `q/2^j` is even at these levels,
+
+```text
+beta_j(V setminus S) = beta_j(S),
+|supp(beta_j(S))| is even.                                   (44)
+```
+
+There is a level-j version of (24).  Fix `P in S`, and put
+`m=|N_A(P) intersect supp(beta_j(S))|`.  A marked line through P has positive
+occupancy congruent to `2^j` modulo `2^(j+1)`, so it supplies at least
+`2^j-1` further S-points.  An unmarked line has positive occupancy divisible
+by `2^(j+1)`, so it supplies at least `2^(j+1)-1`.  The q sets of further
+points are disjoint.  Hence
+
+```text
+|S| >= (2^(j+1)-1)q + 1 - 2^j m.                             (45)
+```
+
+In particular, if `beta_j(S)=0`, then (44)--(45), applied to S and its
+complement, force
+
+```text
+(2^(j+1)-1)q+1 <= |S|
+                     <= q^2-(2^(j+1)-1)q-1.                  (46)
+```
+
+The hierarchy must stop.  The kernel condition starts the induction because
+every occupancy is even.  At any level, `beta_j(S)=0` says precisely that all
+occupancies are divisible by `2^(j+1)`, so the next digit is defined.  If every
+digit `beta_1,...,beta_(k-1)` vanished, then (46) at `j=k-1` would require both
+S and its complement to have at
+least
+
+```text
+(q-1)q+1 = q^2-q+1
+```
+
+points, whose sum exceeds `q^2`.  Therefore every nontrivial binary kernel
+shore has a least level `j<=k-1` with
+
+```text
+beta_j(S) != 0.                                               (47)
+```
+
+At the final possible level `j=k-1`, a constant-one digit would make every
+line occupancy exactly `q/2`: it is the only multiple of `q/2`, at most q,
+whose quotient is odd.  Then `A1_S=(q/2)1`, the cut variance is zero, and S is
+a union of D-components.  Consequently, when D is connected, a stopping
+digit at level `k-1` is necessarily nonconstant.
+
+This is the first mechanism in the Baer lane whose depth grows with k.  It
+proves that the incidence hierarchy cannot remain invisible modulo
+successively higher powers of two: before the q-scale it must emit a
+nonzero even, complement-invariant marked-line layer, and at the last level
+that layer is genuinely nonconstant under connectedness.
+
+Equations (7)--(47) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(42), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(47), so these laws alone
 do not conceal an order-independent
 contradiction.
 
