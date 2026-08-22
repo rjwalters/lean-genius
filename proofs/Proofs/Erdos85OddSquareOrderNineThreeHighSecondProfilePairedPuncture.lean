@@ -1565,6 +1565,186 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_exact
   have hr : residualRows.card = 29 := by omega
   exact ⟨hs, hd, hcore, hr⟩
 
+/-- The five B0 neighbors of a common missing row all lie in the ordinary
+47-row block.  Their induced ordinary-row degrees have the forced multiset
+`{5,6,6,6,6}`: one support point has degree five and four have degree six.
+Their disjoint neighbor blocks partition the 29 residual rows. -/
+theorem squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_degree_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hb : b ∈
+      ((secondOrderDefectGraph G).neighborFinset y ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) ∩
+      ((secondOrderDefectGraph G).neighborFinset z ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let Q0 := G.neighborFinset b ∩ B 0
+    let Q := G.neighborFinset b ∩ T
+    let F := fun q => G.neighborFinset q ∩ T
+    Q0 = Q ∧ Q.card = 5 ∧ (∑ q ∈ Q, (F q).card) = 29 ∧
+      (Q.filter fun q => (F q).card = 5).card = 1 ∧
+      (Q.filter fun q => (F q).card = 6).card = 4 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let Q0 := G.neighborFinset b ∩ B 0
+  let Q := G.neighborFinset b ∩ T
+  let F := fun q => G.neighborFinset q ∩ T
+  let A := fun t => (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+  let residualRows := T.filter fun t => (A t).Nonempty
+  have hpack :=
+    squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_union
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz hb
+  dsimp only at hpack
+  have hQ0card : Q0.card = 5 := hpack.2.2.1
+  have hQsubQ0 : Q ⊆ Q0 := by
+    intro q hq
+    have hqParts := Finset.mem_inter.mp hq
+    exact Finset.mem_inter.mpr ⟨hqParts.1, (Finset.mem_sdiff.mp hqParts.2).1⟩
+  have hQle : Q.card ≤ 5 := by
+    calc Q.card ≤ Q0.card := Finset.card_le_card hQsubQ0
+      _ = 5 := hQ0card
+  have hexact :=
+    squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_exact
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz hb
+  dsimp only at hexact
+  have hresidual : residualRows.card = 29 := hexact.2.2.2
+  have hbNotT : b ∉ T := by
+    intro hbT
+    have hbB0 := (Finset.mem_sdiff.mp hbT).1
+    have hbB1 := (Finset.mem_sdiff.mp
+      (Finset.mem_inter.mp (Finset.mem_inter.mp hb).1).2).1
+    have hk0 := (Finset.mem_filter.mp hbB0).2
+    have hk1 := (Finset.mem_filter.mp hbB1).2
+    omega
+  have hgeneric :=
+    c4Free_neighbor_blocks_partition_common_targets G hfree b T hbNotT
+  dsimp only at hgeneric
+  have hdisj : ∀ q ∈ Q, ∀ r ∈ Q, q ≠ r → Disjoint (F q) (F r) := by
+    intro q hq r hr hqr
+    exact hgeneric.1 q (Finset.mem_inter.mp hq).1
+      r (Finset.mem_inter.mp hr).1 hqr
+  have hunion : Q.biUnion F = residualRows := by
+    ext t
+    constructor
+    · intro htUnion
+      simp only [Finset.mem_biUnion] at htUnion
+      obtain ⟨q, hqQ, htF⟩ := htUnion
+      have hqParts := Finset.mem_inter.mp hqQ
+      have htParts := Finset.mem_inter.mp htF
+      refine Finset.mem_filter.mpr ⟨htParts.2, ⟨q, ?_⟩⟩
+      exact Finset.mem_inter.mpr ⟨Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset t q).mpr
+          ((G.adj_comm q t).mp ((G.mem_neighborFinset q t).mp htParts.1)),
+        hqParts.2⟩, hqParts.1⟩
+    · intro htFilter
+      have htParts := Finset.mem_filter.mp htFilter
+      obtain ⟨q, hqA⟩ := htParts.2
+      have hqAParts := Finset.mem_inter.mp hqA
+      have htq := Finset.mem_inter.mp hqAParts.1
+      simp only [Finset.mem_biUnion]
+      exact ⟨q, Finset.mem_inter.mpr ⟨hqAParts.2, htq.2⟩,
+        Finset.mem_inter.mpr ⟨
+          (G.mem_neighborFinset q t).mpr
+            ((G.adj_comm t q).mp ((G.mem_neighborFinset t q).mp htq.1)),
+          htParts.1⟩⟩
+  have hsum : (∑ q ∈ Q, (F q).card) = 29 := by
+    rw [← Finset.card_biUnion hdisj, hunion, hresidual]
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_binZero_residual_census
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcensus
+  let U := (S.biUnion fun s => G.neighborFinset s ∩ B 0) \ S
+  have hdegree : ∀ q ∈ Q, (F q).card = if q ∈ U then 5 else 6 := by
+    intro q hq
+    have hqT := (Finset.mem_inter.mp hq).2
+    have hqDeg := hcensus.2.2.1 ⟨q, hqT⟩
+    rw [degree_induce_finset_eq_card_inter] at hqDeg
+    exact hqDeg
+  have hQge : 5 ≤ Q.card := by
+    have hbound : (∑ q ∈ Q, (F q).card) ≤ ∑ _q ∈ Q, 6 := by
+      apply Finset.sum_le_sum
+      intro q hq
+      rw [hdegree q hq]
+      split <;> omega
+    have hprod : 29 ≤ Q.card * 6 := by
+      calc
+        29 = ∑ q ∈ Q, (F q).card := hsum.symm
+        _ ≤ ∑ _q ∈ Q, 6 := hbound
+        _ = Q.card * 6 := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+          simp
+    omega
+  have hQcard : Q.card = 5 := by omega
+  have hQQ0 : Q = Q0 :=
+    Finset.eq_of_subset_of_card_le hQsubQ0 (by omega)
+  let Q5 := Q.filter fun q => (F q).card = 5
+  let Q6 := Q.filter fun q => (F q).card = 6
+  have hsplit : Q = Q5 ∪ Q6 := by
+    ext q
+    simp only [Q5, Q6, Finset.mem_union, Finset.mem_filter]
+    constructor
+    · intro hq
+      rw [hdegree q hq]
+      split <;> simp_all
+    · tauto
+  have h56 : Disjoint Q5 Q6 := by
+    rw [Finset.disjoint_left]
+    intro q hq5 hq6
+    have h5 := (Finset.mem_filter.mp hq5).2
+    have h6 := (Finset.mem_filter.mp hq6).2
+    omega
+  have hcards : Q5.card + Q6.card = 5 := by
+    have := congrArg Finset.card hsplit
+    rw [Finset.card_union_of_disjoint h56, hQcard] at this
+    omega
+  have hsum56 : 5 * Q5.card + 6 * Q6.card = 29 := by
+    calc
+      5 * Q5.card + 6 * Q6.card =
+          (∑ q ∈ Q5, (F q).card) + ∑ q ∈ Q6, (F q).card := by
+        congr 1
+        · calc
+            5 * Q5.card = ∑ _q ∈ Q5, 5 := by simp [Nat.mul_comm]
+            _ = ∑ q ∈ Q5, (F q).card := by
+              apply Finset.sum_congr rfl
+              intro q hq
+              exact ((Finset.mem_filter.mp hq).2).symm
+        · calc
+            6 * Q6.card = ∑ _q ∈ Q6, 6 := by simp [Nat.mul_comm]
+            _ = ∑ q ∈ Q6, (F q).card := by
+              apply Finset.sum_congr rfl
+              intro q hq
+              exact ((Finset.mem_filter.mp hq).2).symm
+      _ = ∑ q ∈ Q, (F q).card := by
+        rw [hsplit, Finset.sum_union h56]
+      _ = 29 := hsum
+  have hQ5 : Q5.card = 1 := by omega
+  have hQ6 : Q6.card = 4 := by omega
+  exact ⟨hQQ0.symm, hQcard, hsum, hQ5, hQ6⟩
+
 end
 
 end Erdos85
@@ -1587,3 +1767,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_dichotomy
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_specialDefects_eq_two
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_exact
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_degree_profile
