@@ -1018,13 +1018,58 @@ s >= qr,       where r = s mod (q/2).                       (56)
 This residue restriction is invisible in the scalar parity laws: it uses
 the two different shores' exact degree profiles, not merely the cut size.
 
-Equations (7)--(56) are the first canonical cut detector manufactured from
+The local bound (48) makes the final layer much more rigid than (52) alone
+suggests.  Since `deg_A(P,B)<=q` on both shores, its final-level
+specialization forces
+
+```text
+q^2/2-q+1 <= s <= q^2/2+q-1.                               (57)
+```
+
+Write `s=q^2/2+d`, so `|d|<=q-1`, and put `C=V setminus B`.  The exact
+pointwise form of (48), with `a=q/2`, is
+
+```text
+deg_A(P,C) <= 2-ceil((1-d)/(q/2))       for P in S,
+deg_A(P,C) <= 2-ceil((1+d)/(q/2))       for P outside S.    (58)
+```
+
+Across the interval (57), both right sides are at most three.  Consequently
+
+```text
+Delta(A[C]) <= 3.                                           (59)
+```
+
+Every vertex of C indexes either an empty line or a full line, because its
+S-occupancy is respectively zero or q.  Thus the final obstruction has been
+reduced to a nonempty set of monochromatic lines whose induced A-graph is
+subcubic, while all remaining lines are exactly half occupied.  A uniform
+classification or elimination of this bounded-degree exceptional design
+would close the final dyadic branch.
+
+There is a canonical four-type decomposition of that exceptional design.
+For `X in C`, let `p(X)=1` when X itself lies in S, and let `ell(X)=1` when
+the line `N_A(X)` is full (rather than empty).  If `XY` is an A-edge inside
+C, incidence in the two directions gives
+
+```text
+p(Y)=ell(X),       p(X)=ell(Y).                              (60)
+```
+
+Thus an A-edge swaps the ordered type `(p,ell)`.  The subcubic graph A[C]
+is the disjoint union of its induced `(0,0)` part, its induced `(1,1)` part,
+and a bipartite graph between types `(0,1)` and `(1,0)`; there are no other
+cross-type edges.  This exact routing rule is additional structure beyond
+subcubicity and is the natural entry point for coupling the exceptional
+lines back to the Baer involutions.
+
+Equations (7)--(60) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(56), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(60), so these laws alone
 do not conceal an order-independent
 contradiction.
 
