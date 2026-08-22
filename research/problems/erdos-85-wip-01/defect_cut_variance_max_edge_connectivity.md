@@ -1645,6 +1645,43 @@ therefore occupy exactly `3a` distinct points of X.  Thus the endpoint and
 first-slice structures are not isolated phenomena but the first two cases
 of one q-generic wing design.
 
+There is likewise a q-generic version of the matching normal form (B28).
+Put
+
+```text
+C=N_A(c) intersect X,          |C|=a,
+U_P=disjoint-union_(p in P) F_p,   |U_P|=3a,
+H_R={F_r : r in R\P}.
+```
+
+The family `H_R` consists of `q-2` fibers of size `a+1`, colored by the
+three R-wings.  It is linear: two distinct fibers cannot contain the same
+pair of X-points, since their centers would be two common A-neighbors of
+that pair.  Moreover (B25) gives the exact point degrees
+
+```text
+deg_(H_R)(x)=1+1_(x in C)-1_(x in U_P).       (B36)
+```
+
+Indeed x has one R-neighbor, or two precisely when `x in C`, and the
+pairwise-disjoint P-fibers remove exactly one of those neighbors precisely
+on `U_P`.  Thus every point outside `C union U_P` lies in exactly one
+R-fiber; the holes are exactly `U_P\C`, the degree-two points are exactly
+`C\U_P`, and points in `C intersect U_P` again have degree one.  In
+particular
+
+```text
+|U_P\C|-|C\U_P|=2a,
+```
+
+also following from the incidence count
+`(q-2)(a+1)-|X|=-2a`.  When `a=1`, (B36) says exactly that the R-fibers are
+a matching missing two points if `u in U_P`, or a matching plus one
+length-two path and three holes otherwise: this recovers (B28) without a
+separate case analysis.  The surviving dual branch therefore carries a
+linear almost-resolution for every a, with all deviations from a partition
+located explicitly in the two small sets C and `U_P`.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
