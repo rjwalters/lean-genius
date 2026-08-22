@@ -150,6 +150,35 @@ so `D[S]` is `K9` with respectively one, two, two, or three edges removed.
 This turns the smallest surviving component into a near-clique placement
 problem rather than an unrestricted finite census.
 
+The same test on all orders from 1 through 77 leaves the symmetric order set
+
+```text
+{9,18,19,26,27,35,43,51,52,59,60,69}.
+```
+
+Partitioning 78 by these orders gives exactly eleven possible disconnected
+component-order multisets:
+
+```text
+[9,69], [18,60], [19,59], [26,52], [27,51], [35,43],
+[9,9,60], [9,18,51], [9,26,43], [26,26,26], [9,9,9,51].
+```
+
+In particular, `D0` has at most four components.  Requiring the component
+color vectors to sum to `(10,10,10)` eliminates none of these eleven rows;
+the respective numbers of ordered color-vector assignments in the displayed
+order are
+
+```text
+10, 10, 6, 3, 1, 3, 39, 10, 9, 6, 39.
+```
+
+Thus the cut identity turns disconnectedness into a finite eleven-row
+structural classification, while also proving that color totals alone are
+not the missing terminal.  The exact integer enumeration is independently
+reproducible with `q9_near_regular_cut_components.py`; it checks both the
+order list and all eleven assignment counts, without enumerating graphs.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
@@ -162,6 +191,7 @@ whole-bin totals reproduces known quotient mass rather than a contradiction.
 
 The component-order list is stronger: it is a finite necessary classification
 derived symbolically from the exact identity.  It is not yet sufficient to
-prove that `D0` is connected or to eliminate any listed component type.
+prove that `D0` is connected or to eliminate any of the eleven component
+multisets.
 
 No Lean theorem or nonexistence conclusion is claimed in this audit.
