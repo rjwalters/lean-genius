@@ -63,6 +63,95 @@ theorem c4Free_crossCut_eq_ones_sub_defect
   change H * B + B * C = J - R
   simpa [A, D, H, B, C, J] using hblock.trans hright
 
+/-- Transposed arbitrary-cut equation. -/
+theorem c4Free_crossCut_transpose_eq_ones_sub_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (p : V → Prop) [DecidablePred p] :
+    let A := G.adjMatrix ℤ
+    let D := (secondOrderDefectGraph G).adjMatrix ℤ
+    let H := A.toBlock p p
+    let B := A.toBlock p (fun x ↦ ¬p x)
+    let C := A.toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    let R := D.toBlock p (fun x ↦ ¬p x)
+    let J : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+    C * B.transpose + B.transpose * H = J.transpose - R.transpose := by
+  classical
+  let A := G.adjMatrix ℤ
+  let D := (secondOrderDefectGraph G).adjMatrix ℤ
+  let H := A.toBlock p p
+  let B := A.toBlock p (fun x ↦ ¬p x)
+  let C := A.toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  let R := D.toBlock p (fun x ↦ ¬p x)
+  let J : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+  have hcross : H * B + B * C = J - R := by
+    simpa [A, D, H, B, C, R, J] using
+      c4Free_crossCut_eq_ones_sub_defect G hfree p
+  have hHt : H.transpose = H := by
+    ext x y
+    simp [H, A, Matrix.transpose_apply, Matrix.toBlock_apply,
+      SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have hCt : C.transpose = C := by
+    ext x y
+    simp [C, A, Matrix.transpose_apply, Matrix.toBlock_apply,
+      SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have ht := congrArg Matrix.transpose hcross
+  change C * B.transpose + B.transpose * H = J.transpose - R.transpose
+  simpa [Matrix.transpose_add, Matrix.transpose_sub, Matrix.transpose_mul,
+    hHt, hCt, add_comm] using ht
+
+/-- **Forced exterior transfer across an arbitrary cut.**  A zero-sum
+internal `H`-eigenvector is transported with opposite eigenvalue, up to the
+explicit forcing supplied by cross-defect incidences.  When `Rᵀ f = 0` this
+specializes to the defect-component eigenvalue-negation law. -/
+theorem c4Free_crossCut_forced_exterior_eigenvector_transfer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (p : V → Prop) [DecidablePred p]
+    (f : {x // p x} → ℤ) (theta : ℤ)
+    (hsum : ∑ x, f x = 0)
+    (hf : ((G.adjMatrix ℤ).toBlock p p).mulVec f = theta • f) :
+    let A := G.adjMatrix ℤ
+    let D := (secondOrderDefectGraph G).adjMatrix ℤ
+    let B := A.toBlock p (fun x ↦ ¬p x)
+    let C := A.toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    let R := D.toBlock p (fun x ↦ ¬p x)
+    C.mulVec (B.transpose.mulVec f) =
+      (-theta) • B.transpose.mulVec f - R.transpose.mulVec f := by
+  classical
+  let A := G.adjMatrix ℤ
+  let D := (secondOrderDefectGraph G).adjMatrix ℤ
+  let H := A.toBlock p p
+  let B := A.toBlock p (fun x ↦ ¬p x)
+  let C := A.toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  let R := D.toBlock p (fun x ↦ ¬p x)
+  let J : Matrix {x // p x} {x // ¬p x} ℤ := fun _ _ ↦ 1
+  have htrans : C * B.transpose + B.transpose * H =
+      J.transpose - R.transpose := by
+    simpa [A, D, H, B, C, R, J] using
+      c4Free_crossCut_transpose_eq_ones_sub_defect G hfree p
+  have hJzero : J.transpose.mulVec f = 0 := by
+    funext z
+    simp [J, Matrix.mulVec, dotProduct, hsum]
+  have hv := congrArg
+    (fun M : Matrix {x // ¬p x} {x // p x} ℤ ↦ M.mulVec f) htrans
+  change C.mulVec (B.transpose.mulVec f) =
+    (-theta) • B.transpose.mulVec f - R.transpose.mulVec f
+  change H.mulVec f = theta • f at hf
+  rw [Matrix.add_mulVec, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec,
+    ← Matrix.mulVec_mulVec, hf, Matrix.mulVec_smul, hJzero] at hv
+  ext z
+  have hz := congrFun hv z
+  simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.zero_apply] at hz ⊢
+  ring_nf at hz ⊢
+  omega
+
 /-- **Order-free, nonregular defect-cut equation.**  Across a connected
 component of the second-order defect graph, every pair of endpoints has one
 common ambient neighbor.  Splitting that neighbor according to the cut gives
@@ -689,6 +778,8 @@ end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
 #print axioms Erdos85.c4Free_crossCut_eq_ones_sub_defect
+#print axioms Erdos85.c4Free_crossCut_transpose_eq_ones_sub_defect
+#print axioms Erdos85.c4Free_crossCut_forced_exterior_eigenvector_transfer
 #print axioms Erdos85.c4Free_defectComponent_crossBlock_eq_ones
 #print axioms Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_eq
 #print axioms
