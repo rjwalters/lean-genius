@@ -1764,6 +1764,33 @@ one distinguished star in the K-fiber intersection graph.  This is the
 first direct incidence-level coupling between the two q-generic designs,
 beyond their separate scalar ledgers.
 
+This injection remembers all three wing colors.  Fix `x in C`; it has no
+W-attachment, so its three missing separator colors are routed exactly by
+(B25).  If `x notin U_P`, its two R-neighbors lie in `R\P`, its other
+K-neighbor is `phi(x)`, and these three centers each carry one W-color.
+They must therefore carry the three different colors.  Hence
+
+```text
+x in C\U_P:
+  the Gamma_R edge at x joins two different R-wings, and phi(x) lies in
+  the K-wing of the complementary third color.                (B40a)
+```
+
+If instead `x in C intersect U_P`, let p be its unique P-neighbor.  Since
+p is also in K and the K-neighborhood of x is `{c,phi(x)}`, necessarily
+`p=phi(x)`.  This center carries its two incident W-colors in the six-cycle,
+while the other R-neighbor of x lies in the complementary third wing:
+
+```text
+x in C intersect U_P:
+  phi(x) is the receiving P-point, and the remaining R-center has the
+  unique W-color not incident with phi(x).                     (B40b)
+```
+
+Thus the c-star of `Gamma_K` decomposes into complementary-color images of
+the tripartite edges of `Gamma_R` and P-valued edges carrying the remaining
+two-color routes.  No wing label is lost in the design coupling.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
