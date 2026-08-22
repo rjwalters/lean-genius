@@ -2332,3 +2332,51 @@ analogue of the kernel cycle used in Section 17.  The next transport target
 is to turn the odd half-length of `S(Omega)` into a binary boundary vector or
 to show that repeated vertices/edges pair its contribution; the raw walk
 need not be a simple cycle, so that reduction is not automatic.
+
+## 41. Extraction of an odd-half simple incidence cycle
+
+The repeated-walk issue in Section 40 can be removed at the cost of losing
+the original state-cycle ordering.  Split `S(Omega)` whenever a vertex is
+revisited.  Because the walk is locally nonbacktracking, this process
+decomposes it into ordinary simple cycles in the bipartite incidence graph
+`B_c`; there are no two-edge backtracking pieces.  If their lengths are
+
+```text
+2 ell_1, ..., 2 ell_t,
+```
+
+then length additivity in (143) gives
+
+```text
+ell_1 + ... + ell_t = H(Omega).                         (145)
+```
+
+Consequently, when `Omega` is odd-horizontal, at least one extracted simple
+cycle has odd half-length:
+
+```text
+there is a simple cycle of B_c of length 2 ell,
+with ell odd.                                           (146)
+```
+
+This cycle alternates between `ell` distinct roots in `c` and `ell`
+distinct exterior port vertices.  Each exterior vertex carries its component
+color.  At an exterior-centered two-step the two neighboring roots came
+from a horizontal state transition and therefore share that owner color;
+color changes inherited from vertical transitions occur at roots.  After
+the walk decomposition, a cycle may retain only a subsequence of those
+changes, but every edge is still an actual cross-incidence edge with its
+exterior color label.
+
+Thus both residual branches produce an odd-half incidence cycle:
+
+* an all-horizontal obstruction gives a monochromatic cycle which is an
+  entire component of one cross block;
+* a mixed obstruction gives a possibly multicolored simple cycle in the
+  concatenated block `B_c`.
+
+Only the first is automatically a binary kernel vector for a single
+`R_ce`; the second need not be induced or component-closed.  The next mixed
+transport theorem must exploit the color changes on the simple cycle, or
+show that an odd-half multicolored incidence cycle contains a smaller
+monochromatic/kernel obstruction.
