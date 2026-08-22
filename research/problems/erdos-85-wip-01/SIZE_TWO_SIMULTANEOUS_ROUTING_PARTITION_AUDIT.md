@@ -1,9 +1,10 @@
 # Size-two simultaneous routing partition audit
 
 Status: q-generic synthesis of already proved routing and self-indexing
-theorems, 2026-08-22.  This note isolates the first genuinely simultaneous
-block condition that is absent from a single ODC or a single target
-factorization.
+theorems, 2026-08-22.  The routing-color partition itself is already
+formalized; this note isolates its endpoint-color identification with the
+self-indexed diagonal blocks, which is absent from a single ODC or a single
+target factorization.
 
 ## 1. Setup
 
@@ -38,6 +39,13 @@ The relevant formal inputs are:
 * `transpose_cross_mul_cross_apply_eq_ite_intermediate`;
 * `binarySquare_regular_threeSizeTwoParts_routing_row_card_eq_four`;
 * `binarySquare_regular_threeSizeTwoParts_routing_column_card_eq_four`.
+
+The graph-facing factor package and its entrywise resolution are already
+formalized in `Erdos85OrderSixtyFourRoutingColorFactors` and
+`Erdos85OrderSixtyFourRoutingColorRectangularOrthogonality`.  Sections 2 and
+the first half of Section 4 below are therefore a matrix translation of
+banked facts, not a new theorem claim.  The new synthesis begins with the
+self-indexed endpoint identification (6).
 
 ## 2. Exact intermediate-component partition
 
@@ -100,7 +108,7 @@ A_c R_ce + R_ce A_e
 
 and every summand is a disjoint-support 4-regular zero-one matrix.
 
-This is the precise coherence condition missed by choosing pairwise ODCs or
+The endpoint identification is the precise coherence condition missed by choosing pairwise ODCs or
 paired cross-factor intertwiners independently.  The same cross block `R_ce`
 must simultaneously avoid the two endpoint cycle-route supports in (7), and
 all residual entries must split into the products through the other component
