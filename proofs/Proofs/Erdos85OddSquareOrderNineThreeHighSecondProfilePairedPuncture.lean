@@ -2325,6 +2325,98 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_degreeSix_marked_cen
   have hOge : 2 ≤ O.card := by omega
   exact ⟨heq, hOge, hDle⟩
 
+/-- The common-hole degree-six census can be expressed entirely in terms of
+marked defect incidence: the number of degree-six support points outside the
+marked-support target is two plus the number of marked defect neighbors of
+the common row. -/
+theorem squareOrderNine_threeHigh_secondProfile_common_hole_degreeSix_marked_exact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z w b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hw : w ∈ G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)
+    (hwy : w ≠ y) (hwz : w ≠ z)
+    (hb : b ∈
+      ((secondOrderDefectGraph G).neighborFinset y ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) ∩
+      ((secondOrderDefectGraph G).neighborFinset z ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let Q := G.neighborFinset b ∩ T
+    let Rw := G.neighborFinset w ∩ B 0
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let O := (Q \ Rw) \ P
+    let DM := (secondOrderDefectGraph G).neighborFinset b ∩ M
+    O.card = 2 + DM.card := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let Q := G.neighborFinset b ∩ T
+  let Rw := G.neighborFinset w ∩ B 0
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let O := (Q \ Rw) \ P
+  let D := secondOrderDefectGraph G
+  let DM := D.neighborFinset b ∩ M
+  let D1 := D.neighborFinset b ∩ U1
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_common_hole_degreeSix_marked_census
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz
+        hw hwy hwz hb
+  dsimp only at hcensus
+  have hOD1 : O.card + D1.card = 4 := by
+    simpa [O, D1, Q, Rw, P, T, S, U1, M, B, D] using hcensus.1
+  have hbU1 : b ∈ U1 :=
+    (Finset.mem_inter.mp (Finset.mem_inter.mp hb).1).2
+  have hBsplit : B 1 = M ∪ U1 := by
+    ext v
+    simp only [M, U1, Finset.mem_union, Finset.mem_inter,
+      Finset.mem_sdiff]
+    tauto
+  have hMUdisj : Disjoint M U1 := by
+    rw [Finset.disjoint_left]
+    intro v hvM hvU
+    exact (Finset.mem_sdiff.mp hvU).2 hvM
+  have hsplit : DM.card + D1.card =
+      (D.neighborFinset b ∩ B 1).card := by
+    rw [hBsplit, Finset.inter_union_distrib_left,
+      Finset.card_union_of_disjoint
+        (hMUdisj.mono Finset.inter_subset_right Finset.inter_subset_right)]
+  have hDtotal :=
+    squareOrderNine_threeHigh_secondProfile_binOne_defect_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc4
+        ((Finset.mem_sdiff.mp hbU1).1)
+  dsimp only at hDtotal
+  have hMD1 : DM.card + D1.card = 2 := by
+    calc
+      DM.card + D1.card = (D.neighborFinset b ∩ B 1).card := hsplit
+      _ = 2 := hDtotal.2.1
+  dsimp [O, DM, D1, Q, Rw, P, T, S, U1, M, B, D] at hOD1 hMD1 ⊢
+  omega
+
 end
 
 end Erdos85
@@ -2351,3 +2443,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_B0_defect_partner_budget
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_degreeSix_marked_census
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_degreeSix_marked_exact
