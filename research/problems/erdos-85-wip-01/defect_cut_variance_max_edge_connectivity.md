@@ -1231,6 +1231,25 @@ a >= ceil((q-4)/3).                           (B19)
 Thus `c notin X` whenever `3a+4<q`; the endpoint exclusion (B17'') is the
 first case of this uniform location bound.
 
+The Y-location has a complementary lower bound.  If `c in Y`, then (B10)
+gives `n_c=deg_D(c,W)<=1`, and there are no D-edges from `c` to `X`.
+Equation (B18) therefore puts `c` and the `q-1-n_c` internal-Y defect
+neighbors of `c` in `K intersect Y`, so
+
+```text
+|K intersect Y| >= q-n_c.
+```
+
+Substitution in (B15), where `c_X=0`, yields
+
+```text
+|R intersect X| >= 3a-q+3-n_c >= 3a-q+2.     (B20)
+```
+
+If `c` has no W-attachment the first lower bound improves by one.  Thus at
+large a the Y-location forces a correspondingly large part of R to sit in
+the opposite component X.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
