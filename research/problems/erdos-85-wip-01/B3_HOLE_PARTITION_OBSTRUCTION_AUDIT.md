@@ -336,6 +336,58 @@ full `D0-x` theorem.  It does isolate the missing input more sharply as
 residual/common-center reciprocity (or comparably strong B0--B0 structure),
 not connectivity imposed only on the defect degree ledger.
 
+### Marked-support neighborhood partitions
+
+The marked-row reciprocity that is absent from the max-flow probe has an
+exact support-local form.  Let `P_g` be one of the three seven-row groups
+adjacent to a fixed marked B1 vertex, and put
+
+```text
+M_g = {t in ordinary B0 : N_A(t) intersect P_g is empty}.
+```
+
+Every row in `P_g` has residual degree six, while the marked B1 vertex has
+exactly five B0 defect neighbors.  Hence `|M_g|=5` and
+
+```text
+sum_t |N_A(t) intersect P_g|
+  = sum_{u in P_g} deg_A(u) = 7*6 = 42.
+```
+
+Each of the other 42 rows has at least one neighbor in `P_g`, so equality
+forces exactly one.  Equivalently,
+
+```text
+{N_A(u) : u in P_g}
+```
+
+is a family of seven disjoint six-point sets which partitions the 42-point
+complement of `M_g`.  Disjointness also follows directly from C4-freeness:
+two rows of `P_g` already share the marked B1 vertex and therefore cannot
+share a residual B0 neighbor.  Thus the full marked reciprocity produces
+three parallel seven-fiber partitions, each with five holes.  This is a
+strictly stronger placement constraint than prescribing only the row and
+column degrees of the B0--U1 defect matrix.
+
+The first pairwise count between these partitions is nevertheless exhausted.
+For `g != h`, every row outside `M_g union M_h` selects one fiber from each
+partition, so
+
+```text
+sum_{u in P_g, v in P_h} |N_A(u) intersect N_A(v)|
+  = 47 - |M_g union M_h| = 37 + |M_g intersect M_h|.         (12p)
+```
+
+Every summand is at most one, and it is zero when the two corresponding
+outer blocks already share a U1 point.  The two marked matchings share a
+color and cover seven of its eight points each, so they create six or seven
+such forced-zero cells among the 49 pairs.  The resulting capacity is 43 or
+42, while the right side of (12p) is at most 42.  Thus the unrefined pairwise
+intersection count gives only the tautological bound
+`|M_g intersect M_h| <= 5` (or weaker).  Any gain must couple all three
+partitions, retain the locations of their forced-zero cells, or use the
+ordinary U1 fibers below; pairwise mass alone is not the terminal.
+
 ### Residual fiber-matching form
 
 Residual reciprocity packages the term `T_R` columnwise.  For `b in U1`,
