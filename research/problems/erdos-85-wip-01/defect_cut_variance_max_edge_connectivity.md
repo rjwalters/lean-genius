@@ -469,6 +469,25 @@ alpha,beta,gamma lie in S
   with cut degrees m-1,m-1,1.                 (22)
 ```
 
+Every `z in Z` now supplies a punctured parallel class on `S`.  Let `s_z`
+be its unique D-neighbor in `S`, and write `|S|=qa+1`.  Because
+`N_A(z)` is disjoint from `R`, equation (5) says that every
+`w in N_A(z)` has exactly a A-neighbors in `S`.  The q sets
+
+```text
+N_A(w) intersect S,       w in N_A(z),
+```
+
+are pairwise disjoint: a common point of two would give those two vertices
+the common A-neighbors `z` and that point.  They have total size `qa`, and
+the D relation says that their union is exactly `S\{s_z}`.  Thus the q-1
+boundary endpoints give q-1 parallel classes of q a-blocks, whose omitted
+points have multiplicities
+
+```text
+(m-1,m-1,1) at (alpha,beta,gamma).             (23)
+```
+
 This is the exact nonlinear filler problem left by the triangle-free
 minimum-cut branch.  The available degree and pair-capacity counts fit
 inside the two wings and `Z`; no repeated common neighbor or D-disconnection
