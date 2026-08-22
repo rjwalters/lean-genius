@@ -148,9 +148,87 @@ theorem squareOrderNine_threeHigh_secondProfile_binZero_row_mass_dichotomy
     rw [hrow]
     omega
 
+/-- Exact center weights on the two nonzero parts of a row cover.  Residual
+bin-zero centers in the marked support union contribute two unmarked points,
+the other residual bin-zero centers contribute three, and every unmarked
+bin-one center contributes three by cubicity. -/
+theorem squareOrderNine_threeHigh_secondProfile_row_center_weight_sums
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let R := G.neighborFinset t ∩ T
+    (∑ w ∈ R, (G.neighborFinset w ∩ U1).card) =
+        2 * (R.filter fun w => w ∈ P).card +
+          3 * (R.filter fun w => w ∉ P).card ∧
+      (∑ w ∈ G.neighborFinset t ∩ U1,
+        (G.neighborFinset w ∩ U1).card) =
+          3 * (G.neighborFinset t ∩ U1).card := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let R := G.neighborFinset t ∩ T
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcensus
+  have hcore :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcore
+  constructor
+  · calc
+      (∑ w ∈ R, (G.neighborFinset w ∩ U1).card) =
+          ∑ w ∈ R, if w ∈ P then 2 else 3 := by
+        apply Finset.sum_congr rfl
+        intro w hwR
+        have hwT := (Finset.mem_inter.mp hwR).2
+        by_cases hwP : w ∈ P
+        · rw [if_pos hwP]
+          exact hcensus.2.2.1 w hwP
+        · rw [if_neg hwP]
+          exact hcensus.2.2.2.1 w
+            (Finset.mem_sdiff.mpr ⟨hwT, hwP⟩)
+      _ = 2 * (R.filter fun w => w ∈ P).card +
+          3 * (R.filter fun w => w ∉ P).card := by
+        rw [Finset.sum_ite]
+        simp [Nat.mul_comm]
+  · calc
+      (∑ w ∈ G.neighborFinset t ∩ U1,
+          (G.neighborFinset w ∩ U1).card) =
+          ∑ _w ∈ G.neighborFinset t ∩ U1, 3 := by
+        apply Finset.sum_congr rfl
+        intro w hw
+        have hwU := (Finset.mem_inter.mp hw).2
+        have hdeg := hcore.2.1 ⟨w, hwU⟩
+        rw [degree_induce_finset_eq_card_inter] at hdeg
+        exact hdeg
+      _ = 3 * (G.neighborFinset t ∩ U1).card := by
+        simp [Nat.mul_comm]
 end
 
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_unmarked_row_cover
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_row_mass_dichotomy
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_row_center_weight_sums
