@@ -163,6 +163,49 @@ The abstract cyclic-grid construction above remains useful only as a scope
 control: it shows why C4 fiber capacity alone did not see the contradiction;
 it does not satisfy the required Mantel density in `D[Z_i]`.
 
+## Scalar frontier for a three-vertex separator
+
+Three-connectivity does not automatically iterate once more.  Let `W` be a
+minimal three-vertex separator.  Every component of `D-W` meets all three
+vertices of `W`, and its boundary is contained among the
+`3(q-1)-2e_D(W)` available outward incidences.  Minimizing the residue bounds
+over at least two components leaves exactly three patterns, up to order:
+
+```text
+(A) two components with residues (0, q-3),
+(B) two components with residues (q-2, q-1),
+(C) three components, all with residue q-1.
+```
+
+Patterns (A) and (B) have minimum total boundary `3q-5`, hence force
+`e_D(W) <= 1`.  Pattern (C) has minimum `3q-3`, so `D[W]` is empty and all
+three component cuts are sharp.  No fourth component fits the boundary
+capacity.
+
+The direct analogue of the two-separator Mantel argument does not kill (C).
+Its three low `q`-sets are supported on the union of three `A`-neighborhoods,
+so each induced defect graph is only forced to be three-colorable.  The
+Turan upper bound `floor(q^2/3)` is larger than the minimum-cut lower bound
+`q^2/4-1`, and balanced tripartite controls fit.
+
+Pattern (A) also survives the current scalar layer.  If its component cuts
+are denoted `(delta_0,delta_1)`, parity and capacity leave
+
+```text
+e_D(W)=1:  (delta_0,delta_1) = (4, 3q-9),
+e_D(W)=0:  (delta_0,delta_1) = (4, 3q-7) or (6, 3q-9).
+```
+
+For the four-edge divisible cut, the centered `A`-degree vector has two
+entries `+1`, two entries `-1`, and all others zero; the three attachment
+multiplicities are `(2,1,1)`.  These profiles admit abstract C4-linear cell
+models.  Pattern (B) is the location of the squad's separate Mantel-pole
+analysis; this note makes no claim that its branch has been eliminated.
+
+Thus `kappa(D) >= 3` is proved, while proving `kappa(D) >= 4` requires new
+location arguments for all surviving three-separator patterns, not merely a
+formal repetition of the two-separator proof.
+
 ## Status
 
 - **Proved mathematically:** connected `D` is three-vertex-connected for even
@@ -170,5 +213,7 @@ it does not satisfy the required Mantel density in `D[Z_i]`.
 - **Intermediate equality interface:** two cross-intersecting punctured
   parallel classes with omission sizes `p` and `q-1-p`; Mantel compression
   excludes it in the graph.
+- **Next vertex-cut frontier:** the three residue patterns (A)--(C) above;
+  (A) and (C) survive all scalar/C4-capacity consumers audited here.
 - **Not claimed here:** a Lean theorem.  The Mantel input and joint argument
   remain subject to the squad's independent review status.
