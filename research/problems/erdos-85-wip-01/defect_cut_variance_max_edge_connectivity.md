@@ -1735,6 +1735,35 @@ K-fibers.  The dual pattern-B escape is therefore constrained by two
 simultaneous linear designs on X: the sparse-overlap R-design (B37) and
 this prescribed-surplus K-design.
 
+The two designs are coupled at the exceptional K-center c.  Its fiber is
+exactly `F_c=C=N_A(c) intersect X`.  By (B18), every `x in C` has no
+D-attachment to W and its two K-neighbors are c and the distinct target
+`phi(x)`.  Therefore the edges of `Gamma_K` incident with c are precisely
+
+```text
+{c,phi(x)},   x in C,
+```
+
+and `deg_(Gamma_K)(c)=a`.  On the other hand (B37) labels every edge of
+`Gamma_R` by its unique intersection point `x in C\U_P`.  Sending that
+edge to `{c,phi(x)}` gives a canonical injection
+
+```text
+E(Gamma_R) --> E(Gamma_K) incident with c,                 (B39)
+```
+
+whose complement in the c-star is labeled exactly by `C intersect U_P`.
+Equivalently,
+
+```text
+deg_(Gamma_K)(c)=|E(Gamma_R)|+|C intersect U_P|=a.
+```
+
+Thus every overlap among the large R-fibers consumes a distinct edge of
+one distinguished star in the K-fiber intersection graph.  This is the
+first direct incidence-level coupling between the two q-generic designs,
+beyond their separate scalar ledgers.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
