@@ -314,6 +314,51 @@ by routing exterior vertices through the four packed neighborhoods.  Thus
 the two-hole cover is a location-sensitive interface for a later component
 coupling, not a terminal by itself.
 
+## Coupling the three order-nine components
+
+In the row `[9,9,9,51]`, the bin-three vertex is in the order-51 component,
+whose color vector is `(6,6,6)`.  The three non-owner order-nine vectors
+therefore sum to `(4,4,4)`.  Up to permuting components and colors, the 21
+ordered assignments fall into exactly three families:
+
+```text
+6 : three (0,2,2) types, with their missing colors all distinct;
+9 : one (0,2,2) missing color i and two (1,1,2) types repeated in color i;
+6 : three (1,1,2) types, with their repeated colors all distinct.
+```
+
+Accordingly, the multiplicities with which the three high roots occur as
+`C4` diagonal centers are `(2,2,2)`, a permutation of `(2,1,1)`, and
+`(1,1,1)`.  These multiplicities exactly fit the high-root degrees, so they
+do not eliminate a family.
+
+There is nevertheless a genuine cross-component packing constraint.  Let
+`C_i` be the defect `K5` in the `i`th order-nine component and put
+`U_i=union_(c in C_i) N_A(c)`.  Each `U_i` has size 45.  Across two distinct
+components every pair in `C_i x C_j` is a defect nonedge and hence has one
+common neighbor.  C4-freeness makes the 25 pair-centers distinct, so
+
+```text
+|U_i intersect U_j| = 25.                       (10)
+```
+
+If `t=|U_1 intersect U_2 intersect U_3|`, classify all 81 vertices by how
+many of the three sets contain them.  Equations `|U_i|=45` and (10) force
+
+```text
+membership 3 : t,
+membership 2 : 75-3t,
+membership 1 : 3t-15,
+membership 0 : 21-t.
+```
+
+Hence `5 <= t <= 21`.  The lower bound also has a pointwise interpretation:
+for each `c in C_i`, its five centers against `C_j` and five centers against
+`C_k` must overlap at least once inside the nine-point set `N_A(c)`.  The
+three-family color classification and this forced triple-overlap are exact,
+but both endpoints remain combinatorially feasible.  A terminal must control
+which cross-pairs share a triple center, not merely their number.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three

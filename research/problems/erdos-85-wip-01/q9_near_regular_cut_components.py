@@ -6,6 +6,7 @@ This is an exact integer checker for the necessary component conditions in
 not assert that any surviving row is realizable.
 """
 
+from collections import Counter
 from itertools import product
 
 
@@ -185,6 +186,25 @@ def order_nine_owner_types(
     return result
 
 
+def three_order_nine_family_counts(
+    types: dict[int, list[tuple[int, int, int]]]
+) -> Counter[tuple[tuple[int, int, int], ...]]:
+    """Color-orbit shapes for the forced (9,9,9,51) row."""
+    result = Counter()
+    for small in product(types[9], repeat=3):
+        if tuple(map(sum, zip(*small))) != (4, 4, 4):
+            continue
+        if not all(
+            tripartite_two_factor_necessary(beta)
+            and bin_degree_ledger_necessary(9, beta, False)
+            for beta in small
+        ):
+            continue
+        shape = tuple(sorted(tuple(sorted(beta)) for beta in small))
+        result[shape] += 1
+    return result
+
+
 def main() -> None:
     types = admissible_types()
     orders = sorted(types)
@@ -227,6 +247,13 @@ def main() -> None:
         {35, 43},
     ]
     assert order_nine_owner_types(partitions, types) == {(2, 2, 2)}
+    assert three_order_nine_family_counts(types) == Counter(
+        {
+            ((0, 2, 2), (0, 2, 2), (0, 2, 2)): 6,
+            ((0, 2, 2), (1, 1, 2), (1, 1, 2)): 9,
+            ((1, 1, 2), (1, 1, 2), (1, 1, 2)): 6,
+        }
+    )
 
     bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
     assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
