@@ -433,8 +433,25 @@ the second-order defect graph says that `x,y` have no common ambient neighbor.
 Equations (28)-(29) show exactly why the raw joint trace did not decide
 parity.  Evenness of `M_c` is equivalent to evenness of the number of internal
 cycle vertices whose two incident internal edges are both triangle-free.
-The handshake lemma only makes the number of vertices incident to exactly one
-such edge even; it does not control the degree-two count.  A genuine parity
-terminal must therefore use the already available triangle-free/antipodal
-color trace or a cycle-run constraint.  Commutation and row sums alone stop at
-(28).
+
+For even `q`, the bank is stronger than the handshake lemma:
+
+* `binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_zero_or_two`
+  says every vertex of `c` has triangle-free degree zero or two;
+* `binarySquare_regular_sizeTwoPart_triangleFree_degree_eq_of_reachable`
+  says this status is constant along every connected component of `G[c]`.
+
+Therefore the diagonal-two set in (28) is a disjoint union of whole internal
+cycles, and
+
+```text
+M_c mod 2
+  = (total order of the all-triangle-free internal cycles in c) mod 2. (30)
+```
+
+This removes arbitrary cycle runs from the residual.  The exact remaining
+question is whether the triangle-free/antipodal color trace forces the total
+order in (30) to be even for every normalized size-two defect component, or
+only after summing across components.  Commutation and row sums alone stop at
+(28); the proved 0-or-2 propagation sharpens the missing input to the
+componentwise parity in (30).
