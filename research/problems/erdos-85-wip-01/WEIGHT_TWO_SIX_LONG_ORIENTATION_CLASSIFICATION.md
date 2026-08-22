@@ -179,3 +179,42 @@ This does **not** itself exclude the survivor.  The q=16 step-3 witness is one
 member of the classified family, and the unresolved obstruction remains the
 integral exterior placement (in particular the disjoint-trace codegree laws,
 which were absent from the feasible fractional control).
+
+## Why the linear exterior spectrum forgets the step
+
+There is a sharp limit on the next consumer.  Let `M` be the incidence matrix
+of the trace graph `F`, and let `K` be any exterior completion.  The trace
+graph in the surviving orientation is connected, bipartite, and
+`(q-2)`-regular, with alternating sign vector `s`.  Hence
+
+```text
+M M^T = (q-2) I + F
+```
+
+is positive semidefinite with kernel exactly `span{s}`.  The cross-block
+square equation and its transpose are
+
+```text
+H M + M K = J,             M^T H + K M^T = J.
+```
+
+If `x` is orthogonal to `1` and `s`, the second equation gives
+
+```text
+K (M^T x) = -M^T(Hx),
+```
+
+and `M^T x` is nonzero.  Thus `M^T` injectively intertwines `-H` with `K`
+on the `(2q-2)`-dimensional space `{1,s}^perp`.  In particular every
+nonprincipal internal-cycle eigenmode other than the alternating kernel is
+inherited by the exterior adjacency with its eigenvalue negated.
+
+Crucially, this inherited operator is the restriction of `-H`; it is
+independent of the cyclic hole step `t`.  The step changes the Gram form
+`M M^T`, hence the embedding of this subspace, but not its exterior
+eigenvalues or any trace-moment contribution obtained merely by summing those
+eigenvalues.  Therefore characteristic-polynomial divisibility and scalar
+spectral-moment routes cannot distinguish the classified steps.  A terminal
+must use the entrywise `0/1` placement of `M^T x` or the nonlinear exterior
+codegree constraints; simply transferring the cycle spectrum cannot select
+or exclude `t`.
