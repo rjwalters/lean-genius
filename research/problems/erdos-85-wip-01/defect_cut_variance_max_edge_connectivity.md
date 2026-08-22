@@ -1053,6 +1053,26 @@ Consequently `A[X union W]` consists of the perfect matching on the
 vertex `c`, and possibly the single edge between the other two vertices of
 `W`.
 
+The R-location is then exact up to that last possible edge.  Since
+`P=K intersect R`, `K intersect W={c}`, and `c notin R`, while
+`R intersect X` is empty, all three points of `P` lie in `Y`.  On `W`, the
+profile (B7) reads
+
+```text
+deg_A(w,W)=1_(w in R)       for w in W\{c},
+deg_A(c,W)=0.
+```
+
+Only the edge between the two points of `W\{c}` can occur, so
+
+```text
+R intersect W = empty       if A[W] is empty,
+R intersect W = W\{c}       if A[W] has that edge.          (B17W''')
+```
+
+In particular `R\(P union W)` lies entirely in `Y`; the three pair-centers
+`P` themselves lie there as well.
+
 The Y-location also carries a near-complete transversal.  If `c in Y`,
 then every `x in X` is a D-nonneighbor of `c`, because `X,Y` are different
 components of `D-W`.  Let `psi(x)` be their unique common A-neighbor.
