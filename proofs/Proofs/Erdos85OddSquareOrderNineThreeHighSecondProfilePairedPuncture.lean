@@ -675,6 +675,229 @@ theorem squareOrderNine_threeHigh_secondProfile_paired_supports_anticomplete
   have hle := common_le_one_of_not_containsC4 hfree y wz hywz
   exact hwyz (Finset.card_le_one.mp hle wy hwyCommon z hzCommon)
 
+/-- Every triple in a special puncture resolution is rainbow: it contains
+exactly one unmarked bin-one row from each high-root fiber. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_puncture_blocks_rainbow
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := (G.neighborFinset y ∩ B 0) \ S
+    let block := fun w => G.neighborFinset w ∩ U1
+    let color := fun a => G.neighborFinset a ∩ U1
+    ∀ w ∈ F, ∀ a ∈ H, ((block w) ∩ (color a)).card = 1 := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := (G.neighborFinset y ∩ B 0) \ S
+  let block := fun w => G.neighborFinset w ∩ U1
+  let color := fun a => G.neighborFinset a ∩ U1
+  have hresolution :=
+    squareOrderNine_threeHigh_secondProfile_special_puncture_resolution
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  dsimp only at hresolution
+  have hcolors :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcolors
+  intro w hwF a ha
+  have hwLow : w ∉ H := by
+    intro hwH
+    have hwB0 := (Finset.mem_inter.mp (Finset.mem_sdiff.mp hwF).1).2
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hwB0).1).2 hwH
+  have hle : ∀ r ∈ H, ((block w) ∩ (color r)).card ≤ 1 := by
+    intro r hr
+    rw [Finset.card_le_one]
+    intro u hu v hv
+    have huParts := Finset.mem_inter.mp hu
+    have hvParts := Finset.mem_inter.mp hv
+    have huBlock := Finset.mem_inter.mp huParts.1
+    have hvBlock := Finset.mem_inter.mp hvParts.1
+    have huColor := Finset.mem_inter.mp huParts.2
+    have hvColor := Finset.mem_inter.mp hvParts.2
+    by_contra huv
+    exact (squareOrderNine_threeHigh_secondProfile_same_high_fiber_separation
+      G hfree huv hr
+        ((G.mem_neighborFinset r u).mp huColor.1)
+        ((G.mem_neighborFinset r v).mp hvColor.1)
+        hwLow).1 ⟨
+          (G.mem_neighborFinset w u).mp huBlock.1,
+          (G.mem_neighborFinset w v).mp hvBlock.1⟩
+  have hpair : ∀ r ∈ H, ∀ s ∈ H, r ≠ s →
+      Disjoint ((block w) ∩ (color r)) ((block w) ∩ (color s)) := by
+    intro r hr s hs hrs
+    exact (hcolors.2.2.1 r hr s hs hrs).mono
+      (fun _ h => (Finset.mem_inter.mp h).2)
+      (fun _ h => (Finset.mem_inter.mp h).2)
+  have hunion : H.biUnion (fun r => (block w) ∩ (color r)) = block w := by
+    ext u
+    constructor
+    · intro hu
+      simp only [Finset.mem_biUnion] at hu
+      obtain ⟨r, _hr, huParts⟩ := hu
+      exact (Finset.mem_inter.mp huParts).1
+    · intro hu
+      have huU := (Finset.mem_inter.mp hu).2
+      have huColors : u ∈ H.biUnion color := by
+        rw [hcolors.2.2.2]
+        exact huU
+      simp only [Finset.mem_biUnion] at huColors ⊢
+      obtain ⟨r, hr, huColor⟩ := huColors
+      exact ⟨r, hr, Finset.mem_inter.mpr ⟨hu, huColor⟩⟩
+  have hsum : (∑ r ∈ H, ((block w) ∩ (color r)).card) = 3 := by
+    rw [← Finset.card_biUnion hpair, hunion,
+      hresolution.1 w hwF]
+  have hrest : (∑ r ∈ H.erase a,
+      ((block w) ∩ (color r)).card) ≤ 2 := by
+    have hbound := Finset.sum_le_card_nsmul (H.erase a)
+      (fun r => ((block w) ∩ (color r)).card) 1 (by
+        intro r hr
+        exact hle r (Finset.mem_of_mem_erase hr))
+    rw [Finset.card_erase_of_mem ha, hcolors.1] at hbound
+    norm_num at hbound
+    exact hbound
+  have hdecomp := Finset.sum_erase_add H
+    (fun r => ((block w) ∩ (color r)).card) ha
+  change (∑ r ∈ H.erase a, ((block w) ∩ (color r)).card) +
+      ((block w) ∩ (color a)).card =
+        ∑ r ∈ H, ((block w) ∩ (color r)).card at hdecomp
+  rw [hsum] at hdecomp
+  have haLe := hle a ha
+  change ((block w) ∩ (color a)).card = 1
+  omega
+
+/-- The three-row hole of a special puncture is also rainbow: exactly one
+missing row lies in each high-root fiber. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_puncture_hole_rainbow
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let E := (secondOrderDefectGraph G).neighborFinset y ∩ U1
+    let color := fun a => G.neighborFinset a ∩ U1
+    ∀ a ∈ H, (E ∩ color a).card = 1 := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := (G.neighborFinset y ∩ B 0) \ S
+  let E := (secondOrderDefectGraph G).neighborFinset y ∩ U1
+  let block := fun w => G.neighborFinset w ∩ U1
+  let color := fun a => G.neighborFinset a ∩ U1
+  have hresolution :=
+    squareOrderNine_threeHigh_secondProfile_special_puncture_resolution
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  dsimp only at hresolution
+  have hrainbow :=
+    squareOrderNine_threeHigh_secondProfile_special_puncture_blocks_rainbow
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  dsimp only at hrainbow
+  have hcolors :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcolors
+  have hFcard :=
+    squareOrderNine_threeHigh_secondProfile_nondefect_special_support_card_seven
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  change F.card = 7 at hFcard
+  intro a ha
+  let covered := (U1 \ E) ∩ color a
+  have hcoveredEq : covered =
+      F.biUnion fun w => (block w) ∩ color a := by
+    ext b
+    constructor
+    · intro hb
+      have hbParts := Finset.mem_inter.mp hb
+      have hbUnion : b ∈ F.biUnion block := by
+        rw [hresolution.2.2]
+        exact hbParts.1
+      simp only [Finset.mem_biUnion] at hbUnion ⊢
+      obtain ⟨w, hwF, hbBlock⟩ := hbUnion
+      exact ⟨w, hwF, Finset.mem_inter.mpr ⟨hbBlock, hbParts.2⟩⟩
+    · intro hb
+      simp only [Finset.mem_biUnion] at hb
+      obtain ⟨w, hwF, hbParts⟩ := hb
+      refine Finset.mem_inter.mpr ⟨?_, (Finset.mem_inter.mp hbParts).2⟩
+      rw [← hresolution.2.2]
+      simp only [Finset.mem_biUnion]
+      exact ⟨w, hwF, (Finset.mem_inter.mp hbParts).1⟩
+  have hcoveredPair : ∀ w ∈ F, ∀ v ∈ F, w ≠ v →
+      Disjoint ((block w) ∩ color a) ((block v) ∩ color a) := by
+    intro w hw v hv hwv
+    exact (hresolution.2.1 w hw v hv hwv).mono
+      (fun _ h => (Finset.mem_inter.mp h).1)
+      (fun _ h => (Finset.mem_inter.mp h).1)
+  have hcoveredCard : covered.card = 7 := by
+    rw [hcoveredEq, Finset.card_biUnion hcoveredPair]
+    calc
+      (∑ w ∈ F, ((block w) ∩ color a).card) = ∑ _w ∈ F, 1 := by
+        apply Finset.sum_congr rfl
+        intro w hw
+        exact hrainbow w hw a ha
+      _ = 7 := by simp [hFcard]
+  have hcolorCard : (color a).card = 8 := hcolors.2.1 a ha
+  have hcolorSplit : color a = covered ∪ (E ∩ color a) := by
+    ext b
+    simp only [covered, Finset.mem_union, Finset.mem_inter,
+      Finset.mem_sdiff]
+    constructor
+    · intro hbColor
+      by_cases hbE : b ∈ E
+      · exact Or.inr ⟨hbE, hbColor⟩
+      · exact Or.inl ⟨⟨(Finset.mem_inter.mp hbColor).2, hbE⟩, hbColor⟩
+    · rintro (hb | hb) <;> exact hb.2
+  have hsplitDisj : Disjoint covered (E ∩ color a) := by
+    rw [Finset.disjoint_left]
+    intro b hbCovered hbE
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hbCovered).1).2
+      (Finset.mem_inter.mp hbE).1
+  have hcards := congrArg Finset.card hcolorSplit
+  rw [Finset.card_union_of_disjoint hsplitDisj,
+    hcolorCard, hcoveredCard] at hcards
+  change 8 = 7 + (E ∩ color a).card at hcards
+  change (E ∩ color a).card = 1
+  omega
+
 end
 
 end Erdos85
@@ -688,3 +911,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_puncture_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_resolutions_cross_le_one
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_supports_anticomplete
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_puncture_blocks_rainbow
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_puncture_hole_rainbow
