@@ -1432,6 +1432,35 @@ the same path-cycle vertex set `X`; any surviving realization must make
 these colored matchings compatible with `A[X]` and with the endpoint split
 in (B24).
 
+Their uncolored union already has an exact normal form.  The three points
+of P have three distinct X-neighbors.  Indeed any two points of P share
+one of their two W-neighbors in the six-cycle (B8); if they also shared an
+X-neighbor, that X-point and the shared W-point would have two common
+A-neighbors.  Let `U_P subset X` be this three-point recipient set.
+
+Similarly, no unordered pair of X-points can be a two-fiber of two
+different points of `R\P`, since those would be two common A-neighbors of
+the pair.  Thus the `R_w` fibers in (B27), over all three colors, form a
+simple edge-disjoint union `M_R` with `q-2` edges.  By (B25), every
+`x != u` has exactly one R-neighbor, whereas `u` has two; a point is
+incident with an edge of `M_R` once for each of those R-neighbors outside
+P.  Also `u` can receive at most one P-point by the preceding paragraph.
+Consequently exactly one of the following holds:
+
+```text
+u in U_P:      M_R is a matching with exactly two uncovered X-points;
+u notin U_P:   M_R is a matching together with one length-two path
+               whose middle vertex is u, and has three uncovered points.
+                                                               (B28)
+```
+
+In the second line the two R-neighbors of `u` lie in different wings:
+two fibers of the same color would give `(u,w)` two common neighbors.
+Thus (B28) is also properly three-colored by the separator wings.  This
+near-perfect matching is forced on the same vertex set on which `A[X]`
+is the path-cycle graph (B22), giving a compact two-factor-style object for
+the remaining `a=1` compatibility problem.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
