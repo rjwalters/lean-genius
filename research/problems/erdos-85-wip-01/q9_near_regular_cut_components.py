@@ -205,6 +205,68 @@ def three_order_nine_family_counts(
     return result
 
 
+def b3_articulation_assemblies() -> list[tuple[tuple[int, int, tuple[int, int, int]], ...]]:
+    """Necessary component assemblies if deleting B3 disconnects D0.
+
+    A component type is ``(e,k,beta)``: it contains ``e`` of the five
+    exceptional B0 vertices, ``5k`` regular B0 vertices, and ``3k`` B1
+    vertices.  Its order and boundary are ``e+8k`` and ``e``.
+    """
+    types = []
+    for exceptional in range(1, 6):
+        for scale in range(10):
+            bin_zero = exceptional + 5 * scale
+            twice_bin_zero_edges = 7 * exceptional + 25 * scale
+            if bin_zero < 8:
+                continue
+            if twice_bin_zero_edges % 2:
+                continue
+            if twice_bin_zero_edges > bin_zero * (bin_zero - 1):
+                continue
+            order = exceptional + 8 * scale
+            if not 1 <= order < N_ORDINARY:
+                continue
+            for beta in product(range(10), repeat=3):
+                if sum(beta) != 3 * scale:
+                    continue
+                complement = tuple(HIGH_DEGREE - value for value in beta)
+                if cut_lower(order, beta) <= exceptional and cut_lower(
+                    N_ORDINARY - order, complement
+                ) <= exceptional:
+                    types.append((exceptional, scale, beta))
+
+    result = []
+
+    def visit(
+        first: int,
+        exceptional_sum: int,
+        scale_sum: int,
+        beta_sum: tuple[int, int, int],
+        parts: list[tuple[int, int, tuple[int, int, int]]],
+    ) -> None:
+        if (exceptional_sum, scale_sum, beta_sum) == (5, 9, (9, 9, 9)):
+            if len(parts) >= 2:
+                result.append(tuple(parts))
+            return
+        for index in range(first, len(types)):
+            exceptional, scale, beta = types[index]
+            new_beta = tuple(beta_sum[i] + beta[i] for i in range(3))
+            if exceptional_sum + exceptional > 5 or scale_sum + scale > 9:
+                continue
+            if any(value > 9 for value in new_beta):
+                continue
+            visit(
+                index,
+                exceptional_sum + exceptional,
+                scale_sum + scale,
+                new_beta,
+                parts + [types[index]],
+            )
+
+    visit(0, 0, 0, (0, 0, 0), [])
+    return result
+
+
 def main() -> None:
     types = admissible_types()
     orders = sorted(types)
@@ -259,12 +321,20 @@ def main() -> None:
         }
     )
 
+    articulation = b3_articulation_assemblies()
+    articulation_order_pairs = Counter(
+        tuple(sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly))
+        for assembly in articulation
+    )
+    assert articulation_order_pairs == Counter({(18, 59): 7, (27, 50): 1, (34, 43): 1})
+
     bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
     assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
     assert [entry[1] for entry in bin_ledger] == [21, 27, 10, 18, 7, 17, 12, 18, 6, 2, 6]
 
     print(f"verified component orders: {orders}")
     print("verified connectivity terminal: no admissible proper order is divisible by 8")
+    print(f"verified B3-articulation assemblies: {articulation_order_pairs}")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
     ):

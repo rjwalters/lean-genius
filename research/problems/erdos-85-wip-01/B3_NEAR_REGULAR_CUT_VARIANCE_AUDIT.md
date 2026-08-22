@@ -324,6 +324,49 @@ In particular, all eleven disconnected order rows are impossible.  The
 earlier order-nine localization calculations are retained only as checks of
 the weaker aggregate layers; (10)--(12) are the decisive consumer.
 
+## If the bin-three vertex is an articulation
+
+Connectivity makes deletion of the unique bin-three vertex `x` the next
+natural separator test.  Suppose a component `S` of `D0-x` contains `e` of
+the five exceptional bin-zero vertices, `r` regular bin-zero vertices, and
+`n1` bin-one vertices.  Its only boundary edges in `D0` are the `e` edges to
+`x`.  Counting `B0`--`B1` edges again gives `3r=5n1`, so for some `k`
+
+```text
+r=5k,  n1=3k,  n0=e+5k,
+|S|=e+8k,  delta_D(S)=e.                        (13)
+```
+
+The internal bin-zero degree sum is also exact.  Each exceptional vertex has
+seven bin-zero defect neighbors and each regular vertex has five, all in
+`S`; hence
+
+```text
+2 e_D(B0,B0;S) = 7e+25k.                        (14)
+```
+
+Thus `7e+25k` is even, `n0>=8`, and the right side of (14) is at most
+`n0(n0-1)`.  Apply (6) to `S` and its complement with boundary `e`, then
+assemble components using
+
+```text
+sum e=5,  sum k=9,  sum beta=(9,9,9).
+```
+
+The exact checker leaves nine color assignments.  Every one has exactly two
+components, with the exceptional vertices split `2+3`; their order pairs
+are
+
+```text
+(18,59) : seven assignments,
+(27,50) : one assignment,
+(34,43) : one assignment.                       (15)
+```
+
+Consequently `x` can be an articulation only in these three sharply
+specified branches.  This is not yet a proof that `D0-x` is connected; a
+location-sensitive consumer of (15) is still required.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
