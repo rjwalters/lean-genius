@@ -255,3 +255,44 @@ The spectral multiplier of `E` still vanishes on the defect eigenvalue
 `mu=-1`, so (10) does not alone close the designated-sector trace problem.
 It is, however, a load-bearing consumer of maximal defect connectivity and
 the strongest current uniform energy bound for that incidence operator.
+
+### Equality in the closed-neighborhood bound
+
+The equality case in (9) is rigid.  Suppose
+`|delta_D(N_D[x])|=q`, and put `y=E_x`.  Then `y` is an integral zero-sum
+vector with `||y||^2=q`.  If `m=|supp(y)|`, then `m<=q`.  Moreover
+
+```text
+A y = L_D 1_{N_D[x]},
+```
+
+so `Ay` is supported on at most `2q` cut endpoints.  The C4 support count
+used in (3) gives
+
+```text
+m(q-m+1) <= 2q.
+```
+
+For `q>=8`, this leaves only `m in {2,q-1,q}`.  The middle value is
+impossible: `q-1` nonzero integer squares already sum to at least `q-1`,
+and the next possible increase is three, not one.  If `m=2`, zero sum gives
+`y=(a,-a)` and `q=2a^2`.  This can occur arithmetically only when the binary
+exponent of q is odd.  But then `a` is even (as `q>=8`), whereas
+
+```text
+y_x = E_xx = deg_T(x)-1
+```
+
+is odd and nonzero because every T-degree is even.  Thus `m=2` is also
+impossible.  Necessarily `m=q`, all nonzero entries are `+1` or `-1`, and
+zero sum gives exactly `q/2` of each.  In particular
+
+```text
+|delta_D(N_D[x])| = q
+  implies deg_T(x) in {0,2}.                  (13)
+```
+
+Equivalently, the q-neighbor occupancy of the closed D-star has exactly
+`q/2` empty and `q/2` double cells, with every other cell occupied once.
+If this balanced simple-occupancy pattern fails, the even cut has size at
+least `q+2`.  No contradiction to the balanced pattern is currently known.
