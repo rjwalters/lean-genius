@@ -2596,6 +2596,129 @@ theorem squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
       rw [Finset.card_sdiff_of_subset hOsub, hTcard, hOc]
     exact ⟨hsecond.1, by omega, hholes⟩
 
+/-- The two or four ordinary bin-zero vertices missed by all six support
+rows through the rare bin-three vertex are exactly its remaining bin-zero
+defect neighbors.  Thus the anonymous support holes are precisely the
+exceptional bin-zero vertices outside the three special rows. -/
+theorem squareOrderNine_threeHigh_secondProfile_support_holes_eq_defect_fiber
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let D := secondOrderDefectGraph G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let W := (S.biUnion fun y => G.neighborFinset y ∩ B 0) ∪
+      (M.biUnion fun y => G.neighborFinset y ∩ B 0)
+    (B 0 \ S) \ (W \ S) = (D.neighborFinset x ∩ B 0) \ S := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let D := secondOrderDefectGraph G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let W := (S.biUnion fun y => G.neighborFinset y ∩ B 0) ∪
+    (M.biUnion fun y => G.neighborFinset y ∩ B 0)
+  let T := B 0 \ S
+  let O := W \ S
+  let Q := (D.neighborFinset x ∩ B 0) \ S
+  change T \ O = Q
+  have hQsub : Q ⊆ T \ O := by
+    intro z hzQ
+    have hzParts := Finset.mem_sdiff.mp hzQ
+    have hzD0 := Finset.mem_inter.mp hzParts.1
+    have hzT : z ∈ T := Finset.mem_sdiff.mpr ⟨hzD0.2, hzParts.2⟩
+    have hxzNot : ¬ G.Adj x z := by
+      intro hxz
+      exact hzParts.2 (Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x z).mpr hxz, hzD0.2⟩)
+    have hanti : z ∈ antipodalNeighbors G x := by
+      rw [secondOrderDefectGraph_neighborFinset G x] at hzD0
+      rcases Finset.mem_union.mp hzD0.1 with hanti | htf
+      · exact hanti
+      · exact (hxzNot ((mem_triangleFreeNeighbors G x z).mp htf).1).elim
+    have hzero : (G.neighborFinset x ∩ G.neighborFinset z).card = 0 :=
+      ((mem_antipodalNeighbors G x z).mp hanti).2.2
+    have hzNotW : z ∉ W := by
+      intro hzW
+      have hzRow := Finset.mem_union.mp hzW
+      rcases hzRow with hzSrow | hzMrow
+      · simp only [Finset.mem_biUnion] at hzSrow
+        obtain ⟨y, hyS, hzy⟩ := hzSrow
+        have hyParts := Finset.mem_inter.mp hyS
+        have hzyParts := Finset.mem_inter.mp hzy
+        have hyCommon : y ∈ G.neighborFinset x ∩ G.neighborFinset z :=
+          Finset.mem_inter.mpr ⟨hyParts.1, (G.mem_neighborFinset z y).mpr
+            ((G.adj_comm y z).mp ((G.mem_neighborFinset y z).mp hzyParts.1))⟩
+        simpa [Finset.card_eq_zero.mp hzero] using hyCommon
+      · simp only [Finset.mem_biUnion] at hzMrow
+        obtain ⟨y, hyM, hzy⟩ := hzMrow
+        have hyParts := Finset.mem_inter.mp hyM
+        have hzyParts := Finset.mem_inter.mp hzy
+        have hyCommon : y ∈ G.neighborFinset x ∩ G.neighborFinset z :=
+          Finset.mem_inter.mpr ⟨hyParts.1, (G.mem_neighborFinset z y).mpr
+            ((G.adj_comm y z).mp ((G.mem_neighborFinset y z).mp hzyParts.1))⟩
+        simpa [Finset.card_eq_zero.mp hzero] using hyCommon
+    exact Finset.mem_sdiff.mpr ⟨hzT, fun hzO => hzNotW (Finset.mem_sdiff.mp hzO).1⟩
+  have hSat := squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hSat
+  change W.card = 45 ∧ O ⊆ T ∧
+    (((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧
+        O.card = 45 ∧ (T \ O).card = 2) ∨
+      ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧
+        O.card = 43 ∧ (T \ O).card = 4)) at hSat
+  have hSCard : S.card = 3 :=
+    (squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx).2.2
+  have hD0Card : (D.neighborFinset x ∩ B 0).card = 5 :=
+    (squareOrderNine_threeHigh_secondProfile_binThree_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx).1
+  have hBranch :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  change ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧
+      (S \ D.neighborFinset x).card = 0) ∨
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧
+      (S \ D.neighborFinset x).card = 2) at hBranch
+  have hSsubB0 : S ⊆ B 0 := Finset.inter_subset_right
+  have hQCard (n : ℕ) (hR : (S \ D.neighborFinset x).card = n) :
+      Q.card = 2 + n := by
+    have hSDCard : (S ∩ D.neighborFinset x).card = 3 - n := by
+      have hpartition := Finset.card_sdiff_add_card_inter S (D.neighborFinset x)
+      rw [hR, hSCard] at hpartition
+      omega
+    rw [Finset.card_sdiff]
+    have hinter : S ∩ (D.neighborFinset x ∩ B 0) =
+        S ∩ D.neighborFinset x := by
+      ext z
+      simp only [Finset.mem_inter]
+      constructor
+      · exact fun hz => ⟨hz.1, hz.2.1⟩
+      · exact fun hz => ⟨hz.1, hz.2, hSsubB0 hz.1⟩
+    rw [hinter, hSDCard, hD0Card]
+    omega
+  symm
+  apply Finset.eq_of_subset_of_card_le hQsub
+  rcases hBranch with h3 | h4
+  · rcases hSat.2.2 with hs3 | hs4
+    · rw [hs3.2.2, hQCard 0 h3.2]
+    · omega
+  · rcases hSat.2.2 with hs3 | hs4
+    · omega
+    · rw [hs4.2.2, hQCard 2 h4.2]
+
 /-- A bin-one vertex antipodal to a special bin-zero neighbor of the rare
 bin-three vertex cannot be one of the three marked bin-one vertices.  It
 therefore has the unmarked original profile `(B₀,B₁)=(5,3)`, and its
@@ -3998,6 +4121,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_binOne_row_packing
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_support_holes_eq_defect_fiber
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_special_support_ledger
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_special_support_equality
