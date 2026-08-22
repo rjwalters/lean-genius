@@ -3054,3 +3054,32 @@ exterior-owner chord internal to the run, and the once-paid collision budget
 of its demanded roots.  It is a deterministic fixed-margin/collision-energy
 constraint, not a fitted price inequality, and is the direct object to test
 against a monotone transport or convexity argument.
+
+## 55. Nonclean colors also consume the target pool
+
+Let `h_P` be the number of third colors `d != c,e` which are not `P`-clean.
+The owner factors are edge-disjoint.  Besides the `ell` run edges in
+`F_e[c][U]`, every nonclean third color contributes at least one edge to its
+own `F_d[c][U]`.  Therefore (184) sharpens to
+
+```text
+A_ext(U)
+  >= ell + sum_(d != c,e, d nonclean) a_d(U)
+  >= ell + h_P.                                        (185)
+```
+
+Substitution in (183) gives
+
+```text
+2 sum_(d in D_P) t_d
+  <= m(q-2) - ell - h_P + a(T_*).                      (186)
+```
+
+Thus the two apparent exceptional mechanisms cannot be budgeted
+independently: every color removed from the clean transpose core because it
+contains a chord also removes at least one vertex from the ambient target
+pool.  Conversely, when `h_P` is small, `D_P` contains almost every third
+color (apart from the at most two endpoint owners), and the once-paid global
+collision bound (179) applies to a large simultaneous family.  Equation
+(186) is the clean-shortage versus target-capacity tradeoff to combine with
+the monotone-transport collision statistic.
