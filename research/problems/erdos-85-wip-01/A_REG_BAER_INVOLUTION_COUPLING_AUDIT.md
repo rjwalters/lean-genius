@@ -1562,6 +1562,48 @@ canonical one- or two-valued defect transport marks, not only their residual
 A-incidence rows -- the natural input for coupling (73p) back to the
 Eulerian `K/Omega` transport.
 
+The unique `r=1` mark does **not** yet carry a canonical `K/Omega` sign.
+This is the exact obstruction to identifying the two private points on a
+majority line with an oriented port pair.  For a private point `P in S`, let
+`m(P)` be its unique D-neighbor outside S and put
+
+```text
+tau_P = 1_[P m(P) in T],
+kappa_P = 1_[P m(P) in K],
+rho_P = |{Y outside S : PY in K setminus D}|.              (73ra)
+```
+
+If `tau_P=1`, then the marked edge is an A-edge.  Omega is absent on A-edges
+and K was obtained by removing T from H, so the mark lies in neither Omega
+nor K: `kappa_P=0`.  If `tau_P=0`, the marked D-edge is non-A and
+`K=Omega triangle (D setminus T)` makes its K- and Omega-memberships
+complementary.  Thus even the *existence* of a binary K/Omega mark first
+requires excluding `T` at the unique D crossing.
+
+Moreover, Eulerianity of K and (20) give the exact row remainder
+
+```text
+kappa_P + rho_P = |N_T(P) intersect S|          (mod 2).  (73rb)
+```
+
+Indeed the left side is the full K-incidence of P across S, while an
+Eulerian graph has equal internal- and crossing-incidence parity, and (20)
+identifies its internal parity with T-incidence into S.  Consequently, for
+the private pair `{P,Q}` owned by one majority line, the desired opposite
+mark condition is equivalent (after proving `tau_P=tau_Q=0`) to
+
+```text
+|N_T(P) intersect S| + |N_T(Q) intersect S|
+  + rho_P + rho_Q = 1                            (mod 2).  (73rc)
+```
+
+Neither (19)--(21) nor the Gram identity controls the two `rho` terms.
+Therefore the precise missing coupling lemma has two independent jobs:
+(i) exclude T at both unique marked crossings, and (ii) pair or evaluate the
+non-D K-crossing remainder so that (73rc) is odd.  Without both inputs the
+private pair remains unoriented; treating the unique D-neighbors themselves
+as signed K/Omega labels would silently assume the desired bridge.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
