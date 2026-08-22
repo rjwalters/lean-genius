@@ -281,6 +281,39 @@ to
 in the displayed order.  Thus it removes six placements in `[9,9,60]`, two
 in `[9,18,51]`, and one in `[9,69]`, without yet eliminating an order row.
 
+## The non-owner order-nine two-hole cover
+
+The exact non-owner geometry has a useful zero-slack packing consequence.
+Let `C` be its defect `K5` of bin-zero vertices and `P` its colored defect
+`C4` of bin-one vertices.  The five sets `N_A(c)`, `c in C`, are pairwise
+disjoint, so their union `U` has 45 points.  Because every `C`--`P` pair is a
+defect edge, every `N_A(p)` avoids `U`.
+
+Consecutive vertices of the defect `C4` have disjoint `A`-neighborhoods,
+whereas each opposite pair has exactly one common neighbor.  The two common
+centers are distinct.  Therefore
+
+```text
+|union_(p in P) N_A(p)| = 4*9 - 2 = 34,
+```
+
+and these four neighborhoods cover all but two points of the 36-point
+complement of `U`.
+
+The colors locate part of this two-hole set.  For type `(0,2,2)`, the two
+opposite pairs are monochromatic and their centers are the two used high
+roots; the unused high root is one of the two holes.  For type `(1,1,2)`,
+the repeated-color diagonal is centered at its high root and the other
+diagonal has an ordinary center.  All three high roots then lie in the
+34-point cover, so both holes are ordinary.
+
+The associated global degree count has no slack but gives no contradiction:
+the two diagonal centers have respectively `8+8=16` exterior incidences in
+type `(0,2,2)` and `8+7=15` in type `(1,1,2)`, exactly the deficits obtained
+by routing exterior vertices through the four packed neighborhoods.  Thus
+the two-hole cover is a location-sensitive interface for a later component
+coupling, not a terminal by itself.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
