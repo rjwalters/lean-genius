@@ -568,6 +568,12 @@ four local edges; W is the regular U-pair; all partners are on order 34;
 all three points of U are on order 43.                         (26)
 ```
 
+But the third point of `U` is the exceptional one.  It is not in `W`, has
+no bin-one neighbors, and the local-edge classification says it is adjacent
+to neither point of the regular pair `W`.  Its only neighbor in `Z` is
+therefore `x`, whereas every bin-zero point on the order-43 side has
+`Z`-degree two by (23).  This contradiction eliminates `(p,q)=(2,2)`.
+
 Now suppose `(p,q)=(3,1)`, so all three partners belong to `P`.  If `b` is
 the number of points of `U` on the order-34 side, the `3+3` split puts
 exactly `b` partners on the order-43 side.  By (25), each of those partners
@@ -584,8 +590,24 @@ a four-cycle with `x`.  Hence in the three-edge branch that selected point
 must be the unique order-34 point of `U`.  In the four-edge branch it must
 additionally be the exceptional point: a selected regular point has
 `W`-degree one on either side and produces the same forbidden four-cycle.
-These conclusions do not yet eliminate `(34,43)`, but reduce it to one
-rigid `(2,2)` placement and the narrow `(3,1)` alternatives just described.
+If `b=1`, the selected point is the exceptional order-34 point, so the other
+two points of `U` are outside `W`, have no neighbor in `P`, and have no edge
+to the selected point.  Their required `Z`-degree two forces both through
+the sole point of `W\U`; they share that point and `x`, a forbidden
+four-cycle.
+
+If `b=0`, the selected point of `U intersect W` is on the order-43 side and
+its required `W`-degree one forces it to meet `W\U`.  In the three-edge
+branch both other points of `U` also require that neighbor.  In the
+four-edge branch, if the selected point is exceptional then both regular
+points require it; if it is regular, the remaining exceptional point does.
+In every case the selected point and at least one other point of `U` share
+both `x` and `W\U`, again a four-cycle.  This kills `(p,q)=(3,1)` as well.
+Consequently
+
+```text
+the (34,43) B3-articulation branch is impossible.              (28)
+```
 
 The symmetric `(18,59)` branch has cut excess two rather than equality.  The
 integer square-sum refinement leaves exactly two profiles on the order-60
@@ -593,7 +615,7 @@ shore:
 
 ```text
 (L) one degree-5 center c, 28 degree-6, 49 degree-7;
-(H) one degree-8 center c, 31 degree-6, 46 degree-7.                 (28)
+(H) one degree-8 center c, 31 degree-6, 46 degree-7.                 (29)
 ```
 
 In case (L), let `Z` contain the degree-5 center and the 28 degree-6
@@ -602,14 +624,14 @@ component `S`, respectively,
 
 ```text
 (L) A 1_S = 2 1 + 1_Z + e_c - A 1_H,
-(H) A 1_S = 2 1 + 1_Z - e_c - A 1_H.             (29)
+(H) A 1_S = 2 1 + 1_Z - e_c - A 1_H.             (30)
 ```
 
 The same square-identity calculation gives
 
 ```text
 (L) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z - 1_(N_A(c)),
-(H) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z + 1_(N_A(c)). (30)
+(H) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z + 1_(N_A(c)). (31)
 ```
 
 In case (H), evaluation at a high root forces `c` to be high-free; otherwise
@@ -621,13 +643,13 @@ So (H) is impossible.
 In case (L), evaluation at `x` gives
 
 ```text
-|N_A(x) intersect Z| = 1 - 1_[x adjacent c].     (31)
+|N_A(x) intersect Z| = 1 - 1_[x adjacent c].     (32)
 ```
 
-At the high roots, (30) says that at most the `k(c)` high-root incidences of
+At the high roots, (31) says that at most the `k(c)` high-root incidences of
 `c` can account for missing points of `Z`.  Hence at least `3-k(c)` of the
 three distinct bin-one partners of `x` lie in `Z`.  If `c` is bin zero this
-lower bound is three, and if `c` is bin one it is two; both contradict (31).
+lower bound is three, and if `c` is bin one it is two; both contradict (32).
 The only remaining possibility is `c=x` (the spike center is ordinary, so
 there is no high-vertex case).
 

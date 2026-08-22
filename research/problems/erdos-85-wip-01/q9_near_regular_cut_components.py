@@ -440,12 +440,23 @@ def main() -> None:
     }
     assert pq_cases == {(2, 2), (3, 1)}
     # For q=2, the three-local-edge branch is eliminated; in the four-edge
-    # branch W must be the adjacent regular pair and the 3+3 shore split is
-    # forced to (partners on S, U on S)=(3,0).  For q=1, C4-freeness bounds
-    # the number b of U-points on S by one.
-    q2_survivors = [("four", "regular-pair", 3, 0)]
-    assert q2_survivors == [("four", "regular-pair", 3, 0)]
+    # branch W would have to be the adjacent regular pair, leaving the third
+    # U-point with Z-degree one instead of two.  For q=1, C4-freeness bounds
+    # the number b of U-points on S by one, and the other two U-points are
+    # both forced through the sole point of W\U, another forbidden C4.
     assert [b for b in range(4) if b <= 1] == [0, 1]
+    articulation_after_two_point_handshake = [
+        assembly
+        for assembly in articulation_after_b0_handshake
+        if tuple(
+            sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly)
+        )
+        != (34, 43)
+    ]
+    assert Counter(
+        tuple(sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly))
+        for assembly in articulation_after_two_point_handshake
+    ) == Counter({(18, 59): 1})
 
     bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
     assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
@@ -459,6 +470,7 @@ def main() -> None:
     print("verified post-equality articulation frontier: (18,59), (27,50), (34,43)")
     print("verified post-B0-handshake articulation frontier: (18,59), (34,43)")
     print("verified (34,43) low-set split: (p,q)=(2,2) or (3,1)")
+    print("verified post-two-point-handshake articulation frontier: (18,59)")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
     ):
