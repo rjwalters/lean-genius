@@ -2809,3 +2809,46 @@ Thus the clean-lift primal has an explicit collision-energy coordinate
 charge each repeated target once, and (168) bounds the total charge by the
 geometry of the demanded root set; this is the direct analogue of the
 fiber-collision statistic retained by the successful B.3 Farkas curl.
+
+## 50. Mixed clean-or-long dichotomy
+
+Let `C` be an odd mixed cycle from Section 42.  By (155), choose an owner
+color `e` for which `r_e(C)` is odd.  Its cyclic edge set has an odd number
+of odd-length maximal `e`-runs.  Define `L'_q` to be the least positive odd
+integer `ell` for which
+
+```text
+q < (ell-1)(ell-2) + 10.                               (170)
+```
+
+Then the parity-carrying runs have the following exact alternative:
+
+```text
+some odd e-run has length ell < L'_q
+  and admits an endpoint-neutral clean lift;
+
+or every odd e-run has length at least L'_q.            (171)
+```
+
+Indeed, in the first case the negation of (170) is precisely the sufficient
+condition (160).  In the second case, the odd runs are edge-disjoint subsets
+of `C`, so their number is at most
+
+```text
+floor(r_e(C)/L'_q)
+  <= floor(|C|/L'_q)
+  <= floor(2q/L'_q).                                   (172)
+```
+
+For large `q`, `L'_q` is asymptotic to `sqrt(q)`, so the second branch has
+only `O(sqrt(q))` parity-carrying runs, each of length `Omega(sqrt(q))`.
+For every fixed odd `ell`, the first branch holds once
+`q >= (ell-1)(ell-2)+10`.
+
+This is the mixed counterpart of (134)--(137), now with the endpoint mark
+retained.  The short branch supplies the verified primal cap system and
+collision bound (165)--(169) on an odd run.  The long branch is a sparse
+global census on the one odd internal cycle `C`.  Thus a closing argument
+need only prove root--port conservation for the endpoint-neutral short-run
+system and separately pair the bounded family of long odd runs; no arbitrary
+mixed state-cycle geometry remains.
