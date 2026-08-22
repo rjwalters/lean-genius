@@ -1099,3 +1099,51 @@ orthogonality, rooted budgets, and canonical port resolution do not kill odd
 holonomy.  The closing theorem must use the simultaneous reuse of the other
 cross blocks (and, in the target campaign, the binary-power hypothesis); no
 further invariant confined to one endpoint pair can suffice.
+
+## 17. Full-SRP boundary transport of an odd closed run
+
+The other routing colors do detect the local countermodel's missing datum.
+Suppose an internal cycle `C` of odd order `n` is monochromatically owned by
+an exterior component `e`.  Its owner ports form a set `Z subset e` of the
+same order, and the `C--Z` part of `R_ce` is the bipartite incidence cycle.
+It is an entire connected component of that cross two-factor: every vertex
+of `C` and `Z` has both cross neighbors inside the block.  Therefore over
+`F_2`, writing indicator vectors with the same symbols,
+
+```text
+R_ce Z = 0,                         R_ec C = 0.          (64)
+```
+
+Apply `SRP(c,e)` to `Z`.  The first endpoint layer vanishes by `R_ce Z=0`.
+Now pair the resulting vector with `C`.  The second endpoint layer also
+vanishes, since
+
+```text
+C^T R_ce A_e Z = (R_ec C)^T A_e Z = 0.
+```
+
+On the right, `J Z = n 1_c = 1_c` because `n` is odd, and pairing with `C`
+again gives `n=1` in `F_2`.  Consequently the exterior routing colors obey
+the exact simultaneous identity
+
+```text
+sum_(d != c,e) (R_dc C)^T (R_de Z) = 1  in F_2.         (65)
+```
+
+Both vectors in each summand are incidence-boundary vectors on the same
+component `d`; each has even Hamming weight because every cross block has
+column degree two.  Nevertheless (65) says that an odd number of third
+colors have odd overlap, in particular
+
+```text
+there exists d != c,e with
+  |supp(R_dc C) cap supp(R_de Z)| odd.                   (66)
+```
+
+This is the first obstruction in this audit which genuinely uses all the
+simultaneous routing colors and is absent from the single-pair model of
+Section 16.  An odd all-horizontal state cycle cannot remain isolated: it
+exports an odd boundary-overlap mark to at least one third component.  The
+next parity step is to show that these exported marks pair globally, or that
+iterating the export creates a forbidden odd incidence cycle in the finite
+component-color system.
