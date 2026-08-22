@@ -372,6 +372,76 @@ theorem c4Free_sum_punctured_shore_blocks_le
     _ ≤ (S.erase p).card := Finset.card_filter_le _ _
     _ = S.card - 1 := Finset.card_erase_of_mem hp
 
+/-- At the final dyadic layer `q = 2m`, every row through a shore point is
+balanced or full.  A balanced row contributes `m-1` points after puncturing
+at that point, while a full row contributes one further block of size `m`.
+The C4-free local packing therefore bounds the number of full rows through
+the point.  This is the quantitative occupancy conversion used in (57)--(58). -/
+theorem binarySquare_finalLayer_fullRows_local_bound
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {m : ℕ}
+    (hreg : ∀ v, G.degree v = 2 * m)
+    (S : Finset V) {p : V} (hp : p ∈ S)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = 2 * m) :
+    2 * m * (m - 1) +
+        m * ((G.neighborFinset p).filter fun w =>
+          (G.neighborFinset w ∩ S).card = 2 * m).card + 1 ≤ S.card := by
+  by_cases hmzero : m = 0
+  · have hScard : 1 ≤ S.card := Finset.one_le_card.mpr ⟨p, hp⟩
+    simp [hmzero, hScard]
+  · have hm : 1 ≤ m := Nat.one_le_iff_ne_zero.mpr hmzero
+    have hrow (w : V) (hw : w ∈ G.neighborFinset p) :
+      (m - 1) +
+          (if (G.neighborFinset w ∩ S).card = 2 * m then m else 0) ≤
+        (G.neighborFinset w ∩ S.erase p).card := by
+      have hpNw : p ∈ G.neighborFinset w := by
+        exact (G.mem_neighborFinset w p).mpr
+          ((G.mem_neighborFinset p w).mp hw).symm
+      have hpInter : p ∈ G.neighborFinset w ∩ S :=
+        Finset.mem_inter.mpr ⟨hpNw, hp⟩
+      have herase :
+          G.neighborFinset w ∩ S.erase p =
+            (G.neighborFinset w ∩ S).erase p := by
+        ext x
+        simp [and_assoc, and_comm]
+      rw [herase, Finset.card_erase_of_mem hpInter]
+      rcases htri w with hzero | hhalf | hfull
+      · have : 0 < (G.neighborFinset w ∩ S).card :=
+          Finset.card_pos.mpr ⟨p, hpInter⟩
+        omega
+      · have hnotFull : (G.neighborFinset w ∩ S).card ≠ 2 * m := by
+          omega
+        rw [if_neg hnotFull, hhalf]
+        omega
+      · simp [hfull]
+        omega
+    have hweighted :
+      2 * m * (m - 1) +
+          m * ((G.neighborFinset p).filter fun w =>
+            (G.neighborFinset w ∩ S).card = 2 * m).card ≤
+        ∑ w ∈ G.neighborFinset p,
+          (G.neighborFinset w ∩ S.erase p).card := by
+      calc
+        2 * m * (m - 1) +
+            m * ((G.neighborFinset p).filter fun w =>
+              (G.neighborFinset w ∩ S).card = 2 * m).card =
+            ∑ w ∈ G.neighborFinset p,
+              ((m - 1) +
+                if (G.neighborFinset w ∩ S).card = 2 * m then m else 0) := by
+                  rw [Finset.sum_add_distrib]
+                  simp [Finset.sum_ite, G.card_neighborFinset_eq_degree, hreg,
+                    Nat.mul_comm, Nat.mul_left_comm]
+        _ ≤ ∑ w ∈ G.neighborFinset p,
+            (G.neighborFinset w ∩ S.erase p).card := by
+              exact Finset.sum_le_sum fun w hw => hrow w hw
+    have hpack := c4Free_sum_punctured_shore_blocks_le G hfree S hp
+    have hScard : 1 ≤ S.card := Finset.one_le_card.mpr ⟨p, hp⟩
+    omega
+
 end
 
 end Erdos85
@@ -388,3 +458,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_full_empty_card_le
 #print axioms Erdos85.regular_emptyLines_mul_card_le_complement_card
 #print axioms Erdos85.c4Free_sum_punctured_shore_blocks_le
+#print axioms Erdos85.binarySquare_finalLayer_fullRows_local_bound
