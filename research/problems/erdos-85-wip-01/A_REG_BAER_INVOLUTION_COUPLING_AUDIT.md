@@ -743,13 +743,71 @@ new nonconstant kernel shore then it is an even shore, disjoint from S, on
 which the full package recurses again.  In particular the exact
 complete/cocktail incidence leaves no bottom period-two escape.
 
-Equations (7)--(37) are the first canonical cut detector manufactured from
+More generally, an even-period survivor has a rigid mod-four incidence
+normal form.  Suppose U,V are kernel shores with
+
+```text
+beta(U)=V,       beta(V)=U,
+s=|U|,           t=|V|.
+```
+
+Then, pointwise,
+
+```text
+|N_A(x) intersect U| = 2 [x in V]  (mod 4),
+|N_A(x) intersect V| = 2 [x in U]  (mod 4).                    (38)
+```
+
+In particular every U-point has `2 mod 4` neighbors in V and every V-point
+has `2 mod 4` neighbors in U; all points off the opposite shore have degree
+`0 mod 4` into it.  Let `a(s)` be the least integer congruent to 2 modulo
+four which is at least
+
+```text
+max(2, ceil((3q+1-s)/2)),
+```
+
+and define `a(t)` symmetrically.  Equation (24) and (38) give the cross
+minimum degrees `a(s),a(t)`.  C4-freeness and incidence balance then force
+
+```text
+s C(a(s),2) <= C(t,2),       s a(s) <= (q-2)t,
+t C(a(t),2) <= C(s,2),       t a(t) <= (q-2)s.                 (39)
+```
+
+These are necessary conditions for every literal two-cycle, including
+overlapping U,V (treat the two shores as labeled copies).  They subsume the
+bottom exclusion: at `s=q+1` or `q+2`, the exact interface has U-to-V degree
+q, congruent to zero rather than two modulo four.
+
+A fixed point is substantially more constrained.  Put U=V and s=t.  Then
+every induced degree in `A[U]` is `2 mod 4` and at least `a(s)`.  Pair
+counting in U gives
+
+```text
+s C(a(s),2) <= C(s,2),
+s >= a(s)(a(s)-1)+1.                                         (40)
+```
+
+If `s<3q+1`, using `a(s)>=(3q+1-s)/2` in (40) yields
+
+```text
+(3q-s)^2 <= 4s-3,
+s >= 3q+2-sqrt(12q+1).                                      (41)
+```
+
+The same lower bound is automatic when `s>=3q+1`.  Hence no Bockstein fixed
+shore lives near the generic minimum `q+1`: every fixed point is confined
+to a narrow window below or above `3q`.  Equations (39)--(41) are an exact
+normal form, not yet an exclusion of large or asymmetric two-cycles.
+
+Equations (7)--(41) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(37), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(41), so these laws alone
 do not conceal an order-independent
 contradiction.
 
