@@ -1129,6 +1129,25 @@ candidate whose external label is essential and therefore has deletion loss
 one.  Both are root--fiber collision statements visible to `iota` and the
 role census.
 
+For `|O|=1` the loss has a standard matching interpretation.  If the own
+candidate is a selected-label singleton, it deletes no external label and
+has `lambda=0`, hence net gain one.  If its support is `{a,b}` with `a` a
+root-own label and `b` external, then
+
+```text
+lambda({u})=1  iff every maximum matching of G_t^ext uses label b. (12qs)
+```
+
+Indeed, a maximum matching avoiding `b` survives its deletion, while one in
+the deleted graph is precisely a maximum matching of the original graph
+which avoids `b`.  Call such a `b` **external-essential**.  Thus a two-label
+own candidate contributes net gain zero exactly when its second label is
+external-essential; otherwise it contributes one.  For two compatible own
+candidates, (12qq) is the corresponding two-label essential-set test.  This
+reduces the local side of the conjecture to at most two root-own fibers and
+the essentiality of their attached external labels—a small vertex-cover
+condition via Kőnig, rather than an arbitrary matching interaction.
+
 At zeroth order, the own transport is an Eulerian flow statement.  Let
 `x_tu` be the fractional multiplicity with which candidate `u` is selected
 in row `t`.  Equal own mass in (12qi) says, for every full signature `sigma`,
