@@ -24,7 +24,10 @@ pieces: ``dtb-aq-cap`` is the entrywise bound ``A_T Q <= 1``, while
 For fixed outer witnesses tested on 2026-08-21, the orthogonality law alone
 (with defect variables decoupled via ``dtb-zero``) remained UNSAT in about two
 seconds in both branches; the AQ cap alone timed out.  This is localization,
-not a certificate or a universal UNSAT claim.
+not a certificate or a universal UNSAT claim.  A second split showed that
+orthogonality together with the B0 Gram law (blocks sharing a U1 point cannot
+share a residual center) remains UNSAT even after removing the ordinary
+residual C4 constraint; removing both Gram laws gives SAT witnesses.
 """
 
 from __future__ import annotations
@@ -106,7 +109,8 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
     # the unconditional at-most-one constraint is already necessary.
     for u, v in combinations(range(N), 2):
         common = [If(adj(u, w) & adj(v, w), 1, 0) for w in range(N) if w not in (u, v)]
-        solver.add(Sum(common) <= 1)
+        if "residual-c4" not in relax:
+            solver.add(Sum(common) <= 1)
 
     incidence = {}
     k = {}
@@ -177,7 +181,9 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
             block_common = Sum([If(And(incidence[u, b], incidence[v, b]), 1, 0) for b in range(N_U1)])
             residual_common = Sum([If(adj(u, w) & adj(v, w), 1, 0) for w in range(N) if w not in (u, v)])
             if "b0-c4" not in relax:
-                solver.add(block_common + residual_common <= 1)
+                solver.add(block_common <= 1)
+                if "b0-orthogonal" not in relax:
+                    solver.add(Or(block_common == 0, residual_common == 0))
 
         # Cubic U1 graph: one neighbor of every high color at every point.
         k = {edge_key(a, b): Bool(f"k_{a}_{b}") for a, b in combinations(range(N_U1), 2)}
@@ -287,7 +293,8 @@ def main() -> int:
                         help="fix incidence/K to one fast outer-design witness")
     parser.add_argument("--outer-random-seed", type=int, default=0)
     parser.add_argument("--relax", action="append", default=[],
-                        choices=("b0-c4", "dtb-common", "dtb-cap", "dtb-aq-cap",
+                        choices=("residual-c4", "b0-c4", "b0-orthogonal",
+                                 "dtb-common", "dtb-cap", "dtb-aq-cap",
                                  "dtb-orthogonal", "dtb-zero", "dtb-rows",
                                  "dtb-columns"))
     parser.add_argument("--kissat", action="store_true",

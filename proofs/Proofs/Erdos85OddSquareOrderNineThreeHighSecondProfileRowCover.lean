@@ -1572,6 +1572,66 @@ theorem squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
   · rw [hC.2.1]
     simp
 
+/-- The companion Gram identity.  Off the diagonal, a pair of ordinary B0
+rows cannot simultaneously share an unmarked-B1 incidence point and a
+residual-B0 common center.  In matrix notation this is the vanishing of the
+off-diagonal part of the entrywise product `(Q Qᵀ) * (A²)`. -/
+theorem squareOrderNine_threeHigh_secondProfile_incidence_residual_gram_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {x : V} :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    (∑ t ∈ T, ∑ u ∈ T.filter (fun u => u ≠ t),
+      ((G.neighborFinset t ∩ U1) ∩ G.neighborFinset u).card *
+        ((G.neighborFinset t ∩ T) ∩ G.neighborFinset u).card) = 0 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  apply Finset.sum_eq_zero
+  intro t ht
+  apply Finset.sum_eq_zero
+  intro u hu
+  have htu : t ≠ u := (Finset.mem_filter.mp hu).2.symm
+  let Q := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset u
+  let R := (G.neighborFinset t ∩ T) ∩ G.neighborFinset u
+  change Q.card * R.card = 0
+  have hdisj : Disjoint Q R := by
+    rw [Finset.disjoint_left]
+    intro w hwQ hwR
+    have hwU := (Finset.mem_inter.mp (Finset.mem_inter.mp hwQ).1).2
+    have hwT := (Finset.mem_inter.mp (Finset.mem_inter.mp hwR).1).2
+    have hwB1 := (Finset.mem_sdiff.mp hwU).1
+    have hwB0 := (Finset.mem_sdiff.mp hwT).1
+    have hk1 := (Finset.mem_filter.mp hwB1).2
+    have hk0 := (Finset.mem_filter.mp hwB0).2
+    omega
+  have hunionSub : Q ∪ R ⊆ G.neighborFinset t ∩ G.neighborFinset u := by
+    intro w hw
+    rcases Finset.mem_union.mp hw with hwQ | hwR
+    · have hwp := Finset.mem_inter.mp hwQ
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hwp.1).1, hwp.2⟩
+    · have hwp := Finset.mem_inter.mp hwR
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hwp.1).1, hwp.2⟩
+  have hsumLe : Q.card + R.card ≤ 1 := by
+    rw [← Finset.card_union_of_disjoint hdisj]
+    exact (Finset.card_le_card hunionSub).trans
+      ((not_containsC4_iff_forall_common_le_one G).mp hfree t u htu)
+  by_cases hQ : Q.card = 0
+  · rw [hQ]
+    simp
+  · have hR : R.card = 0 := by omega
+    rw [hR]
+    simp
+
 /-- For each U1 point, exactly fifteen ordinary rows are resolved through a
 U1-core common center: its three cubic neighbors have five ordinary B0
 neighbors each, and these three service fibers are disjoint. -/
@@ -2192,6 +2252,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_incidence_residual_gram_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_defect_mass_dichotomy
