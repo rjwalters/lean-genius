@@ -1245,6 +1245,16 @@ refinement must resolve the individual own fiber or its external-essential
 second label—exactly the information retained by `iota` and (12qs), rather
 than another scalar root statistic.
 
+External essentiality itself is not a plug-in global price.  Set
+`mu_tb=1` when deleting external label `b` lowers `nu(G_t^ext)`, and zero
+otherwise (root-own labels have value zero).  The exact integer matching
+oracle gives positive global support sums on every locally feasible sampled
+instance; on the two hardest pairs they are 66 and 58.  The complementary
+`0/1` price is also positive (62 and 53).  Thus (12qs) identifies the local
+deletion mechanism but does not by itself orient the Farkas curl.
+Full-signature alpha potentials and genuinely joint role weights are still
+required to turn essential-label blocking into a global contradiction.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
