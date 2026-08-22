@@ -464,7 +464,7 @@ ones.  This cleanly separates the already harmless connected internal-cycle
 case from the genuine mixed-cycle case.
 
 There is a stronger sectorwise conclusion.  Under the full-support
-alternating-eigenline hypotheses, the banked theorem
+`-2` alternating-eigenline hypotheses, the banked theorem
 `binarySquare_regular_sizeTwoPart_internalCycle_even_six_le` says that
 **every** connected component of `G[c]` has even order.  Consequently every
 all-triangle-free internal cycle has even order separately, and (30) gives
@@ -474,9 +474,10 @@ M_c = 0  (mod 2)                                             (31)
 ```
 
 for an arbitrary number of internal cycles.  Thus the multi-cycle parity
-residual is absent throughout `SIZE-TWO-EIGENLINE(q)`, not only in its
-single-cycle subcase.  Any genuinely odd residual in (30) must lie in the
-no-full-support-alternating-eigenline sector (or on internal cycles where a
-candidate `-2` eigenvector vanishes), so it belongs on the transport/no-
-eigenline side of the dispatcher rather than inside the signed eigenline
-classification.
+residual is absent throughout the full-support `-2` sector, not only in its
+single-cycle subcase.  Any genuinely odd residual in (30) requires failure
+of that hypothesis (for example, no full-support `-2` eigenline, or a
+candidate `-2` eigenvector vanishing on an internal cycle).  This does not
+exclude other signed joint eigenvalues `mu`; it routes the residue away from
+the specifically alternating `mu=-2` cell toward the transport/other-mode
+side of the dispatcher.
