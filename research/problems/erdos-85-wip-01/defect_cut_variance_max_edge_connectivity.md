@@ -867,6 +867,28 @@ size `q(q-2)`; (B6) says that their complement is exactly the `2q`-set `K`.
 Accordingly the smallest surviving parameter has been reduced to a rigid
 near-maximal defect clique with a two-edge attachment at every vertex.
 
+There is an exact matching inside this endpoint.  For `w in W`, let `X_w`
+be the vertices of `X` whose unique missing `D`-attachment is `w`.  Since
+every `x in X` attaches to the other two separator vertices,
+
+```text
+|X_w|=(q-2)-m_w=n_w-1=|R_w|.                 (B12)
+```
+
+The pair `(x,w)` is a `D`-nonedge and therefore has a unique common
+`A`-neighbor.  It cannot lie in `K`, because `K` is `A`-anticomplete to
+`X`; among the neighbors of `w`, (B8') then forces it to lie in `R_w`.
+Distinct vertices of the defect clique `X` have disjoint `A`-neighborhoods,
+so these common neighbors are distinct.  Cardinality in (B12) upgrades the
+map to a bijection
+
+```text
+X_w  <-->  R_w.                               (B13)
+```
+
+Thus each of the three missing-attachment color classes is paired exactly
+with its opposite R-wing.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
