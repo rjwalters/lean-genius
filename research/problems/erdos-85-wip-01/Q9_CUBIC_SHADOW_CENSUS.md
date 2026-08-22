@@ -249,3 +249,15 @@ Consequently the triangular graph has **no edge within a shadow component**,
 and every one of the 80 configuration lines meets three distinct components.
 The remaining lift is therefore five-partite, with each 16-point block having
 48 line incidences.
+
+`q9_order16_block_quotients.py` next exhausts the five transitive groups of
+degree five and every invariant nonnegative integer weighting of the ten
+block triples.  For the cyclic and dihedral actions the triples form two
+orbits of size five, with weights `(a, 16-a)` for `0 <= a <= 16`: 17
+patterns for each action.  For each of the Frobenius group of order 20,
+`A5`, and `S5`, the ten triples form one orbit and its unique weight is 8.
+Thus exactly 37 action-pattern pairs survive the block quotient.  Their
+pair-codegrees are 16 through 32 on the two pair orbitals in complementary
+amounts for the cyclic/dihedral cases, and uniformly 24 in the remaining
+three cases.  These are necessary quotient data; they do not yet exclude
+the order-16 lift.
