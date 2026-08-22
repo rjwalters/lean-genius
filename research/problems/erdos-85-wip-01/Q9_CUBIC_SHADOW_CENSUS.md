@@ -192,3 +192,15 @@ completely eliminates four of the seven order-40-pair shadow types.
 The three higher-symmetry order-40 component types—ordinals 3, 8, and 11—have
 doubled-shadow automorphism groups of orders 12,800, 12,800, and 460,800,
 respectively, and remain separate classification leaves.
+
+The companion `q9_order40_pair_highsymmetry_exclusion.py` closes ordinals 3
+and 8.  Each order-12,800 automorphism group has 23,183 subgroup conjugacy
+classes.  GAP finds 468 transitive classes (4,629 actual subgroups) for
+ordinal 3 and 364 transitive classes (3,253 actual subgroups) for ordinal 8.
+The verifier checks 58,392 and 33,644 representative line orbits,
+respectively.  Every orbit is non-linear, violates the shadow-edge condition,
+or creates a C4; there are no witnesses.
+
+Hence **six of the seven order-40-pair types are excluded**.  Only component
+ordinal 11, with doubled-shadow automorphism group of order 460,800, remains
+in this component-size branch.
