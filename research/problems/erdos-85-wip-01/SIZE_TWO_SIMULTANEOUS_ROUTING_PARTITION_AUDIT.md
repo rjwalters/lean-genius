@@ -2762,3 +2762,50 @@ root--port form (162).  What is not yet proved is that the cap system for all
 endpoint-neutral clean colors can be coupled so that its dual evaluates to
 the horizontal marking (164); (165)--(166) identify the concrete primal
 constraints a closing separation theorem must use.
+
+## 49. Target-support and collision bound
+
+Continue with the clean color `d`.  Let `t_d=|T_d|`, and let `Z_d` be the
+set of distinct target ports used by the `2t_d` assignments in Section 48.
+By (166), every target has multiplicity one or two.  Hence the number of
+target collisions is exactly
+
+```text
+kappa_d := 2t_d - |Z_d|.                               (167)
+```
+
+Each collision determines the unordered pair of roots whose source ports
+use the repeated target.  By (165), that pair has path distance at least
+three.  Moreover this map from collisions to root pairs is injective: two
+different repeated targets for the same pair would be two common neighbors
+of those roots, contradicting C4-freeness.  Therefore, if
+
+```text
+a(T_d) := # {{x,x'} subset T_d : pathDistance_P(x,x') >= 3},
+```
+
+then
+
+```text
+kappa_d <= a(T_d),
+|Z_d| >= 2t_d - a(T_d),
+|Z_d| >= t_d.                                          (168)
+```
+
+The last inequality is the global capacity-two bound; the middle inequality
+is stronger when the demanded roots are concentrated in a short interval.
+For example, a one-edge run has no allowable collision pair, so all targets
+are distinct.  On a three-edge run, the only possible collision pair is the
+two endpoints, so
+
+```text
+|Z_d| >= 2t_d - 1.                                     (169)
+```
+
+For demands at every one of the `m` path roots,
+`a(T_d)=(m-2)(m-3)/2`, the same complement-of-path-square count as (156).
+Thus the clean-lift primal has an explicit collision-energy coordinate
+`kappa_d`, rather than only a coarse target capacity.  A root--port price can
+charge each repeated target once, and (168) bounds the total charge by the
+geometry of the demanded root set; this is the direct analogue of the
+fiber-collision statistic retained by the successful B.3 Farkas curl.
