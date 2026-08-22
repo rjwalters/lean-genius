@@ -732,6 +732,24 @@ constructed from `Q,K`.  Equation (12k), rather than sixteen individual
 fiber loads, is the natural interface for a uniform trace or flag-counting
 inequality.
 
+The three choices of two colors are coupled exactly.  The eligibility graph
+`H` and hence `n(t)` do not depend on the selected colors.  If `G_g` records
+support intersections through color `g` alone, linearity makes the three
+edge sets disjoint and
+
+```text
+G_ij = G_i + G_j,
+c_ij(t) = c_i(t) + c_j(t),
+c_01(t)+c_02(t)+c_12(t) = 2(c_0(t)+c_1(t)+c_2(t)).           (12l)
+```
+
+The same identities hold after summing over rows or taking the traces in
+(12k).  Thus a uniform proof may choose a favorable color pair by averaging
+three rooted mixed-triangle counts; it need not construct three unrelated
+certificates.  The current categorical potential is nonlinear, so (12l)
+does not itself perform that averaging, but it is the exact coupling a
+threshold inequality should exploit.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
