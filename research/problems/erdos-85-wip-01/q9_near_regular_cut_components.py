@@ -358,6 +358,20 @@ def main() -> None:
             (51, (7, 7, 7), 5, 30, 6, 48, 3): 1,
         }
     )
+    # The equality-shore matrix argument in the report eliminates the six
+    # nonsymmetric order-(18,59) assemblies.
+    articulation_after_equality = [
+        assembly
+        for assembly in articulation
+        if not any(
+            exceptional + 8 * scale == 18 and tuple(sorted(beta)) == (1, 2, 3)
+            for exceptional, scale, beta in assembly
+        )
+    ]
+    assert Counter(
+        tuple(sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly))
+        for assembly in articulation_after_equality
+    ) == Counter({(18, 59): 1, (27, 50): 1, (34, 43): 1})
 
     bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
     assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
@@ -367,6 +381,7 @@ def main() -> None:
     print("verified connectivity terminal: no admissible proper order is divisible by 8")
     print(f"verified B3-articulation assemblies: {articulation_order_pairs}")
     print(f"verified articulation equality profiles: {equality_profiles}")
+    print("verified post-equality articulation frontier: (18,59), (27,50), (34,43)")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
     ):

@@ -396,9 +396,51 @@ order-50 component.  In the `(34,43)` branch, three or four lie in the
 order-34 component.  The sole articulation assignment with no equality
 shore is the symmetric `(18,59)` color split `(2,2,2)/(7,7,7)`.
 
-These location statements sharply couple the articulation split to the
-already classified six ordinary neighbors of `x`; they do not yet eliminate
-a branch.
+The first equality profile actually gives a contradiction.  Let `S` be the
+order-18 component with `beta(S)=(1,2,3)` after naming the high roots
+`h_a,h_b,h_c`, and let `T` be its ordinary complement.  If `Z` is the set of
+30 ordinary centers having six neighbors in `T`, then, on all 81 vertices,
+
+```text
+A 1_S = 2 1 + 1_Z - A 1_H - e_(h_a) + e_(h_c). (16)
+```
+
+Here `A 1_H` is the high-incidence vector.  Use
+
+```text
+D = 8I + J + diag(1_H) - A^2,
+A^2 1_H = 3 1 + 9 1_H,
+```
+
+where the second identity uses high independence and the fact that every
+high vertex is isolated in `D`.  Substituting (16) gives
+
+```text
+D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z
+          + 1_(N_A(h_a)) - 1_(N_A(h_c)).        (17)
+```
+
+At a high root, the left side is zero and the last two terms vanish, so
+every high root has all ten `A`-neighbors in `Z`.  At `x`, the left side is
+two (the two exceptional vertices of `S`), while `x` is adjacent to both
+`h_a` and `h_c`; hence (17) gives
+
+```text
+|N_A(x) intersect Z| = 1.                       (18)
+```
+
+But `x` has one bin-one original partner at each of the three high roots.
+Those three distinct partners are neighbors of their high roots, hence all
+belong to `Z`, and all are adjacent to `x`.  This contradicts (18).
+
+Therefore all six nonsymmetric `(18,59)` assignments are impossible.  The
+B3-articulation frontier shrinks from nine assignments to exactly three:
+
+```text
+(18,59) with beta=(2,2,2)/(7,7,7),
+(27,50) with beta=(3,3,3)/(6,6,6),
+(34,43) with beta=(4,4,4)/(5,5,5).              (19)
+```
 
 ## Scope
 
