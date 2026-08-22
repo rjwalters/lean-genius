@@ -217,3 +217,18 @@ eight remaining representatives all occur under the regular order-80
 projection class and have cycle types `4·C10` (five representatives), `5·C8`
 (two), or `8·C5` (one).  This reduces the final order-40 pair leaf to eight
 internal cycle patterns and a cross-component 4-regular lift.
+
+The regular subgroup has six conjugates in the order-480 component
+automorphism group, so it is self-normalizing.  Consequently every remaining
+two-component transitive action is conjugate into the restricted wreath
+product `K wr C2`, of order 12,800.  This avoids the intractable full
+order-460,800 wreath product without losing a candidate.
+
+`q9_order40_ordinal11_lift_exclusion.py` enumerates all 5,264 subgroup classes
+and 75 transitive classes of `K wr C2` (509 actual transitive subgroups), then
+checks all 934 representative invariant 80-line orbits.  Every orbit is
+non-linear, violates the intrinsic shadow-edge condition, or creates a C4.
+There are no witnesses.
+
+Therefore **all seven disconnected order-40-pair shadow types are
+impossible**.
