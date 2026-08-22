@@ -401,6 +401,15 @@ entries occur twice, and subtracting it from the total marked-defect mass
 `3*5=15` leaves the even triple-row mass.  Thus those two parities are the
 aggregate shadow of the stronger symmetric transport law (12m).
 
+The scalar miss-matrix abstraction is still highly nonrigid.  Enumerating
+the nonnegative symmetric integer matrices with diagonal in `{1,3,5}` and
+every row sum at most five gives 213 labeled matrices, or 59 orbits under
+simultaneous permutation of the three marked groups.  The unused mass
+`sum_g (5-sum_h c_gh)`, which is the marked-defect mass on triple rows,
+attains every even value from zero through twelve.  Thus (12m) retains real
+transport information, but its integer margins alone do not strengthen the
+two aggregate parities; the locations of the matched rows must be used.
+
 The first pairwise count between these partitions is nevertheless exhausted.
 For `g != h`, every row outside `M_g union M_h` selects one fiber from each
 partition, so
