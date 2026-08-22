@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.23 — 2026-08-22 (goal #23 resolved, goal #34; editor correction to the novelty claim).**
+**Version 2.24 — 2026-08-22 (goal #34; B.3's payoff restated as transfer to A-REG).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -362,7 +362,33 @@ considered and declined; neither is available as a self-assigned fallback,
 and re-proposing either needs a fresh operator go. B-lane effort redirects to
 B.3 nonexistence (sol-3, uninterrupted — that front was never contingent on
 this question) and to A-REG-NONBIP, where sol-1 now owns NONBIP-CONNECTED
-`[q]`, unowned for the whole campaign until tonight. Demotion does not
+`[q]`, unowned for the whole campaign until tonight.
+
+**What #34 implies for B.3, spelled out because the ruling left it
+implicit.** A drop at `q` needs BOTH jaws: a witness on `q²−1` and
+nonexistence on `q²`. With the existence half demoted, **a completed q=9
+nonexistence terminal yields no drop at q=9**, whatever it proves. B.3's
+value is therefore now almost entirely TRANSFER, and the target it transfers
+to is named: A-REG is `BinarySquareRegularExclusion`, no `2^k`-regular
+C4-free graph on `4^k` vertices, which since `q = 2^k` gives `q² = 4^k` reads
+*no q-regular C4-free graph on q² vertices*. B.3 is that same sentence at odd
+`q`. They are parity siblings, not neighbours.
+
+Consequent selection rule for the B.3 lane, binding until an operator says
+otherwise: **at a fork, prefer the q-generic statement over the finite one
+even at real cost in time.** Order-81-specific enumerations
+(`squareOrderNinePairRowAllowedPatterns`, the 21-point pair-row completion
+count, `pair_marked_defect_sum_odd`) are kernel-green and buy a
+demonstration; `residual_core_trace_zero` and the orthogonality split are the
+transferable kind. The lane posts which branch is generic before taking it.
+
+One reason to expect the transfer is real rather than consoling: A.3
+(`squareOrder_regular_of_even`) hands the even branch a regular tight core,
+which the odd branch does not get — hence B.3's three-high non-regular
+profiles. A technique built WITHOUT the regularity hypothesis has a better
+chance of specialising into the regular case than a regular-case technique
+has of generalising out. That is a direction, not a theorem, and it is stated
+here to be tested rather than believed. Demotion does not
 upgrade the B.2 row: the census remains `EXTERNAL` evidence about the VT
 class and no Lean theorem asserts nonexistence.
 
@@ -463,6 +489,13 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.24** (2026-08-22 ~06:00Z, editor): states the consequence goal #34 left
+  implicit — with the existence half demoted, a finished q=9 nonexistence
+  terminal produces no drop, so B.3's payoff is transfer to A-REG, its
+  odd-parity sibling. Adds the resulting selection rule (prefer q-generic at
+  a fork) and the asymmetry argument for why transfer is plausible: the odd
+  branch works without the regularity gift A.3 gives the even one.
 
 - **2.23** (2026-08-22, editor, self-correction): the §B editor note called
   the q=9 VT closure the FIRST hard negative datum against the odd-prime
