@@ -1895,6 +1895,39 @@ Thus every P-center carries a large attachment-free fiber on Y, with at
 most one exceptional point, complementing the small attachment-colored
 deficit fiber on X in (B41').
 
+In fact this yields a much stronger lower bound on every X-wing.  Remove
+from `G_(p_w)` its at most one point adjacent to c.  Any remaining point y
+cannot be D-adjacent to w by the argument in (B44), so it is attachment-free.
+Its R-neighborhood is then just `{p_w}`, while its two K-neighbors are
+`p_w` and one further point k.  This k is neither c nor a point of P, and
+the unique route for the complementary missing color w forces `k in K_w`.
+Distinct y give distinct k, since otherwise `p_w` and k would have two
+common A-neighbors.  Therefore
+
+```text
+m_w=|K_w| >= b-2                         for every w in W.  (B45)
+```
+
+Summing the three inequalities and using `sum_w m_w=2q-4` gives
+
+```text
+3(b-2) <= 2q-4,
+b <= floor((2q+2)/3),
+a=q-1-b >= ceil((q-5)/3).                                  (B45')
+```
+
+Combined with (B9), the entire dual escape is confined to
+
+```text
+ceil((q-5)/3) <= a <= q/2.
+```
+
+In particular `a=0` is impossible for every binary `q>=8`, and `a=1` is
+impossible for every binary `q>=16` (the only binary parameter not excluded
+by (B45') is `q=8`, whose execution remains parked).  Thus the punctured
+parallel-class endpoint and, beyond the smallest parked order, the first
+path-cycle slice are now eliminated by the q-generic wing coupling.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
