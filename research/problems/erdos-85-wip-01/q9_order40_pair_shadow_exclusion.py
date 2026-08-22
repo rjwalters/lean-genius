@@ -55,13 +55,14 @@ def cycle_notation(permutation: list[int]) -> str:
 
 def gap_transitive_representatives(
     generators: list[list[int]],
+    degree: int = 80,
 ) -> tuple[tuple[int, int, int], list[tuple[int, int, list[tuple[int, ...]]]]]:
     encoded_group = ",".join(cycle_notation(generator) for generator in generators)
     gap_code = f"""
 SizeScreen([100000,100000]);;
 G:=Group([{encoded_group}]);;
 classes:=ConjugacyClassesSubgroups(G);;
-trans:=Filtered(classes,c->IsTransitive(Representative(c),[1..80]));;
+trans:=Filtered(classes,c->IsTransitive(Representative(c),[1..{degree}]));;
 Print("META|",Size(G),"|",Length(classes),"|",Length(trans),"\\n");;
 for c in trans do
   H:=Representative(c);;
@@ -70,7 +71,7 @@ for c in trans do
   for gen in GeneratorsOfGroup(H) do
     if not first then Print(";"); fi;;
     first:=false;;
-    Print(JoinStringsWithSeparator(List([1..80],i->String(i^gen)),","));;
+    Print(JoinStringsWithSeparator(List([1..{degree}],i->String(i^gen)),","));;
   od;;
   Print("\\n");;
 od;;

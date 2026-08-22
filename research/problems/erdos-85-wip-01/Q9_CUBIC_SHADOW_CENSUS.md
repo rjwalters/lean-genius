@@ -204,3 +204,16 @@ or creates a C4; there are no witnesses.
 Hence **six of the seven order-40-pair types are excluded**.  Only component
 ordinal 11, with doubled-shadow automorphism group of order 460,800, remains
 in this component-size branch.
+
+For that last type, direct wreath-product subgroup enumeration is too coarse.
+Every configuration line has block type `2+1`; incidence balance forces
+exactly 40 lines in each orientation.  Therefore the triangular graph induced
+inside each order-40 component is a 2-factor.  The component automorphism
+group has order 480 and only five transitive subgroup classes.
+
+`q9_order40_ordinal11_internal_sieve.py` enumerates all 21 invariant eligible
+2-factors.  Thirteen contain a 4-cycle and are immediately impossible.  The
+eight remaining representatives all occur under the regular order-80
+projection class and have cycle types `4·C10` (five representatives), `5·C8`
+(two), or `8·C5` (one).  This reduces the final order-40 pair leaf to eight
+internal cycle patterns and a cross-component 4-regular lift.
