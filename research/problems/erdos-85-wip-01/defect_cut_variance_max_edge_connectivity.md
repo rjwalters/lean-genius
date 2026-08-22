@@ -606,6 +606,81 @@ minimum-cut branch.  The available degree and pair-capacity counts fit
 inside the two wings and `Z`; no repeated common neighbor or D-disconnection
 follows from the cell sizes alone.
 
+### The full residue-(q-2,q-1) three-separator frontier
+
+The pole separator above belongs to a slightly larger variance family that
+is useful to state explicitly.  Let `W` be a three-vertex separator for
+which `D-W` has two components `X,Y` with
+
+```text
+|X| = q a + q-2,       |Y| = q b-1.
+```
+
+The two cut sizes sum to `3(q-1)-2e_D(W)`.  Their residue lower bounds are
+`2q-4` and `q-1`, and all excesses are even.  Consequently exactly the
+following three cases remain:
+
+```text
+e_D(W)=1:  (delta_D(X),delta_D(Y))=(2q-4,q-1),
+e_D(W)=0:  (delta_D(X),delta_D(Y))=(2q-2,q-1),
+e_D(W)=0:  (delta_D(X),delta_D(Y))=(2q-4,q+1). (B1)
+```
+
+The equality and near-equality degree profiles make the distinction more
+concrete.  In the first two cases the `q-1` shore is a minimum cut, so for a
+q-set `R`
+
+```text
+A 1_Y = b 1 - 1_R.
+```
+
+Complementing across `W`, equality for the `q-2` shore gives
+
+```text
+A 1_W = 1_R + 1_K,       |K|=2q,
+```
+
+whereas excess two gives
+
+```text
+A 1_W = 1_R + 1_K + 1_c,
+|K|=2q-1, c in K.
+```
+
+These are precisely the ambient versions of (25)--(26); the extra
+near-bipartite incidence argument is what further forces
+`K intersect R={a,b}` and locates `c` there.
+
+The third line of (B1) is genuinely dual.  Equality on `X` gives a `2q`-set
+`K`.  If `t=A 1_Y-b 1`, then
+
+```text
+sum_v t_v=-q,       sum_v t_v^2=q+2,
+```
+
+so `sum_v t_v(t_v+1)=2`.  There are exactly two integer profile types:
+
+```text
+A 1_Y = b 1 - 1_R - 1_c,   |R|=q-1, c in R,
+A 1_Y = b 1 - 1_R + 1_c,   |R|=q+1, c notin R.
+```
+
+Complementing gives, respectively,
+
+```text
+A 1_W = 1_K + 1_R + 1_c,
+A 1_W = 1_K + 1_R - 1_c,   |K|=2q.           (B2)
+```
+
+In the second line nonnegativity forces `c in K`.
+
+Unlike the first two cases, (B2) supplies no associated q-set to which the
+minimum-cut Mantel bound applies.  Hence the two-wing pole analysis covers
+all pattern-B profiles with a minimum `q-1` shore, but not this last dual
+near-mincut escape.  Any general four-connectivity argument must either
+exclude (B2) separately or recover a q-set from additional point-location
+information.
+
 ## Three-vertex-connectivity
 
 The Mantel bound (16) closes the sole two-separator escape left by maximal
