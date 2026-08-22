@@ -1928,6 +1928,22 @@ by (B45') is `q=8`, whose execution remains parked).  Thus the punctured
 parallel-class endpoint and, beyond the smallest parked order, the first
 path-cycle slice are now eliminated by the q-generic wing coupling.
 
+The same estimate balances every individual wing from both sides.  For a
+fixed w, apply (B45) to the other two separator vertices and subtract from
+`sum_v m_v=2q-4`; then use `m_w+n_w=q-1`.  This gives
+
+```text
+b-2 <= m_w <= 2a+2,
+q-2a-3 <= n_w <= a+2                 for every w in W.     (B46)
+```
+
+(A negative lower bound on `n_w` is of course replaced by zero.)  Thus in
+the surviving middle range neither side of a separator wing can be made
+arbitrarily small: the X-attachments are trapped between the opposite
+component parameter minus two and twice the small parameter plus two, with
+the complementary bounds on Y.  These intervals are available for the
+remaining location-specific analysis of c.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
