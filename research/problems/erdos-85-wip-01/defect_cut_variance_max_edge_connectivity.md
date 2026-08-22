@@ -961,6 +961,32 @@ least `q-4` points of `Q` lie in `Y`.  Thus the endpoint contains two
 simultaneous exact matchings: the three `X_w <--> R_w` wing matchings and
 this exceptional-point matching into the overwhelmingly Y-located set K.
 
+This matching exhausts all common-neighbor incidences between `c` and
+`K\{c}`.  Indeed every common neighbor lies in `N_A(c) subset Y`, and each
+such point has only the two K-neighbors `c` and `phi(y)`.  Hence the q points
+of `Q` are exactly the K-points that are D-nonneighbors of `c`.  The other
+`q-1` points exhaust its defect degree:
+
+```text
+N_D(c)=K\({c} union Q).                       (B17')
+```
+
+In particular `c` cannot lie in `X` for binary `q>=8`.  If it did, the
+defect clique (B11) would give
+
+```text
+X\{c} subset N_D(c) subset K,
+```
+
+so `|K intersect (X union W)|>=q-3` from those vertices, and the two
+separator attachments of `c` are also in `N_D(c) subset K`, raising the
+lower bound to `q-1`.  This contradicts the upper bound four from (B16).
+Thus at the endpoint
+
+```text
+c in Y union W.                               (B17'')
+```
+
 A partial version holds for every `a`.  The point `c` has `a` neighbors in
 `X` and `q-a` in `Y`.  Each of the latter has exactly two K-neighbors by
 (B6), so deleting `c` again gives an injection
