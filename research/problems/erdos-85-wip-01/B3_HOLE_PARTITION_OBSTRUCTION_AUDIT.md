@@ -1316,6 +1316,36 @@ is the collision-free residual normal form: the horizontal same-role
 transition is the unique same-role option visible in its source census, and
 all other eligible occupants in that fiber (if any) have different roles.
 
+Define the **flat handoff graph** directly from this residual.  Its vertices
+are the eighty root-own selected flags `(t,b)`.  Draw a directed edge
+`(t,b)->(t',b')` when
+
+1. `t` has exactly one eligible same-role occupant `u` in `F_b`;
+2. the horizontal transition `t->u` is allowed; and
+3. `(u,b)` can hand off monotonically to `(t',b')`, i.e. the two roots have
+   the same full signature, `t'` also has exactly one same-role occupant in
+   `F_b'`, and `r_ub<=r_t'b'` coordinatewise.
+
+An uncharged cycle (12qw) is exactly a directed closed walk in this graph.
+In all 24 four-seed pair/design instances the graph has only 6--22 arcs, all
+recurrent strongly connected components have order two, four, or six, and
+there is no odd directed closed walk.  This suggests the precise terminal
+
+```text
+FLAT-HANDOFF BIPARTITENESS:
+the flat handoff graph of every admissible (Q,K) has no odd directed cycle.
+                                                               (12qx)
+```
+
+The observed bipartition is not an affine parity of the obvious state data:
+parallel class of the root and its unique neighbor, selected-label color,
+and all binary digits of `(n,c_pair,c_all)` give an inconsistent `F_2`
+edge-sign system across the 283 recurrent sampled arcs.  Thus (12qx) needs
+the detailed realizable census/eligibility relation, but no matching or LP
+variables remain.  Together with (12qv), it would eliminate the
+collision-free odd residual and leave every alternating obstruction charged
+to the finite root-own collision budget.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
