@@ -1001,13 +1001,30 @@ Thus the last stopping digit produces a two-cell degree profile in D, not
 only a line-intersection profile in A.  Equations (51) and (54) couple its
 marked-line count and its two high-degree populations through the same cut.
 
-Equations (7)--(54) are the first canonical cut detector manufactured from
+Equating the two expressions in (54) removes the cut altogether.  When
+`r=0`, one has `rho=q/2-1`; when `1<=r<q/2`, one has `rho=r-1`.  Hence
+
+```text
+x+y = s                    if r=0,
+x+y = 2(s-qr)              if 1<=r<q/2.                     (55)
+```
+
+In particular a nonzero residue at the final stopping level must satisfy
+
+```text
+s >= qr,       where r = s mod (q/2).                       (56)
+```
+
+This residue restriction is invisible in the scalar parity laws: it uses
+the two different shores' exact degree profiles, not merely the cut size.
+
+Equations (7)--(56) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(54), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(56), so these laws alone
 do not conceal an order-independent
 contradiction.
 
