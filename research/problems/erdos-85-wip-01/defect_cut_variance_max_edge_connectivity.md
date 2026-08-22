@@ -396,4 +396,20 @@ Moreover, the two q/2 common-neighbor blocks are its bipartition classes,
 and the size-two block covers the unique missing cross edge.  The excluded
 `q=8` square-sum gap is exactly two, so this argument deliberately makes no
 order-64 endpoint claim.  In the remaining general case `D[R]` contains a
-triangle; neither branch is yet contradictory.
+triangle.  That branch is quantitatively nontrivial: Theorem 1 of Erdos,
+*On the number of triangles contained in certain graphs*, Canadian
+Mathematical Bulletin 7 (1964), DOI `10.4153/CMB-1964-007-3`, says that an
+n-vertex graph with `floor(n^2/4)-ell` edges and a triangle has at least
+`floor(n/2)-ell-1` triangles.  If necessary, delete edges other than a fixed
+triangle down to the `q^2/4-1` threshold and apply the theorem to obtain
+
+```text
+D[R] contains a triangle
+  implies t(D[R]) >= q/2-2.                    (20)
+```
+
+Each such triangle is a triple of vertices with pairwise disjoint
+A-neighborhoods.  The bound grows with q, but the triangles may form a book
+around one D-edge; the resulting neighborhood packing still fits inside
+`q^2` vertices.  Thus neither the near-bipartite branch nor (20) is yet
+contradictory.
