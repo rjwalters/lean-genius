@@ -964,3 +964,51 @@ around an odd internal cycle.  The final simultaneous invariant must rule
 out or pair those odd-horizontal state cycles.  Equivalently, it must supply
 a bipartition or a zero-holonomy label on the state graph which is not already
 a function only of the completed-shift conjugacy class eliminated earlier.
+
+## 14. Cohomological form of the missing invariant
+
+Let `Gamma_c` be the active root--color state two-factor and mark its
+horizontal edges by one and its vertical edges by zero in `F_2`.  Every
+state cycle has even horizontal length exactly when this edge marking is a
+coboundary.  Concretely, the sufficient-and-cyclewise-necessary datum is a
+potential
+
+```text
+sigma : {(x,e) : active state} -> F_2
+```
+
+satisfying
+
+```text
+sigma(x,e) + sigma(y,e) = 1   on every horizontal owner edge,
+sigma(x,e) + sigma(x,d) = 0   on every vertical triangle edge. (57)
+```
+
+If (57) exists, every component of `Gamma_c` has even horizontal edge count,
+so (56) gives
+
+```text
+sum_(e != c) p_ce = 0  (mod 2).                          (58)
+```
+
+Together with the self-color term, this leaves only the already isolated
+internal-`C3` contribution; in the signed quotient branch that contribution
+is even by (37).  More generally, (57) is the exact exterior-owner part of
+the desired parity.
+
+Conversely, failure of (57) is witnessed by a state cycle with an odd number
+of horizontal edges.  This gives a canonical, fiber-labelled obstruction
+cycle rather than an arbitrary failed sign assignment.  It is materially
+different from the eliminated completed-shift comparison: its vertices
+remember both the root `x` and the actual owner color `e`, and its vertical
+edges remember the locations of three-component triangles.  The transport
+horn can therefore be sharpened to a dichotomy:
+
+```text
+root--color potential (57),
+or a fiber-labelled odd-horizontal state cycle to transport. (59)
+```
+
+Proving the first alternative uniformly, or showing that the second creates
+an impossible exterior eigenmode, would consume the simultaneous routing
+data at the level that the scalar and conjugacy-class audits do not see.
