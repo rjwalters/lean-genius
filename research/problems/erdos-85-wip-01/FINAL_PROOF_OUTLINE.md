@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.32 — 2026-08-22 (§G gains rule 5: act, don't ask — the editor is not a gate).**
+**Version 2.33 — 2026-08-22 (λ(D) = q−1 banked; exterior divisibility kills a q=16 witness).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -459,6 +459,35 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   *Operator note:* the suggested `q = 8` Diophantine endpoint falls under the
   A.5.2 order-64 park (goal #30), and the owner correctly declined to pursue
   it without an explicit go. It is flagged here rather than acted on.
+
+  **(xiii) `λ(D) = q − 1` — the defect graph is MAXIMALLY EDGE-CONNECTED**
+  (sol-1, `8b427fab6c`, 19:16Z). For a connected defect graph arising here,
+  edge-connectivity equals the degree, the largest value possible for a
+  `(q−1)`-regular graph. The bank is a prose report plus an exhaustive `q = 4`
+  verifier — all 65,536 shores, all 16,508 nonzero `q`-divisible support
+  inequalities, minimum nonzero cut `q − 1` — independently re-run by the
+  integrator. Structural corollaries: every minimum cut has shore size
+  `≡ ±1 (mod q)`, and in the equality case a minimum cut of size `q − 1`
+  forces (after complementing) `|S| = qa + 1`.
+
+  *Scope, as the owner stated it:* NON-TERMINAL, and deliberately **no Lean
+  until a consumer is load-bearing** (review #16 / goal #24). Two consumers
+  were tried and closed the same hour: the **far-`F` perfect-matching**
+  route is NEGATIVE with a uniform abstract countermodel for every `q ≥ 8`,
+  and the **radical cut-lattice** audit is CLOSED by exact overlap — the
+  doubled bounds are valid but coincide with what is already known.
+
+  **(xiv) EXTERIOR DIVISIBILITY: `3 ∣ a(C)`, and a `q = 16` witness dies**
+  (sol-2, from the size-two exterior distance law `a61fe3ae61`, 19:25Z). The
+  `far_disjoint` graph is exactly `D` induced on `R`, hence `(q−1)`-regular,
+  so `p(z) + τ_K(z) = q − 2` pointwise and every `K`-edge outside the
+  nonedge-trace resolvers lies in exactly one `K`-triangle. Counting gives
+  `3 ∣ a + q(q−2)(q−4)/2`, and at every binary `q` the product term vanishes
+  mod 3, so **the number of edge-traces `a(C)` is divisible by 3**.
+  Consequence: the `q = 16` `C6 + C26` witness with `a = 26` is
+  **FULL-EXTERIOR IMPOSSIBLE**. This is a q-generic congruence that kills a
+  named finite candidate, which is the shape the size-two lane has been
+  missing.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -794,6 +823,18 @@ Does not count (goes to the ledger, not here):
    continuously overnight when editor latency happened to be seconds.
 
 ## Change log
+
+- **2.33** (2026-08-22 ~19:30Z, editor): first hour under §G rule 5, and the
+  room ran at its highest rate of the campaign — 133 chat messages in 50
+  minutes with ZERO permission-asking messages, against two lanes parked on
+  exactly that the hour before. Two results banked. `λ(D) = q − 1`: the
+  defect graph is maximally edge-connected, exhaustively verified at `q = 4`
+  and independently re-run, with min-cut shores `≡ ±1 (mod q)`; owner marked
+  it non-terminal and correctly held it out of Lean until a consumer is
+  load-bearing, and two candidate consumers (far-`F` matching, radical
+  cut-lattice) closed the same hour. And an exterior divisibility law
+  `3 ∣ a(C)` that kills the `q = 16` `C6 + C26` witness outright — a
+  q-generic congruence disposing of a named finite candidate.
 
 - **2.32** (2026-08-22 ~18:40Z, editor): adds §G rule 5, ACT DON'T ASK. No
   mathematics changed. The editor-imposed approval gate is removed — lane
