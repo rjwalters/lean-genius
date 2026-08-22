@@ -384,3 +384,19 @@ parity-switching direction at the linear layer.  If it holds, a cut potential
 expresses `T_R mod 2` directly from the residual degree parities.  Thus (13)
 is a small diagnostic for whether the remaining obstruction is already
 linear or necessarily uses exact-degree/integrality information.
+
+Finally, combining the corrected core-edge contraction (5) with the
+incidence-masked identity (9) gives the exact transfer
+
+```text
+t(K) + |E(K) intersect E(D)|
+  = T_R + Z/2  (mod 2).                                      (14)
+```
+
+Here `E(K) intersect E(D)` is precisely the set of triangle-free original
+edges internal to `U1` (the twelve same-color K-edges already lie in their
+high-root triangles), while `Z` is the triangle-free U1--B0 incidence cut.
+Thus (14) moves the collision parity between the internal-core description
+and the residual-fiber/cut description without the formerly double-counted
+marked-pair term.  By itself it is a transfer identity, not a parity
+terminal.
