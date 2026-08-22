@@ -91,6 +91,14 @@ and the new maximal-edge-connectivity law of `8b427fab6c`; its missing layer
 is outside adjacency, not the component's own defect realization or cut
 structure.
 
+A separate binary cut MILP, checked to optimality by HiGHS, minimizes over
+shores of sizes 2 through 30 and returns 28=`2q-4`.  Hence every minimum
+15-edge cut is trivial: this defect block is super-edge-connected and sharply
+saturates the next nontrivial-cut lower bound discussed after `8b427fab6c`.
+This is computational control evidence rather than a certificate, but it
+shows that strengthening maximal edge-connectivity to super-edge-connectivity
+still does not eliminate the reduced desynchronization pattern.
+
 The alternating eigenline is also realized, rather than inferred merely from
 the even cycle lengths.  Give consecutive vertices on each H-cycle signs
 `+1,-1`.  Every selected outside trace joins opposite signs, so `M^T s=0`,

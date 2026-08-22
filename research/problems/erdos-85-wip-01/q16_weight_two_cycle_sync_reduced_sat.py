@@ -13,6 +13,9 @@ from collections import deque
 from itertools import combinations
 
 import networkx as nx
+import numpy as np
+from scipy.optimize import Bounds, LinearConstraint, milp
+from scipy.sparse import coo_matrix
 from z3 import Bool, If, Not, Solver, Sum, is_true, sat
 
 
@@ -224,6 +227,44 @@ def main() -> None:
     defect_graph.add_nodes_from(range(N))
     defect_graph.add_edges_from(defect_edges)
     assert nx.edge_connectivity(defect_graph) == Q - 1
+
+    # Minimize a cut with both shores of size at least two.  Binary variables
+    # choose the shore and one auxiliary variable per D-edge records crossing.
+    ordered_defect_edges = sorted(defect_edges)
+    variable_count = N + len(ordered_defect_edges)
+    objective = np.r_[np.zeros(N), np.ones(len(ordered_defect_edges))]
+    rows: list[int] = []
+    columns: list[int] = []
+    values: list[int] = []
+    lower: list[float] = []
+    upper: list[float] = []
+
+    def add_linear_row(coefficients, lo, hi) -> None:
+        row = len(lower)
+        for column, value in coefficients:
+            rows.append(row)
+            columns.append(column)
+            values.append(value)
+        lower.append(lo)
+        upper.append(hi)
+
+    for index, (first, second) in enumerate(ordered_defect_edges):
+        crossing = N + index
+        add_linear_row([(crossing, 1), (first, -1), (second, 1)], 0, np.inf)
+        add_linear_row([(crossing, 1), (first, 1), (second, -1)], 0, np.inf)
+    add_linear_row([(vertex, 1) for vertex in range(N)], 2, N - 2)
+    add_linear_row([(0, 1)], 0, 0)  # break shore/complement symmetry
+    constraint_matrix = coo_matrix(
+        (values, (rows, columns)), shape=(len(lower), variable_count)
+    ).tocsr()
+    cut_result = milp(
+        objective,
+        integrality=np.ones(variable_count),
+        bounds=Bounds(np.zeros(variable_count), np.ones(variable_count)),
+        constraints=LinearConstraint(constraint_matrix, lower, upper),
+    )
+    assert cut_result.success
+    assert round(cut_result.fun) == 2 * Q - 4
     assert all(
         sum(alternating_sign[neighbor] for neighbor in defect_neighbors[vertex])
         == (Q - 5) * alternating_sign[vertex]
@@ -235,6 +276,7 @@ def main() -> None:
     print("outside traces: 224; trace-edges: 26")
     print(f"outside resolution edges: {len(outside_edges)}")
     print("induced defect block: connected, nonbipartite, 15-regular, edge-connectivity 15")
+    print("minimum nontrivial-shore defect cut: 28")
     print("alternating vector: cross-kernel and defect eigenvalue 11")
 
 
