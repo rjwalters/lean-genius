@@ -1282,6 +1282,26 @@ This path-cycle decomposition is the `a=1` analogue of the matching plus
 two isolates obtained at the endpoint, and is the next location-sensitive
 object to couple to the W-attachment fibers.
 
+For binary `q>=8`, (B19) excludes `c in X` on this slice because
+`3a+4=7<q`.  If instead `c in W`, then `c in K intersect W` and minimality
+gives at least one X-neighbor in D.  By (B18) those X-neighbors lie in
+`K intersect X`, whose size is even.  Equation (B16) becomes
+
+```text
+|K intersect X|+|K intersect W|=6-|R intersect X|.
+```
+
+Since `|K intersect W|>=1`, the only possibilities are
+
+```text
+|K intersect X| in {2,4},
+|R intersect X| <= 3,
+1 <= deg_D(c,X) <= |K intersect X| <= 4.       (B23)
+```
+
+Thus the separator-located `a=1` branch has only two possible numbers of
+path endpoints and at most four X-attachments at the exceptional pole.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
