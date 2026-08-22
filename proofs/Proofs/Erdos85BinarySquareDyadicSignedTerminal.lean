@@ -441,6 +441,30 @@ theorem replicationAtMostOne_secondOrderDefect_adj
   have hone := hcap z
   omega
 
+/-- A witnessed ambient two-step excludes a defect edge between its
+endpoints.  This is the graph-facing codegree fact used to forbid D-edges at
+distance two in the partial-Baer path--cycle core. -/
+theorem commonNeighbor_not_secondOrderDefect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {x y z : V} (hxy : x ≠ y) (hxz : G.Adj x z) (hyz : G.Adj y z) :
+    ¬ (secondOrderDefectGraph G).Adj x y := by
+  intro hD
+  have hmem : y ∈ (secondOrderDefectGraph G).neighborFinset x :=
+    ((secondOrderDefectGraph G).mem_neighborFinset x y).mpr hD
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree x y hxy
+  rw [if_pos hmem] at hcommon
+  have hz : z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset x z).mpr hxz,
+       (G.mem_neighborFinset y z).mpr hyz⟩
+  have : 0 < (G.neighborFinset x ∩ G.neighborFinset y).card :=
+    Finset.card_pos.mpr ⟨z, hz⟩
+  omega
+
 /-- If a nonempty exceptional type has replication at most one and is
 defect-adjacent to the opposite type, then their whole support fits inside
 one closed defect neighborhood.  In a `(q-1)`-regular defect graph this
@@ -860,6 +884,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedExceptional_defectCut_lower
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
+#print axioms Erdos85.commonNeighbor_not_secondOrderDefect_adj
 #print axioms Erdos85.mixedExceptional_union_card_le_of_replicationAtMostOne
 #print axioms Erdos85.binarySquare_regular_secondOrderDefect_degree_eq
 #print axioms Erdos85.binarySquare_full_empty_card_le_of_defectRegular
