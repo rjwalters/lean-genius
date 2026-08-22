@@ -176,6 +176,36 @@ evidence only.  Equations (6)--(7) do not force recognition for general q:
 they bound the common-neighbor collision count but do not force its maximum
 `choose(q,2)`.  Super-edge-connectivity is therefore not claimed.
 
+### Punctured parallel classes from every minimum cut
+
+The one-sided matching boundary has a general resolvable-design form.  Let
+
+```text
+Z = {z outside S : deg_A(z,R)=0}.
+```
+
+These are exactly the `q-1` outside endpoints of the minimum cut.  Write
+`s_z` for the unique D-neighbor of `z` in `S`.  Since `N_A(z)` is disjoint
+from `R`, equation (5) says every `w in N_A(z)` has exactly a A-neighbors
+in `S`.  The q sets
+
+```text
+N_A(w) intersect S,       w in N_A(z),
+```
+
+are pairwise disjoint: a common point of two would give those two vertices
+the distinct common A-neighbors `z` and that point.  Their total size is
+`qa`, and the D relation says their union is precisely `S\{s_z}`.  Thus
+every endpoint gives a parallel class of q a-blocks on the once-punctured
+shore.  The omitted point `u in S` occurs in exactly `d_u` of the `q-1`
+classes.
+
+This statement is valid for every nontrivial minimum cut, independently of
+the later triangle/near-bipartite dichotomy.  Aggregate cross-class pair
+counts have constant-factor slack (and no pair content when `a=1`), so the
+remaining issue is compatibility of the block labels with their own point
+locations.
+
 ## A q-clique is an isolated defect component
 
 There is also a sharp incidence consequence useful for the Baer-type route.
@@ -469,20 +499,8 @@ alpha,beta,gamma lie in S
   with cut degrees m-1,m-1,1.                 (22)
 ```
 
-Every `z in Z` now supplies a punctured parallel class on `S`.  Let `s_z`
-be its unique D-neighbor in `S`, and write `|S|=qa+1`.  Because
-`N_A(z)` is disjoint from `R`, equation (5) says that every
-`w in N_A(z)` has exactly a A-neighbors in `S`.  The q sets
-
-```text
-N_A(w) intersect S,       w in N_A(z),
-```
-
-are pairwise disjoint: a common point of two would give those two vertices
-the common A-neighbors `z` and that point.  They have total size `qa`, and
-the D relation says that their union is exactly `S\{s_z}`.  Thus the q-1
-boundary endpoints give q-1 parallel classes of q a-blocks, whose omitted
-points have multiplicities
+The general punctured parallel classes above specialize here to q-1 classes
+whose omitted points have multiplicities
 
 ```text
 (m-1,m-1,1) at (alpha,beta,gamma).             (23)
