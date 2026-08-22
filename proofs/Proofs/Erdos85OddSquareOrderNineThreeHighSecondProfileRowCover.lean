@@ -1072,6 +1072,137 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_pair_pattern
       (Finset.mem_inter.mp hwC.1).1,
       hwF.1⟩
 
+/-- A pair-center row is necessarily in the regular row-cover branch.  It has
+six residual neighbors, split into `3 - d` pair centers and `3 + d` triple
+centers, where `d` is its marked defect degree.  The second equality is the
+missing cardinality component of the graph-to-allowed-family bridge. -/
+theorem squareOrderNine_threeHigh_secondProfile_pair_row_triple_completion_count
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (htP : t ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1).biUnion
+      fun m => G.neighborFinset m ∩ squareOrderNineLowIncidenceBin G 0) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let R := G.neighborFinset t ∩ T
+    let Q := R.filter fun w => w ∉ P
+    let D := secondOrderDefectGraph G
+    R.card = 6 ∧ Q.card = 3 + (D.neighborFinset t ∩ M).card := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let N := G.neighborFinset t
+  let NS := N ∩ S
+  let R := N ∩ T
+  let NM := N ∩ M
+  let NU := N ∩ U1
+  let C := R.filter fun w => w ∈ P
+  let Q := R.filter fun w => w ∉ P
+  let D := secondOrderDefectGraph G
+  have htB0 : t ∈ B 0 := (Finset.mem_sdiff.mp ht).1
+  have hNMnonempty : NM.Nonempty := by
+    simp only [Finset.mem_biUnion] at htP
+    obtain ⟨m, hmM, htm⟩ := htP
+    refine ⟨m, Finset.mem_inter.mpr ⟨?_, hmM⟩⟩
+    exact (G.mem_neighborFinset t m).mpr
+      ((G.adj_comm m t).mp ((G.mem_neighborFinset m t).mp
+        (Finset.mem_inter.mp htm).1))
+  have hcent :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hcent
+  change (D.Adj x t ∧ NS.card = 0 ∧ NM.card = 0) ∨
+    (¬ D.Adj x t ∧ NS.card + NM.card = 1) at hcent
+  have hspecial : NS.card + NM.card = 1 := by
+    rcases hcent with hzero | hone
+    · exact (Finset.card_ne_zero.mpr hNMnonempty hzero.2.2).elim
+    · exact hone.2
+  have hpart :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_neighbor_center_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hpart
+  change N = (NS ∪ R) ∪ (NM ∪ NU) at hpart
+  have hST : Disjoint NS R := by
+    rw [Finset.disjoint_left]
+    intro w hwS hwT
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwT).2).2
+      (Finset.mem_inter.mp hwS).2
+  have hMU : Disjoint NM NU := by
+    rw [Finset.disjoint_left]
+    intro w hwM hwU
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwU).2).2
+      (Finset.mem_inter.mp hwM).2
+  have hcross : Disjoint (NS ∪ R) (NM ∪ NU) := by
+    rw [Finset.disjoint_left]
+    intro w hw0 hw1
+    have hwB0 : w ∈ B 0 := by
+      rcases Finset.mem_union.mp hw0 with hwS | hwT
+      · exact (Finset.mem_inter.mp (Finset.mem_inter.mp hwS).2).2
+      · exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwT).2).1
+    have hwB1 : w ∈ B 1 := by
+      rcases Finset.mem_union.mp hw1 with hwM | hwU
+      · exact (Finset.mem_inter.mp (Finset.mem_inter.mp hwM).2).2
+      · exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwU).2).1
+    have hk0 := (Finset.mem_filter.mp hwB0).2
+    have hk1 := (Finset.mem_filter.mp hwB1).2
+    omega
+  have hNcards := congrArg Finset.card hpart
+  rw [Finset.card_union_of_disjoint hcross,
+    Finset.card_union_of_disjoint hST,
+    Finset.card_union_of_disjoint hMU] at hNcards
+  have htdeg : G.degree t = 9 := by
+    have htL := (Finset.mem_filter.mp htB0).1
+    have htNotHigh : t ∉ squareOrderHighVertices G 9 :=
+      (Finset.mem_sdiff.mp htL).2
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (by norm_num) hmin hcover hcard t with hlo | hhi
+    · exact hlo
+    · exact (htNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  rw [G.card_neighborFinset_eq_degree, htdeg] at hNcards
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcensus
+  have hNU : NU.card = 2 := hcensus.2.2.1 t htP
+  have hR : R.card = 6 := by omega
+  have hpair :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hpair
+  change C.card + (D.neighborFinset t ∩ M).card = 3 at hpair
+  have hCQ : C.card + Q.card = R.card := by
+    exact Finset.card_filter_add_card_filter_not
+      (s := R) (fun w => w ∈ P)
+  refine ⟨hR, ?_⟩
+  apply Nat.add_left_cancel (n := C.card)
+  calc
+    C.card + Q.card = R.card := hCQ
+    _ = 6 := hR
+    _ = 3 + 3 := by norm_num
+    _ = 3 + (C.card + (D.neighborFinset t ∩ M).card) := by rw [hpair]
+    _ = C.card + (3 + (D.neighborFinset t ∩ M).card) := by omega
+
 /-- The actual marked-support neighbor patterns are reciprocal on the
 21-point pair-center set, because they are restrictions of an undirected
 residual adjacency relation. -/
@@ -2468,6 +2599,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_aligned_weighted_row_branches
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_pattern
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_pair_row_triple_completion_count
 #print axioms Erdos85.squareOrderNine_pair_pattern_mem_comm
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
