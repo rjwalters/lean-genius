@@ -302,7 +302,42 @@ itself contradict connectedness, but it puts the nontrivial kernel shore
 into a strict mod-eight cut class while (10)--(11) simultaneously control
 its vertexwise D/Omega incidence parity.
 
-Equations (7)--(15) are the first canonical cut detector manufactured from
+### Even-occupancy cut variance
+
+The exact cut-variance identity becomes stronger on a kernel shore.  Put
+`b_X=|N_A(X) intersect S|=2c_X` and write
+
+```text
+|S| = 2q a + r,        0 <= r < 2q.
+```
+
+Since `sum_X c_X=q|S|/2`, the q-squared integers `c_X-a` have sum `qr/2`.
+Minimizing their square deviation from `r/(2q)` by zeros and ones gives
+
+```text
+|delta_D(S)|
+  = sum_X (b_X-|S|/q)^2
+  = 4 sum_X (c_X-|S|/(2q))^2
+  >= r(2q-r).                                             (16)
+```
+
+This is the ordinary cut-variance bound with its modulus doubled from q to
+`2q`, using the Baer/kernel evenness of every line occupancy.  Equality
+forces every line to meet `S` in one of the two adjacent even sizes `2a`
+and `2a+2`, with exactly `qr/2` lines of the larger size.  At the bottom
+weights it recovers the structural calculations above:
+
+```text
+|S|=q+1  implies  |delta_D(S)|=q^2-1,
+|S|=q+2  and S even-minimal implies |delta_D(S)|=q^2-4.
+```
+
+In particular no nonconstant kernel shore can be a minimum D-cut of size
+`q-1`: the previously proved minimum-cut residue `|S|=qa +/- 1`, reduced
+modulo `2q`, makes the right side of (16) at least `2q-1` (and is
+`q^2-1` in the opposite-parity residue).
+
+Equations (7)--(16) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The edges of `Omega` are disjoint
 from `A`, hence from `T`, and may be either D-edges or non-D even-overlap
@@ -310,7 +345,7 @@ pairs.  So (10) cannot yet be combined with the Eulerian cut law for `T`.
 Any k-dependent terminal can now aim at locating the symmetric difference
 `Omega triangle D` on the kernel shore `S`, rather than trying to couple the
 local involutions directly.  The q=4 connected control is compatible with
-(7)--(15), so these laws alone do not conceal an order-independent
+(7)--(16), so these laws alone do not conceal an order-independent
 contradiction.
 
 ## Disposition
