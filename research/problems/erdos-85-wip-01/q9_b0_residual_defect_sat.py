@@ -28,6 +28,14 @@ not a certificate or a universal UNSAT claim.  A second split showed that
 orthogonality together with the B0 Gram law (blocks sharing a U1 point cannot
 share a residual center) remains UNSAT even after removing the ordinary
 residual C4 constraint; removing both Gram laws gives SAT witnesses.
+
+The ``--audit-hole-partitions-seeds`` mode isolates the equality case behind
+that fast UNSAT result.  For each exceptional triple center ``h``, its six
+residual-neighbor blocks would have to be three triples and three pairs that
+partition the complement of ``supp(Q_h K)``.  The mode counts such local
+partitions in independently generated outer witnesses.  Zero counts are
+external evidence for a prospective uniform lemma, not a proof that every
+outer design has this property.
 """
 
 from __future__ import annotations
@@ -284,6 +292,49 @@ def make_outer_seed(branch: int, timeout_ms: int, random_seed: int = 0) -> dict:
     return {"blocks": blocks, "k_edges": chosen(data["k"])}
 
 
+def hole_partition_counts(branch: int, timeout_ms: int,
+                          random_seed: int) -> list[int]:
+    """Count equality-case neighbor-block partitions at every hole."""
+    seed = make_outer_seed(branch, timeout_ms, random_seed)
+    blocks = [set(block) for block in seed["blocks"]]
+    k_neighbors = [set() for _ in range(N_U1)]
+    for a, b in seed["k_edges"]:
+        k_neighbors[a].add(b)
+        k_neighbors[b].add(a)
+    core_support = [
+        set().union(*(k_neighbors[b] for b in block)) for block in blocks
+    ]
+    holes = 2 if branch == 3 else 4
+    counts = []
+    for h in range(N_TRIPLE - holes, N_TRIPLE):
+        complement = set(range(N_U1)) - core_support[h]
+
+        def eligible(v: int) -> bool:
+            # The first condition is trace orthogonality at h; the second is
+            # the same condition at v, needed because the residual edge is
+            # symmetric.
+            return (v != h and blocks[v] <= complement
+                    and not (blocks[h] & core_support[v]))
+
+        triple_candidates = [v for v in range(N_TRIPLE) if eligible(v)]
+        pair_candidates = [v for v in range(N_TRIPLE, N) if eligible(v)]
+        triple_packings = []
+        for chosen in combinations(triple_candidates, 3):
+            union = set().union(*(blocks[v] for v in chosen))
+            if len(union) == 9:
+                triple_packings.append(union)
+        pair_packings = []
+        for chosen in combinations(pair_candidates, 3):
+            union = set().union(*(blocks[v] for v in chosen))
+            if len(union) == 6:
+                pair_packings.append(union)
+        counts.append(sum(
+            1 for triples in triple_packings for pairs in pair_packings
+            if not (triples & pairs) and triples | pairs == complement
+        ))
+    return counts
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--branch", type=int, choices=(3, 4), required=True)
@@ -292,6 +343,9 @@ def main() -> int:
     parser.add_argument("--seed-outer", action="store_true",
                         help="fix incidence/K to one fast outer-design witness")
     parser.add_argument("--outer-random-seed", type=int, default=0)
+    parser.add_argument("--audit-hole-partitions-seeds", type=int, default=0,
+                        help="count local exceptional-hole complement partitions "
+                             "for seeds 0..N-1, then exit")
     parser.add_argument("--relax", action="append", default=[],
                         choices=("residual-c4", "b0-c4", "b0-orthogonal",
                                  "dtb-common", "dtb-cap", "dtb-aq-cap",
@@ -300,6 +354,14 @@ def main() -> int:
     parser.add_argument("--kissat", action="store_true",
                         help="bit-blast the model to DIMACS and run Kissat")
     args = parser.parse_args()
+    if args.audit_hole_partitions_seeds:
+        for seed_number in range(args.audit_hole_partitions_seeds):
+            counts = hole_partition_counts(
+                args.branch, args.timeout_seconds * 1000, seed_number
+            )
+            print(f"branch={args.branch} outer_seed={seed_number} "
+                  f"hole_partition_counts={counts}")
+        return 0
     seed = make_outer_seed(args.branch, args.timeout_seconds * 1000,
                            args.outer_random_seed) if args.seed_outer else None
     solver, data = build(args.branch, args.timeout_seconds * 1000,
