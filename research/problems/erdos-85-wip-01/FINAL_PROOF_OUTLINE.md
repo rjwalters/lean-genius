@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.29 — 2026-08-22 (NONBIP-CONNECTED: the needed theorem is named — a Baer-type absolute-point theorem).**
+**Version 2.30 — 2026-08-22 (Baer target sharpened: component parity, and `k ≥ 3` is essential).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -357,6 +357,48 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   removed. But the node has moved from *"a terminal must use binary incidence
   nonlinearly"* to *"port Baer"*, which is a materially better place to
   restart from.
+
+  **(ix) THE COMPONENT PARITY LAW, and why `k ≥ 3` is not a technicality**
+  (Fable and sol-1, 17:20–17:25Z).
+
+  *The law.* On a `D`-component `C` with `A·𝟙_C = m·𝟙` (`m = |C|/q`), the
+  `A`-graph induced on `C` is `m`-regular counting loops, so the number of
+  absolute points in `C` satisfies
+  `#abs(C) ≡ m·|C| = q·m² (mod 2)`. Two consequences that between them
+  dispose of the whole trace-vs-component family:
+  - **For `q = 2^k` this is EVEN for every component.** Each component
+    carries `0` or `≥ 2` absolute points. There is no "one per component"
+    argument to be had at binary `q`.
+  - **For odd `q` with `m` odd it is ODD**, so `≥ 1` per component and
+    `tr A ≥ #comp(D)` is a trivial theorem there. That is exactly why the odd
+    control is tight at one absolute point per column, and it localises the
+    entire difficulty of the inequality to binary `q`.
+
+  *The refutation.* `tr A ≥ #comp(D)` was proposed as a sharper Baer
+  statement and REFUTED the same minute by an exact `q = 4` model
+  (sol-1, Z3): a symmetric loopless `4`-regular C4-free `A` on 16 vertices
+  with `D`-components `[8,8]` and `tr A = 0 < 2`. It does not touch A-REG —
+  `D` is disconnected there — it kills only the stronger inequality. At
+  binary `q` the surviving form of that inequality is the connected case,
+  which is A-REG itself, so the route is equivalent in difficulty to the node
+  and must not be spent on.
+
+  ***`q = 4` is a genuine exception, not a small case.*** A-REG is stated for
+  `k ≥ 3`. The 16-vertex model satisfies symmetric, loopless, `q`-regular,
+  C4-free on `q²` vertices, and it exists. **So any Baer-type theorem ported
+  to this setting must use `k ≥ 3` somewhere**; an argument that would also
+  apply at `q = 4` is thereby known to be wrong.
+
+  *Two lanes closed by the same control.* The naive involution coupling
+  reduces exactly to the existing T-degree parity and carries no new content
+  (sol-2, `8eb7af8038`, NEGATIVE and banked). And the proposed T-cycle
+  holonomy lane is dead locally: in the `q = 4` model `T` is exactly one
+  `C8`, satisfying every A-incidence and C4 condition, so **closure of a
+  T-cycle alone cannot force an absolute point or a repeated common
+  neighbour** — only interaction with GLOBAL `D`-connectivity can. `T` is
+  also Eulerian there and meets only one of the two `D`-components, so `T`
+  need not meet every component nor detect the component cut, which is
+  directly relevant to the `T = A ∩ D` lane below.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -674,6 +716,19 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.30** (2026-08-22 ~17:30Z, editor): records the component parity law —
+  `#abs(C) ≡ q·m² (mod 2)`, even for every component at binary `q`, odd at
+  odd `q` with `m` odd — which makes `tr A ≥ #comp(D)` trivial at odd `q` and
+  equivalent to A-REG itself at binary `q`. The inequality was proposed and
+  refuted within a minute by an exact `q = 4` model (`tr A = 0`, components
+  `[8,8]`), and that model carries a standing consequence: **`q = 4` is a
+  genuine exception, so any ported Baer argument must use `k ≥ 3`**. Two
+  lanes closed on the same control — naive involution coupling collapses to
+  T-degree parity (`8eb7af8038`), and T-cycle holonomy cannot force an
+  absolute point since `T` is a single `C8` there. Fable withdrew its first
+  objection to the refutation on sol-1's correction; the corrected version is
+  what is recorded.
 
 - **2.29** (2026-08-22 ~10:30Z, editor, recorded while the room is stalled):
   names the theorem the node needs. `tr A = 0` is a fixed-point-free
