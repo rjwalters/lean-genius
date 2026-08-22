@@ -24,10 +24,10 @@ cycles of `A[C]` to choose the same orientation.
 ## Reduced countermodel at a binary parameter
 
 `q16_weight_two_cycle_sync_reduced_sat.py` constructs a satisfiable exact
-component-selector model at `q=16`.  Take
+component-selector model at `q=16`.  Take two orientable internal cycles
 
 ```text
-A[C] = C3 disjoint-union C29.
+A[C] = C5 disjoint-union C27.
 ```
 
 Represent the `q^2-2q = 224` outside vertices by their distinct two-point
@@ -38,12 +38,15 @@ traces.  Thus the traces form a simple `(q-2)=14`-regular graph `F` on the
 * no repeated trace (simplicity, forced by C4-freeness);
 * no trace pair having an internal common neighbor (the exact pair-codegree
   exclusion forced by C4-freeness);
-* no triangle edge in `F`;
-* every C29 edge in `F`.
+* no C5 edge in `F` (that cycle is T-saturated);
+* every C27 edge in `F` (that cycle is cross-saturated).
 
-Z3 finds such an `F`.  It has all 224 required traces but exactly 29
-edge-traces, strictly between the proposed endpoints 0 and 224.  The script
-then independently checks every listed invariant against the model.
+Z3 finds such an `F`.  It has all 224 required traces but exactly 27
+edge-traces.  Since there are no internal triangles, this is strictly between
+the corrected synchronization endpoints 0 and `2q = 32`.  (The earlier
+uncorrected endpoint `q^2-2q` counts all outside traces, most of which must be
+non-edge pairs, and is not the right maximum.)  The script then independently
+checks every listed invariant against the model.
 
 The script also realizes the next cross-resolution layer explicitly.  Treat
 each edge of `F` as an outside vertex joined across the cut to its two
@@ -53,7 +56,7 @@ cross edges through the other endpoint in `C`; the new matching edges resolve
 every remaining cross edge through exactly one outside common neighbor.
 The local matchings never reuse an outside edge, because two distinct trace
 pairs cannot share two endpoints.  Direct checks give outside resolution
-degree zero on the 29 edge-traces and degree two on all 195 non-edge traces,
+degree zero on the 27 edge-traces and degree two on all 197 non-edge traces,
 with exactly one resolver for every cross incidence.
 
 ## Verdict

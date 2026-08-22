@@ -16,8 +16,8 @@ from z3 import Bool, If, Not, Solver, Sum, is_true, sat
 
 Q = 16
 N = 2 * Q
-TRIANGLE = tuple(range(3))
-LONG_CYCLE = tuple(range(3, N))
+SHORT_CYCLE = tuple(range(5))
+LONG_CYCLE = tuple(range(5, N))
 
 
 def cycle_edges(vertices: tuple[int, ...]) -> set[tuple[int, int]]:
@@ -27,7 +27,7 @@ def cycle_edges(vertices: tuple[int, ...]) -> set[tuple[int, int]]:
     }
 
 
-INTERNAL_EDGES = cycle_edges(TRIANGLE) | cycle_edges(LONG_CYCLE)
+INTERNAL_EDGES = cycle_edges(SHORT_CYCLE) | cycle_edges(LONG_CYCLE)
 PAIRS = tuple(combinations(range(N), 2))
 
 
@@ -64,9 +64,9 @@ def main() -> None:
     for pair in distance_two_pairs:
         solver.add(Not(selected[pair]))
 
-    # Opposite orientations: the triangle's edges already have their internal
-    # common neighbor, whereas every edge of C29 is cross-triangulated.
-    for pair in cycle_edges(TRIANGLE):
+    # Opposite orientations on two genuinely orientable cycles: C5 is
+    # T-saturated, whereas every edge of C27 is cross-triangulated.
+    for pair in cycle_edges(SHORT_CYCLE):
         solver.add(Not(selected[pair]))
     for pair in cycle_edges(LONG_CYCLE):
         solver.add(selected[pair])
@@ -82,10 +82,12 @@ def main() -> None:
         for vertex in range(N)
     )
     assert chosen.isdisjoint(distance_two_pairs)
-    assert chosen.isdisjoint(cycle_edges(TRIANGLE))
+    assert chosen.isdisjoint(cycle_edges(SHORT_CYCLE))
     assert cycle_edges(LONG_CYCLE) <= chosen
-    assert len(chosen & INTERNAL_EDGES) == len(LONG_CYCLE) == 29
-    assert 0 < len(chosen & INTERNAL_EDGES) < Q * Q - 2 * Q
+    assert len(chosen & INTERNAL_EDGES) == len(LONG_CYCLE) == 27
+    # With no internal triangles, the corrected synchronization endpoints are
+    # zero and all 2q internal edges, not the total number of outside traces.
+    assert 0 < len(chosen & INTERNAL_EDGES) < 2 * Q
 
     # Realize the unique-common-neighbor requirement on every cross edge.
     # Regard each chosen pair as one outside vertex, adjacent across the cut
@@ -137,8 +139,8 @@ def main() -> None:
     assert all(len(set(first) & set(second)) == 1 for first, second in outside_edges)
 
     print("verified reduced q=16 selector countermodel")
-    print("internal type: C3 + C29")
-    print("outside traces: 224; trace-edges: 29")
+    print("internal type: C5 + C27 (oppositely oriented)")
+    print("outside traces: 224; trace-edges: 27")
     print(f"outside resolution edges: {len(outside_edges)}")
 
 
