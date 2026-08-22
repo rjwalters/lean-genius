@@ -1032,6 +1032,27 @@ vertices, namely `K intersect X`.  When `m_c=2` both isolates are the
 X-neighbors of `c` in D; when `m_c=1`, one is that D-neighbor and the other
 lies in `Q`.
 
+The two isolates are also matched exactly to the other separator vertices
+in `A`.  Since `R intersect X` is empty, (B7) read on `X` gives
+
+```text
+deg_A(x,W)=1_(x in K).
+```
+
+Thus only the two points of `K intersect X` meet `W`, once each.  Conversely
+the profile `A 1_X=1-1_K` read on `W` gives no X-neighbor at
+`c in K intersect W` and exactly one at each point of `W\{c}`, because
+`K intersect W={c}`.  Therefore these two A-edges form a bijection
+
+```text
+K intersect X  <-->  W\{c}.                  (B17W'')
+```
+
+Consequently `A[X union W]` consists of the perfect matching on the
+`q-4` nonisolated X-points, this two-edge cross matching, the isolated
+vertex `c`, and possibly the single edge between the other two vertices of
+`W`.
+
 The Y-location also carries a near-complete transversal.  If `c in Y`,
 then every `x in X` is a D-nonneighbor of `c`, because `X,Y` are different
 components of `D-W`.  Let `psi(x)` be their unique common A-neighbor.
