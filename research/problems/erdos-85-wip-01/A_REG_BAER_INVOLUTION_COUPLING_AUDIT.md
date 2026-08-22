@@ -391,6 +391,23 @@ sigma_P(S) = |N_T(P) intersect S|
            = |N_K(P) intersect S|               (mod 2).        (20)
 ```
 
+There is no matrix ambiguity in the location of K.  For nonadjacent points
+`P,Y`, the A-edges between `N_A(P)` and `N_A(Y)` form a matching: two edges
+sharing an endpoint would give that endpoint and P or Y two common
+neighbors.  Its size is exactly `(A^3)(P,Y)`.  Since `(A^2)(P,Y)` is zero
+on a D-pair and one on a non-D pair, (17) says
+
+```text
+PY in K  iff
+  PY in D     and the cross-neighborhood matching has odd size, or
+  PY notin D  and the cross-neighborhood matching has even size,           (21)
+```
+
+where `PY` is required to be a non-A pair.  Thus (20) is a nonlinear parity
+identity between split local Baer transpositions and cross-neighborhood
+matchings.  Any location theorem for K may be attacked directly in these
+incidence terms, without referring to the auxiliary matrix E.
+
 Thus the missing Baer-to-T bridge is not wholly absent: every vertex's
 broken-pair incidence into S is reproduced by a canonical Eulerian graph K
 of non-A pairs.  What remains is a location theorem for those K-edges (or a
@@ -413,13 +430,13 @@ not lie in D, avoid D, or preserve D-components; even a large K-cut is
 compatible with the transport identity.  A terminal really must use the
 `k>=3` incidence structure, not a support-containment shortcut.
 
-Equations (7)--(20) are the first canonical cut detector manufactured from
+Equations (7)--(21) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(20), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(21), so these laws alone
 do not conceal an order-independent
 contradiction.
 
