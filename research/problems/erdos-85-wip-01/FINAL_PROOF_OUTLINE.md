@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.25 — 2026-08-22 (NONBIP-CONNECTED: det route eliminated, first candidate mechanism since the holonomy family died).**
+**Version 2.26 — 2026-08-22 (NONBIP-CONNECTED: trace interface PROVEN, gap narrowed on the owner's correction).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -204,11 +204,36 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   Galois/norm argument, so what remains is a graph-facing wrapper restricting
   `A, D` to a J-killed residual sector. Do not re-extract it.
 
-  **Honest scope, and the owner said it before anyone asked:** the
-  verification is finite, q = 4 and q = 8, **not uniform in q**. The named
-  uniform gap is to control the designated square-in-eigenfield factors and
-  assemble their trace against `+q`. Until that lands this is a candidate,
-  not a mechanism, and this outline does not upgrade it.
+  **(iii) The graph-facing interface is now PROVEN** (`55b7a058cd`,
+  `Erdos85BinarySquareConnectedTraceEscape`). `binarySquare_regular_shiftedDefect_residual_trace_eq_zero`
+  takes the shifted `T = D − J`, proves `A² = (q−1)I − T` with `A` and `T`
+  commuting, and applies `abstract_residual_trace_eq_zero`. Cold-verified,
+  standard axioms only. The owner's own framing is kept: **this is an
+  interface, not a connected exclusion.**
+
+  **The gap, narrowed on the owner's correction (v2.25 stated it too
+  widely).** Do NOT label the existence of designated factors a gap — it is
+  `PROVEN`: `exists_nonprincipal_defectEigenvalue_with_square`
+  (`Erdos85GlobalOrbitSquare`) gives a genuine nonprincipal
+  square-in-`ℚ(μ)` defect orbit, and every certified residual factor has zero
+  trace (`55b7a058cd`). **The exact remaining GAP is to classify or bound ALL
+  designated factors strongly enough that their signed trace contributions
+  cannot total `−q`** — optionally meeting the cubic trace at the same time.
+
+  **First quantitative child that strengthens with q** (sol-1, 07:24Z, NOT
+  yet banked — spectral-bound APIs under audit, and it is recorded here as a
+  proposal). A connected non-bipartite `(q−1)`-regular `D` has every
+  nonprincipal `μ > −(q−1)`, so every associated adjacency root satisfies
+  `|θ| < √(2q−2)`. Since certified residual sectors cancel and the total
+  nonprincipal trace is `−q`, the TOTAL DIMENSION of designated
+  square-in-`ℚ(μ)` sectors must exceed `q/√(2q−2) ≈ √(q/2)`. That upgrades
+  `GlobalOrbitSquare` from bare existence to a **growing multiplicity
+  requirement**, which is the first thing beneath this node to meet §A.5.3's
+  standing bar that a proposal counts only if it strengthens with `q`.
+
+  **Scope discipline, and the owner said it before anyone asked:** the
+  trace-condition verification remains finite, q = 4 and q = 8. The node
+  stays `GAP` and this outline does not upgrade it.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -526,6 +551,18 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.26** (2026-08-22 ~07:30Z, editor, correcting v2.25 at the node owner's
+  request): v2.25 stated the NONBIP-CONNECTED gap too widely. The existence
+  of a designated square-in-eigenfield orbit is PROVEN, not a gap
+  (`exists_nonprincipal_defectEigenvalue_with_square`), and the graph-facing
+  residual-trace interface is now proven too (`55b7a058cd`, cold-verified,
+  standard axioms) — though it is an interface, not a connected exclusion.
+  The exact gap is narrowed to bounding ALL designated factors so their
+  signed traces cannot total `−q`. Records sol-1's proposed quantitative
+  child — total designated dimension must exceed about `√(q/2)` — as the
+  first thing beneath this node that strengthens with q, flagged NOT yet
+  banked.
 
 - **2.25** (2026-08-22 ~07:15Z, editor, on sol-1's requested delta):
   NONBIP-CONNECTED acquired its first owner and moved twice in an hour. The
