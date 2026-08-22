@@ -3875,3 +3875,55 @@ owner chord.  The reproducer
 `verify_c7_vertical_collision_counterprofile.py` checks the displayed local
 incidences, the cut/collision ledger, and maximum codegree one of the corrected
 skeleton with distinct outside roots.
+
+## 71. A closing chord on a three-edge run saturates the clean interface
+
+The counterprofile identifies a general terminal inside an actual routing
+system.  Let `P=x_0x_1x_2x_3` be a maximal three-edge run owned by `e`, and
+suppose the two private `e`-ports at its boundary roots coincide.  Call the
+common port `z`.  Since a port labels its pair of `c`-neighbors, this is
+equivalent to
+
+```text
+x_0x_3 in E(F_e[c]).                                   (236)
+```
+
+Among the six pairs of the four roots, the three run edges have distance
+one, the two pairs `x_0x_2,x_1x_3` have distance two, and `x_0x_3` is the
+only remaining pair.  The radius-two argument excludes every third-owner
+edge on the first five pairs, while (236) and exclusivity of pair ownership
+exclude a third owner on the last pair.  Hence
+
+```text
+every third color d != c,e is P-clean.                 (237)
+```
+
+Moreover, any target port repeated by two rooted assignments over `U` pins
+a distance-at-least-three root pair.  There is only the pair `x_0x_3`, and
+two different repeated ports on that pair would form a four-cycle.  Thus
+`z` is the unique possible repeated target; when it is used by both boundary
+transitions,
+
+```text
+kappa_vert(P)=1,
+every other clean target over U has multiplicity one.  (238)
+```
+
+Because (237) removes all nonclean leakage, clean--clean transpose
+cancellation leaves only the two boundary assignments into the run owner
+`e`.  Under (238), both have the same actual target port:
+
+```text
+clean source at x_0 --> z <-- clean source at x_3.     (239)
+```
+
+This is complementary to the one-edge terminal (197): there the two owner
+targets are forced distinct private ports, while a three-edge closing chord
+forces them to be one common private port and simultaneously makes the
+entire third-color interface clean.  Any price depending only on the target
+port cancels on (239); the sole surviving obstruction is the difference of
+the two **root-incidence** evaluations at the same port `z`.  Therefore an
+SRP proof need not forbid the closing chord outright.  It is enough to show
+that the incidence-aware transport assigns equal phase to the two
+occurrences of a repeated port.  The Section-70 profile demonstrates that
+this equality is not supplied by rooted owner factors alone.
