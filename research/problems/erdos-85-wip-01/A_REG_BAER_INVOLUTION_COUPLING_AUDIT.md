@@ -1252,7 +1252,7 @@ on the two shores, gives
 
 ```text
 deg_D(P,V setminus S) = (q t_P-c)/2       for P in S,
-deg_D(P,S) = q-1-c/2                      for P outside S.  (74)
+deg_D(P,S) = c/2                          for P outside S.  (74)
 ```
 
 In particular `q t_P>=c`.  If `q<c<=2q-2`, the subcubic bound (59) therefore
