@@ -1302,6 +1302,36 @@ Since `|K intersect W|>=1`, the only possibilities are
 Thus the separator-located `a=1` branch has only two possible numbers of
 path endpoints and at most four X-attachments at the exceptional pole.
 
+There is also a parity coupling between those paths and the c-attachment
+fiber.  Put
+
+```text
+M_c={x in X : cx is not an edge of D}.
+```
+
+Then `X\M_c=N_D(c) intersect X` has size `m_c` and lies in K by (B18),
+while the endpoints in `K intersect M_c` lie in Q.  Hence the path endpoints
+split exactly as
+
+```text
+|K intersect (X\M_c)|=m_c,
+|K intersect M_c|=|K intersect X|-m_c.        (B24)
+```
+
+Sum the degrees of `A[X]` over `M_c`.  Since the degrees are two except at
+the K-endpoints, the parity of the A-cut from `M_c` to `X\M_c` is
+
+```text
+e_A(M_c,X\M_c) = |K intersect M_c| = m_c mod 2,
+```
+
+using even `|K intersect X|`.  Finally `N_A(c) intersect X` is a singleton
+at `a=1`; call it `u`.  The uniform conclusion after (B18) puts `u in M_c`.
+If `u` had an A-neighbor in `X\M_c`, it would be a common A-neighbor of c
+and a D-neighbor of c, impossible.  Thus all A[X]-neighbors of `u` remain
+inside `M_c`.  This is the first edge-level constraint linking the
+path-cycle decomposition to a separator attachment fiber.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
