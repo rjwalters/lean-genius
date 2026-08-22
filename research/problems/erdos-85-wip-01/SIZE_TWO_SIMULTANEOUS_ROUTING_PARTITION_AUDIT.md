@@ -3716,3 +3716,63 @@ For larger root cycles, (222) quantifies exactly how far the all-occurrence
 feature can drift from the desired horizontal count.  Any incidence-weighted
 transport inequality strong enough to improve (222) to an even correction
 would settle the parity problem through (217).
+
+## 68. Vertical collision is an exact owner-factor cut deficit
+
+For each exterior color `d`, let
+
+```text
+X_d(Omega) := {x in C : the state (x,d) lies on Omega},
+v_d(Omega) := number of vertical edges of Omega incident with color d.
+```
+
+Every port used by `Omega` at a state `(x,d)` labels one `F_d[c]` edge
+incident with `x`.  The `d`-port incidences used vertically have exactly two
+forms:
+
+* an `F_d[c]` edge with both endpoints in `X_d` but not used horizontally;
+  its port occurs on two vertical edges and contributes one to
+  `kappa_vert(d)`;
+* an `F_d[c]` cut edge of `X_d`; its port occurs vertically at the unique
+  endpoint state lying on `Omega`.
+
+If both endpoints lie in `X_d` and their state edge is horizontal, the port
+is instead one of the `2h_d` horizontal incidences and contributes to neither
+class.  The port bijection makes the preceding partition exhaustive.  Hence
+
+```text
+v_d(Omega)
+  = 2 kappa_vert(d;Omega) + |delta_(F_d[c])(X_d)|.      (225)
+```
+
+Equivalently, writing `h_d` for the number of horizontal color-`d` edges,
+
+```text
+kappa_vert(d;Omega)
+  = |E(F_d[c][X_d])| - h_d.                            (226)
+```
+
+Indeed, every induced owner-factor edge supplies a load-two port, split
+uniquely into the horizontal and vertically repeated classes.  Summing
+(225) over colors and using `sum_d v_d=2V` gives
+
+```text
+kappa_vert(Omega)
+  = V - (1/2) sum_d |delta_(F_d[c])(X_d)|.             (227)
+```
+
+Every displayed cut has even cardinality because `F_d[c]` is two-regular,
+so the half-sum is integral.  More sharply,
+
+```text
+kappa_vert(Omega) is even
+  <=> sum_d |delta_(F_d[c])(X_d)| == 2V  (mod 4).      (228)
+```
+
+Thus the missing parity is not obtained by observing that every collision
+has two preimages; that fact is already the coefficient two in (225).  What
+is needed is a genuine mod-four congruence for the simultaneous owner-factor
+cuts of the color supports `X_d`.  The rooted transition paths determine
+those supports, while the clean-core capacity controls their repeated
+internal ports.  Equation (228) is the exact cut form in which the two data
+sets must be combined.
