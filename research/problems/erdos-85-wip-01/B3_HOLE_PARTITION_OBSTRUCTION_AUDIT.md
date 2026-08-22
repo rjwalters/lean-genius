@@ -287,3 +287,27 @@ L = T_R + Z/2  (mod 2).                                      (9)
 In particular `Z` is even.  Equation (9) identifies the remaining consumer
 as a joint parity law for residual B0--B0--U1 triangles and half the number
 of triangle-free B0--U1 incidence edges.
+
+The colorwise version retains more information.  For a high-root color `i`,
+the eight vertices of `U1_i` have five ordinary B0 neighbors each, giving a
+40-edge incidence cut.  Let `L_i` count the endpoints of row-internal
+K-edges that lie in color `i`, let `T_R,i` count residual triangles whose
+U1 vertex has color `i`, and let `Z_i` count triangle-free incidence edges
+into `U1_i`.  Then
+
+```text
+40 = L_i + 2 T_R,i + Z_i,
+L_i = Z_i  (mod 2).                                           (10)
+```
+
+Here `sum_i L_i=2L`, because every internal K-edge is cross-color.  If `m_i`
+instead counts the triangle-carrying rows whose internal edge misses color
+`i`, then `m_i=L-L_i`, hence
+
+```text
+m_i = L + Z_i  (mod 2).                                      (11)
+```
+
+Thus a colored defect-cut parity would recover the parity distribution of
+the missing colors, even though summing (10) over all three colors returns
+only the already-known evenness of `Z`.
