@@ -1960,6 +1960,159 @@ theorem squareOrderNine_threeHigh_secondProfile_special_defect_mass_dichotomy
     have hmass : (∑ b ∈ U1, (D.neighborFinset b ∩ S).card) = 6 := by
       rw [htotal, h4.2]
     exact ⟨h4.1, hmass⟩
+
+/-- A special endpoint outside the defect fiber of `x` has a seven-point
+ordinary B0 support. -/
+theorem squareOrderNine_threeHigh_secondProfile_nondefect_special_support_card_seven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    ((G.neighborFinset y ∩ B 0) \ S).card = 7 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let D := secondOrderDefectGraph G
+  let R := S \ D.neighborFinset x
+  let F := G.neighborFinset y ∩ B 0
+  have hyR : y ∈ R := hy
+  have hyS := (Finset.mem_sdiff.mp hy).1
+  have hbranch :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  change ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧ R.card = 0) ∨
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧ R.card = 2) at hbranch
+  have hRcard : R.card = 2 := by
+    rcases hbranch with h3 | h4
+    · have : 0 < R.card := Finset.card_pos.mpr ⟨y, hyR⟩
+      omega
+    · exact h4.2
+  have hErase : (R.erase y).card = 1 := by
+    rw [Finset.card_erase_of_mem hyR, hRcard]
+  obtain ⟨z, hzErase⟩ := Finset.card_pos.mp (by omega : 0 < (R.erase y).card)
+  have hzR := (Finset.mem_erase.mp hzErase).2
+  have hyz : y ≠ z := by
+    intro h
+    subst z
+    exact (Finset.mem_erase.mp hzErase).1 rfl
+  have hyzAdj :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hyR hzR hyz
+        (by rcases hbranch with h3 | h4 <;> omega)
+  have hpack :=
+    squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hpack
+  have hFcard : F.card = 8 := hpack.1 y hyS
+  have hInterLe : (F ∩ S).card ≤ 1 := by
+    apply (Finset.card_le_card ?_).trans
+      ((not_containsC4_iff_forall_common_le_one G).mp hfree y x ?_)
+    · intro w hw
+      have hwParts := Finset.mem_inter.mp hw
+      have hwS := Finset.mem_inter.mp hwParts.2
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hwParts.1).1, hwS.1⟩
+    · intro hyx
+      subst y
+      exact G.loopless.irrefl x
+        ((G.mem_neighborFinset x x).mp (Finset.mem_inter.mp hyS).1)
+  have hzInter : z ∈ F ∩ S := by
+    have hzS := (Finset.mem_sdiff.mp hzR).1
+    exact Finset.mem_inter.mpr ⟨Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset y z).mpr hyzAdj, (Finset.mem_inter.mp hzS).2⟩, hzS⟩
+  have hInterPos : 0 < (F ∩ S).card := Finset.card_pos.mpr ⟨z, hzInter⟩
+  have hInterCard : (F ∩ S).card = 1 := by omega
+  have hInterCard' : (S ∩ F).card = 1 := by
+    rw [Finset.inter_comm]
+    exact hInterCard
+  rw [Finset.card_sdiff, hFcard, hInterCard']
+
+/-- Pointwise puncture law.  For each nondefect special endpoint, its three
+U1 defect neighbors are exactly the three rows missing its seven-point
+ordinary support. -/
+theorem squareOrderNine_threeHigh_secondProfile_nondefect_special_defect_eq_missing_rows
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := (G.neighborFinset y ∩ B 0) \ S
+    (secondOrderDefectGraph G).neighborFinset y ∩ U1 =
+      U1.filter fun b => (G.neighborFinset b ∩ F).card = 0 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := (G.neighborFinset y ∩ B 0) \ S
+  let D := secondOrderDefectGraph G
+  let A := antipodalNeighbors G y ∩ B 1
+  have hyBase := (Finset.mem_sdiff.mp hy).1
+  have hF7 : F.card = 7 :=
+    squareOrderNine_threeHigh_secondProfile_nondefect_special_support_card_seven
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  have hanti :=
+    squareOrderNine_threeHigh_secondProfile_antipodal_fiber_eq_missing_rows
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hF7
+  dsimp only at hanti
+  change A = U1.filter fun b => (G.neighborFinset b ∩ F).card = 0 at hanti
+  rw [← hanti]
+  ext b
+  constructor
+  · intro hbD
+    have hbParts := Finset.mem_inter.mp hbD
+    have hbU := Finset.mem_sdiff.mp hbParts.2
+    have hDyb := (D.mem_neighborFinset y b).mp hbParts.1
+    change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj y b at hDyb
+    rcases hDyb with hantiY | htf
+    · exact Finset.mem_inter.mpr ⟨
+        (antipodalGraph_adj G y b).mp hantiY, hbU.1⟩
+    · have hyb := ((mem_triangleFreeNeighbors G y b).mp
+          ((triangleFreeEdgeGraph_adj G y b).mp htf)).1
+      exfalso
+      exact (squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+        G hfree hhigh hx (Finset.mem_inter.mp hyBase).2 hbU.1
+          ((G.mem_neighborFinset x y).mp (Finset.mem_inter.mp hyBase).1)) hyb
+  · intro hbA
+    have hbParts := Finset.mem_inter.mp hbA
+    have hfiber :=
+      squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyBase hbA
+    dsimp only at hfiber
+    exact Finset.mem_inter.mpr ⟨
+      (D.mem_neighborFinset y b).mpr (Or.inl
+        ((antipodalGraph_adj G y b).mpr hbParts.1)),
+      Finset.mem_sdiff.mpr ⟨hbParts.2, hfiber.1⟩⟩
 end
 
 end Erdos85
@@ -1983,4 +2136,6 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_defect_mass_dichotomy
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_nondefect_special_support_card_seven
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_nondefect_special_defect_eq_missing_rows
 #print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
