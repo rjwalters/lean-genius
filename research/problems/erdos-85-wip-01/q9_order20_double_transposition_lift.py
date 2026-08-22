@@ -23,7 +23,8 @@ import z3
 
 from q9_order20_c4_lift import EXPECTED_SHA256, ORDINALS, component
 
-OPEN_PAIRS = {4: ((5, 5),), 6: ((0, 0),), 7: ()}
+OPEN_PAIRS = {4: (), 6: (), 7: ()}
+ROOT_GAUGE_PAIRS = {4: ((5, 5),), 6: ((0, 0),), 7: ()}
 
 
 def main() -> None:
@@ -36,6 +37,7 @@ def main() -> None:
     parser.add_argument("--all", action="store_true")
     parser.add_argument("--decided", action="store_true")
     parser.add_argument("--timeout", type=int, default=300)
+    parser.add_argument("--root-gauge", action="store_true")
     args = parser.parse_args()
     raw = args.census.read_bytes()
     assert hashlib.sha256(raw).hexdigest() == EXPECTED_SHA256
@@ -101,14 +103,17 @@ def main() -> None:
             if not args.decided or pair not in OPEN_PAIRS[args.ordinal]
         ]
         for alpha_class, beta_class in cases:
+            command = [
+                sys.executable, str(Path(__file__).resolve()), str(args.census),
+                "--ordinal", str(args.ordinal),
+                "--alpha-class", str(alpha_class),
+                "--beta-class", str(beta_class),
+                "--timeout", str(args.timeout),
+            ]
+            if (alpha_class, beta_class) in ROOT_GAUGE_PAIRS[args.ordinal]:
+                command.append("--root-gauge")
             process = subprocess.run(
-                [
-                    sys.executable, str(Path(__file__).resolve()), str(args.census),
-                    "--ordinal", str(args.ordinal),
-                    "--alpha-class", str(alpha_class),
-                    "--beta-class", str(beta_class),
-                    "--timeout", str(args.timeout),
-                ],
+                command,
                 text=True, capture_output=True,
             )
             if process.returncode != 0 or "result=unsat" not in process.stdout:
@@ -144,6 +149,20 @@ def main() -> None:
         for x in range(20):
             for y in range(20):
                 solver.add(matrix[alpha[x]][target_twist[y]] == matrix[x][y])
+    if args.root_gauge:
+        alpha_centralizer = [
+            element for element in automorphisms
+            if compose(element, alpha) == compose(alpha, element)
+        ]
+        beta_centralizer = [
+            element for element in automorphisms
+            if compose(element, beta) == compose(beta, element)
+        ]
+        assert {element[0] for element in alpha_centralizer} == set(range(20))
+        assert {element[0] for element in beta_centralizer} == set(range(20))
+        # Residual coordinate changes by the two centralizers send
+        # g -> b g a^-1.  Taking a=id and choosing b makes g(0)=0.
+        solver.add(g[0][0])
 
     contribution = {}
 
