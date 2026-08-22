@@ -959,6 +959,26 @@ least `q-4` points of `Q` lie in `Y`.  Thus the endpoint contains two
 simultaneous exact matchings: the three `X_w <--> R_w` wing matchings and
 this exceptional-point matching into the overwhelmingly Y-located set K.
 
+A partial version holds for every `a`.  The point `c` has `a` neighbors in
+`X` and `q-a` in `Y`.  Each of the latter has exactly two K-neighbors by
+(B6), so deleting `c` again gives an injection
+
+```text
+N_A(c) intersect Y  -->  K\{c}                (B18)
+```
+
+with image size `q-a`.  For `x in N_A(c) intersect X`, (B6) already counts
+`c` among its K-neighbors, and hence `deg_D(x,W)<=1`; this sharpens (B10) on
+the exceptional neighborhood.  Finally (B16) gives
+
+```text
+|K intersect (X union W)| <= 3a+4,
+```
+
+so at least `max(0,q-4a-4)` targets of (B18) lie in `Y`.  Thus for small a
+the same internal-Y matching pressure persists quantitatively, even before
+the endpoint becomes a full parallel class.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
