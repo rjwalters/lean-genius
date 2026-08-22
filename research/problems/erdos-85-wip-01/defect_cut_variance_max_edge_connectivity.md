@@ -932,6 +932,28 @@ Since `|K|=2q`, this is equivalently
 |K intersect (X union W)|=3a+3-r_X+c_X.      (B16)
 ```
 
+There are also uniform location parities.  On `X`,
+
+```text
+deg_A(x,X)=a+1-1_(x in K).
+```
+
+Because `|X|=q(a+1)-2` is even, the handshake lemma gives
+
+```text
+|K intersect X| = 0 mod 2.                   (B16a)
+```
+
+On `Y`, the analogous degree sum is
+`b|Y|-|R intersect Y|+1_(c in Y)`.  Here `|Y|=qb-1` is odd and
+`b=q-1-a` has parity `a+1`, so
+
+```text
+|R intersect Y| + 1_(c in Y) = a+1 mod 2.    (B16b)
+```
+
+These hold for the full positive-spike profile, not only at `a=0`.
+
 At the endpoint `a=0`, at most four points of `K` can lie in `X union W`,
 and necessarily `r_X<=3+c_X`.  Since `c in K`, at most three of those
 points are different from `c`; equality four requires `c in X` and
