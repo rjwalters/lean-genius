@@ -1332,17 +1332,19 @@ and a D-neighbor of c, impossible.  Thus all A[X]-neighbors of `u` remain
 inside `M_c`.  This is the first edge-level constraint linking the
 path-cycle decomposition to a separator attachment fiber.
 
-The whole separator complement is in fact routed through the three wings.
+The whole separator complement is in fact routed through the three wings;
+this part holds for every `a`, not only on the first non-endpoint slice.
 For `x in X`, put `t_x=deg_D(x,W)`.  The componentwise equations (B6) and
-the positive-spike flow equation give
+the two-walk identity give
 
 ```text
-deg_A(x,K)=2-t_x,
-deg_A(x,R)=1+1_(x in N_A(c)).
+deg_A(x,K)=2-t_x.
 ```
 
-On the other hand (B7), summed over the neighbors of `x`, says that the
-number of two-edge walks from `x` to `W` is
+Indeed, the number of two-edge walks from `x` to `W` is `3-t_x`: each of
+the `3-t_x` non-D pairs `(x,w)` has exactly one common A-neighbor, and the
+`t_x` D-pairs have none.  On the other hand (B7), summed over the neighbors
+of `x`, says that the same number is
 
 ```text
 sum_(z in N_A(x)) deg_A(z,W)
@@ -1350,9 +1352,13 @@ sum_(z in N_A(x)) deg_A(z,W)
   = 3-t_x.                                      (B25)
 ```
 
-There are exactly `3-t_x` pairs `(x,w)` with `w in W` that are not edges
-of `D`.  Each has exactly one common `A`-neighbor, while a `D`-edge has
-none.  Consequently (B25) is an exact color-preserving routing rule: for
+In particular (B25) recovers
+
+```text
+deg_A(x,R)=1+1_(x in N_A(c)).
+```
+
+More importantly, it is an exact color-preserving routing rule: for
 each missing `D`-attachment `xw`, its unique common neighbor lies in the
 `K/R` wing incident with `w`, and these are all the `K/R`-neighbors of
 `x`, except for `c` itself when `x in N_A(c)`.
