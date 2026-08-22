@@ -1434,6 +1434,32 @@ triangle edge: D[F] is empty, so its endpoints have their unique additional
 common A-neighbor.  This is the exact interface between the partial-Baer core
 and `T=A intersect D`.
 
+This partial-Baer core is not, by itself, contradictory.  In fact the local
+majority design realizes every C4-free graph H of minimum degree one and
+maximum degree two that obeys (73k).  Start from the abstract majority
+incidence points: one point `p_XY` for every non-D pair of majority lines,
+and `r+1+deg_(D[F])(X)` private points on line X.  For each label `X in R`,
+place X as follows:
+
+```text
+deg_H(X)=2 with neighbors Y,Z: put X at p_YZ;
+deg_H(X)=1 with neighbor Y:   put X at a private point of Y. (73l)
+```
+
+The first point exists by (73k).  Two degree-two labels could collide only
+if they had the same two neighbors, which would form a C4 in H; endpoint
+collisions are avoided because a vertex has at most two endpoint neighbors
+and every line has at least `r+1>=2` private points.  Pair points and private
+points are disjoint types.  The resulting incidence is symmetric and induces
+exactly H on R.
+
+Therefore neither the complete-pair `r=1` design nor the one-missing-pair
+`r=2` design can be killed from (73d)--(73k) alone.  The next argument must
+use how this locally feasible self-indexing extends to the remaining
+`q^2-O(q)` vertices -- equivalently, how its path--cycle marks enter the
+canonical `K/Omega` transport -- rather than attempting another internal
+path/cycle classification.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
