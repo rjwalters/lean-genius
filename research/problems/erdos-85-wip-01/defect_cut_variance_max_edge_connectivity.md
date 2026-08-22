@@ -604,3 +604,68 @@ This is the exact nonlinear filler problem left by the triangle-free
 minimum-cut branch.  The available degree and pair-capacity counts fit
 inside the two wings and `Z`; no repeated common neighbor or D-disconnection
 follows from the cell sizes alone.
+
+## Three-vertex-connectivity
+
+The Mantel bound (16) closes the sole two-separator escape left by maximal
+edge-connectivity.  First, `D` has no articulation vertex: if deleting `w`
+leaves at least two components, their nonzero cuts are all incident with
+`w`, so their cut sizes sum to `q-1`, while each is at least `q-1`.
+
+Now suppose `W={x,y}` separates `D`.  The component cuts sum to at most
+`2(q-1)`.  Hence there are exactly two components `S_1,S_2`, both cuts have
+size `q-1`, and `xy` is not a D-edge.  For binary `q>=8`, the minimum-cut
+residue and
+
+```text
+|S_1|+|S_2| = q^2-2
+```
+
+force `|S_i|=q a_i-1`, with `a_1+a_2=q`.  Equality in (1) gives q-element
+low sets `Z_i` such that
+
+```text
+A 1_(S_i) = a_i 1 - 1_(Z_i).
+```
+
+Adding the two equations and using `S_1 disjoint-union S_2=V\W` yields
+
+```text
+1_(Z_1)+1_(Z_2) = 1_(N_A(x))+1_(N_A(y)).      (27)
+```
+
+Since `xy` is not a D-edge, its two A-neighborhoods meet in a unique point
+`c`.  Equation (27) therefore says that `Z_1,Z_2` also meet in `c` and
+partition the two punctured neighborhoods.  For either i, write
+
+```text
+Z_i = {c} disjoint-union P_i disjoint-union Q_i,
+P_i subset N_A(x)\N_A(y),
+Q_i subset N_A(y)\N_A(x).
+```
+
+Both `{c} union P_i` and `{c} union Q_i` are D-cocliques, because their
+pairs share A-neighbor x or y.  Thus, with `p=|P_i|`,
+
+```text
+e_D(Z_i) <= p(q-1-p)
+           <= floor((q-1)^2/4)
+            = q^2/4-q/2.                      (28)
+```
+
+On the other hand, orienting the complementary minimum cut `V\S_i`, whose
+size is 1 modulo q, makes `Z_i` its associated q-set.  Bound (16) gives
+
+```text
+e_D(Z_i) >= q^2/4-1,                           (29)
+```
+
+contradicting (28) for `q>=8`.  Consequently
+
+```text
+D connected implies vertexConnectivity(D) >= 3.      (30)
+```
+
+This is stronger than maximal edge-connectivity alone and is the first
+place where the near-Mantel q-set bound eliminates a global separator
+configuration rather than merely classifying it.
