@@ -906,6 +906,20 @@ theorem binarySquare_forcedTBundle_ordinary_card_odd
   use k - 1
   omega
 
+/-- If the total private population and the path-endpoint population are
+even, adjoining one exceptional private point forces the remaining ordinary
+private population to be odd.  This is the arithmetic core of (73rg). -/
+theorem binarySquare_ordinaryPrivate_card_odd
+    (totalPrivate ordinaryPrivate pathEndpoints : ℕ)
+    (hsplit : totalPrivate = ordinaryPrivate + (pathEndpoints + 1))
+    (htotal : Even totalPrivate)
+    (hendpoints : Even pathEndpoints) :
+    Odd ordinaryPrivate := by
+  obtain ⟨a, ha⟩ := htotal
+  obtain ⟨b, hb⟩ := hendpoints
+  use a - b - 1
+  omega
+
 end
 
 end Erdos85
@@ -941,3 +955,4 @@ end Erdos85
 #print axioms Erdos85.neighbor_inter_complement_card
 #print axioms Erdos85.binarySquare_finalLayer_exceptionalNeighbors_card_le_three
 #print axioms Erdos85.binarySquare_forcedTBundle_ordinary_card_odd
+#print axioms Erdos85.binarySquare_ordinaryPrivate_card_odd

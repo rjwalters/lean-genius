@@ -1658,6 +1658,23 @@ K/Omega label, this parity carrier follows from the existing design and
 Eulerian laws.  A transport terminal may try to carry this owner-indexed odd
 bundle through the residual half-line system (73m)--(73p).
 
+There is a second, global odd residue.  In the same `r=1,h=f` branch, the
+exceptional private points are exactly `E_0` together with those vertices of
+`R=F intersect S` having degree one in the path--cycle graph `A[R]`: this is
+the endpoint/private correspondence in (73i).  The number of degree-one
+vertices is even by the handshaking lemma.  Since (73j) gives `2(q-1)`
+private points in total, it follows that
+
+```text
+|P intersect C| = 1 + #{degree-one vertices of A[R]} is odd,
+|P intersect M| is odd.                                  (73rg)
+```
+
+In particular an ordinary private point always exists.  This parity is
+independent of how the ordinary private marks split among T, K, and Omega;
+it is therefore a robust residual target for the owner-incidence-weighted
+transport, rather than a consequence of the failed pointwise sign.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
