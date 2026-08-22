@@ -1234,6 +1234,16 @@ monotone on the realizable flags.  This rules out the simplest scalar
 root-incidence collision potential and locates the needed invariant at the
 interaction between role coordinates.
 
+The upper-set decomposition is not sparse either.  Take one fitted arbitrary
+isotone incidence table for the last `(0,1)` case and threshold its cap
+values; every superlevel set is an upper set of the realized census poset.
+For 25 levels spanning all nonzero values, refitting free alpha plus a single
+nonnegative upper-set coefficient always gives objective zero.  Refitting
+every pair among 13 coarse superlevels also gives zero.  Therefore the final
+certificate is not one or two exceptional census predicates hidden inside a
+dense table: it requires a genuinely multi-threshold combination (or a new
+structural identity which couples those thresholds before separation).
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
