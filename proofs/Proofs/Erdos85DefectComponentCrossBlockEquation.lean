@@ -1,5 +1,6 @@
 import Proofs.Erdos85ExcessDefectRegular
 import Proofs.Erdos85BinarySquareRegularParity
+import Proofs.Erdos85NonregularDefectOperator
 
 /-! # The exact adjacency equation across a defect-component cut
 
@@ -16,6 +17,54 @@ namespace Erdos85
 noncomputable section
 
 set_option maxHeartbeats 0
+
+/-- **Order-free, nonregular defect-cut equation.**  Across a connected
+component of the second-order defect graph, every pair of endpoints has one
+common ambient neighbor.  Splitting that neighbor according to the cut gives
+`H B + B C = J`; the diagonal degree term in the general defect-operator
+identity has no cross-block entries. -/
+theorem c4Free_defectComponent_crossBlock_eq_ones
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    H * B + B * C = fun _ _ ↦ (1 : ℤ) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  have hsq :=
+    adjMatrix_sq_eq_degreePredDiagonal_add_ones_sub_secondOrderDefect
+      G hfree
+  have hblock := congrArg
+    (fun X ↦ X.toBlock p (fun x ↦ ¬p x)) hsq
+  rw [Matrix.toBlock_mul_eq_add p p (fun x ↦ ¬p x)] at hblock
+  have hA11 : (G.adjMatrix ℤ).toBlock p p = H := by
+    ext i j
+    simp [H, p, Matrix.toBlock_apply, SimpleGraph.adjMatrix_apply]
+  have hA12 : (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x) = B := rfl
+  have hA22 : (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x)
+      (fun x ↦ ¬p x) = C := rfl
+  have hright : (degreePredDiagonal G +
+        FriendshipTheoremOQ01.onesMatrix V - D.adjMatrix ℤ).toBlock
+          p (fun x ↦ ¬p x) = fun _ _ ↦ (1 : ℤ) := by
+    ext i j
+    have hij : i.1 ≠ j.1 := fun h ↦ j.2 (h ▸ i.2)
+    have hD : ¬D.Adj i.1 j.1 := by
+      intro hadj
+      exact j.2 ((c.mem_supp_congr_adj hadj).mp i.2)
+    simp [Matrix.toBlock_apply, degreePredDiagonal, hij, hD,
+      SimpleGraph.adjMatrix_apply, FriendshipTheoremOQ01.onesMatrix]
+  rw [hA11, hA12, hA22, hright] at hblock
+  exact hblock
 
 /-- **Defect-cut cross-block equation.**  If `H` and `C` are the ambient
 adjacency blocks inside and outside a second-order defect component and `B`
@@ -34,36 +83,8 @@ theorem binarySquare_regular_defectComponent_crossBlock_eq_ones
     let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
     let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
     H * B + B * C = fun _ _ ↦ (1 : ℤ) := by
-  classical
-  let D := secondOrderDefectGraph G
-  let p : V → Prop := fun x ↦ x ∈ c.supp
-  let H := (G.induce c.supp).adjMatrix ℤ
-  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
-  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
-  have hsq := adjMatrix_sq_eq_sub_secondOrderDefect_of_regular
-    G hfree hreg
-  have hblock := congrArg
-    (fun X ↦ X.toBlock p (fun x ↦ ¬p x)) hsq
-  rw [Matrix.toBlock_mul_eq_add p p (fun x ↦ ¬p x)] at hblock
-  have hA11 : (G.adjMatrix ℤ).toBlock p p = H := by
-    ext i j
-    simp [H, p, Matrix.toBlock_apply, SimpleGraph.adjMatrix_apply]
-  have hA12 : (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x) = B := rfl
-  have hA22 : (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x)
-      (fun x ↦ ¬p x) = C := rfl
-  have hright : (((q : ℤ) - 1) • (1 : Matrix V V ℤ) +
-        FriendshipTheoremOQ01.onesMatrix V - D.adjMatrix ℤ).toBlock
-          p (fun x ↦ ¬p x) = fun _ _ ↦ (1 : ℤ) := by
-    ext i j
-    have hij : i.1 ≠ j.1 := fun h ↦ j.2 (h ▸ i.2)
-    have hD : ¬D.Adj i.1 j.1 := by
-      intro hadj
-      exact j.2 ((c.mem_supp_congr_adj hadj).mp i.2)
-    change (((q : ℤ) - 1) * (if i.1 = j.1 then 1 else 0) + 1 -
-      (if D.Adj i.1 j.1 then 1 else 0)) = 1
-    simp [hij, hD]
-  rw [hA11, hA12, hA22, hright] at hblock
-  exact hblock
+  have _hreg := hreg
+  exact c4Free_defectComponent_crossBlock_eq_ones G hfree c
 
 /-- **Normalized-component outside-return identity.**  If the cut component
 has order `q*m`, then it has internal degree `m` and exterior degree `q-m`.
@@ -507,14 +528,13 @@ theorem orderSixtyFour_sizeTwoComponent_crossBlock_sq
   norm_num at h
   exact h
 
-/-- Transposed form of the defect-cut equation. -/
-theorem binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
+/-- Transposed form of the order-free defect-cut equation. -/
+theorem c4Free_defectComponent_transpose_crossBlock_eq_ones
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    (hfree : ¬ containsC4 V G) {q : ℕ}
-    (hreg : ∀ x, G.degree x = q)
+    (hfree : ¬ containsC4 V G)
     (c : (secondOrderDefectGraph G).ConnectedComponent) :
     let p : V → Prop := fun x ↦ x ∈ c.supp
     let H := (G.induce c.supp).adjMatrix ℤ
@@ -527,8 +547,7 @@ theorem binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
   let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
   let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
   let JHO : Matrix c.supp {x // ¬p x} ℤ := fun _ _ ↦ 1
-  have hcross := binarySquare_regular_defectComponent_crossBlock_eq_ones
-    G hfree hreg c
+  have hcross := c4Free_defectComponent_crossBlock_eq_ones G hfree c
   have hcross' : H * B + B * C = JHO := by
     simpa [H, B, C, JHO, p] using hcross
   have hHt : H.transpose = H := by
@@ -546,16 +565,32 @@ theorem binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
   rw [ht']
   rfl
 
-/-- **Exterior eigenvector transfer.**  On zero-sum vectors, transposed
-cross-incidence sends an internal `H`-eigenvector of eigenvalue `λ` to an
-exterior `C`-eigenvector of eigenvalue `-λ`. -/
-theorem binarySquare_regular_defectComponent_exterior_eigenvector_transfer
+/-- Compatibility wrapper for the former regular statement. -/
+theorem binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     (hfree : ¬ containsC4 V G) {q : ℕ}
     (hreg : ∀ x, G.degree x = q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    C * B.transpose + B.transpose * H = fun _ _ ↦ (1 : ℤ) := by
+  have _hreg := hreg
+  exact c4Free_defectComponent_transpose_crossBlock_eq_ones G hfree c
+
+/-- **Exterior eigenvector transfer.**  On zero-sum vectors, transposed
+cross-incidence sends an internal `H`-eigenvector of eigenvalue `λ` to an
+exterior `C`-eigenvector of eigenvalue `-λ`. -/
+theorem c4Free_defectComponent_exterior_eigenvector_transfer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
     (f : c.supp → ℤ) (mu : ℤ)
     (hsum : ∑ x, f x = 0)
@@ -572,8 +607,7 @@ theorem binarySquare_regular_defectComponent_exterior_eigenvector_transfer
   let J : Matrix {x // ¬p x} c.supp ℤ := fun _ _ ↦ 1
   have htrans : C * B.transpose + B.transpose * H = J := by
     simpa [H, B, C, J, p] using
-      binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
-        G hfree hreg c
+      c4Free_defectComponent_transpose_crossBlock_eq_ones G hfree c
   have hJzero : J.mulVec f = 0 := by
     funext z
     simp [J, Matrix.mulVec, dotProduct, hsum]
@@ -586,9 +620,30 @@ theorem binarySquare_regular_defectComponent_exterior_eigenvector_transfer
   simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, add_eq_zero_iff_eq_neg] at hz
   simpa [neg_smul] using hz
 
+/-- Compatibility wrapper for the former regular eigenvector transfer. -/
+theorem binarySquare_regular_defectComponent_exterior_eigenvector_transfer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hreg : ∀ x, G.degree x = q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (f : c.supp → ℤ) (mu : ℤ)
+    (hsum : ∑ x, f x = 0)
+    (hf : ((G.induce c.supp).adjMatrix ℤ).mulVec f = mu • f) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    C.mulVec (B.transpose.mulVec f) = (-mu) • B.transpose.mulVec f := by
+  have _hreg := hreg
+  exact c4Free_defectComponent_exterior_eigenvector_transfer
+    G hfree c f mu hsum hf
+
 end
 
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossBlock_eq_ones
+#print axioms Erdos85.c4Free_defectComponent_crossBlock_eq_ones
 #print axioms Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_eq
 #print axioms
   Erdos85.binarySquare_regular_normalizedComponent_outsideReturn_entry_budget
@@ -600,7 +655,9 @@ end
 #print axioms Erdos85.orderSixtyFour_sizeTwoComponent_crossBlock_sq
 #print axioms
   Erdos85.binarySquare_regular_defectComponent_transpose_crossBlock_eq_ones
+#print axioms Erdos85.c4Free_defectComponent_transpose_crossBlock_eq_ones
 #print axioms
   Erdos85.binarySquare_regular_defectComponent_exterior_eigenvector_transfer
+#print axioms Erdos85.c4Free_defectComponent_exterior_eigenvector_transfer
 
 end Erdos85
