@@ -334,3 +334,27 @@ B0--B0 defect edges or a residual graph and therefore is not a model of the
 full `D0-x` theorem.  It does isolate the missing input more sharply as
 residual/common-center reciprocity (or comparably strong B0--B0 structure),
 not connectivity imposed only on the defect degree ledger.
+
+### Residual fiber-matching form
+
+Residual reciprocity packages the term `T_R` columnwise.  For `b in U1`,
+let
+
+```text
+F_b = {t in ordinary B0 : Q_tb=1}.
+```
+
+Every `F_b` has five vertices.  Since it lies in the neighborhood of `b`,
+the residual graph induced on `F_b` has maximum degree at most one and is
+therefore a matching.  Its edges are in bijection with the residual
+B0--B0--`b` triangles.  Consequently
+
+```text
+T_R = sum_{b in U1} |E(A[F_b])|,                              (12)
+```
+
+with each summand in `{0,1,2}`.  In particular, the parity of `T_R` is the
+parity of the number of U1 columns whose five-point residual fiber contains
+exactly one matching edge.  This is the first formulation in the chain that
+uses symmetry of the residual B0 adjacency itself; the max-flow defect probe
+does not model these fiber matchings.
