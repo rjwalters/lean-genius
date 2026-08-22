@@ -599,5 +599,59 @@ exceeding the target size five; entry three would force the reverse
 `C3`--`C8` entry to be eight, exceeding the six-regular row sum.  Therefore
 the shores have the same shape and contain either zero or two triangles.
 By (35), `M_c` is even.  This is a structural `q=8` corollary, not a census;
-the uniform remaining problem is the parity of the number of internal
-triangles for general even `q`.
+in fact the same quotient ledger closes the triangle parity uniformly.
+
+Let the internal cycles be split between the two sign shores, and write
+`n_a` for their orders.  Since `R` has degree `q-2` and only crosses the
+shores, define its componentwise bipartite complement by
+
+```text
+z_ab = n_b - componentQuotientMatrix(R,H,a,b).
+```
+
+The target-size bound makes `z_ab` nonnegative, and the quotient identities
+give
+
+```text
+sum_b z_ab = 2,                 n_a z_ab = n_b z_ba.     (36)
+```
+
+Thus every nonzero `z_ab` is one or two.  Regard these entries as weights on
+the bipartite support graph of internal cycles.  A node of order three has
+only the following possibilities, forced by weighted reciprocity:
+
+* a weight-one edge can only meet another order-three node, again with
+  reverse weight one;
+* a weight-two edge meets either an order-three node with reverse weight two,
+  or an order-six node with reverse weight one.
+
+The row sum two now classifies every support component which contains an
+order-three node.  Weight-one order-three nodes form a bipartite cycle, so
+there are evenly many of them.  A weight-two `3--3` edge is an isolated pair.
+Finally, a weight-two `3--6` edge makes the order-three endpoint a leaf and
+leaves one unit at the order-six endpoint.  Reciprocity says that every
+subsequent weight-one edge goes to another order-six node (reverse weight
+one) or to an order-three leaf (reverse weight two).  Hence the finite
+component is a path
+
+```text
+C3 -- C6 -- ... -- C6 -- C3,
+```
+
+again with exactly two order-three endpoints.  Therefore
+
+```text
+# internal C3 components = 0  (mod 2).                    (37)
+```
+
+Combining (35) and (37) gives the uniform signed-mode terminal
+
+```text
+full-support signed joint eigenline  ==>  M_c = 0 (mod 2). (38)
+```
+
+The modes `mu=-2,0` were closed by cycle-length divisibility; the `mu=2`
+mode is closed by the defect-selector bridge and the two-regular complement
+quotient above.  Consequently any odd collision residue is now confined to
+the transport/no-full-support-signed-eigenline side of the dispatcher.  The
+remaining task is no longer a signed-mode parity question.
