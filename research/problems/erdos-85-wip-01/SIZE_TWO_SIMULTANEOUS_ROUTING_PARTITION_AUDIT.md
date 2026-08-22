@@ -1860,3 +1860,53 @@ does an SRP-factorable endpoint residual force
 If yes, no cross-pair simultaneous comparison is needed for the all-horizontal
 owner-run case; if no, a countermodel must preserve an actual rectangle
 factorization rather than only the two endpoint layers.
+
+## 31. Pairwise SRP factorability still does not kill the cubic
+
+The question (112) has a negative answer.  Keep the same `C5 disjoint-union
+C7` cross incidence and source internal factor as in Section 29, but replace
+the target internal cycle by
+
+```text
+(11,3,7,10,1,5,9,4,6,2,8,0).                          (113)
+```
+
+The two-shore graph is again simple, four-regular, and C4-free.  This time
+the residual `Q` in (110) has an exact factorization through a twelve-point
+third shore.  Its twelve intermediate vertices use the following source and
+target neighbor pairs:
+
+```text
+(01|79), (08|36), (17|4,11), (24|5,10),
+(26|09), (35|8,10), (37|15), (4,11|27),
+(59|03), (68|1,11), (9,10|26), (10,11|48).             (114)
+```
+
+Every source and target vertex occurs in exactly two pairs, and the twelve
+`K_(2,2)` rectangles in (114) partition all 48 residual edges.  Thus the
+associated zero-one blocks have row and column degree two and satisfy
+
+```text
+Q = R_cd R_de
+```
+
+exactly: the full `SRP(c,e)` equation holds for this endpoint pair.
+
+Nevertheless, on the five-point owner-port component,
+
+```text
+(P(P+A_e)A_e V_0)|_(V_0) = (1,0,1,1,1),               (115)
+```
+
+so the marked cubic remains nonzero.  The reproducer
+`verify_local_marked_cubic_srp_factorable_q6.py` checks C4-freeness, all
+degree conditions, the exact matrix factorization, and (115).
+
+Scope again matters.  The factor blocks in (114) have not been equipped with
+an internal third-shore factor `A_d`, nor required to satisfy the two other
+endpoint equations `SRP(c,d)` and `SRP(d,e)`; and `q=6` is nonbinary.  Hence
+this is a pairwise-SRP countermodel, not a simultaneous three-component
+countermodel.  It proves that rectangle factorability of one residual is
+still insufficient.  The next admissible theorem must use reuse of
+`R_cd,R_de` in the other SRP equations (or an essentially binary-power
+constraint); the proposed shortcut (112) is closed.
