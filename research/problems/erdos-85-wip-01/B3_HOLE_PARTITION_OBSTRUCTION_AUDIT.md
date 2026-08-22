@@ -873,6 +873,40 @@ energy.  This is a more economical proof interface than arbitrary `Q,K`
 flags: a majorization or compression argument on the columns of `r_t` could
 construct the monotone prices, while (12fa) handles the low-cover boundary.
 
+There is an exact primal alternative to constructing those monotone prices.
+Let `I` be the finite set of compressed root--fiber flags in (12p), ordered
+at fixed root signature by coordinatewise inclusion of the role census.
+Let `K` be the cone of nonnegative isotone tables on `I`.  For each choice of
+one cardinality-`d_t` matching at every row, sum its (12n) feature vectors;
+let `C` be the convex hull of all such sums.  The free `alpha` coordinates
+and the cone `K` are precisely the allowed monotone price directions.
+Finite-dimensional strong separation therefore gives
+
+```text
+no strict monotone flag-price separator
+iff some v in C satisfies
+    v_alpha(sigma)=0 for every root signature sigma, and
+    sum_{i in U} v_mu(i) >= 0 for every upper set U of I.    (12ra)
+```
+
+Indeed, the first condition is forced by pairing with every free `alpha`.
+Every nonnegative isotone function on a finite poset is a nonnegative linear
+combination of indicators of upper sets (take its successive superlevel
+sets), so the second line is exactly membership in the dual cone `K*`.
+Conversely, if the compact polytope `C` misses this closed dual cone, strict
+separation supplies an allowed monotone table whose maximum on `C` is
+negative, which is the desired matching-support inequality.
+
+The `alpha` equations in (12ra) say concretely that the fractional selected
+candidate endpoints reproduce the fixed demand census of every root
+signature.  The upper-set equations say that source fiber usage dominates
+the corresponding incoming usage in role-census majorization order.  Thus a
+counterexample to the price branch is not an opaque failed LP: it is a
+fractional system of locally feasible matchings with exact signature balance
+and finitely many flag-majorization inequalities.  Combining three such
+systems for the three color pairs with the coupled occupancies (12l), (12r)
+is a concrete route to the design-level Hall-or-price dichotomy (12q).
+
 There are sharp scalar consequences.  Let `p(t)` be the number of eligible
 pair candidates missing one selected color and put `L=2n(t)-p(t)`, the total
 selected-label mass.  Write
