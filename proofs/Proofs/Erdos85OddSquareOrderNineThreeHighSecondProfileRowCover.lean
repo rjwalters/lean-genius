@@ -1203,6 +1203,43 @@ theorem squareOrderNine_threeHigh_secondProfile_pair_row_triple_completion_count
     _ = 3 + (C.card + (D.neighborFinset t ∩ M).card) := by rw [hpair]
     _ = C.card + (3 + (D.neighborFinset t ∩ M).card) := by omega
 
+/-- The exact local admissibility predicate used by the reduced q=9
+reciprocity model.  A proposed pair-center pattern `C` must admit the required
+number of triple-center completion rows; all six completed residual blocks
+are pairwise disjoint and avoid the original core block of the row. -/
+def squareOrderNinePairRowAdmissible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    (x t : V) (C : Finset V) : Prop :=
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let D := secondOrderDefectGraph G
+  C ⊆ P ∧ t ∉ C ∧
+    C.card + (D.neighborFinset t ∩ M).card = 3 ∧
+    (∀ m ∈ M,
+      (C.filter fun w => w ∈ G.neighborFinset m ∩ B 0).card ≤ 1) ∧
+    ∃ Q : Finset V,
+      Q ⊆ T \ P ∧
+      Q.card = 3 + (D.neighborFinset t ∩ M).card ∧
+      (∀ u ∈ C ∪ Q, ∀ v ∈ C ∪ Q, u ≠ v →
+        Disjoint (G.neighborFinset u ∩ U1) (G.neighborFinset v ∩ U1)) ∧
+      (∀ u ∈ C ∪ Q, ∀ c ∈ G.neighborFinset t ∩ U1,
+        ∀ b ∈ G.neighborFinset u ∩ U1, ¬ G.Adj c b)
+
+/-- The finite family of locally admissible pair-center patterns at a row. -/
+def squareOrderNinePairRowAllowedPatterns
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    (x t : V) : Finset (Finset V) := by
+  classical
+  exact Finset.univ.filter fun C => squareOrderNinePairRowAdmissible G x t C
+
 /-- The actual marked-support neighbor patterns are reciprocal on the
 21-point pair-center set, because they are restrictions of an undirected
 residual adjacency relation. -/
@@ -1355,6 +1392,90 @@ theorem squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
     (not_containsC4_iff_forall_common_le_one G).mp hfree t b htb
   have := Finset.card_le_card hpairSub
   omega
+
+/-- Every actual pair-row neighbor pattern belongs to the finite admissible
+family.  This packages all graph-side hypotheses needed by the reduced
+reciprocity-pruning obstruction into one membership statement. -/
+theorem squareOrderNine_threeHigh_secondProfile_actual_pair_pattern_mem_allowed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (htP : t ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1).biUnion
+      fun m => G.neighborFinset m ∩ squareOrderNineLowIncidenceBin G 0) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let C := (G.neighborFinset t ∩ T).filter fun w => w ∈ P
+    C ∈ squareOrderNinePairRowAllowedPatterns G x t := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let R := G.neighborFinset t ∩ T
+  let C := R.filter fun w => w ∈ P
+  let Q := R.filter fun w => w ∉ P
+  let D := secondOrderDefectGraph G
+  rw [squareOrderNinePairRowAllowedPatterns, Finset.mem_filter]
+  refine ⟨Finset.mem_univ C, ?_⟩
+  dsimp only [squareOrderNinePairRowAdmissible]
+  have hpattern :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_pair_pattern
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hpattern
+  change C.card + (D.neighborFinset t ∩ M).card = 3 ∧ t ∉ C ∧
+    ∀ m ∈ M,
+      (C.filter fun w => w ∈ G.neighborFinset m ∩ B 0).card ≤ 1 at hpattern
+  have hcompletion :=
+    squareOrderNine_threeHigh_secondProfile_pair_row_triple_completion_count
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht htP
+  dsimp only at hcompletion
+  change R.card = 6 ∧ Q.card = 3 + (D.neighborFinset t ∩ M).card at hcompletion
+  have hCsub : C ⊆ P := by
+    intro u hu
+    exact (Finset.mem_filter.mp hu).2
+  have hQsub : Q ⊆ T \ P := by
+    intro u hu
+    have huParts := Finset.mem_filter.mp hu
+    exact Finset.mem_sdiff.mpr ⟨(Finset.mem_inter.mp huParts.1).2, huParts.2⟩
+  refine ⟨hCsub, hpattern.2.1, hpattern.1, hpattern.2.2,
+    Q, hQsub, hcompletion.2, ?_, ?_⟩
+  · intro u hu v hv huv
+    have huR : u ∈ R := by
+      rcases Finset.mem_union.mp hu with huC | huQ
+      · exact (Finset.mem_filter.mp huC).1
+      · exact (Finset.mem_filter.mp huQ).1
+    have hvR : v ∈ R := by
+      rcases Finset.mem_union.mp hv with hvC | hvQ
+      · exact (Finset.mem_filter.mp hvC).1
+      · exact (Finset.mem_filter.mp hvQ).1
+    exact squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
+      G hfree ht huR hvR huv
+  · intro u hu c hc b hb
+    have huR : u ∈ R := by
+      rcases Finset.mem_union.mp hu with huC | huQ
+      · exact (Finset.mem_filter.mp huC).1
+      · exact (Finset.mem_filter.mp huQ).1
+    exact squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
+      G hfree ht huR hc hb
 
 /-- For an ordinary row and a marked root, all common neighbors lie in that
 root's seven-point B0 support, and necessarily in the residual set `T`. -/
@@ -2603,6 +2724,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_pair_pattern_mem_comm
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_actual_pair_pattern_mem_allowed
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_common_eq_support_hit
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_support_hit_or_defect
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_fortyTwo_five_ledger
