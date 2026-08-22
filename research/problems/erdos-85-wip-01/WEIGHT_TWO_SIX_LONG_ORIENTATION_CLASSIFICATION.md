@@ -281,27 +281,25 @@ properties:
 * the resolver graph is one cycle on
   `q(q-2)-(2q-6)=q^2-4q+6` vertices.
 
-This proves the exact degrees and reciprocity, but an arbitrary Euler circuit
-does **not** yet prove the relevant C4-freeness.  If it pairs
-`z={u,v}` with `z'={u,w}` at `u` and `v,w` are adjacent in `H`, then
+The only apparent extra C4 danger is in fact excluded by the alternating
+sign law.  If the circuit pairs `z={u,v}` with `z'={u,w}` at `u`, a 4-cycle
+using two component vertices would have to be
 
 ```text
 z - v - w - z' - z
 ```
 
-is a 4-cycle in the full ambient graph.  Thus the transition at `u` must
-never pair two incident trace-edges whose other endpoints are H-adjacent.
-The forbidden-transition graph at each `u` has maximum degree at most two,
-which is favorable, but existence of one Euler circuit compatible with all
-these local forbidden transitions has not been proved.  This is a precise
-Kotzig-type compatible-tour problem.
+and hence would require `vw` to be an H-edge.  But every trace edge joins
+opposite alternating signs, so `v` and `w` both have sign `-s(u)` and
+therefore have the same sign.  Every H-edge joins opposite signs.  Thus
+`vw` cannot be an H-edge, for every transition of every Euler circuit.
 
-Simplicity of the resolver graph itself is automatic because two distinct
-simple trace edges cannot share both component endpoints.  What is banked is
-therefore narrower: resolver degree and reciprocity have no parity
-obstruction, while C4-compatible reciprocity remains a genuine entrywise
-condition and may still exclude the survivor before disjoint-trace edges are
-added.
+Simplicity is also automatic because two distinct simple trace edges cannot
+share both component endpoints.  Consequently the Euler construction really
+does give a reciprocal resolver layer compatible with ambient C4-freeness.
+This closes resolver parity, reciprocity, and the putative forbidden-
+transition obstruction; it does not address C4s involving the subsequently
+added disjoint-trace edges.
 
 ## The scalar disjoint-pair capacity is an identity
 
@@ -346,8 +344,8 @@ but their total is
 So the triangle term cancels and the entire scalar capacity inequality is
 always saturated as an algebraic identity.  In particular its parity gives
 nothing beyond the already forced degree counts.  Together with the Euler
-resolver construction, this closes total-count and bare resolver-parity
-routes at the classified survivor, but not the forbidden-transition
-condition above.  The remaining possible obstructions are entrywise: first a
-C4-compatible reciprocal resolver pairing, and then simultaneous placement
-of the residual edges so that disjoint-trace pairs have codegree at most one.
+resolver construction and the sign argument above, this closes total-count,
+resolver-parity, reciprocity, and resolver-only C4 routes at the classified
+survivor.  The remaining possible obstruction is entrywise simultaneous
+placement of the residual edges so that disjoint-trace pairs have codegree at
+most one, including their codegrees through resolver edges.
