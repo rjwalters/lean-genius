@@ -1461,6 +1461,23 @@ near-perfect matching is forced on the same vertex set on which `A[X]`
 is the path-cycle graph (B22), giving a compact two-factor-style object for
 the remaining `a=1` compatibility problem.
 
+There is a first direct compatibility condition between these two graphs.
+If `xy` is an edge of `M_R`, its R-center is already a common A-neighbor of
+`x` and `y`.  Therefore `x` and `y` cannot have a common neighbor in X as
+well.  Equivalently,
+
+```text
+xy in M_R  implies  N_A(x) intersect N_A(y) intersect X = empty. (B29)
+```
+
+In the path-cycle decomposition (B22), no R-fiber may join the two ends of
+an A-path of length two (including a two-step arc of an A-cycle); in
+particular it cannot be an edge of a triangular A[X]-component.  An
+R-fiber may still be an edge of a longer path or cycle, producing a triangle
+with its R-center, or join vertices with no common A[X]-neighbor.  Thus the
+next consumer must distinguish these two allowed types; raw matching
+parity alone cannot close the branch.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
