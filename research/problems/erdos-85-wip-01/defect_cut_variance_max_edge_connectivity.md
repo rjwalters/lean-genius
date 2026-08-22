@@ -1478,6 +1478,34 @@ with its R-center, or join vertices with no common A[X]-neighbor.  Thus the
 next consumer must distinguish these two allowed types; raw matching
 parity alone cannot close the branch.
 
+For the separator-located pole, this near-perfect matching is overwhelmingly
+one-colored.  Suppose `c in W` and retain `m_c=deg_D(c,X)`.  Then the set
+`M_c` from (B24) is exactly the missing-c color class `S_c`.  Since
+`n_c=q-1-m_c`, (B27) specializes to
+
+```text
+M_c = (m_c singleton K_c fibers)
+      disjoint-union (q-2-m_c two-point R_c fibers)
+      disjoint-union (two incident-P singleton fibers).     (B30)
+```
+
+The two P-recipients in this display lie in `M_c` directly: their centers
+are adjacent to c.  The other two wing matchings contain only
+
+```text
+sum_(w in W\{c}) |R_w|
+  = (q-2)-|R_c| = m_c <= 4
+```
+
+edges in total, using (B23).  Thus all but at most four edges of the global
+normal form (B28) have color c, and the c-colored part is a matching on
+`M_c` leaving exactly `m_c+2` singleton-routed points there.  In the
+second case of (B28), if u is the middle of the unique length-two path,
+at least one of its two incident edges belongs to this bounded non-c
+exception, because a single color is itself a matching.  The remaining
+separator-located compatibility problem is therefore a bounded color
+perturbation of one large c-wing matching, even though q is unrestricted.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
