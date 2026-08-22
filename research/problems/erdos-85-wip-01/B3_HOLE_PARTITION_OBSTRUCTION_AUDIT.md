@@ -852,6 +852,26 @@ graph (12f), or a color pair admitting coordinatewise-monotone prices of the
 form (12p).  The exact color coupling (12l) is the natural mechanism for that
 choice.
 
+The two monotonicity exceptions identify a sharper three-color implication.
+They occur in the same branch-3 outer witness, for pairs `(0,1)` and `(1,2)`;
+the complementary pair `(0,2)` has a local Hall failure at exceptional row
+25.  Its demand is six and its minimum cover has size five (either five real
+labels, or four real labels plus one private singleton dummy).  Thus the only
+sampled failure pattern has the form
+
+```text
+no monotone separator for {a,b} and {b,c}
+  ==> a local Hall cover for the complementary pair {a,c}. (12qa)
+```
+
+Equation (12qa), with arbitrary distinct colors `a,b,c`, is a more focused
+uniform target than constructing prices for every pair.  In the transport
+dual below, its contrapositive says that local feasibility for `{a,c}`
+prevents simultaneous balanced monotone transports for the two pairs
+containing `b`.  The pair collision identity (12l) is exactly additive in
+the two one-color load energies, so it is the natural scalar interface for
+this complementary-pair implication.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
