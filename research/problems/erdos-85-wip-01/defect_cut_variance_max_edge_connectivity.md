@@ -768,6 +768,60 @@ In particular `(A 1_W)_c=0`: the exceptional point `c` is
 `A`-anticomplete to the separator.  This reduces the previously two-pronged
 dual filler problem to the single signed profile (B7).
 
+The remaining profile has an exact three-wing core.  Put
+`P=K intersect R`, so `|P|=3`.  For `w in W`, let
+
+```text
+m_w=deg_D(w,X),       n_w=deg_D(w,Y).
+```
+
+Since `D[W]` is empty, `m_w+n_w=q-1`.  Equations (B5) and the positive-spike
+cut flow give
+
+```text
+deg_A(w,K)=2+m_w,     deg_A(w,R)=1+n_w.
+```
+
+Thus the two sets account for `q+2` incidences among only q neighbors of
+`w`, so `deg_A(w,P)>=2`.  On the other hand every point of `P` has
+`(A 1_W)_v=2` by (B7), whence
+
+```text
+sum_(w in W) deg_A(w,P)=6.
+```
+
+Therefore every `w` meets exactly two points of `P`, and every point of `P`
+meets exactly two vertices of `W`.  The resulting bipartite incidence graph
+is a six-cycle.  In particular the three points of `P` are the three
+distinct pairwise common `A`-neighbors of the vertices of `W`; there are no
+other intersections among the three separator neighborhoods.  Moreover
+
+```text
+N_A(w) subset K union R                       (B8)
+```
+
+for every `w in W`, with the two points of `P` counted in both sides.
+
+There is also a first numerical restriction on the component location.
+Because `(A 1_Y)_c=b+1`, `(A 1_W)_c=0`, and `a+b=q-1`, regularity gives
+`deg_A(c,X)=a`.  For every `x in N_A(c) intersect X`, the positive-spike
+flow equation on `X` gives `deg_A(x,R)=2`.  Distinct such incidences use
+distinct pairs `(c,r)` by C4-freeness.  Hence
+
+```text
+2a <= |R|=q+1,
+```
+
+and, since q is even,
+
+```text
+a <= q/2.                                    (B9)
+```
+
+So the sole dual escape consists of three rigid wings around `W`, an
+exceptional point outside all three wings, and a `q-2` residue component no
+larger than the halfway parameter.
+
 ## Three-vertex-connectivity
 
 The Mantel bound (16) closes the sole two-separator escape left by maximal
