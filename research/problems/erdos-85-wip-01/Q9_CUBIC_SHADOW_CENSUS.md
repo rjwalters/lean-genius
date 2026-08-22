@@ -270,3 +270,16 @@ for `D10` their orbit sizes are `2,2,1,1`.  In both cases only the endpoint
 weights `(0,16)` and `(16,0)` remain.  The unique uniform pattern remains for
 each of `F20`, `A5`, and `S5`.  Hence only **seven** action-pattern pairs can
 lift: two each for `C5` and `D10`, and one for each of the other three groups.
+
+The four cyclic/dihedral endpoint pairs do not lift.
+`q9_order16_endpoint_lift_sat.py` uses a preimage of the block 5-cycle.
+After independent changes of coordinates on the five component copies, that
+lift is a cyclic block shift with one closing twist `alpha` in `Aut(C)`.
+The component automorphism group has 13 conjugacy classes, all enumerated by
+the verifier.  The identity twist is split losslessly into its 56 diagonal
+seed-line orbits; the other twelve twist classes are checked as single
+centralizer-invariant formulas, for 68 UNSAT branches in total.  Each formula
+enforces all 80 line incidences, linearity, zero common neighbors on every
+shadow edge, and the global at-most-one-common-neighbor condition equivalent
+to C4-freeness.  Therefore only the three uniform quotient cases with block
+actions `F20`, `A5`, and `S5` remain.
