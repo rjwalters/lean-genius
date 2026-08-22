@@ -143,3 +143,60 @@ displayed equations from the existing global commutation theorem.  Its
 mathematical content is matrix block multiplication; the graph-facing inputs
 to expose are (i) exterior owner layers are opposite-sign and (ii) the
 cross-sign defect block equals the hole relation.
+
+## Uniform cyclic factorization countermodel
+
+The first colored equation alone still gives no obstruction, even together
+with binary degree two and exact edge partition.  This has a q-generic
+construction.
+
+Let `q` be even and let `S` be the cyclic shift matrix on one q-point sign
+shore.  After a cyclic relabeling, take the hole block
+
+```text
+P = I + S^delta
+```
+
+with `delta` odd.  (The two shifts of an opposite-sign cyclic hole factor
+differ by an odd residue.)  The involution
+
+```text
+R(a) = delta-a
+```
+
+on `Z/qZ` has no fixed point: `2a=delta` has no solution for even `q` and odd
+`delta`.  Its orbit `{0,delta}` is exactly the pair of shifts used by `P`.
+For every other orbit define
+
+```text
+Q_[a] = S^a + S^(delta-a).
+```
+
+Then each `Q_[a]` is binary with every row and column of degree two, distinct
+orbits have disjoint support, and
+
+```text
+sum_[a] Q_[a] = J-P.
+```
+
+Moreover every color satisfies the colored hole equation, since
+
+```text
+Q_[a] P^T
+ = S^a + S^(a-delta) + S^(delta-a) + S^(-a)
+ = P Q_[a]^T.
+```
+
+Thus `(q-2)/2` size-two colors give a complete legal factorization of the
+cross-sign trace block at the level of
+
+```text
+binary + degree two + edge partition + Q_e P^T = P Q_e^T.
+```
+
+This is not asserted to realize the full ambient graph: it does not impose
+the second equation `Q_e D_- = D_+ Q_e`, the same-shore owner layers, or the
+unique-selector compatibility across different target components.  It does
+prove that the first colored equation and cyclic phase counting cannot close
+`BinarySizeTwoCyclicPackingBound`.  Any valid consumer must use the
+same-shore equation or multi-component selector compatibility.
