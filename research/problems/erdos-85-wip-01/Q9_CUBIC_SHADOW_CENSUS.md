@@ -369,5 +369,17 @@ four star patterns and four complementary triangle patterns, so every point
 uses three distinct incident block triples and the whole component has one
 of these two types.  The extended order-16 lift verifier computes these
 catalogs and supports explicit twist, pattern, fiber-partition, and fiber-
-bijection branches.  This is a reduction of the remaining uniform lifts,
-not yet their exclusion.
+bijection branches.
+
+The `F20` uniform action does not lift.  Ten of the thirteen closing-twist
+classes (`1,2,4,5,6,7,8,9,10,11`) are UNSAT even before imposing any
+point-stabilizer pattern constraint; `q9_order16_uniform_easy_twists.py`
+checks these direct formulas behind one aggregate gate.  For the three hard
+classes, `q9_order16_f20_sweep.py` computes orbits of fiber-to-pattern
+assignments under the closing twist centralizer and checks one formula per
+orbit.  The exact coverage is 70 representatives for class 0, 518 for class
+3 (7, 7, 126, 126, 126, 126 across the six pattern types), and 70 for class
+12.  All 658 representative formulas are UNSAT.  The orbit driver derives
+the representatives from the 19 `4 x 4` and 7 `2 x 8` partition catalogs,
+asserts catalog closure, and supports atomic checkpoints, so no pasted
+representative list or interrupted-run inference enters the claim.
