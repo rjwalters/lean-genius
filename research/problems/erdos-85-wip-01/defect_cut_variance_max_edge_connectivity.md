@@ -458,6 +458,17 @@ finely, the `(q-1)`-sets `N_A(l)\{alpha}`, for `l in L`, are pairwise
 disjoint cells; the analogous M-cells are pairwise disjoint, and the only
 cross-cell intersection is `gamma` between the cells indexed by `a,b`.
 
+This partition is aligned with the original minimum cut, not merely with
+`R`.  The equation `A 1_R-1=L_D1_S` makes the zero-occupancy vertices
+exactly the outside endpoints of that cut.  Hence
+
+```text
+Z is disjoint from S,
+each z in Z has exactly one D-neighbor in S,
+alpha,beta,gamma lie in S
+  with cut degrees m-1,m-1,1.                 (22)
+```
+
 This is the exact nonlinear filler problem left by the triangle-free
 minimum-cut branch.  The available degree and pair-capacity counts fit
 inside the two wings and `Z`; no repeated common neighbor or D-disconnection
