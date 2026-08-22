@@ -232,3 +232,20 @@ There are no witnesses.
 
 Therefore **all seven disconnected order-40-pair shadow types are
 impossible**.
+
+## The order-16 five-component shadow
+
+The unique surviving order-16 component type has automorphism group of order
+96.  In a vertex-transitive candidate, each component stabilizer is
+transitive on its 16 vertices, so the triangular graph induced inside a
+component is invariant under one of the eight transitive subgroup classes.
+
+`q9_order16_internal_edge_sieve.py` enumerates every union of eligible
+internal pair orbitals for all eight classes.  Every nonempty union either
+creates a C4 together with the cubic component or gives a shadow edge a
+common neighbor.  The empty union is the unique survivor in every class.
+
+Consequently the triangular graph has **no edge within a shadow component**,
+and every one of the 80 configuration lines meets three distinct components.
+The remaining lift is therefore five-partite, with each 16-point block having
+48 line incidences.
