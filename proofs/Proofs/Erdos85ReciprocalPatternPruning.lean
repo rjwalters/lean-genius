@@ -21,6 +21,43 @@ def reciprocalPatternPrune {α : Type*} [DecidableEq α]
     (F : α → Finset (Finset α)) : α → Finset (Finset α) :=
   fun p => (F p).filter fun S => ∀ q ∈ S, ∃ T ∈ F q, p ∈ T
 
+/-- Pruning only deletes patterns. -/
+theorem reciprocalPatternPrune_subset
+    {α : Type*} [DecidableEq α]
+    (F : α → Finset (Finset α)) (p : α) :
+    reciprocalPatternPrune F p ⊆ F p := by
+  exact Finset.filter_subset _ _
+
+/-- Successive pruning iterates form a decreasing sequence, fiber by fiber. -/
+theorem iterate_reciprocalPatternPrune_succ_subset
+    {α : Type*} [DecidableEq α]
+    (F : α → Finset (Finset α)) (n : ℕ) (p : α) :
+    (reciprocalPatternPrune^[n + 1]) F p ⊆
+      (reciprocalPatternPrune^[n]) F p := by
+  rw [Function.iterate_succ_apply']
+  exact reciprocalPatternPrune_subset ((reciprocalPatternPrune^[n]) F) p
+
+/-- A pattern system is a pruning fixed point exactly when every proposed arc
+has reverse support somewhere in the opposite fiber. -/
+theorem reciprocalPatternPrune_eq_self_iff
+    {α : Type*} [DecidableEq α]
+    (F : α → Finset (Finset α)) :
+    reciprocalPatternPrune F = F ↔
+      ∀ p S, S ∈ F p → ∀ q ∈ S, ∃ T ∈ F q, p ∈ T := by
+  constructor
+  · intro heq p S hS q hq
+    have hmem : S ∈ reciprocalPatternPrune F p := by
+      rw [heq]
+      exact hS
+    exact (Finset.mem_filter.mp hmem).2 q hq
+  · intro hsupported
+    funext p
+    ext S
+    constructor
+    · exact fun hS => (Finset.mem_filter.mp hS).1
+    · intro hS
+      exact Finset.mem_filter.mpr ⟨hS, hsupported p S hS⟩
+
 /-- A reciprocal choice from `F` remains available after one pruning round. -/
 theorem reciprocal_choice_mem_prune
     {α : Type*} [DecidableEq α]
