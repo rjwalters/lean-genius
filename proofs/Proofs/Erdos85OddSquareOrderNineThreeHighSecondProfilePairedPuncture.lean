@@ -1812,7 +1812,12 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
     let T := B 0 \ S
     let Q := G.neighborFinset b ∩ T
     let Rw := G.neighborFinset w ∩ B 0
-    (Q ∩ Rw).card = 1 ∧ (Q \ Rw).card = 4 := by
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    (Q ∩ Rw).card = 1 ∧ (Q \ Rw).card = 4 ∧
+      (∀ q ∈ Q ∩ Rw, q ∉ P ∧
+        (G.neighborFinset q ∩ U1).card = 3) := by
   classical
   dsimp only
   let B := squareOrderNineLowIncidenceBin G
@@ -1823,6 +1828,9 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
   let Ry := G.neighborFinset y ∩ B 0
   let Rz := G.neighborFinset z ∩ B 0
   let Rw := G.neighborFinset w ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
   let U := (S.biUnion fun s => G.neighborFinset s ∩ B 0) \ S
   have hprofile :=
     squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_degree_profile
@@ -1845,15 +1853,15 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
   have hyS : y ∈ S := (Finset.mem_sdiff.mp hy).1
   have hzS : z ∈ S := (Finset.mem_sdiff.mp hz).1
   have hwS : w ∈ S := hw
-  let P : Finset V := {y, z, w}
-  have hPsub : P ⊆ S := by
+  let P3 : Finset V := {y, z, w}
+  have hPsub : P3 ⊆ S := by
     intro v hv
-    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hv
+    simp only [P3, Finset.mem_insert, Finset.mem_singleton] at hv
     rcases hv with rfl | rfl | rfl
     · exact hyS
     · exact hzS
     · exact hwS
-  have hPcard : P.card = 3 := by
+  have hPcard : P3.card = 3 := by
     have hyNot : y ∉ ({z, w} : Finset V) := by
       simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
       exact ⟨hyz, fun h => hwy h.symm⟩
@@ -1864,7 +1872,7 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
     rw [Finset.card_insert_of_notMem hyNot,
       Finset.card_insert_of_notMem hzNot]
     simp
-  have hPS : P = S :=
+  have hPS : P3 = S :=
     Finset.eq_of_subset_of_card_le hPsub (by rw [hPcard, hScard])
   have hQUeq : Q ∩ U = Q ∩ Rw := by
     ext q
@@ -1875,8 +1883,8 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
       have hqUParts := Finset.mem_sdiff.mp hqU
       simp only [Finset.mem_biUnion] at hqUParts
       obtain ⟨s, hsS, hqs⟩ := hqUParts.1
-      have hsP : s ∈ P := by rw [hPS]; exact hsS
-      simp only [P, Finset.mem_insert, Finset.mem_singleton] at hsP
+      have hsP : s ∈ P3 := by rw [hPS]; exact hsS
+      simp only [P3, Finset.mem_insert, Finset.mem_singleton] at hsP
       rcases hsP with rfl | rfl | rfl
       · have hqQ0 : q ∈ Q0 := hQ0eq.symm ▸ hqQ
         exact ((Finset.disjoint_left.mp hYQ0) hqs hqQ0).elim
@@ -1893,7 +1901,52 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
     exact hQUcard
   have hQdiff : (Q \ Rw).card = 4 := by
     rw [Finset.card_sdiff, hQcard, Finset.inter_comm Rw Q, hQRw]
-  exact ⟨hQRw, hQdiff⟩
+  have hpairCensus :=
+    squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hpairCensus
+  have howner : ∀ q ∈ Q ∩ Rw, q ∉ P ∧
+      (G.neighborFinset q ∩ U1).card = 3 := by
+    intro q hqOwner
+    have hqParts := Finset.mem_inter.mp hqOwner
+    have hqQParts := Finset.mem_inter.mp hqParts.1
+    have hqT := hqQParts.2
+    have hqRw := Finset.mem_inter.mp hqParts.2
+    have hqNotP : q ∉ P := by
+      intro hqP
+      simp only [P, Finset.mem_biUnion] at hqP
+      obtain ⟨m, hmM, hmq⟩ := hqP
+      have hmParts := Finset.mem_inter.mp hmM
+      have hmqParts := Finset.mem_inter.mp hmq
+      have hwParts := Finset.mem_inter.mp hw
+      have hxq : x ≠ q := by
+        intro hxq
+        subst q
+        have hk3 := (Finset.mem_filter.mp hx).2
+        have hk0 := (Finset.mem_filter.mp
+          (Finset.mem_sdiff.mp hqT).1).2
+        omega
+      have hwm : w ≠ m := by
+        intro hwm
+        subst m
+        have hk0 := (Finset.mem_filter.mp hwParts.2).2
+        have hk1 := (Finset.mem_filter.mp hmParts.2).2
+        omega
+      have hwCommon : w ∈ G.neighborFinset x ∩ G.neighborFinset q := by
+        refine Finset.mem_inter.mpr ⟨hwParts.1, ?_⟩
+        exact (G.mem_neighborFinset q w).mpr
+          ((G.adj_comm w q).mp ((G.mem_neighborFinset w q).mp hqRw.1))
+      have hmCommon : m ∈ G.neighborFinset x ∩ G.neighborFinset q := by
+        refine Finset.mem_inter.mpr ⟨hmParts.1, ?_⟩
+        exact (G.mem_neighborFinset q m).mpr
+          ((G.adj_comm m q).mp ((G.mem_neighborFinset m q).mp hmqParts.1))
+      have hle := (not_containsC4_iff_forall_common_le_one G).mp
+        hfree x q hxq
+      exact hwm (Finset.card_le_one.mp hle w hwCommon m hmCommon)
+    refine ⟨hqNotP, ?_⟩
+    exact hpairCensus.2.2.2.1 q
+      (Finset.mem_sdiff.mpr ⟨hqT, hqNotP⟩)
+  exact ⟨hQRw, hQdiff, howner⟩
 
 end
 
