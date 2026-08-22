@@ -632,13 +632,57 @@ self-indexing target: embed the labels of a complete-graph (or
 cocktail-party) edge-incidence design back into its own point set so that
 the overlapping labels induce only C3 or cycles of length at least five.
 
-Equations (7)--(30) are the first canonical cut detector manufactured from
+### Coupling the two binary layers
+
+Extend `sigma_P(R)` to any vertex set R: it is the number modulo two of
+`iota_P` transpositions with exactly one endpoint in R.  Partitioning the
+A-neighbors of P into the broken T-neighbors and the involution pairs gives
+the general identity
+
+```text
+sigma_P(R) + |N_T(P) intersect R|
+  = |N_A(P) intersect R|                    (mod 2).            (31)
+```
+
+Apply (31) to the half-occupancy support B.  Its right side is
+`(A beta(S))_P`, which (25) identifies with the second binary digit w of the
+D-degree into S.  Vertexwise,
+
+```text
+sigma(B) + T beta(S)
+  = w + 1_S + (|S|/2)1                  if |S| is even,
+sigma(B) + T beta(S)
+  = w + ((|S|-1)/2)1                    if |S| is odd.          (32)
+```
+
+This is the promised direct coupling: the second defect digit is exactly a
+sum of split Baer pairs on B and T-incidence into B, up to the displayed
+forced constants.
+
+It also gives a clean recursion-or-signature dichotomy.  If
+`A beta(S) != 0`, its support is a nontrivial vertexwise second-bit Baer
+signature, explicitly the right side of (32).  If `A beta(S)=0`, then B is
+itself a binary kernel shore.  Equations (19), (20), and (31) repeat on B:
+
+```text
+K beta(S) = T beta(S) = sigma(B).                            (33)
+```
+
+The constant possibilities `beta=0,1` are already confined by (26)--(27).
+Otherwise B is a new nonconstant even kernel shore (its cardinality is even
+by (23)), so all support, cut, K/T, and half-occupancy laws above apply to B
+again.  Thus the Bockstein layer cannot disappear silently: it either emits
+the explicit second-bit signature (32), lands in a controlled constant
+branch, or produces an iterated even kernel shore carrying the same Baer
+transport.
+
+Equations (7)--(33) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(30), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(33), so these laws alone
 do not conceal an order-independent
 contradiction.
 
