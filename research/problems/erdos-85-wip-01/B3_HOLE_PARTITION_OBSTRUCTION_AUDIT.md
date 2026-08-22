@@ -85,3 +85,55 @@ or scalar matrix identities above implies this.  Progress requires a new
 entrywise coupling among different holes or a certified solution of the
 seed-free query; repeating fixed-outer residual SAT does not address the
 uniform statement.
+
+## Rectangular collision parity
+
+There is a parameter-free parity invariant which survives the failed scalar
+contractions above.  It was identified by transferring the collision-table
+argument from the regular component lane.  Let `Q` be any zero-one matrix,
+let `K` be any symmetric loopless zero-one matrix, and put
+
+```text
+R = Q K Q^T.
+```
+
+If `S_x` is the support of row `x` of `Q`, then
+
+```text
+R_xx = 2 |E_K(S_x)|.                                           (1)
+```
+
+Since `R` is symmetric, every off-diagonal summand in the ordered collision
+count occurs twice.  On the diagonal,
+`binom(2e,2) = e(2e-1) = e (mod 2)`.  Therefore
+
+```text
+sum_(x,y) binom(R_xy,2)
+  = sum_x |E_K(S_x)|                         (mod 2).           (2)
+```
+
+No entry bound on `R` is needed for (2).  If the application separately
+forces `R_xy <= 2`, its left side is exactly the parity of the ordered cells
+with two routes.
+
+For disjoint vertex blocks `T,U` in a C4-free graph, take `Q` to be the
+`T x U` adjacency block and `K` the adjacency matrix on `U`.  Then the right
+side of (2) counts triangles having one vertex in `T` and two in `U`.
+Moreover, if `x,y in T` are adjacent, the two cross fibers are anticomplete
+by `c4Free_internalEdge_crossBlock_fibers_anticomplete`, so
+
+```text
+A_T(x,y)=1  implies  R_xy=0.                                  (3)
+```
+
+Thus (2)--(3) give a joint parity invariant of precisely the residual
+adjacency and the zero-support graph of `Q K Q^T`; unlike the earlier trace
+zero, it sees double routes.  In the B.3 specialization, its right side is
+the parity of the `B0-B1-B1` triangles with the B1 vertices in the unmarked
+core.
+
+This does not yet close the hole-partition conjecture.  The remaining
+consumer must determine that triangle parity (or force the parity of the
+double-route cells) from the colored row ledger.  Connectivity of `D0-x`
+does not by itself enter (2); its prospective role is to prevent the
+collision support from splitting into independently parity-balanced pieces.
