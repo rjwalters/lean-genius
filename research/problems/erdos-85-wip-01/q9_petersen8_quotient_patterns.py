@@ -19,7 +19,7 @@ from __future__ import annotations
 import subprocess
 import hashlib
 from collections import Counter
-from itertools import combinations
+from itertools import combinations, permutations, product
 
 import networkx as nx
 import z3
@@ -333,6 +333,52 @@ def omission_outdegree(
         for pair in PAIRS
     }
     return sum(pair_codegree[tuple(sorted((0, other)))] != 10 for other in range(1, 8))
+
+
+def canonical_component_pattern(
+    multiplicity: dict[tuple[int, int, int], int]
+) -> tuple[int, ...]:
+    """Canonicalize a K_{2,2,2,2} pattern under component relabeling."""
+    pair_codegree = {
+        pair: sum(
+            value for triple, value in multiplicity.items()
+            if set(pair) <= set(triple)
+        )
+        for pair in PAIRS
+    }
+    mates = []
+    seen = set()
+    for left in range(8):
+        if left in seen:
+            continue
+        right = next(
+            right for right in range(8)
+            if right != left
+            and pair_codegree[tuple(sorted((left, right)))] == 0
+        )
+        mates.append((left, right))
+        seen.update((left, right))
+    assert len(mates) == 4
+    triple_index = {triple: index for index, triple in enumerate(TRIPLES)}
+    best = None
+    for pair_order in permutations(range(4)):
+        for flips in product(range(2), repeat=4):
+            relabel = {}
+            for old_pair, (left, right) in enumerate(mates):
+                new_pair = pair_order[old_pair]
+                targets = (2 * new_pair, 2 * new_pair + 1)
+                if flips[old_pair]:
+                    targets = targets[::-1]
+                relabel[left], relabel[right] = targets
+            vector = [0] * len(TRIPLES)
+            for triple, value in multiplicity.items():
+                image = tuple(sorted(relabel[vertex] for vertex in triple))
+                vector[triple_index[image]] = value
+            candidate = tuple(vector)
+            if best is None or candidate < best:
+                best = candidate
+    assert best is not None
+    return best
 
 
 def main() -> None:

@@ -55,21 +55,49 @@ ten such local types. All 324 patterns pass this necessary factorization, so
 the next exclusion must use compatibility among the perfect Petersen
 anti-matchings, not another component-count identity.
 
+The initial Z3 model in
 [`q9_petersen8_perfect_matching_lift.py`](q9_petersen8_perfect_matching_lift.py)
-is the exact lift model for that frontier. It uses 24 directed pairs of
-4-bit permutation variables, enforces Petersen-edge-to-nonedge matching,
-inverse maps, unique triangle closure, the selected quotient multiplicities,
-and lazy C4 cuts. A spanning-tree gauge reduces each new block edge from
-2,880 matchings to 24 target-automorphism representatives. The first tested
-case still times out before an initial model at 60 seconds, so this script is
-an auditable CSP specification, not yet an exclusion certificate; it reports
-`unknown` honestly when the configured timeout is reached.
+records the exact lift constraints but is too slow to serve as the final
+certificate.  The direct CNF encoding in
+[`q9_petersen8_kissat_lift.py`](q9_petersen8_kissat_lift.py) instead uses a
+10-by-10 Boolean permutation matrix on each of the 24 supported component
+pairs.  It enforces row and column uniqueness, the Petersen
+edge-to-nonedge condition, functional triangle composition, the selected
+quotient multiplicities, and uniqueness of the triangle containing every
+matching edge.  The same lossless spanning-tree gauge fixes a root edge and
+restricts every subsequent tree edge to 24 target-automorphism
+representatives.
+
+There are only 19 quotient patterns up to arbitrary relabeling of the eight
+components.  Twelve are UNSAT already in the lift model without imposing a
+component action.  For each of the remaining seven geometric patterns, the
+lifted generators of the transitive component action must act inside every
+Petersen block by a Petersen automorphism and conjugate every matching
+correctly.  Quotienting the remaining action-pattern pairs by the normalizer
+of each of the eleven surviving transitive groups leaves 39 representatives.
+All 39 are UNSAT with these necessary lifted-action constraints.  Thus the
+12 base representatives plus 39 action representatives exclude all 324
+action-pattern pairs.  Every solve is UNSAT before any lazy C4 cut is added:
+the matching, triangle, and vertex-transitivity constraints alone are
+inconsistent.
+
+[`q9_petersen8_exhaustive_lift.py`](q9_petersen8_exhaustive_lift.py) audits
+both reductions rather than trusting the representative lists: it rebuilds
+all 324 patterns, canonicalizes them to 19 geometric classes, computes the
+normalizer of every surviving transitive group inside `S8`, and asserts that
+the seven hard geometric classes split into exactly the pinned 39 action
+classes.  With `--verify`, it reruns all 51 UNSAT representatives and prints
+`excluded_petersen8_action_patterns 324` only after every solver result has
+been checked.
 
 Run with:
 
 ```text
 python3 research/problems/erdos-85-wip-01/q9_petersen8_quotient_patterns.py
+python3 research/problems/erdos-85-wip-01/q9_petersen8_exhaustive_lift.py
+python3 research/problems/erdos-85-wip-01/q9_petersen8_exhaustive_lift.py --verify --workers 2
 ```
 
-Dependencies used for the recorded run: GAP 4.15.1 from
-`gapsystem/gap-docker`, and `z3-solver` 4.15.3.
+Dependencies used for the recorded runs: GAP 4.15.1 from
+`gapsystem/gap-docker`, `z3-solver` 4.15.3 for the specification model, and
+Kissat 4.0.4 for the exhaustive CNF suite.
