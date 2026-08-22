@@ -929,6 +929,26 @@ census over the incoming fiber census, with equal total mass.  A proof of
 (12r) that cannot be nonincreasing around all three color-pair dominance
 systems unless one of the Hall cover inequalities (12fa) is already tight.
 
+Equivalently, the finite-poset transport theorem (the max-flow form of
+first-order stochastic dominance) replaces all upper-set inequalities by a
+single monotone coupling.  For each root signature there is a nonnegative
+transport matrix `pi` from its incoming flag measure to its source flag
+measure such that
+
+```text
+pi(r_in,r_out)>0  implies  r_in <= r_out coordinatewise,   (12rc)
+```
+
+and the two marginals are exactly the incoming and source masses produced by
+the fractional row matchings.  Necessity follows by testing upper sets;
+sufficiency is the integral max-flow/min-cut theorem after clearing the
+rational matching weights.  Thus a hypothetical failure of both branches
+has a purely combinatorial normal form: locally feasible fractional
+matchings, exact signature balance, and monotone transports of four-role
+fiber columns.  This is the natural place to apply the fixed column sums and
+strictly convex collision energy in (12r), rather than reason about fitted
+price coefficients.
+
 There are sharp scalar consequences.  Let `p(t)` be the number of eligible
 pair candidates missing one selected color and put `L=2n(t)-p(t)`, the total
 selected-label mass.  Write
