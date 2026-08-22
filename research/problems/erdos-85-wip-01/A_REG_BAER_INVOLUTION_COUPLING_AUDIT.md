@@ -267,7 +267,8 @@ nonzero, number of D-edges into `S`.
 
 ### The binary edge congruence
 
-The kernel shore finally exposes a genuinely k-sensitive residue.  Write
+The kernel shore exposes a k-dependent specialization of the edge residue.
+Write
 
 ```text
 r_X = |N_A(X) intersect S| = 2 a_X.
@@ -347,15 +348,64 @@ In particular no nonconstant kernel shore can be a minimum D-cut of size
 modulo `2q`, makes the right side of (16) at least `2q-1` (and is
 `q^2-1` in the opposite-parity residue).
 
-Equations (7)--(16) are the first canonical cut detector manufactured from
+### Direct transport back to the broken Baer pairs
+
+The symmetric difference targeted above already contains `T` in a precise
+way.  Let `H` be the simple graph with adjacency matrix
+
+```text
+M_H = M_Omega + D = A^2(A+I)                    over F_2.        (17)
+```
+
+The diagonal in (17) is zero: `diag(A^2)=q=0`, while `diag(A^3)` counts
+twice the triangles through a point.  Also `M_H 1=0`, so H is Eulerian.
+On an A-edge, Omega is absent and D is present exactly for a T-edge.
+Therefore
+
+```text
+H intersect A = T.                                             (18)
+```
+
+Remove this adjacency-edge part by putting
+
+```text
+K = H triangle T = Omega triangle (D setminus T).
+```
+
+Both H and T are Eulerian, hence K is Eulerian; by (18), K is disjoint from
+A.  On the kernel shore `S`, equation (17) gives `M_H 1_S=0`, and therefore
+
+```text
+M_K 1_S = M_T 1_S.                              over F_2         (19)
+```
+
+This has an exact partial-involution interpretation.  For a point P, let
+`sigma_P(S)` be the number of transpositions of `iota_P` with exactly one
+endpoint in S.  The parity of `N_A(P) intersect S` is zero.  Every unsplit
+transposition contributes zero modulo two and every split transposition
+contributes one, while the points outside the involution domain are exactly
+the T-neighbors.  Hence
+
+```text
+sigma_P(S) = |N_T(P) intersect S|
+           = |N_K(P) intersect S|               (mod 2).        (20)
+```
+
+Thus the missing Baer-to-T bridge is not wholly absent: every vertex's
+broken-pair incidence into S is reproduced by a canonical Eulerian graph K
+of non-A pairs.  What remains is a location theorem for those K-edges (or a
+reason that an Eulerian nonadjacent transport with (20) is incompatible
+with connected D).  This is strictly sharper than trying to compare Omega
+and T directly, since their disjointness has now been factored out.
+
+Equations (7)--(20) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
-also state exactly what is still missing.  The edges of `Omega` are disjoint
-from `A`, hence from `T`, and may be either D-edges or non-D even-overlap
-pairs.  So (10) cannot yet be combined with the Eulerian cut law for `T`.
-Any k-dependent terminal can now aim at locating the symmetric difference
-`Omega triangle D` on the kernel shore `S`, rather than trying to couple the
-local involutions directly.  The q=4 connected control is compatible with
-(7)--(16), so these laws alone do not conceal an order-independent
+also state exactly what is still missing.  The graph K is the nonadjacent
+part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
+(19)--(20).  Any k-dependent terminal can now aim at locating K inside the
+non-A pairs, rather than trying to couple the local involutions directly.
+The q=4 fixed-free control is compatible with (7)--(20), so these laws alone
+do not conceal an order-independent
 contradiction.
 
 ## Disposition
@@ -363,9 +413,10 @@ contradiction.
 The involution-coupling audit does not yield a new theorem beneath
 `A-REG-NONBIP`.  Its durable result is the narrowed target:
 
-> Couple the canonical odd-degree overlap graph `Omega` to the locations of
-> `T` inside a connected `D`; degree parity and scalar connectivity are
-> already exhausted.
+> Control the canonical nonadjacent Eulerian transport
+> `K=Omega triangle (D setminus T)` on the binary kernel shore; it reproduces
+> the broken Baer-pair/T incidence vertexwise, while degree parity and scalar
+> connectivity are already exhausted.
 
 Equivalently, prove that binary fixed-point-free incidence forces the
 missing-pair graph D to split into its affine parallel-class cliques.  Any
