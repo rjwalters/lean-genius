@@ -554,3 +554,50 @@ not merely shore balance, commutation, regularity, separation, or the
 component quotient ledger.  Equivalently, it must couple the selector to
 the `R` quotient rather than treating it as an arbitrary union of internal
 cycles.
+
+That coupling is supplied by
+`exteriorPairGraph_adj_iff_not_defect_and_no_internal_common`.  In the
+`mu=2` joint line, `s` is constant on each internal cycle, while every
+`R`-edge reverses `s`; hence no two vertices on the same internal cycle are
+`R`-adjacent.  Now take an internal ambient edge `xy`.
+
+* If its cycle is a `C3`, the third vertex is an internal common neighbor of
+  `x,y`.  Thus `xy` is not a second-order defect edge and the entire cycle is
+  all-triangle.
+* If its cycle has order at least four, adjacent cycle vertices have no
+  internal common neighbor.  They are not `R`-adjacent, so the adjacency
+  criterion forces them to be second-order defect adjacent.  Since `xy` is
+  already an ambient edge, it cannot be antipodal; it is a triangle-free
+  edge.  Thus the entire cycle is all-triangle-free.
+
+Consequently the formerly arbitrary selector is exact:
+
+```text
+all-triangle cycles = the internal C3 components,
+all-triangle-free cycles = every other internal cycle.       (34)
+```
+
+Because the size-two component has even order `2q`, equations (30) and (34)
+give the generic reduction
+
+```text
+M_c mod 2 = (# internal C3 components) mod 2.                 (35)
+```
+
+This also explains why the abstract model above needed the deliberately
+non-ambient declaration that `C3_+` was all-triangle-free: the actual defect
+adjacency bridge forbids precisely that declaration.
+
+At `q=8`, (35) closes the `mu=2` residue using only the four-cycle quotient
+ledger.  Each sign shore has order eight and is a disjoint union of cycles
+of order at least three, with no `C4` because the ambient graph is C4-free.
+Its shape is therefore either `C8` or `C3 disjoint_union C5`.  The two shores
+cannot have different shapes: if a `C8` shore faced a `C3+C5` shore, weighted
+reciprocity for the `R` quotient would make the per-vertex `C8`--`C3` entry a
+multiple of three.  Entry zero would force the `C8`--`C5` entry to be six,
+exceeding the target size five; entry three would force the reverse
+`C3`--`C8` entry to be eight, exceeding the six-regular row sum.  Therefore
+the shores have the same shape and contain either zero or two triangles.
+By (35), `M_c` is even.  This is a structural `q=8` corollary, not a census;
+the uniform remaining problem is the parity of the number of internal
+triangles for general even `q`.
