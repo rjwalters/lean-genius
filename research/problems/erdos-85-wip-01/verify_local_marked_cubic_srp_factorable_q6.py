@@ -2,6 +2,7 @@
 """Verify a q=6 pairwise-SRP-factorable marked-cubic failure."""
 
 import numpy as np
+from itertools import combinations
 
 
 def cycle_adjacency(order: int, cycle: list[int]) -> np.ndarray:
@@ -60,6 +61,27 @@ def main() -> None:
     assert np.all(third_to_target.sum(axis=1) == 2)
     assert np.array_equal(source_to_third @ third_to_target, residual)
 
+    source_codegree = shadow @ shadow + cross @ cross.T
+    target_codegree = cross.T @ cross + target_internal @ target_internal
+    compatible_edges: set[tuple[int, int]] = set()
+    for source_pair in combinations(range(order), 2):
+        if source_codegree[source_pair] != 0:
+            continue
+        common_targets = [
+            target
+            for target in range(order)
+            if residual[source_pair[0], target] and residual[source_pair[1], target]
+        ]
+        for target_pair in combinations(common_targets, 2):
+            if target_codegree[target_pair] == 0:
+                compatible_edges.update(
+                    (source, target)
+                    for source in source_pair
+                    for target in target_pair
+                )
+    assert residual[0, 7] == 1
+    assert (0, 7) not in compatible_edges
+
     first_component = np.zeros(order, dtype=np.uint8)
     first_component[components[0]] = 1
     marked_cubic = (
@@ -70,6 +92,7 @@ def main() -> None:
     print("verified: q=6 local model is 4-regular and C4-free")
     print("verified: endpoint residual factors through one degree-two third shore")
     print("marked cubic on C5 ports:", marked_cubic[components[0]].tolist())
+    print("ambient extension obstruction: residual edge (0,7) has no C4-compatible K2,2")
 
 
 if __name__ == "__main__":

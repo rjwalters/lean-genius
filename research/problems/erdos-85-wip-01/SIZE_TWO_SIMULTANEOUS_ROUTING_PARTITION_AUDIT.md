@@ -1910,3 +1910,32 @@ countermodel.  It proves that rectangle factorability of one residual is
 still insufficient.  The next admissible theorem must use reuse of
 `R_cd,R_de` in the other SRP equations (or an essentially binary-power
 constraint); the proposed shortcut (112) is closed.
+
+## 32. The factorization is not ambient-C4-compatible
+
+The rectangle partition (114) is an exact matrix factorization, but it cannot
+serve as the cross blocks of a third component in an ambient C4-free graph.
+A rectangle with source pair `{x,x'}` creates a new common neighbor of
+`x,x'` in `d`; therefore that pair must have codegree zero in the existing
+two-shore graph.  The same condition holds for its target pair `{z,z'}`.
+
+Filter all `K_(2,2)` rectangles in the residual (110) by these two necessary
+codegree-zero conditions.  Only ten compatible rectangles remain, and the
+residual edge `(0,7)` lies in none of them.  Consequently **no** rectangle
+partition of this residual— not merely the displayed choice (114)—can be
+extended to C4-free cross blocks `R_cd,R_de`.
+
+The reproducer now checks the uncovered edge after enumerating every
+ambient-compatible rectangle.  This identifies the next exact boundary:
+
+```text
+an endpoint residual factorization into K_(2,2) fibers
+whose source and target pairs all have prior codegree zero.             (116)
+```
+
+Condition (116) is forced before an internal factor `A_d` or the other two
+SRP equations are considered.  The Section-31 example proves that abstract
+matrix factorization is too weak, while this section shows precisely which
+ambient realizability condition rejects it.  A further countermodel to the
+marked cubic must preserve (116); otherwise the plausible next theorem is
+that (116), together with the odd owner run, already forces (107).
