@@ -537,6 +537,24 @@ genuinely simultaneous: locally chosen matchings must be coupled by
 that this simultaneous horn can fail even though every graph in (12f) has a
 large enough matching.
 
+Kőnig's cover criterion can be written without private dummy vertices.  Let
+`L` be a subset of the sixteen real selected labels which meets every
+two-label candidate support, and let `s_t(L)` be the number of singleton
+candidates at row `t` whose unique label is outside `L`.  Once `L` is fixed,
+exactly those `s_t(L)` private dummies must be added to cover the singleton
+candidate edges.  Therefore
+
+```text
+nu(candidateGraph(t)) < d_t
+iff there is L hitting every two-label candidate with
+    |L| + s_t(L) <= d_t-1.                                 (12fa)
+```
+
+Equivalently, local feasibility says `|L|+s_t(L)>=d_t` for every real-label
+cover of the two-label candidates.  This is an exact label-only Hall
+inequality derived from `Q,K`, and is the clean hypothesis to negate in the
+simultaneous price branch.
+
 In the four-seed run the local branch is extremely sharp.  There are nine
 failed row/color-pair instances.  Every matching number is exactly one below
 demand.  Eight are demand-six rows with a minimum vertex cover of size five;
