@@ -17,6 +17,153 @@ noncomputable section
 
 set_option maxHeartbeats 0
 
+/-- **Order-free, nonregular cross-cut Gram identity.**  The exterior
+incidence energy of a defect component is controlled by the vertexwise
+degree-predecessor diagonal, rather than a scalar regular degree. -/
+theorem c4Free_defectComponent_crossGram_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let H := (G.induce c.supp).adjMatrix ℤ
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let Delta : Matrix c.supp c.supp ℤ :=
+      Matrix.diagonal fun x ↦ (G.degree x.1 : ℤ) - 1
+    let Dc := ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+    H * H + B * B.transpose =
+      Delta + FriendshipTheoremOQ01.onesMatrix c.supp - Dc := by
+  classical
+  let D := secondOrderDefectGraph G
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let Delta : Matrix c.supp c.supp ℤ :=
+    Matrix.diagonal fun x ↦ (G.degree x.1 : ℤ) - 1
+  let Dc := (D.induce c.supp).adjMatrix ℤ
+  have hsq :=
+    adjMatrix_sq_eq_degreePredDiagonal_add_ones_sub_secondOrderDefect
+      G hfree
+  have hblock := congrArg (fun X ↦ X.toBlock p p) hsq
+  rw [Matrix.toBlock_mul_eq_add p p p] at hblock
+  have hA11 : (G.adjMatrix ℤ).toBlock p p = H := by
+    ext i j
+    simp [H, p, Matrix.toBlock_apply, SimpleGraph.adjMatrix_apply]
+  have hA12 : (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x) = B := rfl
+  have hA21 : (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) p = B.transpose := by
+    ext i j
+    simp [B, p, Matrix.toBlock_apply, Matrix.transpose_apply,
+      SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have hright : (degreePredDiagonal G +
+        FriendshipTheoremOQ01.onesMatrix V - D.adjMatrix ℤ).toBlock p p =
+      Delta + FriendshipTheoremOQ01.onesMatrix c.supp - Dc := by
+    ext i j
+    by_cases hij : i = j
+    · subst j
+      simp [Delta, Dc, degreePredDiagonal, Matrix.toBlock_apply,
+        SimpleGraph.adjMatrix_apply, FriendshipTheoremOQ01.onesMatrix]
+    · have hval : i.1 ≠ j.1 := fun h ↦ hij (Subtype.ext h)
+      simp [Delta, Dc, degreePredDiagonal, Matrix.toBlock_apply, hij, hval,
+        SimpleGraph.adjMatrix_apply, FriendshipTheoremOQ01.onesMatrix]
+  rw [hA11, hA12, hA21, hright] at hblock
+  exact hblock
+
+/-- On a joint eigenvector of the internal ambient graph, internal defect
+graph, and degree diagonal, the exterior Gram is scalar.  This is the
+nonregular energy formula `delta - mu - theta²`. -/
+theorem c4Free_defectComponent_crossGram_jointEigenvector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (f : c.supp → ℤ) (theta mu delta : ℤ)
+    (hsum : ∑ x, f x = 0)
+    (hH : ((G.induce c.supp).adjMatrix ℤ).mulVec f = theta • f)
+    (hD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec f =
+      mu • f)
+    (hDelta : (Matrix.diagonal fun x : c.supp ↦
+      (G.degree x.1 : ℤ) - 1).mulVec f = delta • f) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    (B * B.transpose).mulVec f =
+      (delta - mu - theta ^ 2) • f := by
+  classical
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let H := (G.induce c.supp).adjMatrix ℤ
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let Delta : Matrix c.supp c.supp ℤ :=
+    Matrix.diagonal fun x ↦ (G.degree x.1 : ℤ) - 1
+  let Dc := ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ
+  let J := FriendshipTheoremOQ01.onesMatrix c.supp
+  have hgram : H * H + B * B.transpose = Delta + J - Dc := by
+    simpa [H, B, Delta, Dc, J, p] using
+      c4Free_defectComponent_crossGram_eq G hfree c
+  have hJzero : J.mulVec f = 0 := by
+    funext x
+    simp [J, FriendshipTheoremOQ01.onesMatrix, Matrix.mulVec, dotProduct, hsum]
+  have hv := congrArg (fun M : Matrix c.supp c.supp ℤ ↦ M.mulVec f) hgram
+  change (B * B.transpose).mulVec f =
+    (delta - mu - theta ^ 2) • f
+  change Delta.mulVec f = delta • f at hDelta
+  rw [Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.add_mulVec,
+    ← Matrix.mulVec_mulVec, hH, Matrix.mulVec_smul, hH,
+    hDelta, hJzero, hD] at hv
+  ext x
+  have hx := congrFun hv x
+  simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.zero_apply] at hx ⊢
+  ring_nf at hx ⊢
+  omega
+
+/-- Away from zero exterior energy, the generalized cross-cut transfer is
+nonzero and carries the opposite internal ambient eigenvalue outside. -/
+theorem c4Free_defectComponent_nonzero_exterior_eigenvector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (f : c.supp → ℤ) (theta mu delta : ℤ)
+    (hsum : ∑ x, f x = 0) (hf0 : f ≠ 0)
+    (hH : ((G.induce c.supp).adjMatrix ℤ).mulVec f = theta • f)
+    (hD : (((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ).mulVec f =
+      mu • f)
+    (hDelta : (Matrix.diagonal fun x : c.supp ↦
+      (G.degree x.1 : ℤ) - 1).mulVec f = delta • f)
+    (hnonsat : delta - mu - theta ^ 2 ≠ 0) :
+    let p : V → Prop := fun x ↦ x ∈ c.supp
+    let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+    let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+    B.transpose.mulVec f ≠ 0 ∧
+      C.mulVec (B.transpose.mulVec f) = (-theta) • B.transpose.mulVec f := by
+  classical
+  let p : V → Prop := fun x ↦ x ∈ c.supp
+  let B := (G.adjMatrix ℤ).toBlock p (fun x ↦ ¬p x)
+  let C := (G.adjMatrix ℤ).toBlock (fun x ↦ ¬p x) (fun x ↦ ¬p x)
+  have hgram := c4Free_defectComponent_crossGram_jointEigenvector
+    G hfree c f theta mu delta hsum hH hD hDelta
+  have htransfer := c4Free_defectComponent_exterior_eigenvector_transfer
+    G hfree c f theta hsum hH
+  change B.transpose.mulVec f ≠ 0 ∧
+    C.mulVec (B.transpose.mulVec f) = (-theta) • B.transpose.mulVec f
+  refine ⟨?_, by simpa [B, C, p] using htransfer⟩
+  intro hzero
+  have hleft : (B * B.transpose).mulVec f = 0 := by
+    rw [← Matrix.mulVec_mulVec, hzero]
+    simp
+  have hscalar : (delta - mu - theta ^ 2) • f = 0 := by
+    rw [← hgram]
+    exact hleft
+  apply hf0
+  funext x
+  have hx := congrFun hscalar x
+  simp only [Pi.smul_apply, Pi.zero_apply] at hx
+  exact (mul_eq_zero.mp hx).resolve_left hnonsat
+
 /-- **Cross-cut Gram identity.**  If `H` is the ambient adjacency inside a
 defect component and `B` is its incidence with the exterior, then
 `H² + BBᵀ = (q-1)I + J - D[c]`. -/
@@ -182,6 +329,9 @@ theorem orderSixtyFour_internalMinusTwo_nonzero_exterior_eigenvector_of_mu_ne_th
 
 end
 
+#print axioms Erdos85.c4Free_defectComponent_crossGram_eq
+#print axioms Erdos85.c4Free_defectComponent_crossGram_jointEigenvector
+#print axioms Erdos85.c4Free_defectComponent_nonzero_exterior_eigenvector
 #print axioms Erdos85.binarySquare_regular_defectComponent_crossGram_eq
 #print axioms
   Erdos85.binarySquare_regular_defectComponent_crossGram_jointEigenvector
