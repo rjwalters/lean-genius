@@ -3000,3 +3000,56 @@ one-edge run every target used anywhere in the clean core is distinct; on a
 three-edge run there is at most one repeated target across the entire clean
 core.  This is the first genuinely simultaneous quantitative constraint on
 the endpoint-neutral lift systems.
+
+## 54. Exact ambient port-support upper bound
+
+Every target in `Z_P` is adjacent to its triangle root in `U`.  The total
+pool of possible targets can therefore be counted exactly from the cross
+blocks out of `c`.  For an exterior color `g != c`, put
+
+```text
+a_g(U) := |E(F_g[c][U])|.
+```
+
+There are `2m` incidences from the `m` roots of `U` into `g`.  A vertex of
+`g` has one or two neighbors in `U`; the multiplicity-two vertices are in
+bijection with the edges of `F_g[c][U]`.  Hence
+
+```text
+|supp(R_gc U)| = 2m - a_g(U).                          (181)
+```
+
+Let
+
+```text
+A_ext(U) := sum_(g != c) a_g(U).
+```
+
+There are `(q-2)/2` exterior colors, so their vertex sets are disjoint and
+(181) sums to
+
+```text
+|union_(g != c) supp(R_gc U)|
+  = m(q-2) - A_ext(U).                                 (182)
+```
+
+Since `Z_P` is a subset of this union, combine (179) and (182) to obtain the
+simultaneous occupancy inequality
+
+```text
+2 sum_(d in D_P) t_d
+  <= m(q-2) - A_ext(U) + a(T_*).                       (183)
+```
+
+The `ell` consecutive edges of the owner run all belong to `F_e[c][U]`, so
+
+```text
+A_ext(U) >= ell.                                       (184)
+```
+
+Thus (183) couples three quantities which the separate rooted budgets do
+not: total nonedge-fiber demand over all neutral clean colors, every
+exterior-owner chord internal to the run, and the once-paid collision budget
+of its demanded roots.  It is a deterministic fixed-margin/collision-energy
+constraint, not a fitted price inequality, and is the direct object to test
+against a monotone transport or convexity argument.
