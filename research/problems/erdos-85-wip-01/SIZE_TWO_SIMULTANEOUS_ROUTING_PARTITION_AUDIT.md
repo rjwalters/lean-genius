@@ -184,3 +184,66 @@ completion is constrained by a distinguished internal cycle step.  A next
 argument must exploit that marked cycle step (or give a uniform model for it);
 merely recounting monochromatic routing triples duplicates the existing
 routing-rainbow package.
+
+## 6. Endpoint-marked rooted normal form
+
+Fix pairwise distinct endpoint components `c,e,f`, a root `x in c`, and take
+the routing color to be the endpoint `c`.  Let the two internal neighbors of
+`x` in the 2-regular graph `G[c]` be `u_0,u_1`.  The generic theorem
+`routingRow_eq_biUnion_componentCrossNeighborFinset`, together with
+`routingRow_starRows_pairwise_disjoint`, specializes to
+
+```text
+{z in e : route(x,z)=c} = Z_0 disjoint-union Z_1,
+Z_i = N_G(u_i) cap e,             |Z_i|=2,              (10)
+
+{w in f : route(x,w)=c} = W_0 disjoint-union W_1,
+W_i = N_G(u_i) cap f,             |W_i|=2.              (11)
+```
+
+Thus the endpoint-colored four-point routing row is not merely an arbitrary
+four-set: it is canonically paired by the two internal cycle directions at
+`x`.
+
+Now count pairs `(z,w)` for which all three routes `(x,z),(z,w),(x,w)` have
+color `c`.
+
+* If `z in Z_i` and `w in W_i`, then `u_i` is their common center.  These are
+  the forced star completions.  There are exactly
+
+  ```text
+  2 * |Z_i| * |W_i| = 2 * 2 * 2 = 8.                  (12)
+  ```
+
+* If `z in Z_i` and `w in W_j` with `i != j`, a color-`c` route from `z` to
+  `w` has a center `y in c` distinct from `u_i,u_j`.  The edges
+  `u_i-y` and `y-u_j` in the owner factorization are owned by `e` and `f`,
+  respectively.  Conversely such a colored two-step middle `y` has unique
+  subdivision vertices `(z,w)` by C4-freeness.  Hence the excess over (12)
+  is exactly
+
+  ```text
+  E_x(e,f) = |N_(O_e[c])(u_0) cap N_(O_f[c])(u_1)|
+           + |N_(O_e[c])(u_1) cap N_(O_f[c])(u_0)|.    (13)
+  ```
+
+Every restricted owner factor on a size-two source component is 2-regular,
+so each intersection in (13) has size at most two.  The rooted endpoint-color
+count therefore has the exact form
+
+```text
+8 + E_x(e,f),                 0 <= E_x(e,f) <= 4.       (14)
+```
+
+Summing the forced term over the `2q` roots of `c` gives `16q`; the residual
+sum `sum_x E_x(e,f)` is precisely the owner-rainbow contribution whose
+unmarked version is handled by the bijection in Section 5.
+
+This exposes the remaining local question without overclaiming: the present
+bank gives neither parity nor a positive lower bound for `E_x(e,f)`.  Such a
+claim would require a new interaction between the two restricted owner
+2-factors across the distinguished self edge `{u_0,u_1}`.  Their separate
+commutation with `D[c]` does not imply that they commute with each other.
+Consequently (14) is a normal form, not yet a contradiction; the next useful
+input must constrain these oriented intersections simultaneously as `x`,
+`e`, and `f` vary.
