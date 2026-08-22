@@ -996,6 +996,28 @@ the negative cap term is summed precisely over the root's own selected
 fibers.  A prospective proof should therefore couple the two column classes
 through (12qh), rather than treat `iota` as an arbitrary binary feature.
 
+The reviewed separation alternative becomes especially sharp for this
+incidence mode.  Its flag poset compares role censuses only at fixed full
+root signature `sigma=(role,n,c_pair,c_all)` and fixed `iota`.  Hence failure
+of the incidence-price branch is equivalent to fractional local matchings
+with alpha balance at every `sigma` and, separately for each `(sigma,iota)`,
+an equal-mass monotone transport
+
+```text
+incoming role-census columns  -->  source role-census columns,
+supported only on r_in <= r_out.                            (12qi)
+```
+
+To see equal mass, sum all cap coordinates as in (12rb): alpha balance
+weighted by `g` makes the global mass zero.  Every `(sigma,iota)` component
+and its complement are upper sets of the disconnected flag poset, so their
+two nonnegative dual inequalities force the component mass itself to zero.
+Finite Strassen then gives (12qi).  Thus the final sampled conjecture has a
+fully combinatorial negation: signature-balanced fractional row matchings
+whose own columns and external columns each admit a census-increasing
+transport.  The fixed own/external role margins (12qh) are the natural
+candidate invariant for ruling this out uniformly.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
