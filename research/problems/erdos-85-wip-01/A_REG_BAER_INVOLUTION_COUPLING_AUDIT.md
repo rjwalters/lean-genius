@@ -1102,13 +1102,37 @@ So the displacement of the shore from half size is exactly half the signed
 imbalance of the two monochromatic line types.  In particular, the small
 exceptional graph carries all of the global shore imbalance.
 
-Equations (7)--(63) are the first canonical cut detector manufactured from
+Opposite line types form a complete bipartite defect core.  Indeed a full
+line and an empty line cannot share an A-neighbor: such a point would have
+to lie both in S and outside S.  Since off-diagonal entries satisfy
+`(A^2)_{XY}=1-D_{XY}`, it follows that
+
+```text
+C_full cross C_empty is contained in E(D).                  (64)
+```
+
+Consequently either one exceptional line type is absent, in which case
+`|d|=c/2`, or both types occur and D-regularity gives
+
+```text
+|C_full|<=q-1,       |C_empty|<=q-1,
+c <= 2(q-1-|d|).                                         (65)
+```
+
+In the mixed case, equality `c=2q-2` would force `d=0` and both classes to
+have size `q-1`.  Then the `K_(q-1,q-1)` in (64) exhausts every D-degree of
+C, making C a proper union of D-components, contrary to connectedness.
+Thus the maximum mixed exceptional design is already excluded; the pure
+full/pure empty branch and the smaller mixed cores are the two remaining
+structural cases.
+
+Equations (7)--(65) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(63), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(65), so these laws alone
 do not conceal an order-independent
 contradiction.
 
