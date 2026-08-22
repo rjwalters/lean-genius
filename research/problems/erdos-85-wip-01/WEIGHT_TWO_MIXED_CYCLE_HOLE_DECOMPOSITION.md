@@ -127,3 +127,40 @@ isomorphism); in the factor-two cases it has the margins of a two-fold cycle
 cover.  Proving that these descriptions are forced entrywise, and classifying
 how several such blocks can share the degree-two budget, is the next
 component-side consumer.
+
+## Factor-two blocks are the standard cycle covers
+
+The factor-two description is in fact forced entrywise.  Suppose `a=2b` and
+the block from `C_(4b)` to `C_(2b)` has row degree one and column degree two.
+Write its unique 1 in row `x` as column `f(x)`.  The column margins say that
+`f` is two-to-one.  The intertwining equation, evaluated at `(x,y)`, is
+
+```text
+1[f(x-1)=y] + 1[f(x+1)=y]
+  = 1[y=f(x)-1] + 1[y=f(x)+1].
+```
+
+Thus the multiset of images of the two neighbors of `x` is exactly the two
+neighbors of `f(x)`.  In particular `f` is a locally bijective graph map
+
+```text
+C_(4b) -> C_(2b).
+```
+
+Choose the image `c=f(0)`.  The image of `1` is `c+epsilon` for one
+`epsilon in {+1,-1}`.  At vertex `1`, one neighbor has already mapped back to
+`c`; local bijectivity forces the other to map to `c+2epsilon`.  Induction
+around the connected long cycle gives
+
+```text
+f(x)=c+epsilon*x  (mod 2b).
+```
+
+This is the standard two-fold cyclic covering; each short-cycle vertex has
+the two preimages differing by `2b`.  Conversely these maps plainly satisfy
+the margins and intertwining law.  Transposing classifies the `(2,1)` case.
+
+Therefore every unequal-length rectangular block of the commuting hole
+factor is a dihedral translate of the canonical two-fold cycle cover.  The
+only unclassified rectangular case is degree `(2,2)` between equal-length
+cycles; degree `(1,1)` is already a dihedral cycle isomorphism.
