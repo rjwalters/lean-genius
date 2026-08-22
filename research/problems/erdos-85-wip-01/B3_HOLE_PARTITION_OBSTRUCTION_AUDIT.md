@@ -810,6 +810,13 @@ valid before using the individual role margins, so any proof by compression
 can work inside the substantially smaller `(role,n,p,c)` range cut out by
 (12s).
 
+These scalar bounds do not distinguish the two branches.  In the four-seed
+run, the nine Hall-failed rows have lower-bound gap `c-lower(12s)` between
+9 and 15, while locally feasible rows range from 6 to 26; the upper-bound
+gaps overlap as well.  Thus `(n,p,c)` is necessary root bookkeeping, not a
+closing statistic.  The distribution of roles among the individual fiber
+columns in `r_tb` is genuinely needed by the sampled certificates.
+
 The smallest invariant ansatz for `W` can also be eliminated exactly on the
 sampled designs.  Normalize the selected colors as low/high and give a row
 one of five types: regular triple, exceptional hole, pair missing low, pair
