@@ -3373,3 +3373,49 @@ must retain an alternating/root-dependent coefficient, a nonlinear feature
 of the marked centers, or additional source-port transport along the rooted
 paths `P_i`.  This identifies exactly what the self-indexed line-cycle
 compression supplies and what parity information it discards.
+
+## 61. Alternating signs retain the run parity at the boundary
+
+Over a signed coefficient group, rather than characteristic two, there is a
+minimal refinement of (203).  With the same indexing, define
+
+```text
+Delta_alt(P) := sum_(i=1)^ell (-1)^(i-1) delta_i.
+```
+
+The internal labels again cancel, but the signs at the far boundary remember
+the parity of the run:
+
+```text
+Delta_alt(P)
+  = ([p_1]-[p_0]) + (-1)^ell([p_ell]-[p_(ell+1)]).     (204)
+```
+
+Thus the two inward boundary differences occur with the same coefficient
+for an even run and opposite coefficients for an odd run (with the displayed
+convention).  If the reversed run is reindexed starting again with sign
+`+1`, its alternating sum is `(-1)^ell Delta_alt(P)`; this dependence on the
+choice of initial phase is exactly the parity datum, not an orientation-free
+edge label.
+
+This parity signal disappears after reduction modulo two, which explains
+why the binary unweighted curl and the collision statistic were blind to the
+one-edge terminal.  But (204) provides a concrete signed interface: attach
+alternating signs along every monochromatic owner run and compare its two
+oriented boundary edges through the rooted transition paths.  On the odd
+projected cycle `C`, a globally consistent alternating sign assignment is
+itself impossible without one sign defect.  A closing theorem can therefore
+take either of two equivalent forms:
+
+```text
+the rooted transition transport preserves the signed B-boundary orientation,
+or
+every sign defect contributes a nonzero conserved private-port class.     (205)
+```
+
+Equation (204) alone proves neither alternative in (205); the missing input
+is still the transport of actual source ports through `P_i`.  It does,
+however, identify the exact signed quantity that transport must preserve and
+the exact place where odd run length enters.  This is compatible with the
+dyadic signed-terminal strategy: no division or arbitrary real price is
+needed, only coefficients `+1` and `-1` on consecutive marked centers.
