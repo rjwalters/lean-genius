@@ -623,6 +623,7 @@ def fit_sparse(instances: list[dict], max_rounds: int) -> tuple[str, float, np.n
 
 
 def main() -> int:
+    global FEATURES
     parser = argparse.ArgumentParser()
     parser.add_argument("--seeds", type=int, default=1)
     parser.add_argument("--timeout-seconds", type=int, default=300)
@@ -672,17 +673,21 @@ def main() -> int:
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")
         return 0
-    if args.features != "basic":
-        refine_features(data, args.features)
-        print(f"feature_mode={args.features} feature_count={len(FEATURES)}")
     if args.individual:
         for label, candidate in zip(data_labels, data):
+            if args.features != "basic":
+                FEATURES = feature_index()
+                refine_features([candidate], args.features)
             fitter = fit_sparse if args.sparse else fit
             status, objective, _, rounds = fitter([candidate], args.max_rounds)
             branch, seed_number, colors = label
             print(f"individual branch={branch} seed={seed_number} colors={colors} "
-                  f"status={status} objective={objective:.9g} rounds={rounds}")
+                  f"features={len(FEATURES)} status={status} "
+                  f"objective={objective:.9g} rounds={rounds}")
         return 0
+    if args.features != "basic":
+        refine_features(data, args.features)
+        print(f"feature_mode={args.features} feature_count={len(FEATURES)}")
     fitter = fit_sparse if args.sparse else fit
     status, objective, theta, rounds = fitter(data, args.max_rounds)
     print(f"instances={len(data)} local_hall_instances={len(hall_labels)} "

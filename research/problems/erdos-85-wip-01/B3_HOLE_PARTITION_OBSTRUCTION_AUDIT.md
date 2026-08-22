@@ -685,6 +685,27 @@ role census inside each eligible fiber.  Mode `--features
 fiber-role-farkas` reproduces (12o); the neighboring feature modes record
 the controls.
 
+The four-role symmetry is close to, but not uniformly stable across, a wider
+sample.  In a four-seed-per-branch run, seven of the 24 instances have a
+direct local Hall obstruction.  Of the remaining seventeen, the four-role
+prices separate sixteen.  Retaining the two oriented roles "pair missing
+the first selected color" and "pair missing the second selected color" gives
+five roles and separates all seventeen, still without using the identity,
+color, or root-incidence of `b`.  Thus the robust sampled dichotomy is
+
+```text
+local Hall failure, or
+mu_tb = f(orientedRole(t),n(t),c(t), orientedRoleCensus(E_t intersect F_b)).
+                                                                    (12p)
+```
+
+Mode `--features fiber-type-bare-farkas --seeds 4 --individual` reproduces
+the 7/17 split.  The random-seed numbers label solver samples rather than
+canonical outer witnesses, so comparisons of one named seed across separate
+processes are not treated as witness identities.  Equation (12p) is sampled
+evidence and a precise seed-free flag-price conjecture, not yet a proof for
+every admissible outer design.
+
 The smallest invariant ansatz for `W` can also be eliminated exactly on the
 sampled designs.  Normalize the selected colors as low/high and give a row
 one of five types: regular triple, exceptional hole, pair missing low, pair
