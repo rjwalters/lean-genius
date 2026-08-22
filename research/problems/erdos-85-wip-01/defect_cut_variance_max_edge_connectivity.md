@@ -1218,6 +1218,19 @@ so at least `max(0,q-3a-4)` targets of Q lie in `Y`.  This upgrades the
 former partial Y-matching to an exact global matching and makes the
 exceptional neighborhood completely attachment-free on its X side.
 
+It also excludes the X-location through the lower third of the range.  If
+`c in X`, then component separation puts all `q-1` defect neighbors of `c`
+in `X union W`.  By (B18) they lie in K, and `c` itself is another point of
+`K intersect (X union W)`.  Comparing with (B16) gives
+
+```text
+q <= |K intersect (X union W)| <= 3a+4,
+a >= ceil((q-4)/3).                           (B19)
+```
+
+Thus `c notin X` whenever `3a+4<q`; the endpoint exclusion (B17'') is the
+first case of this uniform location bound.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
