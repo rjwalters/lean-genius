@@ -118,6 +118,13 @@ def build(branch: int, timeout_ms: int) -> tuple[Solver, dict]:
                 solver.add(at_most_one([classes[r][t] for t in triples if v in t]))
         solver.add(Sum([If(holes[t], 1, 0) for t in triples]) == 4)
 
+    # Lossless color-fiber normalization: independent permutations of the
+    # three eight-point fibers send the first full parallel class to the
+    # diagonal triples (i,8+i,16+i).
+    diagonal = {(i, 8 + i, 16 + i) for i in range(8)}
+    for t in triples:
+        solver.add(classes[0][t] == (t in diagonal))
+
     solver.add(Sum([If(selected[t], 1, 0) for t in triples]) == 26)
 
     # The three marked supports give seven-pair matchings, one on each pair

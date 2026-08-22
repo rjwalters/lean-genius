@@ -125,6 +125,12 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
             for b in range(N_U1):
                 hits = Sum([If(incidence[u, b], 1, 0) for u in centers])
                 solver.add(hits == 1 if r == 0 or branch == 3 else hits <= 1)
+        # Match the lossless normalization in the outer model: the first
+        # full class is the eight diagonal color triples.
+        for u in range(8):
+            diagonal = {u, 8 + u, 16 + u}
+            for b in range(N_U1):
+                solver.add(incidence[u, b] == (b in diagonal))
         for g, centers in enumerate(pair_groups):
             for b in range(N_U1):
                 solver.add(Sum([If(incidence[u, b], 1, 0) for u in centers]) <= 1)
