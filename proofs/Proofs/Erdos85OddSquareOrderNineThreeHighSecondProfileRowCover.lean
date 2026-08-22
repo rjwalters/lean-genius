@@ -1421,6 +1421,98 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_
   rw [secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree htb,
     hpartition]
   simp only [Finset.card_eq_zero, Finset.union_eq_empty]
+
+/-- Zero-slack mixed resolution.  Every ordinary-B0/unmarked-B1 pair is
+resolved in exactly one of three ways: a defect edge, one residual-B0 common
+center, or one U1-core common center. -/
+theorem squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hb : b ∈ squareOrderNineLowIncidenceBin G 1 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    let A := (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+    let C := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+    (D.Adj t b ∧ A.card = 0 ∧ C.card = 0) ∨
+      (¬ D.Adj t b ∧ A.card = 1 ∧ C.card = 0) ∨
+      (¬ D.Adj t b ∧ A.card = 0 ∧ C.card = 1) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let A := (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+  let C := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+  have htb : t ≠ b := by
+    intro h
+    subst b
+    have htB0 := (Finset.mem_sdiff.mp ht).1
+    have hbB1 := (Finset.mem_sdiff.mp hb).1
+    have hk0 := (Finset.mem_filter.mp htB0).2
+    have hk1 := (Finset.mem_filter.mp hbB1).2
+    omega
+  have hpartition :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_common_center_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht hb
+  dsimp only at hpartition
+  change G.neighborFinset t ∩ G.neighborFinset b = A ∪ C at hpartition
+  have hdisj : Disjoint A C := by
+    rw [Finset.disjoint_left]
+    intro w hwA hwC
+    have hwT := (Finset.mem_inter.mp (Finset.mem_inter.mp hwA).1).2
+    have hwU := (Finset.mem_inter.mp (Finset.mem_inter.mp hwC).1).2
+    have hwB0 := (Finset.mem_sdiff.mp hwT).1
+    have hwB1 := (Finset.mem_sdiff.mp hwU).1
+    have hk0 := (Finset.mem_filter.mp hwB0).2
+    have hk1 := (Finset.mem_filter.mp hwB1).2
+    omega
+  have hcards := congrArg Finset.card hpartition
+  rw [Finset.card_union_of_disjoint hdisj] at hcards
+  have hle : A.card + C.card ≤ 1 := by
+    rw [← hcards]
+    exact (not_containsC4_iff_forall_common_le_one G).mp hfree t b htb
+  have hzero :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht hb
+  dsimp only at hzero
+  change D.Adj t b ↔ A.card = 0 ∧ C.card = 0 at hzero
+  by_cases hD : D.Adj t b
+  · left
+    exact ⟨hD, (hzero.mp hD).1, (hzero.mp hD).2⟩
+  · have hnotboth : ¬ (A.card = 0 ∧ C.card = 0) := by
+      intro hz
+      exact hD (hzero.mpr hz)
+    by_cases hA : A.card = 0
+    · right
+      right
+      have hC : C.card = 1 := by omega
+      exact ⟨hD, hA, hC⟩
+    · right
+      left
+      have hAone : A.card = 1 := by omega
+      have hCzero : C.card = 0 := by omega
+      exact ⟨hD, hAone, hCzero⟩
 end
 
 end Erdos85
@@ -1440,4 +1532,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_fortyTwo_five_ledger
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_common_center_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
 #print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
