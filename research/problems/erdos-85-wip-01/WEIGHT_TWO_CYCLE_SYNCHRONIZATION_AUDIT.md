@@ -119,8 +119,11 @@ for every outside trace `r={u,v}`, its 14 neighbors in `K` must form an
 `N_H(u) union N_H(v)`.  Mutual selection turns this into an exact-cover
 instance with 19,136 admissible outside edges and 6,272 exact-one equations.
 
-The unrestricted instance is currently **UNKNOWN**: Z3, native Kissat, and
-HiGHS MILP did not return a verdict in the bounded runs (120--240 seconds).
+The unrestricted instance is currently **UNKNOWN**: Z3, native Kissat,
+HiGHS MILP, and OR-Tools CP-SAT did not return a verdict in bounded runs
+(120--240 seconds).  CP-SAT's native presolve detected 268 large variable
+orbits and explored millions of branches with no feasible solution, but did
+not prove infeasibility.
 The LP/mod-two interface is feasible, so there is no immediate linear
 certificate.  Symmetry-restricted versions invariant under the explicit
 trace graph's order-39 rotation, its order-13 subgroup, or its order-3
