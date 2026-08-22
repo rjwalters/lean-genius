@@ -681,6 +681,56 @@ near-mincut escape.  Any general four-connectivity argument must either
 exclude (B2) separately or recover a q-set from additional point-location
 information.
 
+There is nevertheless a sharp first location constraint in the dual case.
+Since `e_D(W)=0`, every pair of vertices of `W` has exactly one common
+`A`-neighbor.  Therefore
+
+```text
+sum_v binom((A 1_W)_v,2)=3.                  (B3)
+```
+
+For the negative-spike line of (B2), where `c in R`, substituting the
+indicator profile into (B3) gives
+
+```text
+|K intersect R| + 1_(c in K) = 2.            (B4-)
+```
+
+For the positive-spike line, `c in K` and `c notin R`; the subtraction at
+`c` makes `(A 1_W)_c=0`, while every point of `K intersect R` has value two.
+Thus
+
+```text
+|K intersect R| = 3.                         (B4+)
+```
+
+The equality profile of the `q-2` shore also has a useful componentwise
+form.  From
+
+```text
+A 1_X = (a+1)1 - 1_K
+```
+
+and `L_D=A^2-J`, one obtains
+
+```text
+L_D 1_X = 2 1 - A 1_K.                       (B5)
+```
+
+There are no `D`-edges from `X` to `Y`, so (B5) says
+
+```text
+deg_A(y,K)=2                    for every y in Y,
+deg_A(x,K)=2-deg_D(x,W)         for every x in X,
+deg_A(w,K)=2+deg_D(w,X)         for every w in W.  (B6)
+```
+
+In particular the whole large opposite component is a two-fold incidence
+cover of `K`, while only two or three points of `K` can lie in the spike set
+`R`.  These signed-intersection and two-cover conditions are absent from an
+abstract cut-capacity model and are the appropriate next input for excluding
+the dual escape.
+
 ## Three-vertex-connectivity
 
 The Mantel bound (16) closes the sole two-separator escape left by maximal
