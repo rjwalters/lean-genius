@@ -153,6 +153,16 @@ branches, no incumbent).  Codegree-at-most-one for disjoint trace pairs has
 not yet been added.  Thus even the intersecting-trace C4 layer has no bounded
 solver verdict; no SAT or UNSAT claim is made.
 
+The real relaxation, however, is now **exactly feasible**.  The verifier
+`q16_exterior_completion_fractional_control.py` quotients by the explicit
+156-element automorphism group of the trace graph, leaving 274 edge-orbit
+variables, 85 exact-equation types, and 4,142 intersecting-trace C4 inequality
+types.  HiGHS supplies a solution which the script rationalizes and checks
+exactly over `Q`; all denominators are at most 1,794.  Therefore neither the
+bare exact cover nor its first C4 layer admits a Farkas, weighted-linear, or
+fractional Hall obstruction.  Any impossibility is integral or lies in the
+still-unencoded disjoint-trace codegree-at-most-one constraints.
+
 ## Verdict
 
 Cycle synchronization does not follow from the complete component-side
