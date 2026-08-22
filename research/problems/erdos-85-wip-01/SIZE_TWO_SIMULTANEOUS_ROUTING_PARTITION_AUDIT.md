@@ -1264,3 +1264,47 @@ ownership has disappeared.  Therefore iterating the uncolored matrices
 A closing argument must retain either the individual third color `d` together
 with owner data at its switch vertices, or a second marked structure not
 annihilated in the contraction (71).
+
+## 20. Affine freedom of the color-resolved parity matrices
+
+Retaining the third-color label `d` without any further geometric datum is
+still not enough at the binary-matrix level.  If `R_ce` has `k` incidence
+components, let
+
+```text
+E_k = { X in Mat_(k x k)(F_2) : X 1 = 0 and 1^T X = 0 }.
+```
+
+The last row and column are determined by the leading `(k-1) x (k-1)`
+block, so
+
+```text
+dim_F2 E_k = (k-1)^2.                                  (74)
+```
+
+Section 18 says `t^d in E_k` for every third color.  Conversely, the only
+linear constraints established so far on the color-resolved family are
+
+```text
+t^d in E_k,                 sum_d t^d = s s^T.          (75)
+```
+
+The target `s s^T` belongs to `E_k` because `sum_i s_i=0`.  Hence if there
+are `r >= 1` third colors, the abstract solution set of (75) is a nonempty affine
+space of dimension
+
+```text
+(r-1)(k-1)^2:                                          (76)
+```
+
+choose any `r-1` matrices in `E_k`, and the last is forced.  In particular,
+the full aggregate may be placed in one color and zero in all others, or
+redistributed by adding an arbitrary Eulerian matrix to two colors.
+
+This is an algebraic freedom statement, not a claim that every such tuple is
+realizable by an ambient graph.  It does prove that row/column parity,
+component oddness, and the color labels alone cannot yield an additional
+linear contradiction.  The next invariant must use a realizability
+constraint tying `t^d_ij` to the owner factors or internal cycle geometry in
+component `d`; otherwise it factors through the affine system (75) and sees
+only the already exhausted rank-one aggregate.
