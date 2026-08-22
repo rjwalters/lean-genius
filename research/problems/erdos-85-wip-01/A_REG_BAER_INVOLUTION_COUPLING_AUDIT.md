@@ -239,23 +239,33 @@ Binary incidence also forces this shore away from the trivial size range.
 More generally, let `0 != u in ker_F2(A)` and choose `P in supp(u)`.  Each of
 the q lines through P has even intersection with `supp(u)`, so each contains
 a second support point.  Distinct lines through P cannot share that second
-point by C4-freeness.  Hence
+point by C4-freeness.  Every chosen point is a non-D partner of P, giving the
+pointwise strengthening
 
 ```text
-0 != u in ker_F2(A)  implies  |supp(u)| >= q+1.                 (12)
+deg_{D[supp(u)]}(P) <= |supp(u)| - q - 1.                       (12)
 ```
 
-Applying (12) also to `u+1`, for the nonconstant vector chosen above, yields
+In particular,
+
+```text
+0 != u in ker_F2(A)  implies  |supp(u)| >= q+1.                 (13)
+```
+
+Applying (13) also to `u+1`, for the nonconstant vector chosen above, yields
 
 ```text
 q+1 <= |S| <= q^2-q-1.
 ```
 
-In the even-weight branch the lower bound rounds up to `q+2`; in the odd
-branch (11) says every one of the `q^2-|S|` outside vertices sends an odd,
-and hence nonzero, number of D-edges into `S`.
+The two bottom equality cases are rigid.  If `|S|=q+1`, (12) makes `D[S]`
+empty.  If `|S|` is even, then (11) makes every internal D-degree odd, so the
+lower bound rounds up to `q+2`; at equality (12) makes every internal degree
+exactly one and `D[S]` is a perfect matching.  In the odd branch, (11) also
+says every one of the `q^2-|S|` outside vertices sends an odd, and hence
+nonzero, number of D-edges into `S`.
 
-Equations (7)--(12) are the first canonical cut detector manufactured from
+Equations (7)--(13) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The edges of `Omega` are disjoint
 from `A`, hence from `T`, and may be either D-edges or non-D even-overlap
@@ -263,7 +273,7 @@ pairs.  So (10) cannot yet be combined with the Eulerian cut law for `T`.
 Any k-dependent terminal can now aim at locating the symmetric difference
 `Omega triangle D` on the kernel shore `S`, rather than trying to couple the
 local involutions directly.  The q=4 connected control is compatible with
-(7)--(12), so these laws alone do not conceal an order-independent
+(7)--(13), so these laws alone do not conceal an order-independent
 contradiction.
 
 ## Disposition
