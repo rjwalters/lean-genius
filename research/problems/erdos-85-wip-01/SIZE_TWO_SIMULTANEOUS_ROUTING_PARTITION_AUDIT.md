@@ -2693,3 +2693,57 @@ endpoint-neutral clean colors of Section 46 identify the available source
 of such restrictions: their disjoint two-point fibers give genuine incoming
 capacity constraints indexed by the marked root and port, exactly the data
 retained in (162).
+
+## 48. The clean lift supplies an actual root--port capacity system
+
+Fix an endpoint-neutral `P`-clean color `d`, and let
+
+```text
+T_d := {x in U : Y_d(x) is not an A_d edge}.
+```
+
+For each `x in T_d`, (161) gives two rooted triangles using `d`.  By the
+port bijection (60), their `d`-vertices are exactly the two distinct members
+of `Y_d(x)`, one per triangle.  Write
+
+```text
+y in Y_d(x)  -->  z(y)
+```
+
+for the other exterior vertex of that triangle.  Thus every demanded source
+port `y` is assigned to one actual target port `z(y)` in a component other
+than `c,d`.
+
+The two targets at one root are distinct.  Otherwise the two members of
+`Y_d(x)` would have the two common neighbors `x` and `z`, creating a C4.
+More generally,
+
+```text
+z(y)=z(y')  ==>  pathDistance_P(x,x') >= 3             (165)
+```
+
+for sources over distinct roots `x,x'`.  At distance one the roots already
+share their owner-`e` port; at distance two they already share the middle
+root of the `A_c` path.  A repeated target would be a second common neighbor
+in either case.
+
+There is also a global target capacity.  If `z` lies in exterior component
+`g`, its cross degree into `c` is two, so
+
+```text
+|{x in T_d : some y in Y_d(x) has z(y)=z}| <= 2.       (166)
+```
+
+Equations (165)--(166), together with two distinct demands at every root of
+`T_d`, form a genuine root--port capacitated assignment, not a relaxation.
+The allowed target of a source `y` is further constrained by the actual
+cross edge `y z` in `R_dg`.  Fibers with `x notin T_d` consume no target:
+their two source ports are paired internally by the `A_d` edge.
+
+This is the direct analogue of the incoming-fiber caps priced by `mu` in
+(12n).  Any Farkas dual of the assignment must retain the root of the source
+and the individual target port, and therefore has exactly the crossed
+root--port form (162).  What is not yet proved is that the cap system for all
+endpoint-neutral clean colors can be coupled so that its dual evaluates to
+the horizontal marking (164); (165)--(166) identify the concrete primal
+constraints a closing separation theorem must use.
