@@ -206,6 +206,41 @@ counts have constant-factor slack (and no pair content when `a=1`), so the
 remaining issue is compatibility of the block labels with their own point
 locations.
 
+Symmetry supplies one further universal parity.  Taking the quadratic form
+of (5) against `1_S` gives
+
+```text
+2 e_A(S) = a|S| + |R intersect S|.
+```
+
+Since q is even and `|S|=qa+1` is odd,
+
+```text
+|R intersect S| = a  (mod 2).                 (5a)
+```
+
+This forces some self-location when a is odd, but does not by itself
+contradict looplessness.
+
+### The smallest shore as an edge-labelled graph
+
+When `a=1`, the shore has size `q+1`.  Its non-D graph `H` has exactly q
+edges.  Each `r in R` has exactly two A-neighbors in `S`; those two points
+form one H-edge, uniquely labelled by `r`.  C4-freeness makes the q labels
+distinct, and looplessness says that a label lying in `S` is not an endpoint
+of its own edge.  Conversely, at `s in S`,
+
+```text
+deg_H(s) = deg_A(s,R) = 1 + d_s.              (5b)
+```
+
+Thus H has no isolated vertices, and its edge labels meet the self-location
+parity `|R intersect S|` odd.  This exact partial structure is locally
+feasible: take `H` to be the path on `q+1` vertices, identify one
+non-endpoint path vertex with the label of a nonincident edge, and take the
+other q-1 labels outside `S`.  Hence the `a=1` edge-label constraints alone
+do not exclude a minimum cut.
+
 ## A q-clique is an isolated defect component
 
 There is also a sharp incidence consequence useful for the Baer-type route.
