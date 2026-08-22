@@ -2095,3 +2095,43 @@ such a disjoint ten-point lift.  Any simultaneous countermodel must then,
 for every one of those colors, choose fiber edges in `A_d` or route the
 remaining fibers through exactly two further colors, with no collisions
 allowed by C4-freeness.
+
+## 36. Internal exclusions on a clean lift
+
+The internal two-factor `A_d` cannot be arbitrary on the lifted set `Y_d`.
+First, if
+
+```text
+y in Y_d(x_i),          y' in Y_d(x_(i+1)),
+```
+
+then `yy'` is not an `A_d` edge: otherwise
+
+```text
+x_i -- y -- y' -- x_(i+1) -- x_i
+```
+
+is an ambient four-cycle.  Hence
+
+```text
+E(A_d) cap (Y_d(x_i) times Y_d(x_(i+1))) = empty.       (128)
+```
+
+Second, the two vertices `y_0,y_1` of one fiber already have the common
+neighbor `x_i`.  They therefore cannot have a common `A_d` neighbor:
+
+```text
+N_(A_d)(y_0) cap N_(A_d)(y_1) = empty.                 (129)
+```
+
+In particular, if the fiber itself is an `A_d` edge (the first branch of
+(126)), that edge cannot lie in an internal triangle of `A_d`; its cycle
+component has order at least five.
+
+Thus a clean color replaces each root by a pair subject to two simultaneous
+rules: consecutive root-pairs are anticomplete in `A_d`, and the two points
+inside each pair have disjoint internal neighbor sets.  For `n=5`, every
+third component must realize ten lifted points with these constraints, in
+addition to the edge-or-two-triangles alternative (126).  This is the exact
+finite local object on which the next simultaneous counting argument can
+operate.
