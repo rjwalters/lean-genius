@@ -883,33 +883,30 @@ c_all(t) = sum over all 24 U1 labels b of binom(ell_b(t),2)
 
 This is selected-pair independent and is computed directly from `(Q,K)`.
 Refine the monotone prices in (12p) by allowing `f,g` also to depend on
-`c_all(t)`.  In the same four-seed run this refinement separates **all
-seventeen** locally feasible instances, including the two former exceptions:
+`c_all(t)`.  In the same four-seed run this refinement separates sixteen of
+the seventeen locally feasible instances.  It repairs one of the two former
+exceptions but not the other:
 
 ```text
 branch 3, exceptional witness:
-pair (0,1): -0.08080818997,   pair (1,2): -0.5841385479.
+pair (0,1): 0,   pair (1,2): -0.4491999820.
 ```
 
 Rounding at scale `100000` and applying the independent integer checker
-gives exact totals `-8012` and `-58348`.  Thus the gain is genuine, not a
-floating tolerance.  Mode `--features fiber-type-total-monotone-farkas`
-reproduces it.  The resulting sharper conjecture is pairwise: for every
-selected pair, either (12fa) gives a local Hall obstruction or there are
-coordinatewise-monotone oriented-role prices with root signature
-`(role,n,c_pair,c_all)`.  Unlike (12qa), this formulation needs no coupling
-of two independently chosen fractional matching witnesses; the three-color
-information is carried by the canonical scalar `c_all` itself.
+gives exact total `-44861` for the repaired pair.  Thus the gain is genuine,
+not a floating tolerance, but omitted collision alone is not a complete
+sampled theorem.  Mode `--features fiber-type-total-monotone-farkas`
+reproduces the corrected 16/17 result.
 
 Since `c_pair` was already present, this refinement is equivalently just the
 collision energy `c_k` in the **omitted** color.  In the exceptional witness
 it splits six formerly aliased root signatures for each failed pair,
 involving only fourteen roots for `(0,1)` and thirteen for `(1,2)`.  Thus the
-old monotone failure is localized: it came from forgetting omitted-color
-fiber concentration, not from missing row identities or a large global
-invariant.  A proof may therefore work directly with the triple
-`(c_0,c_1,c_2)` and use color permutation instead of treating `c_all` as an
-additional independent statistic.
+old monotone failure is partly localized to omitted-color concentration, but
+the surviving `(0,1)` case proves that concentration is not the only missing
+flag.  A proof should still work directly with the color-symmetric triple
+`(c_0,c_1,c_2)`, while retaining one further incidence/orientation datum for
+the last case.
 
 The omitted-color dependence may be given the expected collision sign.
 Impose, at fixed `(role,n,c_pair,r_tb)`,
@@ -921,30 +918,13 @@ c_all <= c'_all  ==>  mu(role,n,c_pair,c'_all,r_tb)
 
 Thus a more concentrated omitted color receives a weakly smaller incoming
 cap price, while the previous coordinatewise monotonicity in the fiber role
-census is retained.  All seventeen locally feasible instances in the
-four-seed run still separate under (12qe); the two exceptional normalized
-objectives are `-0.04834010158` and `-0.4928963663`.
-At scale `100000` the exact checker gives totals `-4749` and `-49223`.
+census is retained.  This signed cone also separates sixteen of seventeen:
+the `(0,1)` exception remains at zero, while `(1,2)` has objective
+`-0.3463128592` and exact scale-`100000` total `-34559`.
 Mode `--features fiber-type-collision-monotone-farkas` enforces this signed
 order.  The sign is the useful structural gain: it makes the omitted-color
-coordinate a genuine collision/concentration charge, compatible with a
-Schur-convex proof from (12qd), rather than an arbitrary refinement of the
-root lookup table.
-
-The two signs cannot be promoted blindly to the full product order.  If one
-also requires
-
-```text
-r <= r' and c_all >= c'_all  ==>  mu(r,c_all) <= mu(r',c'_all)
-```
-
-when both coordinates change simultaneously, the weakest exceptional pair
-`(0,1)` returns to objective zero (the other remains separated at
-`-0.3434173214`).  Hence the sampled theorem supports isotonicity along a
-fixed collision layer and antitonicity along a fixed fiber census, but not a
-global no-interaction assumption.  A uniform construction must allow a
-mixed `r`--`c_all` term, or prove comparisons by axis moves only when the
-intermediate flag actually exists.
+coordinate a genuine collision/concentration charge in the repaired case,
+but it does not remove the final need for another flag.
 
 This axis-qualified cone also has an exact transport alternative.  At fixed
 base signature `(role,n,c_pair)`, put a directed order edge
@@ -966,11 +946,36 @@ equivalent to fractional exact-cardinality row matchings such that
 2. within each base signature, incoming flag mass transports to source flag
    mass only along the realizable order (12qf).
 
-This is now the precise primal object to exclude.  It retains exact
-three-color collision layers through the alpha equations, but allows role
-mass to move between layers only through a fiber census that occurs on both
-sides.  The failed full-product experiment says that this realizability
-condition is essential, not a technical artifact of the feature encoding.
+This is the precise primal object exhibited by the one surviving sampled
+case.  It retains exact three-color collision layers through the alpha
+equations, but allows role mass to move between layers only through a fiber
+census that occurs on both sides.  The remaining task is to identify the
+smallest genuine `(Q,K)` flag that destroys this transport without reverting
+to row or fiber identities.
+
+That final flag can be isolated experimentally.  Retain the single bit
+
+```text
+iota_tb = 1[b in S_t]                                      (12qg)
+```
+
+in the cap-price signature, in addition to
+`(role,n,c_pair,c_all,r_tb)`.  This is root--fiber incidence already present
+in `Q`; it names neither the root nor the fiber and is invariant under
+swapping the two selected colors.  The last `(0,1)` exception then separates
+with objective `-0.08409488672` and exact scale-`100000` total `-8347`.
+Consequently the four-seed result returns to 17/17 locally feasible
+instances, now with the correctly scoped feature class.  Mode
+`--features fiber-type-total-incidence-monotone-farkas` reproduces it.
+
+For comparison, retaining selected-color position instead of `iota_tb` also
+repairs the last case (objective `-0.1523749388`), but (12qg) is the smaller
+and more symmetric datum.  The sharp sampled Hall-or-price target is
+therefore: either the label-only Hall cover (12fa), or nonnegative prices
+isotone in the oriented role census at fixed
+`(role,n,c_pair,c_all,iota)`.  Relative to the original four-role ansatz,
+the only added information is omitted-color collision and whether the priced
+fiber is one of the root's own support fibers.
 
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of

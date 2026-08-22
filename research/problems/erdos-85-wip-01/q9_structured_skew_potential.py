@@ -136,7 +136,9 @@ def refine_features(instances: list[dict], mode: str) -> None:
                 "fiber-type-bare-farkas", "fiber-demand-farkas",
                 "fiber-role-farkas", "fiber-type-monotone-farkas",
                 "fiber-type-total-monotone-farkas",
-                "fiber-type-collision-monotone-farkas"):
+                "fiber-type-collision-monotone-farkas",
+                "fiber-type-total-incidence-monotone-farkas",
+                "fiber-type-total-color-monotone-farkas"):
         instance_keys = []
         all_keys = set()
         for data in instances:
@@ -156,7 +158,9 @@ def refine_features(instances: list[dict], mode: str) -> None:
                     root_type = 2
                 signature = (root_type, len(data["candidates"][t]), collisions)
                 if mode in ("fiber-type-total-monotone-farkas",
-                            "fiber-type-collision-monotone-farkas"):
+                            "fiber-type-collision-monotone-farkas",
+                            "fiber-type-total-incidence-monotone-farkas",
+                            "fiber-type-total-color-monotone-farkas"):
                     signature += (all_collisions,)
                 row_signatures.append(signature)
             mu_keys = []
@@ -186,9 +190,19 @@ def refine_features(instances: list[dict], mode: str) -> None:
                         key = ("mu", root_signature,
                                tuple(sorted(occupants[b])),
                                int(b in data["blocks"][t]))
+                    if mode == "fiber-type-total-incidence-monotone-farkas":
+                        key = ("mu", root_signature,
+                               tuple(sorted(occupants[b])),
+                               int(b in data["blocks"][t]))
+                    if mode == "fiber-type-total-color-monotone-farkas":
+                        key = ("mu", root_signature,
+                               tuple(sorted(occupants[b])),
+                               colors.index(b // 8))
                     if mode in ("fiber-type-bare-farkas",
                                 "fiber-demand-farkas", "fiber-role-farkas",
-                                "fiber-type-monotone-farkas"):
+                                "fiber-type-monotone-farkas",
+                                "fiber-type-total-monotone-farkas",
+                                "fiber-type-collision-monotone-farkas"):
                         key = ("mu", root_signature,
                                tuple(sorted(occupants[b])))
                     row_mu[b] = key
@@ -199,12 +213,16 @@ def refine_features(instances: list[dict], mode: str) -> None:
         FEATURES = {key: i for i, key in enumerate(sorted(all_keys))}
         if mode in ("fiber-type-monotone-farkas",
                     "fiber-type-total-monotone-farkas",
-                    "fiber-type-collision-monotone-farkas"):
+                    "fiber-type-collision-monotone-farkas",
+                    "fiber-type-total-incidence-monotone-farkas",
+                    "fiber-type-total-color-monotone-farkas"):
             mu_keys_all = [key for key in FEATURES if key[0] == "mu"]
             for i, left in enumerate(mu_keys_all):
                 left_counts = Counter(left[2])
                 for right in mu_keys_all[i + 1:]:
                     if left[1] != right[1]:
+                        continue
+                    if left[3:] != right[3:]:
                         continue
                     right_counts = Counter(right[2])
                     if all(left_counts[j] <= right_counts[j] for j in range(5)):
@@ -761,7 +779,9 @@ def main() -> int:
                                                 "fiber-role-farkas",
                                                 "fiber-type-monotone-farkas",
                                                 "fiber-type-total-monotone-farkas",
-                                                "fiber-type-collision-monotone-farkas"),
+                                                "fiber-type-collision-monotone-farkas",
+                                                "fiber-type-total-incidence-monotone-farkas",
+                                                "fiber-type-total-color-monotone-farkas"),
                         default="basic")
     args = parser.parse_args()
     data = []
