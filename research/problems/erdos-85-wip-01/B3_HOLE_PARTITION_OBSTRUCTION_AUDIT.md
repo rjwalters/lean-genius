@@ -679,6 +679,16 @@ potential uses thresholds or other nonlinear dependence on local capacity
 and collisions.  The mode `--features bilinear-collisions` records this
 negative boundary.
 
+Two further compressions fail, which shows what the nonlinear dependence
+must retain.  Replacing `c(t)` by `(max_b ell_b(t), number of b with
+ell_b(t)>=2)` separates five seed-zero instances but has optimum zero on
+branch 3, colors `(0,1)`.  Indexing coefficients only by the ordered row
+types and the differences `n(t)-n(u), c(t)-c(u)` (plus support overlap)
+separates only three of six.  Absolute capacity/collision levels, not just
+their order or difference, therefore matter in the sampled potential.  The
+corresponding modes are `--features load-shape` and `--features
+collision-differences`.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 

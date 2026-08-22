@@ -110,6 +110,47 @@ def refine_features(instances: list[dict], mode: str) -> None:
     conflict at a selected U1 label.
     """
     global FEATURES
+    if mode == "collision-differences":
+        row_data = []
+        keys = set()
+        for data in instances:
+            stats = []
+            for t in range(N):
+                loads = Counter(b for support in data["labels"][t]
+                                for b in support)
+                collisions = sum(x * (x - 1) // 2 for x in loads.values())
+                stats.append((data["types"][t], len(data["candidates"][t]),
+                              collisions))
+            row_data.append(stats)
+            for t in range(N):
+                for u in data["candidates"][t]:
+                    overlap = len(data["blocks"][t] & data["blocks"][u])
+                    raw = (stats[t][0], stats[u][0],
+                           stats[t][1] - stats[u][1],
+                           stats[t][2] - stats[u][2], overlap)
+                    reverse = (raw[1], raw[0], -raw[2], -raw[3], overlap)
+                    if raw != reverse:
+                        keys.add(min(raw, reverse))
+        FEATURES = {key: i for i, key in enumerate(sorted(keys))}
+        for data, stats in zip(instances, row_data):
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                for u in data["candidates"][t]:
+                    overlap = len(data["blocks"][t] & data["blocks"][u])
+                    raw = (stats[t][0], stats[u][0],
+                           stats[t][1] - stats[u][1],
+                           stats[t][2] - stats[u][2], overlap)
+                    reverse = (raw[1], raw[0], -raw[2], -raw[3], overlap)
+                    vector = np.zeros(len(FEATURES))
+                    if raw != reverse:
+                        vector[FEATURES[min(raw, reverse)]] = (
+                            1 if raw < reverse else -1
+                        )
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
     if mode == "bilinear-collisions":
         coordinate_pairs = list(combinations(range(7), 2))
         FEATURES = {
@@ -150,7 +191,8 @@ def refine_features(instances: list[dict], mode: str) -> None:
         row_signatures = []
         for t in range(N):
             signature = (data["types"][t], len(data["candidates"][t]))
-            if mode in ("total-load", "collisions", "load-profile"):
+            if mode in ("total-load", "collisions", "load-shape",
+                        "load-profile"):
                 loads = Counter(b for support in data["labels"][t]
                                 for b in support)
                 if mode == "total-load":
@@ -158,6 +200,9 @@ def refine_features(instances: list[dict], mode: str) -> None:
                 elif mode == "collisions":
                     signature += (sum(x * (x - 1) // 2
                                       for x in loads.values()),)
+                elif mode == "load-shape":
+                    signature += (max(loads.values(), default=0),
+                                  sum(x >= 2 for x in loads.values()))
                 else:
                     signature += (tuple(sorted(loads.values())),)
             row_signatures.append(signature)
@@ -278,8 +323,9 @@ def main() -> int:
                         help="fit each locally feasible instance separately")
     parser.add_argument("--features", choices=("basic", "candidate-count",
                                                 "total-load", "collisions",
-                                                "load-profile",
-                                                "bilinear-collisions"),
+                                                "load-shape", "load-profile",
+                                                "bilinear-collisions",
+                                                "collision-differences"),
                         default="basic")
     args = parser.parse_args()
     data = []
