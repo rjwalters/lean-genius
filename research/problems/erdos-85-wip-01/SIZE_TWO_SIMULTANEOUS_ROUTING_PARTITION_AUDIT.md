@@ -1147,3 +1147,67 @@ exports an odd boundary-overlap mark to at least one third component.  The
 next parity step is to show that these exported marks pair globally, or that
 iterating the export creates a forbidden odd incidence cycle in the finite
 component-color system.
+
+## 18. Off-diagonal propagation between incidence components
+
+The exported mark in (65) cannot terminate on the same cross-factor
+component.  Fix `c,e`, and write the connected components of the bipartite
+two-factor `R_ce` as paired shore sets
+
+```text
+(U_i subset c, V_i subset e),                       i in I.
+```
+
+Thus the `U_i` partition `c`, the `V_i` partition `e`, and the component
+containing the odd owner run of Section 17 is `(U_0,V_0)=(C,Z)`.  For a third
+component color `d`, define the binary component-interaction matrix
+
+```text
+t^d_ij := (R_dc U_i)^T (R_de V_j)  in F_2.            (67)
+```
+
+Every row and every column of `t^d` has even sum.  Indeed, the cross blocks
+have degree two, so
+
+```text
+R_de 1_e = 0,                         R_dc 1_c = 0
+```
+
+over `F_2`; summing (67) over `j`, respectively over `i`, gives zero.  In
+particular the diagonal mark exported by `(C,Z)` has the exact off-diagonal
+resolution
+
+```text
+t^d_00 = sum_(j != 0) t^d_0j
+       = sum_(i != 0) t^d_i0.                            (68)
+```
+
+Combining the first equality with (65) yields
+
+```text
+sum_(d != c,e) sum_(j != 0) t^d_0j = 1.                 (69)
+```
+
+Consequently an odd monochromatic owner run propagates, with odd total
+parity, through third colors to *different* `R_ce` incidence components.
+Pointwise, `t^d_0j` is the parity of vertices `y in d` whose two `c`-neighbors
+straddle `U_0` and its complement and whose two `e`-neighbors straddle `V_j`
+and its complement.  Thus (69) is a genuine component-switch statement, not
+just a relabeling of the diagonal overlap in (65).
+
+The remaining gap is now sharper.  The target `(U_j,V_j)` in (69) is an
+arbitrary cross-factor component and need not itself be a closed
+monochromatic owner run.  A terminal parity argument must either pair the
+switches at such non-owner components or prove that following component
+switches eventually re-enters the owner-run locus with forbidden odd
+holonomy.
+
+Equivalently, for each fixed `d`, regard `t^d` as the adjacency matrix of a
+bipartite graph on two labeled copies of the `R_ce` component set.  The
+row/column laws say that this graph is Eulerian.  Hence every nonzero
+diagonal export edge lies on an even alternating cycle, and after deleting
+that edge there is an odd-length replacement path from the source copy of
+the owner component to its target copy.  Its first and last edges are
+necessarily off-diagonal component switches, although intermediate edges
+may again be diagonal.  What is still missing is a rule that transports
+ownership (rather than only incidence) along this forced path.
