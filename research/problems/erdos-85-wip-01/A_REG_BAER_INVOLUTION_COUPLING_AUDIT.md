@@ -1501,6 +1501,33 @@ entirely by the residual half-lines' excess private-point demand.  A closing
 argument must show that these required private transversals cannot coexist
 with the path--cycle self-indexing and C4-free residual neighborhoods.
 
+The private-transversal system has an exact Gram form.  Let `P` be the set
+of private majority points, and let R be the `P x M` incidence matrix of A.
+Every private point has one majority neighbor, no minority neighbor, and
+hence residual degree `q-1`.  For distinct private points `p,p'`:
+
+- if they have the same majority owner line, that owner is already their
+  common neighbor, so C4-freeness forbids a residual common neighbor;
+- if their owner lines differ, they have no common exceptional neighbor, so
+  the residual codegree is zero or one according as `pp'` is or is not a
+  D-edge.
+
+Let `Q_priv` be the disjoint union of cliques on the private points carried
+by each majority line.  Then
+
+```text
+R R^T = (q-2)I + J - D[P] - Q_priv.                       (73p)
+```
+
+Thus the right side is not merely PSD: it has an integral 0--1 Gram factor
+with column set M and row sum `q-1`.  Formula (73j) fixes `Q_priv` locally.
+At `r=1`, it is `(q-1) K_2`, a perfect matching on the `2(q-1)` private
+points.  At `r=2`, it is `2 K_4` together with `(q-4) K_3`: the two marked
+majority lines carry four private points and the other `q-4` lines carry
+three.  The residual extension problem is therefore a prescribed integral
+Gram-factorization problem for `D[P]` coupled to the partial-Baer path--cycle
+marks, a genuinely stronger target than the scalar boundary identities.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
