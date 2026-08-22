@@ -61,8 +61,9 @@ the coupled conjecture nor a branch-3 per-hole strengthening is established.
    `(A Q)_h = 1 + (Q K)_h` over `F2`.  The aggregate hole targets lie in the
    eligible block-row span in sampled witnesses, so parity gives no terminal.
 4. **Scalar pair-cover contractions.**  The exact outer cover is
-   `K^2 + Q^T Q + M + D = C + 8 I`, where `M` is the marked-pair graph,
-   `D` the core defect graph, and `C` the complete tripartite color graph.
+   `K^2 + Q^T Q + D = C + 8 I`, where the 47 rows of `Q` already include
+   both the 26 triple centers and the 21 marked-pair centers, `D` is the core
+   defect graph, and `C` is the complete tripartite color graph.
    Substituting the partition equation and taking row sums or inner products
    recovers existing column laws or tautologies.
 5. **Per-hole Hall or determinant vanishing.**  False in branch 4: one valid
@@ -144,7 +145,7 @@ The exact pair-cover identity makes the missing parity more concrete.  In
 the B.3 notation,
 
 ```text
-K^2 + Q^T Q + M + D = C + 8 I,
+K^2 + Q^T Q + D = C + 8 I,
 ```
 
 The graph `K` has twelve same-color root-triangle matching edges and 24
@@ -154,7 +155,7 @@ Contracting this identity over those 24 unordered cross-color `K`-edges gives
 
 ```text
 sum_{uv in E(K)} (Q^T Q)_uv
-  = 24 - 3 t(K) - |E(K) intersect E(M)| - |E(K) intersect E(D)|,  (4)
+  = 24 - 3 t(K) - |E(K) intersect E(D)|,                       (4)
 ```
 
 where every edge set in (4) is implicitly restricted to the cross-color
@@ -165,16 +166,16 @@ edges.  The left side of (4) is exactly the number of `B0-B1-B1` triangles
 counted on the right side of (2).  Thus its parity is
 
 ```text
-t(K) + |E(K) intersect E(M)| + |E(K) intersect E(D)|  (mod 2). (5)
+t(K) + |E(K) intersect E(D)|  (mod 2).                         (5)
 ```
 
-This is also the four-way common-neighbor partition of the cubic-core edges:
-completion inside the unmarked core, completion through an ordinary `B0`
-row, completion in the marked-pair layer, or no completion (a defect edge).
-Consequently the first missing input can be stated sharply: the existing
-colored ledger must determine the parity of the three terms in (5), jointly
-or separately.  Their uncolored sum merely recovers the 24-edge partition
-and supplies no contradiction by itself.
+This is the three-way common-neighbor partition of the cubic-core edges:
+completion inside the unmarked core, completion through one of the 47
+ordinary `B0` rows (including a marked-pair row), or no completion (a defect
+edge).  Consequently the first missing input can be stated sharply: the
+existing colored ledger must couple the two terms in (5).  Their uncolored
+sum merely recovers the 24-edge partition and supplies no contradiction by
+itself.
 
 ### Pointwise sharpening and parity probe
 
