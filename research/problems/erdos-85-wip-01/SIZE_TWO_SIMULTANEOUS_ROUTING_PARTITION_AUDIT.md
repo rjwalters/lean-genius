@@ -2908,3 +2908,42 @@ and only a bounded exceptional-color interface remains.  This is the same
 primal/transpose mechanism as the complete Farkas curl (12m)--(12n), now
 derived directly from the simultaneous rooted triangles rather than posited
 as a price ansatz.
+
+## 52. The exceptional boundary is even at every root
+
+Fix a root `x in U` and view its rooted triangles as the vertical
+multigraph on exterior colors.  For every `d in D_P`, endpoint neutrality
+gives `a_xd=0`, and (50) gives
+
+```text
+deg_x(d) = sum_g tau_xdg = 2 - 2b_xd in {0,2}.         (176)
+```
+
+Apply the handshake identity to the vertex set `D_P` in this rooted
+multigraph.  Internal triangle edges contribute twice, so the number
+`lambda_x(D_P)` of triangles with exactly one exterior color in `D_P`
+satisfies
+
+```text
+lambda_x(D_P)
+  = sum_(d in D_P) deg_x(d)
+  = 0  (mod 2).                                        (177)
+```
+
+Each such cut triangle is exactly one directed clean-system assignment whose
+reverse lies outside the transpose-symmetric core of (173).  Therefore the
+number of leakage assignments is even separately at every root, and hence
+even on the entire run:
+
+```text
+sum_(x in U) lambda_x(D_P) = 0  (mod 2).               (178)
+```
+
+This closes the **unweighted** boundary parity.  It does not establish the
+root--port conservation (164a), because a crossed price can distinguish the
+different cut triangles at the same root.  The surviving obstruction is
+therefore precisely a weighted distribution problem on the exceptional
+interface (175), not a parity of its cardinality.  Any successful price
+construction may be normalized by subtracting a constant boundary weight,
+whose contribution vanishes by (177), leaving only price differences among
+the exceptional target ports.
