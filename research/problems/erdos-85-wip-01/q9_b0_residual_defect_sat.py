@@ -44,6 +44,9 @@ equality case, trace orthogonality, and the B0 Gram no-shared-neighbor law,
 without constructing the other residual rows.  An UNSAT result would still
 need independent certification; a timeout is only an open computational
 frontier.
+Use ``--hole-partition-at-least K`` to weaken the question to any ``K`` of
+the exceptional holes; this distinguishes a per-hole obstruction from one
+that only appears after coupling the complete hole set.
 """
 
 from __future__ import annotations
@@ -55,7 +58,7 @@ import time
 from itertools import combinations
 from pathlib import Path
 
-from z3 import And, Bool, Goal, If, Or, SolverFor, Sum, Then, is_true, sat, unknown
+from z3 import And, Bool, Goal, If, Not, Or, SolverFor, Sum, Then, is_true, sat, unknown
 
 
 N_TRIPLE = 26
@@ -361,6 +364,10 @@ def main() -> int:
                         help="ask the unrestricted outer model whether every "
                              "exceptional hole can realize its required local "
                              "complement partition")
+    parser.add_argument("--hole-partition-at-least", type=int, default=0,
+                        help="ask whether at least K exceptional holes can "
+                             "realize the local partition (implies the "
+                             "seed-free hole-partition-only abstraction)")
     parser.add_argument("--relax", action="append", default=[],
                         choices=("residual-c4", "b0-c4", "b0-orthogonal",
                                  "dtb-common", "dtb-cap", "dtb-aq-cap",
@@ -380,27 +387,38 @@ def main() -> int:
     seed = make_outer_seed(args.branch, args.timeout_seconds * 1000,
                            args.outer_random_seed) if args.seed_outer else None
     relax = set(args.relax)
-    if args.hole_partition_only:
+    hole_partition_mode = (args.hole_partition_only
+                           or args.hole_partition_at_least > 0)
+    if hole_partition_mode:
         if args.seed_outer:
-            parser.error("--hole-partition-only uses the unrestricted outer model")
+            parser.error("hole-partition queries use the unrestricted outer model")
         relax.update({"row-ledger", "residual-c4", "dtb-aq-cap",
                       "dtb-zero", "dtb-rows", "dtb-columns"})
     solver, data = build(args.branch, args.timeout_seconds * 1000,
                          args.full_incidence or args.seed_outer
-                         or args.hole_partition_only,
+                         or hole_partition_mode,
                          seed, relax)
-    if args.hole_partition_only:
+    if hole_partition_mode:
         edges = data["edges"]
         holes = 2 if args.branch == 3 else 4
+        required = holes if args.hole_partition_only else args.hole_partition_at_least
+        if not 1 <= required <= holes:
+            parser.error(f"hole partition count must lie in 1..{holes}")
+        active = []
         for h in range(N_TRIPLE - holes, N_TRIPLE):
+            active_h = Bool(f"active_hole_partition_{h}")
+            active.append(active_h)
             incident = [var for (u, v), var in edges.items()
                         if u == h or v == h]
             triple_incident = [var for (u, v), var in edges.items()
                                if (u == h and v < N_TRIPLE)
                                or (v == h and u < N_TRIPLE)]
-            solver.add(Sum([If(var, 1, 0) for var in incident]) == 6)
-            solver.add(Sum([If(var, 1, 0)
-                            for var in triple_incident]) == 3)
+            solver.add(Or(Not(active_h),
+                          Sum([If(var, 1, 0) for var in incident]) == 6))
+            solver.add(Or(Not(active_h),
+                          Sum([If(var, 1, 0)
+                               for var in triple_incident]) == 3))
+        solver.add(Sum([If(flag, 1, 0) for flag in active]) >= required)
     started = time.time()
     if args.kissat:
         goal = Goal()
