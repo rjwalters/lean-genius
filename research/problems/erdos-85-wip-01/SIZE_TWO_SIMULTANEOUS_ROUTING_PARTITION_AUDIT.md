@@ -149,3 +149,38 @@ countermodel) of simultaneous size-two coordinates satisfying all coupled
 routing partitions.  A single-pair spectral, row-sum, or phase argument cannot
 consume the new data.  No order-64-only classification belongs to this lane
 without a new operator direction.
+
+## 5. Cubic contraction audit
+
+There is one tempting way to compare three endpoint partitions which is
+already completely banked.  For pairwise distinct endpoint components
+`c,e,f` and a routing color `d`, form
+
+```text
+T_d(x,z,w) = Q_d^(c,e)(x,z)
+             Q_d^(e,f)(z,w)
+             Q_d^(c,f)(x,w).                            (9)
+```
+
+Its support consists of endpoint triples whose three pairwise routes all have
+intermediate component `d`.  The three canonical common neighbors either
+coincide (the star completion) or are pairwise distinct and form an
+owner-colored rainbow triangle inside `d`.  This is exactly the content of:
+
+* `monochromatic_routing_completion_star_or_rainbow`;
+* `binarySquare_regular_sizeTwoRoutingColor_two_lifts_or_owner_rainbow`;
+* `binarySquare_regular_sizeTwoRoutingColor_rainbow_or_all_two_lifts`;
+* `routingRainbowEndpointTriples_card_eq_ownerRainbowTriples_card`.
+
+Thus an undifferentiated cubic sum of (9) cannot be advertised as a new
+three-coordinate invariant.  In the no-rainbow branch the existing theorem
+already gives the exact two canonical lifts; in the rainbow branch the exact
+bijection transports the residual count to owner-factor triangles.
+
+The genuinely unconsumed refinement is to intersect (9) with the endpoint
+identities (6), especially when `d` equals one of `c,e,f`.  Then one factor is
+forced to be `A_c R`, `R A_e`, or its cyclic analogue, so the star/rainbow
+completion is constrained by a distinguished internal cycle step.  A next
+argument must exploit that marked cycle step (or give a uniform model for it);
+merely recounting monochromatic routing triples duplicates the existing
+routing-rainbow package.
