@@ -1363,3 +1363,61 @@ principle transport ownership information.  It is not yet a terminal: one
 must relate the four-color route parity in (78) back to owner-factor edges
 or triangles in `d`.  Equation (78) fixes the exact object that such a
 relation has to control.
+
+## 22. Four-color routing curvature
+
+Fix a target incidence component `V_j`.  For distinct colors `d,f`, both
+different from `c,e`, write the ordered marked path parity
+
+```text
+ell^j_fd := C^T R_cf R_fd R_de V_j.                    (80)
+```
+
+Equation (78) says that `h^d_0j` is the `d`-column sum of these ordered
+four-color paths:
+
+```text
+h^d_0j = sum_(f != c,d,e) ell^j_fd.                     (81)
+```
+
+Therefore, after summing over the third component and grouping the two
+orders of every unordered pair,
+
+```text
+sum_(d != c,e) h^d_0j
+  = sum_({d,f} subset colors minus {c,e})
+      (ell^j_fd + ell^j_df).                            (82)
+```
+
+The summand in (82) is the exact binary routing curvature of the pair
+`{d,f}` relative to `(C,V_j)`.  To see its local meaning, put
+
+```text
+u_f = R_fc C,        v_f = R_fe V_j.
+```
+
+Then
+
+```text
+ell^j_fd = u_f^T R_fd v_d,
+ell^j_df = u_d^T R_df v_f.                             (83)
+```
+
+For an edge `a--y` of the cross two-factor between `f` and `d`, the first
+orientation marks it when `a` has odd incidence into `C` and `y` has odd
+incidence into `V_j`; the second exchanges the roles of `d` and `f`.
+
+C4-freeness makes the two orientations pointwise support-disjoint after the
+endpoints `x in C`, `z in V_j` are fixed.  Indeed, simultaneous paths
+
+```text
+x -- a(f) -- y(d) -- z,
+x -- y(d) -- a(f) -- z
+```
+
+would create the four-cycle `x--a--z--y--x`.  But support-disjointness does
+not imply equality of their total parities.  Thus (82) isolates the precise
+directed datum which survives the symmetric cancellations: closing the
+marked route requires proving that the total curvature is even, or pairing
+its oriented paths by an owner-sensitive involution.  Ordinary row sums and
+the rank-one incidence law (72) do not address this orientation imbalance.
