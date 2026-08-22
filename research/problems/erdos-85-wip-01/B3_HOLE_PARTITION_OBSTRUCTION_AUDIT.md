@@ -591,6 +591,50 @@ design-dependent Farkas rays into the correct canonical object: an
 now be stated precisely as constructing `W(Q,K)` for which the sum of these
 local matching optima is strictly negative.
 
+The arbitrary skew matrix in (12h) can be replaced, without loss, by a
+canonical row--fiber Farkas curl.  Assume first that every `P_t` is nonempty.
+Regard `P` as already enforcing row degrees and outgoing fiber caps.  If the
+remaining column-degree equalities and incoming caps are infeasible, strong
+Farkas separation gives free prices `alpha_u` for the column equalities and
+nonnegative prices `mu_ub` for the incoming caps such that
+
+```text
+F(X) = sum_u alpha_u(colSum_u(X)-d_u)
+     + sum_{u,b} mu_ub(incomingCap_ub(X)-1) > 0             (12m)
+```
+
+for every `X in P`.  But `F(TX)<=0` on `P`, because transpose turns those
+terms into the row equalities and outgoing caps already imposed in `P`.
+Consequently `W=F after T-F` is strictly negative on `P`, with ordered-edge
+coefficient
+
+```text
+W_tu = alpha_t-alpha_u
+     + sum_{b in S_u intersect C} mu_tb
+     - sum_{b in S_t intersect C} mu_ub.                   (12n)
+```
+
+Conversely, any strict certificate of the form (12n) is an antisymmetric
+certificate in (12h).  Thus (12n) is a complete normal form: the obstruction
+is a curl of row-specific prices on the sixteen selected fibers, plus an
+ordinary degree-gradient term.  Its optimization over `P` still splits
+into the 47 local weighted matchings.  The uniform theorem need not invent
+an arbitrary weight for every ordered row pair; it must construct the
+nonnegative incoming-cap prices `mu` from `Q,K`.
+
+As a diagnostic, allowing signed row--fiber prices and setting `alpha=0`
+already separates all six seed-zero instances.  The normalized optima are
+
+```text
+branch 3: -5.11710981, -9.45805385, -5.14649276,
+branch 4: -5.48336072, -23.1950319, -5.18894009.
+```
+
+Mode `--features row-fiber-curl` reproduces this restricted fit.  The signed
+fit is evidence that the cap curl, rather than the degree gradient, carries
+the sampled signal; the exact completeness statement remains (12m)--(12n),
+where Farkas requires `mu>=0` and may use `alpha`.
+
 The smallest invariant ansatz for `W` can also be eliminated exactly on the
 sampled designs.  Normalize the selected colors as low/high and give a row
 one of five types: regular triple, exceptional hole, pair missing low, pair

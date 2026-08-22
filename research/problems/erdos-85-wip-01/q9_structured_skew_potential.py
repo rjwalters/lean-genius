@@ -99,7 +99,7 @@ def instance(branch: int, seed: dict, colors: tuple[int, int]) -> dict:
         labels.append(ls)
     return {"degree": degree, "candidates": candidates,
             "vectors": vectors, "labels": labels, "blocks": blocks,
-            "types": types}
+            "types": types, "selected": selected}
 
 
 def refine_features(instances: list[dict], mode: str) -> None:
@@ -110,6 +110,31 @@ def refine_features(instances: list[dict], mode: str) -> None:
     conflict at a selected U1 label.
     """
     global FEATURES
+    if mode == "row-fiber-curl":
+        selected_labels = sorted({b for data in instances
+                                  for row in data["labels"] for support in row
+                                  for b in support})
+        FEATURES = {
+            (t, b): i for i, (t, b) in enumerate(
+                (x for t in range(N) for b in selected_labels
+                 for x in [(t, b)])
+            )
+        }
+        for data in instances:
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                own_support = data["blocks"][t] & data["selected"]
+                for j, u in enumerate(data["candidates"][t]):
+                    vector = np.zeros(len(FEATURES))
+                    for b in data["labels"][t][j]:
+                        vector[FEATURES[(t, b)]] += 1
+                    for b in own_support:
+                        vector[FEATURES[(u, b)]] -= 1
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
     if mode == "free-gradient":
         FEATURES = {t: t for t in range(N)}
         for data in instances:
@@ -456,7 +481,8 @@ def main() -> int:
                                                 "bilinear-collisions",
                                                 "collision-differences",
                                                 "gradient-collisions",
-                                                "free-gradient"),
+                                                "free-gradient",
+                                                "row-fiber-curl"),
                         default="basic")
     args = parser.parse_args()
     data = []
