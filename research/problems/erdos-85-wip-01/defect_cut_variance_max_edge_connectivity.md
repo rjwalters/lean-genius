@@ -1611,6 +1611,40 @@ belong to the two singleton-recipient set `U_K`.  This couples the endpoint
 parity (B16a) to the alternating-core description without losing the
 individual common-neighbor centers.
 
+The wing-fiber description itself extends uniformly through the whole
+range of a.  For `w in W` and `z in N_A(w)`, let
+
+```text
+F_z=N_A(z) intersect X.
+```
+
+As in (B27), these fibers partition the missing-w class `S_w`: every point
+of a fiber shares z with w, distinct fibers cannot meet by C4-freeness, and
+the unique center of every pair `(x,w)` with `x in S_w` lies in `N_A(w)`.
+Now `A 1_X=(a+1)1-1_K`, so the exact fiber sizes are
+
+```text
+z in K_w:                 |F_z|=a,
+z in R_w:                 |F_z|=a+1,
+z in P adjacent to w:     |F_z|=a.                         (B35)
+```
+
+Accordingly `S_w` is partitioned into `m_w` a-point fibers,
+`n_w-1` `(a+1)`-point fibers, and two further a-point fibers.  The count is
+
+```text
+|S_w|=a m_w+(a+1)(n_w-1)+2a
+     =qa+n_w-1=|X|-m_w,
+```
+
+using `m_w+n_w=q-1`.  At `a=0` this is exactly the singleton R-wing
+bijection (B13); at `a=1` it is the singleton/pair resolution (B27).
+Furthermore the three P-fibers are pairwise disjoint even across colors,
+because any two P-points share a W-neighbor in the six-cycle.  They
+therefore occupy exactly `3a` distinct points of X.  Thus the endpoint and
+first-slice structures are not isolated phenomena but the first two cases
+of one q-generic wing design.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
