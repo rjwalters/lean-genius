@@ -1598,11 +1598,28 @@ mark condition is equivalent (after proving `tau_P=tau_Q=0`) to
 ```
 
 Neither (19)--(21) nor the Gram identity controls the two `rho` terms.
-Therefore the precise missing coupling lemma has two independent jobs:
-(i) exclude T at both unique marked crossings, and (ii) pair or evaluate the
-non-D K-crossing remainder so that (73rc) is odd.  Without both inputs the
-private pair remains unoriented; treating the unique D-neighbors themselves
-as signed K/Omega labels would silently assume the desired bridge.
+More strongly, the first requested job is false in the saturated
+`r=1,h=f` branch.  Here the unique minority center `E_0` lies in S and the
+unique majority center `F_0` outside S is its A-matched partner by (73h).
+The complete F--E defect core (64) also gives `E_0 F_0 in D`; hence
+
+```text
+E_0 F_0 in T,
+m(E_0)=F_0,
+tau_(E_0)=1 and kappa_(E_0)=0.                            (73rd)
+```
+
+The middle equality holds because `E_0` has all `q-1` majority centers as
+its D-neighbors, of which exactly `q-2` lie in S, so `F_0` is its unique
+cross-shore D-neighbor.  Also `E_0` has majority replication one, making it
+one of the two private points owned by `F_0`.  Thus at least this owner pair
+provably has an invisible T-mark.  A uniform port orientation cannot assign
+K/Omega signs to both raw D-marks on every majority line.  Any surviving
+coupling must either give T-marks a third, separately transported label or
+orient a coarser/global combination in which the forced T-mark and the
+`rho` remainder cancel.  Treating all unique D-neighbors themselves as
+binary signed K/Omega labels is not merely an unsupported assumption: it
+excludes an allowed structural branch.
 
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
