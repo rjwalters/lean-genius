@@ -721,13 +721,35 @@ of the binary coordinate pairing.  This still permits dependence and does
 not rule out such an orbit, but it is a concrete obstruction unavailable
 to an arbitrary recursion.
 
-Equations (7)--(36) are the first canonical cut detector manufactured from
+The bottom incidence geometry excludes the shortest even return.  Suppose
+`|S|` is `q+1` or `q+2`, B is itself a kernel shore, and put
+`C=supp(beta(B))`.  Equation (29a) gives
+
+```text
+|N_A(P) intersect B| = q                 for every P in S.
+```
+
+Since `4 | q`, division by two and reduction modulo two give
+
+```text
+C intersect S = empty.                                          (37)
+```
+
+Thus a bottom shore cannot be a fixed point or belong to a two-cycle of the
+Bockstein recursion: after `S -> B`, the next half-occupancy support avoids
+S entirely.  If C is the zero vector the lift reaches the controlled
+constant branch; if `A1_C != 0` it emits the next signature; and if C is a
+new nonconstant kernel shore then it is an even shore, disjoint from S, on
+which the full package recurses again.  In particular the exact
+complete/cocktail incidence leaves no bottom period-two escape.
+
+Equations (7)--(37) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(36), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(37), so these laws alone
 do not conceal an order-independent
 contradiction.
 
