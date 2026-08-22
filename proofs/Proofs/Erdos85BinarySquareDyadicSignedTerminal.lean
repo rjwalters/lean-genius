@@ -920,6 +920,17 @@ theorem binarySquare_ordinaryPrivate_card_odd
   use a - b - 1
   omega
 
+/-- In a partition into two-point owner fibres, an odd exceptional-point
+population forces an odd number of mixed exceptional/ordinary fibres. -/
+theorem binarySquare_mixedPrivateOwner_card_odd
+    (exceptionalPrivate mixedOwners doubleExceptionalOwners : ℕ)
+    (hsplit : exceptionalPrivate = mixedOwners + 2 * doubleExceptionalOwners)
+    (hodd : Odd exceptionalPrivate) :
+    Odd mixedOwners := by
+  obtain ⟨k, hk⟩ := hodd
+  use k - doubleExceptionalOwners
+  omega
+
 end
 
 end Erdos85
@@ -956,3 +967,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_finalLayer_exceptionalNeighbors_card_le_three
 #print axioms Erdos85.binarySquare_forcedTBundle_ordinary_card_odd
 #print axioms Erdos85.binarySquare_ordinaryPrivate_card_odd
+#print axioms Erdos85.binarySquare_mixedPrivateOwner_card_odd

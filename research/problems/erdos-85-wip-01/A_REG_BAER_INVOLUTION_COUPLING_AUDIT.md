@@ -1675,6 +1675,25 @@ independent of how the ordinary private marks split among T, K, and Omega;
 it is therefore a robust residual target for the owner-incidence-weighted
 transport, rather than a consequence of the failed pointwise sign.
 
+This oddness has a canonical owner-wise form.  Each majority line owns
+exactly two private points.  Call an owner **mixed-private** when exactly one
+of its private points lies in C and the other lies in M.  If `mu` is the
+number of mixed-private owners and `nu` the number whose two private points
+both lie in C, then
+
+```text
+|P intersect C| = mu + 2 nu,
+mu is odd.                                                (73rh)
+```
+
+Every mixed-private pair is canonically oriented by its exceptional and
+ordinary endpoints.  Thus the `r=1,h=f` survivor contains an odd number of
+owner pairs with a genuine binary orientation, obtained from the C/M type
+rather than from a nonexistent K/Omega sign.  The special owner `F_0` is one
+of them, with pair `{E_0,Q_0}` for a unique ordinary private point `Q_0`.
+This is the closest direct interface presently available to an odd family
+of oriented owner-port switches.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
