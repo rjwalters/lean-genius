@@ -291,4 +291,80 @@ theorem adjMatrix_comm_secondOrderDefect_iff_regular_of_tight_edge_cover
       G hfree hd hmin hcover
   · exact adjMatrix_comm_secondOrderDefect_of_regular G hfree
 
+/-- A vector supported on a single degree band is an eigenvector of the
+degree-predecessor diagonal. -/
+theorem degreePredDiagonal_mulVec_of_support_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (f : V → ℤ) {d : ℕ}
+    (hsupport : ∀ x, f x ≠ 0 → G.degree x = d) :
+    (degreePredDiagonal G).mulVec f = ((d : ℤ) - 1) • f := by
+  funext x
+  by_cases hx : f x = 0
+  · simp [degreePredDiagonal, Matrix.mulVec, dotProduct,
+      Matrix.diagonal_apply, hx]
+  · have hdx : G.degree x = d := hsupport x hx
+    simp [degreePredDiagonal, Matrix.mulVec, dotProduct,
+      Matrix.diagonal_apply, hdx]
+
+/-- **Global nonregular spectral pairing.**  A zero-sum adjacency
+eigenvector which is also an eigenvector of the degree diagonal is
+automatically a second-order-defect eigenvector.  Its defect eigenvalue is
+the degree-band value minus the square of its ambient eigenvalue. -/
+theorem c4Free_secondOrderDefect_mulVec_of_adj_degreeEigenvector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (f : V → ℤ) (theta delta : ℤ)
+    (hsum : ∑ x, f x = 0)
+    (hA : (G.adjMatrix ℤ).mulVec f = theta • f)
+    (hDelta : (degreePredDiagonal G).mulVec f = delta • f) :
+    ((secondOrderDefectGraph G).adjMatrix ℤ).mulVec f =
+      (delta - theta ^ 2) • f := by
+  let A := G.adjMatrix ℤ
+  let D := (secondOrderDefectGraph G).adjMatrix ℤ
+  let Delta := degreePredDiagonal G
+  let J := FriendshipTheoremOQ01.onesMatrix V
+  have hsq : A * A = Delta + J - D :=
+    adjMatrix_sq_eq_degreePredDiagonal_add_ones_sub_secondOrderDefect
+      G hfree
+  have hJzero : J.mulVec f = 0 := by
+    funext x
+    simp [J, FriendshipTheoremOQ01.onesMatrix, Matrix.mulVec, dotProduct, hsum]
+  have hv := congrArg (fun M : Matrix V V ℤ ↦ M.mulVec f) hsq
+  change D.mulVec f = (delta - theta ^ 2) • f
+  change A.mulVec f = theta • f at hA
+  change Delta.mulVec f = delta • f at hDelta
+  rw [Matrix.sub_mulVec, Matrix.add_mulVec, ← Matrix.mulVec_mulVec,
+    hA, Matrix.mulVec_smul, hA, hDelta, hJzero] at hv
+  ext x
+  have hx := congrFun hv x
+  simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.zero_apply] at hx ⊢
+  ring_nf at hx ⊢
+  omega
+
+/-- Support-degree form of the global nonregular spectral pairing. -/
+theorem c4Free_secondOrderDefect_mulVec_of_adj_eigenvector_supported_on_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (f : V → ℤ) (theta : ℤ) {d : ℕ}
+    (hsum : ∑ x, f x = 0)
+    (hA : (G.adjMatrix ℤ).mulVec f = theta • f)
+    (hsupport : ∀ x, f x ≠ 0 → G.degree x = d) :
+    ((secondOrderDefectGraph G).adjMatrix ℤ).mulVec f =
+      (((d : ℤ) - 1) - theta ^ 2) • f := by
+  exact c4Free_secondOrderDefect_mulVec_of_adj_degreeEigenvector
+    G hfree f theta ((d : ℤ) - 1) hsum hA
+      (degreePredDiagonal_mulVec_of_support_degree G f hsupport)
+
 end Erdos85
+
+#print axioms Erdos85.degreePredDiagonal_mulVec_of_support_degree
+#print axioms Erdos85.c4Free_secondOrderDefect_mulVec_of_adj_degreeEigenvector
+#print axioms
+  Erdos85.c4Free_secondOrderDefect_mulVec_of_adj_eigenvector_supported_on_degree
