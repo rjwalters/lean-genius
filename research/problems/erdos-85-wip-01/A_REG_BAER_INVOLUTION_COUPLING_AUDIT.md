@@ -1621,6 +1621,24 @@ orient a coarser/global combination in which the forced T-mark and the
 binary signed K/Omega labels is not merely an unsupported assumption: it
 excludes an allowed structural branch.
 
+The invisible mark is nevertheless not isolated.  The center `F_0` indexes
+a full line, so every A-neighbor of `F_0` lies in S.  Since T is Eulerian
+for binary q and `E_0 F_0 in T`, one has
+
+```text
+N_T(F_0) is contained in S,
+0 < deg_T(F_0) = 0 (mod 2),
+deg_T(F_0) >= 2.                                           (73re)
+```
+
+Hence a second T-edge at the same outside owner `F_0` is forced, and it also
+crosses the shore.  The correct replacement for the failed pointwise sign
+may therefore retain the even bundle of T-ports at `F_0`: the forced
+invisible private mark has a same-owner T companion, although the present
+identities do not yet identify which of the other `q-1` points on the full
+line supplies it.  This is a strictly coarser datum than signing both private
+marks, but unlike that signing it is forced in the surviving branch.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
