@@ -689,6 +689,49 @@ their order or difference, therefore matter in the sampled potential.  The
 corresponding modes are `--features load-shape` and `--features
 collision-differences`.
 
+Nor is `c(t)` merely a surrogate for local matching capacity.  The conflict
+graph on `E_t` has `n(t)` vertices and `c(t)` edges, so the generic greedy
+bound gives
+
+```text
+nu(t) >= ceil(n(t)^2 / (n(t)+2c(t))).                       (12j)
+```
+
+On the seed-zero instances this lower bound is usually two to five below the
+true matching number and is too weak even to certify the required local
+degree on most rows.  More decisively, replacing `c(t)` by the *exact* local
+matching number `nu(t)` in the categorical signature has optimum zero on
+five of the six instances (it separates only branch 4, colors `(0,2)`).
+Thus the simultaneous obstruction sees the distribution of candidate
+conflicts, not just how many candidates a single row can ultimately pack.
+Mode `--features matching-capacity` reproduces this test.
+
+There is a compact matrix interpretation of the two successful statistics.
+Let `H` be the simple graph on ordinary rows whose distinct vertices are
+trace-eligible.  Since `K` is symmetric, the two apparent trace directions
+coincide, and
+
+```text
+H_tu=1  iff  t!=u and (Q K Q^T)_tu=0.
+```
+
+Let `G_C` be the simple graph joining two ordinary rows when their supports
+share a point in the selected two colors.  Linearity makes its off-diagonal
+entries zero or one.  Then
+
+```text
+n = H 1,
+2c(t) = (H G_C H)_tt,
+2 sum_t c(t) = trace(G_C H^2).                              (12k)
+```
+
+Indeed, `(H G_C H)_tt` counts both orientations of every `G_C`-edge inside
+the `H`-neighborhood of `t`.  Thus the empirical certificate depends only on
+the degree and rooted mixed-triangle count of a canonical pair of graphs
+constructed from `Q,K`.  Equation (12k), rather than sixteen individual
+fiber loads, is the natural interface for a uniform trace or flag-counting
+inequality.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 

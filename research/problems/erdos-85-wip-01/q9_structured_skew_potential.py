@@ -191,7 +191,23 @@ def refine_features(instances: list[dict], mode: str) -> None:
         row_signatures = []
         for t in range(N):
             signature = (data["types"][t], len(data["candidates"][t]))
-            if mode in ("total-load", "collisions", "load-shape",
+            if mode == "matching-capacity":
+                count = len(data["candidates"][t])
+                caps = lil_matrix((N_U1, count))
+                for j, support in enumerate(data["labels"][t]):
+                    for b in support:
+                        caps[b, j] = 1
+                result = milp(
+                    c=-np.ones(count), integrality=np.ones(count),
+                    bounds=Bounds(np.zeros(count), np.ones(count)),
+                    constraints=LinearConstraint(
+                        caps.tocsr(), np.zeros(N_U1), np.ones(N_U1)
+                    ), options={"time_limit": 30},
+                )
+                if not result.success:
+                    raise RuntimeError(f"capacity oracle failed: {result.message}")
+                signature += (round(-result.fun),)
+            elif mode in ("total-load", "collisions", "load-shape",
                         "load-profile"):
                 loads = Counter(b for support in data["labels"][t]
                                 for b in support)
@@ -324,6 +340,7 @@ def main() -> int:
     parser.add_argument("--features", choices=("basic", "candidate-count",
                                                 "total-load", "collisions",
                                                 "load-shape", "load-profile",
+                                                "matching-capacity",
                                                 "bilinear-collisions",
                                                 "collision-differences"),
                         default="basic")
