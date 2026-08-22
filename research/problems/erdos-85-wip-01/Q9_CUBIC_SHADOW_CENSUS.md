@@ -233,6 +233,28 @@ There are no witnesses.
 Therefore **all seven disconnected order-40-pair shadow types are
 impossible**.
 
+## The order-20 four-component shadows
+
+There are three surviving connected order-20 component types, PSV ordinals
+4, 6, and 7, with automorphism-group orders 20, 120, and 240.  In a
+vertex-transitive candidate, the stabilizer of one component is transitive
+on its 20 vertices.
+
+`q9_order20_internal_edge_sieve.py` enumerates every transitive subgroup
+class of each component automorphism group and every invariant union of
+eligible internal pair orbitals.  It checks both the intrinsic shadow-edge
+condition and C4-freeness.  The three types have respectively 1, 2, and 9
+surviving subgroup cases, and in every case the unique surviving internal
+triangular graph is empty.  All 505 shadow-violating and 235 C4-creating
+nonempty unions are rejected.
+
+Thus every configuration line meets three distinct components.  There are
+only four block triples.  Each 20-point component has 60 line incidences,
+while there are 80 lines in total, so the triple omitting any fixed block has
+weight `80 - 60 = 20`.  The block quotient is therefore unique, with weights
+`(20,20,20,20)`; every pair of components supports 40 triangular edges.
+This is an exact quotient reduction, not yet an exclusion of its lifts.
+
 ## The order-16 five-component shadow
 
 The unique surviving order-16 component type has automorphism group of order
