@@ -1226,6 +1226,25 @@ is `3q/2-2`.  Thus only the pure branch can approach the earlier `2q-2`
 support bound.  The mixed sparse-image terminal already has support at most
 one and a half times q.
 
+The replication structure sharpens this once more.  In the unbalanced mixed
+case, the minority line type has replication at most one by (58); in the
+balanced case either type does.  Two distinct lines of that type therefore
+have no common A-neighbor, so they are D-adjacent.  Equation (64) also makes
+each of them D-adjacent to every line of the opposite type.  Choosing one
+minority line `X` gives
+
+```text
+C setminus {X} subseteq N_D(X),       hence c-1<=q-1 and c<=q. (73a)
+```
+
+The implication “replication at most one implies a D-clique” and the closed
+defect-neighborhood capacity argument are Lean-checked by
+`replicationAtMostOne_secondOrderDefect_adj` and
+`mixedExceptional_union_card_le_of_replicationAtMostOne`.  Thus the mixed
+terminal, like the pure terminal below, has support at most `q`; (73) remains
+useful only as the earlier scalar route that did not exploit the same-type
+D-clique.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated

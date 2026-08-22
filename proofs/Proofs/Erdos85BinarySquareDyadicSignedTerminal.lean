@@ -284,6 +284,92 @@ theorem binarySquare_full_empty_secondOrderDefect_adj
     Finset.card_pos.mpr ⟨z, hzEmpty⟩
   omega
 
+/-- A line family of point-replication at most one is a clique in the
+second-order defect graph: two distinct lines in the family cannot have an
+ambient common neighbor. -/
+theorem replicationAtMostOne_secondOrderDefect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (E : Finset V)
+    (hcap : ∀ v, (G.neighborFinset v ∩ E).card ≤ 1)
+    {x y : V} (hx : x ∈ E) (hy : y ∈ E) (hxy : x ≠ y) :
+    (secondOrderDefectGraph G).Adj x y := by
+  by_contra hD
+  have hnotMem : y ∉ (secondOrderDefectGraph G).neighborFinset x := by
+    simpa [SimpleGraph.mem_neighborFinset] using hD
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree x y hxy
+  rw [if_neg hnotMem] at hcommon
+  obtain ⟨z, hz⟩ :
+      ∃ z, z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+    Finset.card_pos.mp (by omega)
+  have hzData := Finset.mem_inter.mp hz
+  have hxMem : x ∈ G.neighborFinset z ∩ E :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z x).mpr
+        ((G.mem_neighborFinset x z).mp hzData.1).symm, hx⟩
+  have hyMem : y ∈ G.neighborFinset z ∩ E :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y).mpr
+        ((G.mem_neighborFinset y z).mp hzData.2).symm, hy⟩
+  have hsub : ({x, y} : Finset V) ⊆ G.neighborFinset z ∩ E := by
+    intro w hw
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rcases hw with rfl | rfl
+    · exact hxMem
+    · exact hyMem
+  have htwo : 2 ≤ (G.neighborFinset z ∩ E).card :=
+    calc
+      2 = ({x, y} : Finset V).card := by simp [hxy]
+      _ ≤ (G.neighborFinset z ∩ E).card := Finset.card_le_card hsub
+  have hone := hcap z
+  omega
+
+/-- If a nonempty exceptional type has replication at most one and is
+defect-adjacent to the opposite type, then their whole support fits inside
+one closed defect neighborhood.  In a `(q-1)`-regular defect graph this
+sharpens the mixed support bound to `|E ∪ F| ≤ q`. -/
+theorem mixedExceptional_union_card_le_of_replicationAtMostOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hq : 1 ≤ q)
+    (hDreg : ∀ v, (secondOrderDefectGraph G).degree v = q - 1)
+    (E F : Finset V)
+    (hcap : ∀ v, (G.neighborFinset v ∩ E).card ≤ 1)
+    (hcross : ∀ x ∈ F, ∀ y ∈ E,
+      (secondOrderDefectGraph G).Adj x y)
+    (hEnonempty : E.Nonempty) :
+    (E ∪ F).card ≤ q := by
+  obtain ⟨e, heE⟩ := hEnonempty
+  have heUnion : e ∈ E ∪ F := Finset.mem_union_left F heE
+  have hsub : (E ∪ F).erase e ⊆
+      (secondOrderDefectGraph G).neighborFinset e := by
+    intro w hw
+    have hwData := Finset.mem_erase.mp hw
+    have hwUnion := Finset.mem_union.mp hwData.2
+    apply ((secondOrderDefectGraph G).mem_neighborFinset e w).mpr
+    rcases hwUnion with hwE | hwF
+    · exact replicationAtMostOne_secondOrderDefect_adj
+        G hfree E hcap heE hwE hwData.1.symm
+    · exact (hcross w hwF e heE).symm
+  have hcardErase : ((E ∪ F).erase e).card = (E ∪ F).card - 1 :=
+    Finset.card_erase_of_mem heUnion
+  have hdegree :
+      ((secondOrderDefectGraph G).neighborFinset e).card = q - 1 := by
+    rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDreg]
+  have hle : (E ∪ F).card - 1 ≤ q - 1 := by
+    calc
+      (E ∪ F).card - 1 = ((E ∪ F).erase e).card := hcardErase.symm
+      _ ≤ ((secondOrderDefectGraph G).neighborFinset e).card :=
+        Finset.card_le_card hsub
+      _ = q - 1 := hdegree
+  have hpos : 1 ≤ (E ∪ F).card := Finset.one_le_card.mpr ⟨e, heUnion⟩
+  omega
+
 /-- At regular square order the second-order defect graph is `(q-1)`-regular. -/
 theorem binarySquare_regular_secondOrderDefect_degree_eq
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -652,6 +738,8 @@ end Erdos85
 #print axioms Erdos85.binarySquare_pureExceptional_halfDegree_lt_card
 #print axioms Erdos85.binarySquare_pureExceptional_defect_triple_identity
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
+#print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
+#print axioms Erdos85.mixedExceptional_union_card_le_of_replicationAtMostOne
 #print axioms Erdos85.binarySquare_regular_secondOrderDefect_degree_eq
 #print axioms Erdos85.binarySquare_full_empty_card_le_of_defectRegular
 #print axioms Erdos85.binarySquare_full_empty_card_le
