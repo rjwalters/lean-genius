@@ -147,7 +147,8 @@ the B.3 notation,
 K^2 + Q^T Q + M + D = C + 8 I,
 ```
 
-The graph `K` has twelve same-color matching edges and 24 cross-color edges;
+The graph `K` has twelve same-color root-triangle matching edges and 24
+cross-color edges;
 only the latter are edges of the complete tripartite color graph `C`.
 Contracting this identity over those 24 unordered cross-color `K`-edges gives
 
@@ -237,3 +238,37 @@ which is exactly the polarized right side.  Hence the unmasked neighbor-label
 sum is another form of cubic handshaking.  A non-tautological consumer must
 retain a mask on the cross-block terms, for example one supplied by residual
 adjacency or defect reciprocity.
+
+### Incidence-masked three-way partition
+
+There is a pointwise identity that retains both masks.  For an ordinary B0
+row `t`, put `S_t = N_G(t) intersect U1` and `l_t=|E_K(S_t)|`.  Restrict the
+mixed three-way resolution to the incidence cells `b in S_t`.  Such a cell
+is resolved in exactly one of three ways:
+
+1. by a core common neighbor in `U1`;
+2. by a residual B0 common neighbor;
+3. by the defect relation, equivalently the original edge `tb` is
+   triangle-free.
+
+Because the graph induced on `S_t` is a matching, the first class has size
+exactly `2 l_t`.  If `r_t` and `d_t` denote the sizes of the second and third
+classes, respectively, then
+
+```text
+|S_t| = 2 l_t + r_t + d_t.                                  (7)
+```
+
+Every unmarked B1 column has five B0 neighbors, so
+`sum_t |S_t| = 24*5 = 120`.  Writing `L=sum_t l_t`, `R=sum_t r_t`, and
+`Z=sum_t d_t`, summing (7) gives
+
+```text
+2 L = 120 - R - Z.                                           (8)
+```
+
+Thus the collision parity is the half-parity of the combined
+residual-resolved and triangle-free incidence mass.  Unlike the unmasked
+polarization, (7)--(8) preserve exactly the residual/defect distinction
+needed by a prospective connectivity consumer.  They do not yet determine
+that half-parity; a mod-four constraint on `R+Z` is still required.
