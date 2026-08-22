@@ -228,3 +228,55 @@ single-component cyclic phase count can close
 `BinarySizeTwoCyclicPackingBound`.  A valid terminal must couple the layers
 of one source component across multiple target components (or use an
 equivalent exterior-routing law).
+
+## Uniform restricted cross-target control
+
+Even the pairwise orthogonality and cross-factor intertwining of one
+size-two source layer across all size-two targets admit a binary-uniform
+model.
+
+Put `n=2q`, with `q=2^k`, and identify the `n` vertices and `n` edges of a
+Hamilton cycle with `Z/nZ`, edge `j` being `{j,j+1}`.  There are
+
+```text
+phi(2q)/2 = q/2
+```
+
+odd units modulo `2q` up to sign.  Choose representatives `a_c`, one for
+each of `q/2` target coordinates.  Label the source vertices `i in Z/nZ`,
+and in target `c` send label `i` to the cycle edge
+
+```text
+E_c(i) = {a_c i, a_c i+1}.
+```
+
+Because `a_c` is a unit, this is a bijection from source labels to target
+cycle edges.  Two labels `i,j` select intersecting edges in target `c`
+exactly when
+
+```text
+j-i = +/- a_c^(-1).
+```
+
+In another target `d`, their edge indices differ by
+`+/- a_d a_c^(-1)`, which is not `0,+1,-1` because the slopes represent
+distinct unit classes modulo sign.  Their target-`d` edges are therefore
+disjoint.  Hence all `q/2` target edge labelings are pairwise orthogonal in
+exactly the sense of
+`componentOwnerGraph_adj_implies_other_selector_disjoint`.
+
+Every restricted layer is a Hamilton cycle, so paired factors are
+cospectral.  Its incidence matrix automatically intertwines the two cycle
+line graphs, realizing the banked CrossFactorCospectral,
+CrossFactorIntertwining, and PathBalance interfaces at this restricted-layer
+level.
+
+This construction still does **not** supply the full ODC package.  The full
+selector complement has `q^2` edge labels and degree `q`; its star pages must
+be perfect matchings, every target edge must have cover multiplicity two,
+and the labels are self-indexed by the component ground sets with the
+diagonal cycle-incidence blocks fixed.  The affine construction models only
+one `2q`-label source layer.  It proves that pairwise orthogonality and
+cross-factor intertwining cannot be the missing terminal; the obstruction
+must use the simultaneous full-page/two-fold-cover/self-indexing data across
+three or more coordinates.
