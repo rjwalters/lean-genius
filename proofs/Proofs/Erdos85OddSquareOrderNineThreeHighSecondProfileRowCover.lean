@@ -15,6 +15,19 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Arithmetic terminal behind the ordinary weighted-row equation.  If the
+two residual center counts partition a residual degree `r`, then the regular
+combined-degree-eight target and exceptional combined-degree-nine target both
+force `a + d = 3`. -/
+theorem weighted_row_arithmetic_forces_pair_defect_three
+    (a b c d r : ℕ)
+    (hab : a + b = r)
+    (hbranch :
+      (r + c = 8 ∧ 2 * a + 3 * b + 3 * c = 21 + d) ∨
+      (r + c = 9 ∧ 2 * a + 3 * b + 3 * c = 24 ∧ d = 0)) :
+    a + d = 3 := by
+  omega
+
 /-- For every bin-zero vertex, its neighbor rows cover the unmarked bin-one
 core with no overlap.  Numerically, the total row mass is `24` minus its
 number of unmarked bin-one defect neighbors. -/
@@ -614,3 +627,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_neighbor_center_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_weighted_row_equation
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_weighted_row_dichotomy
+#print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
