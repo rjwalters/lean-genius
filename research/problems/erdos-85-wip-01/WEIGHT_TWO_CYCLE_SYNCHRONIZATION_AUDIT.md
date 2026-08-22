@@ -75,6 +75,25 @@ Since `MM^T=(q-2)I+F`, this is exactly `[H,F]=0`.  The C6+C26 witness
 therefore survives the full q-generic K-law/commutator interface, not merely
 its mod-two shadow.
 
+## Full exterior-completion frontier
+
+For this explicit `F`, a full outside adjacency `K` must be a symmetric
+zero-diagonal 0/1 matrix of degree 14 satisfying `HM+MK=J`.  Equivalently,
+for every outside trace `r={u,v}`, its 14 neighbors in `K` must form an
+`F`-perfect matching of the 28 component vertices outside
+`N_H(u) union N_H(v)`.  Mutual selection turns this into an exact-cover
+instance with 19,097 admissible outside edges and 6,272 exact-one equations.
+
+The unrestricted instance is currently **UNKNOWN**: Z3, native Kissat, and
+HiGHS MILP did not return a verdict in the bounded runs (120--240 seconds).
+The LP/mod-two interface is feasible, so there is no immediate linear
+certificate.  Symmetry-restricted versions invariant under the explicit
+trace graph's order-39 rotation, its order-13 subgroup, or its order-3
+subgroup are all UNSAT; thus any completion would have to break every visible
+cyclic symmetry.  These are exploratory solver results, not certificates and
+not a nonexistence claim.  The exact-cover equation is the next honest
+falsifier for the reduced desynchronization witness.
+
 ## Verdict
 
 Cycle synchronization does not follow from the complete component-side
