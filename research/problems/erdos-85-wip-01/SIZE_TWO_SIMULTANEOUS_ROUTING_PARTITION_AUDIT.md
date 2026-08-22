@@ -2335,24 +2335,30 @@ need not be a simple cycle, so that reduction is not automatic.
 
 ## 41. Extraction of an odd-half simple incidence cycle
 
-The repeated-walk issue in Section 40 can be removed at the cost of losing
-the original state-cycle ordering.  Split `S(Omega)` whenever a vertex is
-revisited.  Because the walk is locally nonbacktracking, this process
-decomposes it into ordinary simple cycles in the bipartite incidence graph
-`B_c`; there are no two-edge backtracking pieces.  If their lengths are
+The repeated-vertex issue in Section 40 can be removed at the cost of losing
+the original state-cycle ordering.  In fact `S(Omega)` is a closed trail:
+every one of its cross edges is the port attachment of one state of
+`Omega`; a state occurs only once on the state-cycle component, its two
+ports are distinct by (60), and two states at the same root use different
+owner components.  Hence no ambient cross edge repeats.
+
+Every closed trail in a simple graph decomposes into edge-disjoint ordinary
+simple cycles.  Applying this to the bipartite incidence graph `B_c` gives
+cycles of lengths
 
 ```text
 2 ell_1, ..., 2 ell_t,
 ```
 
-then length additivity in (143) gives
+with every `ell_i >= 2`; a two-edge doubled piece is impossible because the
+trail has no repeated edge.  Length additivity in (143) gives
 
 ```text
 ell_1 + ... + ell_t = H(Omega).                         (145)
 ```
 
 Consequently, when `Omega` is odd-horizontal, at least one extracted simple
-cycle has odd half-length:
+cycle has odd half-length (necessarily `ell >= 3`):
 
 ```text
 there is a simple cycle of B_c of length 2 ell,
@@ -2367,6 +2373,10 @@ color changes inherited from vertical transitions occur at roots.  After
 the walk decomposition, a cycle may retain only a subsequence of those
 changes, but every edge is still an actual cross-incidence edge with its
 exterior color label.
+
+The extracted cycles are edge-disjoint.  Their inherited color-change
+counts at roots therefore sum to at most `V(Omega)`, giving a residual
+transition budget even though the original cyclic ordering is lost.
 
 Thus both residual branches produce an odd-half incidence cycle:
 
