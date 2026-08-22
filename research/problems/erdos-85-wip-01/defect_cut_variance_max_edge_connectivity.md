@@ -1368,6 +1368,29 @@ wing incidences (a point of `P` simultaneously carries its two incident
 colors).  This extends the endpoint bijections (B13) to a fiberwise routing
 law on the first non-endpoint slice.
 
+The attachment multiplicities are consequently unbalanced by exactly two.
+Let
+
+```text
+N_i={x in X : deg_D(x,W)=i},   n_i=|N_i|   (i=0,1,2).
+```
+
+Here `|X|=2q-2` and the X-side of the defect cut has size `2q-4`, so
+
+```text
+n_0+n_1+n_2=2q-2,
+n_1+2n_2=2q-4,
+n_0=n_2+2.                                  (B26)
+```
+
+Thus there are always at least two attachment-free X-points (one of them
+is `u`), and the attachment-free class exceeds the twice-attached class by
+exactly two.  Equivalently, the K-degrees in (B25) partition all `2q`
+points of K into fibers of sizes `2,1,0` over `N_0,N_1,N_2`: indeed
+`A 1_X=2 1-1_K` says independently that every point of K has exactly one
+X-neighbor.  This couples the wing routing to a global exact cover, rather
+than merely bounding the number of each local attachment type.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
