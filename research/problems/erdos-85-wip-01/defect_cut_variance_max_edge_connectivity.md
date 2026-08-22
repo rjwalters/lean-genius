@@ -328,3 +328,65 @@ quantitatively, (9) and (14) sharpen (10) to
 For `q=2^k`, these are respectively the even-k and odd-k cases.  This strict
 global residue still does not control how much E-energy lies in certified
 residual spectral sectors.
+
+## A near-Mantel q-set from a nontrivial minimum cut
+
+Return to the nontrivial minimum-cut equality case and its associated q-set
+`R`.  The inside cut degrees satisfy
+
+```text
+sum_u d_u = q-1,        0 <= d_u <= (q-2)/2.
+```
+
+Equation (7) and `|delta_D(R)|=q(q-1)-2e_D(R)` give
+
+```text
+e_D(R) = ((q-1)^2 - sum_u d_u^2)/2.
+```
+
+The capped square sum is maximized by
+`((q-2)/2,(q-2)/2,1)`, and therefore
+
+```text
+e_D(R) >= q^2/4 - 1.                            (16)
+```
+
+Thus a nontrivial minimum cut manufactures a q-vertex D-subgraph within one
+edge of the Mantel bound.  For binary `q>=16`, if `D[R]` is triangle-free,
+its form is completely determined.  A triangle-free nonbipartite graph on
+`2m` vertices has at most `m^2-m+1` edges (apply the standard shortest-odd-
+cycle proof), so a triangle-free graph with at least `m^2-1` edges is
+bipartite.  Its two part sizes then differ by at most two.  Consequently the
+only possibilities at the top two edge counts are
+
+```text
+K_(m,m),
+K_(m,m) minus one edge,
+K_(m-1,m+1),               where m=q/2.          (17)
+```
+
+The first alternative would require `sum d_u^2` equal to the maximum minus
+two.  But after the maximizing partition above, the second-largest capped
+partition is `(m-1,m-2,2)`, whose square sum is lower by `q-6>2` when
+`q>=16`.  Hence `e_D(R)=m^2-1`, and equality in (16) forces
+
+```text
+(d_u : d_u>0) = (m-1,m-1,1).                  (18)
+```
+
+The corresponding common-A-neighbor block sizes on `R` are `(m,m,2)`.
+They exhaust all non-D pairs of `R`, with no pair repeated by C4-freeness.
+This pair-block decomposition excludes `K_(m-1,m+1)`: its non-D graph is
+`K_(m-1) disjoint-union K_(m+1)`, and two edge-disjoint m-cliques plus one
+edge cannot cover the `K_(m+1)` component.  Therefore
+
+```text
+D[R] triangle-free
+  implies D[R] = K_(q/2,q/2) minus one edge.   (19)
+```
+
+Moreover, the two q/2 common-neighbor blocks are its bipartition classes,
+and the size-two block covers the unique missing cross edge.  The excluded
+`q=8` square-sum gap is exactly two, so this argument deliberately makes no
+order-64 endpoint claim.  In the remaining general case `D[R]` contains a
+triangle; neither branch is yet contradictory.
