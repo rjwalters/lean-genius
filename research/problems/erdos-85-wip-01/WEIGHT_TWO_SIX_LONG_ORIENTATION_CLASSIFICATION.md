@@ -85,10 +85,13 @@ ell(q-2-r_1) = (2q-ell)(q-2-r_2).
 
 For cycles of length at least eight the admissible degree intervals often
 contain the universal solution `r_i=length_i/2-2`, so the quotient law alone
-does not force synchronization.  The C6 case is special because its
-opposite-sign chord space consists of only one matching.  Excluding the
-surviving orientation still requires the full integral exterior placement or
-an additional reciprocal constraint.
+does not force synchronization.  The later shore-capacity argument in
+`WEIGHT_TWO_TWO_CYCLE_MIXED_CLASSIFICATION.md` proves that this universal
+solution is in fact forced for every mixed two-cycle shape and classifies the
+resulting holes.  The C6 case remains special only in selecting which of the
+two orientations is possible at binary `q`; its opposite-sign chord space
+consists of one matching.  Excluding the classified survivors still requires
+the full integral exterior placement or an additional reciprocal constraint.
 
 ## Forced hole reduction in the surviving orientation
 
