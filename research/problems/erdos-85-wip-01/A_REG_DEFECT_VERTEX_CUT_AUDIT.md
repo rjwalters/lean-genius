@@ -95,8 +95,27 @@ does not exclude a two-vertex separator.  A proof of three-connectivity would
 need location information that distinguishes how the two low sets split the
 two punctured neighborhoods.
 
+There is an exact C4-free description of that remaining location problem.
+All vertices in `N_A(x)` already have the common neighbor `x`, so their
+neighborhoods outside `x` are pairwise disjoint.  Restricting these fibers to
+`S_1` and using the equality degree pattern gives
+
+```text
+sum_{u in N_A(x)} |N_A(u) intersect S_1| = |S_1| - p.
+```
+
+The uncovered points are exactly `N_D(x) intersect S_1`, whose cardinality
+is `p`.  The `y`-fibers give a second punctured parallel class on the same
+shore, missing exactly `N_D(y) intersect S_1`, of size `q-1-p`.  The same
+description holds with `S_1,S_2` interchanged.  Cross-fibers from the two
+classes may meet once, so C4-freeness supplies no contradiction for an
+intermediate value of `p`; it converts the escape into two compatible partial
+resolutions.
+
 ## Status
 
 - **Proved mathematically here:** connected `D` has no articulation vertex.
 - **Exact unresolved boundary:** the paired minimum-cut configuration above.
+- **Location interface:** two cross-intersecting punctured parallel classes
+  whose omission sizes are `p` and `q-1-p`.
 - **Not claimed:** a Lean theorem or three-vertex-connectivity.
