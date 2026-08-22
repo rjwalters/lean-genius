@@ -482,6 +482,54 @@ Z = {x} union (fifteen B1 points, five of each color) union (two B0 points),
 and the first equation in (21) forces exactly three ordinary neighbors of
 `x` on each articulation side.
 
+The symmetric `(18,59)` branch has cut excess two rather than equality.  The
+integer square-sum refinement leaves exactly two profiles on the order-60
+shore:
+
+```text
+(L) one degree-5 center c, 28 degree-6, 49 degree-7;
+(H) one degree-8 center c, 31 degree-6, 46 degree-7.                 (22)
+```
+
+In case (L), let `Z` contain the degree-5 center and the 28 degree-6
+centers.  In case (H), let `Z` be the 31 degree-6 centers.  For the order-18
+component `S`, respectively,
+
+```text
+(L) A 1_S = 2 1 + 1_Z + e_c - A 1_H,
+(H) A 1_S = 2 1 + 1_Z - e_c - A 1_H.             (23)
+```
+
+The same square-identity calculation gives
+
+```text
+(L) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z - 1_(N_A(c)),
+(H) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z + 1_(N_A(c)). (24)
+```
+
+In case (H), evaluation at a high root forces `c` to be high-free; otherwise
+that high would have more than all ten neighbors in `Z`.  Thus all three
+high neighborhoods lie in `Z`.  Evaluation at `x` then gives at most two
+neighbors of `x` in `Z`, contradicting its three bin-one high-root partners.
+So (H) is impossible.
+
+In case (L), evaluation at `x` gives
+
+```text
+|N_A(x) intersect Z| = 1 - 1_[x adjacent c].     (25)
+```
+
+At the high roots, (24) says that at most the `k(c)` high-root incidences of
+`c` can account for missing points of `Z`.  Hence at least `3-k(c)` of the
+three distinct bin-one partners of `x` lie in `Z`.  If `c` is bin zero this
+lower bound is three, and if `c` is bin one it is two; both contradict (25).
+The only remaining possibility is `c=x` (the spike center is ordinary, so
+there is no high-vertex case).
+
+Therefore the symmetric articulation survivor has `x` as the unique
+degree-5 center into the order-60 shore.  Equivalently, exactly one of the
+six ordinary neighbors of `x` lies in the order-18 component.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three

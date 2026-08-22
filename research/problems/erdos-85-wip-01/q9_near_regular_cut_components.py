@@ -7,6 +7,7 @@ not assert that any surviving row is realizable.
 """
 
 from collections import Counter
+from functools import lru_cache
 from itertools import product
 
 
@@ -19,6 +20,43 @@ TARGET_BETA = (10, 10, 10)
 def balanced_square_sum(total: int, count: int = N_ORDINARY) -> int:
     base, remainder = divmod(total, count)
     return (count - remainder) * base * base + remainder * (base + 1) ** 2
+
+
+def bounded_degree_profiles(
+    count: int, total: int, square_sum: int, maximum: int = 9
+) -> list[tuple[int, ...]]:
+    """Enumerate multiplicity vectors for bounded integer degree profiles."""
+    @lru_cache(maxsize=None)
+    def visit(
+        value: int, left_count: int, left_total: int, left_squares: int
+    ) -> tuple[tuple[int, ...], ...]:
+        if left_total < value * left_count or left_total > maximum * left_count:
+            return ()
+        if left_squares < value * value * left_count or left_squares > maximum * maximum * left_count:
+            return ()
+        if value == maximum:
+            if (
+                left_total == maximum * left_count
+                and left_squares == maximum * maximum * left_count
+            ):
+                return ((left_count,),)
+            return ()
+        result = []
+        for multiplicity in range(left_count + 1):
+            used_total = value * multiplicity
+            used_squares = value * value * multiplicity
+            if used_total > left_total or used_squares > left_squares:
+                break
+            for suffix in visit(
+                value + 1,
+                left_count - multiplicity,
+                left_total - used_total,
+                left_squares - used_squares,
+            ):
+                result.append((multiplicity,) + suffix)
+        return tuple(result)
+
+    return list(visit(0, count, total, square_sum))
 
 
 def cut_lower(order: int, beta: tuple[int, int, int]) -> int:
@@ -358,6 +396,11 @@ def main() -> None:
             (51, (7, 7, 7), 5, 30, 6, 48, 3): 1,
         }
     )
+    symmetric_spike_profiles = bounded_degree_profiles(78, 516, 3434)
+    assert set(symmetric_spike_profiles) == {
+        (0, 0, 0, 0, 0, 1, 28, 49, 0, 0),
+        (0, 0, 0, 0, 0, 0, 31, 46, 1, 0),
+    }
     # The equality-shore matrix argument in the report eliminates the six
     # nonsymmetric order-(18,59) assemblies.
     articulation_after_equality = [
@@ -381,6 +424,7 @@ def main() -> None:
     print("verified connectivity terminal: no admissible proper order is divisible by 8")
     print(f"verified B3-articulation assemblies: {articulation_order_pairs}")
     print(f"verified articulation equality profiles: {equality_profiles}")
+    print(f"verified symmetric articulation spike profiles: {symmetric_spike_profiles}")
     print("verified post-equality articulation frontier: (18,59), (27,50), (34,43)")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
