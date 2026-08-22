@@ -1791,6 +1791,40 @@ Thus the c-star of `Gamma_K` decomposes into complementary-color images of
 the tripartite edges of `Gamma_R` and P-valued edges carrying the remaining
 two-color routes.  No wing label is lost in the design coupling.
 
+The six-cycle also forces an exact adjacency template on `Gamma_K`.  Two K
+centers having a common W-neighbor cannot have intersecting X-fibers, since
+that would give the corresponding pair `(x,w)` two common A-neighbors.
+Index the point of P not adjacent to `w in W` by `p_w`; it is adjacent to
+the other two separator vertices.  Then
+
+```text
+Gamma_K[K\(P union {c})] is tripartite on (K_w)_(w in W),
+P is an independent set in Gamma_K,
+N_(Gamma_K)(p_w) subset {c} union K_w.                       (B41)
+```
+
+Indeed two ordinary K-centers may intersect only when their wing colors
+differ; every pair of P-points shares a W-neighbor; and `p_w` shares a
+W-neighbor with every ordinary K-center outside the complementary wing
+`K_w`.  The exceptional center c has no W-neighbor and is the only vertex
+outside this color template.
+
+There is also an exact interpretation of the degree deficit at `p_w`.
+Every point `x in F_(p_w)` is D-nonadjacent to the two W-points incident
+with `p_w`, so `t_x` is zero or one.  It contributes an edge incident with
+`p_w` in `Gamma_K` precisely when `t_x=0`; otherwise its unique D-attachment
+must be the complementary vertex w.  Hence
+
+```text
+a-deg_(Gamma_K)(p_w)
+  = |{x in F_(p_w) : xw is an edge of D}|.                  (B41')
+```
+
+Thus the three P-center deficits are not free missing degrees: they are
+exactly the three color-specific attachment counts inside the disjoint
+P-fibers.  Together with (B40), this ties both the edges and the missing
+slots of the distinguished design core to separator colors.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
