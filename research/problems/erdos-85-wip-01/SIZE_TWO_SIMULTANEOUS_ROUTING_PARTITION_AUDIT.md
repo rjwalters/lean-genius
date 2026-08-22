@@ -505,3 +505,52 @@ only in the internal `mu=2` mode (where signs are constant on each internal
 cycle), or else in the no-full-support-signed-eigenline transport branch.
 This isolates the residue more sharply than the `-2` statement alone; it
 does not claim that the `mu=2` mode is itself realizable.
+
+The `mu=2` branch cannot be closed from the commuting exterior-pair quotient
+alone.  There is an explicit abstract model on sixteen points.  Split the
+points into two sign shores of order eight and put
+
+```text
+H_+ = H_- = C3 disjoint_union C5.
+```
+
+On the two shore copies, let `Z` be the bipartite two-regular relation which,
+on each corresponding cycle, joins a vertex to its copy and to the copy of
+its successor.  Put `X=J-Z` and
+
+```text
+H = diag(H_+,H_-),             R = [[0,X],[X^T,0]].
+```
+
+Then `R` is connected, bipartite, and six-regular; `HR=RH`; and for the sign
+vector `s=(1^8,-1^8)` one has
+
+```text
+Hs = 2s,                       Rs = -6s.                 (33)
+```
+
+The four-cycle quotient of `R`, with component order
+`(C3_+,C5_+,C3_-,C5_-)`, is
+
+```text
+[[0,0,1,5],
+ [0,0,3,3],
+ [1,5,0,0],
+ [3,3,0,0]].
+```
+
+It satisfies row sum six, weighted reciprocity, the target-size bounds, and
+the diagonal separation bound `0+3 <= |C|`.  The pointwise separation input
+also holds: an `R`-edge crosses the sign shores, while the two `H`-neighbor
+sets lie in different shores and hence have empty intersection.
+
+If only `C3_+` is declared all-triangle-free, the residue in (30) is odd.
+This declaration is deliberately not asserted to arise from an ambient
+graph: its role is to prove that **all currently banked `H/R` quotient and
+joint-eigenline data leave the triangle-free cycle selector free enough to
+carry odd parity**.  Thus the remaining `mu=2` consumer must use an identity
+involving the second-order defect block (or the ambient triangle owner data),
+not merely shore balance, commutation, regularity, separation, or the
+component quotient ledger.  Equivalently, it must couple the selector to
+the `R` quotient rather than treating it as an arbitrary union of internal
+cycles.
