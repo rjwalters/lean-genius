@@ -3817,6 +3817,99 @@ theorem squareOrderNine_threeHigh_secondProfile_same_high_fiber_separation
   · exact not_secondOrderDefect_adj_of_commonNeighbor
       G hfree huv hau.symm hav.symm
 
+/-- Every unmarked bin-one row has at most one original neighbor in each
+high-color fiber, and its three fiber-intersection sizes sum to three.  This
+is the incidence form of the color-resolved perfect-matching structure of
+the cubic unmarked core. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_core_color_ledger
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := fun a => G.neighborFinset a ∩ U1
+    ∀ z ∈ U1,
+      (∀ a ∈ H, (G.neighborFinset z ∩ F a).card ≤ 1) ∧
+      (∑ a ∈ H, (G.neighborFinset z ∩ F a).card) = 3 := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := fun a => G.neighborFinset a ∩ U1
+  have hpartition :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hpartition
+  change H.card = 3 ∧ (∀ a ∈ H, (F a).card = 8) ∧
+    (∀ a ∈ H, ∀ b ∈ H, a ≠ b → Disjoint (F a) (F b)) ∧
+    H.biUnion F = U1 at hpartition
+  have hcubic :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcubic
+  change U1.card = 24 ∧
+    (∀ q : ↥(↑U1 : Set V), (G.induce (↑U1 : Set V)).degree q = 3) ∧
+    (G.induce (↑U1 : Set V)).edgeFinset.card = 36 at hcubic
+  intro z hzU
+  have hzB := (Finset.mem_sdiff.mp hzU).1
+  have hzLow : z ∉ H :=
+    (Finset.mem_sdiff.mp (Finset.mem_filter.mp hzB).1).2
+  have hle : ∀ a ∈ H, (G.neighborFinset z ∩ F a).card ≤ 1 := by
+    intro a ha
+    rw [Finset.card_le_one]
+    intro u hu v hv
+    by_contra huv
+    have huParts := Finset.mem_inter.mp hu
+    have hvParts := Finset.mem_inter.mp hv
+    have huF := Finset.mem_inter.mp huParts.2
+    have hvF := Finset.mem_inter.mp hvParts.2
+    have hsep := squareOrderNine_threeHigh_secondProfile_same_high_fiber_separation
+      G hfree huv ha
+        ((G.mem_neighborFinset a u).mp huF.1)
+        ((G.mem_neighborFinset a v).mp hvF.1) hzLow
+    exact hsep.1 ⟨
+      (G.mem_neighborFinset z u).mp huParts.1,
+      (G.mem_neighborFinset z v).mp hvParts.1⟩
+  have hpair : ∀ a ∈ H, ∀ b ∈ H, a ≠ b →
+      Disjoint (G.neighborFinset z ∩ F a) (G.neighborFinset z ∩ F b) := by
+    intro a ha b hb hab
+    exact (hpartition.2.2.1 a ha b hb hab).mono
+      Finset.inter_subset_right Finset.inter_subset_right
+  have hunion : H.biUnion (fun a => G.neighborFinset z ∩ F a) =
+      G.neighborFinset z ∩ U1 := by
+    ext u
+    simp only [Finset.mem_biUnion, Finset.mem_inter]
+    constructor
+    · rintro ⟨a, ha, hzu, huF⟩
+      exact ⟨hzu, (Finset.mem_inter.mp huF).2⟩
+    · rintro ⟨hzu, huU⟩
+      have huUnion : u ∈ H.biUnion F := by
+        rw [hpartition.2.2.2]
+        exact huU
+      simp only [Finset.mem_biUnion] at huUnion
+      obtain ⟨a, ha, huF⟩ := huUnion
+      exact ⟨a, ha, hzu, huF⟩
+  have hcard3 : (G.neighborFinset z ∩ U1).card = 3 := by
+    have hdeg := hcubic.2.1 (⟨z, hzU⟩ : ↥(↑U1 : Set V))
+    rw [degree_induce_finset_eq_card_inter] at hdeg
+    simpa only using hdeg
+  refine ⟨hle, ?_⟩
+  rw [← Finset.card_biUnion hpair, hunion, hcard3]
+
 end
 
 end Erdos85
@@ -3864,3 +3957,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_pair_budget
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_same_high_fiber_separation
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_color_ledger
