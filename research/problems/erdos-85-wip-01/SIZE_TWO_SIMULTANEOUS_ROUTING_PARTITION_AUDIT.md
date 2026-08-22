@@ -738,3 +738,40 @@ subdivided exterior-pair edges which also lie in `H`, reproducing (40).
 This packages the transport target as a pure parity theorem for a C4-free
 even-degree split graph, while retaining the self-indexed origin of its
 degree-two side.
+
+Finally, (43) reconnects directly to the simultaneous owner colors.  Let
+`F_d[c]` be the owner-`d` two-factor on `c`.  For `d != c`, every edge of
+`F_d[c]` has its unique common neighbor in the exterior component `d`, so
+the exterior-pair graph is the disjoint owner sum
+
+```text
+R = disjoint_union_(d != c) F_d[c].                      (44)
+```
+
+For the self color, (20) gives `F_c[c]=H^2-2I`.  Hence its intersection with
+`H` consists exactly of the three edges of every internal `C3`, and
+
+```text
+|E(H) cap E(F_c[c])| = 3 t_3(H).                         (45)
+```
+
+Combining (40), (44), and (45) yields the fully colored form
+
+```text
+M_c = sum_d |E(H) cap E(F_d[c])|  (mod 2).               (46)
+```
+
+The factors `F_d[c]` edge-partition the selector complement of `D[c]`, so
+(46) is also the parity of the internal ambient edges which are assigned an
+owner color rather than lying in the triangle-free defect sector.  This is
+algebraically equivalent to (42), but it is the form visible to (SRP): each
+exterior color is built from a cross incidence block reused in every routing
+partition, and the self color is the distinguished distance-two factor.
+Thus the next simultaneous-routing statement can be phrased sharply as
+
+```text
+sum_d |E(A_c) cap E(F_d[c])| is even.                    (47)
+```
+
+Proving (47) from the coupled endpoint partitions closes the transport horn;
+ordinary factor degrees or the uncolored owner partition merely restate it.
