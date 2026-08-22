@@ -112,6 +112,17 @@ classes may meet once, so C4-freeness supplies no contradiction for an
 intermediate value of `p`; it converts the escape into two compatible partial
 resolutions.
 
+This interface has an abstract control for every `a_i` and `p`.  On the
+`q x q` grid of pairs of `x`- and `y`-fibers, take a simple
+`(a_i-1)`-regular bipartite graph (cyclic shifts give one), representing the
+`q(a_i-1)` shore points covered by both classes.  Add `q-1-p` points covered
+only by distinct `x`-fibers and `p` points covered only by distinct
+`y`-fibers.  The result has `q a_i-1` points, the required near-constant cell
+sizes on both sides, and every cross-cell intersection at most one.  Thus all
+pair-capacity consequences of C4-freeness are compatible with every value of
+`p`; any exclusion must restore how these abstract cells are located at their
+own vertices in the original graph.
+
 ## Status
 
 - **Proved mathematically here:** connected `D` has no articulation vertex.
