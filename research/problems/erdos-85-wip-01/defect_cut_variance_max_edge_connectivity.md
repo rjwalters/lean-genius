@@ -640,16 +640,20 @@ Complementing across `W`, equality for the `q-2` shore gives
 A 1_W = 1_R + 1_K,       |K|=2q,
 ```
 
-whereas excess two gives
+whereas excess two gives one of the two mirror profiles
 
 ```text
 A 1_W = 1_R + 1_K + 1_c,
-|K|=2q-1, c in K.
+|K|=2q-1, c in K,
+A 1_W = 1_R + 1_K - 1_c,
+|K|=2q+1, c in R, c notin K.
 ```
 
-These are precisely the ambient versions of (25)--(26); the extra
-near-bipartite incidence argument is what further forces
-`K intersect R={a,b}` and locates `c` there.
+The first and the positive-sign excess profile are the ambient versions of
+(25)--(26).  The negative-sign profile has `(A 1_W)_c=0` at a point
+`c in R`, so it is excluded in the near-bipartite branch by (21), whose
+three pole traces cover every point of `R`.  The same trace argument further
+forces `K intersect R={a,b}` and locates the positive-sign spike in (26).
 
 The third line of (B1) is genuinely dual.  Equality on `X` gives a `2q`-set
 `K`.  If `t=A 1_Y-b 1`, then
@@ -688,6 +692,12 @@ Since `e_D(W)=0`, every pair of vertices of `W` has exactly one common
 ```text
 sum_v binom((A 1_W)_v,2)=3.                  (B3)
 ```
+
+For the omitted negative-sign excess profile with minimum `Y`, its forced
+conditions `c in R`, `c notin K` make the value at `c` zero.  Substitution
+in (B3) gives `|K intersect R|=3`.  In the near-bipartite specialization it
+is already impossible because the pole traces have positive incidence at
+every point of `R`.
 
 For the negative-spike line of (B2), where `c in R`, substituting the
 indicator profile into (B3) gives
