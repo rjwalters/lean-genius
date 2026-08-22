@@ -1178,25 +1178,45 @@ The handshake lemma and even order `|X|=q-2` therefore give
 Thus neither one nor three of the clique cells can be fixed by the
 exceptional-point transversal.
 
-A partial version holds for every `a`.  The point `c` has `a` neighbors in
-`X` and `q-a` in `Y`.  Each of the latter has exactly two K-neighbors by
-(B6), so deleting `c` again gives an injection
+The matching in fact closes for every `a`.  The point `c` has `a` neighbors
+in `X` and `q-a` in `Y`.  Each Y-neighbor has exactly two K-neighbors by
+(B6), one of which is `c`, so it supplies one other K-target.  For
+`x in N_A(c) intersect X`, (B6) says
 
 ```text
-N_A(c) intersect Y  -->  K\{c}                (B18)
+deg_A(x,K)=2-deg_D(x,W).
 ```
 
-with image size `q-a`.  For `x in N_A(c) intersect X`, (B6) already counts
-`c` among its K-neighbors, and hence `deg_D(x,W)<=1`; this is the X-side
-analogue of (B10) on the exceptional neighborhood.  Finally (B16) gives
+Since `c in K` is already one such neighbor, `deg_D(x,W)` is zero or one;
+the point `x` supplies a second K-target exactly in the zero case.  Let h
+be the number of these zero-attachment X-neighbors.  All targets are
+distinct by C4-freeness, and every common neighbor of `c` with a point of
+`K\{c}` arises this way.  Thus exactly `q-a+h` points of `K\{c}` are
+D-nonneighbors of `c`, leaving
+
+```text
+(2q-1)-(q-a+h)=q+a-h-1
+```
+
+D-neighbors of `c` already inside K.  This cannot exceed its total defect
+degree `q-1`; hence `h>=a`.  Since `h<=a`, equality holds.  Therefore every
+point of `N_A(c) intersect X` has zero W-attachments, all q neighbors of
+`c` supply a distinct second K-target, and
+
+```text
+phi : N_A(c) --> Q subset K\{c},   |Q|=q,
+N_D(c)=K\({c} union Q)                       (B18)
+```
+
+for every `a`, not only at the endpoint.  Finally (B16) gives
 
 ```text
 |K intersect (X union W)| <= 3a+4,
 ```
 
-so at least `max(0,q-4a-4)` targets of (B18) lie in `Y`.  Thus for small a
-the same internal-Y matching pressure persists quantitatively, even before
-the endpoint becomes a full parallel class.
+so at least `max(0,q-3a-4)` targets of Q lie in `Y`.  This upgrades the
+former partial Y-matching to an exact global matching and makes the
+exceptional neighborhood completely attachment-free on its X side.
 
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
