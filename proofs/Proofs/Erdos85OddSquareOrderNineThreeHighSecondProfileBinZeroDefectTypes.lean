@@ -1627,6 +1627,118 @@ theorem squareOrderNine_threeHigh_secondProfile_original_lowBin_edge_quotient
     omega
   exact ⟨hK0, hq.2.1, hq.2.2.1, hK1, hq.2.2.2.2⟩
 
+/-- The three bin-zero original neighbors of the rare bin-three vertex give
+three disjoint eight-support rows in the B₀ block of the original adjacency
+matrix.  Their total support mass is therefore 24. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    (∀ y ∈ S, (G.neighborFinset y ∩ B 0).card = 8) ∧
+      (∀ y ∈ S, ∀ z ∈ S, y ≠ z →
+        Disjoint (G.neighborFinset y ∩ B 0)
+          (G.neighborFinset z ∩ B 0)) ∧
+      (∑ y ∈ S, (G.neighborFinset y ∩ B 0).card) = 24 := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  have hb2 : B 2 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 2) (by omega), hc2]
+  have hb3card : (B 3).card = 1 := by
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 3) (by omega), hc3]
+  have hb4 : B 4 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 4) (by omega), hc4]
+  have hScard : S.card = 3 := by
+    have hcensus :=
+      squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+    exact hcensus.2.2
+  have hrow : ∀ y ∈ S, (G.neighborFinset y ∩ B 0).card = 8 := by
+    intro y hyS
+    have hyParts := Finset.mem_inter.mp hyS
+    have hyB0 := hyParts.2
+    have hyx : G.Adj y x :=
+      (G.adj_comm x y).mp ((G.mem_neighborFinset x y).mp hyParts.1)
+    have hyB1zero :=
+      squareOrderNine_threeHigh_secondProfile_binZero_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyB0
+    simp [hyx] at hyB1zero
+    have hyB1card : (G.neighborFinset y ∩ B 1).card = 0 := by
+      rw [hyB1zero]
+      simp
+    have hyLow := (Finset.mem_filter.mp hyB0).1
+    have hyNotHigh : y ∉ H := (Finset.mem_sdiff.mp hyLow).2
+    have hyDegree : G.degree y = 9 := by
+      rcases hp.degree_dichotomy y with hlo | hhi
+      · exact hlo
+      · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+    have hky : squareOrderHighIncidenceCount G 9 y = 0 :=
+      (Finset.mem_filter.mp hyB0).2
+    have hyB3card : (G.neighborFinset y ∩ B 3).card = 1 := by
+      have hsingle : B 3 = {x} := Finset.eq_singleton_iff_unique_mem.mpr
+        ⟨hx, fun z hz => Finset.card_le_one.mp (by omega) z hz x hx⟩
+      rw [hsingle]
+      simp [G.mem_neighborFinset, hyx]
+    have hpnt := squareOrderNine_originalNeighbor_lowBin_partition G hp hyNotHigh
+    change (∑ j ∈ Finset.range 5, (G.neighborFinset y ∩ B j).card) +
+      squareOrderHighIncidenceCount G 9 y = G.degree y at hpnt
+    norm_num [Finset.sum_range_succ, hb2, hb4, hky, hyDegree,
+      hyB1card, hyB3card] at hpnt
+    omega
+  have hdisj : ∀ y ∈ S, ∀ z ∈ S, y ≠ z →
+      Disjoint (G.neighborFinset y ∩ B 0)
+        (G.neighborFinset z ∩ B 0) := by
+    intro y hyS z hzS hyz
+    rw [Finset.disjoint_left]
+    intro w hwy hwz
+    have hyParts := Finset.mem_inter.mp hyS
+    have hzParts := Finset.mem_inter.mp hzS
+    have hwyParts := Finset.mem_inter.mp hwy
+    have hwzParts := Finset.mem_inter.mp hwz
+    have hxCommon : x ∈ G.neighborFinset y ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset y x).mpr
+          ((G.adj_comm x y).mp ((G.mem_neighborFinset x y).mp hyParts.1)),
+        (G.mem_neighborFinset z x).mpr
+          ((G.adj_comm x z).mp ((G.mem_neighborFinset x z).mp hzParts.1))⟩
+    have hwCommon : w ∈ G.neighborFinset y ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hwyParts.1, hwzParts.1⟩
+    have hxw : x ≠ w := by
+      intro h
+      subst w
+      have hxk := (Finset.mem_filter.mp hx).2
+      have hwk := (Finset.mem_filter.mp hwyParts.2).2
+      omega
+    have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree y z hyz
+    exact hxw (Finset.card_le_one.mp hle x hxCommon w hwCommon)
+  refine ⟨hrow, hdisj, ?_⟩
+  calc
+    (∑ y ∈ S, (G.neighborFinset y ∩ B 0).card) =
+        ∑ _y ∈ S, 8 := by
+      apply Finset.sum_congr rfl
+      intro y hy
+      exact hrow y hy
+    _ = 24 := by simp [hScard]
+
 end
 
 end Erdos85
@@ -1655,3 +1767,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_card
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_original_lowBin_quotient
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_original_lowBin_edge_quotient
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
