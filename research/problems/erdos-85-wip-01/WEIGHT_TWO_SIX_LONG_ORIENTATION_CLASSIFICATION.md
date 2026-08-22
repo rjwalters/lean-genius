@@ -258,7 +258,7 @@ the survivor.  The remaining problem is genuinely simultaneous: choose the
 row matchings mutually so that exterior adjacency is symmetric and all
 disjoint-trace codegrees are at most one.
 
-## The shared-trace reciprocity layer always closes
+## Resolver reciprocity and the compatible-tour gap
 
 There is also no obstruction in making all endpoint resolvers reciprocal.
 Delete from `F` the long-cycle edges, which are precisely the edge-traces,
@@ -281,13 +281,27 @@ properties:
 * the resolver graph is one cycle on
   `q(q-2)-(2q-6)=q^2-4q+6` vertices.
 
-The last number is greater than four for `q>=8`, so this resolver layer is
-itself C4-free.  Simplicity is automatic because two distinct simple trace
-edges cannot share both component endpoints.  Therefore even the simultaneous
-shared-trace part of the exterior adjacency has a uniform integral
-completion.  Any terminal must couple these resolver choices to the remaining
-`q-4` or `q-2` disjoint-trace neighbors and their codegree-at-most-one laws;
-resolver parity or reciprocity alone cannot exclude the survivor.
+This proves the exact degrees and reciprocity, but an arbitrary Euler circuit
+does **not** yet prove the relevant C4-freeness.  If it pairs
+`z={u,v}` with `z'={u,w}` at `u` and `v,w` are adjacent in `H`, then
+
+```text
+z - v - w - z' - z
+```
+
+is a 4-cycle in the full ambient graph.  Thus the transition at `u` must
+never pair two incident trace-edges whose other endpoints are H-adjacent.
+The forbidden-transition graph at each `u` has maximum degree at most two,
+which is favorable, but existence of one Euler circuit compatible with all
+these local forbidden transitions has not been proved.  This is a precise
+Kotzig-type compatible-tour problem.
+
+Simplicity of the resolver graph itself is automatic because two distinct
+simple trace edges cannot share both component endpoints.  What is banked is
+therefore narrower: resolver degree and reciprocity have no parity
+obstruction, while C4-compatible reciprocity remains a genuine entrywise
+condition and may still exclude the survivor before disjoint-trace edges are
+added.
 
 ## The scalar disjoint-pair capacity is an identity
 
@@ -332,7 +346,8 @@ but their total is
 So the triangle term cancels and the entire scalar capacity inequality is
 always saturated as an algebraic identity.  In particular its parity gives
 nothing beyond the already forced degree counts.  Together with the Euler
-resolver construction, this closes all total-count and resolver-parity routes
-at the classified survivor.  The remaining possible obstruction is the
-entrywise simultaneous placement of the residual edges: symmetric row
-matchings whose disjoint-trace pairs have codegree at most one.
+resolver construction, this closes total-count and bare resolver-parity
+routes at the classified survivor, but not the forbidden-transition
+condition above.  The remaining possible obstructions are entrywise: first a
+C4-compatible reciprocal resolver pairing, and then simultaneous placement
+of the residual edges so that disjoint-trace pairs have codegree at most one.
