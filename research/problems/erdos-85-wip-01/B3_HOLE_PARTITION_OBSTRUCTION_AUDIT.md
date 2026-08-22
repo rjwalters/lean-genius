@@ -921,8 +921,9 @@ c_all <= c'_all  ==>  mu(role,n,c_pair,c'_all,r_tb)
 
 Thus a more concentrated omitted color receives a weakly smaller incoming
 cap price, while the previous coordinatewise monotonicity in the fiber role
-census is retained.  Both exceptional pairs still separate under (12qe),
-with normalized objectives `-0.04834010158` and `-0.4928963663`.
+census is retained.  All seventeen locally feasible instances in the
+four-seed run still separate under (12qe); the two exceptional normalized
+objectives are `-0.04834010158` and `-0.4928963663`.
 At scale `100000` the exact checker gives totals `-4749` and `-49223`.
 Mode `--features fiber-type-collision-monotone-farkas` enforces this signed
 order.  The sign is the useful structural gain: it makes the omitted-color
