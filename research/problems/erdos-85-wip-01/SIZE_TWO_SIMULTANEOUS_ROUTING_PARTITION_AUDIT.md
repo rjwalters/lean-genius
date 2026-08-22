@@ -2686,13 +2686,22 @@ W_(t,u) = 1 on horizontal edges,
 W_(t,u) = 0 on vertical edges.                          (164)
 ```
 
-Then (163) gives `H(Omega)=0` for every state cycle and closes (57).
-Without a routing-derived restriction on `mu`, (164) is merely a linear
+Equation (164) alone does **not** give `H(Omega)=0`: by (163), it only
+identifies `H(Omega)` with the crossed-`mu` cycle integral.  The closing
+theorem must additionally derive the routing/capacity conservation law
+
+```text
+sum_(tu in Omega) (mu_(t,p_u) + mu_(u,p_t)) = 0         (164a)
+```
+
+for every admissible state cycle (or derive a different forced value which
+contradicts odd `H`).  Only (164) together with (164a) closes (57).
+Without this routing-derived restriction on `mu`, (164) is merely a linear
 reparameterization of the desired cocycle and proves nothing.  The
 endpoint-neutral clean colors of Section 46 identify the available source
-of such restrictions: their disjoint two-point fibers give genuine incoming
-capacity constraints indexed by the marked root and port, exactly the data
-retained in (162).
+of the missing conservation: their disjoint two-point fibers give genuine
+incoming capacity constraints indexed by the marked root and port, exactly
+the data retained in (162).
 
 ## 48. The clean lift supplies an actual root--port capacity system
 
