@@ -689,6 +689,24 @@ their order or difference, therefore matter in the sampled potential.  The
 corresponding modes are `--features load-shape` and `--features
 collision-differences`.
 
+A scalar potential is also insufficient.  Even allowing one arbitrary
+number `phi(t)` for every row and putting
+
+```text
+W_tu = phi(t) - phi(u)
+```
+
+has optimum zero on all six seed-zero instances (`--features
+free-gradient`).  Conceptually, gradients test only whether the local
+outgoing choices can be balanced to the required column degrees: their
+value is `sum_t d_t phi(t) - sum_u colSum_u phi(u)`.  The zero result says
+that this degree-balancing relaxation survives.  The obstruction appears
+only when the incoming fiber caps are imposed, so the terminal `W` must have
+genuine pairwise curl; it cannot be a difference of row potentials, however
+those potentials are chosen.  Even the broader signature-based class with a
+separate `phi(type,n,c)` for support overlap zero and one has optimum zero
+(`--features gradient-collisions`).
+
 Nor is `c(t)` merely a surrogate for local matching capacity.  The conflict
 graph on `E_t` has `n(t)` vertices and `c(t)` edges, so the generic greedy
 bound gives

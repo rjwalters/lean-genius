@@ -110,6 +110,54 @@ def refine_features(instances: list[dict], mode: str) -> None:
     conflict at a selected U1 label.
     """
     global FEATURES
+    if mode == "free-gradient":
+        FEATURES = {t: t for t in range(N)}
+        for data in instances:
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                for u in data["candidates"][t]:
+                    vector = np.zeros(N)
+                    vector[t] = 1
+                    vector[u] -= 1
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
+    if mode == "gradient-collisions":
+        row_data = []
+        signatures = set()
+        for data in instances:
+            stats = []
+            for t in range(N):
+                loads = Counter(b for support in data["labels"][t]
+                                for b in support)
+                collisions = sum(x * (x - 1) // 2 for x in loads.values())
+                signature = (data["types"][t], len(data["candidates"][t]),
+                             collisions)
+                stats.append(signature)
+                signatures.add(signature)
+            row_data.append(stats)
+        FEATURES = {
+            (overlap, signature): i
+            for i, (overlap, signature) in enumerate(
+                (x for overlap in (0, 1) for signature in sorted(signatures)
+                 for x in [(overlap, signature)])
+            )
+        }
+        for data, stats in zip(instances, row_data):
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                for u in data["candidates"][t]:
+                    overlap = len(data["blocks"][t] & data["blocks"][u])
+                    vector = np.zeros(len(FEATURES))
+                    vector[FEATURES[(overlap, stats[t])]] += 1
+                    vector[FEATURES[(overlap, stats[u])]] -= 1
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
     if mode == "collision-differences":
         row_data = []
         keys = set()
@@ -330,6 +378,68 @@ def fit(instances: list[dict], max_rounds: int) -> tuple[str, float, np.ndarray,
     return "round-limit", objective, theta, max_rounds
 
 
+def fit_sparse(instances: list[dict], max_rounds: int) -> tuple[str, float, np.ndarray, int]:
+    """Minimize coefficient L1 norm subject to margin at most -1."""
+    nf = len(FEATURES)
+    nr = len(instances) * N
+    abs_start = nf + nr
+    cuts: list[tuple[int, np.ndarray]] = []
+    zero = np.zeros(nf)
+    for i, data in enumerate(instances):
+        for row in range(N):
+            answer = oracle(data, row, zero)
+            if answer is None:
+                return "local-hall", float("nan"), zero, 0
+            cuts.append((i * N + row, answer[1]))
+    theta = zero
+    norm = float("nan")
+    for round_number in range(1, max_rounds + 1):
+        rows = len(cuts) + len(instances) + 2 * nf
+        aub = lil_matrix((rows, abs_start + nf))
+        bub = np.zeros(rows)
+        for k, (ir, vector) in enumerate(cuts):
+            aub[k, :nf] = vector
+            aub[k, nf + ir] = -1
+        offset = len(cuts)
+        for i in range(len(instances)):
+            aub[offset + i, nf + i * N:nf + (i + 1) * N] = 1
+            bub[offset + i] = -1
+        offset += len(instances)
+        for i in range(nf):
+            aub[offset + 2 * i, i] = 1
+            aub[offset + 2 * i, abs_start + i] = -1
+            aub[offset + 2 * i + 1, i] = -1
+            aub[offset + 2 * i + 1, abs_start + i] = -1
+        objective = np.r_[np.zeros(abs_start), np.ones(nf)]
+        result = linprog(
+            objective, A_ub=aub.tocsr(), b_ub=bub,
+            bounds=[(None, None)] * abs_start + [(0, None)] * nf,
+            method="highs",
+        )
+        if result.status == 2:
+            return "no-separation", float("inf"), zero, round_number
+        if not result.success:
+            raise RuntimeError(f"sparse master LP failed: {result.message}")
+        theta = result.x[:nf]
+        norm = result.fun
+        q = result.x[nf:nf + nr]
+        violations = 0
+        for i, data in enumerate(instances):
+            for row in range(N):
+                answer = oracle(data, row, theta)
+                if answer is None:
+                    return "local-hall", float("nan"), theta, round_number
+                value, vector = answer
+                ir = i * N + row
+                if value > q[ir] + 1e-7:
+                    cuts.append((ir, vector))
+                    violations += 1
+        print(f"round={round_number} l1={norm:.9g} new_cuts={violations}")
+        if violations == 0:
+            return "separates", norm, theta, round_number
+    return "round-limit", norm, theta, max_rounds
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--seeds", type=int, default=1)
@@ -337,12 +447,16 @@ def main() -> int:
     parser.add_argument("--max-rounds", type=int, default=100)
     parser.add_argument("--individual", action="store_true",
                         help="fit each locally feasible instance separately")
+    parser.add_argument("--sparse", action="store_true",
+                        help="minimize coefficient L1 norm at margin -1")
     parser.add_argument("--features", choices=("basic", "candidate-count",
                                                 "total-load", "collisions",
                                                 "load-shape", "load-profile",
                                                 "matching-capacity",
                                                 "bilinear-collisions",
-                                                "collision-differences"),
+                                                "collision-differences",
+                                                "gradient-collisions",
+                                                "free-gradient"),
                         default="basic")
     args = parser.parse_args()
     data = []
@@ -371,12 +485,14 @@ def main() -> int:
         print(f"feature_mode={args.features} feature_count={len(FEATURES)}")
     if args.individual:
         for label, candidate in zip(data_labels, data):
-            status, objective, _, rounds = fit([candidate], args.max_rounds)
+            fitter = fit_sparse if args.sparse else fit
+            status, objective, _, rounds = fitter([candidate], args.max_rounds)
             branch, seed_number, colors = label
             print(f"individual branch={branch} seed={seed_number} colors={colors} "
                   f"status={status} objective={objective:.9g} rounds={rounds}")
         return 0
-    status, objective, theta, rounds = fit(data, args.max_rounds)
+    fitter = fit_sparse if args.sparse else fit
+    status, objective, theta, rounds = fitter(data, args.max_rounds)
     print(f"instances={len(data)} local_hall_instances={len(hall_labels)} "
           f"status={status} objective={objective:.9g} rounds={rounds}")
     if args.features == "basic":
