@@ -2431,3 +2431,55 @@ vertices, with those owner changes realized by rooted triangle paths.  This
 reduces the next invariant from arbitrary multicolored cycles of `B_c` to a
 color-change law on the fixed cyclic edge word of an odd component of
 `A_c`.
+
+## 43. Canonical rooted transition paths
+
+Write the cycle from Section 42 as
+
+```text
+C = (x_i)_(i mod n),
+e_i = owner color of the horizontal edge x_i x_(i+1).
+```
+
+At a fixed root `x_i`, retain only the vertical edges of `Gamma_c`; this is
+the rooted triangle multigraph on the active exterior colors.  The state
+cycle enters the root at `(x_i,e_(i-1))` and leaves it at `(x_i,e_i)`.
+The intervening vertical segment is therefore a path
+
+```text
+P_i : e_(i-1) --> e_i                                  (150)
+```
+
+in that rooted triangle multigraph.  If the two colors agree, (51) gives
+horizontal degree two and vertical degree zero at the common state, so
+`P_i` has length zero.  If they differ, each endpoint state has horizontal
+degree one and hence vertical degree one by (51), while every intermediate
+state on the segment has horizontal degree zero and vertical degree two.
+Thus `P_i` is the entire path component joining the two owner colors; it is
+simple even when the rooted triangle graph has parallel edges elsewhere.
+
+There cannot be a second rooted path component with horizontal endpoints.
+The two incident edges of `A_c` are the only possible horizontal state edges
+at `x_i`, and Section 42 shows that both occur in `Omega`.  All remaining
+vertical components at the root, if any, are disjoint vertical-only cycles.
+Consequently `Omega` has the canonical cyclic substitution
+
+```text
+horizontal edge of color e_i,
+then rooted transition path P_(i+1),
+then horizontal edge of color e_(i+1), ...             (151)
+```
+
+and
+
+```text
+V(Omega) = sum_i |P_i|.                                (152)
+```
+
+This separates the residual data cleanly.  The root geometry is the odd
+cycle `C`; its edge word is `(e_i)`; and each genuine color change is
+certified by a unique chain of three-component triangles at that root.
+The next possible parity input is therefore local: a mod-two label on rooted
+triangle edges whose path integral between `e_(i-1)` and `e_i` telescopes
+around the owner word.  Vertical-only rooted cycles must have zero integral
+for such a label to be well defined.
