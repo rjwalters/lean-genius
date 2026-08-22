@@ -591,6 +591,30 @@ design-dependent Farkas rays into the correct canonical object: an
 now be stated precisely as constructing `W(Q,K)` for which the sum of these
 local matching optima is strictly negative.
 
+The smallest invariant ansatz for `W` can also be eliminated exactly on the
+sampled designs.  Normalize the selected colors as low/high and give a row
+one of five types: regular triple, exceptional hole, pair missing low, pair
+missing high, or pair missing the third color.  Suppose `W_tu` depends only
+on the ordered pair of these types and on `|S_t intersect S_u|` (zero or
+one).  Antisymmetry leaves twenty coefficients.  For fixed coefficients,
+the row optimum is still the exact binary matching problem in (12f).  A
+cutting-plane LP, with those matching problems as separation oracles,
+minimizes the worst total row optimum over the supplied outer witnesses.
+Bounding each coefficient by one loses no strict separator, since a strict
+separator can be rescaled.
+
+On seed zero in both branches, every one of the six color-pair instances is
+locally feasible, but fitting it *individually* gives optimum exactly zero.
+Thus this feature class cannot produce (12h), even with coefficients chosen
+separately for each design.  Across four seeds per branch, seven of the 24
+instances instead have an ordinary local Hall obstruction; a simultaneous
+fit to the other seventeen again has optimum zero.  Hence the required
+potential must see more of the detailed ordered eligibility graph than row
+types and support overlap.  The reproducible exact-oracle experiment is
+`q9_structured_skew_potential.py`; `--individual` distinguishes failure of
+the feature class on one witness from failure of a single potential shared
+across witnesses.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
