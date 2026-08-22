@@ -1126,13 +1126,28 @@ Thus the maximum mixed exceptional design is already excluded; the pure
 full/pure empty branch and the smaller mixed cores are the two remaining
 structural cases.
 
-Equations (7)--(65) are the first canonical cut detector manufactured from
+The same dichotomy is measured exactly by cut energy.  Let
+`u=min(|C_full|,|C_empty|)=c/2-|d|`.  Rewriting (61) gives
+
+```text
+|delta_D(S)|
+  = |d|(q^2/2-|d|) + (q^2/2)u.                              (66)
+```
+
+The first term is precisely the minimum variance in the preceding
+zero-digit modulus `q^2/2`; every minority-type exceptional line costs one
+additional quantum `q^2/2`.  Hence the pure branch is exactly the equality
+case of that earlier variance bound, while the mixed branch has a
+quantized positive excess.  This supplies a scalar detector for the
+structural split in (64)--(65).
+
+Equations (7)--(66) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(65), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(66), so these laws alone
 do not conceal an order-independent
 contradiction.
 
