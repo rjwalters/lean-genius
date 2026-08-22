@@ -596,9 +596,10 @@ A 1_W = 1_R + 1_K + 1_c,
 ```
 
 Equations (25)--(26) exactly restate the three pairwise pole intersections;
-they do not exclude the separator.  Thus eliminating the triangle-free
-minimum-cut branch is at least as strong as proving 4-vertex-connectivity
-for D, beyond the currently proved 2-vertex-connectivity.
+they do not exclude the separator.  Four-vertex-connectivity of D would
+suffice to eliminate this triangle-free minimum-cut branch; the branch is
+one explicit candidate obstruction beyond the three-vertex-connectivity
+proved below.
 
 This is the exact nonlinear filler problem left by the triangle-free
 minimum-cut branch.  The available degree and pair-capacity counts fit
