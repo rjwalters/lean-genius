@@ -1018,6 +1018,62 @@ whose own columns and external columns each admit a census-increasing
 transport.  The fixed own/external role margins (12qh) are the natural
 candidate invariant for ruling this out uniformly.
 
+The split can be read transition by transition.  Put
+
+```text
+delta_tu = |S_t intersect S_u intersect C| in {0,1}.       (12qj)
+```
+
+For a chosen directed candidate `t->u`, every shared selected label appears
+once in the positive `(t,b)` cap sum and once in the negative `(u,b)` cap
+sum, both with `iota=1`.  Target-only labels give `g(u)-delta_tu` positive
+external flags, while source-only labels give `g(t)-delta_tu` negative
+external flags.  Consequently
+
+```text
+own cap mass of t->u:       +delta_tu - delta_tu = 0,
+external cap mass of t->u:  g(u)-g(t).                     (12qk)
+```
+
+Thus own-fiber mass cancels before any global argument, and external mass
+cancels after alpha signature balance.  Moreover (12qi), tested against the
+increasing coordinate `r_j`, gives for every `(sigma,iota)` and role `j`
+
+```text
+sum of source-side r_j over selected flags in (sigma,iota)
+  >=
+sum of incoming-side r_j over selected flags in (sigma,iota). (12ql)
+```
+
+Equations (12qj)--(12ql) turn the residual price problem into a directed
+role-flow inequality.  The own system is supported exactly on selected
+candidate transitions whose two blocks share a selected label; the external
+system carries the complementary label incidences.  Since a row matching
+uses each selected label at most once, at most `g(t)` of its chosen
+transitions can enter the own system.  This is the direct bridge between the
+transport alternative and the label-only Hall cover (12fa).
+
+Equivalently, let `G_t^ext` be the row candidate graph after deleting every
+candidate whose selected support meets `S_t intersect C`.  Splitting any
+matching into own-touching and external candidates gives
+
+```text
+nu(G_t) <= g(t) + nu(G_t^ext).                             (12qm)
+```
+
+Therefore local feasibility forces
+
+```text
+nu(G_t^ext) >= d_t-g(t),                                  (12qn)
+```
+
+namely thresholds three on a regular row, four on a hole or a pair missing
+the unselected color, and five on a pair missing a selected color.  If
+(12qn) fails, (12qm) is already the local Hall branch.  The simultaneous
+price argument may hence assume these smaller external matchings exist at
+every row; those are precisely the transitions carrying the nontrivial
+external transport in (12qk)--(12ql).
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
