@@ -99,6 +99,58 @@ uniformly large family.  It is not a counterexample to A-REG; it is a control
 showing that the missing coupling is precisely nonlinear incidence
 compatibility, not parity or connectivity alone.
 
+## Exact affine-completion criterion
+
+The classical Baer proof pinpoints the missing axiom.  On a non-absolute
+line of a projective plane, every point is sent to the intersection of that
+line with its polar line.  Unique line intersection makes this a total
+involution, and the odd line size in even order forces a fixed point.  In
+the present `(q^2_q)` configuration the line has even size q and the map is
+undefined exactly at the T-neighbors.  One cannot repair this by formally
+adding the omitted intersections unless the whole configuration is already
+affine-completable.
+
+Here is the exact criterion.  Regard the q-subsets `N_A(x)` as the current
+lines.  A family `L_infinity` of q further q-subsets completes them to a
+`2-(q^2,q,1)` affine plane precisely when
+
+```text
+L_infinity is a partition of V into q sets,
+and each set is a q-clique of D.                         (3)
+```
+
+Indeed, two points lie on a current line exactly when they have a common
+A-neighbor, equivalently when they are not adjacent in D.  Thus every pair
+on a new line must be a D-edge.  Each point is short of exactly one line,
+so the q new lines must partition the q^2 points.  Conversely, a partition
+into q D-cliques supplies the unique missing line for every D-pair, while
+the current C4-free incidence supplies the unique line for every non-D
+pair; the standard affine-plane parameters then follow.
+
+But a q-clique of D is a whole D-component by the already proved clique
+isolation theorem.  Consequently
+
+```text
+the configuration is affine-completable
+  iff D is the disjoint union of q copies of K_q.          (4)
+```
+
+The affine-polarity control realizes exactly this case.  A connected D on
+q^2>q vertices admits no such completion.  Therefore the projective-plane
+Baer proof cannot be ported by adjoining an ideal parallel class: the
+connectivity hypothesis destroys precisely the completion needed to make
+the local involutions total.
+
+This also identifies the strongest plausible Baer-type rigidity statement:
+
+> For `q=2^k`, `k>=3`, every fixed-point-free self-polar `(q^2_q)` linear
+> configuration is affine-completable (equivalently, `D=q K_q`).
+
+That statement would immediately prove `NONBIP-CONNECTED`, and the exact
+q=4 control shows why the `k>=3` hypothesis is indispensable.  It remains
+unproved; (3)--(4) reduce it to a concrete missing-line partition theorem
+rather than an analogy with projective planes.
+
 ## Disposition
 
 The involution-coupling audit does not yield a new theorem beneath
@@ -107,3 +159,7 @@ The involution-coupling audit does not yield a new theorem beneath
 > Couple the partial Baer involution orbits to the locations of `T` inside a
 > connected `D`; degree parity and scalar connectivity are already exhausted.
 
+Equivalently, prove that binary fixed-point-free incidence forces the
+missing-pair graph D to split into its affine parallel-class cliques.  Any
+successful proof must manufacture this partition without assuming the line
+intersections whose absence D records.
