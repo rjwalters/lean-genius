@@ -150,8 +150,35 @@ theorem sizeTwoCyclicPermutation_targetDifference_secondMoment
       rw [admissibleTargetColumn_sq_sum hq, admissibleTargetRow_sq_sum hq]
       ring
 
+/-- Binary mod-four shadow of the quadratic displacement identity.  The
+right-hand side vanishes because the product of two consecutive residues is
+even. -/
+theorem sizeTwoCyclicPermutation_targetDifference_secondMoment_modFour
+    {q : ℕ} [NeZero q] (h4q : 4 ∣ q) {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x : ZMod q) (t : sizeTwoAllowedDifference q a) :
+    (∑ r : SizeTwoAdmissibleTargetRow q t.1, (
+      2 * ZMod.castHom h4q (ZMod 4) r.1 *
+          ZMod.castHom h4q (ZMod 4) (code.targetDifference x t r).1 +
+        (ZMod.castHom h4q (ZMod 4)
+          (code.targetDifference x t r).1) ^ 2)) = 0 := by
+  have hq : 2 ≤ q := by
+    obtain ⟨k, rfl⟩ := h4q
+    have hk : k ≠ 0 := by
+      intro hk
+      subst k
+      exact NeZero.ne 0 rfl
+    omega
+  have h := congrArg (ZMod.castHom h4q (ZMod 4))
+    (sizeTwoCyclicPermutation_targetDifference_secondMoment hq code x t)
+  rw [map_sum] at h
+  simp only [map_add, map_mul, map_pow, map_ofNat, map_one] at h
+  have hconsecutive : ∀ z : ZMod 4, 2 * z * (z + 1) = 0 := by decide
+  simpa only [hconsecutive] using h
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCyclicPermutation_targetDifference_secondMoment
+#print axioms Erdos85.sizeTwoCyclicPermutation_targetDifference_secondMoment_modFour
