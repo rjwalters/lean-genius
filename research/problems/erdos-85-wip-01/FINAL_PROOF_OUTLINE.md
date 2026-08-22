@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.26 — 2026-08-22 (NONBIP-CONNECTED: trace interface PROVEN, gap narrowed on the owner's correction).**
+**Version 2.27 — 2026-08-22 (NONBIP-CONNECTED: growth child PROVEN and proved insufficient; three routes closed).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -234,6 +234,57 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   **Scope discipline, and the owner said it before anyone asked:** the
   trace-condition verification remains finite, q = 4 and q = 8. The node
   stays `GAP` and this outline does not upgrade it.
+
+  **(iv) The quantitative child of v2.26 is now `PROVEN` — and proved
+  INSUFFICIENT in the same half hour** (`593c27aa4b`, refined to
+  `87b722316f`). `connectedNonbipartite_designatedFactor_finrank_sq_growth`
+  concludes `q² < 2(q−1)·(finrank_ℚ ker g(T))²` directly, with the proof
+  internally identifying mapped root-list length = root multiset card =
+  mapped charpoly degree = rational restriction charpoly degree = sector
+  finrank, so the bound is on the INTRINSIC designated dimension and not on
+  an encoding artifact. Cold-verified, standard axioms.
+
+  It cannot close on its own, and the owner audited that within two minutes
+  of banking it: ambient dimension gives only `m ≤ q²`, which is entirely
+  compatible with `m > √(q/2)`, and the already-eliminated determinant/tree
+  package supplies no upper bound. **What is now required is an UPPER bound
+  on the intrinsic designated primary dimension.** No banked theorem
+  constrains the number or degree of square-in-`ℚ(μ)` factors for a
+  connected `(q−1)`-regular `D`.
+
+  **(v) Three routes closed the same half hour, all before any Lean file was
+  opened.** Recorded because each would otherwise be re-proposed.
+  1. *The growth bound alone* — insufficient, as above.
+  2. *Local vertexwise cancellation / the two-budget currency* — REFUTED by
+     abstract satisfiability before formalization. The budgets are
+     continuously satisfiable at designated rank `Θ(√q)`, so they are a
+     lower-bound interface and carry no upper bound. The one genuinely
+     discrete fact underneath was extracted and is worth keeping: since
+     `A² = (q−1)I + J − D`, for `y ~ x` one has `(A²)_xy = 1 − D_xy`, hence
+     `Σ_nonprincipal (q−1−μ)·a_μ(x) = −|N_A(x) ∩ N_D(x)|` — minus the
+     `triangleFreeEdgeGraph` degree at `x`. No pigeonhole follows: `a_μ(x) ∈
+     ℚ(μ)` has unbounded denominators coming from the D-charpoly
+     discriminant. Lane deliberately not opened.
+  3. *Smith normal form* — CLOSED at the abstract level. `B = L_D + J = A²`
+     is nonsingular over ℚ, so `coker(B)` sits in
+     `0 → coker(A) → coker(A²) → coker(A) → 0`, but that self-extension need
+     not split: `A = [2]` already gives `0 → ℤ/2 → ℤ/4 → ℤ/2 → 0`.
+
+  **(vi) Current candidate, audited and explicitly NOT a terminal.** The
+  incidence bottleneck `E := AD − (J − A) = qA − A³ + (q−1)J`. Row `x`
+  records occupancy-minus-one of the `q−1` defect-neighbour blocks on the
+  `q²−q` points outside `B_x`; it vanishes identically on `B_x` and has row
+  sum zero. A wholly vanishing row would make `N_D[x]` a `K_q` component
+  (the `q−1` neighbour blocks pairwise disjoint), impossible for connected
+  `D` on `q² > q` — so every row is a nonzero integral zero-sum vector and
+  `‖E‖_F² ≥ 2q²`. Spectrally `E` has multiplier `θ(μ+1) = θ(q−θ²)`; **the
+  exact blind spot is `μ = −1`**, and when `q` is a square the designated
+  trace can concentrate in that kernel, so this does not yet upper-bound the
+  designated dimension. The sharper question it isolates: bound the `−1`
+  multiplicity or trace imbalance of connected `(q−1)`-regular deficiency
+  graphs, or separate designated `E`-mass from residual `E`-mass. The owner
+  is holding off on a Lean file until one of those has a closing
+  inequality.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -551,6 +602,18 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.27** (2026-08-22 ~08:30Z, editor): the composition was attempted ahead
+  of further extraction and it landed — v2.26's quantitative child is now a
+  Lean theorem on the intrinsic finrank (`87b722316f`) — and the same audit
+  showed it cannot close alone, because nothing bounds the designated
+  dimension from ABOVE. Three routes closed in the same half hour, each
+  before a file was opened: growth-bound-alone, local vertexwise
+  cancellation (refuted by abstract satisfiability, with the discrete
+  residue kept), and Smith normal form (non-split self-extension). One new
+  audited candidate recorded, the incidence bottleneck `E`, with its `μ = −1`
+  blind spot stated. The node stays `GAP`; the required object is now named
+  precisely — an upper bound on intrinsic designated primary dimension.
 
 - **2.26** (2026-08-22 ~07:30Z, editor, correcting v2.25 at the node owner's
   request): v2.25 stated the NONBIP-CONNECTED gap too widely. The existence
