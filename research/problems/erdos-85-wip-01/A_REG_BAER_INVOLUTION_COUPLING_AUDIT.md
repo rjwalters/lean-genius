@@ -696,20 +696,38 @@ u_i dot u_{j+1} = u_{i+1} dot u_j,
 u_i dot u_{i+2} = |supp(u_{i+1})| = 0           (mod 2),         (35)
 ```
 
-because every beta-support has even cardinality.  Also
+because every beta-support has even cardinality (here, as throughout the
+lift, `4 | q`).  Also
 `u_i dot u_{i+1}=e_A(supp(u_i)) (mod 2)` by the quadratic identity after
 (25).  Hence an iterated shore sequence must carry a symmetric shifted Gram
 pattern; arbitrary cycles of kernel shores are not admissible.  Equations
 (34)--(35) do not yet force linear independence or exclude a two-cycle, so
 no dimension contradiction is claimed.
 
-Equations (7)--(35) are the first canonical cut detector manufactured from
+They do classify odd periodic orbits.  Suppose a literal recursive orbit
+has odd period ell.  The first identity in (35), with indices modulo ell,
+makes `u_i dot u_j` depend only on `i+j mod ell`.  Every diagonal value is
+zero because every orbit vector is itself a beta-support and hence has even
+weight.  Since multiplication by two permutes the residues modulo odd ell,
+the diagonal classes `2i` exhaust all possible sums.  Therefore
+
+```text
+u_i dot u_j = 0 for every i,j on an odd-period orbit,
+e_A(supp(u_i)) = 0 for every i.                              (36)
+```
+
+So an odd Bockstein cycle would have to span a totally isotropic subspace
+of the binary coordinate pairing.  This still permits dependence and does
+not rule out such an orbit, but it is a concrete obstruction unavailable
+to an arbitrary recursion.
+
+Equations (7)--(36) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(35), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(36), so these laws alone
 do not conceal an order-independent
 contradiction.
 
