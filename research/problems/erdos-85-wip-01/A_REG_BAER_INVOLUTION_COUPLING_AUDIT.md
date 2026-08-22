@@ -1401,6 +1401,23 @@ remaining low-r obstruction is therefore a uniformly described partial-Baer
 path--cycle embedding inside the complete-pair (or one-missing-pair)
 majority design, not an unstructured exceptional graph.
 
+The majority design has a local private-point profile as well.  A majority
+line X meets exactly those other majority lines not D-adjacent to X.  The
+replication-two cap makes the resulting intersection points distinct on the
+line, so among its q points the private ones number
+
+```text
+private_F(X) = q-(f-1-deg_(D[F])(X))
+             = r+1+deg_(D[F])(X).                         (73j)
+```
+
+Summing (73j) recovers the first formula in (73e).  Pointwise it says more:
+at `r=1`, every majority line has exactly two private points; at `r=2`, the
+two endpoints of the unique D[F]-edge have four private points each, while
+every other majority line has three.  Hence the sole missing intersection in
+the `r=2` design is visible as one extra private point on each of its two
+lines, a marked pair that the path--cycle self-indexing must respect.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
