@@ -1031,6 +1031,31 @@ Indeed `psi(x)` is adjacent to `c`; its only other K-neighbor is
 set `K intersect X` is exactly the fixed-point locus where the exceptional
 matching lands back on the clique point whose cell contains its center.
 
+This transversal is actually onto the non-K part of `N_A(c)`.  Since
+`c in Y`, (B6) gives `deg_A(c,K)=2`.  The two neighbors of `c` not used by
+`psi` are A-anticomplete to `X` (otherwise they would be the unique center
+of `c` with that X-point), and at `a=0` the complement of
+`union_(x in X) N_A(x)` is exactly `K`.  Hence they are precisely the two
+K-neighbors of `c`, and
+
+```text
+psi : X  <-->  N_A(c)\K                      (B17Y'')
+```
+
+is a bijection.  Put `theta=phi o psi`.  For every `x`, the point `psi(x)`
+is adjacent to `c,x,theta(x)`; when these are distinct it is the unique
+common A-neighbor of each pair.  If `theta(x)` also lies in `X`, the defect clique forces
+`theta(x)=x`; conversely this equality is equivalent to `x in K` by
+(B17Y').  Therefore
+
+```text
+theta(X) intersect X = K intersect X,
+theta fixes exactly K intersect X.            (B17Y''')
+```
+
+The two holes of the injection `theta:X-->Q` are the `phi`-images of the
+two points in `N_A(c) intersect K`.
+
 A partial version holds for every `a`.  The point `c` has `a` neighbors in
 `X` and `q-a` in `Y`.  Each of the latter has exactly two K-neighbors by
 (B6), so deleting `c` again gives an injection
