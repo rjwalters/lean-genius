@@ -1602,9 +1602,11 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_degree_pr
     let Q0 := G.neighborFinset b ∩ B 0
     let Q := G.neighborFinset b ∩ T
     let F := fun q => G.neighborFinset q ∩ T
+    let U := (S.biUnion fun s => G.neighborFinset s ∩ B 0) \ S
     Q0 = Q ∧ Q.card = 5 ∧ (∑ q ∈ Q, (F q).card) = 29 ∧
       (Q.filter fun q => (F q).card = 5).card = 1 ∧
-      (Q.filter fun q => (F q).card = 6).card = 4 := by
+      (Q.filter fun q => (F q).card = 6).card = 4 ∧
+      (Q ∩ U).card = 1 ∧ (Q \ U).card = 4 := by
   classical
   dsimp only
   let B := squareOrderNineLowIncidenceBin G
@@ -1743,7 +1745,155 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_degree_pr
       _ = 29 := hsum
   have hQ5 : Q5.card = 1 := by omega
   have hQ6 : Q6.card = 4 := by omega
-  exact ⟨hQQ0.symm, hQcard, hsum, hQ5, hQ6⟩
+  have hQ5U : Q5 = Q ∩ U := by
+    ext q
+    simp only [Q5, Finset.mem_filter, Finset.mem_inter]
+    constructor
+    · rintro ⟨hq, hq5⟩
+      refine ⟨hq, ?_⟩
+      rw [hdegree q hq] at hq5
+      by_contra hqU
+      simp [hqU] at hq5
+    · rintro ⟨hq, hqU⟩
+      refine ⟨hq, ?_⟩
+      rw [hdegree q hq]
+      simp [hqU]
+  have hQ6U : Q6 = Q \ U := by
+    ext q
+    simp only [Q6, Finset.mem_filter, Finset.mem_sdiff]
+    constructor
+    · rintro ⟨hq, hq6⟩
+      refine ⟨hq, ?_⟩
+      intro hqU
+      rw [hdegree q hq] at hq6
+      simp [hqU] at hq6
+    · rintro ⟨hq, hqU⟩
+      refine ⟨hq, ?_⟩
+      rw [hdegree q hq]
+      simp [hqU]
+  exact ⟨hQQ0.symm, hQcard, hsum, hQ5, hQ6,
+    hQ5U ▸ hQ5, hQ6U ▸ hQ6⟩
+
+/-- Let `w` be the third special B0 row, distinct from the two puncture
+endpoints.  A common missing row has exactly one B0 neighbor on `w`'s row
+and four B0 neighbors off it.  The unique neighbor on `w`'s row is exactly
+the degree-five point in its five-support profile. -/
+theorem squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z w b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hw : w ∈ G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)
+    (hwy : w ≠ y) (hwz : w ≠ z)
+    (hb : b ∈
+      ((secondOrderDefectGraph G).neighborFinset y ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) ∩
+      ((secondOrderDefectGraph G).neighborFinset z ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let Q := G.neighborFinset b ∩ T
+    let Rw := G.neighborFinset w ∩ B 0
+    (Q ∩ Rw).card = 1 ∧ (Q \ Rw).card = 4 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let Q0 := G.neighborFinset b ∩ B 0
+  let Q := G.neighborFinset b ∩ T
+  let Ry := G.neighborFinset y ∩ B 0
+  let Rz := G.neighborFinset z ∩ B 0
+  let Rw := G.neighborFinset w ∩ B 0
+  let U := (S.biUnion fun s => G.neighborFinset s ∩ B 0) \ S
+  have hprofile :=
+    squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_degree_profile
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz hb
+  dsimp only at hprofile
+  have hQ0eq : Q0 = Q := hprofile.1
+  have hQcard : Q.card = 5 := hprofile.2.1
+  have hQUcard : (Q ∩ U).card = 1 := hprofile.2.2.2.2.2.1
+  have hpack :=
+    squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_union
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz hb
+  dsimp only at hpack
+  have hYQ0 : Disjoint Ry Q0 := hpack.2.2.2.2.1
+  have hZQ0 : Disjoint Rz Q0 := hpack.2.2.2.2.2.1
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcensus
+  have hScard : S.card = 3 := hcensus.2.2
+  have hyS : y ∈ S := (Finset.mem_sdiff.mp hy).1
+  have hzS : z ∈ S := (Finset.mem_sdiff.mp hz).1
+  have hwS : w ∈ S := hw
+  let P : Finset V := {y, z, w}
+  have hPsub : P ⊆ S := by
+    intro v hv
+    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hv
+    rcases hv with rfl | rfl | rfl
+    · exact hyS
+    · exact hzS
+    · exact hwS
+  have hPcard : P.card = 3 := by
+    have hyNot : y ∉ ({z, w} : Finset V) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+      exact ⟨hyz, fun h => hwy h.symm⟩
+    have hzNot : z ∉ ({w} : Finset V) := by
+      simp only [Finset.mem_singleton]
+      exact fun h => hwz h.symm
+    change ({y, z, w} : Finset V).card = 3
+    rw [Finset.card_insert_of_notMem hyNot,
+      Finset.card_insert_of_notMem hzNot]
+    simp
+  have hPS : P = S :=
+    Finset.eq_of_subset_of_card_le hPsub (by rw [hPcard, hScard])
+  have hQUeq : Q ∩ U = Q ∩ Rw := by
+    ext q
+    simp only [Finset.mem_inter]
+    constructor
+    · rintro ⟨hqQ, hqU⟩
+      refine ⟨hqQ, ?_⟩
+      have hqUParts := Finset.mem_sdiff.mp hqU
+      simp only [Finset.mem_biUnion] at hqUParts
+      obtain ⟨s, hsS, hqs⟩ := hqUParts.1
+      have hsP : s ∈ P := by rw [hPS]; exact hsS
+      simp only [P, Finset.mem_insert, Finset.mem_singleton] at hsP
+      rcases hsP with rfl | rfl | rfl
+      · have hqQ0 : q ∈ Q0 := hQ0eq.symm ▸ hqQ
+        exact ((Finset.disjoint_left.mp hYQ0) hqs hqQ0).elim
+      · have hqQ0 : q ∈ Q0 := hQ0eq.symm ▸ hqQ
+        exact ((Finset.disjoint_left.mp hZQ0) hqs hqQ0).elim
+      · exact hqs
+    · rintro ⟨hqQ, hqRw⟩
+      refine ⟨hqQ, Finset.mem_sdiff.mpr ⟨?_, ?_⟩⟩
+      · simp only [Finset.mem_biUnion]
+        exact ⟨w, hwS, hqRw⟩
+      · exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hqQ).2).2
+  have hQRw : (Q ∩ Rw).card = 1 := by
+    rw [← hQUeq]
+    exact hQUcard
+  have hQdiff : (Q \ Rw).card = 4 := by
+    rw [Finset.card_sdiff, hQcard, Finset.inter_comm Rw Q, hQRw]
+  exact ⟨hQRw, hQdiff⟩
 
 end
 
@@ -1768,3 +1918,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_specialDefects_eq_two
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_exact
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_degree_profile
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_third_row_owner
