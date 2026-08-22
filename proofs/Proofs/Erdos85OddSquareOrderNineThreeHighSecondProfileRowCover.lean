@@ -1513,6 +1513,129 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_reso
       have hAone : A.card = 1 := by omega
       have hCzero : C.card = 0 := by omega
       exact ⟨hD, hAone, hCzero⟩
+
+/-- For each U1 point, exactly fifteen ordinary rows are resolved through a
+U1-core common center: its three cubic neighbors have five ordinary B0
+neighbors each, and these three service fibers are disjoint. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hb : b ∈ squareOrderNineLowIncidenceBin G 1 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let C := fun t => (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+    (T.filter fun t => (C t).Nonempty).card = 15 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let W := G.neighborFinset b ∩ U1
+  let F := fun w => G.neighborFinset w ∩ T
+  let C := fun t => (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+  have hbU1 : b ∈ U1 := hb
+  have hcore :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcore
+  have hWcard : W.card = 3 := by
+    have hdeg := hcore.2.1 ⟨b, hbU1⟩
+    rw [degree_induce_finset_eq_card_inter] at hdeg
+    exact hdeg
+  have hFcard : ∀ w ∈ W, (F w).card = 5 := by
+    intro w hwW
+    have hwParts := Finset.mem_inter.mp hwW
+    have hwU := Finset.mem_sdiff.mp hwParts.2
+    have hwNotX : ¬ G.Adj w x := by
+      intro hwx
+      exact hwU.2 (Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x w).mpr hwx.symm, hwU.1⟩)
+    have hwdeg :=
+      squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hwU.1
+    dsimp only at hwdeg
+    have hB0card : (G.neighborFinset w ∩ B 0).card = 5 := by
+      simpa [hwNotX] using hwdeg.2
+    have hFT : F w = G.neighborFinset w ∩ B 0 := by
+      apply Finset.Subset.antisymm
+      · intro t htF
+        have htParts := Finset.mem_inter.mp htF
+        exact Finset.mem_inter.mpr ⟨htParts.1,
+          (Finset.mem_sdiff.mp htParts.2).1⟩
+      · intro t htB0
+        have htParts := Finset.mem_inter.mp htB0
+        refine Finset.mem_inter.mpr ⟨htParts.1,
+          Finset.mem_sdiff.mpr ⟨htParts.2, ?_⟩⟩
+        intro htS
+        have htSParts := Finset.mem_inter.mp htS
+        have hforbid :=
+          squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+            G hfree hhigh hx htSParts.2 hwU.1
+              ((G.mem_neighborFinset x t).mp htSParts.1)
+        exact hforbid ((G.adj_comm w t).mp
+          ((G.mem_neighborFinset w t).mp htParts.1))
+    rw [hFT, hB0card]
+  have hbNotT : b ∉ T := by
+    intro hbT
+    have hbB0 := (Finset.mem_sdiff.mp hbT).1
+    have hk0 := (Finset.mem_filter.mp hbB0).2
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_sdiff.mp hb).1).2
+    omega
+  have hgeneric :=
+    c4Free_neighbor_blocks_partition_common_targets G hfree b T hbNotT
+  dsimp only at hgeneric
+  have hdisj : ∀ w ∈ W, ∀ z ∈ W, w ≠ z → Disjoint (F w) (F z) := by
+    intro w hwW z hzW hwz
+    exact hgeneric.1 w (Finset.mem_inter.mp hwW).1
+      z (Finset.mem_inter.mp hzW).1 hwz
+  have hunion : W.biUnion F = T.filter fun t => (C t).Nonempty := by
+    ext t
+    constructor
+    · intro htUnion
+      simp only [Finset.mem_biUnion] at htUnion
+      obtain ⟨w, hwW, htF⟩ := htUnion
+      have hwParts := Finset.mem_inter.mp hwW
+      have htParts := Finset.mem_inter.mp htF
+      refine Finset.mem_filter.mpr ⟨htParts.2, ⟨w, ?_⟩⟩
+      exact Finset.mem_inter.mpr ⟨Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset t w).mpr
+          ((G.adj_comm w t).mp ((G.mem_neighborFinset w t).mp htParts.1)),
+        hwParts.2⟩, hwParts.1⟩
+    · intro htFilter
+      have htParts := Finset.mem_filter.mp htFilter
+      obtain ⟨w, hwC⟩ := htParts.2
+      have hwCParts := Finset.mem_inter.mp hwC
+      have hwtU := Finset.mem_inter.mp hwCParts.1
+      simp only [Finset.mem_biUnion]
+      exact ⟨w, Finset.mem_inter.mpr ⟨hwCParts.2, hwtU.2⟩,
+        Finset.mem_inter.mpr ⟨
+          (G.mem_neighborFinset w t).mpr
+            ((G.adj_comm t w).mp ((G.mem_neighborFinset t w).mp hwtU.1)),
+          htParts.1⟩⟩
+  rw [← hunion, Finset.card_biUnion hdisj]
+  calc
+    (∑ w ∈ W, (F w).card) = ∑ _w ∈ W, 5 := by
+      apply Finset.sum_congr rfl
+      intro w hw
+      exact hFcard w hw
+    _ = 15 := by simp [hWcard]
 end
 
 end Erdos85
@@ -1533,4 +1656,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_common_center_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
 #print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
