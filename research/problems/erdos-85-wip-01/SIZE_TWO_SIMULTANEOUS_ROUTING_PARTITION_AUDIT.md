@@ -2639,3 +2639,57 @@ endpoint defect once (160) holds.  When (160) fails, either the run is
 quadratically long in `q`, or all clean colors can be concentrated on the
 at most two endpoint owners; the latter is now the finite exceptional
 configuration requiring a marked endpoint count.
+
+## 47. Root--port curl interface
+
+The color-only failure in Section 44 specifies which part of a Farkas
+potential can still carry information.  Orient an edge `t -> u` of the
+state cycle, and let `p_t` and `p_u` be the actual ports used at its two
+ends.  On a horizontal edge they are the same exterior vertex; on a
+vertical edge they are the two exterior vertices of the rooted triangle.
+
+For state prices `alpha_t` and cross-prices `mu_(t,p)`, define the binary
+root--port curl
+
+```text
+W_(t,u)
+  := alpha_t + alpha_u
+   + mu_(t,p_u) + mu_(u,p_t).                           (162)
+```
+
+This is the characteristic-two version of the complete row--fiber Farkas
+curl (12n) in the B.3 audit: the ordinary degree-gradient is the `alpha`
+part, while the two crossed `mu` evaluations retain the individual root and
+port at opposite ends of the transition.  It is symmetric as a binary edge
+label, equivalently antisymmetric before reduction modulo two.
+
+Around a state cycle `Omega`, the `alpha` terms cancel and
+
+```text
+sum_(tu in Omega) W_(t,u)
+  = sum_(tu in Omega)
+      (mu_(t,p_u) + mu_(u,p_t)).                        (163)
+```
+
+Unlike (154), the right side need not vanish when the owner-change graph is
+Eulerian: two occurrences of the same owner color can have different roots
+and different actual ports.  Thus (162) is the smallest imported curl shape
+which escapes the proved blind spot.
+
+The exact remaining theorem can now be stated without claiming arbitrary
+prices suffice.  One must construct `mu` from the simultaneous clean-lift
+or incoming-fiber-cap data, with whatever sign/integrality constraints that
+construction imposes, so that on admissible state edges
+
+```text
+W_(t,u) = 1 on horizontal edges,
+W_(t,u) = 0 on vertical edges.                          (164)
+```
+
+Then (163) gives `H(Omega)=0` for every state cycle and closes (57).
+Without a routing-derived restriction on `mu`, (164) is merely a linear
+reparameterization of the desired cocycle and proves nothing.  The
+endpoint-neutral clean colors of Section 46 identify the available source
+of such restrictions: their disjoint two-point fibers give genuine incoming
+capacity constraints indexed by the marked root and port, exactly the data
+retained in (162).
