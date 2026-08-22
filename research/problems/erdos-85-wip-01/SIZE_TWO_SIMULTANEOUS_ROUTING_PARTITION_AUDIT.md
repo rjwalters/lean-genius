@@ -3818,3 +3818,55 @@ it exposes the required involution more concretely: pair the owner chords
 which merge or close the rooted state-run components.  A pairing of their
 two endpoint occurrences is insufficient; the pairing must act on these
 component-changing chords themselves.
+
+## 70. A `C7` rooted counterprofile to cut parity without simultaneous reuse
+
+The congruence (228) is not a consequence of the owner word, rooted path
+lengths, and radius-two exclusion alone.  Label a projected `C7` by
+`x_0,...,x_6`.  Give the first three consecutive edges owner `e` and the
+remaining four owner `f`, so the two change roots are `x_0` and `x_3`.
+Take both rooted transition paths to be the single vertical edge `e--f`.
+Then
+
+```text
+X_e = {x_0,x_1,x_2,x_3},   h_e=3,   v_e=2,
+X_f = {x_0,x_3,x_4,x_5,x_6}, h_f=4, v_f=2.             (232)
+```
+
+On `X_e`, let `F_e[c]` contain the three run edges and the allowed
+distance-three chord `x_0x_3`.  Thus `F_e[c][X_e]` is a four-cycle,
+its cut is empty, and the chord port is used vertically at both change
+roots:
+
+```text
+kappa_vert(e)=1,    |delta_(F_e[c])(X_e)|=0.           (233)
+```
+
+On `X_f`, retain only its four run edges and let the other owner-factor edge
+at each boundary root leave `X_f`.  Then
+
+```text
+kappa_vert(f)=0,    |delta_(F_f[c])(X_f)|=2.           (234)
+```
+
+The partial factors extend abstractly to two-factors by continuing the two
+`f` boundary edges through unused roots; the `e` restriction is already a
+cycle.  Equations (225)--(227) hold exactly:
+
+```text
+2+2 = 2(1) + (0+2),
+kappa_vert = V - (0+2)/2 = 2-1 = 1.                   (235)
+```
+
+The only added chord has cyclic distance three, so the radius-two exclusion
+is respected.  At the two changes, its single port can serve the `e` side of
+both direct transitions, while distinct cut ports serve the `f` sides.
+
+This is deliberately a **rooted owner-factor counterprofile**, not a full
+ambient graph or an SRP realization: the remaining cross blocks, internal
+factors, and other colors have not been supplied.  Its conclusion is exact
+at that scope.  The mod-four target (228), and hence evenness of
+`kappa_vert`, cannot be proved from the cyclic owner word plus the local
+transition paths and C4 radius exclusions.  A successful proof must use the
+simultaneous reuse equations to forbid or pair precisely this distance-three
+owner chord.
