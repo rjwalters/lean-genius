@@ -721,6 +721,20 @@ of the binary coordinate pairing.  This still permits dependence and does
 not rule out such an orbit, but it is a concrete obstruction unavailable
 to an arbitrary recursion.
 
+For an even literal period `ell=2m`, the same argument kills exactly the
+even residue classes.  The Gram entry `u_i dot u_j` still depends only on
+`i+j mod 2m`; diagonal sums `2i` exhaust all even residues, so
+
+```text
+u_i dot u_j = 0 whenever i and j have the same parity.          (36a)
+```
+
+Thus the even-phase shores and odd-phase shores each span a totally
+isotropic subspace, and the orbit Gram matrix has block form
+`[[0,C],[C^T,0]]`; only opposite phases can pair.  The period-two normal
+form below is the first case of this bipartite isotropic structure.  Again,
+this constrains rather than excludes longer even orbits.
+
 The bottom incidence geometry excludes the shortest even return.  Suppose
 `|S|` is `q+1` or `q+2`, B is itself a kernel shore, and put
 `C=supp(beta(B))`.  Equation (29a) gives
