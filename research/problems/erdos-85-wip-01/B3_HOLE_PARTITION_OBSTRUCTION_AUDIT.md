@@ -498,6 +498,18 @@ uniform proof must therefore construct a Hall/min-cut potential from `Q,K`
 or prove directly that the corresponding fractional exact-degree polytope
 is empty; another scalar weighted-row ledger cannot recover this signal.
 
+Greedy irreducible-subsystem probes show why such a potential cannot be
+attached to one fixed row set.  Depending on the outer witness and selected
+color pair, an infeasible degree-row core can be a single locally deficient
+row, one complete five-row fiber `F_b`, a six-row set `F_b union {u}` with
+`b in S_u K` (so `u` is trace-anticomplete to `F_b`), or a larger coupled
+multi-fiber set.  In other instances every individual row and every single
+fiber is fractionally feasible although the complete system is not.  These
+cores depend on deletion order and are diagnostic rather than certificates,
+but they locate the plausible uniform statement: a local-transversal versus
+coupled-multi-fiber deficiency dichotomy, not the existence of one bad fiber
+of a predetermined kind.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
