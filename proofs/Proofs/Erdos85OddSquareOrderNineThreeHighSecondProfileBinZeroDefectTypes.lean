@@ -1960,6 +1960,243 @@ theorem squareOrderNine_threeHigh_secondProfile_special_binZero_target_dichotomy
     rw [hKone] at hord
     omega
 
+/-- After deleting the three special bin-zero rows, the remaining B₀ block
+is a 47-vertex graph.  Its vertices have induced degree five precisely on
+the special support target set and degree six elsewhere; the two branches
+therefore have `(24,23,129)` and `(22,25,130)` degree/edge censuses. -/
+theorem squareOrderNine_threeHigh_secondProfile_ordinary_binZero_residual_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let U := (S.biUnion fun y => G.neighborFinset y ∩ B 0) \ S
+    let K := G.induce (↑T : Set V)
+    T.card = 47 ∧ U ⊆ T ∧
+      (∀ y : ↥(↑T : Set V), K.degree y = if y.1 ∈ U then 5 else 6) ∧
+      ((U.card = 24 ∧ (T \ U).card = 23 ∧ K.edgeFinset.card = 129) ∨
+        (U.card = 22 ∧ (T \ U).card = 25 ∧ K.edgeFinset.card = 130)) := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let W := S.biUnion fun y => G.neighborFinset y ∩ B 0
+  let U := W \ S
+  let K := G.induce (↑T : Set V)
+  change T.card = 47 ∧ U ⊆ T ∧
+    (∀ y : ↥(↑T : Set V), K.degree y = if y.1 ∈ U then 5 else 6) ∧
+    ((U.card = 24 ∧ (T \ U).card = 23 ∧ K.edgeFinset.card = 129) ∨
+      (U.card = 22 ∧ (T \ U).card = 25 ∧ K.edgeFinset.card = 130))
+  have hB0card : (B 0).card = 50 :=
+    squareOrderNine_threeHigh_secondProfile_binZero_card G hcard hp hhigh hc3
+  have hScard : S.card = 3 := by
+    have hcensus :=
+      squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+    exact hcensus.2.2
+  have hSsub : S ⊆ B 0 := Finset.inter_subset_right
+  have hTcard : T.card = 47 := by
+    rw [Finset.card_sdiff_of_subset hSsub, hB0card, hScard]
+  have hWsub : W ⊆ B 0 := by
+    intro y hyW
+    simp only [W, Finset.mem_biUnion] at hyW
+    obtain ⟨z, _hzS, hyF⟩ := hyW
+    exact (Finset.mem_inter.mp hyF).2
+  have hUsub : U ⊆ T := by
+    intro y hyU
+    have hyParts := Finset.mem_sdiff.mp hyU
+    exact Finset.mem_sdiff.mpr ⟨hWsub hyParts.1, hyParts.2⟩
+  have hb2 : B 2 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 2) (by omega), hc2]
+  have hb3card : (B 3).card = 1 := by
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 3) (by omega), hc3]
+  have hb4 : B 4 = ∅ := by
+    rw [← Finset.card_eq_zero,
+      squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 4) (by omega), hc4]
+  have hB0degree : ∀ y ∈ T, (G.neighborFinset y ∩ B 0).card = 6 := by
+    intro y hyT
+    have hyParts := Finset.mem_sdiff.mp hyT
+    have hyB0 := hyParts.1
+    have hyNotS := hyParts.2
+    have hyNotAdj : ¬ G.Adj y x := by
+      intro hyx
+      apply hyNotS
+      exact Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x y).mpr hyx.symm, hyB0⟩
+    have hyB1 :=
+      squareOrderNine_threeHigh_secondProfile_binZero_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyB0
+    simp [hyNotAdj] at hyB1
+    change (G.neighborFinset y ∩ B 1).card = 3 at hyB1
+    have hyLow := (Finset.mem_filter.mp hyB0).1
+    have hyNotHigh : y ∉ H := (Finset.mem_sdiff.mp hyLow).2
+    have hyDegree : G.degree y = 9 := by
+      rcases hp.degree_dichotomy y with hlo | hhi
+      · exact hlo
+      · exact (hyNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+    have hky : squareOrderHighIncidenceCount G 9 y = 0 :=
+      (Finset.mem_filter.mp hyB0).2
+    have hyB3zero : (G.neighborFinset y ∩ B 3).card = 0 := by
+      rw [Finset.card_eq_zero]
+      ext z
+      simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+      intro hyz hzB3
+      have hzx : z = x := Finset.card_le_one.mp (by omega) z hzB3 x hx
+      subst z
+      exact hyNotAdj ((G.mem_neighborFinset y x).mp hyz)
+    have hpnt := squareOrderNine_originalNeighbor_lowBin_partition G hp hyNotHigh
+    change (∑ j ∈ Finset.range 5, (G.neighborFinset y ∩ B j).card) +
+      squareOrderHighIncidenceCount G 9 y = G.degree y at hpnt
+    norm_num [Finset.sum_range_succ, hb2, hb4, hky, hyDegree,
+      hyB1, hyB3zero] at hpnt
+    omega
+  have hspecialLe : ∀ y ∈ T, (G.neighborFinset y ∩ S).card ≤ 1 := by
+    intro y hyT
+    have hyParts := Finset.mem_sdiff.mp hyT
+    have hyNotS := hyParts.2
+    have hyx : y ≠ x := by
+      intro h
+      subst y
+      have hxB0 := hyParts.1
+      have hkx := (Finset.mem_filter.mp hx).2
+      have hk0 := (Finset.mem_filter.mp hxB0).2
+      omega
+    have hcommon := (not_containsC4_iff_forall_common_le_one G).mp hfree y x hyx
+    apply (Finset.card_le_card ?_).trans hcommon
+    intro z hz
+    have hzParts := Finset.mem_inter.mp hz
+    exact Finset.mem_inter.mpr ⟨hzParts.1,
+      (Finset.mem_inter.mp hzParts.2).1⟩
+  have hmemU : ∀ y ∈ T, y ∈ U ↔ 0 < (G.neighborFinset y ∩ S).card := by
+    intro y hyT
+    have hyNotS := (Finset.mem_sdiff.mp hyT).2
+    constructor
+    · intro hyU
+      have hyW := (Finset.mem_sdiff.mp hyU).1
+      simp only [W, Finset.mem_biUnion] at hyW
+      obtain ⟨z, hzS, hyF⟩ := hyW
+      have hzy : G.Adj z y :=
+        (G.mem_neighborFinset z y).mp (Finset.mem_inter.mp hyF).1
+      rw [Finset.card_pos]
+      exact ⟨z, Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset y z).mpr hzy.symm, hzS⟩⟩
+    · intro hpos
+      obtain ⟨z, hz⟩ := Finset.card_pos.mp hpos
+      have hzParts := Finset.mem_inter.mp hz
+      refine Finset.mem_sdiff.mpr ⟨?_, hyNotS⟩
+      simp only [W, Finset.mem_biUnion]
+      exact ⟨z, hzParts.2, Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset z y).mpr
+          ((G.mem_neighborFinset y z).mp hzParts.1).symm,
+          (Finset.mem_sdiff.mp hyT).1⟩⟩
+  have hdegree : ∀ y : ↥(↑T : Set V),
+      K.degree y = if y.1 ∈ U then 5 else 6 := by
+    intro y
+    rw [degree_induce_finset_eq_card_inter]
+    have hB0 := hB0degree y.1 y.2
+    have hsub : S ⊆ B 0 := hSsub
+    have heq : G.neighborFinset y.1 ∩ T =
+        (G.neighborFinset y.1 ∩ B 0) \ S := by
+      ext z
+      constructor
+      · intro hz
+        have hzParts := Finset.mem_inter.mp hz
+        have hzT := Finset.mem_sdiff.mp hzParts.2
+        exact Finset.mem_sdiff.mpr
+          ⟨Finset.mem_inter.mpr ⟨hzParts.1, hzT.1⟩, hzT.2⟩
+      · intro hz
+        have hzParts := Finset.mem_sdiff.mp hz
+        have hzNB := Finset.mem_inter.mp hzParts.1
+        exact Finset.mem_inter.mpr
+          ⟨hzNB.1, Finset.mem_sdiff.mpr ⟨hzNB.2, hzParts.2⟩⟩
+    rw [heq, Finset.card_sdiff]
+    have hinter : S ∩ (G.neighborFinset y.1 ∩ B 0) =
+        G.neighborFinset y.1 ∩ S := by
+      ext z
+      constructor
+      · intro hz
+        have hzParts := Finset.mem_inter.mp hz
+        exact Finset.mem_inter.mpr
+          ⟨(Finset.mem_inter.mp hzParts.2).1, hzParts.1⟩
+      · intro hz
+        have hzParts := Finset.mem_inter.mp hz
+        exact Finset.mem_inter.mpr ⟨hzParts.2,
+          Finset.mem_inter.mpr ⟨hzParts.1, hSsub hzParts.2⟩⟩
+    rw [hinter, hB0]
+    have hle := hspecialLe y.1 y.2
+    by_cases hyU : y.1 ∈ U
+    · have hpos := (hmemU y.1 y.2).mp hyU
+      simp [hyU]
+      omega
+    · have hzero : (G.neighborFinset y.1 ∩ S).card = 0 := by
+        by_contra hne
+        have hpos : 0 < (G.neighborFinset y.1 ∩ S).card := Nat.pos_of_ne_zero hne
+        exact hyU ((hmemU y.1 y.2).mpr hpos)
+      simp [hyU, hzero]
+  have htarget :=
+    squareOrderNine_threeHigh_secondProfile_special_binZero_target_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  change ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧ U.card = 24) ∨
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧ U.card = 22) at htarget
+  have hcompCard (u : ℕ) (hu : U.card = u) : (T \ U).card = 47 - u := by
+    rw [Finset.card_sdiff_of_subset hUsub, hTcard, hu]
+  have hedgeCard (u e : ℕ) (hu : U.card = u)
+      (heq : 5 * u + 6 * (47 - u) = 2 * e) : K.edgeFinset.card = e := by
+    have hfilter : T.filter (fun y => y ∈ U) = U := by
+      ext y
+      simp only [Finset.mem_filter]
+      constructor
+      · exact fun hy => hy.2
+      · intro hyU
+        exact ⟨hUsub hyU, hyU⟩
+    have hfilterNot : T.filter (fun y => y ∉ U) = T \ U := by
+      ext y
+      simp
+    have hsum : (∑ y : ↥(↑T : Set V), K.degree y) =
+        5 * U.card + 6 * (T \ U).card := by
+      calc
+        _ = ∑ y : ↥(↑T : Set V),
+            (if y.1 ∈ U then 5 else 6) := by
+              apply Finset.sum_congr rfl
+              intro y _
+              exact hdegree y
+        _ = ∑ y ∈ T, (if y ∈ U then 5 else 6) :=
+          (Finset.sum_subtype T (fun _ => Iff.rfl)
+            (fun y : V => if y ∈ U then 5 else 6)).symm
+        _ = 5 * U.card + 6 * (T \ U).card := by
+          simp [Finset.sum_ite, hfilter, hfilterNot, Nat.mul_comm]
+    have hhand := K.sum_degrees_eq_twice_card_edges
+    rw [hsum, hu, hcompCard u hu] at hhand
+    omega
+  refine ⟨hTcard, hUsub, hdegree, ?_⟩
+  rcases htarget with hfirst | hsecond
+  · left
+    have hcomp := hcompCard 24 hfirst.2
+    have hedge := hedgeCard 24 129 hfirst.2 (by norm_num)
+    exact ⟨hfirst.2, by simpa using hcomp, hedge⟩
+  · right
+    have hcomp := hcompCard 22 hsecond.2
+    have hedge := hedgeCard 22 130 hsecond.2 (by norm_num)
+    exact ⟨hsecond.2, by simpa using hcomp, hedge⟩
+
 end
 
 end Erdos85
@@ -1991,3 +2228,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_ordinary_support
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_binZero_target_dichotomy
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_binZero_residual_census
