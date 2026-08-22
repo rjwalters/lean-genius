@@ -1545,6 +1545,23 @@ has `q-3`.  The missing majority intersection is therefore paired
 pointwise with one missing ordinary D-neighbor on each marked line; the
 extension defect is localized, not merely fixed in total by (73f).
 
+At saturation the companion shore equation localizes the D-cut on the
+design points themselves.  Since `2a=q-2r`, a majority point of replication
+one or two satisfies
+
+```text
+t_P^F=1  => deg_D(P,V setminus S)=r,
+t_P^F=2  => deg_D(P,V setminus S)=q/2+r.                  (73r)
+```
+
+This is Lean-checked by `binarySquare_saturatedMixed_shoreCut_profile`.
+Thus every private point in the `r=1` Gram system (73p) has a unique
+cross-shore D-neighbor; at `r=2` it has exactly two.  Pair-intersection points
+carry the complementary large cut.  The private rows therefore come with
+canonical one- or two-valued defect transport marks, not only their residual
+A-incidence rows -- the natural input for coupling (73p) back to the
+Eulerian `K/Omega` transport.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated

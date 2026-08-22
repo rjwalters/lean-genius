@@ -378,6 +378,16 @@ theorem binarySquare_majority_private_ordinaryDefect_complement
     pvt + dM + u = q + r := by
   omega
 
+/-- Saturated companion-cut profile for majority private points (`t=1`) and
+pair-intersection points (`t=2`). -/
+theorem binarySquare_saturatedMixed_shoreCut_profile
+    {q m a r cut t : ℕ}
+    (hq : q = 2 * m) (hma : m = a + r)
+    (ht : t = 1 ∨ t = 2)
+    (hcut : 2 * cut + 2 * a = q * t) :
+    (t = 1 → cut = r) ∧ (t = 2 → cut = m + r) := by
+  constructor <;> intro h <;> subst t <;> omega
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -906,6 +916,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedExceptional_defectCut_lower
 #print axioms Erdos85.binarySquare_residualHalfLine_profile
 #print axioms Erdos85.binarySquare_majority_private_ordinaryDefect_complement
+#print axioms Erdos85.binarySquare_saturatedMixed_shoreCut_profile
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.commonNeighbor_not_secondOrderDefect_adj
