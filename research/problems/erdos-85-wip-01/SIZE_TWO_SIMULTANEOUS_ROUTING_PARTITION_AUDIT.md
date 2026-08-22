@@ -3871,4 +3871,7 @@ at that scope.  The mod-four target (228), and hence evenness of
 `kappa_vert`, cannot be proved from the cyclic owner word plus the local
 transition paths and C4 radius exclusions.  A successful proof must use the
 simultaneous reuse equations to forbid or pair precisely this distance-three
-owner chord.
+owner chord.  The reproducer
+`verify_c7_vertical_collision_counterprofile.py` checks the displayed local
+incidences, the cut/collision ledger, and maximum codegree one of the corrected
+skeleton with distinct outside roots.
