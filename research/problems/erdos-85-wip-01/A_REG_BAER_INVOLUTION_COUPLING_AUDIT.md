@@ -590,6 +590,19 @@ shown in (29).  This remains true even when S and B overlap as subsets of
 the ambient vertex set; looplessness merely says that an overlapping label
 X is not an endpoint of the pair it indexes.
 
+Equivalently, with S and B treated as labeled copies, this incidence is
+`(q,2)`-biregular.  Every A-neighbor of a point of S labels a line through
+that point and hence lies in B, so
+
+```text
+N_A(S) is contained in B,
+A has no edge from S to V setminus B.                           (29a)
+```
+
+Every point of B uses exactly two of its q A-edges on S and its remaining
+`q-2` edges outside S.  Thus (29) specifies the whole A-interface of the
+bottom shore, not only a pair-counting bijection.
+
 The overlap has its own rigid form.  A point `X in S` belongs to B exactly
 when its polar line meets S twice, equivalently when its degree in `A[S]` is
 two.  Any neighbor in `A[S]` also has positive even induced degree, hence
