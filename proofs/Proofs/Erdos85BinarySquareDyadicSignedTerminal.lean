@@ -325,6 +325,21 @@ theorem binarySquare_mixedExceptional_defectCut_identity
       _ = u * u := by rw [Nat.sub_add_cancel hu]
   nlinarith
 
+/-- Four-type population dichotomy at the saturated mixed endpoint `c=q`.
+Write `q=2a+2r`; the number `h=|C∩S|` is forced to be either the shore
+displacement scale `a` or the majority size `2a+r=q-r`.  The first disjunct
+is the equation at a minority vertex in `S`, the second at one outside `S`. -/
+theorem binarySquare_saturatedMixed_exceptionalShore_card_dichotomy
+    {q a r h : ℕ} (hq : q = 2 * a + 2 * r)
+    (hcase : (∃ b t : ℕ, b + h = q ∧ (t = 1 ∨ t = 2) ∧
+        2 * b + 2 * a = q * t) ∨
+      (∃ t : ℕ, (t = 0 ∨ t = 1) ∧
+        2 * h = 2 * a + q * t)) :
+    h = a ∨ h = 2 * a + r := by
+  rcases hcase with ⟨b, t, hbh, ht, heq⟩ | ⟨t, ht, heq⟩
+  · rcases ht with rfl | rfl <;> omega
+  · rcases ht with rfl | rfl <;> omega
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -825,6 +840,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedMajority_first_defect_layers
 #print axioms Erdos85.binarySquare_mixedMajority_replication_profile
 #print axioms Erdos85.binarySquare_mixedExceptional_defectCut_identity
+#print axioms Erdos85.binarySquare_saturatedMixed_exceptionalShore_card_dichotomy
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.mixedExceptional_union_card_le_of_replicationAtMostOne

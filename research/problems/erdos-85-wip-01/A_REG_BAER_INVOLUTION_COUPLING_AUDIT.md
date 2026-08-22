@@ -1327,6 +1327,27 @@ core makes `D[C]=K_c`, so `|delta_D(C)|=c(q-c)`.  Consequently the endpoint
 contrary to the connected-D branch.  Hence every balanced mixed survivor
 already satisfies `c<=q-1`.
 
+At the saturated unbalanced endpoint `c=q`, one also has `u=r`; every
+minority vertex then exhausts its entire D-neighborhood on `C setminus {X}`.
+Let `h=|C intersect S|`.  For a minority vertex in S, the number of its
+D-neighbors across the shore is exactly `q-h`; for one outside S, the number
+into S is exactly h.  Substitution into the two companion shore-degree
+formulas, together with minority replication `0/1` and majority replication
+`1/2`, forces
+
+```text
+h in {a,f} = {(q-2r)/2, q-r}.                              (73g)
+```
+
+This arithmetic dichotomy is Lean-checked by
+`binarySquare_saturatedMixed_exceptionalShore_card_dichotomy`.  It also
+records the four-type routing choice: when `h=f`, a minority center in S has
+one A-neighbor in the outside-majority type and a minority center outside S
+has one A-neighbor in its outside-minority type; when `h=a`, those degrees
+are respectively two and zero.  Thus `r=1` permits only
+`h=(q-2)/2` or `q-1`, and `r=2` only `h=(q-4)/2` or `q-2`.  The low-r layers
+now have both their incidence design and their four-type population fixed.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
