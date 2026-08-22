@@ -103,6 +103,41 @@ theorem c4Free_sameBlock_offDiagonal_gram_zero
   simpa [Nat.mul_comm] using
     (c4Free_disjointBlocks_common_card_mul_eq_zero G hfree T U hTU htu)
 
+/-- Exact cross-block saturation ledger.  Every ordered pair `(t, u)` in
+disjoint blocks is accounted for either by its (necessarily unique) common
+neighbor or by an edge of the second-order defect graph.  This is the scalar,
+parameter-free ancestor of the defect-component cross-block matrix equation. -/
+theorem c4Free_crossBlock_twoWalk_add_defect_eq_card_mul
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (T U : Finset V) (hTU : Disjoint T U) :
+    (∑ t ∈ T, ∑ w ∈ G.neighborFinset t,
+        (G.neighborFinset w ∩ U).card) +
+      (∑ t ∈ T,
+        ((secondOrderDefectGraph G).neighborFinset t ∩ U).card) =
+      T.card * U.card := by
+  classical
+  rw [← Finset.sum_add_distrib]
+  calc
+    (∑ t ∈ T, ((∑ w ∈ G.neighborFinset t,
+          (G.neighborFinset w ∩ U).card) +
+        ((secondOrderDefectGraph G).neighborFinset t ∩ U).card)) =
+        ∑ _t ∈ T, U.card := by
+      apply Finset.sum_congr rfl
+      intro t ht
+      have htU : t ∉ U := by
+        intro ht'
+        exact Finset.disjoint_left.mp hTU ht ht'
+      rw [c4Free_sum_neighbor_block_cards_eq_defect_complement
+        G hfree t U htU]
+      simpa [Finset.inter_comm] using
+        Finset.card_sdiff_add_card_inter U
+          ((secondOrderDefectGraph G).neighborFinset t)
+    _ = T.card * U.card := by simp
+
 end
 
 end Erdos85
@@ -110,3 +145,4 @@ end Erdos85
 #print axioms Erdos85.c4Free_crossBlock_common_card_mul_eq_zero
 #print axioms Erdos85.c4Free_crossBlock_trace_zero
 #print axioms Erdos85.c4Free_sameBlock_offDiagonal_gram_zero
+#print axioms Erdos85.c4Free_crossBlock_twoWalk_add_defect_eq_card_mul
