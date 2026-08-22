@@ -352,8 +352,10 @@ vertices.  All six B0 vertices lie among the 47 ordinary rows.  Indeed, an
 edge from `u` to a vertex `y` of the exceptional set `U` would close the
 4-cycle `x-z-u-y-x`, where `z` is the marked partner.  The marked B1 vertex
 has exactly five B0 defect neighbors, all again among the 47 ordinary rows;
-the vertices of `U` share `x` with it and rows of `P_g` are adjacent to it.
-Hence `|M_g|=5` and
+the vertices of `U` share `x` with it.  Some of those five defects can lie
+inside `P_g`: adjacency does not exclude a triangle-free edge from the
+second-order defect graph, and the proved internal-defect theorem in fact
+makes their number inside `P_g` odd.  Hence `|M_g|=5` and
 
 ```text
 sum_t |N_A(t) intersect P_g|
