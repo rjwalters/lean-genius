@@ -197,14 +197,42 @@ Equivalently, for every vertex set `S`,
 |delta_Omega(S)| = |S|  (mod 2).                 (8)
 ```
 
-This is the first canonical cut detector manufactured from the partial Baer
-involutions: every odd shore is crossed oddly.  It also states exactly what
-is still missing.  The edges of `Omega` may be either holes or even-overlap
-pairs and need not lie in `T` (or even in `D`), so (8) cannot yet be combined
-with the Eulerian cut law for `T`.  Any k-dependent terminal can now aim at a
-location theorem for `Omega`, rather than trying to couple the local
-involutions directly.  The q=4 connected control is compatible with (7), so
-this law alone does not conceal an order-independent contradiction.
+There is also an exact vertexwise coupling to `D`.  Let `M_Omega` be the
+zero-diagonal adjacency matrix of `Omega`, reduced over `F_2`.  Since `q` is
+even, the defining identities for `D` and `E` give
+
+```text
+D       = A^2 + J + I,
+M_Omega = E + I = A^3 + J + I,
+M_Omega + D = A^2(A+I)                         over F_2.          (9)
+```
+
+The matrix `A` is alternating over `F_2`, and `A 1=0`.  Its rank, hence its
+nullity (the order `q^2` is even), is even.  Therefore its kernel has
+dimension at least two and contains a vector `u` outside the constant line.
+For the nonempty proper shore `S=supp(u)`, (9) yields
+
+```text
+A 1_S = 0,
+M_Omega 1_S = D 1_S.                           over F_2           (10)
+```
+
+Thus every vertex has an even number of A-neighbors in `S`, and, vertex by
+vertex, its number of `Omega`-neighbors in `S` has the same parity as its
+number of D-neighbors in `S`.  This is stronger than the aggregate cut law
+(8): it is a nontrivial shore on which the overlap graph and the connected
+defect graph have identical incidence parity.
+
+Equations (7)--(10) are the first canonical cut detector manufactured from
+the partial Baer involutions and its first exact transport into `D`.  They
+also state exactly what is still missing.  The edges of `Omega` are disjoint
+from `A`, hence from `T`, and may be either D-edges or non-D even-overlap
+pairs.  So (10) cannot yet be combined with the Eulerian cut law for `T`.
+Any k-dependent terminal can now aim at locating the symmetric difference
+`Omega triangle D` on the kernel shore `S`, rather than trying to couple the
+local involutions directly.  The q=4 connected control is compatible with
+(7)--(10), so these laws alone do not conceal an order-independent
+contradiction.
 
 ## Disposition
 
