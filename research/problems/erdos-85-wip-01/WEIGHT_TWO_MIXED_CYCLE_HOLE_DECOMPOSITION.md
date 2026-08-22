@@ -164,3 +164,47 @@ Therefore every unequal-length rectangular block of the commuting hole
 factor is a dihedral translate of the canonical two-fold cycle cover.  The
 only unclassified rectangular case is degree `(2,2)` between equal-length
 cycles; degree `(1,1)` is already a dihedral cycle isomorphism.
+
+## Equal-length degree-two blocks split into dihedral matchings
+
+The final `(2,2)` case is also rigid, although the two matchings may have
+different orientations.  Let `Q` be the binary degree-two block between two
+copies of `C_r`, with `r>=3`, satisfying the cycle intertwining recurrence.
+
+If `Q` is translation-invariant, its row support is obtained from the support
+at row zero by simultaneous translation.  The two offsets in that support
+therefore give two edge-disjoint forward cyclic matchings.
+
+Otherwise the existing structural lemma
+`binary_cycleIntertwiner_exists_full_reverse_diagonal` extracts a complete
+reverse matching `R_s` contained entrywise in `Q`.  Subtract it.  The banked
+lemmas
+
+```text
+sub_reverseMatchingMatrix_entry_intertwine
+sub_reverseMatchingMatrix_binary
+sub_reverseMatchingMatrix_row_sum_eq_one
+```
+
+show that `Q-R_s` is still a binary cycle intertwiner and has row degree one.
+Then `binary_rowOne_cycleIntertwiner_orientation` says its unique row selector
+is globally either `x -> c+x` or `x -> c-x`.  Hence the residual is one
+dihedral perfect matching.  In either branch, `Q` is the edge-disjoint union
+of two dihedral cycle-isomorphism matchings.
+
+The exact Z3 falsifier `equal_cycle_two_intertwiner_audit.py` independently
+excludes every non-dihedral-pair support for `r=6,8,10,12,14`; the proof above
+is uniform and uses the already kernel-checked cycle-intertwiner lemmas, not
+the finite audit.
+
+Combining all cases gives the complete rectangular block list for a commuting
+hole 2-factor:
+
+* unequal lengths: only a factor-two pair, carrying the canonical two-fold
+  cyclic cover (or its transpose);
+* equal lengths, degree one: one dihedral matching;
+* equal lengths, degree two: two edge-disjoint dihedral matchings.
+
+What remains at the component level is compatibility of several such blocks
+with the total degree-two budget, rather than classification of an individual
+rectangular block.
