@@ -274,6 +274,144 @@ theorem squareOrderNine_threeHigh_secondProfile_paired_puncture_row_equation
   simp only [D] at hyHit hzHit ⊢
   omega
 
+/-- Each special endpoint has exactly three defect rows in the unmarked
+bin-one core.  Its full bin-one defect degree is three, while a marked row
+would share the bin-three root as an original common neighbor. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_unmarked_defect_card_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    (D.neighborFinset y ∩ U1).card = 3 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  have hregular :=
+    squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  dsimp only at hregular
+  have hmarkedZero : D.neighborFinset y ∩ M = ∅ := by
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro b hb
+    have hbParts := Finset.mem_inter.mp hb
+    have hbM := Finset.mem_inter.mp hbParts.2
+    have hyParts := Finset.mem_sdiff.mp hy
+    have hyx : G.Adj y x := (G.adj_comm x y).mp
+      ((G.mem_neighborFinset x y).mp (Finset.mem_inter.mp hyParts.1).1)
+    have hbx : G.Adj b x := (G.adj_comm x b).mp
+      ((G.mem_neighborFinset x b).mp hbM.1)
+    have hyb : y ≠ b := by
+      intro h
+      subst b
+      have hky := (Finset.mem_filter.mp (Finset.mem_inter.mp hyParts.1).2).2
+      have hkb := (Finset.mem_filter.mp hbM.2).2
+      omega
+    exact (not_secondOrderDefect_adj_of_commonNeighbor
+      G hfree hyb hyx hbx) ((D.mem_neighborFinset y b).mp hbParts.1)
+  have hsplit : D.neighborFinset y ∩ B 1 =
+      (D.neighborFinset y ∩ M) ∪ (D.neighborFinset y ∩ U1) := by
+    ext b
+    simp only [M, U1, Finset.mem_inter, Finset.mem_union,
+      Finset.mem_sdiff]
+    tauto
+  rw [hmarkedZero, Finset.empty_union] at hsplit
+  rw [← hsplit, hregular.2.1]
+
+/-- Joint census of the two three-row defect punctures.  All four row
+classes are determined by the overlap `I` of the two defect sets. -/
+theorem squareOrderNine_threeHigh_secondProfile_paired_defect_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    let Ey := D.neighborFinset y ∩ U1
+    let Ez := D.neighborFinset z ∩ U1
+    let I := Ey ∩ Ez
+    Ey.card = 3 ∧ Ez.card = 3 ∧ I.card ≤ 3 ∧
+      (Ey \ Ez).card = 3 - I.card ∧
+      (Ez \ Ey).card = 3 - I.card ∧
+      (U1 \ (Ey ∪ Ez)).card = 18 + I.card := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let Ey := D.neighborFinset y ∩ U1
+  let Ez := D.neighborFinset z ∩ U1
+  let I := Ey ∩ Ez
+  have hEy : Ey.card = 3 :=
+    squareOrderNine_threeHigh_secondProfile_special_unmarked_defect_card_three
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  have hEz : Ez.card = 3 :=
+    squareOrderNine_threeHigh_secondProfile_special_unmarked_defect_card_three
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hz
+  have hIle : I.card ≤ 3 := by
+    calc I.card ≤ Ey.card := Finset.card_le_card Finset.inter_subset_left
+      _ = 3 := hEy
+  have hEyDiff : (Ey \ Ez).card = 3 - I.card := by
+    change (Ey \ Ez).card = 3 - (Ey ∩ Ez).card
+    rw [Finset.card_sdiff, hEy]
+    congr 2
+    rw [Finset.inter_comm]
+  have hEzDiff : (Ez \ Ey).card = 3 - I.card := by
+    change (Ez \ Ey).card = 3 - (Ey ∩ Ez).card
+    rw [Finset.card_sdiff, hEz]
+  have hmarked :=
+    squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hmarked
+  have hMsub : M ⊆ B 1 := Finset.inter_subset_right
+  have hU1card : U1.card = 24 := by
+    rw [Finset.card_sdiff_of_subset hMsub, hmarked.1, hmarked.2]
+  have hEySub : Ey ⊆ U1 := Finset.inter_subset_right
+  have hEzSub : Ez ⊆ U1 := Finset.inter_subset_right
+  have hUnionSub : Ey ∪ Ez ⊆ U1 := Finset.union_subset hEySub hEzSub
+  have hUnionCard : (Ey ∪ Ez).card = 6 - I.card := by
+    change (Ey ∪ Ez).card = 6 - (Ey ∩ Ez).card
+    rw [Finset.card_union, hEy, hEz]
+  have hNeither : (U1 \ (Ey ∪ Ez)).card = 18 + I.card := by
+    rw [Finset.card_sdiff_of_subset hUnionSub, hU1card, hUnionCard]
+    omega
+  exact ⟨hEy, hEz, hIle, hEyDiff, hEzDiff, hNeither⟩
+
 end
 
 end Erdos85
@@ -282,3 +420,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_support_card_fourteen
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_puncture_design
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_puncture_row_equation
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_unmarked_defect_card_three
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_defect_census
