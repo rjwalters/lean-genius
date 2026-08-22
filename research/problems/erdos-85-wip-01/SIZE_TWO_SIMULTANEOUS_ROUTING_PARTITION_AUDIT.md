@@ -1211,3 +1211,56 @@ the owner component to its target copy.  Its first and last edges are
 necessarily off-diagonal component switches, although intermediate edges
 may again be diagonal.  What is still missing is a rule that transports
 ownership (rather than only incidence) along this forced path.
+
+## 19. Exact aggregate interaction and the ownership blind spot
+
+In fact the interaction matrices have a complete aggregate description.
+For arbitrary incidence components `(U_i,V_i)` and `(U_j,V_j)` of `R_ce`,
+their indicator vectors satisfy
+
+```text
+R_ec U_i = 0,                         R_ce V_j = 0       (70)
+```
+
+over `F_2`, because each bipartite component is a cycle.  Pair `SRP(c,e)`
+on the left with `U_i` and on the right with `V_j`.  Equation (70) kills
+both endpoint terms, leaving
+
+```text
+sum_(d != c,e) t^d_ij = |U_i| |V_j|  (mod 2).           (71)
+```
+
+The two shores of each incidence component have equal size.  If
+
+```text
+s_i := |U_i| mod 2 = |V_i| mod 2,
+T_ij := sum_(d != c,e) t^d_ij,
+```
+
+then (71) is the exact rank-one law
+
+```text
+T = s s^T  over F_2.                                    (72)
+```
+
+Since the shore order `2q` is even, `sum_i s_i=0`: every cross two-factor
+has an even number of odd half-length components.  For an odd owner component
+`i=0`, (72) says more precisely
+
+```text
+sum_(d != c,e) t^d_0j = s_j.                            (73)
+```
+
+Thus the aggregate third-color switch parity from the owner run is one to
+every other odd incidence component and zero to every even incidence
+component.  Summing (73) over `j != 0` recovers (69), because an even total
+number of odd components leaves an odd number besides `0`.
+
+This both strengthens and limits Sections 17--18.  The simultaneous routing
+partition does force component switches, but after summing the routing color
+their parity is determined entirely by the cycle-length parities of `R_ce`;
+ownership has disappeared.  Therefore iterating the uncolored matrices
+`t^d` cannot by itself prove that an odd owner run reaches another owner run.
+A closing argument must retain either the individual third color `d` together
+with owner data at its switch vertices, or a second marked structure not
+annihilated in the contraction (71).
