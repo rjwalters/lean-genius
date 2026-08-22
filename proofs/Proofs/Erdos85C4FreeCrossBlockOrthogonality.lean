@@ -103,6 +103,70 @@ theorem c4Free_sameBlock_offDiagonal_gram_zero
   simpa [Nat.mul_comm] using
     (c4Free_disjointBlocks_common_card_mul_eq_zero G hfree T U hTU htu)
 
+/-- Rows in one cross-block incidence fiber have pairwise-disjoint
+neighborhoods inside the row block.  A shared row neighbor together with the
+fiber point would otherwise give two common neighbors. -/
+theorem c4Free_shared_crossBlock_fiber_neighborFinsets_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (T U : Finset V) (hTU : Disjoint T U)
+    {b t u : V} (hb : b ∈ U) (ht : t ∈ G.neighborFinset b ∩ T)
+    (hu : u ∈ G.neighborFinset b ∩ T) (htu : t ≠ u) :
+    Disjoint (G.neighborFinset t ∩ T) (G.neighborFinset u ∩ T) := by
+  rw [Finset.disjoint_left]
+  intro v hvt hvu
+  have htParts := Finset.mem_inter.mp ht
+  have huParts := Finset.mem_inter.mp hu
+  have hvtParts := Finset.mem_inter.mp hvt
+  have hvuParts := Finset.mem_inter.mp hvu
+  have hbCommon : b ∈ G.neighborFinset t ∩ G.neighborFinset u :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset t b).mpr
+        ((G.adj_comm b t).mp ((G.mem_neighborFinset b t).mp htParts.1)),
+      (G.mem_neighborFinset u b).mpr
+        ((G.adj_comm b u).mp ((G.mem_neighborFinset b u).mp huParts.1))⟩
+  have hvCommon : v ∈ G.neighborFinset t ∩ G.neighborFinset u :=
+    Finset.mem_inter.mpr ⟨hvtParts.1, hvuParts.1⟩
+  have hbv : b ≠ v := by
+    intro h
+    subst v
+    exact Finset.disjoint_left.mp hTU hvtParts.2 hb
+  have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree t u htu
+  exact hbv (Finset.card_le_one.mp hle b hbCommon v hvCommon)
+
+/-- Fibers over the endpoints of an internal edge of `U` are anticomplete
+inside `T`.  The four alleged edges would be a cross-block 4-cycle. -/
+theorem c4Free_internalEdge_crossBlock_fibers_anticomplete
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (T U : Finset V) (hTU : Disjoint T U)
+    {b c t u : V} (hbc : G.Adj b c)
+    (hb : b ∈ U) (hc : c ∈ U)
+    (ht : t ∈ G.neighborFinset b ∩ T)
+    (hu : u ∈ G.neighborFinset c ∩ T) :
+    ¬ G.Adj t u := by
+  intro htu
+  have hbu : b ≠ u := by
+    intro h
+    subst u
+    exact Finset.disjoint_left.mp hTU (Finset.mem_inter.mp hu).2 hb
+  have htc : t ≠ c := by
+    intro h
+    subst t
+    exact Finset.disjoint_left.mp hTU (Finset.mem_inter.mp ht).2 hc
+  have htCommon : t ∈ G.neighborFinset b ∩ G.neighborFinset u :=
+    Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp ht).1,
+      (G.mem_neighborFinset u t).mpr ((G.adj_comm t u).mp htu)⟩
+  have hcCommon : c ∈ G.neighborFinset b ∩ G.neighborFinset u :=
+    Finset.mem_inter.mpr ⟨(G.mem_neighborFinset b c).mpr hbc,
+      (G.mem_neighborFinset u c).mpr
+        ((G.adj_comm c u).mp
+          ((G.mem_neighborFinset c u).mp (Finset.mem_inter.mp hu).1))⟩
+  have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree b u hbu
+  exact htc (Finset.card_le_one.mp hle t htCommon c hcCommon)
+
 /-- Rowwise two-block mass bound.  For disjoint vertex blocks `T,U`, the
 total `U`-degrees of the neighbors of `t ∈ T` which lie in `T ∪ U` cannot
 exceed `|U|`.  The omitted neighbors outside the two blocks only strengthen
@@ -230,6 +294,8 @@ end Erdos85
 #print axioms Erdos85.c4Free_crossBlock_common_card_mul_eq_zero
 #print axioms Erdos85.c4Free_crossBlock_trace_zero
 #print axioms Erdos85.c4Free_sameBlock_offDiagonal_gram_zero
+#print axioms Erdos85.c4Free_shared_crossBlock_fiber_neighborFinsets_disjoint
+#print axioms Erdos85.c4Free_internalEdge_crossBlock_fibers_anticomplete
 #print axioms Erdos85.c4Free_crossBlock_row_neighbor_mass_le
 #print axioms Erdos85.c4Free_crossBlock_row_degree_packing
 #print axioms Erdos85.c4Free_crossBlock_twoWalk_add_defect_eq_card_mul
