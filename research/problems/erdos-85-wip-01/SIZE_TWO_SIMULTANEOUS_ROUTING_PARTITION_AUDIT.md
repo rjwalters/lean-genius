@@ -3675,3 +3675,44 @@ start of this audit.  The signed branch controls (221) by a global sign;
 the transport branch must control the same degree-two mass using the rooted
 capacity and incidence strata instead.  This is the precise bridge between
 the two sides of the dispatcher.
+
+## 67. The vertical collision error has the same radius-two bound
+
+Return to the selected state cycle `Omega`, whose projected root cycle `C`
+has order `n=H>=5` (an internal `C3` edge would have both the third root and
+its owner port as common neighbors).  A vertically repeated port `z` is adjacent to two roots
+`x,x'` of `C`, so it labels the owner-factor edge `xx'`.  The two roots
+cannot have cyclic distance one: their `A_c` edge already has its horizontal
+owner port as a common neighbor.  They cannot have distance two: their
+middle root is already a common neighbor in `A_c`.  Thus every vertical
+collision determines a root pair at cyclic distance at least three.
+
+Two distinct repeated ports cannot determine the same pair, since those
+ports would be two common neighbors of `x,x'`.  Therefore the assignment is
+injective into the nonedges of the square of `C`, and
+
+```text
+kappa_vert(Omega) <= n(n-5)/2.                          (222)
+```
+
+This is the cycle version of the collision injection in Sections 49 and 53,
+but it needs no clean-color restriction: it counts the actual vertical port
+occurrences of `Omega` itself.  Combining (215) and (222) gives the exact
+pinch
+
+```text
+H <= kappa_all(Omega) <= H + H(H-5)/2.                  (223)
+```
+
+In particular, when the projected root cycle is a `C5`,
+
+```text
+kappa_vert(Omega)=0,    kappa_all(Omega)=H=5.           (224)
+```
+
+So the smallest mixed obstruction has no vertical collision error at all:
+its full collision mass is entirely the five horizontal shared-owner ports.
+For larger root cycles, (222) quantifies exactly how far the all-occurrence
+feature can drift from the desired horizontal count.  Any incidence-weighted
+transport inequality strong enough to improve (222) to an even correction
+would settle the parity problem through (217).
