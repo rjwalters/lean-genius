@@ -556,6 +556,31 @@ cover of the two-label candidates.  This is an exact label-only Hall
 inequality derived from `Q,K`, and is the clean hypothesis to negate in the
 simultaneous price branch.
 
+There is an exact weighted extension which removes the local matching oracle
+from (12h).  Assume the row is locally feasible, give candidate `u` weight
+`w_u`, and let `D_t` and `S_t` be its two-label and singleton candidates.
+The dual of the cardinality-`d_t` bipartite matching LP has a free cardinality
+price `z` and nonnegative vertex prices.  Every singleton dummy is private,
+so its price can be minimized explicitly.  The result is
+
+```text
+max_{matching M, |M|=d_t} sum_{u in M} w_u
+ = min_{z real, y_b>=0}
+     [d_t z + sum_{b in C} y_b
+      + sum_{u in S_t} max(0, w_u-z-y_{b(u)})],             (12fb)
+
+subject to z+y_a+y_b >= w_u for every u in D_t
+with selected labels {a,b}.
+```
+
+Thus all private dummies and all matching choices can be eliminated in favor
+of sixteen real-label prices and hinge terms.  Substituting the Farkas-curl
+edge weights (12n) into (12fb) turns the global condition
+`sum_t max_{P_t} W_t<0` into a purely scalar nested price inequality.  This
+is the natural analytic form for proving the Hall-or-price conjecture: (12fa)
+handles failure of the cardinality face, and (12fb) handles every locally
+feasible row.
+
 In the four-seed run the local branch is extremely sharp.  There are nine
 failed row/color-pair instances.  Every matching number is exactly one below
 demand.  Eight are demand-six rows with a minimum vertex cover of size five;
