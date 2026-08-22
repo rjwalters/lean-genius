@@ -537,6 +537,25 @@ genuinely simultaneous: locally chosen matchings must be coupled by
 that this simultaneous horn can fail even though every graph in (12f) has a
 large enough matching.
 
+The simultaneous horn also has an exact directed form which removes matrix
+symmetry from the list of mysteries.  A feasible symmetric fractional `A`
+exists if and only if there is a nonnegative directed matrix `X`, on the
+same symmetric allowed support, such that
+
+```text
+rowSum(X)=d,   colSum(X)=d,
+sum_{u in F_b} X_tu <= 1,   sum_{u in F_b} X_ut <= 1          (12g)
+```
+
+for every row `t` and every selected fiber `b`.  The forward implication is
+`X=A`.  Conversely, set `A=(X+X^T)/2`.  Its row sum is the average of the
+corresponding row and column sums of `X`, and each fiber cap is the average
+of the outgoing and incoming caps in (12g); all other conditions are
+preserved.  Thus the remaining obstruction is precisely balanced
+transportation between the locally feasible candidate matchings, not an
+extra parity of symmetric matrices.  Equation (12g) is the natural interface
+for a submodular-flow or transportation min--max theorem.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
