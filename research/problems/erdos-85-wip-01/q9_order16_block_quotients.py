@@ -84,6 +84,26 @@ def set_orbits(
     return orbits
 
 
+def compose(left: tuple[int, ...], right: tuple[int, ...]) -> tuple[int, ...]:
+    return tuple(left[right[vertex]] for vertex in range(5))
+
+
+def generated_group(generators: list[tuple[int, ...]]) -> set[tuple[int, ...]]:
+    identity = tuple(range(5))
+    group = {identity}
+    frontier = list(generators)
+    while frontier:
+        permutation = frontier.pop()
+        if permutation in group:
+            continue
+        previous = list(group)
+        group.add(permutation)
+        for other in previous:
+            frontier.append(compose(permutation, other))
+            frontier.append(compose(other, permutation))
+    return group
+
+
 def invariant_patterns(
     triple_orbits: list[tuple[tuple[int, ...], ...]],
 ) -> list[tuple[int, ...]]:
@@ -123,8 +143,41 @@ def pair_codegrees(
     )
 
 
+def point_stabilizer_integral_patterns(
+    triple_orbits: list[tuple[tuple[int, ...], ...]],
+    patterns: list[tuple[int, ...]],
+    generators: list[tuple[int, ...]],
+) -> tuple[list[int], list[tuple[int, ...]]]:
+    """Apply integrality on the line orbits incident with one component.
+
+    The component stabilizer is transitive on its 16 vertices.  On every
+    orbit O of block triples containing block zero, the number of incident
+    lines is therefore 16 times the number through one vertex.  Hence the
+    sum of the triple weights on O must be divisible by 16.
+    """
+    group = generated_group(generators)
+    stabilizer = [permutation for permutation in group if permutation[0] == 0]
+    incident = tuple(triple for triple in TRIPLES if 0 in triple)
+    stabilizer_orbits = set_orbits(incident, stabilizer)
+    orbit_index = {
+        triple: index
+        for index, orbit in enumerate(triple_orbits)
+        for triple in orbit
+    }
+    survivors = [
+        pattern
+        for pattern in patterns
+        if all(
+            sum(pattern[orbit_index[triple]] for triple in orbit) % 16 == 0
+            for orbit in stabilizer_orbits
+        )
+    ]
+    return list(map(len, stabilizer_orbits)), survivors
+
+
 def main() -> None:
     total = 0
+    lift_total = 0
     for index, order, generators in gap_transitive_generators():
         triple_orbits = set_orbits(TRIPLES, generators)
         patterns = invariant_patterns(triple_orbits)
@@ -135,6 +188,9 @@ def main() -> None:
             for pattern in patterns
         )
         codegree_catalog = sorted({pair_codegrees(triple_orbits, p) for p in patterns})
+        stabilizer_orbit_sizes, lift_patterns = point_stabilizer_integral_patterns(
+            triple_orbits, patterns, generators
+        )
         digest = hashlib.sha256(repr(patterns).encode()).hexdigest()
         print(
             f"transitive_group={index}",
@@ -145,8 +201,15 @@ def main() -> None:
         )
         print(f"  patterns={patterns}")
         print(f"  pair_codegrees={codegree_catalog}")
+        print(
+            f"  point_stabilizer_incident_orbit_sizes={stabilizer_orbit_sizes}",
+            f"integral_lift_patterns={lift_patterns}",
+        )
+        lift_total += len(lift_patterns)
     assert total == 37
+    assert lift_total == 7
     print("quotient_actions=5 quotient_patterns=37")
+    print("point_stabilizer_integral_lift_patterns=7")
 
 
 if __name__ == "__main__":

@@ -261,3 +261,12 @@ pair-codegrees are 16 through 32 on the two pair orbitals in complementary
 amounts for the cyclic/dihedral cases, and uniformly 24 in the remaining
 three cases.  These are necessary quotient data; they do not yet exclude
 the order-16 lift.
+
+There is a further integral lift condition already at block level.  The
+stabilizer of one component is transitive on its 16 points, so the total
+number of incident lines in each of its orbits on block triples must be a
+multiple of 16.  For `C5` the six incident triples are fixed individually;
+for `D10` their orbit sizes are `2,2,1,1`.  In both cases only the endpoint
+weights `(0,16)` and `(16,0)` remain.  The unique uniform pattern remains for
+each of `F20`, `A5`, and `S5`.  Hence only **seven** action-pattern pairs can
+lift: two each for `C5` and `D10`, and one for each of the other three groups.
