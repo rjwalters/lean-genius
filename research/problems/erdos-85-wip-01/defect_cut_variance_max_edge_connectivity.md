@@ -1846,6 +1846,55 @@ the small-shore parameter.  This is the first inequality obtained from the
 coupled fiber intersection graphs rather than directly from a cut or flow
 profile.
 
+The opposite component Y has a parallel exact wing resolution.  For
+`w in W`, put
+
+```text
+T_w={y in Y : yw is not an edge of D},
+G_z=N_A(z) intersect Y        for z in N_A(w).
+```
+
+The same unique-center argument partitions `T_w` by the fibers `G_z`.
+Now `A 1_Y=b 1-1_R+1_c`, and c is not adjacent to W, so
+
+```text
+z in K_w:                 |G_z|=b,
+z in R_w:                 |G_z|=b-1,
+z in P adjacent to w:     |G_z|=b-1.                       (B43)
+```
+
+Indeed the fiber count is
+
+```text
+b m_w+(b-1)(n_w-1)+2(b-1)
+  =qb-n_w-1=|Y|-n_w=|T_w|.
+```
+
+As on X, the three P-fibers are pairwise disjoint across colors, now
+occupying exactly `3(b-1)` points of Y.
+
+Each complementary P-fiber is almost entirely attachment-free.  Fix
+`p_w`, the P-point not adjacent to w, and let `y in G_(p_w)`.  The two
+separator vertices incident with `p_w` are D-nonneighbors of y, so its only
+possible W-attachment is w.  If `yw` is a D-edge, the positive-spike flow
+equation
+
+```text
+deg_A(y,R)=1+1_(y in N_A(c))-deg_D(y,W)
+```
+
+and the existing R-neighbor `p_w` force `y in N_A(c)`.  Two such points
+would be two common A-neighbors of `p_w` and c.  Therefore
+
+```text
+|G_(p_w) intersect N_D(w)| <= 1,
+|{y in G_(p_w) : deg_D(y,W)=0}| >= b-2.        (B44)
+```
+
+Thus every P-center carries a large attachment-free fiber on Y, with at
+most one exceptional point, complementing the small attachment-colored
+deficit fiber on X in (B41').
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
