@@ -351,3 +351,23 @@ enforces all 80 line incidences, linearity, zero common neighbors on every
 shadow edge, and the global at-most-one-common-neighbor condition equivalent
 to C4-freeness.  Therefore only the three uniform quotient cases with block
 actions `F20`, `A5`, and `S5` remain.
+
+For these uniform cases, the component stabilizer gives a much smaller local
+action classification.  Under `F20`, its order-four point stabilizer acts on
+the six incident block triples.  The 56 three-line multisets have 16 orbits;
+equivariance and the six global incidence totals leave only six orbit types.
+The equal fibers of the resulting pattern map must be an imprimitivity
+system for one of the eight transitive subgroups of the order-96 component
+automorphism group.  Closing the subgroup representatives under all
+component automorphisms gives only 19 possible `4 x 4` fiber partitions and
+7 possible `2 x 8` partitions.
+
+For `A5` (and hence also `S5`), the point stabilizer acts as `A4`.  Its orbit
+sizes on the 56 multisets are `4,4,6,6,6,6,12,12`; since the image orbit size
+must divide 16, only the two size-four orbits survive.  They are exactly the
+four star patterns and four complementary triangle patterns, so every point
+uses three distinct incident block triples and the whole component has one
+of these two types.  The extended order-16 lift verifier computes these
+catalogs and supports explicit twist, pattern, fiber-partition, and fiber-
+bijection branches.  This is a reduction of the remaining uniform lifts,
+not yet their exclusion.
