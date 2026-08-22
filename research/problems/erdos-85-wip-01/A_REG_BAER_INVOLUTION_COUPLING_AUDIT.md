@@ -223,7 +223,39 @@ number of D-neighbors in `S`.  This is stronger than the aggregate cut law
 (8): it is a nontrivial shore on which the overlap graph and the connected
 defect graph have identical incidence parity.
 
-Equations (7)--(10) are the first canonical cut detector manufactured from
+The square relation gives the common parity explicitly:
+
+```text
+M_Omega 1_S = D 1_S = |S| 1 + 1_S.             over F_2           (11)
+```
+
+Thus if `|S|` is even, every point of `S` has odd internal D- and
+`Omega`-degree while every outside point has even incidence into `S`; if
+`|S|` is odd, these parities are reversed.  The defect half of (11) is the
+previously banked odd-defect-set law.  Its simultaneous `Omega` realization
+is the new information here.
+
+Binary incidence also forces this shore away from the trivial size range.
+More generally, let `0 != u in ker_F2(A)` and choose `P in supp(u)`.  Each of
+the q lines through P has even intersection with `supp(u)`, so each contains
+a second support point.  Distinct lines through P cannot share that second
+point by C4-freeness.  Hence
+
+```text
+0 != u in ker_F2(A)  implies  |supp(u)| >= q+1.                 (12)
+```
+
+Applying (12) also to `u+1`, for the nonconstant vector chosen above, yields
+
+```text
+q+1 <= |S| <= q^2-q-1.
+```
+
+In the even-weight branch the lower bound rounds up to `q+2`; in the odd
+branch (11) says every one of the `q^2-|S|` outside vertices sends an odd,
+and hence nonzero, number of D-edges into `S`.
+
+Equations (7)--(12) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The edges of `Omega` are disjoint
 from `A`, hence from `T`, and may be either D-edges or non-D even-overlap
@@ -231,7 +263,7 @@ pairs.  So (10) cannot yet be combined with the Eulerian cut law for `T`.
 Any k-dependent terminal can now aim at locating the symmetric difference
 `Omega triangle D` on the kernel shore `S`, rather than trying to couple the
 local involutions directly.  The q=4 connected control is compatible with
-(7)--(10), so these laws alone do not conceal an order-independent
+(7)--(12), so these laws alone do not conceal an order-independent
 contradiction.
 
 ## Disposition
