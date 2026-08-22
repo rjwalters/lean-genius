@@ -980,7 +980,8 @@ X\{c} subset N_D(c) subset K,
 
 so `|K intersect (X union W)|>=q-3` from those vertices, and the two
 separator attachments of `c` are also in `N_D(c) subset K`, raising the
-lower bound to `q-1`.  This contradicts the upper bound four from (B16).
+lower bound to `q-1`; including `c in K intersect X` raises it to q.  This
+contradicts the upper bound four from (B16).
 Thus at the endpoint
 
 ```text
@@ -1039,8 +1040,8 @@ N_A(c) intersect Y  -->  K\{c}                (B18)
 ```
 
 with image size `q-a`.  For `x in N_A(c) intersect X`, (B6) already counts
-`c` among its K-neighbors, and hence `deg_D(x,W)<=1`; this sharpens (B10) on
-the exceptional neighborhood.  Finally (B16) gives
+`c` among its K-neighbors, and hence `deg_D(x,W)<=1`; this is the X-side
+analogue of (B10) on the exceptional neighborhood.  Finally (B16) gives
 
 ```text
 |K intersect (X union W)| <= 3a+4,
