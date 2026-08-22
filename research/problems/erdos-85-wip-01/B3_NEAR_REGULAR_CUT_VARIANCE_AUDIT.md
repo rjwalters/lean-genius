@@ -102,6 +102,54 @@ by C4-freeness.  Convex minimization in the three cases gives respectively
 delta_D(N_A(h)) >= 8.                           (5)
 ```
 
+## Necessary component orders in the ordinary defect graph
+
+Let `D0` be the defect graph induced on the 78 ordinary vertices.  If `S` is
+a union of `D0`-components, then its defect boundary is zero.  For
+`beta=(beta_1,beta_2,beta_3)`, put
+
+```text
+M = 9|S| - (beta_1+beta_2+beta_3).
+```
+
+Writing `M=78a+r`, equations (3)--(4) give the necessary inequality
+
+```text
+0 >= (78-r)a^2 + r(a+1)^2 - |S|^2
+       + sum_i beta_i(beta_i-1).                 (6)
+```
+
+Apply (6) to both `S` and its complement, whose color vector is
+`(10,10,10)-beta`.  Handshake adds `sum beta_i` even, since
+
+```text
+2 e_D(S) = 8|S| - sum beta_i.
+```
+
+If `D0` is disconnected, choose a smallest component, so `|S| <= 39`.
+Evaluating the elementary convex inequalities leaves only the following
+orders and color vectors, up to permutation:
+
+```text
+ 9 : (0,1,1), (0,2,2), (1,1,2), (2,2,2)
+18 : (2,2,2), (2,2,4), (2,3,3), (3,3,4)
+19 : (2,3,3), (3,3,4)
+26 : (3,3,4)
+27 : (4,4,4)
+35 : (4,5,5).
+```
+
+Every other order from 1 through 39 is impossible at this layer.  In the
+order-nine cases,
+
+```text
+e_D(S) = (8|S| - sum beta_i)/2,
+```
+
+so `D[S]` is `K9` with respectively one, two, two, or three edges removed.
+This turns the smallest surviving component into a near-clique placement
+problem rather than an unrestricted finite census.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
@@ -111,5 +159,9 @@ they do not by themselves exclude the second profile.  The useful next
 consumer must choose a location-sensitive shore whose defect boundary is
 already controlled by the row-cover/transversal structure; applying only
 whole-bin totals reproduces known quotient mass rather than a contradiction.
+
+The component-order list is stronger: it is a finite necessary classification
+derived symbolically from the exact identity.  It is not yet sufficient to
+prove that `D0` is connected or to eliminate any listed component type.
 
 No Lean theorem or nonexistence conclusion is claimed in this audit.
