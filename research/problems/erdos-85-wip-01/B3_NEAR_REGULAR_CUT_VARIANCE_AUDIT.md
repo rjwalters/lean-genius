@@ -521,13 +521,79 @@ Z = {x} union (fifteen B1 points, five of each color) union (two B0 points),
 and the first equation in (23) forces exactly three ordinary neighbors of
 `x` on each articulation side.
 
+This two-point low set has a further local consequence.  Let `P` be its
+fifteen bin-one points, let `W` be its two bin-zero points, and put
+
+```text
+p = |P intersect N_A(x) intersect B1|,
+q = |W intersect N_A(x) intersect B0|.
+```
+
+The three bin-one neighbors of `x` are its high-root partners and its three
+bin-zero neighbors will be denoted by `U`.  Since `|N_A(x) intersect Z|=4`,
+
+```text
+p+q=4,  so (p,q) is either (2,2) or (3,1).       (24)
+```
+
+For a high-root partner `z`, the pointwise bin-one profile gives no bin-one
+neighbors.  Thus, because `x in Z`, equation (23) gives
+
+```text
+deg_A(z,W)=0 if z is on the order-34 side,
+deg_A(z,W)=1 if z is on the order-43 side.       (25)
+```
+
+The already proved local-triangle profile at `x` says more than just the
+types of the three points in `U`: the three forced high--partner edges use
+all local edges in the three-edge branch, while in the four-edge branch the
+unique additional local edge joins the two regular points of `U`.
+
+Suppose first that `(p,q)=(2,2)`.  In the three-edge branch the two points
+of `U` lying in `W` are independent.  Their `Z`-degrees force both to be the
+two exceptional points on the order-34 side.  Hence exactly one partner is
+on that side (the ordinary-neighbor split is `3+3`), but (25) would force
+the other two partners to meet `W`, impossible because there are no further
+edges inside `N_A(x)`.  Thus this subcase is dead.  In the four-edge branch,
+symmetry of the two-point graph `A[W]` forces the two points of `W` to be
+the adjacent regular pair: choosing the exceptional point and one regular
+point is impossible because they are nonadjacent while the regular point
+requires `W`-degree one.  Equation (25) then forces all three partners onto
+the order-34 side.  Consequently all
+three points of `U` lie on the order-43 side.  The whole `(2,2)` alternative
+therefore has the single surviving placement
+
+```text
+four local edges; W is the regular U-pair; all partners are on order 34;
+all three points of U are on order 43.                         (26)
+```
+
+Now suppose `(p,q)=(3,1)`, so all three partners belong to `P`.  If `b` is
+the number of points of `U` on the order-34 side, the `3+3` split puts
+exactly `b` partners on the order-43 side.  By (25), each of those partners
+must meet the unique point of `W\U`.  Two such partners would share both
+`x` and that point, creating a four-cycle, so
+
+```text
+b <= 1.                                                       (27)
+```
+
+If `b=1` and the selected point of `U intersect W` lies on the order-43
+side, both it and the unique order-43 partner must meet `W\U`, again making
+a four-cycle with `x`.  Hence in the three-edge branch that selected point
+must be the unique order-34 point of `U`.  In the four-edge branch it must
+additionally be the exceptional point: a selected regular point has
+`W`-degree one on either side and produces the same forbidden four-cycle.
+These conclusions do not yet eliminate `(34,43)`, but reduce it to one
+rigid `(2,2)` placement and the narrow `(3,1)` alternatives just described.
+
 The symmetric `(18,59)` branch has cut excess two rather than equality.  The
 integer square-sum refinement leaves exactly two profiles on the order-60
 shore:
 
 ```text
 (L) one degree-5 center c, 28 degree-6, 49 degree-7;
-(H) one degree-8 center c, 31 degree-6, 46 degree-7.                 (24)
+(H) one degree-8 center c, 31 degree-6, 46 degree-7.                 (28)
 ```
 
 In case (L), let `Z` contain the degree-5 center and the 28 degree-6
@@ -536,14 +602,14 @@ component `S`, respectively,
 
 ```text
 (L) A 1_S = 2 1 + 1_Z + e_c - A 1_H,
-(H) A 1_S = 2 1 + 1_Z - e_c - A 1_H.             (25)
+(H) A 1_S = 2 1 + 1_Z - e_c - A 1_H.             (29)
 ```
 
 The same square-identity calculation gives
 
 ```text
 (L) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z - 1_(N_A(c)),
-(H) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z + 1_(N_A(c)). (26)
+(H) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z + 1_(N_A(c)). (30)
 ```
 
 In case (H), evaluation at a high root forces `c` to be high-free; otherwise
@@ -555,13 +621,13 @@ So (H) is impossible.
 In case (L), evaluation at `x` gives
 
 ```text
-|N_A(x) intersect Z| = 1 - 1_[x adjacent c].     (27)
+|N_A(x) intersect Z| = 1 - 1_[x adjacent c].     (31)
 ```
 
-At the high roots, (26) says that at most the `k(c)` high-root incidences of
+At the high roots, (30) says that at most the `k(c)` high-root incidences of
 `c` can account for missing points of `Z`.  Hence at least `3-k(c)` of the
 three distinct bin-one partners of `x` lie in `Z`.  If `c` is bin zero this
-lower bound is three, and if `c` is bin one it is two; both contradict (27).
+lower bound is three, and if `c` is bin one it is two; both contradict (31).
 The only remaining possibility is `c=x` (the spike center is ordinary, so
 there is no high-vertex case).
 

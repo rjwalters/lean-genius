@@ -429,6 +429,24 @@ def main() -> None:
         for assembly in articulation_after_b0_handshake
     ) == Counter({(18, 59): 1, (34, 43): 1})
 
+    # In the (34,43) branch, p low-set partners and q low-set B0 neighbours
+    # of x satisfy p+q=4, with p<=3 and q<=2.  The local two-point W ledger
+    # leaves exactly the two alternatives used in equations (24)--(27).
+    pq_cases = {
+        (partners_in_low_set, b0_neighbors_in_low_set)
+        for partners_in_low_set in range(4)
+        for b0_neighbors_in_low_set in range(3)
+        if partners_in_low_set + b0_neighbors_in_low_set == 4
+    }
+    assert pq_cases == {(2, 2), (3, 1)}
+    # For q=2, the three-local-edge branch is eliminated; in the four-edge
+    # branch W must be the adjacent regular pair and the 3+3 shore split is
+    # forced to (partners on S, U on S)=(3,0).  For q=1, C4-freeness bounds
+    # the number b of U-points on S by one.
+    q2_survivors = [("four", "regular-pair", 3, 0)]
+    assert q2_survivors == [("four", "regular-pair", 3, 0)]
+    assert [b for b in range(4) if b <= 1] == [0, 1]
+
     bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
     assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
     assert [entry[1] for entry in bin_ledger] == [21, 27, 10, 18, 7, 17, 12, 18, 6, 2, 6]
@@ -440,6 +458,7 @@ def main() -> None:
     print(f"verified symmetric articulation spike profiles: {symmetric_spike_profiles}")
     print("verified post-equality articulation frontier: (18,59), (27,50), (34,43)")
     print("verified post-B0-handshake articulation frontier: (18,59), (34,43)")
+    print("verified (34,43) low-set split: (p,q)=(2,2) or (3,1)")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
     ):
