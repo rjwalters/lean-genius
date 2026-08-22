@@ -3782,6 +3782,41 @@ theorem squareOrderNine_threeHigh_secondProfile_unmarked_pair_budget
     norm_num [Nat.choose]
   exact ⟨hcubic.1, hB0.2.2.2.2, hB1pairs, hHpairs, hdefect, htotal⟩
 
+/-- High-color transversality on the unmarked bin-one core.  Two distinct
+vertices in the same high fiber cannot have a low common original neighbor,
+and they cannot be adjacent in the second-order defect graph. -/
+theorem squareOrderNine_threeHigh_secondProfile_same_high_fiber_separation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {u v a w : V}
+    (huv : u ≠ v)
+    (ha : a ∈ squareOrderHighVertices G 9)
+    (hau : G.Adj a u) (hav : G.Adj a v)
+    (hwLow : w ∉ squareOrderHighVertices G 9) :
+    ¬ (G.Adj w u ∧ G.Adj w v) ∧
+      ¬ (secondOrderDefectGraph G).Adj u v := by
+  constructor
+  · rintro ⟨hwu, hwv⟩
+    have haCommon : a ∈ G.neighborFinset u ∩ G.neighborFinset v :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset u a).mpr hau.symm,
+        (G.mem_neighborFinset v a).mpr hav.symm⟩
+    have hwCommon : w ∈ G.neighborFinset u ∩ G.neighborFinset v :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset u w).mpr hwu.symm,
+        (G.mem_neighborFinset v w).mpr hwv.symm⟩
+    have haw : a ≠ w := by
+      intro h
+      subst w
+      exact hwLow ha
+    have hle := common_le_one_of_not_containsC4 hfree u v huv
+    exact haw (Finset.card_le_one.mp hle a haCommon w hwCommon)
+  · exact not_secondOrderDefect_adj_of_commonNeighbor
+      G hfree huv hau.symm hav.symm
+
 end
 
 end Erdos85
@@ -3828,3 +3863,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_pair_budget
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_same_high_fiber_separation
