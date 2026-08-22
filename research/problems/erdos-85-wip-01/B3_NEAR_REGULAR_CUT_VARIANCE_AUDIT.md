@@ -164,8 +164,9 @@ component-order multisets:
 [9,9,60], [9,18,51], [9,26,43], [26,26,26], [9,9,9,51].
 ```
 
-In particular, `D0` has at most four components.  Requiring the component
-color vectors to sum to `(10,10,10)` eliminates none of these eleven rows;
+In particular, `D0` has at most four components.  Requiring every component
+vector to lie in its own order's admissible list above, and requiring those
+vectors to sum to `(10,10,10)`, eliminates none of these eleven rows;
 the respective numbers of ordered color-vector assignments in the displayed
 order are
 
