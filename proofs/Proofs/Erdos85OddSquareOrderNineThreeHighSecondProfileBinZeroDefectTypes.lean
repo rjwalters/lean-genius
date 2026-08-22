@@ -3103,6 +3103,132 @@ theorem squareOrderNine_threeHigh_secondProfile_special_support_triple_blocks
         ((G.adj_comm b w).mp
           ((G.mem_neighborFinset b w).mp hwParts.1)), hbU1⟩⟩
 
+/-- Each marked bin-one row produces a seven-edge matching on the unmarked
+bin-one core: its seven bin-zero targets each have exactly two unmarked
+bin-one neighbors, and these pairs are mutually disjoint. -/
+theorem squareOrderNine_threeHigh_secondProfile_marked_support_pair_matching
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x m : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hm : m ∈ G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1) :
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := G.neighborFinset m ∩ B 0
+    let Q := fun w => G.neighborFinset w ∩ U1
+    F.card = 7 ∧
+      (∀ w ∈ F, (Q w).card = 2) ∧
+      (∀ w ∈ F, ∀ z ∈ F, w ≠ z → Disjoint (Q w) (Q z)) ∧
+      (F.biUnion Q).card = 14 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := G.neighborFinset m ∩ B 0
+  let Q := fun w => G.neighborFinset w ∩ U1
+  have hmParts := Finset.mem_inter.mp hm
+  have hmx : G.Adj m x :=
+    (G.adj_comm x m).mp ((G.mem_neighborFinset x m).mp hmParts.1)
+  have hmdeg := squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
+    G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hmParts.2
+  dsimp only at hmdeg
+  have hFcard : F.card = 7 := by simpa [hmx] using hmdeg.2
+  have hQcard : ∀ w ∈ F, (Q w).card = 2 := by
+    intro w hwF
+    have hwParts := Finset.mem_inter.mp hwF
+    have hwm : G.Adj w m :=
+      (G.adj_comm m w).mp ((G.mem_neighborFinset m w).mp hwParts.1)
+    have hwNotAdjX : ¬ G.Adj w x := by
+      intro hwx
+      exact (squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+        G hfree hhigh hx hwParts.2 hmParts.2 hwx.symm) hwm
+    have hservice :=
+      squareOrderNine_threeHigh_secondProfile_binZero_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hwParts.2
+    have hB1card : (G.neighborFinset w ∩ B 1).card = 3 := by
+      simpa [hwNotAdjX] using hservice
+    have hmarkedEq : (G.neighborFinset w ∩ B 1) ∩ M = {m} := by
+      ext z
+      simp only [Finset.mem_inter, Finset.mem_singleton]
+      constructor
+      · rintro ⟨⟨hwzN, hzB1⟩, hzM⟩
+        have hzMParts := Finset.mem_inter.mp hzM
+        by_contra hzm
+        have hxCommon : x ∈ G.neighborFinset m ∩ G.neighborFinset z :=
+          Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset m x).mpr hmx,
+            (G.mem_neighborFinset z x).mpr
+              ((G.adj_comm x z).mp
+                ((G.mem_neighborFinset x z).mp hzMParts.1))⟩
+        have hwCommon : w ∈ G.neighborFinset m ∩ G.neighborFinset z :=
+          Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset m w).mpr hwm.symm,
+            (G.mem_neighborFinset z w).mpr
+              ((G.adj_comm w z).mp ((G.mem_neighborFinset w z).mp hwzN))⟩
+        have hxw : x ≠ w := by
+          intro h
+          subst w
+          have hkx := (Finset.mem_filter.mp hx).2
+          have hkw := (Finset.mem_filter.mp hwParts.2).2
+          omega
+        have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree m z
+          (Ne.symm hzm)
+        exact hxw (Finset.card_le_one.mp hle x hxCommon w hwCommon)
+      · intro hzm
+        subst z
+        exact ⟨⟨(G.mem_neighborFinset w m).mpr hwm, hmParts.2⟩,
+          Finset.mem_inter.mpr ⟨hmParts.1, hmParts.2⟩⟩
+    have hQeq : Q w = (G.neighborFinset w ∩ B 1) \ M := by
+      ext z
+      simp only [Q, U1, Finset.mem_inter, Finset.mem_sdiff]
+      tauto
+    have hmarkedEq' : M ∩ (G.neighborFinset w ∩ B 1) = {m} := by
+      rw [Finset.inter_comm]
+      exact hmarkedEq
+    rw [hQeq, Finset.card_sdiff, hmarkedEq', hB1card]
+    simp
+  have hpair : ∀ w ∈ F, ∀ z ∈ F, w ≠ z → Disjoint (Q w) (Q z) := by
+    intro w hw z hz hwz
+    rw [Finset.disjoint_left]
+    intro b hbw hbz
+    have hwParts := Finset.mem_inter.mp hw
+    have hzParts := Finset.mem_inter.mp hz
+    have hbwParts := Finset.mem_inter.mp hbw
+    have hbzParts := Finset.mem_inter.mp hbz
+    have hmCommon : m ∈ G.neighborFinset w ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset w m).mpr
+          ((G.adj_comm m w).mp ((G.mem_neighborFinset m w).mp hwParts.1)),
+        (G.mem_neighborFinset z m).mpr
+          ((G.adj_comm m z).mp ((G.mem_neighborFinset m z).mp hzParts.1))⟩
+    have hbCommon : b ∈ G.neighborFinset w ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hbwParts.1, hbzParts.1⟩
+    have hmb : m ≠ b := by
+      intro h
+      subst b
+      exact (Finset.mem_sdiff.mp hbwParts.2).2 hm
+    have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree w z hwz
+    exact hmb (Finset.card_le_one.mp hle m hmCommon b hbCommon)
+  refine ⟨hFcard, hQcard, hpair, ?_⟩
+  rw [Finset.card_biUnion hpair]
+  calc
+    (∑ w ∈ F, (Q w).card) = ∑ _w ∈ F, 2 := by
+      apply Finset.sum_congr rfl
+      intro w hw
+      exact hQcard w hw
+    _ = 14 := by simp [hFcard]
+
 end
 
 end Erdos85
@@ -3143,3 +3269,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_special_support_equality
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_antipodal_fiber_eq_missing_rows
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_support_triple_blocks
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_pair_matching
