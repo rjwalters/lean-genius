@@ -60,6 +60,21 @@ pairs cannot share two endpoints.  Direct checks give outside resolution
 degree zero on the 26 edge-traces and degree two on all 198 non-edge traces,
 with exactly one resolver for every cross incidence.
 
+These numbers saturate the complete corrected two-component triangle ledger,
+not just the vertexwise resolution law.  For component weights `2` and
+`q-2`, there is no all-distinct triangle term and no cross `T` edge, so
+
+```text
+2q(q-2) = 2 t_12 + 2 t_21,
+```
+
+or `t_12+t_21=q(q-2)`.  Each selected internal edge of the weight-two
+component contributes one `1,1,2` triangle, hence `t_12=26`; each constructed
+outside resolution edge contributes one `1,2,2` triangle, hence `t_21=198`.
+At q=16 their sum is exactly 224.  Thus the integer ledger and its mod-8
+consequence are fully compatible with desynchronization; they merely divide
+the cross-edge owners between the two sides.
+
 The commutator is not an optional strengthening.  If `M` is the component-to-
 outside incidence matrix and `K` the outside induced adjacency matrix, the
 cross block of `A^2` is

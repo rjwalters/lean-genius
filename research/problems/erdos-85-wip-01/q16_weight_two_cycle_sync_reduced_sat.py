@@ -168,6 +168,7 @@ def main() -> None:
     # No outside edge gets two component-side common neighbors: distinct
     # two-subsets in a simple trace graph intersect in at most one point.
     assert all(len(set(first) & set(second)) == 1 for first, second in outside_edges)
+    assert len(chosen & INTERNAL_EDGES) + len(outside_edges) == Q * (Q - 2)
 
     print("verified reduced q=16 selector countermodel")
     print("internal type: C6 + C26 (oppositely oriented)")
