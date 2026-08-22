@@ -1506,6 +1506,39 @@ exception, because a single color is itself a matching.  The remaining
 separator-located compatibility problem is therefore a bounded color
 perturbation of one large c-wing matching, even though q is unrestricted.
 
+The alternative location `c in Y` has a parallel but even cleaner normal
+form.  Every `x in X` is a D-nonneighbor of c, so its unique common
+A-neighbor with c lies in `N_A(c)`.  Conversely every X-neighbor of a point
+of `N_A(c)` supplies such a route.  The resulting fibers are disjoint and
+exhaust X.  Now c has exactly one X-neighbor, namely u, no W-neighbor by
+(B7), and its other `q-1` neighbors lie in Y.  Moreover
+
+```text
+deg_A(z,X)=2-1_(z in K),
+|N_A(c) intersect K|=deg_A(c,K)=2.
+```
+
+Thus the q centers in `N_A(c)` partition X into two singleton fibers and
+`q-2` two-point fibers.  The latter form a matching `M_c^Y` with `q-2`
+edges and exactly two uncovered X-points.  The special center u determines
+its precise interaction with the path-cycle graph:
+
+```text
+u in K:      u is one of the two singleton centers, and every edge of
+             M_c^Y has no common A-neighbor in X;
+u notin K:   N_A(u) intersect X is the unique edge of M_c^Y whose ends
+             have a common A-neighbor in X; all other edges have none.
+                                                               (B31)
+```
+
+Indeed every center other than u lies in Y, so a common X-neighbor of the
+ends of one of its fibers would be a second common A-neighbor.  If `u notin
+K`, its X-degree is two and its fiber is exactly the two-step A[X]-arc
+through u; C4-freeness excludes any other X-center for those ends.  If
+`u in K`, its X-degree is one and it supplies a singleton instead.  Hence
+the Y-located branch is an almost-perfect matching avoiding every A[X]
+two-step arc, with the sole possible exception forced and identified by u.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
