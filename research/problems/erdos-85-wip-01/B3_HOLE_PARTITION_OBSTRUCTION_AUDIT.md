@@ -401,8 +401,24 @@ W-intersection.  Thus the parity of `T_R` is not determined by residual
 degree parity even after imposing the full outer orthogonality support.
 This is again a sampled failure certificate, not a graph realization.  An
 odd cycle switches degree parity data but cannot in general be toggled while
-preserving the prescribed exact degrees; the surviving obstruction is
-therefore genuinely in the exact-degree/integrality layer.
+preserving prescribed exact degrees.  Thus this probe only locates the
+failure beyond the degree-parity linear layer.
+
+A direct exact-degree check narrows the boundary further.  On seed zero in
+each branch, impose only `A subset H` and the proved residual degrees (degree
+five on regular triple rows; degree six on exceptional holes and all 21 pair
+rows).  The resulting pure `f`-factor problem is satisfiable with either
+parity of `|E(A) intersect E(W)|`:
+
+```text
+branch 3, seed 0: T_R parity 0 SAT; parity 1 SAT,
+branch 4, seed 0: T_R parity 0 SAT; parity 1 SAT.
+```
+
+Therefore even the exact residual degree sequence plus the two-sided
+orthogonality support does not determine `T_R`.  Any terminal must also use
+the row-type/marked-group reciprocity, residual C4 common-neighbor structure,
+or another constraint absent from the pure `f`-factor model.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
