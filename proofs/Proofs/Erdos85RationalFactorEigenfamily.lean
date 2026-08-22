@@ -25,6 +25,7 @@ theorem exists_real_eigenfamily_of_rat_charpoly_factor
     let roots := (p.map (algebraMap ℚ ℂ)).roots
     let L := roots.toList
     ∃ (θ : Fin L.length → ℝ) (w : Fin L.length → n → ℝ),
+      (∀ i, θ i = L[i].re) ∧
       (∀ i, w i ≠ 0) ∧
       (∀ i, (A.map (algebraMap ℚ ℝ)).mulVec (w i) = θ i • w i) ∧
       ∑ i, θ i = roots.sum.re := by
@@ -43,7 +44,7 @@ theorem exists_real_eigenfamily_of_rat_charpoly_factor
     exact (exists_real_eigenvector_of_mem_roots_map_of_dvd_hermitian_charpoly
       A hA hp hdiv (hroot i)).2
   choose w hw heigen using hex
-  refine ⟨fun i ↦ L[i].re, w, hw, heigen, ?_⟩
+  refine ⟨fun i ↦ L[i].re, w, fun _ ↦ rfl, hw, heigen, ?_⟩
   have hreList : (L.map Complex.re).sum = L.sum.re := by
     induction L with
     | nil => simp
