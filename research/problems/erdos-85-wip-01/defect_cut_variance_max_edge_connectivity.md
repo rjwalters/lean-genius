@@ -1056,6 +1056,23 @@ theta fixes exactly K intersect X.            (B17Y''')
 The two holes of the injection `theta:X-->Q` are the `phi`-images of the
 two points in `N_A(c) intersect K`.
 
+The fixed-point locus has even size.  At `a=0`, the profile on `X` reads
+
+```text
+deg_A(x,X)=1-1_(x in K).
+```
+
+The handshake lemma and even order `|X|=q-2` therefore give
+`|K intersect X|=0 mod 2`.  In the present `c in Y` branch, (B16) gives
+`|K intersect X|<=3`.  Combining this with (B17Y''') yields
+
+```text
+|Fix(theta)|=|K intersect X| in {0,2}.        (B17Y'''')
+```
+
+Thus neither one nor three of the clique cells can be fixed by the
+exceptional-point transversal.
+
 A partial version holds for every `a`.  The point `c` has `a` neighbors in
 `X` and `q-a` in `Y`.  Each of the latter has exactly two K-neighbors by
 (B6), so deleting `c` again gives an injection
