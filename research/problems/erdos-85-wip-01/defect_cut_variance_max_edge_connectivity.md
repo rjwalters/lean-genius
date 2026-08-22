@@ -204,3 +204,54 @@ defect graph is a union of `K_q` components.  It generalizes the earlier
 special observation that a clique closed neighborhood `N_D[x]` isolates,
 but by itself it does not rule out smaller odd cycles or prove the desired
 absolute-point theorem.
+
+## Incidence-bottleneck energy
+
+The cut theorem substantially strengthens the previously known nonvanishing
+bound for the incidence bottleneck
+
+```text
+E = AD - (J-A) = qA - A^3 + (q-1)J.
+```
+
+Because `A` and `D` commute, row `x` is exactly
+
+```text
+E_x = A 1_{N_D[x]} - 1.
+```
+
+The closed D-neighborhood `S=N_D[x]` has size q.  Equation (1), with
+`a=1`, therefore identifies its cut energy exactly:
+
+```text
+||E_x||^2 = |delta_D(N_D[x])|.                (9)
+```
+
+When `D` is connected this is a nonzero q-divisible-shore cut.  It is even
+and at least `q-1`, hence at least q.  Summing (9) over all vertices gives
+
+```text
+||E||_F^2 >= q^3.                             (10)
+```
+
+This improves the bare integral zero-sum estimate `||E||_F^2 >= 2q^2` by
+a factor `q/2`.  In local graph language, if `h_x` is the number of missing
+D-edges among the `q-1` vertices of `N_D(x)`, then
+
+```text
+|delta_D(N_D[x])| = 2 h_x,
+h_x >= q/2.                                   (11)
+```
+
+Thus every vertex centers at least `q/2` D-wedges whose endpoints have a
+unique common A-neighbor.  Globally, if `t(D)` is the number of D-triangles,
+
+```text
+||E||_F^2 = q^2 (q-1)(q-2) - 6 t(D),
+t(D) <= q^2 (q^2-4q+2) / 6.                  (12)
+```
+
+The spectral multiplier of `E` still vanishes on the defect eigenvalue
+`mu=-1`, so (10) does not alone close the designated-sector trace problem.
+It is, however, a load-bearing consumer of maximal defect connectivity and
+the strongest current uniform energy bound for that incidence operator.
