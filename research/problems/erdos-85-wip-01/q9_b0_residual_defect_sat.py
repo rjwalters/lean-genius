@@ -22,10 +22,13 @@ an UNSAT result still needs a checked proof or independently verified CNF.
 from __future__ import annotations
 
 import argparse
+import subprocess
+import tempfile
 import time
 from itertools import combinations
+from pathlib import Path
 
-from z3 import And, Bool, If, SolverFor, Sum, is_true, sat, unknown
+from z3 import And, Bool, Goal, If, SolverFor, Sum, Then, is_true, sat, unknown
 
 
 N_TRIPLE = 26
@@ -267,6 +270,8 @@ def main() -> int:
     parser.add_argument("--outer-random-seed", type=int, default=0)
     parser.add_argument("--relax", action="append", default=[],
                         choices=("b0-c4", "dtb-common", "dtb-rows", "dtb-columns"))
+    parser.add_argument("--kissat", action="store_true",
+                        help="bit-blast the model to DIMACS and run Kissat")
     args = parser.parse_args()
     seed = make_outer_seed(args.branch, args.timeout_seconds * 1000,
                            args.outer_random_seed) if args.seed_outer else None
@@ -274,6 +279,30 @@ def main() -> int:
                          args.full_incidence or args.seed_outer, seed,
                          set(args.relax))
     started = time.time()
+    if args.kissat:
+        goal = Goal()
+        goal.add(*solver.assertions())
+        cnf_started = time.time()
+        transformed = Then("simplify", "solve-eqs", "lia2card", "card2bv",
+                           "bit-blast", "tseitin-cnf")(goal)
+        cnf_elapsed = time.time() - cnf_started
+        if len(transformed) != 1:
+            raise RuntimeError(f"CNF tactic produced {len(transformed)} goals")
+        dimacs = transformed[0].dimacs()
+        with tempfile.TemporaryDirectory(prefix="q9-b0-cnf-") as tmp:
+            cnf_path = Path(tmp) / "model.cnf"
+            cnf_path.write_text(dimacs)
+            proc = subprocess.run(
+                ["kissat", f"--time={args.timeout_seconds}", str(cnf_path)],
+                text=True, capture_output=True, check=False,
+            )
+        elapsed = time.time() - started
+        status = next((line for line in proc.stdout.splitlines()
+                       if line.startswith("s ")), "s UNKNOWN")
+        print(f"branch={args.branch} kissat={status[2:]} elapsed={elapsed:.3f}s "
+              f"cnf_seconds={cnf_elapsed:.3f} "
+              f"vars_clauses={dimacs.splitlines()[0]}")
+        return 0 if status != "s UNKNOWN" else 2
     result = solver.check()
     elapsed = time.time() - started
     print(f"branch={args.branch} result={result} elapsed={elapsed:.3f}s")
