@@ -1,4 +1,4 @@
-import Proofs.Erdos85C4FreeNeighborBlockPartition
+import Proofs.Erdos85C4FreeCrossBlockOrthogonality
 import Proofs.Erdos85OddSquareOrderNineThreeHighSecondProfileBinZeroDefectTypes
 
 /-! # Row covers for the q=9 three-high second profile
@@ -2473,29 +2473,15 @@ theorem squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
   let T := B 0 \ S
   let M := G.neighborFinset x ∩ B 1
   let U1 := B 1 \ M
-  apply Finset.sum_eq_zero
-  intro t ht
-  apply Finset.sum_eq_zero
-  intro b hb
-  let A := (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
-  let C := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
-  change A.card * C.card = 0
-  have hresolution :=
-    squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
-      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht hb
-  dsimp only at hresolution
-  change
-    ((secondOrderDefectGraph G).Adj t b ∧ A.card = 0 ∧ C.card = 0) ∨
-      (¬ (secondOrderDefectGraph G).Adj t b ∧ A.card = 1 ∧ C.card = 0) ∨
-      (¬ (secondOrderDefectGraph G).Adj t b ∧ A.card = 0 ∧ C.card = 1)
-    at hresolution
-  rcases hresolution with hD | hA | hC
-  · rw [hD.2.1]
-    simp
-  · rw [hA.2.2]
-    simp
-  · rw [hC.2.1]
-    simp
+  have hTU : Disjoint T U1 := by
+    rw [Finset.disjoint_left]
+    intro z hzT hzU
+    have hzB0 := (Finset.mem_sdiff.mp hzT).1
+    have hzB1 := (Finset.mem_sdiff.mp hzU).1
+    have hk0 := (Finset.mem_filter.mp hzB0).2
+    have hk1 := (Finset.mem_filter.mp hzB1).2
+    omega
+  exact c4Free_crossBlock_trace_zero G hfree T U1 hTU
 
 /-- The companion Gram identity.  Off the diagonal, a pair of ordinary B0
 rows cannot simultaneously share an unmarked-B1 incidence point and a
