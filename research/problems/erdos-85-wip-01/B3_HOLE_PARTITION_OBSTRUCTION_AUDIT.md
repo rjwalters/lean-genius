@@ -946,6 +946,32 @@ global no-interaction assumption.  A uniform construction must allow a
 mixed `r`--`c_all` term, or prove comparisons by axis moves only when the
 intermediate flag actually exists.
 
+This axis-qualified cone also has an exact transport alternative.  At fixed
+base signature `(role,n,c_pair)`, put a directed order edge
+
+```text
+(c,r) <= (c,r')   when r<=r',
+(c,r) <= (c',r)   when c>=c',                              (12qf)
+```
+
+and take the transitive closure **on the flags which actually occur**.  The
+first edge is fiber-census isotonicity and the second is collision
+antitonicity (12qe); importantly, (12qf) does not insert a diagonal edge when
+the intermediate flag is absent.  Repeating the separation and finite
+Strassen argument of (12ra)--(12rc), failure of the signed price branch is
+equivalent to fractional exact-cardinality row matchings such that
+
+1. the endpoint census balances separately for every full alpha signature
+   `(role,n,c_pair,c_all)`; and
+2. within each base signature, incoming flag mass transports to source flag
+   mass only along the realizable order (12qf).
+
+This is now the precise primal object to exclude.  It retains exact
+three-color collision layers through the alpha equations, but allows role
+mass to move between layers only through a fiber census that occurs on both
+sides.  The failed full-product experiment says that this realizability
+condition is essential, not a technical artifact of the feature encoding.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
