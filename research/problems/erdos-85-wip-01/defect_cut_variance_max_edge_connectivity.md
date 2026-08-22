@@ -1979,6 +1979,45 @@ Again `(b-1)+(q-1)b=qb-1=|Y|`.  Thus either component location forces an
 exact near-parallel class on the opposite component, with the exceptional
 fiber multiplicities determined by K or R membership.
 
+At the bottom of the surviving interval, the B45 injection ledger is
+almost completely rigid.  Put
+
+```text
+e_w=|G_(p_w) intersect N_A(c)| in {0,1},
+s_w=m_w-(b-1-e_w) >= 0.
+```
+
+Summing the three exact lower bounds gives
+
+```text
+sum_w s_w=3a-q+2+sum_w e_w.                  (B48)
+```
+
+Suppose first `q=3r+2` and `a=ceil((q-5)/3)=r-1`.  The right side is
+`sum e_w-3`; hence all three `e_w` equal one and every slack vanishes:
+
+```text
+q=3r+2, a=r-1:
+  m_w=b-2, n_w=a+2 for all w,
+  |G_(p_w) intersect N_A(c)|=1,
+  G_(p_w)\N_A(c) <--> K_w is a bijection.     (B48a)
+```
+
+If `q=3r+1` and `a=ceil((q-5)/3)=r-1`, then `sum s_w=sum e_w-2`.
+Thus either two `e_w` are one and all slacks vanish, or all three are one
+and the total slack is one.  In both cases the unordered wing profiles are
+
+```text
+q=3r+1, a=r-1:
+  {m_w : w in W}={b-2,b-2,b-1},
+  {n_w : w in W}={a+2,a+2,a+1}.               (B48b)
+```
+
+For binary q the two alternatives correspond to odd and even exponents,
+respectively.  Hence any attempt to eliminate the bottom middle-third
+slice may start from these exact balanced wing profiles rather than the
+full attachment simplex.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
