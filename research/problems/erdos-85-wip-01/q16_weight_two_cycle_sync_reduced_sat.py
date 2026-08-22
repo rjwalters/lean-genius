@@ -65,6 +65,16 @@ def main() -> None:
     for pair in distance_two_pairs:
         solver.add(Not(selected[pair]))
 
+    # Realize the actual alternating eigenline, not only even cycle lengths.
+    # Every two-point outside trace must contain one +1 and one -1 point.
+    alternating_sign = {
+        vertex: 1 if (vertex if vertex < 6 else vertex - 6) % 2 == 0 else -1
+        for vertex in range(N)
+    }
+    for first, second in PAIRS:
+        if alternating_sign[first] == alternating_sign[second]:
+            solver.add(Not(selected[first, second]))
+
     # The full cross-block equation HM + MK = J forces the exact integral
     # commutator [H, MM^T] = 0.  Off the diagonal, MM^T is precisely this
     # simple trace-pair graph, so impose [H,F] = 0 already at the reduced
@@ -114,6 +124,8 @@ def main() -> None:
         for vertex in range(N)
     )
     assert chosen.isdisjoint(distance_two_pairs)
+    assert all(alternating_sign[first] + alternating_sign[second] == 0
+               for first, second in chosen)
     assert chosen.isdisjoint(cycle_edges(SHORT_CYCLE))
     assert cycle_edges(LONG_CYCLE) <= chosen
     assert len(chosen & INTERNAL_EDGES) == len(LONG_CYCLE) == 26
@@ -207,12 +219,18 @@ def main() -> None:
                 elif color[neighbor] == color[vertex]:
                     bipartite = False
     assert not bipartite
+    assert all(
+        sum(alternating_sign[neighbor] for neighbor in defect_neighbors[vertex])
+        == (Q - 5) * alternating_sign[vertex]
+        for vertex in range(N)
+    )
 
     print("verified reduced q=16 selector countermodel")
     print("internal type: C6 + C26 (oppositely oriented)")
     print("outside traces: 224; trace-edges: 26")
     print(f"outside resolution edges: {len(outside_edges)}")
     print("induced defect block: connected, nonbipartite, 15-regular")
+    print("alternating vector: cross-kernel and defect eigenvalue 11")
 
 
 if __name__ == "__main__":

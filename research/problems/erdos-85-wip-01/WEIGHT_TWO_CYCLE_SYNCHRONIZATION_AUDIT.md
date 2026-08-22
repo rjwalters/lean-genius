@@ -38,6 +38,8 @@ traces.  Thus the traces form a simple `(q-2)=14`-regular graph `F` on the
 * no repeated trace (simplicity, forced by C4-freeness);
 * no trace pair having an internal common neighbor (the exact pair-codegree
   exclusion forced by C4-freeness);
+* every trace joins opposite signs of the alternating vector on the two even
+  cycles (the exact exterior-kernel/eigenline condition);
 * the exact integral commutator `[H,F]=0`, where `H=A[C]`;
 * no C6 edge in `F` (that cycle is T-saturated);
 * every C26 edge in `F` (that cycle is cross-saturated).
@@ -86,6 +88,13 @@ all 32 vertices.  Thus the reduced witness satisfies the defining NONBIP
 defect-component condition; its missing layer is outside adjacency, not the
 component's own defect realization.
 
+The alternating eigenline is also realized, rather than inferred merely from
+the even cycle lengths.  Give consecutive vertices on each H-cycle signs
+`+1,-1`.  Every selected outside trace joins opposite signs, so `M^T s=0`,
+while `Hs=-2s`.  The reconstructed defect block directly verifies
+`D[C]s=(q-5)s=11s`.  Hence this reduced witness survives the full
+SIZE-TWO-EIGENLINE interface as well as the broader NONBIP-MIXED laws.
+
 The commutator is not an optional strengthening.  If `M` is the component-to-
 outside incidence matrix and `K` the outside induced adjacency matrix, the
 cross block of `A^2` is
@@ -108,7 +117,7 @@ zero-diagonal 0/1 matrix of degree 14 satisfying `HM+MK=J`.  Equivalently,
 for every outside trace `r={u,v}`, its 14 neighbors in `K` must form an
 `F`-perfect matching of the 28 component vertices outside
 `N_H(u) union N_H(v)`.  Mutual selection turns this into an exact-cover
-instance with 19,097 admissible outside edges and 6,272 exact-one equations.
+instance with 19,136 admissible outside edges and 6,272 exact-one equations.
 
 The unrestricted instance is currently **UNKNOWN**: Z3, native Kissat, and
 HiGHS MILP did not return a verdict in the bounded runs (120--240 seconds).
