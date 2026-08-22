@@ -829,6 +829,140 @@ theorem squareOrderNine_threeHigh_secondProfile_trianglePair_common_binOne_force
         ((mem_triangleFreeNeighbors G y p).mp htf).1,
         ((mem_triangleFreeNeighbors G p z).mp htf').1⟩
 
+/-- A bin-zero neighbor of the universal bin-three vertex has no original
+bin-one neighbor.  A hypothetical bin-one neighbor and the bin-three vertex
+would be two common neighbors of the bin-zero vertex and the bin-one
+vertex's unique high root. -/
+theorem squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    {x y z : V}
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 0)
+    (hz : z ∈ squareOrderNineLowIncidenceBin G 1)
+    (hxy : G.Adj x y) :
+    ¬ G.Adj y z := by
+  intro hyz
+  let H := squareOrderHighVertices G 9
+  have hxCard : (G.neighborFinset x ∩ H).card = 3 :=
+    (Finset.mem_filter.mp hx).2
+  have hzCard : (G.neighborFinset z ∩ H).card = 1 :=
+    (Finset.mem_filter.mp hz).2
+  have hxAll : G.neighborFinset x ∩ H = H := by
+    apply Finset.eq_of_subset_of_card_le
+    · exact Finset.inter_subset_right
+    · rw [hxCard, hhigh]
+  obtain ⟨r, hr⟩ := Finset.card_pos.mp (by omega :
+    0 < (G.neighborFinset z ∩ H).card)
+  have hrParts := Finset.mem_inter.mp hr
+  have hrx : G.Adj r x := by
+    have : r ∈ G.neighborFinset x ∩ H := by
+      rw [hxAll]
+      exact hrParts.2
+    exact (G.adj_comm x r).mp
+      ((G.mem_neighborFinset x r).mp (Finset.mem_inter.mp this).1)
+  have hrz : G.Adj r z :=
+    (G.adj_comm z r).mp ((G.mem_neighborFinset z r).mp hrParts.1)
+  have hyr : y ≠ r := by
+    intro hyr
+    subst r
+    have hyLow := (Finset.mem_filter.mp hy).1
+    exact (Finset.mem_sdiff.mp hyLow).2 hrParts.2
+  have hxz : x ≠ z := by
+    intro hxz
+    subst z
+    omega
+  have hxCommon : x ∈ G.neighborFinset y ∩ G.neighborFinset r :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset y x).mpr hxy.symm,
+      (G.mem_neighborFinset r x).mpr hrx⟩
+  have hzCommon : z ∈ G.neighborFinset y ∩ G.neighborFinset r :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset y z).mpr hyz,
+      (G.mem_neighborFinset r z).mpr hrz⟩
+  have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree y r hyr
+  exact hxz (Finset.card_le_one.mp hle x hxCommon z hzCommon)
+
+/-- Consequently every defect edge from such a bin-zero neighbor into the
+bin-one core is antipodal: its triangle-free/original alternative is ruled
+out by the preceding two-common-neighbor obstruction. -/
+theorem squareOrderNine_threeHigh_binThree_binZero_neighbor_binOne_defect_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    {x y z : V}
+    (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ squareOrderNineLowIncidenceBin G 0)
+    (hz : z ∈ squareOrderNineLowIncidenceBin G 1)
+    (hxy : G.Adj x y)
+    (hDyz : (secondOrderDefectGraph G).Adj y z) :
+    (antipodalGraph G).Adj y z := by
+  change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj y z at hDyz
+  rcases hDyz with hanti | htf
+  · exact hanti
+  · exfalso
+    exact (squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+      G hfree hhigh hx hy hz hxy)
+      (((mem_triangleFreeNeighbors G y z).mp htf).1)
+
+/-- Each endpoint of the forced nondefect bin-zero pair therefore sends
+exactly three antipodal edges into the bin-one core. -/
+theorem squareOrderNine_threeHigh_secondProfile_nondefect_binZero_binOne_antipodal_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    (antipodalNeighbors G y ∩ squareOrderNineLowIncidenceBin G 1).card = 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  have hyParts := Finset.mem_sdiff.mp hy
+  have hyB : y ∈ B 0 := (Finset.mem_inter.mp hyParts.1).2
+  have hxy : G.Adj x y :=
+    (G.mem_neighborFinset x y).mp (Finset.mem_inter.mp hyParts.1).1
+  have htype :=
+    squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  dsimp only at htype
+  have heq : D.neighborFinset y ∩ B 1 = antipodalNeighbors G y ∩ B 1 := by
+    ext z
+    simp only [Finset.mem_inter]
+    constructor
+    · rintro ⟨hzD, hzB⟩
+      have hanti :=
+        squareOrderNine_threeHigh_binThree_binZero_neighbor_binOne_defect_antipodal
+          G hfree hhigh hx hyB hzB hxy
+          ((D.mem_neighborFinset y z).mp hzD)
+      exact ⟨(antipodalGraph_adj G y z).mp hanti, hzB⟩
+    · rintro ⟨hzA, hzB⟩
+      have hanti : (antipodalGraph G).Adj y z :=
+        (antipodalGraph_adj G y z).mpr hzA
+      have hD : D.Adj y z := by
+        change (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj y z
+        exact Or.inl hanti
+      exact ⟨(D.mem_neighborFinset y z).mpr hD, hzB⟩
+  rw [← heq]
+  exact htype.2.1
+
 /-- In the q=9 three-high sector, both colors of the second-order defect
 graph have edge count divisible by three.  This is a genuinely global
 constraint: `G` has 366 edges, its triangular edges occur in triples, and
@@ -959,4 +1093,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_trianglePair_common_binOne_forces_antipodal
+#print axioms Erdos85.squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+#print axioms Erdos85.squareOrderNine_threeHigh_binThree_binZero_neighbor_binOne_defect_antipodal
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_nondefect_binZero_binOne_antipodal_card
 #print axioms Erdos85.squareOrderNine_threeHigh_colored_defect_edge_card_dvd_three
