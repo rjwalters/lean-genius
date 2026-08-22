@@ -1298,6 +1298,24 @@ role-constant.  Thus every odd nonconstant role cycle consumes positive
 root-own mixed collision, exactly paralleling the once-paid collision budget
 in the simultaneous port-switch lane.
 
+Same-role multiplicity sharpens the uncharged branch.  At a no-turn index
+write `a=a_(i-1)=a_(i+1)`.  If `r_{t_i b_i,a}>=2`, the source flag contains
+a same-role occupant pair and can instead be charged to
+`binom(r_{t_i b_i,a},2)`.  The same per-flag flow bound applies.  Combining
+mixed- and same-role pairs, all cycle mass except indices satisfying
+
+```text
+a_(i-1)=a_(i+1)=a  and  r_{t_i b_i,a}=1                 (12qw)
+```
+
+is bounded by the full root-own collision energy
+`sum_{t,b in S_t intersect C} binom(ell_b(t),2)`.
+Consequently an entirely uncharged odd-horizontal cycle is role-constant and
+every used own fiber has exactly one eligible occupant of that role.  This
+is the collision-free residual normal form: the horizontal same-role
+transition is the unique same-role option visible in its source census, and
+all other eligible occupants in that fiber (if any) have different roles.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
