@@ -147,19 +147,21 @@ the B.3 notation,
 K^2 + Q^T Q + M + D = C + 8 I,
 ```
 
-and every edge of the cubic graph `K` is an edge of the complete tripartite
-color graph `C`.  Contracting this identity over the 36 unordered `K`-edges
-gives
+The graph `K` has twelve same-color matching edges and 24 cross-color edges;
+only the latter are edges of the complete tripartite color graph `C`.
+Contracting this identity over those 24 unordered cross-color `K`-edges gives
 
 ```text
 sum_{uv in E(K)} (Q^T Q)_uv
-  = 36 - 3 t(K) - |E(K) intersect E(M)| - |E(K) intersect E(D)|.  (4)
+  = 24 - 3 t(K) - |E(K) intersect E(M)| - |E(K) intersect E(D)|,  (4)
 ```
 
-Indeed, the `K^2` contraction is `3 t(K)`, since each triangle contributes
-one common neighbor on each of its three edges.  The left side of (4) is
-exactly the number of `B0-B1-B1` triangles counted on the right side of
-(2).  Thus its parity is
+where every edge set in (4) is implicitly restricted to the cross-color
+sector.  Indeed, the `K^2` contraction is `3 t(K)`: a K-triangle is rainbow
+(two same-color vertices would share both their high root and the third
+triangle vertex), and contributes one common neighbor on each of its three
+edges.  The left side of (4) is exactly the number of `B0-B1-B1` triangles
+counted on the right side of (2).  Thus its parity is
 
 ```text
 t(K) + |E(K) intersect E(M)| + |E(K) intersect E(D)|  (mod 2). (5)
@@ -170,5 +172,37 @@ completion inside the unmarked core, completion through an ordinary `B0`
 row, completion in the marked-pair layer, or no completion (a defect edge).
 Consequently the first missing input can be stated sharply: the existing
 colored ledger must determine the parity of the three terms in (5), jointly
-or separately.  Their uncolored sum merely recovers the 36-edge partition
+or separately.  Their uncolored sum merely recovers the 24-edge partition
 and supplies no contradiction by itself.
+
+### Pointwise sharpening and parity probe
+
+There is one exact pointwise sharpening.  The graph induced on the
+neighborhood of any vertex in a C4-free graph has maximum degree at most
+one: two incident local edges would make their two outer endpoints share
+both the root and the middle vertex.  Every B.3 row support has size two or
+three, so
+
+```text
+|E_K(S_x)| is either zero or one.                               (6)
+```
+
+Consequently the right side of (2) is literally the parity of the number of
+ordinary B0 rows carrying a B0--U1--U1 triangle, not merely a weighted edge
+count.
+
+The mandatory abstract-satisfiability probe rules out an outer-ledger-only
+parity theorem.  Using `make_outer_seed` from
+`q9_b0_residual_defect_sat.py`, three independently seeded valid outer
+designs in each branch gave total internal-row K-edge counts
+
+```text
+branch 3: 11, 14, 18  (parities 1,0,0),
+branch 4: 12, 15, 17  (parities 0,1,1).
+```
+
+Thus both parities occur in both branches before the residual graph and
+defect semantics are imposed.  This is a failure certificate for the claim
+that the colored `Q,K` row ledger alone fixes (2); it is not evidence that an
+actual graph can realize either parity.  Any terminal consumer must use the
+residual adjacency, defect connectivity, or an equally strong coupling.
