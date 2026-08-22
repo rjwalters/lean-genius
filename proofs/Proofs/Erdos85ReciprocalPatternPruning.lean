@@ -15,6 +15,28 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Any deletion operator on a finite set reaches a fixed point within the
+initial cardinality.  This is the generic finite-descent bound used for
+bounded reciprocity pruning. -/
+theorem finset_decreasing_iterate_stabilizes
+    {β : Type*} [DecidableEq β]
+    (f : Finset β → Finset β)
+    (hsub : ∀ s, f s ⊆ s)
+    (s : Finset β) :
+    ∃ n ≤ s.card, (f^[n + 1]) s = (f^[n]) s := by
+  by_cases hfix : f s = s
+  · exact ⟨0, Nat.zero_le _, by simpa using hfix⟩
+  · have hstrict : f s ⊂ s :=
+      (Finset.ssubset_iff_subset_ne).2 ⟨hsub s, hfix⟩
+    have hcard : (f s).card < s.card := Finset.card_lt_card hstrict
+    obtain ⟨n, hn, hstable⟩ :=
+      finset_decreasing_iterate_stabilizes f hsub (f s)
+    refine ⟨n + 1, by omega, ?_⟩
+    rw [show n + 1 + 1 = (n + 1) + 1 by omega,
+      Function.iterate_succ_apply, Function.iterate_succ_apply]
+    exact hstable
+termination_by s.card
+
 /-- Delete every local pattern containing an arc unsupported in the reverse
 direction by the current pattern families. -/
 def reciprocalPatternPrune {α : Type*} [DecidableEq α]
