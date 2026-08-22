@@ -2947,3 +2947,56 @@ interface (175), not a parity of its cardinality.  Any successful price
 construction may be normalized by subtracting a constant boundary weight,
 whose contribution vanishes by (177), leaving only price differences among
 the exceptional target ports.
+
+## 53. Global target capacity across all clean colors
+
+The capacity in (166) is simultaneous across the source color `d`, not only
+valid one clean system at a time.  Let
+
+```text
+N_P := 2 sum_(d in D_P) t_d
+```
+
+be the total number of demanded source ports over the endpoint-neutral clean
+colors, and let `Z_P` be the union of all target ports they use.  A target
+`z` cannot serve two different source colors at the same root `x`: the two
+source ports `y in d`, `y' in d'` would give the ambient four-cycle
+
+```text
+x -- y -- z -- y' -- x.
+```
+
+Across distinct roots, every service consumes the cross edge `xz`, and `z`
+has exactly two cross neighbors in `c`.  Hence every target has total
+multiplicity at most two across **all** `d in D_P`.
+
+Put
+
+```text
+T_* := union_(d in D_P) T_d,
+K_P := N_P - |Z_P|.
+```
+
+As in Section 49, `K_P` is the number of multiplicity-two targets.  Such a
+target determines two distinct roots in `T_*` at path distance at least
+three.  Two repeated targets cannot determine the same root pair by
+C4-freeness.  Therefore the global collision map is injective and
+
+```text
+K_P <= a(T_*),
+|Z_P| >= N_P - a(T_*),
+|Z_P| >= N_P/2 = sum_(d in D_P) t_d.                   (179)
+```
+
+In particular, since `T_* subset U`,
+
+```text
+a(T_*) <= (ell-1)(ell-2)/2.                            (180)
+```
+
+Unlike the result obtained by summing (168) color by color, (179) pays the
+path-square collision budget only once, not once per clean color.  On a
+one-edge run every target used anywhere in the clean core is distinct; on a
+three-edge run there is at most one repeated target across the entire clean
+core.  This is the first genuinely simultaneous quantitative constraint on
+the endpoint-neutral lift systems.
