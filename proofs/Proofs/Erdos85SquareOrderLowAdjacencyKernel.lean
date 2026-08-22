@@ -369,6 +369,43 @@ theorem squareOrder_high_card_sub_one_le_finrank_lowAdjacency_ker
     rw [Fintype.card_coe, Finset.card_erase_of_mem ha]
   simpa [H, hIcard] using hle
 
+/-- In particular, two or more high vertices force the low-sector adjacency
+matrix to be singular over the rationals. -/
+theorem squareOrder_lowAdjacency_det_eq_zero_of_two_le_high_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (hhigh : 2 ≤ (squareOrderHighVertices G d).card) :
+    let L := (Finset.univ : Finset V) \ squareOrderHighVertices G d
+    ((G.induce (L : Set V)).adjMatrix ℚ).det = 0 := by
+  classical
+  let H := squareOrderHighVertices G d
+  let L := (Finset.univ : Finset V) \ H
+  have hhighH : 2 ≤ H.card := by simpa [H] using hhigh
+  have hHpos : 0 < H.card := by omega
+  obtain ⟨a, ha⟩ := Finset.card_pos.mp hHpos
+  have herasepos : 0 < (H.erase a).card := by
+    rw [Finset.card_erase_of_mem ha]
+    omega
+  obtain ⟨b, hb⟩ := Finset.card_pos.mp herasepos
+  let i : {x // x ∈ H.erase a} := ⟨b, hb⟩
+  let v : ↥(L : Set V) → ℚ :=
+    squareOrderLowHighIncidenceDifferenceRat G d b a
+  have hvzero : ((G.induce (L : Set V)).adjMatrix ℚ).mulVec v = 0 := by
+    simpa [H, L, i, v] using
+      squareOrder_lowAdjacency_mulVec_highIncidenceDifferenceRat_eq_zero
+        G hfree hd hmin hcover hcard (Finset.mem_of_mem_erase hb) ha
+  have hli := squareOrder_lowHighIncidenceDifferencesRat_linearIndependent
+    G hfree hd hmin hcover hcard ha
+  have hvne : v ≠ 0 := by
+    simpa [H, L, i, v] using hli.ne_zero i
+  exact Matrix.exists_mulVec_eq_zero_iff.mp ⟨v, hvne, hvzero⟩
+
 end
 
 end Erdos85
@@ -378,3 +415,5 @@ end Erdos85
 #print axioms Erdos85.squareOrder_lowHighIncidenceDifferences_linearIndependent
 #print axioms
   Erdos85.squareOrder_high_card_sub_one_le_finrank_lowAdjacency_ker
+#print axioms
+  Erdos85.squareOrder_lowAdjacency_det_eq_zero_of_two_le_high_card
