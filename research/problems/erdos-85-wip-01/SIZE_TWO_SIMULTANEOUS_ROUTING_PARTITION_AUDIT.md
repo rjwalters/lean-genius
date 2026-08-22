@@ -699,6 +699,10 @@ is equivalent to the single mixed trace congruence
 trace(H^3 + 3 H R) = 0  (mod 12).                       (42)
 ```
 
+Here (40)--(42) retain the even-`q` triangle-free degree `0/2` and
+cycle-propagation hypotheses used in (30); they are not assertions about an
+arbitrary commuting pair of graphs.
+
 The signed-mode argument above proves (42) whenever the exterior-pair bottom
 line supplies a full-support `{+1,-1}` joint eigenvector.  In the other horn,
 `B^T` transports every relevant nonprincipal internal mode to the exterior
