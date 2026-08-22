@@ -257,8 +257,16 @@ factorization edge-partitions the q-regular selector complement
 H_c = complement(D[c]) = disjoint-union_a F_a,           (15)
 ```
 
-and `F_c` is the distinguished self-source distance-two 2-factor.  The two
-summands in (13) are exchanged by swapping `e` and `f`, so
+and `F_c` is the distinguished self-source distance-two 2-factor.
+
+Here "distance-two" means the proved distinct-common-neighbor graph, not
+graph-metric distance exactly two.  Consequently an internal `C_3` maps to
+another `C_3` (each pair shares the third vertex).  An internal `C_4` would
+degenerate to a matching because opposite roots repeat the same pair, but it
+is excluded by ambient C4-freeness.  Thus `F_c` is indeed 2-regular in the
+present branch, including triangle components.
+
+The two summands in (13) are exchanged by swapping `e` and `f`, so
 
 ```text
 E_x(e,f) = E_x(f,e).                                    (16)
