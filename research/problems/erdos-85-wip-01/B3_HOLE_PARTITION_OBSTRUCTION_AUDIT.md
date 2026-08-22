@@ -137,3 +137,38 @@ consumer must determine that triangle parity (or force the parity of the
 double-route cells) from the colored row ledger.  Connectivity of `D0-x`
 does not by itself enter (2); its prospective role is to prevent the
 collision support from splitting into independently parity-balanced pieces.
+
+### Core-edge contraction
+
+The exact pair-cover identity makes the missing parity more concrete.  In
+the B.3 notation,
+
+```text
+K^2 + Q^T Q + M + D = C + 8 I,
+```
+
+and every edge of the cubic graph `K` is an edge of the complete tripartite
+color graph `C`.  Contracting this identity over the 36 unordered `K`-edges
+gives
+
+```text
+sum_{uv in E(K)} (Q^T Q)_uv
+  = 36 - 3 t(K) - |E(K) intersect E(M)| - |E(K) intersect E(D)|.  (4)
+```
+
+Indeed, the `K^2` contraction is `3 t(K)`, since each triangle contributes
+one common neighbor on each of its three edges.  The left side of (4) is
+exactly the number of `B0-B1-B1` triangles counted on the right side of
+(2).  Thus its parity is
+
+```text
+t(K) + |E(K) intersect E(M)| + |E(K) intersect E(D)|  (mod 2). (5)
+```
+
+This is also the four-way common-neighbor partition of the cubic-core edges:
+completion inside the unmarked core, completion through an ordinary `B0`
+row, completion in the marked-pair layer, or no completion (a defect edge).
+Consequently the first missing input can be stated sharply: the existing
+colored ledger must determine the parity of the three terms in (5), jointly
+or separately.  Their uncolored sum merely recovers the 36-edge partition
+and supplies no contradiction by itself.
