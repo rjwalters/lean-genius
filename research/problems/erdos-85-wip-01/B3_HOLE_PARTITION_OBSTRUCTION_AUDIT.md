@@ -453,6 +453,38 @@ exactly one matching edge.  This is the first formulation in the chain that
 uses symmetry of the residual B0 adjacency itself; the max-flow defect probe
 does not model these fiber matchings.
 
+### Two-color fiber-packing localization
+
+The nonlinear join localizes much more sharply than the full 24-column
+model suggests.  Fix an outer `Q,K` design and retain only:
+
+1. the exact residual row degrees (five on regular triple rows and six on
+   the exceptional holes and all pair rows);
+2. the two trace-zero directions on an allowed residual edge `uv`, namely
+   `S_v intersect (S_u K)=empty` and `S_u intersect (S_v K)=empty`;
+3. the fiber cap `|N_A(t) intersect F_b| <= 1`, but only for the sixteen
+   points `b` in any chosen two of the three high-root colors.
+
+Even after relaxing every residual edge variable to the interval `[0,1]`,
+this system is infeasible for every color pair on four independently
+generated outer seeds in each branch.  All 24 branch/seed/color-pair LPs
+return infeasible.  By contrast, keeping the caps for only one eight-point
+color class is satisfiable in the corresponding binary model, as is every
+tested four-fiber closed neighborhood in `K`.  Exact degrees plus the
+trace-zero support and all three marked-support partitions are also
+satisfiable on the eight seeds when the U1 fiber caps are omitted.
+
+Thus the sampled obstruction is not marked-row reciprocity and does not
+require all three colors.  It is already a **two-color fiber-packing
+inequality**, and LP infeasibility guarantees a weighted linear (Farkas)
+certificate for each sampled design.  The remaining proof target is to make
+that inequality uniform in the outer design.  Rowwise transversal capacity
+alone is not uniform: it kills a few sampled color pairs directly, while in
+most instances every row separately has enough eligible neighbors and only
+global residual reciprocity fails.  The reproducible relaxation is
+`q9_two_color_residual_lp.py`; its output is evidence for the uniform lemma,
+not a universal certificate.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
