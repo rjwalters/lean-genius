@@ -510,6 +510,33 @@ but they locate the plausible uniform statement: a local-transversal versus
 coupled-multi-fiber deficiency dichotomy, not the existence of one bad fiber
 of a predetermined kind.
 
+The local half of that dichotomy has a standard exact form.  Fix a row `t`
+and two selected colors.  Replace every trace-eligible candidate neighbor
+`u` by the selected-color labels in `S_u`.  A triple row, or a pair row
+missing the unselected color, carries one label in each selected color and
+therefore gives an edge of an `8`-by-`8` bipartite graph.  A pair row missing
+one selected color carries a single label; attach its other endpoint to a
+private dummy vertex on the opposite shore.  Linearity of the outer design
+prevents duplicate two-label edges, and the marked pair supports are
+matchings, so the construction faithfully records candidate rows.
+
+Choosing residual neighbors of `t` subject to all sixteen fiber caps is now
+exactly choosing a matching in this augmented bipartite graph.  In
+particular, the one-row LP relaxation is integral, and
+
+```text
+the degree demand at t is locally feasible
+iff nu(twoColorCandidateGraph(t)) >= d_t,                    (12f)
+```
+
+where `d_t` is five or six.  Failure of (12f) has an ordinary Hall-set
+certificate.  This explains the single-row irreducible cores above without
+any numerical duality.  When (12f) holds at every row, the remaining horn is
+genuinely simultaneous: locally chosen matchings must be coupled by
+`A_uv=A_vu` and by the five-row fiber constraints.  The sampled designs show
+that this simultaneous horn can fail even though every graph in (12f) has a
+large enough matching.
+
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
 
