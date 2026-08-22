@@ -2285,3 +2285,50 @@ mixed odd-horizontal cycles: nonbacktracking port walks W(Omega)
 A mixed-cycle closure must exploit the marked exterior transitions in
 `W(Omega)`—for example by a parity law for their owner-color sequence—rather
 than reusing the single-pair kernel contraction.
+
+## 40. Triangle cancellation and the mixed incidence skeleton
+
+Every vertical transition has an additional exact signature inside
+`W(Omega)`.  Suppose it joins `(x,e)` to `(x,d)` and uses ports `p in e`,
+`q in d`.  The end of the first state path, the vertical edge, and the start
+of the second state path form the literal ambient triangle
+
+```text
+x -- p -- q -- x.                                      (142)
+```
+
+Delete this three-edge triangle excursion at every vertical transition.
+The other port of `(x,e)` and the other port of `(x,d)` remain joined through
+the root `x`, so the deletions splice the walk rather than break it.  The
+result is a canonical closed walk `S(Omega)` using only cross edges between
+`c` and its exterior:
+
+```text
+|S(Omega)| = |W(Omega)| - 3V(Omega) = 2H(Omega).        (143)
+```
+
+It alternates between roots in `c` and exterior port vertices.  At a
+horizontal state transition, the exterior port is shared and the walk moves
+between two roots.  At a former vertical transition, the root is shared and
+the walk moves between ports of two different owner colors.  Thus the state
+cycle has a dual incidence description:
+
+```text
+horizontal state edge  <-> exterior-centered two-step in S(Omega),
+vertical state edge    <-> color change at a root of S(Omega).           (144)
+```
+
+If `Omega` is an odd-horizontal obstruction, `S(Omega)` has an odd number
+of root-centered two-edge steps.  When `V=0`, this skeleton is again the
+single-color incidence cycle `C--Z`.  When `V>0`, it is a closed alternating
+walk in the concatenated exterior incidence matrix
+
+```text
+B_c = [ R_ce ]_(e != c),
+```
+
+with owner color changing only at specified root visits.  This is the mixed
+analogue of the kernel cycle used in Section 17.  The next transport target
+is to turn the odd half-length of `S(Omega)` into a binary boundary vector or
+to show that repeated vertices/edges pair its contribution; the raw walk
+need not be a simple cycle, so that reduction is not automatic.
