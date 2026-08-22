@@ -126,6 +126,17 @@ def main() -> None:
 
     # The two nonconstant F_2 adjacency-kernel shores are exactly the two D
     # components.  On each, K- and T-incidence agree vertexwise modulo two.
+    kernel_shores = {
+        frozenset(x for x in range(N) if (mask >> x) & 1)
+        for mask in range(1 << N)
+        if all(
+            sum((mask >> y) & 1 for y in a[x]) % 2 == 0
+            for x in range(N)
+        )
+    }
+    assert kernel_shores == {
+        frozenset(), frozenset(range(N)), *d_components
+    }
     for shore in d_components:
         assert all(len(a[x] & shore) % 2 == 0 for x in range(N))
         assert all(
