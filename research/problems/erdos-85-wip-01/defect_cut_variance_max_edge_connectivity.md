@@ -1539,6 +1539,32 @@ through u; C4-freeness excludes any other X-center for those ends.  If
 the Y-located branch is an almost-perfect matching avoiding every A[X]
 two-step arc, with the sole possible exception forced and identified by u.
 
+This matching is almost edge-disjoint from the wing matching `M_R` in
+(B28).  First the positive-spike flow equation evaluated at `c in Y` gives
+
+```text
+deg_A(c,R)=1-n_c,   where n_c=deg_D(c,W) in {0,1}.          (B32)
+```
+
+Indeed `(L_D 1_Y)_c=n_c`, while the centered right side is
+`1-deg_A(c,R)`.  If an edge `xy` belonged to both `M_c^Y` and `M_R`, its
+two displayed centers would both be common A-neighbors of x and y.  They
+must therefore be the same point, necessarily in
+`N_A(c) intersect (R\P)`.  Conversely any point of this intersection has
+the same two-point X-fiber in both constructions.  Hence
+
+```text
+M_c^Y intersect M_R is empty or a singleton edge,
+|M_c^Y intersect M_R|=|N_A(c) intersect (R\P)| <= 1.       (B32')
+```
+
+Thus the Y-located slice carries two q-minus-two-edge near-perfect fiber
+systems with at most one common edge.  Their union is an almost
+alternating path-cycle system, modified only by the single degree-two
+vertex allowed in (B28) and by at most one doubled edge.  This is a second
+bounded-core formulation of the surviving `a=1` branch, complementary to
+the overwhelmingly one-colored pole formulation (B30).
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
