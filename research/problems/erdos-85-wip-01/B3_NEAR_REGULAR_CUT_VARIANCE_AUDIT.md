@@ -462,12 +462,51 @@ zero.  Since `x in Z`, the first equation in (20) gives
 Thus the six ordinary neighbors of `x` split exactly `5+1` between the
 order-50 and order-27 components.
 
+This branch is in fact impossible.  Write
+
+```text
+Z = {x} union B1 union W,   |W|=8,
+```
+
+so all three original bin-zero neighbors of `x` lie in `W`.  For a bin-zero
+vertex `y`, the pointwise original-neighbor theorem says that `y` has no
+bin-one original neighbor when `y~x`, and exactly three otherwise.  Hence
+
+```text
+deg_A(y,W) = deg_A(y,Z)-1  if y~x,
+deg_A(y,W) = deg_A(y,Z)-3  otherwise.            (21)
+```
+
+On the order-50 side, (20) gives `deg_A(y,Z)=3` for its two exceptional
+vertices and four for its regular bin-zero vertices.  Every bin-zero vertex
+on the order-27 side has `Z`-degree four.
+
+If `x` has three local edges, its three bin-zero neighbors are all
+exceptional and span no edge.  The order-27 side contains exactly one
+ordinary neighbor of `x`; because it contains three exceptional vertices
+while the other side contains only two, this unique neighbor must be one of
+the three original exceptional vertices.  Thus the three bin-zero neighbors
+of `x` have `W`-degrees `3,2,2`.  Being independent, they send seven edges to
+the other five points of `W`, but (21) gives those other points total degree
+only five.  Contradiction.
+
+If `x` has four local edges, its bin-zero neighbors are one exceptional and
+two regular vertices, and the two regular vertices span the unique extra
+local edge.  Their total `W`-degree is at least eight, so after subtracting
+twice their one internal edge they send at least six edges to the other five
+points.  Equation (21) gives those five points total degree at most five,
+again a contradiction.  Therefore
+
+```text
+the (27,50) B3-articulation branch is impossible.                 (22)
+```
+
 In the `(34,43)` branch, take the order-34 component `S` and the 18-center
 low set `Z`.  Here
 
 ```text
 A 1_S = 4 1 - 1_Z,
-D 1_S = 8 1_S - 2 1 - 4 1_H + A 1_Z.           (21)
+D 1_S = 8 1_S - 2 1 - 4 1_H + A 1_Z.           (23)
 ```
 
 Every high root has six neighbors in `Z`, for total high incidence 18, and
@@ -479,7 +518,7 @@ all 18 points of `Z` would be bin one, so only the three bin-one partners of
 Z = {x} union (fifteen B1 points, five of each color) union (two B0 points),
 ```
 
-and the first equation in (21) forces exactly three ordinary neighbors of
+and the first equation in (23) forces exactly three ordinary neighbors of
 `x` on each articulation side.
 
 The symmetric `(18,59)` branch has cut excess two rather than equality.  The
@@ -488,7 +527,7 @@ shore:
 
 ```text
 (L) one degree-5 center c, 28 degree-6, 49 degree-7;
-(H) one degree-8 center c, 31 degree-6, 46 degree-7.                 (22)
+(H) one degree-8 center c, 31 degree-6, 46 degree-7.                 (24)
 ```
 
 In case (L), let `Z` contain the degree-5 center and the 28 degree-6
@@ -497,14 +536,14 @@ component `S`, respectively,
 
 ```text
 (L) A 1_S = 2 1 + 1_Z + e_c - A 1_H,
-(H) A 1_S = 2 1 + 1_Z - e_c - A 1_H.             (23)
+(H) A 1_S = 2 1 + 1_Z - e_c - A 1_H.             (25)
 ```
 
 The same square-identity calculation gives
 
 ```text
 (L) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z - 1_(N_A(c)),
-(H) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z + 1_(N_A(c)). (24)
+(H) D 1_S = 8 1_S + 3 1 + 7 1_H - A 1_Z + 1_(N_A(c)). (26)
 ```
 
 In case (H), evaluation at a high root forces `c` to be high-free; otherwise
@@ -516,13 +555,13 @@ So (H) is impossible.
 In case (L), evaluation at `x` gives
 
 ```text
-|N_A(x) intersect Z| = 1 - 1_[x adjacent c].     (25)
+|N_A(x) intersect Z| = 1 - 1_[x adjacent c].     (27)
 ```
 
-At the high roots, (24) says that at most the `k(c)` high-root incidences of
+At the high roots, (26) says that at most the `k(c)` high-root incidences of
 `c` can account for missing points of `Z`.  Hence at least `3-k(c)` of the
 three distinct bin-one partners of `x` lie in `Z`.  If `c` is bin zero this
-lower bound is three, and if `c` is bin one it is two; both contradict (25).
+lower bound is three, and if `c` is bin one it is two; both contradict (27).
 The only remaining possibility is `c=x` (the spike center is ordinary, so
 there is no high-vertex case).
 

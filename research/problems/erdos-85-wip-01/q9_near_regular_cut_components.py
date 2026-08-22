@@ -415,6 +415,19 @@ def main() -> None:
         tuple(sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly))
         for assembly in articulation_after_equality
     ) == Counter({(18, 59): 1, (27, 50): 1, (34, 43): 1})
+    # The eight-point B0 handshake in the report eliminates (27,50).
+    articulation_after_b0_handshake = [
+        assembly
+        for assembly in articulation_after_equality
+        if tuple(
+            sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly)
+        )
+        != (27, 50)
+    ]
+    assert Counter(
+        tuple(sorted(exceptional + 8 * scale for exceptional, scale, _ in assembly))
+        for assembly in articulation_after_b0_handshake
+    ) == Counter({(18, 59): 1, (34, 43): 1})
 
     bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
     assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
@@ -426,6 +439,7 @@ def main() -> None:
     print(f"verified articulation equality profiles: {equality_profiles}")
     print(f"verified symmetric articulation spike profiles: {symmetric_spike_profiles}")
     print("verified post-equality articulation frontier: (18,59), (27,50), (34,43)")
+    print("verified post-B0-handshake articulation frontier: (18,59), (34,43)")
     for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
         partitions, counts, localized, bin_ledger
     ):
