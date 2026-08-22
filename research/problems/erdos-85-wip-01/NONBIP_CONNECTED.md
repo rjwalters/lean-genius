@@ -55,6 +55,40 @@ uniformly in binary `q`:
 integer matrices and factorization at `q=4,8` by default (`q=16` is also
 supported but slower).
 
+## The integral trace test is strictly stronger
+
+The same controls show where the next obstruction begins.  At `q=4,8`,
+factor the characteristic polynomial of `L_D+J` over the rationals.  After
+removing the simple factors `x-q²` and `x-4`, the absolute constant terms of
+the remaining irreducible factors are respectively
+
+```text
+q=4:  2, 2, 194
+q=8:  6, 62, 958, 409534, 93049333140734.
+```
+
+Every listed integer is nonsquare.  Since this constant term is, up to
+sign, the field norm of a root `lambda`, `lambda` cannot be a square in
+`Q(lambda)`.  For a rational matrix square root, the Galois sign involution
+therefore pairs the `+sqrt(lambda)` and `-sqrt(lambda)` multiplicities, so
+each residual irreducible sector has trace zero.  The principal sector of a
+`q`-regular adjacency matrix contributes `q`, while the sole remaining
+simple sector `lambda=4` contributes either `+2` or `-2`.  Thus the only
+possible total traces are `q+2` and `q-2`, neither zero.  A zero-diagonal
+adjacency square root is impossible for these two controls.
+
+This is an exact `q=4,8` regression, not a uniform theorem about `D_q`.
+It proves that the norm-plus-trace condition is genuinely finer than the
+determinant and even-multiplicity tests.  The banked abstract theorem
+`abstract_residual_trace_eq_zero` already formalizes the Galois cancellation
+step; the remaining uniform connected-stratum problem is to control which
+defect factors can evaluate to squares at `q-1`, and then assemble their
+designated-sector traces with the principal contribution `q`.
+The companion verifier
+`q_generic_connected_defect_trace_split_test.py` independently checks the
+same cancellation by comparing the exact minimal-polynomial degrees of
+`mu` and `sqrt(q-1-mu)` and then tests the surviving sign sums.
+
 This does **not** construct an ambient graph `G`, so it is not a countermodel
 to A-REG or to the connected stratum.  It is a loss certificate for arguments
 using only the spectrum or determinant of `D`.  A viable next child must use
@@ -64,6 +98,6 @@ the entrywise/integral square-root structure of
 A² = L_D + J,
 ```
 
-such as zero-one adjacency, diagonal zero, or eigenvector-coordinate
-constraints.  Merely strengthening determinant bookkeeping cannot close
-`NONBIP-CONNECTED`.
+such as the zero trace forced by diagonal zero, zero-one adjacency, or
+eigenvector-coordinate constraints.  Merely strengthening determinant
+bookkeeping cannot close `NONBIP-CONNECTED`.

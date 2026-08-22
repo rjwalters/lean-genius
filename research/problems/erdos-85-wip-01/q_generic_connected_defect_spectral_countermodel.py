@@ -17,8 +17,18 @@ spanning-tree number a square as well.  Thus the determinant identity and
 even-multiplicity characteristic-polynomial tests do not exclude the
 connected nonbipartite stratum, uniformly in binary q.
 
-The exact SymPy calculation below is a finite regression of the formula.
-q=16 is supported but substantially slower than the default q=4,8 check.
+At q=4 and q=8 the exact factorization gives a sharper diagnostic.  Apart
+from the principal root q^2 and the simple root 4, every irreducible factor
+has nonsquare absolute constant term.  Hence its eigenvalue lambda is not a
+square in Q(lambda): otherwise its field norm would be a square.  The sign
+involution therefore makes that whole sector contribute zero to the trace
+of any rational square root.  The only possible traces are q-2 and q+2,
+not zero, so these two D_q do not admit an adjacency-matrix square root.
+
+This trace refinement is deliberately asserted only for q=4,8.  The exact
+SymPy calculation below is a finite regression of both statements.  q=16
+remains supported for the spectral-only check, but the script makes no
+uniform or q=16 claim about residual norms.
 """
 
 from __future__ import annotations
@@ -65,10 +75,32 @@ def verify(q: int) -> None:
     assert determinant % (order * order) == 0
     spanning_trees = determinant // (order * order)
     assert math.isqrt(spanning_trees) ** 2 == spanning_trees
+    trace_suffix = ""
+    if q in (4, 8):
+        residual_norms = []
+        for factor, exponent in sp.factor_list(characteristic.as_expr())[1]:
+            polynomial = sp.Poly(factor, variable)
+            if polynomial == sp.Poly(variable - order, variable):
+                assert exponent == 1
+                continue
+            if polynomial == sp.Poly(variable - 4, variable):
+                assert exponent == 1
+                continue
+            norm = abs(int(polynomial.TC()))
+            assert math.isqrt(norm) ** 2 != norm
+            assert exponent % 2 == 0
+            residual_norms.append(norm)
+        trace_candidates = (q - 2, q + 2)
+        assert all(candidate != 0 for candidate in trace_candidates)
+        trace_suffix = (
+            f" residual_norms={residual_norms} "
+            f"square_root_trace_candidates={list(trace_candidates)} "
+            "zero_trace_impossible=true"
+        )
     print(
         f"q={q} order={order} degree={q - 1} connected=true nonbipartite=true "
         f"corrected_charpoly=(x-{order})(x-4)P^2 "
-        f"det_square=true spanning_trees_square=true"
+        f"det_square=true spanning_trees_square=true{trace_suffix}"
     )
 
 
