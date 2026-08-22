@@ -89,3 +89,37 @@ does not force synchronization.  The C6 case is special because its
 opposite-sign chord space consists of only one matching.  Excluding the
 surviving orientation still requires the full integral exterior placement or
 an additional reciprocal constraint.
+
+## Forced hole reduction in the surviving orientation
+
+The surviving degrees determine the cross trace block completely.  Every
+C6 vertex has `q-3` cross-trace neighbors, and every long-cycle vertex has
+three.  Alternating signs leave exactly `q-3` eligible long vertices for each
+C6 vertex and exactly three eligible C6 vertices for each long vertex.
+Therefore the cross block is forced to be
+
+```text
+K_(3,q-3) disjoint-union K_(3,q-3),
+```
+
+one complete bipartite graph for each opposite-sign pairing.
+
+On the long cycle, reorder vertices by alternating sign.  The complete
+opposite-sign graph is `B=K_(q-3,q-3)`.  The internal trace graph `Z` has
+degree `q-5`, so its complement `P=B-Z` has degree two.  Moreover:
+
+* `P` is bipartite and 2-regular;
+* `P` avoids every long-cycle edge because that cycle is cross-saturated and
+  hence contained in `Z`;
+* `P` commutes with the long-cycle adjacency.  Both `Z` and the long cycle
+  commute by the block K-law, while `B` commutes with every 2-regular
+  bipartite graph on these equal sign classes; hence `P=B-Z` commutes too.
+
+Thus the entire surviving component-side problem reduces to a commuting
+2-factor `P` of holes on the long cycle, plus the exterior realization.  In
+the q=16 control, `P` is the step-3 C26.  This is the disconnected-sector
+analogue of the banked reflection-circulant hole classification for a single
+connected internal cycle; that theorem does not apply directly because the
+ambient internal graph here has two components.  Classifying these commuting
+long-cycle hole 2-factors is the next algebraic consumer before the full
+exterior exact cover.
