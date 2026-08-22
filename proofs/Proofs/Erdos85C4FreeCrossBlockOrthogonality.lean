@@ -103,6 +103,91 @@ theorem c4Free_sameBlock_offDiagonal_gram_zero
   simpa [Nat.mul_comm] using
     (c4Free_disjointBlocks_common_card_mul_eq_zero G hfree T U hTU htu)
 
+/-- Rowwise two-block mass bound.  For disjoint vertex blocks `T,U`, the
+total `U`-degrees of the neighbors of `t ∈ T` which lie in `T ∪ U` cannot
+exceed `|U|`.  The omitted neighbors outside the two blocks only strengthen
+the inequality.  This is the parameter-free packing inequality behind the
+rowwise `A Q` versus `Q K` support obstruction. -/
+theorem c4Free_crossBlock_row_neighbor_mass_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (T U : Finset V) (hTU : Disjoint T U)
+    {t : V} (ht : t ∈ T) :
+    (∑ w ∈ G.neighborFinset t ∩ T,
+        (G.neighborFinset w ∩ U).card) +
+      (∑ w ∈ G.neighborFinset t ∩ U,
+        (G.neighborFinset w ∩ U).card) ≤ U.card := by
+  classical
+  let N := G.neighborFinset t
+  let f := fun w => (G.neighborFinset w ∩ U).card
+  have htU : t ∉ U := by
+    intro ht'
+    exact Finset.disjoint_left.mp hTU ht ht'
+  have hparts : Disjoint (N ∩ T) (N ∩ U) :=
+    hTU.mono Finset.inter_subset_right Finset.inter_subset_right
+  have hsub : (N ∩ T) ∪ (N ∩ U) ⊆ N :=
+    Finset.union_subset Finset.inter_subset_left Finset.inter_subset_left
+  have hcover := c4Free_sum_neighbor_block_cards_eq_defect_complement
+    G hfree t U htU
+  dsimp only at hcover
+  change (∑ w ∈ N, f w) =
+    (U \ (secondOrderDefectGraph G).neighborFinset t).card at hcover
+  calc
+    (∑ w ∈ N ∩ T, f w) + (∑ w ∈ N ∩ U, f w) =
+        ∑ w ∈ (N ∩ T) ∪ (N ∩ U), f w := by
+          rw [Finset.sum_union hparts]
+    _ ≤ ∑ w ∈ N, f w := Finset.sum_le_sum_of_subset hsub
+    _ = (U \ (secondOrderDefectGraph G).neighborFinset t).card := hcover
+    _ ≤ U.card := Finset.card_le_card Finset.sdiff_subset
+
+/-- Uniform-degree consequence of the rowwise mass bound.  If every
+`T`-neighbor of `t` has at least `r` neighbors in `U`, and every
+`U`-neighbor of `t` has at least `k` neighbors in `U`, their two center
+classes obey the sharp packing inequality below. -/
+theorem c4Free_crossBlock_row_degree_packing
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (T U : Finset V) (hTU : Disjoint T U)
+    {t : V} (ht : t ∈ T) (r k : ℕ)
+    (hr : ∀ w ∈ G.neighborFinset t ∩ T,
+      r ≤ (G.neighborFinset w ∩ U).card)
+    (hk : ∀ w ∈ G.neighborFinset t ∩ U,
+      k ≤ (G.neighborFinset w ∩ U).card) :
+    r * (G.neighborFinset t ∩ T).card +
+      k * (G.neighborFinset t ∩ U).card ≤ U.card := by
+  have hT : r * (G.neighborFinset t ∩ T).card ≤
+      ∑ w ∈ G.neighborFinset t ∩ T,
+        (G.neighborFinset w ∩ U).card := by
+    calc
+      r * (G.neighborFinset t ∩ T).card =
+          ∑ _w ∈ G.neighborFinset t ∩ T, r := by
+            simp [Nat.mul_comm]
+      _ ≤ ∑ w ∈ G.neighborFinset t ∩ T,
+          (G.neighborFinset w ∩ U).card := by
+            apply Finset.sum_le_sum
+            intro w hw
+            exact hr w hw
+  have hU : k * (G.neighborFinset t ∩ U).card ≤
+      ∑ w ∈ G.neighborFinset t ∩ U,
+        (G.neighborFinset w ∩ U).card := by
+    calc
+      k * (G.neighborFinset t ∩ U).card =
+          ∑ _w ∈ G.neighborFinset t ∩ U, k := by
+            simp [Nat.mul_comm]
+      _ ≤ ∑ w ∈ G.neighborFinset t ∩ U,
+          (G.neighborFinset w ∩ U).card := by
+            apply Finset.sum_le_sum
+            intro w hw
+            exact hk w hw
+  exact (Nat.add_le_add hT hU).trans
+    (c4Free_crossBlock_row_neighbor_mass_le G hfree T U hTU ht)
+
 /-- Exact cross-block saturation ledger.  Every ordered pair `(t, u)` in
 disjoint blocks is accounted for either by its (necessarily unique) common
 neighbor or by an edge of the second-order defect graph.  This is the scalar,
@@ -145,4 +230,6 @@ end Erdos85
 #print axioms Erdos85.c4Free_crossBlock_common_card_mul_eq_zero
 #print axioms Erdos85.c4Free_crossBlock_trace_zero
 #print axioms Erdos85.c4Free_sameBlock_offDiagonal_gram_zero
+#print axioms Erdos85.c4Free_crossBlock_row_neighbor_mass_le
+#print axioms Erdos85.c4Free_crossBlock_row_degree_packing
 #print axioms Erdos85.c4Free_crossBlock_twoWalk_add_defect_eq_card_mul
