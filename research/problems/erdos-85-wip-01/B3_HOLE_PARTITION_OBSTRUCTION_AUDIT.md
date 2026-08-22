@@ -346,8 +346,14 @@ adjacent to a fixed marked B1 vertex, and put
 M_g = {t in ordinary B0 : N_A(t) intersect P_g is empty}.
 ```
 
-Every row in `P_g` has residual degree six, while the marked B1 vertex has
-exactly five B0 defect neighbors.  Hence `|M_g|=5` and
+Every row `u` in `P_g` has residual degree six: among its nine original
+neighbors it has the marked B1 vertex, two unmarked B1 vertices, and six B0
+vertices.  All six B0 vertices lie among the 47 ordinary rows.  Indeed, an
+edge from `u` to a vertex `y` of the exceptional set `U` would close the
+4-cycle `x-z-u-y-x`, where `z` is the marked partner.  The marked B1 vertex
+has exactly five B0 defect neighbors, all again among the 47 ordinary rows;
+the vertices of `U` share `x` with it and rows of `P_g` are adjacent to it.
+Hence `|M_g|=5` and
 
 ```text
 sum_t |N_A(t) intersect P_g|
