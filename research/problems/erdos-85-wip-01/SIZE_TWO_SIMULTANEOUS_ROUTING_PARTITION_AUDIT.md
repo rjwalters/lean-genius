@@ -775,3 +775,53 @@ sum_d |E(A_c) cap E(F_d[c])| is even.                    (47)
 
 Proving (47) from the coupled endpoint partitions closes the transport horn;
 ordinary factor degrees or the uncolored owner partition merely restate it.
+
+## 10. The first SRP contraction and its exact blind spot
+
+For distinct components `c,e`, put
+
+```text
+p_ce = |E(A_c) cap E(F_e[c])|,
+tau_ced = number of ambient triangles with one vertex in each of c,e,d.
+```
+
+Multiply (SRP) on the right by `R_ec=R_ce^T` and take the trace.  Cyclicity
+of trace and the owner-factor interpretation give
+
+```text
+trace(A_c R_ce R_ec) = 2 p_ce,
+trace(R_ce A_e R_ec) = 2 p_ec,
+trace(R_cd R_de R_ec) = tau_ced.
+```
+
+Since every cross block has row sum two,
+`trace(J R_ec)=4q`.  Therefore the contraction is the exact pair law
+
+```text
+2(p_ce + p_ec) + sum_(d != c,e) tau_ced = 4q.            (48)
+```
+
+In particular the three-component sum in (48) is even, and
+
+```text
+p_ce + p_ec
+  = (1/2) sum_(d != c,e) tau_ced  (mod 2).               (49)
+```
+
+Summing (48) over all unordered component pairs shows that the total number
+of three-distinct-component triangles is even and determines the parity of
+the global exterior-owner mass.  But (48) has a precise blind spot: it sees
+only the symmetric combinations `p_ce+p_ec`, whereas the target (47) is the
+directed row sum
+
+```text
+p_cc + sum_(e != c) p_ce.
+```
+
+Thus this natural SRP trace contraction collapses to the already known
+unoriented triangle inventory and cannot close a componentwise collision
+parity.  A genuinely new consumer must retain the direction of the owner
+transfer—equivalently, compare `p_ce` with `p_ec` rather than immediately
+adding them.  Endpoint-marked rows such as (10)--(14), or a nonsymmetric
+test matrix inserted before taking trace, are the remaining routes to that
+information.
