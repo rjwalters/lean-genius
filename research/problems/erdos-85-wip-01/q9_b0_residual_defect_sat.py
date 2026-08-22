@@ -180,6 +180,10 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
         for a in range(N_U1):
             for c in range(3):
                 solver.add(Sum([If(kadj(a, b), 1, 0) for b in range(N_U1) if b != a and color(b) == c]) == 1)
+        first_color_matching = {(0, 1), (2, 3), (4, 5), (6, 7)}
+        for a, b in combinations(range(8), 2):
+            solver.add(k[edge_key(a, b)] ==
+                       (edge_key(a, b) in first_color_matching))
         if outer_seed is not None:
             fixed_k = {edge_key(*e) for e in outer_seed["k_edges"]}
             for e, var in k.items():

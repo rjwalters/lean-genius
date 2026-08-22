@@ -78,6 +78,13 @@ def build(branch: int, timeout_ms: int) -> tuple[Solver, dict]:
                 )
             )
 
+    # After the first special class is diagonalized below, simultaneous S8
+    # relabeling remains.  Use it to normalize the perfect matching induced
+    # by K on the first color fiber.
+    first_color_matching = {(0, 1), (2, 3), (4, 5), (6, 7)}
+    for u, v in combinations(range(8), 2):
+        solver.add(k[edge_key(u, v)] == (edge_key(u, v) in first_color_matching))
+
     # Rainbow triples, indexed by one point of each color.
     triples = list(product(range(8), range(8, 16), range(16, 24)))
     selected = {t: Bool(f"triple_{t[0]}_{t[1]}_{t[2]}") for t in triples}
