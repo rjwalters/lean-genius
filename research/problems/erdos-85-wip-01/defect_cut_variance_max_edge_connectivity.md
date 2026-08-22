@@ -1250,6 +1250,19 @@ If `c` has no W-attachment the first lower bound improves by one.  Thus at
 large a the Y-location forces a correspondingly large part of R to sit in
 the opposite component X.
 
+Finally suppose `c in W`, and write `m_c=deg_D(c,X)`.  Minimality of the
+separator gives `m_c>=1`.  The point `c` and its `m_c` X-neighbors in D all
+belong to `K intersect (X union W)` by (B18), while (B16), now with
+`c_X=0`, gives
+
+```text
+1 <= m_c <= 3a+2-|R intersect X|.             (B21)
+```
+
+Thus the exceptional separator vertex has only O(a) attachments into the
+q-2 residue component; the endpoint `a=0` specializes to the exact
+`m_c in {1,2}` classification in (B17W).
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
