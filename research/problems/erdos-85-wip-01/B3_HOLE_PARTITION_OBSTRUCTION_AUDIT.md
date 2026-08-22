@@ -1244,6 +1244,60 @@ certificate is not one or two exceptional census predicates hidden inside a
 dense table: it requires a genuinely multi-threshold combination (or a new
 structural identity which couples those thresholds before separation).
 
+The alternating-cycle lift supplies such a joint threshold canonically.
+Index one cycle of (12qt) so its horizontal arcs are
+
+```text
+(t_i,b_i) --> (u_i,b_i),
+```
+
+and the following vertical handoff goes from the incoming flag at `u_i` to
+the next source flag at `t_(i+1)`.  Let `a_i=role(t_i)`.  Signature
+preservation on the handoff gives `role(u_i)=a_(i+1)`.  Since `u_i` is an
+eligible member of `F_{b_i}`, the source census satisfies
+
+```text
+r_{t_i b_i, a_(i+1)} >= 1.
+```
+
+Likewise the previous incoming census contains its horizontal predecessor
+`t_(i-1)`, of role `a_(i-1)`, and the vertical handoff is coordinatewise
+nondecreasing.  Therefore every source flag on the cycle obeys
+
+```text
+r_{t_i b_i, a_(i-1)} >= 1,
+r_{t_i b_i, a_(i+1)} >= 1.                                (12qu)
+```
+
+When the adjacent roles differ, (12qu) forces a genuinely joint two-role
+occupancy in one root-own fiber.  Thus the nonlinear interaction is not an
+opaque artifact of the fitted table: it records the predecessor/successor
+role pair of an alternating flag cycle.  A uniform proof may now classify
+cyclic role words against the five-row fiber cap and charge every role turn
+to a mixed-role collision in `c_pair` or `c_all`.
+
+This charge has a direct capacity bound.  In the original fractional row
+matching, all candidates using one selected label `b` are mutually
+exclusive, so the total horizontal flow leaving any source flag `(t,b)` is
+at most one.  Let `Turn` be the total cycle-flow mass at indices with
+`a_(i-1) != a_(i+1)`.  At such an index (12qu) supplies two occupants of
+distinct roles in `E_t intersect F_b`, hence one mixed-role collision.
+Therefore
+
+```text
+Turn <= sum_t sum_{b in S_t intersect C}
+          sum_{j<k} r_tb,j r_tb,k
+     <= sum_t sum_{b in S_t intersect C} binom(ell_b(t),2). (12qv)
+```
+
+The right side is the root-own portion of the collision energy, paid once
+per actual flag rather than once per cycle occurrence.  If `Turn=0`, then
+`a_(i-1)=a_(i+1)` everywhere, so the cyclic role word has period two.  In
+particular an odd-horizontal cycle with no charged collision is
+role-constant.  Thus every odd nonconstant role cycle consumes positive
+root-own mixed collision, exactly paralleling the once-paid collision budget
+in the simultaneous port-switch lane.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
