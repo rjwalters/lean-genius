@@ -831,6 +831,42 @@ and, since q is even,
 a <= q/2.                                    (B9)
 ```
 
+The componentwise flow equations also bound individual attachments.  From
+(B6),
+
+```text
+deg_D(x,W) <= 2                         for x in X.
+```
+
+For `y in Y`, the positive-spike equation reads
+
+```text
+deg_D(y,W)=1-deg_A(y,R)+1_(y in N_A(c)),
+```
+
+and hence
+
+```text
+deg_D(y,W) <= 1+1_(y in N_A(c)).              (B10)
+```
+
+Thus only the `b+1=q-a` neighbors of `c` in `Y` can attach to two separator
+vertices.
+
+At the endpoint `a=0`, the first bound is sharp everywhere.  Indeed
+`|X|=q-2` and the cut has `2q-4=2|X|` edges, so every `x in X` has exactly
+two neighbors in `W`.  Its remaining `q-3` defect neighbors exhaust the
+other vertices of `X`, giving
+
+```text
+D[X] = K_(q-2).                                (B11)
+```
+
+The `A`-neighborhoods of this clique are pairwise disjoint and have union
+size `q(q-2)`; (B6) says that their complement is exactly the `2q`-set `K`.
+Accordingly the smallest surviving parameter has been reduced to a rigid
+near-maximal defect clique with a two-edge attachment at every vertex.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
