@@ -608,6 +608,17 @@ branch and the weighted simultaneous branch now live on the same label
 space; their difference is a cardinality threshold versus a convex hinge
 objective.
 
+All prices may be made exact integers.  The directed feasibility system has
+rational coefficients, so strict Farkas separation admits rational
+`alpha,mu`; scaling gives integral `alpha,mu,W` while preserving `mu>=0` and
+the strict sign.  For integral candidate weights, the bipartite matching
+system is totally dual integral, hence the local dual in (12fb) has integral
+`z` and real-label prices `y`; eliminating private dummies and then `z` via
+(12fc) preserves integrality.  Consequently every fractional B.3
+obstruction has a finite integer nested-price certificate.  This matters for
+formalization: a prospective checker needs only integer inequalities, not LP
+tolerances or imported solver duals.
+
 In the four-seed run the local branch is extremely sharp.  There are nine
 failed row/color-pair instances.  Every matching number is exactly one below
 demand.  Eight are demand-six rows with a minimum vertex cover of size five;
