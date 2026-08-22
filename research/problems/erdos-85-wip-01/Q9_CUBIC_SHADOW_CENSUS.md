@@ -267,6 +267,18 @@ on the incident triples, forcing point-incidence totals `1+2`; for `A4` and
 `S4`, it has one orbit of size three and gives only the already-known total
 of three.  This five-way action split is the interface for the lift stage.
 
+For component ordinal 4, `q9_order20_c4_lift.py` excludes the cyclic `C4`
+component action.  A preimage of the block 4-cycle can be normalized to a
+block shift with one closing twist `alpha` in the order-20 component
+automorphism group.  The 20 lines on blocks `012` are determined by two
+permutations `f,g`; the other three block-triple classes are their rotations,
+and the fourth power of the shift forces both permutations to commute with
+`alpha`.  The verifier enumerates all eight conjugacy classes of `alpha` and
+encodes the resulting two-permutation lift, linearity, the intrinsic shadow
+condition, and C4-freeness.  All eight formulas are UNSAT.  This closes one
+of the fifteen component-type/action pairs; `V4` for ordinal 4 and both
+regular actions for ordinals 6 and 7 remain, as do the nonregular actions.
+
 ## The order-16 five-component shadow
 
 The unique surviving order-16 component type has automorphism group of order
