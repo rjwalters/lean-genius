@@ -2052,6 +2052,19 @@ the same pair is already resolved by a Y-center.  It is independent of a
 and supplements the stronger `m_w>=b-2` bound near the bottom of the
 surviving interval.
 
+For even q, (B49') reads `m_w>=q/2-1`, equivalently `n_w<=q/2`.
+It strictly improves (B45) when `a>(q-3)/2`, namely on the top two integer
+slices `a=q/2-1,q/2`, while (B45) is stronger through the lower part of the
+window.  Together with (B46) the concise combined bounds are
+
+```text
+max(b-2,q/2-1) <= m_w <= min(2a+2,q-2),
+max(1,q-2a-3) <= n_w <= min(a+2,q/2).          (B49'')
+```
+
+Here `n_w>=1` (and hence `m_w<=q-2`) also follows directly from
+`|R_w|=n_w-1` in (B8').
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
