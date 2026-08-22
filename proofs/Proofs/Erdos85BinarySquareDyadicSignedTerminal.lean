@@ -213,6 +213,15 @@ theorem binarySquare_pureLargeExceptional_impossible
   nlinarith [mul_nonneg (show (0 : ℤ) ≤ r - 2 by omega)
     (show (0 : ℤ) ≤ q - r - 2 by omega)]
 
+/-- The complementary arithmetic squeeze in the pure branch.  Positive
+replication at every shore point gives `s ≤ qc`; together with
+`2s=q²+c`, a nonempty pure support must have `q < 2c`. -/
+theorem binarySquare_pureExceptional_halfDegree_lt_card
+    {q c s : ℕ} (hc : 0 < c)
+    (hshore : 2 * s = q * q + c) (hcover : s ≤ q * c) :
+    q < 2 * c := by
+  nlinarith
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -621,6 +630,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_trichotomy_companionDefect_apply
 #print axioms Erdos85.binarySquare_mixedExceptional_card_le
 #print axioms Erdos85.binarySquare_pureLargeExceptional_impossible
+#print axioms Erdos85.binarySquare_pureExceptional_halfDegree_lt_card
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.binarySquare_regular_secondOrderDefect_degree_eq
 #print axioms Erdos85.binarySquare_full_empty_card_le_of_defectRegular

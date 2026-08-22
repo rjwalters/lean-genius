@@ -1261,19 +1261,30 @@ exceptional design satisfies
 c <= q.                                                   (76)
 ```
 
+There is also a lower squeeze in the pure branch.  Since `c>0`, the first
+formula in (74) forces `t_P>=1` at every `P in S`.  Hence incidence balance
+gives `s<=qc`; substituting `2s=q^2+c` yields
+
+```text
+q < 2c,       so q/2 < c <= q in the surviving pure branch. (77)
+```
+
+This last arithmetic implication is Lean-checked by
+`binarySquare_pureExceptional_halfDegree_lt_card`.
+
 The unresolved signed-support terminal has therefore split into two strictly
 smaller regimes: mixed support `c<=3q/2-2`, or pure support `c<=q`.  The latter
 still obeys (74), so every point of its occupied shore has positive
 exceptional replication; eliminating this small pure regime and the mixed
 four-type regime remains necessary.
 
-Equations (7)--(76) are the first canonical cut detector manufactured from
+Equations (7)--(77) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(76), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(77), so these laws alone
 do not conceal an order-independent
 contradiction.
 
