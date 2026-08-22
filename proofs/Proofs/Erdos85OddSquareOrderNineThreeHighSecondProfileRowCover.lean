@@ -1003,6 +1003,113 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
     (r + c = 9 ∧ 2 * a + 3 * b + 3 * c = 24 ∧ d = 0) at halign
   exact weighted_row_arithmetic_forces_pair_defect_three a b c d r hab halign
 
+/-- Graph-to-pattern bridge for reciprocity pruning.  The marked-support
+neighbor pattern of every ordinary row is loopless, has size complementary
+to its marked defect degree, and uses at most one point from each marked
+seven-point support. -/
+theorem squareOrderNine_threeHigh_secondProfile_ordinary_pair_pattern
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let C := (G.neighborFinset t ∩ T).filter fun w => w ∈ P
+    let D := secondOrderDefectGraph G
+    C.card + (D.neighborFinset t ∩ M).card = 3 ∧
+      t ∉ C ∧
+      ∀ m ∈ M,
+        (C.filter fun w => w ∈ G.neighborFinset m ∩ B 0).card ≤ 1 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let C := (G.neighborFinset t ∩ T).filter fun w => w ∈ P
+  let D := secondOrderDefectGraph G
+  have hsize :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hsize
+  change C.card + (D.neighborFinset t ∩ M).card = 3 at hsize
+  refine ⟨hsize, ?_, ?_⟩
+  · intro htt
+    have htN := (Finset.mem_inter.mp (Finset.mem_filter.mp htt).1).1
+    exact G.loopless.irrefl t ((G.mem_neighborFinset t t).mp htN)
+  · intro m hm
+    have htm : t ≠ m := by
+      intro h
+      subst m
+      have htB0 := (Finset.mem_sdiff.mp ht).1
+      have hmB1 := (Finset.mem_inter.mp hm).2
+      have hk0 := (Finset.mem_filter.mp htB0).2
+      have hk1 := (Finset.mem_filter.mp hmB1).2
+      omega
+    apply (Finset.card_le_card ?_).trans
+      ((not_containsC4_iff_forall_common_le_one G).mp hfree t m htm)
+    intro w hw
+    have hwParts := Finset.mem_filter.mp hw
+    have hwC := Finset.mem_filter.mp hwParts.1
+    have hwF := Finset.mem_inter.mp hwParts.2
+    exact Finset.mem_inter.mpr ⟨
+      (Finset.mem_inter.mp hwC.1).1,
+      hwF.1⟩
+
+/-- The actual marked-support neighbor patterns are reciprocal on the
+21-point pair-center set, because they are restrictions of an undirected
+residual adjacency relation. -/
+theorem squareOrderNine_pair_pattern_mem_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {x t u : V}
+    (ht : t ∈ squareOrderNineLowIncidenceBin G 0 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hu : u ∈ squareOrderNineLowIncidenceBin G 0 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (htP : t ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1).biUnion
+      fun m => G.neighborFinset m ∩ squareOrderNineLowIncidenceBin G 0)
+    (huP : u ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1).biUnion
+      fun m => G.neighborFinset m ∩ squareOrderNineLowIncidenceBin G 0) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let C := fun v => (G.neighborFinset v ∩ T).filter fun w => w ∈ P
+    u ∈ C t ↔ t ∈ C u := by
+  classical
+  dsimp only
+  constructor
+  · intro hut
+    have huAdj := (G.mem_neighborFinset t u).mp
+      (Finset.mem_inter.mp (Finset.mem_filter.mp hut).1).1
+    exact Finset.mem_filter.mpr ⟨
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset u t).mpr
+        ((G.adj_comm t u).mp huAdj), ht⟩, htP⟩
+  · intro htu
+    have htAdj := (G.mem_neighborFinset u t).mp
+      (Finset.mem_inter.mp (Finset.mem_filter.mp htu).1).1
+    exact Finset.mem_filter.mpr ⟨
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset t u).mpr
+        ((G.adj_comm u t).mp htAdj), hu⟩, huP⟩
+
 /-- For an ordinary row and a marked root, all common neighbors lie in that
 root's seven-point B0 support, and necessarily in the residual set `T`. -/
 theorem squareOrderNine_threeHigh_secondProfile_ordinary_marked_common_eq_support_hit
@@ -2245,6 +2352,8 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_dichotomy
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_aligned_weighted_row_branches
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_pattern
+#print axioms Erdos85.squareOrderNine_pair_pattern_mem_comm
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_common_eq_support_hit
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_support_hit_or_defect
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_fortyTwo_five_ledger
