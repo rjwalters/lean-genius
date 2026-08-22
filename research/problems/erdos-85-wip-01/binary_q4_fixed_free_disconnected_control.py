@@ -139,6 +139,8 @@ def main() -> None:
     }
     for shore in d_components:
         assert all(len(a[x] & shore) % 2 == 0 for x in range(N))
+        half_occupancy = [len(a[x] & shore) // 2 for x in range(N)]
+        assert half_occupancy == [1] * N
         assert all(
             len(k[x] & shore) % 2 == len(t[x] & shore) % 2
             for x in range(N)

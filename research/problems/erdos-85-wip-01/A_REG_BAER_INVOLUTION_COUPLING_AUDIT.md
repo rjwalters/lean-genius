@@ -431,13 +431,83 @@ not lie in D, avoid D, or preserve D-components; even a large K-cut is
 compatible with the transport identity.  A terminal really must use the
 `k>=3` incidence structure, not a support-containment shortcut.
 
-Equations (7)--(21) are the first canonical cut detector manufactured from
+### The half-occupancy (Bockstein) lift
+
+The even line occupancies retain one more binary layer.  For a kernel shore
+S put
+
+```text
+c = A 1_S / 2                         (an integer vector),
+beta(S) = c mod 2,
+B = supp(beta(S)).                                           (22)
+```
+
+Thus B is the set of polar lines meeting S in `2 mod 4` points.  When
+`4 | q`, it has even size because
+
+```text
+sum_X c_X = q|S|/2 = 0  (mod 2),
+```
+
+and it is invariant under complementing S:
+
+```text
+beta(V setminus S) = (q/2)1-beta(S) = beta(S)  (mod 2).        (23)
+```
+
+This lift has a pointwise incidence consequence.  Fix `P in S`.  Each of
+the q lines through P contains at least one further S-point.  A line in B
+has S-intersection congruent to 2 modulo four, hence needs at least one
+further point; a line outside B has positive S-intersection divisible by
+four, hence needs at least three.  The q sets of further points are disjoint
+by C4-freeness.  Therefore
+
+```text
+|S| >= 1 + |N_A(P) intersect B|
+          + 3(q-|N_A(P) intersect B|)
+     = 3q+1-2|N_A(P) intersect B|.                           (24)
+```
+
+In particular `B=empty` forces `|S|>=3q+1`; more generally every shore
+smaller than `3q+1` forces a uniform lower bound on adjacency from S into B.
+At the bottom weights `q+1` and `q+2`, every line through a point of S lies
+in B, recovering the all-0/2 line-intersection profile from equality in
+(16).
+
+The lift also transports the next bit of the defect profile.  Put
+`d=D 1_S`, and let p be its zero-one parity representative: `p=1_S` when
+`|S|` is even and `p=1-1_S` when `|S|` is odd.  Since
+
+```text
+d = (q-1)1_S + |S|1 - 2Ac,
+```
+
+the integer half-residual `w=(d-p)/2` satisfies, over F_2 and for `4 | q`,
+
+```text
+w = 1_S + (|S|/2)1 + A beta(S)             if |S| is even,
+w = ((|S|-1)/2)1 + A beta(S)               if |S| is odd.      (25)
+```
+
+Thus `A beta(S)` is exactly the second binary digit of the internal
+D-degree vector, after removing the forced first digit (11).  This is a
+genuine refinement of the closed mod-two kernel route: it is a new
+vertexwise incidence vector, not another scalar cut residue.  Finally,
+
+```text
+1_S dot beta(S) = e_A(S)  (mod 2),
+```
+
+since `1_S^T A 1_S=2e_A(S)`.  Equivalently, A-edge parity is the quadratic
+evaluation of the half-occupancy lift on its kernel shore.
+
+Equations (7)--(25) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(21), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(25), so these laws alone
 do not conceal an order-independent
 contradiction.
 
