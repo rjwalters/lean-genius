@@ -112,3 +112,77 @@ relate `R_cross` to the source-fiber displacement law.  The promising target
 is a second refinement by residues modulo `4`: the two omitted consecutive
 rows then occupy adjacent residue classes rather than merely opposite parity,
 so reciprocity may constrain the four resolver cut sizes separately.
+
+## Modulo-four refinement
+
+The next refinement can also be evaluated exactly.  Identify displacement
+classes up to sign as
+
+```text
+0,       2,       odd={1,3}        (mod 4).
+```
+
+For every binary `q>=8`, direct counting of disjoint traces and distinct
+two-walk endpoints gives the no-common-neighbor slack
+
+```text
+S_0   = q^2(q-4)/8,
+S_2   = q^3/8,
+S_odd = q(q-2)^2/4.
+```
+
+These formulas are independent of the reflection parameter `a`.  The
+exterior edge counts are slightly parameter-sensitive.  Put
+
+```text
+sigma = +1  if {a,-1-a} mod 4 = {0,3},
+sigma = -1  if {a,-1-a} mod 4 = {1,2}.
+```
+
+Then
+
+```text
+E_odd = q(q-2)^2/4,
+E_0   = q(q-2)^2/8 + sigma*q/2,
+E_2   = q(q-2)^2/8 - sigma*q/2.
+```
+
+As before, split resolver edges, triangle edges, and far pairs by these
+classes.  The slack-minus-edge offsets give
+
+```text
+L_odd = R_odd + Theta_odd,
+
+if sigma=-1:
+  L_0 = R_0 + Theta_0,
+  L_2 = q(q-2)/2 + R_2 + Theta_2;
+
+if sigma=+1:
+  L_0 = -q + R_0 + Theta_0,
+  L_2 = q^2/2 + R_2 + Theta_2.
+```
+
+The negative class-zero offset in the last branch looks like pressure:
+`R_0+Theta_0>=q`.  It is not a contradiction.  Resolver edges are colored by
+which trace endpoint they share.  Pairings through the first grid coordinate
+have base displacement zero, and there are already
+
+```text
+q(q-4)/2
+```
+
+such resolver edges (each of the `q` first-coordinate component points pairs
+its `q-4` incident non-edge traces).  This is at least `q` for `q>=8`, so the
+forced class-zero mass is automatically available before any triangle edge
+is counted.
+
+The checker `size_two_cyclic_mod4_slack_audit.py` verifies the raw disjoint,
+two-walk, edge, and slack censuses at arbitrary supplied `q,a`; the displayed
+closed forms agree at `q=8,12,16,20,24`.  The derivation is elementary residue
+counting, while the checker is retained as a falsifier.
+
+Thus modulo four refines the ledger but still collapses against a forced
+resolver population.  A useful further invariant must retain both residue
+class and resolver endpoint color, or couple those colored resolver edges to
+the displacement multiplicities of individual source rows.  Uncolored
+2-adic residue totals do not recover the missing factor of `q`.
