@@ -3614,3 +3614,64 @@ root-incidence constraint is precisely what is needed to control their
 difference in (217).  This is a collision formulation of the same switch
 sign problem, but unlike target-only capacity it retains isolated owner
 edges.
+
+## 66. Full collision is the degree-two mass of a common-edge graph
+
+Now take all cycles of `Gamma_c`, not only the selected `Omega`, and fix an
+exterior color `d`.  Let
+
+```text
+I_d := {x in c : b_xd=1}
+```
+
+be its inactive roots.  A port `z in d` labels one edge `xx'` of the owner
+factor `F_d[c]`; its two root occurrences are both active exactly when
+`x,x'` both lie outside `I_d`.  Therefore the color-`d` part of the full
+occurrence collision is
+
+```text
+kappa_all(d) = |E(F_d[c][c setminus I_d])|.             (218)
+```
+
+The owner factor is two-regular on the even-order component `c`.  Degree
+summation across `I_d` gives
+
+```text
+kappa_all(d)
+  = |c| - 2|I_d| + |E(F_d[c][I_d])|
+  == |E(F_d[c][I_d])|  (mod 2).                         (219)
+```
+
+There is a symmetric interpretation inside component `d`.  Recall that
+`B_dc` is the line-cycle on the `d`-ports: its edge labelled by a root `x`
+joins the two members of `Y_d(x)`.  By definition,
+
+```text
+x in I_d  <=>  the B_dc edge labelled x also lies in A_d.
+```
+
+Put `K_dc:=A_d cap B_dc`.  Two inactive roots `x,x'` are adjacent in
+`F_d[c]` exactly when their two common `B_dc` edges meet at the port which
+labels `xx'`.  Hence
+
+```text
+|E(F_d[c][I_d])|
+  = #{z in d : deg_(K_dc)(z)=2}.                        (220)
+```
+
+Combining (219)--(220),
+
+```text
+kappa_all(d)
+  == #{degree-two vertices of A_d cap B_dc}  (mod 2).  (221)
+```
+
+Thus the all-occurrence collision feature is not an arbitrary transport
+statistic.  It is exactly the parity of the internal vertices of the
+common-edge path--cycle graph of the two self-indexed factors on `d`.
+Summing (221) over exterior colors translates the collision/incidence
+formulation of Section 65 back into the signed-support object studied at the
+start of this audit.  The signed branch controls (221) by a global sign;
+the transport branch must control the same degree-two mass using the rooted
+capacity and incidence strata instead.  This is the precise bridge between
+the two sides of the dispatcher.
