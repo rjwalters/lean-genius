@@ -54,6 +54,7 @@ def feature_index() -> dict[tuple[int, int, int], int]:
 
 
 FEATURES = feature_index()
+ORDER_CONSTRAINTS: list[tuple[int, int]] = []
 
 
 def coefficient_bounds() -> list[tuple[float, float]]:
@@ -128,11 +129,12 @@ def refine_features(instances: list[dict], mode: str) -> None:
     sum_b binom(load_b, 2), the number of pairs of eligible candidates which
     conflict at a selected U1 label.
     """
-    global FEATURES
+    global FEATURES, ORDER_CONSTRAINTS
+    ORDER_CONSTRAINTS = []
     if mode in ("fiber-profile-farkas", "fiber-type-profile-farkas",
                 "fiber-type-count-farkas", "fiber-type-uncolored-farkas",
                 "fiber-type-bare-farkas", "fiber-demand-farkas",
-                "fiber-role-farkas"):
+                "fiber-role-farkas", "fiber-type-monotone-farkas"):
         instance_keys = []
         all_keys = set()
         for data in instances:
@@ -175,7 +177,8 @@ def refine_features(instances: list[dict], mode: str) -> None:
                                tuple(sorted(occupants[b])),
                                int(b in data["blocks"][t]))
                     if mode in ("fiber-type-bare-farkas",
-                                "fiber-demand-farkas", "fiber-role-farkas"):
+                                "fiber-demand-farkas", "fiber-role-farkas",
+                                "fiber-type-monotone-farkas"):
                         key = ("mu", root_signature,
                                tuple(sorted(occupants[b])))
                     row_mu[b] = key
@@ -184,6 +187,18 @@ def refine_features(instances: list[dict], mode: str) -> None:
                 all_keys.add(("alpha", row_signatures[t]))
             instance_keys.append((row_signatures, mu_keys))
         FEATURES = {key: i for i, key in enumerate(sorted(all_keys))}
+        if mode == "fiber-type-monotone-farkas":
+            mu_keys_all = [key for key in FEATURES if key[0] == "mu"]
+            for i, left in enumerate(mu_keys_all):
+                left_counts = Counter(left[2])
+                for right in mu_keys_all[i + 1:]:
+                    if left[1] != right[1]:
+                        continue
+                    right_counts = Counter(right[2])
+                    if all(left_counts[j] <= right_counts[j] for j in range(5)):
+                        ORDER_CONSTRAINTS.append((FEATURES[left], FEATURES[right]))
+                    elif all(right_counts[j] <= left_counts[j] for j in range(5)):
+                        ORDER_CONSTRAINTS.append((FEATURES[right], FEATURES[left]))
         for data, (row_signatures, mu_keys) in zip(instances, instance_keys):
             vectors = []
             for t in range(N):
@@ -521,7 +536,8 @@ def fit(instances: list[dict], max_rounds: int) -> tuple[str, float, np.ndarray,
     for round_number in range(1, max_rounds + 1):
         # q_(instance,row) upper-bounds every matching value; z upper-bounds
         # the sum of q over rows in each instance.
-        aub = lil_matrix((len(cuts) + len(instances), z_index + 1))
+        aub = lil_matrix((len(cuts) + len(instances) + len(ORDER_CONSTRAINTS),
+                          z_index + 1))
         bub = np.zeros(aub.shape[0])
         for k, (ir, vector) in enumerate(cuts):
             aub[k, :nf] = vector
@@ -530,6 +546,10 @@ def fit(instances: list[dict], max_rounds: int) -> tuple[str, float, np.ndarray,
             k = len(cuts) + i
             aub[k, nf + i * N:nf + (i + 1) * N] = 1
             aub[k, z_index] = -1
+        offset = len(cuts) + len(instances)
+        for k, (lower, upper) in enumerate(ORDER_CONSTRAINTS):
+            aub[offset + k, lower] = 1
+            aub[offset + k, upper] = -1
         c = np.zeros(z_index + 1)
         c[z_index] = 1
         result = linprog(
@@ -575,7 +595,7 @@ def fit_sparse(instances: list[dict], max_rounds: int) -> tuple[str, float, np.n
     theta = zero
     norm = float("nan")
     for round_number in range(1, max_rounds + 1):
-        rows = len(cuts) + len(instances) + 2 * nf
+        rows = len(cuts) + len(instances) + 2 * nf + len(ORDER_CONSTRAINTS)
         aub = lil_matrix((rows, abs_start + nf))
         bub = np.zeros(rows)
         for k, (ir, vector) in enumerate(cuts):
@@ -591,6 +611,10 @@ def fit_sparse(instances: list[dict], max_rounds: int) -> tuple[str, float, np.n
             aub[offset + 2 * i, abs_start + i] = -1
             aub[offset + 2 * i + 1, i] = -1
             aub[offset + 2 * i + 1, abs_start + i] = -1
+        offset += 2 * nf
+        for k, (lower, upper) in enumerate(ORDER_CONSTRAINTS):
+            aub[offset + k, lower] = 1
+            aub[offset + k, upper] = -1
         objective = np.r_[np.zeros(abs_start), np.ones(nf)]
         result = linprog(
             objective, A_ub=aub.tocsr(), b_ub=bub,
@@ -649,7 +673,8 @@ def main() -> int:
                                                 "fiber-type-uncolored-farkas",
                                                 "fiber-type-bare-farkas",
                                                 "fiber-demand-farkas",
-                                                "fiber-role-farkas"),
+                                                "fiber-role-farkas",
+                                                "fiber-type-monotone-farkas"),
                         default="basic")
     args = parser.parse_args()
     data = []

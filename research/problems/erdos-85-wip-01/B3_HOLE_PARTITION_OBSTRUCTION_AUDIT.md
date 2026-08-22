@@ -706,6 +706,19 @@ processes are not treated as witness identities.  Equation (12p) is sampled
 evidence and a precise seed-free flag-price conjecture, not yet a proof for
 every admissible outer design.
 
+The fitted cap prices have a strong but nonterminal monotonicity pattern.
+For the first witness, among 935 pairs of fiber censuses comparable
+coordinatewise at a fixed root signature, one maximum-margin solution is
+nondecreasing on 760 pairs (with 76 equalities).  Imposing exact
+coordinatewise monotonicity on the five-role prices still separates all six
+seed-zero instances.  On the wider four-seed run it separates fifteen of the
+seventeen simultaneous instances; two branch-3 instances require the
+unconstrained five-role table.  Hence a monotone shadow-price lemma is a
+credible main case but not the complete sampled theorem: a uniform argument
+needs either an exceptional branch or a weaker partial order on the role
+censuses.  Mode `--features fiber-type-monotone-farkas` enforces these order
+constraints inside the master LP.
+
 The smallest invariant ansatz for `W` can also be eliminated exactly on the
 sampled designs.  Normalize the selected colors as low/high and give a row
 one of five types: regular triple, exceptional hole, pair missing low, pair
