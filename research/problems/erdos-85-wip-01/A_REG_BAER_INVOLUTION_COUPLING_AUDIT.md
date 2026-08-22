@@ -501,13 +501,51 @@ vertexwise incidence vector, not another scalar cut residue.  Finally,
 since `1_S^T A 1_S=2e_A(S)`.  Equivalently, A-edge parity is the quadratic
 evaluation of the half-occupancy lift on its kernel shore.
 
-Equations (7)--(25) are the first canonical cut detector manufactured from
+The two constant lifts have strong support windows.  If `beta(S)=0`, (24)
+applied to S and its complement gives
+
+```text
+3q+1 <= |S| <= q^2-3q-1.                                  (26a)
+```
+
+If `beta(S)=1`, every line meets S in at least two points, so incidence
+counting gives `|S|>=2q`; the same holds for the complement by (23).  At
+equality every line meets S in exactly two points, so `A1_S=2 1` and the cut
+variance is zero.  Connected D excludes that equality and therefore
+
+```text
+2q+1 <= |S| <= q^2-2q-1                 if beta(S)=1.       (26b)
+```
+
+Constant beta also doubles the variance modulus once more.  Let
+`epsilon in {0,1}` be its constant value.  Every line occupancy has the
+form `2epsilon+4z_X`.  Write
+
+```text
+|S| = 2epsilon q + 4q a + r,       0 <= r < 4q.
+```
+
+Repeating the integer-variance minimization on the z-coordinates gives
+
+```text
+|delta_D(S)| >= r(4q-r).                                  (27)
+```
+
+Equality means that all line occupancies are the two adjacent permitted
+values `2epsilon+4a` and `2epsilon+4a+4`.  When `r=0`, a connected nontrivial
+shore cannot have zero variance; its nonzero zero-sum deviations are
+multiples of four, so the first possible energy is 32.  Thus the constant
+Bockstein branches either occupy the interior windows (26), or pay a
+modulus-`4q` cut cost (27).  This is still not a terminal, but it is a
+strictly finer consumer than (16).
+
+Equations (7)--(27) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(25), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(27), so these laws alone
 do not conceal an order-independent
 contradiction.
 
