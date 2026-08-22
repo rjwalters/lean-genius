@@ -265,7 +265,7 @@ exactly one and `D[S]` is a perfect matching.  In the odd branch, (11) also
 says every one of the `q^2-|S|` outside vertices sends an odd, and hence
 nonzero, number of D-edges into `S`.
 
-### The k>=3 cut congruence
+### The binary edge congruence
 
 The kernel shore finally exposes a genuinely k-sensitive residue.  Write
 
@@ -288,7 +288,7 @@ C(2a,2) = 2a^2-a
 ```
 
 and `sum a_X^2 = sum a_X (mod 2)`, the right side of (14) is divisible by
-four.  Therefore every binary kernel shore satisfies
+four.  Therefore at `k>=3` every binary kernel shore satisfies
 
 ```text
 e_D(S) = C(|S|,2)                 (mod 4),
@@ -296,11 +296,21 @@ e_D(S) = C(|S|,2)                 (mod 4),
 ```
 
 The second congruence follows from D-regularity:
-`|delta_D(S)|=|S|(q-1)-2e_D(S)`.  This is the first statement in the Baer
-lane that uses `k>=3` rather than only the evenness of q.  It does not by
-itself contradict connectedness, but it puts the nontrivial kernel shore
-into a strict mod-eight cut class while (10)--(11) simultaneously control
-its vertexwise D/Omega incidence parity.
+`|delta_D(S)|=|S|(q-1)-2e_D(S)`.
+
+The scope is narrower than a new k>=3 cut obstruction.  The banked variance
+identity already gives, whenever `4 | q`,
+
+```text
+|delta_D(S)| = -|S|^2                                  (mod 8),
+e_D(S) = C(|S|,2) + q|S|/2                             (mod 4).
+```
+
+Thus `8 | q` only kills the correction term `q|S|/2` in the edge congruence;
+the mod-eight cut class is already present at q=4.  Equation (15) is a useful
+k-dependent specialization, not the missing k>=3 terminal.  Its value here
+is that it sits on the same shore for which (10)--(11) control vertexwise
+D/Omega incidence parity.
 
 ### Even-occupancy cut variance
 
