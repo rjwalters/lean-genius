@@ -368,6 +368,16 @@ theorem binarySquare_residualHalfLine_profile
     n₂ + dF + r = m ∧ n₁ = r + dF := by
   omega
 
+/-- Pointwise complementarity between private points on a majority line and
+its defect neighbors in the ordinary balanced-center set. -/
+theorem binarySquare_majority_private_ordinaryDefect_complement
+    {q r u d pvt dM : ℕ}
+    (hq : 1 ≤ q)
+    (hprivate : pvt = r + 1 + d)
+    (hdegree : dM + u + d = q - 1) :
+    pvt + dM + u = q + r := by
+  omega
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -895,6 +905,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_saturatedMixed_exceptionalShore_card_dichotomy
 #print axioms Erdos85.binarySquare_mixedExceptional_defectCut_lower
 #print axioms Erdos85.binarySquare_residualHalfLine_profile
+#print axioms Erdos85.binarySquare_majority_private_ordinaryDefect_complement
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.commonNeighbor_not_secondOrderDefect_adj

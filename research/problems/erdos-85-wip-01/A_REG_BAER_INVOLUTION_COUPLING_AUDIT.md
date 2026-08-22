@@ -1528,6 +1528,23 @@ three.  The residual extension problem is therefore a prescribed integral
 Gram-factorization problem for `D[P]` coupled to the partial-Baer path--cycle
 marks, a genuinely stronger target than the scalar boundary identities.
 
+There is also a pointwise complementarity on each majority center X.  Its
+D-neighbors consist of all u minority centers, its `deg_(D[F])(X)` majority
+neighbors, and its neighbors in M.  Combining D-regularity with (73j) gives
+
+```text
+private_F(X)+deg_D(X,M)+u=q+r.                            (73q)
+```
+
+This is Lean-checked by
+`binarySquare_majority_private_ordinaryDefect_complement`.  At the saturated
+endpoint `u=r`, the two terms on the left excluding u sum to q.  Thus every
+`r=1` majority center has exactly `q-2` D-neighbors in M.  At `r=2`, the two
+marked centers have `q-4` such neighbors and every unmarked majority center
+has `q-3`.  The missing majority intersection is therefore paired
+pointwise with one missing ordinary D-neighbor on each marked line; the
+extension defect is localized, not merely fixed in total by (73f).
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
