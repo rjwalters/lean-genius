@@ -2135,3 +2135,53 @@ third component must realize ten lifted points with these constraints, in
 addition to the edge-or-two-triangles alternative (126).  This is the exact
 finite local object on which the next simultaneous counting argument can
 operate.
+
+## 37. Rootwise vertical two-factor for an owned five-cycle
+
+Now specialize to `n=5`.  By (124), every third color is clean, so every
+root `x in C` has a lifted pair `Y_d(x)` for every `d != c,e`.  Define the
+active third-color set
+
+```text
+N_x := {d != c,e : Y_d(x) notin E(A_d)}.                (130)
+```
+
+For `d in N_x`, (126) gives exactly two three-component triangles through
+`x` using `d`; for `d` outside `N_x`, it gives none.  No such triangle uses
+the owner color `e`, because the state `(x,e)` already has horizontal degree
+two on the closed owner run and hence vertical degree zero in (55).
+
+Make a multigraph on `N_x` by joining `d,f` once for every triangle with
+vertices in `c,d,f` rooted at `x`.  Each vertex has degree exactly two, so
+
+```text
+the rooted triangle multigraph on N_x is two-regular.    (131)
+```
+
+Parallel edges are allowed, corresponding to two triangles using the same
+unordered color pair.  Loops are not, since a three-component triangle has
+distinct exterior colors.  Consequently
+
+```text
+|N_x| != 1.                                             (132)
+```
+
+Equivalently, at every root of an exterior-owned five-cycle, the number of
+third components whose lifted fiber is a nonedge is either zero or at least
+two.  In the first binary calibration `q=8` there are exactly two third
+colors, so (132) says their lifted pairs agree pointwise: both are internal
+edges or both are nonedges joined by the two parallel rooted triangles.
+This last sentence is a q-generic specialization only and does not authorize
+an order-64 computation under the standing park.
+
+Summing degrees in (131) also identifies the triangle census:
+
+```text
+# {three-component triangles rooted at x using third colors}
+  = |N_x|.                                              (133)
+```
+
+Thus the remaining five-cycle problem is a simultaneous five-row system of
+small two-regular color multigraphs, coupled through the internal factors
+`A_d` and the disjoint lifted fibers.  This structure is absent from every
+single-pair countermodel above.
