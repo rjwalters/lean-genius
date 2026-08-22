@@ -907,6 +907,28 @@ and finitely many flag-majorization inequalities.  Combining three such
 systems for the three color pairs with the coupled occupancies (12l), (12r)
 is a concrete route to the design-level Hall-or-price dichotomy (12q).
 
+The majorization witness has zero, not merely nonnegative, total mass.  Put
+`g(t)=|S_t intersect C|`.  This is determined by the root role: it is two
+for a regular triple, hole, or pair missing the unselected color, and one for
+a pair missing a selected color.  Summing all `mu` coordinates of a matching
+feature vector gives
+
+```text
+sum_{chosen t->u} (g(u)-g(t)).                              (12rb)
+```
+
+The `alpha` balance equations in (12ra), weighted by the signature function
+`g`, make (12rb) zero (each row `t` occurs as a source exactly `d_t` times).
+Flags with different root signatures are incomparable in `I`; hence the
+whole component of one signature and its complement are both upper sets.
+The upper-set inequalities and zero global mass force zero mass on every
+root-signature component separately.  Within each component, (12ra) is
+therefore exactly multivariate first-order dominance of the source fiber
+census over the incoming fiber census, with equal total mass.  A proof of
+(12q) may consequently seek a strictly convex occupancy statistic from
+(12r) that cannot be nonincreasing around all three color-pair dominance
+systems unless one of the Hall cover inequalities (12fa) is already tight.
+
 There are sharp scalar consequences.  Let `p(t)` be the number of eligible
 pair candidates missing one selected color and put `L=2n(t)-p(t)`, the total
 selected-label mass.  Write
