@@ -1421,3 +1421,56 @@ directed datum which survives the symmetric cancellations: closing the
 marked route requires proving that the total curvature is even, or pairing
 its oriented paths by an owner-sensitive involution.  Ordinary row sums and
 the rank-one incidence law (72) do not address this orientation imbalance.
+
+## 23. The ambient cubic identity is tautological on curvature
+
+It is natural to hope that the global cubic polynomial forces the total in
+(82) to vanish.  It does not.  Let `A` now denote the full ambient adjacency
+matrix and `D` the defect adjacency.  From
+
+```text
+A^2 = (q-1) I + J - D
+```
+
+and even `q`, one has over `F_2`
+
+```text
+A^3 = A + A D.                                          (84)
+```
+
+Pair (84) with `C` on the left and `V_j` on the right.  The `A` term is zero
+because `R_ce V_j=0`; the `AD` term is zero because `D` is block diagonal
+and `C^T R_ce=0`.  Hence
+
+```text
+C^T A^3 V_j = 0.                                       (85)
+```
+
+Expand the left side by the component colors of the two intermediate
+vertices.  Any route whose first intermediate color is `c` vanishes by
+`A_c C=0`; first color `e` vanishes by `C^T R_ce=0`; and second color `c`
+vanishes by `R_ce V_j=0`.  The surviving terms are
+
+```text
+sum_(d != c,e) h^d_0j
++ sum_(d,f != c,e, d != f) ell^j_df
++ E_j,                                                  (86)
+```
+
+where the only remaining endpoint layer is
+
+```text
+E_j := sum_(d != c,e) C^T R_cd R_de A_e V_j.
+```
+
+But `E_j=0`: substitute the third-color sum from `SRP(c,e)`.  The `J` term
+has even mass after `A_e V_j`, the `c`-endpoint term is killed by `A_c C=0`,
+and the `e`-endpoint term is killed by `C^T R_ce=0`.
+
+Thus (85)--(86) say that the marked sum equals the ordered curvature sum.
+This is already exactly the sum over `d` of (78).  Equivalently the cubic
+identity reduces to two copies of the same binary scalar and hence to
+`2x=0`.  Therefore no unmarked use of the ambient cubic polynomial can force
+the routing curvature to vanish.  A successful next contraction must retain
+an owner-color mark, a distinguished internal edge, or higher information
+before the component-color sums are taken.
