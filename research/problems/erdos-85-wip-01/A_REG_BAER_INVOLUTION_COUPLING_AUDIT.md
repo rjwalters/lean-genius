@@ -1713,6 +1713,31 @@ explicit boundary term, oriented from `E_0` to the ordinary private point
 `Q_0`.  Establishing that cancellation in the simultaneous residual
 incidence system is now a precise terminal target.
 
+The odd T-bundle at `F_0` also projects canonically onto the path--cycle
+core.  For each `Y in R`, let `W_Y` be the unique intersection point of the
+two full lines indexed by `F_0` and Y; it exists because `D[F]` is empty.
+These `q-2` pair points, together with the two private points `E_0,Q_0`, are
+all q points of the full line at `F_0`.  Put
+
+```text
+B_0 = {Y in R : F_0 W_Y is in T},
+theta_0 = 1_[F_0 Q_0 is in T].
+```
+
+The injectivity of the pair points and (73rf) give
+
+```text
+U_0 = ({Q_0} if theta_0=1 else empty)
+      disjoint_union {W_Y : Y in B_0},
+theta_0 + |B_0| = 1                              (mod 2). (73rj)
+```
+
+Thus the odd ordinary T-port bundle is equivalently an odd marked subset of
+the Baer path--cycle labels, up to one explicit private boundary bit.  This
+is a finite core-facing target: a transport law determining the parity of
+`B_0` from the path pairing in (73ri) would determine `theta_0`, or vice
+versa, without assigning K/Omega signs to arbitrary private marks.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
