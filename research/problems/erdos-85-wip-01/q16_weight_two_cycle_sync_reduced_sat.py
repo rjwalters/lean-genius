@@ -87,9 +87,59 @@ def main() -> None:
     assert len(chosen & INTERNAL_EDGES) == len(LONG_CYCLE) == 29
     assert 0 < len(chosen & INTERNAL_EDGES) < Q * Q - 2 * Q
 
+    # Realize the unique-common-neighbor requirement on every cross edge.
+    # Regard each chosen pair as one outside vertex, adjacent across the cut
+    # to its two endpoints.  An edge-trace already resolves both cross edges
+    # through the other endpoint in C.  At each x, pair the remaining
+    # incident outside vertices; the resulting outside edge resolves those
+    # two cross edges through an outside common neighbor.
+    outside_vertices = tuple(sorted(chosen))
+    trace_is_edge = {trace: trace in INTERNAL_EDGES for trace in outside_vertices}
+    outside_edges: set[tuple[tuple[int, int], tuple[int, int]]] = set()
+    for vertex in range(N):
+        unresolved = sorted(
+            trace
+            for trace in outside_vertices
+            if vertex in trace and not trace_is_edge[trace]
+        )
+        assert len(unresolved) % 2 == 0
+        for index in range(0, len(unresolved), 2):
+            edge = tuple(sorted((unresolved[index], unresolved[index + 1])))
+            assert edge not in outside_edges
+            outside_edges.add(edge)
+
+    def outside_neighbors(trace):
+        return {
+            second if first == trace else first
+            for first, second in outside_edges
+            if trace in (first, second)
+        }
+
+    for trace in outside_vertices:
+        expected_degree = 0 if trace_is_edge[trace] else 2
+        assert len(outside_neighbors(trace)) == expected_degree
+        for endpoint in trace:
+            internal_resolvers = {
+                other
+                for other in trace
+                if other != endpoint
+                and tuple(sorted((endpoint, other))) in INTERNAL_EDGES
+            }
+            external_resolvers = {
+                other_trace
+                for other_trace in outside_neighbors(trace)
+                if endpoint in other_trace
+            }
+            assert len(internal_resolvers | external_resolvers) == 1
+
+    # No outside edge gets two component-side common neighbors: distinct
+    # two-subsets in a simple trace graph intersect in at most one point.
+    assert all(len(set(first) & set(second)) == 1 for first, second in outside_edges)
+
     print("verified reduced q=16 selector countermodel")
     print("internal type: C3 + C29")
     print("outside traces: 224; trace-edges: 29")
+    print(f"outside resolution edges: {len(outside_edges)}")
 
 
 if __name__ == "__main__":

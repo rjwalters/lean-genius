@@ -45,6 +45,17 @@ Z3 finds such an `F`.  It has all 224 required traces but exactly 29
 edge-traces, strictly between the proposed endpoints 0 and 224.  The script
 then independently checks every listed invariant against the model.
 
+The script also realizes the next cross-resolution layer explicitly.  Treat
+each edge of `F` as an outside vertex joined across the cut to its two
+endpoints.  At every `x in C`, pair the incident non-edge traces and put an
+outside A-edge across each pair.  Edge-traces already resolve their two
+cross edges through the other endpoint in `C`; the new matching edges resolve
+every remaining cross edge through exactly one outside common neighbor.
+The local matchings never reuse an outside edge, because two distinct trace
+pairs cannot share two endpoints.  Direct checks give outside resolution
+degree zero on the 29 edge-traces and degree two on all 195 non-edge traces,
+with exactly one resolver for every cross incidence.
+
 ## Verdict
 
 Cycle synchronization does not follow from the complete component-side
@@ -53,6 +64,7 @@ parameter `q=2^4`.  This is a reduced countermodel, not a full regular
 C4-free graph on `q^2` vertices, so it does not disprove the all-or-nothing
 lemma itself.  It identifies the missing currency precisely: a proof must
 couple traces belonging to different outside defect components, or enforce
-the outside-outside A/D placement that realizes those trace pairs.  Further
-parity or packing inside the single weight-two component cannot establish
-the lemma.
+the remaining outside-outside regularity and D-component placement.  Even
+the simultaneous outside common-neighbor matchings and their induced even
+degree split do not synchronize the cycles.  Further parity or packing
+inside the single weight-two component cannot establish the lemma.
