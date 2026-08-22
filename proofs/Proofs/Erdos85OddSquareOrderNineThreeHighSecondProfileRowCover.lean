@@ -1477,6 +1477,223 @@ theorem squareOrderNine_threeHigh_secondProfile_actual_pair_pattern_mem_allowed
     exact squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
       G hfree ht huR hc hb
 
+/-- Reciprocity has an immediate global parity consequence: the total marked
+defect degree on the 21 pair-center rows is odd.  Indeed their pair-center
+degrees are `3 - d`, and the induced pair graph has even degree sum. -/
+theorem squareOrderNine_threeHigh_secondProfile_pair_marked_defect_sum_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let D := secondOrderDefectGraph G
+    Odd (∑ t ∈ P, (D.neighborFinset t ∩ M).card) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let D := secondOrderDefectGraph G
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcensus
+  have hPcard : P.card = 21 := hcensus.1
+  have hPsub : P ⊆ T := by
+    intro y hyP
+    simp only [P, Finset.mem_biUnion] at hyP
+    obtain ⟨m, hmM, hym⟩ := hyP
+    have hmParts := Finset.mem_inter.mp hmM
+    have hymParts := Finset.mem_inter.mp hym
+    refine Finset.mem_sdiff.mpr ⟨hymParts.2, ?_⟩
+    intro hyS
+    have hySParts := Finset.mem_inter.mp hyS
+    have hxy : G.Adj x y := (G.mem_neighborFinset x y).mp hySParts.1
+    have hymAdj : G.Adj y m := (G.adj_comm m y).mp
+      ((G.mem_neighborFinset m y).mp hymParts.1)
+    exact (squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+      G hfree hhigh hx hySParts.2 hmParts.2 hxy) hymAdj
+  let H := G.induce (↑P : Set V)
+  have hdegree (t : ↑(↑P : Set V)) :
+      H.degree t = (G.neighborFinset t.1 ∩ P).card := by
+    exact degree_induce_finset_eq_card_inter G P t
+  have hevenSubtype : Even (∑ t : ↑(↑P : Set V),
+      (G.neighborFinset t.1 ∩ P).card) := by
+    refine ⟨H.edgeFinset.card, ?_⟩
+    calc
+      (∑ t : ↑(↑P : Set V), (G.neighborFinset t.1 ∩ P).card) =
+          ∑ t : ↑(↑P : Set V), H.degree t := by
+            apply Finset.sum_congr rfl
+            intro t _ht
+            exact (hdegree t).symm
+      _ = 2 * H.edgeFinset.card := H.sum_degrees_eq_twice_card_edges
+      _ = H.edgeFinset.card + H.edgeFinset.card := by omega
+  have hevenPairDegree : Even
+      (∑ t ∈ P, (G.neighborFinset t ∩ P).card) := by
+    have hatt := Finset.sum_attach P
+      (fun t => (G.neighborFinset t ∩ P).card)
+    rw [← hatt]
+    simpa using hevenSubtype
+  have hpoint : ∀ t ∈ P,
+      (G.neighborFinset t ∩ P).card +
+        (D.neighborFinset t ∩ M).card = 3 := by
+    intro t htP
+    have htT := hPsub htP
+    have hpair :=
+      squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx htT
+    dsimp only at hpair
+    have hfilter :
+        (G.neighborFinset t ∩ P) =
+          (G.neighborFinset t ∩ T).filter fun w => w ∈ P := by
+      ext w
+      simp only [Finset.mem_inter, Finset.mem_filter]
+      constructor
+      · intro hw
+        exact ⟨⟨hw.1, hPsub hw.2⟩, hw.2⟩
+      · intro hw
+        exact ⟨hw.1.1, hw.2⟩
+    rw [hfilter]
+    exact hpair
+  have htotal :
+      (∑ t ∈ P, (G.neighborFinset t ∩ P).card) +
+        (∑ t ∈ P, (D.neighborFinset t ∩ M).card) = 63 := by
+    rw [← Finset.sum_add_distrib]
+    calc
+      (∑ t ∈ P, ((G.neighborFinset t ∩ P).card +
+          (D.neighborFinset t ∩ M).card)) = ∑ _t ∈ P, 3 := by
+            apply Finset.sum_congr rfl
+            intro t htP
+            exact hpoint t htP
+      _ = 63 := by simp [hPcard]
+  rw [← Nat.not_even_iff_odd]
+  intro hevenDefect
+  obtain ⟨a, ha⟩ := hevenPairDegree
+  obtain ⟨b, hb⟩ := hevenDefect
+  rw [ha, hb] at htotal
+  omega
+
+/-- Since the three marked supports have five holes each, the total marked
+defect mass on all 47 ordinary rows is 15.  The odd pair-row contribution
+therefore leaves an even contribution on the 26 triple-center rows. -/
+theorem squareOrderNine_threeHigh_secondProfile_triple_marked_defect_sum_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let D := secondOrderDefectGraph G
+    Even (∑ t ∈ T \ P, (D.neighborFinset t ∩ M).card) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let D := secondOrderDefectGraph G
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcensus
+  have hPsub : P ⊆ T := by
+    intro y hyP
+    simp only [P, Finset.mem_biUnion] at hyP
+    obtain ⟨m, hmM, hym⟩ := hyP
+    have hmParts := Finset.mem_inter.mp hmM
+    have hymParts := Finset.mem_inter.mp hym
+    refine Finset.mem_sdiff.mpr ⟨hymParts.2, ?_⟩
+    intro hyS
+    have hySParts := Finset.mem_inter.mp hyS
+    have hxy : G.Adj x y := (G.mem_neighborFinset x y).mp hySParts.1
+    have hymAdj : G.Adj y m := (G.adj_comm m y).mp
+      ((G.mem_neighborFinset m y).mp hymParts.1)
+    exact (squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+      G hfree hhigh hx hySParts.2 hmParts.2 hxy) hymAdj
+  have hMcard : M.card = 3 :=
+    (squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx).2
+  have htotal :
+      (∑ t ∈ T, (D.neighborFinset t ∩ M).card) = 15 := by
+    rw [sum_card_neighborFinset_inter_comm D T M]
+    calc
+      (∑ m ∈ M, (D.neighborFinset m ∩ T).card) = ∑ _m ∈ M, 5 := by
+        apply Finset.sum_congr rfl
+        intro m hm
+        have hmParts := Finset.mem_inter.mp hm
+        have hmtype :=
+          squareOrderNine_threeHigh_secondProfile_binOne_defect_neighbors
+            G hfree hmin hcover hcard hp hhigh hc2 hc4 hmParts.2
+        dsimp only at hmtype
+        have heq : D.neighborFinset m ∩ T = D.neighborFinset m ∩ B 0 := by
+          ext t
+          simp only [Finset.mem_inter]
+          constructor
+          · intro ht
+            exact ⟨ht.1, (Finset.mem_sdiff.mp ht.2).1⟩
+          · intro ht
+            refine ⟨ht.1, Finset.mem_sdiff.mpr ⟨ht.2, ?_⟩⟩
+            intro htS
+            have htSParts := Finset.mem_inter.mp htS
+            have hmt : m ≠ t := by
+              intro h
+              subst t
+              have hk1 := (Finset.mem_filter.mp hmParts.2).2
+              have hk0 := (Finset.mem_filter.mp ht.2).2
+              omega
+            exact (not_secondOrderDefect_adj_of_commonNeighbor G hfree hmt
+              ((G.adj_comm x m).mp ((G.mem_neighborFinset x m).mp hmParts.1))
+              ((G.adj_comm x t).mp ((G.mem_neighborFinset x t).mp htSParts.1)))
+                ((D.mem_neighborFinset m t).mp ht.1)
+        rw [heq]
+        exact hmtype.1
+      _ = 15 := by simp [hMcard]
+  have hsplit :
+      (∑ t ∈ P, (D.neighborFinset t ∩ M).card) +
+        (∑ t ∈ T \ P, (D.neighborFinset t ∩ M).card) = 15 := by
+    rw [← Finset.sum_union Finset.disjoint_sdiff,
+      Finset.union_sdiff_of_subset hPsub]
+    exact htotal
+  have hpairOdd :=
+    squareOrderNine_threeHigh_secondProfile_pair_marked_defect_sum_odd
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hpairOdd
+  rcases Nat.even_or_odd
+      (∑ t ∈ T \ P, (D.neighborFinset t ∩ M).card) with heven | hodd
+  · exact heven
+  · obtain ⟨a, ha⟩ := hpairOdd
+    obtain ⟨b, hb⟩ := hodd
+    rw [ha, hb] at hsplit
+    omega
+
 /-- For an ordinary row and a marked root, all common neighbors lie in that
 root's seven-point B0 support, and necessarily in the residual set `T`. -/
 theorem squareOrderNine_threeHigh_secondProfile_ordinary_marked_common_eq_support_hit
@@ -2725,6 +2942,8 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_actual_pair_pattern_mem_allowed
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_pair_marked_defect_sum_odd
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_triple_marked_defect_sum_even
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_common_eq_support_hit
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_support_hit_or_defect
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_fortyTwo_five_ledger
