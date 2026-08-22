@@ -16,8 +16,8 @@ from z3 import Bool, If, Not, Solver, Sum, is_true, sat
 
 Q = 16
 N = 2 * Q
-SHORT_CYCLE = tuple(range(5))
-LONG_CYCLE = tuple(range(5, N))
+SHORT_CYCLE = tuple(range(6))
+LONG_CYCLE = tuple(range(6, N))
 
 
 def cycle_edges(vertices: tuple[int, ...]) -> set[tuple[int, int]]:
@@ -64,8 +64,39 @@ def main() -> None:
     for pair in distance_two_pairs:
         solver.add(Not(selected[pair]))
 
-    # Opposite orientations on two genuinely orientable cycles: C5 is
-    # T-saturated, whereas every edge of C27 is cross-triangulated.
+    # The full cross-block equation HM + MK = J forces the exact integral
+    # commutator [H, MM^T] = 0.  Off the diagonal, MM^T is precisely this
+    # simple trace-pair graph, so impose [H,F] = 0 already at the reduced
+    # layer rather than retaining only degree and pair exclusions.
+    internal_neighbors = {
+        vertex: [
+            other
+            for other in range(N)
+            if tuple(sorted((vertex, other))) in INTERNAL_EDGES
+        ]
+        for vertex in range(N)
+    }
+    for first in range(N):
+        for second in range(N):
+            solver.add(
+                Sum(
+                    [
+                        If(selected[tuple(sorted((witness, second)))], 1, 0)
+                        for witness in internal_neighbors[first]
+                        if witness != second
+                    ]
+                )
+                == Sum(
+                    [
+                        If(selected[tuple(sorted((first, witness)))], 1, 0)
+                        for witness in internal_neighbors[second]
+                        if witness != first
+                    ]
+                )
+            )
+
+    # Opposite orientations on two genuinely orientable even cycles: C6 is
+    # T-saturated, whereas every edge of C26 is cross-triangulated.
     for pair in cycle_edges(SHORT_CYCLE):
         solver.add(Not(selected[pair]))
     for pair in cycle_edges(LONG_CYCLE):
@@ -84,7 +115,7 @@ def main() -> None:
     assert chosen.isdisjoint(distance_two_pairs)
     assert chosen.isdisjoint(cycle_edges(SHORT_CYCLE))
     assert cycle_edges(LONG_CYCLE) <= chosen
-    assert len(chosen & INTERNAL_EDGES) == len(LONG_CYCLE) == 27
+    assert len(chosen & INTERNAL_EDGES) == len(LONG_CYCLE) == 26
     # With no internal triangles, the corrected synchronization endpoints are
     # zero and all 2q internal edges, not the total number of outside traces.
     assert 0 < len(chosen & INTERNAL_EDGES) < 2 * Q
@@ -139,8 +170,8 @@ def main() -> None:
     assert all(len(set(first) & set(second)) == 1 for first, second in outside_edges)
 
     print("verified reduced q=16 selector countermodel")
-    print("internal type: C5 + C27 (oppositely oriented)")
-    print("outside traces: 224; trace-edges: 27")
+    print("internal type: C6 + C26 (oppositely oriented)")
+    print("outside traces: 224; trace-edges: 26")
     print(f"outside resolution edges: {len(outside_edges)}")
 
 

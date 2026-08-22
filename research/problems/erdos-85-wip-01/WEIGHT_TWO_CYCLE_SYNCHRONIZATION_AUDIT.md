@@ -24,10 +24,10 @@ cycles of `A[C]` to choose the same orientation.
 ## Reduced countermodel at a binary parameter
 
 `q16_weight_two_cycle_sync_reduced_sat.py` constructs a satisfiable exact
-component-selector model at `q=16`.  Take two orientable internal cycles
+component-selector model at `q=16`.  Take two orientable even internal cycles
 
 ```text
-A[C] = C5 disjoint-union C27.
+A[C] = C6 disjoint-union C26.
 ```
 
 Represent the `q^2-2q = 224` outside vertices by their distinct two-point
@@ -38,10 +38,11 @@ traces.  Thus the traces form a simple `(q-2)=14`-regular graph `F` on the
 * no repeated trace (simplicity, forced by C4-freeness);
 * no trace pair having an internal common neighbor (the exact pair-codegree
   exclusion forced by C4-freeness);
-* no C5 edge in `F` (that cycle is T-saturated);
-* every C27 edge in `F` (that cycle is cross-saturated).
+* the exact integral commutator `[H,F]=0`, where `H=A[C]`;
+* no C6 edge in `F` (that cycle is T-saturated);
+* every C26 edge in `F` (that cycle is cross-saturated).
 
-Z3 finds such an `F`.  It has all 224 required traces but exactly 27
+Z3 finds such an `F`.  It has all 224 required traces but exactly 26
 edge-traces.  Since there are no internal triangles, this is strictly between
 the corrected synchronization endpoints 0 and `2q = 32`.  (The earlier
 uncorrected endpoint `q^2-2q` counts all outside traces, most of which must be
@@ -56,8 +57,23 @@ cross edges through the other endpoint in `C`; the new matching edges resolve
 every remaining cross edge through exactly one outside common neighbor.
 The local matchings never reuse an outside edge, because two distinct trace
 pairs cannot share two endpoints.  Direct checks give outside resolution
-degree zero on the 27 edge-traces and degree two on all 197 non-edge traces,
+degree zero on the 26 edge-traces and degree two on all 198 non-edge traces,
 with exactly one resolver for every cross incidence.
+
+The commutator is not an optional strengthening.  If `M` is the component-to-
+outside incidence matrix and `K` the outside induced adjacency matrix, the
+cross block of `A^2` is
+
+```text
+H M + M K = J.
+```
+
+Multiplying by `M^T` and comparing with the transpose cancels the symmetric
+term `M K M^T`.  Both margins of `M` are constant (`q-2` and 2), so the two
+remaining all-ones terms agree, yielding `[H,MM^T]=0` over the integers.
+Since `MM^T=(q-2)I+F`, this is exactly `[H,F]=0`.  The C6+C26 witness
+therefore survives the full q-generic K-law/commutator interface, not merely
+its mod-two shadow.
 
 ## Verdict
 
