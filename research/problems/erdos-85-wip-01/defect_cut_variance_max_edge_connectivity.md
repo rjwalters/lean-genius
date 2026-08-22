@@ -413,3 +413,52 @@ A-neighborhoods.  The bound grows with q, but the triangles may form a book
 around one D-edge; the resulting neighborhood packing still fits inside
 `q^2` vertices.  Thus neither the near-bipartite branch nor (20) is yet
 contradictory.
+
+### Two-wing decomposition in the near-bipartite branch
+
+The exact branch in (19) has a useful full-incidence form.  Write its parts
+as `R=L disjoint-union M`, with `|L|=|M|=m=q/2`, and let `(a,b)` be the
+unique missing cross D-edge.  The common-neighbor blocks of sizes `(m,m,2)`
+have centers `alpha,beta,gamma` and are respectively
+
+```text
+N_A(alpha) intersect R = L,
+N_A(beta)  intersect R = M,
+N_A(gamma) intersect R = {a,b}.               (21)
+```
+
+Every other A-neighborhood meets at most one of `L,M`, and meets that part
+at most once.  Indeed, two points in the same part already have their unique
+common neighbor `alpha` or `beta`, while every cross pair is a D-edge except
+`(a,b)`, whose unique common neighbor is `gamma`.
+
+Consequently, if
+
+```text
+X_L = union_{l in L} N_A(l),
+X_M = union_{r in M} N_A(r),
+```
+
+then the q-neighborhoods in either union share only their common pole and
+are otherwise disjoint.  Hence
+
+```text
+|X_L| = |X_M| = 1 + m(q-1),
+X_L intersect X_M = {gamma}.
+```
+
+The remaining set
+
+```text
+Z = V \ (X_L union X_M)
+```
+
+has exactly `q-1` vertices and is A-anticomplete to all of `R`.  More
+finely, the `(q-1)`-sets `N_A(l)\{alpha}`, for `l in L`, are pairwise
+disjoint cells; the analogous M-cells are pairwise disjoint, and the only
+cross-cell intersection is `gamma` between the cells indexed by `a,b`.
+
+This is the exact nonlinear filler problem left by the triangle-free
+minimum-cut branch.  The available degree and pair-capacity counts fit
+inside the two wings and `Z`; no repeated common neighbor or D-disconnection
+follows from the cell sizes alone.
