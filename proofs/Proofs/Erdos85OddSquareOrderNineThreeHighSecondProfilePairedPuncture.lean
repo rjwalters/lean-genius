@@ -1261,6 +1261,124 @@ theorem squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_union
       Finset.card_union_of_disjoint hYZ, hRy, hRz, hQ]
   exact ⟨hRy, hRz, hQ, hYZ, hYQ, hZQ, hUnionCard⟩
 
+/-- A row missing from both special punctures has two or three special
+defects.  Consequently its mixed column has one of two exact profiles:
+three or two ordinary defect rows, fifteen core rows, and respectively
+twenty-nine or thirty residual rows. -/
+theorem squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hb : b ∈
+      ((secondOrderDefectGraph G).neighborFinset y ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) ∩
+      ((secondOrderDefectGraph G).neighborFinset z ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    let A := fun t => (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+    let C := fun t => (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+    let defectRows := T.filter fun t => D.Adj t b
+    let residualRows := T.filter fun t => (A t).Nonempty
+    let coreRows := T.filter fun t => (C t).Nonempty
+    let specialDefects := (D.neighborFinset b ∩ S).card
+    coreRows.card = 15 ∧
+      ((specialDefects = 2 ∧ defectRows.card = 3 ∧ residualRows.card = 29) ∨
+       (specialDefects = 3 ∧ defectRows.card = 2 ∧ residualRows.card = 30)) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let A := fun t => (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+  let C := fun t => (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+  let defectRows := T.filter fun t => D.Adj t b
+  let residualRows := T.filter fun t => (A t).Nonempty
+  let coreRows := T.filter fun t => (C t).Nonempty
+  let specialDefects := (D.neighborFinset b ∩ S).card
+  have hbParts := Finset.mem_inter.mp hb
+  have hbY := Finset.mem_inter.mp hbParts.1
+  have hbZ := Finset.mem_inter.mp hbParts.2
+  have hbU1 : b ∈ B 1 \ (G.neighborFinset x ∩ B 1) := hbY.2
+  have hyS : y ∈ S := (Finset.mem_sdiff.mp hy).1
+  have hzS : z ∈ S := (Finset.mem_sdiff.mp hz).1
+  have hyDb : y ∈ D.neighborFinset b := by
+    apply (D.mem_neighborFinset b y).mpr
+    exact ((D.mem_neighborFinset y b).mp hbY.1).symm
+  have hzDb : z ∈ D.neighborFinset b := by
+    apply (D.mem_neighborFinset b z).mpr
+    exact ((D.mem_neighborFinset z b).mp hbZ.1).symm
+  have hySpecial : y ∈ D.neighborFinset b ∩ S :=
+    Finset.mem_inter.mpr ⟨hyDb, hyS⟩
+  have hzSpecial : z ∈ D.neighborFinset b ∩ S :=
+    Finset.mem_inter.mpr ⟨hzDb, hzS⟩
+  have htwo : 2 ≤ specialDefects := by
+    have hsub : ({y, z} : Finset V) ⊆ D.neighborFinset b ∩ S := by
+      intro v hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      rcases hv with rfl | rfl
+      · exact hySpecial
+      · exact hzSpecial
+    have hcardSub := Finset.card_le_card hsub
+    rw [Finset.card_pair hyz] at hcardSub
+    exact hcardSub
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcensus
+  have hScard : S.card = 3 := by
+    simpa [S, B] using hcensus.2.2
+  have hthree : specialDefects ≤ 3 := by
+    have hsub : D.neighborFinset b ∩ S ⊆ S := Finset.inter_subset_right
+    have := Finset.card_le_card hsub
+    omega
+  have hmixed :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hbU1
+  dsimp only at hmixed
+  rcases hmixed with ⟨hdefect, hcore, hresidual⟩
+  change defectRows.card + specialDefects = 5 at hdefect
+  change coreRows.card = 15 at hcore
+  change residualRows.card = 27 + specialDefects at hresidual
+  refine ⟨hcore, ?_⟩
+  have hs : specialDefects = 2 ∨ specialDefects = 3 := by omega
+  rcases hs with hs | hs
+  · have hs' : (D.neighborFinset b ∩ S).card = 2 := by
+      simpa [specialDefects] using hs
+    have hd : defectRows.card = 3 := by omega
+    have hr : residualRows.card = 29 := by omega
+    exact Or.inl ⟨hs, hd, hr⟩
+  · have hs' : (D.neighborFinset b ∩ S).card = 3 := by
+      simpa [specialDefects] using hs
+    have hd : defectRows.card = 2 := by omega
+    have hr : residualRows.card = 30 := by omega
+    exact Or.inr ⟨hs, hd, hr⟩
+
 end
 
 end Erdos85
@@ -1280,3 +1398,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_color_shared_rows
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_resolution_matching
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_union
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_mixed_column_dichotomy
