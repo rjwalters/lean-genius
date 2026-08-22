@@ -1167,13 +1167,41 @@ replication at most three, joined by the D-complete bipartite core (64),
 and decorated by the four-type A-routing rule (60).  This is the precise
 q-generic exceptional-design object still requiring elimination.
 
-Equations (7)--(68) are the first canonical cut detector manufactured from
+All of the final occupancy data has a compact signed form.  Define
+
+```text
+x = 2 1_S-1,
+z = 1_F-1_E.
+```
+
+Thus x has full support with entries in `{+1,-1}`, while z has entries in
+`{+1,0,-1}` and support exactly C.  Empty, half, and full occupancy are
+equivalent coordinatewise to the single integer equation
+
+```text
+A x = q z,       |supp(z)|=c<=2q-2,       1^T z=1^T x=2d.   (69)
+```
+
+Applying `A^2=(q-1)I+J-D` gives the companion defect equation
+
+```text
+D x = (q-1)x + 2d 1 - q A z.                               (70)
+```
+
+The final dyadic terminal can therefore be stated as a sparse signed-image
+problem: exclude a full-support sign vector whose A-image is q times a
+signed vector on at most `2q-2` coordinates, subject to the four-type,
+subcubic, and D-complete structure above.  This formulation is well suited
+to an uncertainty or Smith-normal-form argument and avoids enumerating the
+exceptional designs individually.
+
+Equations (7)--(70) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(68), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(70), so these laws alone
 do not conceal an order-independent
 contradiction.
 
