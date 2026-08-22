@@ -208,3 +208,44 @@ hole 2-factor:
 What remains at the component level is compatibility of several such blocks
 with the total degree-two budget, rather than classification of an individual
 rectangular block.
+
+## Quotient assembly of the cross-saturated sector
+
+The global budget can be recorded as a small weighted quotient.  Make one
+node for each cross-saturated H-cycle and label it by its half-length `a_i`.
+For distinct nodes put the row degree `r_ij` of the corresponding hole block
+on the `i` end.  Put the internal hole degree on the node itself.  Then
+
+```text
+internalDegree_i + sum_(j != i) r_ij = 2,
+a_i r_ij = a_j r_ji,
+r_ij in {0,1,2}.
+```
+
+The block classifications make this quotient explicit:
+
+* equal-weight nodes may be joined by a degree `(1,1)` edge (one dihedral
+  matching) or a degree `(2,2)` edge (two dihedral matchings, exhausting both
+  nodes);
+* if `a_i=2a_j`, the only unequal-weight edge has degrees `(1,2)` and is the
+  canonical two-fold cycle cover; it exhausts the smaller node and consumes
+  one unit at the larger node;
+* no other unequal weights interact;
+* unused degree remains in the symmetric diagonal block of that cycle.
+
+In particular a node can be the smaller endpoint of at most one doubling
+edge, after which it has no remaining hole degree.  A larger node can support
+at most two such smaller endpoints, or one together with one further
+degree-one block.  Equal-length degree-two edges are isolated components of
+the quotient.  Thus every connected quotient piece is assembled from
+equal-weight matching edges and directed doubling edges, with weighted degree
+two at each node.
+
+There is no binary-parameter contradiction at this quotient level.  The
+weighted sum of all cycle half-lengths is merely `q`, and the already banked
+family with one T-saturated `C6` and one cross-saturated `C_(2q-6)` realizes a
+legal single-node cross sector for every binary `q>=8` at the component level.
+More elaborate legal quotients also exist whenever the partition contains
+equal or doubled lengths.  Hence the quotient classification is a reduction,
+not a terminal: exclusion must use exterior placement or an additional law
+coupling different hole blocks beyond commutation and degree.
