@@ -2185,3 +2185,42 @@ Thus the remaining five-cycle problem is a simultaneous five-row system of
 small two-regular color multigraphs, coupled through the internal factors
 `A_d` and the disjoint lifted fibers.  This structure is absent from every
 single-pair countermodel above.
+
+## 38. Clean-or-long dichotomy for odd owner runs
+
+The positivity threshold in (123) gives a uniform structural split.  If an
+odd exterior-owned cycle of order `n` has no clean third color, then
+
+```text
+q - 4 <= n(n-5).                                       (134)
+```
+
+Equivalently,
+
+```text
+n >= (5 + sqrt(4q+9))/2.                               (135)
+```
+
+Thus every odd owner run satisfies the dichotomy
+
+```text
+clean reusable third color,
+or cycle order at least (5 + sqrt(4q+9))/2.             (136)
+```
+
+The second branch is globally sparse.  The internal two-factor on `c` has
+only `2q` vertices, so if `L_q` is the least odd integer at least the bound
+in (135), the number of no-clean odd owner cycles on the entire shore is at
+most
+
+```text
+floor(2q / L_q).                                        (137)
+```
+
+For any fixed odd length `n`, the no-clean branch disappears once
+`q > n(n-5)+4`.  Hence the simultaneous clean-lift mechanism covers every
+bounded-length obstruction uniformly for all sufficiently large binary
+powers, while the untreated cycles have order `Omega(sqrt(q))` and occur
+only `O(sqrt(q))` times.  A closing parity argument may therefore be split
+into a local clean-lift theorem and a global census of the long residual
+cycles, rather than treating every odd run by the same invariant.
