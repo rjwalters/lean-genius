@@ -311,3 +311,26 @@ m_i = L + Z_i  (mod 2).                                      (11)
 Thus a colored defect-cut parity would recover the parity distribution of
 the missing colors, even though summing (10) over all three colors returns
 only the already-known evenness of `Z`.
+### Defect-degree connectivity probe
+
+A second probe tests how much of defect connectivity is already enough.
+For each fixed outer design, allow a B0--U1 defect cell exactly when its core
+common-center count is zero.  Prescribe the proved row degrees
+`3 - markedDefects(t)` (zero on exceptional holes) and the proved column
+degrees `5 - specialDefects(b)`.  This is an exact bipartite b-matching, so it
+was solved by max flow rather than SAT.  Four seeds per branch all attained
+the full demand:
+
+```text
+branch 3: flow 114 / 114; connected positive core of order 69;
+branch 4: flow 108 / 108; connected positive core of order 66 or 67.
+```
+
+Both triangle parities occurred among the successful connected cores in
+each branch.  Thus the outer ledger plus the B0--U1 defect degree sequence
+and connectivity of its positive bipartite core still do not determine (5).
+This remains a necessary-condition probe: it does not construct the missing
+B0--B0 defect edges or a residual graph and therefore is not a model of the
+full `D0-x` theorem.  It does isolate the missing input more sharply as
+residual/common-center reciprocity (or comparably strong B0--B0 structure),
+not connectivity imposed only on the defect degree ledger.
