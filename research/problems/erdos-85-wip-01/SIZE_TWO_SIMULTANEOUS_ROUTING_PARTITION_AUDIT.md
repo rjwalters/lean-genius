@@ -3526,3 +3526,35 @@ signed strategy must realize an odd cycle of actual triangle edges and
 two-point fiber switches while preserving all reused cross blocks; a
 color-only or pairwise-SRP model cannot decide (212).  The alternating
 boundary identity (204) is the runwise contraction of this same odd walk.
+
+## 64. Port-switch expansion is equivalent to the state cocycle
+
+The construction of `Lambda_C` should not be mistaken for an independent
+parity contradiction.  It is the canonical two-port expansion of the state
+cycle `Omega`: replace every active state by the switch joining its two
+ports, realize every vertical state edge by its triangle edge, and contract
+every horizontal state edge because its two endpoint ports are the same
+actual vertex.  A state cycle with `H` horizontal and `V` vertical edges
+therefore becomes a port-switch closed walk of length
+
+```text
+H + 2V == H  (mod 2).                                  (213)
+```
+
+In particular, a two-coloring of the relevant port-switch graph pulls back
+to the state potential (57), and a state potential pushes forward to a
+consistent sign on each occurrence in the expanded walk.  For the selected
+cycle, (212) is therefore the port-resolved form of the same signed
+alternative, not a theorem supplied by local C4-freeness.  The q=10
+single-pair model of Section 16 already gives an all-switch odd cycle and
+shows that this implication fails without simultaneous reuse.
+
+The value of (211) is instead that it identifies the data the transport
+branch must add: a sign must be forced on the **actual two-point fiber
+switches**, compatibly when the same port occurs at its two roots.  The
+clean-core capacity system records exactly those root--fiber incidences,
+whereas a color potential or collision scalar does not.  Thus the remaining
+route to (212) must combine the once-paid collision statistic with a
+root-own versus external fiber-incidence flag (or an equivalent private-port
+orientation).  This keeps the signed-mode and transport-mode sides of the
+dispatcher logically separate.
