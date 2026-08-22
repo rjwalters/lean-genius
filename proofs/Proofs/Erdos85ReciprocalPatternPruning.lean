@@ -126,8 +126,39 @@ theorem no_reciprocal_choice_of_iterate_prune_eq_empty
   rw [hempty] at hp
   simpa using hp
 
+/-- A small warning example: reverse-support consistency is not complete.
+Each of three vertices may choose either other vertex as its singleton
+pattern.  The system is pruning-stable, but a reciprocal choice would be a
+perfect matching on an odd set. -/
+def threePointSingletonPatterns (p : Fin 3) : Finset (Finset (Fin 3)) :=
+  (Finset.univ.erase p).image fun q => {q}
+
+theorem threePointSingletonPatterns_prune_fixed :
+    reciprocalPatternPrune threePointSingletonPatterns =
+      threePointSingletonPatterns := by
+  classical
+  rw [reciprocalPatternPrune_eq_self_iff]
+  intro p S hS q hq
+  rw [threePointSingletonPatterns, Finset.mem_image] at hS
+  obtain ⟨r, hr, rfl⟩ := hS
+  have hqr : q = r := by simpa using hq
+  subst q
+  refine ⟨{p}, ?_, Finset.mem_singleton_self p⟩
+  rw [threePointSingletonPatterns, Finset.mem_image]
+  refine ⟨p, Finset.mem_erase.mpr ⟨?_, Finset.mem_univ p⟩, rfl⟩
+  exact (Finset.mem_erase.mp hr).1.symm
+
+theorem threePointSingletonPatterns_no_reciprocal_choice :
+    ¬ ∃ C : Fin 3 → Finset (Fin 3),
+      (∀ p, C p ∈ threePointSingletonPatterns p) ∧
+        (∀ p q, q ∈ C p ↔ p ∈ C q) := by
+  set_option maxRecDepth 100000 in
+    decide
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.no_reciprocal_choice_of_iterate_prune_eq_empty
+#print axioms Erdos85.threePointSingletonPatterns_prune_fixed
+#print axioms Erdos85.threePointSingletonPatterns_no_reciprocal_choice
