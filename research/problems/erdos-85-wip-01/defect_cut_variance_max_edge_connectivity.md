@@ -2116,6 +2116,39 @@ one such pair across all three P-centers is either unresolved (a D-edge) or
 resolved in X.  The whole P-core interaction with K has collapsed to a
 zero-or-one edge budget.
 
+There is a complementary exact trichotomy inside R.  For `p_w`, every
+distinct R-point outside `R_w` shares a W-neighbor with `p_w`; the only
+candidate D-neighbors in R are therefore the `n_w-1` points of `R_w`.
+Put
+
+```text
+s_w=|F_(p_w) intersect C| in {0,1},
+f_w=|{y in G_(p_w) intersect N_A(c) : deg_D(y,W)=0}| in {0,1}.
+```
+
+If `s_w=1`, (B40b) gives one point of `R_w` whose X-fiber meets that of
+`p_w`.  If `f_w=1`, the Y-flow law gives the unique attachment-free
+c-neighbor of `p_w` a second R-neighbor, and the complementary-color rule
+puts it in `R_w`.  These alternatives are mutually exclusive: otherwise
+`p_w` and c would have two common A-neighbors.  They account for every
+common neighbor of a candidate pair in X or Y, and no candidate pair has a
+common W-neighbor.  Hence
+
+```text
+deg_D(p_w,R)=n_w-1-s_w-f_w >= n_w-2.           (B52)
+```
+
+Summing over P (which is D-independent) gives
+
+```text
+e_D(P,R\P)=q-2-sum_w(s_w+f_w),                 (B52')
+```
+
+because `sum_w(n_w-1)=q-2`.  Thus, while the bottom-slice P-to-K defect
+budget collapses to zero or one in (B51'), the P-to-R defect incidence is
+nearly the full q-minus-two budget, missing at most one resolved pair per
+wing.
+
 So the sole dual escape consists of three rigid wings around `W`, an
 exceptional point outside all three wings, and a `q-2` residue component no
 larger than the halfway parameter.
