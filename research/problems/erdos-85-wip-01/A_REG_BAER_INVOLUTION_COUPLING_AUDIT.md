@@ -897,13 +897,89 @@ successively higher powers of two: before the q-scale it must emit a
 nonzero even, complement-invariant marked-line layer, and at the last level
 that layer is genuinely nonconstant under connectedness.
 
-Equations (7)--(47) are the first canonical cut detector manufactured from
+The stopping layer has quantitative consumers at every depth.  Put
+`a=2^j`, `B=supp(beta_j(S))`, `s=|S|`, and
+
+```text
+L_j(t) = max(0, ceil(((2a-1)q+1-t)/a)).
+```
+
+Applying (45) to S and, using (44), to its complement gives
+
+```text
+deg_A(P,B) >= L_j(s)       for P in S,
+deg_A(P,B) >= L_j(q^2-s)   for P outside S.                 (48)
+```
+
+Therefore exact incidence counting and the same C4-free pair packing used
+in (28) imply
+
+```text
+q|B| >= s L_j(s) + (q^2-s)L_j(q^2-s),
+
+|B| >= s L_j(s)^2 / (L_j(s)+s-1),
+|B| >= (q^2-s)L_j(q^2-s)^2
+                     / (L_j(q^2-s)+q^2-s-1).                (49)
+```
+
+As before, a fraction on the right is rounded up.  Thus a late nonconstant
+stopping digit is not merely nonempty: it is simultaneously large enough to
+service the two complementary shores, with shared pairs limited by
+C4-freeness.
+
+There is also a depth-j form of the constant-lift variance law (27).  If
+`beta_j(S)=epsilon 1`, where `epsilon` is zero or one, every occupancy is
+`epsilon a` modulo `2a`.  Write
+
+```text
+s = epsilon a q + 2a q h + r,       0 <= r < 2a q.
+```
+
+Minimizing the squared deviations among these permitted occupancies gives
+
+```text
+|delta_D(S)| >= r(2a q-r).                                (50)
+```
+
+Equality forces the two adjacent permitted occupancies
+`epsilon a+2ah` and `epsilon a+2a(h+1)`.  Equations (16) and (27) are the
+base even-occupancy case `(a,epsilon)=(1,0)` and the first lifted case
+`a=2`, respectively.
+
+At the last level there is an exact census, not just a bound.  Here
+`a=q/2`, so every line occupancy is `0`, `q/2`, or q, and B is precisely the
+set of half-occupied lines.  If `n_q` is the number of full lines, incidence
+counting gives
+
+```text
+|B|/2 + n_q = s.
+```
+
+Substitution in the exact cut-variance identity yields
+
+```text
+|delta_D(S)| = s(q^2-s) - (q^2/4)|B|,
+|delta_D(S)| = s(q^2-s)                 (mod q^2/2),          (51)
+```
+
+where the congruence uses the even weight of B.  Connectedness makes the
+left side positive, so
+
+```text
+|B| < 4s(q^2-s)/q^2 <= q^2.                                (52)
+```
+
+Thus (48)--(52) squeeze the final nonconstant layer simultaneously by local
+C4 packing and by an exact D-cut energy.  Extracting a forbidden partial
+design from that squeeze is the remaining terminal.
+
+Equations (7)--(50) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(47), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(50), so these laws alone
 do not conceal an order-independent
 contradiction.
 
