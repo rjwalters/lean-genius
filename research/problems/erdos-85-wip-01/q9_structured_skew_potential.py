@@ -110,6 +110,40 @@ def refine_features(instances: list[dict], mode: str) -> None:
     conflict at a selected U1 label.
     """
     global FEATURES
+    if mode == "bilinear-collisions":
+        coordinate_pairs = list(combinations(range(7), 2))
+        FEATURES = {
+            (overlap, i, j): k
+            for k, (overlap, (i, j)) in enumerate(
+                (x for overlap in (0, 1) for pair in coordinate_pairs
+                 for x in [(overlap, pair)])
+            )
+        }
+        for data in instances:
+            row_features = []
+            for t in range(N):
+                loads = Counter(b for support in data["labels"][t]
+                                for b in support)
+                collisions = sum(x * (x - 1) // 2 for x in loads.values())
+                row_features.append(np.array(
+                    [int(data["types"][t] == i) for i in range(5)]
+                    + [len(data["candidates"][t]), collisions], dtype=float
+                ))
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                for u in data["candidates"][t]:
+                    overlap = len(data["blocks"][t] & data["blocks"][u])
+                    vector = np.zeros(len(FEATURES))
+                    for i, j in coordinate_pairs:
+                        vector[FEATURES[(overlap, i, j)]] = (
+                            row_features[t][i] * row_features[u][j]
+                            - row_features[t][j] * row_features[u][i]
+                        )
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
     signatures = []
     keys = set()
     for data in instances:
@@ -244,7 +278,8 @@ def main() -> int:
                         help="fit each locally feasible instance separately")
     parser.add_argument("--features", choices=("basic", "candidate-count",
                                                 "total-load", "collisions",
-                                                "load-profile"),
+                                                "load-profile",
+                                                "bilinear-collisions"),
                         default="basic")
     args = parser.parse_args()
     data = []

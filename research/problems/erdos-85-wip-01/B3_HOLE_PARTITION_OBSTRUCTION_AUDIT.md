@@ -643,7 +643,13 @@ c(t) = sum_b binom(ell_b(t),2).                              (12i)
 ```
 
 This is exactly the number of unordered pairs of eligible candidates which
-conflict at a selected U1 label.  Refining the five-way row type by only the
+conflict at a selected U1 label.  Equivalently, if `E_t` is the trace-eligible
+candidate set, linearity of `Q` makes `c(t)` the number of pairs in `E_t`
+whose supports share a point of either selected color: it is the edge count
+of the selected-fiber conflict graph induced on `E_t`.  Thus both statistics
+are read directly from `Q,K`, with no residual adjacency variables.
+
+Refining the five-way row type by only the
 candidate count and `c(t)`, and again indexing skew coefficients by ordered
 refined types and support overlap, strictly separates all six seed-zero
 instances.  Their normalized optima are
@@ -663,6 +669,15 @@ capacity and collision excess rather than through sixteen named fibers.
 The script modes `--features candidate-count`, `--features total-load`,
 `--features collisions`, and `--features load-profile` reproduce this
 boundary; every refined mode retains candidate count.
+
+The dependence is not merely linear.  Give a row the seven coordinates
+consisting of its five type indicators, candidate count, and `c(t)`, and let
+`W_tu` be an arbitrary skew-bilinear form in these coordinates, with a
+separate form for support overlap zero and one.  This 42-parameter family has
+optimum zero on every seed-zero instance.  Hence the successful categorical
+potential uses thresholds or other nonlinear dependence on local capacity
+and collisions.  The mode `--features bilinear-collisions` records this
+negative boundary.
 
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation
