@@ -931,6 +931,24 @@ theorem binarySquare_mixedPrivateOwner_card_odd
   use k - doubleExceptionalOwners
   omega
 
+/-- The saturated `r = 1, h = f` endpoint is impossible once its unique
+minority centre is shown to have exactly one triangle-free incident edge:
+at even ambient degree every triangle-free degree is even. -/
+theorem binarySquare_saturatedR1_hEqF_impossible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hqEven : Even q) (hreg : ∀ x, G.degree x = q)
+    (minorityCenter : V)
+    (hunique : (triangleFreeEdgeGraph G).degree minorityCenter = 1) :
+    False := by
+  have heven := binarySquare_regular_triangleFree_degree_even
+    G hfree hqEven hreg minorityCenter
+  obtain ⟨k, hk⟩ := heven
+  omega
+
 end
 
 end Erdos85
@@ -968,3 +986,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_forcedTBundle_ordinary_card_odd
 #print axioms Erdos85.binarySquare_ordinaryPrivate_card_odd
 #print axioms Erdos85.binarySquare_mixedPrivateOwner_card_odd
+#print axioms Erdos85.binarySquare_saturatedR1_hEqF_impossible

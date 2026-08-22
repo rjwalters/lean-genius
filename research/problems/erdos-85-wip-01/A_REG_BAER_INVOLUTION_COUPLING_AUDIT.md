@@ -1788,6 +1788,39 @@ alternative **double broken private ports versus one boundary triangle**.
 The residual transport must rule out or consistently propagate these two
 explicit boundary states.
 
+### The `r=1,h=f` parity kill
+
+The boundary analysis above exposes a much shorter contradiction when
+Eulerianity of T is applied at the minority endpoint `E_0`, rather than at
+the majority owner `F_0`.  Since `E_0 in E intersect S` indexes an empty
+line,
+
+```text
+N_A(E_0) intersect S = empty.                             (73rm)
+```
+
+At saturation its q-1 D-neighbors are exhausted by the complete F--E core:
+they are exactly all majority centers.  Of those, `F_0` is the unique one
+outside S.  Hence `E_0` has exactly one cross-shore D-neighbor.  The matching
+in (73h) gives `E_0 F_0 in A`, while (64) gives the same edge in D, so
+
+```text
+N_T(E_0) = {F_0},
+deg_T(E_0)=1.                                             (73rn)
+```
+
+But q is even and `binarySquare_regular_triangleFree_degree_even` proves
+that every T-degree is even in a C4-free q-regular graph.  This contradicts
+(73rn).  The final composition is Lean-checked by
+`binarySquare_saturatedR1_hEqF_impossible`.
+
+Therefore the saturated `r=1,h=f` branch is impossible.  In particular the
+forced T-mark, odd owner family, core broken set, and Baer matching
+(73rd)--(73rl) are now a diagnostic derivation of the contradiction, not a
+surviving transport object.  The `r=1` work that remains is solely the other
+placement from (73g), namely `h=(q-2)/2`; no argument should continue to
+spend transport machinery on `h=f`.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
