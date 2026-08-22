@@ -1,4 +1,6 @@
 import Proofs.Erdos85OddSquareOrderNineThreeHighSecondProfileCore
+import Proofs.Erdos85DegreeExcessStratification
+import Proofs.Erdos85GlobalLocalTriangleCount
 
 /-! # Bin-zero defect types in the q = 9 three-high second profile
 
@@ -827,6 +829,119 @@ theorem squareOrderNine_threeHigh_secondProfile_trianglePair_common_binOne_force
         ((mem_triangleFreeNeighbors G y p).mp htf).1,
         ((mem_triangleFreeNeighbors G p z).mp htf').1⟩
 
+/-- In the q=9 three-high sector, both colors of the second-order defect
+graph have edge count divisible by three.  This is a genuinely global
+constraint: `G` has 366 edges, its triangular edges occur in triples, and
+the defect graph has 297 edges by global excess conservation. -/
+theorem squareOrderNine_threeHigh_colored_defect_edge_card_dvd_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hhigh : (squareOrderHighVertices G 9).card = 3) :
+    3 ∣ (triangleFreeEdgeGraph G).edgeFinset.card ∧
+      3 ∣ (antipodalGraph G).edgeFinset.card := by
+  classical
+  let T := triangleFreeEdgeGraph G
+  let H := triangularEdgeGraph G
+  let A := antipodalGraph G
+  let D := secondOrderDefectGraph G
+  have hGedges : G.edgeFinset.card = 366 := by
+    rcases squareOrder_even_cube_add_card_high
+        G hfree (by norm_num) hmin hcover (by omega) with ⟨k, hk⟩
+    rw [hhigh] at hk
+    change 9 * 9 * 9 + 3 = k + k at hk
+    have hhand := G.sum_degrees_eq_twice_card_edges
+    have hexcess := squareOrder_sum_degreeExcess_eq_card_high
+      G hfree (by norm_num) hmin hcover (by omega)
+    rw [hhigh] at hexcess
+    have hsum : (∑ x : V, G.degree x) = 732 := by
+      calc
+        (∑ x : V, G.degree x) =
+            ∑ x : V, (9 + (G.degree x - 9)) := by
+              apply Finset.sum_congr rfl
+              intro x _
+              have hxmin := hmin x
+              omega
+        _ = 9 * Fintype.card V +
+            ∑ x : V, (G.degree x - 9) := by
+              rw [Finset.sum_add_distrib]
+              simp [Nat.mul_comm]
+        _ = 732 := by rw [hcard, hexcess]
+    rw [hsum] at hhand
+    omega
+  have hTle : T ≤ G := by
+    intro x y hxy
+    exact ((mem_triangleFreeNeighbors G x y).mp
+      ((triangleFreeEdgeGraph_adj G x y).mp hxy)).1
+  have hGHpartition :
+      G.edgeFinset.card = H.edgeFinset.card + T.edgeFinset.card := by
+    have heq : H.edgeFinset = G.edgeFinset \ T.edgeFinset := by
+      ext e
+      simp [H, T, triangularEdgeGraph]
+    rw [heq, Finset.card_sdiff_of_subset (edgeFinset_mono hTle)]
+    have hle := Finset.card_le_card (edgeFinset_mono hTle)
+    omega
+  have hHedges : H.edgeFinset.card =
+      3 * (H.cliqueFinset 3).card :=
+    (triangularEdgeGraph_locallyLinear_of_not_containsC4 G hfree).card_edgeFinset
+  have hTdvd : 3 ∣ T.edgeFinset.card := by
+    refine ⟨122 - (H.cliqueFinset 3).card, ?_⟩
+    rw [hGedges, hHedges] at hGHpartition
+    omega
+  have hDedges : D.edgeFinset.card = 297 := by
+    have hglobal := two_mul_defectEdges_add_linearExcess_add_squareExcess_eq
+      G hfree (d := 9) (q := 8) (by norm_num) hmin (by omega)
+    have hexcess := squareOrder_sum_degreeExcess_eq_card_high
+      G hfree (by norm_num) hmin hcover (by omega)
+    rw [hhigh] at hexcess
+    have hsquares :
+        (∑ x : V, (G.degree x - 9) * (G.degree x - 9)) = 3 := by
+      have hpoint : ∀ x : V,
+          (G.degree x - 9) * (G.degree x - 9) = G.degree x - 9 := by
+        intro x
+        rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+            G hfree (by norm_num) hmin hcover (by omega) x with hx | hx <;>
+          simp [hx]
+      calc
+        (∑ x : V, (G.degree x - 9) * (G.degree x - 9)) =
+            ∑ x : V, (G.degree x - 9) := by
+              apply Finset.sum_congr rfl
+              intro x _
+              exact hpoint x
+        _ = 3 := hexcess
+    rw [hcard, hexcess, hsquares] at hglobal
+    dsimp [D]
+    omega
+  have hDApartition :
+      D.edgeFinset.card = A.edgeFinset.card + T.edgeFinset.card := by
+    have heq : D.edgeFinset = A.edgeFinset ∪ T.edgeFinset := by
+      ext e
+      simp [D, A, T, secondOrderDefectGraph]
+    have hdisj : Disjoint A.edgeFinset T.edgeFinset := by
+      rw [Finset.disjoint_left]
+      intro e heA heT
+      simp only [SimpleGraph.mem_edgeFinset] at heA heT
+      rcases e with ⟨x, y⟩
+      exact ((mem_antipodalNeighbors G x y).mp
+        ((antipodalGraph_adj G x y).mp heA)).2.1
+        (((mem_triangleFreeNeighbors G x y).mp
+          ((triangleFreeEdgeGraph_adj G x y).mp heT)).1)
+    rw [heq, Finset.card_union_of_disjoint hdisj]
+  refine ⟨?_, ?_⟩
+  · simpa [T] using hTdvd
+  · rcases hTdvd with ⟨t, ht⟩
+    refine ⟨99 - t, ?_⟩
+    rw [hDedges] at hDApartition
+    rw [ht] at hDApartition
+    dsimp [A, T, D] at hDApartition ⊢
+    omega
+
 end
 
 end Erdos85
@@ -844,3 +959,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_trianglePair_common_binOne_forces_antipodal
+#print axioms Erdos85.squareOrderNine_threeHigh_colored_defect_edge_card_dvd_three
