@@ -218,3 +218,39 @@ spectral-moment routes cannot distinguish the classified steps.  A terminal
 must use the entrywise `0/1` placement of `M^T x` or the nonlinear exterior
 codegree constraints; simply transferring the cycle spectrum cannot select
 or exclude `t`.
+
+## Why every individual exterior row passes Hall
+
+The first entrywise necessary condition also holds automatically.  For an
+outside trace `r={u,v}`, the equation `HM+MK=J` says that the `K`-neighbors
+of `r`, viewed as edges of the trace graph `F`, must form a perfect matching
+on
+
+```text
+C minus (N_H(u) union N_H(v)).
+```
+
+Every trace joins opposite sides of the alternating bipartition.  The two
+neighbors of `u` in `H` lie on one shore and the two neighbors of `v` lie on
+the other.  After deleting them, the eligible graph is therefore balanced
+with `m=q-2` vertices on each shore.  The original trace graph `F` is
+`(q-2)`-regular, and deletion removes at most two neighbors of any retained
+vertex, so the eligible graph has minimum degree at least
+
+```text
+q-4 = m-2 >= m/2                 (q >= 8).
+```
+
+A balanced bipartite graph with minimum degree at least `m/2` has a perfect
+matching: for a shore subset of size at most `m/2`, minimum degree proves
+Hall directly; for a larger subset, any vertex outside its neighborhood
+would have all its at least `m/2` neighbors in a complement of size less than
+`m/2`.  Hence Hall holds for every trace, uniformly in the cyclic step.
+
+The reproducible checker `six_long_local_matching_audit.py` confirms this
+for every admissible step at `q=8,16`, and through step 27 at `q=32`, but the
+argument above is general and does not rely on the audit.  Thus neither a
+single-row exact-cover obstruction nor local Hall deficiency can eliminate
+the survivor.  The remaining problem is genuinely simultaneous: choose the
+row matchings mutually so that exterior adjacency is symmetric and all
+disjoint-trace codegrees are at most one.
