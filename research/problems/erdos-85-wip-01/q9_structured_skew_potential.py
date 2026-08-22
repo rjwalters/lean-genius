@@ -56,6 +56,25 @@ def feature_index() -> dict[tuple[int, int, int], int]:
 FEATURES = feature_index()
 
 
+def coefficient_bounds() -> list[tuple[float, float]]:
+    """Use the Farkas sign restriction on tagged incoming-cap prices."""
+    inverse = {i: key for key, i in FEATURES.items()}
+    return [
+        (0, 1) if isinstance(inverse[i], tuple)
+        and inverse[i] and inverse[i][0] == "mu" else (-1, 1)
+        for i in range(len(FEATURES))
+    ]
+
+
+def sparse_coefficient_bounds() -> list[tuple[float | None, float | None]]:
+    inverse = {i: key for key, i in FEATURES.items()}
+    return [
+        (0, None) if isinstance(inverse[i], tuple)
+        and inverse[i] and inverse[i][0] == "mu" else (None, None)
+        for i in range(len(FEATURES))
+    ]
+
+
 def edge_vector(types: list[int], blocks: list[set[int]], u: int,
                 v: int) -> np.ndarray:
     answer = np.zeros(len(FEATURES))
@@ -110,6 +129,30 @@ def refine_features(instances: list[dict], mode: str) -> None:
     conflict at a selected U1 label.
     """
     global FEATURES
+    if mode == "farkas-curl":
+        selected_labels = sorted({b for data in instances
+                                  for b in data["selected"]})
+        keys = ([('alpha', t) for t in range(N)]
+                + [('mu', t, b) for t in range(N)
+                   for b in selected_labels])
+        FEATURES = {key: i for i, key in enumerate(keys)}
+        for data in instances:
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                own_support = data["blocks"][t] & data["selected"]
+                for j, u in enumerate(data["candidates"][t]):
+                    vector = np.zeros(len(FEATURES))
+                    vector[FEATURES[('alpha', t)]] += 1
+                    vector[FEATURES[('alpha', u)]] -= 1
+                    for b in data["labels"][t][j]:
+                        vector[FEATURES[('mu', t, b)]] += 1
+                    for b in own_support:
+                        vector[FEATURES[('mu', u, b)]] -= 1
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
     if mode == "row-fiber-curl":
         selected_labels = sorted({b for data in instances
                                   for row in data["labels"] for support in row
@@ -378,7 +421,7 @@ def fit(instances: list[dict], max_rounds: int) -> tuple[str, float, np.ndarray,
         c[z_index] = 1
         result = linprog(
             c, A_ub=aub.tocsr(), b_ub=bub,
-            bounds=[(-1, 1)] * nf + [(None, None)] * (nr + 1),
+            bounds=coefficient_bounds() + [(None, None)] * (nr + 1),
             method="highs",
         )
         if not result.success:
@@ -438,7 +481,8 @@ def fit_sparse(instances: list[dict], max_rounds: int) -> tuple[str, float, np.n
         objective = np.r_[np.zeros(abs_start), np.ones(nf)]
         result = linprog(
             objective, A_ub=aub.tocsr(), b_ub=bub,
-            bounds=[(None, None)] * abs_start + [(0, None)] * nf,
+            bounds=(sparse_coefficient_bounds()
+                    + [(None, None)] * nr + [(0, None)] * nf),
             method="highs",
         )
         if result.status == 2:
@@ -482,7 +526,8 @@ def main() -> int:
                                                 "collision-differences",
                                                 "gradient-collisions",
                                                 "free-gradient",
-                                                "row-fiber-curl"),
+                                                "row-fiber-curl",
+                                                "farkas-curl"),
                         default="basic")
     args = parser.parse_args()
     data = []

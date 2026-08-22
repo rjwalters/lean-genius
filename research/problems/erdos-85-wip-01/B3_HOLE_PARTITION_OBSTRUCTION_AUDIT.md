@@ -635,6 +635,19 @@ fit is evidence that the cap curl, rather than the degree gradient, carries
 the sampled signal; the exact completeness statement remains (12m)--(12n),
 where Farkas requires `mu>=0` and may use `alpha`.
 
+Imposing exactly those signs and including `alpha` also succeeds
+numerically, as completeness predicts.  Mode `--features farkas-curl` gives
+
+```text
+branch 3: -4.46896933, -6.80267476, -3.94440060,
+branch 4: -5.37158807, -20.2324231, -4.58449430.
+```
+
+These are direct nonnegative-cap-price certificates of (12m), not fits in a
+larger unsigned feature class.  They verify the sign convention and leave a
+sharper uniform target: derive `mu>=0` and `alpha` from the mixed flag counts
+in (12k)--(12l).
+
 The smallest invariant ansatz for `W` can also be eliminated exactly on the
 sampled designs.  Normalize the selected colors as low/high and give a row
 one of five types: regular triple, exceptional hole, pair missing low, pair
