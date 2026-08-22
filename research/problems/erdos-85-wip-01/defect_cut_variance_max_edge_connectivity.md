@@ -296,3 +296,35 @@ Equivalently, the q-neighbor occupancy of the closed D-star has exactly
 `q/2` empty and `q/2` double cells, with every other cell occupied once.
 If this balanced simple-occupancy pattern fails, the even cut has size at
 least `q+2`.  No contradiction to the balanced pattern is currently known.
+
+The balanced pattern cannot occur at every vertex.  Define the nonnegative
+integer excess
+
+```text
+e_x = (|delta_D(N_D[x])| - q) / 2.
+```
+
+The number `t_x` of D-triangles through `x` is
+
+```text
+t_x = choose(q-1,2) - q/2 - e_x.
+```
+
+Since `sum_x t_x` is three times the number of D-triangles, reduction modulo
+three (and `3` does not divide binary q) gives
+
+```text
+sum_x e_x = q  (mod 3).                       (14)
+```
+
+In particular, some row has cut energy strictly greater than q.  More
+quantitatively, (9) and (14) sharpen (10) to
+
+```text
+||E||_F^2 >= q^3 + 2,  if q = 1 (mod 3),
+||E||_F^2 >= q^3 + 4,  if q = 2 (mod 3).      (15)
+```
+
+For `q=2^k`, these are respectively the even-k and odd-k cases.  This strict
+global residue still does not control how much E-energy lies in certified
+residual spectral sectors.
