@@ -995,6 +995,83 @@ theorem squareOrderNine_threeHigh_secondProfile_paired_hole_color_agreement
   refine ⟨hpoint, ?_⟩
   rw [← Finset.card_biUnion hpair, hunion]
 
+/-- In each high color, the two resolutions share six rows, plus one exactly
+when their missing-row selectors agree in that color. -/
+theorem squareOrderNine_threeHigh_secondProfile_paired_color_shared_rows
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x) :
+    let H := squareOrderHighVertices G 9
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    let Ey := D.neighborFinset y ∩ U1
+    let Ez := D.neighborFinset z ∩ U1
+    let I := Ey ∩ Ez
+    let color := fun a => G.neighborFinset a ∩ U1
+    ∀ a ∈ H,
+      ((color a) \ (Ey ∪ Ez)).card = 6 + (I ∩ color a).card := by
+  classical
+  dsimp only
+  let H := squareOrderHighVertices G 9
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let Ey := D.neighborFinset y ∩ U1
+  let Ez := D.neighborFinset z ∩ U1
+  let I := Ey ∩ Ez
+  let color := fun a => G.neighborFinset a ∩ U1
+  have hagree :=
+    squareOrderNine_threeHigh_secondProfile_paired_hole_color_agreement
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hz
+  dsimp only at hagree
+  have hcolors :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_high_fiber_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcolors
+  intro a ha
+  let C := color a
+  let A := Ey ∩ C
+  let Z := Ez ∩ C
+  let J := I ∩ C
+  have hpoint := hagree.1 a ha
+  have hA : A.card = 1 := hpoint.1
+  have hZ : Z.card = 1 := hpoint.2.1
+  have hC : C.card = 8 := hcolors.2.1 a ha
+  have hAZinter : A ∩ Z = J := by
+    ext b
+    simp only [A, Z, J, I, Finset.mem_inter]
+    tauto
+  have hCU : C ∩ (Ey ∪ Ez) = A ∪ Z := by
+    ext b
+    simp only [A, Z, Finset.mem_inter, Finset.mem_union]
+    tauto
+  have hUnionCard : (A ∪ Z).card = 2 - J.card := by
+    rw [Finset.card_union, hA, hZ, hAZinter]
+  have hRemoved : ((Ey ∪ Ez) ∩ C).card = 2 - J.card := by
+    rw [Finset.inter_comm, hCU, hUnionCard]
+  change (C \ (Ey ∪ Ez)).card = 6 + J.card
+  rw [Finset.card_sdiff, hC, hRemoved]
+  have hJle : J.card ≤ 1 := hpoint.2.2
+  omega
+
 end
 
 end Erdos85
@@ -1011,3 +1088,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_puncture_blocks_rainbow
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_puncture_hole_rainbow
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_hole_color_agreement
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_color_shared_rows
