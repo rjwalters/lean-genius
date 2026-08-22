@@ -3083,3 +3083,61 @@ color (apart from the at most two endpoint owners), and the once-paid global
 collision bound (179) applies to a large simultaneous family.  Equation
 (186) is the clean-shortage versus target-capacity tradeoff to combine with
 the monotone-transport collision statistic.
+
+## 56. Full clean core with variable endpoint demand
+
+Endpoint neutrality is needed for the uniform two-or-zero alternative
+(161), but not for the assignment and capacity arguments.  Let `C_P` be the
+set of **all** `P`-clean third colors, including either boundary owner when
+it is clean.  For `d in C_P` and `x in U`, define its vertical demand
+
+```text
+v_xd := 2 - a_xd - 2b_xd
+      = sum_g tau_xdg  in {0,1,2}.                     (187)
+```
+
+At internal roots `a_xd=0`; at an endpoint, `a_xd=1` only when `d` is that
+side's boundary owner, in which case `v_xd=1` by (159).  The port bijection
+(60) assigns the `v_xd` incident vertical edges to distinct members of the
+clean fiber `Y_d(x)`.  Thus the capacity system of Sections 48--49 extends
+verbatim with a one-port demand allowed at those exceptional endpoints.
+
+Put
+
+```text
+N_P^+ := sum_(d in C_P, x in U) v_xd,
+T_+   := {x in U : some d in C_P has v_xd > 0},
+Z_P^+ := union of all targets of these demands.
+```
+
+The same-root C4 exclusion and the cross degree two of every target give
+global target multiplicity at most two.  Repeated targets inject into
+distance-at-least-three pairs of `T_+`.  Hence
+
+```text
+|Z_P^+| >= N_P^+ - a(T_+),
+|Z_P^+| >= ceil(N_P^+/2).                              (188)
+```
+
+Every target still lies in the ambient port pool (182), so
+
+```text
+N_P^+
+  <= m(q-2) - A_ext(U) + a(T_+)
+  <= m(q-2) - ell - h_P + a(T_+).                     (189)
+```
+
+Transpose symmetry also enlarges: a triangle whose two exterior colors lie
+in `C_P` gives reciprocal directed assignments whether their demands are one
+or two.  Therefore every antisymmetric weight cancels on the full clean
+induced core.  The remaining target colors are only the `h_P` nonclean third
+colors and the run owner `e`; the latter has vertical degree zero internally
+and contributes at most one assignment at each boundary root.  Relative to
+(175), the two boundary-owner colors have been absorbed into the clean core
+whenever possible.
+
+This variable-demand formulation is the natural primal system for a Hall or
+Farkas argument.  The endpoint-neutral subsystem remains useful when a
+uniform two-demand row is required, but the deterministic target-capacity
+and transpose-cancellation statements lose nothing by working with all
+clean colors.
