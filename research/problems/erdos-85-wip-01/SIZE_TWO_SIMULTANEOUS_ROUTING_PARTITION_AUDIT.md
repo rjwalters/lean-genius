@@ -2905,9 +2905,10 @@ plus at most two owner-e boundary assignments.          (175)
 Equations (173)--(175) turn the desired global conservation into a boundary
 problem: the large endpoint-neutral clean core cancels exactly by transpose,
 and only a bounded exceptional-color interface remains.  This is the same
-primal/transpose mechanism as the complete Farkas curl (12m)--(12n), now
-derived directly from the simultaneous rooted triangles rather than posited
-as a price ansatz.
+primal/transpose mechanism as the derived complete Farkas normal form
+(12m)--(12n); here the clean-core cancellation itself is obtained directly
+from the simultaneous rooted triangles, without yet constructing a boundary
+price.
 
 ## 52. The exceptional boundary is even at every root
 
