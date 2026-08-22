@@ -1636,6 +1636,193 @@ theorem squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
       intro w hw
       exact hFcard w hw
     _ = 15 := by simp [hWcard]
+
+/-- Complete mixed column law.  For a fixed U1 point, the 47 ordinary rows
+split into defect, residual-B0-resolved, and U1-core-resolved cells.  There
+are always fifteen core-resolved cells; removing the five total B0 defects
+shows that the residual count is `27` plus the number of special B0 defects. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hb : b ∈ squareOrderNineLowIncidenceBin G 1 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    let A := fun t => (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+    let C := fun t => (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+    let defectRows := T.filter fun t => D.Adj t b
+    let residualRows := T.filter fun t => (A t).Nonempty
+    let coreRows := T.filter fun t => (C t).Nonempty
+    let specialDefects := (D.neighborFinset b ∩ S).card
+    defectRows.card + specialDefects = 5 ∧ coreRows.card = 15 ∧
+      residualRows.card = 27 + specialDefects := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let A := fun t => (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+  let C := fun t => (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+  let defectRows := T.filter fun t => D.Adj t b
+  let residualRows := T.filter fun t => (A t).Nonempty
+  let coreRows := T.filter fun t => (C t).Nonempty
+  let specialDefects := (D.neighborFinset b ∩ S).card
+  have hbParts := Finset.mem_sdiff.mp hb
+  have hTcard : T.card = 47 := by
+    have hSsub : S ⊆ B 0 := Finset.inter_subset_right
+    have hB0card : (B 0).card = 50 :=
+      squareOrderNine_threeHigh_secondProfile_binZero_card
+        G hcard hp hhigh hc3
+    have hcensus :=
+      squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+    dsimp only at hcensus
+    have hScard : S.card = 3 := hcensus.2.2
+    have hinter : S ∩ B 0 = S := Finset.inter_eq_left.mpr hSsub
+    rw [Finset.card_sdiff, hinter, hB0card, hScard]
+  have hdefectEq : defectRows = D.neighborFinset b ∩ T := by
+    ext t
+    constructor
+    · intro ht
+      have htParts := Finset.mem_filter.mp ht
+      exact Finset.mem_inter.mpr ⟨
+        (D.mem_neighborFinset b t).mpr ((D.adj_comm t b).mp htParts.2),
+        htParts.1⟩
+    · intro ht
+      have htParts := Finset.mem_inter.mp ht
+      exact Finset.mem_filter.mpr ⟨htParts.2,
+        (D.adj_comm b t).mp ((D.mem_neighborFinset b t).mp htParts.1)⟩
+  have hB0split : B 0 = S ∪ T := by
+    ext t
+    simp only [S, T, Finset.mem_union, Finset.mem_inter, Finset.mem_sdiff]
+    constructor
+    · intro htB
+      by_cases htS : t ∈ G.neighborFinset x ∩ B 0
+      · exact Or.inl (Finset.mem_inter.mp htS)
+      · exact Or.inr ⟨htB, fun h => htS (Finset.mem_inter.mpr h)⟩
+    · rintro (⟨_htN, htB⟩ | ⟨htB, _htNotS⟩) <;> exact htB
+  have hST : Disjoint S T := by
+    rw [Finset.disjoint_left]
+    intro t htS htT
+    exact (Finset.mem_sdiff.mp htT).2 htS
+  have hdefectCount : defectRows.card + specialDefects = 5 := by
+    have hbtype :=
+      squareOrderNine_threeHigh_secondProfile_binOne_defect_neighbors
+        G hfree hmin hcover hcard hp hhigh hc2 hc4 hbParts.1
+    dsimp only at hbtype
+    have hsplit : D.neighborFinset b ∩ B 0 =
+        (D.neighborFinset b ∩ S) ∪ (D.neighborFinset b ∩ T) := by
+      rw [hB0split, Finset.inter_union_distrib_left]
+    have hcards := congrArg Finset.card hsplit
+    rw [Finset.card_union_of_disjoint
+      (hST.mono Finset.inter_subset_right Finset.inter_subset_right)] at hcards
+    rw [hbtype.1] at hcards
+    rw [hdefectEq]
+    omega
+  have hcoreCount : coreRows.card = 15 :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hb
+  have hDR : Disjoint defectRows residualRows := by
+    rw [Finset.disjoint_left]
+    intro t htD htR
+    have htDParts := Finset.mem_filter.mp htD
+    have htRParts := Finset.mem_filter.mp htR
+    have hzero :=
+      squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx htDParts.1 hb
+    dsimp only at hzero
+    have hAempty := Finset.card_eq_zero.mp (hzero.mp htDParts.2).1
+    have hbad : (∅ : Finset V).Nonempty := hAempty ▸ htRParts.2
+    simpa using hbad
+  have hDC : Disjoint defectRows coreRows := by
+    rw [Finset.disjoint_left]
+    intro t htD htC
+    have htDParts := Finset.mem_filter.mp htD
+    have htCParts := Finset.mem_filter.mp htC
+    have hzero :=
+      squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx htDParts.1 hb
+    dsimp only at hzero
+    have hCempty := Finset.card_eq_zero.mp (hzero.mp htDParts.2).2
+    have hbad : (∅ : Finset V).Nonempty := hCempty ▸ htCParts.2
+    simpa using hbad
+  have hRC : Disjoint residualRows coreRows := by
+    rw [Finset.disjoint_left]
+    intro t htR htC
+    have htRParts := Finset.mem_filter.mp htR
+    have htCParts := Finset.mem_filter.mp htC
+    have hthree :=
+      squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx htRParts.1 hb
+    dsimp only at hthree
+    rcases hthree with hD | hA | hC
+    · have hAempty := Finset.card_eq_zero.mp hD.2.1
+      have hbad : (∅ : Finset V).Nonempty := hAempty ▸ htRParts.2
+      simpa using hbad
+    · have hCempty := Finset.card_eq_zero.mp hA.2.2
+      have hbad : (∅ : Finset V).Nonempty := hCempty ▸ htCParts.2
+      simpa using hbad
+    · have hAempty := Finset.card_eq_zero.mp hC.2.1
+      have hbad : (∅ : Finset V).Nonempty := hAempty ▸ htRParts.2
+      simpa using hbad
+  have hpartition : T = (defectRows ∪ residualRows) ∪ coreRows := by
+    ext t
+    constructor
+    · intro htT
+      have hthree :=
+        squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
+          G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx htT hb
+      dsimp only at hthree
+      rcases hthree with hDcase | hAcase | hCcase
+      · exact Finset.mem_union_left _ (Finset.mem_union_left _
+          (Finset.mem_filter.mpr ⟨htT, hDcase.1⟩))
+      · have hpos : 0 < (A t).card := by
+          rw [hAcase.2.1]
+          norm_num
+        exact Finset.mem_union_left _ (Finset.mem_union_right _
+          (Finset.mem_filter.mpr ⟨htT, Finset.card_pos.mp hpos⟩))
+      · have hpos : 0 < (C t).card := by
+          rw [hCcase.2.2]
+          norm_num
+        exact Finset.mem_union_right _
+          (Finset.mem_filter.mpr ⟨htT, Finset.card_pos.mp hpos⟩)
+    · intro ht
+      rcases Finset.mem_union.mp ht with htDR | htC
+      · rcases Finset.mem_union.mp htDR with htD | htR
+        · exact (Finset.mem_filter.mp htD).1
+        · exact (Finset.mem_filter.mp htR).1
+      · exact (Finset.mem_filter.mp htC).1
+  have hDRC : Disjoint (defectRows ∪ residualRows) coreRows := by
+    rw [Finset.disjoint_left]
+    intro t htDR htC
+    rcases Finset.mem_union.mp htDR with htD | htR
+    · exact (Finset.disjoint_left.mp hDC) htD htC
+    · exact (Finset.disjoint_left.mp hRC) htR htC
+  have hcards := congrArg Finset.card hpartition
+  rw [Finset.card_union_of_disjoint hDRC,
+    Finset.card_union_of_disjoint hDR,
+    hTcard, hcoreCount] at hcards
+  have hresidualCount : residualRows.card = 27 + specialDefects := by omega
+  exact ⟨hdefectCount, hcoreCount, hresidualCount⟩
 end
 
 end Erdos85
@@ -1657,4 +1844,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
 #print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
