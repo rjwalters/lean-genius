@@ -565,6 +565,41 @@ whose omitted points have multiplicities
 (m-1,m-1,1) at (alpha,beta,gamma).             (23)
 ```
 
+The three poles are also an explicit D-vertex separator for this branch.
+Put `W={alpha,beta,gamma}`.  All D-edges of the original cut meet `W`, so
+`D-W` separates `S\W` from `V\S`.  Degree counting gives
+
+```text
+|delta_D(S\W)| = 2(q-1-e_D(W)).                (24)
+```
+
+The shore `S\W` has residue `q-2` modulo q, and (2) therefore makes the
+right side at least `2q-4`; hence `e_D(W)<=1`.  This is sharp from the
+incidence description: `alpha,gamma` have common A-neighbor `a`, and
+`beta,gamma` have common A-neighbor `b`, so neither pair is a D-edge.  Only
+`alpha,beta` can be a D-edge.
+
+If it is, (24) attains equality `2q-4`, and equality in the integer variance
+bound says
+
+```text
+A 1_W = 1_R + 1_K,       |K|=2q,              (25)
+```
+
+where `K intersect R={a,b}`.  If `alpha,beta` is not a D-edge, its unique
+common A-neighbor `c` lies outside `R`, the cut is `2q-2`, and the analogous
+near-equality profile is
+
+```text
+A 1_W = 1_R + 1_K + 1_c,
+|K|=2q-1, c in K, K intersect R={a,b}.         (26)
+```
+
+Equations (25)--(26) exactly restate the three pairwise pole intersections;
+they do not exclude the separator.  Thus eliminating the triangle-free
+minimum-cut branch is at least as strong as proving 4-vertex-connectivity
+for D, beyond the currently proved 2-vertex-connectivity.
+
 This is the exact nonlinear filler problem left by the triangle-free
 minimum-cut branch.  The available degree and pair-capacity counts fit
 inside the two wings and `Z`; no repeated common neighbor or D-disconnection
