@@ -1008,6 +1008,28 @@ m_c=2 implies r_X=0.                          (B17W)
 Thus a separator-located exceptional point has an extremely lopsided pair
 of wings, while a Y-located one has at most one boundary edge.
 
+The Y-location also carries a near-complete transversal.  If `c in Y`,
+then every `x in X` is a D-nonneighbor of `c`, because `X,Y` are different
+components of `D-W`.  Let `psi(x)` be their unique common A-neighbor.
+Distinct `x,x' in X` have disjoint A-neighborhoods by (B11), so the centers
+are distinct.  Hence
+
+```text
+psi : X --> N_A(c)
+```
+
+is injective, with image size `q-2`; exactly two of the q neighbors of `c`
+are not used as centers for X.  Moreover, for the matching `phi` in (B17),
+
+```text
+x in K  iff  phi(psi(x))=x.                  (B17Y')
+```
+
+Indeed `psi(x)` is adjacent to `c`; its only other K-neighbor is
+`phi(psi(x))`, so it equals `x` precisely when `x in K`.  Thus the small
+set `K intersect X` is exactly the fixed-point locus where the exceptional
+matching lands back on the clique point whose cell contains its center.
+
 A partial version holds for every `a`.  The point `c` has `a` neighbors in
 `X` and `q-a` in `Y`.  Each of the latter has exactly two K-neighbors by
 (B6), so deleting `c` again gives an injection
