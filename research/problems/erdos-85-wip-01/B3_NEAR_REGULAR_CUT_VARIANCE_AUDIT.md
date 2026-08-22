@@ -179,6 +179,57 @@ not the missing terminal.  The exact integer enumeration is independently
 reproducible with `q9_near_regular_cut_components.py`; it checks both the
 order list and all eleven assignment counts, without enumerating graphs.
 
+## Localization of the bin-one two-factor
+
+The Lean theorem
+`squareOrderNine_threeHigh_secondProfile_binOne_defect_twoRegular` says that
+the 27 bin-one vertices induce a two-regular graph in `D`.  Its three
+nine-point high-root color classes are independent by
+`squareOrderNine_threeHigh_secondProfile_binOne_color_edge_ledger`.  Hence the
+bin-one vertices lying in any `D0`-component induce a disjoint union of whole
+cycles.
+
+This localizes the color vector.  Let `x` be the unique bin-three vertex.  If
+a component `S` does not contain `x`, its three bin-one color counts equal
+`beta(S)`.  If `x` belongs to `S`, then `x` is adjacent in `A` to all three
+high roots, and those counts equal
+
+```text
+beta(S) - (1,1,1).                              (7)
+```
+
+For bin-one color counts `(a,b,c)`, two-regularity and color independence
+force the numbers of edges between the three color pairs to be
+
+```text
+e_ab = a+b-c,   e_ac = a+c-b,   e_bc = b+c-a.  (8)
+```
+
+They must be nonnegative and cannot exceed the simple-graph capacities
+`ab`, `ac`, and `bc`; a nonempty bin-one portion also contains at least three
+vertices.  Applying only these necessary conditions gives the
+following refinement.  In the eleven-row display above, the numbers of
+surviving color-vector assignments are respectively
+
+```text
+7, 10, 6, 3, 1, 3, 27, 7, 9, 6, 21.
+```
+
+Counting also the choice of which component contains `x` gives respectively
+
+```text
+8, 17, 12, 6, 2, 6, 33, 12, 18, 18, 21.
+```
+
+There are two useful location conclusions.  In `[9,9,9,51]`, the bin-three
+vertex must lie in the order-51 component.  In `[9,26,43]`, it cannot lie in
+the order-nine component.  More locally, the order-nine color type
+`(0,1,1)` is impossible altogether: without `x` it would require a simple
+two-regular graph on two vertices, while with `x` equation (7) is negative.
+The cycle conditions still leave all eleven order rows, so this is a strict
+profile and location refinement rather than a disconnectedness
+contradiction.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
@@ -189,9 +240,9 @@ consumer must choose a location-sensitive shore whose defect boundary is
 already controlled by the row-cover/transversal structure; applying only
 whole-bin totals reproduces known quotient mass rather than a contradiction.
 
-The component-order list is stronger: it is a finite necessary classification
-derived symbolically from the exact identity.  It is not yet sufficient to
-prove that `D0` is connected or to eliminate any of the eleven component
-multisets.
+The component-order list and two-factor localization together give a finite
+necessary classification derived symbolically from exact graph identities.
+They are not yet sufficient to prove that `D0` is connected or to eliminate
+any of the eleven component multisets.
 
 No Lean theorem or nonexistence conclusion is claimed in this audit.

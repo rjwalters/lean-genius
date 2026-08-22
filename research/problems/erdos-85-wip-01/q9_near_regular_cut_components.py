@@ -73,6 +73,47 @@ def color_assignment_count(
     )
 
 
+def tripartite_two_factor_necessary(color_counts: tuple[int, int, int]) -> bool:
+    """Necessary conditions for a simple 2-factor with independent colors."""
+    a, b, c = color_counts
+    if min(color_counts) < 0:
+        return False
+    if a + b + c == 0:
+        return True
+    if a + b + c < 3:
+        return False
+    edge_counts = (a + b - c, a + c - b, b + c - a)
+    capacities = (a * b, a * c, b * c)
+    return all(0 <= edges <= capacity for edges, capacity in zip(edge_counts, capacities))
+
+
+def localized_assignment_counts(
+    partition: tuple[int, ...], types: dict[int, list[tuple[int, int, int]]]
+) -> tuple[int, int, set[int]]:
+    """Count assignments/placements surviving B1-cycle localization.
+
+    The distinguished component index is the component containing the unique
+    B3 vertex.  Its B1 color counts are beta - (1,1,1); every other
+    component's B1 color counts are beta.
+    """
+    assignments = set()
+    placements = []
+    owner_orders = set()
+    for assignment in product(*(types[order] for order in partition)):
+        if tuple(map(sum, zip(*assignment))) != TARGET_BETA:
+            continue
+        for owner in range(len(partition)):
+            color_counts = [
+                tuple(value - (index == owner) for value in beta)
+                for index, beta in enumerate(assignment)
+            ]
+            if all(tripartite_two_factor_necessary(counts) for counts in color_counts):
+                assignments.add(assignment)
+                placements.append((assignment, owner))
+                owner_orders.add(partition[owner])
+    return len(assignments), len(placements), owner_orders
+
+
 def main() -> None:
     types = admissible_types()
     orders = sorted(types)
@@ -98,9 +139,31 @@ def main() -> None:
     counts = [color_assignment_count(parts, types) for parts in partitions]
     assert counts == [39, 39, 10, 9, 10, 10, 6, 6, 3, 1, 3]
 
+    localized = [localized_assignment_counts(parts, types) for parts in partitions]
+    assert [entry[0] for entry in localized] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
+    assert [entry[1] for entry in localized] == [21, 33, 12, 18, 8, 17, 12, 18, 6, 2, 6]
+    assert [entry[2] for entry in localized] == [
+        {51},
+        {9, 60},
+        {9, 18, 51},
+        {26, 43},
+        {9, 69},
+        {18, 60},
+        {19, 59},
+        {26},
+        {26, 52},
+        {27, 51},
+        {35, 43},
+    ]
+
     print(f"verified component orders: {orders}")
-    for parts, count in zip(partitions, counts):
-        print(f"{parts}: color assignments={count}")
+    for parts, count, (assignment_count, placement_count, owner_orders) in zip(
+        partitions, counts, localized
+    ):
+        print(
+            f"{parts}: color assignments={count}, localized={assignment_count}, "
+            f"B3 placements={placement_count}, B3 component orders={sorted(owner_orders)}"
+        )
 
 
 if __name__ == "__main__":
