@@ -129,3 +129,49 @@ lambda(D) = q-1.
 These consequences are new constraints on a connected defect graph, but
 they do not yet exclude one.  Lean promotion should wait for a consumer, in
 accord with goal #24's math-before-certificates rule.
+
+## Equality case and a second cut
+
+Suppose a nontrivial minimum cut has size `q-1`.  After replacing its shore
+by its complement if necessary, write `|S|=qa+1`.  Equality in the integer
+variance bound gives a q-set `R` such that
+
+```text
+A 1_S = a 1 + 1_R.                            (5)
+```
+
+Put `d_u=|N_D(u)\S|` for `u in S`.  Comparing the singleton minimum cut
+with the cut of `S\{u}` shows
+
+```text
+d_u <= (q-1)/2                                (6)
+```
+
+for every `u in S`.  Applying `A` to (5) gives
+
+```text
+A 1_R - 1 = L_D 1_S.
+```
+
+Since its left side has entries at least `-1`, every outside vertex has at
+most one cut edge.  Thus the outside endpoints of the cut are `q-1`
+distinct vertices: an endpoint has no A-neighbor in `R`, every other outside
+vertex has one, and a vertex `u in S` has `1+d_u`.  If
+`c_v=|N_A(v) intersect R|`, C4-freeness and direct squaring give
+
+```text
+sum_v choose(c_v,2) = ((q-1) + sum_{u in S} d_u^2)/2,
+|delta_D(R)|        =  (q-1) + sum_{u in S} d_u^2.       (7)
+```
+
+If `R=N_A(v)` for some vertex `v`, then comparison with
+`A 1_R-1=L_D 1_{v}` shows that `1_S-1_{v}` lies in the kernel of `L_D`.
+Connectedness would make `S` a singleton or its complement.  Hence excluding
+a nontrivial minimum cut reduces to recognizing `R` as an A-neighborhood.
+
+An exact SAT audit at `q=4` found no counterexample to this recognition
+statement in any of the five normalized cases `|S intersect R|=0,...,4`,
+even without imposing connectedness of `D`.  This is finite external
+evidence only.  Equations (6)--(7) do not force recognition for general q:
+they bound the common-neighbor collision count but do not force its maximum
+`choose(q,2)`.  Super-edge-connectivity is therefore not claimed.
