@@ -2961,6 +2961,148 @@ theorem squareOrderNine_threeHigh_secondProfile_antipodal_fiber_eq_missing_rows
       (Finset.mem_inter.mpr ⟨hwb, (Finset.mem_inter.mp hwFParts.1).2⟩)
   exact Finset.eq_of_subset_of_card_le hsub (by rw [hAcard, hZcard])
 
+/-- Dual form of the unmarked-row transversal.  The ordinary targets in a
+special bin-zero row define pairwise-disjoint three-point blocks on the 24
+unmarked bin-one vertices.  Their union is exactly the set of rows which do
+not miss that special support. -/
+theorem squareOrderNine_threeHigh_secondProfile_special_support_triple_blocks
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := (G.neighborFinset y ∩ B 0) \ S
+    let Q := fun w => G.neighborFinset w ∩ U1
+    (∀ w ∈ F, (Q w).card = 3) ∧
+      (∀ w ∈ F, ∀ z ∈ F, w ≠ z → Disjoint (Q w) (Q z)) ∧
+      F.biUnion Q =
+        U1.filter fun b => (G.neighborFinset b ∩ F).card ≠ 0 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := (G.neighborFinset y ∩ B 0) \ S
+  let Q := fun w => G.neighborFinset w ∩ U1
+  have hyParts := Finset.mem_inter.mp hy
+  have hQcard : ∀ w ∈ F, (Q w).card = 3 := by
+    intro w hwF
+    have hwParts := Finset.mem_sdiff.mp hwF
+    have hwBase := Finset.mem_inter.mp hwParts.1
+    have hwNotAdjX : ¬ G.Adj w x := by
+      intro hwx
+      exact hwParts.2 (Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x w).mpr hwx.symm, hwBase.2⟩)
+    have hservice :=
+      squareOrderNine_threeHigh_secondProfile_binZero_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hwBase.2
+    have hservice3 : (G.neighborFinset w ∩ B 1).card = 3 := by
+      simpa [hwNotAdjX] using hservice
+    have heq : Q w = G.neighborFinset w ∩ B 1 := by
+      apply Finset.Subset.antisymm
+      · intro b hb
+        have hbParts := Finset.mem_inter.mp hb
+        exact Finset.mem_inter.mpr ⟨hbParts.1,
+          (Finset.mem_sdiff.mp hbParts.2).1⟩
+      · intro b hb
+        have hbParts := Finset.mem_inter.mp hb
+        refine Finset.mem_inter.mpr ⟨hbParts.1,
+          Finset.mem_sdiff.mpr ⟨hbParts.2, ?_⟩⟩
+        intro hbM
+        have hbMParts := Finset.mem_inter.mp hbM
+        have hxCommon : x ∈ G.neighborFinset y ∩ G.neighborFinset b :=
+          Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset y x).mpr
+              ((G.adj_comm x y).mp
+                ((G.mem_neighborFinset x y).mp hyParts.1)),
+            (G.mem_neighborFinset b x).mpr
+              ((G.adj_comm x b).mp
+                ((G.mem_neighborFinset x b).mp hbMParts.1))⟩
+        have hwCommon : w ∈ G.neighborFinset y ∩ G.neighborFinset b :=
+          Finset.mem_inter.mpr ⟨hwBase.1,
+            (G.mem_neighborFinset b w).mpr
+              ((G.adj_comm w b).mp
+                ((G.mem_neighborFinset w b).mp hbParts.1))⟩
+        have hyb : y ≠ b := by
+          intro h
+          subst b
+          have hky := (Finset.mem_filter.mp hyParts.2).2
+          have hkb := (Finset.mem_filter.mp hbMParts.2).2
+          omega
+        have hxw : x ≠ w := by
+          intro h
+          subst w
+          have hkx := (Finset.mem_filter.mp hx).2
+          have hkw := (Finset.mem_filter.mp hwBase.2).2
+          omega
+        have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree y b hyb
+        exact hxw (Finset.card_le_one.mp hle x hxCommon w hwCommon)
+    rw [heq, hservice3]
+  have hpair : ∀ w ∈ F, ∀ z ∈ F, w ≠ z → Disjoint (Q w) (Q z) := by
+    intro w hw z hz hwz
+    rw [Finset.disjoint_left]
+    intro b hbw hbz
+    have hwParts := Finset.mem_sdiff.mp hw
+    have hzParts := Finset.mem_sdiff.mp hz
+    have hbwParts := Finset.mem_inter.mp hbw
+    have hbzParts := Finset.mem_inter.mp hbz
+    have hyCommon : y ∈ G.neighborFinset w ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset w y).mpr
+          ((G.adj_comm y w).mp
+            ((G.mem_neighborFinset y w).mp
+              (Finset.mem_inter.mp hwParts.1).1)),
+        (G.mem_neighborFinset z y).mpr
+          ((G.adj_comm y z).mp
+            ((G.mem_neighborFinset y z).mp
+              (Finset.mem_inter.mp hzParts.1).1))⟩
+    have hbCommon : b ∈ G.neighborFinset w ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hbwParts.1, hbzParts.1⟩
+    have hyb : y ≠ b := by
+      intro h
+      subst b
+      have hky := (Finset.mem_filter.mp hyParts.2).2
+      have hkb := (Finset.mem_filter.mp
+        (Finset.mem_sdiff.mp hbwParts.2).1).2
+      omega
+    have hle := (not_containsC4_iff_forall_common_le_one G).mp hfree w z hwz
+    exact hyb (Finset.card_le_one.mp hle y hyCommon b hbCommon)
+  refine ⟨hQcard, hpair, ?_⟩
+  ext b
+  simp only [Finset.mem_biUnion, Finset.mem_filter]
+  constructor
+  · rintro ⟨w, hwF, hbw⟩
+    have hbwParts := Finset.mem_inter.mp hbw
+    refine ⟨hbwParts.2, ?_⟩
+    rw [Finset.card_ne_zero]
+    refine ⟨w, ?_⟩
+    exact Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset b w).mpr
+        ((G.adj_comm w b).mp
+          ((G.mem_neighborFinset w b).mp hbwParts.1)), hwF⟩
+  · rintro ⟨hbU1, hbNonzero⟩
+    rw [Finset.card_ne_zero] at hbNonzero
+    obtain ⟨w, hw⟩ := hbNonzero
+    have hwParts := Finset.mem_inter.mp hw
+    exact ⟨w, hwParts.2, Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset w b).mpr
+        ((G.adj_comm b w).mp
+          ((G.mem_neighborFinset b w).mp hwParts.1)), hbU1⟩⟩
+
 end
 
 end Erdos85
@@ -3000,3 +3142,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_special_support_ledger
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_special_support_equality
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_antipodal_fiber_eq_missing_rows
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_support_triple_blocks
