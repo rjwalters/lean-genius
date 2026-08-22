@@ -3366,6 +3366,92 @@ theorem squareOrderNine_threeHigh_secondProfile_unmarked_binOne_defect_edges
   rw [hdegreeSum] at hhand
   omega
 
+/-- The 24 unmarked bin-one vertices induce a cubic graph in the original
+graph, hence exactly 36 original edges.  Marked bin-one vertices have no
+bin-one neighbors, so deleting them loses no neighbor of an unmarked row. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let K := G.induce (↑U1 : Set V)
+    U1.card = 24 ∧ (∀ z : ↥(↑U1 : Set V), K.degree z = 3) ∧
+      K.edgeFinset.card = 36 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let K := G.induce (↑U1 : Set V)
+  have hmarked :=
+    squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hmarked
+  have hMsub : M ⊆ B 1 := Finset.inter_subset_right
+  have hU1card : U1.card = 24 := by
+    rw [Finset.card_sdiff_of_subset hMsub, hmarked.1, hmarked.2]
+  have hdegree : ∀ z : ↥(↑U1 : Set V), K.degree z = 3 := by
+    intro z
+    have hzU : z.1 ∈ U1 := z.2
+    have hzParts := Finset.mem_sdiff.mp hzU
+    have hzx : ¬ G.Adj z.1 x := by
+      intro hzx
+      exact hzParts.2 (Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset x z.1).mpr hzx.symm, hzParts.1⟩)
+    have hzdeg := squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hzParts.1
+    dsimp only at hzdeg
+    have hB1card : (G.neighborFinset z.1 ∩ B 1).card = 3 := by
+      simpa [hzx] using hzdeg.1
+    have heq : G.neighborFinset z.1 ∩ U1 = G.neighborFinset z.1 ∩ B 1 := by
+      apply Finset.Subset.antisymm
+      · intro w hw
+        have hwParts := Finset.mem_inter.mp hw
+        exact Finset.mem_inter.mpr ⟨hwParts.1,
+          (Finset.mem_sdiff.mp hwParts.2).1⟩
+      · intro w hw
+        have hwParts := Finset.mem_inter.mp hw
+        refine Finset.mem_inter.mpr ⟨hwParts.1,
+          Finset.mem_sdiff.mpr ⟨hwParts.2, ?_⟩⟩
+        intro hwM
+        have hwMParts := Finset.mem_inter.mp hwM
+        have hwx : G.Adj w x :=
+          (G.adj_comm x w).mp
+            ((G.mem_neighborFinset x w).mp hwMParts.1)
+        have hwdeg := squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
+          G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hwMParts.2
+        dsimp only at hwdeg
+        have hwzero : (G.neighborFinset w ∩ B 1).card = 0 := by
+          simpa [hwx] using hwdeg.1
+        have hzmem : z.1 ∈ G.neighborFinset w ∩ B 1 :=
+          Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset w z.1).mpr
+              ((G.adj_comm z.1 w).mp
+                ((G.mem_neighborFinset z.1 w).mp hwParts.1)), hzParts.1⟩
+        have hempty := Finset.card_eq_zero.mp hwzero
+        simpa [hempty] using hzmem
+    rw [degree_induce_finset_eq_card_inter, heq, hB1card]
+  have hdegreeSum : (∑ z : ↥(↑U1 : Set V), K.degree z) = 72 := by
+    simp_rw [hdegree]
+    simp [hU1card]
+  have hedges : K.edgeFinset.card = 36 := by
+    have hhand := K.sum_degrees_eq_twice_card_edges
+    rw [hdegreeSum] at hhand
+    omega
+  exact ⟨hU1card, hdegree, hedges⟩
+
 end
 
 end Erdos85
@@ -3408,3 +3494,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_support_triple_blocks
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_pair_matching
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_binOne_defect_edges
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_binOne_original_cubic
