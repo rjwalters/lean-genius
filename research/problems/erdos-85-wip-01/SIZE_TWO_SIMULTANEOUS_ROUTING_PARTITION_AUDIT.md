@@ -1308,3 +1308,58 @@ linear contradiction.  The next invariant must use a realizability
 constraint tying `t^d_ij` to the owner factors or internal cycle geometry in
 component `d`; otherwise it factors through the affine system (75) and sees
 only the already exhausted rank-one aggregate.
+
+## 21. The first owner-sensitive marked contraction
+
+The lowest-degree refinement which sees geometry inside a third routing
+component inserts its internal two-factor.  Retain the odd closed owner run
+`(C,Z)=(U_0,V_0)` and, for `d != c,e`, define
+
+```text
+h^d_0j := (R_dc C)^T A_d (R_de V_j)  in F_2.            (77)
+```
+
+This is the parity of internal `A_d` edges between the two incidence-boundary
+vectors (with an edge in their intersection counted twice and hence zero).
+Unlike `t^d_0j`, it depends on the marked cycle geometry inside component
+`d`.
+
+There is an exact four-color transfer law.  Apply `SRP(c,d)` to the vector
+`R_de V_j` and pair on the left with `C`.  Since the owner run is an entire
+internal `A_c` cycle,
+
+```text
+A_c C = 0.
+```
+
+Thus the `c`-endpoint term vanishes.  The right side also vanishes because
+`R_de V_j` has even weight.  In the exterior sum, the `f=e` term vanishes by
+`C^T R_ce=0`.  What remains is
+
+```text
+h^d_0j
+  = sum_(f != c,d,e) C^T R_cf R_fd R_de V_j  in F_2.    (78)
+```
+
+The same partition argument as before gives even margins:
+
+```text
+sum_j h^d_0j = 0,                                      (79)
+```
+
+because `sum_j R_de V_j = R_de 1_e = 0`.  But (78) no
+longer collapses to the rank-one law (72): it retains both the marked
+internal step `A_d` and, on the other side, the individual fourth routing
+color `f`.  Combinatorially, its right side counts parity of length-three
+routes
+
+```text
+C -- f -- d -- V_j
+```
+
+with the middle `d--V_j` leg constrained by the original `e` incidence.
+This is therefore the first contraction in the present chain which can in
+principle transport ownership information.  It is not yet a terminal: one
+must relate the four-color route parity in (78) back to owner-factor edges
+or triangles in `d`.  Equation (78) fixes the exact object that such a
+relation has to control.
