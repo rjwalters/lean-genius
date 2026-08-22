@@ -1245,6 +1245,35 @@ terminal, like the pure terminal below, has support at most `q`; (73) remains
 useful only as the earlier scalar route that did not exploit the same-type
 D-clique.
 
+The unbalanced mixed case also has an exact majority-defect identity.  Orient
+the shore so `d=a>0`, let the majority full family have size `f=u+2a`, and
+write `n_i=|{P in S:t_P^F=i}|`.  The first companion cut formula is now
+`deg_D(P,V setminus S)=(q t_P^F-2a)/2`; hence every occupied-shore point has
+positive majority replication.  Equation (58) sharpens the subcubic cap to
+`t_P^F<=2`, so
+
+```text
+n_1+n_2=s,       n_1+2n_2=qf,
+n_2=C(f,2)-e_D(F).
+```
+
+Using `2s=q^2+2a` and `f=u+2a` gives
+
+```text
+2e_D(F)+u=(q-f)^2.                                      (73b)
+```
+
+This is Lean-checked by `binarySquare_mixedMajority_defect_identity`.  In
+particular `f=q` would force `u=0`, contrary to mixedness, while the covering
+inequality `s<=qf` forces `f>q/2`.  Thus every unbalanced mixed survivor has
+
+```text
+q/2 < f <= q-1,       u <= (q-f)^2,       c=f+u<=q.      (73c)
+```
+
+The balanced mixed case retains the still stronger fact that both line types
+have replication at most one, so the whole exceptional support is a D-clique.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated

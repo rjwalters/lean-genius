@@ -241,6 +241,26 @@ theorem binarySquare_pureExceptional_defect_triple_identity
         _ = c * c := by rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hc)]
   nlinarith
 
+/-- Exact mixed analogue of the pure defect identity.  The majority family
+has size `f = u + 2a`; if its shore replication is one or two, eliminating
+the two replication classes yields `2e + u = (q-f)²`. -/
+theorem binarySquare_mixedMajority_defect_identity
+    {q f u a s n₁ n₂ e : ℕ} (hfq : f ≤ q)
+    (hsize : f = u + 2 * a)
+    (hshore : 2 * s = q * q + 2 * a)
+    (hclasses : n₁ + n₂ = s)
+    (hincidence : n₁ + 2 * n₂ = q * f)
+    (hpairs : 2 * n₂ + 2 * e = f * (f - 1)) :
+    2 * e + u = (q - f) * (q - f) := by
+  have hqsplit : q - f + f = q := Nat.sub_add_cancel hfq
+  have hfprod : f * (f - 1) + f = f * f := by
+    by_cases hf : f = 0
+    · simp [hf]
+    · calc
+        f * (f - 1) + f = f * ((f - 1) + 1) := by ring
+        _ = f * f := by rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hf)]
+  nlinarith
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -737,6 +757,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_pureLargeExceptional_impossible
 #print axioms Erdos85.binarySquare_pureExceptional_halfDegree_lt_card
 #print axioms Erdos85.binarySquare_pureExceptional_defect_triple_identity
+#print axioms Erdos85.binarySquare_mixedMajority_defect_identity
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.mixedExceptional_union_card_le_of_replicationAtMostOne
