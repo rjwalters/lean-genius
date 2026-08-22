@@ -987,6 +987,27 @@ Thus at the endpoint
 c in Y union W.                               (B17'')
 ```
 
+The two surviving locations have sharply bounded attachments.  If
+`c in Y`, then (B10), with no loop at `c`, gives
+
+```text
+deg_D(c,W) <= 1.                              (B17Y)
+```
+
+If `c in W`, write `m_c=deg_D(c,X)`.  The set in (B17') contains `c` itself
+and all `m_c` X-neighbors of `c`, while (B16) puts at most `3-r_X` K-points
+outside `Y`.  Therefore `1+m_c<=3-r_X`.  Minimality of the separator gives
+`m_c>=1`, so
+
+```text
+m_c in {1,2},
+deg_D(c,Y)=q-1-m_c in {q-2,q-3},
+m_c=2 implies r_X=0.                          (B17W)
+```
+
+Thus a separator-located exceptional point has an extremely lopsided pair
+of wings, while a Y-located one has at most one boundary edge.
+
 A partial version holds for every `a`.  The point `c` has `a` neighbors in
 `X` and `q-a` in `Y`.  Each of the latter has exactly two K-neighbors by
 (B6), so deleting `c` again gives an injection
