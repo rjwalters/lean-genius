@@ -2483,3 +2483,51 @@ The next possible parity input is therefore local: a mod-two label on rooted
 triangle edges whose path integral between `e_(i-1)` and `e_i` telescopes
 around the owner word.  Vertical-only rooted cycles must have zero integral
 for such a label to be well defined.
+
+## 44. The owner-change graph is Eulerian, so color potentials are blind
+
+Forget the internal vertices of the rooted paths `P_i` and retain only their
+endpoint owner colors.  For distinct exterior colors `e,d`, let `m_ed(C)`
+be the number of roots of `C` at which the incoming and outgoing edge owners
+are `e` and `d`.  These multiplicities form a loopless multigraph `Q_C` on
+the owner colors.  Every maximal nonempty run of color `e` in the cyclic
+edge word has two boundary roots, so
+
+```text
+deg_(Q_C)(e) = sum_(d != e) m_ed(C) is even.            (153)
+```
+
+Thus `Q_C` is Eulerian.  In particular, for every binary function `u` of
+the owner color,
+
+```text
+sum_(owner changes {e,d}) (u(e)+u(d)) = 0.             (154)
+```
+
+The same conclusion holds if a label on rooted triangle edges is merely the
+color coboundary `u(e)+u(d)`: its integral along `P_i` is
+`u(e_(i-1))+u(e_i)`, and the sum of these path integrals vanishes around
+the cyclic word.  Hence neither the owner-change multigraph nor a potential
+depending only on owner colors can detect that `|C|` is odd.  A closing
+cochain must retain at least the root, the actual port, or an owner-factor
+mark transported between components.
+
+There is nevertheless a forced odd local object.  If
+
+```text
+r_e(C) := number of edges of C owned by e,
+```
+
+then
+
+```text
+sum_e r_e(C) = |C| = 1  (mod 2).                       (155)
+```
+
+So some owner color has odd total run length.  Decomposing its edges into
+maximal cyclic runs shows that it has an odd number of odd-length runs
+(where a monochromatic `C` is the closed-run special case).  The mixed
+transport target can therefore be stated minimally: pair or rule out these
+odd owner paths using their two rooted transition paths.  Equation (154)
+shows why recording only the two endpoint colors cannot do so; the needed
+pairing must use the marked triangle/port data at the endpoints.
