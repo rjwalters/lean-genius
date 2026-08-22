@@ -1327,6 +1327,19 @@ core makes `D[C]=K_c`, so `|delta_D(C)|=c(q-c)`.  Consequently the endpoint
 contrary to the connected-D branch.  Hence every balanced mixed survivor
 already satisfies `c<=q-1`.
 
+There is no zero-boundary exceptional coincidence in the unbalanced case.
+Write `v=r-u` and `w=q-2r`; then `w>=2`, and (73f) splits as
+
+```text
+|delta_D(C)| = w(q-1)+v((q-1)-v) >= 2(q-1).               (73fa)
+```
+
+Indeed `v<=r-1<q-1`, so both summands are nonnegative.  The inequality is
+Lean-checked by `binarySquare_mixedExceptional_defectCut_lower`.  Thus the
+saturated case `u=r` minimizes the boundary at fixed r, with exact value
+`(q-2r)(q-1)`; connectedness is not being supplied by a hidden Pell-type
+exception.
+
 At the saturated unbalanced endpoint `c=q`, one also has `u=r`; every
 minority vertex then exhausts its entire D-neighborhood on `C setminus {X}`.
 Let `h=|C intersect S|`.  For a minority vertex in S, the number of its

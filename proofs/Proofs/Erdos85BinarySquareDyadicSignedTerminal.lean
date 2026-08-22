@@ -340,6 +340,22 @@ theorem binarySquare_saturatedMixed_exceptionalShore_card_dichotomy
   · rcases ht with rfl | rfl <;> omega
   · rcases ht with rfl | rfl <;> omega
 
+/-- The unbalanced mixed exceptional support always has a large positive
+defect boundary.  With `v=r-u` and `w=q-2r`, the exact cut identity splits
+as `delta = w(q-1) + v(q-1-v)`. -/
+theorem binarySquare_mixedExceptional_defectCut_lower
+    {q r u v w delta : ℕ} (hu : 1 ≤ u)
+    (hrv : r = u + v) (hqw : q = 2 * r + w) (hw : 2 ≤ w)
+    (hcut : delta + v * v = (q - 1) * (w + v)) :
+    2 * (q - 1) ≤ delta := by
+  have hvq : v ≤ q - 1 := by omega
+  have hvprod : v * v ≤ v * (q - 1) := Nat.mul_le_mul_left v hvq
+  have hsplit :
+      (q - 1) * (w + v) = w * (q - 1) + v * (q - 1) := by ring
+  have hwprod : 2 * (q - 1) ≤ w * (q - 1) :=
+    Nat.mul_le_mul_right (q - 1) hw
+  omega
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -841,6 +857,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedMajority_replication_profile
 #print axioms Erdos85.binarySquare_mixedExceptional_defectCut_identity
 #print axioms Erdos85.binarySquare_saturatedMixed_exceptionalShore_card_dichotomy
+#print axioms Erdos85.binarySquare_mixedExceptional_defectCut_lower
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.mixedExceptional_union_card_le_of_replicationAtMostOne
