@@ -1050,3 +1050,52 @@ with identity transport across horizontal edges and ambient-adjacency
 transport across vertical edges.  Any proof or countermodel for (57) should
 preserve (60)--(61); a bare odd-horizontal two-factor without this port
 resolution is not an admissible failure model.
+
+## 16. Exact local odd-holonomy countermodel
+
+The port resolution does **not** by itself force (57).  There is a completely
+explicit even-`q` local countermodel at `q=10`, with two shores `c,e` of order
+twenty.  Split each shore into blocks of orders nine and eleven.  On each
+pair of corresponding blocks, let the cross incidence be the standard
+bipartite cycle
+
+```text
+e_i -- c_i, c_(i+1).
+```
+
+Its two shore shadows are both the step-one cycle.  Choose the internal
+two-factors by the following cyclic steps:
+
+```text
+order 9 block:   A_c step 1,   A_e step 3;
+order 11 block:  A_c step 3,   A_e step 1.              (62)
+```
+
+The union of the two internal factors and the cross incidence is simple,
+four-regular, and C4-free (direct common-neighbor check gives maximum one).
+The endpoint owner intersections are
+
+```text
+p_ce=9,                         p_ec=11.                 (63)
+```
+
+There are no third-component/vertical edges in this local model.  On the
+order-nine block the source state graph is an all-horizontal `C9`; on the
+order-eleven block the reverse state graph is an all-horizontal `C11`.
+Every state still has its two distinct ambient ports, and the rooted budgets
+read `a=2,b=0` on the owned block and `a=0,b=1` on the opposite block.  Thus
+
+```text
+p_ce+p_ec=20=2q,
+```
+
+exactly as (48) requires when the three-color term is zero, while both
+directed parities are odd and the potential (57) fails.
+
+Scope is essential: `q=10` is not a binary power, and this is a single-pair
+model, not a realization of all five coupled routing colors or of an ambient
+square-order graph.  It proves only—and sharply—that C4-freeness, endpoint
+orthogonality, rooted budgets, and canonical port resolution do not kill odd
+holonomy.  The closing theorem must use the simultaneous reuse of the other
+cross blocks (and, in the target campaign, the binary-power hypothesis); no
+further invariant confined to one endpoint pair can suffice.
