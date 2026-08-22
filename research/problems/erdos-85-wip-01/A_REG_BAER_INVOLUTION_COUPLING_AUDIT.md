@@ -1460,6 +1460,47 @@ use how this locally feasible self-indexing extends to the remaining
 canonical `K/Omega` transport -- rather than attempting another internal
 path/cycle classification.
 
+The required extension has an exact local transversal profile.  Let
+`M=V setminus C` be the balanced line centers and take `w in M`.  Double
+count common neighbors of w with the majority centers.  A majority line is
+met exactly when its center is not D-adjacent to w, and its full neighborhood
+lies in S, so
+
+```text
+sum_(P in N_A(w) intersect S) t_P^F
+  = f-deg_D(w,F).                                         (73m)
+```
+
+The half-line `N_A(w)` contains `q/2` shore points, each of majority
+replication one or two.  If `b_w` counts its replication-two (pair) points
+and `p_w` its replication-one (private) points, (73m) becomes
+
+```text
+b_w+deg_D(w,F)=q/2-r,
+p_w=r+deg_D(w,F).                                         (73n)
+```
+
+The arithmetic elimination is Lean-checked by
+`binarySquare_residualHalfLine_profile`.  In particular every residual
+half-line contains at least r private majority points: at least one in the
+`r=1` design and at least two in the `r=2` design.  This is precisely the
+extension datum absent from the locally feasible construction (73l).
+
+It also has a global form.  Every private majority point lies in S, has one
+majority neighbor, no minority neighbor (minority lines are empty), and
+therefore exactly `q-1` neighbors in M.  Summing `p_w` over M gives
+
+```text
+r|M|+e_D(M,F)=n_1(q-1),       |M|=q^2-c.                  (73o)
+```
+
+For a saturated `r=1` survivor this recovers
+`e_D(M,F)=(q-2)(q-1)` from the `2(q-1)` private points; for saturated `r=2`
+it gives `e_D(M,F)=(q-4)(q-1)`.  Thus the exact D-boundary (73f) is carried
+entirely by the residual half-lines' excess private-point demand.  A closing
+argument must show that these required private transversals cannot coexist
+with the path--cycle self-indexing and C4-free residual neighborhoods.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated

@@ -356,6 +356,18 @@ theorem binarySquare_mixedExceptional_defectCut_lower
     Nat.mul_le_mul_right (q - 1) hw
   omega
 
+/-- Arithmetic form of the residual half-line profile.  A half-line has
+`m=q/2` occupied points of majority replication one or two; if its total
+majority-line incidence is `f-dF` with `f=q-r`, then its pair points and
+private points are fixed by `dF`. -/
+theorem binarySquare_residualHalfLine_profile
+    {q m f r dF n₁ n₂ : ℕ}
+    (hq : q = 2 * m) (hf : f + r = q)
+    (hpoints : n₁ + n₂ = m)
+    (hincidence : n₁ + 2 * n₂ + dF = f) :
+    n₂ + dF + r = m ∧ n₁ = r + dF := by
+  omega
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -882,6 +894,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedExceptional_defectCut_identity
 #print axioms Erdos85.binarySquare_saturatedMixed_exceptionalShore_card_dichotomy
 #print axioms Erdos85.binarySquare_mixedExceptional_defectCut_lower
+#print axioms Erdos85.binarySquare_residualHalfLine_profile
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.commonNeighbor_not_secondOrderDefect_adj
