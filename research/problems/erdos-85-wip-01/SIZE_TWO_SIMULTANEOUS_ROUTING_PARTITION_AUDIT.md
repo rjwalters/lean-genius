@@ -3283,3 +3283,51 @@ price depending only on total target collisions cannot detect this terminal.
 The missing invariant must retain the orientation of the two private ports
 (possibly together with their distinct clean sources), precisely the
 root--port information absent from the color-only no-go of Section 44.
+
+## 59. The private-port mark is a line-cycle neighborhood
+
+There is a canonical two-factor on the `e`-ports themselves.  Each port
+`p in e` has two neighbors in `c`, hence labels the corresponding edge of
+`F_e[c]`.  Define `B_ec` on the `e`-ports by joining two labels when their
+`F_e[c]` edges share a root in `c`.  On every cycle of `F_e[c]`, this is its
+line graph, so `B_ec` is again a disjoint union of cycles.
+
+For the one-edge run of Section 58, the three ports in (196) satisfy
+
+```text
+N_(B_ec)(p) = {p_-,p_+}.                               (199)
+```
+
+Indeed, the `F_e[c]` edge labelled by `p` is `x_-x_+`; the other edge at
+`x_-` is labelled by `p_-`, and the other edge at `x_+` by `p_+`.  Thus the
+oriented mark (198) is exactly an orientation of the two neighbors of the
+marked center `p` in this line-cycle.
+
+The internal two-factor `A_e` has no edge inside this closed
+`B_ec`-neighborhood:
+
+```text
+E(A_e[N_(B_ec)[p]]) = empty.                           (200)
+```
+
+For the pairs `p p_-` and `p p_+`, this is `b_(x_-,e)=b_(x_+,e)=0`, forced
+by the endpoint budget `a=1` in (159).  If instead `p_- p_+` were an
+`A_e` edge, then
+
+```text
+x_- -- p_- -- p_+ -- x_+ -- x_-
+```
+
+would be an ambient four-cycle.  These are all three possible pairs, proving
+(200).
+
+Let `M_e` be the set of `e`-ports labelling the `e`-owned edges of the
+projected `A_c` cycle.  A center `p in M_e` comes from a one-edge maximal
+run exactly when neither of its two `B_ec` neighbors lies in `M_e`.
+Consequently the `ell=1` terminal is the following simultaneous-two-factor
+object on component `e`: an isolated marked center of the cyclic factor
+`B_ec` whose closed radius-one neighborhood is independent in the cyclic
+factor `A_e`, together with an orientation of its two `B_ec` neighbors.
+This is the self-indexing form of the private-port invariant.  A closing
+argument may now seek a parity rule for these oriented isolated marks in the
+pair `(A_e,B_ec)`, rather than an unconstrained price on ambient ports.
