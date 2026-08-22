@@ -206,3 +206,34 @@ defect semantics are imposed.  This is a failure certificate for the claim
 that the colored `Q,K` row ledger alone fixes (2); it is not evidence that an
 actual graph can realize either parity.  Any terminal consumer must use the
 residual adjacency, defect connectivity, or an equally strong coupling.
+
+### The unmasked local label sum is tautological
+
+The most direct attempt to bring the residual graph into (6) still loses its
+adjacency information.  Over `F2`, let
+
+```text
+q(s) = |E_K(supp(s))|,
+b(s,t) = s K t^T.
+```
+
+Then `q(s+t)=q(s)+q(t)+b(s,t)`.  At an exact exceptional hole `h`, the
+partition equation is
+
+```text
+sum_{u in N_A(h)} Q_u = 1 + Q_h K.
+```
+
+Polarizing therefore expresses the sum of the row labels `q(Q_u)`, plus all
+cross-block terms `b(Q_u,Q_v)`, as `q(1+Q_hK)`.  But the neighbor blocks
+partition `W = U1 \ supp(Q_hK)`, so the entire left side is simply
+`|E_K(W)|`.  Cubic handshaking gives
+
+```text
+|E_K(W)| = q(supp(Q_hK)) + |supp(Q_hK)|  (mod 2),
+```
+
+which is exactly the polarized right side.  Hence the unmasked neighbor-label
+sum is another form of cubic handshaking.  A non-tautological consumer must
+retain a mask on the cross-block terms, for example one supplied by residual
+adjacency or defect reciprocity.
