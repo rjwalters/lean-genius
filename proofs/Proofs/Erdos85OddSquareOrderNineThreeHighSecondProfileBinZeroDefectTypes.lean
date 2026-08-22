@@ -2810,6 +2810,157 @@ theorem squareOrderNine_threeHigh_secondProfile_unmarked_special_support_ledger
       _ = 3 * F.card := by simp [Nat.mul_comm]
   exact ⟨hU1card, hrowLe, hswap.trans hsumTarget⟩
 
+/-- Equality cases of the unmarked-row ledger.  An eight-point ordinary
+special support is a transversal of all 24 unmarked rows.  A seven-point
+support is missed by exactly three of those rows. -/
+theorem squareOrderNine_threeHigh_secondProfile_unmarked_special_support_equality
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := (G.neighborFinset y ∩ B 0) \ S
+    (F.card = 8 → ∀ b ∈ U1, (G.neighborFinset b ∩ F).card = 1) ∧
+      (F.card = 7 →
+        (U1.filter fun b => (G.neighborFinset b ∩ F).card = 0).card = 3) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := (G.neighborFinset y ∩ B 0) \ S
+  let f : V → ℕ := fun b => (G.neighborFinset b ∩ F).card
+  have hledger :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_special_support_ledger
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hy
+  dsimp only at hledger
+  change U1.card = 24 ∧
+    (∀ b ∈ U1, f b ≤ 1) ∧
+    (∑ b ∈ U1, f b) = 3 * F.card at hledger
+  have hbinary : ∀ b ∈ U1, f b = if f b = 0 then 0 else 1 := by
+    intro b hb
+    have hle := hledger.2.1 b hb
+    split_ifs with hz
+    · exact hz
+    · omega
+  have hnonzero : (∑ b ∈ U1, f b) =
+      (U1.filter fun b => f b ≠ 0).card := by
+    calc
+      _ = ∑ b ∈ U1, if f b = 0 then 0 else 1 := by
+        apply Finset.sum_congr rfl
+        intro b hb
+        exact hbinary b hb
+      _ = ∑ b ∈ U1, if f b ≠ 0 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro b _hb
+        by_cases hz : f b = 0 <;> simp [hz]
+      _ = _ := Finset.sum_boole (fun b => f b ≠ 0) U1
+  constructor
+  · intro hF8 b hb
+    have hsum24 : (∑ b ∈ U1, f b) = 24 := by
+      rw [hledger.2.2, hF8]
+    have hfilterCard : (U1.filter fun b => f b ≠ 0).card = U1.card := by
+      rw [← hnonzero, hsum24, hledger.1]
+    have hfilterEq : U1.filter (fun b => f b ≠ 0) = U1 :=
+      Finset.eq_of_subset_of_card_le (Finset.filter_subset _ _) (by omega)
+    have hne : f b ≠ 0 := by
+      have : b ∈ U1.filter (fun z => f z ≠ 0) := by rw [hfilterEq]; exact hb
+      exact (Finset.mem_filter.mp this).2
+    have hle := hledger.2.1 b hb
+    change f b = 1
+    omega
+  · intro hF7
+    have hsum21 : (∑ b ∈ U1, f b) = 21 := by
+      rw [hledger.2.2, hF7]
+    have hnonzeroCard : (U1.filter fun b => f b ≠ 0).card = 21 := by
+      rw [← hnonzero, hsum21]
+    have hpartition := Finset.card_filter_add_card_filter_not
+      (s := U1) (p := fun b => f b = 0)
+    have hzeroCard : (U1.filter fun b => f b = 0).card = 3 := by
+      rw [hledger.1] at hpartition
+      rw [hnonzeroCard] at hpartition
+      omega
+    exact hzeroCard
+
+/-- For a nondefect special endpoint whose ordinary support has size seven,
+the three missing unmarked bin-one rows are exactly its three antipodal
+bin-one fibers. -/
+theorem squareOrderNine_threeHigh_secondProfile_antipodal_fiber_eq_missing_rows
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hF7 : ((G.neighborFinset y ∩ squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)).card = 7) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let F := (G.neighborFinset y ∩ B 0) \ S
+    antipodalNeighbors G y ∩ B 1 =
+      U1.filter fun b => (G.neighborFinset b ∩ F).card = 0 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let F := (G.neighborFinset y ∩ B 0) \ S
+  let A := antipodalNeighbors G y ∩ B 1
+  let Z := U1.filter fun b => (G.neighborFinset b ∩ F).card = 0
+  have hyBase := (Finset.mem_sdiff.mp hy).1
+  have hAcard : A.card = 3 :=
+    squareOrderNine_threeHigh_secondProfile_nondefect_binZero_binOne_antipodal_card
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy
+  have hequality :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_special_support_equality
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyBase
+  dsimp only at hequality
+  have hZcard : Z.card = 3 := hequality.2 hF7
+  have hsub : A ⊆ Z := by
+    intro b hbA
+    have hbParts := Finset.mem_inter.mp hbA
+    have hfiber :=
+      squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyBase hbA
+    dsimp only at hfiber
+    have hbU1 : b ∈ U1 := Finset.mem_sdiff.mpr ⟨hbParts.2, hfiber.1⟩
+    refine Finset.mem_filter.mpr ⟨hbU1, ?_⟩
+    rw [Finset.card_eq_zero]
+    ext w
+    simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+    intro hwb hwF
+    have hwFParts := Finset.mem_sdiff.mp hwF
+    exact Finset.disjoint_left.mp hfiber.2.2.2 hwFParts.1
+      (Finset.mem_inter.mpr ⟨hwb, (Finset.mem_inter.mp hwFParts.1).2⟩)
+  exact Finset.eq_of_subset_of_card_le hsub (by rw [hAcard, hZcard])
+
 end
 
 end Erdos85
@@ -2847,3 +2998,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_special_support_ledger
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_special_support_equality
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_antipodal_fiber_eq_missing_rows
