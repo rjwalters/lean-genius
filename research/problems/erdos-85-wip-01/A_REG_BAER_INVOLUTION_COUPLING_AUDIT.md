@@ -1308,6 +1308,25 @@ its `q-1` majority lines; the `r=2` layer has `3q-4` private points and one
 missing majority line-pair intersection (the unique D-edge in `F`).  These
 are uniform incidence designs, not order-specific enumerations.
 
+The same normal form determines the entire D-boundary of the exceptional
+support.  Its internal D-edges are the minority clique, the complete
+minority--majority cross core, and the `e_D(F)` majority edges.  Therefore
+
+```text
+|delta_D(C)| + (r-u)^2 = (q-1)(q-r-u)
+                       = 2a(q-1).                         (73f)
+```
+
+The subtraction-free form of (73f) is Lean-checked by
+`binarySquare_mixedExceptional_defectCut_identity`.  Thus the signed
+imbalance `2a` is exactly the leading defect-boundary scale; the correction
+is the square of the gap between parameter defect and minority size.  In the
+balanced mixed case, both types are replication-one D-cliques and the cross
+core makes `D[C]=K_c`, so `|delta_D(C)|=c(q-c)`.  Consequently the endpoint
+`c=q` would have zero D-boundary and make the proper set C a D-component,
+contrary to the connected-D branch.  Hence every balanced mixed survivor
+already satisfies `c<=q-1`.
+
 The large pure branch is impossible.  By replacing `S` with its complement
 it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
 `t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated

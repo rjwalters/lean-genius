@@ -292,6 +292,39 @@ theorem binarySquare_mixedMajority_replication_profile
       _ = f * f := by rw [Nat.sub_add_cancel hf]
   constructor <;> nlinarith
 
+/-- Exact defect cut of the unbalanced mixed exceptional support in the
+`r=q-f` normal form.  The internal defect edges are the minority clique, the
+complete cross core, and the prescribed majority edges. -/
+theorem binarySquare_mixedExceptional_defectCut_identity
+    {q f r u c eF eC delta v a₂ : ℕ}
+    (hu : 1 ≤ u) (hrv : r = u + v) (hqsum : q = r + u + a₂)
+    (hfr : f + r = q) (hcu : c = f + u)
+    (hmajority : 2 * eF + u = r * r)
+    (hinternal : 2 * eC = u * (u - 1) + 2 * u * f + 2 * eF)
+    (hcut : delta + 2 * eC = c * (q - 1)) :
+    delta + v * v = (q - 1) * a₂ := by
+  subst r
+  subst q
+  have hfEq : f = u + a₂ := by omega
+  subst f
+  subst c
+  have hQpos : 1 ≤ u + v + u + a₂ := by omega
+  have hQprod :
+      (u + v + u + a₂) * (u + v + u + a₂ - 1) +
+          (u + v + u + a₂) =
+        (u + v + u + a₂) * (u + v + u + a₂) := by
+    calc
+      (u + v + u + a₂) * (u + v + u + a₂ - 1) +
+          (u + v + u + a₂) =
+          (u + v + u + a₂) * ((u + v + u + a₂ - 1) + 1) := by ring
+      _ = (u + v + u + a₂) * (u + v + u + a₂) := by
+        rw [Nat.sub_add_cancel hQpos]
+  have huprod : u * (u - 1) + u = u * u := by
+    calc
+      u * (u - 1) + u = u * ((u - 1) + 1) := by ring
+      _ = u * u := by rw [Nat.sub_add_cancel hu]
+  nlinarith
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -791,6 +824,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedMajority_defect_identity
 #print axioms Erdos85.binarySquare_mixedMajority_first_defect_layers
 #print axioms Erdos85.binarySquare_mixedMajority_replication_profile
+#print axioms Erdos85.binarySquare_mixedExceptional_defectCut_identity
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.replicationAtMostOne_secondOrderDefect_adj
 #print axioms Erdos85.mixedExceptional_union_card_le_of_replicationAtMostOne
