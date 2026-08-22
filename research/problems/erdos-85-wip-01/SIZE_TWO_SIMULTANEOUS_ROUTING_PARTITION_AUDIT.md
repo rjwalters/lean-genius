@@ -315,3 +315,57 @@ must control the other three classes, or compare the colored decomposition of
 (19) at consecutive roots of the internal cycle.  Ordinary triangle totals
 erase precisely this marked-edge information, as already observed in the
 owner triangle inventory.
+
+## 8. Joint-moment form of the marked mass
+
+Write `A_c` for the adjacency matrix of the internal 2-factor `G[c]`, `S_c`
+for the adjacency matrix of the self-source factor `F_c`, and `D_c` for
+`D[c]`.  C4-freeness makes every off-diagonal common-neighbor count in
+`G[c]` Boolean, while every diagonal entry of `A_c^2` is two.  The
+distinct-common-neighbor theorem therefore gives the integer matrix identity
+
+```text
+S_c = A_c^2 - 2I.                                      (20)
+```
+
+This also covers an internal triangle: for `C_3`, `A_c^2-2I=A_c`.
+
+Let `M_c` count pairs consisting of an `H_c`-triangle and a distinguished
+self edge of that triangle.  (A triangle with two self edges is counted
+twice.)  Summing (17) over the edges of `F_c` gives
+
+```text
+2 M_c = trace(S_c H_c^2) = trace(S_c D_c^2),            (21)
+```
+
+where the second equality is the summed form of (19).  The factor two comes
+from the two orientations of every marked edge in the matrix trace.
+
+The global commutation `AD=DA` restricts to `A_c D_c=D_c A_c`, because `D`
+is block diagonal on its connected components.  Substituting (20) into (21)
+and using this commutation yields
+
+```text
+2 M_c
+  = trace((A_c^2-2I)D_c^2)
+  = trace((A_c D_c)^2) - 2 trace(D_c^2)
+  = trace((A_c D_c)^2) - 4q(q-1).                      (22)
+```
+
+Thus the endpoint-marked routing mass is a genuine joint fourth moment of the
+internal cycle block and the defect block.  It is not determined by the
+ordinary spectra of `A_c` and `D_c` separately: their common eigenbasis (or,
+equivalently, the placement of `D_c` inside the commutant of the cycle
+system) is required.
+
+Equation (22) gives the necessary inequality
+
+```text
+trace((A_c D_c)^2) >= 4q(q-1),                          (23)
+```
+
+but this is just `M_c >= 0`; it is not a terminal by itself.  Its value is
+that it identifies the exact spectral consumer of the colored refinement in
+Section 7.  Any useful parity or lower bound for the exterior-rainbow portion
+must refine (22) by owner colors, rather than recomputing the already fixed
+uncolored trace.
