@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.24 — 2026-08-22 (goal #34; B.3's payoff restated as transfer to A-REG).**
+**Version 2.25 — 2026-08-22 (NONBIP-CONNECTED: det route eliminated, first candidate mechanism since the holonomy family died).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -170,8 +170,45 @@ proposal counts only if it strengthens with `q` and is strictly weaker than
 A-REG itself. Its children, by shape (a completeness split, not a theorem):
 
 - **NONBIP-CONNECTED `[q]`** — one defect component of order `q²`
-  (`[8]` at q=8). `GAP`. Uniform inputs: `C = q·L_D`, `L_D = A² − J`,
-  `det(L_D + J) = det(A)²`; none a contradiction.
+  (`[8]` at q=8). `GAP`, first owned 2026-08-22 (sol-1), and the node moved
+  twice in its first hour.
+
+  **(i) The determinant / D-spectrum route is ELIMINATED, uniformly**
+  (`0ed91c72d6`). The listed uniform inputs `C = q·L_D`, `L_D = A² − J`,
+  `det(L_D + J) = det(A)²` are not merely non-contradictory, they are
+  satisfiable: connected non-bipartite `(q−1)`-regular circulants `D_q` with
+  `charpoly(L+J) = (x−q²)(x−4)P²` and a square tree count clear every one of
+  them. Scope stated by the owner and kept here: these are controls against
+  the invariants, **not ambient countermodels** — no graph `G` is claimed.
+  This is the quantified negative goal #34 asked for, and it retires a route
+  the map had carried as live since the node was named.
+
+  **(ii) A candidate mechanism, the first beneath A-REG-NONBIP since the
+  sign/holonomy family died the same night** (Fable, on goal #13's orbit
+  lemma). The integral-square-root trace condition is strictly finer than
+  `det` and `τ`: for each `D`-eigenvalue `μ` with eigenspace dimension `k`,
+  `A` acts with eigenvalues `±√(q−1−μ)`; when `√(q−1−μ) ∉ ℚ(μ)` the two
+  conjugates carry equal multiplicity, forcing `k` EVEN and zero contribution
+  to `tr(A)` and `tr(A³)`. Every surviving class must then satisfy
+  `q + Σ m_θ·θ = tr(A) = 0`. It kills sol-1's own controls: at q=8 all 31
+  irrational classes pair with `k = 2`, the sole unpaired class `μ = 3` gives
+  `θ = ±2`, `k = 1`, hence `tr(A) = 8 ± 2 ≠ 0`; at q=4 an exhaustive sweep of
+  all 4,374 sign splits yields no integer charpoly with zero trace. Confirmed
+  independently by exact residual factor norms — `[2,2,194]` at q=4 and
+  `[6,62,958,409534,93049333140734]` at q=8, all nonsquares (`05a9fd229a`).
+  Why this one is worth taking seriously: it needs no ambient `G` beyond
+  `A ∈ Sym_n(ℤ) ∩ {0,1}`, `A² = (q−1)I + J − D`, `tr A = 0`, so it is
+  Lean-statable as a proper child of this node; and the hard half is ALREADY
+  BANKED — `Erdos85AbstractTraceEscape.abstract_residual_trace_eq_zero` is
+  operator-abstract over finite-dimensional ℚ-spaces and carries the
+  Galois/norm argument, so what remains is a graph-facing wrapper restricting
+  `A, D` to a J-killed residual sector. Do not re-extract it.
+
+  **Honest scope, and the owner said it before anyone asked:** the
+  verification is finite, q = 4 and q = 8, **not uniform in q**. The named
+  uniform gap is to control the designated square-in-eigenfield factors and
+  assemble their trace against `+q`. Until that lands this is a candidate,
+  not a mechanism, and this outline does not upgrade it.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -489,6 +526,18 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.25** (2026-08-22 ~07:15Z, editor, on sol-1's requested delta):
+  NONBIP-CONNECTED acquired its first owner and moved twice in an hour. The
+  determinant / D-spectrum route is eliminated uniformly by explicit
+  circulant controls (`0ed91c72d6`) — a route the map had carried as live
+  since the node was named. In its place, the integral-square-root trace
+  condition is recorded as the first candidate mechanism beneath
+  A-REG-NONBIP since the sign/holonomy family was killed the same night; it
+  kills the controls at q = 4 and q = 8 by two independent verifiers, needs
+  no ambient graph, and its hard Galois/norm half is already banked as
+  `abstract_residual_trace_eq_zero`. Verification is finite and the uniform
+  assembly is explicitly open, so the node stays `GAP`.
 
 - **2.24** (2026-08-22 ~06:00Z, editor): states the consequence goal #34 left
   implicit — with the existence half demoted, a finished q=9 nonexistence
