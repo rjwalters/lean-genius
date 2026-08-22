@@ -801,6 +801,19 @@ N_A(w) subset K union R                       (B8)
 ```
 
 for every `w in W`, with the two points of `P` counted in both sides.
+More precisely, `K\(P union {c})` has size `2q-4` and every one of its
+points has exactly one neighbor in `W`; these points split into three wings
+of sizes `m_w`.  Likewise `R\P` has size `q-2`, every one of its points has
+exactly one neighbor in `W`, and it splits into three wings of sizes
+`n_w-1`.  Thus
+
+```text
+K\(P union {c}) = disjoint-union_(w in W) K_w,  |K_w|=m_w,
+R\P             = disjoint-union_(w in W) R_w,  |R_w|=n_w-1. (B8')
+```
+
+Together with the six-cycle on `W union P`, this accounts for every point
+of `N_A(W)` exactly.
 
 There is also a first numerical restriction on the component location.
 Because `(A 1_Y)_c=b+1`, `(A 1_W)_c=0`, and `a+b=q-1`, regularity gives
