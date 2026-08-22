@@ -895,6 +895,17 @@ theorem binarySquare_finalLayer_exceptionalNeighbors_card_le_three
       simpa [Nat.mul_comm] using Nat.mul_le_mul_left m ht
     omega
 
+/-- Removing one forced exceptional port from a positive even `T`-bundle
+leaves an odd ordinary-port bundle.  This is the arithmetic core of (73rf). -/
+theorem binarySquare_forcedTBundle_ordinary_card_odd
+    (tDegree ordinaryPorts : ℕ)
+    (hsplit : tDegree = ordinaryPorts + 1)
+    (heven : Even tDegree) :
+    Odd ordinaryPorts := by
+  obtain ⟨k, hk⟩ := heven
+  use k - 1
+  omega
+
 end
 
 end Erdos85
@@ -929,3 +940,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_finalLayer_fullRows_local_bound
 #print axioms Erdos85.neighbor_inter_complement_card
 #print axioms Erdos85.binarySquare_finalLayer_exceptionalNeighbors_card_le_three
+#print axioms Erdos85.binarySquare_forcedTBundle_ordinary_card_odd

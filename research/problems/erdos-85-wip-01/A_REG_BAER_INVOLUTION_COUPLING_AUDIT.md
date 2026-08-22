@@ -1639,6 +1639,25 @@ identities do not yet identify which of the other `q-1` points on the full
 line supplies it.  This is a strictly coarser datum than signing both private
 marks, but unlike that signing it is forced in the surviving branch.
 
+In fact the type of the companions is fixed.  The routing in (73h), together
+with (60), makes `E_0` the only exceptional A-neighbor of `F_0`: there is no
+second minority center, and a majority center in S cannot lie on the full
+line of the majority center `F_0` outside S.  Every other point of that line
+is therefore an ordinary balanced center.  Consequently there is a set
+`U_0` with
+
+```text
+N_T(F_0) = {E_0} disjoint_union U_0,
+U_0 contained in M intersect S,
+|U_0| is odd (and in particular nonzero).                 (73rf)
+```
+
+Thus deleting the forced invisible exceptional port from the even T-bundle
+leaves an **odd ordinary T-port bundle** at `F_0`.  Unlike a guessed binary
+K/Omega label, this parity carrier follows from the existing design and
+Eulerian laws.  A transport terminal may try to carry this owner-indexed odd
+bundle through the residual half-line system (73m)--(73p).
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
