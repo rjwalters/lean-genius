@@ -442,6 +442,137 @@ theorem binarySquare_finalLayer_fullRows_local_bound
     have hScard : 1 ≤ S.card := Finset.one_le_card.mpr ⟨p, hp⟩
     omega
 
+/-- The complement-shore occupancy is the degree minus the original shore
+occupancy. -/
+theorem neighbor_inter_complement_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S : Finset V) (v : V) :
+    (G.neighborFinset v ∩ (Finset.univ \ S)).card =
+      G.degree v - (G.neighborFinset v ∩ S).card := by
+  have heq :
+      G.neighborFinset v ∩ (Finset.univ \ S) =
+        G.neighborFinset v \ (G.neighborFinset v ∩ S) := by
+    ext x
+    simp
+  rw [heq, Finset.card_sdiff_of_subset Finset.inter_subset_left,
+    G.card_neighborFinset_eq_degree]
+
+/-- In the final shore window, every point has at most three exceptional
+neighbors (empty or full lines).  This is the subcubic conclusion (59),
+obtained on the two shores by applying the weighted local bound to `S` and
+to its complement. -/
+theorem binarySquare_finalLayer_exceptionalNeighbors_card_le_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {m : ℕ} (hm : 2 ≤ m)
+    (hreg : ∀ v, G.degree v = 2 * m)
+    (hcard : Fintype.card V = 4 * m * m)
+    (S : Finset V)
+    (hlower : 2 * m * m - 2 * m + 1 ≤ S.card)
+    (hupper : S.card ≤ 2 * m * m + 2 * m - 1)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = 2 * m)
+    (p : V) :
+    ((G.neighborFinset p).filter fun w =>
+      (G.neighborFinset w ∩ S).card = 0 ∨
+      (G.neighborFinset w ∩ S).card = 2 * m).card ≤ 3 := by
+  by_cases hp : p ∈ S
+  · have hfilter :
+        (G.neighborFinset p).filter (fun w =>
+          (G.neighborFinset w ∩ S).card = 0 ∨
+          (G.neighborFinset w ∩ S).card = 2 * m) =
+        (G.neighborFinset p).filter (fun w =>
+          (G.neighborFinset w ∩ S).card = 2 * m) := by
+      ext w
+      simp only [Finset.mem_filter]
+      constructor
+      · rintro ⟨hwp, hzero | hfull⟩
+        · have hpNw : p ∈ G.neighborFinset w :=
+            (G.mem_neighborFinset w p).mpr
+              ((G.mem_neighborFinset p w).mp hwp).symm
+          have : 0 < (G.neighborFinset w ∩ S).card :=
+            Finset.card_pos.mpr ⟨p, Finset.mem_inter.mpr ⟨hpNw, hp⟩⟩
+          omega
+        · exact ⟨hwp, hfull⟩
+      · rintro ⟨hwp, hfull⟩
+        exact ⟨hwp, Or.inr hfull⟩
+    rw [hfilter]
+    have hlocal := binarySquare_finalLayer_fullRows_local_bound
+      G hfree hreg S hp htri
+    have hbase : 2 * m * (m - 1) + 2 * m = 2 * m * m := by
+      calc
+        2 * m * (m - 1) + 2 * m = 2 * m * ((m - 1) + 1) := by ring
+        _ = 2 * m * m := by rw [Nat.sub_add_cancel (by omega)]
+    by_contra hnot
+    have ht : 4 ≤ ((G.neighborFinset p).filter fun w =>
+        (G.neighborFinset w ∩ S).card = 2 * m).card := by omega
+    have hfour : 4 * m ≤
+        m * ((G.neighborFinset p).filter fun w =>
+          (G.neighborFinset w ∩ S).card = 2 * m).card := by
+      simpa [Nat.mul_comm] using Nat.mul_le_mul_left m ht
+    omega
+  · let T : Finset V := Finset.univ \ S
+    have hpT : p ∈ T := Finset.mem_sdiff.mpr ⟨Finset.mem_univ p, hp⟩
+    have hTcard : T.card = Fintype.card V - S.card := by
+      simp [T, Finset.card_sdiff]
+    have hTupper : T.card ≤ 2 * m * m + 2 * m - 1 := by
+      rw [hTcard, hcard]
+      have hsplit : 4 * m * m = 2 * m * m + 2 * m * m := by ring
+      rw [hsplit]
+      omega
+    have htriT : ∀ v,
+        (G.neighborFinset v ∩ T).card = 0 ∨
+        (G.neighborFinset v ∩ T).card = m ∨
+        (G.neighborFinset v ∩ T).card = 2 * m := by
+      intro v
+      have hcomp := neighbor_inter_complement_card G S v
+      change (G.neighborFinset v ∩ T).card = _ at hcomp
+      rw [hreg] at hcomp
+      rcases htri v with hzero | hhalf | hfull
+      · exact Or.inr (Or.inr (by omega))
+      · exact Or.inr (Or.inl (by omega))
+      · exact Or.inl (by omega)
+    have hfilter :
+        (G.neighborFinset p).filter (fun w =>
+          (G.neighborFinset w ∩ S).card = 0 ∨
+          (G.neighborFinset w ∩ S).card = 2 * m) =
+        (G.neighborFinset p).filter (fun w =>
+          (G.neighborFinset w ∩ T).card = 2 * m) := by
+      ext w
+      simp only [Finset.mem_filter]
+      have hcomp := neighbor_inter_complement_card G S w
+      change (G.neighborFinset w ∩ T).card = _ at hcomp
+      rw [hreg] at hcomp
+      constructor
+      · rintro ⟨hwp, hzero | hfull⟩
+        · exact ⟨hwp, by omega⟩
+        · have hpNw : p ∈ G.neighborFinset w :=
+            (G.mem_neighborFinset w p).mpr
+              ((G.mem_neighborFinset p w).mp hwp).symm
+          have hcardPos : 0 < (G.neighborFinset w ∩ T).card :=
+            Finset.card_pos.mpr ⟨p, Finset.mem_inter.mpr ⟨hpNw, hpT⟩⟩
+          omega
+      · rintro ⟨hwp, hfullT⟩
+        exact ⟨hwp, Or.inl (by omega)⟩
+    rw [hfilter]
+    have hlocal := binarySquare_finalLayer_fullRows_local_bound
+      G hfree hreg T hpT htriT
+    have hbase : 2 * m * (m - 1) + 2 * m = 2 * m * m := by
+      calc
+        2 * m * (m - 1) + 2 * m = 2 * m * ((m - 1) + 1) := by ring
+        _ = 2 * m * m := by rw [Nat.sub_add_cancel (by omega)]
+    by_contra hnot
+    have ht : 4 ≤ ((G.neighborFinset p).filter fun w =>
+        (G.neighborFinset w ∩ T).card = 2 * m).card := by omega
+    have hfour : 4 * m ≤
+        m * ((G.neighborFinset p).filter fun w =>
+          (G.neighborFinset w ∩ T).card = 2 * m).card := by
+      simpa [Nat.mul_comm] using Nat.mul_le_mul_left m ht
+    omega
+
 end
 
 end Erdos85
@@ -459,3 +590,5 @@ end Erdos85
 #print axioms Erdos85.regular_emptyLines_mul_card_le_complement_card
 #print axioms Erdos85.c4Free_sum_punctured_shore_blocks_le
 #print axioms Erdos85.binarySquare_finalLayer_fullRows_local_bound
+#print axioms Erdos85.neighbor_inter_complement_card
+#print axioms Erdos85.binarySquare_finalLayer_exceptionalNeighbors_card_le_three
