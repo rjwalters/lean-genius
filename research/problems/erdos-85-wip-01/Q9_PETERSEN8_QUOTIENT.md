@@ -55,6 +55,16 @@ ten such local types. All 324 patterns pass this necessary factorization, so
 the next exclusion must use compatibility among the perfect Petersen
 anti-matchings, not another component-count identity.
 
+[`q9_petersen8_perfect_matching_lift.py`](q9_petersen8_perfect_matching_lift.py)
+is the exact lift model for that frontier. It uses 24 directed pairs of
+4-bit permutation variables, enforces Petersen-edge-to-nonedge matching,
+inverse maps, unique triangle closure, the selected quotient multiplicities,
+and lazy C4 cuts. A spanning-tree gauge reduces each new block edge from
+2,880 matchings to 24 target-automorphism representatives. The first tested
+case still times out before an initial model at 60 seconds, so this script is
+an auditable CSP specification, not yet an exclusion certificate; it reports
+`unknown` honestly when the configured timeout is reached.
+
 Run with:
 
 ```text
