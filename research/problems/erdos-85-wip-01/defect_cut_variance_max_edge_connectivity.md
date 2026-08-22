@@ -175,3 +175,32 @@ even without imposing connectedness of `D`.  This is finite external
 evidence only.  Equations (6)--(7) do not force recognition for general q:
 they bound the common-neighbor collision count but do not force its maximum
 `choose(q,2)`.  Super-edge-connectivity is therefore not claimed.
+
+## A q-clique is an isolated defect component
+
+There is also a sharp incidence consequence useful for the Baer-type route.
+If `C` is a q-clique in `D`, then for distinct `c,c' in C` the neighborhoods
+`N_A(c)` and `N_A(c')` are disjoint.  They are q pairwise disjoint q-sets,
+so they partition all `q^2` vertices.
+
+Now take `y` outside `C`.  C4-freeness gives
+
+```text
+|N_A(y) intersect N_A(c)| <= 1
+```
+
+for every `c in C`.  The q cells `N_A(c)` partition the q neighbors of `y`,
+so equality holds for every cell.  Hence every pair `(y,c)` has exactly one
+common A-neighbor and no such pair is a D-edge.  There are no D-edges from
+`C` to its complement, and therefore
+
+```text
+C is a whole K_q component of D.              (8)
+```
+
+In particular, connected `D` on `q^2>q` vertices has clique number at most
+`q-1`.  This explains the boundary of the affine polarity control, whose
+defect graph is a union of `K_q` components.  It generalizes the earlier
+special observation that a clique closed neighborhood `N_D[x]` isolates,
+but by itself it does not rule out smaller odd cycles or prove the desired
+absolute-point theorem.
