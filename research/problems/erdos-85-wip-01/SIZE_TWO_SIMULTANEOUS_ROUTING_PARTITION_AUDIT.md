@@ -1777,3 +1777,44 @@ the internal cycle `B` marked.  Equation (107) is the sharp next theorem
 target.  Proving it requires an interaction between these two two-factors;
 their separate commutation with `H_e` is enough to remove the background
 owner sum but not enough by itself to annihilate `P(P+B)B`.
+
+## 29. Exact local failure of the marked cubic
+
+The target (107) is not forced by the two-shore C4 geometry alone.  There is
+an explicit local model at `q=6`, with two shores `c,e` of order twelve.
+Split both shores into blocks of orders five and seven.  On corresponding
+blocks use the standard bipartite incidence cycles
+
+```text
+e_i -- c_i, c_(i+1),
+```
+
+so the two shore shadows are `P=C5 disjoint-union C7`.  Take the source
+internal factor to be the same `C5 disjoint-union C7`; hence both source
+cycles are closed runs monochromatically owned by `e`.  On the target shore
+take the Hamilton cycle
+
+```text
+(5,8,3,10,0,6,2,11,7,1,9,4).                          (108)
+```
+
+The resulting 24-vertex two-shore graph is simple, four-regular, and
+C4-free: direct multiplication gives maximum off-diagonal common-neighbor
+count one.  Let `V_0` be the five-point port component.  Direct binary
+calculation gives
+
+```text
+(P (P+A_e) A_e V_0)|_(V_0) = (0,1,0,0,1),              (109)
+```
+
+so the marked cubic does not vanish and `Theta V_0` is not forced constant
+by the local endpoint geometry.
+
+The reproducer `verify_local_marked_cubic_failure_q6.py` checks regularity,
+C4-freeness, both cross shadows, the owner-run identification, and (109).
+Scope is essential: `q=6` is not a binary power, and this is a single-pair
+model rather than a realization of all `q/2=3` simultaneous component
+colors and their coupled SRP partitions.  Thus (109) does not refute the
+target campaign.  It proves that the next theorem must use simultaneous
+reuse and/or the binary-power input; no argument confined to the marked
+two-shore factors `P,A_e` can establish (107).
