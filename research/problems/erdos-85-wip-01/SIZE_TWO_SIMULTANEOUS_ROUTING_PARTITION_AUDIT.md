@@ -2404,25 +2404,21 @@ walk
 pi(Omega) in A_c,       |pi(Omega)| = H(Omega).         (147)
 ```
 
-This projected walk is locally nonbacktracking whenever `H(Omega)>0`.
-Indeed, an immediate reversal at a root would use the same internal root
-pair on the two sides of a nonempty vertical run.  The two horizontal edges
-would then assign that pair two different owner colors, contradicting the
-owner-factor edge partition.  With no intervening vertical edge, immediate
-reversal would already repeat the same horizontal state edge in the state
-cycle.
+The projection is edge-simple whenever `H(Omega)>0`.  Indeed, every internal
+edge has a unique owner color, so an occurrence of that edge in the
+projection lifts to its unique horizontal edge of `Gamma_c`.  A second
+occurrence would repeat that state edge on the cycle `Omega`.  Hence
+`pi(Omega)` is a nonempty closed trail in the internal two-factor.
 
-Since `A_c` is two-regular, a locally nonbacktracking closed walk in it winds
-some positive number `k` of times around one internal cycle `C`:
+The edge support of a closed trail is Eulerian.  A nonempty connected
+Eulerian subgraph of the two-regular graph `A_c` must be an entire cycle
+component `C`.  Therefore
 
 ```text
-H(Omega) = k |C|.                                      (148)
+E(pi(Omega)) = E(C).                                   (148)
 ```
 
-In fact `k=1`.  If `k>1`, the projection repeats an internal edge.  Its
-owner color is unique, so both occurrences lift to the same horizontal edge
-of `Gamma_c`, impossible in one cycle component of the state two-factor.
-Therefore
+Edge-simplicity now gives
 
 ```text
 H(Omega) = |C|,                                        (149)
