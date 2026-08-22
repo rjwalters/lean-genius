@@ -931,6 +931,21 @@ coordinate a genuine collision/concentration charge, compatible with a
 Schur-convex proof from (12qd), rather than an arbitrary refinement of the
 root lookup table.
 
+The two signs cannot be promoted blindly to the full product order.  If one
+also requires
+
+```text
+r <= r' and c_all >= c'_all  ==>  mu(r,c_all) <= mu(r',c'_all)
+```
+
+when both coordinates change simultaneously, the weakest exceptional pair
+`(0,1)` returns to objective zero (the other remains separated at
+`-0.3434173214`).  Hence the sampled theorem supports isotonicity along a
+fixed collision layer and antitonicity along a fixed fiber census, but not a
+global no-interaction assumption.  A uniform construction must allow a
+mixed `r`--`c_all` term, or prove comparisons by axis moves only when the
+intermediate flag actually exists.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
