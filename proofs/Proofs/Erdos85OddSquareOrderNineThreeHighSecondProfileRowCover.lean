@@ -1157,6 +1157,123 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_marked_support_hit_or_d
       exact hD (hDzero.mpr hz)
     have hone : (R.filter fun w => w ∈ F).card = 1 := by omega
     exact ⟨hone, hD⟩
+
+/-- Globally, each marked seven-point support is hit by exactly 42 of the 47
+ordinary rows.  Its five missed rows are exactly the B0 defect neighbors of
+the marked root. -/
+theorem squareOrderNine_threeHigh_secondProfile_marked_support_fortyTwo_five_ledger
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x m : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hm : m ∈ G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let F := G.neighborFinset m ∩ B 0
+    let D := secondOrderDefectGraph G
+    let misses := T.filter fun t => D.Adj t m
+    let hits := T.filter fun t =>
+      ((G.neighborFinset t ∩ T).filter fun w => w ∈ F).card = 1
+    misses = D.neighborFinset m ∩ B 0 ∧ misses.card = 5 ∧ hits.card = 42 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let F := G.neighborFinset m ∩ B 0
+  let D := secondOrderDefectGraph G
+  let misses := T.filter fun t => D.Adj t m
+  let hits := T.filter fun t =>
+    ((G.neighborFinset t ∩ T).filter fun w => w ∈ F).card = 1
+  have hmParts := Finset.mem_inter.mp hm
+  have hmisses : misses = D.neighborFinset m ∩ B 0 := by
+    ext t
+    constructor
+    · intro ht
+      have htParts := Finset.mem_filter.mp ht
+      have htT := Finset.mem_sdiff.mp htParts.1
+      exact Finset.mem_inter.mpr ⟨
+        (D.mem_neighborFinset m t).mpr ((D.adj_comm t m).mp htParts.2), htT.1⟩
+    · intro ht
+      have htParts := Finset.mem_inter.mp ht
+      have hDmt := (D.mem_neighborFinset m t).mp htParts.1
+      have htm : t ≠ m := (D.ne_of_adj hDmt).symm
+      have htNotS : t ∉ S := by
+        intro htS
+        have htSParts := Finset.mem_inter.mp htS
+        have htx : G.Adj t x := (G.adj_comm x t).mp
+          ((G.mem_neighborFinset x t).mp htSParts.1)
+        have hmx : G.Adj m x := (G.adj_comm x m).mp
+          ((G.mem_neighborFinset x m).mp hmParts.1)
+        exact (not_secondOrderDefect_adj_of_commonNeighbor
+          G hfree htm htx hmx) ((D.adj_comm m t).mp hDmt)
+      exact Finset.mem_filter.mpr ⟨Finset.mem_sdiff.mpr ⟨htParts.2, htNotS⟩,
+        (D.adj_comm m t).mp hDmt⟩
+  have hmtype :=
+    squareOrderNine_threeHigh_secondProfile_binOne_defect_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc4 hmParts.2
+  dsimp only at hmtype
+  have hmisscard : misses.card = 5 := by rw [hmisses, hmtype.1]
+  have hTcard : T.card = 47 := by
+    have hSsub : S ⊆ B 0 := Finset.inter_subset_right
+    have hB0card : (B 0).card = 50 :=
+      squareOrderNine_threeHigh_secondProfile_binZero_card
+        G hcard hp hhigh hc3
+    have hcensus :=
+      squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+    dsimp only at hcensus
+    have hScard : S.card = 3 := hcensus.2.2
+    have hinter : S ∩ B 0 = S := Finset.inter_eq_left.mpr hSsub
+    rw [Finset.card_sdiff, hinter, hB0card, hScard]
+  have hhitIff : ∀ t ∈ T,
+      (((G.neighborFinset t ∩ T).filter fun w => w ∈ F).card = 1 ↔
+        ¬ D.Adj t m) := by
+    intro t htT
+    have ht : t ∈ B 0 \ S := htT
+    have hlocal :=
+      squareOrderNine_threeHigh_secondProfile_ordinary_marked_support_hit_or_defect
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht hm
+    dsimp only at hlocal
+    change ((((G.neighborFinset t ∩ T).filter fun w => w ∈ F).card = 1 ∧
+      ¬ D.Adj t m) ∨
+      (((G.neighborFinset t ∩ T).filter fun w => w ∈ F).card = 0 ∧
+      D.Adj t m)) at hlocal
+    constructor
+    · intro hone
+      rcases hlocal with hhit | hmiss
+      · exact hhit.2
+      · omega
+    · intro hnotD
+      rcases hlocal with hhit | hmiss
+      · exact hhit.1
+      · exact (hnotD hmiss.2).elim
+  have hhitEq : hits = T.filter fun t => ¬ D.Adj t m := by
+    ext t
+    simp only [hits, Finset.mem_filter]
+    constructor
+    · rintro ⟨htT, hhit⟩
+      exact ⟨htT, (hhitIff t htT).mp hhit⟩
+    · rintro ⟨htT, hnotD⟩
+      exact ⟨htT, (hhitIff t htT).mpr hnotD⟩
+  have hsplit := Finset.card_filter_add_card_filter_not
+    (s := T) (fun t => D.Adj t m)
+  have hhitcard : hits.card = 42 := by
+    rw [hhitEq]
+    change misses.card + (T.filter fun t => ¬ D.Adj t m).card = T.card at hsplit
+    omega
+  exact ⟨hmisses, hmisscard, hhitcard⟩
 end
 
 end Erdos85
@@ -1173,4 +1290,5 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_common_eq_support_hit
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_support_hit_or_defect
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_fortyTwo_five_ledger
 #print axioms Erdos85.weighted_row_arithmetic_forces_pair_defect_three
