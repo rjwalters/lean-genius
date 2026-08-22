@@ -603,6 +603,20 @@ Every point of B uses exactly two of its q A-edges on S and its remaining
 `q-2` edges outside S.  Thus (29) specifies the whole A-interface of the
 bottom shore, not only a pair-counting bijection.
 
+Over F_2 this interface has exact rank.  The vertex-edge incidence matrix of
+a connected graph has rank one less than its number of vertices; both
+graphs in (29) are connected.  Hence
+
+```text
+rank_F2 A[S,B] = |S|-1.                                      (29b)
+```
+
+By (29a), the rows indexed by S have no entries outside B, so (29b) is also
+their rank in the full adjacency matrix.  Their sole dependency is the sum
+of all S-rows, namely `A1_S=0`.  Equivalently, no nonempty proper subset of
+S supports another adjacency-kernel word.  The bottom shore is therefore
+an indecomposable binary row dependency, not merely a minimum-weight set.
+
 The overlap has its own rigid form.  A point `X in S` belongs to B exactly
 when its polar line meets S twice, equivalently when its degree in `A[S]` is
 two.  Any neighbor in `A[S]` also has positive even induced degree, hence
