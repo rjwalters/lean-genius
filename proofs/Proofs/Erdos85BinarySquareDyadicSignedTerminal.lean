@@ -176,6 +176,43 @@ theorem binarySquare_mixedExceptional_card_le
     have hu := huUnbalanced haPos
     omega
 
+/-- Arithmetic terminal for the large pure exceptional branch.  If every
+shore point has exceptional replication two or three, incidence balance and
+the linear-design pair bound are incompatible with `q < c ≤ 2q-2` once
+`q ≥ 8`.  The variables `n₂,n₃` count the two replication classes. -/
+theorem binarySquare_pureLargeExceptional_impossible
+    {q c s n₂ n₃ : ℕ} (hq : 8 ≤ q) (hqc : q < c)
+    (hc : c ≤ 2 * q - 2)
+    (hshore : 2 * s = q * q + c)
+    (hclasses : n₂ + n₃ = s)
+    (hincidence : 2 * n₂ + 3 * n₃ = q * c)
+    (hpairs : 2 * n₂ + 6 * n₃ ≤ c * (c - 1)) : False := by
+  have hcpos : 1 ≤ c := by omega
+  have hcsub : c - 1 + 1 = c := Nat.sub_add_cancel hcpos
+  have hcupper : c + 2 ≤ 2 * q := by omega
+  have hcprod : c * (c - 1) + c = c * c := by
+    calc
+      c * (c - 1) + c = c * ((c - 1) + 1) := by ring
+      _ = c * c := by rw [hcsub]
+  have hn₃ : n₃ + q * q + c = q * c := by omega
+  have hpoly : 4 * q * c ≤ 3 * q * q + c * c + 2 * c := by
+    nlinarith
+  let r := c - q
+  have hcr : c = q + r := by
+    dsimp [r]
+    omega
+  have hrupper : r ≤ q - 2 := by omega
+  have hn₃r : n₃ + q + r = q * r := by
+    rw [hcr] at hn₃
+    nlinarith
+  have hr : 2 ≤ r := by
+    by_contra h
+    have : r ≤ 1 := by omega
+    interval_cases r <;> simp at hn₃r <;> omega
+  rw [hcr] at hpoly
+  nlinarith [mul_nonneg (show (0 : ℤ) ≤ r - 2 by omega)
+    (show (0 : ℤ) ≤ q - r - 2 by omega)]
+
 /-- A full exceptional line and an empty exceptional line form a defect
 edge: otherwise their unique common ambient neighbor would have to lie both
 inside and outside the shore. -/
@@ -583,6 +620,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_sparseSigned_companionDefect_apply
 #print axioms Erdos85.binarySquare_trichotomy_companionDefect_apply
 #print axioms Erdos85.binarySquare_mixedExceptional_card_le
+#print axioms Erdos85.binarySquare_pureLargeExceptional_impossible
 #print axioms Erdos85.binarySquare_full_empty_secondOrderDefect_adj
 #print axioms Erdos85.binarySquare_regular_secondOrderDefect_degree_eq
 #print axioms Erdos85.binarySquare_full_empty_card_le_of_defectRegular

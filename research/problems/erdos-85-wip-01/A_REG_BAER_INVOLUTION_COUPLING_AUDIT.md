@@ -1226,13 +1226,54 @@ is `3q/2-2`.  Thus only the pure branch can approach the earlier `2q-2`
 support bound.  The mixed sparse-image terminal already has support at most
 one and a half times q.
 
-Equations (7)--(73) are the first canonical cut detector manufactured from
+The large pure branch is impossible.  By replacing `S` with its complement
+it is enough to treat `E=empty`, so `d=c/2` and `s=(q^2+c)/2`.  Put
+`t_P=|N_A(P) intersect F|`.  The pointwise companion equation (70), evaluated
+on the two shores, gives
+
+```text
+deg_D(P,V setminus S) = (q t_P-c)/2       for P in S,
+deg_D(P,S) = q-1-c/2                      for P outside S.  (74)
+```
+
+In particular `q t_P>=c`.  If `q<c<=2q-2`, the subcubic bound (59) therefore
+forces `t_P in {2,3}` at every point of `S`.  Let `n_2,n_3` count these two
+replication classes.  Incidence balance and the shore size give
+
+```text
+n_2+n_3=s,             2n_2+3n_3=qc.
+```
+
+The pair identity (68), merely using `e_D(F)>=0`, gives
+
+```text
+2n_2+6n_3 <= c(c-1).                                  (75)
+```
+
+Eliminating `s,n_2,n_3` from these relations yields
+`4qc<=3q^2+c^2+2c`.  But incidence nonnegativity first forces `c>=q+2`, and
+the reverse strict inequality holds throughout `q+2<=c<=2q-2` for `q>=8`.
+This arithmetic contradiction is Lean-checked by
+`binarySquare_pureLargeExceptional_impossible`.  Hence every surviving pure
+exceptional design satisfies
+
+```text
+c <= q.                                                   (76)
+```
+
+The unresolved signed-support terminal has therefore split into two strictly
+smaller regimes: mixed support `c<=3q/2-2`, or pure support `c<=q`.  The latter
+still obeys (74), so every point of its occupied shore has positive
+exceptional replication; eliminating this small pure regime and the mixed
+four-type regime remains necessary.
+
+Equations (7)--(76) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
 also state exactly what is still missing.  The graph K is the nonadjacent
 part of `Omega triangle D`, is Eulerian, and transports T-incidence on S by
 (19)--(20).  Any k-dependent terminal can now aim at locating K inside the
 non-A pairs, rather than trying to couple the local involutions directly.
-The q=4 fixed-free control is compatible with (7)--(73), so these laws alone
+The q=4 fixed-free control is compatible with (7)--(76), so these laws alone
 do not conceal an order-independent
 contradiction.
 
