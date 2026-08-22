@@ -2852,3 +2852,59 @@ global census on the one odd internal cycle `C`.  Thus a closing argument
 need only prove root--port conservation for the endpoint-neutral short-run
 system and separately pair the bounded family of long odd runs; no arbitrary
 mixed state-cycle geometry remains.
+
+## 51. Transpose symmetry on the endpoint-neutral clean core
+
+For a fixed maximal `e`-run `P`, let `D_P` be the set of third colors which
+are both `P`-clean and endpoint-neutral.  Consider a rooted triangle at
+`x in U` whose two exterior vertices are
+
+```text
+y in d,       z in g,       d,g in D_P.
+```
+
+In the clean-lift capacity system for `d`, this triangle is the assignment
+`y -> z`.  Since `g` is also endpoint-neutral, `a_xg=0`; the same triangle
+forces `Y_g(x)` to be in its nonedge branch and appears in the `g`-system as
+the reverse assignment `z -> y`.  Consequently the union of all directed
+assignments with both colors in `D_P` is invariant under transpose:
+
+```text
+(x,d,y) -> (x,g,z)
+  iff
+(x,g,z) -> (x,d,y).                                    (173)
+```
+
+It follows immediately that every antisymmetric root--port weight cancels
+on the clean core:
+
+```text
+sum_(d,g in D_P) W((x,d,y),(x,g,z)) = 0.               (174)
+```
+
+This is the conservation mechanism missing from (164a), but so far only on
+the induced clean core.  All uncancelled assignments have their target
+color outside `D_P`.  Their color support is sharply localized.  By (156),
+at most
+
+```text
+(ell-1)(ell-2)/2
+```
+
+third colors are nonclean, and endpoint neutrality excludes at most the two
+boundary owners `f_-`,`f_+`.  The run owner `e` can occur in a rooted
+triangle only at the two boundary roots, because its state has horizontal
+degree two and vertical degree zero at every internal root.  Thus the curl
+defect is supported on
+
+```text
+at most (ell-1)(ell-2)/2 + 2 exceptional third colors,
+plus at most two owner-e boundary assignments.          (175)
+```
+
+Equations (173)--(175) turn the desired global conservation into a boundary
+problem: the large endpoint-neutral clean core cancels exactly by transpose,
+and only a bounded exceptional-color interface remains.  This is the same
+primal/transpose mechanism as the complete Farkas curl (12m)--(12n), now
+derived directly from the simultaneous rooted triangles rather than posited
+as a price ansatz.
