@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.30 — 2026-08-22 (Baer target sharpened: component parity, and `k ≥ 3` is essential).**
+**Version 2.31 — 2026-08-22 (NONBIP-CONNECTED restated as a SINGULARITY claim; Sachs congruence recorded).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -399,6 +399,66 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   also Eulerian there and meets only one of the two `D`-components, so `T`
   need not meet every component nor detect the component cut, which is
   directly relevant to the `T = A ∩ D` lane below.
+
+  **(x) THE NODE RESTATED — and this formulation survives every control**
+  (sol-1, 17:33Z). From `A² = L_D + J`, `dim ker(A) = #comp(D) − 1`. Therefore
+
+  > **NONBIP-CONNECTED ⟺ every loopless binary `q`-regular C4-free `A` on
+  > `q²` vertices is SINGULAR.**
+
+  Connected `D` ⟺ `A` nonsingular. What makes this worth more than the
+  statements it replaces: the `q = 4` model and the affine control are BOTH
+  singular, so unlike the trace/component family this formulation is not
+  refuted by any ambient control we hold. It is the first restatement of the
+  node that survives everything the room has built to kill things with.
+
+  **(xi) THE SACHS CONGRUENCE — a candidate that grows with `k`** (Fable,
+  17:34Z, sharpening sol-1's reframing). By matrix-tree,
+  `det(L_D + J) = n²·τ(D)`, so `det A = ± q²·√τ(D)`. Two consequences:
+  1. `τ(D)` must be a perfect square — the already-closed det/τ test,
+     consistent.
+  2. NEW and `k`-dependent: **`4^k = q²` divides `det A`**, with
+     `v₂(det A) = 2k + v₂(τ(D))/2` exactly. Connectedness is what upgrades
+     the automatic `q | det A` to `q² | det A`.
+
+  Expanding entrywise by Sachs — `det A = Σ_S (−1)^{r(S)} 2^{c(S)}` over
+  spanning elementary subgraphs (disjoint edges plus cycles, and **no C4
+  terms**, which is where C4-freeness enters) — the statement becomes: *the
+  signed count of spanning Sachs subgraphs with FEWER THAN `2k` cycles must
+  vanish mod `4^k`* (terms with `c(S) ≥ 2k` are already `≡ 0`). The `c = 0`
+  case is trivial matching parity from `A𝟙 = q𝟙`; the content starts at
+  `c = 1 … 2k−1` and **genuinely grows with `k`** — at `q = 8`, cancellation
+  mod 64 among Sachs subgraphs with at most 5 cycles. On the `q = 4` control
+  both sides vanish because `D` is disconnected, which is the correct
+  behaviour: the invariant is nonvacuous exactly on the connected case we
+  want to kill.
+
+  **Status, with sol-1's own scope correction applied.** The congruence is
+  retained as a precise candidate interface. The *presently available*
+  Sachs/cycle-length consumer is CLOSED — not the future route: the `c = 0`
+  term is ordinary matching parity, and `c ≥ 1` sums perfect-matching counts
+  of `A − V(C)` over triangles and cycles of length `≥ 5`, on which
+  C4-freeness gives no divisibility or bound. **No wrapper is to be built:**
+  the congruence is algebraically identical to the banked `q² | det A`
+  consequence until a combinatorial valuation UPPER bound appears. An
+  involution proving `det A = 0` outright would BE the theorem.
+
+  **(xii) SPLIT BY THE PARITY OF `k`** (divergence round #2, 17:28–17:30Z).
+  Converged first negative: `8 | q` on its own yields no mod-`2^j` counting
+  currency, and all 8-divisibility local-count routes are CLOSED, along with
+  T/component/transport-cardinality refinements. The one honest structural
+  split is the parity of `k`:
+  - **odd `k`** — the canonical `μ = −1` / `±√q` survivor is residual and
+    trace-zero by the already-banked trace-escape interface, so it
+    disappears. This narrows odd-`k` designated carriers to other
+    square-in-`ℚ(μ)` sectors but does NOT close them.
+  - **even `k ≥ 4`** — the survivor remains, and this is exactly the open
+    `mult_D(−1)` problem of (vii), with `q = 4` as its realized disconnected
+    control.
+
+  *Operator note:* the suggested `q = 8` Diophantine endpoint falls under the
+  A.5.2 order-64 park (goal #30), and the owner correctly declined to pursue
+  it without an explicit go. It is flagged here rather than acted on.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -716,6 +776,21 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.31** (2026-08-22 ~18:30Z, editor): the node is restated as a
+  SINGULARITY claim — `dim ker(A) = #comp(D) − 1`, so NONBIP-CONNECTED is
+  exactly "every loopless binary q-regular C4-free `A` on `q²` vertices is
+  singular" — and unlike the trace/component family this survives both the
+  `q = 4` model and the affine control, since both are singular. Records the
+  Sachs congruence that follows from `det A = ±q²√τ(D)`: the signed count of
+  spanning Sachs subgraphs with fewer than `2k` cycles vanishes mod `4^k`,
+  content growing with `k` and nonvacuous only on the connected case. Present
+  Sachs consumer CLOSED on the owner's own scope correction, congruence
+  retained, no wrapper until a valuation upper bound exists. Divergence #2
+  closes all 8-divisibility local-count routes and splits the node by
+  parity(k): odd k removes the `μ = −1` survivor via banked trace-escape,
+  even `k ≥ 4` remains the open multiplicity problem. `q = 8` Diophantine
+  endpoint flagged as blocked by the A.5.2 park.
 
 - **2.30** (2026-08-22 ~17:30Z, editor): records the component parity law —
   `#abs(C) ≡ q·m² (mod 2)`, even for every component at binary `q`, odd at
