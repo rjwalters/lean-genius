@@ -618,6 +618,63 @@ theorem squareOrderNine_threeHigh_secondProfile_paired_resolutions_cross_le_one
   exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hbParts.1).1,
     (Finset.mem_inter.mp hbParts.2).1⟩
 
+/-- The two external seven-point supports are anticomplete in the original
+graph.  A cross edge would close a four-cycle through the special edge. -/
+theorem squareOrderNine_threeHigh_secondProfile_paired_supports_anticomplete
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hloc : (G.induce (G.neighborSet x)).edgeFinset.card = 4) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let Fy := (G.neighborFinset y ∩ B 0) \ S
+    let Fz := (G.neighborFinset z ∩ B 0) \ S
+    ∀ wy ∈ Fy, ∀ wz ∈ Fz, ¬ G.Adj wy wz := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let Fy := (G.neighborFinset y ∩ B 0) \ S
+  let Fz := (G.neighborFinset z ∩ B 0) \ S
+  have hyzAdj :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hy hz hyz hloc
+  have hyS : y ∈ S := (Finset.mem_sdiff.mp hy).1
+  have hzS : z ∈ S := (Finset.mem_sdiff.mp hz).1
+  intro wy hwy wz hwz hcross
+  have hwyParts := Finset.mem_sdiff.mp hwy
+  have hwzParts := Finset.mem_sdiff.mp hwz
+  have hywz : y ≠ wz := fun h =>
+    hwzParts.2 (h ▸ hyS)
+  have hwyz : wy ≠ z := fun h =>
+    hwyParts.2 (h ▸ hzS)
+  have hwyCommon : wy ∈ G.neighborFinset y ∩ G.neighborFinset wz :=
+    Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hwyParts.1).1,
+      (G.mem_neighborFinset wz wy).mpr ((G.adj_comm wy wz).mp hcross)⟩
+  have hzCommon : z ∈ G.neighborFinset y ∩ G.neighborFinset wz :=
+    Finset.mem_inter.mpr ⟨(G.mem_neighborFinset y z).mpr hyzAdj,
+      (G.mem_neighborFinset wz z).mpr ((G.adj_comm z wz).mp
+        ((G.mem_neighborFinset z wz).mp
+          (Finset.mem_inter.mp hwzParts.1).1))⟩
+  have hle := common_le_one_of_not_containsC4 hfree y wz hywz
+  exact hwyz (Finset.card_le_one.mp hle wy hwyCommon z hzCommon)
+
 end
 
 end Erdos85
@@ -630,3 +687,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_defect_census
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_special_puncture_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_resolutions_cross_le_one
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_supports_anticomplete
