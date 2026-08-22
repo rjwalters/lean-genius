@@ -633,10 +633,36 @@ This locates the information threshold: the potential need not name rows or
 use the full arbitrary Farkas ray, but it must at least detect the imbalance
 pattern of the selected U1 fibers in each local eligibility graph.  The
 profile is almost injective in the first instance (44 profiles on 47 rows),
-so this is not yet a uniform counting lemma.  Its value is as a positive
-target for compression: identify which statistic of the sixteen label loads
-is responsible for the strict sign.  The script modes `--features
-candidate-count` and `--features load-profile` reproduce the boundary.
+so by itself this is not yet a uniform counting lemma.  However, the profile
+can be compressed to two elementary row statistics.  Write `ell_b(t)` for
+the number of eligible candidates at row `t` carrying selected label `b` and
+set
+
+```text
+c(t) = sum_b binom(ell_b(t),2).                              (12i)
+```
+
+This is exactly the number of unordered pairs of eligible candidates which
+conflict at a selected U1 label.  Refining the five-way row type by only the
+candidate count and `c(t)`, and again indexing skew coefficients by ordered
+refined types and support overlap, strictly separates all six seed-zero
+instances.  Their normalized optima are
+
+```text
+branch 3: -0.493338506, -1.55163664, -0.722755960,
+branch 4: -2.19211409,  -5.99921391, -0.481591077.
+```
+
+Both scalars matter: candidate count alone has optimum zero on all six;
+total selected-label load in place of `c(t)` has optimum zero on the first;
+and `c(t)` without candidate count also has optimum zero there.  Thus the
+first reproducible positive compression is the pair `(number of eligible
+candidates, number of candidate conflicts)`.  This suggests a concrete
+uniform counting target: express the skew matching potential through local
+capacity and collision excess rather than through sixteen named fibers.
+The script modes `--features candidate-count`, `--features total-load`,
+`--features collisions`, and `--features load-profile` reproduce this
+boundary; every refined mode retains candidate count.
 
 This also identifies exactly what the earlier reduced-`L`
 ``diagonal-even'' condition measured.  In that formulation

@@ -2,8 +2,9 @@
 """Fit invariant antisymmetric matching potentials for the q=9 B.3 horn.
 
 The basic potential class only sees ordered row types and U1-support
-intersection size.  Optional modes refine a row type by its candidate count
-or by the multiset of its selected-label loads.  A cutting-plane LP minimizes
+intersection size.  Optional modes refine a row type by its candidate count,
+the total or pair-collision count of its selected-label loads, or their full
+multiset.  A cutting-plane LP minimizes
 the worst (over outer witnesses) sum of the 47 local maximum-weight matching
 values.  The matching oracle is an exact binary MILP, so convergence with a
 negative objective certifies (12h) for every supplied witness.  Objective
@@ -102,7 +103,12 @@ def instance(branch: int, seed: dict, colors: tuple[int, int]) -> dict:
 
 
 def refine_features(instances: list[dict], mode: str) -> None:
-    """Replace the basic vectors by vectors for a finer vertex signature."""
+    """Replace basic vectors by vectors for a finer vertex signature.
+
+    Every refined mode retains candidate count.  ``collisions`` adds
+    sum_b binom(load_b, 2), the number of pairs of eligible candidates which
+    conflict at a selected U1 label.
+    """
     global FEATURES
     signatures = []
     keys = set()
@@ -110,10 +116,16 @@ def refine_features(instances: list[dict], mode: str) -> None:
         row_signatures = []
         for t in range(N):
             signature = (data["types"][t], len(data["candidates"][t]))
-            if mode == "load-profile":
+            if mode in ("total-load", "collisions", "load-profile"):
                 loads = Counter(b for support in data["labels"][t]
                                 for b in support)
-                signature += (tuple(sorted(loads.values())),)
+                if mode == "total-load":
+                    signature += (sum(loads.values()),)
+                elif mode == "collisions":
+                    signature += (sum(x * (x - 1) // 2
+                                      for x in loads.values()),)
+                else:
+                    signature += (tuple(sorted(loads.values())),)
             row_signatures.append(signature)
         signatures.append(row_signatures)
         for t in range(N):
@@ -231,6 +243,7 @@ def main() -> int:
     parser.add_argument("--individual", action="store_true",
                         help="fit each locally feasible instance separately")
     parser.add_argument("--features", choices=("basic", "candidate-count",
+                                                "total-load", "collisions",
                                                 "load-profile"),
                         default="basic")
     args = parser.parse_args()
