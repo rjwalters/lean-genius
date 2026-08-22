@@ -1165,6 +1165,102 @@ theorem squareOrderNine_threeHigh_secondProfile_paired_resolution_matching
     exact Finset.card_le_one.mp (hcross wy hwy wz hwz)
       b hb c hc
 
+/-- A common missing row has a five-point B0 support simultaneously
+disjoint from both eight-point special rows. -/
+theorem squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_union
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x y z b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hz : z ∈ (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset x)
+    (hyz : y ≠ z)
+    (hb : b ∈
+      ((secondOrderDefectGraph G).neighborFinset y ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) ∩
+      ((secondOrderDefectGraph G).neighborFinset z ∩
+        (squareOrderNineLowIncidenceBin G 1 \
+          (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))) :
+    let B := squareOrderNineLowIncidenceBin G
+    let Ry := G.neighborFinset y ∩ B 0
+    let Rz := G.neighborFinset z ∩ B 0
+    let Q := G.neighborFinset b ∩ B 0
+    Ry.card = 8 ∧ Rz.card = 8 ∧ Q.card = 5 ∧
+      Disjoint Ry Rz ∧ Disjoint Ry Q ∧ Disjoint Rz Q ∧
+      ((Ry ∪ Rz) ∪ Q).card = 21 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let Ry := G.neighborFinset y ∩ B 0
+  let Rz := G.neighborFinset z ∩ B 0
+  let Q := G.neighborFinset b ∩ B 0
+  let D := secondOrderDefectGraph G
+  have hyBase := (Finset.mem_sdiff.mp hy).1
+  have hzBase := (Finset.mem_sdiff.mp hz).1
+  have hbParts := Finset.mem_inter.mp hb
+  have hbY := Finset.mem_inter.mp hbParts.1
+  have hbZ := Finset.mem_inter.mp hbParts.2
+  have hbB1 : b ∈ B 1 := (Finset.mem_sdiff.mp hbY.2).1
+  have hyB0 : y ∈ B 0 := (Finset.mem_inter.mp hyBase).2
+  have hzB0 : z ∈ B 0 := (Finset.mem_inter.mp hzBase).2
+  have hxy : G.Adj x y :=
+    (G.mem_neighborFinset x y).mp (Finset.mem_inter.mp hyBase).1
+  have hxz : G.Adj x z :=
+    (G.mem_neighborFinset x z).mp (Finset.mem_inter.mp hzBase).1
+  have hyAnti : b ∈ antipodalNeighbors G y ∩ B 1 := by
+    have hanti :=
+      squareOrderNine_threeHigh_binThree_binZero_neighbor_binOne_defect_antipodal
+        G hfree hhigh hx hyB0 hbB1 hxy
+          ((D.mem_neighborFinset y b).mp hbY.1)
+    exact Finset.mem_inter.mpr ⟨
+      (antipodalGraph_adj G y b).mp hanti, hbB1⟩
+  have hzAnti : b ∈ antipodalNeighbors G z ∩ B 1 := by
+    have hanti :=
+      squareOrderNine_threeHigh_binThree_binZero_neighbor_binOne_defect_antipodal
+        G hfree hhigh hx hzB0 hbB1 hxz
+          ((D.mem_neighborFinset z b).mp hbZ.1)
+    exact Finset.mem_inter.mpr ⟨
+      (antipodalGraph_adj G z b).mp hanti, hbB1⟩
+  have hyFiber :=
+    squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hyBase hyAnti
+  have hzFiber :=
+    squareOrderNine_threeHigh_secondProfile_special_antipodal_binOne_fiber
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx hzBase hzAnti
+  dsimp only at hyFiber hzFiber
+  have hpack :=
+    squareOrderNine_threeHigh_secondProfile_special_binZero_row_packing
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hpack
+  have hRy : Ry.card = 8 := hpack.1 y hyBase
+  have hRz : Rz.card = 8 := hpack.1 z hzBase
+  have hQ : Q.card = 5 := hyFiber.2.1
+  have hYZ : Disjoint Ry Rz := hpack.2.1 y hyBase z hzBase hyz
+  have hYQ : Disjoint Ry Q := hyFiber.2.2.2
+  have hZQ : Disjoint Rz Q := hzFiber.2.2.2
+  have hUnionQ : Disjoint (Ry ∪ Rz) Q := by
+    rw [Finset.disjoint_left]
+    intro v hvUnion hvQ
+    rcases Finset.mem_union.mp hvUnion with hvY | hvZ
+    · exact (Finset.disjoint_left.mp hYQ) hvY hvQ
+    · exact (Finset.disjoint_left.mp hZQ) hvZ hvQ
+  have hUnionCard : ((Ry ∪ Rz) ∪ Q).card = 21 := by
+    rw [Finset.card_union_of_disjoint hUnionQ,
+      Finset.card_union_of_disjoint hYZ, hRy, hRz, hQ]
+  exact ⟨hRy, hRz, hQ, hYZ, hYQ, hZQ, hUnionCard⟩
+
 end
 
 end Erdos85
@@ -1183,3 +1279,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_hole_color_agreement
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_color_shared_rows
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_paired_resolution_matching
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_common_hole_B0_support_union
