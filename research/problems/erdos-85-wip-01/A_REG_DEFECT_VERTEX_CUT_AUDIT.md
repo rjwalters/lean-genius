@@ -41,9 +41,9 @@ residue sum cannot lower the total to `q-1`.  Both cases contradict (1).
 Thus connected `D` has no articulation vertex: its vertex connectivity is at
 least two.
 
-## Exact two-vertex-separator escape
+## Cut-variance two-vertex-separator escape
 
-The same argument does not prove three-connectivity.  If deleting
+Cut variance by itself does not prove three-connectivity.  If deleting
 `W = {x,y}` leaves at least two components, their boundaries total at most
 `2(q-1)`.  The residue bounds leave one sharp possibility:
 
@@ -89,11 +89,10 @@ deg_D(x,S_1) = p,              deg_D(y,S_1) = q-1-p,
 deg_D(x,S_2) = q-1-p,          deg_D(y,S_2) = p.
 ```
 
-Every value `0 <= p <= q-1` satisfies all scalar cut, equality, and pair
-codegree constraints.  Hence the cut theorem proves two-connectivity but
-does not exclude a two-vertex separator.  A proof of three-connectivity would
-need location information that distinguishes how the two low sets split the
-two punctured neighborhoods.
+Every value `0 <= p <= q-1` satisfies the scalar cut, equality, and pair
+codegree constraints considered so far.  At this layer, a proof of
+three-connectivity still needs location information that distinguishes how
+the two low sets split the two punctured neighborhoods.
 
 There is an exact C4-free description of that remaining location problem.
 All vertices in `N_A(x)` already have the common neighbor `x`, so their
@@ -123,10 +122,53 @@ pair-capacity consequences of C4-freeness are compatible with every value of
 `p`; any exclusion must restore how these abstract cells are located at their
 own vertices in the original graph.
 
+## Mantel compression excludes the escape
+
+The missing location input is supplied by the minimum-cut Mantel theorem.
+For either component, orient the complementary shore of order `1 mod q`; its
+associated `q`-set is precisely the low set `Z_i`.  The theorem gives
+
+```text
+e_D(Z_i) >= q^2 / 4 - 1.
+```
+
+On the other hand, write
+
+```text
+Z_i = {c} disjoint-union P_i disjoint-union Q_i,
+```
+
+where `c` is the unique point in `N_A(x) intersect N_A(y)`, `P_i` lies in
+`N_A(x) \ N_A(y)`, and `Q_i` lies in `N_A(y) \ N_A(x)`.  Every pair inside
+`{c} union P_i` shares the common `A`-neighbor `x`, and every pair inside
+`{c} union Q_i` shares `y`; none of those pairs is a `D`-edge.  Therefore all
+`D[Z_i]` edges run between `P_i` and `Q_i`, and
+
+```text
+e_D(Z_i) <= |P_i| |Q_i|
+         = p(q-1-p)
+         <= floor((q-1)^2 / 4)
+         = q^2 / 4 - q / 2.
+```
+
+For even `q >= 8`, this is strictly below `q^2/4-1`, a contradiction.  Thus
+the paired minimum-cut escape cannot occur, and connected `D` has no
+one- or two-vertex separator:
+
+```text
+kappa(D) >= 3.
+```
+
+The abstract cyclic-grid construction above remains useful only as a scope
+control: it shows why C4 fiber capacity alone did not see the contradiction;
+it does not satisfy the required Mantel density in `D[Z_i]`.
+
 ## Status
 
-- **Proved mathematically here:** connected `D` has no articulation vertex.
-- **Exact unresolved boundary:** the paired minimum-cut configuration above.
-- **Location interface:** two cross-intersecting punctured parallel classes
-  whose omission sizes are `p` and `q-1-p`.
-- **Not claimed:** a Lean theorem or three-vertex-connectivity.
+- **Proved mathematically:** connected `D` is three-vertex-connected for even
+  `q >= 8`, using cut variance plus the minimum-cut Mantel bound.
+- **Intermediate equality interface:** two cross-intersecting punctured
+  parallel classes with omission sizes `p` and `q-1-p`; Mantel compression
+  excludes it in the graph.
+- **Not claimed here:** a Lean theorem.  The Mantel input and joint argument
+  remain subject to the squad's independent review status.
