@@ -1110,6 +1110,121 @@ theorem squareOrderNine_pair_pattern_mem_comm
       Finset.mem_inter.mpr ⟨(G.mem_neighborFinset t u).mpr
         ((G.adj_comm u t).mp htAdj), hu⟩, huP⟩
 
+/-- Pointwise B0 Gram law.  Distinct residual neighbors of one ordinary row
+have disjoint incidence blocks in the unmarked B1 core. -/
+theorem squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {x t u v : V}
+    (ht : t ∈ squareOrderNineLowIncidenceBin G 0 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hu : u ∈ G.neighborFinset t ∩
+      (squareOrderNineLowIncidenceBin G 0 \
+        (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)))
+    (hv : v ∈ G.neighborFinset t ∩
+      (squareOrderNineLowIncidenceBin G 0 \
+        (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)))
+    (huv : u ≠ v) :
+    let B := squareOrderNineLowIncidenceBin G
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    Disjoint (G.neighborFinset u ∩ U1) (G.neighborFinset v ∩ U1) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  rw [Finset.disjoint_left]
+  intro b hbu hbv
+  have hbU := (Finset.mem_inter.mp hbu).2
+  have htB0 := (Finset.mem_sdiff.mp ht).1
+  have hbB1 := (Finset.mem_sdiff.mp hbU).1
+  have htb : t ≠ b := by
+    intro h
+    subst b
+    have hk0 := (Finset.mem_filter.mp htB0).2
+    have hk1 := (Finset.mem_filter.mp hbB1).2
+    omega
+  have htCommon : t ∈ G.neighborFinset u ∩ G.neighborFinset v := by
+    have htu := (G.mem_neighborFinset t u).mp (Finset.mem_inter.mp hu).1
+    have htv := (G.mem_neighborFinset t v).mp (Finset.mem_inter.mp hv).1
+    exact Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset u t).mpr ((G.adj_comm t u).mp htu),
+      (G.mem_neighborFinset v t).mpr ((G.adj_comm t v).mp htv)⟩
+  have hbCommon : b ∈ G.neighborFinset u ∩ G.neighborFinset v :=
+    Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hbu).1,
+      (Finset.mem_inter.mp hbv).1⟩
+  have hpairSub : ({t, b} : Finset V) ⊆
+      G.neighborFinset u ∩ G.neighborFinset v := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact htCommon
+    · exact hbCommon
+  have hpairCard : ({t, b} : Finset V).card = 2 := by simp [htb]
+  have hcommonLe :=
+    (not_containsC4_iff_forall_common_le_one G).mp hfree u v huv
+  have := Finset.card_le_card hpairSub
+  omega
+
+/-- Pointwise mixed Gram law.  If `u` is a residual neighbor of `t`, no
+original U1-core edge can join an incidence point of `t` to an incidence
+point of `u`. -/
+theorem squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {x t u c b : V}
+    (ht : t ∈ squareOrderNineLowIncidenceBin G 0 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hu : u ∈ G.neighborFinset t ∩
+      (squareOrderNineLowIncidenceBin G 0 \
+        (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0)))
+    (hc : c ∈ G.neighborFinset t ∩
+      (squareOrderNineLowIncidenceBin G 1 \
+        (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))
+    (hb : b ∈ G.neighborFinset u ∩
+      (squareOrderNineLowIncidenceBin G 1 \
+        (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) :
+    ¬ G.Adj c b := by
+  intro hcb
+  have htB0 := (Finset.mem_sdiff.mp ht).1
+  have hbB1 := (Finset.mem_sdiff.mp (Finset.mem_inter.mp hb).2).1
+  have htb : t ≠ b := by
+    intro h
+    subst b
+    have hk0 := (Finset.mem_filter.mp htB0).2
+    have hk1 := (Finset.mem_filter.mp hbB1).2
+    omega
+  have huB0 := (Finset.mem_sdiff.mp (Finset.mem_inter.mp hu).2).1
+  have hcB1 := (Finset.mem_sdiff.mp (Finset.mem_inter.mp hc).2).1
+  have huc : u ≠ c := by
+    intro h
+    subst c
+    have hk0 := (Finset.mem_filter.mp huB0).2
+    have hk1 := (Finset.mem_filter.mp hcB1).2
+    omega
+  have huCommon : u ∈ G.neighborFinset t ∩ G.neighborFinset b := by
+    exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hu).1,
+      (G.mem_neighborFinset b u).mpr ((G.adj_comm u b).mp
+        ((G.mem_neighborFinset u b).mp (Finset.mem_inter.mp hb).1))⟩
+  have hcCommon : c ∈ G.neighborFinset t ∩ G.neighborFinset b := by
+    exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hc).1,
+      (G.mem_neighborFinset b c).mpr ((G.adj_comm c b).mp hcb)⟩
+  have hpairSub : ({u, c} : Finset V) ⊆
+      G.neighborFinset t ∩ G.neighborFinset b := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact huCommon
+    · exact hcCommon
+  have hpairCard : ({u, c} : Finset V).card = 2 := by simp [huc]
+  have hcommonLe :=
+    (not_containsC4_iff_forall_common_le_one G).mp hfree t b htb
+  have := Finset.card_le_card hpairSub
+  omega
+
 /-- For an ordinary row and a marked root, all common neighbors lie in that
 root's seven-point B0 support, and necessarily in the residual set `T`. -/
 theorem squareOrderNine_threeHigh_secondProfile_ordinary_marked_common_eq_support_hit
@@ -2354,6 +2469,8 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_pattern
 #print axioms Erdos85.squareOrderNine_pair_pattern_mem_comm
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_common_eq_support_hit
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_marked_support_hit_or_defect
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_marked_support_fortyTwo_five_ledger
