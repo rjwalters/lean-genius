@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.28 — 2026-08-22 (NONBIP-CONNECTED: the survivor is reduced to one multiplicity question; spectral routes closed).**
+**Version 2.29 — 2026-08-22 (NONBIP-CONNECTED: the needed theorem is named — a Baer-type absolute-point theorem).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -320,6 +320,43 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   polynomial's coefficients alone can kill the canonical survivor**, so
   further Newton/congruence wrappers are not the missing currency and should
   not be built.
+
+  **(viii) THE THEOREM THE NODE NEEDS NOW HAS A NAME AND A LITERATURE
+  ANCHOR** (Fable, 09:30Z, offered explicitly as a framing rather than a lane
+  claim; numerically checked at q = 3, 5, 7).
+
+  *The classical control.* Take the `(q²_q)` configuration `AG(2,q)` minus
+  one parallel class, with the polarity `(a,b) ↔ {y = ax − b}`. Incidence
+  `d = ac − b` is symmetric in the two points, so `A` is symmetric,
+  `q`-regular and C4-free on `q²` vertices — it satisfies EVERYTHING in
+  A-REG except two things, and it fails both in the most instructive way:
+  1. `tr A = q`, not 0 — exactly `q` absolute points, the `(a,b)` with
+     `2b = a²` (for even `q`, the column `a = 0`);
+  2. `D = q·K_q`, the dropped parallel class — DISCONNECTED, with
+     `mult_D(−1) = q² − q`.
+
+  So the classical object sits exactly at the union-of-cliques extreme that
+  (vii)'s clique-blowup identified, and differs from a counterexample only by
+  having trace `+q` instead of 0. That is a very sharp place for the known
+  model to sit.
+
+  *The theorem to port.* `tr A = 0` is precisely the statement that the
+  polarity is FIXED-POINT-FREE — no absolute points. So what A-REG needs
+  beneath this node is a **Baer-type absolute-point theorem for self-polar
+  `(q²_q)` configurations**: *a polarity of a `(q²_q)` configuration whose
+  non-collinearity graph is connected has at least one absolute point.*
+  Baer's own theorem for projective planes gives `≥ n+1` absolute points, and
+  — this is why it fits (vii)'s direction — **its proof is combinatorial, not
+  spectral.** That is the technique to port, and it is the first candidate
+  beneath A-REG-NONBIP that is anchored in existing mathematics rather than
+  invented here.
+
+  Status: `GAP` still. Nothing is proven, no Lean file is open, the
+  connected-vs-disconnected hypothesis is exactly the hard part, and Baer's
+  argument is for planes rather than for configurations with a parallel class
+  removed. But the node has moved from *"a terminal must use binary incidence
+  nonlinearly"* to *"port Baer"*, which is a materially better place to
+  restart from.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -637,6 +674,19 @@ Does not count (goes to the ledger, not here):
    Branch B needs B-EXIST, B-NONEXIST, and one unbounded set for both.
 
 ## Change log
+
+- **2.29** (2026-08-22 ~10:30Z, editor, recorded while the room is stalled):
+  names the theorem the node needs. `tr A = 0` is a fixed-point-free
+  polarity, so what is wanted is a Baer-type absolute-point theorem for
+  self-polar `(q²_q)` configurations with connected non-collinearity graph;
+  Baer's plane version gives `≥ n+1` and its proof is combinatorial, which is
+  exactly what (vii) said a terminal would have to be. The classical control
+  — `AG(2,q)` minus a parallel class under `(a,b) ↔ {y = ax − b}` — satisfies
+  all of A-REG except `tr A = q` and a disconnected `D = q·K_q`, placing the
+  known model one property away from a counterexample. First candidate on
+  this node anchored in existing literature rather than invented in the room.
+  Recorded now because all three Sol lanes went stale between 06:42Z and
+  09:10Z and this framing would otherwise sit unread in chat.
 
 - **2.28** (2026-08-22 ~09:30Z, editor): divergence round #1 reduced the
   NONBIP-CONNECTED survivor from a joint kernel to a single multiplicity
