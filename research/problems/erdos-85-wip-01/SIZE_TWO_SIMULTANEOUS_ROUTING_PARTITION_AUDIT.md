@@ -455,3 +455,10 @@ order in (30) to be even for every normalized size-two defect component, or
 only after summing across components.  Commutation and row sums alone stop at
 (28); the proved 0-or-2 propagation sharpens the missing input to the
 componentwise parity in (30).
+
+In particular, (30) is automatically even when `G[c]` is a single internal
+cycle: its all-triangle-free order is either zero or the full order `2q`.
+The parity residual exists only for a size-two defect component containing at
+least two internal cycles, with an odd total order among the all-triangle-free
+ones.  This cleanly separates the already harmless connected internal-cycle
+case from the genuine mixed-cycle case.
