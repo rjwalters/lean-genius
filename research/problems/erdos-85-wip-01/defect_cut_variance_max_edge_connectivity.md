@@ -1051,7 +1051,8 @@ K intersect X  <-->  W\{c}.                  (B17W'')
 Consequently `A[X union W]` consists of the perfect matching on the
 `q-4` nonisolated X-points, this two-edge cross matching, the isolated
 vertex `c`, and possibly the single edge between the other two vertices of
-`W`.
+`W`.  Here isolation of `c` inside `W` uses the signed value
+`(A 1_W)_c=0` from (B7), not merely its membership in `K`.
 
 The R-location is then exact up to that last possible edge.  Since
 `P=K intersect R`, `K intersect W={c}`, and `c notin R`, while
