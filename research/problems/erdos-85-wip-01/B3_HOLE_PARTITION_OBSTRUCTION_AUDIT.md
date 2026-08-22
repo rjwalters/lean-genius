@@ -545,9 +545,10 @@ exactly those `s_t(L)` private dummies must be added to cover the singleton
 candidate edges.  Therefore
 
 ```text
-nu(candidateGraph(t)) < d_t
-iff there is L hitting every two-label candidate with
-    |L| + s_t(L) <= d_t-1.                                 (12fa)
+nu(candidateGraph(t))
+  = min_{L hits every two-label candidate} (|L|+s_t(L)),
+so nu(candidateGraph(t)) < d_t iff some such L has
+|L| + s_t(L) <= d_t-1.                                     (12fa)
 ```
 
 Equivalently, local feasibility says `|L|+s_t(L)>=d_t` for every real-label
