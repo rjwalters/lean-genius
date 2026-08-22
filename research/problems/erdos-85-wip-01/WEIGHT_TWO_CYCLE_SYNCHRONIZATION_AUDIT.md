@@ -84,9 +84,12 @@ distance-two H-neighbors.  By the banked
 the induced defect graph is the loopless complement of these distance-two
 pairs together with the 224 outside trace pairs.  The script reconstructs it
 directly and verifies that it is 15-regular, connected, and non-bipartite on
-all 32 vertices.  Thus the reduced witness satisfies the defining NONBIP
-defect-component condition; its missing layer is outside adjacency, not the
-component's own defect realization.
+all 32 vertices.  A global minimum-cut computation also gives exact edge
+connectivity 15=`q-1`, with a singleton shore witnessing equality.  Thus the
+reduced witness satisfies both the defining NONBIP defect-component condition
+and the new maximal-edge-connectivity law of `8b427fab6c`; its missing layer
+is outside adjacency, not the component's own defect realization or cut
+structure.
 
 The alternating eigenline is also realized, rather than inferred merely from
 the even cycle lengths.  Give consecutive vertices on each H-cycle signs

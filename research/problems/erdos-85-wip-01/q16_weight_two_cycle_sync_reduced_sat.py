@@ -12,6 +12,7 @@ nevertheless have different trace/T orientations.
 from collections import deque
 from itertools import combinations
 
+import networkx as nx
 from z3 import Bool, If, Not, Solver, Sum, is_true, sat
 
 
@@ -219,6 +220,10 @@ def main() -> None:
                 elif color[neighbor] == color[vertex]:
                     bipartite = False
     assert not bipartite
+    defect_graph = nx.Graph()
+    defect_graph.add_nodes_from(range(N))
+    defect_graph.add_edges_from(defect_edges)
+    assert nx.edge_connectivity(defect_graph) == Q - 1
     assert all(
         sum(alternating_sign[neighbor] for neighbor in defect_neighbors[vertex])
         == (Q - 5) * alternating_sign[vertex]
@@ -229,7 +234,7 @@ def main() -> None:
     print("internal type: C6 + C26 (oppositely oriented)")
     print("outside traces: 224; trace-edges: 26")
     print(f"outside resolution edges: {len(outside_edges)}")
-    print("induced defect block: connected, nonbipartite, 15-regular")
+    print("induced defect block: connected, nonbipartite, 15-regular, edge-connectivity 15")
     print("alternating vector: cross-kernel and defect eigenvalue 11")
 
 
