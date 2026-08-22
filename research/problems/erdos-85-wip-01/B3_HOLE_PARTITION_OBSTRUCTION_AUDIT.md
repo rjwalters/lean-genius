@@ -385,6 +385,25 @@ expresses `T_R mod 2` directly from the residual degree parities.  Thus (13)
 is a small diagnostic for whether the remaining obstruction is already
 linear or necessarily uses exact-degree/integrality information.
 
+The diagnostic was run directly on four unrestricted outer seeds in each
+branch.  Here `H` contains precisely the symmetric residual cells satisfying
+the two trace-orthogonality directions.  In every seed `H` was connected and
+`W intersect H` failed the cut-potential equations:
+
+```text
+branch 3: |E(H)| = 377, 378, 385, 389;  W is not a cut in all four,
+branch 4: |E(H)| = 390, 386, 388, 379;  W is not a cut in all four.
+```
+
+For seed zero in either branch, the failure already has a three-edge witness:
+an allowed residual triangle with mask weights `(0,1,0)`, hence odd
+W-intersection.  Thus the parity of `T_R` is not determined by residual
+degree parity even after imposing the full outer orthogonality support.
+This is again a sampled failure certificate, not a graph realization.  An
+odd cycle switches degree parity data but cannot in general be toggled while
+preserving the prescribed exact degrees; the surviving obstruction is
+therefore genuinely in the exact-degree/integrality layer.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
