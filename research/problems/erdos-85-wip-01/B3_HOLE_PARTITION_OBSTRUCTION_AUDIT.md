@@ -1099,6 +1099,24 @@ also removes one or two labels from the external matching system.  A uniform
 Hall-or-price proof can charge this bounded deletion loss against the
 own-versus-external role-flow inequalities (12ql).
 
+At zeroth order, the own transport is an Eulerian flow statement.  Let
+`x_tu` be the fractional multiplicity with which candidate `u` is selected
+in row `t`.  Equal own mass in (12qi) says, for every full signature `sigma`,
+
+```text
+sum_{sig(t)=sigma,u} x_tu delta_tu
+  = sum_{sig(u)=sigma,t} x_tu delta_tu.                    (12qp)
+```
+
+Thus the own-touching selections form a directed fractional flow on the
+selected-label block-intersection graph, balanced after quotienting roots by
+`(role,n,c_pair,c_all)`.  The inequalities (12ql) refine this conservation
+by every role coordinate of the shared fiber.  Formula (12qo) simultaneously
+says that each such flow edge spends one of at most two root-own labels and
+deletes its other label(s) from the external matching.  This Eulerian-flow
+plus bounded-deletion formulation is a compact graph-theoretic statement of
+the remaining uniform obstruction.
+
 The role flags in (12o)--(12p) are constrained occupancy tables, not
 independent parameters.  Let `e_tj` be the number of eligible candidates of
 role `j` at row `t`, and write `r_tb,j` for the corresponding coordinate of
