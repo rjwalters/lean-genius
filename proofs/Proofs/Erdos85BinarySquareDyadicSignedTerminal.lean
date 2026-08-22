@@ -1,0 +1,111 @@
+import Proofs.Erdos85BinarySquareAdjacencySquareAction
+
+/-!
+# Sparse signed terminal for the binary square-order branch
+
+This file formalizes the load-bearing algebraic core of the final dyadic
+occupancy layer.  If a sign vector `x` satisfies `A x = q z`, then the exact
+square-order identity transports it to a pointwise equation for the defect
+graph.  The support and sign restrictions on `z` are separate combinatorial
+inputs; this theorem certifies the matrix-to-defect transport they consume.
+-/
+
+open SimpleGraph Matrix
+
+namespace Erdos85
+
+noncomputable section
+
+/-- Multiplying the adjacency matrix by the `±1` sign vector of a shore is
+twice the local shore occupancy minus the degree. -/
+theorem cutSign_adjMatrix_mulVec_apply
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {q : ℕ} (hreg : ∀ v, G.degree v = q)
+    (S : Finset V) (v : V) :
+    (G.adjMatrix ℤ).mulVec (fun w => if w ∈ S then (1 : ℤ) else -1) v =
+      2 * ((G.neighborFinset v ∩ S).card : ℤ) - q := by
+  rw [SimpleGraph.adjMatrix_mulVec_apply]
+  have hpoint (w : V) :
+      (if w ∈ S then (1 : ℤ) else -1) =
+        2 * (if w ∈ S then (1 : ℤ) else 0) - 1 := by
+    by_cases hw : w ∈ S <;> simp [hw]
+  simp_rw [hpoint]
+  rw [Finset.sum_sub_distrib]
+  simp [G.card_neighborFinset_eq_degree, hreg]
+  ring
+
+/-- If every local shore occupancy is empty, balanced, or full, then the
+shore sign vector has a sparse signed adjacency image.  The value `+1`
+marks full lines, `-1` marks empty lines, and zero marks balanced lines. -/
+theorem cutSign_adjMatrix_mulVec_eq_sparseSigned
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {q : ℕ} (hq : 0 < q) (hreg : ∀ v, G.degree v = q)
+    (S : Finset V)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      2 * (G.neighborFinset v ∩ S).card = q ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    (G.adjMatrix ℤ).mulVec (fun w => if w ∈ S then (1 : ℤ) else -1) =
+      (q : ℤ) • fun v =>
+        if (G.neighborFinset v ∩ S).card = q then (1 : ℤ)
+        else if (G.neighborFinset v ∩ S).card = 0 then -1 else 0 := by
+  funext v
+  rw [cutSign_adjMatrix_mulVec_apply G hreg S v]
+  change
+    2 * ((G.neighborFinset v ∩ S).card : ℤ) - q =
+      (q : ℤ) *
+        (if (G.neighborFinset v ∩ S).card = q then 1
+         else if (G.neighborFinset v ∩ S).card = 0 then -1 else 0)
+  rcases htri v with hzero | hhalf | hfull
+  · have h0q : 0 ≠ q := by omega
+    simp [hzero, h0q]
+  · have hneZero : (G.neighborFinset v ∩ S).card ≠ 0 := by omega
+    have hneFull : (G.neighborFinset v ∩ S).card ≠ q := by omega
+    have hhalfZ :
+        (2 : ℤ) * (G.neighborFinset v ∩ S).card = q := by
+      exact_mod_cast hhalf
+    simp [hneZero, hneFull, hhalfZ]
+  · simp [hfull]
+    ring
+
+/-- The sparse signed equation `A x = q z`, together with the coordinate sum
+of `x`, gives the companion defect equation pointwise. -/
+theorem binarySquare_sparseSigned_companionDefect_apply
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hreg : ∀ v, G.degree v = q)
+    (x z : V → ℤ) (d : ℤ)
+    (hAx : (G.adjMatrix ℤ).mulVec x = (q : ℤ) • z)
+    (hsum : ∑ v, x v = 2 * d) (v : V) :
+    ∑ w ∈ (secondOrderDefectGraph G).neighborFinset v, x w =
+      ((q : ℤ) - 1) * x v + 2 * d -
+        (q : ℤ) * ∑ w ∈ G.neighborFinset v, z w := by
+  have hsq := binarySquare_regular_adjMatrix_sq_mulVec_apply
+    G hfree hreg x v
+  have hAA := congrArg (fun u => (G.adjMatrix ℤ).mulVec u) hAx
+  have hleft :
+      ((G.adjMatrix ℤ * G.adjMatrix ℤ) *ᵥ x) v =
+        (q : ℤ) * ∑ w ∈ G.neighborFinset v, z w := by
+    rw [← Matrix.mulVec_mulVec]
+    calc
+      (G.adjMatrix ℤ).mulVec ((G.adjMatrix ℤ).mulVec x) v =
+          (G.adjMatrix ℤ).mulVec ((q : ℤ) • z) v := by
+            rw [hAx]
+      _ = (q : ℤ) * ∑ w ∈ G.neighborFinset v, z w := by
+            rw [Matrix.mulVec_smul]
+            simp [SimpleGraph.adjMatrix_mulVec_apply]
+  rw [hsum] at hsq
+  linarith
+
+end
+
+end Erdos85
+
+#print axioms Erdos85.cutSign_adjMatrix_mulVec_apply
+#print axioms Erdos85.cutSign_adjMatrix_mulVec_eq_sparseSigned
+#print axioms Erdos85.binarySquare_sparseSigned_companionDefect_apply
