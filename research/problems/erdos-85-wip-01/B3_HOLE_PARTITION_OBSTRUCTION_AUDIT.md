@@ -648,6 +648,43 @@ larger unsigned feature class.  They verify the sign convention and leave a
 sharper uniform target: derive `mu>=0` and `alpha` from the mixed flag counts
 in (12k)--(12l).
 
+The nonnegative prices can be made local and color-symmetric on every
+seed-zero instance.  Relative to an unordered selected color pair, merge the
+five row types into four roles:
+
+```text
+regular triple; exceptional hole;
+pair missing either selected color; pair missing the unselected color.
+```
+
+For a root row `t` and selected fiber `b`, let `r_tb` be the four-vector of
+these role counts in `E_t intersect F_b`.  There are nonnegative prices of
+the form
+
+```text
+mu_tb = f(role(t), n(t), c(t), r_tb),
+alpha_t = g(role(t), n(t), c(t)),                            (12o)
+```
+
+with no dependence on the identity or selected color of `b`, nor on whether
+`b in S_t`, which strictly separate all six instances.  Their normalized
+optima are
+
+```text
+branch 3: -0.964341984, -2.40773483, -1.01006714,
+branch 4: -2.21949614,  -11.7358523, -1.45558145.
+```
+
+This is the first exact-price ansatz invariant under swapping the selected
+colors.  Coarser controls locate its necessary information: retaining only
+the load `|E_t intersect F_b|` separates three of six; replacing the four
+roles by merely residual demand five versus six separates only two;
+and deleting `n(t),c(t)` from the root price separates only one.  Thus the
+prospective lemma must combine the root mixed-triangle flag with the marked
+role census inside each eligible fiber.  Mode `--features
+fiber-role-farkas` reproduces (12o); the neighboring feature modes record
+the controls.
+
 The smallest invariant ansatz for `W` can also be eliminated exactly on the
 sampled designs.  Normalize the selected colors as low/high and give a row
 one of five types: regular triple, exceptional hole, pair missing low, pair

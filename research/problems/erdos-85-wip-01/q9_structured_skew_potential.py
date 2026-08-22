@@ -129,6 +129,119 @@ def refine_features(instances: list[dict], mode: str) -> None:
     conflict at a selected U1 label.
     """
     global FEATURES
+    if mode in ("fiber-profile-farkas", "fiber-type-profile-farkas",
+                "fiber-type-count-farkas", "fiber-type-uncolored-farkas",
+                "fiber-type-bare-farkas", "fiber-demand-farkas",
+                "fiber-role-farkas"):
+        instance_keys = []
+        all_keys = set()
+        for data in instances:
+            colors = sorted({b // 8 for b in data["selected"]})
+            row_signatures = []
+            for t in range(N):
+                loads = Counter(b for support in data["labels"][t]
+                                for b in support)
+                collisions = sum(x * (x - 1) // 2 for x in loads.values())
+                root_type = data["types"][t]
+                if mode == "fiber-role-farkas" and root_type == 3:
+                    root_type = 2
+                row_signatures.append((root_type,
+                                       len(data["candidates"][t]), collisions))
+            mu_keys = []
+            for t in range(N):
+                occupants = {b: [] for b in data["selected"]}
+                for j, u in enumerate(data["candidates"][t]):
+                    for b in data["labels"][t][j]:
+                        occupant_type = data["types"][u]
+                        if mode == "fiber-role-farkas" and occupant_type == 3:
+                            occupant_type = 2
+                        occupants[b].append(
+                            row_signatures[u] if mode == "fiber-profile-farkas"
+                            else (int(occupant_type == 0)
+                                  if mode == "fiber-demand-farkas"
+                                  else occupant_type)
+                        )
+                row_mu = {}
+                for b in data["selected"]:
+                    root_signature = (data["types"][t]
+                                      if mode == "fiber-type-count-farkas"
+                                      else row_signatures[t])
+                    key = ("mu", root_signature,
+                           tuple(sorted(occupants[b])),
+                           int(b in data["blocks"][t]), colors.index(b // 8))
+                    if mode in ("fiber-type-uncolored-farkas",
+                                "fiber-type-bare-farkas"):
+                        key = ("mu", root_signature,
+                               tuple(sorted(occupants[b])),
+                               int(b in data["blocks"][t]))
+                    if mode in ("fiber-type-bare-farkas",
+                                "fiber-demand-farkas", "fiber-role-farkas"):
+                        key = ("mu", root_signature,
+                               tuple(sorted(occupants[b])))
+                    row_mu[b] = key
+                    all_keys.add(key)
+                mu_keys.append(row_mu)
+                all_keys.add(("alpha", row_signatures[t]))
+            instance_keys.append((row_signatures, mu_keys))
+        FEATURES = {key: i for i, key in enumerate(sorted(all_keys))}
+        for data, (row_signatures, mu_keys) in zip(instances, instance_keys):
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                own_support = data["blocks"][t] & data["selected"]
+                for j, u in enumerate(data["candidates"][t]):
+                    vector = np.zeros(len(FEATURES))
+                    vector[FEATURES[("alpha", row_signatures[t])]] += 1
+                    vector[FEATURES[("alpha", row_signatures[u])]] -= 1
+                    for b in data["labels"][t][j]:
+                        vector[FEATURES[mu_keys[t][b]]] += 1
+                    for b in own_support:
+                        vector[FEATURES[mu_keys[u][b]]] -= 1
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
+    if mode == "invariant-farkas":
+        instance_keys = []
+        all_keys = set()
+        for data in instances:
+            colors = sorted({b // 8 for b in data["selected"]})
+            row_signatures = []
+            mu_keys = []
+            for t in range(N):
+                loads = Counter(b for support in data["labels"][t]
+                                for b in support)
+                collisions = sum(x * (x - 1) // 2 for x in loads.values())
+                row_signature = (data["types"][t],
+                                 len(data["candidates"][t]), collisions)
+                row_signatures.append(row_signature)
+                row_mu = {}
+                for b in data["selected"]:
+                    key = ("mu", row_signature, loads[b],
+                           int(b in data["blocks"][t]), colors.index(b // 8))
+                    row_mu[b] = key
+                    all_keys.add(key)
+                mu_keys.append(row_mu)
+                all_keys.add(("alpha", row_signature))
+            instance_keys.append((row_signatures, mu_keys))
+        FEATURES = {key: i for i, key in enumerate(sorted(all_keys))}
+        for data, (row_signatures, mu_keys) in zip(instances, instance_keys):
+            vectors = []
+            for t in range(N):
+                row_vectors = []
+                own_support = data["blocks"][t] & data["selected"]
+                for j, u in enumerate(data["candidates"][t]):
+                    vector = np.zeros(len(FEATURES))
+                    vector[FEATURES[("alpha", row_signatures[t])]] += 1
+                    vector[FEATURES[("alpha", row_signatures[u])]] -= 1
+                    for b in data["labels"][t][j]:
+                        vector[FEATURES[mu_keys[t][b]]] += 1
+                    for b in own_support:
+                        vector[FEATURES[mu_keys[u][b]]] -= 1
+                    row_vectors.append(vector)
+                vectors.append(np.array(row_vectors))
+            data["vectors"] = vectors
+        return
     if mode == "farkas-curl":
         selected_labels = sorted({b for data in instances
                                   for b in data["selected"]})
@@ -527,7 +640,15 @@ def main() -> int:
                                                 "gradient-collisions",
                                                 "free-gradient",
                                                 "row-fiber-curl",
-                                                "farkas-curl"),
+                                                "farkas-curl",
+                                                "invariant-farkas",
+                                                "fiber-profile-farkas",
+                                                "fiber-type-profile-farkas",
+                                                "fiber-type-count-farkas",
+                                                "fiber-type-uncolored-farkas",
+                                                "fiber-type-bare-farkas",
+                                                "fiber-demand-farkas",
+                                                "fiber-role-farkas"),
                         default="basic")
     args = parser.parse_args()
     data = []
