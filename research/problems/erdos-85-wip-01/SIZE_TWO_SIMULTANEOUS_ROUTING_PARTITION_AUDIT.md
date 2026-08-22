@@ -874,3 +874,45 @@ count.  To extract `p_ce mod 2`, the next step must pair the `a_xe=1`
 locations or control the `a_xe=2` locations along the internal cycles.  This
 is exactly the endpoint-marked problem anticipated in (10)--(14), now with
 an explicit two-unit budget at every root.
+
+## 12. Owner-run normal form
+
+For fixed distinct `c,e`, let
+
+```text
+K_ce = A_c cap F_e[c].
+```
+
+This is a subgraph of the internal two-factor, and its degree at `x` is
+exactly `a_xe`.  Hence every connected component of `K_ce` is an isolated
+vertex, a path, or a cycle.  The rooted budget refines this elementary
+decomposition:
+
+* a path endpoint (`deg K_ce = 1`) carries exactly one rooted
+  three-component triangle involving the color `e`, by (52);
+* a path or cycle interior (`deg K_ce = 2`) has `b_xe=0` and carries no such
+  rooted triangle;
+* an isolated vertex (`deg K_ce = 0`) either has `b_xe=1` and no such
+  triangle, or has `b_xe=0` and exactly two of them.
+
+Thus the three-component triangles mark precisely the boundaries and holes
+of the color-`e` runs along the internal cycles.  Since
+
+```text
+p_ce = |E(K_ce)|,
+```
+
+its parity has the exact component form
+
+```text
+p_ce = number of odd-edge paths and odd cycles in K_ce  (mod 2). (54)
+```
+
+The handshake lemma pairs the path endpoints, but it does not determine the
+parity of the distance between paired endpoints, and closed monochromatic
+owner runs have no endpoints at all.  Therefore (50) alone still does not
+prove (47).  The missing simultaneous input can now be stated without
+matrices: the coupled routing partitions must pair the marked endpoints with
+even run distance and pair the odd closed owner cycles, after summing over
+all colors.  A countermodel to that statement would likewise be a definitive
+failure certificate for the rooted-parity route.
