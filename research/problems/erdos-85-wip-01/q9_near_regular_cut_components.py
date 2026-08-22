@@ -87,6 +87,28 @@ def tripartite_two_factor_necessary(color_counts: tuple[int, int, int]) -> bool:
     return all(0 <= edges <= capacity for edges, capacity in zip(edge_counts, capacities))
 
 
+def bin_degree_ledger_necessary(
+    order: int, beta: tuple[int, int, int], owns_b3: bool
+) -> bool:
+    """Necessary B0/B1/B3 edge capacities inside one D0-component."""
+    owner = int(owns_b3)
+    bin_one = sum(beta) - 3 * owner
+    bin_zero = order - bin_one - owner
+    if bin_zero < 0 or bin_one < 0:
+        return False
+    # Every B1 vertex has five B0 defect neighbors; B3 has five as well.
+    if bin_one > 0 and bin_zero < 5:
+        return False
+    if owner and bin_zero < 5:
+        return False
+    # The B0 degree sum determines twice the number of internal B0 edges.
+    twice_bin_zero_edges = 8 * bin_zero - 5 * bin_one - 5 * owner
+    return (
+        twice_bin_zero_edges % 2 == 0
+        and 0 <= twice_bin_zero_edges <= bin_zero * (bin_zero - 1)
+    )
+
+
 def localized_assignment_counts(
     partition: tuple[int, ...], types: dict[int, list[tuple[int, int, int]]]
 ) -> tuple[int, int, set[int]]:
@@ -111,6 +133,34 @@ def localized_assignment_counts(
                 assignments.add(assignment)
                 placements.append((assignment, owner))
                 owner_orders.add(partition[owner])
+    return len(assignments), len(placements), owner_orders
+
+
+def bin_ledger_assignment_counts(
+    partition: tuple[int, ...], types: dict[int, list[tuple[int, int, int]]]
+) -> tuple[int, int, set[int]]:
+    """Further refine localized placements by the exact bin-degree ledger."""
+    assignments = set()
+    placements = []
+    owner_orders = set()
+    for assignment in product(*(types[order] for order in partition)):
+        if tuple(map(sum, zip(*assignment))) != TARGET_BETA:
+            continue
+        for owner in range(len(partition)):
+            color_counts = [
+                tuple(value - (index == owner) for value in beta)
+                for index, beta in enumerate(assignment)
+            ]
+            if not all(tripartite_two_factor_necessary(counts) for counts in color_counts):
+                continue
+            if not all(
+                bin_degree_ledger_necessary(order, beta, index == owner)
+                for index, (order, beta) in enumerate(zip(partition, assignment))
+            ):
+                continue
+            assignments.add(assignment)
+            placements.append((assignment, owner))
+            owner_orders.add(partition[owner])
     return len(assignments), len(placements), owner_orders
 
 
@@ -178,13 +228,18 @@ def main() -> None:
     ]
     assert order_nine_owner_types(partitions, types) == {(2, 2, 2)}
 
+    bin_ledger = [bin_ledger_assignment_counts(parts, types) for parts in partitions]
+    assert [entry[0] for entry in bin_ledger] == [21, 27, 7, 9, 7, 10, 6, 6, 3, 1, 3]
+    assert [entry[1] for entry in bin_ledger] == [21, 27, 10, 18, 7, 17, 12, 18, 6, 2, 6]
+
     print(f"verified component orders: {orders}")
-    for parts, count, (assignment_count, placement_count, owner_orders) in zip(
-        partitions, counts, localized
+    for parts, count, (assignment_count, placement_count, owner_orders), ledger in zip(
+        partitions, counts, localized, bin_ledger
     ):
         print(
             f"{parts}: color assignments={count}, localized={assignment_count}, "
-            f"B3 placements={placement_count}, B3 component orders={sorted(owner_orders)}"
+            f"B3 placements={placement_count}, B3 component orders={sorted(owner_orders)}, "
+            f"bin-ledger placements={ledger[1]}"
         )
 
 

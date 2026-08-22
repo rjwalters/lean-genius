@@ -239,6 +239,48 @@ it.  The cycle conditions still leave all eleven order rows, so the result is
 a strict profile and location refinement rather than a disconnectedness
 contradiction.
 
+## Componentwise bin-degree capacity
+
+There is one further exact aggregate constraint.  Write `epsilon=1` for the
+component containing `x` and `epsilon=0` otherwise.  Equations (7) and the
+pointwise bin-degree theorems give
+
+```text
+n1 = sum beta_i - 3 epsilon,
+n0 = |S| - n1 - epsilon,
+e_D(B1,B1;S) = n1,
+e_D(B1,B0;S) = 5 n1,
+e_D(B3,B0;S) = 5 epsilon.
+```
+
+Indeed every bin-one vertex has exactly two bin-one and five bin-zero defect
+neighbors, while the unique bin-three vertex has all five defect neighbors
+in bin zero.  Summing degree eight over the bin-zero vertices therefore
+determines
+
+```text
+e_D(B0,B0;S) = (8 n0 - 5 n1 - 5 epsilon)/2.     (9)
+```
+
+The right side must be an integer between zero and `C(n0,2)`, and a nonempty
+`B1`--`B0` or `B3`--`B0` incidence requires `n0 >= 5`.  This removes the
+non-owner order-nine type `(2,2,2)`: it would have `n1=6`, `n0=3`, and a
+negative value in (9).  Consequently every order-nine component not
+containing `x` has color type `(0,2,2)` or `(1,1,2)`, up to permutation; in
+either case its five bin-zero vertices form a defect `K5` and its four
+bin-one vertices form a colored `C4`, with every cross edge present.
+
+At the eleven-row level, (9) leaves the same numbers of color assignments as
+the two-factor test, but reduces the numbers of possible placements of `x`
+to
+
+```text
+7, 17, 12, 6, 2, 6, 27, 10, 18, 18, 21
+```
+
+in the displayed order.  Thus it removes six placements in `[9,9,60]`, two
+in `[9,18,51]`, and one in `[9,69]`, without yet eliminating an order row.
+
 ## Scope
 
 Equations (1)--(4) are exact and global.  They couple cut size to the three
