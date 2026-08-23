@@ -5055,18 +5055,17 @@ residual-center-neighbor sets.  Recall that the full anchor vector is
 00--00: (alpha_1,alpha_2)=(0,0);
 10--10: (alpha_1,alpha_2)=(0,0);
 11--11: (alpha_1,alpha_2)=(1,1);
-01--01: (alpha_1,alpha_2)=(1,1) iff exactly one root is
-         adjacent to both E_1,E_2, and (0,0) otherwise. (73rnz_cjibkzx)
+01--01: (alpha_1,alpha_2)=(0,0).                       (73rnz_cjibkzx)
 ```
 
 For `11--11`, each root has odd pole parity and therefore meets exactly one
 of the two poles; (73rnz_cjibkzw) forces those poles to be different.  Since
 both residual parities are one, (73rnz_cjibkzt) then gives one anchor for
 each owner modulo two.  For `10--10`, both residual parities are zero.  For
-`00--00`, they are again zero.  In the `01--01` cell both residual parities
-are one, while pole parity zero means that a root meets either zero or both
-poles; (73rnz_cjibkzw) permits at most one double-pole root, giving the last
-line.
+`00--00`, they are again zero.  Finally the poles `E_1,E_2` are D-adjacent,
+so their off-diagonal D equation gives `A^2_(E_1,E_2)=0`; their A-neighborhoods
+are disjoint.  Hence pole parity zero means zero pole neighbors, never two,
+and the `01--01` anchor vector is zero.
 
 Therefore the scalar diagonal-pair obstruction hides only a **diagonal
 owner class** `(c,c)`, never an off-diagonal owner error.  In particular every
@@ -5074,7 +5073,7 @@ owner class** `(c,c)`, never an off-diagonal owner error.  In particular every
 residual ambiguity (73rnz_cjibkzd).  This does not yet prove cancellation:
 the unlabeled marked unit still has to be compared with that vector through
 (73rnz_cjibkd).  It does reduce the remaining geometric theorem to the
-parity of `00--00`, `10--10`, and the non-double-pole subcell of `01--01`, with
+parity of `00--00`, `10--10`, and `01--01`, with
 the `11--11` owner value fixed pointwise.
 
 The `10` residue has an additional run-level reduction.  Let `K_10` be the
@@ -5105,7 +5104,7 @@ kind of datum the vertical edges of the root--color state two-factor can
 transport.  This does not assert that those vertical connections already
 pair the displayed endpoints; it removes the cycle obstruction and states
 the exact remaining coverage lemma.  No analogous two-pole alternation is
-available for the unanchored `00` or non-double-pole `01` runs, whose roots
+available for the unanchored `00` or `01` runs, whose roots
 have even pole parity.
 
 Moreover the entire pairing gauge is generated locally.  Any two perfect
