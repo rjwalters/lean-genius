@@ -122,17 +122,10 @@ def instance(branch: int, seed: dict, colors: tuple[int, int]) -> dict:
             "types": types, "selected": selected}
 
 
-def flat_signature_audit(data: dict) -> tuple[
-        int, int, int, tuple[str, ...], tuple[tuple[int, ...], ...], bool]:
-    """Audit the simple signature quotient in the terminal (12qy).
-
-    A flat pair uses a selected label owned by both roots and makes the two
-    same-role roots each other's unique same-role candidate on that label.
-    Return the number of nonisolated signatures, quotient edges, parallel
-    realizations discarded by the simple quotient, and whether it is a
-    forest.  A quotient loop counts as a cycle.
-    """
+def root_signature_censuses(data: dict) -> tuple[list[tuple], list[dict]]:
+    """Return the full root signatures and role censuses used in (12rb)."""
     signatures = []
+    censuses = []
     for t in range(N):
         selected_loads = Counter(
             b for u in data["candidates"][t]
@@ -143,6 +136,49 @@ def flat_signature_audit(data: dict) -> tuple[
             data["types"][t], len(data["candidates"][t]),
             sum(x * (x - 1) // 2 for x in selected_loads.values()),
             sum(x * (x - 1) // 2 for x in all_loads.values())))
+        censuses.append({
+            b: tuple(sum(1 for u in data["candidates"][t]
+                         if b in data["blocks"][u]
+                         and data["types"][u] == role)
+                     for role in range(5))
+            for b in data["selected"]})
+    return signatures, censuses
+
+
+def bundle_boundary_audit(data: dict) -> tuple[int, list[tuple[int, int]]]:
+    """Find same-role own transitions with zero whole-bundle boundary."""
+    signatures, censuses = root_signature_censuses(data)
+    tested = 0
+    zero = []
+    for t in range(N):
+        own_support = data["blocks"][t] & data["selected"]
+        for u in data["candidates"][t]:
+            if (data["types"][t] != data["types"][u]
+                    or not own_support & data["blocks"][u]):
+                continue
+            tested += 1
+            positive = Counter(
+                (signatures[t], int(b in data["blocks"][t]), censuses[t][b])
+                for b in data["blocks"][u] & data["selected"])
+            negative = Counter(
+                (signatures[u], int(b in data["blocks"][u]), censuses[u][b])
+                for b in own_support)
+            if signatures[t] == signatures[u] and positive == negative:
+                zero.append((t, u))
+    return tested, zero
+
+
+def flat_signature_audit(data: dict) -> tuple[
+        int, int, int, tuple[str, ...], tuple[tuple[int, ...], ...], bool]:
+    """Audit the retracted simple signature quotient (12qy).
+
+    A flat pair uses a selected label owned by both roots and makes the two
+    same-role roots each other's unique same-role candidate on that label.
+    Return the number of nonisolated signatures, quotient edges, parallel
+    realizations discarded by the simple quotient, and whether it is a
+    forest.  A quotient loop counts as a cycle.
+    """
+    signatures, _ = root_signature_censuses(data)
 
     realized_edges = []
     for t in range(N):
@@ -945,7 +981,9 @@ def main() -> int:
                         help="round the fitted prices at this positive scale "
                              "and audit the separator by exact integer DP")
     parser.add_argument("--audit-flat-signatures", action="store_true",
-                        help="audit the flat-signature forest terminal (12qy)")
+                        help="regression-audit the retracted terminal (12qy)")
+    parser.add_argument("--audit-bundle-boundaries", action="store_true",
+                        help="audit exact zero whole-bundle transitions (12rb)")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -996,6 +1034,7 @@ def main() -> int:
                 else:
                     data.append(candidate)
                     data_labels.append((branch, seed_number, colors))
+    audit_failed = False
     if args.audit_flat_signatures:
         all_forests = True
         for label, candidate in all_data:
@@ -1008,11 +1047,24 @@ def main() -> int:
                   f"parallel_realizations={parallel} roles={roles} "
                   f"component_degree_shapes={shapes} forest={forest}")
         print(f"flat_signature_all_forests={all_forests}")
+        audit_failed |= not all_forests
+    if args.audit_bundle_boundaries:
+        total_tested = 0
+        total_zero = 0
+        for label, candidate in all_data:
+            tested, zero = bundle_boundary_audit(candidate)
+            total_tested += tested
+            total_zero += len(zero)
+            branch, seed_number, colors = label
+            print(f"bundle_boundary branch={branch} seed={seed_number} "
+                  f"colors={colors} tested={tested} zero={zero}")
+        print(f"bundle_boundary_total_tested={total_tested} "
+              f"zero_transitions={total_zero}")
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
-    if args.audit_flat_signatures:
-        return 0 if all_forests else 1
+    if args.audit_flat_signatures or args.audit_bundle_boundaries:
+        return 1 if audit_failed else 0
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")
         return 0

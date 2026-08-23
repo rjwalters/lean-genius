@@ -1484,6 +1484,26 @@ external deletion loss—not bipartiteness of the one-shared-flag projection.
 The seed-8 self-loop is broken immediately by the pair-high/pair-other census
 swap in (12ra).
 
+The atomic version of this correction survives a wider falsification sweep.
+The mode `--audit-bundle-boundaries` constructs the two exact tagged
+multisets in (12rb) for every same-role own-touching transition and reports
+literal equality, without floating optimization.  Across 20 seeds in both
+branches and all three selected color pairs—120 quotients and 2,304 tested
+transitions, including locally Hall-failing instances—there is no zero
+bundle boundary.  This suggests the first local lemma
+
+```text
+BUNDLE ATOMIC SEPARATION:
+for every same-role own-touching transition t->u,
+(signature(t),B^+(t,u)) != (signature(u),B^-(t,u)).       (12rc)
+```
+
+Unlike the retracted flat terminals, (12rc) sees every label consumed by the
+candidate and is not refuted by the seed-8 loop.  It only rules out a
+one-transition obstruction: several nonzero bundle boundaries may still
+balance in a fractional matching flow.  Hence the global problem remains a
+signed hypergraph-circulation theorem, not a graph-cycle theorem.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
