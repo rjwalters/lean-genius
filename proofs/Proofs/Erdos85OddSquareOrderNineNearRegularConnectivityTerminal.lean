@@ -104,6 +104,49 @@ theorem exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
     SimpleGraph.ConnectedComponent.mem_supp_of_adj_mem_supp c huSupp huv
   exact Finset.mem_filter.mpr ⟨Finset.mem_univ v, hvSupp⟩
 
+/-- If every vertex of `B₀` has three neighbors in `B₁` and every vertex
+of `B₁` has five neighbors in `B₀`, double-counting the cross edges gives
+the component balance `3 |B₀| = 5 |B₁|`.  At the graph call site the two
+sets are the colour classes restricted to a zero-boundary component. -/
+theorem three_mul_card_eq_five_mul_card_of_cross_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (B₀ B₁ : Finset V)
+    (h₀ : ∀ x ∈ B₀, (D.neighborFinset x ∩ B₁).card = 3)
+    (h₁ : ∀ y ∈ B₁, (D.neighborFinset y ∩ B₀).card = 5) :
+    3 * B₀.card = 5 * B₁.card := by
+  classical
+  have hrow (x : V) :
+      (D.neighborFinset x ∩ B₁).card =
+        ∑ y ∈ B₁, if D.Adj x y then 1 else 0 := by
+    rw [Finset.sum_boole]
+    congr 1
+    ext y
+    simp [SimpleGraph.mem_neighborFinset, and_comm]
+  have hcol (y : V) :
+      (D.neighborFinset y ∩ B₀).card =
+        ∑ x ∈ B₀, if D.Adj x y then 1 else 0 := by
+    rw [Finset.sum_boole]
+    congr 1
+    ext x
+    simp [SimpleGraph.mem_neighborFinset, D.adj_comm, and_comm]
+  have hcross :
+      (∑ x ∈ B₀, (D.neighborFinset x ∩ B₁).card) =
+        ∑ y ∈ B₁, (D.neighborFinset y ∩ B₀).card := by
+    simp_rw [hrow, hcol]
+    exact Finset.sum_comm
+  calc
+    3 * B₀.card = ∑ _x ∈ B₀, 3 := by simp [Nat.mul_comm]
+    _ = ∑ x ∈ B₀, (D.neighborFinset x ∩ B₁).card := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      exact (h₀ x hx).symm
+    _ = ∑ y ∈ B₁, (D.neighborFinset y ∩ B₀).card := hcross
+    _ = ∑ _y ∈ B₁, 5 := by
+      apply Finset.sum_congr rfl
+      intro y hy
+      exact h₁ y hy
+    _ = 5 * B₁.card := by simp [Nat.mul_comm]
+
 /-- The exact `3 n₀ = 5 n₁` component balance forces the total component
 order to be divisible by eight. -/
 theorem eight_dvd_of_three_mul_eq_five_mul
@@ -168,6 +211,7 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
 #print axioms exists_nonowner_connectedComponent_of_not_connected
 #print axioms sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
 #print axioms exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
+#print axioms three_mul_card_eq_five_mul_card_of_cross_degrees
 #print axioms orderNine_component_colour_sum_even_of_handshake
 #print axioms false_of_orderNine_nearRegular_proper_component_balance
 #print axioms false_of_orderNine_nearRegular_component_handshake_and_balance
