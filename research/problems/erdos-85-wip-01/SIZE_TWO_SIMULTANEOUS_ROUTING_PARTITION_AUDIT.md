@@ -23302,3 +23302,62 @@ proper color ordering can all be achieved by one finite-state holonomy
 object.  As in Section 432, the remaining qualification is only that its
 base projection may repeat vertices or edges; no simple base-cycle claim
 is made here.
+
+## 435. The parity-cover projection is root-parity primitive
+
+The repeated-state qualification has a finite exact normal form.  Choose
+the simple properly colored cover cycle `Q_tilde` from Section 432 (or its
+avoiding version in Section 434), and let `W` be its base projection.  If
+`n:=|O_5|`, then
+
+```text
+|W|=|Q_tilde|<=32n,                               (1556)
+```
+
+and any base vertex occurs at most thirty-two times in `W`.  Indeed its
+occurrences lift to vertices `(v,a)` with pairwise distinct sheet states
+`a in F_2^5`, because `Q_tilde` is simple.
+
+More sharply, take two distinct occurrences of one base vertex `v`, with
+sheet states `a!=b`, and split the cover cycle at those occurrences.  The
+two projected arcs are closed base walks from `v` to itself.  The first
+has root-parity voltage
+
+```text
+p:=b-a!=0,
+```
+
+and the complementary arc has voltage `a-b=p`, since the sheet group has
+characteristic two.  Thus
+
+```text
+both arcs have the same nonzero root-parity vector p,
+and the same nonzero selected-tag syndrome sum_i p_i[T_i].       (1557)
+```
+
+The syndrome is nonzero because the five `[T_i]` form a basis.  Equivalently,
+
+```text
+no proper contiguous subwalk of W which begins and ends at the same
+base vertex can have zero root/tag voltage.                       (1558)
+```
+
+Otherwise its lifted endpoints would be the same `(v,a)`, repeating a
+cover vertex before closure.  Consequently the selected walk satisfies
+the dichotomy
+
+```text
+W has no repeated base vertex:
+  W is already a simple PC base cycle with zero root/tag parity;
+
+W repeats a base vertex:
+  every repeated-vertex split gives two complementary base arcs
+  carrying one common nonzero five-bit root/tag syndrome.        (1559)
+```
+
+The arcs inherit proper color changes internally, although closing either
+arc at `v` may fail the color condition.  Thus (1559) is a parity-primitive
+finite-state obstruction, not an unjustified decomposition into shorter
+PC cycles.  It bounds base-state multiplicity by thirty-two and reduces
+the remaining simplification problem to cancelling equal nonzero
+syndromes across repeated visits.
