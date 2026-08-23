@@ -1892,6 +1892,29 @@ to the simultaneous-routing lane's connection/holonomy language: `p` is the
 incoming labeled potential, `q` the capacity-corrected outgoing potential,
 and `epsilon` the localized curvature.
 
+The corrected uniform target suggested by all four exact ledgers encountered
+so far is the following, deliberately stated as a conjecture rather than a
+classification already obtained.
+
+```text
+PIVOT-FLAT CERTIFICATE CONJECTURE (q=9):
+every branch-3/4 quotient passing the zero-loss restricted Hall test has
+sets P,R of selected labels, |P|<=2 and |R|<=1, and an integral (12ro)
+certificate such that
+  * its scalar is -1 and every coefficient has absolute value at most 2;
+  * bundle multipliers use only iota=0 external states;
+  * negative demand roots are among the B0 roots incident with P;
+  * capacity prices outside demand roots use labels in P union R; and
+  * epsilon(t,u)>0 in (12ru) implies B_t meets P union R.       (12rv)
+```
+
+Here `R` is empty in three observed ledgers and is the singleton secondary
+relay `{7}` in the remaining branch-4 ledger.  Statement `(12rv)` survives
+the twenty-seed falsifier that killed `(12rs)` and packages exactly the
+structure needed for a finite equality-case proof.  Its next required test is
+not another numbered-root comparison but an audit over more deterministic
+outer models that searches jointly for the bounded pivot/relay support.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
