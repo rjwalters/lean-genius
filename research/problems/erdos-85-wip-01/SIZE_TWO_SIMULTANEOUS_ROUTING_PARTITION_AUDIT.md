@@ -14537,3 +14537,72 @@ an odd cut across it, supported on an explicit odd subset of the five root
 matchings.  This is the color-resolved recursive analogue of the strict
 export that initiated the five-port analysis, now located entirely on
 actual ports in `O` and tied to the holonomy shore from Section 282.
+
+## 284. An odd residual factor cut exports a nonzero reverse tag
+
+Fix a color `a` satisfying (896).  Because `H_a^C` has port degrees at most
+two, the parity of its cut across `S` is the parity of its degree-one
+vertices lying in `S`.  Put
+
+```text
+W_a(S):={w in S:deg_(H_a^C)(w)=1}.
+```
+
+Then handshaking on `S` gives
+
+```text
+|W_a(S)|=|delta_(H_a^C)(S)|=1 mod 2.                (897)
+```
+
+Every `w in W_a(S)` carries a canonical reverse routing row.  The port `w`
+has exactly two `a`-neighbors, say `y_w^0,y_w^1`.  Its degree one in
+`H_a^C` means that exactly one of these labels meets `C`, at exactly one
+root by (779); the other label meets no root of `C`.  Their two-element
+`c`-neighborhoods are disjoint.  A common root would make that root and
+`w` have the two common `a`-neighbors `y_w^0,y_w^1`, contrary to
+`C_4`-freeness.  Hence
+
+```text
+E_w^a:=(N_c(y_w^0) disjoint_union N_c(y_w^1))\C,
+|E_w^a|=3.                                           (898)
+```
+
+This is the exact reverse analogue of the three-port destination set
+`D_i^a` in (811): there are four distinct roots in the full reverse row,
+exactly one selected and three outside the selected incidence component.
+
+Let `(U_j,V_j)` be the incidence components of `R_ce`, with `U_0=C`, and
+for `j!=0` define
+
+```text
+rho_w^a(j):=|E_w^a intersect U_j| mod 2.             (899)
+```
+
+The outside root components partition `c\C`, so every singleton terminal
+has odd augmentation:
+
+```text
+sum_(j!=0) rho_w^a(j)=1.                             (900)
+```
+
+Aggregate over the odd set of singleton terminals,
+
+```text
+Rho_a(S):=sum_(w in W_a(S)) rho_w^a.
+```
+
+Equations (897) and (900) give
+
+```text
+aug(Rho_a(S))=|W_a(S)|=1,
+so Rho_a(S)!=0.                                      (901)
+```
+
+Thus the residual owner shore does not merely have a nonzero color cut.
+In one actual exterior color it exports an odd, component-resolved
+three-root tag back to the opposite side `c\C`.  The composed route from
+Sections 279--283 has therefore returned to the same kind of nonvanishing
+destination ledger with which Section 259 began, but now without a closed
+five-port target.  A terminal price must identify why this reverse tag
+cannot be absorbed by the ordinary outside incidence components, or show
+that iterating these located tags creates forbidden owner holonomy.
