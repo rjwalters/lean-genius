@@ -3017,6 +3017,35 @@ degree census.  It does not by itself exclude the collision -- T may contain
 6-cycles -- but it replaces a generic privacy failure by a concrete short
 routed object whose remaining ordinary/defect attachments can be audited.
 
+The remaining attachment census is already coupled to the canonical graph
+K.  Fix an inside empty star center E and a residual outside full center G.
+Every A-neighbor of E lies outside S, while every A-neighbor of G lies inside
+S, so E and G have no common A-neighbor; they are also nonadjacent.  Hence
+`EG in D`.  By (21), the A-edges between `N_A(E)` and `N_A(G)` form a
+matching and their number is `A^3(E,G)`, with
+
+```text
+1[EG in K] = A^3(E,G)                              (mod 2). (73rnz_aq)
+```
+
+Every switch from a leaf L of E to G through p contributes the distinguished
+cross-matching edge `Lp`: indeed `L in N_A(E)`, `p in N_A(G)`, and `Lp in T`.
+Let `c_(E,G)` be the number of these switch edges (zero, one, or two by
+(73rnz_ap)), and let `rho_(E,G)` count all remaining edges of the
+`N_A(E)`--`N_A(G)` cross matching.  Then
+
+```text
+1[EG in K] = c_(E,G)+rho_(E,G)                    (mod 2). (73rnz_ar)
+```
+
+This identifies the required secondary-fiber label exactly.  A private
+star-level switch (`c_(E,G)=1`) is detected by K unless the residual matching
+census `rho_(E,G)` is odd; a two-leaf collision contributes the explicit
+6-cycle but cancels from this parity.  Thus the compensation is no longer an
+unspecified defect tag: it is the parity of the cross-neighborhood matching
+after deleting the realized leaf--port switch edges.  Summing (73rnz_ar)
+against the shore relation (20) is the concrete next conservation test.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
