@@ -4398,6 +4398,19 @@ non-strict positive-special fiber descends in exact load.  The seed-20
 counterexample shows that interchanging “globally” with “inside the selected
 fiber” is invalid.
 
+An unconditional all-row rescan is an important scope correction.  Every
+random outer design at seeds 0 through 20 has at least one strict fractional
+one-row cover, including every design on which load descent also succeeds.
+Thus those random successes do **not** independently test the conditional
+descent theorem on the row-feasible locus; they already die in the first
+horn.  The stored durable branch-4 payload is row-feasible under this exact
+fractional audit (zero strict one-row covers) and its unique minimum-load
+special point `p=3` does have a strict full-fiber cover.  Consequently the
+hard second horn currently has one serious row-feasible regression, not
+fifty.  The CLI now always computes all exact one-row optima and reports
+`all_rows_fractionally_feasible`, avoiding the former asymmetry where rows
+were scanned only after descent failed.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
