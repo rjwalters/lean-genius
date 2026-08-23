@@ -2292,6 +2292,25 @@ blocks.  This is the exact extreme-endpoint analogue of contracting straight
 passages and retaining turn/switch/boundary events in the shared occurrence
 flow; no identification with a global closed token cycle is asserted here.
 
+The owner-bend symbol has an additional fiber localization.  Suppose
+`p_i=y_((3-i),j)` is outside.  Then `chi_i=1` says that this point is also
+adjacent to `z_i`.  But `E_j,z_i` are non-D and their unique common
+A-neighbor is `y_(i,j)` by construction.  Since `p_i` is adjacent to both,
+uniqueness forces
+
+```text
+chi_i=1  iff  y_(1,j)=y_(2,j)                            (73rnz_g)
+```
+
+for an outside crossed intermediary.  Hence an outside owner bend occurs
+exactly on a shared-witness line.  There is at most one such line, because
+two shared witnesses would be two common neighbors of the owner pair.  If
+both oriented crossed routes have outside owner bends, they therefore use
+the same point: `p_1=p_2`, and (73rnz') places the state in the unique
+`kappa=1, delta=0, tau_1=tau_2=0` row of (73rnz'').  Outside owner bends are
+thus globally localized; mark bends, defect stops, and fresh continuations
+remain distributed among the other fibers.
+
 The corresponding signed occurrence boundary is already integral (all
 differences in the following display are taken in `Z`).  For
 each endpoint write `d_(i,j)=1[z_i y_(i,j) in D]`, so that
