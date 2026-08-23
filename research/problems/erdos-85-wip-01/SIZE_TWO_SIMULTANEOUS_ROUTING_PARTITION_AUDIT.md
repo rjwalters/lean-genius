@@ -10819,9 +10819,11 @@ marked-H charge.
 
 ## 212. The safe private terminal is a switch-relation quotient
 
-Let `Sigma` be the finite private endpoint-state alphabet on the shared
-configuration, retaining all fields in (650)--(651), and let `E_Sigma` be
-the `F_2` vector space on realizable unordered private pairs.  For every
+Let `Sigma` be the private endpoint-occurrence alphabet on the shared
+configuration, retaining all fields in (650)--(651), including actual
+endpoint and witness identities, and let `E_Sigma` be the `F_2` vector space
+on realizable unordered private pairs.  It is finite for each graph; no
+uniform bound in `q` is asserted.  For every
 realizable four-endpoint switch include the relation
 
 ```text
@@ -10854,7 +10856,7 @@ w(a,b)=phi(a)+phi(b)+c_C                              (654)
 is valid only after proving that, in each fiber, the switch relations generate
 the full non-cut cycle space (or an equivalent kernel theorem).
 
-Thus (653), not (654), is the unconditional finite terminal.  It retains
+Thus (653), not (654), is the unconditional per-graph finite terminal.  It retains
 exactly the private information demanded by Section 210 and by the B3
 seven-coordinate census: endpoint occurrences and realizable pair classes,
 with no collapse to H/S/V types and no unproved affine normal form.
@@ -10868,34 +10870,44 @@ multigraph and let
 partial:F_2^E -> F_2^V
 ```
 
-be the incidence map.  Differences of two perfect matchings have zero
-boundary and even edge cardinality.  Hence the relevant re-pairing space is
+be the incidence map.  Differences of two realizable perfect matchings have
+zero boundary and even edge cardinality.  Define their actual span by
 
 ```text
+D_match:=span{1_M+1_(M'): M,M' realizable perfect
+         matchings in the same fiber},
 Z_even:=ker(partial) cap ker(1_E^T).                   (655)
 ```
 
-Every realizable four-switch vector (652) belongs to `Z_even`.  If `Q` is
-the matrix whose rows are those switch vectors, then the required generation
-lemma is exactly
+Then `D_match subseteq Z_even`.  Equality need not hold in an arbitrary
+allowed-pair graph: an even cycle need not extend to two perfect matchings of
+the fiber.  Every realizable four-switch vector (652) belongs to `D_match`.
+If `Q` is the matrix whose rows are those switch vectors, then the exact
+switch-generation lemma is
 
 ```text
-rank(Q)=dim Z_even.                                    (656)
+rank(Q)=dim D_match.                                   (656)
 ```
 
-This is slightly weaker than generation of the whole graph cycle space and
-is the correct condition for affine prices.  A uniform constant edge cochain
-annihilates `Z_even` even when it is not a graph cut, which is why the
-annihilator of all matching differences is
+Both sides of (656) are reproducible by enumerating the finite matchings and
+switches of the occurrence fiber.  The cheaper equality
+`rank(Q)=dim Z_even` is a sufficient test, and becomes equivalent only after
+proving `D_match=Z_even`, for example by a matching-extension theorem.
+
+A uniform constant edge cochain annihilates `Z_even` even when it is not a
+graph cut, and
 
 ```text
-cut space + span{1_E}.                                (657)
+ann(Z_even)=cut space + span{1_E}.                     (657)
 ```
 
-Thus (656) implies precisely the affine form (654), with no missing cycle
-classes.
+Consequently the sufficient test `rank(Q)=dim Z_even` implies precisely the
+affine form (654), with no missing cycle classes.  The exact test (656) gives
+all realizable pairing invariance, but by itself need not force an affine
+endpoint form when `D_match` is a proper subspace of `Z_even`; the extra
+annihilator records pair states no realizable matching exchange can compare.
 
-The dimension in (656) is elementary.  If
+The ambient dimension needed for the sufficient test is elementary.  If
 
 ```text
 beta=|E|-|V|+number_of_components(G_Sigma),
@@ -10908,14 +10920,17 @@ dim Z_even = beta      if every graph cycle is even,
 dim Z_even = beta-1    if an odd graph cycle exists.   (658)
 ```
 
-If (656) fails, the defect
+The exact switch-generation defect is
 
 ```text
-h_fiber:=dim Z_even-rank(Q)                            (659)
+h_match:=dim D_match-rank(Q).                          (659)
 ```
 
-is the exact number of additional pairing-holonomy coordinates that must be
-retained beyond endpoint potentials and the affine constant.  Equations
-(655)--(659) turn the disputed affine step into a reproducible finite linear
-algebra audit on the private state table; no informal connectedness argument
-is needed.
+It is the number of matching-exchange directions missed by the realized
+four-switches.  The larger computable number
+`h_ambient:=dim Z_even-rank(Q)` also contains the extension defect
+`dim Z_even-dim D_match`; it must not be called realized pairing holonomy
+without proving extension.  Equations (655)--(659) turn the disputed switch
+generation step into a reproducible finite linear-algebra audit on the
+private occurrence table; no informal connectedness or cycle-extension
+argument is needed.
