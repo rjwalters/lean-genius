@@ -2014,6 +2014,27 @@ concrete theorem interface: prove capacity loss for external labels classified
 by the two collision inventories and their complete five-role neighborhood
 census, with no endpoint-role or raw candidate-count decoration.
 
+Concretely, for a seven-coordinate state `s` define the route boundary
+
+```text
+E_s(t,u) = #{b in B_u cap selected : b notin B_t and state_t(b)=s}
+           -#{b in B_t cap selected : b notin B_u and state_u(b)=s}.
+```
+
+The only global equations required by `(12rz)` are
+
+```text
+sum_(t,u) x_(t,u) E_s(t,u) = 0                 for every state s. (12rza)
+```
+
+Together with `sum_u x_(t,u)=d_t`, nonnegativity, and the row-label capacities
+`sum_{u:b in B_u}x_(t,u)<=1`, these equations are already infeasible in all
+eleven models.  This is the proof-facing formulation: `(12rza)` says that a
+fractional matching flow transports every collision-pair/role-census class
+without net creation, while the capacity ledger says some class must lose a
+unit.  No reference to alpha endpoints, internal labels, or an LP dual is
+needed in the statement.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
