@@ -2439,6 +2439,162 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_reso
       have hCzero : C.card = 0 := by omega
       exact ⟨hD, hAone, hCzero⟩
 
+/-- Exact local cardinalities on an exceptional (hole) row.  It has three
+unmarked core neighbors and six residual bin-zero neighbors, split evenly
+between the marked-support pair centers and the complementary triple
+centers. -/
+theorem squareOrderNine_threeHigh_secondProfile_exceptional_row_exact_cardinalities
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hxt : (secondOrderDefectGraph G).Adj x t) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let R := G.neighborFinset t ∩ T
+    (G.neighborFinset t ∩ U1).card = 3 ∧ R.card = 6 ∧
+      (R.filter fun w => w ∈ P).card = 3 ∧
+      (R.filter fun w => w ∉ P).card = 3 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let N := G.neighborFinset t
+  let NS := N ∩ S
+  let R := N ∩ T
+  let NM := N ∩ M
+  let NU := N ∩ U1
+  let C := R.filter fun w => w ∈ P
+  let Q := R.filter fun w => w ∉ P
+  let D := secondOrderDefectGraph G
+  have hcent :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hcent
+  change (D.Adj x t ∧ NS.card = 0 ∧ NM.card = 0) ∨
+    (¬ D.Adj x t ∧ NS.card + NM.card = 1) at hcent
+  have hzero : NS.card = 0 ∧ NM.card = 0 := by
+    rcases hcent with hzero | hone
+    · exact hzero.2
+    · exact (hone.1 hxt).elim
+  have htNotP : t ∉ P := by
+    intro htP
+    simp only [P, Finset.mem_biUnion] at htP
+    obtain ⟨m, hmM, htm⟩ := htP
+    have hmNM : m ∈ NM := Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset t m).mpr
+        ((G.adj_comm m t).mp ((G.mem_neighborFinset m t).mp
+          (Finset.mem_inter.mp htm).1)), hmM⟩
+    have hNMempty : NM = ∅ := Finset.card_eq_zero.mp hzero.2
+    rw [hNMempty] at hmNM
+    simpa using hmNM
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_binZero_unmarked_pair_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hcensus
+  have htOff : t ∈ T \ P := Finset.mem_sdiff.mpr ⟨ht, htNotP⟩
+  have hNU : NU.card = 3 := hcensus.2.2.2.1 t htOff
+  have hpart :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_neighbor_center_partition
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hpart
+  change N = (NS ∪ R) ∪ (NM ∪ NU) at hpart
+  have hST : Disjoint NS R := by
+    rw [Finset.disjoint_left]
+    intro w hwS hwT
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwT).2).2
+      (Finset.mem_inter.mp hwS).2
+  have hMU : Disjoint NM NU := by
+    rw [Finset.disjoint_left]
+    intro w hwM hwU
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwU).2).2
+      (Finset.mem_inter.mp hwM).2
+  have hcross : Disjoint (NS ∪ R) (NM ∪ NU) := by
+    rw [Finset.disjoint_left]
+    intro w hw0 hw1
+    have hwB0 : w ∈ B 0 := by
+      rcases Finset.mem_union.mp hw0 with hwS | hwT
+      · exact (Finset.mem_inter.mp (Finset.mem_inter.mp hwS).2).2
+      · exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwT).2).1
+    have hwB1 : w ∈ B 1 := by
+      rcases Finset.mem_union.mp hw1 with hwM | hwU
+      · exact (Finset.mem_inter.mp (Finset.mem_inter.mp hwM).2).2
+      · exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hwU).2).1
+    have hk0 := (Finset.mem_filter.mp hwB0).2
+    have hk1 := (Finset.mem_filter.mp hwB1).2
+    omega
+  have hNcards := congrArg Finset.card hpart
+  rw [Finset.card_union_of_disjoint hcross,
+    Finset.card_union_of_disjoint hST,
+    Finset.card_union_of_disjoint hMU] at hNcards
+  have htB0 : t ∈ B 0 := (Finset.mem_sdiff.mp ht).1
+  have htdeg : G.degree t = 9 := by
+    have htL := (Finset.mem_filter.mp htB0).1
+    have htNotHigh : t ∉ squareOrderHighVertices G 9 :=
+      (Finset.mem_sdiff.mp htL).2
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree (by norm_num) hmin hcover hcard t with hlo | hhi
+    · exact hlo
+    · exact (htNotHigh (Finset.mem_filter.mpr ⟨by simp, hhi⟩)).elim
+  rw [G.card_neighborFinset_eq_degree, htdeg] at hNcards
+  have hR : R.card = 6 := by omega
+  have hpair :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_pair_defect_three
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hpair
+  change C.card + (D.neighborFinset t ∩ M).card = 3 at hpair
+  have hDmarkedZero : (D.neighborFinset t ∩ M).card = 0 := by
+    have htype :=
+      squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
+        G hfree hmin hcover hcard hp hhigh hc2 hc4 htB0
+    dsimp only at htype
+    rcases htype with hregular | hexceptional
+    · have hxmem : x ∈ D.neighborFinset t ∩ B 3 :=
+        Finset.mem_inter.mpr ⟨(D.mem_neighborFinset t x).mpr
+          ((D.adj_comm x t).mp hxt), hx⟩
+      have hempty : D.neighborFinset t ∩ B 3 = ∅ :=
+        Finset.card_eq_zero.mp hregular.2.2
+      rw [hempty] at hxmem
+      simpa using hxmem
+    · have hsub : D.neighborFinset t ∩ M ⊆ D.neighborFinset t ∩ B 1 := by
+        intro m hm
+        exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hm).1,
+          (Finset.mem_inter.mp (Finset.mem_inter.mp hm).2).2⟩
+      apply Finset.card_eq_zero.mpr
+      apply Finset.Subset.antisymm
+      · intro m hm
+        have hm' := hsub hm
+        have hempty : D.neighborFinset t ∩ B 1 = ∅ :=
+          Finset.card_eq_zero.mp hexceptional.2.1
+        rw [hempty] at hm'
+        simpa using hm'
+      · exact Finset.empty_subset _
+  have hC : C.card = 3 := by omega
+  have hCQ : C.card + Q.card = R.card :=
+    Finset.card_filter_add_card_filter_not (s := R) (fun w => w ∈ P)
+  have hQ : Q.card = 3 := by omega
+  exact ⟨hNU, hR, hC, hQ⟩
+
 /-- On an exceptional (hole) ordinary row, the defect alternative in the
 mixed three-way resolution is impossible.  Hence every unmarked point is
 resolved by exactly one residual-B0 center or exactly one U1-core center.
@@ -3373,6 +3529,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_pair_row_triple_completion_count
 #print axioms Erdos85.squareOrderNine_pair_pattern_mem_comm
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_row_exact_cardinalities
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_actual_pair_pattern_mem_allowed
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_pair_marked_defect_sum_odd
