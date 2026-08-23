@@ -263,6 +263,17 @@ averaging cannot prove existence.  A sharper candidate is conditional:
 absence of every strict single should force a tight single, then exact-cover
 collision around that tight fiber should select the genuinely strict pair.
 
+The probe now emits `single_fiber_costs`, `tight_single_points`, and exact
+`nonstrict_single_excesses` in compact mode, so this conditional statement is
+falsifiable without retaining bulky LP witnesses.  Across default-generator
+seeds 0 through 18, every model had a strict or tight overlap fiber.  Seed 5
+was the only model with no strict overlap fiber, and it had the unique tight
+point 9 described above.  Several models had strict fibers but no tight one
+(seeds 11, 12, 13, 15, and 17), so tightness is plausibly forced only on the
+no-strict face and must not be asserted unconditionally.  This sweep is
+evidence, not a proof; in particular it contains only one no-strict model, so
+the subsequent forced-collision implication still rests on one hard fixture.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus

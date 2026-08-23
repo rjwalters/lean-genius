@@ -229,6 +229,29 @@ def exact_joint_optimum_summary(system: dict, pair,
     }
 
 
+def single_optimum_summary(single_optima: dict) -> dict:
+    """Expose the strict/tight/excess trichotomy without bulky LP witnesses."""
+    costs = {
+        str(point): optimum["cost"]
+        for point, optimum in single_optima.items()
+    }
+    tight = [
+        point for point, optimum in single_optima.items()
+        if Fraction(optimum["cost"]) == optimum["target"]
+    ]
+    excesses = {
+        str(point): str(
+            Fraction(optimum["cost"]) - optimum["target"])
+        for point, optimum in single_optima.items()
+        if not optimum["strict"]
+    }
+    return {
+        "single_fiber_costs": costs,
+        "tight_single_points": tight,
+        "nonstrict_single_excesses": excesses,
+    }
+
+
 def one_model(
         timeout_ms: int, random_seed: int, max_scale: int,
         details: bool = False, genuine_only: bool = False,
@@ -319,6 +342,7 @@ def one_model(
                 if genuine_only:
                     answer["genuine_pair_count"] = len(genuine_pairs)
                     answer["strict_single_points"] = strict_single_points
+                    answer.update(single_optimum_summary(single_optima))
                 if details:
                     answer["outer_payload"] = outer_payload
                     answer["joint_optimum"] = exact_joint_optimum(system, p, q)
@@ -339,6 +363,7 @@ def one_model(
     if genuine_only:
         answer["genuine_pair_count"] = len(genuine_pairs)
         answer["strict_single_points"] = strict_single_points
+        answer.update(single_optimum_summary(single_optima))
     if scan_exact_joint_optima:
         answer["genuine_joint_optima"] = [
             exact_joint_optimum_summary(system, pair, single_optima)
@@ -379,6 +404,7 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
                     "genuine_pair_count": len(genuine_pairs),
                     "strict_single_points": strict_single_points,
                 }
+                answer.update(single_optimum_summary(single_optima))
                 if details:
                     answer["joint_optimum"] = exact_joint_optimum(system, p, q)
                     answer["overlap_single_fiber_optima"] = [
@@ -397,6 +423,7 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
         "genuine_pair_count": len(genuine_pairs),
         "strict_single_points": strict_single_points,
     }
+    answer.update(single_optimum_summary(single_optima))
     if scan_exact_joint_optima:
         answer["genuine_joint_optima"] = [
             exact_joint_optimum_summary(system, pair, single_optima)
