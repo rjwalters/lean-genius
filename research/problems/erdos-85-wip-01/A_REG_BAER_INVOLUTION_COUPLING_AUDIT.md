@@ -3801,26 +3801,43 @@ one common pairing-gauge bit.  The arbitrary even-star pairing cannot create
 an independent odd switch charge.  This is exactly the fine-label reduction
 needed to compare the witness columns with the route alphabet (73rnz_at).
 
-The special-leaf owner mark has an equally small pairing state.  Every
-neighbor of an outside full leaf lies in the occupied shore, where the
-replication-two bound lets a witness y meet at most two of the four star
-leaves.  It cannot meet two sibling leaves: then y and their empty center
-would have those two leaves as common A-neighbors, violating C4-freeness.
-Consequently the possibilities are
+In fact one can choose a canonical T-word-adapted pairing.  On
+`N_A(y) setminus N_T(y)`, use the original partial Baer involution `iota_y`;
+it pairs all non-T neighbors canonically.  The omitted set `N_T(y)` has even
+size, so pair only those broken points arbitrarily.  The resulting relays
+have
 
 ```text
-0 leaf neighbors: no owner-marked relay;
-1 leaf neighbor:  one forced leaf--nonleaf relay;
-2 leaf neighbors: the leaves are cross-star, and either pair together
-                  or launch two separate leaf--nonleaf relays.           (73rnz_cjibb)
+word 00 on every canonical iota_y pair,
+word 11 on every paired broken-T pair,                 (73rnz_cjibaa)
+```
+
+with no mixed word at all, occurrence by occurrence.  Thus the T-word gauge
+can be eliminated completely: pairing freedom remains only inside the 11
+fiber, where it cannot alter the route word.  Any genuine fine obstruction
+must therefore use the endpoint owner labels of broken T-neighbors, not a
+00/11 pairing artifact.
+
+Only the 11 fiber retains an owner pairing state.  A non-T special leaf lies
+in the canonical `iota_y` domain and has no pairing choice.  Every neighbor
+of an outside full leaf lies in the occupied shore, where the replication-two
+bound lets a witness y have at most two T-neighbors among the four star
+leaves.  It cannot have two sibling leaves: then y and their empty center
+would have those two leaves as common A-neighbors, violating C4-freeness.
+Consequently the broken-T pairing possibilities are
+
+```text
+0 T-leaf neighbors: no owner-marked 11 relay;
+1 T-leaf neighbor:  one forced leaf--nonleaf 11 relay;
+2 T-leaf neighbors: the leaves are cross-star, and either pair together
+                    or launch two separate leaf--nonleaf 11 relays.       (73rnz_cjibb)
 ```
 
 Thus the owner refinement has no unbounded pairing ambiguity.  The one-leaf
 state forces a unique odd owner exit, while the two-leaf state has one binary
 collision/exit choice -- the same cross-star collision bit already isolated
-by (73rnz_an)--(73rnz_ap).  Together with (73rnz_cjiba), every witness star's
-fine owner/T-word ambiguity is bounded by two binary gauge choices, independent
-of q.
+by (73rnz_an)--(73rnz_ap).  With the canonical choice (73rnz_cjibaa), this is
+the witness star's only remaining fine owner/T-word gauge, independent of q.
 
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
@@ -3859,12 +3876,15 @@ is even, while the former depends only on the fixed star margins and is
 exactly the additive-linear information already exhausted by
 (73rnz_aj)--(73rnz_al).
 
-Consequently a genuinely capacity-sensitive pair-local price has only one
-possible behavior: it must fail a quadrilateral identity and create the
-explicit four-relay holonomy of (73rnz_cjibd).  Gauge-independent prices are
-additive and powerless; nonadditive prices are automatically localized
-holonomies.  This removes the last ambiguity about what kind of fine terminal
-can exist.
+Consequently a genuinely capacity-sensitive pair-local price that is required
+to ignore the star pairing must fail a quadrilateral identity and create the
+explicit four-relay holonomy of (73rnz_cjibd).  Pairing-independent prices are
+additive and powerless.  The alternative is to use the canonical
+`iota_y`/broken-T pairing (73rnz_cjibaa), in which case a nonadditive price may
+depend on the sole cross-star owner choice in (73rnz_cjibb).  Thus the fine
+terminal has exactly two honest forms: a localized four-relay holonomy, or a
+canonical-Baer owner price.  No pairing-agnostic nonadditive third option
+exists.
 
 Similarly, because T is Eulerian, `Tx` is exactly the boundary vector of the
 T-cut `delta_T(X)`: outside X it counts T-neighbors in X, while inside X the
