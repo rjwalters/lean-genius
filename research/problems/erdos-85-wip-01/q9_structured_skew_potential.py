@@ -2661,6 +2661,8 @@ def main() -> int:
         all_uncovered = []
         for branch in (3, 4):
             counts = Counter()
+            deficient_role_patterns = Counter()
+            feasible_collision_role_patterns = Counter()
             uncovered = []
             for seed_number in range(args.seeds):
                 seed = make_outer_seed(
@@ -2669,13 +2671,28 @@ def main() -> int:
                 candidate = instance(branch, seed, (0, 1))
                 deficient = residual_gram_local_capacities(candidate)
                 collisions = residual_gram_forced_collisions(candidate)
+                def broad_role(row: int) -> str:
+                    return ("regular-triple" if candidate["types"][row] == 0
+                            else "hole" if candidate["types"][row] == 1
+                            else "pair")
                 key = ("deficient" if deficient else "locally-feasible",
                        "forced-collision" if collisions else "no-collision")
                 counts[key] += 1
+                if deficient:
+                    deficient_role_patterns[
+                        tuple(sorted({broad_role(row) for row, _, _ in deficient}))
+                    ] += 1
+                else:
+                    feasible_collision_role_patterns.update(
+                        (broad_role(u), broad_role(v), broad_role(w))
+                        for u, v, w in collisions)
                 if not deficient and not collisions:
                     uncovered.append(seed_number)
                     all_uncovered.append((branch, seed_number))
             print(f"residual_gram_summary branch={branch} counts={dict(counts)} "
+                  f"deficient_role_patterns={dict(deficient_role_patterns)} "
+                  f"feasible_collision_roles="
+                  f"{dict(feasible_collision_role_patterns)} "
                   f"uncovered={uncovered}")
         return 1 if all_uncovered else 0
     if args.audit_residual_gram_core:

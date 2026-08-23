@@ -3215,6 +3215,33 @@ occasionally needs the two-row kernel collision.  The zero uncovered count
 is strong falsification resistance for candidate (13f), but does not replace
 a proof over the unrestricted outer design.
 
+A repeated sixty-four-per-branch run retained the coarse row roles.  No
+deficient row was ever a marked-pair row.  The deficient-role patterns were
+
+```text
+branch 3: hole only 29; hole+regular triple 20; regular triple only 8;
+branch 4: hole only 32; hole+regular triple 25; regular triple only 7.
+                                                                    (13f'')
+```
+
+Thus branch 4 does not reduce to the exceptional-hole conjecture: seven
+witnesses had only regular-triple deficits.  On the seven locally feasible
+branch-3 witnesses, all nineteen forced collisions joined a regular triple
+to another triple center.  Their forced neighbor was a marked-pair row in
+eighteen cases and a regular triple in one; the endpoint/neighbor role counts
+were
+
+```text
+(regular triple, regular triple; pair): 8,
+(regular triple, hole; pair):          10,
+(regular triple, hole; regular triple): 1.              (13f''')
+```
+
+This reduces the candidate's obstruction centers from all 47 rows to the 26
+triple centers.  Marked-pair rows remain essential as eligible or forced
+neighbors, but sampled evidence never needs their own degree equation to
+supply the deficit or either endpoint of a kernel collision.
+
 The representative branch-3 collision has a particularly small exact-cover
 profile.  The two core rows are regular rainbow triples
 
