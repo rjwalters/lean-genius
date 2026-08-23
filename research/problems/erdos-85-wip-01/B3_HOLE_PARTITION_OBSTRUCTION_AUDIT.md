@@ -3888,6 +3888,41 @@ set of centers whose mutually eligible packing families have no symmetric
 disjoint transversal.  That statement would contradict the actual residual
 relation directly and bypass reverse intervals and fractional duality.
 
+Even the integrality in (13ad) is unnecessary on every model tested.  Put a
+single nonnegative symmetric mass `x_{uv}=x_{vu}` on each mutually
+trace-eligible pair, require exact row sums `sum_v x_{uv}=d(u)`, and impose
+the ordered point capacities
+
+```text
+for every u and p:  sum_{v : p in B_v} x_{uv} <= 1.           (13ae)
+```
+
+An actual residual relation supplies a zero-one solution, so infeasibility
+of (13ae) is already a contradiction; neither residual C4 nor integral
+matching theory is needed.  `q9_symmetric_point_mass_obstruction.py` finds
+this LP infeasible on all four stored fixed outer payloads.  A separate
+cross-corpus run serialized ten further distinct outer payloads (random
+seeds 0 through 4 in each branch) and found (13ae) infeasible on all ten as
+well.  The branch-3 mutual-eligibility graphs had 386--393 edges and
+758--761 active ordered point caps; branch 4 had 377--389 edges and
+749--761 caps.  These are sampled results, not a universal proof.
+
+The dual is now the sharpest proof target: find row prices `y_u` and
+nonnegative ordered point prices `z_{u,p}` such that every eligible edge
+satisfies
+
+```text
+y_u+y_v <= sum_{p in B_v} z_{u,p} + sum_{p in B_u} z_{v,p},
+sum_u d(u)y_u > sum_{u,p} z_{u,p}.                            (13af)
+```
+
+Summing the edge inequalities against any putative symmetric mass and then
+using (13ae) gives the contradiction immediately.  Exact sparse Farkas
+prices already exist on stored payloads, but their uniform derivation from
+the outer incidence/K equations remains open.  In light of the fourteen
+successful LP tests, (13af) is presently a cleaner uniform B.3 target than
+either the integral four-row classification or the reverse-interval route.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
