@@ -1086,6 +1086,10 @@ def main() -> None:
                 "--scan-disjoint-exceptional-regular-packings requires branch 4"
             )
         holes_begin = N_TRIPLE - 4
+        packing_counts = {
+            row: forced_local_packing_neighbors(system, row)["packing_count"]
+            for row in range(N_TRIPLE)
+        }
         records = []
         for regular in range(holes_begin):
             for hole in range(holes_begin, N_TRIPLE):
@@ -1099,6 +1103,8 @@ def main() -> None:
                     "regular": regular,
                     "hole": hole,
                     "shared_point": intersection[0],
+                    "regular_packing_count": packing_counts[regular],
+                    "hole_packing_count": packing_counts[hole],
                     "has_disjoint_pair": witness is not None,
                     "witness": witness,
                 })
@@ -1107,6 +1113,10 @@ def main() -> None:
         print("disjoint_exceptional_regular_packings=" + json.dumps({
             "incident_pair_count": len(records),
             "obstructed_pair_count": len(obstructed),
+            "minimum_obstructed_hole_packing_count": (
+                min(record["hole_packing_count"] for record in obstructed)
+                if obstructed else None
+            ),
             "exists_obstructed_pair": bool(obstructed),
             "obstructed_pairs": [
                 [record["regular"], record["hole"]]

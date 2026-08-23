@@ -4676,6 +4676,26 @@ only rows 30 and 45 participate in these intersections, occurring in 26 and
 failed and (13as) survives: the invariant is cross-intersection of two
 packing families, not intersection of their separate forced cores.
 
+Both refinements are now **retracted** by direct hard-locus synthesis.  The
+durable payload
+`q9_branch4_fixed_and_joint_selector_counterexample.json` was generated with
+denominator-one packings imposed at all 47 rows and independently has zero
+strict fractional one-row covers.  Every one of its 30 incident
+regular/exceptional pairs admits exactly rechecked disjoint local packings of
+sizes five and six, so (13as) is false.  It also has zero fixed `(1,2)`
+shared-point certificates, so (13ar) is false.  This is not a numerical
+boundary failure: both scans return an empty certificate/obstruction set.
+
+The base arbitrary-weight target (13aq) survives.  The same payload has two
+exceptional/regular two-row certificates, `{25,15}` with row weights
+`(1,3/2)` and `{25,19}` with weights `(1,1)`, both of margin one.  Crucially,
+the exceptional and regular blocks are disjoint in both pairs, so neither
+admits the shared-point collision normal form.  Thus the honest branch-4
+selector returns all the way to (13aq): an arbitrary exceptional/regular
+pair, possibly disjoint, with arbitrary rational row weights.  The fixed
+price and disjoint-packing Lean consumers remain correct conditional
+theorems, but neither describes a universal outer-incidence horn.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
