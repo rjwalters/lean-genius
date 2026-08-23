@@ -3531,12 +3531,12 @@ kernel-free residual matching problem.  The remaining content of (13f) is
 to show that the forced matchings of all intersecting tight rows cannot have
 pairwise empty intersections as sets of block rows.
 
-### Retraction: the local alternative (13f) is false
+### Retraction warning: the local alternative (13f) has audit counterexamples
 
-A wider adversarial sweep found admissible generated outer designs satisfying
-the exact negation of (13f): every row has a demanded local packing, but no
-two intersecting rows force one common neighbor.  The reproducing invocation
-used
+A wider adversarial sweep reported generated outer designs satisfying the
+exact negation of (13f): every row has a demanded local packing, but no two
+intersecting rows force one common neighbor.  The completed sequential
+invocation used
 
 ```text
 PYTHONHASHSEED=41 python3 q9_structured_skew_potential.py \
@@ -3561,22 +3561,28 @@ branch 3: 112,119,129,137,172,188,190,218;
 branch 4: 251.
 ```
 
-These labels are reproducible only with the stated hash seed and current
-generator; they are not canonical isomorphism identifiers.  The substantive
-result is the exact local enumeration: all nine witnesses have matching
-number at least the demand at every row and empty common forced kernel on
-every intersecting row pair.  Therefore (13f), (13j), (13l), and (13m') are
-equivalent descriptions of a **false universal candidate**.  The reductions
-(13h)--(13p) remain valid identities, and the Lean consumer remains a valid
-conditional theorem, but no admissible-outer-design proof can supply its
-`hbad` hypothesis through (13f).
+These are run-local generator labels, not canonical isomorphism identifiers.
+A focused rerun of label 112 returned `UNKNOWN` during outer generation, so
+the labels are not independently reproducible handles even with the stated
+hash seed.  The completed process did exact local matching enumeration after
+each outer SAT result, but it did not serialize the nine outer-design
+payloads.  Equation (13q) is therefore strong computational counterexample
+evidence, not yet a stored independently checkable counterexample.
+
+Until one survivor payload is captured and verified, (13f), (13j), (13l),
+and (13m') must be marked **REFUTED-IN-AUDIT / candidate unsafe**, rather than
+used as a universal lemma.  They are equivalent descriptions, so a captured
+survivor would refute all four at once.  The reductions (13h)--(13p) remain
+valid identities, and the Lean consumer remains a valid conditional theorem;
+what has lost support is the claim that every admissible outer design supplies
+its `hbad` hypothesis through (13f).
 
 The replacement interface must restore genuinely global compatibility data
 from (13c), such as simultaneous symmetric degree realization, rather than
 inspect one or two local packing families only.  The seed-free exact-negation
-model should now classify these survivors and identify the smallest global
-constraint which excludes them; further local-kernel refinements alone cannot
-close B.3.
+model should now either capture one survivor or prove the negation encoding
+UNSAT, then identify the smallest global constraint which excludes any real
+survivors.  Further local-kernel refinements alone cannot close B.3.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
