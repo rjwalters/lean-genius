@@ -116,6 +116,8 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
         Set V)).Connected) :
     let U := ((Finset.univ : Finset V) \
       squareOrderHighVertices G 9).erase owner
+    let E := (secondOrderDefectGraph G).neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0
     ∃ S T : Finset V,
       S ∪ T = U ∧ Disjoint S T ∧
       ((S.card = 18 ∧ T.card = 59) ∨
@@ -127,7 +129,11 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
       (orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ S ∨
        orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ T) ∧
       (∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S) ∧
-      (∀ x ∈ T, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T) := by
+      (∀ x ∈ T, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T) ∧
+      (∑ x ∈ S, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card) = (E ∩ S).card ∧
+      (∑ x ∈ T, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ T)).card) = (E ∩ T).card := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -175,7 +181,9 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
         orderNineNearRegularCutLower (78 - X.card)
           (10 - (G.neighborFinset h₁ ∩ X).card)
           (10 - (G.neighborFinset h₂ ∩ X).card)
-          (10 - (G.neighborFinset h₃ ∩ X).card) ≤ (E ∩ X).card := by
+          (10 - (G.neighborFinset h₃ ∩ X).card) ≤ (E ∩ X).card ∧
+        (∑ x ∈ X, (D.neighborFinset x ∩ (Finset.univ \ X)).card) =
+          (E ∩ X).card := by
     intro X hXnonempty hXsub hXclosed
     have hXsubO : X ⊆ O := fun x hx => (Finset.mem_erase.mp (hXsub hx)).2
     have hXproperO : X.card < O.card := by
@@ -264,10 +272,10 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
       hXproper78 hXclosed hEmeet
       (hb h₁ (by simp)) (hb h₂ (by simp)) (hb h₃ (by simp))
       hcutBounds.1 hcutBounds.2
-    exact ⟨k, hkorder, hktype, hkbeta, hcutBounds.1, hcutBounds.2⟩
-  obtain ⟨kS, hSorder, hStype, hSbeta, hScut, hScutCompl⟩ :=
+    exact ⟨k, hkorder, hktype, hkbeta, hcutBounds.1, hcutBounds.2, hboundary⟩
+  obtain ⟨kS, hSorder, hStype, hSbeta, hScut, hScutCompl, hSboundary⟩ :=
     hclassify S hSnonempty hSsubU hSclosed
-  obtain ⟨kT, hTorder, hTtype, hTbeta, hTcut, hTcutCompl⟩ :=
+  obtain ⟨kT, hTorder, hTtype, hTbeta, hTcut, hTcutCompl, hTboundary⟩ :=
     hclassify T hTnonempty hTsubU hTclosed
   have hEsubU : E ⊆ U := by
     intro x hxE
@@ -371,7 +379,8 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
       · exact Or.inl ⟨by omega, hb⟩
       · exact Or.inr (Or.inl ⟨by omega, hb⟩)
       · exact Or.inr (Or.inr ⟨by omega, hb⟩)
-  refine ⟨S, T, hUnion, hDisjoint, ?_, hsmallBeta, hSclosed, hTclosed⟩
+  refine ⟨S, T, hUnion, hDisjoint, ?_, hsmallBeta, hSclosed, hTclosed,
+    hSboundary, hTboundary⟩
   simpa [hSorder, hTorder] using hpairs
 
 #print axioms squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not_connected
