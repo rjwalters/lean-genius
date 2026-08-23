@@ -4081,29 +4081,33 @@ transport, the entire nonadditive owner ledger consists only of explicitly
 labeled cross-neighborhood matching atoms (plus the source K-tags already
 present in (73rnz_as)--(73rnz_aw)).
 
-One activation step is still genuinely missing.  Let `Psi_owner` denote the
-sum of the labeled matching expressions on the right sides of
-(73rnz_cjibka)--(73rnz_cjibkc), with occurrences retained.  The results above
-prove that every owner occurrence maps canonically into `Psi_owner`; they do
-not prove
+One activation step is still genuinely missing.  Let `Psi_owner` be the
+vector in `F_2^{ {E_1,E_2} }` obtained from the labeled matching expressions
+on the right sides of (73rnz_cjibka)--(73rnz_cjibkc), retaining the pole owner
+of every occurrence (a cross-star through contributes to both labels).  The
+results above prove that every owner occurrence maps canonically into this
+vector; they do not prove the owner-resolved identity
 
 ```text
-Psi_owner=1.                                             (73rnz_cjibkd GAP)
+Psi_owner=(1,1).                                        (73rnz_cjibkd GAP)
 ```
 
 Indeed the earlier odd pole matching ledger (73rnz_cd) closed at its omitted
 adjacent endpoint (73rnz_ce), showing exactly why occurrence activation and
 odd price are different.  A marked relay may exist while its source-corrected
-K/matching price is zero.  The missing theorem must transport a PRIMARY odd
-class -- `omega_Q`, or an equivalent owner-resolved grading -- to the mass of
-`Psi_owner`.  Only after (73rnz_cjibkd) is proved does the Eulerian graph R
-guarantee a nonzero/odd labeled holonomy needing a capacity contradiction.
+K/matching price is zero.  The two pole demands form the nonzero diagonal
+class `(1,1)`; their unlabelled sum is necessarily zero, so no scalar mass
+identity can detect them.  The missing theorem must preserve this
+owner-resolved class through the source cancellations.  Only after
+(73rnz_cjibkd) is proved does an owner character (choose either pole label)
+give the odd labeled holonomy needed for a capacity contradiction.
 
 This is the precise remaining asymmetry with the parallel SRP lane: its
-activation theorem proves `mass(F_Z)=omega_M`, whereas the Baer lane currently
-has the complete nonlinear alphabet and boundary transport but not the
-corresponding mass identity.  No further unweighted parity or A-polynomial
-identity can supply it, by (73rnz_ce)--(73rnz_cf).
+activation theorem proves the scalar identity `mass(F_Z)=omega_M`, whereas
+the Baer source is intrinsically two-labeled and needs the vector identity
+(73rnz_cjibkd).  Forgetting the labels kills the desired class.  No further
+unweighted parity or A-polynomial identity can supply it, by
+(73rnz_ce)--(73rnz_cf).
 
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
