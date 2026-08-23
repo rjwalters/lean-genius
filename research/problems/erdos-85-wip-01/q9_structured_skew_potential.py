@@ -2586,6 +2586,8 @@ def main() -> int:
                         help="find rows lacking a demanded W-independent eligible neighborhood")
     parser.add_argument("--audit-residual-gram-core", action="store_true",
                         help="extract grouped degree/Gram UNSAT cores on locally feasible seeds")
+    parser.add_argument("--audit-residual-gram-summary", action="store_true",
+                        help="count deficit/forced-collision coverage over generated seeds")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -2655,6 +2657,27 @@ def main() -> int:
                       f"seed={seed_number} deficient={deficient} "
                       f"forced_collisions={collisions}")
         return 0
+    if args.audit_residual_gram_summary:
+        all_uncovered = []
+        for branch in (3, 4):
+            counts = Counter()
+            uncovered = []
+            for seed_number in range(args.seeds):
+                seed = make_outer_seed(
+                    branch, args.timeout_seconds * 1000, seed_number,
+                    require_eligible_hole_pair=args.require_eligible_hole_pair)
+                candidate = instance(branch, seed, (0, 1))
+                deficient = residual_gram_local_capacities(candidate)
+                collisions = residual_gram_forced_collisions(candidate)
+                key = ("deficient" if deficient else "locally-feasible",
+                       "forced-collision" if collisions else "no-collision")
+                counts[key] += 1
+                if not deficient and not collisions:
+                    uncovered.append(seed_number)
+                    all_uncovered.append((branch, seed_number))
+            print(f"residual_gram_summary branch={branch} counts={dict(counts)} "
+                  f"uncovered={uncovered}")
+        return 1 if all_uncovered else 0
     if args.audit_residual_gram_core:
         for branch in (3, 4):
             for seed_number in range(args.seeds):

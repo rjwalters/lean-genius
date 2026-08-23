@@ -3199,6 +3199,22 @@ admissible outer design, is now the precise proof candidate.  It involves at
 most two local packing polytopes and avoids the full symmetric factor model.
 As before, the sweep is evidence for that candidate rather than a proof.
 
+The summary mode `--audit-residual-gram-summary` then stress-tested (13f) on
+sixty-four generated witnesses per branch.  It found no uncovered design:
+
+```text
+branch 3: 57 with a deficient row, 7 locally feasible with a forced
+          collision (36 of the deficient cases also had a collision);
+branch 4: all 64 with a deficient row (48 also had a collision);
+uncovered: 0 of 128.                                      (13f')
+```
+
+This larger run preserves the parity asymmetry suggested by the smaller
+sample: branch 4 repeatedly dies in the one-row horn, whereas branch 3
+occasionally needs the two-row kernel collision.  The zero uncovered count
+is strong falsification resistance for candidate (13f), but does not replace
+a proof over the unrestricted outer design.
+
 The representative branch-3 collision has a particularly small exact-cover
 profile.  The two core rows are regular rainbow triples
 
