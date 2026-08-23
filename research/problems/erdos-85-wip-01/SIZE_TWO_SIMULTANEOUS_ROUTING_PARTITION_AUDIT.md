@@ -5398,3 +5398,56 @@ states at their ends.  Such a transition bundle may still have endpoint
 boundary (302), but its internal tagged rows need not telescope and can
 privately witness an unoriented gap.  This is precisely the strengthening
 isolated empirically as the private tagged-bundle feature in the B3 lane.
+
+## 102. The missing feature map must be both conserved and private
+
+Let `E_gap` be the free module on oriented local transition occurrences in
+the non-H gaps, with route reversal `T`.  Two extreme feature maps are
+immediate.
+
+The endpoint boundary
+
+```text
+partial : E_gap --> Z[token symbols],
+partial(u --> v) = [v]-[u]
+```
+
+is conserved around every closed word, but Section 101 shows that it is not
+private: all internal information telescopes.  Conversely, the actual
+unoriented dart support gives an injective map
+
+```text
+iota : E_gap / (t+Tt) --> Z[unoriented transition supports],
+```
+
+because two different edges of the dart cycle have different incidence
+supports.  This map is perfectly private, but no SRP identity says that the
+signed `iota`-sum of an oriented occurrence flow vanishes; an oriented cycle
+normally uses every support only one way.
+
+The closing invariant is therefore exactly an intermediate feature map
+
+```text
+Phi : E_gap --> F                                    (303)
+```
+
+with both properties:
+
+```text
+conservation: the realized global gap ledger has total Phi-boundary zero;
+privacy:      the induced columns on E_gap/(t+Tt) are independent
+              (or at least have a private coordinate).              (304)
+```
+
+Conservation plus privacy forces equal weights on every route-reversal pair
+by coefficient peeling.  That supplies the gap transfers in (300), after
+which (301) kills the mixed marked grading.
+
+Equation (304) distinguishes a genuine invariant from a tautological
+occurrence tag.  Endpoint features have conservation without privacy;
+literal dart identities have privacy without conservation.  The candidate
+`Phi` must use the finest data still controlled by SRP—ordered rooted
+triangles, intermediate fibers, and switch roles.  The B3 lane's private
+tagged-bundle computation is empirical evidence that precisely such a
+middle feature space exists; proving its analogue uniformly is now the
+shared algebraic task.
