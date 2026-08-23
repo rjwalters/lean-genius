@@ -24167,3 +24167,51 @@ repeatable: unless avoided nondegenerate cancellation already occurs, it
 has a fourteen-pair matching spread across several exact source fibers
 and target vertices.  Any remaining obstruction must therefore satisfy
 substantial simultaneous packing constraints.
+
+## 451. Parametric saturation-matching law
+
+The preceding argument is not special to the twenty-six-layer budget.
+Let `p>=0` be an integer and suppose
+
+```text
+q>1172+110p.                                      (1620)
+```
+
+Assume again that no avoided nondegenerate tag-even PC cancellation
+occurs, and form the rank-at-most-two payer-layer family `mathcal L` of
+all saturation terminals supplied by Section 448.  If a set `P` of at
+most `p` layers met every member of `mathcal L`, Section 448 applied with
+that `P` would return a saturation whose layer set is disjoint from `P`,
+a contradiction.  Therefore
+
+```text
+tau(mathcal L)>=p+1.                              (1621)
+```
+
+The endpoint union of a maximal matching is a transversal, exactly as in
+Section 450.  Hence
+
+```text
+nu(mathcal L)>=ceil((p+1)/2).                     (1622)
+```
+
+Put `m:=ceil((p+1)/2)` and choose `m` pairwise layer-disjoint saturation
+pairs.  Fixed payer layers prevent edge reuse, and payer injectivity
+together with layer disjointness makes all `2m` canonical payers
+distinct.  The exact ten-edge source-fiber capacity of Section 447 and
+the degree-five target capacity then give the uniform terminal
+
+```text
+q>1172+110p and no avoided nondegenerate cancellation
+ -> at least m=ceil((p+1)/2) layer-disjoint saturation pairs,
+    2m distinct edges and canonical payers,
+    at least ceil(m/5) allowed exterior source colors,
+    at least ceil(m/2) distinct target vertices in O_5.          (1623)
+```
+
+Indeed a source color supports at most ten edges, hence at most five of
+the chosen pairs, while a target supports at most two edge-disjoint
+saturated pairs.  Thus every additional `220` units of avoidance budget
+force, up to rounding, one more disjoint saturation pair.  Section 450
+is the instance `p=26`, for which `m=14`, the source-color lower bound is
+three, and the target lower bound is seven.
