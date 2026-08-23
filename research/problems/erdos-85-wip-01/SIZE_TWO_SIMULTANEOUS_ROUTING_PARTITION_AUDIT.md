@@ -23795,3 +23795,56 @@ every splice remain in that same graph.  Thus disconnectedness is no
 longer an unstructured failure of the color-ordering bridge: it is a
 constant family of at most six vertex-disjoint colored clusters carrying
 a minimal nonzero syndrome dependency.
+
+## 444. A shortest connector splices clusters or exposes color saturation
+
+Vertex-disjoint cluster walks in the same connected component of `H` can
+also be joined unless a genuine saturation terminal is already present.
+Let `W_1,W_2` be two such PC closed walks, and choose a shortest base path
+
+```text
+P=x_0 x_1 ... x_r,                                (1593)
+```
+
+from `V(W_1)` to `V(W_2)`.  Its internal vertices avoid both walk
+supports.  If two consecutive edges of `P` have the same exterior color,
+they are distinct physical edges incident at their common vertex and
+already saturate that color's degree-two capacity.  Hence, outside the
+saturation branch, `P` is properly colored internally.
+
+Let the first path-edge color be `h_1`.  At the chosen occurrence of
+`x_0` on `W_1`, the walk has two distinct incident transition colors.  If
+`h_1` equals either one, the path edge is distinct from that walk edge
+because it leaves the support, so again those two physical edges saturate
+one color.  Otherwise `h_1` differs from both transition colors.  The same
+dichotomy at `x_r` gives a last-edge color `h_2` different from both
+incident colors of `W_2`, unless saturation has already occurred.  Thus in
+the nonsaturated branch the concatenation
+
+```text
+W_1, P, W_2, reverse(P)                           (1594)
+```
+
+is one properly colored closed walk.  Every connector edge is traversed
+twice, so
+
+```text
+syndrome(1594)=syndrome(W_1)+syndrome(W_2),
+[E(1594)]=[E(W_1)]+[E(W_2)].                      (1595)
+```
+
+Iterate with a shortest path from the already combined walk to the next
+cluster.  Consequently all clusters of (1592) which lie in one connected
+component of `H` satisfy
+
+```text
+they splice to one nondegenerate PC closed walk with their total syndrome;
+or H contains two distinct incident edges saturating one exterior color.
+                                                               (1596)
+```
+
+In particular, if the cluster syndromes sum to zero within any one
+`H`-component, (1596) supplies a nondegenerate tag-even PC walk.  After
+Sections 442--444, the only nonsaturated splice obstruction is cancellation
+distributed across genuinely distinct connected components of `H`, whose
+nonzero component syndromes sum to zero.
