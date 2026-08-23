@@ -8878,3 +8878,34 @@ By (523), this local one-sided port defect launches an odd root-side demand.
 The remaining bits `nu_u,zeta_u` record global interval parity and the
 constant channel; only they remain invisible to this local target-port
 test.
+
+## 169. A constant-one channel has run length at most five
+
+Suppose `zeta_u=1`, so the word of Section 161 satisfies `b_i=1` at every
+H port of the run.  By Section 160, each H wedge then contains exactly one
+vertex adjacent to the active label `u`.
+
+There are only five possible H-port witnesses.  The label `u` has two
+`c`-neighbors, and each such root is incident to two `e` ports, so root
+incidences can witness at most four H port pairs.  Its unique target port
+`r_u` can witness at most one further H port pair.  Every `b_i=1` state must
+be witnessed by one of these incidences.  Therefore
+
+```text
+zeta_u=1 implies ell(A)<=5.                            (534)
+```
+
+This is an injection bound, not just a parity count: an H port pair is
+identified by its port, a root witness can occur only on one of that root's
+two incident ports, and the port witness is the single `r_u`.
+
+Consequently no H-run of length at least six supports a constant-one
+secondary channel.  On an odd singleton obstruction the `zeta` branch is
+confined to run lengths `1,3,5`; all longer odd runs are controlled entirely
+by the `(pi_u,nu_u)` interval states and the four-relay holonomy branch.
+
+This reproduces, at the run level, the order-five cutoff found for flat
+singleton columns in Section 141, but it uses only the direct two-by-two
+fiber geometry and H-decoration exclusivity.  It leaves the three short
+odd lengths for a finite local check rather than treating `zeta_u` as an
+unbounded global state.
