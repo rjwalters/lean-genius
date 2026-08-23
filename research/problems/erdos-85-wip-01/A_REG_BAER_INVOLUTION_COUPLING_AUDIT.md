@@ -2597,6 +2597,22 @@ The result solves precisely the incidence-separable part of the shared
 rigidity problem; the nonseparable two-endpoint layer remains open, in exact
 agreement with the one-port telescoping obstruction in the SRP lane.
 
+The canonical F-matching (73rnz_r) does not by itself solve that two-local
+problem.  Its edge tag is private but reversal-even: reversing an F-labelled
+H-edge fixes the same outside full center, and both endpoints have majority
+replication two.  Therefore the antisymmetrization of the bare tag
+
+```text
+(outside-full label, matched/matched endpoint status)
+```
+
+is zero.  The matching supplies privacy but no route-odd column.  A
+nontrivial extension of `Phi` must additionally retain endpoint-resolved
+secondary-fiber or defect data whose two values can differ under reversal,
+and then prove conservation for that enriched tag.  This is exactly the
+genuinely two-local gap isolated by the shared SRP/B3 analysis, now verified
+inside the concrete pilot graph rather than inferred abstractly.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
