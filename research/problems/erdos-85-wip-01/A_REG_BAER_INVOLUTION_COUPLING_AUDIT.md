@@ -2994,6 +2994,29 @@ endpoint census supplies the correct private row/column-Gram defect, while
 an SRP-derived occurrence balance is still needed to conserve it or cancel
 it against the ordinary-exit/defect census.
 
+The privacy compression has one exact collision sector.  The port p may be
+dropped from the label `(E,L,p) x G`: for fixed `(L,G)`, C4-freeness gives at
+most one common port, so `(L,G)` still identifies the switch occurrence.
+Now drop the leaf and retain only the star-level cross-tag `(E,G)`.  It has
+multiplicity at most two, one through each of the two leaves of E.  If both
+occurrences exist, with ports `p_0,p_1`, their forced T-edges contain
+
+```text
+E-L_0-p_0-G-p_1-L_1-E,                                  (73rnz_ap)
+```
+
+a simple T 6-cycle.  The leaves are distinct; the ports are distinct because
+the two same-star bundles are disjoint; and neither port equals an
+exceptional center.  Conversely, a repeated `(E,G)` switch label is exactly
+such a two-leaf switch collision and supplies this cycle.
+
+Thus the off-route switch coordinate is private after compression to
+`(E,G)` unless the geometry already contains a canonical star-to-residual
+6-cycle.  This is the precise collision alternative hidden by the bare J
+degree census.  It does not by itself exclude the collision -- T may contain
+6-cycles -- but it replaces a generic privacy failure by a concrete short
+routed object whose remaining ordinary/defect attachments can be audited.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
