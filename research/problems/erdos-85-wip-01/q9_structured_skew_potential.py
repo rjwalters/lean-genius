@@ -223,7 +223,8 @@ def bundle_triple_audit(data: dict) -> tuple[int, list[tuple]]:
     return len(transitions), sorted(zero_triples)
 
 
-def bundle_rank_audit(data: dict) -> tuple[int, int, list[tuple[int, int]]]:
+def bundle_rank_audit(data: dict) -> tuple[
+        int, int, list[tuple[int, int]], list[tuple[int, int]]]:
     """Exact rank after quotienting the route-reversal sign relation."""
     from sympy import SparseMatrix
 
@@ -231,8 +232,16 @@ def bundle_rank_audit(data: dict) -> tuple[int, int, list[tuple[int, int]]]:
                    for t, u, boundary in bundle_transition_boundaries(data)}
     missing_reverse = sorted((t, u) for t, u in transitions
                              if (u, t) not in transitions)
-    columns = [boundary for (t, u), boundary in transitions.items()
-               if t < u and (u, t) in transitions]
+    indexed_columns = [((t, u), boundary)
+                       for (t, u), boundary in transitions.items()
+                       if t < u and (u, t) in transitions]
+    columns = [boundary for _, boundary in indexed_columns]
+    feature_frequency = Counter(feature for boundary in columns
+                                for feature, value in boundary.items() if value)
+    without_private_feature = [
+        edge for edge, boundary in indexed_columns
+        if not any(value and feature_frequency[feature] == 1
+                   for feature, value in boundary.items())]
     features = sorted({feature for boundary in columns for feature in boundary},
                       key=repr)
     row = {feature: index for index, feature in enumerate(features)}
@@ -240,7 +249,7 @@ def bundle_rank_audit(data: dict) -> tuple[int, int, list[tuple[int, int]]]:
                for column, boundary in enumerate(columns)
                for feature, value in boundary.items()}
     rank = SparseMatrix(len(features), len(columns), entries).rank()
-    return len(columns), rank, missing_reverse
+    return len(columns), rank, missing_reverse, without_private_feature
 
 
 def flat_signature_audit(data: dict) -> tuple[
@@ -1172,18 +1181,22 @@ def main() -> int:
         total_columns = 0
         total_rank = 0
         total_missing = 0
+        total_nonprivate = 0
         for label, candidate in all_data:
-            columns, rank, missing = bundle_rank_audit(candidate)
+            columns, rank, missing, nonprivate = bundle_rank_audit(candidate)
             total_columns += columns
             total_rank += rank
             total_missing += len(missing)
+            total_nonprivate += len(nonprivate)
             branch, seed_number, colors = label
             print(f"bundle_rank branch={branch} seed={seed_number} "
                   f"colors={colors} columns={columns} rank={rank} "
-                  f"missing_reverse={missing}")
+                  f"missing_reverse={missing} nonprivate={nonprivate}")
         print(f"bundle_rank_total_columns={total_columns} "
-              f"total_rank={total_rank} missing_reverse={total_missing}")
-        audit_failed |= total_rank != total_columns or total_missing > 0
+              f"total_rank={total_rank} missing_reverse={total_missing} "
+              f"nonprivate={total_nonprivate}")
+        audit_failed |= (total_rank != total_columns or total_missing > 0
+                         or total_nonprivate > 0)
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")

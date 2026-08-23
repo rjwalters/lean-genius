@@ -1582,6 +1582,24 @@ matching mass, so its two external deletion losses must be coupled next.
 The key gain is that no higher hypergraph circuit remains once (12rg) is
 proved.
 
+The sampled rank has a combinatorial certificate much simpler than a
+determinant.  In all 476 columns, at least one nonzero tagged alpha-or-bundle
+feature occurs in **no other unordered transition column** of that instance.
+The rank audit now reports any column lacking such a private row and finds
+none.  Hence the most concrete prospective lemma is
+
+```text
+PRIVATE BUNDLE FEATURE:
+every unordered same-role own transition {t,u} has an alpha or tagged
+fiber-census feature occurring in no other Delta(v,w).          (12rh)
+```
+
+Peeling the coefficient of that private row proves (12rg) immediately.
+This turns the rank conjecture into a uniqueness statement about a realizing
+root signature or one of its consumed secondary fibers.  The seed-8 loop
+illustrates the latter case: its pair-high/pair-other secondary census swap
+is exactly the private information lost by the flat projection.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
