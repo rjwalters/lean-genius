@@ -18214,3 +18214,57 @@ ten-ticket simple-cycle claim is not made.  The important reduction is
 that indefinite propagation is confined to a q-independent thirty-state
 object with no monochromatic transition and no immediate owner-fiber
 reversal.
+
+## 347. The owner/root/color projection already admits a three-state cycle
+
+The cycle branch of (1173) cannot be excluded from only the owner ports,
+core roots, and consecutive color changes.  There is a minimal explicit
+model.  Index the selected core cyclically as before, and choose one private
+ticket `w_i` over each of the three consecutive owner ports
+
+```text
+p_0=E_0,       p_1=E_1,       p_2=E_2.             (1174)
+```
+
+Introduce three distinct active labels `y_0,y_1,y_2` with three distinct
+exterior colors and set their target-factor edges and core roots to be
+
+```text
+y_0: {w_0,w_1}, root x_3;
+y_1: {w_1,w_2}, root x_0;
+y_2: {w_2,w_0}, root x_4.                          (1175)
+```
+
+Every entry is a legitimate ticket letter.  The roots available at a
+ticket over `p_i` are the three vertices outside `Ends(E_i)`.  Hence
+
+```text
+w_0 admits roots x_4,x_3,
+w_1 admits roots x_3,x_0,
+w_2 admits roots x_0,x_4,                           (1176)
+```
+
+and the two displayed roots at each ticket are distinct.  Complete each
+ticket by its unused third root and any color consistent with the
+nonmonochromatic cap; the two incident cycle colors are already distinct.
+
+The three arrival states then form the directed cycle
+
+```text
+(w_0,y_2) -> (w_1,y_0) -> (w_2,y_1) -> (w_0,y_2). (1177)
+```
+
+Consecutive tickets have distinct owner fibers, no step hits a sibling,
+and no step immediately reverses.  Any two tickets share only their one
+displayed transition label, so the local common-neighbor constraints which
+created (1172) are respected.  The unused darts of the three color factors
+and the remaining ticket letters can be paired on fresh local states, just
+as in the skeleton completion of Section 340.
+
+This is an abstract countermodel to the projection retained in Section
+346, not a completion of the ambient graph or of all simultaneous routing
+partitions.  It proves that neither cycle length, owner sequence, core-root
+incidence, nor the rule of consecutive color change can by itself price the
+cycle branch.  Any exclusion must use information absent from (1174)--
+(1177), such as the self factors `A_(color(y_i))`, the coupled partitions
+`SRP(color(y_i),e)`, or the outside component tags of the displayed labels.
