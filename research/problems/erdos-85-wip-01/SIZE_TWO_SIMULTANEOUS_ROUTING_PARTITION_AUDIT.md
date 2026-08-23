@@ -17130,3 +17130,61 @@ individual color-`b` return is marked in `Omega_b^C`; a same-color
 reversal requires the interface of the two corresponding ten-label
 skeletons.  In either case shore parity alone no longer records the data
 which a reversal must preserve.
+
+## 329. A singleton defect returns through exactly one active edge
+
+The singleton expansion in (1094) has a sharper realized normal form.
+Take `D={x}` and a color `b` with `|S_b({x})|` odd.  The restricted graph
+`H_b^{\{x\}}` consists of exactly the two `b`-factor edges colored by the
+root `x`.  They are nonadjacent by (865), so they have four distinct
+endpoints and are themselves the two nontrivial path components:
+
+```text
+H_b^{\{x\}}=e_x^0 disjoint_union e_x^1,
+e_x^0 and e_x^1 are vertex-disjoint edges.          (1100)
+```
+
+Every endpoint has degree one in this restricted graph.  Consequently
+`S_b({x})` is exactly the subset of the four endpoints which lie in `O`.
+Its odd cardinality is therefore one or three.  Pairing endpoints along
+the two edges, the number of edges with exactly one endpoint in `O` has
+the same parity as `|S_b({x})|`; since there are only two edges, it is
+exactly one:
+
+```text
+#{h in {0,1}:|e_x^h intersect O|=1}=1.             (1101)
+```
+
+The other edge has no residual endpoint when `|S_b({x})|=1`, and has two
+residual endpoints when `|S_b({x})|=3`.  Thus the odd crossing family in
+(1085) is not merely nonempty in the singleton case: it is the single
+root-colored factor edge
+
+```text
+s --[one edge of H_b^{\{x\}}]-- t,
+s in O,        t in Z union B.                     (1102)
+```
+
+After the optional owner step from a `B` terminal, there is one selected
+endpoint `zeta`.  Hence the chains in (1090)--(1092) specialize to
+
+```text
+L_{\{x\}}=[(x,zeta)],
+R_{\{x\}}={x},
+Z_{\{x\}}={zeta},
+Phi({x})={x} triangle Ends(E_zeta).                 (1103)
+```
+
+The pair `(x,zeta)` is off-incidence, so the three roots on the right of
+(1103) are distinct.  This strengthens (1094): every singleton return is
+a one-edge active-factor event followed by at most one owner edge, and its
+triple successor is determined by one specific nonincident selected port.
+There is no three-port cancellation branch at the first step.
+
+Accordingly a realized `1 -> 3 -> 1` reversal must undo a fully located
+one-edge expansion, not merely reverse an abstract odd shore.  In a
+same-color reversal the edge (1102) selects one marked transition in the
+ten-label skeleton `Omega_b^C`; in a mixed-color reversal the second
+skeleton must return the exact triple in (1103) while respecting the
+root-matching disjointness across colors.  These are the two concrete
+holonomy interfaces left by Sections 327--328.
