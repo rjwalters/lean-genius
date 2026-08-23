@@ -21893,3 +21893,58 @@ odd port-pairing parity excludes the saturated layer.  Any successful
 continuation must use coupling to `A_h`, the source/payer-layer assignments,
 the large cross-layer theta system of Section 407, or another simultaneous
 SRP constraint absent from this local factor.
+
+## 409. Deep `q=16` slack forces an adjacent high-loss pair
+
+The two-root conclusion of Section 406 strengthens once the total slack
+passes sixteen.  Call a root **high-loss** when `delta_i>=3`.  If at most
+two roots were high-loss, then (1404) would give
+
+```text
+Delta<=2*5+3*2=16.                                 (1449)
+```
+
+Therefore
+
+```text
+Delta>=17 -> at least three roots are high-loss.   (1450)
+```
+
+The independence number of the five-cycle on the core roots is two, so
+three high-loss roots contain an adjacent pair `x_i,x_j`.  Both members of
+that pair satisfy the explicit private-boundary/shelter alternatives
+(1439).  In addition, adjacency locates their common artificial fixed set:
+
+```text
+|B_(x_i) intersect B_(x_j)|=2                     (1451)
+```
+
+by (1331), and those two private tickets are isolates of the pair matching
+graph `Gamma_ij`.  Thus the deep-slack branch supplies an adjacent
+high-loss pair together with its two named common fixed tickets; it is not
+merely an arbitrary pair among the five roots.
+
+Using (1411), the complementary shallow band is finite at the scalar level:
+
+```text
+Delta in {14,15,16}
+ iff b_B+e_BB-S_sh in {6,5,4}, respectively.       (1452)
+```
+
+Consequently the `q=16` density gap splits exactly into two targets:
+
+```text
+Delta>=17:
+  an adjacent pair of roots obeys the high-loss alternatives (1439)
+  and has the two fixed private tickets (1451);
+
+Delta in {14,15,16}:
+  the global private statistic b_B+e_BB-S_sh is exactly 6, 5, or 4.
+                                                        (1453)
+```
+
+This is still a reduction, not an exclusion.  Its purpose is to expose the
+next finite coupling: the adjacent branch can use the exact two-root path
+decomposition of Sections 382--387 at the same time as the two high-loss
+private boundaries, while the shallow band has only three possible global
+boundary totals to realize.
