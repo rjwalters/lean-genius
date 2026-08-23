@@ -5451,3 +5451,41 @@ triangles, intermediate fibers, and switch roles.  The B3 lane's private
 tagged-bundle computation is empirical evidence that precisely such a
 middle feature space exists; proving its analogue uniformly is now the
 shared algebraic task.
+
+## 103. A single root-marked primitive has only a one-bit cokernel
+
+The canonical primitive (91)--(92) is the finest existing root-marked SRP
+identity, but its coboundary statement alone cannot supply the private map
+`Phi`.  On a connected cycle of order `n`, let
+
+```text
+(delta phi)_i := phi_(i-1) + phi_i
+```
+
+over `F_2`.  Then
+
+```text
+ker(delta) = span{1},
+im(delta)  = {kappa : sum_i kappa_i=0},
+dim coker(delta)=1.                                   (305)
+```
+
+Indeed `delta phi=0` forces every consecutive pair of values equal, so
+`phi` is constant.  Rank-nullity gives rank `n-1`, and every image vector
+has even coordinate sum; hence the image is exactly the even-sum
+hyperplane.
+
+Thus the conserved information in the bare statement
+`kappa=delta phi` is only the already known total parity of `kappa`.  A
+one-dimensional cokernel cannot privately distinguish the many unoriented
+gap transitions required by (304).  The distinguished formula (91) for
+`phi` retains much more routing data, but `phi` itself is not a zero-boundary
+feature whose global occurrence sum is known to vanish.
+
+Consequently the candidate `Phi` cannot be obtained by simply reusing one
+root-marked coboundary row.  It must consume the **compatibility** of the
+distinguished primitives as the third color and target incidence component
+vary—the precise compatibility left open after Section 25.  This rules out
+another overly coarse conservation map while pointing to the correct
+refinement: atomize the cross-color family of primitives before taking its
+cycle derivative or total sum.
