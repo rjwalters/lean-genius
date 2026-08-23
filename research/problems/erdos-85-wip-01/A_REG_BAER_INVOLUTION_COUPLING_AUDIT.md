@@ -5077,6 +5077,37 @@ the unlabeled marked unit still has to be compared with that vector through
 parity of `00--00`, `10--10`, and the non-double-pole subcell of `01--01`, with
 the `11--11` owner value fixed pointwise.
 
+The `10` residue has an additional run-level reduction.  Let `K_10` be the
+maximum-degree-two subgraph of marked same-side H edges whose two roots both
+have shore state `10`.  Every vertex v of `K_10` has `ell(v)=1`, so it is
+adjacent to exactly one of the two poles; call that pole `pi(v)`.  For every
+edge `vv'` of `K_10`, (73rnz_cjibkzw) gives
+
+```text
+pi(v) != pi(v').                                      (73rnz_cjibkzy)
+```
+
+Hence the pole label alternates along each path or cycle component of
+`K_10`.  In particular every cycle component has even length, and a path
+component has odd edge length exactly when its two endpoint pole labels are
+different.  Therefore
+
+```text
+m_(10,10)
+ =#{path components Q of K_10:
+       pi(left endpoint of Q) != pi(right endpoint of Q)}  (mod 2).
+                                                               (73rnz_cjibkzz)
+```
+
+Thus the `10--10` diagonal cell has no hidden odd closed-run contribution.
+Its entire parity is a two-ended pole-owner boundary census, precisely the
+kind of datum the vertical edges of the root--color state two-factor can
+transport.  This does not assert that those vertical connections already
+pair the displayed endpoints; it removes the cycle obstruction and states
+the exact remaining coverage lemma.  No analogous two-pole alternation is
+available for the unanchored `00` or non-double-pole `01` runs, whose roots
+have even pole parity.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
