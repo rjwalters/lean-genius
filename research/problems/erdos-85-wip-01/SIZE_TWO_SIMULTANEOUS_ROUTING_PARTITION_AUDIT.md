@@ -19585,3 +19585,62 @@ This is an exact per-root statement, not merely a global handshake.  It
 does not yet bound the number of `O--O` edges, which disappear twice in
 (1273), but it prevents all five residual rooted families from closing
 inside `O` independently of the locations of their strict mates.
+
+## 371. Arbitrary companion collisions obey an exact color-capacity law
+
+The two-payer collision of Section 358 extends without loss to any family
+of inactive companions.  Fix an outside endpoint
+
+```text
+o in B disjoint_union O,
+```
+
+and let `I(o)` be a set of distinct core-inactive payer labels whose unique
+outside companion is `o`.  For each exterior component `k`, define
+
+```text
+n_k(o):=#{z in I(o):z in k},
+t_k(o):=#{ell in RootWord(o):color(ell)=k}.          (1280)
+```
+
+Every label counted by either term is a distinct `k`-neighbor of `o`: the
+first family is core-inactive, while the rooted-word family meets `C`.
+Since the `k--e` cross block has degree two at `o`, one has the pointwise
+capacity law
+
+```text
+0<=n_k(o)<=2,       n_k(o)+t_k(o)<=2.               (1281)
+```
+
+Thus two inactive arrivals in one color delete that color from the rooted
+word, while one inactive arrival leaves room for at most one rooted letter
+of that color.  Section 358 is exactly the two-arrival specialization of
+(1281), but no assumption on the total collision multiplicity or on equal
+arrival layers is needed here.
+
+Let
+
+```text
+K(o):={k:n_k(o)>0}.
+```
+
+Summing `n_k(o)<=2` over its support gives
+
+```text
+|K(o)|>=ceil(|I(o)|/2).                             (1282)
+```
+
+Equivalently, a collision of `m` inactive companions at one outside
+endpoint must occupy at least `ceil(m/2)` distinct arrival colors.  The
+same data impose the rooted-word deficit
+
+```text
+sum_(k in K(o)) (2-t_k(o)) >= |I(o)|.               (1283)
+```
+
+Hence outside-endpoint reuse cannot erase the global inactive-payer count
+of Section 369.  It converts that count into color diversity and explicit
+missing capacity in the three-letter `B` ticket or five-letter `O` word.
+Distinct companions retain separate restart fans; coincident companions
+obey (1281)--(1283).  This is a local capacity law, not yet a global lower
+bound on the number of different outside endpoints.
