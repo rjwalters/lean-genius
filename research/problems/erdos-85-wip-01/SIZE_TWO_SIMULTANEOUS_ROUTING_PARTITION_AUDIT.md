@@ -15496,3 +15496,59 @@ long.  No disjointness between different quadruples, and no equality of
 their label sequences, is asserted.  The gain is exact occurrence
 coupling: the same reverse terminal which produces the bounded odd root
 defect also determines an actual escape across the target-owner shore.
+
+## 303. The bounded root route has an exact local shape classification
+
+The length bound in (971) can be resolved completely.  Fix `w in W_I` and
+write the two companion root edges as
+
+```text
+N_c(y_w)={x,u},
+N_c(y'_w)={v_0,v_1},                                (974)
+```
+
+where `x=x(w)` and the four displayed roots are distinct by Section 284.
+Put `Z_w:=N_c(z(w))` and
+
+```text
+r_w=|Z_w intersect {u,v_0,v_1}|.
+```
+
+Section 293 gives `r_w in {0,1,2}` and
+`|T_w^def|=5-2r_w`.  The component of `L_w` incident to `x` is as follows.
+
+```text
+r_w=0:
+  x--u.                                              (975)
+
+r_w=1, u in Z_w:
+  x--u--h,       where Z_w={u,h}.                    (976)
+
+r_w=1, Z_w intersect {v_0,v_1}!={}:
+  x--u.                                              (977)
+```
+
+In (975) the other two edges form components disjoint from `x`.  In (976)
+the terminal edge indexed by `z(w)` continues the active edge, and `h` is
+the defect endpoint.  In (977) the terminal edge instead joins the
+inactive-companion component, so the source component again ends at `u`.
+
+It remains to resolve `r_w=2`.  If `z(w)=y'_w`, the two inactive label
+edges cancel and the source route is the single edge `x--u`, as already
+noted after (971).  Otherwise `z(w)` is distinct from both companions.
+Then `C_4`-freeness permits at most one shared root with each companion;
+therefore, after exchanging `v_0,v_1` if necessary,
+
+```text
+Z_w={u,v_0},
+x--u--v_0--v_1,
+T_w^def={v_1}.                                      (978)
+```
+
+These cases are exhaustive.  In particular the bounded root route uses
+the same terminal label `z(w)` as the target escape (972) exactly when
+`u in Z_w`; then it has length two or three.  Otherwise it is the single
+active edge `x--u`, while the inactive labels lie in separate or cancelled
+components.  This identifies precisely when the occurrence-indexed dual
+routes share their terminal private label, rather than leaving that issue
+inside the length-three bound.
