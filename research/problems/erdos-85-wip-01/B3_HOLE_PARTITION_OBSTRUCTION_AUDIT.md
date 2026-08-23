@@ -1823,6 +1823,15 @@ support of the negative demand weights have a design-theoretic description;
 only their multiplicities, the capacity slots, and the state-potential
 propagation remain to be classified.
 
+The coefficient-two demand weights in the branch-4 ledgers are the cost of
+this canonical small skeleton, not an absolute necessity.  Constraining the
+`(12rs)` demand set to unit weights makes both branch-4 integer duals
+infeasible.  If arbitrary unit-weight demand rows are allowed instead, exact
+certificates reappear, but grow from 53/51 to 96/100 nonzeros, require three
+or four pivot labels, and include pair-side demand roots.  The compact
+two-pivot B0-only ledgers are therefore the better uniform target even though
+they require one extra transport layer on some roots.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
