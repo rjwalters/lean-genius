@@ -23507,3 +23507,66 @@ obstruction: it automatically enters the repeated-edge branch of (1563),
 while carrying an explicit chain of alternating pinch colors.  If repeated
 edges are eliminated, the remaining nonsimple projection is a closed
 trail with vertex multiplicity at most two, a much smaller normal form.
+
+## 439. Repeated directed edges are necessarily antipodal pairs
+
+Minimality gives an exact global law for the repeated-edge branch.  Fix a
+directed base edge
+
+```text
+e_bar=(u,v)
+```
+
+and suppose the shortest tag-even PC walk `W` traverses this same directed
+edge `k` times.  Cut `W` immediately before consecutive occurrences.
+This decomposes its cyclic edge sequence into `k` closed walks
+
+```text
+C_j=e_bar A_j,       j=0,...,k-1,                 (1571)
+```
+
+where `A_j` runs from `v` back to `u`.  Every `C_j` is properly colored at
+closure: its first transition is the transition after one occurrence of
+`e_bar` in `W`, while its last-to-first transition is the transition into
+the next occurrence, whose edge has the same exterior color as `e_bar`.
+
+Let `ell_j:=|C_j|`.  Traversing `C_j` twice cancels every binary root/tag
+syndrome and remains properly colored, so the minimality of `W` forces
+
+```text
+2ell_j>=L for every j,       sum_j ell_j=L.        (1572)
+```
+
+The two relations in (1572) immediately imply
+
+```text
+k<=2.                                               (1573)
+```
+
+Indeed `k>=3` would make the sum at least `3L/2`.  If `k=2`, both
+inequalities in (1572) are equalities:
+
+```text
+ell_0=ell_1=L/2.                                  (1574)
+```
+
+Write `p_j` for the root-parity voltage of `C_j`.  Since
+`W=C_0 C_1` has zero voltage, `p_0=p_1` in characteristic two.  Their
+common value is nonzero; otherwise either `C_j` would already be a shorter
+tag-even PC closed walk.  The tag basis gives the identical statement for
+their selected-column syndromes.  Thus a double occurrence has the exact
+normal form
+
+```text
+same directed edge occurs twice
+ -> the two occurrences are antipodal,
+    the complementary PC closed halves have equal nonzero
+    root and selected-tag syndrome.                (1575)
+```
+
+All source-color and payer-layer avoidance imposed before minimizing `W`
+is inherited by the two halves.  Consequently a directed base edge can
+never recur three times, and its only possible double recurrence is not an
+arbitrary nested pinch but an equal-length, equal-syndrome antipodal pair.
+This sharply limits the repeated-edge alternative remaining after
+Sections 437--438.
