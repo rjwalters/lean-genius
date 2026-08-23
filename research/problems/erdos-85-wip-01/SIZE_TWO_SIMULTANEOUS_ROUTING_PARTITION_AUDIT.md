@@ -11444,3 +11444,46 @@ anonymous odd run length; its every edge unit is represented by a bounded-
 arity joint label.  After the `10` boundary reduction and the pointwise
 payment of `11`, only the `00` closed-run sector lacks such a nonzero
 incidence expansion.
+
+## 225. The fully shore-empty `00` cell cannot be incidence-lifted
+
+For a `00` root, `ell=0` means no pole neighbor because the two empty lines
+are disjoint, but `r=0` means only that its residual-neighbor set has even
+cardinality; it may have size `0,2,4,...`.  Thus `00` does not mean absence
+from the residual alphabet.
+
+There is nevertheless one exact hard subcell.  Let `e=xx'` be a marked
+`00--00` H edge with
+
+```text
+R_x=R_(x')=empty.                                     (692)
+```
+
+Every nonconstant flag built solely from the pole incidences
+`ell_i(x),ell_i(x')` and residual incidences
+`1[G in R_x],1[G in R_(x')]` vanishes on (692), at every arity.  The marked
+H unit is still one.  Consequently no identity of the form
+
+```text
+marked unit = sum of positive-degree shore-incidence flags             (693)
+```
+
+can hold occurrence-by-occurrence on all `00` edges unless (692) is
+geometrically impossible.
+
+This is stronger than the failure of the particular determinant or pair
+flag: it is the augmentation obstruction at the zero incidence state.  The
+remaining `00` route has an exact fork:
+
+```text
+(a) prove every marked 00--00 H edge has a nonempty pole/residual
+    incidence and construct an odd expansion there; or
+(b) retain a non-shore generator, necessarily the private H-port witness,
+    root--color vertical decoration, or V/S route state.                (694)
+```
+
+Branch (a) still needs an odd expansion: nonempty even residual sets do not
+make the single- or double-label sums odd automatically.  Branch (b) is the
+honest interface already indicated by the full state cycle (577).  Thus the
+sole unexpanded class has now been localized further to a precise zero-state
+obstruction rather than an undifferentiated `00` population.
