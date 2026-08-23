@@ -3154,6 +3154,40 @@ weight transported to the `nu/mu` atoms.  This rules out any proof based only
 on the centerwise scalar balance and matches the independent failure of
 additive-linear census potentials in the B3 ledger.
 
+There is a sharp linear-algebra dichotomy for producing the missing star
+weight.  Over F2 let `h=e_(E_1)+e_(E_2)`.  Either there is a vector
+`v in ker A` with
+
+```text
+v(E_1)+v(E_2)=1,                                      (73rnz_ay)
+```
+
+or the functional h annihilates all of `ker A`.  Since A is symmetric, the
+latter condition is equivalent to `h in im A`; hence there is an x with
+
+```text
+A x = h.                                               (73rnz_az)
+```
+
+In the first branch, the general identity `M_K v=M_T v` (the same proof as
+(19), using `Av=0`) supplies a transport equation whose coefficients
+distinguish the two empty stars before they are summed.  It also introduces
+the other v-weighted exceptional/ordinary cells, which must be retained; no
+automatic contradiction is claimed.
+
+In the second branch, applying A once more gives
+
+```text
+A^2 x = A h = 1_(N_A(E_1)) + 1_(N_A(E_2)).             (73rnz_ba)
+```
+
+The two neighborhoods are disjoint because the empty centers have no common
+A-neighbor.  Thus failure of every kernel separator is not featureless: it
+produces a canonical two-pole potential whose second derivative is exactly
+the union of the two empty lines.  The joint-state terminal may therefore
+split cleanly into a kernel-separator transport branch and a two-pole
+potential branch, rather than assuming a star character exists.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
