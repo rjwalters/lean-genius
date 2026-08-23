@@ -14,11 +14,13 @@ zero says that the selected invariant class is insufficient.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from collections import Counter
 from fractions import Fraction
 from itertools import combinations
+from pathlib import Path
 
 import numpy as np
 from scipy.optimize import Bounds, LinearConstraint, linprog, milp
@@ -2448,6 +2450,77 @@ def local_candidate_fractional_transversal(
              if weight > 1e-8])
 
 
+def local_candidate_fractional_matching(
+        data: dict, row: int, excluded_row: int | None = None
+        ) -> tuple[float, list[tuple[int, tuple[int, ...], float]]] | None:
+    """Maximum fractional matching, including its positive block support."""
+    candidates = [u for u in data["candidates"][row] if u != excluded_row]
+    matrix = np.zeros((N_U1, len(candidates)))
+    for j, candidate in enumerate(candidates):
+        for label in data["blocks"][candidate]:
+            matrix[label, j] = 1
+    result = linprog(-np.ones(len(candidates)), A_ub=matrix,
+                     b_ub=np.ones(N_U1), bounds=[(0, 1)] * len(candidates),
+                     method="highs")
+    if not result.success:
+        return None
+    return (-float(result.fun),
+            [(candidate, tuple(sorted(data["blocks"][candidate])),
+              float(weight))
+             for candidate, weight in zip(candidates, result.x)
+             if weight > 1e-8])
+
+
+def local_candidate_exact_fractional_certificate(
+        data: dict, row: int, excluded_row: int | None = None
+        ) -> dict | None:
+    """Rationalize and exactly verify matching/cover LP certificates."""
+    primal = local_candidate_fractional_matching(data, row, excluded_row)
+    dual = local_candidate_fractional_transversal(data, row, excluded_row)
+    if primal is None or dual is None:
+        return None
+    primal_weights = {
+        candidate: Fraction(weight).limit_denominator(1_000_000)
+        for candidate, _, weight in primal[1]
+    }
+    dual_weights = {
+        label: Fraction(weight).limit_denominator(1_000_000)
+        for label, weight in dual[1]
+    }
+    candidates = [u for u in data["candidates"][row] if u != excluded_row]
+    primal_ok = all(
+        sum((primal_weights.get(u, Fraction(0)) for u in candidates
+             if label in data["blocks"][u]), Fraction(0)) <= 1
+        for label in range(N_U1)
+    )
+    dual_ok = all(
+        sum((dual_weights.get(label, Fraction(0))
+             for label in data["blocks"][u]), Fraction(0)) >= 1
+        for u in candidates
+    )
+    primal_value = sum(primal_weights.values(), Fraction(0))
+    dual_value = sum(dual_weights.values(), Fraction(0))
+    if not primal_ok or not dual_ok or primal_value != dual_value:
+        return None
+    return {
+        "value": str(primal_value),
+        "primal": [
+            (u, tuple(sorted(data["blocks"][u])), str(primal_weights[u]))
+            for u in sorted(primal_weights)
+        ],
+        "dual": [(label, str(dual_weights[label]))
+                 for label in sorted(dual_weights)],
+    }
+
+
+def local_candidate_matching_capacity(
+        data: dict, row: int, excluded_row: int | None = None) -> int:
+    """Exact integral matching number of one retained candidate family."""
+    supports = [data["blocks"][u] for u in data["candidates"][row]
+                if u != excluded_row]
+    return maximum_label_packing(supports, set(range(N_U1)))
+
+
 def residual_gram_unsat_core(data: dict, timeout_seconds: int) -> dict:
     """Return a grouped assumption core for degree plus Gram-only constraints."""
     from z3 import And, Bool, If, Implies, SolverFor, Sum, unsat
@@ -2625,6 +2698,8 @@ def main() -> int:
                         help="seek small label-transversal duals for deficits and forced neighbors")
     parser.add_argument("--audit-residual-gram-dual-summary", action="store_true",
                         help="test fractional label-cover certification of the Gram dichotomy")
+    parser.add_argument("--audit-residual-gram-gap-certificate", action="store_true",
+                        help="exactly verify the stored fractional-integral gap witness")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -2661,6 +2736,54 @@ def main() -> int:
     if os.environ.get('PYTHONHASHSEED') != '0':
         print("warning: set PYTHONHASHSEED=0 before launch for reproducible "
               "outer-model seed labels", file=sys.stderr)
+    if args.audit_residual_gram_gap_certificate:
+        import q9_three_high_u1_design_sat as outer
+        from z3 import sat
+
+        witness_path = Path(__file__).with_name(
+            "q9_gram_fractional_gap_witness.json")
+        witness = json.loads(witness_path.read_text())
+        branch = int(witness["branch"])
+        outer_solver, outer_data = outer.build(branch, 30_000)
+        blocks = [tuple(block) for block in witness["blocks"]]
+        for class_index, class_map in enumerate(outer_data["classes"]):
+            chosen = set(blocks[8 * class_index:8 * (class_index + 1)])
+            for block, variable in class_map.items():
+                outer_solver.add(variable == (block in chosen))
+        chosen_holes = set(blocks[24:26])
+        for block, variable in outer_data["holes"].items():
+            outer_solver.add(variable == (block in chosen_holes))
+        chosen_pairs = {tuple(block) for block in blocks[26:]}
+        for block, variable in outer_data["marked_pairs"].items():
+            outer_solver.add(variable == (block in chosen_pairs))
+        chosen_k = {tuple(edge) for edge in witness["k_edges"]}
+        for edge, variable in outer_data["k"].items():
+            outer_solver.add(variable == (edge in chosen_k))
+        assert outer_solver.check() == sat
+        candidate = instance(branch, witness, (0, 1))
+        u, v, w = map(int, witness["collision"])
+        collisions = residual_gram_forced_collisions(candidate)
+        capacities = {
+            "base_u": local_candidate_matching_capacity(candidate, u),
+            "base_v": local_candidate_matching_capacity(candidate, v),
+            "delete_u": local_candidate_matching_capacity(candidate, u, w),
+            "delete_v": local_candidate_matching_capacity(candidate, v, w),
+        }
+        certificates = {
+            "u": local_candidate_exact_fractional_certificate(candidate, u, w),
+            "v": local_candidate_exact_fractional_certificate(candidate, v, w),
+        }
+        assert (u, v, w) in collisions
+        assert capacities == {
+            "base_u": 5, "base_v": 5, "delete_u": 4, "delete_v": 4}
+        assert certificates["u"] is not None
+        assert certificates["v"] is not None
+        assert certificates["u"]["value"] == "9/2"
+        assert certificates["v"]["value"] == "5"
+        print("residual_gram_gap_certificate", {
+            "collision": (u, v, w), "capacities": capacities,
+            "certificates": certificates})
+        return 0
     if (args.audit_residual_c4_parity or args.audit_residual_gram_parity
             or args.audit_residual_gram_only):
         for branch in (3, 4):
@@ -2817,7 +2940,18 @@ def main() -> int:
                              local_candidate_fractional_transversal(
                                  candidate, u, excluded_row=w)[0],
                              local_candidate_fractional_transversal(
-                                 candidate, v, excluded_row=w)[0])
+                                 candidate, v, excluded_row=w)[0],
+                             local_candidate_fractional_matching(
+                                 candidate, u, excluded_row=w),
+                             local_candidate_fractional_matching(
+                                 candidate, v, excluded_row=w),
+                             local_candidate_exact_fractional_certificate(
+                                 candidate, u, excluded_row=w),
+                             local_candidate_exact_fractional_certificate(
+                                 candidate, v, excluded_row=w),
+                             tuple(sorted(candidate["blocks"][u])),
+                             tuple(sorted(candidate["blocks"][v])),
+                             tuple(sorted(candidate["blocks"][w])))
                             for u, v, w in collisions
                         ],
                     })

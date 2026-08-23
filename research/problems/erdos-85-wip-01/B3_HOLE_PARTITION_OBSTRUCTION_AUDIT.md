@@ -3292,6 +3292,40 @@ whose demand is five.  Thus the dual proves `w in F(11)` but cannot prove
 was captured inside the same sequential generator run because regenerated
 seed handles are noncanonical.
 
+The witness and exact certificates are now stored rather than left as
+floating console output.  The file `q9_gram_fractional_gap_witness.json`
+contains all 47 blocks and all 36 edges of `K`.  The mode
+`--audit-residual-gram-gap-certificate` verifies by exact subset dynamic
+programming that both base matching ranks are five and both ranks after
+deleting row 27 are four.  It first fixes the stored blocks and `K` inside
+the unrestricted outer-design solver and requires `SAT`, so admissibility is
+also rechecked rather than trusted from provenance.  It rationalizes the LP
+supports and then checks
+every primal capacity inequality, every dual block-cover inequality, and
+equality of the two rational objectives using `Fraction`.  The certified
+values are
+
+```text
+row 11 after deletion:  nu=4, fractional optimum=9/2;
+row 16 after deletion:  nu=4, fractional optimum=5.             (13h')
+```
+
+The integral gap at row 16 has a small visible support.  Two unit-weight
+pair blocks are `{0,21}` and `{7,16}`.  The six half-weight blocks split as
+
+```text
+{4,12,20}, {2,20}, {2,12};
+{4,13,23}, {3,23}, {3,13}.                              (13h'')
+```
+
+Each line is a three-edge Berge triangle: its blocks intersect pairwise at
+three different labels.  The two triple blocks also meet at label 4.  Thus
+the half weights contribute three fractionally, whereas integrally each
+triangle contributes at most one; with the two unit pairs this is the
+observed `5` versus `4` gap.  The exact dual of value five puts unit weight
+on labels `{2,3,4,7,21}`.  This identifies the nonlinear residue as an odd-
+cycle matching obstruction, not numerical solver noise.
+
 Consequently a purely linear replacement of (13f) is false.  Fractional
 label covers remain a compact proof tool for one-row deficits and most kernel
 sides, but a uniform proof must retain at least one integral exact-cover
