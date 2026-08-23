@@ -21,7 +21,7 @@ from pathlib import Path
 import numpy as np
 from scipy.optimize import Bounds, LinearConstraint, milp
 
-from q9_symmetric_point_mass_obstruction import N_U1, fixed_system
+from q9_symmetric_point_mass_obstruction import N_TRIPLE, N_U1, fixed_system
 
 
 DEFAULT_PAYLOADS = (
@@ -119,6 +119,10 @@ def main() -> int:
     parser.add_argument("payloads", type=Path, nargs="*")
     parser.add_argument("--max-denominator", type=int, default=12)
     parser.add_argument("--show-prices", action="store_true")
+    parser.add_argument(
+        "--middle-hole-only", action="store_true",
+        help="test only the middle-color point on each exceptional hole row",
+    )
     args = parser.parse_args()
     if args.max_denominator < 1:
         parser.error("--max-denominator must be positive")
@@ -128,11 +132,23 @@ def main() -> int:
     summaries = []
     for path in payloads:
         system = fixed_system(json.loads(path.read_text()))
+        points = list(range(N_U1))
+        if args.middle_hole_only:
+            hole_count = 2 if system["branch"] == 3 else 4
+            hole_rows = range(N_TRIPLE - hole_count, N_TRIPLE)
+            points = sorted({
+                point for row in hole_rows for point in system["blocks"][row]
+                if 8 <= point < 16
+            })
+            if len(points) != hole_count:
+                raise RuntimeError(
+                    f"expected {hole_count} middle-hole points, got {points}"
+                )
         least = None
         witnesses = []
         for denominator in range(1, args.max_denominator + 1):
             witnesses = [
-                witness for point in range(N_U1)
+                witness for point in points
                 if (witness := scaled_cover(system, point, denominator))
                 is not None
             ]
@@ -151,6 +167,7 @@ def main() -> int:
             "payload": path.name,
             "branch": system["branch"],
             "least_denominator": least,
+            "candidate_points": points,
             "witnesses": witnesses,
         })
     print(json.dumps(summaries, indent=2, sort_keys=True))
