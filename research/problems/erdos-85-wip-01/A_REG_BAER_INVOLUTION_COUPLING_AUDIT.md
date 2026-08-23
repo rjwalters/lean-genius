@@ -4863,6 +4863,47 @@ uniform matching constant.  What remains is not switch generation but the
 aggregate transport of these per-witness endpoint margins/constants across
 `delta_(W_P)(R)`.
 
+This separation is exact at the quotient level.  Let `E_flip` be the vector
+space on the full private b-flip occurrences (so each basis edge retains its
+unique witness label), and define the witness-incidence map
+
+```text
+ell:E_flip -> F_2^(witnesses),   ell(e_y)=1_y.          (73rnz_cjibkzp)
+```
+
+Project a local four-switch relation at y to its b-flip edges.  The parity of
+the number of mixed-b pairs in either pairing is the sum of the four endpoint
+b-bits, so the two sides contain the same number of flips modulo two.  Its
+projection therefore contains an even number of y-labelled flip edges and
+lies in `ker(ell)`.  Consequently `ell` descends through the direct sum of
+all local switch quotients.  For the realized flip census z,
+(73rnz_cjibkh) says
+
+```text
+ell(z)_y=s(y),
+<1_R,ell(z)>=sum_(G in R)s(G)=Delta.                   (73rnz_cjibkzq)
+```
+
+Thus the positive generation theorem (73rnz_cjibkzo) kills every
+within-witness matching holonomy but cannot change, or force the vanishing
+of, the residual witness character `Delta`.  This is not another hidden
+local constant: it is a quotient coordinate transverse to all local pairing
+relations.  Any proof that uses only owner-free re-pairing inside individual
+stars is therefore formally incapable of proving `Delta=0`.
+
+The missing relation must be genuinely cross-witness and owner-resolved.
+The segment pairing in `W_P` supplies two-ended generators labelled y+z;
+(73rnz_cjibkzk) evaluates the residual character on them as
+`1_R(y)+1_R(z)`.  To prove (73rnz_cjibkd), one must show that after the
+audited owner cells are removed, the realized owner routes impose relations
+whose witness-label image carries the two pole source labels to exactly the
+diagonal residual character `(1_R circle ell)(1,1)` from
+(73rnz_cjibkzd).  Equivalently, after choosing either pole-owner character,
+the remaining scalar target is equality with `1_R circle ell` on the
+cross-witness route quotient, compatibly for both choices.  Equations
+(73rnz_cjibkzo)--(73rnz_cjibkzq) prove that no further
+local switch enumeration can substitute for that transport theorem.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
