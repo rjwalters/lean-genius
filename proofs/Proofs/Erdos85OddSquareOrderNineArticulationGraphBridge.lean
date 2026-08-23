@@ -1,4 +1,5 @@
 import Proofs.Erdos85OddSquareOrderNineNearRegularConnectivityTerminal
+import Proofs.Erdos85BranchDeficitSymmetry
 
 /-! # Generic graph bridges for a deleted-owner articulation component -/
 
@@ -259,11 +260,76 @@ theorem exists_two_nonempty_complementary_relativeClosedShores_of_induce_not_con
   exact ⟨S, T, Finset.card_pos.mp hSpos, Finset.card_pos.mp hTpos,
     hUnion, hDisjoint, hSclosed, hTclosed⟩
 
+/-- If vertices outside the ordinary set are isolated, complementary ordinary
+shores have equal oriented boundary in the full graph. -/
+theorem ordinary_complement_boundary_sum_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (H S : Finset V)
+    (hSsub : S ⊆ Finset.univ \ H)
+    (hiso : ∀ h ∈ H, D.neighborFinset h = ∅) :
+    let T := (Finset.univ \ H) \ S
+    (∑ x ∈ T, (D.neighborFinset x ∩ (Finset.univ \ T)).card) =
+      ∑ x ∈ S, (D.neighborFinset x ∩ (Finset.univ \ S)).card := by
+  classical
+  dsimp only
+  let O := Finset.univ \ H
+  let T := O \ S
+  have hnoHigh {x y : V} (hxO : x ∈ O) (hxy : D.Adj x y) : y ∉ H := by
+    intro hyH
+    have hxin : x ∈ D.neighborFinset y := by
+      simpa [SimpleGraph.mem_neighborFinset, D.adj_comm] using hxy
+    rw [hiso y hyH] at hxin
+    exact Finset.notMem_empty x hxin
+  have hrowS : ∀ x ∈ S,
+      D.neighborFinset x ∩ (Finset.univ \ S) = D.neighborFinset x ∩ T := by
+    intro x hxS
+    ext y
+    simp only [Finset.mem_inter, Finset.mem_sdiff, Finset.mem_univ, true_and, T]
+    constructor
+    · intro hy
+      have hxO := hSsub hxS
+      have hxy := (D.mem_neighborFinset x y).mp hy.1
+      exact ⟨hy.1, ⟨Finset.mem_sdiff.mpr
+        ⟨Finset.mem_univ y, hnoHigh hxO hxy⟩, hy.2⟩⟩
+    · exact fun hy => ⟨hy.1, hy.2.2⟩
+  have hrowT : ∀ x ∈ T,
+      D.neighborFinset x ∩ (Finset.univ \ T) = D.neighborFinset x ∩ S := by
+    intro x hxT
+    ext y
+    simp only [Finset.mem_inter]
+    constructor
+    · intro hy
+      have hxParts := Finset.mem_sdiff.mp hxT
+      have hxy := (D.mem_neighborFinset x y).mp hy.1
+      have hyO : y ∈ O := Finset.mem_sdiff.mpr ⟨Finset.mem_univ y,
+        hnoHigh hxParts.1 hxy⟩
+      have hyNotT := (Finset.mem_sdiff.mp hy.2).2
+      exact ⟨hy.1, Classical.byContradiction fun hyNotS =>
+        hyNotT (Finset.mem_sdiff.mpr ⟨hyO, hyNotS⟩)⟩
+    · intro hy
+      refine ⟨hy.1, Finset.mem_sdiff.mpr ⟨Finset.mem_univ y, ?_⟩⟩
+      intro hyT
+      exact (Finset.mem_sdiff.mp hyT).2 hy.2
+  calc
+    ∑ x ∈ T, (D.neighborFinset x ∩ (Finset.univ \ T)).card =
+        ∑ x ∈ T, (D.neighborFinset x ∩ S).card := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      rw [hrowT x hx]
+    _ = ∑ x ∈ S, (D.neighborFinset x ∩ T).card :=
+      sum_card_neighbor_inter_comm D T S
+    _ = ∑ x ∈ S, (D.neighborFinset x ∩ (Finset.univ \ S)).card := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      rw [hrowS x hx]
+
 #print axioms sum_boundary_eq_card_exceptional_of_erase_owner_closed
 #print axioms three_mul_regular_eq_five_mul_binOne_of_erase_owner_closed
 #print axioms exists_articulation_scale_of_three_mul_regular_eq_five_mul_binOne
 #print axioms articulation_binZero_internal_handshake
 #print axioms exists_two_nonempty_complementary_relativeClosedShores_of_induce_not_connected
+#print axioms ordinary_complement_boundary_sum_eq
 
 end
 
