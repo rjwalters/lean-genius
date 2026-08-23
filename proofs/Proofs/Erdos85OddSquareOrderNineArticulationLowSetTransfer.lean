@@ -2005,6 +2005,107 @@ theorem false_of_orderNine_order34_owner_W_dichotomy_of_closed_shores
       G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
         Z P W hpartition hPsub hWsub hWcard hone hZdegree
 
+/-- **Audit equation (28), sharp-data capstone.**  The order-34 explicit
+partition and its 18-point low set determine
+`Z = {owner} ∪ (Z∩B₁) ∪ (Z∩B₀)`, with two bin-zero points.  The owner-degree
+calculation gives exactly the `(2,2)`/`(3,1)` dichotomy, while defect-closed
+shores provide the bin-zero `Z`-degree input.  The preceding master theorem
+then eliminates both alternatives. -/
+theorem false_of_orderNine_order34_sharp_lowSet_of_closed_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ owner : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (U S T : Finset V)
+    (hScard : S.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ S).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ S).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ S).card = 4)
+    (hSH : Disjoint S {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hneighborsU : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hownerB₀U : ∀ y ∈ G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0, y ∈ U)
+    (hownerB₀Ord : ∀ y ∈ G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0,
+      y ∉ ({h₁, h₂, h₃} : Finset V))
+    (Z : Finset V)
+    (hZ : Z = orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3)
+    (hZsub : Z ⊆ (Finset.univ : Finset V) \ squareOrderHighVertices G 9)
+    (hZcard : Z.card = 18)
+    (hsum : (∑ z ∈ Z, squareOrderHighIncidenceCount G 9 z) = 18)
+    (hownerMem : owner ∈ Z)
+    (hownerZ : (G.neighborFinset owner ∩ Z).card = 4)
+    (hownerB₁ : (G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 1).card = 3) : False := by
+  classical
+  let k := squareOrderHighIncidenceCount G 9
+  let P := Z ∩ squareOrderNineLowIncidenceBin G 1
+  let W := Z ∩ squareOrderNineLowIncidenceBin G 0
+  have hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1 := by
+    intro z hz hzowner
+    exact orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+      G hp hhigh hc2 hc3 owner z howner (hZsub hz) hzowner
+  have hfilter (i : ℕ) : Z.filter (fun z ↦ k z = i) =
+      Z ∩ squareOrderNineLowIncidenceBin G i := by
+    ext z
+    constructor
+    · intro hz
+      have hzParts := Finset.mem_filter.mp hz
+      exact Finset.mem_inter.mpr ⟨hzParts.1,
+        Finset.mem_filter.mpr ⟨hZsub hzParts.1, hzParts.2⟩⟩
+    · intro hz
+      have hzParts := Finset.mem_inter.mp hz
+      exact Finset.mem_filter.mpr ⟨hzParts.1,
+        (Finset.mem_filter.mp hzParts.2).2⟩
+  have hpartition := lowSet_eq_insert_incidence_one_union_zero
+    owner Z k hownerMem hcap
+  rw [hfilter 1, hfilter 0] at hpartition
+  change Z = insert owner (P ∪ W) at hpartition
+  have hcounts := orderNine_secondProfile_lowSet_bin_cards_of_owner_mem
+    G hp hhigh hc2 hc3 owner howner Z hZsub hZcard hsum hownerMem
+  have hWcard : W.card = 2 := by simpa [W] using hcounts.2
+  have hdich := orderNine_secondProfile_owner_lowSet_neighbor_bin_dichotomy
+    G hp hhigh hc2 hc3 owner howner Z hZsub hZcard hsum
+      hownerMem hownerZ hownerB₁
+  dsimp only at hdich
+  have hownerWAlt :
+      (G.neighborFinset owner ∩ W).card = 2 ∨
+      (G.neighborFinset owner ∩ W).card = 1 := by
+    rcases hdich with htwo | hone
+    · exact Or.inl (by simpa [W] using htwo.2)
+    · exact Or.inr (by simpa [W] using hone.2)
+  have hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1 := by
+    exact Finset.inter_subset_right
+  have hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0 := by
+    exact Finset.inter_subset_right
+  exact false_of_orderNine_order34_owner_W_dichotomy_of_closed_shores
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
+      h₁ h₂ h₃ owner howner U S T hScard hpart
+      hhigh₁ hhigh₂ hhigh₃ hSH hdegOrd hdegHigh
+      hunion hdisj hneighborsU hSclosed hTclosed
+      hownerB₀U hownerB₀Ord Z P W hZ hpartition
+      hPsub hWsub hWcard hownerWAlt
+
 end
 
 end Erdos85
