@@ -19096,3 +19096,62 @@ the endpoint layer and the other four are paid elsewhere.  No contribution
 can be hidden in the original core color or reassigned across layers.  This
 is an exact support law, not yet a claim that the four or five payment
 intermediates are globally new.
+
+## 362. Every global propagation edge has one to three selected tags
+
+The fifth-cell calculation of Section 349 extends uniformly from `B--B`
+transitions to every rooted edge in the global propagation of Section 359.
+Let `y in a` have core root `r in C` and two target endpoints
+
+```text
+N_e(y)={s,t} subset e\Z.                           (1242)
+```
+
+Assume the edge occurs in the nonbacktracking propagation, so if both
+endpoints are private they are not siblings.  Let
+
+```text
+b(y):=|{s,t} intersect B| in {0,1,2}.              (1243)
+```
+
+In the selected columns of `SRP(a,e)`, the routing layer through `c`
+occupies exactly the two ports incident to `r`, as in (1183).  The endpoint
+layer through `e` contributes no selected port for an endpoint in `O`, and
+contributes exactly its owner for an endpoint in `B`.  The private owners
+are distinct when there are two, and each is nonincident to `r` because
+`r` is a rooted letter of that private ticket.  Hence the two supports are
+disjoint and have total size
+
+```text
+2+b(y).                                             (1244)
+```
+
+Exact integer SRP assigns every remaining selected cell to a unique layer
+different from `c,e`.  Therefore the row `y` carries exactly
+
+```text
+3-b(y) selected payment tags beyond the c/e layers. (1245)
+```
+
+Equivalently, the transition types have the exact price
+
+```text
+B--B: one tag;
+B--O: two tags;
+O--O: three tags.                                  (1246)
+```
+
+Each tagged cell has an actual intermediate.  Within one row these
+intermediates are distinct: an exterior intermediate cannot meet two
+selected ports by the pointwise bound (785) (and the original secondary
+component has no selected incidence at all).  Thus (1246) counts literal
+payment vertices, not only occupied columns with possible internal reuse.
+
+Section 349 is precisely the `B--B` line of (1246).  The other two lines
+show that allowing the propagation cycle to enter the residual sector does
+not loosen its coupled-SRP price; it doubles or triples the selected restart
+data attached to that edge.  Consequently every nonstrict global holonomy
+cycle from Section 359 comes decorated by at least one actual selected tag
+per edge, with an additional tag for each residual endpoint.  The remaining
+obstruction may now count tag reuse around the whole cycle rather than
+treating only private-to-private transitions.
