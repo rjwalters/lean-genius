@@ -5040,47 +5040,47 @@ formulated as a balance between color turns and fiber switches along the
 alternating `B_ec` phase—the same signed bundle boundary that survives in
 the B3 lane.
 
-## 94. The labeled occurrence flow is Eulerian, not automatically reversible
+## 94. Closed labeled occurrence flow would be Eulerian, not reversible
 
-Use the closed port-resolved state walks of Sections 63--64.  Along one such
-walk, retain the state-color sequence at the actual rooted transitions and
-suppress the intervening horizontal transports and formal fiber switches.
-The result is a cyclic word `...,r,e,d,...`.  At each middle occurrence `e`,
-record the induced turn `r --> d`.  This is exactly the straight passage or
-color turn of Section 93 when the occurrence is one of its private-port
-windows; a fiber-switch state does not terminate the word, but transports it
-to the next rooted transition.
+The pairing (285) crosses an **unmarked** edge of the shadow factor
+`F_e[c]`.  It is therefore not a horizontal edge of the state graph
+`Gamma_c`, whose horizontal edges are the marked owner edges in
+`K_ce=A_c cap F_e[c]`.  Two triangles paired through `p_i` may consequently
+belong to different state cycles.  The closed walks of Sections 63--64 do
+not by themselves prove that the new token pairings close into cycles.
 
-Let `N(r,d)` count directed consecutive occurrences `r --> d` over all these
-cyclic words before inserting the alternating signs.  Cyclicity gives the
-exact flow balance
+The required closure lemma can now be stated precisely: combine the
+straight pairings (285), the rooted degree-two continuations of Section 91,
+and the owner-factor switches into an auxiliary graph on labeled triangle
+tokens, and prove that every token has one predecessor and one successor.
+If this holds, its components are cyclic words `...,r,e,d,...`; at each
+middle occurrence `e`, record the induced turn `r --> d`.
+
+Conditioned on that closure lemma, let `N(r,d)` count directed turn
+occurrences before inserting alternating signs.  Cyclicity then gives
 
 ```text
 sum_d N(r,d) = sum_d N(d,r)     for every label r.     (287)
 ```
 
-Every occurrence of `r` has one successor and one predecessor.  Straight
-terms `N(r,r)` cancel locally by (285), leaving a divergence-free directed
-flow of genuine color turns.
-
-Equation (287) is weaker than the reversibility needed for transpose-odd
-cancellation:
+Straight terms `N(r,r)` cancel locally by (285), leaving a divergence-free
+directed flow of genuine color turns.  This is weaker than the reversibility
+needed for transpose-odd cancellation:
 
 ```text
 N(r,d) = N(d,r).                                      (288)
 ```
 
 An oriented label cycle `r --> d --> f --> r` satisfies (287) but violates
-(288).  Hence neither closed state walks nor Eulerian bookkeeping alone can
-supply the occurrence-weight pairing required in Section 92.  After straight
-passages are removed, the only possible obstruction is a circulation on a
-directed label cycle of length at least three (two-cycles are reversible).
+(288).  Hence even after auxiliary closure is proved, Eulerian bookkeeping
+alone cannot supply the occurrence-weight pairing required in Section 92.
+After straight passages are removed, the only possible obstruction is a
+circulation on a directed label cycle of length at least three.
 
-This is the shared terminal with the B3 bundle lane.  Formal route reversal
-makes the signed boundary odd, and actual occurrence flow is balanced, but
-one must still exclude or pair nonreversible circulations.  In the present
-lane the extra run-reversal character and alternating `B_ec` phase are the
-remaining structures capable of killing those directed label cycles.
+This separates two open obligations which were previously conflated: first
+prove closure of the port-token continuation graph, then exclude or pair its
+nonreversible circulations.  The B3 bundle lane faces the second obligation
+directly; the present lane must still establish the first.
 
 ## 95. Straight passages preserve the line-cycle orientation
 
@@ -5108,16 +5108,14 @@ reverse while preserving its port and label.
 Iterating (289) across consecutive straight states produces a directed arc
 of the `B_ec` cycle.  Its endpoints are precisely the first nonstraight
 events from (286): a color turn, an owner-factor fiber switch, or a marked
-run boundary.  Hence, after all canonical straight pairings are contracted,
-the residual occurrence flow is a cyclic word of turn/switch/boundary events
-in the actual `B_ec` order, not merely an abstract directed label flow.
+run boundary.  Hence every maximal straight chain has a genuine `B_ec`
+orientation.  This does not yet show that the chains join into a cyclic
+token flow; that is exactly the closure lemma isolated in Section 94.
 
-This supplies the orientation compatibility requested after (285).  The
-alternating phase of Section 76 now acts on consecutive residual events in
-their genuine line-cycle order.  What remains is to prove that its signed
-event word has reversible occurrence weights—or equivalently that every
-directed label circulation from Section 94 meets an even signed number of
-turn/switch boundaries.
+This supplies the orientation compatibility requested after (285).  Once
+auxiliary closure is established, the alternating phase of Section 76 acts
+on consecutive residual events in their genuine line-cycle order.  Only
+then does the reversible-weight/circulation question of Section 94 apply.
 
 ## 96. A rooted color triangle already supports irreversible circulation
 
@@ -5153,9 +5151,9 @@ This is a structural local counterprofile, not a claim that the triangle
 extends to the full odd-horizontal state cycle or satisfies every SRP block.
 It closes one tempting shortcut: the remaining directed circulations cannot
 be killed solely inside a rooted triangle multigraph.  A valid exclusion
-must use their embedding in the oriented `B_ec` event word of Section 95,
-the odd horizontal count, or the simultaneous occurrence weights supplied
-by the other colors.
+must use a proved closure/embedding of the oriented `B_ec` chains from
+Section 95, the odd horizontal count, or the simultaneous occurrence weights
+supplied by the other colors.
 
 ## 97. The final obstruction is a horizontally odd labeled circulation
 
@@ -5163,41 +5161,37 @@ The rooted triangle in Section 96 has no horizontal transport: all three
 state changes occur at one root.  It therefore has horizontal parity zero
 and does not contradict the desired mixed-cycle theorem.
 
-After contracting the straight passages of Section 95, retain on every
-directed residual edge the length of the suppressed oriented `B_ec` arc.
-For any closed labeled occurrence flow `Z`, define its horizontal grading
+For any **closed** auxiliary token flow `Z` obtained after contracting the
+straight passages of Section 95, retain on every directed residual edge the
+length of the suppressed oriented `B_ec` arc and define
 
 ```text
 omega_B(Z) := sum_(arcs of Z) arc_length              (mod 2).  (291)
 ```
 
-Undoing the contractions shows that `omega_B(Z)` is exactly the number of
-horizontal state transitions represented by `Z`, modulo two.  Turn edges
-at one rooted color graph have length zero; straight transport contributes
-the number of line-cycle steps it advances; fiber-switch segments contribute
-no horizontal step until their next `B_ec` arc is traversed.
-
-Thus the original mixed odd state cycle produces a balanced labeled flow
-with
+The grading is well-defined for such a closed token flow.  What is not yet
+proved is that a state cycle `Omega` canonically induces one while preserving
+horizontal parity.  The missing bridge is
 
 ```text
-omega_B(Z) = H(Omega) = 1  (mod 2).                   (292)
+Omega |--> Z(Omega) closed, with
+omega_B(Z(Omega)) = H(Omega)  (mod 2).                (292)
 ```
 
-Sections 93--96 show why balance alone does not rule this out: directed
-label circulations exist, but the smallest local one lies in the kernel of
-`omega_B`.  The exact remaining theorem is the homological strengthening
+The unmarked-shadow warning in Section 94 shows that (292) is a theorem, not
+a formal consequence of the state-cycle lift.  If it is established, then
+the rooted triangle of Section 96 has grading zero while an odd-horizontal
+`Omega` induces grading one.  The second required theorem is the homological
+strengthening
 
 ```text
 every simultaneously realizable balanced labeled occurrence flow Z
 satisfies omega_B(Z)=0.                               (293)
 ```
 
-Equation (293) is a target, not yet proved.  It packages all remaining
-requirements without losing information: route reversal supplies the odd
-bundle character, run reversal supplies the complementary character, and
-the individual `K_d` labels/intermediate ports encode simultaneous
-realizability.  Proving (293) contradicts (292) and closes the odd mixed
-component; a counterexample must exhibit a full-SRP labeled circulation of
-odd horizontal grading, something none of the local counterprofiles above
-provides.
+Equations (292) and (293) are both targets.  The first is the auxiliary
+closure/grade-preservation lemma; the second is the simultaneous-routing
+kernel statement.  Together they contradict an odd-horizontal `Omega`.
+Keeping them separate prevents the line-cycle port pairing from being
+mistaken for a state-graph edge and identifies the exact additional work
+needed before the homological terminal can be used.
