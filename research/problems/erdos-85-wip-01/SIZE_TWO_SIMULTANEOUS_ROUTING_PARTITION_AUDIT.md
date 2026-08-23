@@ -22570,3 +22570,49 @@ Cycles of length three or four remain a bounded local alternative because
 the ear in (1496) need not be strictly shorter there.  Beyond that finite
 case, the simultaneous five-action escape cannot be absorbed by a bounded
 set of outside companions.
+
+## 421. A clean triangle has nine distinct outside neighbors
+
+The small-length alternative in Section 420 is itself rigid.  A simple
+four-cycle cannot occur because `G_sh` is a subgraph of the four-cycle-free
+target graph.  It remains to analyze a properly colored triangle
+
+```text
+Q=(v_0,v_1,v_2,v_0).                              (1500)
+```
+
+Its three edge colors are pairwise distinct.  Its three root types are
+also pairwise distinct: at each triangle vertex the two incident edges
+belong to different root matchings.  There are no chords, so (1480) gives,
+up to permuting the five roots,
+
+```text
+(a_0,...,a_4)=(1,1,1,0,0),
+(b_0,...,b_4)=(1,1,1,3,3).                        (1501)
+```
+
+Thus each triangle vertex has exactly three boundary edges, one in every
+root matching complementary to its two incident cycle roots.  These nine
+edges have nine distinct outside endpoints.  Indeed, if an outside vertex
+`w` were adjacent to two triangle vertices `v_i,v_j`, then those two
+vertices would have the two distinct common neighbors `w` and the third
+triangle vertex.  They would form a four-cycle, a contradiction.  Hence
+
+```text
+N_G_sh(v_i) setminus V(Q) are pairwise disjoint,
+|union_i (N_G_sh(v_i) setminus V(Q))|=3+3+3=9.     (1502)
+```
+
+In particular the triangle case is stronger than the general expansion
+bound (1498):
+
+```text
+ell=3 -> nine distinct root-complementary outside neighbors;
+ell=4 -> impossible;
+ell>=5 -> at least ceil(ell/2) selected outside neighbors.        (1503)
+```
+
+This closes the finite exception left by the ear argument.  Every shortest
+clean holonomy has explicit external vertex expansion, and a triangular
+holonomy pays the maximal local price because four-cycle-freeness forbids
+any sharing between its three outside neighborhoods.
