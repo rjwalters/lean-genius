@@ -2226,15 +2226,42 @@ There is one further exact localization relevant to the witness phases.  If
 p_i = y_((3-i),j) for a unique empty line E_j.
 ```
 
-That witness edge at `z_(3-i)` is necessarily non-D, because `w_i` is its
-common A-neighbor; hence this distinguished crossed-route coordinate
-contributes zero to `b_(3-i)`.  If `p_i` is inside, it instead records a
-genuine residual-M port.  Therefore the unresolved datum in (73rnz'') is
-not another bit of phase: it is, for each unique crossed route, whether its
-intermediate label is an empty-line witness or an inside residual port, and
-in the outside case which empty-line block carries it.  This is exactly the
-color/fiber label that must be retained by any final simultaneous-routing
-argument.
+If `p_i` is inside, it instead records a genuine residual-M port.  Therefore
+the unresolved datum in (73rnz'') is not another bit of phase: it is, for
+each unique crossed route, whether its intermediate label is an empty-line
+witness or an inside residual port, and in the outside case which empty-line
+block carries it.  This is exactly the color/fiber label that must be
+retained by any final simultaneous-routing argument.  Importantly, the mere
+incidences `z_(3-i)-p_i-w_i` do **not** force the witness edge
+`z_(3-i)p_i` to be non-D: that would require an additional common neighbor,
+equivalently another routing incidence analyzed below.
+
+Here is the correct conditional rule.  Still assuming distinct marks and
+`tau_i=0`, put
+
+```text
+chi_i   = 1[p_i z_i in A],
+gamma_i = 1[z_(3-i) w_i in A].
+```
+
+For the edge `z_(3-i)p_i`, the vertex `z_i` is a common neighbor exactly
+when `chi_i=1`, and `w_i` is a common neighbor exactly when `gamma_i=1`.
+C4-freeness therefore gives `chi_i+gamma_i<=1`.  If either bit is one, that
+edge is non-D.  If both are zero, its D-status is genuinely undecided: it is
+D when there is no further common neighbor, and otherwise has a unique new
+common neighbor `q_i`.  Equivalently,
+
+```text
+chi_i+gamma_i = 1  implies  z_(3-i)p_i notin D,
+z_(3-i)p_i in D    implies  chi_i=gamma_i=0,              (73rnz_d)
+```
+
+and in the non-D case the unique continuation through that edge is `z_i`,
+`w_i`, or a new port according as `chi_i=1`, `gamma_i=1`, or both vanish.
+For an outside `p_i=y_((3-i),j)`, this is the exact rule for the witness atom
+`d_((3-i),j)`.  It is the desired straight/turn/switch trichotomy, but it
+retains the extra incidence bit that the incorrect unconditional-zero claim
+had silently discarded.
 
 The corresponding signed occurrence boundary is already integral (all
 differences in the following display are taken in `Z`).  For
@@ -2252,9 +2279,8 @@ Lambda
 This is an integer because both T-degrees are even.  Reversing the oriented
 owner occurrence (`1 <-> 2`) negates `Lambda` exactly.  Thus `Lambda` is the
 route-odd character of the full marked-witness bundle, not just its mod-two
-shadow (73rnk).  The localization above is label-sensitive: whenever a
-crossed intermediary is the opposite witness `y_((3-i),j)`, its corresponding
-atom `d_((3-i),j)` is forced to zero before the signed sum is formed.
+shadow (73rnk).  The localization above is label-sensitive but does not by
+itself determine the corresponding atom `d_((3-i),j)`.
 
 Formal availability of the reversed orientation does not imply cancellation:
 it is the same unoriented owner occurrence viewed backward.  Vanishing of the
