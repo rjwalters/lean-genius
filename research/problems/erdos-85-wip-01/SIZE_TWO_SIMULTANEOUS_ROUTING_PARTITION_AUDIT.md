@@ -15942,3 +15942,72 @@ terminal labels lie in sector `00`.  Thus the path-endpoint term in (998)
 does not introduce a new anonymous parity: it restores the concrete
 `01/00` sector dichotomy of the original three-sector payment triangle,
 now attached to the transported residual occurrence paths.
+
+## 311. Separator labels cannot cancel between selected overlay paths
+
+The possible aggregate cancellation left open after Section 309 does not
+occur.  Distinct vertices of `W_I` belong to distinct `W--I` components of
+the abstract overlay, one `W` endpoint per component.  Consider the raw
+expansions used to construct their chains `Theta_w`.
+
+Active-pairing connections partition the internal edges of
+`H_a^C[S]`, and factor-pairing intervals partition the internal edges of
+`F_a[e][S]`.  Thus an underlying factor edge could occur in two raw
+selected expansions only if it is active and is used once by an active
+connection and once by a factor interval.  Let `A` be its active
+connection.  If `A` has an active cut occurrence as an endpoint, the
+factor interval containing the edge is forced to follow the same active
+run to that occurrence.  The two pairing edges are therefore glued at
+that occurrence and lie in the same abstract overlay component.  This
+includes an `A--A` connection, where they are glued at both ends.
+
+The only remaining active connection type is `W--W`; it has no active
+occurrence node and is itself an unselected `W--W` overlay component.  A
+selected factor interval may retrace such a physical run, but no second
+selected expansion uses it through the active-pairing layer.  A whole
+active cycle likewise has no cut occurrence and belongs to no selected
+pairing path.  Consequently
+
+```text
+w!=v in W_I  implies
+E(Theta_w) intersect E(Theta_v)=emptyset.           (1006)
+```
+
+The added terminal inactive edges are also distinct, because distinct
+inactive cut occurrences index distinct factor edges.  Taking symmetric
+differences inside one expansion can only delete edges, so it cannot spoil
+(1006).  The boundary path components inherit the same property:
+
+```text
+w!=v in W_I  implies
+E(Pi_w) intersect E(Pi_v)=emptyset.                 (1007)
+```
+
+Every factor edge has one private `a`-label, hence the path label chains
+are pairwise support-disjoint as well.
+
+This makes the aggregate residue `J_x` from (994) a literal disjoint
+union.  A nonlocal occurrence contributes its internal path labels, while
+a local occurrence contributes the one-edge path label `y'_w`.  Therefore
+
+```text
+|supp(J_x)|
+ =sum_(w in W_I(x)\L_x^loc)|supp(Pi_w^int)|
+  +|L_x^loc|.                                      (1008)
+```
+
+Combining (1000) with (1008) yields the capacity lower bound
+
+```text
+|supp(J_x)|
+ >=|W_I^in intersect W_I(x)|+|L_x^loc|.             (1009)
+```
+
+In particular every internal separator forced in Section 309 survives in
+`J_x`; so does every completely local inactive edge.  The caveat at the
+end of Section 309 is thereby discharged: aggregate cancellation remains
+possible among component *profiles* after applying `E_j`, but not among
+the underlying private labels in the explicit residual chain of (998).
+The remaining price must now pay an actual label population of the size
+shown in (1009), rather than a collection of pointwise witnesses which
+could disappear before aggregation.
