@@ -4595,6 +4595,26 @@ bit.  The final owner-resolved commutator problem is to transport or cancel
 these diagonal center bits; every off-diagonal and unbounded part has now
 been evaluated.
 
+In particular, if
+
+```text
+Delta:=sum_(residual centers G) delta_G,
+```
+
+then the total unresolved contribution of the silent commutator sector is
+exactly
+
+```text
+Delta (1,1).                                           (73rnz_cjibkzd)
+```
+
+This does not evaluate `Delta`, but it reduces the last owner-labeled
+ambiguity in this sector to one scalar coefficient of the already known
+diagonal class.  All off-diagonal owner information is fixed by
+(73rnz_cjibkzb).  A final conservation identity need only determine this
+single scalar after the bounded private exceptions and active routes are
+inserted.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
