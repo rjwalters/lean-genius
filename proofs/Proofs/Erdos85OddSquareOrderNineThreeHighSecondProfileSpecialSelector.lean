@@ -12,6 +12,40 @@ residual target is strictly larger than the branch-three baseline 27.
 
 namespace Erdos85
 
+/-- Arithmetic selection terminal for the branch-four cover route.  If the
+total special mass is six, then an aggregate cover-price bound strictly below
+`27` per positive-special point plus that mass forces a positive-special
+point whose individual price is strictly below `27 + special`. -/
+theorem exists_positive_special_price_lt_target_of_sum_lt
+    {α : Type*} [DecidableEq α]
+    (U : Finset α) (special price : α → ℕ)
+    (hspecial : ∑ b ∈ U, special b = 6)
+    (hprice :
+      ∑ b ∈ U.filter (fun b => 0 < special b), price b <
+        27 * (U.filter fun b => 0 < special b).card + 6) :
+    ∃ b ∈ U, 0 < special b ∧ price b < 27 + special b := by
+  classical
+  let P := U.filter fun b => 0 < special b
+  have hPsub : P ⊆ U := Finset.filter_subset _ _
+  have hspecialP : ∑ b ∈ P, special b = 6 := by
+    rw [← hspecial]
+    apply Finset.sum_subset hPsub
+    intro b hbU hbNotP
+    simp only [P, Finset.mem_filter, hbU, true_and, not_lt] at hbNotP
+    omega
+  by_contra hnot
+  push Not at hnot
+  have hle : (∑ b ∈ P, (27 + special b)) ≤ (∑ b ∈ P, price b) := by
+    apply Finset.sum_le_sum
+    intro b hbP
+    have hbParts := Finset.mem_filter.mp hbP
+    exact hnot b hbParts.1 hbParts.2
+  have hleft : (∑ b ∈ P, (27 + special b)) = (27 * P.card + 6) := by
+    rw [Finset.sum_add_distrib, hspecialP]
+    simp [Nat.mul_comm]
+  change (∑ b ∈ P, price b) < 27 * P.card + 6 at hprice
+  omega
+
 /-- In the four-edge high-root branch, some unmarked bin-one point is defect
 adjacent to a special B0 row.  This is the formal existence half of the six
 global puncture-miss selector; the separate mixed-column theorem upgrades its
@@ -179,3 +213,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twentyEight
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residualRows_total_eq_654
+#print axioms Erdos85.exists_positive_special_price_lt_target_of_sum_lt

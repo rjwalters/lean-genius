@@ -4200,8 +4200,20 @@ pointwise column law over all 24 unmarked points and proves exact total target
 mass `24*27+6=654`.  Thus any global cover-price argument proving total cost
 strictly below 654 immediately yields a strict point, while (13ak) asks for
 the sharper conclusion that the strict point can be chosen with positive
-special mass.  These theorems do not assert the price
-alternative; (13ak) remains exactly the missing branch-4 cover statement.
+special mass.  That sharper arithmetic consumer is now isolated too.  If
+`P={p:special(p)>0}`, then
+`exists_positive_special_price_lt_target_of_sum_lt` shows it is enough to
+prove
+
+```text
+sum_(p in P) C_p < 27 |P| + 6.
+```
+
+Indeed the special mass on `P` is exactly six, so failure of every strict
+candidate would reverse this inequality term by term.  The remaining work is
+therefore a genuine aggregate cover-price bound on `P`, not another point-
+existence argument.  These theorems do not assert that price bound; the price
+alternative (13ak) remains exactly the missing branch-4 cover statement.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
