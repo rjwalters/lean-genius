@@ -14292,3 +14292,57 @@ classes `(1,3,5)`, fixed root-color matching sizes, fixed exterior-color
 loads, prescribed strict endpoints, and the independent return pairing
 `nu_e` on `B`.  This formulation removes artificial parallel-edge freedom
 from the finite compatibility problem while retaining both decompositions.
+
+## 279. Composing the two pairing systems forces an escape into `O`
+
+The path pairing from Section 273 and the target-owner return pairing from
+Section 266 have a global parity consequence which neither has separately.
+For every exterior color `a`, contract each path component of `H_a^C` to
+one edge between its two degree-one endpoints; discard its cycle components.
+Let `P` be the multigraph union of these endpoint-pairing edges over all
+exterior colors.  At a port `w`, its degree in `P` is the number of colors
+for which `w` belongs to `partial H_a^C`.  Equation (872) therefore gives
+
+```text
+deg_P(w)=1 mod 2             for every w in e.        (880)
+```
+
+Now add the five edges of the target-owner return matching `nu_e` on the
+ten private endpoints `B`, retaining multiplicity if an endpoint-pair edge
+happens to coincide.  Put
+
+```text
+Pi:=P multiset_union nu_e.
+```
+
+The matching flips the degree parity exactly on `B`.  Hence the odd-degree
+vertices of `Pi` are precisely
+
+```text
+Odd(Pi)=Z disjoint_union O.                          (881)
+```
+
+Every connected component of a finite multigraph contains an even number
+of odd-degree vertices.  Since `|Z|=5` is odd, not every component meeting
+`Z` can have all its odd vertices in `Z`: otherwise those components would
+partition `Z` into even-sized sets.  Consequently
+
+```text
+some component of Pi contains a port of Z and a port of O. (882)
+```
+
+Choose a path in that component between such ports and expand every `P`
+edge back to its canonical path in one `H_a^C`, and every `nu_e` edge back
+to its outside `A_e` return path.  This gives a concrete composed route
+from a selected port to a residual port.  The selected endpoint has only
+one incident `P` edge, whose expanded first factor edge is its strict
+export edge.  At the residual endpoint, the final `P` edge belongs to a
+color in which that port has degree one, so that color occurs exactly once
+in its five-root word.
+
+Thus the strict-to-outside escape of Section 275 can be continued globally
+past all private `B` terminals: after composing the two actual pairing
+systems, at least one strict occurrence reaches a located residual port in
+`O` with a singleton exterior-color role.  No alternation of edge types
+along the chosen path is asserted; the invariant is the forced `Z`--`O`
+connectivity after the owner-return edges evenize every vertex of `B`.
