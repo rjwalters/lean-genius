@@ -3619,6 +3619,28 @@ collision, or the reciprocity failure (13t).  A wider seed-free test must
 either prove that trichotomy or expose a survivor requiring still more global
 simultaneous-selection data.
 
+The mode `--audit-residual-gram-reciprocity-summary` computes the prospective
+trichotomy exactly on generated outer designs.  For every row `u` it forms
+the intersection `F(u)` and union `P(u)` of its demanded packing family; the
+reciprocity horn is precisely some `w in F(u)` with `u notin P(w)`.  On the
+stored counterexample it returns the unique obstruction `(u,w)=(7,29)`.
+
+One sixty-four-per-branch regression run returned
+
+```text
+branch 3: 57 with a deficit, 43 with a forced collision,
+          50 with a reciprocity obstruction;
+branch 4: 64 with a deficit, 48 with a forced collision,
+          54 with a reciprocity obstruction;
+uncovered: 0 of 128.                                      (13u)
+```
+
+The horn counts overlap.  More importantly, this is the older 128-design
+corpus in which every design was already covered by a deficit or collision;
+it therefore regression-tests the reciprocity computation but adds no real
+falsification resistance to the universal trichotomy.  The stored survivor
+and a seed-free negation model remain the decisive tests.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

@@ -2417,6 +2417,23 @@ def residual_gram_forced_collisions(data: dict) -> list[tuple[int, int, int]]:
             for w in sorted(forced[u] & forced[v])]
 
 
+def residual_gram_reciprocity_obstructions(data: dict) -> list[tuple[int, int]]:
+    """Forced incidences whose reverse occurs in no demanded packing."""
+    forced = {}
+    possible = {}
+    for row in range(N):
+        demand = int(data["degree"][row])
+        feasible_sets = [set(chosen)
+                         for chosen in combinations(data["candidates"][row], demand)
+                         if all(not (data["blocks"][u] & data["blocks"][v])
+                                for u, v in combinations(chosen, 2))]
+        if feasible_sets:
+            forced[row] = set.intersection(*feasible_sets)
+            possible[row] = set.union(*feasible_sets)
+    return [(u, w) for u in sorted(forced) for w in sorted(forced[u])
+            if u not in possible.get(w, set())]
+
+
 def local_candidate_label_transversal(data: dict, row: int,
                                       excluded_row: int | None = None,
                                       max_size: int | None = None) -> list[int] | None:
@@ -2794,6 +2811,8 @@ def main() -> int:
                         help="exactly verify the stored fractional-integral gap witness")
     parser.add_argument("--audit-residual-gram-triangle-summary", action="store_true",
                         help="test point caps plus all Berge-triangle matching cuts")
+    parser.add_argument("--audit-residual-gram-reciprocity-summary", action="store_true",
+                        help="test deficit/collision/forced-reverse trichotomy")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -2996,6 +3015,27 @@ def main() -> int:
                       f"seed={seed_number} deficit_duals={deficit_duals} "
                       f"collision_duals={collision_duals}")
         return 0
+    if args.audit_residual_gram_reciprocity_summary:
+        all_uncovered = []
+        for branch in (3, 4):
+            counts = Counter()
+            uncovered = []
+            for seed_number in range(args.seeds):
+                seed = make_outer_seed(
+                    branch, args.timeout_seconds * 1000, seed_number,
+                    require_eligible_hole_pair=args.require_eligible_hole_pair)
+                candidate = instance(branch, seed, (0, 1))
+                deficient = residual_gram_local_capacities(candidate)
+                collisions = residual_gram_forced_collisions(candidate)
+                reciprocity = residual_gram_reciprocity_obstructions(candidate)
+                key = (bool(deficient), bool(collisions), bool(reciprocity))
+                counts[key] += 1
+                if not any(key):
+                    uncovered.append(seed_number)
+                    all_uncovered.append((branch, seed_number))
+            print(f"residual_gram_reciprocity_summary branch={branch} "
+                  f"counts={dict(counts)} uncovered={uncovered}")
+        return 1 if all_uncovered else 0
     if args.audit_residual_gram_triangle_summary:
         all_uncovered = []
         for branch in (3, 4):
