@@ -23989,3 +23989,70 @@ ambiguity from that branch.  At `q>=256` the obstruction is a constant
 ten-edge source fiber outside both distinguished source-color families,
 and its two payer layers may be forced outside any prescribed set of at
 most eight layers.
+
+## 448. Componentwise nondegenerate cancellation retains bounded avoidance
+
+The component pigeonhole can retain the simultaneous avoidance conditions
+at a larger uniform threshold.  Let `F` contain every edge of source color
+`d`, every edge whose source color lies in `Gamma`, and every edge whose
+canonical payer layer lies in a set `P`.  Put `f:=|F|`.  Sections 419 and
+434 give
+
+```text
+f<=55+10|P|,
+D_F:=|E(H-F)|-(2|O_5|-3)>=q-117-f.                (1607)
+```
+
+First consider the closed components of `H`.  If there are more than `f`
+of them, some closed component contains no edge of `F`.  Section 445 then
+works inside that untouched component and already gives, wholly in `H-F`,
+either a nondegenerate tag-even PC closed walk or a distinct-edge color
+saturation.
+
+Otherwise `H` has at most `f` closed components and at most ninety open
+components by Section 428.  Deleting one edge raises the number of graph
+components by at most one, so
+
+```text
+components(H-F)<=90+2f.                           (1608)
+```
+
+The pivot-transversal proof of Section 433 applies to `H-F`: its PC-cycle
+span has dimension at least `D_F` and is the direct sum of its residual
+component spans.  Therefore, if
+
+```text
+D_F>5(90+2f),                                     (1609)
+```
+
+one residual component has PC-cycle-span dimension at least six.  Six
+independent cycles in that component give a nonzero zero-syndrome
+dependency, and Sections 442--444 turn it into one nondegenerate tag-even
+PC walk unless a genuine saturation occurs.  Every edge involved lies in
+`H-F`, so either terminal avoids `d`, all of `Gamma`, and every payer layer
+in `P`.
+
+Using (1603), a convenient sufficient condition for (1605) is
+
+```text
+q-117-f>450+10f,
+q>567+11f,
+q>1172+110|P|.                                   (1610)
+```
+
+In particular,
+
+```text
+binary q>=2048 and |P|<=7, or
+binary q>=4096 and |P|<=8
+
+ -> inside one component of the avoided full-root graph there is
+    either a nondegenerate tag-even PC closed walk,
+    or two distinct incident avoided edges saturate an allowed
+    exterior source color.                        (1611)
+```
+
+Thus the componentwise elimination of the exact-square artifact is
+compatible with bounded source/payer avoidance.  The threshold reflects
+only the coarse worst-case cost that each deleted edge can both consume
+one unit of PC surplus and split one residual component.
