@@ -24056,3 +24056,53 @@ Thus the componentwise elimination of the exact-square artifact is
 compatible with bounded source/payer avoidance.  The threshold reflects
 only the coarse worst-case cost that each deleted edge can both consume
 one unit of PC surplus and split one residual component.
+## 449. Adaptive payer avoidance forces five disjoint saturation pairs
+
+The quantifier over payer-layer sets in Section 441 can be diagonalized.
+Start with `P_0=emptyset`.  At stage `j`, provided `|P_j|<=8`, apply the
+avoided trichotomy (1581).  If case (I) or case (III) occurs, retain that
+terminal and stop.  Otherwise case (II) supplies a saturated pair
+`{e_j^1,e_j^2}` with canonical payer-layer set
+
+```text
+L_j:={payerLayer(e_j^1),payerLayer(e_j^2)},
+1<=|L_j|<=2,       L_j intersect P_j=emptyset.     (1612)
+```
+
+Set `P_(j+1):=P_j union L_j` and repeat.  The sets `L_j` are pairwise
+disjoint, and each stage increases `|P_j|` by at most two and at least one.
+Therefore, if no case (I) or (III) appears before the layer budget is
+exceeded, at least five saturation stages occur:
+
+```text
+|P_0|=0, |P_j|<=8 before every run,
+|P_(j+1)|>|P_j|, |P_(j+1)|-|P_j|<=2
+ -> at least five returned saturated pairs before |P|>8.         (1613)
+```
+
+No edge can occur in two returned pairs: its canonical payer layer was
+added to `P` after its first occurrence and is forbidden thereafter.  By
+Section 447, every returned pair lies in an exact ten-edge source-color
+fiber outside `{d} union Gamma`.  Consequently the adaptive terminal is
+
+```text
+either case (I) or case (III) of (1581) for some |P|<=8;
+
+or at least five pairwise edge-disjoint saturated pairs,
+   with pairwise disjoint nonempty payer-layer sets L_j,
+   each supported in a nonexceptional ten-edge source fiber.     (1614)
+```
+
+If several pairs have the same source color `h`, their edges are still
+disjoint; at most five such pairs fit in its ten-edge fiber, with equality
+exhausting that entire fiber:
+
+```text
+five returned pairs of one color h
+ -> their ten edges are exactly E_h(M).            (1615)
+```
+
+Thus the saturation branch cannot remain one exceptional local pinch once
+payer avoidance is used adaptively.  Either a nonsaturation terminal
+appears, or the graph contains a finite but genuinely multiple family of
+source-fiber saturations with new payer layers at every stage.
