@@ -111,6 +111,16 @@ def IsReverseIntervalContractedExtension
   (F ∪ Y).card = d u ∧
   Disjoint (F ∪ Y) I
 
+/-- A Hall/rank-style certificate at one row: every eligible conflict-free
+superset of the forced lower bound which avoids the impossible upper set is
+strictly smaller than the demanded cardinality. -/
+def HasReverseIntervalRankDeficitAt
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) (u : V) : Prop :=
+  let F := reverseForcedLocalGramNeighborFinset H W d u
+  let I := reverseImpossibleLocalGramNeighborFinset H W d u
+  ∀ X : Finset V, IsLocalGramPrepacking H W u X →
+    F ⊆ X → Disjoint X I → X.card < d u
+
 /-- A finite set of reverse-impossible candidates hits every demanded
 packing at one row.  Singleton hitting sets are the old reciprocity horn;
 the q=9 durable survivor first exposes a hitting set of size two. -/
@@ -353,6 +363,22 @@ theorem hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExten
       (exists_reverseIntervalLocalGramPacking_iff_contractedExtension
         H W d u).1 ⟨X, hX⟩
     exact hu Y hY
+
+/-- A strict reverse-interval rank bound rules out every contracted residual
+extension at that row. -/
+theorem no_contractedExtension_of_reverseIntervalRankDeficit
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) (u : V)
+    (hdeficit : HasReverseIntervalRankDeficitAt H W d u) :
+    ∀ Y : Finset V, ¬ IsReverseIntervalContractedExtension H W d u Y := by
+  classical
+  let F := reverseForcedLocalGramNeighborFinset H W d u
+  let I := reverseImpossibleLocalGramNeighborFinset H W d u
+  intro Y hY
+  change IsLocalGramPrepacking H W u (F ∪ Y) ∧
+    (F ∪ Y).card = d u ∧ Disjoint (F ∪ Y) I at hY
+  have hlt : (F ∪ Y).card < d u :=
+    hdeficit (F ∪ Y) hY.1 (Finset.subset_union_left) hY.2.2
+  omega
 
 omit [Fintype V] in
 /-- The configuration-level obstruction contains the earlier forced-edge
@@ -722,6 +748,23 @@ theorem false_of_localGramPackingContractedExtensionDeficit
     ((hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExtension
       H W d).2 hdeficit)
 
+/-- **Reverse-interval rank-deficit consumer.**  A Hall/rank certificate at
+one row supplies the contracted deficit required by the actual-graph
+contradiction. -/
+theorem false_of_localGramPackingReverseIntervalRankDeficit
+    (A H W : V → V → Prop) [DecidableEq V] [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hdeficit : ∃ u, HasReverseIntervalRankDeficitAt H W d u) :
+    False := by
+  obtain ⟨u, hu⟩ := hdeficit
+  apply false_of_localGramPackingContractedExtensionDeficit
+    A H W d hsymm hdegree hsupport hgram
+  exact ⟨u, no_contractedExtension_of_reverseIntervalRankDeficit H W d u hu⟩
+
 /-- **Forced hitting-set reciprocity consumer.**  If a finite set of
 reverse-impossible candidates meets every demanded packing at one row, no
 symmetric supported Gram-compatible residual relation exists. -/
@@ -787,6 +830,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
 #print axioms exists_reverseIntervalLocalGramPacking_iff_contractedExtension
 #print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExtension
+#print axioms no_contractedExtension_of_reverseIntervalRankDeficit
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
@@ -795,6 +839,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms oneRowCompatibilityObstruction_of_hittingSetReciprocityObstruction
 #print axioms false_of_localGramPackingOneRowCompatibilityObstruction
 #print axioms false_of_localGramPackingContractedExtensionDeficit
+#print axioms false_of_localGramPackingReverseIntervalRankDeficit
 #print axioms false_of_localGramPackingHittingSetReciprocityObstruction
 #print axioms false_of_forcedLocalGramNeighbor_not_reverse
 #print axioms not_hasLocalGramPackingReciprocityObstruction_iff
