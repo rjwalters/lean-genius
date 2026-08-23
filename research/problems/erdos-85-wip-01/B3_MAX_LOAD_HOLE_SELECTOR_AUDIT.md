@@ -90,6 +90,13 @@ the tenth: its cover intersection has ten points and none has a strict scaled
 cover through denominator six.  Therefore the 15/9 overlap arithmetic plus
 the full-pack cap still needs exceptional-to-pair/full-relation agreement.
 
+Minimum exact eligibility load does not rescue branch 3 at this local scope.
+Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
+the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
+cover in only five.  The argmin was unique in nine models, so tie-breaking is
+not the issue.  The positive-special restriction may still make minimum load
+useful in branch 4, but bare load descent is not a common branch-3 terminal.
+
 The diagnostic option `--print-hole-packs` prints the selected blocks in a
 SAT model.  In one hole-reciprocal branch-3 model, an exact denominator-six
 scan found a strict cover at only one of the six hole incidences (scale 2,
