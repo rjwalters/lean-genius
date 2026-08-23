@@ -4374,6 +4374,30 @@ status.  The generic Lean consumer
 `exists_good_or_obstruction_at_minimal_positive_special` chooses the
 minimum-load positive-special point and exposes exactly these two horns.
 
+This localization is false and is retracted.  The very next widened model,
+seed 20, has a unique minimum special point `p=3` with `L(3)=75` and exact
+full-fiber primal and dual value `144/5>28`.  No strict one-row cover occurs
+on any row of `F_3`, so `localized_minimum_alternative_valid=false` and
+(13ap) fails.  The outer design is nevertheless killed by one-row covers
+elsewhere: row 7 has exact value `9/2<5`, row 23 has `47/8<6`, and rows 24
+and 25 each have `11/2<6`.  Thus the broader all-row alternative (13ao)
+still handles this model, but the row obstruction cannot be localized to the
+bad special fiber.  The generic Lean consumer remains a valid conditional
+statement; its localized hypothesis is no longer proposed as a consequence
+of the outer design.  This counterexample confirms that the one-row Farkas
+horn must range over all rows before any special-point argument begins.
+
+A widened seeds-0-through-49 run then tested the broader (13ao) directly.
+Pure load descent failed in exactly six generated models, at seeds
+`7,15,20,21,34,35`; every failure had at least one exact strict one-row
+fractional cover somewhere in the full 47-row system.  Hence
+`combined_valid=true` in all fifty models.  This does not prove (13ao), but
+it sharpens its intended order of proof: first exclude every globally
+row-deficient outer design, and only on that row-feasible locus prove that a
+non-strict positive-special fiber descends in exact load.  The seed-20
+counterexample shows that interchanging “globally” with “inside the selected
+fiber” is invalid.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
