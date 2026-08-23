@@ -325,6 +325,13 @@ def integer_single_dual_packing(system: dict, optimum: dict) -> dict:
 
 def single_optimum_summary(system: dict, single_optima: dict) -> dict:
     """Expose the strict/tight/excess trichotomy without bulky LP witnesses."""
+    overlap = set(single_optima)
+    mask_multiplicities = [
+        sum(point in system["blocks"][row] or point == q
+            for point in overlap)
+        for row, q in system["caps"]
+    ]
+    maximum_mask_multiplicity = max(mask_multiplicities, default=0)
     costs = {
         str(point): optimum["cost"]
         for point, optimum in single_optima.items()
@@ -372,6 +379,9 @@ def single_optimum_summary(system: dict, single_optima: dict) -> dict:
         "tight_single_points": tight,
         "nonstrict_single_excesses": excesses,
         "tight_single_packings": tight_packings,
+        "maximum_reduced_mask_multiplicity": maximum_mask_multiplicity,
+        "mask_multiplicity_at_most_half_overlap":
+            2 * maximum_mask_multiplicity <= len(overlap),
     }
 
 
