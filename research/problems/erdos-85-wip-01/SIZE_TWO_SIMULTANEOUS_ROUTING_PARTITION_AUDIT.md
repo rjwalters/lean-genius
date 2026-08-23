@@ -19875,6 +19875,7 @@ coupled rows, each with its forced secondary/singleton geometry.  The moving
 and stationary branches of Section 374 are therefore both exposed to the
 same tag-reuse and inactive-payer mechanisms, through propagation rows in
 one case and strict rows in the other.
+
 ## 376. Reflected holonomy has a finite rooted cyclic-word normal form
 
 The state-cycle formulation can be converted into one concrete cyclic word
@@ -19934,3 +19935,60 @@ rooted labels, with adjacent root/color changes, strict reflections marked
 as formal loops, and every physical move decorated by its exact SRP tag row.
 This is a normal form rather than an exclusion; its purpose is to give the
 cycle-wide tag identity a precise indexing object.
+
+## 377. A strict row's offset tag cannot pay through its own strict label
+
+The offset column in a strict row has a stronger version of the
+strict/inactive dichotomy.  Suppose first that `v_i in O`.  By (1300), the
+column `p_(i+2)` has a unique non-`d` singleton payer; call it `z_i`.  If
+`z_i` met `C`, Section 352 would identify it with the unique strict export
+at that column, namely the source label itself:
+
+```text
+z_i=s_i.                                            (1304)
+```
+
+But a payment by `s_i in k` in row `s_i` would belong to the self layer
+`A_k R_ke` and require the diagonal entry `A_k(s_i,s_i)=1`.  The self
+factor has no loops.  Hence (1304) is impossible and
+
+```text
+z_i is core-inactive.                               (1305)
+```
+
+The same proof applies when `v_i in B` provided its owner is not the offset
+port.  In that case `p_(i+2)` remains one of the two non-`d` singleton tag
+columns in (1300), and its only possible core-active payer is again the
+source `s_i`.  The sole exception is
+
+```text
+v_i in B and p(v_i)=p_(i+2),                        (1306)
+```
+
+when the endpoint layer already occupies the offset column and there is no
+offset tag to price.
+
+Thus every strict-reflection row has a forced inactive offset payer except
+possibly the owner-equals-offset private row.  These forced payers have
+unique outside companions by Section 355.  They are distinct for different
+roots: their selected offset ports differ and every non-`d` payer has
+selected incidence one.
+
+Apply this to a stationary word (1292) of length `L`.  If its common outside
+mate `v` lies in `O`, all `L` rows satisfy (1305).  If `v in B`, its owner is
+fixed, and the bijection `x_i mapsto p_(i+2)` shows that at most one of the
+distinct roots in the word can satisfy (1306).  Therefore
+
+```text
+stationary word at v in O forces L distinct inactive payers;
+stationary word at v in B forces at least L-1 distinct inactive payers.
+                                                               (1307)
+```
+
+Since `L>=2`, even the smallest stationary reflected cycle opens at least one
+inactive outside companion.  Thus stationary holonomy is not a closed
+strict-export phenomenon: it
+necessarily feeds the companion collision and restart machinery of Sections
+355--373.  This does not yet rule out the enlarged recurrence, but removes
+the last branch whose selected tags might all have been paid by already
+accounted strict labels.
