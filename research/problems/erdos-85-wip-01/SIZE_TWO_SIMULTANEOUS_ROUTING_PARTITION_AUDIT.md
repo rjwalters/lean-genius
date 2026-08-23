@@ -3988,3 +3988,65 @@ the paired endpoints.  The remaining transport statement is now narrower:
 phase must propagate across each unmarked `B_ec` gap.  Singleton gaps need
 no propagation because their two occurrences are already the same port;
 only gaps of order at least two carry a distinct-port residue.
+
+## 73. SRP transports an oriented fiber difference across one gap step
+
+The required single-step propagation has an exact linear identity.  Let
+`u,v` be consecutive `B_ec` ports, so `Y_e(x)={u,v}` for the root labelling
+their `B_ec` edge.  Orient the fiber difference
+
+```text
+w_(x,e) := 1_u - 1_v  in Z^e.
+```
+
+Each port has one other neighbor in `c`; call them `x_u,x_v`.  The common
+root cancels with opposite signs, giving
+
+```text
+R_ce w_(x,e) = 1_(x_u) - 1_(x_v).                     (242)
+```
+
+Also `J w_(x,e)=0`.  Apply the simultaneous routing partition `(SRP)` to
+this zero-sum column.  One obtains the signed single-switch identity
+
+```text
+A_c(1_(x_u)-1_(x_v))
+  + R_ce A_e(1_u-1_v)
+  + sum_(d != c,e) R_cd R_de(1_u-1_v)
+  = 0.                                                  (243)
+```
+
+No parity or positivity has been discarded in (243); it is an equality of
+integer vectors.  The first term transports the difference through the two
+other roots, the second through the internal `A_e` factor, and the remaining
+terms through every reused third-color block.  A pairwise model can balance
+the first two terms incorrectly because it does not have to realize the
+fixed third-color sum.
+
+Now orient an unmarked gap of order `g>=2` as
+
+```text
+p_0, p_1, ..., p_(g-1).
+```
+
+Sum (243) over its `g-1` consecutive `B_ec` edges using
+`w_i=1_(p_i)-1_(p_(i+1))`.  The input differences telescope:
+
+```text
+sum_i w_i = 1_(p_0)-1_(p_(g-1)).                       (244)
+```
+
+By linearity, the entire SRP transport of the gap is therefore the image of
+its paired endpoint difference under the same three families of operators.
+Equation (244) is the algebraic form of the complementary-gap involution
+(241).
+
+The remaining phase theorem is now a precise separation statement, not an
+undefined sign choice: construct a signed functional from the clean
+capacity/incidence dual whose pullback through one displayed transport is
+the desired endpoint price, while its evaluations on the other transported
+terms cancel.  Pairing (243) with that functional then gives zero on the
+endpoint difference (244), so every complementary-gap pair cancels.
+Conversely, any obstruction must exhibit which endpoint or third-color term
+prevents this separation.  This is the minimal SRP-local equation unavailable
+to the rooted owner-factor counterprofile of Section 70.
