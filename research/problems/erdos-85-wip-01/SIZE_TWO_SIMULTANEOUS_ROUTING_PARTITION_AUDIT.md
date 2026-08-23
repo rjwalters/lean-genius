@@ -19705,3 +19705,56 @@ to its outside mate.  The cycle is in the exact rooted-arrival dynamics,
 with every genuine departure changing color and every nonselected immediate
 reversal excluded.  This is the global finite object which a final coupled
 SRP/component argument must rule out.
+
+## 373. Inactive companions have a global endpoint-capacity bound
+
+The local collision law of Section 371 can be summed over all exterior
+colors.  There are `r=q/2` component colors in total and `r-2` components
+outside the fixed pair `{c,e}`.  For an outside endpoint `o`, summing
+(1281) over those colors gives
+
+```text
+|I(o)|+|RootWord(o)|<=2(r-2).                       (1288)
+```
+
+The rooted word has size three on a private ticket and size five on a
+residual endpoint.  Using `q=2r`, (1288) becomes the role-sensitive bound
+
+```text
+o in B implies |I(o)|<=q-7;
+o in O implies |I(o)|<=q-9.                         (1289)
+```
+
+Thus even collisions spread over many arrival colors cannot place
+arbitrarily many inactive payers at one target endpoint.  Let `I` be any
+finite set of distinct inactive payer labels, let `Comp(I)` be the set of
+their outside companions, and split it into `Comp_B(I),Comp_O(I)`.  Summing
+(1289) over the companion fibers yields
+
+```text
+|I| <= (q-7)|Comp_B(I)|+(q-9)|Comp_O(I)|.           (1290)
+```
+
+Apply this to the inactive offset payers forced by a family `Y` of distinct
+`O--O` propagation labels in Section 369.  Since that section supplies at
+least `max(|Y|-5,0)` distinct inactive payers, their companion endpoints
+satisfy
+
+```text
+(q-7)|Comp_B|+(q-9)|Comp_O| >= max(|Y|-5,0),
+
+|Comp_B|+|Comp_O|
+  >= ceil(max(|Y|-5,0)/(q-7)).                      (1291)
+```
+
+If all companions lie in `O`, the sharper denominator `q-9` applies.
+Equations (1290)--(1291) are global noncollapse bounds: the many inactive
+labels forced by repeated residual roots cannot all merge into fewer
+outside endpoints than the available cross-color slots permit.
+
+This estimate is quantitative rather than terminal; its denominator grows
+with `q`.  Its role is to preserve actual target support when passing from
+the distinct inactive labels of Section 369 to the reflected holonomy of
+Section 372.  Any stronger contradiction must exploit the rooted deficits
+in (1283), the injective fans at those companion endpoints, or overlap
+between their restarted edges, not merely the number of labels.
