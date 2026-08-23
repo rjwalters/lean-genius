@@ -3689,6 +3689,32 @@ and evaluate it on `kappa_C`, or price an odd-K holonomy cycle.  The remaining
 difficulty is not boundary existence; it is transporting either object into
 the finite owner/T-word route alphabet without losing its label.
 
+The cut exit has a concrete normal form.  If
+`k_D(uv)=t(u)+t(v)` on D-edges, then every T-edge has K-value zero and hence
+
+```text
+t(u)=t(v)                    for uv in T.                (73rnz_cje)
+```
+
+On a non-A D-edge, `K=Omega+D`, so
+
+```text
+1[uv in Omega]=1+t(u)+t(v).                              (73rnz_cjf)
+```
+
+Moreover symmetry of A evaluates the pairing-independent chain price as
+
+```text
+<k_D,r_C>=<t,kappa_C>
+ = <A t,P_C x>+<t,P_C h>.                               (73rnz_cjg)
+```
+
+For `C=F,M` the last term vanishes, so the price is exactly the `At`-mass on
+the C-type part of X.  Thus the cut branch is no longer an abstract
+possibility: it asks whether a T-component-constant two-coloring satisfying
+(73rnz_cjf) can have the owner-restricted `At` parity forced by activation.
+The holonomy branch instead supplies the explicit odd-K D-cycle (73rnz_cjd).
+
 The syndrome packing bound (73rnz_bm) removes one of those branches and
 rigidifies the other.  Suppose first that both endpoints are leaves and that
 `kappa_F` has no off-pole support.  Then (73rnz_ch) says `kappa_F=h`.  Since
