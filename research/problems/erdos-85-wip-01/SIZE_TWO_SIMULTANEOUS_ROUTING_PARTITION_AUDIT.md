@@ -10176,3 +10176,43 @@ In the alternative odd-holonomy branch no `lambda` exists and this extension
 is unavailable; the localized odd K-cycle must instead be converted directly
 to the Erdős 85 contradiction.  Thus (608)--(610) simplify only the additive
 branch and make no assumption about the other branch.
+
+## 198. Every `C_V` star matching has an untyped perfect completion
+
+Fix one root or port witness `r`.  The realized `C_V` edges at `r` are
+pairwise disjoint as edges on `N_A(r)`.  Indeed, if one resolved route label
+`y` occurred in two such pairs at the same root (respectively port), then
+the support of the intermediate-resolved matrix `F_(d,y)` would contain two
+entries in one row (respectively column), contradicting the partial-matching
+theorem of Section 113.
+
+Thus the `C_V` edges at `r` form a partial matching `M_V(r)` on the `q`
+neighbors of `r`.  Since `q` is even, the number of uncovered endpoints is
+
+```text
+q-2|M_V(r)|=0 mod 2.                                  (611)
+```
+
+Pair those endpoints arbitrarily.  This extends `M_V(r)` to a perfect
+matching `M_hat(r)` of the same untyped endpoint population `N_A(r)` used by
+the Baer star pairing `P_r`.
+
+Consequently condition (610a) is automatic after forgetting endpoint types:
+the actual V--V turns and `P_r` are two matchings of the same neighbor set,
+so the additive total (609) is identical on them regardless of the chosen
+completion.  No injectivity or parity obstruction remains at this level.
+
+The completion is not yet geometrically priced.  Its added pairs represent
+the neighbors not consumed by V--V turns; the current argument neither
+identifies them with the realized H/S decorations nor respects the `00/11`,
+owner, and activity subtypes of `P_r`.  Therefore the entire additive-branch
+interface has reduced to one typed aggregate statement:
+
+```text
+price of the arbitrary complement M_hat(r) setminus M_V(r)
+ = audited H/S boundary and transfer payments at r, modulo boundaries. (612)
+```
+
+Equation (612) is the local form of (610b), not a proved identity.  The
+point is that completion existence and scalar pairing gauge are now both
+discharged; only the price attached to the complementary endpoints remains.
