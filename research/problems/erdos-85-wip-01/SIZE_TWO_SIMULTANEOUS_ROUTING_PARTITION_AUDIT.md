@@ -7223,3 +7223,49 @@ Thus the saturated primary-connection sector has genuine secondary-label
 privacy, stronger than the degree-at-most-four star bound for the V--V C6
 sector.  This does not yet cancel its contribution: it supplies a private
 unit that a conservation or capacity argument may price without collision.
+
+## 137. The six-profile atom applies directly at every H--V boundary
+
+Nothing in the expansion (402) used the H decoration.  For an arbitrary
+root pair at `x`, with ports `z_1,z_2` and opposite roots `x_1,x_2`, the two
+copies of `R_cd(x,u)` still cancel.  Consequently
+
+```text
+delta_R q_u(E)
+ = t_u( R_cd(x_1,u)+R_ed(z_1,u)
+       +R_cd(x_2,u)+R_ed(z_2,u) )                    (410)
+```
+
+for **every** root pair `E` on the lifted dart cycle.  Since its ports lie
+in `V_j` and share `x`, the C4 and degree-two arguments of Sections 134--135
+apply verbatim: every nonzero root derivative has one of the six sided
+profiles (407).
+
+Apply this directly to the H--V support in (395).  If
+`N_10(u),N_01(u),N_21(u)` denote the H--V boundary root cells of the three
+profiles, counted modulo two with their side retained before the count, then
+
+```text
+D_(1_H,q_u)
+ = |N_10(u)|+|N_01(u)|+|N_21(u)|.                   (411)
+```
+
+This is a profile resolution of the primary marked defect itself, not only
+of the auxiliary internal connection used in (400).
+
+The privacy proof of Section 136 also did not use that the root pair was
+H--H.  It used only the `(2,1)` incidences, the two degree-two fibers, and
+C4.  Hence, for fixed `u`, at most one H--V boundary cell belongs to
+`N_21(u)`.  The primary ledger therefore has the exact form
+
+```text
+two unsaturated sided unit-transfer families N_10,N_01,
+plus one private saturated boundary unit N_21 per u.  (412)
+```
+
+The H-run transport remains useful for assembling these boundary cells into
+the canonical chain `T_H`, but no classification of its internal word is
+needed to know the local type of the primary defect.  The open conservation
+problem is now the parity relation among the two unsaturated families and
+the private saturated units in (411), followed by the separate refinement
+commutator from (396).
