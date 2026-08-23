@@ -63,6 +63,17 @@ def HasLocalGramPackingOneRowCompatibilityObstruction
         IsLocalGramPacking H W d w Y → u ∉ Y) ∨
       (w ∉ X ∧ IsForcedLocalGramNeighbor H W d w u)
 
+/-- A demanded packing lying between the two reverse-incidence bounds at
+`u`: it contains every candidate forced by the reverse local family and
+omits every candidate impossible in the reverse local family. -/
+def IsReverseIntervalLocalGramPacking
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (u : V) (X : Finset V) : Prop :=
+  IsLocalGramPacking H W d u X ∧
+  (∀ w, IsForcedLocalGramNeighbor H W d w u → w ∈ X) ∧
+  ∀ w, (∀ Y : Finset V,
+    IsLocalGramPacking H W d w Y → u ∉ Y) → w ∉ X
+
 /-- A finite set of reverse-impossible candidates hits every demanded
 packing at one row.  Singleton hitting sets are the old reciprocity horn;
 the q=9 durable survivor first exposes a hitting set of size two. -/
@@ -199,6 +210,38 @@ theorem not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
     · obtain ⟨hwX, hforced⟩ := homitted
       obtain ⟨Y, hY, huY⟩ := (hcompatible w).2 hwX
       exact huY (hforced Y hY)
+
+omit [Fintype V] in
+/-- **Full reverse-interval deficit equivalence.**  A one-row compatibility
+obstruction is exactly a row having no demanded packing between its reverse-
+forced lower bound and reverse-impossible upper exclusion. -/
+theorem hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) :
+    HasLocalGramPackingOneRowCompatibilityObstruction H W d ↔
+      ∃ u, ∀ X : Finset V,
+        ¬ IsReverseIntervalLocalGramPacking H W d u X := by
+  classical
+  constructor
+  · rintro ⟨u, hu⟩
+    refine ⟨u, ?_⟩
+    intro X hinterval
+    obtain ⟨hX, hlower, hupper⟩ := hinterval
+    obtain ⟨w, hselected | homitted⟩ := hu X hX
+    · exact (hupper w hselected.2) hselected.1
+    · exact homitted.1 (hlower w homitted.2)
+  · rintro ⟨u, hu⟩
+    refine ⟨u, ?_⟩
+    intro X hX
+    by_contra hbad
+    apply hu X
+    refine ⟨hX, ?_, ?_⟩
+    · intro w hforced
+      by_contra hwX
+      apply hbad
+      exact ⟨w, Or.inr ⟨hwX, hforced⟩⟩
+    · intro w hreverse hwX
+      apply hbad
+      exact ⟨w, Or.inl ⟨hwX, hreverse⟩⟩
 
 omit [Fintype V] in
 /-- The configuration-level obstruction contains the earlier forced-edge
@@ -561,6 +604,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
 #print axioms not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
+#print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
 #print axioms hasLocalGramPackingHittingSetReciprocityObstruction_iff
 #print axioms hittingSetReciprocityObstruction_of_reciprocityObstruction
