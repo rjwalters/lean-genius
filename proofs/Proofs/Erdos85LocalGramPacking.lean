@@ -99,6 +99,18 @@ noncomputable def reverseImpossibleLocalGramNeighborFinset
     exact Finset.univ.filter fun w =>
       ∀ Y : Finset V, IsLocalGramPacking H W d w Y → u ∉ Y
 
+/-- A residual witness after contracting the reverse-forced lower bound and
+deleting the reverse-impossible upper bound.  The remaining mathematical
+task is precisely to produce such a `Y`. -/
+def IsReverseIntervalContractedExtension
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (u : V) (Y : Finset V) : Prop :=
+  let F := reverseForcedLocalGramNeighborFinset H W d u
+  let I := reverseImpossibleLocalGramNeighborFinset H W d u
+  IsLocalGramPrepacking H W u (F ∪ Y) ∧
+  (F ∪ Y).card = d u ∧
+  Disjoint (F ∪ Y) I
+
 /-- A finite set of reverse-impossible candidates hits every demanded
 packing at one row.  Singleton hitting sets are the old reciprocity horn;
 the q=9 durable survivor first exposes a hitting set of size two. -/
@@ -267,6 +279,50 @@ theorem hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
     · intro w hreverse hwX
       apply hbad
       exact ⟨w, Or.inl ⟨hwX, hreverse⟩⟩
+
+/-- Reverse-interval demanded packings are exactly contracted residual
+extensions.  In the reverse direction the canonical residual witness is
+`X \ F_u`. -/
+theorem exists_reverseIntervalLocalGramPacking_iff_contractedExtension
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) (u : V) :
+    (∃ X : Finset V, IsReverseIntervalLocalGramPacking H W d u X) ↔
+      ∃ Y : Finset V, IsReverseIntervalContractedExtension H W d u Y := by
+  classical
+  let F := reverseForcedLocalGramNeighborFinset H W d u
+  let I := reverseImpossibleLocalGramNeighborFinset H W d u
+  constructor
+  · rintro ⟨X, hX, hlower, hupper⟩
+    have hFsub : F ⊆ X := by
+      intro w hwF
+      apply hlower w
+      simpa [F, reverseForcedLocalGramNeighborFinset] using hwF
+    have hunion : F ∪ (X \ F) = X := Finset.union_sdiff_of_subset hFsub
+    have hdisj : Disjoint X I := by
+      rw [Finset.disjoint_left]
+      intro w hwX hwI
+      have himpossible : ∀ Y : Finset V,
+          IsLocalGramPacking H W d w Y → u ∉ Y := by
+        simpa [I, reverseImpossibleLocalGramNeighborFinset] using hwI
+      exact hupper w himpossible hwX
+    refine ⟨X \ F, ?_⟩
+    change IsLocalGramPrepacking H W u (F ∪ (X \ F)) ∧
+      (F ∪ (X \ F)).card = d u ∧ Disjoint (F ∪ (X \ F)) I
+    rw [hunion]
+    exact ⟨⟨hX.2.1, hX.2.2⟩, hX.1, hdisj⟩
+  · rintro ⟨Y, hpre, hcard, hdisj⟩
+    refine ⟨F ∪ Y, ?_⟩
+    change IsLocalGramPacking H W d u (F ∪ Y) ∧
+      (∀ w, IsForcedLocalGramNeighbor H W d w u → w ∈ F ∪ Y) ∧
+      ∀ w, (∀ Z : Finset V,
+        IsLocalGramPacking H W d w Z → u ∉ Z) → w ∉ F ∪ Y
+    refine ⟨⟨hcard, hpre.1, hpre.2⟩, ?_, ?_⟩
+    · intro w hforced
+      apply Finset.mem_union_left
+      simpa [F, reverseForcedLocalGramNeighborFinset] using hforced
+    · intro w himpossible hw
+      have hwI : w ∈ I := by
+        simpa [I, reverseImpossibleLocalGramNeighborFinset] using himpossible
+      exact (Finset.disjoint_left.mp hdisj) hw hwI
 
 omit [Fintype V] in
 /-- The configuration-level obstruction contains the earlier forced-edge
@@ -681,6 +737,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
 #print axioms not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
 #print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
+#print axioms exists_reverseIntervalLocalGramPacking_iff_contractedExtension
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
