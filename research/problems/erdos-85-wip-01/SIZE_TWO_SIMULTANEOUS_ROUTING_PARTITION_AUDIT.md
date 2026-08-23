@@ -10216,3 +10216,52 @@ price of the arbitrary complement M_hat(r) setminus M_V(r)
 Equation (612) is the local form of (610b), not a proved identity.  The
 point is that completion existence and scalar pairing gauge are now both
 discharged; only the price attached to the complementary endpoints remains.
+
+## 199. Typed completion has one activity-parity obstruction
+
+Retain on every endpoint `y in N_A(r)` its binary activity bit `t_y`.  Let
+`W_r` be the endpoints already consumed by the partial V matching `M_V(r)`.
+The canonical Baer star pairing has no mixed T-word: its pairs lie in the
+`00` or `11` sectors.  Therefore the arbitrary completion in Section 198 can
+be chosen with the same T-word rule if and only if the number of active
+uncovered endpoints is even.
+
+Define the obstruction
+
+```text
+kappa(r):=sum_(y in N_A(r) setminus W_r) t_y
+         =s_star(r)+sum_(y in W_r)t_y,
+
+s_star(r):=sum_(y in N_A(r))t_y.                      (613)
+```
+
+Subtraction and addition agree over `F_2`.  Since `q` is even,
+`kappa(r)=0` makes both the uncovered active and
+inactive populations even, so they can be paired separately into `11` and
+`00` edges.  Conversely a same-type completion pairs the active uncovered
+endpoints two at a time and forces `kappa(r)=0`.
+
+If `kappa(r)=1`, every perfect completion of the untyped matching contains
+an odd number of mixed `01` pairs.  Such a completion cannot be identified
+with `P_r`, whose canonical pairing preserves the T-word sectors.  Thus
+(613) is the complete typed-population obstruction to condition (610a); no
+larger matching table is needed.
+
+The used-endpoint term in (613) is fully resolved by the actual V
+decorations.  The remaining `s_star(r)` term has the same star-aggregate
+*form* as the Baer activity whose flip expansion is carried by the `00/11`
+cut channels (the definitions are not identified), while on the SRP side
+the H/S marginal and silent-footprint ledgers retain the complementary non-V
+occurrences.  This structural match does not yet prove cancellation.  A
+necessary scalar residual identity from those ledgers is
+
+```text
+sum_(relevant root/port witnesses r) kappa(r)=0,       (614)
+```
+
+with the same occurrence weights used in (610b).  Equation (614) is a
+target; (613) is the proved local reduction.  Vanishing of (614) alone does
+not give a same-type completion separately at every star: a transport
+identity must pair the nonzero `kappa(r)` defects through the audited H/S
+transfers.  If even the scalar sum fails, an odd mixed-type endpoint is the
+located obstruction that the final capacity argument must price.
