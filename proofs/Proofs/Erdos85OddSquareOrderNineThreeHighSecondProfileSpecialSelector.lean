@@ -58,6 +58,53 @@ theorem squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect
     exact (Finset.sum_pos_iff
       (s := U1) (f := fun b => (D.neighborFinset b ∩ S).card)).mp hsumPos
 
+/-- The positive special point has at least 28 ordinary residual-resolved
+rows.  This packages candidate existence together with the mixed-column law,
+so the branch-four price route can use the high target directly. -/
+theorem squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twentyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hbranch : (G.induce (G.neighborSet x)).edgeFinset.card = 4) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    ∃ b ∈ U1, 28 ≤
+      (T.filter fun t =>
+        (((G.neighborFinset t ∩ T) ∩ G.neighborFinset b).Nonempty)).card := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  obtain ⟨b, hbU1, hbSpecial⟩ :=
+    squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hbranch
+  have hmixed :=
+    squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hbU1
+  dsimp only at hmixed
+  rcases hmixed with ⟨_hdefect, _hcore, hresidual⟩
+  refine ⟨b, hbU1, ?_⟩
+  omega
+
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twentyEight
