@@ -13176,3 +13176,56 @@ zero.  The remaining owner theorem is to transport the labeled words
 `W_(u_i)` through the companion ports and complementary H/V/S transitions,
 or to show that a closed monochromatic sum has forbidden owner holonomy.
 The payer is no longer missing; only its global route price is.
+
+## 258. Untagged wedge-word conservation is tautological
+
+The raw words (802) satisfy a colorwise identity before any five-port
+specialization.  Fix a receiving color `a` and sum over all `y in a`.  In
+the port term, every `p in Z` has exactly two `a`-neighbors because the
+cross block `R_ea` has row sum two.  Hence every basis point `[p]` occurs
+twice.  In the root-chain term, every `x in C` likewise has exactly two
+`a`-neighbors, so its edge `[E_x]` occurs twice in `sum_y A_y`.  Over
+`F_2` both contributions vanish:
+
+```text
+sum_(y in a) W_y=0.                                  (806)
+```
+
+For a genuine exterior color in the five-port case, the pointwise bounds
+`i_y,j_y<=1` from Section 253 imply that a `00` label has no selected root
+and no selected port, hence `W_y=0`.  Active labels have `W_y=Q_y` by
+(803).  Splitting (806) into the exact four cut sectors therefore gives
+
+```text
+sum_(y:11 or 01) Q_y = sum_(y:10) W_y.               (807)
+```
+
+The isolated paths of Section 255 refine (807) label by label through
+(805); the remaining `10--10` and `01--01` singleton-run pairs cancel in
+their respective raw/active sums because both endpoints carry the same
+single root-edge boundary or port point.  Thus §257 is not merely compatible
+with cross-degree conservation: it is its canonical private-label
+decomposition.
+
+Equation (806) also proves a sharp no-go for coarse prices.  If
+`lambda:C_0(Z;F_2)->F_2` is any linear functional depending only on the
+unlabeled physical port zero-chain, then
+
+```text
+sum_(y in a) lambda(W_y)=0                            (808)
+```
+
+identically in every receiving color.  Such a price cannot distinguish the
+marked curl from its forced active/inactive payments and therefore cannot
+exclude the five-port completion.  A successful final price must retain
+data erased by `W_y`: at least the private label, its sector/owner role, or
+the destination components of its two outside cross-fiber neighbors.  This
+is the same information boundary independently found by the B3 half-atom
+dual audit: color aggregation fails, while private label identity together
+with its local role census suffices on every sampled terminal.
+
+The live five-port theorem is consequently precise.  Transport the
+**label-tagged** inactive words `W_(u_i)` through their outside ports and
+complementary owner states, or derive a private-label price whose sum is
+nonzero despite the untagged identity (806).  Repeating an untagged boundary
+or homology calculation cannot make progress beyond this point.
