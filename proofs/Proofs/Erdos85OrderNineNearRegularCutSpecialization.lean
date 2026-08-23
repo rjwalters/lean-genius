@@ -181,6 +181,34 @@ theorem orderNineNearRegularCutLower_le_of_ordinary_moments
   ring_nf at hnatZ ⊢
   linarith
 
+/-- If the sharp cut lower bound is attained, then the ordinary square
+moment itself attains the balanced minimum. -/
+theorem orderNine_balancedSquare_eq_of_cutLower_eq
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (f : O → ℕ) (s b₁ b₂ b₃ δ : ℕ)
+    (hsum : (∑ x, f x) = 9 * s - (b₁ + b₂ + b₃))
+    (hsq : (∑ x, (f x) ^ 2) +
+      (b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1)) =
+        s ^ 2 + δ)
+    (hsharp : orderNineNearRegularCutLower s b₁ b₂ b₃ = δ) :
+    orderNineBalancedSquareSum (∑ x, f x) = ∑ x, (f x) ^ 2 := by
+  let c := b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1)
+  have hsharpZ := hsharp
+  unfold orderNineNearRegularCutLower at hsharpZ
+  have hbalZ :
+      (orderNineBalancedSquareSum (9 * s - (b₁ + b₂ + b₃)) : ℤ) +
+          (c : ℤ) = ((s ^ 2 + δ : ℕ) : ℤ) := by
+    dsimp only [c]
+    push_cast at hsharpZ ⊢
+    linarith
+  have hbal :
+      orderNineBalancedSquareSum (9 * s - (b₁ + b₂ + b₃)) + c =
+        s ^ 2 + δ := by
+    exact_mod_cast hbalZ
+  rw [← hsum] at hbal
+  dsimp only [c] at hbal
+  omega
+
 /-- Two-sided form matching `orderNineNearRegularComponentAdmissible`.
 The second ordinary vector is the complement shore's incidence vector. -/
 theorem orderNineNearRegularComponentAdmissible_of_ordinary_moments
@@ -208,5 +236,6 @@ theorem orderNineNearRegularComponentAdmissible_of_ordinary_moments
 #print axioms orderNine_ordinary_square_moment_of_zero_cut
 #print axioms orderNine_ordinary_square_moment_of_cut
 #print axioms orderNineNearRegularCutLower_le_of_ordinary_moments
+#print axioms orderNine_balancedSquare_eq_of_cutLower_eq
 
 end Erdos85
