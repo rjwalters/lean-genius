@@ -4721,6 +4721,33 @@ inside one routed cut: the pole blocks from (73rnz_cjibkm), the residual
 block (73rnz_cjibkzi), and the direct/through blocks already transported by
 (73rnz_cjibk)--(73rnz_cjibkc).
 
+The residual block itself has an exact two-ended boundary.  Use any cycle
+decomposition of the Eulerian graph P and pair consecutive B-crossing edges
+as in (73rnz_cjibkp).  Form a witness-label multigraph `W_P`: for every
+paired pair of flip edges, labeled by witnesses y and z, add one edge yz
+(a loop is allowed when the labels agree).  Since every flip edge occurs in
+exactly one pair,
+
+```text
+deg_(W_P)(y)=#(b-flip P-edges labeled y)=s(y) mod 2.    (73rnz_cjibkzj)
+```
+
+Apply the handshake identity to the vertex subset R of residual witnesses:
+
+```text
+Delta=sum_(G in R)s(G)=|delta_(W_P)(R)| mod 2.          (73rnz_cjibkzk)
+```
+
+Thus a residual diagonal unit cannot terminate entirely among residual
+centers: its parity is exactly the number of routed flip segments from a
+residual witness to a non-residual witness.  Each segment retains the full
+endpoint states and, in the cut-potential branch, its internal `1+mu` price
+is endpoint-determined by (73rnz_cjibkq)--(73rnz_cjibks).  The final
+classification is reduced to pricing the **non-residual endpoint type** of
+these boundary segments (pole, leaf, empty, or ordinary witness), all of
+which belong to the previously enumerated owner/owner-free transition
+alphabet.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
