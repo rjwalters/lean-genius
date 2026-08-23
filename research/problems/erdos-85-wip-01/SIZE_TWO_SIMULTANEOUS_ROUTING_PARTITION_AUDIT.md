@@ -19758,3 +19758,61 @@ the distinct inactive labels of Section 369 to the reflected holonomy of
 Section 372.  Any stronger contradiction must exploit the rooted deficits
 in (1283), the injective fans at those companion endpoints, or overlap
 between their restarted edges, not merely the number of labels.
+
+## 374. Reflected holonomy is stationary strict or contains a tagged move
+
+The state cycle forced in Section 372 has an exact physical dichotomy.
+Represent a rooted arrival state as `(v,ell_in)` with `v in B disjoint_union
+O`.  A departure label `ell_out` has color different from `ell_in`.  If its
+far endpoint is selected, strict reflection returns to a state
+`(v,ell_out)` at the same physical vertex; otherwise it reaches a new
+physical vertex in `B disjoint_union O`.
+
+Choose a directed state cycle with no repeated state except at closure.
+Either every transition is a strict reflection, or at least one transition
+is a genuine outside-to-outside move.  In the first case all physical
+vertices on the cycle are one vertex `v`, and every arrival label on the
+cycle is a distinct strict export whose outside mate is `v`:
+
+```text
+stationary branch:
+  (v,s_(i_0))->(v,s_(i_1))->...->(v,s_(i_(L-1)))
+  ->(v,s_(i_0)).                                    (1292)
+```
+
+Adjacent strict-label colors in (1292) differ, including at closure.  The
+far selected endpoints are pairwise distinct by the injective fan theorem
+(1235), so the strict labels and their roots are pairwise distinct as well.
+There is no one-state cycle because every departure changes label color.
+Consequently
+
+```text
+v in B implies 2<=L<=3,
+v in O implies 2<=L<=5.                             (1293)
+```
+
+Thus the stationary possibility is a constant-size cyclic word of strict
+exports sharing one outside mate, not an arbitrary global recurrence.
+
+In the second case the cycle contains a rooted label `y` with
+
+```text
+N_e(y)={s,t} subset B disjoint_union O.             (1294)
+```
+
+This is precisely a global propagation edge of Section 362.  According to
+its endpoint roles it carries the exact one-, two-, or three-cell selected
+tag profile (1246), with secondary reuse classified by Sections 364--365.
+Hence the reflected cycle dichotomy is
+
+```text
+a stationary strict word of length at most five at one outside vertex;
+or a moving cycle containing at least one fully tagged B/O edge. (1295)
+```
+
+The distinction matters because strict reflection itself introduces no new
+tag row, whereas every physical move does.  A final exclusion may therefore
+handle the bounded stationary word directly and apply the accumulated
+tag/inactive-companion machinery only to the moving branch.  No claim is
+made here that the moving cycle is simple or that its physical edges are
+distinct.
