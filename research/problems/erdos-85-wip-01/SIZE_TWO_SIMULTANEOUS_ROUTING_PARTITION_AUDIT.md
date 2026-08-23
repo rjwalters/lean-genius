@@ -17977,3 +17977,71 @@ into the root matching and ten-label skeleton of some `b'!=b`, or pay the
 same cell through the coupled partition `SRP(b',e)`.  The next exclusion
 may therefore work on this located two-color interface rather than on an
 arbitrary choice of a second color.
+
+## 343. The forced side color is absorbed strictly or exits the owner fiber
+
+Retain the private ticket `w`, side root `r'`, and color `b'` from (1159),
+and let `y'` be the actual intermediate label routing `(r',w)`.  Since
+`y'` meets the selected root component `C` at `r'`, it indexes one edge of
+the active factor `H_(b')^C`.  Write
+
+```text
+g'={w,w'} in H_(b')^C.                              (1160)
+```
+
+Let `w^sib` be the other private owner endpoint over the same selected port
+`p`.  The new edge cannot join the two siblings:
+
+```text
+w'!=w^sib.                                         (1161)
+```
+
+Indeed `w` and `w^sib` are both adjacent to `p` in `A_e`.  If `y'` were
+also adjacent to both, then
+
+```text
+w -- p -- w^sib -- y' -- w
+```
+
+would be a four-cycle, exactly as in the private/private loop exclusion of
+Section 337.
+
+There are now two exhaustive roles for the other endpoint.  If
+
+```text
+w'=p,                                               (1162)
+```
+
+then the cell `(r',p)` is an exterior active cell at a selected port.  By
+the strict permutation (777), it is necessarily the unique strict export
+at `p`; in particular its receiving color is `b'` and its strict root is
+`r'`.  The forced side letter is absorbed by a completely located
+strict--private factor edge.
+
+Otherwise `w'` lies outside the three-point owner fiber
+
+```text
+{p,w,w^sib}.                                       (1163)
+```
+
+It may be residual, belong to another private owner fiber, or be a
+different selected port, but in every case (1160) is an actual
+color-`b'` active edge which exits the owner fiber supporting the
+exact-reuse cancellation.
+
+Thus the nonmonochromatic side letter from Section 342 cannot be hidden by
+pairing the two private tickets which caused the doubled selected endpoint.
+It obeys the exact dichotomy
+
+```text
+strict absorption at p,
+or a b'-factor escape out of the owner fiber.       (1164)
+```
+
+If both occurrences in (1156) are private, applying the argument to both
+tickets gives two distinct side edges: one label cannot join the siblings
+by (1161), although the two side colors are still allowed to coincide.
+Equation (1164) is the first genuine two-color propagation constraint on
+the countermodel of Section 340.  A remaining completion must either spend
+one of the five strict exports in the new color or propagate into a new
+port role where the global matching and component ledgers can charge it.
