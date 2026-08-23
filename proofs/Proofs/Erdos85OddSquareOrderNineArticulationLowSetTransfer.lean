@@ -1793,6 +1793,48 @@ theorem false_of_orderNine_order34_four_edge_owner_W_one
         (hZdegree e (by simpa [U, B] using heParts.1))
         hsAvoid heAvoid
 
+/-- Full `(3,1)` local assembly.  The owner's local-triangle profile has
+either three or four edges, and the preceding two capstones eliminate the
+respective alternatives under the same sharp low-set data. -/
+theorem false_of_orderNine_order34_owner_W_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0)
+    (hWcard : W.card = 2)
+    (hownerW : (G.neighborFinset owner ∩ W).card = 1)
+    (hZdegree : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0),
+      (G.neighborFinset y ∩ Z).card = 2) : False := by
+  have hprofile :=
+    squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  rcases hprofile with hthree | hfour
+  · exact false_of_orderNine_order34_three_edge_owner_W_one
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+        hthree.2.2 Z P W hpartition hPsub hWcard hownerW
+        (by
+          intro y hy
+          exact hZdegree y (Finset.mem_inter.mp hy).1)
+  · exact false_of_orderNine_order34_four_edge_owner_W_one
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+        hfour.2.2 Z P W hpartition hPsub hWsub hWcard hownerW hZdegree
+
 end
 
 end Erdos85
