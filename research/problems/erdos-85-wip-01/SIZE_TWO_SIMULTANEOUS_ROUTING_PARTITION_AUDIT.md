@@ -7368,3 +7368,70 @@ Hence summing them before applying a joint weight loses precisely the data
 needed to escape the cubic counterprofiles.  A terminal must prove (420)
 from the full simultaneous geometry or cancel the finer fiber cells before
 this contraction; another scalar trace sum cannot suffice.
+
+## 140. Every active secondary coordinate has a separator-or-potential dichotomy
+
+Keep the secondary weights instead of setting all of them to one.  For a
+fixed third color `d`, let `T_j` be the diagonal matrix with
+`(T_j)_(u,u)=t_u`, and define the port connection operator
+
+```text
+L_d := R_ec R_cd + R_ed : F_2^d -> F_2^e.             (421)
+```
+
+For a coefficient vector `beta` on the `d`-atoms, summing the local
+observables with these coefficients gives
+
+```text
+Q_beta:=sum_u beta_u q_u=L_d T_j beta.                (422)
+```
+
+Indeed the first term evaluates `R_cd(T_j beta)` at the two roots of each
+port, while the second evaluates `R_ed(T_j beta)` at the port itself,
+exactly as in (362).
+
+Let `Z` be the odd target port component and put
+
+```text
+C_(d,j):= restriction_Z F_c[e] L_d T_j.              (423)
+```
+
+On an odd cycle, `C_(d,j) beta=0` says that `Q_beta` is constant on `Z`, by
+the kernel calculation of Section 28.  Hence every such `beta` supplies the
+genuine conserved primary relation
+
+```text
+sum_u beta_u D_(1_H,q_u)=D_(1_H,Q_beta)=0.            (424)
+```
+
+Restrict the coefficient space to the active atoms `U_j={u:t_u=1}`.  Fix
+`u_0 in U_j`.  Elementary finite-dimensional duality gives exactly one of
+the following alternatives:
+
+```text
+(separator)  some beta in ker C_(d,j) has beta_(u_0)=1;
+
+(potential)  e_(u_0) lies in im C_(d,j)^T, so there is lambda on Z with
+             C_(d,j)^T lambda=e_(u_0).                (425)
+```
+
+To see exhaustiveness, if no separator exists then the coordinate functional
+`e_(u_0)^T` annihilates `ker C_(d,j)`, and therefore belongs to
+`(ker C_(d,j))^perp=im C_(d,j)^T`.  Conversely a displayed potential makes
+`beta_(u_0)=lambda^T C_(d,j)beta=0` for every kernel vector, excluding a
+separator.
+
+In the separator branch, (424) is a conserved joint-weight ledger in which
+the chosen secondary fiber has coefficient one; if that fiber contains the
+private saturated cell of Section 136, the relation sees it before any
+routing-color aggregation.  In the potential branch, `lambda` is an explicit
+dual certificate expressing that coordinate as marked connection curvature.
+It can be expanded against the at-most-seven local cells of Section 138.
+
+This dichotomy does not by itself contradict an odd marked defect: other
+weighted fibers occur in the separator relation, and the potential may have
+large or sign-indefinite support.  It replaces the unsupported demand for a
+universal conserved weight with a guaranteed case split, exactly parallel
+to the kernel-separator/two-pole-potential dichotomy in the Baer lane.  The
+remaining task is to use C4 privacy and capacity to control the additional
+fibers in the first branch or the support of `lambda` in the second.
