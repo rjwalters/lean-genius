@@ -1006,6 +1006,21 @@ theorem binarySquare_twoPort_phase_agreement
   use k₁ + k₂ - ownerPhase
   omega
 
+/-- The difference of the two marked-witness endpoint loads has an integral
+half whenever the full endpoint degrees are even.  This is the signed,
+route-odd lift of `binarySquare_twoPort_phase_agreement`. -/
+theorem binarySquare_twoPort_signedBoundary_integral
+    (ownerPhase markPhase₁ markPhase₂ witnessLoad₁ witnessLoad₂ : ℕ)
+    (h₁ : Even (ownerPhase + markPhase₁ + witnessLoad₁))
+    (h₂ : Even (ownerPhase + markPhase₂ + witnessLoad₂)) :
+    ∃ Λ : ℤ,
+      (markPhase₁ + witnessLoad₁ : ℤ) -
+          (markPhase₂ + witnessLoad₂ : ℤ) = 2 * Λ := by
+  obtain ⟨k₁, hk₁⟩ := h₁
+  obtain ⟨k₂, hk₂⟩ := h₂
+  use (k₁ : ℤ) - k₂
+  omega
+
 /-- If two owner endpoints share the same marked defect target, neither
 marked pair can also be an edge.  Otherwise that endpoint, together with the
 owner edge, is a common neighbor of the opposite marked pair. -/
@@ -1063,4 +1078,5 @@ end Erdos85
 #print axioms Erdos85.binarySquare_saturatedMixed_hEqF_impossible
 #print axioms Erdos85.binarySquare_no_singleton_partialBaer_core
 #print axioms Erdos85.binarySquare_twoPort_phase_agreement
+#print axioms Erdos85.binarySquare_twoPort_signedBoundary_integral
 #print axioms Erdos85.binarySquare_coincident_mark_no_active

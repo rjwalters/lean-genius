@@ -2236,6 +2236,34 @@ in the outside case which empty-line block carries it.  This is exactly the
 color/fiber label that must be retained by any final simultaneous-routing
 argument.
 
+The corresponding signed occurrence boundary is already integral (all
+differences in the following display are taken in `Z`).  For
+each endpoint write `d_(i,j)=1[z_i y_(i,j) in D]`, so that
+`b_i=sum_j d_(i,j)`.  Subtracting the two exact T-degree formulas in
+(73rnk), rather than merely reducing them modulo two, gives
+
+```text
+Lambda
+  := ((tau_1+b_1)-(tau_2+b_2))/2
+   = (deg_T(z_1)-deg_T(z_2))/2
+   = (tau_1-tau_2 + sum_j(d_(1,j)-d_(2,j)))/2.           (73rnz''')
+```
+
+This is an integer because both T-degrees are even.  Reversing the oriented
+owner occurrence (`1 <-> 2`) negates `Lambda` exactly.  Thus `Lambda` is the
+route-odd character of the full marked-witness bundle, not just its mod-two
+shadow (73rnk).  The localization above is label-sensitive: whenever a
+crossed intermediary is the opposite witness `y_((3-i),j)`, its corresponding
+atom `d_((3-i),j)` is forced to zero before the signed sum is formed.
+
+Formal availability of the reversed orientation does not imply cancellation:
+it is the same unoriented owner occurrence viewed backward.  Vanishing of the
+global sum of (73rnz''') requires the missing occurrence-weight reversibility
+that also remains in the labeled SRP and B3 bundle lanes.  This identifies the
+extreme endpoint's precise contribution to that shared open lemma: an
+oriented bundle consisting of one marked-port atom and one defect bit for
+each empty-line witness, with the crossed-route intermediary labels retained.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
