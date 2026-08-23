@@ -3303,6 +3303,30 @@ classes is already resolved by (73rnz_bo)--(73rnz_bp).  This supplies the
 promised K-coupling input for pricing the two-pencil defect units; it does not
 yet prove that their total contribution vanishes.
 
+Here the exceptional-core census removes the apparent D-source entirely.
+Every empty center has
+
+```text
+N_D(E_i)=F union (E setminus {E_i}),
+```
+
+because these `q-1` exceptional vertices exhaust its regular D-degree.
+Consequently the two columns differ only at the poles themselves and
+`Dh=h`.  Equation (73rnz_bq) simplifies to
+
+```text
+K x = T x + 1_L.                                        (73rnz_bs)
+```
+
+Thus K- and T-incidence into X agree exactly off the two empty lines, while
+every point of L carries one correction unit.  The lines are disjoint, so
+each correction has a unique empty-center owner label.  This is an exact
+identity plus a localized exceptional alphabet -- the Baer-side instance of
+the near-identity/pivot-neighborhood structure isolated by the B3 dual
+ledgers.  Unlike the instance-specific B3 alphabet, L has size `2q`; further
+pricing must use its two line fibers rather than treating it as uniformly
+bounded.
+
 At the two poles this transport detects the endpoint type exactly.  The pair
 `E_1E_2` is a D-edge in the minority clique, neither pole lies in L, and
 `h(E_i)=1`, so the last three correction terms in (73rnz_bq) cancel at
