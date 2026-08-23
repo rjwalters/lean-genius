@@ -24875,3 +24875,61 @@ secondary turns in (III).  The gain is that the resistant saturation branch
 now has only two large-scale geometries: disjoint six-port sparse gadgets or
 disjoint repeated-turn gadgets, rather than an arbitrary mixture of the
 five four-edge trace shapes.
+
+## 469. Entire traces can have disjoint payer-layer support
+
+The adaptive construction of Section 465 can separate the canonical
+payer layers of all four trace edges, not only those of the selected
+saturated pair.  Suppose `j` full traces have already been chosen with
+pairwise disjoint vertex sets and pairwise disjoint full-trace payer-layer
+sets.  Their vertex union `X_j` still has size at most `7j`.
+
+Let `L_j` be the union of the canonical payer layers of every edge in the
+earlier traces.  Each trace has four edges, so
+
+```text
+|L_j|<=4j.                                         (1667)
+```
+
+Form a forbidden source-color set `C_j` of two kinds:
+
+```text
+colors of H-edges incident with X_j; and
+colors of H-edges whose canonical payer layer lies in L_j.
+```
+
+The first kind contributes at most `5|X_j|<=35j` colors.  Section 401
+bounds the edges paid from one layer by ten, so the second contributes at
+most `10|L_j|<=40j` colors.  Therefore
+
+```text
+|C_j|<=75j.                                        (1668)
+```
+
+Apply Section 457 with this `C_j` and with no additional payer-layer set.
+If
+
+```text
+q>1172+8250j,                                      (1669)
+```
+
+either an avoided nondegenerate cancellation occurs or the returned
+saturation color `h` lies outside `C_j`.  No `h`-edge is then incident
+with `X_j`, and no `h`-edge is paid from `L_j`.  Hence all four edges of
+the new two-root `h`-trace avoid the earlier trace vertices and all earlier
+trace payer layers.  The induction closes.
+
+Thus for every integer `c>=1`,
+
+```text
+q>1172+8250(c-1)
+ -> an avoided nondegenerate tag-even PC cancellation; or
+ -> c four-edge saturation traces with pairwise disjoint vertex sets,
+    pairwise distinct allowed source colors, and pairwise disjoint
+    payer-layer sets across every edge of the full traces.       (1670)
+```
+
+Pigeonholing the ten root pairs gives `t` such fully separated traces on
+one fixed root pair under `q>1172+82500(t-1)`.  In particular, secondary
+turns in different nonsparse traces now inherit payer-layer disjointness;
+only possible layer coincidences among edges inside one trace remain.
