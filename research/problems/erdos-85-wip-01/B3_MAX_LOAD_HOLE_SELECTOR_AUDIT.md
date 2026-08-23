@@ -567,28 +567,30 @@ row weights plus one distinguished external point, rather than unrestricted
 point prices across the outer design.  This is the branch-3 analogue of the
 shared-point fractional-collision normal form used in branch 4.
 
-The row weights themselves reduce to a two-template integer disjunction.
-`q9_branch3_fixed_weight_selector.py` fixes the
-(diagonal, class-1, exceptional) weights to either `(1,2,1)` (the balanced
-template) or `(3,0,8)` (the exceptional-heavy template), minimizes only the
-allowed point prices, and verifies every edge inequality and the strict
-margin again over exact rationals.  The balanced/exceptional-heavy counts on
-the five hard payloads are `6/2`, `4/0`, `1/0`, `8/3`, and `0/3`; on fresh
-seeds zero through four they are `0/6`, `0/3`, `4/27`, `5/1`, and `12/24`.
-Thus their disjunction survives all ten models.  The two templates are both
-necessary on the hard corpus: the anchor-pair counterexample has only the
-balanced template, while replay seed 17 has only the exceptional-heavy one.
-This replaces existential rational row weights by two explicit arithmetic
-targets.  The remaining classification problem is to show that some one of
-the 48 incidence shapes satisfies one of these two fixed point-cover
-inequalities.
+The row weights themselves appear to reduce to a three-template integer
+disjunction.  `q9_branch3_fixed_weight_selector.py` fixes the
+(diagonal, class-1, exceptional) weights to `(1,2,1)` (balanced), `(3,0,8)`
+(exceptional-heavy), or `(1,1,1)` (unit), minimizes only the allowed point
+prices, and verifies every edge inequality and the strict margin again over
+exact rationals.  The first two templates survived the five hard payloads
+and fresh seeds zero through 14, but seed 15 refuted their disjunction while
+retaining eight unrestricted incident-point certificates.  Its unique fixed
+template is unit, at support `{diagonal 1, class-1 row 15, exceptional 25}`.
+Adding the unit template survives all five hard payloads and every fresh seed
+zero through 32.  All three templates are necessary in the present corpus:
+the anchor-pair counterexample needs balanced or unit, replay seed 17 has
+only exceptional-heavy, and seed 15 has only unit.  This replaces
+existential rational row weights by three explicit arithmetic targets.  The
+remaining classification problem is to show that some one of the 48
+incidence shapes satisfies one of these three fixed point-cover inequalities.
 
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
 counts on the hard corpus are `0/2`, `0/0`, `1/0`, `7/3`, and `0/3`.
 In particular the three-tight fixture has four strict balanced fractional
-covers but no integer cover of either template.  All five fresh samples do
+covers, two strict unit fractional covers, but no integer cover of any
+template.  All five fresh samples do
 retain an integer alternative, so this is a real hard-fixture boundary rather
 than a generic numerical failure.  A proof may denominator-clear a selected
 rational cover, but it cannot replace the fractional capacity calculation by

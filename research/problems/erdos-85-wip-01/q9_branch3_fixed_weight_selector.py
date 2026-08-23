@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit two fixed-weight branch-3 incident-point Farkas templates."""
+"""Audit fixed-weight branch-3 incident-point Farkas templates."""
 
 from __future__ import annotations
 
@@ -22,6 +22,7 @@ from q9_symmetric_point_mass_obstruction import (
 TEMPLATES = {
     "balanced": (Fraction(1), Fraction(2), Fraction(1)),
     "exceptional_heavy": (Fraction(3), Fraction(0), Fraction(8)),
+    "unit": (Fraction(1), Fraction(1), Fraction(1)),
 }
 
 
@@ -131,7 +132,7 @@ def fixed_weight_certificate(
     }
 
 
-def scan(system: dict) -> dict:
+def scan(system: dict, *, audit_integral: bool = True) -> dict:
     if system["branch"] != 3:
         raise ValueError("fixed-weight selector requires branch 3")
     holes_begin = N_TRIPLE - 2
@@ -150,12 +151,15 @@ def scan(system: dict) -> dict:
                     )
                     if certificate is not None:
                         certificates[name].append(certificate)
-                    integer_certificate = fixed_weight_certificate(
-                        system, hole, diagonal, offdiagonal, weights,
-                        integral=True,
-                    )
-                    if integer_certificate is not None:
-                        integer_certificates[name].append(integer_certificate)
+                    if audit_integral:
+                        integer_certificate = fixed_weight_certificate(
+                            system, hole, diagonal, offdiagonal, weights,
+                            integral=True,
+                        )
+                        if integer_certificate is not None:
+                            integer_certificates[name].append(
+                                integer_certificate
+                            )
     return {
         "counts": {
             name: len(found) for name, found in certificates.items()
@@ -177,6 +181,7 @@ def main() -> None:
     parser.add_argument("payload", type=Path, nargs="?")
     parser.add_argument("--random-seed", type=int)
     parser.add_argument("--timeout-seconds", type=int, default=30)
+    parser.add_argument("--skip-integral", action="store_true")
     args = parser.parse_args()
     if args.payload is None:
         if args.random_seed is None:
@@ -185,7 +190,10 @@ def main() -> None:
     else:
         payload = json.loads(args.payload.read_text())
     system = fixed_system(payload)
-    print(json.dumps(scan(system), separators=(",", ":")))
+    print(json.dumps(
+        scan(system, audit_integral=not args.skip_integral),
+        separators=(",", ":"),
+    ))
 
 
 if __name__ == "__main__":
