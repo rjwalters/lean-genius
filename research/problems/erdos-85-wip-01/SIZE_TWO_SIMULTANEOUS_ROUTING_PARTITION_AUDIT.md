@@ -23739,3 +23739,59 @@ Such a walk cannot be the parity-degenerate square `Q Q` of (1583).  Thus
 the only obstruction to turning the bounded PC-generated cancellation of
 Section 433 into one nondegenerate color-ordered object is now global:
 the selected family may split into vertex-disconnected cycle clusters.
+
+## 443. A minimal tag dependency is one walk or at most six disjoint clusters
+
+The disconnected alternative in Section 442 has an exact bounded form.
+Start with six linearly independent simple PC-cycle vectors as in Section
+433, and choose an inclusion-minimal nonempty subfamily `I` whose tag
+syndromes sum to zero.  Put `m:=|I|`, so `1<=m<=6`.  If `m=1`, its sole
+member is already a simple tag-even PC cycle.  Independence always implies
+
+```text
+z_I:=sum_(Q in I)[E(Q)]!=0.                       (1588)
+```
+
+Let `J_I` be the vertex-intersection graph of the cycles in `I`.  If it is
+connected, (1586)--(1587) already give one tag-even PC closed walk with
+nonzero base edge chain.  Suppose instead that its connected components
+are `K_1,...,K_t`, where `2<=t<=m`.  For each cluster define
+
+```text
+z_a:=sum_(Q in K_a)[E(Q)],
+p_a:=sum_(Q in K_a)syndrome(Q)=tau(z_a).          (1589)
+```
+
+Every `z_a` is nonzero by independence.  Every `p_a` is also nonzero: if
+`p_a=0`, the nonempty proper subfamily `K_a subsetneq I` would contradict
+the inclusion-minimality of `I`.  On the other hand the total dependency
+gives
+
+```text
+p_1+...+p_t=0,       p_a!=0 for every a.          (1590)
+```
+
+Cycles in different clusters share no base vertex.  Within each cluster
+the intersection graph is connected, so Section 442 splices its cycles to
+one PC closed walk `W_a` with
+
+```text
+[E(W_a)]=z_a!=0,       syndrome(W_a)=p_a!=0.      (1591)
+```
+
+The walks `W_1,...,W_t` are vertex-disjoint, and their nonzero syndromes
+sum to zero.  Consequently the bounded cancellation from Section 433 has
+the sharp alternative
+
+```text
+one nondegenerate tag-even PC closed walk; or
+2<=t<=6 vertex-disjoint nondegenerate PC closed walks,
+each with nonzero syndrome p_a, with sum_a p_a=0.  (1592)
+```
+
+All conclusions persist inside any source-color- or payer-layer-deleted
+graph for which `R_A>=6` or `R_P>=6`, because the independent cycles and
+every splice remain in that same graph.  Thus disconnectedness is no
+longer an unstructured failure of the color-ordering bridge: it is a
+constant family of at most six vertex-disjoint colored clusters carrying
+a minimal nonzero syndrome dependency.
