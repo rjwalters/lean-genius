@@ -615,6 +615,28 @@ def double_label_flag_primal_audit(data: dict, mode: str = "full") -> tuple:
     return result.success, equalities.shape[0] - N, result.message
 
 
+def double_label_flag_private_audit(data: dict) -> tuple:
+    """Check private unordered-flag rows after quotienting route reversal."""
+    equalities, _, _, _, _, _, _ = double_label_flag_primal_system(
+        data, "unordered")
+    edges = [(t, u) for t in range(N) for u in data["candidates"][t]]
+    edge_set = set(edges)
+    missing_reverse = sorted((t, u) for t, u in edges if (u, t) not in edge_set)
+    selected = [(column, edge) for column, edge in enumerate(edges)
+                if edge[0] < edge[1] and (edge[1], edge[0]) in edge_set]
+    matrix = equalities[N:, [column for column, _ in selected]].tocsr()
+    frequency = np.diff(matrix.indptr)
+    by_column = matrix.tocsc()
+    without_private = []
+    for local_column, (_, edge) in enumerate(selected):
+        rows = by_column.indices[
+            by_column.indptr[local_column]:by_column.indptr[local_column + 1]]
+        if not any(frequency[row] == 1 for row in rows):
+            without_private.append(edge)
+    rank = int(np.linalg.matrix_rank(matrix.toarray()))
+    return len(selected), rank, missing_reverse, without_private
+
+
 def collision_census_infeasible_core(data: dict) -> tuple:
     """Greedily delete seven-state equations to an irreducible LP core."""
     (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
@@ -1824,6 +1846,8 @@ def main() -> int:
                         help="comma-separated coordinates for one triple table")
     parser.add_argument("--audit-double-label-flag-primal", action="store_true",
                         help="test collision-witness flag conservation")
+    parser.add_argument("--audit-double-label-flag-private", action="store_true",
+                        help="check private rows in unordered flag boundaries")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -2188,6 +2212,22 @@ def main() -> int:
                       f"seed={seed_number} colors={colors} mode={mode} "
                       f"feasible={success} flag_count={flag_count} "
                       f"message={message}")
+    if args.audit_double_label_flag_private:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            columns, rank, missing_reverse, without_private = (
+                double_label_flag_private_audit(candidate))
+            branch, seed_number, colors = label
+            print(f"double_label_flag_private branch={branch} "
+                  f"seed={seed_number} colors={colors} columns={columns} "
+                  f"rank={rank} "
+                  f"missing_reverse={missing_reverse} "
+                  f"without_private_count={len(without_private)} "
+                  f"without_private={without_private[:20]}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2272,6 +2312,7 @@ def main() -> int:
             or args.audit_triple_categorical_augmentations
             or args.categorical_extra_triple
             or args.audit_double_label_flag_primal
+            or args.audit_double_label_flag_private
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):

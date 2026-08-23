@@ -2244,6 +2244,36 @@ the occurrence-level shape expected of a two-label incidence handshake and is
 substantially more proof-facing than the arbitrary seven-coordinate state
 potential `(12rza)`.
 
+The unordered flag matrix is close to, but not at, route-pairing rigidity.
+Choose one orientation of every eligible unordered route and use the
+`F_(q;r,s)` as its column.  A numerical rank audit on the eleven survivors
+gives
+
+```text
+label             columns   rank   nullity
+(3,7,12)             385      365      20
+(3,12,01)            389      362      27
+(3,21,12)            386      359      27
+(4,1,01)             384      364      20
+(4,1,12)             384      363      21
+(4,3,01)             381      368      13
+(4,4,02)             386      362      24
+(4,5,12)             384      356      28
+(4,10,01)            376      360      16
+(4,15,01)            385      367      18
+(4,15,02)            385      368      17.                     (12rzj)
+```
+
+In nine models every column lacks a flag row private to that column; in the
+other two, only one column has one.  Thus neither private-row peeling nor full
+column independence proves `(12rzi)`.  The surviving object is nevertheless
+small relative to the roughly 380-route ambient space: a 13--28 dimensional
+circulation kernel.  Since `(12rzj)` uses floating numerical rank it is only a
+diagnostic, not an exact kernel theorem.  It refines the uniform target to:
+classify the unordered two-label flag kernel structurally, then prove that no
+nonnegative degree-normalized kernel point respects all private label
+capacities.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
