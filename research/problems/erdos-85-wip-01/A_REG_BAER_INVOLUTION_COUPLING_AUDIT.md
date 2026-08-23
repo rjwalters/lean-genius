@@ -5449,6 +5449,29 @@ must remain in the joint quotient.  The boundary-invisible full odd cycles
 of the owner factor are untouched by (73rnz_cjibkzzr) and remain the only
 port-secondary curl.
 
+Together with the active boundary identity, this exhausts the boundary
+part of `B_00`.  Two owner-factor edge chains with the same secondary
+boundary differ by a sum of full cycle components.  An even cycle does not
+change edge augmentation; only a full odd cycle can change the scalar
+marked parity.  Moreover any fully selected cycle is automatically inactive:
+at each of its secondary vertices `y`, both incident factor edges are
+selected, so both ports in `N_e(y)` lie on the target shore; target parity
+therefore gives `t_y=0`.  Hence the residual decomposition is exactly
+
+```text
+00 port source
+ = active q_y interval-boundary terms
+   + inactive selected/complement shadow-cut terms
+   + fully selected inactive odd owner-factor cycles. (73rnz_cjibkzzs)
+```
+
+The first two summands are now occurrence-resolved in established route
+alphabets.  The last is boundary-invisible and cannot be removed by another
+secondary endpoint potential; it is the localized port-side holonomy.  In
+particular there are no active odd-cycle terms hidden behind the `q_y`
+projection.  A finish must pair or price these fully inactive odd factor
+cycles through the remaining owner/V/S capacity relation.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
