@@ -6676,3 +6676,47 @@ the source and mate decorations, so the corresponding signed bundle
 boundary remains route-odd.  Conservation is still open—the mate tag cannot
 be added after summation—but the only possible failure of private-row
 peeling is now the explicit labeled six-cycle sector.
+
+## 126. A collision C6 saturates two fibers and has a 2-to-1 target profile
+
+Retain the repeated opposite-root collision of Section 124 inside the fixed
+target incidence component `V_j`.  The intermediate `y` has cross degree two
+into `e`.  Since its two distinct actual ports are `p_1,p_2 in V_j`, they
+exhaust that fiber:
+
+```text
+N_e(y)={p_1,p_2},       t_y=(R_de V_j)(y)=0.           (375)
+```
+
+Similarly `u` has cross degree two into `c`, and the two distinct opposite
+roots on the C6 exhaust its `c`-fiber:
+
+```text
+N_c(u)={b_1,b_2}.                                      (376)
+```
+
+But `u` is a secondary atom only when `t_u=1`.  Therefore exactly one of its
+two `e`-neighbors lies in `V_j`; call it `r`.  It is distinct from
+`p_1,p_2`, because the opposite-root exposure says `u` is adjacent only to
+`b_k` on each collision wedge.  Hence the collision carries the exact
+target-component profile
+
+```text
+y uses two target ports p_1,p_2 and has target parity zero;
+u uses one target port r and has target parity one.     (377)
+```
+
+Thus an exceptional repeated coordinate is a saturated block: it consumes
+the full `e`-fiber of its actual label and the full `c`-fiber of its
+secondary label.  In particular the same coordinate `(y,u)` cannot have a
+third occurrence: the two `e`-ports of `y` are exhausted.  The privacy
+failure has multiplicity exactly two and a forced `2 versus 1`
+target-capacity mismatch, not an unbounded repeated column.  Different
+coordinates may still reuse `u`; no label-disjointness between collision
+blocks is claimed.
+
+No contradiction from (375)--(377) is asserted.  They identify the data a
+conservation proof must price: the even two-port actual bundle against the
+odd one-port secondary bundle.  This is the SRP form of the one-slot
+capacity-transfer deficit appearing in the exact B3 certificates
+(12rm)--(12rp).
