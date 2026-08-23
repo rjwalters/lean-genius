@@ -24215,3 +24215,37 @@ saturated pairs.  Thus every additional `220` units of avoidance budget
 force, up to rounding, one more disjoint saturation pair.  Section 450
 is the instance `p=26`, for which `m=14`, the source-color lower bound is
 three, and the target lower bound is seven.
+
+## 452. Fourteen saturations repeat one root pair at distinct targets
+
+The matching abundance also forces recurrence in the fixed five-root
+geometry.  Each saturation terminal consists of two incident edges in
+distinct root matchings by Section 447, so it determines one unordered
+pair of core roots.  There are only
+
+```text
+choose(5,2)=10.                                     (1624)
+```
+
+such root pairs.  Hence the fourteen pairwise payer-layer-disjoint
+saturation terminals supplied by Section 450 cannot all determine
+different root pairs.  There are two terminals, say at targets `v` and
+`w`, with the same unordered root pair.
+
+These targets are necessarily distinct.  At any vertex of `O_5`, each
+root matching contributes exactly one incident shadow edge.  Thus a fixed
+target and fixed unordered pair of roots determine at most one saturated
+edge pair.  Since the fourteen chosen terminals are edge-disjoint, two of
+them with the same root pair cannot occur at the same target.  Therefore
+
+```text
+q>=4096 and no avoided nondegenerate cancellation
+ -> some two distinct targets v,w in O_5 support saturated pairs
+    with the same unordered pair of core roots.                 (1625)
+```
+
+This is the first forced recurrence not indexed by the growing source-
+color or payer-layer sets: it lives in a ten-state root-pair space.  It
+does not by itself contradict the matching axioms, but it reduces the
+remaining saturation branch to a two-target coupling for one fixed pair
+of root actions.
