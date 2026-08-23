@@ -25178,3 +25178,50 @@ disjointness of boundary edges is being assumed.  The durable conclusion
 is instead three simultaneous odd-degree gadget-interaction layers.  This
 is precisely information absent from the scalable two-root construction
 of Section 473 and supplies the next coupling target for a contradiction.
+
+## 476. A third root forces a growing spoke-color frontier
+
+Return to the cheaper rainbow normal form (1642); full-trace separation is
+not needed here.  Let `T` be its `c` selected centers for fixed roots
+`{r,s}`, and fix any third root `u notin {r,s}`.  The root class `G_u` is
+a matching.  From every `G_u`-edge with both endpoints in `T`, retain only
+one endpoint, and retain every vertex of `T` whose `u`-mate lies outside
+`T`.  The resulting set `T' subseteq T` satisfies
+
+```text
+|T'|>=ceil(c/2),
+the G_u-edges incident with T' are pairwise distinct.           (1689)
+```
+
+The rootwise census of Section 399 gives at most two ordinary edges of
+any source color in `G_u`, including colors with strict exports.  Hence
+the spoke edges from `T'` use at least
+
+```text
+ceil(|T'|/2)>=ceil(c/4) distinct source colors.                 (1690)
+```
+
+At a selected center `v`, its two incident `{r,s}`-edges exhaust the
+degree-two capacity of its saturated color `h_v`.  Therefore the
+`u`-spoke at `v` has color different from `h_v`.  The spoke color may
+equal another center's selected color; no global disjointness is asserted.
+
+Since `|{d} union Gamma|<=6`, at least
+
+```text
+max(0,ceil(c/4)-6)                               (1691)
+```
+
+of the spoke colors lie outside the exceptional source-color set.  Thus
+under the original rainbow threshold
+
+```text
+q>1172+3300(c-1),                                (1692)
+```
+
+either the nondegenerate cancellation already exists or one fixed
+two-root rainbow fan has, along each chosen third root, a matching of
+at least `ceil(c/2)` spokes using at least `ceil(c/4)` colors and a
+linearly growing allowed-color subfrontier.  This is the first post-
+saturation consequence that necessarily leaves the two-root factor
+projection isolated in Section 473.
