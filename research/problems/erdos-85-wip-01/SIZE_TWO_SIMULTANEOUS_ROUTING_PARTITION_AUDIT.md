@@ -10043,3 +10043,53 @@ coarse loop condition: show that the H-parity cochain lies in the cut space
 of `G_hatXi`, or prove the weaker ambient cancellation there, using the
 root/port transition algebra.  Only after that cancellation may one project
 to the canonical coarse chain `Xi`.
+
+## 195. The Baer potential reaches `C_V` only through a pairing gauge
+
+There is a natural but noncanonical comparison with the paired-star graph
+used in the Baer lane.  A `C_V` edge joins two resolved route labels
+`y_1,y_2` whose V darts are paired at a common root or port witness `r`.
+Thus `y_1,y_2` are two neighbors of `r`, exactly the local vertex domain on
+which the Baer star pairing acts.
+
+However, the two pairings are defined independently:
+
+```text
+C_V: the actual root/port matching of the realized dart cycle;
+P_r: the canonical iota_r pairing on the 00 sector plus an
+     owner-adapted completion on the broken-T sector.                 (603)
+```
+
+Sections 113--116 prove distinctness and privacy of the `C_V` labels, but
+they do not prove that an actual V--V pair is an edge of `P_r`.  Therefore
+the Baer vertex potential `lambda` from (73rnz_cjibkq) cannot simply be
+pulled back along `C_V`.
+
+When two admissible pairings use the same finite endpoint set, their
+symmetric difference is a union of alternating even cycles, and one is
+obtained from the other by four-endpoint switches
+
+```text
+{a--b,c--d} <--> {a--c,b--d}.                         (604)
+```
+
+Hence on any star sector where the actual V pairing can first be completed
+to the same endpoint set as `P_r`, transporting `lambda` to `C_V` is
+equivalent to the local quadrilateral price identity (73rnz_cjibd).  A
+failure produces the localized four-relay holonomy; success gives the
+additive form (73rnz_cjibe).
+
+This is a conditional gauge dictionary, not yet a bridge theorem.  Two
+inputs remain to be proved before importing the Baer potential:
+
+```text
+(a) compatible completion: include every realized V--V pair in a full
+    star pairing with the same typed endpoint population as P_r;
+(b) price invariance: verify (604) for every typed switch used in passing
+    between that completion and P_r.                                  (605)
+```
+
+The H/S decorations in the full state (577) are precisely the data needed
+to audit (a); the bounded four-relay state table of Section 166 is the local
+obstruction to (b).  Until both are discharged, the SRP and Baer potentials
+share an exact cycle--cut mechanism but not a canonical coordinate map.
