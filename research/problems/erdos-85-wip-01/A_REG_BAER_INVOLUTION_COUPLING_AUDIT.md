@@ -3247,6 +3247,24 @@ only be the joint labels/holonomy carried around these closed quotient trails
 or a capacity price on their relay atoms.  It cannot be recovered from an
 unlabelled exit count.
 
+Modulo parallel-edge multiplicity, the topology is completely classified.
+The reduction `bar Q` is a simple Eulerian graph on four vertices, hence an
+element of the three-dimensional cycle space of `K_4`.  Its eight possible
+values are
+
+```text
+empty;
+one of the four triangles;
+one of the three Hamilton four-cycles.                    (73rnz_be)
+```
+
+Indeed a nonempty even-degree simple graph on four vertices has every
+nonisolated degree two, so it is a triangle or a four-cycle.  Even parallel
+pairs disappear from `bar Q`; these include the labeled C6 blocks above and
+cannot be discarded from the actual route ledger unless their two labels
+cancel.  Thus the remaining holonomy audit has only seven nonzero quotient
+skeletons, together with the joint labels on even parallel-pair corrections.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
