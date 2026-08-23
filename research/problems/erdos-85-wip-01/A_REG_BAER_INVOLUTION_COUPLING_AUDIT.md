@@ -4541,6 +4541,22 @@ already private switch-flip term.  The remaining ownerwise attachment may
 be attacked as a nonlinear commutator transport identity; no further
 cross-matching atomization is needed.
 
+On the source pair `(E,G)` this commutator has a sharper D-form.  Substitute
+`A^2=D+J+I` into (73rnz_cjibky).  The two J-terms are the star sums `s(E)`
+and `s(G)`, while the two I-terms vanish because `EG notin A`.  Hence
+
+```text
+f_(E,G)=s(E)+s(G)
+ +(A diag(b) D + D diag(b) A)_(E,G).                   (73rnz_cjibkza)
+```
+
+The only non-star residue is therefore a D-weighted endpoint commutator.
+For the empty pole E its D-neighborhood is the exhausted exceptional core,
+so (73rnz_cjibkza) puts the final silent transport directly into the same
+exceptional/ordinary incidence alphabet as (73rnz_as)--(73rnz_aw).  Further
+vanishing is not asserted: the required next identity is the owner-resolved
+evaluation of this D-commutator, not another expansion of `A^2`.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
