@@ -236,6 +236,41 @@ theorem not_hasLocalGramPackingObstruction_of_symmetricSelection
       exact hirr u huv
     exact (hX.1 w).2.2 u huw' v hvw' huv_ne huv
 
+omit [Fintype V] in
+/-- A forced incidence whose reverse is absent from every demanded packing
+rules out a symmetric simultaneous selection. -/
+theorem not_symmetricLocalGramPackingSelection_of_forced_not_reverse
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) (u w : V)
+    (huw : IsForcedLocalGramNeighbor H W d u w)
+    (hreverse : ∀ Y : Finset V,
+      IsLocalGramPacking H W d w Y → u ∉ Y)
+    (X : V → Finset V) :
+    ¬ IsSymmetricLocalGramPackingSelection H W d X := by
+  intro hX
+  have hwu : w ∈ X u := huw (X u) (hX.1 u)
+  have huw' : u ∈ X w := (hX.2 u w).mp hwu
+  exact hreverse (X w) (hX.1 w) huw'
+
+/-- **Forced-forward/impossible-reverse consumer.**  This two-row reciprocity
+obstruction excludes every symmetric supported Gram-compatible residual
+relation. -/
+theorem false_of_forcedLocalGramNeighbor_not_reverse
+    (A H W : V → V → Prop) [DecidableEq V] [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (u w : V)
+    (huw : IsForcedLocalGramNeighbor H W d u w)
+    (hreverse : ∀ Y : Finset V,
+      IsLocalGramPacking H W d w Y → u ∉ Y) :
+    False :=
+  false_of_no_symmetricLocalGramPackingSelection
+    A H W d hsymm hdegree hsupport hgram
+    (not_symmetricLocalGramPackingSelection_of_forced_not_reverse
+      H W d u w huw hreverse)
+
 /-- **Capacity-deficit / forced-collision consumer.**  If the eligible local
 packing system has either no demanded packing at one row, or two
 `W`-conflicting rows force the same neighbor, then no symmetric residual
@@ -279,5 +314,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms relationNeighborFinset_isSymmetricLocalGramPackingSelection
 #print axioms false_of_no_symmetricLocalGramPackingSelection
 #print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
+#print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
+#print axioms false_of_forcedLocalGramNeighbor_not_reverse
 
 end Erdos85
