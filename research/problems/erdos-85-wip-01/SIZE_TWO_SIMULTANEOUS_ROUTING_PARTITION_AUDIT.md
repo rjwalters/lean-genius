@@ -10563,26 +10563,30 @@ that map is constructed.
 
 There is one concrete candidate already present in the H alphabet.  An H
 dart at root `x` retains the horizontal owner edge labelled by its port; its
-opposite root `x'` lies in the same defect component.  Since that horizontal
-edge belongs to `A_c`, it is an internal A-edge of the D-component and hence
+opposite root `x'` lies in the same defect component and satisfies
+`A(x,x')=1`.  But membership in one connected component of `D` does not imply
+the edge `xx'` itself belongs to `D`.  Therefore the exact additional
+checkpoint is
 
 ```text
-x' in N_T(x).                                         (637)
+D(x,x')=1  iff  x' in N_T(x).                         (637)
 ```
 
-Thus H owner mates, not V route labels, have the correct endpoint type for
-(628).  What is not yet proved is the coverage statement: as the owner color
-and dart cycles vary, do these H mates enumerate every `N_T(x)` endpoint
-with the multiplicity required by `Lambda_T(x)`?  Port witnesses and S
-switches require the analogous audit.
+No current lemma says that every horizontal owner edge passes this
+checkpoint.  Thus H owner mates, not V route labels, are the only immediate
+candidate endpoint type for (628), but first their T-subfamily must be
+identified.  One must then prove the coverage statement: as the owner color
+and dart cycles vary, do those T-marked H mates enumerate every `N_T(x)`
+endpoint with the multiplicity required by `Lambda_T(x)`?  Port witnesses
+and S switches require the analogous audit.
 
 Sections 197--205 prove that, **if** this H/S-to-complement attachment exists,
 all of its completion, T-word, pairing, and cover gauges cancel.  The live
 choices are consequently exact:
 
 ```text
-(a) prove the H-owner-mate coverage suggested by (637), construct its
-    port/S companion, and verify (628); or
+(a) isolate the T-marked H-owner mates by (637), prove their coverage,
+    construct the port/S companion, and verify (628); or
 (b) abandon the Baer complement as a direct SRP price and prove scalar
     H/S cancellation inside the full state cycle by another invariant. (638)
 ```
