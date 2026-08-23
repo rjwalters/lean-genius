@@ -557,6 +557,100 @@ theorem orderNine_order27_binZero_W_degree_equation
     G owner y Z P W (by simpa [P] using hpartition)
       hownerP hownerW hPW hPdegree
 
+/-- Cross-incidence handshake, proved by swapping the two endpoints. -/
+theorem sum_neighbor_inter_card_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    (∑ a ∈ A, (G.neighborFinset a ∩ B).card) =
+      ∑ b ∈ B, (G.neighborFinset b ∩ A).card := by
+  classical
+  let L := A.sigma fun a => G.neighborFinset a ∩ B
+  let R := B.sigma fun b => G.neighborFinset b ∩ A
+  have hcard : (A.sigma fun a => G.neighborFinset a ∩ B).card =
+      (B.sigma fun b => G.neighborFinset b ∩ A).card := by
+    refine Finset.card_bij
+      (s := A.sigma fun a => G.neighborFinset a ∩ B)
+      (t := B.sigma fun b => G.neighborFinset b ∩ A)
+      (fun p : Sigma fun _ : V => V => fun _ => ⟨p.2, p.1⟩) ?_ ?_ ?_
+    · intro p hp
+      have hp' := Finset.mem_sigma.mp hp
+      exact Finset.mem_sigma.mpr ⟨(Finset.mem_inter.mp hp'.2).2,
+        Finset.mem_inter.mpr ⟨
+          (G.mem_neighborFinset p.2 p.1).mpr
+            ((G.adj_comm p.1 p.2).mp
+              ((G.mem_neighborFinset p.1 p.2).mp
+                (Finset.mem_inter.mp hp'.2).1)), hp'.1⟩⟩
+    · intro p₁ hp₁ p₂ hp₂ heq
+      have hs := congrArg
+        (fun q : Sigma fun _ : V => V =>
+          (⟨q.2, q.1⟩ : Sigma fun _ : V => V)) heq
+      simpa using hs
+    · intro q hq
+      refine ⟨(⟨q.2, q.1⟩ : Sigma fun _ : V => V), ?_, ?_⟩
+      have hq' := Finset.mem_sigma.mp hq
+      exact Finset.mem_sigma.mpr ⟨(Finset.mem_inter.mp hq'.2).2,
+        Finset.mem_inter.mpr ⟨
+          (G.mem_neighborFinset q.2 q.1).mpr
+            ((G.adj_comm q.1 q.2).mp
+              ((G.mem_neighborFinset q.1 q.2).mp
+                (Finset.mem_inter.mp hq'.2).1)), hq'.1⟩⟩
+      · cases q
+        rfl
+  simpa [L, R, Finset.card_sigma] using hcard
+
+/-- An independent subset sends no more incidences into an ambient set than
+its complement receives. -/
+theorem sum_neighbor_inter_card_le_complement_of_independent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (U W : Finset V) (hUsub : U ⊆ W)
+    (hind : ∀ u ∈ U, (G.neighborFinset u ∩ U).card = 0) :
+    (∑ u ∈ U, (G.neighborFinset u ∩ W).card) ≤
+      ∑ w ∈ W \ U, (G.neighborFinset w ∩ W).card := by
+  classical
+  let C := W \ U
+  have hleft : (∑ u ∈ U, (G.neighborFinset u ∩ W).card) =
+      ∑ u ∈ U, (G.neighborFinset u ∩ C).card := by
+    apply Finset.sum_congr rfl
+    intro u hu
+    congr 1
+    ext x
+    constructor
+    · intro hx
+      have hp := Finset.mem_inter.mp hx
+      refine Finset.mem_inter.mpr ⟨hp.1, Finset.mem_sdiff.mpr ⟨hp.2, ?_⟩⟩
+      intro hxU
+      have hm : x ∈ G.neighborFinset u ∩ U :=
+        Finset.mem_inter.mpr ⟨hp.1, hxU⟩
+      have hempty := Finset.card_eq_zero.mp (hind u hu)
+      rw [hempty] at hm
+      exact Finset.notMem_empty x hm
+    · intro hx
+      have hp := Finset.mem_inter.mp hx
+      exact Finset.mem_inter.mpr ⟨hp.1, (Finset.mem_sdiff.mp hp.2).1⟩
+  have hcross := sum_neighbor_inter_card_comm G U C
+  rw [hleft, hcross]
+  apply Finset.sum_le_sum
+  intro w hw
+  exact Finset.card_le_card (by
+    intro x hx
+    exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hx).1,
+      hUsub (Finset.mem_inter.mp hx).2⟩)
+
+/-- Three-edge arithmetic terminal in (22). -/
+theorem false_of_orderNine_order27_threeEdge_handshake
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (U W : Finset V) (hUsub : U ⊆ W)
+    (hind : ∀ u ∈ U, (G.neighborFinset u ∩ U).card = 0)
+    (hleft : (∑ u ∈ U, (G.neighborFinset u ∩ W).card) = 7)
+    (hright : (∑ w ∈ W \ U, (G.neighborFinset w ∩ W).card) = 5) :
+    False := by
+  have hle := sum_neighbor_inter_card_le_complement_of_independent
+    G U W hUsub hind
+  omega
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -725,6 +819,9 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_lowSet_composition
 #print axioms orderNine_binZero_W_degree_of_lowSet_partition
 #print axioms orderNine_order27_binZero_W_degree_equation
+#print axioms sum_neighbor_inter_card_comm
+#print axioms sum_neighbor_inter_card_le_complement_of_independent
+#print axioms false_of_orderNine_order27_threeEdge_handshake
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
