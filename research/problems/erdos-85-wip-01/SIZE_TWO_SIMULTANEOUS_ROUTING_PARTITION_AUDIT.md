@@ -13892,3 +13892,51 @@ the local role census.  It is not yet a contradiction, because (853) does
 not determine how `L_a` splits between `B` and `O`, nor how the `B` tickets
 are paired by `nu_e`.  Those are now the only owner-return data still absent
 from the colorwise load.
+
+## 271. Each color load has a canonical root-pairing graph
+
+The scalar load in Section 270 has an exact portwise geometry.  Fix an
+exterior color `a` and form the bipartite graph `G_a^C` whose left vertices
+are the five roots `C`, whose right vertices are the actual ports in `e`,
+and whose edges are the cells in the restricted routing layer
+
+```text
+Q_a^(c,e)|_(C times e).
+```
+
+Every left degree is four.  On the selected side `Z`, (777) gives exactly
+the `k_a` strict cells, in distinct rows and columns, so each used selected
+column has degree one.  An arbitrary port column has degree at most two:
+the port has only two `a`-neighbors, and (779) lets each such intermediate
+label meet at most one root of `C`.  Therefore
+
+```text
+deg_(G_a^C)(x_i)=4,
+deg_(G_a^C)(p)<=2,
+G_a^C[C,Z] is a k_a-edge matching.                  (855)
+```
+
+Delete the selected columns `Z`.  The remaining root degrees are
+
+```text
+deg_(G_a^C-Z)(x_i)=4-1_{i in I_a}.                  (856)
+```
+
+Every outside port of degree two now canonically pairs the two distinct
+roots in its neighborhood; every degree-one port is a boundary stub.  If
+`m_1^a,m_2^a` count outside ports of degrees one and two, respectively,
+the load law (853) becomes
+
+```text
+m_1^a+2m_2^a=20-k_a,
+m_1^a=k_a mod 2.                                    (857)
+```
+
+Equivalently, contracting every degree-two port produces a loopless
+multigraph on the five labeled roots, together with `m_1^a` labeled stubs,
+whose vertex degrees are (856).  Multiple root-pair edges are not excluded.
+This is strictly finer than the number `L_a=20-k_a`: it records which
+actual ports pair two root occurrences and which terminate.  The private
+ticket occurrences in `B` and `O` are the distinguished labeled edges and
+stubs of these colorwise graphs, providing a direct combinatorial interface
+with the owner-return pairing `nu_e`.
