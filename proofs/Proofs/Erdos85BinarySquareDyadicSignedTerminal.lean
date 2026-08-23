@@ -949,6 +949,22 @@ theorem binarySquare_saturatedR1_hEqF_impossible
   obtain ⟨k, hk⟩ := heven
   omega
 
+/-- The same even-degree terminal closes either placement of the saturated
+`r = 2, h = f` layer once either minority centre is shown to have its single
+forced matching edge as its unique triangle-free incident edge. -/
+theorem binarySquare_saturatedR2_hEqF_impossible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hqEven : Even q) (hreg : ∀ x, G.degree x = q)
+    (minorityCenter : V)
+    (hunique : (triangleFreeEdgeGraph G).degree minorityCenter = 1) :
+    False := by
+  exact binarySquare_saturatedR1_hEqF_impossible
+    G hfree hqEven hreg minorityCenter hunique
+
 end
 
 end Erdos85
@@ -987,3 +1003,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_ordinaryPrivate_card_odd
 #print axioms Erdos85.binarySquare_mixedPrivateOwner_card_odd
 #print axioms Erdos85.binarySquare_saturatedR1_hEqF_impossible
+#print axioms Erdos85.binarySquare_saturatedR2_hEqF_impossible

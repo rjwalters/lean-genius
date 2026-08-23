@@ -1821,6 +1821,34 @@ surviving transport object.  The `r=1` work that remains is solely the other
 placement from (73g), namely `h=(q-2)/2`; no argument should continue to
 spend transport machinery on `h=f`.
 
+The identical endpoint parity closes the saturated `r=2,h=f` branch in
+both placements allowed by (73h).  There are two empty centers.
+
+- If both lie in S, they are A-matched to the two outside full centers.
+  Fix an empty center `E_i`.  Its q-1 D-neighbors are all `q-2` full
+  centers and the other empty center.  Its empty line has no A-neighbor in
+  S, while the perfect matching gives exactly one A-neighbor among the two
+  outside full centers.  All its remaining A-neighbors lie in M, where it
+  has no D-neighbor.  Therefore `deg_T(E_i)=1`.
+- If both lie outside S, (73h) A-matches them to each other.  Their edge is
+  also in D because the minority support is a D-clique.  Every full center
+  lies in S and hence off the empty line of `E_i`; again D-degree is already
+  exhausted inside C, so the matched minority edge is its unique T-edge.
+
+Thus in either case
+
+```text
+deg_T(E_i)=1,                                             (73rno)
+```
+
+contradicting even T-degree.  The final composition is Lean-checked by
+`binarySquare_saturatedR2_hEqF_impossible`.  Hence `r=2,h=f` is impossible
+as well; the only saturated `r=2` placement still live is
+`h=(q-4)/2`.  More generally, the lesson is that the `h=f` routing should be
+tested first at an empty center: its D-degree is exhausted on the exceptional
+core, so a unique routed A-edge immediately becomes a forbidden odd
+T-degree.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
