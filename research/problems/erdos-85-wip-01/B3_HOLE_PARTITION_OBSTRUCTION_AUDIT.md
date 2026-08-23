@@ -1856,6 +1856,24 @@ outside the pivot/relay incidence neighborhood has positive slack.  The
 exceptional alphabet is not merely small numerically: it lives on the same
 canonical labeled neighborhood that determines the demand rows.
 
+There is a useful connection form of the same calculation.  Put
+`q_t(b)=p_t(b)+c_tb`, where `c_tb` is the nonnegative capacity price.  Then
+every candidate route obeys the exact integer equation
+
+```text
+a_t + sum_{b in B_u cap selected} q_t(b)
+    - sum_{b in B_t cap selected} p_u(b) = epsilon(t,u),       (12ru)
+```
+
+with `epsilon=0` on the 2252 tight columns and positive only on the 22 routes
+listed by `(12rt)`.  Thus the certificate is a flat root-to-port transport
+connection away from a pivot-supported curvature set.  The scalar
+contradiction is its one-unit capacity defect after summing the flat transport
+against a normalized matching flow.  This is also the closest B.3 dictionary
+to the simultaneous-routing lane's connection/holonomy language: `p` is the
+incoming labeled potential, `q` the capacity-corrected outgoing potential,
+and `epsilon` the localized curvature.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
