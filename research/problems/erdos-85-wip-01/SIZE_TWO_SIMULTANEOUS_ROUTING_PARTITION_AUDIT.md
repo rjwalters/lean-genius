@@ -22657,3 +22657,58 @@ length-four alternatives of (1503); their endpoint collisions need the
 separate finite simultaneous-color analysis identified there.  For every
 longer shortest holonomy, however, a bounded hole set cannot hide linear
 vertex expansion inside the shadow graph.
+
+## 423. The four-cycle exception still has two-point exit expansion
+
+Although target four-cycle-freeness does not exclude a four-cycle in the
+shadow graph, shortestness still controls its adjacent exit collisions.
+Let
+
+```text
+Q=(v_0,v_1,v_2,v_3,v_0)
+```
+
+be a shortest properly colored cycle, and choose at each `v_j` one
+root-new/color-new boundary edge `f_j=v_jw_j` using (1489).  Suppose two
+adjacent vertices have the same chosen outside endpoint, say
+`w_j=w_(j+1)=w`.  If the two exit colors were different, then
+
+```text
+v_j -- v_(j+1) -- w -- v_j                       (1507)
+```
+
+would be a properly colored triangle.  The transition at each cycle
+vertex is proper because its chosen exit color differs from both incident
+cycle colors, and the transition at `w` is proper by the assumed color
+difference.  This contradicts the choice of the four-cycle as shortest.
+Therefore
+
+```text
+w_j=w_(j+1) -> color(f_j)=color(f_(j+1)).         (1508)
+```
+
+No outside endpoint can receive three of the four chosen exits.  Indeed,
+any three vertices of a four-cycle induce a path of length two.  Applying
+(1508) along that path makes all three exit colors equal at the common
+endpoint, contrary to the exterior component-color degree cap two.  Hence
+
+```text
+#{w_0,w_1,w_2,w_3}>=2.                            (1509)
+```
+
+When an adjacent pair collides, its two exits have the same exterior color
+but different roots, the latter because every root class is a matching.
+An opposite pair may collide with different colors: its two-edge ear has
+length four rather than being shorter, so minimality alone gives no
+constraint.  Thus the complete valid small-length split is now
+
+```text
+ell=3: exact root cut (1,1,1,3,3), endpoint merging open;
+ell=4: at least two chosen-exit endpoints, with adjacent merging typed;
+ell>=5: at least ceil(ell/2) chosen-exit endpoints, all merging typed.
+                                                               (1510)
+```
+
+This uses only shortest-cycle coloring and the genuine root/color degree
+caps.  It does not assume that the target-pair shadow graph is itself
+four-cycle-free.
