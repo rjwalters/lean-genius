@@ -329,6 +329,20 @@ strict.  Point 8 is the tight anchor point, while its successful partner 3 is
 a non-anchor tight point.  This restores the genuine global selection
 problem: choose across the whole overlap/tight set, not only the anchors.
 
+Even tight-centered raw averaging is false.  For every tight point in all
+three durable no-strict fixtures, the sum of exact target gaps
+`sum_{q != t} (54-C(t,q))` is negative.  This includes the unique tight point
+9 in seed 5 and all three/four tight points in the other fixtures; the closest
+case is seed 41 point 12 with sum `-82193/1369200`.  Hence a proof cannot fix a
+tight point and average uniformly over its partners.  A more faithful split
+survives the corpus: when there are at least two tight points, some tight-tight
+pair is strict (all three tight pairs in seed 41; `(3,8)` and `(8,22)` in the
+new counterexample); when the tight point is unique (seed 5), it has a strict
+pair with a minimum-excess non-tight point (`(0,9)`).  This is still only a
+three-fixture conjectural decomposition, but it identifies the selection
+data a combinatorial proof would need: tight-set collisions plus an
+excess-minimizer fallback, not an unweighted sum.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
