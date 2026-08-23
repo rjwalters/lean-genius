@@ -696,6 +696,159 @@ theorem owner_neighbor_complementary_shores_card_eq_three
     rw [← hset, Finset.card_union_of_disjoint hinterDisj]
   omega
 
+/-- **Audit equation (24).**  If the low set is the disjoint union of the
+owner, an incidence-one part `P`, and a two-point incidence-zero part `W`,
+then four owner neighbors in the low set, together with the profile bounds
+`p ≤ 3` and `q ≤ 2`, leave only `(p,q)=(2,2)` or `(3,1)`. -/
+theorem owner_lowSet_neighbor_type_card_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner : V) (Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPW : Disjoint P W)
+    (hownerZ : (G.neighborFinset owner ∩ Z).card = 4)
+    (hownerP : (G.neighborFinset owner ∩ P).card ≤ 3)
+    (hownerW : (G.neighborFinset owner ∩ W).card ≤ 2) :
+    ((G.neighborFinset owner ∩ P).card = 2 ∧
+      (G.neighborFinset owner ∩ W).card = 2) ∨
+    ((G.neighborFinset owner ∩ P).card = 3 ∧
+      (G.neighborFinset owner ∩ W).card = 1) := by
+  classical
+  have hset : G.neighborFinset owner ∩ Z =
+      (G.neighborFinset owner ∩ P) ∪
+        (G.neighborFinset owner ∩ W) := by
+    ext z
+    constructor
+    · intro hz
+      have hzN := (Finset.mem_inter.mp hz).1
+      have hzZ := (Finset.mem_inter.mp hz).2
+      rw [hpartition] at hzZ
+      rcases Finset.mem_insert.mp hzZ with hzo | hzPW
+      · subst z
+        exact (G.loopless.irrefl owner
+          ((G.mem_neighborFinset owner owner).mp hzN)).elim
+      · rcases Finset.mem_union.mp hzPW with hzP | hzW
+        · exact Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨hzN, hzP⟩)
+        · exact Finset.mem_union_right _ (Finset.mem_inter.mpr ⟨hzN, hzW⟩)
+    · intro hz
+      rcases Finset.mem_union.mp hz with hzP | hzW
+      · have hp := Finset.mem_inter.mp hzP
+        exact Finset.mem_inter.mpr ⟨hp.1, by
+          rw [hpartition]
+          exact Finset.mem_insert_of_mem (Finset.mem_union_left _ hp.2)⟩
+      · have hw := Finset.mem_inter.mp hzW
+        exact Finset.mem_inter.mpr ⟨hw.1, by
+          rw [hpartition]
+          exact Finset.mem_insert_of_mem (Finset.mem_union_right _ hw.2)⟩
+  have hdisj : Disjoint (G.neighborFinset owner ∩ P)
+      (G.neighborFinset owner ∩ W) :=
+    hPW.mono Finset.inter_subset_right Finset.inter_subset_right
+  have hsum : (G.neighborFinset owner ∩ P).card +
+      (G.neighborFinset owner ∩ W).card = 4 := by
+    rw [← Finset.card_union_of_disjoint hdisj, ← hset, hownerZ]
+  omega
+
+/-- A low set containing its incidence-three owner and capped by one away
+from it is exactly the owner together with its incidence-one and zero parts. -/
+theorem lowSet_eq_insert_incidence_one_union_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (owner : V) (Z : Finset V) (k : V → ℕ)
+    (howner : owner ∈ Z)
+    (hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1) :
+    Z = insert owner ((Z.filter fun z ↦ k z = 1) ∪
+      (Z.filter fun z ↦ k z = 0)) := by
+  classical
+  ext z
+  constructor
+  · intro hz
+    by_cases hzo : z = owner
+    · exact Finset.mem_insert.mpr (Or.inl hzo)
+    · have hle := hcap z hz hzo
+      have hk : k z = 0 ∨ k z = 1 := by omega
+      refine Finset.mem_insert.mpr (Or.inr ?_)
+      rcases hk with hk | hk
+      · exact Finset.mem_union_right _ (Finset.mem_filter.mpr ⟨hz, hk⟩)
+      · exact Finset.mem_union_left _ (Finset.mem_filter.mpr ⟨hz, hk⟩)
+  · intro hz
+    rcases Finset.mem_insert.mp hz with hzo | hz
+    · simpa [hzo] using howner
+    · rcases Finset.mem_union.mp hz with hz | hz
+      · exact (Finset.mem_filter.mp hz).1
+      · exact (Finset.mem_filter.mp hz).1
+
+/-- Profile-facing form of audit (24), with `P=Z∩B₁` and `W=Z∩B₀`. -/
+theorem orderNine_secondProfile_owner_lowSet_neighbor_bin_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (Z : Finset V)
+    (hZsub : Z ⊆ (Finset.univ : Finset V) \ squareOrderHighVertices G 9)
+    (hZcard : Z.card = 18)
+    (hsum : (∑ z ∈ Z, squareOrderHighIncidenceCount G 9 z) = 18)
+    (hownerMem : owner ∈ Z)
+    (hownerZ : (G.neighborFinset owner ∩ Z).card = 4)
+    (hownerB₁ : (G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 1).card = 3) :
+    let P := Z ∩ squareOrderNineLowIncidenceBin G 1
+    let W := Z ∩ squareOrderNineLowIncidenceBin G 0
+    ((G.neighborFinset owner ∩ P).card = 2 ∧
+      (G.neighborFinset owner ∩ W).card = 2) ∨
+    ((G.neighborFinset owner ∩ P).card = 3 ∧
+      (G.neighborFinset owner ∩ W).card = 1) := by
+  classical
+  let k := squareOrderHighIncidenceCount G 9
+  let B₁ := squareOrderNineLowIncidenceBin G 1
+  let B₀ := squareOrderNineLowIncidenceBin G 0
+  let P := Z ∩ B₁
+  let W := Z ∩ B₀
+  have hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1 := by
+    intro z hz hzowner
+    exact orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+      G hp hhigh hc2 hc3 owner z howner (hZsub hz) hzowner
+  have hcounts := orderNine_secondProfile_lowSet_bin_cards_of_owner_mem
+    G hp hhigh hc2 hc3 owner howner Z hZsub hZcard hsum hownerMem
+  have hfilter (i : ℕ) : Z.filter (fun z ↦ k z = i) =
+      Z ∩ squareOrderNineLowIncidenceBin G i := by
+    ext z
+    constructor
+    · intro hz
+      have hpz := Finset.mem_filter.mp hz
+      exact Finset.mem_inter.mpr ⟨hpz.1,
+        Finset.mem_filter.mpr ⟨hZsub hpz.1, hpz.2⟩⟩
+    · intro hz
+      have hpz := Finset.mem_inter.mp hz
+      exact Finset.mem_filter.mpr ⟨hpz.1,
+        (Finset.mem_filter.mp hpz.2).2⟩
+  have hpartition := lowSet_eq_insert_incidence_one_union_zero
+    owner Z k hownerMem hcap
+  rw [hfilter 1, hfilter 0] at hpartition
+  change Z = insert owner (P ∪ W) at hpartition
+  have hPW : Disjoint P W := by
+    rw [Finset.disjoint_left]
+    intro z hzP hzW
+    have hpz := (Finset.mem_filter.mp (Finset.mem_inter.mp hzP).2).2
+    have hwz := (Finset.mem_filter.mp (Finset.mem_inter.mp hzW).2).2
+    omega
+  have hPbound : (G.neighborFinset owner ∩ P).card ≤ 3 := by
+    calc
+      (G.neighborFinset owner ∩ P).card ≤
+          (G.neighborFinset owner ∩ B₁).card := Finset.card_le_card (by
+            intro z hz
+            exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hz).1,
+              (Finset.mem_inter.mp (Finset.mem_inter.mp hz).2).2⟩)
+      _ = 3 := hownerB₁
+  have hWbound : (G.neighborFinset owner ∩ W).card ≤ 2 := by
+    calc
+      (G.neighborFinset owner ∩ W).card ≤ W.card :=
+        Finset.card_le_card Finset.inter_subset_right
+      _ = 2 := hcounts.2
+  exact owner_lowSet_neighbor_type_card_dichotomy G owner Z P W
+    hpartition hPW hownerZ hPbound hWbound
+
 end
 
 end Erdos85
