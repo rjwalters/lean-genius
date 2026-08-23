@@ -18792,3 +18792,68 @@ canonical target-run boundary component, and in the strict case it also
 selects the root-only mate `u_q` through (1216).  Unequal layer tags remain
 split between different blue pairs; the statement deliberately makes no
 claim that those pairs lie in a common alternating component.
+
+## 357. A private inactive companion restarts rooted propagation
+
+The `B` branch of (1213) cannot absorb the inactive companion without
+affecting its rooted ticket.  Let
+
+```text
+y -- z -- q,o,       z in k core-inactive,       o in B,          (1219)
+```
+
+and let `o^sib` and `p(o)` be the sibling and owner of `o`.  The vertex
+`o` has cross degree two into component `k`, one incidence already being
+the inactive label `z`.  Therefore among the three rooted labels of
+`tau(o)`, at most one has color `k`:
+
+```text
+#{ell in tau(o):color(ell)=k}<=1.                  (1220)
+```
+
+In particular at least two rooted ticket labels have a color different
+from `k`.  Choose one such label `ell`, and write its active target-factor
+edge as
+
+```text
+{o,o'} indexed by ell.                             (1221)
+```
+
+The new endpoint cannot return to the preceding selected port:
+
+```text
+o'!=q.                                             (1222)
+```
+
+Otherwise `o,q` would have the two distinct common neighbors `z,ell`,
+giving a four-cycle.  Nor can it hit the sibling `o^sib`, because
+`o,o^sib` already share the owner `p(o)` and `ell` would be a second common
+neighbor.  Thus
+
+```text
+o' notin {q,o^sib}.                                (1223)
+```
+
+The outgoing label changes color away from the inactive arrival layer
+`k`.  If `o'` is selected, its rooted cell is a strict export; if it is
+residual, propagation reaches `O`; and if it is private, it enters another
+ticket without reversing to `q` or pairing the current siblings.  The
+owner `p(o)` itself remains possible when it differs from `q`, in which
+case (1221) is the sharply located strict-absorption alternative at that
+owner.  When `q=p(o)`, (1222) excludes even that alternative and the new
+edge must leave the whole owner fiber.
+
+Consequently a fifth-cell companion landing in `B` is not a terminal
+inactive decoration.  It supplies the exact restart
+
+```text
+inactive k-arrival at o
+  -> a rooted label of color different from k
+  -> O, a strict selected cell, or another B ticket,              (1224)
+```
+
+with both immediate payer reversal and sibling closure forbidden.  This
+extends the cross-color propagation mechanism beyond the thirty active
+arrival states of Section 346: inactive payer companions either terminate
+in `O`, or re-enter the same strict/escape geometry through an actual
+rooted ticket label.
