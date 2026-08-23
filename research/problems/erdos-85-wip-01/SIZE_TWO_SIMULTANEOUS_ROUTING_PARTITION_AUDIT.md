@@ -4284,3 +4284,56 @@ controls the crossed entries `A_e(q_-,p_+)` and `A_e(q_+,p_-)` would turn
 (255) into an owner-boundary equation.  This is strictly beyond diagonal
 root reweighting and gives a concrete local target for the port-side
 enrichment.
+
+## 78. Equality types reduce the outward residue to finite patterns
+
+The four entries in (254) have only three equality types.  First,
+
+```text
+a_- = a_+
+  iff q_- = p_+
+  iff q_+ = p_-.                                      (256)
+```
+
+For example, if the roots coincide, their two-element `e`-fiber is
+`{p_-,p_+}`, giving both port equalities.  Conversely, `q_-=p_+` makes
+`a_-` a `c`-neighbor of `p_+`.  It cannot be the run root `x_+` by the
+duplicate-shared-port exclusion in Section 74, so it is the other root
+`a_+`; the other implication is symmetric.  In this coincident-root case,
+substitution in (254) gives
+
+```text
+epsilon_e = 0.                                        (257)
+```
+
+Suppose next that `a_- != a_+` but `q_-=q_+=q`.  All equalities between a
+`q`-port and the opposite private port have already been excluded by (256),
+and (254) collapses to
+
+```text
+epsilon_e = 2(A_e(q,p_-)-A_e(q,p_+)) in {-2,0,2}.     (258)
+```
+
+Finally suppose `q_- != q_+` as well.  Then the four ports
+`p_-,p_+,q_-,q_+` are distinct.  The four bits in (254) cannot all equal
+one, since they would form the `A_e` four-cycle
+
+```text
+q_- -- p_- -- q_+ -- p_+ -- q_-.
+```
+
+Thus this last branch has at most fifteen raw four-bit patterns, with
+
+```text
+epsilon_e in {-2,-1,0,1,2},
+epsilon_e == number of the four displayed A_e edges  (mod 2).   (259)
+```
+
+Equations (257)--(259) are a finite normal form, not yet a parity kill.  They
+show exactly where an odd residue can occur: only in the four-distinct-port
+branch, and only when the induced four-edge interface has odd size.  By
+(255), any odd outward third-color imbalance therefore certifies that same
+odd interface.  The remaining local question is now whether the rooted
+budgets and transpose routing force this interface size even; neither the
+coincident-root nor shared-outward-port branch can carry the desired odd
+obstruction.
