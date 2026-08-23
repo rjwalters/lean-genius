@@ -712,6 +712,13 @@ def main() -> None:
                 if certificate is None:
                     continue
                 pair = tuple(sorted((hole, other)))
+                block_intersection = sorted(
+                    system["blocks"][hole] & system["blocks"][other]
+                )
+                external_point_prices = [
+                    (cap, value) for cap, value in certificate["point_prices"]
+                    if cap[0] not in (hole, other)
+                ]
                 certificates.append({
                     "hole": hole,
                     "other": other,
@@ -720,13 +727,18 @@ def main() -> None:
                         else "exceptional" if other < N_TRIPLE
                         else "pair"
                     ),
-                    "block_intersection": sorted(
-                        system["blocks"][hole] & system["blocks"][other]
-                    ),
+                    "block_intersection": block_intersection,
                     "mutually_eligible_pair": pair in edge_set,
                     "margin": certificate["margin"],
                     "row_prices": certificate["row_prices"],
                     "point_price_count": len(certificate["point_prices"]),
+                    "external_point_prices": external_point_prices,
+                    "shared_point_collision_normal_form": (
+                        bool(block_intersection)
+                        and bool(external_point_prices)
+                        and all(cap[1] in block_intersection
+                                for cap, _ in external_point_prices)
+                    ),
                 })
         regular_certificates = [
             certificate for certificate in certificates
@@ -738,6 +750,10 @@ def main() -> None:
             "exists_exceptional_regular": bool(regular_certificates),
             "exists_intersecting_exceptional_regular": any(
                 certificate["block_intersection"]
+                for certificate in regular_certificates
+            ),
+            "exists_regular_shared_point_collision_normal_form": any(
+                certificate["shared_point_collision_normal_form"]
                 for certificate in regular_certificates
             ),
             "certificates": certificates,

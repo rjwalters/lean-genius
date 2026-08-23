@@ -4508,6 +4508,26 @@ nine-model pattern is still empirical, but it replaces the diffuse
 “some two rows” statement by the exact `4 x 22` family whose outer-incidence
 selection must be proved.
 
+The price vectors themselves have a stable collision normal form.  For every
+winning intersecting exceptional/regular pair returned in all nine models,
+every point price outside the two supported rows is placed at their unique
+shared U1 point.  In the sparse witness, `{22,19}` has unit row prices, four
+unit prices on row 19, five on row 22, and one external unit price at the
+shared point 10: total cost 10 against weighted degree 11.  The external
+shared-point price covers reciprocal constraints from both supported rows
+and realizes the strict saving.  The second sparse pair `{23,21}` has the
+same form at shared point 7 with denominator two.  The scanner field
+`exists_regular_shared_point_collision_normal_form` now verifies this
+normal form mechanically.
+
+The kernel consumer also matches the exact dual rather than forcing equal
+row weights.  `false_of_twoRowSupportPointPriceCertificate` accepts two named
+rows with independent rational weights and delegates the resulting sparse
+row-price function to the global symmetric-relation theorem.  It is Lean
+green with standard axioms only.  Thus (13aq) may be proved by constructing
+the observed shared-point collision prices directly; no denominator or
+equal-weight normalization is part of the remaining gap.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
