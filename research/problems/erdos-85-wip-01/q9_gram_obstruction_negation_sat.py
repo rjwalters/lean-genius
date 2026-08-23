@@ -326,6 +326,19 @@ def main() -> int:
                                 not blocks[x] & blocks[y]
                                 for x, y in combinations(choice, 2))
                                 for choice in combinations(allowed, size))), -1)
+                        if interval_profiles[u]["capacity"] >= 0:
+                            forced_labels = set().union(
+                                *(blocks[w] for w in required)) if required else set()
+                            residual = [w for w in allowed if w not in required
+                                        and not blocks[w] & forced_labels]
+                            point_cover = next(
+                                labels for size in range(N_U1 + 1)
+                                for labels in combinations(range(N_U1), size)
+                                if all(set(labels) & blocks[w] for w in residual)
+                            )
+                            interval_profiles[u]["residual_candidates"] = residual
+                            interval_profiles[u]["residual_point_cover"] = list(point_cover)
+                            interval_profiles[u]["residual_point_cover_size"] = len(point_cover)
                     new_rows = [u for u in bad_rows
                                 if u not in counts["added_one_row_clauses"]]
                     horns = bad_rows + collisions
