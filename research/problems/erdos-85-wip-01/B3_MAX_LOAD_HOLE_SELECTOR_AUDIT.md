@@ -503,6 +503,19 @@ supports are not uniformly hole-based—the hard no-strict fixtures include
 ordinary-only supports—so the second horn must classify small global row
 supports rather than merely select an exceptional row.
 
+`q9_branch3_certificate_disjunction_audit.py` now evaluates both horns on the
+same payload and flags only a globally infeasible payload for which both are
+absent.  On all ten stored branch-3 JSON payloads, the maximum-load
+exceptional-hole full-fiber horn already succeeds with denominator at most
+six.  The two sparse-selector counterexamples `q9_13f_counterexample.json`
+and `q9_13t_counterexample.json` are full-fiber-only; the other eight payloads
+have both a full-fiber witness and an exceptional-plus-two-regular partial
+obstruction.  Thus no stored fixture uniquely needs the sparse horn.  The
+maximum-load full-fiber selector remains the empirically primary theorem
+target, while the sparse facet theorem is a valid fallback/alternative under
+the disjunctive interface.  This priority may change only when a durable
+payload with no bounded-denominator full-fiber witness is found.
+
 The row-type pattern sharpens this to a finite geometric selector.  The new
 `--scan-exceptional-three-row-supports` exhausts all supports consisting of
 one of the two exceptional rows plus two of the 24 regular triple rows, with
