@@ -121,6 +121,92 @@ def HasReverseIntervalRankDeficitAt
   ∀ X : Finset V, IsLocalGramPrepacking H W u X →
     F ⊆ X → Disjoint X I → X.card < d u
 
+omit [Fintype V] in
+/-- **Fractional point-cover counting engine.**  If the point sets attached
+to selected rows are pairwise disjoint and each receives weight at least one,
+then the number of selected rows is bounded by the total nonnegative point
+weight. -/
+theorem card_le_totalWeight_of_pairwiseDisjointPointCover
+    {P : Type*} [Fintype P] [DecidableEq P]
+    (B : V → Finset P) (weight : P → ℚ) (S : Finset V)
+    (hnonneg : ∀ p, 0 ≤ weight p)
+    (hdisjoint : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → Disjoint (B x) (B y))
+    (hcover : ∀ x ∈ S, 1 ≤ ∑ p ∈ B x, weight p) :
+    (S.card : ℚ) ≤ ∑ p : P, weight p := by
+  classical
+  have hpairwise : (S : Set V).Pairwise fun x y => Disjoint (B x) (B y) := by
+    intro x hx y hy hxy
+    exact hdisjoint x hx y hy hxy
+  calc
+    (S.card : ℚ) = ∑ _x ∈ S, (1 : ℚ) := by simp
+    _ ≤ ∑ x ∈ S, ∑ p ∈ B x, weight p := by
+      exact Finset.sum_le_sum fun x hx => hcover x hx
+    _ = ∑ p ∈ S.biUnion B, weight p := by
+      symm
+      exact Finset.sum_biUnion hpairwise
+    _ ≤ ∑ p : P, weight p := by
+      apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
+      intro p _ _
+      exact hnonneg p
+
+/-- A fractional point cover of the contracted residual candidates supplies
+the strict reverse-interval rank certificate.  Shared points must imply a
+`W`-conflict, so a prepacking uses pairwise disjoint point sets. -/
+theorem reverseIntervalRankDeficit_of_fractionalPointCover
+    {P : Type*} [Fintype P] [DecidableEq P] [DecidableEq V]
+    (H W : V → V → Prop) (d : V → ℕ) (u : V)
+    (B : V → Finset P) (weight : P → ℚ)
+    (hnonneg : ∀ p, 0 ≤ weight p)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hcover : ∀ x, H u x →
+      x ∉ reverseForcedLocalGramNeighborFinset H W d u →
+      x ∉ reverseImpossibleLocalGramNeighborFinset H W d u →
+      (∀ f ∈ reverseForcedLocalGramNeighborFinset H W d u,
+        f ≠ x → ¬ W f x) →
+      1 ≤ ∑ p ∈ B x, weight p)
+    (htotal :
+      (reverseForcedLocalGramNeighborFinset H W d u).card +
+        (∑ p : P, weight p) < d u) :
+    HasReverseIntervalRankDeficitAt H W d u := by
+  classical
+  let F := reverseForcedLocalGramNeighborFinset H W d u
+  let I := reverseImpossibleLocalGramNeighborFinset H W d u
+  intro X hpre hFsub hdisjI
+  let S := X \ F
+  have hSX : S ⊆ X := Finset.sdiff_subset
+  have hblockDisjoint : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → Disjoint (B x) (B y) := by
+    intro x hx y hy hxy
+    by_contra hblocks
+    exact (hpre.2 x (hSX hx) y (hSX hy) hxy) (hshared x y hxy hblocks)
+  have hcovered : ∀ x ∈ S, 1 ≤ ∑ p ∈ B x, weight p := by
+    intro x hx
+    have hxX : x ∈ X := hSX hx
+    have hxF : x ∉ F := (Finset.mem_sdiff.mp hx).2
+    have hxI : x ∉ I := by
+      intro hxI
+      exact (Finset.disjoint_left.mp hdisjI) hxX hxI
+    apply hcover x (hpre.1 x hxX) hxF hxI
+    intro f hfF hfx
+    exact hpre.2 f (hFsub hfF) x hxX hfx
+  have hweightBound : (S.card : ℚ) ≤ ∑ p : P, weight p :=
+    card_le_totalWeight_of_pairwiseDisjointPointCover
+      B weight S hnonneg hblockDisjoint hcovered
+  have hunion : F ∪ S = X := Finset.union_sdiff_of_subset hFsub
+  have hdisjFS : Disjoint F S := by
+    apply Finset.disjoint_left.mpr
+    intro x hxF hxS
+    exact (Finset.mem_sdiff.mp hxS).2 hxF
+  have hcard : X.card = F.card + S.card := by
+    rw [← hunion, Finset.card_union_of_disjoint hdisjFS]
+  have hrat : (X.card : ℚ) < d u := by
+    rw [hcard, Nat.cast_add]
+    calc
+      (F.card : ℚ) + S.card ≤
+          (F.card : ℚ) + ∑ p : P, weight p :=
+        add_le_add_right hweightBound (F.card : ℚ)
+      _ < d u := htotal
+  exact Nat.cast_lt.mp hrat
+
 /-- A finite set of reverse-impossible candidates hits every demanded
 packing at one row.  Singleton hitting sets are the old reciprocity horn;
 the q=9 durable survivor first exposes a hitting set of size two. -/
@@ -831,6 +917,8 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms exists_reverseIntervalLocalGramPacking_iff_contractedExtension
 #print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExtension
 #print axioms no_contractedExtension_of_reverseIntervalRankDeficit
+#print axioms card_le_totalWeight_of_pairwiseDisjointPointCover
+#print axioms reverseIntervalRankDeficit_of_fractionalPointCover
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
