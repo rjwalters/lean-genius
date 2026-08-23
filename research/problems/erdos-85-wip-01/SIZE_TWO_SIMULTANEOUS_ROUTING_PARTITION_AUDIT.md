@@ -5668,3 +5668,69 @@ resolution avoids the `P_ce=J` collapse of Section 105, but privacy can only
 come from a nonseparable transition feature.  Conservation must therefore
 be proved directly for the global sum of those two-local features; it cannot
 be inherited from telescoping a port potential.
+
+## 107. Two-local information is a defect between the two dart matchings
+
+The dart set `D_ce` of Section 98 has two canonical perfect matchings: the
+root matching `R` and the port matching `P`.  Let `L` be any set of fully
+labeled dart states (including color, intermediate port, and switch role),
+and let `lambda:D_ce -> L` be the state decoration from Section 99.  For a
+function `Gamma` on unordered pairs of labels define the pairing defect
+
+```text
+D_Gamma
+  := sum_({a,b} in R) Gamma(lambda(a),lambda(b))
+     - sum_({a,b} in P) Gamma(lambda(a),lambda(b)).     (317)
+```
+
+Every one-local feature is invisible to this defect.  If
+
+```text
+Gamma(s,t)=psi(s)+psi(t),
+```
+
+then both perfect matchings use every dart exactly once, so `D_Gamma=0`.
+This is the matching-level form of the telescoping in Sections 101 and 106.
+Conversely, after quotienting pair features by these one-local potentials,
+`D_Gamma` is the universal genuinely two-local statistic of the two
+pairings: it records how the same labeled darts are coupled at roots versus
+at ports, not merely their common marginal census.
+
+For scalar dart observables `f,g`, the polarized pair feature
+
+```text
+Gamma_(f,g)(s,t)=f(s)g(t)+f(t)g(s)
+```
+
+has defect
+
+```text
+D_(f,g)
+  = sum_({a,b} in R) (f_a g_b+f_b g_a)
+    - sum_({a,b} in P) (f_a g_b+f_b g_a).              (318)
+```
+
+Thus the first viable SRP tagged bundle is necessarily a family of
+root-versus-port **correlation identities** (318).  Taking `f,g` to be
+indicators of fully labeled transition states makes the resulting pair
+coordinates as fine as possible and supplies the candidate private rows.
+What is not automatic is their conservation: an arbitrary pair feature has
+nonzero (317), exactly as the abstract two-factor counterprofile of Section
+84 permits.
+
+This identifies the remaining SRP obligation without an unspecified
+feature map:
+
+```text
+find an SRP-controlled subspace W of labeled dart observables such that
+  D_(f,g)=0 for the required f,g in W,                       (319)
+and the surviving pair-correlation columns separate reversal classes.
+```
+
+The root-marked primitives (91) are natural candidates for `W`, but Section
+103 shows that one primitive at one target has insufficient rank.  Their
+cross-color and target-incidence compatibility must prove the bilinear
+root/port correlation equality (319).  In B3 language, (317) is exactly the
+new information created by cross-tagging a target bundle with its source
+signature: the two endpoint marginals balance, while the source--consumed-
+fiber correlation need not.
