@@ -12411,3 +12411,62 @@ in (747) to the complementary H/V/S transition chains and `01` union flags
 of those earlier sections, then prove that the resulting price is zero.
 Any failure is localized to a mixed path and cannot be attributed to an
 unmatched internal active label.
+
+## 245. Run fillers prevent a path-local strip-to-state map
+
+The chains in (747) retain their physical edges but not all of the owner
+labels indexing those edges.  This matters before any comparison with the
+H/V/S alphabet.  An internal edge of a blue run in `D_P` is an edge of
+`F_a[e]`, hence is indexed by a unique label `z in a` with
+
+```text
+|N_e(z) intersect Z|=2,       so t_z=0.              (748)
+```
+
+Its other cut bit is not determined by being a blue filler.  Since the
+`a--c` cross fiber has order two,
+
+```text
+|N_c(z) intersect C| in {0,1,2},
+r_z=1 iff |N_c(z) intersect C|=1.                    (749)
+```
+
+In the middle case `z` is itself a root-only boundary vertex of
+`P_a(C,Z)`, hence the `10` endpoint of an alternating path component.  That
+component may be the current component (if the endpoint label reappears as
+one of its own run fillers) or a different one.  The unlabelled chain `D_P`
+does not record which.  Thus even after (746), distinct mixed strips remain
+coupled through equality between a run-filler label and a boundary label.
+
+The even cases expose a second obstruction to a local alphabet map.  If the
+cardinality in (749) is zero, the owner label `z` has no `V_a` occurrence on
+the selected root cycle at all.  If it is two, it has two selected roots,
+but the number and placement of rooted `V_a` triangles additionally depend
+on which of those roots are incident to the two selected ports.  The bare
+edge of `D_P` records neither alignment.  Hence a blue strip edge does not
+canonically determine one H/V/S transition or one private half-atom.
+
+There is a symmetric statement for a red-run filler.  An internal edge of
+`R_P` is indexed by a label `z in a` satisfying
+
+```text
+|N_c(z) intersect C|=2,       so r_z=0,
+|N_e(z) intersect Z| in {0,1,2}.                     (750)
+```
+
+The middle case is a port-only `01` endpoint of an alternating component;
+the even cases again have zero/two target-port incidences.  Therefore the
+two interiors in (747) generate a **global component-coupling graph**:
+odd opposite-side incidence sends a filler to an endpoint of some
+alternating component, while even incidence remains a zero-or-double local
+cell whose rooted alignment must be retained separately.
+
+This proves that the missing bridge after (747) cannot be a pathwise map
+depending only on the three unlabelled chains displayed there.  A valid
+owner/role-resolved lift must at least retain, for every run edge, its
+indexing label, its opposite cut multiplicity `0/1/2`, and in the double
+case the actual root--port incidence alignment.  After adjoining those
+data, the odd fillers may be transported between path components and the
+zero/double fillers may be compared with the H/V/S source cells.  Without
+that lift, applying the Baer-state transports (704)/(707), or the B3
+half-atom antisymmetry (12rzm), would conflate distinct alphabets.
