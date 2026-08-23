@@ -25845,3 +25845,50 @@ secondary repeated root pair.  In exchange it improves the uniform family
 size from the hornwise constants to `ceil(t/25)` and records exactly the
 information needed by arguments insensitive to which of the two local
 profiles occurs.
+
+## 491. Color-rainbow stars retain the companion collision dichotomy
+
+Apply Section 481 not to the original `t` stars, but to the `m`-star
+subfamily selected in Section 490.  This restriction still consists of
+fully separated fixed-primary-root gadgets, so every hypothesis used in
+the five-fan companion count remains valid.  Independently of its companion
+behavior, the subfamily has
+
+```text
+m>=ceil(t/25),
+at least 3m globally distinct displayed source colors,
+m distinct payer layers at each fixed port.                     (1737)
+```
+
+The Section 481 dichotomy now gives one of the two simultaneous horns:
+
+```text
+(endpoint horn) at least 2m distinct companion vertices,
+                at least max(2m-10,0) of them in O; or
+(collision horn) at least m triple-port reuse companions,
+                 at least max(m-10,0) of them in O.              (1738)
+```
+
+In the collision horn, Section 482 applies without any further thinning of
+the star family.  Choosing one of the ten port triples at each reuse
+companion produces a fixed triple and a subdivided complete bipartite
+kernel of width
+
+```text
+K>=ceil(m/10)>=ceil(ceil(t/25)/10).               (1739)
+```
+
+If all companion vertices are required to lie in `O`, its width is instead
+at least `ceil(max(m-10,0)/10)`.  Every arm family retains the source-color
+and payer-layer lower bounds of (1714), while the ambient star family still
+has the global color separation in (1737).  Thus the combined terminal is
+
+```text
+linear global source-color separation together with either
+linear literal endpoint expansion or a fixed-three-port theta kernel.   (1740)
+```
+
+This coupling is stronger than invoking the color and companion terminals
+on unrelated subfamilies: the same named stars witness both structures, so
+a future contradiction may charge an endpoint collision directly to the
+globally separated source colors of its originating gadgets.
