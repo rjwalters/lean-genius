@@ -12693,3 +12693,59 @@ congruent to one modulo four, while its half-difference from the strict
 overlap count prices the proper filler attachments plus the closed-cycle
 residues through (766).  Any proposed H/V/S cancellation that uses only the
 visible alphabet on the selected darts misses the whole curvature in (767).
+
+## 249. Off-incidence curvature bounds the internal edge budget
+
+The exact identity (760) and the vanishing (765) also give a nonnegative
+integer constraint, not only a congruence.  Every one of the `ell` distinct
+ports in `Z` indexes one distinct horizontal edge of the root projection on
+`C`.  All of those edges belong to `A_c[C]`, so
+
+```text
+e_c(C) >= ell.                                        (768)
+```
+
+Additional `A_c` edges with both endpoints in `C` are not excluded; (768)
+is deliberately an inequality rather than the false assertion that the
+displayed cycle is induced in `A_c`.
+
+By (756) and (765), `M_a(C,Z)=O_a(C,Z)` for every exterior color.  Therefore
+(760) becomes the exact identity
+
+```text
+O_tot:=sum_(a != c,e) O_a(C,Z)
+ =ell^2-4(e_c(C)+e_e(Z)).                             (769)
+```
+
+The left side is a cardinality and is nonnegative.  Hence
+
+```text
+e_c(C)+e_e(Z) <= floor(ell^2/4),
+e_e(Z) <= floor(ell(ell-4)/4).                        (770)
+```
+
+Thus the selected horizontal root cycle consumes enough of the integer SRP
+mass to bound every internal `A_e` edge on the paired port set.  This is a
+uniform consequence of the closed curl; it uses no finite certificate and
+does not assume either selected set is induced.
+
+For the minimal surviving curl `ell=5`, (768)--(770) leave only
+
+```text
+(e_c(C),e_e(Z),O_tot)
+  in {(5,0,5),(5,1,1),(6,0,1)}.                     (771)
+```
+
+Indeed `5 <= e_c(C)`, `0 <= e_e(Z)`, and their sum is at most six; (769)
+then gives `O_tot=25-4(e_c+e_e)`.  In particular the five-port core of
+Section 238 has at most one internal port-side edge and at most one extra
+root-side edge beyond its horizontal cycle, never both.  The local core
+check (727) did not include these regularity-completion edges, so (771) is a
+strict global refinement of that counterprofile.
+
+Equation (771) is not a five-port exclusion.  Its remaining cases have one
+or five off-incidence atoms, and the identity does not yet locate their
+intermediate colors or owner prices.  It reduces the minimal curl terminal
+to three exact edge budgets on which the global labeled-atom handshake must
+act; any proposed completion with a larger internal edge count is already
+ruled out by integer SRP.
