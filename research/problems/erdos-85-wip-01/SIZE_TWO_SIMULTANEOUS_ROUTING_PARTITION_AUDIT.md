@@ -18857,3 +18857,55 @@ extends the cross-color propagation mechanism beyond the thirty active
 arrival states of Section 346: inactive payer companions either terminate
 in `O`, or re-enter the same strict/escape geometry through an actual
 rooted ticket label.
+
+## 358. A shared inactive companion consumes its arrival colors
+
+Section 355 deliberately allowed the two inactive payers forced by the
+four-state cycle to have the same outside endpoint.  That collision has an
+exact cross-degree price.  Retain the labels at the two distinct selected
+ports from (1205), and write
+
+```text
+N_e(z_4)={p_4,o_4},       z_4 in k_4,
+N_e(z_2)={p_2,o_2},       z_2 in k_2.               (1225)
+```
+
+The labels `z_4,z_2` are distinct by Section 353.  Suppose their outside
+companions coincide:
+
+```text
+o_4=o_2=:o.                                       (1226)
+```
+
+If the arrival layers also coincide, `k_4=k_2=:k`, then the two distinct
+labels already exhaust the two `k`-neighbors of `o`.  Since both labels are
+core-inactive, neither belongs to the rooted word at `o`, and no rooted
+label of color `k` remains:
+
+```text
+#{ell in RootWord(o):color(ell)=k}=0.               (1227)
+```
+
+Here `RootWord(o)` means the three-letter ticket `tau(o)` when `o in B`
+and the five rooted labels from (847) when `o in O`.  These are the only
+two possibilities because `o` lies outside `Z`.
+
+If instead `k_4!=k_2`, each inactive incidence consumes one of the two
+slots in its own arrival layer.  Therefore
+
+```text
+#{ell in RootWord(o):color(ell)=k_4}<=1,
+#{ell in RootWord(o):color(ell)=k_2}<=1.             (1228)
+```
+
+Thus coincidence of the outside companions never merges the two charges
+for free.  Equal arrival colors delete that color entirely from the rooted
+word; unequal colors impose two simultaneous multiplicity-one caps.  In
+the private branch, (1227) strengthens the restart of Section 357 from
+"at least two" to all three outgoing rooted labels changing away from
+`k`.  In the residual branch it removes `k` from all five rooted cells.
+
+If `o_4!=o_2`, the two located companion cells remain separate and no
+cross-degree coupling between their rooted words is asserted.  Hence
+(1226)--(1228) exactly price the only endpoint collision left open in
+(1214), without assuming that the two fifth-cell layer tags agree.
