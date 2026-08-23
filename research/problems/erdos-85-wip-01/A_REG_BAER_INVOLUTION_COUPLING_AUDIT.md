@@ -3365,6 +3365,32 @@ the pole into the rest of the minimum support.  A leaf endpoint carries an
 odd K-residual and an ordinary endpoint an even one.  This is precisely the
 source-times-secondary-fiber form required by the joint pricing ledger.
 
+In the minimum branch, the line correction is an exact one-unit dichotomy.
+Let `sigma_i` be the parity of the ordinary `iota_(E_i)` transpositions with
+exactly one endpoint in X.  Since the line meets X in the unique point p_i,
+
+```text
+sigma_i = 0  if p_i is a full leaf,
+sigma_i = 1  if p_i is ordinary.                         (73rnz_bu)
+```
+
+In the second case the sole split pair is the Baer pair containing p_i; in
+the first case every ordinary pair lies wholly outside X.  Combining
+(73rnz_bu) with the endpoint detector (73rnz_br) gives
+
+```text
+deg_K(E_i,X) + sigma_i = 1                       (mod 2). (73rnz_bv)
+```
+
+Thus each pole supplies one binary demand, carried in exactly one of two
+channels: an odd K-fiber when the endpoint is a leaf, or one private split
+Baer pair when it is ordinary.  The split-pair channel is a literal private
+unit; the K-channel is presently controlled only in parity.  The two-pole
+minimum block is therefore a binary transfer cell, not merely an unstructured
+profile.  Closing the branch requires resolving the odd K-fiber into priced
+units and showing that the downstream relay ledger cannot pay both pole
+demands simultaneously.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
