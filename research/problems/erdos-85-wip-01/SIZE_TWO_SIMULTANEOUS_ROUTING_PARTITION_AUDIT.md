@@ -9032,3 +9032,45 @@ saturated two-port actual owner, while (540) records whether the secondary
 constant channel uses its target port, a full root block, or both.  Any
 capacity collision is visible in this joint row rather than hidden in an
 arbitrary run word.
+
+## 173. Only the parity of positive silent gaps remains invisible
+
+Fix a nonempty `u`-word and list its occupied H ports cyclically after the
+formal endpoint closure.  Let `g_1,...,g_s` be the numbers of zero states
+strictly between consecutive occupied positions, where
+
+```text
+s=S_u<=5,
+ell(A)=S_u+sum_(a=1)^s g_a.                           (541)
+```
+
+A gap has `g_a=0` exactly when its two occupied endpoints contribute one
+term to `J_u`.  Hence (537) records
+
+```text
+nu_u=S_u+#{a:g_a=0} mod 2.                            (542)
+```
+
+But the marked run grading is
+
+```text
+ell(A) mod 2
+ =S_u+sum_a (g_a mod 2).                              (543)
+```
+
+Thus the local state `(pi_u,nu_u,zeta_u)` and every additive endpoint price
+see which gaps vanish, but not the parity of the **positive** gaps.  There
+are at most five such gaps for each `u`, yet their lengths can be arbitrary.
+
+Every port in a positive `u`-gap has `b_i=0`; by Section 160 its H wedge
+contains no target-active incidence of `u`.  Therefore the discrepancy
+between (542) and (543) is exactly a silent-transport parity, not another
+connection or pairing gauge.
+
+This identifies the last required owner coupling precisely.  A terminal
+must show that, after summing the active labels and the actual-owner rows
+(540)/(510), the positive silent-gap parities cancel or are detected by a
+boundary owner occurrence.  Without such a statement, an odd amount of H
+length can remain hidden inside zero gaps while every three-bit secondary
+state is unchanged.  The interval and constant-channel enumerations have
+exhausted all other degrees of freedom.
