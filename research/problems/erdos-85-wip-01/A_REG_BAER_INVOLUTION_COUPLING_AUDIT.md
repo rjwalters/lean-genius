@@ -4776,33 +4776,39 @@ does not mean a constant indexed only by the coarse endpoint geometry.  Let
 `Sigma` be the finite alphabet obtained from (73rnz_cjibkt) after setting the
 owner flag to zero, but retaining the oriented `b`-endpoint bit, witness
 fiber, `00/11` T-word, endpoint subtype, and triangle-versus-broken-T channel.
-Let `C` be the set of connected realizability fibers for the four-switch
-relations on unordered pairs from `Sigma`.  Applying (73rnz_cjibe) on each
-fiber gives
+Let `E_Sigma` be its realizable unordered pair states and let `S` be the
+subspace of `F_2^(E_Sigma)` spanned by the realized four-switch differences
+from (73rnz_cjibd).  Write `partial:F_2^(E_Sigma) -> F_2^Sigma` for endpoint
+incidence.  A switch-invariant pair weight is an element of `S^perp`.
+Choose a basis `h_1,...,h_d` for a complement of the endpoint-potential
+space `im(partial^*)` inside `S^perp`.  Every switch-invariant weight then has
+the exact form
 
 ```text
-w(a,b)=phi(a)+phi(b)+c_kappa(a,b),                      (73rnz_cjibkzm)
+w=partial^* phi + sum_(j=1)^d c_j h_j.                 (73rnz_cjibkzm)
 ```
 
-where `kappa(a,b) in C`.  A single global constant is justified only when
-the realizable switch graph is connected; no such collapse is used here.
-For the owner-free terminal edges `e` of `delta_(W_P)(R)`, write `m_alpha`
-for the parity with which the private endpoint state `alpha in Sigma`
-occurs, and `n_C` for the parity of terminal pairs in the fiber `C`.  Their
-entire additive contribution is therefore exactly
+For the owner-free terminal edge census `z in F_2^(E_Sigma)` of
+`delta_(W_P)(R)`, put `m=partial z` and `n_j=<h_j,z>`.  Its entire
+switch-invariant contribution is therefore exactly
 
 ```text
 Omega_free = sum_(alpha in Sigma) m_alpha phi(alpha)
-           + sum_(C in C) n_C c_C.                     (73rnz_cjibkzn)
+           + sum_(j=1)^d n_j c_j.                      (73rnz_cjibkzn)
 ```
 
 This is the aggregate fixed-margin endpoint, with no pairing variables left.
 The first vector `m` is an occurrence census and the second vector `n` is a
-private pair-fiber census.  Forgetting witness, activity, endpoint subtype,
+private switch-quotient census.  The complete-graph conclusion
+(73rnz_cjibe) is the special case in which this quotient has only its one
+constant class.  Connectedness of the allowed-pair graph alone is not
+enough: an allowed six-cycle with no realized four-switches retains an
+unconstrained cycle class among the `h_j`.  Thus (73rnz_cjibkzm) makes no
+unproved cycle-generation assumption.  Forgetting witness, activity, endpoint subtype,
 or broken-T channel maps (73rnz_cjibkzn) to a coarser quotient, but equality
 in that quotient does not determine `Omega_free`: a simultaneous toggle in
 the kernel may preserve all coarse decoration marginals while changing one
-`n_C`.  Consequently a decoration-only constant (for example one constant
+`n_j`.  Consequently a decoration-only constant (for example one constant
 for each coarse H/V/S type) is not a valid Baer terminal unless an additional
 injectivity theorem for this quotient is proved.  The remaining endpoint
 statement is now precise: express the source-corrected residual unit `Delta`
