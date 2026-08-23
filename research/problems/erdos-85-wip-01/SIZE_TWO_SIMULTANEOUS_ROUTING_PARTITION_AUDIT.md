@@ -8458,3 +8458,47 @@ suffices to show that the two silent boundary wedges of an odd H-run cannot
 choose compatible templates (507) while the internal four-incidence cells
 close as in (501).  That is a finite connector-propagation problem rather
 than an unrestricted secondary-census problem.
+
+## 159. Every silent routed endpoint is active or spends a second target port
+
+Let the V dart at a boundary have actual route label `ell=(d,y)` and port
+`z in V_j`.  The `d--e` fiber of `y` has order two and already contains
+`z`.  Therefore
+
+```text
+t_y=1 iff the other e-neighbor of y lies outside V_j,
+t_y=0 iff both e-neighbors of y lie in V_j.            (508)
+```
+
+In the first case Section 158 shows that `y` is the unique active connector
+on its routed root--port pair.  In the second case the route label is absent
+from the active signature, but it spends its entire two-port fiber inside
+the target component.
+
+Now suppose the two ends of one H-run have the same actual route label `y`.
+They are distinct route occurrences and use distinct ports: the partial-
+matching property of `F_(d,y)` forbids reuse of a port, and Section 120 also
+forbids `y` from routing both darts of one port.  Both ports lie in `V_j`,
+so they exhaust the `e`-fiber of `y`.  Hence
+
+```text
+ell(E_-)=ell(E_+)=y  implies  t_y=0,                  (509)
+```
+
+and those are the only two target ports of `y`.
+
+Thus the two singleton patterns in (499) have a sharper route-level form:
+
+```text
+equal endpoint labels: the common actual label is a saturated target-even
+                       two-port owner;
+different labels:     each endpoint label either appears as its unique
+                       active routed connector or commits a second target
+                       port elsewhere in V_j.         (510)
+```
+
+This is an exact activation-or-capacity dichotomy for the **actual** route
+labels, independent of the off-route atoms `u`.  It does not yet contradict
+the matched/zero secondary signatures.  It does ensure that a silent
+endpoint cannot make its routed owner disappear for free: it is visible in
+the active connector template or consumes the full two-port target fiber.
