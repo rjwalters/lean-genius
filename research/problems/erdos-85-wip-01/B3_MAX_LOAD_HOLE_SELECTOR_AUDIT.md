@@ -567,6 +567,22 @@ row weights plus one distinguished external point, rather than unrestricted
 point prices across the outer design.  This is the branch-3 analogue of the
 shared-point fractional-collision normal form used in branch 4.
 
+The row weights themselves reduce to a two-template integer disjunction.
+`q9_branch3_fixed_weight_selector.py` fixes the
+(diagonal, class-1, exceptional) weights to either `(1,2,1)` (the balanced
+template) or `(3,0,8)` (the exceptional-heavy template), minimizes only the
+allowed point prices, and verifies every edge inequality and the strict
+margin again over exact rationals.  The balanced/exceptional-heavy counts on
+the five hard payloads are `6/2`, `4/0`, `1/0`, `8/3`, and `0/3`; on fresh
+seeds zero through four they are `0/6`, `0/3`, `4/27`, `5/1`, and `12/24`.
+Thus their disjunction survives all ten models.  The two templates are both
+necessary on the hard corpus: the anchor-pair counterexample has only the
+balanced template, while replay seed 17 has only the exceptional-heavy one.
+This replaces existential rational row weights by two explicit arithmetic
+targets.  The remaining classification problem is to show that some one of
+the 48 incidence shapes satisfies one of these two fixed point-cover
+inequalities.
+
 The legacy alternative is to prove, from the outer design plus the exact
 exceptional-hole DTB complement partition, that a tight overlap fiber has a
 strict joint partner and then denominator-clear its two-fiber cover.  The
