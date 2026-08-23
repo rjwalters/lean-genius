@@ -1390,6 +1390,17 @@ linear block intersections whose endpoints have matching
 exactly that configuration is now the most economical seed-free route to
 the collision-free terminal.
 
+One role family is already excluded uniformly.  Two pair centers have the
+same role exactly when their two-point blocks omit the same U1 color, hence
+belong to the same marked-support group.  The blocks inside each such group
+are point-disjoint (the marked-support matching constraint), so two
+same-role pair centers cannot share the selected label required by a flat
+edge.  Thus every edge of the flat signature graph lies in the triple-center
+or hole roles.  In the 24-sample audit every realized edge is more narrowly
+regular-triple to regular-triple; no hole-role edge occurs.  Proving that
+second exclusion, or classifying the exceptional hole alternative, is the
+first local sublemma toward (12qy).
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
