@@ -19482,3 +19482,50 @@ Hence the exceptional secondary layer does not shield repeated residual
 propagation.  It can absorb two of the three tagged columns, but the fixed
 offset column still yields either the one already-accounted strict export
 or a quantitatively growing family of inactive companions.
+
+## 369. Six residual edges force a new inactive companion
+
+The rootwise estimate (1272) has a global form independent of colors and
+payment layers.  Let `Y` be any finite set of distinct `O--O` rooted
+propagation labels and partition it by core root:
+
+```text
+Y=disjoint_union_(i in Z/5) Y_i.                   (1273)
+```
+
+For a fixed `i`, all offset payers of `Y_i` are distinct by Section 367,
+and at most the one strict label `s_i` is core-active.  Payers belonging to
+different nonempty root classes are also distinct: their selected offset
+ports `p_(i+2)` differ, while every non-`d` offset payer has only one
+selected neighbor by (785).  Therefore the inactive payer sets from the
+five classes are disjoint and
+
+```text
+#{distinct core-inactive offset payers forced by Y}
+ >= sum_i max(|Y_i|-1,0)
+ = |Y|-#{i:Y_i nonempty}
+ >= |Y|-5.                                         (1274)
+```
+
+Equivalently, among all distinct residual-to-residual propagation labels,
+at most five can pay their canonical offset tags through strict exports:
+
+```text
+|Y|>=6 implies Y forces at least one inactive payer
+and hence an outside companion in B disjoint_union O.            (1275)
+```
+
+More generally every label beyond the first five increases the lower bound
+in (1274) by one.  This conclusion does not require two labels to have the
+same source color, the same secondary-payer profile, or the same layer tag;
+only the five available core roots can shelter one strict offset payment
+each.
+
+For a global holonomy cycle, apply (1274) to the set of its distinct
+`O--O` indexing labels.  If that set has size at least six, the cycle cannot
+close solely through the already-accounted strict exports and secondary
+double-payers: it opens an inactive companion, whose injective fan and
+nonstrict continuation are governed by Sections 360--363.  If it has size
+at most five, the residual-residual part of the cycle is now uniformly
+bounded.  Thus the cycle branch splits into a constant-size residual core
+or a quantitatively forced inactive expansion.
