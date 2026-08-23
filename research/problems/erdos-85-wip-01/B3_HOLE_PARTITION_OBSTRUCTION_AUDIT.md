@@ -4780,6 +4780,34 @@ fixed-template failure and is closed exactly by this global reciprocity horn.
 The honest hierarchy is therefore: (13at) false; (13au) still empirical and
 alive; (13aq) remains the robust price-only fallback.
 
+Fresh all-row-feasible seed 129 goes further and **refutes both (13au) and
+the price-only target (13aq)**.  The durable
+`q9_branch4_two_row_price_selector_counterexample.json` has no fixed-price
+certificate, no global reciprocity pair, and no exceptional two-row price
+certificate at all.  Its global symmetric LP is still infeasible, with
+cardinality-minimal row support `{7,11,20}` of size three.
+
+This model is nevertheless closed by the original integral Gram horn.
+Incident rows `{exceptional 25, regular 16}` share point 5; each of row 25's
+three full local packings and each of row 16's eleven full local packings
+contains row 32.  Hence the two conflicting rows have a common forced
+neighbor, reported exactly as
+`exists_exceptional_regular_forced_collision=true`, and
+`false_of_localGramPacking_deficit_or_forced_collision` consumes it.
+
+Therefore the honest branch-4 target must restore the disjunction that the
+successive price-only refinements erased:
+
+```text
+there is a local Gram packing obstruction (deficit or common forced neighbor),
+or an exceptional/regular two-row symmetric price certificate.       (13av)
+```
+
+The new model realizes only the first horn; the earlier
+fractional-collision-not-forced model realizes only the second.  Thus both
+horns are genuinely necessary on the durable corpus.  Any future refinement
+must be tested against these two opposite sharp regressions before promotion.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
