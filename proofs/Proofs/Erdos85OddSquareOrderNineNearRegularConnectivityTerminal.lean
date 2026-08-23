@@ -380,6 +380,21 @@ theorem false_of_orderNine_nearRegular_component_balance
   exact orderNine_nearRegular_eight_not_dvd_of_admissible
     s b₁ b₂ b₃ hs hadm height
 
+/-- Natural-number call-site form of the parity-free terminal.  The graph
+assembly naturally produces finset cardinalities and their strict bounds;
+this wrapper performs the bounded `Fin` packaging once. -/
+theorem false_of_orderNine_nearRegular_component_balance_nat
+    (s b₁ b₂ b₃ n₀ n₁ : ℕ)
+    (hs : s ≠ 0) (hslt : s < 78)
+    (hb₁ : b₁ < 11) (hb₂ : b₂ < 11) (hb₃ : b₃ < 11)
+    (hcard : s = n₀ + n₁)
+    (hadm : orderNineNearRegularComponentAdmissible s b₁ b₂ b₃)
+    (hbalance : 3 * n₀ = 5 * n₁) :
+    False := by
+  exact false_of_orderNine_nearRegular_component_balance
+    ⟨s, hslt⟩ ⟨b₁, hb₁⟩ ⟨b₂, hb₂⟩ ⟨b₃, hb₃⟩ n₀ n₁
+    hs hcard hadm hbalance
+
 /-- Call-site form using the actual defect-component handshake equation
 instead of asking the graph layer to separately state its parity consequence. -/
 theorem false_of_orderNine_nearRegular_component_handshake_and_balance
@@ -409,6 +424,7 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
 #print axioms orderNine_component_colour_sum_even_of_handshake
 #print axioms false_of_orderNine_nearRegular_proper_component_balance
 #print axioms false_of_orderNine_nearRegular_component_balance
+#print axioms false_of_orderNine_nearRegular_component_balance_nat
 #print axioms false_of_orderNine_nearRegular_component_handshake_and_balance
 
 end Erdos85
