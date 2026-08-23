@@ -5095,6 +5095,15 @@ at 180 seconds.  Batch refinement reaches a much stronger exact frontier in
 two models, but also exposes the present solver scalability boundary; the
 result is neither UNSAT nor a counterexample.
 
+The driver now exposes `--threads`.  An eight-thread seed-210 batch produced
+two further SAT models, accumulating six integral rows, 71 no-disjoint pairs,
+and three reciprocity pairs, but the third 180-second solve again returned
+`unknown`.  Parallel Z3 changed the sampled frontier but not the transition:
+the present bottleneck is the density of exact conditional packing witnesses,
+not merely single-thread scheduling.  No alternative SMT backend is installed
+locally, so this remains a search-engineering limit rather than evidence for
+SAT or UNSAT.
+
 A more promising structural invariant comes from the local-family sizes.
 Call a row *rigid* when it has one or two full integral local packings, and
 join two rigid rows when their blocks conflict.  The unified audit now emits

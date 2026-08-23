@@ -72,6 +72,7 @@ def main() -> None:
     parser.add_argument("--iterations", type=int, default=20)
     parser.add_argument("--timeout-seconds", type=int, default=120)
     parser.add_argument("--random-seed", type=int, default=0)
+    parser.add_argument("--threads", type=int, default=1)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--integral-row", type=int, action="append", default=[])
     parser.add_argument(
@@ -81,8 +82,8 @@ def main() -> None:
         "--reciprocity-pair", type=int, nargs=2, action="append", default=[]
     )
     args = parser.parse_args()
-    if args.iterations <= 0 or args.timeout_seconds <= 0:
-        parser.error("iterations and timeout must be positive")
+    if args.iterations <= 0 or args.timeout_seconds <= 0 or args.threads <= 0:
+        parser.error("iterations, timeout, and threads must be positive")
 
     integral_rows = list(dict.fromkeys(args.integral_row))
     disjoint_pairs = list(dict.fromkeys(
@@ -104,6 +105,7 @@ def main() -> None:
             integral_rows, None,
         )
         solver.set(random_seed=args.random_seed + iteration)
+        solver.set(threads=args.threads)
         result = solver.check()
         record = {
             "iteration": iteration,
