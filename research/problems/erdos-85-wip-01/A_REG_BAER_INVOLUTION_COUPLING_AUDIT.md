@@ -2933,6 +2933,38 @@ telescopes.  The required information is the off-occurrence, consumed-port
 fiber census rather than the realized edge atom itself -- exactly the same
 distinction exposed by the SRP on-route atomization test.
 
+The star geometry nevertheless supplies the first exact off-occurrence
+cross-tag.  Let E be the inside empty center whose star contains L.  For a
+switch `e=(L,G,p)`, consider the routed three-vertex wedge
+
+```text
+E -- L -- p.
+```
+
+The residual center G is adjacent to p by definition.  It is not adjacent
+to E, because the only outside-full neighbors of E are its two star leaves,
+and it is not adjacent to L, because a residual outside full center has no
+outside-full neighbor.  Hence
+
+```text
+sum_(x in {E,L,p}) 1[Gx in A] = 1,                       (73rnz_an)
+```
+
+with p the unique incidence.  Thus `(E,L,p) x G` is literally an actual
+route label cross-tagged by a singly incident off-route exceptional fiber.
+It is private at full resolution: the route label contains p, and a fixed
+leaf--center pair has at most one common port by C4-freeness.  This is the
+Baer-star instance of the resolved singleton-incidence census in the SRP
+dart lane.
+
+Privacy is not conservation.  Summing these atoms without their remaining
+endpoint census gives only `|E(J)|`, and reversing the description of the
+same switch does not create a second realized occurrence with opposite
+weight.  A load-bearing use of (73rnz_an) must therefore cross-correlate it
+with the other-port deletion profiles identified after (73rnz_am), or prove
+an occurrence-level balance for those profiles.  The local star supplies
+the required private column, but not yet its conserved coefficient.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
