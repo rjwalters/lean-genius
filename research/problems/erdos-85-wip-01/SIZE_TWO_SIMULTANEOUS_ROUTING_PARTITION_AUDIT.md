@@ -23361,3 +23361,55 @@ finite-state obstruction, not an unjustified decomposition into shorter
 PC cycles.  It bounds base-state multiplicity by thirty-two and reduces
 the remaining simplification problem to cancelling equal nonzero
 syndromes across repeated visits.
+
+## 436. A shortest tag-even PC walk is color-pinched at every strict split
+
+Choose, among all nonempty properly colored closed walks in `H` with zero
+root parity, one of minimum length; the avoiding construction of Section
+434 may be used instead, with the same forbidden edges retained.  Call the
+walk `W` and put `L:=|W|`.  If `W` is simple, the remaining selection
+problem is already solved.  Otherwise choose two occurrences of one base
+vertex `v`, and let `A` be the shorter intervening `v`--`v` arc, of length
+
+```text
+0<r<L/2.                                           (1560)
+```
+
+The strict inequality excludes only an antipodal equal-half split.  Let
+`p in F_2^5` be the root-parity voltage of `A`.  Suppose the last and first
+edges of `A` at `v` had different exterior colors.  Then `A` would be
+properly colored also at its closure.  Traverse it twice.  The doubled
+walk `AA` remains properly colored at both joins and has
+
+```text
+root voltage p+p=0,
+selected-tag syndrome tau(AA)=0,
+|AA|=2r<L.                                         (1561)
+```
+
+This contradicts the choice of `W`.  Therefore every strict-short split
+obeys the pinch law
+
+```text
+color(first edge of A)=color(last edge of A).      (1562)
+```
+
+There are two precise local alternatives.  If those first and last base
+edges are distinct, they exhaust the exterior-color degree-two capacity at
+`v`, so none of the other three incident full-root actions has that color.
+If they are the same base edge used at two different times, the obstruction
+is instead an explicit repeated-edge pinch.  Thus
+
+```text
+strict repeated-state split
+ -> one saturated two-edge color pair at v,
+    or one named base edge is repeated across the split.         (1563)
+```
+
+Only equal-half antipodal splits evade the strict shortening in (1561).
+Hence a nonsimple minimum tag-even PC walk cannot have arbitrary repeated
+states: every nonantipodal repetition is certified by a monochromatic
+pinch, with either literal color saturation or a repeated base edge.  This
+is the local restart interface left after the parity-cover normal form,
+and it preserves all source-color and payer-layer avoidance imposed before
+choosing `W`.
