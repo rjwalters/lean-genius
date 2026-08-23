@@ -18685,3 +18685,62 @@ each menu carries the exact strict indicator (1208).  Consequently the
 remaining cycle-completion problem may be stated entirely as reuse of the
 finite `N_01` labels from (1209), rather than as an unspecified population
 of core-inactive intermediates.
+
+## 355. An inactive fifth-cell payer has a forced outside companion
+
+A port-only payer cannot terminate its contribution at the selected port.
+Fix an inactive `z in P_k(q)`.  The cross block `R_ke` has degree two at
+`z`, while `j_z=1` says that exactly one of those two neighbors lies in
+`Z`.  Hence there is a unique outside endpoint
+
+```text
+o(z) in e\Z,            N_e(z)={q,o(z)}.            (1211)
+```
+
+Now suppose `z=z(y)` pays the fifth cell of a propagation row `y in a`.
+The same actual intermediate which witnesses `y--z--q` also witnesses the
+companion cell
+
+```text
+y -- z -- o(z)                                           (1212)
+```
+
+in the same layer `Q_k^(a,e)=R_ak R_ke`.  Thus the forced fifth-cell tag
+has an exact two-column support at its payer: one selected endpoint `q` and
+one endpoint outside the selected target cycle.  Entrywise exactness of SRP
+prevents this companion path from being cancelled or reassigned to another
+layer.
+
+The outside endpoint has one of the two concrete roles from the partition
+of the target component:
+
+```text
+o(z) in O,  a residual endpoint; or
+o(z) in B,  a private owner endpoint.                (1213)
+```
+
+In the second case `z` is not one of the three rooted letters of
+`tau(o(z))`, because it is core-inactive; it is a genuinely new inactive
+incidence at that private ticket rather than another step of the rooted
+transition graph (1171).
+
+Apply (1211) to the two labels forced in (1205).  There are actual paths
+
+```text
+y_4 -- z_4 -- p_4, o_4,
+y_2 -- z_2 -- p_2, o_2,       o_4,o_2 in e\Z,       (1214)
+```
+
+where `y_4` and `y_2` denote whichever propagation labels use the chosen
+inactive payers.  The outside endpoints need not be distinct, so no parity
+claim is made here.  Nevertheless every full-SRP completion of the
+two-color cycle now contains two literal companion cells outside `Z`, in
+addition to the selected fifth cells.
+
+This converts the `N_01` census cost into target geometry.  If a companion
+lands in `O`, it is already a located residual terminal of the kind used by
+the outside-destination chains in Sections 319--324.  If it lands in `B`,
+the completion acquires an inactive incidence at a named private ticket,
+which must coexist with that ticket's three rooted active letters and its
+owner return.  The remaining price may therefore split on (1213), rather
+than treating the inactive payer as an isolated cut label.
