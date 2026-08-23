@@ -340,6 +340,106 @@ theorem orderNineNearRegularCutLower_le_boundary_fixedHighTriple
   exact orderNineNearRegularCutLower_le_of_ordinary_moments
     hOcard f S.card b₁ b₂ b₃ δ hsum' hsq.le
 
+/-- Equality version of the fixed-high-triple cut adapter.  A sharp cut
+returns the actual two-level ordinary incidence partition, including the
+exact cardinality of its upper level. -/
+theorem orderNine_ordinary_partition_of_sharp_boundary_fixedHighTriple
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (S : Finset V)
+    (hSH : Disjoint S {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (δ : ℕ)
+    (hboundary : (∑ x ∈ S,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card) = δ)
+    (hsharp : orderNineNearRegularCutLower S.card
+      (G.neighborFinset h₁ ∩ S).card
+      (G.neighborFinset h₂ ∩ S).card
+      (G.neighborFinset h₃ ∩ S).card = δ) :
+    let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+    let f := fun x : ↥(↑O : Set V) => (G.neighborFinset x.1 ∩ S).card
+    (∀ x, f x = (∑ y, f y) / 78 ∨ f x = (∑ y, f y) / 78 + 1) ∧
+    (Finset.univ.filter fun x =>
+      f x = (∑ y, f y) / 78 + 1).card = (∑ y, f y) % 78 := by
+  classical
+  dsimp only
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := Finset.univ \ H
+  let f := fun x : ↥(↑O : Set V) => (G.neighborFinset x.1 ∩ S).card
+  let b₁ := (G.neighborFinset h₁ ∩ S).card
+  let b₂ := (G.neighborFinset h₂ ∩ S).card
+  let b₃ := (G.neighborFinset h₃ ∩ S).card
+  have hHcard' : H.card = 3 := by simp [H, h₁₂, h₁₃, h₂₃]
+  have hOcard : Fintype.card ↥(↑O : Set V) = 78 := by
+    rw [Set.fintypeCard_eq_ncard, Set.ncard_coe_finset]
+    dsimp only [O]
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ H), Finset.card_univ,
+      hcard, hHcard']
+  have hfle : ∀ x, f x ≤ 9 := by
+    intro x
+    have hle := Finset.card_le_card (Finset.inter_subset_left :
+      G.neighborFinset x.1 ∩ S ⊆ G.neighborFinset x.1)
+    rw [G.card_neighborFinset_eq_degree,
+      hdegOrd x.1 (Finset.mem_sdiff.mp x.2).2] at hle
+    exact hle
+  have hb₁ : b₁ ≤ 10 := by
+    have hle := Finset.card_le_card (Finset.inter_subset_left :
+      G.neighborFinset h₁ ∩ S ⊆ G.neighborFinset h₁)
+    rw [G.card_neighborFinset_eq_degree, hdegHigh h₁ (by simp)] at hle
+    exact hle
+  have hb₂ : b₂ ≤ 10 := by
+    have hle := Finset.card_le_card (Finset.inter_subset_left :
+      G.neighborFinset h₂ ∩ S ⊆ G.neighborFinset h₂)
+    rw [G.card_neighborFinset_eq_degree, hdegHigh h₂ (by simp)] at hle
+    exact hle
+  have hb₃ : b₃ ≤ 10 := by
+    have hle := Finset.card_le_card (Finset.inter_subset_left :
+      G.neighborFinset h₃ ∩ S ⊆ G.neighborFinset h₃)
+    rw [G.card_neighborFinset_eq_degree, hdegHigh h₃ (by simp)] at hle
+    exact hle
+  have hs : S.card ≤ 78 := by
+    have hsub : S ⊆ O := by
+      intro x hxS
+      exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ x,
+        fun hxH => Finset.disjoint_left.mp hSH hxS hxH⟩
+    have hle := Finset.card_le_card hsub
+    rw [← Set.ncard_coe_finset O, ← Set.fintypeCard_eq_ncard, hOcard] at hle
+    exact hle
+  have hsum := orderNine_ordinary_neighbor_inter_sum G H S hSH hdegOrd
+  have hsum' : (∑ x, f x) = 9 * S.card - (b₁ + b₂ + b₃) := by
+    simpa [f, O, H, b₁, b₂, b₃, h₁₂, h₁₃, h₂₃, add_assoc] using hsum
+  have hbsum : b₁ + b₂ + b₃ ≤ 9 * S.card := by
+    have hhighLe : (∑ h ∈ H, (G.neighborFinset h ∩ S).card) ≤
+        ∑ x : V, (G.neighborFinset x ∩ S).card :=
+      Finset.sum_le_sum_of_subset (Finset.subset_univ H)
+    have htotal := sum_card_neighbor_inter_eq_sum_degree G S
+    have hdegS : (∑ x ∈ S, G.degree x) = 9 * S.card := by
+      calc
+        _ = ∑ _x ∈ S, 9 := by
+          apply Finset.sum_congr rfl
+          intro x hxS
+          exact hdegOrd x (fun hxH => Finset.disjoint_left.mp hSH hxS hxH)
+        _ = 9 * S.card := by simp [mul_comm]
+    rw [htotal, hdegS] at hhighLe
+    simpa [H, b₁, b₂, b₃, h₁₂, h₁₃, h₂₃, add_assoc] using hhighLe
+  have hprod := orderNine_cut_ordinary_high_product_identity
+    G hfree hcard H S hdegOrd hdegHigh δ hboundary
+  have hprod' : δ + (∑ x, f x * (9 - f x)) +
+      (b₁ * (10 - b₁) + b₂ * (10 - b₂) + b₃ * (10 - b₃)) =
+        S.card * (81 - S.card) := by
+    simpa [f, O, H, b₁, b₂, b₃, h₁₂, h₁₃, h₂₃, add_assoc] using hprod
+  have hsq := orderNine_ordinary_square_moment_of_cut
+    f S.card b₁ b₂ b₃ δ hfle hb₁ hb₂ hb₃ hs hbsum hsum' hprod'
+  exact orderNine_ordinary_partition_of_cutLower_eq
+    hOcard f S.card b₁ b₂ b₃ δ hsum' hsq (by simpa [b₁, b₂, b₃] using hsharp)
+
 /-- Card-three adapter: a zero-boundary ordinary shore in an order-81 graph
 with degree profile 9/10 satisfies one side of the reviewed near-regular cut
 classifier. -/
@@ -542,6 +642,7 @@ theorem orderNineNearRegularCutBounds_of_twoEqualCuts_fixedHighTriple
 #print axioms orderNine_zeroCut_ordinary_high_product_identity
 #print axioms orderNine_cut_ordinary_high_product_identity
 #print axioms orderNineNearRegularCutLower_le_boundary_fixedHighTriple
+#print axioms orderNine_ordinary_partition_of_sharp_boundary_fixedHighTriple
 #print axioms orderNineNearRegularCutLower_nonpos_of_zeroCut_highThree
 #print axioms orderNineNearRegularCutLower_nonpos_of_zeroCut_fixedHighTriple
 #print axioms orderNine_high_neighbor_ordinary_compl_card

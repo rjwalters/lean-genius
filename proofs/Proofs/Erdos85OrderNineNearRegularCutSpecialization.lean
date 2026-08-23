@@ -209,6 +209,26 @@ theorem orderNine_balancedSquare_eq_of_cutLower_eq
   dsimp only [c] at hbal
   omega
 
+/-- Complete equality consumer: a sharp cut and its exact ordinary moments
+produce both the two adjacent pointwise values and the exact size of the
+upper-value set. -/
+theorem orderNine_ordinary_partition_of_cutLower_eq
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (hcard : Fintype.card O = 78)
+    (f : O → ℕ) (s b₁ b₂ b₃ δ : ℕ)
+    (hsum : (∑ x, f x) = 9 * s - (b₁ + b₂ + b₃))
+    (hsq : (∑ x, (f x) ^ 2) +
+      (b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1)) =
+        s ^ 2 + δ)
+    (hsharp : orderNineNearRegularCutLower s b₁ b₂ b₃ = δ) :
+    (∀ x, f x = (∑ y, f y) / 78 ∨ f x = (∑ y, f y) / 78 + 1) ∧
+    (Finset.univ.filter fun x =>
+      f x = (∑ y, f y) / 78 + 1).card = (∑ y, f y) % 78 := by
+  have heq := orderNine_balancedSquare_eq_of_cutLower_eq
+    f s b₁ b₂ b₃ δ hsum hsq hsharp
+  exact ⟨balancedSquare_eq_iff_pointwise_of_card_78 hcard f heq,
+    balancedSquare_eq_upper_card_of_card_78 hcard f heq⟩
+
 /-- Two-sided form matching `orderNineNearRegularComponentAdmissible`.
 The second ordinary vector is the complement shore's incidence vector. -/
 theorem orderNineNearRegularComponentAdmissible_of_ordinary_moments
@@ -237,5 +257,6 @@ theorem orderNineNearRegularComponentAdmissible_of_ordinary_moments
 #print axioms orderNine_ordinary_square_moment_of_cut
 #print axioms orderNineNearRegularCutLower_le_of_ordinary_moments
 #print axioms orderNine_balancedSquare_eq_of_cutLower_eq
+#print axioms orderNine_ordinary_partition_of_cutLower_eq
 
 end Erdos85
