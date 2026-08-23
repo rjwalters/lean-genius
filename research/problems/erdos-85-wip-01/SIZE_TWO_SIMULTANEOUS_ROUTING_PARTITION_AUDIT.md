@@ -16127,3 +16127,70 @@ nonzero private-label charge by Section 311.  This is an exhaustive
 terminal split, not yet an exclusion: the next capacity argument must
 price the nonzero label population, the odd independent two-path family,
 or the odd mixed-triangle family.
+
+## 314. Odd-shore descent eliminates perpetual zero charge
+
+The rigid alternative in Section 313 cannot persist under recursion.  In
+the branch `J_tot=0`, every selected path `Pi_w` has length two by (1015).
+Let
+
+```text
+U(S):=disjoint_union_(w in W_I)(V(Pi_w) intersect S). (1019)
+```
+
+Section 311 makes these `S`-vertex pairs disjoint, so
+
+```text
+|U(S)|=2|W_I|>=2.                                   (1020)
+```
+
+The capacity bound (1010) gives `U(S) subset S`.  Since `|S|` is odd and
+`|U(S)|` is positive and even, equality is impossible.  Therefore
+
+```text
+S':=S\U(S) subset O,
+0<|S'|<|S|,
+|S'|=1 mod 2.                                      (1021)
+```
+
+The construction from Section 283 onward can be reapplied to `S'`.  This
+scope point is exact.  Every vertex of `O` has degree one in each root
+matching `M_i` by (873)--(874), so handshaking gives
+
+```text
+|delta_(M_i)(S')|=|S'|=1 mod 2,
+i in Z/5,                                          (1022)
+```
+
+which is precisely the input (892) used by Section 283.  None of Sections
+283--313 uses the special target-owner boundary statement (891) which
+originally produced `S`; after (892), the only shore hypotheses are
+`S subset O` and odd cardinality.  Thus color resolution supplies a new
+receiving color and the entire residual construction applies to `S'`.
+
+If the new stage again has zero aggregate residue, repeat (1019)--(1021).
+Each zero-charge stage reduces the positive odd shore order by at least
+two.  Hence after at most `(|S|-1)/2` such stages either a nonzero residue
+appears or the shore has order one.  The latter cannot support another
+zero-charge stage: (1014) would give a nonempty odd family of two-edge
+paths, while (1010) would require
+
+```text
+2|W_I|<=1,                                          (1023)
+```
+
+an impossibility.
+
+Consequently the recursion terminates at a descendant odd shore `S_*`
+and an actual receiving color `a_*` for which
+
+```text
+J_tot(S_*,a_*)!=0.                                  (1024)
+```
+
+The two rigid families of Section 313 are therefore transient, not final
+escape branches.  Starting from every holonomy shore supplied by Section
+282, finite odd-shore descent forces a genuine, explicitly supported
+private-label charge.  The remaining theorem no longer needs to price the
+zero-charge label triangles or independent wedges indefinitely; it may
+work at the first descendant stage carrying (1024).
