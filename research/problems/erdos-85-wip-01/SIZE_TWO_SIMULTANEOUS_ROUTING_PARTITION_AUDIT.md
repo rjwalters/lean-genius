@@ -13022,3 +13022,70 @@ boundary demand which must be paid by that color's complementary transition
 terms.  The remaining owner theorem may therefore work color by color on
 the explicitly recoverable subsets `I_a`, rather than on an anonymous
 five-unit total.
+
+## 255. Every strict export has an isolated root--port payment path
+
+The ten-by-ten census of Section 253 makes the alternating paths completely
+local.  Fix an exterior color `a`.  Since every label has `i_z<=1`, no edge
+of the owner factor `F_a[c]` has both endpoints in `C`.  Thus `C` is an
+independent set in that factor.  Every maximal nonempty `C`-run is a single
+root, and its two boundary labels are paired by `mu_C`.  Symmetrically,
+`j_z<=1` makes `Z` independent in `F_a[e]`, so every `mu_Z` pair bounds one
+selected port.
+
+Let `z_i in a` be one of the strict exports.  Its red mate is the other
+`a`-label indexing an owner-factor edge at `x_i`; call it `u_i`.  The row
+support (777) has only one strict export at `x_i`, so `u_i` is not an overlap
+label.  The exact bounds give
+
+```text
+(i_(u_i),j_(u_i))=(1,0).                             (793)
+```
+
+Likewise the blue mate `v_i` is the other `a`-label at `p_(i+2)`, and
+
+```text
+(i_(v_i),j_(v_i))=(0,1).                             (794)
+```
+
+Consequently the component of `P_a(C,Z)` containing `z_i` is exactly
+
+```text
+u_i --red-- z_i --blue-- v_i,                        (795)
+```
+
+an isolated length-two path from a root-only label to a port-only label.
+Different strict exports have different red and blue mates because the
+factor pairings are involutions.  The rest of `P_a(C,Z)` consists of
+`5-k_a` isolated red `10--10` edges and `5-k_a` isolated blue `01--01`
+edges, in agreement with (787).
+
+The active-word payment on (795) is pointwise.  The port-only mate `v_i`
+has no selected root and has the unique selected port `p_(i+2)`, so (739)
+specializes to
+
+```text
+Q_(v_i)=[p_(i+2)].                                   (796)
+```
+
+For the strict export, (739) gives
+
+```text
+Q_(z_i)=[p_(i+2)]+partial[E_(x_i)].                  (797)
+```
+
+Adding the two active words cancels their common physical port point:
+
+```text
+Q_(z_i)+Q_(v_i)
+ =partial[E_(x_i)]=[p_(i-1)]+[p_i].                 (798)
+```
+
+Thus the scalar payment of (734) has become a canonical occurrence-level
+map in the five-port case: every strict export is paired with one private
+port-only label in the same receiving color, and their combined active
+ledger is exactly the boundary of the one horizontal H edge indexed by the
+shared root.  No filler chain, multi-export alternating path, or closed
+cycle remains.  The final owner-price question is now whether the red
+root-only mate `u_i` and the complementary H/V/S transition at `x_i` pay
+this single edge boundary; the active port side is completely resolved.
