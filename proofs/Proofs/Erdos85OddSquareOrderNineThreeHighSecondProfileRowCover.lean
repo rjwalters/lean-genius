@@ -2439,6 +2439,83 @@ theorem squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_reso
       have hCzero : C.card = 0 := by omega
       exact ⟨hD, hAone, hCzero⟩
 
+/-- On an exceptional (hole) ordinary row, the defect alternative in the
+mixed three-way resolution is impossible.  Hence every unmarked point is
+resolved by exactly one residual-B0 center or exactly one U1-core center.
+This is the graph-level form of the coupled DTB capacity/orthogonality row
+used by the q=9 obstruction search. -/
+theorem squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hxt : (secondOrderDefectGraph G).Adj x t)
+    (hb : b ∈ squareOrderNineLowIncidenceBin G 1 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let A := (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+    let C := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+    (A.card = 1 ∧ C.card = 0) ∨ (A.card = 0 ∧ C.card = 1) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let D := secondOrderDefectGraph G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let A := (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+  let C := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+  have htB0 : t ∈ B 0 := (Finset.mem_sdiff.mp ht).1
+  have htype :=
+    squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc4 htB0
+  dsimp only at htype
+  have hB1zero : (D.neighborFinset t ∩ B 1).card = 0 := by
+    rcases htype with hregular | hexceptional
+    · have hxmem : x ∈ D.neighborFinset t ∩ B 3 := by
+        refine Finset.mem_inter.mpr ⟨?_, hx⟩
+        exact (D.mem_neighborFinset t x).mpr ((D.adj_comm x t).mp hxt)
+      have hne : (D.neighborFinset t ∩ B 3).card ≠ 0 :=
+        Finset.card_ne_zero.mpr ⟨x, hxmem⟩
+      exact (hne hregular.2.2).elim
+    · exact hexceptional.2.1
+  have hnotDtb : ¬ D.Adj t b := by
+    intro htb
+    have hbB1 : b ∈ B 1 := (Finset.mem_sdiff.mp hb).1
+    have hbmem : b ∈ D.neighborFinset t ∩ B 1 :=
+      Finset.mem_inter.mpr ⟨(D.mem_neighborFinset t b).mpr htb, hbB1⟩
+    have hempty := Finset.card_eq_zero.mp hB1zero
+    rw [hempty] at hbmem
+    simpa using hbmem
+  have hthree :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx ht hb
+  dsimp only at hthree
+  change (D.Adj t b ∧ A.card = 0 ∧ C.card = 0) ∨
+    (¬ D.Adj t b ∧ A.card = 1 ∧ C.card = 0) ∨
+    (¬ D.Adj t b ∧ A.card = 0 ∧ C.card = 1) at hthree
+  rcases hthree with hdefect | hresidual | hcore
+  · exact (hnotDtb hdefect.1).elim
+  · exact Or.inl hresidual.2
+  · exact Or.inr hcore.2
+
 /-- Algebraic form of the decisive mixed-center compatibility constraint.
 The residual-center matrix `A Q` and the cubic-core matrix `Q K` have
 disjoint support, so their entrywise inner product (equivalently
@@ -3146,6 +3223,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_common_center_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_incidence_residual_gram_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
