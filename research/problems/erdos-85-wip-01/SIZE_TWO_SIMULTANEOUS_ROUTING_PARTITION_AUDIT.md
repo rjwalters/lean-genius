@@ -6930,3 +6930,65 @@ does not assert vanishing; it reduces marked conservation to a finite
 transition ledger whose nonzero cells are precisely the ones that must be
 paired with the private C4 cells or priced inside the bounded C6 stars of
 Section 127.
+
+## 131. The primary marked character is supported only at H--V boundaries
+
+First forget the mate tag and let a primary weight have values
+
+```text
+alpha_H, alpha_S, and alpha_ell on V_ell.              (393)
+```
+
+The exhaustive root-pair list (297) consists only of `H--H`, `H--V_ell`,
+`V_ell--V_m`, and `S--S`.  Substituting that list into (391), the equal-type
+`H--H` and `S--S` pairs have zero weight jump.  Hence
+
+```text
+D_(alpha,q_u)
+ = sum_(H--V_ell roots)
+     (alpha_H+alpha_ell) delta_R q_u
+   + sum_(V_ell--V_m roots)
+     (alpha_ell+alpha_m) delta_R q_u.                 (394)
+```
+
+There is no primary switch term: an `S` dart is root-paired only with `S`.
+In particular, for the binary marked-source character
+
+```text
+alpha_H=1,    alpha_S=alpha_ell=0,
+```
+
+equation (394) reduces to
+
+```text
+D_(1_H,q_u)=sum_(H--V roots) delta_R q_u.             (395)
+```
+
+Thus the primary marked defect is a run-boundary census.  Internal H roots,
+switch roots, and all V--V turns vanish before any global summation.  This
+is the secondary-resolved version of the H-row balance (339), now expressed
+as an exact root coboundary rather than an unlabeled boundary count.
+
+The distinction from the fully private ledger is important.  If a desired
+weight `w` also depends on route labels or on the root/port mate decorations,
+write
+
+```text
+w=1_H+r.
+```
+
+Then (392) gives the exact split
+
+```text
+D_(w,q_u)
+ = sum_(H--V roots) delta_R q_u
+   + sum_(root pairs) delta_R r delta_R q_u.          (396)
+```
+
+Consequently the bounded V--V C6 stars of Section 127 are not an obstruction
+to the primary marked grading itself.  They enter only through the refinement
+correction `r`, where route or mate labels distinguish the two root darts.
+The remaining theorem therefore has two separately visible pieces: pair the
+H--V boundary census in (395) with the H-run transfer, and price the genuinely
+joint refinement commutator in the second term of (396).  Neither cancellation
+is asserted here.
