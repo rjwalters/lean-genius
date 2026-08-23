@@ -22005,3 +22005,70 @@ whose departure from five-regularity is concentrated in at most forty-five
 root incidences, independent of `q`.  This is a structural normal form, not
 yet a contradiction; it isolates a large sector on which every root action
 is simultaneously ordinary and unsheltered.
+
+## 411. An adjacent high-loss pair either shares an exit or has one finite profile
+
+The adjacent pair in the deep `q=16` branch has a direct private-boundary
+coupling.  For root `i`, put
+
+```text
+A_i:=B setminus B_(x_i),
+Q_i:={u in B:the ordinary root-i edge at u has its other endpoint in O}.
+```
+
+Thus `|A_i|=6`, `Q_i subset A_i`, and
+`|Q_i|=E_i(O,B)`.  If roots `i,j` are adjacent on the core cycle, then
+(1331) gives `|B_(x_i) intersect B_(x_j)|=2`; since both artificial blocks
+have size four,
+
+```text
+|A_i intersect A_j|=4,
+|A_i setminus A_j|=|A_j setminus A_i|=2.           (1459)
+```
+
+At most two members of `Q_i` lie outside the common active set, and the
+same holds for `Q_j`.  Inclusion--exclusion inside the four common tickets
+therefore gives
+
+```text
+|Q_i intersect Q_j|
+ >=max(E_i(O,B)+E_j(O,B)-8,0).                     (1460)
+```
+
+Consequently an adjacent high-loss pair whose two boundary counts sum to
+at least nine has a private ticket `u` at which both ordinary root edges
+exit to `O`.  Writing their distinct indexing labels as `y_i,y_j`, one has
+
+```text
+u--y_i--o_i,       u--y_j--o_j,
+o_i,o_j in O,      o_i!=o_j.                       (1461)
+```
+
+The last inequality is forced by four-cycle-freeness: equality would make
+`u,o_i` have the two distinct common neighbors `y_i,y_j`.  Ticket
+nonmonochromaticity also makes (1461) dynamically usable.  If `y_i,y_j`
+have different exterior colors, they give the color-changing transition
+through `u`; if their colors agree, the ticket's third rooted label has a
+different color and gives such a transition with either one.
+
+The contrapositive is a sharp finite alternative:
+
+```text
+Q_i intersect Q_j=emptyset
+ -> E_i(O,B)+E_j(O,B)<=8.                           (1462)
+```
+
+If neither high-loss root is sheltered, the table (1439) then forces the
+unique no-common-exit profile
+
+```text
+v_i,v_j in O,
+E_i(O,B)=E_j(O,B)=4.
+```
+
+Indeed a private strict mate would force boundary count five, and a
+residual mate with the next allowed unsheltered count has boundary at least
+four (then six).  Thus the adjacent deep-slack branch reduces further:
+either one named private ticket couples the two high roots to two distinct
+residual endpoints and a legal color transition, or at least one shelter
+is present, except for the single unsheltered `O/O,4+4` boundary profile.
