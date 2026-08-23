@@ -1278,6 +1278,40 @@ theorem squareOrderNine_pair_pattern_mem_comm
       Finset.mem_inter.mpr ⟨(G.mem_neighborFinset t u).mpr
         ((G.adj_comm u t).mp htAdj), hu⟩, huP⟩
 
+/-- Distinct ordinary rows share at most one marked-support pair center.
+This is the cross-row C4 constraint omitted by purely reciprocal local
+sixpack models. -/
+theorem squareOrderNine_ordinary_pair_choices_inter_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {x t u : V}
+    (htu : t ≠ u) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let C := fun v => (G.neighborFinset v ∩ T).filter fun w => w ∈ P
+    ((C t) ∩ (C u)).card ≤ 1 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let C := fun v => (G.neighborFinset v ∩ T).filter fun w => w ∈ P
+  apply (Finset.card_le_card ?_).trans
+    ((not_containsC4_iff_forall_common_le_one G).mp hfree t u htu)
+  intro w hw
+  have hwParts := Finset.mem_inter.mp hw
+  have hwt := Finset.mem_filter.mp hwParts.1
+  have hwu := Finset.mem_filter.mp hwParts.2
+  exact Finset.mem_inter.mpr ⟨
+    (Finset.mem_inter.mp hwt.1).1,
+    (Finset.mem_inter.mp hwu.1).1⟩
+
 /-- Pointwise B0 Gram law.  Distinct residual neighbors of one ordinary row
 have disjoint incidence blocks in the unmarked B1 core. -/
 theorem squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
@@ -2726,6 +2760,100 @@ theorem squareOrderNine_threeHigh_secondProfile_exceptional_pair_reciprocity
     exact (G.mem_neighborFinset t u).mpr
       ((G.adj_comm u t).mp ((G.mem_neighborFinset u t).mp htu))
 
+/-- Global branch-three form of exceptional-to-pair reciprocity.  The two
+exceptional rows each select one pair row in each of the three marked
+supports.  Thus there are exactly six exceptional/pair incidences, with two
+in every marked support. -/
+theorem squareOrderNine_threeHigh_secondProfile_branchThree_exceptional_pair_six_grid
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (htri : (G.induce (G.neighborSet x)).edgeFinset.card = 3) :
+    let B := squareOrderNineLowIncidenceBin G
+    let D := secondOrderDefectGraph G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let H := (D.neighborFinset x ∩ B 0) \ S
+    let C := fun t => (G.neighborFinset t ∩ T).filter fun u => u ∈ P
+    H.card = 2 ∧
+      (∀ t ∈ H, (C t).card = 3) ∧
+      (∀ m ∈ M,
+        (H.filter fun t =>
+          ((C t).filter fun u => u ∈ G.neighborFinset m ∩ B 0).card = 1).card = 2) ∧
+      (∑ t ∈ H, (C t).card) = 6 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let D := secondOrderDefectGraph G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let W := (S.biUnion fun y => G.neighborFinset y ∩ B 0) ∪
+    (M.biUnion fun y => G.neighborFinset y ∩ B 0)
+  let O := W \ S
+  let H := (D.neighborFinset x ∩ B 0) \ S
+  let C := fun t => (G.neighborFinset t ∩ T).filter fun u => u ∈ P
+  have hsat :=
+    squareOrderNine_threeHigh_secondProfile_six_row_support_saturation
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hsat
+  change W.card = 45 ∧ O ⊆ T ∧
+    ((G.induce (G.neighborSet x)).edgeFinset.card = 3 ∧
+        O.card = 45 ∧ (T \ O).card = 2 ∨
+      (G.induce (G.neighborSet x)).edgeFinset.card = 4 ∧
+        O.card = 43 ∧ (T \ O).card = 4) at hsat
+  have hTOcard : (T \ O).card = 2 := by
+    rcases hsat.2.2 with hthree | hfour
+    · exact hthree.2.2
+    · omega
+  have hholes :=
+    squareOrderNine_threeHigh_secondProfile_support_holes_eq_defect_fiber
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hholes
+  change T \ O = H at hholes
+  have hHcard : H.card = 2 := by rw [← hholes]; exact hTOcard
+  have hlocal : ∀ t ∈ H,
+      (C t).card = 3 ∧ ∀ m ∈ M,
+        ((C t).filter fun u => u ∈ G.neighborFinset m ∩ B 0).card = 1 := by
+    intro t htH
+    have htParts := Finset.mem_sdiff.mp htH
+    have htD0 := Finset.mem_inter.mp htParts.1
+    have htT : t ∈ T := Finset.mem_sdiff.mpr ⟨htD0.2, htParts.2⟩
+    have hxt : D.Adj x t := (D.mem_neighborFinset x t).mp htD0.1
+    have hrec :=
+      squareOrderNine_threeHigh_secondProfile_exceptional_pair_reciprocity
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx htT hxt
+    dsimp only at hrec
+    exact ⟨hrec.1, hrec.2.1⟩
+  refine ⟨hHcard, (fun t ht => (hlocal t ht).1), ?_, ?_⟩
+  · intro m hm
+    have heq : H.filter (fun t =>
+        ((C t).filter fun u => u ∈ G.neighborFinset m ∩ B 0).card = 1) = H := by
+      apply Finset.filter_eq_self.mpr
+      intro t ht
+      exact (hlocal t ht).2 m hm
+    rw [heq, hHcard]
+  · calc
+      (∑ t ∈ H, (C t).card) = ∑ _t ∈ H, 3 := by
+        apply Finset.sum_congr rfl
+        intro t ht
+        exact (hlocal t ht).1
+      _ = 6 := by simp [hHcard]
+
 /-- On an exceptional (hole) ordinary row, the defect alternative in the
 mixed three-way resolution is impossible.  Hence every unmarked point is
 resolved by exactly one residual-B0 center or exactly one U1-core center.
@@ -3753,9 +3881,11 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_pair_pattern
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_pair_row_triple_completion_count
 #print axioms Erdos85.squareOrderNine_pair_pattern_mem_comm
+#print axioms Erdos85.squareOrderNine_ordinary_pair_choices_inter_card_le_one
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_row_exact_cardinalities
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_pair_reciprocity
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_branchThree_exceptional_pair_six_grid
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_actual_pair_pattern_mem_allowed
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_pair_marked_defect_sum_odd
