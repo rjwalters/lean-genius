@@ -1705,6 +1705,42 @@ theorem false_of_twoRowSupportPointPriceCertificate
     exact hedge u v huv
   · simpa [rowPrice, mul_add, Finset.sum_add_distrib] using hstrict
 
+/-- Branch-4 fixed-price specialization of the two-row certificate.  A
+regular triple row has residual degree five and an exceptional triple row
+has residual degree six; row prices one and two therefore give the constant
+strict target `5 + 2 * 6 = 17`.  This is the exact consumer for the `(13ar)`
+selector isolated by the branch-4 outer-design audit. -/
+theorem false_of_regularExceptionalFixedPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (regular exceptional : V)
+    (hregularDegree : d regular = 5)
+    (hexceptionalDegree : d exceptional = 6)
+    (pointPrice : V → P → ℚ)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      ((if u = regular then 1 else 0) +
+          (if u = exceptional then 2 else 0)) +
+        ((if v = regular then 1 else 0) +
+          (if v = exceptional then 2 else 0)) ≤
+        (∑ p ∈ B v, pointPrice u p) +
+          ∑ p ∈ B u, pointPrice v p)
+    (hstrict : (∑ u : V, ∑ p : P, pointPrice u p) < 17) :
+    False := by
+  apply false_of_twoRowSupportPointPriceCertificate
+    A H W d B hsymm hdegree hsupport hgram hshared
+    regular exceptional 1 2 pointPrice hpointPrice
+  · intro u v huv
+    simpa using hedge u v huv
+  · norm_num [hregularDegree, hexceptionalDegree]
+    exact hstrict
+
 /-- End-to-end actual-relation consumer whose row-price dual is supported on
 three named rows, with independent rational weights.  This is the direct
 interface for the branch-3 exceptional/diagonal/incident-class certificate. -/
@@ -2301,6 +2337,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_symmetricLocalGramPackingSelection_of_no_canonicalFractionalExtension
 #print axioms false_of_no_canonicalFractionalIntervalExtension
 #print axioms false_of_twoRowSupportPointPriceCertificate
+#print axioms false_of_regularExceptionalFixedPriceCertificate
 #print axioms false_of_threeRowSupportPointPriceCertificate
 #print axioms false_of_twoUnitSupportsPointPriceCertificate
 #print axioms false_of_scaledTwoUnitSupportsPointPriceCertificate
