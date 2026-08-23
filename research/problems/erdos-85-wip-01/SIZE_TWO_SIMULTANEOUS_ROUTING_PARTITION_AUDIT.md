@@ -23413,3 +23413,55 @@ pinch, with either literal color saturation or a repeated base edge.  This
 is the local restart interface left after the parity-cover normal form,
 and it preserves all source-color and payer-layer avoidance imposed before
 choosing `W`.
+
+## 437. A repeated-edge pinch contains a nested saturated pinch
+
+The repeated-base-edge alternative in (1563) cannot evade literal color
+saturation indefinitely.  Let the strict-short pinched arc `A` begin and
+end with the same physical base edge `e=vu`, traversed in opposite
+directions.  Then it has the form
+
+```text
+A: v--e--u,  B,  u--e--v,                         (1564)
+```
+
+where `B` is a closed base subwalk at `u`, internally properly colored.
+The two occurrences of `e` cancel in every binary invariant, so
+
+```text
+rootVoltage(B)=rootVoltage(A),
+tau(B)=tau(A).                                    (1565)
+```
+
+If the last and first colors of `B` were different, then `B` would be
+properly colored also at closure.  Doubling it would give a tag-even PC
+closed walk with
+
+```text
+|BB|=2(|A|-2)<2|A|<|W|,                           (1566)
+```
+
+contradicting the minimality of `W`.  Hence `B` is itself color-pinched.
+If its first and last edges are distinct physical edges, they already
+exhaust that color's degree-two capacity at `u`.  If they are the same
+physical edge, strip that pair and repeat the argument on the next nested
+closed subwalk.
+
+This recursion terminates.  Every stripping step lowers the length by two,
+while a nonempty internally PC closed walk in the simple loopless shadow
+graph cannot have length one or two: length one would be a loop, and length
+two would immediately traverse one edge back with the same color.  Thus
+before reaching those impossible lengths, one obtains a nested subwalk
+whose first and last edges are distinct and have the same color.  Therefore
+
+```text
+every repeated-edge pinch from (1563)
+ contains a nested vertex with two distinct incident edges
+ of one exterior color, saturating its degree-two capacity.       (1567)
+```
+
+Combining Sections 436--437, every nonantipodal repeated-vertex split in a
+minimum tag-even PC walk exposes a genuine saturated-color vertex, either
+at the original split or inside a finite nested repeated-edge chain.  The
+only remaining repetition pattern not charged this way is the antipodal
+equal-half case.
