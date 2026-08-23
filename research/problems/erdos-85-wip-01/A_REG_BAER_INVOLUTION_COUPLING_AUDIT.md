@@ -3788,6 +3788,27 @@ refinements, the only non-chain pieces in (73rnz_cjia) are the colored line
 source and the global scalar column; the O-side remains the atomized
 one-ended dart ledger (73rnz_cjj).
 
+The colored line source compresses to at most two owner atoms.  On the line
+`N_A(E_i)`, its support is the set of points with `t=0`.  Pair those points
+arbitrarily; every pair gives a unique two-edge relay through `E_i`.  At most
+one point remains, and its parity is
+
+```text
+q+sum_(v in N_A(E_i)) t(v)=(A t)_(E_i).                 (73rnz_cjic)
+```
+
+Thus the line term is a sum of two-ended pole-line columns plus one possible
+leftover carrying the explicit owner label `E_i`, for each pole.  This is the
+same owner-restricted cut price appearing in (73rnz_cjg).
+
+Finally, the scalar column `1` has even mass because `|V|=q^2` is even.
+Connectedness of D therefore realizes it as the boundary of a D-edge chain,
+by the same incidence-image argument as (73rnz_cjc).  Consequently the entire
+right side of (73rnz_cjia) is a sum of two-ended geometric chains plus at most
+the two pole-owner leftovers (73rnz_cjic).  The sole remaining conversion is
+to glue the atomized O-darts on the left to those chain endpoints without
+discarding their `1+mu` labels.
+
 Every O-edge is a non-A, non-D pair.  It therefore has one unique
 common-neighbor witness and, by (17),
 
