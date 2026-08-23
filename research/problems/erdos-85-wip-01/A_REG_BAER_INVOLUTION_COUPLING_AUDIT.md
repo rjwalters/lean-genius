@@ -3467,6 +3467,37 @@ explicit endpoint atoms.  A label-preserving terminal may either show this
 cochain is a coboundary on the two-pencil route or price its nonzero cells;
 aggregate matching conservation is already complete.
 
+In fact the whole matching ledger has a direct `Omega` price.  Recall from
+(9) that
+
+```text
+M_Omega=A^3+J+I.
+```
+
+For every `z in X setminus {p_i}`, the pair `E_i,z` is non-A and has distinct
+ends.  Hence `J_(E_i,z)=1`, `I_(E_i,z)=0`, and
+
+```text
+mu_(E_i,z)=(A^3)_(E_i,z)=1+(M_Omega)_(E_i,z).
+```
+
+There are `q-1` such indices, an odd number because `q` is even.  Summing and
+using (73rnz_by) therefore gives, separately at the two poles,
+
+```text
+deg_Omega(E_i, X setminus {p_i}) = m_X             (mod 2).
+                                                               (73rnz_cb)
+```
+
+Thus the common matching parity is not a new cross-neighborhood quantity:
+after the universal odd-size offset is removed, it is exactly the parity of
+one canonical `Omega` shore degree, and both pole degrees equal the same
+ordinary mass `m_X`.  Equivalently, (73rnz_ca) is the evenness of the sum of
+these two restricted `Omega` degrees.  This is the joint price needed to
+compare the two-pole route with the charge-free `Omega/D` Gram bit: any
+remaining contradiction must distinguish the two pole labels or control
+`m_X`; it cannot come from their unlabelled total.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
