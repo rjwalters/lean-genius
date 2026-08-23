@@ -20,9 +20,75 @@ import time
 from z3 import Not, is_true, sat, unknown
 
 from q9_exceptional_hole_sixpack_sat import build
+from q9_three_high_u1_design_sat import color
 
 
 OUTER_MAPS = ("holes", "marked_pairs", "selected", "k")
+
+
+def chosen(mapping: dict, model) -> list[tuple[int, ...]]:
+    return sorted(
+        key for key, variable in mapping.items()
+        if is_true(model.eval(variable, model_completion=True))
+    )
+
+
+def regular_row_pack_exists(anchor: tuple[int, ...], triples, pairs,
+                            k_edges: set[tuple[int, int]]) -> bool:
+    """Check exactly the independent five-neighbor constraints for one row."""
+    def core_compatible(block) -> bool:
+        return all(
+            tuple(sorted((a, b))) not in k_edges
+            for a in anchor for b in block if a != b
+        )
+
+    candidates = [
+        (block, None) for block in triples
+        if block != anchor and core_compatible(block)
+    ] + [
+        (block, next(c for c in range(3)
+                     if c not in {color(block[0]), color(block[1])}))
+        for block in pairs if core_compatible(block)
+    ]
+
+    def search(start: int, used_points: set[int], pair_supports: set[int],
+               triple_count: int, count: int) -> bool:
+        if count == 5:
+            return len(pair_supports) == 5 - triple_count
+        if len(candidates) - start < 5 - count:
+            return False
+        for index in range(start, len(candidates)):
+            block, support = candidates[index]
+            if used_points.intersection(block):
+                continue
+            if support is not None and support in pair_supports:
+                continue
+            next_triples = triple_count + int(support is None)
+            next_pairs = count + 1 - next_triples
+            if next_pairs > 3:
+                continue
+            if search(
+                    index + 1, used_points.union(block),
+                    pair_supports | ({support} if support is not None else set()),
+                    next_triples, count + 1):
+                return True
+        return False
+
+    return search(0, set(), set(), 0, 0)
+
+
+def print_target_local_feasibility(source_data: dict, model,
+                                   target_class: int) -> None:
+    triples = chosen(source_data["selected"], model)
+    pairs = chosen(source_data["marked_pairs"], model)
+    k_edges = set(chosen(source_data["k"], model))
+    anchors = chosen(source_data["classes"][target_class], model)
+    statuses = [
+        [list(anchor), regular_row_pack_exists(
+            anchor, triples, pairs, k_edges)]
+        for anchor in anchors
+    ]
+    print(f"target_class={target_class}_local_rows={statuses}", flush=True)
 
 
 def freeze_outer(source_data: dict, source_model, target_solver,
@@ -73,12 +139,14 @@ def main() -> int:
     if source_result != sat:
         return 1
 
+    source_model = source_solver.model()
+    print_target_local_feasibility(source_data, source_model, target_class)
     target_solver, target_data = build(
         3, args.extension_timeout_seconds * 1000, True,
         regular_class_indices=(target_class,), **common,
     )
     freeze_outer(
-        source_data, source_solver.model(), target_solver, target_data
+        source_data, source_model, target_solver, target_data
     )
     started = time.time()
     target_result = target_solver.check()

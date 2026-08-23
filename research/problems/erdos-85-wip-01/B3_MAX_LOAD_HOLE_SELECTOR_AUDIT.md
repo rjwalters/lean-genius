@@ -166,6 +166,21 @@ complement partitions, not merely a sampling artifact.  It is not yet a
 solver certificate or theorem: the simultaneous seed-free system remains
 UNKNOWN, and other one-class source models may conceivably extend.
 
+The fixed-target failure is row-local, not an eight-row matching artifact.
+The staged probe now independently backtracks over the exact five-neighbor
+constraints for each target-class block.  On the class-1 source, target
+class-2 rows `{5,12,22}`, `{6,8,18}`, and `{7,13,19}` have no permitted
+pack, while its other five rows do.  On the class-2 source, exactly target
+class-1 row `{1,8,22}` is impossible and the other seven rows are feasible.
+The row variables in the regular-class encoding are independent after the
+outer is frozen, so these local failures explain the extension UNSAT
+exactly.  This exposes a potentially stronger branch-3 closure than joint
+pricing: prove that the two exceptional exact packs, their reciprocity and
+full-pack C4 cap force an ordinary row in one of the two non-diagonal regular
+classes to lack a five-row local Gram pack.  An actual residual relation
+supplies such a pack at every row, so that uniform lemma would contradict
+the branch directly.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
