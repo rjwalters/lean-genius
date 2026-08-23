@@ -46,6 +46,33 @@ theorem exists_positive_special_price_lt_target_of_sum_lt
   change (∑ b ∈ P, price b) < 27 * P.card + 6 at hprice
   omega
 
+/-- Well-founded selector for a load-descent proof.  If every positive-
+special point lacking the desired property produces another positive-special
+point of strictly smaller natural-number load, then some positive-special
+point has the property.  This packages the prospective local form of the
+minimum-load branch-four argument. -/
+theorem exists_good_positive_special_of_strict_load_descent
+    {α : Type*} [DecidableEq α]
+    (U : Finset α) (special load : α → ℕ) (Good : α → Prop)
+    [DecidablePred Good]
+    (hnonempty : ∃ p ∈ U, 0 < special p)
+    (hdescent : ∀ p ∈ U, 0 < special p → ¬ Good p →
+      ∃ q ∈ U, 0 < special q ∧ load q < load p) :
+    ∃ p ∈ U, 0 < special p ∧ Good p := by
+  classical
+  let P := U.filter fun p => 0 < special p
+  obtain ⟨p0, hp0U, hp0Special⟩ := hnonempty
+  have hPnonempty : P.Nonempty :=
+    ⟨p0, Finset.mem_filter.mpr ⟨hp0U, hp0Special⟩⟩
+  obtain ⟨p, hpP, hpmin⟩ := Finset.exists_min_image P load hPnonempty
+  have hpParts := Finset.mem_filter.mp hpP
+  by_cases hpGood : Good p
+  · exact ⟨p, hpParts.1, hpParts.2, hpGood⟩
+  · obtain ⟨q, hqU, hqSpecial, hqLoad⟩ :=
+      hdescent p hpParts.1 hpParts.2 hpGood
+    have hpLe := hpmin q (Finset.mem_filter.mpr ⟨hqU, hqSpecial⟩)
+    omega
+
 /-- In the four-edge high-root branch, some unmarked bin-one point is defect
 adjacent to a special B0 row.  This is the formal existence half of the six
 global puncture-miss selector; the separate mixed-column theorem upgrades its
@@ -262,3 +289,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twentyEight
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residualRows_total_eq_654
 #print axioms Erdos85.exists_positive_special_price_lt_target_of_sum_lt
+#print axioms Erdos85.exists_good_positive_special_of_strict_load_descent

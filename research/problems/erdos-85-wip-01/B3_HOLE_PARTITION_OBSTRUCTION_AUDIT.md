@@ -4277,6 +4277,20 @@ accepts any natural-number load and returns a positive-special U1 point
 minimal on that locus.  Instantiating it with `L` leaves only the price half
 of (13am); as with the earlier selector the theorem does not assert a cover.
 
+Equivalently, the missing price theorem can be attacked locally as strict
+descent rather than by constructing the minimizer's cover directly:
+
+```text
+if p is special and its full fiber is not strict,
+then some special q has L(q) < L(p).                          (13an)
+```
+
+The generic theorem `exists_good_positive_special_of_strict_load_descent`
+kernel-checks the well-founded consumer: (13an) on the finite special locus
+forces a good point by choosing a minimum load.  This is the natural algebraic
+form for a load-difference potential extracted from a non-strict fractional
+packing; it avoids every refuted averaging step above.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
