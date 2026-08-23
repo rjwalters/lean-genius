@@ -14183,3 +14183,69 @@ ties the local ticket roles to those path pairings without retaining an
 arbitrary label name: every actual port must be paired as an endpoint in an
 odd number of exterior owner factors, while doubled ticket colors pass
 through it internally.
+
+## 277. The exterior factor edges split into five rootwise matchings
+
+The boundary cover (872) has an exact integral refinement before the root
+colors are forgotten.  For each selected root `x_i`, let `M_i` be the union,
+over all exterior colors `a`, of the two edges of `H_a^C` carrying the root
+label `x_i`.
+
+Within one color those two edges have disjoint endpoints by (865).  Across
+different colors their endpoint sets are also disjoint: they are the
+supports of the disjoint routing-layer rows in integer SRP.  Hence `M_i` is
+a matching.  The endpoint layers locate its uncovered ports exactly.
+The root-owner row occupies the four selected ports other than
+`p_(i+2)`, while the target-owner row occupies
+`B_(x_i)=T_(i-1) disjoint_union T_i`.  Therefore
+
+```text
+V(M_i)
+ ={p_(i+2)} disjoint_union ((e\Z)\B_(x_i)),
+|V(M_i)|=2q-8,          |E(M_i)|=q-4.                (873)
+```
+
+Thus `M_i` is a perfect matching on its displayed actual-port support.  The
+edge count also equals two edges for each of the `q/2-2` exterior colors.
+
+The five matching supports have a rigid multiplicity profile.  A selected
+port `p_j` occurs only in `M_(j-2)`.  A private owner endpoint `w in T_h`
+is omitted precisely from `M_h` and `M_(h+1)`, whose owner blocks contain
+it, and occurs in the other three.  A residual port belongs to every
+matching.  Hence
+
+```text
+sum_i 1_(V(M_i))(w)
+ = 1,  w in Z;
+ = 3,  w in B;
+ = 5,  w in O.                                      (874)
+```
+
+Equivalently, the multigraph union
+
+```text
+M:=M_0 multiset_union ... multiset_union M_4
+```
+
+is properly edge-colored by the five root labels and has integer vertex
+degrees
+
+```text
+deg_M(w)=1_Z(w)+3 1_B(w)+5 1_O(w).                  (875)
+```
+
+Reducing (875) modulo two recovers (872): every vertex has odd degree.
+The integer handshake is consistent and exact,
+
+```text
+sum_w deg_M(w)=5+30+5(2q-15)=10q-40
+              =2 sum_i |E(M_i)|.                    (876)
+```
+
+This matching factorization retains the rootwise pairing that the boundary
+sum erased.  The surviving realization problem can now be phrased as a
+two-axis decomposition of `M`: by root it is the five fixed-support
+matchings `M_i`; by exterior color it is the properly root-colored
+ten-edge path/cycle system `H_a^C`.  Any terminal incompatibility must use
+the coherence of these two decompositions together with the target-owner
+return pairing `nu_e`; neither axis separately is contradictory.
