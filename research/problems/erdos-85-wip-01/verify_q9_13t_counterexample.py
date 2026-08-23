@@ -7,7 +7,11 @@ from pathlib import Path
 from z3 import Bool, If, Not, Solver, Sum, sat
 from q9_b0_residual_defect_sat import N, N_U1, build, edge_key
 from q9_gram_obstruction_negation_sat import OUTER_ONLY_RELAX
-from q9_structured_skew_potential import residual_gram_forced_collisions, residual_gram_local_capacities
+from q9_structured_skew_potential import (
+    residual_gram_forced_collisions,
+    residual_gram_local_capacities,
+    residual_gram_unsat_core,
+)
 
 def main() -> int:
     witness = json.loads(Path(__file__).with_name("q9_13t_counterexample.json").read_text())
@@ -26,7 +30,8 @@ def main() -> int:
     cores = [set().union(*(kn[b] for b in block)) for block in blocks]
     candidates = [[v for v in range(N) if v != u and not blocks[v] & cores[u]] for u in range(N)]
     degree = [5 if u < 24 else 6 for u in range(N)]
-    data = {"blocks": blocks, "candidates": candidates, "degree": degree}
+    data = {"blocks": blocks, "candidates": candidates, "degree": degree,
+            "core": cores}
     assert residual_gram_local_capacities(data) == []
     assert residual_gram_forced_collisions(data) == []
     packs = {u: [set(c) for c in combinations(candidates[u], degree[u])
@@ -45,8 +50,13 @@ def main() -> int:
     for u in range(N):
         for v in range(u+1,N): solver.add(x[u,v] == x[v,u])
     result = solver.check()
+    core = residual_gram_unsat_core(data, 120)
+    assert core["result"] == "unsat", core
     print("outer_constraints=SAT local_deficits=0 forced_collisions=0 reciprocity_horns=0")
     print(f"symmetric_simultaneous_selection={result}")
+    print("unsat_core=" + json.dumps({
+        "degrees": core["degrees"], "gram_pairs": core["gram_pairs"]
+    }, separators=(",", ":")))
     print("candidate_13t_trichotomy=REFUTED_IN_OUTER_ABSTRACTION")
     return 0
 if __name__ == "__main__": raise SystemExit(main())
