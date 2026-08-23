@@ -8795,3 +8795,50 @@ plus `c` times the number of intervals.  The remaining marked information
 can therefore enter only through exposed boundary potentials, interval-
 count parity, or the constant-one channel—not through an unbounded pairing
 gauge.
+
+## 167. Gauge-independent interval prices depend on only two bits
+
+In the zero-holonomy branch of Section 166, define
+
+```text
+pi_u:=n_P(u) mod 2,
+nu_u:=(n_R(u)+n_P(u))/2 mod 2.                        (528)
+```
+
+The division by two is an integer operation: the numerator is even by
+(523).  The bit `nu_u` records whether the total flip count is `2 mod 4`,
+equivalently the parity of the number of proper intervals.
+
+Summing the additive price (527) over all intervals gives
+
+```text
+Price_u
+ =p_R n_R+p_P n_P+c (number of intervals)
+ =(w_RP+w_RR) pi_u+w_RR nu_u.                        (529)
+```
+
+Here `p_R=0`, `p_P=w_RP+w_RR`, and `c=w_RR`; only the endpoint-count
+parities enter.  Thus all eight sectors (524) collapse to the two-bit table
+
+```text
+(n_R,n_P): (0,0) (2,0) (4,0) (1,1)
+(pi,nu):    (0,0) (0,1) (0,0) (1,1)
+
+(n_R,n_P): (3,1) (0,2) (2,2) (4,2)
+(pi,nu):    (1,0) (0,1) (0,0) (0,1).                (530)
+```
+
+The zero-flip constant-one channel is not counted by (528): it has no
+proper interval endpoints but can carry a separate bit `zeta_u`.  Therefore
+the full gauge-independent per-label state is exactly
+
+```text
+(pi_u,nu_u,zeta_u) in F_2^3.                          (531)
+```
+
+No endpoint price can see more than these three bits once four-relay
+holonomy is absent.  The final singleton calculation may consequently be
+organized as an eight-state table per active label, rather than the raw
+ordered word.  A terminal must either price the explicit `h_4=1` holonomy
+or express the marked run grading through the aggregate of the states
+(531) and the actual-owner capacity data (510).
