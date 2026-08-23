@@ -5613,3 +5613,58 @@ Equations (311)--(312) are the smallest-window test for any candidate
 `P_ce=J` has already lost the required tags.  A viable proposal must exhibit
 which individual `Q_d` layer carries each feature and a genuine global
 identity cancelling the resulting layer-resolved defects.
+
+## 106. The maximal one-port route lift still telescopes
+
+Keeping the `Q_d` layers resolved is necessary but not sufficient.  For a
+third color `d`, every occupied entry of
+
+```text
+Q_d = R_cd R_de
+```
+
+has its unique intermediate `d`-port by the four-cycle argument of Section
+88.  Hence a port `p in e` has a canonical maximal route-incidence lift
+
+```text
+Psi_d(p)
+  := sum_({x in c, y in d : x--y--p}) [x,y,p]          (314)
+```
+
+in the free module on labeled two-step paths.  Projecting `[x,y,p]` to
+`[x]` recovers the column `Q_d 1_p`; thus (314) retains strictly more data
+than any vertex-valued test of the individual layer.
+
+Nevertheless, on a gap `p_0,...,p_m`, even this finest **one-port** lift
+has
+
+```text
+sum_(i=0)^(m-1)
+  (Psi_d(p_i)-Psi_d(p_(i+1)))
+    = Psi_d(p_0)-Psi_d(p_m).                           (315)
+```
+
+The cancellation is formal and occurs before any projection or sum over
+`d`.  The same argument applies to every feature of the form `Psi(p)` in
+any abelian group, including a port decorated by all of its colors,
+intermediate fibers, rooted triangles, and incidence classes.
+
+Therefore the feature required by (309) cannot be a difference of
+independently decorated port states.  It must be genuinely **two-local**:
+
+```text
+Gamma(p_i,p_(i+1)) != Psi(p_i)-Psi(p_(i+1))            (316)
+```
+
+for every possible one-port potential `Psi`.  Its extra coordinate must
+record data consumed jointly by the transition—such as the ordered pair of
+rooted routes or the secondary-fiber census left after their common part is
+removed.  This is exactly the structural distinction in the B3 private
+bundle: endpoint signatures are one-local and insufficient, whereas the
+consumed secondary-fiber state belongs to the unordered transition.
+
+Equations (314)--(316) narrow the SRP construction target further.  Layer
+resolution avoids the `P_ce=J` collapse of Section 105, but privacy can only
+come from a nonseparable transition feature.  Conservation must therefore
+be proved directly for the global sum of those two-local features; it cannot
+be inherited from telescoping a port potential.
