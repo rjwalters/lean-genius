@@ -818,7 +818,7 @@ def sparse_bundle_dual_system(system: tuple) -> tuple[bool, float, list[tuple], 
 
 
 def rational_farkas_audit(system: tuple, nonzero: list[tuple],
-                          max_denominator: int = 1000000) -> tuple:
+                          max_denominator: int = 10000000) -> tuple:
     """Rationalize and exactly verify a floating Farkas certificate."""
     (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
      capacity_names, variable_count) = system
@@ -880,6 +880,31 @@ def projected_half_atom_dual(data: dict, mode: str) -> tuple:
     (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
      capacity_names, variable_count) = system
     signatures, censuses = root_signature_censuses(data)
+    type_profiles = {}
+    signature_profiles = {}
+    bare_profiles = {}
+    typed_profiles = {}
+    load_profiles = {}
+    load_moments = {}
+    moment_profiles = {}
+    for b in data["selected"]:
+        loads = [sum(censuses[t][b]) for t in range(N)]
+        load_moments[b] = (sum(loads), sum(load * load for load in loads))
+        load_profiles[b] = tuple(sorted(Counter(
+            loads).items()))
+        moment_profiles[b] = tuple(
+            sum(censuses[t][b][role] ** power for t in range(N))
+            for role in range(5) for power in (1, 2))
+        bare_profiles[b] = tuple(sorted(Counter(
+            censuses[t][b] for t in range(N)).items()))
+        typed_profiles[b] = tuple(sorted(Counter(
+            (data["types"][t], censuses[t][b]) for t in range(N)).items()))
+        type_profiles[b] = tuple(sorted(Counter(
+            (data["types"][t], censuses[t][b],
+             int(b in data["blocks"][t])) for t in range(N)).items()))
+        signature_profiles[b] = tuple(sorted(Counter(
+            (signatures[t], censuses[t][b],
+             int(b in data["blocks"][t])) for t in range(N)).items()))
 
     def root_key(t: int):
         if mode.startswith("root-"):
@@ -896,6 +921,24 @@ def projected_half_atom_dual(data: dict, mode: str) -> tuple:
             result = b // 8
         elif suffix == "label":
             result = b
+        elif suffix == "typeprofile":
+            result = type_profiles[b]
+        elif suffix == "signatureprofile":
+            result = signature_profiles[b]
+        elif suffix == "bareprofile":
+            result = bare_profiles[b]
+        elif suffix == "typedprofile":
+            result = typed_profiles[b]
+        elif suffix == "loadprofile":
+            result = load_profiles[b]
+        elif suffix == "loadmoment":
+            result = load_moments[b]
+        elif suffix == "loadsum":
+            result = load_moments[b][0]
+        elif suffix == "loadsquare":
+            result = load_moments[b][1]
+        elif suffix == "momentprofile":
+            result = moment_profiles[b]
         else:
             raise ValueError(f"unknown half-atom label projection {mode}")
         if mode.startswith("census-"):
@@ -2540,7 +2583,8 @@ def main() -> int:
     if args.audit_half_atom_projections:
         modes = ("type-color", "signature-color", "census-color",
                  "root-color", "type-label", "signature-label",
-                 "census-label")
+                 "census-label", "signature-loadsum", "root-loadsum",
+                 "census-loadsum")
         for label, candidate in all_data:
             if dual_seed_filter and label[1] not in dual_seed_filter:
                 continue

@@ -2470,6 +2470,42 @@ moment is ruled out by `(12rzr)`.  As with the earlier experiments, this is a
 finite-corpus information threshold, not proof that `(12rzs)` works for every
 outer design.
 
+The literal label in `(12rzs)` can be compressed further.  Define the
+canonical global eligible-incidence mass of a selected label by
+
+```text
+L(b) = sum_t sum_(role r) rho_r(t,b).                       (12rzt)
+```
+
+Equivalently, `L(b)` is the number of oriented eligible root--candidate
+incidences whose candidate block carries `b`.  It is invariant under every
+renaming of roots or labels and is computed from the same local census used
+in `(12rzs)`.  Forcing equal prices whenever `L(b)=L(b')`, while retaining
+the local `rho(t,b)`, still gives an exact rational separator on **all
+eleven** survivors.  The maximum denominators are
+`1350,1,12,14354,6,906592,1007853,534119,661,1,1`; some label classes really
+merge, so this is not merely a canonical renaming of sixteen singleton
+fibers.
+
+The local role census is indispensable in this projection class.  If
+`rho(t,b)` is dropped, prices indexed by `(sigma(t),L(b))` fail on all eleven;
+even replacing `sigma(t)` by the named root `t` still fails on all eleven.
+Thus the sharper sampled interface is
+
+```text
+alpha_t = Alpha(sigma(t)),
+phi_tb  = Phi(sigma(t), L(b), rho(t,b)),
+lambda_tb = Lambda(sigma(t), L(b), rho(t,b)), Lambda >= 0.   (12rzu)
+```
+
+This supersedes the literal-label reading immediately after `(12rzs)`:
+color aggregation is too coarse, but arbitrary label identity is not needed.
+The two essential scales are a global scalar `L(b)` and the label's local
+five-role geometry `rho(t,b)`.  A uniform proof can therefore target a
+fiber-load potential and a local occupancy inequality, rather than a lookup
+table on named labels.  The assertion remains a finite-corpus threshold, not
+a construction of `Phi` and `Lambda` for every outer design.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
