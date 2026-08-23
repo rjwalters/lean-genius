@@ -229,7 +229,101 @@ def exact_joint_optimum_summary(system: dict, pair,
     }
 
 
-def single_optimum_summary(single_optima: dict) -> dict:
+def integer_single_optimum_cost(system: dict, optimum: dict) -> int:
+    """Exactly audit the minimum integral cost for one unit fiber."""
+    point = optimum["point"]
+    fiber = set(optimum["support"])
+    allowed = [
+        index for index, (row, q) in enumerate(system["caps"])
+        if row in fiber or q == point
+    ]
+    position = {old: new for new, old in enumerate(allowed)}
+    matrix = []
+    lower = []
+    for u, v in system["edges"]:
+        need = int(u in fiber) + int(v in fiber)
+        if not need:
+            continue
+        row = np.zeros(len(allowed), dtype=int)
+        for q in system["blocks"][v]:
+            index = system["cap_index"][u, q]
+            if index in position:
+                row[position[index]] += 1
+        for q in system["blocks"][u]:
+            index = system["cap_index"][v, q]
+            if index in position:
+                row[position[index]] += 1
+        matrix.append(row)
+        lower.append(need)
+    result = milp(
+        np.ones(len(allowed)), integrality=np.ones(len(allowed)),
+        bounds=Bounds(0, 2),
+        constraints=LinearConstraint(
+            np.array(matrix), np.array(lower), np.inf),
+        options={"mip_rel_gap": 0, "time_limit": 60},
+    )
+    if not result.success:
+        raise RuntimeError("integer single-cover MILP failed: " + result.message)
+    prices = np.rint(result.x).astype(int)
+    if (np.any(prices < 0) or np.any(prices > 2)
+            or np.any(np.array(matrix, dtype=int) @ prices
+                      < np.array(lower, dtype=int))):
+        raise RuntimeError("integer single-cover reconstruction failed")
+    return int(prices.sum())
+
+
+def integer_single_dual_packing(system: dict, optimum: dict) -> dict:
+    """Maximize the integral unit-capacity edge packing dual."""
+    point = optimum["point"]
+    fiber = set(optimum["support"])
+    allowed = [
+        index for index, (row, q) in enumerate(system["caps"])
+        if row in fiber or q == point
+    ]
+    position = {old: new for new, old in enumerate(allowed)}
+    edges = []
+    matrix = []
+    needs = []
+    for u, v in system["edges"]:
+        need = int(u in fiber) + int(v in fiber)
+        if not need:
+            continue
+        row = np.zeros(len(allowed), dtype=int)
+        for q in system["blocks"][v]:
+            index = system["cap_index"][u, q]
+            if index in position:
+                row[position[index]] += 1
+        for q in system["blocks"][u]:
+            index = system["cap_index"][v, q]
+            if index in position:
+                row[position[index]] += 1
+        edges.append((u, v))
+        matrix.append(row)
+        needs.append(need)
+    result = milp(
+        -np.array(needs, dtype=float), integrality=np.ones(len(edges)),
+        bounds=Bounds(0, 1),
+        constraints=LinearConstraint(
+            np.array(matrix, dtype=int).T, -np.inf, 1),
+        options={"mip_rel_gap": 0, "time_limit": 60},
+    )
+    if not result.success:
+        raise RuntimeError("integer single-dual MILP failed: " + result.message)
+    chosen = np.rint(result.x).astype(int)
+    if (np.any(chosen < 0) or np.any(chosen > 1)
+            or np.any(np.array(matrix, dtype=int).T @ chosen > 1)):
+        raise RuntimeError("integer single-dual reconstruction failed")
+    return {
+        "value": int(np.array(needs, dtype=int) @ chosen),
+        "edge_card": int(chosen.sum()),
+        "internal_edge_card": sum(
+            bool(chosen[i]) and u in fiber and v in fiber
+            for i, (u, v) in enumerate(edges)
+        ),
+    }
+
+
+def single_optimum_summary(system: dict, single_optima: dict) -> dict:
     """Expose the strict/tight/excess trichotomy without bulky LP witnesses."""
     costs = {
         str(point): optimum["cost"]
@@ -245,10 +339,39 @@ def single_optimum_summary(single_optima: dict) -> dict:
         for point, optimum in single_optima.items()
         if not optimum["strict"]
     }
+    tight_packings = []
+    for point in tight:
+        optimum = single_optima[point]
+        fiber = set(optimum["support"])
+        primal_weights = [
+            Fraction(weight) for _, weight in optimum["point_prices"]
+        ]
+        dual_edges = [
+            (edge, Fraction(weight))
+            for edge, weight in optimum["_dual_edges"] if weight
+        ]
+        integer_dual = integer_single_dual_packing(system, optimum)
+        tight_packings.append({
+            "point": point,
+            "unit_primal": all(weight == 1 for weight in primal_weights),
+            "primal_support_card": len(primal_weights),
+            "unit_dual": all(weight == 1 for _, weight in dual_edges),
+            "dual_edge_card": len(dual_edges),
+            "internal_dual_edge_card": sum(
+                u in fiber and v in fiber for (u, v), _ in dual_edges
+            ),
+            "integer_optimum_cost": integer_single_optimum_cost(
+                system, optimum),
+            "integer_dual_value": integer_dual["value"],
+            "integer_dual_edge_card": integer_dual["edge_card"],
+            "integer_dual_internal_edge_card": integer_dual[
+                "internal_edge_card"],
+        })
     return {
         "single_fiber_costs": costs,
         "tight_single_points": tight,
         "nonstrict_single_excesses": excesses,
+        "tight_single_packings": tight_packings,
     }
 
 
@@ -342,7 +465,7 @@ def one_model(
                 if genuine_only:
                     answer["genuine_pair_count"] = len(genuine_pairs)
                     answer["strict_single_points"] = strict_single_points
-                    answer.update(single_optimum_summary(single_optima))
+                    answer.update(single_optimum_summary(system, single_optima))
                 if details:
                     answer["outer_payload"] = outer_payload
                     answer["joint_optimum"] = exact_joint_optimum(system, p, q)
@@ -363,7 +486,7 @@ def one_model(
     if genuine_only:
         answer["genuine_pair_count"] = len(genuine_pairs)
         answer["strict_single_points"] = strict_single_points
-        answer.update(single_optimum_summary(single_optima))
+        answer.update(single_optimum_summary(system, single_optima))
     if scan_exact_joint_optima:
         answer["genuine_joint_optima"] = [
             exact_joint_optimum_summary(system, pair, single_optima)
@@ -404,7 +527,7 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
                     "genuine_pair_count": len(genuine_pairs),
                     "strict_single_points": strict_single_points,
                 }
-                answer.update(single_optimum_summary(single_optima))
+                answer.update(single_optimum_summary(system, single_optima))
                 if details:
                     answer["joint_optimum"] = exact_joint_optimum(system, p, q)
                     answer["overlap_single_fiber_optima"] = [
@@ -423,7 +546,7 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
         "genuine_pair_count": len(genuine_pairs),
         "strict_single_points": strict_single_points,
     }
-    answer.update(single_optimum_summary(single_optima))
+    answer.update(single_optimum_summary(system, single_optima))
     if scan_exact_joint_optima:
         answer["genuine_joint_optima"] = [
             exact_joint_optimum_summary(system, pair, single_optima)

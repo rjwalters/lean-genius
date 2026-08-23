@@ -288,8 +288,16 @@ than a delicate fractional denominator.  A viable proof target is now:
 classify such saturated unit edge packings under the exceptional-cover
 partition, then show that some second overlap fiber necessarily collides with
 the packing in a way that saves more than its single-fiber excess.  This is
-still fixture-derived; uniform integrality of every tight optimum is not yet
-established.
+still fixture-derived, and the integral dual equality is genuinely not a
+property of arbitrary tight fibers.  The probe now solves separate integer
+primal and dual MILPs for every tight point.  Both tight points in seed 8
+have integral cover cost 27 but maximum integral dual-packing value only 26;
+their rational dual optima reach 27 fractionally.  Seed 7 has a fractional
+primal basis but admits both an integral cost-27 cover and a 25-edge integral
+dual of value 27.  Therefore the useful candidate is narrower still:
+**absence of strict singles forces a tight fiber with an integral saturated
+dual packing**.  The no-strict hypothesis cannot be discarded after the
+tight point has been selected.
 
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
