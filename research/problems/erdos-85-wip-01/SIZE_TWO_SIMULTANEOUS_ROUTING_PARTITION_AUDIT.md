@@ -12904,3 +12904,67 @@ strict export, one atom in each root and port position of the offset
 permutation (777), with adjacent (indeed all) intermediate vertices
 distinct.  What remains is a color/owner constraint on these five labels,
 not a capacity choice among `0/1/2` profiles.
+
+## 253. Each receiving color has an exact ten-by-ten cut census
+
+The five strict exports are distributed among components genuinely different
+from the original curl colors.  Fix
+
+```text
+a notin {c,e,d}.
+```
+
+The root-side argument (779) applies to every vertex of `a`: no label can
+meet two roots of `C`.  Every root has cross degree two into `a`, so the ten
+`C--a` incidences have ten distinct `a` endpoints.  Therefore
+
+```text
+#{z in a:i_z=1}=10.                                  (784)
+```
+
+There is a symmetric pointwise bound on the port side which uses the
+original secondary color `d`.  Two adjacent ports of the cycle `F_c[e][Z]`
+share their `c`-root.  Two nonadjacent ports have cyclic distance two and,
+by the complementary five-cycle normal form (726), share their unique
+`d`-owner vertex.  Thus every pair of distinct ports in `Z` already has a
+common neighbor in `c` or `d`.  Since `a` is different from both colors,
+C4-freeness gives
+
+```text
+j_z=|N_e(z) intersect Z| <= 1       for every z in a. (785)
+```
+
+Every port has cross degree two into `a`, so the same incidence count yields
+
+```text
+#{z in a:j_z=1}=10.                                  (786)
+```
+
+Put `k_a:=N_11^a`, the number of the five strict exports received by color
+`a`.  Equations (784)--(786), together with the absence of `12` and `21`
+cells from (781), give the exact integer census
+
+```text
+N_10^a=N_01^a=10-k_a.                                (787)
+```
+
+This strengthens the parity triangle (732): in the five-port case both
+singleton sectors have the same known cardinality, not merely the same
+parity as the overlap.  The alternating graph `P_a(C,Z)` therefore has
+`k_a` degree-two vertices and exactly `10-k_a` endpoints of each color.
+
+The original secondary component `d` receives no strict export because
+`R_de 1_Z=0` makes every one of its labels have `j_z` even.  Hence (781)
+also gives
+
+```text
+sum_(a notin {c,e,d}) k_a=5.                         (788)
+```
+
+No distribution of the five among receiving colors is asserted.  Equations
+(787)--(788) provide the exact owner-factor capacity that any such color
+distribution must support: a color receiving `k_a` rigid atoms must also
+carry `10-k_a` root-only and `10-k_a` port-only cut labels.  The remaining
+terminal is to show that these ten-by-ten cut systems cannot realize the
+offset five-atom routing permutation while respecting the simultaneous
+owner factors and their outside endpoints.
