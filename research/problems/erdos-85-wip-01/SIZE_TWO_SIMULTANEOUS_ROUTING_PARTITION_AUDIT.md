@@ -11526,14 +11526,53 @@ Reversal fixes the middle port state and exchanges the two root states:
 ```
 
 The orbit has no fixed member because the two root-label sets are disjoint
-and nonempty.  After the reductions above, the remaining `00` theorem is
-therefore precisely even occupancy of the reversal orbits (698), restricted
-to marked shore-`00` H edges and corrected by the inactive owner cells.
+and nonempty.  This locates the oriented unit, but it does **not** make even
+occupancy of each fully private orbit a justified target: privacy may prevent
+a second physical occurrence from carrying the reversed state at all.
 
 This is a strict narrowing of the original target (573): `11` is paid
 pointwise, `10` is an opposite-pole boundary, `01` has the double-residual
-flag expansion, and `00` has the private `P_d(p)` reversal flag.  The latter
+flag expansion, and `00` has the private `P_d(p)` oriented flag.  The latter
 is the only class with no shore-incidence carrier; it is not the only class
 whose carrier still needs transport.  Equation (697) locates its unit.  The
-still-unproved input is the joint V/S owner-route relation that transports
-the `10` endpoints and `01` flags and pairs the two orientations in (698).
+still-unproved input is a joint V/S owner-route relation on a quotient coarse
+enough to admit cancellation while retaining the marked character.
+
+## 227. Full privacy forbids literal reversal-orbit cancellation
+
+The distinction just made is forced.  The middle state `P_d(p)` pins the
+physical port `p`.  At that port the auxiliary port involution has one H--H
+pair with the two roots `x,x'`; hence the full data in (698) pin one physical
+H occurrence.  A second occurrence with the reversed state would have the
+same `P_d(p)`, hence the same port, roots, and physical pair.  It is not a
+distinct occurrence in the realized edge census.
+
+Consequently, after choosing an orientation of the dart component,
+
+```text
+each realized H edge occupies exactly one member of its
+full-private reversal orbit.                           (699)
+```
+
+Thus the earlier proposed statement (573), if read literally at the fully
+private occurrence resolution of (570)/(577), would imply that there are no
+H occurrences, not merely that their total parity is even.  No proved route
+identity supplies a second copy of the same private port state, and formal
+duplication by reading the same cycle in both directions would make every
+orbit even tautologically while destroying the grading identity (572).
+
+This exposes the exact privacy--cancellation tradeoff.  Private labels are
+needed to prevent accidental collisions when constructing occurrence maps,
+but the final conservation law cannot demand equality occurrence-by-
+occurrence at the maximally private resolution.  It must pass to a quotient
+that forgets enough identity for distinct route occurrences to pair, while
+remaining injective on the marked diagonal character.  Equivalently, one
+needs a price functional on the private route quotient, not literal even
+occupancy of every orbit.
+
+For the `00` sector, `gamma_q` remains a valid one-hot carrier and (697)
+remains exact.  What is withdrawn is only the overstrong orbitwise endpoint.
+The rigorous terminal is now: construct a V/S owner-route quotient on the
+`P_d`-tagged states, prove the marked `00` price descends, and show its
+aggregate value vanishes.  Failure of descent on a realized relation is the
+localized holonomy branch already encoded by Sections 212--214.
