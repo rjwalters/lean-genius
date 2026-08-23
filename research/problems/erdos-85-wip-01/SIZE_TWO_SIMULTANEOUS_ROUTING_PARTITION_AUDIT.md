@@ -22072,3 +22072,61 @@ four (then six).  Thus the adjacent deep-slack branch reduces further:
 either one named private ticket couples the two high roots to two distinct
 residual endpoints and a legal color transition, or at least one shelter
 is present, except for the single unsheltered `O/O,4+4` boundary profile.
+
+## 412. At `q>=128` holonomy survives inside the full-root sector
+
+The constant matching defect in Section 410 can be removed without losing
+all properly colored cycles.  Let
+
+```text
+S:=O setminus O_5,       s:=|S|.
+```
+
+Every hole incidence counted by `eta` lies on `S`, so (1456) gives the
+exact degree sum
+
+```text
+sum_(o in S)deg_G_sh(o)
+ =5s-(2Delta-5).                                    (1463)
+```
+
+Deleting `S` removes at most this many edges; an edge internal to `S` is
+counted twice and only improves the estimate.  Using (1458),
+
+```text
+|E(G_sh[O_5])|
+ >=(5q-35-Delta)-(5s-(2Delta-5))
+ =5q-40+Delta-5s.                                  (1464)
+```
+
+The induced full-root sector has `|O_5|=2q-15-s` vertices.  Subtract its
+PC-cycle-free Yeo ceiling from (1464):
+
+```text
+|E(G_sh[O_5])|-(2|O_5|-3)
+ >=q-7+Delta-3s
+ >=q+8-5Delta,                                     (1465)
+```
+
+where the last inequality uses `s<=2Delta-5` from (1457).  Hence
+
+```text
+q>5Delta-8
+ -> G_sh[O_5] contains a simple properly colored cycle.          (1466)
+```
+
+Since `Delta<=25`, the right side of (1465) is at least `q-117`.
+Consequently
+
+```text
+every binary q>=128 has a simple all-O unsheltered holonomy
+whose every physical vertex lies in O_5.            (1467)
+```
+
+At each vertex of this cycle all five root matchings are present as
+ordinary unsheltered actions, not only the two cycle edges.  The rooted
+component-color multiplicity cap is two, so those five actions occupy at
+least three exterior colors.  Thus the very-large branch has a clean cycle
+inside a sector with no missing root action and no private, strict, or
+sheltered local exception.  Any remaining obstruction there must use the
+simultaneous five-action/color geometry rather than the bounded hole set.
