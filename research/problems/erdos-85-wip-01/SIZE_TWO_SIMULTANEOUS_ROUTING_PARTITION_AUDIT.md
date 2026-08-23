@@ -24696,3 +24696,55 @@ colors along the same fixed alternating factor.  Boundary vertices may
 join two selected colors and be counted twice, which is exactly why
 (1653), rather than an unjustified `6s` disjointness claim, is the sharp
 unconditional conclusion here.
+
+## 465. Adaptive avoidance packs vertex-disjoint full color traces
+
+The simultaneous source-color avoidance of Section 457 can prevent not
+only reuse of a selected color, but every vertex overlap with earlier
+full traces.  Suppose `j` saturation terminals have already been chosen,
+with pairwise vertex-disjoint four-edge two-root traces and pairwise
+disjoint payer-layer supports.  Let `X_j` be the union of their trace
+vertices.  Each four-edge trace has at most seven vertices by (1647), so
+
+```text
+|X_j|<=7j.                                         (1654)
+```
+
+Let `C_j` be the set of all source colors occurring on an `H`-edge
+incident with `X_j`.  Every vertex of `O_5` has degree five in `H`, hence
+
+```text
+|C_j|<=5|X_j|<=35j.                               (1655)
+```
+
+Also let `P_j` be the union of the earlier selected payer-layer supports;
+then `|P_j|<=2j`.  Apply Section 457 with `C=C_j` and `P=P_j`.  Provided
+
+```text
+1172+110(|C_j|+|P_j|)<=1172+4070j,
+so q>1172+4070j is sufficient.                    (1656)
+```
+
+either an avoided nondegenerate cancellation occurs or a new saturation
+terminal has source color `h notin C_j` and payer support disjoint from
+`P_j`.  Since no `h`-edge is incident with `X_j`, the entire ten-edge
+`h`-fiber avoids `X_j`.  In particular its four-edge trace on the two
+roots of the new saturated pair is vertex-disjoint from every earlier
+trace.  This closes the induction.
+
+Consequently, for every integer `c>=1`,
+
+```text
+q>1172+4070(c-1)
+ -> an avoided nondegenerate tag-even PC cancellation; or
+ -> c saturation terminals with pairwise distinct source colors,
+    pairwise disjoint payer-layer supports, and pairwise vertex-disjoint
+    full four-edge traces on their respective two-root factors. (1657)
+```
+
+The root pair may vary between these traces.  Pigeonholing the ten root
+pairs afterwards shows, for example, that replacing `c` in (1657) by
+`10(t-1)+1` yields `t` vertex-disjoint traces on one fixed root pair at
+the sufficient threshold `q>1172+40700(t-1)`.  This coefficient is
+coarser than the overlapping rainbow fan of Section 459; its distinct
+gain is literal vertex-disjointness of the complete constant-size traces.
