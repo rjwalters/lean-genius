@@ -8,8 +8,9 @@ mass below one is backed by an integral demanded packing at ``w`` which
 avoids ``u``.  Thus the support avoids the canonical reverse-impossible set
 and every canonical reverse-forced candidate has coefficient one.
 
-SAT therefore refutes the prospective assertion that every admissible outer
-design has a strict fractional reverse-interval deficit.  UNSAT is useful
+SAT produces a counterexample in the deliberately relaxed outer abstraction;
+it refutes the full prospective assertion only if the emitted payload is then
+verified against the omitted full-admissibility constraints.  UNSAT is useful
 classification evidence but still needs a checked certificate or a uniform
 proof; UNKNOWN is only a computational boundary.
 """
@@ -251,7 +252,8 @@ def main() -> int:
                     data["add_reverse_pair"](*pair)
                 continue
             print(f"branch={args.branch} result=sat "
-                  "fractional_interval_negation=REFUTED")
+                  "fractional_interval_negation="
+                  "SAT_IN_RELAXED_OUTER_ABSTRACTION")
         support = {
             str(u): {str(w): str(model.eval(mass[u, w]))
                      for w in range(N)
