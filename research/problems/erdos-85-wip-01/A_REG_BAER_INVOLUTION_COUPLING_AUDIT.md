@@ -4028,6 +4028,28 @@ charge.  This is the local label-preserving correction needed to insert the
 fixed switch edges of R into the already audited centerwise ledger
 (73rnz_as)--(73rnz_aw).
 
+The same cancellation is uniform across the two-switch collision.  Let
+`S_(E,G)` be the set of realized leaf--port switches between the pole E and
+residual center G, and let `c_(E,G)=|S_(E,G)| mod 2` as before.  Summing
+(73rnz_cjibbf) over their canonical leaf--G relay edges gives
+
+```text
+sum_(s in S_(E,G)) 1[L_s G in K]
+ = c_(E,G)+sum_(s in S_(E,G)) mu_(L_s,G).
+```
+
+Adding (73rnz_ar), `1[EG in K]=c_(E,G)+rho_(E,G)`, cancels the switch count:
+
+```text
+1[EG in K]+sum_(s in S_(E,G)) 1[L_s G in K]
+ = rho_(E,G)+sum_(s in S_(E,G)) mu_(L_s,G).              (73rnz_cjibka)
+```
+
+This covers zero, one, or two realized switches.  In particular the 6-cycle
+collision contributes two fixed owner relays but no residual constant unit.
+All fixed switch-bearing edges of R are therefore transported into pure
+cross-matching atoms, collision included.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
