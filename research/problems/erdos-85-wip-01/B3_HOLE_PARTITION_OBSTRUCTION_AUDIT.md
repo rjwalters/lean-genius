@@ -1404,7 +1404,11 @@ contain reciprocal flat hole pairs.  Nevertheless all six two-color
 quotients of the two targeted witnesses remain forests.  This is reproduced by
 `--require-eligible-hole-pair --audit-flat-signatures`.  Therefore a proof of
 (12qy) must incorporate the hole alternative; only the pair roles are
-uniformly absent.
+uniformly absent.  An expanded eight-seed run in this adversarial mode
+produced 48 further two-color quotients, 32 with an actual hole-role edge;
+all 48 were forests (five to eighteen nonisolated signatures, at most ten
+simple edges).  This is stronger evidence for the mixed triple/hole terminal,
+not a proof of it.
 
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
