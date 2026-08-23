@@ -20873,3 +20873,72 @@ singleton of Sections 364, 365, and 367, and the cycle has no private-owner
 or strict-loop correction in (1314).  Equations (1370)--(1374) do not yet
 cancel those tags; they supply the linear support and the residual-only
 normal form that the remaining payer-reuse argument must exploit.
+
+## 393. A simple ordinary cycle has an exact tag-mass identity
+
+The simplicity supplied by the properly colored cycle theorem makes the
+rowwise tag price additive without vertex multiplicities.  Let `Q` be a
+simple properly exterior-colored cycle of `M`, let
+
+```text
+L:=|E(Q)|=|V(Q)|,       b_Q:=|V(Q) intersect B|,
+```
+
+and for an edge `y of Q` retain the endpoint count `b(y)` from (1243) and
+the selected tag set `D(y)` from (1245).  Every private vertex of `Q` is an
+endpoint of exactly its two incident cycle edges, while residual vertices
+contribute zero.  Therefore
+
+```text
+sum_(y in E(Q)) b(y)=2b_Q.                          (1375)
+```
+
+Using the exact row price `|D(y)|=3-b(y)` from (1245) gives the cycle-wide
+integer identity
+
+```text
+sum_(y in E(Q)) |D(y)|=3L-2b_Q.                    (1376)
+```
+
+Thus every simple ordinary holonomy carries an odd number of selected tag
+cells exactly when its length is odd, independently of how it passes
+through the ten private vertices.  More importantly, (1376) is an exact
+cell count: it does not identify two cells merely because their payer label
+or payment layer later agrees.
+
+There is also an exact vector specialization.  If `r(y)` is the core root
+of edge `y` and
+
+```text
+a_i(Q):=#{y in E(Q):r(y)=i} mod 2,
+```
+
+then the cycle has neither a strict-loop term nor an uncancelled private
+owner term in (1314).  Consequently
+
+```text
+sum_(y in E(Q))[D(y)]
+ =sum_i a_i(Q)[T_i]              in F_2^Z.          (1377)
+```
+
+Since the five `[T_i]` form the basis (1324), the parity with which every
+root occurs on `Q` is recoverable from the five selected-column parities.
+In particular
+
+```text
+sum_(y in E(Q))[D(y)]=0
+ implies every root occurs evenly and L is even.    (1378)
+```
+
+For the residual-only cycle forced by (1374), `b_Q=0`, so (1376) becomes
+
+```text
+sum_(y in E(Q))|D(y)|=3L.                          (1379)
+```
+
+Hence every binary `q>=32` admits a simple all-`O` ordinary holonomy with
+three literal selected tag cells on every edge and with its complete root-
+frequency parity encoded by (1377).  This sharpens the qualitative tag
+decoration after (1367), but it is still not a cancellation theorem: the
+next step must use the offset-payer distinctness and shelter bound of
+Sections 367--369 to convert these cells into new geometry.
