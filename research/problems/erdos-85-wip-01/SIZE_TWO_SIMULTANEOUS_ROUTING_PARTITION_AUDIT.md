@@ -19141,11 +19141,12 @@ B--O: two tags;
 O--O: three tags.                                  (1246)
 ```
 
-Each tagged cell has an actual intermediate.  Within one row these
-intermediates are distinct: an exterior intermediate cannot meet two
-selected ports by the pointwise bound (785) (and the original secondary
-component has no selected incidence at all).  Thus (1246) counts literal
-payment vertices, not only occupied columns with possible internal reuse.
+Each tagged cell has a unique actual intermediate in its displayed product.
+For payment layers outside the distinguished secondary component `d`, the
+intermediates at different selected columns are distinct by the pointwise
+bound (785).  No such distinctness is asserted in layer `d`: a `d`-label
+may have two selected neighbors.  Thus (1246) counts exact tagged cells;
+only outside `d` does it also count distinct payment vertices.
 
 Section 349 is precisely the `B--B` line of (1246).  The other two lines
 show that allowing the propagation cycle to enter the residual sector does
