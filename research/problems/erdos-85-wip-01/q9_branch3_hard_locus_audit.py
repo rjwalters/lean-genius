@@ -35,6 +35,7 @@ def audit(system: dict) -> dict:
     holes_begin = N_TRIPLE - 2
     distinct_class = []
     concurrent = []
+    concurrent_shared_point = []
     for hole in range(holes_begin, N_TRIPLE):
         for first_class, second_class in ((0, 1), (0, 2), (1, 2)):
             for first in range(8 * first_class, 8 * first_class + 8):
@@ -67,8 +68,26 @@ def audit(system: dict) -> dict:
                             "margin": certificate["margin"],
                             "row_prices": certificate["row_prices"],
                         })
+                        shared_result = dual(
+                            system, {hole, first, second},
+                            external_point=common_points[0],
+                        )
+                        if shared_result.success:
+                            shared_certificate = exact_certificate(
+                                system, shared_result
+                            )
+                            if shared_certificate is not None:
+                                concurrent_shared_point.append({
+                                    "hole": hole,
+                                    "regular_rows": [first, second],
+                                    "common_point": common_points[0],
+                                    "margin": shared_certificate["margin"],
+                                    "row_prices":
+                                        shared_certificate["row_prices"],
+                                })
     minimum_support = (
-        None if concurrent else sorted(minimum_row_support(system))
+        None if concurrent_shared_point
+        else sorted(minimum_row_support(system))
     )
     return {
         "strict_one_row_count": len(one_row),
@@ -79,9 +98,11 @@ def audit(system: dict) -> dict:
         "distinct_class_three_row_certificates": distinct_class,
         "concurrent_three_row_count": len(concurrent),
         "concurrent_three_row_certificates": concurrent,
+        "concurrent_shared_point_count": len(concurrent_shared_point),
+        "concurrent_shared_point_certificates": concurrent_shared_point,
         "minimum_row_support_if_no_concurrent": minimum_support,
         "support_at_most_two_or_concurrent": (
-            bool(concurrent)
+            bool(concurrent_shared_point)
             or minimum_support is not None and len(minimum_support) <= 2
         ),
     }

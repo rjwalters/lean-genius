@@ -655,6 +655,17 @@ computes the exact minimum support only when the concurrent horn is absent.
 This is now the preferred finite selector target: arbitrary one/two-row
 global obstruction, or one of 18 concurrent exceptional triples.
 
+The concurrent horn matches the direct coupled-packing consumer exactly.
+Rerunning its dual with every point price outside the three supported rows
+forced onto their common point preserves all hard certificates: restricted
+counts remain `8,4,1,5,0`.  The hard-locus tool now reports
+`concurrent_shared_point_count` and bases the support-two disjunction on this
+restricted exact certificate, not merely on an arbitrary three-row dual.
+By LP duality, its primal is three separate local fractional point packings
+with the three pairwise common-neighbor collision capacities.  The banked
+Lean theorem `false_of_threeConcurrentRowsCoupledPackingBound` consumes
+precisely a strict weighted bound on that primal.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
