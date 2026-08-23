@@ -10540,10 +10540,10 @@ prove the occurrence-level price identification (628), equating the realized
 H/S payment with this vanishing complement.  Equations (632)--(635) close
 the cover side of that identity; they do not prove its H/S side.
 
-## 206. The `11` complement is not presently an H/S occurrence ledger
+## 206. Internal T-neighbors cannot attach through V labels
 
-The same containment used in (634) exposes a missing coordinate map.  If
-`r` lies in defect component `c`, then
+The same containment used in (634) exposes the coordinate map that remains
+to be built.  If `r` lies in defect component `c`, then
 
 ```text
 N_T(r) subset c,                                      (636)
@@ -10551,37 +10551,40 @@ N_T(r) subset c,                                      (636)
 
 because `T subset D`.  By contrast, a resolved V label at `r` is an
 intermediate vertex in an exterior component `d` of a rooted triangle, with
-`d` distinct from the root/port components in the SRP block.  The H and S
-decorations record owner-run and fiber-switch states of those incidence
-darts; they do not, in the current construction, select an individual
-same-component T-neighbor from (636).
+`d` distinct from the root/port components in the SRP block.  Therefore the
+attachment cannot be the identity map on V route labels.
 
-Therefore the perfect-matching complement introduced in Sections 198--203
-is an **auxiliary Baer completion**, not a proved decomposition of the
-realized H/S occurrences.  In particular, the target (628)
+The perfect-matching complement introduced in Sections 198--203 is an
+**auxiliary Baer completion**, not yet a proved decomposition of the realized
+H/S occurrences.  Its right side in (628) is a sum over internal T-neighbors,
+so its left side must be manufactured from the H/S owner and port
+decorations.  The global vanishing (635) cannot imply marked parity before
+that map is constructed.
+
+There is one concrete candidate already present in the H alphabet.  An H
+dart at root `x` retains the horizontal owner edge labelled by its port; its
+opposite root `x'` lies in the same defect component.  Since that horizontal
+edge belongs to `A_c`, it is an internal A-edge of the D-component and hence
 
 ```text
-H/S payment at r = Lambda_T(r)
+x' in N_T(x).                                         (637)
 ```
 
-has no occurrence-level map in the present corpus.  Its right side is a sum
-over internal T-neighbors, while its left side would have to be manufactured
-from owner/port decorations.  The global vanishing (635) cannot be used to
-deduce marked parity without first constructing that missing map.
+Thus H owner mates, not V route labels, have the correct endpoint type for
+(628).  What is not yet proved is the coverage statement: as the owner color
+and dart cycles vary, do these H mates enumerate every `N_T(x)` endpoint
+with the multiplicity required by `Lambda_T(x)`?  Port witnesses and S
+switches require the analogous audit.
 
-This is a genuine no-go for the direct additive-potential import.  Sections
-197--205 prove that, **if** an H/S-to-complement attachment exists, all of its
-completion, T-word, pairing, and cover gauges cancel.  They do not prove the
-attachment itself, and (636) shows it cannot be the identity map on route
-labels.
-
-The live choices are consequently exact:
+Sections 197--205 prove that, **if** this H/S-to-complement attachment exists,
+all of its completion, T-word, pairing, and cover gauges cancel.  The live
+choices are consequently exact:
 
 ```text
-(a) construct a new incidence correspondence sending each internal
-    T-neighbor occurrence to a private H/S state and verify (628); or
+(a) prove the H-owner-mate coverage suggested by (637), construct its
+    port/S companion, and verify (628); or
 (b) abandon the Baer complement as a direct SRP price and prove scalar
-    H/S cancellation inside the full state cycle by another invariant. (637)
+    H/S cancellation inside the full state cycle by another invariant. (638)
 ```
 
 Any cross-lane use of the active-residual census must meet the same test: it
