@@ -22516,3 +22516,57 @@ five ordinary unsheltered root actions, while every cycle edge has its
 distinct core-inactive payer.  Thus neither the distinguished double-payer
 component, the five strict-export colors, nor any fixed bounded set of
 payer layers can control full-root holonomy in the large binary branch.
+
+## 420. Color-new exits give external vertex expansion
+
+The uniform escape in Section 418 converts the edge boundary of a shortest
+clean holonomy into a vertex boundary.  Let `Q` have length `ell>=5`.  At
+each `v in V(Q)`, choose one boundary edge
+
+```text
+f_v=v w_v
+```
+
+whose root is unused by the internal edges at `v` and whose exterior color
+is different from both incident cycle colors, as guaranteed by (1489).
+Suppose two chosen exits `f_u,f_v` have the same outside endpoint `w` but
+different exterior colors.  Join `u` to `v` along the shorter of the two
+arcs of `Q`.  The resulting two-edge ear cycle has length at most
+
+```text
+floor(ell/2)+2<ell.                               (1496)
+```
+
+All transitions internal to the arc are proper.  At `u` and `v` they are
+proper because the chosen exit color is new against both incident cycle
+colors; at `w` they are proper by the assumed difference of the two exit
+colors.  This contradicts the minimality of `Q`.  Therefore
+
+```text
+w_u=w_v -> color(f_u)=color(f_v).                 (1497)
+```
+
+The exterior component-color degree cap is two.  Hence no outside vertex
+can receive three chosen exits: (1497) would give all three the same color,
+violating that cap.  Consequently the chosen root-new/color-new exits obey
+
+```text
+#{w_v:v in V(Q)} >= ceil(ell/2).                  (1498)
+```
+
+Moreover, whenever equality is lost locally through a collision, the two
+colliding exits form a monochromatic pair at their outside endpoint.  They
+still have different root types, since each root class is a matching.
+Thus every shortest clean holonomy of length at least five has linear
+external **vertex** expansion, with the only permitted two-to-one merging
+explicitly typed:
+
+```text
+same outside endpoint and same exterior color,
+but two distinct complementary roots.             (1499)
+```
+
+Cycles of length three or four remain a bounded local alternative because
+the ear in (1496) need not be strictly shorter there.  Beyond that finite
+case, the simultaneous five-action escape cannot be absorbed by a bounded
+set of outside companions.
