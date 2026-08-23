@@ -4904,6 +4904,51 @@ cross-witness route quotient, compatibly for both choices.  Equations
 (73rnz_cjibkzo)--(73rnz_cjibkzq) prove that no further
 local switch enumeration can substitute for that transport theorem.
 
+The same-side marked-H correction has a tempting but only conditional map
+to the existing `rho^tri` channel.  Let a marked H occurrence have roots
+`x,x'` and port witness p.  Sections 207--208 give
+
+```text
+xx' in A setminus T,   p is the unique triangle witness of xx'.
+```
+
+For fixed empty pole `E_i` and residual full center G, this H edge is a
+literal atom of `rho^tri_(E_i,G)` exactly when, up to reversing x and x',
+
+```text
+x in N_A(E_i) and x' in N_A(G).                       (73rnz_cjibkzr)
+```
+
+Indeed (73rnz_cjibkzr) puts `xx'` in the
+`N_A(E_i)`--`N_A(G)` cross matching, while its triangle witness p makes its
+middle T-bit zero; (73rnz_cjibku) then identifies the same canonical `00`
+P-edge.  Conversely every `rho^tri` identification supplies precisely these
+two shore incidences.
+
+Condition (73rnz_cjibkzr) is not contained in the currently retained H state
+`Xi_H=(x,x',p,00,b-word,subtypes,roles c,c,e)`.  The component roles say
+which entries are roots and port; they do not name an empty pole and residual
+center adjacent to the two roots.  Nor do they prove that a possible tuple
+`(E_i,G,orientation)` is unique.  Therefore there is no unconditional map
+from a same-side H occurrence to a `rho^tri` owner atom from the present
+alphabet.
+
+Split the marked same-side census accordingly into occurrences having
+exactly one shore-anchor tuple satisfying (73rnz_cjibkzr) and the remainder
+(zero or more than one such tuple):
+
+```text
+omega_same=omega_same^rho+omega_same^unanch.           (73rnz_cjibkzs)
+```
+
+Only `omega_same^rho` canonically enters the already proved
+`rho^same -> delta_G -> Delta` chain, and even that use must retain its chosen
+pole owner.  The exact new transport task is therefore either to prove a
+unique-shore anchoring theorem that kills `omega_same^unanch`, or to extend
+the occurrence alphabet and route quotient by an additional anchor
+incidence.  Triangle/canonical-pair geometry alone cannot absorb the
+same-side correction.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
