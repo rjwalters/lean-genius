@@ -10399,3 +10399,54 @@ sector altogether and leaves a cleaner complement: canonical `00` pairs
 have zero K-price/additive `lambda` defect, while the added `11` pairs carry
 the broken-T matching price.  The remaining H/S aggregate identity must
 show that the realized non-V decorations pay exactly that `11` complement.
+
+## 203. The uncovered `11` population is exactly the T-neighbor set
+
+Fix a witness `r`.  By (623), every endpoint used by `M_V(r)` lies in
+`N_A(r) setminus N_T(r)`.  Therefore no T-neighbor is removed by the realized
+V matching, and the uncovered endpoint population splits canonically as
+
+```text
+N_T(r)
+  disjoint union
+((N_A(r) setminus N_T(r)) setminus W_r).              (625)
+```
+
+The first set is the entire `11` sector and has even cardinality
+`deg_T(r)`; the second is the residual `00` sector and is also even by
+(611).  Thus a typed completion pairs these two sets separately.  Pairing
+choices inside either sector do not affect the additive total (609).
+
+In the Baer cut-potential branch, the scalar price of the `11` complement is
+the endpoint sum
+
+```text
+Lambda_T(r):=sum_(y in N_T(r)) lambda(y).              (626)
+```
+
+Equivalently, under any owner-adapted pairing of `N_T(r)`, it is the sum of
+the broken-pair prices `1+mu` from (73rnz_cjibkr).  This is independent of
+that pairing by (609).
+
+The `00` complement needs no new internal price law.  On the full non-T
+population, the canonical `iota_r` pairing has zero price edgewise, so
+
+```text
+sum_(y in N_A(r) setminus N_T(r)) lambda(y)=0.         (627)
+```
+
+Consequently the endpoint sum on the residual `00` complement equals the
+endpoint sum already used by `M_V(r)`; the two cancel when the actual V
+matching and its complement are combined.
+
+Thus (612) has only one genuinely new scalar term, `Lambda_T(r)`.  The final
+local price attachment is exactly
+
+```text
+audited H/S payment at r = Lambda_T(r),                (628)
+```
+
+with the V contribution removed by (627) and the previously proved boundary
+transports.  Equation (628) is a target, not yet an identity.  It states the
+remaining additive interface on a canonical endpoint population, with all
+completion and pairing choices eliminated.
