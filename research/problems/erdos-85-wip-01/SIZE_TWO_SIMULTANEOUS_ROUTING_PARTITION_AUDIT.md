@@ -4174,3 +4174,46 @@ color-incidence refinement must therefore use a functional outside
 `span{1_(x_-),1_(x_+)}` (or couple several gap steps so that their run-edge
 defects cancel); merely reweighting the two roots cannot identify or pair
 their route colors.
+
+## 76. Boundary localization forces a two-periodic mark profile
+
+There is an exact uniqueness statement behind the alternating profile of
+Section 61.  For a run written as in (201), give its edge marks arbitrary
+scalar coefficients `gamma_1,...,gamma_ell` and put
+
+```text
+Delta_gamma := sum_(i=1)^ell gamma_i delta_i.
+```
+
+For every deep interior label `p_j`, with `2 <= j <= ell-1`, its coefficient
+in `Delta_gamma` is
+
+```text
+gamma_(j-1) - gamma_(j+1).                             (251)
+```
+
+Consequently `Delta_gamma` is supported only on the two labels nearest each
+boundary if and only if
+
+```text
+gamma_(i+2) = gamma_i       for 1 <= i <= ell-2.       (252)
+```
+
+Thus every boundary-local profile is two-periodic: all odd-indexed marks
+have one coefficient `gamma_odd` and all even-indexed marks have one
+coefficient `gamma_even`.  The diagonal choice
+`gamma_odd=gamma_even` is precisely the unweighted, parity-blind mode (203).
+The anti-diagonal choice `gamma_even=-gamma_odd` is precisely the alternating
+mode (204).  Over a coefficient ring in which `2` is invertible these two
+modes span the full boundary-local space.  Integrally, (252) is the sharper
+lattice statement and requires no division.
+
+In particular, if the coefficients are restricted to signs and the profile
+is not constant, then (252) forces the alternating profile up to a global
+sign.  Hence (204) is the unique sign-valued boundary localization that can
+retain run parity; every other sign choice leaves an interior port label.
+Combined with Section 75, this removes arbitrary diagonal choices from the
+remaining search.  Any closing functional using only boundary-local signed
+marks has the fixed alternating root phase, and all additional information
+must enter through off-diagonal roots, actual source ports, or color-specific
+transport.
