@@ -159,26 +159,22 @@ theorem orderNine_two_articulation_side_orders
 
 /-- Decidable bundle for the two-shore beta classification. -/
 def orderNineTwoShoreBetaAdmissible
-    (e : Fin 6) (k b₁ b₂ b₃ : Fin 10) : Prop :=
+    (e : Fin 6) (k : Fin 10) (b₁ b₂ b₃ : Fin 11) : Prop :=
   e.1 + 8 * k.1 ≤ (5 - e.1) + 8 * (9 - k.1) ∧
   orderNineArticulationSideParameterType e.1 k.1 ∧
   orderNineArticulationSideParameterType (5 - e.1) (9 - k.1) ∧
   b₁.1 + b₂.1 + b₃.1 = 3 * k.1 ∧
   orderNineNearRegularCutLower (e.1 + 8 * k.1) b₁.1 b₂.1 b₃.1 ≤ e.1 ∧
   orderNineNearRegularCutLower (78 - (e.1 + 8 * k.1))
-    (10 - b₁.1) (10 - b₂.1) (10 - b₃.1) ≤ e.1 ∧
-  orderNineNearRegularCutLower ((5 - e.1) + 8 * (9 - k.1))
-    (10 - b₁.1) (10 - b₂.1) (10 - b₃.1) ≤ 5 - e.1 ∧
-  orderNineNearRegularCutLower (78 - ((5 - e.1) + 8 * (9 - k.1)))
-    b₁.1 b₂.1 b₃.1 ≤ 5 - e.1
+    (10 - b₁.1) (10 - b₂.1) (10 - b₃.1) ≤ e.1
 
-instance (e : Fin 6) (k b₁ b₂ b₃ : Fin 10) :
+instance (e : Fin 6) (k : Fin 10) (b₁ b₂ b₃ : Fin 11) :
     Decidable (orderNineTwoShoreBetaAdmissible e k b₁ b₂ b₃) := by
   unfold orderNineTwoShoreBetaAdmissible orderNineArticulationSideParameterType
   infer_instance
 
 def orderNineTwoShoreBetaClassification
-    (e : Fin 6) (k b₁ b₂ b₃ : Fin 10) : Prop :=
+    (e : Fin 6) (k : Fin 10) (b₁ b₂ b₃ : Fin 11) : Prop :=
   (e.1 = 2 ∧ k.1 = 2 ∧
     ((b₁.1 = 2 ∧ b₂.1 = 2 ∧ b₃.1 = 2) ∨
      (b₁.1 = 1 ∧ b₂.1 = 2 ∧ b₃.1 = 3) ∨
@@ -190,7 +186,7 @@ def orderNineTwoShoreBetaClassification
   (e.1 = 3 ∧ k.1 = 3 ∧ b₁.1 = 3 ∧ b₂.1 = 3 ∧ b₃.1 = 3) ∨
   (e.1 = 2 ∧ k.1 = 4 ∧ b₁.1 = 4 ∧ b₂.1 = 4 ∧ b₃.1 = 4)
 
-instance (e : Fin 6) (k b₁ b₂ b₃ : Fin 10) :
+instance (e : Fin 6) (k : Fin 10) (b₁ b₂ b₃ : Fin 11) :
     Decidable (orderNineTwoShoreBetaClassification e k b₁ b₂ b₃) := by
   unfold orderNineTwoShoreBetaClassification
   infer_instance
@@ -204,18 +200,14 @@ equality-shore arguments. -/
 theorem orderNine_two_articulation_side_beta_classification
     (e k b₁ b₂ b₃ : ℕ)
     (heBound : e ≤ 5) (hkBound : k ≤ 9)
-    (hb₁Bound : b₁ ≤ 9) (hb₂Bound : b₂ ≤ 9) (hb₃Bound : b₃ ≤ 9)
+    (hb₁Bound : b₁ ≤ 10) (hb₂Bound : b₂ ≤ 10) (hb₃Bound : b₃ ≤ 10)
     (hsmall : e + 8 * k ≤ (5 - e) + 8 * (9 - k))
     (htype : orderNineArticulationSideParameterType e k)
     (htypeCompl : orderNineArticulationSideParameterType (5 - e) (9 - k))
     (hbeta : b₁ + b₂ + b₃ = 3 * k)
     (hcut : orderNineNearRegularCutLower (e + 8 * k) b₁ b₂ b₃ ≤ e)
     (hcutCompl : orderNineNearRegularCutLower (78 - (e + 8 * k))
-      (10 - b₁) (10 - b₂) (10 - b₃) ≤ e)
-    (hotherCut : orderNineNearRegularCutLower ((5 - e) + 8 * (9 - k))
-      (10 - b₁) (10 - b₂) (10 - b₃) ≤ 5 - e)
-    (hotherCutCompl : orderNineNearRegularCutLower
-      (78 - ((5 - e) + 8 * (9 - k))) b₁ b₂ b₃ ≤ 5 - e) :
+      (10 - b₁) (10 - b₂) (10 - b₃) ≤ e) :
     (e = 2 ∧ k = 2 ∧
       ((b₁ = 2 ∧ b₂ = 2 ∧ b₃ = 2) ∨
        (b₁ = 1 ∧ b₂ = 2 ∧ b₃ = 3) ∨
@@ -228,18 +220,18 @@ theorem orderNine_two_articulation_side_beta_classification
     (e = 2 ∧ k = 4 ∧ b₁ = 4 ∧ b₂ = 4 ∧ b₃ = 4) := by
   let ef : Fin 6 := ⟨e, by omega⟩
   let kf : Fin 10 := ⟨k, by omega⟩
-  let b₁f : Fin 10 := ⟨b₁, by omega⟩
-  let b₂f : Fin 10 := ⟨b₂, by omega⟩
-  let b₃f : Fin 10 := ⟨b₃, by omega⟩
+  let b₁f : Fin 11 := ⟨b₁, by omega⟩
+  let b₂f : Fin 11 := ⟨b₂, by omega⟩
+  let b₃f : Fin 11 := ⟨b₃, by omega⟩
   have hterminal :
-      ∀ (e : Fin 6) (k : Fin 10) (b₁ b₂ b₃ : Fin 10),
+      ∀ (e : Fin 6) (k : Fin 10) (b₁ b₂ b₃ : Fin 11),
         orderNineTwoShoreBetaAdmissible e k b₁ b₂ b₃ →
         orderNineTwoShoreBetaClassification e k b₁ b₂ b₃ := by
     set_option maxHeartbeats 10000000 in
     set_option maxRecDepth 100000 in
       decide
   have hout := hterminal ef kf b₁f b₂f b₃f ⟨hsmall, htype, htypeCompl,
-    hbeta, hcut, hcutCompl, hotherCut, hotherCutCompl⟩
+    hbeta, hcut, hcutCompl⟩
   exact hout
 
 /-- Any finite articulation decomposition exhausting the five exceptional

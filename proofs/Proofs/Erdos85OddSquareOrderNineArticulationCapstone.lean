@@ -14,6 +14,24 @@ namespace Erdos85
 
 noncomputable section
 
+def orderNineArticulationSmallShoreBetaType
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ : V) (S : Finset V) : Prop :=
+  let b₁ := (G.neighborFinset h₁ ∩ S).card
+  let b₂ := (G.neighborFinset h₂ ∩ S).card
+  let b₃ := (G.neighborFinset h₃ ∩ S).card
+  (S.card = 18 ∧
+    ((b₁ = 2 ∧ b₂ = 2 ∧ b₃ = 2) ∨
+     (b₁ = 1 ∧ b₂ = 2 ∧ b₃ = 3) ∨
+     (b₁ = 1 ∧ b₂ = 3 ∧ b₃ = 2) ∨
+     (b₁ = 2 ∧ b₂ = 1 ∧ b₃ = 3) ∨
+     (b₁ = 2 ∧ b₂ = 3 ∧ b₃ = 1) ∨
+     (b₁ = 3 ∧ b₂ = 1 ∧ b₃ = 2) ∨
+     (b₁ = 3 ∧ b₂ = 2 ∧ b₃ = 1))) ∨
+  (S.card = 27 ∧ b₁ = 3 ∧ b₂ = 3 ∧ b₃ = 3) ∨
+  (S.card = 34 ∧ b₁ = 4 ∧ b₂ = 4 ∧ b₃ = 4)
+
 /-- Graph/profile-level articulation capstone.  The standard three-high
 setup is explicit here so the final actual-profile wrapper can reuse the
 same setup already built for ordinary-defect connectivity. -/
@@ -56,7 +74,9 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
        (S.card = 27 ∧ T.card = 50) ∨
        (S.card = 50 ∧ T.card = 27) ∨
        (S.card = 34 ∧ T.card = 43) ∨
-       (S.card = 43 ∧ T.card = 34)) := by
+       (S.card = 43 ∧ T.card = 34)) ∧
+      (orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ S ∨
+       orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ T) := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -93,7 +113,18 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
       X.Nonempty → X ⊆ U →
       (∀ x ∈ X, D.neighborFinset x ∩ U ⊆ X) →
       ∃ k : ℕ, X.card = (E ∩ X).card + 8 * k ∧
-        orderNineArticulationSideParameterType (E ∩ X).card k := by
+        orderNineArticulationSideParameterType (E ∩ X).card k ∧
+        (G.neighborFinset h₁ ∩ X).card +
+          (G.neighborFinset h₂ ∩ X).card +
+          (G.neighborFinset h₃ ∩ X).card = 3 * k ∧
+        orderNineNearRegularCutLower X.card
+          (G.neighborFinset h₁ ∩ X).card
+          (G.neighborFinset h₂ ∩ X).card
+          (G.neighborFinset h₃ ∩ X).card ≤ (E ∩ X).card ∧
+        orderNineNearRegularCutLower (78 - X.card)
+          (10 - (G.neighborFinset h₁ ∩ X).card)
+          (10 - (G.neighborFinset h₂ ∩ X).card)
+          (10 - (G.neighborFinset h₃ ∩ X).card) ≤ (E ∩ X).card := by
     intro X hXnonempty hXsub hXclosed
     have hXsubO : X ⊆ O := fun x hx => (Finset.mem_erase.mp (hXsub hx)).2
     have hXproperO : X.card < O.card := by
@@ -175,14 +206,18 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
         _ = (G.neighborFinset h).card - 1 := Finset.card_erase_of_mem
           ((G.mem_neighborFinset h owner).mpr hOwnerAdj)
         _ = 9 := by rw [G.card_neighborFinset_eq_degree, hdegHigh h hh]
-    exact squareOrderNine_threeHigh_secondProfile_shore_parameter_type_of_cut_bounds
+    obtain ⟨k, hkorder, hktype, hkbeta⟩ :=
+      squareOrderNine_threeHigh_secondProfile_shore_parameter_type_of_cut_bounds
       G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
       h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH howner X hXsub
       hXproper78 hXclosed hEmeet
       (hb h₁ (by simp)) (hb h₂ (by simp)) (hb h₃ (by simp))
       hcutBounds.1 hcutBounds.2
-  obtain ⟨kS, hSorder, hStype⟩ := hclassify S hSnonempty hSsubU hSclosed
-  obtain ⟨kT, hTorder, hTtype⟩ := hclassify T hTnonempty hTsubU hTclosed
+    exact ⟨k, hkorder, hktype, hkbeta, hcutBounds.1, hcutBounds.2⟩
+  obtain ⟨kS, hSorder, hStype, hSbeta, hScut, hScutCompl⟩ :=
+    hclassify S hSnonempty hSsubU hSclosed
+  obtain ⟨kT, hTorder, hTtype, hTbeta, hTcut, hTcutCompl⟩ :=
+    hclassify T hTnonempty hTsubU hTclosed
   have hEsubU : E ⊆ U := by
     intro x hxE
     have hxB0 := (Finset.mem_inter.mp hxE).2
@@ -220,7 +255,72 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
     (by simpa [orderNineArticulationSideParameterType] using hStype)
     (by simpa [orderNineArticulationSideParameterType] using hTtype)
     heSum hkSum
-  refine ⟨S, T, hUnion, hDisjoint, ?_⟩
+  have hsmallBeta :
+      orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ S ∨
+      orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ T := by
+    by_cases hST : S.card ≤ T.card
+    · left
+      have hc := orderNine_two_articulation_side_beta_classification
+        (E ∩ S).card kS
+        (G.neighborFinset h₁ ∩ S).card
+        (G.neighborFinset h₂ ∩ S).card
+        (G.neighborFinset h₃ ∩ S).card
+        (by omega) (by omega)
+        (by
+          have hle := Finset.card_le_card (Finset.inter_subset_left :
+            G.neighborFinset h₁ ∩ S ⊆ G.neighborFinset h₁)
+          rw [G.card_neighborFinset_eq_degree, hdegHigh h₁ (by simp)] at hle
+          exact hle)
+        (by
+          have hle := Finset.card_le_card (Finset.inter_subset_left :
+            G.neighborFinset h₂ ∩ S ⊆ G.neighborFinset h₂)
+          rw [G.card_neighborFinset_eq_degree, hdegHigh h₂ (by simp)] at hle
+          exact hle)
+        (by
+          have hle := Finset.card_le_card (Finset.inter_subset_left :
+            G.neighborFinset h₃ ∩ S ⊆ G.neighborFinset h₃)
+          rw [G.card_neighborFinset_eq_degree, hdegHigh h₃ (by simp)] at hle
+          exact hle)
+        (by omega) hStype (by convert hTtype using 1 <;> omega)
+        hSbeta (by rw [← hSorder]; exact hScut)
+        (by rw [← hSorder]; exact hScutCompl)
+      unfold orderNineArticulationSmallShoreBetaType
+      rcases hc with ⟨he, hk, hb⟩ | ⟨he, hk, hb⟩ | ⟨he, hk, hb⟩
+      · exact Or.inl ⟨by omega, hb⟩
+      · exact Or.inr (Or.inl ⟨by omega, hb⟩)
+      · exact Or.inr (Or.inr ⟨by omega, hb⟩)
+    · right
+      have hTS : T.card ≤ S.card := by omega
+      have hc := orderNine_two_articulation_side_beta_classification
+        (E ∩ T).card kT
+        (G.neighborFinset h₁ ∩ T).card
+        (G.neighborFinset h₂ ∩ T).card
+        (G.neighborFinset h₃ ∩ T).card
+        (by omega) (by omega)
+        (by
+          have hle := Finset.card_le_card (Finset.inter_subset_left :
+            G.neighborFinset h₁ ∩ T ⊆ G.neighborFinset h₁)
+          rw [G.card_neighborFinset_eq_degree, hdegHigh h₁ (by simp)] at hle
+          exact hle)
+        (by
+          have hle := Finset.card_le_card (Finset.inter_subset_left :
+            G.neighborFinset h₂ ∩ T ⊆ G.neighborFinset h₂)
+          rw [G.card_neighborFinset_eq_degree, hdegHigh h₂ (by simp)] at hle
+          exact hle)
+        (by
+          have hle := Finset.card_le_card (Finset.inter_subset_left :
+            G.neighborFinset h₃ ∩ T ⊆ G.neighborFinset h₃)
+          rw [G.card_neighborFinset_eq_degree, hdegHigh h₃ (by simp)] at hle
+          exact hle)
+        (by omega) hTtype (by convert hStype using 1 <;> omega)
+        hTbeta (by rw [← hTorder]; exact hTcut)
+        (by rw [← hTorder]; exact hTcutCompl)
+      unfold orderNineArticulationSmallShoreBetaType
+      rcases hc with ⟨he, hk, hb⟩ | ⟨he, hk, hb⟩ | ⟨he, hk, hb⟩
+      · exact Or.inl ⟨by omega, hb⟩
+      · exact Or.inr (Or.inl ⟨by omega, hb⟩)
+      · exact Or.inr (Or.inr ⟨by omega, hb⟩)
+  refine ⟨S, T, hUnion, hDisjoint, ?_, hsmallBeta⟩
   simpa [hSorder, hTorder] using hpairs
 
 #print axioms squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not_connected

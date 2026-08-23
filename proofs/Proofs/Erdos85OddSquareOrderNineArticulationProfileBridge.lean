@@ -565,7 +565,10 @@ theorem squareOrderNine_threeHigh_secondProfile_shore_parameter_type_of_cut_boun
     let B := squareOrderNineLowIncidenceBin G
     let E := D.neighborFinset owner ∩ B 0
     ∃ k : ℕ, S.card = (E ∩ S).card + 8 * k ∧
-      orderNineArticulationSideParameterType (E ∩ S).card k := by
+      orderNineArticulationSideParameterType (E ∩ S).card k ∧
+      (G.neighborFinset h₁ ∩ S).card +
+        (G.neighborFinset h₂ ∩ S).card +
+        (G.neighborFinset h₃ ∩ S).card = 3 * k := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -665,7 +668,7 @@ theorem squareOrderNine_threeHigh_secondProfile_shore_parameter_type_of_cut_boun
       he heBound hkBound hb₁ hb₂ hb₃ hn₀ hparity hsimple
       (by omega) hbeta (by simpa [horder] using hcut)
       (by simpa [horder] using hcutCompl)
-  refine ⟨k, horder, ?_⟩
+  refine ⟨k, horder, ?_, hbeta⟩
   change orderNineArticulationSideParameterType e k
   simpa [orderNineArticulationSideParameterType] using htype
 
