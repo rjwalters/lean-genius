@@ -314,6 +314,28 @@ theorem orderNine_order27_highRoot_neighbors_subset_lowSet
     Finset.inter_subset_left (by omega :
       (G.neighborFinset h).card ≤ (G.neighborFinset h ∩ Z).card))
 
+/-- Any positive high-incidence bin lies in a set containing every high
+root's neighborhood. -/
+theorem orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (i : ℕ) (hi : 0 < i) (Z : Finset V)
+    (hsaturated : ∀ h ∈ squareOrderHighVertices G 9,
+      G.neighborFinset h ⊆ Z) :
+    squareOrderNineLowIncidenceBin G i ⊆ Z := by
+  intro z hz
+  have hzCount := (Finset.mem_filter.mp hz).2
+  have hpos : 0 < (G.neighborFinset z ∩
+      squareOrderHighVertices G 9).card := by
+    rw [show (G.neighborFinset z ∩ squareOrderHighVertices G 9).card = i
+      by exact hzCount]
+    exact hi
+  obtain ⟨h, hh⟩ := Finset.card_pos.mp hpos
+  have hhParts := Finset.mem_inter.mp hh
+  exact hsaturated h hhParts.2
+    ((G.mem_neighborFinset h z).mpr
+      ((G.adj_comm z h).mp ((G.mem_neighborFinset z h).mp hhParts.1)))
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -478,6 +500,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_explicitPartition_of_large_boundary
 #print axioms orderNine_order27_largeShore_profile_package
 #print axioms orderNine_order27_highRoot_neighbors_subset_lowSet
+#print axioms orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
