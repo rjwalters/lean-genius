@@ -14249,3 +14249,46 @@ matchings `M_i`; by exterior color it is the properly root-colored
 ten-edge path/cycle system `H_a^C`.  Any terminal incompatibility must use
 the coherence of these two decompositions together with the target-owner
 return pairing `nu_e`; neither axis separately is contradictory.
+
+## 278. The two-axis union is a simple doubly colored graph
+
+The multigraph qualifier in (875) is unnecessary for the realized union.
+No port pair can support two distinct edges among all the subgraphs
+`H_a^C`.  Such edges would be indexed by two distinct intermediate labels
+which are both common neighbors of the same two ports, creating a
+four-cycle.  The same label cannot occur in two root matchings because
+(779) gives it at most one neighbor in `C`.  Therefore
+
+```text
+K:=union_(i mod 5) M_i=union_(a != c,e) H_a^C
+```
+
+is a simple graph on the actual target fiber `e`.  Its exact degree
+sequence is inherited from (875):
+
+```text
+deg_K(w)=1 on Z,       3 on B,       5 on O,         (877)
+```
+
+and hence
+
+```text
+|E(K)|=5(q-4).                                        (878)
+```
+
+Every edge has two canonical labels.  Its root label `i` records the
+matching `M_i`, and these five classes are proper matchings of `q-4` edges.
+Its exterior label `a` records the factor subgraph `H_a^C`; each exterior
+class has ten edges, exactly two in every root matching:
+
+```text
+|M_i intersect H_a^C|=2.                             (879)
+```
+
+Within an exterior class the root coloring is proper by (866), and the
+class decomposes into the paths and cycles of (862).  Thus the remaining
+five-port data is a doubly colored **simple** graph with fixed degree
+classes `(1,3,5)`, fixed root-color matching sizes, fixed exterior-color
+loads, prescribed strict endpoints, and the independent return pairing
+`nu_e` on `B`.  This formulation removes artificial parallel-edge freedom
+from the finite compatibility problem while retaining both decompositions.
