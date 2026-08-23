@@ -4879,6 +4879,18 @@ consumer `false_of_localGramPackingObstruction_or_twoRowPrice` already has
 exactly this unrestricted scope.  No exceptional-row premise should be
 introduced into that interface.
 
+A weaker, label-free localization remains worth testing.  The unified audit
+now records the number of integral local packings at both ends of every
+infeasible projection and flags whether some such pair has an endpoint with
+at most two packings.  This holds in all three durable price-only fixtures:
+the fractional-not-forced model has counts `(41,1)` and `(1,72)`; the
+fixed-and-joint counterexample has `(2,1)`, `(8,1)`, and `(1,41)`; seed 142
+has several witnesses, including `(2,10)`.  It is not yet a claim: four fresh
+75-second all-row searches at seeds 158--161 all returned `unknown`, so they
+provide no additional models and no evidence for or against the bound.  The
+diagnostic is retained to make the next successful stress batch decide this
+rigidity hypothesis automatically.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

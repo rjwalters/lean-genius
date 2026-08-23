@@ -1229,12 +1229,23 @@ def main() -> None:
         row_support = None
         price_certificate = None
         infeasible_two_row_projections = []
+        infeasible_pair_packing_counts = []
         selected_partial_primal_feasible = None
         proper_subset_partial_primals_feasible = None
         if not has_local_obstruction and not result.success:
             infeasible_two_row_projections = [
                 [u, v] for u, v in combinations(range(N), 2)
                 if not partial_primal(system, {u, v}).success
+            ]
+            infeasible_pair_packing_counts = [
+                {
+                    "rows": [u, v],
+                    "packing_counts": [
+                        local[u]["packing_count"],
+                        local[v]["packing_count"],
+                    ],
+                }
+                for u, v in infeasible_two_row_projections
             ]
             row_support = sorted(minimum_row_support(system))
             selected_partial_primal_feasible = bool(
@@ -1257,6 +1268,14 @@ def main() -> None:
             "minimum_row_support": row_support,
             "infeasible_two_row_projections":
                 infeasible_two_row_projections,
+            "infeasible_pair_packing_counts":
+                infeasible_pair_packing_counts,
+            "exists_infeasible_pair_with_at_most_two_packings": (
+                None if has_local_obstruction else any(
+                    min(record["packing_counts"]) <= 2
+                    for record in infeasible_pair_packing_counts
+                )
+            ),
             "all_infeasible_pairs_contain_exceptional": (
                 None if has_local_obstruction else all(
                     (N_TRIPLE - 4 <= u < N_TRIPLE)
