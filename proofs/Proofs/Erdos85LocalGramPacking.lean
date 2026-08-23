@@ -1854,6 +1854,92 @@ theorem false_of_regularExceptionalCoupledPackingBound
     simp [hdegree exceptional, hexceptionalDegree]
   norm_num [haSum, hbSum] at hlt
 
+/-- Direct primal consumer for three rows through one block point.  Their
+three characteristic residual neighborhoods are feasible fractional local
+packings, and the common point makes them pairwise collision-coupled. -/
+theorem false_of_threeConcurrentRowsCoupledPackingBound
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (r s t : V) (p : P)
+    (hrs : r ≠ s) (hrt : r ≠ t) (hst : s ≠ t)
+    (hpr : p ∈ B r) (hps : p ∈ B s) (hpt : p ∈ B t)
+    (α β γ : ℚ)
+    (hbound : ∀ x y z : V → ℚ,
+      (∀ v, 0 ≤ x v) → (∀ v, 0 ≤ y v) → (∀ v, 0 ≤ z v) →
+      (∀ v, x v ≠ 0 → H r v) →
+      (∀ v, y v ≠ 0 → H s v) →
+      (∀ v, z v ≠ 0 → H t v) →
+      (∀ q, (∑ v ∈ Finset.univ.filter fun w => q ∈ B w, x v) ≤ 1) →
+      (∀ q, (∑ v ∈ Finset.univ.filter fun w => q ∈ B w, y v) ≤ 1) →
+      (∀ q, (∑ v ∈ Finset.univ.filter fun w => q ∈ B w, z v) ≤ 1) →
+      (∀ v, x v + y v ≤ 1) →
+      (∀ v, x v + z v ≤ 1) →
+      (∀ v, y v + z v ≤ 1) →
+      α * ∑ v, x v + β * ∑ v, y v + γ * ∑ v, z v <
+        α * d r + β * d s + γ * d t) :
+    False := by
+  classical
+  let x : V → ℚ := fun v => if A r v then 1 else 0
+  let y : V → ℚ := fun v => if A s v then 1 else 0
+  let z : V → ℚ := fun v => if A t v then 1 else 0
+  have hnotDisjoint (u v : V) (hpu : p ∈ B u) (hpv : p ∈ B v) :
+      ¬ Disjoint (B u) (B v) :=
+    Finset.not_disjoint_iff.mpr ⟨p, hpu, hpv⟩
+  have hWrs : W r s := hshared r s hrs (hnotDisjoint r s hpr hps)
+  have hWrt : W r t := hshared r t hrt (hnotDisjoint r t hpr hpt)
+  have hWst : W s t := hshared s t hst (hnotDisjoint s t hps hpt)
+  have hnonneg (u : V) : ∀ v, 0 ≤ (if A u v then (1 : ℚ) else 0) := by
+    intro v
+    by_cases huv : A u v <;> simp [huv]
+  have hsupp (u : V) : ∀ v,
+      (if A u v then (1 : ℚ) else 0) ≠ 0 → H u v := by
+    intro v hv
+    apply hsupport u v
+    by_contra huv
+    simp [huv] at hv
+  have hcap (u : V) : ∀ q,
+      (∑ v ∈ Finset.univ.filter fun w => q ∈ B w,
+        if A u v then (1 : ℚ) else 0) ≤ 1 := by
+    intro q
+    exact relationIndicator_pointCapacity_of_sharedPoint
+      A W B hsymm hgram hshared u q
+  have hcollision (u v : V) (hWuv : W u v) : ∀ w,
+      (if A u w then (1 : ℚ) else 0) +
+        (if A v w then 1 else 0) ≤ 1 := by
+    intro w
+    by_cases huw : A u w
+    · have hn : ¬ A v w := by
+        intro hvw
+        exact hgram u v w hWuv huw hvw
+      simp [huw, hn]
+    · by_cases hvw : A v w <;> simp [huw, hvw]
+  have hlt := hbound x y z
+    (hnonneg r) (hnonneg s) (hnonneg t)
+    (hsupp r) (hsupp s) (hsupp t)
+    (hcap r) (hcap s) (hcap t)
+    (hcollision r s hWrs) (hcollision r t hWrt)
+    (hcollision s t hWst)
+  have hx : (∑ v, x v) = (d r : ℚ) := by
+    rw [show (∑ v, x v) = ((relationNeighborFinset A r).card : ℚ) by
+      simp [x, relationNeighborFinset]]
+    simp [hdegree r]
+  have hy : (∑ v, y v) = (d s : ℚ) := by
+    rw [show (∑ v, y v) = ((relationNeighborFinset A s).card : ℚ) by
+      simp [y, relationNeighborFinset]]
+    simp [hdegree s]
+  have hz : (∑ v, z v) = (d t : ℚ) := by
+    rw [show (∑ v, z v) = ((relationNeighborFinset A t).card : ℚ) by
+      simp [z, relationNeighborFinset]]
+    simp [hdegree t]
+  rw [hx, hy, hz] at hlt
+  exact (lt_irrefl _ hlt)
+
 /-- End-to-end actual-relation consumer whose row-price dual is supported on
 three named rows, with independent rational weights.  This is the direct
 interface for the branch-3 exceptional/diagonal/incident-class certificate. -/
@@ -2453,6 +2539,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_twoRowSupportPointPriceCertificate
 #print axioms false_of_regularExceptionalFixedPriceCertificate
 #print axioms false_of_regularExceptionalCoupledPackingBound
+#print axioms false_of_threeConcurrentRowsCoupledPackingBound
 #print axioms false_of_threeRowSupportPointPriceCertificate
 #print axioms false_of_twoUnitSupportsPointPriceCertificate
 #print axioms false_of_scaledTwoUnitSupportsPointPriceCertificate
