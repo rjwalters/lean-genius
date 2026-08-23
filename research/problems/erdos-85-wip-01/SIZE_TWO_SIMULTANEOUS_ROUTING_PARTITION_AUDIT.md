@@ -9641,4 +9641,39 @@ Equation (581) is only the type-level automaton.  It does not assert that a
 paired switch excursion has trivial private price—its rooted identifiers
 must remain in the edge state (577).  It removes one possible escape and
 reduces the final problem to V-turns plus two-ended S excursions.
+
+## 186. Each switch excursion is a unique unoriented transfer path
+
+Restrict the auxiliary dart structure to S-decorated darts.  At an S root,
+the rooted budget state is `(S,S)`, and the root involution pairs the two
+darts by the unique `A_e` fiber switch.  At a port, the port involution
+either pairs two S darts internally or pairs an S dart with a V dart at one
+of the mixed edges counted in (581).
+
+Therefore the graph on S darts with root-switch and internal S--S port
+pairings has maximum degree two.  Its components are cycles and paths; the
+path endpoints are exactly the S sides of mixed V--S port edges.  The
+consecutive pairing from Section 185 selects one such path for every switch
+excursion.
+
+There is no choice of route through the component.  Retain on the path its
+ordered list of rooted switch identifiers and internal port states.  Run
+reversal reads the same physical path backward, so after forgetting its
+endpoint orientation the full internal label is unchanged.  Thus an
+excursion has a canonical unoriented transfer tag
+
+```text
+U_S={mixed endpoint 1 -- labeled S path -- mixed endpoint 2}. (582)
+```
+
+Closed S-only components never meet an H-run and contribute no endpoint to
+a mixed gap; they may be audited separately but cannot absorb one member of
+an H reversal orbit.
+
+Contracting (582) loses no internal switch information and introduces no
+pairing gauge.  Any reversal-odd character of an S excursion is entirely
+the orientation of its two V-side endpoints; the internal S path itself is
+an unoriented label.  Hence the final holonomy table can replace arbitrary
+S words by private two-ended transfers and concentrate on how their V
+endpoints join the resolved V-route turns.
 reduces the final table to V-turns plus bounded, two-ended S excursions.
