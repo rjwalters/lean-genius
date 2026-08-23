@@ -155,6 +155,53 @@ theorem exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
     SimpleGraph.ConnectedComponent.mem_supp_of_adj_mem_supp c huSupp huv
   exact Finset.mem_filter.mpr ⟨Finset.mem_univ v, hvSupp⟩
 
+/-- Selection directly in an induced graph, returned as a finset of ambient
+vertices.  A disconnected induced graph has a nonempty proper component not
+containing a chosen owner; its ambient image is relatively neighbor-closed. -/
+theorem exists_nonempty_proper_nonowner_relativeClosedShore_of_induce_not_connected
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (U : Finset V)
+    (owner : {x // x ∈ U})
+    (hnot : ¬ (D.induce (↑U : Set V)).Connected) :
+    ∃ S : Finset V,
+      0 < S.card ∧ S.card < U.card ∧ owner.1 ∉ S ∧ S ⊆ U ∧
+      ∀ x ∈ S, D.neighborFinset x ∩ U ⊆ S := by
+  classical
+  let K := D.induce (↑U : Set V)
+  obtain ⟨S', hSpos, hSlt, howner, hclosed⟩ :=
+    exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
+      K owner hnot
+  let S : Finset V := S'.image Subtype.val
+  have hcard : S.card = S'.card := by
+    dsimp only [S]
+    rw [Finset.card_image_iff.mpr Subtype.val_injective.injOn]
+  have hUcard : Fintype.card {x // x ∈ U} = U.card := by
+    exact Fintype.card_coe U
+  refine ⟨S, by simpa [hcard] using hSpos, ?_, ?_, ?_, ?_⟩
+  · simpa [hcard, hUcard] using hSlt
+  · intro hmem
+    have : owner ∈ S' := by
+      rw [Finset.mem_image] at hmem
+      obtain ⟨z, hz, hzo⟩ := hmem
+      have : z = owner := Subtype.ext hzo
+      simpa [this] using hz
+    exact howner this
+  · intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨z, hz, rfl⟩ := hx
+    exact z.2
+  · intro x hxS y hy
+    rw [Finset.mem_image] at hxS
+    obtain ⟨x', hx'S, rfl⟩ := hxS
+    have hyParts := Finset.mem_inter.mp hy
+    let y' : {x // x ∈ U} := ⟨y, hyParts.2⟩
+    have hyK : y' ∈ K.neighborFinset x' := by
+      rw [K.mem_neighborFinset]
+      change D.Adj x'.1 y'.1
+      exact (D.mem_neighborFinset x'.1 y'.1).mp hyParts.1
+    have hyS' := hclosed x' hx'S hyK
+    exact Finset.mem_image.mpr ⟨y', hyS', rfl⟩
+
 /-- If every vertex of `B₀` has three neighbors in `B₁` and every vertex
 of `B₁` has five neighbors in `B₀`, double-counting the cross edges gives
 the component balance `3 |B₀| = 5 |B₁|`.  At the graph call site the two
@@ -355,6 +402,7 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
 #print axioms sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
 #print axioms two_zeroBoundarySums_of_relative_closed_and_isolated
 #print axioms exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
+#print axioms exists_nonempty_proper_nonowner_relativeClosedShore_of_induce_not_connected
 #print axioms three_mul_card_eq_five_mul_card_of_cross_degrees
 #print axioms three_mul_card_inter_eq_five_mul_card_inter_of_closed_shore
 #print axioms three_mul_card_inter_eq_five_mul_card_inter_of_relative_closed_shore
