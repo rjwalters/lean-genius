@@ -649,11 +649,10 @@ def main() -> None:
             if load[point] == minimum_special_load
         )
         one_row_certificates = []
-        if not valid:
-            for row in range(N):
-                certificate = unit_row_cover_optimum(system, row)
-                if certificate is not None and certificate["strict"]:
-                    one_row_certificates.append(certificate)
+        for row in range(N):
+            certificate = unit_row_cover_optimum(system, row)
+            if certificate is not None and certificate["strict"]:
+                one_row_certificates.append(certificate)
         bad_minimum_points = [
             record["point"] for record in records
             if record["load"] == minimum_special_load
@@ -669,6 +668,7 @@ def main() -> None:
         print("global_special_load_descent=" + json.dumps({
             "valid": valid,
             "one_row_alternative_valid": bool(one_row_certificates),
+            "all_rows_fractionally_feasible": not one_row_certificates,
             "combined_valid": valid or bool(one_row_certificates),
             "localized_minimum_alternative_valid": all(
                 localized_bad_minimum_points[point]
