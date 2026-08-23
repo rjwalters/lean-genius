@@ -6720,3 +6720,50 @@ conservation proof must price: the even two-port actual bundle against the
 odd one-port secondary bundle.  This is the SRP form of the one-slot
 capacity-transfer deficit appearing in the exact B3 certificates
 (12rm)--(12rp).
+
+## 127. Collision blocks form stars of order at most four
+
+For fixed `(c,e,V_j)`, form the bipartite collision graph `G_col`.  Its left
+vertices are actual intermediate labels `y`, its right vertices are
+secondary labels `u`, and `y--u` records that `(y,u)` is a repeated C6
+coordinate of Section 126.
+
+Every left degree is at most one.  Indeed a collision exhausts the two
+`e`-ports of `y` and fixes their two opposite roots `b_1,b_2`.  If both
+`y--u` and `y--u'` occurred, then `u,u'` would each be adjacent to both
+`b_1,b_2`, giving that root pair two common neighbors unless `u=u'`.
+
+Fix a right vertex `u`.  Its two `c`-neighbors `b_1,b_2` are fixed by the
+degree-two fiber.  A collision neighbor `y` chooses one target port
+
+```text
+p_1 in N_e(b_1) intersect V_j,
+p_2 in N_e(b_2) intersect V_j,                         (378)
+```
+
+and `y` is the common `d`-neighbor of `p_1,p_2`.  For one ordered port pair
+there is at most one such `y`, by C4-freeness.  Each displayed port set has
+order at most two, so
+
+```text
+deg_(G_col)(u) <=
+  |N_e(b_1) intersect V_j| |N_e(b_2) intersect V_j| <= 4. (379)
+```
+
+Since every left degree is at most one, each nontrivial component of
+`G_col` is therefore
+
+```text
+K_(1,s) with 1 <= s <= 4,                              (380)
+```
+
+centered at a secondary label `u`.  The exceptional privacy sector has no
+cycles or higher-depth interaction: it is a disjoint union of bounded
+capacity stars, each edge representing a multiplicity-two coordinate with
+the 2-to-1 profile (377).
+
+This is the precise finite residual for private-row peeling.  A uniform
+argument need only price the four possible star sizes and their target-port
+occupancies; no arbitrary collision hypergraph remains.  The bound four is
+also the same local scale as the four-leaf switch table in the Baer lane,
+where the parallel C6 collision was found.
