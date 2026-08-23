@@ -8842,3 +8842,39 @@ organized as an eight-state table per active label, rather than the raw
 ordered word.  A terminal must either price the explicit `h_4=1` holonomy
 or express the marked run grading through the aggregate of the states
 (531) and the actual-owner capacity data (510).
+
+## 168. The port-parity bit is a local defect around one forced `1`
+
+Suppose the unique target port `r_u` from (519) is an H port of the run.
+Then `u` meets its H wedge at the port.  By Section 160 it meets no other
+vertex of that wedge, so the corresponding word state is forced:
+
+```text
+b(r_u)=1.                                             (532)
+```
+
+Thus the `b(r_u)=0` zero-gap alternative mentioned in Section 163 is not
+realizable for an active `u`; when both P flips occur, they delimit the
+one-port `1` interval at `r_u`.
+
+If `r_u` is internal to the run, let `b_L,b_R` be the neighboring H-port
+states on its two flanks.  The transition on a flank is port-only exactly
+when that neighboring state is zero: the `r_u` side contributes the unique
+port incidence, while a neighboring value one supplies a second incidence
+and makes the connection parity even.  Therefore
+
+```text
+n_P(u)=[b_L=0]+[b_R=0],
+pi_u=b_L+b_R.                                         (533)
+```
+
+If `r_u` is an endpoint H port, the same statement holds for its one
+internal flank; if `r_u` is not an H port of `A`, then `n_P(u)=pi_u=0`.
+
+Consequently `pi_u=1` is not an abstract endpoint-count bit.  It says that
+the forced `1` at the unique target port has unequal continuation on its
+two sides (or terminates against a zero internal neighbor at a run end).
+By (523), this local one-sided port defect launches an odd root-side demand.
+The remaining bits `nu_u,zeta_u` record global interval parity and the
+constant channel; only they remain invisible to this local target-port
+test.
