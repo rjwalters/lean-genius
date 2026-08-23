@@ -11668,6 +11668,41 @@ carriers are the `01` double-residual flags and `00` port-secondary flags,
 together with explicit mixed-H/V/S boundary terms.  Proving their joint
 owner-route conservation remains the live theorem.
 
+## 231. B3 antisymmetry does not automatically conserve a directed route cycle
+
+The unordered double-label shape in Section 228 is common to the B3 and SRP
+terminals, but their conservation mechanisms differ.  In the B3 residual
+selection, the occurrence weights satisfy
+
+```text
+x_(t,u)=x_(u,t),
+```
+
+so every antisymmetric boundary `F(u,t)=-F(t,u)` cancels pairwise.  The SRP
+state ledger instead supplies an oriented closed-cycle flow.  Its transition
+counts satisfy equal in- and out-degree at each state, but need not satisfy
+edgewise symmetry.
+
+For such a directed circulation, antisymmetry alone is insufficient.  A
+directed three-cycle with unit weights and an antisymmetric cochain taking
+value one on each forward edge has nonzero total circulation.  Only an exact
+vertex coboundary is forced to sum to zero, as used in (704) and (707).
+
+Consequently the B3 identity (12rzh) cannot be imported as a proof of the
+GAP (702).  The common flag alphabet is genuine, while automatic
+conservation is not.  To close the SRP ledger one must prove one of:
+
+```text
+the remaining flag cochain is exact on the realized route graph;
+the route census is reversal-symmetric after an allowed coarsening;
+or every nonzero circulation yields a localized joint-label holonomy.   (708)
+```
+
+This is precisely the quotient/price dichotomy of Sections 212 and 227.
+The coboundary transports already proved remove the exact pieces; the
+`01` union flags and `00` port-secondary flags represent the possible curl
+that remains.
+
 ## 230. The `01` pair flags also have an exact coboundary transport
 
 Fix an unordered pair of distinct residual centers `q={G,H}`.  On every root
