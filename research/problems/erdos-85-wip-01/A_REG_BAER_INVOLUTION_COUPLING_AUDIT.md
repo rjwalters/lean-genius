@@ -3327,6 +3327,26 @@ ledgers.  Unlike the instance-specific B3 alphabet, L has size `2q`; further
 pricing must use its two line fibers rather than treating it as uniformly
 bounded.
 
+The original partial Baer involutions compress those two fibers.  On the
+line `N_A(E_i)`, the only T-neighbors of `E_i` are its two full leaves.
+They are precisely the two points omitted from the domain of `iota_(E_i)`;
+the remaining `q-2` ordinary line points form fixed-point-free transposition
+pairs.  Thus each correction line has the canonical decomposition
+
+```text
+N_A(E_i)
+ = {two full leaves}
+   disjoint-union ((q-2)/2 ordinary Baer pairs).          (73rnz_bt)
+```
+
+Over F2, any correction price constant on an `iota_(E_i)` pair cancels on
+that pair.  The invariant part of the q-point correction therefore reduces
+to the two leaf atoms, four in total across both lines.  Conversely, any
+surviving ordinary correction must be antisymmetric inside a specifically
+labeled Baer pair.  This converts the q-scaled near-identity exception into
+a bounded leaf alphabet plus paired ordinary fibers -- exactly the
+pivot/relay split needed for joint pricing.
+
 At the two poles this transport detects the endpoint type exactly.  The pair
 `E_1E_2` is a D-edge in the minority clique, neither pole lies in L, and
 `h(E_i)=1`, so the last three correction terms in (73rnz_bq) cancel at
