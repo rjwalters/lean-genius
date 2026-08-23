@@ -5792,3 +5792,45 @@ into a concrete isotropy question for `K`: construct a sufficiently rich
 SRP-generated subspace that is totally isotropic for the root-minus-port
 matching form, without forcing that subspace into the two-dimensional
 kernel (321).
+
+## 109. Per-layer transpose is covariance, not conservation
+
+The most immediate proposed source for the isotropic space in (322) is the
+per-layer reciprocity (269).  But for a third-color block `K_d` that identity
+is simply
+
+```text
+mu^T K_d w = w^T K_d^T mu,                            (323)
+```
+
+which holds for **every** matrix `K_d`.  It relates a routed occurrence to
+the formally transposed block; it imposes no linear equation on the block
+and no equality between the weights with which the two orientations occur
+in the global dart ledger.
+
+The Hadamard characters (278) have the same status.  Under transpose,
+`alpha_d` is even and `beta_d` is odd, so an equal-weight pair of transposed
+occurrences cancels `beta_d`.  But the existence of that equal-weight pair
+is exactly the route-reversibility conclusion (307), not an input supplied
+by (323).  In particular a single occupied diagonal cell has nonzero
+`alpha_d` and is fixed by transpose; all transpose formulas hold while its
+correlation residue survives.
+
+Therefore the span of the formal transpose relations cannot be inserted as
+`W` in (322).  Doing so would turn covariance of labels into equality of
+occurrence weights and make the reversal-rigidity argument circular.  The
+same warning applies to the run-reversal character `C`: reorienting a word
+changes its description but does not create a second realized occurrence.
+
+What is still needed is an **occurrence-level self-indexing identity**:
+
+```text
+an SRP-derived balance on the realized root/port pair ledger whose terms
+are individually resolved by third color and intermediate fiber.        (324)
+```
+
+Only (324) can prove a nontrivial instance of `f^T K g=0`; (269), (278), and
+(283) then identify how its resolved columns transform under reversal and
+can be used for privacy.  Section 84's abstract counterprofile is consistent
+with every covariance law above and violates the desired parity, confirming
+that covariance alone is insufficient.
