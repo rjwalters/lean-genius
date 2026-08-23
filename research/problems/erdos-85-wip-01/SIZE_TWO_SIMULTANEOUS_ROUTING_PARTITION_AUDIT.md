@@ -11880,3 +11880,42 @@ This does not make the last two terms vanish.  It identifies the companion-
 port shadow construction as the correct place to price them and rules out
 using an active-label alternation to exclude the odd cycle: every label on
 such a residue has activity zero.
+
+## 235. The companion-port shadow split fixes the full-cycle holonomy
+
+The three-port footprint transport does not by itself consume the last term
+of (717).  Let a component of `F_e[d]` have cyclically ordered vertices
+`y_i` and let its edge indexed by the port `p_i` be
+
+```text
+N_d(p_i)={y_i,y_(i+1)}.
+```
+
+If the full cycle belongs to `B_00`, then the other `e`-neighbor of `y_i`
+relative to `p_i` is `p_(i-1)`, and the other neighbor of `y_(i+1)` is
+`p_(i+1)`.  Therefore the singleton footprint of
+`(73rnz_cjibkzzo)` specializes to
+
+```text
+Foot(p_i)=1_(p_(i-1))+1_(p_i)+1_(p_(i+1)).            (718)
+```
+
+Summing (718) around the cycle counts every port three times, and hence
+
+```text
+sum_i Foot(p_i)=sum_i 1_(p_i)  over F_2.               (719)
+```
+
+Equivalently, the labeled shadow stars have zero aggregate boundary on a
+full factor cycle, so the footprint identity restricts to the identity map
+on its cycle-space class.  On an odd cycle both sides of (719) have odd
+augmentation.  Thus the bounded footprint alphabet is a valid transport for
+general `00` chains, but its internal shadow relation neither cancels nor
+changes the boundary-invisible odd holonomy.
+
+The remaining cycle obstruction is consequently simultaneous in an exact
+sense.  The cycle order in (718) comes from the owner factor `F_e[d]`, while
+membership of every `p_i` in the marked H census comes from the distinct
+root component `c` and its H/V/S matching.  A closing exclusion or price
+must compare those two structures; no identity internal to the `d--e`
+shadow two-factor can distinguish the selected full cycle from itself.
