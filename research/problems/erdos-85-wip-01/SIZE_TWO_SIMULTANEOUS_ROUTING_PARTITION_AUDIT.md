@@ -19810,9 +19810,67 @@ a stationary strict word of length at most five at one outside vertex;
 or a moving cycle containing at least one fully tagged B/O edge. (1295)
 ```
 
-The distinction matters because strict reflection itself introduces no new
-tag row, whereas every physical move does.  A final exclusion may therefore
-handle the bounded stationary word directly and apply the accumulated
-tag/inactive-companion machinery only to the moving branch.  No claim is
-made here that the moving cycle is simple or that its physical edges are
+The distinction is dynamical: every physical move directly exposes a row
+of Section 362, while a stationary word must be charged through the strict
+labels themselves.  Section 375 supplies that separate charge.  No claim
+is made here that the moving cycle is simple or that its physical edges are
 distinct.
+
+## 375. Every strict-reflection label has two or three selected tags
+
+Strict reflection does not remove the coupled-SRP cost of its indexing
+label.  Let `s_i in k` be the strict label with
+
+```text
+N_c(s_i) intersect C={x_i},
+N_e(s_i)={p_(i+2),v_i},       v_i in B disjoint_union O.          (1296)
+```
+
+Apply `SRP(k,e)` to row `s_i` and restrict to `Z`.  The core layer occupies
+the two ports incident to `x_i`:
+
+```text
+supp((R_kc R_ce)[s_i,-]) intersect Z={p_(i-1),p_i}. (1297)
+```
+
+For the endpoint layer, the selected neighbor `p_(i+2)` contributes no
+selected `A_e` endpoint because `Z` is independent.  The outside mate
+contributes none when `v_i in O`, and contributes exactly its owner when
+`v_i in B`.  Hence
+
+```text
+supp((R_ke A_e)[s_i,-]) intersect Z
+ =emptyset             if v_i in O,
+ ={p(v_i)}             if v_i in B.                (1298)
+```
+
+In the private case `x_i` is a rooted ticket occurrence at `v_i`, so its
+owner is nonincident to `x_i`; the supports (1297)--(1298) are disjoint.
+Exact SRP therefore leaves
+
+```text
+v_i in O: three selected tag cells;
+v_i in B: two selected tag cells.                  (1299)
+```
+
+Their columns are exactly the same nonincident sets analyzed before:
+`T_i` in the residual-mate case and `T_i\{p(v_i)}` in the private-mate
+case.  Consequently the payer profiles of Sections 364--365 apply verbatim:
+
+```text
+strict mate in O:
+  one d double-payer plus the offset non-d singleton,
+  or three non-d singleton payers;
+
+strict mate in B:
+  a d double-payer is possible only when p(v_i)=p_(i+2),
+  otherwise the two tags have distinct non-d singleton payers.  (1300)
+```
+
+Thus every label in the stationary strict word (1292) carries a literal
+two- or three-cell selected tag profile.  The stationary branch is bounded
+in length but not unpriced: a word of length `L` contributes `L` such
+coupled rows, each with its forced secondary/singleton geometry.  The moving
+and stationary branches of Section 374 are therefore both exposed to the
+same tag-reuse and inactive-payer mechanisms, through propagation rows in
+one case and strict rows in the other.
