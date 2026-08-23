@@ -280,7 +280,7 @@ def main() -> int:
                                 if u not in counts["added_one_row_clauses"]]
                     horns = bad_rows + collisions
                     new_obstructions = new_rows + new_collisions
-                    label = f"one_row_bad={len(bad_rows)} collisions"
+                    label = f"one_row_bad={bad_rows} collisions"
                 else:
                     horns = reciprocity_horns + collisions
                     new_obstructions = new_reciprocity + new_collisions
