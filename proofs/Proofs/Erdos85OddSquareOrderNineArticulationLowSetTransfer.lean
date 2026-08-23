@@ -1487,6 +1487,77 @@ theorem orderNine_secondProfile_owner_defect_binZero_avoids_owner_neighbors
   rw [htfParts.2] at hpos
   omega
 
+/-- Composed post-(27) terminal for two exceptional points.  Under the
+`(3,1)` low-set data, two distinct original bin-zero defect neighbors of the
+owner each have `Z`-degree two.  Their triangle-free owner edges make both
+avoid the owner-adjacent point of `W`, so the two-point forcing terminal
+produces a four-cycle. -/
+theorem false_of_orderNine_order34_two_owner_defect_binZero_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner y z : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0 ∩
+      (secondOrderDefectGraph G).neighborFinset owner)
+    (hz : z ∈ G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0 ∩
+      (secondOrderDefectGraph G).neighborFinset owner)
+    (hyz : y ≠ z)
+    (Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWcard : W.card = 2)
+    (hownerW : (G.neighborFinset owner ∩ W).card = 1)
+    (hyZ : (G.neighborFinset y ∩ Z).card = 2)
+    (hzZ : (G.neighborFinset z ∩ Z).card = 2) : False := by
+  classical
+  have hyParts := Finset.mem_inter.mp hy
+  have hzParts := Finset.mem_inter.mp hz
+  have hyInner := Finset.mem_inter.mp hyParts.1
+  have hzInner := Finset.mem_inter.mp hzParts.1
+  have hyOwner : G.Adj y owner :=
+    (G.adj_comm owner y).mp ((G.mem_neighborFinset owner y).mp hyInner.1)
+  have hzOwner : G.Adj z owner :=
+    (G.adj_comm owner z).mp ((G.mem_neighborFinset owner z).mp hzInner.1)
+  have hyAvoid : (G.neighborFinset y ∩
+      (G.neighborFinset owner ∩ W)).card = 0 := by
+    apply Finset.card_eq_zero.mpr
+    rw [Finset.eq_empty_iff_forall_notMem]
+    intro w hw
+    have hwParts := Finset.mem_inter.mp hw
+    have hwOwner := (Finset.mem_inter.mp hwParts.2).1
+    exact (orderNine_secondProfile_owner_defect_binZero_avoids_owner_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hy
+        ((G.mem_neighborFinset owner w).mp hwOwner))
+          ((G.mem_neighborFinset y w).mp hwParts.1)
+  have hzAvoid : (G.neighborFinset z ∩
+      (G.neighborFinset owner ∩ W)).card = 0 := by
+    apply Finset.card_eq_zero.mpr
+    rw [Finset.eq_empty_iff_forall_notMem]
+    intro w hw
+    have hwParts := Finset.mem_inter.mp hw
+    have hwOwner := (Finset.mem_inter.mp hwParts.2).1
+    exact (orderNine_secondProfile_owner_defect_binZero_avoids_owner_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hz
+        ((G.mem_neighborFinset owner w).mp hwOwner))
+          ((G.mem_neighborFinset z w).mp hwParts.1)
+  exact false_of_orderNine_order34_two_binZero_neighbors_avoid_owner_W
+    G hfree hhigh owner y z howner hyInner.2 hzInner.2 hyz
+      hyOwner hzOwner Z P W hpartition hPsub hWcard hownerW
+      hyZ hzZ hyAvoid hzAvoid
+
 end
 
 end Erdos85
