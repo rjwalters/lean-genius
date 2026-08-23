@@ -360,6 +360,49 @@ theorem no_canonicalFractionalIntervalExtension_of_contractedPointCover
       (F.card : ℚ) + (∑ p : P, weight p) < d u := htotal
   linarith
 
+/-- Denominator-cleared wrapper for the contracted fractional obstruction.
+It accepts exactly the natural numerator/scale certificates emitted by the
+q=9 diagnostics. -/
+theorem no_canonicalFractionalIntervalExtension_of_scaledContractedPointCover
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H W : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (u : V) (weight : P → ℕ) (scale : ℕ)
+    (hscale : 0 < scale)
+    (hcover : ∀ x, H u x →
+      x ∉ reverseForcedLocalGramNeighborFinset H W d u →
+      x ∉ reverseImpossibleLocalGramNeighborFinset H W d u →
+      (∀ f ∈ reverseForcedLocalGramNeighborFinset H W d u,
+        f ≠ x → Disjoint (B f) (B x)) →
+      scale ≤ ∑ p ∈ B x, weight p)
+    (htotal :
+      (reverseForcedLocalGramNeighborFinset H W d u).card * scale +
+        (∑ p : P, weight p) < d u * scale) :
+    ¬ ∃ mass, IsCanonicalFractionalIntervalExtension H W d B u mass := by
+  let rationalWeight : P → ℚ := fun p => weight p / (scale : ℚ)
+  have hqpos : (0 : ℚ) < scale := Nat.cast_pos.mpr hscale
+  have hqne : (scale : ℚ) ≠ 0 := hqpos.ne'
+  apply no_canonicalFractionalIntervalExtension_of_contractedPointCover
+    H W d B u rationalWeight
+  · intro p
+    exact div_nonneg (Nat.cast_nonneg _) hqpos.le
+  · intro x hxH hxF hxI hxdisjoint
+    have hcast : (scale : ℚ) ≤ ∑ p ∈ B x, (weight p : ℚ) := by
+      exact_mod_cast hcover x hxH hxF hxI hxdisjoint
+    calc
+      (1 : ℚ) = (scale : ℚ) / scale := by field_simp
+      _ ≤ (∑ p ∈ B x, (weight p : ℚ)) / scale :=
+        (div_le_div_iff_of_pos_right hqpos).2 hcast
+      _ = ∑ p ∈ B x, rationalWeight p := by
+        simp [rationalWeight, Finset.sum_div]
+  · have hcast :
+        ((reverseForcedLocalGramNeighborFinset H W d u).card : ℚ) * scale +
+            (∑ p : P, (weight p : ℚ)) < (d u : ℚ) * scale := by
+      exact_mod_cast htotal
+    have hdiv := (div_lt_div_iff_of_pos_right hqpos).2 hcast
+    rw [add_div, mul_div_cancel_right₀ _ hqne,
+      mul_div_cancel_right₀ _ hqne, Finset.sum_div] at hdiv
+    simpa [rationalWeight] using hdiv
+
 omit [Fintype V] in
 /-- **Fractional point-cover counting engine.**  If the point sets attached
 to selected rows are pairwise disjoint and each receives weight at least one,
@@ -1493,6 +1536,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms totalMass_le_totalPointWeight
 #print axioms no_canonicalFractionalIntervalExtension_of_pointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_contractedPointCover
+#print axioms no_canonicalFractionalIntervalExtension_of_scaledContractedPointCover
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
