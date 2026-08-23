@@ -3351,6 +3351,90 @@ theorem orderNine_order34_owner_partners_offshore_W_degree_one_of_pointwise_clos
       hPzero hlow
   simpa [hzNotS] using hWdegree
 
+/-- Full corrected equation-(25) provider.  Pointwise true defect closure
+for every owner-adjacent bin-one partner gives W-degree zero on `S` and one
+on its complementary shore. -/
+theorem orderNine_order34_owner_partners_W_degree_eq_if_of_pointwise_closure
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ owner : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (U S T : Finset V)
+    (hScard : S.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ S).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ S).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ S).card = 4)
+    (hSH : Disjoint S {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hpartnerU : ∀ z ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1), z ∈ U)
+    (hpartnerDclosed : ∀ z ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1),
+      (secondOrderDefectGraph G).neighborFinset z ⊆ U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hpartnerOrd : ∀ z ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1),
+      z ∉ ({h₁, h₂, h₃} : Finset V))
+    (Z P W : Finset V)
+    (hZ : Z = orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0) :
+    ∀ z ∈ (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1),
+      (G.neighborFinset z ∩ W).card = if z ∈ S then 0 else 1 := by
+  classical
+  intro z hz
+  have hzNotS_or : z ∈ S ∨ z ∈ T := by
+    have hzU := hpartnerU z hz
+    rw [← hunion] at hzU
+    exact Finset.mem_union.mp hzU
+  have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+    G hfree hmin hcover hcard (Finset.mem_inter.mp hz).2
+  have hzDegree : (secondOrderDefectGraph G).degree z = 7 := by
+    simpa using hledger.1
+  have hdefect := neighbor_inter_shore_card_eq_if_of_complementary_closed
+    (secondOrderDefectGraph G) U S T z hunion hdisj (hpartnerU z hz)
+      (hpartnerDclosed z hz) hSclosed hTclosed hzDegree
+  have hlow := orderNine_order34_lowSet_degree_of_defect_shore
+    G hfree h₁ h₂ h₃ z S hScard hpart hhigh₁ hhigh₂ hhigh₃
+      hSH hdegOrd hdegHigh (hpartnerOrd z hz) hdefect
+  rw [← hZ] at hlow
+  have hPzero :=
+    orderNine_secondProfile_owner_partner_neighbor_inter_binOneSubset_eq_zero
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 owner z howner
+        (Finset.mem_inter.mp hz).2
+        ((G.adj_comm owner z).mp
+          ((G.mem_neighborFinset owner z).mp (Finset.mem_inter.mp hz).1))
+        P hPsub
+  have hownerW : owner ∉ W := by
+    intro how
+    have hownerB₀ := hWsub how
+    have hk3 := (Finset.mem_filter.mp howner).2
+    have hk0 := (Finset.mem_filter.mp hownerB₀).2
+    omega
+  exact owner_partner_W_degree_of_lowSet_partition
+    G owner z S Z P W hpartition hownerW
+      ((G.adj_comm owner z).mp
+        ((G.mem_neighborFinset owner z).mp (Finset.mem_inter.mp hz).1))
+      hPzero hlow
+
 /-- Satisfiable corrected master for the three-edge `(3,1)` branch.  It
 instantiates FullType, the owner-punctured exceptional-degree provider, and
 the pointwise partner equation-(25) provider before invoking the corrected
