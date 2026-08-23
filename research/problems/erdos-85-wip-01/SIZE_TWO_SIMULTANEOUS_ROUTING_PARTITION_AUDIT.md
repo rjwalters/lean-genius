@@ -11847,3 +11847,36 @@ terms: active boundary transport via (715), inactive secondary boundary,
 and odd owner-factor-cycle holonomy.  Filtering the H census to the `00`
 cell may also create complementary-state terms, just as in (704) and (707);
 no cancellation of those terms is asserted here.
+
+## 234. Every boundary-invisible `00` cycle is entirely inactive
+
+The last two terms above are not independent on the cycle-space residue.
+Suppose the restriction of `B_00` to a component cycle `C` of `F_e[d]` has
+zero boundary and is nonempty.  Since `C` is a cycle graph, that restriction
+is the full edge set of `C`.  At every vertex `y of C`, the two incident
+factor edges correspond under (709) to the two `e`-neighbors of `y`.  Both
+ports belong to `M_00`, hence both lie in the fixed target port set `V_j`.
+By the definition of target activity,
+
+```text
+|N_e(y) intersect V_j|=2,       so t_y=0.              (716)
+```
+
+Therefore every full-cycle summand in the kernel of (711), including every
+odd cycle capable of changing augmentation in (712), is supported entirely
+on inactive secondary labels.  In particular, the active `q_y` channel of
+(715) has no hidden cycle-space ambiguity: all of its ambiguity is exposed
+at the boundary.
+
+The live `00` split can consequently be sharpened to
+
+```text
+active split-label boundary (the q_y interval channel)
+ + inactive boundary/companion-port footprints
+ + inactive odd owner-factor-cycle holonomy.           (717)
+```
+
+This does not make the last two terms vanish.  It identifies the companion-
+port shadow construction as the correct place to price them and rules out
+using an active-label alternation to exclude the odd cycle: every label on
+such a residue has activity zero.
