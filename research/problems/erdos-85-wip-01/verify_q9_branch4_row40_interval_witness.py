@@ -120,6 +120,18 @@ def main() -> int:
     }
     assert residual_pairs == [(17, 23), (23, 42), (35, 42)]
     assert residual_triples == []
+    residual_capacity = max(
+        size for size in range(4)
+        if any(independent(choice)
+               for choice in combinations(residual, size))
+    )
+    minimum_transversal = next(
+        labels for size in range(N_U1 + 1)
+        for labels in combinations(range(N_U1), size)
+        if all(set(labels) & blocks[w] for w in residual)
+    )
+    assert residual_capacity == 2
+    assert len(minimum_transversal) == 2
 
     print("outer_constraints=SAT branch=4 row=40")
     print(
@@ -135,6 +147,8 @@ def main() -> int:
         f"residual_blocks={residual_blocks} "
         f"compatible_pairs={residual_pairs} compatible_triples=[]"
     )
+    print(f"residual_capacity=2 label_transversal="
+          f"{list(minimum_transversal)}")
     print("contracted_interval_deficit=VERIFIED")
     return 0
 
