@@ -8410,3 +8410,51 @@ realizability lemma for (362): an odd H-run cannot have the zero/matched
 endpoint signatures (499) while all of its internal secondary connections
 close evenly.  This identifies the exact place where the original marked
 run geometry, rather than the abstract connection ledger, must re-enter.
+
+## 158. A silent endpoint wedge has only four active connector states
+
+Let `o` be any incidence dart with occurrence wedge
+
+```text
+W(o)={x,x',z},                                       (505)
+```
+
+where `x,x'` are the two roots of its port and `z` is the port.  Let
+`U_1={u:t_u=1}` be the target-active secondary labels.  By (366), the full
+secondary signature at `o` vanishes exactly when no `u in U_1` meets
+`W(o)` in an odd number of vertices.  Three incidences would be odd, so
+
+```text
+q_u(o)=0 for every u
+iff every u in U_1 meets W(o) in zero or two vertices. (506)
+```
+
+C4-freeness makes the two-incidence part rigid.  The root pair `{x,x'}`
+already has the common neighbor `z`, so no secondary label can meet both
+roots.  For either root--port pair there is at most one `u` adjacent to
+both: two such labels would be two common neighbors of that pair.  Hence
+the target-active incidence pattern of a silent wedge is specified by a
+subset of the two pair types
+
+```text
+{x,z}, {x',z},                                       (507)
+```
+
+with at most one connector label on each selected pair.  There are only
+`2^2=4` underlying connector states (before recording the labels).
+
+For a V occurrence with actual route label `y`, the routed triangle already
+puts `y` on one root--port pair, say `{x,z}`.  If `t_y=1`, then `y` is
+exactly the unique active connector of that pair in (507); if `t_y=0`, it
+is invisible to the active connector state.  Thus even the on-occurrence
+route, which vanished from `q_y` in (361), re-enters the realizability audit
+through whether its target parity is active.
+
+This classification does not exclude a silent endpoint.  It replaces the
+formal all-zero assignment (504) by four locally admissible templates (not
+an assertion that every template extends to a global graph).
+To eliminate the differently labeled singleton pattern in (499), it now
+suffices to show that the two silent boundary wedges of an odd H-run cannot
+choose compatible templates (507) while the internal four-incidence cells
+close as in (501).  That is a finite connector-propagation problem rather
+than an unrestricted secondary-census problem.
