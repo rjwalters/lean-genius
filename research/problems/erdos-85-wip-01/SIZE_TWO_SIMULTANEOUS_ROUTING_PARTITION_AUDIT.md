@@ -8502,3 +8502,49 @@ labels, independent of the off-route atoms `u`.  It does not yet contradict
 the matched/zero secondary signatures.  It does ensure that a silent
 endpoint cannot make its routed owner disappear for free: it is visible in
 the active connector template or consumes the full two-port target fiber.
+
+## 160. Silence on an H dart means complete active-fiber avoidance
+
+The four templates of Section 158 simplify further on the H side of a run
+boundary.  If an intermediate `u` is adjacent to a root and the shared port
+of an incidence dart, it resolves a rooted triangle through that dart.  The
+dart is then V-decorated by the port bijection of Section 99.  The same
+argument for the other root is the V decoration of the port mate.  Hence an
+H-decorated port admits neither root--port connector in (507).  The
+root--root connector was already excluded by C4.
+
+Thus every secondary label meets the wedge of an H dart in at most one
+vertex, and (366) sharpens to
+
+```text
+q_u(h)=1 iff t_u=1 and u meets the H wedge once;
+q_u(h)=0 for every u iff no target-active u meets the H wedge. (511)
+```
+
+In particular, the differently labeled singleton obstruction of (499)
+forces complete target-active avoidance at both H boundary darts, not just
+an even connector pattern.  Its V boundary darts may still use the four
+templates (507), including the actual active route connector from (508).
+
+For an internal H--H root pair, both incident ports are H-decorated.  The
+same exclusion forbids an opposite root from sharing its own port exposure:
+
+```text
+R_cd(x_i,u) R_ed(z_i,u)=0 for i in {1,2}.             (512)
+```
+
+In particular, the saturated `(2,1)` profile would contain such an aligned
+root--port pair on whichever side exposes the port, so it is impossible.
+The contributing internal states (407) reduce to the two unsaturated
+profiles
+
+```text
+(a_u(E),p_u(E)) in {(1,0),(0,1)}.                     (513)
+```
+
+So the saturated `(2,1)` alternative in (503) cannot occur inside a genuine
+H-run at all; it belonged to the raw four-incidence classification before
+the H decoration was reapplied.  A singleton obstruction is therefore a
+pure chain of root-only and port-only singleton transfers, with complete
+active-fiber avoidance at a silent H endpoint.  This is a substantial
+reduction, but it does not yet exclude such a chain.
