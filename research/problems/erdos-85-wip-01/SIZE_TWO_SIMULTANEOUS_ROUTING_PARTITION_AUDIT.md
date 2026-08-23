@@ -13132,3 +13132,47 @@ the monochromatic branch, the active boundary itself vanishes, so an
 exclusion must use the closed full-cycle owner/color data rather than an
 endpoint demand.  No scalar parity or uncolored sum distinguishes these
 branches; the color-resolved chain does.
+
+## 257. Each active payment equals its inactive mate boundary
+
+The right side of (798) already has a canonical label: it is the
+unprojected wedge word of the red root-only mate.  For any receiving label
+`y`, before multiplying by the target-activity bit, define
+
+```text
+W_y:=sum_(p in Z intersect N_e(y))[p]+partial A_y.    (802)
+```
+
+This is the same incidence expression as (739), without the factor `t_y`.
+Thus
+
+```text
+t_y=1 implies W_y=Q_y;
+t_y=0 implies Q_y=0 but W_y may be nonzero.           (803)
+```
+
+On the isolated path (795), the red mate `u_i` lies in cell `10`.  It has
+the unique selected root `x_i` and no selected port, so
+
+```text
+A_(u_i)=[E_(x_i)],       W_(u_i)=partial[E_(x_i)].    (804)
+```
+
+Comparing (804) with the active pair identity (798) gives the pointwise
+three-label conservation law
+
+```text
+Q_(z_i)+Q_(v_i)=W_(u_i).                              (805)
+```
+
+Hence the active strict export and its port-only payment do not leave an
+anonymous H-boundary: they produce exactly the boundary word carried by the
+unique inactive root-only mate in the same owner-factor component.  Summing
+(805) over `I_a` recovers (799), now with a private label on every summand.
+
+This identifies, occurrence by occurrence, the inactive secondary-boundary
+channel separated abstractly in Section 233.  It does not make that channel
+zero.  The remaining owner theorem is to transport the labeled words
+`W_(u_i)` through the companion ports and complementary H/V/S transitions,
+or to show that a closed monochromatic sum has forbidden owner holonomy.
+The payer is no longer missing; only its global route price is.
