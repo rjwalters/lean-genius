@@ -6546,3 +6546,42 @@ route label and expose the same singleton secondary incidence.  Proving
 that C4/linearity forbids such a collision (or classifying its exceptional
 forms) is the exact SRP counterpart of the private-external-row theorem
 suggested after (12rh).
+
+## 123. Privacy collisions are confined to opposite-root exposures
+
+Fix an actual route label `ell=(d,y)` on a dart `(a,p)`, and let `b` be the
+other root of the same port.  The occurrence wedge is `{a,b,p}` with
+
+```text
+y adjacent to a and p,       y not adjacent to b.      (367)
+```
+
+Let `u` be a secondary atom with `q_u=1`, so by (366) it is adjacent to a
+unique wedge vertex `v`.  Call the exposure **endpoint** when
+`v in {a,p}` and **opposite-root** when `v=b`.
+
+Suppose two distinct occurrences with the same actual label `y` and the same
+secondary `u` are both endpoint exposures, at vertices `v_1,v_2`.  The
+partial-matching property of `F_(d,y)` makes the two actual roots distinct
+and the two actual ports distinct, so `v_1 != v_2` (cross-shore vertices are
+also distinct).  But both `v_1,v_2` are adjacent to `y` by (367) and to `u`
+by the exposure assumption.  They therefore have the two common neighbors
+`y,u`, a four-cycle contradiction.
+
+Hence
+
+```text
+every coordinate (ell,u) occurring only through endpoint exposures is
+private; any privacy collision has an opposite-root exposure.           (368)
+```
+
+More generally, among repeated occurrences of one coordinate, at most one
+can be endpoint-exposed; all others must be opposite-root-exposed.
+
+This proves the generic part of the privacy obligation in (365).  The sole
+exceptional sector is the crossed secondary incidence `u--b`, where the
+actual label `y` uses the other root `a` and the shared port `p`.  Its
+position is analogous to the crossed Hadamard channel of Sections 89--92,
+but `u--b` alone is not an occupied crossed two-step route, so no `beta_d`
+cancellation is claimed.  The remaining privacy audit is exactly the
+classification of these opposite-root collisions.
