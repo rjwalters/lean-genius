@@ -419,6 +419,66 @@ theorem no_symmetricFractionalPointPacking_of_rowPointPrices
       H d B mass rowPrice pointPrice hmass hpointPrice hedge
   exact (not_lt_of_ge hdual) hstrict
 
+/-- **Reduced common-fiber price certificate.**  Rows in `S` carry local
+point covers `localPrice`; rows outside `S` may only pay at the common point
+`p`, through `compensation`.  Consequently the global edge inequalities
+reduce to internal edges of `S` and cross edges leaving `S`.  This is the
+four-row certificate shape isolated by the q=9 B.3 diagnostics. -/
+theorem no_symmetricFractionalPointPacking_of_commonFiberPrices
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (S : Finset V) (p : P) (rowPrice : V → ℚ)
+    (localPrice : V → P → ℚ) (compensation : V → ℚ)
+    (hcommon : ∀ u ∈ S, p ∈ B u)
+    (hlocalNonneg : ∀ u q, 0 ≤ localPrice u q)
+    (hcompNonneg : ∀ u, 0 ≤ compensation u)
+    (hinternal : ∀ u ∈ S, ∀ v ∈ S, H u v →
+      rowPrice u + rowPrice v ≤
+        (∑ q ∈ B v, localPrice u q) +
+        ∑ q ∈ B u, localPrice v q)
+    (hcross : ∀ u ∈ S, ∀ v, v ∉ S → (H u v ∨ H v u) →
+      rowPrice u ≤
+        (∑ q ∈ B v, localPrice u q) + compensation v)
+    (hstrict :
+      (∑ u : V, if u ∈ S then (∑ q : P, localPrice u q)
+        else compensation u) <
+      ∑ u : V, (d u : ℚ) * if u ∈ S then rowPrice u else 0) :
+    ¬ ∃ mass, IsSymmetricFractionalPointPacking H d B mass := by
+  classical
+  let globalRowPrice : V → ℚ := fun u =>
+    if u ∈ S then rowPrice u else 0
+  let globalPointPrice : V → P → ℚ := fun u q =>
+    if u ∈ S then localPrice u q
+    else if q = p then compensation u else 0
+  have hglobalNonneg : ∀ u q, 0 ≤ globalPointPrice u q := by
+    intro u q
+    by_cases hu : u ∈ S
+    · simp [globalPointPrice, hu, hlocalNonneg u q]
+    · by_cases hq : q = p <;>
+        simp [globalPointPrice, hu, hq, hcompNonneg u]
+  apply no_symmetricFractionalPointPacking_of_rowPointPrices
+    H d B globalRowPrice globalPointPrice
+  · exact hglobalNonneg
+  · intro u v huv
+    by_cases hu : u ∈ S
+    · by_cases hv : v ∈ S
+      · simpa [globalRowPrice, globalPointPrice, hu, hv] using
+          hinternal u hu v hv huv
+      · have hp := hcommon u hu
+        simpa [globalRowPrice, globalPointPrice, hu, hv, hp] using
+          hcross u hu v hv (Or.inl huv)
+    · by_cases hv : v ∈ S
+      · have hp := hcommon v hv
+        simpa [globalRowPrice, globalPointPrice, hu, hv, hp, add_comm] using
+          hcross v hv u hu (Or.inr huv)
+      · have hleft : globalRowPrice u + globalRowPrice v = 0 := by
+          simp [globalRowPrice, hu, hv]
+        rw [hleft]
+        exact add_nonneg
+          (Finset.sum_nonneg fun q _ => hglobalNonneg u q)
+          (Finset.sum_nonneg fun q _ => hglobalNonneg v q)
+  · simpa [globalRowPrice, globalPointPrice] using hstrict
+
 /-- Any strict point cover of every positive-mass-eligible block rules out a
 full-demand canonical fractional interval extension.  This is the direct
 dual-side consumer complementary to the forced-shared-point obstruction. -/
@@ -1791,6 +1851,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms totalMass_le_totalPointWeight
 #print axioms weightedDegree_le_totalPointPrice_of_symmetricFractionalPacking
 #print axioms no_symmetricFractionalPointPacking_of_rowPointPrices
+#print axioms no_symmetricFractionalPointPacking_of_commonFiberPrices
 #print axioms relationIndicator_isSymmetricFractionalPointPacking
 #print axioms false_of_symmetricRowPointPriceCertificate
 #print axioms no_canonicalFractionalIntervalExtension_of_pointCover
