@@ -17183,8 +17183,9 @@ There is no three-port cancellation branch at the first step.
 
 Accordingly a realized `1 -> 3 -> 1` reversal must undo a fully located
 one-edge expansion, not merely reverse an abstract odd shore.  In a
-same-color reversal the edge (1102) selects one marked transition in the
-ten-label skeleton `Omega_b^C`; in a mixed-color reversal the second
+same-color reversal the edge (1102) selects one marked active-label vertex
+and its two target darts in the ten-label skeleton `Omega_b^C`; in a
+mixed-color reversal the second
 skeleton must return the exact triple in (1103) while respecting the
 root-matching disjointness across colors.  These are the two concrete
 holonomy interfaces left by Sections 327--328.
