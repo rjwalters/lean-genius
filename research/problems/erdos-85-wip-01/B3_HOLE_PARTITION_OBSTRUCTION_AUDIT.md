@@ -3735,7 +3735,9 @@ fractional point cover nevertheless assigns
 has total value `14/3 < 5`, and covers every residual block with weight at
 least one.  Hence the integral matching rank is at most 4, which is attained.
 The exact fractional-cover diagnostic also gives values strictly below the
-residual demand on the tested row-24, row-40, and branch-3 seed-2 profiles.
+residual demand on row 24, row 40, and every one of the ten genuine branch-3
+profiles from the durable witness and seeds 0,1,2.  These certificates now
+fit the kernel-checked consumer `reverseIntervalRankDeficit_of_fractionalPointCover`.
 This suggests a stronger prospective route: derive a fractional U1-point
 mass bound below `d(u)-|F_u|` at some row.  Its observed validity is sampled
 data; no uniform fractional bound is asserted.
