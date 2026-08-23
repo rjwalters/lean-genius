@@ -1638,6 +1638,45 @@ force one of these weights to vanish.  This rules out another local-capacity
 detour and identifies (12ri) with the conservation obligation in the shared
 tagged-bundle reversal lemma.
 
+Most sampled instances die before global conservation is invoked.  The mode
+`--audit-zero-loss-restriction` deletes every own-touching candidate outside
+`Z`, retains all external candidates, and recomputes the exact local matching
+capacity at every row.  In the eight-seed run, 45 of 48 quotients then have
+at least one row below demand.  The three restricted-Hall survivors were
+
+```text
+(branch,seed,colors,|E(Z)|) = (3,7,(1,2),0),
+                              (4,5,(0,1),1),
+                              (4,5,(0,2),0).             (12rk)
+```
+
+Therefore the zero-charge sector has a sharp empirical dichotomy: a direct
+restricted Hall failure, or one of a tiny set of external-completion designs
+where the full bundle conservation equations must supply the contradiction.
+The survivor with `|E(Z)|=1` is the only sampled case which actually carries
+a symmetric zero-loss own route; the other two survive using external
+candidates alone.  A uniform proof should first derive the restricted Hall
+alternative and then classify its equality case, rather than apply the full
+global ledger to all rows indiscriminately.
+
+All three equality cases are killed by the full normalized bundle ledger.
+The mode `--audit-full-bundle-primal` introduces one marginal for every row
+candidate, imposes row sum `d_t`, every selected-label capacity at most one,
+and equality of every alpha and tagged bundle coordinate.  HiGHS reports the
+system infeasible for each survivor in (12rk), as it does for the other
+sampled quotients.  Consequently the sampled two-stage terminal is complete:
+
+```text
+restricted Hall failure, or
+normalized full-bundle primal infeasibility.                    (12rl)
+```
+
+This last check is a floating LP status, not an exact certificate or a
+uniform proof.  Its value is localization: only the three restricted-Hall
+equality patterns need an analytic conservation argument.  Producing a
+small dual supported on their private bundle rows is the next proof-facing
+experiment.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

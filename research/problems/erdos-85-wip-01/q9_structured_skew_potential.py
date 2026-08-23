@@ -342,6 +342,67 @@ def bundle_deletion_audit(data: dict) -> tuple[
     return losses, sorted(zero_pairs), tuple(sorted(shapes))
 
 
+def zero_loss_restricted_hall_audit(data: dict) -> tuple[int, list[tuple]]:
+    """Keep external candidates and zero-loss own transitions, then test Hall."""
+    _, zero_pairs, _ = bundle_deletion_audit(data)
+    zero = {(t, u) for t, u, _, _ in zero_pairs}
+    zero |= {(u, t) for t, u, _, _ in zero_pairs}
+    bad_rows = []
+    for t in range(N):
+        own_support = data["blocks"][t] & data["selected"]
+        supports = [data["blocks"][u] & data["selected"]
+                    for u in data["candidates"][t]
+                    if not own_support & data["blocks"][u] or (t, u) in zero]
+        capacity = maximum_label_packing(supports, data["selected"])
+        demand = int(data["degree"][t])
+        if capacity < demand:
+            bad_rows.append((t, capacity, demand))
+    return len(zero) // 2, bad_rows
+
+
+def full_bundle_primal_feasible(data: dict) -> tuple[bool, str]:
+    """Test normalized row matchings with exact bundle-boundary equality."""
+    signatures, censuses = root_signature_censuses(data)
+    variables = []
+    for t in range(N):
+        own_support = data["blocks"][t] & data["selected"]
+        for u in data["candidates"][t]:
+            boundary = Counter()
+            boundary[("alpha", signatures[t])] += 1
+            boundary[("alpha", signatures[u])] -= 1
+            for b in data["blocks"][u] & data["selected"]:
+                boundary[("bundle", signatures[t],
+                          int(b in data["blocks"][t]), censuses[t][b])] += 1
+            for b in own_support:
+                boundary[("bundle", signatures[u],
+                          int(b in data["blocks"][u]), censuses[u][b])] -= 1
+            variables.append((t, data["blocks"][u] & data["selected"],
+                              {key: value for key, value in boundary.items()
+                               if value}))
+    features = sorted({key for _, _, boundary in variables for key in boundary},
+                      key=repr)
+    feature_index = {key: index for index, key in enumerate(features)}
+    equalities = lil_matrix((N + len(features), len(variables)))
+    equality_rhs = np.zeros(N + len(features))
+    for column, (t, _, boundary) in enumerate(variables):
+        equalities[t, column] = 1
+        for key, value in boundary.items():
+            equalities[N + feature_index[key], column] = value
+    for t in range(N):
+        equality_rhs[t] = int(data["degree"][t])
+    capacity_rows = [(t, b) for t in range(N) for b in data["selected"]]
+    capacities = lil_matrix((len(capacity_rows), len(variables)))
+    for row, (t, b) in enumerate(capacity_rows):
+        for column, (source, support, _) in enumerate(variables):
+            if source == t and b in support:
+                capacities[row, column] = 1
+    result = linprog(
+        np.zeros(len(variables)), A_ub=capacities.tocsr(),
+        b_ub=np.ones(len(capacity_rows)), A_eq=equalities.tocsr(),
+        b_eq=equality_rhs, bounds=(0, 1), method="highs")
+    return result.success, result.message
+
+
 def flat_signature_audit(data: dict) -> tuple[
         int, int, int, tuple[str, ...], tuple[tuple[int, ...], ...], bool]:
     """Audit the retracted simple signature quotient (12qy).
@@ -1166,6 +1227,10 @@ def main() -> int:
                         help="audit exact rank modulo route reversal")
     parser.add_argument("--audit-bundle-deletion", action="store_true",
                         help="audit paired external deletion losses")
+    parser.add_argument("--audit-zero-loss-restriction", action="store_true",
+                        help="test Hall after retaining only external and Z transitions")
+    parser.add_argument("--audit-full-bundle-primal", action="store_true",
+                        help="test normalized matching flow with bundle equality")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -1319,12 +1384,37 @@ def main() -> int:
         print(f"bundle_deletion_total_losses={dict(total_losses)} "
               f"zero_pairs={total_zero} forced_both={total_forced_both} "
               f"zero_shapes={dict(total_shapes)}")
+    if args.audit_zero_loss_restriction:
+        bad_count_distribution = Counter()
+        survivors = []
+        for label, candidate in all_data:
+            zero_edges, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            bad_count_distribution[len(bad_rows)] += 1
+            branch, seed_number, colors = label
+            print(f"zero_loss_restriction branch={branch} seed={seed_number} "
+                  f"colors={colors} zero_edges={zero_edges} bad_rows={bad_rows}")
+            if not bad_rows:
+                survivors.append(label)
+        print(f"zero_loss_restriction_bad_count_distribution="
+              f"{dict(bad_count_distribution)} survivors={survivors}")
+    if args.audit_full_bundle_primal:
+        feasible_labels = []
+        for label, candidate in all_data:
+            feasible, message = full_bundle_primal_feasible(candidate)
+            branch, seed_number, colors = label
+            print(f"full_bundle_primal branch={branch} seed={seed_number} "
+                  f"colors={colors} feasible={feasible} message={message}")
+            if feasible:
+                feasible_labels.append(label)
+        print(f"full_bundle_primal_feasible={feasible_labels}")
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
     if (args.audit_flat_signatures or args.audit_bundle_boundaries
             or args.audit_bundle_pairs or args.audit_bundle_triples
-            or args.audit_bundle_rank or args.audit_bundle_deletion):
+            or args.audit_bundle_rank or args.audit_bundle_deletion
+            or args.audit_zero_loss_restriction
+            or args.audit_full_bundle_primal):
         return 1 if audit_failed else 0
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")
