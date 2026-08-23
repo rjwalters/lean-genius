@@ -19250,8 +19250,9 @@ columns require different intermediates.  Conversely a `d` payer in
 there cannot be a mixture with only one `d`-tag.
 
 Equation (1253) repairs the only reuse ambiguity in the global tag count.
-In particular every `B--B` propagation edge has the single literal payer
-already used in Section 349.  A residual endpoint introduces either new
+In particular every `B--B` propagation edge has the single non-`d` literal
+payer already used in Section 349, so its canonical fifth-cell tag satisfies
+`kappa(y)!=d`.  A residual endpoint introduces either new
 singleton payer vertices or one sharply identified secondary double-payer;
 it never permits arbitrary merging of the two or three selected tags.  No
 claim is made yet that double-payers on different propagation rows are
