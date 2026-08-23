@@ -16938,7 +16938,7 @@ pair, their parity is the parity of `|T|`, so
 
 For every crossing pair, retain its outside path in `F_a[c]\C` and append
 the two cut edges indexed by the paired labels.  This produces an odd
-family of pairwise edge-disjoint actual `F_a[c]` paths
+family of pairwise edge-disjoint actual `F_a[c]` trails
 
 ```text
 r(y) --[y]-- v(y) --[outside F_a[c] path]--
@@ -16946,10 +16946,12 @@ r(y) --[y]-- v(y) --[outside F_a[c] path]--
 ```
 
 where exactly one of `y,nu_a^C(y)` belongs to the terminal support `T`.
+Each trail is a core-to-core path when its two core roots differ, and a
+closed return cycle when the pairing joins the two labels at one root.
 The labels on the other ends form an odd subset of the complementary
 active-label shore.  After cancellation, the two core-root endpoint
-supports of the path family are both odd and nonempty; their symmetric
-difference is the exact boundary of the sum of the paths in (1088).
+supports of the trail family are both odd and nonempty; their symmetric
+difference is the exact boundary of the sum of the trails in (1088).
 
 Consequently the nonzero outside-root destination of Sections 323--324
 cannot terminate away from the curl: an odd subfamily of its terminal
