@@ -82,6 +82,20 @@ theorem orderNine_articulation_side_parameter_classification
   apply hterminal e k b₁ b₂ b₃
   exact ⟨he, hn₀, hparity, hsimple, hproper, hbeta, hcut, hcutCompl⟩
 
+/-- The projected `(e,k)` type list produced by the side classifier. -/
+def orderNineArticulationSideParameterType (e k : ℕ) : Prop :=
+  (e = 2 ∧ k = 2) ∨ (e = 2 ∧ k = 4) ∨
+  (e = 2 ∧ k = 6) ∨ (e = 3 ∧ k = 3) ∨
+  (e = 3 ∧ k = 5) ∨ (e = 3 ∧ k = 7) ∨
+  (e = 4 ∧ k = 6) ∨ (e = 4 ∧ k = 8) ∨
+  (e = 5 ∧ k = 3) ∨ (e = 5 ∧ k = 7) ∨
+  (e = 5 ∧ k = 9)
+
+theorem two_le_of_orderNineArticulationSideParameterType
+    {e k : ℕ} (h : orderNineArticulationSideParameterType e k) : 2 ≤ e := by
+  unfold orderNineArticulationSideParameterType at h
+  rcases h with h | h | h | h | h | h | h | h | h | h | h <;> omega
+
 /-- Two articulation sides exhausting the five exceptional vertices and the
 nine balance units have one of the three order pairs found by the exact
 checker. -/
@@ -114,7 +128,48 @@ theorem orderNine_two_articulation_side_orders
     rcases h₁ with ⟨rfl, rfl⟩
   all_goals omega
 
+/-- Any finite articulation decomposition exhausting the five exceptional
+vertices has exactly two components.  Their orders lie in the three sharp
+pairs `(18,59)`, `(27,50)`, `(34,43)`. -/
+theorem orderNine_articulation_component_assembly
+    {I : Type*} [DecidableEq I]
+    (L : Finset I) (e k : I → ℕ)
+    (hcard : 2 ≤ L.card)
+    (htype : ∀ i ∈ L, orderNineArticulationSideParameterType (e i) (k i))
+    (hesum : ∑ i ∈ L, e i = 5)
+    (hksum : ∑ i ∈ L, k i = 9) :
+    ∃ a b : I, a ≠ b ∧ L = {a, b} ∧
+      ((e a + 8 * k a = 18 ∧ e b + 8 * k b = 59) ∨
+       (e a + 8 * k a = 59 ∧ e b + 8 * k b = 18) ∨
+       (e a + 8 * k a = 27 ∧ e b + 8 * k b = 50) ∨
+       (e a + 8 * k a = 50 ∧ e b + 8 * k b = 27) ∨
+       (e a + 8 * k a = 34 ∧ e b + 8 * k b = 43) ∨
+       (e a + 8 * k a = 43 ∧ e b + 8 * k b = 34)) := by
+  classical
+  have hsumLower : 2 * L.card ≤ ∑ i ∈ L, e i := by
+    calc
+      2 * L.card = ∑ _i ∈ L, 2 := by simp [Nat.mul_comm]
+      _ ≤ ∑ i ∈ L, e i := by
+        apply Finset.sum_le_sum
+        intro i hi
+        exact two_le_of_orderNineArticulationSideParameterType (htype i hi)
+  have hcardEq : L.card = 2 := by
+    rw [hesum] at hsumLower
+    omega
+  obtain ⟨a, b, hab, hL⟩ := Finset.card_eq_two.mp hcardEq
+  have heab : e a + e b = 5 := by
+    simpa [hL, hab] using hesum
+  have hkab : k a + k b = 9 := by
+    simpa [hL, hab] using hksum
+  have ha := htype a (by simp [hL])
+  have hb := htype b (by simp [hL])
+  unfold orderNineArticulationSideParameterType at ha hb
+  refine ⟨a, b, hab, hL, ?_⟩
+  exact orderNine_two_articulation_side_orders
+    (e a) (k a) (e b) (k b) ha hb heab hkab
+
 #print axioms orderNine_articulation_side_parameter_classification
 #print axioms orderNine_two_articulation_side_orders
+#print axioms orderNine_articulation_component_assembly
 
 end Erdos85
