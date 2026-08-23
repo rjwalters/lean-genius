@@ -2192,6 +2192,50 @@ phase compression discarded.  Mark coincidence is precisely the degenerate
 case in which both crossed codegrees drop from one to zero, recovering
 (73rnl').
 
+Consequently the complete coarse labeled state space is finite and very
+small.  Let `kappa=1[p_1=p_2]` in the distinct-mark branch (and leave it
+undefined for coincident marks).  Substituting (73rnk), (73rnl'), and
+(73rnz') gives
+
+```text
+marks       delta  tau_1 tau_2  beta_1 beta_2  allowed kappa
+coincident    0       0     0       0      0        --
+coincident    1       0     0       1      1        --
+
+distinct      0       0     0       0      0       0 or 1
+distinct      0       1     0       1      0        0
+distinct      0       0     1       0      1        0
+distinct      0       1     1       1      1        0
+distinct      1       0     0       1      1        0
+distinct      1       1     0       0      1        0
+distinct      1       0     1       1      0        0
+distinct      1       1     1       0      0        0.       (73rnz'')
+```
+
+Thus there are exactly eleven coarse labeled states: two coincident states,
+and nine distinct states because the first distinct phase row splits by
+intermediary coincidence.  This table uses every presently proved local
+owner/mark/codegree squeeze.  It is not an impossibility claim: all eleven
+rows remain syntactically compatible with those local constraints.
+
+There is one further exact localization relevant to the witness phases.  If
+`tau_i=0` and `p_i` is an outside point, the complete outside-neighbor list
+(73rnj) forces
+
+```text
+p_i = y_((3-i),j) for a unique empty line E_j.
+```
+
+That witness edge at `z_(3-i)` is necessarily non-D, because `w_i` is its
+common A-neighbor; hence this distinguished crossed-route coordinate
+contributes zero to `b_(3-i)`.  If `p_i` is inside, it instead records a
+genuine residual-M port.  Therefore the unresolved datum in (73rnz'') is
+not another bit of phase: it is, for each unique crossed route, whether its
+intermediate label is an empty-line witness or an inside residual port, and
+in the outside case which empty-line block carries it.  This is exactly the
+color/fiber label that must be retained by any final simultaneous-routing
+argument.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
