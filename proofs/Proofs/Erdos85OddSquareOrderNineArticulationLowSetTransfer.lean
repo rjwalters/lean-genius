@@ -2969,6 +2969,89 @@ theorem false_of_orderNine_order34_regular_owner_W_point_and_partner
       ((G.mem_neighborFinset s w).mp hwParts.1)
       (by rw [hww']; exact (G.mem_neighborFinset z w').mp hw'Parts.1)
 
+/-- End-to-end corrected local assembly for the four-edge `(3,1)` branch.
+It combines the residual placement, the exact partner shore count, and the
+regular-W-point terminal. -/
+theorem false_of_orderNine_order34_four_edge_owner_W_one_punctured
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hloc : (G.induce (G.neighborSet owner)).edgeFinset.card = 4)
+    (S T Z P W : Finset V)
+    (hdisjST : Disjoint S T)
+    (hownerS : (G.neighborFinset owner ∩ S).card = 3)
+    (hownerSPartition : G.neighborFinset owner ∩ S =
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0) ∩ S) ∪
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1) ∩ S))
+    (hpartnersSub : G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 1 ⊆ S ∪ T)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0)
+    (hWcard : W.card = 2)
+    (hownerW : (G.neighborFinset owner ∩ W).card = 1)
+    (hExceptionalDegree : ∀ e ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset owner),
+      (G.neighborFinset e ∩ Z).card = if e ∈ S then 1 else 2)
+    (hRegularDegree : ∀ r ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0) \
+        (secondOrderDefectGraph G).neighborFinset owner,
+      (G.neighborFinset r ∩ Z).card = 2)
+    (hpartnerWdegree : ∀ z ∈
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1) ∩ T),
+      (G.neighborFinset z ∩ W).card = 1) : False := by
+  classical
+  let A := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0
+  let E := A ∩ (secondOrderDefectGraph G).neighborFinset owner
+  let R := A \ (secondOrderDefectGraph G).neighborFinset owner
+  let K := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1
+  obtain ⟨s, hOeq⟩ := Finset.card_eq_one.mp hownerW
+  have hResidual := orderNine_order34_four_edge_owner_W_one_residual_placement
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hloc
+      S Z P W hpartition hPsub hWsub hWcard hownerW
+      hExceptionalDegree hRegularDegree s hOeq
+  have hgeom := orderNine_secondProfile_owner_four_edge_binZero_partition
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hloc
+  dsimp only at hgeom
+  have hEcard : E.card = 1 := by simpa [E, A] using hgeom.1
+  have hEScard : (E ∩ S).card = 1 := by
+    have hsub : E ⊆ S := hResidual.2
+    rw [Finset.inter_eq_left.mpr hsub, hEcard]
+  have hshoreCards :=
+    orderNine_order34_four_edge_owner_W_one_partner_shore_cards
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner S T W
+        hdisjST hownerS (by simpa [E, A] using hEScard)
+        hownerSPartition hpartnersSub hWsub hWcard hownerW hpartnerWdegree
+  dsimp only at hshoreCards
+  have hKTcard : (K ∩ T).card = 1 := by simpa [K] using hshoreCards.2.2
+  have hsO : s ∈ G.neighborFinset owner ∩ W := by rw [hOeq]; simp
+  have hsOParts := Finset.mem_inter.mp hsO
+  have hsR : s ∈ R := by simpa [R, A] using hResidual.1
+  have hsRParts := Finset.mem_sdiff.mp hsR
+  have hsA := Finset.mem_inter.mp hsRParts.1
+  exact false_of_orderNine_order34_regular_owner_W_point_and_partner
+    G hfree hhigh howner
+      ((G.adj_comm owner s).mp ((G.mem_neighborFinset owner s).mp hsOParts.1))
+      hsA.2 Z P W (K ∩ T) hpartition hPsub hWsub hWcard hOeq
+      (hRegularDegree s (by simpa [R, A] using hsR)) hKTcard
+      (fun z hz ↦ (Finset.mem_inter.mp (Finset.mem_inter.mp hz).1).2)
+      (fun z hz ↦ ((G.mem_neighborFinset owner z).mp
+        (Finset.mem_inter.mp (Finset.mem_inter.mp hz).1).1).symm)
+      hpartnerWdegree
+
 /-- Actual owner-punctured provider for the corrected exceptional-point
 `Z`-degree function.  The articulation universe omits `owner` but contains
 every local exceptional point; its defect neighborhoods are closed after
