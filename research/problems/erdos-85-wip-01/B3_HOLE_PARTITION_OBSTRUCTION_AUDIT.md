@@ -1627,6 +1627,17 @@ path.  The local feasibility checks show these components cannot be deleted
 one edge at a time; the remaining simultaneous equation must constrain the
 completion mass at their endpoint and middle rows.
 
+A separate pair-level simultaneous LP cannot improve this.  For a `K_2`
+edge, once both orientations occur in some local degree-`d` matching, the two
+row matching polytopes are a Cartesian product, so the two occurrences can
+be mixed independently with equal positive weight.  At the middle row of a
+`P_3`, if each incident candidate is individually feasible, convexly mixing
+their witnessing matchings gives arbitrarily small positive marginal to
+both.  Therefore only a global normalization or conservation identity can
+force one of these weights to vanish.  This rules out another local-capacity
+detour and identifies (12ri) with the conservation obligation in the shared
+tagged-bundle reversal lemma.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
