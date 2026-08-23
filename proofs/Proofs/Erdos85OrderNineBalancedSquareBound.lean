@@ -33,7 +33,8 @@ private theorem balancedSquare_point (a x : ℕ) :
           ((x : ℤ) - a) * ((x : ℤ) - ((a : ℤ) + 1)) := by ring
     omega
 
-private theorem balancedSquareSum_le_sum_sq_of_card_78
+/-- Type-generic form, used for the subtype of the 78 ordinary vertices. -/
+theorem balancedSquareSum_le_sum_sq_of_card_78
     {ι : Type*} [Fintype ι] [DecidableEq ι]
     (hcard : Fintype.card ι = 78) (f : ι → ℕ) :
     orderNineBalancedSquareSum (∑ i, f i) ≤ ∑ i, (f i) ^ 2 := by
@@ -87,5 +88,6 @@ theorem orderNineBalancedSquareSum_le_sum_sq (f : Fin 78 → ℕ) :
   exact balancedSquareSum_le_sum_sq_of_card_78 (by simp) f
 
 #print axioms orderNineBalancedSquareSum_le_sum_sq
+#print axioms balancedSquareSum_le_sum_sq_of_card_78
 
 end Erdos85
