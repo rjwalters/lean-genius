@@ -3336,6 +3336,29 @@ The lost two bits are not absent from the uncontracted geometry; they are
 stored in the chosen pairing/mate decoration at G.  Any proof needing them
 must retain that decoration, exactly as the SRP ledger retains its mate tag.
 
+The surviving bit is exactly the switch Gram defect with a leaf correction.
+For every even integer d,
+`C(d,2)=d/2` modulo two.  Hence in the charge-free regime
+
+```text
+sum_G C(d_G,2) = |E(J)|/2                         (mod 2).
+```
+
+Combining this with (73rnz_ao) and (73rnz_bi) gives
+
+```text
+omega_Q
+ = |N| + sum_L C(d_L,2) + Delta_J                (mod 2). (73rnz_bk)
+```
+
+The leaf binomial term counts pairs of distinct switches sharing their leaf;
+the center binomial term already absorbed into `Delta_J` counts pairs sharing
+their pivot.  Thus the sole pairing-invariant quotient holonomy is precisely
+the reversal-odd row/column Gram defect corrected by the fixed cross-port
+count and the leaf-side collision census.  This is the direct bridge from
+the four-leaf quotient to the SRP commutator ledger: controlling `Delta_J`
+jointly with the leaf collisions controls `omega_Q`.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
