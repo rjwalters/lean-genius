@@ -3742,6 +3742,21 @@ This suggests a stronger prospective route: derive a fractional U1-point
 mass bound below `d(u)-|F_u|` at some row.  Its observed validity is sampled
 data; no uniform fractional bound is asserted.
 
+The correctly scoped prospective disjunction is therefore
+
+```text
+an old forced collision; or
+some u has fractional residual point-cover value < d(u)-|F_u|. (13aa)
+```
+
+This is not contradicted by the earlier exact fractional value-5 witness:
+that witness lies in a design already carrying a forced collision.  In the
+current first-model tests through random seed 4 in both outer branches, every
+finite noncollision interval obstruction satisfies the strict fractional
+inequality, across both upper-deletion and lower-contraction mechanisms.
+The formal consumers are banked; proving (13aa) from the outer equations is
+the remaining fractional Hall leaf.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
