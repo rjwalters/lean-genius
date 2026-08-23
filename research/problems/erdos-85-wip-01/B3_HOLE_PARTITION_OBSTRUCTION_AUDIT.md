@@ -1754,6 +1754,24 @@ kills the second, and the unit label capacities bound the last term above by
 task has a precise combinatorial form: construct the `(12ro)` weights from
 the three equality-pattern types without solving an instance-specific MILP.
 
+For the certificates in `(12rn)`, `(12ro)` has an equivalent and more local
+form.  Since every used feature has `iota=0`, define `p_t(b)` to be its integer
+multiplier for the state `(sigma_t,0,census_t(b))` when `b` is external to
+root `t`, and zero when `b` belongs to `t`.  Then the bundle contribution of
+a candidate route `t -> u` is exactly
+
+```text
+ sum_{b in B_u cap selected} p_t(b)
+-sum_{b in B_t cap selected} p_u(b).                         (12rp)
+```
+
+Thus the sampled certificates use no mysterious global coordinate: they are
+integer external-label potentials, supplemented by nonnegative prices on the
+row-label capacity slots.  Bundle conservation is precisely cancellation of
+the two transport sums in `(12rp)`.  A uniform equality-case proof may
+therefore be sought as a potential assignment on the finite root/census state
+graph, with the one-unit deficit supplied by the selected demand rows.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
