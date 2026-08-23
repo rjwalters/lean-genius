@@ -11189,7 +11189,9 @@ sum_(same-side marked H edge xx')
 
 The unique-anchor problem has therefore been replaced by a bilinear
 endpoint census.  Proving (673) now requires showing that the marked
-same-side H matching has total determinant equal to its cardinality.  This
+same-side H edge census has total determinant equal to its cardinality.  It
+is a subgraph of the horizontal owner two-factor, not a matching on root
+vertices; a root may meet two H edges.  This
 is not implied by the separate `ell` and `r` marginals, but it is expressed
 in exactly the two-shore commutator alphabet already present in
 (73rnz_cjibky)--(73rnz_cjibkza), so those identities can be tested against
@@ -11227,7 +11229,7 @@ correction, of the marked H population in the seven unordered cells (680).
 This is the smallest scalar table available: the separate one-dart
 `ell/r` marginals do not determine the equal-state cells, just as the coarse
 H/V/S marginals failed in Section 210.  A successful proof must use either
-the horizontal-owner matching relation on these four shore states or the
+the horizontal-owner two-factor relation on these four shore states or the
 owner-resolved commutator in (73rnz_cjibky)--(73rnz_cjibkza); no additional
 anchor enumeration is required.
 
@@ -11252,11 +11254,14 @@ sum_e u(e)
 Thus the three off-diagonal cells incident with `00` are not new pair data:
 their sum is the ordinary one-endpoint margin `n_00`.  After that margin is
 transported, the genuinely nonlinear same-side obstruction consists only of
-four equal-state pair parities.
+four equal-state edge parities.
 
 Equation (682) is sharp at this resolution.  Separate endpoint margins
-cannot determine the diagonal pair counts: toggling two equal-state pairs
-against two cross-state pairs can preserve every endpoint population.  The
+cannot determine the diagonal edge counts: an abstract toggle of two
+equal-state edge cells against two cross-state edge cells can preserve every
+endpoint population.  Realizability of that toggle in the owner two-factor
+is a separate graph question.  The
 remaining graph theorem may therefore be stated minimally as an evaluation
-of the equal-shore-state H pairs, with `n_00` supplied by the existing
-one-dart owner ledger.  No seven-cell enumeration is necessary.
+of the equal-shore-state H edges, with `n_00` supplied by the existing
+one-dart owner ledger and their incidence pattern retained in the horizontal
+owner two-factor.  No seven-cell enumeration is necessary.
