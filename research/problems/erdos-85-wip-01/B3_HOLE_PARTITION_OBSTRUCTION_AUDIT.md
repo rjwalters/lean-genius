@@ -3641,6 +3641,52 @@ it therefore regression-tests the reciprocity computation but adds no real
 falsification resistance to the universal trichotomy.  The stored survivor
 and a seed-free negation model remain the decisive tests.
 
+The seed-free test subsequently refuted that proposed three-horn replacement.
+The durable witness `q9_13t_counterexample.json`, checked independently by
+`verify_q9_13t_counterexample.py`, satisfies
+
+```text
+deficits = 0, forced collisions = 0, singleton reciprocity horns = 0,
+but symmetric simultaneous selection = UNSAT.                 (13v)
+```
+
+It is nevertheless killed by a one-row compatibility obstruction.  Row 2
+has five demanded packings; each contains row 24 or row 46, while no demanded
+packing at either reverse row contains row 2.  Thus `{24,46}` is a minimum
+reverse-impossible hitting set.  The exact formal hierarchy is banked as
+`HasLocalGramPackingOneRowCompatibilityObstruction`,
+`HasLocalGramPackingHittingSetReciprocityObstruction`, and their consumers.
+The canonical incoming reverse bounds are
+
+```text
+F_u = {w : every demanded packing at w contains u},
+I_u = {w : no demanded packing at w contains u}.               (13w)
+```
+
+A compatible packing at `u` is exactly a demanded packing `X` with
+`F_u subset X` and `X intersect I_u = empty`.  Kernel-checked definitions
+`IsReverseIntervalLocalGramPacking` and
+`IsReverseIntervalContractedExtension` reduce this to extending the already
+eligible, conflict-free lower fiber `F_u` inside the deletion of `I_u`.
+
+The exact lazy seed-free negation remains unresolved, not refuted: branch 3
+timed out after four interval-row cuts (600 seconds on the third solve), and
+branch 4 timed out after its first cut round.  Randomized branch-3 outer
+models expose only one-unit interval rank deficits so far.  Representative
+regular-triple profiles have target 5 and contracted capacity 4:
+
+```text
+u=2:  F=empty,       I intersect H_u={24,46};
+u=7:  F={11,19},     I intersect H_u={9};
+u=19: F=empty,       I intersect H_u={7,18}.                    (13x)
+```
+
+These are computational classification data, not a universal bound.  The
+proof-facing B.3 gap is now precise: prove every admissible outer design has
+some interval-deficient row (or an older forced collision), equivalently
+prove the contracted residual rank cannot reach `d(u)-|F_u|` simultaneously
+at all rows.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
