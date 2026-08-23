@@ -21214,3 +21214,66 @@ ports as the binary parameter grows.  This is the first cross-root layer
 coupling extracted from the ordinary-cycle expansion; the remaining task
 is to feed the companion deletions in (1399) back into the rooted matching
 or SRP tag system.
+
+## 398. The unused payer slack is exactly private-boundary loss
+
+The five-slot bound in (1394) has an exact geometric formula.  Fix root
+`x_i`, and write
+
+```text
+h_i:=# root-i ordinary edges meeting B,
+s_i^sh:=# sheltered root-i O--O edges in {0,1},
+epsilon_i:=1_[v_i in B].
+```
+
+Among the ten private tickets, four are the artificial fixed block
+`B_(x_i)`.  The other six carry actual root-`i` labels, except that the
+strict mate `v_i`, when private, is fixed rather than ordinary.  Therefore
+the ordinary root-`i` incidence count on `B` is
+
+```text
+2E_i(B,B)+E_i(O,B)=6-epsilon_i.                    (1400)
+```
+
+Since `h_i=E_i(B,B)+E_i(O,B)`, this also gives
+
+```text
+h_i=(6-epsilon_i+E_i(O,B))/2.                      (1401)
+```
+
+The residual boundary parity (1278) says that `E_i(O,B)` is even when
+`v_i in O` and odd when `v_i in B`.  Together with (1400), its possible
+values and the corresponding private-edge losses are
+
+```text
+v_i in O: E_i(O,B) in {0,2,4,6},  h_i in {3,4,5,6};
+v_i in B: E_i(O,B) in {1,3,5},    h_i in {3,4,5}.  (1402)
+```
+
+Now let `delta_i` be the number of core-inactive labels at `p_(i+2)` not
+hit by the unsheltered offset-payer map.  The root matching has `q-5`
+ordinary edges, partitioned exactly into the `h_i` edges meeting `B`, the
+`s_i^sh` sheltered `O--O` edges, and the unsheltered edges of `G_sh`.
+Comparing this exact partition with the `q-7` inactive labels available at
+the offset port gives
+
+```text
+delta_i
+ =(q-7)-((q-5)-h_i-s_i^sh)
+ =h_i+s_i^sh-2.                                    (1403)
+```
+
+Consequently the slack cannot vanish:
+
+```text
+1<=delta_i<=5 for every root i,
+5<=sum_i delta_i<=25.                              (1404)
+```
+
+Thus the exceptions to the near-bijection are neither arbitrary labels nor
+an asymptotic error term.  They count, root by root, exactly the ordinary
+matching edges diverted through private tickets, together with the optional
+strict-sheltered residual edge, minus the fixed two-unit baseline.  Any
+attempt to improve the saturation staircase of Section 397 must therefore
+act on the finite `B--B/B--O` boundary geometry or exclude shelters; there
+is no hidden residual source of payer slack.
