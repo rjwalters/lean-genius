@@ -6992,3 +6992,62 @@ The remaining theorem therefore has two separately visible pieces: pair the
 H--V boundary census in (395) with the H-run transfer, and price the genuinely
 joint refinement commutator in the second term of (396).  Neither cancellation
 is asserted here.
+
+## 132. The H-run transfer needs a secondary-census connection
+
+Equation (395) can be grouped canonically by the maximal H-runs used to
+define `T_H` in Section 117.  Let a run `A` have boundary root pairs
+`{v_-,h_-}` and `{h_+,v_+}`, where the `v` darts are V-labeled and the `h`
+darts are the endpoint H darts.  Define its secondary-resolved boundary
+charge by
+
+```text
+tau_u(A)
+ := q_u(v_-)+q_u(h_-)+q_u(h_+)+q_u(v_+).             (397)
+```
+
+Then (395) is exactly
+
+```text
+D_(1_H,q_u)=sum_(H-runs A) tau_u(A).                  (398)
+```
+
+There is a useful transport form of the same charge.  Traverse the H-run
+from `h_-` to `h_+` through its alternating root and port matching edges.
+The port increments vanish because `M_P q_u=q_u`.  Telescoping the remaining
+root increments therefore gives
+
+```text
+q_u(h_-)+q_u(h_+)
+ = sum_(internal H--H root pairs E in A) delta_R q_u(E). (399)
+```
+
+Substitution into (397) yields
+
+```text
+tau_u(A)
+ = q_u(v_-)+q_u(v_+)
+   + sum_(internal H--H roots E in A) delta_R q_u(E). (400)
+```
+
+Thus the canonical label edge `[ell_-,ell_+]` contributed by `A` to
+`T_H` has a canonical `q_u`-parallel transport, but its value is not in
+general a function of the two endpoint labels alone.  It also carries the
+integrated root derivative of the local secondary census through the run.
+This is the exact mixed-cycle analogue of a connection on the transfer
+edge.
+
+Consequently the endpoint chain `T_H` from (347) closes the **label**
+boundary, while the secondary-resolved marked ledger requires the enriched
+edge
+
+```text
+(ell_-,ell_+; tau_u(A)).                              (401)
+```
+
+Any proof that pairs (395) using only the undecorated endpoint edge discards
+the correction in (400).  In the all-horizontal owner-run branch the old
+primitive can evaluate this transport, but on a mixed dart cycle (397)--
+(400) are the native definition.  The remaining H-run task is therefore to
+pair or price these enriched transfer edges jointly in `(A,u)`, consistent
+with the transition-potential requirement found in the Baer and B3 lanes.
