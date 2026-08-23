@@ -24373,3 +24373,46 @@ cycle are separated by at least one unmarked target.  Combining this
 with (1632), the q-large saturation branch is a family of separated,
 multicolored monochromatic turns on one fixed two-root factor, not an
 arbitrary collection of overlapping local pinches.
+
+## 457. Componentwise cancellation permits simultaneous color avoidance
+
+The deletion argument of Section 448 can avoid arbitrary additional
+source colors as well as payer layers.  Let `P` be a set of payer layers
+and `C` a set of source colors.  In addition to the edges of color `d`,
+the `Gamma`-colored edges, and the edges paid from `P`, delete every edge
+whose source color lies in `C`.  The exact color census bounds every
+source-color fiber by ten edges, so the enlarged forbidden set `F_(P,C)`
+satisfies
+
+```text
+f_(P,C):=|F_(P,C)|<=55+10(|P|+|C|),
+D_(P,C):=|E(H-F_(P,C))|-(2|O_5|-3)
+          >=q-117-f_(P,C).                       (1634)
+```
+
+Nothing else in Section 448 used the type of a deleted edge.  If more
+than `f_(P,C)` closed components exist, one is untouched and Section 445
+applies inside it.  Otherwise deletion leaves at most
+`90+2f_(P,C)` components, and the residual PC-cycle span has dimension at
+least `D_(P,C)`.  Thus the same six-dimensional component pigeonhole
+works whenever
+
+```text
+D_(P,C)>5(90+2f_(P,C)).                           (1635)
+```
+
+Substituting (1634) gives the convenient sufficient condition
+
+```text
+q>1172+110(|P|+|C|).                              (1636)
+```
+
+Under (1636), one residual component therefore contains either a
+nondegenerate tag-even PC closed walk or a genuine distinct-edge
+saturation.  In both cases every edge avoids `d`, `Gamma`, all payer
+layers in `P`, and all extra source colors in `C`.
+
+This strengthens the avoidance interface rather than the terminal
+itself.  A saturation terminal now carries a one-element source-color
+support together with a payer-layer support of size at most two, and the
+next transversal argument may forbid both kinds of support at once.
