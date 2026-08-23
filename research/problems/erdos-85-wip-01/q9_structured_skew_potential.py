@@ -121,7 +121,7 @@ def instance(branch: int, seed: dict, colors: tuple[int, int]) -> dict:
         labels.append(ls)
     return {"degree": degree, "candidates": candidates,
             "vectors": vectors, "labels": labels, "blocks": blocks,
-            "types": types, "selected": selected}
+            "core": core, "types": types, "selected": selected}
 
 
 def root_signature_censuses(data: dict) -> tuple[list[tuple], list[dict]]:
@@ -2468,8 +2468,24 @@ def residual_gram_unsat_core(data: dict, timeout_seconds: int) -> dict:
         possible = set.union(*feasible_sets) if feasible_sets else set()
         local_profiles[row] = {
             "count": len(feasible_sets),
+            "block": sorted(data["blocks"][row]),
+            "core": sorted(data["core"][row]),
             "forced": sorted(forced),
+            "forced_blocks": {forced_row: sorted(data["blocks"][forced_row])
+                              for forced_row in sorted(forced)},
             "excluded": sorted(set(data["candidates"][row]) - possible),
+            "packing_block_sizes": sorted({
+                tuple(sorted(len(data["blocks"][chosen_row])
+                             for chosen_row in chosen))
+                for chosen in feasible_sets
+            }),
+            "covered_label_counts": sorted({
+                len(set().union(*(data["blocks"][chosen_row]
+                                  for chosen_row in chosen)))
+                for chosen in feasible_sets
+            }),
+            "packings": [sorted(chosen) for chosen in feasible_sets]
+            if len(feasible_sets) <= 20 else [],
         }
     return {
         "result": "unsat",

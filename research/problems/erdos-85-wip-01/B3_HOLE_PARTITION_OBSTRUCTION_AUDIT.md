@@ -3199,6 +3199,30 @@ admissible outer design, is now the precise proof candidate.  It involves at
 most two local packing polytopes and avoids the full symmetric factor model.
 As before, the sweep is evidence for that candidate rather than a proof.
 
+The representative branch-3 collision has a particularly small exact-cover
+profile.  The two core rows are regular rainbow triples
+
+```text
+S_3={3,11,19},       S_16={0,11,20},
+```
+
+sharing point 11.  Row 3 has exactly six feasible five-block packings and row
+16 has exactly three.  Every one of the nine packings contains the same
+marked-pair row 28 with
+
+```text
+S_28={11,23}.                                             (13g)
+```
+
+For row 3 all packings have block-size profile `(3,2,2,2,2)` and cover
+eleven U1 labels.  Row 16 has profiles `(3,2,2,2,2)` or `(3,3,2,2,2)` and
+covers eleven or twelve.  Thus this second horn is not an opaque SAT-core
+artifact: two rainbow triples through one U1 point both force one marked pair
+through that same point.  A useful route to (13f) is to classify when the
+local exact-cover family of a triple or hole has a nonempty kernel `F(u)`,
+then show that absence of a capacity deficit makes two kernels collide along
+an intersecting row pair.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
