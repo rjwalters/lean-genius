@@ -40,6 +40,15 @@ def main() -> int:
     horns = [(u, w) for u in range(N) for w in range(N)
              if all(w in p for p in packs[u]) and all(u not in p for p in packs[w])]
     assert horns == [], horns
+    forced = {u: set.intersection(*packs[u]) for u in range(N)}
+    possible = {u: set.union(*packs[u]) for u in range(N)}
+    compatible = {
+        u: [p for p in packs[u]
+            if all((w not in p or u in possible[w])
+                   and (w in p or u not in forced[w]) for w in range(N))]
+        for u in range(N)
+    }
+    bad_one_rows = [u for u in range(N) if not compatible[u]]
     solver = Solver(); x = {(u,v): Bool(f"x_{u}_{v}") for u in range(N) for v in range(N)}
     for u in range(N):
         solver.add(Sum([If(x[u,v],1,0) for v in range(N)]) == degree[u])
@@ -54,6 +63,7 @@ def main() -> int:
     assert core["result"] == "unsat", core
     print("outer_constraints=SAT local_deficits=0 forced_collisions=0 reciprocity_horns=0")
     print(f"symmetric_simultaneous_selection={result}")
+    print(f"one_row_compatibility_obstructions={bad_one_rows}")
     print("unsat_core=" + json.dumps({
         "degrees": core["degrees"], "gram_pairs": core["gram_pairs"]
     }, separators=(",", ":")))
