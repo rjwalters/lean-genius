@@ -1444,6 +1444,49 @@ theorem orderNine_secondProfile_owner_binZero_local_type_package
       exact squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
         G hfree hhigh howner hyB hpB hOwnerY
 
+/-- An exceptional original bin-zero neighbor of the universal owner avoids
+every other original owner-neighbor.  Such a point is precisely an original
+defect neighbor of the owner, hence its owner edge is triangle-free and has
+no common neighbor.  This supplies the avoidance hypotheses in the
+post-(27) placement terminals. -/
+theorem orderNine_secondProfile_owner_defect_binZero_avoids_owner_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner y z : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hy : y ∈ G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0 ∩
+      (secondOrderDefectGraph G).neighborFinset owner)
+    (hzOwner : G.Adj owner z) :
+    ¬ G.Adj y z := by
+  intro hyz
+  have heq :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  have hyTf : y ∈ triangleFreeNeighbors G owner := by
+    rw [← heq]
+    exact hy
+  have htfParts := (mem_triangleFreeNeighbors G owner y).mp hyTf
+  have hzCommon : z ∈ G.neighborFinset owner ∩ G.neighborFinset y :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset owner z).mpr hzOwner,
+      (G.mem_neighborFinset y z).mpr hyz⟩
+  have hpos : 0 < (G.neighborFinset owner ∩ G.neighborFinset y).card :=
+    Finset.card_pos.mpr ⟨z, hzCommon⟩
+  rw [htfParts.2] at hpos
+  omega
+
 end
 
 end Erdos85
