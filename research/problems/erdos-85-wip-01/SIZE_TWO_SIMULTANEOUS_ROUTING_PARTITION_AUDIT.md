@@ -17635,3 +17635,53 @@ in the full-shore case, two in the exact-reuse case, and these seven in the
 two endpoint-root cases.  The remaining obstruction is therefore a finite
 eleven-pattern holonomy test, with multiplicity ambiguity only in the
 weight-three endpoint patterns realized by five crossing paths.
+
+## 337. Only the strict ticket can support a terminal-correction loop
+
+The loops allowed abstractly in `J_x` by Section 335 have only one
+realizable source.  Suppose an internal matching edge `{t,t'}` of
+`M_i[T_x]` joins two private tickets with the same owner port
+
+```text
+omega_x(t)=omega_x(t')=p.                           (1137)
+```
+
+Then `p` is adjacent in `A_e` to both `t` and `t'`.  The matching edge is
+indexed by one exterior label `y`, which is also adjacent to both target
+endpoints.  Thus `t,p,t',y` are four distinct vertices spanning the
+four-cycle
+
+```text
+t -- p -- t' -- y -- t,                            (1138)
+```
+
+contrary to `C_4`-freeness.  Hence two private tickets in one owner fiber
+can never form an internal terminal pair.
+
+The two even fibers of `omega_x` have size two and consist entirely of
+private tickets, so neither can produce a loop.  The odd fiber over
+`p_str(x)` consists of the strict ticket itself and the two private owner
+endpoints of that port.  Its only possible loop-producing pair therefore
+uses the strict ticket and one of those two private tickets.  Since the
+strict ticket belongs to at most one matching edge,
+
+```text
+J_x has at most one loop, and every loop is based at p_str(x). (1139)
+```
+
+Loops do not alter the boundary in (1132), but (1139) removes the only
+spurious same-owner pairing multiplicity.  On the three nonincident
+selected ports, `partial J_x` is either empty or a two-port set.  Therefore
+the canonical aggregate return shore has the exact coarse form
+
+```text
+Z_x^cross is one of the three singleton ports, or all three ports. (1140)
+```
+
+The singleton `p_str(x)` occurs when `partial J_x=0`; another singleton
+occurs when the boundary contains `p_str(x)` and that port; and the full
+three-port shore occurs when the boundary is the other two ports.  This
+does not yet choose among those four shores, because nonloop internal
+pairs and parallel projected edges remain possible.  It does ensure that
+any such correction is realized by cross-owner terminal pairs, apart from
+at most one explicitly located strict/private loop.
