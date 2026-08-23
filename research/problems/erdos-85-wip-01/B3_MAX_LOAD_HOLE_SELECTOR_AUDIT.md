@@ -793,6 +793,32 @@ but it is not promoted to a theorem: symmetric edge variables couple degree
 coordinates, so coordinatewise downward closure of the projection still
 requires justification.
 
+The natural justification has now passed its first exact test.  Replace each
+selected degree equality by the covering inequality `degree >= target`, while
+retaining nonnegative symmetric edge masses and every point-capacity upper
+bound.  Across all 552 supports in each of the ten stored branch-3 payloads,
+the exact and covering partial primals have identical feasibility: zero
+mismatches, including all 297 infeasible partial systems.  The six durable
+fixtures account for 216 of those infeasible systems.  This explains the
+observed sign pattern at the LP level: infeasibility of the covering system
+has a Farkas separator with nonnegative row prices.
+
+In fact the required truncation lemma is elementary here.  On a selected set
+of three rows, each internal selected--selected edge has mass at most one:
+choose any point of the nonempty opposite block and use its rooted capacity
+inequality.  Hence every selected row has internal mass at most two, strictly
+below its target degree five or six.  Keep all internal masses fixed.  For
+each selected row independently, its edges to unselected rows have total mass
+at least `target - internalMass`; scale just those external edges down by a
+common factor so their total becomes exactly this difference.  No external
+edge is controlled by two selected rows, unselected degrees are unconstrained,
+and every point-capacity left side only decreases.  The resulting mass hits
+all three degree equalities exactly.  Thus exact and covering feasibility are
+equivalent for every three-row support, not just the audited payloads, and
+every strict three-row separator may be taken with nonnegative row prices.
+The remaining facet problem may therefore be stated entirely in the
+down-monotone covering-degree region.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy

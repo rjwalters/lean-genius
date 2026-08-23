@@ -52,6 +52,33 @@ def partial_primal(system: dict, degree_rows: set[int]):
     )
 
 
+def covering_partial_primal(system: dict, degree_rows: set[int]):
+    """Replace selected exact degrees by lower bounds on those degrees."""
+    edges = system["edges"]
+    blocks = system["blocks"]
+    caps = system["caps"]
+    matrix_degree = np.zeros((len(degree_rows), len(edges)))
+    rhs_degree = np.zeros(len(degree_rows))
+    for target, row in enumerate(sorted(degree_rows)):
+        rhs_degree[target] = system["degree"][row]
+        for column, edge in enumerate(edges):
+            matrix_degree[target, column] = int(row in edge)
+    matrix_cap = np.zeros((len(caps), len(edges)))
+    for target, (row, point) in enumerate(caps):
+        for column, edge in enumerate(edges):
+            if row not in edge:
+                continue
+            other = edge[1] if edge[0] == row else edge[0]
+            matrix_cap[target, column] = int(point in blocks[other])
+    return linprog(
+        np.zeros(len(edges)),
+        A_ub=np.vstack((matrix_cap, -matrix_degree)),
+        b_ub=np.concatenate((np.ones(len(caps)), -rhs_degree)),
+        bounds=(0, None),
+        method="highs",
+    )
+
+
 def audit(system: dict) -> dict:
     if system["branch"] != 3:
         raise ValueError("partial primal audit requires branch 3")
@@ -61,6 +88,10 @@ def audit(system: dict) -> dict:
         for first, second in combinations(range(24), 2):
             support = {hole, first, second}
             primal_result = partial_primal(system, support)
+            covering_feasible = (
+                True if primal_result.success
+                else covering_partial_primal(system, support).success
+            )
             dual_result = dual(system, support)
             certificate = (
                 exact_certificate(system, dual_result)
@@ -72,6 +103,7 @@ def audit(system: dict) -> dict:
                 "hole": hole,
                 "regular_rows": [first, second],
                 "partial_primal_feasible": primal_feasible,
+                "covering_partial_primal_feasible": covering_feasible,
                 "strict_dual_certificate": dual_strict,
             }
             if dual_strict:
@@ -97,6 +129,11 @@ def audit(system: dict) -> dict:
     }
     infeasible = [record for record in records
                   if not record["partial_primal_feasible"]]
+    covering_mismatches = [
+        record for record in records
+        if record["partial_primal_feasible"]
+        != record["covering_partial_primal_feasible"]
+    ]
     row_prices = [
         Fraction(value)
         for record in infeasible
@@ -107,6 +144,12 @@ def audit(system: dict) -> dict:
         "row_stratum_feasibility": row_stratum_feasibility,
         "support_count": len(records),
         "partial_primal_infeasible_count": len(infeasible),
+        "covering_partial_primal_infeasible_count": sum(
+            not record["covering_partial_primal_feasible"]
+            for record in records
+        ),
+        "exact_covering_mismatch_count": len(covering_mismatches),
+        "exact_covering_mismatches": covering_mismatches,
         "strict_dual_count": sum(
             record["strict_dual_certificate"] for record in records
         ),
