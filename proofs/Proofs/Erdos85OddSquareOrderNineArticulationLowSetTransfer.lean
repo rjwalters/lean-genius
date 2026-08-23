@@ -457,6 +457,145 @@ theorem orderNine_secondProfile_owner_mem_order34_lowSet
   exact owner_mem_of_lowSet_incidence_saturation G owner Z B₁ k
     hZcard hsum hcap hbin₁ hownerZ hownerB₁
 
+/-- Once the incidence-three owner lies in an 18-point low set of total
+incidence 18, and all other points have incidence at most one, the set
+contains exactly fifteen incidence-one and two incidence-zero points. -/
+theorem lowSet_incidence_one_zero_card_of_owner_mem
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (owner : V) (Z : Finset V) (k : V → ℕ)
+    (hZcard : Z.card = 18) (hsum : (∑ z ∈ Z, k z) = 18)
+    (howner : owner ∈ Z) (hkowner : k owner = 3)
+    (hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1) :
+    (Z.filter fun z ↦ k z = 1).card = 15 ∧
+      (Z.filter fun z ↦ k z = 0).card = 2 := by
+  classical
+  let Z₀ := Z.erase owner
+  have hZ₀card : Z₀.card = 17 := by
+    dsimp [Z₀]
+    rw [Finset.card_erase_of_mem howner, hZcard]
+  have hsplit := Finset.sum_erase_add Z k howner
+  have hsumZ₀ : (∑ z ∈ Z₀, k z) = 15 := by
+    dsimp [Z₀]
+    omega
+  have hpoint : ∀ z ∈ Z₀, k z = if k z = 1 then 1 else 0 := by
+    intro z hz
+    have hzParts := Finset.mem_erase.mp hz
+    have hle := hcap z hzParts.2 hzParts.1
+    by_cases hk : k z = 1
+    · simp [hk]
+    · have hkzero : k z = 0 := by omega
+      simp [hkzero]
+  have honeErase : (Z₀.filter fun z ↦ k z = 1).card = 15 := by
+    calc
+      (Z₀.filter fun z ↦ k z = 1).card =
+          ∑ z ∈ Z₀, if k z = 1 then (1 : ℕ) else 0 := by
+        rw [Finset.sum_boole]
+        norm_num
+      _ = ∑ z ∈ Z₀, k z := by
+        apply Finset.sum_congr rfl
+        intro z hz
+        exact (hpoint z hz).symm
+      _ = 15 := hsumZ₀
+  have honeFilter : Z₀.filter (fun z ↦ k z = 1) =
+      Z.filter (fun z ↦ k z = 1) := by
+    ext z
+    constructor
+    · intro hz
+      have hp := Finset.mem_filter.mp hz
+      exact Finset.mem_filter.mpr ⟨(Finset.mem_erase.mp hp.1).2, hp.2⟩
+    · intro hz
+      have hp := Finset.mem_filter.mp hz
+      have hne : z ≠ owner := by
+        intro hzo
+        subst z
+        omega
+      exact Finset.mem_filter.mpr ⟨Finset.mem_erase.mpr ⟨hne, hp.1⟩, hp.2⟩
+  have hone : (Z.filter fun z ↦ k z = 1).card = 15 := by
+    rw [← honeFilter]
+    exact honeErase
+  let W := Z₀.filter fun z ↦ k z = 0
+  let P := Z₀.filter fun z ↦ k z = 1
+  have hcover : W ∪ P = Z₀ := by
+    ext z
+    constructor
+    · intro hz
+      rcases Finset.mem_union.mp hz with hzW | hzP
+      · exact Finset.filter_subset _ _ hzW
+      · exact Finset.filter_subset _ _ hzP
+    · intro hz
+      have hle := hcap z (Finset.mem_erase.mp hz).2 (Finset.mem_erase.mp hz).1
+      have hk : k z = 0 ∨ k z = 1 := by omega
+      simpa [W, P, hz] using hk
+  have hdisj : Disjoint W P := by
+    rw [Finset.disjoint_left]
+    intro z hzW hzP
+    have hzero := (Finset.mem_filter.mp hzW).2
+    have hone' := (Finset.mem_filter.mp hzP).2
+    omega
+  have hcards : W.card + P.card = Z₀.card := by
+    rw [← hcover, Finset.card_union_of_disjoint hdisj]
+  have hPcard : P.card = 15 := by
+    simpa [P] using honeErase
+  have hWcard : W.card = 2 := by omega
+  have hzeroFilter : W = Z.filter (fun z ↦ k z = 0) := by
+    ext z
+    constructor
+    · intro hz
+      have hp := Finset.mem_filter.mp hz
+      exact Finset.mem_filter.mpr ⟨(Finset.mem_erase.mp hp.1).2, hp.2⟩
+    · intro hz
+      have hp := Finset.mem_filter.mp hz
+      have hne : z ≠ owner := by
+        intro hzo
+        subst z
+        omega
+      exact Finset.mem_filter.mpr ⟨Finset.mem_erase.mpr ⟨hne, hp.1⟩, hp.2⟩
+  refine ⟨hone, ?_⟩
+  rw [← hzeroFilter]
+  exact hWcard
+
+/-- Profile-level translation of incidence saturation: the order-34 low set
+contains fifteen bin-one points and two bin-zero points besides its unique
+bin-three owner. -/
+theorem orderNine_secondProfile_lowSet_bin_cards_of_owner_mem
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (Z : Finset V)
+    (hZsub : Z ⊆ (Finset.univ : Finset V) \ squareOrderHighVertices G 9)
+    (hZcard : Z.card = 18)
+    (hsum : (∑ z ∈ Z, squareOrderHighIncidenceCount G 9 z) = 18)
+    (hownerZ : owner ∈ Z) :
+    (Z ∩ squareOrderNineLowIncidenceBin G 1).card = 15 ∧
+      (Z ∩ squareOrderNineLowIncidenceBin G 0).card = 2 := by
+  classical
+  let k := squareOrderHighIncidenceCount G 9
+  have hkowner : k owner = 3 := (Finset.mem_filter.mp howner).2
+  have hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1 := by
+    intro z hz hzowner
+    exact orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+      G hp hhigh hc2 hc3 owner z howner (hZsub hz) hzowner
+  have hcounts := lowSet_incidence_one_zero_card_of_owner_mem
+    owner Z k hZcard hsum hownerZ hkowner hcap
+  have hfilter (i : ℕ) : Z.filter (fun z ↦ k z = i) =
+      Z ∩ squareOrderNineLowIncidenceBin G i := by
+    ext z
+    constructor
+    · intro hz
+      have hpz := Finset.mem_filter.mp hz
+      exact Finset.mem_inter.mpr ⟨hpz.1,
+        Finset.mem_filter.mpr ⟨hZsub hpz.1, hpz.2⟩⟩
+    · intro hz
+      have hpz := Finset.mem_inter.mp hz
+      exact Finset.mem_filter.mpr ⟨hpz.1,
+        (Finset.mem_filter.mp hpz.2).2⟩
+  rw [hfilter 1, hfilter 0] at hcounts
+  exact hcounts
+
 end
 
 end Erdos85
