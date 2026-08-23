@@ -3069,6 +3069,36 @@ fiber balance sought by the parallel SRP/B3 analysis; the remaining task is
 to resolve the ordinary K term into the same private route labels, or show
 that its aggregate contribution vanishes in the terminal pairing.
 
+The residual matching term rho has a canonical finite atomization.  For an
+edge `xy` of the `N_A(E)`--`N_A(G)` cross matching, retain the endpoint type
+
+```text
+chi(x)=leaf if x is one of the two star leaves of E,
+       ordinary otherwise,
+```
+
+and the three-bit T-word on the length-three route
+
+```text
+E-x-y-G:  (1[Ex in T], 1[xy in T], 1[yG in T]).          (73rnz_at)
+```
+
+If x is a leaf L, then `EL in T`.  Moreover y is adjacent to the two full
+centers L and G, so the replication-two cap prevents y from meeting any
+other leaf; it is automatically a singleton port in the four-bundle system.
+Consequently
+
+```text
+switch edge  iff  chi(x)=leaf and the T-word is 111.     (73rnz_au)
+```
+
+Thus `c_(E,G)` is exactly the leaf-111 cell of the matching, while
+`rho_(E,G)` is the disjoint union of every other endpoint/word cell.  The
+secondary residue in (73rnz_as) is therefore not an amorphous remainder: it
+is a finite labeled route alphabet, with the desired source cell removed.
+Any cancellation with the ordinary K term can now be sought cellwise, and
+failure can be localized to a specific non-111 or ordinary-source route.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
