@@ -2568,6 +2568,116 @@ theorem squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_resol
     (A.card = 1 ↔ C.card = 0) ∧ (C.card = 1 ↔ A.card = 0)
   omega
 
+/-- Set form of the exceptional-row DTB partition.  The U1 blocks carried by
+residual neighbors of a hole row cover exactly the complement of the U1
+blocks carried by its core neighbors.  The preceding pointwise theorem also
+shows that the residual cover has multiplicity one. -/
+theorem squareOrderNine_threeHigh_secondProfile_exceptional_residualBlocks_eq_coreComplement
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hxt : (secondOrderDefectGraph G).Adj x t) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let R := G.neighborFinset t ∩ T
+    let C := G.neighborFinset t ∩ U1
+    R.biUnion (fun w => G.neighborFinset w ∩ U1) =
+      U1 \ C.biUnion (fun a => G.neighborFinset a ∩ U1) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let R := G.neighborFinset t ∩ T
+  let C := G.neighborFinset t ∩ U1
+  ext b
+  constructor
+  · intro hbResidual
+    simp only [Finset.mem_biUnion] at hbResidual
+    obtain ⟨w, hwR, hwb⟩ := hbResidual
+    have hbU1 : b ∈ U1 := (Finset.mem_inter.mp hwb).2
+    have hbInput : b ∈ B 1 \ (G.neighborFinset x ∩ B 1) := hbU1
+    have hcell :=
+      squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht hxt hbInput
+    dsimp only at hcell
+    change (((G.neighborFinset t ∩ T) ∩ G.neighborFinset b).card = 1 ∧
+      ((G.neighborFinset t ∩ U1) ∩ G.neighborFinset b).card = 0) ∨
+      (((G.neighborFinset t ∩ T) ∩ G.neighborFinset b).card = 0 ∧
+      ((G.neighborFinset t ∩ U1) ∩ G.neighborFinset b).card = 1) at hcell
+    have hwCommon : w ∈ (G.neighborFinset t ∩ T) ∩ G.neighborFinset b := by
+      refine Finset.mem_inter.mpr ⟨hwR, ?_⟩
+      exact (G.mem_neighborFinset b w).mpr
+        ((G.adj_comm w b).mp ((G.mem_neighborFinset w b).mp
+          (Finset.mem_inter.mp hwb).1))
+    have hcoreZero : ((G.neighborFinset t ∩ U1) ∩
+        G.neighborFinset b).card = 0 := by
+      rcases hcell with hresidual | hcore
+      · exact hresidual.2
+      · have hempty := Finset.card_eq_zero.mp hcore.1
+        rw [hempty] at hwCommon
+        simpa using hwCommon
+    refine Finset.mem_sdiff.mpr ⟨hbU1, ?_⟩
+    intro hbCore
+    simp only [Finset.mem_biUnion] at hbCore
+    obtain ⟨a, haC, hab⟩ := hbCore
+    have haCommon : a ∈ (G.neighborFinset t ∩ U1) ∩
+        G.neighborFinset b := by
+      refine Finset.mem_inter.mpr ⟨haC, ?_⟩
+      exact (G.mem_neighborFinset b a).mpr
+        ((G.adj_comm a b).mp ((G.mem_neighborFinset a b).mp
+          (Finset.mem_inter.mp hab).1))
+    have hempty := Finset.card_eq_zero.mp hcoreZero
+    rw [hempty] at haCommon
+    simpa using haCommon
+  · intro hbComplement
+    have hbParts := Finset.mem_sdiff.mp hbComplement
+    have hbInput : b ∈ B 1 \ (G.neighborFinset x ∩ B 1) := hbParts.1
+    have hcell :=
+      squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht hxt hbInput
+    dsimp only at hcell
+    change (((G.neighborFinset t ∩ T) ∩ G.neighborFinset b).card = 1 ∧
+      ((G.neighborFinset t ∩ U1) ∩ G.neighborFinset b).card = 0) ∨
+      (((G.neighborFinset t ∩ T) ∩ G.neighborFinset b).card = 0 ∧
+      ((G.neighborFinset t ∩ U1) ∩ G.neighborFinset b).card = 1) at hcell
+    rcases hcell with hresidual | hcore
+    · have hpos : 0 < ((G.neighborFinset t ∩ T) ∩
+          G.neighborFinset b).card := by omega
+      obtain ⟨w, hw⟩ := Finset.card_pos.mp hpos
+      have hwParts := Finset.mem_inter.mp hw
+      simp only [Finset.mem_biUnion]
+      refine ⟨w, hwParts.1, Finset.mem_inter.mpr ⟨?_, hbParts.1⟩⟩
+      exact (G.mem_neighborFinset w b).mpr
+        ((G.adj_comm b w).mp ((G.mem_neighborFinset b w).mp hwParts.2))
+    · have hpos : 0 < ((G.neighborFinset t ∩ U1) ∩
+          G.neighborFinset b).card := by omega
+      obtain ⟨a, ha⟩ := Finset.card_pos.mp hpos
+      have haParts := Finset.mem_inter.mp ha
+      apply (hbParts.2 ?_).elim
+      simp only [Finset.mem_biUnion]
+      refine ⟨a, haParts.1, Finset.mem_inter.mpr ⟨?_, hbParts.1⟩⟩
+      exact (G.mem_neighborFinset a b).mpr
+        ((G.adj_comm b a).mp ((G.mem_neighborFinset b a).mp haParts.2))
+
 /-- Algebraic form of the decisive mixed-center compatibility constraint.
 The residual-center matrix `A Q` and the cubic-core matrix `Q K` have
 disjoint support, so their entrywise inner product (equivalently
@@ -3277,6 +3387,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_resolution
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_residualBlocks_eq_coreComplement
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_incidence_residual_gram_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
