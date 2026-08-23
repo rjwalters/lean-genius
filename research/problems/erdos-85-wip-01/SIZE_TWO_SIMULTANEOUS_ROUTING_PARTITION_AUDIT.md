@@ -23848,3 +23848,45 @@ In particular, if the cluster syndromes sum to zero within any one
 Sections 442--444, the only nonsaturated splice obstruction is cancellation
 distributed across genuinely distinct connected components of `H`, whose
 nonzero component syndromes sum to zero.
+
+## 445. Every closed full-root component has internal nondegenerate cancellation
+
+The remaining cross-component obstruction disappears inside each closed
+component from Section 426.  Let `C` be such a component and put
+`n_C:=|C|`.  It is five-regular, even, and `n_C>=6`, so its componentwise
+surplus over the sharpened PC-free ceiling is
+
+```text
+|E(C)|-(2n_C-3)
+ =5n_C/2-2n_C+3
+ =n_C/2+3
+ >=6.                                             (1597)
+```
+
+Apply the pivot-coordinate argument of Section 433 inside `C` itself.
+The span of its simple PC cycles has dimension at least `n_C/2+3`, hence
+contains six independent cycle vectors.  Their five tag syndromes have a
+nonempty zero-sum subfamily whose mod-two edge sum is nonzero.  Sections
+442--443 turn each vertex-intersection cluster of that family into a
+nondegenerate PC closed walk.
+
+All those cluster walks lie in the same connected graph `C`.  Section 444
+therefore joins them without changing their total syndrome or edge vector,
+unless a distinct-edge exterior-color saturation appears.  Consequently
+
+```text
+for every closed component C of G_sh[O_5], either
+
+  C contains one PC closed walk W with
+    syndrome(W)=0 and [E(W)]!=0;
+
+or C contains a vertex with two distinct incident shadow edges
+  of one exterior color, saturating that color's degree-two capacity.
+                                                               (1598)
+```
+
+Thus a closed five-one-factor reservoir never needs tag cancellation from
+another `H`-component.  It internally supplies a nondegenerate color-
+ordered cancellation, unless it already exposes the local saturation
+terminal.  Cross-component syndrome cancellation can remain only when all
+relevant holonomy lies in the bounded family of components open to `S`.
