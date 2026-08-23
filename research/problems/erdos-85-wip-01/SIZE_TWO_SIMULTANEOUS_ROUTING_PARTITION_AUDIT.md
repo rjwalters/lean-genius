@@ -13803,7 +13803,7 @@ x_i -- y_i(w) -- w,          i in Z/5.               (847)
 ```
 
 The five labels in (847) are distinct.  Each meets a different root in
-`C`, while the pointwise bound (783) allows an exterior label at most one
+`C`, while the pointwise bound (779) allows an exterior label at most one
 neighbor in `C`.  On the other hand, `w` has exactly two neighbors in each
 exterior component.  Hence no exterior color can occur more than twice in
 the five-root word:
