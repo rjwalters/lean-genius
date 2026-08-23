@@ -24347,3 +24347,29 @@ no same-cycle conclusion is asserted.  What is now forced uniformly is
 a single pair of root actions coupled, at distinct targets and through
 disjoint payer support, to an arbitrarily large set of exterior source
 colors as `q` grows.
+
+## 456. The fixed-root turns are separated on the alternating factor
+
+Let `T` be the `t` target set in (1631), viewed as marked vertices of the
+alternating `{r,s}`-factor from Section 454.  The two factor edges
+incident with each `v in T` are exactly its saturated pair.  These
+two-edge stars are pairwise edge-disjoint, because `T` was extracted
+from the payer-layer matching of Section 451.
+
+In particular, no two vertices of `T` are adjacent in the alternating
+factor.  Indeed adjacent marked vertices would both contain their common
+factor edge in their saturated pairs.  Thus
+
+```text
+T is an independent set in G_r union G_s,
+the incident factor-edge stars at T are pairwise disjoint, and
+|V(G_r union G_s) setminus T|>=|T|=t.             (1633)
+```
+
+More locally, if one alternating factor cycle contains `k>0` selected
+turns, deleting those marked vertices splits that cycle into `k`
+nonempty paths.  Hence consecutive selected turns around every factor
+cycle are separated by at least one unmarked target.  Combining this
+with (1632), the q-large saturation branch is a family of separated,
+multicolored monochromatic turns on one fixed two-root factor, not an
+arbitrary collection of overlapping local pinches.
