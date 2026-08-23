@@ -9456,3 +9456,57 @@ center level.  It does not prove conservation under route reversal: the
 next theorem must show how the private states (569) are paired or priced by
 the simultaneous owner ledger.  Any failure can no longer be blamed on a
 collision of coarse secondary labels.
+
+## 182. Odd grading forces an odd fixed-point-free reversal orbit
+
+Use the orientation of each H-run to order the two roots of an H port as
+incoming and outgoing.  Write a center state as
+
+```text
+tau=((Y_-,Y_+,Y_P),T),                               (570)
+```
+
+where `Y_-,Y_+` are the two-element `d`-neighbor sets of the ordered roots,
+`Y_P` is the two-element port-label set, and `T` records the active role
+positions.  Reversing the run acts by
+
+```text
+rho(tau)=((Y_+,Y_-,Y_P),rho(T)),                      (571)
+```
+
+with `rho(T)` swapping the two root-position pairs and fixing the port
+positions.
+
+This involution has no fixed center state.  By (547), `Y_-` and `Y_+` are
+disjoint nonempty sets, so they cannot be equal.  Thus every one of the
+private 64-state occurrences belongs to a two-element reversal orbit
+`{tau,rho(tau)}`.  For a silent state, the three-port footprint is unchanged
+as an untagged vector, but its oriented private tag still moves to the other
+member of the orbit.
+
+Each H port contributes exactly one center atom: its nonempty activity state
+when nonsilent, or its empty-state footprint when silent.  Therefore the
+parity of the total number of center atoms is the number of H ports, and
+over all runs of `Z` it is
+
+```text
+sum_(reversal orbits O) #atoms in O
+ =omega_M(Z) mod 2.                                   (572)
+```
+
+If `omega_M(Z)=1`, at least one fixed-point-free reversal orbit has odd
+occupancy.  This conclusion is stronger than merely `F_Z != 0`: it locates
+an unpaired **oriented private state**, even if its port-vector support
+overlaps other footprints.
+
+The final conservation theorem can now be stated without matrices or
+pricing ambiguity:
+
+```text
+simultaneous route reversal makes every orbit
+{tau,rho(tau)} have even occupancy.                   (573)
+```
+
+Equation (573) is not proved here.  If established with the shadow/run
+boundary payments of Sections 177--179 attached, it contradicts (572)
+immediately and completes the mixed-cycle kernel theorem.
