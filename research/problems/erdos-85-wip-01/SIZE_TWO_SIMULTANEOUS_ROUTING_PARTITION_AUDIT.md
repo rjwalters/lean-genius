@@ -6313,7 +6313,10 @@ for every edge occurrence.  Since `partial Xi=0`, incidence duality gives
 Thus (352)--(353) imply (351), and then the Section 100 phase equation forces
 `omega_M(Z)=0`.
 
-The canonical primitives (91) do **not** yet assign values at this full
+There is also a branch restriction: the canonical primitives (91) were
+constructed for the odd closed owner run of Sections 21--27, an entire
+`A_c` cycle.  A mixed dart cycle `Z` need not be such a run.  Even in their
+native all-horizontal setting, the primitives do **not** assign values at full
 resolution: they are indexed by routing color `d` and target incidence
 component `V_j`, and sum over the intermediate ports `y in d`.  They provide
 the required aggregate occurrence values but not a value for each `(d,y)`.
@@ -6358,10 +6361,10 @@ same-label transfer would refute full descent and force the weaker
 annihilator formulation.  This condition is not asserted here; it is the
 smallest concrete test of (355).
 
-## 119. The canonical primitive has an explicit intermediate atomization
+## 119. In the closed-owner-run branch, the primitive atomizes explicitly
 
-The first stage of (355) can be carried out directly.  Fix `d,j` as in
-Section 25 and, for every `y in d`, put
+Within the closed-owner-run context of Section 25, the first stage of (355)
+can be carried out directly.  Fix `d,j` and, for every `y in d`, put
 
 ```text
 t_y := (R_de V_j)(y)                                  (356)
@@ -6406,7 +6409,9 @@ coboundary law exist canonically; no choice of how to distribute the
 displayed matrix products among the `y` labels remains.  Whether these atoms
 evaluate the desired phase is separate.
 
-The behavior of this atomization on occurrences is now concrete.  Formula
+This calculation does not extend (91) to a mixed dart cycle; it only exposes
+the local formula that such an extension would have to refine.  The behavior
+of this atomization on owner-run occurrences is concrete.  Formula
 (357) says that
 
 ```text
@@ -6419,7 +6424,7 @@ The multiplier `t_y` depends only on `(d,y)` and the target component
 necessary check is its value when `(d,y)` is the actual triangle label of
 the occurrence, before attempting any descent argument.
 
-## 120. The direct primitive atom vanishes on its own routed triangle
+## 120. The direct owner-run atom vanishes on its own routed triangle
 
 Suppose `(d,y)` labels the V dart `(x_i,z_i)`.  Then
 
@@ -6446,26 +6451,29 @@ on-occurrence restriction cannot be the nontrivial label potential `chi` in
 (352).  Nonzero aggregate values come from **off-occurrence** intermediates,
 and the identity (92) mixes those off-route atoms before summing over `y`.
 
-Consequently the final holonomy character cannot be obtained by assigning
+Consequently, even in the native owner-run branch, the holonomy character
+cannot be obtained by assigning
 `chi(d,y)=phi_(i,y)` at the occurrence carrying `(d,y)`.  A viable use of
 the primitive must instead retain an off-occurrence secondary-fiber census
 and cross-tag it with the actual route—the same source/consumed-feature
 structure as the B3 bundle (12rb).  Equation (361) explains why the
 secondary fiber, rather than the routed intermediate itself, is essential.
 
-## 121. The surviving bundle is route label times off-occurrence census
+## 121. The mixed branch has a local off-occurrence census candidate
 
-The correction in Section 120 determines the next feature without guesswork.
-For a V occurrence `o` on the indexed port edge `i`, let
+The local wedge formula exposed by Section 120 makes sense on any mixed dart
+cycle even though the global primitive (91) does not.  For a V occurrence
+`o=(x,z)` whose port mate has other root `x'`, define
 
 ```text
 f_ell(o) := [the actual resolved route label of o is ell],
-q_u(o)   := phi_(i,u)                                  (362)
+q_u(o)   := t_u (R_cd(x,u)+R_cd(x',u)+R_ed(z,u)).       (362)
 ```
 
-for every intermediate atom `u` in the relevant routing color.  Equation
-(361) says `q_ell(o)=0` on the actual route; nonzero entries of `q(o)` are
-necessarily off-occurrence secondary-fiber atoms.
+for every intermediate atom `u` in the relevant routing color.  This is a
+canonical **local candidate**, not a value supplied by (91) on the mixed
+cycle.  Equation (361) still says `q_ell(o)=0` on the actual route; nonzero
+entries of `q(o)` are off-occurrence secondary-fiber atoms.
 
 For a matching pair `{o,o'}`, define the cross-tagged feature coordinate
 
@@ -6509,7 +6517,8 @@ and diagonal candidates have been eliminated, while (362)--(364) define the
 unique surviving cross-tag shape directly from existing SRP data.  A
 counterexample to privacy must now exhibit two distinct transitions with
 the same actual route label and the same off-occurrence primitive census;
-a conservation proof must use (92) before the `u`-sum erases those tags.
+a conservation proof must produce a mixed-cycle identity analogous to (92)
+before the `u`-sum erases those tags; (92) itself is not available here.
 
 ## 122. Secondary atoms are exactly singly incident off-route fibers
 
@@ -6767,3 +6776,57 @@ argument need only price the four possible star sizes and their target-port
 occupancies; no arbitrary collision hypergraph remains.  The bound four is
 also the same local scale as the four-leaf switch table in the Baer lane,
 where the parallel C6 collision was found.
+
+## 128. The cross-tag boundary has a formal local derivative
+
+The secondary observable `q_u` in (362) is indexed by the port edge, not by
+one of its two darts.  Hence it is constant on every port pair:
+
+```text
+M_P q_u = q_u.                                        (381)
+```
+
+At a root, the root mate carries the value from the other incident port.
+Define the adjacent root derivative, lifted to darts, by
+
+```text
+tilde_kappa_u := (I+M_R)q_u.                           (382)
+```
+
+over `F_2`.  With `K=M_R-M_P` from Section 108, subtraction equals addition
+and (381)--(382) give
+
+```text
+K q_u = (M_R-M_P)q_u = (M_R+I)q_u = tilde_kappa_u.    (383)
+```
+
+Therefore the unrefined cross-tag boundary (364) has the exact local form
+
+```text
+Delta_(ell,u)(Z)
+  = D_(f_ell,q_u)[Z]
+  = f_ell^T K q_u
+  = <f_ell,tilde_kappa_u>_Z.                          (384)
+```
+
+The bundle imbalance for actual route label `ell` and secondary atom `u` is
+exactly this local derivative evaluated on the occurrences carrying `ell`.
+In the closed-owner-run specialization of Sections 119--120 it agrees with
+the atomized derivative (359).  On a general mixed dart cycle it is only the
+formal derivative of the local candidate (362): summing it over `u` is not
+known to recover the marked curvature `kappa^(d,j)` from (92).
+
+Equation (384) identifies the remaining conservation theorem precisely:
+
+```text
+the marked-character combination of the route-selected local derivative
+evaluations <f_ell,tilde_kappa_u> vanishes on Xi.       (385)
+```
+
+The mate-decoration refinement (373) must be inserted before this final
+sum; (384) proves the base source-label/secondary-atom identity but does not
+by itself show that every `sigma`-resolved subledger vanishes.  Nor does
+(359) prove (385) outside the all-horizontal owner-run branch.  The privacy
+side has only the bounded C6 stars of Section 127 left, while the mixed-cycle
+conservation side remains a new SRP identity rather than a consequence of
+the old primitive.
