@@ -86,6 +86,68 @@ theorem orderNine_order27_exceptional_inter_large_card_eq_two
     rw [← Finset.card_union_of_disjoint hd, hset]
   omega
 
+/-- If the 27-shore has three incidences from a high root, then the
+opposite 50-shore has six: the tenth incidence is the deleted owner. -/
+theorem orderNine_order27_high_neighbor_large_card_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (H A B : Finset V) (owner h : V)
+    (hunion : A ∪ B = ((Finset.univ : Finset V) \ H).erase owner)
+    (hdisj : Disjoint A B)
+    (hownerO : owner ∈ (Finset.univ : Finset V) \ H)
+    (hownerAdj : G.Adj h owner)
+    (hdeg : G.degree h = 10)
+    (hhighIndependent : Disjoint (G.neighborFinset h) H)
+    (hsmall : (G.neighborFinset h ∩ A).card = 3) :
+    (G.neighborFinset h ∩ B).card = 6 := by
+  let O := (Finset.univ : Finset V) \ H
+  let U := O.erase owner
+  have hunion' : A ∪ B = U := by simpa [U, O] using hunion
+  have hAsubU : A ⊆ U := by
+    intro x hx
+    rw [← hunion']
+    exact Finset.mem_union_left B hx
+  have hBsubU : B ⊆ U := by
+    intro x hx
+    rw [← hunion']
+    exact Finset.mem_union_right A hx
+  have hcompSet : O \ A = insert owner B := by
+    ext x
+    constructor
+    · intro hx
+      have hxO := (Finset.mem_sdiff.mp hx).1
+      have hxA := (Finset.mem_sdiff.mp hx).2
+      by_cases hxo : x = owner
+      · exact Finset.mem_insert.mpr (Or.inl hxo)
+      · have hxU : x ∈ U := Finset.mem_erase.mpr ⟨hxo, hxO⟩
+        rw [← hunion'] at hxU
+        rcases Finset.mem_union.mp hxU with hxA' | hxB
+        · exact (hxA hxA').elim
+        · exact Finset.mem_insert.mpr (Or.inr hxB)
+    · intro hx
+      rcases Finset.mem_insert.mp hx with rfl | hxB
+      · exact Finset.mem_sdiff.mpr ⟨hownerO,
+          fun hoA => (Finset.mem_erase.mp (hAsubU hoA)).1 rfl⟩
+      · have hxU := hBsubU hxB
+        exact Finset.mem_sdiff.mpr ⟨(Finset.mem_erase.mp hxU).2,
+          fun hxA => Finset.disjoint_left.mp hdisj hxA hxB⟩
+  have hcomp := orderNine_high_neighbor_ordinary_compl_card
+    G H A h hdeg hhighIndependent
+  change (G.neighborFinset h ∩ (O \ A)).card =
+    10 - (G.neighborFinset h ∩ A).card at hcomp
+  rw [hcompSet, hsmall] at hcomp
+  have hownerNotB : owner ∉ B := by
+    intro hoB
+    exact (Finset.mem_erase.mp (hBsubU hoB)).1 rfl
+  have hset : G.neighborFinset h ∩ insert owner B =
+      insert owner (G.neighborFinset h ∩ B) := by
+    ext x
+    simp [hownerAdj]
+  rw [hset, Finset.card_insert_of_notMem] at hcomp
+  · omega
+  · intro hm
+    exact hownerNotB (Finset.mem_inter.mp hm).2
+
 /-- Direct sharp-partition extraction on the actual 50-point shore.  This
 is preferable in the graph-facing wrapper to transferring the 51-point
 complement partition: the articulation capstone already supplies this
@@ -282,6 +344,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_explicitPartition_five_48_erase_owner
 #print axioms orderNine_order27_orient_articulation_shores
 #print axioms orderNine_order27_exceptional_inter_large_card_eq_two
+#print axioms orderNine_order27_high_neighbor_large_card_eq_six
 #print axioms orderNine_order27_explicitPartition_of_large_boundary
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
