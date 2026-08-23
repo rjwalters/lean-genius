@@ -12280,3 +12280,55 @@ the `01` union flags must control the residual distribution of the physical
 port points.  This rules out both an untagged homology argument and a cyclic
 displacement argument, and reduces the live joint-capacity theorem to those
 two explicitly retained channels.
+
+## 243. Every mixed owner-run path has an exact active boundary
+
+The alternating paths of Section 241 remove the residual port-point term in
+(739) without forgetting its location.  Consider one blue pair
+`{y,mu_Z(y)}`.  By construction its two labels are the boundary edges of one
+maximal `Z`-run in a cycle of `F_a[e]`.  Let `D_y` be the internal edge chain
+of that run, viewed as a chain on the physical port vertex set.  The unique
+inside endpoints of the two boundary edges satisfy
+
+```text
+[p_y]+[p_(mu_Z(y))]=partial D_y.                      (741)
+```
+
+This includes a one-vertex run: then the two inside endpoints coincide and
+both sides are zero.  No orientation or choice of a distinguished endpoint
+is involved.
+
+Now let `P` be one of the mixed alternating paths in (738), and let `T(P)` be
+its vertices with `t_y=1` (the internal `11` vertices together with its `01`
+endpoint).  Every vertex of `T(P)` has blue degree one, so the blue edges of
+`P` partition `T(P)` into the pairs above.  Summing (741) over those pairs
+gives an occurrence-resolved version of the even `t`-cut parity:
+
+```text
+sum_(y in T(P)) [p_y]=partial D_P,                    (742)
+```
+
+where `D_P` is the sum of their actual owner-`e` run chains.  Combining (742)
+with (739), label by label, yields
+
+```text
+sum_(y in T(P)) Q_y
+ =partial (D_P + sum_(y in T(P)) A_y).                (743)
+```
+
+Thus the exported `11` active words and the forced `01` port-only payment do
+not merely have equal odd augmentation as in (734): on every mixed
+root-to-port owner path their **combined physical H-port zero-chain is
+exact**.  The primitive in (743) is also fully resolved.  Its `D_P` part is
+made of the receiving owner-`e` runs from Section 241, while its `A_y` part is
+made of the root-H edges selected by the same private labels.
+
+Equation (743) is not yet the GAP (702), because exactness here is in the
+free port zero-chain after adjoining edges from two different factors.  The
+realized H/V/S state route and the `01` union-flag quotient must still show
+that this particular primitive has zero price, or transport its boundary
+through the complementary transitions in (704) and (707).  It does eliminate
+an independent port-distribution obstruction: after grouping by the
+canonical mixed owner paths, the only remaining issue is compatibility of
+the **cross-factor primitive** `D_P+sum_y A_y` with the realized route price,
+not cancellation of unmatched active port points.
