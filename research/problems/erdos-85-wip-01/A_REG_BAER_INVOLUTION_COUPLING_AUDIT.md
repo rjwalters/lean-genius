@@ -5641,6 +5641,48 @@ matrices `t^a` has the affine freedom (74)--(76), so a finish must retain the
 owner/internal geometry at the switch vertices (or the four-color curvature
 of (77)--(80)); component parity alone is exhausted.
 
+The exported overlap has a direct home in the active interval ledger.  Fix
+one receiving color `a` and reindex the same selected port set `Z` as the
+owner-factor edge chain
+
+```text
+B_Z^a:=sum_(p in Z) [N_a(p)] in C_1(F_e[a];F_2).
+```
+
+Its boundary is literally
+
+```text
+partial B_Z^a=R_ae 1_Z.                               (73rnz_cjibkzzzf)
+```
+
+If a vertex `y in a` contributes to the overlap in
+(73rnz_cjibkzzzb), then both parity coordinates are one.  Since every cross
+fiber has size two, `y` has exactly one `c`-neighbor in `C` and one outside,
+and exactly one `e`-neighbor `p` in `Z` and one outside.  In particular its
+target-activity bit relative to `Z` is
+
+```text
+t_y=(R_ae 1_Z)(y)=1.                                  (73rnz_cjibkzzzg)
+```
+
+At the selected H port `p`, the rooted-V exclusion says that `y` cannot
+also meet either H root of `p`; otherwise it would form the forbidden rooted
+V triangle through an H dart.  Thus `y` meets that H wedge exactly once, at
+the port, and the active boundary identity (714)--(715) gives
+
+```text
+q_y(h_p)=t_y=1.                                       (73rnz_cjibkzzzh)
+```
+
+Consequently the odd export in color `a` is literally an odd population of
+active `q_y` boundary occurrences in the established run-interval ledger,
+with the additional `c`-boundary crossing retained as its owner-sensitive
+tag.  No new occurrence map is missing at this step.  What remains is the
+joint cancellation/capacity theorem for those active interval occurrences
+and the complementary transition terms.  Note especially that exported
+vertices are **one-in/one-out boundary crossers**, not labels with both
+neighbors inside the curl; the latter would have parity zero.
+
 Thus the doubly closed odd port/root curl cannot remain an isolated debt:
 it exports an odd, fully located overlap mark to a third color.  This does
 not prove global cancellation of the exported marks; Sections 17 onward of
