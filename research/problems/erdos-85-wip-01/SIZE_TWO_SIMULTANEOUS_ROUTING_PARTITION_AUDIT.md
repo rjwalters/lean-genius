@@ -5081,3 +5081,40 @@ makes the signed boundary odd, and actual occurrence flow is balanced, but
 one must still exclude or pair nonreversible circulations.  In the present
 lane the extra run-reversal character and alternating `B_ec` phase are the
 remaining structures capable of killing those directed label cycles.
+
+## 95. Straight passages preserve the line-cycle orientation
+
+Fix one oriented side of the five-port window (263), written
+
+```text
+p -- p_i -- q_i
+```
+
+in the outward direction.  The run root `x_i` is the common endpoint in
+`F_e[c]` of the edges labelled `p` and `p_i`; the outward root `a_i` is the
+common endpoint of the edges labelled `p_i` and `q_i`.  Therefore the
+straight pairing (285) through the fixed port `p_i` moves from the first
+root occurrence to the second:
+
+```text
+(p,p_i) at x_i  -->  (p_i,q_i) at a_i.                (289)
+```
+
+This is exactly one forward step of the oriented `B_ec` window.  The reverse
+orientation gives the reversed step.  There is no third root incident to
+the factor edge labelled `p_i`, so a straight passage cannot branch or
+reverse while preserving its port and label.
+
+Iterating (289) across consecutive straight states produces a directed arc
+of the `B_ec` cycle.  Its endpoints are precisely the first nonstraight
+events from (286): a color turn, an owner-factor fiber switch, or a marked
+run boundary.  Hence, after all canonical straight pairings are contracted,
+the residual occurrence flow is a cyclic word of turn/switch/boundary events
+in the actual `B_ec` order, not merely an abstract directed label flow.
+
+This supplies the orientation compatibility requested after (285).  The
+alternating phase of Section 76 now acts on consecutive residual events in
+their genuine line-cycle order.  What remains is to prove that its signed
+event word has reversible occurrence weights—or equivalently that every
+directed label circulation from Section 94 meets an even signed number of
+turn/switch boundaries.
