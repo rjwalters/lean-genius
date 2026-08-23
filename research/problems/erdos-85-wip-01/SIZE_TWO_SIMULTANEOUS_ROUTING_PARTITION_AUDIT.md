@@ -20620,3 +20620,61 @@ This conclusion is uniform in the binary parameter and uses no order-64
 enumeration.  It turns the stationary branch into a literal finite spread
 condition that can be combined with the inactive-companion bounds of
 Sections 369 and 373; the remaining holonomy problem is then moving.
+
+## 389. The five ordinary root matchings have linear cycle rank
+
+The pair decompositions sit inside one dense global graph.  Let `M` be the
+simple graph on `U` obtained by taking, for all five roots, every ordinary
+transposition edge of `sigma_i` and omitting its fixed points.  Each root
+contributes `q-5` edges by (1318).  Edges from distinct roots cannot
+coincide: a common edge `{u,w}` would give
+`sigma_i(u)=w=sigma_j(u)` with `w!=u`, contrary to (1330).  Therefore
+
+```text
+|V(M)|=2q-5,             |E(M)|=5(q-5).             (1355)
+```
+
+Put `m(u):=|{i:u in F_i}|`.  Root `i` contributes an incident ordinary edge
+at `u` exactly when it does not fix `u`, so
+
+```text
+deg_M(u)=5-m(u),
+sum_(u in U)m(u)=sum_i|F_i|=25.                     (1356)
+```
+
+The degree identity is consistent with (1355): summing it gives
+`2|E(M)|=5(2q-5)-25=10q-50`.  If `kappa(M)` is the number of connected
+components, the binary cycle-space dimension is consequently
+
+```text
+dim Z_1(M;F_2)
+ =|E(M)|-|V(M)|+kappa(M)
+ =3q-20+kappa(M)
+ >=3q-19.                                          (1357)
+```
+
+This graph carries two independent labels on every edge: its core root
+`i`, and the exterior component containing the actual rooted label whose
+two target endpoints form that edge.  The latter is a genuine edge color,
+not a half-edge color: the two endpoints are paired by the same label, so
+its exterior component is identical at both ends.
+
+At any vertex of an `M`-cycle, the two incident cycle edges automatically
+have different roots, since each root class is a matching.  The cycle is a
+literal ordinary reflected-holonomy cycle exactly when their exterior
+component colors also differ at every vertex, including at closure.  Thus
+
+```text
+properly exterior-colored cycles of M
+ <-> holonomy cycles having only ordinary moves.    (1358)
+```
+
+In particular, if the reflected dynamics has no all-ordinary moving cycle,
+then every nonzero member of a cycle space of dimension at least `3q-19`
+contains a same-component transition at some vertex.  This is a global
+obstruction
+ledger rather than a counting contradiction: one bad transition may meet
+many cycles.  Its purpose is to replace ten separate pair graphs by one
+linear-size cycle space to which a properly-colored-cycle or forbidden-
+transition theorem can be applied.  Strict reflections remain outside `M`
+and must be reattached through Sections 385 and 388.
