@@ -16574,3 +16574,50 @@ selected shore.  This is still a transport theorem rather than a
 contradiction.  The remaining absorption step must compare `Z_*` with the
 rigid strict-export permutation (777), or charge the private-owner ticket
 encountered on the routes which use the final owner edge.
+
+## 321. The selected shore induces a nonzero core boundary or the full curl
+
+The odd shore in (1055) has an immediate interpretation on the original
+five-cycle.  Index its selected ports and core vertices cyclically as
+`Z={p_i:i in Z/5Z}` and `C={x_i:i in Z/5Z}`, so that the selected incidence
+of `p_i` is the core edge
+
+```text
+E_i:={x_i,x_(i+1)}.                                (1058)
+```
+
+Project the selected endpoint ledger to the binary core-edge chain
+
+```text
+K_*:=sum_(p_i in Z_*) [E_i] in F_2^(E(C_5)).       (1059)
+```
+
+Because the five `E_i` are distinct, (1056) says that `K_*` has odd,
+nonzero support.  The cycle space of a simple five-cycle consists only of
+the zero chain and the full cycle.  Hence
+
+```text
+partial K_*=0  iff  K_*=sum_i [E_i]
+                 iff  Z_*=Z.                       (1060)
+```
+
+In particular, exactly one of the following alternatives holds:
+
+```text
+Z_*=Z, and K_* is the full five-edge curl; or
+|Z_*| in {1,3}, and partial K_* is a nonzero even core shore. (1061)
+```
+
+This is not merely an abstract parity projection.  Each occurrence of a
+selected port in (1055) is the endpoint of an actual extended route
+`P_hat` from Section 320, and its two core incidences are precisely the
+edge `E_i` charged in (1059).  Thus the symmetric-difference route family
+carries the singleton residual charge all the way back to the original
+curl, where it either exposes a proper nonzero core boundary or consumes
+every selected incidence once modulo two.
+
+The remaining obstruction is consequently sharper than an arbitrary odd
+selected shore.  The proper-shore branch must absorb a visible boundary on
+the five core roots, while the boundary-free branch is forced to be the
+unique full-cycle chain.  Any final strict-export or private-ticket price
+may therefore be proved separately in these two rigid cases.
