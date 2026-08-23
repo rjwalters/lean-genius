@@ -10766,3 +10766,44 @@ Section 209 is a genuine location for the unit, but closing it requires the
 resolved route labels, owner states, or nonlinear activity features.  This
 recovers at the final interface the symmetric blind spot already identified
 in Sections 10 and 112.
+
+## 211. Full H/S occurrences embed in the Baer endpoint-state alphabet
+
+Restrict to the configuration where the Baer two-pole state and its endpoint
+subtypes are defined.  The visible H and S triangles from Section 208 give a
+literal map into the full flip/endpoint alphabet `xi` of
+(73rnz_cjibkt), even though their additive price is zero.
+
+For an H--H port pair at port `p` with roots `x,x'`, retain
+
+```text
+Xi_H=(x,x', witness p, T-word 00,
+      endpoint subtypes, component roles c,c,e).       (650)
+```
+
+For an S--S root switch at root `x` with ports `p,p'`, retain
+
+```text
+Xi_S=(p,p', witness x, T-word 00,
+      endpoint subtypes, component roles e,e,c).       (651)
+```
+
+The `00` assertions are (639)--(640).  The full SRP edge state (577) retains
+the same two endpoints, common witness, decorations, activity data, and
+component roles, so (650)--(651) lose no occurrence identity.  C4-freeness
+makes the common witness private.  Moreover the ordered component roles
+distinguish H from S even after forgetting the coarse decoration symbol.
+
+The Baer terminal classification now applies conditionally and exhaustively
+on this overlap.  If one endpoint is a special leaf, the occurrence belongs
+to an already audited owner cell.  Otherwise it is owner-free and belongs to
+the odd-holonomy or additive fixed-margin alternatives of
+(73rnz_cjibkzl).  Thus the surviving affine bit is attached to a full private
+state `(Xi_H or Xi_S)`, not merely to the coarse letter H or S.
+
+This embedding does not identify the affine-bit value and does not extend
+the two-pole endpoint subtypes to an arbitrary SRP block.  Its rigorous gain
+is narrower: on the shared configuration, the private coordinate map needed
+after Section 210 exists occurrence-by-occurrence.  The final finite problem
+is to show that the fixed-margin bits on the owner-free states (650)--(651),
+together with the audited owner cells, have zero total marked-H charge.
