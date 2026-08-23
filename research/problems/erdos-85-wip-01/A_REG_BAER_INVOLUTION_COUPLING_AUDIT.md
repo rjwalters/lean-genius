@@ -5149,6 +5149,51 @@ must still be transported through the owner-route quotient.  By contrast a
 replication theorem currently makes it empty, and no analogous odd flag
 expansion follows from its shore bits alone.
 
+There is nevertheless an exact all-arity expansion for every **nonempty**
+`00--00` residual state.  For such an H edge `e=xx'`, put
+
+```text
+U_e=R_x union R_(x').
+```
+
+The union is disjoint by (73rnz_cjibkzw), and its cardinality is even, but
+only its nonemptiness matters here.  For every nonempty subset `Q` of the
+residual-center set `R`, retain the private monomial flag
+
+```text
+gamma_Q(e)=1[Q subset U_e].                            (73rnz_cjibkzzc)
+```
+
+Then direct subset counting gives
+
+```text
+sum_(empty != Q subset R) gamma_Q(e)
+ =2^|U_e|-1
+ =1 mod 2                    whenever U_e != empty.    (73rnz_cjibkzzd)
+```
+
+Equivalently this is the algebraic-normal-form identity for the Boolean OR
+of all residual-incidence variables.  It is a positive-degree shore
+incidence expansion, so it does not contradict the augmentation obstruction
+at the zero state.  It is also deliberately not a bounded-arity alphabet:
+`Q` may be as large as `U_e`, and no uniform-in-q compression is claimed.
+Like (73rnz_cjibkzzb), (73rnz_cjibkzzd) is only an occurrence map and every
+flag retains the diagonal owner tag `(1,1)` for later transport.
+
+Consequently the anonymous `00--00` population splits exactly into
+
+```text
+nonempty U_e: all-arity residual occurrence flags gamma_Q;
+empty U_e:    the genuinely shore-empty marked H unit. (73rnz_cjibkzze)
+```
+
+Thus nonempty even residual sets do not remain an algebraic incidence-lift
+gap once arbitrary arity is allowed.  The sole zero-incidence obstruction is
+the literal state `R_x=R_(x')=empty`; a uniform finish must either exclude
+that state, supply a non-shore H/V/S generator for it, or prove a bounded
+compression of the all-arity flags before using them in the owner-route
+quotient.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
