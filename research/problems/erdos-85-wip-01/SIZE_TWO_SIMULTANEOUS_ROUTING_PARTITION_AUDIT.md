@@ -14396,3 +14396,58 @@ Section 279, but it also records every residual vertex traversed inside the
 target-owner return paths.  Thus later local constraints may be applied at
 those intermediate `O` vertices rather than only at the contracted
 endpoints in `B`.
+
+## 281. The return matching carries an odd path-length holonomy
+
+The contraction to `nu_e` in Section 266 discards one further binary datum:
+the parity of the residual ports inside each return path.  Write the five
+boundary-bearing components of `A_e\Z` as
+
+```text
+R_s,       s=1,...,5,
+```
+
+with endpoints in `B`, and let
+
+```text
+lambda_s:=|V(R_s) intersect O| mod 2.                (886)
+```
+
+These are exactly the internal vertices of the path, because its two
+endpoints lie in `B`.  Every other component of `A_e\Z` is an untouched
+cycle lying wholly in `O`: vertices of `B` have degree one after deleting
+`Z`, whereas vertices of `O` retain degree two.  Consequently the residual
+set has the disjoint decomposition
+
+```text
+O = disjoint_union_s (V(R_s) intersect O)
+    disjoint_union disjoint_union_(Q an untouched cycle) V(Q).    (887)
+```
+
+Since `|O|=2q-15` is odd, reducing (884) modulo two gives
+
+```text
+sum_(s=1)^5 lambda_s
+ + |{Q: Q is an untouched odd A_e-cycle}| = 1 mod 2.  (888)
+```
+
+Thus one of two owner-holonomy outcomes is unavoidable:
+
+```text
+there is an odd A_e-cycle entirely inside O;
+or, if every untouched cycle is even, an odd number of the five
+nu_e return paths contain an odd number of internal O ports.       (889)
+```
+
+In the second branch, transport `lambda_s` to the corresponding edge of
+the return pseudograph `K_e` on the five selected ports from (838).  The
+five edge marks then have odd total.  Loops and parallel return edges remain
+allowed; the mark belongs to the actual expanded path, so it distinguishes
+parallel edges canonically.
+
+Equation (888) is not implied by the unmarked matching used in Section 279.
+It records where the odd cardinality of the terminal set `O` lives in the
+target-owner geometry: either on a closed odd owner cycle already disjoint
+from the curl, or as odd holonomy on the five return edges through which the
+strict-to-`O` route is composed.  A final price may therefore split on this
+explicit dichotomy instead of treating `nu_e` as an arbitrary matching.
