@@ -15215,3 +15215,76 @@ parity routing that survives all cancellations.  In particular absorption
 on such a cycle must account for both directions around the owner factor,
 not only for the particular subchain selected by the three-label payment
 construction.
+
+## 298. The comparison with the forward SRP row has two exact error terms
+
+The rootwise defect `D_x` and the forward routing row `delta_x^a` use the
+same incidence-component index, but they are not the same vector for free.
+The discrepancy can be written exactly at the private-label level.  Work in
+the binary vector space on `a`-labels and put
+
+```text
+Lambda_x:=sum_(w in W_I(x))
+          ([y_w]+[y'_w]+[z(w)]),
+Y_x:=[r_x^0]+[r_x^1],
+R_x:=Lambda_x+Y_x.                                  (951)
+```
+
+Here `r_x^0,r_x^1` are the two `a`-labels adjacent to `x`, so `Y_x` is the
+private root-star pair used in (816).  Repeated labels in `Lambda_x` are
+cancelled over `F_2`; it is the label chain indexing `L_x`, not an
+occurrence multiset.
+
+For a binary label chain `Lambda` and `j!=0`, define its two endpoint
+profiles
+
+```text
+C_j(Lambda):=sum_(ell in Lambda)|N_c(ell) intersect U_j| mod 2,
+E_j(Lambda):=sum_(ell in Lambda)|N_e(ell) intersect V_j| mod 2. (952)
+```
+
+The boundary identity (942), restricted to an outside component, and the
+definition (816) say respectively
+
+```text
+C_j(Lambda_x)=D_x(j),
+E_j(Y_x)=delta_x^a(j).                               (953)
+```
+
+Now retain the component-aligned endpoint discrepancy of every label,
+
+```text
+kappa_ell(j):=|N_c(ell) intersect U_j|
+              +|N_e(ell) intersect V_j| mod 2,
+K_x(j):=sum_(ell in Lambda_x)kappa_ell(j).           (954)
+```
+
+Linearity and `R_x=Lambda_x+Y_x` give the exact bridge
+
+```text
+D_x(j)+delta_x^a(j)
+ =K_x(j)+E_j(R_x),                    j!=0.          (955)
+```
+
+Indeed the right side is
+`C_j(Lambda_x)+E_j(Lambda_x)+E_j(Lambda_x)+E_j(Y_x)`.
+Thus no graph-theoretic assertion is hidden in (955); all cancellations,
+including repeated terminal labels, are already accounted for.
+
+Consequently the desired colorwise identification is equivalent to the
+specific private-label terminal
+
+```text
+D_x=delta_x^a
+ iff K_x=(E_j(R_x))_(j!=0).                          (956)
+```
+
+Neither (822) nor the cycle localization of Sections 296--297 proves
+(956).  The first error term records the component-switch discrepancy of
+the labels actually used by the residual payment chain; the second records
+the unmatched labels between that chain and the complete two-label star at
+`x`.  This is the precise remaining bridge to the forward SRP row.  Any
+next absorption theorem must cancel these two displayed terms, or exploit
+their failure to cancel; replacing `D_x` by `delta_x^a` without such an
+argument would discard exactly the private-label information retained by
+the construction.
