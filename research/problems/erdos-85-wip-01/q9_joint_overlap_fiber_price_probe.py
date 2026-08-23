@@ -418,7 +418,9 @@ def one_model(
     blocks = []
     for class_map in data["classes"]:
         blocks.extend(chosen(class_map))
-    blocks.extend(chosen(data["holes"]))
+    hole_blocks = chosen(data["holes"])
+    anchor_blocks = [chosen(anchor)[0] for anchor in data["sixpack_anchors"]]
+    blocks.extend(hole_blocks)
     marked = chosen(data["marked_pairs"])
     for missing_color in range(3):
         blocks.extend([
@@ -429,6 +431,8 @@ def one_model(
         "branch": 3,
         "blocks": [list(block) for block in blocks],
         "k_edges": [list(edge) for edge in chosen(data["k"])],
+        # Ordered with the two exceptional covers below, not lexicographically.
+        "exceptional_hole_blocks": [list(block) for block in anchor_blocks],
     }
     system = fixed_system(outer_payload)
     covers = []
@@ -440,6 +444,9 @@ def one_model(
         )))
     overlap = sorted(covers[0] & covers[1])
     outer_payload["overlap_points"] = overlap
+    exceptional_hole_overlap = [
+        sorted(set(block) & set(overlap)) for block in anchor_blocks
+    ]
     single_optima = {
         point: unit_nondiagonal_fiber_optimum(
             system, point, include_diagonal=True)
@@ -461,7 +468,9 @@ def one_model(
             if (certificate := scaled_joint_cover(
                     system, p, q, scale, details=details)):
                 answer = {
-                    "overlap_card": len(overlap), "certificate": certificate
+                    "overlap_card": len(overlap),
+                    "exceptional_hole_overlap": exceptional_hole_overlap,
+                    "certificate": certificate,
                 }
                 if genuine_only:
                     answer["genuine_pair_count"] = len(genuine_pairs)
@@ -483,7 +492,11 @@ def one_model(
                         for pair in genuine_pairs
                     ]
                 return answer
-    answer = {"overlap_card": len(overlap), "certificate": None}
+    answer = {
+        "overlap_card": len(overlap),
+        "exceptional_hole_overlap": exceptional_hole_overlap,
+        "certificate": None,
+    }
     if genuine_only:
         answer["genuine_pair_count"] = len(genuine_pairs)
         answer["strict_single_points"] = strict_single_points
@@ -515,6 +528,14 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
     strict_single_points = [
         point for point in overlap if single_optima[point]["strict"]
     ]
+    hole_blocks = payload.get(
+        "exceptional_hole_blocks",
+        payload["blocks"][24:26] if payload.get("branch") == 3 else [],
+    )
+    distinguished_hole_overlap = [
+        sorted(set(block) & set(overlap))
+        for block in hole_blocks
+    ]
     genuine_pairs = [
         pair for pair in combinations(overlap, 2)
         if not single_optima[pair[0]]["strict"]
@@ -532,6 +553,7 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
                     "certificate": certificate,
                     "genuine_pair_count": len(genuine_pairs),
                     "strict_single_points": strict_single_points,
+                    "exceptional_hole_overlap": distinguished_hole_overlap,
                 }
                 answer.update(single_optimum_summary(system, single_optima))
                 if details:
@@ -551,6 +573,7 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
         "certificate": None,
         "genuine_pair_count": len(genuine_pairs),
         "strict_single_points": strict_single_points,
+        "exceptional_hole_overlap": distinguished_hole_overlap,
     }
     answer.update(single_optimum_summary(system, single_optima))
     if scan_exact_joint_optima:

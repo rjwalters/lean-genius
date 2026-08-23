@@ -314,6 +314,20 @@ and both contain a saturated tight dual, but successful collision need not be
 centered only at the saturated tight point.  The uniform theorem must select
 existentially across the whole tight set.
 
+There is a more structural selector common to both fixtures.  Each of the two
+exceptional anchor blocks meets the common cover-overlap in a singleton.  In
+seed 5 these distinguished points are 9 and 11; point 9 is the saturated
+tight one.  In seed 41 they are 12 and 22; both are tight, and point 22 is
+the saturated one.  Hence the candidate can avoid searching the entire
+overlap: **if no overlap single is strict, at least one of the two
+anchor-overlap points is tight with integer dual value 27**.  The ordering of
+the two anchors is irrelevant (seed 41's saturated point belongs to the
+second generated anchor, while seed 5's belongs to the first under the stored
+order).  The probe now preserves anchor blocks in cover order and reports
+their overlap intersections explicitly.  Singleton intersection itself
+appears to come from hole reciprocity/full-pack overlap geometry; saturation
+at one of the two points remains the real equality-case gap.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
