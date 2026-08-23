@@ -18582,3 +18582,55 @@ strict half has only two.  Any further occurrences at that tag must use
 core-inactive payers.  This does not yet bound those inactive labels
 globally, but separates the five already-accounted strict exports from the
 new exterior population that a full completion must supply.
+
+## 353. Every repeated transition signature forces an inactive payer
+
+Combine the collision rule of Section 350 with the strict/inactive
+dichotomy.  Let `y_0,y_1` be a repeated owner/root/color signature and let
+`q` be their common fifth port.  Their payment intermediates `z_0,z_1` are
+distinct by the four-cycle argument following (1189).  But Section 352
+gives only one strict-export label at `q`, across all payment layers.
+Therefore
+
+```text
+at least one of z_0,z_1 is core-inactive.           (1204)
+```
+
+This conclusion does not require the tags `kappa(y_0),kappa(y_1)` to
+agree.  If they agree, the two payers saturate that layer's fiber at `q`
+and its strict/inactive profile is either `(1,1)` or `(0,2)`.  If the tags
+differ, at most one of the two layers can contain the globally unique
+strict label at `q`, so the other tagged route is inactive.
+
+Apply (1204) to the two repeated pairs in Section 348.  Choose
+
+```text
+z_4 in {z(y_0),z(y_2)} with
+     z_4 adjacent to p_4 and N_c(z_4) intersect C=emptyset;
+z_2 in {z(y_1),z(y_3)} with
+     z_2 adjacent to p_2 and N_c(z_2) intersect C=emptyset. (1205)
+```
+
+These two inactive labels are distinct.  Indeed every exterior label has
+at most one selected `e`-neighbor by (785), whereas `p_4!=p_2`.  Thus the
+two-color four-state cycle forces at least two different, fully located
+port-only cut labels:
+
+```text
+z_4 contributes an N_01 occurrence at p_4,
+z_2 contributes an N_01 occurrence at p_2.         (1206)
+```
+
+The endpoint-layer rectangles of Section 351 do not evade this price.  In
+each rectangle the two distinct self-layer payers share the fifth port, so
+at most one can be that port's strict export and the other is one of the
+inactive labels in (1205).  Likewise an exterior tag is already classified
+by (1201).  Hence every full-SRP completion of the two-color cycle adds two
+new inactive port-only labels beyond the strict five-cell permutation.
+
+This is still a capacity charge, not a contradiction: the exact census
+`N_01^k=10-k_k` in (787) can contain inactive labels.  The gain is that the
+cycle branch now has two concrete outside witnesses at different selected
+ports, which can be fed into the inactive-label telescopes of Sections
+303--309 or compared against the simultaneous component profile of Section
+324.  They are no longer anonymous fifth-cell layer choices.
