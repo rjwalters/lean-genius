@@ -1976,6 +1976,69 @@ theorem false_of_threeRowSupportPointPriceCertificate
     exact hedge u v huv
   · simpa [rowPrice, mul_add, Finset.sum_add_distrib] using hstrict
 
+/-- A strict global point-price certificate with row prices supported on two
+named rows. -/
+def HasTwoRowSupportPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P) : Prop :=
+  ∃ s t : V, ∃ a b : ℚ, ∃ pointPrice : V → P → ℚ,
+    (∀ u p, 0 ≤ pointPrice u p) ∧
+    (∀ u v, H u v →
+      ((if u = s then a else 0) + (if u = t then b else 0)) +
+          ((if v = s then a else 0) + (if v = t then b else 0)) ≤
+        (∑ p ∈ B v, pointPrice u p) +
+          ∑ p ∈ B u, pointPrice v p) ∧
+    (∑ u : V, ∑ p : P, pointPrice u p) <
+      (d s : ℚ) * a + (d t : ℚ) * b
+
+/-- A strict weighted coupled-packing bound on three distinct rows through a
+common block point. -/
+def HasConcurrentThreeRowCoupledPackingBound
+    {P : Type*} [Fintype P] [DecidableEq P]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P) : Prop :=
+  ∃ r s t : V, ∃ p : P, ∃ α β γ : ℚ,
+    r ≠ s ∧ r ≠ t ∧ s ≠ t ∧
+    p ∈ B r ∧ p ∈ B s ∧ p ∈ B t ∧
+    ∀ x y z : V → ℚ,
+      (∀ v, 0 ≤ x v) → (∀ v, 0 ≤ y v) → (∀ v, 0 ≤ z v) →
+      (∀ v, x v ≠ 0 → H r v) →
+      (∀ v, y v ≠ 0 → H s v) →
+      (∀ v, z v ≠ 0 → H t v) →
+      (∀ q, (∑ v ∈ Finset.univ.filter fun w => q ∈ B w, x v) ≤ 1) →
+      (∀ q, (∑ v ∈ Finset.univ.filter fun w => q ∈ B w, y v) ≤ 1) →
+      (∀ q, (∑ v ∈ Finset.univ.filter fun w => q ∈ B w, z v) ≤ 1) →
+      (∀ v, x v + y v ≤ 1) →
+      (∀ v, x v + z v ≤ 1) →
+      (∀ v, y v + z v ≤ 1) →
+      α * ∑ v, x v + β * ∑ v, y v + γ * ∑ v, z v <
+        α * d r + β * d s + γ * d t
+
+/-- End-to-end consumer for the branch-3 selector interface: either a
+two-row global price obstruction, or a concurrent three-row coupled-packing
+obstruction. -/
+theorem false_of_twoRowPrice_or_concurrentThreeRowPacking
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hbad : HasTwoRowSupportPointPriceCertificate H d B ∨
+      HasConcurrentThreeRowCoupledPackingBound H d B) :
+    False := by
+  rcases hbad with hprice | hpacking
+  · rcases hprice with ⟨s, t, a, b, pointPrice, hnonneg, hedge, hstrict⟩
+    exact false_of_twoRowSupportPointPriceCertificate
+      A H W d B hsymm hdegree hsupport hgram hshared
+      s t a b pointPrice hnonneg hedge hstrict
+  · rcases hpacking with
+      ⟨r, s, t, p, α, β, γ, hrs, hrt, hst, hpr, hps, hpt, hbound⟩
+    exact false_of_threeConcurrentRowsCoupledPackingBound
+      A H W d B hsymm hdegree hsupport hgram hshared
+      r s t p hrs hrt hst hpr hps hpt α β γ hbound
+
 /-- End-to-end actual-relation consumer with unit row prices on `S`. -/
 theorem false_of_unitSupportPointPriceCertificate
     {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
@@ -2540,6 +2603,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_regularExceptionalFixedPriceCertificate
 #print axioms false_of_regularExceptionalCoupledPackingBound
 #print axioms false_of_threeConcurrentRowsCoupledPackingBound
+#print axioms false_of_twoRowPrice_or_concurrentThreeRowPacking
 #print axioms false_of_threeRowSupportPointPriceCertificate
 #print axioms false_of_twoUnitSupportsPointPriceCertificate
 #print axioms false_of_scaledTwoUnitSupportsPointPriceCertificate
