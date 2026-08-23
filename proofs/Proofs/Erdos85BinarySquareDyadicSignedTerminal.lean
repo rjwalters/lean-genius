@@ -994,6 +994,13 @@ theorem binarySquare_no_singleton_partialBaer_core
   · omega
   · omega
 
+/-- At residual capacity `a = 2`, excluding a singleton partial-Baer core
+leaves only the empty-core and two-vertex-core placements. -/
+theorem binarySquare_aTwo_insideMinority_dichotomy
+    (s : ℕ) (hs : s ≤ 2) (hnotOne : s ≠ 1) :
+    s = 0 ∨ s = 2 := by
+  omega
+
 /-- The common owner-edge contribution cancels between the two endpoint
 T-parity equations, leaving equal cross-mark-plus-witness phase. -/
 theorem binarySquare_twoPort_phase_agreement
@@ -1104,6 +1111,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_saturatedR2_hEqF_impossible
 #print axioms Erdos85.binarySquare_saturatedMixed_hEqF_impossible
 #print axioms Erdos85.binarySquare_no_singleton_partialBaer_core
+#print axioms Erdos85.binarySquare_aTwo_insideMinority_dichotomy
 #print axioms Erdos85.binarySquare_twoPort_phase_agreement
 #print axioms Erdos85.binarySquare_twoPort_signedBoundary_integral
 #print axioms Erdos85.binarySquare_coincident_mark_no_active

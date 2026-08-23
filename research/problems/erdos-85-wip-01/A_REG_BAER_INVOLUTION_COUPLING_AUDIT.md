@@ -2338,6 +2338,47 @@ extreme endpoint's precise contribution to that shared open lemma: an
 oriented bundle consisting of one marked-port atom and one defect bit for
 each empty-line witness, with the crossed-route intermediary labels retained.
 
+The next capacity layer `a=2` also collapses to two exact placements.  Since
+`0<=s<=a` and (73rnh) excludes `s=a-1`, one has
+
+```text
+a=2  implies  s=0 or s=2.                                (73rnz_h)
+```
+
+If `s=0`, then `R=F intersect S` has two vertices.  Every vertex of `A[R]`
+has degree one or two by (73i), so the two vertices are adjacent and both
+have degree one: the partial-Baer core is a single reciprocal-private edge.
+All `r=q/2-2` empty centers are outside, their disjoint lines occupy `qr`
+ordinary outside points, and (73rng) leaves exactly `q` uncovered ordinary
+outside points.  Thus this placement has no exceptional T-star; its entire
+obstruction is a two-vertex Baer core coupled to a q-point residual outside
+set.
+
+If `s=2`, then `R` is empty.  The two inside empty centers support two
+vertex-disjoint two-edge T-stars, hence four distinct outside-full leaves;
+the remaining empty centers are outside.  Formula (73rng) leaves exactly
+`q+4` uncovered ordinary outside points.  Each full leaf has exactly one
+exceptional T-edge, namely its edge to its star center, so Eulerianity forces
+an odd nonempty bundle of its remaining T-neighbors in `M intersect S`.
+For the two leaves of the same star these ordinary bundles are disjoint:
+they already share their empty center as a common A-neighbor, and another
+shared point would create a C4.  The two star cycles therefore couple four
+odd ordinary port bundles in two disjoint pairs.
+
+Consequently `a=2` has the finite normal form
+
+```text
+s=0:  one reciprocal-private A-edge + q uncovered M-points;
+s=2:  two disjoint T-stars + four paired odd M-port bundles
+      + (q+4) uncovered M-points.                        (73rnz_i)
+```
+
+Neither form is killed by local parity alone.  The former needs transport
+between the reciprocal private endpoints and the q residual outside points;
+the latter needs simultaneous routing of the two star-paired odd bundles.
+This is the first layer beyond the fully labeled `a=1` terminal and uses no
+order-specific enumeration.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
