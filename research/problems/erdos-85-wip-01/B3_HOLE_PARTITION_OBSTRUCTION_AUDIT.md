@@ -4066,9 +4066,11 @@ reverse-compatibility consequences.  Moreover serious `13f` has no
 necessary in that branch as well.
 
 A fixed-outer retention ladder localizes the stronger missing hypothesis.
-For the seed-3 counterexample above (payload SHA-256 prefix `baf724b3`), its
-fixed `Q,K` extends to models satisfying `row-ledger+b0-c4`, and separately
-to the DTB zero/row/column ledgers.  It still extends when DTB core--residual
+The seed-3 counterexample is now stored durably as
+`q9_outer_seed_b3s3_triangle_selector_counterexample.json` (the original
+pretty-printed temporary payload had SHA-256 prefix `baf724b3`).  Its fixed
+`Q,K` extends to models satisfying `row-ledger+b0-c4`, and separately to the
+DTB zero/row/column ledgers.  It still extends when DTB core--residual
 orthogonality is added but the residual common-neighbor capacity bound is
 ablated.  Conversely, the common cap/orthogonality package without the DTB
 zero/row/column ledgers is also SAT.  Restoring the complete coupled DTB
