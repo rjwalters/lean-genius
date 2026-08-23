@@ -12227,3 +12227,56 @@ can now be posed on these alternating owner-run paths, rather than on three
 unrelated sector populations: combine their endpoint `q_y` words with the
 `01` union flags and the complementary H/V/S boundary terms, and prove that
 the resulting path boundary has zero total capacity.
+
+## 242. The active word is a port point plus an exact root-chain boundary
+
+The role separation in (730) has a coordinate-free chain form.  Regard the
+closed H cycle on the port set `Z` as a cellular cycle.  Its edges are indexed
+by the roots of `C`: the edge `E_x` indexed by `x` has as endpoints the two H
+ports incident to `x`.  For a receiving label `y` put
+
+```text
+A_y:=sum_(x in C intersect N_c(y)) [E_x] in C_1(Z;F_2).
+```
+
+If `t_y=1`, let `p_y` be the unique member of `Z intersect N_e(y)`.  Expanding
+(362) port by port gives the **zero-chain identity**
+
+```text
+Q_y:=sum_(z in Z) q_y(h_z)[z]=[p_y]+partial A_y.      (739)
+```
+
+Indeed the port-incidence term occurs only at `p_y`, while each selected root
+`x` contributes at the two endpoints of `E_x`.  For `r_y=t_y=1`, the cross
+fiber has order two and `A_y=[E_(x_y)]`; (739) is exactly the rigid three-port
+pattern (730).  For `r_y=0,t_y=1`, the chain `A_y` has zero or two edges, so
+(739) also covers the port-only sector without assuming that it has no root
+incidences.
+
+Thus the two root hits in the exported three-port word are already an exact
+coboundary.  Modulo root-edge boundaries, every active word is represented by
+its unique physical port:
+
+```text
+[Q_y]=[[p_y]] in C_0(Z;F_2)/im(partial).              (740)
+```
+
+Since `Z` is connected, the quotient in (740) is one-dimensional and all
+port points have the same class.  Taking augmentation recovers (733), and
+therefore gives no refinement of (734).  In particular a proposed cyclic
+displacement parity cannot supply the missing conservation law.  There is no
+nonzero rotation-invariant homomorphism from the odd cyclic position group
+`Z/|Z|` to `F_2`; choosing numbered ports merely introduces a cut, and moving
+that cut changes the parity because `|Z|` is odd.
+
+The useful remaining datum is consequently not a scalar first moment but the
+**relative chain representative** in (739): the actual point `p_y`, the
+actual root chain `A_y`, and the receiving owner color.  Any terminal joining
+the `11` export to its `01` payment must compare the sums of these port-point
+chains before quotienting by `im(partial)`; after that quotient only the
+already-known odd scalar survives.  Equivalently, the complementary H/V/S
+terms in (704) and (707) must pay the root-chain boundaries in (739), while
+the `01` union flags must control the residual distribution of the physical
+port points.  This rules out both an untagged homology argument and a cyclic
+displacement argument, and reduces the live joint-capacity theorem to those
+two explicitly retained channels.
