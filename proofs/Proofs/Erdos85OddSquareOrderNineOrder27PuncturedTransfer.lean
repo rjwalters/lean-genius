@@ -742,6 +742,48 @@ theorem orderNine_order27_binZero_W_degree_equation
     G owner y Z P W (by simpa [P] using hpartition)
       hownerP hownerW hPW hPdegree
 
+/-- The common right-hand budget in both cases of (22).  The five points of
+`W \ U` are not adjacent to the owner, so (21) subtracts three from their
+`Z`-degree.  A pointwise `Z`-degree cap four therefore leaves at most one
+`W`-neighbor apiece. -/
+theorem orderNine_order27_complement_W_degree_sum_le_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner : V) (Z U W : Finset V)
+    (hWcard : W.card = 8) (hUcard : U.card = 3) (hUsub : U ⊆ W)
+    (hUnbr : U = G.neighborFinset owner ∩ W)
+    (heq21 : ∀ y ∈ W,
+      (G.neighborFinset y ∩ Z).card =
+        (G.neighborFinset y ∩ W).card +
+          if G.Adj y owner then 1 else 3)
+    (hZle : ∀ y ∈ W \ U, (G.neighborFinset y ∩ Z).card ≤ 4) :
+    (∑ y ∈ W \ U, (G.neighborFinset y ∩ W).card) ≤ 5 := by
+  classical
+  let C := W \ U
+  have hCcard : C.card = 5 := by
+    dsimp [C]
+    rw [Finset.card_sdiff_of_subset hUsub, hWcard, hUcard]
+  have hnotAdj : ∀ y ∈ C, ¬ G.Adj y owner := by
+    intro y hy hadj
+    have hyW := (Finset.mem_sdiff.mp hy).1
+    have hyU : y ∈ U := by
+      rw [hUnbr]
+      exact Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset owner y).mpr
+          ((G.adj_comm y owner).mp hadj), hyW⟩
+    exact (Finset.mem_sdiff.mp hy).2 hyU
+  have hone : ∀ y ∈ C, (G.neighborFinset y ∩ W).card ≤ 1 := by
+    intro y hy
+    have he := heq21 y (Finset.mem_sdiff.mp hy).1
+    have hz := hZle y hy
+    simp [hnotAdj y hy] at he
+    omega
+  calc
+    (∑ y ∈ W \ U, (G.neighborFinset y ∩ W).card) =
+        ∑ y ∈ C, (G.neighborFinset y ∩ W).card := by rfl
+    _ ≤ ∑ _y ∈ C, 1 := Finset.sum_le_sum fun y hy ↦ hone y hy
+    _ = 5 := by simp [hCcard]
+
 /-- Cross-incidence handshake, proved by swapping the two endpoints. -/
 theorem sum_neighbor_inter_card_comm
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -1077,6 +1119,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_lowSet_composition
 #print axioms orderNine_binZero_W_degree_of_lowSet_partition
 #print axioms orderNine_order27_binZero_W_degree_equation
+#print axioms orderNine_order27_complement_W_degree_sum_le_five
 #print axioms sum_neighbor_inter_card_comm
 #print axioms sum_neighbor_inter_card_le_complement_of_independent
 #print axioms false_of_orderNine_order27_threeEdge_handshake
