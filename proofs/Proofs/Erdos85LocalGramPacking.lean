@@ -1790,6 +1790,37 @@ theorem false_of_scaledTwoUnitSupportsPointPriceCertificate
     rw [mul_div_cancel_left₀ _ hqne] at hdiv
     simpa [pointPrice, Finset.sum_div] using hdiv
 
+/-- Full-fiber specialization of the scaled joint two-support consumer.  Both
+row supports are inferred from their common block points. -/
+theorem false_of_scaledTwoCommonPointFibersPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (p q : P) (weight : V → P → ℕ) (scale : ℕ)
+    (hscale : 0 < scale)
+    (hedge : ∀ u v, H u v →
+      scale * (((if p ∈ B u then 1 else 0) + (if q ∈ B u then 1 else 0)) +
+        ((if p ∈ B v then 1 else 0) + (if q ∈ B v then 1 else 0))) ≤
+          (∑ r ∈ B v, weight u r) + ∑ r ∈ B u, weight v r)
+    (hstrict :
+      (∑ u : V, ∑ r : P, weight u r) <
+        scale *
+          ((∑ u ∈ Finset.univ.filter (fun u => p ∈ B u), d u) +
+            ∑ u ∈ Finset.univ.filter (fun u => q ∈ B u), d u)) :
+    False := by
+  let S := Finset.univ.filter fun u => p ∈ B u
+  let T := Finset.univ.filter fun u => q ∈ B u
+  apply false_of_scaledTwoUnitSupportsPointPriceCertificate
+    A H W d B hsymm hdegree hsupport hgram hshared S T weight scale hscale
+  · intro u v huv
+    simpa [S, T] using hedge u v huv
+  · simpa [S, T] using hstrict
+
 /-- End-to-end actual-relation consumer for a denominator-cleared unit-support
 certificate.  This is the literal interface produced by the finite q=9
 full-fiber verifier: `weight` is integral and `scale` is its positive common
@@ -2201,6 +2232,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_no_canonicalFractionalIntervalExtension
 #print axioms false_of_twoUnitSupportsPointPriceCertificate
 #print axioms false_of_scaledTwoUnitSupportsPointPriceCertificate
+#print axioms false_of_scaledTwoCommonPointFibersPriceCertificate
 #print axioms false_of_no_symmetricLocalGramPackingSelection
 #print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
