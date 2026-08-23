@@ -14867,3 +14867,50 @@ in (905)--(907), but now every contributing triple is paired with an
 inactive payment occurrence.  Thus the nonzero reverse destination tag
 survives the full active/inactive composition rather than being carried
 only by terminals which might close among themselves.
+
+## 291. Every inactive payment leaves an odd reverse-root defect
+
+The inactive endpoint paired to a reverse tag in Section 290 has the wrong
+augmentation to absorb it.  For `w in W_I`, let `z(w)` be the private
+`a`-label indexing the inactive cut edge at the other endpoint of its
+overlay component.  Since `z(w)` has no neighbor in `C`, its two
+`c`-neighbors lie in the outside incidence components.  Define
+
+```text
+sigma_(z(w))(j):=|N_c(z(w)) intersect U_j| mod 2,
+j!=0.                                                (922)
+```
+
+The two roots give
+
+```text
+aug(sigma_(z(w)))=0,                                 (923)
+```
+
+whereas `aug(rho_w^a)=1` by (900).  Hence the
+occurrence-level payment defect
+
+```text
+d_w:=rho_w^a+sigma_(z(w))
+```
+
+has augmentation one.  Summing over the odd family (919) yields
+
+```text
+D_I:=sum_(w in W_I)d_w,
+aug(D_I)=|W_I|=1,
+D_I!=0.                                             (924)
+```
+
+This defect again has an actual shore realization.  Put
+
+```text
+T_I^def:=triangle_(w in W_I)
+          (E_w^a triangle N_c(z(w))) subset c\C.    (925)
+```
+
+Each summand has odd cardinality `3+2` modulo two, so the aggregate shore
+is odd, and its component-parity profile is exactly `D_I`.  Therefore the
+canonical inactive-label payments do not close the reverse export even at
+the coarsest component level: after every paired payment is included, a
+nonzero odd root defect remains, located on actual roots outside `C`.
