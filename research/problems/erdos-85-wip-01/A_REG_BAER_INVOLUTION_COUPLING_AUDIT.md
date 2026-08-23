@@ -3085,8 +3085,8 @@ E-x-y-G:  (1[Ex in T], 1[xy in T], 1[yG in T]).          (73rnz_at)
 
 If x is a leaf L, then `EL in T`.  Moreover y is adjacent to the two full
 centers L and G, so the replication-two cap prevents y from meeting any
-other leaf; it is automatically a singleton port in the four-bundle system.
-Consequently
+other leaf.  If additionally `Ly in T`, then y lies in L's bundle and is
+automatically a singleton port in the four-bundle system.  Consequently
 
 ```text
 switch edge  iff  chi(x)=leaf and the T-word is 111.     (73rnz_au)
