@@ -15889,3 +15889,56 @@ a nonvanishing theorem for `J_x`.  Its gain is the exact realizability
 constraint needed by the next capacity step: two entire local defect
 classes cannot contribute only their inactive endpoint labels to (998);
 each must introduce a genuine separator label in the target factor.
+
+## 310. The realized endpoint term is exactly the inactive return parity
+
+The augmentation of `P_x` has a direct geometric meaning.  Each path
+`Pi_w` has boundary `{w,o_w}` with `w in S subset e\Z`.  The outside
+component coordinates count the initial endpoint once.  They count the
+terminal endpoint once exactly when `o_w notin Z`.  Therefore its
+contribution to the augmentation is
+
+```text
+1+1_{o_w notin Z}=1_{o_w in Z} mod 2.
+```
+
+Summing over one source root gives
+
+```text
+aug(P_x)=#{w in W_I(x):o_w in Z} mod 2.             (1002)
+```
+
+This is also the target-activity bit of the terminal label.  The `S`-side
+endpoint `s_w` of `E_e(z(w))` lies outside `Z`, so
+
+```text
+t_(z(w)):=|N_e(z(w)) intersect Z| mod 2
+          =1_{o_w in Z},
+aug(P_x)=sum_(w in W_I(x)) t_(z(w)).                (1003)
+```
+
+Every terminal label is `C`-inactive.  Hence (1003) identifies `P_x` as
+the actual parity of terminal labels in sector `01`: no neighbor in the
+root core, but one neighbor in the selected target component.
+
+Globally split the odd occurrence family into
+
+```text
+W_Z  :={w in W_I:o_w in Z},
+W_out:={w in W_I:o_w notin Z}.                      (1004)
+```
+
+These sets partition `W_I`, so (919) gives
+
+```text
+|W_Z|+|W_out|=1 mod 2.                              (1005)
+```
+
+Exactly one of the two terminal populations is odd.  In the first branch,
+an odd number of the realized payment paths return to the original
+five-port component through `C`-inactive, target-active (`01`) labels.  In
+the second, an odd number end outside both selected components, and their
+terminal labels lie in sector `00`.  Thus the path-endpoint term in (998)
+does not introduce a new anonymous parity: it restores the concrete
+`01/00` sector dichotomy of the original three-sector payment triangle,
+now attached to the transported residual occurrence paths.
