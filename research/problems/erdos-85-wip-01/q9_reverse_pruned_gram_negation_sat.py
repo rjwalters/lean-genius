@@ -28,12 +28,14 @@ def main() -> int:
     parser.add_argument("--timeout-seconds", type=int, default=600)
     parser.add_argument("--max-rounds", type=int, default=100)
     parser.add_argument("--witness", type=Path)
+    parser.add_argument("--random-seed", type=int, default=0)
     args = parser.parse_args()
 
     started = time.time()
     solver, data = add_negation(
         args.branch, args.timeout_seconds * 1000, full=False, symmetric=False
     )
+    solver.set(random_seed=args.random_seed)
 
     # Instantiate reverse witnesses lazily, one obstructed row at a time.
     # Existing reciprocity clauses say Avoiding(u,w) OR Containing(w,u).
