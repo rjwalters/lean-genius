@@ -478,6 +478,63 @@ theorem no_symmetricFractionalPointPacking_of_commonFiberPrices
           (Finset.sum_nonneg fun q _ => hglobalNonneg u q)
           (Finset.sum_nonneg fun q _ => hglobalNonneg v q)
   · simpa [globalRowPrice, globalPointPrice] using hstrict
+
+/-- **Fiber-plus-auxiliary price certificate.**  This generalizes the common
+fiber adapter to a support `R` which may contain one row not incident with
+`p`.  Outside compensation contributes to a cross edge exactly when the
+supported endpoint's block contains `p`; hence fiber rows receive it while a
+nonincident auxiliary row must be covered entirely by its local prices. -/
+theorem no_symmetricFractionalPointPacking_of_supportWithPointCompensation
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (R : Finset V) (p : P) (rowPrice : V → ℚ)
+    (localPrice : V → P → ℚ) (compensation : V → ℚ)
+    (hlocalNonneg : ∀ u q, 0 ≤ localPrice u q)
+    (hcompNonneg : ∀ u, 0 ≤ compensation u)
+    (hinternal : ∀ u ∈ R, ∀ v ∈ R, H u v →
+      rowPrice u + rowPrice v ≤
+        (∑ q ∈ B v, localPrice u q) +
+        ∑ q ∈ B u, localPrice v q)
+    (hcross : ∀ u ∈ R, ∀ v, v ∉ R → (H u v ∨ H v u) →
+      rowPrice u ≤
+        (∑ q ∈ B v, localPrice u q) +
+        if p ∈ B u then compensation v else 0)
+    (hstrict :
+      (∑ u : V, if u ∈ R then (∑ q : P, localPrice u q)
+        else compensation u) <
+      ∑ u : V, (d u : ℚ) * if u ∈ R then rowPrice u else 0) :
+    ¬ ∃ mass, IsSymmetricFractionalPointPacking H d B mass := by
+  classical
+  let globalRowPrice : V → ℚ := fun u =>
+    if u ∈ R then rowPrice u else 0
+  let globalPointPrice : V → P → ℚ := fun u q =>
+    if u ∈ R then localPrice u q
+    else if q = p then compensation u else 0
+  have hglobalNonneg : ∀ u q, 0 ≤ globalPointPrice u q := by
+    intro u q
+    by_cases hu : u ∈ R
+    · simp [globalPointPrice, hu, hlocalNonneg u q]
+    · by_cases hq : q = p <;>
+        simp [globalPointPrice, hu, hq, hcompNonneg u]
+  apply no_symmetricFractionalPointPacking_of_rowPointPrices
+    H d B globalRowPrice globalPointPrice hglobalNonneg
+  · intro u v huv
+    by_cases hu : u ∈ R
+    · by_cases hv : v ∈ R
+      · simpa [globalRowPrice, globalPointPrice, hu, hv] using
+          hinternal u hu v hv huv
+      · simpa [globalRowPrice, globalPointPrice, hu, hv] using
+          hcross u hu v hv (Or.inl huv)
+    · by_cases hv : v ∈ R
+      · simpa [globalRowPrice, globalPointPrice, hu, hv, add_comm] using
+          hcross v hv u hu (Or.inr huv)
+      · have hleft : globalRowPrice u + globalRowPrice v = 0 := by
+          simp [globalRowPrice, hu, hv]
+        rw [hleft]
+        exact add_nonneg
+          (Finset.sum_nonneg fun q _ => hglobalNonneg u q)
+          (Finset.sum_nonneg fun q _ => hglobalNonneg v q)
+  · simpa [globalRowPrice, globalPointPrice] using hstrict
 /-- Unit row prices on a finite support set.  This is the direct formal
 interface for the q=9 non-diagonal-fiber prize-cover certificates. -/
 theorem no_symmetricFractionalPointPacking_of_unitSupportPointPrices
@@ -1902,6 +1959,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms weightedDegree_le_totalPointPrice_of_symmetricFractionalPacking
 #print axioms no_symmetricFractionalPointPacking_of_rowPointPrices
 #print axioms no_symmetricFractionalPointPacking_of_commonFiberPrices
+#print axioms no_symmetricFractionalPointPacking_of_supportWithPointCompensation
 #print axioms no_symmetricFractionalPointPacking_of_unitSupportPointPrices
 #print axioms relationIndicator_isSymmetricFractionalPointPacking
 #print axioms false_of_symmetricRowPointPriceCertificate
