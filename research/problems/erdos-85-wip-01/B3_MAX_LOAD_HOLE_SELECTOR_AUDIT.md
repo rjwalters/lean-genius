@@ -666,6 +666,20 @@ with the three pairwise common-neighbor collision capacities.  The banked
 Lean theorem `false_of_threeConcurrentRowsCoupledPackingBound` consumes
 precisely a strict weighted bound on that primal.
 
+The most promising proof mechanism is now a minimal dual-circuit lemma,
+rather than further empirical selection.  Choose a strict global Farkas
+certificate with cardinality-minimal nonzero row-price support.  The desired
+statement is: either this support has cardinality at most two, or there is a
+cardinality-three certificate supported by one exceptional row and two
+regular rows through one common point.  Equivalently, under the negation of
+all 18 concurrent shared-point bounds, eliminate every nonconcurrent
+three-row circuit to a certificate on at most two rows.  The likely inputs
+are only (i) the three regular parallel-class partitions, (ii) the two
+exceptional triples, and (iii) the rooted point-capacity columns of the dual
+matrix.  This formulation separates the convex step from the graph
+application and is exactly the hypothesis shape consumed by
+`false_of_twoRowPrice_or_concurrentThreeRowPacking`.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
