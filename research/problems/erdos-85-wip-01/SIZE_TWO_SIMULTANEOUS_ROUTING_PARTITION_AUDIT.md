@@ -19202,3 +19202,57 @@ This is a genuine nontermination statement rather than a capacity charge.
 The continuation may still enter a finite colored holonomy cycle, but the
 residual branch can no longer be declared finished merely because it has
 reached `O` or because four strict exits are available.
+
+## 364. The distinguished secondary layer has an exact double-payer form
+
+The exception to payer distinctness in Section 362 is completely rigid.
+Let `D(y)` be the set of the `3-b(y)` selected cells in (1245), and let
+`D_d(y)` be the subset whose payment layer is the distinguished secondary
+component `d`.  Every `d`-label `u` has even selected incidence because
+
+```text
+R_de 1_Z=0 over F_2,
+```
+
+while its total cross degree into `e` is two.  Therefore a `d`-intermediate
+which pays any selected cell pays exactly two of them:
+
+```text
+u contributes to D_d(y)  implies  |N_e(u) intersect Z|=2.        (1251)
+```
+
+Both columns in (1251) must belong to `D(y)`.  If one were already occupied
+by the `c`- or `e`-endpoint support from (1244), that entry of the
+nonnegative integer SRP identity would be at least two.  Likewise the
+two-port supports of distinct contributing `d`-intermediates are disjoint;
+otherwise their common column would have product entry at least two.  Thus
+
+```text
+|D_d(y)|=2 times #{d-intermediates paying D(y)}.                  (1252)
+```
+
+Since `|D(y)|` is only one, two, or three, (1252) leaves exactly the
+following payer profiles:
+
+```text
+B--B: one non-d singleton payer;
+
+B--O: one d double-payer,
+       or two distinct non-d singleton payers;
+
+O--O: one d double-payer plus one non-d singleton payer,
+       or three distinct non-d singleton payers.                  (1253)
+```
+
+Here a non-`d` payer is singleton on `Z` by (785), so different tagged
+columns require different intermediates.  Conversely a `d` payer in
+(1253) is one actual intermediate witnessing both of its two tagged cells;
+there cannot be a mixture with only one `d`-tag.
+
+Equation (1253) repairs the only reuse ambiguity in the global tag count.
+In particular every `B--B` propagation edge has the single literal payer
+already used in Section 349.  A residual endpoint introduces either new
+singleton payer vertices or one sharply identified secondary double-payer;
+it never permits arbitrary merging of the two or three selected tags.  No
+claim is made yet that double-payers on different propagation rows are
+distinct.
