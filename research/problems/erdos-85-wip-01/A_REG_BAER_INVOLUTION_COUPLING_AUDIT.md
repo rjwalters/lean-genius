@@ -2805,6 +2805,45 @@ and parities are fixed by N.  The permutation state is the sole state with no
 forced external leaf and is exactly the state carrying the 8-cycle
 (73rnz_ac).
 
+Each singleton port has its own exact absorption/exit bit.  Let p be a
+degree-one port, incident in the four-bundle system to the unique leaf F.
+Because p lies inside S, it is adjacent to no empty center (all empty lines
+contain no inside point).  Majority replication at most two permits at most
+one additional full-center neighbor.  If its edge to that secondary full
+center is in T, write `eta_p=1`; otherwise put `eta_p=0`.  A secondary T-edge
+cannot go to another one of the four leaves, since then p would be a
+degree-two cross-star port rather than a singleton.  Hence it goes, when
+present, to one of the remaining outside full centers.
+
+Let `d_M^T(p)` count all remaining T-neighbors of p among ordinary points.
+Even T-degree gives
+
+```text
+d_M^T(p) = 1+eta_p                              (mod 2). (73rnz_af)
+```
+
+Thus `eta_p=0` forces an odd nonempty ordinary T-exit bundle, while
+`eta_p=1` absorbs the leaf parity at a secondary full center and leaves an
+even ordinary exit count.  A private singleton port has `eta_p=0`
+automatically.
+
+For comparison, a degree-two cross-star port is already adjacent in T to
+one leaf of each star.  Those two full incidences exhaust its majority
+replication, and it has no empty-center neighbor, so its ordinary T-exit
+count is even.  The four-bundle interface therefore has the exact local
+alphabet
+
+```text
+cross port:              even ordinary exit;
+singleton + no T switch: odd ordinary exit;
+singleton + T switch:    even ordinary exit.             (73rnz_ag)
+```
+
+This is the star-layer version of the shared through/turn/switch
+classification: the matrix N locates the through ports, while `eta_p`
+decides whether each forced singleton is absorbed or launches an odd
+ordinary transport bundle.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
