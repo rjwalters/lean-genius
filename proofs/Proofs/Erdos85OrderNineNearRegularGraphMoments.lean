@@ -100,32 +100,27 @@ theorem orderNine_zeroCut_ordinary_high_product_identity
     intro x hxH
     rw [hdegHigh x hxH]
 
-/-- Card-three adapter: a zero-boundary ordinary shore in an order-81 graph
-with degree profile 9/10 satisfies one side of the reviewed near-regular cut
-classifier. -/
-theorem orderNineNearRegularCutLower_nonpos_of_zeroCut_highThree
+/-- Fixed-order form of the card-three zero-cut adapter. -/
+theorem orderNineNearRegularCutLower_nonpos_of_zeroCut_fixedHighTriple
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     (hfree : ¬ containsC4 V G)
     (hcard : Fintype.card V = 81)
-    (H S : Finset V) (hHcard : H.card = 3)
-    (hSH : Disjoint S H)
-    (hdegOrd : ∀ x ∉ H, G.degree x = 9)
-    (hdegHigh : ∀ h ∈ H, G.degree h = 10)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (S : Finset V)
+    (hSH : Disjoint S {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
     (hzero : (∑ x ∈ S,
       ((secondOrderDefectGraph G).neighborFinset x ∩
         (Finset.univ \ S)).card) = 0) :
-    ∃ h₁ h₂ h₃,
-      H = {h₁, h₂, h₃} ∧
-      orderNineNearRegularCutLower S.card
+    orderNineNearRegularCutLower S.card
         (G.neighborFinset h₁ ∩ S).card
         (G.neighborFinset h₂ ∩ S).card
         (G.neighborFinset h₃ ∩ S).card ≤ 0 := by
   classical
-  obtain ⟨h₁, h₂, h₃, h₁₂, h₁₃, h₂₃, rfl⟩ :=
-    Finset.card_eq_three.mp hHcard
   let H : Finset V := {h₁, h₂, h₃}
   let O := Finset.univ \ H
   let f := fun x : ↥(↑O : Set V) => (G.neighborFinset x.1 ∩ S).card
@@ -198,14 +193,146 @@ theorem orderNineNearRegularCutLower_nonpos_of_zeroCut_highThree
     simpa [f, O, H, b₁, b₂, b₃, h₁₂, h₁₃, h₂₃, add_assoc] using hprod
   have hsq := orderNine_ordinary_square_moment_of_zero_cut
     f S.card b₁ b₂ b₃ hfle hb₁ hb₂ hb₃ hs hbsum hsum' hprod'
-  refine ⟨h₁, h₂, h₃, rfl, ?_⟩
   exact orderNineNearRegularCutLower_nonpos_of_ordinary_moments
     hOcard f S.card b₁ b₂ b₃ hsum' hsq.le
+
+/-- Card-three adapter: a zero-boundary ordinary shore in an order-81 graph
+with degree profile 9/10 satisfies one side of the reviewed near-regular cut
+classifier. -/
+theorem orderNineNearRegularCutLower_nonpos_of_zeroCut_highThree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 81)
+    (H S : Finset V) (hHcard : H.card = 3)
+    (hSH : Disjoint S H)
+    (hdegOrd : ∀ x ∉ H, G.degree x = 9)
+    (hdegHigh : ∀ h ∈ H, G.degree h = 10)
+    (hzero : (∑ x ∈ S,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card) = 0) :
+    ∃ h₁ h₂ h₃,
+      H = {h₁, h₂, h₃} ∧
+      orderNineNearRegularCutLower S.card
+        (G.neighborFinset h₁ ∩ S).card
+        (G.neighborFinset h₂ ∩ S).card
+        (G.neighborFinset h₃ ∩ S).card ≤ 0 := by
+  classical
+  obtain ⟨h₁, h₂, h₃, h₁₂, h₁₃, h₂₃, rfl⟩ :=
+    Finset.card_eq_three.mp hHcard
+  refine ⟨h₁, h₂, h₃, rfl, ?_⟩
+  exact orderNineNearRegularCutLower_nonpos_of_zeroCut_fixedHighTriple
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S hSH hdegOrd hdegHigh hzero
+
+/-- A high vertex with no high neighbors splits its ten neighbors between an
+ordinary shore and that shore's ordinary complement. -/
+theorem orderNine_high_neighbor_ordinary_compl_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (H S : Finset V) (h : V)
+    (hdeg : G.degree h = 10)
+    (hhighIndependent : Disjoint (G.neighborFinset h) H) :
+    (G.neighborFinset h ∩ ((Finset.univ \ H) \ S)).card =
+      10 - (G.neighborFinset h ∩ S).card := by
+  classical
+  have hNsub : G.neighborFinset h ⊆ Finset.univ \ H := by
+    intro x hxN
+    exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ x,
+      fun hxH => Finset.disjoint_left.mp hhighIndependent hxN hxH⟩
+  have hset : G.neighborFinset h ∩ ((Finset.univ \ H) \ S) =
+      G.neighborFinset h \ S := by
+    ext x
+    constructor
+    · intro hx
+      exact Finset.mem_sdiff.mpr ⟨(Finset.mem_inter.mp hx).1,
+        (Finset.mem_sdiff.mp (Finset.mem_inter.mp hx).2).2⟩
+    · intro hx
+      have hp := Finset.mem_sdiff.mp hx
+      exact Finset.mem_inter.mpr ⟨hp.1,
+        Finset.mem_sdiff.mpr ⟨hNsub hp.1, hp.2⟩⟩
+  rw [hset, Finset.card_sdiff, G.card_neighborFinset_eq_degree, hdeg]
+  congr 2
+  ext x
+  simp [and_comm]
+
+/-- Two-sided fixed-triple adapter.  High independence identifies the
+complement incidences with `10-bᵢ`, so the two one-sided zero-cut inequalities
+assemble exactly into the classifier's admissibility predicate. -/
+theorem orderNineNearRegularComponentAdmissible_of_twoZeroCuts_fixedHighTriple
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (S : Finset V)
+    (hSsub : S ⊆ Finset.univ \ ({h₁, h₂, h₃} : Finset V))
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hhighIndependent : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      Disjoint (G.neighborFinset h) ({h₁, h₂, h₃} : Finset V))
+    (hzeroS : (∑ x ∈ S,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card) = 0)
+    (hzeroT : let T := (Finset.univ \ ({h₁, h₂, h₃} : Finset V)) \ S
+      (∑ x ∈ T,
+        ((secondOrderDefectGraph G).neighborFinset x ∩
+          (Finset.univ \ T)).card) = 0) :
+    orderNineNearRegularComponentAdmissible S.card
+      (G.neighborFinset h₁ ∩ S).card
+      (G.neighborFinset h₂ ∩ S).card
+      (G.neighborFinset h₃ ∩ S).card := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := Finset.univ \ H
+  let T := O \ S
+  have hSH : Disjoint S H := by
+    rw [Finset.disjoint_left]
+    intro x hxS hxH
+    exact (Finset.mem_sdiff.mp (hSsub hxS)).2 hxH
+  have hTH : Disjoint T H := by
+    rw [Finset.disjoint_left]
+    intro x hxT hxH
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hxT).1).2 hxH
+  have hfirst :=
+    orderNineNearRegularCutLower_nonpos_of_zeroCut_fixedHighTriple
+      G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S hSH hdegOrd hdegHigh hzeroS
+  have hsecond :=
+    orderNineNearRegularCutLower_nonpos_of_zeroCut_fixedHighTriple
+      G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ T hTH hdegOrd hdegHigh hzeroT
+  have hHcard : H.card = 3 := by simp [H, h₁₂, h₁₃, h₂₃]
+  have hOcard : O.card = 78 := by
+    dsimp only [O]
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ H), Finset.card_univ,
+      hcard, hHcard]
+  have hTcard : T.card = 78 - S.card := by
+    dsimp only [T]
+    rw [Finset.card_sdiff_of_subset hSsub, hOcard]
+  have hb₁ := orderNine_high_neighbor_ordinary_compl_card
+    G H S h₁ (hdegHigh h₁ (by simp))
+      (hhighIndependent h₁ (by simp))
+  have hb₂ := orderNine_high_neighbor_ordinary_compl_card
+    G H S h₂ (hdegHigh h₂ (by simp))
+      (hhighIndependent h₂ (by simp))
+  have hb₃ := orderNine_high_neighbor_ordinary_compl_card
+    G H S h₃ (hdegHigh h₃ (by simp))
+      (hhighIndependent h₃ (by simp))
+  constructor
+  · exact hfirst
+  · dsimp only [T, O, H] at hsecond hb₁ hb₂ hb₃
+    rw [hTcard, hb₁, hb₂, hb₃] at hsecond
+    exact hsecond
 
 #print axioms sum_eq_sum_complSubtype_add_sum_finset
 #print axioms orderNine_ordinary_neighbor_inter_sum
 #print axioms orderNine_zeroCut_ordinary_high_product_identity
 #print axioms orderNineNearRegularCutLower_nonpos_of_zeroCut_highThree
+#print axioms orderNineNearRegularCutLower_nonpos_of_zeroCut_fixedHighTriple
+#print axioms orderNine_high_neighbor_ordinary_compl_card
+#print axioms orderNineNearRegularComponentAdmissible_of_twoZeroCuts_fixedHighTriple
 
 end
 
