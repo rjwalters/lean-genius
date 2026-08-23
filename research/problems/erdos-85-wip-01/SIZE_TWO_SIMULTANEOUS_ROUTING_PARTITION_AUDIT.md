@@ -20800,30 +20800,26 @@ separate finite treatment.  No order-specific enumeration enters (1367).
 
 ## 392. Ordinary holonomy has linear transversal mass
 
-The existence theorem is robust under deletions.  First sharpen the
-PC-acyclic edge bound by one.  For an edge-colored graph `H`, form the
-directed transition graph whose vertices are oriented edges `(w,u)` and
-whose arcs are
+The existence theorem is robust under deletions.  First sharpen the Yeo
+bound by one.  Let `H subset M` be connected, PC-cycle-free, and have
+`n>=2` vertices.  Choose the Yeo vertex `z` from (1364), and let
+`C_1,...,C_t` be the components of `H-z`.  Inductively, a component of
+order at least two has at most `2|C_s|-3` edges.  A singleton has no
+internal edge.  Since the edges from `z` to a fixed component have one
+color, the monochromatic degree cap gives at most two such edges; for a
+singleton, simplicity improves this to at most one.  Thus every component,
+together with its edges to `z`, contributes at most `2|C_s|-1`, and
 
 ```text
-(w,u) -> (u,z)
- iff uz!=uw and color(uw)!=color(uz).               (1368)
+|E(H)|<=sum_s(2|C_s|-1)
+       =2(n-1)-t<=2n-3.                            (1368)
 ```
 
-A directed cycle contains a shortest closed properly colored
-nonbacktracking subwalk; cutting at a repeated physical vertex shows that
-such a shortest subwalk is a simple properly colored cycle.  Hence if `H`
-has no properly colored cycle, its transition graph is acyclic.  When `H`
-has an edge, choose a sink `(w,u)`.  Every other edge at `u` then has the
-same color as `uw`.  In a subgraph of `M`, the monochromatic degree cap is
-two, so `deg_H(u)<=2`.
-
-The same argument applies to every nonempty subgraph of a PC-cycle-free
-subgraph of `M`.  Such a graph is therefore `2`-degenerate, and on `n>=2`
-vertices it has at most
+Applying (1368) to the nontrivial components of an arbitrary PC-cycle-free
+subgraph (isolated vertices contribute no edges) gives, on `n>=2` vertices,
 
 ```text
-2n-3 edges.                                         (1369)
+|E(H)|<=2n-3.                                       (1369)
 ```
 
 Let `X subset E(M)` meet every properly colored cycle.  Then `M-X` is
