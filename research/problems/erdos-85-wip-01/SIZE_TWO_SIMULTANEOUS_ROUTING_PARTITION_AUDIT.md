@@ -7967,3 +7967,63 @@ column span (with the reversal change absorbed by `T_H`), or exhibit a dual
 boundary test annihilating every secondary column but detecting `alpha_Z`.
 The latter would be a rigorous obstruction showing that the present
 secondary alphabet is insufficient and must be enlarged.
+
+## 151. Quotienting by H-run boundaries makes activation orientation-free
+
+Let `partial_H` be the boundary-by-run incidence matrix of the canonical
+H-run transfer graph:
+
+```text
+partial_H e_A=e_(entry(A))+e_(exit(A)).               (470)
+```
+
+Changing which endpoint of one run is called its exit changes the vector
+`alpha_Z` by `(ell(A) mod 2) partial_H e_A`.  In particular (469) says that
+global reversal changes `alpha_Z` by an element of `im partial_H`.
+Therefore the quotient class
+
+```text
+[alpha_Z] in F_2^(H--V boundaries) / im partial_H     (471)
+```
+
+is independent of all endpoint-orientation choices.
+
+The natural activation target is consequently the weaker, invariant span
+condition
+
+```text
+alpha_Z=B_Z beta+partial_H gamma                      (472)
+```
+
+for some secondary weights `beta` and run weights `gamma`, equivalently
+`[alpha_Z] in im [B_Z]` in the quotient (471).  Every column of `partial_H`
+has mass two, so summing (472) still gives exactly
+
+```text
+omega_M(Z)=sum_(d,u) beta_(d,u) D_(1_H,q_u).          (473)
+```
+
+Thus (472), just like the stronger (467), excludes A0 when the grading is
+odd, but it does not require an arbitrary orientation convention to be
+encoded by the secondary atoms.
+
+The dual obstruction is also explicit.  Condition (472) fails exactly when
+there is a boundary test `lambda` such that
+
+```text
+partial_H^T lambda=0,
+B_Z^T lambda=0,
+<lambda,alpha_Z>=1.                                   (474)
+```
+
+The first equation says `lambda` takes equal values at the two ends of every
+H-run; hence it is itself reversal-insensitive.  The second says it kills
+every current secondary boundary column, while the last says it detects the
+marked run-phase class.  Such a test would prove that even the present
+mate-unrefined secondary alphabet cannot activate `omega_M` modulo canonical
+endpoint payments, pinpointing exactly where the mate decoration (373) must
+enlarge `B_Z`.
+
+No claim is made that (472) always holds or that a test (474) exists.  The
+gain is a canonical, orientation-free primal/dual formulation of the single
+gating statement identified in Section 149.
