@@ -18,6 +18,8 @@ proof; UNKNOWN is only a computational boundary.
 adds base-packing or fractional rows only after the current concrete payload
 violates them.  ``--full-outer`` retains the constraints omitted by the
 default outer abstraction, which is useful for rechecking a relaxed SAT model.
+``--relation-base`` retains the minimal outer Gram/ledger families and uses
+the residual adjacency rows themselves as the demanded base packings.
 """
 
 from __future__ import annotations
@@ -48,7 +50,8 @@ OUTER_ONLY_RELAX = {
 def add_fractional_interval_negation(branch: int, timeout_ms: int,
                                      witness: dict | None = None,
                                      relax: set[str] | None = None,
-                                     lazy_rows: bool = False):
+                                     lazy_rows: bool = False,
+                                     relation_base: bool = False):
     outer, data = build(
         branch, timeout_ms, True,
         relax=OUTER_ONLY_RELAX if relax is None else relax,
@@ -93,6 +96,11 @@ def add_fractional_interval_negation(branch: int, timeout_ms: int,
                 for point in range(N_U1)
             ]))
 
+    if relation_base:
+        for (u, v), edge in data["edges"].items():
+            solver.add(Implies(edge, eligible[u, v]))
+            solver.add(Implies(edge, eligible[v, u]))
+
     def constrain_integral_packing(row: int, chosen: dict[int, object],
                                    enabled, included: int | None = None,
                                    omitted: int | None = None) -> None:
@@ -124,7 +132,7 @@ def add_fractional_interval_negation(branch: int, timeout_ms: int,
         base = {v: Bool(f"fi_base_{row}_{v}") for v in range(N)}
         constrain_integral_packing(row, base, True)
 
-    if not lazy_rows:
+    if not lazy_rows and not relation_base:
         for row in range(N):
             add_base_row(row)
 
@@ -231,16 +239,35 @@ def main() -> int:
               "relaxed abstraction"),
     )
     parser.add_argument(
+        "--retain-outer", action="append", default=[],
+        choices=tuple(sorted(OUTER_ONLY_RELAX)),
+        help="retain one named constraint family otherwise relaxed by default",
+    )
+    parser.add_argument(
         "--lazy-rows", action="store_true",
         help="add fractional rows only when a concrete outer model violates them",
     )
+    parser.add_argument(
+        "--relation-base", action="store_true",
+        help=("use the outer residual relation as every base packing; retains "
+              "its row ledger and block-intersection Gram constraints"),
+    )
     args = parser.parse_args()
+    if args.full_outer and args.retain_outer:
+        parser.error("--full-outer and --retain-outer are mutually exclusive")
 
     witness = json.loads(args.witness.read_text()) if args.witness else None
+    if witness is not None and args.relation_base:
+        parser.error("--relation-base is only meaningful for seed-free probes")
+    outer_relax = (set() if args.full_outer else
+                   OUTER_ONLY_RELAX - set(args.retain_outer))
+    if args.relation_base:
+        outer_relax -= {"row-ledger", "b0-c4"}
     solver, mass, data = add_fractional_interval_negation(
         args.branch, args.timeout_seconds * 1000, witness,
-        relax=set() if args.full_outer else None,
+        relax=outer_relax,
         lazy_rows=args.lazy_rows and witness is None,
+        relation_base=args.relation_base,
     )
     solver.set(random_seed=args.random_seed)
     for round_number in range(1, args.max_rounds + 1):
@@ -284,7 +311,7 @@ def main() -> int:
             }
             infeasible_rows = [row for row in range(N) if not feasible[row]]
             if infeasible_rows:
-                if not args.lazy_rows:
+                if not args.lazy_rows or args.relation_base:
                     raise RuntimeError(
                         "base packing constraint survived without packing")
                 new_base_rows = [row for row in infeasible_rows
