@@ -17788,3 +17788,86 @@ the two full-shore patterns of Section 332 may treat `(x,zeta)` as a fixed
 literal terminal ticket, rather than only a binary root--port pair.  This
 strengthening is not asserted for a mixed-color reversal, where the second
 restricted factor does not contain `e_0`.
+
+## 340. The exact-reuse reversal survives the current holonomy skeleton
+
+The persistence results of Sections 338--339 do not cover the exact-reuse
+signature, and that omission is essential: the present invariant package
+admits a nested same-color realization of either support in (1126).
+
+Fix one of the two ports `p` nonincident to both `u` and `v`.  Choose three
+terminal tickets
+
+```text
+t_x:=zeta in Z,
+t_u,t_v in B,       omega(t_u)=omega(t_v)=p,        (1147)
+```
+
+where `t_u,t_v` are the two distinct private owner endpoints over `p`.
+Choose nine distinct residual ports
+
+```text
+s_x,s_u,s_v,
+a_x,b_x,a_u,b_u,a_v,b_v in O.                      (1148)
+```
+
+This is available already at the first surviving binary-power parameter,
+where `|O|=2q-15>=17`.  Define the six root-colored edges of `H_b^D` by
+
+```text
+e_r^0={s_r,t_r},
+e_r^1={a_r,b_r},             r in {x,u,v}.          (1149)
+```
+
+They form a matching, with exactly two edges of every root color.  In the
+singleton restriction `H_b^{\{x\}}`, the residual degree-one shore is
+
+```text
+{s_x,a_x,b_x},                                      (1150)
+```
+
+so `e_x^0` is its unique crossing edge.  It is the one-edge expansion of
+Section 329 through the strict ticket `zeta`, and its successor is exactly
+`D={x,u,v}`.
+
+In the triple restriction all six edges remain isolated.  Its residual
+degree-one shore consists of the nine ports in (1148), and its three
+crossing components are `e_x^0,e_u^0,e_v^0`.  Their terminal pairs are
+
+```text
+(x,zeta),       (u,p),       (v,p).                 (1151)
+```
+
+Thus `N=m=3`, the binary support is precisely (1126), and the selected
+boundary is `{zeta}` because the two occurrences of `p` cancel.  Therefore
+
+```text
+Phi({x,u,v})={x,u,v} triangle Ends(E_zeta)={x}.     (1152)
+```
+
+All pointwise constraints used so far are respected.  The two private
+tickets over `p` are not internally paired, so Section 337 creates no
+four-cycle; each receives only its displayed root-`b` occurrence inside
+`D`, and its other ticket letters may satisfy the nonmonochromatic cap.
+The six active edges are disjoint, so the proper root coloring and every
+root-matching condition hold.
+
+The construction also extends to the ten-label skeleton of Section 328.
+Add the four active edges belonging to the other two roots on fresh ports,
+keeping all ten active edges disjoint.  Pair their twenty target darts by
+`C`-inactive complement paths to complete `F_b[e]`; on the root side give
+each active label a fresh outside root and pair those endpoints by outside
+paths to complete `F_b[c]`.  This realizes the two involutions and their
+four-regular overlay without introducing a shared active port.  The
+choices may be made with single inactive edges or longer fresh paths; no
+specific global completion is asserted.
+
+Hence (1147)--(1152) are not a counterexample to the original graph
+problem, but they are a countermodel to an exclusion based only on the
+active-factor paths, ticket role census, and per-color ten-label holonomy
+recorded through Section 339.  A proof cannot rule out all shortest
+reversals by analyzing one `Omega_b^C` in isolation.  It must add a genuine
+cross-factor constraint--for example the other letters of the two private
+tickets, simultaneous root-matchings in their colors, or the global
+component profile retained in Section 324.  This identifies the exact
+information missing from the finite eleven-pattern test.
