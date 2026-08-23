@@ -5996,3 +5996,57 @@ localized before the `(c,e)+(e,c)` symmetrization.  The self-duality target
 obstruction cycle), or an equivalent nonsymmetric root-marked contraction
 must retain the direction of owner transfer.  Summing (296) further would
 only reproduce a theorem already available from (48).
+
+## 113. Intermediate-pair correlations are private but not one-sided conserved
+
+The fully resolved triangle coordinates of Section 110 have the strongest
+possible local privacy.  Fix an intermediate port `y`.  The support of
+`F_(d,y)^(c,e)` is a partial matching between `c` and `e`: two supported
+entries in one row would give two common neighbors of the adjacent pair
+`x,y`, and two in one column would give two common neighbors of the adjacent
+pair `p,y`, in either case producing a four-cycle.  Hence its row and column
+degree profiles are binary.
+
+For two distinct intermediate ports `y,z`, equation (325) becomes
+
+```text
+D_(y,z)
+  = |{x in c : r_y(x)=r_z(x)=1}|
+    - |{p in e : c_y(p)=c_z(p)=1}|.                   (334)
+```
+
+Each set has order at most one, since its element is a common neighbor of
+`y,z`.  They cannot both be nonempty: a root `x in c` and a port `p in e`
+would be two distinct common neighbors of the same pair.  Therefore
+
+```text
+D_(y,z) in {-1,0,1},                                  (335)
+```
+
+and every nonzero value has a unique rooted (`+`) or port (`-`) witness.
+The pair `{y,z}` is thus a private coordinate for that two-local transition;
+the opposite sign occurs only in the transposed shore description of the
+same witness.
+
+This proves the privacy half of (309) for the `V--V` triangle-pair sector at
+maximal intermediate resolution.  It also shows why conservation cannot
+hold coordinatewise on the one-sided fixed-`c` ledger.  A rooted through-turn
+with intermediates `y,z` contributes `D_(y,z)=+1`; a port turn contributes
+`-1`.  Such locally permitted states would be individually forbidden by a
+claim that every coordinate (334) vanishes.
+
+Accordingly the self-duality target (331) must concern the particular
+**linear combinations** of pair coordinates selected by the marked grading
+and the compatible root primitives, not equality of the entire maximally
+resolved vector.  The tension is now explicit:
+
+```text
+maximal intermediate resolution gives private rows but no fixed-c balance;
+SRP-compatible combinations may balance but must retain enough of (334)
+to separate the reversal classes relevant to omega_M.                  (336)
+```
+
+Switch handoffs and `H--V` boundaries are not covered by (334); they require
+their own two-local coordinates.  Thus (334)--(336) close the privacy audit
+for genuine triangle turns while isolating both remaining sectors and the
+exact conservation-versus-resolution tradeoff.
