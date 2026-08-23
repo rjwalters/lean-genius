@@ -7668,3 +7668,44 @@ saturated unit.  Either that unit has a two-port separating test immediately,
 or every one of its exceptional curvature ports carries an explicit competing
 secondary label, producing the bounded joint-label configuration that a C4
 capacity argument must analyze.
+
+## 145. The connection incidence matrix is bounded-degree on both sides
+
+Section 141 bounds every column of `C_(d,j)` by ten.  There is also a
+uniform row bound.  A row is indexed by a port `y in Z`; let `y_-,y_+` be
+its two neighbors in the shadow cycle.  From `C=P_ZQ`,
+
+```text
+(C e_u)(y)=Q_u(y_-)+Q_u(y_+).                         (445)
+```
+
+For a fixed port `p`, formula (362) shows that `Q_u(p)=1` only if `u` is
+adjacent to at least one member of the three-element wedge consisting of
+`p` and its two c-roots.  Each of those three vertices has exactly two
+neighbors in the fixed secondary component `d`.  Therefore
+
+```text
+|{u in U_j:Q_u(p)=1}| <= 6.                           (446)
+```
+
+Applying (446) to `p=y_-` and `p=y_+`, every nonzero entry in row `y` lies
+in the symmetric difference of two sets of order at most six.  Hence
+
+```text
+|{u in U_j:(C e_u)(y)=1}| <= 12.                      (447)
+```
+
+This count is deliberately coarse: C4 exclusions and overlaps between the
+two wedges can only lower it.  Together with (429), the bipartite incidence
+graph of connection rows and active secondary columns has
+
+```text
+column degree <=10,       row degree <=12,            (448)
+```
+
+while a saturated column has degree two or four by Section 143.  Thus the
+bounded-overlap alternative of Section 144 is not hiding an unbounded fan
+at any exceptional port: each of its rows has at most eleven competitors
+besides the saturated atom.  Connected overlap clusters can still grow by
+propagation through successive rows, so (448) is not a bound on component
+order or circuit length.
