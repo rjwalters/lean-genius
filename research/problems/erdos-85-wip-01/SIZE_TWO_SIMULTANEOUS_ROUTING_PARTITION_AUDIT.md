@@ -16955,9 +16955,11 @@ Consequently the nonzero outside-root destination of Sections 323--324
 cannot terminate away from the curl: an odd subfamily of its terminal
 labels is forced through concrete root-side factor paths back to other
 active labels at `C`.  No role is assigned here to the other labels' two
-`e`-endpoints.  The new finite object is instead the composition of two
-canonical pairings on the same ten active labels: the `e`-side transition
-pairing which produced the terminal shore and the root-side return
-involution (1086).  Its alternating cycles retain label identity and are
-the appropriate constant-size holonomy object for the next price; merely
-iterating anonymous odd root shores would discard this extra structure.
+`e`-endpoints.  The new finite object instead combines the `e`-side path
+pairing on active endpoint occurrences with the root-side label involution
+(1086).  These are not asserted to be two involutions on the same set: the
+two `e`-endpoints of one active label may both occur in the first pairing.
+Their incidence union nevertheless has only ten label vertices and at most
+twenty endpoint occurrences, retains label identity, and is the appropriate
+constant-size holonomy object for the next price.  Merely iterating
+anonymous odd root shores would discard this extra structure.
