@@ -3215,6 +3215,80 @@ theorem squareOrderNine_threeHigh_secondProfile_exceptional_block_partition_card
     15 + (C.biUnion fun a => G.neighborFinset a ∩ U1).card = 24 := hsplit'
     _ = 15 + 9 := by norm_num
 
+/-- Two exceptional residual covers have at least six unmarked points in
+common.  Each cover has size fifteen inside the same 24-point U1 core, so
+this is the sharp inclusion-exclusion floor available before using any
+finer cross-hole structure. -/
+theorem squareOrderNine_threeHigh_secondProfile_exceptional_residualCovers_inter_card_ge_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t u : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hu : u ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hxt : (secondOrderDefectGraph G).Adj x t)
+    (hxu : (secondOrderDefectGraph G).Adj x u) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let R := fun v => G.neighborFinset v ∩ T
+    let A := fun v => (R v).biUnion fun w => G.neighborFinset w ∩ U1
+    6 ≤ ((A t) ∩ (A u)).card := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let R := fun v => G.neighborFinset v ∩ T
+  let A := fun v => (R v).biUnion fun w => G.neighborFinset w ∩ U1
+  change 6 ≤ ((A t) ∩ (A u)).card
+  have htCards :=
+    squareOrderNine_threeHigh_secondProfile_exceptional_block_partition_cardinalities
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht hxt
+  have huCards :=
+    squareOrderNine_threeHigh_secondProfile_exceptional_block_partition_cardinalities
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hu hxu
+  dsimp only at htCards huCards
+  have htCard : (A t).card = 15 := htCards.1
+  have huCard : (A u).card = 15 := huCards.1
+  have hAsub : ∀ v, A v ⊆ U1 := by
+    intro v b hb
+    simp only [A, Finset.mem_biUnion] at hb
+    obtain ⟨w, _hw, hwb⟩ := hb
+    exact (Finset.mem_inter.mp hwb).2
+  have hUnionSub : A t ∪ A u ⊆ U1 := Finset.union_subset (hAsub t) (hAsub u)
+  have hUnionLe := Finset.card_le_card hUnionSub
+  have hU1card : U1.card = 24 := by
+    have hmarked :=
+      squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+    dsimp only at hmarked
+    have hMcard :=
+      squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+    have hMsub : M ⊆ B 1 := Finset.inter_subset_right
+    rw [Finset.card_sdiff_of_subset hMsub, hmarked.1, hMcard]
+  rw [hU1card] at hUnionLe
+  have hIE := Finset.card_union_add_card_inter (A t) (A u)
+  rw [htCard, huCard] at hIE
+  omega
+
 /-- Algebraic form of the decisive mixed-center compatibility constraint.
 The residual-center matrix `A Q` and the cubic-core matrix `Q K` have
 disjoint support, so their entrywise inner product (equivalently
@@ -3931,6 +4005,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_residualBlocks_eq_coreComplement
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_block_partition_cardinalities
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_residualCovers_inter_card_ge_six
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_incidence_residual_gram_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
