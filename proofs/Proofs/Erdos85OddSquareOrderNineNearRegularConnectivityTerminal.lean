@@ -25,6 +25,15 @@ theorem eight_dvd_of_three_mul_eq_five_mul
   use k
   omega
 
+/-- The component handshake identity immediately supplies the parity input
+used by the finite cut classification.  The addition-shaped hypothesis avoids
+Nat subtraction at the graph call site. -/
+theorem orderNine_component_colour_sum_even_of_handshake
+    (e s b₁ b₂ b₃ : ℕ)
+    (hhandshake : 2 * e + (b₁ + b₂ + b₃) = 8 * s) :
+    (b₁ + b₂ + b₃) % 2 = 0 := by
+  omega
+
 /-- Abstract terminal consumed by the graph-level connectivity proof.
 
 The graph layer only has to provide a nonempty proper component, its three
@@ -45,7 +54,26 @@ theorem false_of_orderNine_nearRegular_proper_component_balance
   exact orderNine_nearRegular_eight_not_dvd_proper_component_order
     s b₁ b₂ b₃ hs hparity hadm height
 
+/-- Call-site form using the actual defect-component handshake equation
+instead of asking the graph layer to separately state its parity consequence. -/
+theorem false_of_orderNine_nearRegular_component_handshake_and_balance
+    (s : Fin 78) (b₁ b₂ b₃ : Fin 11) (e n₀ n₁ : ℕ)
+    (hs : s.1 ≠ 0)
+    (hcard : s.1 = n₀ + n₁)
+    (hhandshake : 2 * e + (b₁.1 + b₂.1 + b₃.1) = 8 * s.1)
+    (hadm : orderNineNearRegularComponentAdmissible s.1 b₁.1 b₂.1 b₃.1)
+    (hbalance : 3 * n₀ = 5 * n₁) :
+    False := by
+  apply false_of_orderNine_nearRegular_proper_component_balance
+    s b₁ b₂ b₃ n₀ n₁ hs hcard
+  · exact orderNine_component_colour_sum_even_of_handshake
+      e s.1 b₁.1 b₂.1 b₃.1 hhandshake
+  · exact hadm
+  · exact hbalance
+
 #print axioms eight_dvd_of_three_mul_eq_five_mul
+#print axioms orderNine_component_colour_sum_even_of_handshake
 #print axioms false_of_orderNine_nearRegular_proper_component_balance
+#print axioms false_of_orderNine_nearRegular_component_handshake_and_balance
 
 end Erdos85
