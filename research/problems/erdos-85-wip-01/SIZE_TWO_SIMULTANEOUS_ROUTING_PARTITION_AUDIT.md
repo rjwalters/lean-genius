@@ -15595,3 +15595,58 @@ the root route and target escape share the terminal private label, in which
 case `C_4`-freeness separates its target edge from the starting active edge
 and charges at least two target-factor steps, or a one-step target escape
 can occur only in the completely local, nonshared root-route case.
+
+## 305. The dual routes can always share their active source label
+
+The target escape in Section 300 can be chosen with more structure.  Fix
+`w in W_I`.  Every expanded connection in its overlay component lies in
+the same cycle of the full factor `F_a[e]`: active-pairing connections use
+edges of `H_a^C[S] subset F_a[e]`, factor-pairing intervals use edges of
+`F_a[e][S]`, and two successive connections are glued at the same active
+cut-edge occurrence.  Denote this cycle by `Q_e(w)`.
+
+The overlay component terminates at the inactive cut edge indexed by
+`z(w)`.  Hence that edge belongs to `Q_e(w)` and crosses `S`, so
+
+```text
+Q_e(w) is not contained in S.                        (982)
+```
+
+The two factor edges incident to `w` are precisely those indexed by the
+active and inactive companion labels `y_w,y'_w`.  Starting from `w`, follow
+each of the two directions around `Q_e(w)` until its first vertex outside
+`S`.  This gives two edge-disjoint first-exit arcs apart from their common
+initial vertex (their outside endpoints may coincide):
+
+```text
+P_w^+ : w --[y_w]-- ... -- o_w^+,    o_w^+ notin S,
+P_w^- : w --[y'_w]-- ... -- o_w^-,   o_w^- notin S. (983)
+```
+
+Their internal vertices lie in `S`, and their edge supports are disjoint.
+In particular `P_w^+` is an actual simple target-factor escape whose first
+edge has the active private label `y_w`.
+
+On the root side, every path in the classification of Section 303 begins
+with the edge indexed by that same active label:
+
+```text
+x(w) --[y_w]-- u -- ... -- t_w.                     (984)
+```
+
+Combining (980) and (981), every transported occurrence has a
+source-synchronized dual route
+
+```text
+x(w) --[y_w]-- ... -- t_w notin C,
+w    --[y_w]-- ... -- o_w^+ notin S.                (985)
+```
+
+Thus terminal-label synchronization from Section 303 may occur or fail,
+but initial-label synchronization never fails: the same exterior label
+`y_w` is the first owner edge on both fibers.  This conclusion does not
+identify the later edges of the two paths and does not assert disjointness
+between different occurrences.  It replaces the arbitrary target escape
+choice in (972) by a canonical direction distinguished by the active
+source label, while retaining the complementary inactive-start direction
+as a second available escape.
