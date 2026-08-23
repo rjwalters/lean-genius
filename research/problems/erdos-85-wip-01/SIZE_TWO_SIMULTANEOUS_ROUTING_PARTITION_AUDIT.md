@@ -12788,3 +12788,62 @@ off-incidence exterior atoms when the port set is internally `A_e`-empty, or
 one atom when it contains a unique `A_e` edge.  Excluding the minimal curl
 now requires ruling out these two sharply bounded owner-resolved cases, not
 an unbounded connection ledger.
+
+## 251. Endpoint-layer disjointness removes the last port-edge case
+
+The remaining `e_e(Z)=1` alternative in (774) is incompatible with the
+entrywise endpoint-layer partition.  Retain the cyclic indexing (726).  By
+the induced horizontal cycle (772), routing from a fixed root `x_i` through
+its two `A_c` neighbors reaches
+
+```text
+N_e(x_(i-1)) union N_e(x_(i+1))
+ ={p_(i-2),p_(i-1),p_i,p_(i+1)}.                    (775)
+```
+
+These are exactly four occupied cells in row `x_i` of
+`Q_c=A_c R_ce`; its unique missing column on `Z` is `p_(i+2)`.
+
+Suppose `p_j p_k` were an edge of `A_e[Z]`.  Since `p_j` is incident to
+both `x_j,x_(j+1)`, the other endpoint layer `Q_e=R_ce A_e` would contain
+the two cells
+
+```text
+(x_j,p_k),       (x_(j+1),p_k).
+```
+
+Their respective `Q_c`-missing columns are `p_(j+2)` and `p_(j+3)`.  One
+column `p_k` cannot equal both, so at least one displayed `Q_e` cell overlaps
+`Q_c`, contradicting the endpoint-layer disjointness (7).  Therefore
+
+```text
+e_e(Z)=0,             O_tot=5.                       (776)
+```
+
+The conclusion is entrywise.  On the `C by Z` block, `Q_c` occupies the four
+cells (775) in every row and `Q_e` is zero.  Integer SRP leaves exactly the
+permutation support
+
+```text
+sum_(a != c,e) Q_a |_((C,Z))
+  ={(x_i,p_(i+2)): i in Z/5}.                        (777)
+```
+
+Each missing cell has a unique exterior intermediate vertex `z_i`, so the
+five off-incidence atoms are located at
+
+```text
+x_i -- z_i -- p_(i+2).                               (778)
+```
+
+Adjacent atoms have distinct intermediate vertices.  If
+`z_i=z_(i+1)`, then the consecutive roots `x_i,x_(i+1)` would have the two
+common neighbors `p_i` and `z_i`, forming a four-cycle.  Repetition at
+nonadjacent indices is not excluded, and distinct vertices may lie in the
+same exterior component.
+
+Thus the minimum curl has neither a root chord nor an internal port edge:
+it has one rigid five-cell off-incidence permutation.  This still does not
+exclude a regular completion, but it replaces the two numerical cases of
+(774) by one fully located interface on which the owner/color handshake
+must act.
