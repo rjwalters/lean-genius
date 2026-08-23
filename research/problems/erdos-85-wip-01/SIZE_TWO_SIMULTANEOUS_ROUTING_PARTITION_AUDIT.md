@@ -25762,3 +25762,43 @@ This removes the cross-role equality caveat from Section 487 at only a
 constant-factor loss.  It produces a literal five-root normal form whose
 three local color roles are globally rainbow while the full companion and
 payer geometry of the separated stars is preserved.
+
+## 489. The unused-spoke rainbow horn has a global four-color normal form
+
+Now work in the other horn of (1719), with `n>=ceil(t/2)` separated centers
+whose three unused-root spokes have pairwise different colors.  The primary
+color `h_a` occurs on the two primary-root spokes and cannot occur on any
+unused-root spoke.  Thus every center has the exact local profile
+
+```text
+2+1+1+1: one primary color and three distinct unused-root colors.        (1731)
+```
+
+Join two of these centers when their four-element displayed color sets
+intersect.  A fixed color occurs as a primary color at at most one center,
+by Section 477.  In each of the three fixed unused-root roles it occurs at
+at most two centers, by the rootwise two-edge cap.  Hence one color belongs
+to the displayed set of at most `1+2+2+2=7` centers.  Each center has four
+colors, so its conflict degree is at most `4(7-1)=24`.  Greedy selection
+therefore retains
+
+```text
+m>=ceil(n/25)>=ceil(t/50)                         (1732)
+```
+
+centers with pairwise disjoint four-color sets.  Their local colors are
+already distinct by (1731), so all `4m` displayed colors are globally
+different.  Restriction again preserves the fully separated rooted-star
+gadgets and gives
+
+```text
+m>=ceil(t/50) separated 2+1+1+1 centers,
+4m globally distinct displayed source colors,
+m distinct payer layers at each of the five fixed ports.        (1733)
+```
+
+Together, Sections 488--489 turn the two horns of the five-root local
+dichotomy into global color normal forms: either a rainbow `2+1+1+1`
+family, or a complementary double-saturation `2+2+1` family.  Both retain
+literal vertex, payer, and companion geometry from the original separated
+star packing.
