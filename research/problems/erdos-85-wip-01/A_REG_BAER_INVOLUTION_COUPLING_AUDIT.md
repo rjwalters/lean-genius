@@ -2911,6 +2911,28 @@ meet which residual full center in T -- together with its simultaneous
 defect/intersection labels.  This is precisely the labeled-switch constraint
 shared with the SRP dart system.
 
+There is also a useful localization warning for that next datum.  If
+`e=(L,G,p)` is an actual edge of J, then p already has the two full-center
+neighbors L and G.  The majority replication bound is two, and p has no
+empty-center neighbor, so
+
+```text
+N_A(p) intersect (E union F) = {L,G}.                    (73rnz_am)
+```
+
+In particular the realized source port p has no unused exceptional neighbor
+with which to carry an off-route switch label.  Its direct source data are
+only the consumed pair `(L,G)` and its even ordinary T-exit bundle from
+(73rnz_af).  Therefore a nontrivial eligibility invariant cannot be an
+on-port refinement of `eta_p`: it must compare e with the remaining
+eligibility census at its endpoints, namely switches through other singleton
+ports of L or other leaf ports at G, retaining the corresponding ordinary
+exit/defect labels.  At the unlabelled graph level these are merely
+`N_J(L) setminus {G}` and `N_J(G) setminus {L}` and handshaking again
+telescopes.  The required information is the off-occurrence, consumed-port
+fiber census rather than the realized edge atom itself -- exactly the same
+distinction exposed by the SRP on-route atomization test.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
