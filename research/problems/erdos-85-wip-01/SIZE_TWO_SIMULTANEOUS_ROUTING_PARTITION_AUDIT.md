@@ -25439,3 +25439,49 @@ fully separated saturation obstruction now carries five simultaneous
 literal companion fans, seven units of port incidence per gadget, and
 at least one new payer layer per port per gadget.  Any remaining closure
 must control cross-port companion reuse rather than merely find companions.
+
+## 481. Five companion fans force distinctness or triple reuse
+
+Retain the union `D` and multiplicities `m_*(o)` from Section 480.  Split
+according to whether `|D|>=2t`.  In that case there are already at least
+
+```text
+2t distinct outside companions,
+max(2t-10,0) of them in O.                        (1708)
+```
+
+Otherwise `|D|<=2t-1`.  The excess beyond two port incidences satisfies
+
+```text
+sum_(o in D) max(m_*(o)-2,0)
+ >=sum_(o in D)(m_*(o)-2)
+ =7t-2|D|
+ >=3t+2.                                          (1709)
+```
+
+Only companions with `m_*(o)>=3` contribute, and one companion contributes
+at most three because `m_*(o)<=5`.  Hence this second case has at least
+`t+1`, and in particular at least `t`, distinct triple-reuse companions.
+At most ten lie in `B`, so at least `max(t-10,0)` lie in `O`.
+
+Every triple reuse in the gadget subfamilies is also a triple reuse in the
+full port families of Section 403.  Therefore Section 403's local
+consequences apply: at least two arrival layers occur there, and the rooted-
+word deficit satisfies
+
+```text
+sum_k(2-t_k(o))>=m(o)>=3.                         (1710)
+```
+
+Thus the fully separated saturation obstruction has the literal terminal
+
+```text
+(distinct horn) at least 2t companion vertices; or
+(reuse horn)    at least t companions receiving payers from >=3 ports,
+                with multi-layer arrival and rooted deficit >=3.          (1711)
+```
+
+The private losses in both horns are bounded by ten.  This converts the
+five simultaneous fans into a linear family of named residual endpoints
+unless a linear family of genuine cross-port collision endpoints already
+appears.
