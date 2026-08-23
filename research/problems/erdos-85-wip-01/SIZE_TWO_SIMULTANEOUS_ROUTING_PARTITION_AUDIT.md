@@ -18523,3 +18523,62 @@ completion suggested after (1181) by two explicit constant-size objects.
 The exterior branch can be charged by component/color propagation, while
 the endpoint-layer branch must realize two saturated selected fibers and
 their paired `A_a,A_b` cross edges simultaneously.
+
+## 352. Every fifth-cell payer is strict or core-inactive
+
+The actual intermediate in (1187) has a useful dichotomy relative to the
+original core.  Write the uniquely witnessed fifth-cell route as
+
+```text
+y -- z(y) -- q(y),       z(y) in kappa(y).          (1199)
+```
+
+If `z(y)` has a neighbor `r' in C`, then `(r',q(y))` is an exterior
+`C`-by-`Z` cell paid through `z(y)`.  The rigid support permutation (777)
+has exactly one such cell in the column `q(y)`.  Hence `z(y)` is precisely
+the unique strict export at that selected port.  Otherwise
+
+```text
+N_c(z(y)) intersect C = emptyset.                  (1200)
+```
+
+Call the latter payer core-inactive.  Thus every fifth-cell tag has the
+exhaustive refinement
+
+```text
+z(y) is the strict export at q(y), or z(y) is core-inactive. (1201)
+```
+
+This refinement also has exact local capacities.  Fix the endpoint color
+`a`, a paying layer `k notin {c,e}`, and a selected port `q`.  The column
+of the routing product
+
+```text
+Q_k^(a,e)=R_ak R_ke
+```
+
+has integer sum four: `q` has two `k`-neighbors and each of them has two
+neighbors in `a` (with `R_aa=A_a` when `k=a`).  Since the simultaneous
+partition is entrywise exact, its four contributions occupy four distinct
+rows.  Consequently
+
+```text
+#{propagation y in a : (kappa(y),q(y))=(k,q)} <= 4. (1202)
+```
+
+There is a sharper bound in the strict branch.  A selected port `q` has
+one strict-export label `z_q`, in one determined component `k`.  For fixed
+endpoint color `a`, the rows whose fifth cell is paid through `z_q` are
+neighbors of `z_q` in `R_ka` (or in `A_a` if `k=a`).  That degree is two,
+so
+
+```text
+#{propagation y in a : z(y)=z_q} <= 2.              (1203)
+```
+
+Therefore a tagged propagation cycle cannot reuse fifth cells without
+cost: each fixed layer--port tag has four row slots in total, and its
+strict half has only two.  Any further occurrences at that tag must use
+core-inactive payers.  This does not yet bound those inactive labels
+globally, but separates the five already-accounted strict exports from the
+new exterior population that a full completion must supply.
