@@ -17,6 +17,7 @@ import argparse
 import os
 import sys
 from collections import Counter
+from fractions import Fraction
 from itertools import combinations
 
 import numpy as np
@@ -816,6 +817,41 @@ def sparse_bundle_dual_system(system: tuple) -> tuple[bool, float, list[tuple], 
     return True, float(result.fun), nonzero, exact
 
 
+def rational_farkas_audit(system: tuple, nonzero: list[tuple],
+                          max_denominator: int = 1000000) -> tuple:
+    """Rationalize and exactly verify a floating Farkas certificate."""
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     capacity_names, variable_count) = system
+    values = {name: Fraction(float(value)).limit_denominator(max_denominator)
+              for name, value in nonzero}
+    y = [values.get(name, Fraction(0)) for name in equality_names]
+    z = [values.get(name, Fraction(0)) for name in capacity_names]
+    if any(value < 0 for value in z):
+        return False, Fraction(0), 0, Fraction(0)
+    equality_columns = equalities.tocsc()
+    capacity_columns = capacities.tocsc()
+    minimum_slack = None
+    for column in range(variable_count):
+        slack = Fraction(0)
+        for offset in range(equality_columns.indptr[column],
+                            equality_columns.indptr[column + 1]):
+            row = equality_columns.indices[offset]
+            slack += Fraction(int(equality_columns.data[offset])) * y[row]
+        for offset in range(capacity_columns.indptr[column],
+                            capacity_columns.indptr[column + 1]):
+            row = capacity_columns.indices[offset]
+            slack += Fraction(int(capacity_columns.data[offset])) * z[row]
+        minimum_slack = slack if minimum_slack is None else min(minimum_slack,
+                                                                slack)
+    scalar = (sum(Fraction(int(value)) * price
+                  for value, price in zip(equality_rhs, y))
+              + sum(Fraction(int(value)) * price
+                    for value, price in zip(capacity_rhs, z)))
+    denominator = max((value.denominator for value in (*y, *z)), default=1)
+    return minimum_slack is not None and minimum_slack >= 0 and scalar < 0, \
+        scalar, denominator, minimum_slack
+
+
 def sparse_full_bundle_dual(data: dict) -> tuple[bool, float, list[tuple], bool]:
     """Find an L1-small full-ledger Farkas certificate."""
     return sparse_bundle_dual_system(full_bundle_primal_system(data))
@@ -825,6 +861,15 @@ def sparse_collision_census_dual(
         data: dict) -> tuple[bool, float, list[tuple], bool]:
     """Find an L1-small dual using only the seven-coordinate state."""
     return sparse_bundle_dual_system(collision_census_primal_system(data))
+
+
+def sparse_half_atom_dual(data: dict) -> tuple:
+    """Find and exactly rational-audit a half-atom Farkas certificate."""
+    system = half_atom_primal_system(data)
+    success, norm, nonzero, integer = sparse_bundle_dual_system(system)
+    rational = (rational_farkas_audit(system, nonzero) if success
+                else (False, Fraction(0), 0, Fraction(0)))
+    return success, norm, nonzero, integer, rational
 
 
 def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
@@ -1972,6 +2017,8 @@ def main() -> int:
                         help="check private rows in unordered flag boundaries")
     parser.add_argument("--audit-half-atom-primal", action="store_true",
                         help="test abstract root-label atom conservation")
+    parser.add_argument("--audit-half-atom-dual", action="store_true",
+                        help="extract exact rational half-atom certificates")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -2386,6 +2433,23 @@ def main() -> int:
             print(f"half_atom_primal branch={branch} seed={seed_number} "
                   f"colors={colors} feasible={feasible} "
                   f"atom_count={atom_count} message={message}")
+    if args.audit_half_atom_dual:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            success, norm, nonzero, integer, rational = (
+                sparse_half_atom_dual(candidate))
+            exact, scalar, denominator, minimum_slack = rational
+            branch, seed_number, colors = label
+            print(f"half_atom_dual branch={branch} seed={seed_number} "
+                  f"colors={colors} success={success} l1={norm} "
+                  f"nonzero_count={len(nonzero)} integer={integer} "
+                  f"exact_rational={exact} scalar={scalar} "
+                  f"max_denominator={denominator} "
+                  f"minimum_slack={minimum_slack}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2472,6 +2536,7 @@ def main() -> int:
             or args.audit_double_label_flag_primal
             or args.audit_double_label_flag_private
             or args.audit_half_atom_primal
+            or args.audit_half_atom_dual
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):

@@ -2384,6 +2384,45 @@ root.  Any uniform proof of `(12rzo)` supersedes `(12rzi)`; the larger
 double-label ledger remains useful only if the half-atom inequality itself
 needs a collision-based derivation.
 
+The exact dual has a clean uniform statement.  Let `alpha_t` and `phi_tb` be
+rational prices, let `lambda_tb >= 0`, and suppose every eligible oriented
+route satisfies
+
+```text
+alpha_t
+ + sum_(b in (B_u cap selected) minus B_t) phi_tb
+ - sum_(b in (B_t cap selected) minus B_u) phi_ub
+ + sum_(b in B_u cap selected) lambda_tb >= 0.               (12rzp)
+```
+
+If in addition
+
+```text
+sum_t d_t alpha_t + sum_(t,b) lambda_tb < 0,                 (12rzq)
+```
+
+then `(12rzo)` follows immediately: multiply `(12rzp)` by the nonnegative
+route weights and sum.  The `phi` terms vanish by half-atom conservation,
+the `alpha` terms become the row demands, and the `lambda` terms are at most
+their private capacities.  This is the easy, purely algebraic direction of
+Farkas separation and is valid for arbitrary finite root and label sets; it
+is the uniform **half-atom price lemma** needed by a future Lean interface.
+The remaining mathematical problem is to construct prices satisfying
+`(12rzp-q)` from the B.3 outer design identities rather than from a solved
+finite instance.
+
+Mode `--audit-half-atom-dual` now rationalizes the floating separators and
+checks `(12rzp-q)` with exact `Fraction` arithmetic on every route column.
+All eleven 32-seed survivors have exact certificates with contradiction
+scalar `-1` and minimum route slack `0`.  Three are integral (supports of
+sizes 30, 13, and 34); the other maximum denominators are respectively
+`38,6,78,5787,206184,3778,16461,11811`.  Thus the sampled claim no longer
+rests only on the HiGHS infeasibility status.  The large denominators and
+dense supports in the hard branch-4 instances are also negative structural
+evidence against guessing one universal small local cut: a proof should
+derive the price function from a global design potential or prove the primal
+impossible directly.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
