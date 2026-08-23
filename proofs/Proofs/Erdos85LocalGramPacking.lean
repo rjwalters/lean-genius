@@ -215,6 +215,27 @@ theorem false_of_no_symmetricLocalGramPackingSelection
     (relationNeighborFinset_isSymmetricLocalGramPackingSelection
       A H W d hsymm hdegree hsupport hgram)
 
+omit [Fintype V] in
+/-- For an irreflexive conflict relation, a symmetric simultaneous selection
+rules out both local obstruction horns.  Thus the restored global target
+strictly subsumes the local deficit/forced-collision certificate. -/
+theorem not_hasLocalGramPackingObstruction_of_symmetricSelection
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (hirr : ∀ u, ¬ W u u) (X : V → Finset V)
+    (hX : IsSymmetricLocalGramPackingSelection H W d X) :
+    ¬ HasLocalGramPackingObstruction H W d := by
+  rintro (⟨u, hu⟩ | ⟨u, v, w, huv, huw, hvw⟩)
+  · exact hu (X u) (hX.1 u)
+  · have hwu : w ∈ X u := huw (X u) (hX.1 u)
+    have hwv : w ∈ X v := hvw (X v) (hX.1 v)
+    have huw' : u ∈ X w := (hX.2 u w).mp hwu
+    have hvw' : v ∈ X w := (hX.2 v w).mp hwv
+    have huv_ne : u ≠ v := by
+      intro huv_eq
+      subst v
+      exact hirr u huv
+    exact (hX.1 w).2.2 u huw' v hvw' huv_ne huv
+
 /-- **Capacity-deficit / forced-collision consumer.**  If the eligible local
 packing system has either no demanded packing at one row, or two
 `W`-conflicting rows force the same neighbor, then no symmetric residual
@@ -257,5 +278,6 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_conflict_of_forcedLocalGramNeighbors
 #print axioms relationNeighborFinset_isSymmetricLocalGramPackingSelection
 #print axioms false_of_no_symmetricLocalGramPackingSelection
+#print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
 
 end Erdos85
