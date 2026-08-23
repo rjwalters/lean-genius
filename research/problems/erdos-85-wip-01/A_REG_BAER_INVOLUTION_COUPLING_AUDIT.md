@@ -3549,6 +3549,20 @@ adjacent endpoint complement; by itself it is not an unpaid relay demand.
 Any terminal must retain a finer occurrence label that prevents this
 endpoint closure from being the whole story.
 
+This also rules out every higher unlabeled walk refinement.  From `A^3x=0`,
+
+```text
+A^m x=0 for every m>=3.                                  (73rnz_cf)
+```
+
+Hence no operator that is merely a polynomial in A with all terms of degree
+at least three can activate a secondary defect on the two-pole support.
+Longer walk counts only repeat the same endpoint cancellation.  A successful
+activation identity must break the commutative A-polynomial algebra, for
+example by inserting an owner/mate diagonal projection between adjacency
+steps.  This matches the independent SRP activation gap: its primary odd bit
+also does not currently imply a nonzero secondary-resolved source defect.
+
 The parallel SRP separator now identifies the exact topology such a terminal
 would need.  Its selected row--atom incidence graph is Eulerian; pairing at
 degree-four atoms is a gauge choice, while the pairing-independent constant
@@ -3572,7 +3586,7 @@ The remaining precise task is therefore
 ```text
 construct occurrence labels for the mu atoms such that non-pole relays
 are even and the two adjacent endpoint closures cannot pay privately.
-                                                               (73rnz_cf GAP)
+                                                               (73rnz_cg GAP)
 ```
 
 Once (73rnz_ce) is available, the two odd pole demands cannot disappear into
