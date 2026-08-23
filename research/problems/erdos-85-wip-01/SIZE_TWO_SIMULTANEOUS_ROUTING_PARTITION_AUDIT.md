@@ -11358,3 +11358,40 @@ This owner-vector correction supersedes treating the four diagonal terms of
 monochromatic runs in the three classes (687), together with the transported
 `n_00` margin and inactive owner cells, against the diagonal source
 `(73rnz_cjibkd)`.
+
+## 223. Pole alternation removes closed `10`-run holonomy
+
+Because the empty lines `N_A(E_1),N_A(E_2)` are disjoint, a root with
+`ell=1` is adjacent to a unique pole.  If two adjacent H roots were adjacent
+to the same pole, they would have that pole and their H-port witness as two
+common A-neighbors, contradicting C4-freeness.  Hence on every H edge whose
+two endpoint states have `ell=1`, the unique pole labels are different.
+
+In particular, pole labels alternate along every component of `K_10` (and
+of `K_11`).  Therefore
+
+```text
+every closed 10--10 or 11--11 H cycle has even length; (688)
+```
+
+and a `10--10` path has odd length exactly when its two endpoints carry
+different pole labels.  Since `11--11` is already pointwise paid by (686),
+the live consequence is
+
+```text
+m_(10,10)
+ = number of K_10 path components whose endpoint
+   pole labels are different mod 2.                   (689)
+```
+
+Thus the `10` diagonal defect has no closed-cycle holonomy.  It is an
+owner-visible boundary term: every odd unit is carried by a path from the
+`E_1` empty line to the `E_2` empty line.  The remaining owner transport may
+attach those two endpoints to the vertical triangle edges of the root--color
+state graph; it need not price an internal `10` run or enumerate its length.
+
+No analogous two-color alternation follows for `01`: its endpoints have no
+pole neighbor and only an odd parity of residual-center neighbors, possibly
+more than one.  The unresolved closed-run sector is consequently narrowed
+to `00` and `01`, while `10` is reduced to a two-pole boundary path and `11`
+is already paid.
