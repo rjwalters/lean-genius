@@ -114,8 +114,13 @@ def main() -> int:
             ]
             for u in range(N)
         }
+        assert all(feasible.values())
         reverse_possible = {
             u: {w for w in range(N) if any(u in packing for packing in feasible[w])}
+            for u in range(N)
+        }
+        reverse_forced = {
+            u: {w for w in range(N) if all(u in packing for packing in feasible[w])}
             for u in range(N)
         }
         pruned_bad_rows = [
@@ -125,6 +130,23 @@ def main() -> int:
                 packing <= reverse_possible[u] for packing in feasible[u]
             )
         ]
+        interval_compatible = {
+            u: [
+                packing for packing in feasible[u]
+                if reverse_forced[u] <= packing <= reverse_possible[u]
+            ]
+            for u in range(N)
+        }
+        interval_bad_rows = [u for u in range(N) if not interval_compatible[u]]
+        interval_profiles = {
+            u: {
+                "forced": sorted(reverse_forced[u]),
+                "impossible": sorted(set(range(N)) - reverse_possible[u]),
+                "packings": len(feasible[u]),
+                "compatible": len(interval_compatible[u]),
+            }
+            for u in interval_bad_rows
+        }
         new_pruned_rows = [u for u in pruned_bad_rows if u not in added_pruned_rows]
         collisions = residual_gram_forced_collisions(concrete)
         new_collisions = [
@@ -137,7 +159,9 @@ def main() -> int:
             f"new_collisions={len(new_collisions)} "
             f"collision_pairs={collisions} "
             f"pruned_bad_rows={pruned_bad_rows} "
-            f"new_pruned_rows={new_pruned_rows}"
+            f"new_pruned_rows={new_pruned_rows} "
+            f"interval_bad_rows={interval_bad_rows} "
+            f"interval_profiles={interval_profiles}"
         )
         if not collisions and not pruned_bad_rows:
             print("reverse_pruned_trichotomy=REFUTED_IN_OUTER_ABSTRACTION")
