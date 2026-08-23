@@ -6355,3 +6355,66 @@ ends have the same resolved label to carry trivial phase.  An odd-phase
 same-label transfer would refute full descent and force the weaker
 annihilator formulation.  This condition is not asserted here; it is the
 smallest concrete test of (355).
+
+## 119. The canonical primitive has an explicit intermediate atomization
+
+The first stage of (355) can be carried out directly.  Fix `d,j` as in
+Section 25 and, for every `y in d`, put
+
+```text
+t_y := (R_de V_j)(y)                                  (356)
+```
+
+over `F_2`.  Define the intermediate-resolved pieces
+
+```text
+r_(i,y) := R_cd(x_i,y) t_y,
+w_y(z)  := R_ed(z,y) t_y,
+phi_(i,y)
+  := r_(i,y)+r_(i+1,y)+w_y(z_i).                      (357)
+```
+
+Then
+
+```text
+sum_(y in d) r_(i,y)=r_i^d.
+```
+
+Also `F_d[e]=R_ed R_de-2I` over the integers, so modulo two
+
+```text
+sum_(y in d) w_y = R_ed R_de V_j = F_d[e]V_j=w^d.
+```
+
+Consequently (357) is an exact atomization of (91):
+
+```text
+sum_(y in d) phi_(i,y)=phi_i^(d,j).                   (358)
+```
+
+Taking the adjacent derivative before summing defines
+
+```text
+kappa_(i,y):=phi_(i-1,y)+phi_(i,y),
+sum_y kappa_(i,y)=kappa_i^(d,j),                       (359)
+```
+
+where the last equality is (92).  Thus the intermediate lift and its local
+coboundary law exist canonically; no choice of how to distribute an
+aggregate primitive among the `y` labels remains.
+
+The remaining descent question is now concrete.  Formula (357) says that
+the value attached to an occurrence of `(d,y)` is
+
+```text
+t_y times the parity of the three incidences
+x_i--y, x_(i+1)--y, z_i--y.                           (360)
+```
+
+The multiplier `t_y` depends only on `(d,y)` and the target component
+`V_j`; all possible non-descent lies in the displayed three-incidence
+parity as the occurrence index `i` varies.  Therefore full label descent is
+equivalent to constancy of (360) on the occurrences of each fixed `(d,y)`.
+This removes the atomization half of (355) and leaves a single incidence-
+parity transport statement, suitable for a C4/owner-factor argument or a
+direct small-model falsification test.
