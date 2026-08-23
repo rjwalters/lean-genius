@@ -11634,3 +11634,36 @@ parity.  A relation on which the proposed flag price fails is a localized
 joint-label holonomy witness.  What remains to prove is conservation, not
 another occurrence expansion: all source units now enter the same arity-two
 private ledger.
+
+## 229. The `10` carrier is an exact root-state coboundary
+
+The pole-boundary carrier in (700) can be transported immediately on the
+closed state cycle (577).  Enrich each root occurrence by its Baer shore
+state and define
+
+```text
+chi_10(v):=1[a(v)=10 and E_1 v in A].                 (703)
+```
+
+This is canonical because a `10` root meets exactly one pole.  On every
+`10--10` H edge `vv'`, pole alternation from Section 223 gives
+`chi_10(v)+chi_10(v')=1`.  Since the coboundary of any vertex function sums
+to zero on the closed edge census `C_state`, partitioning its edges yields
+
+```text
+m_(10,10)
+ =sum_(H edge vv' outside K_10) (chi_10(v)+chi_10(v'))
+  +sum_(non-H edge vv' in C_state) (chi_10(v)+chi_10(v')). (704)
+```
+
+Thus `10` is not an independent diagonal generator in `L_H`: its unit is
+exactly transferred to mixed-H boundary transitions and non-H V/S route
+transitions of the same realized cycle.  No path pairing or endpoint-
+coverage lemma is needed.  The complementary terms retain their physical
+root states and diagonal owner tag for the joint quotient.
+
+Equation (704) is a transport identity, not a vanishing statement.  It
+updates the GAP (702): after substituting (704), the independent source
+carriers are the `01` double-residual flags and `00` port-secondary flags,
+together with explicit mixed-H/V/S boundary terms.  Proving their joint
+owner-route conservation remains the live theorem.
