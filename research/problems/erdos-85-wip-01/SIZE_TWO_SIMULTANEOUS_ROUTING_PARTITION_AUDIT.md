@@ -9760,14 +9760,14 @@ unoriented S-path tag, or rooted V-turn tag.
 This extraction is pairing-gauge independent at the existence level.  A
 different half-edge pairing can change the chosen trail but cannot make all
 trails even, because their weights always sum to (588).  Thus the final
-conservation theorem need only exclude one support-minimal refined cycle
-with an odd total of H-run parities.
+conservation theorem may focus on one support-minimal refined cycle selected
+from the realized chain, with an odd total of H-run parities.
 
 No contradiction follows from Eulerianity alone—arbitrary labeled
 multigraphs admit such cycles.  The remaining task is now maximally local:
-use route reversal on the `C_V` edges and the canonical unoriented `T_S`
-transfers to show that a simultaneously realizable minimal refined cycle
-cannot have odd weight (587).
+use route reversal on the ambient `C_V` edges and the canonical unoriented
+`T_S` transfers to show that no circuit selected from a simultaneously
+realized refined chain can have odd weight (587).
 
 ## 189. The minimal odd subchain is a graphic circuit
 
@@ -9803,8 +9803,16 @@ becomes
 sum_(A in K cap T_H) ell(A) = 1.                    (590)
 ```
 
-The terminal theorem may therefore be proved on a single oriented refined
-circuit and compared with the same circuit in the reverse orientation.  Its
-only orientation-sensitive data are the rooted `C_V` turns and the V-side
-ordering of the unoriented `T_S` transfers; all H words and S interiors are
-carried unchanged.
+The terminal character may therefore be evaluated on a single oriented
+refined circuit and compared with the same circuit in the reverse
+orientation.  Its only orientation-sensitive data are the rooted `C_V`
+turns and the V-side ordering of the unoriented `T_S` transfers; all H words
+and S interiors are carried unchanged.
+
+This is a support reduction, not a new realization theorem.  Although every
+edge of `K` comes from the one realized ambient dart cycle, an arbitrary
+subset selected by (589) need not itself be closed under the physical root
+and port matchings.  Thus route identities may be restricted to `K` only
+when they are edge-local or after their complementary ambient terms have
+been shown to cancel.  The final proof must not treat `K` as an independently
+realized routing component.
