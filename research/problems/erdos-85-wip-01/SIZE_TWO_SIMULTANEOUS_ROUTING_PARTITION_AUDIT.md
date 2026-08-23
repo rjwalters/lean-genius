@@ -7143,3 +7143,52 @@ finite joint-label form as the other residual ledgers.  Its state records
 two opposite-root incidences together with a uniquely sided port exposure;
 forgetting the side collapses information in exactly the way that scalar
 aggregation collapses the Baer pivot pairing and the B3 joint potential.
+
+## 135. The six contributing H-connection states have three profiles
+
+For a contributing atom `t_u=1`.  Because `u` has cross degree two into
+`e`, this means exactly one of its two `e`-neighbors lies in the fixed target
+component `V_j`.  The ports of the lifted dart cycle, including `z_1,z_2`,
+lie in that component.  Thus if `pi_u(E)=1`, its uniquely exposed side is
+also the unique target-component port of `u`; if `pi_u(E)=0`, that target
+port lies elsewhere in `V_j`.
+
+Let
+
+```text
+a_u(E):=R_cd(x_1,u)+R_cd(x_2,u) as an integer count in {0,1,2},
+p_u(E):=number of exposed ports among {z_1,z_2} in {0,1}.
+```
+
+Equation (405) says that `eta_u(E)=1` exactly when these two counts have
+opposite parity.  Among the twelve raw states of (406), the six contributing
+states therefore have exactly the profiles
+
+```text
+(a_u(E),p_u(E)) in {(1,0),(0,1),(2,1)},               (407)
+```
+
+with two sided versions in each case: the unique root in the first profile,
+or the unique exposed port in the last two profiles, may be on side `1` or
+side `2`.  The other six raw states have `eta_u(E)=0`.
+
+The three profiles have distinct capacity meanings:
+
+```text
+(1,0): one opposite-root incidence, target port elsewhere;
+(0,1): one target port here, no opposite-root incidence;
+(2,1): both c-neighbors of u are x_1,x_2 and its unique target port is here.
+                                                                    (408)
+```
+
+In the last profile the two root incidences exhaust the full `c`-fiber of
+`u`, while the exposed port is its unique `V_j` incidence.  It is exactly
+the saturated `2 versus 1` capacity shape of the exceptional C6 block
+(376)--(377), now occurring inside the primary H-run connection.  This is
+an equality of local profiles, not an assertion that every `(2,1)` H cell
+belongs to the C6 collision graph of Section 127.
+
+Thus only two unsaturated singleton-transfer profiles and one saturated
+profile remain.  Any uniform pricing can treat `(1,0)` and `(0,1)` as
+oppositely directed unit transfers and reserve the bounded-star correction
+for `(2,1)`; constructing that pairing is still open.
