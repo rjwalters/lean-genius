@@ -613,6 +613,89 @@ theorem orderNine_order34_owner_neighbor_inter_shore_card_eq_three
   simp [hownerZ] at hv
   omega
 
+/-- A low-degree bin-three owner has nine neighbors, three high and hence
+six ordinary; deleting the owner itself does not change that neighborhood. -/
+theorem orderNine_binThree_owner_ordinary_erase_neighbor_card_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner : V) (hdegree : G.degree owner = 9)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3) :
+    let O := (Finset.univ : Finset V) \ squareOrderHighVertices G 9
+    (G.neighborFinset owner ∩ O.erase owner).card = 6 := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let O := (Finset.univ : Finset V) \ H
+  have hk : (G.neighborFinset owner ∩ H).card = 3 :=
+    (Finset.mem_filter.mp howner).2
+  have hsplit : (G.neighborFinset owner ∩ H) ∪
+      (G.neighborFinset owner ∩ O) = G.neighborFinset owner := by
+    ext z
+    constructor
+    · intro hz
+      rcases Finset.mem_union.mp hz with hzH | hzO
+      · exact (Finset.mem_inter.mp hzH).1
+      · exact (Finset.mem_inter.mp hzO).1
+    · intro hz
+      by_cases hzH : z ∈ H
+      · exact Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨hz, hzH⟩)
+      · exact Finset.mem_union_right _ (Finset.mem_inter.mpr ⟨hz,
+          Finset.mem_sdiff.mpr ⟨Finset.mem_univ z, hzH⟩⟩)
+  have hdisj : Disjoint (G.neighborFinset owner ∩ H)
+      (G.neighborFinset owner ∩ O) := by
+    rw [Finset.disjoint_left]
+    intro z hzH hzO
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hzO).2).2
+      (Finset.mem_inter.mp hzH).2
+  have hcards : (G.neighborFinset owner ∩ H).card +
+      (G.neighborFinset owner ∩ O).card = G.degree owner := by
+    have hc := Finset.card_union_of_disjoint hdisj
+    rw [hsplit, G.card_neighborFinset_eq_degree] at hc
+    exact hc.symm
+  have hordinary : (G.neighborFinset owner ∩ O).card = 6 := by omega
+  have herase : G.neighborFinset owner ∩ O.erase owner =
+      G.neighborFinset owner ∩ O := by
+    ext z
+    constructor
+    · intro hz
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hz).1,
+        (Finset.mem_erase.mp (Finset.mem_inter.mp hz).2).2⟩
+    · intro hz
+      have hadj := (G.mem_neighborFinset owner z).mp (Finset.mem_inter.mp hz).1
+      have hne : z ≠ owner := by
+        intro hzo
+        subst z
+        exact G.loopless.irrefl owner hadj
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hz).1,
+        Finset.mem_erase.mpr ⟨hne, (Finset.mem_inter.mp hz).2⟩⟩
+  change (G.neighborFinset owner ∩ O.erase owner).card = 6
+  rw [herase]
+  exact hordinary
+
+/-- If two disjoint shores partition the six ordinary neighbors of the
+owner, a degree three into one shore forces degree three into the other. -/
+theorem owner_neighbor_complementary_shores_card_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner : V) (U S T : Finset V)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hU : (G.neighborFinset owner ∩ U).card = 6)
+    (hS : (G.neighborFinset owner ∩ S).card = 3) :
+    (G.neighborFinset owner ∩ T).card = 3 := by
+  have hset : (G.neighborFinset owner ∩ S) ∪
+      (G.neighborFinset owner ∩ T) = G.neighborFinset owner ∩ U := by
+    ext z
+    simp only [Finset.mem_union, Finset.mem_inter]
+    rw [← hunion, Finset.mem_union]
+    aesop
+  have hinterDisj : Disjoint (G.neighborFinset owner ∩ S)
+      (G.neighborFinset owner ∩ T) := by
+    exact hdisj.mono Finset.inter_subset_right Finset.inter_subset_right
+  have hcards : (G.neighborFinset owner ∩ S).card +
+      (G.neighborFinset owner ∩ T).card =
+      (G.neighborFinset owner ∩ U).card := by
+    rw [← hset, Finset.card_union_of_disjoint hinterDisj]
+  omega
+
 end
 
 end Erdos85
