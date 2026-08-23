@@ -21,6 +21,41 @@ namespace Erdos85
 
 noncomputable section
 
+set_option maxHeartbeats 2000000
+
+/-- The integer square-sum refinement behind audit (29).  A bounded
+ordinary incidence profile with total `516` and square total `3434` is
+obtained from the balanced `6/7` profile by moving one unit either down or
+up. -/
+theorem orderNine_order18_excessTwo_incidence_count_classification
+    (n₀ n₁ n₂ n₃ n₄ n₅ n₆ n₇ n₈ n₉ : ℕ)
+    (hcount : n₀ + n₁ + n₂ + n₃ + n₄ + n₅ + n₆ + n₇ + n₈ + n₉ = 78)
+    (hsum : n₁ + 2 * n₂ + 3 * n₃ + 4 * n₄ + 5 * n₅ + 6 * n₆ +
+      7 * n₇ + 8 * n₈ + 9 * n₉ = 516)
+    (hsquare : n₁ + 4 * n₂ + 9 * n₃ + 16 * n₄ + 25 * n₅ + 36 * n₆ +
+      49 * n₇ + 64 * n₈ + 81 * n₉ = 3434) :
+    (n₀ = 0 ∧ n₁ = 0 ∧ n₂ = 0 ∧ n₃ = 0 ∧ n₄ = 0 ∧
+      n₅ = 1 ∧ n₆ = 28 ∧ n₇ = 49 ∧ n₈ = 0 ∧ n₉ = 0) ∨
+    (n₀ = 0 ∧ n₁ = 0 ∧ n₂ = 0 ∧ n₃ = 0 ∧ n₄ = 0 ∧
+      n₅ = 0 ∧ n₆ = 31 ∧ n₇ = 46 ∧ n₈ = 1 ∧ n₉ = 0) := by
+  have hexcess :
+      42 * n₀ + 30 * n₁ + 20 * n₂ + 12 * n₃ + 6 * n₄ +
+        2 * n₅ + 2 * n₈ + 6 * n₉ = 2 := by
+    omega
+  have hn₀ : n₀ = 0 := by omega
+  have hn₁ : n₁ = 0 := by omega
+  have hn₂ : n₂ = 0 := by omega
+  have hn₃ : n₃ = 0 := by omega
+  have hn₄ : n₄ = 0 := by omega
+  have hn₉ : n₉ = 0 := by omega
+  have hspike : (n₅ = 1 ∧ n₈ = 0) ∨ (n₅ = 0 ∧ n₈ = 1) := by
+    omega
+  rcases hspike with ⟨hn₅, hn₈⟩ | ⟨hn₅, hn₈⟩
+  · left
+    omega
+  · right
+    omega
+
 /-- Evaluation of the high-spike form of audit equation (31) at a high
 root.  Defect-high isolation makes the left side zero, while the high root
 lies in neither ordinary shore. -/
@@ -170,6 +205,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
     omega
 
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
+#print axioms Erdos85.orderNine_order18_excessTwo_incidence_count_classification
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
