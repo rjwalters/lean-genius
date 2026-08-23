@@ -17871,3 +17871,54 @@ cross-factor constraint--for example the other letters of the two private
 tickets, simultaneous root-matchings in their colors, or the global
 component profile retained in Section 324.  This identifies the exact
 information missing from the finite eleven-pattern test.
+
+## 341. Full-shore persistence consumes two tickets at each new root
+
+The same near-matching argument determines the four new root edges
+individually.  Let `f_u^0,f_u^1` be the two root-`u` edges and
+`f_v^0,f_v^1` the two root-`v` edges in `H_b^D`.  If all six edges of the
+restricted graph are isolated, Section 339 leaves `e_1` as the unique
+noncrossing component.  Hence each of the four `f` edges is itself an
+`O`--terminal crossing edge.
+
+Suppose instead that the sole adjacency joins `e_1` to one new edge `f`.
+The two endpoints of the noncrossing edge `e_1` lie on the same physical
+shore: both are in `O`, or both are outside `O`.  The two-edge component
+`e_1 union f` must cross.  Its endpoint on `e_1` therefore lies on the
+opposite shore from the free endpoint of `f`.  The shared endpoint of
+`e_1` and `f` lies on the same shore as the first endpoint, so `f` itself
+also has one endpoint in each shore.  The other three new edges are
+isolated crossing components.  Thus in both near-matching cases
+
+```text
+each f_u^j and f_v^j is an O--terminal edge.        (1153)
+```
+
+Apply the singleton ticket notation of Section 333 at the roots `u,v`.
+Equation (1153) says that the same exterior color `b` has
+
+```text
+c_u^b=c_v^b=2,
+o_u^b=t_u^b=o_v^b=t_v^b=2.                         (1154)
+```
+
+In particular `b` is not an odd singleton-return color at either new root,
+even though it was an odd return color at the predecessor root `x`.
+Moreover the two `u` channels and the two `v` channels of (1116) use four
+distinct literal terminal tickets, two in each root ledger; their selected
+owner projections are exactly one of the two patterns in Section 332.
+
+Consequently a same-color full-shore reversal has the exact rootwise ticket
+profile
+
+```text
+x: one marked crossing edge e_0 and one noncrossing edge e_1;
+u: two crossing edges;
+v: two crossing edges.                             (1155)
+```
+
+This is stronger than the binary `(1,2,2)` terminal-root census: it records
+that no cancellation or internal terminal pairing is hidden in the four
+new channels.  A final same-color price may therefore charge the transition
+from one odd ticket at `x` to two even ticket pairs at `u,v`; only the
+mixed-color branch can avoid this literal six-edge profile.
