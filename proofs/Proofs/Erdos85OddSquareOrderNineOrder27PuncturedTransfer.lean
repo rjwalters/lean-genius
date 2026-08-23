@@ -861,6 +861,79 @@ theorem orderNine_order27_fourEdge_W_degree_sum_ge_eight
       _ = 6 := by simp [hRcard]
   omega
 
+/-- The exact internal incidence count supplied by the four-edge local
+geometry: the exceptional singleton avoids the regular pair, and the two
+regular points form one edge. -/
+theorem orderNine_order27_fourEdge_internal_degree_sum_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E R U : Finset V)
+    (hEcard : E.card = 1) (hRcard : R.card = 2)
+    (hdisj : Disjoint E R) (hU : U = E ∪ R)
+    (hER : ∀ e ∈ E, ∀ r ∈ R, ¬ G.Adj e r)
+    (hRR : ∀ r ∈ R, ∀ s ∈ R, r ≠ s → G.Adj r s) :
+    (∑ u ∈ U, (G.neighborFinset u ∩ U).card) = 2 := by
+  classical
+  have hEzero : ∀ e ∈ E, (G.neighborFinset e ∩ U).card = 0 := by
+    intro e he
+    rw [Finset.card_eq_zero]
+    ext z
+    simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+    intro hez hzU
+    rw [hU] at hzU
+    rcases Finset.mem_union.mp hzU with hzE | hzR
+    · have hne : z ≠ e := by
+        intro h
+        subst z
+        exact G.loopless.irrefl e ((G.mem_neighborFinset e e).mp hez)
+      have heq : z = e := Finset.card_le_one.mp (by rw [hEcard]) z hzE e he
+      exact hne heq
+    · exact hER e he z hzR ((G.mem_neighborFinset e z).mp hez)
+  have hRone : ∀ r ∈ R, (G.neighborFinset r ∩ U).card = 1 := by
+    intro r hr
+    obtain ⟨s, hs, hsr⟩ := Finset.exists_mem_ne (by rw [hRcard]; omega) r
+    have hset : G.neighborFinset r ∩ U = {s} := by
+      ext z
+      constructor
+      · intro hz
+        have hzParts := Finset.mem_inter.mp hz
+        rw [hU] at hzParts
+        rcases Finset.mem_union.mp hzParts.2 with hzE | hzR
+        · exact (hER z hzE r hr
+            ((G.adj_comm r z).mp
+              ((G.mem_neighborFinset r z).mp hzParts.1))).elim
+        · have hzr : z ≠ r := by
+            intro h
+            subst z
+            exact G.loopless.irrefl r
+              ((G.mem_neighborFinset r r).mp hzParts.1)
+          have htwo := Finset.card_le_one.mp (by
+            rw [Finset.card_erase_of_mem hr, hRcard])
+          have hzErase : z ∈ R.erase r := Finset.mem_erase.mpr ⟨hzr, hzR⟩
+          have hsErase : s ∈ R.erase r := Finset.mem_erase.mpr ⟨hsr, hs⟩
+          exact Finset.mem_singleton.mpr (htwo z hzErase s hsErase)
+      · intro hz
+        have hzs : z = s := Finset.mem_singleton.mp hz
+        subst z
+        exact Finset.mem_inter.mpr
+          ⟨(G.mem_neighborFinset r s).mpr (hRR r hr s hs (Ne.symm hsr)),
+            by rw [hU]; exact Finset.mem_union_right E hs⟩
+    rw [hset]
+    simp
+  rw [hU, Finset.sum_union hdisj]
+  have hEsum : (∑ e ∈ E, (G.neighborFinset e ∩ (E ∪ R)).card) = 0 := by
+    apply Finset.sum_eq_zero
+    intro e he
+    simpa [hU] using hEzero e he
+  have hRsum : (∑ r ∈ R, (G.neighborFinset r ∩ (E ∪ R)).card) = 2 := by
+    calc
+      (∑ r ∈ R, (G.neighborFinset r ∩ (E ∪ R)).card) = ∑ _r ∈ R, 1 := by
+        apply Finset.sum_congr rfl
+        intro r hr
+        simpa [hU] using hRone r hr
+      _ = 2 := by simp [hRcard]
+  omega
+
 /-- Cross-incidence handshake, proved by swapping the two endpoints. -/
 theorem sum_neighbor_inter_card_comm
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -1199,6 +1272,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_complement_W_degree_sum_le_five
 #print axioms orderNine_order27_threeEdge_W_degree_sum_eq_seven
 #print axioms orderNine_order27_fourEdge_W_degree_sum_ge_eight
+#print axioms orderNine_order27_fourEdge_internal_degree_sum_eq_two
 #print axioms sum_neighbor_inter_card_comm
 #print axioms sum_neighbor_inter_card_le_complement_of_independent
 #print axioms false_of_orderNine_order27_threeEdge_handshake
