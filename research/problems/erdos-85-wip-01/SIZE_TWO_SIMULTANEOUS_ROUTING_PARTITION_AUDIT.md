@@ -9902,3 +9902,44 @@ cancel in the particular ambient chain Xi.                           (594)
 The second branch is the current honest default.  Its structural analogy
 with the zero-price inactive channel in the Baer lane is suggestive, but no
 coordinate identification between those two ledgers is asserted.
+
+## 192. The constant-channel rows do not locally exclude the odd loop
+
+It is tempting to combine the saturated owner in (593) with the finite
+constant-channel templates (540) and claim an immediate capacity collision.
+That inference is not valid.  The two constructions use different labels
+and different port sectors.
+
+The common route owner `y` in (593) is target-even: `t_y=0`.  By contrast,
+the word and templates of Sections 161--172 are defined for a target-active
+secondary label `u`, so `t_u=1` and necessarily `u!=y`.  The distinguished
+port `P=r_u` in (540) is the unique target port of this active `u` inside
+`V_j`; it is not one of the two ports of `y` by owner identity alone.
+
+There is also a type separation.  The two ports consumed by `y` are the
+V-side ports of the two H--V boundary root pairs.  The positions in the
+constant word (540) are H--H port pairs internal to the run (with a possible
+endpoint H port still distinct from its V mate).  Thus the raw fiber bounds
+
+```text
+|N_e(y) cap V_j|=2,          |N_e(u) cap V_j|=1       (595)
+```
+
+do not compete for a common labeled capacity.  They can coexist in the
+finite local incidence table unless an additional cross-label C4 or owner
+matching condition couples `u` to `y`.
+
+Consequently (509) plus (540) alone cannot prove that an odd same-label
+transfer is impossible.  Any successful local exclusion must add at least
+one of the following genuinely simultaneous data:
+
+```text
+an incidence joining an active witness u to a y-owned boundary mate;
+a collision between their resolved owner factors;
+or the ambient labeled boundary equations coupling this run to its gaps. (596)
+```
+
+This leaves the finite rows useful but correctly scoped: they classify the
+active secondary channel surrounding a target-even owner; they do not price
+that owner's two-port unit by themselves.  The ambient silent-footprint
+transport remains the only proved carrier that includes the missing unit.
