@@ -10716,3 +10716,53 @@ grading lives entirely in the constant/type channel.  The H/V/S marginal
 identities (339), (343), and the canonical transfer chains are precisely the
 available constraints on that type-dependent constant.  Nonlinear activity
 states are needed only if those constraints cannot determine `c_S,c_V`.
+
+The affine normal form in Section 166 was proved for its R/P interval
+endpoint alphabet.  Applying a decoration-dependent version to the H/S/V
+star alphabet is itself part of target (646), not an already justified
+extension of that theorem.
+
+## 210. Coarse decoration constants cannot isolate marked H parity
+
+Write the mod-two root-pair counts as
+
+```text
+r_HH,r_HV,r_VV,r_SS
+```
+
+and the port-pair counts as
+
+```text
+p_HH,p_VV,p_SV,p_SS.
+```
+
+Equality of the one-dart H marginals gives
+
+```text
+2r_HH+r_HV=2p_HH,        hence r_HV=0.                (647)
+```
+
+Equality of the S marginals gives
+
+```text
+2r_SS=2p_SS+p_SV,        hence p_SV=0.                (648)
+```
+
+The V marginal repeats `r_HV=p_SV`, and equality of the total numbers of
+root and port pairs leaves only
+
+```text
+r_HH+r_VV+r_SS=p_HH+p_VV+p_SS.                        (649)
+```
+
+These equations do not determine `p_HH=omega_M`.  Algebraically, toggling
+`p_HH` and `p_VV` together preserves (647)--(649) and every one-dart type
+marginal while changing the marked parity.
+
+Thus no invariant depending only on the coarse H/S/V pair types, including
+an unconstrained choice of constants `c_H,c_S,c_V`, can isolate the marked
+H count from the marginal identities alone.  The constant channel in
+Section 209 is a genuine location for the unit, but closing it requires the
+resolved route labels, owner states, or nonlinear activity features.  This
+recovers at the final interface the symmetric blind spot already identified
+in Sections 10 and 112.
