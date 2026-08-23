@@ -4039,6 +4039,17 @@ cover is equality `27=27` at `p=0`; at the strict fractional point `p=13`,
 the binary optimum is `28>27` while the rational optimum is
 `616/23<27`.  Fractional weights are therefore essential to a uniform proof
 of (13ai), not an artifact of the LP implementation.
+They need not be arbitrary on the serious corpus.  After scaling all point
+prices by a common denominator, the exact integer verifier
+`q9_bounded_denominator_full_fiber.py` proves that denominator 1 suffices for
+the other three models, while `13t` first becomes strict at denominator 6:
+at `p=13` it has scaled cost `161<162`, with every scaled edge-cover slack
+nonnegative.  Denominators 1 through 5 are integer-infeasible at every point
+of that payload.  This suggests the finite prospective strengthening
+`6 C_p <= 6 D_p-1` for some full fiber.  It is only a corpus bound—nothing yet
+shows that sixth-integral prices suffice for every admissible outer design—
+but it replaces the observed denominator 46 LP vertex by a much smaller
+integer ledger and gives a concrete target for outer arithmetic.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
