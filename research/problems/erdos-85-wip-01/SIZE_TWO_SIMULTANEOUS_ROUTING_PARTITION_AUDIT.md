@@ -5550,3 +5550,66 @@ In the present SRP lane, route oddness is supplied by Sections 88--92, while
 the exact conserved choice of the secondary-fiber multiset and its privacy
 remain open.  Equations (306)--(309) are therefore a single reusable theorem
 interface, not an assertion that the SRP bundle has already been built.
+
+## 105. Even varying tests of the full SRP transport collapse
+
+The proposed tagged-test construction has a necessary noncommutation.  Let
+`P_ce` denote the three-family transport on the left side of (243), so that
+
+```text
+P_ce(1_u-1_v)=0
+```
+
+whenever `u,v` are consecutive `B_ec` ports.  On an oriented non-H gap
+`p_0,...,p_m`, put `w_i=1_(p_i)-1_(p_(i+1))`.  For any **fixed** linear test
+functional `ell`, linearity and (244) give
+
+```text
+sum_(i=0)^(m-1) ell(P_ce w_i)
+  = ell(P_ce(1_(p_0)-1_(p_m))) = 0.                  (310)
+```
+
+Thus replacing a vertex indicator by one fixed fiber-census indicator does
+not evade Section 101: every such observation still factors through the two
+gap endpoints and forgets all internal transition occurrences.
+
+To retain those occurrences, the test must vary with the step.  For
+functionals `ell_i`, discrete summation by parts gives the exact identity
+
+```text
+sum_(i=0)^(m-1) ell_i(P_ce w_i)
+  = ell_0(P_ce 1_(p_0)) - ell_(m-1)(P_ce 1_(p_m))
+    + sum_(i=1)^(m-1)
+        (ell_i-ell_(i-1))(P_ce 1_(p_i)) = 0.          (311)
+```
+
+The last sum is the formal commutator between transition-dependent tagging
+and the cycle derivative.  However the full SRP operator is exactly `J`, so
+`P_ce 1_(p_i)=1_c` for every port `p_i`.  Therefore (311) reduces further to
+
+```text
+ell_0(1_c) - ell_(m-1)(1_c)
+  + sum_(i=1)^(m-1) (ell_i-ell_(i-1))(1_c) = 0,        (312)
+```
+
+which is a scalar telescoping tautology.  Even transition-dependent tests
+of the **combined** SRP transport cannot record an ordered rooted triangle,
+a consumed secondary-fiber state, or a switch handoff.
+
+Consequently an SRP tagged bundle cannot come from any projection of the
+full left side of (243), fixed or varying.  The summands must remain resolved
+by endpoint/third color and intermediate fiber *before* the identity is
+tested.  The cross-color compatibility of the distinguished primitives
+must then prove cancellation only after those resolved defects are assembled.
+This separates the two remaining obligations cleanly:
+
+```text
+conservation = cancellation across the resolved SRP layers;
+privacy      = injectivity of their nonzero state-change defects.        (313)
+```
+
+Equations (311)--(312) are the smallest-window test for any candidate
+`Phi`: a proposal that first replaces the resolved routing partition by
+`P_ce=J` has already lost the required tags.  A viable proposal must exhibit
+which individual `Q_d` layer carries each feature and a genuine global
+identity cancelling the resulting layer-resolved defects.
