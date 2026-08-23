@@ -7435,3 +7435,63 @@ universal conserved weight with a guaranteed case split, exactly parallel
 to the kernel-separator/two-pole-potential dichotomy in the Baer lane.  The
 remaining task is to use C4 privacy and capacity to control the additional
 fibers in the first branch or the support of `lambda` in the second.
+
+## 141. A single active connection column has odd support at most five
+
+The columns of the operator in Section 140 have a concrete sparse form.
+Fix `u in U_j`, let `r` be its unique `e`-neighbor in `Z=V_j`, and write
+`N_c(u)={b_1,b_2}`.  For a root `b`, its two `e`-neighbors form one edge of
+the shadow cycle `F_c[e]`, so
+
+```text
+E_b:=N_e(b) intersect Z
+```
+
+has order zero or two.  Restricting the `u` column of (422) to `Z` gives
+
+```text
+Q_u|_Z = 1_(E_(b_1)) + 1_(E_(b_2)) + e_r.            (426)
+```
+
+The two root pairs `E_(b_1),E_(b_2)` are disjoint.  If a port belonged to
+both, then it and `u` would have the two common c-neighbors `b_1,b_2`, a
+four-cycle.  Also `r` belongs to at most one of them, by the same argument.
+Therefore cancellations in (426) can only remove `r` together with its one
+occurrence in a single root pair.  In particular,
+
+```text
+|supp(Q_u|_Z)| is one of 1,3,5.                       (427)
+```
+
+The corresponding connection-curvature column is
+
+```text
+C_(d,j)e_u = (F_c[e] Q_u)|_Z.                         (428)
+```
+
+Since the cycle adjacency sends each support point to two neighbors,
+
+```text
+|supp(C_(d,j)e_u)| <= 10,                             (429)
+```
+
+before possible cancellations.  Its total mass is even.
+
+On an odd cycle the curvature column is zero exactly when `Q_u|_Z` is
+constant.  The vector in (427) has odd, nonzero mass, so the only constant
+possibility is `1_Z`.  Consequently
+
+```text
+C_(d,j)e_u=0  implies |Z|<=5 and Q_u|_Z=1_Z.          (430)
+```
+
+Thus on every odd target component of order at least seven, no active atom
+is flat by itself: a separator in (425) must combine at least two secondary
+fibers.  On the short components of orders three or five, a flat atom is
+possible only in the completely classified covering case `Q_u=1_Z`, where
+`beta=e_u` already gives the one-fiber conservation law (424).
+
+This sharply localizes the two branches of (425).  The separator branch is
+either a short, explicit flat column or a genuinely multi-atom dependency;
+the potential branch is a parity system whose every column tests at most ten
+port positions.  No bound on the total support of `lambda` is claimed.
