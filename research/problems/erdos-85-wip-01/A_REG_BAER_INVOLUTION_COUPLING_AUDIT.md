@@ -4615,6 +4615,23 @@ diagonal class.  All off-diagonal owner information is fixed by
 single scalar after the bounded private exceptions and active routes are
 inserted.
 
+This scalar itself has a closed matrix expression.  Let `r_R` be the
+indicator of the `q/2-2` residual full centers.  That cardinality is even,
+so summing the definition of `delta_i(G)` over G removes the constant
+`a_i` term.  For either pole i,
+
+```text
+Delta
+ =e_(E_i)^T (A diag(b) A^2 + A^2 diag(b) A) r_R
+  +a_i (D r_R)_(p_i).                                  (73rnz_cjibkze)
+```
+
+Equations (73rnz_cjibkzc)--(73rnz_cjibkzd) imply that the right side is
+independent of `i`.  Thus the last silent coefficient is an explicit
+weighted-matrix scalar, not a remaining choice of matchings or owner
+pairings.  Evaluating (73rnz_cjibkze) from the residual-full-center geometry
+is a precise final subproblem.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
