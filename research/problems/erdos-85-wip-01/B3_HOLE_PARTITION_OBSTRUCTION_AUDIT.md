@@ -2606,14 +2606,19 @@ negative-price constraint.  On all four restricted-Hall survivors of a
 13-seed run, one shared price succeeds.  The union has `165`
 root-signature and `1716` local classes; `13` root classes and `84` local
 classes genuinely occur in at least two instances, so the joint solve has
-nontrivial cross-instance equalities.
+nontrivial cross-instance equalities.  The instance-overlap graph is
+connected (reported component sizes `(4,)`), so this witness is not a
+product of independent subcorpus prices.
 
 This is only an initial common-potential witness.  The full eleven-survivor
 joint LP exceeded the exploratory run window before returning a status, so
 no all-corpus common-price claim is made.  The audit imposes a five-minute
 HiGHS limit and reports shared-class counts, allowing progressively larger
 subcorpora to locate the first incompatible pair or establish a universal
-sampled affine potential.
+sampled affine potential.  It also decomposes disconnected instance-overlap
+graphs automatically and reports their component sizes; this avoids solving
+unrelated price systems together while exposing when a common witness is
+genuinely coupled.
 
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**

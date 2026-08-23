@@ -1120,7 +1120,8 @@ def affine_load_half_atom_dual(data: dict) -> tuple:
             denominator)
 
 
-def common_affine_load_half_atom_dual(instances: list[dict]) -> tuple:
+def common_affine_load_half_atom_dual(
+        instances: list[dict], decompose: bool = True) -> tuple:
     """Test one shared affine-in-load price on a family of instances."""
     prepared = []
     alpha_keys = set()
@@ -1155,6 +1156,32 @@ def common_affine_load_half_atom_dual(instances: list[dict]) -> tuple:
     shared_local_count = sum(
         sum(key in keys for keys in instance_local_sets) >= 2
         for key in local_keys)
+    unseen = set(range(len(instances)))
+    components = []
+    while unseen:
+        component = {unseen.pop()}
+        frontier = list(component)
+        while frontier:
+            left = frontier.pop()
+            neighbors = {
+                right for right in unseen
+                if (instance_alpha_sets[left] & instance_alpha_sets[right]
+                    or instance_local_sets[left] & instance_local_sets[right])
+            }
+            unseen.difference_update(neighbors)
+            component.update(neighbors)
+            frontier.extend(neighbors)
+        components.append(sorted(component))
+    component_sizes = tuple(sorted(map(len, components), reverse=True))
+    if decompose and len(components) > 1:
+        results = [common_affine_load_half_atom_dual(
+            [instances[index] for index in component], decompose=False)
+            for component in components]
+        success = all(result[0] for result in results)
+        messages = "; ".join(result[-1] for result in results)
+        return (success, len(instances), alpha_count, local_count,
+                shared_alpha_count, shared_local_count, component_sizes,
+                messages)
     coefficient_count = alpha_count + 4 * local_count
     capacity_offset = alpha_count + 2 * local_count
     inequality_blocks = []
@@ -1205,7 +1232,8 @@ def common_affine_load_half_atom_dual(instances: list[dict]) -> tuple:
         bounds=[(None, None)] * coefficient_count, method="highs",
         options={"time_limit": 300.0})
     return (result.success, len(instances), alpha_count, local_count,
-            shared_alpha_count, shared_local_count, result.message)
+            shared_alpha_count, shared_local_count, component_sizes,
+            result.message)
 
 
 def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
@@ -2848,7 +2876,8 @@ def main() -> int:
         print(f"common_affine_load_dual success={result[0]} "
               f"instances={result[1]} alpha_classes={result[2]} "
               f"local_classes={result[3]} shared_alpha_classes={result[4]} "
-              f"shared_local_classes={result[5]} message={result[6]}")
+              f"shared_local_classes={result[5]} "
+              f"component_sizes={result[6]} message={result[7]}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
