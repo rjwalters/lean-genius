@@ -12332,3 +12332,78 @@ an independent port-distribution obstruction: after grouping by the
 canonical mixed owner paths, the only remaining issue is compatibility of
 the **cross-factor primitive** `D_P+sum_y A_y` with the realized route price,
 not cancellation of unmatched active port points.
+
+## 244. Red owner runs remove every internal root-chain label
+
+The root-chain part of the primitive in (743) has the same run filling on
+the red edges of `P_a(C,Z)`.  Let `P` be a mixed path, with `10` endpoint
+`y_-` and `01` endpoint `y_+`.  For each red pair `{y,mu_C(y)}` in `P`, let
+`R_y` be the internal edge chain of the corresponding maximal `C`-run in
+`F_a[c]`, and put
+
+```text
+R_P:=sum_({y,mu_C(y)} red in P) R_y.
+```
+
+Every red cut label has a unique inside root in `C`.  Therefore
+
+```text
+partial R_P
+ =sum_(y in P:r_y=1) [x_y].                          (744)
+```
+
+Let
+
+```text
+E_*:C_0(C;F_2) -> C_1(Z;F_2),       [x] |-> [E_x],
+```
+
+where `E_x` is the H-cycle edge indexed by the root `x`, as in Section 242.
+For every label with `r_y=1`, the size-two cross fiber gives
+`A_y=[E_(x_y)]`.  The `r=1` vertices of a mixed path are its `10` endpoint
+and all of its internal `11` vertices.  Applying `E_*` to (744) consequently
+gives
+
+```text
+E_*(partial R_P)
+ =A_(y_-)+sum_(y internal in P) A_y.                 (745)
+```
+
+Write the cross-factor primitive from (743) as
+
+```text
+W_P:=D_P+sum_(y in T(P)) A_y.
+```
+
+Since `T(P)` consists of the internal `11` vertices and the `01` endpoint,
+(745) yields the exact decomposition
+
+```text
+W_P
+ =D_P+E_*(partial R_P)+A_(y_-)+A_(y_+).              (746)
+```
+
+Thus none of the private root chains attached to the internal exported
+labels remains independent.  They assemble into the image of the actual
+red owner-run boundary.  The only unpaired `A` terms are attached to the two
+physical endpoints of the mixed path: `A_(y_-)` is one H edge because
+`r_(y_-)=1`, while `A_(y_+)` has zero or two H edges because
+`r_(y_+)=0`.
+
+Together, (743) and (746) reduce the route-price problem to a geometric
+two-ended strip:
+
+```text
+blue interior: D_P in F_a[e] on the port vertices;
+red interior:  R_P in F_a[c] on the root vertices, mapped by E_*;
+ends:          A_(y_-)+A_(y_+) on the H cycle.        (747)
+```
+
+This is stronger than retaining every private `A_y`, but it is not a claim
+that `E_* partial` is itself a boundary operator or that the strip has zero
+price.  That compatibility is exactly the remaining simultaneous H/V/S
+input.  Equation (704) already transports the `10` endpoint, and (707)
+transports the `01` union flag; the live theorem is now to identify their
+complementary transition chains with the two ends and the cross-factor
+strip in (747).  Any failure is localized to a mixed path and cannot be
+attributed to an unmatched internal active label.
