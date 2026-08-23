@@ -20742,3 +20742,58 @@ cycle, but it sharply localizes any low-degree terminal of a cycle-
 elimination argument: it cannot lie in the residual set, and at a leaf it
 must spend one of the finitely many repeated strict-mate fibers from
 Section 388.
+
+## 391. Yeo elimination forces an ordinary moving cycle for `q>=16`
+
+The global ledger has a sharp properly-colored-cycle terminal.  We use the
+following theorem of Anders Yeo, *A Note on Alternating Cycles in
+Edge-Coloured Graphs*, J. Combin. Theory Ser. B 69 (1997), 222--225,
+doi:10.1006/jctb.1997.1728:
+
+```text
+if an edge-colored graph H has no properly colored cycle,
+then some vertex z has the property that every component of H-z
+is joined to z by edges of at most one color.         (1364)
+```
+
+The hypothesis applies literally to the exterior-component coloring of
+`M` from Section 389.  Moreover the rooted color cap (1351) says that at
+every vertex of `M`, at most two incident edges have any prescribed color.
+This cap is inherited by every subgraph.
+
+We now induct on the order of a connected subgraph `H subset M` having no
+properly colored cycle.  The one-vertex case is immediate.  Choose `z` by
+(1364), and let `C_1,...,C_t` be the components of `H-z`.  Induction gives
+`e(C_s)<=2(|C_s|-1)`.  All edges from `z` to a fixed `C_s` have one color,
+so the color cap gives at most two such edges.  Therefore
+
+```text
+|E(H)|
+ <=sum_s (2(|C_s|-1)+2)
+ =2(|V(H)|-1).                                     (1365)
+```
+
+Applying (1365) separately to the `kappa(M)` components yields the uniform
+extremal bound
+
+```text
+M has no properly colored cycle
+ implies |E(M)|<=2(|V(M)|-kappa(M))
+                 <=4q-12.                         (1366)
+```
+
+But the exact matching count (1355) is `|E(M)|=5q-25`.  Combining it with
+(1366) would give `q<=13`.  Hence
+
+```text
+q>=14 implies M has a properly exterior-colored cycle;
+in the binary range, q>=16 forces an all-ordinary moving holonomy.
+                                                        (1367)
+```
+
+This removes every strict-reflection and stationary complication from the
+large binary branch: by (1358), the forced cycle is already a literal
+rooted holonomy made entirely of ordinary `B/O` moves, and every one of its
+edges carries the exact coupled SRP tag profile of Sections 362--365.  The
+remaining small binary value is outside this inequality and must retain its
+separate finite treatment.  No order-specific enumeration enters (1367).
