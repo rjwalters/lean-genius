@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from functools import cache
 from pathlib import Path
 
 from z3 import And, Bool, If, Implies, Int, Not, Or, Sum, is_true, sat
@@ -35,6 +36,7 @@ from q9_symmetric_point_mass_obstruction import (
 def build_row_feasible(timeout_seconds: int, denominator: int,
                        rows: list[int], shared_integral_relation: bool,
                        exclude_single_special_hole: bool,
+                       all_incident_disjoint_packings: bool,
                        template: dict | None = None):
     solver, data = build(
         4, timeout_seconds * 1000, True, outer_seed=template,
@@ -59,17 +61,60 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
     def kadj(a: int, b: int):
         return False if a == b else k[edge_key(a, b)]
 
+    @cache
     def core(row: int, point: int):
         return Or([
             And(incidence[row, source], kadj(source, point))
             for source in range(N_U1) if source != point
         ])
 
+    @cache
     def eligible(u: int, v: int):
         return And([
             Implies(incidence[v, point], Not(core(u, point)))
             for point in range(N_U1)
         ])
+
+    if all_incident_disjoint_packings:
+        for regular in range(22):
+            for hole in range(22, 26):
+                incident = Or([
+                    And(incidence[regular, point], incidence[hole, point])
+                    for point in range(N_U1)
+                ])
+                first = {
+                    v: Bool(f"joint_pack_regular_{regular}_{hole}_{v}")
+                    for v in range(N)
+                }
+                second = {
+                    v: Bool(f"joint_pack_hole_{regular}_{hole}_{v}")
+                    for v in range(N)
+                }
+                solver.add(Implies(
+                    incident, Sum([If(first[v], 1, 0) for v in range(N)]) == 5
+                ))
+                solver.add(Implies(
+                    incident, Sum([If(second[v], 1, 0) for v in range(N)]) == 6
+                ))
+                for v in range(N):
+                    solver.add(Implies(first[v], And(
+                        incident, regular != v,
+                        eligible(regular, v), eligible(v, regular),
+                    )))
+                    solver.add(Implies(second[v], And(
+                        incident, hole != v,
+                        eligible(hole, v), eligible(v, hole),
+                    )))
+                    solver.add(Not(And(first[v], second[v])))
+                for point in range(N_U1):
+                    solver.add(Implies(incident, Sum([
+                        If(And(first[v], incidence[v, point]), 1, 0)
+                        for v in range(N)
+                    ]) <= 1))
+                    solver.add(Implies(incident, Sum([
+                        If(And(second[v], incidence[v, point]), 1, 0)
+                        for v in range(N)
+                    ]) <= 1))
 
     if shared_integral_relation:
         relation = {
@@ -153,6 +198,12 @@ def main() -> None:
         help=("forbid every hole point from being missed by exactly one "
               "punctured class"),
     )
+    parser.add_argument(
+        "--all-incident-disjoint-packings", action="store_true",
+        help=("attempt to refute (13as) by requiring every incident "
+              "regular/exceptional pair to admit disjoint integral local "
+              "block-packings of sizes five and six"),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
@@ -165,6 +216,7 @@ def main() -> None:
     solver, data = build_row_feasible(
         args.timeout_seconds, args.denominator, rows,
         args.shared_integral_relation, args.exclude_single_special_hole,
+        args.all_incident_disjoint_packings,
         template=template
     )
     solver.set(random_seed=args.random_seed)

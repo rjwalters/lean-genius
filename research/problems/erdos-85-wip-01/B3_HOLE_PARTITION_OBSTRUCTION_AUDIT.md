@@ -4652,6 +4652,20 @@ also confirms why separate forced-neighbor intersections were too crude:
 joint packing infeasibility can hold without either row having a neighbor
 forced on its own.
 
+The negation of (13as) is now encoded inside the outer-design generator as
+`--all-incident-disjoint-packings`: for every symbolically incident
+regular/exceptional pair it introduces two disjoint integral packings of
+sizes five and six, with mutual trace eligibility and separate U1 point
+capacities.  Cached symbolic eligibility expressions make the 8,272 packing
+bits practical to construct.  Fixing the sharp
+`q9_branch4_fractional_collision_not_forced_witness.json` outer design makes
+this negation UNSAT in 26 seconds, agreeing with the independent MILP's
+unique obstructed pair.  The unrestricted outer instance, and a stronger
+variant imposing denominator-one local packings at all four exceptional
+rows, both return UNKNOWN at 180 seconds.  Hence there is no synthesized
+counterexample, but also no computational closure claim: the current result
+is a reproducible falsification harness and a sharply stated theorem target.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
