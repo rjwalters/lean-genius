@@ -20157,3 +20157,67 @@ SRP tag decorations retained.  It is not yet a sign contradiction--an odd
 permutation may have fixed points--but it is the precise bridge from the
 ticket propagation audit to the Baer-involution/coupling formulation of the
 q-generic A-REG-NONBIP lane.
+
+## 381. The five nonincident triples form a root-parity basis
+
+The root term in the cycle identity (1314) retains all five root parities,
+not only their total augmentation.  Recall
+
+```text
+T_i={p_(i+1),p_(i+2),p_(i+3)} subset Z.             (1321)
+```
+
+The five incidence vectors `[T_i]` are linearly independent over `F_2`.
+Indeed suppose
+
+```text
+sum_(i mod 5) a_i[T_i]=0.                           (1322)
+```
+
+Reading coordinate `p_j` gives
+
+```text
+a_(j-1)+a_(j-2)+a_(j-3)=0.                         (1323)
+```
+
+Adding the equations for `j` and `j+1` yields `a_j=a_(j-3)`.  Since three
+generates the cyclic group of order five, all five coefficients are equal.
+Substitution into (1323) then gives `a_i=0` for every `i`.  Thus
+
+```text
+([T_0],...,[T_4]) is a basis of F_2^Z.              (1324)
+```
+
+For the reflected word, let
+
+```text
+a_i:=#{j:i_j=i} mod 2
+```
+
+be the parity with which root `x_i` occurs, and define the corrected tag
+vector
+
+```text
+W:=sum_(j mod L)[D_j]
+   +sum_(j:ell_j strict and v_j in B)[p(v_j)].       (1325)
+```
+
+Equation (1314) and the basis property give
+
+```text
+W=sum_(i mod 5) a_i[T_i],                           (1326)
+```
+
+so `W` uniquely determines the full root-parity vector
+`(a_0,...,a_4)`.  In particular
+
+```text
+W=0 implies every root occurs evenly and L is even. (1327)
+```
+
+More generally any proposed cycle-wide cancellation law for the actual tag
+payments translates, through the explicit strict-owner correction in
+(1325), into five separate root constraints.  A scalar tag count would see
+only `L mod 2`; the basis (1324) prevents cancellation between different
+root triples and is the exact linear interface needed by the common-domain
+involutions of Section 380.
