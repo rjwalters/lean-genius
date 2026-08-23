@@ -1642,6 +1642,36 @@ theorem false_of_unitSupportPointPriceCertificate
   exact relationIndicator_pointCapacity_of_sharedPoint
     A W B hsymm hgram hshared
 
+/-- End-to-end actual-relation consumer for a denominator-cleared unit-support
+certificate.  This is the literal interface produced by the finite q=9
+full-fiber verifier: `weight` is integral and `scale` is its positive common
+denominator. -/
+theorem false_of_scaledUnitSupportPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (S : Finset V) (weight : V → P → ℕ) (scale : ℕ)
+    (hscale : 0 < scale)
+    (hedge : ∀ u v, H u v →
+      scale * ((if u ∈ S then 1 else 0) + (if v ∈ S then 1 else 0)) ≤
+        (∑ p ∈ B v, weight u p) + ∑ p ∈ B u, weight v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, weight u p) <
+        scale * ∑ u ∈ S, d u) :
+    False := by
+  apply no_symmetricFractionalPointPacking_of_scaledUnitSupportPointPrices
+    H d B S weight scale hscale hedge hstrict
+  refine ⟨fun u v => if A u v then 1 else 0, ?_⟩
+  apply relationIndicator_isSymmetricFractionalPointPacking
+    A H d B hsymm hdegree hsupport
+  exact relationIndicator_pointCapacity_of_sharedPoint
+    A W B hsymm hgram hshared
+
 /-- The characteristic function of an actual symmetric neighborhood is a
 canonical fractional interval extension.  The point-capacity hypothesis is
 the numeric form of the Gram disjointness law for the block model. -/
@@ -2014,6 +2044,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms relationIndicator_isSymmetricFractionalPointPacking
 #print axioms false_of_symmetricRowPointPriceCertificate
 #print axioms false_of_unitSupportPointPriceCertificate
+#print axioms false_of_scaledUnitSupportPointPriceCertificate
 #print axioms no_canonicalFractionalIntervalExtension_of_pointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_contractedPointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_scaledContractedPointCover
