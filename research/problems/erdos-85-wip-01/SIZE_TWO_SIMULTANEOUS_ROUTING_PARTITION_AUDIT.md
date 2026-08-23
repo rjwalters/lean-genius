@@ -16621,3 +16621,84 @@ selected shore.  The proper-shore branch must absorb a visible boundary on
 the five core roots, while the boundary-free branch is forced to be the
 unique full-cycle chain.  Any final strict-export or private-ticket price
 may therefore be proved separately in these two rigid cases.
+
+## 322. The returned routes leave an unavoidable odd root defect
+
+The terminal activity retained in Section 320 removes the full-curl escape
+in (1061).  Let `P` range over the odd family of crossing paths from
+(1050).  Its terminal `t(P)` has `H_a^C`-degree one, so its unique active
+color-`a` label meets a unique root of `C`; denote that root by `r(P)`.
+Pair it with the selected endpoint `zeta(P)` from (1054).
+
+This pair is never an incidence of the original core.  If `t(P)` lies in
+`Z`, its active label is the strict export at that selected port, and the
+strict permutation (777) assigns it to the opposite, nonincident root.  If
+`t(P)` lies in `B`, its active label is the singleton color-`a` letter of
+the ticket `tau(t(P))`; Section 267 says that all three ticket roots avoid
+the two roots incident to the owner port `p(t(P))=zeta(P)`.  Thus
+
+```text
+(r(P),zeta(P)) belongs to
+  (C times Z)\E(R_ce[C,Z])                          (1062)
+```
+
+for every crossing path.  Sum these terminal pairs over `F_2`:
+
+```text
+L_*:=sum_(P crossing) [(r(P),zeta(P))].             (1063)
+```
+
+The complement in (1062) has fifteen edges.  Since the number of crossing
+paths is odd, cancellation of repeated pairs leaves
+
+```text
+|supp(L_*)|=1 mod 2,
+L_*!=0.                                             (1064)
+```
+
+Let `R_* subset C` be the odd-degree root shore of this bipartite edge
+chain.  Its selected-port boundary is exactly `Z_*`: both count the same
+terminal occurrences, now grouped by `zeta(P)`.  On the two sides of the
+chain one therefore has
+
+```text
+partial L_*=R_* disjoint_union Z_*,
+|R_*|=|Z_*|=1 mod 2.                                (1065)
+```
+
+Now compare the root projection with the core-edge chain `K_*` from
+(1059).  Define
+
+```text
+D_*:=R_* triangle partial K_* subset C.             (1066)
+```
+
+Every graph boundary has even cardinality, whereas `R_*` is odd.  Hence
+
+```text
+|D_*|=1 mod 2,
+D_*!=empty.                                         (1067)
+```
+
+This defect is realized occurrence by occurrence.  Linearity of the two
+projections gives
+
+```text
+D_*=triangle_(P crossing)
+      ({r(P)} triangle Ends(E_(zeta(P)))).           (1068)
+```
+
+By (1062), each summand in (1068) is a set of three distinct core roots:
+the terminal active root and the two roots incident to the returned
+selected port.  An odd family of realized residual-to-selected routes
+therefore leaves a located odd root defect after the selected incidences
+are fully charged.
+
+In particular the boundary-free alternative `Z_*=Z` in (1061) no longer
+closes the ledger: then `partial K_*=0` and `D_*=R_*` is still odd and
+nonzero.  The remaining terminal price may act directly on the actual
+three-root contributions (1068); it need not split between a proper core
+boundary and a supposedly harmless full curl.  This is still not itself a
+contradiction, because an odd root shore can be exported through the
+outside incidence components, but it removes the last cancellation
+available wholly inside the original five-port component.
