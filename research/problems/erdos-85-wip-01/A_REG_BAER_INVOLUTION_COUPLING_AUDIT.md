@@ -4277,6 +4277,42 @@ part.  This attachment is not yet proved; the rigorous conclusion here is
 that treating only the broken relays would omit an entire activation
 channel.
 
+At the pole witnesses the candidate channel alignment is exact.  Write
+
+```text
+a_i:=s(E_i)=t(p_i),
+k_i:=deg_K(E_i,X)=1[p_i is a leaf].
+```
+
+If `p_i` is ordinary, its unique split `iota_(E_i)` pair has other endpoint
+outside X, hence b-word `a_i 0`; all other ordinary pairs are unsplit and
+the forced sibling 11 pair has b-word 00.  If `p_i` is a leaf, every ordinary
+pair has b-word 00, while the forced sibling 11 pair has b-word `a_i 0`
+(the sibling is outside X; the T-cut potential is constant on its T-edge to
+the pole).  Therefore
+
+```text
+F_(E_i)^00=sigma_i a_i,
+F_(E_i)^11=k_i a_i.                                    (73rnz_cjibkl)
+```
+
+Since `k_i+sigma_i=1` by (73rnz_bv), each primary channel decomposes
+pointwise as
+
+```text
+sigma_i = sigma_i(1+a_i)+F_(E_i)^00,
+k_i     = k_i(1+a_i)+F_(E_i)^11.                       (73rnz_cjibkm)
+```
+
+Thus the pole demand `Phi_i=1` is already the sum of exactly one inactive
+source channel (selected when `a_i=0`) or exactly one active flip channel
+(selected when `a_i=1`), with 00 versus 11 determined by the ordinary/leaf
+endpoint dichotomy.  The source-to-transition conservation is proved at the
+pole star itself.  The remaining content of (73rnz_cjibkd) is downstream:
+transport the active 00 split-pair flip and active 11 sibling-relay flip,
+together with the inactive decorated source, through the non-pole
+owner-normal forms to `Psi^hat_owner`.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
