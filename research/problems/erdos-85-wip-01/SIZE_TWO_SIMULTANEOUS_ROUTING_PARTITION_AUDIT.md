@@ -9165,3 +9165,46 @@ secondary labels joining the center port to its companions.  Footprints of
 different silent ports may overlap, so no global packing bound is claimed
 yet.  Their overlap graph is now the exact object whose parity must pay the
 positive silent-gap bits of Section 174.
+
+## 176. Silent footprints have an exact two-regular shadow boundary
+
+Let `G_d^e` be the shore projection on the `e` ports of the bipartite
+two-factor `R_de`: a label `y in d` with
+
+```text
+N_e(y)={z,r}
+```
+
+gives the edge `z--r`, carrying label `y`.  Every `e` port has two
+`d`-neighbors, and C4 makes their other endpoints distinct, so `G_d^e` is a
+simple two-regular graph, hence a disjoint union of cycles.
+
+The two companions in (549) are exactly the two `G_d^e`-neighbors of the
+silent center `z`.  If `s` is the indicator of any family of totally silent
+H ports in `V_j`, its summed three-port footprint is
+
+```text
+p_s:=(I+A_(G_d^e))s.                                  (550)
+```
+
+Every window used in (550) lies in `V_j`, by (549).  Since `G_d^e` has
+degree two,
+
+```text
+1^T p_s
+ =1^T s+1^T A_(G_d^e)s
+ =|s|+2|s|
+ =|s| mod 2.                                         (551)
+```
+
+Therefore an odd family of totally silent H ports has a nonzero, indeed
+odd-mass, companion-port footprint ledger.  Its private q-signatures may
+all vanish, but its inactive two-port owner labels cannot cancel the three-
+port windows completely.
+
+This is the first direct payment of silent-length parity.  The overlap
+graph is no longer open-ended: it is the cycle graph `G_d^e`, and adjacent
+silent centers combine by the linear operator `I+A_(G_d^e)`.  What remains
+is to attach the odd footprint `p_s` to the existing route/owner capacity
+ledger without contracting away its edge labels.  At the unlabeled port
+level, odd silent parity is already activated exactly by (551).
