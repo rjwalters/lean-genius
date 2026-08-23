@@ -94,6 +94,33 @@ def main() -> int:
     assert size_five
     assert not size_six
 
+    # Transparent contracted residual certificate.  After fixing F, only
+    # these five block-vertices remain compatible with every forced block.
+    # Their compatibility graph has three edges and no triangle, so at most
+    # two residual vertices can be added to the three forced ones.
+    residual = [
+        v for v in allowed
+        if v not in forced and all(not blocks[v] & blocks[f] for f in forced)
+    ]
+    residual_blocks = {v: sorted(blocks[v]) for v in residual}
+    residual_pairs = [
+        pair for pair in combinations(residual, 2)
+        if not blocks[pair[0]] & blocks[pair[1]]
+    ]
+    residual_triples = [
+        triple for triple in combinations(residual, 3)
+        if independent(triple)
+    ]
+    assert residual_blocks == {
+        17: [6, 8, 21],
+        23: [5, 14, 19],
+        32: [8, 19],
+        35: [6, 19],
+        42: [2, 8],
+    }
+    assert residual_pairs == [(17, 23), (23, 42), (35, 42)]
+    assert residual_triples == []
+
     print("outer_constraints=SAT branch=4 row=40")
     print(
         "forced=[1,9,24] impossible_candidates=[] "
@@ -103,6 +130,10 @@ def main() -> int:
         f"row_packings={len(packings[row])} "
         f"capacity_five_witnesses="
         f"{[sorted(X) for X in size_five]}"
+    )
+    print(
+        f"residual_blocks={residual_blocks} "
+        f"compatible_pairs={residual_pairs} compatible_triples=[]"
     )
     print("contracted_interval_deficit=VERIFIED")
     return 0
