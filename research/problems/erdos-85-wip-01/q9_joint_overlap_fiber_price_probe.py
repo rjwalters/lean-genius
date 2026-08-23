@@ -208,6 +208,27 @@ def exact_joint_optimum(system: dict, p: int, q: int) -> dict:
     }
 
 
+def exact_joint_optimum_summary(system: dict, pair,
+                                single_optima: dict) -> dict:
+    """Summarize exact joint cost and its saving over two single covers."""
+    optimum = exact_joint_optimum(system, *pair)
+    joint_cost = Fraction(optimum["cost"])
+    single_sum = sum(
+        (Fraction(single_optima[point]["cost"]) for point in pair),
+        Fraction(),
+    )
+    return {
+        "points": list(pair),
+        **{
+            key: value for key, value in optimum.items()
+            if key not in ("point_prices", "dual_edges")
+        },
+        "single_sum": str(single_sum),
+        "uncrossing_gain": str(single_sum - joint_cost),
+        "target_gap": str(Fraction(54) - joint_cost),
+    }
+
+
 def one_model(
         timeout_ms: int, random_seed: int, max_scale: int,
         details: bool = False, genuine_only: bool = False,
@@ -309,14 +330,8 @@ def one_model(
                     ]
                 if scan_exact_joint_optima:
                     answer["genuine_joint_optima"] = [
-                        {
-                            "points": list(pair),
-                            **{
-                                key: value for key, value in
-                                exact_joint_optimum(system, *pair).items()
-                                if key not in ("point_prices", "dual_edges")
-                            },
-                        }
+                        exact_joint_optimum_summary(
+                            system, pair, single_optima)
                         for pair in genuine_pairs
                     ]
                 return answer
@@ -326,14 +341,7 @@ def one_model(
         answer["strict_single_points"] = strict_single_points
     if scan_exact_joint_optima:
         answer["genuine_joint_optima"] = [
-            {
-                "points": list(pair),
-                **{
-                    key: value for key, value in
-                    exact_joint_optimum(system, *pair).items()
-                    if key not in ("point_prices", "dual_edges")
-                },
-            }
+            exact_joint_optimum_summary(system, pair, single_optima)
             for pair in genuine_pairs
         ]
     return answer
@@ -378,14 +386,8 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
                     ]
                 if scan_exact_joint_optima:
                     answer["genuine_joint_optima"] = [
-                        {
-                            "points": list(pair),
-                            **{
-                                key: value for key, value in
-                                exact_joint_optimum(system, *pair).items()
-                                if key not in ("point_prices", "dual_edges")
-                            },
-                        }
+                        exact_joint_optimum_summary(
+                            system, pair, single_optima)
                         for pair in genuine_pairs
                     ]
                 return answer
@@ -397,14 +399,7 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
     }
     if scan_exact_joint_optima:
         answer["genuine_joint_optima"] = [
-            {
-                "points": list(pair),
-                **{
-                    key: value for key, value in
-                    exact_joint_optimum(system, *pair).items()
-                    if key not in ("point_prices", "dual_edges")
-                },
-            }
+            exact_joint_optimum_summary(system, pair, single_optima)
             for pair in genuine_pairs
         ]
     return answer

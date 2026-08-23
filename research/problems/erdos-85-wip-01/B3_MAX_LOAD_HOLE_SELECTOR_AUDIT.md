@@ -252,6 +252,17 @@ The complete outer is stored as
 `--payload` mode rechecks all eight exact single optima and the scale-two
 joint certificate without regenerating a Z3 model.
 
+The exact uncrossing-gain matrix further localizes the hard horn.  Only three
+of its 28 pairs have joint optimum below 54, and every one contains point 9,
+the unique tight single fiber with optimum exactly 27.  For the best pair
+`(1,9)`, the two single optima sum to `1352/25 = 54.08`, the joint optimum is
+`160/3`, and the uncrossing gain is `56/75`, easily exceeding the single
+excess `2/25`.  Pairs `(9,11)` and `(0,9)` have target gaps `17/64` and
+`1/11`.  The sum of target gaps over all 28 pairs is negative, so raw pair
+averaging cannot prove existence.  A sharper candidate is conditional:
+absence of every strict single should force a tight single, then exact-cover
+collision around that tight fiber should select the genuinely strict pair.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
