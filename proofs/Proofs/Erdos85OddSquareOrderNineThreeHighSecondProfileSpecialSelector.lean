@@ -93,6 +93,32 @@ theorem obstruction_or_exists_good_positive_special_of_strict_load_descent
       exists_good_positive_special_of_strict_load_descent
         U special load Good hnonempty hdescent
 
+/-- Localized two-horn selector.  It is enough to prove that a minimum-load
+positive-special point either has the desired full-fiber property or carries
+a local obstruction at that same point. -/
+theorem exists_good_or_obstruction_at_minimal_positive_special
+    {α : Type*} [DecidableEq α]
+    (U : Finset α) (special load : α → ℕ) (Good Obstruction : α → Prop)
+    (hnonempty : ∃ p ∈ U, 0 < special p)
+    (halternative : ∀ p ∈ U, 0 < special p →
+      (∀ q ∈ U, 0 < special q → load p ≤ load q) →
+      Good p ∨ Obstruction p) :
+    (∃ p ∈ U, 0 < special p ∧ Good p) ∨
+      ∃ p ∈ U, 0 < special p ∧ Obstruction p := by
+  classical
+  let P := U.filter fun p => 0 < special p
+  obtain ⟨p0, hp0U, hp0Special⟩ := hnonempty
+  have hPnonempty : P.Nonempty :=
+    ⟨p0, Finset.mem_filter.mpr ⟨hp0U, hp0Special⟩⟩
+  obtain ⟨p, hpP, hpmin⟩ := Finset.exists_min_image P load hPnonempty
+  have hpParts := Finset.mem_filter.mp hpP
+  have hpMinimum : ∀ q ∈ U, 0 < special q → load p ≤ load q := by
+    intro q hqU hqSpecial
+    exact hpmin q (Finset.mem_filter.mpr ⟨hqU, hqSpecial⟩)
+  rcases halternative p hpParts.1 hpParts.2 hpMinimum with hpGood | hpObstruction
+  · exact Or.inl ⟨p, hpParts.1, hpParts.2, hpGood⟩
+  · exact Or.inr ⟨p, hpParts.1, hpParts.2, hpObstruction⟩
+
 /-- In the four-edge high-root branch, some unmarked bin-one point is defect
 adjacent to a special B0 row.  This is the formal existence half of the six
 global puncture-miss selector; the separate mixed-column theorem upgrades its
@@ -311,3 +337,4 @@ end Erdos85
 #print axioms Erdos85.exists_positive_special_price_lt_target_of_sum_lt
 #print axioms Erdos85.exists_good_positive_special_of_strict_load_descent
 #print axioms Erdos85.obstruction_or_exists_good_positive_special_of_strict_load_descent
+#print axioms Erdos85.exists_good_or_obstruction_at_minimal_positive_special

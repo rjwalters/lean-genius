@@ -364,6 +364,62 @@ def unit_nondiagonal_fiber_optimum(
     }
 
 
+def unit_row_cover_optimum(system: dict, row: int) -> dict | None:
+    """Exact fractional point-cover optimum for one row's eligible neighbors."""
+    blocks = system["blocks"]
+    neighbors = [
+        v if u == row else u for u, v in system["edges"] if row in (u, v)
+    ]
+    matrix = np.array([
+        [-int(point in blocks[v]) for point in range(N_U1)]
+        for v in neighbors
+    ], dtype=float)
+    result = linprog(
+        np.ones(N_U1), A_ub=matrix,
+        b_ub=-np.ones(len(neighbors)), bounds=(0, None), method="highs",
+    )
+    if not result.success:
+        return None
+    cover = [
+        Fraction(float(value)).limit_denominator(10**6)
+        for value in result.x
+    ]
+    if any(value < 0 for value in cover):
+        return None
+    if any(
+        sum((cover[point] for point in blocks[v]), Fraction()) < 1
+        for v in neighbors
+    ):
+        return None
+    packing = [
+        Fraction(float(-value)).limit_denominator(10**6)
+        for value in result.ineqlin.marginals
+    ]
+    if any(value < 0 for value in packing):
+        return None
+    if any(
+        sum((packing[i] for i, v in enumerate(neighbors)
+             if point in blocks[v]), Fraction()) > 1
+        for point in range(N_U1)
+    ):
+        return None
+    cost = sum(cover, Fraction())
+    dual_lower_bound = sum(packing, Fraction())
+    if dual_lower_bound != cost:
+        return None
+    return {
+        "row": row,
+        "block": sorted(blocks[row]),
+        "degree": system["degree"][row],
+        "cost": str(cost),
+        "dual_lower_bound": str(dual_lower_bound),
+        "strict": cost < system["degree"][row],
+        "cover": [
+            (point, str(value)) for point, value in enumerate(cover) if value
+        ],
+    }
+
+
 def unit_nondiagonal_fiber_certificate(
         system: dict, point: int, include_diagonal: bool = False
         ) -> dict | None:
@@ -595,21 +651,31 @@ def main() -> None:
         one_row_certificates = []
         if not valid:
             for row in range(N):
-                row_result = dual(system, {row})
-                if not row_result.success:
-                    continue
-                certificate = exact_certificate(system, row_result)
-                if certificate is not None:
-                    one_row_certificates.append({
-                        "row": row,
-                        "block": sorted(system["blocks"][row]),
-                        "degree": system["degree"][row],
-                        "margin": certificate["margin"],
-                    })
+                certificate = unit_row_cover_optimum(system, row)
+                if certificate is not None and certificate["strict"]:
+                    one_row_certificates.append(certificate)
+        bad_minimum_points = [
+            record["point"] for record in records
+            if record["load"] == minimum_special_load
+            and not record["strict"]
+        ]
+        localized_bad_minimum_points = {
+            point: [
+                certificate["row"] for certificate in one_row_certificates
+                if point in system["blocks"][certificate["row"]]
+            ]
+            for point in bad_minimum_points
+        }
         print("global_special_load_descent=" + json.dumps({
             "valid": valid,
             "one_row_alternative_valid": bool(one_row_certificates),
             "combined_valid": valid or bool(one_row_certificates),
+            "localized_minimum_alternative_valid": all(
+                localized_bad_minimum_points[point]
+                for point in bad_minimum_points
+            ),
+            "bad_minimum_points_with_fiber_one_row":
+                localized_bad_minimum_points,
             "one_row_certificates": one_row_certificates,
             "minimum_special_load": minimum_special_load,
             "minimum_special_points": minimum_special_points,
