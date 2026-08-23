@@ -2061,6 +2061,33 @@ coincident cases have zero or one active marked edge, with (73rnk) fixing
 whether the two witness parities agree or differ.  This removes one of the
 four naive two-port phase states before any simultaneous transport input.
 
+The owner edge itself has exactly three possible geometries.  If
+`delta=1`, it is a T-edge and hence lies on a simple T-cycle, producing an
+alternate T-path between `z_1,z_2`.  If `delta=0`, the codegree dichotomy
+gives a unique common A-neighbor v.  The complete outside-neighbor
+description used in (73rnj) shows that either
+
+```text
+v = y_(1,j) = y_(2,j) for one empty line E_j,
+```
+
+or `v in M intersect S`.  There is no other outside possibility: shared
+witnesses must have the same j because the empty lines are disjoint.  In the
+inside case v is distinct from both defect marks `w_i`; otherwise the marked
+D-edge `z_iw_i` would have the opposite owner endpoint as a common
+A-neighbor.  Hence the terminal states are precisely
+
+```text
+(I)  a broken owner T-edge with an alternate T-path;
+(II) a boundary triangle through one shared empty-line witness;
+(III) a boundary triangle through one unmarked inside ordinary point.      (73rnm)
+```
+
+Case (II) contributes zero at its shared coordinate to both witness phases
+in (73rnk); case (III) leaves all empty-line witness coordinates distinct.
+This is a complete geometric localization of the owner-edge phase before
+the simultaneous routing equations are applied.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
