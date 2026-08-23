@@ -2653,6 +2653,39 @@ prove their signed imbalance vanishes by an additional simultaneous
 identity.  This is the `a=2` incarnation of the SRP lane's conclusion that
 per-layer route data must be kept before aggregate cancellation.
 
+The Eulerian K-parity identity (20) does not make the residue in (73rnz_x)
+vanish for free, but it translates it exactly.  For `k>=3`, both possible
+outside D-degrees at a support point are even:
+
+```text
+r=q/2-2 = 0,          q-2 = 0                    (mod 2).
+```
+
+Thus pointwise `N_p=Theta_p (mod 2)`.  Let
+`U=U_+ union U_-`.  Since subtraction and addition agree modulo two and
+Theta counts every cross-shore T-incidence of U,
+
+```text
+N_+-N_- = Theta_++Theta_-
+          = e_T(U,V setminus S)
+          = e_T(U,S setminus U)                  (mod 2). (73rnz_y)
+```
+
+The last equality is exactly Eulerian cut parity for T.  Summing (20) over U
+and using Eulerianity of K gives the parallel identity
+
+```text
+e_K(U,V setminus S)=e_K(U,S setminus U)
+                   =e_T(U,S setminus U)           (mod 2). (73rnz_z)
+```
+
+Therefore the K machinery supplies no additional zero: it identifies the
+slack parity with the internal T/K boundary of the occurrence support.  An
+F2 rigidity argument would close if that internal boundary were even, but
+its evenness is a new simultaneous statement, not a consequence of (20).
+This prevents treating the local K-parity as a completed conservation law
+and isolates the exact parity lemma still required.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
