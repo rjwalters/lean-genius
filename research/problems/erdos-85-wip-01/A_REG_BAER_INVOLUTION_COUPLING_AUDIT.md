@@ -5674,6 +5674,25 @@ the port, and the active boundary identity (714)--(715) gives
 q_y(h_p)=t_y=1.                                       (73rnz_cjibkzzzh)
 ```
 
+The full support inside the selected curl is also exact.  Let `x_y in C`
+and `p_y in Z` be the unique inside root and port of an exported `y`.  They
+are nonincident by the same rooted-V exclusion.  The root cycle has exactly
+two H edges at `x_y`; let their distinct indexing ports be `p_y^-` and
+`p_y^+`.  At each of those two H wedges, `y` meets the root and no port, while
+at the H wedge indexed by `p_y` it meets the port and no root.  Therefore
+
+```text
+q_y=1 at exactly the three selected H positions
+        p_y^-, p_y^+, p_y,
+and p_y notin {p_y^-,p_y^+}.                          (73rnz_cjibkzzzha)
+```
+
+Their total mass is `3=1 mod 2`.  Thus an odd exported-overlap population
+produces an odd active `q_y` wedge mass even before different labels are
+aggregated.  The three-position description retains which occurrence is
+the port crossing and which two arise from the root crossing, the role data
+needed by the subsequent interval/owner transport.
+
 Consequently the odd export in color `a` is literally an odd population of
 active `q_y` boundary occurrences in the established run-interval ledger,
 with the additional `c`-boundary crossing retained as its owner-sensitive
