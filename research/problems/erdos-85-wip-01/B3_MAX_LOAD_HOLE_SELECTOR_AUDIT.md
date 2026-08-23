@@ -154,6 +154,18 @@ the symmetric class-2 run has a scale-two witness `107 < 108`.
 Thus one full regular class sharpens the model but does not close branch 3;
 the still-unresolved boundary genuinely couples both non-diagonal classes.
 
+The staged cross-class test is sharper.  The standalone
+`q9_regular_class_extension_probe.py` first generates an outer admitting one
+entire regular class under both cross-hole constraints, freezes every outer
+class/block/core variable, and asks for the other class.  In the class-1 to
+class-2 direction the source solved SAT in 93 seconds and the fixed extension
+was UNSAT in 0.35 seconds.  Symmetrically, a class-2 source solved in 80
+seconds and its class-1 extension was UNSAT in 0.33 seconds.  This is strong
+evidence for a direct incompatibility between the two exact regular-class
+complement partitions, not merely a sampling artifact.  It is not yet a
+solver certificate or theorem: the simultaneous seed-free system remains
+UNKNOWN, and other one-class source models may conceivably extend.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
