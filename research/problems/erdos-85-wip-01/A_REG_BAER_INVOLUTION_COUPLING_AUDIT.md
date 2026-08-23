@@ -3526,9 +3526,28 @@ deg_Omega(E_i, X setminus {p_i})=0               (mod 2), (73rnz_cd)
 
 for each pole separately.  Thus each pole has an odd cross-matching demand
 but an even restricted `Omega` degree: the universal complement bit between
-`A^3` and `M_Omega` is the entire parity discrepancy.  The remaining
-label-sensitive terminal must pair two individually odd matching ledgers;
-there is no ordinary-mass escape in the minimum two-pencil branch.
+`A^3` and `M_Omega` is the entire parity discrepancy.  There is no
+ordinary-mass escape in the minimum two-pencil branch.
+
+However, the odd restricted ledger closes tautologically at its omitted
+endpoint.  From `Ax=h` and `Dh=h`,
+
+```text
+A^3 x=A^2h=Dh+h=0.
+```
+
+Therefore the full `A^3` row of either pole has even sum on X, and
+
+```text
+sum_(z in X setminus {p_i}) mu_(E_i,z)
+  = (A^3)_(E_i,p_i).                                    (73rnz_ce)
+```
+
+The endpoint pair is an A-edge.  Omega has no A-edges, so (9) gives
+`(A^3)_(E_i,p_i)=1`.  Thus (73rnz_cd)'s oddness is exactly the universal
+adjacent endpoint complement; by itself it is not an unpaid relay demand.
+Any terminal must retain a finer occurrence label that prevents this
+endpoint closure from being the whole story.
 
 The parallel SRP separator now identifies the exact topology such a terminal
 would need.  Its selected row--atom incidence graph is Eulerian; pairing at
@@ -3537,18 +3556,23 @@ class is the parity of the selected atom support.  Even support gives a local
 circuit and odd support gives a global cover.  This is the same distinction
 as the Baer quotient's pairing gauge and intrinsic bit `omega_Q`.
 
-For the two-pole state, (73rnz_cd) supplies the two odd boundary vertices.  If
+For the two-pole state, (73rnz_cd) supplies two odd *restricted* boundary
+vertices, while (73rnz_ce) shows that the omitted endpoints close them in the
+unlabeled `A^3` ledger.  If
 the individual `mu` occurrences can be placed in a relay-incidence graph in
-which every non-pole label has even degree, adjoining one formal pole--pole
-edge Eulerizes it.  The cycle containing that edge is then a pole-to-pole
-alternating trail, and its support parity is the common SRP/Baer constant
-class.  This is a conditional dictionary, not yet a terminal: (73rnz_ca)
-proves only the total cochain boundary, not evenness at every relay label.
+which every non-pole/non-endpoint label has even degree, and in which the two
+endpoint closures carry distinguishable owner labels, adjoining one formal
+pole--pole edge Eulerizes the remaining system.  The cycle containing that
+edge is then a pole-to-pole alternating trail, and its support parity is the
+common SRP/Baer constant class.  This is a conditional dictionary, not yet a
+terminal: (73rnz_ca) proves only the total cochain boundary, not evenness at
+every relay label or separation of the endpoint closures.
 The remaining precise task is therefore
 
 ```text
-construct relay labels for the mu occurrences and prove every
-non-pole relay has even incidence.                           (73rnz_ce GAP)
+construct occurrence labels for the mu atoms such that non-pole relays
+are even and the two adjacent endpoint closures cannot pay privately.
+                                                               (73rnz_cf GAP)
 ```
 
 Once (73rnz_ce) is available, the two odd pole demands cannot disappear into
