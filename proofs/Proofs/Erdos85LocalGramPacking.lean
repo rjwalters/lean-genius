@@ -1608,6 +1608,48 @@ theorem false_of_no_disjointLocalGramPackingPair
     exact hgram s t v hst hsv htv
   exact (hnone X Y hX hY) hdisjoint
 
+/-- Three-way integral packing consumer.  If three pairwise-conflicting rows
+admit no choice of pairwise-disjoint full local packings, an actual residual
+relation cannot realize them: its three neighborhood finsets would be such a
+choice. -/
+theorem false_of_no_pairwiseDisjointLocalGramPackingTriple
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (r s t : V) (hrs : W r s) (hrt : W r t) (hst : W s t)
+    (hnone : ∀ X Y Z,
+      IsLocalGramPacking H W d r X →
+      IsLocalGramPacking H W d s Y →
+      IsLocalGramPacking H W d t Z →
+      ¬ (Disjoint X Y ∧ Disjoint X Z ∧ Disjoint Y Z)) :
+    False := by
+  classical
+  let X := relationNeighborFinset A r
+  let Y := relationNeighborFinset A s
+  let Z := relationNeighborFinset A t
+  have hX : IsLocalGramPacking H W d r X :=
+    relationNeighborFinset_isLocalGramPacking
+      A H W d hsymm hdegree hsupport hgram r
+  have hY : IsLocalGramPacking H W d s Y :=
+    relationNeighborFinset_isLocalGramPacking
+      A H W d hsymm hdegree hsupport hgram s
+  have hZ : IsLocalGramPacking H W d t Z :=
+    relationNeighborFinset_isLocalGramPacking
+      A H W d hsymm hdegree hsupport hgram t
+  have pairDisjoint (u v : V) (huv : W u v) :
+      Disjoint (relationNeighborFinset A u) (relationNeighborFinset A v) := by
+    apply Finset.disjoint_left.mpr
+    intro w hwu hwv
+    have huw : A u w := (Finset.mem_filter.mp hwu).2
+    have hvw : A v w := (Finset.mem_filter.mp hwv).2
+    exact hgram u v w huv huw hvw
+  apply (hnone X Y Z hX hY hZ)
+  exact ⟨pairDisjoint r s hrs, pairDisjoint r t hrt,
+    pairDisjoint s t hst⟩
+
 /-- The Gram law and the fact that a shared block point creates a conflict
 imply the numeric point-capacity condition for characteristic neighborhood
 masses. -/
@@ -2586,6 +2628,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 
 #print axioms relationNeighborFinset_isLocalGramPacking
 #print axioms false_of_no_disjointLocalGramPackingPair
+#print axioms false_of_no_pairwiseDisjointLocalGramPackingTriple
 #print axioms sum_card_relationNeighborFinset_inter_fiber_eq_relationFiberLoad
 #print axioms relationIndicator_pointCapacity_of_sharedPoint
 #print axioms relationIndicator_isCanonicalFractionalIntervalExtension
