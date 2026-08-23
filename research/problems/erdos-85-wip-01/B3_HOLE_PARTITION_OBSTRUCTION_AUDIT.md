@@ -3085,6 +3085,26 @@ orthogonality support does not determine `T_R`.  Any terminal must also use
 the row-type/marked-group reciprocity, residual C4 common-neighbor structure,
 or another constraint absent from the pure `f`-factor model.
 
+Adding residual C4-freeness still does not determine the parity.  The mode
+`--audit-residual-c4-parity` builds the symmetric graph directly on the
+two-sided trace-orthogonal support, imposes degree five on regular triple
+rows and degree six on exceptional-hole and pair rows, and requires every
+two vertices to have at most one common residual neighbor.  On outer seed
+zero it finds
+
+```text
+branch 3: T_R parity 0 SAT; parity 1 SAT,
+branch 4: T_R parity 0 SAT; parity 1 SAT.
+```
+
+These are explicit failure certificates for the strengthened abstraction:
+exact degrees, two-sided trace support, and the internal residual C4 law
+together still admit both collision parities.  Thus the next terminal cannot
+come from residual C4-freeness alone.  It must use the mixed B0--U1
+common-neighbor budget (in particular the block-intersection Gram law), the
+marked-row defect reciprocity, or a stronger coupling that implies one of
+them.  No claim beyond the completed seed-zero witnesses is made.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
