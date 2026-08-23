@@ -3650,6 +3650,31 @@ commutator unless both endpoints are ordinary and every point of X is
 ordinary.  The activation problem has collapsed to this single pure-ordinary
 two-pencil residue.
 
+That residue has a forced mate relay.  For an ordinary endpoint `p_i`, let
+
+```text
+a_i=iota_(E_i)(p_i).
+```
+
+Then `a_i` lies on the pole line and is adjacent to `p_i`; it is the outside
+endpoint of the unique split Baer pair.  Since the pole line meets X only at
+`p_i`, one has `a_i notin X`.  Also `a_i` is not a pole, while
+`p_i in X intersect N_A(a_i)`.  The equation `Ax=h` therefore makes
+`deg_A(a_i,X)` even.  In the equality packing, every non-pole line center
+through `p_i` contains exactly two X-points, so there is a unique
+
+```text
+z_i in X setminus {p_i} with a_i z_i in A.               (73rnz_cl)
+```
+
+Thus the split pair cannot pay privately: it extends canonically to the
+marked relay `p_i--a_i--z_i`.  The two mate centers are distinct, since a
+common `a_1=a_2` would be a common A-neighbor of the D-adjacent empty poles,
+whose codegree is zero.  Hence the pure-ordinary residue supplies two actual
+owner-marked exits into X.  Combined with (73rnz_cj) and the both-leaf
+packing argument, every endpoint decoration now activates either an
+off-pole commutator unit or a canonical mate relay.
+
 The parallel SRP separator now identifies the exact topology such a terminal
 would need.  Its selected row--atom incidence graph is Eulerian; pairing at
 degree-four atoms is a gauge choice, while the pairing-independent constant
@@ -3665,9 +3690,9 @@ becomes relevant only after refining each endpoint parity into owner/mate
 occurrences.  The remaining precise task is therefore
 
 ```text
-couple forced off-pole commutator support to the gauge ledger, and exclude
-the pure-ordinary two-pencil residue X subset M.
-                                                               (73rnz_cl GAP)
+couple the forced off-pole commutator units / ordinary mate relays to the
+pairing-independent Omega/SRP gauge class.
+                                                               (73rnz_cm GAP)
 ```
 
 Equivalently, one needs a noncommuting marked operator whose endpoint value
