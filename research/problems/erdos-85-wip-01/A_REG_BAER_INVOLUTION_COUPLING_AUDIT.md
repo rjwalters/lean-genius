@@ -5612,6 +5612,35 @@ owner factor; its SRP export strictly changes color.  Any propagation cycle
 of these marks must use at least two distinct secondary colors, an additional
 constraint for the global pairing step.
 
+The aggregate destination set of the export is completely determined.  Let
+`(U_i,V_i)` be the incidence components of `R_ce`, with
+`(U_0,V_0)=(C,Z)`, and put
+
+```text
+s_i=|U_i| mod 2=|V_i| mod 2,
+t^a_(ij)=(R_ac 1_(U_i))^T(R_ae 1_(V_j)).
+```
+
+The audited rank-one interaction law (71)--(73) gives, since `s_0=1`,
+
+```text
+sum_(a != c,e) t^a_(0j)=s_j for every j.              (73rnz_cjibkzzze)
+```
+
+Thus every other odd incidence component receives an odd total of
+color-resolved component switches from the curl component, and every even
+component receives an even total.  Because the total shore order is even,
+the number of odd incidence components is even; hence there is an odd number
+of other odd targets.  Summing (73rnz_cjibkzzze) over `j != 0` recovers the
+odd off-diagonal propagation identity (69).
+
+This is stronger than choosing one witness color in
+(73rnz_cjibkzzzb): the uncolored target support is fixed exactly by component
+parity.  It still does not transport ownership.  The family of individual
+matrices `t^a` has the affine freedom (74)--(76), so a finish must retain the
+owner/internal geometry at the switch vertices (or the four-color curvature
+of (77)--(80)); component parity alone is exhausted.
+
 Thus the doubly closed odd port/root curl cannot remain an isolated debt:
 it exports an odd, fully located overlap mark to a third color.  This does
 not prove global cancellation of the exported marks; Sections 17 onward of
