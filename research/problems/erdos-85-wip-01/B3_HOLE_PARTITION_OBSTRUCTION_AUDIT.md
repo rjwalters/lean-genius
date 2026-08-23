@@ -4480,6 +4480,28 @@ opposite search—synthesizing one common relation with the outer design—but
 the unrestricted instance is currently UNKNOWN at 180 seconds, so this is a
 proof target rather than a computational closure claim.
 
+The two-row target localizes further under exhaustive support scans.  The CLI
+mode `--scan-exceptional-two-row-supports` solves and rationally verifies all
+`4*46` candidate supports `{hole,other}` and records row type, block
+intersection, mutual eligibility, prices, and margin.  Across the tracked
+payload, the refuting all-row payload, and three independently synthesized
+all-row-feasible payloads, every design has a certificate pairing an
+exceptional row with a **regular triple row**; counts of all exceptional
+two-row certificates are respectively `10,6,13,2,2`.  The newest hard model
+has only two: `{24,5}` and `{25,12}`, both with a regular triple partner.
+Thus the current sharp selector is finite and incidence-native:
+
+```text
+some exceptional triple h and regular triple t admit a strict symmetric
+row/point-price certificate supported on {h,t}.               (13aq)
+```
+
+The rows need not be mutually eligible, and their U1 blocks may be disjoint
+or meet in one point, so neither condition should be added to (13aq).  This
+five-model pattern is still empirical, but it replaces the diffuse
+“some two rows” statement by the exact `4 x 22` family whose outer-incidence
+selection must be proved.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
