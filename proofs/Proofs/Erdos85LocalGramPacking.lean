@@ -1741,6 +1741,85 @@ theorem false_of_regularExceptionalFixedPriceCertificate
   · norm_num [hregularDegree, hexceptionalDegree]
     exact hstrict
 
+/-- Direct dual form of the branch-4 `(5,6)` two-row obstruction.  Instead
+of asking for point prices, it asks for a strict upper bound on every pair of
+fractional eligible-neighbor packings coupled by `a v + b v ≤ 1`.  Applying
+that bound to the two characteristic residual neighborhoods gives the
+impossible inequality `17 < 17`. -/
+theorem false_of_regularExceptionalCoupledPackingBound
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (regular exceptional : V)
+    (hne : regular ≠ exceptional)
+    (hincident : ¬ Disjoint (B regular) (B exceptional))
+    (hregularDegree : d regular = 5)
+    (hexceptionalDegree : d exceptional = 6)
+    (hbound : ∀ a b : V → ℚ,
+      (∀ v, 0 ≤ a v) → (∀ v, 0 ≤ b v) →
+      (∀ v, a v ≠ 0 → H regular v) →
+      (∀ v, b v ≠ 0 → H exceptional v) →
+      (∀ p, (∑ v ∈ Finset.univ.filter fun z => p ∈ B z, a v) ≤ 1) →
+      (∀ p, (∑ v ∈ Finset.univ.filter fun z => p ∈ B z, b v) ≤ 1) →
+      (∀ v, a v + b v ≤ 1) →
+      (∑ v, a v) + 2 * ∑ v, b v < 17) :
+    False := by
+  classical
+  let a : V → ℚ := fun v => if A regular v then 1 else 0
+  let b : V → ℚ := fun v => if A exceptional v then 1 else 0
+  have hW : W regular exceptional := hshared regular exceptional hne hincident
+  have hab := hbound a b
+  have haNonneg : ∀ v, 0 ≤ a v := by
+    intro v
+    by_cases hA : A regular v <;> simp [a, hA]
+  have hbNonneg : ∀ v, 0 ≤ b v := by
+    intro v
+    by_cases hA : A exceptional v <;> simp [b, hA]
+  have haSupport : ∀ v, a v ≠ 0 → H regular v := by
+    intro v hav
+    apply hsupport regular v
+    by_contra hA
+    simp [a, hA] at hav
+  have hbSupport : ∀ v, b v ≠ 0 → H exceptional v := by
+    intro v hbv
+    apply hsupport exceptional v
+    by_contra hA
+    simp [b, hA] at hbv
+  have haCapacity : ∀ p,
+      (∑ v ∈ Finset.univ.filter fun z => p ∈ B z, a v) ≤ 1 := by
+    intro p
+    simpa [a] using relationIndicator_pointCapacity_of_sharedPoint
+      A W B hsymm hgram hshared regular p
+  have hbCapacity : ∀ p,
+      (∑ v ∈ Finset.univ.filter fun z => p ∈ B z, b v) ≤ 1 := by
+    intro p
+    simpa [b] using relationIndicator_pointCapacity_of_sharedPoint
+      A W B hsymm hgram hshared exceptional p
+  have hcollision : ∀ v, a v + b v ≤ 1 := by
+    intro v
+    by_cases har : A regular v
+    · have hnotExceptional : ¬ A exceptional v := by
+        intro hae
+        exact hgram regular exceptional v hW har hae
+      simp [a, b, har, hnotExceptional]
+    · by_cases hae : A exceptional v <;> simp [a, b, har, hae]
+  have hlt := hab haNonneg hbNonneg haSupport hbSupport
+    haCapacity hbCapacity hcollision
+  have haSum : (∑ v, a v) = (5 : ℚ) := by
+    rw [show (∑ v, a v) = ((relationNeighborFinset A regular).card : ℚ) by
+      simp [a, relationNeighborFinset]]
+    simp [hdegree regular, hregularDegree]
+  have hbSum : (∑ v, b v) = (6 : ℚ) := by
+    rw [show (∑ v, b v) = ((relationNeighborFinset A exceptional).card : ℚ) by
+      simp [b, relationNeighborFinset]]
+    simp [hdegree exceptional, hexceptionalDegree]
+  norm_num [haSum, hbSum] at hlt
+
 /-- End-to-end actual-relation consumer whose row-price dual is supported on
 three named rows, with independent rational weights.  This is the direct
 interface for the branch-3 exceptional/diagonal/incident-class certificate. -/
@@ -2338,6 +2417,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_no_canonicalFractionalIntervalExtension
 #print axioms false_of_twoRowSupportPointPriceCertificate
 #print axioms false_of_regularExceptionalFixedPriceCertificate
+#print axioms false_of_regularExceptionalCoupledPackingBound
 #print axioms false_of_threeRowSupportPointPriceCertificate
 #print axioms false_of_twoUnitSupportsPointPriceCertificate
 #print axioms false_of_scaledTwoUnitSupportsPointPriceCertificate
