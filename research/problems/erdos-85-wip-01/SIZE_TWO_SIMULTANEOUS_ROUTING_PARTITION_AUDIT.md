@@ -6216,3 +6216,63 @@ intermediate-pair coordinates give private edges, while the H/S marginal
 identities give their exact conservation defect.  No additional unlabeled
 count can refine this boundary; the missing datum is the canonical
 root-marked routing of each labeled source to a labeled sink.
+
+## 117. H-runs and S-paths supply the canonical closing transfer
+
+The transfer chain requested in (346) already exists combinatorially.  Keep
+only H darts and the matching edges whose two endpoints are H.  On a mixed
+dart cycle its components are the maximal H-runs; each is a path with two
+root H--V boundary darts.  If their resolved V labels are `ell,ell'`, attach
+the label edge `[ell,ell']`.  Summing these edges over the H-runs gives
+
+```text
+T_H(Z),       partial T_H(Z)=sum_ell h_ell(Z)[ell].    (347)
+```
+
+Likewise keep only S darts and S--S matching edges.  Every nontrivial path
+component has two port S--V handoffs; S-only cycle components have no
+boundary and contribute nothing.  Joining the two resolved V labels at the
+ends of each S-path gives
+
+```text
+T_S(Z),       partial T_S(Z)=sum_ell s_ell(Z)[ell].    (348)
+```
+
+Both pairings are canonical subgraphs of the one realized dart cycle—no
+choice of path decomposition or formal reverse occurrence is involved.
+Therefore
+
+```text
+T(Z):=T_H(Z)-T_S(Z),
+partial T(Z)=sum_ell(h_ell(Z)-s_ell(Z))[ell],
+partial(C_V(Z)+T(Z))=0.                               (349)
+```
+
+This upgrades Section 116: existence and canonicity of the closing transfer
+are proved.  The closed chain
+
+```text
+Xi(Z):=C_V(Z)+T_H(Z)-T_S(Z)                           (350)
+```
+
+retains every intermediate pair on V--V turns, every pair of marked-run
+boundary labels, and every pair of switch-handoff labels.
+
+Here the pair module is enlarged to allow a diagonal generator `[ell,ell]`
+with boundary `2[ell]`, since the two ends of an H-run or S-path may carry
+the same resolved label.  Equivalently one may first distinguish the two
+endpoint occurrences and then project to labels.  No injectivity is claimed
+for the transfer edges; privacy remains supplied by the V--V coordinates of
+Section 113.
+
+The remaining gap theorem is now precisely:
+
+```text
+the canonical closed chain Xi(Z) has trivial signed holonomy in the
+marked-grading character.                              (351)
+```
+
+The root-marked primitive compatibility is no longer needed to manufacture
+or close a transfer chain.  Its sole job is to evaluate the homology class
+of the explicit chain (350) and prove (351).  This is the narrowest
+direction-sensitive formulation reached so far.
