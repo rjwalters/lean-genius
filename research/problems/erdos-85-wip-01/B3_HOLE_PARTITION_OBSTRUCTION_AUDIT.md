@@ -4051,6 +4051,17 @@ shows that sixth-integral prices suffice for every admissible outer design—
 but it replaces the observed denominator 46 LP vertex by a much smaller
 integer ledger and gives a concrete target for outer arithmetic.
 
+One promising selector must retain the same scope discipline.  Among the
+four serious survivors, `13t` is the only payload whose cubic U1 core `K` is
+triangle-free; each other model has a strict rational full-fiber cover at a
+triangle vertex.  However this is false in the outer-only relaxation:
+branch-3 fresh seed 3 has triangle vertices `{4,8,19}` and none of their
+fibers is strict, although other points do have strict fibers.  Moreover even
+serious `13f` has no *integral* strict cover at a triangle vertex.  Thus a
+triangle-versus-triangle-free proof split remains plausible only if the
+triangle horn uses the local base-feasibility consequences and rational
+prices.  Triangle incidence alone is insufficient.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
