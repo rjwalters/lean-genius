@@ -2046,6 +2046,21 @@ equals cross-mark status plus the parity of triangle-free witness edges.
 This is the empty-line-transversal version of the outward signed residue in
 the simultaneous transport terminal.
 
+There is also a sharp crossed-mark exclusion.  If `tau_i=1`, then the marked
+edge `z_iw_i` lies in T and has no common A-neighbor.  Since `z_1z_2 in A`,
+the opposite endpoint cannot be adjacent to `w_i`:
+
+```text
+tau_i=1  implies  z_(3-i) w_i is not in A.                (73rnl)
+```
+
+In particular, if `w_1=w_2`, then `tau_1+tau_2<=1`; the coincident-target
+state with both marked edges active in T is impossible (either marked edge
+would have the other owner endpoint as a common neighbor).  The remaining
+coincident cases have zero or one active marked edge, with (73rnk) fixing
+whether the two witness parities agree or differ.  This removes one of the
+four naive two-port phase states before any simultaneous transport input.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
