@@ -192,6 +192,15 @@ blocked searches were `UNKNOWN` at 154--300 seconds.  Thus the bad-row
 identity varies, while existence of a typed-deficient opposite-class row
 persists across the three one-class sources obtained so far.
 
+The first cross-hole hypothesis split gives a necessary ingredient.  Both
+regular classes together with both exact exceptional packs and the full-pack
+C4 overlap cap, but without hole reciprocity, are SAT (17 seconds).  Hence
+the cap alone cannot force the typed-deficient regular row.  The corresponding
+systems with neither cross-hole constraint and with reciprocity alone were
+both `UNKNOWN` after 180 seconds; the full reciprocity-plus-cap system remains
+`UNKNOWN` as before.  Any uniform cross-class contradiction must therefore
+spend hole reciprocity, possibly in essential combination with the cap.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
