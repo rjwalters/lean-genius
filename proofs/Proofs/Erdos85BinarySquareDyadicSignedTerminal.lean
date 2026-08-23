@@ -1006,6 +1006,21 @@ theorem binarySquare_twoPort_phase_agreement
   use k₁ + k₂ - ownerPhase
   omega
 
+/-- If two owner endpoints share the same marked defect target, neither
+marked pair can also be an edge.  Otherwise that endpoint, together with the
+owner edge, is a common neighbor of the opposite marked pair. -/
+theorem binarySquare_coincident_mark_no_active
+    {V : Type*} (G : SimpleGraph V) {z₁ z₂ w : V}
+    (howner : G.Adj z₁ z₂)
+    (hmarkNoCommon₁ : ∀ v, G.Adj z₁ v → G.Adj w v → False)
+    (hmarkNoCommon₂ : ∀ v, G.Adj z₂ v → G.Adj w v → False) :
+    ¬ G.Adj z₁ w ∧ ¬ G.Adj z₂ w := by
+  constructor
+  · intro hactive₁
+    exact hmarkNoCommon₂ z₁ howner.symm hactive₁.symm
+  · intro hactive₂
+    exact hmarkNoCommon₁ z₂ howner hactive₂.symm
+
 end
 
 end Erdos85
@@ -1048,3 +1063,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_saturatedMixed_hEqF_impossible
 #print axioms Erdos85.binarySquare_no_singleton_partialBaer_core
 #print axioms Erdos85.binarySquare_twoPort_phase_agreement
+#print axioms Erdos85.binarySquare_coincident_mark_no_active
