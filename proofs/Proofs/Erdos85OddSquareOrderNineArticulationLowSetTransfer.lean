@@ -2504,6 +2504,122 @@ theorem false_of_orderNine_order34_three_edge_owner_W_one_partner_split
   rw [hKTcard] at hle
   omega
 
+/-- End-to-end corrected three-edge `(3,1)` assembly.  On an ordinary shore,
+the owner's original neighbors split exactly into the three exceptional
+bin-zero points and the three bin-one partners.  The punctured `1/2` degree
+formula and FullType first force the exceptional `2+1` shore split; the
+owner's `3+3` ordinary-neighbor split then forces two partners off `S`, and
+equation (25) contradicts the partner bound. -/
+theorem false_of_orderNine_order34_three_edge_owner_W_one_punctured
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hloc : (G.induce (G.neighborSet owner)).edgeFinset.card = 3)
+    (S T Z P W : Finset V)
+    (hSsub : S ⊆ (Finset.univ : Finset V) \
+      squareOrderHighVertices G 9)
+    (hdisjST : Disjoint S T)
+    (hownerS : (G.neighborFinset owner ∩ S).card = 3)
+    (hpartnersSub : G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 1 ⊆ S ∪ T)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0)
+    (hWcard : W.card = 2)
+    (hownerW : (G.neighborFinset owner ∩ W).card = 1)
+    (hTotalDefectS :
+      (((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) ∩ S).card = 2)
+    (hZdegree : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset owner),
+      (G.neighborFinset y ∩ Z).card = if y ∈ S then 1 else 2)
+    (hpartnerWdegree : ∀ z ∈
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1) ∩ T),
+      (G.neighborFinset z ∩ W).card = 1) : False := by
+  classical
+  let A := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0
+  let E := A ∩ (secondOrderDefectGraph G).neighborFinset owner
+  let K := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1
+  have hcensus :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hcensus
+  have hAcard : A.card = 3 := by simpa [A] using hcensus.2.2
+  have heq :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  have hprofile :=
+    squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  have hEcard : E.card = 3 := by
+    have hEtf : E = triangleFreeNeighbors G owner := by
+      simpa [E, A] using heq
+    rw [hEtf]
+    rcases hprofile with hthree | hfour
+    · exact hthree.2.1
+    · omega
+  have hEA : E = A := by
+    apply Finset.eq_of_subset_of_card_le
+    · exact Finset.inter_subset_left
+    · rw [hEcard, hAcard]
+  have hExceptionalS :=
+    orderNine_order34_three_edge_owner_W_one_exceptional_split
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hloc
+        S Z P W hpartition hPsub hWcard hownerW hTotalDefectS hZdegree
+  have hownerSPartition : G.neighborFinset owner ∩ S =
+      (E ∩ S) ∪ (K ∩ S) := by
+    ext y
+    constructor
+    · intro hy
+      have hyParts := Finset.mem_inter.mp hy
+      have hyOrd := hSsub hyParts.2
+      have hne : y ≠ owner := by
+        intro h
+        subst y
+        exact G.loopless.irrefl owner
+          ((G.mem_neighborFinset owner owner).mp hyParts.1)
+      have hle := orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+        G hp hhigh hc2 hc3 owner y howner hyOrd hne
+      have hk : squareOrderHighIncidenceCount G 9 y = 0 ∨
+          squareOrderHighIncidenceCount G 9 y = 1 := by omega
+      rcases hk with hk | hk
+      · have hyA : y ∈ A := Finset.mem_inter.mpr ⟨hyParts.1,
+          Finset.mem_filter.mpr ⟨hyOrd, hk⟩⟩
+        exact Finset.mem_union_left _ (Finset.mem_inter.mpr
+          ⟨by rw [hEA]; exact hyA, hyParts.2⟩)
+      · have hyK : y ∈ K := Finset.mem_inter.mpr ⟨hyParts.1,
+          Finset.mem_filter.mpr ⟨hyOrd, hk⟩⟩
+        exact Finset.mem_union_right _ (Finset.mem_inter.mpr
+          ⟨hyK, hyParts.2⟩)
+    · intro hy
+      rcases Finset.mem_union.mp hy with hy | hy
+      · have hyParts := Finset.mem_inter.mp hy
+        have hyE := Finset.mem_inter.mp hyParts.1
+        have hyA := Finset.mem_inter.mp hyE.1
+        exact Finset.mem_inter.mpr ⟨hyA.1, hyParts.2⟩
+      · have hyParts := Finset.mem_inter.mp hy
+        have hyK := Finset.mem_inter.mp hyParts.1
+        exact Finset.mem_inter.mpr ⟨hyK.1, hyParts.2⟩
+  exact false_of_orderNine_order34_three_edge_owner_W_one_partner_split
+    G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner S T W
+      hdisjST hownerS (by simpa [E, A] using hExceptionalS)
+      (by simpa [E, A, K] using hownerSPartition)
+      (by simpa [K] using hpartnersSub) hWsub hWcard hownerW
+      (by simpa [K] using hpartnerWdegree)
+
 end
 
 end Erdos85
