@@ -2148,6 +2148,22 @@ sum--difference identity; unlike the local phase table, it uses all empty
 fibers at once and is therefore a plausible input for separating the
 remaining rows of (73rnn).
 
+On the inside shore the same identity is completely sharp.  Both `z_i` have
+exactly one D-neighbor in S, namely `w_i`.  Since w itself vanishes on S,
+(73rny) gives the vector identity
+
+```text
+(A^2 w)|_S = -1_(w_1)+1_(w_2).                            (73rnz)
+```
+
+The right side cancels when the marks coincide and is the exact oriented
+two-port difference when they are distinct.  There is no residual term.
+Consequently the blockwise-balanced outside current (73rnx), after two
+A-steps, transports into precisely the cross-shore mark difference.  This
+is the clean sum-to-difference compatibility sought in the simultaneous
+transport lane, now forced directly by the adjacency-square/defect identity
+at the extreme saturated endpoint.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
