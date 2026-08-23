@@ -6830,3 +6830,49 @@ by itself show that every `sigma`-resolved subledger vanishes.  Nor does
 side has only the bounded C6 stars of Section 127 left, while the mixed-cycle
 conservation side remains a new SRP identity rather than a consequence of
 the old primitive.
+
+## 129. Full source-decoration resolution has exact mixed-cycle conservation
+
+Although (92) is unavailable on a mixed dart cycle, the H/V/S partition
+supplies a genuine occurrence-level balance for every local secondary atom.
+Let `f_H,f_S`, and `f_ell` be the indicators of the exclusive dart
+decorations.  Then
+
+```text
+f_H+f_S+sum_ell f_ell = 1_D.                           (386)
+```
+
+Both matching matrices have row and column sums one, so for every dart
+observable `q_u`,
+
+```text
+D_(1_D,q_u)=1_D^T(M_R-M_P)q_u=0.                      (387)
+```
+
+By linearity, (386)--(387) give the intermediate-resolved conservation law
+
+```text
+D_(f_H,q_u)+D_(f_S,q_u)+sum_ell D_(f_ell,q_u)=0
+                                                    for every u. (388)
+```
+
+The V terms in (388) are exactly the cross-tag boundaries (364).  The H and
+S terms are the corresponding secondary-census correlations in the sectors
+whose unlabeled marginals produced the H-run and S-path transfers of
+Sections 114--117; identifying their mate-resolved pieces with those
+canonical transfers is part of the marked refinement.  The **complete
+decorated source ledger is conserved on every mixed dart cycle**, with no
+appeal to the closed-owner-run primitive.
+
+Equation (388) is a marginal identity and does not prove marked holonomy:
+the marked character weights the H/V/S transition types differently, and
+the mate-decoration refinement (373) splits terms that (388) still sums.
+But it cleanly separates the remaining tasks:
+
+```text
+base conservation: proved by (388);
+marked conservation: show the character-weighted and mate-resolved
+                     refinement remains in the conserved subspace.       (389)
+```
+
+This is the correct mixed-branch replacement for the invalid use of (92).
