@@ -288,6 +288,32 @@ theorem orderNine_order27_largeShore_profile_package
   norm_num at hx ⊢
   convert hx using 1 <;> ring
 
+/-- Equation (20) evaluated at an isolated high root puts all ten of its
+neighbors in the 36-point low set. -/
+theorem orderNine_order27_highRoot_neighbors_subset_lowSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (B Z H : Finset V) (h : V)
+    (hhH : h ∈ H) (hhB : h ∉ B)
+    (hdeg : G.degree h = 10)
+    (hDzero : ((secondOrderDefectGraph G).neighborFinset h ∩ B).card = 0)
+    (heq20 : ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+        8 * (if x ∈ B then 1 else 0) - 4 -
+          6 * (if x ∈ H then 1 else 0) +
+          ((G.neighborFinset x ∩ Z).card : ℤ)) :
+    G.neighborFinset h ⊆ Z := by
+  have heq := heq20 h
+  rw [hDzero] at heq
+  simp [hhH, hhB] at heq
+  have hcard : (G.neighborFinset h ∩ Z).card =
+      (G.neighborFinset h).card := by
+    rw [G.card_neighborFinset_eq_degree, hdeg]
+    omega
+  exact Finset.inter_eq_left.mp (Finset.eq_of_subset_of_card_le
+    Finset.inter_subset_left (by omega :
+      (G.neighborFinset h).card ≤ (G.neighborFinset h ∩ Z).card))
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -451,6 +477,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_high_neighbor_large_card_eq_six
 #print axioms orderNine_order27_explicitPartition_of_large_boundary
 #print axioms orderNine_order27_largeShore_profile_package
+#print axioms orderNine_order27_highRoot_neighbors_subset_lowSet
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
