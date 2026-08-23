@@ -20329,3 +20329,65 @@ and all one-sided strict corrections, contribute to the group action but
 can never by themselves realize the shortest stationary holonomy.  Any
 two-letter obstruction is concentrated at equality of two explicitly
 located strict outside mates together with their color separation.
+## 384. Every two-root product has five unpaired orbit components
+
+The fixed-set law has an exact orbit-level refinement.  Fix distinct roots
+`i,j`, put
+
+```text
+c_ij:=|F_i intersect F_j|,
+pi_ij:=sigma_j sigma_i,
+```
+
+and form the two-colored graph `Gamma_ij` on `U` whose `i`-edges are the
+transpositions of `sigma_i` and whose `j`-edges are the transpositions of
+`sigma_j`.  A vertex outside `F_i union F_j` has one edge of each color, a
+vertex in the symmetric difference has degree one, and a common fixed
+vertex is isolated.  Moreover an `i`-edge and a `j`-edge can never coincide:
+such a shared transposition would give equal moving images, excluded by
+(1330).  Hence every nontrivial component is either an alternating path or
+an alternating even cycle.
+
+There are `5-c_ij` vertices of each of the two types
+`F_i setminus F_j` and `F_j setminus F_i`.  These are precisely the degree-one
+vertices of `Gamma_ij`, so the component census is
+
+```text
+c_ij isolated common fixed vertices;
+5-c_ij alternating path components;
+h_ij alternating cycle components                 (1337)
+```
+
+for some `h_ij>=0`.  This statement does not require a path to join opposite
+fixed-set types: paths with two endpoints of the same type may occur, but
+the total endpoint balance pairs them globally.
+
+The action of `pi_ij` on these components is standard but useful here.  On
+an alternating path, successively applying the `i`- and `j`-matchings walks
+through all path vertices and closes them into one permutation cycle.  On
+an alternating cycle of length `2m`, it advances by two edges and therefore
+splits the component into two permutation cycles of the same length `m`.
+Each isolated vertex is a fixed point.  Consequently
+
+```text
+#Orbits(pi_ij on U)
+ =c_ij+(5-c_ij)+2h_ij
+ =5+2h_ij.                                         (1338)
+```
+
+In particular every two-root product has an odd number of permutation
+orbits, with exactly five unpaired component-orbits; every remaining orbit
+occurs with an equal-length partner coming from the other parity class of
+one alternating cycle.  The vertex count also gives the coarse capacity
+
+```text
+2q-5>=c_ij+2(5-c_ij)+4h_ij,
+h_ij<=floor((2q-15+c_ij)/4).                       (1339)
+```
+
+Equations (1337)--(1339) upgrade the pairwise trace data `|Fix(pi_ij)|` to
+an exact cycle-type normal form.  They still do not force a contradiction:
+the five path/fixed orbits may have arbitrary lengths.  Their value is that
+any longer holonomy or character argument may treat all closed alternating
+components in paired blocks and isolate a bounded set of exactly five
+unpaired two-root orbits.
