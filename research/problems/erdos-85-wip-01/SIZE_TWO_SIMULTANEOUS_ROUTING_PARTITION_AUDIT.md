@@ -4217,3 +4217,70 @@ remaining search.  Any closing functional using only boundary-local signed
 marks has the fixed alternating root phase, and all additional information
 must enter through off-diagonal roots, actual source ports, or color-specific
 transport.
+
+## 77. The paired other-root functional exposes four outward adjacencies
+
+Section 75 points to the other roots `a_-` and `a_+` as the smallest
+off-diagonal enlargement.  Let `q_-` be the other member of `Y_e(a_-)`
+besides `p_-`, and define `q_+` similarly.  Use the multiplicity-sensitive
+test vector
+
+```text
+mu := 1_(a_-) + 1_(a_+).
+```
+
+(Thus `mu=2 1_a` if the two other roots coincide.)  The source-endpoint
+term again vanishes:
+
+```text
+mu^T A_c R_ce w = 0.                                  (253)
+```
+
+Indeed, Section 74 proved entrywise that neither `a_-` nor `a_+` is adjacent
+in `A_c` to either run root.  In the remaining difference
+`1_(a_-)-1_(a_+)`, the possible cross-edge `a_-a_+` contributes once with
+each sign and cancels by symmetry; this also covers the coincident-root
+case.
+
+On the reverse endpoint side,
+
+```text
+R_ec mu = 1_(p_-)+1_(q_-)+1_(p_+)+1_(q_+).
+```
+
+The `p_-` and `p_+` rows cancel against
+`w=1_(p_-)-1_(p_+)` by symmetry of `A_e`.  Therefore the entire endpoint
+residue is the explicit four-entry quantity
+
+```text
+epsilon_e
+  := A_e(q_-,p_-) - A_e(q_-,p_+)
+   + A_e(q_+,p_-) - A_e(q_+,p_+),
+
+mu^T R_ce A_e w = epsilon_e.                          (254)
+```
+
+Pairing (243) with `mu` gives the first non-diagonal third-color identity
+
+```text
+sum_(d != c,e) mu^T R_cd R_de 1_(p_-)
+  - sum_(d != c,e) mu^T R_cd R_de 1_(p_+)
+  = -epsilon_e.                                       (255)
+```
+
+Unlike (250), this is not determined by the two known boundary units at
+`x_-` and `x_+`: it samples third-color routing at the outward roots.  The
+same-fiber entries in (254) have a direct owner interpretation.
+Specifically, `A_e(q_-,p_-)=b_(a_-,e)` and
+`A_e(q_+,p_+)=b_(a_+,e)` are the two rooted fiber-switch bits.  Since the
+edges labelled `p_-` and `p_+` are unmarked, the corresponding owner counts
+are at most one, and the rooted budgets constrain these bits together with
+the outward vertical demands.  The two crossed entries are the remaining
+uncontrolled terms.
+
+Thus the one-edge terminal has been reduced to a four-bit outward residue,
+not closed outright.  A C4 exclusion or complementary-gap pairing that
+controls the crossed entries `A_e(q_-,p_+)` and `A_e(q_+,p_-)` would turn
+(255) into an owner-boundary equation.  This is strictly beyond diagonal
+root reweighting and gives a concrete local target for the port-side
+enrichment.
