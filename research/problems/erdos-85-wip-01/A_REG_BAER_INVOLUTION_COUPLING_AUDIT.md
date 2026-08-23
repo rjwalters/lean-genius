@@ -2430,6 +2430,40 @@ coordinates and `q-2` unshared pairs.  The shared part is now the same
 two-port size as the `a=1` endpoint, while the even `q-2` residue carries
 the genuinely new occurrence-flow content.
 
+This two-line system is an exact cross-shore kernel, not only a count on Z.
+Put `w=1_X-1_Y` and let `L_X=N_A(X)`, `L_Y=N_A(Y)`.  Since both lines are
+full, they lie in S, and
+
+```text
+h:=Aw=1_(L_X)-1_(L_Y) is supported on S.                 (73rnz_m)
+```
+
+The endpoints `X,Y` have identical D-status at every outside vertex.  Every
+outside empty center is D-adjacent to both; no outside full center is
+D-adjacent to either because `D[F]` is empty; and the cross-shore D-degree r
+of each private endpoint is already exhausted by the r empty centers, so no
+ordinary outside point is D-adjacent to either.  Hence `Dw` vanishes outside
+S.  Using `1^T w=0` in the square identity gives
+
+```text
+(Ah)|_(V setminus S)=(A^2w)|_(V setminus S)=0.           (73rnz_n)
+```
+
+Equivalently, if B is the A-incidence block from S to its complement, then
+both `w` and `h` lie in `ker(B^T)`.  They are independent: h is nonzero on
+the points of `L_X setminus (L_Y union {Y})`, where w vanishes.  Thus
+
+```text
+nullity(B^T)>=2.                                         (73rnz_o)
+```
+
+Coordinatewise, every outside full or ordinary vertex has one common
+neighbor with X and one with Y, while an outside empty center has zero with
+both.  The signed line current therefore balances at every outside
+occurrence simultaneously.  This is a closed aggregate transport identity
+for the `a=2,s=0` branch, obtained without pairing individual transversal
+labels or assuming a token-cycle closure.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
