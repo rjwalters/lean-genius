@@ -25723,3 +25723,42 @@ and the stated rolewise global counts.  They do not yet exclude a color
 used in one role at one center from occurring in a different role at
 another center.  The gain is an exact five-root local normal form, rather
 than only the two saturated turns recorded in Section 486.
+
+## 488. A linear double-saturation subfamily is globally color-rainbow
+
+Build a conflict graph on the `k` centers of Section 487.  Join two centers
+when their three-element color sets `{h_a,g_a,ell_a}` intersect.  A fixed
+color occurs as a primary `h`-color at at most one center, by the selected-
+color separation in Section 477.  It occurs as a complementary `g`-color
+at at most two centers, by the fixed-`u` rootwise cap, and as a singleton
+`ell`-color at at most two centers, by the fixed-`x` cap.  Because the three
+roles are distinct locally, the color therefore occurs at no more than
+
+```text
+1+2+2=5 centers across all three roles.           (1728)
+```
+
+Each of a center's three colors can consequently conflict with at most
+four other centers.  The conflict graph has maximum degree at most twelve,
+so greedy independent-set selection retains a subfamily of size
+
+```text
+m>=ceil(k/13)>=ceil(t/78).                        (1729)
+```
+
+The three colors at one retained center are distinct by (1725), and
+independence makes the color sets of different retained centers disjoint.
+Thus this subfamily uses exactly `3m` pairwise different displayed colors.
+All of its rooted-star gadgets remain vertex-disjoint and fully payer-
+separated, giving the simultaneous terminal
+
+```text
+m>=ceil(t/78) separated 2+2+1 centers,
+3m globally distinct displayed source colors,
+m distinct payer layers at each of the five fixed ports.        (1730)
+```
+
+This removes the cross-role equality caveat from Section 487 at only a
+constant-factor loss.  It produces a literal five-root normal form whose
+three local color roles are globally rainbow while the full companion and
+payer geometry of the separated stars is preserved.
