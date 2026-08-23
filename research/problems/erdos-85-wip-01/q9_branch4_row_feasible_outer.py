@@ -33,7 +33,8 @@ from q9_symmetric_point_mass_obstruction import (
 
 
 def build_row_feasible(timeout_seconds: int, denominator: int,
-                       rows: list[int], template: dict | None = None):
+                       rows: list[int], shared_integral_relation: bool,
+                       template: dict | None = None):
     solver, data = build(
         4, timeout_seconds * 1000, True, outer_seed=template,
         relax=OUTER_ONLY_RELAX
@@ -56,6 +57,31 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
             Implies(incidence[v, point], Not(core(u, point)))
             for point in range(N_U1)
         ])
+
+    if shared_integral_relation:
+        relation = {
+            (u, v): Bool(f"shared_relation_{u}_{v}")
+            for u in range(N) for v in range(u + 1, N)
+        }
+
+        def rel(u: int, v: int):
+            return False if u == v else relation[min(u, v), max(u, v)]
+
+        for u in range(N):
+            degree = 6 if u >= N_TRIPLE - 4 else 5
+            solver.add(Sum([
+                If(rel(u, v), 1, 0) for v in range(N) if v != u
+            ]) == degree)
+            for point in range(N_U1):
+                solver.add(Sum([
+                    If(And(rel(u, v), incidence[v, point]), 1, 0)
+                    for v in range(N) if v != u
+                ]) <= 1)
+        for u in range(N):
+            for v in range(u + 1, N):
+                solver.add(Implies(rel(u, v), And(
+                    eligible(u, v), eligible(v, u)
+                )))
 
     packing = {}
     for u in rows:
@@ -104,6 +130,11 @@ def main() -> None:
         "--all-rows", action="store_true",
         help="impose the packing condition on all 47 rows",
     )
+    parser.add_argument(
+        "--shared-integral-relation", action="store_true",
+        help=("also synthesize one common symmetric 0/1 relation with all "
+              "row degrees, mutual eligibility, and point capacities"),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
@@ -114,7 +145,8 @@ def main() -> None:
         parser.error("--rows entries must lie in 0..46")
     template = json.loads(args.template.read_text()) if args.template else None
     solver, data = build_row_feasible(
-        args.timeout_seconds, args.denominator, rows, template=template
+        args.timeout_seconds, args.denominator, rows,
+        args.shared_integral_relation, template=template
     )
     solver.set(random_seed=args.random_seed)
     result = solver.check()
