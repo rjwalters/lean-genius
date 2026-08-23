@@ -16011,3 +16011,56 @@ the underlying private labels in the explicit residual chain of (998).
 The remaining price must now pay an actual label population of the size
 shown in (1009), rather than a collection of pointwise witnesses which
 could disappear before aggregation.
+
+## 312. The selected escapes obey an exact residual-shore capacity bound
+
+The disjointness in Section 311 converts the label charge into an integer
+capacity inequality.  Every path `Pi_w` consists of a path in
+`F_a[e][S]` followed by its terminal cut edge.  Thus all of its vertices
+except `o_w` lie in `S`.  Two edge-disjoint paths in a two-factor cannot
+share an `S`-vertex: an internal shared vertex would require more than its
+two factor edges, while a shared initial vertex would contradict the
+distinctness of the `W_I` endpoints.  Hence the paths are vertex-disjoint
+on `S`.
+
+A path of `ell` factor edges from `S` to `e\S`, with all preceding vertices
+in `S`, uses exactly `ell` vertices of `S`.  Therefore (1007) gives
+
+```text
+sum_(w in W_I)|E(Pi_w)|<=|S|.                       (1010)
+```
+
+The left side can be evaluated using the residue `J`.  A local occurrence
+has `Pi_w=[y'_w]`, so its length is one and its contribution to `J` is one.
+Every nonlocal path has its two distinct inactive endpoint labels plus
+`Pi_w^int`.  Put `L^loc:=disjoint_union_(x in C)L_x^loc` and
+`J:=sum_(x in C)J_x`.  Using the support-disjoint union (1008),
+
+```text
+sum_(w in W_I)|E(Pi_w)|
+ =2|W_I|-2|L^loc|+|supp(J)|.                        (1011)
+```
+
+The supports of the `J_x` are disjoint by (1007), so
+`|supp(J)|=sum_x|supp(J_x)|`.  Consequently
+
+```text
+2|W_I|-2|L^loc|+|supp(J)|<=|S|.                    (1012)
+```
+
+The located shore satisfies `S subset O`, and (846) gives
+`|O|=2q-15`.  Combining (1009)--(1012) yields the explicit pair of bounds
+
+```text
+2|W_I|-2|L^loc|+|supp(J)| <= |S| <= 2q-15,
+2|W_I|-|L^loc|+|W_I^in|   <= |S| <= 2q-15.         (1013)
+```
+
+This is the first integer capacity constraint on the full residual
+transport.  It charges one shore vertex for a local escape, at least two
+for every other transported occurrence, and a third for every
+inactive-overlap separator class from Section 309.  Unlike the preceding
+augmentation identities, (1013) can fail by magnitude; any continuation
+must fit the odd occurrence population, the local exceptions, and all
+forced separator labels inside the actual residual shore of order at most
+`2q-15`.
