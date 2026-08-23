@@ -22843,7 +22843,7 @@ Thus closed full-root components are not part of the bounded debris in
 Section 425.  They retain all five root actions internally and necessarily
 carry holonomy; only components that pay into the constant defect sector
 can be properly-colored-cycle-free.
-## 428. Full-root holonomy has linear disjoint packing mass
+## 427. Full-root holonomy has linear disjoint packing mass
 
 The induced-core surplus also survives passage from one cycle to a maximal
 packing.  Put
