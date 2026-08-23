@@ -5513,6 +5513,26 @@ re-enters the already constructed route-boundary ledger or upgrades to a
 two-factor odd-cycle holonomy; it is never an isolated cycle of only the
 secondary owner factor.
 
+More precisely, every edge of `B_C^c` lies not merely in `F_e[c]` but in
+the marked shore-`00` subgraph `K_00`: its indexing port belongs to `M_00`,
+so its two roots form the corresponding H edge and both roots have state
+`00`.  Therefore the zero-boundary branch of (73rnz_cjibkzzv) is a union of
+closed `K_00` cycle components.  Odd augmentation forces at least one odd
+`K_00` cycle, exactly the closed-run term counted in
+(73rnz_cjibkzz)/(683).  Thus the two previously visible curls merge:
+
+```text
+odd full port cycle with no root boundary
+ = an odd closed K_00 run indexed by the same port set
+   (possibly alongside even closed K_00 runs).        (73rnz_cjibkzzw)
+```
+
+The remaining simultaneous obstruction is consequently one object seen in
+two projections: an odd component cycle of the secondary/primal owner factor
+whose ports are all marked `00`, and an odd horizontal root cycle in
+`K_00`.  Any exclusion must compare those projections; neither factor's
+internal cycle identities can cancel it alone.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
