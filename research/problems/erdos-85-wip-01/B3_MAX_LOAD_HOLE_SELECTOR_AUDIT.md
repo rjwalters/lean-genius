@@ -50,15 +50,21 @@ fiber.  Even with `--residual-type-ledger`, the seed-free instance remained
 `UNKNOWN` after 120 seconds.  This is a well-scoped candidate horn, not yet a
 solver certificate or proof.
 
-For branch 4, incidence counting selects a hole row with at least two
-special-positive points, and every such row in the six tracked models has a
-strict special point even though singleton-special rows can fail.  The option
-`--multispecial-hole-row h` forces this horn and asserts the partial-mass
-negation only on the special fibers of row `h`.  The tracked serious witness
-at row 23 is `UNSAT` in under one second of solving; the unrestricted row-22
-instance with residual type ledgers remains `UNKNOWN` after 120 seconds.
-Thus the multi-special row is the sharp surviving branch-4 selector, but the
-outer/type equations still do not decide it without the DTB partition.
+For branch 4, every multi-special hole row in the six tracked models has a
+strict special point even though singleton-special rows can fail.  This is a
+conditional corpus horn only: global special mass six does **not** imply that
+two special occurrences lie in one hole row, and existence of such a row is
+still `UNKNOWN`.  The option `--multispecial-hole-row h` forces the conditional
+horn and asserts the partial-mass negation only on the special fibers of row
+`h`.  The tracked serious witness at row 23 is `UNSAT` in under one second of
+solving; the unrestricted row-22 instance with residual type ledgers remains
+`UNKNOWN` after 120 seconds.
+
+The cleaner unconditional branch-4 candidate is global: the two punctured
+regular classes miss exactly one point of each color, giving six special
+occurrences without requiring hole incidence.  All tracked models have a
+strict full fiber at one of these global special points.  This selector should
+supersede the conditional multispecial-hole horn.
 
 ## Proof decomposition exposed by the load
 
@@ -72,15 +78,13 @@ should be proved directly from their cardinality identities:
   28 or 29; the tracked branch-4 payload attains 29).
 
 Branch 3 therefore needs the genuinely strict improvement below 27.  In
-branch 4 the correct joint target is `C_p < 27 + special(p)` for some
-special-positive hole point.  The incidence lemma producing
-`special(p) > 0` cannot be separated from the cover choice: in the tracked
-branch-4 payload the unique maximum-load point `p=19` has target 29 but
+branch 4 the correct joint target is `C_p < 27 + special(p)` for some global
+special point.  The point choice cannot be separated from its cover: in the
+tracked branch-4 payload a maximum-load point `p=19` has target 29 but
 fractional optimum about 27.4 (and least integral cover 28), so the tempting
 stronger bound `C_p <= 27` at that selected point is false.  The positive
 special slack still relaxes branch 4 relative to branch 3, but both require a
-genuine coupled selector.  The exact DTB complement partition is the common
-structural input.
+genuine coupled selector.
 
 ## Refuted shortcuts
 
