@@ -22712,3 +22712,45 @@ ell>=5: at least ceil(ell/2) chosen-exit endpoints, all merging typed.
 This uses only shortest-cycle coloring and the genuine root/color degree
 caps.  It does not assume that the target-pair shadow graph is itself
 four-cycle-free.
+
+## 424. Root capacity gives the triangle genuine three-point expansion
+
+The exact triangle cut vector (1501) still forces vertex expansion, but
+through matching capacity rather than shadow four-cycle-freeness.  Let
+`W_partial` be the set of outside endpoints of all nine boundary edges of
+the triangle.  Each of the two roots absent from the cycle has boundary
+coordinate three.  Its three boundary edges belong to one matching and
+therefore have three distinct outside endpoints.  Hence
+
+```text
+|W_partial|>=3.                                    (1511)
+```
+
+More precisely, every collision bundle at an outside endpoint contains
+distinct roots, because each `G_i` has degree at most one there, and each
+exterior color occurs at most twice in that bundle.  Thus the valid local
+capacity statement is
+
+```text
+same outside endpoint -> all incident boundary roots are distinct;
+same outside endpoint and same exterior color -> multiplicity at most 2.
+                                                               (1512)
+```
+
+There is also a defect-sector consequence when the triangle is an entire
+component of `G_sh[O_5]`.  Then every one of its boundary endpoints lies
+in `S`.  For either root `i` absent from the triangle, those three matched
+endpoints are distinct from the hole set `H_i subseteq S`.  Consequently
+
+```text
+V(C_Q)=V(Q), ell=3
+ -> s>=3,
+ -> s>=|H_i|+3=2delta_i+2
+    for each of the two roots absent from Q.       (1513)
+```
+
+So the triangular exception cannot collapse to fewer than three outside
+companions, and an isolated full-root triangle consumes three nonhole
+vertices of the defect sector in each unused root matching.  This is
+weaker than the retracted nine-neighbor claim but is exact under the true
+shadow model and interfaces directly with the bounded hole budgets.
