@@ -12402,8 +12402,12 @@ ends:          A_(y_-)+A_(y_+) on the H cycle.        (747)
 This is stronger than retaining every private `A_y`, but it is not a claim
 that `E_* partial` is itself a boundary operator or that the strip has zero
 price.  That compatibility is exactly the remaining simultaneous H/V/S
-input.  Equation (704) already transports the `10` endpoint, and (707)
-transports the `01` union flag; the live theorem is now to identify their
-complementary transition chains with the two ends and the cross-factor
-strip in (747).  Any failure is localized to a mixed path and cannot be
-attributed to an unmatched internal active label.
+input.  The endpoint names `10` and `01` in this section refer only to the
+cut bits `(r_y,t_y)` from Section 240.  They are not the Baer shore states
+called `10` and `01` in Sections 229--230, so (704) and (707) cannot yet be
+applied to these endpoints.  The live theorem must first construct an
+owner- and role-resolved map from the two cut-sector endpoints and the strip
+in (747) to the complementary H/V/S transition chains and `01` union flags
+of those earlier sections, then prove that the resulting price is zero.
+Any failure is localized to a mixed path and cannot be attributed to an
+unmatched internal active label.
