@@ -23465,3 +23465,45 @@ minimum tag-even PC walk exposes a genuine saturated-color vertex, either
 at the original split or inside a finite nested repeated-edge chain.  The
 only remaining repetition pattern not charged this way is the antipodal
 equal-half case.
+
+## 438. Three visits force a pinch chain and a repeated base edge
+
+The pinch law becomes stronger when one base vertex occurs many times.
+Suppose `v` occurs `k>=3` times on the shortest tag-even PC walk `W` of
+Section 436.  List the occurrences cyclically and let
+`r_0,...,r_(k-1)` be the positive lengths of the consecutive gaps.  Then
+
+```text
+sum_j r_j=L,
+#{j:r_j<L/2}>=k-1.                                (1568)
+```
+
+Indeed at most one positive gap can be at least half the total length.
+Every gap counted on the right of (1568) is color-pinched by (1562).  If
+two consecutive gaps are both pinched, their pinch colors are different:
+the last edge of the first gap and the first edge of the second meet at
+the intervening occurrence of `v`, where `W` is properly colored.  Thus
+the `k-1` or more forced equalities form a chain
+
+```text
+color(outgoing edge at occurrence j)
+ =color(incoming edge at occurrence j+1),
+with consecutive defined pinch colors unequal.                  (1569)
+```
+
+There is also an unavoidable physical repetition.  The `k` visits use
+`2k>=6` traversal incidences at `v`, while `v in O_5` has only five
+physical incident shadow edges.  Hence some base edge incident with `v`
+is traversed at least twice.  Equivalently,
+
+```text
+v occurs at least three times -> W repeats a base edge;
+W is base-edge-simple         -> every base vertex occurs at most twice.
+                                                               (1570)
+```
+
+Therefore high base-state multiplicity is not a third independent
+obstruction: it automatically enters the repeated-edge branch of (1563),
+while carrying an explicit chain of alternating pinch colors.  If repeated
+edges are eliminated, the remaining nonsimple projection is a closed
+trail with vertex multiplicity at most two, a much smaller normal form.
