@@ -1327,24 +1327,42 @@ are the eighty root-own selected flags `(t,b)`.  Draw a directed edge
    `F_b'`, and `r_ub<=r_t'b'` coordinatewise.
 
 An uncharged cycle (12qw) is exactly a directed closed walk in this graph.
-In all 24 four-seed pair/design instances the graph has only 6--22 arcs, all
-recurrent strongly connected components have order two, four, or six, and
-there is no odd directed closed walk.  This suggests the precise terminal
+The first 24 four-seed pair/design instances had only 6--22 arcs, recurrent
+strongly connected components of order two, four, or six, and no odd
+directed closed walk.  This originally suggested
 
 ```text
-FLAT-HANDOFF BIPARTITENESS:
+FLAT-HANDOFF BIPARTITENESS (RETRACTED):
 the flat handoff graph of every admissible (Q,K) has no odd directed cycle.
                                                                (12qx)
 ```
 
-The observed bipartition is not an affine parity of the obvious state data:
+This is **false**, even after imposing local Hall feasibility.  In a branch-3
+outer witness generated at seed 8 with selected colors `(1,2)`, roots 6 and
+19 share selected label 22 and are reciprocal unique same-role occupants.
+Both root signatures are
+
+```text
+(role,n,c_pair,c_all) = (triple,13,14,19),
+```
+
+and both fiber-role censuses are exactly
+`{triple:1,pair-low:1,pair-other:1}`.  Thus horizontal transition
+`(6,22)->(19,22)` hands back monotonically to `(6,22)` with equality: the
+flat handoff graph has a directed self-loop.  Every one of the 47 local
+candidate graphs in this instance passes Hall.  The witness is reproduced by
+running `--seeds 9 --audit-flat-signatures`; the audit reports
+`forest=False` for the offending quotient.
+
+The earlier observed bipartition was not an affine parity of the obvious state data:
 parallel class of the root and its unique neighbor, selected-label color,
 and all binary digits of `(n,c_pair,c_all)` give an inconsistent `F_2`
-edge-sign system across the 283 recurrent sampled arcs.  Thus (12qx) needs
-the detailed realizable census/eligibility relation, but no matching or LP
-variables remain.  Together with (12qv), it would eliminate the
-collision-free odd residual and leave every alternating obstruction charged
-to the finite root-own collision budget.
+edge-sign system across the 283 recurrent sampled arcs.  The counterexample
+now shows that even the full realizable census/eligibility relation is
+insufficient.  Any valid terminal must restore information discarded in
+passing from (12qt), most naturally whether the horizontal edge is actually
+used by the balanced fractional row matchings and its external
+essential-label deletion cost in (12qq)--(12qr).
 
 There is a smaller sufficient graph which explains the sampled parity.
 Define the **flat signature graph** with vertex set the full signatures
@@ -1358,17 +1376,16 @@ occupant; flatness at the incoming flag is forced by the same-role collision
 charge, and since `t` is an occupant there, incoming uniqueness makes the
 pair reciprocal.  The vertical step stays at the incoming signature.
 
-In all 24 sampled instances this undirected simple signature graph is a
-**forest**, with no equal-signature reciprocal pair (which would project to
-a loop).
+In the first 24 sampled instances this undirected simple signature graph was
+a forest, with no equal-signature reciprocal pair.
 It has between three and sixteen nonisolated vertices and between two and
 nine edges; in every case `|E|=|V|-number_of_components`.  Therefore every
-closed projected walk has even length, which proves (12qx) for that instance
-without inspecting the detailed handoff arcs.  This suggests the sharper
-uniform terminal
+closed projected walk has even length, which proved (12qx) for each of those
+instances without inspecting the detailed handoff arcs.  This led to the
+now-retracted terminal
 
 ```text
-FLAT-SIGNATURE FOREST:
+FLAT-SIGNATURE FOREST (RETRACTED):
 there is no equal-signature reciprocal flat pair, and the simple quotient
 of reciprocal unique-same-role shared-label pairs is a forest on full root
 signatures.                                                     (12qy)
@@ -1378,17 +1395,14 @@ Multiple actual flat pairs which realize the same pair of distinct
 signatures are harmless: they become one edge in the simple quotient, and
 traversing between its endpoints still changes sides.  A loop is not
 harmless, since it is already an odd closed projected walk; this is why its
-exclusion is explicit in (12qy).  The weaker exact requirement is merely
-that the signature multigraph have no loop or odd cycle, but simple-quotient
-forestness is the sharper property observed in every sample.
+exclusion is explicit in (12qy).  The weaker exact requirement would merely
+be that the signature multigraph have no loop or odd cycle.  Seed 8 violates
+even that requirement.
 
-Statement (12qy) depends only on the outer eligibility graph and four scalar
-root flags; the monotone transport disappears from the hypothesis.  A cycle
-of signature classes would have to be realized by a cyclic sequence of
-linear block intersections whose endpoints have matching
-`(role,n,c_pair,c_all)` data and unique same-role fiber degree.  Excluding
-exactly that configuration is now the most economical seed-free route to
-the collision-free terminal.
+The economy of (12qy)—depending only on the outer eligibility graph and four
+scalar root flags—was precisely its defect: it discarded the matching-flow
+and deletion data which distinguish the seed-8 self-loop from an actual
+global Farkas obstruction.
 
 One role family is already excluded uniformly.  Two pair centers have the
 same role exactly when their two-point blocks omit the same U1 color, hence
@@ -1402,31 +1416,29 @@ axioms.  Adding the seed-free requirement that two hole blocks intersect and
 have no cross-core edge is SAT in both branches; the resulting witnesses
 contain reciprocal flat hole pairs.  Nevertheless all six two-color
 quotients of the two targeted witnesses remain forests.  This is reproduced by
-`--require-eligible-hole-pair --audit-flat-signatures`.  Therefore a proof of
-(12qy) must incorporate the hole alternative; only the pair roles are
-uniformly absent.  An expanded eight-seed run in this adversarial mode
+`--require-eligible-hole-pair --audit-flat-signatures`.  Only the pair-role
+exclusion remains a valid uniform structural fact.  An expanded eight-seed
+run in this adversarial mode
 produced 48 further two-color quotients, 32 with an actual hole-role edge;
 all 48 were forests (five to eighteen nonisolated signatures, at most ten
-simple edges).  This is stronger evidence for the mixed triple/hole terminal,
-not a proof of it.
+simple edges).  Seed 8 shows why that finite evidence cannot support a
+uniform terminal.
 
-The connected shapes are more rigid than forestness alone suggests.  The 24
+The apparent connected-shape sharpening also fails.  The 24
 original quotients and twelve separately regenerated hole-forced quotients
 were audited by full component degree sequence.  Every component was a path,
 except for one four-vertex claw with degrees `(1,1,1,3)`.  Thus the sharper
 sampled statement is
 
 ```text
-FLAT-SIGNATURE PATH-OR-CLAW:
+FLAT-SIGNATURE PATH-OR-CLAW (RETRACTED):
 every nontrivial flat-signature component is a path or K_(1,3). (12qz)
 ```
 
-This packages (12qy) into two more local exclusions: no signature has degree
-at least four or lies in a branched component beyond the single claw, and the
-degree-two core is empty.  The obvious proof by taking the lexicographically
-least or greatest `(n,c_pair,c_all)` signature fails on several sampled
-paths—the extremum can be internal—so any leaf argument must use the actual
-fiber realizing an incident edge, not scalar ordering alone.
+Seed 7 already supplies a `K_(1,4)` component, and seed 8 supplies the loop
+above.  Hence neither bounded branching nor an empty degree-two core follows
+from the outer axioms.  The component-shape output remains a useful
+regression diagnostic, but (12qy)--(12qz) are not proof targets.
 
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
