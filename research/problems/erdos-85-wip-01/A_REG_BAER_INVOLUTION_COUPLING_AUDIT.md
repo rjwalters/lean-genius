@@ -2686,6 +2686,65 @@ its evenness is a new simultaneous statement, not a consequence of (20).
 This prevents treating the local K-parity as a completed conservation law
 and isolates the exact parity lemma still required.
 
+The other `a=2` placement, `s=2`, has an exact four-bundle alternative.  Let
+`E_1,E_2` be the inside empty centers and let `F_(i,0),F_(i,1)` be the two
+outside-full leaves of the T-star at `E_i`.  Put
+
+```text
+U_(i,a)=N_T(F_(i,a)) intersect (M intersect S).
+```
+
+Each `U_(i,a)` is odd and nonempty, and the two bundles belonging to one
+star are disjoint.  For leaves from different stars set
+
+```text
+n_(a,b)=|U_(1,a) intersect U_(2,b)| in {0,1}.             (73rnz_aa)
+```
+
+The upper bound is C4-freeness: two points in the intersection would be two
+common A-neighbors of the corresponding leaf pair.  A point cannot belong
+to three leaf bundles, because then it would meet both leaves of one star,
+contradicting their disjointness.  Thus every ordinary port appearing in the
+four bundles has leaf-incidence degree one or two; degree-two ports occupy a
+unique cell of the binary matrix `N=(n_(a,b))`.
+
+Let `s_(i,a)` count the degree-one ports in `U_(i,a)`.  The four odd bundle
+equations give
+
+```text
+s_(1,a)+n_(a,0)+n_(a,1) = 1                       (mod 2),
+s_(2,b)+n_(0,b)+n_(1,b) = 1                       (mod 2),
+sum_(i,a) s_(i,a) = 0                             (mod 2). (73rnz_ab)
+```
+
+Hence the total number of singleton ports is even.  If it is positive, it
+is at least two; at each such point the unique incident leaf T-edge leaves
+an odd number of further T-edges to the rest of the graph, because the total
+T-degree is even.  These are genuine external routing ports.
+
+If there is no singleton port, every row and column of N has odd sum.  A
+binary 2-by-2 matrix with this property is a permutation matrix.  The two
+occupied cells give distinct ordinary points `p_0,p_1`, and the forced edges
+form the simple T-cycle
+
+```text
+E_1-F_(1,0)-p_0-F_(2,sigma(0))-E_2
+   -F_(2,sigma(1))-p_1-F_(1,1)-E_1,                      (73rnz_ac)
+```
+
+where sigma is the corresponding permutation.  (The `p_i` may have further
+T-edges, so this is a contained cycle, not necessarily a whole component.)
+Therefore the `s=2` placement has the exact dichotomy
+
+```text
+an explicit star-to-star T 8-cycle,
+or an even positive family of external singleton T-ports. (73rnz_ad)
+```
+
+This removes the vague “four odd bundles” description: either they close
+inside the two-star interface in the unique 2-by-2 manner, or at least two
+ports must enter the simultaneous residual transport.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 

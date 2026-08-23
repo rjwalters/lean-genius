@@ -1070,6 +1070,40 @@ theorem binarySquare_crossRoute_four_states
     (ownerBend = 0 ∧ markBend = 0 ∧ defectStop = 0) := by
   omega
 
+/-- Four odd leaf bundles coupled through pairwise intersections have an even
+total number of singleton ports. -/
+theorem binarySquare_fourOddBundles_singletonTotal_even
+    (s₁₀ s₁₁ s₂₀ s₂₁ n₀₀ n₀₁ n₁₀ n₁₁ : ℕ)
+    (h₁₀ : Odd (s₁₀ + n₀₀ + n₀₁))
+    (h₁₁ : Odd (s₁₁ + n₁₀ + n₁₁))
+    (h₂₀ : Odd (s₂₀ + n₀₀ + n₁₀))
+    (h₂₁ : Odd (s₂₁ + n₀₁ + n₁₁)) :
+    Even (s₁₀ + s₁₁ + s₂₀ + s₂₁) := by
+  obtain ⟨k₁₀, hk₁₀⟩ := h₁₀
+  obtain ⟨k₁₁, hk₁₁⟩ := h₁₁
+  obtain ⟨k₂₀, hk₂₀⟩ := h₂₀
+  obtain ⟨k₂₁, hk₂₁⟩ := h₂₁
+  have hle : n₀₀ + n₀₁ + n₁₀ + n₁₁ ≤ k₁₀ + k₁₁ + k₂₀ + k₂₁ + 2 := by
+    omega
+  use (k₁₀ + k₁₁ + k₂₀ + k₂₁ + 2) - (n₀₀ + n₀₁ + n₁₀ + n₁₁)
+  omega
+
+/-- A binary two-by-two matrix with every row and column odd is a
+permutation matrix. -/
+theorem binarySquare_binaryTwoByTwo_oddMargins
+    (n₀₀ n₀₁ n₁₀ n₁₁ : ℕ)
+    (h₀₀ : n₀₀ ≤ 1) (h₀₁ : n₀₁ ≤ 1)
+    (h₁₀ : n₁₀ ≤ 1) (h₁₁ : n₁₁ ≤ 1)
+    (hr₀ : Odd (n₀₀ + n₀₁)) (hr₁ : Odd (n₁₀ + n₁₁))
+    (hc₀ : Odd (n₀₀ + n₁₀)) (hc₁ : Odd (n₀₁ + n₁₁)) :
+    (n₀₀ = 1 ∧ n₀₁ = 0 ∧ n₁₀ = 0 ∧ n₁₁ = 1) ∨
+    (n₀₀ = 0 ∧ n₀₁ = 1 ∧ n₁₀ = 1 ∧ n₁₁ = 0) := by
+  obtain ⟨kr₀, hkr₀⟩ := hr₀
+  obtain ⟨kr₁, hkr₁⟩ := hr₁
+  obtain ⟨kc₀, hkc₀⟩ := hc₀
+  obtain ⟨kc₁, hkc₁⟩ := hc₁
+  omega
+
 end
 
 end Erdos85
@@ -1117,3 +1151,5 @@ end Erdos85
 #print axioms Erdos85.binarySquare_coincident_mark_no_active
 #print axioms Erdos85.binarySquare_crossRoute_candidate_exclusive
 #print axioms Erdos85.binarySquare_crossRoute_four_states
+#print axioms Erdos85.binarySquare_fourOddBundles_singletonTotal_even
+#print axioms Erdos85.binarySquare_binaryTwoByTwo_oddMargins
