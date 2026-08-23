@@ -14773,3 +14773,56 @@ one active cut edge.  This closes the scope gap noted after (911) at the
 level of parity: the reverse tags and the active ends of the residual cut
 ledger are not bijective, but an odd nonempty family of canonical internal
 connections links the two occurrence systems.
+
+## 289. The two canonical pairings join reverse tags to inactive payments
+
+The active cut occurrences can be used as internal nodes to compose the
+two odd ledgers completely.  First construct the **active pairing**.  At
+every vertex of `S`, retain the internal `H_a^C[S]` edges, truncate every
+active cut edge to a terminal half-edge, and add one formal terminal stub
+at each vertex of `W_a(S)`.  If the global `H_a^C` degree is two, no stub is
+added and the retained internal/cut incidences still total two.  If it is
+one, the added `W` stub raises the total to two.  Thus every nonisolated
+vertex has degree two, and the resulting paths canonically pair the
+terminal occurrences
+
+```text
+W_a(S) disjoint_union delta_(H_a^C)(S).              (915)
+```
+
+Second use the **factor pairing** from Section 287.  The path intervals of
+the full two-factor `F_a[e]` through `S` canonically pair all terminals in
+
+```text
+delta_(H_a^C)(S)
+ disjoint_union delta_(Hbar_a^C)(S).                 (916)
+```
+
+Now overlay the two pairing systems, identifying the two copies of each
+active cut-edge occurrence.  Every active occurrence has degree two in the
+overlay, one edge from each pairing.  The only degree-one vertices are the
+reverse-tag stubs `W_a(S)` and the inactive cut-edge occurrences
+`delta_(Hbar_a^C)(S)`.  Consequently every noncycle component is a path of
+type `W--W`, `W--I`, or `I--I`.
+
+Let their counts be `N_WW,N_WI,N_II`.  Endpoint counting gives
+
+```text
+|W_a(S)|                         =2N_WW+N_WI,
+|delta_(Hbar_a^C)(S)|            =2N_II+N_WI.        (917)
+```
+
+Both left sides are odd by (897) and (904), so
+
+```text
+N_WI=1 mod 2.                                        (918)
+```
+
+Hence an odd nonempty family of canonical occurrence paths joins actual
+reverse-tag singleton terminals to actual cut edges indexed by
+`C`-inactive labels.  Expanding the two pairing edges along such a path
+gives a private-label chain through the located shore `S`; active cut
+occurrences are internal transition states and no arbitrary bijection is
+chosen.  This composes the reverse export of Section 284 with the inactive
+payment of Section 285 and removes the non-bijection caveat left after
+Section 287.
