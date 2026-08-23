@@ -122,7 +122,8 @@ def instance(branch: int, seed: dict, colors: tuple[int, int]) -> dict:
             "types": types, "selected": selected}
 
 
-def flat_signature_audit(data: dict) -> tuple[int, int, int, tuple[str, ...], bool]:
+def flat_signature_audit(data: dict) -> tuple[
+        int, int, int, tuple[str, ...], tuple[tuple[int, ...], ...], bool]:
     """Audit the simple signature quotient in the terminal (12qy).
 
     A flat pair uses a selected label owned by both roots and makes the two
@@ -163,6 +164,10 @@ def flat_signature_audit(data: dict) -> tuple[int, int, int, tuple[str, ...], bo
     edge_multiplicity = Counter(realized_edges)
     edges = set(edge_multiplicity)
     vertices = {vertex for edge in edges for vertex in edge}
+    adjacency = {vertex: set() for vertex in vertices}
+    for left, right in edges:
+        adjacency[left].add(right)
+        adjacency[right].add(left)
     parent = {vertex: vertex for vertex in vertices}
 
     def find(vertex: tuple) -> tuple:
@@ -180,7 +185,21 @@ def flat_signature_audit(data: dict) -> tuple[int, int, int, tuple[str, ...], bo
             parent[left_root] = right_root
     parallel = sum(count - 1 for count in edge_multiplicity.values())
     roles = tuple(TYPE_NAMES[role] for role in sorted({edge[0][0] for edge in edges}))
-    return len(vertices), len(edges), parallel, roles, forest
+    unseen = set(vertices)
+    shapes = []
+    while unseen:
+        stack = [unseen.pop()]
+        component = set(stack)
+        while stack:
+            vertex = stack.pop()
+            for neighbor in adjacency[vertex]:
+                if neighbor in unseen:
+                    unseen.remove(neighbor)
+                    component.add(neighbor)
+                    stack.append(neighbor)
+        shapes.append(tuple(sorted(len(adjacency[vertex]) for vertex in component)))
+    return (len(vertices), len(edges), parallel, roles,
+            tuple(sorted(shapes)), forest)
 
 
 def refine_features(instances: list[dict], mode: str) -> None:
@@ -980,13 +999,14 @@ def main() -> int:
     if args.audit_flat_signatures:
         all_forests = True
         for label, candidate in all_data:
-            vertices, edges, parallel, roles, forest = flat_signature_audit(candidate)
+            (vertices, edges, parallel, roles, shapes,
+             forest) = flat_signature_audit(candidate)
             all_forests &= forest
             branch, seed_number, colors = label
             print(f"flat_signature branch={branch} seed={seed_number} "
                   f"colors={colors} vertices={vertices} edges={edges} "
                   f"parallel_realizations={parallel} roles={roles} "
-                  f"forest={forest}")
+                  f"component_degree_shapes={shapes} forest={forest}")
         print(f"flat_signature_all_forests={all_forests}")
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "

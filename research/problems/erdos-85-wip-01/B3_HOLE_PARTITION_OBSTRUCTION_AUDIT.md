@@ -1410,6 +1410,24 @@ all 48 were forests (five to eighteen nonisolated signatures, at most ten
 simple edges).  This is stronger evidence for the mixed triple/hole terminal,
 not a proof of it.
 
+The connected shapes are more rigid than forestness alone suggests.  The 24
+original quotients and twelve separately regenerated hole-forced quotients
+were audited by full component degree sequence.  Every component was a path,
+except for one four-vertex claw with degrees `(1,1,1,3)`.  Thus the sharper
+sampled statement is
+
+```text
+FLAT-SIGNATURE PATH-OR-CLAW:
+every nontrivial flat-signature component is a path or K_(1,3). (12qz)
+```
+
+This packages (12qy) into two more local exclusions: no signature has degree
+at least four or lies in a branched component beyond the single claw, and the
+degree-two core is empty.  The obvious proof by taking the lexicographically
+least or greatest `(n,c_pair,c_all)` signature fails on several sampled
+paths—the extremum can be internal—so any leaf argument must use the actual
+fiber realizing an incident edge, not scalar ordering alone.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
