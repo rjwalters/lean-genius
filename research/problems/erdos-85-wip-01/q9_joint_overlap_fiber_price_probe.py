@@ -279,6 +279,9 @@ def one_model(
         if not single_optima[pair[0]]["strict"]
         and not single_optima[pair[1]]["strict"]
     ] if single_optima else []
+    strict_single_points = [
+        point for point in overlap if single_optima[point]["strict"]
+    ] if single_optima else []
     for scale in range(1, max_scale + 1):
         for p, q in combinations(overlap, 2):
             if genuine_only and (
@@ -291,6 +294,7 @@ def one_model(
                 }
                 if genuine_only:
                     answer["genuine_pair_count"] = len(genuine_pairs)
+                    answer["strict_single_points"] = strict_single_points
                 if details:
                     answer["joint_optimum"] = exact_joint_optimum(system, p, q)
                     answer["single_fiber_optima"] = [
@@ -303,6 +307,7 @@ def one_model(
     answer = {"overlap_card": len(overlap), "certificate": None}
     if genuine_only:
         answer["genuine_pair_count"] = len(genuine_pairs)
+        answer["strict_single_points"] = strict_single_points
     return answer
 
 

@@ -215,6 +215,20 @@ the rationally certified continuous optimum is `481/9 < 54`.  Thus all
 triple-center exact partitions preserve, rather than replace, the surviving
 joint selector.
 
+That full-strength witness is not genuinely synergistic.  Re-running with
+`--genuine-only` excludes every pair having an individually strict fiber;
+all 21 remaining pairs fail the integer joint scan through denominator six.
+The reported pair `p=7,q=19` instead uses the strict single fiber at `q=19`,
+whose exact optimum is `53/2 < 27`; `p=7` is non-strict at `543/20`.
+Therefore the uniform structural target may naturally split into two horns:
+an overlap point with a strict single-fiber cover, or a genuinely joint pair
+when every relevant single fails.  The joint two-support terminal still
+subsumes both computationally, but the proof mechanisms need not be the same.
+The staged all-class source is rare: attempts to obtain independent sources
+at solver seeds 1 and 2 remained `UNKNOWN` after 120 and 180 seconds, so the
+strict-single horn currently has one full-strength regression rather than a
+widened corpus.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
