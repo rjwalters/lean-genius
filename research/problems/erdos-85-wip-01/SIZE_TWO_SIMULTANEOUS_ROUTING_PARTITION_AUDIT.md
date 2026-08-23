@@ -12010,3 +12010,39 @@ two edge-disjoint odd cycles is asserted.  The gain is that a closed residue
 cannot occupy a proper subset of the target incidence component: failure of
 root-boundary transport forces a common invariant odd vertex set for two
 different owner factors, with the entire root projection marked `00`.
+
+## 238. The five-port simultaneous curl is locally C4-free
+
+The minimum case left by (725) and `(73rnz_cjibkzzy)` cannot be excluded
+from the three-component incidence skeleton alone.  There is an explicit
+core on five ports `p_i`, five roots `x_i in c`, and five secondary labels
+`y_i in d`, with indices modulo five:
+
+```text
+N_c(p_i)={x_i,x_(i+1)},       x_i x_(i+1) in A_c,
+N_e(y_i)={p_i,p_(i+2)}.                              (726)
+```
+
+The root-line edges on the ports are `p_i p_(i+1)`, while the secondary
+owner edges are `p_i p_(i+2)`.  They are the two complementary five-cycles
+of `K_5`, exactly the forced normal form from (725).
+
+A direct common-neighbor check on the graph consisting of the incidences in
+(726) and the five displayed root edges gives
+
+```text
+15 vertices, 25 edges, maximum off-diagonal codegree 1. (727)
+```
+
+Hence this core is simple and C4-free.  The deterministic reproducer
+`verify_five_port_curl_core.py` constructs it and checks (727).  In
+particular, the common-edge C4 argument excluding the triangular curl is
+sharp at the level of these incidences: two edge-disjoint five-cycles do
+not force a four-cycle.
+
+This is a local counterprofile, not an SRP model.  It does not supply the
+remaining neighbors required by regularity, the full owner factorization,
+or the Baer shore-`00` states at the roots.  It proves that any exclusion of
+the minimal curl must use at least one of those additional inputs.  Merely
+recounting the two projected cycles, their unique shared roots/labels, and
+the marked H triangles cannot close (722).
