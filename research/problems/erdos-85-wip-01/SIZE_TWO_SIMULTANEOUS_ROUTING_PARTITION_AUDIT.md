@@ -24655,3 +24655,44 @@ different colors may overlap at nonturn vertices, so no additive
 seven-vertex bound is asserted.  The unconditional output of this
 section is instead the `4c` edge packing and the turn amplification
 (1651).
+
+## 464. Sparse traces force six boundary transitions per color
+
+Let `S_sparse` be the set of rainbow colors taking the sparse branch of
+(1649), and put `s:=|S_sparse|`.  For `h in S_sparse`, its trace
+
+```text
+P_2 disjointUnion P_1 disjointUnion P_1
+```
+
+has three path components and hence six distinct path endpoints.  At
+each endpoint, exactly one incident edge of the ambient alternating
+factor has color `h`; the other factor edge has a different color.  Thus
+if `B_h` denotes the set of `h`-to-non-`h` transition vertices, then
+
+```text
+|B_h|=6.                                           (1652)
+```
+
+A factor vertex can be a transition endpoint for at most two selected
+sparse colors, namely the colors of its two incident factor edges.
+Double-counting the pairs `(h,x)` with
+`h in S_sparse` and `x in B_h` therefore gives
+
+```text
+|union_(h in S_sparse) B_h|>=3s.                   (1653)
+```
+
+These transition vertices are disjoint from every monochromatic turn
+vertex: their two incident factor colors differ.  In particular they
+are disjoint from the `s` marked centers of the sparse traces, so sparse
+colors alone occupy at least `4s` distinct factor vertices when centers
+and boundary transitions are counted together.
+
+The numerical vertex bound is consistent with the `4c` edge packing in
+Section 463; the new information is the transition incidence.  Each
+resistant sparse color exports six boundary occurrences into other
+colors along the same fixed alternating factor.  Boundary vertices may
+join two selected colors and be counted twice, which is exactly why
+(1653), rather than an unjustified `6s` disjointness claim, is the sharp
+unconditional conclusion here.
