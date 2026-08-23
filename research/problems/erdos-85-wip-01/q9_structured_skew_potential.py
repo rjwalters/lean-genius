@@ -447,6 +447,83 @@ def full_bundle_primal_ablation(data: dict) -> dict[str, bool]:
     return answer
 
 
+def external_bundle_coarsening_audit(data: dict) -> dict[str, bool]:
+    """Test which coordinates of the external joint state are indispensable."""
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     _, variable_count) = full_bundle_primal_system(data)
+    external_rows = [row for row in range(N, equalities.shape[0])
+                     if equality_names[row][1][0] == 'bundle'
+                     and equality_names[row][1][2] == 0]
+
+    def state(row):
+        feature = equality_names[row][1]
+        return feature[1], feature[3]
+
+    projections = {
+        'full': lambda signature, census: (signature, census),
+        'signature': lambda signature, census: signature,
+        'census': lambda signature, census: census,
+        'type_census': lambda signature, census: (signature[0], census),
+        'count_census': lambda signature, census: (signature[1], census),
+        'selected_collision_census':
+            lambda signature, census: (signature[2], census),
+        'all_collision_census':
+            lambda signature, census: (signature[3], census),
+    }
+    for omitted in range(4):
+        projections[f'drop_signature_{omitted}'] = (
+            lambda signature, census, omitted=omitted:
+            (signature[:omitted] + signature[omitted + 1:], census))
+    for omitted in range(5):
+        projections[f'drop_census_{omitted}'] = (
+            lambda signature, census, omitted=omitted:
+            (signature, census[:omitted] + census[omitted + 1:]))
+        projections[f'selected_collision_drop_census_{omitted}'] = (
+            lambda signature, census, omitted=omitted:
+            (signature[2], census[:omitted] + census[omitted + 1:]))
+        projections[f'all_collision_drop_census_{omitted}'] = (
+            lambda signature, census, omitted=omitted:
+            (signature[3], census[:omitted] + census[omitted + 1:]))
+        projections[f'collision_pair_drop_census_{omitted}'] = (
+            lambda signature, census, omitted=omitted:
+            ((signature[2], signature[3]),
+             census[:omitted] + census[omitted + 1:]))
+    for role in range(5):
+        projections[f'selected_collision_census_{role}'] = (
+            lambda signature, census, role=role: (signature[2], census[role]))
+        projections[f'all_collision_census_{role}'] = (
+            lambda signature, census, role=role: (signature[3], census[role]))
+        projections[f'collision_pair_census_{role}'] = (
+            lambda signature, census, role=role:
+            ((signature[2], signature[3]), census[role]))
+    projections['selected_collision_census_total'] = (
+        lambda signature, census: (signature[2], sum(census)))
+    projections['all_collision_census_total'] = (
+        lambda signature, census: (signature[3], sum(census)))
+    for size in range(1, 5):
+        for coordinates in combinations(range(4), size):
+            label = ''.join(map(str, coordinates))
+            projections[f'signature_subset_{label}'] = (
+                lambda signature, census, coordinates=coordinates:
+                (tuple(signature[index] for index in coordinates), census))
+
+    answer = {}
+    for name, projection in projections.items():
+        groups = {}
+        for row in external_rows:
+            signature, census = state(row)
+            groups.setdefault(projection(signature, census), []).append(row)
+        grouped_rows = [equalities[rows].sum(axis=0) for rows in groups.values()]
+        projected = vstack([equalities[:N], *grouped_rows], format='csr')
+        result = linprog(
+            np.zeros(variable_count), A_ub=capacities,
+            b_ub=capacity_rhs, A_eq=projected,
+            b_eq=np.r_[equality_rhs[:N], np.zeros(len(grouped_rows))],
+            bounds=(0, 1), method='highs')
+        answer[name] = result.success
+    return answer
+
+
 def sparse_full_bundle_dual(data: dict) -> tuple[bool, float, list[tuple], bool]:
     """Find an L1-small Farkas certificate and verify rounded unit entries."""
     from scipy.sparse import hstack
@@ -1499,6 +1576,8 @@ def main() -> int:
                         help="test normalized matching flow with bundle equality")
     parser.add_argument("--audit-bundle-primal-ablation", action="store_true",
                         help="ablate alpha/external/internal primal equalities")
+    parser.add_argument("--audit-external-coarsening", action="store_true",
+                        help="drop coordinates from external bundle states")
     parser.add_argument("--audit-full-bundle-dual", action="store_true",
                         help="extract sparse duals for restricted-Hall survivors")
     parser.add_argument("--print-full-dual", action="store_true",
@@ -1707,6 +1786,17 @@ def main() -> int:
             print(f"bundle_primal_ablation branch={branch} seed={seed_number} "
                   f"colors={colors} feasible="
                   f"{full_bundle_primal_ablation(candidate)}")
+    if args.audit_external_coarsening:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            branch, seed_number, colors = label
+            print(f"external_coarsening branch={branch} seed={seed_number} "
+                  f"colors={colors} feasible="
+                  f"{external_bundle_coarsening_audit(candidate)}")
     if args.audit_full_bundle_dual:
         dual_labels = []
         for label, candidate in all_data:
@@ -1806,6 +1896,7 @@ def main() -> int:
             or args.audit_bundle_rank or args.audit_bundle_deletion
             or args.audit_zero_loss_restriction
             or args.audit_full_bundle_primal or args.audit_bundle_primal_ablation
+            or args.audit_external_coarsening
             or args.audit_full_bundle_dual
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual

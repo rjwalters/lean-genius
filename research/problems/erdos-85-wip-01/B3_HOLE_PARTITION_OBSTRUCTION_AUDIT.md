@@ -1987,6 +1987,33 @@ The proof problem is now to derive external-state capacity loss directly—by a
 combinatorial transport or Hall argument—rather than to reconstruct whichever
 dense Farkas basis an LP happens to choose.
 
+The external state itself admits one final, uniform compression.  The mode
+`--audit-external-coarsening` groups external bundle equations after dropping
+or retaining chosen coordinates.  Write
+
+```text
+kappa_sel(t) = selected-label pair-collision count at root t,
+kappa_all(t) = all-label pair-collision count at root t,
+n_r(t,b)     = number of candidates of role r containing label b.
+```
+
+For all eleven deterministic survivors, conservation indexed only by
+
+```text
+(kappa_sel(t), kappa_all(t), n_0(t,b),...,n_4(t,b))            (12rz)
+```
+
+already makes the normalized primal infeasible.  Root type and candidate
+count—the first two coordinates of the old signature—are unnecessary.
+Moreover `(12rz)` is coordinatewise minimal on the hard survivor
+`(3,21,(1,2))`: either collision scalar paired with the full census is
+feasible, and deleting any one of the five census coordinates from the
+collision-pair state is feasible.  Thus the controlling object is genuinely
+joint in exactly seven scalar coordinates.  This sharpens `(12ry)` to a
+concrete theorem interface: prove capacity loss for external labels classified
+by the two collision inventories and their complete five-role neighborhood
+census, with no endpoint-role or raw candidate-count decoration.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
