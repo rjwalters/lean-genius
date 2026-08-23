@@ -5085,6 +5085,16 @@ a horn—but it makes a short finite list of forced ordered pairs implausible;
 the proof target should control a global count or cycle property of the
 forced-incidence relation.
 
+CEGAR now batches *all* horns from each exact audit rather than adding only
+the first.  This is logically equivalent—every refinement is necessary for
+a horn-free model—but removes model-by-model churn.  A fresh seed-205 run
+was SAT twice.  The first model contributed row 23 and 17 no-disjoint pairs;
+the second added rows 15,22,25, another 37 no-disjoint pairs, and reciprocity
+`(23,22)`.  The third solve with all 54 pair constraints returned `unknown`
+at 180 seconds.  Batch refinement reaches a much stronger exact frontier in
+two models, but also exposes the present solver scalability boundary; the
+result is neither UNSAT nor a counterexample.
+
 A more promising structural invariant comes from the local-family sizes.
 Call a row *rigid* when it has one or two full integral local packings, and
 join two rigid rows when their blocks conflict.  The unified audit now emits

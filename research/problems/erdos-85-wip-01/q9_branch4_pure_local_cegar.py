@@ -42,25 +42,29 @@ def payload_from_model(data: dict, model) -> dict:
     }
 
 
-def first_horn(payload: dict):
+def all_horns(payload: dict) -> dict:
     system = fixed_system(payload)
     local = {
         u: forced_local_packing_neighbors(system, u) for u in range(N)
     }
     deficit = [u for u in range(N) if not local[u]["packing_count"]]
-    if deficit:
-        return "deficit", deficit[0]
+    reciprocity = []
     for u in range(N):
         for w in local[u]["forced_neighbors"]:
             if u not in local[w]["possible_neighbors"]:
-                return "reciprocity", (u, w)
+                reciprocity.append((u, w))
+    disjoint = []
     for u in range(N):
         for v in range(u + 1, N):
             if not (system["blocks"][u] & system["blocks"][v]):
                 continue
             if disjoint_local_packing_pair(system, u, v) is None:
-                return "disjoint", (u, v)
-    return None, None
+                disjoint.append((u, v))
+    return {
+        "deficit": deficit,
+        "reciprocity": reciprocity,
+        "disjoint": disjoint,
+    }
 
 
 def main() -> None:
@@ -117,26 +121,36 @@ def main() -> None:
             print("pure_local_cegar=unknown")
             break
         payload = payload_from_model(data, solver.model())
-        kind, witness = first_horn(payload)
-        record["horn"] = kind
-        record["witness"] = witness
+        horns = all_horns(payload)
+        new_integral = [u for u in horns["deficit"] if u not in integral_rows]
+        new_disjoint = [
+            pair for pair in horns["disjoint"] if pair not in disjoint_pairs
+        ]
+        new_reciprocity = [
+            pair for pair in horns["reciprocity"]
+            if pair not in reciprocity_pairs
+        ]
+        record["horns"] = {
+            "deficit": horns["deficit"],
+            "disjoint": [list(pair) for pair in horns["disjoint"]],
+            "reciprocity": [list(pair) for pair in horns["reciprocity"]],
+        }
         print(json.dumps({
             "iteration": iteration,
-            "refinement": kind,
-            "witness": witness,
+            "new_integral_rows": new_integral,
+            "new_disjoint_pairs": [list(pair) for pair in new_disjoint],
+            "new_reciprocity_pairs": [list(pair) for pair in new_reciprocity],
         }, separators=(",", ":")), flush=True)
-        if kind is None:
+        if not any(horns.values()):
             print("pure_local_cegar=counterexample")
             if args.output:
                 args.output.write_text(json.dumps(payload, separators=(",", ":")))
             break
-        if kind == "deficit":
-            integral_rows.append(witness)
-            continue
-        if kind == "disjoint":
-            disjoint_pairs.append(witness)
-        else:
-            reciprocity_pairs.append(witness)
+        if not (new_integral or new_disjoint or new_reciprocity):
+            raise RuntimeError("audited horns produced no new refinement")
+        integral_rows.extend(new_integral)
+        disjoint_pairs.extend(new_disjoint)
+        reciprocity_pairs.extend(new_reciprocity)
     else:
         print("pure_local_cegar=iteration_limit")
     if args.output:
