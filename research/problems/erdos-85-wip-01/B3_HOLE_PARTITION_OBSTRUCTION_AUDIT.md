@@ -3379,6 +3379,31 @@ hypergraphs whose maximum matching has exactly the demanded size, then show
 that their essential-edge kernels cannot remain disjoint along every
 intersection of row blocks.
 
+Each nonempty forced kernel is itself highly structured.  Assume row `t`
+is locally feasible and choose one demanded matching.  Every block in
+`F(t)` belongs to that matching, so two distinct blocks in `F(t)` are
+disjoint and
+
+```text
+F(t) is a matching,             |F(t)|<=d(t).                 (13n)
+```
+
+For a rank-tight row, put `P_t:=union_{w in F(t)} B_w` and delete every
+eligible block meeting `P_t`.  Removing the forced blocks from any maximum
+matching leaves a matching of size `d(t)-|F(t)|` in this point-deleted
+hypergraph.  Conversely, a larger matching there could be adjoined to the
+pairwise disjoint forced blocks and would contradict rank tightness.  Hence
+
+```text
+nu(mathcal H_t-P_t)=d(t)-|F(t)|.                              (13o)
+```
+
+Thus the second horn of (13m') compares small disjoint essential matchings,
+not arbitrary sets of block rows.  After contracting `F(t)`, every tight
+local problem has exactly the residual rank in (13o); this supplies a
+canonical smaller matching instance for a transversal or alternating-path
+proof of kernel intersection.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
