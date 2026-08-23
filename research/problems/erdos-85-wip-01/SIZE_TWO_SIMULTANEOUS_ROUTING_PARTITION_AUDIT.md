@@ -20033,3 +20033,57 @@ inside the reflected state cycle itself; its mandatory coupled-SRP
 completion immediately leaves the center.  The full holonomy obstruction
 may consequently be sought in the moving, companion-expanded geometry even
 when the minimal reflected cycle has no ordinary target edge.
+## 379. Private-owner terms cancel from the cycle-wide tag parity
+
+The cyclic word (1301) has a selected-column invariant which is independent
+of all private endpoints on its ordinary edges.  For `v in U`, define the
+owner vector over `F_2^Z`
+
+```text
+beta(v):=[p(v)] if v in B,       beta(v):=0 if v in O.            (1311)
+```
+
+For the letter `ell_j` rooted at `x_(i_j)`, let `D_j subset Z` be its
+selected tag support outside the forced `c/e` layers.  If `ell_j` is an
+ordinary edge from `v_j` to `v_(j+1)`, Sections 362 and 365 give
+
+```text
+[D_j]=[T_(i_j)]+beta(v_j)+beta(v_(j+1))       in F_2^Z.           (1312)
+```
+
+Indeed `T_(i_j)` is the three-port nonincident set, and each private
+endpoint removes its distinct owner column.  If `ell_j=s_(i_j)` is a strict
+loop, Section 375 instead gives
+
+```text
+[D_j]=[T_(i_j)]+beta(v_j),                          (1313)
+```
+
+because the selected endpoint contributes no owner column and the unique
+outside mate is `v_j=v_(j+1)`.
+
+Now sum around the cyclic word.  After deleting its formal strict loops,
+the ordinary letters form a closed walk on `U`; hence every physical vertex
+has even ordinary-edge incidence.  All owner vectors in (1312) cancel.
+Only the one-copy correction from each strict loop remains, giving the exact
+cycle identity
+
+```text
+sum_(j mod L) [D_j]
+ =sum_(j mod L) [T_(i_j)]
+  +sum_(j:ell_j strict and v_j in B) [p(v_j)]       in F_2^Z.     (1314)
+```
+
+Thus ordinary motion through private tickets contributes no endpoint noise
+to the total tag parity.  In a moving word with no strict letters, the tag
+sum is determined solely by the root word.  In a stationary strict word at
+`v`, the correction is zero for `v in O` and is `L[p(v)]` for `v in B`.
+Mixed reflected cycles have exactly the displayed private strict-mate
+correction and no others.
+
+Equation (1314) is a conservation law rather than a vanishing assertion:
+the left side need not yet be zero.  Its value is that any cycle-wide reuse
+or cancellation theorem for the actual payment tags can now be compared
+against a five-dimensional root expression with one explicitly located
+strict-owner correction, instead of against the full sequence of private
+and residual endpoints.
