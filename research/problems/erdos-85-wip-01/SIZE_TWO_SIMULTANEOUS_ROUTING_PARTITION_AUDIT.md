@@ -21085,3 +21085,60 @@ edges are needed to hit all of their properly colored cycles.  This is
 still a support theorem rather than the final contradiction; the next
 step must couple the nearly saturated offset-port layers or the companion
 fans across different cycles.
+
+## 396. The offset-payer map misses at most five labels per port
+
+The inactive payer population in (1386) has an exact ambient size.  There
+are `r-3` exterior components outside `{c,e,d}`.  For each such component
+`a` and selected port `p`, the cross degree gives exactly two `a`-labels
+meeting `p`, and (785) says that each meets no other selected port.  Hence
+the non-`d` selected-singleton population at one port has size
+
+```text
+2(r-3)=q-6.                                         (1391)
+```
+
+The strict-support permutation (777) places exactly one of the five strict
+exports at each selected port.  Section 352 says that every other label in
+(1391) is core-inactive.  Equivalently, summing the exact census
+`N_01^a=10-k_a` from (787)--(788), the core-inactive pool is
+
+```text
+q-7 labels at each selected port;
+5(q-7)=5q-35 labels over all five ports.            (1392)
+```
+
+The unsheltered offset map nearly exhausts this pool root by root.  Fix
+`x_i`.  Its ordinary matching has `q-5` edges.  Exactly four private
+vertices are artificial fixed points for this root, so only the other six
+vertices of `B` can lie on its ordinary edges.  Deleting all edges meeting
+`B` therefore removes at most six root-`i` edges.  Deleting the possible
+single sheltered edge removes at most one more.  If `E_i(G_sh)` is the
+remaining root-`i` edge set, then
+
+```text
+|E_i(G_sh)|>=(q-5)-6-1=q-12.                       (1393)
+```
+
+Every edge in `E_i(G_sh)` maps injectively to a core-inactive payer at the
+one offset port `p_(i+2)`.  Comparing (1393) with the exact `q-7` labels
+available there proves
+
+```text
+0 <= (q-7)-|z(E_i(G_sh))| <= 5.                    (1394)
+```
+
+Thus at every selected port, not merely in aggregate, all but at most five
+core-inactive selected labels occur as canonical offset payers of
+unsheltered residual edges.  Summing (1394) recovers the global constant
+slack
+
+```text
+|(core-inactive selected pool) setminus z(E(G_sh))|<=25.
+```
+
+This is substantially tighter than a linear lower bound alone: any final
+companion or layer argument may discard only five exceptional inactive
+labels per port before it must account for the entire residual matching
+family.  The constant `25` is independent of `q`, while the covered pool
+has size `5q-35`.
