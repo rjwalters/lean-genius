@@ -122,6 +122,66 @@ def instance(branch: int, seed: dict, colors: tuple[int, int]) -> dict:
             "types": types, "selected": selected}
 
 
+def flat_signature_audit(data: dict) -> tuple[int, int, int, bool]:
+    """Audit the simple signature quotient in the terminal (12qy).
+
+    A flat pair uses a selected label owned by both roots and makes the two
+    same-role roots each other's unique same-role candidate on that label.
+    Return the number of nonisolated signatures, quotient edges, parallel
+    realizations discarded by the simple quotient, and whether it is a
+    forest.  A quotient loop counts as a cycle.
+    """
+    signatures = []
+    for t in range(N):
+        selected_loads = Counter(
+            b for u in data["candidates"][t]
+            for b in data["blocks"][u] & data["selected"])
+        all_loads = Counter(
+            b for u in data["candidates"][t] for b in data["blocks"][u])
+        signatures.append((
+            data["types"][t], len(data["candidates"][t]),
+            sum(x * (x - 1) // 2 for x in selected_loads.values()),
+            sum(x * (x - 1) // 2 for x in all_loads.values())))
+
+    realized_edges = []
+    for t in range(N):
+        for b in data["blocks"][t] & data["selected"]:
+            same_role = [
+                u for u in data["candidates"][t]
+                if data["types"][u] == data["types"][t]
+                and b in data["blocks"][u]]
+            if len(same_role) != 1:
+                continue
+            u = same_role[0]
+            reverse = [
+                v for v in data["candidates"][u]
+                if data["types"][v] == data["types"][u]
+                and b in data["blocks"][v]]
+            if reverse == [t]:
+                realized_edges.append(tuple(sorted((signatures[t], signatures[u]))))
+
+    edge_multiplicity = Counter(realized_edges)
+    edges = set(edge_multiplicity)
+    vertices = {vertex for edge in edges for vertex in edge}
+    parent = {vertex: vertex for vertex in vertices}
+
+    def find(vertex: tuple) -> tuple:
+        while parent[vertex] != vertex:
+            parent[vertex] = parent[parent[vertex]]
+            vertex = parent[vertex]
+        return vertex
+
+    forest = True
+    for left, right in edges:
+        left_root, right_root = find(left), find(right)
+        if left_root == right_root:
+            forest = False
+        else:
+            parent[left_root] = right_root
+    parallel = sum(count - 1 for count in edge_multiplicity.values())
+    return len(vertices), len(edges), parallel, forest
+
+
 def refine_features(instances: list[dict], mode: str) -> None:
     """Replace basic vectors by vectors for a finer vertex signature.
 
@@ -864,6 +924,8 @@ def main() -> int:
     parser.add_argument("--exact-round-scale", type=int, default=0,
                         help="round the fitted prices at this positive scale "
                              "and audit the separator by exact integer DP")
+    parser.add_argument("--audit-flat-signatures", action="store_true",
+                        help="audit the flat-signature forest terminal (12qy)")
     parser.add_argument("--features", choices=("basic", "candidate-count",
                                                 "total-load", "collisions",
                                                 "load-shape", "load-profile",
@@ -893,6 +955,7 @@ def main() -> int:
                         default="basic")
     args = parser.parse_args()
     data = []
+    all_data = []
     data_labels = []
     hall_labels = []
     for branch in (3, 4):
@@ -900,6 +963,7 @@ def main() -> int:
             seed = make_outer_seed(branch, args.timeout_seconds * 1000, seed_number)
             for colors in combinations(range(3), 2):
                 candidate = instance(branch, seed, colors)
+                all_data.append(((branch, seed_number, colors), candidate))
                 bad_rows = [row for row in range(N)
                             if oracle(candidate, row, np.zeros(len(FEATURES))) is None]
                 if bad_rows:
@@ -907,9 +971,21 @@ def main() -> int:
                 else:
                     data.append(candidate)
                     data_labels.append((branch, seed_number, colors))
+    if args.audit_flat_signatures:
+        all_forests = True
+        for label, candidate in all_data:
+            vertices, edges, parallel, forest = flat_signature_audit(candidate)
+            all_forests &= forest
+            branch, seed_number, colors = label
+            print(f"flat_signature branch={branch} seed={seed_number} "
+                  f"colors={colors} vertices={vertices} edges={edges} "
+                  f"parallel_realizations={parallel} forest={forest}")
+        print(f"flat_signature_all_forests={all_forests}")
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
+    if args.audit_flat_signatures:
+        return 0 if all_forests else 1
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")
         return 0
