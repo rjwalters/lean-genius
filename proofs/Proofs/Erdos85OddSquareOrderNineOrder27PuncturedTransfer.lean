@@ -496,6 +496,67 @@ theorem orderNine_binZero_W_degree_of_lowSet_partition
     simp [hadj]
     omega
 
+/-- Graph/profile specialization of audit (21). -/
+theorem orderNine_order27_binZero_W_degree_equation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (Z W : Finset V)
+    (hB1sub : squareOrderNineLowIncidenceBin G 1 ⊆ Z)
+    (hW : W = Z ∩ squareOrderNineLowIncidenceBin G 0)
+    (hpartition : Z = insert owner
+      ((Z ∩ squareOrderNineLowIncidenceBin G 1) ∪ W)) :
+    ∀ y ∈ W,
+      (G.neighborFinset y ∩ Z).card =
+        (G.neighborFinset y ∩ W).card +
+          if G.Adj y owner then 1 else 3 := by
+  classical
+  intro y hyW
+  let P := Z ∩ squareOrderNineLowIncidenceBin G 1
+  have hyB0 : y ∈ squareOrderNineLowIncidenceBin G 0 := by
+    rw [hW] at hyW
+    exact (Finset.mem_inter.mp hyW).2
+  have hownerP : owner ∉ P := by
+    intro ho
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp ho).2).2
+    have hk3 := (Finset.mem_filter.mp howner).2
+    omega
+  have hownerW : owner ∉ W := by
+    intro ho
+    have ho' := ho
+    rw [hW] at ho'
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp ho').2).2
+    have hk3 := (Finset.mem_filter.mp howner).2
+    omega
+  have hPW : Disjoint P W := by
+    rw [Finset.disjoint_left]
+    intro z hzP hzW
+    have hzW' := hzW
+    rw [hW] at hzW'
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzP).2).2
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzW').2).2
+    omega
+  have hPdegree : (G.neighborFinset y ∩ P).card =
+      if G.Adj y owner then 0 else 3 := by
+    have hraw := squareOrderNine_threeHigh_secondProfile_binZero_original_binOne_neighbors
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner hyB0
+    have hPfull : P = squareOrderNineLowIncidenceBin G 1 :=
+      Finset.inter_eq_right.mpr hB1sub
+    simpa [P, hPfull] using hraw
+  exact orderNine_binZero_W_degree_of_lowSet_partition
+    G owner y Z P W (by simpa [P] using hpartition)
+      hownerP hownerW hPW hPdegree
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -663,6 +724,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
 #print axioms orderNine_order27_lowSet_composition
 #print axioms orderNine_binZero_W_degree_of_lowSet_partition
+#print axioms orderNine_order27_binZero_W_degree_equation
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
