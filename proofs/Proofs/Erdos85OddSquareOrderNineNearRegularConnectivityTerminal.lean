@@ -266,6 +266,22 @@ theorem false_of_orderNine_nearRegular_proper_component_balance
   exact orderNine_nearRegular_eight_not_dvd_proper_component_order
     s b₁ b₂ b₃ hs hparity hadm height
 
+/-- Parity-free form of the component-balance terminal.  The exact two-sided
+cut inequalities already exclude every nonzero eight-divisible shore, so the
+graph-level connectivity argument does not need a separate handshake count. -/
+theorem false_of_orderNine_nearRegular_component_balance
+    (s : Fin 78) (b₁ b₂ b₃ : Fin 11) (n₀ n₁ : ℕ)
+    (hs : s.1 ≠ 0)
+    (hcard : s.1 = n₀ + n₁)
+    (hadm : orderNineNearRegularComponentAdmissible s.1 b₁.1 b₂.1 b₃.1)
+    (hbalance : 3 * n₀ = 5 * n₁) :
+    False := by
+  have height : 8 ∣ s.1 := by
+    rw [hcard]
+    exact eight_dvd_of_three_mul_eq_five_mul n₀ n₁ hbalance
+  exact orderNine_nearRegular_eight_not_dvd_of_admissible
+    s b₁ b₂ b₃ hs hadm height
+
 /-- Call-site form using the actual defect-component handshake equation
 instead of asking the graph layer to separately state its parity consequence. -/
 theorem false_of_orderNine_nearRegular_component_handshake_and_balance
@@ -292,6 +308,7 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
 #print axioms three_mul_card_inter_eq_five_mul_card_inter_of_relative_closed_shore
 #print axioms orderNine_component_colour_sum_even_of_handshake
 #print axioms false_of_orderNine_nearRegular_proper_component_balance
+#print axioms false_of_orderNine_nearRegular_component_balance
 #print axioms false_of_orderNine_nearRegular_component_handshake_and_balance
 
 end Erdos85
