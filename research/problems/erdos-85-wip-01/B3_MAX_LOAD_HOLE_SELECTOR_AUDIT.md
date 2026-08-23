@@ -512,6 +512,12 @@ row prices allow one- and two-row certificates to sit inside this uniform
 three-row template.  This is the branch-3 analogue of branch 4's exceptional
 plus one regular row target, and reduces the search to `2 * choose(24,2)`
 explicit support shapes rather than arbitrary triples among 47 rows.
+The two regular rows cannot additionally be required to meet the exceptional
+row in one common block point: the first four hard payloads have respectively
+`8,4,1,5` certificates with a nonempty three-way block intersection, but
+`q9_no_strict_replay_seed17.json` has zero while still having 26 valid
+exceptional-three-row supports.  The uniform selector must therefore retain
+genuinely nonconcurrent three-row configurations.
 
 The legacy alternative is to prove, from the outer design plus the exact
 exceptional-hole DTB complement partition, that a tight overlap fiber has a
