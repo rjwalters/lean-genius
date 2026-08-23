@@ -5260,3 +5260,51 @@ ports of Sections 88--93 to these closed dart cycles and show that their
 total marked grading cancels.  Unlike the conditional bridge (292), the
 cycle closure and aggregate grade identity (295) are already proved by the
 two involutions; only the labeled kernel statement remains.
+
+## 99. The dart cycles carry a complete H/V/S alphabet
+
+The port bijection (60) decorates each incidence dart `(x,p)` by the state
+edge using that port.  There are three types:
+
+```text
+H     if p labels a horizontal owner edge,
+V_d   if the rooted triangle through p joins owner e to color d,
+S     if b_(x,e)=1 and p belongs to the A_e fiber switch at x.
+```
+
+At every root, the `R`-paired darts have exactly one of the four forms
+
+```text
+(H,H)        a=2, b=0, v=0       run interior,
+(H,V_d)      a=1, b=0, v=1       run boundary,
+(V_d,V_f)    a=0, b=0, v=2       rooted through-turn,
+(S,S)        a=0, b=1, v=0       owner-factor switch. (297)
+```
+
+This is just the rooted budget `a+2b+v=2`, with the two incident state edges
+assigned bijectively to the two ports.  Repeated labels `d=f` are allowed in
+the third row when the rooted color multigraph has parallel occurrences;
+the intermediate ports still distinguish the two tokens.
+
+The `P`-pair at a port has either two `H` endpoints or no `H` endpoint.  The
+first alternative occurs exactly for `p in M_e`, since ownership is a
+property of the whole factor edge labelled by `p`.  In the unmarked
+alternative, its endpoints are decorated by `V` labels or by the adjacent
+root switches.  Equal `V_d` endpoints give the straight pairing of Section
+93; unequal labels give a color turn; an `S` endpoint records a switch
+handoff.
+
+Thus every auxiliary dart cycle is now an unconditional cyclic word over
+the alphabet
+
+```text
+H, S, and V_d with its unique intermediate port.      (298)
+```
+
+The number of `H--H` port pairs in the word is its marked grading
+`omega_M`.  Sections 88--93 describe exactly how the labeled `V` atoms
+transform under routing/run reversal and how equal labels cancel.  The
+remaining kernel theorem (296) is therefore a statement about these closed
+H/V/S words: after summing over owner colors, the number of `H--H` port
+pairs is even whenever all color-labeled `V` atoms and switch handoffs obey
+their simultaneous reversal ledger.
