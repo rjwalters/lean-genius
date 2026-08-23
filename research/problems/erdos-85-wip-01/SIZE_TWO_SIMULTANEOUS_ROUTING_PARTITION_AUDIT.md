@@ -14012,9 +14012,13 @@ unique root.  Every such label `y` indexes the edge of the owner factor
 `F_a[e]` whose endpoints are the two ports in `N_e(y)`.
 
 Let `H_a^C` be the subgraph of `F_a[e]` consisting of these ten indexed
-edges.  Exactly two of its edges carry each root label `x_i`, and its
-edge--vertex incidence graph is the routing graph `G_a^C` of Section 271.
-Since `F_a[e]` is two-regular,
+edges.  They are distinct: two labels indexing the same pair of ports would
+give those ports two common `a`-neighbors and hence a four-cycle.  Exactly
+two edges carry each root label `x_i`.  Start with the edge--vertex
+incidence graph of `H_a^C` and merge the two edge-nodes carrying the same
+root label; the result is precisely the routing graph `G_a^C` of
+Section 271.  In particular, the degree of every port is unchanged by this
+merger.  Since `F_a[e]` is two-regular,
 
 ```text
 H_a^C is a disjoint union of paths and cycles,
