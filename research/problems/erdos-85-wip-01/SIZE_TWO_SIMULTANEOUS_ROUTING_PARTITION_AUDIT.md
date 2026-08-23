@@ -18909,3 +18909,59 @@ If `o_4!=o_2`, the two located companion cells remain separate and no
 cross-degree coupling between their rooted words is asserted.  Hence
 (1226)--(1228) exactly price the only endpoint collision left open in
 (1214), without assuming that the two fifth-cell layer tags agree.
+
+## 359. A residual endpoint also restarts propagation
+
+The apparent `O` terminal in Sections 346 and 357 has the same restart
+mechanism, without an owner sibling.  Fix `s in O`.  For each of the five
+roots `x in C`, the exact outside partition (835) gives one rooted active
+label `ell_x(s)` for the cell `(x,s)`.  These five labels are distinct by
+(779), and a fixed exterior color occurs among them at most twice because
+`s` has cross degree two into that component:
+
+```text
+#{x in C:color(ell_x(s))=a}<=2.                    (1229)
+```
+
+First suppose an active label `ell_in` arrives at `s` from a preceding
+endpoint `s_-`.  It is one of the five rooted labels.  Equation (1229)
+ensures that some other rooted label `ell_out` has a different color.
+Following its target-factor edge from `s` to `s_+`, one has
+
+```text
+s_+!=s_-.                                          (1230)
+```
+
+Indeed equality would make `s,s_-` share the two distinct common labels
+`ell_in,ell_out`, producing a four-cycle.
+
+Now suppose instead that `s=o(z)` is reached through a core-inactive payer
+`z in k` as in (1211).  The inactive incidence already consumes one of the
+two `k`-neighbors of `s`, so at most one rooted `ell_x(s)` has color `k`.
+There are therefore at least four choices of a rooted label with color
+different from `k`.  For any such choice, its far endpoint is not the
+preceding selected port `q`, since `s,q` already share `z` and a return
+would give them a second common neighbor.
+
+Thus both arrival types have a common continuation rule:
+
+```text
+active or inactive arrival at s in O
+  -> a rooted label of a different color
+  -> an endpoint in O, B, or Z, without immediate reversal.       (1231)
+```
+
+An endpoint in `Z` is again a strict export because the outgoing label is
+rooted in `C`; endpoints in `O` and `B` continue by this section and
+Section 357.  Consequently residual arrival is not a terminal alternative
+for the cross-color dynamics.  After adjoining the inactive companion
+states, propagation can stop only at a strict selected cell; otherwise it
+continues through the finite target component and eventually enters a
+nonbacktracking cross-color state cycle.
+
+The last sentence is a finite-state conclusion, not yet an exclusion: the
+enlarged state space includes rooted arrivals at every vertex of `O` and
+inactive arrivals supplied by fifth-cell payers.  Its value is to remove
+the residual escape hatch from (1173).  Any full completion of the exact
+reuse reversal must either hit one of the five strict selected cells or
+support a genuine global colored holonomy cycle in the target component.
