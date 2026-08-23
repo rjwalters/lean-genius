@@ -13089,3 +13089,46 @@ shared root.  No filler chain, multi-export alternating path, or closed
 cycle remains.  The final owner-price question is now whether the red
 root-only mate `u_i` and the complementary H/V/S transition at `x_i` pay
 this single edge boundary; the active port side is completely resolved.
+
+## 256. The active boundary closes only in the monochromatic case
+
+Sum the isolated payment identity (798) over the strict exports received by
+one exterior color `a`.  With `I_a` as in Section 254, its total active
+residue is
+
+```text
+partial H_a,       H_a:=sum_(i in I_a)[E_(x_i)].     (799)
+```
+
+The edges `E_(x_i)` form the connected five-cycle on `Z`.  Over `F_2`, the
+kernel of the boundary map on the edge space of a connected cycle consists
+of the zero chain and the full cycle.  Therefore
+
+```text
+partial H_a=0
+ iff I_a=empty or I_a=Z/5.                            (800)
+```
+
+This criterion retains the color tag.  The nonempty sets `I_a` partition
+the five export indices by (788), so exactly one of the following holds:
+
+```text
+monochromatic: one exterior color has I_a=Z/5;
+               its five active payments close once around the H cycle;
+
+multicolor:    at least two exterior colors are used;
+               every used color has partial H_a != 0.                (801)
+```
+
+In the multicolor branch the boundary support is explicit: it is the set of
+ports at which membership in the cyclic subset `I_a` changes.  It is
+nonempty and even, and different colors retain disjoint export-index sets
+even if their boundary port supports overlap.
+
+Equation (801) separates two genuinely different final owner-price tasks.
+In the multicolor branch, every used color must transport a nonzero located
+H-boundary through its root-only mates and complementary transitions.  In
+the monochromatic branch, the active boundary itself vanishes, so an
+exclusion must use the closed full-cycle owner/color data rather than an
+endpoint demand.  No scalar parity or uncolored sum distinguishes these
+branches; the color-resolved chain does.
