@@ -25007,3 +25007,39 @@ q>1172+7040(c-1)
 The fixed-root specialization is `q>1172+70400(t-1)`.  Equations
 (1674)--(1675) use only the canonical payer assignment already required
 in Section 469; no injectivity of payer layers within one trace is needed.
+
+## 472. Sparse traces expose a growing allowed-color frontier
+
+Let `s` fixed-root, vertex-disjoint selected traces take the sparse shape,
+and let `C_out` be the colors on their outward factor edges.  Section 467
+gives
+
+```text
+|C_out|>=ceil(3s/4),       C_out intersect H_sel=emptyset.      (1677)
+```
+
+The strict-export support has at most five colors, and adjoining the
+distinguished color `d` gives
+
+```text
+|{d} union Gamma|<=6.                              (1678)
+```
+
+Therefore the allowed part of the boundary frontier satisfies
+
+```text
+|C_out setminus ({d} union Gamma)|
+ >=max(0,ceil(3s/4)-6).                            (1679)
+```
+
+In particular, the sparse terminal (II) of (1666) carries the bound (1679)
+with `s=k`, while retaining `6k` distinct boundary vertices and disjoint
+selected payer support.  Thus the three-way terminal at
+`q>1172+81400(k-1)` may be sharpened by replacing its sparse branch with a
+linear family of new allowed boundary colors outside the selected rainbow
+set.
+
+These boundary colors are not asserted to be saturation colors, and their
+canonical payer layers are not controlled.  The conclusion is instead a
+new frontier interface: a large resistant sparse family cannot discharge
+all six-port boundary mass through the bounded exceptional color set.
