@@ -6462,8 +6462,9 @@ secondary fiber, rather than the routed intermediate itself, is essential.
 ## 121. The mixed branch has a local off-occurrence census candidate
 
 The local wedge formula exposed by Section 120 makes sense on any mixed dart
-cycle even though the global primitive (91) does not.  For a V occurrence
-`o=(x,z)` whose port mate has other root `x'`, define
+cycle even though the global primitive (91) does not.  Fix a secondary
+routing color `d`.  For **every incidence dart** `o=(x,z)` whose port mate
+has other root `x'`, define
 
 ```text
 f_ell(o) := [the actual resolved route label of o is ell],
@@ -6472,7 +6473,11 @@ q_u(o)   := t_u (R_cd(x,u)+R_cd(x',u)+R_ed(z,u)).       (362)
 
 for every intermediate atom `u` in the relevant routing color.  This is a
 canonical **local candidate**, not a value supplied by (91) on the mixed
-cycle.  Equation (361) still says `q_ell(o)=0` on the actual route; nonzero
+cycle.  The observable `q_u` is therefore defined on H, S, and V darts; the
+source indicator `f_ell` is supported only on V darts.  This full-domain
+extension is what is used in Sections 128--132.  Formula (362) is symmetric
+in `x,x'`, so the extension remains constant on port pairs.  On a V dart,
+equation (361) still says `q_ell(o)=0` for its actual route label; nonzero
 entries of `q(o)` are off-occurrence secondary-fiber atoms.
 
 For a matching pair `{o,o'}`, define the cross-tagged feature coordinate
@@ -7051,3 +7056,44 @@ primitive can evaluate this transport, but on a mixed dart cycle (397)--
 (400) are the native definition.  The remaining H-run task is therefore to
 pair or price these enriched transfer edges jointly in `(A,u)`, consistent
 with the transition-potential requirement found in the Baer and B3 lanes.
+
+## 133. The internal H connection is a four-incidence atom
+
+The full-domain convention in (362) makes the correction in (400) entirely
+local.  Let an internal H--H root pair at root `x` have ports `z_1,z_2`,
+and let `x_1,x_2` be their respective other roots.  Expanding (362) on its
+two darts gives
+
+```text
+q_u(x,z_1)=t_u(R_cd(x,u)+R_cd(x_1,u)+R_ed(z_1,u)),
+q_u(x,z_2)=t_u(R_cd(x,u)+R_cd(x_2,u)+R_ed(z_2,u)).
+```
+
+The common-root term occurs twice and cancels over `F_2`.  Hence
+
+```text
+delta_R q_u(x;z_1,z_2)
+ = t_u( R_cd(x_1,u)+R_ed(z_1,u)
+       +R_cd(x_2,u)+R_ed(z_2,u) ).                    (402)
+```
+
+Define the displayed four-incidence parity to be the internal connection
+atom `eta_u(x;z_1,z_2)`.  Equation (400) becomes
+
+```text
+tau_u(A)=q_u(v_-)+q_u(v_+)
+         +sum_(internal H roots E in A) eta_u(E).     (403)
+```
+
+Thus no unbounded run word is hidden in the primary transfer: after its two
+endpoint wedge values, it is a sum of identical four-incidence local cells.
+The atom is symmetric under exchanging the two ports and their opposite
+roots, so it is attached to the unordered H--H root pair rather than to an
+orientation of the run.
+
+Equation (402) does **not** say `eta_u=0`.  C4-freeness constrains which of
+its four incidences can coexist, but a separate classification is required
+before any cancellation or privacy claim.  The remaining primary problem
+is now finite and explicit: classify the nonzero `(H--H root,u)` cells of
+(402), then match their sum and the two endpoint wedge values against the
+joint run transfer in (403).
