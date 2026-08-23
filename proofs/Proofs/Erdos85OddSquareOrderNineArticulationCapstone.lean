@@ -125,7 +125,9 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
        (S.card = 34 ∧ T.card = 43) ∨
        (S.card = 43 ∧ T.card = 34)) ∧
       (orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ S ∨
-       orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ T) := by
+       orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ T) ∧
+      (∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S) ∧
+      (∀ x ∈ T, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T) := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -369,7 +371,7 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
       · exact Or.inl ⟨by omega, hb⟩
       · exact Or.inr (Or.inl ⟨by omega, hb⟩)
       · exact Or.inr (Or.inr ⟨by omega, hb⟩)
-  refine ⟨S, T, hUnion, hDisjoint, ?_, hsmallBeta⟩
+  refine ⟨S, T, hUnion, hDisjoint, ?_, hsmallBeta, hSclosed, hTclosed⟩
   simpa [hSorder, hTorder] using hpairs
 
 #print axioms squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not_connected
