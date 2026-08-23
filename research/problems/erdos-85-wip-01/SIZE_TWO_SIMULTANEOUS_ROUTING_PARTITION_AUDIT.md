@@ -10594,3 +10594,48 @@ choices are consequently exact:
 Any cross-lane use of the active-residual census must meet the same test: it
 must provide the occurrence correspondence in (a), not merely an equal
 aggregate parity.
+
+## 207. The natural H and S mates are also outside `T`
+
+The checkpoint (637) can be evaluated directly for the mate carried by an H
+dart.  A horizontal owner edge `xx' in A_c` is labelled by its port `p`,
+meaning `p` is adjacent to both roots.  Therefore
+
+```text
+x--p--x'--x
+```
+
+is an actual triangle containing `xx'`.  Since `T` is the triangle-free
+edge graph,
+
+```text
+xx' notin T.                                           (639)
+```
+
+Thus the opposite root retained by the H decoration never supplies an
+endpoint of `N_T(x)`.
+
+The same argument applies to the immediate S mate.  An S state at root `x`
+is the `A_e` fiber switch joining its two ports `p,p'`; both ports are
+adjacent to `x`, so the switch edge lies in the triangle
+
+```text
+p--x--p'--p
+```
+
+and hence
+
+```text
+pp' notin T.                                           (640)
+```
+
+Therefore none of the three direct occurrence labels supplies the internal
+T-neighbor population: V label legs are non-T by (623), H owner mates by
+(639), and S switch mates by (640).
+
+This rules out the direct version of branch (638a).  Any proof of (628) must
+use a genuinely secondary incidence construction (for example, a broken-T
+endpoint attached through a matching atom), not the visible mate edge of an
+H, V, or S decoration.  Absent such a construction, the additive Baer
+completion remains globally cancelling auxiliary data and branch (638b) is
+the honest SRP route.
