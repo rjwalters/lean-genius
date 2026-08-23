@@ -2054,12 +2054,18 @@ the opposite endpoint cannot be adjacent to `w_i`:
 tau_i=1  implies  z_(3-i) w_i is not in A.                (73rnl)
 ```
 
-In particular, if `w_1=w_2`, then `tau_1+tau_2<=1`; the coincident-target
-state with both marked edges active in T is impossible (either marked edge
-would have the other owner endpoint as a common neighbor).  The remaining
-coincident cases have zero or one active marked edge, with (73rnk) fixing
-whether the two witness parities agree or differ.  This removes one of the
-four naive two-port phase states before any simultaneous transport input.
+In fact mark coincidence is stronger than this first crossed exclusion.  If
+`w_1=w_2=w` and `tau_i=1`, then `z_i` is a common A-neighbor of the opposite
+defect pair `z_(3-i),w`: the owner edge is in A and so is `z_iw`.  This is
+impossible because `z_(3-i)w` is the marked D-pair for the opposite endpoint.
+Therefore
+
+```text
+w_1=w_2  implies  tau_1=tau_2=0.                         (73rnl')
+```
+
+Thus coincident marks leave no active marked edge at all; (73rnk) then fixes
+the two witness parities to `(beta_1,beta_2)=(delta,delta)`.
 
 The owner edge itself has exactly three possible geometries.  If
 `delta=1`, it is a T-edge and hence lies on a simple T-cycle, producing an
@@ -2104,14 +2110,15 @@ delta  (tau_1,tau_2)   (beta_1,beta_2)
 ```
 
 For distinct marks all eight rows remain compatible with the currently
-proved local equations.  For coincident marks (73rnl) deletes precisely the
-two `tau_1=tau_2=1` rows, leaving six.  The triangle localization (73rnm)
+proved local equations.  For coincident marks (73rnl') leaves only the two
+`tau_1=tau_2=0` rows, namely `(delta,beta_1,beta_2)=(0,0,0)` and
+`(1,1,1)`.  The triangle localization (73rnm)
 refines the `delta=0` rows by the location of their common neighbor but does
 not remove their remaining phase choices.  This is an honest negative
 terminal: local T-parity, codegree, and mark coincidence do not by themselves
 kill `a=1`.  A final exclusion must use a simultaneous routing relation that
 couples the two witness parities or the two cross-mark phases; (73rnn) states
-exactly which six/eight local rows that relation has to separate.
+exactly which two/eight local rows that relation has to separate.
 
 There is already an exact signed simultaneous-routing identity at this
 endpoint.  Put
@@ -2163,6 +2170,27 @@ A-steps, transports into precisely the cross-shore mark difference.  This
 is the clean sum-to-difference compatibility sought in the simultaneous
 transport lane, now forced directly by the adjacency-square/defect identity
 at the extreme saturated endpoint.
+
+The coordinate form also exposes the exact labeled cross routes.  When
+`w_1!=w_2`, the pair `z_i,w_i` is D and has no common A-neighbor, whereas
+`z_(3-i),w_i` is non-D (the opposite endpoint's unique inside D-mark is
+`w_(3-i)`) and therefore has one common A-neighbor.  Write it `p_i`.  Then
+
+```text
+N_A(z_i) intersect N_A(w_i) = empty,
+N_A(z_(3-i)) intersect N_A(w_i) = {p_i},
+p_i=z_i  iff  tau_i=1.                                  (73rnz')
+```
+
+The last equivalence uses the owner edge `z_1z_2 in A`: if `tau_i=1`, the
+unique crossed route is `w_i-z_i-z_(3-i)`, and the converse is immediate.
+Moreover `p_1=p_2` can occur only when `delta=0` and both `tau_i=0`, because
+a shared cross intermediary is a common A-neighbor of the owner pair, while
+an owner endpoint cannot serve as both intermediaries.  Thus the exact
+mark-difference in (73rnz) retains the intermediate-port label that scalar
+phase compression discarded.  Mark coincidence is precisely the degenerate
+case in which both crossed codegrees drop from one to zero, recovering
+(73rnl').
 
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
