@@ -16268,3 +16268,73 @@ contradiction: applying `E_j` may still cancel a nonzero `Q_lab`.  It does,
 however, replace arbitrary label cancellation by a finite ten-label
 exhaustion with the quantitative threshold (1031), which is the remaining
 case a final SRP price must address.
+
+## 316. Every residual port has a singleton local-charge normal form
+
+The scope audit in Section 314 allows the recursion to start directly from
+any singleton residual shore.  Fix an arbitrary port `s in O` and put
+
+```text
+S_s:={s}.                                            (1032)
+```
+
+Every root matching `M_i` has degree one at `s`, so all five singleton
+cuts are odd.  Section 283 therefore supplies an actual exterior receiving
+color `a=a(s)` with
+
+```text
+deg_(H_a^C)(s)=1.                                   (1033)
+```
+
+Let `y_s` be the unique `C`-active `a`-label whose factor edge is incident
+to `s`, and let `y'_s` be the other `a`-label at that port.  Then `y'_s` is
+`C`-inactive.  The reverse-terminal set inside the singleton shore is
+`W_a(S_s)={s}`.  Section 289 produces an odd nonempty subset of it, hence
+
+```text
+W_I={s}.                                            (1034)
+```
+
+The unique selected escape is nonempty, while the capacity bound (1010)
+gives `|E(Pi_s)|<=|S_s|=1`.  Thus it consists of one edge.  By the exact
+endpoint identification (987)--(989), its terminal label equals the
+inactive companion:
+
+```text
+z(s)=y'_s,
+Pi_s=[y'_s],
+L^loc={s},
+J_tot=[y'_s]!=0.                                   (1035)
+```
+
+The pointwise root defect is simultaneously forced into the local shape
+of Sections 293 and 303.  Write
+
+```text
+N_c(y_s)={x_s,u_s},       x_s in C, u_s notin C.
+```
+
+The inactive pair cancels from the three-edge root chain, leaving
+
+```text
+T_s^def={u_s},
+x_s --[y_s]-- u_s,
+s   --[y'_s]-- o_s,       o_s notin {s}.            (1036)
+```
+
+Moreover `y'_s` is `C`-inactive, whereas every label in the root-star
+chain `Y` and active chain `A` meets `C`.  Hence the explicit residue from
+(1028) cannot vanish:
+
+```text
+Q_lab(S_s,a(s))=Y+A+[y'_s]!=0.                      (1037)
+```
+
+Thus no descent or large-shore cancellation analysis is needed to obtain
+a charge.  **Every** residual port `s in O` admits some exterior color with
+the same canonical local normal form: one active label routes a selected
+root to a singleton outside-root defect, the inactive companion routes
+`s` out of its singleton shore, and that companion survives as a private
+label residue.  The remaining price problem can therefore be posed on the
+family of `2q-15` singleton tickets (1032)--(1037), rather than on an
+arbitrary recursively chosen shore.
