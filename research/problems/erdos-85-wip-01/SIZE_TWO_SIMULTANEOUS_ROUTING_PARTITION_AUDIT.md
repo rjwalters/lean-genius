@@ -13940,3 +13940,64 @@ actual ports pair two root occurrences and which terminate.  The private
 ticket occurrences in `B` and `O` are the distinguished labeled edges and
 stubs of these colorwise graphs, providing a direct combinatorial interface
 with the owner-return pairing `nu_e`.
+
+## 272. Global load plus the local three-role census is exact
+
+The rootwise role data underlying Sections 270--271 can be stated without
+retaining arbitrary port names.  For every root index and exterior color
+put
+
+```text
+epsilon_i^a:=1_{i in I_a},
+b_i^a:=|D_(x_i)^a intersect B|,
+o_i^a:=|D_(x_i)^a intersect O|.                      (858)
+```
+
+The set `D_(x_i)^a` is the outside part of the four-port row of color `a`.
+It has size three when the row contains the unique strict selected cell and
+size four otherwise.  Since `B` and `O` partition the outside target ports,
+this gives the exact local role equation
+
+```text
+epsilon_i^a+b_i^a+o_i^a=4.                          (859)
+```
+
+At a fixed root, four of the ten private endpoints form the owner block
+`B_(x_i)=T_(i-1) disjoint_union T_i`; the other six are assigned by integer
+SRP to exterior colors.  Every residual port is exterior-routed there.
+Therefore the root margins are
+
+```text
+sum_a epsilon_i^a=1,
+sum_a b_i^a=6,
+sum_a o_i^a=|O|=2q-15.                              (860)
+```
+
+The color margins recover the global census exactly:
+
+```text
+sum_i epsilon_i^a=k_a,
+sum_i b_i^a=b_a,
+sum_i o_i^a=o_a,
+k_a+b_a+o_a=20.                                     (861)
+```
+
+Thus each exterior color has a canonical five-row local role table
+
+```text
+(epsilon_i^a,b_i^a,o_i^a)_(i mod 5)
+```
+
+together with the global load `L_a=20-k_a`; either determines the missing
+row entry through (859), and all row and column margins are fixed by
+(860)--(861).  In the colorwise pairing graph of Section 271, `b_i^a` and
+`o_i^a` distinguish whether an incident edge or stub uses a private owner
+endpoint or a residual port.
+
+This is precisely the invariant class suggested by the independent B.3
+compression experiments: global fiber load plus local role geometry, with
+literal label names discarded.  The analogy does not import the finite B.3
+certificate into this setting.  The remaining uniform task is to impose
+the realizability constraints that the table alone omits--the
+nonmonochromatic ticket caps (844), the residual caps (848), and the
+return pairing `nu_e` on the `B` occurrences.
