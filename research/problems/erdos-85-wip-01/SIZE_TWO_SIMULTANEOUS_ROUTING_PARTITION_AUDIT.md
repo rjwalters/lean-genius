@@ -24416,3 +24416,59 @@ This strengthens the avoidance interface rather than the terminal
 itself.  A saturation terminal now carries a one-element source-color
 support together with a payer-layer support of size at most two, and the
 next transversal argument may forbid both kinds of support at once.
+
+## 458. Mixed color-payer supports have a rank-three matching
+
+Assume that no avoided nondegenerate tag-even PC cancellation occurs.
+For every saturation terminal from Section 457, form a support in the
+disjoint union of the source-color and payer-layer universes:
+
+```text
+K(e_1,e_2):={sourceColor(e_1)} disjointUnion
+             {payerLayer(e_1),payerLayer(e_2)},
+2<=|K(e_1,e_2)|<=3.                              (1637)
+```
+
+Let `mathcal K` be the family of all such supports.  Suppose an at-most
+`p` element set met every member of `mathcal K`; split it as a payer-layer
+set `P` and a source-color set `C`, with `|P|+|C|<=p`.  If
+
+```text
+q>1172+110p,                                      (1638)
+```
+
+Section 457 returns a saturation whose payer layers avoid `P` and whose
+source color avoids `C`, contradicting the transversal property.  Hence
+`tau(mathcal K)>=p+1`.  The union of a maximal matching in this
+rank-at-most-three family is a transversal of size at most three times
+the matching number, so
+
+```text
+nu(mathcal K)>=ceil((p+1)/3).                     (1639)
+```
+
+Put `m:=ceil((p+1)/3)` and choose `m` disjoint mixed supports.  Their
+source colors are pairwise distinct, their payer-layer sets are pairwise
+disjoint, and their `2m` physical edges and canonical payers are distinct.
+Pigeonhole these terminals among the ten unordered root pairs.  One fixed
+root pair occurs at
+
+```text
+r:=ceil(m/10)
+```
+
+distinct targets; the target distinction follows as in Section 453.
+Unlike the earlier root-pair fan, these `r` turns already have pairwise
+distinct source colors.  In particular, taking `p=30(c-1)` gives
+
+```text
+q>1172+3300(c-1) and no avoided nondegenerate cancellation
+ -> one fixed root pair has saturated turns at c distinct targets,
+    in c pairwise distinct allowed exterior source colors,
+    with pairwise disjoint payer-layer support.                 (1640)
+```
+
+Thus simultaneous avoidance improves the multicolor coefficient in
+(1632) from `11000` to `3300` and, more importantly, produces the color
+and payer disjointness in one matching rather than by a posteriori
+capacity counting.
