@@ -3289,6 +3289,99 @@ theorem squareOrderNine_threeHigh_secondProfile_exceptional_residualCovers_inter
   rw [htCard, huCard] at hIE
   omega
 
+/-- Every point in the overlap of two exceptional residual covers is
+doubly saturated: in each hole row it has exactly one residual B0 center
+and no U1-core center.  This retains the useful coupled interface even
+though selecting only from the overlap is not by itself a valid price
+selector. -/
+theorem squareOrderNine_threeHigh_secondProfile_exceptional_overlap_double_saturation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t u q : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hu : u ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hxt : (secondOrderDefectGraph G).Adj x t)
+    (hxu : (secondOrderDefectGraph G).Adj x u)
+    (hq : q ∈
+      ((G.neighborFinset t ∩
+          (squareOrderNineLowIncidenceBin G 0 \
+            (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))).biUnion
+        fun w => G.neighborFinset w ∩
+          (squareOrderNineLowIncidenceBin G 1 \
+            (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1))) ∩
+      ((G.neighborFinset u ∩
+          (squareOrderNineLowIncidenceBin G 0 \
+            (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))).biUnion
+        fun w => G.neighborFinset w ∩
+          (squareOrderNineLowIncidenceBin G 1 \
+            (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)))) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let R := fun v => G.neighborFinset v ∩ T
+    (((R t) ∩ G.neighborFinset q).card = 1 ∧
+        ((G.neighborFinset t ∩ U1) ∩ G.neighborFinset q).card = 0) ∧
+      (((R u) ∩ G.neighborFinset q).card = 1 ∧
+        ((G.neighborFinset u ∩ U1) ∩ G.neighborFinset q).card = 0) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let R := fun v => G.neighborFinset v ∩ T
+  let A := fun v => (R v).biUnion fun w => G.neighborFinset w ∩ U1
+  change q ∈ A t ∩ A u at hq
+  change (((R t) ∩ G.neighborFinset q).card = 1 ∧
+      ((G.neighborFinset t ∩ U1) ∩ G.neighborFinset q).card = 0) ∧
+    (((R u) ∩ G.neighborFinset q).card = 1 ∧
+      ((G.neighborFinset u ∩ U1) ∩ G.neighborFinset q).card = 0)
+  have hsaturated (v : V)
+      (hv : v ∈ B 0 \ (G.neighborFinset x ∩ B 0))
+      (hxv : (secondOrderDefectGraph G).Adj x v)
+      (hqA : q ∈ A v) :
+      ((R v) ∩ G.neighborFinset q).card = 1 ∧
+        ((G.neighborFinset v ∩ U1) ∩ G.neighborFinset q).card = 0 := by
+    simp only [A, Finset.mem_biUnion] at hqA
+    obtain ⟨w, hwR, hwq⟩ := hqA
+    have hqU1 : q ∈ U1 := (Finset.mem_inter.mp hwq).2
+    have hcell :=
+      squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hv hxv hqU1
+    dsimp only at hcell
+    change (((R v) ∩ G.neighborFinset q).card = 1 ∧
+        ((G.neighborFinset v ∩ U1) ∩ G.neighborFinset q).card = 0) ∨
+      (((R v) ∩ G.neighborFinset q).card = 0 ∧
+        ((G.neighborFinset v ∩ U1) ∩ G.neighborFinset q).card = 1) at hcell
+    rcases hcell with hresidual | hcore
+    · exact hresidual
+    · have hwCommon : w ∈ (R v) ∩ G.neighborFinset q := by
+        refine Finset.mem_inter.mpr ⟨hwR, ?_⟩
+        exact (G.mem_neighborFinset q w).mpr
+          ((G.adj_comm w q).mp ((G.mem_neighborFinset w q).mp
+            (Finset.mem_inter.mp hwq).1))
+      have hempty := Finset.card_eq_zero.mp hcore.1
+      rw [hempty] at hwCommon
+      simpa using hwCommon
+  exact ⟨hsaturated t ht hxt (Finset.mem_inter.mp hq).1,
+    hsaturated u hu hxu (Finset.mem_inter.mp hq).2⟩
+
 /-- Algebraic form of the decisive mixed-center compatibility constraint.
 The residual-center matrix `A Q` and the cubic-core matrix `Q K` have
 disjoint support, so their entrywise inner product (equivalently
@@ -4006,6 +4099,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_residualBlocks_eq_coreComplement
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_block_partition_cardinalities
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_residualCovers_inter_card_ge_six
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_overlap_double_saturation
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_incidence_residual_gram_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
