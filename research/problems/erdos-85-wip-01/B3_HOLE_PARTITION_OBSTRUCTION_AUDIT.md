@@ -3266,6 +3266,37 @@ local exact-cover family of a triple or hole has a nonempty kernel `F(u)`,
 then show that absence of a capacity deficit makes two kernels collide along
 an intersecting row pair.
 
+There is a useful but nonterminal linear dual.  Give the 24 U1 labels
+nonnegative weights `lambda_b` and require every eligible candidate block to
+have weight at least one.  Pairwise-disjoint chosen blocks then consume
+disjoint label weights, so every local packing has size at most
+`sum_b lambda_b`.  A total below `d(u)` certifies a deficit.  After deleting
+one candidate `w`, the same inequality certifies `w in F(u)`.  The audit modes
+`--audit-residual-gram-hitting` and
+`--audit-residual-gram-dual-summary` compute integral and fractional versions
+of this cover dual.
+
+The fractional dual certifies nearly all sampled horns, but not all.  In a
+sixty-four-per-branch run its coverage was
+
+```text
+branch 3: 63 of 64 witnesses;
+branch 4: 64 of 64 witnesses.                                (13h)
+```
+
+The one uncovered branch-3 witness was locally feasible and had exactly one
+forced collision `(u,v,w)=(11,16,27)`.  After deleting `w`, the optimal
+fractional cover weights were `4.5` at row 11 and exactly `5.0` at row 16,
+whose demand is five.  Thus the dual proves `w in F(11)` but cannot prove
+`w in F(16)`; the latter forcedness is genuinely integral.  This counterexample
+was captured inside the same sequential generator run because regenerated
+seed handles are noncanonical.
+
+Consequently a purely linear replacement of (13f) is false.  Fractional
+label covers remain a compact proof tool for one-row deficits and most kernel
+sides, but a uniform proof must retain at least one integral exact-cover
+argument in the exceptional branch-3 collision pattern.
+
 The generic consumer of (13f) is now formalized in
 `Erdos85LocalGramPacking.lean`.  The theorem
 `false_of_localGramPacking_deficit_or_forced_collision` takes an arbitrary

@@ -2415,6 +2415,39 @@ def residual_gram_forced_collisions(data: dict) -> list[tuple[int, int, int]]:
             for w in sorted(forced[u] & forced[v])]
 
 
+def local_candidate_label_transversal(data: dict, row: int,
+                                      excluded_row: int | None = None,
+                                      max_size: int | None = None) -> list[int] | None:
+    """Find a smallest U1-label set meeting every retained candidate block."""
+    candidates = [u for u in data["candidates"][row] if u != excluded_row]
+    limit = int(data["degree"][row]) if max_size is None else max_size
+    for cardinality in range(limit + 1):
+        for chosen in combinations(range(N_U1), cardinality):
+            labels = set(chosen)
+            if all(labels & data["blocks"][u] for u in candidates):
+                return list(chosen)
+    return None
+
+
+def local_candidate_fractional_transversal(
+        data: dict, row: int, excluded_row: int | None = None
+        ) -> tuple[float, list[tuple[int, float]]] | None:
+    """Minimum fractional U1-label cover of the retained candidate blocks."""
+    candidates = [u for u in data["candidates"][row] if u != excluded_row]
+    matrix = np.zeros((len(candidates), N_U1))
+    for i, candidate in enumerate(candidates):
+        for label in data["blocks"][candidate]:
+            matrix[i, label] = -1
+    result = linprog(np.ones(N_U1), A_ub=matrix,
+                     b_ub=-np.ones(len(candidates)),
+                     bounds=[(0, None)] * N_U1, method="highs")
+    if not result.success:
+        return None
+    return (float(result.fun),
+            [(label, float(weight)) for label, weight in enumerate(result.x)
+             if weight > 1e-8])
+
+
 def residual_gram_unsat_core(data: dict, timeout_seconds: int) -> dict:
     """Return a grouped assumption core for degree plus Gram-only constraints."""
     from z3 import And, Bool, If, Implies, SolverFor, Sum, unsat
@@ -2588,6 +2621,10 @@ def main() -> int:
                         help="extract grouped degree/Gram UNSAT cores on locally feasible seeds")
     parser.add_argument("--audit-residual-gram-summary", action="store_true",
                         help="count deficit/forced-collision coverage over generated seeds")
+    parser.add_argument("--audit-residual-gram-hitting", action="store_true",
+                        help="seek small label-transversal duals for deficits and forced neighbors")
+    parser.add_argument("--audit-residual-gram-dual-summary", action="store_true",
+                        help="test fractional label-cover certification of the Gram dichotomy")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -2628,6 +2665,8 @@ def main() -> int:
             or args.audit_residual_gram_only):
         for branch in (3, 4):
             for seed_number in range(args.seeds):
+                if dual_seed_filter and seed_number not in dual_seed_filter:
+                    continue
                 seed = make_outer_seed(
                     branch, args.timeout_seconds * 1000, seed_number,
                     require_eligible_hole_pair=args.require_eligible_hole_pair)
@@ -2694,6 +2733,97 @@ def main() -> int:
                   f"feasible_collision_roles="
                   f"{dict(feasible_collision_role_patterns)} "
                   f"uncovered={uncovered}")
+        return 1 if all_uncovered else 0
+    if args.audit_residual_gram_hitting:
+        for branch in (3, 4):
+            for seed_number in range(args.seeds):
+                if dual_seed_filter and seed_number not in dual_seed_filter:
+                    continue
+                seed = make_outer_seed(
+                    branch, args.timeout_seconds * 1000, seed_number,
+                    require_eligible_hole_pair=args.require_eligible_hole_pair)
+                candidate = instance(branch, seed, (0, 1))
+                deficient = residual_gram_local_capacities(candidate)
+                collisions = residual_gram_forced_collisions(candidate)
+                deficit_duals = [
+                    (row, demand, capacity,
+                     local_candidate_label_transversal(
+                         candidate, row, max_size=demand - 1),
+                     local_candidate_fractional_transversal(candidate, row))
+                    for row, demand, capacity in deficient
+                ]
+                collision_duals = [
+                    (u, v, w,
+                     local_candidate_label_transversal(
+                         candidate, u, excluded_row=w,
+                         max_size=int(candidate["degree"][u]) - 1),
+                     local_candidate_label_transversal(
+                         candidate, v, excluded_row=w,
+                         max_size=int(candidate["degree"][v]) - 1),
+                     local_candidate_fractional_transversal(
+                         candidate, u, excluded_row=w),
+                     local_candidate_fractional_transversal(
+                         candidate, v, excluded_row=w))
+                    for u, v, w in collisions
+                ]
+                print(f"residual_gram_hitting branch={branch} "
+                      f"seed={seed_number} deficit_duals={deficit_duals} "
+                      f"collision_duals={collision_duals}")
+        return 0
+    if args.audit_residual_gram_dual_summary:
+        all_uncovered = []
+        for branch in (3, 4):
+            counts = Counter()
+            uncovered = []
+            uncovered_details = []
+            for seed_number in range(args.seeds):
+                seed = make_outer_seed(
+                    branch, args.timeout_seconds * 1000, seed_number,
+                    require_eligible_hole_pair=args.require_eligible_hole_pair)
+                candidate = instance(branch, seed, (0, 1))
+                deficient = residual_gram_local_capacities(candidate)
+                collisions = residual_gram_forced_collisions(candidate)
+                certified_deficits = [
+                    row for row, demand, _ in deficient
+                    if (dual := local_candidate_fractional_transversal(
+                            candidate, row)) is not None
+                    and dual[0] < demand - 1e-7
+                ]
+                certified_collisions = [
+                    (u, v, w) for u, v, w in collisions
+                    if (left := local_candidate_fractional_transversal(
+                            candidate, u, excluded_row=w)) is not None
+                    and (right := local_candidate_fractional_transversal(
+                            candidate, v, excluded_row=w)) is not None
+                    and left[0] < int(candidate["degree"][u]) - 1e-7
+                    and right[0] < int(candidate["degree"][v]) - 1e-7
+                ]
+                key = ("dual-deficit" if certified_deficits else "no-dual-deficit",
+                       "dual-collision" if certified_collisions else "no-dual-collision")
+                counts[key] += 1
+                if not certified_deficits and not certified_collisions:
+                    uncovered.append(seed_number)
+                    all_uncovered.append((branch, seed_number))
+                    uncovered_details.append({
+                        "seed": seed_number,
+                        "deficits": [
+                            (row, demand, capacity,
+                             local_candidate_fractional_transversal(
+                                 candidate, row)[0])
+                            for row, demand, capacity in deficient
+                        ],
+                        "collisions": [
+                            (u, v, w,
+                             local_candidate_fractional_transversal(
+                                 candidate, u, excluded_row=w)[0],
+                             local_candidate_fractional_transversal(
+                                 candidate, v, excluded_row=w)[0])
+                            for u, v, w in collisions
+                        ],
+                    })
+            print(f"residual_gram_dual_summary branch={branch} "
+                  f"counts={dict(counts)} uncovered={uncovered} "
+                  f"uncovered_details={uncovered_details}")
         return 1 if all_uncovered else 0
     if args.audit_residual_gram_core:
         for branch in (3, 4):
