@@ -3637,6 +3637,19 @@ odd number of further support points in
 `V setminus (X union {E_1,E_2})`.  The nonprivate activation is therefore an
 external-shore relay, not an internal cancellation hidden inside X.
 
+For scope, the exact source formula is
+
+```text
+kappa_C=A 1_(X intersect C)+P_C h.                       (73rnz_cjb)
+```
+
+Off the poles it records the parity of C-crossing A-incidences into X.  This
+makes `kappa_C` a canonical marked source syndrome, but does not yet express
+it as a sum of two-ended relay-boundary columns: an A-dart from outside X is
+one-ended in (73rnz_cjb).  Nonempty external support is therefore activation,
+not yet a quotient-span or trail solution.  Producing that boundary
+decomposition is precisely the remaining gauge-coupling step.
+
 The syndrome packing bound (73rnz_bm) removes one of those branches and
 rigidifies the other.  Suppose first that both endpoints are leaves and that
 `kappa_F` has no off-pole support.  Then (73rnz_ch) says `kappa_F=h`.  Since
