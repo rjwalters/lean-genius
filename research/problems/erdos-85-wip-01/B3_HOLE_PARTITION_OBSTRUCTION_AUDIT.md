@@ -4484,11 +4484,17 @@ The two-row target localizes further under exhaustive support scans.  The CLI
 mode `--scan-exceptional-two-row-supports` solves and rationally verifies all
 `4*46` candidate supports `{hole,other}` and records row type, block
 intersection, mutual eligibility, prices, and margin.  Across the tracked
-payload, the refuting all-row payload, and three independently synthesized
+payload, the refuting all-row payload, and seven independently synthesized
 all-row-feasible payloads, every design has a certificate pairing an
 exceptional row with a **regular triple row**; counts of all exceptional
-two-row certificates are respectively `10,6,13,2,2`.  The newest hard model
-has only two: `{24,5}` and `{25,12}`, both with a regular triple partner.
+two-row certificates in the four newest models are `5,5,4,9`.  The sparse
+durable regression `q9_branch4_two_row_selector_sparse_witness.json` has only
+four exceptional two-row certificates, of which precisely two have a regular
+triple partner: `{22,19}` and `{23,21}`.  Both row pairs share exactly one U1
+point.  In fact every one of the nine hard models has at least one winning
+exceptional/regular pair whose blocks meet, although disjoint winning pairs
+also occur.  The scanner now machine-reports both the regular-partner and
+intersecting-regular-partner existence booleans.
 Thus the current sharp selector is finite and incidence-native:
 
 ```text
@@ -4498,7 +4504,7 @@ row/point-price certificate supported on {h,t}.               (13aq)
 
 The rows need not be mutually eligible, and their U1 blocks may be disjoint
 or meet in one point, so neither condition should be added to (13aq).  This
-five-model pattern is still empirical, but it replaces the diffuse
+nine-model pattern is still empirical, but it replaces the diffuse
 “some two rows” statement by the exact `4 x 22` family whose outer-incidence
 selection must be proved.
 
