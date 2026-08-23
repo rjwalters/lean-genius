@@ -3223,6 +3223,30 @@ pivot.  The pairing at a degree-four center is not canonical, so the normal
 form is an existence statement; a proof must either choose weights invariant
 under its three pairings or retain G as the uncontracted joint label.
 
+The whole exceptional interface now closes on the four-leaf quotient.  Add
+to P the two sibling edges, each representing the two-edge star path through
+`E_i`, and add one cross-star edge for every occupied cell of N, representing
+its two-edge path through the corresponding degree-two port.  Call the
+resulting labeled multigraph Q.  At a leaf L its degree satisfies
+
+```text
+deg_Q(L) = deg_P(L)+1+m_L = b_L+1+m_L = 0        (mod 2). (73rnz_bd)
+```
+
+Thus Q is Eulerian and decomposes into closed trails.  Its three edge types
+expand to actual T-paths of lengths four (paired switch), two (empty star),
+and two (cross port), respectively.  Consequently every charge-free
+exceptional routing is a closed labeled T-walk system generated on only four
+leaf states.  A parallel P/sibling pair expands to the C6 in (73rnz_ap), and
+a parallel P/cross-port pair is another six-edge closed route; longer quotient
+cycles give the corresponding longer even T-walks.
+
+This explains why no boundary parity survives: after all switches are paired,
+the exceptional interface is already Eulerian.  The terminal information can
+only be the joint labels/holonomy carried around these closed quotient trails
+or a capacity price on their relay atoms.  It cannot be recovered from an
+unlabelled exit count.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
