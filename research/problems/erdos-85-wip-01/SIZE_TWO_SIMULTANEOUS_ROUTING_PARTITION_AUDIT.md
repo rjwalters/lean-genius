@@ -24830,3 +24830,48 @@ No claim is made that these new colors are themselves saturation colors
 or avoid `d` and `Gamma`; (1661) is a factor-incidence expansion statement.
 Its gain is that a large family of resistant sparse traces cannot export
 through a bounded collection of exterior colors.
+
+## 468. Disjoint traces split into sparse-boundary or repeated-turn mass
+
+Retain the `t` fixed-root, vertex-disjoint rainbow traces from Section 466.
+Partition their colors according to (1649): let `s` be sparse and `a` be
+nonsparse, so
+
+```text
+s+a=t,       max(s,a)>=ceil(t/2).                 (1664)
+```
+
+If `s>=ceil(t/2)`, keep that many sparse traces.  Each has six boundary
+vertices by (1659); full-trace vertex-disjointness makes all those vertices
+distinct, and Section 466 says every outward factor edge has an unselected
+color.  If instead `a>=ceil(t/2)`, keep that many nonsparse traces.  Section
+462 gives a second same-color saturated turn inside each retained trace.
+The traces are vertex-disjoint, so the selected and secondary turns from
+different traces are all distinct.
+
+Equivalently, for every integer `k>=1`, set `t=2k-1` in (1658).  Then
+
+```text
+q>1172+81400(k-1)                                  (1665)
+```
+
+forces one of the following three terminals:
+
+```text
+(I) an avoided nondegenerate tag-even PC cancellation;
+
+(II) k vertex-disjoint sparse traces on one fixed root pair,
+     in k distinct allowed colors, with 6k distinct boundary vertices
+     whose outward factor-edge colors are all unselected;
+
+(III) k vertex-disjoint nonsparse traces on one fixed root pair,
+      in k distinct allowed colors, each containing at least two
+      same-color saturated turns.                              (1666)
+```
+
+The selected payer-layer supports remain pairwise disjoint in (II) and
+(III).  As before, no avoidance claim is made for the payer layers of the
+secondary turns in (III).  The gain is that the resistant saturation branch
+now has only two large-scale geometries: disjoint six-port sparse gadgets or
+disjoint repeated-turn gadgets, rather than an arbitrary mixture of the
+five four-edge trace shapes.
