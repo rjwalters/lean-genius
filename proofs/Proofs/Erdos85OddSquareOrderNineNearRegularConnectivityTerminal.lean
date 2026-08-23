@@ -48,6 +48,22 @@ theorem exists_nonowner_connectedComponent_of_not_connected
   intro hsupp
   exact howner (hsupp ▸ Set.mem_univ owner)
 
+/-- Neighbor closure of a finite shore is exactly the vanishing oriented cut
+sum used by the C4-free defect cut identity. -/
+theorem sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (S : Finset V)
+    (hclosed : ∀ u ∈ S, D.neighborFinset u ⊆ S) :
+    ∑ u ∈ S, (D.neighborFinset u ∩ (Finset.univ \ S)).card = 0 := by
+  apply Finset.sum_eq_zero
+  intro u hu
+  rw [Finset.card_eq_zero]
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro v hv
+  have hvParts := Finset.mem_inter.mp hv
+  have hvOutside := (Finset.mem_sdiff.mp hvParts.2).2
+  exact hvOutside (hclosed u hu hvParts.1)
+
 /-- Finite call-site form of the non-owner selection lemma.  The returned
 shore is nonempty, has cardinality strictly below the ambient order, omits
 the owner, and is closed under every graph neighbor; equivalently its graph
@@ -150,6 +166,7 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
 
 #print axioms eight_dvd_of_three_mul_eq_five_mul
 #print axioms exists_nonowner_connectedComponent_of_not_connected
+#print axioms sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
 #print axioms exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
 #print axioms orderNine_component_colour_sum_even_of_handshake
 #print axioms false_of_orderNine_nearRegular_proper_component_balance
