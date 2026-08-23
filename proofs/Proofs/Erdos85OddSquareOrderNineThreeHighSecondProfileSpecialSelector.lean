@@ -92,6 +92,53 @@ theorem squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect
     exact (Finset.sum_pos_iff
       (s := U1) (f := fun b => (D.neighborFinset b ∩ S).card)).mp hsumPos
 
+/-- A positive-special point may be chosen to minimize any natural-number
+load on the positive-special locus.  Instantiating `load` with the exact
+mutual trace-eligibility fiber load gives the formal selection half of the
+minimum-load branch-four target (13am). -/
+theorem squareOrderNine_threeHigh_secondProfile_exists_minimal_positive_specialDefect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hbranch : (G.induce (G.neighborSet x)).edgeFinset.card = 4)
+    (load : V → ℕ) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let D := secondOrderDefectGraph G
+    ∃ b ∈ U1, 0 < (D.neighborFinset b ∩ S).card ∧
+      ∀ c ∈ U1, 0 < (D.neighborFinset c ∩ S).card → load b ≤ load c := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  let P := U1.filter fun b => 0 < (D.neighborFinset b ∩ S).card
+  obtain ⟨b0, hb0U1, hb0Special⟩ :=
+    squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hbranch
+  have hPnonempty : P.Nonempty :=
+    ⟨b0, Finset.mem_filter.mpr ⟨hb0U1, hb0Special⟩⟩
+  obtain ⟨b, hbP, hbmin⟩ := Finset.exists_min_image P load hPnonempty
+  have hbParts := Finset.mem_filter.mp hbP
+  refine ⟨b, hbParts.1, hbParts.2, ?_⟩
+  intro c hcU1 hcSpecial
+  exact hbmin c (Finset.mem_filter.mpr ⟨hcU1, hcSpecial⟩)
+
 /-- The positive special point has at least 28 ordinary residual-resolved
 rows.  This packages candidate existence together with the mixed-column law,
 so the branch-four price route can use the high target directly. -/
@@ -211,6 +258,7 @@ theorem squareOrderNine_threeHigh_secondProfile_residualRows_total_eq_654
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_minimal_positive_specialDefect
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twentyEight
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residualRows_total_eq_654
 #print axioms Erdos85.exists_positive_special_price_lt_target_of_sum_lt

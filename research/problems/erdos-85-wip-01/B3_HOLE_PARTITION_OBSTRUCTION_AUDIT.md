@@ -4271,6 +4271,12 @@ retains the magnitude that the earlier half-atom projection audit found
 essential: parity or merely above/below-average load did not suffice, while
 exact `L` did.
 
+The minimizer itself is now kernel-selectable without encoding `H` into the
+profile file: `squareOrderNine_threeHigh_secondProfile_exists_minimal_positive_specialDefect`
+accepts any natural-number load and returns a positive-special U1 point
+minimal on that locus.  Instantiating it with `L` leaves only the price half
+of (13am); as with the earlier selector the theorem does not assert a cover.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
