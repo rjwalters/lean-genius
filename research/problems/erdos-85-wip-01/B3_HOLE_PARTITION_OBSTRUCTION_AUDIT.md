@@ -4137,6 +4137,14 @@ Adding the necessary residual triple/pair subdegree and marked-group miss
 ledger to the seed-free partial-mass negation is sound and reproduces fixed
 UNSAT, but the unrestricted one-hole branch-3 solve remains UNKNOWN.  Those
 row-type equations alone therefore do not replace the partition argument.
+The branch-4 high-target selection itself is already decided at the incidence
+level.  `q9_branch4_hole_special_incidence.py` relaxes every residual, DTB,
+row-ledger, and marked-miss family and asks for a normalized branch-4 block
+design in which every point of every exceptional hole hits both punctured
+regular special classes.  The negation is UNSAT in about one second.  Hence
+some hole point has `special(p)>0` and therefore `D_p>=28`; no residual
+classification is needed for this half of the branch-4 split.  What remains
+there is precisely the proposed weak cost-at-most-27 cover construction.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
