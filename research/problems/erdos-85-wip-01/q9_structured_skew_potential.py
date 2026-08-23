@@ -2378,6 +2378,26 @@ def residual_c4_parity_audit(data: dict, timeout_seconds: int,
     return answers
 
 
+def residual_gram_local_capacities(data: dict) -> list[tuple[int, int, int]]:
+    """Rows whose trace-eligible neighborhood lacks the demanded W-packing."""
+    deficient = []
+    for row in range(N):
+        demand = int(data["degree"][row])
+
+        def feasible(cardinality: int) -> bool:
+            return any(all(not (data["blocks"][u] & data["blocks"][v])
+                               for u, v in combinations(chosen, 2))
+                       for chosen in combinations(data["candidates"][row],
+                                                  cardinality))
+
+        if feasible(demand):
+            continue
+        capacity = next(cardinality for cardinality in range(demand - 1, -1, -1)
+                        if feasible(cardinality))
+        deficient.append((row, demand, capacity))
+    return deficient
+
+
 def main() -> int:
     global FEATURES
     parser = argparse.ArgumentParser()
@@ -2464,6 +2484,8 @@ def main() -> int:
                         help="also consume residual common-neighbor capacity for block intersections")
     parser.add_argument("--audit-residual-gram-only", action="store_true",
                         help="test block-intersection Gram law without ordinary residual C4")
+    parser.add_argument("--audit-residual-gram-local", action="store_true",
+                        help="find rows lacking a demanded W-independent eligible neighborhood")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -2519,6 +2541,17 @@ def main() -> int:
                         else "residual_c4_parity")
                 print(f"{mode} branch={branch} "
                       f"seed={seed_number} answers={answers}")
+        return 0
+    if args.audit_residual_gram_local:
+        for branch in (3, 4):
+            for seed_number in range(args.seeds):
+                seed = make_outer_seed(
+                    branch, args.timeout_seconds * 1000, seed_number,
+                    require_eligible_hole_pair=args.require_eligible_hole_pair)
+                candidate = instance(branch, seed, (0, 1))
+                deficient = residual_gram_local_capacities(candidate)
+                print(f"residual_gram_local branch={branch} "
+                      f"seed={seed_number} deficient={deficient}")
         return 0
     data = []
     all_data = []

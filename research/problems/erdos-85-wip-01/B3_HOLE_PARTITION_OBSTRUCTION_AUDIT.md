@@ -3124,13 +3124,26 @@ symmetric graph with the exact 5/6 degrees, two-sided trace-orthogonal edge
 support, and (13a).  Marked-row defect variables, their row and column sums,
 and ordinary residual C4 bounds are absent.
 
-This isolates a much smaller proof-facing mechanism than the earlier full
-SAT model.  Each residual neighborhood `N_A(w)` must be an independent set
-in the block-intersection graph `W`, while symmetry must realize all 47
-prescribed degrees inside the trace-eligible graph `H`.  The next uniform
-target is therefore a simultaneous `H`-factor / `W`-independent-neighborhood
-packing inequality.  The UNSAT observations remain sampled fixed-outer
-evidence, not a proof for all admissible outer designs.
+The first interpretation of this result as a simultaneous 47-row packing
+obstruction was too strong.  The follow-up mode
+`--audit-residual-gram-local` checks each row separately.  It finds the
+entire UNSAT already at local independent-set capacity:
+
+```text
+branch 3, seed 0: rows 24 and 25 demand 6 but have capacity 5,
+branch 4, seed 0: row 4 demands 5 but has capacity 4.          (13b)
+```
+
+Here capacity means the largest `W`-independent subset of the row's
+two-sided trace-eligible `H`-neighbors.  Thus symmetry and simultaneous
+degree realization are not needed for these sampled contradictions.  The
+proof-facing target is sharper: prove uniformly that every admissible outer
+design in branch 3 or 4 contains some row `w` whose trace-eligible
+neighborhood has `W`-independence number below its required residual degree.
+This is a local block-packing statement closely aligned with the exceptional-
+hole complement-partition obstruction already isolated above.  The current
+capacity deficits remain sampled fixed-outer evidence, not a proof for all
+admissible outer designs.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
