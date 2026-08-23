@@ -9247,3 +9247,49 @@ part.  The only non-boundary term is the original silent-center indicator
 `s`, whose mass is the marked silent parity.  A final owner identity must
 attach those H centers to the V boundary decorations of their silent gaps;
 all intervening companion transport is now an explicit labeled cut chain.
+
+## 178. Run-path transport sends silent parity to the marked exit
+
+Orient one maximal H-run `A` toward its exit boundary `E_+`.  Augment the
+linear graph of its H port pairs by the last H--V transition to `E_+`.  For
+each totally silent H port `z`, let `P(z,E_+)` be the unique forward path in
+this augmented run graph.  Define the run chain
+
+```text
+c_s:=sum_(z:s(z)=1) P(z,E_+).                         (554)
+```
+
+Every internal path vertex occurs twice in its own path boundary, so
+linearity gives the exact endpoint formula
+
+```text
+partial_Hrun c_s=s+(|s| mod 2)e_(E_+).               (555)
+```
+
+There is no path-pairing gauge: the oriented H-run supplies the unique path
+from every center to the chosen exit.  Reversing the orientation changes
+the exit term by the full run-endpoint boundary, exactly the quotient
+ambiguity already absorbed in Section 151.
+
+Substitute (555) into the shadow normal form (553).  In the combined chain
+space of the run and the port shadow,
+
+```text
+p_s
+ =partial_G(delta_G s)+partial_Hrun c_s
+  +(|s| mod 2)e_(E_+).                                (556)
+```
+
+Every edge in the first boundary carries its unique inactive intermediate
+label `y`; every edge in the second is an actual H-run transition with its
+owner/port data.  Thus (556) is label-preserving on both parts.  Modulo
+these two explicit boundary families, the entire silent footprint ledger is
+exactly the exit atom with coefficient `|s| mod 2`.
+
+This closes the transport half of silent activation.  An odd number of
+totally silent H ports cannot remain in the interior: it reaches the same V
+boundary at which the oriented phase vector `alpha_Z` records the run
+length.  To finish the singleton identity one must add the complementary
+nonsilent H ports—already covered by the active-label states of Sections
+161--174—and verify that their exit coefficients sum with `|s|` to
+`ell(A) mod 2` without losing the owner tags.
