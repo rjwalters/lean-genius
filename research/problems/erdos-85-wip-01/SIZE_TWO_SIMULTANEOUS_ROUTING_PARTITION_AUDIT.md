@@ -11230,3 +11230,33 @@ H/V/S marginals failed in Section 210.  A successful proof must use either
 the horizontal-owner matching relation on these four shore states or the
 owner-resolved commutator in (73rnz_cjibky)--(73rnz_cjibkza); no additional
 anchor enumeration is required.
+
+## 220. Only four diagonal pair cells survive the endpoint margins
+
+Let `m_(uv)` be the parity of marked same-side H edges whose unordered shore
+states are `{u,v}`, for `u,v in {00,10,01,11}`, and let `n_00` be the parity
+of their endpoints having state `00`.  Since a `00--00` edge contributes two
+such endpoints,
+
+```text
+n_00=m_(00,10)+m_(00,01)+m_(00,11).                  (681)
+```
+
+The defect table (680) therefore has total parity
+
+```text
+sum_e u(e)
+ =n_00+m_(00,00)+m_(10,10)+m_(01,01)+m_(11,11).      (682)
+```
+
+Thus the three off-diagonal cells incident with `00` are not new pair data:
+their sum is the ordinary one-endpoint margin `n_00`.  After that margin is
+transported, the genuinely nonlinear same-side obstruction consists only of
+four equal-state pair parities.
+
+Equation (682) is sharp at this resolution.  Separate endpoint margins
+cannot determine the diagonal pair counts: toggling two equal-state pairs
+against two cross-state pairs can preserve every endpoint population.  The
+remaining graph theorem may therefore be stated minimally as an evaluation
+of the equal-shore-state H pairs, with `n_00` supplied by the existing
+one-dart owner ledger.  No seven-cell enumeration is necessary.
