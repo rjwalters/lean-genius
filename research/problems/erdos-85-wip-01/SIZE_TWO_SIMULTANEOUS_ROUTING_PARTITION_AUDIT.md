@@ -14451,3 +14451,44 @@ target-owner geometry: either on a closed odd owner cycle already disjoint
 from the curl, or as odd holonomy on the five return edges through which the
 strict-to-`O` route is composed.  A final price may therefore split on this
 explicit dichotomy instead of treating `nu_e` as an arbitrary matching.
+
+## 282. Return holonomy produces an odd residual shore crossed by every root
+
+The two branches of (889) have a common formulation on actual residual
+ports.  If there is an untouched odd `A_e`-cycle in `O`, let `S` be its
+vertex set.  Otherwise every untouched cycle is even, so (888) makes at
+least one return-path mark `lambda_s` equal to one; let `S` be the internal
+`O` vertices of that path.  In both cases
+
+```text
+S subset O,             |S|=1 mod 2.                 (890)
+```
+
+The target-owner boundary of `S` is located.  In the cycle branch it is
+empty.  In the path branch the marked path has two endpoints in `B`, and
+the internal vertices form one interval, so its `A_e` cut consists exactly
+of the two endpoint edges:
+
+```text
+|delta_(A_e)(S)|=0 or 2,                             (891)
+```
+
+with the two-edge case attached to one identified return edge of `K_e`.
+
+Every residual port belongs to the support of every root matching `M_i` by
+(873)--(874).  Thus each vertex of `S` has degree one in `M_i`.  Handshaking
+inside `S` gives, for all five roots,
+
+```text
+|delta_(M_i)(S)|
+ = |S|-2|E(M_i[S])|
+ =1 mod 2,                 i in Z/5.                 (892)
+```
+
+Hence the composed owner escape does not terminate at one anonymous
+residual ticket.  It produces a located odd residual shore which every one
+of the five private root matchings crosses oddly, while its genuine
+`A_e`-owner boundary is either closed or a single identified two-edge
+attachment.  Equation (892) is the recursive export datum available for a
+terminal price: the new shore simultaneously retains root identity,
+actual port identity, and the return-holonomy branch.
