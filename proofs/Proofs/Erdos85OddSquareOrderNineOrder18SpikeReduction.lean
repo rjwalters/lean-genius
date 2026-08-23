@@ -56,6 +56,89 @@ theorem orderNine_order18_excessTwo_incidence_count_classification
   · right
     omega
 
+/-- The graph-facing moment package for the symmetric order-eighteen cut.
+Here `R` is the sixty-point ordinary complement `O \ S` (so it includes the
+deleted owner), each high root has eight neighbors in `R`, and the oriented
+defect boundary has size two.  The exact cut identity gives the incidence
+sum `516` and square sum `3434` used by the arithmetic classifier above. -/
+theorem orderNine_order18_largeOrdinaryShore_incidence_moments
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hRcard : R.card = 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 8)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 8)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 8)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hboundary : (∑ x ∈ R,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ R)).card) = 2) :
+    let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+    let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+    Fintype.card ↥(↑O : Set V) = 78 ∧
+      (∑ x, f x) = 516 ∧ (∑ x, (f x) ^ 2) = 3434 := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+  have hHcard : H.card = 3 := by simp [H, h₁₂, h₁₃, h₂₃]
+  have hOcard : Fintype.card ↥(↑O : Set V) = 78 := by
+    rw [Set.fintypeCard_eq_ncard, Set.ncard_coe_finset]
+    dsimp [O]
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ H), Finset.card_univ,
+      hcard, hHcard]
+  have hsumRaw := orderNine_ordinary_neighbor_inter_sum
+    G H R hRH hdegOrd
+  have hsum : (∑ x, f x) = 516 := by
+    dsimp only [f, O]
+    dsimp only at hsumRaw
+    rw [hRcard] at hsumRaw
+    simp [H, h₁₂, h₁₃, h₂₃, hhigh₁, hhigh₂, hhigh₃] at hsumRaw
+    exact hsumRaw
+  have hprodRaw := orderNine_cut_ordinary_high_product_identity
+    G hfree hcard H R hdegOrd hdegHigh 2 hboundary
+  have hhighProd : (∑ h ∈ H, (G.neighborFinset h ∩ R).card *
+      (10 - (G.neighborFinset h ∩ R).card)) = 48 := by
+    simp [H, h₁₂, h₁₃, h₂₃, hhigh₁, hhigh₂, hhigh₃]
+  have hprod : (∑ x, f x * (9 - f x)) = 1210 := by
+    dsimp only [f, O]
+    dsimp only at hprodRaw
+    rw [hhighProd, hRcard] at hprodRaw
+    norm_num at hprodRaw
+    omega
+  have hfle : ∀ x, f x ≤ 9 := by
+    intro x
+    have hle := Finset.card_le_card (Finset.inter_subset_left :
+      G.neighborFinset x.1 ∩ R ⊆ G.neighborFinset x.1)
+    rw [G.card_neighborFinset_eq_degree,
+      hdegOrd x.1 (Finset.mem_sdiff.mp x.2).2] at hle
+    exact hle
+  have hpoint : ∀ x, (f x) ^ 2 + f x * (9 - f x) = 9 * f x := by
+    intro x
+    have hmul : f x * f x ≤ f x * 9 := Nat.mul_le_mul_left (f x) (hfle x)
+    rw [pow_two, Nat.mul_sub_left_distrib]
+    simpa [mul_comm] using Nat.add_sub_of_le hmul
+  have hsumsqAdd : (∑ x, (f x) ^ 2) + ∑ x, f x * (9 - f x) =
+      9 * ∑ x, f x := by
+    rw [← Finset.sum_add_distrib]
+    calc
+      (∑ x, ((f x) ^ 2 + f x * (9 - f x))) = ∑ x, 9 * f x := by
+        apply Finset.sum_congr rfl
+        intro x _
+        exact hpoint x
+      _ = 9 * ∑ x, f x := by rw [Finset.mul_sum]
+  refine ⟨hOcard, hsum, ?_⟩
+  rw [hprod, hsum] at hsumsqAdd
+  have hs := congrArg (fun n : ℕ => n - 1210) hsumsqAdd
+  norm_num at hs
+  exact hs
+
 /-- Evaluation of the high-spike form of audit equation (31) at a high
 root.  Defect-high isolation makes the left side zero, while the high root
 lies in neither ordinary shore. -/
@@ -206,6 +289,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_excessTwo_incidence_count_classification
+#print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_moments
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
