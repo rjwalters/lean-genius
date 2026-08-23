@@ -10934,3 +10934,58 @@ without proving extension.  Equations (655)--(659) turn the disputed switch
 generation step into a reproducible finite linear-algebra audit on the
 private occurrence table; no informal connectedness or cycle-extension
 argument is needed.
+
+## 214. Local switch generation leaves one cross-witness cochain equality
+
+The Baer generation theorem (73rnz_cjibkzo) now proves the stronger ambient
+test on every variable owner-free witness fiber: after the canonical `00`
+and prescribed owner pairs are removed, the remaining allowed graph is a
+complete graph on an even endpoint set, and its realizable quadrilaterals
+span `Z_even`.  Thus the local defects in (659) vanish there.  This does not
+yet identify affine data belonging to different witnesses.
+
+The remaining transport has an exact cochain form.  Let `z_P` be the edge
+census of the witness-label multigraph `W_P` from (73rnz_cjibkzj), let
+`partial_W` be its vertex--edge incidence map, and let `1_R` indicate the
+residual witnesses.  Equation (73rnz_cjibkzk) is precisely
+
+```text
+Delta=<partial_W^*(1_R),z_P>.                          (660)
+```
+
+In other words, the Baer residual price is the literal cut cochain: a routed
+segment has price one exactly when its two witness labels lie on opposite
+sides of `R`.  Local complete-graph generation removes pairing holonomy
+inside each star, but it cannot by itself prove (660) equals the SRP marked-H
+price, because that comparison changes witness fibers.
+
+Transport the H/S occurrence map (650)--(651), the audited owner-cell prices,
+and the same-side sector to the same routed-segment space.  Denote the
+resulting marked cochain by `tau_H`; this notation is a target and presumes no
+value for an untransported occurrence.  The final cross-lane statement is
+exactly
+
+```text
+<tau_H,z_P>=<partial_W^*(1_R),z_P>                     (661)
+```
+
+for the realized global census, after the owner-cell corrections.  More
+canonically, if `Q_route` is the span of all realized segment switches and
+both prices annihilate it, they descend to functionals `bar(tau_H)` and
+`bar(tau_R)` on `H_route:=E_route/Q_route`, where
+`tau_R=partial_W^*(1_R)`.  It is enough to prove
+
+```text
+<bar(tau_H)+bar(tau_R),[z_P]>=0 in F_2.                (662)
+```
+
+Failure of either price to annihilate a generator of `Q_route` is the already
+localized odd-holonomy branch.  If both descend but (662) fails, the realized
+class `[z_P]` identifies the exact additional private transport coordinate;
+it must not be hidden by a coarse H/S/V marginal.
+
+Thus (73rnz_cjibkzo) closes the **within-witness** generation question.  The
+unproved theorem is now only the **cross-witness** equality (661), including
+the same-side `b=00/11` occurrences excluded from `xi`.  This separation
+prevents the local rank result from being mistaken for the global marked
+parity cancellation.
