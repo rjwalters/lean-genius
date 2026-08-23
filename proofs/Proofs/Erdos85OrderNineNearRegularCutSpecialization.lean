@@ -14,6 +14,72 @@ open Finset
 
 namespace Erdos85
 
+/-- Algebraic conversion of the zero-defect-boundary cut identity to equation
+(3).  This theorem isolates all Nat-subtraction side conditions: ordinary
+incidences are at most nine, high-root incidences at most ten, and the shore
+is proper inside the 78 ordinary vertices. -/
+theorem orderNine_ordinary_square_moment_of_zero_cut
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (f : O → ℕ) (s b₁ b₂ b₃ : ℕ)
+    (hfle : ∀ x, f x ≤ 9)
+    (hb₁ : b₁ ≤ 10) (hb₂ : b₂ ≤ 10) (hb₃ : b₃ ≤ 10)
+    (hs : s ≤ 78)
+    (hbsum : b₁ + b₂ + b₃ ≤ 9 * s)
+    (hsum : (∑ x, f x) = 9 * s - (b₁ + b₂ + b₃))
+    (hcut : (∑ x, f x * (9 - f x)) +
+      (b₁ * (10 - b₁) + b₂ * (10 - b₂) + b₃ * (10 - b₃)) =
+        s * (81 - s)) :
+    (∑ x, (f x) ^ 2) +
+      (b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1)) = s ^ 2 := by
+  have hordCast :
+      (((∑ x, f x * (9 - f x) : ℕ) : ℕ) : ℤ) =
+        ∑ x, (f x : ℤ) * (9 - f x) := by
+    rw [Nat.cast_sum]
+    apply Finset.sum_congr rfl
+    intro x _
+    rw [Nat.cast_mul, Nat.cast_sub (hfle x)]
+    norm_num
+  have hhighCast :
+      ((b₁ * (10 - b₁) + b₂ * (10 - b₂) + b₃ * (10 - b₃) : ℕ) : ℤ) =
+        (b₁ : ℤ) * (10 - b₁) + (b₂ : ℤ) * (10 - b₂) +
+          (b₃ : ℤ) * (10 - b₃) := by
+    push_cast [Nat.cast_sub hb₁, Nat.cast_sub hb₂, Nat.cast_sub hb₃]
+    rfl
+  have hrhsCast : ((s * (81 - s) : ℕ) : ℤ) =
+      (s : ℤ) * (81 - s) := by
+    rw [Nat.cast_mul, Nat.cast_sub (by omega : s ≤ 81)]
+    norm_num
+  have hcutZ := congrArg (fun n : ℕ => (n : ℤ)) hcut
+  push_cast at hcutZ
+  simp_rw [Nat.cast_sub (hfle _)] at hcutZ
+  rw [Nat.cast_sub hb₁, Nat.cast_sub hb₂, Nat.cast_sub hb₃,
+    Nat.cast_sub (by omega : s ≤ 81)] at hcutZ
+  norm_num at hcutZ
+  have hsumZ : (∑ x, (f x : ℤ)) =
+      9 * (s : ℤ) - ((b₁ : ℤ) + b₂ + b₃) := by
+    exact_mod_cast hsum
+  have hordAlg : (∑ x, (f x : ℤ) * (9 - f x)) =
+      9 * (∑ x, (f x : ℤ)) - ∑ x, (f x : ℤ) ^ 2 := by
+    simp_rw [mul_sub, mul_comm (f _ : ℤ) 9]
+    rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
+    simp [pow_two]
+  have hcoll : ∀ b : ℕ,
+      (b : ℤ) * ((b - 1 : ℕ) : ℤ) = (b : ℤ) * ((b : ℤ) - 1) := by
+    intro b
+    by_cases hb : b = 0
+    · simp [hb]
+    · rw [Nat.cast_sub (Nat.one_le_iff_ne_zero.mpr hb)]
+      norm_num
+  rw [hordAlg, hsumZ] at hcutZ
+  have hgoalZ : ((∑ x, f x ^ 2 : ℕ) : ℤ) +
+      ((b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1) : ℕ) : ℤ) =
+        ((s ^ 2 : ℕ) : ℤ) := by
+    push_cast
+    rw [hcoll b₁, hcoll b₂, hcoll b₃]
+    ring_nf at hcutZ ⊢
+    linarith
+  exact_mod_cast hgoalZ
+
 /-- A 78-entry ordinary degree vector with the q=9 incidence total and the
 zero-boundary square-moment inequality implies the classifier's cut lower
 bound. -/
@@ -65,5 +131,6 @@ theorem orderNineNearRegularComponentAdmissible_of_ordinary_moments
 
 #print axioms orderNineNearRegularCutLower_nonpos_of_ordinary_moments
 #print axioms orderNineNearRegularComponentAdmissible_of_ordinary_moments
+#print axioms orderNine_ordinary_square_moment_of_zero_cut
 
 end Erdos85
