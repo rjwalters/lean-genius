@@ -2088,6 +2088,31 @@ in (73rnk); case (III) leaves all empty-line witness coordinates distinct.
 This is a complete geometric localization of the owner-edge phase before
 the simultaneous routing equations are applied.
 
+The remaining binary phase assignments can be exhausted without a search.
+Put `beta_i=b_i mod 2`.  Equation (73rnk) gives the complete table
+
+```text
+delta  (tau_1,tau_2)   (beta_1,beta_2)
+  0          00               00
+  0          10               10
+  0          01               01
+  0          11               11
+  1          00               11
+  1          10               01
+  1          01               10
+  1          11               00.                         (73rnn)
+```
+
+For distinct marks all eight rows remain compatible with the currently
+proved local equations.  For coincident marks (73rnl) deletes precisely the
+two `tau_1=tau_2=1` rows, leaving six.  The triangle localization (73rnm)
+refines the `delta=0` rows by the location of their common neighbor but does
+not remove their remaining phase choices.  This is an honest negative
+terminal: local T-parity, codegree, and mark coincidence do not by themselves
+kill `a=1`.  A final exclusion must use a simultaneous routing relation that
+couples the two witness parities or the two cross-mark phases; (73rnn) states
+exactly which six/eight local rows that relation has to separate.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
