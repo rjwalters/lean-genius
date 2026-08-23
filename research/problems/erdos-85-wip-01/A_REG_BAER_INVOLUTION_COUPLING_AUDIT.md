@@ -3598,6 +3598,31 @@ pole restriction is exactly the leaf/split-pair binary transfer cell
 yet controlled is the support of `kappa_C` away from the poles, or a global
 identity forcing its marked endpoint units into the SRP/Baer gauge class.
 
+There is nevertheless an immediate activation dichotomy.  Every commutator
+has even total mass.  Indeed, over F2,
+
+```text
+1^T kappa_C
+ = 1^T A P_C x + 1^T P_C A x
+ = q 1^T P_C x + |C intersect {E_1,E_2}| = 0,            (73rnz_ci)
+```
+
+because q is even and each type class contains either both poles (`C=E`) or
+neither (`C=F,M`).  Hence the mass of `kappa_C` away from the poles equals
+its pole mass.  If exactly one endpoint is a leaf and the other ordinary,
+(73rnz_ch) gives
+
+```text
+|supp(kappa_F) setminus {E_1,E_2}| = 1,
+|supp(kappa_M) setminus {E_1,E_2}| = 1              (mod 2). (73rnz_cj)
+```
+
+Thus the mixed endpoint-type branch necessarily activates nonprivate marked
+units in both owner channels.  Private endpoint payment can survive only
+when the two endpoints have the same type (both leaves or both ordinary).
+This reduces the activation gap from four endpoint decorations to two
+same-type branches.
+
 The parallel SRP separator now identifies the exact topology such a terminal
 would need.  Its selected row--atom incidence graph is Eulerian; pairing at
 degree-four atoms is a gauge choice, while the pairing-independent constant
@@ -3613,9 +3638,9 @@ becomes relevant only after refining each endpoint parity into owner/mate
 occurrences.  The remaining precise task is therefore
 
 ```text
-control the off-pole support of the owner commutators kappa_C and prove that
-a primary odd gauge class activates a non-private endpoint occurrence.
-                                                               (73rnz_ci GAP)
+couple the forced off-pole commutator support to the gauge ledger in the
+mixed-type branch, and exclude private payment in the two same-type branches.
+                                                               (73rnz_ck GAP)
 ```
 
 Equivalently, one needs a noncommuting marked operator whose endpoint value
