@@ -12648,3 +12648,48 @@ the remaining owner-resolved tasks together with the closed-cycle price.
 But any global half-atom conservation must now reproduce (760), not merely
 the mod-two rank-one export, and its
 candidate price is constrained by the nonzero residue (764).
+
+## 248. The closed horizontal curl has purely off-incidence curvature
+
+In the branch under consideration the aligned term of (764) vanishes, not
+merely modulo four.  By (725), every `p in Z` indexes a marked horizontal
+edge in the root projection on `C`.  Equivalently, both incidence darts at
+that port are decorated `H`.  Since `(C,Z)` is the whole cross-incidence
+component, every root `x in C` is incident to its two cycle ports in `Z`, and
+both are horizontal.  The rooted budget from Section 99 is
+
+```text
+a(x)+2b(x)+v(x)=2.
+```
+
+Here `a(x)=2`, so `b(x)=v(x)=0`.  In particular no selected incidence dart
+`(x,p)` with `x in C,p in Z` supports a rooted triangle of any exterior
+color.  Therefore, color by color,
+
+```text
+V_a(C,Z)=0.                                           (765)
+```
+
+Substitution into (756) sharpens the per-color filler handshake to
+
+```text
+B_att^a+R_att^a+B_cyc^a+R_cyc^a
+ = (O_a(C,Z)-N_11^a)/2                       (mod 2). (766)
+```
+
+The numerator is even by the exact cell identity, so no independent
+divisibility assumption is used.  More importantly, (764) becomes
+
+```text
+sum_(a != c,e) O_a(C,Z)=1 mod 4.                     (767)
+```
+
+Thus the nonzero integer curvature of the closed curl is **entirely
+off-incidence**.  It cannot be paid by aligned `V` tokens on the selected H
+cycle, because the all-horizontal root budget excludes every such token.
+The remaining transport problem has consequently lost one more channel:
+the global owner ledger must carry an off-incidence `C--a--Z` two-path mass
+congruent to one modulo four, while its half-difference from the strict
+overlap count prices the proper filler attachments plus the closed-cycle
+residues through (766).  Any proposed H/V/S cancellation that uses only the
+visible alphabet on the selected darts misses the whole curvature in (767).
