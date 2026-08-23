@@ -18327,3 +18327,76 @@ the cycle branch of (1173), even with only two side colors.  Any next price
 must use information omitted here--for example the exact per-color cut
 census (787), the self factors `A_a,A_b`, or the incidence-component profile
 of Section 324--rather than only the thirty-state transition graph.
+
+## 349. Coupled SRP forces a fifth selected-cell tag on every ticket transition
+
+The local cycle countermodels leave one selected cell in a different
+simultaneous partition unspecified.  Let a propagation label `y` have
+color `a`, core root `r in C`, and private target endpoints
+
+```text
+N_e(y)={w,w'},       p(w)=p, p(w')=p',       p!=p'. (1182)
+```
+
+The two owner ports are distinct by (1172).  Apply `SRP(a,e)` and inspect
+the row indexed by the endpoint vertex `y in a`, restricted to `Z`.
+
+First consider routing color `c`.  The label `y` has exactly one
+`c`-neighbor in `C`, namely `r`, and its other `c`-neighbor lies outside
+`C` by (779).  Since `(C,Z)` is a whole component of `R_ce`, only `r`
+contributes selected endpoints.  Therefore
+
+```text
+supp((R_ac R_ce)[y,-]) intersect Z
+ =N_e(r) intersect Z,                              (1183)
+```
+
+the two selected ports incident to `r`.
+
+Next consider endpoint color `e`.  Each private ticket has exactly one
+`A_e`-neighbor in `Z`, its owner port, so
+
+```text
+supp((R_ae A_e)[y,-]) intersect Z={p,p'}.           (1184)
+```
+
+Because `r` is a ticket root at both `w` and `w'`, it is incident to
+neither owner port.  Thus the two sets in (1183)--(1184) are disjoint and
+occupy four of the five selected columns.  Let `q(y)` be the remaining
+port.  Equivalently,
+
+```text
+q(y) is the third selected port nonincident to r,
+distinct from p and p'.                             (1185)
+```
+
+The exact support partition now assigns the cell `(y,q(y))` to a unique
+intermediate component
+
+```text
+kappa(y) notin {c,e}.                               (1186)
+```
+
+If `kappa(y)=a`, this is an endpoint-layer path through an actual internal
+neighbor of `y` in `A_a`; otherwise it is a path through an actual vertex
+of a fourth component:
+
+```text
+y --[vertex in kappa(y)]-- q(y).                    (1187)
+```
+
+Hence every private-to-private propagation edge carries a canonical
+fifth-cell tag `(q(y),kappa(y))` supplied by `SRP(a,e)`.  It is not visible
+in the owner/root/color words of Sections 347--348: those words determine
+`q(y)` but do not choose the paying layer `kappa(y)`.  In particular the
+three- and four-state cycle countermodels are not full-SRP countermodels
+until all their fifth cells are paid compatibly with the reused self and
+cross blocks.
+
+This is still a forcing statement rather than an exclusion.  Its point is
+to place the missing invariant exactly: a cycle branch must admit a
+simultaneous assignment of the tags (1186), where choosing the endpoint
+layer consumes `A_a` at the propagation label and choosing another color
+creates a new cross-color route.  The next price can act on those actual
+layer tags instead of adding another projection of the already exhausted
+owner/root cycle.
