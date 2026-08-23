@@ -20221,3 +20221,60 @@ payments translates, through the explicit strict-owner correction in
 only `L mod 2`; the basis (1324) prevents cancellation between different
 root triples and is the exact linear interface needed by the common-domain
 involutions of Section 380.
+
+## 382. Pair products fix exactly the common root-fixed vertices
+
+The five involutions of Section 380 have an exact pairwise fixed-set law.
+Write
+
+```text
+F_i:=Fix(sigma_i)=B_(x_i) disjoint_union {v_i}.      (1328)
+```
+
+For distinct roots `i!=j` and any `u in U`, involutivity gives
+
+```text
+(sigma_j sigma_i)(u)=u  iff  sigma_i(u)=sigma_j(u). (1329)
+```
+
+Suppose the common image in (1329) were `w!=u`.  Then both maps use
+ordinary rooted labels: one meeting `x_i`, the other meeting `x_j`.  The
+labels are distinct by the one-root bound (779), and they would be two
+common neighbors of `u,w`, producing a four-cycle.  Therefore equality of
+the two images is possible only at `w=u`, when both involutions fix `u`.
+Conversely a common fixed point plainly fixes the product.  Hence
+
+```text
+Fix(sigma_j sigma_i)=F_i intersect F_j.             (1330)
+```
+
+The endpoint-layer part of this intersection is already explicit.  The
+four vertices `B_(x_i)` are the two private tickets over each of the two
+selected ports incident to `x_i`.  Two adjacent core roots share one such
+port, while two nonadjacent roots share none.  Thus
+
+```text
+|B_(x_i) intersect B_(x_j)|
+ =2 if x_i,x_j are adjacent on C,
+ =0 otherwise.                                     (1331)
+```
+
+Combining (1328)--(1331), the full pair-product fixed set is
+
+```text
+(B_(x_i) intersect B_(x_j))
+ union ({v_i} intersect F_j)
+ union ({v_j} intersect B_(x_i)).                  (1332)
+```
+
+The last two terms are the only strict-mate corrections; they include the
+possibility `v_i=v_j`.  In particular an adjacent root pair always gives
+at least the two common private fixed points, while a nonadjacent pair has
+no fixed point unless one of these explicitly located strict corrections
+occurs.
+
+This is stronger than knowing that every `sigma_i` is odd.  It determines
+the fixed points of every reduced two-letter word and shows that no
+additional coincidence of moving images can occur.  Longer-word analysis
+may therefore start from a completely controlled pair geometry rather than
+from arbitrary products of five involutions.
