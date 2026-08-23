@@ -120,7 +120,19 @@ coordinates, with weights through four.  Thus the tempting construction
 simple; the uniform proof must capture a genuinely joint covering or Hall
 deficiency.
 
-The exact continuous optimum in that genuine model is `747/14 < 54`.
+The genuine boundary is now durable rather than tied to an unsaved generated
+model.  `q9_joint_genuine_single_failure_fixture.json` has canonical SHA-256
+`c5dacb5e34c94d800af483050910c43f7c651e5071c018753aec1c18d88e6853`.
+All eight overlap-point single-fiber optima are non-strict.  Nevertheless the
+pair `(1,9)` has an exactly verified scale-two integer cover of cost `107`
+below target `108`; its exact continuous optimum is `160/3 < 54`.  Replaying
+`q9_joint_overlap_fiber_price_probe.py --payload ... --genuine-only` reports
+`strict_single_points=[]`, 28 genuine pairs, and the same `(1,9)` certificate.
+This is the adversarial regression fixture that any proposed replacement for
+the joint selector must survive.
+
+The exact continuous optimum in the preceding generated `p=9,q=21` model is
+`747/14 < 54`.
 `--details` now reconstructs both the primal point prices and the LP-dual
 eligible-edge packing as rationals and checks feasibility and equality of
 their objectives.  The matching dual has 96 nonzero edges and denominators
