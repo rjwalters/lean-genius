@@ -1524,6 +1524,36 @@ the two selected colors only permutes bundle states.  Thus the entire B3
 boundary is route-odd, and an equivariant closing lemma must construct an
 equal-weight occurrence pairing rather than merely reverse the formal arc.
 
+There is no sampled two-atom escape from this characterization.  The exact
+mode `--audit-bundle-pairs` hashes the full signed `Delta(t,u)` and searches
+for `Delta(v,w)=-Delta(t,u)`, excluding the definitional reverse
+`(v,w)=(u,t)`.  Across eight seeds in both branches and all color pairs it
+tested 952 transitions and found no non-reversal opposite pair.  This
+suggests
+
+```text
+BUNDLE TWO-ATOM RIGIDITY:
+Delta(t,u)+Delta(v,w)=0 implies (v,w)=(u,t).              (12re)
+```
+
+Together, (12rc) and (12re) say that every balanced occurrence measure of
+support at most two is the trivial symmetric pair and cancels by (12rd).
+They do not exclude a three-or-more-transition circuit; finding or excluding
+such circuits is the next exact hypergraph question.
+
+The first such case is also absent in the same eight-seed sample.  A
+meet-in-the-middle `--audit-bundle-triples` search allows repeated atoms and
+checks the literal integer equation
+
+```text
+Delta(t_1,u_1)+Delta(t_2,u_2)+Delta(t_3,u_3)=0.          (12rf)
+```
+
+Among the 952 transitions it finds no zero triple.  Hence every sampled
+nontrivial bundle circulation needs at least four transition occurrences.
+This is still empirical: (12rf) is a finite-support diagnostic, not yet a
+uniform lower bound or a substitute for the matching-flow constraints.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the

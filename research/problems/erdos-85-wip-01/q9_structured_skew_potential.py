@@ -145,27 +145,82 @@ def root_signature_censuses(data: dict) -> tuple[list[tuple], list[dict]]:
     return signatures, censuses
 
 
-def bundle_boundary_audit(data: dict) -> tuple[int, list[tuple[int, int]]]:
-    """Find same-role own transitions with zero whole-bundle boundary."""
+def bundle_transition_boundaries(data: dict) -> list[tuple[int, int, Counter]]:
+    """Construct exact alpha-plus-bundle boundaries for eligible transitions."""
     signatures, censuses = root_signature_censuses(data)
-    tested = 0
-    zero = []
+    answer = []
     for t in range(N):
         own_support = data["blocks"][t] & data["selected"]
         for u in data["candidates"][t]:
             if (data["types"][t] != data["types"][u]
                     or not own_support & data["blocks"][u]):
                 continue
-            tested += 1
-            positive = Counter(
-                (signatures[t], int(b in data["blocks"][t]), censuses[t][b])
-                for b in data["blocks"][u] & data["selected"])
-            negative = Counter(
-                (signatures[u], int(b in data["blocks"][u]), censuses[u][b])
-                for b in own_support)
-            if signatures[t] == signatures[u] and positive == negative:
-                zero.append((t, u))
-    return tested, zero
+            boundary = Counter()
+            boundary[("alpha", signatures[t])] += 1
+            boundary[("alpha", signatures[u])] -= 1
+            for b in data["blocks"][u] & data["selected"]:
+                boundary[("bundle", signatures[t],
+                          int(b in data["blocks"][t]), censuses[t][b])] += 1
+            for b in own_support:
+                boundary[("bundle", signatures[u],
+                          int(b in data["blocks"][u]), censuses[u][b])] -= 1
+            answer.append((t, u, Counter({key: value
+                                          for key, value in boundary.items()
+                                          if value})))
+    return answer
+
+
+def bundle_boundary_audit(data: dict) -> tuple[int, list[tuple[int, int]]]:
+    """Find same-role own transitions with zero whole-bundle boundary."""
+    transitions = bundle_transition_boundaries(data)
+    return len(transitions), [(t, u) for t, u, boundary in transitions
+                              if not boundary]
+
+
+def bundle_pair_audit(data: dict) -> tuple[int, list[tuple]]:
+    """Find exact opposite bundle vectors not explained by route reversal."""
+    transitions = bundle_transition_boundaries(data)
+
+    def key(boundary: Counter, sign: int = 1) -> tuple:
+        return tuple(sorted(((item, sign * count)
+                             for item, count in boundary.items()), key=repr))
+
+    by_boundary = {}
+    for t, u, boundary in transitions:
+        by_boundary.setdefault(key(boundary), []).append((t, u))
+    nonreversal = set()
+    for t, u, boundary in transitions:
+        for v, w in by_boundary.get(key(boundary, -1), []):
+            if (v, w) != (u, t):
+                nonreversal.add(tuple(sorted(((t, u), (v, w)))))
+    return len(transitions), sorted(nonreversal)
+
+
+def bundle_triple_audit(data: dict) -> tuple[int, list[tuple]]:
+    """Find zero sums of three bundle vectors, allowing repeated atoms."""
+    transitions = bundle_transition_boundaries(data)
+
+    def key(boundary: Counter, sign: int = 1) -> tuple:
+        return tuple(sorted(((item, sign * count)
+                             for item, count in boundary.items() if count),
+                            key=repr))
+
+    singles = {}
+    for index, (_, _, boundary) in enumerate(transitions):
+        singles.setdefault(key(boundary), []).append(index)
+    zero_triples = set()
+    for left in range(len(transitions)):
+        for right in range(left, len(transitions)):
+            total = Counter(transitions[left][2])
+            total.update(transitions[right][2])
+            total = Counter({item: count for item, count in total.items()
+                             if count})
+            for last in singles.get(key(total, -1), []):
+                atoms = tuple(sorted((transitions[index][0],
+                                      transitions[index][1])
+                                     for index in (left, right, last)))
+                zero_triples.add(atoms)
+    return len(transitions), sorted(zero_triples)
 
 
 def flat_signature_audit(data: dict) -> tuple[
@@ -984,6 +1039,10 @@ def main() -> int:
                         help="regression-audit the retracted terminal (12qy)")
     parser.add_argument("--audit-bundle-boundaries", action="store_true",
                         help="audit exact zero whole-bundle transitions (12rb)")
+    parser.add_argument("--audit-bundle-pairs", action="store_true",
+                        help="audit non-reversal two-transition cancellations")
+    parser.add_argument("--audit-bundle-triples", action="store_true",
+                        help="audit exact zero sums of three bundle transitions")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -1060,10 +1119,38 @@ def main() -> int:
                   f"colors={colors} tested={tested} zero={zero}")
         print(f"bundle_boundary_total_tested={total_tested} "
               f"zero_transitions={total_zero}")
+        audit_failed |= total_zero > 0
+    if args.audit_bundle_pairs:
+        total_tested = 0
+        total_pairs = 0
+        for label, candidate in all_data:
+            tested, pairs = bundle_pair_audit(candidate)
+            total_tested += tested
+            total_pairs += len(pairs)
+            branch, seed_number, colors = label
+            print(f"bundle_pairs branch={branch} seed={seed_number} "
+                  f"colors={colors} tested={tested} nonreversal={pairs}")
+        print(f"bundle_pairs_total_tested={total_tested} "
+              f"nonreversal_pairs={total_pairs}")
+        audit_failed |= total_pairs > 0
+    if args.audit_bundle_triples:
+        total_tested = 0
+        total_triples = 0
+        for label, candidate in all_data:
+            tested, triples = bundle_triple_audit(candidate)
+            total_tested += tested
+            total_triples += len(triples)
+            branch, seed_number, colors = label
+            print(f"bundle_triples branch={branch} seed={seed_number} "
+                  f"colors={colors} tested={tested} zero={triples}")
+        print(f"bundle_triples_total_tested={total_tested} "
+              f"zero_triples={total_triples}")
+        audit_failed |= total_triples > 0
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
-    if args.audit_flat_signatures or args.audit_bundle_boundaries:
+    if (args.audit_flat_signatures or args.audit_bundle_boundaries
+            or args.audit_bundle_pairs or args.audit_bundle_triples):
         return 1 if audit_failed else 0
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")
