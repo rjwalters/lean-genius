@@ -16401,3 +16401,51 @@ labels, not yet for their component profiles: applying `E_j` to the odd
 chain may still cancel.  It nevertheless replaces `2q-15` separately
 chosen local witnesses by one color-resolved odd inactive-factor cut on
 which a final SRP price can act.
+
+## 318. The full singleton ledger contains at least q minus seven labels
+
+The odd chain in Section 317 also has an integer magnitude before binary
+cancellation.  Let
+
+```text
+Sigma:={(s,a):s in O and deg_(H_a^C)(s)=1},
+T:=|Sigma|=sum_a |W_a^O|.                           (1044)
+```
+
+At each residual port the exterior-color degrees belong to `{0,1,2}` and
+sum to five.  The number of entries equal to one is therefore one, three,
+or five.  Summing over the odd residual set gives
+
+```text
+2q-15<=T<=5(2q-15),
+T=1 mod 2.                                         (1045)
+```
+
+Map a singleton occurrence `(s,a)` to its inactive companion label
+`y'_(s,a)`.  A private label has exactly two `e`-endpoints, and its color is
+fixed, so it can be the selected companion of at most two singleton
+occurrences.  If `n_1` labels occur once and `n_2` occur twice in this
+ledger, then
+
+```text
+T=n_1+2n_2,
+N_dist:=n_1+n_2>=ceil(T/2)>=q-7.                   (1046)
+```
+
+Moreover the binary chain `J_O` from (1040) is supported precisely on the
+labels of multiplicity one.  Hence
+
+```text
+|supp(J_O)|=n_1=1 mod 2.                            (1047)
+```
+
+Thus the singleton construction produces two complementary global
+outputs.  At least `q-7` distinct `C`-inactive labels carry local charges
+before cancellation, a magnitude growing linearly with the component
+parameter; and an odd nonempty subfamily remains after every possible
+pair cancellation.  Labels of multiplicity two are not spurious: their
+factor edge has both endpoints among the corresponding fixed-color
+singleton tickets and is exactly an internal edge removed from the cut
+chain (1042).  A final magnitude price may therefore charge all
+`N_dist` labels, while a parity price may act on the surviving odd cut
+support (1047).
