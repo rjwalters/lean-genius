@@ -2564,6 +2564,33 @@ parity information: on three survivors even their combination loses a
 separation that the exact fiber load restores.  This is again a sampled
 no-go for those projection classes, not a universal minimality theorem.
 
+There is strong numerical evidence that the required magnitude enters only
+affinely.  Impose the still smaller ansatz
+
+```text
+phi_tb = Phi_0(sigma(t),rho(t,b))
+         +L(b) Phi_1(sigma(t),rho(t,b)),
+lambda_tb = Lambda_0(sigma(t),rho(t,b))
+            +L(b) Lambda_1(sigma(t),rho(t,b)) >= 0,          (12rzz)
+```
+
+with `alpha_t=Alpha(sigma(t))`.  The nonnegativity in `(12rzz)` is imposed
+on every realized root--label capacity price, rather than on the two affine
+coefficients separately.  Mode `--audit-affine-load-dual` finds such a
+separator on all eleven survivors, including the three on which centered
+sign plus parity fails.  Thus the sampled next target is not an arbitrary
+function of the exact load: it is a local census price with one constant
+and one linear fiber-degree coefficient.
+
+This affine result is currently numerical evidence, not yet an exact
+certificate theorem.  The existing bounded-denominator rationalizer
+verifies one of the eleven solver vertices exactly (maximum denominator
+`78`) but does not recover exact points for the other ten, whose degenerate
+floating vertices produce near-ten-million denominators and fail the final
+route-slack check.  Rational polyhedral feasibility suggests exact affine
+prices should exist, but an exact basis reconstruction or a direct symbolic
+construction is required before using `(12rzz)` as a proved corpus fact.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

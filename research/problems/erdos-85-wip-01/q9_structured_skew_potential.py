@@ -1035,6 +1035,83 @@ def label_load_formula_audit(data: dict) -> tuple[bool, dict[int, int]]:
     return valid, loads
 
 
+def affine_load_half_atom_dual(data: dict) -> tuple:
+    """Test prices affine in L(b), with coefficients indexed by sigma,rho."""
+    from scipy.sparse import hstack, vstack
+
+    system = half_atom_primal_system(data)
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     capacity_names, _) = system
+    signatures, censuses = root_signature_censuses(data)
+    loads = {
+        b: sum(len(data["candidates"][u]) for u in range(N)
+               if b in data["blocks"][u])
+        for b in data["selected"]
+    }
+    load_origin = round(sum(loads.values()) / len(loads))
+    load_coordinates = {b: loads[b] - load_origin for b in loads}
+
+    alpha_keys = sorted(set(signatures), key=repr)
+    local_keys = sorted(set(
+        (signatures[t], censuses[t][b])
+        for t in range(N) for b in data["selected"]), key=repr)
+    alpha_index = {key: i for i, key in enumerate(alpha_keys)}
+    local_index = {key: i for i, key in enumerate(local_keys)}
+    alpha_count = len(alpha_keys)
+    local_count = len(local_keys)
+    coefficient_count = alpha_count + 4 * local_count
+
+    equality_projection = lil_matrix(
+        (len(equality_names), coefficient_count))
+    for row, name in enumerate(equality_names):
+        if name[0] == "row":
+            equality_projection[row, alpha_index[signatures[name[1]]]] = 1
+            continue
+        t, b = name[1]
+        index = local_index[(signatures[t], censuses[t][b])]
+        equality_projection[row, alpha_count + 2 * index] = 1
+        equality_projection[row, alpha_count + 2 * index + 1] = (
+            load_coordinates[b])
+
+    capacity_projection = lil_matrix(
+        (len(capacity_names), coefficient_count))
+    capacity_offset = alpha_count + 2 * local_count
+    for row, (_, t, b) in enumerate(capacity_names):
+        index = local_index[(signatures[t], censuses[t][b])]
+        capacity_projection[row, capacity_offset + 2 * index] = 1
+        capacity_projection[row, capacity_offset + 2 * index + 1] = (
+            load_coordinates[b])
+    equality_projection = equality_projection.tocsr()
+    capacity_projection = capacity_projection.tocsr()
+
+    route_prices = (equalities.T @ equality_projection
+                    + capacities.T @ capacity_projection)
+    inequalities = vstack([-route_prices, -capacity_projection], format="csr")
+    scalar = (equality_rhs @ equality_projection
+              + capacity_rhs @ capacity_projection)
+    result = linprog(
+        np.zeros(coefficient_count), A_ub=inequalities,
+        b_ub=np.zeros(inequalities.shape[0]),
+        A_eq=scalar.reshape(1, -1), b_eq=[-1],
+        bounds=[(None, None)] * coefficient_count, method="highs")
+    if not result.success:
+        return False, alpha_count, local_count, False, 0
+
+    equality_values = equality_projection @ result.x
+    capacity_values = capacity_projection @ result.x
+    nonzero = [
+        (name, float(value))
+        for name, value in zip(equality_names, equality_values)
+        if abs(value) > 1e-8
+    ] + [
+        (name, float(value))
+        for name, value in zip(capacity_names, capacity_values)
+        if value > 1e-8
+    ]
+    exact, _, denominator, _ = rational_farkas_audit(system, nonzero)
+    return True, alpha_count, local_count, exact, denominator
+
+
 def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
     """Test a common low-degree polynomial potential on seven-state rows."""
     from scipy.sparse import hstack
@@ -2184,6 +2261,8 @@ def main() -> int:
                         help="extract exact rational half-atom certificates")
     parser.add_argument("--audit-half-atom-projections", action="store_true",
                         help="test invariant root/label price factorizations")
+    parser.add_argument("--audit-affine-load-dual", action="store_true",
+                        help="test half-atom prices affine in fiber load")
     parser.add_argument("--audit-label-load-formula", action="store_true",
                         help="verify the fiber-degree formula for L(b)")
     parser.add_argument("--print-full-dual", action="store_true",
@@ -2643,6 +2722,20 @@ def main() -> int:
             print(f"label_load_formula branch={branch} seed={seed_number} "
                   f"colors={colors} valid={valid} "
                   f"load_multiset={sorted(Counter(loads.values()).items())}")
+    if args.audit_affine_load_dual:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            success, alpha_count, local_count, exact, denominator = (
+                affine_load_half_atom_dual(candidate))
+            branch, seed_number, colors = label
+            print(f"affine_load_dual branch={branch} seed={seed_number} "
+                  f"colors={colors} success={success} "
+                  f"alpha_classes={alpha_count} local_classes={local_count} "
+                  f"exact_rational={exact} max_denominator={denominator}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2731,6 +2824,7 @@ def main() -> int:
             or args.audit_half_atom_primal
             or args.audit_half_atom_dual
             or args.audit_half_atom_projections
+            or args.audit_affine_load_dual
             or args.audit_label_load_formula
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
