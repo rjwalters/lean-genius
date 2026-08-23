@@ -375,13 +375,36 @@ def single_optimum_summary(system: dict, single_optima: dict) -> dict:
     }
 
 
+def anchor_pair_summary(system: dict, hole_overlap: list[list[int]],
+                        single_optima: dict) -> dict | None:
+    """Audit the distinguished pair when both anchor cuts are singletons."""
+    if len(hole_overlap) != 2 or any(len(points) != 1
+                                     for points in hole_overlap):
+        return None
+    pair = (hole_overlap[0][0], hole_overlap[1][0])
+    if pair[0] == pair[1]:
+        return {"points": list(pair), "distinct": False}
+    optimum = exact_joint_optimum(system, *pair)
+    cost = Fraction(optimum["cost"])
+    return {
+        "points": list(pair),
+        "distinct": True,
+        "single_strict": [single_optima[p]["strict"] for p in pair],
+        "single_costs": [single_optima[p]["cost"] for p in pair],
+        "joint_cost": str(cost),
+        "joint_strict": cost < 54,
+        "target_gap": str(Fraction(54) - cost),
+    }
+
+
 def one_model(
         timeout_ms: int, random_seed: int, max_scale: int,
         details: bool = False, genuine_only: bool = False,
         diagonal_rows: bool = False, all_regular_classes: bool = False,
         regular_class_indices: tuple[int, ...] | None = None,
         stage_all_regular_classes: bool = False,
-        scan_exact_joint_optima: bool = False):
+        scan_exact_joint_optima: bool = False,
+        anchor_pair_only: bool = False):
     if stage_all_regular_classes:
         source_solver, source_data = build(
             3, timeout_ms, True, all_regular_classes=True,
@@ -451,7 +474,8 @@ def one_model(
         point: unit_nondiagonal_fiber_optimum(
             system, point, include_diagonal=True)
         for point in overlap
-    } if genuine_only or details or scan_exact_joint_optima else {}
+    } if (genuine_only or details or scan_exact_joint_optima
+          or anchor_pair_only) else {}
     genuine_pairs = [
         pair for pair in combinations(overlap, 2)
         if not single_optima[pair[0]]["strict"]
@@ -460,6 +484,17 @@ def one_model(
     strict_single_points = [
         point for point in overlap if single_optima[point]["strict"]
     ] if single_optima else []
+    if anchor_pair_only:
+        answer = {
+            "overlap_card": len(overlap),
+            "strict_single_points": strict_single_points,
+            "exceptional_hole_overlap": exceptional_hole_overlap,
+            "anchor_pair": anchor_pair_summary(
+                system, exceptional_hole_overlap, single_optima),
+        }
+        if details:
+            answer["outer_payload"] = outer_payload
+        return answer
     for scale in range(1, max_scale + 1):
         for p, q in combinations(overlap, 2):
             if genuine_only and (
@@ -476,6 +511,8 @@ def one_model(
                     answer["genuine_pair_count"] = len(genuine_pairs)
                     answer["strict_single_points"] = strict_single_points
                     answer.update(single_optimum_summary(system, single_optima))
+                    answer["anchor_pair"] = anchor_pair_summary(
+                        system, exceptional_hole_overlap, single_optima)
                 if details:
                     answer["outer_payload"] = outer_payload
                     answer["joint_optimum"] = exact_joint_optimum(system, p, q)
@@ -501,6 +538,8 @@ def one_model(
         answer["genuine_pair_count"] = len(genuine_pairs)
         answer["strict_single_points"] = strict_single_points
         answer.update(single_optimum_summary(system, single_optima))
+        answer["anchor_pair"] = anchor_pair_summary(
+            system, exceptional_hole_overlap, single_optima)
     if scan_exact_joint_optima:
         answer["genuine_joint_optima"] = [
             exact_joint_optimum_summary(system, pair, single_optima)
@@ -516,7 +555,8 @@ def one_model(
 
 def fixed_payload_model(payload: dict, max_scale: int, details: bool,
                         genuine_only: bool,
-                        scan_exact_joint_optima: bool = False) -> dict:
+                        scan_exact_joint_optima: bool = False,
+                        anchor_pair_only: bool = False) -> dict:
     """Scan a stored outer payload with an explicit exceptional-cover overlap."""
     system = fixed_system(payload)
     overlap = sorted(payload["overlap_points"])
@@ -536,6 +576,14 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
         sorted(set(block) & set(overlap))
         for block in hole_blocks
     ]
+    if anchor_pair_only:
+        return {
+            "overlap_card": len(overlap),
+            "strict_single_points": strict_single_points,
+            "exceptional_hole_overlap": distinguished_hole_overlap,
+            "anchor_pair": anchor_pair_summary(
+                system, distinguished_hole_overlap, single_optima),
+        }
     genuine_pairs = [
         pair for pair in combinations(overlap, 2)
         if not single_optima[pair[0]]["strict"]
@@ -556,6 +604,8 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
                     "exceptional_hole_overlap": distinguished_hole_overlap,
                 }
                 answer.update(single_optimum_summary(system, single_optima))
+                answer["anchor_pair"] = anchor_pair_summary(
+                    system, distinguished_hole_overlap, single_optima)
                 if details:
                     answer["joint_optimum"] = exact_joint_optimum(system, p, q)
                     answer["overlap_single_fiber_optima"] = [
@@ -576,6 +626,8 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
         "exceptional_hole_overlap": distinguished_hole_overlap,
     }
     answer.update(single_optimum_summary(system, single_optima))
+    answer["anchor_pair"] = anchor_pair_summary(
+        system, distinguished_hole_overlap, single_optima)
     if scan_exact_joint_optima:
         answer["genuine_joint_optima"] = [
             exact_joint_optimum_summary(system, pair, single_optima)
@@ -597,6 +649,10 @@ def main() -> int:
     parser.add_argument("--timeout-seconds", type=int, default=60)
     parser.add_argument("--details", action="store_true")
     parser.add_argument("--scan-exact-joint-optima", action="store_true")
+    parser.add_argument(
+        "--anchor-pair-only", action="store_true",
+        help="only audit the two exceptional anchor-overlap fibers and pair",
+    )
     parser.add_argument(
         "--genuine-only", action="store_true",
         help="only scan pairs whose two single-fiber optima are non-strict",
@@ -625,7 +681,8 @@ def main() -> int:
             parser.error("--payload requires --samples 1")
         results = [fixed_payload_model(
             json.loads(args.payload.read_text()), args.max_scale,
-            args.details, args.genuine_only, args.scan_exact_joint_optima)]
+            args.details, args.genuine_only, args.scan_exact_joint_optima,
+            args.anchor_pair_only)]
     else:
         results = [
             one_model(
@@ -633,16 +690,21 @@ def main() -> int:
                 args.genuine_only, args.diagonal_rows, args.all_regular_classes,
                 (tuple(args.regular_class)
                  if args.regular_class is not None else None),
-                args.stage_all_regular_classes, args.scan_exact_joint_optima)
+                args.stage_all_regular_classes, args.scan_exact_joint_optima,
+                args.anchor_pair_only)
             for seed in range(args.seed_start, args.seed_start + args.samples)
         ]
     if args.save_payload is not None:
-        if args.payload is not None or args.samples != 1 or not args.details:
+        if args.payload is not None or not args.details:
             parser.error(
-                "--save-payload requires one generated sample with --details")
+                "--save-payload requires generated samples with --details")
         args.save_payload.write_text(
-            json.dumps(results[0]["outer_payload"], indent=2) + "\n")
+            json.dumps(results[-1]["outer_payload"], indent=2) + "\n")
     print(json.dumps(results, separators=(",", ":"), default=str))
+    if args.anchor_pair_only:
+        tested = sum(result["anchor_pair"] is not None for result in results)
+        print(f"anchor_pair_audited={tested}/{len(results)}")
+        return 0 if tested == len(results) else 1
     passed = sum(result["certificate"] is not None for result in results)
     print(f"joint_overlap_price_selector={passed}/{len(results)}")
     return 0 if passed == len(results) else 1

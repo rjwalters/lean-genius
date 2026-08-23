@@ -314,33 +314,20 @@ and both contain a saturated tight dual, but successful collision need not be
 centered only at the saturated tight point.  The uniform theorem must select
 existentially across the whole tight set.
 
-There is a more structural selector common to both fixtures.  Each of the two
-exceptional anchor blocks meets the common cover-overlap in a singleton.  In
-seed 5 these distinguished points are 9 and 11; point 9 is the saturated
-tight one.  In seed 41 they are 12 and 22; both are tight, and point 22 is
-the saturated one.  Hence the candidate can avoid searching the entire
-overlap: **if no overlap single is strict, at least one of the two
-anchor-overlap points is tight with integer dual value 27**.  The ordering of
-the two anchors is irrelevant (seed 41's saturated point belongs to the
-second generated anchor, while seed 5's belongs to the first under the stored
-order).  The probe now preserves anchor blocks in cover order and reports
-their overlap intersections explicitly.  Singleton intersection itself
-appears to come from hole reciprocity/full-pack overlap geometry; saturation
-at one of the two points remains the real equality-case gap.
-
-In fact the two distinguished points themselves give a cleaner horn that
-bypasses saturated-dual classification.  Let `p_r` be the unique point where
-anchor block `r` meets the common cover-overlap.  In seed 5 the direct pair
-`(p_0,p_1)=(9,11)` has exact joint optimum `3439/64 < 54` and an integer
-scale-five certificate `269 < 270`.  In seed 41 the direct pair `(12,22)` has
-exact optimum `372/7 < 54` and a scale-two certificate `107 < 108`.
-Therefore the preferred uniform equality-face statement is now simply:
-**if neither anchor overlap admits a strict single (or, more strongly, if no
-overlap point does), the joint price of the two anchor-overlap singleton
-fibers is strict**.  This is exactly the geometrically distinguished pair and
-feeds the existing two-common-fiber price consumer directly; tightness and
-integer-dual saturation become diagnostic explanations rather than theorem
-hypotheses.
+The tempting exceptional-anchor selector is false beyond those two fixtures.
+The complete seed sweep found empty, singleton, and multi-point intersections
+between an anchor block and the common cover-overlap, so singleton incidence
+is not forced by hole reciprocity/full-pack geometry.  More decisively, the
+durable payload `q9_anchor_pair_nonstrict_counterexample.json` has no strict
+single anywhere and singleton anchor intersections `{8}` and `{0}`, but the
+direct pair `(8,0)` has exact joint optimum `109/2 > 54`.  Thus neither
+"an anchor point is saturated" nor "the two anchor points form the strict
+pair" is a valid uniform equality-face lemma.  The same payload still has the
+required global horn: `(3,8)` has exact optimum `2129/40 < 54` and a
+scale-two integer certificate `107 < 108`; `(8,22)` and `(14,16)` are also
+strict.  Point 8 is the tight anchor point, while its successful partner 3 is
+a non-anchor tight point.  This restores the genuine global selection
+problem: choose across the whole overlap/tight set, not only the anchors.
 
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
