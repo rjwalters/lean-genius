@@ -15288,3 +15288,48 @@ next absorption theorem must cancel these two displayed terms, or exploit
 their failure to cancel; replacing `D_x` by `delta_x^a` without such an
 argument would discard exactly the private-label information retained by
 the construction.
+
+## 299. The bridge error detects every source/export mismatch
+
+The augmentation of the exact error in (955) has a simple rootwise
+meaning.  Write
+
+```text
+M_x:=K_x+(E_j(R_x))_(j!=0)=D_x+delta_x^a.           (957)
+```
+
+Section 295 gives `aug(D_x)=1` exactly for `x in X_I`.  On the other hand,
+(819) says that `aug(delta_x^a)=1` exactly when the unique strict export at
+`x` has receiving color `a`; these roots form the set `I_a`.  Therefore
+
+```text
+aug(M_x)=1_{x in X_I}+1_{x in I_a}
+        =1_{x in X_I triangle I_a}.                 (958)
+```
+
+In particular, every root in the symmetric difference carries a nonzero
+private-label bridge error.  Thus pointwise cancellation in (956) at all
+five roots would force the exact source identity
+
+```text
+M_x=0 for every x in C  implies  X_I=I_a.            (959)
+```
+
+The converse is deliberately not asserted: when the two root sets agree,
+each `M_x` merely has even augmentation and may still be nonzero.
+
+There is also a color-level consequence.  Since `|X_I|` is odd by (927)
+and `|I_a|=k_a`, summing (958) over the core gives
+
+```text
+aug(sum_(x in C)M_x)=|X_I|+|I_a|=1+k_a mod 2.       (960)
+```
+
+Hence every receiving color with even strict-export load `k_a` has a
+globally nonzero aggregate bridge error.  For odd `k_a`, augmentation alone
+does not decide the aggregate; complete pointwise invisibility still
+requires the much sharper alignment `X_I=I_a` from (959).  The remaining
+terminal is therefore split cleanly: either exploit the located nonzero
+switch/unmatched-chain error on `X_I triangle I_a`, or analyze the rigid
+aligned branch in which the residual source roots reproduce the original
+strict-export set.
