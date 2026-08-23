@@ -24590,3 +24590,34 @@ rainbow obstruction in (1642) is not merely a collection of ten-edge
 color fibers: each selected color leaves one of four constant-size
 traces on the same fixed two-root factor, while its payer support remains
 disjoint from every other selected color.
+
+## 462. A rainbow color either repeats its turn or has the sparse trace
+
+Fix a selected rainbow color `h` and its marked saturated target `v`.
+A saturated `{r,s}`-turn of color `h` is exactly a degree-two vertex in
+the four-edge `h`-trace of Section 461.  Inspecting (1647), the shapes
+`P_4`, `C_4`, `P_3 disjointUnion P_1`, and
+`P_2 disjointUnion P_2` all have a degree-two vertex other than `v`.
+That vertex supports a second saturated `{r,s}`-turn of the same source
+color.  The only shape without a second turn is
+
+```text
+P_2 disjointUnion P_1 disjointUnion P_1,          (1648)
+```
+
+where the marked `P_2` is the unique nontrivial color component and the
+remaining `h`-edge of root `r` and remaining `h`-edge of root `s` are
+isolated from every other `h`-edge in the factor.  Hence each color in
+the rainbow terminal (1642) obeys the exact local alternative
+
+```text
+(repeat) h has a second monochromatic saturated r/s turn; or
+(sparse) the selected turn is the unique h-turn and the two unused
+         r/s edges of color h are isolated in the h-trace.      (1649)
+```
+
+The second turn in the repeat branch need not belong to the selected
+rainbow set, and its payer layers are not asserted to avoid the selected
+supports.  With that qualification, (1649) isolates the sole
+constant-size trace capable of hiding all additional saturation of a
+selected color.
