@@ -22177,3 +22177,58 @@ parities: the five coordinates are locked to the single bit `|X| mod 2`.
 This simultaneous parity constraint is q-generic and survives even when
 ordinary edge density or properly colored-cycle existence alone gives no
 further information.
+
+## 414. A shortest full-root holonomy has linear boundary
+
+Choose a shortest simple properly colored cycle in `G_sh[O_5]`, and write
+
+```text
+Q=(v_0,v_1,...,v_(ell-1),v_0),
+c_j:=the exterior color of v_j v_(j+1),
+```
+
+with subscripts read modulo `ell`.  Consider a chord `v_a v_b` of color
+`h`.  The chord together with either of the two `v_a`--`v_b` arcs of `Q`
+forms a simple cycle shorter than `Q`.  Each shortcut cycle is properly
+colored away from the chord endpoints, and hence must fail proper coloring
+at one of those endpoints by the choice of `Q`.  Applied to the two arcs,
+this says
+
+```text
+h in {c_a,c_(b-1)} intersect {c_b,c_(a-1)}.        (1472)
+```
+
+Proper coloring of `Q` gives `c_(a-1)!=c_a` and
+`c_(b-1)!=c_b`.  The two same-endpoint intersections in (1472) are
+therefore impossible, leaving exactly the two chord types
+
+```text
+h=c_a=c_b,       or       h=c_(a-1)=c_(b-1).       (1473)
+```
+
+Thus every chord incident with `v_j` has one of the two colors already
+used by the cycle edges at `v_j`.  For either such color, the exterior
+component-color degree cap two has already spent one incidence on the
+corresponding cycle edge, so it permits at most one additional chord.
+Consequently
+
+```text
+deg_(G_sh[V(Q)])(v_j)<=2+2=4.                      (1474)
+```
+
+Every `v_j` lies in `O_5`, so its degree in the whole shadow graph is
+exactly five.  Subtracting (1474), every cycle vertex sends at least one
+edge out of the cycle, and summing these distinct boundary incidences gives
+
+```text
+|partial_(G_sh)V(Q)|
+ =sum_(v in V(Q))(5-deg_(G_sh[V(Q)])(v))
+ >=ell=|V(Q)|.                                    (1475)
+```
+
+Hence the clean holonomy supplied by Section 412 can be chosen with a
+linear edge boundary: no shortest properly colored cycle in the full-root
+sector can absorb all five ordinary root actions locally.  Its chords are
+rigidly typed by (1473), and at least one action at every cycle vertex must
+leave the cycle.  This is a genuine expansion constraint, not merely the
+existence of a color-changing circuit.
