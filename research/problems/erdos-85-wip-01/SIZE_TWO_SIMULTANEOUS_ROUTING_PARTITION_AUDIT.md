@@ -17494,3 +17494,80 @@ a doubled selected endpoint carrying the two other root colors separately.
 As in Section 332, existence inside the same- or mixed-color factor
 skeleton remains to be tested; (1126) is the finite pattern that such a
 holonomy realization must produce.
+
+## 335. The seven tickets form one odd matching cut with a three-edge correction
+
+The seven-ticket ledger is the terminal shore of one actual root matching.
+Fix `x=x_i` and use the notation `T_x` from (1120).  The exterior-color
+submatchings partition the matching `M_i` of Section 277, and (1119) says
+that its exact support is
+
+```text
+V(M_i)=O disjoint_union T_x.                       (1127)
+```
+
+Both shores are odd.  Let
+
+```text
+C_x:=delta_(M_i)(O)=delta_(M_i)(T_x),
+c_x:=|C_x|,
+h_x:=|E(M_i[T_x])|.                                (1128)
+```
+
+Because `M_i` is a perfect matching on its support, every terminal ticket
+is either the endpoint of one crossing edge or belongs to one internal
+terminal pair.  Hence
+
+```text
+c_x=7-2h_x in {1,3,5,7},
+h_x=(7-c_x)/2<=3.                                  (1129)
+```
+
+This is the aggregate version of the colorwise singleton returns.  If
+`c_x^b` is the number of crossing edges in `H_b^{\{x\}}`, then
+
+```text
+c_x^b in {0,1,2},
+c_x^b=t_x^b mod 2,
+sum_b c_x^b=c_x.                                   (1130)
+```
+
+Thus every odd-return color from (1122) contributes its unique crossing
+edge, while an even color contributes either zero or two.  Across all
+colors the crossing endpoints are distinct actual tickets.
+
+The optional owner append has an exact correction formula.  Let
+
+```text
+omega_x:T_x -> {the three selected ports nonincident to x}
+```
+
+send a private endpoint to its owner port and fix the strict ticket
+`p_str(x)`.  By (1123), its three fibers have sizes `3,2,2`, with the
+odd fiber over `p_str(x)`.  Construct a multigraph `J_x` on those three
+selected ports by sending every internal terminal edge `{t,t'}` of
+`M_i[T_x]` to an edge `{omega_x(t),omega_x(t')}`; retain parallel edges
+and allow a loop when the two owners agree.  Then
+
+```text
+|E(J_x)|=h_x<=3.                                   (1131)
+```
+
+Let `Z_x^cross` be the symmetric difference of the selected endpoints
+obtained by applying the owner append to all edges of `C_x`.  The seven
+tickets split into the crossing endpoints and the paired endpoints of
+`M_i[T_x]`.  Taking their owner images over `F_2`, the full `3,2,2`
+ticket multiset reduces to `{p_str(x)}`, while every internal pair gives
+one boundary contribution in `J_x`.  Therefore
+
+```text
+Z_x^cross={p_str(x)} triangle partial J_x.          (1132)
+```
+
+In particular `Z_x^cross` is odd and nonempty.  Equation (1132) replaces
+an arbitrary choice among singleton-return colors by one canonical
+rootwise route shore: it is the strict selected port corrected by the
+boundary of at most three actual internal terminal pairs.  Any same- or
+mixed-color reversal must refine this seven-ticket matching cut; changing
+colors cannot alter the aggregate identity (1132), only how its crossing
+edges are divided into one- and two-edge color contributions.
