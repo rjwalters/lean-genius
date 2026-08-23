@@ -4721,6 +4721,19 @@ removes arbitrary row weights.  It remains empirical.  In particular the
 failure of the incident locus shows that any proof must preserve the
 disjoint-pair horn rather than silently reintroduce a shared point.
 
+The generator now encodes a bounded-denominator primal negation of (13at).
+For every one of the 88 pairs it introduces nonnegative symmetric edge
+weights, the two separate point-capacity systems, the shared-point collision
+capacities when the blocks meet, and weighted objective at least 17.  This is
+the exact LP dual of “no strict fixed `(1,2)` cover” at the chosen common
+denominator.  On the durable counterexample above, denominator one makes the
+simultaneous negation UNSAT in 29 seconds, validating the inequality
+orientation.  Denominator 12 is UNKNOWN at 60 seconds even with that outer
+design fixed, and the unrestricted denominator-one outer search is UNKNOWN
+at 180 seconds.  Thus this is another reproducible adversarial harness, not a
+closure result; any SAT payload must still be passed through the unrestricted
+rational scanner before it can refute (13at).
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

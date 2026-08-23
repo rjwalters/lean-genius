@@ -37,6 +37,7 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                        rows: list[int], shared_integral_relation: bool,
                        exclude_single_special_hole: bool,
                        all_incident_disjoint_packings: bool,
+                       fixed_template_primal_denominator: int | None,
                        template: dict | None = None):
     solver, data = build(
         4, timeout_seconds * 1000, True, outer_seed=template,
@@ -74,6 +75,61 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
             Implies(incidence[v, point], Not(core(u, point)))
             for point in range(N_U1)
         ])
+
+    @cache
+    def mutually_eligible(u: int, v: int):
+        return And(eligible(u, v), eligible(v, u))
+
+    if fixed_template_primal_denominator is not None:
+        scale = fixed_template_primal_denominator
+        for regular in range(22):
+            for hole in range(22, 26):
+                candidate_edges = [
+                    edge_key(u, v)
+                    for u in (regular, hole) for v in range(N) if u != v
+                ]
+                candidate_edges = sorted(set(candidate_edges))
+                weight = {
+                    edge: Int(
+                        f"fixed_template_primal_{regular}_{hole}_"
+                        f"{edge[0]}_{edge[1]}"
+                    )
+                    for edge in candidate_edges
+                }
+                for (u, v), value in weight.items():
+                    solver.add(value >= 0, value <= scale)
+                    solver.add(Implies(Not(mutually_eligible(u, v)), value == 0))
+
+                def edge_weight(u: int, v: int):
+                    if u == v:
+                        return 0
+                    return weight.get(edge_key(u, v), 0)
+
+                # Point-price variables on the two supported rows yield the
+                # two independent block-packing capacity systems.
+                for supported in (regular, hole):
+                    for point in range(N_U1):
+                        solver.add(Sum([
+                            If(incidence[v, point], edge_weight(supported, v), 0)
+                            for v in range(N) if v != supported
+                        ]) <= scale)
+                # If the named blocks meet at p, the permitted incoming price
+                # z[v,p] couples the two incident edge weights at every third
+                # row v.  When they are disjoint there is no such constraint.
+                for v in range(N):
+                    if v in (regular, hole):
+                        continue
+                    for point in range(N_U1):
+                        solver.add(Implies(
+                            And(incidence[regular, point],
+                                incidence[hole, point]),
+                            edge_weight(v, regular) + edge_weight(v, hole)
+                                <= scale,
+                        ))
+                solver.add(Sum([
+                    ((int(regular in edge) + 2 * int(hole in edge)) * value)
+                    for edge, value in weight.items()
+                ]) >= 17 * scale)
 
     if all_incident_disjoint_packings:
         for regular in range(22):
@@ -204,11 +260,22 @@ def main() -> None:
               "regular/exceptional pair to admit disjoint integral local "
               "block-packings of sizes five and six"),
     )
+    parser.add_argument(
+        "--all-pairs-fixed-template-primal-denominator", type=int,
+        help=("attempt to refute (13at): for every exceptional/regular pair, "
+              "require a bounded-denominator dual packing of weighted value "
+              "at least 17, thereby negating its fixed (1,2) strict cover"),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.denominator <= 0:
         parser.error("--denominator must be positive")
+    if (args.all_pairs_fixed_template_primal_denominator is not None
+            and args.all_pairs_fixed_template_primal_denominator <= 0):
+        parser.error(
+            "--all-pairs-fixed-template-primal-denominator must be positive"
+        )
     rows = list(range(N)) if args.all_rows else args.rows
     if any(row < 0 or row >= N for row in rows):
         parser.error("--rows entries must lie in 0..46")
@@ -217,6 +284,7 @@ def main() -> None:
         args.timeout_seconds, args.denominator, rows,
         args.shared_integral_relation, args.exclude_single_special_hole,
         args.all_incident_disjoint_packings,
+        args.all_pairs_fixed_template_primal_denominator,
         template=template
     )
     solver.set(random_seed=args.random_seed)
