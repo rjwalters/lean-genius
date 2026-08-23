@@ -13,6 +13,41 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Defect-high isolation gives the actual punctured closure used below.
+Every defect neighbor of an ordinary point is ordinary; splitting the
+ordinary set at `owner` places it in `insert owner (O.erase owner)`. -/
+theorem orderNine_defect_neighbors_subset_insert_owner_ordinary_erase
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ owner : V)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) :
+    let O := (Finset.univ : Finset V) \ squareOrderHighVertices G 9
+    let U := O.erase owner
+    ∀ x ∈ U, (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner U := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ : Finset V) \ squareOrderHighVertices G 9
+  let U := O.erase owner
+  intro x hx y hy
+  have hyO : y ∈ O := by
+    refine Finset.mem_sdiff.mpr ⟨Finset.mem_univ y, ?_⟩
+    intro hyHigh
+    have hyTriple : y ∈ ({h₁, h₂, h₃} : Finset V) := by
+      rw [← hH]
+      exact hyHigh
+    have hyIso := hdefectHighIsolated y hyTriple
+    have hxy : x ∈ D.neighborFinset y :=
+      (D.mem_neighborFinset y x).mpr
+        ((D.adj_comm x y).mp ((D.mem_neighborFinset x y).mp hy))
+    rw [hyIso] at hxy
+    exact Finset.notMem_empty x hxy
+  by_cases hyo : y = owner
+  · exact Finset.mem_insert.mpr (Or.inl hyo)
+  · exact Finset.mem_insert.mpr (Or.inr (Finset.mem_erase.mpr ⟨hyo, hyO⟩))
+
 /-- The four corrected local terminals, assembled behind the two profile
 dichotomies. -/
 theorem false_of_orderNine_order34_local_profile_of_corrected_punctured_data
