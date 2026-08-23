@@ -21277,3 +21277,64 @@ strict-sheltered residual edge, minus the fixed two-unit baseline.  Any
 attempt to improve the saturation staircase of Section 397 must therefore
 act on the finite `B--B/B--O` boundary geometry or exclude shelters; there
 is no hidden residual source of payer slack.
+
+## 399. Every exterior color contributes five to ten ordinary edges
+
+The exterior-component coloring of `M` has an exact class-size census.
+Let `h` be one of the `r-2` components outside `{c,e}`, and put
+
+```text
+k_h:=#{i:gamma_i=h},
+```
+
+the number of strict exports whose exterior color is `h`.  The cross
+factor from the five-cycle `C` into `h` has degree two at every core root.
+The one-root bound (779) makes its ten neighbors distinct, so there are
+exactly ten `h`-labels which carry a core root.
+
+The rigid support permutation (777) says that a rooted label meets the
+selected set `Z` exactly when it is one of the five strict exports.  Thus
+exactly `k_h` of the ten rooted `h`-labels have one endpoint in `Z` and
+their other endpoint at the corresponding strict mate in `U`.  Each of the
+remaining `10-k_h` labels has both target endpoints in `U` and contributes
+one ordinary edge of `M`.  Consequently
+
+```text
+|E_h(M)|=10-k_h.                                   (1405)
+```
+
+Here `E_h(M)` denotes the set of ordinary matching edges whose actual
+rooted label lies in exterior component `h`.  Since the five strict exports
+have exactly one exterior color each,
+
+```text
+sum_(h outside {c,e}) k_h=5,
+0<=k_h<=5.                                         (1406)
+```
+
+Equations (1405)--(1406) recover the global edge count color by color:
+
+```text
+sum_h |E_h(M)|
+ =10(r-2)-5
+ =5q-25
+ =|E(M)|.                                          (1407)
+```
+
+The distinguished secondary component has an additional exact value.  A
+strict export has selected incidence one, whereas every `d`-label has even
+selected incidence by Section 364.  Hence `k_d=0` and
+
+```text
+|E_d(M)|=10.                                       (1408)
+```
+
+More generally every exterior color class of `M` has between five and ten
+edges.  Its maximum degree is at most two, by the same cross-degree cap
+used in the Yeo argument, so each color class is a disjoint union of paths
+and cycles with this explicitly bounded total size.  The properly colored
+cycle problem therefore has many constant-size color classes rather than a
+few large ones: all of the growth in `|E(M)|` comes from the `r-2` different
+exterior components.  This histogram is independent of the payer-layer
+saturation in Sections 396--398 and supplies a second finite interface for
+any sharpened alternating-cycle or transversal argument.
