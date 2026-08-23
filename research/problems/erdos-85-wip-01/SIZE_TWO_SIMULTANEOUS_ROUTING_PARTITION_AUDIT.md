@@ -22571,11 +22571,9 @@ the ear in (1496) need not be strictly shorter there.  Beyond that finite
 case, the simultaneous five-action escape cannot be absorbed by a bounded
 set of outside companions.
 
-## 421. A clean triangle has nine distinct outside neighbors
+## 421. A clean triangle has an exact root-boundary spectrum
 
-The small-length alternative in Section 420 is itself rigid.  A simple
-four-cycle cannot occur because `G_sh` is a subgraph of the four-cycle-free
-target graph.  It remains to analyze a properly colored triangle
+The triangular alternative in Section 420 is rigid at the root level.  Let
 
 ```text
 Q=(v_0,v_1,v_2,v_0).                              (1500)
@@ -22592,27 +22590,28 @@ up to permuting the five roots,
 ```
 
 Thus each triangle vertex has exactly three boundary edges, one in every
-root matching complementary to its two incident cycle roots.  These nine
-edges have nine distinct outside endpoints.  Indeed, if an outside vertex
-`w` were adjacent to two triangle vertices `v_i,v_j`, then those two
-vertices would have the two distinct common neighbors `w` and the third
-triangle vertex.  They would form a four-cycle, a contradiction.  Hence
+root matching complementary to its two incident cycle roots, and the
+triangle has nine boundary edges in total:
 
 ```text
-N_G_sh(v_i) setminus V(Q) are pairwise disjoint,
-|union_i (N_G_sh(v_i) setminus V(Q))|=3+3+3=9.     (1502)
+|partial_(G_sh)V(Q)|=9.                            (1502)
 ```
 
-In particular the triangle case is stronger than the general expansion
-bound (1498):
+This does **not** imply nine distinct outside endpoints.  A shadow edge
+records the two target endpoints of an intermediate rooted label, so a
+four-cycle in `G_sh` generally lifts to an eight-cycle in the original
+target factor and is allowed.  Original four-cycle-freeness guarantees
+simplicity of the shadow matching edges, but does not make `G_sh`
+four-cycle-free.  Therefore
 
 ```text
-ell=3 -> nine distinct root-complementary outside neighbors;
-ell=4 -> impossible;
-ell>=5 -> at least ceil(ell/2) selected outside neighbors.        (1503)
+ell=3: exact root cut vector (1,1,1,3,3), but exit collisions remain;
+ell=4: a finite shadow alternative, not excluded by target C4-freeness;
+ell>=5: the ear law (1497)--(1499) applies.                         (1503)
 ```
 
-This closes the finite exception left by the ear argument.  Every shortest
-clean holonomy has explicit external vertex expansion, and a triangular
-holonomy pays the maximal local price because four-cycle-freeness forbids
-any sharing between its three outside neighborhoods.
+Thus the triangle has a fully determined five-root boundary spectrum, but
+the small-length endpoint-collision problem remains genuinely open.  Any
+exclusion of lengths three or four must use exterior colors, payer tags,
+or another simultaneous-SRP constraint rather than incorrectly importing
+four-cycle-freeness into the shadow graph.
