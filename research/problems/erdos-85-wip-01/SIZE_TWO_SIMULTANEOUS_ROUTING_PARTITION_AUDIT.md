@@ -23890,3 +23890,51 @@ another `H`-component.  It internally supplies a nondegenerate color-
 ordered cancellation, unless it already exposes the local saturation
 terminal.  Cross-component syndrome cancellation can remain only when all
 relevant holonomy lies in the bounded family of components open to `S`.
+
+## 446. At `q>=1024` one component carries nondegenerate cancellation
+
+The bounded open-component census removes the last cross-component escape
+at sufficiently large binary parameters.  Let `W_PC(C)` be the binary
+span of the simple PC-cycle vectors contained in a component `C` of `H`.
+Cycles cannot cross components, so
+
+```text
+W_PC(H)=direct_sum_C W_PC(C),
+sum_C dim W_PC(C)=dim W_PC(H)>=R_5.                (1599)
+```
+
+If `H` has a closed component, Section 445 already gives either a
+nondegenerate tag-even PC closed walk or a saturated-color vertex.  Suppose
+therefore that every component is open to `S`.  Section 428 then bounds
+their number by ninety.  Some component `C` consequently satisfies
+
+```text
+dim W_PC(C)>=ceil(R_5/90)
+              >=ceil((q-117)/90).                 (1600)
+```
+
+For binary `q>=1024`, the last quantity is at least
+
+```text
+ceil(907/90)=11>=6.                               (1601)
+```
+
+Choose six independent PC cycles inside this one connected component.
+Their five syndromes have a nonempty zero-sum subfamily, and independence
+makes its binary edge sum nonzero.  Sections 442--444 splice all of its
+clusters inside `C`, unless they expose a genuine distinct-edge color
+saturation.  Combining this with the closed-component case proves
+
+```text
+every binary q>=1024 has, wholly inside one O_5 component,
+
+  either a PC closed walk W with syndrome(W)=0 and [E(W)]!=0,
+  or two distinct incident edges saturating one exterior color. (1602)
+```
+
+Thus the parity-degenerate exact square from Section 441 is no longer a
+terminal in the very-large branch: one connected component supports a
+nonzero color-ordered cancellation unless the explicit local saturation
+terminal is already present.  Avoidance was not imposed in this
+component-pigeonhole step; retaining it while controlling the component
+count is a separate refinement.
