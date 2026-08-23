@@ -24472,3 +24472,41 @@ Thus simultaneous avoidance improves the multicolor coefficient in
 (1632) from `11000` to `3300` and, more importantly, produces the color
 and payer disjointness in one matching rather than by a posteriori
 capacity counting.
+
+## 459. Rainbow separated-turn normal form
+
+Sections 454, 456, and 458 combine into one q-generic structural
+terminal.  Fix an integer `c>=1` and suppose
+
+```text
+q>1172+3300(c-1).                                (1641)
+```
+
+Either the avoided nondegenerate tag-even PC cancellation already
+exists, or (1640) supplies roots `r!=s` and a set `T subseteq O_5` of
+`c` saturation targets.  The union `G_r union G_s` is the spanning
+alternating even-cycle factor of Section 454.  The saturated pair at
+each `v in T` is exactly the two-edge factor star at `v`.
+
+The mixed supports selected in Section 458 are disjoint.  Consequently
+the source-color map on `T` is injective, the canonical payer-layer sets
+at distinct targets are disjoint, and all `2c` factor edges and payers
+are distinct.  Those edge stars are disjoint, so Section 456 also makes
+`T` independent in the alternating factor.  Thus the terminal can be
+recorded as
+
+```text
+q>1172+3300(c-1)
+ -> an avoided nondegenerate tag-even PC cancellation; or
+ -> roots r!=s and an independent c-set T in G_r union G_s such that
+      every v in T is a monochromatic saturated r/s turn,
+      the c turn colors are pairwise distinct and avoid {d} union Gamma,
+      and the c nonempty payer-layer supports are pairwise disjoint.
+                                                               (1642)
+```
+
+The marked vertices may occupy different cycles of the factor.  Apart
+from that necessary qualification, (1642) packages the entire remaining
+q-large saturation obstruction as a rainbow independent set of turns in
+one fixed two-root action, with disjoint payer support available for
+further avoidance.
