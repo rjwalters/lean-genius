@@ -4408,9 +4408,11 @@ sum_(11 edges vw of C) (1+mu_(v,w))=0.                 (73rnz_cjibks)
 ```
 
 Thus `lambda` is constant across each canonical Baer pair and records exactly
-the complement matching price across each broken relay.  The `mu` part of a
-routed owner's price is consequently gauge-invariant in the cut-potential
-branch; a failure of (73rnz_cjibks) is precisely the odd-K cycle alternative.
+the complement matching price across each broken relay.  The combined
+broken-relay price `1+mu` of a routed owner is consequently gauge-invariant
+in the cut-potential branch (the `mu` sum and number-of-11-edges parity need
+not be invariant separately); a failure of (73rnz_cjibks) is precisely the
+odd-K cycle alternative.
 The unresolved endpoint identification after (73rnz_cjibkq) is narrower than
 stated above: attach the source-side residual `rho` (and any inactive unit)
 from (73rnz_cjibka) to the terminal endpoint potential delivered by the P
