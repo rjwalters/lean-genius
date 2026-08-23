@@ -3742,12 +3742,14 @@ collision-inconsistent rows are excluded.  These certificates now fit the
 kernel-checked consumers `reverseIntervalRankDeficit_of_fractionalPointCover`
 and `reverseIntervalRankDeficit_of_scaledPointCover`.
 
-The sampled certificates do not reduce to a halves-and-thirds template.
-Most observed optimal weights have denominators at most three, but branch 4,
-seed 1, row 0 uses an exhibited scale-four certificate, with positive
-weights in `{1/4,1/2,3/4,1}`, support size eight, and total `9/2 < 5`.
-Thus bounded-denominator or finite-template claims require a proof independent
-of the current corpus; denominator three is already false as a sampled bound.
+Raw optimizer output does not determine the minimum certificate denominator.
+For example, branch 4, seed 1, row 0 was first emitted with quarter weights,
+but exact integer SMT also finds a scale-two certificate: labels
+`{3,6,8,13,19,20,22}` have numerator one and label 9 has numerator two,
+for total numerator `9 < 2*5`.  Scale one is infeasible.  Thus this profile
+requires a genuinely fractional cover but does not refute the sampled
+possibility that strict certificates can always be chosen half-integrally;
+any bounded-denominator or finite-template claim remains unproved.
 This suggests a stronger prospective route: derive a fractional U1-point
 mass bound below `d(u)-|F_u|` at some row.  Its observed validity is sampled
 data; no uniform fractional bound is asserted.
