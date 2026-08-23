@@ -437,6 +437,16 @@ def add_exact_joint_scan(answer: dict, system: dict, genuine_pairs,
     answer["tight_hub_counterexample"] = (
         no_strict_single and not exists_tight_partner
     )
+    exceptional_overlap = {
+        point
+        for points in answer.get("exceptional_hole_overlap", [])
+        for point in points
+    }
+    tight_exceptional_overlap = sorted(tight & exceptional_overlap)
+    answer["tight_exceptional_overlap_points"] = tight_exceptional_overlap
+    answer["tight_exceptional_overlap_counterexample"] = (
+        no_strict_single and not tight_exceptional_overlap
+    )
 
 
 def one_model(

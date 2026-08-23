@@ -154,6 +154,16 @@ single fibers.  Thus the candidate has survived a third genuine model, but
 the no-single-strict locus remains rare and the statement is still evidence,
 not a theorem.
 
+The tempting refinement that the tight point can be chosen among the
+distinguished exceptional-hole overlap anchors is false.  The probe now also
+reports `tight_exceptional_overlap_points` and
+`tight_exceptional_overlap_counterexample`.  A fresh no-single-strict exact
+model has exceptional-hole overlap `[[],[10]]` but tight set `{0}`, so the
+intersection is empty and the counterexample flag is true.  The broader
+tight-hub candidate survives—the model still has a tight point in the full
+cover intersection—but a proof cannot localize the averaging step to the two
+hole anchors.
+
 The exact continuous optimum in the preceding generated `p=9,q=21` model is
 `747/14 < 54`.
 `--details` now reconstructs both the primal point prices and the LP-dual
