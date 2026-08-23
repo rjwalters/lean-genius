@@ -4636,3 +4636,84 @@ routing.  The unique alternating phase from Section 76 is the only remaining
 linear mechanism capable of changing the boundary sign pattern; absent such
 a sum--difference compatibility, Section 84 shows that the two owner-factor
 gap systems can carry odd current.
+
+## 86. The companion SRP polarization realizes difference--sum
+
+The profile exchanged in Section 85 is itself accessible from the same SRP
+block.  In the four-distinct branch, put
+
+```text
+rho   := 1_(a_-) - 1_(a_+),
+sigma := 1_(p_-) + 1_(p_+).
+```
+
+Although `J sigma` is nonzero, `rho^T J sigma=0` because `rho` has coordinate
+sum zero.  Pair the full `SRP(c,e)sigma=J sigma` with `rho`.  The first
+endpoint term vanishes:
+
+```text
+rho^T A_c R_ce sigma = 0.                             (270)
+```
+
+Indeed, `R_ce sigma=1_(x_-)+1_(a_-)+1_(x_+)+1_(a_+)`.
+Neither other root sees a run root by Section 74, while a possible edge
+`a_-a_+` contributes equally at the two oppositely weighted rows.
+
+For the reverse endpoint term,
+
+```text
+R_ec rho = 1_(p_-)+1_(q_-)-1_(p_+)-1_(q_+).
+```
+
+The private rows cancel against `sigma` by symmetry.  Define the outward-row
+imbalance
+
+```text
+eta_e
+  := A_e(q_-,p_-) + A_e(q_-,p_+)
+   - A_e(q_+,p_-) - A_e(q_+,p_+).
+```
+
+Then the companion polarization is
+
+```text
+rho^T R_ce A_e sigma = eta_e,
+sum_(d != c,e) rho^T R_cd R_de sigma = -eta_e.        (271)
+```
+
+It has the same signed-current interpretation on the outward shore.  Since
+the possible internal edge `q_-q_+` contributes equally to both outward
+degrees and every `A_e` degree is two,
+
+```text
+eta_e = deg_P(q_-) - deg_P(q_+)
+      = deg_O(q_+) - deg_O(q_-).                       (272)
+```
+
+Thus SRP supplies both orientations of the sum--difference mismatch, not
+just the original one.
+
+To make their relation explicit, let `K_d` be the `2 by 2` restriction of
+`R_cd R_de` with rows `(a_-,a_+)` and columns `(p_-,p_+)`, and write its
+entries as `k_d^{--},k_d^{-+},k_d^{+-},k_d^{++}`.  Then
+
+```text
+mu^T K_d w     = k_d^{--}-k_d^{-+}+k_d^{+-}-k_d^{++},
+rho^T K_d sigma = k_d^{--}+k_d^{-+}-k_d^{+-}-k_d^{++}.
+```
+
+Adding and subtracting (255) and (271) yields the exact Hadamard split
+
+```text
+epsilon_e + eta_e
+  = -2 sum_d (k_d^{--}-k_d^{++}),
+epsilon_e - eta_e
+  = -2 sum_d (k_d^{+-}-k_d^{-+}).                     (273)
+```
+
+In particular `epsilon_e == eta_e (mod 2)`, but (273) retains the two
+integer half-residues: diagonal third-color imbalance and crossed
+third-color imbalance.  The alternating phase no longer needs to invent a
+sum--difference conversion; SRP already provides both polarizations.  The
+remaining global task is to pair their diagonal and crossed half-residues
+across successive marked centers.
