@@ -9768,3 +9768,43 @@ multigraphs admit such cycles.  The remaining task is now maximally local:
 use route reversal on the `C_V` edges and the canonical unoriented `T_S`
 transfers to show that a simultaneously realizable minimal refined cycle
 cannot have odd weight (587).
+
+## 189. The minimal odd subchain is a graphic circuit
+
+Let `K` be an inclusion-minimal odd closed subchain supplied by Section 188,
+with containment understood on the distinct refined edge occurrences.  In
+fact `K` has no proper nonempty closed subchain of either parity.  Indeed, if
+`J` were such a subchain, then
+
+```text
+weight(J)=1  => J is a smaller odd closed subchain;
+weight(J)=0  => K+J is a smaller odd closed subchain.             (589)
+```
+
+Both alternatives contradict the choice of `K`.  Thus `K` is a circuit of
+the binary cycle matroid of the V-label multigraph.
+
+Equivalently, after retaining multiplicities and private occurrence tags,
+the support of `K` is one graph-theoretic cycle: a loop, a pair of parallel
+edges, or a connected simple cycle of length at least three.  To see this
+directly, every vertex of `K` has even degree.  If some vertex had degree at
+least four, pairing two incident half-edges and following the finite
+Eulerian support until the first return would produce a proper nonempty
+closed subchain, contrary to (589).  Hence every incident vertex has degree
+two, and connectedness gives the stated circuit classification.
+
+Consequently `K` has a unique cyclic traversal up to rotation and reversal.
+There is no remaining half-edge-pairing gauge and no repeated coarse V
+label on a circuit of length at least three: two distinct visits would force
+degree at least four at that label vertex.  In particular the odd identity
+becomes
+
+```text
+sum_(A in K cap T_H) ell(A) = 1.                    (590)
+```
+
+The terminal theorem may therefore be proved on a single oriented refined
+circuit and compared with the same circuit in the reverse orientation.  Its
+only orientation-sensitive data are the rooted `C_V` turns and the V-side
+ordering of the unoriented `T_S` transfers; all H words and S interiors are
+carried unchanged.
