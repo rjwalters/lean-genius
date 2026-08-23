@@ -9728,3 +9728,43 @@ character vanishes on the **realized refined lift** of `Xi`, using the
 route-reversal identities on `C_V` and the canonical two-ended nature of
 `T_S`.  All combinatorial transfers required to state that theorem are now
 constructed and audited.
+
+## 188. Odd grading localizes to one refined `Xi` cycle
+
+Reduce the canonical closed chain `Xi(Z)` modulo two, retaining a distinct
+copy of every private occurrence label from (586).  Its incidence boundary
+is zero, so the resulting V-label multigraph is Eulerian.  Pair incident
+half-edges arbitrarily at every label vertex and decompose the edge set into
+closed trails.
+
+Give a refined `T_H` edge the weight
+
+```text
+weight(A)=ell(A) mod 2,                               (587)
+```
+
+and give every `C_V` and `T_S` edge weight zero.  The total edge weight is
+
+```text
+sum_(edges of Xi) weight
+ =sum_(H-runs A) ell(A)
+ =omega_M(Z).                                        (588)
+```
+
+Therefore, when `omega_M(Z)=1`, every cycle decomposition contains at least
+one closed trail of odd weight.  Choose an inclusion-minimal odd closed
+subchain.  It is connected and contains no proper nonempty closed odd
+subchain; all edge occurrences still carry their full H-center word,
+unoriented S-path tag, or rooted V-turn tag.
+
+This extraction is pairing-gauge independent at the existence level.  A
+different half-edge pairing can change the chosen trail but cannot make all
+trails even, because their weights always sum to (588).  Thus the final
+conservation theorem need only exclude one support-minimal refined cycle
+with an odd total of H-run parities.
+
+No contradiction follows from Eulerianity alone—arbitrary labeled
+multigraphs admit such cycles.  The remaining task is now maximally local:
+use route reversal on the `C_V` edges and the canonical unoriented `T_S`
+transfers to show that a simultaneously realizable minimal refined cycle
+cannot have odd weight (587).
