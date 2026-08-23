@@ -478,8 +478,30 @@ genuine coupled selector.
 
 ## Remaining theorem gap
 
-Prove, from the outer design plus the exact exceptional-hole DTB complement
-partition, that a maximum-load hole point admits the bounded scaled cover.
-Once its natural-number weights and positive scale are produced, the banked
-actual-relation consumer closes the symmetric fractional residual relation and
-hence the B.3 branch.
+The shared-relation/global-price formulation now looks strictly preferable to
+finishing the outer-only tight-partner classification.  On all five durable
+no-strict payloads, the global symmetric fractional point-packing primal is
+infeasible, and `--minimize-row-support --dual` produces exact Farkas price
+certificates with row-support sizes `2,2,3,1,2`.  The supports are
+`{4,16}`, `{0,16}`, `{2,9,25}`, `{13}`, and `{1,12}` respectively.  Five
+fresh unrestricted branch-3 outer samples are likewise infeasible with
+minimum supports `{3,24}`, `{6}`, `{24}`, `{9,24}`, `{24}`.  All rational
+certificates have positive exact margin (normalized to 1) and are consumed
+directly by `false_of_symmetricRowPointPriceCertificate`.
+
+Thus a stronger and cleaner prospective theorem is: every normalized
+branch-3 outer design admits a global symmetric row/point-price certificate
+supported on at most three rows.  This would close the actual residual
+relation without choosing an overlap point, tight fiber, or joint partner at
+all.  The observed supports are not uniformly hole-based—the hard fixtures
+include ordinary-only supports—so the proof must classify small global row
+supports rather than merely select an exceptional row.  The former
+tight-partner statement remains valid evidence and a fallback, but is no
+longer the preferred proof interface.
+
+The legacy alternative is to prove, from the outer design plus the exact
+exceptional-hole DTB complement partition, that a tight overlap fiber has a
+strict joint partner and then denominator-clear its two-fiber cover.  The
+banked actual-relation consumers close either route.  Current evidence favors
+the global support-at-most-three theorem because it is stronger, avoids all
+the refuted selector subcases, and is already visible on every hard payload.
