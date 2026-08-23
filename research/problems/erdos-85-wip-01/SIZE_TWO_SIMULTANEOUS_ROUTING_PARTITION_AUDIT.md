@@ -23062,3 +23062,58 @@ Thus avoidance is not paid for by collapsing back to one exceptional
 cycle.  Even after every distinguished source color, or any fixed set of
 payer layers, is removed, the no-hole five-root sector retains linear
 disjoint properly colored holonomy mass.
+
+## 431. Tag-even Eulerian cancellation robustly avoids edge families
+
+The kernel in Section 429 remains nonzero after any sublinear collection
+of edge prohibitions.  Write
+
+```text
+K:=ker(tau|Z_1(H)).
+```
+
+For an edge set `F subseteq E(H)`, restriction to the coordinates in `F`
+defines a linear map `K -> F_2^F`.  Its rank is at most `|F|`, so (1532)
+gives
+
+```text
+dim {z in K:supp(z) intersect F=emptyset}
+ >=dim K-|F|
+ >=3q-184-|F|.                                    (1538)
+```
+
+Consequently
+
+```text
+|F|<3q-184
+ -> H-F contains a nonzero Eulerian edge chain z
+    with every root frequency and every selected tag column even.       (1539)
+```
+
+This applies directly to the bounded geometric families already isolated.
+The source-color-`d` class has at most ten edges, all strict-export source
+colors together have at most forty-five, and a payer-layer set `P` accounts
+for at most `10|P|` edges.  Thus a single tag-even chain can simultaneously
+avoid all three families whenever
+
+```text
+55+10|P|<3q-184.                                  (1540)
+```
+
+At the first large binary value `q=128`, the right side is two hundred;
+in particular every payer-layer set with `|P|<=14` can be avoided together
+with source color `d` and every strict-export source color.  Uniformly,
+
+```text
+binary q>=128 and |P|<=14
+ -> there is a nonzero all-O_5, unsheltered Eulerian chain
+    with literal selected-tag cancellation which avoids d, Gamma,
+    and every canonical payer layer in P.                        (1541)
+```
+
+The conclusion is intentionally an Eulerian chain, not yet a simple
+properly colored cycle: it is the robust algebraic half of that selection
+problem.  It shows that neither exceptional source colors nor bounded
+payer layers can destroy literal tag cancellation before the remaining
+color-ordering step is imposed; for any fixed `P`, (1540) holds throughout
+all sufficiently large binary parameters.
