@@ -3099,6 +3099,37 @@ is a finite labeled route alphabet, with the desired source cell removed.
 Any cancellation with the ordinary K term can now be sought cellwise, and
 failure can be localized to a specific non-111 or ordinary-source route.
 
+The ordinary K term in (73rnz_as) can likewise be resolved entirely into
+incidence atoms.  For an ordinary inside vertex z nonadjacent to G, put
+
+```text
+nu_(G,z) = |N_A(G) intersect N_A(z)| in {0,1},
+mu_(G,z) = A^3(G,z)                              (mod 2).
+```
+
+Because K is disjoint from A, equation (17) gives on this non-A pair
+
+```text
+1[Gz in K] = nu_(G,z)+mu_(G,z)                  (mod 2). (73rnz_av)
+```
+
+Here `nu` is either absent or has one unique common-neighbor witness, while
+`mu` is the parity of the matching of A-edges between `N_A(G)` and
+`N_A(z)`.  Therefore (73rnz_as) becomes the fully incidence-resolved law
+
+```text
+sum_i (c_(E_i,G)+rho_(E_i,G))
+ = sum_(z in M intersect S, Gz notin A)
+       (nu_(G,z)+mu_(G,z))                     (mod 2). (73rnz_aw)
+```
+
+Both sides now consist of unique common-neighbor atoms and linear
+cross-neighborhood matchings.  No auxiliary K-edge remains.  The unresolved
+step is narrower: construct a label-preserving pairing (or signed capacity
+inequality) between the route cells (73rnz_at) on the left and the
+common-neighbor/cross-matching atoms on the right.  C4-freeness supplies
+privacy within each fiber, but not this cross-fiber conservation by itself.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
