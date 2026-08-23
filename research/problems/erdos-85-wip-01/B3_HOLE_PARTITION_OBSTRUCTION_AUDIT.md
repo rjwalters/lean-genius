@@ -3161,6 +3161,44 @@ identifier, so the seed labels and row indices above document reproducing
 runs rather than invariant isomorphism classes.  All observations remain
 sampled outer-design evidence, not proofs for every admissible design.
 
+A grouped UNSAT core and a second widened sweep sharpen the second horn back
+to a two-row local statement.  For a locally feasible row `u`, let
+
+```text
+F(u) := intersection of all demand(u)-element W-independent subsets
+        of the trace-eligible neighborhood N_H(u).              (13d)
+```
+
+Thus `F(u)` is the set of residual neighbors forced by every local packing
+at `u`.  In the first locally feasible branch-3 survivor, the grouped core
+used only the degree equations of rows 3 and 16.  Their blocks intersected,
+and both forced row 28.  Hence any simultaneous realization would contain
+the forbidden common residual neighbor
+
+```text
+28 in F(3) intersect F(16),  while S_3 intersect S_16 != empty. (13e)
+```
+
+The mode now reports all such forced collisions.  In one completed sweep of
+sixteen generated witnesses per branch, thirty witnesses had a deficient
+row.  The two locally feasible witnesses (one in each branch) both had
+forced collisions; indeed the branch-3 survivor had three and the branch-4
+survivor had eight.  Therefore all thirty-two sampled witnesses satisfy the
+purely local alternative
+
+```text
+some u has alpha_W(N_H(u)) < demand(u); or
+some u,v,w have S_u intersect S_v != empty
+  and w in F(u) intersect F(v).                                (13f)
+```
+
+Either horn immediately contradicts a Gram-compatible residual graph: the
+first cannot realize the row degree, while the second forces two intersecting
+blocks to share residual neighbor `w`.  Statement (13f), uniform over every
+admissible outer design, is now the precise proof candidate.  It involves at
+most two local packing polytopes and avoids the full symmetric factor model.
+As before, the sweep is evidence for that candidate rather than a proof.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

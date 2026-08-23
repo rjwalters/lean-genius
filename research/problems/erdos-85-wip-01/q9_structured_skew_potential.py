@@ -2398,6 +2398,88 @@ def residual_gram_local_capacities(data: dict) -> list[tuple[int, int, int]]:
     return deficient
 
 
+def residual_gram_forced_collisions(data: dict) -> list[tuple[int, int, int]]:
+    """Intersecting row pairs forced to share one residual neighbor locally."""
+    forced = {}
+    for row in range(N):
+        demand = int(data["degree"][row])
+        feasible_sets = [set(chosen)
+                         for chosen in combinations(data["candidates"][row], demand)
+                         if all(not (data["blocks"][u] & data["blocks"][v])
+                                for u, v in combinations(chosen, 2))]
+        if feasible_sets:
+            forced[row] = set.intersection(*feasible_sets)
+    return [(u, v, w)
+            for u, v in combinations(sorted(forced), 2)
+            if data["blocks"][u] & data["blocks"][v]
+            for w in sorted(forced[u] & forced[v])]
+
+
+def residual_gram_unsat_core(data: dict, timeout_seconds: int) -> dict:
+    """Return a grouped assumption core for degree plus Gram-only constraints."""
+    from z3 import And, Bool, If, Implies, SolverFor, Sum, unsat
+
+    allowed = {
+        (u, v) for u, v in combinations(range(N), 2)
+        if v in data["candidates"][u] and u in data["candidates"][v]
+    }
+    edges = {edge: Bool(f"core_a_{edge[0]}_{edge[1]}") for edge in allowed}
+
+    def adj(u: int, v: int):
+        if u == v:
+            return False
+        edge = (u, v) if u < v else (v, u)
+        return edges.get(edge, False)
+
+    solver = SolverFor("QF_FD")
+    solver.set(timeout=timeout_seconds * 1000)
+    flags = []
+    labels = {}
+    for u in range(N):
+        flag = Bool(f"core_degree_{u}")
+        flags.append(flag)
+        labels[str(flag)] = ("degree", u)
+        solver.add(Implies(flag, Sum([If(adj(u, v), 1, 0)
+                                      for v in range(N) if v != u])
+                           == int(data["degree"][u])))
+    for u, v in combinations(range(N), 2):
+        if not (data["blocks"][u] & data["blocks"][v]):
+            continue
+        flag = Bool(f"core_gram_{u}_{v}")
+        flags.append(flag)
+        labels[str(flag)] = ("gram", u, v)
+        common = [And(adj(u, w), adj(v, w))
+                  for w in range(N) if w not in (u, v)]
+        solver.add(Implies(flag, Sum([If(term, 1, 0)
+                                      for term in common]) == 0))
+    result = solver.check(*flags)
+    if result != unsat:
+        return {"result": str(result), "degrees": [], "gram_pairs": []}
+    core = [labels[str(flag)] for flag in solver.unsat_core()]
+    degree_rows = sorted(item[1] for item in core if item[0] == "degree")
+    local_profiles = {}
+    for row in degree_rows:
+        demand = int(data["degree"][row])
+        feasible_sets = [set(chosen)
+                         for chosen in combinations(data["candidates"][row], demand)
+                         if all(not (data["blocks"][u] & data["blocks"][v])
+                                for u, v in combinations(chosen, 2))]
+        forced = set.intersection(*feasible_sets) if feasible_sets else set()
+        possible = set.union(*feasible_sets) if feasible_sets else set()
+        local_profiles[row] = {
+            "count": len(feasible_sets),
+            "forced": sorted(forced),
+            "excluded": sorted(set(data["candidates"][row]) - possible),
+        }
+    return {
+        "result": "unsat",
+        "degrees": degree_rows,
+        "gram_pairs": sorted((item[1], item[2])
+                             for item in core if item[0] == "gram"),
+        "local_profiles": local_profiles,
+    }
+
+
 def main() -> int:
     global FEATURES
     parser = argparse.ArgumentParser()
@@ -2486,6 +2568,8 @@ def main() -> int:
                         help="test block-intersection Gram law without ordinary residual C4")
     parser.add_argument("--audit-residual-gram-local", action="store_true",
                         help="find rows lacking a demanded W-independent eligible neighborhood")
+    parser.add_argument("--audit-residual-gram-core", action="store_true",
+                        help="extract grouped degree/Gram UNSAT cores on locally feasible seeds")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -2550,8 +2634,28 @@ def main() -> int:
                     require_eligible_hole_pair=args.require_eligible_hole_pair)
                 candidate = instance(branch, seed, (0, 1))
                 deficient = residual_gram_local_capacities(candidate)
+                collisions = residual_gram_forced_collisions(candidate)
                 print(f"residual_gram_local branch={branch} "
-                      f"seed={seed_number} deficient={deficient}")
+                      f"seed={seed_number} deficient={deficient} "
+                      f"forced_collisions={collisions}")
+        return 0
+    if args.audit_residual_gram_core:
+        for branch in (3, 4):
+            for seed_number in range(args.seeds):
+                if dual_seed_filter and seed_number not in dual_seed_filter:
+                    continue
+                seed = make_outer_seed(
+                    branch, args.timeout_seconds * 1000, seed_number,
+                    require_eligible_hole_pair=args.require_eligible_hole_pair)
+                candidate = instance(branch, seed, (0, 1))
+                deficient = residual_gram_local_capacities(candidate)
+                if deficient:
+                    print(f"residual_gram_core branch={branch} "
+                          f"seed={seed_number} skipped_local={deficient}")
+                    continue
+                core = residual_gram_unsat_core(candidate, args.timeout_seconds)
+                print(f"residual_gram_core branch={branch} "
+                      f"seed={seed_number} core={core}")
         return 0
     data = []
     all_data = []
