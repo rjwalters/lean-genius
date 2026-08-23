@@ -11964,3 +11964,49 @@ comes from owner `d` on the port component, while membership in `M_00` is
 defined by the distinct root component `c`, its internal H edge, and the
 Baer shore state.  The local shadow identities internal to `(d,e)` cannot
 supply that comparison, as (719) shows.
+
+## 237. In the root-closed branch the odd port set is the whole target cycle
+
+Apply the same port indexing to the root component: for the odd port set
+`P_C=V(C*)` in (721), form the edge chain
+
+```text
+B_C^c:=sum_(p in P_C) [N_c(p)] in C_1(F_e[c];F_2).     (723)
+```
+
+Every edge in (723) is the marked shore-`00` H edge indexed by `p`.  The
+root-boundary pincer `(73rnz_cjibkzzt)--(73rnz_cjibkzzw)` says that either
+`partial B_C^c` gives selected-to-complement H/V/S endpoints, or `B_C^c` is
+a union of full cycle components of `F_e[c]` and contains an odd one.
+
+In the latter branch the fixed target component removes the apparent
+possibility of several cycles.  A component cycle of `F_e[c]` is the root
+projection of one connected bipartite cycle of `R_ce`; its edge-indexing
+ports form exactly the corresponding component cycle of the dual shadow
+factor `F_c[e]`.  All ports in (723) belong to the single fixed component
+`V_j` of `F_c[e]`.  Therefore any nonempty full root-factor component used
+by (723) has port set equal to `V_j`.  Since the port indexing is bijective,
+
+```text
+partial B_C^c=0  implies  P_C=V_j,                    (724)
+```
+
+and `B_C^c` is the unique root projection paired with that incidence
+component.  In particular `|V_j|` is odd.
+
+Combining (721) and (724), the boundary-free obstruction has the sharper
+form
+
+```text
+V_j is simultaneously a component vertex set of
+the distinct owner factors F_c[e] and F_d[e],
+both restrictions are odd cycles, and every p in V_j
+indexes a marked shore-00 H edge in the root projection. (725)
+```
+
+The two owner-factor cycles in (725) are edge-disjoint because the owner
+factors partition the selector complement on `e`.  No contradiction from
+two edge-disjoint odd cycles is asserted.  The gain is that a closed residue
+cannot occupy a proper subset of the target incidence component: failure of
+root-boundary transport forces a common invariant odd vertex set for two
+different owner factors, with the entire root projection marked `00`.
