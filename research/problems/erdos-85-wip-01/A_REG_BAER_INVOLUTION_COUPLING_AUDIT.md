@@ -3443,6 +3443,30 @@ demand between the type bit and split-pair channel but do not change the
 total matching parity seen from either pole.  What remains is labelwise
 pairing of those matching atoms, not aggregate conservation.
 
+The labelwise reversal defect is itself canonical.  On the common index set
+`X setminus {p,r}`, both pole pairs are non-A, and hence
+
+```text
+mu_(E_1,z)+mu_(E_2,z)
+  = (A^3 h)_z
+  = (A^2 1_L)_z.                                       (73rnz_bz)
+```
+
+The last equality uses `Ah=1_L`.  The two pole sums in (73rnz_by) have only
+two unmatched indices: r occurs only in the `E_1` sum and p only in the
+`E_2` sum.  Their combined evenness is therefore the closed boundary law
+
+```text
+mu_(E_1,r)+mu_(E_2,p)
+ + sum_(z in X setminus {p,r}) (A^3 h)_z = 0      (mod 2). (73rnz_ca)
+```
+
+Thus the remaining failure of pointwise pole reversal is not arbitrary: it
+is the restriction of the single secondary cochain `A^3h=A^2 1_L`, with two
+explicit endpoint atoms.  A label-preserving terminal may either show this
+cochain is a coboundary on the two-pencil route or price its nonzero cells;
+aggregate matching conservation is already complete.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
