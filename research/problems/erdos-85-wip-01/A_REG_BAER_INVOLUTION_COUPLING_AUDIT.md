@@ -4632,6 +4632,56 @@ weighted-matrix scalar, not a remaining choice of matchings or owner
 pairings.  Evaluating (73rnz_cjibkze) from the residual-full-center geometry
 is a precise final subproblem.
 
+In fact (73rnz_cjibkze) collapses to the residual-center activity parity.
+Expand its first matrix term at a pole.  Since
+`N_A(E_i) intersect X={p_i}`,
+
+```text
+(A diag(b) A^2 r_R)_(E_i)=a_i(A^2 r_R)_(p_i).
+```
+
+For `u in X`, the two-pencil codegree audit gives
+
+```text
+(A^2)_(E_i,u)=1  iff u is ordinary,
+```
+
+including the endpoint (`p_i` is ordinary exactly when its pole edge is
+non-T).  Hence
+
+```text
+(A^2 diag(b) A r_R)_(E_i)
+ =sum_(u in M intersect X) t(u)(A r_R)(u).
+```
+
+The remaining pole-specific terms cancel: from `A^2+D=J+I`, even
+`|R|`, and `p_i notin R` (it is either an excluded star leaf or ordinary),
+
+```text
+a_i((A^2 r_R)_(p_i)+(D r_R)_(p_i))=0.
+```
+
+Therefore
+
+```text
+Delta=sum_(u in M intersect X) t(u)(A r_R)(u).          (73rnz_cjibkzf)
+```
+
+Every A-neighbor of a residual full center G is ordinary in the `a=s=2`
+placement: its line lies inside S, there is no inside full center, and G has
+no empty-center neighbor.  Interchanging the incidence sum in
+(73rnz_cjibkzf) now yields the particularly simple identity
+
+```text
+Delta=sum_(G in R) sum_(u in N_A(G) intersect X) t(u)
+     =sum_(G in R) s(G).                                (73rnz_cjibkzg)
+```
+
+Thus the last diagonal silent coefficient is exactly the parity of the
+**active residual full centers**.  The matrix/matching ambiguity is gone;
+the final question is whether this active-center parity is paid by the
+already classified switch/direct/through owner cells.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
