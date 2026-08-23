@@ -3813,6 +3813,28 @@ All compile without `sorry` and print only standard axioms.  Consequently the
 sole mathematical B.3 leaf in this route is no longer a consumer lemma: it is
 the outer-design assertion (13ab) itself.
 
+The first seed-free lazy-row experiment identifies an important scope
+boundary.  In the maximally relaxed `Q,K` abstraction, the first outer model
+has no demanded local packing at rows 4, 19, and 25; adding a single symbolic
+base-packing witness at row 4 already times out before any fractional or
+reverse-incidence row is activated.  This is an encoding boundary, not a
+fractional counterexample.  More importantly, an actual residual design does
+not need independent base-packing variables: its residual adjacency row is
+already the base packing.
+
+Only a small, explicit part of the omitted outer structure is needed for
+that fact.  Retaining `row-ledger` gives the exact demanded degree.  Retaining
+`b0-c4` (and hence its nested `b0-orthogonal` clause) says that two residual
+neighbors of one center cannot have intersecting U1 blocks, since the center
+is already their residual common neighbor.  Retaining `dtb-common` and
+`dtb-cap` activates `dtb-orthogonal`: if `x` is a residual neighbor of `u`
+and `b` lies in `B_x`, their positive residual-common count forces the
+`K`-core count between `B_u` and `b` to vanish, exactly trace eligibility.
+All other current relaxations may remain for this base-packing implication.
+Thus the next honest computational/proof target is (13ab) over the
+row-ledger-plus-two-orthogonality abstraction, using the existing residual
+edge row rather than fresh existential base variables.                    (13ac)
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
