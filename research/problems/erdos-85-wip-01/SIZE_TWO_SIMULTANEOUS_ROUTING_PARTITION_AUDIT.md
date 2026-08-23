@@ -18041,6 +18041,9 @@ or a b'-factor escape out of the owner fiber.       (1164)
 If both occurrences in (1156) are private, applying the argument to both
 tickets gives two distinct side edges: one label cannot join the siblings
 by (1161), although the two side colors are still allowed to coincide.
+The strict permutation has only one exterior cell at `p`, so these two
+distinct edges cannot both satisfy (1162).  Consequently at most one is
+absorbed at `p`, and at least one side edge exits the owner fiber.
 Equation (1164) is the first genuine two-color propagation constraint on
 the countermodel of Section 340.  A remaining completion must either spend
 one of the five strict exports in the new color or propagate into a new
