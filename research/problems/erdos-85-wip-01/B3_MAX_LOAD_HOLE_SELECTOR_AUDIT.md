@@ -723,6 +723,25 @@ concurrent shapes admits no pairwise-disjoint triple of full local
 packings**.  The second horn is finite and integral, and its Lean consumer
 uses only the Gram conflict law.
 
+**Retraction after seed 116.**  Fresh-process payload
+`38cbf8c0b5b4800476e9e32836a2f51b1e153f9459048fb9bb89650cabd20ea6`
+has zero obstructed concurrent packing triples and minimum global row support
+`{0,25,37}` of size three.  Its exceptional-three-row scan has a unique
+certificate `{25,0,21}` with weights `(4,2,4)`; the three blocks are
+concurrent at point 16, but their local packing families do admit a
+pairwise-disjoint triple.  Thus the two-row-price-or-integral-triple selector
+is false.  More importantly, the shared-point-restricted global Farkas dual
+is **not** dual to three independent local packing families with only
+pairwise collision caps: its primal retains global undirected-edge symmetry
+and cross-row reciprocity constraints.  The earlier claim that
+`concurrent_shared_point_count` establishes the hypothesis of
+`false_of_threeConcurrentRowsCoupledPackingBound` is therefore also
+retracted.  Both Lean consumers remain correct conditional theorems, but are
+not universal selector endpoints.  After this correction, the only robust
+branch-3 target is again the full 552-shape statement: some exceptional row
+and arbitrary two regular rows support a strict **global** symmetric price
+certificate, with all reciprocity retained.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
