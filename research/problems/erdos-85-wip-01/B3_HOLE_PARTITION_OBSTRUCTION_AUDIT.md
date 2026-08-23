@@ -3937,6 +3937,18 @@ some row has a local fractional mutual-eligibility deficit, or some
 same-U1-point pair has a coupled two-row deficit, with a separate branch-3
 residual if those two alternatives genuinely fail.
 
+There is a crucial corpus distinction.  The ten fresh outer payloads were
+generated before imposing local base feasibility.  Direct fractional covers
+of the mutually eligible block family show a strict one-row deficit in
+exactly the same eight cases having one-row dual support; the two remaining
+fresh branch-3 cases are the paired certificates above.  By contrast, none
+of the four stored, locally feasible survivor payloads has any strict
+one-row mutual-eligibility cover.  Hence the eight random single-row kills
+are useful regressions but not representative of an actual-graph survivor.
+The serious global coupling evidence is the stored corpus: branch 4 and the
+fractional-gap payload have paired certificates, whereas `13f` and `13t`
+currently require broader prices.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
