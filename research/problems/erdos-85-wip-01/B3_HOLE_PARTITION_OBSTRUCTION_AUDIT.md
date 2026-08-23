@@ -4839,6 +4839,23 @@ projections are feasible: supports `{24,45}`, `{19,25}`, and fresh seed138's
 under negation of the local horn, some two-coordinate projection of the
 global degree vector is already outside the symmetric packing polytope.
 
+Exhausting all `C(47,2)=1081` projections in the three price-only models
+localizes this further.  The fractional-not-forced model has exactly
+`{10,24}` and `{24,45}`; the fixed-and-joint-selector counterexample has
+exactly `{15,25}`, `{19,25}`, and `{25,34}`; fresh seed138 has only
+`{18,22}`.  Every infeasible pair contains one of the four exceptional rows
+22--25.  The unified audit now records the complete pair list and checks this
+stratum assertion.  The sharp remaining geometric claim is therefore:
+
+```text
+if the sound local Gram obstruction is absent, some exceptional-row/other-row
+two-coordinate partial primal is infeasible.                       (13aw)
+```
+
+This `4*46` formulation retains pair rows when genuinely needed (`{24,45}`
+and `{25,34}`), so it does not make the unsupported claim that pair-row
+degree equations are redundant.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

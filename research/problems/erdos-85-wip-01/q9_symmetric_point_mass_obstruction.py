@@ -1228,9 +1228,14 @@ def main() -> None:
         has_local_obstruction = bool(deficit_rows or forced_collisions)
         row_support = None
         price_certificate = None
+        infeasible_two_row_projections = []
         selected_partial_primal_feasible = None
         proper_subset_partial_primals_feasible = None
         if not has_local_obstruction and not result.success:
+            infeasible_two_row_projections = [
+                [u, v] for u, v in combinations(range(N), 2)
+                if not partial_primal(system, {u, v}).success
+            ]
             row_support = sorted(minimum_row_support(system))
             selected_partial_primal_feasible = bool(
                 partial_primal(system, set(row_support)).success
@@ -1250,6 +1255,15 @@ def main() -> None:
             "forced_collisions": forced_collisions,
             "has_local_obstruction": has_local_obstruction,
             "minimum_row_support": row_support,
+            "infeasible_two_row_projections":
+                infeasible_two_row_projections,
+            "all_infeasible_pairs_contain_exceptional": (
+                None if has_local_obstruction else all(
+                    (N_TRIPLE - 4 <= u < N_TRIPLE)
+                    or (N_TRIPLE - 4 <= v < N_TRIPLE)
+                    for u, v in infeasible_two_row_projections
+                )
+            ),
             "selected_partial_primal_feasible":
                 selected_partial_primal_feasible,
             "proper_subset_partial_primals_feasible":
