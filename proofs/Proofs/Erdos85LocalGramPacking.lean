@@ -74,6 +74,31 @@ def IsReverseIntervalLocalGramPacking
   ∀ w, (∀ Y : Finset V,
     IsLocalGramPacking H W d w Y → u ∉ Y) → w ∉ X
 
+/-- A partial local packing: every member is eligible and distinct members
+are conflict-free, but no target cardinality is imposed. -/
+def IsLocalGramPrepacking (H W : V → V → Prop)
+    (u : V) (F : Finset V) : Prop :=
+  (∀ w ∈ F, H u w) ∧
+  ∀ x ∈ F, ∀ y ∈ F, x ≠ y → ¬ W x y
+
+/-- The lower interval bound at `u`: rows whose every demanded packing
+contains `u`. -/
+noncomputable def reverseForcedLocalGramNeighborFinset
+    (H W : V → V → Prop) (d : V → ℕ) (u : V) : Finset V :=
+  by
+    classical
+    exact Finset.univ.filter fun w =>
+      IsForcedLocalGramNeighbor H W d w u
+
+/-- The upper interval exclusion at `u`: rows having no demanded packing
+which contains `u`. -/
+noncomputable def reverseImpossibleLocalGramNeighborFinset
+    (H W : V → V → Prop) (d : V → ℕ) (u : V) : Finset V :=
+  by
+    classical
+    exact Finset.univ.filter fun w =>
+      ∀ Y : Finset V, IsLocalGramPacking H W d w Y → u ∉ Y
+
 /-- A finite set of reverse-impossible candidates hits every demanded
 packing at one row.  Singleton hitting sets are the old reciprocity horn;
 the q=9 durable survivor first exposes a hitting set of size two. -/
@@ -374,6 +399,57 @@ theorem eligible_of_forcedLocalGramNeighbor_of_noObstruction
   intro X hX
   exact hnH (hX.2.1 w (huw X hX))
 
+/-- Under the old deficit/collision negation, the reverse-forced lower bound
+is already an eligible conflict-free prepacking.  This is the part which may
+be safely contracted before proving the remaining matching-rank bound. -/
+theorem reverseForcedLocalGramNeighborFinset_isPrepacking
+    [DecidableEq V] (H W : V → V → Prop) [DecidableRel H]
+    (d : V → ℕ) (u : V)
+    (hH : Std.Symm H)
+    (hno : ¬ HasLocalGramPackingObstruction H W d) :
+    IsLocalGramPrepacking H W u
+      (reverseForcedLocalGramNeighborFinset H W d u) := by
+  classical
+  constructor
+  · intro w hw
+    have hforced : IsForcedLocalGramNeighbor H W d w u := by
+      simpa [reverseForcedLocalGramNeighborFinset] using hw
+    exact hH.symm w u (eligible_of_forcedLocalGramNeighbor_of_noObstruction
+      H W d w u hno hforced)
+  · intro x hx y hy hxy
+    have hforcedx : IsForcedLocalGramNeighbor H W d x u := by
+      simpa [reverseForcedLocalGramNeighborFinset] using hx
+    have hforcedy : IsForcedLocalGramNeighbor H W d y u := by
+      simpa [reverseForcedLocalGramNeighborFinset] using hy
+    exact not_conflict_of_common_forcedLocalGramNeighbor
+      H W d x y u hno hforcedx hforcedy
+
+/-- With no deficient row, a reverse row cannot simultaneously force and
+forbid the same incidence.  Hence the contraction lower bound and deletion
+upper bound are disjoint. -/
+theorem reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) (u : V)
+    (hno : ¬ HasLocalGramPackingObstruction H W d) :
+    Disjoint (reverseForcedLocalGramNeighborFinset H W d u)
+      (reverseImpossibleLocalGramNeighborFinset H W d u) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro w hwforced hwimpossible
+  have hforced : IsForcedLocalGramNeighbor H W d w u := by
+    simpa [reverseForcedLocalGramNeighborFinset] using hwforced
+  have himpossible : ∀ Y : Finset V,
+      IsLocalGramPacking H W d w Y → u ∉ Y := by
+    simpa [reverseImpossibleLocalGramNeighborFinset] using hwimpossible
+  have hpack : ∃ Y : Finset V, IsLocalGramPacking H W d w Y := by
+    by_contra hnpack
+    apply hno
+    left
+    refine ⟨w, ?_⟩
+    intro Y hY
+    exact hnpack ⟨Y, hY⟩
+  obtain ⟨Y, hY⟩ := hpack
+  exact himpossible Y hY (hforced Y hY)
+
 /-- The neighborhood finset of an arbitrary decidable relation. -/
 def relationNeighborFinset (A : V → V → Prop) [DecidableRel A]
     (u : V) : Finset V :=
@@ -605,6 +681,8 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
 #print axioms not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
 #print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
+#print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
+#print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
 #print axioms hasLocalGramPackingHittingSetReciprocityObstruction_iff
 #print axioms hittingSetReciprocityObstruction_of_reciprocityObstruction
