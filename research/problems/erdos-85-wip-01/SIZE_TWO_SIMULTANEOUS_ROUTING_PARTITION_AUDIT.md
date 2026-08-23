@@ -5156,3 +5156,48 @@ be killed solely inside a rooted triangle multigraph.  A valid exclusion
 must use their embedding in the oriented `B_ec` event word of Section 95,
 the odd horizontal count, or the simultaneous occurrence weights supplied
 by the other colors.
+
+## 97. The final obstruction is a horizontally odd labeled circulation
+
+The rooted triangle in Section 96 has no horizontal transport: all three
+state changes occur at one root.  It therefore has horizontal parity zero
+and does not contradict the desired mixed-cycle theorem.
+
+After contracting the straight passages of Section 95, retain on every
+directed residual edge the length of the suppressed oriented `B_ec` arc.
+For any closed labeled occurrence flow `Z`, define its horizontal grading
+
+```text
+omega_B(Z) := sum_(arcs of Z) arc_length              (mod 2).  (291)
+```
+
+Undoing the contractions shows that `omega_B(Z)` is exactly the number of
+horizontal state transitions represented by `Z`, modulo two.  Turn edges
+at one rooted color graph have length zero; straight transport contributes
+the number of line-cycle steps it advances; fiber-switch segments contribute
+no horizontal step until their next `B_ec` arc is traversed.
+
+Thus the original mixed odd state cycle produces a balanced labeled flow
+with
+
+```text
+omega_B(Z) = H(Omega) = 1  (mod 2).                   (292)
+```
+
+Sections 93--96 show why balance alone does not rule this out: directed
+label circulations exist, but the smallest local one lies in the kernel of
+`omega_B`.  The exact remaining theorem is the homological strengthening
+
+```text
+every simultaneously realizable balanced labeled occurrence flow Z
+satisfies omega_B(Z)=0.                               (293)
+```
+
+Equation (293) is a target, not yet proved.  It packages all remaining
+requirements without losing information: route reversal supplies the odd
+bundle character, run reversal supplies the complementary character, and
+the individual `K_d` labels/intermediate ports encode simultaneous
+realizability.  Proving (293) contradicts (292) and closes the odd mixed
+component; a counterexample must exhibit a full-SRP labeled circulation of
+odd horizontal grading, something none of the local counterprofiles above
+provides.
