@@ -1165,6 +1165,79 @@ theorem false_of_distinct_owner_neighbors_share_second
   exact hfree (containsC4_of_two_common hab how
     haOwner.symm hbOwner.symm haw.symm hbw.symm)
 
+/-- **Audit equation (27).**  Let `W` have two bin-zero points, exactly one
+adjacent to the universal bin-three owner.  Among the owner's bin-one
+neighbors, at most one can have `W`-degree one.  Indeed, no such bin-one
+point can meet the owner-adjacent member of `W`, so two of them would both
+meet the other member and form a four-cycle with the owner. -/
+theorem orderNine_secondProfile_owner_partners_W_degree_one_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (owner : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (W K : Finset V)
+    (hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0)
+    (hWcard : W.card = 2)
+    (hownerW : (G.neighborFinset owner ∩ W).card = 1)
+    (hKB₁ : K ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hKowner : ∀ z ∈ K, G.Adj z owner)
+    (hKWdegree : ∀ z ∈ K, (G.neighborFinset z ∩ W).card = 1) :
+    K.card ≤ 1 := by
+  classical
+  let C := W \ G.neighborFinset owner
+  have hCcard : C.card = 1 := by
+    dsimp only [C]
+    rw [Finset.card_sdiff]
+    rw [hownerW, hWcard]
+  apply Finset.card_le_one.mpr
+  intro z hz z' hz'
+  by_contra hzz'
+  have hzNonempty : (G.neighborFinset z ∩ W).Nonempty := by
+    rw [← Finset.card_pos, hKWdegree z hz]
+    omega
+  have hz'Nonempty : (G.neighborFinset z' ∩ W).Nonempty := by
+    rw [← Finset.card_pos, hKWdegree z' hz']
+    omega
+  obtain ⟨w, hw⟩ := hzNonempty
+  obtain ⟨w', hw'⟩ := hz'Nonempty
+  have hwParts := Finset.mem_inter.mp hw
+  have hw'Parts := Finset.mem_inter.mp hw'
+  have hwC : w ∈ C := by
+    exact Finset.mem_sdiff.mpr ⟨hwParts.2, by
+      intro hwOwner
+      have hwB₀ := hWsub hwParts.2
+      have hnot := squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+        G hfree hhigh howner hwB₀ (hKB₁ hz) ((G.mem_neighborFinset owner w).mp hwOwner)
+      exact hnot ((G.adj_comm z w).mp ((G.mem_neighborFinset z w).mp hwParts.1))⟩
+  have hw'C : w' ∈ C := by
+    exact Finset.mem_sdiff.mpr ⟨hw'Parts.2, by
+      intro hw'Owner
+      have hw'B₀ := hWsub hw'Parts.2
+      have hnot := squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+        G hfree hhigh howner hw'B₀ (hKB₁ hz')
+          ((G.mem_neighborFinset owner w').mp hw'Owner)
+      exact hnot ((G.adj_comm z' w').mp
+        ((G.mem_neighborFinset z' w').mp hw'Parts.1))⟩
+  have hww' : w = w' :=
+    Finset.card_le_one.mp (Nat.le_of_eq hCcard) w hwC w' hw'C
+  have hOwnerW : owner ≠ w := by
+    intro how
+    have hk3 : squareOrderHighIncidenceCount G 9 owner = 3 :=
+      (Finset.mem_filter.mp howner).2
+    have hownerB₀ : owner ∈ squareOrderNineLowIncidenceBin G 0 :=
+      how.symm ▸ hWsub hwParts.2
+    have hk0 : squareOrderHighIncidenceCount G 9 owner = 0 :=
+      (Finset.mem_filter.mp hownerB₀).2
+    omega
+  exact false_of_distinct_owner_neighbors_share_second G hfree
+    hzz' hOwnerW (hKowner z hz) (hKowner z' hz')
+      ((G.mem_neighborFinset z w).mp hwParts.1)
+      (by rw [hww']; exact (G.mem_neighborFinset z' w').mp hw'Parts.1)
+
 /-- Terminal for the sole placement left by audit (26).  A bin-zero neighbor
 of the universal owner has no original neighbor in the bin-one part `P`.
 If the placement also leaves it with no neighbor in the two-point part `W`,
