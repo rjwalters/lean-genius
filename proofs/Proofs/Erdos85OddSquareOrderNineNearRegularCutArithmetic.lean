@@ -82,8 +82,29 @@ theorem orderNine_nearRegular_eight_not_dvd_proper_component_order
   exact orderNine_nearRegular_no_eight_dvd_proper_component_order
     s b₁ b₂ b₃ hs hparity hadm (Nat.mod_eq_zero_of_dvd hdvd)
 
+/-- Stronger terminal needed by the connectivity argument: parity is not
+required to exclude an eight-divisible proper component order.  This checks
+the exact two-sided cut inequalities directly on all bounded inputs. -/
+theorem orderNine_nearRegular_eight_not_dvd_of_admissible
+    (s : Fin 78) (b₁ b₂ b₃ : Fin 11)
+    (hs : s.1 ≠ 0)
+    (hadm : orderNineNearRegularComponentAdmissible s.1 b₁.1 b₂.1 b₃.1) :
+    ¬ 8 ∣ s.1 := by
+  intro hdvd
+  have hmod : s.1 % 8 = 0 := Nat.mod_eq_zero_of_dvd hdvd
+  have hterminal :
+      ∀ (s : Fin 78) (b₁ b₂ b₃ : Fin 11),
+        s.1 ≠ 0 →
+        orderNineNearRegularComponentAdmissible s.1 b₁.1 b₂.1 b₃.1 →
+        s.1 % 8 ≠ 0 := by
+    set_option maxHeartbeats 10000000 in
+    set_option maxRecDepth 100000 in
+      decide
+  exact hterminal s b₁ b₂ b₃ hs hadm hmod
+
 #print axioms orderNine_nearRegular_proper_component_order_classification
 #print axioms orderNine_nearRegular_no_eight_dvd_proper_component_order
 #print axioms orderNine_nearRegular_eight_not_dvd_proper_component_order
+#print axioms orderNine_nearRegular_eight_not_dvd_of_admissible
 
 end Erdos85
