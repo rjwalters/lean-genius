@@ -3687,6 +3687,23 @@ some interval-deficient row (or an older forced collision), equivalently
 prove the contracted residual rank cannot reach `d(u)-|F_u|` simultaneously
 at all rows.
 
+Corrected first-round profiles across both outer branches suggest a sharper
+prospective statement.  After discarding rows whose lower fiber is already
+inconsistent because of an old forced collision, every observed finite
+interval obstruction has capacity exactly one below demand:
+
+```text
+nu_interval(u) = d(u)-1.                                      (13y)
+```
+
+This holds for all ten noncollision branch-3 profiles from the durable
+witness and random seeds 0,1,2, and for the three genuine branch-4 profiles.
+The observed mechanisms are small upper deletions and small consistent lower
+contractions.  Branch 3 has `|F_u|, |I_u intersect H_u| <= 2` in these runs;
+branch 4 includes the clean row-40 contraction with `|F_u|=3` and no upper
+deletion.  Neither the one-unit deficit nor these support bounds are proved
+universally.  Equation (13y) is a falsifiable row-class target, not a theorem.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
