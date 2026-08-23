@@ -22945,3 +22945,52 @@ interact with the bounded hole sector, together with any number of closed
 even holonomy reservoirs.  In particular all componentwise irregularity
 visible from `S` is confined to a constant-size component census, not just
 to a constant number of missing vertices.
+
+## 429. The full-root cycle space has a linear tag-even kernel
+
+The abundance results can be reconnected to the literal selected tags.
+Put `H:=G_sh[O_5]`.  Every edge `y` of `H` has two residual endpoints, so
+if its root is `i`, its selected tag set is exactly `D(y)=T_i` by (1245).
+Define the edgewise linear map
+
+```text
+tau:F_2^{E(H)} -> F_2^Z,
+tau(1_y):=[T_i] when y lies in G_i.                (1529)
+```
+
+The five vectors `[T_i]` are a basis by (1324).  Therefore, for every
+binary edge chain `F`,
+
+```text
+tau(F)=0
+ iff |F intersect E(G_i)| is even for every root i
+ iff every selected tag column occurs evenly across F.           (1530)
+```
+
+Now restrict `tau` to the binary cycle space `Z_1(H)`.  Its kernel consists
+of Eulerian shadow chains with complete rootwise and selected-column tag
+cancellation.  The dimension of the ambient cycle space is already linear.
+Using (1464), `|O_5|=2q-15-s`, and at least one component,
+
+```text
+dim Z_1(H)
+ =|E(H)|-|O_5|+components(H)
+ >=3q-24+Delta-4s
+ >=3q-4-7Delta
+ >=3q-179.                                        (1531)
+```
+
+The map has rank at most five, so
+
+```text
+dim ker(tau|Z_1(H))>=3q-184,
+and in particular is at least 200 when q=128.      (1532)
+```
+
+Thus the clean full-root sector contains not only linearly many holonomy
+edges and vertices, but a linear-dimensional reservoir of Eulerian chains
+whose literal three-tags-per-edge cancel in every selected column and
+whose five root frequencies are all even.  This does not yet ensure that
+one kernel element is itself a properly colored simple cycle; it isolates
+that precise remaining selection problem instead of treating tag
+cancellation as scarce.
