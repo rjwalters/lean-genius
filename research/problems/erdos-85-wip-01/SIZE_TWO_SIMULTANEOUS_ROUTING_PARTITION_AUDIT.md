@@ -21402,3 +21402,69 @@ records exactly when private strict concentration or `B--B` matching mass
 forces a stronger common-layer collision.  The remaining finite data are
 only the five strict-mate roles, the private matching `M[B]`, and the five
 possible shelters.
+
+## 401. Ordinary holonomy avoids any bounded color or payer-layer set
+
+The constant-size exterior color classes convert the edge-transversal
+bound into a color-transversal bound.  Let `A` be a set of exterior source
+colors and suppose that every properly colored cycle of `M` uses an edge
+whose rooted label color lies in `A`.  Then the union of those color classes
+is an edge transversal, so (1370) and (1405) give
+
+```text
+sum_(h in A)(10-k_h)>=q-12,
+|A|>=ceil((q-12)/10).                              (1413)
+```
+
+The residual unsheltered graph has the analogous stronger-role statement.
+If every properly colored cycle of `G_sh` uses a source color in `A`, then
+(1387) gives
+
+```text
+sum_(h in A)(10-k_h)>=q-27.                        (1414)
+```
+
+There is also a payer-layer version of (1414).  Fix an allowed payment
+layer `h`.  At each of the five offset ports there are at most two inactive
+selected-singleton labels in `h`, and the offset-payer map is injective.
+Thus at most ten edges of `G_sh` have canonical payer layer `h`.  If a set
+`P` of payer layers meets the canonical payer layer of every properly
+colored cycle, its edge union is again a transversal, and
+
+```text
+10|P|>=q-27,
+|P|>=ceil((q-27)/10).                              (1415)
+```
+
+Equivalently, any source-color set with weight less than `q-27`, or any
+set of fewer than `ceil((q-27)/10)` payer layers, can be avoided by one
+simple residual unsheltered holonomy cycle.  Two useful uniform
+specializations follow.  Since `|E_d(M)|=10`,
+
+```text
+binary q>=64
+ -> G_sh has a simple PC cycle with no source edge of color d.   (1416)
+```
+
+Let `Gamma:={h:k_h>0}` be the strict-export color support.  By (1406),
+
+```text
+sum_(h in Gamma)(10-k_h)=10|Gamma|-5<=45.
+```
+
+Therefore
+
+```text
+binary q>=128
+ -> G_sh has a simple PC cycle whose source colors
+    avoid every strict-export color.               (1417)
+```
+
+The cycles in (1416)--(1417) remain all-`O` and unsheltered, so every edge
+still has its distinct core-inactive offset payer from Section 394.  These
+avoidance statements separate three notions which need not agree--root,
+source component, and payer layer--and show that no bounded collection in
+either of the latter two coordinates can control all ordinary holonomy as
+`q` grows.  In particular the distinguished double-payer component and the
+five strict-export colors can be removed from the source alphabet of a
+clean large-binary cycle without any enumeration.
