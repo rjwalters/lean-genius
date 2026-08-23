@@ -11584,3 +11584,53 @@ The rigorous terminal is now: construct a V/S owner-route quotient on the
 `P_d`-tagged states, prove the marked `00` price descends, and show its
 aggregate value vanishes.  Failure of descent on a realized relation is the
 localized holonomy branch already encoded by Sections 212--214.
+
+## 228. All live carriers share one unordered double-label terminal
+
+After the privacy correction, the three unresolved classes still have a
+common bounded-arity carrier:
+
+```text
+10: each odd run is a path with endpoint labels {E_1,E_2};
+01: each unit expands into flags {G,H} with G,H in R, G!=H;
+00: each unit carries the two-label port set N_d(p)={y_1,y_2}. (700)
+```
+
+Retain with each unordered pair its channel (`pole boundary`, `residual
+pair`, or `port-secondary`), diagonal owner tag, endpoint/role subtype, and
+the activity bits already present in the originating state.  Let `F_2Flag`
+be the free `F_2` space on these full unordered double-label flag types and
+let `L_H` be the sum of the carriers in (700), after subtracting the
+pointwise-paid `11` cells and audited owner cells.
+
+The augmentation of `L_H` is exactly the remaining marked parity:
+
+```text
+aug(L_H)
+ = (# odd 10 paths)
+   +sum_(01 edges e) sum_({G,H}) beta_(G,H)(e)
+   +sum_(00 edges e) sum_q gamma_q(e),                (701)
+```
+
+with each inner sum equal to one by (691) or (697).  Thus no scalar unit is
+lost in passing to the flag ledger.  The actual label identities are
+retained; ``bounded arity'' does not assert a bounded number of types in q.
+
+This is the same terminal shape independently forced by the B3 categorical
+audit (12rzh)--(12rzi): unordered double labels plus role/channel data, while
+forgetting either label or the role interaction restores feasible
+countermodels.  The convergence is structural rather than a claimed map
+between the two applications.
+
+The remaining theorem can now be stated once:
+
+```text
+the realized simultaneous V/S and owner routes conserve L_H
+in the unordered double-label flag quotient.          (702 GAP)
+```
+
+If (702) holds, its owner-boundary value is zero and (701) kills the marked
+parity.  A relation on which the proposed flag price fails is a localized
+joint-label holonomy witness.  What remains to prove is conservation, not
+another occurrence expansion: all source units now enter the same arity-two
+private ledger.
