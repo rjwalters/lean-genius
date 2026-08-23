@@ -1274,6 +1274,30 @@ def main() -> None:
             and local[w]["packing_count"]
             and u not in local[w]["possible_neighbors"]
         ]
+        rigid_rows = [
+            u for u in range(N) if 0 < local[u]["packing_count"] <= 2
+        ]
+        rigid_conflict_edges = [
+            [u, v]
+            for index, u in enumerate(rigid_rows)
+            for v in rigid_rows[index + 1:]
+            if system["blocks"][u] & system["blocks"][v]
+        ]
+        rigid_parent = {u: u for u in rigid_rows}
+
+        def rigid_find(u: int) -> int:
+            while rigid_parent[u] != u:
+                rigid_parent[u] = rigid_parent[rigid_parent[u]]
+                u = rigid_parent[u]
+            return u
+
+        rigid_conflict_forest = True
+        for u, v in rigid_conflict_edges:
+            first, second = rigid_find(u), rigid_find(v)
+            if first == second:
+                rigid_conflict_forest = False
+                break
+            rigid_parent[first] = second
         has_strengthened_local_obstruction = bool(
             has_local_obstruction or disjoint_pair_obstructions
             or reciprocity_obstructions
@@ -1330,6 +1354,11 @@ def main() -> None:
             "has_local_obstruction": has_local_obstruction,
             "disjoint_pair_obstructions": disjoint_pair_obstructions,
             "reciprocity_obstructions": reciprocity_obstructions,
+            "rigid_rows": [
+                [u, local[u]["packing_count"]] for u in rigid_rows
+            ],
+            "rigid_conflict_edges": rigid_conflict_edges,
+            "rigid_conflict_forest": rigid_conflict_forest,
             "has_strengthened_local_obstruction":
                 has_strengthened_local_obstruction,
             "minimum_row_support": row_support,

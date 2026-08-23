@@ -5055,6 +5055,23 @@ only at its iteration limit.  Eight of the nine exposed pairs meet rows
 useful localization evidence, not a universal exceptional-row theorem (seed
 142 already refutes that kind of unconditional localization).
 
+A more promising structural invariant comes from the local-family sizes.
+Call a row *rigid* when it has one or two full integral local packings, and
+join two rigid rows when their blocks conflict.  The unified audit now emits
+this induced graph and checks whether it is a forest.  It is a forest in all
+eleven durable branch-4 payloads.  The largest examples are still tiny: the
+row-feasible-no-single-special fixture has rigid conflict edges
+`{7,24},{22,24}`, while the row-feasible-selector witness has
+`{1,20},{1,23},{20,25}`; both are trees.  No stored model has a rigid cycle.
+
+This suggests a leaf-to-root packing-choice propagation theorem, or a 2-SAT
+implication-graph certificate when every rigid row has exactly two choices.
+It is not yet sufficient by itself: one must also prove that rows with three
+or more local packings can be extended around the chosen rigid forest, and
+that all symmetry requirements—not only block-conflict edges—are respected.
+Thus forestness is a concrete candidate mechanism for (13ay), not a claimed
+pairwise-to-global converse.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
