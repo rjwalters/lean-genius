@@ -6876,3 +6876,57 @@ marked conservation: show the character-weighted and mate-resolved
 ```
 
 This is the correct mixed-branch replacement for the invalid use of (92).
+
+## 130. Marked conservation has an exact root-transition commutator
+
+The gap between (388) and marked holonomy can be written without choosing a
+primitive.  Let `w` be any `F_2`-valued weight on darts; in the application,
+`w` is constant on each fully decorated H/V/S source cell, including the
+route and mate tags.  Since `M_P q_u=q_u`, its weighted secondary-census
+defect is
+
+```text
+D_(w,q_u)=w^T(M_R-M_P)q_u=w^T(M_R+I)q_u.             (390)
+```
+
+Group the last expression by the unordered root pairs `{o,M_R o}`.  Each
+pair contributes
+
+```text
+(w(o)+w(M_R o)) (q_u(o)+q_u(M_R o)),
+```
+
+and therefore
+
+```text
+D_(w,q_u)=sum_{root pairs {o,o'}}
+             (w(o)+w(o'))(q_u(o)+q_u(o')).           (391)
+```
+
+Thus a marked weight can lose the marginal conservation of (388) only at a
+root transition on which **both** its decorated source value and the local
+secondary census change.  In particular, root pairs internal to one marked
+source cell contribute zero, as do root pairs on which `q_u` is constant.
+The unresolved contribution is supported exactly on the finite set of
+H/V/S source transitions crossed by the mate-resolved labeling.
+
+Equivalently, with the root coboundary
+
+```text
+delta_R a(o):=a(o)+a(M_R o),
+```
+
+equation (391) is the commutator identity
+
+```text
+D_(w,q_u)=sum_{{o,o'} in E_R} delta_R w(o) delta_R q_u(o). (392)
+```
+
+This identifies the correct pre-sum object suggested by all three lanes:
+the joint state is not a scalar source census, but a decorated transition
+type together with the secondary label `u`.  The base choice `w=1_D` has
+`delta_R w=0` and recovers (387).  For the desired character weight, (392)
+does not assert vanishing; it reduces marked conservation to a finite
+transition ledger whose nonzero cells are precisely the ones that must be
+paired with the private C4 cells or priced inside the bounded C6 stars of
+Section 127.
