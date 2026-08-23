@@ -3531,6 +3531,53 @@ kernel-free residual matching problem.  The remaining content of (13f) is
 to show that the forced matchings of all intersecting tight rows cannot have
 pairwise empty intersections as sets of block rows.
 
+### Retraction: the local alternative (13f) is false
+
+A wider adversarial sweep found admissible generated outer designs satisfying
+the exact negation of (13f): every row has a demanded local packing, but no
+two intersecting rows force one common neighbor.  The reproducing invocation
+used
+
+```text
+PYTHONHASHSEED=41 python3 q9_structured_skew_potential.py \
+  --audit-residual-gram-summary --seeds 256 --timeout-seconds 60
+```
+
+and returned
+
+```text
+branch 3: 25 locally feasible with forced collision,
+           8 locally feasible with no forced collision,
+         223 with a deficient row;
+branch 4: 10 locally feasible with forced collision,
+           1 locally feasible with no forced collision,
+         245 with a deficient row.                              (13q)
+```
+
+The uncovered generated-seed labels were
+
+```text
+branch 3: 112,119,129,137,172,188,190,218;
+branch 4: 251.
+```
+
+These labels are reproducible only with the stated hash seed and current
+generator; they are not canonical isomorphism identifiers.  The substantive
+result is the exact local enumeration: all nine witnesses have matching
+number at least the demand at every row and empty common forced kernel on
+every intersecting row pair.  Therefore (13f), (13j), (13l), and (13m') are
+equivalent descriptions of a **false universal candidate**.  The reductions
+(13h)--(13p) remain valid identities, and the Lean consumer remains a valid
+conditional theorem, but no admissible-outer-design proof can supply its
+`hbad` hypothesis through (13f).
+
+The replacement interface must restore genuinely global compatibility data
+from (13c), such as simultaneous symmetric degree realization, rather than
+inspect one or two local packing families only.  The seed-free exact-negation
+model should now classify these survivors and identify the smallest global
+constraint which excludes them; further local-kernel refinements alone cannot
+close B.3.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
