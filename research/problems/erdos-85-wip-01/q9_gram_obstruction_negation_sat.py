@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from fractions import Fraction
 from pathlib import Path
 
 from z3 import And, Bool, If, Implies, Not, Or, Sum, is_true, sat, unknown
@@ -342,6 +343,32 @@ def main() -> int:
                             }
                             interval_profiles[u]["residual_point_cover"] = list(point_cover)
                             interval_profiles[u]["residual_point_cover_size"] = len(point_cover)
+                            if residual:
+                                import numpy as np
+                                from scipy.optimize import linprog
+
+                                matrix = np.array([
+                                    [-int(label in blocks[w]) for label in range(N_U1)]
+                                    for w in residual
+                                ], dtype=float)
+                                lp = linprog(
+                                    np.ones(N_U1), A_ub=matrix,
+                                    b_ub=-np.ones(len(residual)),
+                                    bounds=(0, None), method="highs",
+                                )
+                                if not lp.success:
+                                    raise RuntimeError(lp.message)
+                                weights = [Fraction(float(value)).limit_denominator(1_000_000)
+                                           for value in lp.x]
+                                if not all(sum((weights[label] for label in blocks[w]),
+                                               Fraction(0)) >= 1 for w in residual):
+                                    raise RuntimeError("fractional cover rationalization failed")
+                                interval_profiles[u]["fractional_point_cover"] = {
+                                    label: str(value) for label, value in enumerate(weights)
+                                    if value
+                                }
+                                interval_profiles[u]["fractional_point_cover_value"] = str(
+                                    sum(weights, Fraction(0)))
                     new_rows = [u for u in bad_rows
                                 if u not in counts["added_one_row_clauses"]]
                     horns = bad_rows + collisions
