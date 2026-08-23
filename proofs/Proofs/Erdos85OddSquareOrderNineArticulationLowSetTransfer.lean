@@ -936,6 +936,116 @@ theorem owner_partner_W_degree_of_lowSet_partition
   · rw [if_neg hzR] at hZdegree ⊢
     omega
 
+/-- A degree-seven vertex in one of two complementary relatively closed
+shores has seven defect neighbors in its own shore and none across. -/
+theorem neighbor_inter_shore_card_eq_if_of_complementary_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (U S T : Finset V) (z : V)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hzU : z ∈ U)
+    (hneighborsU : ∀ x ∈ U, D.neighborFinset x ⊆ U)
+    (hSclosed : ∀ x ∈ S, D.neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T, D.neighborFinset x ∩ U ⊆ T)
+    (hzdegree : D.degree z = 7) :
+    (D.neighborFinset z ∩ S).card = if z ∈ S then 7 else 0 := by
+  classical
+  by_cases hzS : z ∈ S
+  · rw [if_pos hzS]
+    have hsub : D.neighborFinset z ⊆ S := by
+      intro y hy
+      exact hSclosed z hzS (Finset.mem_inter.mpr
+        ⟨hy, hneighborsU z hzU hy⟩)
+    have heq : D.neighborFinset z ∩ S = D.neighborFinset z := by
+      exact Finset.inter_eq_left.mpr hsub
+    rw [heq, D.card_neighborFinset_eq_degree, hzdegree]
+  · rw [if_neg hzS]
+    have hzT : z ∈ T := by
+      have hzUnion : z ∈ S ∪ T := by rw [hunion]; exact hzU
+      rcases Finset.mem_union.mp hzUnion with hzS' | hzT
+      · exact (hzS hzS').elim
+      · exact hzT
+    have hsub : D.neighborFinset z ⊆ T := by
+      intro y hy
+      exact hTclosed z hzT (Finset.mem_inter.mpr
+        ⟨hy, hneighborsU z hzU hy⟩)
+    have hempty : D.neighborFinset z ∩ S = ∅ := by
+      rw [Finset.eq_empty_iff_forall_notMem]
+      intro y hy
+      have hyParts := Finset.mem_inter.mp hy
+      exact (Finset.disjoint_left.mp hdisj) hyParts.2 (hsub hyParts.1)
+    rw [hempty, Finset.card_empty]
+
+/-- Second-profile specialization of the closed-shore count: a bin-one
+vertex has defect degree seven, hence seven defect neighbors on the shore
+containing it and zero on the other. -/
+theorem orderNine_binOne_defect_neighbor_inter_shore_card_eq_if
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (U S T : Finset V) (z : V)
+    (hzB₁ : z ∈ squareOrderNineLowIncidenceBin G 1)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hzU : z ∈ U)
+    (hneighborsU : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T) :
+    ((secondOrderDefectGraph G).neighborFinset z ∩ S).card =
+      if z ∈ S then 7 else 0 := by
+  have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+    G hfree hmin hcover hcard hzB₁
+  dsimp only at hledger
+  have hzdegree : (secondOrderDefectGraph G).degree z = 7 := by
+    omega
+  exact neighbor_inter_shore_card_eq_if_of_complementary_closed
+    (secondOrderDefectGraph G) U S T z hunion hdisj hzU
+      hneighborsU hSclosed hTclosed hzdegree
+
+/-- An owner-adjacent bin-one point has no original neighbors in any subset
+of the bin-one class; this is the zero-`P` input to audit equation (25). -/
+theorem orderNine_secondProfile_owner_partner_neighbor_inter_binOneSubset_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (owner z : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hzB₁ : z ∈ squareOrderNineLowIncidenceBin G 1)
+    (hadj : G.Adj z owner)
+    (P : Finset V) (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1) :
+    (G.neighborFinset z ∩ P).card = 0 := by
+  have hdegrees := squareOrderNine_threeHigh_secondProfile_binOne_original_degrees
+    G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner hzB₁
+  dsimp only at hdegrees
+  have hB₁zero : (G.neighborFinset z ∩
+      squareOrderNineLowIncidenceBin G 1).card = 0 := by
+    simpa [hadj] using hdegrees.1
+  apply Nat.eq_zero_of_le_zero
+  calc
+    (G.neighborFinset z ∩ P).card ≤
+        (G.neighborFinset z ∩ squareOrderNineLowIncidenceBin G 1).card :=
+      Finset.card_le_card (by
+        intro y hy
+        exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hy).1,
+          hPsub (Finset.mem_inter.mp hy).2⟩)
+    _ = 0 := hB₁zero
+
 end
 
 end Erdos85
