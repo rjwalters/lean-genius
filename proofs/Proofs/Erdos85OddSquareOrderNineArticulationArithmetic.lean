@@ -82,6 +82,35 @@ theorem orderNine_articulation_side_parameter_classification
   apply hterminal e k b₁ b₂ b₃
   exact ⟨he, hn₀, hparity, hsimple, hproper, hbeta, hcut, hcutCompl⟩
 
+/-- Natural-number call-site wrapper for the bounded articulation-side
+classifier.  Graph layers can supply ordinary cardinal bounds instead of
+constructing `Fin` values themselves. -/
+theorem orderNine_articulation_side_parameter_classification_nat
+    (e k b₁ b₂ b₃ : ℕ)
+    (he : e ≠ 0) (heBound : e ≤ 5) (hkBound : k ≤ 9)
+    (hb₁Bound : b₁ ≤ 9) (hb₂Bound : b₂ ≤ 9) (hb₃Bound : b₃ ≤ 9)
+    (hn₀ : 8 ≤ e + 5 * k)
+    (hparity : (7 * e + 25 * k) % 2 = 0)
+    (hsimple : 7 * e + 25 * k ≤ (e + 5 * k) * (e + 5 * k - 1))
+    (hproper : e + 8 * k < 78)
+    (hbeta : b₁ + b₂ + b₃ = 3 * k)
+    (hcut : orderNineNearRegularCutLower (e + 8 * k) b₁ b₂ b₃ ≤ e)
+    (hcutCompl : orderNineNearRegularCutLower (78 - (e + 8 * k))
+      (10 - b₁) (10 - b₂) (10 - b₃) ≤ e) :
+    ((e = 2 ∧ k = 2) ∨ (e = 2 ∧ k = 4) ∨
+      (e = 2 ∧ k = 6) ∨ (e = 3 ∧ k = 3) ∨
+      (e = 3 ∧ k = 5) ∨ (e = 3 ∧ k = 7) ∨
+      (e = 4 ∧ k = 6) ∨ (e = 4 ∧ k = 8) ∨
+      (e = 5 ∧ k = 3) ∨ (e = 5 ∧ k = 7) ∨
+      (e = 5 ∧ k = 9)) := by
+  let ef : Fin 6 := ⟨e, by omega⟩
+  let kf : Fin 10 := ⟨k, by omega⟩
+  let b₁f : Fin 10 := ⟨b₁, by omega⟩
+  let b₂f : Fin 10 := ⟨b₂, by omega⟩
+  let b₃f : Fin 10 := ⟨b₃, by omega⟩
+  exact orderNine_articulation_side_parameter_classification
+    ef kf b₁f b₂f b₃f he hn₀ hparity hsimple hproper hbeta hcut hcutCompl
+
 /-- The projected `(e,k)` type list produced by the side classifier. -/
 def orderNineArticulationSideParameterType (e k : ℕ) : Prop :=
   (e = 2 ∧ k = 2) ∨ (e = 2 ∧ k = 4) ∨
@@ -169,6 +198,7 @@ theorem orderNine_articulation_component_assembly
     (e a) (k a) (e b) (k b) ha hb heab hkab
 
 #print axioms orderNine_articulation_side_parameter_classification
+#print axioms orderNine_articulation_side_parameter_classification_nat
 #print axioms orderNine_two_articulation_side_orders
 #print axioms orderNine_articulation_component_assembly
 
