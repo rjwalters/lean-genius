@@ -9511,6 +9511,14 @@ Equation (573) is not proved here.  If established with the shadow/run
 boundary payments of Sections 177--179 attached, it contradicts (572)
 immediately and completes the mixed-cycle kernel theorem.
 
+**Scope correction (Section 227).**  At the fully private resolution used
+here, (573) is in fact overstrong: the private port state pins one physical
+H occurrence, so its reversed state cannot be supplied by a distinct
+occurrence with the same full tag.  The valid terminal must be a coarser
+route quotient or price retaining the marked character, not literal even
+occupancy of every orbit in (573).  Equation (572) remains a correct
+localization identity.
+
 ## 183. Center states form a directed root-state path with private edge labels
 
 For a root `x`, define its secondary activity state
