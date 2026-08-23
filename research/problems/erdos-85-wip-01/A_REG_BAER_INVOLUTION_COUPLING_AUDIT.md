@@ -5472,6 +5472,47 @@ particular there are no active odd-cycle terms hidden behind the `q_y`
 projection.  A finish must pair or price these fully inactive odd factor
 cycles through the remaining owner/V/S capacity relation.
 
+The inactive odd cycle cannot remain confined to the secondary factor.  Let
+`C` be a fully selected odd cycle of `F_e[d]` and let `P_C` be its set of
+indexing ports.  The same owner-factor bijection for the root component `c`
+sends each port to the edge formed by its two `c`-neighbors.  Define
+
+```text
+B_C^c:=sum_(p in P_C) [N_c(p)] in C_1(F_e[c];F_2).
+                                                               (73rnz_cjibkzzt)
+```
+
+Because every `p in P_C` is a marked H port, `N_c(p)` is exactly its pair
+of H roots, both in shore state `00`.  Also
+
+```text
+aug(B_C^c)=|P_C|=|C|=1 mod 2.                         (73rnz_cjibkzzu)
+```
+
+There are now two exhaustive cases.  If `partial B_C^c` is nonzero, a root
+in its support meets exactly one selected port edge (the ambient factor has
+degree two).  Its other incident factor edge is indexed by a complementary
+port, so this boundary is a literal selected-to-complement H-run endpoint
+with its H/V/S decoration retained.  If `partial B_C^c=0`, then on every
+cycle component of `F_e[c]` the chain is either empty or the full cycle.
+By (73rnz_cjibkzzu), at least one of those full cycles has odd length.
+
+Thus every secondary odd-cycle residue satisfies the exact pincer
+
+```text
+fully selected inactive odd cycle in F_e[d]
+  => nonzero root-factor boundary into H/V/S transitions
+     or a fully selected odd cycle in F_e[c].         (73rnz_cjibkzzv)
+```
+
+The second branch is a genuinely simultaneous self-indexing obstruction:
+the same odd port selection is cycle-closed in both owner factors (possibly
+as one `d` cycle and a union containing an odd `c` cycle).  This does not
+exclude that configuration.  It proves that the last port curl either
+re-enters the already constructed route-boundary ledger or upgrades to a
+two-factor odd-cycle holonomy; it is never an isolated cycle of only the
+secondary owner factor.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
