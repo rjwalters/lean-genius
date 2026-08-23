@@ -1725,10 +1725,15 @@ branch 4, colors (0,2): 51 nonzeros, coefficients in {-2,-1,1,2}.   (12rn)
 All three have a strictly negative integer scalar and nonnegative coefficient
 on every candidate column.  The branch-4 ledgers use six negative demand rows,
 13 and 11 signed external bundle rows, and 34 positive capacity rows.  Thus
-every survivor of the restricted exact Hall audit has a modest exact integral
-certificate.  This is still a finite sampled statement: the remaining proof
-task is to recognize these signed bundle transfers uniformly, not to regard
-the three solver outputs themselves as the branch-3/4 theorem.
+their weighted demand/capacity totals are respectively `47>46` and `36>35`.
+Every feature multiplier is an `iota=0` external tagged-bundle equality; no
+alpha equality is used.  Hence all three ledgers have the same analytic form:
+signed bundle conservation transports an integer combination of row demands
+into a collection of label slots whose capacity is smaller by exactly one.
+Thus every survivor of the restricted exact Hall audit has a modest exact
+integral certificate.  This is still a finite sampled statement: the
+remaining proof task is to recognize these signed bundle transfers uniformly,
+not to regard the three solver outputs themselves as the branch-3/4 theorem.
 
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
