@@ -74,6 +74,36 @@ def HasLocalGramPackingHittingSetReciprocityObstruction
     ∀ w ∈ S, ∀ Y : Finset V,
       IsLocalGramPacking H W d w Y → u ∉ Y
 
+/-- The hitting set can be chosen canonically: it is the complement of the
+reverse-possible candidates.  Thus the obstruction is exactly a local
+packing deficit after pruning every candidate which no reverse packing can
+contain. -/
+theorem hasLocalGramPackingHittingSetReciprocityObstruction_iff
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) :
+    HasLocalGramPackingHittingSetReciprocityObstruction H W d ↔
+      ∃ u, ∀ X : Finset V, IsLocalGramPacking H W d u X →
+        ∃ w ∈ X, ¬ HasLocalGramPackingContaining H W d w u := by
+  constructor
+  · rintro ⟨u, S, hhit, hreverse⟩
+    refine ⟨u, ?_⟩
+    intro X hX
+    obtain ⟨w, hwS, hwX⟩ := hhit X hX
+    refine ⟨w, hwX, ?_⟩
+    rintro ⟨Y, hY, huY⟩
+    exact hreverse w hwS Y hY huY
+  · rintro ⟨u, hbad⟩
+    classical
+    let S : Finset V := Finset.univ.filter fun w =>
+      ¬ HasLocalGramPackingContaining H W d w u
+    refine ⟨u, S, ?_, ?_⟩
+    · intro X hX
+      obtain ⟨w, hwX, hreverse⟩ := hbad X hX
+      exact ⟨w, by simp [S, hreverse], hwX⟩
+    · intro w hwS Y hY huY
+      have hreverse : ¬ HasLocalGramPackingContaining H W d w u := by
+        simpa [S] using hwS
+      exact hreverse ⟨Y, hY, huY⟩
+
 /-- A simultaneous choice of demanded local packings whose membership
 relation is symmetric.  This is the exact global compatibility retained by
 the neighborhoods of an undirected residual graph. -/
@@ -516,6 +546,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
 #print axioms not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
+#print axioms hasLocalGramPackingHittingSetReciprocityObstruction_iff
 #print axioms oneRowCompatibilityObstruction_of_hittingSetReciprocityObstruction
 #print axioms false_of_localGramPackingOneRowCompatibilityObstruction
 #print axioms false_of_localGramPackingHittingSetReciprocityObstruction
