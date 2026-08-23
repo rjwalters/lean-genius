@@ -281,6 +281,37 @@ theorem orderNine_order34_lowSet_card_and_high_incidence
   exact ⟨hZcard,
     hroot h₁ (by simp), hroot h₂ (by simp), hroot h₃ (by simp)⟩
 
+/-- Evaluating the order-34 low-set equation at the deleted ordinary owner:
+two defect neighbors on the shore force exactly four original neighbors in
+the 18-point low set. -/
+theorem orderNine_order34_owner_lowSet_degree_eq_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (h₁ h₂ h₃ owner : V) (R : Finset V)
+    (hRcard : R.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 4)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hownerH : owner ∉ ({h₁, h₂, h₃} : Finset V))
+    (hownerR : owner ∉ R)
+    (hownerDefect :
+      ((secondOrderDefectGraph G).neighborFinset owner ∩ R).card = 2) :
+    (G.neighborFinset owner ∩
+      orderNineOrdinaryLowSet G h₁ h₂ h₃ R 3).card = 4 := by
+  classical
+  have hv := orderNineOrdinaryExplicitPartition_defect_lowSet_eq_nearRegular
+    G hfree h₁ h₂ h₃ R 3 60 hpart hhigh₁ hhigh₂ hhigh₃
+      hRH hdegOrd hdegHigh owner
+  simp [hRcard, hownerH, hownerR, hownerDefect] at hv
+  omega
+
 end
 
 end Erdos85
