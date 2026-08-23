@@ -5284,6 +5284,43 @@ that state, supply a non-shore H/V/S generator for it, or prove a bounded
 compression of the all-arity flags before using them in the owner-route
 quotient.
 
+The bounded port-pair carrier for the same class is genuinely transverse to
+the root-coboundary transports above.  Let `e=xx'` be an H occurrence with
+port witness `p` and put
+
+```text
+q_p=N_d(p)={y_1,y_2}.
+```
+
+The three two-label sets in the full private state,
+`N_d(x),N_d(x')`, and `N_d(p)`, are pairwise disjoint by the C4 argument
+underlying (565).  In particular
+
+```text
+q_p intersect N_d(x)=q_p intersect N_d(x')=empty.     (73rnz_cjibkzzl)
+```
+
+Fix a pair `q={y_1,y_2}` and let `f_q(v)` be any root phase whose value is a
+Boolean polynomial of the two incidence bits
+`1[y_1 in N_d(v)],1[y_2 in N_d(v)]`, with no additional port-edge input.
+On an H edge carrying the port label `q_p=q`, both endpoints present the
+same zero input to that polynomial.  Hence
+
+```text
+f_q(x)+f_q(x')=0,
+while 1[P_d(p) has label pair q]=1.                   (73rnz_cjibkzzm)
+```
+
+Thus the `00` port-pair unit cannot be the coboundary of a label-incidence
+root phase analogous to `chi_10`, `chi_01`, or the coordinatewise
+two-residual phases.  This is not a no-go for arbitrary root potentials
+using other private fields, nor for a relation that couples different port
+labels.  It is the exact transversality statement relevant to the current
+carrier: its two labels occur in the middle edge state and are absent from
+both endpoint label sets.  Therefore a proof of its conservation must use a
+genuine port/V/S route relation (or a cross-port quotient relation); endpoint
+incidence telescoping alone cannot consume it.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
