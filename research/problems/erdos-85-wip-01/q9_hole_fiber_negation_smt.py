@@ -12,6 +12,12 @@ produce the more restrictive local-plus-common-point price mask.
 Thus SAT is a concrete outer counterexample to the proposed hole-incidence
 selector.  UNSAT would be strong evidence but still needs a checked finite
 certificate or a uniform proof.
+
+``--residual-type-ledger`` strengthens each selected partial row by the
+exact triple/pair subdegree and marked-seven-set miss equations obeyed by an
+actual residual row.  It is no longer the exact LP negation, but it remains a
+necessary relaxation of an actual relation and can be used as a smaller
+direct contradiction probe.
 """
 
 from __future__ import annotations
@@ -22,7 +28,7 @@ import time
 from itertools import combinations
 from pathlib import Path
 
-from z3 import And, If, Implies, Not, Or, Real, Solver, Sum, sat, unknown
+from z3 import And, Bool, If, Implies, Not, Or, Real, Solver, Sum, sat, unknown
 
 from q9_b0_residual_defect_sat import (
     N, N_TRIPLE, N_U1, build, color, edge_key,
@@ -43,6 +49,11 @@ def main() -> int:
     parser.add_argument(
         "--hole-row", type=int, action="append",
         help="restrict to these exceptional hole rows (repeatable)",
+    )
+    parser.add_argument(
+        "--residual-type-ledger", action="store_true",
+        help=("add the necessary triple/pair and marked-group subdegree "
+              "ledger obeyed by an actual residual row"),
     )
     args = parser.parse_args()
 
@@ -95,6 +106,10 @@ def main() -> int:
         return 6 if u >= holes_begin else 5
 
     edge_pairs = list(combinations(range(N), 2))
+    pair_groups = [
+        range(N_TRIPLE + 7 * group, N_TRIPLE + 7 * (group + 1))
+        for group in range(3)
+    ]
     systems = 0
     for hole in holes:
         for fiber_color in range(3):
@@ -137,14 +152,51 @@ def main() -> int:
                 # Exact degree is required precisely at the five roots in
                 # the selected point fiber.
                 for u in range(N):
+                    selected_root = And(selected, incidence[u, point])
                     solver.add(Implies(
-                        And(selected, incidence[u, point]),
+                        selected_root,
                         Sum([edge_mass(u, v) for v in range(N) if v != u])
                         == demand(u),
                     ))
+                    if not args.residual_type_ledger:
+                        continue
+                    local_miss = []
+                    for group, support in enumerate(pair_groups):
+                        miss = Bool(
+                            f"hf_miss_{hole}_{fiber_color}_{point}_{u}_{group}"
+                        )
+                        group_load = Sum([
+                            edge_mass(u, v) for v in support if v != u
+                        ])
+                        # An actual 0/1 residual row misses this marked
+                        # seven-set exactly when its group load is zero.  The
+                        # equivalence and the subdegree equations remain a
+                        # sound continuous relaxation of that actual row.
+                        solver.add(Implies(
+                            selected_root, miss == (group_load == 0)
+                        ))
+                        local_miss.append(miss)
+                    triple_load = Sum([
+                        edge_mass(u, v)
+                        for v in range(N_TRIPLE) if v != u
+                    ])
+                    if holes_begin <= u < N_TRIPLE:
+                        triple_target = 3
+                    elif u < N_TRIPLE:
+                        triple_target = 2 + Sum([
+                            If(miss, 1, 0) for miss in local_miss
+                        ])
+                    else:
+                        triple_target = 3 + Sum([
+                            If(miss, 1, 0) for miss in local_miss
+                        ])
+                    solver.add(Implies(
+                        selected_root, triple_load == triple_target
+                    ))
 
     print(
-        f"branch={args.branch} holes={holes} partial_mass_systems={systems}"
+        f"branch={args.branch} holes={holes} partial_mass_systems={systems} "
+        f"residual_type_ledger={args.residual_type_ledger}"
     )
     started = time.monotonic()
     result = solver.check()
