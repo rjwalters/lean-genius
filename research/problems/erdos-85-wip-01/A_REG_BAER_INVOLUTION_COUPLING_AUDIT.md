@@ -4368,6 +4368,31 @@ different cycle decompositions may attach the owner to different non-pole
 cells and the required `mu/rho` price must be invariant under that gauge (or
 produce an odd holonomy by (73rnz_cjibd)).
 
+The remaining route-price gauge is global cycle space and has the same exact
+dichotomy.  Give a P-edge its actual K-indicator (zero automatically on every
+00 edge).  Two choices of P-segments pairing the same marked cut crossings
+differ by a binary cycle of P.  Therefore either
+
+```text
+some cycle of P has odd K-weight,
+```
+
+or the K-cochain annihilates the cycle space of every P-component.  In the
+second case incidence duality supplies a vertex potential `lambda` with
+
+```text
+1[uv in K]=lambda(u)+lambda(v)  for every uv in E(P).   (73rnz_cjibkq)
+```
+
+Then the K-price of every owner segment from one flip crossing to another is
+endpoint-determined and independent of the cycle decomposition used in
+(73rnz_cjibkp).  Hence the downstream gauge is fully reduced to the same two
+terminal possibilities as the local four-switch analysis: an explicit odd
+K-holonomy cycle in the labeled paired-star graph, or additive prices on the
+non-pole flip endpoints.  The latter endpoint prices still have to be
+identified with the `rho/mu` atoms of `Psi^hat_owner`; (73rnz_cjibkq) does
+not by itself prove that final identification.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
