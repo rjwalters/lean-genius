@@ -17304,3 +17304,68 @@ of one six-edge root-restricted factor, and the full selected closure has
 the rigid near-matching normal form above.  The remaining label-holonomy
 test may now be performed separately on the three-path and five-path
 branches rather than on an arbitrary odd family.
+
+## 332. A full-shore reversal has one forced and two binary root channels
+
+The five-path branch of Section 331 has a still smaller terminal census.
+Retain the notation
+
+```text
+D={x,u,v},        E_zeta={u,v},
+R_D={x},          Z_D=Z                            (1113)
+```
+
+for the full-shore signature in (1108).  Equations (1111)--(1112) force
+`m=N=5`.  Thus the five crossing-path occurrences give five distinct
+support edges of `L_D`, and their selected endpoints are the five distinct
+ports of `Z`, one each.
+
+For `r in D`, let `n_r` be the number of these five terminal pairs whose
+root coordinate is `r`.  Every such pair uses at its terminal a distinct
+edge of `H_b^D` colored by `r`.  There are exactly two `b`-factor edges of
+each root color, so
+
+```text
+0<=n_r<=2,
+n_x+n_u+n_v=5.                                    (1114)
+```
+
+Because there is no cancellation and the root boundary is the singleton
+`R_D={x}`, the occurrence parities are
+
+```text
+n_x=1 mod 2,       n_u=n_v=0 mod 2.                (1115)
+```
+
+The bounds and total in (1114) therefore leave only
+
+```text
+(n_x,n_u,n_v)=(1,2,2).                             (1116)
+```
+
+The unique `x`-rooted occurrence is also located.  The selected port
+`zeta` represents the edge `{u,v}` and hence is incident to both `u` and
+`v`.  Every terminal pair in `L_D` is off-incidence, while its root lies in
+`D`.  Consequently the occurrence ending at `zeta` can use neither `u`
+nor `v`, and must be the unique `x` occurrence:
+
+```text
+(x,zeta) in supp(L_D).                              (1117)
+```
+
+Remove `zeta` from the five-cycle of selected ports.  Of the remaining
+four ports, the other port incident to `u` is forced to carry root `v`,
+and the other port incident to `v` is forced to carry root `u`.  The last
+two ports are incident to neither `u` nor `v`; (1116) assigns one to `u`
+and the other to `v`.  Hence there are exactly two possible root--selected
+support patterns for a full-shore reversal, exchanged by swapping those
+last two assignments.
+
+This conclusion is independent of whether a terminal reaches its selected
+port directly or through a private-owner edge: the off-incidence statement
+used in (1117) was proved for both terminal roles.  The formerly broad
+five-path case is therefore reduced to two explicit cyclic patterns.  A
+same-color holonomy exclusion need only test how the two root-colored
+edges in each of the `u` and `v` channels can realize one of those patterns
+inside `Omega_b^C`; a mixed-color exclusion must match the unique marked
+pair `(x,zeta)` across the two color skeletons.
