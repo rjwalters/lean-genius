@@ -3419,6 +3419,30 @@ the ordinary-endpoint branch the same right side is even and the private
 split Baer pair carries the pole demand instead.  Both channels of
 (73rnz_bv) are now expressed in the common source/type/matching alphabet.
 
+The endpoint-type terms cancel completely between the two descriptions.
+Put `m_X=|M intersect X|` and
+`o_i=1[p_i is ordinary]`.  Since every point on the empty line is either a
+full leaf or ordinary,
+
+```text
+1[p_i is a leaf] = 1+o_i,
+|M intersect (X setminus {p_i})| = m_X+o_i        (mod 2).
+```
+
+Substitution into (73rnz_bx) gives, separately for both poles,
+
+```text
+sum_(z in X setminus {p_i}) mu_(E_i,z) = 1+m_X    (mod 2).
+                                                               (73rnz_by)
+```
+
+In particular the two pole cross-matching ledgers have identical parity and
+their combined total is even.  This is a genuine reversal balance intrinsic
+to the minimum two-pencil block: leaf/ordinary endpoint changes move the
+demand between the type bit and split-pair channel but do not change the
+total matching parity seen from either pole.  What remains is labelwise
+pairing of those matching atoms, not aggregate conservation.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
