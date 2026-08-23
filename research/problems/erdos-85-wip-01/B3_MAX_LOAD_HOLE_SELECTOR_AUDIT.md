@@ -215,6 +215,20 @@ the rationally certified continuous optimum is `481/9 < 54`.  Thus all
 triple-center exact partitions preserve, rather than replace, the surviving
 joint selector.
 
+The next retention rung localizes the remaining relation agreement.  On the
+same full two-regular-class outer, exact typed packs for all 21 pair-center
+rows extend in about one second, and they coexist with hole reciprocity plus
+the full-pack cap.  Thus pair rows are not locally deficient.  Fixing this
+outer and adding pair-to-pair reciprocity is instead UNSAT in 1.45 seconds;
+adding hole-to-pair reciprocity is UNSAT in 1.06 seconds.  These are again
+fixed-outer results, not uniform contradictions: a different rare outer may
+satisfy the symmetry constraints.  They identify the next actual-relation
+boundary precisely as reciprocal agreement involving pair centers, while
+the full triple-row geometry itself already preserves the joint price.
+A seed-free source containing all pair rows and pair-to-pair reciprocity,
+without the other strengthened row families, remained `UNKNOWN` after 180
+seconds, so this boundary is not yet classified in either direction.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
