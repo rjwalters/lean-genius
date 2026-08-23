@@ -18965,3 +18965,62 @@ inactive arrivals supplied by fifth-cell payers.  Its value is to remove
 the residual escape hatch from (1173).  Any full completion of the exact
 reuse reversal must either hit one of the five strict selected cells or
 support a genuine global colored holonomy cycle in the target component.
+## 360. Every inactive companion opens an injective rooted fan
+
+The restart in Section 357 can be applied simultaneously to every rooted
+letter at the companion endpoint.  Let
+
+```text
+y -- z -- q,o,       z in k core-inactive,
+o in B disjoint_union O,                            (1232)
+```
+
+and let `RootWord(o)` have its meaning from Section 358.  For each rooted
+label `ell` in this word, denote the other endpoint of its target-factor
+edge by `f_o(ell)`:
+
+```text
+N_e(ell)={o,f_o(ell)}.                              (1233)
+```
+
+Every fan endpoint avoids the preceding selected port:
+
+```text
+f_o(ell)!=q.                                        (1234)
+```
+
+Indeed `z` and `ell` are distinct--the former is core-inactive and the
+latter meets a root in `C`.  If (1234) failed, they would be two common
+neighbors of `o` and `q`, producing a four-cycle.
+
+The endpoint map is injective.  If distinct rooted labels `ell,m` had
+`f_o(ell)=f_o(m)`, then `ell,m` would be two common neighbors of `o` and
+that far endpoint.  Therefore
+
+```text
+ell!=m implies f_o(ell)!=f_o(m).                    (1235)
+```
+
+When `o in B`, every far endpoint also avoids the sibling `o^sib`, because
+`o,o^sib` already share the owner `p(o)`.  Thus a private companion opens
+three distinct rooted edges whose far endpoints avoid `{q,o^sib}`.  A
+residual companion opens five distinct rooted edges whose far endpoints
+avoid `q`:
+
+```text
+o in B: |f_o(RootWord(o))|=3,
+o in O: |f_o(RootWord(o))|=5.                       (1236)
+```
+
+The arrival label `z` already consumes one of the two `k`-neighbors of
+`o`, so at most one fan edge has color `k`.  Consequently at least two of
+the three private fan edges, or at least four of the five residual fan
+edges, change color away from `k`.  A far endpoint in `Z` is a strict cell
+because its indexing label is rooted; every other far endpoint lies in
+`B` or `O`.
+
+Hence an inactive fifth-cell companion is never a one-edge terminal.  It
+forces an injective three- or five-way rooted fan with an explicit forbidden
+back edge and a large color-changing subfan.  The remaining propagation
+argument may now count distinct far endpoints, rather than choosing one
+restart and losing the other rooted incidences.
