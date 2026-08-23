@@ -3919,6 +3919,33 @@ ordinary endpoint or is paired into a leaf--leaf through.  The remaining
 capacity problem is consequently concentrated at the ordinary endpoints and
 their `nu/mu` labels in (73rnz_aw), not at the exceptional owner centers.
 
+The K-price of the canonical transition system is explicit.  On a 00 pair
+from `iota_y`, the two endpoints are adjacent by definition of the Baer
+involution, and K has no A-edges, so its price is zero.  On an 11 pair
+`{v,w}` of broken T-neighbors, the endpoints cannot be adjacent: otherwise
+`v,y,w` is a triangle and the edges `yv,yw` are not in T.  They already share
+y, so C4-freeness makes y their unique common neighbor; hence `vw` is non-A
+and non-D.  Equation (17) gives
+
+```text
+1[vw in K]=1+mu_(v,w).                                  (73rnz_cjibbf)
+```
+
+Therefore the total transition price at y in the canonical normal form is
+
+```text
+Theta_y=deg_T(y)/2
+        + sum_(broken-T pairs {v,w} at y) mu_(v,w)       (mod 2). (73rnz_cjibbg)
+```
+
+This is independent of every 00 Baer pair and records exactly the secondary
+half-degree bit plus the cross-matching prices of the 11 relays.  Every
+owner-bearing through/switch/exit constructed above occupies a specified
+summand of (73rnz_cjibbg); owner-free ordinary pairs occupy the remaining
+summands.  Thus the sink-side capacity question has reduced to comparing the
+marked owner summands with the single local bit `Theta_y`, the Baer analogue
+of the SRP half-flip/interval bit.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
