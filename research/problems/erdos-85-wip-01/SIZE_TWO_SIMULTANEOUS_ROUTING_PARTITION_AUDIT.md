@@ -22457,3 +22457,62 @@ color.  This crossed root/color escape is the simultaneous-routing
 information absent from the uncolored chord graph, and is the interface
 through which the cycle can restart the tagged propagation machinery of
 Sections 357--363.
+
+## 419. Full-root holonomy avoids bounded source colors and payer layers
+
+The avoidance principle of Section 401 can be imposed without leaving the
+full-root sector.  Retain `S=O setminus O_5`, `s=|S|`, and put
+
+```text
+R_5:=q-7+Delta-3s.
+```
+
+By (1465), the edge surplus of `G_sh[O_5]` over its properly-colored-cycle-
+free ceiling is at least `R_5`, and
+
+```text
+R_5>=q+8-5Delta>=q-117.                           (1492)
+```
+
+Let `A` be a set of exterior source colors.  If every properly colored
+cycle in `G_sh[O_5]` uses a color in `A`, delete all such edges.  The
+remaining graph is PC-cycle-free, so the number deleted is at least its
+original surplus, hence at least `R_5`.  On the other hand (1405) bounds
+the total number of available edges of color `h` by `10-k_h`.  Therefore
+
+```text
+every PC cycle in G_sh[O_5] meets A
+ -> sum_(h in A)(10-k_h)>=R_5.                    (1493)
+```
+
+The same argument applies to canonical payer layers.  Injectivity of the
+offset-payer map and the five two-slot offset ports bound the edges paid
+from any one layer by ten, exactly as in (1415).  Thus for every payer-layer
+set `P`,
+
+```text
+every PC cycle in G_sh[O_5] has a payer layer in P
+ -> 10|P|>=R_5.                                   (1494)
+```
+
+Equivalently, a source-color set of total weight below `R_5`, or a payer-
+layer set with `10|P|<R_5`, can be avoided by a simple properly colored
+cycle wholly inside `O_5`.  Two uniform consequences sharpen (1416)--
+(1417).  The distinguished color `d` has weight ten by (1408), while the
+strict-export support `Gamma={h:k_h>0}` has total weight at most forty-five
+by (1406).  Since `Delta<=25`, (1492) gives
+
+```text
+binary q>=128
+ -> G_sh[O_5] has a simple PC cycle avoiding source color d;
+
+binary q>=256
+ -> G_sh[O_5] has a simple PC cycle avoiding every source color
+    in Gamma.                                      (1495)
+```
+
+These cycles retain all of Section 412's cleanliness: every vertex has all
+five ordinary unsheltered root actions, while every cycle edge has its
+distinct core-inactive payer.  Thus neither the distinguished double-payer
+component, the five strict-export colors, nor any fixed bounded set of
+payer layers can control full-root holonomy in the large binary branch.
