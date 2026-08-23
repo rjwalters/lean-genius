@@ -324,6 +324,36 @@ theorem exists_reverseIntervalLocalGramPacking_iff_contractedExtension
         simpa [I, reverseImpossibleLocalGramNeighborFinset] using himpossible
       exact (Finset.disjoint_left.mp hdisj) hw hwI
 
+/-- **Correct contracted-deficit target.**  The desired one-row obstruction
+is an existential failure of residual extension: at some row, every proposed
+contracted residual witness fails.  Its negation, used by the SAT probe,
+requires an extension at every row. -/
+theorem hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExtension
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) :
+    HasLocalGramPackingOneRowCompatibilityObstruction H W d ↔
+      ∃ u, ∀ Y : Finset V,
+        ¬ IsReverseIntervalContractedExtension H W d u Y := by
+  constructor
+  · intro hbad
+    obtain ⟨u, hu⟩ :=
+      (hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
+        H W d).1 hbad
+    refine ⟨u, ?_⟩
+    intro Y hY
+    obtain ⟨X, hX⟩ :=
+      (exists_reverseIntervalLocalGramPacking_iff_contractedExtension
+        H W d u).2 ⟨Y, hY⟩
+    exact hu X hX
+  · rintro ⟨u, hu⟩
+    apply (hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
+      H W d).2
+    refine ⟨u, ?_⟩
+    intro X hX
+    obtain ⟨Y, hY⟩ :=
+      (exists_reverseIntervalLocalGramPacking_iff_contractedExtension
+        H W d u).1 ⟨X, hX⟩
+    exact hu Y hY
+
 omit [Fintype V] in
 /-- The configuration-level obstruction contains the earlier forced-edge
 reciprocity horn as a special case. -/
@@ -738,6 +768,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
 #print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval
 #print axioms exists_reverseIntervalLocalGramPacking_iff_contractedExtension
+#print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExtension
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
