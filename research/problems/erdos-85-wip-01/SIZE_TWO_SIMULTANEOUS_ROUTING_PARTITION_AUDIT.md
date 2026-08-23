@@ -5195,3 +5195,67 @@ kernel statement.  Together they contradict an odd-horizontal `Omega`.
 Keeping them separate prevents the line-cycle port pairing from being
 mistaken for a state-graph edge and identifies the exact additional work
 needed before the homological terminal can be used.
+
+## 98. The aggregate incidence-dart flow closes canonically
+
+Per-state-cycle closure is unnecessary for the original parity sum.  Fix
+`c != e` and let
+
+```text
+D_ce := {(x,p) : R_ce(x,p)=1}
+```
+
+be the incidence darts of the cross two-factor.  There are two canonical
+fixed-point-free involutions on `D_ce`:
+
+```text
+R(x,p) := (x,p'),   where Y_e(x)={p,p'},
+P(x,p) := (x',p),   where the c-neighbors of p are {x,x'}.
+```
+
+The graph with the `R`- and `P`-pairs as edges is two-regular, hence a
+disjoint union of cycles.  Contracting its root pairs gives `B_ec`; keeping
+the darts gives the original bipartite incidence cycles.  This closure is
+unconditional and may splice triangles lying on different `Gamma_c` cycles,
+which is exactly why it survives the warning in Section 94.
+
+The rooted budget decorates every `R`-pair exhaustively.  If neither port is
+marked, the root pair is either two rooted transition tokens (`b=0,v=2`) or
+an owner-factor switch (`b=1,v=0`).  If exactly one port is marked, the
+unmarked dart carries the unique boundary transition (`a=1,v=1`).  If both
+are marked, the root is internal to an owner run (`a=2,v=0`).  These are the
+global versions of the three outward states in (282), now including run
+interiors and boundaries.
+
+A `P`-pair at port `p` is marked precisely when `p in M_e`, equivalently
+when its two roots form an edge of `K_ce=A_c cap F_e[c]`.  Thus marked
+`P`-pairs are in bijection with the horizontal state edges, and
+
+```text
+number of marked P-pairs = |M_e| = p_ce.              (294)
+```
+
+For an auxiliary dart cycle `Z`, define
+
+```text
+omega_M(Z) := number of its marked P-pairs  (mod 2).
+```
+
+Summing over all dart cycles gives the exact aggregate bridge
+
+```text
+sum_Z omega_M(Z) = p_ce  (mod 2).                     (295)
+```
+
+No map from an individual state cycle is asserted or needed.  The original
+target is now equivalent to proving
+
+```text
+sum_(e != c) sum_(dart cycles Z in D_ce) omega_M(Z)=0. (296)
+```
+
+The remaining simultaneous task is to lift the color labels/intermediate
+ports of Sections 88--93 to these closed dart cycles and show that their
+total marked grading cancels.  Unlike the conditional bridge (292), the
+cycle closure and aggregate grade identity (295) are already proved by the
+two involutions; only the labeled kernel statement remains.
