@@ -8,6 +8,52 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Normalize the unordered `(27,50)` articulation output, retaining the
+boundary equation belonging to each oriented shore.  FullType cannot occur
+on the 50-point shore. -/
+theorem orderNine_order27_orient_articulation_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E : Finset V) (h₁ h₂ h₃ : V) (U S T : Finset V)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (horders : (S.card = 27 ∧ T.card = 50) ∨
+      (S.card = 50 ∧ T.card = 27))
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ S ∨
+      orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ T)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hSboundary : (∑ x ∈ S,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card) = (E ∩ S).card)
+    (hTboundary : (∑ x ∈ T,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ T)).card) = (E ∩ T).card) :
+    ∃ A B : Finset V,
+      A ∪ B = U ∧ Disjoint A B ∧ A.card = 27 ∧ B.card = 50 ∧
+      orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ A ∧
+      (∀ x ∈ A, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ A) ∧
+      (∀ x ∈ B, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ B) ∧
+      (∑ x ∈ A, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ A)).card) = (E ∩ A).card ∧
+      (∑ x ∈ B, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ B)).card) = (E ∩ B).card := by
+  rcases horders with hST | hTS
+  · rcases hfull with hfullS | hfullT
+    · exact ⟨S, T, hunion, hdisj, hST.1, hST.2, hfullS,
+        hSclosed, hTclosed, hSboundary, hTboundary⟩
+    · have hbad := hfullT.1
+      unfold orderNineArticulationSmallShoreBetaType at hbad
+      omega
+  · rcases hfull with hfullS | hfullT
+    · have hbad := hfullS.1
+      unfold orderNineArticulationSmallShoreBetaType at hbad
+      omega
+    · exact ⟨T, S, by simpa [Finset.union_comm] using hunion,
+        hdisj.symm, hTS.2, hTS.1, hfullT, hTclosed, hSclosed,
+        hTboundary, hSboundary⟩
+
 /-- Direct sharp-partition extraction on the actual 50-point shore.  This
 is preferable in the graph-facing wrapper to transferring the 51-point
 complement partition: the articulation capstone already supplies this
@@ -202,6 +248,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
   omega
 
 #print axioms orderNine_explicitPartition_five_48_erase_owner
+#print axioms orderNine_order27_orient_articulation_shores
 #print axioms orderNine_order27_explicitPartition_of_large_boundary
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
