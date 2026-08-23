@@ -10778,14 +10778,14 @@ For an H--H port pair at port `p` with roots `x,x'`, retain
 
 ```text
 Xi_H=(x,x', witness p, T-word 00,
-      endpoint subtypes, component roles c,c,e).       (650)
+      b-word, endpoint subtypes, component roles c,c,e). (650)
 ```
 
 For an S--S root switch at root `x` with ports `p,p'`, retain
 
 ```text
 Xi_S=(p,p', witness x, T-word 00,
-      endpoint subtypes, component roles e,e,c).       (651)
+      b-word, endpoint subtypes, component roles e,e,c). (651)
 ```
 
 The `00` assertions are (639)--(640).  The full SRP edge state (577) retains
@@ -10794,16 +10794,25 @@ component roles, so (650)--(651) lose no occurrence identity.  C4-freeness
 makes the common witness private.  Moreover the ordered component roles
 distinguish H from S even after forgetting the coarse decoration symbol.
 
-The Baer terminal classification now applies conditionally and exhaustively
-on this overlap.  If one endpoint is a special leaf, the occurrence belongs
-to an already audited owner cell.  Otherwise it is owner-free and belongs to
-the odd-holonomy or additive fixed-margin alternatives of
-(73rnz_cjibkzl).  Thus the surviving affine bit is attached to a full private
-state `(Xi_H or Xi_S)`, not merely to the coarse letter H or S.
+The Baer flip state `xi` is defined only when the b-word is mixed.  Thus if
+the endpoints in (650) or (651) have word `10` or `01`, orient from `b=1` to
+`b=0`; the occurrence is literally a private terminal flip state.  On that
+flip subfamily, the Baer terminal classification applies conditionally and
+exhaustively: a special-leaf endpoint gives an audited owner cell, while an
+owner-free occurrence belongs to the odd-holonomy or additive fixed-margin
+alternatives of (73rnz_cjibkzl).  The surviving affine bit is attached to a
+full private state `(Xi_H or Xi_S)`, not merely to the coarse letter H or S.
+
+If the b-word is `00` or `11`, the occurrence is not in `delta_P(B)` and
+does not belong to `xi`; (73rnz_cjibkzl) cannot be applied.  It remains in
+the same-side silent/private sector classified on the Baer lane.  This split
+is essential: component roles and endpoint subtypes do not replace the
+activation coordinate.
 
 This embedding does not identify the affine-bit value and does not extend
 the two-pole endpoint subtypes to an arbitrary SRP block.  Its rigorous gain
 is narrower: on the shared configuration, the private coordinate map needed
-after Section 210 exists occurrence-by-occurrence.  The final finite problem
-is to show that the fixed-margin bits on the owner-free states (650)--(651),
-together with the audited owner cells, have zero total marked-H charge.
+after Section 210 exists occurrence-by-occurrence on the flip subfamily.  The
+final finite problem splits into the fixed-margin/owner states there and the
+same-side sector for the remaining occurrences; both must have zero total
+marked-H charge.
