@@ -3722,6 +3722,24 @@ the residual rank is exactly 2.  Three residual rows are required to extend
 human-sized Hall certificate for one proof model, not yet a uniform
 transversal theorem.
 
+Integral point covers do not suffice uniformly even on this durable model.
+For the genuine branch-4 row-0 upper-deletion profile, the residual matching
+rank is 4 but the minimum integral point cover has size 5.  An exact
+fractional point cover nevertheless assigns
+
+```text
+2:1/3, 3:1/3, 8:2/3, 9:1/3, 11:1/3,
+12:1, 16:2/3, 19:1/3, 22:2/3,
+```
+
+has total value `14/3 < 5`, and covers every residual block with weight at
+least one.  Hence the integral matching rank is at most 4, which is attained.
+The exact fractional-cover diagnostic also gives values strictly below the
+residual demand on the tested row-24, row-40, and branch-3 seed-2 profiles.
+This suggests a stronger prospective route: derive a fractional U1-point
+mass bound below `d(u)-|F_u|` at some row.  Its observed validity is sampled
+data; no uniform fractional bound is asserted.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
