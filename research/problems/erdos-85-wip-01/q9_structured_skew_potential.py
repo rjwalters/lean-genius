@@ -2325,7 +2325,9 @@ def exact_integral_audit(instances: list[dict], theta: np.ndarray,
     return feasible and signs_ok and orders_ok and all(x < 0 for x in totals), totals, integral
 
 
-def residual_c4_parity_audit(data: dict, timeout_seconds: int) -> list[tuple[int, str]]:
+def residual_c4_parity_audit(data: dict, timeout_seconds: int,
+                             block_gram: bool = False,
+                             residual_c4: bool = True) -> list[tuple[int, str]]:
     """Test both collision parities in the exact-degree C4-free residual model.
 
     Candidate edges are precisely the symmetric two-sided trace-orthogonal
@@ -2357,8 +2359,12 @@ def residual_c4_parity_audit(data: dict, timeout_seconds: int) -> list[tuple[int
                             for v in range(N) if v != u])
                        == int(data["degree"][u]))
         for u, v in combinations(range(N), 2):
-            solver.add(Sum([If(And(adj(u, w), adj(v, w)), 1, 0)
-                            for w in range(N) if w not in (u, v)]) <= 1)
+            common = Sum([If(And(adj(u, w), adj(v, w)), 1, 0)
+                          for w in range(N) if w not in (u, v)])
+            if block_gram and data["blocks"][u] & data["blocks"][v]:
+                solver.add(common == 0)
+            elif residual_c4:
+                solver.add(common <= 1)
         masked = [var for (u, v), var in edges.items()
                   if data["blocks"][u] & data["blocks"][v]]
         solver.add(Sum([If(var, 1, 0) for var in masked]) % 2 == parity)
@@ -2454,6 +2460,10 @@ def main() -> int:
                         help="test linear state-potential duals on survivors")
     parser.add_argument("--audit-residual-c4-parity", action="store_true",
                         help="test both collision parities after adding residual C4-freeness")
+    parser.add_argument("--audit-residual-gram-parity", action="store_true",
+                        help="also consume residual common-neighbor capacity for block intersections")
+    parser.add_argument("--audit-residual-gram-only", action="store_true",
+                        help="test block-intersection Gram law without ordinary residual C4")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -2490,7 +2500,8 @@ def main() -> int:
     if os.environ.get('PYTHONHASHSEED') != '0':
         print("warning: set PYTHONHASHSEED=0 before launch for reproducible "
               "outer-model seed labels", file=sys.stderr)
-    if args.audit_residual_c4_parity:
+    if (args.audit_residual_c4_parity or args.audit_residual_gram_parity
+            or args.audit_residual_gram_only):
         for branch in (3, 4):
             for seed_number in range(args.seeds):
                 seed = make_outer_seed(
@@ -2498,8 +2509,15 @@ def main() -> int:
                     require_eligible_hole_pair=args.require_eligible_hole_pair)
                 candidate = instance(branch, seed, (0, 1))
                 answers = residual_c4_parity_audit(
-                    candidate, args.timeout_seconds)
-                print(f"residual_c4_parity branch={branch} "
+                    candidate, args.timeout_seconds,
+                    block_gram=(args.audit_residual_gram_parity
+                                or args.audit_residual_gram_only),
+                    residual_c4=not args.audit_residual_gram_only)
+                mode = ("residual_gram_only" if args.audit_residual_gram_only
+                        else "residual_gram_parity"
+                        if args.audit_residual_gram_parity
+                        else "residual_c4_parity")
+                print(f"{mode} branch={branch} "
                       f"seed={seed_number} answers={answers}")
         return 0
     data = []

@@ -3105,6 +3105,33 @@ common-neighbor budget (in particular the block-intersection Gram law), the
 marked-row defect reciprocity, or a stronger coupling that implies one of
 them.  No claim beyond the completed seed-zero witnesses is made.
 
+The missing mixed Gram law reverses the result completely.  The mode
+`--audit-residual-gram-parity` additionally requires two rows whose U1
+blocks intersect to have no common residual neighbor.  On seed zero, both
+parities are UNSAT in both branches.  More sharply,
+`--audit-residual-gram-only` deletes the ordinary residual C4 constraint for
+block-disjoint row pairs and retains only
+
+```text
+S_u intersect S_v != empty
+ -> N_A(u) intersect N_A(v) = empty.                         (13a)
+```
+
+Even this Gram-only model is UNSAT for both parities in branch 3 and branch
+4.  Since the two parity cases exhaust all residual graphs, the parity
+constraint is inessential: on these fixed outer witnesses there is no
+symmetric graph with the exact 5/6 degrees, two-sided trace-orthogonal edge
+support, and (13a).  Marked-row defect variables, their row and column sums,
+and ordinary residual C4 bounds are absent.
+
+This isolates a much smaller proof-facing mechanism than the earlier full
+SAT model.  Each residual neighborhood `N_A(w)` must be an independent set
+in the block-intersection graph `W`, while symmetry must realize all 47
+prescribed degrees inside the trace-eligible graph `H`.  The next uniform
+target is therefore a simultaneous `H`-factor / `W`-independent-neighborhood
+packing inequality.  The UNSAT observations remain sampled fixed-outer
+evidence, not a proof for all admissible outer designs.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
