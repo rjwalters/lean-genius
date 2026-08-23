@@ -331,6 +331,148 @@ theorem orderNine_order18_largeOrdinaryShore_unique_spike
       hhigh₁ hhigh₂ hhigh₃ hdegOrd hdegHigh hboundary
   exact orderNine_order18_excessTwo_function_unique_spike f hp
 
+/-- Cardinal decomposition across three pairwise-disjoint parts. -/
+theorem card_inter_add_inter_add_inter_of_three_part_partition
+    {V : Type*} [Fintype V] [DecidableEq V] (N A B C : Finset V)
+    (hAB : Disjoint A B) (hAC : Disjoint A C) (hBC : Disjoint B C)
+    (hcover : (A ∪ B) ∪ C = Finset.univ) :
+    (N ∩ A).card + (N ∩ B).card + (N ∩ C).card = N.card := by
+  have hAB' : Disjoint (N ∩ A) (N ∩ B) :=
+    hAB.mono Finset.inter_subset_right Finset.inter_subset_right
+  have hABC' : Disjoint ((N ∩ A) ∪ (N ∩ B)) (N ∩ C) := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hAC.mono Finset.inter_subset_right Finset.inter_subset_right,
+      hBC.mono Finset.inter_subset_right Finset.inter_subset_right⟩
+  have hset : ((N ∩ A) ∪ (N ∩ B)) ∪ (N ∩ C) = N := by
+    calc
+      ((N ∩ A) ∪ (N ∩ B)) ∪ (N ∩ C) = N ∩ ((A ∪ B) ∪ C) := by
+        ext x
+        simp [and_or_left]
+      _ = N := by rw [hcover]; simp
+  have hcardAB := Finset.card_union_of_disjoint hAB'
+  have hcardABC := Finset.card_union_of_disjoint hABC'
+  rw [hset] at hcardABC
+  omega
+
+/-- Audit equation (30), low-spike sign.  This is the exact finite-set
+conversion from the `5/6/7` incidence profile on the sixty-point ordinary
+shore to the global order-eighteen shore identity. -/
+theorem orderNine_order18_lowSpike_global_shore_equation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (H O S R Z : Finset V) (c : V)
+    (hO : O = (Finset.univ : Finset V) \ H)
+    (hSR : S ∪ R = O) (hdisj : Disjoint S R)
+    (hSsub : S ⊆ O) (hRsub : R ⊆ O) (hZsub : Z ⊆ O)
+    (hcO : c ∈ O) (hcZ : c ∈ Z)
+    (hdegOrd : ∀ x ∈ O, G.degree x = 9)
+    (hhighIndependent : ∀ h ∈ H, Disjoint (G.neighborFinset h) H)
+    (hhighS : ∀ h ∈ H, (G.neighborFinset h ∩ S).card = 2)
+    (hlevels : ∀ x ∈ O,
+      (G.neighborFinset x ∩ R).card =
+        if x = c then 5 else if x ∈ Z then 6 else 7) :
+    ∀ x : V,
+      ((G.neighborFinset x ∩ S).card : ℤ) =
+        2 + (if x ∈ Z then 1 else 0) + (if x = c then 1 else 0) -
+          ((G.neighborFinset x ∩ H).card : ℤ) := by
+  classical
+  have hSH : Disjoint S H := by
+    rw [Finset.disjoint_left]
+    intro x hxS hxH
+    exact (Finset.mem_sdiff.mp (show x ∈ Finset.univ \ H by simpa [hO] using hSsub hxS)).2 hxH
+  have hRH : Disjoint R H := by
+    rw [Finset.disjoint_left]
+    intro x hxR hxH
+    exact (Finset.mem_sdiff.mp (show x ∈ Finset.univ \ H by simpa [hO] using hRsub hxR)).2 hxH
+  have hcover : (S ∪ R) ∪ H = Finset.univ := by
+    rw [hSR, hO]
+    exact Finset.sdiff_union_of_subset (Finset.subset_univ H)
+  intro x
+  by_cases hxH : x ∈ H
+  · have hxZ : x ∉ Z := fun hxZ ↦
+      (Finset.mem_sdiff.mp (show x ∈ Finset.univ \ H by simpa [hO] using hZsub hxZ)).2 hxH
+    have hxc : x ≠ c := fun hxc ↦ by subst x; exact
+      (Finset.mem_sdiff.mp (show c ∈ Finset.univ \ H by simpa [hO] using hcO)).2 hxH
+    have hxHH : (G.neighborFinset x ∩ H).card = 0 := by
+      rw [Finset.card_eq_zero]
+      ext y
+      simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+      intro hyN hyH
+      exact Finset.disjoint_left.mp (hhighIndependent x hxH) hyN hyH
+    simp [hhighS x hxH, hxZ, hxc, hxHH]
+  · have hxO : x ∈ O := by simp [hO, hxH]
+    have hparts := card_inter_add_inter_add_inter_of_three_part_partition
+      (G.neighborFinset x) S R H hdisj hSH hRH hcover
+    rw [G.card_neighborFinset_eq_degree, hdegOrd x hxO, hlevels x hxO] at hparts
+    by_cases hxc : x = c
+    · subst x
+      simp [hcZ] at hparts ⊢
+      omega
+    · by_cases hxZ : x ∈ Z
+      · simp [hxc, hxZ] at hparts ⊢
+        omega
+      · simp [hxc, hxZ] at hparts ⊢
+        omega
+
+/-- Audit equation (30), high-spike sign, from the `6/7/8` incidence
+profile on the sixty-point ordinary shore. -/
+theorem orderNine_order18_highSpike_global_shore_equation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (H O S R Z : Finset V) (c : V)
+    (hO : O = (Finset.univ : Finset V) \ H)
+    (hSR : S ∪ R = O) (hdisj : Disjoint S R)
+    (hSsub : S ⊆ O) (hRsub : R ⊆ O) (hZsub : Z ⊆ O)
+    (hcO : c ∈ O) (hcZ : c ∉ Z)
+    (hdegOrd : ∀ x ∈ O, G.degree x = 9)
+    (hhighIndependent : ∀ h ∈ H, Disjoint (G.neighborFinset h) H)
+    (hhighS : ∀ h ∈ H, (G.neighborFinset h ∩ S).card = 2)
+    (hlevels : ∀ x ∈ O,
+      (G.neighborFinset x ∩ R).card =
+        if x = c then 8 else if x ∈ Z then 6 else 7) :
+    ∀ x : V,
+      ((G.neighborFinset x ∩ S).card : ℤ) =
+        2 + (if x ∈ Z then 1 else 0) - (if x = c then 1 else 0) -
+          ((G.neighborFinset x ∩ H).card : ℤ) := by
+  classical
+  have hSH : Disjoint S H := by
+    rw [Finset.disjoint_left]
+    intro x hxS hxH
+    exact (Finset.mem_sdiff.mp (show x ∈ Finset.univ \ H by simpa [hO] using hSsub hxS)).2 hxH
+  have hRH : Disjoint R H := by
+    rw [Finset.disjoint_left]
+    intro x hxR hxH
+    exact (Finset.mem_sdiff.mp (show x ∈ Finset.univ \ H by simpa [hO] using hRsub hxR)).2 hxH
+  have hcover : (S ∪ R) ∪ H = Finset.univ := by
+    rw [hSR, hO]
+    exact Finset.sdiff_union_of_subset (Finset.subset_univ H)
+  intro x
+  by_cases hxH : x ∈ H
+  · have hxZ : x ∉ Z := fun hxZ ↦
+      (Finset.mem_sdiff.mp (show x ∈ Finset.univ \ H by simpa [hO] using hZsub hxZ)).2 hxH
+    have hxc : x ≠ c := fun hxc ↦ by subst x; exact
+      (Finset.mem_sdiff.mp (show c ∈ Finset.univ \ H by simpa [hO] using hcO)).2 hxH
+    have hxHH : (G.neighborFinset x ∩ H).card = 0 := by
+      rw [Finset.card_eq_zero]
+      ext y
+      simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+      intro hyN hyH
+      exact Finset.disjoint_left.mp (hhighIndependent x hxH) hyN hyH
+    simp [hhighS x hxH, hxZ, hxc, hxHH]
+  · have hxO : x ∈ O := by simp [hO, hxH]
+    have hparts := card_inter_add_inter_add_inter_of_three_part_partition
+      (G.neighborFinset x) S R H hdisj hSH hRH hcover
+    rw [G.card_neighborFinset_eq_degree, hdegOrd x hxO, hlevels x hxO] at hparts
+    by_cases hxc : x = c
+    · subst x
+      simp [hcZ] at hparts ⊢
+      omega
+    · by_cases hxZ : x ∈ Z
+      · simp [hxc, hxZ] at hparts ⊢
+        omega
+      · simp [hxc, hxZ] at hparts ⊢
+        omega
+
 /-- Evaluation of the high-spike form of audit equation (31) at a high
 root.  Defect-high isolation makes the left side zero, while the high root
 lies in neither ordinary shore. -/
@@ -486,6 +628,8 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_profile
 #print axioms Erdos85.orderNine_order18_excessTwo_function_unique_spike
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_unique_spike
+#print axioms Erdos85.orderNine_order18_lowSpike_global_shore_equation
+#print axioms Erdos85.orderNine_order18_highSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
