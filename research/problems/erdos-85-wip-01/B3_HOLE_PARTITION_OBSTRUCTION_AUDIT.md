@@ -3239,6 +3239,17 @@ local exact-cover family of a triple or hole has a nonempty kernel `F(u)`,
 then show that absence of a capacity deficit makes two kernels collide along
 an intersecting row pair.
 
+The generic consumer of (13f) is now formalized in
+`Erdos85LocalGramPacking.lean`.  The theorem
+`false_of_localGramPacking_deficit_or_forced_collision` takes an arbitrary
+finite symmetric residual relation with exact row demands, eligible support,
+and the Gram common-neighbor law.  Its actual neighborhood at every row is a
+local `W`-independent packing; hence either a missing local packing or an
+intersecting pair forcing one common neighbor yields `False`.  This theorem
+is parameter-free, compiles with no `sorry`, and uses only the standard
+`propext` and `Quot.sound` axioms.  The sole B.3 gap at this interface is now
+the outer-design statement (13f) itself.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
