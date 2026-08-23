@@ -354,6 +354,20 @@ no-strict fixtures, the weakest surviving statement remains: some strict
 joint pair touches the tight set; in every fixture with at least two tight
 points, a tight-tight strict pair exists.
 
+The latter tight-tight claim is refuted by the fifth durable model
+`q9_no_strict_replay_seed17.json`.  It has no strict single and tight set
+`{10,19}`, but `C(10,19)=54` exactly.  The joint horn instead uses the
+non-tight point 12, whose single excess is `1/3`:
+`C(10,12)=323/6<54` and `C(12,19)=809/15<54`; a scale-three integer
+certificate `161<162` also exists at `(12,22)`.  Moreover strict pairs
+`(1,12)` and `(12,22)` touch no tight point, so "every strict pair touches
+the tight set" is false as well.  What survives all five fixtures is only the
+weak existential localization suggested by the exact gain data: **if no
+single is strict, there exists a tight point `t` and some partner `q` with
+`C(t,q)<54`**.  Neither `q` nor every successful pair need be tight.  This is
+now the preferred statement; the tight-tight/minimum-excess split above is a
+recorded failed shortcut, not a proof plan.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
