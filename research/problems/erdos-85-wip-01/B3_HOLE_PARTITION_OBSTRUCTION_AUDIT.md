@@ -4734,6 +4734,32 @@ at 180 seconds.  Thus this is another reproducible adversarial harness, not a
 closure result; any SAT payload must still be passed through the unrestricted
 rational scanner before it can refute (13at).
 
+The disjoint horn of the newest counterexample is not an opaque fractional
+phenomenon.  For pair `{regular 15,hole 25}`, every full packing at row 15
+contains 25 while every full packing at row 25 omits 15.  For `{19,25}` the
+orientation is reversed.  These are exactly
+`HasLocalGramPackingReciprocityObstruction`, already consumed in Lean by
+`false_of_localGramPackingReciprocityObstruction`.  The fixed-template
+scanner now enumerates each named row's full integral packing family and
+reports this forced-forward/impossible-reverse mismatch exactly.
+
+Across all eight durable branch-4 payloads and all eight fresh all-row
+feasible models, every design therefore satisfies the sharper structural
+disjunction
+
+```text
+an incident exceptional/regular pair has the fixed (1,2) price certificate,
+or there is an integral local-packing reciprocity obstruction.    (13au)
+```
+
+The new counterexample realizes only the second horn (two reciprocity pairs,
+zero incident fixed-price pairs); every other durable payload realizes the
+first, with two also realizing reciprocity.  This disjunction explains why
+(13at) survived after incidence failed: disjoint fixed-price certificates
+are witnessing the pre-existing symmetry mismatch.  It may be easier to
+prove than the undifferentiated 88-pair price selector, but remains an
+empirical outer-design claim.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

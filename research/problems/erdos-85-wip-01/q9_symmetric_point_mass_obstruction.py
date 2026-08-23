@@ -618,6 +618,7 @@ def forced_local_packing_neighbors(system: dict, row: int) -> dict:
         for u, v in system["edges"] if row in (u, v)
     ]
     forced = set(neighbors)
+    possible = set()
     packing_count = 0
     for packing in combinations(neighbors, system["degree"][row]):
         if not all(
@@ -627,9 +628,11 @@ def forced_local_packing_neighbors(system: dict, row: int) -> dict:
             continue
         packing_count += 1
         forced.intersection_update(packing)
+        possible.update(packing)
     return {
         "packing_count": packing_count,
         "forced_neighbors": sorted(forced) if packing_count else [],
+        "possible_neighbors": sorted(possible),
     }
 
 
@@ -1076,6 +1079,20 @@ def main() -> None:
             )
             for regular_weight, hole_weight in templates
         }
+        local = {
+            row: forced_local_packing_neighbors(system, row)
+            for row in range(N_TRIPLE)
+        }
+        for certificate in certificates:
+            regular = certificate["regular"]
+            hole = certificate["hole"]
+            certificate["reciprocity_mismatch"] = (
+                (hole in local[regular]["forced_neighbors"]
+                 and regular not in local[hole]["possible_neighbors"])
+                or
+                (regular in local[hole]["forced_neighbors"]
+                 and hole not in local[regular]["possible_neighbors"])
+            )
         print("fixed_exceptional_two_row_templates=" + json.dumps({
             "templates": templates,
             "certificate_count": len(certificates),
@@ -1085,6 +1102,15 @@ def main() -> None:
             ),
             "disjoint_certificate_count": sum(
                 not certificate["block_intersection"]
+                for certificate in certificates
+            ),
+            "reciprocity_certificate_count": sum(
+                certificate["reciprocity_mismatch"]
+                for certificate in certificates
+            ),
+            "exists_incident_or_reciprocity": any(
+                certificate["block_intersection"]
+                or certificate["reciprocity_mismatch"]
                 for certificate in certificates
             ),
             "exists_certificate": bool(certificates),
