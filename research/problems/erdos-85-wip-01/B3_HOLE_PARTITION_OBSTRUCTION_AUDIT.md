@@ -2602,9 +2602,9 @@ The coefficients need not be completely refit instance by instance on a
 first cross-instance test.  Mode `--audit-common-affine-load-dual` forms one
 joint LP in which the functions `Alpha,Phi_0,Phi_1,Lambda_0,Lambda_1` are
 shared on every identical `(sigma,rho)` key and every survivor has its own
-negative-price constraint.  On the three-survivor subcorpus selected by
-32-seed indices `7,12`, one shared price succeeds.  The union has `126`
-root-signature and `1288` local classes; `8` root classes and `50` local
+negative-price constraint.  On all four restricted-Hall survivors of a
+13-seed run, one shared price succeeds.  The union has `165`
+root-signature and `1716` local classes; `13` root classes and `84` local
 classes genuinely occur in at least two instances, so the joint solve has
 nontrivial cross-instance equalities.
 
