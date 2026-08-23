@@ -68,6 +68,59 @@ theorem orderNine_order18_orient_articulation_shores
         hdisj.symm, hTS.2, hTS.1, hfullT, hTclosed, hSclosed,
         hTboundary, hSboundary⟩
 
+/-- In the oriented order-eighteen split, the sixty-point ordinary
+complement is `insert owner B`, and every high root has eight neighbors in
+it: two lie on the small shore, seven in `B`, and one is the owner. -/
+theorem orderNine_order18_high_neighbor_largeOrdinary_card_eq_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (H A B : Finset V) (owner h : V)
+    (hunion : A ∪ B = ((Finset.univ : Finset V) \ H).erase owner)
+    (hdisj : Disjoint A B)
+    (hownerO : owner ∈ (Finset.univ : Finset V) \ H)
+    (hownerAdj : G.Adj h owner)
+    (hdeg : G.degree h = 10)
+    (hhighIndependent : Disjoint (G.neighborFinset h) H)
+    (hsmall : (G.neighborFinset h ∩ A).card = 2) :
+    (G.neighborFinset h ∩ insert owner B).card = 8 := by
+  let O := (Finset.univ : Finset V) \ H
+  let U := O.erase owner
+  have hunion' : A ∪ B = U := by simpa [U, O] using hunion
+  have hAsubU : A ⊆ U := by
+    intro x hx
+    rw [← hunion']
+    exact Finset.mem_union_left B hx
+  have hBsubU : B ⊆ U := by
+    intro x hx
+    rw [← hunion']
+    exact Finset.mem_union_right A hx
+  have hcompSet : O \ A = insert owner B := by
+    ext x
+    constructor
+    · intro hx
+      have hxO := (Finset.mem_sdiff.mp hx).1
+      have hxA := (Finset.mem_sdiff.mp hx).2
+      by_cases hxo : x = owner
+      · exact Finset.mem_insert.mpr (Or.inl hxo)
+      · have hxU : x ∈ U := Finset.mem_erase.mpr ⟨hxo, hxO⟩
+        rw [← hunion'] at hxU
+        rcases Finset.mem_union.mp hxU with hxA' | hxB
+        · exact (hxA hxA').elim
+        · exact Finset.mem_insert.mpr (Or.inr hxB)
+    · intro hx
+      rcases Finset.mem_insert.mp hx with rfl | hxB
+      · exact Finset.mem_sdiff.mpr ⟨hownerO,
+          fun hoA => (Finset.mem_erase.mp (hAsubU hoA)).1 rfl⟩
+      · have hxU := hBsubU hxB
+        exact Finset.mem_sdiff.mpr ⟨(Finset.mem_erase.mp hxU).2,
+          fun hxA => Finset.disjoint_left.mp hdisj hxA hxB⟩
+  have hcomp := orderNine_high_neighbor_ordinary_compl_card
+    G H A h hdeg hhighIndependent
+  change (G.neighborFinset h ∩ (O \ A)).card =
+    10 - (G.neighborFinset h ∩ A).card at hcomp
+  rw [hcompSet, hsmall] at hcomp
+  simpa using hcomp
+
 /-- The integer square-sum refinement behind audit (29).  A bounded
 ordinary incidence profile with total `516` and square total `3434` is
 obtained from the balanced `6/7` profile by moving one unit either down or
@@ -963,6 +1016,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
 
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
+#print axioms Erdos85.orderNine_order18_high_neighbor_largeOrdinary_card_eq_eight
 #print axioms Erdos85.orderNine_order18_excessTwo_incidence_count_classification
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_moments
 #print axioms Erdos85.orderNine_order18_excessTwo_function_profile
