@@ -22754,3 +22754,51 @@ companions, and an isolated full-root triangle consumes three nonhole
 vertices of the defect sector in each unused root matching.  This is
 weaker than the retracted nine-neighbor claim but is exact under the true
 shadow model and interfaces directly with the bounded hole budgets.
+
+## 425. Properly-colored-cycle-free full-root components have bounded mass
+
+The defect cut bounds not just odd components but every component that
+contains no holonomy.  Let `C` be a connected component of
+`G_sh[O_5]`, put `n_C:=|C|`, `e_C:=|E(C)|`, and let `b_C` be its edge
+boundary into `S`.  Every vertex of `C` has shadow degree five, so
+
+```text
+b_C=5n_C-2e_C.                                    (1514)
+```
+
+If `n_C>=2` and `C` has no properly colored cycle, the sharpened Yeo bound
+gives `e_C<=2n_C-3`.  A singleton has `e_C=0`.  Consequently
+
+```text
+C PC-cycle-free, n_C>=2 -> b_C>=n_C+6;
+C a singleton                 -> b_C=5=n_C+4.      (1515)
+```
+
+Let `T` be the union of all PC-cycle-free components, with `k_1` singleton
+components and `k_2` nontrivial components.  Their boundaries are disjoint
+subsets of the full `O_5`--`S` cut.  Summing (1515), then using the exact
+cut identity (1478), gives
+
+```text
+|T|+4k_1+6k_2
+ <=sum_(C subset T)b_C
+ <=5s-(2Delta-5)-2|E(G_sh[S])|,
+
+|T|<=8Delta-20<=180.                              (1516)
+```
+
+For the last inequality, use `s<=2Delta-5` from (1457) and `Delta<=25`.
+Thus the complementary union of full-root components which do contain a
+properly colored cycle has vertex mass at least
+
+```text
+|O_5|-|T|
+ >=2q+10-10Delta
+ >=2q-240.                                        (1517)
+```
+
+Hence the large binary branch does not merely contain one clean holonomy:
+all but at most 180 full-root vertices lie in holonomy-containing
+components, uniformly in `q`.  Any remaining contradiction may therefore
+work componentwise on an almost-spanning sector; PC-cycle-free debris is
+entirely chargeable to the constant hole boundary.
