@@ -81,6 +81,20 @@ def audit(system: dict) -> dict:
             if primal_feasible == dual_strict:
                 mismatches.append(record)
     globally_feasible = primal(system).success
+    row_stratum_feasibility = {
+        "regular_triples_0_23": partial_primal(
+            system, set(range(24))
+        ).success,
+        "all_triples_0_25": partial_primal(
+            system, set(range(26))
+        ).success,
+        "pair_rows_26_46": partial_primal(
+            system, set(range(26, 47))
+        ).success,
+        "exceptional_and_pair_rows_24_46": partial_primal(
+            system, set(range(24, 47))
+        ).success,
+    }
     infeasible = [record for record in records
                   if not record["partial_primal_feasible"]]
     row_prices = [
@@ -90,6 +104,7 @@ def audit(system: dict) -> dict:
     ]
     return {
         "global_primal_feasible": globally_feasible,
+        "row_stratum_feasibility": row_stratum_feasibility,
         "support_count": len(records),
         "partial_primal_infeasible_count": len(infeasible),
         "strict_dual_count": sum(

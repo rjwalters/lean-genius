@@ -768,6 +768,21 @@ proof of the local-to-global statement.  The mode reports the payload hash and
 the first failing support so any future zero-obstruction result is immediately
 identifiable and can be promoted as a durable counterexample.
 
+Row-stratum diagnostics isolate where the obstruction lives.  On all ten
+stored branch-3 payloads, the partial system on the 21 pair rows `26..46` is
+feasible, whereas the system on the 26 triple rows `0..25` is infeasible.
+Thus every observed obstruction is already visible before imposing any pair-
+row degree equation; the audit now reports regular-triple, all-triple, pair,
+and exceptional-plus-pair feasibility separately.  This does not yet prove
+that pair-row equations can always be eliminated, but it identifies that as a
+strictly simpler intermediate lemma.  On the durable seed-116 payload, an
+exhaustive exact LP scan also shows that the regular rows `0..23` alone need
+four row equations before becoming infeasible: every subset of size at most
+three is feasible, while `{3,6,15,17}` is infeasible.  In contrast the unique
+exceptional-plus-two-regular obstruction is `{25,0,21}`.  The exceptional row
+therefore genuinely lowers the Helly support from four to three; it is not a
+decorative way to restate a regular-only certificate.
+
 The separating normals observed on all six durable branch-3 fixtures are
 nonnegative.  Across their 216 infeasible partial systems, exact audit finds
 zero negative row prices; the nonzero row-support histograms are respectively
