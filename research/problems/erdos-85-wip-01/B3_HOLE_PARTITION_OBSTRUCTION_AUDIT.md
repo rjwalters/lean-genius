@@ -4621,6 +4621,25 @@ packing statement that some incident `(t,h)` has this maximum strictly below
 independent row-feasibility systems in only one transparent inequality per
 common eligible neighbor.
 
+There is also a still simpler integral endpoint beneath (13ar).  A strict
+fixed-cover certificate rules out even a pair of disjoint full local
+packings at `t` and `h`.  Conversely, the two actual residual neighborhoods
+would be such local packings, and they must be disjoint because the shared
+point makes `W t h`: a common residual neighbor would violate the Gram law.
+The Lean theorem `false_of_no_disjointLocalGramPackingPair` packages exactly
+this contradiction with no prices and no forced-neighbor hypothesis.  Thus a
+potentially easier but weaker selector target is:
+
+```text
+some incident regular/exceptional pair admits no disjoint pair of local
+Gram packings of cardinalities 5 and 6.                         (13as)
+```
+
+The fractional-not-forced regression does not refute (13as): it only shows
+that intersecting the neighbors forced in *each row separately* is
+insufficient.  Joint packing infeasibility can hold without either row
+having a neighbor forced on its own.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
