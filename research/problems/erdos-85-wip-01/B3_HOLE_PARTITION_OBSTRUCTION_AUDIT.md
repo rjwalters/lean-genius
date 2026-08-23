@@ -2089,6 +2089,40 @@ the two clean failures already refute a uniform proof based on one quadratic
 moment score of the seven coordinates.  Higher-degree fitting is not a
 meaningful next step without an independently derived algebraic identity.
 
+Allowing nonlinear lookup tables coordinate by coordinate does not repair the
+loss.  The mode `--audit-categorical-collision-census-dual` first permits
+
+```text
+p(s) = sum_j f_j(s_j)
+```
+
+with an arbitrary table `f_j` for every observed value of each of the seven
+coordinates.  This additive categorical dual is infeasible on **all eleven**
+deterministic survivors.  Adding every pair table,
+
+```text
+p(s) = sum_j f_j(s_j) + sum_(j<k) f_jk(s_j,s_k),
+```
+
+certifies six survivors, but is cleanly infeasible on branch-4 survivor
+`(4,5,(1,2))`; four further pairwise solves, including hard survivor
+`(3,21,(1,2))`, return an indeterminate HiGHS status.  Therefore
+
+```text
+PAIRWISE-CENSUS NO-GO:
+neither separate coordinate tables nor all pairwise contingency tables give
+a uniform external-capacity certificate.                         (12rze)
+```
+
+Only the clean infeasible instance is needed for the pairwise no-go; the four
+indeterminate solves carry no mathematical claim.  Together `(12rzd-e)` show
+that the live object is not a scalar moment or a collection of one- and
+two-coordinate marginals.  A proof must retain a genuinely higher-order joint
+private state, or derive a new identity that makes such joint information
+redundant.  Blindly adding third-order tables would merely approach an
+overparameterized encoding of the original arbitrary state potential and is
+not a structural reduction.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

@@ -655,6 +655,47 @@ def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
     return True, result.message, coefficients
 
 
+def categorical_collision_census_dual(data: dict, order: int = 2) -> tuple:
+    """Test additive one- or two-coordinate tables on seven-state rows."""
+    from itertools import combinations
+    from scipy.sparse import hstack
+
+    if order not in (1, 2):
+        raise ValueError("only one- and two-coordinate tables are supported")
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     _, _) = collision_census_primal_system(data)
+    states = [name[1] for name in equality_names[N:]]
+    coordinate_sets = [(coordinate,) for coordinate in range(7)]
+    if order == 2:
+        coordinate_sets += list(combinations(range(7), 2))
+    basis_keys = []
+    for coordinates in coordinate_sets:
+        values = sorted({tuple(state[c] for c in coordinates)
+                         for state in states})
+        basis_keys.extend((coordinates, value) for value in values)
+    basis_index = {key: index for index, key in enumerate(basis_keys)}
+    latent_count = N + len(basis_keys)
+    projection = lil_matrix((equalities.shape[0], latent_count))
+    for t in range(N):
+        projection[t, t] = 1
+    for row, name in enumerate(equality_names[N:], start=N):
+        state = name[1]
+        for coordinates in coordinate_sets:
+            value = tuple(state[c] for c in coordinates)
+            projection[row, N + basis_index[(coordinates, value)]] = 1
+    columns = equalities.T @ projection.tocsr()
+    inequalities = hstack([-columns, -capacities.T], format='csr')
+    latent_rhs = np.r_[equality_rhs[:N], np.zeros(len(basis_keys))]
+    scalar = np.r_[latent_rhs, capacity_rhs].reshape(1, -1)
+    result = linprog(
+        np.zeros(latent_count + capacities.shape[0]),
+        A_ub=inequalities, b_ub=np.zeros(columns.shape[0]),
+        A_eq=scalar, b_eq=[-1],
+        bounds=[(None, None)] * latent_count
+        + [(0, None)] * capacities.shape[0], method='highs')
+    return result.success, result.message, len(basis_keys)
+
+
 def integer_full_bundle_dual(data: dict, time_limit: float = 60) -> tuple:
     """Search directly for an integer Farkas certificate."""
     from scipy.sparse import hstack
@@ -1684,6 +1725,9 @@ def main() -> int:
     parser.add_argument("--audit-polynomial-collision-census-dual",
                         action="store_true",
                         help="test linear/quadratic seven-state potentials")
+    parser.add_argument("--audit-categorical-collision-census-dual",
+                        action="store_true",
+                        help="test one-/two-coordinate state lookup tables")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -1969,6 +2013,21 @@ def main() -> int:
                       f"seed={seed_number} colors={colors} degree={degree} "
                       f"success={success} coefficient_nonzero={nonzero} "
                       f"message={message}")
+    if args.audit_categorical_collision_census_dual:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            branch, seed_number, colors = label
+            for order in (1, 2):
+                success, message, basis_count = (
+                    categorical_collision_census_dual(candidate, order))
+                print(f"categorical_collision_census_dual branch={branch} "
+                      f"seed={seed_number} colors={colors} order={order} "
+                      f"success={success} basis_count={basis_count} "
+                      f"message={message}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2049,6 +2108,7 @@ def main() -> int:
             or args.audit_collision_census_dual
             or args.audit_collision_census_core
             or args.audit_polynomial_collision_census_dual
+            or args.audit_categorical_collision_census_dual
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):
