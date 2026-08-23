@@ -9864,3 +9864,41 @@ route reversals and the two-ended `T_S` transfers.  A proof may instead use
 an ambient cancellation special to `Xi` without annihilating the whole cycle
 space; the circuit reduction alone does not justify that stronger step.  No
 purely graphic argument can supply either conclusion.
+
+## 191. The loop checkpoint lies entirely in the target-even channel
+
+The first condition in (592) is not a formal consequence of the current
+local geometry.  Section 159 gives the exact classification instead.  If an
+H-run has the same resolved route label `ell=(d,y)` at both boundaries, its
+two route occurrences use the two distinct target ports in the `d--e` fiber
+of `y`; hence
+
+```text
+T_H edge [ell,ell]  =>  t_y=0,
+                         N_e(y) is exhausted by the two boundary ports. (593)
+```
+
+Nothing in (509) forces the run length to be even.  Therefore the active
+connector channel cannot by itself prove the loop clause of (592): the
+actual route label is absent from the target-active signature at both ends.
+An odd same-label run, if globally realizable, is precisely an odd loop for
+`w` and refutes the full cut-space potential (591).
+
+This does not refute the desired ambient identity `<w,Xi>=0`.  It identifies
+the payment that identity must retain.  The two consumed target ports in
+(593) form a private target-even capacity unit; an ambient proof must either
+pair such units with another odd H transfer or transport them through the
+silent-footprint/boundary ledger of Sections 176--180.  Projecting only to
+active V connectors discards the sole visible trace of the loop.
+
+Thus the cut-space strategy has a clean branch test:
+
+```text
+prove odd same-label H runs impossible; or
+abandon full label descent and prove their target-even capacity units
+cancel in the particular ambient chain Xi.                           (594)
+```
+
+The second branch is the current honest default.  Its structural analogy
+with the zero-price inactive channel in the Baer lane is suggestive, but no
+coordinate identification between those two ledgers is asserted.
