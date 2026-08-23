@@ -5117,6 +5117,38 @@ replication regime.  Thus `K_01` has odd residual-neighbor subsets at its
 vertices, not a well-defined single G-label.  Any residual-center alternation
 argument requires that missing shore-placement theorem first.
 
+Uniqueness is unnecessary for an occurrence expansion.  For a `01--01` H
+edge `e=xx'`, retain the full residual-neighbor sets
+
+```text
+R_x=N_A(x) intersect R,       R_(x')=N_A(x') intersect R.
+```
+
+Both have odd cardinality.  Equation (73rnz_cjibkzw) says they are disjoint.
+For an unordered pair of distinct residual centers `{G,H}`, define
+
+```text
+beta_(G,H)(e)=1 iff
+ (G in R_x and H in R_(x')) or
+ (H in R_x and G in R_(x')).                           (73rnz_cjibkzza)
+```
+
+Disjointness makes the two alternatives exclusive, and every ordered choice
+from `R_x times R_(x')` contributes to exactly one unordered flag.  Hence
+
+```text
+sum_({G,H} subset R) beta_(G,H)(e)
+ =|R_x||R_(x')|=1 mod 2.                               (73rnz_cjibkzzb)
+```
+
+Thus every `01--01` diagonal unit has a canonical expansion into
+double-residual private flags, still carrying the diagonal owner tag
+`(1,1)`.  This is an occurrence map, not a cancellation theorem; the flags
+must still be transported through the owner-route quotient.  By contrast a
+`00` root has an even residual-neighbor count, which may be nonzero: no
+replication theorem currently makes it empty, and no analogous odd flag
+expansion follows from its shore bits alone.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
