@@ -13516,3 +13516,49 @@ must therefore separate that distinguished color before taking the sum in
 `beta` is compatible with the five subsets `I_a`.  There is no longer an
 unlocated complementary owner term: its entire available payment is the
 explicit adjacent gauge (827).
+
+## 264. Component-parity data alone has arbitrary color lifts
+
+The affine owner equation (828) does not by itself constrain which exterior
+color receives the strict export at a root.  Let `W` be the binary vector
+space on the outside incidence components and let
+
+```text
+aug:W -> F_2,       aug(v)=sum_(j != 0)v(j).
+```
+
+By (819), exactly one exterior color has odd local augmentation at each
+root.  Equivalently,
+
+```text
+aug(gamma_i)=1.                                      (830)
+```
+
+This also follows directly from (828): `aug(beta_i)=0` by (826), while the
+number of odd incidence components outside the odd component `V_0` is odd,
+so `aug(s)=1`.
+
+Now prescribe an arbitrary exterior color `a_i` at each of the five roots.
+At the abstract component-vector level set
+
+```text
+delta_(x_i)^(a_i):=gamma_i,
+delta_(x_i)^a:=0                    for a != a_i.      (831)
+```
+
+Then the color sum is exactly `gamma_i`; the distinguished row has odd
+augmentation by (830); and every other row has even augmentation.  Thus
+(831) satisfies all the local color-census and owner-transfer equations
+(816)--(829), for every one of the possible color distributions of the
+five strict exports.
+
+This is an affine-freedom statement, not a claim that the rows in (831) are
+always realizable by an ambient graph.  It proves that root indexing,
+destination-component parity, and the exact owner coboundary still do not
+form a terminal obstruction when treated only as binary vectors.  A final
+argument must impose the realizability information erased in (831): the
+actual outside port identities in the four-port rows, their private labels,
+or the cross-color owner-factor transitions linking those ports.  Further
+linear manipulation of the vectors `delta_x^a,beta_i,s` alone cannot rule
+out a color lift, just as the earlier affine family (75) could not rule out
+a color-resolved switch matrix.
