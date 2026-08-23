@@ -25485,3 +25485,48 @@ The private losses in both horns are bounded by ten.  This converts the
 five simultaneous fans into a linear family of named residual endpoints
 unless a linear family of genuine cross-port collision endpoints already
 appears.
+
+## 482. Triple reuse contains a subdivided complete bipartite kernel
+
+Work in the reuse horn of (1711).  At every triple-reuse companion choose
+one three-element subset of the ports which occur there.  There are only
+`choose(5,3)=10` port triples, so some fixed triple `{i,j,k}` is chosen at
+at least
+
+```text
+K:=ceil(t/10)                                     (1712)
+```
+
+distinct companions.  For such a companion `o`, let
+`z_i(o),z_j(o),z_k(o)` be its unique inactive payer labels at the three
+ports.  Portwise companion injectivity and selected-incidence one make all
+these payer labels distinct as `o` and the port vary.  The literal paths
+
+```text
+p_i--z_i(o)--o,
+p_j--z_j(o)--o,
+p_k--z_k(o)--o                                   (1713)
+```
+
+therefore form a subdivision of `K_(3,K)`, with the three selected ports
+on one side and the `K` companion vertices on the other.
+
+For each of the three port pairs, (1713) gives `K` internally disjoint
+length-four paths between the two selected ports.  Any two such paths form
+a simple eight-cycle, so each port pair lies in `binom(K,2)` literal
+eight-cycles inside the kernel.
+
+At one fixed port, the `K` payer labels correspond to `K` distinct
+ordinary edges of its root matching.  A source color occurs on at most two
+such edges, and one payer layer contains at most two labels at the port.
+Hence every arm family in (1713) uses at least
+
+```text
+ceil(K/2) source colors and ceil(K/2) payer layers.              (1714)
+```
+
+If residual companions are desired, apply the same pigeonhole only to the
+at least `max(t-10,0)` triple-reuse vertices in `O`, giving a residual
+kernel of width `ceil(max(t-10,0)/10)`.  Thus the reuse horn is not merely
+high multiplicity: it contains a fixed-three-port theta complex whose arm
+colors and layers also grow.
