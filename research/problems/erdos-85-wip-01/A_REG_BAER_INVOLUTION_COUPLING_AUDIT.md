@@ -3498,6 +3498,38 @@ compare the two-pole route with the charge-free `Omega/D` Gram bit: any
 remaining contradiction must distinguish the two pole labels or control
 `m_X`; it cannot come from their unlabelled total.
 
+The explicit D-boundary profile (73rnz_bp) does control that mass.  Neither
+pole belongs to `X` by normalization.  Neither belongs to `L`: there are no
+loops, and the two inside empty centers are nonadjacent because each empty
+line has no A-neighbor in the occupied shore.  Therefore
+
+```text
+deg_D(E_i,X)=0                                           (mod 2).
+```
+
+But the exhausted neighborhood
+`N_D(E_i)=F union (E setminus {E_i})` says that this degree is exactly the
+number of exceptional vertices of X.  Since `F`, `E`, and the ordinary set
+`M` partition the vertices, `|X|=q` is even, and `E_i notin X`, it follows
+that
+
+```text
+m_X=|M intersect X|=0                                   (mod 2). (73rnz_cc)
+```
+
+Consequently (73rnz_by) and (73rnz_cb) sharpen simultaneously to
+
+```text
+sum_(z in X setminus {p_i}) mu_(E_i,z)=1,
+deg_Omega(E_i, X setminus {p_i})=0               (mod 2), (73rnz_cd)
+```
+
+for each pole separately.  Thus each pole has an odd cross-matching demand
+but an even restricted `Omega` degree: the universal complement bit between
+`A^3` and `M_Omega` is the entire parity discrepancy.  The remaining
+label-sensitive terminal must pair two individually odd matching ledgers;
+there is no ordinary-mass escape in the minimum two-pencil branch.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
