@@ -21839,3 +21839,57 @@ it converts the diffuse companion reuse into one explicit two-port
 subgeometry of linear width.  A final obstruction can now couple the
 source colors, payer layers, or SRP rows along many paths with the same two
 selected endpoints rather than comparing unrelated collision vertices.
+
+## 408. Odd saturated-layer pairing is locally factor-realizable
+
+The odd port component in Section 405 is not by itself a contradiction.
+There is an explicit layer-level model realizing the strongest `t=5`
+boundary from Section 404.  On the `e` side take the five selected ports
+`p_i`, five further vertices `u_i`, and ten further vertices `v_j`.  On the
+`h` side take ten inactive payer labels `a_i,b_i` and ten rooted active
+labels `y_j`, with indices modulo five and ten respectively.
+
+Put the boundary incidences in the single cycle
+
+```text
+p_i -- a_i -- u_i -- b_(i+1) -- p_(i+1)
+for i=0,...,4 cyclically.                           (1446)
+```
+
+Thus port `p_i` owns the two payer terminals `a_i,b_i`.  Their outside
+companions are `u_i,u_(i-1)`, so they are distinct as required by
+four-cycle-freeness.  At `u_i`, the payers `a_i,b_(i+1)` collide; they
+exhaust the two `h`-neighbors and delete rooted color `h` there.  Contracting
+the five paths in (1446) gives exactly the quotient five-cycle of Section
+405.
+
+Independently put the active incidences in the cycle
+
+```text
+v_j -- y_j -- v_(j+1)
+for j=0,...,9 cyclically,                           (1447)
+```
+
+and assign `y_i,y_(i+5)` to root `x_i`.  Then every root has exactly two
+active `h`-labels, each with target type `U--U`, while all ten payer labels
+have target type `Z--U` and are core-inactive.  The two displayed components
+are disjoint 20-cycles.  Hence their union is bipartite, two-regular, and
+contains no four-cycle.  It realizes
+
+```text
+ten active rooted h-labels;
+ten inactive selected h-payers;
+five collision companions and the odd five-port pairing.        (1448)
+```
+
+Additional disjoint even cycles of length at least six may fill the unused
+vertices of the `h--e` factor without changing (1446)--(1448).
+
+This is deliberately a factor-level countermodel, not a model of all
+simultaneous SRP equations: it does not specify the internal graph `A_h`
+or the other cross factors.  Its role is to audit the terminal boundary.
+Neither two-regularity, four-cycle-freeness, the exact twin population, nor
+odd port-pairing parity excludes the saturated layer.  Any successful
+continuation must use coupling to `A_h`, the source/payer-layer assignments,
+the large cross-layer theta system of Section 407, or another simultaneous
+SRP constraint absent from this local factor.
