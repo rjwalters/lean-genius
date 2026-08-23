@@ -660,10 +660,79 @@ theorem false_of_orderNine_order34_oriented_articulation_output
       hdegOrd hdegHigh hlocalOrd hpartnerOrd hfull Z rfl hZsub
       hlow.1 hlow.2.1 hlow.2.2.1 hlow.2.2.2.1 hlow.2.2.2.2.1
 
+/-- The unordered order-34 branch exactly as returned by the deleted-owner
+articulation capstone is impossible. -/
+theorem false_of_orderNine_order34_unordered_articulation_output
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (S T : Finset V)
+    (hunion : S ∪ T =
+      ((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner)
+    (hdisj : Disjoint S T)
+    (horders : (S.card = 34 ∧ T.card = 43) ∨
+      (S.card = 43 ∧ T.card = 34))
+    (hfull : orderNineArticulationSmallShoreFullType G
+        ((secondOrderDefectGraph G).neighborFinset owner ∩
+          squareOrderNineLowIncidenceBin G 0) h₁ h₂ h₃ S ∨
+      orderNineArticulationSmallShoreFullType G
+        ((secondOrderDefectGraph G).neighborFinset owner ∩
+          squareOrderNineLowIncidenceBin G 0) h₁ h₂ h₃ T)
+    (hSclosed : ∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩
+      ((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner ⊆ S)
+    (hTclosed : ∀ x ∈ T, (secondOrderDefectGraph G).neighborFinset x ∩
+      ((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner ⊆ T)
+    (hSboundary : (∑ x ∈ S,
+      ((secondOrderDefectGraph G).neighborFinset x ∩ (Finset.univ \ S)).card) =
+      (((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) ∩ S).card)
+    (hTboundary : (∑ x ∈ T,
+      ((secondOrderDefectGraph G).neighborFinset x ∩ (Finset.univ \ T)).card) =
+      (((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) ∩ T).card)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) : False := by
+  rcases horders with hST | hTS
+  · rcases hfull with hfullS | hfullT
+    · exact false_of_orderNine_order34_oriented_articulation_output
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
+          h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH owner howner S T hunion hdisj
+          hST.1 hfullS hSclosed hTclosed hSboundary
+          hdegOrd hdegHigh hdefectHighIsolated
+    · have hbad := hfullT.1
+      unfold orderNineArticulationSmallShoreBetaType at hbad
+      omega
+  · rcases hfull with hfullS | hfullT
+    · have hbad := hfullS.1
+      unfold orderNineArticulationSmallShoreBetaType at hbad
+      omega
+    · exact false_of_orderNine_order34_oriented_articulation_output
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
+          h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH owner howner T S
+          (by simpa [Finset.union_comm] using hunion) hdisj.symm
+          hTS.2 hfullT hTclosed hSclosed hTboundary
+          hdegOrd hdegHigh hdefectHighIsolated
+
 #print axioms false_of_orderNine_order34_local_profile_of_corrected_punctured_data
 #print axioms false_of_orderNine_order34_local_profile_of_punctured_articulation
 #print axioms false_of_orderNine_order34_profile_of_punctured_articulation
 #print axioms false_of_orderNine_order34_oriented_articulation_output
+#print axioms false_of_orderNine_order34_unordered_articulation_output
 
 end
 
