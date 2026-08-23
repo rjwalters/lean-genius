@@ -4800,7 +4800,7 @@ successive price-only refinements erased:
 
 ```text
 there is a local Gram packing obstruction (deficit or common forced neighbor),
-or an exceptional/regular two-row symmetric price certificate.       (13av)
+or an arbitrary two-row symmetric price certificate.                 (13av)
 ```
 
 The new model realizes only the first horn; the earlier
@@ -4855,6 +4855,29 @@ two-coordinate partial primal is infeasible.                       (13aw)
 This `4*46` formulation retains pair rows when genuinely needed (`{24,45}`
 and `{25,34}`), so it does not make the unsupported claim that pair-row
 degree equations are redundant.
+
+Fresh all-row-feasible seed 142 **refutes (13aw)**.  The durable
+`q9_branch4_exceptional_price_support_counterexample.json` has no deficit
+row and no common-forced-neighbor collision, but its cardinality-minimal
+price support is the ordinary-row pair `{4,13}`.  Its complete list of
+infeasible two-coordinate partial primals is
+
+```text
+{1,14}, {4,13}, {14,30}, {16,23}, {16,37}, {17,23}, {20,22}.
+```
+
+Only two of these seven pairs meet the exceptional stratum 22--25.  The
+exact rational certificate selected on `{4,13}` has row prices `2` and
+`1/2`, margin one, and minimum edge slack zero; both singleton partial
+primals remain feasible.  Thus exceptional-row localization was an artifact
+of the first three price-only models, not a structural theorem.
+
+The honest target returns to (13av): under negation of the local Gram horn,
+some *arbitrary* two-coordinate partial primal is infeasible.  Seed 142
+realizes its price horn, seed 129 realizes only its local horn, and the Lean
+consumer `false_of_localGramPackingObstruction_or_twoRowPrice` already has
+exactly this unrestricted scope.  No exceptional-row premise should be
+introduced into that interface.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
