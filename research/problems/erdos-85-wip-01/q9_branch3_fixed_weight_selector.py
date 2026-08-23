@@ -5,11 +5,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from fractions import Fraction
 from pathlib import Path
 
 import numpy as np
-from scipy.optimize import linprog
+from scipy.optimize import Bounds, LinearConstraint, linprog, milp
 
 from q9_symmetric_point_mass_obstruction import (
     N_TRIPLE,
@@ -30,6 +31,8 @@ def fixed_weight_certificate(
     diagonal: int,
     offdiagonal: int,
     weights: tuple[Fraction, Fraction, Fraction],
+    *,
+    integral: bool = False,
 ) -> dict | None:
     """Minimize point price with fixed row weights and audit exactly."""
     intersection = (
@@ -61,13 +64,28 @@ def fixed_weight_certificate(
         cap_row in support or point == incident_point
         for cap_row, point in caps
     ]
-    result = linprog(
-        np.ones(len(caps)),
-        A_ub=np.array(matrix),
-        b_ub=np.array(upper),
-        bounds=[(0, None) if keep else (0, 0) for keep in allowed],
-        method="highs",
-    )
+    if integral:
+        result = milp(
+            np.ones(len(caps)),
+            integrality=np.ones(len(caps)),
+            bounds=Bounds(
+                np.zeros(len(caps)),
+                np.array([np.inf if keep else 0 for keep in allowed]),
+            ),
+            constraints=LinearConstraint(
+                np.array(matrix),
+                np.full(len(matrix), -np.inf),
+                np.array(upper),
+            ),
+        )
+    else:
+        result = linprog(
+            np.ones(len(caps)),
+            A_ub=np.array(matrix),
+            b_ub=np.array(upper),
+            bounds=[(0, None) if keep else (0, 0) for keep in allowed],
+            method="highs",
+        )
     if not result.success:
         return None
     point_price = [
@@ -101,8 +119,15 @@ def fixed_weight_certificate(
         "offdiagonal": offdiagonal,
         "incident_point": incident_point,
         "weights": [str(weight) for weight in weights],
+        "integral": integral,
         "margin": str(margin),
         "point_price_count": sum(value != 0 for value in point_price),
+        "point_price_denominator_lcm": math.lcm(*(
+            value.denominator for value in point_price if value
+        )),
+        "point_price_values": sorted({
+            str(value) for value in point_price if value
+        }),
     }
 
 
@@ -111,6 +136,7 @@ def scan(system: dict) -> dict:
         raise ValueError("fixed-weight selector requires branch 3")
     holes_begin = N_TRIPLE - 2
     certificates = {name: [] for name in TEMPLATES}
+    integer_certificates = {name: [] for name in TEMPLATES}
     for name, weights in TEMPLATES.items():
         for hole in range(holes_begin, N_TRIPLE):
             for offdiagonal in range(8, 16):
@@ -124,12 +150,25 @@ def scan(system: dict) -> dict:
                     )
                     if certificate is not None:
                         certificates[name].append(certificate)
+                    integer_certificate = fixed_weight_certificate(
+                        system, hole, diagonal, offdiagonal, weights,
+                        integral=True,
+                    )
+                    if integer_certificate is not None:
+                        integer_certificates[name].append(integer_certificate)
     return {
         "counts": {
             name: len(found) for name, found in certificates.items()
         },
         "exists_fixed_weight_certificate": any(certificates.values()),
+        "integer_counts": {
+            name: len(found)
+            for name, found in integer_certificates.items()
+        },
+        "exists_integer_fixed_weight_certificate":
+            any(integer_certificates.values()),
         "certificates": certificates,
+        "integer_certificates": integer_certificates,
     }
 
 

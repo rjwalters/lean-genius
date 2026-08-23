@@ -583,6 +583,17 @@ targets.  The remaining classification problem is to show that some one of
 the 48 incidence shapes satisfies one of these two fixed point-cover
 inequalities.
 
+The point-price cover cannot in turn be assumed integral.  The fixed-weight
+scanner also solves the same cover with every point price constrained to an
+integer and audits the result exactly.  Integer balanced/exceptional-heavy
+counts on the hard corpus are `0/2`, `0/0`, `1/0`, `7/3`, and `0/3`.
+In particular the three-tight fixture has four strict balanced fractional
+covers but no integer cover of either template.  All five fresh samples do
+retain an integer alternative, so this is a real hard-fixture boundary rather
+than a generic numerical failure.  A proof may denominator-clear a selected
+rational cover, but it cannot replace the fractional capacity calculation by
+an unscaled integral covering lemma.
+
 The legacy alternative is to prove, from the outer design plus the exact
 exceptional-hole DTB complement partition, that a tight overlap fiber has a
 strict joint partner and then denominator-clear its two-fiber cover.  The
