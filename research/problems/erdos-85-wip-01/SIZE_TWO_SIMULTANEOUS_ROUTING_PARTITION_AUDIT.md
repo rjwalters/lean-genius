@@ -11746,3 +11746,70 @@ collision form used by the unordered double-label capacity ledger.  Together
 with (704), it leaves `00` port flags and the `01` union flags as the two
 independent H-edge carriers, with all other terms already on complementary
 route transitions.
+
+## 232. The `00` port carrier is an edge chain in the dual owner factor
+
+Fix the root component `c`, port component `e`, and secondary component `d`
+of one simultaneous-routing block.  Every port `p in e` has exactly two
+`d`-neighbors.  Those two vertices form the edge of the owner-`e` factor on
+`d` indexed by their unique common neighbor `p`.  Thus
+
+```text
+Phi_(e,d): e -> E(F_e[d]),       p |-> N_d(p)          (709)
+```
+
+is a bijection.  Surjectivity is the definition of the exterior owner
+factor; injectivity is C4-freeness, since two different ports with the same
+two `d`-neighbors would be two common neighbors of that pair.  Both sets
+have order `2q`, consistently with `F_e[d]` being two-regular on `2q`
+vertices.
+
+Let `M_00` be any selected census of marked `00--00` H ports in this block,
+with multiplicity reduced modulo two, and transfer it through (709):
+
+```text
+B_00:=sum_(p in M_00) [N_d(p)] in C_1(F_e[d];F_2).     (710)
+```
+
+The private two-label coordinate in `P_d(p)` is now literally the unordered
+endpoint pair of the corresponding owner-factor edge.  Its chain boundary
+is
+
+```text
+partial B_00(y)
+ =#{p in M_00 : y in N_d(p)} mod 2.                    (711)
+```
+
+Hence (711), rather than a root-incidence phase at the two H roots, is the
+canonical channel-changing endpoint datum for the `00` carrier.  It is
+indexed by the same secondary labels that occur in the V/S interval and
+activity ledger.  Identifying that ledger with (711) is still a required
+route statement; (709)--(711) only construct the exact interface.
+
+Because `F_e[d]` is a disjoint union of cycles, two edge chains with the same
+boundary differ on each factor cycle `C` by either zero or the full cycle.
+Toggling the full cycle changes the augmentation of the chain by
+
+```text
+|E(C)| mod 2.                                          (712)
+```
+
+It follows that the scalar `00` marked parity is determined by the secondary
+boundary (711) on every even factor cycle.  The only boundary-invisible
+residue capable of changing it is the full edge set of an **odd** cycle of
+`F_e[d]`.  Equivalently, the port-secondary part of the GAP (702) splits
+canonically into
+
+```text
+secondary-label boundary transport
+ + odd owner-factor-cycle holonomy.                    (713)
+```
+
+This is strictly coarser than the impossible full-private reversal pairing
+of Section 227: distinct ports may now interact through their shared
+secondary endpoints.  It also respects the obstruction of Section 231.
+The boundary term is the part that can be exact after adjoining V/S states;
+an odd full owner cycle is the localized curl which no endpoint coboundary
+can see.  A closing argument must therefore identify (711) with the realized
+V/S boundary and either exclude or separately price the selected odd-cycle
+residue.  No same-channel exact-pair cancellation is asserted.
