@@ -20,10 +20,11 @@ from __future__ import annotations
 
 import argparse
 import json
+from fractions import Fraction
 from itertools import combinations
 
 import numpy as np
-from scipy.optimize import Bounds, LinearConstraint, milp
+from scipy.optimize import Bounds, LinearConstraint, linprog, milp
 from z3 import is_true, sat
 
 from q9_b0_residual_defect_sat import color
@@ -119,6 +120,88 @@ def scaled_joint_cover(
     return certificate
 
 
+def exact_joint_optimum(system: dict, p: int, q: int) -> dict:
+    """Rationally verify a continuous primal/dual optimum for diagnostics."""
+    row_price = [
+        int(p in block) + int(q in block) for block in system["blocks"]
+    ]
+    support = {u for u, value in enumerate(row_price) if value}
+    allowed = [
+        index for index, (u, point) in enumerate(system["caps"])
+        if u in support or point in (p, q)
+    ]
+    position = {old: new for new, old in enumerate(allowed)}
+    edges = []
+    matrix = []
+    needs = []
+    for u, v in system["edges"]:
+        need = row_price[u] + row_price[v]
+        if not need:
+            continue
+        row = np.zeros(len(allowed), dtype=int)
+        for point in system["blocks"][v]:
+            index = system["cap_index"][u, point]
+            if index in position:
+                row[position[index]] += 1
+        for point in system["blocks"][u]:
+            index = system["cap_index"][v, point]
+            if index in position:
+                row[position[index]] += 1
+        edges.append((u, v))
+        matrix.append(row)
+        needs.append(need)
+    result = linprog(
+        np.ones(len(allowed)), A_ub=-np.array(matrix),
+        b_ub=-np.array(needs), bounds=(0, None), method="highs",
+    )
+    if not result.success:
+        raise RuntimeError("joint covering LP failed: " + result.message)
+    prices = [
+        Fraction(float(value)).limit_denominator(10**6)
+        for value in result.x
+    ]
+    dual = [
+        Fraction(float(-value)).limit_denominator(10**6)
+        for value in result.ineqlin.marginals
+    ]
+    primal_slacks = [
+        sum((Fraction(int(a)) * value
+             for a, value in zip(row, prices)), Fraction()) - need
+        for row, need in zip(matrix, needs)
+    ]
+    dual_slacks = [
+        Fraction(1) - sum(
+            (Fraction(int(matrix[i][j])) * dual[i]
+             for i in range(len(edges))), Fraction())
+        for j in range(len(allowed))
+    ]
+    primal_cost = sum(prices, Fraction())
+    dual_value = sum(
+        (Fraction(need) * value for need, value in zip(needs, dual)),
+        Fraction(),
+    )
+    if (min(prices) < 0 or min(dual) < 0 or min(primal_slacks) < 0
+            or min(dual_slacks) < 0 or primal_cost != dual_value):
+        raise RuntimeError("rational reconstruction did not certify optimum")
+    return {
+        "cost": str(primal_cost),
+        "target": sum(
+            degree * price
+            for degree, price in zip(system["degree"], row_price)
+        ),
+        "minimum_primal_slack": str(min(primal_slacks)),
+        "minimum_dual_slack": str(min(dual_slacks)),
+        "point_prices": [
+            [*system["caps"][old], str(prices[new])]
+            for new, old in enumerate(allowed) if prices[new]
+        ],
+        "dual_edges": [
+            [*edge, str(value)]
+            for edge, value in zip(edges, dual) if value
+        ],
+    }
+
+
 def one_model(
         timeout_ms: int, random_seed: int, max_scale: int,
         details: bool = False, genuine_only: bool = False):
@@ -184,6 +267,7 @@ def one_model(
                 if genuine_only:
                     answer["genuine_pair_count"] = len(genuine_pairs)
                 if details:
+                    answer["joint_optimum"] = exact_joint_optimum(system, p, q)
                     answer["single_fiber_optima"] = [
                         single_optima[point] for point in (p, q)
                     ]

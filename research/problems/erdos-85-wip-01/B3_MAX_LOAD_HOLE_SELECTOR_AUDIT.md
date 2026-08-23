@@ -120,6 +120,16 @@ coordinates, with weights through four.  Thus the tempting construction
 simple; the uniform proof must capture a genuinely joint covering or Hall
 deficiency.
 
+The exact continuous optimum in that genuine model is `747/14 < 54`.
+`--details` now reconstructs both the primal point prices and the LP-dual
+eligible-edge packing as rationals and checks feasibility and equality of
+their objectives.  The matching dual has 96 nonzero edges and denominators
+through fourteen, so the optimum is not explained by a tiny supported Hall
+witness.  The denominator-two integer cover is a slightly weaker but much
+cleaner `107/2`; a uniform explicit cover construction or an argument using
+integrality of the actual residual relation may be more promising than
+formalizing the full LP optimum.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
