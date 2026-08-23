@@ -19992,3 +19992,44 @@ necessarily feeds the companion collision and restart machinery of Sections
 355--373.  This does not yet rule out the enlarged recurrence, but removes
 the last branch whose selected tags might all have been paid by already
 accounted strict labels.
+
+## 378. A stationary word's inactive companions leave its center
+
+The inactive offset payers forced in Section 377 cannot return their
+outside endpoints to the stationary vertex.  Let `s_i` be one strict label
+in a stationary word centered at `v`, and let `z_i` be its forced inactive
+offset payer.  Write
+
+```text
+N_e(s_i)={p_(i+2),v},
+N_e(z_i)={p_(i+2),o_i}.                             (1308)
+```
+
+Then
+
+```text
+o_i!=v.                                             (1309)
+```
+
+Indeed equality would make the selected port `p_(i+2)` and the outside
+vertex `v` have the two distinct common neighbors `s_i,z_i`, producing a
+four-cycle.  Thus every inactive payer counted in (1307) opens a companion
+away from the physical center of the reflected word.
+
+Different payers may still share one new companion, but such collisions
+obey the exact arrival-color capacity law (1281)--(1283).  In particular
+the companion set is nonempty, and the global endpoint bound of Section 373
+applies to it.  Quantitatively,
+
+```text
+v in O: L inactive payers have companions in (B union O)\{v};
+v in B: at least L-1 inactive payers do so.         (1310)
+```
+
+Since `L>=2`, the stationary branch always creates at least one genuinely
+new outside vertex carrying an inactive arrival and the injective rooted
+fan of Section 360.  Therefore a stationary strict word is stationary only
+inside the reflected state cycle itself; its mandatory coupled-SRP
+completion immediately leaves the center.  The full holonomy obstruction
+may consequently be sought in the moving, companion-expanded geometry even
+when the minimal reflected cycle has no ordinary target edge.
