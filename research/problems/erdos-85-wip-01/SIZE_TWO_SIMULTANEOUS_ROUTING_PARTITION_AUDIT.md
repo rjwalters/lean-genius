@@ -21608,3 +21608,68 @@ set of literal cross-port collision endpoints, each with multi-layer
 arrival data and at least three units of missing rooted capacity.  The
 remaining terminal may now focus on these named triple-reuse vertices
 rather than on arbitrary companion merging.
+
+## 404. A saturated payer layer has a twin active boundary
+
+The common payer layer from Section 397 simultaneously controls rooted
+active labels of the same exterior color.  Suppose `h` is saturated at a
+set `I` of `t` roots.  Saturation uses two core-inactive `h`-labels at the
+offset port of each `i in I`, so necessarily
+
+```text
+h!=gamma_i for every i in I.                       (1429)
+```
+
+The cross factor from root `x_i` into component `h` has exactly two rooted
+labels.  By (1429), neither is the strict export; both therefore have two
+target endpoints in `U` and give ordinary `h`-colored edges of `M`.
+Consequently component `h` contains two disjoint populations:
+
+```text
+2t rooted active labels, each with target type U--U;
+2t core-inactive offset payers, each with target type Z--U.      (1430)
+```
+
+They are disjoint because the second population does not meet `C`.  The
+active population contributes `4t` incidences at `U`, and the payer
+population contributes its `2t` outside-companion incidences.  Every
+vertex of `U` has cross degree two into component `h`, so their combined
+support satisfies
+
+```text
+|U endpoints used by the two populations|>=3t.     (1431)
+```
+
+This gives support at least nine, twelve, and fifteen in the three
+saturation ranges of (1398).
+
+At `q>=128`, Section 397 gives `t=5`.  Then (1429) says `k_h=0`, and the
+exterior-color census (1405) says that the ten active labels in (1430) are
+exactly all ten ordinary edges of color `h`.  The ten payer labels are also
+exactly all `h`-labels meeting `Z`, two at each selected port.  Thus
+
+```text
+q>=128:
+  h has ten rooted U--U labels and ten inactive Z--U labels,
+  with no strict h-export.                          (1432)
+```
+
+There is a canonical path pairing behind (1432).  The incidence graph
+between the vertices of component `h` and the target component `e` is
+bipartite and two-regular: every label has two `e`-neighbors and every
+`e`-vertex has two `h`-neighbors.  Delete the five selected vertices `Z`.
+The ten payer labels in (1432) become the only degree-one vertices.  Each
+two-regular cycle which met `Z` breaks into paths, and altogether the five
+deleted vertices create exactly five disjoint paths.  Hence
+
+```text
+the ten inactive h-payers are paired by five vertex-disjoint
+alternating h--e paths whose internal e-vertices lie in U.       (1433)
+```
+
+Cycles of the `h--e` factor which avoid `Z` remain disjoint from these
+paths.  Equation (1433) is a normal form, not yet an impossibility: a path
+may pair the two payers from one port or from different ports.  Its gain is
+to replace the large-parameter common-layer branch by a fixed ten-terminal
+path system coupled to the ten ordinary rooted `h`-edges and the companion
+color-deletion law of (1399).
