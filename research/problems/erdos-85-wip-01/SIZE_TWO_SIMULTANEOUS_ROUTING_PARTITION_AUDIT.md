@@ -8329,3 +8329,51 @@ labeled-collision sector.  This does not yet prove that the resulting
 circuit has even run-length grading, but it removes arbitrary selected-run
 families from consideration: only the zero-column patterns (499) and
 support-minimal collision circuits can obstruct activation.
+
+## 156. A singleton obstruction is internally connection-even
+
+Suppose the degenerate circuit (499) occurs.  In either label case its two
+endpoint signatures agree side by side:
+
+```text
+q_u(h_-)=q_u(h_+),       q_u(v_-)=q_u(v_+)            (500)
+```
+
+for every `u`.  When the route labels differ, (499) makes all four values
+zero; when they agree, equality is exactly the two coordinates of
+`s(E_-)=s(E_+)`.
+
+The H-run telescoping identity (399) now gives
+
+```text
+sum_(internal H--H roots E in A) eta_u(E)=0           (501)
+```
+
+for every secondary atom `u`.  Equivalently, each `u` occurs in an even
+number of the six contributing connection states (407) along the run.
+Equation (397) also gives
+
+```text
+tau_u(A)=0                                            (502)
+```
+
+for every `u`, consistently with the zero run-signature column.
+
+This reaches the capacity classification.  If a secondary label `u`
+supports a saturated `(2,1)` cell inside a singleton obstruction, its total
+number of contributing cells is even by (501).  Hence it is accompanied by
+an odd number of unsaturated `(1,0)` or `(0,1)` cells with the same `u`.
+The saturated cell is unique for that label by Section 136, so it cannot be
+privately closed by another saturated payment.
+
+Thus an odd singleton obstruction has only two possible internal profiles:
+
+```text
+no saturated cell at all; or
+each saturated private unit launches an odd unsaturated same-u relay.    (503)
+```
+
+This does not exclude either profile.  It does show that the degenerate
+activation failure is already coupled to the pricing ledger: the private
+capacity unit cannot remain isolated, and the remaining no-saturation
+branch consists entirely of the two directed singleton-transfer profiles.
