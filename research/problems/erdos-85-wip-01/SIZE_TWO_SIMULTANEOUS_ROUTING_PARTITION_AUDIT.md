@@ -14959,3 +14959,48 @@ closure split as Section 256.  The long residual transport has not erased
 the original owner index: it returns either a nonzero core boundary demand
 or the closed five-edge holonomy, together with an unavoidable odd root
 defect outside `C`.
+
+## 293. Every individual payment defect has size one, three, or five
+
+The oddness in Section 291 holds before aggregation and has a bounded
+geometric realization.  At `w in W_I`, denote by `y_w^+` the active
+`a`-label incident to `w` and by `y_w^-` its inactive companion.  Thus
+`y_w^+` has one root in `C`, `y_w^-` has none, and the disjointness proved
+in Section 284 gives
+
+```text
+E_w^a=(N_c(y_w^+)\C) disjoint_union N_c(y_w^-),
+|E_w^a|=1+2=3.                                      (930)
+```
+
+Let `z=z(w)` be the terminal inactive label paired with `w`.  It cannot
+equal `y_w^+`, because `z` has no neighbor in `C`.  If `z=y_w^-`, then
+`N_c(z)` contributes exactly the two-root second summand of (930).  If `z`
+is distinct from both companion labels, `C_4`-freeness gives
+
+```text
+|N_c(z) intersect N_c(y_w^+)|<=1,
+|N_c(z) intersect N_c(y_w^-)|<=1.
+```
+
+Indeed, two common roots with either label would form a four-cycle through
+those two labels.  In both cases, therefore,
+
+```text
+r_w:=|E_w^a intersect N_c(z(w))| belongs to {0,1,2}. (931)
+```
+
+The actual support of the pointwise defect `d_w` is
+
+```text
+T_w^def:=E_w^a triangle N_c(z(w)) subset c\C,
+|T_w^def|=3+2-2r_w belongs to {1,3,5}.               (932)
+```
+
+Its component-parity profile is exactly `d_w` from Section 291.  Thus the
+aggregate defect (925) is assembled from canonically paired local defects
+of uniformly bounded odd size; no cancellation inside one payment can
+make its tag vanish.  In the completely local case where the factor
+interval pairs the active cut occurrence at `w` directly with the inactive
+cut occurrence at the same port, `z(w)=y_w^-`, so `r_w=2` and
+`T_w^def=N_c(y_w^+)\C` is the single outside root of the active label.
