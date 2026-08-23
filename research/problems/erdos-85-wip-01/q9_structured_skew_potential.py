@@ -545,6 +545,76 @@ def collision_census_primal_system(data: dict) -> tuple:
             capacities, capacity_rhs, names, capacity_names, variable_count)
 
 
+def double_label_flag_primal_system(data: dict, mode: str = "full") -> tuple:
+    """Conserve occurrence flags (transported b, collision c, role pair)."""
+    (base_equalities, equality_rhs, capacities, capacity_rhs, _,
+     capacity_names, variable_count) = full_bundle_primal_system(data)
+    profiles = []
+    for t in range(N):
+        profile = Counter()
+        for c in data["selected"]:
+            counts = [sum(1 for u in data["candidates"][t]
+                          if c in data["blocks"][u]
+                          and data["types"][u] == role)
+                      for role in range(5)]
+            for left in range(5):
+                profile[(c, left, left)] = counts[left] * (counts[left] - 1) // 2
+                for right in range(left + 1, 5):
+                    profile[(c, left, right)] = counts[left] * counts[right]
+        profiles.append(+profile)
+    variables = []
+    feature_keys = set()
+
+    def project(b: int, c: int, left: int, right: int) -> tuple:
+        if mode == "full":
+            return b, c, left, right
+        if mode == "unordered":
+            return min(b, c), max(b, c), left, right
+        if mode == "transported":
+            return b, left, right
+        if mode == "witness":
+            return c, left, right
+        if mode == "equality":
+            return int(b == c), left, right
+        if mode == "roles":
+            return left, right
+        raise ValueError(f"unknown double-label projection {mode}")
+
+    for t in range(N):
+        own_support = data["blocks"][t] & data["selected"]
+        for u in data["candidates"][t]:
+            boundary = Counter()
+            for b in (data["blocks"][u] & data["selected"]) - own_support:
+                for (c, left, right), count in profiles[t].items():
+                    boundary[project(b, c, left, right)] += count
+            for b in own_support - data["blocks"][u]:
+                for (c, left, right), count in profiles[u].items():
+                    boundary[project(b, c, left, right)] -= count
+            variables.append(boundary)
+            feature_keys.update(boundary)
+    keys = sorted(feature_keys)
+    key_index = {key: row for row, key in enumerate(keys)}
+    flag_rows = lil_matrix((len(keys), variable_count))
+    for column, boundary in enumerate(variables):
+        for key, value in boundary.items():
+            flag_rows[key_index[key], column] = value
+    equalities = vstack([base_equalities[:N], flag_rows], format='csr')
+    names = ([('row', t) for t in range(N)]
+             + [('double_label_flag', key) for key in keys])
+    return (equalities, np.r_[equality_rhs[:N], np.zeros(len(keys))],
+            capacities, capacity_rhs, names, capacity_names, variable_count)
+
+
+def double_label_flag_primal_audit(data: dict, mode: str = "full") -> tuple:
+    """Test row demands, capacities, and double-labelled flag conservation."""
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     _, variable_count) = double_label_flag_primal_system(data, mode)
+    result = linprog(
+        np.zeros(variable_count), A_ub=capacities, b_ub=capacity_rhs,
+        A_eq=equalities, b_eq=equality_rhs, bounds=(0, 1), method='highs')
+    return result.success, equalities.shape[0] - N, result.message
+
+
 def collision_census_infeasible_core(data: dict) -> tuple:
     """Greedily delete seven-state equations to an irreducible LP core."""
     (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
@@ -1752,6 +1822,8 @@ def main() -> int:
                         help="add each coordinate triple to pairwise tables")
     parser.add_argument("--categorical-extra-triple", default="",
                         help="comma-separated coordinates for one triple table")
+    parser.add_argument("--audit-double-label-flag-primal", action="store_true",
+                        help="test collision-witness flag conservation")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -2100,6 +2172,22 @@ def main() -> int:
                   f"seed={seed_number} colors={colors} "
                   f"coordinates={coordinates} success={success} "
                   f"basis_count={basis_count} message={message}")
+    if args.audit_double_label_flag_primal:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            branch, seed_number, colors = label
+            for mode in ("roles", "equality", "transported", "witness",
+                         "unordered", "full"):
+                success, flag_count, message = double_label_flag_primal_audit(
+                    candidate, mode)
+                print(f"double_label_flag_primal branch={branch} "
+                      f"seed={seed_number} colors={colors} mode={mode} "
+                      f"feasible={success} flag_count={flag_count} "
+                      f"message={message}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2183,6 +2271,7 @@ def main() -> int:
             or args.audit_categorical_collision_census_dual
             or args.audit_triple_categorical_augmentations
             or args.categorical_extra_triple
+            or args.audit_double_label_flag_primal
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):

@@ -2181,6 +2181,57 @@ transported `b`.  Such a ledger retains precisely the collision/two-role
 coupling seen in `(12rzf)` and has a chance to compose with the squad's
 resolved-label/private-activation ledgers; a scalar collision moment does not.
 
+The double-label proposal has a sharp, symmetry-respecting capacity test.
+For selected `c` and roles `r<=s`, let
+
+```text
+C_t(c;r,r) = binom(n_r(t,c),2),
+C_t(c;r,s) = n_r(t,c)n_s(t,c)                 (r<s).
+```
+
+For an unordered selected-label pair `q={b,c}`, define the route boundary
+
+```text
+F_(q;r,s)(t,u)
+ = sum_(b in (B_u cap selected) minus B_t)
+       sum_(c selected : {b,c}=q) C_t(c;r,s)
+ - sum_(b in (B_t cap selected) minus B_u)
+       sum_(c selected : {b,c}=q) C_u(c;r,s).                 (12rzh)
+```
+
+Mode `--audit-double-label-flag-primal` imposes only row demands, row-label
+capacities, and conservation
+
+```text
+sum_(t,u) x_(t,u) F_(q;r,s)(t,u) = 0
+```
+
+for every unordered `q` and role pair.  This primal is infeasible on **all
+eleven** deterministic restricted-Hall survivors, including hard survivor
+`(3,21,(1,2))`.  Ordering `(b,c)` is unnecessary: the ordered refinement is
+also infeasible, but the unordered projection already suffices.  Conversely,
+each of the following projections is feasible on all eleven:
+
+```text
+forget c;  forget b;  retain only 1[b=c];  retain only (r,s).
+```
+
+Record the sampled theorem interface as
+
+```text
+UNORDERED DOUBLE-LABEL FLAG CAPACITY TRANSFER:
+conservation of ({b,c},r,s) collision flags is incompatible with the row
+demands and private label capacities.                            (12rzi)
+```
+
+The implication direction remains the mathematical gap: `(12rzi)` is a
+floating primal contradiction, not yet a proof that an actual B.3
+decomposition conserves `(12rzh)`.  But it isolates the missing lemma with no
+orientation or scalar-state decoration.  Both distinct label identities are
+essential, while their order is not.  This is exactly the occurrence-level
+shape expected of a two-label incidence handshake and is substantially more
+proof-facing than the arbitrary seven-coordinate state potential `(12rza)`.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
