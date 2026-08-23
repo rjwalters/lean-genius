@@ -558,6 +558,55 @@ theorem no_symmetricFractionalPointPacking_of_unitSupportPointPrices
   rw [← Finset.sum_filter]
   simp only [Finset.filter_mem_eq_inter, Finset.univ_inter]
 
+/-- Denominator-cleared unit-support certificate.  `weight` stores natural
+point-price numerators and `scale` their common positive denominator. -/
+theorem no_symmetricFractionalPointPacking_of_scaledUnitSupportPointPrices
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (S : Finset V) (weight : V → P → ℕ) (scale : ℕ)
+    (hscale : 0 < scale)
+    (hedge : ∀ u v, H u v →
+      scale * ((if u ∈ S then 1 else 0) + (if v ∈ S then 1 else 0)) ≤
+        (∑ p ∈ B v, weight u p) + ∑ p ∈ B u, weight v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, weight u p) <
+        scale * ∑ u ∈ S, d u) :
+    ¬ ∃ mass, IsSymmetricFractionalPointPacking H d B mass := by
+  let pointPrice : V → P → ℚ := fun u p => weight u p / (scale : ℚ)
+  have hqpos : (0 : ℚ) < scale := Nat.cast_pos.mpr hscale
+  have hqne : (scale : ℚ) ≠ 0 := hqpos.ne'
+  apply no_symmetricFractionalPointPacking_of_unitSupportPointPrices
+    H d B S pointPrice
+  · intro u p
+    exact div_nonneg (Nat.cast_nonneg _) hqpos.le
+  · intro u v huv
+    have hcast :
+        (scale : ℚ) *
+            ((if u ∈ S then (1 : ℚ) else 0) +
+              if v ∈ S then 1 else 0) ≤
+          (∑ p ∈ B v, (weight u p : ℚ)) +
+            ∑ p ∈ B u, (weight v p : ℚ) := by
+      exact_mod_cast hedge u v huv
+    calc
+      (if u ∈ S then (1 : ℚ) else 0) +
+          (if v ∈ S then 1 else 0) =
+          ((scale : ℚ) *
+            ((if u ∈ S then (1 : ℚ) else 0) +
+              if v ∈ S then 1 else 0)) / scale := by field_simp
+      _ ≤ ((∑ p ∈ B v, (weight u p : ℚ)) +
+            ∑ p ∈ B u, (weight v p : ℚ)) / scale :=
+        (div_le_div_iff_of_pos_right hqpos).2 hcast
+      _ = (∑ p ∈ B v, pointPrice u p) +
+            ∑ p ∈ B u, pointPrice v p := by
+        simp [pointPrice, add_div, Finset.sum_div]
+  · have hcast :
+        (∑ u : V, ∑ p : P, (weight u p : ℚ)) <
+          (scale : ℚ) * ∑ u ∈ S, (d u : ℚ) := by
+      exact_mod_cast hstrict
+    have hdiv := (div_lt_div_iff_of_pos_right hqpos).2 hcast
+    rw [mul_div_cancel_left₀ _ hqne] at hdiv
+    simpa [pointPrice, Finset.sum_div] using hdiv
+
 /-- Any strict point cover of every positive-mass-eligible block rules out a
 full-demand canonical fractional interval extension.  This is the direct
 dual-side consumer complementary to the forced-shared-point obstruction. -/
@@ -1961,6 +2010,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms no_symmetricFractionalPointPacking_of_commonFiberPrices
 #print axioms no_symmetricFractionalPointPacking_of_supportWithPointCompensation
 #print axioms no_symmetricFractionalPointPacking_of_unitSupportPointPrices
+#print axioms no_symmetricFractionalPointPacking_of_scaledUnitSupportPointPrices
 #print axioms relationIndicator_isSymmetricFractionalPointPacking
 #print axioms false_of_symmetricRowPointPriceCertificate
 #print axioms false_of_unitSupportPointPriceCertificate
