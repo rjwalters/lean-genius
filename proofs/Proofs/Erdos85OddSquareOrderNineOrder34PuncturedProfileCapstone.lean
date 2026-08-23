@@ -728,11 +728,77 @@ theorem false_of_orderNine_order34_unordered_articulation_output
           hTS.2 hfullT hTclosed hSclosed hTboundary
           hdegOrd hdegHigh hdefectHighIsolated
 
+/-- Direct consumer of the deleted-owner articulation capstone: the two
+order-34 disjuncts are impossible, while the 18/59 and 27/50 alternatives
+are deliberately preserved. -/
+theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_without_order34
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hOcard : ((Finset.univ : Finset V) \
+      squareOrderHighVertices G 9).card = 78)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hhighIndependent : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      Disjoint (G.neighborFinset h) ({h₁, h₂, h₃} : Finset V))
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅)
+    (hfullConnected : ((secondOrderDefectGraph G).induce
+      (↑((Finset.univ : Finset V) \ squareOrderHighVertices G 9) : Set V)).Connected)
+    (hnot : ¬ ((secondOrderDefectGraph G).induce
+      (↑(((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner) :
+        Set V)).Connected) :
+    let U := ((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner
+    ∃ S T : Finset V, S ∪ T = U ∧ Disjoint S T ∧
+      ((S.card = 18 ∧ T.card = 59) ∨
+       (S.card = 59 ∧ T.card = 18) ∨
+       (S.card = 27 ∧ T.card = 50) ∨
+       (S.card = 50 ∧ T.card = 27)) := by
+  classical
+  dsimp only
+  obtain ⟨S, T, hunion, hdisj, horders, _hbeta, hfull,
+      hSclosed, hTclosed, hSboundary, hTboundary⟩ :=
+    squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not_connected
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
+        h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH owner howner hOcard
+        hdegOrd hdegHigh hhighIndependent hdefectHighIsolated
+        hfullConnected hnot
+  refine ⟨S, T, hunion, hdisj, ?_⟩
+  rcases horders with h18 | h59 | h27 | h50 | h34 | h43
+  · exact Or.inl h18
+  · exact Or.inr (Or.inl h59)
+  · exact Or.inr (Or.inr (Or.inl h27))
+  · exact Or.inr (Or.inr (Or.inr h50))
+  · exact (false_of_orderNine_order34_unordered_articulation_output
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
+        h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH owner howner S T hunion hdisj
+        (Or.inl h34) hfull hSclosed hTclosed hSboundary hTboundary
+        hdegOrd hdegHigh hdefectHighIsolated).elim
+  · exact (false_of_orderNine_order34_unordered_articulation_output
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
+        h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH owner howner S T hunion hdisj
+        (Or.inr h43) hfull hSclosed hTclosed hSboundary hTboundary
+        hdegOrd hdegHigh hdefectHighIsolated).elim
+
 #print axioms false_of_orderNine_order34_local_profile_of_corrected_punctured_data
 #print axioms false_of_orderNine_order34_local_profile_of_punctured_articulation
 #print axioms false_of_orderNine_order34_profile_of_punctured_articulation
 #print axioms false_of_orderNine_order34_oriented_articulation_output
 #print axioms false_of_orderNine_order34_unordered_articulation_output
+#print axioms squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_without_order34
 
 end
 
