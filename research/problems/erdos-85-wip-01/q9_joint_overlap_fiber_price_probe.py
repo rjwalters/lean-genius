@@ -439,6 +439,7 @@ def one_model(
             set(block) for block in chosen(triples) + chosen(pairs)
         )))
     overlap = sorted(covers[0] & covers[1])
+    outer_payload["overlap_points"] = overlap
     single_optima = {
         point: unit_nondiagonal_fiber_optimum(
             system, point, include_diagonal=True)
@@ -491,6 +492,11 @@ def one_model(
         answer["genuine_joint_optima"] = [
             exact_joint_optimum_summary(system, pair, single_optima)
             for pair in genuine_pairs
+        ]
+    if details:
+        answer["outer_payload"] = outer_payload
+        answer["overlap_single_fiber_optima"] = [
+            single_optima[point] for point in overlap
         ]
     return answer
 
@@ -558,6 +564,10 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--payload", type=Path)
+    parser.add_argument(
+        "--save-payload", type=Path,
+        help="write the first generated outer payload as durable JSON",
+    )
     parser.add_argument("--samples", type=int, default=1)
     parser.add_argument("--seed-start", type=int, default=0)
     parser.add_argument("--max-scale", type=int, default=6)
@@ -603,6 +613,12 @@ def main() -> int:
                 args.stage_all_regular_classes, args.scan_exact_joint_optima)
             for seed in range(args.seed_start, args.seed_start + args.samples)
         ]
+    if args.save_payload is not None:
+        if args.payload is not None or args.samples != 1 or not args.details:
+            parser.error(
+                "--save-payload requires one generated sample with --details")
+        args.save_payload.write_text(
+            json.dumps(results[0]["outer_payload"], indent=2) + "\n")
     print(json.dumps(results, separators=(",", ":"), default=str))
     passed = sum(result["certificate"] is not None for result in results)
     print(f"joint_overlap_price_selector={passed}/{len(results)}")

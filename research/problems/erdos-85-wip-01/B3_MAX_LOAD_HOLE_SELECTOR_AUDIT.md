@@ -299,6 +299,21 @@ dual of value 27.  Therefore the useful candidate is narrower still:
 dual packing**.  The no-strict hypothesis cannot be discarded after the
 tight point has been selected.
 
+Seed 41 supplies the needed independent no-strict equality face and is stored
+as `q9_joint_no_strict_three_tight_fixture.json`.  Its nine overlap points
+have no strict single; three are tight, at points 3, 12, and 22.  Their
+maximum integer dual-packing values are respectively 26, 26, and 27, so the
+existential saturated-dual candidate survives while the stronger claim that
+every tight point is saturated fails inside the no-strict face itself.  The
+complete rational joint scan finds seven of 36 pairs below 54, and every one
+contains at least one of the three tight points.  Four contain the saturated
+point 22.  In particular `(3,12)` has a scale-two integer certificate
+`107 < 108` and exact optimum `641/12`, while `(10,12)` has exact optimum 53.
+Thus both independent no-strict fixtures exhibit the required joint horn,
+and both contain a saturated tight dual, but successful collision need not be
+centered only at the saturated tight point.  The uniform theorem must select
+existentially across the whole tight set.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
