@@ -25085,3 +25085,49 @@ four-edge rootwise color census, trace vertex/layer separation, and boundary
 color counting can exclude the saturation branch.  A closing lemma must
 couple the traces to at least one additional root action or to the actual
 companion/payer geometry outside this projection.
+
+## 474. An allowed boundary color saturates or is a four-edge matching
+
+Fix the root pair `{r,s}` and an allowed boundary color
+
+```text
+g in C_out setminus ({d} union Gamma)
+```
+
+from Section 472.  Since `g notin Gamma`, one has `k_g=0`.  The rootwise
+census of Section 461 therefore gives exactly two `g`-edges in `G_r` and
+exactly two in `G_s`:
+
+```text
+|E_g(M) intersect (G_r union G_s)|=4.             (1682)
+```
+
+If two of these four factor edges are adjacent, they are the `r`- and
+`s`-edges at their common vertex and form a monochromatic saturated
+`{r,s}`-turn of color `g`.  If no two are adjacent, the four-edge trace has
+maximum degree one and is exactly
+
+```text
+P_1 disjointUnion P_1 disjointUnion P_1 disjointUnion P_1.      (1683)
+```
+
+Thus every allowed color in the new frontier satisfies the exact local
+alternative
+
+```text
+(boundary saturation) g has a saturated r/s turn; or
+(boundary matching)   all four g-edges form a matching.         (1684)
+```
+
+Put `m:=max(0,ceil(3s/4)-6)`, the frontier lower bound in (1679).
+At least `ceil(m/2)` distinct frontier colors take the same branch of
+(1682).  In the saturation branch their turn vertices are distinct across
+colors, and they lie outside the selected sparse traces because a boundary
+vertex has two different incident colors.  In the matching branch one gets
+`ceil(m/2)` distinct allowed four-edge matching traces attached through the
+sparse boundary ports.
+
+No payer-layer avoidance is inherited by these frontier traces.  The gain
+is a new finite terminal: sparse resistance either manufactures many new
+allowed saturations, or forces many exact four-edge matchings on the same
+two-root factor.
