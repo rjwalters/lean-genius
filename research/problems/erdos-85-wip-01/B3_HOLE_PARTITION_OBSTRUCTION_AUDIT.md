@@ -1346,6 +1346,36 @@ variables remain.  Together with (12qv), it would eliminate the
 collision-free odd residual and leave every alternating obstruction charged
 to the finite root-own collision budget.
 
+There is a smaller sufficient graph which explains the sampled parity.
+Define the **flat signature graph** with vertex set the full signatures
+`(role,n,c_pair,c_all)` which occur on flat flags.  Join signatures `sigma`
+and `tau` when some shared-label pair `(t,b),(u,b)` is reciprocal and flat:
+`t,u` have the same role, each is the other's unique same-role eligible
+occupant in `F_b`, and their signatures are `sigma,tau`.  Every horizontal
+step of a flat handoff walk crosses one such signature edge, while its
+vertical step stays at the incoming signature.
+
+In all 24 sampled instances this undirected signature graph is a **forest**.
+It has between three and sixteen nonisolated vertices and between two and
+nine edges; in every case `|E|=|V|-number_of_components`.  Therefore every
+closed projected walk has even length, which proves (12qx) for that instance
+without inspecting the detailed handoff arcs.  This suggests the sharper
+uniform terminal
+
+```text
+FLAT-SIGNATURE FOREST:
+reciprocal unique-same-role shared-label pairs form a forest on full
+root signatures.                                               (12qy)
+```
+
+Statement (12qy) depends only on the outer eligibility graph and four scalar
+root flags; the monotone transport disappears from the hypothesis.  A cycle
+of signature classes would have to be realized by a cyclic sequence of
+linear block intersections whose endpoints have matching
+`(role,n,c_pair,c_all)` data and unique same-role fiber degree.  Excluding
+exactly that configuration is now the most economical seed-free route to
+the collision-free terminal.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
