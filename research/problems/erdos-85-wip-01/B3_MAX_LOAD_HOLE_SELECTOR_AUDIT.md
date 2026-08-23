@@ -328,6 +328,20 @@ their overlap intersections explicitly.  Singleton intersection itself
 appears to come from hole reciprocity/full-pack overlap geometry; saturation
 at one of the two points remains the real equality-case gap.
 
+In fact the two distinguished points themselves give a cleaner horn that
+bypasses saturated-dual classification.  Let `p_r` be the unique point where
+anchor block `r` meets the common cover-overlap.  In seed 5 the direct pair
+`(p_0,p_1)=(9,11)` has exact joint optimum `3439/64 < 54` and an integer
+scale-five certificate `269 < 270`.  In seed 41 the direct pair `(12,22)` has
+exact optimum `372/7 < 54` and a scale-two certificate `107 < 108`.
+Therefore the preferred uniform equality-face statement is now simply:
+**if neither anchor overlap admits a strict single (or, more strongly, if no
+overlap point does), the joint price of the two anchor-overlap singleton
+fibers is strict**.  This is exactly the geometrically distinguished pair and
+feeds the existing two-common-fiber price consumer directly; tightness and
+integer-dual saturation become diagnostic explanations rather than theorem
+hypotheses.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
