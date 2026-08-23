@@ -494,6 +494,27 @@ def integer_full_bundle_dual(data: dict, time_limit: float = 60) -> tuple:
             int(np.min(column_values, initial=0)))
 
 
+def integer_dual_pivot_profile(data: dict, nonzero: list[tuple]) -> tuple:
+    """Summarize pivot labels hitting every negative-demand support."""
+    demand_roots = {name[1] for name, value in nonzero
+                    if name[0] == 'row' and value < 0}
+    supports = [data['blocks'][t] & data['selected']
+                for t in sorted(demand_roots)]
+    pivot_covers = []
+    for size in range(1, len(data['selected']) + 1):
+        pivot_covers = [cover for cover in combinations(sorted(data['selected']), size)
+                        if all(set(cover) & support for support in supports)]
+        if pivot_covers:
+            break
+    pivots = set(pivot_covers[0]) if len(pivot_covers) == 1 else set()
+    relay_capacities = [(name[1], name[2], value) for name, value in nonzero
+                        if name[0] == 'capacity'
+                        and name[1] not in demand_roots
+                        and name[2] not in pivots]
+    return (tuple(sorted(demand_roots)), tuple(pivot_covers),
+            tuple(relay_capacities))
+
+
 def linear_state_bundle_dual(data: dict) -> tuple[bool, str]:
     """Test external-label potentials linear in signature and role census."""
     from scipy.sparse import hstack
@@ -1568,6 +1589,10 @@ def main() -> int:
                   f"scalar={scalar} min_column={min_column} "
                   f"nonzero_count={len(nonzero)} message={message} "
                   f"nonzero={nonzero if exact else nonzero[:20]}")
+            if exact:
+                print(f"integer_bundle_pivots branch={branch} "
+                      f"seed={seed_number} colors={colors} "
+                      f"profile={integer_dual_pivot_profile(candidate, nonzero)}")
             integer_labels.append((label, success, exact, len(nonzero)))
         print(f"integer_bundle_dual_survivors={integer_labels}")
         audit_failed |= any(not success or not exact

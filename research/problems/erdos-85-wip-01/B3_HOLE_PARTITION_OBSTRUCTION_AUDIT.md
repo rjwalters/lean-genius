@@ -1788,6 +1788,26 @@ uniform ansatz: the state potential must distinguish joint signature/census
 patterns nonlinearly (or be constructed by a combinatorial propagation rule)
 rather than by a single additive score.
 
+The sparse integer ledgers nevertheless have a simple label-level skeleton.
+The integer audit now computes the minimum selected-label hitting sets of the
+negative demand roots' own supports.  They are unique:
+
+```text
+branch 3, demand roots {3,8,17,25}:       pivot {11};
+branch 4, demand roots {5,6,8,13,20,25}: pivots {6,13};
+branch 4, demand roots {6,7,11,14,18,22}: pivots {22,23}.      (12rr)
+```
+
+Every positive capacity outside a demand root is priced at a pivot label,
+except the single slot `(root 27,label 7)` in the last pattern.  That exception
+is a one-step relay: label 7 is the nonpivot member of demand root 14's own
+support `{7,22}`.  Thus the three equality certificates are respectively a
+one-pivot star, a two-pivot network, and a two-pivot network with one secondary
+relay.  This is a substantially smaller classification target than arbitrary
+joint state potentials: prove that every restricted-Hall equality pattern has
+one of these pivot/relay skeletons, then propagate the state multipliers along
+that skeleton to obtain `(12ro)`.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
