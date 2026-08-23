@@ -4900,3 +4900,48 @@ entries.
 No analogous triangle interpretation is asserted for a crossed cell:
 `a_-p_+` and `a_+p_-` are absent in the four-distinct branch, which is why
 the crossed channel instead closes by transpose antisymmetry.
+
+## 91. The outward rooted budget has exactly three states
+
+At either outward root `a_i`, the edge labelled `p_i` is unmarked because
+`p` is an isolated marked center.  The other `A_c` edge at that root is
+labelled `q_i`.  Hence, for owner color `e`, the rooted owner count is
+
+```text
+a_(a_i,e) = [q_i in M_e].
+```
+
+Write `s_i=A_e(q_i,p_i)=b_(a_i,e)` as above and let `v_i` be the rooted
+vertical degree of `e`.  The rooted budget becomes
+
+```text
+[q_i in M_e] + 2s_i + v_i = 2.                        (281)
+```
+
+There are exactly three possibilities:
+
+```text
+q_i marked:     (a,s_i,v_i)=(1,0,1),
+q_i unmarked,
+  no switch:    (a,s_i,v_i)=(0,0,2),
+q_i unmarked,
+  fiber switch: (a,s_i,v_i)=(0,1,0).                 (282)
+```
+
+By (274), the diagonal cell is occupied exactly in the first two states.
+In the marked case, `e` has rooted color-graph degree one, so the label
+`d_(ii)` of Section 90 is its unique neighbor and is the endpoint color of
+the rooted transition path at the boundary of the next `e`-run.  In the
+unmarked no-switch case, `e` has degree two: the `p_i` triangle supplies one
+incident transition and the port bijection assigns the other transition to
+the other `e`-port `q_i`.  Thus the diagonal label is one half of a canonical
+through-transition at `a_i`.
+
+The third state has no diagonal label at all; its two `e`-ports are joined
+internally by `A_e`.  Therefore every diagonal token in (280) belongs to a
+canonical rooted transition path, either as an endpoint at the next marked
+run or as a through-step across an unmarked radius-two port.  This gives the
+promised propagation rule: follow the degree-two states until the token
+reaches a marked endpoint or closes on a rooted color cycle.  The remaining
+global parity question is how these endpoint/closed-cycle alternatives
+interact with the alternating signs of successive isolated marks.
