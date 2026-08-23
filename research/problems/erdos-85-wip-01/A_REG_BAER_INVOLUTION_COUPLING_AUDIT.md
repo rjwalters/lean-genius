@@ -3265,6 +3265,22 @@ cannot be discarded from the actual route ledger unless their two labels
 cancel.  Thus the remaining holonomy audit has only seven nonzero quotient
 skeletons, together with the joint labels on even parallel-pair corrections.
 
+In particular every leaf-only potential is invisible on the closed quotient.
+For any `chi:{four leaves}->F_2`,
+
+```text
+sum_(LL' in E(Q)) (chi(L)+chi(L'))
+  = sum_L deg_Q(L) chi(L) = 0.                           (73rnz_bf)
+```
+
+Thus a weight depending only on the leaf, or only on its parent star, is a
+coboundary with zero Q-holonomy.  Even the separator branch (73rnz_ay) becomes
+load-bearing only if its values are cross-tagged with the pivot G, the route
+cell, or the relay atom before contraction.  The required potential is
+genuinely joint-label data, not a scalar coloring of the four quotient
+vertices -- the exact finite analogue of the SRP transition commutator and
+the failure of additive B3 census potentials.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
