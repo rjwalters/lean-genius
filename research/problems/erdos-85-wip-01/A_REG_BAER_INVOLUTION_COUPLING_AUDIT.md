@@ -5410,6 +5410,45 @@ crossing edge retaining `y_i`.  Whether the footprints cancel against V/S
 and owner-route capacity is precisely the remaining joint conservation
 problem.
 
+The same shadow split identifies the **inactive** part of the secondary
+boundary (711) occurrence-by-occurrence.  Transfer the marked `00` port
+census to the owner-factor edge chain `B_00` by
+`p |-> N_d(p)`.  Fix a secondary label `y` with `t_y=0` and
+
+```text
+partial B_00(y)=1.
+```
+
+The two owner-factor edges incident with `y` are indexed by the two ports
+`p,r` in `N_e(y)`.  Boundary one says exactly one of those ports belongs to
+the selected `00` census; orient the pair from the selected port `p` to its
+complement `r`.  Since `t_y=0`, target evenness puts the two ports on the
+same target shore.  Therefore
+
+```text
+(y, p selected, r complementary, same shore)          (73rnz_cjibkzzq)
+```
+
+is a canonical labelled shadow-cut occurrence.  Conversely every
+`y`-labelled shadow edge crossing from the selected port set to its
+complement gives `partial B_00(y)=1`.  Hence
+
+```text
+{inactive y : partial B_00(y)=1}
+ <-> {inactive labelled edges of the selected-port shadow cut}.
+                                                               (73rnz_cjibkzzr)
+```
+
+This closes the occurrence-map part of the inactive boundary left after
+the active identity `t_y partial B_00(y)=sum q_y(h_p)`: active labels enter
+the existing interval ledger, while inactive labels enter the explicit
+selected-to-complement shadow cut.  It is again transport, not cancellation.
+The complementary port may be a different H shore state or a V/S port, so
+filtering to `00` produces exactly those complementary-state terms; they
+must remain in the joint quotient.  The boundary-invisible full odd cycles
+of the owner factor are untouched by (73rnz_cjibkzzr) and remain the only
+port-secondary curl.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
