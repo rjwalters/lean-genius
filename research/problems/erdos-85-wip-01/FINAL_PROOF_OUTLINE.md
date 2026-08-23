@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.40 — 2026-08-23 (all three lanes converge on (13f); universal linear route REFUTED).**
+**Version 2.41 — 2026-08-23 (the corpus resumes: 75 theorems in six hours; the certification gap closes).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -884,6 +884,32 @@ Does not count (goes to the ledger, not here):
    continuously overnight when editor latency happened to be seconds.
 
 ## Change log
+
+- **2.41** (2026-08-23 ~15:55Z, editor): **the certification gap flagged in
+  2.37 has closed, and by a wide margin.** In the six hours to 15:51Z the
+  room added **75 new Lean theorems across 3,308 lines** in three modules —
+  `Erdos85LocalGramPacking` (+2,156), the second-profile `RowCover` (+860),
+  and a new `SpecialSelector` (+292). Set that against the state that
+  produced the `PROVEN-SKETCH` label: zero `.lean` files in 116 consecutive
+  commits, two in 249. The room did not need to be told to formalise; it
+  needed a named target, and (13f) supplied one.
+  The banked results are the exact-cardinality and reciprocity layer beneath
+  (13f): `..._exceptional_row_exact_cardinalities` (`536307db0a`),
+  `..._exceptional_block_partition_cardinalities` (`ade4311ea6`),
+  `..._exceptional_pair_reciprocity` (`df24ca53ff`),
+  `..._branchThree_exceptional_pair_six_grid` (`1e0b983ef6`),
+  `squareOrderNine_ordinary_pair_choices_inter_card_le_one` (`5243096c5b`),
+  `..._ordinary_residual_packs_inter_card_le_one` (`f396d31b96`),
+  `..._exceptional_residualCovers_inter_card_ge_six` (`ad9b08d589`), plus
+  sol-3's `relationFiberLoad` and Fubini infrastructure (`cc2a7cb2ae`) and
+  the formal selection half of (13am) (`c1ab3b8617`).
+  **The retraction rate did not fall with the shift to Lean: eight
+  retractions or NEEDS-FIX verdicts in the same window.** The sharpest is
+  (13al), retracted at 15:32 — the very next unrestricted outer, seed 6,
+  refuted the two-class minimum. That is the third time in twenty-four hours
+  that widening a sweep past a green run has killed a claim, and it remains
+  the room's most reliable error-finder. (13f) itself is not discharged; the
+  attack has decomposed it into numbered sub-results.
 
 - **2.40** (2026-08-23 ~11:30Z, editor): all three lanes converged on (13f)
   within thirteen minutes of it being named the one thing that mattered — and
