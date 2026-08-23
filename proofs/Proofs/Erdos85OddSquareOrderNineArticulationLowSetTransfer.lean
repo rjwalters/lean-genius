@@ -312,6 +312,151 @@ theorem orderNine_order34_owner_lowSet_degree_eq_four
   simp [hRcard, hownerH, hownerR, hownerDefect] at hv
   omega
 
+/-- Abstract saturation step behind the order-34 owner argument.  An
+18-point set of total incidence 18, with every nonowner incidence at most
+one, consists entirely of incidence-one points if it omits the owner.  Four
+owner neighbors in that set then contradict an ambient bin-one degree of
+three. -/
+theorem owner_mem_of_lowSet_incidence_saturation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner : V) (Z B₁ : Finset V) (k : V → ℕ)
+    (hZcard : Z.card = 18)
+    (hsum : (∑ z ∈ Z, k z) = 18)
+    (hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1)
+    (hbin₁ : ∀ z ∈ Z, k z = 1 → z ∈ B₁)
+    (hownerZ : (G.neighborFinset owner ∩ Z).card = 4)
+    (hownerB₁ : (G.neighborFinset owner ∩ B₁).card = 3) :
+    owner ∈ Z := by
+  classical
+  by_contra hownerNotZ
+  have hle : ∀ z ∈ Z, k z ≤ 1 := by
+    intro z hz
+    exact hcap z hz (fun hzo ↦ hownerNotZ (hzo ▸ hz))
+  have hsumEq : (∑ z ∈ Z, k z) = ∑ _z ∈ Z, 1 := by
+    simpa [hZcard] using hsum
+  have hone : ∀ z ∈ Z, k z = 1 :=
+    (Finset.sum_eq_sum_iff_of_le hle).mp hsumEq
+  have hsub : G.neighborFinset owner ∩ Z ⊆
+      G.neighborFinset owner ∩ B₁ := by
+    intro z hz
+    exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hz).1,
+      hbin₁ z (Finset.mem_inter.mp hz).2
+        (hone z (Finset.mem_inter.mp hz).2)⟩
+  have hcardLe := Finset.card_le_card hsub
+  rw [hownerZ, hownerB₁] at hcardLe
+  omega
+
+/-- Three named high roots with six low-set neighbors each give total
+high-incidence mass 18 on the low set. -/
+theorem orderNine_lowSet_highIncidence_sum_eq_eighteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    (Z : Finset V)
+    (hroot₁ : (G.neighborFinset h₁ ∩ Z).card = 6)
+    (hroot₂ : (G.neighborFinset h₂ ∩ Z).card = 6)
+    (hroot₃ : (G.neighborFinset h₃ ∩ Z).card = 6) :
+    (∑ z ∈ Z, squareOrderHighIncidenceCount G 9 z) = 18 := by
+  have hswap := sum_card_neighborFinset_inter_comm G Z
+    (squareOrderHighVertices G 9)
+  change (∑ z ∈ Z, squareOrderHighIncidenceCount G 9 z) =
+    ∑ h ∈ squareOrderHighVertices G 9,
+      (G.neighborFinset h ∩ Z).card at hswap
+  rw [hH] at hswap
+  simpa [h₁₂, h₁₃, h₂₃, hroot₁, hroot₂, hroot₃] using hswap
+
+/-- In the second three-high profile, every ordinary vertex other than the
+unique bin-three owner has at most one high neighbor. -/
+theorem orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (owner z : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hzOrd : z ∈ (Finset.univ : Finset V) \ squareOrderHighVertices G 9)
+    (hzowner : z ≠ owner) :
+    squareOrderHighIncidenceCount G 9 z ≤ 1 := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let k := squareOrderHighIncidenceCount G 9
+  have hkLe : k z ≤ 3 := by
+    have hinter := Finset.card_le_card (Finset.inter_subset_right :
+      G.neighborFinset z ∩ H ⊆ H)
+    simpa [k, squareOrderHighIncidenceCount, H, hhigh] using hinter
+  change k z ≤ 1
+  by_contra hkNot
+  have hkTwoOrThree : k z = 2 ∨ k z = 3 := by omega
+  rcases hkTwoOrThree with hkTwo | hkThree
+  · have hzB2 : z ∈ squareOrderNineLowIncidenceBin G 2 := by
+      exact Finset.mem_filter.mpr ⟨hzOrd, hkTwo⟩
+    have hB2card : (squareOrderNineLowIncidenceBin G 2).card = 0 := by
+      rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 2) (by omega), hc2]
+    rw [Finset.card_eq_zero.mp hB2card] at hzB2
+    exact Finset.notMem_empty z hzB2
+  · have hzB3 : z ∈ squareOrderNineLowIncidenceBin G 3 := by
+      exact Finset.mem_filter.mpr ⟨hzOrd, hkThree⟩
+    have hB3card : (squareOrderNineLowIncidenceBin G 3).card = 1 := by
+      rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+        G hp (i := 3) (by omega), hc3]
+    obtain ⟨u, hu⟩ := Finset.card_eq_one.mp hB3card
+    have hzEq : z = u := by simpa [hu] using hzB3
+    have hownerEq : owner = u := by simpa [hu] using howner
+    exact hzowner (hzEq.trans hownerEq.symm)
+
+/-- **Order-34 owner membership.**  The 18-point, six-per-root low-set data
+and the owner's four low-set neighbors force the unique bin-three owner to
+belong to the low set. -/
+theorem orderNine_secondProfile_owner_mem_order34_lowSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (Z : Finset V)
+    (hZsub : Z ⊆ (Finset.univ : Finset V) \ squareOrderHighVertices G 9)
+    (hZcard : Z.card = 18)
+    (hroot₁ : (G.neighborFinset h₁ ∩ Z).card = 6)
+    (hroot₂ : (G.neighborFinset h₂ ∩ Z).card = 6)
+    (hroot₃ : (G.neighborFinset h₃ ∩ Z).card = 6)
+    (hownerZ : (G.neighborFinset owner ∩ Z).card = 4) :
+    owner ∈ Z := by
+  classical
+  let k := squareOrderHighIncidenceCount G 9
+  let B₁ := squareOrderNineLowIncidenceBin G 1
+  have hsum : (∑ z ∈ Z, k z) = 18 := by
+    exact orderNine_lowSet_highIncidence_sum_eq_eighteen G
+      h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH Z hroot₁ hroot₂ hroot₃
+  have hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1 := by
+    intro z hz hzowner
+    exact orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+      G hp hhigh hc2 hc3 owner z howner (hZsub hz) hzowner
+  have hbin₁ : ∀ z ∈ Z, k z = 1 → z ∈ B₁ := by
+    intro z hz hk
+    exact Finset.mem_filter.mpr ⟨hZsub hz, hk⟩
+  have hownerB₁ : (G.neighborFinset owner ∩ B₁).card = 3 := by
+    exact squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner
+  exact owner_mem_of_lowSet_incidence_saturation G owner Z B₁ k
+    hZcard hsum hcap hbin₁ hownerZ hownerB₁
+
 end
 
 end Erdos85
