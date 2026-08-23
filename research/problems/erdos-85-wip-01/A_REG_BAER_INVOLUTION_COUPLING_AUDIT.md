@@ -4134,6 +4134,31 @@ the Baer source is intrinsically two-labeled and needs the vector identity
 unweighted parity or A-polynomial identity can supply it, by
 (73rnz_ce)--(73rnz_cf).
 
+The zero-price T-cut used to Eulerize `R_s` does not, by itself, transport
+the inactive owner unit.  Indeed an edge `uv in T` belongs to
+`delta_T(S_s)` with indicator `s(u)+s(v)`.  Along a realized switch route
+
+```text
+E--L--y--G
+```
+
+all three edges lie in T, so the sum of their cut indicators telescopes:
+
+```text
+(s(E)+s(L))+(s(L)+s(y))+(s(y)+s(G))=s(E)+s(G).          (73rnz_cjibke)
+```
+
+In particular the internal witness bit `s(y)` disappears, while the source
+unit left by an inactive switch is `1+s(y)`.  Even on the two edges incident
+with y, cut membership is controlled separately by `s(L)+s(y)` and
+`s(y)+s(G)`; inactivity alone selects neither edge.  Thus `delta_T(S_s)` is
+the exact **unlabelled boundary payment** needed for Eulerization, but no
+restriction of that cut to the switch path canonically carries the missing
+pole-owner unit.  A proof of (73rnz_cjibkd) must retain a decorated
+witness-incidence (or an equivalent nonlinear owner state); merely assigning
+pole labels to the zero-price cut edges loses the activation bit by
+telescoping.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
