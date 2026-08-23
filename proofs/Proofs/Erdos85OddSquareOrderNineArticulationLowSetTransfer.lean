@@ -596,6 +596,23 @@ theorem orderNine_secondProfile_lowSet_bin_cards_of_owner_mem
   rw [hfilter 1, hfilter 0] at hcounts
   exact hcounts
 
+/-- Membership of the deleted owner in the lower level turns the global
+`A1_R = 4·1 - 1_Z` identity into an exact shore degree of three. -/
+theorem orderNine_order34_owner_neighbor_inter_shore_card_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ owner : V) (R : Finset V)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 4)
+    (hownerZ : owner ∈ orderNineOrdinaryLowSet G h₁ h₂ h₃ R 3) :
+    (G.neighborFinset owner ∩ R).card = 3 := by
+  have hv := orderNineOrdinaryExplicitPartition_global_lowSet
+    G h₁ h₂ h₃ R 3 60 hpart hhigh₁ hhigh₂ hhigh₃ owner
+  simp [hownerZ] at hv
+  omega
+
 end
 
 end Erdos85
