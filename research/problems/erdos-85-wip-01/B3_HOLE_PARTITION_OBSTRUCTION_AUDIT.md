@@ -4244,6 +4244,33 @@ and averaging inside it captures (13ak); the surviving selector must retain
 finer pointwise state or use actual residual-relation coupling absent from
 the outer relaxation.
 
+The first finer state that survives is the exact candidate load already
+isolated in (12rzv).  Let `H` be the mutual trace-eligibility graph on the 47
+ordinary rows and, for a point `p`, put
+
+```text
+L(p) = sum_(u in F_p) deg_H(u).
+```
+
+Restrict to the global special set `P` and choose only its minimum-`L`
+points.  Twenty unrestricted branch-4 outer designs, including the designs
+that refute both averages above, satisfy
+
+```text
+some p in argmin_(q in P) L(q) has C_p < 27 + special(p).    (13am)
+```
+
+The durable branch-4 witness also passes: its unique minimum-load special
+point is `p=3`, with `L(3)=78` and exact rational cover `27<28`.  The CLI mode
+`q9_symmetric_point_mass_obstruction.py
+--scan-min-load-global-special-fibers` computes `L` from the eligibility
+graph, restricts the exact unit-fiber LP to the minimizing special points,
+and rationally verifies every returned edge inequality.  This is still
+corpus evidence rather than a theorem, but unlike the retracted averages it
+retains the magnitude that the earlier half-atom projection audit found
+essential: parity or merely above/below-average load did not suffice, while
+exact `L` did.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

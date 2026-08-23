@@ -349,6 +349,12 @@ def main() -> None:
     parser.add_argument("--scan-nondiagonal-fibers", action="store_true")
     parser.add_argument("--scan-unit-nondiagonal-fibers", action="store_true")
     parser.add_argument("--scan-unit-full-fibers", action="store_true")
+    parser.add_argument(
+        "--scan-min-load-global-special-fibers", action="store_true",
+        help=("branch 4: restrict unit full-fiber certificates to global "
+              "special points minimizing the exact candidate load "
+              "sum_{u in F_p} deg_H(u)"),
+    )
     args = parser.parse_args()
     if args.payload is None:
         if args.branch is None:
@@ -412,13 +418,64 @@ def main() -> None:
         print("unit_full_fiber_certificates=" + json.dumps(
             certificates, separators=(",", ":")
         ))
+    if args.scan_min_load_global_special_fibers:
+        if system["branch"] != 4:
+            parser.error("--scan-min-load-global-special-fibers requires branch 4")
+        punctured_classes = (range(8, 15), range(15, 22))
+        special = {
+            point: sum(
+                not any(point in system["blocks"][row] for row in rows)
+                for rows in punctured_classes
+            )
+            for point in range(N_U1)
+        }
+        special_points = [point for point, count in special.items() if count]
+        if sum(special.values()) != 6:
+            raise RuntimeError(
+                "branch-4 puncture mass is not six: "
+                f"{sorted(special.items())}"
+            )
+        candidate_degree = [0] * N
+        for u, v in system["edges"]:
+            candidate_degree[u] += 1
+            candidate_degree[v] += 1
+        load = {
+            point: sum(
+                candidate_degree[row]
+                for row, block in enumerate(system["blocks"])
+                if point in block
+            )
+            for point in special_points
+        }
+        minimum_load = min(load.values())
+        candidates = [
+            point for point in special_points if load[point] == minimum_load
+        ]
+        certificates = [
+            certificate for point in candidates
+            if (certificate := unit_nondiagonal_fiber_certificate(
+                system, point, include_diagonal=True
+            )) is not None
+        ]
+        print("min_load_global_special_selector=" + json.dumps({
+            "special_mass": sum(special.values()),
+            "minimum_load": minimum_load,
+            "candidates": [
+                {"point": point, "special": special[point]}
+                for point in candidates
+            ],
+            "certificates": certificates,
+            "strict": bool(certificates),
+        }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support
             and not args.scan_nondiagonal_fibers
             and not args.scan_unit_nondiagonal_fibers
-            and not args.scan_unit_full_fibers):
+            and not args.scan_unit_full_fibers
+            and not args.scan_min_load_global_special_fibers):
         return
     if (args.scan_nondiagonal_fibers or args.scan_unit_nondiagonal_fibers
             or args.scan_unit_full_fibers
+            or args.scan_min_load_global_special_fibers
             ) and not (args.dual or args.minimize_row_support):
         return
     row_support = (
