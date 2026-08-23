@@ -1602,6 +1602,16 @@ have a private bundle row.  The seed-8 loop
 illustrates the latter case: its pair-high/pair-other secondary census swap
 is exactly the private information lost by the flat projection.
 
+The prospective proof has one sharply isolated alternative.  In 475 of the
+476 sampled columns, a private bundle row has `iota=0`, so it is a nonshared
+consumed secondary fiber.  The sole exception is a branch-4 regular-triple
+pair with root signatures `(triple,10,9,13)` and `(triple,12,10,16)`; its
+private row is instead the incoming shared-own state
+`((triple,12,10,16), iota=1, (1,0,0,0,1))`.  The rank audit reports every
+column lacking a private external row.  Thus a proof of (12rh) can target
+secondary-fiber injectivity generically, with an explicit shared-own census
+alternative rather than assuming the external version universally.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
