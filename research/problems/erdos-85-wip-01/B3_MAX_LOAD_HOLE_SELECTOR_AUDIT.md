@@ -602,6 +602,19 @@ The scanner reports `diagonal_collision_count` and `either_collision_count`
 with exact rational re-verification.  Fixed row-weight templates are useful
 diagnostics inside this union, not a theorem target.
 
+Further stress testing retracts that union and even the normalized class-pair
+selector.  Seeds 81 and 92 have zero collision-locus certificates and zero
+certificates with regular class pair `(0,1)`.  Nevertheless the full
+exceptional-plus-two-regular scan retains respectively 46 and 3 strict
+certificates.  Seed 92's only supports are `{25,3,17}`, `{25,12,18}`, and
+`{25,15,18}`, with regular class pairs `(0,2)` and `(1,2)`.  Thus neither the
+128 normalized shapes nor either 48-shape collision locus is a uniform
+theorem.  They remain useful frequent-case diagnostics only.  After fresh
+seeds zero through 95, the sharp robust target returns to the original 552
+shapes: **some exceptional row and some two regular triple rows support a
+strict global symmetric price certificate**.  No regular-class or pairwise
+intersection restriction currently survives adversarial sampling.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
