@@ -2620,6 +2620,74 @@ theorem false_of_orderNine_order34_three_edge_owner_W_one_punctured
       (by simpa [K] using hpartnersSub) hWsub hWcard hownerW
       (by simpa [K] using hpartnerWdegree)
 
+/-- Actual owner-punctured provider for the corrected exceptional-point
+`Z`-degree function.  The articulation universe omits `owner` but contains
+every local exceptional point; its defect neighborhoods are closed after
+allowing the single deleted owner.  Consequently equation (23) gives degree
+one on `S` and degree two on `T`. -/
+theorem orderNine_order34_exceptional_owner_neighbors_lowSet_degree_eq_if_of_punctured_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ owner : V)
+    (U S T : Finset V)
+    (hownerNotU : owner ∉ U)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hneighbors : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hlocalU : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset owner), y ∈ U)
+    (hScard : S.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ S).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ S).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ S).card = 4)
+    (hSH : Disjoint S {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hlocalOrd : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset owner),
+      y ∉ ({h₁, h₂, h₃} : Finset V))
+    (Z : Finset V)
+    (hZ : Z = orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3) :
+    ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset owner),
+      (G.neighborFinset y ∩ Z).card = if y ∈ S then 1 else 2 := by
+  classical
+  intro y hy
+  let D := secondOrderDefectGraph G
+  have hyParts := Finset.mem_inter.mp hy
+  have hyUParts := Finset.mem_inter.mp hyParts.1
+  have hyDadj : D.Adj y owner := by
+    have : D.Adj owner y :=
+      (D.mem_neighborFinset owner y).mp hyParts.2
+    exact (D.adj_comm owner y).mp this
+  have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+    G hfree hmin hcover hcard hyUParts.2
+  have hyDegree : D.degree y = 8 := by
+    simpa [D] using hledger.1
+  have hdefect :=
+    neighbor_inter_shore_card_eq_if_of_complementary_closed_punctured_owner
+      D owner U S T y hownerNotU hunion hdisj (hlocalU y hy)
+        hyDadj hneighbors hSclosed hTclosed hyDegree
+  have hlow := orderNine_order34_exceptional_binZero_lowSet_degree_eq_if
+    G hfree h₁ h₂ h₃ y S hScard hpart hhigh₁ hhigh₂ hhigh₃
+      hSH hdegOrd hdegHigh (hlocalOrd y hy) hdefect
+  rw [← hZ] at hlow
+  exact hlow
+
 end
 
 end Erdos85
