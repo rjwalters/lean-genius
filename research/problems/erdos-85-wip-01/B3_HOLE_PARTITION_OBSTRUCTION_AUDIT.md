@@ -3351,6 +3351,34 @@ unit-or-larger matching deficit at two intersecting rows.  Equations
 `F` by four ordinary matching-number comparisons, which is the natural form
 for a transversal dual or a seed-free finite encoding.
 
+Only rank-tight rows can contribute to the second horn.  Indeed, if
+`nu(mathcal H_t)>=d(t)+1`, choose a matching of size `d(t)+1`.  For any
+prescribed block `B_w`, either it is absent, in which case any `d(t)` of
+those edges avoid it, or it is present, in which case deleting it leaves a
+`d(t)`-matching.  Therefore
+
+```text
+nu(mathcal H_t)>=d(t)+1  ->  F(t)=empty.                    (13m)
+```
+
+Equivalently, deleting one hyperedge lowers matching number by at most one,
+so the inequalities in the second horn of (13l) force
+`nu(mathcal H_u)=d(u)` and `nu(mathcal H_v)=d(v)`.  Candidate (13f) thus has
+the sharper exact rank form
+
+```text
+some t has nu(mathcal H_t)<d(t); or
+some intersecting u,v are both rank-tight,
+  nu(mathcal H_u)=d(u), nu(mathcal H_v)=d(v),
+and share one essential block B_w whose deletion lowers both ranks.       (13m')
+```
+
+Rows with surplus matching rank are irrelevant to the forced-collision
+horn.  A proof of (13f) may therefore focus only on the canonical deletion
+hypergraphs whose maximum matching has exactly the demanded size, then show
+that their essential-edge kernels cannot remain disjoint along every
+intersection of row blocks.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
