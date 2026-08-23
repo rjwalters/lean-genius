@@ -4032,6 +4032,13 @@ and `5.903`, respectively.  Therefore an unweighted inequality
 argument must select or weight a structural class of points, or exploit
 coupled covers rather than independent minima.  Statement (13ah) remains a
 valid exact fallback regression, but (13ai) is now the sharper proof leaf.
+Nor can the rational cover simply be replaced by an ordinary hitting set.
+Binary point-price minimization gives strict full-fiber covers for `13f`, the
+fractional-gap model, and branch 4, but none for `13t`.  There the best binary
+cover is equality `27=27` at `p=0`; at the strict fractional point `p=13`,
+the binary optimum is `28>27` while the rational optimum is
+`616/23<27`.  Fractional weights are therefore essential to a uniform proof
+of (13ai), not an artifact of the LP implementation.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
