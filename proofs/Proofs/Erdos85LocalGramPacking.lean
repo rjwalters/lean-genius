@@ -2855,6 +2855,28 @@ theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_equalTwoRowPri
       A H W d B hsymm hdegree hsupport hgram hshared
       s t 1 1 pointPrice hnonneg hedge (by simpa using hstrict)
 
+/-- Purely local strengthened consumer: besides deficit/common-forced and
+no-disjoint-pair obstructions, it accepts a forced incidence which cannot be
+realized in the reverse row's local packing family. -/
+theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_reciprocity
+    [DecidableEq V] (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hbad : HasLocalGramPackingObstruction H W d ∨
+      HasDisjointLocalGramPackingPairObstruction H W d ∨
+      HasLocalGramPackingReciprocityObstruction H W d) :
+    False := by
+  rcases hbad with hlocal | hpair | hreciprocity
+  · exact false_of_localGramPacking_deficit_or_forced_collision
+      A H W d hsymm hdegree hsupport hgram hlocal
+  · exact false_of_disjointLocalGramPackingPairObstruction
+      A H W d hsymm hdegree hsupport hgram hpair
+  · exact false_of_localGramPackingReciprocityObstruction
+      A H W d hsymm hdegree hsupport hgram hreciprocity
+
 #print axioms relationNeighborFinset_isLocalGramPacking
 #print axioms false_of_no_disjointLocalGramPackingPair
 #print axioms false_of_no_pairwiseDisjointLocalGramPackingTriple
@@ -2865,6 +2887,7 @@ theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_equalTwoRowPri
 #print axioms false_of_localGramPackingObstruction_or_twoRowPrice
 #print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_twoRowPrice
 #print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_equalTwoRowPrice
+#print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_reciprocity
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
 #print axioms not_hasLocalGramPackingObstruction_iff
 #print axioms not_conflict_of_common_forcedLocalGramNeighbor

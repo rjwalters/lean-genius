@@ -4951,6 +4951,34 @@ confirms `valid_equal_weight_strengthened=true` in every case: ten close by
 the strengthened local horn, and only the fixed-and-joint counterexample
 uses the equal-price fallback.
 
+The last sentence is superseded by a further local audit.  The
+fixed-and-joint counterexample's unique row-25 packing is
+`{19,26,27,28,34,41}`, so row 25 forces row 19; none of row 19's eight local
+packings contains row 25.  This is exactly
+`HasLocalGramPackingReciprocityObstruction`, already known to contradict a
+symmetric residual relation.  The unified audit now includes every such
+forced-forward/impossible-reverse pair in its strengthened local horn.  In
+the fixed-and-joint payload it finds `(25,19)` (as well as `(15,25)` and
+`(25,34)` in the appropriate orientations).
+
+After this correction, **all eleven durable branch-4 payloads close purely
+locally**.  No price certificate is needed on the current corpus.  The new
+sharp empirical target is
+
+```text
+local deficit/common-forced obstruction,
+or a conflicting pair with no disjoint full local packings,
+or a forced-forward/impossible-reverse reciprocity obstruction.   (13ay)
+```
+
+Lean consumes (13ay) with
+`false_of_localGramPackingObstruction_or_noDisjointPair_or_reciprocity`.
+The price capstones remain valid fallbacks and (13ax) remains logically
+sound, but the earlier assertion that the price horn is necessary is false
+for the strengthened local hierarchy.  As before, the corpus establishes
+only the target and regressions; the universal outer-design selector (13ay)
+is not yet proved.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

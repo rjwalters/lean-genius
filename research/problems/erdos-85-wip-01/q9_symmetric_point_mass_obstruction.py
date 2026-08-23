@@ -1267,8 +1267,16 @@ def main() -> None:
                     "second_packing_count": local[v]["packing_count"],
                 })
         has_local_obstruction = bool(deficit_rows or forced_collisions)
+        reciprocity_obstructions = [
+            [u, w]
+            for u in range(N) for w in local[u]["forced_neighbors"]
+            if local[u]["packing_count"]
+            and local[w]["packing_count"]
+            and u not in local[w]["possible_neighbors"]
+        ]
         has_strengthened_local_obstruction = bool(
             has_local_obstruction or disjoint_pair_obstructions
+            or reciprocity_obstructions
         )
         row_support = None
         price_certificate = None
@@ -1321,6 +1329,7 @@ def main() -> None:
             "forced_collisions": forced_collisions,
             "has_local_obstruction": has_local_obstruction,
             "disjoint_pair_obstructions": disjoint_pair_obstructions,
+            "reciprocity_obstructions": reciprocity_obstructions,
             "has_strengthened_local_obstruction":
                 has_strengthened_local_obstruction,
             "minimum_row_support": row_support,
