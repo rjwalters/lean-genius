@@ -3780,6 +3780,27 @@ and y is its unique common-neighbor label by C4-freeness.  Changing the
 pairing is only the familiar even-star gauge.  Thus every common-neighbor
 hyperedge in (73rnz_cjia) is a sum of private two-ended witness columns.
 
+The T-word of those columns has only one gauge bit.  At an active witness y,
+mark each incident star edge by `tau(v)=1[yv in T]`.  The number of marked
+edges is `deg_T(y)`, which is even.  In any pairing, let `n_00,n_01,n_11`
+count pairs with zero, one, or two marked edges.  Then
+
+```text
+n_01=0,
+n_00+n_11=q/2=0                         (mod 2),
+```
+
+where the second equality uses `8 | q`.  Hence
+
+```text
+n_00=n_11                                      (mod 2). (73rnz_cjiba)
+```
+
+Thus mixed T-word relays always cancel in pairs, and the 00/11 classes carry
+one common pairing-gauge bit.  The arbitrary even-star pairing cannot create
+an independent odd switch charge.  This is exactly the fine-label reduction
+needed to compare the witness columns with the route alphabet (73rnz_at).
+
 Similarly, because T is Eulerian, `Tx` is exactly the boundary vector of the
 T-cut `delta_T(X)`: outside X it counts T-neighbors in X, while inside X the
 even T-degree converts internal incidence to external incidence.  Hence the
