@@ -26,6 +26,79 @@ def IsForcedLocalGramNeighbor (H W : V → V → Prop) (d : V → ℕ)
     (u w : V) : Prop :=
   ∀ X : Finset V, IsLocalGramPacking H W d u X → w ∈ X
 
+/-- A demanded local packing at `u` which omits the candidate `w`. -/
+def HasLocalGramPackingAvoiding (H W : V → V → Prop) (d : V → ℕ)
+    (u w : V) : Prop :=
+  ∃ X : Finset V, IsLocalGramPacking H W d u X ∧ w ∉ X
+
+/-- The exact local alternative consumed by the Gram obstruction theorem. -/
+def HasLocalGramPackingObstruction (H W : V → V → Prop)
+    (d : V → ℕ) : Prop :=
+  (∃ u, ∀ X : Finset V, ¬ IsLocalGramPacking H W d u X) ∨
+  ∃ u v w, W u v ∧
+    IsForcedLocalGramNeighbor H W d u w ∧
+    IsForcedLocalGramNeighbor H W d v w
+
+omit [Fintype V] in
+/-- Forced membership is exactly the nonexistence of a demanded packing
+which omits the candidate. -/
+theorem isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) (u w : V) :
+    IsForcedLocalGramNeighbor H W d u w ↔
+      ¬ HasLocalGramPackingAvoiding H W d u w := by
+  constructor
+  · intro hforced ⟨X, hX, hw⟩
+    exact hw (hforced X hX)
+  · intro havoid X hX
+    by_contra hw
+    exact havoid ⟨X, hX, hw⟩
+
+omit [Fintype V] in
+/-- **Existential negation interface for the outer-design problem.**  The
+failure of the deficit/forced-collision alternative is precisely a demanded
+packing at every row together with an omitting packing at one endpoint for
+every conflicting pair and candidate. -/
+theorem not_hasLocalGramPackingObstruction_iff
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) :
+    ¬ HasLocalGramPackingObstruction H W d ↔
+      (∀ u, ∃ X : Finset V, IsLocalGramPacking H W d u X) ∧
+      ∀ u v w, W u v →
+        HasLocalGramPackingAvoiding H W d u w ∨
+        HasLocalGramPackingAvoiding H W d v w := by
+  constructor
+  · intro hno
+    constructor
+    · intro u
+      by_contra hpack
+      apply hno
+      left
+      refine ⟨u, ?_⟩
+      intro X hX
+      exact hpack ⟨X, hX⟩
+    · intro u v w huv
+      by_contra homit
+      have hnou : ¬ HasLocalGramPackingAvoiding H W d u w := by
+        intro hu
+        exact homit (Or.inl hu)
+      have hnov : ¬ HasLocalGramPackingAvoiding H W d v w := by
+        intro hv
+        exact homit (Or.inr hv)
+      apply hno
+      right
+      exact ⟨u, v, w, huv,
+        (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+          H W d u w).2 hnou,
+        (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+          H W d v w).2 hnov⟩
+  · rintro ⟨hpacks, homit⟩ (⟨u, hu⟩ | ⟨u, v, w, huv, huw, hvw⟩)
+    · obtain ⟨X, hX⟩ := hpacks u
+      exact hu X hX
+    · rcases homit u v w huv with hu | hv
+      · exact (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+          H W d u w).1 huw hu
+      · exact (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+          H W d v w).1 hvw hv
+
 /-- The neighborhood finset of an arbitrary decidable relation. -/
 def relationNeighborFinset (A : V → V → Prop) [DecidableRel A]
     (u : V) : Finset V :=
@@ -85,5 +158,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 
 #print axioms relationNeighborFinset_isLocalGramPacking
 #print axioms false_of_localGramPacking_deficit_or_forced_collision
+#print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+#print axioms not_hasLocalGramPackingObstruction_iff
 
 end Erdos85
