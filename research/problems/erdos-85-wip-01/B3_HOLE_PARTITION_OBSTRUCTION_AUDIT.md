@@ -1735,6 +1735,25 @@ integral certificate.  This is still a finite sampled statement: the
 remaining proof task is to recognize these signed bundle transfers uniformly,
 not to regard the three solver outputs themselves as the branch-3/4 theorem.
 
+The reusable analytic statement exposed by these ledgers is elementary.  Let
+`Delta_f(t,u)` be the external bundle boundary of candidate `u` at row `t`,
+and let `S(t,u)` be its selected-label support.  If integers `a_t,m_f` and
+nonnegative integers `c_tb` obey
+
+```text
+a_t + sum_f m_f Delta_f(t,u) + sum_{b in S(t,u)} c_tb >= 0
+                                                        for every (t,u),
+sum_t a_t d_t + sum_{t,b} c_tb < 0,                    (12ro)
+```
+
+then no normalized bundle-conserving matching flow exists.  Indeed, multiply
+the first line by its nonnegative candidate marginal and sum.  Row
+normalization replaces the first term by `sum a_t d_t`, bundle conservation
+kills the second, and the unit label capacities bound the last term above by
+`sum c_tb`, contradicting the second line.  Thus the remaining uniform B.3
+task has a precise combinatorial form: construct the `(12ro)` weights from
+the three equality-pattern types without solving an instance-specific MILP.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
