@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from pathlib import Path
 
 from z3 import And, Bool, If, Implies, Not, Or, Sum, is_true, sat, unknown
 
@@ -196,6 +197,7 @@ def main() -> int:
     parser.add_argument("--symmetric", action="store_true")
     parser.add_argument("--max-rounds", type=int, default=100)
     parser.add_argument("--random-seed", type=int, default=0)
+    parser.add_argument("--witness", type=Path)
     args = parser.parse_args()
 
     build_started = time.time()
@@ -207,6 +209,16 @@ def main() -> int:
                                   and not args.symmetric,
                                   symmetric=args.symmetric)
     solver.set(random_seed=args.random_seed)
+    if args.witness is not None:
+        witness = json.loads(args.witness.read_text())
+        fixed_blocks = [set(block) for block in witness["blocks"]]
+        fixed_k = {edge_key(*edge) for edge in witness["k_edges"]}
+        for u in range(N):
+            for b in range(N_U1):
+                variable = counts["incidence"][u, b]
+                solver.add(variable if b in fixed_blocks[u] else Not(variable))
+        for edge, variable in counts["k"].items():
+            solver.add(variable if edge in fixed_k else Not(variable))
     build_elapsed = time.time() - build_started
     if args.lazy or args.lazy_reciprocity or args.lazy_one_row:
         from itertools import combinations
@@ -229,7 +241,8 @@ def main() -> int:
                 if result == unknown:
                     print(f"reason_unknown={solver.reason_unknown()}")
                     return 2
-                candidate = "13t" if args.lazy_reciprocity else "13f"
+                candidate = ("one_row_trichotomy" if args.lazy_one_row else
+                             "13t" if args.lazy_reciprocity else "13f")
                 print(f"candidate_{candidate}_negation=UNSAT_UNCERTIFIED")
                 return 0
             model = solver.model()
@@ -277,7 +290,20 @@ def main() -> int:
                     bad_rows = [u for u in range(N) if not any(
                         all((w not in packing or u in possible[w]) and
                             (w in packing or u not in forced[w])
-                            for w in range(N)) for packing in feasible[u])]
+                        for w in range(N)) for packing in feasible[u])]
+                    interval_profiles = {
+                        u: {
+                            "forced": sorted(w for w in range(N)
+                                             if u in forced[w]),
+                            "impossible": sorted(w for w in range(N)
+                                                 if u not in possible[w]),
+                            "impossible_candidates": sorted(
+                                w for w in candidates[u]
+                                if u not in possible[w]),
+                            "packing_count": len(feasible[u]),
+                        }
+                        for u in bad_rows
+                    }
                     new_rows = [u for u in bad_rows
                                 if u not in counts["added_one_row_clauses"]]
                     horns = bad_rows + collisions
@@ -296,6 +322,9 @@ def main() -> int:
             if args.lazy_reciprocity or args.lazy_one_row:
                 print(f"lazy_round={round_number + 1} {label}="
                       f"{len(collisions)} new={len(new_obstructions)}")
+                if args.lazy_one_row and bad_rows:
+                    print("interval_profiles=" + json.dumps(
+                        interval_profiles, separators=(",", ":")))
             else:
                 print(f"lazy_round={round_number + 1} {label}={len(horns)} "
                       f"new={len(new_obstructions)}")
