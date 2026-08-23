@@ -23570,3 +23570,61 @@ never recur three times, and its only possible double recurrence is not an
 arbitrary nested pinch but an equal-length, equal-syndrome antipodal pair.
 This sharply limits the repeated-edge alternative remaining after
 Sections 437--438.
+
+## 440. The antipodal exception is saturation or an exact doubled simple cycle
+
+The equal-half exception in Section 436 also has a complete normal form.
+Suppose one base vertex `v` occurs twice antipodally on the minimum
+tag-even PC walk, so
+
+```text
+W=A B,       |A|=|B|=L/2,                         (1576)
+```
+
+with both arcs closed at `v`.  First suppose `A` is color-pinched at its
+closure.  Distinct first and last base edges immediately saturate their
+common exterior color at `v`.  If those boundary edges are the same
+physical edge, strip them as in Section 437.  The inner walk has length
+`|A|-2`, so doubling a properly closing inner walk would have length
+
+```text
+2(|A|-2)=L-4<L.                                   (1577)
+```
+
+Minimality again forces a nested pinch, and the finite stripping argument
+ends at distinct same-color edges.  Hence every pinched antipodal half
+still exposes genuine color saturation.
+
+It remains that `A` closes properly.  Then `A` is a PC closed walk.  Let
+`p` be its root/tag syndrome.  One has
+
+```text
+p!=0,                                             (1578)
+```
+
+because `p=0` would make `A` a shorter tag-even PC walk.  Traversing `A`
+twice produces another minimum tag-even PC walk
+
+```text
+W':=A A,       |W'|=L,       syndrome(W')=p+p=0.  (1579)
+```
+
+If `A` repeated any base vertex internally, the corresponding split in
+`W'` would have length strictly below `L/2`; Sections 436--437 would then
+force a saturated-color vertex.  Thus, in the nonsaturated branch, `A` is
+a simple base cycle.  Combining all cases gives the final minimum-walk
+dichotomy
+
+```text
+a simple tag-even PC base cycle already exists; or
+W exposes two distinct incident edges saturating one exterior color; or
+W may be replaced by Q Q, where Q is one simple PC base cycle
+with one nonzero root/tag syndrome p.              (1580)
+```
+
+The last alternative is the unique parity-degenerate obstruction: its
+tag cancellation comes solely from traversing the same nonzero-syndrome
+simple cycle twice.  All avoidance conditions pass to `Q`.  Thus the
+large-parameter selection problem is reduced to excluding a local
+saturated-color pinch or this exact doubled-cycle square; arbitrary
+repeated-state walks no longer remain.
