@@ -1440,6 +1440,50 @@ above.  Hence neither bounded branching nor an empty degree-two core follows
 from the outer axioms.  The component-shape output remains a useful
 regression diagnostic, but (12qy)--(12qz) are not proof targets.
 
+The seed-8 loop identifies exactly which information was lost.  Both
+orientations of the reciprocal pair can occur in a cardinality-five local
+matching (forcing the indicated candidate still permits packing six).  For
+row 6, using candidate 19 deletes its other selected label 8 from an external
+matching and lowers the external rank from six to five.  That orientation
+pays one unit of deletion.  For row 19, using candidate 6 deletes label 14,
+but the external rank remains five; this reverse orientation has zero
+deletion cost and therefore cannot be dismissed by (12qq) alone.
+
+It is nevertheless not a zero incidence-price transition.  Candidate 6 in
+row 19 consumes selected labels `{14,22}`, whereas the incoming own support
+of row 19 is `{8,22}`.  The shared-label states cancel exactly:
+
+```text
+r_(19,22) = r_(6,22) = (1,0,1,0,1),
+```
+
+but the two secondary fiber states are
+
+```text
+r_(19,14) = (2,0,0,0,1),
+r_(6,8)   = (2,0,0,1,0).                                (12ra)
+```
+
+Thus the flat graph retained the shared own flag and discarded the
+nonshared-label bundle which a candidate consumes.  For an exact replacement,
+attach to every transition `t->u` the signed multisets
+
+```text
+B^+(t,u) = {(signature(t), iota_tb, r_tb) : b in S_u intersect C},
+B^-(t,u) = {(signature(u), iota_ub, r_ub) : b in S_t intersect C}.
+                                                               (12rb)
+```
+
+The incidence part of its Farkas vector is precisely the feature-count
+difference `B^+(t,u)-B^-(t,u)` (with the chosen monotone feature expansion),
+while alpha records the root-signature boundary.  Any genuine failed
+separator must balance these **whole bundles** across its fractional local
+matchings.  The corrected structural target is therefore a hypergraph-flow
+classification for balanced bundle boundaries (12rb), coupled to the
+external deletion loss—not bipartiteness of the one-shared-flag projection.
+The seed-8 self-loop is broken immediately by the pair-high/pair-other census
+swap in (12ra).
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
