@@ -139,6 +139,92 @@ theorem orderNine_order34_explicitPartition_of_full_boundary
     · omega
     · exact ⟨hpart, hb₁, hb₂, hb₃⟩
 
+/-- All low-set statistics needed by the outer profile shell, derived from
+the oriented order-34 partition and FullType data. -/
+theorem orderNine_order34_lowSet_profile_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (S : Finset V) (hScard : S.card = 34)
+    (hfull : orderNineArticulationSmallShoreFullType G
+      ((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) h₁ h₂ h₃ S)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ S).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ S).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ S).card = 4)
+    (hSsub : S ⊆ (Finset.univ : Finset V) \ {h₁, h₂, h₃})
+    (hownerNotS : owner ∉ S)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) :
+    let Z := orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3
+    Z.card = 18 ∧
+      (∑ z ∈ Z, squareOrderHighIncidenceCount G 9 z) = 18 ∧
+      owner ∈ Z ∧ (G.neighborFinset owner ∩ Z).card = 4 ∧
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1).card = 3 ∧
+      (G.neighborFinset owner ∩ S).card = 3 := by
+  classical
+  dsimp only
+  let Z := orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3
+  have hSH : Disjoint S ({h₁, h₂, h₃} : Finset V) := by
+    rw [Finset.disjoint_left]
+    intro x hxS hxH
+    exact (Finset.mem_sdiff.mp (hSsub hxS)).2 hxH
+  have hdata := orderNine_order34_lowSet_card_and_high_incidence
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S hScard hpart
+      hhigh₁ hhigh₂ hhigh₃ hSH hdegOrd hdegHigh hdefectHighIsolated
+  dsimp only at hdata
+  have hZsub : Z ⊆ (Finset.univ : Finset V) \
+      squareOrderHighVertices G 9 := by
+    intro x hx
+    have hx' := orderNineOrdinaryLowSet_subset G h₁ h₂ h₃ S 3 hx
+    simpa [hH] using hx'
+  have hownerTriple : owner ∉ ({h₁, h₂, h₃} : Finset V) := by
+    have hownerOrd := (Finset.mem_filter.mp howner).1
+    simpa [hH] using (Finset.mem_sdiff.mp hownerOrd).2
+  have hownerDefect :
+      ((secondOrderDefectGraph G).neighborFinset owner ∩ S).card = 2 := by
+    have htotal := hfull.2.2.2 hScard
+    have hownerInfo := squareOrderNine_threeHigh_secondProfile_owner_defect_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+    dsimp only at hownerInfo
+    rw [hownerInfo.2.1]
+    simpa [Finset.inter_assoc] using htotal
+  have hownerZcard : (G.neighborFinset owner ∩ Z).card = 4 :=
+    orderNine_order34_owner_lowSet_degree_eq_four
+      G hfree h₁ h₂ h₃ owner S hScard hpart hhigh₁ hhigh₂ hhigh₃
+        hSH hdegOrd hdegHigh hownerTriple hownerNotS hownerDefect
+  have hownerMem : owner ∈ Z :=
+    orderNine_secondProfile_owner_mem_order34_lowSet
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4
+        h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH owner howner Z hZsub
+        hdata.1 hdata.2.1 hdata.2.2.1 hdata.2.2.2 hownerZcard
+  have hsum := orderNine_lowSet_highIncidence_sum_eq_eighteen
+    G h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH Z
+      hdata.2.1 hdata.2.2.1 hdata.2.2.2
+  have hownerB₁ : (G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 1).card = 3 :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner
+  have hownerS := orderNine_order34_owner_neighbor_inter_shore_card_eq_three
+    G h₁ h₂ h₃ owner S hpart hhigh₁ hhigh₂ hhigh₃ hownerMem
+  exact ⟨hdata.1, hsum, hownerMem, hownerZcard, hownerB₁, hownerS⟩
+
 /-- The four corrected local terminals, assembled behind the two profile
 dichotomies. -/
 theorem false_of_orderNine_order34_local_profile_of_corrected_punctured_data
