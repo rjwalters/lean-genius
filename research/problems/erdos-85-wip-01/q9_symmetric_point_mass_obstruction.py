@@ -755,6 +755,16 @@ def main() -> None:
                 })
         print("exceptional_three_row_supports=" + json.dumps({
             "count": len(certificates),
+            "normalized_class_pair_count": sum(
+                certificate["regular_rows"][0] < 8
+                and 8 <= certificate["regular_rows"][1] < 16
+                for certificate in certificates
+            ),
+            "normalized_class_pair_certificates": [
+                certificate for certificate in certificates
+                if (certificate["regular_rows"][0] < 8
+                    and 8 <= certificate["regular_rows"][1] < 16)
+            ],
             "certificates": certificates,
         }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support

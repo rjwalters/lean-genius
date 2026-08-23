@@ -519,6 +519,19 @@ row in one common block point: the first four hard payloads have respectively
 exceptional-three-row supports.  The uniform selector must therefore retain
 genuinely nonconcurrent three-row configurations.
 
+Regular-class type does give a real reduction.  Every hard payload has a
+certificate whose two regular rows consist of one normalized diagonal-class
+row `0..7` and one row of the first other regular class `8..15`; the counts
+are `24,8,2,23,9`.  The hard two-candidate payload is exactly the pair
+`{25,0,9}`, `{25,2,9}` of this type.  Intersecting the observed class-pair
+sets over all five payloads leaves only `(class 0,class 1)`.  The scanner now
+reports this subfamily separately as `normalized_class_pair_certificates`.
+Consequently the sharpest supported selector has only `2*8*8=128` shapes:
+choose an exceptional row, a normalized diagonal row, and a first
+off-diagonal-class row.  Finer block-intersection types have empty common
+intersection across the corpus, so no additional concurrency pattern should
+be imposed.
+
 The legacy alternative is to prove, from the outer design plus the exact
 exceptional-hole DTB complement partition, that a tight overlap fiber has a
 strict joint partner and then denominator-clear its two-fiber cover.  The
