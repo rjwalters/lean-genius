@@ -33,6 +33,87 @@ theorem orderNineOrdinaryLowSet_subset
       (Finset.univ : Finset V) \ {h₁, h₂, h₃} := by
   exact Finset.filter_subset _ _
 
+/-- The lower level contains exactly the complement, among the 78 ordinary
+centers, of the `r` upper-level centers. -/
+theorem orderNineOrdinaryLowSet_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V) (a r : ℕ)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R a r) :
+    (orderNineOrdinaryLowSet G h₁ h₂ h₃ R a).card = 78 - r := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+  let Z := O.filter fun x ↦ (G.neighborFinset x ∩ R).card = a
+  let U := O.filter fun x ↦ (G.neighborFinset x ∩ R).card = a + 1
+  change (∀ x, f x = a ∨ f x = a + 1) ∧
+    (Finset.univ.filter fun x ↦ f x = a + 1).card = r at hpart
+  have hHcard : H.card = 3 := by simp [H, h₁₂, h₁₃, h₂₃]
+  have hOcard : O.card = 78 := by
+    rw [show O = (Finset.univ : Finset V) \ H by rfl,
+      Finset.card_sdiff_of_subset (Finset.subset_univ H),
+      Finset.card_univ, hcard, hHcard]
+  let e : ↥(↑O : Set V) ↪ V := Function.Embedding.subtype _
+  have hmap :
+      (Finset.univ.filter fun x : ↥(↑O : Set V) ↦ f x = a + 1).map e = U := by
+    ext x
+    simp [e, U, f]
+    constructor
+    · rintro ⟨hxO, hx⟩
+      exact ⟨hxO, hx⟩
+    · rintro ⟨hxO, hx⟩
+      exact ⟨hxO, hx⟩
+  have hUcard : U.card = r := by
+    calc
+      U.card = ((Finset.univ.filter fun x : ↥(↑O : Set V) ↦
+          f x = a + 1).map e).card := congrArg Finset.card hmap.symm
+      _ = (Finset.univ.filter fun x : ↥(↑O : Set V) ↦
+          f x = a + 1).card := Finset.card_map e
+      _ = r := hpart.2
+  have hcover : Z ∪ U = O := by
+    ext x
+    constructor
+    · simp only [Finset.mem_union]
+      aesop
+    · intro hxO
+      have hlevels := hpart.1 ⟨x, hxO⟩
+      simpa [Z, U, f, hxO] using hlevels
+  have hdisj : Disjoint Z U := by
+    rw [Finset.disjoint_left]
+    intro x hxZ hxU
+    have hz := (Finset.mem_filter.mp hxZ).2
+    have hu := (Finset.mem_filter.mp hxU).2
+    omega
+  have hcards : Z.card + U.card = O.card := by
+    rw [← hcover, Finset.card_union_of_disjoint hdisj]
+  change Z.card = 78 - r
+  omega
+
+theorem orderNineOrdinaryLowSet_card_eq_thirty_of_upper48
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V) (a : ℕ)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R a 48) :
+    (orderNineOrdinaryLowSet G h₁ h₂ h₃ R a).card = 30 := by
+  simpa using orderNineOrdinaryLowSet_card G hcard h₁ h₂ h₃
+    h₁₂ h₁₃ h₂₃ R a 48 hpart
+
+theorem orderNineOrdinaryLowSet_card_eq_eighteen_of_upper60
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V) (a : ℕ)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R a 60) :
+    (orderNineOrdinaryLowSet G h₁ h₂ h₃ R a).card = 18 := by
+  simpa using orderNineOrdinaryLowSet_card G hcard h₁ h₂ h₃
+    h₁₂ h₁₃ h₂₃ R a 60 hpart
+
 /-- The two ordinary levels and matching high-root values combine into the
 global incidence identity `A 1_R = (a+1)1 - 1_Z`. -/
 theorem orderNineOrdinaryExplicitPartition_global_lowSet
