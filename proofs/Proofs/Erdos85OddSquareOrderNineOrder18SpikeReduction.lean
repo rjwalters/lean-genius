@@ -21,6 +21,50 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Evaluation of the high-spike form of audit equation (31) at a high
+root.  Defect-high isolation makes the left side zero, while the high root
+lies in neither ordinary shore. -/
+theorem orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (S H Z : Finset V) (c h : V)
+    (hhH : h ∈ H) (hhS : h ∉ S)
+    (hDzero : (D.neighborFinset h ∩ S).card = 0)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ S).card : ℤ) =
+        8 * (if v ∈ S then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) +
+          (if G.Adj v c then 1 else 0)) :
+    (G.neighborFinset h ∩ Z).card =
+      10 + if G.Adj h c then 1 else 0 := by
+  have heq := heq31 h
+  rw [hDzero] at heq
+  simp only [Nat.cast_zero, if_neg hhS, if_pos hhH] at heq
+  by_cases hadj : G.Adj h c <;> simp [hadj] at heq ⊢ <;> omega
+
+/-- Evaluation of the low-spike form of (31) at a high root.  It is best
+kept as `Z`-degree plus the spike incidence equals ten: each high root can
+lose at most the one slot charged to `c`. -/
+theorem orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (S H Z : Finset V) (c h : V)
+    (hhH : h ∈ H) (hhS : h ∉ S)
+    (hDzero : (D.neighborFinset h ∩ S).card = 0)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ S).card : ℤ) =
+        8 * (if v ∈ S then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v c then 1 else 0)) :
+    (G.neighborFinset h ∩ Z).card +
+      (if G.Adj h c then 1 else 0) = 10 := by
+  have heq := heq31 h
+  rw [hDzero] at heq
+  simp only [Nat.cast_zero, if_neg hhS, if_pos hhH] at heq
+  by_cases hadj : G.Adj h c <;> simp [hadj] at heq ⊢ <;> omega
+
 /-- The high-spike high-root equation forces the spike center to be
 high-free.  In cardinal form, equation (31) at a degree-ten high root says
 that its `Z`-degree is `10 + 1_[h~c]`; the degree bound leaves no room for
@@ -127,6 +171,8 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
+#print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
+#print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.false_of_orderNine_order18_highSpike_three_partners
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 
