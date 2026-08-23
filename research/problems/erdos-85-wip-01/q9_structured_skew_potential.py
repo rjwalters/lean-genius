@@ -593,6 +593,19 @@ def integer_dual_slack_profile(data: dict, nonzero: list[tuple]) -> tuple:
             tuple(exceptions))
 
 
+def fractional_dual_slack_profile(data: dict, nonzero: list[tuple]) -> tuple:
+    """Count tight and positive columns of a floating Farkas dual."""
+    (equalities, _, capacities, _, equality_names, capacity_names,
+     _) = full_bundle_primal_system(data)
+    values_by_name = dict(nonzero)
+    y = np.array([values_by_name.get(name, 0.0) for name in equality_names])
+    z = np.array([values_by_name.get(name, 0.0) for name in capacity_names])
+    values = np.asarray(equalities.T @ y + capacities.T @ z).ravel()
+    tight = int(np.sum(np.abs(values) <= 1e-7))
+    positive = int(np.sum(values > 1e-7))
+    return len(values), tight, positive, float(np.max(values, initial=0))
+
+
 def linear_state_bundle_dual(data: dict) -> tuple[bool, str]:
     """Test external-label potentials linear in signature and role census."""
     from scipy.sparse import hstack
@@ -1455,6 +1468,8 @@ def main() -> int:
                         help="test normalized matching flow with bundle equality")
     parser.add_argument("--audit-full-bundle-dual", action="store_true",
                         help="extract sparse duals for restricted-Hall survivors")
+    parser.add_argument("--print-full-dual", action="store_true",
+                        help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
                         help="search integer duals for restricted-Hall survivors")
     parser.add_argument("--audit-bounded-bundle-dual", action="store_true",
@@ -1658,12 +1673,16 @@ def main() -> int:
                 continue
             success, norm, nonzero, exact = sparse_full_bundle_dual(candidate)
             branch, seed_number, colors = label
-            displayed = nonzero if exact else nonzero[:20]
+            displayed = nonzero if exact or args.print_full_dual else nonzero[:20]
             print(f"full_bundle_dual branch={branch} seed={seed_number} "
                   f"colors={colors} success={success} l1={norm} "
                   f"nonzero_count={len(nonzero)} nonzero={displayed} "
-                  f"nonzero_truncated={not exact and len(nonzero) > 20} "
+                  f"nonzero_truncated={not exact and not args.print_full_dual and len(nonzero) > 20} "
                   f"exact_integer={exact}")
+            if success:
+                print(f"full_bundle_dual_slacks branch={branch} "
+                      f"seed={seed_number} colors={colors} "
+                      f"profile={fractional_dual_slack_profile(candidate, nonzero)}")
             dual_labels.append((label, success, exact, len(nonzero)))
         print(f"full_bundle_dual_survivors={dual_labels}")
         audit_failed |= any(not success or not exact

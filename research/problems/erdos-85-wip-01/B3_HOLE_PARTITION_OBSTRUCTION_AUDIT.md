@@ -1930,6 +1930,28 @@ The unresolved L1 searches mean `(12rv*)` remains conjectural.  They are the
 next computational targets; no pivot or coefficient-two restriction should
 be imposed on their duals.
 
+The first unresolved model is already a hard counterprofile to this strategy.
+For deterministic survivor `(3,21,(1,2))`, HiGHS reports the integer dual
+infeasible under coefficient bounds 2, 3, 4, and 5.  A 300-second unrestricted
+integer L1 search finds no incumbent.  The continuous L1 optimum exists, but
+has 607 nonzero rows; among its 772 candidate columns, 688 are tight and 84
+have positive slack (maximum about `3.277`).  Record this as
+
+```text
+HARD FULL-STATE COUNTERPROFILE:
+the current normalized bundle ledger can be infeasible while its available
+Farkas dual is dense, high-denominator, and broadly curved.              (12rw)
+```
+
+The bound-infeasibility and timeout statements are solver diagnostics, not
+formal UNSAT certificates, and `(12rw)` does not rule out an undiscovered
+sparse integral dual.  It does rule out promoting `(12rv*)` from a hope to a
+uniform mechanism on present evidence.  Certificate-pattern mining has now
+passed its useful stopping point: a proof must either derive an additional
+design identity that eliminates this hard equality model before the full
+ledger, or prove a structural integrality/certificate theorem not visible in
+the sampled duals.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
