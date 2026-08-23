@@ -15637,7 +15637,7 @@ with the edge indexed by that same active label:
 x(w) --[y_w]-- u -- ... -- t_w.                     (984)
 ```
 
-Combining (980) and (981), every transported occurrence has a
+Combining (983) and (984), every transported occurrence has a
 source-synchronized dual route
 
 ```text
