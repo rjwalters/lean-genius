@@ -164,20 +164,25 @@ tight-hub candidate survives—the model still has a tight point in the full
 cover intersection—but a proof cannot localize the averaging step to the two
 hole anchors.
 
-A possible full-intersection averaging route uses the banked Fubini exchange:
-restrict one common weighted cover to every fiber, then exchange the sum over
-fibers with the sum over price coordinates.  The first necessary multiplicity
-check is now explicit in the probe.  A reduced coordinate `(u,q)` belongs to
+A possible full-intersection averaging route would restrict one common
+weighted cover to every fiber, then exchange the sum over fibers with the sum
+over price coordinates.  No such cover-level Fubini theorem is currently
+banked: `sum_card_relationNeighborFinset_inter_fiber_eq_relationFiberLoad`
+exchanges cardinalities of a candidate relation, not point-price cover mass,
+and `card_le_totalWeight_of_pairwiseDisjointPointCover` is a row-local rank
+count.  The first necessary multiplicity check for a new bridge is explicit
+in the probe.  A reduced coordinate `(u,q)` belongs to
 the mask for overlap point `p` exactly when `p ∈ B_u` or `p=q`; on the durable
 genuine fixture the maximum multiplicity is four and the overlap has size
 eight, so `2 * maxMultiplicity ≤ |I|` holds sharply.  The three sharp
 coordinates arise from a triple block contained in `I` plus one incoming
 point outside that block.  Because blocks have size at most three, this bound
 is automatic once `|I| ≥ 8`; overlap sizes six and seven are the only
-nontrivial cases.  This does not yet prove tight-point existence: one must
-still construct a single common cover whose restriction is feasible for
-every fiber and whose total mass has the required bound.  An arbitrary joint
-cover for two chosen points does not visibly restrict to a third fiber.
+nontrivial cases.  This does not prove tight-point existence: one must first
+construct a single common cover whose restriction is feasible for every
+fiber and whose total mass has the required bound.  No current LP object has
+that property, and an arbitrary joint cover for two chosen points does not
+restrict to a third fiber.
 
 The exact continuous optimum in the preceding generated `p=9,q=21` model is
 `747/14 < 54`.
