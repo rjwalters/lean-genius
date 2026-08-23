@@ -17041,3 +17041,88 @@ them requires the factor-label holonomy retained in Section 326 rather
 than shore parity alone.  Equation (1094) isolates the shortest possible
 loss of expansion: a monotonicity proof must in particular price a return
 from a realized triple back to one of its singleton predecessors.
+
+## 328. The ten active labels carry a canonical two-axis holonomy skeleton
+
+The endpoint-occurrence caveat in Section 326 has an exact finite model.
+Let `Y_a^C` be the ten color-`a` labels active at `C`, and form their
+twenty target darts
+
+```text
+Ecal_e:={(y,t):y in Y_a^C, t in N_e(y)}.           (1095)
+```
+
+Write again `H=H_a^C` and `Hbar=F_a[e]\H`.  Every endpoint of an active
+edge has `H`-degree one or two.  Define an involution `sigma_e` on
+`Ecal_e` as follows.
+
+* If `deg_H(t)=2`, pair `(y,t)` with the dart of the other active label
+  at the same port `t`.
+* If `deg_H(t)=1`, follow the nontrivial `Hbar`-path from `t` to its other
+  endpoint `t'` and pair `(y,t)` with `(y',t')`, where `y'` is the unique
+  active label at `t'`.
+
+Both rules are symmetric, their cases are disjoint, and the second endpoint
+in either rule differs from the first dart.  Hence
+
+```text
+sigma_e:Ecal_e -> Ecal_e
+is a fixed-point-free involution.                   (1096)
+```
+
+Project each of its ten pairs through `(y,t)|->y`.  This gives a
+two-regular multigraph `Lambda_e` on `Y_a^C`: every label has degree two,
+one for each of its target darts.  A loop is allowed when an inactive
+path pairs the two target darts of the same label, and parallel edges are
+retained.  Each edge has a canonical actual lift, either
+
+```text
+y -- t -- y'                                       (deg_H(t)=2),
+```
+
+or
+
+```text
+y -- t --[Hbar path]-- t' -- y'                    (deg_H(t)=1). (1097)
+```
+
+The ten lifts are pairwise edge-disjoint in the `a--e` incidence graph.
+In particular, the inactive crossing paths used in Sections 319--323 are
+not anonymous: they are selected edges of the second type in this fixed
+two-factor skeleton.
+
+There is a parallel, simpler compression on the root side.  Let `kappa_c`
+pair the two active labels incident to each root of `C`, and let `nu_a^C`
+be the outside-path involution (1086).  Both are perfect matchings on
+`Y_a^C`.  Their union
+
+```text
+Lambda_c:=kappa_c union nu_a^C                     (1098)
+```
+
+is a two-regular multigraph whose cycles alternate between the two
+matchings and therefore all have even length.  Its matching edges also
+have disjoint actual lifts: a `kappa_c` edge is the two-step trail through
+its core root, and a `nu_a^C` edge is the outside return trail from
+Section 326.
+
+Consequently
+
+```text
+Omega_a^C:=Lambda_c union Lambda_e                 (1099)
+```
+
+is a canonically two-axis-colored four-regular multigraph on exactly ten
+private labels, counting loops and parallel edges with their usual
+multipities.  Within each axis its edges have pairwise disjoint ambient
+lifts, and the two axes use the different `a--c` and `a--e` incidence
+blocks.  The `c`-axis cycles are forced even; any unpaired holonomy is now
+confined to the explicitly realized `e`-axis cycles and their overlay with
+the two root matchings.
+
+This is a structural compression, not yet a contradiction.  It replaces
+the unbounded outside paths and the ambiguous endpoint-to-label projection
+by a fixed ten-vertex object while retaining every transition used to make
+the odd terminal shore and every return used in (1087).  A proposed
+`1 -> 3 -> 1` reversal from Section 327 must therefore appear as a marked
+walk in `Omega_a^C`; it can no longer be certified by shore parity alone.
