@@ -3323,6 +3323,34 @@ orthogonality predicate from a seed-free encoding and expose the remaining
 target as a statement about essential edges in matchings after one canonical
 neighborhood deletion.
 
+The essential-edge condition has an equivalent matching-rank test.  Let
+`mathcal H_t` denote the eligible block hypergraph in (13i), and assume its
+matching number meets the row demand.  Then
+
+```text
+w in F(t)
+iff every d(t)-matching of mathcal H_t contains B_w
+iff nu(mathcal H_t-B_w)<d(t).                              (13k)
+```
+
+The last equivalence is immediate: a demanded matching omitting `B_w` is
+exactly a demanded matching in the deletion.  Consequently the complete
+unrestricted candidate (13f) can be written without intersections over
+families of packings:
+
+```text
+some t has nu(mathcal H_t)<d(t); or
+some u,v,w satisfy B_u intersect B_v!=empty,
+  nu(mathcal H_u)>=d(u),       nu(mathcal H_v)>=d(v),
+  nu(mathcal H_u-B_w)<d(u),    nu(mathcal H_v-B_w)<d(v).        (13l)
+```
+
+Thus the second horn asks for one block whose deletion creates a simultaneous
+unit-or-larger matching deficit at two intersecting rows.  Equations
+(13i), (13k), and (13l) replace the nested universal quantifiers defining
+`F` by four ordinary matching-number comparisons, which is the natural form
+for a transversal dual or a seed-free finite encoding.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
