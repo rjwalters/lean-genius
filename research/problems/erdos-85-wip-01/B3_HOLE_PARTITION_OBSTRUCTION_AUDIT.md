@@ -4056,11 +4056,14 @@ four serious survivors, `13t` is the only payload whose cubic U1 core `K` is
 triangle-free; each other model has a strict rational full-fiber cover at a
 triangle vertex.  However this is false in the outer-only relaxation:
 branch-3 fresh seed 3 has triangle vertices `{4,8,19}` and none of their
-fibers is strict, although other points do have strict fibers.  Moreover even
-serious `13f` has no *integral* strict cover at a triangle vertex.  Thus a
-triangle-versus-triangle-free proof split remains plausible only if the
-triangle horn uses the local base-feasibility consequences and rational
-prices.  Triangle incidence alone is insufficient.
+fibers is strict, although other points do have strict fibers.  Exact
+enumeration additionally shows that every row of this payload has an
+eligible block-disjoint base packing of the demanded size.  Thus even
+triangle incidence plus rowwise local base feasibility is insufficient; a
+triangle horn would have to use stronger global symmetric-relation, Gram, or
+reverse-compatibility consequences.  Moreover serious `13f` has no
+*integral* strict cover at a triangle vertex, so rational prices remain
+necessary in that branch as well.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
