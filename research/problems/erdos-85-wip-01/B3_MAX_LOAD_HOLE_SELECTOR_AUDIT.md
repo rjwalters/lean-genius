@@ -377,6 +377,17 @@ maps are respectively `9↦{0,1,11}`, `3↦{10,12,22}` / `12↦{3,10,22}` /
 Future payloads therefore falsify the preferred lemma with one explicit
 boolean rather than requiring manual inspection of every pair optimum.
 
+The collision cannot be read from the coarsest two-fiber incidence counts.
+Across all five payloads, grouping each pair by (i) the number of common rows
+in its two five-row fibers and (ii) the number of residual-host edges crossing
+between those fibers produces many mixed groups containing both strict and
+non-strict joint optima.  For example signature `(0,10)` contains four strict
+and ten non-strict pairs, while `(1,6)` contains two strict and nine
+non-strict pairs.  Even the exceptional signature `(1,14)` happens to be
+strict in its lone occurrence, but adjacent signatures are mixed.  Thus the
+uniform proof needs the weighted capacity/edge arrangement seen by the cover
+LP, not merely a shared-row or cross-edge cardinality threshold.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
