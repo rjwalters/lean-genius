@@ -1889,6 +1889,30 @@ in the outside-minority placement must therefore come from the cycle
 components or from how the paired endpoint occurrences interact with the
 residual M incidence, not from endpoint-mark parity alone.
 
+The two odd bundles in the inside-minority placement are coupled by an
+actual T-cycle.  The empty-line routing and the complete F--E core give
+
+```text
+N_T(E_0) = {F_1,F_2}.                                    (73rs)
+```
+
+Every edge of a finite Eulerian graph lies on a cycle.  Since these are the
+only two T-edges at `E_0`, a simple T-cycle containing `E_0F_1` must leave
+`E_0` through `E_0F_2`.  Removing `E_0` from that cycle gives a T-path
+
+```text
+F_1 -- u_1 -- ... -- u_2 -- F_2,
+u_i in U_i,                                               (73rt)
+```
+
+The first and last internal vertices are ordinary by (73rq); later vertices
+may revisit other exceptional centers through M, so no stronger cleanliness
+is claimed.  Nevertheless the two disjoint odd bundles are not merely
+parity-correlated: at least one port of each lies on the same T transport
+path.  A terminal may now compare the residual owner/incidence data at the
+two ends of this path, rather than trying to orient every element of `U_1`
+and `U_2` separately.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
