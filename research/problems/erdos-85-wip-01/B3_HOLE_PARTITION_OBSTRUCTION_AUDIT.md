@@ -3746,10 +3746,12 @@ Raw optimizer output does not determine the minimum certificate denominator.
 For example, branch 4, seed 1, row 0 was first emitted with quarter weights,
 but exact integer SMT also finds a scale-two certificate: labels
 `{3,6,8,13,19,20,22}` have numerator one and label 9 has numerator two,
-for total numerator `9 < 2*5`.  Scale one is infeasible.  Thus this profile
-requires a genuinely fractional cover but does not refute the sampled
-possibility that strict certificates can always be chosen half-integrally;
-any bounded-denominator or finite-template claim remains unproved.
+for total numerator `9 < 2*5`.  Scale one is infeasible.  By contrast, the
+durable branch-4 row-0 profile has scales one and two infeasible and first
+admits the displayed total-14 certificate at scale three.  Thus
+half-integrality is already false, while the weaker sampled possibility that
+strict certificates can always be chosen with denominator at most three
+remains unproved.
 This suggests a stronger prospective route: derive a fractional U1-point
 mass bound below `d(u)-|F_u|` at some row.  Its observed validity is sampled
 data; no uniform fractional bound is asserted.
