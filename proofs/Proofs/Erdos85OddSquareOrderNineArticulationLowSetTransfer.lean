@@ -882,6 +882,39 @@ theorem orderNine_order34_lowSet_degree_of_defect_shore
   simp [hzOrd] at hv
   by_cases hzR : z ∈ R <;> simp [hzR] at hv ⊢ <;> omega
 
+/-- Evaluating audit equation (23) at an ordinary bin-zero point whose eight
+defect neighbors stay on its own shore gives `Z`-degree two on either shore.
+This is the degree input used to eliminate the surviving placement in (26)
+and all placements in (27). -/
+theorem orderNine_order34_binZero_lowSet_degree_eq_two_of_defect_shore
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (h₁ h₂ h₃ z : V) (R : Finset V)
+    (hRcard : R.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 4)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hzOrd : z ∉ ({h₁, h₂, h₃} : Finset V))
+    (hdefectShore :
+      ((secondOrderDefectGraph G).neighborFinset z ∩ R).card =
+        if z ∈ R then 8 else 0) :
+    (G.neighborFinset z ∩
+      orderNineOrdinaryLowSet G h₁ h₂ h₃ R 3).card = 2 := by
+  classical
+  have hv := orderNineOrdinaryExplicitPartition_defect_lowSet_eq_nearRegular
+    G hfree h₁ h₂ h₃ R 3 60 hpart hhigh₁ hhigh₂ hhigh₃
+      hRH hdegOrd hdegHigh z
+  rw [hRcard, hdefectShore] at hv
+  simp [hzOrd] at hv
+  by_cases hzR : z ∈ R <;> simp [hzR] at hv <;> omega
+
 /-- Removing the owner contribution and a zero-neighbor `P` part from the
 low-set degree gives audit equation (25): `W`-degree zero on the order-34
 shore and one off it. -/
