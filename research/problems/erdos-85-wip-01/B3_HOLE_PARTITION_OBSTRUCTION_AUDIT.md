@@ -4211,9 +4211,20 @@ sum_(p in P) C_p < 27 |P| + 6.
 
 Indeed the special mass on `P` is exactly six, so failure of every strict
 candidate would reverse this inequality term by term.  The remaining work is
-therefore a genuine aggregate cover-price bound on `P`, not another point-
-existence argument.  These theorems do not assert that price bound; the price
-alternative (13ak) remains exactly the missing branch-4 cover statement.
+not, however, reducible to this sufficient aggregate bound.  A ten-seed
+unrestricted branch-4 outer-design probe found seed 4 with six distinct
+special points and
+
+```text
+sum_(p in P) C_p - (27 |P| + 6) = approximately 0.1731 > 0,
+```
+
+even though that same design still has individual strict special candidates.
+Thus raw special-point averaging is false already at the exact outer `Q,K`
+layer, just as the earlier hole averages were false.  The arithmetic theorem
+remains a valid optional consumer if stronger actual-relation structure later
+forces its hypothesis, but (13ak) itself requires a nonuniform selector or a
+strictly sharper coupled inequality.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
