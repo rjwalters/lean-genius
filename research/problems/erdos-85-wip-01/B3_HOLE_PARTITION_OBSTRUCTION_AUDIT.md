@@ -3951,9 +3951,30 @@ fresh branch-3 cases are the paired certificates above.  By contrast, none
 of the four stored, locally feasible survivor payloads has any strict
 one-row mutual-eligibility cover.  Hence the eight random single-row kills
 are useful regressions but not representative of an actual-graph survivor.
-The serious global coupling evidence is the stored corpus: branch 4 and the
-fractional-gap payload have paired certificates, whereas `13f` and `13t`
-currently require broader prices.
+The serious global coupling evidence is the stored corpus: branch 4, the
+fractional-gap payload, and `13f` have paired certificates, while `13t` has
+an exact four-row certificate.
+
+Sparse-support minimization and a fiber-directed retry sharpen this further.
+In `13t`, a minimum four-row support is exactly the four non-diagonal B0
+blocks through point 0; the same full non-diagonal-fiber template also gives
+certificates at points 13 and 17.  The fractional-gap payload has successful
+non-diagonal fibers at points 9 and 12, and the durable branch-4 payload has
+nine successful fibers, at points `3,4,6,12,13,18,19,20,23`.  Thus three of
+the four serious survivors admit prices supported inside the canonical
+four-row set
+
+```text
+{u : p in B_u} minus {the fixed diagonal triple at p}.         (13ag)
+```
+
+The sole exception is `13f`: no non-diagonal fiber supports a certificate,
+but an exact two-row dual exists on diagonal triple row 7 and disjoint pair
+row 29.  This suggests a much more concrete prospective dichotomy than
+arbitrary sparse support: some U1 point has a bad non-diagonal fiber (13ag),
+or a special diagonal/pair configuration supplies the price certificate.
+The fiber successes and the `13f` exception are still fixed-model evidence,
+not a proved classification.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
