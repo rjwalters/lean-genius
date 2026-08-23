@@ -25349,3 +25349,47 @@ degree-two `h_i` capacity.  Thus (1698)--(1700) turn the q-large obstruction
 into a packing of mutually remote centers with three genuinely populated
 cross-root color frontiers and separated payer support, rather than merely
 a repeated two-root pinch.
+
+## 479. Third-root spokes lift to distinct companions and many payer layers
+
+Retain the third root `u`, the center set `T'`, and its pairwise distinct
+spoke edges from Section 476.  Every such edge lies in the unsheltered
+full-root graph, so it has a canonical core-inactive offset payer at the
+single selected port `p_(u+2)`.  The payer map is injective on edges;
+hence the spoke family supplies
+
+```text
+|T'|>=ceil(c/2) distinct payer labels at p_(u+2). (1701)
+```
+
+Section 403 strengthens this at one fixed port: two distinct inactive
+payers meeting `p_(u+2)` cannot have the same outside companion, or that
+companion and the selected port would have two common payer neighbors.
+Therefore the spoke payers have pairwise distinct outside companions:
+
+```text
+|Comp_u(T')|=|T'|>=ceil(c/2).                     (1702)
+```
+
+The layer capacity at one offset port is at most two payer labels (and is
+only one in its strict-export layer).  Consequently the same spoke family
+uses at least
+
+```text
+ceil(|T'|/2)>=ceil(c/4) distinct payer layers.    (1703)
+```
+
+Combining (1690), (1702), and (1703), the cheap rainbow threshold (1692)
+gives, for every chosen unused root `u`, a third-root spoke family with
+
+```text
+at least ceil(c/2) distinct edges, payers, and outside companions,
+at least ceil(c/4) source colors,
+and at least ceil(c/4) canonical payer layers.    (1704)
+```
+
+The source-color and payer-layer sets need not be disjoint as abstract
+names, and no injectivity is claimed between those two coordinates.  The
+point is their simultaneous realization on the same literal spoke edges,
+with companion injectivity at one selected port.  This is companion/payer
+information absent from the scalable factor-only model of Section 473.
