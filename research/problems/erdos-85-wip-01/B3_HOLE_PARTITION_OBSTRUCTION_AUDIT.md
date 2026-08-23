@@ -3923,6 +3923,20 @@ the outer incidence/K equations remains open.  In light of the fourteen
 successful LP tests, (13af) is presently a cleaner uniform B.3 target than
 either the integral four-row classification or the reverse-interval route.
 
+The dual support is usually much smaller than this global formulation
+suggests.  Among the ten fresh outer payloads, eight admit an exact dual with
+only one nonzero row price.  The other two admit exact two-row support: in
+branch 3 seed 0 the priced rows have degrees `(5,5)` and their blocks share
+point 3; in branch 3 seed 3 their degrees are `(5,6)` and their blocks again
+share point 3.  The stored branch-4 and fractional-gap payloads also admit
+two-row certificates on intersecting blocks.  Only the two older stored
+branch-3 payloads failed the current one/two-row price search and require
+larger support under the present optimizer; this is not a lower-bound proof
+on their support.  A plausible structural refinement of (13af) is therefore:
+some row has a local fractional mutual-eligibility deficit, or some
+same-U1-point pair has a coupled two-row deficit, with a separate branch-3
+residual if those two alternatives genuinely fail.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
