@@ -4811,3 +4811,46 @@ successive isolated marks—most plausibly by showing that the alternating
 phase pairs equal labels in opposite signed cells.  Whether two occupied
 cells in one row or column may share a label remains an open incidence
 constraint; it is not decided by (275) alone.
+
+## 89. Transpose kills the crossed channel and preserves the diagonal one
+
+For each third color define its two signed Hadamard contributions
+
+```text
+alpha_d := k_d^{--} - k_d^{++},
+beta_d  := k_d^{+-} - k_d^{-+}.                       (277)
+```
+
+With the displayed minus/plus ordering fixed on both shores, reversal of the
+two-step routing replaces `K_d` by `K_d^T`.  Therefore
+
+```text
+alpha_d(K_d^T) =  alpha_d(K_d),
+beta_d(K_d^T)  = -beta_d(K_d).                        (278)
+```
+
+Thus the two halves in (273) have opposite transpose character.  The
+crossed half is already antisymmetric: whenever the global ledger contains
+both orientations of the same labeled rectangle with equal weight, their
+`beta_d` contributions cancel.  The diagonal half is symmetric and doubles
+instead; transpose alone cannot remove it.
+
+This reduces the color-resolved closing problem from two channels to one.
+The remaining alternating phase need only control
+
+```text
+sum_d alpha_d = sum_d (k_d^{--}-k_d^{++}),            (279)
+```
+
+the difference between same-label routing at the two diagonal cells.  Any
+failure of global crossed cancellation must now be exhibited as a failure
+to pair the reversed labeled rectangles with equal weight, not as an
+intrinsic sign defect of `beta_d`.  Conversely, even perfect transpose
+pairing leaves (279) untouched, so the diagonal label transport is the sole
+genuine phase obstruction.
+
+Equation (278) is algebraic and does not assert that the required reversed
+rectangles occur among the isolated marks.  Establishing that occurrence
+and weight pairing is part of simultaneous self-indexing; once it is
+available, only the transpose-even diagonal channel must be propagated
+along `B_ec`.
