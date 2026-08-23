@@ -8,6 +8,28 @@ namespace Erdos85
 
 noncomputable section
 
+private theorem degree_induce_finset_eq_card_inter_local
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (A : Finset V)
+    (x : ↑(↑A : Set V)) :
+    (G.induce (↑A : Set V)).degree x =
+      (G.neighborFinset x.1 ∩ A).card := by
+  classical
+  rw [← (G.induce (↑A : Set V)).card_neighborFinset_eq_degree]
+  apply Finset.card_bij (fun y _ => y.1)
+  · intro y hy
+    have hxy : G.Adj x.1 y.1 :=
+      ((G.induce (↑A : Set V)).mem_neighborFinset x y).mp hy
+    exact Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset x.1 y.1).mpr hxy, Finset.mem_coe.mp y.2⟩
+  · intro y₁ _ y₂ _ heq
+    exact Subtype.ext heq
+  · intro y hy
+    have hy' := Finset.mem_inter.mp hy
+    refine ⟨⟨y, Finset.mem_coe.mpr hy'.2⟩, ?_, rfl⟩
+    exact ((G.induce (↑A : Set V)).mem_neighborFinset _ _).mpr
+      ((G.mem_neighborFinset x.1 y).mp hy'.1)
+
 /-- If a shore is closed after deleting `owner`, all ambient neighbors stay
 inside `O`, and precisely the exceptional vertices are adjacent to `owner`,
 then its oriented defect boundary is exactly the number of exceptional
@@ -110,9 +132,86 @@ theorem exists_articulation_scale_of_three_mul_regular_eq_five_mul_binOne
   · omega
   · omega
 
+/-- Internal handshake for the bin-zero part of an articulation side.
+Exceptional vertices have seven internal bin-zero neighbors and regular
+vertices have five.  Hence `7e+5r` is twice an edge count and is at most the
+complete-graph directed degree bound `n₀(n₀-1)`. -/
+theorem articulation_binZero_internal_handshake
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (B₀ E : Finset V)
+    (hEB₀ : E ⊆ B₀)
+    (hE : ∀ x ∈ E, (D.neighborFinset x ∩ B₀).card = 7)
+    (hR : ∀ x ∈ B₀ \ E, (D.neighborFinset x ∩ B₀).card = 5) :
+    ∃ m : ℕ,
+      2 * m = 7 * E.card + 5 * (B₀.card - E.card) ∧
+      7 * E.card + 5 * (B₀.card - E.card) ≤
+        B₀.card * (B₀.card - 1) := by
+  classical
+  let H := D.induce (↑B₀ : Set V)
+  let f : V → ℕ := fun x => (D.neighborFinset x ∩ B₀).card
+  have hsum : ∑ x ∈ B₀, f x =
+      7 * E.card + 5 * (B₀.card - E.card) := by
+    have hsplit := Finset.sum_sdiff hEB₀ (f := f)
+    calc
+      ∑ x ∈ B₀, f x = (∑ x ∈ B₀ \ E, f x) + ∑ x ∈ E, f x :=
+        hsplit.symm
+      _ = 5 * (B₀ \ E).card + 7 * E.card := by
+        congr 1
+        · calc
+            ∑ x ∈ B₀ \ E, f x = (B₀ \ E).card * 5 := by
+              apply Finset.sum_eq_card_nsmul
+              intro x hx
+              exact hR x hx
+            _ = 5 * (B₀ \ E).card := by omega
+        · calc
+            ∑ x ∈ E, f x = E.card * 7 := by
+              apply Finset.sum_eq_card_nsmul
+              intro x hx
+              exact hE x hx
+            _ = 7 * E.card := by omega
+      _ = 7 * E.card + 5 * (B₀.card - E.card) := by
+        rw [Finset.card_sdiff_of_subset hEB₀]
+        omega
+  have hdegree (x : ↑(↑B₀ : Set V)) : H.degree x = f x.1 := by
+    exact degree_induce_finset_eq_card_inter_local D B₀ x
+  have hhand : ∑ x ∈ B₀, f x = 2 * H.edgeFinset.card := by
+    have hatt := Finset.sum_attach B₀ f
+    rw [← hatt]
+    calc
+      ∑ x : ↑(↑B₀ : Set V), f x.1 =
+          ∑ x : ↑(↑B₀ : Set V), H.degree x := by
+        apply Finset.sum_congr rfl
+        intro x _
+        exact (hdegree x).symm
+      _ = 2 * H.edgeFinset.card := H.sum_degrees_eq_twice_card_edges
+  have hpointBound : ∀ x ∈ B₀, f x ≤ B₀.card - 1 := by
+    intro x hx
+    have hsub : D.neighborFinset x ∩ B₀ ⊆ B₀.erase x := by
+      intro y hy
+      have hp := Finset.mem_inter.mp hy
+      exact Finset.mem_erase.mpr ⟨fun hyx => by
+        subst y
+        exact D.loopless.irrefl x ((D.mem_neighborFinset x x).mp hp.1), hp.2⟩
+    calc
+      f x ≤ (B₀.erase x).card := Finset.card_le_card hsub
+      _ = B₀.card - 1 := Finset.card_erase_of_mem hx
+  have hsumBound : ∑ x ∈ B₀, f x ≤
+      B₀.card * (B₀.card - 1) := by
+    calc
+      ∑ x ∈ B₀, f x ≤ ∑ _x ∈ B₀, (B₀.card - 1) := by
+        apply Finset.sum_le_sum
+        intro x hx
+        exact hpointBound x hx
+      _ = B₀.card * (B₀.card - 1) := by simp
+  refine ⟨H.edgeFinset.card, ?_, ?_⟩
+  · omega
+  · omega
+
 #print axioms sum_boundary_eq_card_exceptional_of_erase_owner_closed
 #print axioms three_mul_regular_eq_five_mul_binOne_of_erase_owner_closed
 #print axioms exists_articulation_scale_of_three_mul_regular_eq_five_mul_binOne
+#print axioms articulation_binZero_internal_handshake
 
 end
 
