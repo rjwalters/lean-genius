@@ -1845,6 +1845,32 @@ it is a path--cycle partial-Baer core of order `q/2-2` or `q/2-1`, decorated
 in the first placement by one forced two-edge T-star, and coupled through
 the residual M block to the fixed exceptional D-star (73ro).
 
+The `E_0 in S` case has two forced odd ordinary T-bundles.  Let `F_1,F_2`
+be the two outside full centers adjacent to `E_0`.  Evaluating the companion
+equation (70) at either `F_i` (where `x=-1`, `z=1`, and
+`(Az)_(F_i)=-1`) gives
+
+```text
+N_D(F_i) is contained in S.                               (73rp)
+```
+
+Its full line also lies in S.  Since `F_i E_0 in T` and T is Eulerian,
+
+```text
+N_T(F_i) = {E_0} disjoint_union U_i,
+U_i contained in M intersect S,
+|U_i| is odd and nonzero.                                 (73rq)
+```
+
+Here every other exceptional center is excluded by the two-case routing
+above.  Moreover `U_1` and `U_2` are disjoint: a common point would be a
+second common A-neighbor of `F_1,F_2` in addition to `E_0`, contradicting
+C4-freeness.  Thus the live inside-minority placement carries two disjoint
+odd ordinary T-port bundles.  Unlike the killed `h=f` case, the exceptional
+T-degree is two and these two odd remainders occur at distinct full centers;
+the next transport must couple them rather than seek a one-vertex parity
+contradiction.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
