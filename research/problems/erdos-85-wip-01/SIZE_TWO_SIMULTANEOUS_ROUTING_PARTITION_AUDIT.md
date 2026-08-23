@@ -13776,3 +13776,62 @@ component-vector lift (831).  The unresolved step is to compare the
 tickets at the two endpoints paired by an outside `A_e` path, or to tie one
 of their labels to the strict paths `u_i--z_i--v_i`; no compatibility of
 paired tickets is asserted here.
+
+## 269. Every residual port forces three exterior colors
+
+The ten private owner endpoints do not exhaust the outside target fiber.
+Define the residual set
+
+```text
+O:=e\(Z union B).
+```
+
+The three sets are disjoint, `|e|=2q`, `|Z|=5`, and `|B|=10`, so
+
+```text
+|O|=2q-15.                                           (846)
+```
+
+Fix `w in O`.  Since `w` belongs to none of the sets `T_h`, it belongs to
+no owner block `B_(x_i)`.  The exact partition (835) therefore assigns the
+cell `(x_i,w)` to a unique exterior routing color at **every** one of the
+five roots.  Let `a_i(w)` be that color and `y_i(w)` its unique intermediate
+label:
+
+```text
+x_i -- y_i(w) -- w,          i in Z/5.               (847)
+```
+
+The five labels in (847) are distinct.  Each meets a different root in
+`C`, while the pointwise bound (783) allows an exterior label at most one
+neighbor in `C`.  On the other hand, `w` has exactly two neighbors in each
+exterior component.  Hence no exterior color can occur more than twice in
+the five-root word:
+
+```text
+max_a |{i:a_i(w)=a}| <= 2.                           (848)
+```
+
+It follows that every residual port uses at least three exterior colors;
+its multiplicity pattern is one of
+
+```text
+2+2+1,       2+1+1+1,       1+1+1+1+1.              (849)
+```
+
+There are `r=q/2` component colors in total and only `r-2` exterior to the
+fixed endpoints `c,e`.  Therefore the existence of a five-port curl with
+`O` nonempty forces
+
+```text
+r-2>=3,       equivalently q>=10.                    (850)
+```
+
+In the binary-power regime this sharpens to `q>=16`.  In particular the
+uniform five-root word mechanism immediately excludes the `q=8`
+(order-64) specialization: there `|O|=1` but only two exterior colors are
+available, contradicting (848).  This is a q-generic corollary of integer
+SRP and the five-port geometry, not an order-64 census or certificate
+calculation.  For larger `q`, (847)--(849) supply `5(2q-15)` further actual
+label occurrences which any remaining owner-return construction must
+realize.
