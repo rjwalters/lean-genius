@@ -7754,3 +7754,49 @@ Equations (448)--(450) supply the topology missing from the separator branch:
 bounded local degree plus Eulerian closure.  What remains is to attach the
 profile/mate labels to these closed trails and show that either their marked
 holonomy cancels or a private capacity unit is consumed.
+
+## 147. Separator parity determines the lost constant and forces coverage
+
+For a separator `beta`, equation (435) says
+
+```text
+Q beta=c 1_Z                                           (451)
+```
+
+for some `c in F_2`.  Every active column `Q_u` has odd mass by (427), and
+`Z` has odd order.  Taking total mass in (451) therefore gives
+
+```text
+c=sum_u beta_u=|supp(beta)|  (mod 2).                 (452)
+```
+
+Thus the constant killed by the curvature operator is not ambiguous:
+
+```text
+even separator support  => Q beta=0,
+odd separator support   => Q beta=1_Z.               (453)
+```
+
+In the odd case, the selected column supports must cover every port of `Z`.
+Since each has order at most five,
+
+```text
+|supp(beta)| >= ceil(|Z|/5).                          (454)
+```
+
+If the distinguished selected atom `u_0` is saturated, its support has order
+exactly three by (438).  The remaining selected columns cover at most five
+new ports each, so the sharper bound is
+
+```text
+|supp(beta)| >= 1+ceil((|Z|-3)/5)                    (455)
+```
+
+for every odd separator containing `u_0`.
+
+Even separators are genuine zero-sum dependencies among the sparse columns;
+they need not cover the cycle, so no analogous size bound follows.  Hence
+the separator branch itself splits into two geometrically different
+topologies: a local even circuit with `Q beta=0`, or a global odd cover with
+`Q beta=1_Z`.  Both give Eulerian curvature incidence by Section 146, but
+the support parity records which constant class their closed trails carry.
