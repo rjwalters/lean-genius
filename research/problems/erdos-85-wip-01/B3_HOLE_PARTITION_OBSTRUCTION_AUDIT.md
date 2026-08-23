@@ -4816,7 +4816,7 @@ is absent solves the global minimum-row-support MILP and independently
 rationalizes a support-at-most-two price certificate.  It does not infer one
 horn from the other.
 
-All ten durable branch-4 payloads pass the unified audit.  The
+All eleven current durable branch-4 payloads pass the unified audit.  The
 fractional-collision-not-forced regression has no local horn and exact minimum
 price support `{24,45}`; the two-row-price-selector counterexample has the
 forced collision `(16,25; common 32)` and does not run the price fallback.
@@ -4946,6 +4946,10 @@ certificate as `HasTwoEqualRowSupportPointPriceCertificate` and consumes the
 whole disjunction with
 `false_of_localGramPackingObstruction_or_noDisjointPair_or_equalTwoRowPrice`.
 The corpus supports (13ax), but its outer-design selector is still unproved.
+An exhaustive rerun over all eleven stored `q9_branch4*.json` payloads
+confirms `valid_equal_weight_strengthened=true` in every case: ten close by
+the strengthened local horn, and only the fixed-and-joint counterexample
+uses the equal-price fallback.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
