@@ -3868,7 +3868,7 @@ Thus the special-leaf owner refinement has no remaining pairing ambiguity in
 the chosen normal form.  The one-leaf state forces a unique odd owner exit,
 while the two-leaf state realizes the cross-star through cell already
 isolated by (73rnz_an)--(73rnz_ap).  With (73rnz_cjibaa) and
-(73rnz_cjibba), every witness star has a fixed special-leaf/T-word profile,
+(73rnz_cjibba), every active witness star has a fixed special-leaf/T-word profile,
 independent of q; only the finer nonleaf subtype pairing remains.
 
 For witnesses that actually carry a special-leaf owner, even that finer
@@ -3946,39 +3946,55 @@ summands.  Thus the sink-side capacity question has reduced to comparing the
 marked owner summands with the single local bit `Theta_y`, the Baer analogue
 of the SRP half-flip/interval bit.
 
-These local transitions assemble into an Eulerian normal-form relay graph.
-Let R have one edge `vw`, labeled by y, for every broken-T pair `{v,w}` at
-witness y in any fixed completion of the normal form above.  Two different witnesses cannot create
-the same relay edge, because then v,w would have two common A-neighbors.
-Moreover every T-edge `vy` contributes exactly one occurrence of v to the
-pairing at y.  Therefore
+These local transitions must retain the active-witness mask.  Let `R_s` have
+one edge `vw`, labeled by y, for every broken-T pair `{v,w}` at an **active**
+witness `y in supp(s)` in any fixed completion of the normal form above.  Two
+different witnesses cannot create the same relay edge, because then v,w
+would have two common A-neighbors.  At a vertex v, one relay incidence is
+created for each active T-neighbor of v.  Therefore
 
 ```text
-deg_R(v)=deg_T(v)=0                                  (mod 2), (73rnz_cjibbh)
+deg_(R_s)(v)=(T s)(v)                                  (mod 2). (73rnz_cjibbh)
 ```
 
-so R is Eulerian.  All of its edges are non-A/non-D and retain their unique
-witness, owner, endpoint-subtype, and word-11 labels.  By
-(73rnz_cjibbf)--(73rnz_cjibbg),
+Thus `R_s` need not itself be Eulerian.  There is, however, a canonical exact
+Eulerization.  Put `S_s=supp(s)` and let `delta_T(S_s)` be its cut in the
+Eulerian graph T.  Since every T-degree is even, the boundary of this cut is
+`T s`, exactly the boundary in (73rnz_cjibbh).  Moreover its edges lie in A,
+whereas the relay edges are non-A, so the two edge sets are disjoint.  Define
 
 ```text
-|E(R) intersect E(K)|=sum_y Theta_y                  (mod 2). (73rnz_cjibbi)
+Q_s=R_s triangle delta_T(S_s).
+```
+
+Then `Q_s` is Eulerian.  The added T-cut has K-price zero because K is
+disjoint from A.  All relay edges retain their unique witness, owner,
+endpoint-subtype, and word-11 labels, while the added zero-price edges retain
+their T-cut label.  By (73rnz_cjibbf)--(73rnz_cjibbg), now summed only over
+active witnesses,
+
+```text
+|E(Q_s) intersect E(K)|=|E(R_s) intersect E(K)|
+ =sum_(y in supp(s)) Theta_y                          (mod 2). (73rnz_cjibbi)
 ```
 
 Thus every normal-form fine capacity ledger has the same exact cut/cycle terminal
-as the coarse D-chain: either `K restricted R` is a cut of each R-component,
-or R contains an owner-labeled cycle with odd K-holonomy.  Unlike the earlier
-coarse dichotomy, each R-edge is an actual owner/T-word relay and retains its
-labels; the remaining owner-free completion choice does not erase them.  The
-final task is now to exclude the cut potential on R or price one explicit odd
-owner-labeled holonomy cycle.
+as the coarse D-chain: either `K restricted Q_s` is a cut of each
+`Q_s`-component, or `Q_s` contains a labeled cycle with odd K-holonomy.  The
+zero-price T-cut edges are the necessary boundary payments; deleting them and
+calling `R_s` Eulerian would drop the mask `s=A(t x)`.  Each non-A edge of
+`Q_s` is an actual owner/T-word relay and retains its labels.  The final task
+is to exclude the cut potential on this augmented graph or price one explicit
+odd labeled holonomy cycle.
 
 The owner-free completion choice cannot hide another mechanism.  Consider a
 four-switch (73rnz_cjibc) using only non-special-leaf broken-T endpoints at
-one witness.  It preserves every prescribed owner relay.  If the K-weights
-of the two pairings differ, the two legal completions have opposite values of
-`|E(R) intersect E(K)|`; hence one completion has odd total K-price, and the
-Eulerian decomposition of R contains an odd-K labeled cycle.
+one active witness.  It preserves every prescribed owner relay, does not
+change the boundary `T s`, and hence leaves the same T-cut Eulerization in
+place.  If the K-weights of the two pairings differ, the two legal
+completions have opposite values of `|E(Q_s) intersect E(K)|`; hence one
+completion has odd total K-price, and the Eulerian decomposition of `Q_s`
+contains an odd-K labeled cycle.
 
 If no owner-free four-switch changes the K-price, the cocycle classification
 (73rnz_cjibe) applies on that fiber: its K-weight is an endpoint potential
@@ -3994,10 +4010,12 @@ In particular the unresolved nonleaf `F/E/M` and mate pairing from the scope
 correction cannot privately absorb an owner demand.  Either it produces the
 desired odd relay cycle immediately, or it can be summed away without losing
 capacity information.  The genuinely nonadditive residue is confined to the
-already fixed owner-bearing edges of R.
+already fixed owner-bearing edges of `R_s`.  This statement is local to the
+active stars; it makes no claim that an owner occurrence at an inactive
+witness has acquired a relay edge.
 
-On a private switch, the fixed owner-edge price has an exact source
-transport.  For the route
+On an **active** private switch, the fixed owner-edge price has an exact
+source transport.  For the route
 
 ```text
 E--L--y--G
@@ -4022,36 +4040,40 @@ Adding the two identities cancels the owner constants:
 1[EG in K]+1[LG in K]=rho_(E,G)+mu_(L,G).                (73rnz_cjibk)
 ```
 
-Thus moving the K-price from the empty-center source tag to the canonical
+Thus, provided its unique witness is active, moving the K-price from the empty-center source tag to the canonical
 leaf relay costs exactly two cross-matching atoms, with no residual unit
 charge.  This is the local label-preserving correction needed to insert the
-fixed switch edges of R into the already audited centerwise ledger
+fixed switch edges of `R_s` into the already audited centerwise ledger
 (73rnz_as)--(73rnz_aw).
 
-The same cancellation is uniform across the two-switch collision.  Let
-`S_(E,G)` be the set of realized leaf--port switches between the pole E and
-residual center G, and let `c_(E,G)=|S_(E,G)| mod 2` as before.  Summing
-(73rnz_cjibbf) over their canonical leaf--G relay edges gives
+For a collision the active mask leaves an exact residual.  Let `S_(E,G)` be
+the set of all realized leaf--port switches between the pole E and residual
+center G, let `S^act_(E,G)` be those whose unique witness lies in `supp(s)`,
+and write `c,c_act,c_inact` for their three cardinalities modulo two.  Thus
+`c=c_act+c_inact`.  Summing (73rnz_cjibbf) over the canonical leaf--G relay
+edges that actually occur in `R_s` gives
 
 ```text
-sum_(s in S_(E,G)) 1[L_s G in K]
- = c_(E,G)+sum_(s in S_(E,G)) mu_(L_s,G).
+sum_(a in S^act_(E,G)) 1[L_a G in K]
+ = c_act+sum_(a in S^act_(E,G)) mu_(L_a,G).
 ```
 
-Adding (73rnz_ar), `1[EG in K]=c_(E,G)+rho_(E,G)`, cancels the switch count:
+Adding (73rnz_ar), `1[EG in K]=c+rho_(E,G)`, leaves precisely the inactive
+switch parity:
 
 ```text
-1[EG in K]+sum_(s in S_(E,G)) 1[L_s G in K]
- = rho_(E,G)+sum_(s in S_(E,G)) mu_(L_s,G).              (73rnz_cjibka)
+1[EG in K]+sum_(a in S^act_(E,G)) 1[L_a G in K]
+ = c_inact+rho_(E,G)+sum_(a in S^act_(E,G)) mu_(L_a,G).  (73rnz_cjibka)
 ```
 
-This covers zero, one, or two realized switches.  In particular the 6-cycle
-collision contributes two fixed owner relays but no residual constant unit.
-All fixed switch-bearing edges of R are therefore transported into pure
-cross-matching atoms, collision included.
+Thus complete constant cancellation holds exactly when the inactive switch
+population is even.  In particular a private unique switch has the pure
+identity (73rnz_cjibk) only when it is active.  For a two-switch collision,
+zero, one, or two of its ports may be active; the parity of the inactive
+ports is a genuine source term, not a pairing artifact.
 
-The direct-exit and cross-star-through cells have the same cancellation.  On
-a direct ordinary exit
+The direct-exit and cross-star-through cells have the same **local active
+occurrence** cancellation.  On an active direct ordinary exit
 
 ```text
 E--L--y--z,
@@ -4065,7 +4087,7 @@ have the complement form `1+mu`, and
 1[Ez in K]+1[Lz in K]=mu_(E,z)+mu_(L,z).                 (73rnz_cjibkb)
 ```
 
-For a cross-star port y joining leaves `L_1,L_2`, the canonical owner relay
+For an active cross-star port y joining leaves `L_1,L_2`, the canonical owner relay
 has `1[L_1L_2 in K]=1+mu_(L_1,L_2)`.  The realized port is exactly one occupied
 cell of N, so its source bit cancels that complement unit:
 
@@ -4074,31 +4096,34 @@ cell of N, so its source bit cancels that complement unit:
  = mu_(L_1,L_2).                                        (73rnz_cjibkc)
 ```
 
-Thus every fixed owner-bearing relay in R -- switch, two-switch collision,
+Thus every active fixed owner-bearing relay in `R_s` -- switch, collision,
 direct ordinary exit, or cross-star through -- loses its universal unit
-against the actual source occurrence that created it.  After source
-transport, the entire nonadditive owner ledger consists only of explicitly
-labeled cross-neighborhood matching atoms (plus the source K-tags already
-present in (73rnz_as)--(73rnz_aw)).
+against the active source occurrence that created it.  Inactive occurrences
+have no edge in `R_s`; their source units remain explicitly in the ledger.
+This active/inactive residue is the exact activation issue and cannot be
+discarded by the local matching identities.
 
-One activation step is still genuinely missing.  Let `Psi_owner` be the
-vector in `F_2^{ {E_1,E_2} }` obtained from the labeled matching expressions
-on the right sides of (73rnz_cjibka)--(73rnz_cjibkc), retaining the pole owner
-of every occurrence (a cross-star through contributes to both labels).  The
-results above prove that every owner occurrence maps canonically into this
-vector; they do not prove the owner-resolved identity
+One activation step is still genuinely missing.  Let `Psi^hat_owner` be the
+vector in `F_2^{ {E_1,E_2} }` obtained from the active labeled matching
+expressions on the right sides of (73rnz_cjibka)--(73rnz_cjibkc), **together
+with the uncancelled inactive source terms** such as `c_inact`, retaining the
+pole owner of every occurrence (a cross-star through contributes to both
+labels).  The results above prove this corrected active/inactive transport;
+they do not prove the owner-resolved identity
 
 ```text
-Psi_owner=(1,1).                                        (73rnz_cjibkd GAP)
+Psi^hat_owner=(1,1).                                    (73rnz_cjibkd GAP)
 ```
 
 Indeed the earlier odd pole matching ledger (73rnz_cd) closed at its omitted
 adjacent endpoint (73rnz_ce), showing exactly why occurrence activation and
 odd price are different.  A marked relay may exist while its source-corrected
-K/matching price is zero.  The two pole demands form the nonzero diagonal
-class `(1,1)`; their unlabelled sum is necessarily zero, so no scalar mass
-identity can detect them.  The missing theorem must preserve this
-owner-resolved class through the source cancellations.  Only after
+K/matching price is zero; moreover an inactive occurrence need not enter the
+relay graph at all.  The two pole demands form the nonzero diagonal class
+`(1,1)`; their unlabelled sum is necessarily zero, so no scalar mass identity
+can detect them.  The missing theorem must preserve this owner-resolved class
+through both the active matching cancellations and the inactive source
+residue.  Only after
 (73rnz_cjibkd) is proved does an owner character (choose either pole label)
 give the odd labeled holonomy needed for a capacity contradiction.
 
