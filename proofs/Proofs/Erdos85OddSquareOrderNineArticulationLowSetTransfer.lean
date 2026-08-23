@@ -235,6 +235,52 @@ theorem orderNineOrdinaryExplicitPartition_defect_lowSet_eq_nearRegular
   · rw [hdegOrd x hxH]
     simp [hxH]
 
+/-- The concrete low-set data at the order-34 equality branch: the low set
+has 18 ordinary centers and every high root has exactly six neighbors in it. -/
+theorem orderNine_order34_lowSet_card_and_high_incidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V)
+    (hRcard : R.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 4)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) :
+    let Z := orderNineOrdinaryLowSet G h₁ h₂ h₃ R 3
+    Z.card = 18 ∧
+      (G.neighborFinset h₁ ∩ Z).card = 6 ∧
+      (G.neighborFinset h₂ ∩ Z).card = 6 ∧
+      (G.neighborFinset h₃ ∩ Z).card = 6 := by
+  classical
+  let Z := orderNineOrdinaryLowSet G h₁ h₂ h₃ R 3
+  have hZcard : Z.card = 18 := by
+    exact orderNineOrdinaryLowSet_card_eq_eighteen_of_upper60
+      G hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R 3 hpart
+  have heq := orderNineOrdinaryExplicitPartition_defect_lowSet_eq_nearRegular
+    G hfree h₁ h₂ h₃ R 3 60 hpart hhigh₁ hhigh₂ hhigh₃
+      hRH hdegOrd hdegHigh
+  have hroot (h : V) (hh : h ∈ ({h₁, h₂, h₃} : Finset V)) :
+      (G.neighborFinset h ∩ Z).card = 6 := by
+    have hnR : h ∉ R := by
+      intro hR
+      exact (Finset.disjoint_left.mp hRH) hR hh
+    have hv := heq h
+    rw [hdefectHighIsolated h hh] at hv
+    simp [hRcard, hh, hnR] at hv
+    dsimp only [Z] at hv ⊢
+    omega
+  exact ⟨hZcard,
+    hroot h₁ (by simp), hroot h₂ (by simp), hroot h₃ (by simp)⟩
+
 end
 
 end Erdos85
