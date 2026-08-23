@@ -4996,3 +4996,46 @@ must supply exactly this occurrence/weight matching.  Equation (283) turns
 that task into a finite group-action statement: construct the required
 `{1,T,C,CT}` orbits of color-labeled transition endpoints, or identify the
 unpaired orbit that carries the obstruction.
+
+## 93. Equal labels pass straight through a private port
+
+Return to one side `i in {-,+}` of the isolated mark.  Section 74 gives a
+mandatory boundary triangle at the run root `x_i`, using the private port
+`p_i`; let its unique third color be `r_i` and its intermediate port be
+`z_i`.  If the diagonal cell at the outward root `a_i` is occupied, Section
+90 gives the second triangle through the same private port, with label
+`d_i:=d_(ii)` and intermediate port `y_i`:
+
+```text
+x_i -- z_i -- p_i -- x_i,       color(z_i)=r_i,
+a_i -- y_i -- p_i -- a_i,       color(y_i)=d_i.        (284)
+```
+
+If `d_i=r_i=d`, then `z_i != y_i`.  Otherwise the two distinct `c`-roots
+`x_i,a_i` would have the two common neighbors `p_i` and `z_i=y_i`, giving
+an ambient four-cycle.  Since `p_i` has exactly two neighbors in component
+`d`, the pair `{z_i,y_i}` is exactly its `d`-fiber.  Equal labels therefore
+give a canonical straight-through pairing across the private port:
+
+```text
+boundary d-token at x_i  <-->  outward d-token at a_i. (285)
+```
+
+If `d_i != r_i`, the private port carries a genuine **color turn**: the two
+rooted transition tokens cannot cancel labelwise.  If the diagonal cell is
+absent, Section 91 is in the fiber-switch state and there is no outward
+token to pair with the boundary token.  Thus every side of an isolated mark
+has exactly one of three continuation types:
+
+```text
+straight label-preserving passage,
+color turn,
+owner-factor fiber switch.                            (286)
+```
+
+Only the last two types can contribute to an unpaired labeled orbit in
+Section 92.  Equation (285) removes all straight passages canonically,
+without choosing signs or paths.  The remaining global invariant may now be
+formulated as a balance between color turns and fiber switches along the
+alternating `B_ec` phase—the same signed bundle boundary that survives in
+the B3 lane.
