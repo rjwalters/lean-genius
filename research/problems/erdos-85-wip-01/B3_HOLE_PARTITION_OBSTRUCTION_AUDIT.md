@@ -4906,6 +4906,26 @@ submodular union-capacity proof cannot establish (13av): the surviving hard
 cases depend on internal incompatibility of the two row-capacity systems,
 consistent with the observed small local-packing families.
 
+There is, however, a sound intermediate strengthening of the local horn.
+Two conflicting rows in an actual residual graph must have *disjoint* full
+local neighborhood packings.  The older diagnostic tested this only for
+degree-five/degree-six exceptional selectors; it now uses each row's actual
+demand and scans every block-intersecting pair.  The fractional-not-forced
+fixture has three no-disjoint-pair obstructions, including `{10,24}` with
+packing-family counts `(41,1)`.  Seed 142 has two, `{1,14}` and `{17,23}`.
+Thus both models previously called price-only are already closed by a local
+configuration obstruction stronger than “common forced neighbor.”  The
+fixed-and-joint-selector counterexample has no such pair anywhere and still
+requires its two-row price certificate, so the price horn remains necessary.
+
+Lean now packages this exact refinement as
+`HasDisjointLocalGramPackingPairObstruction` and the three-way consumer
+`false_of_localGramPackingObstruction_or_noDisjointPair_or_twoRowPrice`.
+The remaining outer-design target can therefore use the strictly weaker
+price fallback obtained only after excluding every no-disjoint conflicting
+pair; this is an interface theorem, not yet a proof that every outer design
+satisfies the three-way disjunction.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

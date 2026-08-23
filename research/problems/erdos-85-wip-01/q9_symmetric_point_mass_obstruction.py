@@ -428,7 +428,7 @@ def fixed_two_row_shared_point_certificate(
 
 
 def disjoint_local_packing_pair(system: dict, regular: int, hole: int):
-    """Find disjoint integral block-packings of sizes five and six.
+    """Find disjoint integral block-packings of the two demanded row sizes.
 
     This deliberately omits cross-edge reciprocity between the two rows, so
     infeasibility proves the stronger hypothesis consumed by
@@ -448,7 +448,10 @@ def disjoint_local_packing_pair(system: dict, regular: int, hole: int):
     matrix = []
     lower = []
     upper = []
-    for offset, target in ((0, 5), (N, 6)):
+    for offset, target in (
+        (0, system["degree"][regular]),
+        (N, system["degree"][hole]),
+    ):
         row = np.zeros(variable_count)
         row[offset:offset + N] = 1
         matrix.append(row)
@@ -486,7 +489,9 @@ def disjoint_local_packing_pair(system: dict, regular: int, hole: int):
     first = {v for v in range(N) if result.x[v] > 0.5}
     second = {v for v in range(N) if result.x[N + v] > 0.5}
     valid = (
-        len(first) == 5 and len(second) == 6 and first.isdisjoint(second)
+        len(first) == system["degree"][regular]
+        and len(second) == system["degree"][hole]
+        and first.isdisjoint(second)
         and first <= regular_neighbors and second <= hole_neighbors
         and all(
             sum(point in system["blocks"][v] for v in selected) <= 1
@@ -1231,6 +1236,7 @@ def main() -> None:
             row for row in range(N) if local[row]["packing_count"] == 0
         ]
         forced_collisions = []
+        disjoint_pair_obstructions = []
         for u, v in combinations(range(N), 2):
             intersection = sorted(system["blocks"][u] & system["blocks"][v])
             if not intersection:
@@ -1248,7 +1254,22 @@ def main() -> None:
                     "first_packing_count": local[u]["packing_count"],
                     "second_packing_count": local[v]["packing_count"],
                 })
+            if (
+                local[u]["packing_count"]
+                and local[v]["packing_count"]
+                and disjoint_local_packing_pair(system, u, v) is None
+            ):
+                disjoint_pair_obstructions.append({
+                    "first": u,
+                    "second": v,
+                    "block_intersection": intersection,
+                    "first_packing_count": local[u]["packing_count"],
+                    "second_packing_count": local[v]["packing_count"],
+                })
         has_local_obstruction = bool(deficit_rows or forced_collisions)
+        has_strengthened_local_obstruction = bool(
+            has_local_obstruction or disjoint_pair_obstructions
+        )
         row_support = None
         price_certificate = None
         infeasible_two_row_projections = []
@@ -1290,6 +1311,9 @@ def main() -> None:
             "deficit_rows": deficit_rows,
             "forced_collisions": forced_collisions,
             "has_local_obstruction": has_local_obstruction,
+            "disjoint_pair_obstructions": disjoint_pair_obstructions,
+            "has_strengthened_local_obstruction":
+                has_strengthened_local_obstruction,
             "minimum_row_support": row_support,
             "infeasible_two_row_projections":
                 infeasible_two_row_projections,
@@ -1321,6 +1345,10 @@ def main() -> None:
             "has_exact_two_row_price": price_certificate is not None,
             "price_certificate": price_certificate,
             "valid": has_local_obstruction or price_certificate is not None,
+            "valid_strengthened": (
+                has_strengthened_local_obstruction
+                or price_certificate is not None
+            ),
         }, separators=(",", ":")))
     if args.scan_exceptional_three_row_supports:
         if system["branch"] != 3:

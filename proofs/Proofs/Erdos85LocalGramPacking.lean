@@ -44,6 +44,15 @@ def HasLocalGramPackingObstruction (H W : V → V → Prop)
     IsForcedLocalGramNeighbor H W d u w ∧
     IsForcedLocalGramNeighbor H W d v w
 
+/-- Two conflicting rows for which no pair of demanded local packings is
+disjoint.  This strictly extends the common-forced-neighbor local horn. -/
+def HasDisjointLocalGramPackingPairObstruction
+    (H W : V → V → Prop) (d : V → ℕ) : Prop :=
+  ∃ s t, W s t ∧ ∀ X Y,
+    IsLocalGramPacking H W d s X →
+    IsLocalGramPacking H W d t Y →
+    ¬ Disjoint X Y
+
 /-- A forced incidence whose reverse orientation is absent from every
 demanded local packing. -/
 def HasLocalGramPackingReciprocityObstruction
@@ -1608,6 +1617,20 @@ theorem false_of_no_disjointLocalGramPackingPair
     exact hgram s t v hst hsv htv
   exact (hnone X Y hX hY) hdisjoint
 
+/-- Existential wrapper for `false_of_no_disjointLocalGramPackingPair`. -/
+theorem false_of_disjointLocalGramPackingPairObstruction
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hbad : HasDisjointLocalGramPackingPairObstruction H W d) :
+    False := by
+  rcases hbad with ⟨s, t, hst, hnone⟩
+  exact false_of_no_disjointLocalGramPackingPair
+    A H W d hsymm hdegree hsupport hgram s t hst hnone
+
 /-- Three-way integral packing consumer.  If three pairwise-conflicting rows
 admit no choice of pairwise-disjoint full local packings, an actual residual
 relation cannot realize them: its three neighborhood finsets would be such a
@@ -2769,6 +2792,29 @@ theorem false_of_localGramPackingObstruction_or_twoRowPrice
       A H W d B hsymm hdegree hsupport hgram hshared
       s t a b pointPrice hnonneg hedge hstrict
 
+/-- Strengthened branch-4 consumer which also accepts the genuinely local
+obstruction that two conflicting rows admit no disjoint full packings. -/
+theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_twoRowPrice
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hbad : HasLocalGramPackingObstruction H W d ∨
+      HasDisjointLocalGramPackingPairObstruction H W d ∨
+      HasTwoRowSupportPointPriceCertificate H d B) :
+    False := by
+  rcases hbad with hlocal | hpair | hprice
+  · exact false_of_localGramPacking_deficit_or_forced_collision
+      A H W d hsymm hdegree hsupport hgram hlocal
+  · exact false_of_disjointLocalGramPackingPairObstruction
+      A H W d hsymm hdegree hsupport hgram hpair
+  · exact false_of_localGramPackingObstruction_or_twoRowPrice
+      A H W d B hsymm hdegree hsupport hgram hshared (Or.inr hprice)
+
 #print axioms relationNeighborFinset_isLocalGramPacking
 #print axioms false_of_no_disjointLocalGramPackingPair
 #print axioms false_of_no_pairwiseDisjointLocalGramPackingTriple
@@ -2777,6 +2823,7 @@ theorem false_of_localGramPackingObstruction_or_twoRowPrice
 #print axioms relationIndicator_isCanonicalFractionalIntervalExtension
 #print axioms false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_localGramPackingObstruction_or_twoRowPrice
+#print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_twoRowPrice
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
 #print axioms not_hasLocalGramPackingObstruction_iff
 #print axioms not_conflict_of_common_forcedLocalGramNeighbor
