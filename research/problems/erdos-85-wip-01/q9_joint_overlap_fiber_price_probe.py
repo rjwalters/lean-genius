@@ -308,7 +308,7 @@ def main() -> int:
             args.genuine_only, args.diagonal_rows, args.all_regular_classes)
         for seed in range(args.seed_start, args.seed_start + args.samples)
     ]
-    print(json.dumps(results, separators=(",", ":")))
+    print(json.dumps(results, separators=(",", ":"), default=str))
     passed = sum(result["certificate"] is not None for result in results)
     print(f"joint_overlap_price_selector={passed}/{len(results)}")
     return 0 if passed == len(results) else 1

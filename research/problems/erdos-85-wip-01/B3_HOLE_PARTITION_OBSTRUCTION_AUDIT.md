@@ -4351,6 +4351,29 @@ one-row obstruction.  The generic Lean theorem
 `obstruction_or_exists_good_positive_special_of_strict_load_descent`
 packages exactly this two-horn consumer.
 
+Exact one-row optima localize the repair further.  In seed 7 the unique bad
+minimum point `p=21` lies in deficient row 23, whose independently verified
+fractional point-cover value is `28/5<6`.  In seed 15 the two minimum-load
+points are 3 and 6; point 3 already has a strict full-fiber cover, while the
+bad point `p=6` lies in deficient row 22, of exact value `11/2<6`.  Therefore
+the twenty-model evidence supports the strictly more local alternative
+
+```text
+for every minimum-load positive-special p,
+  the full fiber at p is strict; or
+  some row u in F_p has fractional one-row cover value below d(u). (13ap)
+```
+
+Either conclusion immediately contradicts an actual residual relation; no
+iterated descent or globally located obstruction is required.  The audit
+field `localized_minimum_alternative_valid` verifies (13ap), and
+`bad_minimum_points_with_fiber_one_row` identifies the witnessing rows.  The
+one-row values now carry independently checked rational primal covers and
+dual packings, so the strict inequalities do not rely on floating-point
+status.  The generic Lean consumer
+`exists_good_or_obstruction_at_minimal_positive_special` chooses the
+minimum-load positive-special point and exposes exactly these two horns.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
