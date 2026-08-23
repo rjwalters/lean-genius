@@ -2379,6 +2379,36 @@ the latter needs simultaneous routing of the two star-paired odd bundles.
 This is the first layer beyond the fully labeled `a=1` terminal and uses no
 order-specific enumeration.
 
+The `a=2,s=0` core has a sharper two-line transversal form.  Let its two
+vertices be `X,Y`.  The edge `XY` is non-D because the majority defect core
+has no internal edges, so it has a unique common A-neighbor `v`.  There are
+no other inside exceptional centers, and `A[R]` has only the edge `XY`;
+hence
+
+```text
+v in M intersect S,
+N_A(X) intersect N_A(Y) = {v}.                           (73rnz_j)
+```
+
+As points of the majority design, `X` and `Y` each have replication one.
+Their cross-shore D-degree is therefore `r` by (73r), already exhausted by
+the `r` outside empty centers in the complete F--E defect core.  Consequently
+every uncovered ordinary point `z` outside S is non-D to both `X` and `Y`.
+For the q-point uncovered set `Z`, define the unique common neighbors
+
+```text
+x_z in N_A(X) intersect N_A(z),
+y_z in N_A(Y) intersect N_A(z).                          (73rnz_k)
+```
+
+The full lines at `X,Y` lie inside S, so both witnesses lie in S.  Moreover
+`x_z=y_z` iff both equal `v`, equivalently iff `zv in A`, by (73rnz_j).
+Thus the reciprocal-private edge carries q labeled two-line transversals,
+with all shared coordinates localized at the single line-intersection point
+`v`.  This is the `a=2` analogue of the two-port witness system (73rnj), now
+with q outside occurrences instead of two; it gives the exact object that
+the next simultaneous-routing equation must couple.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
