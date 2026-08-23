@@ -4515,6 +4515,32 @@ two endpoints both have `b=0`.  The final attachment problem is therefore a
 silent-00 conservation statement plus finitely many private 11 exceptions;
 there is no remaining unbounded active or mixed population.
 
+The parity of that silent population has an exact nonlinear matrix form.
+For the full `N_A(E)`--`N_A(G)` cross matching (switch edges included), let
+`f_(E,G)` count edges whose endpoint b-values differ.  C4-freeness makes the
+cross incidences a matching, and weighting its two ends gives
+
+```text
+f_(E,G)
+ =(A diag(b) A^2 + A^2 diag(b) A)_(E,G),   b=t x.      (73rnz_cjibky)
+```
+
+Indeed the first summand counts b at the `N_A(E)` endpoint of every
+length-three route `E--a--z--G`, and the second counts b at its
+`N_A(G)` endpoint.  Let `f^sw_(E,G)` be the b-flip parity among the removed
+switch edges.  Since the residual matching partitions into flip and
+same-side edges,
+
+```text
+rho^same_(E,G)=rho_(E,G)+f_(E,G)+f^sw_(E,G).           (73rnz_cjibkz)
+```
+
+Thus the last silent-00 parity is not an independent matching variable: it
+is the source `rho` plus one explicit endpoint-weighted A-commutator and the
+already private switch-flip term.  The remaining ownerwise attachment may
+be attacked as a nonlinear commutator transport identity; no further
+cross-matching atomization is needed.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
