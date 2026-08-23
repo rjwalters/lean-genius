@@ -19529,3 +19529,59 @@ nonstrict continuation are governed by Sections 360--363.  If it has size
 at most five, the residual-residual part of the cycle is now uniformly
 bounded.  Thus the cycle branch splits into a constant-size residual core
 or a quantitatively forced inactive expansion.
+## 370. Every root has an odd residual boundary after its strict mate
+
+There is a rootwise parity law on the global propagation graph.  Fix a
+core root `x_i`, and consider the target-factor edges indexed by labels
+which meet `x_i`.  For `X,Y in {O,B,Z}`, let `E_i(X,Y)` denote the number
+of such edges with one endpoint in `X` and the other in `Y`.
+
+Every residual endpoint `s in O` is incident to exactly one edge in this
+rooted family.  Indeed the exact outside partition (835) assigns the cell
+`(x_i,s)` to one unique exterior intermediate, which is the rooted label
+from (847).  Counting rooted-edge incidences on `O` therefore gives the
+integer identity
+
+```text
+|O|=2 E_i(O,O)+E_i(O,B)+E_i(O,Z).                  (1276)
+```
+
+The last term is completely located.  A label meeting both `x_i` and a
+selected port is a strict export, and (777) supplies exactly the label
+`s_i` at the offset port `p_(i+2)`.  Write
+
+```text
+N_e(s_i)={p_(i+2),v_i},       v_i in B disjoint_union O.
+```
+
+It follows that
+
+```text
+E_i(O,Z)=1 if v_i in O,       E_i(O,Z)=0 if v_i in B.             (1277)
+```
+
+Since `|O|=2q-15` by (846), the left side of (1276) is odd.  Reducing
+(1276) modulo two and using (1277) yields
+
+```text
+E_i(O,B)+1_[v_i in O]=1                         (mod 2).          (1278)
+```
+
+Equivalently the rootwise residual boundary has the exact dichotomy
+
+```text
+v_i in B  implies E_i(O,B) is odd, hence nonzero;
+v_i in O  implies E_i(O,B) is even.                 (1279)
+```
+
+Thus whenever the strict outside mate lies in a private ticket, the same
+root necessarily supports an odd family of additional `O--B` propagation
+edges.  Each such edge carries the two selected tags of the mixed line in
+(1246), with the distinguished-double geometry controlled by Sections
+365--366.  If the strict mate lies in `O`, it accounts for the odd boundary
+itself and the remaining `O--B` edges pair evenly.
+
+This is an exact per-root statement, not merely a global handshake.  It
+does not yet bound the number of `O--O` edges, which disappear twice in
+(1273), but it prevents all five residual rooted families from closing
+inside `O` independently of the locations of their strict mates.
