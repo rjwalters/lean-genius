@@ -6452,3 +6452,61 @@ the primitive must instead retain an off-occurrence secondary-fiber census
 and cross-tag it with the actual route—the same source/consumed-feature
 structure as the B3 bundle (12rb).  Equation (361) explains why the
 secondary fiber, rather than the routed intermediate itself, is essential.
+
+## 121. The surviving bundle is route label times off-occurrence census
+
+The correction in Section 120 determines the next feature without guesswork.
+For a V occurrence `o` on the indexed port edge `i`, let
+
+```text
+f_ell(o) := [the actual resolved route label of o is ell],
+q_u(o)   := phi_(i,u)                                  (362)
+```
+
+for every intermediate atom `u` in the relevant routing color.  Equation
+(361) says `q_ell(o)=0` on the actual route; nonzero entries of `q(o)` are
+necessarily off-occurrence secondary-fiber atoms.
+
+For a matching pair `{o,o'}`, define the cross-tagged feature coordinate
+
+```text
+Gamma_(ell,u)(o,o')
+  := f_ell(o) q_u(o') + f_ell(o') q_u(o).              (363)
+```
+
+This records the actual route label on one endpoint together with the
+secondary census exposed at the other endpoint.  It is genuinely two-local:
+neither marginal determines the product.  It is also the literal SRP
+analogue of (12rb), where a source signature tags the bundle consumed by its
+transition partner.
+
+Summing (363) over root pairs and subtracting the port-pair sum gives
+
+```text
+Delta_(ell,u)(Z)
+  = D_(f_ell,q_u)[Z]
+  = <r_(f_ell),r_(q_u)>-<c_(f_ell),c_(q_u)>.           (364)
+```
+
+Thus the entire cross-tagged bundle boundary is an instance of the exact
+Gram identity (325).  Shore transpose exchanges the two matching sums and
+negates every coordinate, so route oddness is automatic.  Unlike the direct
+atom, (363) can be nonzero precisely because it evaluates `q_u` away from
+the route carrying `ell`.
+
+Equation (364) supplies a concrete finite feature matrix for the two open
+tests in (309):
+
+```text
+conservation: the primitive identities force the realized Delta-ledger
+              to vanish in the marked-character quotient;
+privacy:      the nonzero columns Delta(o,o') are independent, or each
+              owns a source-label/secondary-atom coordinate.             (365)
+```
+
+Neither assertion in (365) is claimed yet.  The gain is that all coarser
+and diagonal candidates have been eliminated, while (362)--(364) define the
+unique surviving cross-tag shape directly from existing SRP data.  A
+counterexample to privacy must now exhibit two distinct transitions with
+the same actual route label and the same off-occurrence primitive census;
+a conservation proof must use (92) before the `u`-sum erases those tags.
