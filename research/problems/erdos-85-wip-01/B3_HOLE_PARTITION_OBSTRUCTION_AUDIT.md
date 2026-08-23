@@ -4226,6 +4226,25 @@ remains a valid optional consumer if stronger actual-relation structure later
 forces its hypothesis, but (13ak) itself requires a nonuniform selector or a
 strictly sharper coupled inequality.
 
+A smaller nonuniform selector survives the first focused probe.  For each of
+the two punctured seven-row classes, take its three miss points (one per
+color), counted as occurrences, and sum their full-fiber costs.  In six
+unrestricted branch-4 outer designs, at least one of the two class sums was
+strictly below `3*28=84`.  This implies (13ak), since one of that class's
+three points then has cost below 28 and hence below its actual target
+`27+special(p)`.  Neither class can be fixed in advance: in seed 4 one class
+had pointwise gaps `C_p-(27+special(p))` equal to approximately
+`0.5, 0.6, 0`, while the other class supplied the strict candidate.  The
+next candidate statement is therefore the two-class minimum
+
+```text
+min_(punctured class J) sum_(p missed by J) C_p < 84.         (13al)
+```
+
+This is corpus evidence, not a theorem.  It is strictly weaker than the
+refuted all-special aggregate inequality and retains the punctured-class
+coupling that the raw point average discarded.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
