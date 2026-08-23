@@ -22,6 +22,10 @@ direct contradiction probe.
 ``--shared-hole-point-only`` is the branch-3 intersecting-hole horn.  It
 forces the two exceptional triples to meet and asserts the negation only for
 their shared point, rather than simultaneously for all six hole incidences.
+
+``--multispecial-hole-row`` is the branch-4 horn: it forces the named hole
+row to contain at least two points missing a punctured regular class and
+asserts the negation only on those special-positive point fibers.
 """
 
 from __future__ import annotations
@@ -64,11 +68,21 @@ def main() -> int:
         help=("branch 3 only: force the two holes to intersect and test only "
               "their shared full fiber"),
     )
+    parser.add_argument(
+        "--multispecial-hole-row", type=int,
+        help=("branch 4 only: force this exceptional hole row to have at "
+              "least two special-positive points and test only those fibers"),
+    )
     args = parser.parse_args()
     if args.shared_hole_point_only and args.branch != 3:
         parser.error("--shared-hole-point-only requires --branch 3")
     if args.shared_hole_point_only and args.hole_row is not None:
         parser.error("--shared-hole-point-only cannot be combined with --hole-row")
+    if args.multispecial_hole_row is not None and args.branch != 4:
+        parser.error("--multispecial-hole-row requires --branch 4")
+    if (args.multispecial_hole_row is not None
+            and (args.hole_row is not None or args.shared_hole_point_only)):
+        parser.error("--multispecial-hole-row cannot be combined with hole selectors")
 
     outer_seed = (
         None if args.witness is None
@@ -111,6 +125,7 @@ def main() -> int:
     holes_begin = N_TRIPLE - (2 if args.branch == 3 else 4)
     holes = list(range(holes_begin, N_TRIPLE))
     shared_holes = tuple(holes)
+    special_positive = {}
     if args.shared_hole_point_only:
         solver.add(Or([
             And(incidence[shared_holes[0], point],
@@ -120,6 +135,21 @@ def main() -> int:
         # A single system per color is enough: exactly one color contains the
         # shared point, and implications for the other colors are vacuous.
         holes = [shared_holes[0]]
+    if args.multispecial_hole_row is not None:
+        if args.multispecial_hole_row not in holes:
+            parser.error(f"--multispecial-hole-row must lie in {holes}")
+        punctured_classes = (range(8, 15), range(15, 22))
+        hole = args.multispecial_hole_row
+        for point in range(N_U1):
+            special_positive[point] = Or([
+                Not(Or([incidence[row, point] for row in centers]))
+                for centers in punctured_classes
+            ])
+        solver.add(Sum([
+            If(And(incidence[hole, point], special_positive[point]), 1, 0)
+            for point in range(N_U1)
+        ]) >= 2)
+        holes = [hole]
     if args.hole_row is not None:
         if any(row not in holes for row in args.hole_row):
             parser.error(f"--hole-row must lie in {holes}")
@@ -165,6 +195,8 @@ def main() -> int:
                     And(incidence[shared_holes[0], point],
                         incidence[shared_holes[1], point])
                     if args.shared_hole_point_only
+                    else And(incidence[hole, point], special_positive[point])
+                    if args.multispecial_hole_row is not None
                     else incidence[hole, point]
                 )
                 # Only edges touching the selected five-root fiber can carry
@@ -225,7 +257,8 @@ def main() -> int:
     print(
         f"branch={args.branch} holes={holes} partial_mass_systems={systems} "
         f"residual_type_ledger={args.residual_type_ledger} "
-        f"shared_hole_point_only={args.shared_hole_point_only}"
+        f"shared_hole_point_only={args.shared_hole_point_only} "
+        f"multispecial_hole_row={args.multispecial_hole_row}"
     )
     started = time.monotonic()
     result = solver.check()

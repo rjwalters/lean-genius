@@ -50,6 +50,16 @@ fiber.  Even with `--residual-type-ledger`, the seed-free instance remained
 `UNKNOWN` after 120 seconds.  This is a well-scoped candidate horn, not yet a
 solver certificate or proof.
 
+For branch 4, incidence counting selects a hole row with at least two
+special-positive points, and every such row in the six tracked models has a
+strict special point even though singleton-special rows can fail.  The option
+`--multispecial-hole-row h` forces this horn and asserts the partial-mass
+negation only on the special fibers of row `h`.  The tracked serious witness
+at row 23 is `UNSAT` in under one second of solving; the unrestricted row-22
+instance with residual type ledgers remains `UNKNOWN` after 120 seconds.
+Thus the multi-special row is the sharp surviving branch-4 selector, but the
+outer/type equations still do not decide it without the DTB partition.
+
 ## Proof decomposition exposed by the load
 
 Every full point fiber has five rows, and each row degree is five or six, so
