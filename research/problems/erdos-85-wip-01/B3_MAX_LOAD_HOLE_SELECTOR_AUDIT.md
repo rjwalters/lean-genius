@@ -343,6 +343,17 @@ three-fixture conjectural decomposition, but it identifies the selection
 data a combinatorial proof would need: tight-set collisions plus an
 excess-minimizer fallback, not an unweighted sum.
 
+A fourth durable no-strict model, `q9_no_strict_replay_seed10.json`, further
+supports the multi-tight half.  It has eleven overlap points, no strict
+single, and exactly two tight points `{0,19}`.  Their tight-tight joint optimum
+is `269/5 < 54`; the probe also finds a scale-two certificate `107 < 108` at
+`(0,13)`.  Several other partners of 0 are strict as well.  The exceptional
+anchors both meet the overlap in the same point 0, another independent reason
+the anchor-pair shortcut is not the right abstraction.  Across four durable
+no-strict fixtures, the weakest surviving statement remains: some strict
+joint pair touches the tight set; in every fixture with at least two tight
+points, a tight-tight strict pair exists.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
