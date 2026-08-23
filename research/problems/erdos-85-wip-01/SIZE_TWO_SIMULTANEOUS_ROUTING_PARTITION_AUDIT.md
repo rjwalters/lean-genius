@@ -7192,3 +7192,34 @@ Thus only two unsaturated singleton-transfer profiles and one saturated
 profile remain.  Any uniform pricing can treat `(1,0)` and `(0,1)` as
 oppositely directed unit transfers and reserve the bounded-star correction
 for `(2,1)`; constructing that pairing is still open.
+
+## 136. A saturated H-connection cell is private in its secondary label
+
+Fix a secondary atom `u` with `t_u=1`.  Let `r` be its unique `e`-neighbor
+in `V_j`, and write its two `c`-neighbors as `b_1,b_2`.  Suppose `u` occurs
+in a saturated `(2,1)` cell.  Its exposed H port must be `r`; after choosing
+the exposed side, the opposite root on that side is one of `b_1,b_2`, say
+`b_1`.  Thus `r` is adjacent to both `u` and `b_1`.
+
+At most one of `b_1,b_2` can be adjacent to `r`.  Otherwise the distinct
+pair `u,r` would have the two common neighbors `b_1,b_2`, contradicting
+C4-freeness.  Hence the exposed opposite root is uniquely determined by
+`u`.  The other `c`-neighbor of `r` is then the center root `x`, so `x` is
+also uniquely determined by `u`.
+
+The unexposed side must join this fixed `x` to the remaining c-neighbor
+`b_2` through an `e` port `z_2`.  There is at most one such port: two would
+be two common neighbors of the pair `x,b_2`.  Therefore the whole unordered
+H--H root cell is forced.  In particular,
+
+```text
+for fixed u, at most one internal H--H root E
+has profile (a_u(E),p_u(E))=(2,1).                   (409)
+```
+
+The apparent left/right alternatives in (407) are only two descriptions of
+the same forced unordered cell; the unique exposed port chooses its side.
+Thus the saturated primary-connection sector has genuine secondary-label
+privacy, stronger than the degree-at-most-four star bound for the V--V C6
+sector.  This does not yet cancel its contribution: it supplies a private
+unit that a conservation or capacity argument may price without collision.
