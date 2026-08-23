@@ -7313,3 +7313,58 @@ defect is now a disjoint union of secondary fibers of uniformly bounded
 order seven, with the only saturated member private.  A terminal argument
 may therefore be sought as a finite fiberwise parity/pricing lemma rather
 than an unbounded run-holonomy statement.
+
+## 139. Routing-color contraction recovers exactly the marked cubic
+
+The contraction over all secondary atoms can be evaluated exactly.  For a
+fixed third color `d`, sum (362) over `u in d`.  With `z` having roots
+`x,x'`, the definitions (87), (91), and (356) give the port observable
+
+```text
+Q_d(z):=sum_(u in d) q_u(x,z)
+       =r_x^d+r_(x')^d+w^d(z).                       (417)
+```
+
+It is independent of the choice of dart over `z`, as it must be from
+P-invariance.  Now sum over all `d != c,e`.  Applying the rootwise identity
+(95) at `x,x'`, the two copies of `s_j` and the two evaluations at `z`
+cancel.  The remaining neighboring-port evaluations give
+`F_c[e]A_eV_j` at `z`; (96) supplies the sum of the `w^d` terms.  Therefore
+
+```text
+sum_(d != c,e) Q_d = Theta_(c,e) V_j,                (418)
+```
+
+with `Theta_(c,e)` exactly the marked operator (98).
+
+By bilinearity, the full secondary/color contraction of the primary defect
+is consequently
+
+```text
+sum_(d != c,e) sum_(u in d) D_(1_H,q_u)
+ =D_(1_H, lift_P(Theta_(c,e)V_j)).                    (419)
+```
+
+Here `lift_P` assigns the port value to both of its darts.  Using (391), the
+right side is the H--V boundary sum of the root differences of
+`Theta_(c,e)V_j`.
+
+Thus the contraction suggested by the trace ledger is not a new automatic
+conservation law.  It vanishes if `Theta_(c,e)V_j` is constant on the owner
+port component; on an odd component, Sections 27--28 identify that
+constancy with
+
+```text
+(F_c[e](F_c[e]+A_e)A_eV_j)|_Z=0,                    (420)
+```
+
+the marked cubic target (107).  Section 29 shows that the local two-shore
+algebra alone does not force this condition.
+
+Equations (417)--(420) identify the relation between the two formulations:
+the seven-cell fibers of Section 138 are the fully secondary-resolved atoms
+whose unweighted routing-color sum is the old marked-cubic fluctuation.
+Hence summing them before applying a joint weight loses precisely the data
+needed to escape the cubic counterprofiles.  A terminal must prove (420)
+from the full simultaneous geometry or cancel the finer fiber cells before
+this contraction; another scalar trace sum cannot suffice.
