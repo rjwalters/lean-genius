@@ -2598,6 +2598,23 @@ route-slack check.  Rational polyhedral feasibility suggests exact affine
 prices should exist, but an exact basis reconstruction or a direct symbolic
 construction is required before using `(12rzz)` as a proved corpus fact.
 
+The coefficients need not be completely refit instance by instance on a
+first cross-instance test.  Mode `--audit-common-affine-load-dual` forms one
+joint LP in which the functions `Alpha,Phi_0,Phi_1,Lambda_0,Lambda_1` are
+shared on every identical `(sigma,rho)` key and every survivor has its own
+negative-price constraint.  On the three-survivor subcorpus selected by
+32-seed indices `7,12`, one shared price succeeds.  The union has `126`
+root-signature and `1288` local classes; `8` root classes and `50` local
+classes genuinely occur in at least two instances, so the joint solve has
+nontrivial cross-instance equalities.
+
+This is only an initial common-potential witness.  The full eleven-survivor
+joint LP exceeded the exploratory run window before returning a status, so
+no all-corpus common-price claim is made.  The audit imposes a five-minute
+HiGHS limit and reports shared-class counts, allowing progressively larger
+subcorpora to locate the first incompatible pair or establish a universal
+sampled affine potential.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

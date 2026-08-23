@@ -1120,6 +1120,94 @@ def affine_load_half_atom_dual(data: dict) -> tuple:
             denominator)
 
 
+def common_affine_load_half_atom_dual(instances: list[dict]) -> tuple:
+    """Test one shared affine-in-load price on a family of instances."""
+    prepared = []
+    alpha_keys = set()
+    local_keys = set()
+    instance_alpha_sets = []
+    instance_local_sets = []
+    for data in instances:
+        signatures, censuses = root_signature_censuses(data)
+        loads = {
+            b: sum(len(data["candidates"][u]) for u in range(N)
+                   if b in data["blocks"][u])
+            for b in data["selected"]
+        }
+        prepared.append((data, signatures, censuses, loads))
+        instance_alpha = set(signatures)
+        instance_local = set(
+            (signatures[t], censuses[t][b])
+            for t in range(N) for b in data["selected"])
+        instance_alpha_sets.append(instance_alpha)
+        instance_local_sets.append(instance_local)
+        alpha_keys.update(instance_alpha)
+        local_keys.update(instance_local)
+    alpha_keys = sorted(alpha_keys, key=repr)
+    local_keys = sorted(local_keys, key=repr)
+    alpha_index = {key: i for i, key in enumerate(alpha_keys)}
+    local_index = {key: i for i, key in enumerate(local_keys)}
+    alpha_count = len(alpha_keys)
+    local_count = len(local_keys)
+    shared_alpha_count = sum(
+        sum(key in keys for keys in instance_alpha_sets) >= 2
+        for key in alpha_keys)
+    shared_local_count = sum(
+        sum(key in keys for keys in instance_local_sets) >= 2
+        for key in local_keys)
+    coefficient_count = alpha_count + 4 * local_count
+    capacity_offset = alpha_count + 2 * local_count
+    inequality_blocks = []
+    rhs_blocks = []
+
+    # A fixed origin preserves a single affine function across all instances.
+    load_origin = 75
+    for data, signatures, censuses, loads in prepared:
+        (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+         capacity_names, _) = half_atom_primal_system(data)
+        equality_projection = lil_matrix(
+            (len(equality_names), coefficient_count))
+        for row, name in enumerate(equality_names):
+            if name[0] == "row":
+                equality_projection[
+                    row, alpha_index[signatures[name[1]]]] = 1
+                continue
+            t, b = name[1]
+            index = local_index[(signatures[t], censuses[t][b])]
+            equality_projection[row, alpha_count + 2 * index] = 1
+            equality_projection[row, alpha_count + 2 * index + 1] = (
+                loads[b] - load_origin)
+        capacity_projection = lil_matrix(
+            (len(capacity_names), coefficient_count))
+        for row, (_, t, b) in enumerate(capacity_names):
+            index = local_index[(signatures[t], censuses[t][b])]
+            capacity_projection[row, capacity_offset + 2 * index] = 1
+            capacity_projection[row, capacity_offset + 2 * index + 1] = (
+                loads[b] - load_origin)
+        equality_projection = equality_projection.tocsr()
+        capacity_projection = capacity_projection.tocsr()
+        route_prices = (equalities.T @ equality_projection
+                        + capacities.T @ capacity_projection)
+        scalar = (equality_rhs @ equality_projection
+                  + capacity_rhs @ capacity_projection)
+        inequality_blocks.extend(
+            [-route_prices, -capacity_projection,
+             scalar.reshape(1, -1)])
+        rhs_blocks.extend([
+            np.zeros(route_prices.shape[0]),
+            np.zeros(capacity_projection.shape[0]),
+            np.array([-1.0]),
+        ])
+    inequalities = vstack(inequality_blocks, format="csr")
+    result = linprog(
+        np.zeros(coefficient_count), A_ub=inequalities,
+        b_ub=np.concatenate(rhs_blocks),
+        bounds=[(None, None)] * coefficient_count, method="highs",
+        options={"time_limit": 300.0})
+    return (result.success, len(instances), alpha_count, local_count,
+            shared_alpha_count, shared_local_count, result.message)
+
+
 def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
     """Test a common low-degree polynomial potential on seven-state rows."""
     from scipy.sparse import hstack
@@ -2271,6 +2359,8 @@ def main() -> int:
                         help="test invariant root/label price factorizations")
     parser.add_argument("--audit-affine-load-dual", action="store_true",
                         help="test half-atom prices affine in fiber load")
+    parser.add_argument("--audit-common-affine-load-dual", action="store_true",
+                        help="test one affine load price across all survivors")
     parser.add_argument("--audit-label-load-formula", action="store_true",
                         help="verify the fiber-degree formula for L(b)")
     parser.add_argument("--print-full-dual", action="store_true",
@@ -2746,6 +2836,19 @@ def main() -> int:
                   f"alpha_classes={alpha_count} local_classes={local_count} "
                   f"nonlinear_test_classes={nonlinear_test_classes} "
                   f"exact_rational={exact} max_denominator={denominator}")
+    if args.audit_common_affine_load_dual:
+        survivors = []
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if not bad_rows:
+                survivors.append(candidate)
+        result = common_affine_load_half_atom_dual(survivors)
+        print(f"common_affine_load_dual success={result[0]} "
+              f"instances={result[1]} alpha_classes={result[2]} "
+              f"local_classes={result[3]} shared_alpha_classes={result[4]} "
+              f"shared_local_classes={result[5]} message={result[6]}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2835,6 +2938,7 @@ def main() -> int:
             or args.audit_half_atom_dual
             or args.audit_half_atom_projections
             or args.audit_affine_load_dual
+            or args.audit_common_affine_load_dual
             or args.audit_label_load_formula
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
