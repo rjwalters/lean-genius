@@ -478,6 +478,28 @@ theorem no_symmetricFractionalPointPacking_of_commonFiberPrices
           (Finset.sum_nonneg fun q _ => hglobalNonneg u q)
           (Finset.sum_nonneg fun q _ => hglobalNonneg v q)
   · simpa [globalRowPrice, globalPointPrice] using hstrict
+/-- Unit row prices on a finite support set.  This is the direct formal
+interface for the q=9 non-diagonal-fiber prize-cover certificates. -/
+theorem no_symmetricFractionalPointPacking_of_unitSupportPointPrices
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (S : Finset V) (pointPrice : V → P → ℚ)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      (if u ∈ S then (1 : ℚ) else 0) + (if v ∈ S then 1 else 0) ≤
+        (∑ p ∈ B v, pointPrice u p) +
+        ∑ p ∈ B u, pointPrice v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, pointPrice u p) <
+        ∑ u ∈ S, (d u : ℚ)) :
+    ¬ ∃ mass, IsSymmetricFractionalPointPacking H d B mass := by
+  apply no_symmetricFractionalPointPacking_of_rowPointPrices
+    H d B (fun u => if u ∈ S then 1 else 0) pointPrice
+    hpointPrice hedge
+  convert hstrict using 1
+  simp only [mul_ite, mul_one, mul_zero]
+  rw [← Finset.sum_filter]
+  simp only [Finset.filter_mem_eq_inter, Finset.univ_inter]
 
 /-- Any strict point cover of every positive-mass-eligible block rules out a
 full-demand canonical fractional interval extension.  This is the direct
@@ -1486,6 +1508,34 @@ theorem false_of_symmetricRowPointPriceCertificate
   exact relationIndicator_pointCapacity_of_sharedPoint
     A W B hsymm hgram hshared
 
+/-- End-to-end actual-relation consumer with unit row prices on `S`. -/
+theorem false_of_unitSupportPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (S : Finset V) (pointPrice : V → P → ℚ)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      (if u ∈ S then (1 : ℚ) else 0) + (if v ∈ S then 1 else 0) ≤
+        (∑ p ∈ B v, pointPrice u p) +
+        ∑ p ∈ B u, pointPrice v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, pointPrice u p) <
+        ∑ u ∈ S, (d u : ℚ)) :
+    False := by
+  apply no_symmetricFractionalPointPacking_of_unitSupportPointPrices
+    H d B S pointPrice hpointPrice hedge hstrict
+  refine ⟨fun u v => if A u v then 1 else 0, ?_⟩
+  apply relationIndicator_isSymmetricFractionalPointPacking
+    A H d B hsymm hdegree hsupport
+  exact relationIndicator_pointCapacity_of_sharedPoint
+    A W B hsymm hgram hshared
+
 /-- The characteristic function of an actual symmetric neighborhood is a
 canonical fractional interval extension.  The point-capacity hypothesis is
 the numeric form of the Gram disjointness law for the block model. -/
@@ -1852,8 +1902,10 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms weightedDegree_le_totalPointPrice_of_symmetricFractionalPacking
 #print axioms no_symmetricFractionalPointPacking_of_rowPointPrices
 #print axioms no_symmetricFractionalPointPacking_of_commonFiberPrices
+#print axioms no_symmetricFractionalPointPacking_of_unitSupportPointPrices
 #print axioms relationIndicator_isSymmetricFractionalPointPacking
 #print axioms false_of_symmetricRowPointPriceCertificate
+#print axioms false_of_unitSupportPointPriceCertificate
 #print axioms no_canonicalFractionalIntervalExtension_of_pointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_contractedPointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_scaledContractedPointCover
