@@ -22390,7 +22390,7 @@ only way a shortest clean holonomy can attain minimal expansion is through
 a spanning two-regular bipartite chord system; any break in that system
 pays a quantified boundary surplus.
 
-## 418. Tight expansion forces a root-new and color-new exit at every vertex
+## 418. Every shortest-cycle vertex has a root-new and color-new exit
 
 The chord law also couples the two distinct edge labels: exterior color
 and core root.  Write `rho(e)` for the root matching containing a shadow
@@ -22412,6 +22412,19 @@ same exterior color as one incident cycle edge,
 different core root from both incident cycle edges.              (1488)
 ```
 
+This already forces an escape at every cycle vertex, without assuming
+tightness.  If `d_j in {0,1,2}` is the chord degree at `v_j`, then its
+`2+d_j` internal incidences use distinct roots and its `3-d_j` boundary
+incidences use precisely the complementary roots.  Among the two incident
+cycle colors, the unused degree capacity is only `2-d_j`: each chord
+saturates the cycle color whose type it has.  Since there are `3-d_j`
+boundary edges, at least one boundary edge `f_j` must satisfy
+
+```text
+rho(f_j) is not used by any internal edge at v_j,
+color(f_j) notin {c_(j-1),c_j}.                    (1489)
+```
+
 Now assume the tight endpoint `|partial V(Q)|=ell`.  By (1486), every
 cycle vertex has exactly two chords, one outgoing and one incoming.  The
 four internal incidences at `v_j` lie in four distinct root matchings, so
@@ -22419,7 +22432,7 @@ the unique boundary edge `f_j` lies in the fifth:
 
 ```text
 {rho(e): e incident with v_j, e internal to V(Q)} has size 4;
-rho(f_j) is its unique complementary root.                        (1489)
+rho(f_j) is its unique complementary root.                        (1490)
 ```
 
 There is an equally rigid exterior-color conclusion.  The two cycle
@@ -22434,13 +22447,13 @@ The component-color degree cap two has saturated both colors.  Therefore
 the unique exit has a third color:
 
 ```text
-color(f_j) notin {c_(j-1),c_j}.                    (1490)
+color(f_j) notin {c_(j-1),c_j}.                    (1491)
 ```
 
-Consequently minimal boundary is not a locally closed extremum.  It
-canonically chooses at every cycle vertex one action that is new in both
-coordinates: its root is the missing fifth root and its exterior color is
-different from both colors used by the holonomy there.  This crossed
-root/color escape is the simultaneous-routing information absent from the
-uncolored chord graph, and is the interface through which the tight cycle
-can restart the tagged propagation machinery of Sections 357--363.
+Consequently no shortest clean holonomy is locally closed.  Every one of
+its vertices has an action new in both coordinates; at minimal boundary
+this action is canonical, with the missing fifth root and a third exterior
+color.  This crossed root/color escape is the simultaneous-routing
+information absent from the uncolored chord graph, and is the interface
+through which the cycle can restart the tagged propagation machinery of
+Sections 357--363.
