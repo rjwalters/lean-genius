@@ -969,8 +969,8 @@ theorem owner_partner_W_degree_of_lowSet_partition
   · rw [if_neg hzR] at hZdegree ⊢
     omega
 
-/-- A degree-seven vertex in one of two complementary relatively closed
-shores has seven defect neighbors in its own shore and none across. -/
+/-- A degree-`k` vertex in one of two complementary relatively closed
+shores has all `k` defect neighbors in its own shore and none across. -/
 theorem neighbor_inter_shore_card_eq_if_of_complementary_closed
     {V : Type*} [Fintype V] [DecidableEq V]
     (D : SimpleGraph V) [DecidableRel D.Adj]
@@ -1932,6 +1932,78 @@ theorem false_of_orderNine_order34_owner_W_two
     G hfree hhigh owner e howner heU.2
       ((G.adj_comm owner e).mp ((G.mem_neighborFinset owner e).mp heU.1))
       Z P W hpartition hPsub hWzero (hZdegree e heParts.1)
+
+/-- Global-to-local order-34 assembly.  Complementary defect-closed shores
+turn every bin-zero owner-neighbor's defect degree eight into the exact
+`8/0` shore count; equation (23) then gives `Z`-degree two.  The sharp owner
+split is either `(2,2)` or `(3,1)`, dispatched respectively to the two local
+capstones above. -/
+theorem false_of_orderNine_order34_owner_W_dichotomy_of_closed_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ owner : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (U S T : Finset V)
+    (hScard : S.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ S).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ S).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ S).card = 4)
+    (hSH : Disjoint S {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hneighborsU : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hownerB₀U : ∀ y ∈ G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0, y ∈ U)
+    (hownerB₀Ord : ∀ y ∈ G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0,
+      y ∉ ({h₁, h₂, h₃} : Finset V))
+    (Z P W : Finset V)
+    (hZ : Z = orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0)
+    (hWcard : W.card = 2)
+    (hownerWAlt :
+      (G.neighborFinset owner ∩ W).card = 2 ∨
+      (G.neighborFinset owner ∩ W).card = 1) : False := by
+  have hZdegree : ∀ y ∈ G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0,
+      (G.neighborFinset y ∩ Z).card = 2 := by
+    intro y hy
+    have hyParts := Finset.mem_inter.mp hy
+    have hdefect := orderNine_binZero_defect_neighbor_inter_shore_card_eq_if
+      G hfree hmin hcover hcard U S T y hyParts.2 hunion hdisj
+        (hownerB₀U y hy) hneighborsU hSclosed hTclosed
+    have hlow := orderNine_order34_binZero_lowSet_degree_eq_two_of_defect_shore
+      G hfree h₁ h₂ h₃ y S hScard hpart hhigh₁ hhigh₂ hhigh₃
+        hSH hdegOrd hdegHigh (hownerB₀Ord y hy) hdefect
+    rw [← hZ] at hlow
+    exact hlow
+  rcases hownerWAlt with htwo | hone
+  · exact false_of_orderNine_order34_owner_W_two
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+        Z P W hpartition hPsub hWcard htwo hZdegree
+  · exact false_of_orderNine_order34_owner_W_one
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+        Z P W hpartition hPsub hWsub hWcard hone hZdegree
 
 end
 
