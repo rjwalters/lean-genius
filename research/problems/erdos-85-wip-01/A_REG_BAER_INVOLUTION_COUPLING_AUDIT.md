@@ -3857,16 +3857,19 @@ The middle choice is always possible: the broken-T set is even, so after one
 leaf its nonleaf population is odd and nonzero.  After the prescribed owner
 pairs are removed, an even number of nonleaves remains.  Hence
 (73rnz_cjibba), together with the forced pole row, eliminates the last owner
-gauge at the level of the route alphabet: two leaves give one cross-star 11
-through-relay, one leaf gives one 11 exit, and zero leaves gives none.  Any
-remaining freedom pairs only indistinguishable nonleaf-11 endpoints and
-cannot change an owner/T-word capacity cell.
+gauge at the level of the special-leaf/T-word alphabet: two leaves give one
+cross-star 11 through-relay, one leaf gives one 11 exit, and zero leaves gives
+none.  Remaining freedom pairs only non-special-leaf 11 endpoints.  It cannot
+change the displayed leaf/T-word cell, but those endpoints may still carry
+finer `F/E/M` or mate labels; compatibility with that refined capacity
+alphabet remains part of the terminal.
 
-Thus the owner refinement has no remaining pairing ambiguity in the chosen
-normal form.  The one-leaf state forces a unique odd owner exit, while the
-two-leaf state realizes the cross-star through cell already isolated by
-(73rnz_an)--(73rnz_ap).  With (73rnz_cjibaa) and (73rnz_cjibba), every
-witness star has a fixed owner/T-word profile, independent of q.
+Thus the special-leaf owner refinement has no remaining pairing ambiguity in
+the chosen normal form.  The one-leaf state forces a unique odd owner exit,
+while the two-leaf state realizes the cross-star through cell already
+isolated by (73rnz_an)--(73rnz_ap).  With (73rnz_cjibaa) and
+(73rnz_cjibba), every witness star has a fixed special-leaf/T-word profile,
+independent of q; only the finer nonleaf subtype pairing remains.
 
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
