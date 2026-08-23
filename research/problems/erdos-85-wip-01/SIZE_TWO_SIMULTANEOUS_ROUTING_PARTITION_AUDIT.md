@@ -18104,7 +18104,7 @@ directly into this dichotomy.  This singleton-or-path normal form is the
 next interface for coupling the reversal to `SRP(a,e)` and the self factor
 `A_a`.
 
-## 345. Every private reversal ticket pays strictly or forces an escape
+## 345. Every exact-reuse reversal forces a side-color escape
 
 The path alternative of Section 344 has the same owner-fiber consequence
 as the singleton side edge.  Let `w^sib` again be the sibling private ticket
@@ -18130,18 +18130,26 @@ one singleton side-color edge is absorbed strictly at p;
 or at least one side-color edge exits {p,w,w^sib}.  (1169)
 ```
 
-The first line is the only way to avoid propagation: it consumes the unique
-strict exterior cell at `p` in its side color and root.  In particular, two
-private exact-reuse terminals over the same port cannot both avoid escape,
-because the strict permutation supplies only one strict cell at that port.
-Thus if both occurrences `(u,p),(v,p)` are private, at least one ticket has
-a forced cross-color edge leaving the owner fiber, independently of whether
-its ticket colors have singleton or doubled side support.
+For an exact-reuse reversal, even the first line cannot eliminate every
+escape.  If exactly one of the two occurrences `(u,p),(v,p)` is private,
+the other occurrence is the unique direct strict cell at `p`, and its color
+is the reversal color `b`.  Every side color supplied by the private ticket
+is different from `b`, so strict uniqueness forbids its absorption at `p`.
+The singleton side edge must escape by (1164), and the path alternative
+already escapes by (1168).
 
-Equation (1169) removes the last purely local completion of the private
-ticket letters in Section 340.  An exact-reuse reversal must now either pay
-a specific member of the five strict exports or create a marked side-color
-edge at a new target-port role.  The latter can be fed into the component
-profile of Section 324 or the simultaneous partition `SRP(a,e)`; it cannot
-be absorbed by rearranging the two sibling tickets which caused the
-selected-port cancellation.
+If both occurrences are private, applying (1169) to both tickets again
+forces an escape: the strict permutation supplies only one exterior cell at
+`p`, so at most one ticket can use its first line.  Therefore in all cases
+
+```text
+every exact-reuse reversal has a marked side-color edge
+leaving the owner fiber of its doubled selected port.       (1170)
+```
+
+Equation (1170) removes the last purely local completion of the private
+ticket letters in Section 340.  The escaping edge can be fed into the
+component profile of Section 324 or the simultaneous partition `SRP(a,e)`;
+it cannot be absorbed by rearranging the two sibling tickets which caused
+the selected-port cancellation or by spending the already occupied strict
+cell.
