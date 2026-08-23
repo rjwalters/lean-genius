@@ -15,7 +15,7 @@ import time
 from itertools import combinations
 from pathlib import Path
 
-from z3 import Bool, If, Implies, Not, Or, Solver, Sum, is_true, sat, unknown
+from z3 import Bool, If, Implies, Int, Not, Or, Solver, Sum, is_true, sat, unknown
 
 from q9_b0_residual_defect_sat import N, N_U1, edge_key
 from q9_gram_obstruction_negation_sat import add_negation
@@ -200,6 +200,27 @@ def main() -> int:
             assert cover is not None
             interval_profiles[u]["point_cover"] = cover
             interval_profiles[u]["cover_gap"] = len(cover) - residual_rank
+
+            scaled_cover = None
+            for scale in range(1, 7):
+                scaled_solver = Solver()
+                weight = [Int(f"scaled_{u}_{b}_{scale}") for b in range(N_U1)]
+                scaled_solver.add(*[value >= 0 for value in weight])
+                for w in residual_rows:
+                    scaled_solver.add(Sum([weight[b] for b in blocks[w]]) >= scale)
+                scaled_solver.add(Sum(weight) < residual_target * scale)
+                if scaled_solver.check() == sat:
+                    scaled_model = scaled_solver.model()
+                    values = [scaled_model.eval(value).as_long() for value in weight]
+                    scaled_cover = {
+                        "scale": scale,
+                        "total": sum(values),
+                        "weights": {
+                            b: value for b, value in enumerate(values) if value
+                        },
+                    }
+                    break
+            interval_profiles[u]["scaled_cover"] = scaled_cover
         new_pruned_rows = [u for u in pruned_bad_rows if u not in added_pruned_rows]
         collisions = residual_gram_forced_collisions(concrete)
         new_collisions = [
