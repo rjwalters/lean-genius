@@ -15004,3 +15004,58 @@ make its tag vanish.  In the completely local case where the factor
 interval pairs the active cut occurrence at `w` directly with the inactive
 cut occurrence at the same port, `z(w)=y_w^-`, so `r_w=2` and
 `T_w^def=N_c(y_w^+)\C` is the single outside root of the active label.
+
+## 294. The source and defect are joined by an actual root-factor chain
+
+The six-root parity behind each occurrence defect is the boundary of three
+canonical edges on the root side.  For `w in W_I`, let `y_w` be its active
+`a`-neighbor, let `y'_w` be the other, `C`-inactive `a`-neighbor at `w`,
+and retain the terminal inactive label `z(w)` from Section 291.  Every
+`a`-label `ell` indexes the edge `E_c(ell)` of the root owner factor
+`F_a[c]` whose endpoints are `N_c(ell)`.  Therefore
+
+```text
+partial([E_c(y_w)]+[E_c(y'_w)]+[E_c(z(w))])
+ ={x(w)} triangle E_w^a triangle N_c(z(w)).          (933)
+```
+
+Indeed the first two root pairs are disjoint and their union is the one
+core root `x(w)` together with the outside triple `E_w^a`; the last pair is
+the terminal inactive support.
+
+Sum these three-edge chains over the odd transported family:
+
+```text
+L_I:=sum_(w in W_I)
+       ([E_c(y_w)]+[E_c(y'_w)]+[E_c(z(w))]).          (934)
+```
+
+Equations (921), (925), and (926) turn (933) into the exact boundary law
+
+```text
+partial L_I=X_I triangle T_I^def.                    (935)
+```
+
+The two boundary shores are disjoint, and both have odd cardinality by
+(927) and (924)--(925).  As a subgraph of the two-factor `F_a[c]`, the
+mod-two chain `L_I` is a disjoint union of paths and cycles.  If
+`N_XX,N_XT,N_TT` count its path components by endpoint shore, then
+
+```text
+|X_I|       =2N_XX+N_XT,
+|T_I^def|   =2N_TT+N_XT,
+N_XT=1 mod 2.                                        (936)
+```
+
+Consequently an odd nonempty family of canonical root-factor paths joins
+actual source roots in the original core to actual roots in the outside
+defect shore:
+
+```text
+x in X_I -- path in F_a[c] -- t in T_I^def.          (937)
+```
+
+Thus the residual active/inactive composition has a fully realized route
+on both sides: its port-side occurrence walk transports the tags to
+inactive labels, and the three associated label edges assemble into an
+actual `F_a[c]` path carrying the surviving odd defect away from `C`.
