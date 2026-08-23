@@ -6510,3 +6510,39 @@ unique surviving cross-tag shape directly from existing SRP data.  A
 counterexample to privacy must now exhibit two distinct transitions with
 the same actual route label and the same off-occurrence primitive census;
 a conservation proof must use (92) before the `u`-sum erases those tags.
+
+## 122. Secondary atoms are exactly singly incident off-route fibers
+
+Formula (360) has a direct combinatorial classification.  Fix the port edge
+with roots `x_i,x_(i+1)` and port `z_i`.  For an intermediate `u`, C4
+freeness forbids adjacency to both roots: they already have the common
+neighbor `z_i`.  It also forbids adjacency to all three vertices.  Hence the
+incidence count of `u` on
+
+```text
+{x_i,x_(i+1),z_i}
+```
+
+is zero, one, or two.  The two-incidence case consists of `z_i` and exactly
+one root, so it is precisely a routed triangle through that dart.  Modulo
+two, (360) therefore says
+
+```text
+q_u(o)=1
+iff t_u=1 and u is adjacent to exactly one of
+    x_i,x_(i+1),z_i.                                  (366)
+```
+
+Zero-incidence atoms contribute nothing, and routed two-incidence atoms
+cancel.  Thus `q(o)` is literally the census of target-active intermediates
+which touch the occurrence wedge exactly once—the off-route secondary
+fibers predicted in Section 120.
+
+The cross-tag coordinate `(ell,u)` in (363) now has a concrete meaning:
+the transition uses actual rooted route `ell` at one endpoint and exposes a
+singly incident target-active secondary fiber `u` at the other.  A privacy
+collision can occur only if two distinct transitions use the same actual
+route label and expose the same singleton secondary incidence.  Proving
+that C4/linearity forbids such a collision (or classifying its exceptional
+forms) is the exact SRP counterpart of the private-external-row theorem
+suggested after (12rh).
