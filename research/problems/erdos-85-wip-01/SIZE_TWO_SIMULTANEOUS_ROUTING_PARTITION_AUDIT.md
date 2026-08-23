@@ -22282,3 +22282,58 @@ Thus the bounded hole sector controls not only how many full-root vertices
 are lost, but also the parity census of the components that remain.  Odd
 components consume one boundary edge of every root type, and internal
 matching edges inside `S` reduce their available budget two at a time.
+
+## 416. A shortest clean holonomy has an exact five-root boundary spectrum
+
+The cut parity and the shortest-cycle expansion admit a common exact form.
+Let `Q` be the shortest properly colored cycle chosen in Section 414, put
+`ell:=|V(Q)|`, and for each root matching write
+
+```text
+a_i:=|E(G_i[V(Q)])|,       b_i:=|partial_(G_i)V(Q)|.
+```
+
+Every vertex of `Q subseteq O_5` is matched exactly once by `G_i`.
+Counting its root-`i` incidences therefore gives, coordinate by coordinate,
+
+```text
+ell=2a_i+b_i,
+b_i=ell-2a_i in {0,...,ell},
+b_i=ell (mod 2).                                  (1480)
+```
+
+Thus (1470) is not only a parity constraint here: the five rooted boundary
+coordinates record exactly how many internal edges of each matching the
+cycle and its chords consume.  Let `c` be the number of chords of `Q` in
+`G_sh`.  The five matching classes partition the internal shadow edges, so
+
+```text
+sum_i a_i=ell+c.
+```
+
+Summing (1480) consequently yields the exact total boundary
+
+```text
+B:=|partial_(G_sh)V(Q)|
+  =sum_i b_i
+  =5ell-2(ell+c)
+  =3ell-2c.                                       (1481)
+```
+
+Section 414 bounds the chord degree of every cycle vertex by two.  Hence
+`2c<=2ell`, or `c<=ell`, and (1481) sharpens (1475) to the spectrum
+
+```text
+ell<=B<=3ell,
+B=ell (mod 2),
+B-ell=2(ell-c).                                   (1482)
+```
+
+In particular, if `ell` is odd, then every `b_i` is a positive odd integer:
+the shortest clean holonomy sends at least one boundary edge of every root
+type, regardless of how many of its other root actions are absorbed by
+chords.  If `ell` is even, a root coordinate may vanish, but only by using
+exactly `ell/2` internal edges of that matching.  Thus the remaining
+large-`q` obstruction has a rigid five-coordinate cut vector, not merely a
+scalar lower bound.  The equality case in (1482) is analyzed next via the
+signed chord graph.
