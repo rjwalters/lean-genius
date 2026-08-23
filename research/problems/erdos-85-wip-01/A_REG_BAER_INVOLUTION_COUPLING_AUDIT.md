@@ -4495,6 +4495,26 @@ be restricted to proving that these same-side atoms cancel ownerwise or are
 absorbed by the inactive source state; all b-flipping rho atoms are already
 geometrically attached.
 
+The same-side sector has only one potentially large class.  On the pole
+side of a residual edge `ab in N_A(E_i)--N_A(G)`, the line
+`N_A(E_i)` meets X only at `p_i`.  Hence `b(a)=1` forces `a=p_i` and
+`t(p_i)=1`.  Because the cross-neighborhood graph is a matching, for each
+fixed `(E_i,G)` there is at most one same-side edge with b-word 11.  It is
+private to the owner data `(E_i,p_i,G)`.
+
+Thus
+
+```text
+same-side rho = private 11 atom (multiplicity at most one per (E_i,G))
+                + an arbitrary 00 population.          (73rnz_cjibkx)
+```
+
+The 11 atom is already a bounded full-state endpoint even though it has no
+cut crossing.  All unbounded anonymity is confined to residual edges whose
+two endpoints both have `b=0`.  The final attachment problem is therefore a
+silent-00 conservation statement plus finitely many private 11 exceptions;
+there is no remaining unbounded active or mixed population.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
