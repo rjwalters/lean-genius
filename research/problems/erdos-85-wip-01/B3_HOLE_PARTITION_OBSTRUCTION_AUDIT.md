@@ -1849,6 +1849,13 @@ pivot/relay network, then verify nonnegativity on a bounded exceptional-route
 alphabet.  Trying to guess dozens of unrelated capacity prices obscures this
 near-equality structure.
 
+The 22 exceptions are localized as well.  Every exceptional source root has
+an own support meeting the pivot set, except branch 4's single source root 46,
+whose support is the relay label `{7}` from `(12rr)`.  Thus no route starting
+outside the pivot/relay incidence neighborhood has positive slack.  The
+exceptional alphabet is not merely small numerically: it lives on the same
+canonical labeled neighborhood that determines the demand rows.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
