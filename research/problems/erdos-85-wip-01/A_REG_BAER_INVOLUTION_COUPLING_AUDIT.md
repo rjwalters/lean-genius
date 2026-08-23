@@ -1968,6 +1968,29 @@ has `s=1`, no majority core, one two-edge T-star, and by (73rng) exactly two
 uncovered ordinary points outside S.  This endpoint is still q-generic: it
 occurs at `r=q/2-1` for every binary q.
 
+Those two uncovered points form an exact residual terminal.  Let them be
+`z_1,z_2 in M setminus S`.  By definition they lie on no empty line, so
+`t_(z_i)^E=0`; as outside points they cannot lie on a full line either, so
+`t_(z_i)^F=0`.  Evaluating (70) at an ordinary outside point gives
+
+```text
+2 deg_D(z_i,S) = 2a + q t_(z_i)^E.
+```
+
+At `a=1` this yields
+
+```text
+deg_D(z_i,S)=1.                                          (73rni)
+```
+
+The unique cross-shore D-neighbor lies in `M intersect S`: the sole inside
+exceptional center is empty and has its D-degree exhausted on C, while there
+is no inside full center because R is empty.  Hence the entire extreme
+`a=1` layer consists of one paired exceptional T-star together with exactly
+two ordinary outside vertices, each carrying one residual cross-shore
+defect mark into the fixed `q^2/2`-point inside M shore.  Whether those two
+marks coincide is now a concrete two-port terminal.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
