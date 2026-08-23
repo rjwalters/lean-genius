@@ -1334,6 +1334,18 @@ def main() -> None:
                     rigid_domains[u] = first_domain
                     rigid_domains[v] = second_domain
                     changed = True
+        rigid_set = set(rigid_rows)
+        has_rigid_incident_obstruction = bool(
+            deficit_rows
+            or any(record["first"] in rigid_set
+                   or record["second"] in rigid_set
+                   for record in forced_collisions)
+            or any(record["first"] in rigid_set
+                   or record["second"] in rigid_set
+                   for record in disjoint_pair_obstructions)
+            or any(u in rigid_set or w in rigid_set
+                   for u, w in reciprocity_obstructions)
+        )
         has_strengthened_local_obstruction = bool(
             has_local_obstruction or disjoint_pair_obstructions
             or reciprocity_obstructions
@@ -1401,6 +1413,8 @@ def main() -> None:
             "rigid_arc_consistency_domain_sizes": [
                 [u, len(rigid_domains[u])] for u in rigid_rows
             ],
+            "has_deficit_or_rigid_incident_obstruction":
+                has_rigid_incident_obstruction,
             "has_strengthened_local_obstruction":
                 has_strengthened_local_obstruction,
             "minimum_row_support": row_support,

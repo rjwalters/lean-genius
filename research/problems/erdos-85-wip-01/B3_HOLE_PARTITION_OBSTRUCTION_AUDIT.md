@@ -5083,6 +5083,18 @@ necessarily involves a non-rigid row or a different local horn.  This both
 validates tree-CSP propagation as a real certificate on some models and
 confirms that it is not yet the universal (13ay) mechanism.
 
+A tempting sharper extension pattern is already false.  Ten payloads have
+either a deficit row or a sound local horn incident to a rigid row: seed 142
+has no-disjoint `{1,14}` and reciprocity `(4,13)`; fixed-and-joint has
+reciprocity `(15,25)` and `(25,19)`; the fractional-not-forced fixture has
+no-disjoint `{10,24}`.  But the durable seed-129
+`q9_branch4_two_row_price_selector_counterexample.json` refutes the
+localization.  Its only rigid row is 15, whereas its closing forced collision
+is `(16,25; common 32)` with packing-family sizes `(11,3)`.  The audit records
+`has_deficit_or_rigid_incident_obstruction=false` on precisely this fixture.
+Thus an extension theorem must also handle a genuinely non-rigid/non-rigid
+collision; it cannot reduce all of (13ay) to the rigid forest.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
