@@ -201,6 +201,20 @@ both `UNKNOWN` after 180 seconds; the full reciprocity-plus-cap system remains
 `UNKNOWN` as before.  Any uniform cross-class contradiction must therefore
 spend hole reciprocity, possibly in essential combination with the cap.
 
+**Retraction of the cross-class incompatibility target.**  A staged solve
+starting from the cap-only two-class model freezes its complete outer design
+and then restores hole reciprocity.  Both reciprocity alone and
+reciprocity-plus-cap extend on that same outer in under 0.6 seconds.  Hence
+the full system with both non-diagonal regular classes is SAT; its monolithic
+`UNKNOWN` result was search difficulty, and the typed-deficient rows above
+are features of the sampled one-class sources rather than a uniform theorem.
+The joint-price route remains necessary.  The new probe option
+`--stage-all-regular-classes` reproduces the full-strength model and finds
+overlap points `p=7,q=19` with integer certificate `107 < 108` at scale two;
+the rationally certified continuous optimum is `481/9 < 54`.  Thus all
+triple-center exact partitions preserve, rather than replace, the surviving
+joint selector.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled

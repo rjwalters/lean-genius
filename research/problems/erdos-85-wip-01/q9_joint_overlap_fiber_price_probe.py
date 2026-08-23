@@ -15,7 +15,9 @@ Generated models include both exact exceptional six-packs, hole reciprocity,
 and the C4-free full-pack overlap cap.  This remains finite evidence, not a
 uniform theorem.  ``--diagonal-rows`` and ``--all-regular-classes`` impose
 the corresponding exact residual complement partitions as a retention
-ladder toward global cross-row agreement.
+ladder toward global cross-row agreement.  The monolithic all-regular search
+is difficult; ``--stage-all-regular-classes`` first solves the cap-only
+two-class system, freezes its outer design, then restores hole reciprocity.
 """
 
 from __future__ import annotations
@@ -31,6 +33,7 @@ from z3 import is_true, sat
 
 from q9_b0_residual_defect_sat import color
 from q9_exceptional_hole_sixpack_sat import build
+from q9_regular_class_extension_probe import freeze_outer
 from q9_symmetric_point_mass_obstruction import (
     fixed_system,
     unit_nondiagonal_fiber_optimum,
@@ -208,16 +211,31 @@ def one_model(
         timeout_ms: int, random_seed: int, max_scale: int,
         details: bool = False, genuine_only: bool = False,
         diagonal_rows: bool = False, all_regular_classes: bool = False,
-        regular_class_indices: tuple[int, ...] | None = None):
-    solver, data = build(
-        3, timeout_ms, True,
-        diagonal_rows=diagonal_rows,
-        all_regular_classes=all_regular_classes,
-        hole_reciprocity=True,
-        hole_full_pack_overlap_cap=True,
-        regular_class_indices=regular_class_indices,
-    )
-    solver.set(random_seed=random_seed)
+        regular_class_indices: tuple[int, ...] | None = None,
+        stage_all_regular_classes: bool = False):
+    if stage_all_regular_classes:
+        source_solver, source_data = build(
+            3, timeout_ms, True, all_regular_classes=True,
+            hole_full_pack_overlap_cap=True,
+        )
+        source_solver.set(random_seed=random_seed)
+        if source_solver.check() != sat:
+            raise RuntimeError("staged regular-class source did not solve")
+        solver, data = build(
+            3, timeout_ms, True, all_regular_classes=True,
+            hole_reciprocity=True, hole_full_pack_overlap_cap=True,
+        )
+        freeze_outer(source_data, source_solver.model(), solver, data)
+    else:
+        solver, data = build(
+            3, timeout_ms, True,
+            diagonal_rows=diagonal_rows,
+            all_regular_classes=all_regular_classes,
+            hole_reciprocity=True,
+            hole_full_pack_overlap_cap=True,
+            regular_class_indices=regular_class_indices,
+        )
+        solver.set(random_seed=random_seed)
     if solver.check() != sat:
         raise RuntimeError("exact two-sixpack model did not solve")
     model = solver.model()
@@ -302,6 +320,11 @@ def main() -> int:
     parser.add_argument("--diagonal-rows", action="store_true")
     parser.add_argument("--all-regular-classes", action="store_true")
     parser.add_argument(
+        "--stage-all-regular-classes", action="store_true",
+        help=("generate a cap-only two-class outer, freeze it, then restore "
+              "hole reciprocity before scanning prices"),
+    )
+    parser.add_argument(
         "--regular-class", action="append", type=int, choices=(1, 2),
     )
     args = parser.parse_args()
@@ -309,12 +332,17 @@ def main() -> int:
         parser.error("--samples and --max-scale must be positive")
     if args.all_regular_classes and args.regular_class is not None:
         parser.error("use either --all-regular-classes or --regular-class")
+    if args.stage_all_regular_classes and (
+            args.diagonal_rows or args.all_regular_classes
+            or args.regular_class is not None):
+        parser.error("--stage-all-regular-classes is a standalone scope")
     results = [
         one_model(
             args.timeout_seconds * 1000, seed, args.max_scale, args.details,
             args.genuine_only, args.diagonal_rows, args.all_regular_classes,
             (tuple(args.regular_class)
-             if args.regular_class is not None else None))
+             if args.regular_class is not None else None),
+            args.stage_all_regular_classes)
         for seed in range(args.seed_start, args.seed_start + args.samples)
     ]
     print(json.dumps(results, separators=(",", ":"), default=str))
