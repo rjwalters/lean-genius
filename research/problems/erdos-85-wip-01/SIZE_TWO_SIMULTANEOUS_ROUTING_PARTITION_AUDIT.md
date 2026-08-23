@@ -15440,3 +15440,59 @@ has only the outside boundary `T_x triangle G_x`.  This locates the
 treated as an anonymous even correction.  What remains is to compare its
 `e`-endpoint profile with the port-factor chain obtained by expanding the
 Section 289 occurrence walk.
+
+## 302. Every payment carries a bounded root route and a target escape
+
+The root-factor realization can also be kept pointwise in the same
+occurrence index as the target-factor path from Section 300.  For
+`w in W_I`, define the three-label root chain
+
+```text
+L_w:=[E_c(y_w)]+[E_c(y'_w)]+[E_c(z(w))].            (969)
+```
+
+The pointwise identity (933) and the local defect shore from (932) give
+
+```text
+partial L_w={x(w)} triangle T_w^def.                 (970)
+```
+
+The active label `y_w` is distinct from both inactive labels and is the
+only one of the three incident to a root of `C`; in particular it is the
+unique edge of `L_w` incident to `x(w)`.  The two inactive labels either
+coincide, in the completely local case `z(w)=y'_w`, or are distinct.
+Consequently the mod-two support of `L_w` has respectively one or three
+edges.  Its component at `x(w)` is therefore an actual path of length at
+most three, whose other endpoint belongs to the pointwise defect shore:
+
+```text
+x(w) -- path of length <=3 in F_a[c] -- t_w,
+t_w in T_w^def subset c\C.                          (971)
+```
+
+When `z(w)=y'_w`, the two inactive edges cancel and (971) is exactly the
+single active factor edge from `x(w)` to the unique outside root of
+`y_w`, agreeing with the final clause of Section 293.
+
+For the same occurrence `w`, Section 300 supplies the independently
+realized target-factor chain
+
+```text
+partial Theta_w={w} triangle {o_w},
+w -- path in F_a[e] -- o_w,          o_w notin S.    (972)
+```
+
+Thus every member of the odd family `W_I` carries one concrete dual-route
+quadruple
+
+```text
+(x(w),t_w; w,o_w),
+x(w) in C,   t_w notin C,   w in S,   o_w notin S.  (973)
+```
+
+The first route is uniformly bounded by three root-factor edges; the
+second is the mod-two reduction of the full occurrence overlay and may be
+long.  No disjointness between different quadruples, and no equality of
+their label sequences, is asserted.  The gain is exact occurrence
+coupling: the same reverse terminal which produces the bounded odd root
+defect also determines an actual escape across the target-owner shore.
