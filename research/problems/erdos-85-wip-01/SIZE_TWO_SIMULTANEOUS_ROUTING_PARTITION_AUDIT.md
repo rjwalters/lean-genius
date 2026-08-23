@@ -14914,3 +14914,48 @@ is odd, and its component-parity profile is exactly `D_I`.  Therefore the
 canonical inactive-label payments do not close the reverse export even at
 the coarsest component level: after every paired payment is included, a
 nonzero odd root defect remains, located on actual roots outside `C`.
+
+## 292. The transported defect retains an odd source subset on the core
+
+The incoming end of every mixed payment path also has a canonical root in
+the original five-cycle.  For `w in W_I`, let `x(w)` be the unique root of
+`C` adjacent to the active `a`-label at `w`, and define
+
+```text
+X_I:=triangle_(w in W_I){x(w)} subset C.             (926)
+```
+
+Symmetric-difference cardinality again preserves parity.  By (919),
+
+```text
+|X_I|=|W_I|=1 mod 2.                                (927)
+```
+
+Thus `X_I` is a nonempty subset of the five roots, of size one, three, or
+five.  Let
+
+```text
+H(X_I):=sum_(x_i in X_I)[E_(x_i)]
+```
+
+be the corresponding edge chain on the connected core `C_5`.  The boundary
+kernel on a cycle consists only of the zero and full edge chains, so
+
+```text
+partial H(X_I)=0 iff X_I=C.                          (928)
+```
+
+Equivalently, the occurrence-level payment composition has the exact
+dichotomy
+
+```text
+|X_I| in {1,3}:  partial H(X_I)!=0;
+X_I=C:            the five source edges close once around the core. (929)
+```
+
+The nonzero outside defect `D_I` from (924) is therefore paired with an odd
+source subset which retains the same located-boundary versus full-cycle
+closure split as Section 256.  The long residual transport has not erased
+the original owner index: it returns either a nonzero core boundary demand
+or the closed five-edge holonomy, together with an unavoidable odd root
+defect outside `C`.
