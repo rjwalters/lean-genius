@@ -17685,3 +17685,65 @@ does not yet choose among those four shores, because nonloop internal
 pairs and parallel projected edges remain possible.  It does ensure that
 any such correction is realized by cross-owner terminal pairs, apart from
 at most one explicitly located strict/private loop.
+
+## 338. Same-color endpoint reversals must erase or double the initial ticket
+
+The initial singleton edge from Section 329 remains visible inside a
+same-color second return.  Let its color be `b` and write it as
+
+```text
+e_0={s,t} in H_b^{\{x\}},
+s in O,       t in Z union B,
+zeta(t)=zeta,       D={x,u,v}, E_zeta={u,v}.       (1141)
+```
+
+At the terminal `t`, neither of the two new root colors `u,v` can supply
+an edge of `H_b^D`.  If `t=zeta in Z`, its cells at the incident roots
+`u,v` are core incidences, not exterior color-`b` cells.  If `t in B`,
+Section 267 puts it in the owner blocks at precisely those same two roots,
+again excluding exterior routing there.  The two root-`x` edges form a
+matching, so no second one meets `t`.  Therefore
+
+```text
+deg_(H_b^D)(t)=1.                                  (1142)
+```
+
+Let `Q_0` be the path component of `H_b^D` containing `e_0`.  If its other
+endpoint lies in `O`, then `Q_0` is one of the crossing paths in (1085),
+and its terminal pair is exactly
+
+```text
+(x,zeta).                                          (1143)
+```
+
+Both endpoint-root signatures in Section 336 have selected boundary which
+omits `zeta`, and none of their seven binary supports contains (1143).
+Hence a same-color realization of one of those signatures has exactly two
+ways to dispose of the initial ticket.
+
+First, `Q_0` may cease to cross the residual shore.  Since its endpoint
+`t` remains degree one outside `O`, its other endpoint must then also lie
+outside `O`.  In particular the original residual endpoint `s` cannot
+remain degree one: one of the new root colors attaches there, so
+
+```text
+deg_(H_b^D)(s)=2,
+d_s^b=2,                                           (1144)
+```
+
+and `Q_0` becomes a terminal-to-terminal path.
+
+Second, `Q_0` may remain crossing and contribute (1143), but that pair
+must cancel with one further crossing occurrence having the same root and
+selected endpoint.  Section 336 shows that cancellation is possible only
+in its `N=5,m=3` branch, where there is exactly one doubled terminal pair.
+That unique doubled pair is then forced to be `(x,zeta)`.
+
+Thus an endpoint-arc reversal in one color cannot simply forget the marked
+singleton edge.  It either pays the local double-hit (1144) and transports
+the edge into a terminal--terminal component, or it uses the five-path
+branch and spends its sole cancellation on a second realization of the
+same marked ticket.  This dichotomy is specific to same-color reversal;
+for a mixed-color second step the initial edge is not present in the new
+restricted factor and the interface must instead be enforced through the
+two color skeletons of Section 328.
