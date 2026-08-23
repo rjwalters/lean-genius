@@ -2880,12 +2880,36 @@ sum_L lambda_L + sum_G gamma_G = 0               (mod 2), (73rnz_aj)
 because the four constant terms and the two copies of every N- and J-edge
 cancel.  The graph J therefore transports the margin-parity defects from
 the four leaves to residual full centers; a switch does not erase a parity
-charge, it moves it.  At the purely binary level all charges can sometimes
-be paired (for example two forced leaves may switch to one residual center),
-so this still does not force an ordinary exit.  The remaining question is
-whether the required J-edges are simultaneously realizable with their
-defect/intersection labels -- precisely the labeled-switch constraint shared
-with the SRP dart system.
+charge, it moves it.
+
+In fact the purely binary obstruction always vanishes.  Put
+`b_L=1+m_L`, the forced leaf-charge before switches.  Since every occupied
+cell of N contributes to two margins,
+
+```text
+sum_L b_L = 0                                      (mod 2). (73rnz_ak)
+```
+
+Choose one residual center `G_0` (there is one because
+`r=q/2-2>=2`) and, in the abstract complete bipartite switch graph, join
+`G_0` exactly to the leaves with `b_L=1`.  Then every leaf has
+`deg_J(L)=b_L`, while `deg_J(G_0)=sum_L b_L` is even and every other residual
+center has degree zero.  Equations (73rnz_ah)--(73rnz_ai) give
+
+```text
+lambda_L=0 for every leaf L,       gamma_G=0 for every center G. (73rnz_al)
+```
+
+This construction is simple and covers charge weights zero, two, and four;
+at a charged leaf the odd singleton count guarantees at least one candidate
+port.  It is deliberately only an abstract parity realization: the chosen
+ports need not all admit the same secondary center `G_0`, or any prescribed
+center at all.  Thus leaf charges, center capacities, simplicity, and parity
+transport alone can never force an ordinary exit.  The remaining datum is
+exactly the actual switch-eligibility relation -- which singleton port can
+meet which residual full center in T -- together with its simultaneous
+defect/intersection labels.  This is precisely the labeled-switch constraint
+shared with the SRP dart system.
 
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
