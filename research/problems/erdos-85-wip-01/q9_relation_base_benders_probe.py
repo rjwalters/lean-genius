@@ -38,6 +38,11 @@ def main() -> int:
     parser.add_argument("--witness", type=Path)
     parser.add_argument("--timeout-seconds", type=int, default=600)
     parser.add_argument("--random-seed", type=int, default=0)
+    parser.add_argument(
+        "--relax-inner", action="append", default=[],
+        choices=("eligibility", "residual-c4", "block-orthogonal"),
+        help="omit one inner residual-relation constraint family",
+    )
     args = parser.parse_args()
 
     if args.witness is None:
@@ -97,16 +102,21 @@ def main() -> int:
     def adj(u: int, v: int):
         return False if u == v else edge[edge_key(u, v)]
 
+    inner_relax = set(args.relax_inner)
+
     for u in range(N):
         solver.add(Sum([If(adj(u, v), 1, 0)
                         for v in range(N) if v != u]) == demand(u))
     for u, v in combinations(range(N), 2):
-        if not eligible[u][v] or not eligible[v][u]:
+        if ("eligibility" not in inner_relax and
+                (not eligible[u][v] or not eligible[v][u])):
             solver.add(Not(adj(u, v)))
         common = [If(adj(u, w) & adj(v, w), 1, 0)
                   for w in range(N) if w not in (u, v)]
-        solver.add(Sum(common) <= 1)
-        if blocks[u] & blocks[v]:
+        if "residual-c4" not in inner_relax:
+            solver.add(Sum(common) <= 1)
+        if ("block-orthogonal" not in inner_relax and
+                blocks[u] & blocks[v]):
             solver.add(Sum(common) == 0)
 
     result = solver.check()
