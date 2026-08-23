@@ -10303,3 +10303,54 @@ unweighted V marginal (345) forgets `tau_r`, so it cannot supply (616) by
 itself.  A successful next identity must be the T-word-weighted refinement
 of the H/V/S marginal, retaining the actual root or port witness on every
 mixed endpoint.
+
+## 201. The T-word-weighted H/V/S marginal is exact
+
+For a V dart `v` with resolved label `y`, root witness `x`, and port witness
+`z`, define its two T-leg bits
+
+```text
+tau_R(v):=1[xy in T],        tau_P(v):=1[zy in T].     (617)
+```
+
+Let `m_R` and `m_P` be the parities of mixed-T-word V--V pairs at roots and
+ports, respectively.  Also define the weighted boundary terms
+
+```text
+b_HV^T:=sum_(root H--V pairs) tau_R(the V dart),
+b_SV^T:=sum_(port S--V pairs) tau_P(the V dart),
+q_V^T :=sum_(all V darts v) (tau_R(v)+tau_P(v)).       (618)
+```
+
+Count `tau_R` over all V darts through the root matching.  A V--V root pair
+contributes `tau_R(v_1)+tau_R(v_2)`, which is one exactly for a mixed pair;
+an H--V root pair contributes its single V bit.  The root alphabet (297) has
+no other V case.  Therefore
+
+```text
+sum_(V darts v) tau_R(v)=m_R+b_HV^T.                  (619)
+```
+
+The identical count through the port matching uses only V--V and S--V
+unmarked pairs, giving
+
+```text
+sum_(V darts v) tau_P(v)=m_P+b_SV^T.                  (620)
+```
+
+Adding (619)--(620) yields the exact weighted marginal
+
+```text
+m_R+m_P=q_V^T+b_HV^T+b_SV^T.                          (621)
+```
+
+By (616), the left side is the global typed-completion obstruction on `Z`.
+Thus all of its residual information lies in the three located terms on the
+right: the two-leg T defect of actual V triangles, the T-marked H boundary,
+and the T-marked S handoff.
+
+No relation between `tau_R(v)` and `tau_P(v)` is assumed here.  In
+particular, (621) does not discard `q_V^T` by claiming that the two legs of a
+rooted triangle have equal T status.  The remaining geometric task is now
+exactly to evaluate `q_V^T` and transport the two boundary terms through the
+canonical H runs and S excursions.
