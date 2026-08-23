@@ -123,6 +123,10 @@ def main() -> int:
         "--middle-hole-only", action="store_true",
         help="test only the middle-color point on each exceptional hole row",
     )
+    parser.add_argument(
+        "--hole-only", action="store_true",
+        help="test only points incident to an exceptional hole row",
+    )
     args = parser.parse_args()
     if args.max_denominator < 1:
         parser.error("--max-denominator must be positive")
@@ -133,14 +137,14 @@ def main() -> int:
     for path in payloads:
         system = fixed_system(json.loads(path.read_text()))
         points = list(range(N_U1))
-        if args.middle_hole_only:
+        if args.middle_hole_only or args.hole_only:
             hole_count = 2 if system["branch"] == 3 else 4
             hole_rows = range(N_TRIPLE - hole_count, N_TRIPLE)
             points = sorted({
                 point for row in hole_rows for point in system["blocks"][row]
-                if 8 <= point < 16
+                if args.hole_only or 8 <= point < 16
             })
-            if len(points) != hole_count:
+            if args.middle_hole_only and len(points) != hole_count:
                 raise RuntimeError(
                     f"expected {hole_count} middle-hole points, got {points}"
                 )
