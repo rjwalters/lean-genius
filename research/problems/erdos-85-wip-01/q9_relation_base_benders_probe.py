@@ -21,7 +21,7 @@ import json
 from itertools import combinations
 from pathlib import Path
 
-from z3 import Bool, If, Not, Or, SolverFor, Sum, is_true, sat
+from z3 import Bool, If, Implies, Not, Or, SolverFor, Sum, is_true, sat
 
 from q9_b0_residual_defect_sat import N, N_TRIPLE, N_U1, build, edge_key
 
@@ -43,7 +43,21 @@ def main() -> int:
         choices=("eligibility", "residual-c4", "block-orthogonal"),
         help="omit one inner residual-relation constraint family",
     )
+    parser.add_argument(
+        "--eligibility-core", action="store_true",
+        help="track forbidden trace edges and emit an UNSAT assumption core",
+    )
+    parser.add_argument(
+        "--degree-core", action="store_true",
+        help="track row-degree equations and emit an UNSAT row core",
+    )
+    parser.add_argument(
+        "--minimize-degree-core", action="store_true",
+        help="greedily shrink the tracked UNSAT row-degree core",
+    )
     args = parser.parse_args()
+    if args.minimize_degree_core:
+        args.degree_core = True
 
     if args.witness is None:
         outer, data = build(
@@ -103,14 +117,31 @@ def main() -> int:
         return False if u == v else edge[edge_key(u, v)]
 
     inner_relax = set(args.relax_inner)
+    eligibility_assumptions = []
+    assumption_edge = {}
 
+    degree_assumptions = []
+    assumption_row = {}
     for u in range(N):
-        solver.add(Sum([If(adj(u, v), 1, 0)
-                        for v in range(N) if v != u]) == demand(u))
+        degree_eq = (Sum([If(adj(u, v), 1, 0)
+                          for v in range(N) if v != u]) == demand(u))
+        if args.degree_core:
+            gate = Bool(f"require_degree_{u}")
+            degree_assumptions.append(gate)
+            assumption_row[gate.decl().name()] = u
+            solver.add(Implies(gate, degree_eq))
+        else:
+            solver.add(degree_eq)
     for u, v in combinations(range(N), 2):
         if ("eligibility" not in inner_relax and
                 (not eligible[u][v] or not eligible[v][u])):
-            solver.add(Not(adj(u, v)))
+            if args.eligibility_core:
+                gate = Bool(f"allow_forbid_{u}_{v}")
+                eligibility_assumptions.append(gate)
+                assumption_edge[gate.decl().name()] = (u, v)
+                solver.add(Implies(gate, Not(adj(u, v))))
+            else:
+                solver.add(Not(adj(u, v)))
         common = [If(adj(u, w) & adj(v, w), 1, 0)
                   for w in range(N) if w not in (u, v)]
         if "residual-c4" not in inner_relax:
@@ -119,12 +150,73 @@ def main() -> int:
                 blocks[u] & blocks[v]):
             solver.add(Sum(common) == 0)
 
-    result = solver.check()
+    result = solver.check(*(eligibility_assumptions + degree_assumptions))
     print(f"branch={args.branch} result={result}")
+    if args.eligibility_core:
+        print(f"eligibility_forbidden_count={len(eligibility_assumptions)}")
     if result != sat:
         if str(result) == "unknown":
             print("reason_unknown=" + solver.reason_unknown())
             return 2
+        if args.eligibility_core:
+            core = [assumption_edge[item.decl().name()]
+                    for item in solver.unsat_core()
+                    if item.decl().name() in assumption_edge]
+            print(f"eligibility_core_size={len(core)}")
+            print("eligibility_core=" + json.dumps(
+                [list(pair) for pair in sorted(core)], separators=(",", ":")))
+            frequency = [sum(v in pair for pair in core) for v in range(N)]
+            print("eligibility_core_vertex_frequency=" + json.dumps(
+                frequency, separators=(",", ":")))
+        if args.degree_core:
+            degree_gate = {gate.decl().name(): gate
+                           for gate in degree_assumptions}
+            current = [degree_gate[item.decl().name()]
+                       for item in solver.unsat_core()
+                       if item.decl().name() in degree_gate]
+            if args.minimize_degree_core:
+                changed = True
+                while changed:
+                    changed = False
+                    for gate in list(current):
+                        trial = [item for item in current if not item.eq(gate)]
+                        trial_result = solver.check(
+                            *(eligibility_assumptions + trial))
+                        if str(trial_result) == "unsat":
+                            trial_names = {
+                                item.decl().name()
+                                for item in solver.unsat_core()
+                                if item.decl().name() in degree_gate
+                            }
+                            current = [item for item in trial
+                                       if item.decl().name() in trial_names]
+                            changed = True
+                            break
+            degree_core = [assumption_row[item.decl().name()]
+                           for item in current]
+            print(f"degree_core_size={len(degree_core)}")
+            print("degree_core=" + json.dumps(sorted(degree_core),
+                                               separators=(",", ":")))
+            profiles = {
+                str(u): {
+                    "block": sorted(blocks[u]),
+                    "demand": demand(u),
+                    "mutually_eligible": [
+                        v for v in range(N)
+                        if v != u and eligible[u][v] and eligible[v][u]
+                    ],
+                }
+                for u in sorted(degree_core)
+            }
+            core_intersections = [
+                [u, v, sorted(blocks[u] & blocks[v])]
+                for u, v in combinations(sorted(degree_core), 2)
+                if blocks[u] & blocks[v]
+            ]
+            print("degree_core_profiles=" + json.dumps(
+                profiles, separators=(",", ":")))
+            print("degree_core_intersections=" + json.dumps(
+                core_intersections, separators=(",", ":")))
         print("fixed_outer_relation_base=UNSAT")
         return 0
     model = solver.model()
