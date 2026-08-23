@@ -4767,3 +4767,47 @@ label transforms under (269).  Summing over `d` before comparing successive
 marks necessarily collapses back to the locally realizable matrix (274).
 This is the precise point where simultaneous self-indexing, rather than one
 more scalar SRP functional, must enter.
+
+## 88. The residual block is a partially labeled two-by-two matrix
+
+Because every `K_d=R_cd R_de` has nonnegative integer entries and the total
+matrix `K` in (274) is binary, each occupied cell `(i,j)` has a unique third
+color `d_(ij)` such that
+
+```text
+(K_(d_(ij)))_(ij) = 1,
+(K_d)_(ij) = 0 for d != d_(ij).                        (275)
+```
+
+Moreover the unit product has a unique intermediate port
+`y_(ij) in d_(ij)`: two such ports would be two common ambient neighbors of
+`a_i` and `p_j`, producing a four-cycle.  Thus every occupied cell records a
+canonical routed path
+
+```text
+a_i -- y_(ij) -- p_j                                  (276)
+```
+
+together with its color label.  Empty cells record endpoint-layer routing
+through `A_c` or `A_e` as displayed in (274).
+
+Scalar transposition (269) now has an entrywise form.  The path (276)
+reverses to
+
+```text
+p_j -- y_(ij) -- a_i,
+```
+
+with the same third color; equivalently the color-labeled residual block for
+the reversed ordered pair is the transpose of the original labeled block.
+No choice of intermediate port or relabeling is available.
+
+This is the minimal simultaneous datum left by the local audit: a partially
+filled `2 by 2` matrix, with at most four occupied cells, whose labels and
+intermediate ports are preserved under reversal.  Section 87 proves that
+forgetting these labels recovers only the locally arbitrary interface bits.
+The closing invariant must therefore compare the labeled matrices at
+successive isolated marks—most plausibly by showing that the alternating
+phase pairs equal labels in opposite signed cells.  Whether two occupied
+cells in one row or column may share a label remains an open incidence
+constraint; it is not decided by (275) alone.
