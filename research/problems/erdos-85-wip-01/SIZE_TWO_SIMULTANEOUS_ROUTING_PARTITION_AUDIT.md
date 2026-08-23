@@ -9816,3 +9816,51 @@ and port matchings.  Thus route identities may be restricted to `K` only
 when they are edge-local or after their complementary ambient terms have
 been shown to cancel.  The final proof must not treat `K` as an independently
 realized routing component.
+
+## 190. Circuit exclusion is exactly a cut-space theorem
+
+Let `G_Xi` be the finite V-label multigraph containing the distinct refined
+edge occurrences of the realized chain, and let `w` be the edge cochain
+from (587).  Over `F_2`, the following are equivalent:
+
+```text
+(i)  every closed subchain J of G_Xi has <w,J>=0;
+(ii) every graphic circuit K of G_Xi has <w,K>=0;
+(iii) there is chi:V(G_Xi)->F_2 with
+      w[ell,m]=chi(ell)+chi(m) on every refined edge occurrence. (591)
+```
+
+The equivalence of (i) and (ii) follows because graphic circuits generate
+the binary cycle space.  For (iii), choose one base vertex in each connected
+component and define `chi(v)` as the sum of `w` along any path from the base
+to `v`.  Circuit vanishing makes this path-independent, and the edge formula
+follows.  Conversely that formula telescopes on every closed subchain.
+
+Thus Sections 188--189 do not by themselves make the holonomy theorem
+edge-local.  They identify the exact dual form of the **circuit-exclusion
+strategy**: the simultaneous route and switch identities would have to
+prove that the realized H-parity cochain `w` lies in the cut space of
+`G_Xi`.  This is the mod-two refined version of the label
+potential criterion (352)--(354), with `chi` allowed initially only on the
+vertices actually present in the realized support.
+
+The two smallest falsification checkpoints are immediate from (591):
+
+```text
+an H-transfer loop [ell,ell] must have even run length;
+two parallel refined edges with the same endpoints must have equal w.   (592)
+```
+
+Either failure is already an odd graphic circuit.  For a simple circuit of
+length at least three, (591) asks that the edge phases integrate consistently
+around its distinct V labels.  The private H words and S paths may be used
+to prove these equalities, but they cannot be hidden by projecting to the
+coarse label graph.
+
+Accordingly this route to the remaining geometric theorem has a precise
+output: construct the potential `chi` in (591), or equivalently prove the
+loop, parallel-edge, and simple-circuit exclusions, from the realized `C_V`
+route reversals and the two-ended `T_S` transfers.  A proof may instead use
+an ambient cancellation special to `Xi` without annihilating the whole cycle
+space; the circuit reduction alone does not justify that stronger step.  No
+purely graphic argument can supply either conclusion.
