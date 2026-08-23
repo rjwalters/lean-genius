@@ -30,12 +30,41 @@ from pathlib import Path
 
 import numpy as np
 from scipy.optimize import linprog
+from z3 import is_true, sat
 
-from q9_b0_residual_defect_sat import N, N_TRIPLE, N_U1
+from q9_b0_residual_defect_sat import N, N_TRIPLE, N_U1, build
 
 
-def fixed_system(path: Path) -> dict:
-    payload = json.loads(path.read_text())
+OUTER_ONLY_RELAX = {
+    "row-ledger", "residual-c4", "b0-c4", "dtb-common", "dtb-cap",
+    "dtb-zero", "dtb-rows", "dtb-columns", "marked-miss",
+}
+
+
+def random_outer(branch: int, seed: int, timeout_seconds: int) -> dict:
+    solver, data = build(
+        branch, timeout_seconds * 1000, True, relax=OUTER_ONLY_RELAX
+    )
+    solver.set(random_seed=seed)
+    if solver.check() != sat:
+        raise RuntimeError("outer design generation did not return SAT")
+    model = solver.model()
+    return {
+        "branch": branch,
+        "blocks": [
+            [point for point in range(N_U1)
+             if is_true(model.eval(data["incidence"][row, point],
+                                   model_completion=True))]
+            for row in range(N)
+        ],
+        "k_edges": [
+            list(edge) for edge, variable in data["k"].items()
+            if is_true(model.eval(variable, model_completion=True))
+        ],
+    }
+
+
+def fixed_system(payload: dict) -> dict:
     blocks = [set(block) for block in payload["blocks"]]
     k_edges = {tuple(sorted(edge)) for edge in payload["k_edges"]}
     holes_begin = N_TRIPLE - (2 if payload["branch"] == 3 else 4)
@@ -173,11 +202,26 @@ def exact_certificate(system: dict, result) -> dict | None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("payload", type=Path)
+    parser.add_argument("payload", type=Path, nargs="?")
+    parser.add_argument("--branch", type=int, choices=(3, 4))
+    parser.add_argument("--random-seed", type=int, default=0)
+    parser.add_argument("--timeout-seconds", type=int, default=60)
     parser.add_argument("--dual", action="store_true")
     parser.add_argument("--row-support", type=int, nargs="*")
     args = parser.parse_args()
-    system = fixed_system(args.payload)
+    if args.payload is None:
+        if args.branch is None:
+            parser.error("either payload or --branch is required")
+        payload = random_outer(
+            args.branch, args.random_seed, args.timeout_seconds
+        )
+    else:
+        payload = json.loads(args.payload.read_text())
+        if "branch" not in payload:
+            if args.branch is None:
+                parser.error("payload without branch requires --branch")
+            payload["branch"] = args.branch
+    system = fixed_system(payload)
     result = primal(system)
     print(
         f"branch={system['branch']} edges={len(system['edges'])} "
