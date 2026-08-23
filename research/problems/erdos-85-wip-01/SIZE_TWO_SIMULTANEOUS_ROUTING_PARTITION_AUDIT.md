@@ -17447,3 +17447,50 @@ independent of `q`.  Any attempt to avoid the three-/five-path reversal
 price of Section 331 by changing colors must still choose one of these
 three located successor triples through one of the seven private terminal
 tickets.
+
+## 334. Exact selected-port reuse also has only two support patterns
+
+Consider instead the second signature in (1108):
+
+```text
+R_D=D={x,u,v},       Z_D={zeta},       E_zeta={u,v}. (1124)
+```
+
+Let `n_r` again count crossing-path occurrences with terminal root `r`.
+The root boundary now contains all three roots, so every `n_r` is odd.
+Each is at most two because only the two root-`r` edges of `H_b^D` can
+supply such terminals.  Hence
+
+```text
+n_x=n_u=n_v=1,
+N=3.                                                (1125)
+```
+
+In particular the alternative `N=5` in (1112) is impossible for this
+signature.  Equations (1111)--(1112) now give `m=N=3`, so the three
+terminal pairs are distinct and no cancellation occurs.
+
+Their selected-port occurrence multiset has total size three and binary
+support the singleton `{zeta}`.  It cannot consist of three occurrences
+at `zeta`: among the roots in `D`, only `x` is nonincident to the edge
+`E_zeta={u,v}`, so off-incidence permits only the pair `(x,zeta)` there.
+Consequently `zeta` occurs once and one other port `p` occurs twice.
+The root counts (1119) then force
+
+```text
+supp(L_D)={(x,zeta),(u,p),(v,p)}.                  (1126)
+```
+
+The port `p` must be nonincident to both `u` and `v`.  On the five-cycle,
+after deleting the edge `{u,v}` and its two endpoint-adjacent edges, there
+are exactly two such ports: the two internal edges of the complementary
+three-vertex path.  Either one can serve as `p` at the level of the
+off-incidence boundary constraints.
+
+Thus exact reuse of the selected port from the singleton expansion is not
+an arbitrary three-path cancellation.  It has exactly two possible binary
+support patterns, both consisting of the forced marked pair `(x,zeta)` and
+a doubled selected endpoint carrying the two other root colors separately.
+As in Section 332, existence inside the same- or mixed-color factor
+skeleton remains to be tested; (1126) is the finite pattern that such a
+holonomy realization must produce.
