@@ -5106,6 +5106,16 @@ control greedy extension.  Any viable degeneracy theorem needs the weighted
 condition using actual kill multiplicities, and likely must choose the fixed
 packing adaptively rather than use worst-case weights.
 
+Even the adaptive one-neighbor version is false.  For each ordered pair,
+minimize the killed target packings over all choices at the fixed row, then
+maximize this best-choice cost over ordered pairs.  The eleven worst adaptive
+costs still range from 264 to 622.  Seed 129's sharp pair is nonconflicting:
+every one of row 0's six choices kills at least 622 of row 30's 640 choices
+through reciprocal-incidence disagreement alone.  Thus merely replacing
+worst-case weights by the best independent choice does not rescue greedy
+degeneracy; choices must be coordinated across several neighbors, i.e. a
+genuine constraint-satisfaction argument rather than a scalar degree bound.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

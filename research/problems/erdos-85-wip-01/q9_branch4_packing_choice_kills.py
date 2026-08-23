@@ -18,11 +18,13 @@ def main() -> None:
     system = fixed_system(json.loads(args.payload.read_text()))
     families = {u: local_packing_family(system, u) for u in range(N)}
     worst = None
+    worst_adaptive = None
     for u in range(N):
         for v in range(N):
             if u == v or not families[u] or not families[v]:
                 continue
             conflict = bool(system["blocks"][u] & system["blocks"][v])
+            pair_records = []
             for choice, first in enumerate(families[u]):
                 killed = 0
                 for second in families[v]:
@@ -39,12 +41,25 @@ def main() -> None:
                     "blocks_conflict": conflict,
                     "killed_target_packings": killed,
                 }
+                pair_records.append(record)
                 if worst is None or killed > worst["killed_target_packings"]:
                     worst = record
+            adaptive = min(
+                pair_records, key=lambda record: record["killed_target_packings"]
+            )
+            if (worst_adaptive is None
+                    or adaptive["killed_target_packings"] >
+                    worst_adaptive["killed_target_packings"]):
+                worst_adaptive = adaptive
     print(json.dumps({
         "maximum_kill": worst,
+        "maximum_best_choice_kill": worst_adaptive,
         "kill_at_most_one": (
             worst is None or worst["killed_target_packings"] <= 1
+        ),
+        "best_choice_kill_at_most_one": (
+            worst_adaptive is None
+            or worst_adaptive["killed_target_packings"] <= 1
         ),
     }, separators=(",", ":")))
 
