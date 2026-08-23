@@ -3217,6 +3217,37 @@ finite leaf/ordinary endpoint decoration, plus Eulerian cut corrections.
 This is the natural object to compare with the six-edge cross-star transports
 in (73rnz_bb).
 
+The two-pole syndrome has its own sharp packing bound.  Choose
+`p in X intersect N_A(E_1)`, which exists because `(Ax)_(E_1)=1`.  The empty
+lines are disjoint, so `p` is not adjacent to `E_2`.  For each
+`Y in N_A(p) setminus {E_1}`, one has `(Ax)_Y=0` while `p in X intersect
+N_A(Y)`; hence there is another point
+
+```text
+x_Y in (X setminus {p}) intersect N_A(Y).
+```
+
+The `q-1` points `x_Y` are distinct: if the same point served Y and Y', then
+the pair `p,x_Y` would have the two common A-neighbors Y,Y', contradicting
+C4-freeness.  Therefore
+
+```text
+|X| >= q.                                                (73rnz_bm)
+```
+
+If equality holds, X consists of p and these `q-1` witnesses.  Since
+`(Ax)_(E_2)=1` and p is not adjacent to `E_2`, some witness `x_Y` is adjacent
+to `E_2`, giving the explicit A-path
+
+```text
+E_1-p-Y-x_Y-E_2.                                        (73rnz_bn)
+```
+
+Thus the image branch splits further into a minimum two-pole coset carrying
+a length-four route, or a support of size at least `q+1`.  This is the
+syndrome-two analogue of the earlier `q+1` lower bound for nonzero kernel
+supports.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
