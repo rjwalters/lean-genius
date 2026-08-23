@@ -23,6 +23,10 @@ linking the two branch-3 complement partitions.
 ``--hole-pair-reciprocity`` additionally couples every exceptional row to
 all 21 marked-pair rows.  It requires ``--all-holes --all-pair-rows``.
 
+``--hole-pair-choice-overlap-cap`` adds the C4-free cross-hole law: two
+distinct exceptional rows can select the same marked-pair center in at most
+one of the three supports.
+
 Exploratory only: UNSAT still requires an independently checked certificate
 or a kernel proof.
 """
@@ -49,7 +53,8 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
           diagonal_rows: bool = False, all_regular_classes: bool = False,
           all_pair_rows: bool = False, pair_reciprocity: bool = False,
           hole_reciprocity: bool = False,
-          hole_pair_reciprocity: bool = False):
+          hole_pair_reciprocity: bool = False,
+          hole_pair_choice_overlap_cap: bool = False):
     solver, data = outer.build(branch, timeout_ms)
     triples = data["triples"]
     pairs = list(data["marked_pairs"])
@@ -117,6 +122,15 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
                 solver.add(r_to_s == s_to_r)
     elif hole_reciprocity:
         raise ValueError("hole reciprocity requires all holes")
+    if hole_pair_choice_overlap_cap:
+        if not all_holes:
+            raise ValueError("hole pair-choice overlap cap requires all holes")
+        for r, s in combinations(range(pack_count), 2):
+            solver.add(Sum([
+                If(And(hole_pair_neighbors[r][e],
+                       hole_pair_neighbors[s][e]), 1, 0)
+                for e in pairs
+            ]) <= 1)
     if diagonal_rows:
         for r in range(8):
             anchor_block = {r, 8 + r, 16 + r}
@@ -327,6 +341,9 @@ def main() -> int:
     parser.add_argument("--hole-reciprocity", action="store_true")
     parser.add_argument("--hole-pair-reciprocity", action="store_true")
     parser.add_argument(
+        "--hole-pair-choice-overlap-cap", action="store_true",
+    )
+    parser.add_argument(
         "--print-hole-packs", action="store_true",
         help="on SAT, print the selected exceptional blocks and six-packs",
     )
@@ -336,6 +353,7 @@ def main() -> int:
         args.diagonal_rows, args.all_regular_classes,
         args.all_pair_rows, args.pair_reciprocity,
         args.hole_reciprocity, args.hole_pair_reciprocity,
+        args.hole_pair_choice_overlap_cap,
     )
     started = time.time()
     result = solver.check()

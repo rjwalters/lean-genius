@@ -71,6 +71,14 @@ that sharply scoped system is `UNKNOWN` after 120 seconds.  Thus local
 six-packs plus hole reciprocity are insufficient, while the first unresolved
 agreement boundary is symmetry against the pair rows.
 
+The proved cross-hole C4 law says the two holes share at most one selected
+marked-pair center.  `--hole-pair-choice-overlap-cap` adds this constraint.
+It is still locally `SAT` in 1.8 seconds, sharply: the witness holes intersect
+in one U1 point and agree in exactly one marked support.  Even the targeted
+intersecting-hole negation with one shared relation, both exact partitions,
+and residual type ledgers remains `UNKNOWN` after 120 seconds.  Thus the cap
+is real new structure but does not by itself yield a solver terminal.
+
 The diagnostic option `--print-hole-packs` prints the selected blocks in a
 SAT model.  In one hole-reciprocal branch-3 model, an exact denominator-six
 scan found a strict cover at only one of the six hole incidences (scale 2,
