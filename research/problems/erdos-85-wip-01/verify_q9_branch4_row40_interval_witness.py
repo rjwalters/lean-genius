@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from fractions import Fraction
 from itertools import combinations
 from pathlib import Path
 
@@ -133,6 +134,32 @@ def main() -> int:
     assert residual_capacity == 2
     assert len(minimum_transversal) == 2
 
+    # The genuine upper-deletion deficit at row 0 is not certified by a
+    # minimum integral point cover (tau=5 while nu=4), but it has this exact
+    # fractional cover of value 14/3 < 5.
+    row_zero = 0
+    zero_allowed = sorted(set(candidates[row_zero]) & reverse_possible[row_zero])
+    zero_residual = {w: blocks[w] for w in zero_allowed}
+    assert zero_residual == {
+        3: {3, 11, 19}, 19: {7, 9, 22}, 26: {12, 18},
+        29: {11, 22}, 30: {9, 16}, 32: {8, 19},
+        33: {2, 22}, 38: {3, 16}, 42: {2, 8}, 45: {7, 12},
+    }
+    fractional_cover = {
+        2: Fraction(1, 3), 3: Fraction(1, 3), 8: Fraction(2, 3),
+        9: Fraction(1, 3), 11: Fraction(1, 3), 12: Fraction(1),
+        16: Fraction(2, 3), 19: Fraction(1, 3), 22: Fraction(2, 3),
+    }
+    assert all(sum((fractional_cover.get(label, Fraction(0))
+                    for label in block), Fraction(0)) >= 1
+               for block in zero_residual.values())
+    assert sum(fractional_cover.values(), Fraction(0)) == Fraction(14, 3)
+    zero_four = [choice for choice in combinations(zero_allowed, 4)
+                 if independent(choice)]
+    zero_five = [choice for choice in combinations(zero_allowed, 5)
+                 if independent(choice)]
+    assert zero_four and not zero_five
+
     print("outer_constraints=SAT branch=4 row=40")
     print(
         "forced=[1,9,24] impossible_candidates=[] "
@@ -149,6 +176,7 @@ def main() -> int:
     )
     print(f"residual_capacity=2 label_transversal="
           f"{list(minimum_transversal)}")
+    print("row0_interval_capacity=4 fractional_point_cover=14/3")
     print("contracted_interval_deficit=VERIFIED")
     return 0
 

@@ -337,6 +337,9 @@ def main() -> int:
                                 if all(set(labels) & blocks[w] for w in residual)
                             )
                             interval_profiles[u]["residual_candidates"] = residual
+                            interval_profiles[u]["residual_candidate_blocks"] = {
+                                w: sorted(blocks[w]) for w in residual
+                            }
                             interval_profiles[u]["residual_point_cover"] = list(point_cover)
                             interval_profiles[u]["residual_point_cover_size"] = len(point_cover)
                     new_rows = [u for u in bad_rows
