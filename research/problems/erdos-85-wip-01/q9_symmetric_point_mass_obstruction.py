@@ -127,7 +127,8 @@ def primal(system: dict):
     )
 
 
-def dual(system: dict, row_support: set[int] | None):
+def dual(system: dict, row_support: set[int] | None,
+         external_point: int | None = None):
     blocks = system["blocks"]
     degree = system["degree"]
     edges = system["edges"]
@@ -153,12 +154,17 @@ def dual(system: dict, row_support: set[int] | None):
     margin[2 * N:] = 1
     matrix.append(margin)
     rhs.append(-1)
-    bounds = [
-        (0, None)
-        if row_support is None or u % N in row_support or u >= 2 * N
-        else (0, 0)
-        for u in range(variable_count)
-    ]
+    bounds = []
+    for index in range(variable_count):
+        if index < 2 * N:
+            allowed = row_support is None or index % N in row_support
+        else:
+            cap_row, cap_point = caps[index - 2 * N]
+            allowed = (
+                external_point is None or row_support is None
+                or cap_row in row_support or cap_point == external_point
+            )
+        bounds.append((0, None) if allowed else (0, 0))
     return linprog(
         np.ones(variable_count), A_ub=np.array(matrix), b_ub=np.array(rhs),
         bounds=bounds, method="highs",
@@ -417,6 +423,29 @@ def unit_row_cover_optimum(system: dict, row: int) -> dict | None:
         "cover": [
             (point, str(value)) for point, value in enumerate(cover) if value
         ],
+    }
+
+
+def forced_local_packing_neighbors(system: dict, row: int) -> dict:
+    """Enumerate demanded integral local packings and intersect their rows."""
+    blocks = system["blocks"]
+    neighbors = [
+        v if u == row else u
+        for u, v in system["edges"] if row in (u, v)
+    ]
+    forced = set(neighbors)
+    packing_count = 0
+    for packing in combinations(neighbors, system["degree"][row]):
+        if not all(
+            blocks[u].isdisjoint(blocks[v])
+            for u, v in combinations(packing, 2)
+        ):
+            continue
+        packing_count += 1
+        forced.intersection_update(packing)
+    return {
+        "packing_count": packing_count,
+        "forced_neighbors": sorted(forced) if packing_count else [],
     }
 
 
@@ -719,6 +748,16 @@ def main() -> None:
                     (cap, value) for cap, value in certificate["point_prices"]
                     if cap[0] not in (hole, other)
                 ]
+                collision_certificate = None
+                if other < holes_begin and len(block_intersection) == 1:
+                    collision_result = dual(
+                        system, {hole, other},
+                        external_point=block_intersection[0],
+                    )
+                    if collision_result.success:
+                        collision_certificate = exact_certificate(
+                            system, collision_result
+                        )
                 certificates.append({
                     "hole": hole,
                     "other": other,
@@ -739,11 +778,37 @@ def main() -> None:
                         and all(cap[1] in block_intersection
                                 for cap, _ in external_point_prices)
                     ),
+                    "has_shared_point_collision_certificate":
+                        collision_certificate is not None,
                 })
         regular_certificates = [
             certificate for certificate in certificates
             if certificate["other_kind"] == "regular-triple"
         ]
+        local = {
+            row: forced_local_packing_neighbors(system, row)
+            for row in range(N_TRIPLE)
+        }
+        forced_collision_pairs = []
+        for hole in holes:
+            for regular in range(holes_begin):
+                intersection = sorted(
+                    system["blocks"][hole] & system["blocks"][regular]
+                )
+                common_forced = sorted(
+                    set(local[hole]["forced_neighbors"])
+                    & set(local[regular]["forced_neighbors"])
+                )
+                if intersection and common_forced:
+                    forced_collision_pairs.append({
+                        "hole": hole,
+                        "regular": regular,
+                        "block_intersection": intersection,
+                        "common_forced_neighbors": common_forced,
+                        "hole_packing_count": local[hole]["packing_count"],
+                        "regular_packing_count":
+                            local[regular]["packing_count"],
+                    })
         print("exceptional_two_row_supports=" + json.dumps({
             "count": len(certificates),
             "regular_triple_count": len(regular_certificates),
@@ -753,9 +818,12 @@ def main() -> None:
                 for certificate in regular_certificates
             ),
             "exists_regular_shared_point_collision_normal_form": any(
-                certificate["shared_point_collision_normal_form"]
+                certificate["has_shared_point_collision_certificate"]
                 for certificate in regular_certificates
             ),
+            "exists_exceptional_regular_forced_collision":
+                bool(forced_collision_pairs),
+            "forced_collision_pairs": forced_collision_pairs,
             "certificates": certificates,
         }, separators=(",", ":")))
     if args.scan_exceptional_three_row_supports:

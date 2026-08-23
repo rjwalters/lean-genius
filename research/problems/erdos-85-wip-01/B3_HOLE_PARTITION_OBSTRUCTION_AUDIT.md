@@ -4508,17 +4508,20 @@ nine-model pattern is still empirical, but it replaces the diffuse
 “some two rows” statement by the exact `4 x 22` family whose outer-incidence
 selection must be proved.
 
-The price vectors themselves have a stable collision normal form.  For every
-winning intersecting exceptional/regular pair returned in all nine models,
-every point price outside the two supported rows is placed at their unique
-shared U1 point.  In the sparse witness, `{22,19}` has unit row prices, four
+The price vectors themselves have a stable collision normal form.  In every
+one of the nine models there is a winning intersecting exceptional/regular
+pair for which the dual remains feasible after every point price outside the
+two supported rows is forbidden except at their unique shared U1 point.
+This is checked by a second, restricted LP rather than inferred from whichever
+unrestricted optimum HiGHS happens to return.  In the sparse witness,
+`{22,19}` has unit row prices, four
 unit prices on row 19, five on row 22, and one external unit price at the
 shared point 10: total cost 10 against weighted degree 11.  The external
 shared-point price covers reciprocal constraints from both supported rows
 and realizes the strict saving.  The second sparse pair `{23,21}` has the
 same form at shared point 7 with denominator two.  The scanner field
-`exists_regular_shared_point_collision_normal_form` now verifies this
-normal form mechanically.
+`exists_regular_shared_point_collision_normal_form` now reports existence of
+an independently rationalized restricted certificate mechanically.
 
 The kernel consumer also matches the exact dual rather than forcing equal
 row weights.  `false_of_twoRowSupportPointPriceCertificate` accepts two named
@@ -4527,6 +4530,27 @@ row-price function to the global symmetric-relation theorem.  It is Lean
 green with standard axioms only.  Thus (13aq) may be proved by constructing
 the observed shared-point collision prices directly; no denominator or
 equal-weight normalization is part of the remaining gap.
+
+Integral local-packing enumeration explains most, but not all, of the price
+collision.  `forced_local_packing_neighbors` intersects every demanded
+pairwise-disjoint eligible packing at a row.  In eight of the nine hard
+models there is an incident exceptional/regular pair with a common forced
+neighbor; the existing theorem
+`false_of_localGramPacking_deficit_or_forced_collision` then closes the
+actual relation without prices.  The sparse witness is especially sharp:
+row 40 is forced at both 22 and 19, while row 44 is forced at both 23 and 21.
+
+The ninth model refutes making this the universal selector.  The durable
+`q9_branch4_fractional_collision_not_forced_witness.json` has no
+exceptional/regular common-forced-neighbor pair at all, despite every row
+having an integral local packing.  It still has two exact exceptional-row
+price certificates; `{24,10}` is incident at point 16 and has row weights
+`7` and `3` after scaling.  Thus the shared-point collision is genuinely
+fractional in the last case.  The scanner reports
+`exists_exceptional_regular_forced_collision=false` on this payload, so the
+two-row Farkas theorem cannot be replaced by the older forced-collision horn;
+the correct prospective dichotomy is “forced integral collision or strict
+two-row fractional collision.”
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
