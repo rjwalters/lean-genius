@@ -24973,3 +24973,37 @@ Pigeonholing root pairs now costs `q>1172+74800(t-1)` for `t` fully
 separated traces on one fixed root pair.  This is only a constant
 improvement, but it records the internal trace edges rather than charging
 all five incidences at every trace vertex as potentially new colors.
+
+## 471. Selected trace colors are counted on both avoidance sides
+
+The payer-linked term in Section 470 has the same internal overlap.  The
+at most `40j` edges paid from `L_j` include the `4j` earlier trace edges,
+because `L_j` contains their canonical payer layers.  Those `4j` edges
+use only the `j` pairwise distinct selected trace colors.  Therefore the
+number of payer-linked colors is at most
+
+```text
+j+(40j-4j)=37j.                                  (1674)
+```
+
+Furthermore, all `j` selected trace colors occur in both forbidden-color
+classes: their trace edges are incident with `X_j` and are paid from
+`L_j`.  Inclusion-exclusion with the `28j` incident-color bound (1671)
+and (1674) gives
+
+```text
+|C_j|<=28j+37j-j=64j.                            (1675)
+```
+
+The adaptive threshold can consequently be reduced once more:
+
+```text
+q>1172+7040(c-1)
+ -> an avoided nondegenerate tag-even PC cancellation; or
+ -> c full four-edge traces pairwise disjoint in vertices, source colors,
+    and their complete canonical payer-layer supports.          (1676)
+```
+
+The fixed-root specialization is `q>1172+70400(t-1)`.  Equations
+(1674)--(1675) use only the canonical payer assignment already required
+in Section 469; no injectivity of payer layers within one trace is needed.
