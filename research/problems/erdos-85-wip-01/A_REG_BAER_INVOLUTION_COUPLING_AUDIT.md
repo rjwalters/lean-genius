@@ -3650,6 +3650,45 @@ one-ended in (73rnz_cjb).  Nonempty external support is therefore activation,
 not yet a quotient-span or trail solution.  Producing that boundary
 decomposition is precisely the remaining gauge-coupling step.
 
+Defect connectivity supplies that decomposition if one first forgets the
+fine route labels.  Let `partial_D` be the vertex--edge incidence matrix of
+D over F2.  Since D is connected,
+
+```text
+im(partial_D)={vertex vectors of even mass}.
+```
+
+Thus (73rnz_ci) gives, for every owner class C, a D-edge chain `r_C` with
+
+```text
+partial_D r_C=kappa_C.                                  (73rnz_cjc)
+```
+
+In the mixed branch this chain joins the pole unit to an odd collection of
+external marked units; in the ordinary branch it can be adjoined to the two
+canonical mate relays.  This is an actual two-ended boundary solution, but
+it still forgets which D-edges admit the route cells (73rnz_at).
+
+The gauge ambiguity of (73rnz_cjc) has an exact cut/cycle dichotomy.  Let
+`k_D` be the indicator of K restricted to the D-edges.  The price
+
+```text
+<k_D,r_C>
+```
+
+is independent of the chosen D-chain exactly when `k_D` annihilates the
+cycle space of D, equivalently (because D is connected) when `k_D` is a cut
+of D.  Otherwise there is a D-cycle Z with
+
+```text
+<k_D,1_Z>=1.                                             (73rnz_cjd)
+```
+
+Hence gauge coupling now has two concrete exits: identify the cut potential
+and evaluate it on `kappa_C`, or price an odd-K holonomy cycle.  The remaining
+difficulty is not boundary existence; it is transporting either object into
+the finite owner/T-word route alphabet without losing its label.
+
 The syndrome packing bound (73rnz_bm) removes one of those branches and
 rigidifies the other.  Suppose first that both endpoints are leaves and that
 `kappa_F` has no off-pole support.  Then (73rnz_ch) says `kappa_F=h`.  Since
