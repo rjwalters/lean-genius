@@ -18103,3 +18103,45 @@ occur exactly once; the two remaining roots are both non-`b` and fall
 directly into this dichotomy.  This singleton-or-path normal form is the
 next interface for coupling the reversal to `SRP(a,e)` and the self factor
 `A_a`.
+
+## 345. Every private reversal ticket pays strictly or forces an escape
+
+The path alternative of Section 344 has the same owner-fiber consequence
+as the singleton side edge.  Let `w^sib` again be the sibling private ticket
+over `p`.  Neither far endpoint in (1166) can equal `w^sib`: either equality
+would make `w,w^sib` share both the owner `p` and the corresponding side
+label, giving the four-cycle from (1161).  Together with (1167),
+
+```text
+q_1,q_2 are distinct and neither is w^sib.          (1168)
+```
+
+At most one of them can equal the remaining point `p` of the owner fiber.
+If one does, that edge is the uniquely located strict side-color absorption
+described in (1162).  The other far endpoint necessarily lies outside
+`{p,w,w^sib}`.  Hence the two-edge side-color path always contains at least
+one actual edge which exits the owner fiber.
+
+Combine this with the singleton alternative and (1164).  Every private
+terminal ticket forced by exact reuse satisfies the sharp dichotomy
+
+```text
+one singleton side-color edge is absorbed strictly at p;
+or at least one side-color edge exits {p,w,w^sib}.  (1169)
+```
+
+The first line is the only way to avoid propagation: it consumes the unique
+strict exterior cell at `p` in its side color and root.  In particular, two
+private exact-reuse terminals over the same port cannot both avoid escape,
+because the strict permutation supplies only one strict cell at that port.
+Thus if both occurrences `(u,p),(v,p)` are private, at least one ticket has
+a forced cross-color edge leaving the owner fiber, independently of whether
+its ticket colors have singleton or doubled side support.
+
+Equation (1169) removes the last purely local completion of the private
+ticket letters in Section 340.  An exact-reuse reversal must now either pay
+a specific member of the five strict exports or create a marked side-color
+edge at a new target-port role.  The latter can be fed into the component
+profile of Section 324 or the simultaneous partition `SRP(a,e)`; it cannot
+be absorbed by rearranging the two sibling tickets which caused the
+selected-port cancellation.
