@@ -4594,3 +4594,45 @@ axioms.  Any valid global pairing theorem must use additional information
 from (255)/(267), such as the third-color transport at the outward roots or
 a compatibility equation tying the signed `A_e` exits to the alternating
 `B_ec` phase.
+
+## 85. Transpose swaps the root-sum and port-difference profiles
+
+The additional information in (267) lies in the third-color terms.  For
+each `d != c,e`, set
+
+```text
+T_d(mu,w) := mu^T R_cd R_de w.
+```
+
+The incidence blocks satisfy `R_dc=R_cd^T` and `R_ed=R_de^T`, so scalar
+transposition gives the exact duality
+
+```text
+T_d(mu,w) = w^T R_ed R_dc mu.                         (269)
+```
+
+This is the available reciprocal routing, but it does not cancel (267) by
+itself.  On the `c` side the test profile is the **sum**
+
+```text
+mu = 1_(a_-) + 1_(a_+),
+```
+
+whereas on the `e` side the input profile is the oriented **difference**
+
+```text
+w = 1_(p_-) - 1_(p_+).
+```
+
+After transposition, these two profile types exchange sides; they do not
+return to another copy of the same one-edge functional.  This is why the
+clean--clean antisymmetric cancellation of Section 56, which pairs matching
+profile types, does not already eliminate the residue.
+
+Equation (269) isolates the exact global closure requirement.  A successful
+self-indexing invariant must pair the family of root-sum profiles `mu` with
+the family of oriented port differences `w` under the reversed two-step
+routing.  The unique alternating phase from Section 76 is the only remaining
+linear mechanism capable of changing the boundary sign pattern; absent such
+a sum--difference compatibility, Section 84 shows that the two owner-factor
+gap systems can carry odd current.
