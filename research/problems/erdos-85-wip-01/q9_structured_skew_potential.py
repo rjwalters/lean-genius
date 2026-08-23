@@ -524,12 +524,51 @@ def external_bundle_coarsening_audit(data: dict) -> dict[str, bool]:
     return answer
 
 
-def sparse_full_bundle_dual(data: dict) -> tuple[bool, float, list[tuple], bool]:
-    """Find an L1-small Farkas certificate and verify rounded unit entries."""
+def collision_census_primal_system(data: dict) -> tuple:
+    """Project external bundle states to the seven coordinates in (12rz)."""
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     capacity_names, variable_count) = full_bundle_primal_system(data)
+    groups = {}
+    for row in range(N, equalities.shape[0]):
+        feature = equality_names[row][1]
+        if feature[0] != 'bundle' or feature[2] != 0:
+            continue
+        signature, census = feature[1], feature[3]
+        key = (signature[2], signature[3], *census)
+        groups.setdefault(key, []).append(row)
+    keys = sorted(groups, key=repr)
+    grouped_rows = [equalities[groups[key]].sum(axis=0) for key in keys]
+    projected = vstack([equalities[:N], *grouped_rows], format='csr')
+    names = ([('row', t) for t in range(N)]
+             + [('external_state', key) for key in keys])
+    return (projected, np.r_[equality_rhs[:N], np.zeros(len(keys))],
+            capacities, capacity_rhs, names, capacity_names, variable_count)
+
+
+def collision_census_infeasible_core(data: dict) -> tuple:
+    """Greedily delete seven-state equations to an irreducible LP core."""
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     _, variable_count) = collision_census_primal_system(data)
+    retained = list(range(N, equalities.shape[0]))
+    for row in list(retained):
+        trial_states = [candidate for candidate in retained if candidate != row]
+        selected = list(range(N)) + trial_states
+        result = linprog(
+            np.zeros(variable_count), A_ub=capacities,
+            b_ub=capacity_rhs, A_eq=equalities[selected],
+            b_eq=equality_rhs[selected], bounds=(0, 1), method='highs')
+        if not result.success:
+            retained.remove(row)
+    keys = tuple(equality_names[row][1] for row in retained)
+    return equalities.shape[0] - N, len(keys), keys
+
+
+def sparse_bundle_dual_system(system: tuple) -> tuple[bool, float, list[tuple], bool]:
+    """Find an L1-small Farkas certificate for a supplied primal system."""
     from scipy.sparse import hstack
 
     (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
-     capacity_names, variable_count) = full_bundle_primal_system(data)
+     capacity_names, variable_count) = system
     equality_count = equalities.shape[0]
     capacity_count = capacities.shape[0]
     # y is free (split as y+ - y-), z>=0, with
@@ -561,6 +600,17 @@ def sparse_full_bundle_dual(data: dict) -> tuple[bool, float, list[tuple], bool]
                  and np.max(np.abs(y - rounded_y), initial=0) < 1e-8
                  and np.max(np.abs(z - rounded_z), initial=0) < 1e-8)
     return True, float(result.fun), nonzero, exact
+
+
+def sparse_full_bundle_dual(data: dict) -> tuple[bool, float, list[tuple], bool]:
+    """Find an L1-small full-ledger Farkas certificate."""
+    return sparse_bundle_dual_system(full_bundle_primal_system(data))
+
+
+def sparse_collision_census_dual(
+        data: dict) -> tuple[bool, float, list[tuple], bool]:
+    """Find an L1-small dual using only the seven-coordinate state."""
+    return sparse_bundle_dual_system(collision_census_primal_system(data))
 
 
 def integer_full_bundle_dual(data: dict, time_limit: float = 60) -> tuple:
@@ -701,10 +751,10 @@ def integer_dual_slack_profile(data: dict, nonzero: list[tuple]) -> tuple:
             tuple(exceptions))
 
 
-def fractional_dual_slack_profile(data: dict, nonzero: list[tuple]) -> tuple:
+def fractional_system_slack_profile(system: tuple, nonzero: list[tuple]) -> tuple:
     """Count tight and positive columns of a floating Farkas dual."""
     (equalities, _, capacities, _, equality_names, capacity_names,
-     _) = full_bundle_primal_system(data)
+     _) = system
     values_by_name = dict(nonzero)
     y = np.array([values_by_name.get(name, 0.0) for name in equality_names])
     z = np.array([values_by_name.get(name, 0.0) for name in capacity_names])
@@ -712,6 +762,11 @@ def fractional_dual_slack_profile(data: dict, nonzero: list[tuple]) -> tuple:
     tight = int(np.sum(np.abs(values) <= 1e-7))
     positive = int(np.sum(values > 1e-7))
     return len(values), tight, positive, float(np.max(values, initial=0))
+
+
+def fractional_dual_slack_profile(data: dict, nonzero: list[tuple]) -> tuple:
+    return fractional_system_slack_profile(full_bundle_primal_system(data),
+                                           nonzero)
 
 
 def linear_state_bundle_dual(data: dict) -> tuple[bool, str]:
@@ -1580,6 +1635,10 @@ def main() -> int:
                         help="drop coordinates from external bundle states")
     parser.add_argument("--audit-full-bundle-dual", action="store_true",
                         help="extract sparse duals for restricted-Hall survivors")
+    parser.add_argument("--audit-collision-census-dual", action="store_true",
+                        help="extract duals for seven-coordinate external states")
+    parser.add_argument("--audit-collision-census-core", action="store_true",
+                        help="greedily minimize seven-state infeasible equations")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -1821,6 +1880,34 @@ def main() -> int:
         print(f"full_bundle_dual_survivors={dual_labels}")
         audit_failed |= any(not success or not exact
                             for _, success, exact, _ in dual_labels)
+    if args.audit_collision_census_dual:
+        projected_labels = []
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            success, norm, nonzero, exact = sparse_collision_census_dual(candidate)
+            system = collision_census_primal_system(candidate)
+            branch, seed_number, colors = label
+            print(f"collision_census_dual branch={branch} seed={seed_number} "
+                  f"colors={colors} success={success} l1={norm} "
+                  f"nonzero_count={len(nonzero)} exact_integer={exact} "
+                  f"slacks={fractional_system_slack_profile(system, nonzero)}")
+            projected_labels.append((label, success, exact, len(nonzero)))
+        print(f"collision_census_dual_survivors={projected_labels}")
+    if args.audit_collision_census_core:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            branch, seed_number, colors = label
+            print(f"collision_census_core branch={branch} seed={seed_number} "
+                  f"colors={colors} core="
+                  f"{collision_census_infeasible_core(candidate)}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -1898,6 +1985,8 @@ def main() -> int:
             or args.audit_full_bundle_primal or args.audit_bundle_primal_ablation
             or args.audit_external_coarsening
             or args.audit_full_bundle_dual
+            or args.audit_collision_census_dual
+            or args.audit_collision_census_core
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):

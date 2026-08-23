@@ -2035,6 +2035,41 @@ without net creation, while the capacity ledger says some class must lose a
 unit.  No reference to alpha endpoints, internal labels, or an LP dual is
 needed in the statement.
 
+Two further diagnostics set the boundary of this compression.  Re-solving the
+L1 dual after projecting to the seven-coordinate state does not generally
+produce a short certificate.  The hard survivor `(3,21,(1,2))` has a floating
+optimum with L1 norm about `2104.177`, 643 nonzero rows, and 110 positive
+column slacks among 772 columns (maximum slack about `19.401`).  Even two of
+the three survivors in the deterministic eight-seed prefix have 611 and 624
+nonzero rows; only `(3,7,(1,2))` has a 35-row integral certificate.  Thus
+
+```text
+SEVEN-STATE DUAL CAUTION:
+minimality of the primal state does not imply sparsity or integrality of its
+Farkas dual.                                                    (12rzb)
+```
+
+This is a solver profile, not a lower bound on all certificates.  It confirms
+that `(12rza)`, rather than the observed dual basis, remains the appropriate
+proof interface.
+
+A greedy deletion audit also fails to expose a small hidden transport circuit.
+On the hard survivor, 300 of the 361 seven-state conservation equations remain
+in a deletion-irreducible infeasible subsystem (the row equations and label
+capacities are kept throughout):
+
+```text
+HARD SEVEN-STATE CORE PROFILE:
+the greedy irreducible core retains 300/361 state classes.       (12rzc)
+```
+
+Irreducibility here is relative to that deletion order, so `(12rzc)` neither
+proves minimum core size nor rules out a different compact nonlinear argument.
+It does rule out treating the first greedy core as evidence for a bounded
+finite circuit.  The next step must exploit an algebraic relation among the
+seven statistics or a direct Hall/transport inequality across many state
+classes at once.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
