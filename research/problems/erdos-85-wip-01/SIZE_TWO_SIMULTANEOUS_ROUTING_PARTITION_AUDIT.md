@@ -11919,3 +11919,48 @@ membership of every `p_i` in the marked H census comes from the distinct
 root component `c` and its H/V/S matching.  A closing exclusion or price
 must compare those two structures; no identity internal to the `d--e`
 shadow two-factor can distinguish the selected full cycle from itself.
+
+## 236. The odd curl is a primal owner-factor cycle inside the marked port set
+
+There is an equivalent formulation entirely on the port component `e`.
+Two ports `p,r in e` are consecutive in the line graph of `F_e[d]` exactly
+when their dual edges share a vertex `y in d`, equivalently when `p,r` have
+the common `d`-neighbor `y`.  By the cross-Gram owner-factor identity,
+
+```text
+R_ed R_de=2I+F_d[e],                                  (720)
+```
+
+this line graph is precisely the owner-`d` factor `F_d[e]`.  The bipartite
+`d--e` incidence component therefore projects to cycles of the same length
+on its `d` vertices (`F_e[d]`) and its `e` ports (`F_d[e]`), with the edge
+of the first projection indexed by the corresponding vertex of the second.
+
+Under this identification, a full-cycle summand of `B_00` is exactly a
+component cycle `C*` of `F_d[e]` satisfying
+
+```text
+V(C*) subset M_00 subset V_j.                          (721)
+```
+
+The first containment says that every port on the primal owner cycle is a
+marked `00--00` H port; the second is part of the fixed lifted-dart block.
+Cycle length is preserved, so the augmentation-changing case of (712) is
+equivalently an odd component of `F_d[e]` satisfying (721).  By (716), all
+secondary vertices on its dual cycle are inactive.
+
+Thus the remaining port-secondary curl has the following exact geometric
+exclusion target:
+
+```text
+no odd component cycle of a third owner factor F_d[e]
+is contained in the marked-00 port census of V_j,       (722)
+```
+
+or else such a cycle must receive a compensating price from the root-side
+H/V/S and owner data.  Statement (722) is not proved here.  It makes clear
+which simultaneous structures must interact: adjacency around the residue
+comes from owner `d` on the port component, while membership in `M_00` is
+defined by the distinct root component `c`, its internal H edge, and the
+Baer shore state.  The local shadow identities internal to `(d,e)` cannot
+supply that comparison, as (719) shows.
