@@ -5072,6 +5072,17 @@ that all symmetry requirements—not only block-conflict edges—are respected.
 Thus forestness is a concrete candidate mechanism for (13ay), not a claimed
 pairwise-to-global converse.
 
+Forest propagation requires more than forestness, so the audit now enforces
+arc consistency on the exact one/two-choice domains.  Two endpoint choices
+are compatible only when their packings are disjoint and their mutual
+incidence decisions agree.  Propagation empties a rigid domain in four of
+the eleven payloads: fixed-weight, row40-interval,
+row-feasible-no-single-special, and row-feasible-selector-witness.  In the
+other seven it leaves every rigid domain nonempty, so their known obstruction
+necessarily involves a non-rigid row or a different local horn.  This both
+validates tree-CSP propagation as a real certificate on some models and
+confirms that it is not yet the universal (13ay) mechanism.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

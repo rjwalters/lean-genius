@@ -662,28 +662,34 @@ def unit_row_cover_optimum(system: dict, row: int) -> dict | None:
     }
 
 
-def forced_local_packing_neighbors(system: dict, row: int) -> dict:
-    """Enumerate demanded integral local packings and intersect their rows."""
+def local_packing_family(system: dict, row: int) -> list[frozenset[int]]:
+    """Enumerate every demanded integral local packing at one row."""
     blocks = system["blocks"]
     neighbors = [
         v if u == row else u
         for u, v in system["edges"] if row in (u, v)
     ]
-    forced = set(neighbors)
-    possible = set()
-    packing_count = 0
-    for packing in combinations(neighbors, system["degree"][row]):
-        if not all(
+    return [
+        frozenset(packing)
+        for packing in combinations(neighbors, system["degree"][row])
+        if all(
             blocks[u].isdisjoint(blocks[v])
             for u, v in combinations(packing, 2)
-        ):
-            continue
-        packing_count += 1
+        )
+    ]
+
+
+def forced_local_packing_neighbors(system: dict, row: int) -> dict:
+    """Enumerate demanded integral local packings and intersect their rows."""
+    family = local_packing_family(system, row)
+    forced = set(family[0]) if family else set()
+    possible = set()
+    for packing in family:
         forced.intersection_update(packing)
         possible.update(packing)
     return {
-        "packing_count": packing_count,
-        "forced_neighbors": sorted(forced) if packing_count else [],
+        "packing_count": len(family),
+        "forced_neighbors": sorted(forced),
         "possible_neighbors": sorted(possible),
     }
 
@@ -1298,6 +1304,36 @@ def main() -> None:
                 rigid_conflict_forest = False
                 break
             rigid_parent[first] = second
+        rigid_families = {
+            u: local_packing_family(system, u) for u in rigid_rows
+        }
+        rigid_domains = {
+            u: set(range(len(rigid_families[u]))) for u in rigid_rows
+        }
+        changed = True
+        while changed:
+            changed = False
+            for u, v in rigid_conflict_edges:
+                def compatible(first_index: int, second_index: int) -> bool:
+                    first = rigid_families[u][first_index]
+                    second = rigid_families[v][second_index]
+                    return (
+                        first.isdisjoint(second)
+                        and ((v in first) == (u in second))
+                    )
+                first_domain = {
+                    i for i in rigid_domains[u]
+                    if any(compatible(i, j) for j in rigid_domains[v])
+                }
+                second_domain = {
+                    j for j in rigid_domains[v]
+                    if any(compatible(i, j) for i in first_domain)
+                }
+                if (first_domain != rigid_domains[u]
+                        or second_domain != rigid_domains[v]):
+                    rigid_domains[u] = first_domain
+                    rigid_domains[v] = second_domain
+                    changed = True
         has_strengthened_local_obstruction = bool(
             has_local_obstruction or disjoint_pair_obstructions
             or reciprocity_obstructions
@@ -1359,6 +1395,12 @@ def main() -> None:
             ],
             "rigid_conflict_edges": rigid_conflict_edges,
             "rigid_conflict_forest": rigid_conflict_forest,
+            "rigid_arc_consistency_empty_rows": [
+                u for u in rigid_rows if not rigid_domains[u]
+            ],
+            "rigid_arc_consistency_domain_sizes": [
+                [u, len(rigid_domains[u])] for u in rigid_rows
+            ],
             "has_strengthened_local_obstruction":
                 has_strengthened_local_obstruction,
             "minimum_row_support": row_support,
