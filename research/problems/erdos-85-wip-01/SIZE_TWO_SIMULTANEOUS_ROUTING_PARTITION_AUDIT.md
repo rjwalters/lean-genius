@@ -11147,3 +11147,50 @@ multiplicity, into the existing `rho^same -> delta_G -> Delta` chain.  Any
 surviving obstruction is now supported precisely on the mod-two mismatch
 between marked H ownership and anchor multiplicity, not on nonuniqueness
 itself.
+
+## 218. Anchor parity is a two-bit endpoint determinant
+
+The residual character `u` has a closed graph-facing formula.  For any
+vertex `v`, put
+
+```text
+ell_i(v):=1[E_i v in A],
+ell(v):=ell_1(v)+ell_2(v),
+r(v):=|N_A(v) intersect R| mod 2.                     (674)
+```
+
+For an H edge `e=xx'`, choosing an `E_i`-anchor means choosing one
+orientation in which the first endpoint is adjacent to `E_i` and then one
+residual center adjacent to the other endpoint.  The two orientations are
+disjoint as ordered anchor incidences, so (670) becomes
+
+```text
+alpha_i(xx')=ell_i(x)r(x')+ell_i(x')r(x),
+alpha(xx') =ell(x)r(x') +ell(x')r(x).                 (675)
+```
+
+Equivalently, if `a(v)=(ell(v),r(v)) in F_2^2`, then
+
+```text
+alpha(xx')=det(a(x),a(x')).                           (676)
+```
+
+This derivation counts anchor tuples with their actual multiplicity; it does
+not assume that the neighbor in `R` is unique.  The survival clause in (668)
+is automatic for H mates: removed leaf-switch middle edges lie in `T`, while
+`xx'` lies outside `T` by (639).
+
+Thus the scalar same-side residue in (673) is explicitly
+
+```text
+sum_(same-side marked H edge xx')
+  (1+ell(x)r(x')+ell(x')r(x)).                        (677)
+```
+
+The unique-anchor problem has therefore been replaced by a bilinear
+endpoint census.  Proving (673) now requires showing that the marked
+same-side H matching has total determinant equal to its cardinality.  This
+is not implied by the separate `ell` and `r` marginals, but it is expressed
+in exactly the two-shore commutator alphabet already present in
+(73rnz_cjibky)--(73rnz_cjibkza), so those identities can be tested against
+(677) without constructing any new anchor choices.
