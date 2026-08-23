@@ -4393,6 +4393,29 @@ non-pole flip endpoints.  The latter endpoint prices still have to be
 identified with the `rho/mu` atoms of `Psi^hat_owner`; (73rnz_cjibkq) does
 not by itself prove that final identification.
 
+On the transition edges, however, the potential equations are already
+explicit.  Combining (73rnz_cjibkq) with the 00/11 price formulas gives
+
+```text
+00 pair vw: lambda(v)+lambda(w)=0,
+11 pair vw: lambda(v)+lambda(w)=1+mu_(v,w).             (73rnz_cjibkr)
+```
+
+Equivalently, on every P-cycle C in the additive branch,
+
+```text
+sum_(11 edges vw of C) (1+mu_(v,w))=0.                 (73rnz_cjibks)
+```
+
+Thus `lambda` is constant across each canonical Baer pair and records exactly
+the complement matching price across each broken relay.  The `mu` part of a
+routed owner's price is consequently gauge-invariant in the cut-potential
+branch; a failure of (73rnz_cjibks) is precisely the odd-K cycle alternative.
+The unresolved endpoint identification after (73rnz_cjibkq) is narrower than
+stated above: attach the source-side residual `rho` (and any inactive unit)
+from (73rnz_cjibka) to the terminal endpoint potential delivered by the P
+segment.  No additional ambiguity remains in the internal `mu` sum.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
