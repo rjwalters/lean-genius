@@ -1009,7 +1009,7 @@ def main() -> None:
         ]
         local = {
             row: forced_local_packing_neighbors(system, row)
-            for row in range(N_TRIPLE)
+            for row in range(N)
         }
         forced_collision_pairs = []
         for hole in holes:
@@ -1081,7 +1081,7 @@ def main() -> None:
         }
         local = {
             row: forced_local_packing_neighbors(system, row)
-            for row in range(N_TRIPLE)
+            for row in range(N)
         }
         for certificate in certificates:
             regular = certificate["regular"]
@@ -1093,6 +1093,13 @@ def main() -> None:
                 (regular in local[hole]["forced_neighbors"]
                  and hole not in local[regular]["possible_neighbors"])
             )
+        global_reciprocity_pairs = [
+            [u, w]
+            for u in range(N) for w in local[u]["forced_neighbors"]
+            if local[u]["packing_count"]
+            and local[w]["packing_count"]
+            and u not in local[w]["possible_neighbors"]
+        ]
         print("fixed_exceptional_two_row_templates=" + json.dumps({
             "templates": templates,
             "certificate_count": len(certificates),
@@ -1108,10 +1115,11 @@ def main() -> None:
                 certificate["reciprocity_mismatch"]
                 for certificate in certificates
             ),
-            "exists_incident_or_reciprocity": any(
-                certificate["block_intersection"]
-                or certificate["reciprocity_mismatch"]
-                for certificate in certificates
+            "global_reciprocity_pairs": global_reciprocity_pairs,
+            "exists_incident_or_global_reciprocity": (
+                any(certificate["block_intersection"]
+                    for certificate in certificates)
+                or bool(global_reciprocity_pairs)
             ),
             "exists_certificate": bool(certificates),
             "template_counts": template_counts,

@@ -4760,6 +4760,26 @@ are witnessing the pre-existing symmetry mismatch.  It may be easier to
 prove than the undifferentiated 88-pair price selector, but remains an
 empirical outer-design claim.
 
+Fresh all-row-feasible seed 120 now **refutes (13at)**.  The durable
+`q9_branch4_fixed_weight_counterexample.json` has zero fixed `(1,2)`
+certificates among all 88 exceptional/regular pairs.  The base arbitrary
+price target remains alive: incident pairs `{25,12}` at point 10 and
+`{25,19}` at point 7 have equal row weights and margin one.  Hence even after
+allowing disjoint blocks, universal fixed row weights are false.
+
+The sharper disjunction (13au) survives for a different reason.  Ordinary
+row 18 has a unique full local packing containing row 20, while none of row
+20's 37 full packings contains row 18.  Thus the model has the global
+reciprocity obstruction `(18,20)` even though it has no fixed-price horn.
+The scanner previously checked reciprocity only on exceptional/regular pairs
+that already carried the fixed certificate; that diagnostic was too narrow.
+It now enumerates packing families at all 47 rows and reports the global
+forced-forward/impossible-reverse pairs independently.  On the ten SAT
+all-row-feasible designs produced from seeds 110--125, seed 120 is the only
+fixed-template failure and is closed exactly by this global reciprocity horn.
+The honest hierarchy is therefore: (13at) false; (13au) still empirical and
+alive; (13aq) remains the robust price-only fallback.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
