@@ -3843,6 +3843,29 @@ and (73rnz_cjibb) leave only bounded binary T-word/owner states, checking
 gauge compatibility has reduced to a finite table of local quadrilateral
 identities, uniform in q; no large-star enumeration remains.
 
+There is also no hidden nonadditive invariant in the successful-table case.
+The standard complete-graph cocycle calculation says that a symmetric
+pair-weight satisfying every switch identity (73rnz_cjibd) has the form
+
+```text
+w(a,b)=phi(a)+phi(b)+c.                                  (73rnz_cjibe)
+```
+
+Indeed the four-cycle relations generate all differences of perfect
+pairings; fixing two reference endpoints recovers `phi`, with one constant
+class left over.  Summing (73rnz_cjibe) over a perfect pairing gives the sum
+of the endpoint potentials plus `c q/2`.  The latter vanishes because `q/2`
+is even, while the former depends only on the fixed star margins and is
+exactly the additive-linear information already exhausted by
+(73rnz_aj)--(73rnz_al).
+
+Consequently a genuinely capacity-sensitive pair-local price has only one
+possible behavior: it must fail a quadrilateral identity and create the
+explicit four-relay holonomy of (73rnz_cjibd).  Gauge-independent prices are
+additive and powerless; nonadditive prices are automatically localized
+holonomies.  This removes the last ambiguity about what kind of fine terminal
+can exist.
+
 Similarly, because T is Eulerian, `Tx` is exactly the boundary vector of the
 T-cut `delta_T(X)`: outside X it counts T-neighbors in X, while inside X the
 even T-degree converts internal incidence to external incidence.  Hence the
