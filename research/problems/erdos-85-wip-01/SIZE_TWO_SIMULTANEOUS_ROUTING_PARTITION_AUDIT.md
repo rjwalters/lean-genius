@@ -24284,3 +24284,32 @@ Thus the finite recurrence from Section 452 is not a one-time artifact
 of `q=4096`: unless the nondegenerate cancellation terminal occurs, the
 number of targets coupled to one fixed pair of root actions grows
 without bound with `q`.
+
+## 454. The repeated root pair lives in one alternating two-factor
+
+Fix the unordered root pair `{r,s}` and distinct targets `v,w` supplied
+by Section 452.  On `O_5`, every root action is full: each vertex has
+exactly one incident edge in the root matching `G_r` and exactly one in
+`G_s`.  The root classes are disjoint, so
+
+```text
+G_r union G_s is a spanning two-regular graph on O_5.            (1629)
+```
+
+Every component of this union is therefore an even cycle whose edge
+roots alternate `r,s,r,s,...`.  The saturated pair at `v` is exactly the
+two factor edges incident with `v`, and those edges have one common
+allowed exterior source color.  The same holds at `w`.  Thus (1625)
+refines to
+
+```text
+some alternating {r,s}-cycle factor contains at least two distinct
+vertices, possibly on different cycles, at each of which the two
+incident factor edges have a common exterior source color.       (1630)
+```
+
+The common source color at `v` need not equal the common source color at
+`w`, and the counting argument does not place the two vertices on the
+same alternating cycle.  Subject to exactly those qualifications, the
+remaining q-large saturation terminal is now a pair of monochromatic
+turns in one fixed two-root cycle factor.
