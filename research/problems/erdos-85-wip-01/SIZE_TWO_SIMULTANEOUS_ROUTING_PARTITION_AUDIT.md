@@ -11813,3 +11813,37 @@ an odd full owner cycle is the localized curl which no endpoint coboundary
 can see.  A closing argument must therefore identify (711) with the realized
 V/S boundary and either exclude or separately price the selected odd-cycle
 residue.  No same-channel exact-pair cancellation is asserted.
+
+## 233. The active part of the owner-factor boundary is the `q_y` census
+
+The interface in (711) already occurs in the secondary interval ledger.
+Let `p` be an H port and let `h_p` be either of its two incidence darts.  If
+`y in N_d(p)`, then `y` meets the H wedge at its port.  It cannot also meet
+either root: that would be a rooted V triangle through an H dart, excluded
+in Section 160.  Thus it meets the wedge exactly once, and (362)/(511) give
+
+```text
+q_y(h_p)=t_y  whenever y in N_d(p).                    (714)
+```
+
+Consequently the target-active projection of (711) is exactly
+
+```text
+t_y partial B_00(y)
+ =sum_(p in M_00, y in N_d(p)) q_y(h_p).               (715)
+```
+
+There is no dart-choice ambiguity because `q_y` is constant on a port pair
+by (381).  Equation (715) is the promised channel change: the two-label
+port edge is split at its owner-factor boundary into the individual active
+secondary labels already propagated by the canonical run intervals of
+Sections 161--165.
+
+For `t_y=0`, the right side of (715) is identically zero while
+`partial B_00(y)` need not vanish.  Hence the existing active `q_y` ledger
+sees precisely the active projection of the boundary, not all of it.  A
+complete use of (713) must therefore handle three explicitly separated
+terms: active boundary transport via (715), inactive secondary boundary,
+and odd owner-factor-cycle holonomy.  Filtering the H census to the `00`
+cell may also create complementary-state terms, just as in (704) and (707);
+no cancellation of those terms is asserted here.
