@@ -3848,6 +3848,11 @@ full DTB orthogonality equations themselves cross the current solver
 boundary.  The adjacency-as-base encoding may state edge-to-eligibility
 directly as the necessary consequence proved above and retain only the much
 cheaper row ledger and B0 block orthogonality.
+The corresponding direct `--relation-base` branch-3 probe is likewise
+UNKNOWN on its initial 60-second solve, with zero added base, fractional, or
+reverse rows.  It removes the base-witness issue semantically, but the joint
+edge-to-eligibility/row-ledger/B0-orthogonality system itself is already past
+the present solver boundary.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
