@@ -9601,3 +9601,44 @@ Arbitrary closed labeled cycles do not satisfy this, so closure and privacy
 alone are insufficient.  The final input must be the route/switch algebra
 on the non-H edge decorations in (577), which is now the only data not yet
 used by (576).
+
+## 185. The exact decoration automaton has paired switch excursions
+
+The rooted budget classification (297) gives the complete compatibility
+rule for two consecutive port edges at a root.  Ignoring the resolved
+labels but retaining decoration type, the unordered pair of incident dart
+decorations is exactly one of
+
+```text
+HH, HV, VV, SS.                                       (580)
+```
+
+In particular, H meets a non-H edge only through V, never S, and a root
+transition never changes V to S.  A type change V--S can occur only across
+a **port edge** whose two endpoint decorations are V and S.
+
+Every maximal non-H gap lies between two H-runs, so (580) makes its first
+and last root-side decorations V.  Traversing the gap, each mixed V--S port
+edge toggles the current type and root transitions preserve it.  Therefore
+
+```text
+number of mixed V--S port edges in each gap is even.  (581)
+```
+
+They pair canonically in traversal order into switch excursions: enter an
+S segment across one mixed port edge and leave it across the next.  Inside
+an S segment every root transition is S--S; outside, every root transition
+is V--V, with the two gap endpoints supplied by H--V transitions.
+
+Thus switch parity itself cannot carry the odd H holonomy.  After each
+paired S excursion is contracted to a labeled V-to-V transfer, a gap is a
+directed path of resolved V-route states from its entry label to its exit
+label.  The remaining conservation problem is entirely the holonomy of
+these V-route turns together with the internal labels of the paired switch
+excursions; there is no unpaired switch endpoint to absorb an odd H state.
+
+Equation (581) is only the type-level automaton.  It does not assert that a
+paired switch excursion has trivial private price—its rooted identifiers
+must remain in the edge state (577).  It removes one possible escape and
+reduces the final problem to V-turns plus two-ended S excursions.
+reduces the final table to V-turns plus bounded, two-ended S excursions.
