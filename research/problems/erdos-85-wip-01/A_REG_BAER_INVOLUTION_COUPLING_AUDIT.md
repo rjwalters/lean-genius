@@ -5074,7 +5074,7 @@ owner class** `(c,c)`, never an off-diagonal owner error.  In particular every
 residual ambiguity (73rnz_cjibkzd).  This does not yet prove cancellation:
 the unlabeled marked unit still has to be compared with that vector through
 (73rnz_cjibkd).  It does reduce the remaining geometric theorem to the
-parity of `00--00`, `10--10`, and the double-pole subcell of `01--01`, with
+parity of `00--00`, `10--10`, and the non-double-pole subcell of `01--01`, with
 the `11--11` owner value fixed pointwise.
 
 Moreover the entire pairing gauge is generated locally.  Any two perfect
