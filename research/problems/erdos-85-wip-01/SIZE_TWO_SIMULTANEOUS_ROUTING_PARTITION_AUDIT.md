@@ -9402,3 +9402,57 @@ must show that an odd-mass ledger built from the two atom types (564) cannot
 be conserved by the simultaneous route-reversal pairing.  Unlike the old
 activation question, that theorem starts with a guaranteed nonzero, fully
 located, bounded-degree object.
+
+## 181. The enlarged center alphabet has private full-state tags
+
+For an H port `z` with roots `x,x'`, retain the role-partitioned six-label
+tuple
+
+```text
+Sigma(z):=(N_d(x),N_d(x'),N_d(z))                    (565)
+```
+
+and its active subset
+
+```text
+T(z):={y in the six entries of Sigma(z):t_y=1}.       (566)
+```
+
+The three pairs in (565) are disjoint by (547).  The last pair
+`N_d(z)={y_1,y_2}` uniquely determines the center port `z`: a second port
+adjacent to both `y_1,y_2` would give that port pair two common neighbors,
+a C4.  Hence the full role-tagged state `(Sigma(z),T(z))` is private to one
+H-port occurrence on the dart-cycle decomposition.
+
+Use the 64 one-hot activity states
+
+```text
+a_(Sigma,T)(z):=[Sigma(z)=Sigma and T(z)=T],
+T subseteq the six role positions.                    (567)
+```
+
+The state `T=empty` is total silence.  The other 63 states partition
+nonsilence and give a one-hot version of the Boolean expansion (558):
+
+```text
+n(z)=sum_(empty != T) a_(Sigma(z),T)(z).              (568)
+```
+
+Unlike individual monomials in (558), a one-hot atom retains the inactive
+labels too, including the private port-label pair.  Thus distinct centers
+cannot collide merely because they share one active secondary label.
+
+The silent footprint atom also carries the state `(Sigma,empty)` and its
+two uniquely labeled shadow edges.  Therefore both atom types in (564) fit
+one finite, private center alphabet:
+
+```text
+nonempty T: one center unit with its full six-label activity state;
+empty T:    one center plus its two inactive labeled companions.         (569)
+```
+
+This settles the privacy side of the enlarged activation ledger at the
+center level.  It does not prove conservation under route reversal: the
+next theorem must show how the private states (569) are paired or priced by
+the simultaneous owner ledger.  Any failure can no longer be blamed on a
+collision of coarse secondary labels.
