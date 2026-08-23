@@ -5095,6 +5095,17 @@ is `(16,25; common 32)` with packing-family sizes `(11,3)`.  The audit records
 Thus an extension theorem must also handle a genuinely non-rigid/non-rigid
 collision; it cannot reduce all of (13ay) to the rigid forest.
 
+The simplest greedy-degeneracy extension also fails decisively.  The
+diagnostic `q9_branch4_packing_choice_kills.py` fixes one row packing and
+counts incompatible packings at every other row, where compatibility means
+both reciprocal-incidence agreement and (for block-conflicting rows)
+disjointness.  “One fixed neighbor kills at most one packing” is false in
+all eleven payloads.  The observed maxima range from 299 killed packings to
+624 of 640 target packings in seed 129.  Hence ordinary back-degree cannot
+control greedy extension.  Any viable degeneracy theorem needs the weighted
+condition using actual kill multiplicities, and likely must choose the fixed
+packing adaptively rather than use worst-case weights.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
