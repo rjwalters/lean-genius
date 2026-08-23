@@ -1952,6 +1952,41 @@ design identity that eliminates this hard equality model before the full
 ledger, or prove a structural integrality/certificate theorem not visible in
 the sampled duals.
 
+Primal ablation supplies exactly that additional identity and reverses the
+misleading lesson of the dense dual.  The mode
+`--audit-bundle-primal-ablation` separately retains alpha equalities, external
+(`iota=0`) bundle equalities, and internal (`iota=1`) bundle equalities.  On
+**all eleven** restricted-Hall survivors in the deterministic 32-seed run it
+reports the identical profile
+
+```text
+rows only: feasible;                 alpha only: feasible;
+internal bundles only: feasible;     alpha + internal: feasible;
+external bundles only: infeasible;   all bundles/full: infeasible. (12rx)
+```
+
+Thus the external bundle layer is the unique load-bearing conservation family
+in this ablation: alpha and internal states are neither sufficient alone nor
+together, while external states alone already give the contradiction.  The
+607-row full-state dual in `(12rw)` is therefore a coordinate artifact of L1
+optimization, not evidence that alpha/internal geometry is essential.
+
+The corrected uniform target is consequently simpler and more robust than
+both false conjectures `(12rv)` and `(12rv*)`:
+
+```text
+EXTERNAL-BUNDLE CAPACITY TRANSFER:
+every restricted-Hall equality model is infeasible after imposing only the
+iota=0 bundle conservation equations, row demands, and label capacities.
+                                                               (12ry)
+```
+
+Statement `(12ry)` restores the local transport form `(12rp)` for every
+sampled hard model, without any pivot restriction or small-certificate claim.
+The proof problem is now to derive external-state capacity loss directly—by a
+combinatorial transport or Hall argument—rather than to reconstruct whichever
+dense Farkas basis an LP happens to choose.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

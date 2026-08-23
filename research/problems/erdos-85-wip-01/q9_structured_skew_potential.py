@@ -416,6 +416,37 @@ def full_bundle_primal_feasible(data: dict) -> tuple[bool, str]:
     return result.success, result.message
 
 
+def full_bundle_primal_ablation(data: dict) -> dict[str, bool]:
+    """Test which feature layers first make the normalized primal infeasible."""
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     _, variable_count) = full_bundle_primal_system(data)
+    feature_predicates = {
+        'rows': lambda feature: False,
+        'alpha': lambda feature: feature[0] == 'alpha',
+        'external': lambda feature: feature[0] == 'bundle' and feature[2] == 0,
+        'internal': lambda feature: feature[0] == 'bundle' and feature[2] == 1,
+        'bundles': lambda feature: feature[0] == 'bundle',
+        'alpha_external': lambda feature: (feature[0] == 'alpha'
+                                            or feature[0] == 'bundle'
+                                            and feature[2] == 0),
+        'alpha_internal': lambda feature: (feature[0] == 'alpha'
+                                            or feature[0] == 'bundle'
+                                            and feature[2] == 1),
+        'full': lambda feature: True,
+    }
+    answer = {}
+    for name, predicate in feature_predicates.items():
+        selected_rows = list(range(N)) + [
+            row for row in range(N, equalities.shape[0])
+            if predicate(equality_names[row][1])]
+        result = linprog(
+            np.zeros(variable_count), A_ub=capacities,
+            b_ub=capacity_rhs, A_eq=equalities[selected_rows],
+            b_eq=equality_rhs[selected_rows], bounds=(0, 1), method='highs')
+        answer[name] = result.success
+    return answer
+
+
 def sparse_full_bundle_dual(data: dict) -> tuple[bool, float, list[tuple], bool]:
     """Find an L1-small Farkas certificate and verify rounded unit entries."""
     from scipy.sparse import hstack
@@ -1466,6 +1497,8 @@ def main() -> int:
                         help="test Hall after retaining only external and Z transitions")
     parser.add_argument("--audit-full-bundle-primal", action="store_true",
                         help="test normalized matching flow with bundle equality")
+    parser.add_argument("--audit-bundle-primal-ablation", action="store_true",
+                        help="ablate alpha/external/internal primal equalities")
     parser.add_argument("--audit-full-bundle-dual", action="store_true",
                         help="extract sparse duals for restricted-Hall survivors")
     parser.add_argument("--print-full-dual", action="store_true",
@@ -1663,6 +1696,17 @@ def main() -> int:
             if feasible:
                 feasible_labels.append(label)
         print(f"full_bundle_primal_feasible={feasible_labels}")
+    if args.audit_bundle_primal_ablation:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            branch, seed_number, colors = label
+            print(f"bundle_primal_ablation branch={branch} seed={seed_number} "
+                  f"colors={colors} feasible="
+                  f"{full_bundle_primal_ablation(candidate)}")
     if args.audit_full_bundle_dual:
         dual_labels = []
         for label, candidate in all_data:
@@ -1761,7 +1805,8 @@ def main() -> int:
             or args.audit_bundle_pairs or args.audit_bundle_triples
             or args.audit_bundle_rank or args.audit_bundle_deletion
             or args.audit_zero_loss_restriction
-            or args.audit_full_bundle_primal or args.audit_full_bundle_dual
+            or args.audit_full_bundle_primal or args.audit_bundle_primal_ablation
+            or args.audit_full_bundle_dual
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):
