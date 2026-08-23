@@ -613,6 +613,48 @@ def sparse_collision_census_dual(
     return sparse_bundle_dual_system(collision_census_primal_system(data))
 
 
+def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
+    """Test a common low-degree polynomial potential on seven-state rows."""
+    from scipy.sparse import hstack
+
+    if degree not in (1, 2):
+        raise ValueError("only linear and quadratic state potentials are supported")
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     _, _) = collision_census_primal_system(data)
+    monomials = ([(coordinate,) for coordinate in range(7)]
+                 + ([(left, right) for left in range(7)
+                     for right in range(left, 7)] if degree == 2 else []))
+    basis_count = 1 + len(monomials)
+    latent_count = N + basis_count
+    projection = lil_matrix((equalities.shape[0], latent_count))
+    for t in range(N):
+        projection[t, t] = 1
+    for row, name in enumerate(equality_names[N:], start=N):
+        state = name[1]
+        values = [1.0]
+        for indices in monomials:
+            value = 1.0
+            for coordinate in indices:
+                value *= state[coordinate]
+            values.append(value)
+        for coordinate, value in enumerate(values):
+            projection[row, N + coordinate] = value
+    columns = equalities.T @ projection.tocsr()
+    inequalities = hstack([-columns, -capacities.T], format='csr')
+    latent_rhs = np.r_[equality_rhs[:N], np.zeros(basis_count)]
+    scalar = np.r_[latent_rhs, capacity_rhs].reshape(1, -1)
+    result = linprog(
+        np.zeros(latent_count + capacities.shape[0]),
+        A_ub=inequalities, b_ub=np.zeros(columns.shape[0]),
+        A_eq=scalar, b_eq=[-1],
+        bounds=[(None, None)] * latent_count
+        + [(0, None)] * capacities.shape[0], method='highs')
+    if not result.success:
+        return False, result.message, ()
+    coefficients = tuple(float(value) for value in result.x[N:N + basis_count])
+    return True, result.message, coefficients
+
+
 def integer_full_bundle_dual(data: dict, time_limit: float = 60) -> tuple:
     """Search directly for an integer Farkas certificate."""
     from scipy.sparse import hstack
@@ -1639,6 +1681,9 @@ def main() -> int:
                         help="extract duals for seven-coordinate external states")
     parser.add_argument("--audit-collision-census-core", action="store_true",
                         help="greedily minimize seven-state infeasible equations")
+    parser.add_argument("--audit-polynomial-collision-census-dual",
+                        action="store_true",
+                        help="test linear/quadratic seven-state potentials")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -1908,6 +1953,22 @@ def main() -> int:
             print(f"collision_census_core branch={branch} seed={seed_number} "
                   f"colors={colors} core="
                   f"{collision_census_infeasible_core(candidate)}")
+    if args.audit_polynomial_collision_census_dual:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            branch, seed_number, colors = label
+            for degree in (1, 2):
+                success, message, coefficients = (
+                    polynomial_collision_census_dual(candidate, degree))
+                nonzero = sum(abs(value) > 1e-8 for value in coefficients)
+                print(f"polynomial_collision_census_dual branch={branch} "
+                      f"seed={seed_number} colors={colors} degree={degree} "
+                      f"success={success} coefficient_nonzero={nonzero} "
+                      f"message={message}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -1987,6 +2048,7 @@ def main() -> int:
             or args.audit_full_bundle_dual
             or args.audit_collision_census_dual
             or args.audit_collision_census_core
+            or args.audit_polynomial_collision_census_dual
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):

@@ -2070,6 +2070,25 @@ finite circuit.  The next step must exploit an algebraic relation among the
 seven statistics or a direct Hall/transport inequality across many state
 classes at once.
 
+The most direct low-moment algebraic ansatz also fails.  The mode
+`--audit-polynomial-collision-census-dual` restricts every state multiplier to
+one common polynomial of total degree at most two in
+`(kappa_sel,kappa_all,n_0,...,n_4)`, while still allowing arbitrary demand-row
+weights and nonnegative capacity prices.  On both branch-4 survivors in the
+deterministic eight-seed prefix, HiGHS reports this quadratic dual infeasible
+(and likewise reports the linear subcase infeasible):
+
+```text
+COMMON QUADRATIC STATE POTENTIAL does not certify the sampled branch-4
+external-capacity obstructions.                                  (12rzd)
+```
+
+The branch-3 quadratic solve returned an indeterminate numerical status, so
+no claim is made there.  Statement `(12rzd)` is a floating-model no-go, but
+the two clean failures already refute a uniform proof based on one quadratic
+moment score of the seven coordinates.  Higher-degree fitting is not a
+meaningful next step without an independently derived algebraic identity.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
