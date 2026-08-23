@@ -18455,3 +18455,71 @@ cycle, but it upgrades each repeated transition from a free fifth cell to
 an exact degree-two capacity event.  A full completion of Section 348 must
 now realize both saturation-or-splitting decisions simultaneously with the
 self factors and the other SRP rows.
+
+## 351. Endpoint-layer saturation forms a three-axis rectangle
+
+Apply Section 349 to the two-color four-state cycle (1180).  The two
+color-`a` labels `y_0,y_2` have the same root `x_3` and the same pair of
+owner ports `{p_0,p_1}`.  Therefore
+
+```text
+q(y_0)=q(y_2)=p_4.                                 (1192)
+```
+
+Suppose first that either fifth cell has `kappa(y_i)!=a`.  Then (1187)
+already supplies a genuine exterior-component tag on the cycle.  The only
+remaining case has
+
+```text
+kappa(y_0)=kappa(y_2)=a.                           (1193)
+```
+
+Let `z_0,z_2` be the actual `A_a` neighbors paying the two cells:
+
+```text
+y_0 --[A_a]-- z_0 -- p_4,
+y_2 --[A_a]-- z_2 -- p_4.                          (1194)
+```
+
+They are distinct.  If `z_0=z_2`, the propagation labels `y_0,y_2`
+would have the two common neighbors `x_3` and `z_0`, giving a four-cycle.
+Since a selected `e`-port has exactly two neighbors in color `a`, the two
+distinct payments saturate its cross fiber:
+
+```text
+N_a(p_4)={z_0,z_2}.                                (1195)
+```
+
+Equivalently, the repeated root gives the root-axis edge
+`y_0--y_2` in `F_c[a]`, the saturated port gives the target-axis edge
+`z_0--z_2` in `F_e[a]`, and the self factor supplies the two cross edges
+in (1194).  Their ambient lifts form the actual six-cycle
+
+```text
+y_0 -- x_3 -- y_2 -- z_2 -- p_4 -- z_0 -- y_0.    (1196)
+```
+
+Thus two endpoint-layer payments do not disappear into arbitrary self
+neighbors: they create a rigid three-axis rectangle on four color-`a`
+labels and consume the whole `a`-fiber of the fifth selected port.
+
+The color-`b` pair is identical after replacing
+
+```text
+(y_0,y_2,x_3,p_4,a) by (y_1,y_3,x_4,p_2,b).        (1197)
+```
+
+Consequently every full-SRP completion of the four-state witness has the
+exact dichotomy
+
+```text
+some propagation label carries an exterior fifth-cell tag; or
+both colors form the saturated rectangles (1196)--(1197). (1198)
+```
+
+This still does not declare the ticket cycle impossible: a six-cycle is
+allowed by `C_4`-freeness.  It does, however, replace the free self-factor
+completion suggested after (1181) by two explicit constant-size objects.
+The exterior branch can be charged by component/color propagation, while
+the endpoint-layer branch must realize two saturated selected fibers and
+their paired `A_a,A_b` cross edges simultaneously.
