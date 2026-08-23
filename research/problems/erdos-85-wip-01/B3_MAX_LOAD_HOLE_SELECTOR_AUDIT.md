@@ -71,6 +71,14 @@ that sharply scoped system is `UNKNOWN` after 120 seconds.  Thus local
 six-packs plus hole reciprocity are insufficient, while the first unresolved
 agreement boundary is symmetry against the pair rows.
 
+The diagnostic option `--print-hole-packs` prints the selected blocks in a
+SAT model.  In one hole-reciprocal branch-3 model, an exact denominator-six
+scan found a strict cover at only one of the six hole incidences (scale 2,
+`53 < 54`); the other five had no scaled cover through denominator six.
+Hence even after imposing both exact local six-packs, no pointwise
+"every hole point is strict" lemma is available.  The surviving statement is
+genuinely an alternative across the two holes and their six incidences.
+
 For branch 4, every multi-special hole row in the six tracked models has a
 strict special point even though singleton-special rows can fail.  This is a
 conditional corpus horn only: global special mass six does **not** imply that

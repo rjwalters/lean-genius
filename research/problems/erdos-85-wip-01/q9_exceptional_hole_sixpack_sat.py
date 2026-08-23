@@ -35,7 +35,7 @@ import time
 from pathlib import Path
 import sys
 
-from z3 import And, Bool, If, Implies, Not, Or, Sum, sat, unknown
+from z3 import And, Bool, If, Implies, Not, Or, Sum, is_true, sat, unknown
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import q9_three_high_u1_design_sat as outer
@@ -309,6 +309,9 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
                         And(anchors[r][t], pair_triples[t]) for t in triples
                     ])
                     solver.add(hole_to_pair == pair_to_hole)
+    data["sixpack_anchors"] = anchors
+    data["sixpack_triple_neighbors"] = hole_triple_neighbors
+    data["sixpack_pair_neighbors"] = hole_pair_neighbors
     return solver, data
 
 
@@ -323,11 +326,17 @@ def main() -> int:
     parser.add_argument("--pair-reciprocity", action="store_true")
     parser.add_argument("--hole-reciprocity", action="store_true")
     parser.add_argument("--hole-pair-reciprocity", action="store_true")
+    parser.add_argument(
+        "--print-hole-packs", action="store_true",
+        help="on SAT, print the selected exceptional blocks and six-packs",
+    )
     args = parser.parse_args()
-    solver, _ = build(args.branch, args.timeout_seconds * 1000, args.all_holes,
-                      args.diagonal_rows, args.all_regular_classes,
-                      args.all_pair_rows, args.pair_reciprocity,
-                      args.hole_reciprocity, args.hole_pair_reciprocity)
+    solver, data = build(
+        args.branch, args.timeout_seconds * 1000, args.all_holes,
+        args.diagonal_rows, args.all_regular_classes,
+        args.all_pair_rows, args.pair_reciprocity,
+        args.hole_reciprocity, args.hole_pair_reciprocity,
+    )
     started = time.time()
     result = solver.check()
     elapsed = time.time() - started
@@ -337,6 +346,20 @@ def main() -> int:
         return 2
     if result == sat:
         print("requested exceptional-hole six-pack system exists")
+        if args.print_hole_packs:
+            model = solver.model()
+            for index, (anchor, triples, pairs) in enumerate(zip(
+                    data["sixpack_anchors"],
+                    data["sixpack_triple_neighbors"],
+                    data["sixpack_pair_neighbors"])):
+                chosen = lambda mapping: sorted(
+                    key for key, value in mapping.items()
+                    if is_true(model.eval(value, model_completion=True))
+                )
+                print(
+                    f"pack={index} anchor={chosen(anchor)} "
+                    f"triples={chosen(triples)} pairs={chosen(pairs)}"
+                )
     return 0
 
 
