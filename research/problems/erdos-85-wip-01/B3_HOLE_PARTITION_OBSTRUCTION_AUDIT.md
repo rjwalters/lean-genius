@@ -4194,7 +4194,13 @@ extracts a positive-special U1 point from the already-proved total mass six,
 and
 `squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twentyEight`
 composes it with the mixed-column law to return a point with at least 28
-ordinary residual-resolved rows.  These theorems do not assert the price
+ordinary residual-resolved rows.  The aggregate interface is also formal:
+`squareOrderNine_threeHigh_secondProfile_residualRows_total_eq_654` sums the
+pointwise column law over all 24 unmarked points and proves exact total target
+mass `24*27+6=654`.  Thus any global cover-price argument proving total cost
+strictly below 654 immediately yields a strict point, while (13ak) asks for
+the sharper conclusion that the strict point can be chosen with positive
+special mass.  These theorems do not assert the price
 alternative; (13ak) remains exactly the missing branch-4 cover statement.
 
 Finally, combining the corrected core-edge contraction (5) with the

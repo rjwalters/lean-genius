@@ -104,7 +104,78 @@ theorem squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twen
   refine ⟨b, hbU1, ?_⟩
   omega
 
+/-- Aggregate form of the branch-four target ledger.  Across all 24
+unmarked bin-one points, the ordinary residual-resolved row counts have
+total mass `24 * 27 + 6 = 654`.  This is the exact global threshold against
+which a family of full-fiber cover prices must be compared in order to
+obtain the six-special-point alternative. -/
+theorem squareOrderNine_threeHigh_secondProfile_residualRows_total_eq_654
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (hbranch : (G.induce (G.neighborSet x)).edgeFinset.card = 4) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    ∑ b ∈ U1, (T.filter fun t =>
+      (((G.neighborFinset t ∩ T) ∩ G.neighborFinset b).Nonempty)).card = 654 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let D := secondOrderDefectGraph G
+  have hmarked :=
+    squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hmarked
+  have hMcard :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  have hMsub : M ⊆ B 1 := Finset.inter_subset_right
+  have hU1card : U1.card = 24 := by
+    rw [Finset.card_sdiff_of_subset hMsub, hmarked.1, hMcard]
+  have hmass :=
+    squareOrderNine_threeHigh_secondProfile_special_defect_mass_dichotomy
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hmass
+  have hspecial : (∑ b ∈ U1, (D.neighborFinset b ∩ S).card) = 6 := by
+    rcases hmass with hthree | hfour
+    · omega
+    · exact hfour.2
+  calc
+    (∑ b ∈ U1, (T.filter fun t =>
+        (((G.neighborFinset t ∩ T) ∩ G.neighborFinset b).Nonempty)).card) =
+        ∑ b ∈ U1, (27 + (D.neighborFinset b ∩ S).card) := by
+      apply Finset.sum_congr rfl
+      intro b hbU1
+      have hmixed :=
+        squareOrderNine_threeHigh_secondProfile_unmarked_mixed_column_counts
+          G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx hbU1
+      dsimp only at hmixed
+      exact hmixed.2.2
+    _ = 27 * U1.card + ∑ b ∈ U1, (D.neighborFinset b ∩ S).card := by
+      rw [Finset.sum_add_distrib]
+      simp [Nat.mul_comm]
+    _ = 654 := by omega
+
 end Erdos85
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twentyEight
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residualRows_total_eq_654
