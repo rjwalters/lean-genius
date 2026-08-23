@@ -22130,3 +22130,50 @@ least three exterior colors.  Thus the very-large branch has a clean cycle
 inside a sector with no missing root action and no private, strict, or
 sheltered local exception.  Any remaining obstruction there must use the
 simultaneous five-action/color geometry rather than the bounded hole set.
+
+## 413. The full-root sector obeys a simultaneous five-color cut parity
+
+The five matching classes carry more information than their total density.
+For any `X subseteq O`, count the vertices of `X` matched by `G_i`.  Internal
+matching edges contribute two vertices, crossing edges contribute one, and
+the vertices in `H_i intersect X` contribute zero.  Therefore
+
+```text
+|X|-|H_i intersect X|
+ =2|E(G_i[X])|+|partial_(G_i)X|,                  (1468)
+```
+
+and hence
+
+```text
+|partial_(G_i)X|
+ =|X|-|H_i intersect X|                           (mod 2).       (1469)
+```
+
+In particular, if `X subseteq O_5`, then no root matching has a hole on
+`X`, so all five rooted boundary counts have the same parity:
+
+```text
+|partial_(G_0)X| = ... = |partial_(G_4)X|
+                   = |X|                         (mod 2).        (1470)
+```
+
+This applies especially to a connected component `C` of the induced graph
+`G_sh[O_5]`.  No matching edge joins `C` to another vertex of `O_5`, so its
+whole boundary lands in the bounded defect sector `S=O setminus O_5`.
+Equation (1470) then gives the dichotomy
+
+```text
+|C| odd  -> every one of the five root matchings has an odd,
+            hence nonzero, boundary from C to S;
+|C| even -> every one of the five root-matching boundaries is even.
+                                                               (1471)
+```
+
+Thus every odd full-root component sends at least five rooted matching
+edges into the hole sector, one of each root type.  More generally, no cut
+inside `O_5` can have an independently chosen pattern of rooted boundary
+parities: the five coordinates are locked to the single bit `|X| mod 2`.
+This simultaneous parity constraint is q-generic and survives even when
+ordinary edge density or properly colored-cycle existence alone gives no
+further information.
