@@ -5187,6 +5187,58 @@ must still be transported through the owner-route quotient.  By contrast a
 replication theorem currently makes it empty, and no analogous odd flag
 expansion follows from its shore bits alone.
 
+The `01` expansion has a useful quadratic normal form.  For a residual
+subset `S`, put
+
+```text
+q_R(S)=binom(|S|,2) mod 2
+      =sum_({G,H} subset S) 1.                         (73rnz_cjibkzzh)
+```
+
+If `e=xx'` is a `01--01` H edge, write `A=R_x`, `B=R_(x')`, and
+`U_e=A union B`.  The sets `A,B` are disjoint and odd, so polarization of
+the quadratic cardinality gives
+
+```text
+q_R(U_e)=q_R(A)+q_R(B)+|A||B|
+        =q_R(A)+q_R(B)+1.                              (73rnz_cjibkzzi)
+```
+
+Equivalently, the augmentation of the cross flags
+(73rnz_cjibkzza) is the polar term of `q_R`.  Define on every root
+occurrence of the closed state cycle
+
+```text
+chi_01(v)=1[a(v)=01] q_R(R_v).                         (73rnz_cjibkzzj)
+```
+
+Summing its coboundary over the closed H/V/S edge census, exactly as in
+(73rnz_cjibkzzg), yields
+
+```text
+m_(01,01)
+ = sum_(01--01 H edges e) q_R(U_e)
+   + sum_(H edge vv' not in K_01) (chi_01(v)+chi_01(v'))
+   + sum_(non-H edge vv') (chi_01(v)+chi_01(v')).      (73rnz_cjibkzzk)
+```
+
+Thus the root-separable part of the `01` carrier is transported
+automatically to complementary H/V/S transitions.  The only independent
+edge-local residue is the orientation-free quadratic union flag
+
+```text
+q_R(U_e)=sum_({G,H} subset R) 1[{G,H} subset U_e],
+```
+
+an unordered arity-two carrier.  This is a compression of the aggregate
+unit, not a labelwise cancellation of the individual cross flags
+`beta_(G,H)`: the latter retain which center lies at which root, while the
+quadratic union flag forgets that bipartition.  Any owner-route argument
+that needs the oriented cross assignment must still use the finer flags.
+For the diagonal marked character, however, (73rnz_cjibkzzk) shows exactly
+which bounded two-label interaction survives after all vertex-potential
+terms are removed.
+
 There is nevertheless an exact all-arity expansion for every **nonempty**
 `00--00` residual state.  For such an H edge `e=xx'`, put
 
