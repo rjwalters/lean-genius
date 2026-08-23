@@ -4682,6 +4682,28 @@ Thus the last diagonal silent coefficient is exactly the parity of the
 the final question is whether this active-center parity is paid by the
 already classified switch/direct/through owner cells.
 
+There is also a literal cut description of this parity.  For a residual
+center G, `Ax(G)=h(G)=0`, so `|N_A(G) intersect X|` is even.  Hence
+
+```text
+s(G)=sum_(u in N_A(G) intersect X) (t(u)+t(G)).
+```
+
+On a T-edge `Gu`, the summand vanishes by the cut-potential constancy
+(73rnz_cje).  Put `U=supp(t)`.  Summing over residual centers gives
+
+```text
+Delta
+ =|{Gu in E(A setminus T): G in R, u in X,
+                         1_U(G) != 1_U(u)}| mod 2.      (73rnz_cjibkzh)
+```
+
+Thus Delta is the parity of a completely located part of the U-cut in the
+triangle-edge graph `A setminus T`: residual-full to support-ordinary
+crossings.  Every such edge has a unique triangle witness and therefore a
+canonical Baer-pair label.  The remaining payment problem can be attacked
+on these triangle witnesses; no defect or matching matrix remains.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
