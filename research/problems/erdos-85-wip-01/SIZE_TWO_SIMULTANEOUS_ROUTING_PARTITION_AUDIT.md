@@ -12559,3 +12559,92 @@ What remains is to transport the `O_a` atoms and separately price/exclude
 vanishes in the simultaneous owner ledger.  Any proposed mod-two argument
 that omits the division-by-two information in (757) cannot distinguish the
 zero and double filler profiles and is necessarily too coarse.
+
+## 247. Integer SRP fixes the total mixed moment modulo four
+
+The moments (751) are the integer masses of the exterior routing layers:
+
+```text
+M_a(C,Z)=1_C^T R_ca R_ae 1_Z.                        (758)
+```
+
+They therefore sum exactly under the integer simultaneous routing identity,
+not merely under its mod-two reduction.  Because `(C,Z)` is one whole
+connected component of the two-regular cross-incidence graph `R_ce`, one has
+over the integers
+
+```text
+R_ce 1_Z=2 1_C,             R_ec 1_C=2 1_Z.          (759)
+```
+
+Let `e_c(C)` be the number of internal `A_c` edges with both endpoints in
+`C`, and define `e_e(Z)` analogously.  Pairing
+
+```text
+A_c R_ce+R_ce A_e+sum_(a != c,e) R_ca R_ae=J
+```
+
+with `1_C,1_Z` and using (759) evaluates the two endpoint layers as
+
+```text
+1_C^T A_c R_ce 1_Z=2(1_C^T A_c 1_C)=4 e_c(C),
+1_C^T R_ce A_e 1_Z=2(1_Z^T A_e 1_Z)=4 e_e(Z).
+```
+
+The two shores of a two-regular bipartite component have the same order;
+write `|C|=|Z|=ell`.  The exact exterior-mass identity is consequently
+
+```text
+sum_(a != c,e) M_a(C,Z)
+ =ell^2-4(e_c(C)+e_e(Z)).                             (760)
+```
+
+The closed curl has odd `ell`, so `ell^2=1 mod 4`.  Hence
+
+```text
+sum_(a != c,e) M_a(C,Z)=1 mod 4.                     (761)
+```
+
+This is a genuine strengthening of the odd export identity
+`(73rnz_cjibkzzza)`: the endpoint layers vanish in blocks of four, not only
+modulo two.
+
+For each exterior color attach a superscript `a` to the nine-cell counts of
+Section 246.  Substituting (753) into (761) gives the global coupling law
+
+```text
+sum_(a != c,e)
+  (N_11^a+2N_12^a+2N_21^a)=1 mod 4.                 (762)
+```
+
+In particular, if
+
+```text
+S_11:=sum_a N_11^a,       F:=sum_a(N_12^a+N_21^a),
+```
+
+then `S_11` is odd and
+
+```text
+F=(1-S_11)/2 mod 2.                                  (763)
+```
+
+Here `F` counts both the odd filler attachments and the closed owner-cycle
+residues split in (752).  Thus their **combined** global parity is fixed by
+the total overlap population modulo four; neither part is an independent
+path statistic, and the closed residue cannot be dropped.
+
+Finally (756) turns the same law into the physical route alphabet:
+
+```text
+sum_(a != c,e) (V_a(C,Z)+O_a(C,Z))=1 mod 4.          (764)
+```
+
+Equation (764) is an integer H/V/S--connection curvature for the closed
+curl: across every exterior routing color, the aligned rooted-V tokens and
+the off-incidence atoms have total mass one modulo four.  It still does not
+separate `V_a` from `O_a`, and (763) still requires `S_11 mod 4`; those are
+the remaining owner-resolved tasks together with the closed-cycle price.
+But any global half-atom conservation must now reproduce (760), not merely
+the mod-two rank-one export, and its
+candidate price is constrained by the nonzero residue (764).
