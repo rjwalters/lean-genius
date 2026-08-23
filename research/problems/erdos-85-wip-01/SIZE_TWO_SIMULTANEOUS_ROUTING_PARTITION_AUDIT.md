@@ -16702,3 +16702,72 @@ boundary and a supposedly harmless full curl.  This is still not itself a
 contradiction, because an odd root shore can be exported through the
 outside incidence components, but it removes the last cancellation
 available wholly inside the original five-port component.
+
+## 323. The odd core defect has an exact odd outside-root destination
+
+The export mentioned at the end of Section 322 can be located without
+introducing another arbitrary component profile.  For each crossing path
+`P`, let `alpha(P)` be the unique active color-`a` label at its terminal
+`t(P)`.  Section 252 gives `i_(alpha(P))=1`: in the `c`-factor this label
+indexes an actual edge
+
+```text
+{r(P),v(P)} in F_a[c],       r(P) in C, v(P) notin C. (1069)
+```
+
+Take the symmetric difference of these terminal-label edges,
+
+```text
+A_T:=sum_(P crossing) [{r(P),v(P)}].                (1070)
+```
+
+Two occurrences cancel in `A_T` exactly when they use the same label,
+because factor edges are indexed by their intermediate labels.  The
+number of crossing paths is odd, so
+
+```text
+|supp(A_T)|=1 mod 2,
+A_T!=0.                                             (1071)
+```
+
+Every surviving edge of `A_T` has exactly one endpoint in `C`.  Its
+`C`-side boundary is the root shore `R_*` from (1065).  Write `V_*` for
+its boundary outside `C`.  Then
+
+```text
+partial A_T=R_* triangle V_*,       V_* subset c\C,
+|V_*|=|R_*|=1 mod 2.                                (1072)
+```
+
+In particular, cancellation among several terminal labels at one outside
+root cannot erase all destinations: the parity of `V_*` is the parity of
+the surviving factor edges.
+
+Now add the charged curl edges from (1059).  The mixed-color root-graph
+chain
+
+```text
+G_*:=A_T+K_*                                       (1073)
+```
+
+is completely realized: its first summand consists of actual `F_a[c]`
+edges and its second of actual core `A_c` edges.  Equations (1066) and
+(1072) give the exact boundary identity
+
+```text
+partial G_*=D_* triangle V_*.                       (1074)
+```
+
+Thus the unavoidable odd core defect of Section 322 is not merely
+permitted to escape.  It is joined by an explicit binary root-edge chain
+to a nonempty odd shore `V_*` outside the curl, with all repeated labels,
+roots, and selected endpoints already cancelled in `F_2`.  Even in the
+full-curl case `Z_*=Z`, the five core edges contribute zero boundary and
+the same odd outside destination remains.
+
+The terminal obstruction has therefore moved to a sharply defined place:
+any completion must absorb the odd set `V_*` through the outside endpoints
+of the very terminal labels used by the returned inactive paths.  A next
+descent or capacity argument may work on those actual outside roots; it
+does not have to choose a fresh defect support or reconstruct which
+labels exported `D_*`.
