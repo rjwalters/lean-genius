@@ -1312,6 +1312,34 @@ theorem squareOrderNine_ordinary_pair_choices_inter_card_le_one
     (Finset.mem_inter.mp hwt.1).1,
     (Finset.mem_inter.mp hwu.1).1⟩
 
+/-- Strong full-pack version of the preceding overlap law.  The residual
+center packs of two distinct ordinary rows share at most one center in
+total, irrespective of whether that center is a pair or triple row. -/
+theorem squareOrderNine_ordinary_residual_packs_inter_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {x t u : V}
+    (htu : t ≠ u) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let R := fun v => G.neighborFinset v ∩ T
+    ((R t) ∩ (R u)).card ≤ 1 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let R := fun v => G.neighborFinset v ∩ T
+  apply (Finset.card_le_card ?_).trans
+    ((not_containsC4_iff_forall_common_le_one G).mp hfree t u htu)
+  intro w hw
+  have hwParts := Finset.mem_inter.mp hw
+  exact Finset.mem_inter.mpr ⟨
+    (Finset.mem_inter.mp hwParts.1).1,
+    (Finset.mem_inter.mp hwParts.2).1⟩
+
 /-- Pointwise B0 Gram law.  Distinct residual neighbors of one ordinary row
 have disjoint incidence blocks in the unmarked B1 core. -/
 theorem squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
@@ -3882,6 +3910,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_pair_row_triple_completion_count
 #print axioms Erdos85.squareOrderNine_pair_pattern_mem_comm
 #print axioms Erdos85.squareOrderNine_ordinary_pair_choices_inter_card_le_one
+#print axioms Erdos85.squareOrderNine_ordinary_residual_packs_inter_card_le_one
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_row_exact_cardinalities
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_pair_reciprocity
