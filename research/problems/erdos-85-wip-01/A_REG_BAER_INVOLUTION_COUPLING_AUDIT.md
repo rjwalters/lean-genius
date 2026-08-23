@@ -3623,6 +3623,20 @@ when the two endpoints have the same type (both leaves or both ordinary).
 This reduces the activation gap from four endpoint decorations to two
 same-type branches.
 
+The activated support is more sharply localized.  Symmetry of A gives
+
+```text
+x^T kappa_C
+ = x^T A P_C x + x^T P_C A x = 0.                       (73rnz_cja)
+```
+
+Thus every owner commutator has even support inside X as well as even total
+support.  In the mixed-type branch, each of `kappa_F,kappa_M` has exactly one
+pole unit, and the poles lie outside X.  Consequently each channel has an
+odd number of further support points in
+`V setminus (X union {E_1,E_2})`.  The nonprivate activation is therefore an
+external-shore relay, not an internal cancellation hidden inside X.
+
 The syndrome packing bound (73rnz_bm) removes one of those branches and
 rigidifies the other.  Suppose first that both endpoints are leaves and that
 `kappa_F` has no off-pole support.  Then (73rnz_ch) says `kappa_F=h`.  Since
