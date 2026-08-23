@@ -3809,6 +3809,39 @@ the two pole-owner leftovers (73rnz_cjic).  The sole remaining conversion is
 to glue the atomized O-darts on the left to those chain endpoints without
 discarding their `1+mu` labels.
 
+That dart conversion has an exact boundary residue.  Let `delta_O(X)` be the
+O-cut of X.  Outside X its edge-boundary is `Ox`; inside X the difference
+between external and internal O-incidence is the O-degree.  Hence
+
+```text
+O x=partial_O(delta_O(X))+x deg_O.                       (73rnz_cjid)
+```
+
+Because `K=O disjoint-union K_D` is Eulerian, `deg_O=deg_(K_D)` modulo two.
+For the D-cut `K_D=delta_D(t)`, its degree vector is `Dt+t` (D has odd degree
+`q-1`).  Therefore
+
+```text
+O x=partial_O(delta_O(X))+x(Dt+t).                       (73rnz_cjie)
+```
+
+Every O-dart has now become its actual two-ended O-edge, retaining the
+edge's `1+mu` label from (73rnz_cjj).  The remaining vertex residue is
+supported on X and has total mass
+
+```text
+<x,Dt+t>=<Dx,t>+<x,t>=<1_L,t>.                           (73rnz_cjif)
+```
+
+This is exactly the combined parity of the two line-owner leftovers in
+(73rnz_cjic).  Adjoin those leftover atoms to `x(Dt+t)`; the resulting
+vector has even mass and is therefore another D-chain boundary.  Thus the
+entire cut branch admits a coarse two-ended geometric decomposition that
+preserves every O-edge matching label.  What is still unproved is the finer
+capacity statement that these chain pairings can be chosen compatibly with
+the owner/T-word cells (73rnz_at), rather than merely in the ambient D/O
+graphs.
+
 Every O-edge is a non-A, non-D pair.  It therefore has one unique
 common-neighbor witness and, by (17),
 
