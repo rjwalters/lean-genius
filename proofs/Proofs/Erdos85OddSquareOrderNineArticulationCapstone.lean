@@ -104,6 +104,116 @@ theorem orderNineArticulationSmallShoreBetaType_sharp_dichotomy
     simp only [hs, hb₁, hb₂, hb₃]
     norm_num [orderNineNearRegularCutLower, orderNineBalancedSquareSum]
 
+def orderNineOrdinarySharpPartition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ : V) (R : Finset V) : Prop :=
+  let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+  let f := fun x : ↥(↑O : Set V) => (G.neighborFinset x.1 ∩ R).card
+  (∀ x, f x = (∑ y, f y) / 78 ∨ f x = (∑ y, f y) / 78 + 1) ∧
+  (Finset.univ.filter fun x =>
+    f x = (∑ y, f y) / 78 + 1).card = (∑ y, f y) % 78
+
+theorem orderNineOrdinarySharpPartition_of_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (R : Finset V) (hRH : Disjoint R {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (δ : ℕ)
+    (hboundary : (∑ x ∈ R, ((secondOrderDefectGraph G).neighborFinset x ∩
+      (Finset.univ \ R)).card) = δ)
+    (hsharp : orderNineNearRegularCutLower R.card
+      (G.neighborFinset h₁ ∩ R).card
+      (G.neighborFinset h₂ ∩ R).card
+      (G.neighborFinset h₃ ∩ R).card = δ) :
+    orderNineOrdinarySharpPartition G h₁ h₂ h₃ R := by
+  exact orderNine_ordinary_partition_of_sharp_boundary_fixedHighTriple
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hdegOrd hdegHigh δ
+      hboundary hsharp
+
+theorem orderNineArticulationSmallShore_sharp_partition_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (E S : Finset V)
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ S)
+    (hSsub : S ⊆ (Finset.univ : Finset V) \ {h₁, h₂, h₃})
+    (hboundary : (∑ x ∈ S, ((secondOrderDefectGraph G).neighborFinset x ∩
+      (Finset.univ \ S)).card) = (E ∩ S).card)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hhighIndependent : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      Disjoint (G.neighborFinset h) ({h₁, h₂, h₃} : Finset V))
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) :
+    (S.card = 18 ∧
+      (G.neighborFinset h₁ ∩ S).card = 2 ∧
+      (G.neighborFinset h₂ ∩ S).card = 2 ∧
+      (G.neighborFinset h₃ ∩ S).card = 2) ∨
+    orderNineOrdinarySharpPartition G h₁ h₂ h₃
+      (((Finset.univ : Finset V) \ {h₁, h₂, h₃}) \ S) ∨
+    orderNineOrdinarySharpPartition G h₁ h₂ h₃ S := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let R := O \ S
+  have hHcard : H.card = 3 := by simp [H, h₁₂, h₁₃, h₂₃]
+  have hOcard : O.card = 78 := by
+    dsimp [O]
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ H), Finset.card_univ,
+      hcard, hHcard]
+  have hRcard : R.card = 78 - S.card := by
+    dsimp [R]
+    rw [Finset.card_sdiff_of_subset hSsub, hOcard]
+  have hRH : Disjoint R H := by
+    rw [Finset.disjoint_left]
+    intro x hxR hxH
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hxR).1).2 hxH
+  have hSH : Disjoint S H := by
+    rw [Finset.disjoint_left]
+    intro x hxS hxH
+    exact (Finset.mem_sdiff.mp (hSsub hxS)).2 hxH
+  have hcompBoundary := ordinary_complement_boundary_sum_eq
+    (secondOrderDefectGraph G) H S hSsub hdefectHighIsolated
+  have hb₁ := orderNine_high_neighbor_ordinary_compl_card G H S h₁
+    (hdegHigh h₁ (by simp)) (hhighIndependent h₁ (by simp))
+  have hb₂ := orderNine_high_neighbor_ordinary_compl_card G H S h₂
+    (hdegHigh h₂ (by simp)) (hhighIndependent h₂ (by simp))
+  have hb₃ := orderNine_high_neighbor_ordinary_compl_card G H S h₃
+    (hdegHigh h₃ (by simp)) (hhighIndependent h₃ (by simp))
+  have hcases := orderNineArticulationSmallShoreBetaType_sharp_dichotomy
+    G h₁ h₂ h₃ S hfull.1
+  rcases hcases with hsym | hcomp18 | hcomp27 | hself34
+  · exact Or.inl hsym
+  · right
+    left
+    have he : (E ∩ S).card = 2 := hfull.2.1 hcomp18.1
+    apply orderNineOrdinarySharpPartition_of_boundary
+      G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hdegOrd hdegHigh 2
+    · exact hcompBoundary.trans (hboundary.trans he)
+    · simpa [R, O, H, hRcard, hb₁, hb₂, hb₃] using hcomp18.2
+  · right
+    left
+    have he : (E ∩ S).card = 3 := hfull.2.2.1 hcomp27.1
+    apply orderNineOrdinarySharpPartition_of_boundary
+      G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hdegOrd hdegHigh 3
+    · exact hcompBoundary.trans (hboundary.trans he)
+    · simpa [R, O, H, hRcard, hb₁, hb₂, hb₃] using hcomp27.2
+  · right
+    right
+    have he : (E ∩ S).card = 2 := hfull.2.2.2 hself34.1
+    apply orderNineOrdinarySharpPartition_of_boundary
+      G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S hSH hdegOrd hdegHigh 2
+    · exact hboundary.trans he
+    · exact hself34.2
 /-- Graph/profile-level articulation capstone.  The standard three-high
 setup is explicit here so the final actual-profile wrapper can reuse the
 same setup already built for ordinary-defect connectivity. -/
@@ -421,6 +531,8 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
 #print axioms squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not_connected
 #print axioms orderNineArticulationSmallShoreBetaType_sharp_dichotomy
 #print axioms orderNineArticulationSmallShoreFullType_of_parameterType
+#print axioms orderNineOrdinarySharpPartition_of_boundary
+#print axioms orderNineArticulationSmallShore_sharp_partition_dichotomy
 
 end
 
