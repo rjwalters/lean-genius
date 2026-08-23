@@ -7614,3 +7614,57 @@ neighborhood (439), the saturated column is flat, and its exceptional
 support is canonically labeled by the private atom `u` and its forced H--V
 cell.  Cancellation with other columns is still possible; no independence
 of these curvature supports is claimed.
+
+## 144. A saturated curvature has a private-row-or-bounded-overlap split
+
+Let `u` be saturated and let
+
+```text
+S_u:=supp(C_(d,j)e_u),
+```
+
+so `|S_u|=2` on a five-cycle and `|S_u|=4` on every longer odd cycle by
+(439)--(440).  Suppose first that some `y in S_u` belongs to no other active
+curvature column:
+
+```text
+(C_(d,j)e_v)(y)=0 for every active v != u.             (441)
+```
+
+Since `(C_(d,j)e_u)(y)=1`, the singleton row potential `lambda=e_y`
+satisfies
+
+```text
+C_(d,j)^T lambda=e_u.                                 (442)
+```
+
+Thus the potential branch of (425) holds with a completely local
+certificate.  In the even-test formulation of Section 142,
+
+```text
+mu=P_Z e_y                                             (443)
+```
+
+is supported on exactly the two cycle neighbors of `y` and separates `Q_u`
+from every other active column.
+
+Otherwise every `y in S_u` is covered by at least one other active column.
+Choose one witness `v_y != u` for each position.  Then
+
+```text
+S_u subset union_(y in S_u) supp(C_(d,j)e_(v_y)),     (444)
+```
+
+using at most four witness atoms (at most two on a five-cycle).  Each witness
+comes from a `Q_(v_y)` of support at most five and a curvature column of
+support at most ten by Section 141.  Hence failure of the private-row test is
+confined to a bounded overlap cluster consisting of `u` and at most four
+other secondary atoms.
+
+This is not a bound on the size of a general separator circuit or dual
+potential: the selected witness columns can interact with further columns
+away from `S_u`.  It is an exact first localization around the private
+saturated unit.  Either that unit has a two-port separating test immediately,
+or every one of its exceptional curvature ports carries an explicit competing
+secondary label, producing the bounded joint-label configuration that a C4
+capacity argument must analyze.
