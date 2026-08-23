@@ -275,11 +275,23 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
                     "incidence": incidence, "k": k, "defect_u1": defect_u1}
 
 
-def make_outer_seed(branch: int, timeout_ms: int, random_seed: int = 0) -> dict:
+def make_outer_seed(branch: int, timeout_ms: int, random_seed: int = 0,
+                    require_eligible_hole_pair: bool = False) -> dict:
     """Obtain one fast 24-core witness and canonically index its 47 blocks."""
     import q9_three_high_u1_design_sat as outer
 
     solver, data = outer.build(branch, timeout_ms)
+    if require_eligible_hole_pair:
+        witnesses = []
+        for t, u in combinations(data["triples"], 2):
+            if not set(t) & set(u):
+                continue
+            no_cross_core_edge = [
+                Not(data["k"][edge_key(a, b)])
+                for a in t for b in u if a != b]
+            witnesses.append(And(data["holes"][t], data["holes"][u],
+                                 *no_cross_core_edge))
+        solver.add(Or(witnesses))
     solver.set(random_seed=random_seed)
     result = solver.check()
     if result != sat:

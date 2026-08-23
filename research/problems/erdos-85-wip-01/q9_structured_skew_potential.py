@@ -122,7 +122,7 @@ def instance(branch: int, seed: dict, colors: tuple[int, int]) -> dict:
             "types": types, "selected": selected}
 
 
-def flat_signature_audit(data: dict) -> tuple[int, int, int, bool]:
+def flat_signature_audit(data: dict) -> tuple[int, int, int, tuple[str, ...], bool]:
     """Audit the simple signature quotient in the terminal (12qy).
 
     A flat pair uses a selected label owned by both roots and makes the two
@@ -179,7 +179,8 @@ def flat_signature_audit(data: dict) -> tuple[int, int, int, bool]:
         else:
             parent[left_root] = right_root
     parallel = sum(count - 1 for count in edge_multiplicity.values())
-    return len(vertices), len(edges), parallel, forest
+    roles = tuple(TYPE_NAMES[role] for role in sorted({edge[0][0] for edge in edges}))
+    return len(vertices), len(edges), parallel, roles, forest
 
 
 def refine_features(instances: list[dict], mode: str) -> None:
@@ -926,6 +927,9 @@ def main() -> int:
                              "and audit the separator by exact integer DP")
     parser.add_argument("--audit-flat-signatures", action="store_true",
                         help="audit the flat-signature forest terminal (12qy)")
+    parser.add_argument("--require-eligible-hole-pair", action="store_true",
+                        help="generate outer witnesses with intersecting "
+                             "mutually eligible hole blocks")
     parser.add_argument("--features", choices=("basic", "candidate-count",
                                                 "total-load", "collisions",
                                                 "load-shape", "load-profile",
@@ -960,7 +964,9 @@ def main() -> int:
     hall_labels = []
     for branch in (3, 4):
         for seed_number in range(args.seeds):
-            seed = make_outer_seed(branch, args.timeout_seconds * 1000, seed_number)
+            seed = make_outer_seed(
+                branch, args.timeout_seconds * 1000, seed_number,
+                require_eligible_hole_pair=args.require_eligible_hole_pair)
             for colors in combinations(range(3), 2):
                 candidate = instance(branch, seed, colors)
                 all_data.append(((branch, seed_number, colors), candidate))
@@ -974,12 +980,13 @@ def main() -> int:
     if args.audit_flat_signatures:
         all_forests = True
         for label, candidate in all_data:
-            vertices, edges, parallel, forest = flat_signature_audit(candidate)
+            vertices, edges, parallel, roles, forest = flat_signature_audit(candidate)
             all_forests &= forest
             branch, seed_number, colors = label
             print(f"flat_signature branch={branch} seed={seed_number} "
                   f"colors={colors} vertices={vertices} edges={edges} "
-                  f"parallel_realizations={parallel} forest={forest}")
+                  f"parallel_realizations={parallel} roles={roles} "
+                  f"forest={forest}")
         print(f"flat_signature_all_forests={all_forests}")
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
