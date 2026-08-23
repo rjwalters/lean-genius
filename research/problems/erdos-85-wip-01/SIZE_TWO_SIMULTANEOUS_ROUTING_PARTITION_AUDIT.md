@@ -21017,3 +21017,71 @@ literal inactive payer and whose companion collisions retain the exact
 capacity price (1385).  The only unresolved merging is now at those named
 outside companions; none of the cycle's offset obligations can be absorbed
 by the five already-accounted strict exports.
+
+## 395. Unsheltered residual holonomy has linear transversal mass
+
+The cycle in Section 394 is not an isolated consequence of one density
+comparison.  Every edge of `G_sh` has a core-inactive canonical offset
+payer.  Moreover the distinctness proof used for (1384) applies to the
+entire edge set: equal-root payers are distinct by (1266), while
+different-root payers meet different selected offset ports and each has
+selected incidence one.  Hence the payer map is injective and (1382) gives
+
+```text
+z:E(G_sh) -> {core-inactive labels} is injective,
+|z(E(G_sh))|>=5q-60.                               (1386)
+```
+
+Now let `X subset E(G_sh)` meet every properly colored cycle of `G_sh`.
+The graph `G_sh-X` is PC-cycle-free, so the sharpened Yeo bound (1369)
+and (1382) imply
+
+```text
+5q-60-|X|<=2(2q-15)-3=4q-33,
+|X|>=q-27.                                         (1387)
+```
+
+There is again a weighted vertex version.  If `S subset O` meets every
+properly colored cycle and at least two vertices remain, deletion removes
+at most
+
+```text
+sum_(u in S)deg_M(u)=sum_(u in S)(5-m(u))
+```
+
+edges of `G_sh`.  Comparing the remaining lower bound with (1369) gives
+
+```text
+sum_(u in S)(3-m(u))>=q-27,
+|S|>=ceil((q-27)/3).                               (1388)
+```
+
+If fewer than two vertices remain, the cardinality conclusion is
+automatic.  Thus no bounded set of residual endpoints accounts for all
+unsheltered cycles as `q` grows.
+
+The injection (1386) transfers (1387) directly to the payer side.  If a
+set `P` of inactive labels meets the offset-payer set of every properly
+colored cycle of `G_sh`, its inverse edge set is a cycle transversal.
+Therefore
+
+```text
+|P|>=q-27.                                         (1389)
+```
+
+Finally apply the companion capacity (1290) to all labels in (1386), not
+only to one chosen cycle.  Writing `Comp_B(G_sh),Comp_O(G_sh)` for their
+distinct outside companions gives
+
+```text
+5q-60
+ <=(q-7)|Comp_B(G_sh)|+(q-9)|Comp_O(G_sh)|.        (1390)
+```
+
+Equations (1386)--(1390) turn the large-binary residual branch into a
+linear family of named inactive obligations: at least `5q-60` different
+payer labels exist globally, and at least `q-27` payer labels or ordinary
+edges are needed to hit all of their properly colored cycles.  This is
+still a support theorem rather than the final contradiction; the next
+step must couple the nearly saturated offset-port layers or the companion
+fans across different cycles.
