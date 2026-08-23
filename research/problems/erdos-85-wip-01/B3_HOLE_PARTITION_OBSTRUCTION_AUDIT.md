@@ -3771,6 +3771,32 @@ inequality, across both upper-deletion and lower-contraction mechanisms.
 The formal consumers are banked; proving (13aa) from the outer equations is
 the remaining fractional Hall leaf.
 
+There is a cleaner primal formulation which subsumes both alternatives.
+For every row `u`, ask for coefficients `x_{u,w}` of total `d(u)`, between
+zero and one, supported on trace-eligible blocks, with every U1 point carrying
+total mass at most one.  In addition require `x_{u,w}>0` only when some
+demanded packing at reverse row `w` contains `u`, and require
+`x_{u,w}<1` only when some demanded packing at `w` avoids `u`.  Equivalently,
+the canonical lower fiber `F_u` has coefficient one and the upper forbidden
+fiber `I_u` has coefficient zero.  Then the unified prospective statement is
+
+```text
+some row has no full-demand canonical fractional interval extension. (13ab)
+```
+
+An old forced collision already makes (13ab) true: two intersecting blocks
+forced into `F_u` each have coefficient one, violating the shared-point
+capacity.  When `F_u` is a prepacking, fractional matching/cover duality
+turns (13ab) into the strict residual point-cover alternative of (13aa).
+Thus (13ab) is a stronger single target whose two elementary cases recover
+the corrected disjunction; no separate collision cuts are needed in its
+negation model.  The exact script `q9_fractional_interval_negation_smt.py`
+returns UNSAT on the stored branch-3 and branch-4 payloads, including the old
+collision prototype, while the unrestricted relaxed branch-4 abstraction is
+UNKNOWN at its first 90-second solve.  This is a computational boundary, not
+a proof; any future SAT payload from the relaxed build must still be checked
+against the full outer constraints.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
