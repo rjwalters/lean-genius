@@ -9556,3 +9556,48 @@ closed directed cycle can use every private edge only in one orientation.
 The terminal theorem must price or cancel that labeled holonomy using the
 simultaneous route-reversal data of the non-H gaps; endpoint telescoping
 alone cannot make reversal-orbit occupancies even.
+
+## 184. The non-H gaps lift to the same private directed-edge alphabet
+
+For every port pair `z` of the auxiliary dart cycle, not only an H port,
+orient its roots as `x_-,x_+` and let `D_-(z),D_+(z)` be the complete dart
+decorations at the two ends.  Each decoration is `H`, `S` with its switch
+identifier, or `V_ell` with its resolved route label.  Define the full
+port-edge state
+
+```text
+epsilon(z):=(R_d(x_-),D_-(z),P_d(z),D_+(z),R_d(x_+)). (577)
+```
+
+The port activity state `P_d(z)` contains the two-label set `N_d(z)`, which
+pins `z` uniquely by C4 as in Section 181.  Hence (577) is a private edge
+tag.  Reversal acts without choices by
+
+```text
+rho(epsilon)
+ =(R_d(x_+),D_+(z),P_d(z),D_-(z),R_d(x_-)).           (578)
+```
+
+Again there are no fixed states because the two root-label sets are
+disjoint nonempty sets.
+
+At a common root, consecutive port edges have exactly the same root state,
+including its two activity bits.  Therefore the complete sequence of
+states (577) around an auxiliary dart component is a closed directed cycle
+in the root-state graph, with private labeled edges.  The H center alphabet
+of Sections 181--183 is precisely the subalphabet
+
+```text
+D_-=D_+=H.                                            (579)
+```
+
+All V/S gap data now live on the complementary edge states of the **same**
+closed flow; there is no longer a separate endpoint-lifting problem.
+
+This is an exact finite formulation of the remaining holonomy theorem:
+among closed state cycles (577) realizable by the simultaneous routing
+identities, every reversal orbit of H--H edges must have even occupancy.
+Arbitrary closed labeled cycles do not satisfy this, so closure and privacy
+alone are insufficient.  The final input must be the route/switch algebra
+on the non-H edge decorations in (577), which is now the only data not yet
+used by (576).
