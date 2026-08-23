@@ -8950,3 +8950,42 @@ positions and `nu_u` is its mod-two Euler characteristic, not an unbounded
 word invariant.  Together with (533), both `pi_u` and `nu_u` are now
 explicit local functions of a five-position incidence pattern; only the
 actual-owner coupling to the marked run length remains to be supplied.
+
+## 171. A length-five constant channel exhausts a rigid port footprint
+
+Let the two `c`-neighbors of an active label `u` be `b_1,b_2`, and retain
+its unique target port `r_u`.  The five potential witnesses from Section
+170 are in fact five distinct ports when they are H-decorated.
+
+First, the two `e`-fibers `N_e(b_1)` and `N_e(b_2)` are disjoint: a common
+port together with their common neighbor `u` would form a C4.  Second,
+`r_u` cannot be incident to either `b_i` when it is an H port, since then
+`u` would meet both the root and port of an H dart, contradicting Section
+160.  Hence
+
+```text
+N_e(b_1), N_e(b_2), {r_u}
+are disjoint and have total size five.                (538)
+```
+
+If `zeta_u=1` on a run of length five, the injection behind (535) is an
+equality.  Therefore its H port set is exactly
+
+```text
+Ports(A)=N_e(b_1) union N_e(b_2) union {r_u}.         (539)
+```
+
+Moreover, the two ports in each `N_e(b_i)` are consecutive in the H-run:
+their darts at `b_i` form an H--H root pair, so the auxiliary cycle passes
+directly from one port pair to the other without leaving the maximal run.
+
+Thus a length-five constant channel is not an arbitrary five-letter word.
+It consists of two forced adjacent root-witness pairs and one distinguished
+target-port state, in some order compatible with the run endpoints.  The
+short constant cases of lengths one and three choose proper subsets of the
+same five-slot footprint; only the extremal case exhausts it.
+
+This supplies a finite owner-sensitive template for the last `zeta` state.
+Any collision with another label must reuse one of the five explicit ports
+or roots in (539), where C4 and the two-fiber capacities apply directly.
+No contradiction is asserted yet.
