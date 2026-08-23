@@ -2811,6 +2811,75 @@ theorem orderNine_order34_exceptional_owner_neighbors_lowSet_degree_eq_if_of_pun
   rw [← hZ] at hlow
   exact hlow
 
+/-- The complementary provider for regular bin-zero owner-neighbors.  Such
+a point is not defect-adjacent to the deleted owner, so owner-punctured
+closure sharpens to genuine closure in `U`; equation (23) therefore gives
+low-set degree two on either shore. -/
+theorem orderNine_order34_regular_owner_neighbors_lowSet_degree_two_of_punctured_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ owner : V)
+    (U S T : Finset V)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hneighborsPunctured : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hlocalU : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0), y ∈ U)
+    (hScard : S.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ S).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ S).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ S).card = 4)
+    (hSH : Disjoint S {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hlocalOrd : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0),
+      y ∉ ({h₁, h₂, h₃} : Finset V))
+    (Z : Finset V)
+    (hZ : Z = orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3) :
+    ∀ y ∈ (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset owner,
+      (G.neighborFinset y ∩ Z).card = 2 := by
+  classical
+  intro y hy
+  have hyParts := Finset.mem_sdiff.mp hy
+  have hyLocal := Finset.mem_inter.mp hyParts.1
+  have hyClosed : (secondOrderDefectGraph G).neighborFinset y ⊆ U := by
+    intro z hz
+    rcases Finset.mem_insert.mp
+        (hneighborsPunctured y (hlocalU y hyParts.1) hz) with hzo | hzU
+    · subst z
+      have hAdj : (secondOrderDefectGraph G).Adj y owner :=
+        ((secondOrderDefectGraph G).mem_neighborFinset y owner).mp hz
+      have hAdj' : (secondOrderDefectGraph G).Adj owner y :=
+        ((secondOrderDefectGraph G).adj_comm y owner).mp hAdj
+      exact (hyParts.2
+        (((secondOrderDefectGraph G).mem_neighborFinset owner y).mpr hAdj')).elim
+    · exact hzU
+  have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+    G hfree hmin hcover hcard hyLocal.2
+  have hyDegree : (secondOrderDefectGraph G).degree y = 8 := by
+    simpa using hledger.1
+  have hdefect := neighbor_inter_shore_card_eq_if_of_complementary_closed
+    (secondOrderDefectGraph G) U S T y hunion hdisj
+      (hlocalU y hyParts.1) hyClosed hSclosed hTclosed hyDegree
+  have hlow := orderNine_order34_binZero_lowSet_degree_eq_two_of_defect_shore
+    G hfree h₁ h₂ h₃ y S hScard hpart hhigh₁ hhigh₂ hhigh₃
+      hSH hdegOrd hdegHigh (hlocalOrd y hyParts.1) hdefect
+  rw [← hZ] at hlow
+  exact hlow
+
 /-- Pointwise, satisfiable equation-(25) provider for off-shore bin-one
 partners.  Unlike the earlier global-closure wrapper, this assumes defect
 closure only for the partner currently being evaluated; exceptional
