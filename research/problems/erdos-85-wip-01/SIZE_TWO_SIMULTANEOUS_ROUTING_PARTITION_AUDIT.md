@@ -17369,3 +17369,81 @@ same-color holonomy exclusion need only test how the two root-colored
 edges in each of the `u` and `v` channels can realize one of those patterns
 inside `Omega_b^C`; a mixed-color exclusion must match the unique marked
 pair `(x,zeta)` across the two color skeletons.
+
+## 333. Every root has exactly seven singleton-return terminal tickets
+
+The singleton returns across all exterior colors share a constant terminal
+budget.  Fix `x in C`, and let `p_str(x)` be the unique selected port in
+the strict-export cell of row `x` from (777).  Recall also the four-element
+owner block `B_x` in (834).  For an exterior color `b`, the four entries
+in its routing row at `x` are exactly the four endpoints of the two-edge
+matching `H_b^{\{x\}}` from Section 329.
+
+The exterior routing rows are support-disjoint.  On `Z` their union is the
+single strict cell `p_str(x)`, while outside `Z` the exact partition (835)
+gives `e\(Z union B_x)`.  Since
+
+```text
+e\(Z union B_x)=O disjoint_union (B\B_x),
+|B\B_x|=6,                                         (1118)
+```
+
+the row endpoints satisfy the actual disjoint partition
+
+```text
+disjoint_union_(b exterior) V(H_b^{\{x\}})
+ =O disjoint_union (B\B_x) disjoint_union {p_str(x)}. (1119)
+```
+
+Thus the terminal side of the singleton ledger is the fixed seven-point
+set
+
+```text
+T_x:=(B\B_x) disjoint_union {p_str(x)},
+|T_x|=7.                                           (1120)
+```
+
+For each color put
+
+```text
+o_x^b:=|V(H_b^{\{x\}}) intersect O|,
+t_x^b:=|V(H_b^{\{x\}}) intersect T_x|.
+```
+
+Then (1119) gives the exact integer margins
+
+```text
+o_x^b+t_x^b=4,
+sum_b o_x^b=2q-15,
+sum_b t_x^b=7.                                     (1121)
+```
+
+The color `b` has an odd singleton shore precisely when `o_x^b` is odd,
+equivalently when `t_x^b` is odd.  Consequently the number `k_x` of
+colors available for a singleton return at `x` obeys
+
+```text
+k_x in {1,3,5,7}.                                  (1122)
+```
+
+For every such color, Section 329 supplies exactly one matching edge from
+`O` to `T_x`.  These terminal endpoints are distinct across colors by
+(1119), so the odd colors inject into the seven actual tickets rather than
+merely into seven anonymous slots.
+
+Their selected-port projection is equally rigid.  The six points of
+`B\B_x` are the two private owner endpoints of each of the three selected
+ports nonincident to `x`.  The strict port `p_str(x)` is one of those same
+three ports.  After the optional owner append, the seven tickets therefore
+project to the three possible singleton successors with multiplicities
+
+```text
+3,2,2,                                             (1123)
+```
+
+the multiplicity-three port being `p_str(x)`.  Hence all q-generic
+singleton expansions at one root are controlled by a seven-ticket ledger
+independent of `q`.  Any attempt to avoid the three-/five-path reversal
+price of Section 331 by changing colors must still choose one of these
+three located successor triples through one of the seven private terminal
+tickets.
