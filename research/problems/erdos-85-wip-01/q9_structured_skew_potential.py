@@ -872,6 +872,91 @@ def sparse_half_atom_dual(data: dict) -> tuple:
     return success, norm, nonzero, integer, rational
 
 
+def projected_half_atom_dual(data: dict, mode: str) -> tuple:
+    """Constrain half-atom prices to a root/label invariant projection."""
+    from scipy.sparse import hstack
+
+    system = half_atom_primal_system(data)
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     capacity_names, variable_count) = system
+    signatures, censuses = root_signature_censuses(data)
+
+    def root_key(t: int):
+        if mode.startswith("root-"):
+            return t
+        if mode.startswith("type-"):
+            return data["types"][t]
+        if mode.startswith("signature-") or mode.startswith("census-"):
+            return signatures[t]
+        raise ValueError(f"unknown half-atom projection {mode}")
+
+    def label_key(t: int, b: int):
+        suffix = mode.split("-", 1)[1]
+        if suffix == "color":
+            result = b // 8
+        elif suffix == "label":
+            result = b
+        else:
+            raise ValueError(f"unknown half-atom label projection {mode}")
+        if mode.startswith("census-"):
+            return result, censuses[t][b]
+        return result
+
+    equality_groups = []
+    for name in equality_names:
+        if name[0] == "row":
+            equality_groups.append(("row", root_key(name[1])))
+        else:
+            t, b = name[1]
+            equality_groups.append(("atom", root_key(t), label_key(t, b)))
+    capacity_groups = [
+        ("capacity", root_key(t), label_key(t, b))
+        for _, t, b in capacity_names]
+    equality_keys = sorted(set(equality_groups), key=repr)
+    capacity_keys = sorted(set(capacity_groups), key=repr)
+    equality_index = {key: index for index, key in enumerate(equality_keys)}
+    capacity_index = {key: index for index, key in enumerate(capacity_keys)}
+    equality_projection = lil_matrix((len(equality_names), len(equality_keys)))
+    capacity_projection = lil_matrix((len(capacity_names), len(capacity_keys)))
+    for row, key in enumerate(equality_groups):
+        equality_projection[row, equality_index[key]] = 1
+    for row, key in enumerate(capacity_groups):
+        capacity_projection[row, capacity_index[key]] = 1
+    equality_projection = equality_projection.tocsr()
+    capacity_projection = capacity_projection.tocsr()
+    projected_equalities = equalities.T @ equality_projection
+    projected_capacities = capacities.T @ capacity_projection
+    free_count = len(equality_keys)
+    nonnegative_count = len(capacity_keys)
+    inequalities = hstack([-projected_equalities, projected_equalities,
+                            -projected_capacities], format="csr")
+    projected_rhs = np.r_[equality_rhs @ equality_projection,
+                          capacity_rhs @ capacity_projection]
+    scalar = lil_matrix((1, 2 * free_count + nonnegative_count))
+    scalar[0, :free_count] = projected_rhs[:free_count]
+    scalar[0, free_count:2 * free_count] = -projected_rhs[:free_count]
+    scalar[0, 2 * free_count:] = projected_rhs[free_count:]
+    result = linprog(
+        np.ones(2 * free_count + nonnegative_count),
+        A_ub=inequalities, b_ub=np.zeros(variable_count),
+        A_eq=scalar.tocsr(), b_eq=[-1], bounds=(0, None), method="highs")
+    if not result.success:
+        return False, len(equality_keys), len(capacity_keys), False, 0
+    y_group = result.x[:free_count] - result.x[free_count:2 * free_count]
+    z_group = result.x[2 * free_count:]
+    nonzero = []
+    for name, key in zip(equality_names, equality_groups):
+        value = y_group[equality_index[key]]
+        if abs(value) > 1e-8:
+            nonzero.append((name, value))
+    for name, key in zip(capacity_names, capacity_groups):
+        value = z_group[capacity_index[key]]
+        if value > 1e-8:
+            nonzero.append((name, value))
+    exact, _, denominator, _ = rational_farkas_audit(system, nonzero)
+    return True, len(equality_keys), len(capacity_keys), exact, denominator
+
+
 def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
     """Test a common low-degree polynomial potential on seven-state rows."""
     from scipy.sparse import hstack
@@ -2019,6 +2104,8 @@ def main() -> int:
                         help="test abstract root-label atom conservation")
     parser.add_argument("--audit-half-atom-dual", action="store_true",
                         help="extract exact rational half-atom certificates")
+    parser.add_argument("--audit-half-atom-projections", action="store_true",
+                        help="test invariant root/label price factorizations")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -2450,6 +2537,21 @@ def main() -> int:
                   f"exact_rational={exact} scalar={scalar} "
                   f"max_denominator={denominator} "
                   f"minimum_slack={minimum_slack}")
+    if args.audit_half_atom_projections:
+        modes = ("type-color", "signature-color", "census-color",
+                 "root-color", "type-label", "signature-label",
+                 "census-label")
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            branch, seed_number, colors = label
+            results = {mode: projected_half_atom_dual(candidate, mode)
+                       for mode in modes}
+            print(f"half_atom_projections branch={branch} seed={seed_number} "
+                  f"colors={colors} results={results}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2537,6 +2639,7 @@ def main() -> int:
             or args.audit_double_label_flag_private
             or args.audit_half_atom_primal
             or args.audit_half_atom_dual
+            or args.audit_half_atom_projections
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):

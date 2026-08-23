@@ -2423,6 +2423,53 @@ evidence against guessing one universal small local cut: a proof should
 derive the price function from a global design potential or prove the primal
 impossible directly.
 
+The price data have a reproducible invariant threshold.  Recall the root
+signature
+
+```text
+sigma(t) = (type(t), n(t), kappa_selected(t), kappa_all(t))
+```
+
+and let `rho(t,b)` be the five-role census of candidates at root `t` carrying
+label `b`.  Mode `--audit-half-atom-projections` forces `alpha`, `phi`, and
+`lambda` to be constant on specified root/label classes before solving the
+dual.  Across the eleven survivors the success counts are
+
+```text
+root class       label class                  successes
+type             selected color                 0 / 11
+sigma            selected color                 0 / 11
+named root       selected color                 0 / 11
+type             named label                    0 / 11
+sigma,rho        selected color                 6 / 11
+sigma            named label                   10 / 11
+sigma,rho        named label                   11 / 11.       (12rzr)
+```
+
+Every successful final-row separator rationalizes and verifies exactly; its
+maximum denominators on the eleven instances are
+`5,1,145,6,73,5787,106899,106294,16461,4517,1`.  The decisive information
+boundary is therefore not a named root.  It is the identity of the private
+label together with that label's local role census at a root.  Conversely,
+even giving every root its own price does not help after labels are collapsed
+to their selected color.  Thus the sampled uniform target can be sharpened
+from arbitrary prices to
+
+```text
+alpha_t = Alpha(sigma(t)),
+phi_tb  = Phi(sigma(t), b, rho(t,b)),
+lambda_tb = Lambda(sigma(t), b, rho(t,b)), Lambda >= 0.       (12rzs)
+```
+
+This is substantially smaller than a root-by-label lookup table and is
+proof-facing: `sigma` consists of the canonical capacity/collision scalars,
+while `rho` is the already-defined five-role fiber census.  Exact label
+identity cannot yet be quotiented away, so any uniform construction must use
+the selected-fiber partition or a labelwise handshake; a color-aggregate
+moment is ruled out by `(12rzr)`.  As with the earlier experiments, this is a
+finite-corpus information threshold, not proof that `(12rzs)` works for every
+outer design.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
