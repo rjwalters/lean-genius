@@ -16064,3 +16064,66 @@ augmentation identities, (1013) can fail by magnitude; any continuation
 must fit the odd occurrence population, the local exceptions, and all
 forced separator labels inside the actual residual shore of order at most
 `2q-15`.
+
+## 313. Zero residual charge forces one of two rigid odd label families
+
+The disjointness in Section 311 makes the zero-charge branch completely
+classifiable.  Put
+
+```text
+J_tot:=sum_(x in C)J_x.
+```
+
+The path supports are disjoint even across different source roots.
+Equation (1008), summed over `x`, therefore gives the equivalence
+
+```text
+J_tot=0
+ iff L_x^loc=empty for every x and
+     Pi_w^int=0 for every w in W_I.                 (1014)
+```
+
+Thus in the zero-charge branch every terminal label is distinct from its
+inactive companion and every overlay-selected target path has exactly the
+two-edge label word
+
+```text
+Pi_w=[y'_w]+[z(w)].                                 (1015)
+```
+
+These endpoint labels are consecutive in `Gamma_e^a`.  Orthogonality
+(991) makes them nonadjacent in `Gamma_c^a`, equivalently
+
+```text
+N_c(y'_w) intersect N_c(z(w))=emptyset.             (1016)
+```
+
+The local classification of Section 303 now leaves only two shapes.  Write
+`N_c(y_w)={x,u}` as before:
+
+```text
+type 0: r_w=0,                         |T_w^def|=5;
+type u: r_w=1 and N_c(z(w)) contains u, |T_w^def|=3. (1017)
+```
+
+In type 0 the three labels `y_w,y'_w,z(w)` are pairwise nonadjacent in
+`Gamma_c^a`, while `y_w--y'_w--z(w)` is a two-edge walk in
+`Gamma_e^a`.  In type `u`, the same two target adjacencies hold and
+`z(w)--y_w` is an edge of `Gamma_c^a`; hence the three labels form a mixed
+triangle in `Gamma_c^a union Gamma_e^a`, with two target-factor edges and
+one root-factor edge.
+
+Let `W_0,W_u` be the two occurrence classes in (1017).  They partition the
+odd set `W_I`, so
+
+```text
+|W_0|+|W_u|=1 mod 2.                                (1018)
+```
+
+Consequently exactly one rigid family is odd: root-independent target
+two-paths carrying five-root defects, or mixed label triangles carrying
+three-root defects.  Outside this rigid alternative, `J_tot` is a genuine
+nonzero private-label charge by Section 311.  This is an exhaustive
+terminal split, not yet an exclusion: the next capacity argument must
+price the nonzero label population, the odd independent two-path family,
+or the odd mixed-triangle family.
