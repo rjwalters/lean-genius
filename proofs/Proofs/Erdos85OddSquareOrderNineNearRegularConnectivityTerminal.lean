@@ -183,6 +183,46 @@ theorem three_mul_card_inter_eq_five_mul_card_inter_of_closed_shore
     rw [hinter]
     exact h₁ y hyParts.1
 
+/-- Induced-subgraph form of the closed-shore balance theorem.  It is enough
+that `S` be closed under neighbors lying in an ambient vertex set `U`, provided
+both colour classes lie in `U`.  This is the form used for components of the
+ordinary induced defect graph inside the full second-order defect graph. -/
+theorem three_mul_card_inter_eq_five_mul_card_inter_of_relative_closed_shore
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (U S B₀ B₁ : Finset V)
+    (hB₀U : B₀ ⊆ U) (hB₁U : B₁ ⊆ U)
+    (hclosed : ∀ x ∈ S, D.neighborFinset x ∩ U ⊆ S)
+    (h₀ : ∀ x ∈ B₀, (D.neighborFinset x ∩ B₁).card = 3)
+    (h₁ : ∀ y ∈ B₁, (D.neighborFinset y ∩ B₀).card = 5) :
+    3 * (B₀ ∩ S).card = 5 * (B₁ ∩ S).card := by
+  apply three_mul_card_eq_five_mul_card_of_cross_degrees D (B₀ ∩ S) (B₁ ∩ S)
+  · intro x hx
+    have hxParts := Finset.mem_inter.mp hx
+    have hinter :
+        D.neighborFinset x ∩ (B₁ ∩ S) = D.neighborFinset x ∩ B₁ := by
+      ext y
+      simp only [Finset.mem_inter]
+      constructor
+      · exact fun hy => ⟨hy.1, hy.2.1⟩
+      · intro hy
+        exact ⟨hy.1, hy.2,
+          hclosed x hxParts.2 (Finset.mem_inter.mpr ⟨hy.1, hB₁U hy.2⟩)⟩
+    rw [hinter]
+    exact h₀ x hxParts.1
+  · intro y hy
+    have hyParts := Finset.mem_inter.mp hy
+    have hinter :
+        D.neighborFinset y ∩ (B₀ ∩ S) = D.neighborFinset y ∩ B₀ := by
+      ext x
+      simp only [Finset.mem_inter]
+      constructor
+      · exact fun hx => ⟨hx.1, hx.2.1⟩
+      · intro hx
+        exact ⟨hx.1, hx.2,
+          hclosed y hyParts.2 (Finset.mem_inter.mpr ⟨hx.1, hB₀U hx.2⟩)⟩
+    rw [hinter]
+    exact h₁ y hyParts.1
+
 /-- The exact `3 n₀ = 5 n₁` component balance forces the total component
 order to be divisible by eight. -/
 theorem eight_dvd_of_three_mul_eq_five_mul
@@ -249,6 +289,7 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
 #print axioms exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
 #print axioms three_mul_card_eq_five_mul_card_of_cross_degrees
 #print axioms three_mul_card_inter_eq_five_mul_card_inter_of_closed_shore
+#print axioms three_mul_card_inter_eq_five_mul_card_inter_of_relative_closed_shore
 #print axioms orderNine_component_colour_sum_even_of_handshake
 #print axioms false_of_orderNine_nearRegular_proper_component_balance
 #print axioms false_of_orderNine_nearRegular_component_handshake_and_balance
