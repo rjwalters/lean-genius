@@ -21142,3 +21142,75 @@ companion or layer argument may discard only five exceptional inactive
 labels per port before it must account for the entire residual matching
 family.  The constant `25` is independent of `q`, while the covered pool
 has size `5q-35`.
+
+## 397. Several roots saturate one common payer layer
+
+The five-label slack in Section 396 forces a cross-root layer collision.
+Fix `x_i`, and for an allowed payer layer `h notin {c,e,d}` put
+
+```text
+n_i(h):=#{y in E_i(G_sh):h(y)=h}.
+```
+
+Let `gamma_i` be the exterior color of the strict export `s_i`.  At the
+offset port `p_(i+2)`, the inactive-label capacity of layer `h` is
+
+```text
+c_i(h):=2-1_[h=gamma_i].
+```
+
+Thus `sum_h c_i(h)=q-7`, exactly (1392), and Section 396 gives
+
+```text
+0<=n_i(h)<=c_i(h),
+Delta_i:=sum_h(c_i(h)-n_i(h))<=5.                 (1395)
+```
+
+There are `r-4` layers other than `gamma_i`, each with inactive capacity
+two.  Every such layer which is not filled by two offset payers costs at
+least one unit of `Delta_i`.  Hence root `i` saturates at least
+
+```text
+(r-4)-5=r-9                                      (1396)
+```
+
+two-slot layers.  Average (1396) over the five roots.  Some allowed layer
+`h` is saturated at at least
+
+```text
+t(q):=ceil(5(r-9)/(r-3))                           (1397)
+```
+
+different roots.  In the binary ranges this gives the staircase
+
+```text
+q>=32  -> t(q)>=3;
+q>=64  -> t(q)>=4;
+q>=128 -> t(q)=5.                                  (1398)
+```
+
+For each of these `t(q)` roots, the two payer labels in layer `h` exhaust
+the entire `h`-fiber of its selected offset port.  The two labels have
+different outside companions: otherwise that companion and the selected
+port would have the same two common payer neighbors, a four-cycle.  Across
+different roots a companion may be reused, but its cross degree into `h`
+is two, so at most two of the `2t(q)` payer labels can meet it.  Hence the
+common saturated layer supplies
+
+```text
+2t(q) distinct inactive payer labels in h,
+at least t(q) distinct outside companions.          (1399)
+```
+
+Whenever two labels collide at one companion, they exhaust its two
+`h`-neighbors; because both payers are core-inactive, that companion then
+has no rooted active label of color `h`, exactly the deletion phenomenon
+of (1227).
+
+Thus the residual unsheltered graph is not merely large in aggregate.
+Every root misses at most five inactive offset-payer slots, forcing a common layer
+which simultaneously saturates three, four, or all five selected offset
+ports as the binary parameter grows.  This is the first cross-root layer
+coupling extracted from the ordinary-cycle expansion; the remaining task
+is to feed the companion deletions in (1399) back into the rooted matching
+or SRP tag system.
