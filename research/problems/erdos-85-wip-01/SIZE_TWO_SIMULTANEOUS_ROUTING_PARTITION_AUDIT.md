@@ -7904,3 +7904,66 @@ connection ledger and handles all three cases, or prove directly that A0 and
 A1 have even marked grading, leaving A2 as the only source.  This activation
 bridge is logically prior to using the private saturated capacity unit as a
 contradiction.
+
+## 150. Activation is an explicit boundary-column span problem
+
+The weakest bridge needed to rule out A0 can be stated linearly.  Choose an
+orientation of the mixed dart cycle.  For each maximal H-run `A` of length
+`ell(A)`, call its two H--V root pairs the entry and exit boundaries.  Define
+a binary vector on the H--V boundary set by
+
+```text
+alpha_Z(entry(A)):=0,
+alpha_Z(exit(A)) :=ell(A) mod 2.                       (464)
+```
+
+Then, directly from (299),
+
+```text
+sum_(H--V boundaries E) alpha_Z(E)=omega_M(Z).        (465)
+```
+
+Let `B_Z` be the boundary-by-secondary matrix whose `(E,(d,u))` entry is
+
+```text
+B_Z(E,(d,u)):=delta_R q_u(E).                         (466)
+```
+
+Its column sum is exactly `D_(1_H,q_u)` by (395).  Therefore the span
+statement
+
+```text
+alpha_Z=B_Z beta                                      (467)
+```
+
+for some coefficient vector `beta` would imply
+
+```text
+omega_M(Z)=sum_(d,u) beta_(d,u) D_(1_H,q_u).          (468)
+```
+
+In particular, odd `omega_M` would force at least one nonzero secondary
+coordinate, excluding A0 and proving the missing implication (461).
+
+Equation (467) is not orientation-free.  Reversing the cycle exchanges the
+entry and exit of each run.  If `alpha_Z^rev` is the reversed choice, then
+
+```text
+alpha_Z+alpha_Z^rev
+ =sum_(H-runs A) (ell(A) mod 2)
+    (e_(entry(A))+e_(exit(A))).                       (469)
+```
+
+The right side is the weighted incidence boundary of the canonical H-run
+transfer edges in `T_H`.  Thus the reversal ambiguity is itself a known
+run-endpoint boundary; it is not an arbitrary choice, but it cannot be
+discarded by an untagged scalar sum.  The mate/orientation refinement from
+(373) is exactly the natural enlargement of `B_Z` in which to seek a
+reversal-compatible version of (467).
+
+No span inclusion is proved here.  It is a concrete activation target:
+either show the oriented run-phase vector lies in the secondary boundary
+column span (with the reversal change absorbed by `T_H`), or exhibit a dual
+boundary test annihilating every secondary column but detecting `alpha_Z`.
+The latter would be a rigorous obstruction showing that the present
+secondary alphabet is insufficient and must be enlarged.
