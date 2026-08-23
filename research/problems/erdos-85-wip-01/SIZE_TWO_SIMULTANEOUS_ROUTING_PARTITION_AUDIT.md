@@ -21719,3 +21719,62 @@ loop is precisely a factor cycle containing only one selected port.  At
 boundary labels by an entirely even port pattern.  Any terminal argument
 may split into the three finite odd cases in (1436), while all other
 boundary-free `h--e` cycles remain irrelevant to this five-port quotient.
+
+## 406. The `q=16` density gap has two high-loss roots
+
+Return to the finite branch left by (1423).  At `q=16`, failure of the
+exact density comparison to force a residual unsheltered cycle means
+
+```text
+b_B+e_BB-S_sh<=6.
+```
+
+Using (1411), this is equivalently the high-slack condition
+
+```text
+Delta=sum_i delta_i>=14.                            (1437)
+```
+
+Each root slack lies between one and five by (1404).  If at most one root
+had slack at least three, their total would be at most `5+4*2=13`, contrary
+to (1437).  Hence there are distinct roots `i,j` with
+
+```text
+delta_i,delta_j>=3,
+h_i+s_i^sh, h_j+s_j^sh>=5.                         (1438)
+```
+
+The boundary table (1402) makes (1438) completely local.  For either such
+root `i`, exactly one of the following holds:
+
+```text
+v_i in O:
+  E_i(O,B)>=4,
+  or E_i(O,B)=2 and s_i^sh=1;
+
+v_i in B:
+  E_i(O,B)=5,
+  or E_i(O,B)=3 and s_i^sh=1.                      (1439)
+```
+
+Indeed the omitted boundary values give `h_i<=3`, or give `h_i=4` without
+the shelter needed to reach five in (1438).  Thus every high-slack root
+either sends at least four residual-to-private ordinary edges (five when
+its strict mate is private), or lies in one of the two explicitly sheltered
+next-boundary cases.
+
+There is an equivalent payer statement.  At `q=16` the inactive pool at
+one offset port has size `q-7=9`, and (1394) is exact.  Therefore each of
+the two roots in (1438) satisfies
+
+```text
+|E_i(G_sh)|=9-delta_i<=6.                           (1440)
+```
+
+Consequently the small density gap is not an unstructured failure of the
+large-`q` estimate.  It forces two named root matchings into the finite
+alternatives (1439), with at least three missing offset payers apiece and
+at most six clean residual edges apiece.  All other `q=16` configurations
+already fall into the simple all-`O` unsheltered cycle branch of (1422).
+The remaining finite task is to couple the two high-loss private boundaries
+through their pair graph or through the two possible shelter rows.
