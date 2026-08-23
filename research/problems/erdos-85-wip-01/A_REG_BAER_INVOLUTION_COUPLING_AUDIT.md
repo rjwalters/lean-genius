@@ -4050,6 +4050,37 @@ collision contributes two fixed owner relays but no residual constant unit.
 All fixed switch-bearing edges of R are therefore transported into pure
 cross-matching atoms, collision included.
 
+The direct-exit and cross-star-through cells have the same cancellation.  On
+a direct ordinary exit
+
+```text
+E--L--y--z,
+```
+
+the ordinary endpoint z is nonadjacent and non-D to E, while L,z share the
+unique witness y and are likewise nonadjacent/non-D.  Hence both K-indicators
+have the complement form `1+mu`, and
+
+```text
+1[Ez in K]+1[Lz in K]=mu_(E,z)+mu_(L,z).                 (73rnz_cjibkb)
+```
+
+For a cross-star port y joining leaves `L_1,L_2`, the canonical owner relay
+has `1[L_1L_2 in K]=1+mu_(L_1,L_2)`.  The realized port is exactly one occupied
+cell of N, so its source bit cancels that complement unit:
+
+```text
+1[y is the N-cell (L_1,L_2)]+1[L_1L_2 in K]
+ = mu_(L_1,L_2).                                        (73rnz_cjibkc)
+```
+
+Thus every fixed owner-bearing relay in R -- switch, two-switch collision,
+direct ordinary exit, or cross-star through -- loses its universal unit
+against the actual source occurrence that created it.  After source
+transport, the entire nonadditive owner ledger consists only of explicitly
+labeled cross-neighborhood matching atoms (plus the source K-tags already
+present in (73rnz_as)--(73rnz_aw)).
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
