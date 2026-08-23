@@ -4083,6 +4083,61 @@ spend the coupled DTB capacity/orthogonality ledger.  Triangle incidence,
 rowwise base feasibility, residual degrees, and B0 orthogonality do not
 suffice, even together in the tested counterexample.
 
+The selector surviving the expanded corpus is incidence with an exceptional
+hole block.  `--hole-only` finds a strict scale-at-most-six full fiber at a
+hole point in all four serious payloads and all ten stored fresh outers,
+including the durable triangle counterexample.  Fixed color choices do not
+survive: a middle-color hole-point selector is refuted by another rowwise
+base-feasible fresh branch-3 outer.  Even the broad hole selector is not a
+raw average.  The sum of exact optimal gaps over hole incidences is positive
+on serious `13t` (`51407/14168`) and fresh branch-4 seed 4 (`11189/16380`),
+despite each having an individual strict hole point.  Hence the remaining
+choice must be nonuniform or use a min-type/partition argument.
+
+The coupled DTB equations give exactly such extra structure at a hole row
+`h`.  Write
+
+```text
+c(h,b) = #{a in B_h : a K-adjacent to b},
+r(h,b) = #{v : h A-adjacent to v and b in B_v}.
+```
+
+The exceptional DTB row ledger has no defects, so `c(h,b)+r(h,b)>0` for
+every U1 point `b`.  Residual capacity gives `r(h,b)<=1`, while mixed
+orthogonality gives `c(h,b)=0 or r(h,b)=0`.  Consequently
+
+```text
+r(h,b)=1 iff c(h,b)=0.                                      (13aj)
+```
+
+Thus the blocks of the residual neighbors of `h` partition, exactly once,
+the complement of the K-core of `B_h`.  This is the theorem-ready DTB
+consequence to spend on the hole-fiber selector.  The seed-free existential
+negation `q9_hole_fiber_negation_smt.py` encodes partial symmetric masses on
+the selected five-row fibers and reproduces fixed-payload UNSAT quickly, but
+an unrestricted branch-3 instance is UNKNOWN even for one hole at 60
+seconds.  So (13aj), rather than a larger SMT census, is presently the
+algebraic route to the remaining discrete hole-selector lemma.
+
+The degree target itself splits cleanly by branch.  Every full fiber has
+five roots, with baseline degree 5 each, and gains one for every incident
+pair or hole block.  The projected column law therefore gives
+
+```text
+branch 3: D_p = 25 + pair_count(p) + hole_count(p) = 27,
+branch 4: D_p = 27 + special(p),
+```
+
+where `special(p)` counts missed punctured classes.  In the branch-4 corpus,
+a maximal-degree hole point always has target at least 28 (sometimes 29).
+This suggests a useful division of labor: construct a uniform weak hole
+cover of cost at most 27 to close branch 4 immediately, then spend the exact
+partition (13aj) for the strict `<27` improvement needed in branch 3.
+Adding the necessary residual triple/pair subdegree and marked-group miss
+ledger to the seed-free partial-mass negation is sound and reproduces fixed
+UNSAT, but the unrestricted one-hole branch-3 solve remains UNKNOWN.  Those
+row-type equations alone therefore do not replace the partition argument.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
