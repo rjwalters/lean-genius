@@ -3130,6 +3130,30 @@ inequality) between the route cells (73rnz_at) on the left and the
 common-neighbor/cross-matching atoms on the right.  C4-freeness supplies
 privacy within each fiber, but not this cross-fiber conservation by itself.
 
+There is a decisive limitation on the unweighted form of this conservation.
+Suppose, toward the desired exit contradiction, that every ordinary exit
+charge vanishes.  In particular (73rnz_ai) gives
+`deg_J(G)=gamma_G=0` modulo two at every residual center.  But
+
+```text
+sum_(i=1,2) c_(E_i,G) = deg_J(G) = 0              (mod 2),
+```
+
+so (73rnz_as) collapses to
+
+```text
+sum_(i=1,2) rho_(E_i,G) = deg_K(G,M intersect S)  (mod 2). (73rnz_ax)
+```
+
+The switch atoms themselves disappear from the aggregate equation exactly
+in the charge-free regime that must be excluded.  Hence (73rnz_aw), although
+an exact incidence-resolved conservation ledger, cannot be applied after
+summing away the star label.  A terminal must assign a nonconstant joint
+weight to `(E,leaf,G,route-cell)` before the two-star sum, with the matching
+weight transported to the `nu/mu` atoms.  This rules out any proof based only
+on the centerwise scalar balance and matches the independent failure of
+additive-linear census potentials in the B3 ledger.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
