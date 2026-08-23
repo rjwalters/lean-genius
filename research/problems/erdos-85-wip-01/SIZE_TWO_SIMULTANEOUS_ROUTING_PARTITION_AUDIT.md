@@ -8678,3 +8678,39 @@ analogous count of two R flips is asserted.  The rigorous reduction is only
 the unique-port localization (519)--(520): the `RR/RP/PR/PP` table from
 Section 161 has at most two P-bearing interval endpoints per secondary
 label, and at most one P--P interval.
+
+## 164. Each secondary label has at most three proper run intervals
+
+The root-only endpoints also have a uniform bound.  A `(1,0)` flip for `u`
+selects exactly one opposite root `b` adjacent to `u` and one H port `z`
+incident to `b`; the internal root cell is the unique transition at the
+other root of `z` containing that dart.  The `d--c` fiber of `u` has two
+roots, and each such root has two `e`-neighbors.  Therefore there are at
+most four possible `(b,z)` incidences and
+
+```text
+number of R-type flips for u along one H-run <= 4.     (521)
+```
+
+There is no double counting issue for a contributing `(1,0)` cell: its
+unique exposed opposite root determines `(b,z)`, and one incidence dart
+belongs to one root transition on the auxiliary cycle.
+
+Combining (520)--(521), the closed binary word for `u` has at most six
+flips.  Its flip count is even, so it belongs to
+
+```text
+{0,2,4,6}.                                            (522)
+```
+
+Consequently its `1`-support has at most three proper relay intervals,
+apart from the zero-flip constant channel.  This bound is independent of
+the length of the H-run.
+
+The singleton transfer problem is therefore finite at each secondary
+label: at most four root endpoints, at most two endpoints pinned to one
+target port, and at most three canonically paired intervals.  What remains
+unbounded is only the number of different labels `u` appearing along a
+long run, not the state complexity of any one label.  A global price may
+sum the per-`u` interval contributions; it need not solve an unbounded
+pairing problem within a fiber.
