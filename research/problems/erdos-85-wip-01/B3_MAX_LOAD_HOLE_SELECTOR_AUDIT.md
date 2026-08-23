@@ -229,6 +229,15 @@ at solver seeds 1 and 2 remained `UNKNOWN` after 120 and 180 seconds, so the
 strict-single horn currently has one full-strength regression rather than a
 widened corpus.
 
+The genuine horn really fails on that full-strength model; this is not a
+denominator-six artifact.  `--scan-exact-joint-optima` rationally certifies
+primal and dual optima for all 21 pairs of non-strict points.  Every optimum
+is strictly above 54.  The smallest is `50668/935 = 54 + 178/935` at pair
+`(4,7)`; the next is `2389/44 = 54 + 13/44`, and the largest is
+`11674/209 = 54 + 388/209`.  Thus the two horns are empirically exclusive
+in both directions: this full model needs its strict point `19`, whereas the
+stored seed-5 model below has no strict point and needs genuine joint synergy.
+
 The genuine-joint horn is indispensable already at exact-hole scope.  Seed
 5 reproducibly has eight overlap points and no strict single fiber.  Their
 exact optima (with matching rational dual lower bounds) are `649/24`,

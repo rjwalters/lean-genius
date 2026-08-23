@@ -213,7 +213,8 @@ def one_model(
         details: bool = False, genuine_only: bool = False,
         diagonal_rows: bool = False, all_regular_classes: bool = False,
         regular_class_indices: tuple[int, ...] | None = None,
-        stage_all_regular_classes: bool = False):
+        stage_all_regular_classes: bool = False,
+        scan_exact_joint_optima: bool = False):
     if stage_all_regular_classes:
         source_solver, source_data = build(
             3, timeout_ms, True, all_regular_classes=True,
@@ -275,7 +276,7 @@ def one_model(
         point: unit_nondiagonal_fiber_optimum(
             system, point, include_diagonal=True)
         for point in overlap
-    } if genuine_only or details else {}
+    } if genuine_only or details or scan_exact_joint_optima else {}
     genuine_pairs = [
         pair for pair in combinations(overlap, 2)
         if not single_optima[pair[0]]["strict"]
@@ -306,16 +307,41 @@ def one_model(
                     answer["overlap_single_fiber_optima"] = [
                         single_optima[point] for point in overlap
                     ]
+                if scan_exact_joint_optima:
+                    answer["genuine_joint_optima"] = [
+                        {
+                            "points": list(pair),
+                            **{
+                                key: value for key, value in
+                                exact_joint_optimum(system, *pair).items()
+                                if key not in ("point_prices", "dual_edges")
+                            },
+                        }
+                        for pair in genuine_pairs
+                    ]
                 return answer
     answer = {"overlap_card": len(overlap), "certificate": None}
     if genuine_only:
         answer["genuine_pair_count"] = len(genuine_pairs)
         answer["strict_single_points"] = strict_single_points
+    if scan_exact_joint_optima:
+        answer["genuine_joint_optima"] = [
+            {
+                "points": list(pair),
+                **{
+                    key: value for key, value in
+                    exact_joint_optimum(system, *pair).items()
+                    if key not in ("point_prices", "dual_edges")
+                },
+            }
+            for pair in genuine_pairs
+        ]
     return answer
 
 
 def fixed_payload_model(payload: dict, max_scale: int, details: bool,
-                        genuine_only: bool) -> dict:
+                        genuine_only: bool,
+                        scan_exact_joint_optima: bool = False) -> dict:
     """Scan a stored outer payload with an explicit exceptional-cover overlap."""
     system = fixed_system(payload)
     overlap = sorted(payload["overlap_points"])
@@ -350,13 +376,38 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
                     answer["overlap_single_fiber_optima"] = [
                         single_optima[point] for point in overlap
                     ]
+                if scan_exact_joint_optima:
+                    answer["genuine_joint_optima"] = [
+                        {
+                            "points": list(pair),
+                            **{
+                                key: value for key, value in
+                                exact_joint_optimum(system, *pair).items()
+                                if key not in ("point_prices", "dual_edges")
+                            },
+                        }
+                        for pair in genuine_pairs
+                    ]
                 return answer
-    return {
+    answer = {
         "overlap_card": len(overlap),
         "certificate": None,
         "genuine_pair_count": len(genuine_pairs),
         "strict_single_points": strict_single_points,
     }
+    if scan_exact_joint_optima:
+        answer["genuine_joint_optima"] = [
+            {
+                "points": list(pair),
+                **{
+                    key: value for key, value in
+                    exact_joint_optimum(system, *pair).items()
+                    if key not in ("point_prices", "dual_edges")
+                },
+            }
+            for pair in genuine_pairs
+        ]
+    return answer
 
 
 def main() -> int:
@@ -367,6 +418,7 @@ def main() -> int:
     parser.add_argument("--max-scale", type=int, default=6)
     parser.add_argument("--timeout-seconds", type=int, default=60)
     parser.add_argument("--details", action="store_true")
+    parser.add_argument("--scan-exact-joint-optima", action="store_true")
     parser.add_argument(
         "--genuine-only", action="store_true",
         help="only scan pairs whose two single-fiber optima are non-strict",
@@ -395,7 +447,7 @@ def main() -> int:
             parser.error("--payload requires --samples 1")
         results = [fixed_payload_model(
             json.loads(args.payload.read_text()), args.max_scale,
-            args.details, args.genuine_only)]
+            args.details, args.genuine_only, args.scan_exact_joint_optima)]
     else:
         results = [
             one_model(
@@ -403,7 +455,7 @@ def main() -> int:
                 args.genuine_only, args.diagonal_rows, args.all_regular_classes,
                 (tuple(args.regular_class)
                  if args.regular_class is not None else None),
-                args.stage_all_regular_classes)
+                args.stage_all_regular_classes, args.scan_exact_joint_optima)
             for seed in range(args.seed_start, args.seed_start + args.samples)
         ]
     print(json.dumps(results, separators=(",", ":"), default=str))
