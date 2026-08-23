@@ -4050,3 +4050,73 @@ endpoint difference (244), so every complementary-gap pair cancels.
 Conversely, any obstruction must exhibit which endpoint or third-color term
 prevents this separation.  This is the minimal SRP-local equation unavailable
 to the rooted owner-factor counterprofile of Section 70.
+
+## 74. The one-edge root indicator kills both endpoint transports
+
+For the one-edge run of Section 58, write `U={x_-,x_+}` and retain the
+shared/private notation
+
+```text
+Y_e(x_-)={p,p_-},    Y_e(x_+)={p,p_+}.
+```
+
+Let `w=1_(p_-)-1_(p_+)` and pair `SRP(c,e)w=0` with the root indicator
+`1_U`.  The first endpoint term vanishes:
+
+```text
+1_U^T A_c R_ce w = 0.                                  (245)
+```
+
+To see this, let `a_-` and `a_+` be the other `c`-neighbors of `p_-` and
+`p_+`.  Then
+
+```text
+R_ce w = (1_(x_-)+1_(a_-))-(1_(x_+)+1_(a_+)).
+```
+
+The contributions of `x_-` and `x_+` to `1_U^T A_c` cancel.  Neither
+`a_-` nor `a_+` is adjacent in `A_c` to a root of `U`: equality with the
+opposite root would duplicate the shared port `p`; equality with the outer
+cycle neighbor would make the boundary edge `e`-owned, contradicting run
+maximality; adjacency at cyclic distance two would give the middle root and
+the private port as two common neighbors.  This proves (245).
+
+The reverse endpoint term also vanishes:
+
+```text
+1_U^T R_ce A_e w = 0.                                  (246)
+```
+
+Indeed,
+
+```text
+R_ec 1_U = 2 1_p + 1_(p_-) + 1_(p_+).
+```
+
+The last two terms pair to zero with `A_e(1_(p_-)-1_(p_+))` by symmetry of
+`A_e`.  The `p` term is zero because the rooted budgets at both endpoints
+have `a=1,b=0`, so neither `pp_-` nor `pp_+` is an `A_e` edge.
+
+Pairing (243) with `1_U` therefore leaves the exact third-color balance
+
+```text
+sum_(d != c,e) 1_U^T R_cd R_de 1_(p_-)
+  =
+sum_(d != c,e) 1_U^T R_cd R_de 1_(p_+).                (247)
+```
+
+Both sides equal one.  At `x_-`, the pair `(x_-,p_-)` lies in neither
+endpoint layer by the preceding arguments, so the SRP partition routes it
+through its unique third color; at `x_+`, the source-endpoint layer reaches
+`p_-` through the run edge and contributes there instead.  The roles reverse
+for `p_+`.  Thus (247) is exactly equality of the two boundary assignments'
+total third-color mass, not merely equality of two unconstrained column
+sums.
+
+This is the first explicit functional requested after (244): the root
+indicator annihilates both endpoint transports and isolates the clean
+third-color routing balance.  It still sums over the source color, so it
+does not force equality for a dual price which distinguishes the two rooted
+transition paths.  The remaining refinement is to split `1_U` by the
+clean-color/root-incidence coordinates while preserving the cancellations
+(245)--(246).
