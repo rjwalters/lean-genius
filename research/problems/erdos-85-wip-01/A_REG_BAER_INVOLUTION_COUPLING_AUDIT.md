@@ -3268,6 +3268,23 @@ singletons, and their shared member is the unique common line center of
 `p,r` occurring in (73rnz_bn).  Any minimum two-pole potential must realize
 this exact paired-pencil geometry.
 
+It also has an exact defect signature.  Let
+`L=N_A(E_1) union N_A(E_2)`.  Since `|X|=q` is even, the defining relation
+`D=A^2+J+I` and (73rnz_ba) give
+
+```text
+D 1_X = 1_L + 1_X.                                      (73rnz_bp)
+```
+
+The two-pencil structure says `L intersect X={p,r}`.  Consequently p and r
+have even D-incidence into X -- in fact zero, because each other X-point
+shares with the pole a current line from its pencil -- while every point of
+`X setminus {p,r}` has odd D-degree into X.  On the other shore, every point
+of `L setminus {p,r}` has odd D-incidence into X and every point outside
+`L union X` has even incidence.  Thus the minimum two-pole A-route comes with
+a completely explicit D-boundary parity profile, suitable for the same
+source/defect cross-tag ledger as (73rnz_aw).
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
