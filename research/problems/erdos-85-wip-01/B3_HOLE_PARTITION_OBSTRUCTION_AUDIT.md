@@ -4291,6 +4291,16 @@ forces a good point by choosing a minimum load.  This is the natural algebraic
 form for a load-difference potential extracted from a non-strict fractional
 packing; it avoids every refuted averaging step above.
 
+The CLI mode `--audit-global-special-load-descent` now tests (13an) directly.
+For every special fiber it rationalizes and independently checks both sides
+of the cover LP: a feasible point-price vector gives the exact upper bound,
+while rational dual edge weights give a checked lower bound.  Hence a point
+is labeled non-strict only when the dual lower bound reaches its target, not
+from a floating-point optimum.  It then lists all strictly lower-load special
+competitors.  On a fresh averaging-counterexample outer, for example, four
+non-strict special points all have lower-load special competitors, while the
+minimum-load point has exact strict cover `139/5 < 28`.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

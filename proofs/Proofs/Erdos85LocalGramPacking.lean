@@ -1699,6 +1699,97 @@ theorem false_of_unitSupportPointPriceCertificate
   exact relationIndicator_pointCapacity_of_sharedPoint
     A W B hsymm hgram hshared
 
+/-- Joint two-support actual-relation consumer.  Rows in the overlap carry
+price two, so a single point-price cover can exploit shared capacity across
+two fibers directly; no reduction to an individually strict fiber is
+required. -/
+theorem false_of_twoUnitSupportsPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (S T : Finset V) (pointPrice : V → P → ℚ)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      ((if u ∈ S then (1 : ℚ) else 0) + (if u ∈ T then 1 else 0)) +
+        ((if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)) ≤
+          (∑ p ∈ B v, pointPrice u p) +
+            ∑ p ∈ B u, pointPrice v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, pointPrice u p) <
+        (∑ u ∈ S, (d u : ℚ)) + ∑ u ∈ T, (d u : ℚ)) :
+    False := by
+  let rowPrice : V → ℚ := fun u =>
+    (if u ∈ S then 1 else 0) + (if u ∈ T then 1 else 0)
+  apply false_of_symmetricRowPointPriceCertificate
+    A H W d B hsymm hdegree hsupport hgram hshared rowPrice pointPrice
+    hpointPrice
+  · intro u v huv
+    exact hedge u v huv
+  · simpa [rowPrice, mul_add, Finset.sum_add_distrib] using hstrict
+
+/-- Denominator-cleared joint two-support consumer.  This is the literal
+interface for an integer certificate emitted by a joint two-fiber verifier. -/
+theorem false_of_scaledTwoUnitSupportsPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (S T : Finset V) (weight : V → P → ℕ) (scale : ℕ)
+    (hscale : 0 < scale)
+    (hedge : ∀ u v, H u v →
+      scale * (((if u ∈ S then 1 else 0) + (if u ∈ T then 1 else 0)) +
+        ((if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0))) ≤
+          (∑ p ∈ B v, weight u p) + ∑ p ∈ B u, weight v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, weight u p) <
+        scale * ((∑ u ∈ S, d u) + ∑ u ∈ T, d u)) :
+    False := by
+  let pointPrice : V → P → ℚ := fun u p => weight u p / (scale : ℚ)
+  have hqpos : (0 : ℚ) < scale := Nat.cast_pos.mpr hscale
+  have hqne : (scale : ℚ) ≠ 0 := hqpos.ne'
+  apply false_of_twoUnitSupportsPointPriceCertificate
+    A H W d B hsymm hdegree hsupport hgram hshared S T pointPrice
+  · intro u p
+    exact div_nonneg (Nat.cast_nonneg _) hqpos.le
+  · intro u v huv
+    have hcast :
+        (scale : ℚ) *
+            (((if u ∈ S then (1 : ℚ) else 0) + (if u ∈ T then 1 else 0)) +
+              ((if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0))) ≤
+          (∑ p ∈ B v, (weight u p : ℚ)) +
+            ∑ p ∈ B u, (weight v p : ℚ) := by
+      exact_mod_cast hedge u v huv
+    calc
+      ((if u ∈ S then (1 : ℚ) else 0) + (if u ∈ T then 1 else 0)) +
+          ((if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)) =
+        ((scale : ℚ) *
+          (((if u ∈ S then (1 : ℚ) else 0) + (if u ∈ T then 1 else 0)) +
+            ((if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)))) / scale := by
+              field_simp
+      _ ≤ ((∑ p ∈ B v, (weight u p : ℚ)) +
+            ∑ p ∈ B u, (weight v p : ℚ)) / scale :=
+        (div_le_div_iff_of_pos_right hqpos).2 hcast
+      _ = (∑ p ∈ B v, pointPrice u p) +
+            ∑ p ∈ B u, pointPrice v p := by
+        simp [pointPrice, add_div, Finset.sum_div]
+  · have hcast :
+        (∑ u : V, ∑ p : P, (weight u p : ℚ)) <
+          (scale : ℚ) *
+            ((∑ u ∈ S, (d u : ℚ)) + ∑ u ∈ T, (d u : ℚ)) := by
+      exact_mod_cast hstrict
+    have hdiv := (div_lt_div_iff_of_pos_right hqpos).2 hcast
+    rw [mul_div_cancel_left₀ _ hqne] at hdiv
+    simpa [pointPrice, Finset.sum_div] using hdiv
+
 /-- End-to-end actual-relation consumer for a denominator-cleared unit-support
 certificate.  This is the literal interface produced by the finite q=9
 full-fiber verifier: `weight` is integral and `scale` is its positive common
@@ -2108,6 +2199,8 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms exists_canonicalFractionalIntervalExtension_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_no_canonicalFractionalExtension
 #print axioms false_of_no_canonicalFractionalIntervalExtension
+#print axioms false_of_twoUnitSupportsPointPriceCertificate
+#print axioms false_of_scaledTwoUnitSupportsPointPriceCertificate
 #print axioms false_of_no_symmetricLocalGramPackingSelection
 #print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse

@@ -261,10 +261,10 @@ def exact_certificate(system: dict, result) -> dict | None:
     }
 
 
-def unit_nondiagonal_fiber_certificate(
+def unit_nondiagonal_fiber_optimum(
         system: dict, point: int, include_diagonal: bool = False
         ) -> dict | None:
-    """Exact unit-row-price certificate with the natural fiber price mask.
+    """Exact unit-row-price optimum with the natural fiber price mask.
 
     Only outgoing point prices at the four non-diagonal roots through
     ``point`` and incoming prices at ``point`` itself are allowed.
@@ -316,8 +316,6 @@ def unit_nondiagonal_fiber_certificate(
         return None
     target = sum(system["degree"][row] for row in fiber)
     cost = sum(prices, Fraction())
-    if not cost < target:
-        return None
     for row, bound in zip(matrix, rhs):
         lhs = sum(
             (Fraction(int(coefficient)) * price
@@ -325,16 +323,49 @@ def unit_nondiagonal_fiber_certificate(
         )
         if lhs > bound:
             return None
+    dual = [
+        Fraction(float(-value)).limit_denominator(10**6)
+        for value in result.ineqlin.marginals
+    ]
+    if any(value < 0 for value in dual):
+        return None
+    for column in range(len(allowed)):
+        usage = sum(
+            (-Fraction(int(matrix[row][column]))) * dual[row]
+            for row in range(len(matrix))
+        )
+        if usage > 1:
+            return None
+    dual_lower_bound = sum(
+        (-Fraction(bound)) * value for bound, value in zip(rhs, dual)
+    )
+    strict = cost < target
+    nonstrict = target <= dual_lower_bound
+    if not strict and not nonstrict:
+        return None
     return {
         "point": point,
         "support": sorted(fiber),
         "cost": str(cost),
         "target": target,
+        "dual_lower_bound": str(dual_lower_bound),
+        "strict": strict,
+        "nonstrict": nonstrict,
         "point_prices": [
             (caps[allowed[i]], str(price))
             for i, price in enumerate(prices) if price
         ],
     }
+
+
+def unit_nondiagonal_fiber_certificate(
+        system: dict, point: int, include_diagonal: bool = False
+        ) -> dict | None:
+    """Return the exact optimum only when it is a strict certificate."""
+    optimum = unit_nondiagonal_fiber_optimum(
+        system, point, include_diagonal=include_diagonal
+    )
+    return optimum if optimum is not None and optimum["strict"] else None
 
 
 def main() -> None:
@@ -354,6 +385,13 @@ def main() -> None:
         help=("branch 4: restrict unit full-fiber certificates to global "
               "special points minimizing the exact candidate load "
               "sum_{u in F_p} deg_H(u)"),
+    )
+    parser.add_argument(
+        "--audit-global-special-load-descent", action="store_true",
+        help=("branch 4: rationally certify strictness or non-strictness "
+              "at every global-special full fiber and test whether each "
+              "non-strict point has a strictly "
+              "lower-load global-special competitor"),
     )
     args = parser.parse_args()
     if args.payload is None:
@@ -467,15 +505,68 @@ def main() -> None:
             "certificates": certificates,
             "strict": bool(certificates),
         }, separators=(",", ":")))
+    if args.audit_global_special_load_descent:
+        if system["branch"] != 4:
+            parser.error("--audit-global-special-load-descent requires branch 4")
+        punctured_classes = (range(8, 15), range(15, 22))
+        special = {
+            point: sum(
+                not any(point in system["blocks"][row] for row in rows)
+                for rows in punctured_classes
+            )
+            for point in range(N_U1)
+        }
+        special_points = [point for point, count in special.items() if count]
+        candidate_degree = [0] * N
+        for u, v in system["edges"]:
+            candidate_degree[u] += 1
+            candidate_degree[v] += 1
+        load = {
+            point: sum(
+                candidate_degree[row]
+                for row, block in enumerate(system["blocks"])
+                if point in block
+            )
+            for point in special_points
+        }
+        records = []
+        valid = True
+        for point in special_points:
+            optimum = unit_nondiagonal_fiber_optimum(
+                system, point, include_diagonal=True
+            )
+            if optimum is None:
+                raise RuntimeError(f"could not verify fiber optimum at {point}")
+            lower = sorted(
+                q for q in special_points if load[q] < load[point]
+            )
+            valid &= optimum["strict"] or bool(lower)
+            records.append({
+                "point": point,
+                "special": special[point],
+                "load": load[point],
+                "cost": optimum["cost"],
+                "dual_lower_bound": optimum["dual_lower_bound"],
+                "target": optimum["target"],
+                "strict": optimum["strict"],
+                "nonstrict": optimum["nonstrict"],
+                "lower_load_special_points": lower,
+            })
+        print("global_special_load_descent=" + json.dumps({
+            "valid": valid,
+            "records": records,
+        }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support
             and not args.scan_nondiagonal_fibers
             and not args.scan_unit_nondiagonal_fibers
             and not args.scan_unit_full_fibers
-            and not args.scan_min_load_global_special_fibers):
+            and not args.scan_min_load_global_special_fibers
+            and not args.audit_global_special_load_descent):
         return
     if (args.scan_nondiagonal_fibers or args.scan_unit_nondiagonal_fibers
             or args.scan_unit_full_fibers
             or args.scan_min_load_global_special_fibers
+            or args.audit_global_special_load_descent
             ) and not (args.dual or args.minimize_row_support):
         return
     row_support = (
