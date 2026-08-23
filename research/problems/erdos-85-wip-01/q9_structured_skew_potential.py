@@ -617,6 +617,8 @@ def double_label_flag_primal_audit(data: dict, mode: str = "full") -> tuple:
 
 def double_label_flag_private_audit(data: dict) -> tuple:
     """Check private unordered-flag rows after quotienting route reversal."""
+    from scipy.linalg import qr, solve_triangular
+
     equalities, _, _, _, _, _, _ = double_label_flag_primal_system(
         data, "unordered")
     edges = [(t, u) for t in range(N) for u in data["candidates"][t]]
@@ -637,12 +639,67 @@ def double_label_flag_private_audit(data: dict) -> tuple:
         signatures[tuple(zip(rows, values))] += 1
         if not any(frequency[row] == 1 for row in rows):
             without_private.append(edge)
-    rank = int(np.linalg.matrix_rank(matrix.toarray()))
+    dense = matrix.toarray()
+    _, triangular, pivots = qr(dense, mode='economic', pivoting=True)
+    diagonal = np.abs(np.diag(triangular))
+    tolerance = (max(dense.shape) * np.finfo(float).eps
+                 * (diagonal[0] if len(diagonal) else 0.0))
+    rank = int(np.sum(diagonal > tolerance))
+    free_count = dense.shape[1] - rank
+    if free_count:
+        basic = -solve_triangular(triangular[:rank, :rank],
+                                  triangular[:rank, rank:], lower=False)
+        fundamental_supports = []
+        small_relations = []
+        for free_column in range(free_count):
+            vector = np.zeros(dense.shape[1])
+            vector[pivots[:rank]] = basic[:, free_column]
+            vector[pivots[rank + free_column]] = 1.0
+            support = np.flatnonzero(np.abs(vector) > 1e-8)
+            fundamental_supports.append(len(support))
+            if len(support) <= 5:
+                scale = min(abs(vector[index]) for index in support)
+                small_relations.append(tuple(
+                    (selected[index][1], round(float(vector[index] / scale), 8))
+                    for index in support))
+        fundamental_supports.sort()
+    else:
+        fundamental_supports = []
+        small_relations = []
     duplicate_groups = sorted((count for count in signatures.values() if count > 1),
                               reverse=True)
     duplicate_excess = sum(count - 1 for count in duplicate_groups)
+    edge_column = {edge: column for column, (_, edge) in enumerate(selected)}
+    support_roots = {}
+    for root in range(N):
+        support = frozenset(data["blocks"][root] & data["selected"])
+        support_roots.setdefault(support, []).append(root)
+    triangle_vectors = []
+    for pair, unions in support_roots.items():
+        if len(pair) != 2:
+            continue
+        left_label, right_label = sorted(pair)
+        for left in support_roots.get(frozenset((left_label,)), []):
+            for right in support_roots.get(frozenset((right_label,)), []):
+                for union in unions:
+                    routes = ((left, right, 1), (left, union, -1),
+                              (right, union, 1))
+                    vector = np.zeros(len(selected))
+                    valid = True
+                    for source, target, coefficient in routes:
+                        edge = tuple(sorted((source, target)))
+                        if edge not in edge_column:
+                            valid = False
+                            break
+                        orientation = 1 if source < target else -1
+                        vector[edge_column[edge]] += coefficient * orientation
+                    if valid:
+                        triangle_vectors.append(vector)
+    triangle_rank = (int(np.linalg.matrix_rank(np.array(triangle_vectors)))
+                     if triangle_vectors else 0)
     return (len(selected), rank, missing_reverse, without_private,
-            duplicate_excess, duplicate_groups)
+            duplicate_excess, duplicate_groups, fundamental_supports,
+            small_relations, len(triangle_vectors), triangle_rank)
 
 
 def collision_census_infeasible_core(data: dict) -> tuple:
@@ -2228,9 +2285,21 @@ def main() -> int:
             if bad_rows:
                 continue
             (columns, rank, missing_reverse, without_private,
-             duplicate_excess, duplicate_groups) = (
+             duplicate_excess, duplicate_groups,
+             fundamental_supports, small_relations,
+             triangle_count, triangle_rank) = (
                 double_label_flag_private_audit(candidate))
             branch, seed_number, colors = label
+            signatures, _ = root_signature_censuses(candidate)
+            relation_vertices = sorted({vertex
+                                        for relation in small_relations
+                                        for edge, _ in relation
+                                        for vertex in edge})
+            relation_profiles = [
+                (vertex, TYPE_NAMES[candidate["types"][vertex]],
+                 tuple(sorted(candidate["blocks"][vertex] &
+                              candidate["selected"])), signatures[vertex])
+                for vertex in relation_vertices]
             print(f"double_label_flag_private branch={branch} "
                   f"seed={seed_number} colors={colors} columns={columns} "
                   f"rank={rank} "
@@ -2238,6 +2307,11 @@ def main() -> int:
                   f"without_private_count={len(without_private)} "
                   f"duplicate_excess={duplicate_excess} "
                   f"duplicate_groups={duplicate_groups} "
+                  f"fundamental_supports={fundamental_supports} "
+                  f"small_relations={small_relations} "
+                  f"support_triangles={triangle_count} "
+                  f"support_triangle_rank={triangle_rank} "
+                  f"relation_profiles={relation_profiles} "
                   f"without_private={without_private[:20]}")
     if args.audit_integer_bundle_dual:
         integer_labels = []

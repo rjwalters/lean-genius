@@ -2298,6 +2298,41 @@ genuine multi-route tensor relation.  A useful next algebraic target is to
 classify the minimal-support relations among the symmetrized wedges `(12rzk)`
 and show that every such relation has a positive private-capacity price.
 
+The smallest relation is now explicit.  Suppose three mutually eligible roots
+`L,H,O` have selected supports
+
+```text
+B_L cap selected = {a},
+B_H cap selected = {b},
+B_O cap selected = {a,b},                a != b.
+```
+
+Then `(12rzk)` gives, for every unordered label pair and role pair,
+
+```text
+F(L,H) = F(L,O) - F(H,O).                              (12rzl)
+```
+
+Indeed `L -> O` transports only `b`, so its flag tensor is
+`sym(e_b tensor P_L)`; `H -> O` transports only `a`, giving
+`sym(e_a tensor P_H)`; and `L -> H` is their difference.  The profile `P_O`
+drops out completely.  Thus `(12rzl)` is an exact Boolean support-triangle
+identity, not a sampled rank coincidence.
+
+The two branch-4 survivors in the deterministic eight-seed prefix contain
+respectively three and two independent support-triangle relations of this
+form.  A pivoted fundamental basis exposes the three-route circuits on roots
+`(31,33,40)` for colors `(0,1)` and `(29,42,35)` for colors `(0,2)`, with
+roles respectively `pair-low`, `pair-high`, `pair-other`.  The branch-3
+survivor has no support triangle, so these explain only a proper subspace of
+the full kernel.  The capacity interaction is nevertheless concrete: at root
+`L`, both candidates `H` and `O` spend label `b`; at root `H`, both candidates
+`L` and `O` spend label `a`.  Hence the tensor kernel's smallest generator is
+already aligned with the private slots that must price it.  The next uniform
+statement should quotient these singleton-union triangles and classify the
+residual kernel, rather than treating all null directions as opaque LP
+artifacts.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
