@@ -22904,3 +22904,43 @@ Consequently the `q>=128` branch cannot concentrate holonomy in one
 exceptional circuit or a bounded vertex set.  It carries linear disjoint
 cycle mass entirely inside the no-hole, all-five-root sector, in addition
 to the almost-spanning component mass of Section 425.
+
+## 428. Only boundedly many full-root components meet the hole sector
+
+The simultaneous cut parity also bounds the number of open components,
+independently of their orders.  Call a connected component `C` of
+`G_sh[O_5]` open when it has a nonempty boundary to `S`, and write
+`b(C):=sum_i b_i(C)`.  By (1470), all five root-boundary coordinates have
+parity `|C|`.  Hence
+
+```text
+C open and |C| even -> b(C)>=2;
+|C| odd             -> b_i(C)>=1 for every i,
+                       so b(C)>=5.                 (1526)
+```
+
+Indeed in the even case at least one coordinate is nonzero and every
+coordinate is even.  Let `n_even^+` count the open even components and
+let `n_odd` count the odd components.  Component boundaries partition the
+full `O_5`--`S` cut, so (1478) and (1526) give
+
+```text
+2n_even^+ + 5n_odd
+ <=5s-(2Delta-5)-2|E(G_sh[S])|
+ <=8Delta-20
+ <=180.                                             (1527)
+```
+
+Consequently
+
+```text
+n_even^+ + n_odd<=90,       n_odd<=36.             (1528)
+```
+
+Every other full-root component is closed and therefore has the even
+five-one-factor structure and forced holonomy of Section 426.  Thus the
+entire induced full-root graph splits into at most ninety components that
+interact with the bounded hole sector, together with any number of closed
+even holonomy reservoirs.  In particular all componentwise irregularity
+visible from `S` is confined to a constant-size component census, not just
+to a constant number of missing vertices.
