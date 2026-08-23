@@ -25393,3 +25393,49 @@ names, and no injectivity is claimed between those two coordinates.  The
 point is their simultaneous realization on the same literal spoke edges,
 with companion injectivity at one selected port.  This is companion/payer
 information absent from the scalable factor-only model of Section 473.
+
+## 480. Fully separated stars produce five simultaneous companion fans
+
+Return to the `t` fixed-root fully separated gadgets of Sections 477--478.
+At each primary root `r` or `s`, every gadget contributes the two edges of
+its four-edge color trace; at each of the other three roots it contributes
+one spoke.  Thus the five fixed-port edge counts are
+
+```text
+2t, 2t, t, t, t,                                  (1705)
+```
+
+for total mass `7t`.  All these edges are unsheltered.  Within each root
+the canonical payer and companion maps are injective by Sections 395 and
+403.  Consequently the two primary ports each see `2t` distinct payers and
+outside companions, while each unused-root port sees `t` of each.
+
+The complete payer-layer supports of different gadgets are disjoint by
+(1697).  Hence every one of the five ports uses at least `t` distinct
+payer layers: each gadget contributes at least one layer at that port, and
+no layer can recur in another gadget.  Within one gadget the two primary-
+root edges may share a layer, so no `2t` layer claim is made.
+
+Companion vertices may be reused across different ports, but at most once
+per port.  If `D` is their union and `m_*(o)` is the number of the five
+gadget port-fans containing `o`, then
+
+```text
+sum_(o in D)m_*(o)=7t,       1<=m_*(o)<=5,
+|D|>=ceil(7t/5).                                  (1706)
+```
+
+Only ten outside companions lie in the private set `B`, so private
+vertices absorb at most fifty of the port incidences.  Therefore the
+residual companion set obeys
+
+```text
+|D intersect O|>=ceil(max(7t-50,0)/5).            (1707)
+```
+
+Portwise, the stronger bounds are `max(2t-10,0)` residual companions at
+each primary port and `max(t-10,0)` at each unused-root port.  Thus the
+fully separated saturation obstruction now carries five simultaneous
+literal companion fans, seven units of port incidence per gadget, and
+at least one new payer layer per port per gadget.  Any remaining closure
+must control cross-port companion reuse rather than merely find companions.
