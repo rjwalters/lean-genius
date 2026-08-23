@@ -460,6 +460,11 @@ def main() -> None:
         help=("scan every support {exceptional row, other row} for an exact "
               "symmetric row/point-price obstruction"),
     )
+    parser.add_argument(
+        "--scan-exceptional-three-row-supports", action="store_true",
+        help=("branch 3: scan supports with one exceptional row and two "
+              "regular triple rows"),
+    )
     args = parser.parse_args()
     if args.payload is None:
         if args.branch is None:
@@ -727,19 +732,46 @@ def main() -> None:
             "count": len(certificates),
             "certificates": certificates,
         }, separators=(",", ":")))
+    if args.scan_exceptional_three_row_supports:
+        if system["branch"] != 3:
+            parser.error(
+                "--scan-exceptional-three-row-supports requires branch 3")
+        holes_begin = N_TRIPLE - 2
+        certificates = []
+        for hole in range(holes_begin, N_TRIPLE):
+            for first, second in combinations(range(holes_begin), 2):
+                result = dual(system, {hole, first, second})
+                if not result.success:
+                    continue
+                certificate = exact_certificate(system, result)
+                if certificate is None:
+                    continue
+                certificates.append({
+                    "hole": hole,
+                    "regular_rows": [first, second],
+                    "margin": certificate["margin"],
+                    "row_prices": certificate["row_prices"],
+                    "point_price_count": len(certificate["point_prices"]),
+                })
+        print("exceptional_three_row_supports=" + json.dumps({
+            "count": len(certificates),
+            "certificates": certificates,
+        }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support
             and not args.scan_nondiagonal_fibers
             and not args.scan_unit_nondiagonal_fibers
             and not args.scan_unit_full_fibers
             and not args.scan_min_load_global_special_fibers
             and not args.audit_global_special_load_descent
-            and not args.scan_exceptional_two_row_supports):
+            and not args.scan_exceptional_two_row_supports
+            and not args.scan_exceptional_three_row_supports):
         return
     if (args.scan_nondiagonal_fibers or args.scan_unit_nondiagonal_fibers
             or args.scan_unit_full_fibers
             or args.scan_min_load_global_special_fibers
             or args.audit_global_special_load_descent
             or args.scan_exceptional_two_row_supports
+            or args.scan_exceptional_three_row_supports
             ) and not (args.dual or args.minimize_row_support):
         return
     row_support = (

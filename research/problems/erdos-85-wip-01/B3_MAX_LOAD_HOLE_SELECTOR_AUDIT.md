@@ -499,6 +499,20 @@ supports rather than merely select an exceptional row.  The former
 tight-partner statement remains valid evidence and a fallback, but is no
 longer the preferred proof interface.
 
+The row-type pattern sharpens this to a finite geometric selector.  The new
+`--scan-exceptional-three-row-supports` exhausts all supports consisting of
+one of the two exceptional rows plus two of the 24 regular triple rows, with
+exact rational verification.  The five hard payloads have respectively
+`70,27,2,90,26` such certificates; the uniquely difficult anchor-pair
+counterexample has exactly the two supports `{25,0,9}` and `{25,2,9}`.  Five
+fresh branch-3 outers have `98,54,322,80,279` candidates.  Therefore the
+sharp current target is: **some exceptional row and at most two regular
+triple rows support a strict global symmetric price certificate**.  Zero
+row prices allow one- and two-row certificates to sit inside this uniform
+three-row template.  This is the branch-3 analogue of branch 4's exceptional
+plus one regular row target, and reduces the search to `2 * choose(24,2)`
+explicit support shapes rather than arbitrary triples among 47 rows.
+
 The legacy alternative is to prove, from the outer design plus the exact
 exceptional-hole DTB complement partition, that a tight overlap fiber has a
 strict joint partner and then denominator-clear its two-fiber cover.  The
