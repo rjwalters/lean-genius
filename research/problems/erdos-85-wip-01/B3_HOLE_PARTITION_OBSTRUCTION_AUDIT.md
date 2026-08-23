@@ -2151,6 +2151,36 @@ collision/two-role interaction, while the hard obstruction still requires a
 richer joint private ledger.  This is the stopping point for categorical
 feature escalation.
 
+There is an exact occurrence-level realization of the interaction isolated in
+`(12rzf)`.  For a selected label `c`, put
+`N_c(t)=sum_r n_r(t,c)`.  By definition of selected collision count,
+
+```text
+kappa_sel(t)
+ = sum_(c selected) binom(N_c(t),2)
+ = sum_(c selected) [sum_r binom(n_r(t,c),2)
+                     + sum_(r<s) n_r(t,c)n_s(t,c)].           (12rzg)
+```
+
+The identical formula gives `kappa_all(t)` after extending the role census to
+all labels.  Thus a collision-conditioned two-role state can be expanded into
+flags carrying
+
+```text
+(transported external label b,
+ collision-witness label c,
+ unordered pair of candidate roles r,s).
+```
+
+Equation `(12rzg)` is exact, not sampled.  It does **not** linearize an
+arbitrary lookup table in `kappa`; rather, it identifies the occurrence space
+on which a nonlinear/private proof must operate.  The next proof-facing target
+is therefore a double-labelled flag transport: pair creation and destruction
+of these `(b,c;r,s)` flags along `t -> u`, with row-label capacity charging the
+transported `b`.  Such a ledger retains precisely the collision/two-role
+coupling seen in `(12rzf)` and has a chance to compose with the squad's
+resolved-label/private-activation ledgers; a scalar collision moment does not.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
