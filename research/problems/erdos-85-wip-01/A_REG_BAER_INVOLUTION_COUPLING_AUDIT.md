@@ -3946,6 +3946,33 @@ summands.  Thus the sink-side capacity question has reduced to comparing the
 marked owner summands with the single local bit `Theta_y`, the Baer analogue
 of the SRP half-flip/interval bit.
 
+These local transitions assemble into an Eulerian normal-form relay graph.
+Let R have one edge `vw`, labeled by y, for every broken-T pair `{v,w}` at
+witness y in any fixed completion of the normal form above.  Two different witnesses cannot create
+the same relay edge, because then v,w would have two common A-neighbors.
+Moreover every T-edge `vy` contributes exactly one occurrence of v to the
+pairing at y.  Therefore
+
+```text
+deg_R(v)=deg_T(v)=0                                  (mod 2), (73rnz_cjibbh)
+```
+
+so R is Eulerian.  All of its edges are non-A/non-D and retain their unique
+witness, owner, endpoint-subtype, and word-11 labels.  By
+(73rnz_cjibbf)--(73rnz_cjibbg),
+
+```text
+|E(R) intersect E(K)|=sum_y Theta_y                  (mod 2). (73rnz_cjibbi)
+```
+
+Thus every normal-form fine capacity ledger has the same exact cut/cycle terminal
+as the coarse D-chain: either `K restricted R` is a cut of each R-component,
+or R contains an owner-labeled cycle with odd K-holonomy.  Unlike the earlier
+coarse dichotomy, each R-edge is an actual owner/T-word relay and retains its
+labels; the remaining owner-free completion choice does not erase them.  The
+final task is now to exclude the cut potential on R or price one explicit odd
+owner-labeled holonomy cycle.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
