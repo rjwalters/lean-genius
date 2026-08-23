@@ -549,6 +549,27 @@ types of the three points in `U`: the three forced high--partner edges use
 all local edges in the three-edge branch, while in the four-edge branch the
 unique additional local edge joins the two regular points of `U`.
 
+**Retraction of the order-34 placement kill.**  The argument below treated
+every bin-zero owner-neighbor as having all eight defect neighbors in its
+deleted-owner shore and hence `Z`-degree two.  This is false for the
+exceptional points `E = N_D(x) ∩ B0`: each has the deleted owner `x` as its
+eighth defect neighbor.  Relative closure therefore gives seven in-shore
+neighbors when `e ∈ S`, not eight.  Equation (23) gives
+
+```text
+deg_A(e,Z)=1 for e in the order-34 shore S,
+deg_A(e,Z)=2 for e in the complementary shore.
+```
+
+The sharp full-type ledger has `|E ∩ S|=2`.  In the three-local-edge branch
+`|E|=3`, so the exceptional degrees split `1,1,2`; in the four-edge branch
+`|E|=1`, already incompatible with `|E ∩ S|=2`.  The subsequent `(2,2)` and
+`(3,1)` eliminations invoke uniform exceptional `Z`-degree two and therefore
+do not establish (28) as written.  Their regular/nondefect degree-two inputs
+remain valid.  A corrected proof must use the `1,1,2` exceptional split (and
+may discard the four-edge branch immediately); until then the `(34,43)`
+branch is open.
+
 Suppose first that `(p,q)=(2,2)`.  In the three-edge branch the two points
 of `U` lying in `W` are independent.  Their `Z`-degrees force both to be the
 two exceptional points on the order-34 side.  Hence exactly one partner is
@@ -603,10 +624,10 @@ four-edge branch, if the selected point is exceptional then both regular
 points require it; if it is regular, the remaining exceptional point does.
 In every case the selected point and at least one other point of `U` share
 both `x` and `W\U`, again a four-cycle.  This kills `(p,q)=(3,1)` as well.
-Consequently
+Consequently, in the original argument (retracted above),
 
 ```text
-the (34,43) B3-articulation branch is impossible.              (28)
+the (34,43) B3-articulation branch is impossible.              (28, RETRACTED)
 ```
 
 The symmetric `(18,59)` branch has cut excess two rather than equality.  The
