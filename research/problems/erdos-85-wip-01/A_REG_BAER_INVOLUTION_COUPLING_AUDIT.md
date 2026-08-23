@@ -5035,6 +5035,46 @@ state switch is geometrically unrealizable for marked H occurrences.  This
 is the exact selector obstruction; it does not reopen any Baer pairing gauge,
 which was already closed by (73rnz_cjibkzo).
 
+The four equal-state cells do have a sharper owner-vector classification.
+For an H edge `xx'` with witness p, the roots already have the common
+neighbor p.  Hence C4-freeness gives, for each pole and each residual center,
+
+```text
+e_i(x)e_i(x')=0,          A_(G,x)A_(G,x')=0.           (73rnz_cjibkzw)
+```
+
+Thus the two roots have disjoint pole-neighbor sets and disjoint
+residual-center-neighbor sets.  Recall that the full anchor vector is
+`(alpha_1,alpha_2)`, while the scalar determinant is
+`alpha_1+alpha_2`.  On the four equal scalar shore-state cells, direct use of
+(73rnz_cjibkzt) gives
+
+```text
+00--00: (alpha_1,alpha_2)=(0,0);
+10--10: (alpha_1,alpha_2)=(0,0);
+11--11: (alpha_1,alpha_2)=(1,1);
+01--01: (alpha_1,alpha_2)=(1,1) iff exactly one root is
+         adjacent to both E_1,E_2, and (0,0) otherwise. (73rnz_cjibkzx)
+```
+
+For `11--11`, each root has odd pole parity and therefore meets exactly one
+of the two poles; (73rnz_cjibkzw) forces those poles to be different.  Since
+both residual parities are one, (73rnz_cjibkzt) then gives one anchor for
+each owner modulo two.  For `10--10`, both residual parities are zero.  For
+`00--00`, they are again zero.  In the `01--01` cell both residual parities
+are one, while pole parity zero means that a root meets either zero or both
+poles; (73rnz_cjibkzw) permits at most one double-pole root, giving the last
+line.
+
+Therefore the scalar diagonal-pair obstruction hides only a **diagonal
+owner class** `(c,c)`, never an off-diagonal owner error.  In particular every
+`11--11` marked H pair already supplies the same `(1,1)` anchor class as the
+residual ambiguity (73rnz_cjibkzd).  This does not yet prove cancellation:
+the unlabeled marked unit still has to be compared with that vector through
+(73rnz_cjibkd).  It does reduce the remaining geometric theorem to the
+parity of `00--00`, `10--10`, and the double-pole subcell of `01--01`, with
+the `11--11` owner value fixed pointwise.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
