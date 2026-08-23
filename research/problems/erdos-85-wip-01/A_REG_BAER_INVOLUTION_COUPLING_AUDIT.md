@@ -3248,6 +3248,26 @@ a length-four route, or a support of size at least `q+1`.  This is the
 syndrome-two analogue of the earlier `q+1` lower bound for nonzero kernel
 supports.
 
+The equality structure is a two-pencil design.  Let
+`r in X intersect N_A(E_2)`.  Apply the same q-point packing argument based
+at r.  If a second point of X lay on the `E_2` line, then in the equality
+packing it would also share with r one of the other `q-1` line centers,
+giving that pair two common A-neighbors.  Hence
+
+```text
+X intersect N_A(E_1) = {p},
+X intersect N_A(E_2) = {r}.                            (73rnz_bo)
+```
+
+Moreover every line center `Y in N_A(p) setminus {E_1}` contains exactly
+the two X-points `p,x_Y`: a third X-point is already the witness assigned to
+some other line through p and would again give two common neighbors with p.
+The analogous statement holds for the q-1 non-pole lines through r.  Thus
+the two pencils partition `X setminus {p}` and `X setminus {r}` into
+singletons, and their shared member is the unique common line center of
+`p,r` occurring in (73rnz_bn).  Any minimum two-pole potential must realize
+this exact paired-pencil geometry.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
