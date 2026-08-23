@@ -29,7 +29,7 @@ from itertools import combinations
 from pathlib import Path
 
 import numpy as np
-from scipy.optimize import linprog
+from scipy.optimize import Bounds, LinearConstraint, linprog, milp
 from z3 import is_true, sat
 
 from q9_b0_residual_defect_sat import N, N_TRIPLE, N_U1, build
@@ -165,6 +165,67 @@ def dual(system: dict, row_support: set[int] | None):
     )
 
 
+def minimum_row_support(system: dict, big_m: float = 50) -> set[int]:
+    """Find a cardinality-minimum support for the free row prices.
+
+    A tiny continuous tie-breaker makes the returned prices/capacities small;
+    the support cardinality dominates because every continuous variable is
+    bounded by ``big_m`` and its total coefficient is below one.
+    """
+    blocks = system["blocks"]
+    degree = system["degree"]
+    edges = system["edges"]
+    caps = system["caps"]
+    cap_index = system["cap_index"]
+    support_begin = 2 * N + len(caps)
+    variable_count = support_begin + N
+    matrix = []
+    upper = []
+    for u, v in edges:
+        row = np.zeros(variable_count)
+        row[u] = row[v] = 1
+        row[N + u] = row[N + v] = -1
+        for point in blocks[v]:
+            row[2 * N + cap_index[u, point]] -= 1
+        for point in blocks[u]:
+            row[2 * N + cap_index[v, point]] -= 1
+        matrix.append(row)
+        upper.append(0)
+    margin = np.zeros(variable_count)
+    for u in range(N):
+        margin[u] = -degree[u]
+        margin[N + u] = degree[u]
+    margin[2 * N:support_begin] = 1
+    matrix.append(margin)
+    upper.append(-1)
+    for u in range(N):
+        row = np.zeros(variable_count)
+        row[u] = row[N + u] = 1
+        row[support_begin + u] = -big_m
+        matrix.append(row)
+        upper.append(0)
+    objective = np.zeros(variable_count)
+    objective[:support_begin] = 1e-6
+    objective[support_begin:] = 1
+    integrality = np.zeros(variable_count)
+    integrality[support_begin:] = 1
+    variable_upper = np.full(variable_count, big_m)
+    variable_upper[support_begin:] = 1
+    result = milp(
+        objective, integrality=integrality,
+        bounds=Bounds(np.zeros(variable_count), variable_upper),
+        constraints=LinearConstraint(
+            np.array(matrix), np.full(len(matrix), -np.inf), np.array(upper)
+        ),
+        options={"time_limit": 600, "mip_rel_gap": 0},
+    )
+    if not result.success:
+        raise RuntimeError("row-support MILP failed: " + result.message)
+    return {
+        u for u in range(N) if result.x[support_begin + u] > 0.5
+    }
+
+
 def exact_certificate(system: dict, result) -> dict | None:
     caps = system["caps"]
     cap_index = system["cap_index"]
@@ -208,6 +269,7 @@ def main() -> None:
     parser.add_argument("--timeout-seconds", type=int, default=60)
     parser.add_argument("--dual", action="store_true")
     parser.add_argument("--row-support", type=int, nargs="*")
+    parser.add_argument("--minimize-row-support", action="store_true")
     args = parser.parse_args()
     if args.payload is None:
         if args.branch is None:
@@ -227,10 +289,16 @@ def main() -> None:
         f"branch={system['branch']} edges={len(system['edges'])} "
         f"caps={len(system['caps'])} primal={result.message}"
     )
-    if not args.dual:
+    if not args.dual and not args.minimize_row_support:
         return
+    row_support = (
+        minimum_row_support(system) if args.minimize_row_support
+        else None if args.row_support is None else set(args.row_support)
+    )
+    if args.minimize_row_support:
+        print("minimum_row_support=" + json.dumps(sorted(row_support)))
     dual_result = dual(
-        system, None if args.row_support is None else set(args.row_support)
+        system, row_support
     )
     print(f"dual={dual_result.message}")
     if not dual_result.success:
