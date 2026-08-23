@@ -139,6 +139,111 @@ theorem orderNine_order18_largeOrdinaryShore_incidence_moments
   norm_num at hs
   exact hs
 
+/-- Histogram-facing form of the excess-two classification.  This generic
+adapter turns the three raw moments of any `0..9`-valued function on 78
+points into the two exact profiles, so the graph layer need not manipulate
+ten fiber counts by hand. -/
+theorem orderNine_order18_excessTwo_function_profile
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (f : X → ℕ) (hcard : Fintype.card X = 78)
+    (hbound : ∀ x, f x ≤ 9)
+    (hsum : ∑ x, f x = 516)
+    (hsquare : ∑ x, (f x) ^ 2 = 3434) :
+    let n := fun i : ℕ ↦ ((Finset.univ : Finset X).filter fun x ↦ f x = i).card
+    (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+      n 5 = 1 ∧ n 6 = 28 ∧ n 7 = 49 ∧ n 8 = 0 ∧ n 9 = 0) ∨
+    (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+      n 5 = 0 ∧ n 6 = 31 ∧ n 7 = 46 ∧ n 8 = 1 ∧ n 9 = 0) := by
+  classical
+  let n := fun i : ℕ ↦ ((Finset.univ : Finset X).filter fun x ↦ f x = i).card
+  have hmaps : ((Finset.univ : Finset X) : Set X).MapsTo f (Finset.range 10) := by
+    intro x _
+    exact Finset.mem_range.mpr (by have := hbound x; omega)
+  have hcountRaw := Finset.card_eq_sum_card_fiberwise hmaps
+  have hcount : n 0 + n 1 + n 2 + n 3 + n 4 + n 5 + n 6 + n 7 + n 8 + n 9 = 78 := by
+    rw [Finset.card_univ, hcard] at hcountRaw
+    simpa [n, Finset.sum_range_succ] using hcountRaw.symm
+  have hsumRaw := Finset.sum_fiberwise_of_maps_to hmaps f
+  have hfiberSum : ∀ j : ℕ,
+      (∑ x ∈ (Finset.univ : Finset X).filter (fun x ↦ f x = j), f x) =
+        n j * j := by
+    intro j
+    exact Finset.sum_const_nat (fun x hx ↦ (Finset.mem_filter.mp hx).2)
+  have hsumCounts : n 1 + 2 * n 2 + 3 * n 3 + 4 * n 4 + 5 * n 5 +
+      6 * n 6 + 7 * n 7 + 8 * n 8 + 9 * n 9 = 516 := by
+    rw [hsum] at hsumRaw
+    simp only [Finset.sum_range_succ] at hsumRaw
+    rw [hfiberSum 0, hfiberSum 1, hfiberSum 2, hfiberSum 3, hfiberSum 4,
+      hfiberSum 5, hfiberSum 6, hfiberSum 7, hfiberSum 8, hfiberSum 9] at hsumRaw
+    norm_num [mul_comm] at hsumRaw ⊢
+    exact hsumRaw
+  have hsquareRaw := Finset.sum_fiberwise_of_maps_to hmaps
+    (fun x : X ↦ (f x) ^ 2)
+  have hfiberSquare : ∀ j : ℕ,
+      (∑ x ∈ (Finset.univ : Finset X).filter (fun x ↦ f x = j), (f x) ^ 2) =
+        n j * j ^ 2 := by
+    intro j
+    exact Finset.sum_const_nat (fun x hx ↦ congrArg (· ^ 2) (Finset.mem_filter.mp hx).2)
+  have hsquareCounts : n 1 + 4 * n 2 + 9 * n 3 + 16 * n 4 + 25 * n 5 +
+      36 * n 6 + 49 * n 7 + 64 * n 8 + 81 * n 9 = 3434 := by
+    rw [hsquare] at hsquareRaw
+    simp only [Finset.sum_range_succ] at hsquareRaw
+    rw [hfiberSquare 0, hfiberSquare 1, hfiberSquare 2, hfiberSquare 3,
+      hfiberSquare 4, hfiberSquare 5, hfiberSquare 6, hfiberSquare 7,
+      hfiberSquare 8, hfiberSquare 9] at hsquareRaw
+    norm_num [mul_comm] at hsquareRaw ⊢
+    exact hsquareRaw
+  exact orderNine_order18_excessTwo_incidence_count_classification
+    (n 0) (n 1) (n 2) (n 3) (n 4) (n 5) (n 6) (n 7) (n 8) (n 9)
+      hcount hsumCounts hsquareCounts
+
+/-- Direct graph-facing form of audit (29): the symmetric sixty-point
+ordinary shore has exactly the low-spike or high-spike incidence histogram. -/
+theorem orderNine_order18_largeOrdinaryShore_incidence_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hRcard : R.card = 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 8)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 8)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 8)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hboundary : (∑ x ∈ R,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ R)).card) = 2) :
+    let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+    let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+    let n := fun i : ℕ ↦ ((Finset.univ : Finset ↥(↑O : Set V)).filter
+      fun x ↦ f x = i).card
+    (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+      n 5 = 1 ∧ n 6 = 28 ∧ n 7 = 49 ∧ n 8 = 0 ∧ n 9 = 0) ∨
+    (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+      n 5 = 0 ∧ n 6 = 31 ∧ n 7 = 46 ∧ n 8 = 1 ∧ n 9 = 0) := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+  have hmoments := orderNine_order18_largeOrdinaryShore_incidence_moments
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hRcard
+      hhigh₁ hhigh₂ hhigh₃ hdegOrd hdegHigh hboundary
+  change Fintype.card ↥(↑O : Set V) = 78 ∧
+      (∑ x, f x) = 516 ∧ (∑ x, (f x) ^ 2) = 3434 at hmoments
+  have hbound : ∀ x, f x ≤ 9 := by
+    intro x
+    have hle := Finset.card_le_card (Finset.inter_subset_left :
+      G.neighborFinset x.1 ∩ R ⊆ G.neighborFinset x.1)
+    rw [G.card_neighborFinset_eq_degree,
+      hdegOrd x.1 (Finset.mem_sdiff.mp x.2).2] at hle
+    exact hle
+  exact orderNine_order18_excessTwo_function_profile f hmoments.1 hbound
+    hmoments.2.1 hmoments.2.2
+
 /-- Evaluation of the high-spike form of audit equation (31) at a high
 root.  Defect-high isolation makes the left side zero, while the high root
 lies in neither ordinary shore. -/
@@ -290,6 +395,8 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_excessTwo_incidence_count_classification
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_moments
+#print axioms Erdos85.orderNine_order18_excessTwo_function_profile
+#print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_profile
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
