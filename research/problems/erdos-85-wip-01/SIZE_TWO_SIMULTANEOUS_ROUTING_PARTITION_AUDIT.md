@@ -17123,6 +17123,10 @@ the two root matchings.
 This is a structural compression, not yet a contradiction.  It replaces
 the unbounded outside paths and the ambiguous endpoint-to-label projection
 by a fixed ten-vertex object while retaining every transition used to make
-the odd terminal shore and every return used in (1087).  A proposed
-`1 -> 3 -> 1` reversal from Section 327 must therefore appear as a marked
-walk in `Omega_a^C`; it can no longer be certified by shore parity alone.
+the odd terminal shore and every return used in (1087).  The construction
+applies separately to every exterior color used by (1085).  Thus an
+individual color-`b` return is marked in `Omega_b^C`; a same-color
+`1 -> 3 -> 1` reversal lies in one such skeleton, while a mixed-color
+reversal requires the interface of the two corresponding ten-label
+skeletons.  In either case shore parity alone no longer records the data
+which a reversal must preserve.
