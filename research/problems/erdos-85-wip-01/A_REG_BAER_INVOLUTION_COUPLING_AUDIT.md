@@ -5565,6 +5565,42 @@ can exist abstractly on those vertex sets.  It removes the smallest
 holonomy uniformly and supplies the exact cross-factor constraint that any
 remaining capacity argument must exploit.
 
+The surviving double closure has an exact full-SRP export.  In the
+root-closed branch, the fixed-component refinement (723)--(725) makes the
+odd `K_00` cycle a whole root cycle `C subset c` whose indexing port set is
+the paired cross-incidence component `Z=V_j subset e`.  Hence the bipartite
+two-factor component is closed on both shores:
+
+```text
+R_ce 1_Z=0,          R_ec 1_C=0.                     (73rnz_cjibkzzz)
+```
+
+Apply the simultaneous routing identity `SRP(c,e)` to `1_Z` and pair with
+`1_C`.  The two endpoint terms vanish by (73rnz_cjibkzzz), while the odd
+orders give the `J` term one.  Therefore the established all-horizontal
+export identity (64)--(66) yields
+
+```text
+sum_(a != c,e)
+  (R_ac 1_C)^T (R_ae 1_Z)=1 mod 2.                   (73rnz_cjibkzzza)
+```
+
+In particular some third component `a` has
+
+```text
+|supp(R_ac 1_C) intersect supp(R_ae 1_Z)|=1 mod 2.   (73rnz_cjibkzzzb)
+```
+
+Thus the doubly closed odd port/root curl cannot remain an isolated debt:
+it exports an odd, fully located overlap mark to a third color.  This does
+not prove global cancellation of the exported marks; Sections 17 onward of
+the simultaneous-routing audit already identify their propagation problem.
+It does show that the last boundary-invisible `00` cycle re-enters the
+multi-color route ledger.  The remaining theorem is now the global pairing
+or capacity contradiction for these exported third-color marks together
+with the complementary transition terms, rather than a local exclusion of
+the odd owner cycle itself.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
