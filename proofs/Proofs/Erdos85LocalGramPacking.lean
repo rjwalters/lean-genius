@@ -1705,6 +1705,42 @@ theorem false_of_twoRowSupportPointPriceCertificate
     exact hedge u v huv
   · simpa [rowPrice, mul_add, Finset.sum_add_distrib] using hstrict
 
+/-- End-to-end actual-relation consumer whose row-price dual is supported on
+three named rows, with independent rational weights.  This is the direct
+interface for the branch-3 exceptional/diagonal/incident-class certificate. -/
+theorem false_of_threeRowSupportPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (r s t : V) (a b c : ℚ)
+    (pointPrice : V → P → ℚ)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      ((if u = r then a else 0) + (if u = s then b else 0) +
+          (if u = t then c else 0)) +
+        ((if v = r then a else 0) + (if v = s then b else 0) +
+          (if v = t then c else 0)) ≤
+        (∑ p ∈ B v, pointPrice u p) +
+          ∑ p ∈ B u, pointPrice v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, pointPrice u p) <
+        (d r : ℚ) * a + (d s : ℚ) * b + (d t : ℚ) * c) :
+    False := by
+  let rowPrice : V → ℚ := fun u =>
+    (if u = r then a else 0) + (if u = s then b else 0) +
+      (if u = t then c else 0)
+  apply false_of_symmetricRowPointPriceCertificate
+    A H W d B hsymm hdegree hsupport hgram hshared rowPrice pointPrice
+    hpointPrice
+  · intro u v huv
+    exact hedge u v huv
+  · simpa [rowPrice, mul_add, Finset.sum_add_distrib] using hstrict
+
 /-- End-to-end actual-relation consumer with unit row prices on `S`. -/
 theorem false_of_unitSupportPointPriceCertificate
     {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
@@ -2265,6 +2301,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_symmetricLocalGramPackingSelection_of_no_canonicalFractionalExtension
 #print axioms false_of_no_canonicalFractionalIntervalExtension
 #print axioms false_of_twoRowSupportPointPriceCertificate
+#print axioms false_of_threeRowSupportPointPriceCertificate
 #print axioms false_of_twoUnitSupportsPointPriceCertificate
 #print axioms false_of_scaledTwoUnitSupportsPointPriceCertificate
 #print axioms false_of_scaledTwoCommonPointFibersPriceCertificate
