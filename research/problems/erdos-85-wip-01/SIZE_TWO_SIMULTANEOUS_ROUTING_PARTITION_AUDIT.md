@@ -25802,3 +25802,46 @@ dichotomy into global color normal forms: either a rainbow `2+1+1+1`
 family, or a complementary double-saturation `2+2+1` family.  Both retain
 literal vertex, payer, and companion geometry from the original separated
 star packing.
+
+## 490. Horn-free thinning gives a stronger uniform rainbow family
+
+The majority split in Section 484 is unnecessary when only a globally
+separated color family is needed.  Return to all `t` fixed-primary-root
+stars after (1697).  At each center the selected primary color `h_a` is
+doubled on `{r,s}` and absent from the three unused-root spokes.  No color
+can occur on all three unused spokes, so the displayed five-spoke profile
+is one of
+
+```text
+2+2+1 or 2+1+1+1, with respectively three or four colors.       (1734)
+```
+
+Let `C_a` be this three- or four-element displayed color set.  A fixed
+color belongs to at most one `C_a` as a selected primary color.  Across the
+three unused fixed roots, it occurs on at most six displayed edges in
+total, two per root, and hence belongs to at most six further center sets.
+Thus every color occurs in at most seven of the sets `C_a`.
+
+Join centers whose displayed color sets intersect.  A center has at most
+four colors, each shared with at most six other centers, so the conflict
+graph has maximum degree at most twenty-four.  Greedy selection retains
+
+```text
+m>=ceil(t/25)                                                  (1735)
+```
+
+centers with pairwise disjoint displayed color sets.  Every retained set
+has size at least three by (1734), and therefore this family supplies
+
+```text
+at least 3m globally distinct colors on its 5m root spokes,
+m pairwise different payer layers at each of the five fixed ports.       (1736)
+```
+
+The full gadgets remain disjoint in vertices, edges, and cross-center
+canonical payer supports.  Unlike Sections 488--489, this thinning does
+not make all retained centers choose the same local horn, nor does it fix a
+secondary repeated root pair.  In exchange it improves the uniform family
+size from the hornwise constants to `ceil(t/25)` and records exactly the
+information needed by arguments insensitive to which of the two local
+profiles occurs.
