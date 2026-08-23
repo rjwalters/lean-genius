@@ -536,9 +536,134 @@ theorem false_of_orderNine_order34_profile_of_punctured_articulation
       Finset.inter_subset_right Finset.inter_subset_right hWcard
       hlocAlt hownerWAlt
 
+/-- The oriented `(34,43)` output of the deleted-owner articulation
+capstone is impossible.  All set-membership and punctured-closure inputs are
+derived here from `U = O.erase owner`. -/
+theorem false_of_orderNine_order34_oriented_articulation_output
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (S T : Finset V)
+    (hunion : S ∪ T =
+      ((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner)
+    (hdisj : Disjoint S T)
+    (hScard : S.card = 34)
+    (hfull : orderNineArticulationSmallShoreFullType G
+      ((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) h₁ h₂ h₃ S)
+    (hSclosed : ∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩
+      ((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner ⊆ S)
+    (hTclosed : ∀ x ∈ T, (secondOrderDefectGraph G).neighborFinset x ∩
+      ((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner ⊆ T)
+    (hboundary : (∑ x ∈ S, ((secondOrderDefectGraph G).neighborFinset x ∩
+      (Finset.univ \ S)).card) =
+      (((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) ∩ S).card)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) : False := by
+  classical
+  let O := (Finset.univ : Finset V) \ squareOrderHighVertices G 9
+  let U := O.erase owner
+  let Z := orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3
+  have hSsubU : S ⊆ U := by
+    intro x hx
+    change x ∈ ((Finset.univ : Finset V) \
+      squareOrderHighVertices G 9).erase owner
+    rw [← hunion]
+    exact Finset.mem_union_left T hx
+  have hSsubTriple : S ⊆ (Finset.univ : Finset V) \ {h₁, h₂, h₃} := by
+    intro x hx
+    have hxO := (Finset.mem_erase.mp (hSsubU hx)).2
+    simpa [O, hH] using hxO
+  have hownerNotS : owner ∉ S := by
+    intro ho
+    exact (Finset.mem_erase.mp (hSsubU ho)).1 rfl
+  have hpartData := orderNine_order34_explicitPartition_of_full_boundary
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃
+      ((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) S hScard hfull
+      hSsubTriple hboundary hdegOrd hdegHigh
+  have hlow := orderNine_order34_lowSet_profile_package
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
+      h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH owner howner S hScard hfull
+      hpartData.1 hpartData.2.1 hpartData.2.2.1 hpartData.2.2.2
+      hSsubTriple hownerNotS hdegOrd hdegHigh hdefectHighIsolated
+  dsimp only at hlow
+  have hZsub : Z ⊆ (Finset.univ : Finset V) \
+      squareOrderHighVertices G 9 := by
+    intro x hx
+    have hx' := orderNineOrdinaryLowSet_subset G h₁ h₂ h₃ S 3 hx
+    simpa [hH] using hx'
+  have hpunctured : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner U := by
+    simpa [U, O] using
+      (orderNine_defect_neighbors_subset_insert_owner_ordinary_erase
+        G h₁ h₂ h₃ owner hH hdefectHighIsolated)
+  have hbinU (i : ℕ) (hi : i ≠ 3) :
+      ∀ x ∈ G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G i,
+        x ∈ U := by
+    intro x hx
+    have hxBin := (Finset.mem_inter.mp hx).2
+    have hxO := (Finset.mem_filter.mp hxBin).1
+    have hxo : x ≠ owner := by
+      intro h
+      subst x
+      have hki := (Finset.mem_filter.mp hxBin).2
+      have hk3 := (Finset.mem_filter.mp howner).2
+      omega
+    exact Finset.mem_erase.mpr ⟨hxo, hxO⟩
+  have hlocalU := hbinU 0 (by omega)
+  have hpartnerU := hbinU 1 (by omega)
+  have hlocalOrd : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0),
+      y ∉ ({h₁, h₂, h₃} : Finset V) := by
+    intro y hy
+    have hyO := (Finset.mem_filter.mp (Finset.mem_inter.mp hy).2).1
+    simpa [hH] using (Finset.mem_sdiff.mp hyO).2
+  have hpartnerOrd : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1),
+      y ∉ ({h₁, h₂, h₃} : Finset V) := by
+    intro y hy
+    have hyO := (Finset.mem_filter.mp (Finset.mem_inter.mp hy).2).1
+    simpa [hH] using (Finset.mem_sdiff.mp hyO).2
+  have hpartnersSub : G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 1 ⊆ S ∪ T := by
+    intro y hy
+    rw [hunion]
+    exact hpartnerU y hy
+  have hownerNotU : owner ∉ U := Finset.notMem_erase owner O
+  exact false_of_orderNine_order34_profile_of_punctured_articulation
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4
+      h₁ h₂ h₃ owner howner U S T hownerNotU (by simpa [U, O] using hunion)
+      hdisj (fun x hx ↦ (Finset.mem_erase.mp (hSsubU hx)).2) hlow.2.2.2.2.2
+      hpartnersSub hpunctured hSclosed hTclosed hlocalU hpartnerU
+      hScard hpartData.1 hpartData.2.1 hpartData.2.2.1 hpartData.2.2.2
+      (by
+        rw [Finset.disjoint_left]
+        intro x hxS hxH'
+        exact (Finset.mem_sdiff.mp (hSsubTriple hxS)).2 hxH')
+      hdegOrd hdegHigh hlocalOrd hpartnerOrd hfull Z rfl hZsub
+      hlow.1 hlow.2.1 hlow.2.2.1 hlow.2.2.2.1 hlow.2.2.2.2.1
+
 #print axioms false_of_orderNine_order34_local_profile_of_corrected_punctured_data
 #print axioms false_of_orderNine_order34_local_profile_of_punctured_articulation
 #print axioms false_of_orderNine_order34_profile_of_punctured_articulation
+#print axioms false_of_orderNine_order34_oriented_articulation_output
 
 end
 
