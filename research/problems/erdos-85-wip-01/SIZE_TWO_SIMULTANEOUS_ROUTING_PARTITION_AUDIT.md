@@ -10858,3 +10858,64 @@ Thus (653), not (654), is the unconditional finite terminal.  It retains
 exactly the private information demanded by Section 210 and by the B3
 seven-coordinate census: endpoint occurrences and realizable pair classes,
 with no collapse to H/S/V types and no unproved affine normal form.
+
+## 213. The affine-generation question is one finite rank test
+
+For one private realizability fiber, let `G_Sigma=(V,E)` be its allowed-pair
+multigraph and let
+
+```text
+partial:F_2^E -> F_2^V
+```
+
+be the incidence map.  Differences of two perfect matchings have zero
+boundary and even edge cardinality.  Hence the relevant re-pairing space is
+
+```text
+Z_even:=ker(partial) cap ker(1_E^T).                   (655)
+```
+
+Every realizable four-switch vector (652) belongs to `Z_even`.  If `Q` is
+the matrix whose rows are those switch vectors, then the required generation
+lemma is exactly
+
+```text
+rank(Q)=dim Z_even.                                    (656)
+```
+
+This is slightly weaker than generation of the whole graph cycle space and
+is the correct condition for affine prices.  A uniform constant edge cochain
+annihilates `Z_even` even when it is not a graph cut, which is why the
+annihilator of all matching differences is
+
+```text
+cut space + span{1_E}.                                (657)
+```
+
+Thus (656) implies precisely the affine form (654), with no missing cycle
+classes.
+
+The dimension in (656) is elementary.  If
+
+```text
+beta=|E|-|V|+number_of_components(G_Sigma),
+```
+
+then
+
+```text
+dim Z_even = beta      if every graph cycle is even,
+dim Z_even = beta-1    if an odd graph cycle exists.   (658)
+```
+
+If (656) fails, the defect
+
+```text
+h_fiber:=dim Z_even-rank(Q)                            (659)
+```
+
+is the exact number of additional pairing-holonomy coordinates that must be
+retained beyond endpoint potentials and the affine constant.  Equations
+(655)--(659) turn the disputed affine step into a reproducible finite linear
+algebra audit on the private state table; no informal connectedness argument
+is needed.
