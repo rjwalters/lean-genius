@@ -4128,11 +4128,11 @@ residue.  Only after
 give the odd labeled holonomy needed for a capacity contradiction.
 
 This is the precise remaining asymmetry with the parallel SRP lane: its
-activation theorem proves the scalar identity `mass(F_Z)=omega_M`, whereas
-the Baer source is intrinsically two-labeled and needs the vector identity
-(73rnz_cjibkd).  Forgetting the labels kills the desired class.  No further
-unweighted parity or A-polynomial identity can supply it, by
-(73rnz_ce)--(73rnz_cf).
+activation theorem both locates and transports the scalar identity
+`mass(F_Z)=omega_M`, whereas the Baer source is intrinsically two-labeled and
+still needs the vector conservation (73rnz_cjibkd).  Forgetting the labels
+kills the desired class.  No further unweighted parity or A-polynomial
+identity can supply it, by (73rnz_ce)--(73rnz_cf).
 
 The zero-price T-cut used to Eulerize `R_s` does not, by itself, transport
 the inactive owner unit.  Indeed an edge `uv in T` belongs to
@@ -4158,6 +4158,29 @@ pole-owner unit.  A proof of (73rnz_cjibkd) must retain a decorated
 witness-incidence (or an equivalent nonlinear owner state); merely assigning
 pole labels to the zero-price cut edges loses the activation bit by
 telescoping.
+
+The source side of this missing theorem is already nonzero; it should not be
+confused with the transport gap.  Recall the private split-pair bit `sigma_i`
+of (73rnz_bu).  Equation (73rnz_bv) proves, separately for the two poles,
+
+```text
+Phi_i := deg_K(E_i,X)+sigma_i=1,
+Phi_owner=(Phi_1,Phi_2)=(1,1).                           (73rnz_cjibkf)
+```
+
+Moreover (73rnz_bw)--(73rnz_by) resolve the K-fiber part of `Phi_i` into
+located endpoint-type and cross-matching atoms.  Thus owner-resolved
+**activation at the primary two-channel source is proved**.  What remains in
+(73rnz_cjibkd) is the conservation statement
+
+```text
+Phi_owner = Psi^hat_owner,
+```
+
+through the active relay cancellations and inactive witness residues.  The
+difficulty is therefore not to manufacture the diagonal class, but to carry
+the already proved class from the pole K/split-pair alphabet to the
+owner-labeled relay alphabet without the telescoping loss (73rnz_cjibke).
 
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
