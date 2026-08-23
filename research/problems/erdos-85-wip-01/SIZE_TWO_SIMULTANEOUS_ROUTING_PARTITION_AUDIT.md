@@ -24621,3 +24621,37 @@ rainbow set, and its payer layers are not asserted to avoid the selected
 supports.  With that qualification, (1649) isolates the sole
 constant-size trace capable of hiding all additional saturation of a
 selected color.
+
+## 463. Distinct rainbow colors have disjoint full traces
+
+The disjointness from Section 459 extends from the selected turns to all
+four factor edges counted in (1646).  An edge has only one exterior
+source color, so the four-edge traces belonging to distinct rainbow
+colors are pairwise edge-disjoint.  Thus `c` selected colors occupy
+exactly `4c` distinct edges of the fixed alternating factor, even though
+only `2c` of those edges belong to the originally selected turns.
+
+Turn vertices also cannot coincide across two colors: both incident
+factor edges at a monochromatic turn determine its unique color.  The
+number of turn vertices in each trace shape is
+
+```text
+P_4: 3,       C_4: 4,
+P_3 disjointUnion P_1: 2,
+P_2 disjointUnion P_2: 2,
+P_2 disjointUnion P_1 disjointUnion P_1: 1.       (1650)
+```
+
+Consequently, if `a` of the `c` rainbow colors take a nonsparse branch
+of (1649), their full traces supply at least
+
+```text
+c+a distinct monochromatic r/s turns on G_r union G_s.          (1651)
+```
+
+For completeness, one sparse trace spans exactly seven vertices: three
+on its marked `P_2` and two on each isolated edge.  Vertex supports of
+different colors may overlap at nonturn vertices, so no additive
+seven-vertex bound is asserted.  The unconditional output of this
+section is instead the `4c` edge packing and the turn amplification
+(1651).
