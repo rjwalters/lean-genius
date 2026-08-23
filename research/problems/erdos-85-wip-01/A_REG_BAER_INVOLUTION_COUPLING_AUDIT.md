@@ -4953,6 +4953,48 @@ the occurrence alphabet and route quotient by an additional anchor
 incidence.  Triangle/canonical-pair geometry alone cannot absorb the
 same-side correction.
 
+For parity transport, literal uniqueness can be weakened to odd anchor
+multiplicity.  For a same-side H occurrence `H=(x,x';p)` define, separately
+for each pole owner,
+
+```text
+alpha_i(H)
+ :=sum_(G in R) (A_(E_i,x) A_(G,x')
+                +A_(E_i,x') A_(G,x))                 (mod 2),
+alpha(H):=alpha_1(H)+alpha_2(H).                       (73rnz_cjibkzt)
+```
+
+Every summand is exactly one oriented shore-anchor tuple from
+(73rnz_cjibkzr); survival is automatic for H edges as just noted.  Thus
+`alpha_i(H)` is the owner-i multiplicity with which H maps into the
+`rho^tri` census.  The two orientations for a fixed `(E_i,G)` cannot both
+occur, because `N_A(E_i)` and `N_A(G)` lie on opposite shores and are
+disjoint.  Equivalently, if
+
+```text
+e_i(v)=A_(E_i,v),       r(v)=sum_(G in R) A_(G,v),
+```
+
+then `alpha_i(H)=e_i(x)r(x')+e_i(x')r(x)`.  This is a
+pure endpoint-incidence test, with no choice of anchor.
+
+Let `epsilon_anchor(H):=1+alpha(H)`.  Summing over marked same-side H
+occurrences gives the exact scalar decomposition
+
+```text
+omega_same
+ =sum_(marked same H) alpha(H)
+  +sum_(marked same H) epsilon_anchor(H).              (73rnz_cjibkzu)
+```
+
+The first term has a canonical multiplicity-preserving map into the
+owner-resolved `rho^tri` ledger via the two coordinates `alpha_i`; the second
+is the complete anchor defect.  Hence a unique-shore theorem is sufficient
+but stronger than necessary.  The precise remaining anchor lemma is that the
+total owner-compatible defect in (73rnz_cjibkzu) vanishes (or is absorbed by
+the inactive owner cells).  This formulation also handles multiple anchors
+without making a noncanonical choice.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
