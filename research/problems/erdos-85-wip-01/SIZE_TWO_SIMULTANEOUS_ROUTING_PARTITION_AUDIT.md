@@ -4717,3 +4717,53 @@ third-color imbalance.  The alternating phase no longer needs to invent a
 sum--difference conversion; SRP already provides both polarizations.  The
 remaining global task is to pair their diagonal and crossed half-residues
 across successive marked centers.
+
+## 87. The compressed SRP block is determined entrywise
+
+The Hadamard split (273) should not be mistaken for a new local parity
+constraint.  Sum the third-color matrices and write
+
+```text
+K := sum_(d != c,e) K_d,
+h := A_c(a_-,a_+).
+```
+
+Also abbreviate the four interface bits by
+
+```text
+s_-:=A_e(q_-,p_-),  c_-:=A_e(q_-,p_+),
+c_+:=A_e(q_+,p_-),  s_+:=A_e(q_+,p_+).
+```
+
+Evaluate SRP at the four pairs `(a_i,p_j)`.  The Section 74 exclusions kill
+every other-root/run-root `A_c` entry, and (200) kills `A_e(p_-,p_+)`.
+The endpoint partition therefore gives the complete binary matrix
+
+```text
+K = [ 1-s_-      1-h-c_- ]
+    [ 1-h-c_+    1-s_+   ].                           (274)
+```
+
+For example, at `(a_-,p_+)` the source endpoint contributes exactly `h`,
+the reverse endpoint contributes exactly `c_-`, and the third-color sum is
+the remaining `1-h-c_-`.  Endpoint disjointness guarantees these displayed
+quantities lie in `{0,1}`; the other entries are symmetric.
+
+Substituting (274) into (273) recovers identities:
+
+```text
+sum_d (k_d^{--}-k_d^{++}) = s_+ - s_-,
+sum_d (k_d^{+-}-k_d^{-+}) = c_- - c_+.
+```
+
+Hence the companion polarization is valuable because it exposes both
+oriented route channels, but it cannot rule out any of the fifteen local
+patterns from Section 80.  The scalar third-color sum `K` contains exactly
+the same local information as `(h,s_-,c_-,c_+,s_+)`.
+
+The final invariant must retain the **color decomposition**
+`K=sum_d K_d`: which clean color supplies each surviving unit and how that
+label transforms under (269).  Summing over `d` before comparing successive
+marks necessarily collapses back to the locally realizable matrix (274).
+This is the precise point where simultaneous self-indexing, rather than one
+more scalar SRP functional, must enter.
