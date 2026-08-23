@@ -223,6 +223,26 @@ def bundle_triple_audit(data: dict) -> tuple[int, list[tuple]]:
     return len(transitions), sorted(zero_triples)
 
 
+def bundle_rank_audit(data: dict) -> tuple[int, int, list[tuple[int, int]]]:
+    """Exact rank after quotienting the route-reversal sign relation."""
+    from sympy import SparseMatrix
+
+    transitions = {(t, u): boundary
+                   for t, u, boundary in bundle_transition_boundaries(data)}
+    missing_reverse = sorted((t, u) for t, u in transitions
+                             if (u, t) not in transitions)
+    columns = [boundary for (t, u), boundary in transitions.items()
+               if t < u and (u, t) in transitions]
+    features = sorted({feature for boundary in columns for feature in boundary},
+                      key=repr)
+    row = {feature: index for index, feature in enumerate(features)}
+    entries = {(row[feature], column): value
+               for column, boundary in enumerate(columns)
+               for feature, value in boundary.items()}
+    rank = SparseMatrix(len(features), len(columns), entries).rank()
+    return len(columns), rank, missing_reverse
+
+
 def flat_signature_audit(data: dict) -> tuple[
         int, int, int, tuple[str, ...], tuple[tuple[int, ...], ...], bool]:
     """Audit the retracted simple signature quotient (12qy).
@@ -1043,6 +1063,8 @@ def main() -> int:
                         help="audit non-reversal two-transition cancellations")
     parser.add_argument("--audit-bundle-triples", action="store_true",
                         help="audit exact zero sums of three bundle transitions")
+    parser.add_argument("--audit-bundle-rank", action="store_true",
+                        help="audit exact rank modulo route reversal")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -1146,11 +1168,28 @@ def main() -> int:
         print(f"bundle_triples_total_tested={total_tested} "
               f"zero_triples={total_triples}")
         audit_failed |= total_triples > 0
+    if args.audit_bundle_rank:
+        total_columns = 0
+        total_rank = 0
+        total_missing = 0
+        for label, candidate in all_data:
+            columns, rank, missing = bundle_rank_audit(candidate)
+            total_columns += columns
+            total_rank += rank
+            total_missing += len(missing)
+            branch, seed_number, colors = label
+            print(f"bundle_rank branch={branch} seed={seed_number} "
+                  f"colors={colors} columns={columns} rank={rank} "
+                  f"missing_reverse={missing}")
+        print(f"bundle_rank_total_columns={total_columns} "
+              f"total_rank={total_rank} missing_reverse={total_missing}")
+        audit_failed |= total_rank != total_columns or total_missing > 0
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
     if (args.audit_flat_signatures or args.audit_bundle_boundaries
-            or args.audit_bundle_pairs or args.audit_bundle_triples):
+            or args.audit_bundle_pairs or args.audit_bundle_triples
+            or args.audit_bundle_rank):
         return 1 if audit_failed else 0
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")

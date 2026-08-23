@@ -1554,6 +1554,34 @@ nontrivial bundle circulation needs at least four transition occurrences.
 This is still empirical: (12rf) is a finite-support diagnostic, not yet a
 uniform lower bound or a substitute for the matching-flow constraints.
 
+In fact the sampled support bound is unlimited.  Choose one orientation of
+each unordered same-role own transition and form the integer matrix whose
+columns are its `Delta(t,u)`.  The mode `--audit-bundle-rank` computes its
+rank exactly over the rationals (and checks that every formal reverse arc is
+present).  On the same eight-seed family, all 476 unoriented columns are
+independent.  This suggests the stronger terminal
+
+```text
+BUNDLE ROUTE-PAIRING RIGIDITY:
+the columns Delta(t,u), indexed by unordered same-role own transitions,
+are linearly independent.                                      (12rg)
+```
+
+Indeed write a directed occurrence measure as weights `x_tu>=0`.  By
+(12rd), its total boundary is
+
+```text
+sum_{{t,u}} (x_tu-x_ut) Delta(t,u).
+```
+
+Under (12rg), bundle balance forces `x_tu=x_ut` for every pair.  Thus all
+small-support results (12rc), (12re), and (12rf) become corollaries, and the
+arbitrary-support obstruction reduces exactly to symmetric route pairs.
+This does not finish the Hall argument: a symmetric pair can still carry
+matching mass, so its two external deletion losses must be coupled next.
+The key gain is that no higher hypergraph circuit remains once (12rg) is
+proved.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
