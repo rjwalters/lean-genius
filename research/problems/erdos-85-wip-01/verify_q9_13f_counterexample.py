@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+from itertools import combinations
 from pathlib import Path
 
 from z3 import Not, is_true, sat
@@ -60,8 +61,28 @@ def main() -> int:
     collisions = residual_gram_forced_collisions(concrete)
     assert deficits == [], deficits
     assert collisions == [], collisions
+
+    # The same witness has a two-row obstruction to the restored symmetric
+    # global selection.  Row 7 forces row 29, whereas no demanded packing at
+    # row 29 contains row 7, so membership symmetry is impossible.
+    def local_packings(row: int) -> list[tuple[int, ...]]:
+        demand = concrete["degree"][row]
+        return [
+            chosen for chosen in combinations(concrete["candidates"][row],
+                                               demand)
+            if all(not blocks[u] & blocks[v]
+                   for u, v in combinations(chosen, 2))
+        ]
+
+    forward = local_packings(7)
+    reverse = local_packings(29)
+    assert len(forward) == 4, len(forward)
+    assert len(reverse) == 82, len(reverse)
+    assert all(29 in packing for packing in forward), forward
+    assert all(7 not in packing for packing in reverse), reverse
     print("outer_constraints=SAT local_deficits=0 forced_collisions=0")
     print("candidate_13f=REFUTED_IN_OUTER_ABSTRACTION")
+    print("symmetric_selection=UNSAT reciprocity_core=7->29_forced,29->7_impossible")
     return 0
 
 
