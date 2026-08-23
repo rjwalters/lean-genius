@@ -12046,3 +12046,53 @@ or the Baer shore-`00` states at the roots.  It proves that any exclusion of
 the minimal curl must use at least one of those additional inputs.  Merely
 recounting the two projected cycles, their unique shared roots/labels, and
 the marked H triangles cannot close (722).
+
+## 239. Strict color export turns the closed inactive curl into an odd active ledger
+
+The global SRP export `(73rnz_cjibkzzz)--(73rnz_cjibkzzzd)` supplies a
+strictly new component `a notin {c,e,d}` for which
+
+```text
+E_a:=supp(R_ac 1_C) intersect supp(R_ae 1_Z)
+has odd order.                                         (728)
+```
+
+The support condition must be read as parity, not containment.  Every
+cross fiber has order two, so each `y in E_a` has exactly one `c`-neighbor
+`x_y in C` and exactly one `e`-neighbor `p_y in Z`.  In particular its
+target-activity bit for the component `Z=V_j` is
+
+```text
+t_y=(R_ae 1_Z)(y)=1.                                  (729)
+```
+
+Thus the exported labels are active, not inactive.
+
+There is a canonical occurrence map into the `q_y` ledger.  The selected
+root `x_y` and port `p_y` cannot be incident in the paired `c--e` cycle:
+if `x_y in N_c(p_y)`, then `y` meets both the root and port of an H dart,
+giving the rooted V triangle excluded by Section 160.  Let the two H ports
+incident to `x_y` on the closed root cycle be `p_y^-` and `p_y^+`; they are
+distinct from `p_y`.  Since `y` has no other neighbor in `C or Z`, formula
+(362) gives on the H port census
+
+```text
+q_y(h_z)=1  iff z in {p_y^-,p_y,p_y^+}.               (730)
+```
+
+Port-pair constancy (381) removes the choice of dart.  Each exported label
+therefore contributes exactly three, hence one modulo two, to the total
+active `q` mass.  Summing (730) over the odd set (728) yields
+
+```text
+sum_(y in E_a) sum_(z in Z) q_y(h_z)=|E_a|=1 mod 2.   (731)
+```
+
+Consequently the boundary-free inactive `00` curl does not remain an
+independent inactive holonomy after the full simultaneous-routing identity
+is applied: it creates a nonzero, indeed odd-mass, active secondary ledger
+in a genuinely new color.  This is an occurrence transport, not yet its
+cancellation.  The resulting `q_y` words enter the canonical interval and
+separator/potential machinery of Sections 128 and 140--165; their joint
+capacity conservation with the already transported `01` union flags and
+complementary H/V/S terms remains the final theorem.
