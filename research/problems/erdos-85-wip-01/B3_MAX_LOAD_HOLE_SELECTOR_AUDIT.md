@@ -742,6 +742,22 @@ branch-3 target is again the full 552-shape statement: some exceptional row
 and arbitrary two regular rows support a strict **global** symmetric price
 certificate, with all reciprocity retained.
 
+`q9_branch3_partial_primal_audit.py` gives the correct reciprocity-preserving
+primal formulation.  For a proposed support `{h,r,s}`, keep the single global
+undirected eligible-edge mass and every rooted point-capacity inequality, but
+enforce exact degree equations only at those three rows.  Farkas duality says
+this partial primal is infeasible exactly when a strict global price
+certificate exists with row-price support in `{h,r,s}`.  Exact dual checking
+finds zero mismatches: the five hard payloads have respectively
+`70,27,2,90,26` infeasible partial primals, matching their certificate counts.
+The durable seed-116 counterexample has global primal infeasible and exactly
+one infeasible partial primal, `{25,0,21}`.  Hence the missing 552-shape
+selector is equivalently the following clean local-to-global theorem:
+**if all 552 exceptional-plus-two-regular partial symmetric packing systems
+are feasible, then the full 47-row symmetric packing system is feasible.**
+Unlike the retracted local-packing reductions, each partial system retains
+the cross-row reciprocity that the real obstruction needs.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
