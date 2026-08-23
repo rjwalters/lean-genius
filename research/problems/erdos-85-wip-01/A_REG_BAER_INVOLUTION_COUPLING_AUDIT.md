@@ -3303,6 +3303,24 @@ classes is already resolved by (73rnz_bo)--(73rnz_bp).  This supplies the
 promised K-coupling input for pricing the two-pencil defect units; it does not
 yet prove that their total contribution vanishes.
 
+At the two poles this transport detects the endpoint type exactly.  The pair
+`E_1E_2` is a D-edge in the minority clique, neither pole lies in L, and
+`h(E_i)=1`, so the last three correction terms in (73rnz_bq) cancel at
+`E_i`.  Using `X intersect N_A(E_i)={p_i}` from (73rnz_bo) and the exact
+empty-star T-neighborhood (73rnd) gives
+
+```text
+deg_K(E_i,X) = deg_T(E_i,X)
+             = 1[p_i is one of the two full leaves of E_i]  (mod 2).
+                                                               (73rnz_br)
+```
+
+Thus the leaf-versus-ordinary endpoint decoration of the two-pole cut route
+is not an external case label: it is the parity of the canonical K-fiber from
+the pole into the rest of the minimum support.  A leaf endpoint carries an
+odd K-residual and an ordinary endpoint an even one.  This is precisely the
+source-times-secondary-fiber form required by the joint pricing ledger.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
