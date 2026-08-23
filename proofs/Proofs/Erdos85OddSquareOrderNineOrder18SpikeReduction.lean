@@ -23,6 +23,51 @@ noncomputable section
 
 set_option maxHeartbeats 2000000
 
+/-- Normalize the unordered symmetric `(18,59)` articulation output.  The
+classified FullType shore is necessarily the order-eighteen shore. -/
+theorem orderNine_order18_orient_articulation_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E : Finset V) (h₁ h₂ h₃ : V) (U S T : Finset V)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (horders : (S.card = 18 ∧ T.card = 59) ∨
+      (S.card = 59 ∧ T.card = 18))
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ S ∨
+      orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ T)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hSboundary : (∑ x ∈ S,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card) = (E ∩ S).card)
+    (hTboundary : (∑ x ∈ T,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ T)).card) = (E ∩ T).card) :
+    ∃ A B : Finset V,
+      A ∪ B = U ∧ Disjoint A B ∧ A.card = 18 ∧ B.card = 59 ∧
+      orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ A ∧
+      (∀ x ∈ A, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ A) ∧
+      (∀ x ∈ B, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ B) ∧
+      (∑ x ∈ A, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ A)).card) = (E ∩ A).card ∧
+      (∑ x ∈ B, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ B)).card) = (E ∩ B).card := by
+  rcases horders with hST | hTS
+  · rcases hfull with hfullS | hfullT
+    · exact ⟨S, T, hunion, hdisj, hST.1, hST.2, hfullS,
+        hSclosed, hTclosed, hSboundary, hTboundary⟩
+    · have hbad := hfullT.1
+      unfold orderNineArticulationSmallShoreBetaType at hbad
+      omega
+  · rcases hfull with hfullS | hfullT
+    · have hbad := hfullS.1
+      unfold orderNineArticulationSmallShoreBetaType at hbad
+      omega
+    · exact ⟨T, S, by simpa [Finset.union_comm] using hunion,
+        hdisj.symm, hTS.2, hTS.1, hfullT, hTclosed, hSclosed,
+        hTboundary, hSboundary⟩
+
 /-- The integer square-sum refinement behind audit (29).  A bounded
 ordinary incidence profile with total `516` and square total `3434` is
 obtained from the balanced `6/7` profile by moving one unit either down or
@@ -824,6 +869,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
   · exact heq32
 
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
+#print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_excessTwo_incidence_count_classification
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_moments
 #print axioms Erdos85.orderNine_order18_excessTwo_function_profile
