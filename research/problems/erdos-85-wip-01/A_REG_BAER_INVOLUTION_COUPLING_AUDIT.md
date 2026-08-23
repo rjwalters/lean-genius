@@ -2263,6 +2263,35 @@ For an outside `p_i=y_((3-i),j)`, this is the exact rule for the witness atom
 retains the extra incidence bit that the incorrect unconditional-zero claim
 had silently discarded.
 
+Including the D-bit makes the continuation alphabet exactly four symbols.
+Write `d_i^cross=1[z_(3-i)p_i in D]`.  Then (73rnz_d) and the binary
+codegree dichotomy give the exhaustive table
+
+```text
+chi_i  gamma_i  d_i^cross   continuation through z_(3-i)p_i
+  1        0         0      owner bend, unique common neighbor z_i
+  0        1         0      mark bend,  unique common neighbor w_i
+  0        0         1      defect stop, no common neighbor
+  0        0         0      fresh port, unique new common neighbor q_i. (73rnz_e)
+```
+
+There are no other rows: the `11` row is C4-forbidden, and a D-edge has
+codegree zero while a non-D pair has codegree one.  When `p_i` is the outside
+witness on line `E_(ell_i)`, `d_i^cross` is literally the corresponding
+witness atom `d_((3-i),ell_i)` in (73rnz''').  Hence the phase table fixes the
+parity of the untouched witness fibers by
+
+```text
+sum_(j != ell_i) d_((3-i),j)
+  = beta_(3-i) + d_i^cross                         (mod 2). (73rnz_f)
+```
+
+Thus the eleven coarse rows refine canonically by a four-letter local event,
+and the only remaining witness freedom is carried by the other empty-line
+blocks.  This is the exact extreme-endpoint analogue of contracting straight
+passages and retaining turn/switch/boundary events in the shared occurrence
+flow; no identification with a global closed token cycle is asserted here.
+
 The corresponding signed occurrence boundary is already integral (all
 differences in the following display are taken in `Z`).  For
 each endpoint write `d_(i,j)=1[z_i y_(i,j) in D]`, so that
