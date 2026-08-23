@@ -470,6 +470,73 @@ theorem orderNineNearRegularComponentAdmissible_of_twoZeroCuts_fixedHighTriple
     rw [hTcard, hb₁, hb₂, hb₃] at hsecond
     exact hsecond
 
+/-- Two-sided arbitrary-boundary adapter.  Equal oriented boundary `δ` on a
+shore and its ordinary complement gives both articulation cut inequalities. -/
+theorem orderNineNearRegularCutBounds_of_twoEqualCuts_fixedHighTriple
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (S : Finset V)
+    (hSsub : S ⊆ Finset.univ \ ({h₁, h₂, h₃} : Finset V))
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hhighIndependent : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      Disjoint (G.neighborFinset h) ({h₁, h₂, h₃} : Finset V))
+    (δ : ℕ)
+    (hcutS : (∑ x ∈ S,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card) = δ)
+    (hcutT : let T := (Finset.univ \ ({h₁, h₂, h₃} : Finset V)) \ S
+      (∑ x ∈ T,
+        ((secondOrderDefectGraph G).neighborFinset x ∩
+          (Finset.univ \ T)).card) = δ) :
+    orderNineNearRegularCutLower S.card
+      (G.neighborFinset h₁ ∩ S).card
+      (G.neighborFinset h₂ ∩ S).card
+      (G.neighborFinset h₃ ∩ S).card ≤ δ ∧
+    orderNineNearRegularCutLower (78 - S.card)
+      (10 - (G.neighborFinset h₁ ∩ S).card)
+      (10 - (G.neighborFinset h₂ ∩ S).card)
+      (10 - (G.neighborFinset h₃ ∩ S).card) ≤ δ := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := Finset.univ \ H
+  let T := O \ S
+  have hSH : Disjoint S H := by
+    rw [Finset.disjoint_left]
+    intro x hxS hxH
+    exact (Finset.mem_sdiff.mp (hSsub hxS)).2 hxH
+  have hTH : Disjoint T H := by
+    rw [Finset.disjoint_left]
+    intro x hxT hxH
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hxT).1).2 hxH
+  have hfirst := orderNineNearRegularCutLower_le_boundary_fixedHighTriple
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S hSH hdegOrd hdegHigh δ hcutS
+  have hsecond := orderNineNearRegularCutLower_le_boundary_fixedHighTriple
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ T hTH hdegOrd hdegHigh δ hcutT
+  have hHcard : H.card = 3 := by simp [H, h₁₂, h₁₃, h₂₃]
+  have hOcard : O.card = 78 := by
+    dsimp only [O]
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ H), Finset.card_univ,
+      hcard, hHcard]
+  have hTcard : T.card = 78 - S.card := by
+    dsimp only [T]
+    rw [Finset.card_sdiff_of_subset hSsub, hOcard]
+  have hb₁ := orderNine_high_neighbor_ordinary_compl_card
+    G H S h₁ (hdegHigh h₁ (by simp)) (hhighIndependent h₁ (by simp))
+  have hb₂ := orderNine_high_neighbor_ordinary_compl_card
+    G H S h₂ (hdegHigh h₂ (by simp)) (hhighIndependent h₂ (by simp))
+  have hb₃ := orderNine_high_neighbor_ordinary_compl_card
+    G H S h₃ (hdegHigh h₃ (by simp)) (hhighIndependent h₃ (by simp))
+  refine ⟨hfirst, ?_⟩
+  dsimp only [T, O, H] at hsecond hb₁ hb₂ hb₃
+  rw [hTcard, hb₁, hb₂, hb₃] at hsecond
+  exact hsecond
+
 #print axioms sum_eq_sum_complSubtype_add_sum_finset
 #print axioms orderNine_ordinary_neighbor_inter_sum
 #print axioms orderNine_zeroCut_ordinary_high_product_identity
@@ -479,6 +546,7 @@ theorem orderNineNearRegularComponentAdmissible_of_twoZeroCuts_fixedHighTriple
 #print axioms orderNineNearRegularCutLower_nonpos_of_zeroCut_fixedHighTriple
 #print axioms orderNine_high_neighbor_ordinary_compl_card
 #print axioms orderNineNearRegularComponentAdmissible_of_twoZeroCuts_fixedHighTriple
+#print axioms orderNineNearRegularCutBounds_of_twoEqualCuts_fixedHighTriple
 
 end
 
