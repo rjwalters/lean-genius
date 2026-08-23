@@ -22615,3 +22615,45 @@ the small-length endpoint-collision problem remains genuinely open.  Any
 exclusion of lengths three or four must use exterior colors, payer tags,
 or another simultaneous-SRP constraint rather than incorrectly importing
 four-cycle-freeness into the shadow graph.
+
+## 422. The hole sector can absorb only a bounded part of vertex expansion
+
+Let `Q` be a shortest clean holonomy of length `ell>=5`, and let
+
+```text
+W:={w_v:v in V(Q)}
+```
+
+be the chosen-exit endpoint set from Section 420.  Every member of `W`
+lies in `O setminus V(Q)`, and (1498) gives
+
+```text
+|W|>=ceil(ell/2).                                  (1504)
+```
+
+Only `s=|S|` of these distinct endpoints can lie in the hole sector
+`S=O setminus O_5`.  All remaining endpoints lie in `O_5 setminus V(Q)`
+and are joined to `Q` by edges of the induced full-root graph.  If `C_Q`
+is the connected component of `G_sh[O_5]` containing `Q`, then
+
+```text
+|W intersect O_5|>=max(ceil(ell/2)-s,0),
+|C_Q|>=ell+max(ceil(ell/2)-s,0).                   (1505)
+```
+
+Thus a full-root component whose vertex set is exactly the shortest cycle
+can exist only in the constant range
+
+```text
+V(C_Q)=V(Q)
+ -> ceil(ell/2)<=s
+ -> ell<=2s<=4Delta-10<=90.                       (1506)
+```
+
+More generally (1505) quantifies how many additional full-root vertices
+the component must contain once the clean cycle is longer than the defect
+sector can absorb.  The bound deliberately retains the length-three and
+length-four alternatives of (1503); their endpoint collisions need the
+separate finite simultaneous-color analysis identified there.  For every
+longer shortest holonomy, however, a bounded hole set cannot hide linear
+vertex expansion inside the shadow graph.
