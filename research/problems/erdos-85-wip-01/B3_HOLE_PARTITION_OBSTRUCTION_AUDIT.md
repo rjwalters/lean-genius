@@ -2506,6 +2506,33 @@ fiber-load potential and a local occupancy inequality, rather than a lookup
 table on named labels.  The assertion remains a finite-corpus threshold, not
 a construction of `Phi` and `Lambda` for every outer design.
 
+The scalar `L(b)` is not a new global oracle.  Let `H` be the symmetric
+eligibility graph on ordinary roots, let `n(u)=deg_H(u)`, and let
+`F_b={u:b in B_u}` be the five-root fiber of label `b`.  Exchanging the two
+finite sums gives the exact identity
+
+```text
+L(b)
+ = sum_t |N_H(t) intersect F_b|
+ = sum_(u in F_b) n(u).                                    (12rzv)
+```
+
+If `Q` is the ordinary-root by selected-label block-incidence matrix, this
+is simply
+
+```text
+L = Q^T H 1.                                                (12rzw)
+```
+
+Thus `(12rzu)` depends only on the same candidate degree `n` already present
+in `sigma`, aggregated over one canonical five-root fiber, plus the local
+role vector `rho(t,b)`.  Mode `--audit-label-load-formula` verifies both
+sides and reports the multiset of fiber loads; the implementation also
+asserts `(12rzv)` whenever a load-projected dual is built.  A uniform price
+construction can now be sought as a fiber-degree/occupancy inequality.  It
+does not need arbitrary label names, a new collision tensor, or information
+outside `H` and `Q`.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

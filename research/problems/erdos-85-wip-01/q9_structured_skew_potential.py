@@ -889,7 +889,12 @@ def projected_half_atom_dual(data: dict, mode: str) -> tuple:
     moment_profiles = {}
     for b in data["selected"]:
         loads = [sum(censuses[t][b]) for t in range(N)]
-        load_moments[b] = (sum(loads), sum(load * load for load in loads))
+        load_sum = sum(loads)
+        fiber_degree_sum = sum(len(data["candidates"][u]) for u in range(N)
+                               if b in data["blocks"][u])
+        if load_sum != fiber_degree_sum:
+            raise RuntimeError("label load Fubini identity failed")
+        load_moments[b] = (load_sum, sum(load * load for load in loads))
         load_profiles[b] = tuple(sorted(Counter(
             loads).items()))
         moment_profiles[b] = tuple(
@@ -998,6 +1003,20 @@ def projected_half_atom_dual(data: dict, mode: str) -> tuple:
             nonzero.append((name, value))
     exact, _, denominator, _ = rational_farkas_audit(system, nonzero)
     return True, len(equality_keys), len(capacity_keys), exact, denominator
+
+
+def label_load_formula_audit(data: dict) -> tuple[bool, dict[int, int]]:
+    """Audit L(b)=sum_{u in F_b} deg_H(u)=sum_t sum_r rho_r(t,b)."""
+    _, censuses = root_signature_censuses(data)
+    loads = {}
+    valid = True
+    for b in data["selected"]:
+        census_sum = sum(sum(censuses[t][b]) for t in range(N))
+        fiber_degree_sum = sum(len(data["candidates"][u]) for u in range(N)
+                               if b in data["blocks"][u])
+        valid &= census_sum == fiber_degree_sum
+        loads[b] = fiber_degree_sum
+    return valid, loads
 
 
 def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
@@ -2149,6 +2168,8 @@ def main() -> int:
                         help="extract exact rational half-atom certificates")
     parser.add_argument("--audit-half-atom-projections", action="store_true",
                         help="test invariant root/label price factorizations")
+    parser.add_argument("--audit-label-load-formula", action="store_true",
+                        help="verify the fiber-degree formula for L(b)")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -2596,6 +2617,15 @@ def main() -> int:
                        for mode in modes}
             print(f"half_atom_projections branch={branch} seed={seed_number} "
                   f"colors={colors} results={results}")
+    if args.audit_label_load_formula:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            valid, loads = label_load_formula_audit(candidate)
+            branch, seed_number, colors = label
+            print(f"label_load_formula branch={branch} seed={seed_number} "
+                  f"colors={colors} valid={valid} "
+                  f"load_multiset={sorted(Counter(loads.values()).items())}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2684,6 +2714,7 @@ def main() -> int:
             or args.audit_half_atom_primal
             or args.audit_half_atom_dual
             or args.audit_half_atom_projections
+            or args.audit_label_load_formula
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):
