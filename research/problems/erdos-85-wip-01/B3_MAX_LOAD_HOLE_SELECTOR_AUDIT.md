@@ -615,6 +615,15 @@ shapes: **some exceptional row and some two regular triple rows support a
 strict global symmetric price certificate**.  No regular-class or pairwise
 intersection restriction currently survives adversarial sampling.
 
+A weaker class condition remains a useful candidate: require only that the
+two regular support rows come from two distinct normalized parallel classes,
+without fixing which two.  This retains `2 * choose(3,2) * 8 * 8 = 384`
+shapes.  It has at least one strict exact certificate on all five hard
+payloads and on every fresh seed zero through 95; seed 92 retains exactly its
+three certificates.  Because successive finer selectors above failed only
+under wider stress, this 384-shape family is recorded as a candidate
+diagnostic rather than promoted over the robust 552-shape theorem target.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
