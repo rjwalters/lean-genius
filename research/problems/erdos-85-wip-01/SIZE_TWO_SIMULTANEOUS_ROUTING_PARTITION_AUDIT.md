@@ -25562,3 +25562,47 @@ deliberately port-tagged.  Subject to that exact qualification, the reuse
 horn contains a companion kernel simultaneously rainbow in both finite
 coordinates along every arm, while retaining all of its length-four paths
 and eight-cycles.
+## 484. Unused spokes are rainbow or transfer saturation to a complementary pair
+
+Return to the `t` fully separated fixed-root stars of Sections 477--478,
+with common primary roots `r,s`.  At the center `v_a` of the `a`-th star,
+the selected source color `h_a` already occurs on the two primary spokes
+at `r` and `s`.  The rootwise color-degree cap is two, so none of the three
+unused-root spokes at `v_a` has color `h_a`, and no color can occur on all
+three of them.  Consequently their color multiplicities have exactly one
+of the two forms
+
+```text
+1+1+1  (an unused-spoke rainbow), or
+2+1    (a secondary saturated turn).              (1717)
+```
+
+Partition the `t` centers by these alternatives.  If at least `ceil(t/2)`
+centers have the first form, there is a family of that size in which every
+center has three pairwise different unused-spoke colors.  Otherwise at
+least `ceil(t/2)` centers have the second form.  For each such center,
+record the pair of unused roots carrying the repeated color.  There are
+only three pairs among the three unused roots, so one fixed complementary
+root pair `{u,w}` occurs at at least
+
+```text
+ceil(ceil(t/2)/3) >= ceil(t/6)                     (1718)
+```
+
+centers.  On this subfamily the two `u,w` spokes at each center share a
+secondary color `g_a`, while the third unused spoke has a different color.
+Thus the original primary-root saturation family forces the dichotomy
+
+```text
+(rainbow horn)    >=ceil(t/2) separated centers with three distinct
+                  unused-spoke colors; or
+(transfer horn)   >=ceil(t/6) separated centers saturated on one fixed
+                  complementary root pair.                         (1719)
+```
+
+Both horns inherit vertex-disjoint gadgets and full cross-gadget payer-
+layer separation from Section 477.  In particular the transfer horn is a
+new fixed-root-pair saturation family on roots disjoint from `{r,s}`, not
+merely a repetition of the original selected color.  This exposes a
+five-root alternative complementary to the companion-reuse terminal of
+Sections 481--482.
