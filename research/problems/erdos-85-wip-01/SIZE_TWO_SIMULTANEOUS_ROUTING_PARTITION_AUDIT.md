@@ -21778,3 +21778,64 @@ at most six clean residual edges apiece.  All other `q=16` configurations
 already fall into the simple all-`O` unsheltered cycle branch of (1422).
 The remaining finite task is to couple the two high-loss private boundaries
 through their pair graph or through the two possible shelter rows.
+
+## 407. Two selected ports support a linear inactive theta system
+
+The cross-port multiplicities of Section 403 concentrate on one pair of
+ports.  Double-count the pairs of port families which reuse an outside
+companion:
+
+```text
+sum_(i<j)|C_i intersect C_j|
+ =sum_(o in U) binom(m(o),2).                       (1441)
+```
+
+For every integer `0<=m<=5`, one has
+`binom(m,2)>=2m-3`.  Using (1425) and `|U|=2q-5`
+therefore gives
+
+```text
+sum_(i<j)|C_i intersect C_j|
+ >=2(5q-35-Delta)-3(2q-5)
+ =4q-55-2Delta
+ >=4q-105.                                         (1442)
+```
+
+There are only ten unordered pairs of selected ports.  Hence some pair
+`p_(i+2),p_(j+2)` has a common companion set of size
+
+```text
+K_ij:=|C_i intersect C_j|
+ >=ceil(max(4q-55-2Delta,0)/10)
+ >=ceil(max(4q-105,0)/10).                         (1443)
+```
+
+For each `o in C_i intersect C_j`, let `z_i(o),z_j(o)` be the unique
+inactive payer labels from the two port families.  They give the literal
+ambient path
+
+```text
+p_(i+2)--z_i(o)--o--z_j(o)--p_(j+2).               (1444)
+```
+
+The paths (1444) are internally vertex-disjoint as `o` varies.  Their
+middle vertices are distinct by definition, and portwise companion
+injectivity makes the payer labels distinct in each family; labels from
+the two different families are distinct because every non-`d` payer has
+selected incidence one and the selected ports differ.
+
+Thus the two selected ports are the branch vertices of a theta system with
+`K_ij` internally disjoint paths of length four.  In particular every pair
+of these paths is a simple eight-cycle, so the system contains
+`binom(K_ij,2)` distinct eight-cycles.  Numerically,
+
+```text
+q>=64  -> K_ij>=16;
+q>=128 -> K_ij>=41.                                (1445)
+```
+
+This does not contradict four-cycle-freeness--length eight is allowed--but
+it converts the diffuse companion reuse into one explicit two-port
+subgeometry of linear width.  A final obstruction can now couple the
+source colors, payer layers, or SRP rows along many paths with the same two
+selected endpoints rather than comparing unrelated collision vertices.
