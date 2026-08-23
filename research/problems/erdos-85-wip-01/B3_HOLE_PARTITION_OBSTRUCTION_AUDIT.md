@@ -5004,6 +5004,20 @@ counterexample search against the first two horns of (13ay), but this run
 adds no positive or negative mathematical evidence about the universal
 selector.
 
+The third horn now has an exact symbolic negation as well.
+`--all-reciprocity-compatible-packings` introduces, for every ordered pair
+`(u,w)`, the disjunction “a full packing at `u` avoids `w`, or a full packing
+at `w` contains `u`.”  This is precisely the negation of
+forced-forward/impossible-reverse.  The focused
+`--reciprocity-pair U W` mode regression at `(25,19)` is SAT on the
+reciprocity-free fractional-not-forced fixture and UNSAT on the
+fixed-and-joint fixture, exactly matching the independent enumerator.  The
+all-pairs fixed-template runs both returned `unknown` at 60 seconds because
+the exact witness encoding is large; this is an engineering limit, not a
+logical shortcut or an UNSAT claim.  Combining the two all-pairs switches
+now expresses the full negation of the latter two (13ay) horns, while
+`--all-rows` supplies the row-existence part of the first horn.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

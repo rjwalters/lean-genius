@@ -39,6 +39,8 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                        exclude_single_special_hole: bool,
                        all_incident_disjoint_packings: bool,
                        all_conflicting_disjoint_packings: bool,
+                       all_reciprocity_compatible_packings: bool,
+                       reciprocity_pairs: list[tuple[int, int]],
                        fixed_template_primal_denominator: int | None,
                        template: dict | None = None):
     solver, data = build(
@@ -182,6 +184,48 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                 for v in range(N)
             ]) <= 1))
 
+    requested_reciprocity_pairs = set(reciprocity_pairs)
+    if all_reciprocity_compatible_packings:
+        requested_reciprocity_pairs.update(
+            (u, w) for u in range(N) for w in range(N) if u != w
+        )
+    for u, w in sorted(requested_reciprocity_pairs):
+        avoid_branch = Bool(f"reciprocity_avoid_branch_{u}_{w}")
+        avoid = {
+            v: Bool(f"reciprocity_avoid_{u}_{w}_{v}")
+            for v in range(N)
+        }
+        reverse = {
+            v: Bool(f"reciprocity_reverse_{u}_{w}_{v}")
+            for v in range(N)
+        }
+        solver.add(Implies(avoid_branch, Sum([
+            If(avoid[v], 1, 0) for v in range(N)
+        ]) == (6 if u >= N_TRIPLE - 4 else 5)))
+        solver.add(Implies(Not(avoid_branch), Sum([
+            If(reverse[v], 1, 0) for v in range(N)
+        ]) == (6 if w >= N_TRIPLE - 4 else 5)))
+        solver.add(Not(avoid[w]))
+        solver.add(Implies(Not(avoid_branch), reverse[u]))
+        for v in range(N):
+            solver.add(Implies(avoid[v], And(
+                avoid_branch, u != v,
+                eligible(u, v), eligible(v, u),
+            )))
+            solver.add(Implies(reverse[v], And(
+                Not(avoid_branch), w != v,
+                eligible(w, v), eligible(v, w),
+            )))
+        for point in range(N_U1):
+            solver.add(Implies(avoid_branch, Sum([
+                If(And(avoid[v], incidence[v, point]), 1, 0)
+                for v in range(N)
+            ]) <= 1))
+            solver.add(Implies(Not(avoid_branch), Sum([
+                If(And(reverse[v], incidence[v, point]), 1, 0)
+                for v in range(N)
+            ]) <= 1))
+
     if shared_integral_relation:
         relation = {
             (u, v): Bool(f"shared_relation_{u}_{v}")
@@ -276,6 +320,16 @@ def main() -> None:
               "integral local packings of its actual demanded sizes"),
     )
     parser.add_argument(
+        "--all-reciprocity-compatible-packings", action="store_true",
+        help=("for every ordered row pair (u,w), require either a full "
+              "packing at u avoiding w or a full packing at w containing u"),
+    )
+    parser.add_argument(
+        "--reciprocity-pair", type=int, nargs=2, action="append", default=[],
+        metavar=("U", "W"),
+        help="impose the reciprocity-compatible disjunction only at (u,w)",
+    )
+    parser.add_argument(
         "--all-pairs-fixed-template-primal-denominator", type=int,
         help=("attempt to refute (13at): for every exceptional/regular pair, "
               "require a bounded-denominator dual packing of weighted value "
@@ -294,12 +348,18 @@ def main() -> None:
     rows = list(range(N)) if args.all_rows else args.rows
     if any(row < 0 or row >= N for row in rows):
         parser.error("--rows entries must lie in 0..46")
+    reciprocity_pairs = [tuple(pair) for pair in args.reciprocity_pair]
+    if any(u < 0 or u >= N or w < 0 or w >= N or u == w
+           for u, w in reciprocity_pairs):
+        parser.error("--reciprocity-pair requires distinct rows in 0..46")
     template = json.loads(args.template.read_text()) if args.template else None
     solver, data = build_row_feasible(
         args.timeout_seconds, args.denominator, rows,
         args.shared_integral_relation, args.exclude_single_special_hole,
         args.all_incident_disjoint_packings,
         args.all_conflicting_disjoint_packings,
+        args.all_reciprocity_compatible_packings,
+        reciprocity_pairs,
         args.all_pairs_fixed_template_primal_denominator,
         template=template
     )
