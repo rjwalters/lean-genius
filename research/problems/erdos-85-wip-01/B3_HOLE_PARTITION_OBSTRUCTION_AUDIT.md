@@ -3124,10 +3124,11 @@ symmetric graph with the exact 5/6 degrees, two-sided trace-orthogonal edge
 support, and (13a).  Marked-row defect variables, their row and column sums,
 and ordinary residual C4 bounds are absent.
 
-The first interpretation of this result as a simultaneous 47-row packing
-obstruction was too strong.  The follow-up mode
-`--audit-residual-gram-local` checks each row separately.  It finds the
-entire UNSAT already at local independent-set capacity:
+The first interpretation of this result as necessarily a simultaneous
+47-row packing obstruction was too strong.  The follow-up mode
+`--audit-residual-gram-local` checks each row separately.  In one completed
+seed-zero invocation it found the entire UNSAT already at local independent-
+set capacity:
 
 ```text
 branch 3, seed 0: rows 24 and 25 demand 6 but have capacity 5,
@@ -3136,14 +3137,29 @@ branch 4, seed 0: row 4 demands 5 but has capacity 4.          (13b)
 
 Here capacity means the largest `W`-independent subset of the row's
 two-sided trace-eligible `H`-neighbors.  Thus symmetry and simultaneous
-degree realization are not needed for these sampled contradictions.  The
-proof-facing target is sharper: prove uniformly that every admissible outer
-design in branch 3 or 4 contains some row `w` whose trace-eligible
-neighborhood has `W`-independence number below its required residual degree.
-This is a local block-packing statement closely aligned with the exceptional-
-hole complement-partition obstruction already isolated above.  The current
-capacity deficits remain sampled fixed-outer evidence, not a proof for all
-admissible outer designs.
+degree realization are not needed for those particular contradictions.
+
+However, widening the local audit to eight generated witnesses per branch
+immediately killed the uniform one-row conjecture.  Fifteen of the sixteen
+witnesses had at least one deficient row (typically capacity one below
+demand, once capacity two below), but branch 3 seed 1 had none.  Rechecking
+the first two witnesses in the full Gram-only model nevertheless gave UNSAT
+for both parities in both branches, including that locally feasible branch-3
+survivor.  Consequently the sampled mechanism has a genuine dichotomy:
+
+```text
+some row has alpha_W(H-neighborhood) below its residual demand;
+or every row is locally feasible but the symmetric degree realization
+   with W-independent neighborhoods fails simultaneously.                (13c)
+```
+
+The proof-facing target must retain both horns.  The first is a local block-
+packing statement aligned with the exceptional-hole complement-partition
+obstruction; the second is a global compatibility theorem for the locally
+feasible rows.  Generated solver witness numbering is not a canonical graph
+identifier, so the seed labels and row indices above document reproducing
+runs rather than invariant isomorphism classes.  All observations remain
+sampled outer-design evidence, not proofs for every admissible design.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
