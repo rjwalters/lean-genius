@@ -14001,3 +14001,49 @@ certificate into this setting.  The remaining uniform task is to impose
 the realizability constraints that the table alone omits--the
 nonmonochromatic ticket caps (844), the residual caps (848), and the
 return pairing `nu_e` on the `B` occurrences.
+
+## 273. The root-pairing graph is a ten-edge owner-factor subgraph
+
+The pairing geometry in Section 271 is realized inside a canonical
+two-factor, rather than being an abstract contraction.  Fix an exterior
+color `a`.  The pointwise bound (779), the two `a`-neighbors at each root,
+and the five roots show that exactly ten `a`-labels meet `C`, each at a
+unique root.  Every such label `y` indexes the edge of the owner factor
+`F_a[e]` whose endpoints are the two ports in `N_e(y)`.
+
+Let `H_a^C` be the subgraph of `F_a[e]` consisting of these ten indexed
+edges.  Exactly two of its edges carry each root label `x_i`, and its
+edge--vertex incidence graph is the routing graph `G_a^C` of Section 271.
+Since `F_a[e]` is two-regular,
+
+```text
+H_a^C is a disjoint union of paths and cycles,
+|E(H_a^C)|=10.                                      (862)
+```
+
+Its degree-one vertices are also completely identified.  On `Z`, the only
+incidences are the `k_a` strict-export cells, in distinct ports.  Outside
+`Z`, they are exactly the `m_1^a` stubs of (857).  Thus
+
+```text
+|{p:deg_(H_a^C)(p)=1}|=k_a+m_1^a.                   (863)
+```
+
+Every path component has two endpoints and every cycle component has none,
+so the number of path components is
+
+```text
+(k_a+m_1^a)/2.                                      (864)
+```
+
+Following each path gives a canonical fixed-point-free pairing of the
+`k_a` selected strict ports and the `m_1^a` outside stubs.  A pair may be
+selected--selected, selected--outside, or outside--outside; none of these
+types is excluded yet.  The internal edges of the path retain their private
+root labels, two occurrences of each root across the whole subgraph.
+
+This owner-factor path pairing is the actual realization constraint behind
+the parity `m_1^a=k_a mod 2`.  Together with the target-owner return pairing
+`nu_e` on the ten ports `B`, it supplies two concrete pairing systems on the
+same ticket data: one follows `A_e` outside paths, while the other follows
+the color-`a` factor `F_a[e]` through the ten labels meeting `C`.
