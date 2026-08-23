@@ -13453,3 +13453,66 @@ even-augmentation owner deformation `b_x`.  Equation (822) is the precise
 local transfer identity sought after (812): any terminal price must now
 separate the unique odd color at `x` from the even local destination rows
 of the other colors while respecting this owner deformation.
+
+## 263. On the five-port curl the owner deformation is an exact coboundary
+
+The owner profile in Section 262 has a canonical primitive on the selected
+port cycle.  Retain the indexing in which the two selected ports incident
+to `x_i` are `p_(i-1),p_i`.  Section 251 proved the integer statement
+`e_e(Z)=0`, so neither `A_e`-neighbor of any `p_i` lies in `Z`.  For every
+outside incidence component define the per-port destination profile
+
+```text
+beta_i(j):=|N_(A_e)(p_i) intersect V_j| mod 2,       j != 0.       (825)
+```
+
+Each `p_i` has `A_e`-degree two.  Hence every `beta_i` has even
+augmentation:
+
+```text
+sum_(j != 0) beta_i(j)=0.                            (826)
+```
+
+The two entries of `R_ec e_(x_i)` are exactly `p_(i-1)` and `p_i`.
+Expanding (821) at those two ports therefore gives the pointwise identity
+
+```text
+b_(x_i)(j)=beta_(i-1)(j)+beta_i(j).                  (827)
+```
+
+Thus the even-margin assertion (824) is not merely a scalar parity fact:
+the whole complementary owner deformation is the adjacent boundary of the
+five private port profiles.  If
+
+```text
+gamma_i:=sum_(a != c,e) delta_(x_i)^a
+```
+
+is the color-summed local routing row, then (822) becomes the exact affine
+cycle equation
+
+```text
+gamma_i=s+beta_(i-1)+beta_i.                         (828)
+```
+
+Here `s=(s_j)_(j!=0)` is constant in the root index.  Summing around the
+odd five-cycle cancels every `beta_i` twice and leaves
+
+```text
+sum_(i mod 5) gamma_i=s.                             (829)
+```
+
+Equation (829) is the root-indexed form of the old rank-one switch row
+(73), while (828) records exactly what that contraction erased.  In the
+cokernel of the cycle boundary `beta |-> (beta_(i-1)+beta_i)_i`, the local
+routing family has the fixed affine class represented by the constant word
+`s`; all target-owner freedom lies in the displayed coboundary.
+
+This is still not a contradiction.  The sum over exterior colors in
+`gamma_i` forgets which unique color has odd augmentation at `x_i`, and the
+even local rows of the other colors may be nonzero.  The remaining theorem
+must therefore separate that distinguished color before taking the sum in
+(828), or show that no color-resolved lift of the canonical owner primitive
+`beta` is compatible with the five subsets `I_a`.  There is no longer an
+unlocated complementary owner term: its entire available payment is the
+explicit adjacent gauge (827).
