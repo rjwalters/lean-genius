@@ -6627,3 +6627,52 @@ failure of inter-occurrence private-row peeling must be witnessed by a repeated
 proof may therefore either exclude this labeled C6 pattern by simultaneous
 routing, or treat its columns as a separate block controlled by the generic
 sixth-moment identities.
+
+## 125. The mate-decoration tag removes same-source collisions
+
+The unresolved same-source case in Section 123 has a canonical role tag.
+For a V dart `o` with actual label `ell`, let
+
+```text
+sigma_R(o) := full decoration of its root mate,
+sigma_P(o) := full decoration of its port mate,
+```
+
+where a V decoration includes its resolved `(d,y)` label and H/S remain
+distinct symbols.  The Section 99 alphabet gives
+
+```text
+sigma_R(o) in {H,V_m},       sigma_P(o) in {S,V_n}.    (372)
+```
+
+These two decorations are always different.  The H/S cases are immediate.
+If both were the same V label `m`, then the pair of triangle indicators
+`F_ell,F_m` would have both a common root (the R-pair) and a common port (the
+P-pair).  Section 113 proved those two witnesses mutually exclusive by C4.
+
+Refine (363) by retaining the mate decoration:
+
+```text
+Gamma_(ell,sigma,u)(o,o')
+  := f_ell(o) [decoration(o')=sigma] q_u(o')
+     + f_ell(o') [decoration(o)=sigma] q_u(o).         (373)
+```
+
+For the two transition columns incident to one fixed source occurrence `o`,
+the tags are `sigma_R(o)` and `sigma_P(o)`, hence distinct by (372).  Thus
+no same-source privacy collision survives in the refined bundle.
+
+Combining Sections 123--125 gives the exact privacy split for (373):
+
+```text
+same source:       separated by the mate-decoration tag;
+distinct sources: separated by C4 for endpoint exposures;
+remaining case:   repeated opposite-root exposures carrying the C6 (370).
+                                                                  (374)
+```
+
+The refinement is route-natural: reversing an ordered transition exchanges
+the source and mate decorations, so the corresponding signed bundle
+boundary remains route-odd.  Conservation is still open—the mate tag cannot
+be added after summation—but the only possible failure of private-row
+peeling is now the explicit labeled six-cycle sector.
