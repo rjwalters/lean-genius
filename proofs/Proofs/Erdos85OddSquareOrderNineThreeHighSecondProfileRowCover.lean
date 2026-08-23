@@ -2834,6 +2834,100 @@ theorem squareOrderNine_threeHigh_secondProfile_exceptional_residualBlocks_eq_co
       exact (G.mem_neighborFinset a b).mpr
         ((G.adj_comm b a).mp ((G.mem_neighborFinset b a).mp haParts.2))
 
+/-- Cardinal form of the exceptional block complement.  The six disjoint
+residual blocks cover fifteen unmarked points (three blocks of size two and
+three of size three), while the three core-neighbor blocks cover the other
+nine. -/
+theorem squareOrderNine_threeHigh_secondProfile_exceptional_block_partition_cardinalities
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hxt : (secondOrderDefectGraph G).Adj x t) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let R := G.neighborFinset t ∩ T
+    let C := G.neighborFinset t ∩ U1
+    (R.biUnion fun w => G.neighborFinset w ∩ U1).card = 15 ∧
+      (C.biUnion fun a => G.neighborFinset a ∩ U1).card = 9 := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let R := G.neighborFinset t ∩ T
+  let C := G.neighborFinset t ∩ U1
+  have hdisj : ∀ u ∈ R, ∀ v ∈ R, u ≠ v →
+      Disjoint (G.neighborFinset u ∩ U1) (G.neighborFinset v ∩ U1) := by
+    intro u hu v hv huv
+    exact squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
+      G hfree ht hu hv huv
+  have hweights :=
+    squareOrderNine_threeHigh_secondProfile_row_center_weight_sums
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 (t := t) hx
+  dsimp only at hweights
+  have hcards :=
+    squareOrderNine_threeHigh_secondProfile_exceptional_row_exact_cardinalities
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht hxt
+  dsimp only at hcards
+  have hresidual : (R.biUnion fun w => G.neighborFinset w ∩ U1).card = 15 := by
+    rw [Finset.card_biUnion hdisj, hweights.1, hcards.2.2.1, hcards.2.2.2]
+  have hcomplement :=
+    squareOrderNine_threeHigh_secondProfile_exceptional_residualBlocks_eq_coreComplement
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht hxt
+  dsimp only at hcomplement
+  change (R.biUnion fun w => G.neighborFinset w ∩ U1) =
+    U1 \ (C.biUnion fun a => G.neighborFinset a ∩ U1) at hcomplement
+  have hmarked :=
+    squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hmarked
+  have hMcard :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  have hMsub : M ⊆ B 1 := Finset.inter_subset_right
+  have hU1card : U1.card = 24 := by
+    rw [Finset.card_sdiff_of_subset hMsub, hmarked.1, hMcard]
+  have hcoreSub : (C.biUnion fun a => G.neighborFinset a ∩ U1) ⊆ U1 := by
+    intro b hb
+    simp only [Finset.mem_biUnion] at hb
+    obtain ⟨a, _ha, hab⟩ := hb
+    exact (Finset.mem_inter.mp hab).2
+  have hsplit := Finset.card_sdiff_add_card_eq_card hcoreSub
+  have hcomplementCard := congrArg Finset.card hcomplement
+  have hsplit' : 15 + (C.biUnion fun a => G.neighborFinset a ∩ U1).card = 24 := by
+    calc
+      15 + (C.biUnion fun a => G.neighborFinset a ∩ U1).card =
+          (R.biUnion fun w => G.neighborFinset w ∩ U1).card +
+            (C.biUnion fun a => G.neighborFinset a ∩ U1).card := by rw [hresidual]
+      _ = (U1 \ (C.biUnion fun a => G.neighborFinset a ∩ U1)).card +
+            (C.biUnion fun a => G.neighborFinset a ∩ U1).card := by rw [hcomplementCard]
+      _ = U1.card := hsplit
+      _ = 24 := hU1card
+  refine ⟨hresidual, ?_⟩
+  apply Nat.add_left_cancel (n := 15)
+  calc
+    15 + (C.biUnion fun a => G.neighborFinset a ∩ U1).card = 24 := hsplit'
+    _ = 15 + 9 := by norm_num
+
 /-- Algebraic form of the decisive mixed-center compatibility constraint.
 The residual-center matrix `A Q` and the cubic-core matrix `Q K` have
 disjoint support, so their entrywise inner product (equivalently
@@ -3545,6 +3639,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_residualBlocks_eq_coreComplement
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_block_partition_cardinalities
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_incidence_residual_gram_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card
