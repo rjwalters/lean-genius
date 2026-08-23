@@ -5834,3 +5834,72 @@ Only (324) can prove a nontrivial instance of `f^T K g=0`; (269), (278), and
 can be used for privacy.  Section 84's abstract counterprofile is consistent
 with every covariance law above and violates the desired parity, confirming
 that covariance alone is insufficient.
+
+## 110. The dart correlation defect is a row--column Gram difference
+
+There is nevertheless an exact occurrence-level identity once the dart
+observables themselves are fixed.  Identify `D_ce` with the support of the
+incidence matrix `B=R_ce`.  For functions `f,g` on its darts, write
+
+```text
+r_f(x)=sum_(p:B_xp=1) f(x,p),    c_f(p)=sum_(x:B_xp=1) f(x,p),
+```
+
+and similarly for `g`.  Expanding the two matchings in (318) gives
+
+```text
+D_(f,g) = <r_f,r_g> - <c_f,c_g>.                       (325)
+```
+
+Indeed the row product `<r_f,r_g>` contains the root-matching cross terms
+plus `sum_(x,p) f(x,p)g(x,p)`.  The column product contains the port-matching
+cross terms plus the identical diagonal sum, which cancels.  Equation (325)
+holds over the integers and uses only that every row and column of `B` has
+degree two.
+
+For a third color `d != c,e` and a specific intermediate port `y in d`,
+define the triangle-incidence observable
+
+```text
+F_(d,y)^(c,e)(x,p)
+  := R_ce(x,p) R_cd(x,y) R_de(y,p).                    (326)
+```
+
+Its value at a dart `(x,p)` is one exactly when the incidence edge `x--p`
+belongs to the rooted `c--d--e` triangle with intermediate `y`.  Summing
+over `y in d` recovers `R_ce hadamard (R_cd R_de)`, and uniqueness ensures
+the summands have disjoint support.  Thus (325) applied to
+`F_(d,y),F_(f,z)` is a fully color- and intermediate-resolved
+two-local SRP correlation, not a one-port potential.
+
+Component-pair reversal transposes every ingredient:
+
+```text
+F_(d,y)^(e,c) = (F_(d,y)^(c,e))^T.
+```
+
+It swaps row and column degree profiles, so
+
+```text
+D_(F_(d,y),F_(f,z))^(e,c)
+  = -D_(F_(d,y),F_(f,z))^(c,e).                       (327)
+```
+
+Consequently the complete ordered-component ledger has the genuine
+conservation law
+
+```text
+sum_(c != e) D_(F_(d,y),F_(f,z))^(c,e) = 0            (328)
+```
+
+whenever the labels `d,f` are retained under the reversal (with terms absent
+when a label is an endpoint component).
+
+This is the first nonseparable conserved correlation in the SRP lane.  Its
+scope is also exact: (328) pairs the `(c,e)` ledger with the reversed
+`(e,c)` ledger globally.  The marked-parity target is localized to one fixed
+owner pair and one projected cycle, so global antisymmetry alone may cancel
+the desired residue against a different component-pair ledger.  The next
+localization problem is to refine (325)--(328) by the root-marked primitive
+or target-incidence component so that the reversed term is forced back into
+the same realized reversal class rather than merely another ordered pair.
