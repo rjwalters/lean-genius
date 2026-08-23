@@ -11,6 +11,43 @@ The near-regular cut classification excludes every such proper order.
 
 namespace Erdos85
 
+/-- A disconnected nonempty graph has a connected component different from
+the component containing any prescribed owner vertex.  Its support is
+nonempty and omits the owner, hence is a proper shore.  This is the generic
+selection step used to choose the non-owner ordinary-defect component. -/
+theorem exists_nonowner_connectedComponent_of_not_connected
+    {V : Type*} [Nonempty V] (D : SimpleGraph V) (owner : V)
+    (hnot : ¬ D.Connected) :
+    ∃ c : D.ConnectedComponent,
+      c ≠ D.connectedComponentMk owner ∧
+      c.supp.Nonempty ∧ owner ∉ c.supp ∧ c.supp ≠ Set.univ := by
+  have hnotPreconnected : ¬ D.Preconnected := by
+    intro hpre
+    exact hnot ⟨hpre⟩
+  simp only [SimpleGraph.Preconnected] at hnotPreconnected
+  push Not at hnotPreconnected
+  obtain ⟨u, v, huv⟩ := hnotPreconnected
+  have huvComponent : D.connectedComponentMk u ≠ D.connectedComponentMk v := by
+    intro huvEq
+    exact huv (SimpleGraph.ConnectedComponent.exact huvEq)
+  obtain ⟨c, hc⟩ :
+      ∃ c : D.ConnectedComponent, c ≠ D.connectedComponentMk owner := by
+    by_cases hu : D.connectedComponentMk u ≠ D.connectedComponentMk owner
+    · exact ⟨D.connectedComponentMk u, hu⟩
+    · have huOwner : D.connectedComponentMk u = D.connectedComponentMk owner :=
+        Classical.not_not.mp hu
+      have hv : D.connectedComponentMk v ≠ D.connectedComponentMk owner := by
+        intro hvOwner
+        exact huvComponent (huOwner.trans hvOwner.symm)
+      exact ⟨D.connectedComponentMk v, hv⟩
+  have howner : owner ∉ c.supp := by
+    intro hmem
+    have hm := (SimpleGraph.ConnectedComponent.mem_supp_iff c owner).mp hmem
+    exact hc hm.symm
+  refine ⟨c, hc, c.nonempty_supp, howner, ?_⟩
+  intro hsupp
+  exact howner (hsupp ▸ Set.mem_univ owner)
+
 /-- The exact `3 n₀ = 5 n₁` component balance forces the total component
 order to be divisible by eight. -/
 theorem eight_dvd_of_three_mul_eq_five_mul
@@ -72,6 +109,7 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
   · exact hbalance
 
 #print axioms eight_dvd_of_three_mul_eq_five_mul
+#print axioms exists_nonowner_connectedComponent_of_not_connected
 #print axioms orderNine_component_colour_sum_even_of_handshake
 #print axioms false_of_orderNine_nearRegular_proper_component_balance
 #print axioms false_of_orderNine_nearRegular_component_handshake_and_balance
