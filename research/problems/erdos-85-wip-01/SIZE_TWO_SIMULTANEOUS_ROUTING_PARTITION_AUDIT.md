@@ -10268,3 +10268,38 @@ not give a same-type completion separately at every star: a transport
 identity must pair the nonzero `kappa_T(r)` defects through the realized
 H/S sectors.  If even the scalar sum fails, an odd mixed-T-word endpoint is
 the located obstruction that the final capacity argument must price.
+
+## 200. The typed obstruction is exactly mixed-word `C_V` parity
+
+Because `W_r` is the disjoint union of the endpoint pairs in `M_V(r)`, the
+last expression in (613) can be regrouped edgewise:
+
+```text
+kappa_T(r)
+ =sum_({y_1,y_2} in M_V(r))
+      (tau_r(y_1)+tau_r(y_2))
+ =#{mixed 01 T-word edges of M_V(r)} mod 2.            (615)
+```
+
+Thus a `00` or `11` realized V--V turn contributes nothing to the typed
+completion obstruction, while a mixed `01` turn contributes one.  No
+activity state, owner label, or completion choice enters (615).
+
+Summing over the root and port witnesses used by the realized dart cycle
+gives
+
+```text
+sum_r kappa_T(r)
+ = parity of all mixed-T-word C_V turns on Z.          (616)
+```
+
+Consequently the target (614) is precisely an evenness statement for the
+mixed-T-word V--V sector.  The complement price (612) need not repair any
+same-word turn; it only has to route the endpoints of the mixed turns through
+the H/S sectors or show that their total is even.
+
+Equation (616) does not assert that this parity vanishes.  The existing
+unweighted V marginal (345) forgets `tau_r`, so it cannot supply (616) by
+itself.  A successful next identity must be the T-word-weighted refinement
+of the H/V/S marginal, retaining the actual root or port witness on every
+mixed endpoint.
