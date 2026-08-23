@@ -1991,6 +1991,33 @@ two ordinary outside vertices, each carrying one residual cross-shore
 defect mark into the fixed `q^2/2`-point inside M shore.  Whether those two
 marks coincide is now a concrete two-port terminal.
 
+The two uncovered ports are necessarily A-adjacent.  Fix `z_i` and an empty
+center `E_j`.  They are non-A because `z_i` is not on any empty line, and
+they are non-D because every empty center's D-degree is exhausted on C.
+Hence the codegree dichotomy supplies a unique common A-neighbor `y_(i,j)`
+on the empty line of `E_j`.  The empty lines are disjoint, so for fixed i
+these `r=q/2-1` witnesses are distinct.  Each lies in the covered part of
+`M setminus S`: a full-center witness would put the outside point `z_i` on
+a full line, while the `h=a` routing excludes empty-center witnesses.
+
+The balanced line indexed by `z_i outside S` has exactly `q/2` outside
+A-neighbors.  The witnesses account for `q/2-1` of them.  Any additional
+covered outside point lies on a unique empty line and would be a second
+common neighbor with its empty center, contradicting uniqueness.  There are
+only two uncovered points and no loops, so the final outside neighbor of
+each is the other one:
+
+```text
+z_1 z_2 is in A.                                         (73rnj)
+```
+
+Thus the extreme `a=1` survivor is literally one ordinary owner edge
+`z_1z_2`, with one residual cross-shore D-mark attached to each endpoint.
+The remaining dichotomy is whether those marks coincide and whether the
+owner edge itself lies in D (hence T); this is the same repeated-target
+versus distinct-port terminal isolated independently in the simultaneous
+transport lane.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
