@@ -4247,6 +4247,36 @@ of a q-bit star word is required.  What is still unproved is the price that
 maps these transition parities, together with the leading owner unit in
 (73rnz_cjibki), to the primary atoms of `Phi_owner`.
 
+The transition parity itself has two geometric channels.  Let
+`F_y^00,F_y^11` be the parities of the b-flip pairs with the indicated
+T-word.  Then
+
+```text
+s(y)=F_y^00+F_y^11.                                    (73rnz_cjibkj)
+```
+
+Put `B=supp(t x)`, so `b=1_B`.  A 00 pair is a canonical Baer edge
+`vw in A`; it is a b-flip exactly when `vw` crosses the A-cut of B, and its
+K-price is zero.  A 11 pair is the non-A relay edge of (73rnz_cjibbf); it is
+a b-flip exactly when that relay crosses B, and summing its price over the
+flip subfamily gives
+
+```text
+sum_(11 b-flip pairs {v,w} at y) 1[vw in K]
+ =F_y^11+sum_(11 b-flip pairs {v,w} at y) mu_(v,w).     (73rnz_cjibkk)
+```
+
+Consequently the aggregate activity splits into a zero-price canonical
+Baer-cut channel `F_y^00` and a priced broken-relay channel `F_y^11`.  This
+is structurally parallel to the SRP silent-footprint/active-atom split: the
+00 flips can carry activation while remaining invisible to K, whereas the
+11 flips expose their constant unit against a matching atom.  The natural
+remaining comparison is the zero-price 00 cut channel versus the split-pair
+part `sigma_i` of `Phi_i`, and the priced 11 channel versus its pole K-fiber
+part.  This attachment is not yet proved; the rigorous conclusion here is
+that treating only the broken relays would omit an entire activation
+channel.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
