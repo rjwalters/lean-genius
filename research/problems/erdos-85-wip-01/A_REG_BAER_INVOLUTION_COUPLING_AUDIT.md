@@ -3892,6 +3892,33 @@ relay now has a fixed endpoint subtype, T-word, and switch/exit label.  The
 unresolved nonleaf subtype pairing occurs only in witness stars carrying no
 special-leaf owner, so it cannot privately absorb a star demand.
 
+The switch endpoint can also be propagated canonically through its residual
+full center.  At a residual center G, let `j_G` be the number of switching
+singleton ports and `r_G` the number of its remaining ordinary T-ports.
+Equation (73rnz_ai) is exactly
+
+```text
+j_G=r_G                                               (mod 2).
+```
+
+If this common parity is odd, choose one switch port and one ordinary port
+and pair them through G; after removing them, both populations are even and
+pair internally.  If it is even, pair each population internally from the
+start.  Therefore the normal form at G is
+
+```text
+j_G odd:  one leaf--switch--G--ordinary exit,
+           plus leaf--leaf throughs and owner-free ordinary pairs;
+j_G even: only leaf--leaf throughs and owner-free ordinary pairs.         (73rnz_cjibbc)
+```
+
+Thus an odd owner switch cannot terminate privately at a residual full
+center: it launches a marked exit into M.  Together with the direct ordinary
+exit in the `eta=0` case, every singleton leaf owner either reaches an
+ordinary endpoint or is paired into a leaf--leaf through.  The remaining
+capacity problem is consequently concentrated at the ordinary endpoints and
+their `nu/mu` labels in (73rnz_aw), not at the exceptional owner centers.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
