@@ -4748,6 +4748,29 @@ these boundary segments (pole, leaf, empty, or ordinary witness), all of
 which belong to the previously enumerated owner/owner-free transition
 alphabet.
 
+That endpoint classification is exhaustive without a new vertex-type case
+table.  A non-residual terminal flip edge at witness y either contains a
+special-leaf endpoint or it does not.  In the first case the owner-adapted
+normal forms (73rnz_cjibba)--(73rnz_cjibbc) identify it as one of the
+cross-star through, switch, or direct-exit cells, with source transport
+(73rnz_cjibk)--(73rnz_cjibkc).  In the second case it is owner-free, and the
+four-switch/cocycle dichotomy (73rnz_cjibj)--(73rnz_cjibe) applies.
+
+Therefore every edge of `delta_(W_P)(R)` has exactly one of the terminal
+forms
+
+```text
+audited owner cell;
+owner-free odd holonomy;
+owner-free additive fixed-margin endpoint.             (73rnz_cjibkzl)
+```
+
+The first is already expressed in `rho/mu` atoms; the second is the explicit
+odd-cycle branch; only the third survives in the additive branch.  Thus the
+remaining finite calculation is not a leaf/empty/ordinary enumeration but
+the aggregate fixed-margin endpoint potential of the owner-free boundary
+segments.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
