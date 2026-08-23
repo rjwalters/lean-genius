@@ -3182,11 +3182,14 @@ A^2 x = A h = 1_(N_A(E_1)) + 1_(N_A(E_2)).             (73rnz_ba)
 ```
 
 The two neighborhoods are disjoint because the empty centers have no common
-A-neighbor.  Thus failure of every kernel separator is not featureless: it
-produces a canonical two-pole potential whose second derivative is exactly
-the union of the two empty lines.  The joint-state terminal may therefore
-split cleanly into a kernel-separator transport branch and a two-pole
-potential branch, rather than assuming a star character exists.
+A-neighbor.  Moreover A is alternating, so
+`0=x^T A x=x(E_1)+x(E_2)`; adding the constant kernel vector if necessary
+normalizes `x(E_1)=x(E_2)=0`.  Thus failure of every kernel separator is not
+featureless: the canonical two-pole right-hand side admits a normalized
+potential whose second derivative is exactly the union of the two empty
+lines (the potential itself need not be unique).  The joint-state terminal
+may therefore split cleanly into a kernel-separator transport branch and a
+two-pole potential branch, rather than assuming a star character exists.
 
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
