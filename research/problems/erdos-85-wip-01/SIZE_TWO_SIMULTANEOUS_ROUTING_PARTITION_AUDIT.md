@@ -11395,3 +11395,52 @@ pole neighbor and only an odd parity of residual-center neighbors, possibly
 more than one.  The unresolved closed-run sector is consequently narrowed
 to `00` and `01`, while `10` is reduced to a two-pole boundary path and `11`
 is already paid.
+
+## 224. Every `01--01` unit lifts canonically to double-residual flags
+
+The state `01` asserts only that a root has an odd number of neighbors in
+`R`; the shared H state does not place the root in the ordinary occupied
+shore where a replication-two bound would make that neighbor unique.  Thus
+one must retain the full residual-neighbor incidence rather than select one
+center.
+
+For an H edge `e=xx'` in `K_01`, let
+
+```text
+R_x=N_A(x) intersect R,       R_(x')=N_A(x') intersect R.
+```
+
+Both sets have odd size.  They are disjoint: a residual center adjacent to
+both roots would join their H-port witness as a second common A-neighbor,
+contradicting C4-freeness.  For each unordered pair of distinct residual
+centers `{G,H}`, define the private double-label flag
+
+```text
+beta_(G,H)(e)
+ :=1[(G in R_x and H in R_(x')) or
+     (H in R_x and G in R_(x'))].                     (690)
+```
+
+Disjointness makes the two alternatives exclusive.  Double counting the
+Cartesian product gives the pointwise identity
+
+```text
+sum_({G,H} subset R) beta_(G,H)(e)
+ =|R_x| |R_(x')|=1 mod 2.                             (691)
+```
+
+Hence every `01--01` marked unit has a canonical odd expansion into private
+flags carrying two distinct residual labels.  This removes the need for a
+unique residual-center label and is the exact analogue of the all-anchor
+incidence construction (670).  It also matches the double-labelled flag
+terminal independently isolated in the B3 lane: scalar or single-label
+marginals cannot retain the required interaction.
+
+Equation (691) is an occurrence map, not yet a cancellation theorem.  At
+owner resolution the marked unit is still duplicated as `(1,1)`, so each
+double-residual flag must enter the owner-route quotient with that diagonal
+tag (or be paired there).  The gain is exact: `01` no longer contributes an
+anonymous odd run length; its every edge unit is represented by a bounded-
+arity joint label.  After the `10` boundary reduction and the pointwise
+payment of `11`, only the `00` closed-run sector lacks such a nonzero
+incidence expansion.
