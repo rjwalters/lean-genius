@@ -2224,13 +2224,25 @@ conservation of ({b,c},r,s) collision flags is incompatible with the row
 demands and private label capacities.                            (12rzi)
 ```
 
-The implication direction remains the mathematical gap: `(12rzi)` is a
-floating primal contradiction, not yet a proof that an actual B.3
-decomposition conserves `(12rzh)`.  But it isolates the missing lemma with no
-orientation or scalar-state decoration.  Both distinct label identities are
-essential, while their order is not.  This is exactly the occurrence-level
-shape expected of a two-label incidence handshake and is substantially more
-proof-facing than the arbitrary seven-coordinate state potential `(12rza)`.
+Conservation has no additional design hypothesis: swapping the route gives
+
+```text
+F_(q;r,s)(u,t) = -F_(q;r,s)(t,u),
+```
+
+definitionally.  Hence the actual symmetric residual adjacency, whose
+occurrence weights satisfy `x_tu=x_ut`, cancels `(12rzh)` pairwise over
+unordered routes exactly as in `(12rd)`.  The relaxed primal deliberately does
+not impose edgewise symmetry; it retains only these flag consequences, so its
+infeasibility is the stronger statement needed to exclude an actual symmetric
+selection.
+
+The mathematical gap is instead to prove the **capacity-transfer** assertion
+`(12rzi)` uniformly, without relying on the sampled floating LP.  Both distinct
+label identities are essential, while their order is not.  This is exactly
+the occurrence-level shape expected of a two-label incidence handshake and is
+substantially more proof-facing than the arbitrary seven-coordinate state
+potential `(12rza)`.
 
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
