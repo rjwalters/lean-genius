@@ -5358,3 +5358,43 @@ already proved run contribution from the sole missing labeled-gap
 contribution.  The all-H branch remains the earlier owner-cycle program;
 the mixed branch is now exactly the private-feature/reversal problem shared
 with B3, with no closure ambiguity left.
+
+## 101. The naive gap bundle telescopes away all private data
+
+Orient one non-H gap from its left boundary token to its right boundary
+token.  Retain the complete dart-symbol sequence from (298), including the
+color and intermediate port on every `V` token and a rooted identifier on
+every `S` token:
+
+```text
+u_0,u_1,...,u_m.
+```
+
+In the free abelian group on these token symbols, define the elementary
+successor-minus-predecessor bundle
+
+```text
+Delta_0(G) := sum_(k=0)^(m-1) ([u_(k+1)]-[u_k]).
+```
+
+It telescopes exactly:
+
+```text
+Delta_0(G) = [u_m]-[u_0],
+Delta_0(reverse G) = -Delta_0(G).                      (302)
+```
+
+Thus the naive gap boundary has the desired route-odd character, but it
+forgets every internal turn, intermediate port, and switch.  Distinct gaps
+with the same endpoint symbols have identical `Delta_0`, even if their
+simultaneous routing data are completely different.  No private-feature
+rigidity, and hence no canonical transfer `theta_j`, can follow from (302).
+
+This is the exact gap-level analogue of the scalar-compression failures in
+Sections 87 and 94.  The required bundle must attach features to the
+**transition occurrences**—for example the ordered pair of rooted triangles,
+the consumed secondary fiber, or the switch handoff—not merely to the token
+states at their ends.  Such a transition bundle may still have endpoint
+boundary (302), but its internal tagged rows need not telescope and can
+privately witness an unoriented gap.  This is precisely the strengthening
+isolated empirically as the private tagged-bundle feature in the B3 lane.
