@@ -1118,6 +1118,20 @@ theorem orderNine_secondProfile_owner_partner_W_degree_eq_if_order34_shore
   exact owner_partner_W_degree_of_lowSet_partition
     G owner z S Z P W hpartition hownerW hadj hPzero hZdegree
 
+/-- Two distinct neighbors of an owner cannot both meet a second vertex:
+the owner and that vertex would be two distinct common neighbors, producing
+a four-cycle.  This is the repeated terminal contradiction in the order-34
+placement analysis. -/
+theorem false_of_distinct_owner_neighbors_share_second
+    {V : Type*} (G : SimpleGraph V)
+    (hfree : ¬ containsC4 V G)
+    {owner w a b : V}
+    (hab : a ≠ b) (how : owner ≠ w)
+    (haOwner : G.Adj a owner) (hbOwner : G.Adj b owner)
+    (haw : G.Adj a w) (hbw : G.Adj b w) : False := by
+  exact hfree (containsC4_of_two_common hab how
+    haOwner.symm hbOwner.symm haw.symm hbw.symm)
+
 end
 
 end Erdos85
