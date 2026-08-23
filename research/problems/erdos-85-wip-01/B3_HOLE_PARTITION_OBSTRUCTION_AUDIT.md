@@ -1352,10 +1352,15 @@ Define the **flat signature graph** with vertex set the full signatures
 and `tau` when some shared-label pair `(t,b),(u,b)` is reciprocal and flat:
 `t,u` have the same role, each is the other's unique same-role eligible
 occupant in `F_b`, and their signatures are `sigma,tau`.  Every horizontal
-step of a flat handoff walk crosses one such signature edge, while its
-vertical step stays at the incoming signature.
+step of an **uncharged closed** flat handoff walk crosses one such signature
+edge.  Indeed, flatness at the source makes `u` its unique same-role
+occupant; flatness at the incoming flag is forced by the same-role collision
+charge, and since `t` is an occupant there, incoming uniqueness makes the
+pair reciprocal.  The vertical step stays at the incoming signature.
 
-In all 24 sampled instances this undirected signature graph is a **forest**.
+In all 24 sampled instances this undirected simple signature graph is a
+**forest**, with no equal-signature reciprocal pair (which would project to
+a loop).
 It has between three and sixteen nonisolated vertices and between two and
 nine edges; in every case `|E|=|V|-number_of_components`.  Therefore every
 closed projected walk has even length, which proves (12qx) for that instance
@@ -1364,9 +1369,18 @@ uniform terminal
 
 ```text
 FLAT-SIGNATURE FOREST:
-reciprocal unique-same-role shared-label pairs form a forest on full
-root signatures.                                               (12qy)
+there is no equal-signature reciprocal flat pair, and the simple quotient
+of reciprocal unique-same-role shared-label pairs is a forest on full root
+signatures.                                                     (12qy)
 ```
+
+Multiple actual flat pairs which realize the same pair of distinct
+signatures are harmless: they become one edge in the simple quotient, and
+traversing between its endpoints still changes sides.  A loop is not
+harmless, since it is already an odd closed projected walk; this is why its
+exclusion is explicit in (12qy).  The weaker exact requirement is merely
+that the signature multigraph have no loop or odd cycle, but simple-quotient
+forestness is the sharper property observed in every sample.
 
 Statement (12qy) depends only on the outer eligibility graph and four scalar
 root flags; the monotone transport disappears from the hypothesis.  A cycle
