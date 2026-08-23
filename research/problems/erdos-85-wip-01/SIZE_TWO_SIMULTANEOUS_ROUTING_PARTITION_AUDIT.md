@@ -20392,6 +20392,7 @@ the five path/fixed orbits may have arbitrary lengths.  Their value is that
 any longer holonomy or character argument may treat all closed alternating
 components in paired blocks and isolate a bounded set of exactly five
 unpaired two-root orbits.
+
 ## 385. Stationary holonomy is a common-mate color-cycle test
 
 The same admissibility distinction classifies every stationary word, not
@@ -20443,3 +20444,80 @@ color more than twice.  All roots in the word share the one explicit
 outside mate `v`, and Sections 377--378 then force their inactive companions
 away from that center.  No group-product fixed point which is artificial
 for one of the roots enters this classification.
+
+## 386. Live alternating components classify all two-root holonomy
+
+The component decomposition of Section 384 also has an exact dynamic
+admissibility test.  For a root `i` and vertex `u in U`, define an actual
+root action whenever `u` is not one of the four artificial fixed points:
+
+```text
+L_i(u):=the ordinary x_i-rooted label at u, if sigma_i(u)!=u;
+        s_i,                                  if u=v_i.
+                                                        (1344)
+```
+
+Thus `L_i(u)` is undefined exactly on `B_(x_i)`.  Write `kappa_i(u)` for
+its exterior component color.  For distinct roots `i,j`, call a component
+`K` of `Gamma_ij` **live** when
+
+```text
+L_i(u),L_j(u) are both defined and
+kappa_i(u)!=kappa_j(u) for every u in K.             (1345)
+```
+
+This condition has a concrete form on each component type.  On an
+alternating cycle both actions are ordinary everywhere, so only the color
+inequalities remain.  At an endpoint `u in F_i setminus F_j` of an
+alternating path, the missing `i`-action is defined exactly when `u=v_i`;
+otherwise it is an artificial fixed point in `B_(x_i)`.  The symmetric
+statement holds at an endpoint in `F_j setminus F_i`.  At an isolate, both
+actions are defined exactly when `u=v_i=v_j`, recovering the common-mate
+condition of Section 383.  In particular a path whose two endpoints lie in
+the same fixed-set difference is never live: both distinct endpoints would
+have to equal the one strict mate of the same root.  Every live path
+therefore joins the two opposite fixed-set differences, with endpoints
+`v_i` and `v_j`.
+
+Now consider a rooted state cycle whose root alphabet is exactly `{i,j}`.
+Consecutive roots must differ, so its departures alternate between the two
+actions.  Every ordinary departure traverses the corresponding colored edge
+of `Gamma_ij`, while every strict departure uses the formal reflection at a
+path endpoint or isolate.  The transition rule is precisely the color
+inequality in (1345).  It follows that
+
+```text
+there is a holonomy cycle using exactly roots i,j
+ <-> Gamma_ij has a live component.                 (1346)
+```
+
+For completeness, the construction in the reverse direction is explicit.
+A live alternating cycle of length `2m` is traversed once and gives a word
+of length `2m`.  A live path with `n` ordinary edges is traversed to one
+end, reflected through its strict action, traversed back, and reflected at
+the other end, giving a word of length
+
+```text
+2(n+1).                                             (1347)
+```
+
+A live isolate gives the stationary two-letter word of (1336).  In each
+case successive arrivals determine the next, opposite-root departure, so
+the construction closes without introducing any third root.  Conversely a
+two-root state cycle cannot jump between components, cannot pass an
+artificial endpoint, and cannot cross a vertex where the two action colors
+agree; its supporting component is therefore live.
+
+Hence exclusion of the entire two-root branch is equivalent to the finite
+local obstruction
+
+```text
+every component of every Gamma_ij contains either
+an artificial path/isolate endpoint or a same-color transition vertex.
+                                                        (1348)
+```
+
+This criterion includes stationary and moving cycles uniformly.  It does
+not assert that (1348) always holds; rather, it identifies the exact extra
+component-color datum that must be coupled to the five-unpaired-orbit law
+before a three-or-more-root terminal can be invoked.
