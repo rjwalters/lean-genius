@@ -10492,3 +10492,50 @@ that full sum.  Equations (629)--(631) reduce the remaining additive price
 identity (628) to a cover calculation in the already constructed dart-cycle
 decomposition.  If `a_total=1`, Eulerianity closes it immediately; if not,
 `T a_total` is the precise residual vector requiring H/S boundary transport.
+
+## 205. The aggregate witness cover lies in `ker T`
+
+For one ordered component pair `c!=e`, the dart set `D_ce` contains the two
+`e`-ports at every root `x in c`, paired into one R-edge, and the two
+`c`-roots at every port `p in e`, paired into one P-edge.  Across all cycles
+of `D_ce`, every vertex of `c` therefore occurs exactly once as a root
+witness and every vertex of `e` exactly once as a port witness.  Hence its
+witness vector is
+
+```text
+a_ce=1_c+1_e.                                         (632)
+```
+
+Fix `c` as in the directed target (296) and sum over all `e!=c`.  If the
+defect graph has `k` components, then
+
+```text
+a_total=(k-1)1_c+sum_(e!=c)1_e.                       (633)
+```
+
+In particular `a_total` is constant on every connected component of `D`.
+Since `T=A cap D` is a subgraph of `D`, all T-neighbors of a vertex lie in
+the same defect component.  Every T-degree is even, so for any vector `a`
+constant on D-components,
+
+```text
+(Ta)(v)=a(component(v)) deg_T(v)=0.                   (634)
+```
+
+Applying (634) to (633) proves the cover condition (631):
+
+```text
+T a_total=0,
+sum_(e!=c) sum_(witnesses r in D_ce) Lambda_T(r)=0.   (635)
+```
+
+Thus the additive Baer endpoint price of the entire `11` complement cancels
+for the exact aggregate used by (296), with no assumption on the parity of
+the number of defect components.
+
+This is not yet the SRP contradiction.  It also exposes the limit of the
+cross-lane additive potential: after the full directed-row sum its endpoint
+price is identically zero.  To deduce the marked H parity one must still
+prove the occurrence-level price identification (628), equating the realized
+H/S payment with this vanishing complement.  Equations (632)--(635) close
+the cover side of that identity; they do not prove its H/S side.
