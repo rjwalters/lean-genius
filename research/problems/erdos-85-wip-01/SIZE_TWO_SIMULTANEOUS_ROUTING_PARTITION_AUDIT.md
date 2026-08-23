@@ -15121,3 +15121,57 @@ which occurs oddly in the transported population carries its own nonzero
 component-resolved defect and its own realized root-factor path.  This is
 the source-indexed form needed to compare the residual construction with
 the rootwise SRP rows (822), rather than with their color-summed shadow.
+
+## 296. Every surviving route is localized on one owner-factor cycle
+
+The rootwise route in Section 295 retains one further canonical index.
+Let `Q_a(x)` be the cycle component of the two-factor `F_a[c]` containing
+the core root `x`.  Since `L_x` is a subgraph of that two-factor, the path
+in (943) cannot leave `Q_a(x)`.  Consequently, for every `x in X_I`, there
+is an actual endpoint
+
+```text
+t_x in T_x intersect Q_a(x),
+x -- path in Q_a(x) -- t_x.                          (944)
+```
+
+Thus the odd local defect attached to `x` is not merely nonempty somewhere
+outside `C`: at least one of its roots lies on the same owner-factor cycle
+as `x`.
+
+There is also an exact cyclewise parity statement for the aggregate chain.
+For a cycle component `Q` of `F_a[c]`, restrict `L_I` to its edges and put
+
+```text
+epsilon_Q:=|X_I intersect Q| mod 2.
+```
+
+Because factor components are vertex-disjoint, restricting (935) gives
+
+```text
+partial(L_I intersect Q)
+ =(X_I intersect Q) triangle (T_I^def intersect Q),
+|T_I^def intersect Q|=epsilon_Q mod 2.               (945)
+```
+
+Moreover
+
+```text
+sum_Q epsilon_Q=|X_I|=1 mod 2.                       (946)
+```
+
+Hence an odd number of owner-factor cycles meet both boundary shores oddly.
+On each such cycle, decompose the mod-two subgraph `L_I intersect Q` into
+paths and cycles.  If `N_XT(Q)` is the number of its path components with
+one endpoint in each shore, the endpoint count on that single factor cycle
+gives
+
+```text
+N_XT(Q)=epsilon_Q=1 mod 2.                           (947)
+```
+
+The residual obstruction is therefore localized simultaneously in three
+ways: by receiving color `a`, by source root `x`, and by the concrete cycle
+`Q_a(x)` of the root owner factor.  Any proposed absorption must pay an odd
+outside defect on an odd family of those actual factor cycles; cancellation
+between different owner-factor cycles is unavailable.
