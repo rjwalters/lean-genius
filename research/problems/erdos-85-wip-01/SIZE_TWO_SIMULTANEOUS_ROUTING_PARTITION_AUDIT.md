@@ -16771,3 +16771,45 @@ of the very terminal labels used by the returned inactive paths.  A next
 descent or capacity argument may work on those actual outside roots; it
 does not have to choose a fresh defect support or reconstruct which
 labels exported `D_*`.
+
+## 324. The outside destination has a nonzero incidence-component profile
+
+The actual shore `V_*` in (1072) cannot disappear when literal outside
+root names are compressed to incidence components.  Recall the components
+`(U_j,V_j)` of `R_ce`, indexed so that `U_0=C`.  Because
+`V_* subset c\C`, the sets `U_j` for `j!=0` partition its possible
+locations.  Define
+
+```text
+Theta_*(j):=|V_* intersect U_j| mod 2,       j!=0.  (1075)
+```
+
+Taking augmentation and using (1072) gives
+
+```text
+sum_(j!=0) Theta_*(j)=|V_*|=1 mod 2,
+Theta_*!=0.                                         (1076)
+```
+
+Equivalently, an odd number of the outside incidence components contain
+an odd part of the terminal-label destination shore.  This profile is not
+an arbitrary lift: it is exactly the component projection of the outside
+boundary of the realized factor-edge chain `A_T`, and hence of the
+outside part of `partial G_*` in (1074):
+
+```text
+Theta_*(j)=|partial A_T intersect U_j|
+          =|partial G_* intersect U_j| mod 2,
+          j!=0.                                     (1077)
+```
+
+Thus the global singleton construction now survives both levels of
+cancellation.  Sections 317--319 first forced an odd cut of actual
+`C`-inactive labels; Sections 320--323 transported an odd subfamily
+through actual factor and owner routes; and (1076) shows that the resulting
+outside-root destination remains nonzero even after incidence-component
+compression.  This does not assert that the direct component projection
+of the original cut `J_a` was already nonzero--the intervening routes and
+terminal active labels are essential.  The remaining obstruction is an
+actual nonzero component tag with odd augmentation, rather than the earlier
+possibility that all private-label charges cancel after projection.
