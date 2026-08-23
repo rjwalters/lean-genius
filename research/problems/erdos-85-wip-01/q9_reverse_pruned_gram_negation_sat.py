@@ -15,7 +15,7 @@ import time
 from itertools import combinations
 from pathlib import Path
 
-from z3 import Bool, Implies, Not, is_true, sat, unknown
+from z3 import Bool, If, Implies, Not, Or, Solver, Sum, is_true, sat, unknown
 
 from q9_b0_residual_defect_sat import N, N_U1, edge_key
 from q9_gram_obstruction_negation_sat import add_negation
@@ -155,6 +155,49 @@ def main() -> int:
             }
             for u in interval_bad_rows
         }
+        for u in interval_bad_rows:
+            required = reverse_forced[u]
+            allowed = reverse_possible[u] & set(candidates[u])
+            required_prepacking = required <= allowed and all(
+                not blocks[v] & blocks[w] for v, w in combinations(required, 2)
+            )
+            if not required_prepacking:
+                interval_profiles[u]["contracted_rank"] = -1
+                interval_profiles[u]["point_cover"] = None
+                interval_profiles[u]["cover_gap"] = None
+                continue
+            used_points = set().union(*(blocks[w] for w in required))
+            residual_rows = [
+                w for w in allowed - required if not blocks[w] & used_points
+            ]
+            residual_target = concrete["degree"][u] - len(required)
+            residual_rank = next(
+                size for size in range(residual_target, -1, -1)
+                if any(
+                    all(not blocks[v] & blocks[w]
+                        for v, w in combinations(choice, 2))
+                    for choice in combinations(residual_rows, size)
+                )
+            )
+            interval_profiles[u]["contracted_rank"] = residual_rank
+
+            cover = None
+            for size in range(residual_rank, N_U1 + 1):
+                cover_solver = Solver()
+                point = [Bool(f"cover_{u}_{b}_{size}") for b in range(N_U1)]
+                for w in residual_rows:
+                    cover_solver.add(Or([point[b] for b in blocks[w]]))
+                cover_solver.add(Sum([If(v, 1, 0) for v in point]) <= size)
+                if cover_solver.check() == sat:
+                    cover_model = cover_solver.model()
+                    cover = [
+                        b for b, variable in enumerate(point)
+                        if is_true(cover_model.eval(variable, model_completion=True))
+                    ]
+                    break
+            assert cover is not None
+            interval_profiles[u]["point_cover"] = cover
+            interval_profiles[u]["cover_gap"] = len(cover) - residual_rank
         new_pruned_rows = [u for u in pruned_bad_rows if u not in added_pruned_rows]
         collisions = residual_gram_forced_collisions(concrete)
         new_collisions = [
