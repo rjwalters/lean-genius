@@ -63,6 +63,17 @@ def HasLocalGramPackingOneRowCompatibilityObstruction
         IsLocalGramPacking H W d w Y → u ∉ Y) ∨
       (w ∉ X ∧ IsForcedLocalGramNeighbor H W d w u)
 
+/-- A finite set of reverse-impossible candidates hits every demanded
+packing at one row.  Singleton hitting sets are the old reciprocity horn;
+the q=9 durable survivor first exposes a hitting set of size two. -/
+def HasLocalGramPackingHittingSetReciprocityObstruction
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) : Prop :=
+  ∃ (u : V) (S : Finset V),
+    (∀ X : Finset V, IsLocalGramPacking H W d u X →
+      ∃ w ∈ S, w ∈ X) ∧
+    ∀ w ∈ S, ∀ Y : Finset V,
+      IsLocalGramPacking H W d w Y → u ∉ Y
+
 /-- A simultaneous choice of demanded local packings whose membership
 relation is symmetric.  This is the exact global compatibility retained by
 the neighborhoods of an undirected residual graph. -/
@@ -170,6 +181,19 @@ theorem oneRowCompatibilityObstruction_of_reciprocityObstruction
   refine ⟨u, ?_⟩
   intro X hX
   exact ⟨w, Or.inl ⟨hforced X hX, hreverse⟩⟩
+
+omit [Fintype V] in
+/-- A reverse-impossible hitting set is a selected-bit instance of the
+one-row compatibility obstruction. -/
+theorem oneRowCompatibilityObstruction_of_hittingSetReciprocityObstruction
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (hbad : HasLocalGramPackingHittingSetReciprocityObstruction H W d) :
+    HasLocalGramPackingOneRowCompatibilityObstruction H W d := by
+  obtain ⟨u, S, hhit, hreverse⟩ := hbad
+  refine ⟨u, ?_⟩
+  intro X hX
+  obtain ⟨w, hwS, hwX⟩ := hhit X hX
+  exact ⟨w, Or.inl ⟨hwX, hreverse w hwS⟩⟩
 
 omit [Fintype V] in
 /-- **Existential negation interface for the outer-design problem.**  The
@@ -429,6 +453,23 @@ theorem false_of_localGramPackingOneRowCompatibilityObstruction
     (not_symmetricLocalGramPackingSelection_of_oneRowCompatibilityObstruction
       H W d hbad)
 
+/-- **Forced hitting-set reciprocity consumer.**  If a finite set of
+reverse-impossible candidates meets every demanded packing at one row, no
+symmetric supported Gram-compatible residual relation exists. -/
+theorem false_of_localGramPackingHittingSetReciprocityObstruction
+    (A H W : V → V → Prop) [DecidableEq V] [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hbad : HasLocalGramPackingHittingSetReciprocityObstruction H W d) :
+    False :=
+  false_of_localGramPackingOneRowCompatibilityObstruction
+    A H W d hsymm hdegree hsupport hgram
+    (oneRowCompatibilityObstruction_of_hittingSetReciprocityObstruction
+      H W d hbad)
+
 /-- **Capacity-deficit / forced-collision consumer.**  If the eligible local
 packing system has either no demanded packing at one row, or two
 `W`-conflicting rows force the same neighbor, then no symmetric residual
@@ -475,7 +516,9 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
 #print axioms not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
+#print axioms oneRowCompatibilityObstruction_of_hittingSetReciprocityObstruction
 #print axioms false_of_localGramPackingOneRowCompatibilityObstruction
+#print axioms false_of_localGramPackingHittingSetReciprocityObstruction
 #print axioms false_of_forcedLocalGramNeighbor_not_reverse
 #print axioms not_hasLocalGramPackingReciprocityObstruction_iff
 #print axioms false_of_localGramPackingReciprocityObstruction
