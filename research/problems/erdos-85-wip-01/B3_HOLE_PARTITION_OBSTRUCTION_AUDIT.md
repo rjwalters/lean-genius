@@ -3854,6 +3854,40 @@ reverse rows.  It removes the base-witness issue semantically, but the joint
 edge-to-eligibility/row-ledger/B0-orthogonality system itself is already past
 the present solver boundary.
 
+A fixed-outer Benders split exposes a substantially simpler obstruction than
+(13ab).  Once `Q,K` are pinned, solve only for a symmetric residual relation
+`A` with the exact degree ledger, mutual trace eligibility, and the Gram law
+that block-intersecting centers have no residual common neighbor.  Residual
+C4-freeness is not needed for the following durable branch-4 core.  Greedy
+assumption minimization leaves degree equations at only four rows:
+
+```text
+rows              6, 15, 23, 28
+demands           5,  5,  6,  6
+blocks            {6,14,22}, {0,14,18}, {5,14,19}, {14,17}.   (13ad)
+```
+
+All four blocks share point 14, so Gram orthogonality makes their four
+residual neighborhoods pairwise disjoint.  Their mutually trace-eligible,
+internally block-disjoint demanded-neighborhood family sizes are respectively
+`21,36,7,308`.  Symmetry leaves exactly four possible internal-edge patterns:
+no internal edge, or exactly one of `28--6`, `28--15`, `28--23`.  The family
+sizes after those four restrictions are
+
+```text
+none:   (14,10,3,227);  28--23: (14,10,4,34);
+28--15: (14,20,3,39);   28--6:  (7,10,3,8),
+```
+
+and exhaustive set-family search finds no pairwise-disjoint choice in any
+case.  The exact verifier `q9_branch4_relation_core_verifier.py` checks the
+common point, all candidate/packing counts, the symmetry pattern census, and
+zero extensions.  This is a durable proof model, not a uniform theorem.
+Nevertheless it suggests a sharper outer leaf: force a small same-U1-fiber
+set of centers whose mutually eligible packing families have no symmetric
+disjoint transversal.  That statement would contradict the actual residual
+relation directly and bypass reverse intervals and fractional duality.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
