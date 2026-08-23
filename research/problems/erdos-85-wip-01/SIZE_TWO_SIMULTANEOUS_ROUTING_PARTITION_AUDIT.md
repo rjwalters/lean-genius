@@ -19257,3 +19257,68 @@ singleton payer vertices or one sharply identified secondary double-payer;
 it never permits arbitrary merging of the two or three selected tags.  No
 claim is made yet that double-payers on different propagation rows are
 distinct.
+
+## 365. Secondary double-payers have a unique geometric location
+
+The complementary five-cycle normal form locates the exceptional profile
+of Section 364 exactly.  Use the cyclic indexing (726), so the root `x_i`
+is incident to the two selected ports
+
+```text
+{p_(i-1),p_i},                                      (1254)
+```
+
+and the distinguished `d`-edges on `Z` are
+`{p_j,p_(j+2)}`.  Let a rooted propagation label `y` have core root `x_i`.
+After removing its two forced core-layer columns, the three nonincident
+selected ports are
+
+```text
+T_i={p_(i+1),p_(i+2),p_(i+3)}.                     (1255)
+```
+
+There is exactly one distinguished `d`-edge contained in this triple:
+
+```text
+{p_(i+1),p_(i+3)},                                 (1256)
+```
+
+and its complementary vertex in `T_i` is the offset port `p_(i+2)`.  This
+is also the strict-export column paired with row `x_i` by (777), although
+the payer of a propagation tag at that column need not itself be strict.
+
+For an `O--O` propagation edge, `D(y)=T_i`.  Hence the double-payer branch
+of (1253), if it occurs, is forced to use exactly (1256), and the remaining
+non-`d` singleton tag is forced to lie at `p_(i+2)`:
+
+```text
+O--O with a d double-payer:
+  d support={p_(i+1),p_(i+3)},
+  non-d singleton column=p_(i+2).                  (1257)
+```
+
+For a `B--O` propagation edge, let `p_h` be the owner of its private
+endpoint.  Since `x_i` is a ticket root there, `p_h` is one of the three
+ports in `T_i`, and
+
+```text
+D(y)=T_i\{p_h}.                                     (1258)
+```
+
+The two-element set in (1258) is a distinguished `d`-edge exactly when
+
+```text
+p_h=p_(i+2).                                        (1259)
+```
+
+Therefore an actual `d` double-payer in the `B--O` line of (1253) forces
+the private owner to be the offset port `p_(i+2)`.  If the owner is either
+of the other two nonincident ports, both remaining tags must be paid by
+distinct non-`d` singleton intermediates.  When the owner is the offset,
+the geometry permits the unique double support (1256) but does not force
+that profile instead of two singleton payers.
+
+Thus secondary reuse is not only a parity alternative.  In the residual
+row it selects one fixed diagonal of the nonincident triple, and in the
+mixed row it is available only at one of the three possible private-owner
+positions.  All other tagged columns retain literal payer distinctness.
