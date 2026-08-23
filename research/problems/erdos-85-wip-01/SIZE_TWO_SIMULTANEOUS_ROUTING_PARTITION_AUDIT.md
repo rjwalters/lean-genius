@@ -25043,3 +25043,45 @@ These boundary colors are not asserted to be saturation colors, and their
 canonical payer layers are not controlled.  The conclusion is instead a
 new frontier interface: a large resistant sparse family cannot discharge
 all six-port boundary mass through the bounded exceptional color set.
+
+## 473. The two-root factor projection alone has scalable sparse models
+
+The preceding abundance cannot by itself yield a contradiction using only
+the edge-colored alternating `{r,s}`-factor.  There is an explicit abstract
+factor projection with arbitrarily many fully separated sparse traces.
+
+For one gadget, take a private alternating ten-cycle with edge positions
+`0,...,9`, where even positions have root `r` and odd positions root `s`.
+Give a selected color `h` to positions
+
+```text
+{0,1,4,7}.                                        (1680)
+```
+
+The `h`-trace is `P_2 disjointUnion P_1 disjointUnion P_1`, with exactly
+two edges of each root.  Color the remaining position pairs
+`{2,3}`, `{5,6}`, and `{8,9}` by private colors `a,b,c`, respectively.
+Add one private alternating six-cycle whose three consecutive edge pairs
+are colored `a,a`, then `b,b`, then `c,c`.  Each filler color now also has
+exactly two `r`-edges and two `s`-edges across the gadget.
+
+Both factor cycles are pinched: the ten-cycle contains the selected
+`h,h` turn and three filler-color turns, while every pair on the six-cycle
+is monochromatic.  Thus Section 460 finds no unpinched factor cycle.  Take
+disjoint copies of this sixteen-vertex gadget, with fresh colors and fresh
+formal payer layers in every copy.  For every integer `m` this gives
+
+```text
+m vertex-disjoint selected sparse traces,
+distinct selected colors and disjoint full-trace payer supports,
+exactly two r-edges and two s-edges for every color used in the projection,
+and no properly colored alternating factor cycle.               (1681)
+```
+
+This is deliberately an abstract two-root projection, not a claimed full
+SRP instance or a realization of the other three root matchings.  Its role
+is diagnostic: no argument using only the factor-cycle parity law, the
+four-edge rootwise color census, trace vertex/layer separation, and boundary
+color counting can exclude the saturation branch.  A closing lemma must
+couple the traces to at least one additional root action or to the actual
+companion/payer geometry outside this projection.
