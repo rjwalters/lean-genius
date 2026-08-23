@@ -11334,22 +11334,23 @@ state cell     (alpha_1,alpha_2)       u_vec
 00--00         (0,0)                   (1,1)
 10--10         (0,0)                   (1,1)
 11--11         (1,1)                   (0,0)
-01--01         (1,1) if one root meets both poles,
-                (0,0) otherwise        (0,0) or (1,1). (686)
+01--01         (0,0)                   (1,1).          (686)
 ```
 
 For `11--11`, odd pole parity makes each root meet exactly one pole and the
 shared-witness C4 exclusion forces the poles to be different; odd residual
 parity then gives one anchor for each owner.  For `01--01`, pole parity zero
-means zero or two pole neighbors, and at most one root can be the double-pole
-root.
+means zero pole neighbors here: `E_1,E_2` are the two inside empty centers,
+are D-adjacent in the minority clique, and therefore have A-codegree zero.
+Their A-neighborhoods (the empty lines) are disjoint, so no double-pole root
+exists.
 
 Consequently the `11--11` diagonal cell is paid pointwise at full owner
 resolution even though its scalar determinant is zero.  The genuine
 diagonal owner residue is supported only on
 
 ```text
-00--00, 10--10, and the non-double-pole part of 01--01. (687)
+00--00, 10--10, and 01--01.                            (687)
 ```
 
 This owner-vector correction supersedes treating the four diagonal terms of
