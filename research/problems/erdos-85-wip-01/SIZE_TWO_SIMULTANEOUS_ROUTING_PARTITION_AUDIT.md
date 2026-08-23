@@ -11094,3 +11094,56 @@ Thus the same-side test has a definite outcome with the current lemmas: the
 `rho^tri` classification is a valid target container, but no literal map has
 yet been proved.  The next graph-facing statement is (668), not another
 parity identity on the already aggregated `rho^same` count.
+
+## 217. Anchor incidence removes the unnecessary uniqueness demand
+
+For parity transport, a same-side H edge need not choose a unique shore
+anchor.  For a marked occurrence `e=(xx';p)`, let `A(e)` be the set of all
+ordered tuples `(i,G,orientation)` satisfying (668), and define the two
+owner-resolved anchor parities
+
+```text
+alpha_i(e):=# {anchors in A(e) with pole E_i} mod 2,
+alpha(e):=alpha_1(e)+alpha_2(e).                       (670)
+```
+
+Every element of `A(e)` is literally one occurrence of the middle edge in
+`rho^tri_(E_i,G)`.  Conversely, every `rho^tri` occurrence whose middle edge
+is the marked H edge `e` supplies exactly one such ordered anchor.  Therefore
+double counting the incidence set gives, separately by owner,
+
+```text
+sum_(same-side marked H e) alpha_i(e)
+ = number of H-tagged same-side rho^tri atoms owned by E_i. (671)
+```
+
+This identity is canonical even if an H edge has zero, two, or more shore
+extensions; no arbitrary choice or unique-anchor theorem is needed.  Its
+scalar price of dropping uniqueness is the explicit residual character
+
+```text
+u(e):=h(e)+alpha(e),                                  (672)
+```
+
+Summing (672) says exactly that the scalar same-side marked census equals its
+anchored `rho^tri` census plus `sum_e u(e)`.  Thus a unique-anchor theorem is
+one sufficient way to kill `u`, but it is stronger than necessary.  The
+exact scalar remaining statement is only
+
+```text
+sum_(same-side marked H e) u(e)=0
+after the audited owner corrections.                   (673)
+```
+
+At owner-vector resolution, (671) already provides the canonical vector
+`(sum_e alpha_1(e),sum_e alpha_2(e))`.  Comparing the scalar H mark with its
+two coordinates requires the separate pole-owner lift demanded by
+(73rnz_cjibkd); no pole label on `h(e)` is asserted here.
+
+Equations (670)--(673) implement the alternative suggested after (669):
+extend the private quotient by the actual shore-anchor incidence rather than
+selecting one anchor.  They absorb every anchored occurrence, with correct
+multiplicity, into the existing `rho^same -> delta_G -> Delta` chain.  Any
+surviving obstruction is now supported precisely on the mod-two mismatch
+between marked H ownership and anchor multiplicity, not on nonuniqueness
+itself.
