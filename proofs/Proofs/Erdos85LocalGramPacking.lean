@@ -2746,8 +2746,8 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 
 /-- Honest branch-4 `(13av)` capstone.  The durable corpus shows both horns
 are necessary: some outer designs die by a local packing deficit/forced
-collision, while others require an exceptional/regular two-row global price
-certificate with unrestricted rational row weights. -/
+collision, while others require an arbitrary two-row global price certificate
+with unrestricted rational row weights. -/
 theorem false_of_localGramPackingObstruction_or_twoRowPrice
     {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
     (A H W : V → V → Prop) [DecidableRel A]
