@@ -13618,3 +13618,68 @@ channel and all exterior routing colors do not merely balance: they divide
 the entire outside target fiber into uniquely assigned ports.  Any final
 price may therefore be evaluated on this canonical labeled partition,
 where reassignment of `gamma_i` to an arbitrary color is no longer allowed.
+## 266. The target-owner payment has ten private ports and five return paths
+
+The actual endpoints hidden by the binary profiles `beta_i` satisfy a much
+stronger realizability condition.  Every two distinct selected ports already
+have a common neighbor in the displayed five-port core.  Consecutive ports
+share their incident `c`-root, while nonconsecutive ports share the
+`d`-owner supplied by the complementary five-cycle normal form used in
+Section 253.  Therefore two selected ports cannot also share an
+`A_e`-neighbor: that vertex and the already displayed common neighbor would
+give a four-cycle.
+
+Together with `e_e(Z)=0`, this proves that the ten owner endpoints
+
+```text
+B:=disjoint_union_(i mod 5) N_(A_e)(p_i)
+```
+
+are ten distinct vertices, all outside `Z`:
+
+```text
+|B|=10,
+N_(A_e)(p_i) intersect N_(A_e)(p_h)=emptyset for i!=h.  (836)
+```
+
+Thus each vertex of `B` is incident to exactly one of the ten cut edges
+from `Z`; no outside endpoint is reused by two selected ports.  This is the
+port-identity information erased when (825) records only the parity of the
+incidence component containing an endpoint.
+
+There is also a canonical return pairing on these private endpoints.  The
+internal owner graph `A_e` is a disjoint union of cycles.  Delete the five
+independent vertices `Z`.  In every `A_e`-cycle meeting `Z`, the remaining
+boundary-bearing components are paths whose endpoints lie in `B`.  A cycle
+containing `r` selected ports produces exactly `r` such paths.  Summing over
+the cycles, there are exactly five boundary-bearing paths, and hence a
+fixed-point-free involution
+
+```text
+nu_e:B -> B                                             (837)
+```
+
+which pairs the two endpoints of each outside owner path.  Untouched
+`A_e`-cycles contain no vertex of `B` and play no role in this pairing.
+
+Equivalently, contract each of the five outside paths and remember which
+selected port is adjacent to each endpoint.  The result is a 2-regular
+pseudograph `K_e` on the five labeled ports:
+
+```text
+V(K_e)=Z,          |E(K_e)|=5,          deg_(K_e)(p_i)=2.  (838)
+```
+
+A loop means that an `A_e`-cycle contains only that one selected port, and
+two parallel return edges mean that it contains exactly two; neither is
+excluded here.  Formula (838) is simply the cycle decomposition of `A_e`
+with the actual outside paths retained, not a new parity relaxation.
+
+This is the first target-owner refinement beyond the affine no-go of
+Section 264.  The complementary payment is not an arbitrary collection of
+even component vectors: it is the projection of ten distinct port
+identities paired by the five concrete paths (837).  A terminal argument
+may now seek incompatibility between this owner-return involution and the
+private exterior-label paths `u_i--z_i--v_i`.  The present section does not
+assert that every 2-regular pseudograph in (838) is impossible or that the
+pairing already respects the receiving colors.
