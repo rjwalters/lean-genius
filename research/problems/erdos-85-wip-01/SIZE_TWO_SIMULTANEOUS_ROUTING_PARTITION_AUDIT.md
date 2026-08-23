@@ -17571,3 +17571,67 @@ boundary of at most three actual internal terminal pairs.  Any same- or
 mixed-color reversal must refine this seven-ticket matching cut; changing
 colors cannot alter the aggregate identity (1132), only how its crossing
 edges are divided into one- and two-edge color contributions.
+
+## 336. The two endpoint-root reversal signatures have seven supports
+
+The two odd-arc cases left in (1108) can also be enumerated without any
+factor-label choices.  Normalize the five-cycle as
+
+```text
+C=(x_0,x_1,x_2,x_3,x_4),
+E_i={x_i,x_(i+1)},
+x=x_0, u=x_1, v=x_2, zeta=p_1.                    (1133)
+```
+
+Thus `D={x_0,x_1,x_2}` and `E_zeta={u,v}`.  The nine allowed cells of the
+off-incidence graph on `D times Z` are
+
+```text
+x_0: p_1,p_2,p_3;
+u:   p_2,p_3,p_4;
+v:   p_0,p_3,p_4.                                  (1134)
+```
+
+For the endpoint-root signature `R_D={u}`, the unique odd `x_0--u` arc is
+`Z_D={p_0}`.  For `R_D={v}`, the unique odd `x_0--v` arc is its three-edge
+complement `Z_D={p_2,p_3,p_4}`.  Section 331 says that the binary support
+of `L_D` has weight three or five.  Solving the root and port parity
+equations in the nine cells (1134) gives exactly the following supports.
+
+For `R_D={u}` there are three:
+
+```text
+{(u,p_3),(v,p_0),(v,p_3)},
+{(u,p_4),(v,p_0),(v,p_4)},
+{(x_0,p_2),(x_0,p_3),(u,p_2),(v,p_0),(v,p_3)}.     (1135)
+```
+
+For `R_D={v}` there are four:
+
+```text
+{(x_0,p_2),(x_0,p_3),(v,p_4)},
+{(u,p_2),(u,p_3),(v,p_4)},
+{(u,p_2),(u,p_4),(v,p_3)},
+{(x_0,p_2),(x_0,p_3),(u,p_3),(u,p_4),(v,p_3)}.     (1136)
+```
+
+For completeness, the enumeration is a short elimination rather than a
+computer assumption.  In each row of (1134) the support parity is fixed
+by `R_D`, and in each port column it is fixed by the displayed `Z_D`.
+Choose the entries in the two three-cell rows for `x_0,u`; the `v` row is
+then forced columnwise.  Rejecting weights other than three or five leaves
+precisely (1135)--(1136), whose boundaries can be checked directly.
+
+The occurrence census is compatible with this list.  If the endpoint root
+is `r in {u,v}`, its crossing occurrence count is one, while the other two
+root counts are even and at most two.  Hence a three-path realization uses
+one of the other roots twice, whereas a five-path realization uses both
+twice.  When `N=3`, `m=3` and there is no cancellation.  When `N=5`, either
+`m=5`, or `m=3` and exactly one terminal pair occurs twice and cancels.
+
+Together with Sections 332 and 334, (1135)--(1136) exhaust all binary
+root--selected supports of a shortest `1 -> 3 -> 1` reversal: two patterns
+in the full-shore case, two in the exact-reuse case, and these seven in the
+two endpoint-root cases.  The remaining obstruction is therefore a finite
+eleven-pattern holonomy test, with multiplicity ambiguity only in the
+weight-three endpoint patterns realized by five crossing paths.
