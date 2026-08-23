@@ -13740,3 +13740,39 @@ words along five concrete outside `A_e` paths.  Any terminal compatibility
 test can therefore compare the exterior colors at their six routed root
 occurrences before projecting to `delta` or `beta`; neither endpoint
 identity nor the owner-return pairing has to be reconstructed from parity.
+
+## 268. The three-root routing words are necessarily nonmonochromatic
+
+The words in Section 267 retain still more actual-label information.  Fix
+`w in T_h`, and for each `i notin {h,h+1}` let `y_i(w)` be the unique
+intermediate label in the cell `(x_i,w)` of color `a_i(w)`.  The three
+labels are distinct: Section 252 proved that every exterior label has at
+most one neighbor in `C`, whereas these labels meet three different roots.
+Thus `w` carries the label-refined ticket
+
+```text
+tau(w):=(a_i(w),y_i(w))_(i notin {h,h+1}).           (843)
+```
+
+This ticket cannot be monochromatic.  For a fixed exterior color `a`, the
+cross block `R_ae` gives `w` exactly two neighbors in `a`.  Three cells of
+color `a` would require the three distinct labels `y_i(w)` to be three such
+neighbors.  Consequently
+
+```text
+max_a |{i notin {h,h+1}:a_i(w)=a}| <= 2.             (844)
+```
+
+The color pattern of every private owner endpoint is therefore `2+1` or
+`1+1+1`, never `3`.  Across the ten endpoints this yields thirty actual
+exterior label occurrences, grouped into ten nonmonochromatic tickets:
+
+```text
+sum_(w in B) |tau(w)|=30.                            (845)
+```
+
+This is a realizability constraint absent from the arbitrary
+component-vector lift (831).  The unresolved step is to compare the
+tickets at the two endpoints paired by an outside `A_e` path, or to tie one
+of their labels to the strict paths `u_i--z_i--v_i`; no compatibility of
+paired tickets is asserted here.
