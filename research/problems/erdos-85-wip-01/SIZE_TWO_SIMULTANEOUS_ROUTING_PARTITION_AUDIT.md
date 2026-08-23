@@ -18153,3 +18153,64 @@ component profile of Section 324 or the simultaneous partition `SRP(a,e)`;
 it cannot be absorbed by rearranging the two sibling tickets which caused
 the selected-port cancellation or by spending the already occupied strict
 cell.
+
+## 346. Side-color escape either terminates or enters a thirty-state cycle
+
+The escape in (1170) can be iterated without forgetting its incoming
+label.  For a private ticket `w in B`, its three routed root occurrences
+in (843) are three distinct active labels.  Define the finite arrival-state
+set
+
+```text
+Scal_B:={(w,y):w in B and y is one of the three labels of tau(w)},
+|Scal_B|=30.                                        (1171)
+```
+
+Suppose an active label `y_in` arrives at `w` from its other `e`-endpoint.
+The ticket is nonmonochromatic, so among its other labels there is a label
+`y_out` whose color differs from the color of `y_in`.  Follow the
+`F_(color(y_out))[e]` edge indexed by `y_out` from `w` to its other
+endpoint `w'`.
+
+Two immediate returns are forbidden.  The endpoint `w'` cannot be the
+sibling private ticket over `p(w)`, since those tickets already have their
+owner port as a common neighbor and `y_out` would create the four-cycle of
+(1161).  It also cannot be the preceding endpoint of `y_in`: otherwise
+that endpoint and `w` would have the two distinct common labels `y_in` and
+`y_out`.  Thus whenever `w'` is private,
+
+```text
+w' is in B, its owner fiber differs from that of w,
+and the propagation does not immediately reverse.                 (1172)
+```
+
+If `w'` lies in `O`, propagation has reached a residual port.  If it lies
+in `Z`, the exterior selected cell is necessarily a strict export.  These
+are the two terminal roles.  If `w'` lies in `B`, continue from the new
+arrival state `(w',y_out)`.
+
+Because `Scal_B` has only thirty states, every such sequence has the exact
+dichotomy
+
+```text
+reach O or a strict selected endpoint; or
+repeat an arrival state and contain a directed state cycle.        (1173)
+```
+
+The cycle has length between three and thirty.  Length one is impossible
+for a factor edge, and length two is excluded by the no-reversal part of
+(1172).  At every state on it the outgoing label color differs from the
+incoming label color, including at the closing state because the full
+arrival state, not merely its ticket, is repeated.  Consecutive private
+tickets also belong to different owner fibers.
+
+Apply this construction to the mandatory escaping edge of (1170).  If its
+far endpoint is residual or selected, the exact-reuse countermodel has
+already paid a new located terminal role.  If it is private, (1173) gives
+either such a terminal after further forced color changes, or a bounded
+cross-color private-ticket holonomy cycle.  This is not yet an exclusion:
+the same ticket may occur in a cycle with different incoming labels, so a
+ten-ticket simple-cycle claim is not made.  The important reduction is
+that indefinite propagation is confined to a q-independent thirty-state
+object with no monochromatic transition and no immediate owner-fiber
+reversal.
