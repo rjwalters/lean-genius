@@ -1707,9 +1707,28 @@ all with `iota=0` and coefficient `-1`.  Bundle conservation transports the
 four rows' total demand 21 into the listed twenty unit capacity slots, giving
 the exact scalar `-21+20=-1`; the verified column coefficients are
 nonnegative.  Thus the branch-3 survivor is an integer capacity-transfer
-contradiction, not a numerical artifact.  The two branch-4 survivors still
-produce dense fractional `L_1` duals (613 and 620 nonzeros) whose naive
-rounding fails the exact check, so their small analytic dual remains open.
+contradiction, not a numerical artifact.  The two branch-4 survivors produce
+dense fractional `L_1` duals (613 and 620 nonzeros), so naive rounding does
+not expose their structure.
+
+A direct integer Farkas search does.  The mode `--audit-integer-bundle-dual`
+allows the negative scalar to choose its natural integral scale, then rechecks
+the rounded certificate against every original column.  On the same three
+survivors it returns respectively
+
+```text
+branch 3, colors (1,2): 35 nonzeros, coefficients in {-1,1};
+branch 4, colors (0,1): 53 nonzeros, coefficients in {-2,-1,1,2};
+branch 4, colors (0,2): 51 nonzeros, coefficients in {-2,-1,1,2}.   (12rn)
+```
+
+All three have a strictly negative integer scalar and nonnegative coefficient
+on every candidate column.  The branch-4 ledgers use six negative demand rows,
+13 and 11 signed external bundle rows, and 34 positive capacity rows.  Thus
+every survivor of the restricted exact Hall audit has a modest exact integral
+certificate.  This is still a finite sampled statement: the remaining proof
+task is to recognize these signed bundle transfers uniformly, not to regard
+the three solver outputs themselves as the branch-3/4 theorem.
 
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**

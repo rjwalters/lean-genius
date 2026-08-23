@@ -20,7 +20,7 @@ from itertools import combinations
 
 import numpy as np
 from scipy.optimize import Bounds, LinearConstraint, linprog, milp
-from scipy.sparse import lil_matrix
+from scipy.sparse import lil_matrix, vstack
 
 from q9_b0_residual_defect_sat import N, N_TRIPLE, N_U1, make_outer_seed
 
@@ -452,6 +452,46 @@ def sparse_full_bundle_dual(data: dict) -> tuple[bool, float, list[tuple], bool]
                  and np.max(np.abs(y - rounded_y), initial=0) < 1e-8
                  and np.max(np.abs(z - rounded_z), initial=0) < 1e-8)
     return True, float(result.fun), nonzero, exact
+
+
+def integer_full_bundle_dual(data: dict, time_limit: float = 60) -> tuple:
+    """Search directly for an integer Farkas certificate."""
+    from scipy.sparse import hstack
+
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     capacity_names, _) = full_bundle_primal_system(data)
+    equality_count = equalities.shape[0]
+    capacity_count = capacities.shape[0]
+    columns = hstack([equalities.T, -equalities.T, capacities.T], format='csr')
+    scalar = lil_matrix((1, 2 * equality_count + capacity_count))
+    scalar[0, :equality_count] = equality_rhs
+    scalar[0, equality_count:2 * equality_count] = -equality_rhs
+    scalar[0, 2 * equality_count:] = capacity_rhs
+    constraints = vstack([columns, scalar.tocsr()], format='csr')
+    result = milp(
+        np.ones(constraints.shape[1]), integrality=np.ones(constraints.shape[1]),
+        bounds=Bounds(np.zeros(constraints.shape[1]), np.full(constraints.shape[1], np.inf)),
+        constraints=LinearConstraint(
+            constraints,
+            np.r_[np.zeros(columns.shape[0]), -np.inf],
+            np.r_[np.full(columns.shape[0], np.inf), -1]),
+        options={'time_limit': time_limit})
+    if result.x is None:
+        return False, result.message, [], False, 0, 0
+    rounded = np.rint(result.x).astype(int)
+    y = (rounded[:equality_count] -
+         rounded[equality_count:2 * equality_count])
+    z = rounded[2 * equality_count:]
+    column_values = equalities.T @ y + capacities.T @ z
+    scalar_value = int(equality_rhs @ y + capacity_rhs @ z)
+    exact = bool(np.max(np.abs(result.x - rounded), initial=0) < 1e-7
+                 and np.all(column_values >= 0) and scalar_value < 0)
+    nonzero = ([(equality_names[index], int(value))
+                for index, value in enumerate(y) if value]
+               + [(capacity_names[index], int(value))
+                  for index, value in enumerate(z) if value])
+    return (True, result.message, nonzero, exact, scalar_value,
+            int(np.min(column_values, initial=0)))
 
 
 def flat_signature_audit(data: dict) -> tuple[
@@ -1284,6 +1324,8 @@ def main() -> int:
                         help="test normalized matching flow with bundle equality")
     parser.add_argument("--audit-full-bundle-dual", action="store_true",
                         help="extract sparse duals for restricted-Hall survivors")
+    parser.add_argument("--audit-integer-bundle-dual", action="store_true",
+                        help="search integer duals for restricted-Hall survivors")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -1478,6 +1520,24 @@ def main() -> int:
         print(f"full_bundle_dual_survivors={dual_labels}")
         audit_failed |= any(not success or not exact
                             for _, success, exact, _ in dual_labels)
+    if args.audit_integer_bundle_dual:
+        integer_labels = []
+        for label, candidate in all_data:
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            (success, message, nonzero, exact, scalar,
+             min_column) = integer_full_bundle_dual(candidate)
+            branch, seed_number, colors = label
+            print(f"integer_bundle_dual branch={branch} seed={seed_number} "
+                  f"colors={colors} success={success} exact={exact} "
+                  f"scalar={scalar} min_column={min_column} "
+                  f"nonzero_count={len(nonzero)} message={message} "
+                  f"nonzero={nonzero if exact else nonzero[:20]}")
+            integer_labels.append((label, success, exact, len(nonzero)))
+        print(f"integer_bundle_dual_survivors={integer_labels}")
+        audit_failed |= any(not success or not exact
+                            for _, success, exact, _ in integer_labels)
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
@@ -1485,7 +1545,8 @@ def main() -> int:
             or args.audit_bundle_pairs or args.audit_bundle_triples
             or args.audit_bundle_rank or args.audit_bundle_deletion
             or args.audit_zero_loss_restriction
-            or args.audit_full_bundle_primal or args.audit_full_bundle_dual):
+            or args.audit_full_bundle_primal or args.audit_full_bundle_dual
+            or args.audit_integer_bundle_dual):
         return 1 if audit_failed else 0
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")
