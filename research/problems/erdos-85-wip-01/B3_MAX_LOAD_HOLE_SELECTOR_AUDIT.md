@@ -624,6 +624,18 @@ three certificates.  Because successive finer selectors above failed only
 under wider stress, this 384-shape family is recorded as a candidate
 diagnostic rather than promoted over the robust 552-shape theorem target.
 
+`q9_branch3_hard_locus_audit.py` makes the proof decomposition reproducible.
+It first scans every row for a strict unit-row fractional point cover, which
+already contradicts an actual residual relation.  It then exact-scans the
+384 distinct-class three-row supports.  Four of the five durable hard
+payloads are genuinely on the all-row-fractionally-feasible locus; replay
+seed 10 is easy at row 13 with cover cost `4 < 5`.  The four hard-locus
+payloads retain respectively `50,20,2,19` distinct-class certificates, and
+fresh seed 92 is all-row feasible with exactly three.  This is the correct
+place to seek a structural selector: one-row strictness closes the easy horn,
+while the remaining horn assumes all local fractional packings exist and
+must exploit reciprocity between rows.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
