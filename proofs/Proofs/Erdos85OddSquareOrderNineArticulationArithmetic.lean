@@ -234,6 +234,52 @@ theorem orderNine_two_articulation_side_beta_classification
     hbeta, hcut, hcutCompl⟩
   exact hout
 
+/-- Every classified smaller shore is either the symmetric `(18,59)` case,
+or one of the moment cuts used next is sharp. -/
+theorem orderNine_articulation_beta_type_sharp_dichotomy
+    (e k b₁ b₂ b₃ : ℕ)
+    (h :
+      (e = 2 ∧ k = 2 ∧
+        ((b₁ = 2 ∧ b₂ = 2 ∧ b₃ = 2) ∨
+         (b₁ = 1 ∧ b₂ = 2 ∧ b₃ = 3) ∨
+         (b₁ = 1 ∧ b₂ = 3 ∧ b₃ = 2) ∨
+         (b₁ = 2 ∧ b₂ = 1 ∧ b₃ = 3) ∨
+         (b₁ = 2 ∧ b₂ = 3 ∧ b₃ = 1) ∨
+         (b₁ = 3 ∧ b₂ = 1 ∧ b₃ = 2) ∨
+         (b₁ = 3 ∧ b₂ = 2 ∧ b₃ = 1))) ∨
+      (e = 3 ∧ k = 3 ∧ b₁ = 3 ∧ b₂ = 3 ∧ b₃ = 3) ∨
+      (e = 2 ∧ k = 4 ∧ b₁ = 4 ∧ b₂ = 4 ∧ b₃ = 4)) :
+    (e = 2 ∧ k = 2 ∧ b₁ = 2 ∧ b₂ = 2 ∧ b₃ = 2) ∨
+    (e = 2 ∧ k = 2 ∧
+      orderNineNearRegularCutLower (78 - (e + 8 * k))
+        (10 - b₁) (10 - b₂) (10 - b₃) = e) ∨
+    (e = 3 ∧ k = 3 ∧
+      orderNineNearRegularCutLower (78 - (e + 8 * k))
+        (10 - b₁) (10 - b₂) (10 - b₃) = e) ∨
+    (e = 2 ∧ k = 4 ∧
+      orderNineNearRegularCutLower (e + 8 * k) b₁ b₂ b₃ = e) := by
+  rcases h with ⟨rfl, rfl, hb⟩ | ⟨rfl, rfl, rfl, rfl, rfl⟩ |
+      ⟨rfl, rfl, rfl, rfl, rfl⟩
+  · rcases hb with ⟨rfl, rfl, rfl⟩ | ⟨rfl, rfl, rfl⟩ |
+        ⟨rfl, rfl, rfl⟩ | ⟨rfl, rfl, rfl⟩ | ⟨rfl, rfl, rfl⟩ |
+        ⟨rfl, rfl, rfl⟩ | ⟨rfl, rfl, rfl⟩
+    · exact Or.inl ⟨rfl, rfl, rfl, rfl, rfl⟩
+    all_goals
+      right
+      left
+      refine ⟨rfl, rfl, ?_⟩
+      norm_num [orderNineNearRegularCutLower, orderNineBalancedSquareSum]
+  · right
+    right
+    left
+    refine ⟨rfl, rfl, ?_⟩
+    norm_num [orderNineNearRegularCutLower, orderNineBalancedSquareSum]
+  · right
+    right
+    right
+    refine ⟨rfl, rfl, ?_⟩
+    norm_num [orderNineNearRegularCutLower, orderNineBalancedSquareSum]
+
 /-- Any finite articulation decomposition exhausting the five exceptional
 vertices has exactly two components.  Their orders lie in the three sharp
 pairs `(18,59)`, `(27,50)`, `(34,43)`. -/
@@ -278,6 +324,7 @@ theorem orderNine_articulation_component_assembly
 #print axioms orderNine_articulation_side_parameter_classification_nat
 #print axioms orderNine_two_articulation_side_orders
 #print axioms orderNine_two_articulation_side_beta_classification
+#print axioms orderNine_articulation_beta_type_sharp_dichotomy
 #print axioms orderNine_articulation_component_assembly
 
 end Erdos85
