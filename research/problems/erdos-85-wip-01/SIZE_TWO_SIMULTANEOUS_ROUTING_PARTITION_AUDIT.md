@@ -21948,3 +21948,59 @@ next finite coupling: the adjacent branch can use the exact two-root path
 decomposition of Sections 382--387 at the same time as the two high-loss
 private boundaries, while the shallow band has only three possible global
 boundary totals to realize.
+
+## 410. The residual graph is five near-perfect matchings with constant defect
+
+The exact port slack also gives a useful global normal form.  For each root
+`i`, let `G_i` be the root-`i` color class of `G_sh`.  It is a matching on
+the common residual vertex set `O`, and (1421) gives
+
+```text
+|G_i| = q-7-delta_i.                              (1454)
+```
+
+Write `H_i := O \ V(G_i)` for its unmatched set.  Since `|O|=2q-15`,
+
+```text
+|H_i| = (2q-15)-2(q-7-delta_i)
+      = 2 delta_i-1 in {1,3,5,7,9}.               (1455)
+```
+
+Thus every rooted matching is near-perfect on the same odd set, with an
+odd defect of at most nine.  For `o in O`, put
+`eta(o):=#{i:o in H_i}`.  The five matching colors are disjoint, so
+
+```text
+deg_G_sh(o)=5-eta(o),
+sum_(o in O) eta(o)=sum_i(2 delta_i-1)=2 Delta-5,
+5 <= 2 Delta-5 <= 45.                             (1456)
+```
+
+In particular at most `2 Delta-5` residual vertices miss even one root
+matching.  The full-root sector
+
+```text
+O_5 := {o in O : eta(o)=0}
+```
+
+therefore satisfies
+
+```text
+|O_5| >= |O|-(2 Delta-5)
+      = 2q-10-2 Delta >= 2q-60.                   (1457)
+```
+
+Every vertex of `O_5` has all five rooted actions represented by ordinary
+`O`--`O`, unsheltered edges of `G_sh`, one in each root matching.  Finally,
+summing the degrees in (1456) recovers the exact residual density:
+
+```text
+2|E(G_sh)| = 5|O|-(2 Delta-5),
+|E(G_sh)|  = 5q-35-Delta.                         (1458)
+```
+
+Hence the entire residual graph is a union of five near-perfect matchings
+whose departure from five-regularity is concentrated in at most forty-five
+root incidences, independent of `q`.  This is a structural normal form, not
+yet a contradiction; it isolates a large sector on which every root action
+is simultaneously ordinary and unsheltered.
