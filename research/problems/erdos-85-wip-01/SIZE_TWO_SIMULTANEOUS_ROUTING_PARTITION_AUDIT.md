@@ -16813,3 +16813,95 @@ of the original cut `J_a` was already nonzero--the intervening routes and
 terminal active labels are essential.  The remaining obstruction is an
 actual nonzero component tag with odd augmentation, rather than the earlier
 possibility that all private-label charges cancel after projection.
+
+## 325. Every odd root defect re-enters through an odd active path shore
+
+The exact outside-port partition (835) applies to the odd core shore
+`D_*` from (1066), not only to all five roots at once.  Put `d:=|D_*|`, so
+`d` is one, three, or five.  For a residual port `s in O` and exterior
+color `b`, define the restricted cell multiplicity
+
+```text
+d_s^b:=|{x in D_*:s in D_x^b}|.                    (1078)
+```
+
+At every root, (835) assigns `s` to exactly one exterior color.  Moreover
+a fixed color occurs at most twice at a port by (848).  Therefore
+
+```text
+d_s^b in {0,1,2},
+sum_b d_s^b=d=1 mod 2.                              (1079)
+```
+
+Let
+
+```text
+A_D(s):={b:d_s^b=1},
+Sigma_D:={(s,b):s in O and b in A_D(s)},
+T_D:=|Sigma_D|.                                     (1080)
+```
+
+The number of entries equal to one in (1079) is odd.  It lies between one
+and `d`, so the odd residual set gives
+
+```text
+|O|=2q-15<=T_D<=d(2q-15),
+T_D=1 mod 2.                                        (1081)
+```
+
+This ledger has an exact factor realization.  Let `H_b^D` be the subgraph
+of `H_b^C` consisting of the edges whose root color belongs to `D_*`.
+There are exactly two such edges for every root in `D_*`, and the routing
+interpretation of (871) gives
+
+```text
+|E(H_b^D)|=2d,
+deg_(H_b^D)(s)=d_s^b.                               (1082)
+```
+
+Consequently the color shore
+
+```text
+S_b(D):={s in O:deg_(H_b^D)(s)=1}                  (1083)
+```
+
+has size equal to the number of occurrences of `b` in `Sigma_D`.  Summing
+over colors and using (1081), an odd number of colors have `|S_b(D)|` odd.
+Also a graph with `2d` edges has at most `4d` degree-one vertices, so
+
+```text
+|S_b(D)|<=4d,
+#{b:S_b(D)!=empty}>=ceil(T_D/(4d))
+                    >=ceil((2q-15)/(4d)).           (1084)
+```
+
+Thus the odd-defect transport retains a q-growing color footprint even
+though every individual root-restricted factor has constant size.
+
+Fix any color `b` for which `S_b(D)` is odd.  The graph `H_b^D` has maximum
+degree two.  Pair the degree-one endpoints along its nontrivial path
+components.  Exactly as in (1050), an odd number of these paths have one
+endpoint in `S_b(D)` and the other outside it.  The other endpoint cannot
+lie in `O`, since (1083) contains every residual degree-one vertex of this
+restricted graph.  It therefore lies in `Z union B`:
+
+```text
+s in S_b(D) --[path in H_b^D]--> t in Z union B,
+an odd number of such paths.                        (1085)
+```
+
+These are `C`-active paths whose root labels all belong to the original
+defect shore `D_*`.  As in Section 320, leave a `Z` terminal fixed and
+append the unique owner edge from a `B` terminal to its selected neighbor.
+The selected endpoint occurrences again have odd total, hence produce a
+nonempty odd shore in `Z`.
+
+Equation (1085) is an exact return map for an arbitrary odd core defect:
+integer SRP sends it through an odd residual singleton ledger and back to
+the selected five-port component using only root labels already in the
+defect.  It is not yet a descent, because the new selected shore need not
+be smaller and the chosen color need not be the color `a` used in
+Sections 317--324.  The explicit capacity (1084) identifies the remaining
+monotonicity question: a contradiction must make successive returns
+consume distinct color/root-factor capacity, rather than merely cycle
+through the same finite terminal data.
