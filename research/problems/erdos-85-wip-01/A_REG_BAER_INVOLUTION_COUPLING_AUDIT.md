@@ -4313,6 +4313,37 @@ transport the active 00 split-pair flip and active 11 sibling-relay flip,
 together with the inactive decorated source, through the non-pole
 owner-normal forms to `Psi^hat_owner`.
 
+All star transitions assemble into one global cut object.  Fix the canonical
+`iota_y` pairs and one owner-adapted completion of the broken-T pairs at
+**every** witness y, active or inactive, and let P have the resulting paired
+edge `vw` labeled by y.  An edge cannot be repeated at two witnesses, since
+that would give v,w two common A-neighbors.  Every vertex v occurs once in
+the pairing at each of its q A-neighbors, so
+
+```text
+deg_P(v)=q=0 mod 2.                                    (73rnz_cjibkn)
+```
+
+Thus P is Eulerian (although it depends on the fixed owner-free completion).
+With `B=supp(t x)`, a P-edge is in `delta_P(B)` exactly when its b-word is a
+flip.  Hence
+
+```text
+delta_P(B)=all 00 and 11 b-flip transition edges,
+|delta_P(B)|=sum_y s(y)=0 mod 2.                       (73rnz_cjibko)
+```
+
+The last equality follows either from even-degree cut parity in P or
+directly from `1^T s=1^T A(t x)=q 1^T(t x)=0`.  The pole flip selected by
+(73rnz_cjibkm) and every downstream non-pole flip therefore belong to one
+global paired-star cut, not to unrelated local ledgers.  This proves scalar
+conservation of the full transition population and explains why forgetting
+the pole labels always kills the diagonal source class.  The unresolved
+statement `Phi_owner=Psi^hat_owner` is precisely a **label refinement** of
+the cut (73rnz_cjibko): route the two marked pole channels through its
+non-pole 00/11 edges while retaining their owner labels and matching prices.
+Eulerian cut parity alone cannot choose that refinement.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
