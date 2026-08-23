@@ -544,6 +544,34 @@ theorem no_contractedExtension_of_reverseIntervalRankDeficit
     hdeficit (F ∪ Y) hY.1 (Finset.subset_union_left) hY.2.2
   omega
 
+/-- The reverse-interval leaf subsumes the old forced-collision horn.  Two
+conflicting rows forced toward the same neighbor both enter that neighbor's
+reverse lower fiber, so no prepacking can contain the fiber. -/
+theorem no_contractedExtension_of_common_forcedLocalGramNeighbor
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (hW : Std.Irrefl W) (u v w : V)
+    (huv : W u v)
+    (huw : IsForcedLocalGramNeighbor H W d u w)
+    (hvw : IsForcedLocalGramNeighbor H W d v w) :
+    ∀ Y : Finset V, ¬ IsReverseIntervalContractedExtension H W d w Y := by
+  classical
+  let F := reverseForcedLocalGramNeighborFinset H W d w
+  let I := reverseImpossibleLocalGramNeighborFinset H W d w
+  have huF : u ∈ F := by
+    simpa [F, reverseForcedLocalGramNeighborFinset] using huw
+  have hvF : v ∈ F := by
+    simpa [F, reverseForcedLocalGramNeighborFinset] using hvw
+  have huv_ne : u ≠ v := by
+    intro huv_eq
+    subst v
+    exact hW.irrefl u huv
+  intro Y hY
+  change IsLocalGramPrepacking H W w (F ∪ Y) ∧
+    (F ∪ Y).card = d w ∧ Disjoint (F ∪ Y) I at hY
+  have hu : u ∈ F ∪ Y := Finset.mem_union_left Y huF
+  have hv : v ∈ F ∪ Y := Finset.mem_union_left Y hvF
+  exact (hY.1.2 u hu v hv huv_ne) huv
+
 omit [Fintype V] in
 /-- The configuration-level obstruction contains the earlier forced-edge
 reciprocity horn as a special case. -/
@@ -995,6 +1023,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms exists_reverseIntervalLocalGramPacking_iff_contractedExtension
 #print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExtension
 #print axioms no_contractedExtension_of_reverseIntervalRankDeficit
+#print axioms no_contractedExtension_of_common_forcedLocalGramNeighbor
 #print axioms card_le_totalWeight_of_pairwiseDisjointPointCover
 #print axioms card_mul_le_totalWeight_of_pairwiseDisjointPointCover
 #print axioms reverseIntervalRankDeficit_of_fractionalPointCover
