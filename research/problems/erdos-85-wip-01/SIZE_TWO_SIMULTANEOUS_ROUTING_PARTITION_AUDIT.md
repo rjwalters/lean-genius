@@ -14675,3 +14675,61 @@ nonzero abstract destination vector but a located odd set of actual roots
 outside `C`, canonically assembled from the singleton terminal labels.
 This is the object on which a next owner/cut transport can act without
 choosing representatives for the component tag.
+
+## 287. Odd active and inactive cuts meet on mixed residual intervals
+
+The two odd cut populations (896) and (904) can be composed
+occurrence-by-occurrence inside the full factor `F_a[e]`.  Consider the
+components of the induced shore `F_a[e][S]`.  Components which are whole
+factor cycles have no cut edges.  Every other nonempty component is a path
+interval with exactly two `F_a[e]` cut edges.  Classify such intervals by
+whether their two boundary edges lie in the active class `H_a^C` or the
+inactive class `Hbar_a^C`, and let
+
+```text
+n_AA,       n_AI,       n_II
+```
+
+be the three counts.  Every active--inactive interval is counted once,
+without orienting its two ends.  Counting the two cut populations gives
+
+```text
+|delta_(H_a^C)(S)|    =2n_AA+n_AI,
+|delta_(Hbar_a^C)(S)| =2n_II+n_AI.                  (908)
+```
+
+Both left sides are odd by (896) and (904).  Therefore
+
+```text
+n_AI=1 mod 2.                                       (909)
+```
+
+In particular there is an actual path interval through `S` whose one
+boundary edge is indexed by an `a`-label meeting `C` and whose other
+boundary edge is indexed by an `a`-label with no neighbor in `C`.  Expanding
+the interval in the two-factor gives a private-label chain
+
+```text
+outside -- active a-edge -- (path through S)
+        -- inactive a-edge -- outside.              (910)
+```
+
+The active boundary edge has a unique root label in `C` by (779).  If
+`m_i` counts mixed intervals whose active end has root label `x_i`, then
+
+```text
+sum_(i mod 5) m_i=n_AI=1 mod 2.                     (911)
+```
+
+Thus an odd nonempty subset of the five roots occurs at the active ends of
+these mixed payment intervals.
+
+This is stronger than retaining two separate odd ledgers: an odd number of
+their occurrences are joined by canonical paths inside the located
+residual shore.  It is the residual analogue of the isolated
+`u_i--z_i--v_i` payment paths from Section 255, with the important scope
+difference that the active endpoint of a mixed interval need not be a
+degree-one vertex of `H_a^C`; therefore the reverse tags of Section 284 are
+not claimed to pair bijectively with these intervals.  The next price must
+couple the odd root-indexed family (908) to the nonzero aggregate reverse
+tag (901).
