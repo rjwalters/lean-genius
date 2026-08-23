@@ -24748,3 +24748,48 @@ pairs afterwards shows, for example, that replacing `c` in (1657) by
 the sufficient threshold `q>1172+40700(t-1)`.  This coefficient is
 coarser than the overlapping rainbow fan of Section 459; its distinct
 gain is literal vertex-disjointness of the complete constant-size traces.
+
+## 466. Fixed-root disjoint traces export only to unselected colors
+
+Apply the last paragraph of Section 465 and retain `t` pairwise
+vertex-disjoint traces on one fixed root pair `{r,s}`.  Thus it is enough
+that
+
+```text
+q>1172+40700(t-1).                                (1658)
+```
+
+Let `H_sel` be their `t` pairwise distinct source colors.  At an endpoint
+of one `h`-trace component, the other incident edge of the alternating
+`{r,s}`-factor has some color `g!=h`.  In fact `g notin H_sel`.  Otherwise
+that edge is one of the four `{r,s}`-factor edges in the selected
+`g`-trace, so the `h`- and `g`-traces share their endpoint, contradicting
+full-trace vertex-disjointness.
+
+Moreover, endpoints belonging to different selected traces are distinct.
+The exact numbers of boundary-transition vertices contributed by the five
+trace shapes are therefore
+
+```text
+P_4: 2,       C_4: 0,
+P_3 disjointUnion P_1: 4,
+P_2 disjointUnion P_2: 4,
+P_2 disjointUnion P_1 disjointUnion P_1: 6.       (1659)
+```
+
+If their respective shape counts are `n_4,n_C,n_31,n_22,n_sp`, the union
+of selected traces has exactly
+
+```text
+2n_4+4n_31+4n_22+6n_sp                           (1660)
+```
+
+distinct boundary vertices, and every outward factor edge at those
+vertices has a color outside `H_sel`.  In particular `n_sp` resistant
+sparse traces export through `6n_sp` distinct vertices into unselected
+colors, improving the factor-two overlap allowance in (1653) after the
+stronger adaptive packing has been invoked.
+
+The common-root restriction is essential: for traces on different root
+pairs, a boundary edge of color `g` need not belong to the four-edge trace
+selected for `g`.  No such cross-root claim is used here.
