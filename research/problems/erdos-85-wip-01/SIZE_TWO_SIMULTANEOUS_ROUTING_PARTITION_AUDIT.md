@@ -8591,3 +8591,51 @@ The remaining task is to price the four possible endpoint-type pairs
 actual-owner expenditure (510).  Any successful price must be invariant
 under inserting or deleting a length-two subinterval, so only an odd
 run-length holonomy can survive.
+
+## 162. Saturation survives only as a V-port-mate route at a boundary
+
+Section 160 eliminates `(2,1)` cells internal to an H-run, but the boundary
+theory of Sections 137--144 has one nonvacuous saturated channel.  Let an
+H--V root pair at center root `x` have H port `z_H`, V port `z_V`, and
+opposite roots `x_H,x_V`.  A saturated cell for `u` has
+
+```text
+u adjacent to x_H and x_V, and to exactly one of z_H,z_V. (516)
+```
+
+It cannot expose `z_H`: then `u` would meet the aligned H dart
+`(x_H,z_H)` in both its root and port, contradicting Section 160.  Therefore
+the exposed port is `z_V`.  Since `u` is also adjacent to `x_V`, the port-
+mate dart `(x_V,z_V)` is a rooted V triangle whose unique intermediate is
+`u`.  In the complete decoration alphabet,
+
+```text
+(2,1) at an H--V boundary
+implies the V port mate is decorated V_u.             (517)
+```
+
+Conversely, if the V port mate is `V_u`, `t_u=1`, and `u` is adjacent to
+the H-side opposite root `x_H`, then `u` is adjacent to both opposite roots
+and to `z_V`; these exhaust its two `c`-neighbors and its unique target
+port, so the cell is saturated.  Thus, with those explicit incidence and
+activity conditions, (517) is an equivalence.
+
+The V dart at the boundary itself has some actual label `ell`.  Necessarily
+`ell != u`: equality would make `u` adjacent to both roots `x,x_V` of
+`z_V`, while those roots already have common neighbor `z_V`, violating C4.
+Hence every surviving saturated boundary is the resolved color-turn port
+pair
+
+```text
+(V_ell,V_u),  ell != u,                              (518)
+```
+
+seen from an adjacent H--V root transition, together with the extra crossed
+incidence `u--x_H`.
+
+This sharply scopes the private-curvature theory of Sections 143--144.  Its
+saturated source is not a generic `(2,1)` connection state: it is exactly a
+V-port-mate owner occurrence of the form (518).  All internal run relays are
+unsaturated by Section 160, while every saturated boundary unit already
+carries the actual secondary route label needed for owner-sensitive
+pricing.
