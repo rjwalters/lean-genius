@@ -2550,6 +2550,40 @@ both endpoints.  This supplies an exact private feature layer on top of the
 conserved occurrence graph, in the format required by the shared tagged-
 bundle rigidity program.
 
+For this occurrence layer the shared reversal-rigidity interface is not a
+target but an exact theorem.  Let a dart be an incidence `(p,z)` where
+`p in U_+ union U_-` and the active outside label z contracts to an H-edge.
+The unique positive/negative neighbor statement defines a fixed-point-free
+route reversal `rho` pairing the two darts over z.  In the free module on
+active outside labels define
+
+```text
+Phi(p,z) = +e_z  for p in U_+,
+Phi(p,z) = -e_z  for p in U_-.                           (73rnz_u)
+```
+
+Then `Phi(rho d)=-Phi(d)`, and the realized dart sum vanishes coordinatewise:
+
+```text
+sum_(realized darts d) Phi(d)=0.                         (73rnz_v)
+```
+
+After quotienting by route reversal, one representative column remains for
+each active z, and these columns are the distinct basis vectors `e_z`.
+They are therefore linearly independent over every coefficient field.  The
+coefficient-peeling argument of the shared tagged-bundle schema now forces
+the two realized orientations over every z to have equal weight (indeed both
+weights are one here).  Thus occurrence-weight reversibility is proved for
+the entire `a=2,s=0` transversal layer, uniformly in epsilon.
+
+Consequently every additive route-odd functional whose label is resolved at
+the active outside occurrence cancels pairwise on H.  Any surviving
+obstruction must either use the inactive zero-current set from (73rnz_t), or
+couple labels belonging to different H-edges in a way not visible to the
+private coordinate `e_z`.  This cleanly separates the solved local
+reversibility problem from the remaining genuinely simultaneous label
+transport.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
