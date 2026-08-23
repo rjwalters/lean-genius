@@ -261,6 +261,79 @@ def exact_certificate(system: dict, result) -> dict | None:
     }
 
 
+def unit_nondiagonal_fiber_certificate(system: dict, point: int) -> dict | None:
+    """Exact unit-row-price certificate with the natural fiber price mask.
+
+    Only outgoing point prices at the four non-diagonal roots through
+    ``point`` and incoming prices at ``point`` itself are allowed.
+    """
+    blocks = system["blocks"]
+    caps = system["caps"]
+    cap_index = system["cap_index"]
+    fiber = {
+        row for row, block in enumerate(blocks)
+        if point in block and row != point % 8
+    }
+    if len(fiber) != 4:
+        raise RuntimeError(
+            f"point {point} has non-diagonal fiber {sorted(fiber)}"
+        )
+    allowed = [
+        index for index, (row, q) in enumerate(caps)
+        if row in fiber or q == point
+    ]
+    position = {old: new for new, old in enumerate(allowed)}
+    matrix = []
+    rhs = []
+    for u, v in system["edges"]:
+        need = int(u in fiber) + int(v in fiber)
+        if not need:
+            continue
+        row = np.zeros(len(allowed))
+        for q in blocks[v]:
+            index = cap_index[u, q]
+            if index in position:
+                row[position[index]] -= 1
+        for q in blocks[u]:
+            index = cap_index[v, q]
+            if index in position:
+                row[position[index]] -= 1
+        matrix.append(row)
+        rhs.append(-need)
+    result = linprog(
+        np.ones(len(allowed)), A_ub=np.array(matrix), b_ub=np.array(rhs),
+        bounds=(0, None), method="highs",
+    )
+    if not result.success:
+        return None
+    prices = [
+        Fraction(float(value)).limit_denominator(10**6) for value in result.x
+    ]
+    if any(price < 0 for price in prices):
+        return None
+    target = sum(system["degree"][row] for row in fiber)
+    cost = sum(prices, Fraction())
+    if not cost < target:
+        return None
+    for row, bound in zip(matrix, rhs):
+        lhs = sum(
+            (Fraction(int(coefficient)) * price
+             for coefficient, price in zip(row, prices)), Fraction()
+        )
+        if lhs > bound:
+            return None
+    return {
+        "point": point,
+        "support": sorted(fiber),
+        "cost": str(cost),
+        "target": target,
+        "point_prices": [
+            (caps[allowed[i]], str(price))
+            for i, price in enumerate(prices) if price
+        ],
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("payload", type=Path, nargs="?")
@@ -271,6 +344,7 @@ def main() -> None:
     parser.add_argument("--row-support", type=int, nargs="*")
     parser.add_argument("--minimize-row-support", action="store_true")
     parser.add_argument("--scan-nondiagonal-fibers", action="store_true")
+    parser.add_argument("--scan-unit-nondiagonal-fibers", action="store_true")
     args = parser.parse_args()
     if args.payload is None:
         if args.branch is None:
@@ -314,11 +388,22 @@ def main() -> None:
         print("nondiagonal_fiber_certificates=" + json.dumps(
             successes, separators=(",", ":")
         ))
+    if args.scan_unit_nondiagonal_fibers:
+        certificates = [
+            certificate for point in range(N_U1)
+            if (certificate := unit_nondiagonal_fiber_certificate(
+                system, point
+            )) is not None
+        ]
+        print("unit_nondiagonal_fiber_certificates=" + json.dumps(
+            certificates, separators=(",", ":")
+        ))
     if (not args.dual and not args.minimize_row_support
-            and not args.scan_nondiagonal_fibers):
+            and not args.scan_nondiagonal_fibers
+            and not args.scan_unit_nondiagonal_fibers):
         return
-    if args.scan_nondiagonal_fibers and not (
-            args.dual or args.minimize_row_support):
+    if (args.scan_nondiagonal_fibers or args.scan_unit_nondiagonal_fibers
+            ) and not (args.dual or args.minimize_row_support):
         return
     row_support = (
         minimum_row_support(system) if args.minimize_row_support
