@@ -2516,6 +2516,58 @@ theorem squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_cente
   · exact Or.inl hresidual.2
   · exact Or.inr hcore.2
 
+/-- Complement-law packaging of
+`squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center`.
+For an exceptional row the residual-center and U1-core-center counts sum to
+one, and either count is one exactly when the other is zero. -/
+theorem squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_resolution
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t b : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hxt : (secondOrderDefectGraph G).Adj x t)
+    (hb : b ∈ squareOrderNineLowIncidenceBin G 1 \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 1)) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let U1 := B 1 \ M
+    let A := (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+    let C := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+    A.card + C.card = 1 ∧
+      (A.card = 1 ↔ C.card = 0) ∧ (C.card = 1 ↔ A.card = 0) := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let U1 := B 1 \ M
+  let A := (G.neighborFinset t ∩ T) ∩ G.neighborFinset b
+  let C := (G.neighborFinset t ∩ U1) ∩ G.neighborFinset b
+  have hcenter :=
+    squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht hxt hb
+  dsimp only at hcenter
+  change (A.card = 1 ∧ C.card = 0) ∨
+    (A.card = 0 ∧ C.card = 1) at hcenter
+  change A.card + C.card = 1 ∧
+    (A.card = 1 ↔ C.card = 0) ∧ (C.card = 1 ↔ A.card = 0)
+  omega
+
 /-- Algebraic form of the decisive mixed-center compatibility constraint.
 The residual-center matrix `A Q` and the cubic-core matrix `Q K` have
 disjoint support, so their entrywise inner product (equivalently
@@ -3224,6 +3276,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_defect_iff_no_centers
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_ordinary_unmarked_three_way_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_resolution
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_core_trace_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_incidence_residual_gram_zero
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_unmarked_core_resolved_rows_card

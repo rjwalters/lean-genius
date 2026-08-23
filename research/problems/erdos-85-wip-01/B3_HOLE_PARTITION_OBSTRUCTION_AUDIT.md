@@ -4111,8 +4111,13 @@ r(h,b)=1 iff c(h,b)=0.                                      (13aj)
 ```
 
 Thus the blocks of the residual neighbors of `h` partition, exactly once,
-the complement of the K-core of `B_h`.  This is the theorem-ready DTB
-consequence to spend on the hole-fiber selector.  The seed-free existential
+the complement of the K-core of `B_h`.  This pointwise law is now
+kernel-checked by
+`squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_resolution`:
+for every exceptional ordinary row `h` and every `b in U1`, the residual-
+center and U1-core-center counts sum to one, with each count equal to one
+exactly when the other is zero.  This is the DTB consequence to spend on the
+hole-fiber selector.  The seed-free existential
 negation `q9_hole_fiber_negation_smt.py` encodes partial symmetric masses on
 the selected five-row fibers and reproduces fixed-payload UNSAT quickly, but
 an unrestricted branch-3 instance is UNKNOWN even for one hole at 60
