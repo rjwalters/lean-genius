@@ -8274,3 +8274,58 @@ payment after both endpoint orientation and owner/mate cancellation have
 been quotiented out.  A uniform proof must show that an odd-length selected
 run family cannot close all the censuses (494); a finite falsifier need only
 find such a family.
+
+## 155. A minimal activation obstruction is an odd-graded run circuit
+
+Package the two endpoint censuses of one H-run into a single feature
+column.  Let
+
+```text
+s(E):=(q_u^H(E),q_u^V(E))_u,
+g_A:=e_(ell(E_-)) tensor s(E_-)
+    +e_(ell(E_+)) tensor s(E_+),                       (497)
+```
+
+where `E_-,E_+` are the two boundaries of `A`; the first tensor coordinate
+places signatures with different route labels in disjoint blocks.  Then
+(494)--(495) say that a dual obstruction is exactly a coefficient vector
+`epsilon` satisfying
+
+```text
+sum_A epsilon_A g_A=0,
+sum_A epsilon_A (ell(A) mod 2)=1.                     (498)
+```
+
+Choose an obstruction of inclusion-minimal run support.  No nonempty proper
+subfamily of its selected columns can sum to zero.  Indeed, if such a
+subfamily had odd total run length it would itself be a smaller obstruction;
+if it had even total run length, deleting it would leave a smaller
+obstruction.  Hence the selected `g_A` form a binary matroid circuit, and
+the run-length grading of that circuit is odd.
+
+There is one degenerate circuit case, now completely explicit.  A single
+odd run `A` is an obstruction exactly when `g_A=0`.  From (497):
+
+```text
+if ell(E_-) != ell(E_+):
+    s(E_-)=s(E_+)=0;
+if ell(E_-)=ell(E_+):
+    s(E_-)=s(E_+).                                    (499)
+```
+
+Thus the base case of (496) is not automatic.  It reduces to excluding an
+odd H-run whose differently labeled ends are both secondary-silent, or
+whose equally labeled ends have identical full side-resolved secondary
+signatures.  Any proposed local activation proof must address precisely
+these two patterns.
+
+For a nondegenerate minimal obstruction, every feature coordinate appearing
+in one selected run column appears in at least one other selected run
+column; otherwise that coordinate would survive in the sum (498).  The
+privacy and collision analysis of Sections 123--127 can therefore be aimed
+directly at these circuit repetitions: private coordinates peel a run,
+while every surviving repeated coordinate must be assigned to the bounded
+labeled-collision sector.  This does not yet prove that the resulting
+circuit has even run-length grading, but it removes arbitrary selected-run
+families from consideration: only the zero-column patterns (499) and
+support-minimal collision circuits can obstruct activation.
