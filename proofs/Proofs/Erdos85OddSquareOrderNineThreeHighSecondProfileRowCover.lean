@@ -2595,6 +2595,137 @@ theorem squareOrderNine_threeHigh_secondProfile_exceptional_row_exact_cardinalit
   have hQ : Q.card = 3 := by omega
   exact ⟨hNU, hR, hC, hQ⟩
 
+/-- Exceptional-to-pair reciprocity in the exact form used by the coupled
+sixpack model.  The hole selects exactly three marked-support pair rows,
+at most one from each marked support.  Equivalently, these are precisely
+the pair rows whose complementary (triple-row) residual pattern contains
+the hole. -/
+theorem squareOrderNine_threeHigh_secondProfile_exceptional_pair_reciprocity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {x t : V} (hx : x ∈ squareOrderNineLowIncidenceBin G 3)
+    (ht : t ∈ (squareOrderNineLowIncidenceBin G 0) \
+      (G.neighborFinset x ∩ squareOrderNineLowIncidenceBin G 0))
+    (hxt : (secondOrderDefectGraph G).Adj x t) :
+    let B := squareOrderNineLowIncidenceBin G
+    let S := G.neighborFinset x ∩ B 0
+    let T := B 0 \ S
+    let M := G.neighborFinset x ∩ B 1
+    let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+    let C := (G.neighborFinset t ∩ T).filter fun u => u ∈ P
+    let Q := fun u => (G.neighborFinset u ∩ T).filter fun w => w ∉ P
+    C.card = 3 ∧
+      (∀ m ∈ M,
+        (C.filter fun u => u ∈ G.neighborFinset m ∩ B 0).card = 1) ∧
+      C = T.filter fun u => u ∈ P ∧ t ∈ Q u := by
+  classical
+  dsimp only
+  let B := squareOrderNineLowIncidenceBin G
+  let S := G.neighborFinset x ∩ B 0
+  let T := B 0 \ S
+  let M := G.neighborFinset x ∩ B 1
+  let P := M.biUnion fun m => G.neighborFinset m ∩ B 0
+  let C := (G.neighborFinset t ∩ T).filter fun u => u ∈ P
+  let Q := fun u => (G.neighborFinset u ∩ T).filter fun w => w ∉ P
+  let D := secondOrderDefectGraph G
+  have hcards :=
+    squareOrderNine_threeHigh_secondProfile_exceptional_row_exact_cardinalities
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht hxt
+  dsimp only at hcards
+  have hpattern :=
+    squareOrderNine_threeHigh_secondProfile_ordinary_pair_pattern
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+  dsimp only at hpattern
+  let F := fun m => G.neighborFinset m ∩ B 0
+  let CF := fun m => C.filter fun u => u ∈ F m
+  have hpack :=
+    squareOrderNine_threeHigh_secondProfile_marked_binOne_row_packing
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 hx
+  dsimp only at hpack
+  have hCFdisj : ∀ m ∈ M, ∀ n ∈ M, m ≠ n → Disjoint (CF m) (CF n) := by
+    intro m hm n hn hmn
+    exact (hpack.2.2.1 m hm n hn hmn).mono
+      (by intro u hu; exact (Finset.mem_filter.mp hu).2)
+      (by intro u hu; exact (Finset.mem_filter.mp hu).2)
+  have hCFunion : M.biUnion CF = C := by
+    ext u
+    constructor
+    · intro hu
+      simp only [Finset.mem_biUnion] at hu
+      obtain ⟨m, _hm, huCF⟩ := hu
+      exact (Finset.mem_filter.mp huCF).1
+    · intro huC
+      have huP := (Finset.mem_filter.mp huC).2
+      simp only [P, Finset.mem_biUnion] at huP
+      obtain ⟨m, hmM, hum⟩ := huP
+      simp only [Finset.mem_biUnion]
+      exact ⟨m, hmM, Finset.mem_filter.mpr ⟨huC, hum⟩⟩
+  have hsum : (∑ m ∈ M, (CF m).card) = 3 := by
+    rw [← Finset.card_biUnion hCFdisj, hCFunion, hcards.2.2.1]
+  have hEach : ∀ m ∈ M, (CF m).card = 1 := by
+    intro m hm
+    have hMcard : M.card = 3 := hpack.1
+    have hrest : (∑ n ∈ M.erase m, (CF n).card) ≤ 2 := by
+      calc
+        (∑ n ∈ M.erase m, (CF n).card) ≤ ∑ _n ∈ M.erase m, 1 := by
+          apply Finset.sum_le_sum
+          intro n hn
+          exact hpattern.2.2 n (Finset.mem_of_mem_erase hn)
+        _ = 2 := by simp [Finset.card_erase_of_mem hm, hMcard]
+    have hsplit := Finset.sum_erase_add M (fun n => (CF n).card) hm
+    have hsplit' : (∑ n ∈ M.erase m, (CF n).card) + (CF m).card = 3 :=
+      hsplit.trans hsum
+    have hmLe : (CF m).card ≤ 1 := hpattern.2.2 m hm
+    omega
+  have htNotP : t ∉ P := by
+    have hcent :=
+      squareOrderNine_threeHigh_secondProfile_ordinary_special_marked_center_dichotomy
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 hx ht
+    dsimp only at hcent
+    let NS := G.neighborFinset t ∩ S
+    let NM := G.neighborFinset t ∩ M
+    change (D.Adj x t ∧ NS.card = 0 ∧ NM.card = 0) ∨
+      (¬ D.Adj x t ∧ NS.card + NM.card = 1) at hcent
+    have hNMzero : NM.card = 0 := by
+      rcases hcent with hzero | hone
+      · exact hzero.2.2
+      · exact (hone.1 hxt).elim
+    intro htP
+    simp only [P, Finset.mem_biUnion] at htP
+    obtain ⟨m, hmM, htm⟩ := htP
+    have hmNM : m ∈ NM := Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset t m).mpr
+        ((G.adj_comm m t).mp ((G.mem_neighborFinset m t).mp
+          (Finset.mem_inter.mp htm).1)), hmM⟩
+    have hempty : NM = ∅ := Finset.card_eq_zero.mp hNMzero
+    rw [hempty] at hmNM
+    simpa using hmNM
+  refine ⟨hcards.2.2.1, ?_, ?_⟩
+  · intro m hm
+    exact hEach m hm
+  ext u
+  simp only [C, Q, Finset.mem_filter, Finset.mem_inter]
+  constructor
+  · rintro ⟨⟨htu, huT⟩, huP⟩
+    refine ⟨huT, huP, ?_⟩
+    exact ⟨⟨(G.mem_neighborFinset u t).mpr
+      ((G.adj_comm t u).mp ((G.mem_neighborFinset t u).mp htu)), ht⟩, htNotP⟩
+  · rintro ⟨huT, huP, ⟨htu, _htT⟩, _htNotP⟩
+    refine ⟨⟨?_, huT⟩, huP⟩
+    exact (G.mem_neighborFinset t u).mpr
+      ((G.adj_comm u t).mp ((G.mem_neighborFinset u t).mp htu))
+
 /-- On an exceptional (hole) ordinary row, the defect alternative in the
 mixed three-way resolution is impossible.  Hence every unmarked point is
 resolved by exactly one residual-B0 center or exactly one U1-core center.
@@ -3624,6 +3755,7 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_pair_pattern_mem_comm
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_neighbor_blocks_disjoint
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_row_exact_cardinalities
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_exceptional_pair_reciprocity
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residual_block_avoids_core
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_actual_pair_pattern_mem_allowed
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_pair_marked_defect_sum_odd
