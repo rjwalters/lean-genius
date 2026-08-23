@@ -523,6 +523,27 @@ def integer_dual_pivot_profile(data: dict, nonzero: list[tuple]) -> tuple:
             tuple(relay_capacities))
 
 
+def integer_dual_slack_profile(data: dict, nonzero: list[tuple]) -> tuple:
+    """List the exceptional positive-slack candidate inequalities."""
+    (equalities, _, capacities, _, equality_names, capacity_names,
+     _) = full_bundle_primal_system(data)
+    equality_values = dict(nonzero)
+    capacity_values = dict(nonzero)
+    y = np.array([equality_values.get(name, 0) for name in equality_names])
+    z = np.array([capacity_values.get(name, 0) for name in capacity_names])
+    values = np.asarray(equalities.T @ y + capacities.T @ z).ravel()
+    exceptions = []
+    column = 0
+    for t in range(N):
+        for u in data['candidates'][t]:
+            value = int(values[column])
+            if value:
+                exceptions.append((t, u, value))
+            column += 1
+    return (len(values), tuple(sorted(Counter(map(int, values)).items())),
+            tuple(exceptions))
+
+
 def linear_state_bundle_dual(data: dict) -> tuple[bool, str]:
     """Test external-label potentials linear in signature and role census."""
     from scipy.sparse import hstack
@@ -1601,6 +1622,9 @@ def main() -> int:
                 print(f"integer_bundle_pivots branch={branch} "
                       f"seed={seed_number} colors={colors} "
                       f"profile={integer_dual_pivot_profile(candidate, nonzero)}")
+                print(f"integer_bundle_slacks branch={branch} "
+                      f"seed={seed_number} colors={colors} "
+                      f"profile={integer_dual_slack_profile(candidate, nonzero)}")
             integer_labels.append((label, success, exact, len(nonzero)))
         print(f"integer_bundle_dual_survivors={integer_labels}")
         audit_failed |= any(not success or not exact

@@ -1832,6 +1832,23 @@ or four pivot labels, and include pair-side demand roots.  The compact
 two-pivot B0-only ledgers are therefore the better uniform target even though
 they require one extra transport layer on some roots.
 
+The compact ledgers are much closer to identities than their size suggests.
+The integer audit now evaluates the left side of `(12ro)` on every candidate
+column and lists every positive-slack exception.  The exact distributions are
+
+```text
+branch 3: 766 of 770 columns tight; 4 have slack 1;
+branch 4, first pattern: 744 of 752 tight; 6 have slack 1, 2 slack 2;
+branch 4, second pattern:742 of 752 tight; 10 have slack 1.     (12rt)
+```
+
+Thus 2252 of the 2274 candidate inequalities are equalities.  The audit
+prints the remaining 22 ordered routes explicitly.  This changes the likely
+proof architecture: construct an exact joint-state transport identity on the
+pivot/relay network, then verify nonnegativity on a bounded exceptional-route
+alphabet.  Trying to guess dozens of unrelated capacity prices obscures this
+near-equality structure.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
