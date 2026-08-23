@@ -495,6 +495,52 @@ def integer_full_bundle_dual(data: dict, time_limit: float = 60) -> tuple:
             int(np.min(column_values, initial=0)))
 
 
+def bounded_integer_full_bundle_dual(
+        data: dict, coefficient_bound: int = 2,
+        time_limit: float = 60) -> tuple:
+    """Seek any exact integer dual with every coefficient bounded."""
+    from scipy.sparse import hstack
+
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     capacity_names, _) = full_bundle_primal_system(data)
+    equality_count = equalities.shape[0]
+    capacity_count = capacities.shape[0]
+    columns = hstack([equalities.T, -equalities.T, capacities.T], format='csr')
+    scalar = lil_matrix((1, 2 * equality_count + capacity_count))
+    scalar[0, :equality_count] = equality_rhs
+    scalar[0, equality_count:2 * equality_count] = -equality_rhs
+    scalar[0, 2 * equality_count:] = capacity_rhs
+    constraints = vstack([columns, scalar.tocsr()], format='csr')
+    variable_count = constraints.shape[1]
+    result = milp(
+        np.zeros(variable_count), integrality=np.ones(variable_count),
+        bounds=Bounds(np.zeros(variable_count),
+                      np.full(variable_count, coefficient_bound)),
+        constraints=LinearConstraint(
+            constraints,
+            np.r_[np.zeros(columns.shape[0]), -np.inf],
+            np.r_[np.full(columns.shape[0], np.inf), -1]),
+        options={'time_limit': time_limit})
+    if result.x is None:
+        return False, result.message, [], False, 0, 0
+    rounded = np.rint(result.x).astype(int)
+    y = (rounded[:equality_count]
+         - rounded[equality_count:2 * equality_count])
+    z = rounded[2 * equality_count:]
+    column_values = equalities.T @ y + capacities.T @ z
+    scalar_value = int(equality_rhs @ y + capacity_rhs @ z)
+    exact = bool(np.max(np.abs(result.x - rounded), initial=0) < 1e-7
+                 and np.all(column_values >= 0) and scalar_value < 0
+                 and np.max(np.abs(y), initial=0) <= coefficient_bound
+                 and np.max(z, initial=0) <= coefficient_bound)
+    nonzero = ([(equality_names[index], int(value))
+                for index, value in enumerate(y) if value]
+               + [(capacity_names[index], int(value))
+                  for index, value in enumerate(z) if value])
+    return (True, result.message, nonzero, exact, scalar_value,
+            int(np.min(column_values, initial=0)))
+
+
 def integer_dual_pivot_profile(data: dict, nonzero: list[tuple]) -> tuple:
     """Summarize pivot labels hitting every negative-demand support."""
     demand_roots = {name[1] for name, value in nonzero
@@ -1411,6 +1457,14 @@ def main() -> int:
                         help="extract sparse duals for restricted-Hall survivors")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
                         help="search integer duals for restricted-Hall survivors")
+    parser.add_argument("--audit-bounded-bundle-dual", action="store_true",
+                        help="seek coefficient-bounded integer survivor duals")
+    parser.add_argument("--integer-dual-time-limit", type=float, default=60,
+                        help="seconds per integer bundle-dual survivor")
+    parser.add_argument("--dual-seed-filter", default="",
+                        help="comma-separated seed numbers to analyze in dual modes")
+    parser.add_argument("--bounded-dual-coefficient", type=int, default=2,
+                        help="absolute coefficient bound for bounded dual mode")
     parser.add_argument("--audit-linear-bundle-dual", action="store_true",
                         help="test linear state-potential duals on survivors")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
@@ -1444,6 +1498,8 @@ def main() -> int:
                                                 "fiber-type-total-incidence-threshold-farkas"),
                         default="basic")
     args = parser.parse_args()
+    dual_seed_filter = ({int(value) for value in args.dual_seed_filter.split(',')
+                         if value} if args.dual_seed_filter else set())
     if os.environ.get('PYTHONHASHSEED') != '0':
         print("warning: set PYTHONHASHSEED=0 before launch for reproducible "
               "outer-model seed labels", file=sys.stderr)
@@ -1595,6 +1651,8 @@ def main() -> int:
     if args.audit_full_bundle_dual:
         dual_labels = []
         for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
             _, bad_rows = zero_loss_restricted_hall_audit(candidate)
             if bad_rows:
                 continue
@@ -1613,11 +1671,14 @@ def main() -> int:
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
             _, bad_rows = zero_loss_restricted_hall_audit(candidate)
             if bad_rows:
                 continue
             (success, message, nonzero, exact, scalar,
-             min_column) = integer_full_bundle_dual(candidate)
+             min_column) = integer_full_bundle_dual(
+                 candidate, args.integer_dual_time_limit)
             branch, seed_number, colors = label
             print(f"integer_bundle_dual branch={branch} seed={seed_number} "
                   f"colors={colors} success={success} exact={exact} "
@@ -1635,9 +1696,36 @@ def main() -> int:
         print(f"integer_bundle_dual_survivors={integer_labels}")
         audit_failed |= any(not success or not exact
                             for _, success, exact, _ in integer_labels)
+    if args.audit_bounded_bundle_dual:
+        bounded_labels = []
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            (success, message, nonzero, exact, scalar,
+             min_column) = bounded_integer_full_bundle_dual(
+                 candidate, args.bounded_dual_coefficient,
+                 args.integer_dual_time_limit)
+            branch, seed_number, colors = label
+            print(f"bounded_bundle_dual branch={branch} seed={seed_number} "
+                  f"colors={colors} success={success} exact={exact} "
+                  f"scalar={scalar} min_column={min_column} "
+                  f"nonzero_count={len(nonzero)} message={message}")
+            if exact:
+                print(f"bounded_bundle_slacks branch={branch} "
+                      f"seed={seed_number} colors={colors} "
+                      f"profile={integer_dual_slack_profile(candidate, nonzero)}")
+            bounded_labels.append((label, success, exact, len(nonzero)))
+        print(f"bounded_bundle_dual_survivors={bounded_labels}")
+        audit_failed |= any(not success or not exact
+                            for _, success, exact, _ in bounded_labels)
     if args.audit_linear_bundle_dual:
         linear_labels = []
         for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
             _, bad_rows = zero_loss_restricted_hall_audit(candidate)
             if bad_rows:
                 continue
@@ -1656,6 +1744,7 @@ def main() -> int:
             or args.audit_zero_loss_restriction
             or args.audit_full_bundle_primal or args.audit_full_bundle_dual
             or args.audit_integer_bundle_dual
+            or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):
         return 1 if audit_failed else 0
     if not data:

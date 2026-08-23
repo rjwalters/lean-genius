@@ -1884,36 +1884,51 @@ a_t + sum_{b in B_u cap selected} q_t(b)
 
 with `epsilon=0` on the tight columns and positive only on the exceptional
 routes listed by the audit.  Thus the certificate is a flat root-to-port
-transport
-connection away from a pivot-supported curvature set.  The scalar
+transport connection away from a localized curvature set for the `iota=0`
+ledgers above.  The scalar
 contradiction is its one-unit capacity defect after summing the flat transport
 against a normalized matching flow.  This is also the closest B.3 dictionary
 to the simultaneous-routing lane's connection/holonomy language: `p` is the
 incoming labeled potential, `q` the capacity-corrected outgoing potential,
-and `epsilon` the localized curvature.
+and `epsilon` the localized curvature.  This `p,q` form is not asserted for
+certificates using alpha or `iota=1` states.
 
-The corrected uniform target suggested by all four exact ledgers encountered
-so far is the following, deliberately stated as a conjecture rather than a
-classification already obtained.
+The proposed pivot-flat generalization did not survive its next required
+test.  A deterministic 32-seed run found eleven restricted-Hall survivors.
+Seven obtained exact integer certificates within the 60-second per-instance
+limit and four integer searches timed out.  Among the five new solved
+branch-4 patterns, some certificates use alpha rows, some use `iota=1`
+bundle states, some put demand on pair-side roots, and their capacity support
+is not controlled by a two-label pivot set.  Therefore the following former
+conjecture is **REFUTED**:
 
 ```text
-PIVOT-FLAT CERTIFICATE CONJECTURE (q=9):
-every branch-3/4 quotient passing the zero-loss restricted Hall test has
-sets P,R of selected labels, |P|<=2 and |R|<=1, and an integral (12ro)
-certificate such that
-  * its scalar is -1 and every coefficient has absolute value at most 2;
-  * bundle multipliers use only iota=0 external states;
-  * negative demand roots are among the B0 roots incident with P;
-  * capacity prices outside demand roots use labels in P union R; and
-  * epsilon(t,u)>0 in (12ru) implies B_t meets P union R.       (12rv)
+PIVOT-FLAT CERTIFICATE CONJECTURE.                           (12rv, false)
 ```
 
-Here `R` is empty in three observed ledgers and is the singleton secondary
-relay `{7}` in the remaining branch-4 ledger.  Statement `(12rv)` survives
-the twenty-seed falsifier that killed `(12rs)` and packages exactly the
-structure needed for a finite equality-case proof.  Its next required test is
-not another numbered-root comparison but an audit over more deterministic
-outer models that searches jointly for the bounded pivot/relay support.
+What survives in the L1-solved models is the full-state flatness, not the
+pivot support.  Every one of the seven solved certificates has scalar `-1`,
+coefficients of absolute value at most two, and between two and ten
+positive-slack candidate columns; all other columns satisfy the corresponding
+full `(12ro)` expression with equality.
+
+A separate bounded-feasibility mode then tested whether coefficient bound two
+itself was uniform.  It is not: the branch-3 survivor `(3,21,(1,2))` is
+infeasible under that bound, while four other searches time out.  Moreover,
+arbitrary bound-two certificates found for the easy instances are dense and
+can have dozens of positive-slack columns.  Thus small coefficients and
+near-flatness are distinct objectives.  The honest replacement target is
+
+```text
+FULL-STATE SPARSE-CURVATURE CERTIFICATE:
+every restricted-Hall survivor has a scalar -1 integral (12ro) certificate
+whose positive-curvature support is a bounded, locally classifiable route
+alphabet, allowing alpha and both iota states.                (12rv*)
+```
+
+The unresolved L1 searches mean `(12rv*)` remains conjectural.  They are the
+next computational targets; no pivot or coefficient-two restriction should
+be imposed on their duals.
 
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
