@@ -12161,3 +12161,69 @@ boundaries and their joint support.  That is structural convergence, not a
 map or a proof of the B3 capacity assertion.  Here (732)--(734) are exact
 consequences of the two owner-factor cuts and retain the receiving color,
 the physical boundary components, and the active `q_y` occurrences.
+
+## 241. The two factor cuts force an odd root-to-port alternating path census
+
+The shared label `y` in (732) carries more information than the pair of bits
+`(r_y,t_y)`.  The edge `N_c(y)` belongs to the two-factor `F_a[c]`.  On each
+cycle of that factor, pair the two boundary edges surrounding every maximal
+nonempty run in `C`.  This gives a fixed-point-free involution
+
+```text
+mu_C : {y:r_y=1} -> {y:r_y=1}.                       (735)
+```
+
+Likewise the maximal `Z`-runs in the cycles of `F_a[e]` give
+
+```text
+mu_Z : {y:t_y=1} -> {y:t_y=1}.                       (736)
+```
+
+These are occurrence-level pairings: a `mu_C` edge remembers the actual
+owner-`c` run in `F_a[c]`, and a `mu_Z` edge remembers the actual owner-`e`
+run in `F_a[e]`.  They do not require a choice of orientation.  The absence
+of two-cycles in the owner factors ensures that the two boundary edges of a
+run are distinct.
+
+Form the two-colored multigraph `P_a(C,Z)` whose vertices are the labels with
+`r_y=1` or `t_y=1`, whose red edges are the pairs of `mu_C`, and whose blue
+edges are the pairs of `mu_Z`.  A vertex in sector `10` has red degree one
+and blue degree zero; a vertex in sector `01` has blue degree one and red
+degree zero; and a vertex in sector `11` has one edge of each color.  Hence
+every component is an alternating cycle or an alternating path, and the path
+endpoints lie in the singleton sectors.
+
+On an alternating path, the number of internal `11` vertices is odd exactly
+when its two endpoints have different sectors.  Indeed the first and last
+edge colors differ exactly when the endpoints are respectively `10` and
+`01`; an alternating word has different end colors exactly when it has even
+length, equivalently an odd number of internal vertices.  Alternating cycles
+have even order.  Summing over components therefore gives the exact parity
+identity
+
+```text
+#{11 labels}
+ = #{alternating paths from a 10 label to a 01 label} mod 2.   (737)
+```
+
+Since the export has `n_11=1`, (737) proves
+
+```text
+there are an odd number of owner-run alternating paths joining
+a root-only boundary label to a port-only active label.        (738)
+```
+
+This upgrades the scalar payment (734) to an explicit, owner-resolved route.
+The `11` labels on the interior of such a path are precisely exported active
+labels; its `10` endpoint is the inactive `c`-boundary propagation mark, and
+its `01` endpoint has odd H-port `q_y` mass by (733).  Thus at least one odd
+export is transported through the actual two owner factors to a port-only
+active occurrence, with all intermediate private labels retained.
+
+Statement (738) is still not the terminal capacity contradiction.  A path
+may contain several `11` labels and (733) is a parity statement on the closed
+H cycle, not a choice of one private port occurrence.  The remaining theorem
+can now be posed on these alternating owner-run paths, rather than on three
+unrelated sector populations: combine their endpoint `q_y` words with the
+`01` union flags and the complementary H/V/S boundary terms, and prove that
+the resulting path boundary has zero total capacity.
