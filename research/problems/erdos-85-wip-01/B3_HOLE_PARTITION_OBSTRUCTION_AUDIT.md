@@ -4600,6 +4600,27 @@ selector no longer quantifies over row weights or their denominators.  The
 point-price optimum remains genuinely fractional (observed denominators
 reach 56), so only the row-weight part has been normalized away.
 
+The dual of this fixed cover is particularly concrete.  For an incident pair
+`(t,h)`, put nonnegative weights `a_v` on trace-eligible neighbors of `t` and
+`b_v` on trace-eligible neighbors of `h`.  Each U1 point has capacity one in
+each family separately, and every neighbor eligible at both rows has the
+extra collision capacity `a_v+b_v <= 1` supplied by the shared-point price.
+If `t` and `h` are themselves mutually eligible, their one common edge is
+represented by the identification `a_h=b_t` (rather than two variables).
+Then the optimum cover cost is exactly
+
+```text
+max (sum_v a_v + 2 * sum_v b_v).
+```
+
+The scanner now rationalizes the solver's dual packing too, checks every
+capacity and exact equality with the cover cost, and emits it beside the
+price certificate.  Consequently (13ar) is equivalently the seed-free
+packing statement that some incident `(t,h)` has this maximum strictly below
+17.  This is the next combinatorial target; it couples the two otherwise
+independent row-feasibility systems in only one transparent inequality per
+common eligible neighbor.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

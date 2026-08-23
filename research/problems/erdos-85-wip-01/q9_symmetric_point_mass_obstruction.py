@@ -290,6 +290,7 @@ def fixed_two_row_shared_point_certificate(
     ]
     matrix = []
     rhs = []
+    constraint_edges = []
     row_price = {regular: regular_weight, hole: hole_weight}
     for u, v in system["edges"]:
         required = row_price.get(u, 0) + row_price.get(v, 0)
@@ -302,6 +303,7 @@ def fixed_two_row_shared_point_certificate(
             row[cap_index[v, point]] -= 1
         matrix.append(row)
         rhs.append(-required)
+        constraint_edges.append((u, v, required))
     result = linprog(
         np.ones(len(caps)),
         A_ub=np.array(matrix), b_ub=np.array(rhs),
@@ -313,6 +315,10 @@ def fixed_two_row_shared_point_certificate(
     prices = [
         Fraction(float(value)).limit_denominator(10**6)
         for value in result.x
+    ]
+    packing = [
+        Fraction(float(-value)).limit_denominator(10**6)
+        for value in result.ineqlin.marginals
     ]
     slacks = []
     for u, v in system["edges"]:
@@ -329,7 +335,25 @@ def fixed_two_row_shared_point_certificate(
         + system["degree"][hole] * hole_weight
     )
     cost = sum(prices, Fraction())
-    if cost >= target or min(slacks) < 0 or any(value < 0 for value in prices):
+    packing_value = sum(
+        weight * required
+        for weight, (_, _, required) in zip(packing, constraint_edges)
+    )
+    packing_capacities = [
+        sum(
+            (packing[index] * -Fraction(matrix[index][cap_index_value])
+             for index in range(len(packing))),
+            Fraction(),
+        )
+        for cap_index_value, keep in enumerate(allowed) if keep
+    ]
+    if (
+        cost >= target or min(slacks) < 0
+        or any(value < 0 for value in prices)
+        or any(value < 0 for value in packing)
+        or max(packing_capacities, default=Fraction()) > 1
+        or packing_value != cost
+    ):
         return None
     return {
         "regular": regular,
@@ -341,6 +365,12 @@ def fixed_two_row_shared_point_certificate(
         "target": str(target),
         "margin": str(Fraction(target) - cost),
         "minimum_edge_slack": str(min(slacks)),
+        "packing_value": str(packing_value),
+        "packing": [
+            ([u, v], str(weight), required)
+            for weight, (u, v, required) in zip(packing, constraint_edges)
+            if weight
+        ],
         "point_prices": [
             (caps[index], str(value))
             for index, value in enumerate(prices) if value
