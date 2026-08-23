@@ -1808,6 +1808,21 @@ joint state potentials: prove that every restricted-Hall equality pattern has
 one of these pivot/relay skeletons, then propagate the state multipliers along
 that skeleton to obtain `(12ro)`.
 
+There is also a root-free description of every displayed demand set.  In all
+three cases it is exactly
+
+```text
+{ t : type(t) in {triple,hole} and B_t meets the pivot set }.   (12rs)
+```
+
+For example, pivot 11 occurs in roots `{3,8,17,25,28}` in the branch-3
+survivor; the first four are precisely its triple/hole roots and root 28 is a
+pair-side root.  The two branch-4 pivot pairs behave identically.  The profile
+audit now checks `(12rs)` directly.  Hence both the pivot labels and the
+support of the negative demand weights have a design-theoretic description;
+only their multiplicities, the capacity slots, and the state-potential
+propagation remain to be classified.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

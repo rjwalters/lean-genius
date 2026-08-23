@@ -507,11 +507,19 @@ def integer_dual_pivot_profile(data: dict, nonzero: list[tuple]) -> tuple:
         if pivot_covers:
             break
     pivots = set(pivot_covers[0]) if len(pivot_covers) == 1 else set()
+    pivot_occurrences = tuple(
+        (b, tuple(t for t in range(N) if b in data['blocks'][t]),
+         tuple(t for t in sorted(demand_roots) if b in data['blocks'][t]))
+        for b in sorted(pivots))
+    predicted_demands = tuple(t for t in range(N)
+                              if data['types'][t] in (0, 1)
+                              and data['blocks'][t] & pivots)
     relay_capacities = [(name[1], name[2], value) for name, value in nonzero
                         if name[0] == 'capacity'
                         and name[1] not in demand_roots
                         and name[2] not in pivots]
-    return (tuple(sorted(demand_roots)), tuple(pivot_covers),
+    return (tuple(sorted(demand_roots)), tuple(pivot_covers), pivot_occurrences,
+            predicted_demands == tuple(sorted(demand_roots)),
             tuple(relay_capacities))
 
 
