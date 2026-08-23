@@ -2,7 +2,7 @@
 """Exact four-row residual-relation obstruction in the durable branch-4 model.
 
 The outer payload is independently pinned and checked by
-``q9_branch4_row40_interval_witness_verify.py``.  Here we enumerate every
+``verify_q9_branch4_row40_interval_witness.py``.  Here we enumerate every
 mutually trace-eligible, block-disjoint demanded neighborhood at rows
 6, 15, 23, and 28.  Their four B0 blocks share U1 point 14, so residual
 Gram orthogonality makes the four chosen neighborhoods pairwise disjoint.
