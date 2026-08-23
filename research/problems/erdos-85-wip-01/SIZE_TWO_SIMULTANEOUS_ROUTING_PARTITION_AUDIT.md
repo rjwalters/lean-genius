@@ -7269,3 +7269,47 @@ needed to know the local type of the primary defect.  The open conservation
 problem is now the parity relation among the two unsaturated families and
 the private saturated units in (411), followed by the separate refinement
 commutator from (396).
+
+## 138. Every secondary primary-boundary fiber has order at most seven
+
+The two unsaturated families in (412) also have uniform fiber bounds.  Fix
+`u` and consider a `(1,0)` H--V root cell.  Its unique incident opposite root
+`b` is one of the two elements of `N_c(u)`.  The port `z` on that side is
+one of the two elements of `N_e(b)`.  Once `(b,z)` is chosen, the other
+`c`-neighbor of `z` is the center root `x`; the other `e`-neighbor of `x`
+is the second port of the root pair, and that port's other root is fixed.
+Thus `(b,z)` determines the whole unordered root cell, if it has the required
+H--V decoration and `(1,0)` profile.  Hence
+
+```text
+|N_10(u)| <= |N_c(u)| * 2 <= 4.                      (413)
+```
+
+For a `(0,1)` cell, the exposed port is the unique target port `r` of `u`.
+Choose which of the two `c`-neighbors of `r` is the center `x`.  The other
+neighbor is the exposed-side opposite root; the second port at `x` and its
+opposite root are then forced by the degree-two fibers.  Therefore
+
+```text
+|N_01(u)| <= 2.                                      (414)
+```
+
+Finally Section 136, applied through Section 137, gives
+
+```text
+|N_21(u)| <= 1.                                      (415)
+```
+
+Combining (413)--(415),
+
+```text
+|N_10(u)|+|N_01(u)|+|N_21(u)| <= 7.                 (416)
+```
+
+These are bounds on actual decorated H--V cells, not merely on abstract bit
+patterns.  Some of the candidates counted above may fail the H--V decoration
+or profile tests, so the bounds need not be sharp.  The primary marked
+defect is now a disjoint union of secondary fibers of uniformly bounded
+order seven, with the only saturated member private.  A terminal argument
+may therefore be sought as a finite fiberwise parity/pricing lemma rather
+than an unbounded run-holonomy statement.
