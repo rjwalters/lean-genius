@@ -306,7 +306,8 @@ def forced_candidate_feasible(data: dict, t: int, u: int) -> bool:
             >= int(data["degree"][t]))
 
 
-def bundle_deletion_audit(data: dict) -> tuple[Counter, list[tuple]]:
+def bundle_deletion_audit(data: dict) -> tuple[
+        Counter, list[tuple], tuple[tuple[int, ...], ...]]:
     """Classify bidirectional deletion loss after bundle route pairing."""
     transitions = {(t, u) for t, u, _ in bundle_transition_boundaries(data)}
     losses = Counter()
@@ -320,7 +321,25 @@ def bundle_deletion_audit(data: dict) -> tuple[Counter, list[tuple]]:
         if forward + reverse == 0:
             zero_pairs.append((t, u, forced_candidate_feasible(data, t, u),
                                forced_candidate_feasible(data, u, t)))
-    return losses, sorted(zero_pairs)
+    adjacency = {}
+    for t, u, _, _ in zero_pairs:
+        adjacency.setdefault(t, set()).add(u)
+        adjacency.setdefault(u, set()).add(t)
+    unseen = set(adjacency)
+    shapes = []
+    while unseen:
+        stack = [unseen.pop()]
+        component = set(stack)
+        while stack:
+            vertex = stack.pop()
+            for neighbor in adjacency[vertex]:
+                if neighbor in unseen:
+                    unseen.remove(neighbor)
+                    component.add(neighbor)
+                    stack.append(neighbor)
+        shapes.append(tuple(sorted(len(adjacency[vertex])
+                                   for vertex in component)))
+    return losses, sorted(zero_pairs), tuple(sorted(shapes))
 
 
 def flat_signature_audit(data: dict) -> tuple[
@@ -1285,18 +1304,21 @@ def main() -> int:
         total_losses = Counter()
         total_zero = 0
         total_forced_both = 0
+        total_shapes = Counter()
         for label, candidate in all_data:
-            losses, zero_pairs = bundle_deletion_audit(candidate)
+            losses, zero_pairs, shapes = bundle_deletion_audit(candidate)
             total_losses.update(losses)
             total_zero += len(zero_pairs)
             total_forced_both += sum(forward and reverse
                                      for _, _, forward, reverse in zero_pairs)
+            total_shapes.update(shapes)
             branch, seed_number, colors = label
             print(f"bundle_deletion branch={branch} seed={seed_number} "
                   f"colors={colors} losses={dict(losses)} "
-                  f"zero_pairs={zero_pairs}")
+                  f"zero_pairs={zero_pairs} zero_shapes={shapes}")
         print(f"bundle_deletion_total_losses={dict(total_losses)} "
-              f"zero_pairs={total_zero} forced_both={total_forced_both}")
+              f"zero_pairs={total_zero} forced_both={total_forced_both} "
+              f"zero_shapes={dict(total_shapes)}")
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")

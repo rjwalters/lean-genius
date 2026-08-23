@@ -1611,6 +1611,22 @@ outer routing equations: every edge of `Z` is locally viable in isolation.
 This is the B3 analogue of the transpose-even diagonal sector in the
 simultaneous owner-run lane.
 
+The zero-loss graph is itself extremely sparse.  In the eight-seed audit its
+61 edges form 53 isolated `K_2` components and four three-vertex paths; the
+maximum degree is two and there is no cycle.  The deletion audit now prints
+these exact component degree sequences.  This suggests
+
+```text
+ZERO-LOSS PATH FOREST:
+every component of Z is K_2 or P_3.                           (12rj)
+```
+
+Under (12rj), (12ri) reduces componentwise to one symmetric route weight on
+an isolated pair, or two weights meeting at the middle root of a three-root
+path.  The local feasibility checks show these components cannot be deleted
+one edge at a time; the remaining simultaneous equation must constrain the
+completion mass at their endpoint and middle rows.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
