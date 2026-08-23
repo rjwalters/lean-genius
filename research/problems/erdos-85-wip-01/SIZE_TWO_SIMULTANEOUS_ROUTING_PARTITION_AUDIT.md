@@ -25131,3 +25131,50 @@ No payer-layer avoidance is inherited by these frontier traces.  The gain
 is a new finite terminal: sparse resistance either manufactures many new
 allowed saturations, or forces many exact four-edge matchings on the same
 two-root factor.
+
+## 475. Every sparse trace has odd boundary in all three unused roots
+
+The scalable projection in Section 473 omits the other three root actions.
+Those actions already impose a parity coupling.  Let `X` be the vertex set
+of one sparse trace on roots `{r,s}`.  Its shape
+`P_2 disjointUnion P_1 disjointUnion P_1` has
+
+```text
+|X|=3+2+2=7.                                      (1685)
+```
+
+Fix any root `u notin {r,s}`.  The full-root property makes `G_u` a
+degree-one matching at every vertex of `O_5`.  Counting its incidences on
+`X` gives
+
+```text
+|delta_(G_u)(X)|=|X|-2|E(G_u[X])|
+                 =7-2|E(G_u[X])|,
+so |delta_(G_u)(X)| is odd and at least one.       (1686)
+```
+
+Now take `k` pairwise vertex-disjoint sparse traces `X_1,...,X_k` from the
+strong packing terminal.  For a fixed unused root `u`, contract each
+`X_i` to one gadget vertex and retain the `G_u`-edges joining different
+gadgets or joining a gadget to the outside.  By (1686), every gadget
+vertex has odd degree in this interaction graph.  In particular,
+
+```text
+sum_(i=1)^k |delta_(G_u)(X_i)|>=k,
+sum_(u notin {r,s}) sum_i |delta_(G_u)(X_i)|>=3k. (1687)
+```
+
+There is also a union-level parity.  Put `X_*:=union_i X_i`.  If `k` is
+odd, then `|X_*|=7k` is odd, and the same matching identity gives
+
+```text
+|delta_(G_u)(X_*)| is odd and nonzero
+for every one of the three unused roots u.         (1688)
+```
+
+Edges between two sparse gadgets contribute to the two individual
+boundaries in (1687) but cancel from the union boundary in (1688); no
+disjointness of boundary edges is being assumed.  The durable conclusion
+is instead three simultaneous odd-degree gadget-interaction layers.  This
+is precisely information absent from the scalable two-root construction
+of Section 473 and supplies the next coupling target for a contradiction.
