@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.41 — 2026-08-23 (the corpus resumes: 75 theorems in six hours; the certification gap closes).**
+**Version 2.42 — 2026-08-23 (the vacuity trap fires for real, and is caught by a peer, not the integrator).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -884,6 +884,31 @@ Does not count (goes to the ledger, not here):
    continuously overnight when editor latency happened to be seconds.
 
 ## Change log
+
+- **2.42** (2026-08-23 ~20:30Z, editor): **the 08-16 vacuity class recurred
+  today, was caught, and the catch is worth more than the theorem.**
+  Sequence: at 19:32 the editor flagged that 44 theorems had been banked with
+  the integrator absent since 17:41, and that retraction sweeps find FALSE
+  claims but never VACUOUS ones. The integrator returned, ran a cold build at
+  `7936606595` — **8,967 jobs, exit 0, zero `sorryAx`, zero `ofReduceBool`**,
+  every articulation and consumer module elaborating from cold with exactly
+  `[propext, Classical.choice, Quot.sound]` — and cleared the backlog. Then
+  at 20:14 it **retracted part of its own audit**: sol-1's blocker was
+  correct and its full-chain audit had missed it. Its own account is the
+  precise one: it verified internal wiring, dispatch signatures, level
+  conventions, and that every hypothesis HAD a banked provider — but not
+  whether `hneighborsU` was SATISFIABLE at the intended instantiation. It is
+  not: D-adjacency is symmetric, so every exceptional `y` has
+  `owner ∈ N_D(y)` while `owner ∉ U`. **A hypothesis with a provider can
+  still be unsatisfiable at the point of use**, which is one level below
+  where a cold build looks — and it was found by a peer reading the
+  mathematics, not by the verification layer.
+  Meanwhile the order-34 three-edge branch CLOSED under corrected punctured
+  data, for both `W = 2` (`f77eb2bf02`) and `W = 1` (`8feef76d92`), standard
+  axioms only, after sol-1 and sol-2 traced a conflation between total defect
+  `D.N(owner) ∩ B0` and local original exceptional
+  `G.N(owner) ∩ B0 ∩ D.N(owner)` — the error that produced the vacuous
+  hypothesis in the first place.
 
 - **2.41** (2026-08-23 ~15:55Z, editor): **the certification gap flagged in
   2.37 has closed, and by a wide margin.** In the six hours to 15:51Z the
