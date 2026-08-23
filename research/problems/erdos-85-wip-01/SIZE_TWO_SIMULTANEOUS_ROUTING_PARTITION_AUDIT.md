@@ -21338,3 +21338,67 @@ few large ones: all of the growth in `|E(M)|` comes from the `r-2` different
 exterior components.  This histogram is independent of the payer-layer
 saturation in Sections 396--398 and supplies a second finite interface for
 any sharpened alternating-cycle or transversal argument.
+
+## 400. Total payer slack is an exact private matching statistic
+
+The rootwise formula (1403) sums to one global identity.  Put
+
+```text
+b_B:=#{i:v_i in B},
+e_BB:=|E(M[B])|,
+S_sh:=sum_i s_i^sh.
+```
+
+By (1362), the fixed incidence mass on the private set is
+
+```text
+mu(B)=20+b_B.
+```
+
+Hence (1356) gives
+
+```text
+sum_(u in B)deg_M(u)=50-mu(B)=30-b_B.              (1409)
+```
+
+The left side of (1409) counts a `B--O` edge once and a `B--B` edge twice,
+whereas `sum_i h_i` counts every edge meeting `B` once.  Therefore
+
+```text
+sum_i h_i=30-b_B-e_BB.                             (1410)
+```
+
+Summing `delta_i=h_i+s_i^sh-2` from (1403) now yields the exact total
+unused-pool formula
+
+```text
+Delta:=sum_i delta_i
+      =20-b_B-e_BB+S_sh.                           (1411)
+```
+
+Thus a private strict mate or a private-to-private ordinary edge removes
+one unit of global payer slack, while a sheltered residual edge restores
+one.  These are the only corrections to the baseline twenty.
+
+There is a direct refinement of the saturation staircase.  For root `i`,
+among the `r-4` two-slot layers different from `gamma_i`, every layer not
+filled by two offset payers costs at least one unit of `delta_i`.  If `A`
+is the number of saturated root--layer pairs, then
+
+```text
+A>=sum_i(r-4-delta_i)
+  =5r-40+b_B+e_BB-S_sh.                            (1412)
+```
+
+Consequently some one of the `r-3` allowed payer layers is saturated at at
+least
+
+```text
+ceil((5r-40+b_B+e_BB-S_sh)/(r-3))
+```
+
+roots.  The coarse staircase (1398) is recovered from `Delta<=25`; (1412)
+records exactly when private strict concentration or `B--B` matching mass
+forces a stronger common-layer collision.  The remaining finite data are
+only the five strict-mate roles, the private matching `M[B]`, and the five
+possible shelters.
