@@ -149,6 +149,30 @@ theorem card_le_totalWeight_of_pairwiseDisjointPointCover
       intro p _ _
       exact hnonneg p
 
+omit [Fintype V] in
+/-- Denominator-cleared form of the fractional point-cover count.  It is
+convenient for exact certificates: `scale` is the common denominator and
+`weight` stores the integer numerators. -/
+theorem card_mul_le_totalWeight_of_pairwiseDisjointPointCover
+    {P : Type*} [Fintype P] [DecidableEq P]
+    (B : V → Finset P) (weight : P → ℕ) (scale : ℕ) (S : Finset V)
+    (hdisjoint : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → Disjoint (B x) (B y))
+    (hcover : ∀ x ∈ S, scale ≤ ∑ p ∈ B x, weight p) :
+    S.card * scale ≤ ∑ p : P, weight p := by
+  classical
+  have hpairwise : (S : Set V).Pairwise fun x y => Disjoint (B x) (B y) := by
+    intro x hx y hy hxy
+    exact hdisjoint x hx y hy hxy
+  calc
+    S.card * scale = ∑ _x ∈ S, scale := by simp
+    _ ≤ ∑ x ∈ S, ∑ p ∈ B x, weight p := by
+      exact Finset.sum_le_sum fun x hx => hcover x hx
+    _ = ∑ p ∈ S.biUnion B, weight p := by
+      symm
+      exact Finset.sum_biUnion hpairwise
+    _ ≤ ∑ p : P, weight p := by
+      exact Finset.sum_le_sum_of_subset (Finset.subset_univ _)
+
 /-- A fractional point cover of the contracted residual candidates supplies
 the strict reverse-interval rank certificate.  Shared points must imply a
 `W`-conflict, so a prepacking uses pairwise disjoint point sets. -/
@@ -206,6 +230,60 @@ theorem reverseIntervalRankDeficit_of_fractionalPointCover
         add_le_add_right hweightBound (F.card : ℚ)
       _ < d u := htotal
   exact Nat.cast_lt.mp hrat
+
+/-- Integer-scaled certificate interface for the reverse-interval rank
+deficit.  For example, thirds are represented by `scale = 3`; no rational
+arithmetic or division is needed in a concrete certificate. -/
+theorem reverseIntervalRankDeficit_of_scaledPointCover
+    {P : Type*} [Fintype P] [DecidableEq P] [DecidableEq V]
+    (H W : V → V → Prop) (d : V → ℕ) (u : V)
+    (B : V → Finset P) (weight : P → ℕ) (scale : ℕ)
+    (hscale : 0 < scale)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hcover : ∀ x, H u x →
+      x ∉ reverseForcedLocalGramNeighborFinset H W d u →
+      x ∉ reverseImpossibleLocalGramNeighborFinset H W d u →
+      (∀ f ∈ reverseForcedLocalGramNeighborFinset H W d u,
+        f ≠ x → ¬ W f x) →
+      scale ≤ ∑ p ∈ B x, weight p)
+    (htotal :
+      (reverseForcedLocalGramNeighborFinset H W d u).card * scale +
+        (∑ p : P, weight p) < d u * scale) :
+    HasReverseIntervalRankDeficitAt H W d u := by
+  classical
+  let F := reverseForcedLocalGramNeighborFinset H W d u
+  let I := reverseImpossibleLocalGramNeighborFinset H W d u
+  intro X hpre hFsub hdisjI
+  let S := X \ F
+  have hSX : S ⊆ X := Finset.sdiff_subset
+  have hblockDisjoint : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → Disjoint (B x) (B y) := by
+    intro x hx y hy hxy
+    by_contra hblocks
+    exact (hpre.2 x (hSX hx) y (hSX hy) hxy) (hshared x y hxy hblocks)
+  have hcovered : ∀ x ∈ S, scale ≤ ∑ p ∈ B x, weight p := by
+    intro x hx
+    have hxX : x ∈ X := hSX hx
+    have hxF : x ∉ F := (Finset.mem_sdiff.mp hx).2
+    have hxI : x ∉ I := by
+      intro hxI
+      exact (Finset.disjoint_left.mp hdisjI) hxX hxI
+    apply hcover x (hpre.1 x hxX) hxF hxI
+    intro f hfF hfx
+    exact hpre.2 f (hFsub hfF) x hxX hfx
+  have hweightBound : S.card * scale ≤ ∑ p : P, weight p :=
+    card_mul_le_totalWeight_of_pairwiseDisjointPointCover
+      B weight scale S hblockDisjoint hcovered
+  have hunion : F ∪ S = X := Finset.union_sdiff_of_subset hFsub
+  have hdisjFS : Disjoint F S := by
+    apply Finset.disjoint_left.mpr
+    intro x hxF hxS
+    exact (Finset.mem_sdiff.mp hxS).2 hxF
+  have hcard : X.card = F.card + S.card := by
+    rw [← hunion, Finset.card_union_of_disjoint hdisjFS]
+  have hmul : X.card * scale < d u * scale := by
+    rw [hcard, Nat.add_mul]
+    exact lt_of_le_of_lt (Nat.add_le_add_left hweightBound _) htotal
+  exact (Nat.mul_lt_mul_right hscale).mp hmul
 
 /-- A finite set of reverse-impossible candidates hits every demanded
 packing at one row.  Singleton hitting sets are the old reciprocity horn;
@@ -918,7 +996,9 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExtension
 #print axioms no_contractedExtension_of_reverseIntervalRankDeficit
 #print axioms card_le_totalWeight_of_pairwiseDisjointPointCover
+#print axioms card_mul_le_totalWeight_of_pairwiseDisjointPointCover
 #print axioms reverseIntervalRankDeficit_of_fractionalPointCover
+#print axioms reverseIntervalRankDeficit_of_scaledPointCover
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
