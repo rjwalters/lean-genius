@@ -3326,10 +3326,51 @@ observed `5` versus `4` gap.  The exact dual of value five puts unit weight
 on labels `{2,3,4,7,21}`.  This identifies the nonlinear residue as an odd-
 cycle matching obstruction, not numerical solver noise.
 
-Consequently a purely linear replacement of (13f) is false.  Fractional
-label covers remain a compact proof tool for one-row deficits and most kernel
-sides, but a uniform proof must retain at least one integral exact-cover
-argument in the exceptional branch-3 collision pattern.
+Adding the corresponding valid odd-cycle inequalities closes this stored
+integral gap exactly.  For every three pairwise-intersecting candidate
+blocks `a,b,c`, a matching satisfies
+
+```text
+x_a+x_b+x_c<=1.                                           (13h''')
+```
+
+The exact certificate mode now solves the point-capacity relaxation with all
+such Berge-triangle cuts and rationally verifies primal and dual objectives
+equal to four on both deletion rows.  At row 16 the upper certificate uses
+unit point prices at labels 7 and 21 together with unit prices on the two
+triangles `(4,34,41)` and `(20,35,42)` displayed in (13h'').  At row 11 it
+uses point prices at 8 and 14 and triangle prices on `(4,12,36)` and
+`(19,24,33)`.  Thus
+
+```text
+triangle-augmented fractional optimum = integral rank = 4
+at both sides of the stored forced collision.                    (13h'''')
+```
+
+This repairs the unique miss of the plain fractional label cover for the
+stored witness.  It does not yet prove that point caps plus Berge-triangle
+cuts suffice for every admissible outer design; that uniform assertion
+requires a seed-free argument or a wider adversarial test.
+
+The mode `--audit-residual-gram-triangle-summary` applies the strengthened
+relaxation to generated witnesses.  An initial eight-per-branch run had no
+uncovered design:
+
+```text
+branch 3: 7 triangle-certified deficits, 5 certified collisions;
+branch 4: 8 triangle-certified deficits, 5 certified collisions;
+uncovered: 0 of 16.                                      (13h''''')
+```
+
+The horns overlap in these counts.  This small run is only a regression test
+that the odd-cycle refinement retains the earlier easy certificates while
+closing the stored hard one; it is not evidence strong enough to promote the
+triangle-augmented statement to a theorem.
+
+Consequently a replacement using only fractional U1-label covers is false.
+Those covers remain a compact proof tool for one-row deficits and most kernel
+sides, but the exceptional branch-3 collision needs an additional integral
+or odd-cycle matching ingredient such as (13h''').
 
 The generic consumer of (13f) is now formalized in
 `Erdos85LocalGramPacking.lean`.  The theorem

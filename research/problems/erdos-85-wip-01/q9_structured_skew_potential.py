@@ -2521,6 +2521,98 @@ def local_candidate_matching_capacity(
     return maximum_label_packing(supports, set(range(N_U1)))
 
 
+def local_candidate_triangle_fractional_matching(
+        data: dict, row: int, excluded_row: int | None = None
+        ) -> tuple[float, list[tuple[int, tuple[int, ...], float]], int] | None:
+    """Fractional matching with every pairwise-intersecting triple cut."""
+    candidates = [u for u in data["candidates"][row] if u != excluded_row]
+    point_matrix = np.zeros((N_U1, len(candidates)))
+    for j, candidate in enumerate(candidates):
+        for label in data["blocks"][candidate]:
+            point_matrix[label, j] = 1
+    triangles = [
+        (i, j, k) for i, j, k in combinations(range(len(candidates)), 3)
+        if data["blocks"][candidates[i]] & data["blocks"][candidates[j]]
+        and data["blocks"][candidates[i]] & data["blocks"][candidates[k]]
+        and data["blocks"][candidates[j]] & data["blocks"][candidates[k]]
+    ]
+    triangle_matrix = np.zeros((len(triangles), len(candidates)))
+    for constraint, triangle in enumerate(triangles):
+        triangle_matrix[constraint, list(triangle)] = 1
+    matrix = (np.vstack((point_matrix, triangle_matrix))
+              if triangles else point_matrix)
+    result = linprog(-np.ones(len(candidates)), A_ub=matrix,
+                     b_ub=np.ones(matrix.shape[0]),
+                     bounds=[(0, 1)] * len(candidates), method="highs")
+    if not result.success:
+        return None
+    return (-float(result.fun),
+            [(candidate, tuple(sorted(data["blocks"][candidate])),
+              float(weight))
+             for candidate, weight in zip(candidates, result.x)
+             if weight > 1e-8], len(triangles))
+
+
+def local_candidate_exact_triangle_certificate(
+        data: dict, row: int, excluded_row: int | None = None
+        ) -> dict | None:
+    """Exactly verify a primal/dual certificate for the triangle-cut LP."""
+    candidates = [u for u in data["candidates"][row] if u != excluded_row]
+    point_matrix = np.zeros((N_U1, len(candidates)))
+    for j, candidate in enumerate(candidates):
+        for label in data["blocks"][candidate]:
+            point_matrix[label, j] = 1
+    triangles = [
+        (i, j, k) for i, j, k in combinations(range(len(candidates)), 3)
+        if data["blocks"][candidates[i]] & data["blocks"][candidates[j]]
+        and data["blocks"][candidates[i]] & data["blocks"][candidates[k]]
+        and data["blocks"][candidates[j]] & data["blocks"][candidates[k]]
+    ]
+    triangle_matrix = np.zeros((len(triangles), len(candidates)))
+    for constraint, triangle in enumerate(triangles):
+        triangle_matrix[constraint, list(triangle)] = 1
+    matrix = (np.vstack((point_matrix, triangle_matrix))
+              if triangles else point_matrix)
+    result = linprog(-np.ones(len(candidates)), A_ub=matrix,
+                     b_ub=np.ones(matrix.shape[0]),
+                     bounds=[(0, None)] * len(candidates), method="highs")
+    if not result.success:
+        return None
+    primal = [Fraction(value).limit_denominator(1_000_000)
+              for value in result.x]
+    dual = [Fraction(-value).limit_denominator(1_000_000)
+            for value in result.ineqlin.marginals]
+    primal_ok = all(
+        sum((Fraction(int(matrix[i, j])) * primal[j]
+             for j in range(len(candidates))), Fraction(0)) <= 1
+        for i in range(matrix.shape[0])
+    )
+    dual_ok = all(
+        sum((Fraction(int(matrix[i, j])) * dual[i]
+             for i in range(matrix.shape[0])), Fraction(0)) >= 1
+        for j in range(len(candidates))
+    )
+    primal_value = sum(primal, Fraction(0))
+    dual_value = sum(dual, Fraction(0))
+    if not primal_ok or not dual_ok or primal_value != dual_value:
+        return None
+    return {
+        "value": str(primal_value),
+        "primal": [
+            (candidates[j], tuple(sorted(data["blocks"][candidates[j]])),
+             str(value))
+            for j, value in enumerate(primal) if value
+        ],
+        "point_dual": [(label, str(dual[label]))
+                       for label in range(N_U1) if dual[label]],
+        "triangle_dual": [
+            (tuple(candidates[j] for j in triangles[i]), str(dual[N_U1 + i]))
+            for i in range(len(triangles)) if dual[N_U1 + i]
+        ],
+        "triangle_count": len(triangles),
+    }
+
+
 def residual_gram_unsat_core(data: dict, timeout_seconds: int) -> dict:
     """Return a grouped assumption core for degree plus Gram-only constraints."""
     from z3 import And, Bool, If, Implies, SolverFor, Sum, unsat
@@ -2700,6 +2792,8 @@ def main() -> int:
                         help="test fractional label-cover certification of the Gram dichotomy")
     parser.add_argument("--audit-residual-gram-gap-certificate", action="store_true",
                         help="exactly verify the stored fractional-integral gap witness")
+    parser.add_argument("--audit-residual-gram-triangle-summary", action="store_true",
+                        help="test point caps plus all Berge-triangle matching cuts")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -2773,6 +2867,10 @@ def main() -> int:
             "u": local_candidate_exact_fractional_certificate(candidate, u, w),
             "v": local_candidate_exact_fractional_certificate(candidate, v, w),
         }
+        triangle_certificates = {
+            "u": local_candidate_exact_triangle_certificate(candidate, u, w),
+            "v": local_candidate_exact_triangle_certificate(candidate, v, w),
+        }
         assert (u, v, w) in collisions
         assert capacities == {
             "base_u": 5, "base_v": 5, "delete_u": 4, "delete_v": 4}
@@ -2780,9 +2878,14 @@ def main() -> int:
         assert certificates["v"] is not None
         assert certificates["u"]["value"] == "9/2"
         assert certificates["v"]["value"] == "5"
+        assert triangle_certificates["u"] is not None
+        assert triangle_certificates["v"] is not None
+        assert triangle_certificates["u"]["value"] == "4"
+        assert triangle_certificates["v"]["value"] == "4"
         print("residual_gram_gap_certificate", {
             "collision": (u, v, w), "capacities": capacities,
-            "certificates": certificates})
+            "certificates": certificates,
+            "triangle_certificates": triangle_certificates})
         return 0
     if (args.audit_residual_c4_parity or args.audit_residual_gram_parity
             or args.audit_residual_gram_only):
@@ -2893,6 +2996,44 @@ def main() -> int:
                       f"seed={seed_number} deficit_duals={deficit_duals} "
                       f"collision_duals={collision_duals}")
         return 0
+    if args.audit_residual_gram_triangle_summary:
+        all_uncovered = []
+        for branch in (3, 4):
+            counts = Counter()
+            uncovered = []
+            for seed_number in range(args.seeds):
+                seed = make_outer_seed(
+                    branch, args.timeout_seconds * 1000, seed_number,
+                    require_eligible_hole_pair=args.require_eligible_hole_pair)
+                candidate = instance(branch, seed, (0, 1))
+                deficient = residual_gram_local_capacities(candidate)
+                collisions = residual_gram_forced_collisions(candidate)
+                certified_deficits = [
+                    row for row, demand, _ in deficient
+                    if (answer := local_candidate_triangle_fractional_matching(
+                            candidate, row)) is not None
+                    and answer[0] < demand - 1e-7
+                ]
+                certified_collisions = [
+                    (u, v, w) for u, v, w in collisions
+                    if (left := local_candidate_triangle_fractional_matching(
+                            candidate, u, excluded_row=w)) is not None
+                    and (right := local_candidate_triangle_fractional_matching(
+                            candidate, v, excluded_row=w)) is not None
+                    and left[0] < int(candidate["degree"][u]) - 1e-7
+                    and right[0] < int(candidate["degree"][v]) - 1e-7
+                ]
+                key = ("triangle-deficit" if certified_deficits
+                       else "no-triangle-deficit",
+                       "triangle-collision" if certified_collisions
+                       else "no-triangle-collision")
+                counts[key] += 1
+                if not certified_deficits and not certified_collisions:
+                    uncovered.append(seed_number)
+                    all_uncovered.append((branch, seed_number))
+            print(f"residual_gram_triangle_summary branch={branch} "
+                  f"counts={dict(counts)} uncovered={uncovered}")
+        return 1 if all_uncovered else 0
     if args.audit_residual_gram_dual_summary:
         all_uncovered = []
         for branch in (3, 4):
