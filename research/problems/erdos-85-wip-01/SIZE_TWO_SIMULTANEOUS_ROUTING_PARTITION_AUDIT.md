@@ -25530,3 +25530,35 @@ at least `max(t-10,0)` triple-reuse vertices in `O`, giving a residual
 kernel of width `ceil(max(t-10,0)/10)`.  Thus the reuse horn is not merely
 high multiplicity: it contains a fixed-three-port theta complex whose arm
 colors and layers also grow.
+
+## 483. The triple-port kernel has a six-coordinate rainbow subkernel
+
+For each companion `o` in the width-`K` kernel of Section 482 and each of
+the three fixed ports, record two port-tagged coordinates: the source color
+of the corresponding ordinary edge and the canonical payer layer of its
+payer label.  Build a conflict graph on the `K` companions, joining two
+when they agree in either coordinate at any one fixed port.
+
+At a fixed port, one source color occurs on at most two root edges and one
+payer layer contains at most two payer labels.  Thus each of the six
+port-tagged coordinates of one companion can create conflict with at most
+one other companion.  The conflict graph has maximum degree at most six,
+so greedy independent-set selection gives a set of size
+
+```text
+L>=ceil(K/7)>=ceil(ceil(t/10)/7).                 (1715)
+```
+
+Restrict (1713) to these `L` companion vertices.  It remains a subdivided
+`K_(3,L)`, and now, separately on each of its three arm families,
+
+```text
+the L source colors are pairwise distinct,
+the L canonical payer layers are pairwise distinct.             (1716)
+```
+
+Colors or layers at different ports may still agree; the coordinates are
+deliberately port-tagged.  Subject to that exact qualification, the reuse
+horn contains a companion kernel simultaneously rainbow in both finite
+coordinates along every arm, while retaining all of its length-four paths
+and eight-cycles.
