@@ -4213,6 +4213,40 @@ of that bit from primary matching atoms must exploit the canonical
 SRP center-state argument would silently replace an aggregate parity by a
 local label.
 
+The canonical star pairing nevertheless compresses that aggregate to a
+finite transition alphabet.  Give each endpoint the bit
+
+```text
+b(v):=t(v)x(v).
+```
+
+Use the `iota_y` pairing on the non-T endpoints and the fixed owner-adapted
+pairing on the broken-T endpoints.  Since these pairs partition `N_A(y)`,
+
+```text
+s(y)=sum_({v,w} paired at y) (b(v)+b(w))
+    =#{paired endpoints with b-word 01 or 10} mod 2.     (73rnz_cjibkh)
+```
+
+Thus only a **b-flip** pair contributes to activity.  Refining a pair by its
+T-word (`00` or `11`), b-word (`00,01,10,11`), owner flag, and the bounded
+endpoint subtype alphabet gives finitely many transition cells independent
+of q.  The population of a cell may grow with q, but only its parity enters
+(73rnz_cjibkh).  In particular an owner's inactive unit has the exact local
+expansion
+
+```text
+1+s(y)=1+sum_(b-flip transition cells at y) count(cell) mod 2.            (73rnz_cjibki)
+```
+
+This is the correct Baer analogue of the SRP run-flip word: the nonlinear
+one-hot state `s(y)` is the parity of finitely typed transitions, not a
+six-label local activity tuple.  Consequently the remaining conservation
+problem can be posed over the b-flip/owner transition table; no enumeration
+of a q-bit star word is required.  What is still unproved is the price that
+maps these transition parities, together with the leading owner unit in
+(73rnz_cjibki), to the primary atoms of `Phi_owner`.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
