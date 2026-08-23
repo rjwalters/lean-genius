@@ -13003,7 +13003,7 @@ For an exterior receiving color `a`, let
 I_a:={i:z_i in a},       Q_a:=sum_(i in I_a) v_i.
 ```
 
-Then (786) proves
+Then (791) proves
 
 ```text
 Q_a=0 iff I_a=empty,                                   (792)
