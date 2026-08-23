@@ -7709,3 +7709,48 @@ at any exceptional port: each of its rows has at most eleven competitors
 besides the saturated atom.  Connected overlap clusters can still grow by
 propagation through successive rows, so (448) is not a bound on component
 order or circuit length.
+
+## 146. Every separator is an Eulerian curvature-incidence system
+
+Each column of `C_(d,j)=P_ZQ` has even mass, because the cycle adjacency has
+column sum two.  Thus every active column vertex in the bipartite incidence
+graph of `C_(d,j)` has even degree (at most ten).
+
+Let `beta` realize the separator branch of (425), and keep precisely the
+column vertices with `beta_u=1`, together with all their incident row edges.
+The kernel equation
+
+```text
+C_(d,j) beta=0                                        (449)
+```
+
+says that every row vertex also has even degree in this selected subgraph.
+Therefore
+
+```text
+the selected row--atom incidence graph is Eulerian.   (450)
+```
+
+It decomposes into closed alternating trails.  If the distinguished atom
+`u_0` is saturated, its degree in this graph is two or four by Section 143,
+so it lies on a nontrivial closed-trail component; this recovers the overlap
+forced by the failure of the private-row alternative in Section 144.
+
+Moreover a support-minimal separator containing `u_0` may be taken connected.
+Indeed, if the selected Eulerian graph had several components, the column
+indicator of the component containing `u_0` would itself satisfy (449) and
+would give a smaller separator.  Hence the minimal separator problem is a
+connected Eulerian bounded-degree incidence problem, not an arbitrary linear
+dependency.
+
+One may pair the incident row edges at each atom vertex and contract that
+atom to transitions between curvature rows.  Degree-two atoms give canonical
+transitions; atoms of degree four or more introduce pairing choices.  Changing
+those choices is a gauge transformation of the resulting closed row trails,
+exactly as pairing a degree-four pivot changes the Baer quotient by a cycle.
+No pairing-independent holonomy is asserted here.
+
+Equations (448)--(450) supply the topology missing from the separator branch:
+bounded local degree plus Eulerian closure.  What remains is to attach the
+profile/mate labels to these closed trails and show that either their marked
+holonomy cancels or a private capacity unit is consumed.
