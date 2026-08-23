@@ -143,6 +143,14 @@ def main() -> int:
                 "forced": sorted(reverse_forced[u]),
                 "impossible": sorted(set(range(N)) - reverse_possible[u]),
                 "packings": len(feasible[u]),
+                "upper_compatible": sum(
+                    packing <= reverse_possible[u] for packing in feasible[u]
+                ),
+                "forced_omission_patterns": sorted({
+                    tuple(sorted(reverse_forced[u] - packing))
+                    for packing in feasible[u]
+                    if packing <= reverse_possible[u]
+                }),
                 "compatible": len(interval_compatible[u]),
             }
             for u in interval_bad_rows
