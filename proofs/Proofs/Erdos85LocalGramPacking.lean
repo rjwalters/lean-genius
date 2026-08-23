@@ -51,6 +51,18 @@ def HasLocalGramPackingReciprocityObstruction
   ∃ u w, IsForcedLocalGramNeighbor H W d u w ∧
     ∀ Y : Finset V, IsLocalGramPacking H W d w Y → u ∉ Y
 
+/-- Every demanded packing at one row makes some membership decision which
+no demanded packing at the reverse row can match.  This is the first
+configuration-level strengthening of the single forced-edge reciprocity
+obstruction. -/
+def HasLocalGramPackingOneRowCompatibilityObstruction
+    (H W : V → V → Prop) (d : V → ℕ) : Prop :=
+  ∃ u, ∀ X : Finset V, IsLocalGramPacking H W d u X →
+    ∃ w,
+      (w ∈ X ∧ ∀ Y : Finset V,
+        IsLocalGramPacking H W d w Y → u ∉ Y) ∨
+      (w ∉ X ∧ IsForcedLocalGramNeighbor H W d w u)
+
 /-- A simultaneous choice of demanded local packings whose membership
 relation is symmetric.  This is the exact global compatibility retained by
 the neighborhoods of an undirected residual graph. -/
@@ -100,6 +112,64 @@ theorem not_hasLocalGramPackingReciprocityObstruction_iff
     · exact (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
         H W d u w).1 huw havoid
     · exact hreverse Y hY huY
+
+omit [Fintype V] in
+/-- **Existential negation interface for one-row compatibility.**  Avoiding
+the obstruction is exactly the ability, at every row, to choose one demanded
+packing such that each of its membership bits is individually realizable in
+the corresponding reverse local family. -/
+theorem not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) :
+    ¬ HasLocalGramPackingOneRowCompatibilityObstruction H W d ↔
+      ∀ u, ∃ X : Finset V,
+        IsLocalGramPacking H W d u X ∧
+        ∀ w,
+          (w ∈ X → HasLocalGramPackingContaining H W d w u) ∧
+          (w ∉ X → HasLocalGramPackingAvoiding H W d w u) := by
+  constructor
+  · intro hno u
+    by_contra hchoice
+    apply hno
+    refine ⟨u, ?_⟩
+    intro X hX
+    by_contra hbad
+    apply hchoice
+    refine ⟨X, hX, ?_⟩
+    intro w
+    constructor
+    · intro hwX
+      by_contra hcontain
+      apply hbad
+      refine ⟨w, Or.inl ⟨hwX, ?_⟩⟩
+      intro Y hY huY
+      exact hcontain ⟨Y, hY, huY⟩
+    · intro hwX
+      by_contra havoid
+      apply hbad
+      refine ⟨w, Or.inr ⟨hwX, ?_⟩⟩
+      exact (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+        H W d w u).2 havoid
+  · intro hchoice ⟨u, hbad⟩
+    obtain ⟨X, hX, hcompatible⟩ := hchoice u
+    obtain ⟨w, hselected | homitted⟩ := hbad X hX
+    · obtain ⟨hwX, hreverse⟩ := hselected
+      obtain ⟨Y, hY, huY⟩ := (hcompatible w).1 hwX
+      exact hreverse Y hY huY
+    · obtain ⟨hwX, hforced⟩ := homitted
+      obtain ⟨Y, hY, huY⟩ := (hcompatible w).2 hwX
+      exact huY (hforced Y hY)
+
+omit [Fintype V] in
+/-- The configuration-level obstruction contains the earlier forced-edge
+reciprocity horn as a special case. -/
+theorem oneRowCompatibilityObstruction_of_reciprocityObstruction
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (hbad : HasLocalGramPackingReciprocityObstruction H W d) :
+    HasLocalGramPackingOneRowCompatibilityObstruction H W d := by
+  obtain ⟨u, w, hforced, hreverse⟩ := hbad
+  refine ⟨u, ?_⟩
+  intro X hX
+  exact ⟨w, Or.inl ⟨hforced X hX, hreverse⟩⟩
 
 omit [Fintype V] in
 /-- **Existential negation interface for the outer-design problem.**  The
@@ -325,6 +395,40 @@ theorem false_of_localGramPackingReciprocityObstruction
   exact false_of_forcedLocalGramNeighbor_not_reverse
     A H W d hsymm hdegree hsupport hgram u w huw hreverse
 
+omit [Fintype V] in
+/-- A one-row reverse-compatibility obstruction rules out every symmetric
+simultaneous selection. -/
+theorem not_symmetricLocalGramPackingSelection_of_oneRowCompatibilityObstruction
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (hbad : HasLocalGramPackingOneRowCompatibilityObstruction H W d)
+    (X : V → Finset V) :
+    ¬ IsSymmetricLocalGramPackingSelection H W d X := by
+  intro hX
+  obtain ⟨u, hu⟩ := hbad
+  obtain ⟨w, hselected | homitted⟩ := hu (X u) (hX.1 u)
+  · obtain ⟨hwu, hreverse⟩ := hselected
+    exact hreverse (X w) (hX.1 w) ((hX.2 u w).mp hwu)
+  · obtain ⟨hwu, hforced⟩ := homitted
+    have huw : u ∈ X w := hforced (X w) (hX.1 w)
+    exact hwu ((hX.2 u w).mpr huw)
+
+/-- **One-row compatibility consumer.**  If every demanded packing at one
+row contains a reverse-incompatible bit, no symmetric supported
+Gram-compatible residual relation exists. -/
+theorem false_of_localGramPackingOneRowCompatibilityObstruction
+    (A H W : V → V → Prop) [DecidableEq V] [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hbad : HasLocalGramPackingOneRowCompatibilityObstruction H W d) :
+    False :=
+  false_of_no_symmetricLocalGramPackingSelection
+    A H W d hsymm hdegree hsupport hgram
+    (not_symmetricLocalGramPackingSelection_of_oneRowCompatibilityObstruction
+      H W d hbad)
+
 /-- **Capacity-deficit / forced-collision consumer.**  If the eligible local
 packing system has either no demanded packing at one row, or two
 `W`-conflicting rows force the same neighbor, then no symmetric residual
@@ -369,6 +473,9 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_no_symmetricLocalGramPackingSelection
 #print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
+#print axioms not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
+#print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
+#print axioms false_of_localGramPackingOneRowCompatibilityObstruction
 #print axioms false_of_forcedLocalGramNeighbor_not_reverse
 #print axioms not_hasLocalGramPackingReciprocityObstruction_iff
 #print axioms false_of_localGramPackingReciprocityObstruction
