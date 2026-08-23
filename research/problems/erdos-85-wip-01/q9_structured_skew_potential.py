@@ -628,13 +628,21 @@ def double_label_flag_private_audit(data: dict) -> tuple:
     frequency = np.diff(matrix.indptr)
     by_column = matrix.tocsc()
     without_private = []
+    signatures = Counter()
     for local_column, (_, edge) in enumerate(selected):
         rows = by_column.indices[
             by_column.indptr[local_column]:by_column.indptr[local_column + 1]]
+        values = by_column.data[
+            by_column.indptr[local_column]:by_column.indptr[local_column + 1]]
+        signatures[tuple(zip(rows, values))] += 1
         if not any(frequency[row] == 1 for row in rows):
             without_private.append(edge)
     rank = int(np.linalg.matrix_rank(matrix.toarray()))
-    return len(selected), rank, missing_reverse, without_private
+    duplicate_groups = sorted((count for count in signatures.values() if count > 1),
+                              reverse=True)
+    duplicate_excess = sum(count - 1 for count in duplicate_groups)
+    return (len(selected), rank, missing_reverse, without_private,
+            duplicate_excess, duplicate_groups)
 
 
 def collision_census_infeasible_core(data: dict) -> tuple:
@@ -2219,7 +2227,8 @@ def main() -> int:
             _, bad_rows = zero_loss_restricted_hall_audit(candidate)
             if bad_rows:
                 continue
-            columns, rank, missing_reverse, without_private = (
+            (columns, rank, missing_reverse, without_private,
+             duplicate_excess, duplicate_groups) = (
                 double_label_flag_private_audit(candidate))
             branch, seed_number, colors = label
             print(f"double_label_flag_private branch={branch} "
@@ -2227,6 +2236,8 @@ def main() -> int:
                   f"rank={rank} "
                   f"missing_reverse={missing_reverse} "
                   f"without_private_count={len(without_private)} "
+                  f"duplicate_excess={duplicate_excess} "
+                  f"duplicate_groups={duplicate_groups} "
                   f"without_private={without_private[:20]}")
     if args.audit_integer_bundle_dual:
         integer_labels = []

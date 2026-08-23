@@ -2274,6 +2274,30 @@ classify the unordered two-label flag kernel structurally, then prove that no
 nonnegative degree-normalized kernel point respects all private label
 capacities.
 
+The flag boundary has an exact tensor factorization.  Let `ell_t` be the
+selected-label indicator of `B_t`, let `ell_(u-minus-t)` be the indicator of
+`(B_u cap selected) minus B_t`, and let `P_t` be the collision-profile tensor
+with coordinates `P_t(c;r,s)=C_t(c;r,s)`.  Before forgetting label order, put
+
+```text
+G(t,u) = ell_(u-minus-t) tensor P_t
+         - ell_(t-minus-u) tensor P_u.                         (12rzk)
+```
+
+Then `F(t,u)` in `(12rzh)` is exactly the image of `G(t,u)` under
+symmetrization of its two label slots, leaving the role-pair slot fixed.  This
+makes `F(u,t)=-F(t,u)` immediate.  It also identifies the circulation kernel
+as a symmetrized tensor-wedge kernel, rather than an arbitrary 700-row matrix
+kernel.
+
+The cheapest quotient explanation is absent: on all three deterministic
+eight-seed survivors, no two unoriented route columns are equal, so none of
+the 18--21 sampled null directions is a two-route exchange.  Combined with
+the absence of private flag rows, this says a proof of `(12rzi)` must use a
+genuine multi-route tensor relation.  A useful next algebraic target is to
+classify the minimal-support relations among the symmetrized wedges `(12rzk)`
+and show that every such relation has a positive private-capacity price.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
