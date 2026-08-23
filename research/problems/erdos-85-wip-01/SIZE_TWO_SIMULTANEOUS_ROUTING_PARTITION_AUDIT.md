@@ -4504,3 +4504,45 @@ problem.  No arbitrary shore labeling remains: reversal of the marked
 partition `{P,Q}` and the parity in (261).  What remains is to compare the
 endpoints of the mixed `A_e` gaps with the fixed alternating phase on
 successive marked centers of `B_ec`.
+
+## 83. The private-shore current is conserved integrally
+
+The modulo-two current (260) has a signed refinement on the private shore.
+Write `deg_Q(p)` and `deg_O(p)` for the numbers of `A_e` neighbors of `p`
+in `Q` and `O`.  The definition (254) groups exactly by its private-port
+column:
+
+```text
+epsilon_e = deg_Q(p_-) - deg_Q(p_+).                  (265)
+```
+
+By (200), `p_-p_+` is absent from `A_e`.  Since both private ports have
+`A_e` degree two and `e=P disjoint_union Q disjoint_union O`, one has
+
+```text
+deg_Q(p_-) + deg_O(p_-) = 2,
+deg_Q(p_+) + deg_O(p_+) = 2.
+```
+
+Subtracting gives the exact signed handoff law
+
+```text
+epsilon_e = deg_O(p_+) - deg_O(p_-).                  (266)
+```
+
+Thus the interface imbalance entering the radius-one layer from `Q` exits
+into the complementary owner-cycle gaps with the opposite orientation.  In
+particular, (255) can be rewritten without the four local bits as
+
+```text
+sum_(d != c,e) mu^T R_cd R_de 1_(p_-)
+  - sum_(d != c,e) mu^T R_cd R_de 1_(p_+)
+  = deg_O(p_-) - deg_O(p_+).                          (267)
+```
+
+This retains information discarded by (260): an odd residue not only
+forces mixed gap paths, but determines which private side has the excess
+complementary exit.  That signed side is exactly the datum on which the
+alternating `B_ec` phase can act.  The remaining global theorem must pair
+these signed exits along the compressed `A_e` gaps; an unsigned pairing of
+gap endpoints would be insufficient.
