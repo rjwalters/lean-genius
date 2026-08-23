@@ -9676,4 +9676,55 @@ the orientation of its two V-side endpoints; the internal S path itself is
 an unoriented label.  Hence the final holonomy table can replace arbitrary
 S words by private two-ended transfers and concentrate on how their V
 endpoints join the resolved V-route turns.
-reduces the final table to V-turns plus bounded, two-ended S excursions.
+
+## 187. Contracting the full state cycle recovers the canonical chain `Xi`
+
+Apply three canonical contractions to the closed edge-state cycle (577).
+
+```text
+maximal H--H subpath:
+  contract to its two V boundary labels, retaining the H-run word;
+
+maximal S excursion:
+  contract its unique path (582) to its two V handoff labels;
+
+remaining V sector:
+  retain every V--V root turn and V--V port passage with its sign.        (583)
+```
+
+After forgetting the root activity states and the internal private words,
+the three outputs are exactly the previously defined chains
+
+```text
+T_H(Z),       T_S(Z),       C_V(Z),                   (584)
+```
+
+respectively.  Therefore the coarse quotient of the full state cycle is
+
+```text
+Xi(Z)=C_V(Z)+T_H(Z)-T_S(Z)                            (585)
+```
+
+from (350).  Its closure is not a new assertion: it is the image of the
+literal root-state closure of Section 184.
+
+The refinement retains precisely the data discarded in Section 117:
+
+```text
+on T_H: the ordered private center states and run-length parity;
+on T_S: the full unoriented switch-path tag;
+on C_V: the ordered rooted triangle labels and port activity states.     (586)
+```
+
+The odd reversal orbit from (572) lives on the refined `T_H` edges and
+projects to the marked-grading character of `Xi`.  Consequently the open
+statement (573) is exactly the full-state lift of the old holonomy target
+(351), not a different conjecture.
+
+This identification prevents a false shortcut.  Closure of `Xi` proves
+only endpoint conservation, already captured by (576); it does not control
+the private words in (586).  The final theorem must show that the marked
+character vanishes on the **realized refined lift** of `Xi`, using the
+route-reversal identities on `C_V` and the canonical two-ended nature of
+`T_S`.  All combinatorial transfers required to state that theorem are now
+constructed and audited.
