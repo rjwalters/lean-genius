@@ -24249,3 +24249,38 @@ color or payer-layer sets: it lives in a ten-state root-pair space.  It
 does not by itself contradict the matching axioms, but it reduces the
 remaining saturation branch to a two-target coupling for one fixed pair
 of root actions.
+
+## 453. One root pair recurs with unbounded multiplicity
+
+The ten-state pigeonhole in Section 452 also parameterizes.  Under the
+hypotheses of Section 451, put
+
+```text
+m:=ceil((p+1)/2),       r:=ceil(m/10).             (1626)
+```
+
+Map each of the `m` pairwise payer-layer-disjoint saturation terminals
+to its unordered pair of core roots.  Since there are only ten such
+pairs, one fiber contains at least `r` terminals.  Those terminals occur
+at pairwise distinct targets: a fixed root pair determines at most one
+edge pair at a fixed target, whereas the chosen terminals are
+edge-disjoint.  Consequently
+
+```text
+q>1172+110p and no avoided nondegenerate cancellation
+ -> some fixed unordered root pair supports saturated pairs at
+    at least ceil(ceil((p+1)/2)/10) distinct O_5 targets.        (1627)
+```
+
+Equivalently, for every integer `t>=1`, choosing `p=20(t-1)` gives the
+clean sufficient form
+
+```text
+q>1172+2200(t-1) and no avoided nondegenerate cancellation
+ -> one root pair saturates at at least t distinct targets.      (1628)
+```
+
+Thus the finite recurrence from Section 452 is not a one-time artifact
+of `q=4096`: unless the nondegenerate cancellation terminal occurs, the
+number of targets coupled to one fixed pair of root actions grows
+without bound with `q`.
