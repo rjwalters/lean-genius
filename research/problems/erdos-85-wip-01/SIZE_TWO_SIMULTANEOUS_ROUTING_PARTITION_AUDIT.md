@@ -9352,3 +9352,53 @@ This does not yet prove the final capacity inequality.  It does close the
 linear-span failure diagnosed in Sections 149--157: the missing columns are
 now identified exactly as the silent footprint atoms and the nonempty
 cross-label monomials (558), with no arbitrary witness selection.
+
+## 180. Odd marked grading unconditionally activates the enlarged ledger
+
+For each maximal H-run `A`, define its port-feature ledger
+
+```text
+F_A:=p_(s_A)+n_A,                                     (561)
+```
+
+where `s_A,n_A` are its totally silent and nonsilent port indicators.  By
+(551), the footprint term has mass `|s_A|`; the nonsilent term has mass
+`|n_A|`.  Since these two sets partition the H ports of `A`,
+
+```text
+1^T F_A=|s_A|+|n_A|=ell(A) mod 2.                     (562)
+```
+
+Sum over all H-runs of the mixed dart cycle and put
+
+```text
+F_Z:=sum_A F_A.
+```
+
+Equations (299) and (562) give the unconditional activation identity
+
+```text
+1^T F_Z=omega_M(Z).                                   (563)
+```
+
+Therefore odd marked grading forces `F_Z != 0`.  Cancellation between
+different runs cannot erase the ledger, because its total mass is odd.
+Every nonzero term is one of two explicit, uniformly bounded types:
+
+```text
+silent:    a three-port shadow footprint with labeled cut normal form;
+nonsilent: a degree-at-most-six cross-label wedge atom from (558).       (564)
+```
+
+Moreover, summing (560) shows that the oriented phase vector `alpha_Z` is
+homologous to `F_Z` modulo the labeled shadow cuts and canonical H-run path
+boundaries (and orientation changes lie in the old `partial_H` quotient).
+Thus the A0 activation gap of Section 149 is closed **for the enlarged
+feature alphabet**: an odd component necessarily contains a nonzero
+owner-resolved feature ledger.
+
+This is not yet the Erdős 85 contradiction.  The remaining capacity theorem
+must show that an odd-mass ledger built from the two atom types (564) cannot
+be conserved by the simultaneous route-reversal pairing.  Unlike the old
+activation question, that theorem starts with a guaranteed nonzero, fully
+located, bounded-degree object.
