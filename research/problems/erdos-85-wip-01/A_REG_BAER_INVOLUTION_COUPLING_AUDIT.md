@@ -3996,6 +3996,38 @@ desired odd relay cycle immediately, or it can be summed away without losing
 capacity information.  The genuinely nonadditive residue is confined to the
 already fixed owner-bearing edges of R.
 
+On a private switch, the fixed owner-edge price has an exact source
+transport.  For the route
+
+```text
+E--L--y--G
+```
+
+with its unique realized switch, (73rnz_ar) gives
+
+```text
+1[EG in K]=1+rho_(E,G).
+```
+
+The canonical owner relay at y is `LG`.  Its endpoints are broken
+T-neighbors with unique common neighbor y, so (73rnz_cjibbf) gives
+
+```text
+1[LG in K]=1+mu_(L,G).
+```
+
+Adding the two identities cancels the owner constants:
+
+```text
+1[EG in K]+1[LG in K]=rho_(E,G)+mu_(L,G).                (73rnz_cjibk)
+```
+
+Thus moving the K-price from the empty-center source tag to the canonical
+leaf relay costs exactly two cross-matching atoms, with no residual unit
+charge.  This is the local label-preserving correction needed to insert the
+fixed switch edges of R into the already audited centerwise ledger
+(73rnz_as)--(73rnz_aw).
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
