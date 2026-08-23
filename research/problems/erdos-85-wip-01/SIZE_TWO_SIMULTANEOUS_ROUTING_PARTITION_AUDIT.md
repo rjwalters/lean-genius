@@ -13229,3 +13229,67 @@ The live five-port theorem is consequently precise.  Transport the
 complementary owner states, or derive a private-label price whose sum is
 nonzero despite the untagged identity (806).  Repeating an untagged boundary
 or homology calculation cannot make progress beyond this point.
+
+## 259. Every strict export has a canonical odd outside-destination tag
+
+The isolated red mate in Section 255 can be tied to an actual row of the
+`c--a--e` routing layer.  Fix `i in I_a`.  The two `a`-neighbors of the
+selected root `x_i` are exactly the strict export `z_i` and its red mate
+`u_i`.  Consequently the support of the `x_i` row of
+
+```text
+L_a^(c,e):=R_ca R_ae
+```
+
+is the union of their two port-neighborhoods.  This union is disjoint.  If
+some port `p` were adjacent to both `z_i` and `u_i`, then `x_i` and `p`
+would have the two common `a`-neighbors `z_i,u_i`, contrary to
+`C_4`-freeness.  Thus the routing row has four distinct ports:
+
+```text
+supp(L_a^(c,e)[x_i,-])
+ =N_e(z_i) disjoint_union N_e(u_i),
+|supp(L_a^(c,e)[x_i,-])|=4.                         (809)
+```
+
+The sector labels make the selected part of this row exact.  The `11`
+label `z_i` has the unique selected neighbor `p_(i+2)`, whereas the `10`
+label `u_i` has none.  Hence
+
+```text
+supp(L_a^(c,e)[x_i,-]) intersect Z={p_(i+2)}.        (810)
+```
+
+Let `D_i^a` be the other three ports in this row.  They are distinct and
+all lie outside the selected target incidence component `Z`.  One is the
+second port of the active label `z_i`; the other two are precisely the two
+outside ports of its inactive mate `u_i`:
+
+```text
+D_i^a=(N_e(z_i)\{p_(i+2)}) disjoint_union N_e(u_i),
+|D_i^a|=3.                                          (811)
+```
+
+In particular this is private-label information that survives the no-go in
+Section 258.  If the target incidence components outside `Z` are indexed by
+`j != 0`, define the destination-parity tag
+
+```text
+delta_i^a(j):=|D_i^a intersect V_j| mod 2.
+```
+
+Because the three ports of `D_i^a` are partitioned among those components,
+
+```text
+sum_(j != 0) delta_i^a(j)=1 in F_2,
+so delta_i^a != 0.                                  (812)
+```
+
+Thus every strict export carries a canonical nonzero off-component tag,
+namely the odd destination profile of the same routing row that contains
+its selected port.  The inactive mate alone contributes two of the three
+outside ports and need not have nonzero component parity; the indispensable
+tag is the full root-row triple (811), which also remembers the companion
+outside port of `z_i`.  The remaining transport problem may therefore be
+posed on the labeled vectors `delta_i^a`, rather than on the physical
+boundary words `W_(u_i)` whose untagged color sum vanishes.
