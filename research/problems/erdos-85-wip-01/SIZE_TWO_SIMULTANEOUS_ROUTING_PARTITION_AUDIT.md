@@ -20521,3 +20521,51 @@ This criterion includes stationary and moving cycles uniformly.  It does
 not assert that (1348) always holds; rather, it identifies the exact extra
 component-color datum that must be coupled to the five-unpaired-orbit law
 before a three-or-more-root terminal can be invoked.
+
+## 387. Same-side path orbits occur in balanced even pairs
+
+The path caveat in Section 384 has an exact parity form.  Fix distinct
+roots `i,j`, abbreviate `c:=c_ij`, and classify the `5-c` alternating paths
+of `Gamma_ij` by their endpoint types.  Let
+
+```text
+a   := number with one endpoint in each of
+       F_i setminus F_j and F_j setminus F_i;
+b_i := number with both endpoints in F_i setminus F_j;
+b_j := number with both endpoints in F_j setminus F_i.
+```
+
+Each fixed-set difference contains exactly `5-c` path endpoints.  Counting
+the two endpoint types separately gives
+
+```text
+a+2b_i=5-c=a+2b_j.
+```
+
+Consequently `b_i=b_j=:b` and
+
+```text
+a=5-c-2b.                                           (1349)
+```
+
+This balance also determines the parity of the associated product orbits.
+Along an alternating path, endpoints of opposite fixed-set types have
+incident edges of opposite colors, so the path has an even number of edges
+and an odd number of vertices.  Endpoints of the same type have incident
+edges of the same color, so the path has an odd number of edges and an even
+number of vertices.  By (1338), all vertices of one path form one orbit of
+`pi_ij`.  The `c` common-fixed isolates are singleton orbits.  Hence among
+the five unpaired path/isolate orbits of `pi_ij` there are exactly
+
+```text
+c+a=5-2b odd-cardinality orbits;
+b_i+b_j=2b even-cardinality orbits.                 (1350)
+```
+
+In particular the even unpaired orbits occur in a balanced pair: one
+same-side path of each endpoint type.  The alternating-cycle contribution
+remains a collection of equal-length pairs as in Section 384, irrespective
+of whether those paired orbit lengths are odd or even.  Thus (1350) makes
+no false cross-type matching assertion; it isolates precisely the balanced
+same-side obstruction that prevents the five distinguished product orbits
+from all having odd cardinality.
