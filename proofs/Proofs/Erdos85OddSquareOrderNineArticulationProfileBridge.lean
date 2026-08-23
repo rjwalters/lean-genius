@@ -166,9 +166,110 @@ theorem squareOrderNine_threeHigh_secondProfile_articulation_cross_degrees
     rw [hinter]
     exact hyType.1
 
+/-- Every shore in the low-vertex defect graph after deleting the unique
+bin-three owner is the disjoint union of its exceptional bin-zero, regular
+bin-zero, and bin-one parts. -/
+theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_shore_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    {owner : V} (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (S : Finset V)
+    (hS : S ⊆ (((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner)) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let E := D.neighborFinset owner ∩ B 0
+    let R := B 0 \ E
+    S.card = (E ∩ S).card + (R ∩ S).card + (B 1 ∩ S).card := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let E := D.neighborFinset owner ∩ B 0
+  let R := B 0 \ E
+  let U := (Finset.univ : Finset V) \ squareOrderHighVertices G 9
+  let k := squareOrderHighIncidenceCount G 9
+  have hB2empty : B 2 = ∅ := by
+    rw [← Finset.card_eq_zero]
+    dsimp [B]
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 2) (by omega), hc2]
+  have hcover : U.erase owner ⊆ E ∪ R ∪ B 1 := by
+    intro u hu
+    have huParts := Finset.mem_erase.mp hu
+    have huU : u ∈ U := huParts.2
+    have hkLe : k u ≤ 3 := by
+      have := Finset.card_le_card
+        (Finset.inter_subset_right : G.neighborFinset u ∩
+          squareOrderHighVertices G 9 ⊆ squareOrderHighVertices G 9)
+      dsimp [k, squareOrderHighIncidenceCount]
+      rw [hhigh] at this
+      exact this
+    have hkCases : k u = 0 ∨ k u = 1 ∨ k u = 2 ∨ k u = 3 := by omega
+    rcases hkCases with hk0 | hk1 | hk2 | hk3
+    · have huB0 : u ∈ B 0 := Finset.mem_filter.mpr ⟨huU, hk0⟩
+      by_cases huE : u ∈ E
+      · simp [huE]
+      · have huR : u ∈ R := Finset.mem_sdiff.mpr ⟨huB0, huE⟩
+        simp [huR]
+    · have huB1 : u ∈ B 1 := Finset.mem_filter.mpr ⟨huU, hk1⟩
+      simp [huB1]
+    · have huB2 : u ∈ B 2 := Finset.mem_filter.mpr ⟨huU, hk2⟩
+      rw [hB2empty] at huB2
+      simp at huB2
+    · have huB3 : u ∈ B 3 := Finset.mem_filter.mpr ⟨huU, hk3⟩
+      have hB3card : (B 3).card = 1 := by
+        dsimp [B]
+        rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+          G hp (i := 3) (by omega), hc3]
+      have huo : u = owner :=
+        Finset.card_le_one.mp (by omega) u huB3 owner howner
+      exact (huParts.1 huo).elim
+  have hset : S = (E ∩ S) ∪ (R ∩ S) ∪ (B 1 ∩ S) := by
+    ext u
+    constructor
+    · intro huS
+      have huCover := hcover (hS huS)
+      simp only [Finset.mem_union, Finset.mem_inter] at huCover ⊢
+      rcases huCover with (huE | huR) | huB1
+      · exact Or.inl (Or.inl ⟨huE, huS⟩)
+      · exact Or.inl (Or.inr ⟨huR, huS⟩)
+      · exact Or.inr ⟨huB1, huS⟩
+    · intro hu
+      rcases Finset.mem_union.mp hu with huER | huB1
+      · rcases Finset.mem_union.mp huER with huE | huR
+        · exact (Finset.mem_inter.mp huE).2
+        · exact (Finset.mem_inter.mp huR).2
+      · exact (Finset.mem_inter.mp huB1).2
+  have hER : Disjoint (E ∩ S) (R ∩ S) := by
+    rw [Finset.disjoint_left]
+    intro u huE huR
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp huR).1).2
+      (Finset.mem_inter.mp huE).1
+  have hERB : Disjoint ((E ∩ S) ∪ (R ∩ S)) (B 1 ∩ S) := by
+    rw [Finset.disjoint_left]
+    intro u huER huB1
+    have huB1' := (Finset.mem_inter.mp huB1).1
+    have hk1 := (Finset.mem_filter.mp huB1').2
+    rcases Finset.mem_union.mp huER with huE | huR
+    · have huB0 := (Finset.mem_inter.mp (Finset.mem_inter.mp huE).1).2
+      have hk0 := (Finset.mem_filter.mp huB0).2
+      omega
+    · have huB0 := (Finset.mem_sdiff.mp (Finset.mem_inter.mp huR).1).1
+      have hk0 := (Finset.mem_filter.mp huB0).2
+      omega
+  have hcard := congrArg Finset.card hset
+  rw [Finset.card_union_of_disjoint hERB,
+    Finset.card_union_of_disjoint hER] at hcard
+  exact hcard
+
 end
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_owner_defect_neighbors
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_articulation_cross_degrees
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_deleted_owner_shore_partition
 
 end Erdos85
