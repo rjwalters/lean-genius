@@ -12096,3 +12096,68 @@ cancellation.  The resulting `q_y` words enter the canonical interval and
 separator/potential machinery of Sections 128 and 140--165; their joint
 capacity conservation with the already transported `01` union flags and
 complementary H/V/S terms remains the final theorem.
+
+## 240. Every odd export forces an odd three-sector boundary triangle
+
+Fix the receiving color `a` from (728), and for `y in a` put
+
+```text
+r_y:=(R_ac 1_C)(y),       t_y:=(R_ae 1_Z)(y).
+```
+
+The labels with `r_y=1` index the cut of `C` in the two-regular owner factor
+`F_a[c]`; those with `t_y=1` index the cut of `Z` in `F_a[e]`.  Every cut of
+a two-regular graph has even order.  If
+
+```text
+n_uv:=#{y in a:(r_y,t_y)=(u,v)} mod 2,
+```
+
+then (728) says `n_11=1`, while the two cut parities give
+
+```text
+n_10+n_11=0,       n_01+n_11=0.
+```
+
+Consequently
+
+```text
+n_10=n_01=n_11=1.                                  (732)
+```
+
+Thus the strict export never creates an isolated odd overlap.  In the same
+new color it forces odd populations in all three nonzero boundary sectors:
+root-only, port-only, and root-plus-port.
+
+There is also an exact `q_y` interpretation of the two active sectors.  For
+any `y` with `t_y=1`, sum (362) over all H ports of the closed paired cycle.
+Every root of `C` belongs to two H wedges, so all root-incidence terms occur
+twice and cancel; every port of `Z` occurs once, and `y` has exactly one
+neighbor there.  Hence
+
+```text
+sum_(z in Z) q_y(h_z)=1.                              (733)
+```
+
+The entire `t=1` population is a factor cut and has even order, so summing
+(733) and partitioning by `r_y` gives
+
+```text
+sum_(y:r_y=t_y=1) sum_z q_y(h_z)
+ =sum_(y:r_y=0,t_y=1) sum_z q_y(h_z)=1.               (734)
+```
+
+Equation (734) is a scalar conservation/payment identity: the odd active
+ledger exported from the closed `00` curl is accompanied by an odd active
+port-only population in the same owner color.  It does not identify their
+private labels occurrence-by-occurrence.  The root-only sector in (732) is
+inactive for this target and is the corresponding propagation mark on the
+`c` boundary.  Hence the remaining capacity theorem is now supported on a
+three-sector boundary triangle, rather than on one unpaired curl.
+
+This three-support shape is the same Boolean incidence pattern as the
+singleton/union circuit isolated in the B3 flag kernel: two singleton
+boundaries and their joint support.  That is structural convergence, not a
+map or a proof of the B3 capacity assertion.  Here (732)--(734) are exact
+consequences of the two owner-factor cuts and retain the receiving color,
+the physical boundary components, and the active `q_y` occurrences.
