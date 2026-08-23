@@ -14642,3 +14642,36 @@ color-resolved export forces an odd population in the complementary
 `C`-inactive label channel.  The payment is now fully located at the level
 of actual labels and factor edges; it is not an untagged boundary sum or an
 arbitrary component-vector lift.
+
+## 286. The reverse tag is supported on an actual odd root shore
+
+The component vector in (901) has a canonical port-to-root realization.
+Take the symmetric difference of the actual three-root sets from (898):
+
+```text
+T_a(S):=triangle_(w in W_a(S)) E_w^a subset c\C.    (905)
+```
+
+Cardinality modulo two commutes with symmetric difference.  Since every
+`E_w^a` has size three and `W_a(S)` is odd by (897),
+
+```text
+|T_a(S)|
+ =sum_(w in W_a(S)) |E_w^a|
+ =1 mod 2.                                          (906)
+```
+
+Moreover the incidence components `(U_j,V_j)` partition `c`, and the
+component projection of symmetric difference is linear.  Thus the reverse
+tag is exactly the component-parity profile of this actual shore:
+
+```text
+Rho_a(S)(j)=|T_a(S) intersect U_j| mod 2,       j!=0. (907)
+```
+
+In particular some outside incidence component `U_j` contains an odd part
+of `T_a(S)`.  The recursive route has therefore produced not only a
+nonzero abstract destination vector but a located odd set of actual roots
+outside `C`, canonically assembled from the singleton terminal labels.
+This is the object on which a next owner/cut transport can act without
+choosing representatives for the component tag.
