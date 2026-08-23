@@ -655,6 +655,15 @@ computes the exact minimum support only when the concurrent horn is absent.
 This is now the preferred finite selector target: arbitrary one/two-row
 global obstruction, or one of 18 concurrent exceptional triples.
 
+Fresh-seed evidence is generated one model per Python process.  Reusing the
+generator repeatedly inside one process can carry solver state across calls,
+so a seed alone is not treated as a durable payload identifier in that mode.
+The hard-locus audit now prints a canonical `payload_sha256`; independent
+fresh-process reruns of seed 81 agree on
+`aeae306a8492d9e0ac4579da120b8d96c9e101e1427c1e4c005b692fa6095504`.
+Exact long-lived counterexamples should still be saved as JSON fixtures, but
+the hash makes stress results auditable before promotion.
+
 The concurrent horn matches the direct coupled-packing consumer exactly.
 Rerunning its dual with every point price outside the three supported rows
 forced onto their common point preserves all hard certificates: restricted

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -120,9 +121,12 @@ def main() -> None:
         payload = random_outer(3, args.random_seed, args.timeout_seconds)
     else:
         payload = json.loads(args.payload.read_text())
-    print(json.dumps(
-        audit(fixed_system(payload)), separators=(",", ":")
-    ))
+    canonical_payload = json.dumps(
+        payload, sort_keys=True, separators=(",", ":")
+    ).encode()
+    result = audit(fixed_system(payload))
+    result["payload_sha256"] = hashlib.sha256(canonical_payload).hexdigest()
+    print(json.dumps(result, separators=(",", ":")))
 
 
 if __name__ == "__main__":
