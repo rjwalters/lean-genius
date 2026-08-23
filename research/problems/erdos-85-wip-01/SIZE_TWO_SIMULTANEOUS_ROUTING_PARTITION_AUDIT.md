@@ -7800,3 +7800,50 @@ the separator branch itself splits into two geometrically different
 topologies: a local even circuit with `Q beta=0`, or a global odd cover with
 `Q beta=1_Z`.  Both give Eulerian curvature incidence by Section 146, but
 the support parity records which constant class their closed trails carry.
+
+## 148. A two-row syndrome is a pole-to-pole trail with one parity bit
+
+The Eulerian description extends canonically to a nonzero even syndrome.
+Let `beta` be any selected active-column vector with
+
+```text
+C_(d,j) beta=e_a+e_b,             a != b in Z.         (456)
+```
+
+Every selected atom vertex still has even degree.  Equation (456) says that
+the row vertices `a,b` have odd degree and every other row has even degree.
+Therefore the selected incidence graph decomposes into
+
+```text
+one a--b alternating trail plus closed alternating trails. (457)
+```
+
+Equivalently, adjoining one formal edge between the two row vertices makes
+the whole system Eulerian.  Pairing gauges at higher-degree atoms act only
+on the choice of trail decomposition, not on the two-row boundary.
+
+Put `q:=Q beta`.  Since `C=P_ZQ`, equation (456) is
+
+```text
+P_Z q=e_a+e_b.                                        (458)
+```
+
+The right side has even mass and hence lies in `im P_Z`.  Because
+`ker P_Z=<1_Z>`, (458) has exactly two solutions, differing by the constant
+vector `1_Z`.  Their total masses have opposite parity because `|Z|` is odd.
+But every column of `Q` has odd mass, so
+
+```text
+sum_(z in Z) q(z)=|supp(beta)|  (mod 2).              (459)
+```
+
+Thus the parity of the selected atom support chooses uniquely between the
+two possible pole-to-pole port transports.  This is the two-source analogue
+of (452): after adjoining the formal pole edge, the gauge-invariant bit is
+still the support parity.
+
+No existence of a geometrically desired `beta` with syndrome (456) is
+asserted.  The statement identifies its exact topology if it occurs and
+provides the direct dictionary to a pair of odd boundary ledgers in the Baer
+lane: two odd rows, one joining trail, Eulerian closure after one formal
+edge, and one surviving parity class.
