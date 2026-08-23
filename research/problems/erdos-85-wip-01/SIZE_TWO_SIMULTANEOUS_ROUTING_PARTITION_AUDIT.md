@@ -17922,3 +17922,58 @@ that no cancellation or internal terminal pairing is hidden in the four
 new channels.  A final same-color price may therefore charge the transition
 from one odd ticket at `x` to two even ticket pairs at `u,v`; only the
 mixed-color branch can avoid this literal six-edge profile.
+
+## 342. Exact reuse forces a second color on a private terminal ticket
+
+The local countermodel in Section 340 cannot be closed as a genuinely
+one-color object once the other letters of its private tickets are
+retained.  In the exact-reuse support (1126), the doubled selected port
+`p` carries the two distinct terminal occurrences
+
+```text
+(u,p),        (v,p),                                (1156)
+```
+
+and `p` is incident to neither root.  Among all exterior routing colors,
+the `C times Z` block contains only the one strict-export cell at `p` from
+(777).  Therefore at most one occurrence in (1156) can terminate directly
+at the selected port.  At least one must have the owner-return form
+
+```text
+r --[color b label]-- w --[A_e owner edge]-- p,
+r in {u,v},       w in B,       p(w)=p.             (1157)
+```
+
+The root support of the private ticket `tau(w)` is
+
+```text
+C\Ends(E_p)={u,v,w_p}                              (1158)
+```
+
+for the third root `w_p` nonincident to `p`.  Notice that `w_p` equals
+`x` for one of the two possible exact-reuse ports and differs from `x`
+for the other; no identification with the predecessor triple is assumed.
+The occurrence (1157) supplies a color-`b` letter at the ticket root `r`.
+By the nonmonochromatic ticket theorem (844), the other two letters cannot
+both also have color `b`.  Hence there exist
+
+```text
+r' in {u,v,w_p}\{r},       b'!=b,                  (1159)
+```
+
+and an actual color-`b'` label routing the cell `(r',w)`.
+
+Thus every exact-reuse reversal, including the same-color realization of
+Section 340, exposes at least one second exterior color at the same literal
+private terminal used by the reversal.  If both occurrences in (1156) use
+owner returns, the argument applies to both tickets, although their forced
+side colors need not be distinct.
+
+This is not yet a contradiction: Section 340 explicitly left those ticket
+letters free, and they can satisfy nonmonochromaticity locally.  It is the
+first unavoidable interface beyond the one-color skeleton `Omega_b^C`.
+Any completion of that countermodel must extend the marked terminal `w`
+into the root matching and ten-label skeleton of some `b'!=b`, or pay the
+same cell through the coupled partition `SRP(b',e)`.  The next exclusion
+may therefore work on this located two-color interface rather than on an
+arbitrary choice of a second color.
