@@ -5365,6 +5365,51 @@ split the pair into the individual labels `y_1,y_2`, or recombine them with
 different port pairs/role data.  The full unordered pair cannot move through
 S merely by equality of `P_d` states.
 
+There is, however, a canonical channel-changing **label split**.  For each
+`y_i in N_d(p)`, the secondary two-factor gives a unique other owner-port
+neighbor `r_i` with
+
+```text
+N_e(y_i)={p,r_i}.
+```
+
+The companions are distinct: `r_1=r_2` would make `p,r_1` share both
+neighbors `y_1,y_2`, a C4.  Let `h_i` be the shadow edge `p--r_i`, retaining
+its individual label `y_i`, and put
+
+```text
+Star_q(p)=h_1+h_2,
+Foot_q(p)=1_p+1_(r_1)+1_(r_2).
+```
+
+Over `F_2`, the two copies of `p` in the incidence boundary cancel, so
+
+```text
+partial Star_q(p)=1_(r_1)+1_(r_2),
+1_p=Foot_q(p)+partial Star_q(p).                      (73rnz_cjibkzzo)
+```
+
+This is the singleton form of the labeled shadow-cut normal form
+(550)--(553) in the simultaneous-routing audit, and it does not require an
+ordering of `q`.  It performs exactly the channel change forced above: the
+private unordered pair at `p` is replaced by two individually labelled
+shadow edges plus one three-port footprint.  For a family `S_00` of marked
+`00` ports, summing gives
+
+```text
+sum_(p in S_00) 1_p
+ =sum_(p in S_00) Foot_q(p)
+  +partial sum_(p in S_00) Star_q(p).                 (73rnz_cjibkzzp)
+```
+
+The footprint side has the same augmentation as the marked population,
+because each footprint has three vertices.  Thus (73rnz_cjibkzzp) is a
+genuine occurrence transport, not a vanishing theorem: it moves the `00`
+unit into the established bounded three-port shadow alphabet, with every
+crossing edge retaining `y_i`.  Whether the footprints cancel against V/S
+and owner-route capacity is precisely the remaining joint conservation
+problem.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
