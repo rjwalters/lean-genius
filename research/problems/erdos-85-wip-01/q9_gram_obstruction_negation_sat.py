@@ -76,7 +76,8 @@ def add_negation(branch: int, timeout_ms: int, full: bool = True,
             ]))
 
     def constrain_packing(t: int, chosen: dict[int, object], enabled,
-                          omitted: int | None = None) -> None:
+                          omitted: int | None = None,
+                          included: int | None = None) -> None:
         solver.add(Implies(enabled,
                            Sum([If(chosen[u], 1, 0) for u in range(N)])
                            == demand(t)))
@@ -85,6 +86,8 @@ def add_negation(branch: int, timeout_ms: int, full: bool = True,
                 solver.add(Implies(enabled, Not(chosen[u])))
             # If u is chosen at t, its block avoids Gamma_K(B_t).
             solver.add(Implies(And(enabled, chosen[u]), eligible[t, u]))
+        if included is not None:
+            solver.add(Implies(enabled, chosen[included]))
         # Pairwise block disjointness is exactly one incidence per U1 label.
         for b in range(N_U1):
             solver.add(Implies(
@@ -105,6 +108,7 @@ def add_negation(branch: int, timeout_ms: int, full: bool = True,
                 solver.add(base[t][u] == base[u][t])
 
     avoiding = {}
+    containing = {}
 
     def ensure_avoiding(t: int, w: int):
         if (t, w) not in avoiding:
@@ -113,6 +117,14 @@ def add_negation(branch: int, timeout_ms: int, full: bool = True,
             chosen = {u: Bool(f"neg_avoid_{t}_{w}_{u}") for u in range(N)}
             constrain_packing(t, chosen, enabled, omitted=w)
         return avoiding[t, w]
+
+    def ensure_containing(t: int, w: int):
+        if (t, w) not in containing:
+            enabled = Bool(f"neg_contain_enabled_{t}_{w}")
+            containing[t, w] = enabled
+            chosen = {u: Bool(f"neg_contain_{t}_{w}_{u}") for u in range(N)}
+            constrain_packing(t, chosen, enabled, included=w)
+        return containing[t, w]
 
     added_collision_clauses = set()
 
@@ -126,6 +138,15 @@ def add_negation(branch: int, timeout_ms: int, full: bool = True,
         ])
         solver.add(Or(Not(intersects), ensure_avoiding(u, w),
                       ensure_avoiding(v, w)))
+
+    added_reciprocity_clauses = set()
+
+    def add_reciprocity_clause(u: int, w: int) -> None:
+        if (u, w) in added_reciprocity_clauses:
+            return
+        added_reciprocity_clauses.add((u, w))
+        # Negate the horn "u forces w but w can never contain u".
+        solver.add(Or(ensure_avoiding(u, w), ensure_containing(w, u)))
 
     # Negate every forced collision: if B_u and B_v intersect, then for every
     # w at least one endpoint has a demanded packing omitting w.
@@ -141,6 +162,8 @@ def add_negation(branch: int, timeout_ms: int, full: bool = True,
         "demand": demand,
         "add_collision_clause": add_collision_clause,
         "added_collision_clauses": added_collision_clauses,
+        "add_reciprocity_clause": add_reciprocity_clause,
+        "added_reciprocity_clauses": added_reciprocity_clauses,
         "base_variables": N * N,
         "avoid_enabled_variables": len(avoiding),
         "avoid_choice_variables": len(avoiding) * N,
@@ -154,17 +177,26 @@ def main() -> int:
     parser.add_argument("--branch", type=int, choices=(3, 4), required=True)
     parser.add_argument("--timeout-seconds", type=int, default=600)
     parser.add_argument("--lazy", action="store_true")
+    parser.add_argument("--lazy-reciprocity", action="store_true")
     parser.add_argument("--symmetric", action="store_true")
     parser.add_argument("--max-rounds", type=int, default=100)
     args = parser.parse_args()
 
     build_started = time.time()
+    if args.lazy and args.lazy_reciprocity:
+        parser.error("choose at most one lazy mode")
     solver, counts = add_negation(args.branch, args.timeout_seconds * 1000,
-                                  full=not args.lazy and not args.symmetric,
+                                  full=not args.lazy and not args.lazy_reciprocity
+                                  and not args.symmetric,
                                   symmetric=args.symmetric)
     build_elapsed = time.time() - build_started
-    if args.lazy:
+    if args.lazy or args.lazy_reciprocity:
+        from itertools import combinations
+
         from q9_structured_skew_potential import residual_gram_forced_collisions
+
+        cut_key = ("added_reciprocity_clauses" if args.lazy_reciprocity
+                   else "added_collision_clauses")
 
         solve_started = time.time()
         for round_number in range(args.max_rounds):
@@ -174,11 +206,12 @@ def main() -> int:
                 print(f"branch={args.branch} lazy=True result={result} "
                       f"rounds={round_number + 1} build_seconds={build_elapsed:.3f} "
                       f"solve_seconds={solve_elapsed:.3f} "
-                      f"cuts={len(counts['added_collision_clauses'])}")
+                      f"cuts={len(counts[cut_key])}")
                 if result == unknown:
                     print(f"reason_unknown={solver.reason_unknown()}")
                     return 2
-                print("candidate_13f_negation=UNSAT_UNCERTIFIED")
+                candidate = "13t" if args.lazy_reciprocity else "13f"
+                print(f"candidate_{candidate}_negation=UNSAT_UNCERTIFIED")
                 return 0
             model = solver.model()
             blocks = [
@@ -202,18 +235,49 @@ def main() -> int:
                 "candidates": candidates,
                 "degree": [counts["demand"](t) for t in range(N)],
             }
-            collisions = residual_gram_forced_collisions(concrete)
-            new_collisions = [collision for collision in collisions
-                              if collision not in counts["added_collision_clauses"]]
-            print(f"lazy_round={round_number + 1} collisions={len(collisions)} "
-                  f"new={len(new_collisions)}")
-            if not collisions:
+            if args.lazy_reciprocity:
+                feasible = {}
+                for row in range(N):
+                    feasible[row] = [set(chosen) for chosen in combinations(
+                        candidates[row], concrete["degree"][row])
+                        if all(not blocks[u] & blocks[v]
+                               for u, v in combinations(chosen, 2))]
+                reciprocity_horns = [(u, w) for u in range(N) for w in range(N)
+                         if feasible[u]
+                         and all(w in packing for packing in feasible[u])
+                         and feasible[w]
+                         and all(u not in packing for packing in feasible[w])]
+                collisions = residual_gram_forced_collisions(concrete)
+                new_reciprocity = [horn for horn in reciprocity_horns
+                                   if horn not in counts["added_reciprocity_clauses"]]
+                new_collisions = [horn for horn in collisions
+                                  if horn not in counts["added_collision_clauses"]]
+                horns = reciprocity_horns + collisions
+                new_obstructions = new_reciprocity + new_collisions
+                label = (f"reciprocity_horns={len(reciprocity_horns)} "
+                         f"collisions")
+            else:
+                horns = residual_gram_forced_collisions(concrete)
+                added = counts["added_collision_clauses"]
+                new_obstructions = [horn for horn in horns if horn not in added]
+                label = "collisions"
+            if args.lazy_reciprocity:
+                print(f"lazy_round={round_number + 1} {label}="
+                      f"{len(collisions)} new={len(new_obstructions)}")
+            else:
+                print(f"lazy_round={round_number + 1} {label}={len(horns)} "
+                      f"new={len(new_obstructions)}")
+            if not horns:
                 solve_elapsed = time.time() - solve_started
-                print(f"branch={args.branch} lazy=True result=sat "
+                print(f"branch={args.branch} lazy=True "
+                      f"reciprocity={args.lazy_reciprocity} result=sat "
                       f"rounds={round_number + 1} build_seconds={build_elapsed:.3f} "
                       f"solve_seconds={solve_elapsed:.3f} "
-                      f"cuts={len(counts['added_collision_clauses'])}")
-                print("candidate_13f=REFUTED_IN_OUTER_ABSTRACTION")
+                      f"cuts={len(counts[cut_key])}")
+                if args.lazy_reciprocity:
+                    print("candidate_13t=REFUTED_IN_OUTER_ABSTRACTION")
+                else:
+                    print("candidate_13f=REFUTED_IN_OUTER_ABSTRACTION")
                 print("counterexample=" + json.dumps({
                     "branch": args.branch,
                     "blocks": [sorted(block) for block in blocks],
@@ -223,13 +287,16 @@ def main() -> int:
                     ),
                 }, separators=(",", ":")))
                 return 0
-            if not new_collisions:
-                raise RuntimeError("concrete forced collision survived its exact cut")
-            for u, v, w in new_collisions:
-                counts["add_collision_clause"](u, v, w)
+            if not new_obstructions:
+                raise RuntimeError("concrete obstruction survived its exact cut")
+            for obstruction in new_obstructions:
+                if args.lazy_reciprocity and obstruction in new_reciprocity:
+                    counts["add_reciprocity_clause"](*obstruction)
+                else:
+                    counts["add_collision_clause"](*obstruction)
         print(f"branch={args.branch} lazy=True result=round-limit "
               f"rounds={args.max_rounds} cuts="
-              f"{len(counts['added_collision_clauses'])}")
+              f"{len(counts[cut_key])}")
         return 2
 
     solve_started = time.time()
