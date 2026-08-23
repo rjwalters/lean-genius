@@ -10093,3 +10093,40 @@ The H/S decorations in the full state (577) are precisely the data needed
 to audit (a); the bounded four-relay state table of Section 166 is the local
 obstruction to (b).  Until both are discharged, the SRP and Baer potentials
 share an exact cycle--cut mechanism but not a canonical coordinate map.
+
+## 196. Scalar full-state cancellation is enough for SRP
+
+The orbit statement (573) is a sufficient terminal, but it is stronger than
+the contradiction actually required.  If `n_O` is the occupancy parity of a
+reversal orbit `O`, then (572) says only
+
+```text
+omega_M(Z)=sum_O n_O.                                 (606)
+```
+
+Proving every `n_O=0` certainly forces `omega_M(Z)=0`, but the mixed-cycle
+kernel theorem needs only the latter scalar equality.  Equivalently, for the
+full-state graph of Section 194 it suffices to prove
+
+```text
+<w,G_hatXi>=0,                                        (607)
+```
+
+or to construct a scalar endpoint potential whose coboundary is `w` on the
+particular realized component.  No owner-resolved assignment of individual
+reversal orbits is necessary.
+
+This is an important scope difference from the Baer terminal.  There the
+primary source is the two-coordinate class `(1,1)`, and changing a path
+decomposition may attach the two pole owners to different terminal flip
+states; scalar endpoint pricing does not by itself preserve that owner
+vector.  Here all H-run contributions enter the single grading (606), so a
+pairing-independent **total** endpoint price already proves the required
+contradiction even if individual orbit labels are reassigned.
+
+Therefore the gauge-mediated bridge of Section 195 may be used at scalar
+strength.  Compatible completion plus invariance of the total four-switch
+price would suffice for (607); the stronger task of transporting every
+private reversal-orbit label should be imposed only if scalar cancellation
+fails.  This strictly weakens the live SRP target without changing its
+conclusion.
