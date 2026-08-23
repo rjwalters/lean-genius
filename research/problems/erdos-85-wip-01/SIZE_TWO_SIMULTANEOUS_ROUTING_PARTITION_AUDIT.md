@@ -20278,3 +20278,54 @@ the fixed points of every reduced two-letter word and shows that no
 additional coincidence of moving images can occur.  Longer-word analysis
 may therefore start from a completely controlled pair geometry rather than
 from arbitrary products of five involutions.
+
+## 383. Only common strict mates support admissible two-letter cycles
+
+The fixed points in (1332) separate into algebraic and dynamically
+admissible roles.  For distinct roots `i,j`, put
+
+```text
+alpha_(i,j):=1_[v_i in B_(x_j)],
+delta_(i,j):=1_[v_i=v_j].                           (1333)
+```
+
+The four pieces in (1332) are disjoint.  For example `v_i` does not belong
+to `B_(x_i)`, and if `v_i=v_j` then that common strict mate belongs to
+neither endpoint-layer block.  Hence (1331)--(1332) give the exact count
+
+```text
+|Fix(sigma_j sigma_i)|
+ =2*1_[x_i,x_j adjacent on C]
+  +alpha_(i,j)+alpha_(j,i)+delta_(i,j).             (1334)
+```
+
+Most of these product fixed points cannot occur as states of the rooted
+holonomy.  A vertex in `B_(x_i) intersect B_(x_j)` is artificial for both
+roots: neither rooted letter exists there.  A correction counted by
+`alpha_(i,j)` is the strict mate for root `i` but is artificial for root
+`j`, and symmetrically for `alpha_(j,i)`.  The only fixed point carrying
+actual rooted strict letters for both roots is therefore a common strict
+mate
+
+```text
+v_i=v_j.                                             (1335)
+```
+
+Let `col(s_i)` denote the exterior component of the strict label.  A
+stationary two-letter state cycle alternates the departures `s_i,s_j` at
+one outside vertex.  The transition rule requires their colors to differ.
+Conversely, if (1335) holds and the colors differ, both strict departures
+are available at the common mate and each reflects back there, producing
+the literal state cycle.  Thus
+
+```text
+an admissible stationary 2-cycle on roots i,j exists
+ iff v_i=v_j and col(s_i)!=col(s_j).                 (1336)
+```
+
+This distinguishes fixed points of the permutation product from legal
+rooted-arrival recurrence.  The two base fixed points for adjacent roots,
+and all one-sided strict corrections, contribute to the group action but
+can never by themselves realize the shortest stationary holonomy.  Any
+two-letter obstruction is concentrated at equality of two explicitly
+located strict outside mates together with their color separation.
