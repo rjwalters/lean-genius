@@ -2686,6 +2686,36 @@ its evenness is a new simultaneous statement, not a consequence of (20).
 This prevents treating the local K-parity as a completed conservation law
 and isolates the exact parity lemma still required.
 
+The internal boundary in (73rnz_y) has no exceptional parity residue.  In
+the `s=0` placement the inside exceptional centers are only X and Y.  When
+`epsilon=1`, the additional line-intersection point v is ordinary, and the
+edges `Xv,Yv` are non-T: the other core center is a common A-neighbor of
+each edge.  The full line at X is
+
+```text
+{Y} disjoint_union U_+ disjoint_union ({v} if epsilon=1),
+```
+
+and similarly at Y.  Since every T-degree is even and `XY in T` exactly
+when `epsilon=0`,
+
+```text
+e_T(U_+,{X}) = 1-epsilon,
+e_T(U_-,{Y}) = 1-epsilon                    (mod 2).       (73rnz_z1)
+```
+
+Their sum is zero modulo two.  Consequently
+
+```text
+e_T(U,S setminus U)
+  = e_T(U,(M intersect S) setminus U)        (mod 2).      (73rnz_z2)
+```
+
+Thus the F2 obstruction is entirely an ordinary-block boundary; no
+exceptional mark remains to be tabulated.  Closing the `s=0` parity route is
+equivalent to proving that the T-cut of U inside the ordinary residual block
+is even.
+
 The other `a=2` placement, `s=2`, has an exact four-bundle alternative.  Let
 `E_1,E_2` be the inside empty centers and let `F_(i,0),F_(i,1)` be the two
 outside-full leaves of the T-star at `E_i`.  Put
