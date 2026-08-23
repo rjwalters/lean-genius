@@ -19381,3 +19381,56 @@ can occur is now coupled to a named strict export and an endpoint-disjoint
 outside mate.  A global holonomy completion must account for that strict
 mate in addition to the double-payer support (1256), rather than treating
 the offset owner as a purely columnwise coincidence.
+
+## 367. Equal-root residual edges collide at the offset port
+
+The offset singleton in Section 365 is present even when the secondary
+double-payer is not used.  Let `y` be an `O--O` rooted propagation label
+with core root `x_i`.  Its three residual tagged columns are `T_i`.  In the
+double-payer profile, (1257) leaves `p_(i+2)` as the non-`d` singleton; in
+the three-singleton profile of (1253), every column of `T_i` is non-`d`.
+Thus in all cases there is a uniquely tagged actual path
+
+```text
+y -- z(y) -- p_(i+2),       z(y) in h(y),
+h(y) notin {c,e,d}.                                    (1265)
+```
+
+Now take two distinct `O--O` propagation labels `y_0,y_1` with the same
+core root `x_i`.  Their offset payers are distinct:
+
+```text
+z(y_0)!=z(y_1).                                      (1266)
+```
+
+Indeed the two source labels already have the common neighbor `x_i`.  If
+their offset payer were also common, those two vertices would give a
+four-cycle through `y_0,y_1`.
+
+Consequently the layer tags have the sharp collision dichotomy
+
+```text
+h(y_0)=h(y_1)=h
+  implies N_h(p_(i+2))={z(y_0),z(y_1)};
+
+h(y_0)!=h(y_1)
+  gives two separately located non-d payment obligations
+  at the same offset port p_(i+2).                    (1267)
+```
+
+The first line uses the cross degree two of the selected port into `h`:
+the distinct payers in (1266) exhaust that entire fiber.  Thus the repeated
+signature collision of Section 350 has a residual analogue requiring only
+a repeated root, not a repeated pair of private owners:
+
+```text
+two O--O edges rooted at x_i
+  -> saturation or layer splitting at p_(i+2).       (1268)
+```
+
+This is again a capacity event rather than an exclusion.  Its gain is that
+residual propagation cannot evade the selected-port collision mechanism by
+changing both target endpoints: the core root alone fixes a canonical
+non-secondary singleton column on every `O--O` row.  Further repetition of
+one root may therefore be counted against the finite two-slot fibers at its
+offset port.
