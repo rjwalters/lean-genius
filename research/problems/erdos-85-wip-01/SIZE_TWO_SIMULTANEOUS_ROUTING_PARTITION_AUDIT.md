@@ -11265,3 +11265,41 @@ remaining graph theorem may therefore be stated minimally as an evaluation
 of the equal-shore-state H edges, with `n_00` supplied by the existing
 one-dart owner ledger and their incidence pattern retained in the horizontal
 owner two-factor.  No seven-cell enumeration is necessary.
+
+## 221. Diagonal cells are odd monochromatic shore runs
+
+The marked H edge census is not a matching on its root vertices.  For fixed
+`(c,e)` it is the horizontal owner subgraph
+`K_ce=A_c intersect F_e[c]`, of maximum degree two; an interior root of an
+H-run meets two marked edges.  Thus matching class-size formulas cannot be
+used to evaluate (682).
+
+For each shore state `u in {00,10,01,11}`, let `K_u` contain the marked
+same-side H edges whose two endpoints both have state `u`.  Every component
+of `K_u` is a path or a cycle.  Therefore
+
+```text
+m_(u,u)
+ = number of odd-edge paths and odd-edge cycles in K_u mod 2. (683)
+```
+
+The endpoints of the path components are precisely the incidences where a
+maximal `u`-run stops because the next horizontal owner edge is absent or
+has a different shore state.  Handshake pairs these endpoints, but—as in
+the original owner-run identity (54)—does not determine the parity of the
+distance between them, and an odd closed `u`-cycle has no endpoints at all.
+
+Combining (682) and (683), the same-side anchor theorem is exactly the
+owner-corrected evenness of
+
+```text
+n_00 + sum_(u in F_2^2)
+  #(odd-edge path/cycle components of K_u).            (684)
+```
+
+This is the correct use of the horizontal two-factor.  It localizes every
+remaining diagonal unit to an odd monochromatic shore run, while showing why
+endpoint populations alone cannot pay it.  A closing identity must use the
+vertical triangle connections of the root--color state two-factor, or an
+equivalent H-tagged owner route, to pair the odd runs and odd closed cycles.
+No inference from a nonexistent global H matching is valid.
