@@ -3391,6 +3391,34 @@ profile.  Closing the branch requires resolving the odd K-fiber into priced
 units and showing that the downstream relay ledger cannot pay both pole
 demands simultaneously.
 
+The K-channel has the same incidence atomization as (73rnz_av).  For
+`z in X setminus {p_i}`, the unique pole-line intersection implies
+`E_i z notin A`.  The empty center's D-neighborhood is exactly
+`F union (E setminus {E_i})`, so this non-A pair has codegree one exactly
+when z is ordinary and codegree zero exactly when z is exceptional.  If
+`mu_(E_i,z)=A^3(E_i,z)` modulo two denotes the parity of its
+cross-neighborhood matching, (17) gives
+
+```text
+1[E_i z in K] = 1[z in M] + mu_(E_i,z)            (mod 2). (73rnz_bw)
+```
+
+(The point p_i itself is A-adjacent to E_i and contributes no K-edge.)
+Summing (73rnz_bw) over the other `q-1` support points and using
+(73rnz_br) yields
+
+```text
+1[p_i is a leaf]
+ = |M intersect (X setminus {p_i})|
+   + sum_(z in X setminus {p_i}) mu_(E_i,z)        (mod 2). (73rnz_bx)
+```
+
+Thus the odd K-fiber is fully resolved into ordinary endpoint-type units and
+cross-neighborhood matching atoms, each matching linear by C4-freeness.  In
+the ordinary-endpoint branch the same right side is even and the private
+split Baer pair carries the pole demand instead.  Both channels of
+(73rnz_bv) are now expressed in the common source/type/matching alphabet.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
