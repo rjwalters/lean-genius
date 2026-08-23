@@ -113,6 +113,21 @@ theorem not_conflict_of_forcedLocalGramNeighbors
   obtain ⟨X, hX⟩ := hpack
   exact hX.2.2 x (hx X hX) y (hy X hX) hxy
 
+omit [Fintype V] in
+/-- Under the negation of the obstruction, the rows which force one common
+candidate are pairwise nonconflicting.  Together with
+`not_conflict_of_forcedLocalGramNeighbors`, this makes the forced-neighbor
+relation packing-like in both its rows and its columns. -/
+theorem not_conflict_of_common_forcedLocalGramNeighbor
+    (H W : V → V → Prop) (d : V → ℕ) (u v w : V)
+    (hno : ¬ HasLocalGramPackingObstruction H W d)
+    (huw : IsForcedLocalGramNeighbor H W d u w)
+    (hvw : IsForcedLocalGramNeighbor H W d v w) :
+    ¬ W u v := by
+  intro huv
+  apply hno
+  exact Or.inr ⟨u, v, w, huv, huw, hvw⟩
+
 /-- The neighborhood finset of an arbitrary decidable relation. -/
 def relationNeighborFinset (A : V → V → Prop) [DecidableRel A]
     (u : V) : Finset V :=
@@ -174,6 +189,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_localGramPacking_deficit_or_forced_collision
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
 #print axioms not_hasLocalGramPackingObstruction_iff
+#print axioms not_conflict_of_common_forcedLocalGramNeighbor
 #print axioms not_conflict_of_forcedLocalGramNeighbors
 
 end Erdos85
