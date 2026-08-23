@@ -39,8 +39,10 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                        exclude_single_special_hole: bool,
                        all_incident_disjoint_packings: bool,
                        all_conflicting_disjoint_packings: bool,
+                       requested_disjoint_pairs: list[tuple[int, int]],
                        all_reciprocity_compatible_packings: bool,
                        reciprocity_pairs: list[tuple[int, int]],
+                       requested_integral_rows: list[int],
                        fixed_template_primal_denominator: int | None,
                        template: dict | None = None):
     solver, data = build(
@@ -135,7 +137,7 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                     for edge, value in weight.items()
                 ]) >= 17 * scale)
 
-    disjoint_pairs = set()
+    disjoint_pairs = {edge_key(u, v) for u, v in requested_disjoint_pairs}
     if all_incident_disjoint_packings:
         disjoint_pairs.update(
             (regular, hole)
@@ -225,6 +227,23 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                 If(And(reverse[v], incidence[v, point]), 1, 0)
                 for v in range(N)
             ]) <= 1))
+
+    for u in sorted(set(requested_integral_rows)):
+        selected = {
+            v: Bool(f"integral_row_pack_{u}_{v}") for v in range(N)
+        }
+        solver.add(Sum([
+            If(selected[v], 1, 0) for v in range(N)
+        ]) == (6 if u >= N_TRIPLE - 4 else 5))
+        for v in range(N):
+            solver.add(Implies(selected[v], And(
+                u != v, eligible(u, v), eligible(v, u),
+            )))
+        for point in range(N_U1):
+            solver.add(Sum([
+                If(And(selected[v], incidence[v, point]), 1, 0)
+                for v in range(N)
+            ]) <= 1)
 
     if shared_integral_relation:
         relation = {
@@ -320,6 +339,11 @@ def main() -> None:
               "integral local packings of its actual demanded sizes"),
     )
     parser.add_argument(
+        "--disjoint-pair", type=int, nargs=2, action="append", default=[],
+        metavar=("U", "V"),
+        help="require disjoint full local packings at one conflicting pair",
+    )
+    parser.add_argument(
         "--all-reciprocity-compatible-packings", action="store_true",
         help=("for every ordered row pair (u,w), require either a full "
               "packing at u avoiding w or a full packing at w containing u"),
@@ -328,6 +352,10 @@ def main() -> None:
         "--reciprocity-pair", type=int, nargs=2, action="append", default=[],
         metavar=("U", "W"),
         help="impose the reciprocity-compatible disjunction only at (u,w)",
+    )
+    parser.add_argument(
+        "--integral-row", type=int, action="append", default=[],
+        help="require one full integral local packing at the named row",
     )
     parser.add_argument(
         "--all-pairs-fixed-template-primal-denominator", type=int,
@@ -349,17 +377,25 @@ def main() -> None:
     if any(row < 0 or row >= N for row in rows):
         parser.error("--rows entries must lie in 0..46")
     reciprocity_pairs = [tuple(pair) for pair in args.reciprocity_pair]
+    disjoint_pairs = [tuple(pair) for pair in args.disjoint_pair]
+    if any(u < 0 or u >= N or v < 0 or v >= N or u == v
+           for u, v in disjoint_pairs):
+        parser.error("--disjoint-pair requires distinct rows in 0..46")
     if any(u < 0 or u >= N or w < 0 or w >= N or u == w
            for u, w in reciprocity_pairs):
         parser.error("--reciprocity-pair requires distinct rows in 0..46")
+    if any(u < 0 or u >= N for u in args.integral_row):
+        parser.error("--integral-row entries must lie in 0..46")
     template = json.loads(args.template.read_text()) if args.template else None
     solver, data = build_row_feasible(
         args.timeout_seconds, args.denominator, rows,
         args.shared_integral_relation, args.exclude_single_special_hole,
         args.all_incident_disjoint_packings,
         args.all_conflicting_disjoint_packings,
+        disjoint_pairs,
         args.all_reciprocity_compatible_packings,
         reciprocity_pairs,
+        args.integral_row,
         args.all_pairs_fixed_template_primal_denominator,
         template=template
     )

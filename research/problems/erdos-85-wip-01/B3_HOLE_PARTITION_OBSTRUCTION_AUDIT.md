@@ -5018,6 +5018,20 @@ logical shortcut or an UNSAT claim.  Combining the two all-pairs switches
 now expresses the full negation of the latter two (13ay) horns, while
 `--all-rows` supplies the row-existence part of the first horn.
 
+Because the monolithic exact encoding times out before search, the companion
+`q9_branch4_pure_local_cegar.py` adds these necessary witnesses lazily.  It
+starts from the outer design alone, audits each SAT model exactly, and adds
+only the first failed requirement: an integral packing at a deficit row, a
+disjoint-packing witness at a conflicting pair, or the reciprocity-compatible
+disjunction at an ordered pair.  Every accumulated constraint is necessary
+for any genuine negation of (13ay), so SAT with no horn is a counterexample,
+UNSAT rules out all counterexamples satisfying the accumulated necessary
+conditions, and `unknown` remains inconclusive.  A five-iteration seed-165
+smoke run stayed SAT and lazily requested integral rows `3,14,23,22` before
+the iteration limit; unlike the monolithic all-row call, it made immediate
+progress.  This is a search procedure and regression harness, not a Lean
+proof or an UNSAT certificate.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
