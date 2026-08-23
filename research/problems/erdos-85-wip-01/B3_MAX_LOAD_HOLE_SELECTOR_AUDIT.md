@@ -368,6 +368,15 @@ single is strict, there exists a tight point `t` and some partner `q` with
 now the preferred statement; the tight-tight/minimum-excess split above is a
 recorded failed shortcut, not a proof plan.
 
+`--scan-exact-joint-optima` now machine-reports this exact surviving
+predicate as `tight_strict_partners` and `exists_tight_strict_partner`.
+Rechecking all five durable no-strict payloads gives `True`; their partner
+maps are respectively `9↦{0,1,11}`, `3↦{10,12,22}` / `12↦{3,10,22}` /
+`22↦{0,3,10,12}`, `3↦{8}` / `8↦{3,22}` / `16↦{14}` / `22↦{8}`,
+`0↦{3,6,13,16,18,19}` / `19↦{0}`, and `10↦{12}` / `19↦{12}`.
+Future payloads therefore falsify the preferred lemma with one explicit
+boolean rather than requiring manual inspection of every pair optimum.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus

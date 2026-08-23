@@ -397,6 +397,33 @@ def anchor_pair_summary(system: dict, hole_overlap: list[list[int]],
     }
 
 
+def add_exact_joint_scan(answer: dict, system: dict, genuine_pairs,
+                         single_optima: dict) -> None:
+    """Attach all joint optima and the surviving tight-partner invariant."""
+    joint_optima = [
+        exact_joint_optimum_summary(system, pair, single_optima)
+        for pair in genuine_pairs
+    ]
+    tight = {
+        point for point, optimum in single_optima.items()
+        if Fraction(optimum["cost"]) == optimum["target"]
+    }
+    partners = {point: [] for point in sorted(tight)}
+    for optimum in joint_optima:
+        if Fraction(optimum["target_gap"]) <= 0:
+            continue
+        p, q = optimum["points"]
+        if p in tight:
+            partners[p].append(q)
+        if q in tight:
+            partners[q].append(p)
+    answer["genuine_joint_optima"] = joint_optima
+    answer["tight_strict_partners"] = {
+        str(point): values for point, values in partners.items()
+    }
+    answer["exists_tight_strict_partner"] = any(partners.values())
+
+
 def one_model(
         timeout_ms: int, random_seed: int, max_scale: int,
         details: bool = False, genuine_only: bool = False,
@@ -523,11 +550,8 @@ def one_model(
                         single_optima[point] for point in overlap
                     ]
                 if scan_exact_joint_optima:
-                    answer["genuine_joint_optima"] = [
-                        exact_joint_optimum_summary(
-                            system, pair, single_optima)
-                        for pair in genuine_pairs
-                    ]
+                    add_exact_joint_scan(
+                        answer, system, genuine_pairs, single_optima)
                 return answer
     answer = {
         "overlap_card": len(overlap),
@@ -541,10 +565,7 @@ def one_model(
         answer["anchor_pair"] = anchor_pair_summary(
             system, exceptional_hole_overlap, single_optima)
     if scan_exact_joint_optima:
-        answer["genuine_joint_optima"] = [
-            exact_joint_optimum_summary(system, pair, single_optima)
-            for pair in genuine_pairs
-        ]
+        add_exact_joint_scan(answer, system, genuine_pairs, single_optima)
     if details:
         answer["outer_payload"] = outer_payload
         answer["overlap_single_fiber_optima"] = [
@@ -612,11 +633,8 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
                         single_optima[point] for point in overlap
                     ]
                 if scan_exact_joint_optima:
-                    answer["genuine_joint_optima"] = [
-                        exact_joint_optimum_summary(
-                            system, pair, single_optima)
-                        for pair in genuine_pairs
-                    ]
+                    add_exact_joint_scan(
+                        answer, system, genuine_pairs, single_optima)
                 return answer
     answer = {
         "overlap_card": len(overlap),
@@ -629,10 +647,7 @@ def fixed_payload_model(payload: dict, max_scale: int, details: bool,
     answer["anchor_pair"] = anchor_pair_summary(
         system, distinguished_hole_overlap, single_optima)
     if scan_exact_joint_optima:
-        answer["genuine_joint_optima"] = [
-            exact_joint_optimum_summary(system, pair, single_optima)
-            for pair in genuine_pairs
-        ]
+        add_exact_joint_scan(answer, system, genuine_pairs, single_optima)
     return answer
 
 
