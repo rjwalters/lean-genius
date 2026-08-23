@@ -775,6 +775,20 @@ def main() -> None:
                 if (certificate["regular_rows"][0] < 8
                     and 8 <= certificate["regular_rows"][1] < 16)
             ],
+            "incident_offdiagonal_count": sum(
+                certificate["regular_rows"][0] < 8
+                and 8 <= certificate["regular_rows"][1] < 16
+                and not system["blocks"][certificate["hole"]].isdisjoint(
+                    system["blocks"][certificate["regular_rows"][1]])
+                for certificate in certificates
+            ),
+            "incident_offdiagonal_certificates": [
+                certificate for certificate in certificates
+                if (certificate["regular_rows"][0] < 8
+                    and 8 <= certificate["regular_rows"][1] < 16
+                    and not system["blocks"][certificate["hole"]].isdisjoint(
+                        system["blocks"][certificate["regular_rows"][1]]))
+            ],
             "certificates": certificates,
         }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support

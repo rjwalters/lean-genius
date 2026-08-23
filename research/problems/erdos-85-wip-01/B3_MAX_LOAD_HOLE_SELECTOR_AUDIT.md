@@ -532,6 +532,18 @@ off-diagonal-class row.  Finer block-intersection types have empty common
 intersection across the corpus, so no additional concurrency pattern should
 be imposed.
 
+One incidence condition does survive: the chosen first off-diagonal-class
+row can be required to meet the exceptional block.  The hard counts inside
+this subfamily are `16,8,2,7,3`; the five fresh outers have `7,7,34,14,26`.
+Because each three-point exceptional block
+meets exactly three rows of a regular parallel class, this reduces the
+selector further to `2*3*8=48` support shapes: choose the exceptional row,
+one of its three incident class-1 rows, and an arbitrary normalized diagonal
+row.  The diagonal row cannot be required to meet either of the other two;
+the fifth payload's surviving incidence types include diagonal rows disjoint
+from both.  The scanner reports this sharp subfamily as
+`incident_offdiagonal_certificates`.
+
 The legacy alternative is to prove, from the outer design plus the exact
 exceptional-hole DTB complement partition, that a tight overlap fiber has a
 strict joint partner and then denominator-clear its two-fiber cover.  The
