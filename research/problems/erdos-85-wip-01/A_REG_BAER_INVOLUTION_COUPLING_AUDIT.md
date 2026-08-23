@@ -2113,6 +2113,41 @@ kill `a=1`.  A final exclusion must use a simultaneous routing relation that
 couples the two witness parities or the two cross-mark phases; (73rnn) states
 exactly which six/eight local rows that relation has to separate.
 
+There is already an exact signed simultaneous-routing identity at this
+endpoint.  Put
+
+```text
+w = 1_(z_1)-1_(z_2).
+```
+
+The outside-neighbor classification in (73rnj) gives, as an integer vector
+on `V setminus S`,
+
+```text
+(A w)|_(V setminus S)
+  = -1_(z_1)+1_(z_2)
+    + sum_(E_j in E) (1_(y_(1,j))-1_(y_(2,j))).           (73rnx)
+```
+
+A shared witness cancels in its summand.  In particular the signed sum on
+every empty-line block is zero: that line contains one `+1` witness and one
+`-1` witness, or their common witness with coefficient zero.  Since
+`1^T w=0`, the square identity also gives
+
+```text
+A^2 w = ((q-1)I-D)w,
+(A^2 w)_(E_j)=0 for every empty center E_j,               (73rny)
+```
+
+the last equality using `E_j z_i` non-D for both endpoints.  Thus the
+two-port terminal carries a genuine root-sum/port-difference compatibility:
+the oriented owner difference routes through all empty lines with exact
+blockwise cancellation before reaching the inside-neighbor difference.
+This is the adjacency-square analogue of the simultaneous SRP functional's
+sum--difference identity; unlike the local phase table, it uses all empty
+fibers at once and is therefore a plausible input for separating the
+remaining rows of (73rnn).
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
