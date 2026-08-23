@@ -15552,3 +15552,46 @@ active edge `x--u`, while the inactive labels lie in separate or cancelled
 components.  This identifies precisely when the occurrence-indexed dual
 routes share their terminal private label, rather than leaving that issue
 inside the length-three bound.
+
+## 304. A shared terminal label forces separation on the target factor
+
+The shared-label cases in Section 303 have an additional `C_4`-free cost.
+Suppose `u in Z_w`, so the active label `y_w` and terminal label `z(w)`
+share the outside root `u`.  Their target neighborhoods must then be
+disjoint:
+
+```text
+N_e(y_w) intersect N_e(z(w))=emptyset.              (979)
+```
+
+Otherwise a common target port together with `u,y_w,z(w)` would form a
+four-cycle.  Since the tagged port `w` belongs to `N_e(y_w)`, neither
+endpoint of the terminal edge indexed by `z(w)` is `w`.  In the notation
+of Section 300,
+
+```text
+s_w!=w,       o_w!=w.                               (980)
+```
+
+The path component of `Theta_w` ending at `o_w` necessarily uses the
+terminal edge `s_w--o_w` as its last edge: every other edge of
+`Theta_w^S` has both endpoints in `S`.  Because `s_w!=w`, the preceding
+part from `w` to `s_w` is nonempty.  Hence in every shared-label case the
+target escape satisfies
+
+```text
+length_(F_a[e])(w--o_w)>=2.                          (981)
+```
+
+Conversely, a one-edge target escape would make `z(w)` incident to `w`.
+The only two `a`-labels incident to `w` are the active label `y_w` and its
+inactive companion `y'_w`; since `z(w)` is inactive and cannot equal
+`y_w`, this forces `z(w)=y'_w`.  The companion supports in (974) are
+disjoint, so then `u notin Z_w` and the root route is the single active
+edge `x--u`.
+
+Thus the occurrence-level dual route has an exact alternative.  Either
+the root route and target escape share the terminal private label, in which
+case `C_4`-freeness separates its target edge from the starting active edge
+and charges at least two target-factor steps, or a one-step target escape
+can occur only in the completely local, nonshared root-route case.
