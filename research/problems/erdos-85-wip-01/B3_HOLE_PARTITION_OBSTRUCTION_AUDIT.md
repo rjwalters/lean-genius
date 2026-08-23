@@ -5076,6 +5076,15 @@ new sound horn.  The diversity of ordered pairs indicates that a proof of
 (13ay) likely needs a structural invariant of the forced-incidence digraph,
 not a finite exceptional-row list.
 
+Five further 180-second iterations again remained SAT.  They added
+reciprocity `(8,4)`, deficit row 17, reciprocity `(5,32)` and `(16,25)`, then
+no-disjoint `{5,23}`.  The repeated alternation between horn types shows that
+the current outer relaxation has substantial freedom to move the obstruction
+rather than eliminate it.  This does not refute (13ay)—every model still has
+a horn—but it makes a short finite list of forced ordered pairs implausible;
+the proof target should control a global count or cycle property of the
+forced-incidence relation.
+
 A more promising structural invariant comes from the local-family sizes.
 Call a row *rigid* when it has one or two full integral local packings, and
 join two rigid rows when their blocks conflict.  The unified audit now emits
