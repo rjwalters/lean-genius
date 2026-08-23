@@ -8377,3 +8377,36 @@ This does not exclude either profile.  It does show that the degenerate
 activation failure is already coupled to the pricing ledger: the private
 capacity unit cannot remain isolated, and the remaining no-saturation
 branch consists entirely of the two directed singleton-transfer profiles.
+
+## 157. Capacity constraints alone cannot exclude the silent odd run
+
+There is a formal zero model of every connection and capacity statement in
+Sections 132--138.  Take one abstract H-run of arbitrary odd length and set
+
+```text
+q_u(v_-)=q_u(h_-)=q_u(h_+)=q_u(v_+)=0,
+eta_u(E)=0 for every internal cell E,
+tau_u(A)=0                                               (504)
+```
+
+for every `u`.  Then the transport identities (397)--(403) hold, the list
+of nonzero profiles (407) is empty, the saturated privacy statement is
+vacuous, and all fiber bounds are satisfied.  If the two endpoint route
+labels differ, (504) is exactly the first singleton obstruction in (499);
+if they agree, it is a special case of the second.
+
+This is an abstract ledger model, not a claim that an SRP incidence graph
+realizes it.  Its consequence is nevertheless rigorous: no argument using
+only the displayed transport equalities, the six-state profile list, and
+the capacity/privacy bounds can prove (496), because those constraints
+admit (504).  Excluding the silent odd run requires one additional geometric
+input that forces some endpoint or internal secondary incidence from the
+primary odd grading.
+
+Thus capacity pricing can finish the branch after activation, and (501)--
+(503) constrain how a saturated unit relays, but capacity cannot create the
+first nonzero atom.  The missing statement is now irreducibly an incidence
+realizability lemma for (362): an odd H-run cannot have the zero/matched
+endpoint signatures (499) while all of its internal secondary connections
+close evenly.  This identifies the exact place where the original marked
+run geometry, rather than the abstract connection ledger, must re-enter.
