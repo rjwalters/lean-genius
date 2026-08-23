@@ -12847,3 +12847,60 @@ it has one rigid five-cell off-incidence permutation.  This still does not
 exclude a regular completion, but it replaces the two numerical cases of
 (774) by one fully located interface on which the owner/color handshake
 must act.
+
+## 252. Every five-port exterior atom is a distinct strict export
+
+The five intermediates in (778) cannot reuse a vertex.  In fact every pair
+of distinct roots of the horizontal `C_5` already has a common neighbor in
+the displayed core.  Consecutive roots `x_i,x_(i+1)` share their indexing
+port `p_i`.  Nonconsecutive roots have cycle distance two and share the
+middle root on the corresponding two-edge `A_c` path.  If one exterior
+vertex `z` met two roots of `C`, it would be a second common neighbor of
+that pair and would create a four-cycle.  Hence, for every exterior label,
+
+```text
+i_z=|N_c(z) intersect C| <= 1.                       (779)
+```
+
+The aggregate exterior support (777) has exactly one cell in each root row.
+If a label with `i_z=1` had `j_z=2`, its two selected ports would create two
+exterior cells in the same row.  Therefore every label which contributes a
+positive mixed moment has
+
+```text
+(i_z,j_z)=(1,1).                                     (780)
+```
+
+It follows both that the five intermediates `z_i` in (778) are pairwise
+distinct and that the full nine-cell census across all exterior colors is
+
+```text
+sum_a N_11^a=5,
+sum_a N_12^a=sum_a N_21^a=sum_a N_22^a=0.            (781)
+```
+
+The vanishing is integer, not only parity.  In particular the proper
+run-filler attachments and the whole contained owner-cycle residues from
+(752) all vanish for the selected five-port target:
+
+```text
+sum_a(B_att^a+R_att^a+B_cyc^a+R_cyc^a)=0.           (782)
+```
+
+Color by color one also has
+
+```text
+O_a(C,Z)=N_11^a,                                     (783)
+```
+
+because every exterior two-path cell is one of the five strict exports and
+all aligned cells vanish by (765).  Thus the division-by-two handshake
+(766) is identically zero in every receiving color, while the global
+curvature is the five strict-overlap atoms themselves.
+
+The minimum curl terminal has therefore lost all new-color filler and
+closed-cycle ambiguity.  Its only exterior response is a rigid five-term
+strict export, one atom in each root and port position of the offset
+permutation (777), with adjacent (indeed all) intermediate vertices
+distinct.  What remains is a color/owner constraint on these five labels,
+not a capacity choice among `0/1/2` profiles.
