@@ -3046,6 +3046,29 @@ unspecified defect tag: it is the parity of the cross-neighborhood matching
 after deleting the realized leaf--port switch edges.  Summing (73rnz_ar)
 against the shore relation (20) is the concrete next conservation test.
 
+That test gives an exact centerwise balance.  Fix a residual full center G.
+All of its T-neighbors lie in S, so their number is the even integer
+`deg_T(G)`.  Applying (20) at G therefore says that its K-incidence into S
+is even.  The only exceptional vertices inside S are the two empty centers
+`E_1,E_2`; all remaining inside vertices are ordinary.  Hence, modulo two,
+
+```text
+sum_(i=1,2) 1[E_i G in K]
+   = deg_K(G, M intersect S)
+
+sum_(i=1,2) (c_(E_i,G)+rho_(E_i,G))
+   = deg_K(G, M intersect S).                           (73rnz_as)
+```
+
+The second line substitutes (73rnz_ar).  Thus the cross-tagged switch atoms
+do have an occurrence-level conservation law, but only after adjoining two
+specific secondary ledgers: the unused cross-neighborhood matching edges
+`rho` and the ordinary inside K-incidences at G.  Bare J loses both and hence
+cannot see (73rnz_as).  This is the exact Baer-side source-times-consumed-
+fiber balance sought by the parallel SRP/B3 analysis; the remaining task is
+to resolve the ordinary K term into the same private route labels, or show
+that its aggregate contribution vanishes in the terminal pairing.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
