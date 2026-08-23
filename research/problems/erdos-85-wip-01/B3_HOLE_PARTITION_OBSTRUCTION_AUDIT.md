@@ -3531,7 +3531,7 @@ kernel-free residual matching problem.  The remaining content of (13f) is
 to show that the forced matchings of all intersecting tight rows cannot have
 pairwise empty intersections as sets of block rows.
 
-### Retraction warning: the local alternative (13f) has audit counterexamples
+### Retraction: the local alternative (13f) is false in the outer abstraction
 
 A wider adversarial sweep reported generated outer designs satisfying the
 exact negation of (13f): every row has a demanded local packing, but no two
@@ -3569,20 +3569,34 @@ each outer SAT result, but it did not serialize the nine outer-design
 payloads.  Equation (13q) is therefore strong computational counterexample
 evidence, not yet a stored independently checkable counterexample.
 
-Until one survivor payload is captured and verified, (13f), (13j), (13l),
-and (13m') must be marked **REFUTED-IN-AUDIT / candidate unsafe**, rather than
-used as a universal lemma.  They are equivalent descriptions, so a captured
-survivor would refute all four at once.  The reductions (13h)--(13p) remain
-valid identities, and the Lean consumer remains a valid conditional theorem;
-what has lost support is the claim that every admissible outer design supplies
-its `hbad` hypothesis through (13f).
+A seed-free exact-negation model subsequently supplied the missing durable
+witness.  The full branch-3 block design and cubic `K` graph are stored in
+`q9_13f_counterexample.json`.  The independent command
+
+```text
+python3 research/problems/erdos-85-wip-01/verify_q9_13f_counterexample.py
+```
+
+pins all 47 incidence blocks and every `K` edge back into the unrestricted
+outer equations, obtains `SAT`, and then exhaustively recomputes
+
+```text
+local deficits = 0,       forced collisions = 0.              (13r)
+```
+
+Thus (13f), (13j), (13l), and (13m') are now independently refuted as
+universal statements in the outer abstraction, not merely unsafe sampled
+candidates.  The reductions (13h)--(13p) remain valid identities, and the
+Lean consumer remains a valid conditional theorem; what is false is the
+claim that every admissible outer design supplies its `hbad` hypothesis
+through (13f).
 
 The replacement interface must restore genuinely global compatibility data
 from (13c), such as simultaneous symmetric degree realization, rather than
 inspect one or two local packing families only.  The seed-free exact-negation
-model should now either capture one survivor or prove the negation encoding
-UNSAT, then identify the smallest global constraint which excludes any real
-survivors.  Further local-kernel refinements alone cannot close B.3.
+model must now add the symmetric simultaneous-selection constraints and
+identify the smallest global condition which excludes the stored survivor.
+Further local-kernel refinements alone cannot close B.3.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
