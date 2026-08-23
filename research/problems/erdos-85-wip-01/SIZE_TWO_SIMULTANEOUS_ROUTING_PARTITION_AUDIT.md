@@ -7847,3 +7847,60 @@ asserted.  The statement identifies its exact topology if it occurs and
 provides the direct dictionary to a pair of odd boundary ledgers in the Baer
 lane: two odd rows, one joining trail, Eulerian closure after one formal
 edge, and one surviving parity class.
+
+## 149. The secondary connection still needs an activation bridge from the grading
+
+The connection theory of Sections 129--148 is conditional on a nonzero
+secondary-resolved source defect.  It must not be confused with the original
+marked grading.  Recall that
+
+```text
+omega_M(Z)=number of H--H port pairs  (mod 2),
+```
+
+whereas the primary connection coordinate is
+
+```text
+D_(1_H,q_u)=sum_(H--V roots) delta_R q_u.             (460)
+```
+
+The H-row identity (339) relates the **unlabeled** H--V boundary count to
+the H--H root/port imbalance, but it contains no secondary observable `q_u`.
+Conversely, the routing-color contraction (419) identifies the sum of (460)
+with the marked-cubic fluctuation `Theta V_j`, not with `omega_M(Z)`.  No
+proved equation currently gives
+
+```text
+omega_M(Z)=1  implies D_(1_H,q_u)=1 for some d,u.     (461)
+```
+
+Even if a nonzero coordinate in (461) is supplied, (411) gives three
+possibilities for that fiber.  Since `|N_21(u)|` is zero or one by privacy,
+an odd defect has either
+
+```text
+|N_21(u)|=1,  with arbitrary unsaturated parity; or
+|N_21(u)|=0,  and |N_10(u)|+|N_01(u)| is odd.         (462)
+```
+
+Thus saturation is not forced merely by nonvanishing.
+
+The unresolved activation alternatives for an odd-graded mixed cycle are
+therefore:
+
+```text
+A0: every secondary coordinate (460) vanishes;
+A1: some coordinate is nonzero only through an odd unsaturated imbalance;
+A2: some coordinate contains the private saturated unit.               (463)
+```
+
+Sections 140--148 give strong separator/potential and trail structure in A2,
+and their linear machinery also applies to an A1 coordinate once a chosen
+source fiber is specified.  They do not exclude A0 or show that A2 occurs.
+
+A complete terminal must now do one of two things: construct a marked/mate-
+resolved character identity that sends odd `omega_M` into the secondary
+connection ledger and handles all three cases, or prove directly that A0 and
+A1 have even marked grading, leaving A2 as the only source.  This activation
+bridge is logically prior to using the private saturated capacity unit as a
+contradiction.
