@@ -54,6 +54,38 @@ theorem orderNine_order27_orient_articulation_shores
         hdisj.symm, hTS.2, hTS.1, hfullT, hTclosed, hSclosed,
         hTboundary, hSboundary⟩
 
+/-- In an oriented order-27 split, the five exceptional points divide as
+three on the FullType small shore and two on the large shore. -/
+theorem orderNine_order27_exceptional_inter_large_card_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E A B U : Finset V) (h₁ h₂ h₃ : V)
+    (hunion : A ∪ B = U) (hdisj : Disjoint A B)
+    (hEsub : E ⊆ U) (hEcard : E.card = 5)
+    (hAcard : A.card = 27)
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ A) :
+    (E ∩ B).card = 2 := by
+  have hEA : (E ∩ A).card = 3 := hfull.2.2.1 hAcard
+  have hsplit : (E ∩ A).card + (E ∩ B).card = E.card := by
+    have hset : (E ∩ A) ∪ (E ∩ B) = E := by
+      ext x
+      constructor
+      · intro hx
+        rcases Finset.mem_union.mp hx with hx | hx
+        · exact (Finset.mem_inter.mp hx).1
+        · exact (Finset.mem_inter.mp hx).1
+      · intro hxE
+        have hxU := hEsub hxE
+        rw [← hunion] at hxU
+        rcases Finset.mem_union.mp hxU with hxA | hxB
+        · exact Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨hxE, hxA⟩)
+        · exact Finset.mem_union_right _ (Finset.mem_inter.mpr ⟨hxE, hxB⟩)
+    have hd : Disjoint (E ∩ A) (E ∩ B) :=
+      Finset.disjoint_of_subset_right Finset.inter_subset_right
+        (Finset.disjoint_of_subset_left Finset.inter_subset_right hdisj)
+    rw [← Finset.card_union_of_disjoint hd, hset]
+  omega
+
 /-- Direct sharp-partition extraction on the actual 50-point shore.  This
 is preferable in the graph-facing wrapper to transferring the 51-point
 complement partition: the articulation capstone already supplies this
@@ -249,6 +281,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
 #print axioms orderNine_explicitPartition_five_48_erase_owner
 #print axioms orderNine_order27_orient_articulation_shores
+#print axioms orderNine_order27_exceptional_inter_large_card_eq_two
 #print axioms orderNine_order27_explicitPartition_of_large_boundary
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
