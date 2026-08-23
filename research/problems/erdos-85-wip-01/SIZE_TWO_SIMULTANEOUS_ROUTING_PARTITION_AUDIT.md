@@ -11050,3 +11050,47 @@ only external correction.  A failure is now localized either to one routed
 segment cell in the parenthesis or to one same-side private occurrence; it
 cannot be attributed to a choice of Eulerian pairing or to an undefined
 cross-witness cochain.
+
+## 216. A same-side H edge is not automatically a `rho^tri` atom
+
+The existing Baer classification suggests attaching `omega_same` through
+the same-side `rho^tri` channel of (73rnz_cjibku)--(73rnz_cjibkx).  The two
+objects share genuine geometry: both are canonical `00` P-edges with a
+unique triangle witness.  That agreement is not yet an occurrence map.
+
+For the H occurrence (650), write its canonical edge as `xx'` with witness
+`p`.  To be a particular residual cross-matching atom
+`rho^tri_(E_i,G)`, it must additionally admit the ordered four-step route
+
+```text
+E_i--x--x'--G   or   E_i--x'--x--G,                  (668)
+```
+
+where `E_i` is one of the two specified empty poles, `G` is a specified
+residual full center, and the middle edge survives the switch removal used
+to define `rho`.  Equivalently, one endpoint must lie in `N_A(E_i)`, the
+other in `N_A(G)`, with the owner and residual labels retained.
+
+The H state (650) supplies `x,x',p`, their canonical-00/T-word data,
+endpoint subtypes, and component roles.  It does not by itself supply either
+adjacency in (668), a residual center `G`, or a pole choice `E_i`.
+C4-freeness makes `p` unique but cannot manufacture those two exterior
+neighbors.  Hence
+
+```text
+same-side marked H canonical edge
+   does not presently imply a rho^tri occurrence.     (669)
+```
+
+This is a typing obstruction, not a claim that the attachment is false in a
+realized two-pole block.  A positive bridge must prove the **route extension
+lemma** (668), including multiplicity and owner compatibility, for the
+relevant H occurrences.  If extension fails for an occurrence, its private
+state must remain as an additional same-side coordinate in (667).  Merely
+identifying both edges as canonical `00` P-edges would repeat the
+aggregate-versus-occurrence error excluded in Sections 206 and 211.
+
+Thus the same-side test has a definite outcome with the current lemmas: the
+`rho^tri` classification is a valid target container, but no literal map has
+yet been proved.  The next graph-facing statement is (668), not another
+parity identity on the already aggregated `rho^same` count.
