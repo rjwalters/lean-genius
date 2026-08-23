@@ -1700,7 +1700,7 @@ The marked noncommuting term disappears after left compression:
 V_i^T P B V_j = (P V_i)^T B V_j = 0.
 ```
 
-Hence
+Hence, for supports at distinct actual-route occurrences,
 
 ```text
 theta_ij = V_i^T (H_e + B^2) V_j.                     (101)
@@ -6572,16 +6572,58 @@ Hence
 
 ```text
 every coordinate (ell,u) occurring only through endpoint exposures is
-private; any privacy collision has an opposite-root exposure.           (368)
+inter-occurrence private; any such collision has an opposite-root
+exposure.                                                               (368)
 ```
 
 More generally, among repeated occurrences of one coordinate, at most one
 can be endpoint-exposed; all others must be opposite-root-exposed.
 
-This proves the generic part of the privacy obligation in (365).  The sole
-exceptional sector is the crossed secondary incidence `u--b`, where the
+This proves the generic **inter-occurrence** part of the privacy obligation
+in (365).  It does not exclude two transition columns sharing the same
+actual-route occurrence but using its two different matching mates; those
+have `v_1=v_2` and require a separate same-source comparison.  Among
+distinct occurrences, the sole exceptional sector is the crossed secondary
+incidence `u--b`, where the
 actual label `y` uses the other root `a` and the shared port `p`.  Its
 position is analogous to the crossed Hadamard channel of Sections 89--92,
 but `u--b` alone is not an occupied crossed two-step route, so no `beta_d`
 cancellation is claimed.  The remaining privacy audit is exactly the
 classification of these opposite-root collisions.
+
+## 124. Every exceptional privacy collision contains a labeled six-cycle
+
+Consider two distinct opposite-root exposures of the same coordinate
+`(ell,u)`, with `ell=(d,y)`.  Write their actual ports and opposite roots as
+`p_1,b_1` and `p_2,b_2`.  By definition the ambient edges include
+
+```text
+y--p_k--b_k--u       for k=1,2.                       (369)
+```
+
+The ports are distinct by the column-matching property of `F_(d,y)`.  The
+opposite roots are also distinct: if `b_1=b_2`, then the pair `y,b_1` would
+have the two common neighbors `p_1,p_2`, a four-cycle.  Cross-shore vertices
+cannot coincide.  Therefore the two paths in (369) form the simple cycle
+
+```text
+y--p_1--b_1--u--b_2--p_2--y.                         (370)
+```
+
+Its component pattern is `d--e--c--d--c--e--d`, and its two length-three
+halves are precisely the two collided singleton exposures.  Thus the
+distinct-occurrence collision classification is now
+
+```text
+inter-occurrence-private endpoint-exposed coordinate,
+or a repeated opposite-root coordinate carrying a labeled ambient C6.   (371)
+```
+
+No contradiction follows from C4-freeness alone because six-cycles are
+allowed.  But (370) moves the exceptional sector out of an abstract feature
+collision and into the established sixth-moment/cycle inventory: any
+failure of inter-occurrence private-row peeling must be witnessed by a repeated
+`d-e-c-d-c-e` cycle with the target-activity tag `t_u=1`.  A uniform privacy
+proof may therefore either exclude this labeled C6 pattern by simultaneous
+routing, or treat its columns as a separate block controlled by the generic
+sixth-moment identities.
