@@ -5107,6 +5107,44 @@ the exact remaining coverage lemma.  No analogous two-pole alternation is
 available for the unanchored `00` or `01` runs, whose roots
 have even pole parity.
 
+In fact the full closed H/V/S state cycle turns that prospective coverage
+into an exact coboundary identity.  Enrich every root occurrence in (577)
+by its canonical Baer shore state and define
+
+```text
+chi_10(v)=1[a(v)=10 and A_(E_1,v)=1].                 (73rnz_cjibkzzf)
+```
+
+This definition makes no choice: a `10` root meets exactly one pole.  Let
+`C_state` be the mod-two edge census of the closed port-state cycles (577),
+and partition its H edges into the `10--10` cell and its complement.  On a
+`10--10` H edge `vv'`, pole alternation (73rnz_cjibkzy) gives
+
+```text
+chi_10(v)+chi_10(v')=1.
+```
+
+The coboundary of any vertex function sums to zero on a closed edge census.
+Consequently
+
+```text
+m_(10,10)
+ = sum_(H edge vv' not in K_10) (chi_10(v)+chi_10(v'))
+   + sum_(non-H edge vv' of C_state) (chi_10(v)+chi_10(v'))
+                                                        (73rnz_cjibkzzg)
+```
+
+over `F_2`.  Thus the `10--10` carrier is already transported, without a
+new pairing or path-endpoint coverage hypothesis, to literal complementary
+transitions of the same realized H/V/S state cycle.  The first sum is a
+mixed-H boundary term and the second is a V/S route term; both retain their
+physical root occurrences and therefore can be inserted into the joint
+owner-route quotient.  Equation (73rnz_cjibkzzg) does not claim that these
+complementary terms vanish, but it removes `10` as an independent diagonal
+generator.  The owner tag remains diagonal `(1,1)`; choosing `E_2` instead
+of `E_1` changes `chi_10` by the indicator of the `10` state and gives the
+equivalent complementary-boundary presentation.
+
 Nor may a `01` root presently be labelled by a unique residual center.  Its
 bit `r(v)=1` states only that `|N_A(v) intersect R|` is odd.  The
 majority-replication-at-most-two lemma would turn this into uniqueness for a
