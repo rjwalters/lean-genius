@@ -15720,3 +15720,51 @@ the realized root and target routes.  Outside the completely local case,
 the discrepancy is reduced to the single active source label plus the
 strictly internal labels of the overlay-selected target path; no inactive
 endpoint label remains unmatched.
+
+## 307. The two owner factors are orthogonal on their common label set
+
+There is a global realizability constraint on every dual-route label word.
+Fix the exterior color `a` and put a graph `Gamma_c^a` on the vertices of
+`a` by joining two labels when their indexed edges in `F_a[c]` share a
+`c`-root.  Define `Gamma_e^a` analogously from `F_a[e]`.  Since both owner
+factors are two-regular, their line graphs are spanning two-factors on the
+same private-label set:
+
+```text
+Gamma_c^a=L(F_a[c]),
+Gamma_e^a=L(F_a[e]).                                 (990)
+```
+
+Their edge sets are disjoint.  Indeed, if distinct labels `ell,m` were
+adjacent in both graphs, their factor edges would share some root `u in c`
+and some port `p in e`.  Then `u` and `p` would have the two common
+`a`-neighbors `ell,m`, producing a four-cycle.  Therefore
+
+```text
+E(Gamma_c^a) intersect E(Gamma_e^a)=emptyset,        (991)
+```
+
+and their union is a simple four-regular graph on the `a`-labels.  This is
+the label-level form of the `C_4` exclusion: two private labels consecutive
+on a root-factor route are never consecutive on a target-factor route.
+
+For the synchronized routes of Sections 303--305, the active label `y_w`
+is the first edge on both sides.  Whenever the root route next uses the
+terminal label `z(w)` (equivalently, `u in N_c(z(w))` in (978)), the pair
+`y_w,z(w)` is an edge of `Gamma_c^a` and hence not of `Gamma_e^a`.  Thus any
+target-factor path which contains both endpoint labels must have a genuine
+intervening label:
+
+```text
+y_w,...,z(w) on a target path and
+y_w,z(w) consecutive on the root path
+implies target distance between their factor edges at least two. (992)
+```
+
+In particular such a target path uses at least three factor edges.  More
+generally, every consecutive pair in the bounded root word of Section 303
+is forbidden as a consecutive pair in either direction around the target
+cycle.  This does not force the active first-exit arc to contain `z(w)`;
+it constrains it when it does, and constrains every comparison of the full
+root and target label chains.  The two words are therefore not arbitrary
+reuses of the same labels: their adjacency sets must be disjoint.
