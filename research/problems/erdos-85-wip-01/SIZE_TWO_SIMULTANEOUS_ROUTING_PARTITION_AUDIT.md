@@ -13348,3 +13348,58 @@ may therefore be stated uniformly on the pair
 and need only prove that the realized complementary transitions cannot pay
 a nonzero pair.  Neither monochromatic closure nor an even-sized receiving
 population makes the five-port curl invisible.
+## 261. The destination tags are the root-indexed switch row
+
+The vectors in Section 259 are not auxiliary decorations.  They give an
+exact local decomposition of the component-switch matrix from Section 18.
+For every root `x in C` and exterior color `a`, let `y_x^0,y_x^1` be the
+two `a`-neighbors of `x`.  As in (809), their two port-neighborhoods are
+disjoint, so they form the four distinct ports in the `x` row of
+`L_a^(c,e)`.  For `j != 0`, put
+
+```text
+delta_x^a(j)
+ :=|(N_e(y_x^0) disjoint_union N_e(y_x^1)) intersect V_j| mod 2. (816)
+```
+
+In the five-port case, every `a`-label has at most one neighbor in `C` by
+(783).  Hence the support of `R_ac C` is partitioned by the five red pairs
+`{y_x^0,y_x^1}`, one for each `x in C`.  Expanding (67) label by label and
+then grouping by these private roots gives, for every outside component,
+
+```text
+t^a_0j=(R_ac C)^T(R_ae V_j)
+       =sum_(x in C) delta_x^a(j),       j != 0.       (817)
+```
+
+Thus (817) is a root-indexed lift of the old aggregate switch row.  Its
+local row parity is also exact.  The four ports belonging to `x` are
+partitioned between `Z=V_0` and the components `V_j`, `j != 0`, so
+
+```text
+sum_(j != 0) delta_x^a(j)
+ =|supp(L_a^(c,e)[x,-]) intersect Z| mod 2.           (818)
+```
+
+Section 251 proved that each selected root supports exactly one strict
+export in total.  Therefore the right side of (818) is one precisely when
+that unique export has color `a`, and is zero for every other exterior
+color:
+
+```text
+sum_(j != 0) delta_x^a(j)=1_{x=x_i with i in I_a}.    (819)
+```
+
+For `x=x_i`, (816) is exactly the nonzero vector `delta_i^a` of Section
+259.  All other local summands in the same color have even coordinate sum.
+Consequently
+
+```text
+sum_(j != 0) t^a_0j=|I_a| mod 2,                     (820)
+```
+
+but (817)--(819) retain the five individual witnesses that (820) discards.
+This identifies precisely where the switch formalism lost the private
+label: it summed the five local routing rows over `x in C`.  Any proposed
+owner holonomy can now be tested on the labeled family `delta_x^a`; no new
+notion of destination or ad hoc refinement of `t^a` is required.
