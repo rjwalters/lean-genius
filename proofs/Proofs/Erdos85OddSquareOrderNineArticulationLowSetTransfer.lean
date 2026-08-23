@@ -1487,6 +1487,77 @@ theorem orderNine_secondProfile_owner_defect_binZero_avoids_owner_neighbors
   rw [htfParts.2] at hpos
   omega
 
+/-- Exact four-edge geometry at the universal owner.  Its three original
+bin-zero neighbors split into one exceptional defect point and two regular
+nondefect points.  The regular pair is adjacent, while the exceptional point
+is adjacent to neither member of that pair. -/
+theorem orderNine_secondProfile_owner_four_edge_binZero_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hloc : (G.induce (G.neighborSet owner)).edgeFinset.card = 4) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let U := G.neighborFinset owner ∩ B 0
+    let E := U ∩ D.neighborFinset owner
+    let R := U \ D.neighborFinset owner
+    E.card = 1 ∧ R.card = 2 ∧
+      (∀ e ∈ E, ∀ r ∈ R, ¬ G.Adj e r) ∧
+      (∀ r ∈ R, ∀ s ∈ R, r ≠ s → G.Adj r s) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let U := G.neighborFinset owner ∩ B 0
+  let E := U ∩ D.neighborFinset owner
+  let R := U \ D.neighborFinset owner
+  have heq :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  have hprofile :=
+    squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  have hEcard : E.card = 1 := by
+    have hEtf : E = triangleFreeNeighbors G owner := by
+      simpa [E, U, B, D] using heq
+    rw [hEtf]
+    rcases hprofile with hthree | hfour
+    · omega
+    · exact hfour.2.1
+  have hRpair :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hRpair
+  have hRcard : R.card = 2 := by
+    rcases hRpair with hthree | hfour
+    · omega
+    · simpa [R, U, B, D] using hfour.2
+  refine ⟨hEcard, hRcard, ?_, ?_⟩
+  · intro e he r hr
+    have hrParts := Finset.mem_sdiff.mp hr
+    have hrU := Finset.mem_inter.mp hrParts.1
+    exact orderNine_secondProfile_owner_defect_binZero_avoids_owner_neighbors
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner he
+        ((G.mem_neighborFinset owner r).mp hrU.1)
+  · intro r hr s hs hrs
+    exact
+      squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+          (by simpa [R, U, B, D] using hr)
+          (by simpa [R, U, B, D] using hs) hrs hloc
+
 /-- Composed post-(27) terminal for two exceptional points.  Under the
 `(3,1)` low-set data, two distinct original bin-zero defect neighbors of the
 owner each have `Z`-degree two.  Their triangle-free owner edges make both
