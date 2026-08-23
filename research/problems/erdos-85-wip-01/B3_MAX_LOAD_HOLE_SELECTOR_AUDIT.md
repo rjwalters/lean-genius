@@ -266,13 +266,30 @@ collision around that tight fiber should select the genuinely strict pair.
 The probe now emits `single_fiber_costs`, `tight_single_points`, and exact
 `nonstrict_single_excesses` in compact mode, so this conditional statement is
 falsifiable without retaining bulky LP witnesses.  Across default-generator
-seeds 0 through 18, every model had a strict or tight overlap fiber.  Seed 5
+seeds 0 through 30, every model had a strict or tight overlap fiber.  Seed 5
 was the only model with no strict overlap fiber, and it had the unique tight
 point 9 described above.  Several models had strict fibers but no tight one
 (seeds 11, 12, 13, 15, and 17), so tightness is plausibly forced only on the
 no-strict face and must not be asserted unconditionally.  This sweep is
 evidence, not a proof; in particular it contains only one no-strict model, so
 the subsequent forced-collision implication still rests on one hard fixture.
+In particular, all twelve added seeds 19 through 30 had at least one strict
+fiber, so more random sampling did not produce a second point on the
+no-strict equality face.  Further progress therefore needs an equality-case
+argument or a solver constrained toward that face, not a larger ordinary seed
+sweep.
+
+The seed-5 tight optimum itself is unexpectedly integral.  Its primal uses
+27 unit point prices, and a matching dual uses 25 unit-weight constraint
+edges; exactly two of those edges have both endpoints in the five-row fiber,
+so their demands contribute twice and the dual objective is `25 + 2 = 27`.
+Thus the observed equality face has a concrete packing interpretation rather
+than a delicate fractional denominator.  A viable proof target is now:
+classify such saturated unit edge packings under the exceptional-cover
+partition, then show that some second overlap fiber necessarily collides with
+the packing in a way that saves more than its single-fiber excess.  This is
+still fixture-derived; uniform integrality of every tight optimum is not yet
+established.
 
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
