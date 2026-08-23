@@ -15768,3 +15768,74 @@ cycle.  This does not force the active first-exit arc to contain `z(w)`;
 it constrains it when it does, and constrains every comparison of the full
 root and target label chains.  The two words are therefore not arbitrary
 reuses of the same labels: their adjacency sets must be disjoint.
+
+## 308. The unmatched SRP term splits into actual target endpoints and one residue
+
+The pointwise telescope of Section 306 can be summed without losing the
+source-root index.  For `x in C`, put
+
+```text
+Pi_x:=sum_(w in W_I(x)) Pi_w,
+A_x :=sum_(w in W_I(x))[y_w],                        (993)
+```
+
+and separate the local occurrences
+
+```text
+L_x^loc:={w in W_I(x):z(w)=y'_w}.
+```
+
+Define the remaining internal-label chain by
+
+```text
+J_x:=sum_(w in W_I(x)\L_x^loc) Pi_w^int
+     +sum_(w in L_x^loc)[y'_w].                      (994)
+```
+
+For a nonlocal occurrence, (988) says
+`Lambda_w+Pi_w=[y_w]+Pi_w^int`; for a local occurrence, (989) says the
+same comparison is `[y_w]+[y'_w]`.  Summing the two cases gives
+
+```text
+Lambda_x+Pi_x=A_x+J_x,
+R_x+Pi_x=Y_x+A_x+J_x.                               (995)
+```
+
+The `e`-endpoint profile of `Pi_x` is fully realized.  Every `Pi_w` is the
+simple path component of `Theta_w` from `w` to `o_w`, so for `j!=0` put
+
+```text
+P_x(j):=E_j(Pi_x)
+ =|V_j intersect
+    triangle_(w in W_I(x))({w} triangle {o_w})| mod 2.             (996)
+```
+
+The initial endpoints satisfy `w in S subset O subset e\Z`.  The terminal
+endpoint `o_w` lies outside `S`, but it may lie in `Z`; inactivity of
+`z(w)` refers to its `c`-neighborhood, not its `e`-endpoints.  Formula
+(996) therefore records exactly the outside-component coordinates
+`j!=0` and silently discards a terminal endpoint in `V_0=Z`, as the
+definition of `E_j` requires.  Applying that linear endpoint map to (995)
+yields
+
+```text
+E_j(R_x)=P_x(j)+E_j(Y_x+A_x+J_x).                   (997)
+```
+
+Substitute (997) into the exact bridge (955).  Its missing colorwise term
+now has the occurrence-resolved form
+
+```text
+M_x=D_x+delta_x^a
+   =K_x+P_x+(E_j(Y_x+A_x+J_x))_(j!=0).              (998)
+```
+
+Thus the anonymous unmatched profile `E(R_x)` has disappeared.  The first
+replacement term is the component profile of actual target-factor path
+endpoints; the second is the endpoint profile of one explicit residual
+label chain, consisting of the complete root star, the active source
+labels selected by the odd occurrence family, and the strictly internal
+target labels (with the local inactive edge retained exactly in the sole
+exceptional case).  A final telescope must control this displayed residue,
+but it no longer has to reconstruct which inactive endpoint labels are
+paired: Section 306 has cancelled those labels exactly before aggregation.
