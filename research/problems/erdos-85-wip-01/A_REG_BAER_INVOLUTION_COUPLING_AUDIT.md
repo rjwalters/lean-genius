@@ -4557,6 +4557,44 @@ exceptional/ordinary incidence alphabet as (73rnz_as)--(73rnz_aw).  Further
 vanishing is not asserted: the required next identity is the owner-resolved
 evaluation of this D-commutator, not another expansion of `A^2`.
 
+Although the D-commutator is not yet resolved pole by pole, its two-pole sum
+collapses to two bounded atoms.  Let `h=e_(E_1)+e_(E_2)` and
+`B=diag(b)`.  Using `Ah=1_L`, `Dh=h`, symmetry, and the normalization
+`b(E_i)=t(E_i)x(E_i)=0`,
+
+```text
+sum_i (A B D + D B A)_(E_i,G)
+ =(1_L^T B D)_G+(h^T B A)_G
+ =(1_L^T B D)_G.
+```
+
+Now `L intersect X={p_1,p_2}` and `b(p_i)=a_i=s(E_i)`, so summing
+(73rnz_cjibkza) over the poles cancels the two copies of `s(G)` and gives
+
+```text
+f_(E_1,G)+f_(E_2,G)
+ =a_1(1+D_(p_1,G))+a_2(1+D_(p_2,G)).                  (73rnz_cjibkzb)
+```
+
+Define the ownerwise discrepancies
+
+```text
+delta_i(G):=f_(E_i,G)+a_i(1+D_(p_i,G)).
+```
+
+Equation (73rnz_cjibkzb) says exactly
+
+```text
+delta_1(G)=delta_2(G)=:delta_G.                        (73rnz_cjibkzc)
+```
+
+Thus the failure of the canonical bounded owner assignment is no longer an
+unbounded silent population: it is one **diagonal owner bit** `(delta_G,
+delta_G)` per residual center.  Scalar conservation necessarily misses this
+bit.  The final owner-resolved commutator problem is to transport or cancel
+these diagonal center bits; every off-diagonal and unbounded part has now
+been evaluated.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
