@@ -100,16 +100,21 @@ def main() -> None:
         help=("rows whose fractional feasibility is imposed; defaults to "
               "the four exceptional branch-4 holes 22..25"),
     )
+    parser.add_argument(
+        "--all-rows", action="store_true",
+        help="impose the packing condition on all 47 rows",
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.denominator <= 0:
         parser.error("--denominator must be positive")
-    if any(row < 0 or row >= N for row in args.rows):
+    rows = list(range(N)) if args.all_rows else args.rows
+    if any(row < 0 or row >= N for row in rows):
         parser.error("--rows entries must lie in 0..46")
     template = json.loads(args.template.read_text()) if args.template else None
     solver, data = build_row_feasible(
-        args.timeout_seconds, args.denominator, args.rows, template=template
+        args.timeout_seconds, args.denominator, rows, template=template
     )
     solver.set(random_seed=args.random_seed)
     result = solver.check()

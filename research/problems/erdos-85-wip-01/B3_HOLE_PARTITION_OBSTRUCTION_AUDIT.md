@@ -4435,6 +4435,27 @@ the generator deliberately prints the independent all-row verdict because
 imposing feasibility only on the four exceptional rows does not always make
 the remaining 43 rows feasible.
 
+The conjecture does **not** survive direct synthesis on the full hard locus.
+Running the same generator with denominator one and `--all-rows` produced
+`q9_branch4_row_feasible_selector_counterexample.json`.  All 47 rows have
+explicit integral point-capacity packings of their target degree, and the
+independent rational audit again reports zero strict one-row covers.  Yet its
+six positive-special fibers are
+
+```text
+(1,82,368/13,28), (2,81,281/10,28), (14,83,3407/120,28),
+(15,81,28,28), (16,83,85/3,28), (17,85,2864/99,28).
+```
+
+Every one is non-strict.  In particular the minimum-load locus is `{2,15}`:
+point 2 has cost `281/10>28`, while point 15 is exactly tight at `28`.
+Therefore strict load descent fails on an all-row-feasible outer design, the
+combined alternative (13ao) is false, and even the bare global-special
+selector (13ak) cannot follow from the outer incidence design plus separate
+one-row feasibility.  The next branch-4 theorem must use a *shared* residual
+relation (or another genuinely cross-row constraint); no refinement that
+only certifies every row independently can close this gap.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
