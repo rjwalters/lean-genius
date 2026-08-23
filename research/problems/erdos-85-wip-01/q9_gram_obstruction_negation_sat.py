@@ -293,17 +293,36 @@ def main() -> int:
                         for w in range(N)) for packing in feasible[u])]
                     interval_profiles = {
                         u: {
+                            "block": sorted(blocks[u]),
                             "forced": sorted(w for w in range(N)
                                              if u in forced[w]),
+                            "forced_blocks": {
+                                w: sorted(blocks[w]) for w in range(N)
+                                if u in forced[w]
+                            },
                             "impossible": sorted(w for w in range(N)
                                                  if u not in possible[w]),
                             "impossible_candidates": sorted(
                                 w for w in candidates[u]
                                 if u not in possible[w]),
+                            "impossible_candidate_blocks": {
+                                w: sorted(blocks[w]) for w in candidates[u]
+                                if u not in possible[w]
+                            },
                             "packing_count": len(feasible[u]),
                         }
                         for u in bad_rows
                     }
+                    for u in bad_rows:
+                        required = {w for w in range(N) if u in forced[w]}
+                        allowed = [w for w in candidates[u]
+                                   if u in possible[w]]
+                        interval_profiles[u]["capacity"] = next(
+                            size for size in range(concrete["degree"][u], -1, -1)
+                            if any(required <= set(choice) and all(
+                                not blocks[x] & blocks[y]
+                                for x, y in combinations(choice, 2))
+                                for choice in combinations(allowed, size)))
                     new_rows = [u for u in bad_rows
                                 if u not in counts["added_one_row_clauses"]]
                     horns = bad_rows + collisions
