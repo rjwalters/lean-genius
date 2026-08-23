@@ -352,11 +352,176 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_beta_sum
       h₁₂, h₁₃, h₂₃, add_assoc] using hswap
   exact hswap'.trans hsumPoint
 
+/-- The B0 part of a relatively closed deleted-owner shore inherits internal
+degrees seven on exceptional vertices and five on regular vertices.  Its
+handshake supplies parity and the simple-graph bound; a nonempty exceptional
+part forces at least eight B0 vertices. -/
+theorem squareOrderNine_threeHigh_secondProfile_shore_binZero_handshake
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner : V} (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (S : Finset V)
+    (hclosed : ∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩
+      (((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner) ⊆ S) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let E := D.neighborFinset owner ∩ B 0
+    let R := B 0 \ E
+    let e := (E ∩ S).card
+    let r := (R ∩ S).card
+    (7 * e + 5 * r) % 2 = 0 ∧
+      7 * e + 5 * r ≤ (e + r) * (e + r - 1) ∧
+      ((E ∩ S).Nonempty → 8 ≤ e + r) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let U := (Finset.univ : Finset V) \ squareOrderHighVertices G 9
+  let E := D.neighborFinset owner ∩ B 0
+  let R := B 0 \ E
+  let B₀S := B 0 ∩ S
+  let ES := E ∩ S
+  let RS := R ∩ S
+  have hownerInfo := squareOrderNine_threeHigh_secondProfile_owner_defect_neighbors
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hownerInfo
+  have hcross := squareOrderNine_threeHigh_secondProfile_articulation_cross_degrees
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hcross
+  have hB0erase : B 0 ⊆ U.erase owner := by
+    intro x hxB0
+    have hxU : x ∈ U := (Finset.mem_filter.mp hxB0).1
+    have hxo : x ≠ owner := by
+      intro hxo
+      subst x
+      have hk0 := (Finset.mem_filter.mp hxB0).2
+      have hk3 := (Finset.mem_filter.mp howner).2
+      omega
+    exact Finset.mem_erase.mpr ⟨hxo, hxU⟩
+  have hB0split : B₀S = ES ∪ RS := by
+    ext x
+    simp only [B₀S, ES, RS, R, Finset.mem_inter, Finset.mem_union,
+      Finset.mem_sdiff]
+    constructor
+    · intro hx
+      by_cases hxE : x ∈ E
+      · exact Or.inl ⟨hxE, hx.2⟩
+      · exact Or.inr ⟨⟨hx.1, hxE⟩, hx.2⟩
+    · rintro (hx | hx)
+      · exact ⟨(Finset.mem_inter.mp hx.1).2, hx.2⟩
+      · exact ⟨hx.1.1, hx.2⟩
+  have hdis : Disjoint ES RS := by
+    rw [Finset.disjoint_left]
+    intro x hxE hxR
+    exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hxR).1).2
+      (Finset.mem_inter.mp hxE).1
+  have hB0card : B₀S.card = ES.card + RS.card := by
+    rw [hB0split, Finset.card_union_of_disjoint hdis]
+  have hEdegree : ∀ x ∈ ES, (D.neighborFinset x ∩ B₀S).card = 7 := by
+    intro x hxES
+    have hxParts := Finset.mem_inter.mp hxES
+    have hxEParts := Finset.mem_inter.mp hxParts.1
+    have htype :=
+      squareOrderNine_threeHigh_secondProfile_binZero_defect_neighbor_dichotomy
+        G hfree hmin hcover hcard hp hhigh hc2 hc4 hxEParts.2
+    dsimp only at htype
+    have hexceptional : (D.neighborFinset x ∩ B 0).card = 7 := by
+      rcases htype with hregular | hexceptional
+      · have hxOwner : owner ∈ D.neighborFinset x ∩ B 3 := by
+          refine Finset.mem_inter.mpr ⟨?_, howner⟩
+          exact (D.mem_neighborFinset x owner).mpr
+            ((D.adj_comm owner x).mp
+              ((D.mem_neighborFinset owner x).mp hxEParts.1))
+        have : 0 < (D.neighborFinset x ∩ B 3).card :=
+          Finset.card_pos.mpr ⟨owner, hxOwner⟩
+        rw [hregular.2.2] at this
+        omega
+      · exact hexceptional.1
+    have hinter : D.neighborFinset x ∩ B₀S = D.neighborFinset x ∩ B 0 := by
+      ext y
+      simp only [B₀S, Finset.mem_inter]
+      constructor
+      · exact fun hy => ⟨hy.1, hy.2.1⟩
+      · intro hy
+        exact ⟨hy.1, hy.2, hclosed x hxParts.2
+          (Finset.mem_inter.mpr ⟨hy.1, hB0erase hy.2⟩)⟩
+    rw [hinter]
+    exact hexceptional
+  have hRdegree : ∀ x ∈ RS, (D.neighborFinset x ∩ B₀S).card = 5 := by
+    intro x hxRS
+    have hxParts := Finset.mem_inter.mp hxRS
+    have hglobal := (hcross.1 x hxParts.1).1
+    have hinter : D.neighborFinset x ∩ B₀S = D.neighborFinset x ∩ B 0 := by
+      ext y
+      simp only [B₀S, Finset.mem_inter]
+      constructor
+      · exact fun hy => ⟨hy.1, hy.2.1⟩
+      · intro hy
+        exact ⟨hy.1, hy.2, hclosed x hxParts.2
+          (Finset.mem_inter.mpr ⟨hy.1, hB0erase hy.2⟩)⟩
+    rw [hinter]
+    exact hglobal
+  obtain ⟨m, hhand, hsimple⟩ := articulation_binZero_internal_handshake
+    D B₀S ES (by
+      intro x hx
+      exact Finset.mem_inter.mpr ⟨
+        (Finset.mem_inter.mp (Finset.mem_inter.mp hx).1).2,
+        (Finset.mem_inter.mp hx).2⟩)
+    hEdegree (by
+      intro x hx
+      have hxB0S := (Finset.mem_sdiff.mp hx).1
+      have hxNotES := (Finset.mem_sdiff.mp hx).2
+      apply hRdegree x
+      have hxParts := Finset.mem_inter.mp hxB0S
+      exact Finset.mem_inter.mpr ⟨
+        Finset.mem_sdiff.mpr ⟨hxParts.1, fun hxE =>
+          hxNotES (Finset.mem_inter.mpr ⟨hxE, hxParts.2⟩)⟩,
+        hxParts.2⟩)
+  have hparity : (7 * ES.card + 5 * RS.card) % 2 = 0 := by omega
+  have hsimple' : 7 * ES.card + 5 * RS.card ≤
+      (ES.card + RS.card) * (ES.card + RS.card - 1) := by
+    have hdiff : B₀S.card - ES.card = RS.card := by omega
+    rw [hdiff] at hsimple
+    rw [← hB0card]
+    exact hsimple
+  refine ⟨hparity, hsimple', ?_⟩
+  intro hESnonempty
+  obtain ⟨x, hxES⟩ := hESnonempty
+  have hNsub : D.neighborFinset x ∩ B₀S ⊆ B₀S.erase x := by
+    intro y hy
+    have hyParts := Finset.mem_inter.mp hy
+    exact Finset.mem_erase.mpr ⟨fun hyx => by
+      subst y
+      exact D.loopless.irrefl x ((D.mem_neighborFinset x x).mp hyParts.1), hyParts.2⟩
+  have hsevenLe : 7 ≤ B₀S.card - 1 := by
+    calc
+      7 = (D.neighborFinset x ∩ B₀S).card := (hEdegree x hxES).symm
+      _ ≤ (B₀S.erase x).card := Finset.card_le_card hNsub
+      _ = B₀S.card - 1 := Finset.card_erase_of_mem
+        (Finset.mem_inter.mpr ⟨
+          (Finset.mem_inter.mp (Finset.mem_inter.mp hxES).1).2,
+          (Finset.mem_inter.mp hxES).2⟩)
+  have height : 8 ≤ B₀S.card := by omega
+  rw [hB0card] at height
+  exact height
+
 end
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_owner_defect_neighbors
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_articulation_cross_degrees
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_deleted_owner_shore_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_deleted_owner_beta_sum
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_shore_binZero_handshake
 
 end Erdos85

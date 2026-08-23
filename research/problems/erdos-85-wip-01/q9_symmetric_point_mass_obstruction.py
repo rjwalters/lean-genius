@@ -728,8 +728,18 @@ def main() -> None:
                     "row_prices": certificate["row_prices"],
                     "point_price_count": len(certificate["point_prices"]),
                 })
+        regular_certificates = [
+            certificate for certificate in certificates
+            if certificate["other_kind"] == "regular-triple"
+        ]
         print("exceptional_two_row_supports=" + json.dumps({
             "count": len(certificates),
+            "regular_triple_count": len(regular_certificates),
+            "exists_exceptional_regular": bool(regular_certificates),
+            "exists_intersecting_exceptional_regular": any(
+                certificate["block_intersection"]
+                for certificate in regular_certificates
+            ),
             "certificates": certificates,
         }, separators=(",", ":")))
     if args.scan_exceptional_three_row_supports:
