@@ -23675,3 +23675,67 @@ precise: either exploit the named nonexceptional saturated source fiber in
 (II), or color-order a nonzero PC-generated cancellation so that it cannot
 collapse to the doubled-cycle artifact (III).  This section is a terminal
 interface, not yet an exclusion of those two branches.
+
+## 442. A connected PC-cycle family splices into one nondegenerate walk
+
+There is no local color obstruction to joining properly colored cycles
+which meet physically.  Let two PC closed walks meet at a base vertex `v`.
+At chosen occurrences of `v`, write their incoming/outgoing exterior
+colors as
+
+```text
+(a,b),       (c,d),       a!=b, c!=d.             (1584)
+```
+
+Fix the orientation of the first walk.  For one orientation of the second,
+the two splice conditions are
+
+```text
+a!=d and c!=b;
+```
+
+for the reverse orientation they are
+
+```text
+a!=c and d!=b.                                    (1585)
+```
+
+At least one choice works.  If both failed, choosing one failed equality
+from each line would give one of
+
+```text
+a=d and a=c;   a=d and d=b;
+c=b and a=c;   c=b and d=b,
+```
+
+contradicting respectively `c!=d` or `a!=b`.  Concatenating the two
+oriented walks at `v` therefore produces one PC closed walk.  Its root/tag
+syndrome is the sum of the two syndromes, and its mod-two base edge vector
+is the symmetric difference of theirs.
+
+Iterate along a spanning tree of the vertex-intersection graph of a finite
+PC-cycle family.  At each step the already spliced walk contains the shared
+vertex and has two distinct transition colors there, so the same argument
+applies.  Consequently
+
+```text
+vertex-intersection graph connected
+ -> the family splices to one PC closed walk W_family,
+    syndrome(W_family)=sum_Q syndrome(Q),
+    [E(W_family)]=sum_Q [E(Q)].                    (1586)
+```
+
+Apply this to the nonempty subfamily of at most six independent simple PC
+cycles supplied by (1550).  Its syndrome sum is zero and its edge-vector
+sum is nonzero.  Therefore, whenever its vertex-intersection graph is
+connected,
+
+```text
+there is one tag-even PC closed walk with nonzero binary base edge chain.
+                                                               (1587)
+```
+
+Such a walk cannot be the parity-degenerate square `Q Q` of (1583).  Thus
+the only obstruction to turning the bounded PC-generated cancellation of
+Section 433 into one nondegenerate color-ordered object is now global:
+the selected family may split into vertex-disconnected cycle clusters.
