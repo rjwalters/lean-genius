@@ -9994,7 +9994,8 @@ The loop in (597) is a loop only after projecting a boundary occurrence to
 its coarse resolved label `ell=(d,y)`.  Before that projection, retain at an
 H--V boundary the incident data already present in the full edge state
 (577): the rooted V state, its V-side port state, and the side decoration.
-Write the resulting boundary state as
+This is the state of the actual V-dart occurrence at which two contracted
+pieces meet, not merely an isomorphism type of that state.  Write it as
 
 ```text
 hat(ell)=(ell,R_d(x),P_d(z_V),side).                  (600)
@@ -10013,7 +10014,9 @@ different full-state vertices.  It becomes the diagonal generator
 `hat(ell) -> ell`.
 
 Contract the full state cycle of Section 184 as in Section 187 while keeping
-the endpoint states (600).  This produces a full-state multigraph
+the endpoint occurrences (600).  Adjacent contracted pieces meet at the
+same V dart, so they receive literally the same endpoint occurrence.  This
+produces a full-state multigraph
 `G_hatXi` mapping onto `G_Xi`; its H, S, and V edges retain exactly the data
 in (586), and its incidence closure is inherited from the literal state
 closure (579).  On `G_hatXi`, an endpoint potential is allowed to distinguish
@@ -10028,6 +10031,12 @@ that odd same-label runs do not formally refute **full-state** descent; they
 refute only descent through the coarse label projection.  The private
 capacity bit demanded by (599) is precisely the information separating the
 two vertices in (601).
+
+Because occurrence identities are retained, existence of `hatChi` on an
+entire component is equivalent to vanishing of the ambient holonomy on that
+component; this lift does not make the theorem tautologically true or give
+a reusable potential depending only on a bounded state type.  Its gain is
+only to locate the information that coarse projection erased.
 
 The remaining theorem can therefore be stated without demanding the false
 coarse loop condition: show that the H-parity cochain lies in the cut space
