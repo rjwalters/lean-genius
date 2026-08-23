@@ -5214,8 +5214,9 @@ P(x,p) := (x',p),   where the c-neighbors of p are {x,x'}.
 ```
 
 The graph with the `R`- and `P`-pairs as edges is two-regular, hence a
-disjoint union of cycles.  Contracting its root pairs gives `B_ec`; keeping
-the darts gives the original bipartite incidence cycles.  This closure is
+disjoint union of cycles.  Contracting its port pairs gives `B_ec`, while
+contracting its root pairs gives `F_e[c]`; keeping the darts gives the
+subdivision common to both line cycles.  This closure is
 unconditional and may splice triangles lying on different `Gamma_c` cycles,
 which is exactly why it survives the warning in Section 94.
 
