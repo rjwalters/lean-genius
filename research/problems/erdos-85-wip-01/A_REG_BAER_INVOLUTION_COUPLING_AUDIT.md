@@ -5591,6 +5591,27 @@ In particular some third component `a` has
 |supp(R_ac 1_C) intersect supp(R_ae 1_Z)|=1 mod 2.   (73rnz_cjibkzzzb)
 ```
 
+This exported color is not the secondary color `d` that supplied the odd
+port cycle.  The refinement `Z=V_j=V(C*)` says that `Z` is a whole component
+cycle of `F_d[e]`; equivalently it is the `e`-shore of one complete
+bipartite incidence component of `R_de`.  Hence
+
+```text
+R_de 1_Z=0.                                           (73rnz_cjibkzzzc)
+```
+
+The `a=d` summand of (73rnz_cjibkzzza) is therefore zero.  Consequently
+the odd overlap occurs for a genuinely new component
+
+```text
+a notin {c,e,d}.                                      (73rnz_cjibkzzzd)
+```
+
+Thus the closed `00` curl cannot pay itself through the same secondary
+owner factor; its SRP export strictly changes color.  Any propagation cycle
+of these marks must use at least two distinct secondary colors, an additional
+constraint for the global pairing step.
+
 Thus the doubly closed odd port/root curl cannot remain an isolated debt:
 it exports an odd, fully located overlap mark to a third color.  This does
 not prove global cancellation of the exported marks; Sections 17 onward of
