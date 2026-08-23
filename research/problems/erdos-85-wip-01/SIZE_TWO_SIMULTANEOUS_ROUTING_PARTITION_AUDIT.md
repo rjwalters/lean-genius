@@ -10130,3 +10130,49 @@ price would suffice for (607); the stronger task of transporting every
 private reversal-orbit label should be imposed only if scalar cancellation
 fails.  This strictly weakens the live SRP target without changing its
 conclusion.
+
+## 197. Additive total price is automatically pairing-independent
+
+Suppose the no-holonomy branch of the Baer paired-star dichotomy supplies a
+vertex potential `lambda` on one typed star endpoint population `U`.  Extend
+its pair price from the canonical edges of `P_r` to every unordered pair in
+`U` by
+
+```text
+w_lambda(a,b):=lambda(a)+lambda(b).                   (608)
+```
+
+For every perfect matching `M` of the same endpoint population,
+
+```text
+sum_({a,b} in M) w_lambda(a,b)
+ =sum_(a in U) lambda(a).                             (609)
+```
+
+Hence this total is independent of `M`.  In particular every four-endpoint
+switch (604) has zero `w_lambda` defect automatically; no separate table of
+switch identities is needed for the scalar total once the additive potential
+exists.
+
+This sharpens (605) in the additive branch.  The live bridge conditions are
+now:
+
+```text
+(a) compatible completion: realize the full H/V/S star data as a matching
+    of the same typed endpoint population U;
+(b) price identification: show that the aggregate SRP edge price
+    (H contributes its marked parity; V/S contribute their audited
+    payments) equals the extended total (609), modulo proved boundaries. (610)
+```
+
+Condition (b), not pairing gauge, is the remaining scalar content.  The
+canonical and realized matchings may pair endpoints differently without
+changing (609).  This does not solve (610): `lambda` is known initially from
+K-prices on the Baer `00/11` edges, while the SRP H/V/S price lives on a
+different decorated edge alphabet.  An occurrence-level identification of
+those aggregate prices is still required.
+
+In the alternative odd-holonomy branch no `lambda` exists and this extension
+is unavailable; the localized odd K-cycle must instead be converted directly
+to the Erdős 85 contradiction.  Thus (608)--(610) simplify only the additive
+branch and make no assumption about the other branch.
