@@ -5055,6 +5055,16 @@ only at its iteration limit.  Eight of the nine exposed pairs meet rows
 useful localization evidence, not a universal exceptional-row theorem (seed
 142 already refutes that kind of unconditional localization).
 
+To prevent a long sequence of no-disjoint refinements from starving the
+third horn, CEGAR now audits reciprocity before no-disjoint pairs once all
+deficits are repaired.  A resumed SAT run with the twelve integral rows but
+without the accumulated pair constraints first added no-disjoint `{4,8}`, then
+exposed reciprocity `(8,16)`, stayed SAT after that exact avoid/contain
+constraint, and exposed a second reciprocity pair `(18,24)`.  Thus live
+generated models have now exercised all three refinement types—deficit,
+no-disjoint, and reciprocity—and the exact third-horn encoding is integrated
+into the search rather than only fixed-template tested.
+
 A more promising structural invariant comes from the local-family sizes.
 Call a row *rigid* when it has one or two full integral local packings, and
 join two rigid rows when their blocks conflict.  The unified audit now emits

@@ -51,15 +51,15 @@ def first_horn(payload: dict):
     if deficit:
         return "deficit", deficit[0]
     for u in range(N):
+        for w in local[u]["forced_neighbors"]:
+            if u not in local[w]["possible_neighbors"]:
+                return "reciprocity", (u, w)
+    for u in range(N):
         for v in range(u + 1, N):
             if not (system["blocks"][u] & system["blocks"][v]):
                 continue
             if disjoint_local_packing_pair(system, u, v) is None:
                 return "disjoint", (u, v)
-    for u in range(N):
-        for w in local[u]["forced_neighbors"]:
-            if u not in local[w]["possible_neighbors"]:
-                return "reciprocity", (u, w)
     return None, None
 
 
