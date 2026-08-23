@@ -3006,6 +3006,33 @@ theorem orderNine_secondProfile_owner_partner_defectNeighbors_subset_punctured
       G hfree hhigh howner hzB₁ hAdj).elim
   · exact h
 
+/-- Family form used to discharge the corrected three-edge master's
+pointwise partner-closure hypothesis directly from the articulation's
+owner-punctured closure. -/
+theorem orderNine_secondProfile_owner_partners_defectNeighbors_subset_of_punctured_closure
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    {owner : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (U T : Finset V)
+    (hpartnerU : ∀ z ∈
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1) ∩ T),
+      z ∈ U)
+    (hneighborsPunctured : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner U) :
+    ∀ z ∈ ((G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 1) ∩ T),
+      (secondOrderDefectGraph G).neighborFinset z ⊆ U := by
+  intro z hz
+  have hzB₁ := (Finset.mem_inter.mp (Finset.mem_inter.mp hz).1).2
+  exact orderNine_secondProfile_owner_partner_defectNeighbors_subset_punctured
+    G hfree hhigh howner hzB₁ U
+      (hneighborsPunctured z (hpartnerU z hz))
+
 end
 
 end Erdos85
