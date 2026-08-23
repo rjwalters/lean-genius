@@ -21468,3 +21468,65 @@ either of the latter two coordinates can control all ordinary holonomy as
 `q` grows.  In particular the distinguished double-payer component and the
 five strict-export colors can be removed from the source alphabet of a
 clean large-binary cycle without any enumeration.
+
+## 402. Exact residual density isolates the `q=16` obstruction
+
+The private slack formula also makes the residual graph size exact.  The
+total number of ordinary edges meeting `B` is `sum_i h_i`, so (1355) and
+(1410) give
+
+```text
+|E(M[O])|
+ =5q-25-(30-b_B-e_BB)
+ =5q-55+b_B+e_BB.                                  (1418)
+```
+
+Every sheltered edge lies in `M[O]`, and `S_sh` counts them exactly.
+Consequently
+
+```text
+|E(G_sh)|
+ =5q-55+b_B+e_BB-S_sh
+ =5q-35-Delta,                                     (1419)
+```
+
+where the second form uses (1411).  Thus the earlier lower bound `5q-60`
+is attained only at the maximum possible slack `Delta=25`; every unit of
+private matching or strict-mate concentration retained by (1411) raises
+the residual edge count literally.
+
+The graph `G_sh` has `2q-15` vertices.  If it were PC-cycle-free, (1369)
+would impose
+
+```text
+|E(G_sh)|<=2(2q-15)-3=4q-33.                       (1420)
+```
+
+Comparing (1419) and (1420) gives the exact sufficient density condition
+
+```text
+q-22+b_B+e_BB-S_sh>0
+ -> G_sh contains a simple properly colored cycle. (1421)
+```
+
+This is a sufficient condition from the sharp Yeo edge bound, not a
+characterization of PC-cycle existence.  For the small binary value left
+outside the automatic residual range, it becomes
+
+```text
+q=16 and b_B+e_BB-S_sh>=7
+ -> a simple all-O unsheltered ordinary holonomy exists.         (1422)
+```
+
+Hence the only `q=16` configurations not settled by this density comparison
+obey the explicit finite inequality
+
+```text
+b_B+e_BB-S_sh<=6.                                  (1423)
+```
+
+The large branch still follows at once (indeed `q>=28` works without any
+private correction), while (1423) identifies the precise finite geometry
+that a `q=16` argument must analyze: few private strict mates and `B--B`
+ordinary edges relative to the sheltered residual count.  No residual
+endpoint or payer-layer variable remains in that small-value density gap.
