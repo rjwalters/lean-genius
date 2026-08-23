@@ -4182,6 +4182,37 @@ difficulty is therefore not to manufacture the diagonal class, but to carry
 the already proved class from the pole K/split-pair alphabet to the
 owner-labeled relay alphabet without the telescoping loss (73rnz_cjibke).
 
+There is a private one-hot refinement, but it is not literally the SRP
+six-bit center state.  For each realized owner occurrence `o`, retain
+
+```text
+zeta(o)=(pole E, leaf L, witness y, endpoint subtype, s(y)).              (73rnz_cjibkg)
+```
+
+The geometric identifiers make this state private to the occurrence, and
+the last coordinate partitions it into exactly two one-hot classes.  The
+`s(y)=1` class creates the canonical active relay treated above; the
+`s(y)=0` class contributes the retained inactive source unit.  Hence the
+active/inactive split itself has no collision ambiguity.
+
+However, `s(y)` is the star aggregate
+
+```text
+s(y)=sum_(v in N_A(y) intersect X) t(v),
+```
+
+not a local secondary-label activity bit.  Recovering it before taking
+parity would require the whole incidence word
+`(t(v)1[v in X])_(v in N_A(y))`, whose length is q.  Thus the SRP private
+state `(Sigma,T)` from its six-label wedge does not map directly to
+(73rnz_cjibkg): SRP has a bounded local activity tuple, whereas Baer has a
+bounded **output bit** of an unbounded star aggregate.  The Baer conservation
+proof may use the one-hot bit `s(y)` as a decorated atom, but any derivation
+of that bit from primary matching atoms must exploit the canonical
+`iota_y`/broken-T pairing or another star compression.  Merely importing the
+SRP center-state argument would silently replace an aggregate parity by a
+local label.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
