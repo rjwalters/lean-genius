@@ -3530,6 +3530,31 @@ but an even restricted `Omega` degree: the universal complement bit between
 label-sensitive terminal must pair two individually odd matching ledgers;
 there is no ordinary-mass escape in the minimum two-pencil branch.
 
+The parallel SRP separator now identifies the exact topology such a terminal
+would need.  Its selected row--atom incidence graph is Eulerian; pairing at
+degree-four atoms is a gauge choice, while the pairing-independent constant
+class is the parity of the selected atom support.  Even support gives a local
+circuit and odd support gives a global cover.  This is the same distinction
+as the Baer quotient's pairing gauge and intrinsic bit `omega_Q`.
+
+For the two-pole state, (73rnz_cd) supplies the two odd boundary vertices.  If
+the individual `mu` occurrences can be placed in a relay-incidence graph in
+which every non-pole label has even degree, adjoining one formal pole--pole
+edge Eulerizes it.  The cycle containing that edge is then a pole-to-pole
+alternating trail, and its support parity is the common SRP/Baer constant
+class.  This is a conditional dictionary, not yet a terminal: (73rnz_ca)
+proves only the total cochain boundary, not evenness at every relay label.
+The remaining precise task is therefore
+
+```text
+construct relay labels for the mu occurrences and prove every
+non-pole relay has even incidence.                           (73rnz_ce GAP)
+```
+
+Once (73rnz_ce) is available, the two odd pole demands cannot disappear into
+an aggregate cancellation: they lie on one labeled trail whose gauge class
+can be compared directly with `omega_Q` or the SRP constant class.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
