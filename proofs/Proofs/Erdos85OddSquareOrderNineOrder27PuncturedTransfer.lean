@@ -336,6 +336,93 @@ theorem orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
     ((G.mem_neighborFinset h z).mpr
       ((G.adj_comm z h).mp ((G.mem_neighborFinset z h).mp hhParts.1)))
 
+/-- In the second three-high profile, a saturated 36-point ordinary set is
+the owner, all 27 bin-one points, and exactly eight bin-zero points. -/
+theorem orderNine_order27_lowSet_composition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (Z : Finset V)
+    (hZsub : Z ⊆ (Finset.univ : Finset V) \ squareOrderHighVertices G 9)
+    (hZcard : Z.card = 36)
+    (hsaturated : ∀ h ∈ squareOrderHighVertices G 9,
+      G.neighborFinset h ⊆ Z) :
+    owner ∈ Z ∧
+      squareOrderNineLowIncidenceBin G 1 ⊆ Z ∧
+      Z = insert owner
+        ((Z ∩ squareOrderNineLowIncidenceBin G 1) ∪
+          (Z ∩ squareOrderNineLowIncidenceBin G 0)) ∧
+      (Z ∩ squareOrderNineLowIncidenceBin G 0).card = 8 := by
+  classical
+  let k := squareOrderHighIncidenceCount G 9
+  let P := Z ∩ squareOrderNineLowIncidenceBin G 1
+  let W := Z ∩ squareOrderNineLowIncidenceBin G 0
+  have hownerZ := orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
+    G 3 (by omega) Z hsaturated howner
+  have hB1sub := orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
+    G 1 (by omega) Z hsaturated
+  have hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1 := by
+    intro z hz hne
+    exact orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+      G hp hhigh hc2 hc3 owner z howner (hZsub hz) hne
+  have hpartition := lowSet_eq_insert_incidence_one_union_zero
+    owner Z k hownerZ hcap
+  have hfilter (i : ℕ) : Z.filter (fun z ↦ k z = i) =
+      Z ∩ squareOrderNineLowIncidenceBin G i := by
+    ext z
+    constructor
+    · intro hz
+      have hpz := Finset.mem_filter.mp hz
+      exact Finset.mem_inter.mpr ⟨hpz.1,
+        Finset.mem_filter.mpr ⟨hZsub hpz.1, hpz.2⟩⟩
+    · intro hz
+      have hpz := Finset.mem_inter.mp hz
+      exact Finset.mem_filter.mpr ⟨hpz.1,
+        (Finset.mem_filter.mp hpz.2).2⟩
+  rw [hfilter 1, hfilter 0] at hpartition
+  change Z = insert owner (P ∪ W) at hpartition
+  have hc1 : squareOrderNineHighIncidenceHistogram G 1 = 27 := by
+    rcases squareOrderNine_highIncidence_profile_of_three_high
+        G hcard hp hhigh with hfirst | hsecond
+    · rw [hfirst.2.2.2.1] at hc3
+      omega
+    · exact hsecond.2.1
+  have hB1card : (squareOrderNineLowIncidenceBin G 1).card = 27 := by
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 1) (by omega), hc1]
+  have hP : P = squareOrderNineLowIncidenceBin G 1 := by
+    exact Finset.inter_eq_right.mpr hB1sub
+  have hownerNotP : owner ∉ P := by
+    intro ho
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp ho).2).2
+    have hk3 := (Finset.mem_filter.mp howner).2
+    omega
+  have hownerNotW : owner ∉ W := by
+    intro ho
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp ho).2).2
+    have hk3 := (Finset.mem_filter.mp howner).2
+    omega
+  have hPW : Disjoint P W := by
+    rw [Finset.disjoint_left]
+    intro z hzP hzW
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzP).2).2
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzW).2).2
+    omega
+  have hcardSplit : Z.card = 1 + P.card + W.card := by
+    rw [hpartition, Finset.card_insert_of_notMem]
+    · rw [Finset.card_union_of_disjoint hPW]
+      omega
+    · simp [hownerNotP, hownerNotW]
+  refine ⟨hownerZ, hB1sub, hpartition, ?_⟩
+  change W.card = 8
+  rw [hZcard, hP, hB1card] at hcardSplit
+  omega
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -501,6 +588,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_largeShore_profile_package
 #print axioms orderNine_order27_highRoot_neighbors_subset_lowSet
 #print axioms orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
+#print axioms orderNine_order27_lowSet_composition
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
