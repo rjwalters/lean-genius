@@ -61,10 +61,16 @@ should be proved directly from their cardinality identities:
 - branch 4: some exceptional-hole point has `D_p >= 28` (fresh samples attain
   28 or 29; the tracked branch-4 payload attains 29).
 
-Thus branch 4 only needs a maximum-load hole cover of cost at most 27, whereas
-branch 3 needs the genuinely strict improvement below 27.  The exact DTB
-complement partition at an exceptional hole is therefore most urgently needed
-for branch 3.
+Branch 3 therefore needs the genuinely strict improvement below 27.  In
+branch 4 the correct joint target is `C_p < 27 + special(p)` for some
+special-positive hole point.  The incidence lemma producing
+`special(p) > 0` cannot be separated from the cover choice: in the tracked
+branch-4 payload the unique maximum-load point `p=19` has target 29 but
+fractional optimum about 27.4 (and least integral cover 28), so the tempting
+stronger bound `C_p <= 27` at that selected point is false.  The positive
+special slack still relaxes branch 4 relative to branch 3, but both require a
+genuine coupled selector.  The exact DTB complement partition is the common
+structural input.
 
 ## Refuted shortcuts
 
