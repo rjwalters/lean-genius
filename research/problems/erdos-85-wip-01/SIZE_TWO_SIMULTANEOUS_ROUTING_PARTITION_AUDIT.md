@@ -18400,3 +18400,58 @@ layer consumes `A_a` at the propagation label and choosing another color
 creates a new cross-color route.  The next price can act on those actual
 layer tags instead of adding another projection of the already exhausted
 owner/root cycle.
+
+## 350. Repeated transition signatures force fifth-cell saturation
+
+The tag in Section 349 has a sharp collision rule.  Let `y_0,y_1` be two
+distinct propagation labels in one color `a` with the same core root `r`
+and the same unordered pair of private owners `{p,p'}`.  Their four forced
+selected cells in (1183)--(1184) coincide, so
+
+```text
+q(y_0)=q(y_1)=:q.                                  (1188)
+```
+
+For `i in {0,1}`, write the uniquely tagged fifth-cell route as
+
+```text
+y_i -- z_i -- q,       z_i in kappa(y_i).           (1189)
+```
+
+The payment vertices are distinct.  Indeed, `y_0,y_1` already have the
+common neighbor `r`.  If `z_0=z_1`, that vertex would be their second common
+neighbor and would produce the four-cycle
+
+```text
+y_0 -- r -- y_1 -- z_0 -- y_0.
+```
+
+Consequently, if the two layer tags agree, say
+
+```text
+kappa(y_0)=kappa(y_1)=k,                            (1190)
+```
+
+then `z_0,z_1` are exactly the two `k`-neighbors of `q`: every cross block
+has degree two, and both slots have now been used.  Thus a repeated
+owner/root/color signature cannot hide two fifth-cell payments in one
+vertex.  Equal tags consume the whole `q`--`k` fiber; unequal tags create
+two separately located cross-color obligations.
+
+The two-color cycle of Section 348 contains this collision twice.  With
+the cyclic convention that `x_i` is incident to `p_(i-1),p_i`, its two
+color-`a` labels have root `x_3` and owners `{p_0,p_1}`, while its two
+color-`b` labels have root `x_4` and the same owner pair.  Hence
+
+```text
+q(y_0)=q(y_2)=p_4,
+q(y_1)=q(y_3)=p_2.                                  (1191)
+```
+
+For either pair, agreeing tags saturate the corresponding selected port in
+that payment layer by (1190); disagreeing tags force two different payment
+layers at the same selected port.  This does not yet exclude the abstract
+cycle, but it upgrades each repeated transition from a free fifth cell to
+an exact degree-two capacity event.  A full completion of Section 348 must
+now realize both saturation-or-splitting decisions simultaneously with the
+self factors and the other SRP rows.
