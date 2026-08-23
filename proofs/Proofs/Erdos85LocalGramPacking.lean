@@ -128,6 +128,21 @@ theorem not_conflict_of_common_forcedLocalGramNeighbor
   apply hno
   exact Or.inr ⟨u, v, w, huv, huw, hvw⟩
 
+omit [Fintype V] in
+/-- Under the negation of the obstruction, every forced-neighbor incidence
+lies in the eligible relation. -/
+theorem eligible_of_forcedLocalGramNeighbor_of_noObstruction
+    (H W : V → V → Prop) [DecidableRel H] (d : V → ℕ) (u w : V)
+    (hno : ¬ HasLocalGramPackingObstruction H W d)
+    (huw : IsForcedLocalGramNeighbor H W d u w) :
+    H u w := by
+  by_contra hnH
+  apply hno
+  left
+  refine ⟨u, ?_⟩
+  intro X hX
+  exact hnH (hX.2.1 w (huw X hX))
+
 /-- The neighborhood finset of an arbitrary decidable relation. -/
 def relationNeighborFinset (A : V → V → Prop) [DecidableRel A]
     (u : V) : Finset V :=
@@ -190,6 +205,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
 #print axioms not_hasLocalGramPackingObstruction_iff
 #print axioms not_conflict_of_common_forcedLocalGramNeighbor
+#print axioms eligible_of_forcedLocalGramNeighbor_of_noObstruction
 #print axioms not_conflict_of_forcedLocalGramNeighbors
 
 end Erdos85
