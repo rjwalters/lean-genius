@@ -39,6 +39,10 @@ def main() -> int:
     parser.add_argument("--timeout-seconds", type=int, default=600)
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument(
+        "--write-outer", type=Path,
+        help="write the pinned/generated outer payload for another inner probe",
+    )
+    parser.add_argument(
         "--relax-inner", action="append", default=[],
         choices=("eligibility", "residual-c4", "block-orthogonal"),
         help="omit one inner residual-relation constraint family",
@@ -74,6 +78,7 @@ def main() -> int:
             return 0
         outer_model = outer.model()
         witness = {
+            "branch": args.branch,
             "blocks": [
                 [b for b in range(N_U1)
                  if is_true(outer_model.eval(
@@ -87,6 +92,9 @@ def main() -> int:
         }
     else:
         witness = json.loads(args.witness.read_text())
+        witness.setdefault("branch", args.branch)
+    if args.write_outer is not None:
+        args.write_outer.write_text(json.dumps(witness, indent=2) + "\n")
     fingerprint = hashlib.sha256(json.dumps(
         witness, sort_keys=True, separators=(",", ":")).encode()).hexdigest()[:16]
     print(f"outer_fingerprint={fingerprint}")
