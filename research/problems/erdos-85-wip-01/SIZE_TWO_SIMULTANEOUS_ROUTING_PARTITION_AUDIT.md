@@ -25225,3 +25225,85 @@ at least `ceil(c/2)` spokes using at least `ceil(c/4)` colors and a
 linearly growing allowed-color subfrontier.  This is the first post-
 saturation consequence that necessarily leaves the two-root factor
 projection isolated in Section 473.
+
+## 477. Closed-neighborhood avoidance packs full rooted stars
+
+The deletion proof of Section 457 permits an arbitrary additional edge
+set.  If `E` extra edges are deleted beyond the source-color and payer-
+layer deletions there, the total forbidden-edge count satisfies
+
+```text
+f<=55+10(|P|+|C|)+E.
+```
+
+Substitution into the general sufficient inequality `q>567+11f` from
+Section 448 gives
+
+```text
+q>1172+110(|P|+|C|)+11E.                         (1693)
+```
+
+For a vertex set `Z subseteq O_5`, delete every edge incident with its
+closed `H`-neighborhood `N_H[Z]`.  Since `H` has maximum degree five,
+
+```text
+|N_H[Z]|<=6|Z|,
+E<=5|N_H[Z]|<=30|Z|.                             (1694)
+```
+
+Every edge of a returned terminal survives this deletion, so both its
+endpoints, and in particular a returned saturation center, lie outside
+`N_H[Z]`.  Consequently the center has no `H`-neighbor in `Z`.
+
+This permits an adaptive packing stronger than Section 471.  For a
+saturation with center `v`, source color `h`, and root pair `{r,s}`, let
+its rooted-star gadget consist of the complete four-edge `h`-trace on
+`G_r union G_s` together with the three edges at `v` in the unused root
+matchings.  It has seven edges and at most ten vertices.
+
+Suppose `j` such gadgets have already been chosen, pairwise disjoint in
+vertices and in the canonical payer-layer sets of all seven edges.  Let
+`Y_j` be their vertex union and `L_j` their payer-layer union.  Then
+
+```text
+|Y_j|<=10j,       |L_j|<=7j.                     (1695)
+```
+
+Let `B_j` be the endpoints of all edges paid from `L_j`.  The ten-edge-
+per-layer bound gives `|B_j|<=20|L_j|<=140j`.  Put
+`Z_j:=Y_j union B_j`, so `|Z_j|<=150j`, and perform the closed-neighborhood
+deletion (1694), costing at most `E<=4500j` edges.
+
+Also forbid every source color incident with `Y_j` and every source color
+of an edge paid from `L_j`.  The two classes cost at most `50j` and `70j`
+colors, respectively, hence at most `120j` in total.  Apply (1693) with
+`P=emptyset`.  The sufficient stage-`j` threshold is
+
+```text
+q>1172+110(120j)+11(4500j)
+ =1172+62700j.                                    (1696)
+```
+
+If cancellation does not occur, the returned color `h` has no edge
+incident with `Y_j` and no edge paid from `L_j`; its entire four-edge
+trace is therefore vertex- and payer-disjoint from the earlier gadgets.
+The new center lies outside `N_H[Z_j]`, so its three unused-root spokes
+avoid `Y_j`.  None is paid from `L_j`, since otherwise the center itself
+would lie in `B_j subseteq Z_j`.  Thus the full seven-edge gadget extends
+the packing.
+
+Induction yields the q-generic terminal
+
+```text
+q>1172+62700(c-1)
+ -> an avoided nondegenerate tag-even PC cancellation; or
+ -> c seven-edge rooted-star gadgets pairwise disjoint in vertices,
+    selected source colors, and complete canonical payer-layer supports.
+                                                               (1697)
+```
+
+Pigeonholing the ten primary root pairs gives `t` such fully separated
+gadgets with one common saturated root pair under
+`q>1172+627000(t-1)`.  The coefficient is intentionally coarse; the new
+content is simultaneous control of the complete color trace and all three
+unused-root spokes, the companion geometry absent from Section 473.
