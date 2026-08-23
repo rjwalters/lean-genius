@@ -4773,12 +4773,14 @@ segments.
 
 The word ``fixed-margin'' here must retain the private occurrence state; it
 does not mean a constant indexed only by the coarse endpoint geometry.  Let
-`Sigma` be the finite alphabet obtained from (73rnz_cjibkt) after setting the
-owner flag to zero, but retaining the oriented `b`-endpoint bit, witness
-fiber, `00/11` T-word, endpoint subtype, and triangle-versus-broken-T channel.
-Let `E_Sigma` be its realizable unordered pair states and let `S` be the
-subspace of `F_2^(E_Sigma)` spanned by the realized four-switch differences
-from (73rnz_cjibd).  Write `partial:F_2^(E_Sigma) -> F_2^Sigma` for endpoint
+`Sigma_occ` be the full occurrence alphabet obtained from (73rnz_cjibkt)
+after setting the owner flag to zero.  It retains the actual oriented
+endpoints and witness identity, the mixed `b`-word orientation, `00/11`
+T-word, endpoint subtype, and triangle-versus-broken-T channel.  This alphabet
+is finite for each graph but its size is not asserted to be uniform in q.
+Let `E_occ` be its realizable unordered pair states and let `S` be the
+subspace of `F_2^(E_occ)` spanned by the realized four-switch differences
+from (73rnz_cjibd).  Write `partial:F_2^(E_occ) -> F_2^Sigma_occ` for endpoint
 incidence.  A switch-invariant pair weight is an element of `S^perp`.
 Choose a basis `h_1,...,h_d` for a complement of the endpoint-potential
 space `im(partial^*)` inside `S^perp`.  Every switch-invariant weight then has
@@ -4788,12 +4790,12 @@ the exact form
 w=partial^* phi + sum_(j=1)^d c_j h_j.                 (73rnz_cjibkzm)
 ```
 
-For the owner-free terminal edge census `z in F_2^(E_Sigma)` of
+For the owner-free terminal edge census `z in F_2^(E_occ)` of
 `delta_(W_P)(R)`, put `m=partial z` and `n_j=<h_j,z>`.  Its entire
 switch-invariant contribution is therefore exactly
 
 ```text
-Omega_free = sum_(alpha in Sigma) m_alpha phi(alpha)
+Omega_free = sum_(alpha in Sigma_occ) m_alpha phi(alpha)
            + sum_(j=1)^d n_j c_j.                      (73rnz_cjibkzn)
 ```
 
@@ -4810,11 +4812,16 @@ in that quotient does not determine `Omega_free`: a simultaneous toggle in
 the kernel may preserve all coarse decoration marginals while changing one
 `n_j`.  Consequently a decoration-only constant (for example one constant
 for each coarse H/V/S type) is not a valid Baer terminal unless an additional
-injectivity theorem for this quotient is proved.  The remaining endpoint
+injectivity theorem for this quotient is proved.  In particular, replacing
+actual endpoint/witness identities by bounded local role types is itself
+such an unproved quotient, even though the list of local types is uniform.
+The remaining endpoint
 statement is now precise: express the source-corrected residual unit `Delta`
 as the same linear functional of `(m,n)`, or exhibit a realizable switch on
 which (73rnz_cjibkzm) fails and hence an odd holonomy.  This is a finite
-private-census problem uniform in q, not a scalar type-count problem.
+private-census problem for each graph, not yet a bounded scalar type-count
+problem uniform in q.  A uniform finish must prove either switch-cycle
+generation or injective compression for this occurrence quotient.
 
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
