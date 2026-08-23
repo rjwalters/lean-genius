@@ -3801,6 +3801,27 @@ one common pairing-gauge bit.  The arbitrary even-star pairing cannot create
 an independent odd switch charge.  This is exactly the fine-label reduction
 needed to compare the witness columns with the route alphabet (73rnz_at).
 
+The special-leaf owner mark has an equally small pairing state.  Every
+neighbor of an outside full leaf lies in the occupied shore, where the
+replication-two bound lets a witness y meet at most two of the four star
+leaves.  It cannot meet two sibling leaves: then y and their empty center
+would have those two leaves as common A-neighbors, violating C4-freeness.
+Consequently the possibilities are
+
+```text
+0 leaf neighbors: no owner-marked relay;
+1 leaf neighbor:  one forced leaf--nonleaf relay;
+2 leaf neighbors: the leaves are cross-star, and either pair together
+                  or launch two separate leaf--nonleaf relays.           (73rnz_cjibb)
+```
+
+Thus the owner refinement has no unbounded pairing ambiguity.  The one-leaf
+state forces a unique odd owner exit, while the two-leaf state has one binary
+collision/exit choice -- the same cross-star collision bit already isolated
+by (73rnz_an)--(73rnz_ap).  Together with (73rnz_cjiba), every witness star's
+fine owner/T-word ambiguity is bounded by two binary gauge choices, independent
+of q.
+
 Similarly, because T is Eulerian, `Tx` is exactly the boundary vector of the
 T-cut `delta_T(X)`: outside X it counts T-neighbors in X, while inside X the
 even T-degree converts internal incidence to external incidence.  Hence the
