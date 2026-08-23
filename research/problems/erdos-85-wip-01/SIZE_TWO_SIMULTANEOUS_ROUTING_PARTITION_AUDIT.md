@@ -18268,3 +18268,62 @@ incidence, nor the rule of consecutive color change can by itself price the
 cycle branch.  Any exclusion must use information absent from (1174)--
 (1177), such as the self factors `A_(color(y_i))`, the coupled partitions
 `SRP(color(y_i),e)`, or the outside component tags of the displayed labels.
+
+## 348. Even two colors admit a four-state propagation cycle
+
+Boundedness in (1173) is not itself a contradiction.  There is already a
+four-state cycle satisfying every owner, root-support, color-change, and
+immediate-return constraint used in Section 346.  Take both private tickets
+in each of two consecutive owner fibers,
+
+```text
+T_0={w_0,w'_0},             T_1={w_1,w'_1}.         (1178)
+```
+
+The routed root supports from (841) are
+
+```text
+supp tau(T_0)={x_2,x_3,x_4},
+supp tau(T_1)={x_3,x_4,x_0}.                         (1179)
+```
+
+Choose four distinct exterior labels with the following private endpoints,
+roots, and two alternating colors `a!=b`:
+
+```text
+y_0: {w_0,w_1},   root x_3, color a;
+y_1: {w_1,w'_0},  root x_4, color b;
+y_2: {w'_0,w'_1}, root x_3, color a;
+y_3: {w'_1,w_0},  root x_4, color b.                (1180)
+```
+
+Every displayed root belongs to both endpoint tickets' supports.  At each
+ticket the two cycle labels occupy the distinct roots `x_3,x_4`, and their
+colors differ.  Consecutive tickets have different owners; the only pairs
+with a common owner are the opposite pairs `{w_0,w'_0}` and
+`{w_1,w'_1}`, and (1180) does not join either pair.  No two tickets share
+two displayed labels, and no two displayed labels share two tickets, so
+the local incidence pattern creates an alternating eight-cycle rather than
+a forbidden four-cycle.
+
+Complete each of the four tickets' unused third root occurrence by a fresh
+label with a fresh residual far endpoint.  Its color can be chosen so that
+the ticket multiplicity cap (844) remains at most two.  Then the transition
+rule may follow
+
+```text
+(w_0,y_3) -> (w_1,y_0) -> (w'_0,y_1)
+ -> (w'_1,y_2) -> (w_0,y_3),                        (1181)
+```
+
+and every step changes color and avoids both the sibling and the preceding
+ticket.  Thus (1181) is a literal four-cycle in the arrival-state dynamics.
+
+This construction is deliberately a local ticket-layer realization, not a
+completion of all factor degrees or the full simultaneous routing
+partition.  It proves that owner projection, root support (841), ticket
+nonmonochromaticity, and the C4 exclusions of Section 346 do not eliminate
+the cycle branch of (1173), even with only two side colors.  Any next price
+must use information omitted here--for example the exact per-color cut
+census (787), the self factors `A_a,A_b`, or the incidence-component profile
+of Section 324--rather than only the thirty-state transition graph.
