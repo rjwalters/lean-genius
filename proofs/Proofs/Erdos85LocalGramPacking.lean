@@ -904,6 +904,50 @@ theorem relationNeighborFinset_isLocalGramPacking
     have huy : A u y := (Finset.mem_filter.mp hy).2
     exact hgram x y u hW (hsymm.symm u x hux) (hsymm.symm u y huy)
 
+/-- The characteristic function of an actual symmetric neighborhood is a
+canonical fractional interval extension.  The point-capacity hypothesis is
+the numeric form of the Gram disjointness law for the block model. -/
+theorem relationIndicator_isCanonicalFractionalIntervalExtension
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hpointCapacity : ∀ u p,
+      (∑ w ∈ Finset.univ.filter fun z => p ∈ B z,
+        if A u w then (1 : ℚ) else 0) ≤ 1)
+    (u : V) :
+    IsCanonicalFractionalIntervalExtension H W d B u
+      (fun w => if A u w then 1 else 0) := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro w
+    by_cases huw : A u w <;> simp [huw]
+  · rw [show (∑ w : V, if A u w then (1 : ℚ) else 0) =
+        ((relationNeighborFinset A u).card : ℚ) by
+          simp [relationNeighborFinset]]
+    simp [hdegree u]
+  · intro w hw
+    by_cases huw : A u w
+    · exact hsupport u w huw
+    · simp [huw] at hw
+  · exact hpointCapacity u
+  · intro w hw
+    have hpack := relationNeighborFinset_isLocalGramPacking
+      A H W d hsymm hdegree hsupport hgram w
+    have huw : u ∈ relationNeighborFinset A w := hw _ hpack
+    have hwu : A w u := (Finset.mem_filter.mp huw).2
+    simp [hsymm.symm w u hwu]
+  · intro w hw
+    by_cases huw : A u w
+    · have hwu : A w u := hsymm.symm u w huw
+      have hpack := relationNeighborFinset_isLocalGramPacking
+        A H W d hsymm hdegree hsupport hgram w
+      exact False.elim ((hw _ hpack)
+        (Finset.mem_filter.mpr ⟨Finset.mem_univ u, hwu⟩))
+    · simp [huw]
+
 /-- Actual neighborhoods of a symmetric residual relation form a symmetric
 simultaneous selection of demanded local packings. -/
 theorem relationNeighborFinset_isSymmetricLocalGramPackingSelection
@@ -1083,6 +1127,28 @@ theorem false_of_localGramPackingReverseIntervalRankDeficit
     A H W d hsymm hdegree hsupport hgram
   exact ⟨u, no_contractedExtension_of_reverseIntervalRankDeficit H W d u hu⟩
 
+/-- **Canonical fractional-interval consumer.**  Actual symmetric
+neighborhoods give characteristic feasible masses at every row.  Therefore
+one row with no canonical fractional extension contradicts the actual
+residual relation directly. -/
+theorem false_of_noCanonicalFractionalIntervalExtension
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hpointCapacity : ∀ u p,
+      (∑ w ∈ Finset.univ.filter fun z => p ∈ B z,
+        if A u w then (1 : ℚ) else 0) ≤ 1)
+    (hbad : ∃ u, ∀ mass,
+      ¬ IsCanonicalFractionalIntervalExtension H W d B u mass) :
+    False := by
+  obtain ⟨u, hu⟩ := hbad
+  exact hu _ (relationIndicator_isCanonicalFractionalIntervalExtension
+    A H W d B hsymm hdegree hsupport hgram hpointCapacity u)
+
 /-- **Forced hitting-set reciprocity consumer.**  If a finite set of
 reverse-impossible candidates meets every demanded packing at one row, no
 symmetric supported Gram-compatible residual relation exists. -/
@@ -1134,6 +1200,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
     exact hgram u v w huv huwA hvwA
 
 #print axioms relationNeighborFinset_isLocalGramPacking
+#print axioms relationIndicator_isCanonicalFractionalIntervalExtension
 #print axioms false_of_localGramPacking_deficit_or_forced_collision
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
 #print axioms not_hasLocalGramPackingObstruction_iff
@@ -1166,6 +1233,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_localGramPackingOneRowCompatibilityObstruction
 #print axioms false_of_localGramPackingContractedExtensionDeficit
 #print axioms false_of_localGramPackingReverseIntervalRankDeficit
+#print axioms false_of_noCanonicalFractionalIntervalExtension
 #print axioms false_of_localGramPackingHittingSetReciprocityObstruction
 #print axioms false_of_forcedLocalGramNeighbor_not_reverse
 #print axioms not_hasLocalGramPackingReciprocityObstruction_iff
