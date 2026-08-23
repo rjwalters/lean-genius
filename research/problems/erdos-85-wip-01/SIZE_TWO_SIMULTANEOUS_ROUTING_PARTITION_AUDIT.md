@@ -25643,3 +25643,42 @@ M distinct source colors and 2M distinct payer layers.          (1721)
 This is a block-rainbow rather than edge-rainbow conclusion: coordinate
 sets are separated between literal collision endpoints, which is the form
 needed for any subsequent endpoint-by-endpoint rooted-deficit argument.
+
+## 486. The transfer horn contains a double-saturation family
+
+Work in the transfer horn of (1719), and let `k>=ceil(t/6)` be the number
+of retained centers for its fixed complementary root pair `{u,w}`.  Write
+`g_a` for the common color of the `u,w` spokes at center `v_a`.  The
+`u`-spokes are distinct ordinary edges, and one source color occurs on at
+most two edges of the fixed root matching.  Therefore
+
+```text
+#{g_a:1<=a<=k}>=ceil(k/2)>=ceil(t/12).            (1722)
+```
+
+At the same center, the primary `r,s` spokes have their common selected
+color `h_a`.  The local color-degree cap already used in Section 484 gives
+`g_a!=h_a`.  Hence every retained center carries two color-disjoint
+saturated turns on disjoint root pairs:
+
+```text
+(r,s;h_a) and (u,w;g_a),       {r,s} intersect {u,w}=emptyset.    (1723)
+```
+
+The four displayed spoke edges belong to the fully separated gadget of
+that center.  Consequently different centers have disjoint displayed
+edges and vertices, and their full canonical payer-layer supports are
+disjoint.  In particular, at each one of the four fixed ports the `k`
+displayed spokes have pairwise different payer layers across centers.
+Combining this with (1722), the transfer horn supplies
+
+```text
+k>=ceil(t/6) vertex-disjoint double-saturation centers,
+>=ceil(t/12) secondary colors,
+k distinct payer layers at each of four fixed ports.             (1724)
+```
+
+No within-center equality of payer layers is asserted.  The point is that
+complementary saturation does not merely relabel the original turn: it
+creates a linear four-port family with a genuinely different local color
+and with the same cross-gadget payer separation as the primary family.
