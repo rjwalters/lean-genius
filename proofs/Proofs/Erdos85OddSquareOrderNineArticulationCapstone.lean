@@ -114,6 +114,50 @@ def orderNineOrdinarySharpPartition
   (Finset.univ.filter fun x =>
     f x = (∑ y, f y) / 78 + 1).card = (∑ y, f y) % 78
 
+def orderNineOrdinaryExplicitPartition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ : V) (R : Finset V) (a r : ℕ) : Prop :=
+  let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+  let f := fun x : ↥(↑O : Set V) => (G.neighborFinset x.1 ∩ R).card
+  (∀ x, f x = a ∨ f x = a + 1) ∧
+  (Finset.univ.filter fun x => f x = a + 1).card = r
+
+theorem orderNineOrdinaryExplicitPartition_of_sharp
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (R : Finset V) (a r : ℕ)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hsharp : orderNineOrdinarySharpPartition G h₁ h₂ h₃ R)
+    (htotal : 9 * R.card -
+      ((G.neighborFinset h₁ ∩ R).card +
+       (G.neighborFinset h₂ ∩ R).card +
+       (G.neighborFinset h₃ ∩ R).card) = 78 * a + r)
+    (hr : r < 78) :
+    orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R a r := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let f := fun x : ↥(↑O : Set V) => (G.neighborFinset x.1 ∩ R).card
+  change (∀ x, f x = (∑ y, f y) / 78 ∨ f x = (∑ y, f y) / 78 + 1) ∧
+    (Finset.univ.filter fun x =>
+      f x = (∑ y, f y) / 78 + 1).card = (∑ y, f y) % 78 at hsharp
+  change (∀ x, f x = a ∨ f x = a + 1) ∧
+    (Finset.univ.filter fun x => f x = a + 1).card = r
+  have hsum := orderNine_ordinary_neighbor_inter_sum G H R hRH hdegOrd
+  have hsum' : (∑ x, f x) = 9 * R.card -
+      ((G.neighborFinset h₁ ∩ R).card +
+       (G.neighborFinset h₂ ∩ R).card +
+       (G.neighborFinset h₃ ∩ R).card) := by
+    simpa [f, O, H, h₁₂, h₁₃, h₂₃, add_assoc] using hsum
+  have hsumTotal : (∑ x, f x) = 78 * a + r := hsum'.trans htotal
+  have hdiv : (78 * a + r) / 78 = a := by omega
+  have hmod : (78 * a + r) % 78 = r := by omega
+  rw [hsumTotal] at hsharp
+  simpa [hdiv, hmod] using hsharp
+
 theorem orderNineOrdinarySharpPartition_of_boundary
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -158,9 +202,11 @@ theorem orderNineArticulationSmallShore_sharp_partition_dichotomy
       (G.neighborFinset h₁ ∩ S).card = 2 ∧
       (G.neighborFinset h₂ ∩ S).card = 2 ∧
       (G.neighborFinset h₃ ∩ S).card = 2) ∨
-    orderNineOrdinarySharpPartition G h₁ h₂ h₃
-      (((Finset.univ : Finset V) \ {h₁, h₂, h₃}) \ S) ∨
-    orderNineOrdinarySharpPartition G h₁ h₂ h₃ S := by
+    orderNineOrdinaryExplicitPartition G h₁ h₂ h₃
+      (((Finset.univ : Finset V) \ {h₁, h₂, h₃}) \ S) 6 48 ∨
+    orderNineOrdinaryExplicitPartition G h₁ h₂ h₃
+      (((Finset.univ : Finset V) \ {h₁, h₂, h₃}) \ S) 5 48 ∨
+    orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60 := by
   classical
   let H : Finset V := {h₁, h₂, h₃}
   let O := (Finset.univ : Finset V) \ H
@@ -189,6 +235,12 @@ theorem orderNineArticulationSmallShore_sharp_partition_dichotomy
     (hdegHigh h₂ (by simp)) (hhighIndependent h₂ (by simp))
   have hb₃ := orderNine_high_neighbor_ordinary_compl_card G H S h₃
     (hdegHigh h₃ (by simp)) (hhighIndependent h₃ (by simp))
+  have hb₁R : (G.neighborFinset h₁ ∩ R).card =
+      10 - (G.neighborFinset h₁ ∩ S).card := by simpa [R, O] using hb₁
+  have hb₂R : (G.neighborFinset h₂ ∩ R).card =
+      10 - (G.neighborFinset h₂ ∩ S).card := by simpa [R, O] using hb₂
+  have hb₃R : (G.neighborFinset h₃ ∩ R).card =
+      10 - (G.neighborFinset h₃ ∩ S).card := by simpa [R, O] using hb₃
   have hcases := orderNineArticulationSmallShoreBetaType_sharp_dichotomy
     G h₁ h₂ h₃ S hfull.1
   rcases hcases with hsym | hcomp18 | hcomp27 | hself34
@@ -196,24 +248,58 @@ theorem orderNineArticulationSmallShore_sharp_partition_dichotomy
   · right
     left
     have he : (E ∩ S).card = 2 := hfull.2.1 hcomp18.1
-    apply orderNineOrdinarySharpPartition_of_boundary
+    have hpart := orderNineOrdinarySharpPartition_of_boundary
       G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hdegOrd hdegHigh 2
-    · exact hcompBoundary.trans (hboundary.trans he)
-    · simpa [R, O, H, hRcard, hb₁, hb₂, hb₃] using hcomp18.2
-  · right
-    left
-    have he : (E ∩ S).card = 3 := hfull.2.2.1 hcomp27.1
-    apply orderNineOrdinarySharpPartition_of_boundary
-      G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hdegOrd hdegHigh 3
-    · exact hcompBoundary.trans (hboundary.trans he)
-    · simpa [R, O, H, hRcard, hb₁, hb₂, hb₃] using hcomp27.2
+      (hcompBoundary.trans (hboundary.trans he))
+      (by simpa [R, O, H, hRcard, hb₁, hb₂, hb₃] using hcomp18.2)
+    apply orderNineOrdinaryExplicitPartition_of_sharp
+      G h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R 6 48 hRH hdegOrd hpart
+    · rw [hRcard, hb₁R, hb₂R, hb₃R]
+      have hbeta := hfull.1
+      unfold orderNineArticulationSmallShoreBetaType at hbeta
+      rcases hbeta with ⟨hs, hb⟩ | ⟨hs, hb₁', hb₂', hb₃'⟩ |
+          ⟨hs, hb₁', hb₂', hb₃'⟩
+      · rcases hb with hb | hb | hb | hb | hb | hb | hb <;>
+          rcases hb with ⟨hb₁', hb₂', hb₃'⟩ <;>
+          omega
+      all_goals omega
+    · norm_num
   · right
     right
+    left
+    have he : (E ∩ S).card = 3 := hfull.2.2.1 hcomp27.1
+    have hpart := orderNineOrdinarySharpPartition_of_boundary
+      G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hdegOrd hdegHigh 3
+      (hcompBoundary.trans (hboundary.trans he))
+      (by simpa [R, O, H, hRcard, hb₁, hb₂, hb₃] using hcomp27.2)
+    apply orderNineOrdinaryExplicitPartition_of_sharp
+      G h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R 5 48 hRH hdegOrd hpart
+    · rw [hRcard, hb₁R, hb₂R, hb₃R]
+      have hbeta := hfull.1
+      unfold orderNineArticulationSmallShoreBetaType at hbeta
+      rcases hbeta with ⟨hs, hb⟩ | ⟨hs, hb₁', hb₂', hb₃'⟩ |
+          ⟨hs, hb₁', hb₂', hb₃'⟩
+      · omega
+      · omega
+      · omega
+    · norm_num
+  · right
+    right
+    right
     have he : (E ∩ S).card = 2 := hfull.2.2.2 hself34.1
-    apply orderNineOrdinarySharpPartition_of_boundary
+    have hpart := orderNineOrdinarySharpPartition_of_boundary
       G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S hSH hdegOrd hdegHigh 2
-    · exact hboundary.trans he
-    · exact hself34.2
+      (hboundary.trans he) hself34.2
+    apply orderNineOrdinaryExplicitPartition_of_sharp
+      G h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S 3 60 hSH hdegOrd hpart
+    · have hbeta := hfull.1
+      unfold orderNineArticulationSmallShoreBetaType at hbeta
+      rcases hbeta with ⟨hs, hb⟩ | ⟨hs, hb₁', hb₂', hb₃'⟩ |
+          ⟨hs, hb₁', hb₂', hb₃'⟩
+      · omega
+      · omega
+      · simp [hs, hb₁', hb₂', hb₃']
+    · norm_num
 /-- Graph/profile-level articulation capstone.  The standard three-high
 setup is explicit here so the final actual-profile wrapper can reuse the
 same setup already built for ordinary-defect connectivity. -/
@@ -532,6 +618,7 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
 #print axioms orderNineArticulationSmallShoreBetaType_sharp_dichotomy
 #print axioms orderNineArticulationSmallShoreFullType_of_parameterType
 #print axioms orderNineOrdinarySharpPartition_of_boundary
+#print axioms orderNineOrdinaryExplicitPartition_of_sharp
 #print axioms orderNineArticulationSmallShore_sharp_partition_dichotomy
 
 end
