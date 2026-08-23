@@ -5118,3 +5118,41 @@ their genuine line-cycle order.  What remains is to prove that its signed
 event word has reversible occurrence weights—or equivalently that every
 directed label circulation from Section 94 meets an even signed number of
 turn/switch boundaries.
+
+## 96. A rooted color triangle already supports irreversible circulation
+
+The two-regularity of the rooted exterior-color graphs does not by itself
+exclude the length-three obstruction from Section 94.  At one root, suppose
+three exterior colors `r,d,f` form a rooted color triangle.  Traverse its
+state-color cycle as
+
+```text
+r --> f --> d --> r.
+```
+
+The skip-one turns at the three middle states are
+
+```text
+at f: r --> d,
+at d: f --> r,
+at r: d --> f.
+```
+
+Together these are the irreversible directed circulation
+
+```text
+r --> d --> f --> r.                                  (290)
+```
+
+Every rooted color has degree two, every transition uses a distinct port by
+the port bijection, and no loop is involved.  Thus maximum degree two,
+looplessness, and the local rooted path/cycle classification are all
+compatible with the minimal nonreversible flow.
+
+This is a structural local counterprofile, not a claim that the triangle
+extends to the full odd-horizontal state cycle or satisfies every SRP block.
+It closes one tempting shortcut: the remaining directed circulations cannot
+be killed solely inside a rooted triangle multigraph.  A valid exclusion
+must use their embedding in the oriented `B_ec` event word of Section 95,
+the odd horizontal count, or the simultaneous occurrence weights supplied
+by the other colors.
