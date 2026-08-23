@@ -4446,6 +4446,35 @@ identities (73rnz_cjibk)--(73rnz_cjibkc).  Completing (73rnz_cjibkd) means
 lifting that aggregate bridge to these full occurrence states.  It is not
 another cycle-space or `mu`-pricing question.
 
+The `rho` interface splits exactly by the middle T-bit of its route word.
+Let `ab` be one residual cross-matching edge on
+`E--a--b--G`.  If `ab notin T`, then the A-edge ab lies in a triangle.  Its
+third vertex r is unique by C4-freeness; the two star edges `ra,rb` are
+non-T, and the defining Baer involution at r pairs a with b.  Hence
+
+```text
+ab notin T  =>  ab is literally a canonical 00 edge of P,
+                 with unique witness r.                (73rnz_cjibku)
+```
+
+If this edge also crosses `B=supp(t x)`, it is already one of the oriented
+flip states (73rnz_cjibkt).  If it does not cross B, it is a same-side 00
+P-edge and carries no flip endpoint.
+
+If instead `ab in T`, then ab is triangle-free by definition, so it has no
+common-neighbor witness and cannot be any P-transition edge.  Thus
+
+```text
+rho_(E,G)=rho^tri_(E,G)+rho^T_(E,G),                   (73rnz_cjibkv)
+```
+
+where `rho^tri` is supported on literal canonical 00 edges of P and `rho^T`
+is supported on triangle-free A-edges outside the P alphabet.  This proves
+the occurrence-level attachment for the b-flipping part of `rho^tri`.
+The final lift problem is correspondingly smaller: account for same-side
+`rho^tri` edges and the witness-free `rho^T` channel, and show that their
+owner-resolved contribution matches the inactive/terminal endpoint states.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
