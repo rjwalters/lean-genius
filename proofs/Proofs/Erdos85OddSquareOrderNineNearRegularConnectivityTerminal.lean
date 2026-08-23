@@ -64,6 +64,57 @@ theorem sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
   have hvOutside := (Finset.mem_sdiff.mp hvParts.2).2
   exact hvOutside (hclosed u hu hvParts.1)
 
+/-- A shore closed inside the non-high induced graph gives both ambient
+zero-cut equations needed by the graph-to-admissibility adapter, provided
+the removed high vertices are isolated in the defect graph.  Symmetry makes
+the relative complement closed automatically. -/
+theorem two_zeroBoundarySums_of_relative_closed_and_isolated
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (H S : Finset V)
+    (hSsub : S ⊆ Finset.univ \ H)
+    (hclosed : ∀ x ∈ S,
+      D.neighborFinset x ∩ (Finset.univ \ H) ⊆ S)
+    (hiso : ∀ h ∈ H, D.neighborFinset h = ∅) :
+    (∑ x ∈ S,
+      (D.neighborFinset x ∩ (Finset.univ \ S)).card) = 0 ∧
+    (let T := (Finset.univ \ H) \ S
+      ∑ x ∈ T,
+        (D.neighborFinset x ∩ (Finset.univ \ T)).card) = 0 := by
+  classical
+  let O := Finset.univ \ H
+  let T := O \ S
+  have hnoHigh {x y : V} (hxO : x ∈ O) (hxy : D.Adj x y) : y ∉ H := by
+    intro hyH
+    have hxin : x ∈ D.neighborFinset y := by
+      simpa [SimpleGraph.mem_neighborFinset, D.adj_comm] using hxy
+    rw [hiso y hyH] at hxin
+    exact Finset.notMem_empty x hxin
+  have hSclosed : ∀ x ∈ S, D.neighborFinset x ⊆ S := by
+    intro x hxS y hyN
+    have hxO : x ∈ O := hSsub hxS
+    have hxy : D.Adj x y := by simpa using hyN
+    have hyO : y ∈ O := Finset.mem_sdiff.mpr
+      ⟨Finset.mem_univ y, hnoHigh hxO hxy⟩
+    exact hclosed x hxS (Finset.mem_inter.mpr ⟨hyN, hyO⟩)
+  have hTclosed : ∀ x ∈ T, D.neighborFinset x ⊆ T := by
+    intro x hxT y hyN
+    have hxParts := Finset.mem_sdiff.mp hxT
+    have hxy : D.Adj x y := by simpa using hyN
+    have hyO : y ∈ O := Finset.mem_sdiff.mpr
+      ⟨Finset.mem_univ y, hnoHigh hxParts.1 hxy⟩
+    have hyNotS : y ∉ S := by
+      intro hyS
+      have hxS := hclosed y hyS (Finset.mem_inter.mpr ⟨by
+        simpa [SimpleGraph.mem_neighborFinset, D.adj_comm] using hxy, hxParts.1⟩)
+      exact hxParts.2 hxS
+    exact Finset.mem_sdiff.mpr ⟨hyO, hyNotS⟩
+  constructor
+  · exact sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
+      D S hSclosed
+  · dsimp only
+    exact sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
+      D T hTclosed
+
 /-- Finite call-site form of the non-owner selection lemma.  The returned
 shore is nonempty, has cardinality strictly below the ambient order, omits
 the owner, and is closed under every graph neighbor; equivalently its graph
@@ -302,6 +353,7 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
 #print axioms eight_dvd_of_three_mul_eq_five_mul
 #print axioms exists_nonowner_connectedComponent_of_not_connected
 #print axioms sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
+#print axioms two_zeroBoundarySums_of_relative_closed_and_isolated
 #print axioms exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
 #print axioms three_mul_card_eq_five_mul_card_of_cross_degrees
 #print axioms three_mul_card_inter_eq_five_mul_card_inter_of_closed_shore
