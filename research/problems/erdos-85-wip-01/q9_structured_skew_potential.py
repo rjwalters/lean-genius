@@ -1055,6 +1055,13 @@ def affine_load_half_atom_dual(data: dict) -> tuple:
     local_keys = sorted(set(
         (signatures[t], censuses[t][b])
         for t in range(N) for b in data["selected"]), key=repr)
+    local_load_sets = {
+        key: {loads[b] for t in range(N) for b in data["selected"]
+              if (signatures[t], censuses[t][b]) == key}
+        for key in local_keys
+    }
+    nonlinear_test_classes = sum(
+        len(values) >= 3 for values in local_load_sets.values())
     alpha_index = {key: i for i, key in enumerate(alpha_keys)}
     local_index = {key: i for i, key in enumerate(local_keys)}
     alpha_count = len(alpha_keys)
@@ -1095,7 +1102,7 @@ def affine_load_half_atom_dual(data: dict) -> tuple:
         A_eq=scalar.reshape(1, -1), b_eq=[-1],
         bounds=[(None, None)] * coefficient_count, method="highs")
     if not result.success:
-        return False, alpha_count, local_count, False, 0
+        return False, alpha_count, local_count, nonlinear_test_classes, False, 0
 
     equality_values = equality_projection @ result.x
     capacity_values = capacity_projection @ result.x
@@ -1109,7 +1116,8 @@ def affine_load_half_atom_dual(data: dict) -> tuple:
         if value > 1e-8
     ]
     exact, _, denominator, _ = rational_farkas_audit(system, nonzero)
-    return True, alpha_count, local_count, exact, denominator
+    return (True, alpha_count, local_count, nonlinear_test_classes, exact,
+            denominator)
 
 
 def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
@@ -2729,12 +2737,14 @@ def main() -> int:
             _, bad_rows = zero_loss_restricted_hall_audit(candidate)
             if bad_rows:
                 continue
-            success, alpha_count, local_count, exact, denominator = (
+            (success, alpha_count, local_count, nonlinear_test_classes,
+             exact, denominator) = (
                 affine_load_half_atom_dual(candidate))
             branch, seed_number, colors = label
             print(f"affine_load_dual branch={branch} seed={seed_number} "
                   f"colors={colors} success={success} "
                   f"alpha_classes={alpha_count} local_classes={local_count} "
+                  f"nonlinear_test_classes={nonlinear_test_classes} "
                   f"exact_rational={exact} max_denominator={denominator}")
     if args.audit_integer_bundle_dual:
         integer_labels = []

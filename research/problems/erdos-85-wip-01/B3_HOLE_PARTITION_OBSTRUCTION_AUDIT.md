@@ -2582,6 +2582,13 @@ sign plus parity fails.  Thus the sampled next target is not an arbitrary
 function of the exact load: it is a local census price with one constant
 and one linear fiber-degree coefficient.
 
+This restriction is nonvacuous on the hard survivors.  For example, the
+branch-3 seed-21 survivor has `54` distinct `(sigma,rho)` classes that each
+occur at three or more different values of `L`; arbitrary values on those
+occurrences cannot in general be interpolated by one affine function.  The
+audit reports this count as `nonlinear_test_classes` to distinguish genuine
+linearity tests from classes supported at only one or two loads.
+
 This affine result is currently numerical evidence, not yet an exact
 certificate theorem.  The existing bounded-denominator rationalizer
 verifies one of the eleven solver vertices exactly (maximum denominator
