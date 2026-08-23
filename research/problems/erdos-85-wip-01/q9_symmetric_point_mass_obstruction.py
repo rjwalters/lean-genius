@@ -862,6 +862,8 @@ def main() -> None:
                     continue
                 incident_point = None
                 collision_certificate = None
+                diagonal_collision_point = None
+                diagonal_collision_certificate = None
                 if first < 8 and 8 <= second < 16:
                     intersection = (
                         system["blocks"][hole]
@@ -876,6 +878,22 @@ def main() -> None:
                         if collision_result.success:
                             collision_certificate = exact_certificate(
                                 system, collision_result
+                            )
+                    diagonal_intersection = (
+                        system["blocks"][first]
+                        & system["blocks"][second]
+                    )
+                    if len(diagonal_intersection) == 1:
+                        diagonal_collision_point = next(iter(
+                            diagonal_intersection
+                        ))
+                        diagonal_collision_result = dual(
+                            system, {hole, first, second},
+                            external_point=diagonal_collision_point,
+                        )
+                        if diagonal_collision_result.success:
+                            diagonal_collision_certificate = exact_certificate(
+                                system, diagonal_collision_result
                             )
                 certificates.append({
                     "hole": hole,
@@ -893,6 +911,20 @@ def main() -> None:
                                 collision_certificate["row_prices"],
                             "point_price_count": len(
                                 collision_certificate["point_prices"]
+                            ),
+                        }
+                    ),
+                    "diagonal_collision_point": diagonal_collision_point,
+                    "has_diagonal_collision_certificate":
+                        diagonal_collision_certificate is not None,
+                    "diagonal_collision_certificate": (
+                        None if diagonal_collision_certificate is None else {
+                            "margin":
+                                diagonal_collision_certificate["margin"],
+                            "row_prices":
+                                diagonal_collision_certificate["row_prices"],
+                            "point_price_count": len(
+                                diagonal_collision_certificate["point_prices"]
                             ),
                         }
                     ),
@@ -931,6 +963,19 @@ def main() -> None:
                 certificate for certificate in certificates
                 if certificate["has_incident_point_collision_certificate"]
             ],
+            "diagonal_collision_count": sum(
+                certificate["has_diagonal_collision_certificate"]
+                for certificate in certificates
+            ),
+            "diagonal_collision_certificates": [
+                certificate for certificate in certificates
+                if certificate["has_diagonal_collision_certificate"]
+            ],
+            "either_collision_count": sum(
+                certificate["has_incident_point_collision_certificate"]
+                or certificate["has_diagonal_collision_certificate"]
+                for certificate in certificates
+            ),
             "certificates": certificates,
         }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support

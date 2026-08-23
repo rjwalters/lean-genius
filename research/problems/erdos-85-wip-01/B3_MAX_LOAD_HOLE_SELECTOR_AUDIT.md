@@ -532,12 +532,12 @@ off-diagonal-class row.  Finer block-intersection types have empty common
 intersection across the corpus, so no additional concurrency pattern should
 be imposed.
 
-One incidence condition does survive: the chosen first off-diagonal-class
-row can be required to meet the exceptional block.  The hard counts inside
+One incidence condition survives the initial corpus: the chosen first
+off-diagonal-class row can be required to meet the exceptional block.  The hard counts inside
 this subfamily are `14,8,2,10,3`; the five fresh outers have `7,7,34,14,26`.
 Because each three-point exceptional block
 meets exactly three rows of a regular parallel class, this reduces the
-selector further to `2*3*8=48` support shapes: choose the exceptional row,
+selector on that corpus to `2*3*8=48` support shapes: choose the exceptional row,
 one of its three incident class-1 rows, and an arbitrary normalized diagonal
 row.  The diagonal row cannot be required to meet either of the other two;
 the fifth payload's surviving incidence types include diagonal rows disjoint
@@ -554,7 +554,7 @@ of the overlap partition reduces the 48 shapes uniformly; the remaining
 selector has to use the outer-design incidence itself rather than an
 overlap-point convention.
 
-The surviving incidence nevertheless supplies a useful price normal form.
+That incidence supplies a useful price normal form on the same corpus.
 For each candidate support, rerun the exact dual while requiring every point
 price outside its three supported rows to lie at the unique intersection of
 the exceptional row and the incident class-1 row.  This restricted dual is
@@ -583,6 +583,24 @@ only exceptional-heavy, and seed 15 has only unit.  This replaces
 existential rational row weights by three explicit arithmetic targets.  The
 remaining classification problem is to show that some one of the 48
 incidence shapes satisfies one of these three fixed point-cover inequalities.
+
+Stress seed 47 then refutes both that three-template claim and the sharper
+48-shape exceptional-incidence selector itself.  It has four
+exceptional-plus-two-regular certificates and two normalized class-pair
+certificates, but zero in which the class-1 row meets the exceptional block.
+The broader `2*8*8=128` normalized class-pair selector therefore remains the
+supported statement.  The price collision moves to the intersection of the
+diagonal and class-1 rows: support `{exceptional 24, diagonal 6, class-1 10}`
+has row prices `(1,3/2,1/2)`, and all external prices can be confined to their
+shared point 6.  This second collision locus has at least one exact
+certificate on every hard payload and on fresh seeds zero through 47; seed
+47 has exactly one.  Since a row of either regular class meets three rows of
+the other, it is another 48-shape subfamily.  The current robust target is
+the union of two collision loci: the class-1 row meets either the exceptional
+row or the diagonal row, and external prices lie at that unique intersection.
+The scanner reports `diagonal_collision_count` and `either_collision_count`
+with exact rational re-verification.  Fixed row-weight templates are useful
+diagnostics inside this union, not a theorem target.
 
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
