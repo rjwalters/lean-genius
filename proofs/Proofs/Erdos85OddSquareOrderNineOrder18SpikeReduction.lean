@@ -244,6 +244,93 @@ theorem orderNine_order18_largeOrdinaryShore_incidence_profile
   exact orderNine_order18_excessTwo_function_profile f hmoments.1 hbound
     hmoments.2.1 hmoments.2.2
 
+/-- Structural reading of the two histogram alternatives: either there is
+a unique degree-five center with `28/49` degree-six/seven levels, or a
+unique degree-eight center with `31/46` degree-six/seven levels. -/
+theorem orderNine_order18_excessTwo_function_unique_spike
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (f : X → ℕ)
+    (hprofile :
+      let n := fun i : ℕ ↦ ((Finset.univ : Finset X).filter fun x ↦ f x = i).card
+      (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+        n 5 = 1 ∧ n 6 = 28 ∧ n 7 = 49 ∧ n 8 = 0 ∧ n 9 = 0) ∨
+      (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+        n 5 = 0 ∧ n 6 = 31 ∧ n 7 = 46 ∧ n 8 = 1 ∧ n 9 = 0)) :
+    ((∃! c : X, f c = 5) ∧
+      ((Finset.univ : Finset X).filter fun x ↦ f x = 6).card = 28 ∧
+      ((Finset.univ : Finset X).filter fun x ↦ f x = 7).card = 49) ∨
+    ((∃! c : X, f c = 8) ∧
+      ((Finset.univ : Finset X).filter fun x ↦ f x = 6).card = 31 ∧
+      ((Finset.univ : Finset X).filter fun x ↦ f x = 7).card = 46) := by
+  classical
+  let n := fun i : ℕ ↦ ((Finset.univ : Finset X).filter fun x ↦ f x = i).card
+  change
+    (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+      n 5 = 1 ∧ n 6 = 28 ∧ n 7 = 49 ∧ n 8 = 0 ∧ n 9 = 0) ∨
+    (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+      n 5 = 0 ∧ n 6 = 31 ∧ n 7 = 46 ∧ n 8 = 1 ∧ n 9 = 0) at hprofile
+  rcases hprofile with hL | hH
+  · left
+    obtain ⟨c, hc⟩ := Finset.card_eq_one.mp hL.2.2.2.2.2.1
+    refine ⟨⟨c, ?_, ?_⟩, hL.2.2.2.2.2.2.1, hL.2.2.2.2.2.2.2.1⟩
+    · have hcMem : c ∈ (Finset.univ : Finset X).filter (fun x ↦ f x = 5) := by
+        rw [hc]
+        simp
+      exact (Finset.mem_filter.mp hcMem).2
+    · intro y hy
+      have hyMem : y ∈ (Finset.univ : Finset X).filter (fun x ↦ f x = 5) :=
+        Finset.mem_filter.mpr ⟨by simp, hy⟩
+      rw [hc] at hyMem
+      simpa using hyMem
+  · right
+    obtain ⟨c, hc⟩ := Finset.card_eq_one.mp hH.2.2.2.2.2.2.2.2.1
+    refine ⟨⟨c, ?_, ?_⟩, hH.2.2.2.2.2.2.1, hH.2.2.2.2.2.2.2.1⟩
+    · have hcMem : c ∈ (Finset.univ : Finset X).filter (fun x ↦ f x = 8) := by
+        rw [hc]
+        simp
+      exact (Finset.mem_filter.mp hcMem).2
+    · intro y hy
+      have hyMem : y ∈ (Finset.univ : Finset X).filter (fun x ↦ f x = 8) :=
+        Finset.mem_filter.mpr ⟨by simp, hy⟩
+      rw [hc] at hyMem
+      simpa using hyMem
+
+/-- Graph-facing unique-center form of (29), on the 78 ordinary centers. -/
+theorem orderNine_order18_largeOrdinaryShore_unique_spike
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hRcard : R.card = 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 8)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 8)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 8)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hboundary : (∑ x ∈ R,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ R)).card) = 2) :
+    let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+    let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+    ((∃! c : ↥(↑O : Set V), f c = 5) ∧
+      ((Finset.univ : Finset ↥(↑O : Set V)).filter fun x ↦ f x = 6).card = 28 ∧
+      ((Finset.univ : Finset ↥(↑O : Set V)).filter fun x ↦ f x = 7).card = 49) ∨
+    ((∃! c : ↥(↑O : Set V), f c = 8) ∧
+      ((Finset.univ : Finset ↥(↑O : Set V)).filter fun x ↦ f x = 6).card = 31 ∧
+      ((Finset.univ : Finset ↥(↑O : Set V)).filter fun x ↦ f x = 7).card = 46) := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+  have hp := orderNine_order18_largeOrdinaryShore_incidence_profile
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hRcard
+      hhigh₁ hhigh₂ hhigh₃ hdegOrd hdegHigh hboundary
+  exact orderNine_order18_excessTwo_function_unique_spike f hp
+
 /-- Evaluation of the high-spike form of audit equation (31) at a high
 root.  Defect-high isolation makes the left side zero, while the high root
 lies in neither ordinary shore. -/
@@ -397,6 +484,8 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_moments
 #print axioms Erdos85.orderNine_order18_excessTwo_function_profile
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_profile
+#print axioms Erdos85.orderNine_order18_excessTwo_function_unique_spike
+#print axioms Erdos85.orderNine_order18_largeOrdinaryShore_unique_spike
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
