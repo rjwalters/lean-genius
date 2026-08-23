@@ -702,6 +702,15 @@ neighborhoods.  It offers a simpler concurrent-18 endpoint when the integral
 packing families can be classified, while the fractional coupled bound
 remains the more general fallback.
 
+`q9_branch3_concurrent_packing_audit.py` enumerates all 18 shapes, their full
+local packing families, the three disjoint-pair counts, and the number of
+pairwise-disjoint packing triples, with a canonical payload hash.  The five
+hard payloads have respectively `7,4,1,6,0` obstructed shapes; among these,
+`3,2,1,0,0` are genuinely three-way (every pair admits a disjoint choice).
+Thus the integral selector mirrors the fractional support-two-or-concurrent
+split on the durable corpus and exposes strictly more elementary finite data
+for the concurrent horn.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
