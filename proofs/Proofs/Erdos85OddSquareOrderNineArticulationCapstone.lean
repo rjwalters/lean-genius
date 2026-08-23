@@ -32,6 +32,55 @@ def orderNineArticulationSmallShoreBetaType
   (S.card = 27 ∧ b₁ = 3 ∧ b₂ = 3 ∧ b₃ = 3) ∨
   (S.card = 34 ∧ b₁ = 4 ∧ b₂ = 4 ∧ b₃ = 4)
 
+/-- Graph-facing sharpness split for a classified smaller shore. -/
+theorem orderNineArticulationSmallShoreBetaType_sharp_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ : V) (S : Finset V)
+    (h : orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ S) :
+    (S.card = 18 ∧
+      (G.neighborFinset h₁ ∩ S).card = 2 ∧
+      (G.neighborFinset h₂ ∩ S).card = 2 ∧
+      (G.neighborFinset h₃ ∩ S).card = 2) ∨
+    (S.card = 18 ∧ orderNineNearRegularCutLower (78 - S.card)
+      (10 - (G.neighborFinset h₁ ∩ S).card)
+      (10 - (G.neighborFinset h₂ ∩ S).card)
+      (10 - (G.neighborFinset h₃ ∩ S).card) = 2) ∨
+    (S.card = 27 ∧ orderNineNearRegularCutLower (78 - S.card)
+      (10 - (G.neighborFinset h₁ ∩ S).card)
+      (10 - (G.neighborFinset h₂ ∩ S).card)
+      (10 - (G.neighborFinset h₃ ∩ S).card) = 3) ∨
+    (S.card = 34 ∧ orderNineNearRegularCutLower S.card
+      (G.neighborFinset h₁ ∩ S).card
+      (G.neighborFinset h₂ ∩ S).card
+      (G.neighborFinset h₃ ∩ S).card = 2) := by
+  unfold orderNineArticulationSmallShoreBetaType at h
+  rcases h with ⟨hs, hb⟩ | ⟨hs, hb₁, hb₂, hb₃⟩ |
+      ⟨hs, hb₁, hb₂, hb₃⟩
+  · rcases hb with ⟨hb₁, hb₂, hb₃⟩ | ⟨hb₁, hb₂, hb₃⟩ |
+        ⟨hb₁, hb₂, hb₃⟩ | ⟨hb₁, hb₂, hb₃⟩ |
+        ⟨hb₁, hb₂, hb₃⟩ | ⟨hb₁, hb₂, hb₃⟩ |
+        ⟨hb₁, hb₂, hb₃⟩
+    · exact Or.inl ⟨hs, hb₁, hb₂, hb₃⟩
+    all_goals
+      right
+      left
+      refine ⟨hs, ?_⟩
+      simp only [hs, hb₁, hb₂, hb₃]
+      norm_num [orderNineNearRegularCutLower, orderNineBalancedSquareSum]
+  · right
+    right
+    left
+    refine ⟨hs, ?_⟩
+    simp only [hs, hb₁, hb₂, hb₃]
+    norm_num [orderNineNearRegularCutLower, orderNineBalancedSquareSum]
+  · right
+    right
+    right
+    refine ⟨hs, ?_⟩
+    simp only [hs, hb₁, hb₂, hb₃]
+    norm_num [orderNineNearRegularCutLower, orderNineBalancedSquareSum]
+
 /-- Graph/profile-level articulation capstone.  The standard three-high
 setup is explicit here so the final actual-profile wrapper can reuse the
 same setup already built for ordinary-defect connectivity. -/
@@ -324,6 +373,7 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
   simpa [hSorder, hTorder] using hpairs
 
 #print axioms squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not_connected
+#print axioms orderNineArticulationSmallShoreBetaType_sharp_dichotomy
 
 end
 
