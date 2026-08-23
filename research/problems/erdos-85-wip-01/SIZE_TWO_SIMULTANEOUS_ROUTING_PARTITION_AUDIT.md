@@ -5308,3 +5308,53 @@ remaining kernel theorem (296) is therefore a statement about these closed
 H/V/S words: after summing over owner colors, the number of `H--H` port
 pairs is even whenever all color-labeled `V` atoms and switch handoffs obey
 their simultaneous reversal ledger.
+
+## 100. Mixed dart cycles reduce to labeled gap holonomy
+
+The closed H/V/S words split into two branches.  If every port pair on a
+dart cycle is `H--H`, then every corresponding shadow edge is owned by `e`
+and every root pair is `(H,H)`.  Contracting the port pairs gives a whole
+cycle of `F_e[c]` lying in `A_c`: this is exactly the all-horizontal,
+monochromatically owned obstruction already isolated in Sections 16--19.
+
+Otherwise the dart cycle is mixed.  Its `H--H` port pairs form maximal
+nonempty runs separated by gaps containing `V` or `S` data.  If their
+lengths are
+
+```text
+ell_1,...,ell_t,
+```
+
+then, by definition of the marked grading,
+
+```text
+omega_M(Z) = ell_1+...+ell_t                         (mod 2),
+(-1)^(omega_M(Z)) = product_j (-1)^(ell_j).           (299)
+```
+
+Each run has two `(H,V_d)` boundary roots.  The alternating profile of
+Sections 61 and 76 transports a boundary sign across that run by the factor
+`(-1)^(ell_j)`.  The intervening non-H gap is an unconditional word in
+`V_d` tokens and `S` switches from (298); straight equal-label passages may
+be contracted by (285), leaving only color turns and switch handoffs.
+
+Thus the mixed branch has a precise holonomy terminal.  Construct from each
+labeled non-H gap a sign transfer `theta_j` such that
+
+```text
+product_j theta_j = 1                                 (300)
+```
+
+by route/run-reversal pairing of its privately witnessed tokens, and show
+that closing the boundary phase gives
+
+```text
+product_j ((-1)^(ell_j) theta_j) = 1.                 (301)
+```
+
+Equations (300)--(301) imply `omega_M(Z)=0` by (299).  They are a target,
+not yet a construction of `theta_j`: their value is that they separate the
+already proved run contribution from the sole missing labeled-gap
+contribution.  The all-H branch remains the earlier owner-cycle program;
+the mixed branch is now exactly the private-feature/reversal problem shared
+with B3, with no closure ambiguity left.
