@@ -460,6 +460,83 @@ def IsSymmetricLocalGramPackingSelection (H W : V → V → Prop)
   (∀ u, IsLocalGramPacking H W d u (X u)) ∧
   ∀ u v, v ∈ X u ↔ u ∈ X v
 
+/-- Every symmetric simultaneous integral selection supplies a canonical
+fractional interval extension: use its characteristic function as the mass.
+The only extra input is that two distinct blocks sharing a point conflict,
+which turns local `W`-independence into the point-capacity inequalities. -/
+theorem exists_canonicalFractionalIntervalExtension_of_symmetricSelection
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H W : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (X : V → Finset V)
+    (hX : IsSymmetricLocalGramPackingSelection H W d X)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (u : V) :
+    ∃ mass, IsCanonicalFractionalIntervalExtension H W d B u mass := by
+  classical
+  let mass : V → ℚ := fun w => if w ∈ X u then 1 else 0
+  refine ⟨mass, ?_⟩
+  constructor
+  · intro w
+    by_cases hw : w ∈ X u <;> simp [mass, hw]
+  constructor
+  · simpa [mass] using congrArg (fun n : ℕ => (n : ℚ)) (hX.1 u).1
+  constructor
+  · intro w hw
+    have hwu : w ∈ X u := by
+      by_contra hn
+      simp [mass, hn] at hw
+    exact (hX.1 u).2.1 w hwu
+  constructor
+  · intro p
+    let S := (Finset.univ.filter fun z => p ∈ B z) ∩ X u
+    have hcard : S.card ≤ 1 := by
+      rw [Finset.card_le_one]
+      intro x hx y hy
+      have hx' := Finset.mem_inter.mp hx
+      have hy' := Finset.mem_inter.mp hy
+      have hxp : p ∈ B x := (Finset.mem_filter.mp hx'.1).2
+      have hyp : p ∈ B y := (Finset.mem_filter.mp hy'.1).2
+      have hxX : x ∈ X u := hx'.2
+      have hyX : y ∈ X u := hy'.2
+      by_contra hxy
+      have hnotDisjoint : ¬ Disjoint (B x) (B y) := by
+        rw [Finset.not_disjoint_iff]
+        exact ⟨p, hxp, hyp⟩
+      exact (hX.1 u).2.2 x hxX y hyX hxy
+        (hshared x y hxy hnotDisjoint)
+    have hsum :
+        (∑ w ∈ Finset.univ.filter fun z => p ∈ B z, mass w) =
+          (S.card : ℚ) := by
+      simp [mass, S]
+    rw [hsum]
+    exact_mod_cast hcard
+  constructor
+  · intro w hforced
+    have huw : u ∈ X w := hforced (X w) (hX.1 w)
+    have hwu : w ∈ X u := (hX.2 u w).mpr huw
+    simp [mass, hwu]
+  · intro w himpossible
+    have hwu : w ∉ X u := by
+      intro hwu
+      have huw : u ∈ X w := (hX.2 u w).mp hwu
+      exact himpossible (X w) (hX.1 w) huw
+    simp [mass, hwu]
+
+/-- A row with no canonical fractional interval extension rules out every
+symmetric simultaneous integral selection. -/
+theorem not_symmetricLocalGramPackingSelection_of_no_canonicalFractionalExtension
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H W : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hbad : ∃ u, ¬ ∃ mass,
+      IsCanonicalFractionalIntervalExtension H W d B u mass)
+    (X : V → Finset V) :
+    ¬ IsSymmetricLocalGramPackingSelection H W d X := by
+  intro hX
+  obtain ⟨u, hu⟩ := hbad
+  exact hu (exists_canonicalFractionalIntervalExtension_of_symmetricSelection
+    H W d B X hX hshared u)
+
 omit [Fintype V] in
 /-- Forced membership is exactly the nonexistence of a demanded packing
 which omits the candidate. -/
@@ -971,6 +1048,27 @@ theorem relationNeighborFinset_isSymmetricLocalGramPackingSelection
       exact Finset.mem_filter.mpr ⟨Finset.mem_univ v,
         hsymm.symm v u (Finset.mem_filter.mp hvu).2⟩
 
+/-- **Canonical fractional-interval consumer.**  If one row admits no full
+canonical fractional extension, no symmetric residual relation can realize
+the prescribed degrees, eligible support, Gram law, and point-block conflict
+model. -/
+theorem false_of_no_canonicalFractionalIntervalExtension
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hbad : ∃ u, ¬ ∃ mass,
+      IsCanonicalFractionalIntervalExtension H W d B u mass) :
+    False := by
+  apply not_symmetricLocalGramPackingSelection_of_no_canonicalFractionalExtension
+    H W d B hshared hbad (relationNeighborFinset A)
+  exact relationNeighborFinset_isSymmetricLocalGramPackingSelection
+    A H W d hsymm hdegree hsupport hgram
+
 /-- **Global compatibility consumer.**  If the eligible local packing
 families admit no symmetric simultaneous selection, no symmetric residual
 relation can realize the prescribed degrees, support, and Gram law. -/
@@ -1208,6 +1306,9 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms eligible_of_forcedLocalGramNeighbor_of_noObstruction
 #print axioms not_conflict_of_forcedLocalGramNeighbors
 #print axioms relationNeighborFinset_isSymmetricLocalGramPackingSelection
+#print axioms exists_canonicalFractionalIntervalExtension_of_symmetricSelection
+#print axioms not_symmetricLocalGramPackingSelection_of_no_canonicalFractionalExtension
+#print axioms false_of_no_canonicalFractionalIntervalExtension
 #print axioms false_of_no_symmetricLocalGramPackingSelection
 #print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
