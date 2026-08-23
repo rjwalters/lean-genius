@@ -12968,3 +12968,57 @@ carry `10-k_a` root-only and `10-k_a` port-only cut labels.  The remaining
 terminal is to show that these ten-by-ten cut systems cannot realize the
 offset five-atom routing permutation while respecting the simultaneous
 owner factors and their outside endpoints.
+
+## 254. The five strict-export active words are linearly independent
+
+The active `q`-ledger retains the complete index set of the five exports,
+not only its parity.  In the indexing (726), root `x_i` is incident to the
+two H ports `p_(i-1),p_i`, while the strict export `z_i` meets the selected
+port `p_(i+2)` by (778).  Therefore (730) gives
+
+```text
+supp(q_(z_i)|_Z)={p_(i-1),p_i,p_(i+2)}.              (789)
+```
+
+Let `v_i in F_2^Z` be this three-port word.  Suppose
+`sum_i s_i v_i=0`.  Reading the coordinate at `p_j` gives, for every
+`j in Z/5`,
+
+```text
+s_j+s_(j+1)+s_(j-2)=0.                               (790)
+```
+
+The equations at `j=0,1` give
+`s_3=s_0+s_1` and `s_4=s_1+s_2`.  The equation at `j=2` then gives
+`s_2=s_1`, hence `s_4=0`; the equations at `j=3,4` give successively
+`s_0=0` and `s_1=0`.  Thus every coefficient vanishes:
+
+```text
+v_0,v_1,v_2,v_3,v_4 are linearly independent over F_2. (791)
+```
+
+For an exterior receiving color `a`, let
+
+```text
+I_a:={i:z_i in a},       Q_a:=sum_(i in I_a) v_i.
+```
+
+Then (786) proves
+
+```text
+Q_a=0 iff I_a=empty,                                   (792)
+```
+
+and indeed `Q_a` uniquely recovers the entire subset `I_a`.  Consequently
+no nonempty collection of the five strict exports can cancel inside one
+color's active H-port ledger, even when `|I_a|` is even.  Across colors the
+same conclusion holds in the direct sum of the color-tagged ledgers.
+
+The scalar three-sector law of Section 240 only detects colors with odd
+`|I_a|`; (792) also exposes every nonempty even population.  Hence a
+five-port completion cannot hide any exported color by internal active-word
+cancellation.  Every used exterior color leaves a nonzero, index-resolved
+boundary demand which must be paid by that color's complementary transition
+terms.  The remaining owner theorem may therefore work color by color on
+the explicitly recoverable subsets `I_a`, rather than on an anonymous
+five-unit total.
