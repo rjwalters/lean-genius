@@ -32,6 +32,29 @@ def orderNineArticulationSmallShoreBetaType
   (S.card = 27 ∧ b₁ = 3 ∧ b₂ = 3 ∧ b₃ = 3) ∨
   (S.card = 34 ∧ b₁ = 4 ∧ b₂ = 4 ∧ b₃ = 4)
 
+def orderNineArticulationSmallShoreFullType
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E : Finset V) (h₁ h₂ h₃ : V) (S : Finset V) : Prop :=
+  orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ S ∧
+  (S.card = 18 → (E ∩ S).card = 2) ∧
+  (S.card = 27 → (E ∩ S).card = 3) ∧
+  (S.card = 34 → (E ∩ S).card = 2)
+
+theorem orderNineArticulationSmallShoreFullType_of_parameterType
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E : Finset V) (h₁ h₂ h₃ : V) (S : Finset V) (k : ℕ)
+    (horder : S.card = (E ∩ S).card + 8 * k)
+    (htype : orderNineArticulationSideParameterType (E ∩ S).card k)
+    (hbeta : orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ S) :
+    orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ S := by
+  refine ⟨hbeta, ?_, ?_, ?_⟩ <;> intro hcard
+  all_goals
+    unfold orderNineArticulationSideParameterType at htype
+    rcases htype with htype | htype | htype | htype | htype | htype | htype |
+      htype | htype | htype | htype <;> rcases htype with ⟨he, hk⟩ <;> omega
+
 /-- Graph-facing sharpness split for a classified smaller shore. -/
 theorem orderNineArticulationSmallShoreBetaType_sharp_dichotomy
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -128,6 +151,8 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
        (S.card = 43 ∧ T.card = 34)) ∧
       (orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ S ∨
        orderNineArticulationSmallShoreBetaType G h₁ h₂ h₃ T) ∧
+      (orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ S ∨
+       orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ T) ∧
       (∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S) ∧
       (∀ x ∈ T, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T) ∧
       (∑ x ∈ S, ((secondOrderDefectGraph G).neighborFinset x ∩
@@ -379,12 +404,23 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not
       · exact Or.inl ⟨by omega, hb⟩
       · exact Or.inr (Or.inl ⟨by omega, hb⟩)
       · exact Or.inr (Or.inr ⟨by omega, hb⟩)
-  refine ⟨S, T, hUnion, hDisjoint, ?_, hsmallBeta, hSclosed, hTclosed,
-    hSboundary, hTboundary⟩
+  have hsmallFull :
+      orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ S ∨
+      orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ T :=
+    hsmallBeta.elim
+      (fun hS => Or.inl
+        (orderNineArticulationSmallShoreFullType_of_parameterType
+          G E h₁ h₂ h₃ S kS hSorder hStype hS))
+      (fun hT => Or.inr
+        (orderNineArticulationSmallShoreFullType_of_parameterType
+          G E h₁ h₂ h₃ T kT hTorder hTtype hT))
+  refine ⟨S, T, hUnion, hDisjoint, ?_, hsmallBeta, hsmallFull,
+    hSclosed, hTclosed, hSboundary, hTboundary⟩
   simpa [hSorder, hTorder] using hpairs
 
 #print axioms squareOrderNine_threeHigh_secondProfile_deleted_owner_order_pairs_of_not_connected
 #print axioms orderNineArticulationSmallShoreBetaType_sharp_dichotomy
+#print axioms orderNineArticulationSmallShoreFullType_of_parameterType
 
 end
 
