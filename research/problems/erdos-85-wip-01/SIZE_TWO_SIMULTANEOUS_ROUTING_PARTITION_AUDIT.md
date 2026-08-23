@@ -5489,3 +5489,64 @@ vary—the precise compatibility left open after Section 25.  This rules out
 another overly coarse conservation map while pointing to the correct
 refinement: atomize the cross-color family of primitives before taking its
 cycle derivative or total sum.
+
+## 104. Shared reversal-rigidity lemma for tagged bundles
+
+The common algebraic core of the SRP and B3 lanes is independent of their
+combinatorial notation.  Let `I` be a finite transition set with a
+fixed-point-free involution `T`, let `Delta(t)` lie in a vector space over a
+field of characteristic not two, and suppose
+
+```text
+Delta(Tt) = -Delta(t).                                (306)
+```
+
+Choose one representative from every unordered pair `{t,Tt}`.  If the
+representative vectors `Delta(t)` are linearly independent, then every
+balanced occurrence weighting
+
+```text
+sum_(t in I) x_t Delta(t)=0
+```
+
+is route-reversible:
+
+```text
+x_t = x_(Tt)     for every t.                         (307)
+```
+
+Indeed, grouping the balanced sum by reversal pairs gives
+
+```text
+sum_(representatives t) (x_t-x_(Tt)) Delta(t)=0,
+```
+
+and independence kills each coefficient.  A private nonzero feature
+coordinate for every representative is a sufficient triangular certificate
+for that independence.
+
+To apply this lemma to a non-H dart gap, the transition atom must contain
+more than its endpoint symbols.  The shared **tagged-bundle schema** is:
+
+```text
+endpoint signature,
+multiset of consumed secondary-fiber states with role tags,
+switch/deletion role when present.                    (308)
+```
+
+Its boundary `Delta=B^+-B^-` must satisfy three lane-specific facts:
+
+```text
+route oddness:  reversal swaps B^+ and B^-;
+conservation:   the realized global occurrence ledger has total Delta zero;
+privacy:        every unoriented Delta column owns a feature row
+                (or the columns are otherwise independent).              (309)
+```
+
+Then (307) gives the reversible weights needed for the gap transfers
+`theta_j`.  In B3, route oddness is proved and privacy is supported by the
+private secondary-fiber audits; conservation comes from the Farkas ledger.
+In the present SRP lane, route oddness is supplied by Sections 88--92, while
+the exact conserved choice of the secondary-fiber multiset and its privacy
+remain open.  Equations (306)--(309) are therefore a single reusable theorem
+interface, not an assertion that the SRP bundle has already been built.
