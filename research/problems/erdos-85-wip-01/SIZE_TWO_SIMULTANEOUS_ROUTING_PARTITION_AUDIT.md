@@ -10639,3 +10639,40 @@ endpoint attached through a matching atom), not the visible mate edge of an
 H, V, or S decoration.  Absent such a construction, the additive Baer
 completion remains globally cancelling auxiliary data and branch (638b) is
 the honest SRP route.
+
+## 208. Visible H/S pairs have zero additive Baer price
+
+The triangles in Section 207 identify the visible mate pairs with the
+canonical partial Baer involutions.  For an H--H port pair labelled by `p`,
+the two roots `x,x'` are adjacent to `p` and to each other.  C4-freeness
+makes their common-neighbor triangle unique, so
+
+```text
+iota_p(x)=x',       iota_p(x')=x.                     (641)
+```
+
+Likewise, for an S--S root switch at `x` joining ports `p,p'`,
+
+```text
+iota_x(p)=p',       iota_x(p')=p.                     (642)
+```
+
+Both are canonical `00` edges of the paired-star graph.  In the additive
+cut-potential branch, (73rnz_cjibkr) therefore gives
+
+```text
+lambda(x)+lambda(x')=0,
+lambda(p)+lambda(p')=0.                               (643)
+```
+
+Thus the visible H and S mate occurrences have zero additive Baer price
+edgewise.  In particular, a marked H--H port pair contributes one to
+`omega_M` but zero to (643).  The endpoint potential cannot distinguish that
+marked occurrence from an unmarked canonical triangle pair.
+
+This proves that (628) cannot mean direct equality between the marked H/S
+grading and the visible `lambda`-pair prices.  Any valid attachment must add
+the nonlinear/private decorations retained by the activation ledger
+(silent footprints, active wedge states, or an equivalent broken-T
+secondary atom).  The purely additive Baer potential is exhausted as a
+direct SRP invariant: it removes pairing gauges but carries no marked-H unit.
