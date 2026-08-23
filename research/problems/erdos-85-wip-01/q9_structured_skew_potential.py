@@ -14,6 +14,7 @@ zero says that the selected invariant class is insufficient.
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from collections import Counter
 from itertools import combinations
@@ -1443,6 +1444,9 @@ def main() -> int:
                                                 "fiber-type-total-incidence-threshold-farkas"),
                         default="basic")
     args = parser.parse_args()
+    if os.environ.get('PYTHONHASHSEED') != '0':
+        print("warning: set PYTHONHASHSEED=0 before launch for reproducible "
+              "outer-model seed labels", file=sys.stderr)
     data = []
     all_data = []
     data_labels = []

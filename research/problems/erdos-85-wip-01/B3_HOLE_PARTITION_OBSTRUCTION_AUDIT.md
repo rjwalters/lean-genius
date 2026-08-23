@@ -1809,8 +1809,10 @@ relay.  This suggested a substantially smaller classification target than
 arbitrary joint state potentials, but the exact three-item taxonomy is
 run-local.
 
-A fresh twenty-seed run is the required correction.  The outer Z3 model
-enumeration is not canonical across processes; that run had only two
+A fresh twenty-seed run with `PYTHONHASHSEED=0` is the required correction.
+The outer Z3 model enumeration is not canonical across differently hashed
+processes; the script now warns unless that deterministic setting is present.
+The widened run had only two
 restricted-Hall survivors, the old `(3,7,(1,2))` pattern and a new branch-3
 pattern `(3,12,(0,1))`.  The latter has a much smaller exact certificate:
 13 nonzeros, two unit demand rows, two signed external bundle states, and nine
