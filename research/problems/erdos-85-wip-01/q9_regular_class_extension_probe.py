@@ -33,9 +33,9 @@ def chosen(mapping: dict, model) -> list[tuple[int, ...]]:
     )
 
 
-def regular_row_pack_exists(anchor: tuple[int, ...], triples, pairs,
-                            k_edges: set[tuple[int, int]]) -> bool:
-    """Check exactly the independent five-neighbor constraints for one row."""
+def regular_row_pack_profile(anchor: tuple[int, ...], triples, pairs,
+                             k_edges: set[tuple[int, int]]) -> dict:
+    """Measure the independent five-neighbor deficit of one regular row."""
     def core_compatible(block) -> bool:
         return all(
             tuple(sorted((a, b))) not in k_edges
@@ -51,30 +51,47 @@ def regular_row_pack_exists(anchor: tuple[int, ...], triples, pairs,
         for block in pairs if core_compatible(block)
     ]
 
-    def search(start: int, used_points: set[int], pair_supports: set[int],
-               triple_count: int, count: int) -> bool:
-        if count == 5:
-            return len(pair_supports) == 5 - triple_count
-        if len(candidates) - start < 5 - count:
-            return False
-        for index in range(start, len(candidates)):
-            block, support = candidates[index]
-            if used_points.intersection(block):
-                continue
-            if support is not None and support in pair_supports:
-                continue
-            next_triples = triple_count + int(support is None)
-            next_pairs = count + 1 - next_triples
-            if next_pairs > 3:
-                continue
-            if search(
-                    index + 1, used_points.union(block),
-                    pair_supports | ({support} if support is not None else set()),
-                    next_triples, count + 1):
-                return True
-        return False
+    def maximum(enforce_pair_supports: bool) -> int:
+        best = 0
 
-    return search(0, set(), set(), 0, 0)
+        def search(start: int, used_points: set[int],
+                   pair_supports: set[int], count: int) -> None:
+            nonlocal best
+            best = max(best, count)
+            if count == 5 or len(candidates) - start <= best - count:
+                return
+            for index in range(start, len(candidates)):
+                block, support = candidates[index]
+                if used_points.intersection(block):
+                    continue
+                if (enforce_pair_supports and support is not None
+                        and support in pair_supports):
+                    continue
+                search(
+                    index + 1, used_points.union(block),
+                    pair_supports | (
+                        {support} if support is not None else set()
+                    ), count + 1,
+                )
+
+        search(0, set(), set(), 0)
+        return best
+
+    typed_maximum = maximum(True)
+    return {
+        "candidate_count": len(candidates),
+        "disjoint_maximum": maximum(False),
+        "typed_maximum": typed_maximum,
+        "exact_pack": typed_maximum >= 5,
+    }
+
+
+def regular_row_pack_exists(anchor: tuple[int, ...], triples, pairs,
+                            k_edges: set[tuple[int, int]]) -> bool:
+    """Check exactly the independent five-neighbor constraints for one row."""
+    return regular_row_pack_profile(anchor, triples, pairs, k_edges)[
+        "exact_pack"
+    ]
 
 
 def print_target_local_feasibility(source_data: dict, model,
@@ -84,7 +101,7 @@ def print_target_local_feasibility(source_data: dict, model,
     k_edges = set(chosen(source_data["k"], model))
     anchors = chosen(source_data["classes"][target_class], model)
     statuses = [
-        [list(anchor), regular_row_pack_exists(
+        [list(anchor), regular_row_pack_profile(
             anchor, triples, pairs, k_edges)]
         for anchor in anchors
     ]
