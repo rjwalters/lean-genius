@@ -10989,3 +10989,64 @@ unproved theorem is now only the **cross-witness** equality (661), including
 the same-side `b=00/11` occurrences excluded from `xi`.  This separation
 prevents the local rank result from being mistaken for the global marked
 parity cancellation.
+
+## 215. The marked flip cochain on `W_P` is canonical
+
+The provisional `tau_H` in Section 214 can be constructed on the flip
+subfamily without any further routing theorem.  An edge `s` of `W_P` is not
+an anonymous pair of witness labels: by construction it retains the two
+particular flip edges `e,e'` of `delta_P(B)` paired consecutively on an
+Eulerian circuit of `P`.  Write `y(e),y(e')` for their private witness labels
+and define
+
+```text
+h(e)=1  iff e is the canonical P-edge supplied by a marked
+             H--H port occurrence from (650),
+tau_H^flip(s):=h(e)+h(e').                            (663)
+```
+
+Every flip edge occurs in exactly one routed segment.  Therefore (663) gives
+the identity
+
+```text
+<tau_H^flip,z_P>
+ = number of marked H occurrences with mixed b-word.  (664)
+```
+
+This is independent of how the flip edges were paired: changing the pairing
+changes the individual segment prices but not their total.  No S or V edge
+is charged, because the full occurrence decoration is retained.
+
+Let `omega_same` be the number modulo two of marked H occurrences whose
+b-word is `00` or `11`.  Sections 208 and 211 identify every H occurrence
+with its canonical P-edge and partition them exhaustively by their b-word,
+so
+
+```text
+omega_M=omega_same+<tau_H^flip,z_P>.                  (665)
+```
+
+On the same routed edge `s={e,e'}`, the residual-cut price from (660) is
+
+```text
+tau_R(s)=1_R(y(e))+1_R(y(e')).                        (666)
+```
+
+Combining (660), (665), and (666) turns the desired comparison into one
+literal discrepancy ledger:
+
+```text
+omega_M+Delta
+ =omega_same
+  +sum_(s={e,e'} in z_P)
+     (h(e)+h(e')+1_R(y(e))+1_R(y(e'))).               (667)
+```
+
+Thus the flip transport map itself is no longer missing.  What remains is
+to prove the right side of (667) vanishes after inserting the audited owner
+cells.  Equivalently, the endpoint classification must pair each residual
+witness incidence with a marked-H flip incidence, with `omega_same` as the
+only external correction.  A failure is now localized either to one routed
+segment cell in the parenthesis or to one same-side private occurrence; it
+cannot be attributed to a choice of Eulerian pairing or to an undefined
+cross-witness cochain.
