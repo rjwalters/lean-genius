@@ -4151,6 +4151,18 @@ double-special point `p=19` has target 29 but rational optimum above 27
 It would suffice to prove that some special-positive hole point has
 `C_p<27+special(p)`; the stronger existence of one with `C_p<=27` remains a
 valid corpus pattern, not an established uniform bound.
+The pointwise strengthening is explicitly false: several stored branch-4
+outers have special-positive hole points with `C_p>=D_p`, and the sum of gaps
+over all special-positive points can also be positive.  A finer selector does
+survive the six tracked branch-4 models.  The total special incidence across
+the four hole triples is at least six, so some hole row contains at least two
+special-positive points; for every tracked hole row with two or three such
+points, at least one has a strict fiber.  In the hardest stored seed 4, the
+two multi-special rows have pairs `{18,15}` and `{10,20}`, with winners 18
+and 10 respectively, while the two singleton-special rows are failures.
+This suggests a two/three-point alternative inside one fixed exact hole
+partition, rather than a global average or a theorem about every high-target
+point.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
