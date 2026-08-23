@@ -22232,3 +22232,53 @@ sector can absorb all five ordinary root actions locally.  Its chords are
 rigidly typed by (1473), and at least one action at every cycle vertex must
 leave the cycle.  This is a genuine expansion constraint, not merely the
 existence of a color-changing circuit.
+
+## 415. The defect sector gives an exact odd-component budget
+
+The component parity of Section 413 can be quantified root by root.  Put
+
+```text
+b_i:=|partial_(G_i)O_5|,       e_i(S):=|E(G_i[S])|,
+S:=O setminus O_5,             s:=|S|.
+```
+
+Exactly `s-|H_i|` vertices of `S` are matched by `G_i`.  Its internal
+edges use two such vertices and its boundary edges use one, so (1455)
+gives
+
+```text
+s-(2delta_i-1)=2e_i(S)+b_i,
+b_i=s-2delta_i+1-2e_i(S).                         (1476)
+```
+
+Let `r` be the number of odd connected components of `G_sh[O_5]`.
+By (1471), each odd component contributes a positive odd number to every
+`b_i`, whereas each even component contributes an even number.  Therefore
+
+```text
+b_i>=r,       b_i=r                              (mod 2),
+r<=min_i b_i<=s-2delta_max+1.                     (1477)
+```
+
+Summing (1476) over the five disjoint root matching classes gives the
+aggregate boundary identity
+
+```text
+sum_i b_i
+ =5s-(2Delta-5)-2|E(G_sh[S])|,
+5r<=5s-(2Delta-5)-2|E(G_sh[S])|.                  (1478)
+```
+
+There is a useful equality endpoint.  Since every `H_i` is contained in
+`S`, one always has `s>=2delta_max-1`.  If equality holds, then for a root
+with `delta_i=delta_max` one has `S=H_i`, hence `b_i=0` in (1476), and
+
+```text
+s=2delta_max-1 -> r=0:
+every connected component of G_sh[O_5] is even.   (1479)
+```
+
+Thus the bounded hole sector controls not only how many full-root vertices
+are lost, but also the parity census of the components that remain.  Odd
+components consume one boundary edge of every root type, and internal
+matching edges inside `S` reduce their available budget two at a time.
