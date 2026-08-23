@@ -534,7 +534,7 @@ be imposed.
 
 One incidence condition does survive: the chosen first off-diagonal-class
 row can be required to meet the exceptional block.  The hard counts inside
-this subfamily are `16,8,2,7,3`; the five fresh outers have `7,7,34,14,26`.
+this subfamily are `14,8,2,10,3`; the five fresh outers have `7,7,34,14,26`.
 Because each three-point exceptional block
 meets exactly three rows of a regular parallel class, this reduces the
 selector further to `2*3*8=48` support shapes: choose the exceptional row,
@@ -543,6 +543,16 @@ row.  The diagonal row cannot be required to meet either of the other two;
 the fifth payload's surviving incidence types include diagonal rows disjoint
 from both.  The scanner reports this sharp subfamily as
 `incident_offdiagonal_certificates`.
+
+The class-1/exceptional incidence point cannot be selected by membership in
+the overlap of the two exceptional covers.  Among the incident-offdiagonal
+certificates, the five hard payloads have respectively `11/3`, `0/8`, `2/0`,
+`9/1`, and `1/2` certificates whose incidence point is outside/inside that
+overlap.  In particular the three-tight fixture forces the point inside,
+whereas the anchor-pair counterexample forces it outside.  Thus neither side
+of the overlap partition reduces the 48 shapes uniformly; the remaining
+selector has to use the outer-design incidence itself rather than an
+overlap-point convention.
 
 The legacy alternative is to prove, from the outer design plus the exact
 exceptional-hole DTB complement partition, that a tight overlap fiber has a
