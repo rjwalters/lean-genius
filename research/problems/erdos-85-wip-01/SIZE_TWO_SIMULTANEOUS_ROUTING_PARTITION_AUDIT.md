@@ -16194,3 +16194,77 @@ escape branches.  Starting from every holonomy shore supplied by Section
 private-label charge.  The remaining theorem no longer needs to price the
 zero-charge label triangles or independent wedges indefinitely; it may
 work at the first descendant stage carrying (1024).
+
+## 315. Cancelling the forced charge consumes every unused root-star label
+
+At the terminal stage of Section 314, the nonzero chain `J_tot` still
+appears in the explicit residue of (998).  Its possible cancellation has a
+rigid support interpretation.  Let
+
+```text
+Y:=sum_(x in C)Y_x,
+A:=sum_(w in W_I)[y_w].                             (1025)
+```
+
+The chain `Y` consists of the ten distinct `a`-labels meeting `C`, two at
+each root.  The active labels in `A` are also distinct.  Indeed, if the
+same active factor edge had two endpoints in `W_I`, its active connection
+would be of type `W--W` and neither endpoint would belong to a selected
+`W--I` component; if the edge crosses `S`, it has only one endpoint in
+`S`.  Therefore
+
+```text
+supp(A) subset supp(Y),
+|supp(A)|=|W_I|.                                    (1026)
+```
+
+Moreover `A` is support-disjoint from every selected path chain `Pi_v`.
+For its own occurrence, the simple path leaves `w` through the opposite
+edge `y'_w` and cannot later use `y_w` without returning to its initial
+vertex.  For a different occurrence, an internal active edge belongs to
+the raw expansion of its own selected overlay component and is excluded by
+Section 311; an active cut edge is neither an internal path edge nor an
+inactive terminal edge.  Hence
+
+```text
+supp(A) intersect supp(sum_(w in W_I)Pi_w)=emptyset. (1027)
+```
+
+Now put
+
+```text
+Q_lab:=Y+A+J_tot.                                   (1028)
+```
+
+This is exactly the global explicit residual label chain in the last term
+of (998).  If it vanishes, then (1026) and label disjointness give
+
+```text
+J_tot=Y\A,
+|supp(J_tot)|=10-|W_I|.                             (1029)
+```
+
+In particular no local contribution can occur: its label `y'_w` is
+`C`-inactive, whereas every label of `Y\A` meets `C`, and Section 311
+prevents it from cancelling with another contribution.  Thus `L^loc` is
+empty.  Substitute (1029) into the exact capacity identity (1011)--(1012):
+
+```text
+10+|W_I|=2|W_I|+|supp(J_tot)|<=|S|.                (1030)
+```
+
+Since `W_I` is nonempty and odd, complete cancellation of the explicit
+label residue forces
+
+```text
+|S|>=11.                                            (1031)
+```
+
+Consequently the terminal stage has an exact alternative.  Either
+`Q_lab!=0`, leaving a genuine private-label residue in (998), or every one
+of its unused root-star labels is consumed by `J_tot` and the located odd
+shore has order at least eleven.  This is not yet a component-profile
+contradiction: applying `E_j` may still cancel a nonzero `Q_lab`.  It does,
+however, replace arbitrary label cancellation by a finite ten-label
+exhaustion with the quantitative threshold (1031), which is the remaining
+case a final SRP price must address.
