@@ -2885,6 +2885,90 @@ theorem orderNine_order34_four_edge_regular_owner_neighbors_not_mem_small_shore
   subst r
   exact hrParts.2 (Finset.mem_inter.mp he).2
 
+/-- Closing terminal for the corrected four-edge `(3,1)` residual.  The
+regular owner-adjacent point `s ∈ W` has low-set degree two.  Besides the
+owner it must therefore meet the unique member of `W` not adjacent to the
+owner.  A bin-one owner-neighbor of `W`-degree one must meet that same
+point, producing a four-cycle with the owner. -/
+theorem false_of_orderNine_order34_regular_owner_W_point_and_partner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    {owner s : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hsOwner : G.Adj s owner)
+    (hsB₀ : s ∈ squareOrderNineLowIncidenceBin G 0)
+    (Z P W K : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0)
+    (hWcard : W.card = 2)
+    (hownerW : G.neighborFinset owner ∩ W = {s})
+    (hsZ : (G.neighborFinset s ∩ Z).card = 2)
+    (hKcard : K.card = 1)
+    (hKB₁ : K ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hKowner : ∀ z ∈ K, G.Adj z owner)
+    (hKWdegree : ∀ z ∈ K, (G.neighborFinset z ∩ W).card = 1) : False := by
+  classical
+  let C := W \ G.neighborFinset owner
+  have hownerWcard : (G.neighborFinset owner ∩ W).card = 1 := by
+    rw [hownerW]
+    simp
+  have hCcard : C.card = 1 := by
+    dsimp only [C]
+    rw [Finset.card_sdiff, hownerWcard, hWcard]
+  obtain ⟨w, hwMem, hwNeOwner⟩ := Finset.exists_mem_ne
+    (by rw [hsZ]; omega : 1 < (G.neighborFinset s ∩ Z).card) owner
+  have hwParts := Finset.mem_inter.mp hwMem
+  have hwW : w ∈ W := by
+    rw [hpartition] at hwParts
+    rcases Finset.mem_insert.mp hwParts.2 with hwo | hwPW
+    · exact (hwNeOwner hwo).elim
+    · rcases Finset.mem_union.mp hwPW with hwP | hwW
+      · have hnot :=
+          squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+            G hfree hhigh howner hsB₀ (hPsub hwP) hsOwner.symm
+        exact (hnot ((G.mem_neighborFinset s w).mp hwParts.1)).elim
+      · exact hwW
+  have hwC : w ∈ C := by
+    refine Finset.mem_sdiff.mpr ⟨hwW, ?_⟩
+    intro hwOwner
+    have hwInter : w ∈ G.neighborFinset owner ∩ W :=
+      Finset.mem_inter.mpr ⟨hwOwner, hwW⟩
+    rw [hownerW] at hwInter
+    have hws : w = s := Finset.mem_singleton.mp hwInter
+    subst w
+    exact G.loopless.irrefl s ((G.mem_neighborFinset s s).mp hwParts.1)
+  obtain ⟨z, hz⟩ := Finset.card_pos.mp (by rw [hKcard]; omega)
+  have hzNonempty : (G.neighborFinset z ∩ W).Nonempty := by
+    rw [← Finset.card_pos, hKWdegree z hz]
+    omega
+  obtain ⟨w', hw'⟩ := hzNonempty
+  have hw'Parts := Finset.mem_inter.mp hw'
+  have hw'C : w' ∈ C := by
+    refine Finset.mem_sdiff.mpr ⟨hw'Parts.2, ?_⟩
+    intro hw'Owner
+    have hnot :=
+      squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+        G hfree hhigh howner (hWsub hw'Parts.2) (hKB₁ hz)
+          ((G.mem_neighborFinset owner w').mp hw'Owner)
+    exact hnot ((G.adj_comm z w').mp
+      ((G.mem_neighborFinset z w').mp hw'Parts.1))
+  have hww' : w = w' :=
+    Finset.card_le_one.mp (Nat.le_of_eq hCcard) w hwC w' hw'C
+  have hsz : s ≠ z := by
+    intro h
+    subst z
+    have hk0 := (Finset.mem_filter.mp hsB₀).2
+    have hk1 := (Finset.mem_filter.mp (hKB₁ hz)).2
+    omega
+  exact false_of_distinct_owner_neighbors_share_second G hfree
+    (owner := owner) (w := w) (a := s) (b := z)
+      hsz (Ne.symm hwNeOwner) hsOwner (hKowner z hz)
+      ((G.mem_neighborFinset s w).mp hwParts.1)
+      (by rw [hww']; exact (G.mem_neighborFinset z w').mp hw'Parts.1)
+
 /-- Actual owner-punctured provider for the corrected exceptional-point
 `Z`-degree function.  The articulation universe omits `owner` but contains
 every local exceptional point; its defect neighborhoods are closed after
