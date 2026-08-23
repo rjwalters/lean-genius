@@ -18,6 +18,10 @@ exact triple/pair subdegree and marked-seven-set miss equations obeyed by an
 actual residual row.  It is no longer the exact LP negation, but it remains a
 necessary relaxation of an actual relation and can be used as a smaller
 direct contradiction probe.
+
+``--shared-hole-point-only`` is the branch-3 intersecting-hole horn.  It
+forces the two exceptional triples to meet and asserts the negation only for
+their shared point, rather than simultaneously for all six hole incidences.
 """
 
 from __future__ import annotations
@@ -55,7 +59,16 @@ def main() -> int:
         help=("add the necessary triple/pair and marked-group subdegree "
               "ledger obeyed by an actual residual row"),
     )
+    parser.add_argument(
+        "--shared-hole-point-only", action="store_true",
+        help=("branch 3 only: force the two holes to intersect and test only "
+              "their shared full fiber"),
+    )
     args = parser.parse_args()
+    if args.shared_hole_point_only and args.branch != 3:
+        parser.error("--shared-hole-point-only requires --branch 3")
+    if args.shared_hole_point_only and args.hole_row is not None:
+        parser.error("--shared-hole-point-only cannot be combined with --hole-row")
 
     outer_seed = (
         None if args.witness is None
@@ -97,6 +110,16 @@ def main() -> int:
 
     holes_begin = N_TRIPLE - (2 if args.branch == 3 else 4)
     holes = list(range(holes_begin, N_TRIPLE))
+    shared_holes = tuple(holes)
+    if args.shared_hole_point_only:
+        solver.add(Or([
+            And(incidence[shared_holes[0], point],
+                incidence[shared_holes[1], point])
+            for point in range(N_U1)
+        ]))
+        # A single system per color is enough: exactly one color contains the
+        # shared point, and implications for the other colors are vacuous.
+        holes = [shared_holes[0]]
     if args.hole_row is not None:
         if any(row not in holes for row in args.hole_row):
             parser.error(f"--hole-row must lie in {holes}")
@@ -138,7 +161,12 @@ def main() -> int:
             for point in range(N_U1):
                 if color(point) != fiber_color:
                     continue
-                selected = incidence[hole, point]
+                selected = (
+                    And(incidence[shared_holes[0], point],
+                        incidence[shared_holes[1], point])
+                    if args.shared_hole_point_only
+                    else incidence[hole, point]
+                )
                 # Only edges touching the selected five-root fiber can carry
                 # mass, and every positive edge is mutually trace eligible.
                 for u, v in edge_pairs:
@@ -196,7 +224,8 @@ def main() -> int:
 
     print(
         f"branch={args.branch} holes={holes} partial_mass_systems={systems} "
-        f"residual_type_ledger={args.residual_type_ledger}"
+        f"residual_type_ledger={args.residual_type_ledger} "
+        f"shared_hole_point_only={args.shared_hole_point_only}"
     )
     started = time.monotonic()
     result = solver.check()

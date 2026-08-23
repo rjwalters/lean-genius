@@ -40,6 +40,16 @@ The fresh generator is not a stable fixture generator across Python processes:
 model-construction ordering varies, so seed labels must not be cited as durable
 witness identifiers.
 
+For branch 3 there is a further empirical horn.  When the two exceptional
+triples intersect, their unique shared point was integrally strict in every
+stored fresh example; the serious payloads and durable triangle-selector
+counterexample instead have disjoint holes.  The option
+`q9_hole_fiber_negation_smt.py --branch 3 --shared-hole-point-only` forces the
+intersecting case and asserts the partial-mass negation only at the shared
+fiber.  Even with `--residual-type-ledger`, the seed-free instance remained
+`UNKNOWN` after 120 seconds.  This is a well-scoped candidate horn, not yet a
+solver certificate or proof.
+
 ## Proof decomposition exposed by the load
 
 Every full point fiber has five rows, and each row degree is five or six, so
