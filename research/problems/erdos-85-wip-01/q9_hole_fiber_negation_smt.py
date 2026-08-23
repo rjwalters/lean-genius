@@ -25,6 +25,13 @@ exactly off its U1-core support, and zero on that support.  Like the residual
 type ledger, this is a necessary actual-relation strengthening rather than an
 exact abstract LP negation.
 
+``--shared-relation`` replaces the separate candidate-wise partial masses by
+one symmetric fractional relation.  It imposes global mutual eligibility and
+point capacities, exact degrees on the union of the selected fibers, and any
+requested hole partitions.  Edges outside the selected fibers are *not*
+zeroed: this is a sound relaxation of the one actual residual relation, not
+an intersection of the candidate-wise support masks.
+
 ``--shared-hole-point-only`` is the branch-3 intersecting-hole horn.  It
 forces the two exceptional triples to meet and asserts the negation only for
 their shared point, rather than simultaneously for all six hole incidences.
@@ -92,6 +99,10 @@ def main() -> int:
         "--exact-hole-partition", action="store_true",
         help=("impose residual multiplicity 1 off, and 0 on, the core of "
               "each selected exceptional hole row"),
+    )
+    parser.add_argument(
+        "--shared-relation", action="store_true",
+        help="use one common fractional residual relation for all candidates",
     )
     args = parser.parse_args()
     if args.shared_hole_point_only and args.branch != 3:
@@ -196,18 +207,29 @@ def main() -> int:
         range(N_TRIPLE + 7 * group, N_TRIPLE + 7 * (group + 1))
         for group in range(3)
     ]
+    shared_mass = None
+    if args.shared_relation:
+        shared_mass = {
+            pair: Real(f"shared_{pair[0]}_{pair[1]}")
+            for pair in edge_pairs
+        }
+        for pair, value in shared_mass.items():
+            solver.add(value >= 0)
+            solver.add(Implies(Not(mutual[pair]), value == 0))
     systems = 0
     for hole in holes:
         for fiber_color in range(3):
             systems += 1
-            mass = {
-                pair: Real(
-                    f"hf_{hole}_{fiber_color}_{pair[0]}_{pair[1]}"
-                )
-                for pair in edge_pairs
-            }
-            for value in mass.values():
-                solver.add(value >= 0)
+            mass = shared_mass
+            if mass is None:
+                mass = {
+                    pair: Real(
+                        f"hf_{hole}_{fiber_color}_{pair[0]}_{pair[1]}"
+                    )
+                    for pair in edge_pairs
+                }
+                for value in mass.values():
+                    solver.add(value >= 0)
 
             def edge_mass(u: int, v: int):
                 return 0 if u == v else mass[edge_key(u, v)]
@@ -258,9 +280,10 @@ def main() -> int:
                         Or(incidence[u, point], incidence[v, point]),
                         mutual[u, v],
                     )
-                    solver.add(Implies(
-                        And(selected, Not(allowed)), mass[u, v] == 0
-                    ))
+                    if not args.shared_relation:
+                        solver.add(Implies(
+                            And(selected, Not(allowed)), mass[u, v] == 0
+                        ))
                 # Exact degree is required precisely at the five roots in
                 # the selected point fiber.
                 for u in range(N):
@@ -312,7 +335,8 @@ def main() -> int:
         f"shared_hole_point_only={args.shared_hole_point_only} "
         f"multispecial_hole_row={args.multispecial_hole_row} "
         f"global_special_only={args.global_special_only} "
-        f"exact_hole_partition={args.exact_hole_partition}"
+        f"exact_hole_partition={args.exact_hole_partition} "
+        f"shared_relation={args.shared_relation}"
     )
     started = time.monotonic()
     result = solver.check()

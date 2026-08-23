@@ -79,6 +79,16 @@ Hence even after imposing both exact local six-packs, no pointwise
 "every hole point is strict" lemma is available.  The surviving statement is
 genuinely an alternative across the two holes and their six incidences.
 
+The original negation assigns an unrelated partial mass to every candidate,
+whereas an actual residual graph is one common symmetric relation.
+`--shared-relation` corrects that relaxation: it keeps one global fractional
+mass, imposes mutual eligibility and all point capacities, exact degrees on
+the union of the selected fibers, and both exact hole partitions.  It does
+not zero edges outside the fibers.  Fixed `13f` is `UNSAT` in 0.1 seconds of
+solving; the unrestricted branch-3 instance with residual type ledgers is
+still `UNKNOWN` after 120 seconds.  Thus common-relation coupling is now
+represented soundly, but Z3 still does not extract the six-way alternative.
+
 For branch 4, every multi-special hole row in the six tracked models has a
 strict special point even though singleton-special rows can fail.  This is a
 conditional corpus horn only: global special mass six does **not** imply that
