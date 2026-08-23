@@ -16905,3 +16905,59 @@ Sections 317--324.  The explicit capacity (1084) identifies the remaining
 monotonicity question: a contradiction must make successive returns
 consume distinct color/root-factor capacity, rather than merely cycle
 through the same finite terminal data.
+
+## 326. The terminal-label shore has an odd root-side return family
+
+The outside destinations in Section 323 are not free endpoints of the
+`c`-factor.  Return to the color `a` fixed in Section 319.  No `a`-label
+meets two vertices of `C`, by (779), while every one of the five roots has
+two `a`-neighbors.  Thus `C` is independent in `F_a[c]` and exactly ten
+distinct active labels index its cut edges.
+
+Delete `C` from the two-factor `F_a[c]`.  Every boundary-bearing component
+of the remainder is a path, and its two endpoints are incident to two of
+those ten cut labels.  The five paths therefore induce a fixed-point-free
+involution
+
+```text
+nu_a^C:{ten C-active labels}->{ten C-active labels}. (1086)
+```
+
+This is the root-side analogue of the owner return pairing (837).  A path
+may pair the two labels at one root, but no label or outside endpoint is
+used by two different paths.
+
+Let `T:=supp(A_T)` be the odd terminal-label support from (1070)--(1071).
+Count the pairs of `nu_a^C` with exactly one endpoint in `T`.  Pair by
+pair, their parity is the parity of `|T|`, so
+
+```text
+#{ {y,nu_a^C(y)}:|{y,nu_a^C(y)} intersect T|=1 }
+  =|T|=1 mod 2.                                    (1087)
+```
+
+For every crossing pair, retain its outside path in `F_a[c]\C` and append
+the two cut edges indexed by the paired labels.  This produces an odd
+family of pairwise edge-disjoint actual `F_a[c]` paths
+
+```text
+r(y) --[y]-- v(y) --[outside F_a[c] path]--
+  v(nu_a^C(y)) --[nu_a^C(y)]-- r(nu_a^C(y)),       (1088)
+```
+
+where exactly one of `y,nu_a^C(y)` belongs to the terminal support `T`.
+The labels on the other ends form an odd subset of the complementary
+active-label shore.  After cancellation, the two core-root endpoint
+supports of the path family are both odd and nonempty; their symmetric
+difference is the exact boundary of the sum of the paths in (1088).
+
+Consequently the nonzero outside-root destination of Sections 323--324
+cannot terminate away from the curl: an odd subfamily of its terminal
+labels is forced through concrete root-side factor paths back to other
+active labels at `C`.  No role is assigned here to the other labels' two
+`e`-endpoints.  The new finite object is instead the composition of two
+canonical pairings on the same ten active labels: the `e`-side transition
+pairing which produced the terminal shore and the root-side return
+involution (1086).  Its alternating cycles retain label identity and are
+the appropriate constant-size holonomy object for the next price; merely
+iterating anonymous odd root shores would discard this extra structure.
