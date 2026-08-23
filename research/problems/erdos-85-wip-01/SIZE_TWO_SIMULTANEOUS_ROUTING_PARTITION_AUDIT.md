@@ -5039,3 +5039,45 @@ without choosing signs or paths.  The remaining global invariant may now be
 formulated as a balance between color turns and fiber switches along the
 alternating `B_ec` phase—the same signed bundle boundary that survives in
 the B3 lane.
+
+## 94. The labeled occurrence flow is Eulerian, not automatically reversible
+
+Use the closed port-resolved state walks of Sections 63--64.  Along one such
+walk, retain the state-color sequence at the actual rooted transitions and
+suppress the intervening horizontal transports and formal fiber switches.
+The result is a cyclic word `...,r,e,d,...`.  At each middle occurrence `e`,
+record the induced turn `r --> d`.  This is exactly the straight passage or
+color turn of Section 93 when the occurrence is one of its private-port
+windows; a fiber-switch state does not terminate the word, but transports it
+to the next rooted transition.
+
+Let `N(r,d)` count directed consecutive occurrences `r --> d` over all these
+cyclic words before inserting the alternating signs.  Cyclicity gives the
+exact flow balance
+
+```text
+sum_d N(r,d) = sum_d N(d,r)     for every label r.     (287)
+```
+
+Every occurrence of `r` has one successor and one predecessor.  Straight
+terms `N(r,r)` cancel locally by (285), leaving a divergence-free directed
+flow of genuine color turns.
+
+Equation (287) is weaker than the reversibility needed for transpose-odd
+cancellation:
+
+```text
+N(r,d) = N(d,r).                                      (288)
+```
+
+An oriented label cycle `r --> d --> f --> r` satisfies (287) but violates
+(288).  Hence neither closed state walks nor Eulerian bookkeeping alone can
+supply the occurrence-weight pairing required in Section 92.  After straight
+passages are removed, the only possible obstruction is a circulation on a
+directed label cycle of length at least three (two-cycles are reversible).
+
+This is the shared terminal with the B3 bundle lane.  Formal route reversal
+makes the signed boundary odd, and actual occurrence flow is balanced, but
+one must still exclude or pair nonreversible circulations.  In the present
+lane the extra run-reversal character and alternating `B_ec` phase are the
+remaining structures capable of killing those directed label cycles.
