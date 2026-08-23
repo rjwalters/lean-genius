@@ -130,6 +130,17 @@ cleaner `107/2`; a uniform explicit cover construction or an argument using
 integrality of the actual residual relation may be more promising than
 formalizing the full LP optimum.
 
+The first cross-row retention step also survives.  Adding the exact residual
+complement partitions for all eight normalized diagonal triple rows leaves
+the branch-3 system SAT and the joint selector passed three independent
+strengthened models, at scale one with costs `53`, `52`, and `53` below 54.
+The probe exposes this as `--diagonal-rows`.  Imposing both diagonal rows and
+all rows of the other two regular triple classes remained `UNKNOWN` after
+120 seconds, rather than producing a countermodel or an infeasibility
+certificate.  Thus diagonal agreement alone does not explain strictness;
+the first unresolved structural boundary is simultaneous agreement across
+all triple-center rows.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled

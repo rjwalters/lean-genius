@@ -13,7 +13,9 @@ fiber.
 The MILP result is reconstructed and checked with exact integer arithmetic.
 Generated models include both exact exceptional six-packs, hole reciprocity,
 and the C4-free full-pack overlap cap.  This remains finite evidence, not a
-uniform theorem.
+uniform theorem.  ``--diagonal-rows`` and ``--all-regular-classes`` impose
+the corresponding exact residual complement partitions as a retention
+ladder toward global cross-row agreement.
 """
 
 from __future__ import annotations
@@ -204,9 +206,12 @@ def exact_joint_optimum(system: dict, p: int, q: int) -> dict:
 
 def one_model(
         timeout_ms: int, random_seed: int, max_scale: int,
-        details: bool = False, genuine_only: bool = False):
+        details: bool = False, genuine_only: bool = False,
+        diagonal_rows: bool = False, all_regular_classes: bool = False):
     solver, data = build(
         3, timeout_ms, True,
+        diagonal_rows=diagonal_rows,
+        all_regular_classes=all_regular_classes,
         hole_reciprocity=True,
         hole_full_pack_overlap_cap=True,
     )
@@ -292,13 +297,15 @@ def main() -> int:
         "--genuine-only", action="store_true",
         help="only scan pairs whose two single-fiber optima are non-strict",
     )
+    parser.add_argument("--diagonal-rows", action="store_true")
+    parser.add_argument("--all-regular-classes", action="store_true")
     args = parser.parse_args()
     if args.samples <= 0 or args.max_scale <= 0:
         parser.error("--samples and --max-scale must be positive")
     results = [
         one_model(
             args.timeout_seconds * 1000, seed, args.max_scale, args.details,
-            args.genuine_only)
+            args.genuine_only, args.diagonal_rows, args.all_regular_classes)
         for seed in range(args.seed_start, args.seed_start + args.samples)
     ]
     print(json.dumps(results, separators=(",", ":")))
