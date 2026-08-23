@@ -933,6 +933,34 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
     omega
   · exact heq32
 
+/-- Low-spike local capstone: the high-root form of (31), the three
+one-high-root partners, and equation (32) force the unique degree-five
+center to be the deleted owner. -/
+theorem orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner c : V) (H K Z B₀ B₁ : Finset V)
+    (hKcard : K.card = 3)
+    (hKowner : K ⊆ G.neighborFinset owner)
+    (hpartnerRoot : ∀ y ∈ K,
+      (G.neighborFinset y ∩ H).card = 1)
+    (hdegHigh : ∀ h ∈ H, G.degree h = 10)
+    (hrootEq : ∀ h ∈ H,
+      (G.neighborFinset h ∩ Z).card +
+        (if G.Adj h c then 1 else 0) = 10)
+    (hcases : c = owner ∨ c ∈ B₀ ∨ c ∈ B₁)
+    (hbinZeroIncidence : c ∈ B₀ → (G.neighborFinset c ∩ H).card = 0)
+    (hbinOneIncidence : c ∈ B₁ → (G.neighborFinset c ∩ H).card = 1)
+    (heq32 : (G.neighborFinset owner ∩ Z).card =
+      if G.Adj owner c then 0 else 1) :
+    c = owner := by
+  have hmissing :=
+    orderNine_order18_lowSpike_missing_partners_le_center_highIncidence
+      G c H K Z hpartnerRoot hdegHigh hrootEq
+  exact orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
+    G owner c H K Z B₀ B₁ hKcard hKowner hcases
+      hbinZeroIncidence hbinOneIncidence hmissing heq32
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_excessTwo_incidence_count_classification
@@ -954,6 +982,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 #print axioms Erdos85.orderNine_order18_lowSpike_missing_partners_le_center_highIncidence
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
+#print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
 
 end
 
