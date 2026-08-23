@@ -3835,6 +3835,20 @@ Thus the next honest computational/proof target is (13ab) over the
 row-ledger-plus-two-orthogonality abstraction, using the existing residual
 edge row rather than fresh existential base variables.                    (13ac)
 
+The branch-3 retention ladder confirms where complexity enters.  With only
+`row-ledger` retained, round one is SAT with base-infeasible row 24; adding
+that single base witness makes round two UNKNOWN at 60 seconds.  Retaining
+`row-ledger+residual-c4` instead gives initial bad rows 14 and 25, then the
+same timeout.  Retaining `row-ledger+b0-c4` gives bad rows 12,17,24,25, then
+the same timeout.  Finally the exact (13ac) retention
+`row-ledger+b0-c4+dtb-common+dtb-cap` is already UNKNOWN on its initial
+60-second solve, before any base, fractional, or reverse row is added.
+Accordingly these runs neither prove nor refute (13ab); they show that the
+full DTB orthogonality equations themselves cross the current solver
+boundary.  The adjacency-as-base encoding may state edge-to-eligibility
+directly as the necessary consequence proved above and retain only the much
+cheaper row ledger and B0 block orthogonality.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
