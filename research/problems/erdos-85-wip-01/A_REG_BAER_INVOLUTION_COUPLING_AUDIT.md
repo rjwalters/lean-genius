@@ -4704,6 +4704,23 @@ crossings.  Every such edge has a unique triangle witness and therefore a
 canonical Baer-pair label.  The remaining payment problem can be attacked
 on these triangle witnesses; no defect or matching matrix remains.
 
+Equivalently, applying the star-flip identity (73rnz_cjibkh) only at
+residual witnesses gives
+
+```text
+Delta
+ =#{b-flip edges of delta_P(B) whose witness label lies in R} mod 2.
+                                                               (73rnz_cjibkzi)
+```
+
+So Delta is not merely a vertex census: it is exactly the residual-witness
+block of the already routed global flip cut (73rnz_cjibko).  All of its
+occurrence labels and 00/11 endpoint states are present in P.  The final
+payment theorem may therefore be stated as a comparison of witness blocks
+inside one routed cut: the pole blocks from (73rnz_cjibkm), the residual
+block (73rnz_cjibkzi), and the direct/through blocks already transported by
+(73rnz_cjibk)--(73rnz_cjibkc).
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
