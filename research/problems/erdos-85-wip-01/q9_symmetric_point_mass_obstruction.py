@@ -288,6 +288,7 @@ def unit_nondiagonal_fiber_optimum(
     position = {old: new for new, old in enumerate(allowed)}
     matrix = []
     rhs = []
+    constraint_edges = []
     for u, v in system["edges"]:
         need = int(u in fiber) + int(v in fiber)
         if not need:
@@ -303,6 +304,7 @@ def unit_nondiagonal_fiber_optimum(
                 row[position[index]] -= 1
         matrix.append(row)
         rhs.append(-need)
+        constraint_edges.append((u, v))
     result = linprog(
         np.ones(len(allowed)), A_ub=np.array(matrix), b_ub=np.array(rhs),
         bounds=(0, None), method="highs",
@@ -355,6 +357,10 @@ def unit_nondiagonal_fiber_optimum(
             (caps[allowed[i]], str(price))
             for i, price in enumerate(prices) if price
         ],
+        # Kept private because the ordinary certificate JSON should remain
+        # compact.  The branch-four descent audit consumes these exact edge
+        # weights to test proposed packing-to-load identities.
+        "_dual_edges": list(zip(constraint_edges, dual)),
     }
 
 
@@ -540,6 +546,28 @@ def main() -> None:
             lower = sorted(
                 q for q in special_points if load[q] < load[point]
             )
+            equal = sorted(
+                q for q in special_points
+                if q != point and load[q] == load[point]
+            )
+            dual_by_edge = dict(optimum["_dual_edges"])
+            residual_edges = [
+                (edge, Fraction(1) - dual_by_edge.get(edge, Fraction()))
+                for edge in system["edges"]
+                if Fraction(1) - dual_by_edge.get(edge, Fraction()) > 0
+            ]
+            residual_not_landing = [
+                [*edge, str(weight)] for edge, weight in residual_edges
+                if not any(
+                    q in system["blocks"][edge[0]]
+                    or q in system["blocks"][edge[1]]
+                    for q in special_points
+                )
+            ]
+            maximum_dual_weight = max(
+                (weight for _, weight in optimum["_dual_edges"]),
+                default=Fraction(),
+            )
             valid &= optimum["strict"] or bool(lower)
             records.append({
                 "point": point,
@@ -551,9 +579,45 @@ def main() -> None:
                 "strict": optimum["strict"],
                 "nonstrict": optimum["nonstrict"],
                 "lower_load_special_points": lower,
+                "equal_load_special_points": equal,
+                "maximum_dual_edge_weight": str(maximum_dual_weight),
+                "dual_weights_at_most_one": maximum_dual_weight <= 1,
+                "residual_edge_count": len(residual_edges),
+                "residual_not_landing_count": len(residual_not_landing),
+                "first_residual_edge_not_landing_on_special_fiber":
+                    residual_not_landing[0] if residual_not_landing else None,
             })
+        minimum_special_load = min(load.values())
+        minimum_special_points = sorted(
+            point for point in special_points
+            if load[point] == minimum_special_load
+        )
+        one_row_certificates = []
+        if not valid:
+            for row in range(N):
+                row_result = dual(system, {row})
+                if not row_result.success:
+                    continue
+                certificate = exact_certificate(system, row_result)
+                if certificate is not None:
+                    one_row_certificates.append({
+                        "row": row,
+                        "block": sorted(system["blocks"][row]),
+                        "degree": system["degree"][row],
+                        "margin": certificate["margin"],
+                    })
         print("global_special_load_descent=" + json.dumps({
             "valid": valid,
+            "one_row_alternative_valid": bool(one_row_certificates),
+            "combined_valid": valid or bool(one_row_certificates),
+            "one_row_certificates": one_row_certificates,
+            "minimum_special_load": minimum_special_load,
+            "minimum_special_points": minimum_special_points,
+            "minimum_load_tie": len(minimum_special_points) > 1,
+            "all_minimum_points_strict": all(
+                record["strict"] for record in records
+                if record["load"] == minimum_special_load
+            ),
             "records": records,
         }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support

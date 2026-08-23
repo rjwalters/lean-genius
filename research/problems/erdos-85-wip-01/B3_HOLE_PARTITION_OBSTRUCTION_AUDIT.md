@@ -4301,6 +4301,56 @@ competitors.  On a fresh averaging-counterexample outer, for example, four
 non-strict special points all have lower-load special competitors, while the
 minimum-load point has exact strict cover `139/5 < 28`.
 
+This conclusion did not survive the next independent outer design and is now
+retracted at the outer-relaxation level.  With random seed 7 the positive
+special locus has six distinct points, and its unique minimum-load point is
+`p=21`, with `L(21)=76`.  Its full-fiber LP has an exactly checked primal
+cover of cost `28` and an exactly checked dual packing of value `28`, against
+target `28`.  Thus the fiber is genuinely non-strict, while there is no
+positive-special `q` with `L(q)<L(21)`.  The audit reports `valid=false`, so
+both (13am) and the proposed sufficient descent hypothesis (13an) are false
+for unrestricted branch-4 outer designs.  Equal-load ties elsewhere cannot
+repair this example because the bad minimizer is unique.  The generic Lean
+theorem consuming a strict-descent hypothesis remains logically valid, but
+that hypothesis is no longer a candidate consequence of the outer design
+alone.
+
+The same audit also falsifies the simplest trace explanation for (13an).
+The exact dual edge weights in every tested optimum are at most one, so the
+residual coefficients `1-x_e` are nonnegative as hoped.  However, already in
+seed 7 there are 96 positive-residual eligibility edges whose two endpoint
+rows meet none of the global special fibers (the first is edge `(0,2)` with
+residual weight one).  Hence residual mass does not automatically “land” on
+the special locus.  Any replacement for (13ak) must use actual residual
+relation constraints or another coupling absent from this outer LP, rather
+than bare eligibility load and the puncture-miss ledger.
+
+The failure has a useful structural repair rather than merely deleting the
+selector.  The two descent failures in the twenty-seed branch-4 sweep are
+seeds 7 and 15.  Both already die in the older one-row horn of (13f): exact
+Farkas certificates exist on rows `{12,23}` in seed 7 and `{22,23,24}` in
+seed 15.  Every other seed satisfies strict descent, and therefore has a
+strict minimum-load positive-special fiber.  Thus all twenty satisfy the
+corrected alternative
+
+```text
+some row has a strict one-row symmetric point-price certificate; or
+every non-strict positive-special p has a positive-special q with L(q)<L(p).
+                                                                    (13ao)
+```
+
+The first horn contradicts the actual residual relation directly; the
+second feeds the minimum-load selector and yields a strict full-fiber
+certificate.  `--audit-global-special-load-descent` now reports both
+`valid` for the descent horn and `combined_valid` for (13ao), checking the
+one-row certificates rationally when descent fails.  Candidate (13ao) is
+still corpus evidence, not a theorem about every outer design, but it is
+strictly better aligned with the established local-feasibility dichotomy:
+the load argument is asserted only on designs that survive the elementary
+one-row obstruction.  The generic Lean theorem
+`obstruction_or_exists_good_positive_special_of_strict_load_descent`
+packages exactly this two-horn consumer.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
