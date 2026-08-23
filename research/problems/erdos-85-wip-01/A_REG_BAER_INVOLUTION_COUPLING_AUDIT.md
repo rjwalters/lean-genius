@@ -2409,6 +2409,27 @@ with all shared coordinates localized at the single line-intersection point
 with q outside occurrences instead of two; it gives the exact object that
 the next simultaneous-routing equation must couple.
 
+In fact the shared coordinates number exactly two.  The point `v` is
+ordinary, so its balanced line has `q/2` neighbors outside S.  Every outside
+empty center `E_j` is non-D to `v` (the empty center's D-neighborhood is
+exhausted on the exceptional core), and therefore has a unique common
+A-neighbor with `v`.  This point lies on the empty line of `E_j`, hence is
+one of the covered ordinary outside points.  Distinct empty lines are
+disjoint, so the `r=q/2-2` empty centers account for exactly r distinct
+outside neighbors of `v`.  There are no outside exceptional A-neighbors of
+`v`: its two majority incidences are precisely `X,Y`, both inside, and an
+empty line has no inside point.  It follows that
+
+```text
+|N_A(v) intersect Z| = q/2-r = 2.                        (73rnz_l)
+```
+
+By (73rnz_k), exactly these two z's have `x_z=y_z=v`.
+Consequently the q transversals split canonically into two shared
+coordinates and `q-2` unshared pairs.  The shared part is now the same
+two-port size as the `a=1` endpoint, while the even `q-2` residue carries
+the genuinely new occurrence-flow content.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
