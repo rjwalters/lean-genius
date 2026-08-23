@@ -39,7 +39,8 @@ OUTER_ONLY_RELAX = {
 }
 
 
-def add_negation(branch: int, timeout_ms: int, full: bool = True):
+def add_negation(branch: int, timeout_ms: int, full: bool = True,
+                 symmetric: bool = False):
     solver, data = build(branch, timeout_ms, True, relax=OUTER_ONLY_RELAX)
     incidence = data["incidence"]
     k = data["k"]
@@ -98,6 +99,11 @@ def add_negation(branch: int, timeout_ms: int, full: bool = True):
         base[t] = chosen
         constrain_packing(t, chosen, True)
 
+    if symmetric:
+        for t in range(N):
+            for u in range(t + 1, N):
+                solver.add(base[t][u] == base[u][t])
+
     avoiding = {}
 
     def ensure_avoiding(t: int, w: int):
@@ -148,12 +154,14 @@ def main() -> int:
     parser.add_argument("--branch", type=int, choices=(3, 4), required=True)
     parser.add_argument("--timeout-seconds", type=int, default=600)
     parser.add_argument("--lazy", action="store_true")
+    parser.add_argument("--symmetric", action="store_true")
     parser.add_argument("--max-rounds", type=int, default=100)
     args = parser.parse_args()
 
     build_started = time.time()
     solver, counts = add_negation(args.branch, args.timeout_seconds * 1000,
-                                  full=not args.lazy)
+                                  full=not args.lazy and not args.symmetric,
+                                  symmetric=args.symmetric)
     build_elapsed = time.time() - build_started
     if args.lazy:
         from q9_structured_skew_potential import residual_gram_forced_collisions
@@ -227,13 +235,19 @@ def main() -> int:
     solve_started = time.time()
     result = solver.check()
     solve_elapsed = time.time() - solve_started
-    print(f"branch={args.branch} result={result} "
+    print(f"branch={args.branch} symmetric={args.symmetric} result={result} "
           f"build_seconds={build_elapsed:.3f} solve_seconds={solve_elapsed:.3f} "
-          f"variables={counts}")
+          f"base_variables={counts['base_variables']} "
+          f"core_variables={counts['core_variables']} "
+          f"eligible_variables={counts['eligible_variables']}")
     if result == unknown:
         print(f"reason_unknown={solver.reason_unknown()}")
         return 2
-    if result == sat:
+    if args.symmetric and result == sat:
+        print("symmetric_simultaneous_selection=SAT_IN_OUTER_ABSTRACTION")
+    elif args.symmetric:
+        print("symmetric_simultaneous_selection=UNSAT_UNCERTIFIED")
+    elif result == sat:
         print("candidate_13f=REFUTED_IN_OUTER_ABSTRACTION")
     else:
         print("candidate_13f_negation=UNSAT_UNCERTIFIED")
