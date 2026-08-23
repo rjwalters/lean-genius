@@ -4416,6 +4416,34 @@ stated above: attach the source-side residual `rho` (and any inactive unit)
 from (73rnz_cjibka) to the terminal endpoint potential delivered by the P
 segment.  No additional ambiguity remains in the internal `mu` sum.
 
+The full terminal state and the remaining interface can now be stated
+without conflating two different edge alphabets.  Orient each flip edge
+`e={u,v}` of `delta_P(B)` from its `b=1` endpoint u to its `b=0` endpoint v
+and retain
+
+```text
+xi(e)=(u,v,witness y,T-word,endpoint subtypes,owner flag).                (73rnz_cjibkt)
+```
+
+This is private at full resolution, and its additive endpoint state is the
+ordered pair `(lambda(u),lambda(v))` constrained by (73rnz_cjibkr).
+
+By contrast, a `rho_(E,G)` atom is an A-edge `xy` of the residual
+`N_A(E)`--`N_A(G)` cross matching, carrying the four-step route
+`E--x--y--G` and the endpoint/T-word cell (73rnz_at).  Such an edge is not
+canonically a P-transition edge: membership in P would additionally require
+that x,y be selected as a pair at a common witness, and the residual
+cross-matching datum supplies no such witness.  Therefore no endpoint-only
+map from `rho` atoms to the states (73rnz_cjibkt) is presently available.
+
+This is the exact surviving attachment problem.  The source side is the
+route-resolved `rho` alphabet of (73rnz_at); the target side is the oriented
+non-pole flip state (73rnz_cjibkt); and the only proved bridge is the
+centerwise conservation (73rnz_aw) together with the local active-relay
+identities (73rnz_cjibk)--(73rnz_cjibkc).  Completing (73rnz_cjibkd) means
+lifting that aggregate bridge to these full occurrence states.  It is not
+another cycle-space or `mu`-pricing question.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
