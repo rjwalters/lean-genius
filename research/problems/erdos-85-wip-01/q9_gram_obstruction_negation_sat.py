@@ -317,12 +317,15 @@ def main() -> int:
                         required = {w for w in range(N) if u in forced[w]}
                         allowed = [w for w in candidates[u]
                                    if u in possible[w]]
-                        interval_profiles[u]["capacity"] = next(
+                        # Before old collision cuts are imposed, `required`
+                        # need not itself be an allowed prepacking.  Record
+                        # that case as -1 rather than crashing the audit.
+                        interval_profiles[u]["capacity"] = next((
                             size for size in range(concrete["degree"][u], -1, -1)
                             if any(required <= set(choice) and all(
                                 not blocks[x] & blocks[y]
                                 for x, y in combinations(choice, 2))
-                                for choice in combinations(allowed, size)))
+                                for choice in combinations(allowed, size))), -1)
                     new_rows = [u for u in bad_rows
                                 if u not in counts["added_one_row_clauses"]]
                     horns = bad_rows + collisions
