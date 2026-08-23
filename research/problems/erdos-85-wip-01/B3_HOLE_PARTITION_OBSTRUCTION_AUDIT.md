@@ -4456,6 +4456,30 @@ one-row feasibility.  The next branch-4 theorem must use a *shared* residual
 relation (or another genuinely cross-row constraint); no refinement that
 only certifies every row independently can close this gap.
 
+The failure is repaired immediately by imposing one common relation.  On the
+durable counterexample, `q9_hole_fiber_negation_smt.py --global-special-only
+--shared-relation` is UNSAT in 0.16 seconds.  More transparently, the global
+symmetric packing LP itself is infeasible and its independently rationalized
+Farkas certificate has support on only rows `{11,24}`.  Row prices are one on
+both rows; ten unit point prices give margin one.  The two earlier all-row
+feasible hard models are globally infeasible for the same reason, with
+minimum certificate supports `{1,23}` and `{24,45}`.  The old tracked serious
+payload likewise has a two-row support `{9,22}` (with denominator 17).
+
+This points to a substantially cleaner branch-4 target than (13ak): prove
+that every normalized branch-4 outer design has either a strict one-row
+certificate or a strict symmetric certificate supported on two rows, one of
+which is exceptional.  The existing theorem
+`false_of_symmetricRowPointPriceCertificate` already consumes the latter
+against the actual shared residual relation; the equal-row-price specimens
+also fit the specialized two-unit-support/scaled consumers.
+Unlike the refuted fiber selector, this candidate matches every hard-locus
+model tested and directly exploits the symmetry that separate row packings
+discard.  The generator's `--shared-integral-relation` mode also attempts the
+opposite search—synthesizing one common relation with the outer design—but
+the unrestricted instance is currently UNKNOWN at 180 seconds, so this is a
+proof target rather than a computational closure claim.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
