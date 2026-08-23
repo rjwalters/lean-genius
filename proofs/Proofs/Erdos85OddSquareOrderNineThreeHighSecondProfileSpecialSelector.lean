@@ -73,6 +73,26 @@ theorem exists_good_positive_special_of_strict_load_descent
     have hpLe := hpmin q (Finset.mem_filter.mpr ⟨hqU, hqSpecial⟩)
     omega
 
+/-- Two-horn consumer for the corrected branch-four selector.  The outer
+design may already be killed by a local row obstruction; only after excluding
+that horn is strict load descent needed to select a good positive-special
+point.  This deliberately keeps the obstruction abstract so the one-row
+point-price terminal can be plugged in without duplicating its inequalities. -/
+theorem obstruction_or_exists_good_positive_special_of_strict_load_descent
+    {α : Type*} [DecidableEq α]
+    (U : Finset α) (special load : α → ℕ) (Good : α → Prop)
+    [DecidablePred Good] (Obstruction : Prop)
+    (hnonempty : ∃ p ∈ U, 0 < special p)
+    (halternative : Obstruction ∨
+      ∀ p ∈ U, 0 < special p → ¬ Good p →
+        ∃ q ∈ U, 0 < special q ∧ load q < load p) :
+    Obstruction ∨ ∃ p ∈ U, 0 < special p ∧ Good p := by
+  rcases halternative with hObstruction | hdescent
+  · exact Or.inl hObstruction
+  · exact Or.inr <|
+      exists_good_positive_special_of_strict_load_descent
+        U special load Good hnonempty hdescent
+
 /-- In the four-edge high-root branch, some unmarked bin-one point is defect
 adjacent to a special B0 row.  This is the formal existence half of the six
 global puncture-miss selector; the separate mixed-column theorem upgrades its
@@ -290,3 +310,4 @@ end Erdos85
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_residualRows_total_eq_654
 #print axioms Erdos85.exists_positive_special_price_lt_target_of_sum_lt
 #print axioms Erdos85.exists_good_positive_special_of_strict_load_descent
+#print axioms Erdos85.obstruction_or_exists_good_positive_special_of_strict_load_descent
