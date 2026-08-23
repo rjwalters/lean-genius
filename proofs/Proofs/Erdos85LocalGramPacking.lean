@@ -60,6 +60,13 @@ def HasLocalGramPackingReciprocityObstruction
   ∃ u w, IsForcedLocalGramNeighbor H W d u w ∧
     ∀ Y : Finset V, IsLocalGramPacking H W d w Y → u ∉ Y
 
+/-- The pure-local three-horn hierarchy isolated by the branch-4 audit. -/
+def HasStrengthenedLocalGramPackingObstruction
+    (H W : V → V → Prop) (d : V → ℕ) : Prop :=
+  HasLocalGramPackingObstruction H W d ∨
+  HasDisjointLocalGramPackingPairObstruction H W d ∨
+  HasLocalGramPackingReciprocityObstruction H W d
+
 /-- Every demanded packing at one row makes some membership decision which
 no demanded packing at the reverse row can match.  This is the first
 configuration-level strengthening of the single forced-edge reciprocity
@@ -2562,6 +2569,42 @@ theorem not_symmetricLocalGramPackingSelection_of_forced_not_reverse
   have huw' : u ∈ X w := (hX.2 u w).mp hwu
   exact hreverse (X w) (hX.1 w) huw'
 
+omit [Fintype V] in
+/-- A symmetric simultaneous selection supplies disjoint selected packings
+at every conflicting pair. -/
+theorem not_hasDisjointLocalGramPackingPairObstruction_of_symmetricSelection
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (hirr : ∀ u, ¬ W u u) (X : V → Finset V)
+    (hX : IsSymmetricLocalGramPackingSelection H W d X) :
+    ¬ HasDisjointLocalGramPackingPairObstruction H W d := by
+  rintro ⟨s, t, hst, hnone⟩
+  apply hnone (X s) (X t) (hX.1 s) (hX.1 t)
+  apply Finset.disjoint_left.mpr
+  intro w hws hwt
+  have hsw : s ∈ X w := (hX.2 s w).mp hws
+  have htw : t ∈ X w := (hX.2 t w).mp hwt
+  have hst_ne : s ≠ t := by
+    intro h
+    subst t
+    exact hirr s hst
+  exact (hX.1 w).2.2 s hsw t htw hst_ne hst
+
+omit [Fintype V] in
+/-- A symmetric simultaneous selection rules out the complete strengthened
+local obstruction hierarchy.  No converse is asserted. -/
+theorem not_hasStrengthenedLocalGramPackingObstruction_of_symmetricSelection
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (hirr : ∀ u, ¬ W u u) (X : V → Finset V)
+    (hX : IsSymmetricLocalGramPackingSelection H W d X) :
+    ¬ HasStrengthenedLocalGramPackingObstruction H W d := by
+  rintro (hlocal | hpair | ⟨u, w, huw, hreverse⟩)
+  · exact not_hasLocalGramPackingObstruction_of_symmetricSelection
+      H W d hirr X hX hlocal
+  · exact not_hasDisjointLocalGramPackingPairObstruction_of_symmetricSelection
+      H W d hirr X hX hpair
+  · exact not_symmetricLocalGramPackingSelection_of_forced_not_reverse
+      H W d u w huw hreverse X hX
+
 /-- **Forced-forward/impossible-reverse consumer.**  This two-row reciprocity
 obstruction excludes every symmetric supported Gram-compatible residual
 relation. -/
@@ -2877,6 +2920,19 @@ theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_reciprocity
   · exact false_of_localGramPackingReciprocityObstruction
       A H W d hsymm hdegree hsupport hgram hreciprocity
 
+/-- Bundled end-to-end consumer for the pure-local branch-4 target. -/
+theorem false_of_strengthenedLocalGramPackingObstruction
+    [DecidableEq V] (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hbad : HasStrengthenedLocalGramPackingObstruction H W d) :
+    False :=
+  false_of_localGramPackingObstruction_or_noDisjointPair_or_reciprocity
+    A H W d hsymm hdegree hsupport hgram hbad
+
 #print axioms relationNeighborFinset_isLocalGramPacking
 #print axioms false_of_no_disjointLocalGramPackingPair
 #print axioms false_of_no_pairwiseDisjointLocalGramPackingTriple
@@ -2888,6 +2944,7 @@ theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_reciprocity
 #print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_twoRowPrice
 #print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_equalTwoRowPrice
 #print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_reciprocity
+#print axioms false_of_strengthenedLocalGramPackingObstruction
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
 #print axioms not_hasLocalGramPackingObstruction_iff
 #print axioms not_conflict_of_common_forcedLocalGramNeighbor

@@ -4979,6 +4979,19 @@ for the strengthened local hierarchy.  As before, the corpus establishes
 only the target and regressions; the universal outer-design selector (13ay)
 is not yet proved.
 
+For formal use, the three horns are bundled as
+`HasStrengthenedLocalGramPackingObstruction`.  Every symmetric simultaneous
+selection of local packings negates this predicate: selected packings exist
+at every row, conflicting rows' selected packings are disjoint, and every
+selected incidence is realized in reverse.  This direction is proved by
+`not_hasStrengthenedLocalGramPackingObstruction_of_symmetricSelection`, and
+the bundled contradiction is
+`false_of_strengthenedLocalGramPackingObstruction`.  **No converse is
+claimed:** pairwise disjoint witnesses and reciprocal possibility need not
+glue to one symmetric global selection in an abstract packing system.  The
+missing (13ay) proof must use branch-4 outer-design structure rather than a
+generic pairwise-to-global compactness principle.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
