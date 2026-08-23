@@ -16508,3 +16508,69 @@ residual terminal class.  This is a path-level parity dichotomy, not yet
 a contradiction: the terminal paths may still cancel after projection
 to component profiles, and a final SRP price must distinguish or consume
 their `Z` and `B` endpoints.
+
+## 320. Every odd inactive terminal family returns to an odd selected shore
+
+The two terminal roles in Section 319 can be composed into one selected
+endpoint ledger.  Every private-owner port `b in B` has a unique
+`A_e`-neighbor in `Z`: the ten ports of `B` are the disjoint union of the
+two outside owner neighbors of each selected port.  Write this neighbor as
+
+```text
+p(b) in Z.                                          (1053)
+```
+
+For each crossing inactive-complement path `P` in the odd family (1052),
+let `t(P)` be its endpoint in `Z union B` and put
+
+```text
+zeta(P):=t(P),       if t(P) in Z;
+zeta(P):=p(t(P)),    if t(P) in B.                  (1054)
+```
+
+In the second case append the actual owner edge
+`{t(P),p(t(P))}` to `P`; in the first case leave `P` unchanged.  This gives
+an actual route `P_hat` from its residual singleton endpoint in `W_a^O` to
+the selected port `zeta(P)`.  The inactive-factor part is indexed entirely
+by `C`-inactive private labels, and at most the final edge is an `A_e` owner
+edge.
+
+Take the symmetric difference of the selected endpoint occurrences:
+
+```text
+Z_*:=triangle_(P crossing) {zeta(P)} subset Z.      (1055)
+```
+
+The number of crossing paths is odd by (1050).  Each contributes one
+selected endpoint occurrence, so cancellation at a port can only remove
+an even number and
+
+```text
+|Z_*|=1 mod 2,
+Z_*!=empty.                                         (1056)
+```
+
+Equivalently, the mod-two sum of the extended routes has boundary
+
+```text
+W_* triangle Z_*,                                  (1057)
+```
+
+where `W_* subset W_a^O` is the odd set of their residual endpoints.
+Repeated selected endpoints and any overlap of route interiors are already
+handled by symmetric difference; the boundary identity remains exact.
+
+The terminal activity is also concrete.  A path ending directly in `Z`
+meets the unique strict `11` export of color `a` at that degree-one port.
+A path ending in `B` meets a singleton color-`a` entry of the private-owner
+ticket before its last owner step to `Z`.  Thus both cases carry an actual
+root-indexed active label at the penultimate terminal, while (1055)--(1057)
+put their final endpoints on one nonempty odd shore of the original
+five-port component.
+
+Section 319 therefore has no lasting `Z/B` escape branch: an odd family of
+residual singleton charges always produces realized routes back to an odd
+selected shore.  This is still a transport theorem rather than a
+contradiction.  The remaining absorption step must compare `Z_*` with the
+rigid strict-export permutation (777), or charge the private-owner ticket
+encountered on the routes which use the final owner edge.
