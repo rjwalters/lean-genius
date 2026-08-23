@@ -4945,3 +4945,54 @@ promised propagation rule: follow the degree-two states until the token
 reaches a marked endpoint or closes on a rooted color cycle.  The remaining
 global parity question is how these endpoint/closed-cycle alternatives
 interact with the alternating signs of successive isolated marks.
+
+## 92. Routing and run reversal give complementary sign characters
+
+There are two different involutions on a labeled boundary block.  Let
+
+```text
+S = [0 1]
+    [1 0]
+```
+
+swap the minus and plus indices.  Routing reversal from Section 89 acts by
+
+```text
+T(K_d) := K_d^T,
+```
+
+while reversal of the oriented run swaps both shores and acts by
+
+```text
+C(K_d) := S K_d S.
+```
+
+They commute, and their effects on the two Hadamard channels are
+
+```text
+             alpha_d   beta_d
+identity        +         +
+T               +         -
+C               -         -
+C T             -         +.                         (283)
+```
+
+The first nontrivial row is (278).  Conjugation swaps both diagonal entries
+and both crossed entries, negating both differences.  Their composite
+therefore negates only `alpha_d`.
+
+This is the exact symmetry division required by the closing invariant.
+Equal-weight pairing under routing reversal cancels the crossed channel but
+leaves the diagonal channel.  Equal-weight pairing under the composite
+run--routing reversal cancels the diagonal channel but leaves the crossed
+one.  A family of labeled mark occurrences closed equivariantly under both
+involutions has zero total residue in both channels.
+
+The needed equivariant closure is not yet proved.  Run reversal always
+exists as a reorientation of one mark, but that is not by itself a second
+occurrence in the global ledger; routing reversal always exists algebraically
+by (269), but need not land on another isolated mark.  The alternating phase
+must supply exactly this occurrence/weight matching.  Equation (283) turns
+that task into a finite group-action statement: construct the required
+`{1,T,C,CT}` orbits of color-labeled transition endpoints, or identify the
+unpaired orbit that carries the obstruction.
