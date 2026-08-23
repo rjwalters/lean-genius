@@ -5043,6 +5043,18 @@ multi-horn refinement loop on live generated models, but the current ledger
 is neither a counterexample nor an UNSAT proof; it is a resumable search
 frontier.
 
+Longer 180-second resumptions remained SAT through eight more refinements.
+They added integral rows `16,15` and no-disjoint-pair witnesses
+`{7,24}`, `{1,23}`, `{10,17}`, `{22,23}`, `{6,23}`, and `{13,25}`.
+Together with the earlier ledger, the live frontier now has integral rows
+`{2,3,13,14,15,16,19,21,22,23,24,25}` and nine required disjoint pairs
+`{1,22}`, `{0,24}`, `{6,25}`, `{7,24}`, `{1,23}`, `{10,17}`, `{22,23}`,
+`{6,23}`, `{13,25}`.  Every solved refinement remained SAT; the run ended
+only at its iteration limit.  Eight of the nine exposed pairs meet rows
+22--25, with `{10,17}` the sole ordinary/ordinary exception so far.  This is
+useful localization evidence, not a universal exceptional-row theorem (seed
+142 already refutes that kind of unconditional localization).
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
