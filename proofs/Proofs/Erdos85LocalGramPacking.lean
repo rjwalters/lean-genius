@@ -2056,6 +2056,21 @@ def HasTwoRowSupportPointPriceCertificate
     (∑ u : V, ∑ p : P, pointPrice u p) <
       (d s : ℚ) * a + (d t : ℚ) * b
 
+/-- A two-row point-price certificate whose two row prices are both one.
+This is the dual form of a strict two-row union-capacity (Hall) bound. -/
+def HasTwoEqualRowSupportPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P) : Prop :=
+  ∃ s t : V, ∃ pointPrice : V → P → ℚ,
+    (∀ u p, 0 ≤ pointPrice u p) ∧
+    (∀ u v, H u v →
+      ((if u = s then 1 else 0) + (if u = t then 1 else 0)) +
+          ((if v = s then 1 else 0) + (if v = t then 1 else 0)) ≤
+        (∑ p ∈ B v, pointPrice u p) +
+          ∑ p ∈ B u, pointPrice v p) ∧
+    (∑ u : V, ∑ p : P, pointPrice u p) <
+      (d s : ℚ) + d t
+
 /-- Exact existential interface for the corrected branch-4 `(13at)` target:
 one degree-five row and one degree-six row, with fixed row prices one and two.
 No incidence or conflict relation between the two rows is assumed. -/
@@ -2815,6 +2830,31 @@ theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_twoRowPrice
   · exact false_of_localGramPackingObstruction_or_twoRowPrice
       A H W d B hsymm hdegree hsupport hgram hshared (Or.inr hprice)
 
+/-- Sharpened three-way consumer with the price fallback restricted to equal
+unit row weights, equivalently a strict two-row Hall union bound. -/
+theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_equalTwoRowPrice
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hbad : HasLocalGramPackingObstruction H W d ∨
+      HasDisjointLocalGramPackingPairObstruction H W d ∨
+      HasTwoEqualRowSupportPointPriceCertificate H d B) :
+    False := by
+  rcases hbad with hlocal | hpair | hprice
+  · exact false_of_localGramPacking_deficit_or_forced_collision
+      A H W d hsymm hdegree hsupport hgram hlocal
+  · exact false_of_disjointLocalGramPackingPairObstruction
+      A H W d hsymm hdegree hsupport hgram hpair
+  · rcases hprice with ⟨s, t, pointPrice, hnonneg, hedge, hstrict⟩
+    exact false_of_twoRowSupportPointPriceCertificate
+      A H W d B hsymm hdegree hsupport hgram hshared
+      s t 1 1 pointPrice hnonneg hedge (by simpa using hstrict)
+
 #print axioms relationNeighborFinset_isLocalGramPacking
 #print axioms false_of_no_disjointLocalGramPackingPair
 #print axioms false_of_no_pairwiseDisjointLocalGramPackingTriple
@@ -2824,6 +2864,7 @@ theorem false_of_localGramPackingObstruction_or_noDisjointPair_or_twoRowPrice
 #print axioms false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_localGramPackingObstruction_or_twoRowPrice
 #print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_twoRowPrice
+#print axioms false_of_localGramPackingObstruction_or_noDisjointPair_or_equalTwoRowPrice
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
 #print axioms not_hasLocalGramPackingObstruction_iff
 #print axioms not_conflict_of_common_forcedLocalGramNeighbor

@@ -1272,6 +1272,7 @@ def main() -> None:
         )
         row_support = None
         price_certificate = None
+        equal_row_price_certificates = []
         infeasible_two_row_projections = []
         infeasible_pair_packing_counts = []
         selected_partial_primal_feasible = None
@@ -1306,6 +1307,14 @@ def main() -> None:
                 price_result = dual(system, set(row_support))
                 if price_result.success:
                     price_certificate = exact_certificate(system, price_result)
+            if not has_strengthened_local_obstruction:
+                equal_row_price_certificates = [
+                    certificate
+                    for u, v in combinations(range(N), 2)
+                    if (certificate := fixed_two_row_shared_point_certificate(
+                        system, u, v, 1, 1
+                    )) is not None
+                ]
         print("local_or_two_row_price=" + json.dumps({
             "global_fractional_packing_feasible": bool(result.success),
             "deficit_rows": deficit_rows,
@@ -1344,10 +1353,17 @@ def main() -> None:
                 proper_subset_partial_primals_feasible,
             "has_exact_two_row_price": price_certificate is not None,
             "price_certificate": price_certificate,
+            "equal_row_price_certificate_count":
+                len(equal_row_price_certificates),
+            "equal_row_price_certificates": equal_row_price_certificates,
             "valid": has_local_obstruction or price_certificate is not None,
             "valid_strengthened": (
                 has_strengthened_local_obstruction
                 or price_certificate is not None
+            ),
+            "valid_equal_weight_strengthened": (
+                has_strengthened_local_obstruction
+                or bool(equal_row_price_certificates)
             ),
         }, separators=(",", ":")))
     if args.scan_exceptional_three_row_supports:

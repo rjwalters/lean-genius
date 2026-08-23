@@ -4926,6 +4926,27 @@ price fallback obtained only after excluding every no-disjoint conflicting
 pair; this is an interface theorem, not yet a proof that every outer design
 satisfies the three-way disjunction.
 
+On the durable corpus that remaining price fallback simplifies all the way
+to equal row weights.  The fixed-and-joint counterexample—the only one of
+the three price-only fixtures with no strengthened local horn—has three
+unit/unit certificates, on `{15,25}`, `{19,25}`, and `{25,34}`, with margins
+`2/3`, `1`, and `1/4`.  The unified audit now searches these certificates
+only after every strengthened local obstruction has failed and records
+`valid_equal_weight_strengthened`.  This motivates the sharper target
+
+```text
+local deficit/common-forced obstruction,
+or a conflicting pair with no disjoint full local packings,
+or an equal-weight two-row point-price certificate.               (13ax)
+```
+
+Unlike the globally false Hall-only route, (13ax) uses the no-disjoint horn
+to remove the known non-Hall cases first.  Lean packages the equal-weight
+certificate as `HasTwoEqualRowSupportPointPriceCertificate` and consumes the
+whole disjunction with
+`false_of_localGramPackingObstruction_or_noDisjointPair_or_equalTwoRowPrice`.
+The corpus supports (13ax), but its outer-design selector is still unproved.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
