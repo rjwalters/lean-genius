@@ -15839,3 +15839,53 @@ target labels (with the local inactive edge retained exactly in the sole
 exceptional case).  A final telescope must control this displayed residue,
 but it no longer has to reconstruct which inactive endpoint labels are
 paired: Section 306 has cancelled those labels exactly before aggregation.
+
+## 309. Inactive-root overlap forces a genuine internal target label
+
+The orthogonality in Section 307 gives a pointwise price for two of the
+local shapes in Section 303.  Define
+
+```text
+W_I^in:={w in W_I:
+         z(w)!=y'_w and
+         N_c(z(w)) intersect N_c(y'_w)!={}}.         (999)
+```
+
+For `w in W_I^in`, the distinct labels `y'_w,z(w)` are adjacent in the
+root-label factor `Gamma_c^a`.  But (987) says that they are respectively
+the first and last labels of the simple target path `Pi_w`.  If
+`Pi_w^int` were empty, those two labels would be consecutive in
+`Gamma_e^a`, contradicting (991).  Hence
+
+```text
+w in W_I^in  implies
+Pi_w^int!=0 and |E(Pi_w)|>=3.                       (1000)
+```
+
+More precisely, the first internal label of `Pi_w` is target-adjacent to
+`y'_w` and therefore not root-adjacent to it; the last internal label is
+target-adjacent to `z(w)` and therefore not root-adjacent to that terminal
+label.  If there is only one internal label, it is root-disjoint from both
+inactive endpoints.
+
+The shape classification makes the charged occurrences exact.  Apart
+from the excluded local equality `z(w)=y'_w`, condition (999) occurs in
+precisely these cases:
+
+```text
+r_w=1 with the unique overlap in {v_0,v_1};
+r_w=2 with z(w) distinct from y'_w.                 (1001)
+```
+
+The first has a three-root defect and the single-edge source route
+`x--u`; the second has a singleton defect and the three-edge source route
+in (978).  Thus every nonlocal singleton defect pays at least one strictly
+internal target label, and so does every three-root defect whose terminal
+overlap lies on the inactive companion.
+
+This is a pointwise occurrence charge.  Different internal chains may
+still cancel in the aggregate `J_x` of (994), so (1000) is not presented as
+a nonvanishing theorem for `J_x`.  Its gain is the exact realizability
+constraint needed by the next capacity step: two entire local defect
+classes cannot contribute only their inactive endpoint labels to (998);
+each must introduce a genuine separator label in the target factor.
