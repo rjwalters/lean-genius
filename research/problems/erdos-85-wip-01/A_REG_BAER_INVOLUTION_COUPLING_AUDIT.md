@@ -3822,6 +3822,27 @@ by (73rnz_an)--(73rnz_ap).  Together with (73rnz_cjiba), every witness star's
 fine owner/T-word ambiguity is bounded by two binary gauge choices, independent
 of q.
 
+Moreover the entire pairing gauge is generated locally.  Any two perfect
+pairings of an even star are connected by four-endpoint switches
+
+```text
+{a--b,c--d}  <-->  {a--c,b--d}.                          (73rnz_cjibc)
+```
+
+Thus a proposed fine route price `w` is independent of the witness-star
+pairing exactly when every realizable labeled quadruple satisfies
+
+```text
+w(a,b)+w(c,d)=w(a,c)+w(b,d).                             (73rnz_cjibd)
+```
+
+If (73rnz_cjibd) fails, the two sides give an explicit four-relay holonomy
+localized at one unique witness y.  If it holds, every q-point star price is
+well-defined independently of all pairing choices.  Because (73rnz_cjiba)
+and (73rnz_cjibb) leave only bounded binary T-word/owner states, checking
+gauge compatibility has reduced to a finite table of local quadrilateral
+identities, uniform in q; no large-star enumeration remains.
+
 Similarly, because T is Eulerian, `Tx` is exactly the boundary vector of the
 T-cut `delta_T(X)`: outside X it counts T-neighbors in X, while inside X the
 even T-degree converts internal incidence to external incidence.  Hence the
