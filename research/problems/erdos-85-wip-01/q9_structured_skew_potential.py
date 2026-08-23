@@ -264,6 +264,65 @@ def bundle_rank_audit(data: dict) -> tuple[
             without_private_bundle, without_private_external)
 
 
+def maximum_label_packing(supports: list[set[int]], selected: set[int],
+                          initial_mask: int = 0) -> int:
+    """Maximum cardinality of pairwise label-disjoint supports, exactly."""
+    bit = {label: 1 << index for index, label in enumerate(sorted(selected))}
+    states = {initial_mask: 0}
+    for support in supports:
+        occupied = sum(bit[label] for label in support)
+        updated = dict(states)
+        for mask, cardinality in states.items():
+            if not mask & occupied:
+                new_mask = mask | occupied
+                updated[new_mask] = max(updated.get(new_mask, -1),
+                                        cardinality + 1)
+        states = updated
+    return max(states.values())
+
+
+def external_deletion_loss(data: dict, t: int, u: int) -> int:
+    """Exact external matching-rank loss caused by the other labels of u."""
+    own_support = data["blocks"][t] & data["selected"]
+    deleted = (data["blocks"][u] & data["selected"]) - own_support
+    external = [data["blocks"][v] & data["selected"]
+                for v in data["candidates"][t]
+                if not (data["blocks"][v] & data["selected"]) & own_support]
+    retained = [support for support in external if not support & deleted]
+    return (maximum_label_packing(external, data["selected"])
+            - maximum_label_packing(retained, data["selected"]))
+
+
+def forced_candidate_feasible(data: dict, t: int, u: int) -> bool:
+    """Whether some required-cardinality local matching contains candidate u."""
+    selected = data["selected"]
+    bit = {label: 1 << index for index, label in enumerate(sorted(selected))}
+    forced_support = data["blocks"][u] & selected
+    forced_mask = sum(bit[label] for label in forced_support)
+    remaining = [data["blocks"][v] & selected
+                 for v in data["candidates"][t] if v != u
+                 and not (data["blocks"][v] & selected) & forced_support]
+    return (1 + maximum_label_packing(remaining, selected, forced_mask)
+            >= int(data["degree"][t]))
+
+
+def bundle_deletion_audit(data: dict) -> tuple[Counter, list[tuple]]:
+    """Classify bidirectional deletion loss after bundle route pairing."""
+    transitions = {(t, u) for t, u, _ in bundle_transition_boundaries(data)}
+    losses = Counter()
+    zero_pairs = []
+    for t, u in transitions:
+        if t >= u:
+            continue
+        forward = external_deletion_loss(data, t, u)
+        reverse = external_deletion_loss(data, u, t)
+        losses[(forward, reverse)] += 1
+        if forward + reverse == 0:
+            zero_pairs.append((t, u, forced_candidate_feasible(data, t, u),
+                               forced_candidate_feasible(data, u, t)))
+    return losses, sorted(zero_pairs)
+
+
 def flat_signature_audit(data: dict) -> tuple[
         int, int, int, tuple[str, ...], tuple[tuple[int, ...], ...], bool]:
     """Audit the retracted simple signature quotient (12qy).
@@ -1086,6 +1145,8 @@ def main() -> int:
                         help="audit exact zero sums of three bundle transitions")
     parser.add_argument("--audit-bundle-rank", action="store_true",
                         help="audit exact rank modulo route reversal")
+    parser.add_argument("--audit-bundle-deletion", action="store_true",
+                        help="audit paired external deletion losses")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -1220,12 +1281,28 @@ def main() -> int:
         audit_failed |= (total_rank != total_columns or total_missing > 0
                          or total_nonprivate > 0
                          or total_nonprivate_bundle > 0)
+    if args.audit_bundle_deletion:
+        total_losses = Counter()
+        total_zero = 0
+        total_forced_both = 0
+        for label, candidate in all_data:
+            losses, zero_pairs = bundle_deletion_audit(candidate)
+            total_losses.update(losses)
+            total_zero += len(zero_pairs)
+            total_forced_both += sum(forward and reverse
+                                     for _, _, forward, reverse in zero_pairs)
+            branch, seed_number, colors = label
+            print(f"bundle_deletion branch={branch} seed={seed_number} "
+                  f"colors={colors} losses={dict(losses)} "
+                  f"zero_pairs={zero_pairs}")
+        print(f"bundle_deletion_total_losses={dict(total_losses)} "
+              f"zero_pairs={total_zero} forced_both={total_forced_both}")
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
     if (args.audit_flat_signatures or args.audit_bundle_boundaries
             or args.audit_bundle_pairs or args.audit_bundle_triples
-            or args.audit_bundle_rank):
+            or args.audit_bundle_rank or args.audit_bundle_deletion):
         return 1 if audit_failed else 0
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")

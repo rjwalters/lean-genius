@@ -1582,6 +1582,35 @@ matching mass, so its two external deletion losses must be coupled next.
 The key gain is that no higher hypergraph circuit remains once (12rg) is
 proved.
 
+The most optimistic deletion coupling is false.  The exact mode
+`--audit-bundle-deletion` computes both external matching ranks before and
+after deleting a transition partner's nonshared selected labels, and also
+checks whether each oriented candidate can be forced into a required-size
+local matching.  In the 476-pair run the bidirectional loss table was
+
+```text
+(lambda_tu,lambda_ut): (1,1) 225, (0,1) 96,
+                       (1,0)  94, (0,0) 61.
+```
+
+Sixty of the 61 zero-zero pairs can be forced into degree-`d` matchings in
+both orientations (the remaining pair fails in one orientation).  Thus
+neither positive paired deletion nor local occurrence infeasibility closes
+the T-symmetric sector.  Let `Z` be the graph of zero-zero unordered route
+pairs.  The corrected post-rank terminal is
+
+```text
+ZERO-LOSS SYMMETRIC FLOW EXCLUSION:
+no balanced family of fractional degree-d row matchings can place positive
+symmetric occurrence mass on Z after the charged transitions are removed.
+                                                               (12ri)
+```
+
+Statement (12ri) must use simultaneous row capacities or the remaining
+outer routing equations: every edge of `Z` is locally viable in isolation.
+This is the B3 analogue of the transpose-even diagonal sector in the
+simultaneous owner-run lane.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
