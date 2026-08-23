@@ -5107,6 +5107,16 @@ the exact remaining coverage lemma.  No analogous two-pole alternation is
 available for the unanchored `00` or `01` runs, whose roots
 have even pole parity.
 
+Nor may a `01` root presently be labelled by a unique residual center.  Its
+bit `r(v)=1` states only that `|N_A(v) intersect R|` is odd.  The
+majority-replication-at-most-two lemma would turn this into uniqueness for a
+root already known to lie in the occupied ordinary shore, but the retained
+H occurrence state `Xi_H` supplies only its SRP component role and Baer
+endpoint subtype; no proved placement lemma puts every such root in that
+replication regime.  Thus `K_01` has odd residual-neighbor subsets at its
+vertices, not a well-defined single G-label.  Any residual-center alternation
+argument requires that missing shore-placement theorem first.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
