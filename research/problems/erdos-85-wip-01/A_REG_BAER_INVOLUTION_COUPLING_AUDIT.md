@@ -3191,6 +3191,32 @@ lines (the potential itself need not be unique).  The joint-state terminal
 may therefore split cleanly into a kernel-separator transport branch and a
 two-pole potential branch, rather than assuming a star character exists.
 
+The two-pole branch already contains an actual route.  Use the normalization
+`x(E_1)=x(E_2)=0` and put `X=supp(x)`.  In the cut graph
+`A[X,V setminus X]`, a vertex outside X has cut-degree parity `(Ax)_v`, while
+a vertex in X has cut-degree parity
+
+```text
+q-(Ax)_v = (Ax)_v                                  (mod 2),
+```
+
+because q is even.  Equation (73rnz_az) therefore says that the only
+odd-degree vertices of this cut graph are `E_1,E_2`.  Hence they lie in the
+same component and the cut graph decomposes into an `E_1`--`E_2` path plus
+closed trails:
+
+```text
+E_1 -- ... -- E_2  inside A[X,V setminus X].             (73rnz_bl)
+```
+
+At either endpoint the first cut edge is a T-edge exactly when it uses one
+of that empty center's two full leaves; every other endpoint edge goes to an
+ordinary point on the empty line and is non-T by (73rnd).  Thus the image
+branch is not merely a linear potential: it yields a two-pole A-route with a
+finite leaf/ordinary endpoint decoration, plus Eulerian cut corrections.
+This is the natural object to compare with the six-edge cross-star transports
+in (73rnz_bb).
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
