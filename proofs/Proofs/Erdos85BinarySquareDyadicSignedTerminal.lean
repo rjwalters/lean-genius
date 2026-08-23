@@ -981,6 +981,19 @@ theorem binarySquare_saturatedMixed_hEqF_impossible
   exact binarySquare_saturatedR1_hEqF_impossible
     G hfree hqEven hreg minorityCenter hunique
 
+/-- A partial-Baer core whose order is either zero or at least two cannot
+occur at the penultimate inside-minority population `s = a - 1`. -/
+theorem binarySquare_no_singleton_partialBaer_core
+    (a s coreCard : ℕ)
+    (ha : 1 ≤ a)
+    (hcard : coreCard + s = a)
+    (hsize : coreCard = 0 ∨ 2 ≤ coreCard) :
+    s ≠ a - 1 := by
+  intro hs
+  rcases hsize with hzero | htwo
+  · omega
+  · omega
+
 end
 
 end Erdos85
@@ -1021,3 +1034,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_saturatedR1_hEqF_impossible
 #print axioms Erdos85.binarySquare_saturatedR2_hEqF_impossible
 #print axioms Erdos85.binarySquare_saturatedMixed_hEqF_impossible
+#print axioms Erdos85.binarySquare_no_singleton_partialBaer_core

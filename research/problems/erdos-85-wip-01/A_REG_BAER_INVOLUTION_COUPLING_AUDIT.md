@@ -1913,6 +1913,61 @@ the partial-Baer majority core and the residual M incidence.  When `s_E=0`
 there is no exceptional T-port and the obstruction lies entirely in the
 core/residual coupling.
 
+The shore populations and empty-line capacity in this sole surviving
+placement are exact.  Write `q=2m`, `a=m-r`, and `s_E=s`.  Then
+
+```text
+|F intersect S| = a-s,        |F setminus S| = m+s,
+|E intersect S| = s,          |E setminus S| = r-s.       (73rne)
+```
+
+Since `|S|=q^2/2+a` and `|C intersect S|=a`, removing C gives the strikingly
+parameter-free residual shore sizes
+
+```text
+|M intersect S| = q^2/2,
+|M setminus S| = q(q-2)/2.                                (73rnf)
+```
+
+The q-point lines indexed by distinct empty centers are pairwise disjoint,
+because the minority D-clique gives every pair codegree zero.  An inside
+empty center's line contains its two distinct outside-full T-leaves and
+`q-2` points of `M setminus S`; an outside empty center's line contains q
+points of `M setminus S`.  Consequently the empty lines occupy exactly
+
+```text
+s(q-2)+(r-s)q = qr-2s
+```
+
+distinct ordinary outside points, leaving
+
+```text
+|M setminus S|-(qr-2s) = q(a-1)+2s.                       (73rng)
+```
+
+Thus the residual outside capacity is fixed before any Baer matching or
+K/Omega choice is made.  At the extreme `a=1` it consists of exactly `2s`
+uncovered ordinary points; when also `s=0`, the empty lines partition all of
+`M setminus S`.  These are q-generic endpoint conditions inside the live
+`h=a` family, not order-specific enumerations.
+
+The partial-Baer core excludes the penultimate placement of the inside
+minority population.  By (73i), every vertex of `A[R]` has degree one or
+two, so R cannot be a singleton.  Since `|R|=a-s`,
+
+```text
+s != a-1;
+equivalently, s=a (R empty) or s<=a-2 (|R|>=2).           (73rnh)
+```
+
+This implication is Lean-checked arithmetically by
+`binarySquare_no_singleton_partialBaer_core` once the graph-theoretic
+zero-or-at-least-two alternative is supplied.  In particular, at the
+extreme `a=1` the case `s=0` is impossible.  Its sole surviving placement
+has `s=1`, no majority core, one two-edge T-star, and by (73rng) exactly two
+uncovered ordinary points outside S.  This endpoint is still q-generic: it
+occurs at `r=q/2-1` for every binary q.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
