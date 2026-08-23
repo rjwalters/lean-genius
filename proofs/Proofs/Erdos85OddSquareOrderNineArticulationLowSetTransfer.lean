@@ -2838,6 +2838,53 @@ theorem orderNine_order34_four_edge_owner_W_one_partner_shore_cards
       (K ∩ T).card = 1 := by omega
   simpa [A, K] using hcards
 
+/-- Once the exceptional point is on `S` and the preceding count says that
+the owner has only one bin-zero neighbor on `S`, both regular points in the
+four-edge local geometry are off `S`. -/
+theorem orderNine_order34_four_edge_regular_owner_neighbors_not_mem_small_shore
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hloc : (G.induce (G.neighborSet owner)).edgeFinset.card = 4)
+    (S : Finset V)
+    (hAScard : ((G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0) ∩ S).card = 1)
+    (hExceptionalS : ∀ e ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset owner), e ∈ S) :
+    ∀ r ∈ (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0) \
+      (secondOrderDefectGraph G).neighborFinset owner, r ∉ S := by
+  classical
+  let A := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0
+  let E := A ∩ (secondOrderDefectGraph G).neighborFinset owner
+  let R := A \ (secondOrderDefectGraph G).neighborFinset owner
+  have hgeom := orderNine_secondProfile_owner_four_edge_binZero_partition
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hloc
+  dsimp only at hgeom
+  have hEcard : E.card = 1 := by simpa [E, A] using hgeom.1
+  obtain ⟨e, he⟩ := Finset.card_pos.mp (by rw [hEcard]; omega)
+  have heS : e ∈ S := hExceptionalS e (by simpa [E, A] using he)
+  have heAS : e ∈ A ∩ S := Finset.mem_inter.mpr
+    ⟨(Finset.mem_inter.mp he).1, heS⟩
+  intro r hr hrS
+  have hrParts := Finset.mem_sdiff.mp hr
+  have hrAS : r ∈ A ∩ S := Finset.mem_inter.mpr ⟨hrParts.1, hrS⟩
+  have her : e = r := Finset.card_le_one.mp (by rw [hAScard]) e heAS r hrAS
+  subst r
+  exact hrParts.2 (Finset.mem_inter.mp he).2
+
 /-- Actual owner-punctured provider for the corrected exceptional-point
 `Z`-degree function.  The articulation universe omits `owner` but contains
 every local exceptional point; its defect neighborhoods are closed after
