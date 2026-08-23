@@ -267,6 +267,87 @@ def exact_certificate(system: dict, result) -> dict | None:
     }
 
 
+def fixed_two_row_shared_point_certificate(
+        system: dict, regular: int, hole: int, regular_weight: int,
+        hole_weight: int) -> dict | None:
+    """Minimize point prices for two fixed positive row prices.
+
+    Point prices may be supported on either named row or at the unique point
+    shared by their blocks.  The floating-point optimum is used only to find
+    a candidate; every edge inequality and the strict objective margin are
+    then checked over ``Fraction``.
+    """
+    blocks = system["blocks"]
+    intersection = sorted(blocks[regular] & blocks[hole])
+    if len(intersection) != 1:
+        return None
+    shared_point = intersection[0]
+    caps = system["caps"]
+    cap_index = system["cap_index"]
+    allowed = [
+        cap_row in (regular, hole) or cap_point == shared_point
+        for cap_row, cap_point in caps
+    ]
+    matrix = []
+    rhs = []
+    row_price = {regular: regular_weight, hole: hole_weight}
+    for u, v in system["edges"]:
+        required = row_price.get(u, 0) + row_price.get(v, 0)
+        if required == 0:
+            continue
+        row = np.zeros(len(caps))
+        for point in blocks[v]:
+            row[cap_index[u, point]] -= 1
+        for point in blocks[u]:
+            row[cap_index[v, point]] -= 1
+        matrix.append(row)
+        rhs.append(-required)
+    result = linprog(
+        np.ones(len(caps)),
+        A_ub=np.array(matrix), b_ub=np.array(rhs),
+        bounds=[(0, None) if keep else (0, 0) for keep in allowed],
+        method="highs",
+    )
+    if not result.success:
+        return None
+    prices = [
+        Fraction(float(value)).limit_denominator(10**6)
+        for value in result.x
+    ]
+    slacks = []
+    for u, v in system["edges"]:
+        required = Fraction(row_price.get(u, 0) + row_price.get(v, 0))
+        supplied = (
+            sum((prices[cap_index[u, point]] for point in blocks[v]),
+                Fraction())
+            + sum((prices[cap_index[v, point]] for point in blocks[u]),
+                  Fraction())
+        )
+        slacks.append(supplied - required)
+    target = (
+        system["degree"][regular] * regular_weight
+        + system["degree"][hole] * hole_weight
+    )
+    cost = sum(prices, Fraction())
+    if cost >= target or min(slacks) < 0 or any(value < 0 for value in prices):
+        return None
+    return {
+        "regular": regular,
+        "hole": hole,
+        "shared_point": shared_point,
+        "regular_weight": regular_weight,
+        "hole_weight": hole_weight,
+        "cost": str(cost),
+        "target": str(target),
+        "margin": str(Fraction(target) - cost),
+        "minimum_edge_slack": str(min(slacks)),
+        "point_prices": [
+            (caps[index], str(value))
+            for index, value in enumerate(prices) if value
+        ],
+    }
+
+
 def unit_nondiagonal_fiber_optimum(
         system: dict, point: int, include_diagonal: bool = False
         ) -> dict | None:
@@ -488,6 +569,12 @@ def main() -> None:
         "--scan-exceptional-two-row-supports", action="store_true",
         help=("scan every support {exceptional row, other row} for an exact "
               "symmetric row/point-price obstruction"),
+    )
+    parser.add_argument(
+        "--scan-fixed-exceptional-two-row-templates", action="store_true",
+        help=("branch 4: test the fixed (regular,hole)=(1,2) row-price "
+              "templates with prices restricted to the two rows and their "
+              "unique shared point"),
     )
     parser.add_argument(
         "--scan-exceptional-three-row-supports", action="store_true",
@@ -795,6 +882,14 @@ def main() -> None:
                     ),
                     "has_shared_point_collision_certificate":
                         collision_certificate is not None,
+                    "shared_point_collision_row_prices": (
+                        collision_certificate["row_prices"]
+                        if collision_certificate is not None else []
+                    ),
+                    "shared_point_collision_point_price_count": (
+                        len(collision_certificate["point_prices"])
+                        if collision_certificate is not None else 0
+                    ),
                 })
         regular_certificates = [
             certificate for certificate in certificates
@@ -844,6 +939,39 @@ def main() -> None:
             "exists_exceptional_regular_forced_collision":
                 bool(forced_collision_pairs),
             "forced_collision_pairs": forced_collision_pairs,
+            "certificates": certificates,
+        }, separators=(",", ":")))
+    if args.scan_fixed_exceptional_two_row_templates:
+        if system["branch"] != 4:
+            parser.error(
+                "--scan-fixed-exceptional-two-row-templates requires branch 4"
+            )
+        templates = [(1, 2)]
+        holes_begin = N_TRIPLE - 4
+        certificates = []
+        for regular in range(holes_begin):
+            for hole in range(holes_begin, N_TRIPLE):
+                for regular_weight, hole_weight in templates:
+                    certificate = fixed_two_row_shared_point_certificate(
+                        system, regular, hole, regular_weight, hole_weight
+                    )
+                    if certificate is not None:
+                        certificate["template"] = [
+                            regular_weight, hole_weight
+                        ]
+                        certificates.append(certificate)
+        template_counts = {
+            f"{regular_weight}:{hole_weight}": sum(
+                certificate["template"] == [regular_weight, hole_weight]
+                for certificate in certificates
+            )
+            for regular_weight, hole_weight in templates
+        }
+        print("fixed_exceptional_two_row_templates=" + json.dumps({
+            "templates": templates,
+            "certificate_count": len(certificates),
+            "exists_certificate": bool(certificates),
+            "template_counts": template_counts,
             "certificates": certificates,
         }, separators=(",", ":")))
     if args.scan_exceptional_three_row_supports:

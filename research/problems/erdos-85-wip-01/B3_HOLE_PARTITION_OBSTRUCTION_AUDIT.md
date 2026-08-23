@@ -4573,6 +4573,33 @@ an arbitrary incident exceptional/regular pair; the scanner retains
 `exists_special_shared_point_collision` only as a diagnostic, not a proposed
 theorem.
 
+The arbitrary rational row weights in (13aq) are also unnecessary in every
+model currently audited.  The scanner mode
+`--scan-fixed-exceptional-two-row-templates` fixes the regular row price to
+one and the exceptional-hole row price to two, permits point prices only on
+the two named rows or at their unique shared point, minimizes their total,
+and independently rechecks every edge inequality and the strict margin over
+`Fraction`.  All seven durable branch-4 regressions and fresh outer designs
+at seeds 0--32, 47, 54, 55, 62--66, 69, 71, and 81--92 admit this single
+template.  On seeds 0--32 the number of winning incident pairs ranges from
+6 to 27; even
+the fractional-not-forced regression has one.  The target is always
+
+```text
+5 * 1 + 6 * 2 = 17,
+```
+
+so the remaining selector can be stated as one explicit strict cover
+inequality: some incident regular triple `t` and exceptional triple `h` have
+shared-point-restricted point-price cost below 17 for fixed row prices
+`y_t=1`, `y_h=2`.                                          (13ar)
+
+This is still a finite-model pattern, not a proof from the normalized outer
+incidence axioms.  It is nevertheless a real simplification of (13aq): the
+selector no longer quantifies over row weights or their denominators.  The
+point-price optimum remains genuinely fractional (observed denominators
+reach 56), so only the row-weight part has been normalized away.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
