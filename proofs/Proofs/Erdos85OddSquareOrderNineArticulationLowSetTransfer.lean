@@ -1238,6 +1238,90 @@ theorem orderNine_secondProfile_owner_partners_W_degree_one_card_le_one
       ((G.mem_neighborFinset z w).mp hwParts.1)
       (by rw [hww']; exact (G.mem_neighborFinset z' w').mp hw'Parts.1)
 
+/-- Repeated terminal in the `b = 1` and `b = 0` analyses following (27).
+Two distinct bin-zero neighbors of the owner, each of `Z`-degree two and
+each avoiding the owner-adjacent point of `W`, must both meet the unique
+point of `W \ N(owner)`.  Together with the owner this is a four-cycle. -/
+theorem false_of_orderNine_order34_two_binZero_neighbors_avoid_owner_W
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (owner y z : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hyB₀ : y ∈ squareOrderNineLowIncidenceBin G 0)
+    (hzB₀ : z ∈ squareOrderNineLowIncidenceBin G 0)
+    (hyz : y ≠ z)
+    (hyOwner : G.Adj y owner) (hzOwner : G.Adj z owner)
+    (Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWcard : W.card = 2)
+    (hownerW : (G.neighborFinset owner ∩ W).card = 1)
+    (hyZ : (G.neighborFinset y ∩ Z).card = 2)
+    (hzZ : (G.neighborFinset z ∩ Z).card = 2)
+    (hyAvoid : (G.neighborFinset y ∩
+      (G.neighborFinset owner ∩ W)).card = 0)
+    (hzAvoid : (G.neighborFinset z ∩
+      (G.neighborFinset owner ∩ W)).card = 0) : False := by
+  classical
+  let C := W \ G.neighborFinset owner
+  have hCcard : C.card = 1 := by
+    dsimp only [C]
+    rw [Finset.card_sdiff, hownerW, hWcard]
+  obtain ⟨wy, hwyMem, hwyNe⟩ := Finset.exists_mem_ne
+    (by rw [hyZ]; omega : 1 < (G.neighborFinset y ∩ Z).card) owner
+  obtain ⟨wz, hwzMem, hwzNe⟩ := Finset.exists_mem_ne
+    (by rw [hzZ]; omega : 1 < (G.neighborFinset z ∩ Z).card) owner
+  have hwyParts := Finset.mem_inter.mp hwyMem
+  have hwzParts := Finset.mem_inter.mp hwzMem
+  have hwyW : wy ∈ W := by
+    rw [hpartition] at hwyParts
+    rcases Finset.mem_insert.mp hwyParts.2 with hwyOwner | hwyPW
+    · exact (hwyNe hwyOwner).elim
+    · rcases Finset.mem_union.mp hwyPW with hwyP | hwyW
+      · have hpB₁ := hPsub hwyP
+        have hnot := squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+          G hfree hhigh howner hyB₀ hpB₁ hyOwner.symm
+        exact (hnot ((G.mem_neighborFinset y wy).mp hwyParts.1)).elim
+      · exact hwyW
+  have hwzW : wz ∈ W := by
+    rw [hpartition] at hwzParts
+    rcases Finset.mem_insert.mp hwzParts.2 with hwzOwner | hwzPW
+    · exact (hwzNe hwzOwner).elim
+    · rcases Finset.mem_union.mp hwzPW with hwzP | hwzW
+      · have hpB₁ := hPsub hwzP
+        have hnot := squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+          G hfree hhigh howner hzB₀ hpB₁ hzOwner.symm
+        exact (hnot ((G.mem_neighborFinset z wz).mp hwzParts.1)).elim
+      · exact hwzW
+  have hwyC : wy ∈ C := Finset.mem_sdiff.mpr ⟨hwyW, by
+    intro hOwnerWy
+    have hmem : wy ∈ G.neighborFinset y ∩
+        (G.neighborFinset owner ∩ W) :=
+      Finset.mem_inter.mpr ⟨hwyParts.1,
+        Finset.mem_inter.mpr ⟨hOwnerWy, hwyW⟩⟩
+    have hempty := Finset.card_eq_zero.mp hyAvoid
+    rw [hempty] at hmem
+    simp at hmem⟩
+  have hwzC : wz ∈ C := Finset.mem_sdiff.mpr ⟨hwzW, by
+    intro hOwnerWz
+    have hmem : wz ∈ G.neighborFinset z ∩
+        (G.neighborFinset owner ∩ W) :=
+      Finset.mem_inter.mpr ⟨hwzParts.1,
+        Finset.mem_inter.mpr ⟨hOwnerWz, hwzW⟩⟩
+    have hempty := Finset.card_eq_zero.mp hzAvoid
+    rw [hempty] at hmem
+    simp at hmem⟩
+  have hwywz : wy = wz :=
+    Finset.card_le_one.mp (Nat.le_of_eq hCcard) wy hwyC wz hwzC
+  exact false_of_distinct_owner_neighbors_share_second G hfree hyz
+    hwyNe.symm hyOwner hzOwner
+      ((G.mem_neighborFinset y wy).mp hwyParts.1)
+      (by rw [hwywz]; exact (G.mem_neighborFinset z wz).mp hwzParts.1)
+
 /-- Terminal for the sole placement left by audit (26).  A bin-zero neighbor
 of the universal owner has no original neighbor in the bin-one part `P`.
 If the placement also leaves it with no neighbor in the two-point part `W`,
