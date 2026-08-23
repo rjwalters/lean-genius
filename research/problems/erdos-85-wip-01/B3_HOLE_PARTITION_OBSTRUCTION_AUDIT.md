@@ -3735,9 +3735,19 @@ fractional point cover nevertheless assigns
 has total value `14/3 < 5`, and covers every residual block with weight at
 least one.  Hence the integral matching rank is at most 4, which is attained.
 The exact fractional-cover diagnostic also gives values strictly below the
-residual demand on row 24, row 40, and every one of the ten genuine branch-3
-profiles from the durable witness and seeds 0,1,2.  These certificates now
-fit the kernel-checked consumer `reverseIntervalRankDeficit_of_fractionalPointCover`.
+residual demand on row 24, row 40, and every genuine branch-3 and branch-4
+profile from the durable fixtures and random seeds 0 through 4.  This is
+sixteen genuine branch-3 profiles and twenty-four genuine branch-4 profiles;
+collision-inconsistent rows are excluded.  These certificates now fit the
+kernel-checked consumers `reverseIntervalRankDeficit_of_fractionalPointCover`
+and `reverseIntervalRankDeficit_of_scaledPointCover`.
+
+The sampled certificates do not reduce to a halves-and-thirds template.
+Most observed optimal weights have denominators at most three, but branch 4,
+seed 1, row 0 uses an exhibited scale-four certificate, with positive
+weights in `{1/4,1/2,3/4,1}`, support size eight, and total `9/2 < 5`.
+Thus bounded-denominator or finite-template claims require a proof independent
+of the current corpus; denominator three is already false as a sampled bound.
 This suggests a stronger prospective route: derive a fractional U1-point
 mass bound below `d(u)-|F_u|` at some row.  Its observed validity is sampled
 data; no uniform fractional bound is asserted.
