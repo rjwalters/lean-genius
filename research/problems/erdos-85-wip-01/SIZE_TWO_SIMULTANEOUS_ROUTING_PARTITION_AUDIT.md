@@ -17475,7 +17475,7 @@ support the singleton `{zeta}`.  It cannot consist of three occurrences
 at `zeta`: among the roots in `D`, only `x` is nonincident to the edge
 `E_zeta={u,v}`, so off-incidence permits only the pair `(x,zeta)` there.
 Consequently `zeta` occurs once and one other port `p` occurs twice.
-The root counts (1119) then force
+The root counts (1125) then force
 
 ```text
 supp(L_D)={(x,zeta),(u,p),(v,p)}.                  (1126)
