@@ -4696,6 +4696,31 @@ pair, possibly disjoint, with arbitrary rational row weights.  The fixed
 price and disjoint-packing Lean consumers remain correct conditional
 theorems, but neither describes a universal outer-incidence horn.
 
+Allowing the selected blocks to be disjoint repairs the fixed-weight pattern
+on every model tested.  The scanner's fixed-template mode now searches all
+`4*22` exceptional/regular pairs, permits prices on the two rows and—only
+when it exists—their shared point, and again fixes row weights to
+`(regular,hole)=(1,2)`.  On the counterexample above it finds the two disjoint
+pairs `{15,25}` and `{19,25}`, of costs `49/3` and `16` against target 17.
+The same single template survives all older durable regressions, eight fresh
+all-row-feasible synthesized models (seeds 101--109, excluding the one
+generation timeout), and ordinary fresh outer seeds 0--32, 47, and 81--92.
+The ordinary-seed counts range from 11 to 85; both intersecting and disjoint
+winners occur.
+
+This yields a corrected candidate strictly between refuted (13ar) and base
+(13aq):
+
+```text
+some exceptional/regular pair, with no incidence requirement, admits a
+two-row price certificate with fixed row weights (1,2).          (13at)
+```
+
+Unlike (13ar), (13at) is not refuted by the new model; unlike (13aq), it
+removes arbitrary row weights.  It remains empirical.  In particular the
+failure of the incident locus shows that any proof must preserve the
+disjoint-pair horn rather than silently reintroduce a shared point.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

@@ -272,20 +272,21 @@ def fixed_two_row_shared_point_certificate(
         hole_weight: int) -> dict | None:
     """Minimize point prices for two fixed positive row prices.
 
-    Point prices may be supported on either named row or at the unique point
-    shared by their blocks.  The floating-point optimum is used only to find
+    Point prices may be supported on either named row and, when the blocks
+    meet, at their unique shared point.  The floating-point optimum only finds
     a candidate; every edge inequality and the strict objective margin are
     then checked over ``Fraction``.
     """
     blocks = system["blocks"]
     intersection = sorted(blocks[regular] & blocks[hole])
-    if len(intersection) != 1:
+    if len(intersection) > 1:
         return None
-    shared_point = intersection[0]
+    shared_point = intersection[0] if intersection else None
     caps = system["caps"]
     cap_index = system["cap_index"]
     allowed = [
-        cap_row in (regular, hole) or cap_point == shared_point
+        cap_row in (regular, hole)
+        or (shared_point is not None and cap_point == shared_point)
         for cap_row, cap_point in caps
     ]
     matrix = []
@@ -358,6 +359,7 @@ def fixed_two_row_shared_point_certificate(
     return {
         "regular": regular,
         "hole": hole,
+        "block_intersection": intersection,
         "shared_point": shared_point,
         "regular_weight": regular_weight,
         "hole_weight": hole_weight,
@@ -674,8 +676,9 @@ def main() -> None:
     parser.add_argument(
         "--scan-fixed-exceptional-two-row-templates", action="store_true",
         help=("branch 4: test the fixed (regular,hole)=(1,2) row-price "
-              "templates with prices restricted to the two rows and their "
-              "unique shared point"),
+              "template on every regular/exceptional pair, with prices "
+              "restricted to the two rows and, when present, their unique "
+              "shared point"),
     )
     parser.add_argument(
         "--scan-disjoint-exceptional-regular-packings", action="store_true",
@@ -1076,6 +1079,14 @@ def main() -> None:
         print("fixed_exceptional_two_row_templates=" + json.dumps({
             "templates": templates,
             "certificate_count": len(certificates),
+            "intersecting_certificate_count": sum(
+                bool(certificate["block_intersection"])
+                for certificate in certificates
+            ),
+            "disjoint_certificate_count": sum(
+                not certificate["block_intersection"]
+                for certificate in certificates
+            ),
             "exists_certificate": bool(certificates),
             "template_counts": template_counts,
             "certificates": certificates,
