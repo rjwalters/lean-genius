@@ -324,12 +324,73 @@ theorem ordinary_complement_boundary_sum_eq
       intro x hx
       rw [hrowS x hx]
 
+private theorem articulation_reachable_induction_of_adj_closed
+    {V : Type*} (D : SimpleGraph V) (P : V → Prop)
+    (hP : ∀ x y, D.Adj x y → P x → P y) {u v : V}
+    (h : D.Reachable u v) (hu : P u) : P v := by
+  obtain ⟨p⟩ := h
+  induction p with
+  | nil => exact hu
+  | cons hadj _ ih => exact ih (hP _ _ hadj hu)
+
+/-- If the full ordinary induced graph is connected, every nonempty proper
+shore closed after deleting `owner` contains an exceptional vertex.  If it
+did not, owner adjacency could not leave the shore, so it would already be
+closed in the connected full ordinary graph. -/
+theorem exceptional_inter_nonempty_of_connected_and_erase_owner_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (O S E : Finset V) (owner : V)
+    (hconn : (D.induce (↑O : Set V)).Connected)
+    (hSnonempty : S.Nonempty) (hSproper : S.card < O.card)
+    (hSsub : S ⊆ O)
+    (hclosed : ∀ x ∈ S, D.neighborFinset x ∩ (O.erase owner) ⊆ S)
+    (hownerAdj : ∀ u ∈ O, D.Adj u owner ↔ u ∈ E) :
+    (E ∩ S).Nonempty := by
+  classical
+  by_contra hnone
+  have hESempty : E ∩ S = ∅ := Finset.not_nonempty_iff_eq_empty.mp hnone
+  have hclosedO : ∀ x ∈ S, D.neighborFinset x ∩ O ⊆ S := by
+    intro x hxS y hy
+    have hyParts := Finset.mem_inter.mp hy
+    by_cases hyo : y = owner
+    · subst y
+      have hxE : x ∈ E := (hownerAdj x (hSsub hxS)).mp
+        ((D.mem_neighborFinset x owner).mp hyParts.1)
+      have hxES : x ∈ E ∩ S := Finset.mem_inter.mpr ⟨hxE, hxS⟩
+      rw [hESempty] at hxES
+      exact (Finset.notMem_empty x hxES).elim
+    · exact hclosed x hxS (Finset.mem_inter.mpr
+        ⟨hyParts.1, Finset.mem_erase.mpr ⟨hyo, hyParts.2⟩⟩)
+  have hTnonempty : (O \ S).Nonempty := by
+    apply Finset.card_pos.mp
+    rw [Finset.card_sdiff_of_subset hSsub]
+    omega
+  let x : {z // z ∈ O} := ⟨hSnonempty.choose, hSsub hSnonempty.choose_spec⟩
+  let y : {z // z ∈ O} :=
+    ⟨hTnonempty.choose, (Finset.mem_sdiff.mp hTnonempty.choose_spec).1⟩
+  have hxS : x.1 ∈ S := hSnonempty.choose_spec
+  have hyNotS : y.1 ∉ S := (Finset.mem_sdiff.mp hTnonempty.choose_spec).2
+  have hreach : (D.induce (↑O : Set V)).Reachable x y :=
+    hconn.preconnected x y
+  have hyS : y.1 ∈ S := articulation_reachable_induction_of_adj_closed
+    (D.induce (↑O : Set V)) (fun z => z.1 ∈ S)
+    (by
+      intro u v huv huS
+      have huvD : D.Adj u.1 v.1 := huv
+      exact hclosedO u.1 huS
+        (Finset.mem_inter.mpr ⟨
+          (D.mem_neighborFinset u.1 v.1).mpr huvD, v.2⟩))
+    hreach hxS
+  exact hyNotS hyS
+
 #print axioms sum_boundary_eq_card_exceptional_of_erase_owner_closed
 #print axioms three_mul_regular_eq_five_mul_binOne_of_erase_owner_closed
 #print axioms exists_articulation_scale_of_three_mul_regular_eq_five_mul_binOne
 #print axioms articulation_binZero_internal_handshake
 #print axioms exists_two_nonempty_complementary_relativeClosedShores_of_induce_not_connected
 #print axioms ordinary_complement_boundary_sum_eq
+#print axioms exceptional_inter_nonempty_of_connected_and_erase_owner_closed
 
 end
 

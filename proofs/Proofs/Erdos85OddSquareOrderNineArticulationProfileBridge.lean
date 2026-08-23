@@ -1,5 +1,6 @@
 import Proofs.Erdos85OddSquareOrderNineArticulationGraphBridge
 import Proofs.Erdos85OddSquareOrderNineThreeHighSecondProfileBinZeroDefectTypes
+import Proofs.Erdos85BranchDeficitSymmetry
 
 /-! # Actual-profile inputs for the q = 9 articulation bridge
 
@@ -266,10 +267,96 @@ theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_shore_partition
     Finset.card_union_of_disjoint hER] at hcard
   exact hcard
 
+/-- On a deleted-owner shore, total incidence into the three high vertices is
+exactly the number of bin-one vertices in the shore. -/
+theorem squareOrderNine_threeHigh_secondProfile_deleted_owner_beta_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    {owner : V} (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (S : Finset V)
+    (hS : S ⊆ (((Finset.univ : Finset V) \
+      squareOrderHighVertices G 9).erase owner)) :
+    (G.neighborFinset h₁ ∩ S).card +
+      (G.neighborFinset h₂ ∩ S).card +
+      (G.neighborFinset h₃ ∩ S).card =
+      (squareOrderNineLowIncidenceBin G 1 ∩ S).card := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let U := (Finset.univ : Finset V) \ H
+  let B := squareOrderNineLowIncidenceBin G
+  let k := squareOrderHighIncidenceCount G 9
+  have hB2empty : B 2 = ∅ := by
+    rw [← Finset.card_eq_zero]
+    dsimp [B]
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 2) (by omega), hc2]
+  have hB3card : (B 3).card = 1 := by
+    dsimp [B]
+    rw [squareOrderNine_lowIncidenceBin_card_eq_histogram_of_ne_zero
+      G hp (i := 3) (by omega), hc3]
+  have hpoint : ∀ x ∈ S, k x = if x ∈ B 1 then 1 else 0 := by
+    intro x hxS
+    have hxErase := hS hxS
+    have hxParts := Finset.mem_erase.mp hxErase
+    have hxU : x ∈ U := hxParts.2
+    have hkLe : k x ≤ 3 := by
+      have := Finset.card_le_card
+        (Finset.inter_subset_right : G.neighborFinset x ∩ H ⊆ H)
+      dsimp [k, squareOrderHighIncidenceCount, H] at this
+      rw [hhigh] at this
+      exact this
+    have hkCases : k x = 0 ∨ k x = 1 ∨ k x = 2 ∨ k x = 3 := by omega
+    rcases hkCases with hk0 | hk1 | hk2 | hk3
+    · have hxNotB1 : x ∉ B 1 := by
+        intro hxB1
+        have hxB1' := hxB1
+        dsimp [B, squareOrderNineLowIncidenceBin] at hxB1'
+        have hxk := (Finset.mem_filter.mp hxB1').2
+        dsimp [k] at hk0
+        omega
+      simp [hk0, hxNotB1]
+    · have hxB1 : x ∈ B 1 := Finset.mem_filter.mpr ⟨hxU, hk1⟩
+      simp [hk1, hxB1]
+    · have hxB2 : x ∈ B 2 := Finset.mem_filter.mpr ⟨hxU, hk2⟩
+      rw [hB2empty] at hxB2
+      simp at hxB2
+    · have hxB3 : x ∈ B 3 := Finset.mem_filter.mpr ⟨hxU, hk3⟩
+      have hxo : x = owner :=
+        Finset.card_le_one.mp (by omega) x hxB3 owner howner
+      exact (hxParts.1 hxo).elim
+  have hsumPoint : (∑ x ∈ S, k x) = (B 1 ∩ S).card := by
+    calc
+      ∑ x ∈ S, k x = ∑ x ∈ S, if x ∈ B 1 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        exact hpoint x hx
+      _ = (B 1 ∩ S).card := by
+        rw [Finset.sum_boole]
+        apply congrArg Finset.card
+        ext x
+        simp [and_comm]
+  have hswap := sum_card_neighbor_inter_comm G H S
+  have hH' : H = {h₁, h₂, h₃} := by exact hH
+  have hswap' :
+      (G.neighborFinset h₁ ∩ S).card +
+        (G.neighborFinset h₂ ∩ S).card +
+        (G.neighborFinset h₃ ∩ S).card = ∑ x ∈ S, k x := by
+    rw [hH'] at hswap
+    simpa [H, k, squareOrderHighIncidenceCount, hH,
+      h₁₂, h₁₃, h₂₃, add_assoc] using hswap
+  exact hswap'.trans hsumPoint
+
 end
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_owner_defect_neighbors
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_articulation_cross_degrees
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_deleted_owner_shore_partition
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_deleted_owner_beta_sum
 
 end Erdos85

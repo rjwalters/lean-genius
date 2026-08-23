@@ -455,6 +455,11 @@ def main() -> None:
               "non-strict point has a strictly "
               "lower-load global-special competitor"),
     )
+    parser.add_argument(
+        "--scan-exceptional-two-row-supports", action="store_true",
+        help=("scan every support {exceptional row, other row} for an exact "
+              "symmetric row/point-price obstruction"),
+    )
     args = parser.parse_args()
     if args.payload is None:
         if args.branch is None:
@@ -686,17 +691,55 @@ def main() -> None:
             ),
             "records": records,
         }, separators=(",", ":")))
+    if args.scan_exceptional_two_row_supports:
+        holes_begin = N_TRIPLE - (2 if system["branch"] == 3 else 4)
+        holes = range(holes_begin, N_TRIPLE)
+        edge_set = set(system["edges"])
+        certificates = []
+        for hole in holes:
+            for other in range(N):
+                if other == hole:
+                    continue
+                result = dual(system, {hole, other})
+                if not result.success:
+                    continue
+                certificate = exact_certificate(system, result)
+                if certificate is None:
+                    continue
+                pair = tuple(sorted((hole, other)))
+                certificates.append({
+                    "hole": hole,
+                    "other": other,
+                    "other_kind": (
+                        "regular-triple" if other < holes_begin
+                        else "exceptional" if other < N_TRIPLE
+                        else "pair"
+                    ),
+                    "block_intersection": sorted(
+                        system["blocks"][hole] & system["blocks"][other]
+                    ),
+                    "mutually_eligible_pair": pair in edge_set,
+                    "margin": certificate["margin"],
+                    "row_prices": certificate["row_prices"],
+                    "point_price_count": len(certificate["point_prices"]),
+                })
+        print("exceptional_two_row_supports=" + json.dumps({
+            "count": len(certificates),
+            "certificates": certificates,
+        }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support
             and not args.scan_nondiagonal_fibers
             and not args.scan_unit_nondiagonal_fibers
             and not args.scan_unit_full_fibers
             and not args.scan_min_load_global_special_fibers
-            and not args.audit_global_special_load_descent):
+            and not args.audit_global_special_load_descent
+            and not args.scan_exceptional_two_row_supports):
         return
     if (args.scan_nondiagonal_fibers or args.scan_unit_nondiagonal_fibers
             or args.scan_unit_full_fibers
             or args.scan_min_load_global_special_fibers
             or args.audit_global_special_load_descent
+            or args.scan_exceptional_two_row_supports
             ) and not (args.dual or args.minimize_row_support):
         return
     row_support = (
