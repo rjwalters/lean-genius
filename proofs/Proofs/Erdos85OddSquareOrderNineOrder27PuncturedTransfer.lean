@@ -8,6 +8,42 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Direct sharp-partition extraction on the actual 50-point shore.  This
+is preferable in the graph-facing wrapper to transferring the 51-point
+complement partition: the articulation capstone already supplies this
+shore's boundary equality. -/
+theorem orderNine_order27_explicitPartition_of_large_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (T : Finset V) (hTcard : T.card = 50)
+    (hTsub : T ⊆ (Finset.univ : Finset V) \ {h₁, h₂, h₃})
+    (hboundary : (∑ x ∈ T,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ T)).card) = 2)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ T).card = 6)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ T).card = 6)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ T).card = 6)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10) :
+    orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ T 5 42 := by
+  have hTH : Disjoint T ({h₁, h₂, h₃} : Finset V) := by
+    rw [Finset.disjoint_left]
+    intro x hxT hxH
+    exact (Finset.mem_sdiff.mp (hTsub hxT)).2 hxH
+  have hsharp := orderNineOrdinarySharpPartition_of_boundary
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ T hTH hdegOrd hdegHigh 2
+      hboundary (by
+        simp [orderNineNearRegularCutLower, orderNineBalancedSquareSum,
+          hTcard, hhigh₁, hhigh₂, hhigh₃])
+  apply orderNineOrdinaryExplicitPartition_of_sharp
+    G h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ T 5 42 hTH hdegOrd hsharp
+  · omega
+  · norm_num
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -166,6 +202,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
   omega
 
 #print axioms orderNine_explicitPartition_five_48_erase_owner
+#print axioms orderNine_order27_explicitPartition_of_large_boundary
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
