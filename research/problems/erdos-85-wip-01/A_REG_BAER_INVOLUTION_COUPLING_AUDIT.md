@@ -1871,6 +1871,24 @@ T-degree is two and these two odd remainders occur at distinct full centers;
 the next transport must couple them rather than seek a one-vertex parity
 contradiction.
 
+The `E_0 outside S` case instead has a repeated-target endpoint structure.
+If X is a degree-one vertex of a path component of `A[R]`, then X is a
+majority private point by (73i), so (73r) gives it exactly one cross-shore
+D-neighbor.  The complete exceptional D-star already supplies `E_0`, hence
+
+```text
+m(X)=E_0.                                                 (73rr)
+```
+
+This marked edge is non-A because the empty line at `E_0` has no neighbor
+in S.  Consequently the two endpoints of every path component carry the
+same actual non-A D-target `E_0`; path components canonically pair all such
+endpoint marks.  This is the repeated-target state from the capacity
+dictionary, rather than a family of independent K/Omega signs.  Any residue
+in the outside-minority placement must therefore come from the cycle
+components or from how the paired endpoint occurrences interact with the
+residual M incidence, not from endpoint-mark parity alone.
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
