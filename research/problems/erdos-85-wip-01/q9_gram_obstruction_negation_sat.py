@@ -195,6 +195,7 @@ def main() -> int:
     parser.add_argument("--lazy-one-row", action="store_true")
     parser.add_argument("--symmetric", action="store_true")
     parser.add_argument("--max-rounds", type=int, default=100)
+    parser.add_argument("--random-seed", type=int, default=0)
     args = parser.parse_args()
 
     build_started = time.time()
@@ -205,6 +206,7 @@ def main() -> int:
                                   and not args.lazy_one_row
                                   and not args.symmetric,
                                   symmetric=args.symmetric)
+    solver.set(random_seed=args.random_seed)
     build_elapsed = time.time() - build_started
     if args.lazy or args.lazy_reciprocity or args.lazy_one_row:
         from itertools import combinations
