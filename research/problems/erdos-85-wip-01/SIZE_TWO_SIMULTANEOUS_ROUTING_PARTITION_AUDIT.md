@@ -17188,3 +17188,62 @@ ten-label skeleton `Omega_b^C`; in a mixed-color reversal the second
 skeleton must return the exact triple in (1103) while respecting the
 root-matching disjointness across colors.  These are the two concrete
 holonomy interfaces left by Sections 327--328.
+
+## 330. A reversal to the original singleton has four boundary signatures
+
+The one-edge normal form reduces a putative shortest reversal to a finite
+`C_5` calculation.  Write the successor in (1103) as
+
+```text
+D={x,u,v},           E_zeta={u,v},                  (1104)
+```
+
+where the core edge `E_zeta` avoids `x`.  Apply the return transition
+(1092) to `D`, and suppose that it returns to the original singleton:
+
+```text
+Phi(D)={x}.                                         (1105)
+```
+
+Its root boundary `R_D` is an odd nonempty subset of the three-element
+set `D`.  Hence it is one of
+
+```text
+{x},       {u},       {v},       or D.              (1106)
+```
+
+For each choice, (1092) prescribes
+
+```text
+partial K_D=R_D triangle {x}.                       (1107)
+```
+
+On a five-cycle every even vertex shore has exactly two preimage edge
+chains under `partial`; they differ by the full five-edge cycle.  Because
+that cycle has odd size, exactly one of the two preimages has odd support.
+The selected shore `Z_D` is odd by (1091), so (1107) determines it
+uniquely.
+
+The four possibilities are therefore:
+
+```text
+R_D={x}:     Z_D=Z, the full five-port shore;
+R_D=D:       Z_D={zeta};
+R_D={u}:     K_D is the unique odd x--u arc of C_5;
+R_D={v}:     K_D is the unique odd x--v arc of C_5. (1108)
+```
+
+In the last two cases the odd arc has one or three edges, according as
+the relevant endpoint of `E_zeta` is adjacent to `x` or at distance two.
+Translating its edges back through `p_i |-> E_i`, this says
+`|Z_D|` is respectively one or three.
+
+Thus a realized `1 -> 3 -> 1` reversal cannot have an arbitrary odd
+selected boundary.  Before any factor-label information is used, its
+root/port projections must have exactly one of the four signatures in
+(1108): full selected closure, exact reuse of the first selected port, or
+one of two uniquely oriented odd arcs.  This classification is necessary,
+not sufficient.  The off-incidence chain `L_D` must still realize the
+listed side boundaries using active paths in one color, and a same- or
+mixed-color realization must satisfy the holonomy interfaces of Section
+328.  Those four cases are the finite targets for the next exclusion.
