@@ -8909,3 +8909,44 @@ singleton columns in Section 141, but it uses only the direct two-by-two
 fiber geometry and H-decoration exclusivity.  It leaves the three short
 odd lengths for a finite local check rather than treating `zeta_u` as an
 unbounded global state.
+
+## 170. Every secondary word has support at most five
+
+The witness count in Section 169 does not require the word to be constant.
+Whenever `b_i=1`, the H wedge at the `i`-th port contains exactly one
+incidence of `u`, and that incidence is one of the same four root-port
+positions or the unique target port.  Hence for every active label
+
+```text
+|{i:b_i=1}|<=5.                                       (535)
+```
+
+Thus all proper `u`-intervals together occupy at most five H port pairs,
+even on an arbitrarily long run.  Long zero gaps carry no secondary state.
+
+The half-flip bit `nu_u` also has a local formula.  Close the word with the
+formal endpoint edge from Section 161 and let
+
+```text
+S_u:=sum_i b_i,
+J_u:=sum_i b_i b_(i+1),                               (536)
+```
+
+where the second sum includes that formal edge.  The occupied subgraph is
+a disjoint union of paths unless it is the constant-one cycle.  Its number
+of proper components has parity `vertices+edges`, so in every case
+(including the empty and constant words, where both sides are zero)
+
+```text
+nu_u=S_u+J_u mod 2.                                   (537)
+```
+
+For a nonconstant word this is the parity of its proper intervals; for the
+constant-one word `S_u=J_u=ell(A) mod 2`, so the two terms cancel and
+`nu_u=0`, leaving `zeta_u` to distinguish that channel as intended.
+
+Therefore the remaining additive state is supported on at most five
+positions and `nu_u` is its mod-two Euler characteristic, not an unbounded
+word invariant.  Together with (533), both `pi_u` and `nu_u` are now
+explicit local functions of a five-position incidence pattern; only the
+actual-owner coupling to the marked run length remains to be supplied.
