@@ -10450,3 +10450,45 @@ with the V contribution removed by (627) and the previously proved boundary
 transports.  Equation (628) is a target, not yet an identity.  It states the
 remaining additive interface on a canonical endpoint population, with all
 completion and pairing choices eliminated.
+
+## 204. The global complement price is `lambda^T T a`
+
+Let `a(r)` be the parity with which a root or port witness `r` occurs in the
+SRP sum under consideration (one dart cycle, one owner row, or the full sum
+in (296)).  Summing (626) with these multiplicities gives
+
+```text
+sum_r a(r)Lambda_T(r)
+ =sum_r a(r) sum_y T_(r,y)lambda(y)
+ =a^T T lambda
+ =lambda^T T a.                                      (629)
+```
+
+Thus the canonical `11` complement has no residual pairing data at all; its
+total price is one bilinear evaluation of the witness-cover vector against
+the triangle-free edge graph.
+
+Since every T-degree is even,
+
+```text
+T 1=0.                                                (630)
+```
+
+Consequently a uniform witness cover `a=1` has zero total complement price.
+More generally, (629) vanishes for every Baer potential `lambda` whenever
+`a in ker T`.
+
+No claim is made here that the witness multiplicity vector of one dart cycle
+is uniform or lies in `ker T`.  The original target (296), however, sums over
+all owner colors and all dart cycles, so it is enough to prove the weaker
+global cover statement
+
+```text
+a_total in ker T,                                     (631)
+```
+
+where `a_total` retains the exact root/port occurrence multiplicities of
+that full sum.  Equations (629)--(631) reduce the remaining additive price
+identity (628) to a cover calculation in the already constructed dart-cycle
+decomposition.  If `a_total=1`, Eulerianity closes it immediately; if not,
+`T a_total` is the precise residual vector requiring H/S boundary transport.
