@@ -9987,3 +9987,50 @@ weight may in principle be killed by a label potential; diagonal weight can
 only be killed by private capacity conservation.  The full-state lift of
 Sections 181--184 retains enough data to state that conservation law, while
 the coarse chain (585) provably does not.
+
+## 194. The diagonal obstruction disappears on full boundary states
+
+The loop in (597) is a loop only after projecting a boundary occurrence to
+its coarse resolved label `ell=(d,y)`.  Before that projection, retain at an
+H--V boundary the incident data already present in the full edge state
+(577): the rooted V state, its V-side port state, and the side decoration.
+Write the resulting boundary state as
+
+```text
+hat(ell)=(ell,R_d(x),P_d(z_V),side).                  (600)
+```
+
+The two ends of a same-label H run have distinct V-side ports by (509).
+Since `P_d(z_V)` retains the port identity, their full states are distinct:
+
+```text
+ell(E_-)=ell(E_+),   but   hat(ell)(E_-) != hat(ell)(E_+). (601)
+```
+
+Thus the corresponding refined H transfer is an ordinary edge between two
+different full-state vertices.  It becomes the diagonal generator
+`[ell,ell]` only under the forgetful projection
+`hat(ell) -> ell`.
+
+Contract the full state cycle of Section 184 as in Section 187 while keeping
+the endpoint states (600).  This produces a full-state multigraph
+`G_hatXi` mapping onto `G_Xi`; its H, S, and V edges retain exactly the data
+in (586), and its incidence closure is inherited from the literal state
+closure (579).  On `G_hatXi`, an endpoint potential is allowed to distinguish
+the two saturated ports of the target-even owner:
+
+```text
+w(E_-,E_+)=hatChi(hat(ell)(E_-))+hatChi(hat(ell)(E_+)). (602)
+```
+
+Equation (602) is again a target, not a proved potential.  Its importance is
+that odd same-label runs do not formally refute **full-state** descent; they
+refute only descent through the coarse label projection.  The private
+capacity bit demanded by (599) is precisely the information separating the
+two vertices in (601).
+
+The remaining theorem can therefore be stated without demanding the false
+coarse loop condition: show that the H-parity cochain lies in the cut space
+of `G_hatXi`, or prove the weaker ambient cancellation there, using the
+root/port transition algebra.  Only after that cancellation may one project
+to the canonical coarse chain `Xi`.
