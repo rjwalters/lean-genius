@@ -15175,3 +15175,43 @@ ways: by receiving color `a`, by source root `x`, and by the concrete cycle
 `Q_a(x)` of the root owner factor.  Any proposed absorption must pay an odd
 outside defect on an odd family of those actual factor cycles; cancellation
 between different owner-factor cycles is unavailable.
+
+## 297. Every odd owner cycle carries two complementary defect routings
+
+The cycle structure supplies a second routing without any additional
+choice.  Fix a factor cycle `Q` with `epsilon_Q=1` and write
+
+```text
+J_Q:=L_I intersect Q,
+Jbar_Q:=Q triangle J_Q.                              (948)
+```
+
+Here chains are taken over `F_2`, so `Jbar_Q` is precisely the edge
+complement of `J_Q` inside the cycle.  The two supports are edge-disjoint
+and partition `E(Q)`.  Since the full cycle has zero boundary, (945) gives
+
+```text
+partial J_Q=partial Jbar_Q
+ =(X_I intersect Q) triangle (T_I^def intersect Q). (949)
+```
+
+This boundary is nonempty: both shores have odd intersection with `Q` and
+are disjoint.  Consequently both complementary chains are nonempty and
+proper.  At every boundary vertex exactly one of its two incident cycle
+edges belongs to `J_Q`, while the other belongs to `Jbar_Q`.
+
+Decompose each chain separately into path components.  Applying the
+endpoint count from (947) first to `J_Q` and then to `Jbar_Q` yields
+
+```text
+N_XT(J_Q)=N_XT(Jbar_Q)=1 mod 2.                      (950)
+```
+
+Thus every owner-factor cycle with odd source mass contains two
+complementary, edge-disjoint path systems, each with an odd number of
+actual core-to-defect paths.  The statement is cyclewise and does not pair
+the same source endpoint across the two systems; it asserts the exact
+parity routing that survives all cancellations.  In particular absorption
+on such a cycle must account for both directions around the owner factor,
+not only for the particular subchain selected by the three-label payment
+construction.
