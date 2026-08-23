@@ -21952,8 +21952,9 @@ boundary totals to realize.
 ## 410. The residual graph is five near-perfect matchings with constant defect
 
 The exact port slack also gives a useful global normal form.  For each root
-`i`, let `G_i` be the root-`i` color class of `G_sh`.  It is a matching on
-the common residual vertex set `O`, and (1421) gives
+`i`, let `G_i` be the root-`i` matching class of `G_sh`.  It is a matching on
+the common residual vertex set `O`, and (1394) together with the exact
+edge/payer bijection gives
 
 ```text
 |G_i| = q-7-delta_i.                              (1454)
