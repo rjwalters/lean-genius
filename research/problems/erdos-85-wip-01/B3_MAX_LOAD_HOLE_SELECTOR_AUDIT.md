@@ -90,6 +90,23 @@ the tenth: its cover intersection has ten points and none has a strict scaled
 cover through denominator six.  Therefore the 15/9 overlap arithmetic plus
 the full-pack cap still needs exceptional-to-pair/full-relation agreement.
 
+A joint two-point price survives that counterexample.  For distinct points
+`p,q` in the intersection of the two 15-point residual covers, put row price
+`1_{F_p} + 1_{F_q}`; overlap rows therefore carry multiplicity two.  In
+branch 3 its exact degree target is `D_p + D_q = 54`.  The dedicated exact
+probe `q9_joint_overlap_fiber_price_probe.py` restricts point prices to
+outgoing coordinates at rows in `F_p union F_q` and incoming coordinates at
+`p` or `q`, then reconstructs and verifies its MILP output in integer
+arithmetic.  It found a strict scaled joint cover in all ten independent
+exact-two-sixpack/full-pack-cap models.  Witness scales were at most six and
+costs were respectively `53/54`, `53/54`, `323/324`, `106/108`, `106/108`,
+`53/54`, `53/54`, `53/54`, `107/108`, and `215/216`.  A fresh standalone
+three-model run also passed at scale one with `53 < 54` in every model.  The
+banked theorem `false_of_scaledTwoUnitSupportsPointPriceCertificate` is the
+literal actual-relation consumer for these integer certificates.  This is
+the strongest surviving branch-3 selector, but remains finite evidence until
+existence of the joint cover is proved uniformly.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
