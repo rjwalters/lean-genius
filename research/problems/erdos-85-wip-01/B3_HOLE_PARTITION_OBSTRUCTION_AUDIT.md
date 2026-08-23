@@ -2591,8 +2591,8 @@ linearity tests from classes supported at only one or two loads.
 
 This affine result is currently numerical evidence, not yet an exact
 certificate theorem.  The existing bounded-denominator rationalizer
-verifies one of the eleven solver vertices exactly (maximum denominator
-`78`) but does not recover exact points for the other ten, whose degenerate
+verifies one of the eleven solver vertices exactly (independently reproduced
+with maximum denominator `2`) but does not recover exact points for the other ten, whose degenerate
 floating vertices produce near-ten-million denominators and fail the final
 route-slack check.  Rational polyhedral feasibility suggests exact affine
 prices should exist, but an exact basis reconstruction or a direct symbolic
