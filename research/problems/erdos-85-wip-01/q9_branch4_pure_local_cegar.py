@@ -69,13 +69,29 @@ def main() -> None:
     parser.add_argument("--timeout-seconds", type=int, default=120)
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--integral-row", type=int, action="append", default=[])
+    parser.add_argument(
+        "--disjoint-pair", type=int, nargs=2, action="append", default=[]
+    )
+    parser.add_argument(
+        "--reciprocity-pair", type=int, nargs=2, action="append", default=[]
+    )
     args = parser.parse_args()
     if args.iterations <= 0 or args.timeout_seconds <= 0:
         parser.error("iterations and timeout must be positive")
 
-    disjoint_pairs: list[tuple[int, int]] = []
-    reciprocity_pairs: list[tuple[int, int]] = []
-    integral_rows: list[int] = []
+    integral_rows = list(dict.fromkeys(args.integral_row))
+    disjoint_pairs = list(dict.fromkeys(
+        tuple(sorted(pair)) for pair in args.disjoint_pair
+    ))
+    reciprocity_pairs = list(dict.fromkeys(
+        tuple(pair) for pair in args.reciprocity_pair
+    ))
+    if any(u < 0 or u >= N for u in integral_rows):
+        parser.error("--integral-row entries must lie in 0..46")
+    if any(u < 0 or u >= N or v < 0 or v >= N or u == v
+           for u, v in disjoint_pairs + reciprocity_pairs):
+        parser.error("pair entries require distinct rows in 0..46")
     trace = []
     for iteration in range(args.iterations):
         solver, data = build_row_feasible(

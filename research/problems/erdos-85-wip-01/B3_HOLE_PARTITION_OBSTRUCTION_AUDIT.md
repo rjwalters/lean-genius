@@ -5032,6 +5032,17 @@ the iteration limit; unlike the monolithic all-row call, it made immediate
 progress.  This is a search procedure and regression harness, not a Lean
 proof or an UNSAT certificate.
 
+The driver accepts initial `--integral-row`, `--disjoint-pair`, and
+`--reciprocity-pair` refinements, so bounded runs can resume without replay.
+Continuing seed 165's four rows found further deficit rows
+`19,21,2,24,13`, then crossed into the pairwise phase: it added no-disjoint
+witnesses `{1,22}` and `{0,24}` before a 30-second iteration returned
+`unknown`.  Resuming those constraints at 90 seconds stayed SAT, added row
+25 and the third pair `{6,25}`, then returned `unknown`.  This validates the
+multi-horn refinement loop on live generated models, but the current ledger
+is neither a counterexample nor an UNSAT proof; it is a resumable search
+frontier.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
