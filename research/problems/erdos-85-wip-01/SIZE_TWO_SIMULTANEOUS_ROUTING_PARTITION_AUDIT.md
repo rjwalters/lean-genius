@@ -24933,3 +24933,43 @@ Pigeonholing the ten root pairs gives `t` such fully separated traces on
 one fixed root pair under `q>1172+82500(t-1)`.  In particular, secondary
 turns in different nonsparse traces now inherit payer-layer disjointness;
 only possible layer coincidences among edges inside one trace remain.
+
+## 470. Trace incidences improve the full-separation coefficient
+
+The `35j` incident-color term in (1668) can be sharpened using the four
+known internal edges of each trace.  Retain the notation of Section 469.
+The `j` traces have distinct selected colors and exactly `4j` trace edges,
+all internal to `X_j`.  These edges consume `8j` of the total
+`5|X_j|` edge incidences at `X_j`.
+
+Every source color incident with `X_j` is either one of the `j` selected
+trace colors or occurs on at least one of the remaining incidences.
+Consequently the number of incident colors is at most
+
+```text
+j+(5|X_j|-8j)=5|X_j|-7j<=28j.                   (1671)
+```
+
+Possible further selected-color incidences only make this upper bound
+smaller; no assumption about colors on the other three root matchings is
+being made.  Combining (1671) with the unchanged `40j` payer-linked-color
+bound from Section 469 gives
+
+```text
+|C_j|<=68j.                                       (1672)
+```
+
+Thus the same adaptive proof closes under the improved sufficient
+condition `q>1172+7480j`, and yields
+
+```text
+q>1172+7480(c-1)
+ -> an avoided nondegenerate tag-even PC cancellation; or
+ -> c full four-edge traces pairwise disjoint in vertices, source colors,
+    and their complete canonical payer-layer supports.          (1673)
+```
+
+Pigeonholing root pairs now costs `q>1172+74800(t-1)` for `t` fully
+separated traces on one fixed root pair.  This is only a constant
+improvement, but it records the internal trace edges rather than charging
+all five incidences at every trace vertex as potentially new colors.
