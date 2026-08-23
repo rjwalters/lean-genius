@@ -16338,3 +16338,66 @@ root to a singleton outside-root defect, the inactive companion routes
 label residue.  The remaining price problem can therefore be posed on the
 family of `2q-15` singleton tickets (1032)--(1037), rather than on an
 arbitrary recursively chosen shore.
+
+## 317. The singleton tickets have a global odd private-label charge
+
+The local charges in Section 316 cannot all cancel when the residual ports
+are considered together.  For an exterior color `a`, let
+
+```text
+W_a^O:={s in O:deg_(H_a^C)(s)=1}.                   (1038)
+```
+
+At a fixed residual port, the degrees `deg_(H_a^C)(s)` lie in `{0,1,2}`
+and sum to five, one edge from each root matching.  Therefore an odd number
+of exterior colors have degree one at `s`.  Since `|O|=2q-15` is odd,
+
+```text
+sum_a |W_a^O|=1 mod 2.                              (1039)
+```
+
+For every pair `(s,a)` counted in (1038), let `y'_(s,a)` be the unique
+`C`-inactive companion from the singleton normal form.  Form the binary
+private-label chain
+
+```text
+J_O:=sum_a sum_(s in W_a^O)[y'_(s,a)].              (1040)
+```
+
+Repeated companion labels cancel only in pairs.  Taking augmentation in
+the vector space on all exterior labels and using (1039) gives
+
+```text
+aug(J_O)=1,
+|supp(J_O)|=1 mod 2,
+J_O!=0.                                             (1041)
+```
+
+There is a factor-cut realization color by color.  Put
+`Hbar_a^C:=F_a[e]\H_a^C`.  At `s in W_a^O`, the active graph has degree
+one, so the edge indexed by `y'_(s,a)` is the unique incident edge of
+`Hbar_a^C`.  Consequently
+
+```text
+J_a:=sum_(s in W_a^O)[y'_(s,a)]
+    =delta_(Hbar_a^C)(W_a^O)                       (1042)
+```
+
+as an edge/label chain: an inactive edge with both endpoints in `W_a^O`
+is counted twice and cancels, while a cut edge is counted once.  Equation
+(1039) supplies at least one color `a_*` with `|W_(a_*)^O|` odd.  For every
+such color,
+
+```text
+|J_(a_*)|=|W_(a_*)^O|=1 mod 2,                     (1043)
+```
+
+because `Hbar_(a_*)^C` has degree one at every vertex of that shore.
+Thus the global residue contains an actual odd cut of `C`-inactive owner
+factor edges.  Its far endpoints may lie in `Z`, in `B`, or in
+`O\W_(a_*)^O`; only in the last case are they necessarily even-multiplicity
+residual tickets.  The assertion is a noncancellation theorem for private
+labels, not yet for their component profiles: applying `E_j` to the odd
+chain may still cancel.  It nevertheless replaces `2q-15` separately
+chosen local witnesses by one color-resolved odd inactive-factor cut on
+which a final SRP price can act.
