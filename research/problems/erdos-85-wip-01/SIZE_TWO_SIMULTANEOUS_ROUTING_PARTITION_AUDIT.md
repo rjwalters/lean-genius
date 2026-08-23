@@ -8639,3 +8639,42 @@ V-port-mate owner occurrence of the form (518).  All internal run relays are
 unsaturated by Section 160, while every saturated boundary unit already
 carries the actual secondary route label needed for owner-sensitive
 pricing.
+
+## 163. Port-only interval endpoints are pinned to one H port
+
+Fix a target-active secondary label `u`.  Since its `d--e` fiber has order
+two and `t_u=1`, it has a unique neighbor
+
+```text
+r_u in V_j.                                           (519)
+```
+
+Every port of the lifted dart cycle lies in `V_j`.  Therefore an internal
+`(0,1)` connection cell for `u` must expose `r_u`; no other H port can be a
+port-only endpoint of a `u`-interval.
+
+The H--H port pair at `r_u` has two root endpoints.  Along the alternating
+dart cycle, the only internal root transitions whose four-incidence cells
+contain `r_u` are the transitions at those two roots.  Consequently
+
+```text
+number of P-type flips for u along one H-run <= 2,     (520)
+```
+
+and when both occur they flank the single port-pair state `b(r_u)` in the
+ordered word of Section 161.  If `r_u` is an endpoint port of the maximal
+run, only the internal flank is present.
+
+This makes the local endpoint geometry almost rigid.  When both P flips are
+present and `b(r_u)=1`, they delimit the one-port interval supported at
+`r_u`.  When `b(r_u)=0`, they delimit the one-port zero gap and their outer
+sides continue into the remaining interval decomposition.  With one P flip,
+it pairs with an R flip; with no P flips, all proper intervals are R--R.
+There cannot be two disjoint P--P relay intervals for the same `u`.
+
+Root-only flips are likewise supported on the two `c`-neighbors of `u`, but
+a root can occur in more than one adjacent four-incidence cell, so no
+analogous count of two R flips is asserted.  The rigorous reduction is only
+the unique-port localization (519)--(520): the `RR/RP/PR/PP` table from
+Section 161 has at most two P-bearing interval endpoints per secondary
+label, and at most one P--P interval.
