@@ -3606,6 +3606,53 @@ theorem orderNine_secondProfile_owner_partners_defectNeighbors_subset_of_punctur
     G hfree hhigh howner hzB₁ U
       (hneighborsPunctured z (hpartnerU z hz))
 
+/-- Every owner-neighbor on an ordinary shore has high-incidence count zero
+or one, hence the owner's shore-neighborhood is exactly its bin-zero and
+bin-one parts. -/
+theorem orderNine_secondProfile_owner_neighbor_inter_ordinary_shore_bin_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    {owner : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (S : Finset V)
+    (hSsub : S ⊆ (Finset.univ : Finset V) \
+      squareOrderHighVertices G 9) :
+    G.neighborFinset owner ∩ S =
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0) ∩ S) ∪
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1) ∩ S) := by
+  classical
+  ext y
+  constructor
+  · intro hy
+    have hyParts := Finset.mem_inter.mp hy
+    have hyOrd := hSsub hyParts.2
+    have hne : y ≠ owner := by
+      intro h
+      subst y
+      exact G.loopless.irrefl owner
+        ((G.mem_neighborFinset owner owner).mp hyParts.1)
+    have hle := orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+      G hp hhigh hc2 hc3 owner y howner hyOrd hne
+    have hk : squareOrderHighIncidenceCount G 9 y = 0 ∨
+        squareOrderHighIncidenceCount G 9 y = 1 := by omega
+    rcases hk with hk | hk
+    · exact Finset.mem_union_left _ (Finset.mem_inter.mpr
+        ⟨Finset.mem_inter.mpr ⟨hyParts.1,
+          Finset.mem_filter.mpr ⟨hyOrd, hk⟩⟩, hyParts.2⟩)
+    · exact Finset.mem_union_right _ (Finset.mem_inter.mpr
+        ⟨Finset.mem_inter.mpr ⟨hyParts.1,
+          Finset.mem_filter.mpr ⟨hyOrd, hk⟩⟩, hyParts.2⟩)
+  · intro hy
+    rcases Finset.mem_union.mp hy with hy | hy
+    · have hyParts := Finset.mem_inter.mp hy
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hyParts.1).1, hyParts.2⟩
+    · have hyParts := Finset.mem_inter.mp hy
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hyParts.1).1, hyParts.2⟩
+
 /-- Satisfiable graph-facing master for the corrected four-edge `(3,1)`
 branch.  Every degree and closure premise used by the local terminal is
 derived from the actual owner-punctured articulation data. -/
