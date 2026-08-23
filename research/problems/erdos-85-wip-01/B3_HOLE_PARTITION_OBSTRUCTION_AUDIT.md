@@ -3591,12 +3591,33 @@ Lean consumer remains a valid conditional theorem; what is false is the
 claim that every admissible outer design supplies its `hbad` hypothesis
 through (13f).
 
-The replacement interface must restore genuinely global compatibility data
-from (13c), such as simultaneous symmetric degree realization, rather than
-inspect one or two local packing families only.  The seed-free exact-negation
-model must now add the symmetric simultaneous-selection constraints and
-identify the smallest global condition which excludes the stored survivor.
-Further local-kernel refinements alone cannot close B.3.
+The stored survivor nevertheless dies by a very small global compatibility
+core.  Exact enumeration in the same verifier gives
+
+```text
+row 7:  4 demanded packings, all containing row 29;
+row 29: 82 demanded packings, none containing row 7.            (13s)
+```
+
+Thus `29 in F(7)`, but the reverse incidence `7 in X_29` is impossible for
+every demanded packing at row 29.  A symmetric simultaneous selection would
+require `29 in X_7` iff `7 in X_29`, so none exists.  The abstract implication
+and its actual-residual-graph consumer are kernel-checked as
+`not_symmetricLocalGramPackingSelection_of_forced_not_reverse` and
+`false_of_forcedLocalGramNeighbor_not_reverse`.
+
+This isolates the precise replacement horn for the counterexample:
+
+```text
+some row u forces w, but no demanded packing at w contains u.   (13t)
+```
+
+Unlike (13f), (13t) uses the membership symmetry required by a global
+residual graph.  It is not yet asserted uniformly over every outer design;
+the next proof-facing candidate is the trichotomy of a deficit row, a forced
+collision, or the reciprocity failure (13t).  A wider seed-free test must
+either prove that trichotomy or expose a survivor requiring still more global
+simultaneous-selection data.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
