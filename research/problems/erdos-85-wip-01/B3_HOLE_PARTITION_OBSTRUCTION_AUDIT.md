@@ -4891,6 +4891,21 @@ provide no additional models and no evidence for or against the bound.  The
 diagnostic is retained to make the next successful stress batch decide this
 rigidity hypothesis automatically.
 
+The natural polymatroid/Hall explanation is already false.  For each
+infeasible pair `(u,v)`, maximize the *sum* of mass incident to `u` or `v`
+after dropping both degree equations.  A plain union-cut obstruction would
+force this capacity below `d(u)+d(v)`.  The new audit reports this capacity
+and flags non-Hall pairs.  In the fractional-not-forced fixture, pair
+`{10,24}` has capacity exactly 11 against target 11, while `{24,45}` even has
+capacity 12.25 against target 12; nevertheless both simultaneous degree
+projections are infeasible.  Seed 142 also has non-Hall pairs `{4,13}` and
+`{16,37}` at exact equality and `{20,22}` at exact equality.  Other pairs do
+fail the union cut (for example `{19,25}` has capacity 10 against target 11),
+so the corpus contains both mechanisms.  Therefore a three-cut max-flow or
+submodular union-capacity proof cannot establish (13av): the surviving hard
+cases depend on internal incompatibility of the two row-capacity systems,
+consistent with the observed small local-packing families.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

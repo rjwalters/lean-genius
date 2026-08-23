@@ -151,6 +151,29 @@ def partial_primal(system: dict, selected_rows: set[int]):
     )
 
 
+def pair_union_capacity(system: dict, first: int, second: int) -> float:
+    """Maximum total mass incident to either of two named rows."""
+    edges = system["edges"]
+    caps = system["caps"]
+    blocks = system["blocks"]
+    objective = np.zeros(len(edges))
+    for column, edge in enumerate(edges):
+        objective[column] = -int(first in edge) - int(second in edge)
+    matrix_cap = np.zeros((len(caps), len(edges)))
+    for row, (u, point) in enumerate(caps):
+        for column, edge in enumerate(edges):
+            if u in edge:
+                other = edge[1] if edge[0] == u else edge[0]
+                matrix_cap[row, column] = int(point in blocks[other])
+    result = linprog(
+        objective, A_ub=matrix_cap, b_ub=np.ones(len(caps)),
+        bounds=(0, None), method="highs",
+    )
+    if not result.success:
+        raise RuntimeError("pair union-capacity LP failed: " + result.message)
+    return -float(result.fun)
+
+
 def dual(system: dict, row_support: set[int] | None,
          external_point: int | None = None):
     blocks = system["blocks"]
@@ -1244,6 +1267,8 @@ def main() -> None:
                         local[u]["packing_count"],
                         local[v]["packing_count"],
                     ],
+                    "degree_sum": system["degree"][u] + system["degree"][v],
+                    "union_capacity": pair_union_capacity(system, u, v),
                 }
                 for u, v in infeasible_two_row_projections
             ]
@@ -1273,6 +1298,12 @@ def main() -> None:
             "exists_infeasible_pair_with_at_most_two_packings": (
                 None if has_local_obstruction else any(
                     min(record["packing_counts"]) <= 2
+                    for record in infeasible_pair_packing_counts
+                )
+            ),
+            "exists_non_hall_infeasible_pair": (
+                None if has_local_obstruction else any(
+                    record["union_capacity"] + 1e-8 >= record["degree_sum"]
                     for record in infeasible_pair_packing_counts
                 )
             ),
