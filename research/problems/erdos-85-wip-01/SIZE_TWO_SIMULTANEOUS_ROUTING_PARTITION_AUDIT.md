@@ -14346,3 +14346,53 @@ systems, at least one strict occurrence reaches a located residual port in
 `O` with a singleton exterior-color role.  No alternation of edge types
 along the chosen path is asserted; the invariant is the forced `Z`--`O`
 connectivity after the owner-return edges evenize every vertex of `B`.
+
+## 280. The composed escape has an uncontracted owner-edge realization
+
+The matching `nu_e` in Section 279 can be replaced by the full outside
+owner graph, retaining every intermediate residual port.  Let
+
+```text
+J_e:=A_e[e\Z]
+```
+
+be the subgraph induced after deleting the five selected ports.  Every
+private endpoint in `B` has exactly one `A_e`-neighbor in `Z`, and the ten
+endpoints are distinct, so it has exactly one remaining neighbor in `J_e`.
+A residual port lies in none of the sets `T_i`, hence has no `A_e`-neighbor
+in `Z` and retains both of its owner neighbors.  Therefore
+
+```text
+deg_(J_e)(w)=1 for w in B,
+deg_(J_e)(w)=2 for w in O.                           (883)
+```
+
+Keep the endpoint-pairing multigraph `P` from (880), and now form
+
+```text
+Xi:=P multiset_union J_e.
+```
+
+Since every `P` degree is odd, (883) again gives the exact odd set
+
+```text
+Odd(Xi)=Z disjoint_union O.                          (884)
+```
+
+The component-parity argument of (882) applies verbatim: because the five
+vertices of `Z` cannot be partitioned into even-sized odd-vertex sets
+without mixing with `O`,
+
+```text
+some component of Xi contains both Z and O.          (885)
+```
+
+A path between them now uses only endpoint-pairing edges from `P` and
+actual outside `A_e` edges.  Expanding each `P` edge into its color-factor
+path produces a completely uncontracted route in the union of the realized
+owner-factor systems.  It begins with the unique strict edge at its selected
+port and ends with a singleton-color edge at a residual port, exactly as in
+Section 279, but it also records every residual vertex traversed inside the
+target-owner return paths.  Thus later local constraints may be applied at
+those intermediate `O` vertices rather than only at the contracted
+endpoints in `B`.
