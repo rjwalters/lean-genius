@@ -8714,3 +8714,40 @@ unbounded is only the number of different labels `u` appearing along a
 long run, not the state complexity of any one label.  A global price may
 sum the per-`u` interval contributions; it need not solve an unbounded
 pairing problem within a fiber.
+
+## 165. The interval endpoint ledger has only eight count sectors
+
+For a fixed active `u`, let `n_R(u)` and `n_P(u)` be the numbers of
+root-only and port-only flips along the run.  Closure of the binary word
+means their sum is even.  Hence
+
+```text
+n_R(u)=n_P(u) mod 2.                                  (523)
+```
+
+Together with (520)--(521), the complete count list is
+
+```text
+(n_R,n_P) in {
+  (0,0),(2,0),(4,0),
+  (1,1),(3,1),
+  (0,2),(2,2),(4,2)
+}.                                                    (524)
+```
+
+The zero-flip all-zero word and the zero-flip constant-one channel are two
+geometrically different realizations of the same count sector `(0,0)`;
+the latter must be retained as an extra state.
+
+Equation (523) is the elementary capacity transfer carried by the interval
+decomposition.  A single occurrence of the unique target port `r_u`
+forces an odd number (one or three) of root-only endpoints on the two
+`c`-neighbors of `u`.  Zero or two port occurrences force an even root
+census.  Thus a one-ended target-port payment cannot remain private: it
+launches an odd root-side relay demand for the same secondary label.
+
+This is exactly the finite endpoint table needed before assigning prices.
+Ordering data still distinguishes interval types inside one sector, but no
+new endpoint counts occur.  Any proposed invariant may therefore be checked
+on the eight sectors (524), the constant channel, and the bounded orderings
+of at most six flips; no `q`-dependent family of count cases remains.
