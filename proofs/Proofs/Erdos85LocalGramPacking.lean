@@ -1699,6 +1699,39 @@ theorem false_of_unitSupportPointPriceCertificate
   exact relationIndicator_pointCapacity_of_sharedPoint
     A W B hsymm hgram hshared
 
+/-- Joint two-support actual-relation consumer.  Rows in the overlap carry
+price two, so a single point-price cover can exploit shared capacity across
+two fibers directly; no reduction to an individually strict fiber is
+required. -/
+theorem false_of_twoUnitSupportsPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (S T : Finset V) (pointPrice : V → P → ℚ)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      ((if u ∈ S then (1 : ℚ) else 0) + (if u ∈ T then 1 else 0)) +
+        ((if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)) ≤
+          (∑ p ∈ B v, pointPrice u p) +
+            ∑ p ∈ B u, pointPrice v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, pointPrice u p) <
+        (∑ u ∈ S, (d u : ℚ)) + ∑ u ∈ T, (d u : ℚ)) :
+    False := by
+  let rowPrice : V → ℚ := fun u =>
+    (if u ∈ S then 1 else 0) + (if u ∈ T then 1 else 0)
+  apply false_of_symmetricRowPointPriceCertificate
+    A H W d B hsymm hdegree hsupport hgram hshared rowPrice pointPrice
+    hpointPrice
+  · intro u v huv
+    exact hedge u v huv
+  · simpa [rowPrice, mul_add, Finset.sum_add_distrib] using hstrict
+
 /-- End-to-end actual-relation consumer for a denominator-cleared unit-support
 certificate.  This is the literal interface produced by the finite q=9
 full-fiber verifier: `weight` is integral and `scale` is its positive common
@@ -2108,6 +2141,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms exists_canonicalFractionalIntervalExtension_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_no_canonicalFractionalExtension
 #print axioms false_of_no_canonicalFractionalIntervalExtension
+#print axioms false_of_twoUnitSupportsPointPriceCertificate
 #print axioms false_of_no_symmetricLocalGramPackingSelection
 #print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
