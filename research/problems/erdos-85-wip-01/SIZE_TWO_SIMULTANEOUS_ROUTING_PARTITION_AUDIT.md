@@ -24032,7 +24032,8 @@ PC walk unless a genuine saturation occurs.  Every edge involved lies in
 `H-F`, so either terminal avoids `d`, all of `Gamma`, and every payer layer
 in `P`.
 
-Using (1603), a convenient sufficient condition for (1605) is
+Using the forbidden-edge and surplus bounds (1607), a convenient
+sufficient condition for (1609) is
 
 ```text
 q-117-f>450+10f,
@@ -24056,6 +24057,7 @@ Thus the componentwise elimination of the exact-square artifact is
 compatible with bounded source/payer avoidance.  The threshold reflects
 only the coarse worst-case cost that each deleted edge can both consume
 one unit of PC surplus and split one residual component.
+
 ## 449. Adaptive payer avoidance forces five disjoint saturation pairs
 
 The quantifier over payer-layer sets in Section 441 can be diagonalized.
@@ -24106,3 +24108,62 @@ Thus the saturation branch cannot remain one exceptional local pinch once
 payer avoidance is used adaptively.  Either a nonsaturation terminal
 appears, or the graph contains a finite but genuinely multiple family of
 source-fiber saturations with new payer layers at every stage.
+
+## 450. At `q>=4096` saturation has a fourteen-pair matching
+
+The larger avoidance budget in Section 448 upgrades the five-pair
+diagonalization to a matching-versus-transversal alternative.  Assume
+`q>=4096` and that no avoided nondegenerate tag-even PC cancellation
+occurs.  Let `mathcal L` be the family of payer-layer sets belonging to
+all saturation terminals supplied by Section 448.  Every member of
+`mathcal L` has size one or two.
+
+The threshold in (1610) holds for every `P` with at most twenty-six
+layers, since
+
+```text
+1172+110*26=4032<4096.                            (1616)
+```
+
+If some such `P` met every member of `mathcal L`, applying Section 448
+with this `P` would give neither possible terminal: cancellation is
+excluded by assumption, while the returned saturation would have a
+payer-layer set disjoint from `P`.  Hence the transversal number of
+`mathcal L` satisfies
+
+```text
+tau(mathcal L)>=27.                               (1617)
+```
+
+Take a maximal pairwise-disjoint subfamily of `mathcal L`, of size
+`nu(mathcal L)`.  The union of its members meets every member of
+`mathcal L`, since otherwise the matching was not maximal.  As each
+member has size at most two, this union is a transversal of size at most
+`2 nu(mathcal L)`.  Therefore
+
+```text
+27<=tau(mathcal L)<=2 nu(mathcal L),
+nu(mathcal L)>=14.                                (1618)
+```
+
+Choose fourteen saturation terminals whose payer-layer sets are
+pairwise disjoint.  Their twenty-eight edges are distinct: reuse of an
+edge would reuse its fixed canonical payer layer.  Their twenty-eight
+canonical payers are also distinct, by payer injectivity within a pair
+and disjointness of the layer sets between pairs.  Section 447 puts at
+most ten of these edges in any one allowed source-color fiber, while a
+degree-five target can support at most two edge-disjoint saturated pairs.
+Consequently
+
+```text
+fourteen pairwise payer-layer-disjoint saturation pairs
+ -> twenty-eight distinct edges and canonical payers,
+    at least three allowed exterior source colors,
+    at least seven distinct target vertices in O_5.              (1619)
+```
+
+Thus at the next binary scale the saturation alternative is not merely
+repeatable: unless avoided nondegenerate cancellation already occurs, it
+has a fourteen-pair matching spread across several exact source fibers
+and target vertices.  Any remaining obstruction must therefore satisfy
+substantial simultaneous packing constraints.
