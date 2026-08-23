@@ -4421,3 +4421,50 @@ that skeleton: the rooted budgets, third-color transpose coupling, or the
 global `A_e` current continuation (260).  Thus Section 79 is not optional
 bookkeeping; it is the first surviving route beyond the complete local
 pattern audit.
+
+## 81. Owner-cycle compression turns odd current into a mixed gap path
+
+Fix one four-distinct interface and its partition `P,Q,O` from Section 79.
+On every cycle of the two-factor `A_e`, delete the vertices in `P union Q`.
+Each remaining nonempty component is an `O`-path whose two boundary edge
+occurrences return to marked vertices (components containing no marked
+vertex are irrelevant).  Contract every such path to a gap edge.  Direct
+`A_e` edges among marked vertices are retained.  The result on each original
+cycle is a cyclic multigraph whose marked occurrences carry labels `P` or
+`Q`.
+
+Every cyclic binary word has an even number of label changes.  Its changing
+edges split into two disjoint types:
+
+```text
+direct P--Q edges, and
+contracted O-gap paths with one P endpoint and one Q endpoint.
+```
+
+Let `g_e(P,Q;O)` count the second type over all `A_e` cycles, with boundary
+occurrences counted when a cycle meets the marked set only once.  Then
+
+```text
+e_(A_e)(P,Q) == g_e(P,Q;O)                    (mod 2),
+epsilon_e     == g_e(P,Q;O)                    (mod 2). (261)
+```
+
+The first congruence is the even-change count on each compressed cycle; the
+second is (260).  In particular, an odd outward residue forces at least one
+actual `A_e` path
+
+```text
+P -- O -- ... -- O -- Q,                               (262)
+```
+
+whose internal ports avoid all four interface ports.  Conversely, the
+parity of these mixed gap paths is the entire residue parity.
+
+This is stronger than the nontermination statement after (260): the current
+has a canonical complementary-gap realization on the owner cycles.  It is
+also the exact analogue of Section 72's gap pairing on `B_ec`.  The closing
+problem is now a comparison of two gap systems on the same port set:
+`B_ec` supplies the unique alternating marked-run phase, while `A_e`
+supplies the mixed `P`--`Q` paths counted by (261).  A proof that these two
+gap systems have even interleaving would eliminate every odd one-edge
+residue.
