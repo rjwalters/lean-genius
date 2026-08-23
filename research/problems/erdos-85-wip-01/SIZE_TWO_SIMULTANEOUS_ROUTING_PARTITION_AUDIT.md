@@ -11194,3 +11194,39 @@ is not implied by the separate `ell` and `r` marginals, but it is expressed
 in exactly the two-shore commutator alphabet already present in
 (73rnz_cjibky)--(73rnz_cjibkza), so those identities can be tested against
 (677) without constructing any new anchor choices.
+
+## 219. The anchor defect has a four-state endpoint table
+
+There are only four scalar shore states
+
+```text
+a(v) in {00,10,01,11}                                  (678)
+```
+
+from (674).  Over `F_2`, two vectors in `F_2^2` have determinant one exactly
+when they are distinct and both nonzero.  Hence the contribution
+`1+det(a(x),a(x'))` in (677) is zero precisely for
+
+```text
+{a(x),a(x')} in {{10,01},{10,11},{01,11}}.            (679)
+```
+
+The anchor defect is supported exactly on the complementary cells:
+
+```text
+at least one endpoint has state 00; or
+the two endpoint shore states are equal.              (680)
+```
+
+Thus multiple shore anchors cause no uncontrolled case split.  Their parity
+has already collapsed to (678), and every marked same-side H edge in one of
+the three cells (679) is paid pointwise by an odd number of `rho^tri`
+anchors.  The remaining statement (673) is the evenness, after owner
+correction, of the marked H population in the seven unordered cells (680).
+
+This is the smallest scalar table available: the separate one-dart
+`ell/r` marginals do not determine the equal-state cells, just as the coarse
+H/V/S marginals failed in Section 210.  A successful proof must use either
+the horizontal-owner matching relation on these four shore states or the
+owner-resolved commutator in (73rnz_cjibky)--(73rnz_cjibkza); no additional
+anchor enumeration is required.
