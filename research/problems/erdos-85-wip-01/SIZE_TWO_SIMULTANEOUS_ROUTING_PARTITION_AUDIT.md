@@ -8027,3 +8027,105 @@ enlarge `B_Z`.
 No claim is made that (472) always holds or that a test (474) exists.  The
 gain is a canonical, orientation-free primal/dual formulation of the single
 gating statement identified in Section 149.
+
+## 152. Decoration projections give a canonical noncommuting activation alphabet
+
+The mate refinement suggested after (469) has an exact operator form.  For
+each dart decoration `tau` in the H/S/V alphabet of Section 125, let `P_tau`
+be the diagonal projection onto darts carrying `tau`.  For a secondary atom
+`q_u`, define its decoration-resolved root derivative by
+
+```text
+widehat_kappa_(tau,u):=(I+M_R)P_tau q_u.              (475)
+```
+
+This is genuinely a projected, noncommuting derivative: in general
+`M_R P_tau != P_tau M_R`, because root mates need not have the same
+decoration.  On a root pair `E={o,M_R o}`, its common value is
+
+```text
+widehat_kappa_(tau,u)(E)
+ =[decoration(o)=tau]q_u(o)
+  +[decoration(M_R o)=tau]q_u(M_R o).                 (476)
+```
+
+Thus (476) retains exactly which endpoint decoration supplied the old
+unresolved difference.  At an H--V boundary only `tau=H` and the actual V
+decorations can occur; from the viewpoint of either endpoint these are its
+root-mate decoration tags from (372)--(373).
+
+Let the refined boundary matrix have columns `(d,u,tau)` and entries
+
+```text
+widehat B_Z(E,(d,u,tau))
+ :=widehat_kappa_(tau,u)(E).                          (477)
+```
+
+Since the decoration projections partition the dart space,
+
+```text
+sum_tau widehat B_Z(E,(d,u,tau))
+ =delta_R q_u(E)=B_Z(E,(d,u)).                        (478)
+```
+
+Consequently `im B_Z` is contained in `im widehat B_Z`: the refinement
+cannot lose an activation available to the old alphabet, but it can split a
+privately cancelling old column into owner-distinguished pieces.  This is
+the precise SRP counterpart of inserting an owner projection inside the
+Baer commutator.
+
+The mass of a refined column is also exact.  Define the decoration-resolved
+root activation
+
+```text
+A_(tau,u)
+ :=1_H^T(I+M_R)P_tau q_u
+ =sum_(H--V boundaries E) widehat B_Z(E,(d,u,tau)).   (479)
+```
+
+The second equality holds because `(I+M_R)P_tau q_u` is constant on each
+root pair and `1_H` selects exactly one dart of every H--V pair.  It is
+important not to rename (479) as `D_(1_H,P_tau q_u)`: unlike `q_u`, the
+projected vector `P_tau q_u` need not be constant on port pairs, so the
+`M_P` term in `D` is not represented by (479).  Only after summing the decorations do
+the port terms recombine, and (478) gives
+
+```text
+sum_tau A_(tau,u)=D_(1_H,q_u).                        (480)
+```
+
+Hence the refined quotient-span statement
+
+```text
+alpha_Z=widehat B_Z widehat_beta+partial_H gamma      (481)
+```
+
+would imply
+
+```text
+omega_M(Z)
+ =sum_(d,u,tau) widehat_beta_(d,u,tau)
+    A_(tau,u).                                        (482)
+```
+
+Odd grading would therefore force a nonzero **decoration-resolved**
+secondary defect even when every unresolved `D_(1_H,q_u)` cancels.  This is
+exactly the activation observable missing from case A0 in Section 149; it
+does not yet couple that observable to the capacity pricing of Sections
+136--148.
+
+The remaining question is again a finite span test.  The refined alphabet
+still fails precisely when some `lambda` satisfies
+
+```text
+partial_H^T lambda=0,
+widehat B_Z^T lambda=0,
+<lambda,alpha_Z>=1.                                   (483)
+```
+
+Because of (478), every refined obstruction is automatically an old
+obstruction (474), while the converse can fail.  Thus (483) cleanly tests
+whether the mate/owner projection already suffices; if it does not, the
+required enlargement must retain still finer source-occurrence data such as
+the full cross-tag `(ell,tau,u)` of (373).  No assertion that (481) always
+holds is made here.
