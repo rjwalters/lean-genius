@@ -6107,3 +6107,45 @@ in Section 100: the H-run grading and the labeled gap endpoints.  Switches
 do not occur in (339), because an H dart is root-paired only with H or V and
 port-paired only with H.  Their contribution remains confined to transport
 inside the non-H gaps.
+
+## 115. The S marginal gives the dual switch-handoff balance
+
+Let `S` be the switch-dart indicator on the same mixed cycle.  At a root,
+an S dart occurs only in an `S--S` pair, so the root-matching cross
+correlation of `S` and `V` is zero.  At a port, an S dart is paired with S or
+with a labeled V dart.  Therefore
+
+```text
+D_(S,V)[Z] = -b_SV(Z),
+D_(S,F_(d,y))[Z]
+  = - number of port S--V handoffs with intermediate (d,y), (341)
+```
+
+where `b_SV(Z)` is the total number of S--V port pairs.
+
+Let `s_R(Z)` count S--S root pairs (the rooted switches) and `s_P(Z)` count
+S--S port pairs.  Then
+
+```text
+D_(S,S)[Z] = 2(s_R(Z)-s_P(Z)).                        (342)
+```
+
+Counting S darts through the two matchings gives
+
+```text
+2s_R(Z)=2s_P(Z)+b_SV(Z),
+D_(S,S)[Z]+D_(S,V)[Z]=0.                              (343)
+```
+
+Thus switch handoffs also satisfy an exact one-sided, fixed-cycle
+correlation balance, with their intermediate labels retained in (341).
+Together, (339) and (343) account for every mixed pair involving H or S:
+H never meets S under either matching, H meets V only at roots, and S meets
+V only at ports.  The only correlations not reduced to a marginal identity
+are the genuinely two-local V--V turns of Section 113.
+
+Equivalently, the full H/V/S pairing-defect matrix has zero row sums because
+the root and port matchings have the same one-dart marginals.  Sections 114
+and 115 make the H and S rows explicit; the V row is their negative.  Hence
+any new conserved/private invariant must refine the internal labels of the
+V--V block rather than introduce another unlabeled alphabet count.
