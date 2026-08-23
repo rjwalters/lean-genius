@@ -5958,3 +5958,41 @@ show that the two contractions assign the same resolved triangle-census
 value to the physical cycle.  This is strictly narrower than constructing
 an arbitrary conserved `Phi` and avoids the circular occurrence-pairing
 problem of Section 109.
+
+## 112. Double aggregation returns to the old symmetric blind spot
+
+One might try to use the ordered-pair conservation (328) by summing the
+target (296) over every root component `c`.  This cannot close the directed
+parity.  The resulting owner count is
+
+```text
+sum_c sum_(e != c) p_ce
+  = sum_({c,e}) (p_ce+p_ec).                           (332)
+```
+
+But the unordered summands on the right are exactly those in the first SRP
+trace contraction (48):
+
+```text
+2(p_ce+p_ec)+sum_(d != c,e) tau_ced=4q.
+```
+
+Thus the parity of (332) is already determined by the unoriented
+three-component triangle inventory.  Section 10 identified this as the
+precise blind spot: symmetric pair sums do not imply the directed row
+parity
+
+```text
+sum_(e != c) p_ce = 0                                  (333)
+```
+
+required for each fixed `c`.  Different directed rows may carry odd residues
+that cancel in (332).
+
+Consequently the doubled conservation (328), although genuinely
+two-local and intermediate-resolved, is not load-bearing until it is
+localized before the `(c,e)+(e,c)` symmetrization.  The self-duality target
+(331) must operate at fixed `c` (and ultimately on the fixed projected
+obstruction cycle), or an equivalent nonsymmetric root-marked contraction
+must retain the direction of owner transfer.  Summing (296) further would
+only reproduce a theorem already available from (48).
