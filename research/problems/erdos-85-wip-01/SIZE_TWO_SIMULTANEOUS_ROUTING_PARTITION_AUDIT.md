@@ -4120,3 +4120,57 @@ does not force equality for a dual price which distinguishes the two rooted
 transition paths.  The remaining refinement is to split `1_U` by the
 clean-color/root-incidence coordinates while preserving the cancellations
 (245)--(246).
+
+## 75. Unequal root weights recover only the run-edge defect
+
+The most immediate attempted refinement of (247) cannot distinguish the
+two route colors.  Put
+
+```text
+lambda = alpha 1_(x_-) + beta 1_(x_+).
+```
+
+The exclusions used in (245) are entrywise for the other roots `a_-` and
+`a_+`.  Only the run edge `x_-x_+` remains, and hence
+
+```text
+lambda^T A_c R_ce w = beta-alpha.                       (248)
+```
+
+The reverse endpoint term is still zero for arbitrary `alpha,beta`.  Indeed,
+
+```text
+R_ec lambda
+  = (alpha+beta)1_p + alpha 1_(p_-) + beta 1_(p_+).
+```
+
+The `p` contribution vanishes because `pp_-` and `pp_+` are absent from
+`A_e`.  Moreover `p_-` and `p_+` both lie in the closed `B_ec`-neighborhood
+of the marked center `p`, so Section 59 gives `p_-p_+` absent from `A_e` as
+well.  Thus
+
+```text
+lambda^T R_ce A_e w = 0.                                (249)
+```
+
+Pairing (243) with `lambda` now yields
+
+```text
+sum_(d != c,e) lambda^T R_cd R_de 1_(p_-)
+  - sum_(d != c,e) lambda^T R_cd R_de 1_(p_+)
+  = alpha-beta.                                         (250)
+```
+
+But the location statement following (247) says that the first third-color
+sum has its unique unit at `x_-`, whereas the second has its unique unit at
+`x_+`.  Their weighted values are therefore already `alpha` and `beta`.
+Consequently (250) is an identity, not a new constraint on the two unique
+third colors.
+
+This closes the diagonal root-reweighting branch: equal weights give the
+color-blind balance (247), and unequal weights expose exactly the run-edge
+cross term that reproduces the chosen weight difference.  A genuine
+color-incidence refinement must therefore use a functional outside
+`span{1_(x_-),1_(x_+)}` (or couple several gap steps so that their run-edge
+defects cancel); merely reweighting the two roots cannot identify or pair
+their route colors.
