@@ -11667,3 +11667,47 @@ updates the GAP (702): after substituting (704), the independent source
 carriers are the `01` double-residual flags and `00` port-secondary flags,
 together with explicit mixed-H/V/S boundary terms.  Proving their joint
 owner-route conservation remains the live theorem.
+
+## 230. The `01` pair flags also have an exact coboundary transport
+
+Fix an unordered pair of distinct residual centers `q={G,H}`.  On every root
+occurrence define the quadratic incidence flag
+
+```text
+chi_q(v):=1[G in R_v and H in R_v].                   (705)
+```
+
+For an edge `e=xx'` of `K_01`, the sets `R_x,R_(x')` are disjoint.  Let
+
+```text
+U_q(e):=1[G,H both belong to R_x union R_(x')].
+```
+
+The pair `{G,H}` lies either twice on one side or once on each side, with
+these cases exclusive.  Therefore the private cross flag (690) satisfies
+
+```text
+beta_q(e)=U_q(e)+chi_q(x)+chi_q(x').                  (706)
+```
+
+Now sum the coboundary of `chi_q` on the full closed state-edge census.  It
+vanishes.  Partitioning the edges into `K_01` and its complement gives the
+coordinatewise transport identity
+
+```text
+sum_(e in K_01) beta_q(e)
+ =sum_(e in K_01) U_q(e)
+  +sum_(e outside K_01) (chi_q(x_e)+chi_q(x'_e)).     (707)
+```
+
+Thus every `01` double-residual coordinate is transported, label pair by
+label pair, to an unordered **union flag** on its H edge plus explicit
+quadratic boundary terms on complementary H and V/S transitions.  This uses
+no unique residual label and no pairing of private occurrences.
+
+Equation (707) does not make the union flags vanish; it changes them from a
+cross-endpoint product to a symmetric edge-union incidence, the same
+collision form used by the unordered double-label capacity ledger.  Together
+with (704), it leaves `00` port flags and the `01` union flags as the two
+independent H-edge carriers, with all other terms already on complementary
+route transitions.
