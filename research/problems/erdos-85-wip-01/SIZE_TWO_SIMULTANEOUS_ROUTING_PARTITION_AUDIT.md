@@ -22337,3 +22337,55 @@ exactly `ell/2` internal edges of that matching.  Thus the remaining
 large-`q` obstruction has a rigid five-coordinate cut vector, not merely a
 scalar lower bound.  The equality case in (1482) is analyzed next via the
 signed chord graph.
+
+## 417. The signed chord graph is bipartite and measures boundary surplus
+
+Let `D_Q` be the graph on `V(Q)` whose edges are precisely the chords of
+the shortest cycle `Q`.  At `v_j`, call a chord outgoing if its color is
+`c_j` and incoming if its color is `c_(j-1)`.  These types are distinct
+because `Q` is properly colored.  The chord law (1473) says more than
+local color reuse:
+
+```text
+every chord has the same type at both endpoints.                  (1483)
+```
+
+Moreover the component-color degree cap permits at most one outgoing and
+at most one incoming chord at each vertex.  Thus `D_Q` has maximum degree
+two, and whenever a vertex has chord degree two its two incident chords
+have opposite types.
+
+Now traverse a cycle component of `D_Q`.  Across an edge its type is
+unchanged by (1483), while at the next vertex the other edge has the
+opposite type.  The edge types therefore alternate around the component,
+so the component has even length.  All other components are paths
+(including isolated vertices).  Consequently
+
+```text
+D_Q is bipartite and is a disjoint union of even cycles and paths.       (1484)
+```
+
+This decomposition exactly measures the surplus in (1482).  Let `p` be
+the number of path components of `D_Q`, counting an isolated vertex as a
+path.  Every cycle component has equally many vertices and edges, whereas
+every path component has one more vertex than edge.  Since
+`|V(D_Q)|=ell` and `|E(D_Q)|=c`,
+
+```text
+ell-c=p,
+|partial_(G_sh)V(Q)|-ell=2p.                     (1485)
+```
+
+In particular the linear boundary bound is tight exactly when `p=0`, or
+equivalently when every cycle vertex has two chords.  At that endpoint
+
+```text
+|partial_(G_sh)V(Q)|=ell
+ <-> D_Q is a disjoint union of even cycles.       (1486)
+```
+
+Otherwise the boundary is at least `ell+2`, with exactly two additional
+exit incidences for every path component of the chord graph.  Hence the
+only way a shortest clean holonomy can attain minimal expansion is through
+a spanning two-regular bipartite chord system; any break in that system
+pays a quantified boundary surplus.
