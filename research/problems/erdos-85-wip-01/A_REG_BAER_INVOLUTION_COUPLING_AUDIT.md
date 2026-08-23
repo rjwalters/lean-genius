@@ -3461,11 +3461,19 @@ mu_(E_1,r)+mu_(E_2,p)
  + sum_(z in X setminus {p,r}) (A^3 h)_z = 0      (mod 2). (73rnz_ca)
 ```
 
-Thus the remaining failure of pointwise pole reversal is not arbitrary: it
-is the restriction of the single secondary cochain `A^3h=A^2 1_L`, with two
-explicit endpoint atoms.  A label-preserving terminal may either show this
-cochain is a coboundary on the two-pencil route or price its nonzero cells;
-aggregate matching conservation is already complete.
+The apparent cochain actually vanishes in the rigid minimum branch.  As
+shown below, `A^2h=0`, and hence `A^3h=0`.  Therefore (73rnz_bz)--(73rnz_ca)
+sharpen to
+
+```text
+mu_(E_1,z)=mu_(E_2,z)       for z in X setminus {p,r},
+mu_(E_1,r)=mu_(E_2,p).                                  (73rnz_caa)
+```
+
+Pointwise pole reversal is already exact on the common domain, and the two
+unmatched endpoint parities agree.  All remaining content is finer than the
+binary `mu` labels: it lies in the owner/occurrence decomposition of the two
+endpoint atoms.
 
 In fact the whole matching ledger has a direct `Omega` price.  Recall from
 (9) that
@@ -3570,28 +3578,23 @@ class is the parity of the selected atom support.  Even support gives a local
 circuit and odd support gives a global cover.  This is the same distinction
 as the Baer quotient's pairing gauge and intrinsic bit `omega_Q`.
 
-For the two-pole state, (73rnz_cd) supplies two odd *restricted* boundary
-vertices, while (73rnz_ce) shows that the omitted endpoints close them in the
-unlabeled `A^3` ledger.  If
-the individual `mu` occurrences can be placed in a relay-incidence graph in
-which every non-pole/non-endpoint label has even degree, and in which the two
-endpoint closures carry distinguishable owner labels, adjoining one formal
-pole--pole edge Eulerizes the remaining system.  The cycle containing that
-edge is then a pole-to-pole alternating trail, and its support parity is the
-common SRP/Baer constant class.  This is a conditional dictionary, not yet a
-terminal: (73rnz_ca) proves only the total cochain boundary, not evenness at
-every relay label or separation of the endpoint closures.
-The remaining precise task is therefore
+For the two-pole state, (73rnz_caa) already pairs every binary relay label
+and identifies the two endpoint parities.  Thus the formerly proposed
+relay-evenness problem is solved at the `mu` level; adjoining a formal
+pole--pole edge would add no information there.  The parallel SRP topology
+becomes relevant only after refining each endpoint parity into owner/mate
+occurrences.  The remaining precise task is therefore
 
 ```text
-construct occurrence labels for the mu atoms such that non-pole relays
-are even and the two adjacent endpoint closures cannot pay privately.
+refine the equal endpoint mu bits by owner/mate labels and prove that a
+primary odd gauge class activates a non-private endpoint occurrence.
                                                                (73rnz_cg GAP)
 ```
 
-Once (73rnz_ce) is available, the two odd pole demands cannot disappear into
-an aggregate cancellation: they lie on one labeled trail whose gauge class
-can be compared directly with `omega_Q` or the SRP constant class.
+Equivalently, one needs a noncommuting marked operator whose endpoint value
+is not forced by the universal A-edge complement.  Only after that activation
+step is there a labeled trail whose gauge class can be compared with
+`omega_Q` or the SRP constant class.
 
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
