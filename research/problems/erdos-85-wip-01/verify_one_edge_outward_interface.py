@@ -60,6 +60,34 @@ def main() -> None:
     assert len(odd) == 8
     assert (1, 1, 1, 1) not in admissible
 
+    # Abstract two-factor completion showing that cycle-cover structure and
+    # closed-B-neighborhood A-independence still permit an odd interface.
+    b_order = tuple(range(9))
+    a_order = (8, 7, 0, 2, 4, 1, 3, 5, 6)
+
+    def cycle_edges(order: tuple[int, ...]) -> set[frozenset[int]]:
+        return {
+            frozenset((order[index], order[(index + 1) % len(order)]))
+            for index in range(len(order))
+        }
+
+    b_edges = cycle_edges(b_order)
+    a_edges = cycle_edges(a_order)
+    private = {8, 1}
+    outward = {7, 2}
+    closed_b_neighborhood = {8, 0, 1}
+    interface = sum(
+        bool(edge & private) and bool(edge & outward) for edge in a_edges
+    )
+    induced = sum(edge <= closed_b_neighborhood for edge in a_edges)
+    assert len(b_edges) == len(a_edges) == 9
+    assert induced == 0
+    assert interface == 1
+    print(
+        "two_factor_completion=odd "
+        f"interface={interface} induced_closed_B={induced}"
+    )
+
 
 if __name__ == "__main__":
     main()

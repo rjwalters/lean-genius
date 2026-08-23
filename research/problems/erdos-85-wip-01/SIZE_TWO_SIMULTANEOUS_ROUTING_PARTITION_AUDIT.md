@@ -4546,3 +4546,51 @@ complementary exit.  That signed side is exactly the datum on which the
 alternating `B_ec` phase can act.  The remaining global theorem must pair
 these signed exits along the compressed `A_e` gaps; an unsigned pairing of
 gap endpoints would be insufficient.
+
+## 84. Two-factor transversality alone still permits odd current
+
+The abstract topological shortcut suggested after (261) is false without a
+routing hypothesis.  On ports `0,...,8`, let `B` be the cyclic factor
+
+```text
+(0,1,2,3,4,5,6,7,8)
+```
+
+and mark the isolated center `p=0`, so
+
+```text
+P={8,1},    Q={7,2},    N_B[p]={8,0,1}.
+```
+
+Let the second cyclic factor have order
+
+```text
+A=(8,7,0,2,4,1,3,5,6).
+```
+
+Then `A[N_B[p]]` is independent, exactly matching the Section 59
+transversality condition.  Nevertheless the only `A` edge between `P` and
+`Q` is `8--7`, so
+
+```text
+e_A(P,Q)=1.                                            (268)
+```
+
+Both overlays are genuine cycle covers; deleting the four interface ports
+from `A` produces the complementary gap system of Section 81.  Thus
+two-regularity, complementary-gap compression, and closed-neighborhood
+independence do **not** force even interleaving.
+
+The same reproducer as Section 80 now verifies this completion and reports
+
+```text
+two_factor_completion=odd interface=1 induced_closed_B=0
+```
+
+This remains an abstract two-factor counterprofile, not an ambient
+simultaneous-routing realization.  Its role is exact: it eliminates a pure
+Jordan/FPF-pairing proof from the currently established transversality
+axioms.  Any valid global pairing theorem must use additional information
+from (255)/(267), such as the third-color transport at the outward roots or
+a compatibility equation tying the signed `A_e` exits to the alternating
+`B_ec` phase.
