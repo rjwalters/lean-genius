@@ -6050,3 +6050,60 @@ Switch handoffs and `H--V` boundaries are not covered by (334); they require
 their own two-local coordinates.  Thus (334)--(336) close the privacy audit
 for genuine triangle turns while isolating both remaining sectors and the
 exact conservation-versus-resolution tradeoff.
+
+## 114. The H marginal gives a fixed-cycle boundary correlation identity
+
+Let `H` be the zero--one observable of H-decorated darts on one mixed dart
+cycle `Z`, and let
+
+```text
+V := sum_(d,y) F_(d,y)
+```
+
+be its intermediate-resolved triangle observable.  The Section 99 alphabet
+is exclusive, so `H` and `V` have disjoint dart support.  More strongly, a
+port pair is either `H--H` or contains no H dart; hence the port-matching
+cross correlation of `H` and `V` is zero.  The root-matching cross
+correlation is exactly the number `b_HV(Z)` of `(H,V_(d,y))` boundary roots.
+Therefore
+
+```text
+D_(H,V)[Z] = b_HV(Z),
+D_(H,F_(d,y))[Z]
+  = number of H--V boundaries with intermediate (d,y). (337)
+```
+
+Let `h_R(Z)` and `h_P(Z)` be the numbers of `H--H` root and port pairs.
+The parity of the latter is `omega_M(Z)`.  Polarization with `f=g=H`
+gives
+
+```text
+D_(H,H)[Z] = 2(h_R(Z)-h_P(Z)).                        (338)
+```
+
+Count H darts through the two matchings.  Every port H-pair contributes two;
+on the root side an H-pair contributes two and an H--V boundary contributes
+one.  Thus
+
+```text
+2h_P(Z)=2h_R(Z)+b_HV(Z),
+D_(H,H)[Z]+D_(H,V)[Z]=0.                              (339)
+```
+
+Equation (339) is an exact, one-sided, fixed-cycle correlation balance.  It
+does not use the transposed component ledger and therefore supplies a first
+nontrivial instance of the occurrence-level identity (324).  Moreover (337)
+retains the full intermediate label at each boundary before the final sum.
+
+The identity is not yet the parity theorem: it rewrites the marked count as
+
+```text
+h_P(Z)=h_R(Z)+b_HV(Z)/2,                              (340)
+```
+
+so the parity still depends on the number of run-interior root pairs and on
+half the boundary count.  But it connects exactly the two sectors separated
+in Section 100: the H-run grading and the labeled gap endpoints.  Switches
+do not occur in (339), because an H dart is root-paired only with H or V and
+port-paired only with H.  Their contribution remains confined to transport
+inside the non-H gaps.
