@@ -13835,3 +13835,60 @@ SRP and the five-port geometry, not an order-64 census or certificate
 calculation.  For larger `q`, (847)--(849) supply `5(2q-15)` further actual
 label occurrences which any remaining owner-return construction must
 realize.
+
+## 270. Each receiving color has an exact global ticket load
+
+The private-endpoint tickets and residual words admit a colorwise load law.
+Fix an exterior color `a`, and let
+
+```text
+b_a:=|{(x,w) in C times B: the cell (x,w) has color a}|,
+o_a:=|{(x,w) in C times O: the cell (x,w) has color a}|.  (851)
+```
+
+The routing layer `Q_a=R_ca R_ae` has row sum four.  Its restriction to the
+five selected roots therefore contains exactly twenty cells.  The target
+fiber is the disjoint union `Z disjoint_union B disjoint_union O`.  On `Z`,
+Section 252 showed that the only exterior cells are the five strict exports,
+and color `a` receives exactly `k_a` of them.  The cells over `B` and `O`
+are precisely the occurrences counted in (851).  Consequently
+
+```text
+k_a+b_a+o_a=20.                                      (852)
+```
+
+In particular, if the actual outside-port load of color `a` is
+
+```text
+L_a:=b_a+o_a,
+```
+
+then
+
+```text
+L_a=20-k_a.                                          (853)
+```
+
+This recovers the export population from a global load scalar without
+remembering arbitrary endpoint names.  A nonreceiving exterior color has
+load twenty; a color receiving `k_a` strict exports has load exactly
+`20-k_a`.  Summing (852) over all exterior colors gives the consistency
+check
+
+```text
+sum_a k_a=5,       sum_a b_a=30,
+sum_a o_a=5(2q-15),
+sum_a(k_a+b_a+o_a)=20(q/2-2).                        (854)
+```
+
+The middle identities are the thirty letters of Section 268 and the five
+letters at each residual port from Section 269.  Both sides of the last
+identity equal `10q-40`.
+
+Equation (853) is the five-port realization of the information boundary
+seen independently in the B.3 label-compression audit: literal private
+names are unnecessary once one retains the global fiber load together with
+the local role census.  It is not yet a contradiction, because (853) does
+not determine how `L_a` splits between `B` and `O`, nor how the `B` tickets
+are paired by `nu_e`.  Those are now the only owner-return data still absent
+from the colorwise load.
