@@ -510,11 +510,15 @@ exceptional-hole full-fiber horn already succeeds with denominator at most
 six.  The two sparse-selector counterexamples `q9_13f_counterexample.json`
 and `q9_13t_counterexample.json` are full-fiber-only; the other eight payloads
 have both a full-fiber witness and an exceptional-plus-two-regular partial
-obstruction.  Thus no stored fixture uniquely needs the sparse horn.  The
-maximum-load full-fiber selector remains the empirically primary theorem
-target, while the sparse facet theorem is a valid fallback/alternative under
-the disjunctive interface.  This priority may change only when a durable
-payload with no bounded-denominator full-fiber witness is found.
+obstruction.  Thus no stored JSON fixture uniquely needs the sparse horn.
+This does **not** restore the single-fiber selector as the primary theorem:
+the independently generated tenth exact-sixpack/full-pack-cap model recorded
+below has no strict single cover through denominator six.  The strongest
+surviving full-fiber route is the joint two-point overlap certificate, which
+does close that model, including genuine cases where both individual fibers
+are non-strict.  The new disjunction tool is therefore a stored-corpus
+regression; the proof priority remains the joint overlap-fiber selector, with
+the sparse facet theorem as a fallback/alternative.
 
 The row-type pattern sharpens this to a finite geometric selector.  The new
 `--scan-exceptional-three-row-supports` exhausts all supports consisting of
