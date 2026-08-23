@@ -3734,6 +3734,35 @@ cycle exit thus needs no further atomization; it is already an odd closed
 matching ledger.  Only the cut-potential exit still lacks a contradiction or
 a transport into the owner/T-word capacity system.
 
+The cut exit also has an exact transport to that alphabet.  Let `K_D` be the
+subgraph of K on D-edges and put `O=K setminus D`.  Under the cut hypothesis,
+the adjacency matrix of `K_D` has entry `D_(u,v)(t(u)+t(v))`, so
+
+```text
+K_D x=D(t x)+t(Dx).
+```
+
+Using the minimum-shore profile `Dx=1_L+x` from (73rnz_bp) and the K-transport
+`Kx=Tx+1_L` from (73rnz_bs) gives
+
+```text
+O x=T x+1_L+D(t x)+t(1_L+x).                            (73rnz_cji)
+```
+
+Every O-edge is a non-A, non-D pair.  It therefore has one unique
+common-neighbor witness and, by (17),
+
+```text
+1[uv in O]=1+mu_(u,v).                                  (73rnz_cjj)
+```
+
+Thus both sides of the cut/cycle dichotomy are now incidence-resolved: the
+cycle branch is the odd matching ledger (73rnz_cjh), while the cut branch is
+the source equation (73rnz_cji) with each O-edge split into its unique
+common-neighbor and cross-matching atoms.  What remains in either branch is
+the same capacity problem -- preserve the owner/T-word label while pairing
+these atoms -- rather than an unlocated graph edge.
+
 The syndrome packing bound (73rnz_bm) removes one of those branches and
 rigidifies the other.  Suppose first that both endpoints are leaves and that
 `kappa_F` has no off-pole support.  Then (73rnz_ch) says `kappa_F=h`.  Since
