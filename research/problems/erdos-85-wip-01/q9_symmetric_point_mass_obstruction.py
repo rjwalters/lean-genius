@@ -261,7 +261,9 @@ def exact_certificate(system: dict, result) -> dict | None:
     }
 
 
-def unit_nondiagonal_fiber_certificate(system: dict, point: int) -> dict | None:
+def unit_nondiagonal_fiber_certificate(
+        system: dict, point: int, include_diagonal: bool = False
+        ) -> dict | None:
     """Exact unit-row-price certificate with the natural fiber price mask.
 
     Only outgoing point prices at the four non-diagonal roots through
@@ -272,11 +274,12 @@ def unit_nondiagonal_fiber_certificate(system: dict, point: int) -> dict | None:
     cap_index = system["cap_index"]
     fiber = {
         row for row, block in enumerate(blocks)
-        if point in block and row != point % 8
+        if point in block and (include_diagonal or row != point % 8)
     }
-    if len(fiber) != 4:
+    expected_size = 5 if include_diagonal else 4
+    if len(fiber) != expected_size:
         raise RuntimeError(
-            f"point {point} has non-diagonal fiber {sorted(fiber)}"
+            f"point {point} has unexpected fiber {sorted(fiber)}"
         )
     allowed = [
         index for index, (row, q) in enumerate(caps)
@@ -345,6 +348,7 @@ def main() -> None:
     parser.add_argument("--minimize-row-support", action="store_true")
     parser.add_argument("--scan-nondiagonal-fibers", action="store_true")
     parser.add_argument("--scan-unit-nondiagonal-fibers", action="store_true")
+    parser.add_argument("--scan-unit-full-fibers", action="store_true")
     args = parser.parse_args()
     if args.payload is None:
         if args.branch is None:
@@ -398,11 +402,23 @@ def main() -> None:
         print("unit_nondiagonal_fiber_certificates=" + json.dumps(
             certificates, separators=(",", ":")
         ))
+    if args.scan_unit_full_fibers:
+        certificates = [
+            certificate for point in range(N_U1)
+            if (certificate := unit_nondiagonal_fiber_certificate(
+                system, point, include_diagonal=True
+            )) is not None
+        ]
+        print("unit_full_fiber_certificates=" + json.dumps(
+            certificates, separators=(",", ":")
+        ))
     if (not args.dual and not args.minimize_row_support
             and not args.scan_nondiagonal_fibers
-            and not args.scan_unit_nondiagonal_fibers):
+            and not args.scan_unit_nondiagonal_fibers
+            and not args.scan_unit_full_fibers):
         return
     if (args.scan_nondiagonal_fibers or args.scan_unit_nondiagonal_fibers
+            or args.scan_unit_full_fibers
             ) and not (args.dual or args.minimize_row_support):
         return
     row_support = (
