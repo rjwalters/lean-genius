@@ -22994,3 +22994,71 @@ whose five root frequencies are all even.  This does not yet ensure that
 one kernel element is itself a properly colored simple cycle; it isolates
 that precise remaining selection problem instead of treating tag
 cancellation as scarce.
+
+## 430. Avoidance and disjoint holonomy abundance hold simultaneously
+
+The avoidance weights of Section 419 can be subtracted before applying the
+packing argument of Section 427.  Let `A` be a set of exterior source
+colors and put
+
+```text
+w(A):=sum_(h in A)(10-k_h),
+H_A:=H minus {edges whose source color lies in A}.
+```
+
+By (1493), deleting these colors removes at most `w(A)` edges.  Hence the
+surplus of `H_A` over the PC-cycle-free ceiling is at least
+
+```text
+R_A:=R_5-w(A).                                    (1533)
+```
+
+Assume `R_A>0`.  If a vertex set `X` meets every properly colored cycle of
+`H_A`, then deleting `X` costs at most `5|X|` edges while the Yeo ceiling
+drops by `2|X|`.  Exactly as in (1522)--(1523),
+
+```text
+|X|>=ceil(R_A/3).                                 (1534)
+```
+
+The union of a maximal vertex-disjoint PC-cycle family in `H_A` is such a
+transversal, while the union of a maximal edge-disjoint family is an edge
+transversal.  Therefore there are source-`A`-avoiding clean holonomies with
+
+```text
+vertex-disjoint covered mass >=ceil(R_A/3),
+edge-disjoint total length   >=R_A.                (1535)
+```
+
+There is an identical payer-layer statement.  If `P` is a set of payer
+layers, at most `10|P|` edges of `H` have their canonical payer in `P`, by
+(1494).  Replacing `R_A` in (1534)--(1535) by
+
+```text
+R_P:=R_5-10|P|                                    (1536)
+```
+
+gives disjoint clean holonomy families avoiding every payer layer in `P`
+whenever `R_P>0`.
+
+The two distinguished source-color consequences are explicit.  The color
+`d` has weight ten, and the strict-export support `Gamma` has weight at
+most forty-five.  Since `R_5>=q-117`,
+
+```text
+binary q>=128:
+  d-free vertex-disjoint clean holonomies cover at least
+  ceil((q-127)/3) vertices,
+  and a d-free edge-disjoint family has total length at least q-127;
+
+binary q>=256:
+  Gamma-free vertex-disjoint clean holonomies cover at least
+  ceil((q-162)/3) vertices,
+  and a Gamma-free edge-disjoint family has total length at least q-162.
+                                                               (1537)
+```
+
+Thus avoidance is not paid for by collapsing back to one exceptional
+cycle.  Even after every distinguished source color, or any fixed set of
+payer layers, is removed, the no-hole five-root sector retains linear
+disjoint properly colored holonomy mass.
