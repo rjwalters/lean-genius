@@ -8548,3 +8548,46 @@ the H decoration was reapplied.  A singleton obstruction is therefore a
 pure chain of root-only and port-only singleton transfers, with complete
 active-fiber avoidance at a silent H endpoint.  This is a substantial
 reduction, but it does not yet exclude such a chain.
+
+## 161. Each secondary label decomposes canonically into run intervals
+
+Order the H port pairs of a run `A` from its entry to its exit and, for a
+fixed `u`, let `b_i` be the common value of `q_u` on the two darts of the
+`i`-th port pair.  Port constancy is (381).  Between consecutive H ports,
+the intervening H--H root pair has connection atom
+
+```text
+eta_u(E_i)=b_i+b_(i+1).                               (514)
+```
+
+This is the local form of the telescoping identity (399): a contributing
+cell is exactly a flip of the binary word `b_1,...,b_m`.
+
+For a singleton obstruction, (500) says the endpoint values agree.  Adjoin
+a formal no-flip edge between the two ends and view the word cyclically.
+Its `1`-support is then a disjoint union of cyclic intervals.  Every proper
+interval has exactly two boundary flips, paired canonically by their order
+along the run; if the word is identically one, it is one boundary-spanning
+channel with no internal flips.  In the different-route-label singleton
+case the H endpoint signatures vanish, so no interval crosses the formal
+edge.
+
+By (513), every actual flip is one of the two unsaturated profiles
+
+```text
+(1,0): root-only endpoint,
+(0,1): port-only endpoint.                            (515)
+```
+
+Thus the internal connection ledger of a singleton obstruction is already
+a family of two-ended `u`-labeled relay intervals, plus possible constant
+channels.  There is no pairing gauge on a linear run: consecutive flips of
+the same `u` determine the intervals uniquely.  This is the SRP analogue of
+the two-ended chain decomposition in the Baer cut branch.
+
+The interval decomposition does not determine the marked run-length parity.
+The remaining task is to price the four possible endpoint-type pairs
+`RR,RP,PR,PP` in (515), together with the constant channel, against the
+actual-owner expenditure (510).  Any successful price must be invariant
+under inserting or deleting a length-two subinterval, so only an odd
+run-length holonomy can survive.
