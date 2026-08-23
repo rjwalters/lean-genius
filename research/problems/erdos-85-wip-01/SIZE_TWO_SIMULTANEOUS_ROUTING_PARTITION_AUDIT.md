@@ -8751,3 +8751,47 @@ Ordering data still distinguishes interval types inside one sector, but no
 new endpoint counts occur.  Any proposed invariant may therefore be checked
 on the eight sectors (524), the constant channel, and the bounded orderings
 of at most six flips; no `q`-dependent family of count cases remains.
+
+## 166. Endpoint prices split into a potential or a four-relay holonomy
+
+Forget interval orientation for the moment and assign binary prices
+
+```text
+w_RR, w_RP=w_PR, w_PP                              (525)
+```
+
+to the three endpoint-type pairs.  The only nontrivial reassociation of two
+R and two P endpoints replaces one `RR` and one `PP` interval by two `RP`
+intervals.  The price change is
+
+```text
+h_4:=w_RR+w_PP,                                      (526)
+```
+
+because the two `w_RP` terms cancel over `F_2`.
+
+Thus there are exactly two branches.  If `h_4=1`, the four endpoints carry
+a localized four-relay holonomy: the two pairings have opposite price.  If
+`h_4=0`, then `w_RR=w_PP`, and the price has the additive normal form
+
+```text
+w_XY=p_X+p_Y+c,
+c=w_RR,
+p_R=0,
+p_P=w_RP+w_RR.                                      (527)
+```
+
+Conversely (527) makes every four-endpoint switch price-neutral.  Hence
+(526) is the complete pairing-gauge obstruction for the R/P endpoint
+alphabet, exactly parallel to the quadrilateral identity in the Baer relay
+stars.
+
+On a single H-run the interval pairing is canonical, so no choice is needed.
+The dichotomy becomes relevant when gluing interval chains across owner
+occurrences or comparing collision-circuit decompositions.  A nonzero
+`h_4` is already a bounded four-relay object to price directly; in the
+zero-holonomy branch every glued-chain price reduces to endpoint potentials
+plus `c` times the number of intervals.  The remaining marked information
+can therefore enter only through exposed boundary potentials, interval-
+count parity, or the constant-one channel—not through an unbounded pairing
+gauge.
