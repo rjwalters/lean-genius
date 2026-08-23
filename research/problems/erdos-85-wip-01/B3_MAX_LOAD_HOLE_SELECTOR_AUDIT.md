@@ -644,8 +644,9 @@ strict certificate.  The concurrent branch has only
 points, and two of the three regular parallel-class rows through that point.
 The hard concurrent counts are `8,4,1,5,0`; replay seed 17 is exactly the
 zero case and has minimum support `{1,12}`.  Across fresh seeds zero through
-95, only seeds 47 and 81 have zero concurrent certificates, and their minimum
-supports are respectively `{10,43}` and `{21}`.  Seed 92, the hard-locus
+191, only seeds 47, 81, and 150 have zero concurrent certificates, and their
+minimum supports are respectively `{10,43}`, `{21}`, and `{0,19}`.  Seed 92,
+the hard-locus
 counterexample to normalized class selection, has two concurrent
 certificates.  Thus the disjunction survives the full corpus while explaining
 the earlier nonconcurrency counterexample instead of discarding concurrency
