@@ -2866,18 +2866,24 @@ def main() -> int:
                   f"exact_rational={exact} max_denominator={denominator}")
     if args.audit_common_affine_load_dual:
         survivors = []
+        survivor_labels = []
         for label, candidate in all_data:
             if dual_seed_filter and label[1] not in dual_seed_filter:
                 continue
             _, bad_rows = zero_loss_restricted_hall_audit(candidate)
             if not bad_rows:
                 survivors.append(candidate)
-        result = common_affine_load_half_atom_dual(survivors)
+                survivor_labels.append(label)
+        if survivors:
+            result = common_affine_load_half_atom_dual(survivors)
+        else:
+            result = (True, 0, 0, 0, 0, 0, (), "no survivors")
         print(f"common_affine_load_dual success={result[0]} "
               f"instances={result[1]} alpha_classes={result[2]} "
               f"local_classes={result[3]} shared_alpha_classes={result[4]} "
               f"shared_local_classes={result[5]} "
-              f"component_sizes={result[6]} message={result[7]}")
+              f"component_sizes={result[6]} labels={survivor_labels} "
+              f"message={result[7]}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
