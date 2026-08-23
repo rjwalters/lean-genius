@@ -336,6 +336,50 @@ theorem orderNine_order27_owner_lowSet_degree_eq_six
   simp [hownerB, hownerH] at h
   omega
 
+/-- Equation (20) at an ordinary exceptional point.  Its deleted-owner
+defect neighborhood contributes seven points when it lies on the large
+shore and zero otherwise, giving low-set degree three versus four. -/
+theorem orderNine_order27_exceptional_lowSet_degree_eq_if
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (y : V) (B Z H : Finset V)
+    (hyH : y ∉ H)
+    (hdefectB :
+      ((secondOrderDefectGraph G).neighborFinset y ∩ B).card =
+        if y ∈ B then 7 else 0)
+    (heq20 : ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+        8 * (if x ∈ B then 1 else 0) - 4 -
+          6 * (if x ∈ H then 1 else 0) +
+          ((G.neighborFinset x ∩ Z).card : ℤ)) :
+    (G.neighborFinset y ∩ Z).card = if y ∈ B then 3 else 4 := by
+  have h := heq20 y
+  rw [hdefectB] at h
+  simp [hyH] at h
+  by_cases hyB : y ∈ B <;> simp [hyB] at h ⊢ <;> omega
+
+/-- Equation (20) at an ordinary regular point whose full eight-point
+defect neighborhood stays on its own shore.  Its low-set degree is four on
+either side. -/
+theorem orderNine_order27_regular_lowSet_degree_eq_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (y : V) (B Z H : Finset V)
+    (hyH : y ∉ H)
+    (hdefectB :
+      ((secondOrderDefectGraph G).neighborFinset y ∩ B).card =
+        if y ∈ B then 8 else 0)
+    (heq20 : ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+        8 * (if x ∈ B then 1 else 0) - 4 -
+          6 * (if x ∈ H then 1 else 0) +
+          ((G.neighborFinset x ∩ Z).card : ℤ)) :
+    (G.neighborFinset y ∩ Z).card = 4 := by
+  have h := heq20 y
+  rw [hdefectB] at h
+  simp [hyH] at h
+  by_cases hyB : y ∈ B <;> simp [hyB] at h <;> omega
+
 /-- Cardinal saturation behind the repaired placement argument: if a
 six-point set is contained in the union of two disjoint three-point sets and
 already contains the first one, it contains the second one as well. -/
@@ -1025,6 +1069,8 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_largeShore_profile_package
 #print axioms orderNine_order27_highRoot_neighbors_subset_lowSet
 #print axioms orderNine_order27_owner_lowSet_degree_eq_six
+#print axioms orderNine_order27_exceptional_lowSet_degree_eq_if
+#print axioms orderNine_order27_regular_lowSet_degree_eq_four
 #print axioms six_set_contains_other_three_of_partition
 #print axioms orderNine_order27_owner_binZero_neighbors_subset_W
 #print axioms orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
