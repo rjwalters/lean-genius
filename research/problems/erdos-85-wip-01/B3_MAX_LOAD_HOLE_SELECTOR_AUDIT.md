@@ -64,7 +64,10 @@ The cleaner unconditional branch-4 candidate is global: the two punctured
 regular classes miss exactly one point of each color, giving six special
 occurrences without requiring hole incidence.  All tracked models have a
 strict full fiber at one of these global special points.  This selector should
-supersede the conditional multispecial-hole horn.
+supersede the conditional multispecial-hole horn.  The option
+`--global-special-only` encodes its partial-mass negation: the tracked serious
+payload is `UNSAT` in 0.3 seconds of solving, while the unrestricted instance
+with residual type ledgers remains `UNKNOWN` after 120 seconds.
 
 ## Proof decomposition exposed by the load
 

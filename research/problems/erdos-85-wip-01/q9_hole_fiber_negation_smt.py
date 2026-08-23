@@ -26,6 +26,10 @@ their shared point, rather than simultaneously for all six hole incidences.
 ``--multispecial-hole-row`` is the branch-4 horn: it forces the named hole
 row to contain at least two points missing a punctured regular class and
 asserts the negation only on those special-positive point fibers.
+
+``--global-special-only`` is the unconditional branch-4 selector.  It drops
+hole incidence and asserts the negation on every point missed by either
+punctured regular class (six occurrences by the outer class ledgers).
 """
 
 from __future__ import annotations
@@ -73,6 +77,11 @@ def main() -> int:
         help=("branch 4 only: force this exceptional hole row to have at "
               "least two special-positive points and test only those fibers"),
     )
+    parser.add_argument(
+        "--global-special-only", action="store_true",
+        help=("branch 4 only: test all global puncture-miss point fibers, "
+              "without requiring hole incidence"),
+    )
     args = parser.parse_args()
     if args.shared_hole_point_only and args.branch != 3:
         parser.error("--shared-hole-point-only requires --branch 3")
@@ -83,6 +92,12 @@ def main() -> int:
     if (args.multispecial_hole_row is not None
             and (args.hole_row is not None or args.shared_hole_point_only)):
         parser.error("--multispecial-hole-row cannot be combined with hole selectors")
+    if args.global_special_only and args.branch != 4:
+        parser.error("--global-special-only requires --branch 4")
+    if (args.global_special_only
+            and (args.hole_row is not None or args.shared_hole_point_only
+                 or args.multispecial_hole_row is not None)):
+        parser.error("--global-special-only cannot be combined with other selectors")
 
     outer_seed = (
         None if args.witness is None
@@ -135,21 +150,26 @@ def main() -> int:
         # A single system per color is enough: exactly one color contains the
         # shared point, and implications for the other colors are vacuous.
         holes = [shared_holes[0]]
-    if args.multispecial_hole_row is not None:
-        if args.multispecial_hole_row not in holes:
-            parser.error(f"--multispecial-hole-row must lie in {holes}")
+    if args.multispecial_hole_row is not None or args.global_special_only:
         punctured_classes = (range(8, 15), range(15, 22))
-        hole = args.multispecial_hole_row
         for point in range(N_U1):
             special_positive[point] = Or([
                 Not(Or([incidence[row, point] for row in centers]))
                 for centers in punctured_classes
             ])
+    if args.multispecial_hole_row is not None:
+        if args.multispecial_hole_row not in holes:
+            parser.error(f"--multispecial-hole-row must lie in {holes}")
+        hole = args.multispecial_hole_row
         solver.add(Sum([
             If(And(incidence[hole, point], special_positive[point]), 1, 0)
             for point in range(N_U1)
         ]) >= 2)
         holes = [hole]
+    if args.global_special_only:
+        # The system name retains a dummy hole index, but selection below is
+        # purely global and does not refer to this row.
+        holes = [holes[0]]
     if args.hole_row is not None:
         if any(row not in holes for row in args.hole_row):
             parser.error(f"--hole-row must lie in {holes}")
@@ -197,6 +217,8 @@ def main() -> int:
                     if args.shared_hole_point_only
                     else And(incidence[hole, point], special_positive[point])
                     if args.multispecial_hole_row is not None
+                    else special_positive[point]
+                    if args.global_special_only
                     else incidence[hole, point]
                 )
                 # Only edges touching the selected five-root fiber can carry
@@ -258,7 +280,8 @@ def main() -> int:
         f"branch={args.branch} holes={holes} partial_mass_systems={systems} "
         f"residual_type_ledger={args.residual_type_ledger} "
         f"shared_hole_point_only={args.shared_hole_point_only} "
-        f"multispecial_hole_row={args.multispecial_hole_row}"
+        f"multispecial_hole_row={args.multispecial_hole_row} "
+        f"global_special_only={args.global_special_only}"
     )
     started = time.monotonic()
     result = solver.check()
