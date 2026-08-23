@@ -494,6 +494,38 @@ def integer_full_bundle_dual(data: dict, time_limit: float = 60) -> tuple:
             int(np.min(column_values, initial=0)))
 
 
+def linear_state_bundle_dual(data: dict) -> tuple[bool, str]:
+    """Test external-label potentials linear in signature and role census."""
+    from scipy.sparse import hstack
+
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     _, _) = full_bundle_primal_system(data)
+    # One constant, four signature coordinates, and five census coordinates.
+    basis_count = 10
+    latent_count = N + basis_count
+    projection = lil_matrix((equalities.shape[0], latent_count))
+    for t in range(N):
+        projection[t, t] = 1
+    for row, name in enumerate(equality_names[N:], start=N):
+        feature = name[1]
+        if feature[0] != 'bundle' or feature[2] != 0:
+            continue
+        values = (1,) + tuple(feature[1]) + tuple(feature[3])
+        for coordinate, value in enumerate(values):
+            projection[row, N + coordinate] = value
+    columns = equalities.T @ projection.tocsr()
+    inequalities = hstack([-columns, -capacities.T], format='csr')
+    latent_rhs = np.r_[equality_rhs[:N], np.zeros(basis_count)]
+    scalar = np.r_[latent_rhs, capacity_rhs].reshape(1, -1)
+    result = linprog(
+        np.zeros(latent_count + capacities.shape[0]),
+        A_ub=inequalities, b_ub=np.zeros(columns.shape[0]),
+        A_eq=scalar, b_eq=[-1],
+        bounds=[(None, None)] * latent_count
+        + [(0, None)] * capacities.shape[0], method='highs')
+    return result.success, result.message
+
+
 def flat_signature_audit(data: dict) -> tuple[
         int, int, int, tuple[str, ...], tuple[tuple[int, ...], ...], bool]:
     """Audit the retracted simple signature quotient (12qy).
@@ -1326,6 +1358,8 @@ def main() -> int:
                         help="extract sparse duals for restricted-Hall survivors")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
                         help="search integer duals for restricted-Hall survivors")
+    parser.add_argument("--audit-linear-bundle-dual", action="store_true",
+                        help="test linear state-potential duals on survivors")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -1538,6 +1572,18 @@ def main() -> int:
         print(f"integer_bundle_dual_survivors={integer_labels}")
         audit_failed |= any(not success or not exact
                             for _, success, exact, _ in integer_labels)
+    if args.audit_linear_bundle_dual:
+        linear_labels = []
+        for label, candidate in all_data:
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            success, message = linear_state_bundle_dual(candidate)
+            branch, seed_number, colors = label
+            print(f"linear_bundle_dual branch={branch} seed={seed_number} "
+                  f"colors={colors} success={success} message={message}")
+            linear_labels.append((label, success))
+        print(f"linear_bundle_dual_survivors={linear_labels}")
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
@@ -1546,7 +1592,8 @@ def main() -> int:
             or args.audit_bundle_rank or args.audit_bundle_deletion
             or args.audit_zero_loss_restriction
             or args.audit_full_bundle_primal or args.audit_full_bundle_dual
-            or args.audit_integer_bundle_dual):
+            or args.audit_integer_bundle_dual
+            or args.audit_linear_bundle_dual):
         return 1 if audit_failed else 0
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")

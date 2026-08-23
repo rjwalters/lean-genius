@@ -1772,6 +1772,22 @@ the two transport sums in `(12rp)`.  A uniform equality-case proof may
 therefore be sought as a potential assignment on the finite root/census state
 graph, with the one-unit deficit supplied by the selected demand rows.
 
+The potential cannot be compressed to the obvious additive statistics.  The
+diagnostic mode `--audit-linear-bundle-dual` restricts
+
+```text
+p_t(b) = beta_0 + sum_{j=1}^4 beta_j sigma_t(j)
+                  + sum_{r=0}^4 gamma_r census_t(b,r)          (12rq)
+```
+
+on external labels, while still allowing arbitrary demand-row weights and
+arbitrary nonnegative capacity prices.  HiGHS finds this restricted dual
+system infeasible for all three survivors.  This is another sampled floating
+no-go, not an exact impossibility theorem, but it rules out the most tempting
+uniform ansatz: the state potential must distinguish joint signature/census
+patterns nonlinearly (or be constructed by a combinatorial propagation rule)
+rather than by a single additive score.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
