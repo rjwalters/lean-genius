@@ -4552,6 +4552,34 @@ two-row Farkas theorem cannot be replaced by the older forced-collision horn;
 the correct prospective dichotomy is “forced integral collision or strict
 two-row fractional collision.”
 
+All nine collision selectors can furthermore be chosen at a hole point with
+`special(p)=1`, not at a point missed by both punctured classes.  The scanner
+field `exists_special_shared_point_collision` checks this after solving the
+restricted dual.  This is the useful interface to the puncture ledger: pick
+an exceptional row `h` and a point `p∈B_h` missed by exactly one punctured
+class, then choose a regular triple row `t` through `p` whose restricted
+two-row dual is strict.
+
+Existence of such a point is not an outer-incidence theorem by itself.
+`q9_branch4_no_single_special_hole_witness.json` is an exact outer design in
+which every hole point has special count zero or two.  It is immediately
+row-deficient: exact one-row covers have values `9/2<5` at row 16 and
+`23/5<6` at row 23.  The option `--exclude-single-special` reproduces this
+counterexample, while `q9_branch4_row_feasible_outer.py
+--exclude-single-special-hole` combines the negation with packing witnesses.
+The unrestricted all-47-row instance is UNKNOWN at 180 seconds; fixing the
+durable counterexample makes it UNSAT, as expected from its audited deficit.
+Thus the plausible next dichotomy is
+
+```text
+some strict one-row cover; or
+some single-special hole incidence (h,p) feeding the two-row selector.
+```
+
+Only the first counterexample and the fixed-instance check are established;
+the conditional existence statement remains a candidate, not a claimed
+computational proof.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

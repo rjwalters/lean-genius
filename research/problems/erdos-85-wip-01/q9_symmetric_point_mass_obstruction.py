@@ -728,6 +728,17 @@ def main() -> None:
     if args.scan_exceptional_two_row_supports:
         holes_begin = N_TRIPLE - (2 if system["branch"] == 3 else 4)
         holes = range(holes_begin, N_TRIPLE)
+        punctured_classes = (
+            (range(8, 15), range(15, 22))
+            if system["branch"] == 4 else ()
+        )
+        special_count = {
+            point: sum(
+                not any(point in system["blocks"][row] for row in rows)
+                for rows in punctured_classes
+            )
+            for point in range(N_U1)
+        }
         edge_set = set(system["edges"])
         certificates = []
         for hole in holes:
@@ -767,6 +778,10 @@ def main() -> None:
                         else "pair"
                     ),
                     "block_intersection": block_intersection,
+                    "shared_point_special": (
+                        special_count[block_intersection[0]]
+                        if len(block_intersection) == 1 else 0
+                    ),
                     "mutually_eligible_pair": pair in edge_set,
                     "margin": certificate["margin"],
                     "row_prices": certificate["row_prices"],
@@ -819,6 +834,11 @@ def main() -> None:
             ),
             "exists_regular_shared_point_collision_normal_form": any(
                 certificate["has_shared_point_collision_certificate"]
+                for certificate in regular_certificates
+            ),
+            "exists_special_shared_point_collision": any(
+                certificate["has_shared_point_collision_certificate"]
+                and certificate["shared_point_special"] > 0
                 for certificate in regular_certificates
             ),
             "exists_exceptional_regular_forced_collision":

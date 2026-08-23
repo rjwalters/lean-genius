@@ -34,6 +34,7 @@ from q9_symmetric_point_mass_obstruction import (
 
 def build_row_feasible(timeout_seconds: int, denominator: int,
                        rows: list[int], shared_integral_relation: bool,
+                       exclude_single_special_hole: bool,
                        template: dict | None = None):
     solver, data = build(
         4, timeout_seconds * 1000, True, outer_seed=template,
@@ -42,6 +43,18 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
 
     incidence = data["incidence"]
     k = data["k"]
+
+    if exclude_single_special_hole:
+        punctured_classes = (range(8, 15), range(15, 22))
+        for hole in range(22, 26):
+            for point in range(N_U1):
+                hits = [
+                    Or([incidence[row, point] for row in rows])
+                    for rows in punctured_classes
+                ]
+                solver.add(Implies(
+                    incidence[hole, point], hits[0] == hits[1]
+                ))
 
     def kadj(a: int, b: int):
         return False if a == b else k[edge_key(a, b)]
@@ -135,6 +148,11 @@ def main() -> None:
         help=("also synthesize one common symmetric 0/1 relation with all "
               "row degrees, mutual eligibility, and point capacities"),
     )
+    parser.add_argument(
+        "--exclude-single-special-hole", action="store_true",
+        help=("forbid every hole point from being missed by exactly one "
+              "punctured class"),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
@@ -146,7 +164,8 @@ def main() -> None:
     template = json.loads(args.template.read_text()) if args.template else None
     solver, data = build_row_feasible(
         args.timeout_seconds, args.denominator, rows,
-        args.shared_integral_relation, template=template
+        args.shared_integral_relation, args.exclude_single_special_hole,
+        template=template
     )
     solver.set(random_seed=args.random_seed)
     result = solver.check()
