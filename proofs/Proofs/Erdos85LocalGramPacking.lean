@@ -39,6 +39,14 @@ def HasLocalGramPackingObstruction (H W : V → V → Prop)
     IsForcedLocalGramNeighbor H W d u w ∧
     IsForcedLocalGramNeighbor H W d v w
 
+/-- A simultaneous choice of demanded local packings whose membership
+relation is symmetric.  This is the exact global compatibility retained by
+the neighborhoods of an undirected residual graph. -/
+def IsSymmetricLocalGramPackingSelection (H W : V → V → Prop)
+    (d : V → ℕ) (X : V → Finset V) : Prop :=
+  (∀ u, IsLocalGramPacking H W d u (X u)) ∧
+  ∀ u v, v ∈ X u ↔ u ∈ X v
+
 omit [Fintype V] in
 /-- Forced membership is exactly the nonexistence of a demanded packing
 which omits the candidate. -/
@@ -167,6 +175,46 @@ theorem relationNeighborFinset_isLocalGramPacking
     have huy : A u y := (Finset.mem_filter.mp hy).2
     exact hgram x y u hW (hsymm.symm u x hux) (hsymm.symm u y huy)
 
+/-- Actual neighborhoods of a symmetric residual relation form a symmetric
+simultaneous selection of demanded local packings. -/
+theorem relationNeighborFinset_isSymmetricLocalGramPackingSelection
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False) :
+    IsSymmetricLocalGramPackingSelection H W d
+      (relationNeighborFinset A) := by
+  constructor
+  · exact relationNeighborFinset_isLocalGramPacking
+      A H W d hsymm hdegree hsupport hgram
+  · intro u v
+    constructor
+    · intro huv
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ u,
+        hsymm.symm u v (Finset.mem_filter.mp huv).2⟩
+    · intro hvu
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ v,
+        hsymm.symm v u (Finset.mem_filter.mp hvu).2⟩
+
+/-- **Global compatibility consumer.**  If the eligible local packing
+families admit no symmetric simultaneous selection, no symmetric residual
+relation can realize the prescribed degrees, support, and Gram law. -/
+theorem false_of_no_symmetricLocalGramPackingSelection
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hbad : ∀ X : V → Finset V,
+      ¬ IsSymmetricLocalGramPackingSelection H W d X) :
+    False :=
+  hbad (relationNeighborFinset A)
+    (relationNeighborFinset_isSymmetricLocalGramPackingSelection
+      A H W d hsymm hdegree hsupport hgram)
+
 /-- **Capacity-deficit / forced-collision consumer.**  If the eligible local
 packing system has either no demanded packing at one row, or two
 `W`-conflicting rows force the same neighbor, then no symmetric residual
@@ -207,5 +255,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_conflict_of_common_forcedLocalGramNeighbor
 #print axioms eligible_of_forcedLocalGramNeighbor_of_noObstruction
 #print axioms not_conflict_of_forcedLocalGramNeighbors
+#print axioms relationNeighborFinset_isSymmetricLocalGramPackingSelection
+#print axioms false_of_no_symmetricLocalGramPackingSelection
 
 end Erdos85
