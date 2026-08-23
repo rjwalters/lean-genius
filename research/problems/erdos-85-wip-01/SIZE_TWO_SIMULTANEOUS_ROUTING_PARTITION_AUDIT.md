@@ -24552,3 +24552,41 @@ not every other edge of its factor cycle.  Thus a zero-syndrome cycle in
 (1645) is an unconditional nondegenerate PC cancellation; it is not yet
 an avoided cancellation unless its remaining edges also avoid the chosen
 forbidden supports.
+
+## 461. Every rainbow color has an exact four-edge two-root trace
+
+The total ten-edge census has a rootwise refinement.  For an allowed
+rainbow color `h`, avoidance gives `h notin Gamma`, hence `k_h=0`.
+Section 399 derives its ten ordinary edges from exactly two rooted
+`h`-labels at each of the five core roots.  Therefore, for the fixed
+roots `{r,s}` in (1642),
+
+```text
+|E_h(M) intersect G_r|=2,
+|E_h(M) intersect G_s|=2.                        (1646)
+```
+
+Thus the `h`-colored subgraph of the alternating factor
+`G_r union G_s` has exactly four edges, two from each matching.  It has
+maximum degree two and contains the marked saturated two-edge turn at
+the unique selected rainbow target carrying color `h`.
+
+Writing `P_j` for a path with `j` edges, the component containing that
+turn has at least two edges.  Since the ambient factor is a disjoint
+union of simple even alternating cycles, the four-edge `h`-trace has one
+of the finite underlying shapes
+
+```text
+P_4 or C_4,
+P_3 disjointUnion P_1,
+P_2 disjointUnion P_2,
+P_2 disjointUnion P_1 disjointUnion P_1,          (1647)
+```
+
+with the marked turn lying in a nontrivial path or cycle component.
+The root labels alternate along every nontrivial component, and the
+`C_4` case is an entire alternating factor cycle.  Consequently the
+rainbow obstruction in (1642) is not merely a collection of ten-edge
+color fibers: each selected color leaves one of four constant-size
+traces on the same fixed two-root factor, while its payer support remains
+disjoint from every other selected color.
