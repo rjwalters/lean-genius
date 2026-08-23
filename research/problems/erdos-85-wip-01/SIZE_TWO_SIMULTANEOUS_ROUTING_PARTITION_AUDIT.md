@@ -13293,3 +13293,58 @@ tag is the full root-row triple (811), which also remembers the companion
 outside port of `z_i`.  The remaining transport problem may therefore be
 posed on the labeled vectors `delta_i^a`, rather than on the physical
 boundary words `W_(u_i)` whose untagged color sum vanishes.
+
+## 260. No color distribution hides both surviving channels
+
+Aggregate the destination tags within one receiving color:
+
+```text
+Delta_a:=sum_(i in I_a) delta_i^a.
+```
+
+Let `aug` sum the coordinates over the incidence components `j!=0`.  By
+(812), every strict export contributes one to this augmentation.  Therefore
+
+```text
+aug(Delta_a)=|I_a|=k_a mod 2.                        (813)
+```
+
+In particular, every color receiving an odd number of exports has
+`Delta_a!=0`.  This complements the H-boundary criterion (800), which is
+nonzero for every proper nonempty subset regardless of its cardinality.
+
+The two branches of (801) can now be sharpened:
+
+```text
+monochromatic: k_a=5 for one color;
+               partial H_a=0 but Delta_a!=0;
+
+multicolor:    every used color has partial H_a!=0;
+               every used color of odd k_a also has Delta_a!=0.     (814)
+```
+
+Since the nonzero `k_a` sum to five, the multicolor branch always has at
+least one odd-`k_a` color, and hence at least one color in which both
+channels are visible.  Consequently
+
+```text
+for every distribution of the five strict exports,
+some color has a nonzero active H-boundary or a nonzero
+outside-destination tag; the two vanish simultaneously for no branch.  (815)
+```
+
+This does not yet contradict a completion: complementary owner states may
+transport either channel.  It removes the last purely color-distribution
+escape.  In the multicolor case the located boundary `partial H_a` is the
+primary demand, with `Delta_a` as an additional tag on odd populations.  In
+the monochromatic case the active boundary closes, but its five private
+rows export an unavoidable odd destination profile.  A final owner price
+may therefore be stated uniformly on the pair
+
+```text
+(partial H_a,Delta_a),
+```
+
+and need only prove that the realized complementary transitions cannot pay
+a nonzero pair.  Neither monochromatic closure nor an even-sized receiving
+population makes the five-port curl invisible.
