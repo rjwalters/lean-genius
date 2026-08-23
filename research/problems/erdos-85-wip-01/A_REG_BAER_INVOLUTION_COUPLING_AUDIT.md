@@ -3749,6 +3749,18 @@ Using the minimum-shore profile `Dx=1_L+x` from (73rnz_bp) and the K-transport
 O x=T x+1_L+D(t x)+t(1_L+x).                            (73rnz_cji)
 ```
 
+Expanding `D=A^2+J+I` removes the remaining raw defect incidence.  The two
+copies of `t x` cancel, leaving
+
+```text
+O x=T x+(1+t)1_L+A^2(t x)+<t,x>1.                       (73rnz_cjia)
+```
+
+The `A^2(t x)` term is a parity sum of unique common-neighbor witnesses
+(off the zero diagonal), while the other terms are the already labeled
+T-incidence, line-owner source, and one scalar bit.  This is the fully
+incidence-resolved cut transport.
+
 Every O-edge is a non-A, non-D pair.  It therefore has one unique
 common-neighbor witness and, by (17),
 
