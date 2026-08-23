@@ -105,7 +105,9 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
         triple_neighbors = Sum([If(adj(u, v), 1, 0) for v in range(N_TRIPLE) if v != u])
         for g, support in enumerate(pair_groups):
             miss[u, g] = Bool(f"miss_{u}_{g}")
-            solver.add(miss[u, g] == (Sum([If(adj(u, v), 1, 0) for v in support]) == 0))
+            if "marked-miss" not in relax:
+                solver.add(miss[u, g] == (Sum([If(adj(u, v), 1, 0)
+                                               for v in support]) == 0))
         marked_defect = Sum([If(miss[u, g], 1, 0) for g in range(3)])
         if "row-ledger" in relax:
             continue
@@ -121,8 +123,9 @@ def build(branch: int, timeout_ms: int, full_incidence: bool,
             solver.add(marked_defect == triple_neighbors - 3)
 
     # Each marked B1 vertex has exactly five B0 defect neighbors.
-    for g in range(3):
-        solver.add(Sum([If(miss[u, g], 1, 0) for u in range(N)]) == 5)
+    if "marked-miss" not in relax:
+        for g in range(3):
+            solver.add(Sum([If(miss[u, g], 1, 0) for u in range(N)]) == 5)
 
     # Residual C4-freeness: two B0 vertices have at most one common residual
     # neighbor.  If their U1 incidence blocks intersect, that already supplies
@@ -384,7 +387,7 @@ def main() -> int:
                         choices=("residual-c4", "b0-c4", "b0-orthogonal",
                                  "dtb-common", "dtb-cap", "dtb-aq-cap",
                                  "dtb-orthogonal", "dtb-zero", "dtb-rows",
-                                 "dtb-columns", "row-ledger"))
+                                 "dtb-columns", "row-ledger", "marked-miss"))
     parser.add_argument("--kissat", action="store_true",
                         help="bit-blast the model to DIMACS and run Kissat")
     args = parser.parse_args()
