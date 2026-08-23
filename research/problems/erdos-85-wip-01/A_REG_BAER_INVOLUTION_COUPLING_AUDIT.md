@@ -2018,6 +2018,34 @@ owner edge itself lies in D (hence T); this is the same repeated-target
 versus distinct-port terminal isolated independently in the simultaneous
 transport lane.
 
+The T-parity ledger at this owner edge is exact.  Write `w_i in M intersect
+S` for the unique cross-shore D-neighbor of `z_i`, and put
+
+```text
+delta = 1_[z_1 z_2 in D],
+tau_i = 1_[z_i w_i in A],
+b_i = |{E_j : z_i y_(i,j) is in D}|.
+```
+
+The outside A-neighbors of `z_i` are exactly `z_(3-i)` and the witnesses
+`y_(i,j)`, while among its inside A-neighbors only the unique D-mark `w_i`
+can lie in T.  Therefore
+
+```text
+deg_T(z_i)=delta+tau_i+b_i,
+delta+tau_i+b_i = 0                              (mod 2),
+tau_1+b_1 = tau_2+b_2                            (mod 2). (73rnk)
+```
+
+If the two transversals share a witness `y_(1,j)=y_(2,j)`, then that point is
+the unique common A-neighbor of `z_1,z_2`.  The owner edge is consequently
+non-D (`delta=0`), and the triangle `z_1z_2y_(1,j)` makes both incident
+witness edges non-D as well; the shared coordinate contributes zero to both
+`b_i`.  Thus (73rnk) isolates the remaining phase exactly: owner-edge status
+equals cross-mark status plus the parity of triangle-free witness edges.
+This is the empty-line-transversal version of the outward signed residue in
+the simultaneous transport terminal.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 

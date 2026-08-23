@@ -994,6 +994,18 @@ theorem binarySquare_no_singleton_partialBaer_core
   · omega
   · omega
 
+/-- The common owner-edge contribution cancels between the two endpoint
+T-parity equations, leaving equal cross-mark-plus-witness phase. -/
+theorem binarySquare_twoPort_phase_agreement
+    (ownerPhase markPhase₁ markPhase₂ witnessPhase₁ witnessPhase₂ : ℕ)
+    (h₁ : Even (ownerPhase + markPhase₁ + witnessPhase₁))
+    (h₂ : Even (ownerPhase + markPhase₂ + witnessPhase₂)) :
+    Even (markPhase₁ + witnessPhase₁ + (markPhase₂ + witnessPhase₂)) := by
+  obtain ⟨k₁, hk₁⟩ := h₁
+  obtain ⟨k₂, hk₂⟩ := h₂
+  use k₁ + k₂ - ownerPhase
+  omega
+
 end
 
 end Erdos85
@@ -1035,3 +1047,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_saturatedR2_hEqF_impossible
 #print axioms Erdos85.binarySquare_saturatedMixed_hEqF_impossible
 #print axioms Erdos85.binarySquare_no_singleton_partialBaer_core
+#print axioms Erdos85.binarySquare_twoPort_phase_agreement
