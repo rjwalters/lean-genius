@@ -16449,3 +16449,62 @@ singleton tickets and is exactly an internal edge removed from the cut
 chain (1042).  A final magnitude price may therefore charge all
 `N_dist` labels, while a parity price may act on the surviving odd cut
 support (1047).
+
+## 319. Inactive-factor paths carry an odd residual family to Z or B
+
+The apparent residual-to-residual branch of the cut (1042) disappears if
+one follows an entire component of the inactive complement.  Fix a color
+`a` for which
+
+```text
+W:=W_a^O,
+|W|=1 mod 2,                                       (1048)
+```
+
+and write `Hbar:=Hbar_a^C`.  Since `F_a[e]` is a two-factor, at every
+`e`-endpoint `v` one has
+
+```text
+deg_Hbar(v)=2-deg_(H_a^C)(v).                      (1049)
+```
+
+Thus the endpoints of the nontrivial path components of `Hbar` are
+exactly the vertices of `H_a^C`-degree one.  (The other components are
+cycles or isolated vertices and have no such endpoint.)  Pair the two
+endpoints of each nontrivial path component,
+and let `tau_a` denote this fixed-point-free pairing on the degree-one
+vertices.  Counting the endpoints in `W` path by path gives
+
+```text
+#{P nontrivial path component of Hbar:
+    |Ends(P) intersect W|=1}=|W|=1 mod 2.          (1050)
+```
+
+Indeed a path with both endpoints in `W` contributes two, a crossing
+path contributes one, and a path disjoint from `W` contributes zero.
+For every crossing path its other endpoint `t=tau_a(s)` has
+`deg_(H_a^C)(t)=1` and lies outside `W`.  It cannot lie in `O`: by
+definition every residual port of degree one in this color belongs to
+`W_a^O`.  Since
+
+```text
+e=Z disjoint_union B disjoint_union O,
+t belongs to Z union B.                            (1051)
+```
+
+Consequently there is an odd family of pairwise edge-disjoint actual
+`C`-inactive factor paths
+
+```text
+s in W_a^O  --[component of Hbar_a^C]-->  t in Z union B.   (1052)
+```
+
+The endpoint in `Z` is a degree-one, hence `01`, return to the selected
+five-port component.  The endpoint in `B` is a degree-one private-owner
+ticket.  An individual first cut edge may still enter a residual port of
+active degree zero, but continuing through its inactive-complement path
+must eventually reach one of these two terminal roles; there is no third
+residual terminal class.  This is a path-level parity dichotomy, not yet
+a contradiction: the terminal paths may still cancel after projection
+to component profiles, and a final SRP price must distinguish or consume
+their `Z` and `B` endpoints.
