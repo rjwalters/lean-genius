@@ -4468,3 +4468,39 @@ problem is now a comparison of two gap systems on the same port set:
 supplies the mixed `P`--`Q` paths counted by (261).  A proof that these two
 gap systems have even interleaving would eliminate every odd one-edge
 residue.
+
+## 82. The outward interface is the radius-one/radius-two B boundary
+
+The ports introduced algebraically in Section 77 have a direct location in
+the line-cycle.  The port `p_-` labels the `F_e[c]` edge `x_-a_-`; its two
+`B_ec` neighbors are therefore the labels of the other factor edges at
+`x_-` and `a_-`, namely `p` and `q_-`.  The plus side is symmetric.  In the
+four-distinct branch, the five ports occur consecutively as the simple
+`B_ec` path
+
+```text
+q_- -- p_- -- p -- p_+ -- q_+.                        (263)
+```
+
+Thus `P={p_-,p_+}` is exactly the radius-one boundary of the isolated marked
+center `p`, while `Q={q_-,q_+}` is its oriented radius-two boundary.  The
+four bits in (254) are all possible `A_e` edges from radius two to radius
+one.  They split canonically into
+
+```text
+same-side:  q_-p_-, q_+p_+,
+crossed:    q_-p_+, q_+p_-.                           (264)
+```
+
+The same-side pairs are the two outward `B_ec` edges of (263); the crossed
+pairs bridge across the marked center.  Consequently (261) has a completely
+self-indexed reading: an odd radius-two/radius-one `A_e` interface forces an
+odd number of complementary `A_e` gap paths between the two boundary
+layers of one isolated `B_ec` mark.
+
+This identifies the common cyclic order needed for the final interleaving
+problem.  No arbitrary shore labeling remains: reversal of the marked
+`B_ec` path swaps the minus and plus sides, while preserving the unordered
+partition `{P,Q}` and the parity in (261).  What remains is to compare the
+endpoints of the mixed `A_e` gaps with the fixed alternating phase on
+successive marked centers of `B_ec`.
