@@ -1498,6 +1498,63 @@ def relationNeighborFinset (A : V → V → Prop) [DecidableRel A]
     (u : V) : Finset V :=
   Finset.univ.filter (A u)
 
+/-- Exact candidate load of the row fiber carrying a point `p`.  For the
+q=9 application, `H` is mutual trace eligibility and `B u` is the U1 block
+of row `u`. -/
+def relationFiberLoad
+    {P : Type*} [DecidableEq P]
+    (H : V → V → Prop) [DecidableRel H]
+    (B : V → Finset P) (p : P) : ℕ :=
+  ∑ u ∈ Finset.univ.filter (fun u => p ∈ B u),
+    (relationNeighborFinset H u).card
+
+/-- Fiber-load Fubini identity.  For a symmetric candidate relation, summing
+the number of fiber rows visible from every row equals the sum of candidate
+degrees over the fiber itself.  This is the formal generic version of
+`L = Qᵀ H 1` used by the minimum-load branch-four selector. -/
+theorem sum_card_relationNeighborFinset_inter_fiber_eq_relationFiberLoad
+    {P : Type*} [DecidableEq V] [DecidableEq P]
+    (H : V → V → Prop) [DecidableRel H]
+    (B : V → Finset P) (p : P)
+    (hsymm : Std.Symm H) :
+    let F := Finset.univ.filter fun u => p ∈ B u
+    (∑ t : V, (relationNeighborFinset H t ∩ F).card) =
+      relationFiberLoad H B p := by
+  classical
+  dsimp only
+  let F := Finset.univ.filter fun u => p ∈ B u
+  change (∑ t : V, (relationNeighborFinset H t ∩ F).card) =
+    ∑ u ∈ F, (relationNeighborFinset H u).card
+  calc
+    (∑ t : V, (relationNeighborFinset H t ∩ F).card) =
+        ∑ t : V, ∑ u ∈ F, if H t u then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro t _
+      have hinter : relationNeighborFinset H t ∩ F = F.filter (H t) := by
+        ext u
+        simp [relationNeighborFinset, and_comm]
+      rw [hinter, Finset.card_eq_sum_ones, Finset.sum_filter]
+    _ = ∑ u ∈ F, ∑ t : V, if H t u then 1 else 0 := by
+      rw [Finset.sum_comm]
+    _ = ∑ u ∈ F, (relationNeighborFinset H u).card := by
+      apply Finset.sum_congr rfl
+      intro u _
+      calc
+        (∑ t : V, if H t u then 1 else 0) =
+            ∑ t : V, if H u t then 1 else 0 := by
+          apply Finset.sum_congr rfl
+          intro t _
+          by_cases htu : H t u
+          · have hut : H u t := @Std.Symm.symm V H hsymm t u htu
+            simp [htu, hut]
+          · have hut : ¬ H u t := by
+              intro hut
+              exact htu (@Std.Symm.symm V H hsymm u t hut)
+            simp [htu, hut]
+        _ = (relationNeighborFinset H u).card := by
+          rw [relationNeighborFinset, Finset.card_eq_sum_ones,
+            Finset.sum_filter]
+
 /-- A symmetric residual relation satisfying the Gram law supplies a local
 packing at every row. -/
 theorem relationNeighborFinset_isLocalGramPacking
@@ -2038,6 +2095,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
     exact hgram u v w huv huwA hvwA
 
 #print axioms relationNeighborFinset_isLocalGramPacking
+#print axioms sum_card_relationNeighborFinset_inter_fiber_eq_relationFiberLoad
 #print axioms relationIndicator_pointCapacity_of_sharedPoint
 #print axioms relationIndicator_isCanonicalFractionalIntervalExtension
 #print axioms false_of_localGramPacking_deficit_or_forced_collision
