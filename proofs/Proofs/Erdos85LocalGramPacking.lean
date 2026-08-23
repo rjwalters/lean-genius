@@ -247,6 +247,119 @@ theorem no_canonicalFractionalIntervalExtension_of_pointCover
   rw [hdemand] at hdual
   exact (not_lt_of_ge hdual) htotal
 
+/-- A strict point cover only on the residual candidates after contracting
+the canonical reverse-forced fiber also rules out the canonical fractional
+primal.  Forced rows already carry unit mass; point capacity makes every
+other positive-mass block disjoint from all forced blocks. -/
+theorem no_canonicalFractionalIntervalExtension_of_contractedPointCover
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H W : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (u : V) (weight : P → ℚ)
+    (hweight : ∀ p, 0 ≤ weight p)
+    (hcover : ∀ x, H u x →
+      x ∉ reverseForcedLocalGramNeighborFinset H W d u →
+      x ∉ reverseImpossibleLocalGramNeighborFinset H W d u →
+      (∀ f ∈ reverseForcedLocalGramNeighborFinset H W d u,
+        f ≠ x → Disjoint (B f) (B x)) →
+      1 ≤ ∑ p ∈ B x, weight p)
+    (htotal :
+      (reverseForcedLocalGramNeighborFinset H W d u).card +
+        (∑ p : P, weight p) < d u) :
+    ¬ ∃ mass, IsCanonicalFractionalIntervalExtension H W d B u mass := by
+  classical
+  let F := reverseForcedLocalGramNeighborFinset H W d u
+  let I := reverseImpossibleLocalGramNeighborFinset H W d u
+  rintro ⟨mass, hmass⟩
+  rcases hmass with
+    ⟨hbounds, hdemand, heligible, hcapacity, hforced, himpossible⟩
+  let residualMass : V → ℚ := fun x => if x ∈ F then 0 else mass x
+  have hresidualNonneg : ∀ x, 0 ≤ residualMass x := by
+    intro x
+    by_cases hx : x ∈ F <;> simp [residualMass, hx, (hbounds x).1]
+  have hresidualCapacity : ∀ p,
+      (∑ x ∈ Finset.univ.filter fun z => p ∈ B z, residualMass x) ≤ 1 := by
+    intro p
+    refine le_trans (Finset.sum_le_sum fun x _ => ?_) (hcapacity p)
+    by_cases hx : x ∈ F
+    · simp [residualMass, hx, (hbounds x).1]
+    · simp [residualMass, hx]
+  have hresidualCover : ∀ x, 0 < residualMass x →
+      1 ≤ ∑ p ∈ B x, weight p := by
+    intro x hx
+    have hxF : x ∉ F := by
+      intro hxF
+      simp [residualMass, hxF] at hx
+    have hxmass : 0 < mass x := by simpa [residualMass, hxF] using hx
+    have hxI : x ∉ I := by
+      intro hxI
+      have hzero : mass x = 0 := by
+        apply himpossible x
+        simpa [I, reverseImpossibleLocalGramNeighborFinset] using hxI
+      linarith
+    apply hcover x (heligible x hxmass) hxF hxI
+    intro f hfF hfx
+    by_contra hblocks
+    rw [Finset.not_disjoint_iff] at hblocks
+    obtain ⟨p, hpf, hpx⟩ := hblocks
+    have hfmass : mass f = 1 := by
+      apply hforced f
+      simpa [F, reverseForcedLocalGramNeighborFinset] using hfF
+    let S := Finset.univ.filter fun z => p ∈ B z
+    have hfS : f ∈ S := by simp [S, hpf]
+    have hxS : x ∈ S := by simp [S, hpx]
+    have hpairSubset : ({f, x} : Finset V) ⊆ S := by
+      intro z hz
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+      rcases hz with rfl | rfl
+      · exact hfS
+      · exact hxS
+    have hpairLe : mass f + mass x ≤ ∑ z ∈ S, mass z := by
+      calc
+        mass f + mass x = ∑ z ∈ ({f, x} : Finset V), mass z := by
+          simp [hfx]
+        _ ≤ ∑ z ∈ S, mass z := by
+          exact Finset.sum_le_sum_of_subset_of_nonneg hpairSubset
+            (fun z _ _ => (hbounds z).1)
+    have hcap : (∑ z ∈ S, mass z) ≤ 1 := by
+      simpa [S] using hcapacity p
+    rw [hfmass] at hpairLe
+    linarith
+  have hdual : (∑ x : V, residualMass x) ≤ ∑ p : P, weight p :=
+    totalMass_le_totalPointWeight B residualMass weight
+      hresidualNonneg hweight hresidualCapacity hresidualCover
+  have hFmass : (∑ f ∈ F, mass f) = (F.card : ℚ) := by
+    calc
+      (∑ f ∈ F, mass f) = ∑ _f ∈ F, (1 : ℚ) := by
+        apply Finset.sum_congr rfl
+        intro f hfF
+        apply hforced f
+        simpa [F, reverseForcedLocalGramNeighborFinset] using hfF
+      _ = (F.card : ℚ) := by simp
+  have hresidualSum :
+      (∑ x : V, residualMass x) =
+        ∑ x ∈ Finset.univ.filter (fun z => z ∉ F), mass x := by
+    calc
+      (∑ x : V, residualMass x) =
+          ∑ x : V, if x ∉ F then mass x else 0 := by
+        apply Finset.sum_congr rfl
+        intro x _
+        by_cases hx : x ∈ F <;> simp [residualMass, hx]
+      _ = ∑ x ∈ Finset.univ.filter (fun z => z ∉ F), mass x := by
+        rw [Finset.sum_filter]
+  have hsplit :
+      (∑ x : V, mass x) =
+        (∑ x ∈ F, mass x) +
+          ∑ x ∈ Finset.univ.filter (fun z => z ∉ F), mass x := by
+    rw [← Finset.sum_filter_add_sum_filter_not
+      (s := Finset.univ) (p := fun z => z ∈ F) (f := mass)]
+    simp
+  have hmassDecomp :
+      (d u : ℚ) = (F.card : ℚ) + ∑ x : V, residualMass x := by
+    rw [← hdemand, hsplit, hFmass, hresidualSum]
+  have htotal' :
+      (F.card : ℚ) + (∑ p : P, weight p) < d u := htotal
+  linarith
+
 omit [Fintype V] in
 /-- **Fractional point-cover counting engine.**  If the point sets attached
 to selected rows are pairwise disjoint and each receives weight at least one,
@@ -1379,6 +1492,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms no_canonicalFractionalIntervalExtension_of_forced_sharedPoint
 #print axioms totalMass_le_totalPointWeight
 #print axioms no_canonicalFractionalIntervalExtension_of_pointCover
+#print axioms no_canonicalFractionalIntervalExtension_of_contractedPointCover
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
