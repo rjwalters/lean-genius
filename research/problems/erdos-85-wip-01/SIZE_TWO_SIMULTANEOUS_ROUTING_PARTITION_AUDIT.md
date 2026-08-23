@@ -6324,8 +6324,10 @@ atomization: lift phi^(d,j) to intermediate-resolved occurrence values;
 descent:     equal (d,y) occurrences receive the same normalized value.
 ```
 
-If both hold, that common value is `chi(d,y)`, and the atomized version of
-(92) supplies (353) along each local transition.
+If both hold, that common value is a candidate `chi(d,y)`.  One must still
+identify the atomized version of (92) with the phase cochain in (353); that
+identification is an additional requirement, not a formal consequence of
+atomization.
 
 This also identifies the obstruction sharply.  A primitive may satisfy all
 local coboundary equations and still fail to descend because two occurrences
@@ -6343,10 +6345,10 @@ intermediate-resolved lift constant on every fiber
 {V occurrences on Z} -> {(d,y)}.                       (355)
 ```
 
-Equation (355), together with the already proved local law (92), is a direct
-and checkable route to the holonomy theorem.  It may be weakened to descent
-only modulo the annihilator of the particular closed chain `Xi`, but full
-fiber constancy is the clean uniform target.
+Equation (355), together with a verified phase identification for (92),
+would be a direct and checkable route to the holonomy theorem.  It may be
+weakened to descent only modulo the annihilator of the particular closed
+chain `Xi`, but full fiber constancy is the clean uniform target.
 
 There is an immediate falsification checkpoint.  On a diagonal transfer
 edge `[ell,ell]`, every label coboundary has value
@@ -6399,12 +6401,13 @@ kappa_(i,y):=phi_(i-1,y)+phi_(i,y),
 sum_y kappa_(i,y)=kappa_i^(d,j),                       (359)
 ```
 
-where the last equality is (92).  Thus the intermediate lift and its local
-coboundary law exist canonically; no choice of how to distribute an
-aggregate primitive among the `y` labels remains.
+where the last equality is (92).  Thus this intermediate lift and its local
+coboundary law exist canonically; no choice of how to distribute the
+displayed matrix products among the `y` labels remains.  Whether these atoms
+evaluate the desired phase is separate.
 
-The remaining descent question is now concrete.  Formula (357) says that
-the value attached to an occurrence of `(d,y)` is
+The behavior of this atomization on occurrences is now concrete.  Formula
+(357) says that
 
 ```text
 t_y times the parity of the three incidences
@@ -6412,9 +6415,40 @@ x_i--y, x_(i+1)--y, z_i--y.                           (360)
 ```
 
 The multiplier `t_y` depends only on `(d,y)` and the target component
-`V_j`; all possible non-descent lies in the displayed three-incidence
-parity as the occurrence index `i` varies.  Therefore full label descent is
-equivalent to constancy of (360) on the occurrences of each fixed `(d,y)`.
-This removes the atomization half of (355) and leaves a single incidence-
-parity transport statement, suitable for a C4/owner-factor argument or a
-direct small-model falsification test.
+`V_j`; variation lies in the displayed three-incidence parity.  The next
+necessary check is its value when `(d,y)` is the actual triangle label of
+the occurrence, before attempting any descent argument.
+
+## 120. The direct primitive atom vanishes on its own routed triangle
+
+Suppose `(d,y)` labels the V dart `(x_i,z_i)`.  Then
+
+```text
+R_cd(x_i,y)=1,       R_ed(z_i,y)=1.
+```
+
+The other root `x_(i+1)` of the port `z_i` cannot also be adjacent to `y`:
+otherwise `z_i` and `y` would be two common neighbors of the consecutive
+owner-cycle roots `x_i,x_(i+1)`, producing a four-cycle.  Hence
+
+```text
+R_cd(x_(i+1),y)=0,
+phi_(i,y)=t_y(1+0+1)=0.                               (361)
+```
+
+The symmetric statement holds when the labeled dart is `(x_(i+1),z_i)`.
+Thus every atom (357) evaluated on the very routed triangle whose label it
+was meant to distinguish is zero.
+
+This is a decisive scope correction.  The atomization (356)--(359) is an
+exact decomposition of the aggregate canonical primitive, but its diagonal
+on-occurrence restriction cannot be the nontrivial label potential `chi` in
+(352).  Nonzero aggregate values come from **off-occurrence** intermediates,
+and the identity (92) mixes those off-route atoms before summing over `y`.
+
+Consequently the final holonomy character cannot be obtained by assigning
+`chi(d,y)=phi_(i,y)` at the occurrence carrying `(d,y)`.  A viable use of
+the primitive must instead retain an off-occurrence secondary-fiber census
+and cross-tag it with the actual route—the same source/consumed-feature
+structure as the B3 bundle (12rb).  Equation (361) explains why the
+secondary fiber, rather than the routed intermediate itself, is essential.
