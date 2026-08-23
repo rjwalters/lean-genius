@@ -2514,7 +2514,11 @@ The occurrence graph has a canonical partial matching of private labels.
 Label each edge of H by the outside vertex that was contracted to it.  Every
 outside full center is active: it is non-D to X and Y by cross-D exhaustion,
 and it cannot use the common point v in the `epsilon=1` case because v already
-has majority replication two at X,Y.  There are exactly `q/2` such centers.
+has majority replication two at X,Y.  Its X-witness cannot be Y either:
+routing (60) puts every majority A-neighbor of the inside center Y inside S,
+whereas the outside full center lies outside; symmetrically its Y-witness is
+not X.  Hence the two witnesses lie in `U_+` and `U_-`.  There are exactly
+`q/2` such centers.
 Their H-edges form a matching.  Indeed a point of `U_+` already lies on the
 full line X, so two additional outside-full neighbors would give majority
 replication at least three; the same holds on `U_-`.  Consequently
@@ -2574,7 +2578,8 @@ They are therefore linearly independent over every coefficient field.  The
 coefficient-peeling argument of the shared tagged-bundle schema now forces
 the two realized orientations over every z to have equal weight (indeed both
 weights are one here).  Thus occurrence-weight reversibility is proved for
-the entire `a=2,s=0` transversal layer, uniformly in epsilon.
+the dart-incidence form of the `a=2,s=0` transversal layer, uniformly in
+epsilon.
 
 Consequently every additive route-odd functional whose label is resolved at
 the active outside occurrence cancels pairwise on H.  Any surviving
@@ -2583,6 +2588,14 @@ couple labels belonging to different H-edges in a way not visible to the
 private coordinate `e_z`.  This cleanly separates the solved local
 reversibility problem from the remaining genuinely simultaneous label
 transport.
+
+This does **not** prove reversal symmetry for a ledger that counts each
+H-edge only once and attaches a genuinely two-local label to its ordered
+endpoint pair.  Such an edge label need not split into the two dart weights
+used in (73rnz_u), and its reversal need not be a second realized occurrence.
+The result solves precisely the incidence-separable part of the shared
+rigidity problem; the nonseparable two-endpoint layer remains open, in exact
+agreement with the one-port telescoping obstruction in the SRP lane.
 
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
