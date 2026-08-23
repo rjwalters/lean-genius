@@ -28,10 +28,14 @@ from z3 import is_true, sat
 
 from q9_b0_residual_defect_sat import color
 from q9_exceptional_hole_sixpack_sat import build
-from q9_symmetric_point_mass_obstruction import fixed_system
+from q9_symmetric_point_mass_obstruction import (
+    fixed_system,
+    unit_nondiagonal_fiber_optimum,
+)
 
 
-def scaled_joint_cover(system: dict, p: int, q: int, scale: int):
+def scaled_joint_cover(
+        system: dict, p: int, q: int, scale: int, details: bool = False):
     row_price = [
         int(p in block) + int(q in block) for block in system["blocks"]
     ]
@@ -85,16 +89,39 @@ def scaled_joint_cover(system: dict, p: int, q: int, scale: int):
         raise RuntimeError("integer reconstruction violates price bounds")
     if int(slacks.min()) < 0 or scaled_cost >= scale * target:
         raise RuntimeError("integer reconstruction violates the joint cover")
-    return {
+    certificate = {
         "points": [p, q],
         "scale": scale,
         "scaled_cost": scaled_cost,
         "scaled_target": scale * target,
         "minimum_scaled_slack": int(slacks.min()),
     }
+    if details:
+        certificate["fiber_rows"] = {
+            str(point): [u for u, block in enumerate(system["blocks"])
+                         if point in block]
+            for point in (p, q)
+        }
+        certificate["fiber_blocks"] = {
+            str(u): sorted(system["blocks"][u]) for u in sorted(support)
+        }
+        certificate["nonzero_prices"] = [
+            [*system["caps"][old], int(prices[new])]
+            for new, old in enumerate(allowed) if prices[new]
+        ]
+        certificate["tight_edges"] = [
+            [*edge, int(slack)] for edge, slack in zip(
+                [edge for edge in system["edges"]
+                 if row_price[edge[0]] + row_price[edge[1]]],
+                slacks,
+            ) if slack == 0
+        ]
+    return certificate
 
 
-def one_model(timeout_ms: int, random_seed: int, max_scale: int):
+def one_model(
+        timeout_ms: int, random_seed: int, max_scale: int,
+        details: bool = False, genuine_only: bool = False):
     solver, data = build(
         3, timeout_ms, True,
         hole_reciprocity=True,
@@ -134,24 +161,61 @@ def one_model(timeout_ms: int, random_seed: int, max_scale: int):
             set(block) for block in chosen(triples) + chosen(pairs)
         )))
     overlap = sorted(covers[0] & covers[1])
+    single_optima = {
+        point: unit_nondiagonal_fiber_optimum(
+            system, point, include_diagonal=True)
+        for point in overlap
+    } if genuine_only or details else {}
+    genuine_pairs = [
+        pair for pair in combinations(overlap, 2)
+        if not single_optima[pair[0]]["strict"]
+        and not single_optima[pair[1]]["strict"]
+    ] if single_optima else []
     for scale in range(1, max_scale + 1):
         for p, q in combinations(overlap, 2):
-            if (certificate := scaled_joint_cover(system, p, q, scale)):
-                return {"overlap_card": len(overlap), "certificate": certificate}
-    return {"overlap_card": len(overlap), "certificate": None}
+            if genuine_only and (
+                    single_optima[p]["strict"] or single_optima[q]["strict"]):
+                continue
+            if (certificate := scaled_joint_cover(
+                    system, p, q, scale, details=details)):
+                answer = {
+                    "overlap_card": len(overlap), "certificate": certificate
+                }
+                if genuine_only:
+                    answer["genuine_pair_count"] = len(genuine_pairs)
+                if details:
+                    answer["single_fiber_optima"] = [
+                        single_optima[point] for point in (p, q)
+                    ]
+                    answer["overlap_single_fiber_optima"] = [
+                        single_optima[point] for point in overlap
+                    ]
+                return answer
+    answer = {"overlap_card": len(overlap), "certificate": None}
+    if genuine_only:
+        answer["genuine_pair_count"] = len(genuine_pairs)
+    return answer
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--samples", type=int, default=1)
+    parser.add_argument("--seed-start", type=int, default=0)
     parser.add_argument("--max-scale", type=int, default=6)
     parser.add_argument("--timeout-seconds", type=int, default=60)
+    parser.add_argument("--details", action="store_true")
+    parser.add_argument(
+        "--genuine-only", action="store_true",
+        help="only scan pairs whose two single-fiber optima are non-strict",
+    )
     args = parser.parse_args()
     if args.samples <= 0 or args.max_scale <= 0:
         parser.error("--samples and --max-scale must be positive")
     results = [
-        one_model(args.timeout_seconds * 1000, seed, args.max_scale)
-        for seed in range(args.samples)
+        one_model(
+            args.timeout_seconds * 1000, seed, args.max_scale, args.details,
+            args.genuine_only)
+        for seed in range(args.seed_start, args.seed_start + args.samples)
     ]
     print(json.dumps(results, separators=(",", ":")))
     passed = sum(result["certificate"] is not None for result in results)

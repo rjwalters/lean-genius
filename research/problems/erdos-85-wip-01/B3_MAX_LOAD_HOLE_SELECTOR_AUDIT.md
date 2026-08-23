@@ -107,6 +107,19 @@ literal actual-relation consumer for these integer certificates.  This is
 the strongest surviving branch-3 selector, but remains finite evidence until
 existence of the joint cover is proved uniformly.
 
+The joint effect is not merely the sum of two individually strict fibers.
+The probe's `--genuine-only` mode computes exact primal and dual optima for
+every overlap-point single fiber, then excludes every pair having a strict
+single member.  A fresh exact model still has a joint witness at `p=9,q=21`:
+its denominator-two cost is `107 < 108`, while the separate exact optima are
+`27` and `136/5`, both certified non-strict by matching rational dual lower
+bounds.  The fibers share exceptional row 22, but the joint certificate uses
+36 units on incoming `p,q` coordinates and 71 on outgoing fiber-row
+coordinates, with weights through four.  Thus the tempting construction
+"merge two tight 27-covers at their shared hole and save one unit" is too
+simple; the uniform proof must capture a genuinely joint covering or Hall
+deficiency.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
