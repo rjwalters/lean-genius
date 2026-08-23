@@ -849,6 +849,93 @@ theorem orderNine_secondProfile_owner_lowSet_neighbor_bin_dichotomy
   exact owner_lowSet_neighbor_type_card_dichotomy G owner Z P W
     hpartition hPW hownerZ hPbound hWbound
 
+/-- Evaluating audit equation (23) at an ordinary bin-one point whose defect
+neighbors are all on its own shore: its `Z`-degree is one on the order-34
+shore and two on the opposite shore. -/
+theorem orderNine_order34_lowSet_degree_of_defect_shore
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (h₁ h₂ h₃ z : V) (R : Finset V)
+    (hRcard : R.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 4)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hzOrd : z ∉ ({h₁, h₂, h₃} : Finset V))
+    (hdefectShore :
+      ((secondOrderDefectGraph G).neighborFinset z ∩ R).card =
+        if z ∈ R then 7 else 0) :
+    (G.neighborFinset z ∩
+      orderNineOrdinaryLowSet G h₁ h₂ h₃ R 3).card =
+        if z ∈ R then 1 else 2 := by
+  classical
+  have hv := orderNineOrdinaryExplicitPartition_defect_lowSet_eq_nearRegular
+    G hfree h₁ h₂ h₃ R 3 60 hpart hhigh₁ hhigh₂ hhigh₃
+      hRH hdegOrd hdegHigh z
+  rw [hRcard, hdefectShore] at hv
+  simp [hzOrd] at hv
+  by_cases hzR : z ∈ R <;> simp [hzR] at hv ⊢ <;> omega
+
+/-- Removing the owner contribution and a zero-neighbor `P` part from the
+low-set degree gives audit equation (25): `W`-degree zero on the order-34
+shore and one off it. -/
+theorem owner_partner_W_degree_of_lowSet_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner z : V) (R Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hownerW : owner ∉ W)
+    (hadj : G.Adj z owner)
+    (hPzero : (G.neighborFinset z ∩ P).card = 0)
+    (hZdegree : (G.neighborFinset z ∩ Z).card =
+      if z ∈ R then 1 else 2) :
+    (G.neighborFinset z ∩ W).card = if z ∈ R then 0 else 1 := by
+  classical
+  have hPempty : G.neighborFinset z ∩ P = ∅ :=
+    Finset.card_eq_zero.mp hPzero
+  have hset : G.neighborFinset z ∩ Z =
+      insert owner (G.neighborFinset z ∩ W) := by
+    ext u
+    constructor
+    · intro hu
+      have huParts := Finset.mem_inter.mp hu
+      rw [hpartition] at huParts
+      rcases Finset.mem_insert.mp huParts.2 with huo | huPW
+      · exact Finset.mem_insert.mpr (Or.inl huo)
+      · rcases Finset.mem_union.mp huPW with huP | huW
+        · have : u ∈ G.neighborFinset z ∩ P :=
+            Finset.mem_inter.mpr ⟨huParts.1, huP⟩
+          rw [hPempty] at this
+          exact (Finset.notMem_empty u this).elim
+        · exact Finset.mem_insert.mpr (Or.inr
+            (Finset.mem_inter.mpr ⟨huParts.1, huW⟩))
+    · intro hu
+      rcases Finset.mem_insert.mp hu with huo | huW
+      · subst u
+        exact Finset.mem_inter.mpr ⟨(G.mem_neighborFinset z owner).mpr hadj,
+          by rw [hpartition]; exact Finset.mem_insert_self owner _⟩
+      · have huParts := Finset.mem_inter.mp huW
+        exact Finset.mem_inter.mpr ⟨huParts.1, by
+          rw [hpartition]
+          exact Finset.mem_insert_of_mem (Finset.mem_union_right _ huParts.2)⟩
+  have hownerNot : owner ∉ G.neighborFinset z ∩ W := by
+    intro h
+    exact hownerW (Finset.mem_inter.mp h).2
+  have hcard : (G.neighborFinset z ∩ Z).card =
+      (G.neighborFinset z ∩ W).card + 1 := by
+    rw [hset, Finset.card_insert_of_notMem hownerNot]
+  by_cases hzR : z ∈ R
+  · rw [if_pos hzR] at hZdegree ⊢
+    omega
+  · rw [if_neg hzR] at hZdegree ⊢
+    omega
+
 end
 
 end Erdos85
