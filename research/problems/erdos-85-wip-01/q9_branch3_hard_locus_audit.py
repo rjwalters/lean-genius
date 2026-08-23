@@ -13,6 +13,7 @@ from q9_symmetric_point_mass_obstruction import (
     dual,
     exact_certificate,
     fixed_system,
+    minimum_row_support,
     random_outer,
     unit_row_cover_optimum,
 )
@@ -33,6 +34,7 @@ def audit(system: dict) -> dict:
 
     holes_begin = N_TRIPLE - 2
     distinct_class = []
+    concurrent = []
     for hole in range(holes_begin, N_TRIPLE):
         for first_class, second_class in ((0, 1), (0, 2), (1, 2)):
             for first in range(8 * first_class, 8 * first_class + 8):
@@ -52,6 +54,22 @@ def audit(system: dict) -> dict:
                         "point_price_count":
                             len(certificate["point_prices"]),
                     })
+                    common_points = sorted(
+                        system["blocks"][hole]
+                        & system["blocks"][first]
+                        & system["blocks"][second]
+                    )
+                    if common_points:
+                        concurrent.append({
+                            "hole": hole,
+                            "regular_rows": [first, second],
+                            "common_points": common_points,
+                            "margin": certificate["margin"],
+                            "row_prices": certificate["row_prices"],
+                        })
+    minimum_support = (
+        None if concurrent else sorted(minimum_row_support(system))
+    )
     return {
         "strict_one_row_count": len(one_row),
         "strict_one_row_certificates": one_row,
@@ -59,6 +77,13 @@ def audit(system: dict) -> dict:
         "distinct_class_three_row_count": len(distinct_class),
         "has_distinct_class_three_row_certificate": bool(distinct_class),
         "distinct_class_three_row_certificates": distinct_class,
+        "concurrent_three_row_count": len(concurrent),
+        "concurrent_three_row_certificates": concurrent,
+        "minimum_row_support_if_no_concurrent": minimum_support,
+        "support_at_most_two_or_concurrent": (
+            bool(concurrent)
+            or minimum_support is not None and len(minimum_support) <= 2
+        ),
     }
 
 

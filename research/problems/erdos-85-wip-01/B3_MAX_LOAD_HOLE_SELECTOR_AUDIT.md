@@ -636,6 +636,24 @@ place to seek a structural selector: one-row strictness closes the easy horn,
 while the remaining horn assumes all local fractional packings exist and
 must exploit reciprocity between rows.
 
+A different decomposition restores a very small geometric three-row branch:
+either some global price certificate has row support at most two, or an
+exceptional row and two regular rows share a common block point and support a
+strict certificate.  The concurrent branch has only
+`2 * 3 * choose(3,2) = 18` shapes: choose an exceptional row, one of its three
+points, and two of the three regular parallel-class rows through that point.
+The hard concurrent counts are `8,4,1,5,0`; replay seed 17 is exactly the
+zero case and has minimum support `{1,12}`.  Across fresh seeds zero through
+95, only seeds 47 and 81 have zero concurrent certificates, and their minimum
+supports are respectively `{10,43}` and `{21}`.  Seed 92, the hard-locus
+counterexample to normalized class selection, has two concurrent
+certificates.  Thus the disjunction survives the full corpus while explaining
+the earlier nonconcurrency counterexample instead of discarding concurrency
+entirely.  The audit tool reports `support_at_most_two_or_concurrent` and
+computes the exact minimum support only when the concurrent horn is absent.
+This is now the preferred finite selector target: arbitrary one/two-row
+global obstruction, or one of 18 concurrent exceptional triples.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
