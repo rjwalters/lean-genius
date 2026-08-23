@@ -13403,3 +13403,53 @@ This identifies precisely where the switch formalism lost the private
 label: it summed the five local routing rows over `x in C`.  Any proposed
 owner holonomy can now be tested on the labeled family `delta_x^a`; no new
 notion of destination or ad hoc refinement of `t^a` is required.
+
+## 262. Rootwise SRP couples the destination tags to owner transfer
+
+There is an exact label-preserving bridge from the local switch rows in
+Section 261 to the complementary owner geometry on the target fiber.  For
+`x in C` and every incidence component `V_j`, define
+
+```text
+b_x(j):=e_x^T R_ce A_e V_j.                          (821)
+```
+
+The vector `R_ec e_x` consists of the two `e`-ports incident to `x` in the
+selected `R_ce` component.  Thus `b_x(j)` is the parity of their internal
+`A_e` owner edges into `V_j`.
+
+Pair `SRP(c,e)` on the left with the individual basis row `e_x^T` and on
+the right with `V_j`.  The `A_c R_ce` endpoint term vanishes because
+`R_ce V_j=0`.  The exterior routing term at `x` is the four-port row used
+in (809) and (816).  Therefore, for every `j != 0`,
+
+```text
+sum_(a != c,e) delta_x^a(j)=s_j+b_x(j),              (822)
+```
+
+where `s_j=|V_j| mod 2` as in Section 19.  Unlike (71), equation (822) has
+not summed over the five roots: it retains both the private root index and
+the actual target-owner transition at its two adjacent ports.
+
+The same row equation at `j=0` is also informative.  Its exterior routing
+sum is the parity of strict exports supported at `x`, which is exactly one
+by Section 251, while `s_0=|Z|=1` in `F_2`.  Hence
+
+```text
+b_x(0)=0.                                            (823)
+```
+
+Finally, summing (821) over every target component gives zero because
+`A_e 1_e=0`.  Combining this with (823) yields the even-margin law
+
+```text
+sum_(j != 0)b_x(j)=0.                                (824)
+```
+
+Thus the complementary owner term cannot supply the odd augmentation of a
+single strict destination tag by itself.  Rootwise, the sum over exterior
+colors is the fixed incidence-parity vector `(s_j)_(j!=0)` plus the
+even-augmentation owner deformation `b_x`.  Equation (822) is the precise
+local transfer identity sought after (812): any terminal price must now
+separate the unique odd color at `x` from the even local destination rows
+of the other colors while respecting this owner deformation.
