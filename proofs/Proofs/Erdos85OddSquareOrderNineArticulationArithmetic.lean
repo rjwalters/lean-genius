@@ -157,6 +157,91 @@ theorem orderNine_two_articulation_side_orders
     rcases h₁ with ⟨rfl, rfl⟩
   all_goals omega
 
+/-- Decidable bundle for the two-shore beta classification. -/
+def orderNineTwoShoreBetaAdmissible
+    (e : Fin 6) (k b₁ b₂ b₃ : Fin 10) : Prop :=
+  e.1 + 8 * k.1 ≤ (5 - e.1) + 8 * (9 - k.1) ∧
+  orderNineArticulationSideParameterType e.1 k.1 ∧
+  orderNineArticulationSideParameterType (5 - e.1) (9 - k.1) ∧
+  b₁.1 + b₂.1 + b₃.1 = 3 * k.1 ∧
+  orderNineNearRegularCutLower (e.1 + 8 * k.1) b₁.1 b₂.1 b₃.1 ≤ e.1 ∧
+  orderNineNearRegularCutLower (78 - (e.1 + 8 * k.1))
+    (10 - b₁.1) (10 - b₂.1) (10 - b₃.1) ≤ e.1 ∧
+  orderNineNearRegularCutLower ((5 - e.1) + 8 * (9 - k.1))
+    (10 - b₁.1) (10 - b₂.1) (10 - b₃.1) ≤ 5 - e.1 ∧
+  orderNineNearRegularCutLower (78 - ((5 - e.1) + 8 * (9 - k.1)))
+    b₁.1 b₂.1 b₃.1 ≤ 5 - e.1
+
+instance (e : Fin 6) (k b₁ b₂ b₃ : Fin 10) :
+    Decidable (orderNineTwoShoreBetaAdmissible e k b₁ b₂ b₃) := by
+  unfold orderNineTwoShoreBetaAdmissible orderNineArticulationSideParameterType
+  infer_instance
+
+def orderNineTwoShoreBetaClassification
+    (e : Fin 6) (k b₁ b₂ b₃ : Fin 10) : Prop :=
+  (e.1 = 2 ∧ k.1 = 2 ∧
+    ((b₁.1 = 2 ∧ b₂.1 = 2 ∧ b₃.1 = 2) ∨
+     (b₁.1 = 1 ∧ b₂.1 = 2 ∧ b₃.1 = 3) ∨
+     (b₁.1 = 1 ∧ b₂.1 = 3 ∧ b₃.1 = 2) ∨
+     (b₁.1 = 2 ∧ b₂.1 = 1 ∧ b₃.1 = 3) ∨
+     (b₁.1 = 2 ∧ b₂.1 = 3 ∧ b₃.1 = 1) ∨
+     (b₁.1 = 3 ∧ b₂.1 = 1 ∧ b₃.1 = 2) ∨
+     (b₁.1 = 3 ∧ b₂.1 = 2 ∧ b₃.1 = 1))) ∨
+  (e.1 = 3 ∧ k.1 = 3 ∧ b₁.1 = 3 ∧ b₂.1 = 3 ∧ b₃.1 = 3) ∨
+  (e.1 = 2 ∧ k.1 = 4 ∧ b₁.1 = 4 ∧ b₂.1 = 4 ∧ b₃.1 = 4)
+
+instance (e : Fin 6) (k b₁ b₂ b₃ : Fin 10) :
+    Decidable (orderNineTwoShoreBetaClassification e k b₁ b₂ b₃) := by
+  unfold orderNineTwoShoreBetaClassification
+  infer_instance
+
+/-- The full high-root incidence classification for the smaller of two
+complementary articulation shores.  Besides the three possible order pairs,
+this records the seven possibilities over `(18,59)` (the symmetric triple
+and the six permutations of `(1,2,3)`) and the unique triples over the other
+two pairs.  This is the finite arithmetic interface used by the subsequent
+equality-shore arguments. -/
+theorem orderNine_two_articulation_side_beta_classification
+    (e k b₁ b₂ b₃ : ℕ)
+    (heBound : e ≤ 5) (hkBound : k ≤ 9)
+    (hb₁Bound : b₁ ≤ 9) (hb₂Bound : b₂ ≤ 9) (hb₃Bound : b₃ ≤ 9)
+    (hsmall : e + 8 * k ≤ (5 - e) + 8 * (9 - k))
+    (htype : orderNineArticulationSideParameterType e k)
+    (htypeCompl : orderNineArticulationSideParameterType (5 - e) (9 - k))
+    (hbeta : b₁ + b₂ + b₃ = 3 * k)
+    (hcut : orderNineNearRegularCutLower (e + 8 * k) b₁ b₂ b₃ ≤ e)
+    (hcutCompl : orderNineNearRegularCutLower (78 - (e + 8 * k))
+      (10 - b₁) (10 - b₂) (10 - b₃) ≤ e)
+    (hotherCut : orderNineNearRegularCutLower ((5 - e) + 8 * (9 - k))
+      (10 - b₁) (10 - b₂) (10 - b₃) ≤ 5 - e)
+    (hotherCutCompl : orderNineNearRegularCutLower
+      (78 - ((5 - e) + 8 * (9 - k))) b₁ b₂ b₃ ≤ 5 - e) :
+    (e = 2 ∧ k = 2 ∧
+      ((b₁ = 2 ∧ b₂ = 2 ∧ b₃ = 2) ∨
+       (b₁ = 1 ∧ b₂ = 2 ∧ b₃ = 3) ∨
+       (b₁ = 1 ∧ b₂ = 3 ∧ b₃ = 2) ∨
+       (b₁ = 2 ∧ b₂ = 1 ∧ b₃ = 3) ∨
+       (b₁ = 2 ∧ b₂ = 3 ∧ b₃ = 1) ∨
+       (b₁ = 3 ∧ b₂ = 1 ∧ b₃ = 2) ∨
+       (b₁ = 3 ∧ b₂ = 2 ∧ b₃ = 1))) ∨
+    (e = 3 ∧ k = 3 ∧ b₁ = 3 ∧ b₂ = 3 ∧ b₃ = 3) ∨
+    (e = 2 ∧ k = 4 ∧ b₁ = 4 ∧ b₂ = 4 ∧ b₃ = 4) := by
+  let ef : Fin 6 := ⟨e, by omega⟩
+  let kf : Fin 10 := ⟨k, by omega⟩
+  let b₁f : Fin 10 := ⟨b₁, by omega⟩
+  let b₂f : Fin 10 := ⟨b₂, by omega⟩
+  let b₃f : Fin 10 := ⟨b₃, by omega⟩
+  have hterminal :
+      ∀ (e : Fin 6) (k : Fin 10) (b₁ b₂ b₃ : Fin 10),
+        orderNineTwoShoreBetaAdmissible e k b₁ b₂ b₃ →
+        orderNineTwoShoreBetaClassification e k b₁ b₂ b₃ := by
+    set_option maxHeartbeats 10000000 in
+    set_option maxRecDepth 100000 in
+      decide
+  have hout := hterminal ef kf b₁f b₂f b₃f ⟨hsmall, htype, htypeCompl,
+    hbeta, hcut, hcutCompl, hotherCut, hotherCutCompl⟩
+  exact hout
+
 /-- Any finite articulation decomposition exhausting the five exceptional
 vertices has exactly two components.  Their orders lie in the three sharp
 pairs `(18,59)`, `(27,50)`, `(34,43)`. -/
@@ -200,6 +285,7 @@ theorem orderNine_articulation_component_assembly
 #print axioms orderNine_articulation_side_parameter_classification
 #print axioms orderNine_articulation_side_parameter_classification_nat
 #print axioms orderNine_two_articulation_side_orders
+#print axioms orderNine_two_articulation_side_beta_classification
 #print axioms orderNine_articulation_component_assembly
 
 end Erdos85
