@@ -15059,3 +15059,65 @@ Thus the residual active/inactive composition has a fully realized route
 on both sides: its port-side occurrence walk transports the tags to
 inactive labels, and the three associated label edges assemble into an
 actual `F_a[c]` path carrying the surviving odd defect away from `C`.
+
+## 295. The surviving defects and routes retain their individual source roots
+
+The aggregate chain in Section 294 decomposes canonically by the original
+core root.  For `x in C`, put
+
+```text
+W_I(x):={w in W_I:x(w)=x},
+D_x:=sum_(w in W_I(x)) d_w,
+T_x:=triangle_(w in W_I(x)) T_w^def.                 (938)
+```
+
+The component-parity profile of `T_x` is `D_x`.  Since every pointwise
+defect has augmentation one and odd support by Sections 291 and 293,
+
+```text
+aug(D_x)=|T_x|=|W_I(x)| mod 2.                       (939)
+```
+
+In particular the source shore from (926) is exactly the set of roots with
+odd local defect augmentation:
+
+```text
+X_I={x in C:aug(D_x)=1}={x in C:|T_x|=1 mod 2},
+D_I=sum_(x in C)D_x,
+T_I^def=triangle_(x in C)T_x.                        (940)
+```
+
+This statement does not assert that `D_x` vanishes for `x` outside `X_I`;
+such a root may carry a nonzero even-augmentation profile.  It identifies
+exactly the odd local rows which survive the symmetric-difference source
+census.
+
+There is also a rootwise version of the actual route in (937).  Restrict
+the chain (934) to one source fiber:
+
+```text
+L_x:=sum_(w in W_I(x))
+      ([E_c(y_w)]+[E_c(y'_w)]+[E_c(z(w))]).          (941)
+```
+
+Summing (933) only over `W_I(x)` gives
+
+```text
+partial L_x=(|W_I(x)| mod 2){x} triangle T_x.        (942)
+```
+
+Hence for every `x in X_I`, the mod-two subgraph `L_x` has boundary
+`{x} triangle T_x`, with `T_x` odd and disjoint from `C`.  The unique path
+component of `L_x` incident to its boundary vertex `x` therefore ends at
+an actual root of `T_x`:
+
+```text
+x -- path in L_x subset F_a[c] -- t_x in T_x.       (943)
+```
+
+Thus neither aggregation over the five core roots nor cancellation between
+different source fibers is needed to obtain the outside route.  Every root
+which occurs oddly in the transported population carries its own nonzero
+component-resolved defect and its own realized root-factor path.  This is
+the source-indexed form needed to compare the residual construction with
+the rootwise SRP rows (822), rather than with their color-summed shadow.
