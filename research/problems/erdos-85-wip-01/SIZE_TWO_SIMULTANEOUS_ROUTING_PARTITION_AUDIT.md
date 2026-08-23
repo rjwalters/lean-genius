@@ -14606,3 +14606,39 @@ destination ledger with which Section 259 began, but now without a closed
 five-port target.  A terminal price must identify why this reverse tag
 cannot be absorbed by the ordinary outside incidence components, or show
 that iterating these located tags creates forbidden owner holonomy.
+
+## 285. The full owner factor forces an odd inactive-label payment
+
+The odd cut in (896) cannot terminate inside the ten `C`-active edges.
+For its exterior color `a`, decompose the full owner factor as
+
+```text
+F_a[e]=H_a^C disjoint_union Hbar_a^C,                (902)
+```
+
+where `Hbar_a^C` consists of the factor edges indexed by `a`-labels which
+do not meet `C`.  The indexing is exact: every `a`-label indexes one
+`F_a[e]` edge, and (779) identifies the ten labels meeting `C` precisely
+with the edges retained in `H_a^C`.
+
+The graph `F_a[e]` is two-regular.  Therefore every vertex shore has an
+even cut:
+
+```text
+|delta_(F_a[e])(S)|=0 mod 2.                         (903)
+```
+
+The two edge classes in (902) partition this cut.  Combining (896) and
+(903) yields
+
+```text
+|delta_(Hbar_a^C)(S)|=1 mod 2.                       (904)
+```
+
+Every edge counted in (904) has one actual port in the located residual
+shore `S`, one port outside it, and is indexed by a private `a`-label with
+no neighbor in the original root cycle `C`.  Thus the recursive
+color-resolved export forces an odd population in the complementary
+`C`-inactive label channel.  The payment is now fully located at the level
+of actual labels and factor edges; it is not an untagged boundary sum or an
+arbitrary component-vector lift.
