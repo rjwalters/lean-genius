@@ -10354,3 +10354,48 @@ particular, (621) does not discard `q_V^T` by claiming that the two legs of a
 rooted triangle have equal T status.  The remaining geometric task is now
 exactly to evaluate `q_V^T` and transport the two boundary terms through the
 canonical H runs and S excursions.
+
+## 202. Every V endpoint has T-word zero
+
+Recall that
+
+```text
+T=A cap D
+```
+
+is the triangle-free edge graph: an A-edge belongs to `T` exactly when it
+lies in no triangle.  A V dart with root `x`, port `z`, and resolved label
+`y` is, by definition (Section 99), the actual rooted triangle
+
+```text
+x--y--z--x.                                           (622)
+```
+
+Hence both A-edges incident with its route label lie in a triangle and are
+not in `T`:
+
+```text
+tau_R(v)=1[xy in T]=0,
+tau_P(v)=1[zy in T]=0.                                (623)
+```
+
+It follows immediately that every realized `C_V` endpoint has T-word zero.
+In particular, pointwise at every root or port witness,
+
+```text
+kappa_T(r)=0,        m_R=m_P=0,                       (624)
+```
+
+and all three terms in the weighted marginal (621) vanish separately.
+
+Thus the typed-population condition in (610a) is fully discharged, not just
+after summing witnesses: every `C_V` partial matching lies entirely in the
+`00` endpoint sector, and its uncovered endpoint population has even `11`
+cardinality because `deg_T(r)` is even.  It extends to a perfect matching
+with only `00` and `11` pairs.
+
+This does not yet prove the price identity (612).  It removes the mixed-word
+sector altogether and leaves a cleaner complement: canonical `00` pairs
+have zero K-price/additive `lambda` defect, while the added `11` pairs carry
+the broken-T matching price.  The remaining H/S aggregate identity must
+show that the realized non-V decorations pay exactly that `11` complement.
