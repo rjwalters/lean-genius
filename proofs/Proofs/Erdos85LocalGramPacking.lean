@@ -981,6 +981,40 @@ theorem relationNeighborFinset_isLocalGramPacking
     have huy : A u y := (Finset.mem_filter.mp hy).2
     exact hgram x y u hW (hsymm.symm u x hux) (hsymm.symm u y huy)
 
+/-- The Gram law and the fact that a shared block point creates a conflict
+imply the numeric point-capacity condition for characteristic neighborhood
+masses. -/
+theorem relationIndicator_pointCapacity_of_sharedPoint
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A W : V → V → Prop) [DecidableRel A] (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (u : V) (p : P) :
+    (∑ w ∈ Finset.univ.filter fun z => p ∈ B z,
+      if A u w then (1 : ℚ) else 0) ≤ 1 := by
+  classical
+  let S := Finset.univ.filter fun z => p ∈ B z
+  let T := S.filter fun z => A u z
+  have hcard : T.card ≤ 1 := by
+    apply Finset.card_le_one.mpr
+    intro x hx y hy
+    by_contra hxy
+    have hxS : x ∈ S := (Finset.mem_filter.mp hx).1
+    have hyS : y ∈ S := (Finset.mem_filter.mp hy).1
+    have hpx : p ∈ B x := by simpa [S] using hxS
+    have hpy : p ∈ B y := by simpa [S] using hyS
+    have hnotDisjoint : ¬ Disjoint (B x) (B y) := by
+      exact Finset.not_disjoint_iff.mpr ⟨p, hpx, hpy⟩
+    have hux : A u x := (Finset.mem_filter.mp hx).2
+    have huy : A u y := (Finset.mem_filter.mp hy).2
+    exact hgram x y u (hshared x y hxy hnotDisjoint)
+      (hsymm.symm u x hux) (hsymm.symm u y huy)
+  rw [show (∑ w ∈ Finset.univ.filter fun z => p ∈ B z,
+        if A u w then (1 : ℚ) else 0) = (T.card : ℚ) by
+      simp [T, S]]
+  exact_mod_cast hcard
+
 /-- The characteristic function of an actual symmetric neighborhood is a
 canonical fractional interval extension.  The point-capacity hypothesis is
 the numeric form of the Gram disjointness law for the block model. -/
@@ -1247,6 +1281,25 @@ theorem false_of_noCanonicalFractionalIntervalExtension
   exact hu _ (relationIndicator_isCanonicalFractionalIntervalExtension
     A H W d B hsymm hdegree hsupport hgram hpointCapacity u)
 
+/-- Shared block points imply conflicts, so the abstract Gram law supplies
+the point capacities required by the canonical fractional consumer. -/
+theorem false_of_noCanonicalFractionalIntervalExtension_of_sharedPoint
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hbad : ∃ u, ∀ mass,
+      ¬ IsCanonicalFractionalIntervalExtension H W d B u mass) :
+    False :=
+  false_of_noCanonicalFractionalIntervalExtension
+    A H W d B hsymm hdegree hsupport hgram
+    (relationIndicator_pointCapacity_of_sharedPoint A W B hsymm hgram hshared)
+    hbad
+
 /-- **Forced hitting-set reciprocity consumer.**  If a finite set of
 reverse-impossible candidates meets every demanded packing at one row, no
 symmetric supported Gram-compatible residual relation exists. -/
@@ -1298,6 +1351,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
     exact hgram u v w huv huwA hvwA
 
 #print axioms relationNeighborFinset_isLocalGramPacking
+#print axioms relationIndicator_pointCapacity_of_sharedPoint
 #print axioms relationIndicator_isCanonicalFractionalIntervalExtension
 #print axioms false_of_localGramPacking_deficit_or_forced_collision
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
@@ -1335,6 +1389,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_localGramPackingContractedExtensionDeficit
 #print axioms false_of_localGramPackingReverseIntervalRankDeficit
 #print axioms false_of_noCanonicalFractionalIntervalExtension
+#print axioms false_of_noCanonicalFractionalIntervalExtension_of_sharedPoint
 #print axioms false_of_localGramPackingHittingSetReciprocityObstruction
 #print axioms false_of_forcedLocalGramNeighbor_not_reverse
 #print axioms not_hasLocalGramPackingReciprocityObstruction_iff
