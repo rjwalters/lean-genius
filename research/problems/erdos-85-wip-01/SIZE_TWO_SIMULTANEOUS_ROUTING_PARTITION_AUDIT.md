@@ -9074,3 +9074,52 @@ boundary owner occurrence.  Without such a statement, an odd amount of H
 length can remain hidden inside zero gaps while every three-bit secondary
 state is unchanged.  The interval and constant-channel enumerations have
 exhausted all other degrees of freedom.
+
+## 174. Silent transport has at most three gap-parity bits per label
+
+The support positions of one active `u` are not five unrelated points.
+Those witnessed by a fixed `c`-neighbor `b_i` are a subset of its two
+incident ports; if both occur, they are consecutive in the H-run and form
+the zero-gap block `B_i B_i`.  The target-port witness is the singleton
+block `P`.  Hence, after contracting these forced zero gaps, the occupied
+word has at most the three blocks
+
+```text
+B_1, B_2, P,                                          (544)
+```
+
+where each `B_i` has size one or two and any block may be absent.
+
+Consequently there are at most three positive silent gaps in the cyclically
+closed word: one when a single block is present, two between two blocks,
+and three between three blocks.  Write their length parities as
+
+```text
+rho_u=(rho_1,rho_2,rho_3) in F_2^3,                  (545)
+```
+
+omitting unused coordinates.  Equation (543) becomes
+
+```text
+ell(A) mod 2
+ =S_u+sum rho_a                                       (546)
+```
+
+for any nonempty word, since the contracted within-block gaps have length
+zero.  Thus unbounded gap lengths reduce to at most three binary variables
+per label.
+
+Together with the block presence, the two `B_i` sizes, and the cyclic block
+order (at most six raw orders, further reduced by reversal and exchange;
+the gap crossing the formal endpoint edge may remain distinguished), (545)
+is a finite state table independent of `q` and of the run length.  The
+constant templates (540) are exactly the rows with no positive gaps.  The
+nonconstant rows insert one to three positive gaps and remember only their
+parities.
+
+This is the complete per-label enumeration promised after Section 170.
+The remaining difficulty is no longer enumeration: it is a cross-label
+identity showing that the sums of the `rho` bits are paid by the actual V
+owner decorations at the run boundaries.  Without that identity the gap
+bits are honest residual degrees of freedom; with it, the singleton
+activation obstruction is eliminated.
