@@ -80,6 +80,53 @@ theorem orderNine_ordinary_square_moment_of_zero_cut
     linarith
   exact_mod_cast hgoalZ
 
+/-- Arbitrary-boundary version of equation (3): a defect boundary of size
+`δ` contributes exactly `δ` to the square moment. -/
+theorem orderNine_ordinary_square_moment_of_cut
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (f : O → ℕ) (s b₁ b₂ b₃ δ : ℕ)
+    (hfle : ∀ x, f x ≤ 9)
+    (hb₁ : b₁ ≤ 10) (hb₂ : b₂ ≤ 10) (hb₃ : b₃ ≤ 10)
+    (hs : s ≤ 78)
+    (hbsum : b₁ + b₂ + b₃ ≤ 9 * s)
+    (hsum : (∑ x, f x) = 9 * s - (b₁ + b₂ + b₃))
+    (hcut : δ + (∑ x, f x * (9 - f x)) +
+      (b₁ * (10 - b₁) + b₂ * (10 - b₂) + b₃ * (10 - b₃)) =
+        s * (81 - s)) :
+    (∑ x, (f x) ^ 2) +
+      (b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1)) =
+        s ^ 2 + δ := by
+  have hcutZ := congrArg (fun n : ℕ => (n : ℤ)) hcut
+  push_cast at hcutZ
+  simp_rw [Nat.cast_sub (hfle _)] at hcutZ
+  rw [Nat.cast_sub hb₁, Nat.cast_sub hb₂, Nat.cast_sub hb₃,
+    Nat.cast_sub (by omega : s ≤ 81)] at hcutZ
+  norm_num at hcutZ
+  have hsumZ : (∑ x, (f x : ℤ)) =
+      9 * (s : ℤ) - ((b₁ : ℤ) + b₂ + b₃) := by
+    exact_mod_cast hsum
+  have hordAlg : (∑ x, (f x : ℤ) * (9 - f x)) =
+      9 * (∑ x, (f x : ℤ)) - ∑ x, (f x : ℤ) ^ 2 := by
+    simp_rw [mul_sub, mul_comm (f _ : ℤ) 9]
+    rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
+    simp [pow_two]
+  have hcoll : ∀ b : ℕ,
+      (b : ℤ) * ((b - 1 : ℕ) : ℤ) = (b : ℤ) * ((b : ℤ) - 1) := by
+    intro b
+    by_cases hb : b = 0
+    · simp [hb]
+    · rw [Nat.cast_sub (Nat.one_le_iff_ne_zero.mpr hb)]
+      norm_num
+  rw [hordAlg, hsumZ] at hcutZ
+  have hgoalZ : ((∑ x, f x ^ 2 : ℕ) : ℤ) +
+      ((b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1) : ℕ) : ℤ) =
+        (((s ^ 2 + δ : ℕ) : ℤ)) := by
+    push_cast
+    rw [hcoll b₁, hcoll b₂, hcoll b₃]
+    ring_nf at hcutZ ⊢
+    linarith
+  exact_mod_cast hgoalZ
+
 /-- A 78-entry ordinary degree vector with the q=9 incidence total and the
 zero-boundary square-moment inequality implies the classifier's cut lower
 bound. -/
@@ -104,6 +151,33 @@ theorem orderNineNearRegularCutLower_nonpos_of_ordinary_moments
   unfold orderNineNearRegularCutLower
   dsimp only [c] at hnatZ
   rw [Nat.cast_pow] at hnatZ
+  ring_nf at hnatZ ⊢
+  linarith
+
+/-- The arbitrary-boundary square-moment inequality gives the sharp bound
+`CutLower ≤ δ`. -/
+theorem orderNineNearRegularCutLower_le_of_ordinary_moments
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (hcard : Fintype.card O = 78)
+    (f : O → ℕ) (s b₁ b₂ b₃ δ : ℕ)
+    (hsum : (∑ x, f x) = 9 * s - (b₁ + b₂ + b₃))
+    (hsq : (∑ x, (f x) ^ 2) +
+      (b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1)) ≤
+        s ^ 2 + δ) :
+    orderNineNearRegularCutLower s b₁ b₂ b₃ ≤ δ := by
+  have hbal := balancedSquareSum_le_sum_sq_of_card_78 hcard f
+  rw [hsum] at hbal
+  let c := b₁ * (b₁ - 1) + b₂ * (b₂ - 1) + b₃ * (b₃ - 1)
+  have hnat : orderNineBalancedSquareSum
+        (9 * s - (b₁ + b₂ + b₃)) + c ≤ s ^ 2 + δ := by
+    exact (Nat.add_le_add_right hbal c).trans hsq
+  have hnatZ :
+      (orderNineBalancedSquareSum (9 * s - (b₁ + b₂ + b₃)) : ℤ) +
+        (c : ℤ) ≤ ((s ^ 2 + δ : ℕ) : ℤ) := by
+    exact_mod_cast hnat
+  unfold orderNineNearRegularCutLower
+  dsimp only [c] at hnatZ
+  push_cast at hnatZ ⊢
   ring_nf at hnatZ ⊢
   linarith
 
@@ -132,5 +206,7 @@ theorem orderNineNearRegularComponentAdmissible_of_ordinary_moments
 #print axioms orderNineNearRegularCutLower_nonpos_of_ordinary_moments
 #print axioms orderNineNearRegularComponentAdmissible_of_ordinary_moments
 #print axioms orderNine_ordinary_square_moment_of_zero_cut
+#print axioms orderNine_ordinary_square_moment_of_cut
+#print axioms orderNineNearRegularCutLower_le_of_ordinary_moments
 
 end Erdos85
