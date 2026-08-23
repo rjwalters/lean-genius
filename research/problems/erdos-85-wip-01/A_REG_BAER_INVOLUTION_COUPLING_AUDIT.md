@@ -2464,6 +2464,48 @@ occurrence simultaneously.  This is a closed aggregate transport identity
 for the `a=2,s=0` branch, obtained without pairing individual transversal
 labels or assuming a token-cycle closure.
 
+Cancelling the two exceptional coordinates turns this kernel into a regular
+occurrence graph.  Put
+
+```text
+u=(A+I)w=h+w,
+U_+ = L_X setminus (L_Y union {Y}),
+U_- = L_Y setminus (L_X union {X}).
+```
+
+Then u is `+1` on `U_+`, `-1` on `U_-`, and zero elsewhere.  By the unique
+line intersection (73rnz_j),
+
+```text
+|U_+|=|U_-|=q-2,
+B^T u=0.                                                  (73rnz_p)
+```
+
+Every point of `U_+ union U_-` is ordinary and lies inside S, so its balanced
+line has exactly `q/2` outside neighbors.  At an outside vertex, (73rnz_p)
+says that the number of positive support neighbors equals the number of
+negative support neighbors.  Each number is at most one: two neighbors from
+the same side would give that outside vertex and X (or Y) as two common
+neighbors of the corresponding pair, violating C4-freeness.  Hence every
+outside vertex has support degree zero or two, and in the latter case it
+joins exactly one `U_+` point to one `U_-` point.
+
+Contract every active outside vertex to such an edge.  Two different outside
+vertices cannot yield the same edge, since they would be two common
+neighbors of its endpoints.  The resulting graph H is therefore simple and
+
+```text
+H is (q/2)-regular bipartite on U_+ disjoint_union U_-,
+|E(H)|=(q/2)(q-2).                                       (73rnz_q)
+```
+
+Thus the aggregate kernel has an unconditional finite occurrence model:
+a regular bipartite graph, rather than a conjectural pairing of transversal
+tokens.  In particular H admits a one-factorization, and because `q/2` is
+even for `k>=3`, its factors may be paired into cycle covers.  Any final
+labelled obstruction in this placement must survive those genuine closed
+cycles; closure itself is no longer a gap.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
