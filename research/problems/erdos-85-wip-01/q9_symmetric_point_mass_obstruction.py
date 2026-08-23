@@ -270,6 +270,7 @@ def main() -> None:
     parser.add_argument("--dual", action="store_true")
     parser.add_argument("--row-support", type=int, nargs="*")
     parser.add_argument("--minimize-row-support", action="store_true")
+    parser.add_argument("--scan-nondiagonal-fibers", action="store_true")
     args = parser.parse_args()
     if args.payload is None:
         if args.branch is None:
@@ -289,7 +290,35 @@ def main() -> None:
         f"branch={system['branch']} edges={len(system['edges'])} "
         f"caps={len(system['caps'])} primal={result.message}"
     )
-    if not args.dual and not args.minimize_row_support:
+    if args.scan_nondiagonal_fibers:
+        successes = []
+        for point in range(N_U1):
+            fiber = {
+                row for row, block in enumerate(system["blocks"])
+                if point in block and row != point % 8
+            }
+            if len(fiber) != 4:
+                raise RuntimeError(
+                    f"point {point} has non-diagonal fiber {sorted(fiber)}"
+                )
+            fiber_result = dual(system, fiber)
+            if fiber_result.success:
+                certificate = exact_certificate(system, fiber_result)
+                if certificate is not None:
+                    successes.append({
+                        "point": point,
+                        "support": sorted(fiber),
+                        "row_prices": certificate["row_prices"],
+                        "margin": certificate["margin"],
+                    })
+        print("nondiagonal_fiber_certificates=" + json.dumps(
+            successes, separators=(",", ":")
+        ))
+    if (not args.dual and not args.minimize_row_support
+            and not args.scan_nondiagonal_fibers):
+        return
+    if args.scan_nondiagonal_fibers and not (
+            args.dual or args.minimize_row_support):
         return
     row_support = (
         minimum_row_support(system) if args.minimize_row_support
