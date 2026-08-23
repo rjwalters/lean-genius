@@ -99,6 +99,20 @@ theorem not_hasLocalGramPackingObstruction_iff
       · exact (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
           H W d v w).1 hvw hv
 
+omit [Fintype V] in
+/-- Distinct forced neighbors at a feasible row cannot conflict.  In the
+outer block-hypergraph interpretation, this says that the forced kernel is
+itself a matching. -/
+theorem not_conflict_of_forcedLocalGramNeighbors
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) (u x y : V)
+    (hpack : ∃ X : Finset V, IsLocalGramPacking H W d u X)
+    (hx : IsForcedLocalGramNeighbor H W d u x)
+    (hy : IsForcedLocalGramNeighbor H W d u y)
+    (hxy : x ≠ y) :
+    ¬ W x y := by
+  obtain ⟨X, hX⟩ := hpack
+  exact hX.2.2 x (hx X hX) y (hy X hX) hxy
+
 /-- The neighborhood finset of an arbitrary decidable relation. -/
 def relationNeighborFinset (A : V → V → Prop) [DecidableRel A]
     (u : V) : Finset V :=
@@ -160,5 +174,6 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_localGramPacking_deficit_or_forced_collision
 #print axioms isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
 #print axioms not_hasLocalGramPackingObstruction_iff
+#print axioms not_conflict_of_forcedLocalGramNeighbors
 
 end Erdos85
