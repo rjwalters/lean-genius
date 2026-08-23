@@ -9945,3 +9945,45 @@ that owner's two-port unit by themselves.  The ambient silent-footprint
 transport is a candidate mechanism with the right inactive character, but
 no proved identity yet attaches the boundary owner's two-port unit to that
 ledger.
+
+## 193. A diagonal H transfer is invisible to every label boundary
+
+For a same-label H transfer `e=[ell,ell]`, the mod-two incidence boundary is
+
+```text
+partial e=[ell]+[ell]=0.                              (597)
+```
+
+Consequently every endpoint potential, and every identity obtained only by
+applying the V-label incidence boundary, evaluates trivially on `e`:
+
+```text
+<delta chi,e>=<chi,partial e>=0.                      (598)
+```
+
+This remains true after adjoining arbitrary `C_V` turns or `T_S` transfers;
+their endpoint conservation can close the ambient chain but cannot reveal
+the parity carried by a diagonal H edge.  In particular, the coarse closure
+of `Xi` and the boundary identities (345)--(349) contain no term capable of
+distinguishing an even same-label run from an odd one.
+
+Therefore the second branch of (594) cannot be completed by another
+V-label boundary calculation.  It requires a genuinely refined equation
+whose state space remembers at least the target-even owner occurrence in
+(593).  Equivalently, if `b_y(A)` denotes the private bit that the two
+boundary ports exhaust the `y` fiber, the needed local-to-ambient transport
+has the form
+
+```text
+(ell(A) mod 2) [ell,ell]
+   --> b_y(A) + private C_V/T_S owner-state payments,                (599)
+```
+
+where the right-hand side must then cancel in the realized ambient cycle.
+Equation (599) is a target statement, not an asserted identity.
+
+This separates the two residual mechanisms cleanly.  Non-diagonal circuit
+weight may in principle be killed by a label potential; diagonal weight can
+only be killed by private capacity conservation.  The full-state lift of
+Sections 181--184 retains enough data to state that conservation law, while
+the coarse chain (585) provably does not.
