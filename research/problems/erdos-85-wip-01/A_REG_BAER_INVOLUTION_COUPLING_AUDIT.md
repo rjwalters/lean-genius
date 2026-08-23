@@ -5533,6 +5533,38 @@ whose ports are all marked `00`, and an odd horizontal root cycle in
 `K_00`.  Any exclusion must compare those projections; neither factor's
 internal cycle identities can cancel it alone.
 
+The two projected cycle structures cannot share an edge.  Let `B_ec` denote
+the line graph on `e`-ports in which two port labels are adjacent when their
+`F_e[c]` root edges share a root.  On the port set,
+adjacency in the secondary/primal owner cycle means that two ports `p,r`
+share a `d`-label `y`.  Adjacency in the line graph of the root factor means
+that their H edges share a `c`-root `x`.  If both adjacencies held, then
+
+```text
+p--x--r--y--p
+```
+
+would be an ambient four-cycle.  Therefore the `d`-owner cycle and every
+closed root-line cycle supported on the same ports are edge-disjoint:
+
+```text
+E(F_d[e][P_C]) intersect E(B_ec[P_C])=empty.          (73rnz_cjibkzzx)
+```
+
+In particular the simultaneous odd-cycle branch cannot have three ports.
+On a three-element set the only two-regular simple graph is the triangle, so
+two such factors would have identical, not disjoint, edge sets.  Hence
+
+```text
+every simultaneous odd port/root curl has length at least five.
+                                                               (73rnz_cjibkzzy)
+```
+
+This does not exclude length five or larger: two edge-disjoint odd cycles
+can exist abstractly on those vertex sets.  It removes the smallest
+holonomy uniformly and supplies the exact cross-factor constraint that any
+remaining capacity argument must exploit.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
