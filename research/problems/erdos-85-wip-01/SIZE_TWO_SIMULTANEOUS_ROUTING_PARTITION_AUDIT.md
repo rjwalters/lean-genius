@@ -13562,3 +13562,59 @@ or the cross-color owner-factor transitions linking those ports.  Further
 linear manipulation of the vectors `delta_x^a,beta_i,s` alone cannot rule
 out a color lift, just as the earlier affine family (75) could not rule out
 a color-resolved switch matrix.
+
+## 265. Integer SRP gives an exact outside-port partition at every root
+
+The realizability information omitted in Section 264 is already visible
+before reducing the simultaneous routing identity modulo two.  Fix
+`x in C` and an actual port `p in e\Z`.  Every `A_c`-neighbor of `x` stays
+in the closed owner cycle `C`, and every `R_ce`-neighbor of a root in `C`
+lies in its paired incidence component `Z`.  Therefore
+
+```text
+(A_c R_ce)[x,p]=0.                                   (832)
+```
+
+Take the `(x,p)` entry of the integer identity `SRP(c,e)`.  Using (832)
+gives the pointwise equation
+
+```text
+(R_ce A_e)[x,p]
+ +sum_(a != c,e)(R_ca R_ae)[x,p]=1.                  (833)
+```
+
+All summands are nonnegative integers.  Consequently exactly one term in
+(833) is one and every other term is zero.  Thus the identity records an
+actual owner/color assignment of every outside port, not merely a parity
+relation.
+
+To state the resulting partition, define
+
+```text
+D_x^a:=supp((R_ca R_ae)[x,-])\Z,
+B_x:=supp((R_ce A_e)[x,-])\Z.                        (834)
+```
+
+The four-port-row argument of (809) applies to every exterior color.  The
+unique color `a_x` receiving the strict export at `x` has `|D_x^(a_x)|=3`;
+every other exterior color has `|D_x^a|=4`.  Moreover `B_x` consists of the
+`A_e`-neighbors of the two selected ports incident to `x`.  Each selected
+port has two such neighbors outside `Z` by `e_e(Z)=0`, and the two pairs
+are disjoint: a common neighbor together with the two selected ports and
+`x` would make a four-cycle.  Hence `|B_x|=4`.
+
+Equation (833) now gives the disjoint set partition
+
+```text
+e\Z = B_x disjoint_union
+      disjoint_union_(a != c,e) D_x^a.               (835)
+```
+
+The parity profiles `beta` and `delta` are exactly the projections of the
+sets in (834) to the incidence-component index.  Thus (828) is the mod-two
+shadow of (835), while (835) restores the actual port identity that the
+arbitrary lift (831) was free to ignore.  At each private root the owner
+channel and all exterior routing colors do not merely balance: they divide
+the entire outside target fiber into uniquely assigned ports.  Any final
+price may therefore be evaluated on this canonical labeled partition,
+where reassignment of `gamma_i` to an arbitrary color is no longer allowed.
