@@ -1677,6 +1677,40 @@ equality patterns need an analytic conservation argument.  Producing a
 small dual supported on their private bundle rows is the next proof-facing
 experiment.
 
+The first equality pattern already has such a dual.  The mode
+`--audit-full-bundle-dual` minimizes the `L_1` norm of a Farkas alternative,
+then rounds and rechecks every integer column inequality and the scalar
+contradiction exactly.  For `(3,7,(1,2))` it finds 35 unit coefficients:
+
+```text
+negative row demands:  3, 8, 17, 25                         (sum 21);
+positive capacities:   (3:{13,14,23}),
+                       (8:{13,14,19,23}),
+                       (17:{17,19,20,23}),
+                       (25:{12,13,14}),
+                       (26,32,33,38,44,45): label 11       (sum 20);
+negative bundle rows:  11 external tagged states.          (12rm)
+```
+
+The eleven states have signatures/censuses
+
+```text
+(0,11,10,16):(1,0,0,0,0), (0,13,12,18):(0,0,0,1,1),
+(0,15,22,32):(0,0,0,0,1), (0,16,22,33):(1,0,0,1,0),
+(2,20,34,48):(2,1,0,0,1), (2,21,29,48):(1,1,0,0,0),
+(3,20,31,50):(2,0,0,0,0), (3,20,36,50):(3,0,0,0,1),
+(3,21,38,59):(2,0,0,0,0), (4,19,28,45):(1,1,0,0,1),
+(4,19,33,51):(2,0,0,0,0),
+```
+
+all with `iota=0` and coefficient `-1`.  Bundle conservation transports the
+four rows' total demand 21 into the listed twenty unit capacity slots, giving
+the exact scalar `-21+20=-1`; the verified column coefficients are
+nonnegative.  Thus the branch-3 survivor is an integer capacity-transfer
+contradiction, not a numerical artifact.  The two branch-4 survivors still
+produce dense fractional `L_1` duals (613 and 620 nonzeros) whose naive
+rounding fails the exact check, so their small analytic dual remains open.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

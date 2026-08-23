@@ -360,8 +360,8 @@ def zero_loss_restricted_hall_audit(data: dict) -> tuple[int, list[tuple]]:
     return len(zero) // 2, bad_rows
 
 
-def full_bundle_primal_feasible(data: dict) -> tuple[bool, str]:
-    """Test normalized row matchings with exact bundle-boundary equality."""
+def full_bundle_primal_system(data: dict) -> tuple:
+    """Build normalized row, capacity, and bundle-boundary constraints."""
     signatures, censuses = root_signature_censuses(data)
     variables = []
     for t in range(N):
@@ -396,11 +396,62 @@ def full_bundle_primal_feasible(data: dict) -> tuple[bool, str]:
         for column, (source, support, _) in enumerate(variables):
             if source == t and b in support:
                 capacities[row, column] = 1
+    equality_names = ([('row', t) for t in range(N)]
+                      + [('feature', key) for key in features])
+    capacity_names = [('capacity', t, b) for t, b in capacity_rows]
+    return (equalities.tocsr(), equality_rhs, capacities.tocsr(),
+            np.ones(len(capacity_rows)), equality_names, capacity_names,
+            len(variables))
+
+
+def full_bundle_primal_feasible(data: dict) -> tuple[bool, str]:
+    """Test normalized row matchings with exact bundle-boundary equality."""
+    (equalities, equality_rhs, capacities, capacity_rhs, _, _,
+     variable_count) = full_bundle_primal_system(data)
     result = linprog(
-        np.zeros(len(variables)), A_ub=capacities.tocsr(),
-        b_ub=np.ones(len(capacity_rows)), A_eq=equalities.tocsr(),
+        np.zeros(variable_count), A_ub=capacities,
+        b_ub=capacity_rhs, A_eq=equalities,
         b_eq=equality_rhs, bounds=(0, 1), method="highs")
     return result.success, result.message
+
+
+def sparse_full_bundle_dual(data: dict) -> tuple[bool, float, list[tuple], bool]:
+    """Find an L1-small Farkas certificate and verify rounded unit entries."""
+    from scipy.sparse import hstack
+
+    (equalities, equality_rhs, capacities, capacity_rhs, equality_names,
+     capacity_names, variable_count) = full_bundle_primal_system(data)
+    equality_count = equalities.shape[0]
+    capacity_count = capacities.shape[0]
+    # y is free (split as y+ - y-), z>=0, with
+    # E^T y + C^T z >= 0 and b^T y + 1^T z = -1.
+    inequalities = hstack([-equalities.T, equalities.T, -capacities.T],
+                          format='csr')
+    certificate_rhs = lil_matrix((1, 2 * equality_count + capacity_count))
+    certificate_rhs[0, :equality_count] = equality_rhs
+    certificate_rhs[0, equality_count:2 * equality_count] = -equality_rhs
+    certificate_rhs[0, 2 * equality_count:] = capacity_rhs
+    result = linprog(
+        np.ones(2 * equality_count + capacity_count),
+        A_ub=inequalities, b_ub=np.zeros(variable_count),
+        A_eq=certificate_rhs.tocsr(), b_eq=[-1], bounds=(0, None),
+        method='highs')
+    if not result.success:
+        return False, float('nan'), [], False
+    y = result.x[:equality_count] - result.x[equality_count:2 * equality_count]
+    z = result.x[2 * equality_count:]
+    nonzero = ([(equality_names[index], value) for index, value in enumerate(y)
+                if abs(value) > 1e-8]
+               + [(capacity_names[index], value) for index, value in enumerate(z)
+                  if value > 1e-8])
+    rounded_y = np.rint(y).astype(int)
+    rounded_z = np.rint(z).astype(int)
+    column_values = equalities.T @ rounded_y + capacities.T @ rounded_z
+    scalar = int(equality_rhs @ rounded_y + capacity_rhs @ rounded_z)
+    exact = bool(np.all(column_values >= 0) and scalar == -1
+                 and np.max(np.abs(y - rounded_y), initial=0) < 1e-8
+                 and np.max(np.abs(z - rounded_z), initial=0) < 1e-8)
+    return True, float(result.fun), nonzero, exact
 
 
 def flat_signature_audit(data: dict) -> tuple[
@@ -1231,6 +1282,8 @@ def main() -> int:
                         help="test Hall after retaining only external and Z transitions")
     parser.add_argument("--audit-full-bundle-primal", action="store_true",
                         help="test normalized matching flow with bundle equality")
+    parser.add_argument("--audit-full-bundle-dual", action="store_true",
+                        help="extract sparse duals for restricted-Hall survivors")
     parser.add_argument("--require-eligible-hole-pair", action="store_true",
                         help="generate outer witnesses with intersecting "
                              "mutually eligible hole blocks")
@@ -1407,6 +1460,24 @@ def main() -> int:
             if feasible:
                 feasible_labels.append(label)
         print(f"full_bundle_primal_feasible={feasible_labels}")
+    if args.audit_full_bundle_dual:
+        dual_labels = []
+        for label, candidate in all_data:
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            success, norm, nonzero, exact = sparse_full_bundle_dual(candidate)
+            branch, seed_number, colors = label
+            displayed = nonzero if exact else nonzero[:20]
+            print(f"full_bundle_dual branch={branch} seed={seed_number} "
+                  f"colors={colors} success={success} l1={norm} "
+                  f"nonzero_count={len(nonzero)} nonzero={displayed} "
+                  f"nonzero_truncated={not exact and len(nonzero) > 20} "
+                  f"exact_integer={exact}")
+            dual_labels.append((label, success, exact, len(nonzero)))
+        print(f"full_bundle_dual_survivors={dual_labels}")
+        audit_failed |= any(not success or not exact
+                            for _, success, exact, _ in dual_labels)
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
@@ -1414,7 +1485,7 @@ def main() -> int:
             or args.audit_bundle_pairs or args.audit_bundle_triples
             or args.audit_bundle_rank or args.audit_bundle_deletion
             or args.audit_zero_loss_restriction
-            or args.audit_full_bundle_primal):
+            or args.audit_full_bundle_primal or args.audit_full_bundle_dual):
         return 1 if audit_failed else 0
     if not data:
         print(f"instances=0 local_hall_instances={len(hall_labels)}")
