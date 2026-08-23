@@ -689,6 +689,19 @@ matrix.  This formulation separates the convex step from the graph
 application and is exactly the hypothesis shape consumed by
 `false_of_twoRowPrice_or_concurrentThreeRowPacking`.
 
+The uniquely hard anchor fixture also has a cleaner integral terminal at its
+concurrent support `{exceptional 25, regular 2, regular 9}`.  These rows have
+respectively `9,18,6` full local Gram packings.  Every named pair admits
+disjoint choices (`2,14,26` disjoint packing pairs), so no two-row integral
+obstruction exists there; nevertheless there are zero triples of choices
+that are pairwise disjoint.  This is a genuinely three-way cross-intersection
+phenomenon.  The banked Lean theorem
+`false_of_no_pairwiseDisjointLocalGramPackingTriple` consumes exactly that
+finite obstruction by applying it to the three actual residual
+neighborhoods.  It offers a simpler concurrent-18 endpoint when the integral
+packing families can be classified, while the fractional coupled bound
+remains the more general fallback.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
