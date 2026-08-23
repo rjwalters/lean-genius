@@ -131,6 +131,18 @@ below target `108`; its exact continuous optimum is `160/3 < 54`.  Replaying
 This is the adversarial regression fixture that any proposed replacement for
 the joint selector must survive.
 
+An exact scan of all 28 pairs in this fixture sharply localizes its joint
+saving.  Only `(0,9)`, `(1,9)`, and `(9,11)` have continuous joint optimum
+below 54, and all three contain point 9, the unique tight single fiber of
+cost exactly 27; every other single optimum exceeds 27.  The earlier genuine
+generated model has the same shape: tight `p=9`, non-strict partner `q=21`
+of cost `136/5`, and a strict joint cover.  This suggests a two-step proof
+target, not yet a theorem: average over the at-least-six overlap points to
+obtain a single optimum at most 27 (hence a tight point under the no-single-
+strict hypothesis), then find a partner whose joint uncrossing gain exceeds
+that partner's single-fiber excess.  Any averaging or uncrossing lemma must be
+tested beyond these two genuine models before promotion.
+
 The exact continuous optimum in the preceding generated `p=9,q=21` model is
 `747/14 < 54`.
 `--details` now reconstructs both the primal point prices and the LP-dual
