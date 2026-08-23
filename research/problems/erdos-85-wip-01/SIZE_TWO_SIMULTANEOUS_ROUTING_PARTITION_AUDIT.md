@@ -7495,3 +7495,66 @@ This sharply localizes the two branches of (425).  The separator branch is
 either a short, explicit flat column or a genuinely multi-atom dependency;
 the potential branch is a parity system whose every column tests at most ten
 port positions.  No bound on the total support of `lambda` is claimed.
+
+## 142. The potential branch is an even test on the sparse port columns
+
+Write `P_Z` for the adjacency of the odd cycle `Z`, and let `Q` be the
+matrix whose active columns are the vectors `Q_u|_Z` from (426).  On the
+active space, (423) is simply
+
+```text
+C_(d,j)=P_Z Q.                                        (431)
+```
+
+The kernel of the symmetric matrix `P_Z` is the constant line.  Therefore
+
+```text
+im P_Z=(ker P_Z)^perp
+      ={mu in F_2^Z : sum_(z in Z) mu(z)=0}.          (432)
+```
+
+Suppose the potential alternative in (425) holds, and put
+`mu:=P_Z lambda`.  Then `mu` has even mass and
+
+```text
+<mu,Q_v>=1 if v=u_0,
+<mu,Q_v>=0 for every other active v.                  (433)
+```
+
+Conversely, every even vector `mu` has the form `P_Z lambda` by (432), so
+any test satisfying (433) yields `C_(d,j)^T lambda=e_(u_0)`.  Thus (433) is
+equivalent to the potential branch, with no loss from replacing `lambda` by
+`mu`.
+
+Using (426), each equation in (433) is the explicit five-position-or-fewer
+test
+
+```text
+mu(r_v)
+ + sum_(z in E_(b_1(v))) mu(z)
+ + sum_(z in E_(b_2(v))) mu(z)
+ = [v=u_0].                                           (434)
+```
+
+The separator branch has the dual port form
+
+```text
+sum_v beta_v Q_v is constant on Z,
+beta_(u_0)=1.                                         (435)
+```
+
+Indeed (435) is exactly `P_Z Q beta=0`.  Hence (425) is the standard
+circuit/cocircuit alternative for the family of sparse odd columns `Q_v`,
+taken in the quotient of `F_2^Z` by the constant line:
+
+```text
+either u_0 belongs to a dependency modulo constants,
+or an even port test separates Q_(u_0) from all other columns. (436)
+```
+
+This is now a purely finite incidence problem.  Every column is a target
+singleton plus at most two disjoint cycle edges, while the separating test
+has even total mass.  The remaining geometric input must show that either
+the dependency in (435) yields a capacity-compatible conserved ledger or
+the test in (434) can be supported/priced on the private boundary cells.
+No such support bound is asserted here.
