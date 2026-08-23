@@ -12470,3 +12470,81 @@ data, the odd fillers may be transported between path components and the
 zero/double fillers may be compared with the H/V/S source cells.  Without
 that lift, applying the Baer-state transports (704)/(707), or the B3
 half-atom antisymmetry (12rzm), would conflate distinct alphabets.
+
+## 246. A mod-four mixed moment counts the odd filler attachments
+
+The `0/1/2` data in Section 245 have an exact aggregate that is invisible
+modulo two.  For `z in a` put
+
+```text
+i_z:=|N_c(z) intersect C|,       j_z:=|N_e(z) intersect Z|,
+```
+
+and let `N_ij` be the integer number of labels with `(i_z,j_z)=(i,j)`.
+Define the mixed incidence moment
+
+```text
+M_a(C,Z):=sum_(z in a) i_z j_z.                       (751)
+```
+
+The odd blue-filler attachments from Section 245 are precisely the labels
+counted by `N_12`: they are root-cut labels whose `e`-edge is internal to
+`Z`.  Symmetrically the odd red-filler attachments are counted by `N_21`.
+Expanding (751) over the nine possible cells gives the exact integer identity
+
+```text
+M_a(C,Z)=N_11+2N_12+2N_21+4N_22.                     (752)
+```
+
+Consequently
+
+```text
+N_12+N_21
+ = (M_a(C,Z)-N_11)/2                         (mod 2). (753)
+```
+
+The quotient is integral by (752).  This is the first scalar that sees the
+global component-coupling edges: ordinary support parity sees `N_11` but
+identifies opposite multiplicities zero and two, while (753) detects exactly
+their odd-filler incidence with the cut endpoints.
+
+The same moment already has a graph-facing alphabet.  Double counting the
+triples `(x,z,p)` gives
+
+```text
+M_a(C,Z)
+ =sum_(x in C,p in Z) |N_a(x) intersect N_a(p)|.     (754)
+```
+
+C4-freeness makes every summand in (754) zero or one.  Split the sum according
+to whether `x` and `p` are incident in the selected `c--e` cycle.  An aligned
+triple is exactly a rooted triangle through the dart `(x,p)` with intermediate
+color `a`, hence a `V_a` token in the H/V/S alphabet of Section 99.  A
+nonincident triple is a uniquely witnessed off-incidence `C--a--Z` connection.
+Thus
+
+```text
+M_a(C,Z)=V_a(C,Z)+O_a(C,Z),                           (755)
+```
+
+where `V_a` is the aligned rooted-`V_a` census and `O_a` is the off-incidence
+two-path census, both with their actual root, port, and intermediate label.
+The latter is not automatically an active `q_z` occurrence: in particular
+the filler cells `j_z=2` have `t_z=0`.  It must remain a separate labeled
+connection atom until a route identity transports it.
+
+Combining (753) and (755) gives the exact handshake now required by the
+global coupling graph:
+
+```text
+N_12+N_21
+ = (V_a(C,Z)+O_a(C,Z)-N_11)/2                 (mod 2). (756)
+```
+
+Therefore the parity of component-to-component filler attachments is already
+encoded by one aligned H/V/S census plus one explicitly located off-incidence
+census.  What remains is no longer to guess how the strips are connected,
+but to transport the `O_a` atoms (or prove their half-difference price with
+`V_a-N_11` vanishes) in the simultaneous owner ledger.  Any proposed
+mod-two argument that omits the division-by-two information in (756) cannot
+distinguish the zero and double filler profiles and is necessarily too coarse.
