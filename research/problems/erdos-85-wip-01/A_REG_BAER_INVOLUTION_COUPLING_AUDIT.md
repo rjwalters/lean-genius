@@ -3761,6 +3761,33 @@ The `A^2(t x)` term is a parity sum of unique common-neighbor witnesses
 T-incidence, line-owner source, and one scalar bit.  This is the fully
 incidence-resolved cut transport.
 
+Its two large hyperedge terms admit genuine two-ended refinements.  Put
+`s=A(t x)`.  Then
+
+```text
+A^2(t x)=A s
+```
+
+is the sum, over active witnesses `y in supp(s)`, of the q-point star
+`N_A(y)`.  Since q is even, pair the q neighbors of each such y arbitrarily.
+Every pair `{v,w}` produces the two-ended relay
+
+```text
+v--y--w,                                                 (73rnz_cjib)
+```
+
+and y is its unique common-neighbor label by C4-freeness.  Changing the
+pairing is only the familiar even-star gauge.  Thus every common-neighbor
+hyperedge in (73rnz_cjia) is a sum of private two-ended witness columns.
+
+Similarly, because T is Eulerian, `Tx` is exactly the boundary vector of the
+T-cut `delta_T(X)`: outside X it counts T-neighbors in X, while inside X the
+even T-degree converts internal incidence to external incidence.  Hence the
+T term already consists of canonical two-ended T-edge columns.  After these
+refinements, the only non-chain pieces in (73rnz_cjia) are the colored line
+source and the global scalar column; the O-side remains the atomized
+one-ended dart ledger (73rnz_cjj).
+
 Every O-edge is a non-A, non-D pair.  It therefore has one unique
 common-neighbor witness and, by (17),
 
