@@ -24793,3 +24793,40 @@ stronger adaptive packing has been invoked.
 The common-root restriction is essential: for traces on different root
 pairs, a boundary edge of color `g` need not belong to the four-edge trace
 selected for `g`.  No such cross-root claim is used here.
+
+## 467. Trace boundaries expand into many unselected colors
+
+Continue with the fixed root pair `{r,s}` from Section 466.  The rootwise
+color census behind (1646) gives at most two ordinary edges of any source
+color in `G_r` and at most two in `G_s`.  This remains an upper bound for
+strict-export colors, whose ordinary count may be smaller.  Hence every
+source color occupies at most four edges, and therefore at most eight edge
+endpoints, in the alternating `{r,s}`-factor.
+
+Let `B` be the number in (1660), and let `C_out` be the set of colors on
+the outward factor edges at those `B` distinct boundary vertices.
+Section 466 gives `C_out intersect H_sel=emptyset`.  Charging a boundary
+vertex to its outward edge color and using the eight-endpoint cap gives
+
+```text
+|C_out|>=ceil(B/8).                               (1661)
+```
+
+Thus the exact shape-count form is
+
+```text
+|C_out| >= ceil((2n_4+4n_31+4n_22+6n_sp)/8),
+C_out intersect H_sel=emptyset.                  (1662)
+```
+
+In particular, if `s` of the vertex-disjoint selected traces are sparse,
+their six boundary vertices alone force
+
+```text
+at least ceil(3s/4) distinct boundary colors outside H_sel.    (1663)
+```
+
+No claim is made that these new colors are themselves saturation colors
+or avoid `d` and `Gamma`; (1661) is a factor-incidence expansion statement.
+Its gain is that a large family of resistant sparse traces cannot export
+through a bounded collection of exterior colors.
