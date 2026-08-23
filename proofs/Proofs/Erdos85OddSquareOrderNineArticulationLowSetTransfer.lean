@@ -977,7 +977,7 @@ theorem neighbor_inter_shore_card_eq_if_of_complementary_closed
     (U S T : Finset V) (z : V)
     (hunion : S ∪ T = U) (hdisj : Disjoint S T)
     (hzU : z ∈ U)
-    (hneighborsU : ∀ x ∈ U, D.neighborFinset x ⊆ U)
+    (hzNeighborsU : D.neighborFinset z ⊆ U)
     (hSclosed : ∀ x ∈ S, D.neighborFinset x ∩ U ⊆ S)
     (hTclosed : ∀ x ∈ T, D.neighborFinset x ∩ U ⊆ T)
     {k : ℕ} (hzdegree : D.degree z = k) :
@@ -988,7 +988,7 @@ theorem neighbor_inter_shore_card_eq_if_of_complementary_closed
     have hsub : D.neighborFinset z ⊆ S := by
       intro y hy
       exact hSclosed z hzS (Finset.mem_inter.mpr
-        ⟨hy, hneighborsU z hzU hy⟩)
+        ⟨hy, hzNeighborsU hy⟩)
     have heq : D.neighborFinset z ∩ S = D.neighborFinset z := by
       exact Finset.inter_eq_left.mpr hsub
     rw [heq, D.card_neighborFinset_eq_degree, hzdegree]
@@ -1001,7 +1001,7 @@ theorem neighbor_inter_shore_card_eq_if_of_complementary_closed
     have hsub : D.neighborFinset z ⊆ T := by
       intro y hy
       exact hTclosed z hzT (Finset.mem_inter.mpr
-        ⟨hy, hneighborsU z hzU hy⟩)
+        ⟨hy, hzNeighborsU hy⟩)
     have hempty : D.neighborFinset z ∩ S = ∅ := by
       rw [Finset.eq_empty_iff_forall_notMem]
       intro y hy
@@ -1099,7 +1099,7 @@ theorem orderNine_binOne_defect_neighbor_inter_shore_card_eq_if
     omega
   exact neighbor_inter_shore_card_eq_if_of_complementary_closed
     (secondOrderDefectGraph G) U S T z hunion hdisj hzU
-      hneighborsU hSclosed hTclosed hzdegree
+      (hneighborsU z hzU) hSclosed hTclosed hzdegree
 
 /-- Bin-zero specialization of the closed-shore count.  A second-profile
 bin-zero point has defect degree eight, hence all eight defect neighbors lie
@@ -1132,7 +1132,7 @@ theorem orderNine_binZero_defect_neighbor_inter_shore_card_eq_if
     omega
   exact neighbor_inter_shore_card_eq_if_of_complementary_closed
     (secondOrderDefectGraph G) U S T z hunion hdisj hzU
-      hneighborsU hSclosed hTclosed hzdegree
+      (hneighborsU z hzU) hSclosed hTclosed hzdegree
 
 /-- Corrected exceptional-bin-zero evaluation of audit equation (23) on
 owner-punctured shores.  An exceptional point has seven defect neighbors on
@@ -2687,6 +2687,96 @@ theorem orderNine_order34_exceptional_owner_neighbors_lowSet_degree_eq_if_of_pun
       hSH hdegOrd hdegHigh (hlocalOrd y hy) hdefect
   rw [← hZ] at hlow
   exact hlow
+
+/-- Pointwise, satisfiable equation-(25) provider for off-shore bin-one
+partners.  Unlike the earlier global-closure wrapper, this assumes defect
+closure only for the partner currently being evaluated; exceptional
+bin-zero points elsewhere in the punctured universe create no vacuous
+obligation. -/
+theorem orderNine_order34_owner_partners_offshore_W_degree_one_of_pointwise_closure
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ owner : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (U S T : Finset V)
+    (hScard : S.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ S).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ S).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ S).card = 4)
+    (hSH : Disjoint S {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hpartnerU : ∀ z ∈
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1) ∩ T),
+      z ∈ U)
+    (hpartnerDclosed : ∀ z ∈
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1) ∩ T),
+      (secondOrderDefectGraph G).neighborFinset z ⊆ U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hpartnerOrd : ∀ z ∈
+      ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1) ∩ T),
+      z ∉ ({h₁, h₂, h₃} : Finset V))
+    (Z P W : Finset V)
+    (hZ : Z = orderNineOrdinaryLowSet G h₁ h₂ h₃ S 3)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWsub : W ⊆ squareOrderNineLowIncidenceBin G 0) :
+    ∀ z ∈ ((G.neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 1) ∩ T),
+      (G.neighborFinset z ∩ W).card = 1 := by
+  classical
+  intro z hz
+  have hzParts := Finset.mem_inter.mp hz
+  have hzPartner := Finset.mem_inter.mp hzParts.1
+  have hzNotS : z ∉ S := by
+    intro hzS
+    exact (Finset.disjoint_left.mp hdisj) hzS hzParts.2
+  have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+    G hfree hmin hcover hcard hzPartner.2
+  have hzDegree : (secondOrderDefectGraph G).degree z = 7 := by
+    simpa using hledger.1
+  have hdefect := neighbor_inter_shore_card_eq_if_of_complementary_closed
+    (secondOrderDefectGraph G) U S T z hunion hdisj (hpartnerU z hz)
+      (hpartnerDclosed z hz) hSclosed hTclosed hzDegree
+  have hlow := orderNine_order34_lowSet_degree_of_defect_shore
+    G hfree h₁ h₂ h₃ z S hScard hpart hhigh₁ hhigh₂ hhigh₃
+      hSH hdegOrd hdegHigh (hpartnerOrd z hz) hdefect
+  rw [← hZ] at hlow
+  have hPzero :=
+    orderNine_secondProfile_owner_partner_neighbor_inter_binOneSubset_eq_zero
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 owner z howner
+        hzPartner.2
+        ((G.adj_comm owner z).mp
+          ((G.mem_neighborFinset owner z).mp hzPartner.1))
+        P hPsub
+  have hownerW : owner ∉ W := by
+    intro how
+    have hownerB₀ := hWsub how
+    have hk3 := (Finset.mem_filter.mp howner).2
+    have hk0 := (Finset.mem_filter.mp hownerB₀).2
+    omega
+  have hWdegree := owner_partner_W_degree_of_lowSet_partition
+    G owner z S Z P W hpartition hownerW
+      ((G.adj_comm owner z).mp
+        ((G.mem_neighborFinset owner z).mp hzPartner.1))
+      hPzero hlow
+  simpa [hzNotS] using hWdegree
 
 end
 
