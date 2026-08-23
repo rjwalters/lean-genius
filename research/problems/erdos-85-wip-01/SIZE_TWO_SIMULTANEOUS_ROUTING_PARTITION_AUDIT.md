@@ -6276,3 +6276,82 @@ The root-marked primitive compatibility is no longer needed to manufacture
 or close a transfer chain.  Its sole job is to evaluate the homology class
 of the explicit chain (350) and prove (351).  This is the narrowest
 direction-sensitive formulation reached so far.
+
+## 118. Holonomy vanishes if the marked primitive descends to labels
+
+Let `E_Xi` denote the occurrences of the four edge types in (350): root and
+port V--V pairs, H-run transfers, and S-path transfers.  The run/routing
+calculus assigns each occurrence an additive phase
+
+```text
+a:E_Xi -> F_2,
+```
+
+with an H-run of length `ell` carrying `ell mod 2` and the other edge types
+carrying their resolved route/switch characters from Sections 88--93.  The
+marked holonomy in (351) is the pairing `<a,Xi(Z)>`.
+
+A sufficient closing datum is now completely explicit: a function on
+resolved intermediate labels
+
+```text
+chi:L -> F_2                                           (352)
+```
+
+such that, with the coefficient sign of the corresponding edge in (350),
+
+```text
+a[ell,m] = chi(ell)+chi(m)                             (353)
+```
+
+for every edge occurrence.  Since `partial Xi=0`, incidence duality gives
+
+```text
+<a,Xi> = <delta chi,Xi> = <chi,partial Xi> = 0.        (354)
+```
+
+Thus (352)--(353) imply (351), and then the Section 100 phase equation forces
+`omega_M(Z)=0`.
+
+The canonical primitives (91) do **not** yet assign values at this full
+resolution: they are indexed by routing color `d` and target incidence
+component `V_j`, and sum over the intermediate ports `y in d`.  They provide
+the required aggregate occurrence values but not a value for each `(d,y)`.
+The compatibility task therefore has two exact stages:
+
+```text
+atomization: lift phi^(d,j) to intermediate-resolved occurrence values;
+descent:     equal (d,y) occurrences receive the same normalized value.
+```
+
+If both hold, that common value is `chi(d,y)`, and the atomized version of
+(92) supplies (353) along each local transition.
+
+This also identifies the obstruction sharply.  A primitive may satisfy all
+local coboundary equations and still fail to descend because two occurrences
+of the same `(d,y)` receive different values.  The target-component sum
+(94) and routing-color aggregate (97) constrain those disagreements, while
+Section 27 shows that their component compression is alternating with zero
+row sums.  Its surviving within-component fluctuation is precisely the
+aggregate shadow of non-descent; scalar component tests cannot remove it.
+
+Consequently the final compatibility lemma is not another parity sum:
+
+```text
+ATOMIZED LABEL DESCENT: the canonical primitive admits an
+intermediate-resolved lift constant on every fiber
+{V occurrences on Z} -> {(d,y)}.                       (355)
+```
+
+Equation (355), together with the already proved local law (92), is a direct
+and checkable route to the holonomy theorem.  It may be weakened to descent
+only modulo the annihilator of the particular closed chain `Xi`, but full
+fiber constancy is the clean uniform target.
+
+There is an immediate falsification checkpoint.  On a diagonal transfer
+edge `[ell,ell]`, every label coboundary has value
+`chi(ell)+chi(ell)=0`.  Hence (353) requires any H-run or S-path whose two
+ends have the same resolved label to carry trivial phase.  An odd-phase
+same-label transfer would refute full descent and force the weaker
+annihilator formulation.  This condition is not asserted here; it is the
+smallest concrete test of (355).
