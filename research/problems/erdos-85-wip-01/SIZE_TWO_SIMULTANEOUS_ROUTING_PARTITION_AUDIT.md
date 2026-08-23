@@ -19644,3 +19644,64 @@ missing capacity in the three-letter `B` ticket or five-letter `O` word.
 Distinct companions retain separate restart fans; coincident companions
 obey (1281)--(1283).  This is a local capacity law, not yet a global lower
 bound on the number of different outside endpoints.
+
+## 372. A strict selected hit reflects to an outside rooted restart
+
+The selected alternative in the propagation rules is not a genuine terminal
+once the other endpoint of its strict label is retained.  Let `s_i` be the
+strict export in `(x_i,p_(i+2))`.  Its selected incidence count is one and
+its total cross degree into `e` is two, so
+
+```text
+N_e(s_i)={p_(i+2),v_i},       v_i in e\Z=B disjoint_union O.      (1284)
+```
+
+At `v_i`, the label `s_i` is an actual rooted active arrival from `x_i`.
+If `v_i in B`, it is one of the three labels of `tau(v_i)`; if `v_i in O`,
+it is one of the five rooted residual labels.  In the private case ticket
+nonmonochromaticity supplies a rooted label `ell` of color different from
+`color(s_i)`; in the residual case the multiplicity cap (1229) does the
+same.  Let `v'` be its other target endpoint.
+
+The restart cannot return to the selected port:
+
+```text
+v'!=p_(i+2).                                        (1285)
+```
+
+Otherwise `v_i,p_(i+2)` would have the two distinct common neighbors
+`s_i,ell`, producing a four-cycle.  If `v_i in B`, the same owner argument
+as in Section 357 also forbids the sibling ticket.
+
+Thus a propagation step which reaches the strict cell through `s_i` may be
+continued at the canonical outside mate: reflect along the already known
+strict incidence to the arrival state `(v_i,s_i)`, then leave through a
+different-color rooted label `ell`.  The reflected strict edge itself is
+not counted as a new color transition; the transition at `v_i` is, and
+(1285) prevents an immediate second hit of the same selected port.  In
+symbols,
+
+```text
+strict hit at p_(i+2) through s_i
+  -> rooted arrival (v_i,s_i)
+  -> different-color edge to B, O, or another strict Z cell.     (1286)
+```
+
+Combine (1286) with the `B` and `O` restart rules of Sections 357 and 359.
+Every rooted arrival state now has a successor: outside endpoints choose a
+different-color rooted edge, and selected endpoints reflect through their
+unique strict label to its outside mate.  Since the target component and
+its rooted incidence set are finite, every infinite choice sequence repeats
+a rooted arrival state and contains a directed colored state cycle:
+
+```text
+the exact-reuse reversal forces a global reflected holonomy cycle.       (1287)
+```
+
+This strengthens (1173): there is no terminal branch after strict
+reflection.  It does not yet assert a simple cycle in the underlying target
+factor, because a selected reflection traverses one strict incidence back
+to its outside mate.  The cycle is in the exact rooted-arrival dynamics,
+with every genuine departure changing color and every nonselected immediate
+reversal excluded.  This is the global finite object which a final coupled
+SRP/component argument must rule out.
