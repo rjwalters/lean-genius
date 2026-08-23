@@ -4008,6 +4008,31 @@ so far been checked only on the four stored locally feasible survivors.
 Deriving existence of `p,a` and the reduced prices from the outer equations
 remains the decisive uniform gap.
 
+An even cleaner regression supersedes (13ah) as the primary target: restore
+the omitted diagonal row and use the full five-row point fiber
+`F_p={u:p in B_u}`.  Unit row price on every member of `F_p`, with the same
+local-outgoing/outside-at-`p` point-price mask, gives a strict exact
+certificate on every serious survivor.  The successful point/cost examples
+are `13f`: `p=4`, `26<27`; `13t`: `p=13`, `616/23<27`; fractional gap:
+`p=9`, `105/4<27`; branch 4: `p=4`, `25<27`.  The exact scanner
+`--scan-unit-full-fibers` checks all edge inequalities and costs over
+`Fraction`.  This removes both the auxiliary-row choice and variable row
+prices from the prospective outer theorem:
+
+```text
+some p has reduced unit full-fiber cover cost
+  C_p < sum_{u:p in B_u} d(u).                               (13ai)
+```
+
+The most naive route to (13ai) is already falsified by the corpus.  Summing
+the independently minimized gaps `C_p-D_p` over all 24 points gives positive
+totals on every serious payload: approximately `10.179`, `27.985`, `15.458`,
+and `5.903`, respectively.  Therefore an unweighted inequality
+`sum_p C_p <= sum_p D_p` cannot prove existence of a strict fiber.  A uniform
+argument must select or weight a structural class of points, or exploit
+coupled covers rather than independent minima.  Statement (13ah) remains a
+valid exact fallback regression, but (13ai) is now the sharper proof leaf.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
