@@ -15333,3 +15333,68 @@ terminal is therefore split cleanly: either exploit the located nonzero
 switch/unmatched-chain error on `X_I triangle I_a`, or analyze the rigid
 aligned branch in which the residual source roots reproduce the original
 strict-export set.
+
+## 300. Every mixed payment has an actual path in the target owner factor
+
+The occurrence walk from Section 289 can be reduced modulo two without
+losing its endpoints.  Fix `w in W_I` and its `W--I` overlay component.
+Expand every active-pairing edge as its internal path in `H_a^C[S]`, and
+expand every factor-pairing edge as the internal part in `S` of its
+`F_a[e]` interval.  Zero-length active connections are allowed.  Let
+`Theta_w^S` be the symmetric difference of all these internal edge chains.
+
+Every active cut occurrence internal to the overlay component is an
+endpoint of exactly one chain of each kind, so its `S`-side vertex occurs
+twice in the boundary and cancels.  The only uncancelled endpoints are the
+initial tagged port `w` and the `S`-side endpoint `s_w` of the terminal
+inactive cut edge indexed by `z(w)`.  Thus
+
+```text
+Theta_w^S subset F_a[e][S],
+partial Theta_w^S={w} triangle {s_w}.                (961)
+```
+
+This identity remains valid if the two occurrence endpoints have the same
+underlying port: then the right side of (961) is empty and the internal
+chain is a mod-two cycle.  Let `o_w` be the other endpoint of the terminal
+edge, so `o_w notin S`, and adjoin that edge:
+
+```text
+Theta_w:=Theta_w^S+[E_e(z(w))] subset F_a[e],
+partial Theta_w={w} triangle {o_w}.                  (962)
+```
+
+The endpoints in (962) are distinct because they lie on opposite sides of
+`S`.  Although the raw alternating expansion may traverse an underlying
+factor edge more than once, symmetric difference removes every even reuse.
+The resulting support is a subgraph of the two-factor and has boundary
+exactly `{w,o_w}`.  Its path decomposition therefore contains one actual
+edge-simple path component joining them:
+
+```text
+w in S -- path in F_a[e] -- o_w notin S.             (963)
+```
+
+There is also an aggregate parity consequence.  Put
+
+```text
+Theta_I:=sum_(w in W_I)Theta_w,
+O_I:=triangle_(w in W_I){o_w} subset e\S.            (964)
+```
+
+The tagged ports in `W_I` are distinct, while outside endpoints may repeat
+and are correctly cancelled in `O_I`.  Summing (962) gives
+
+```text
+partial Theta_I=W_I triangle O_I,
+|O_I|=|W_I|=1 mod 2.                                (965)
+```
+
+Thus the residual construction now has realized routes on both owner
+factors.  Sections 294--297 give root-factor paths from the original core
+to the surviving root defect, while (963) gives, payment by payment, a
+target-factor path from each transported reverse terminal through the
+located shore and out across its specified inactive edge.  The earlier
+warning about the raw occurrence walk remains correct; edge simplicity is
+obtained only after mod-two reduction and path decomposition of the
+resulting factor subgraph.
