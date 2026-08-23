@@ -224,7 +224,8 @@ def bundle_triple_audit(data: dict) -> tuple[int, list[tuple]]:
 
 
 def bundle_rank_audit(data: dict) -> tuple[
-        int, int, list[tuple[int, int]], list[tuple[int, int]]]:
+        int, int, list[tuple[int, int]], list[tuple[int, int]],
+        list[tuple[int, int]]]:
     """Exact rank after quotienting the route-reversal sign relation."""
     from sympy import SparseMatrix
 
@@ -242,6 +243,11 @@ def bundle_rank_audit(data: dict) -> tuple[
         edge for edge, boundary in indexed_columns
         if not any(value and feature_frequency[feature] == 1
                    for feature, value in boundary.items())]
+    without_private_bundle = [
+        edge for edge, boundary in indexed_columns
+        if not any(value and feature[0] == "bundle"
+                   and feature_frequency[feature] == 1
+                   for feature, value in boundary.items())]
     features = sorted({feature for boundary in columns for feature in boundary},
                       key=repr)
     row = {feature: index for index, feature in enumerate(features)}
@@ -249,7 +255,8 @@ def bundle_rank_audit(data: dict) -> tuple[
                for column, boundary in enumerate(columns)
                for feature, value in boundary.items()}
     rank = SparseMatrix(len(features), len(columns), entries).rank()
-    return len(columns), rank, missing_reverse, without_private_feature
+    return (len(columns), rank, missing_reverse, without_private_feature,
+            without_private_bundle)
 
 
 def flat_signature_audit(data: dict) -> tuple[
@@ -1182,21 +1189,27 @@ def main() -> int:
         total_rank = 0
         total_missing = 0
         total_nonprivate = 0
+        total_nonprivate_bundle = 0
         for label, candidate in all_data:
-            columns, rank, missing, nonprivate = bundle_rank_audit(candidate)
+            (columns, rank, missing, nonprivate,
+             nonprivate_bundle) = bundle_rank_audit(candidate)
             total_columns += columns
             total_rank += rank
             total_missing += len(missing)
             total_nonprivate += len(nonprivate)
+            total_nonprivate_bundle += len(nonprivate_bundle)
             branch, seed_number, colors = label
             print(f"bundle_rank branch={branch} seed={seed_number} "
                   f"colors={colors} columns={columns} rank={rank} "
-                  f"missing_reverse={missing} nonprivate={nonprivate}")
+                  f"missing_reverse={missing} nonprivate={nonprivate} "
+                  f"nonprivate_bundle={nonprivate_bundle}")
         print(f"bundle_rank_total_columns={total_columns} "
               f"total_rank={total_rank} missing_reverse={total_missing} "
-              f"nonprivate={total_nonprivate}")
+              f"nonprivate={total_nonprivate} "
+              f"nonprivate_bundle={total_nonprivate_bundle}")
         audit_failed |= (total_rank != total_columns or total_missing > 0
-                         or total_nonprivate > 0)
+                         or total_nonprivate > 0
+                         or total_nonprivate_bundle > 0)
     for branch, seed_number, colors, bad_rows in hall_labels:
         print(f"local_hall branch={branch} seed={seed_number} "
               f"colors={colors} rows={bad_rows}")
