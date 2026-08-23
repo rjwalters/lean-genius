@@ -23938,3 +23938,54 @@ nonzero color-ordered cancellation unless the explicit local saturation
 terminal is already present.  Avoidance was not imposed in this
 component-pigeonhole step; retaining it while controlling the component
 count is a separate refinement.
+
+## 447. Avoided saturation lies in one exact ten-edge source fiber
+
+The saturation terminal in the avoided trichotomy (1581) has constant
+global size.  Work in case (II) of Section 441 and let `h` be the common
+exterior source color of the two distinct pinch edges `e_1,e_2` incident
+with `v in O_5`.  Since the entire walk avoids the strict-export support,
+
+```text
+h notin Gamma,       so k_h=0.                    (1603)
+```
+
+The exact color census (1405) now gives
+
+```text
+|E_h(M)|=10-k_h=10.                               (1604)
+```
+
+Thus all ten rooted `h`-labels are ordinary; none is a strict export.  The
+color-degree cap makes their shadow color class a disjoint union of paths
+and cycles with ten edges in total.  The vertex `v` has degree exactly two
+in this color class, witnessed by `e_1,e_2`, so it is an interior vertex
+of an `h`-path or lies on an `h`-cycle.
+
+The two pinch edges have distinct core roots because the root classes are
+matchings.  Their two actual rooted labels also exhaust the two allowed
+`h`-neighbors of `v`.  Finally, the global unsheltered payer map is
+injective, so their canonical payers `z_1,z_2` are distinct core-inactive
+labels.  The avoidance inherited from Section 441 records
+
+```text
+h notin {d} union Gamma,
+root(e_1)!=root(e_2),
+z_1!=z_2,
+payerLayer(z_1),payerLayer(z_2) notin P.           (1605)
+```
+
+Consequently the whole remaining local terminal is contained in the
+finite configuration
+
+```text
+one nonexceptional ten-edge source-color fiber,
+one named degree-two target vertex v,
+two distinct roots and two distinct inactive payers.            (1606)
+```
+
+This does not yet exclude saturation, but it removes any asymptotic
+ambiguity from that branch.  At `q>=256` the obstruction is a constant
+ten-edge source fiber outside both distinguished source-color families,
+and its two payer layers may be forced outside any prescribed set of at
+most eight layers.
