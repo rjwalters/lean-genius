@@ -4475,6 +4475,26 @@ The final lift problem is correspondingly smaller: account for same-side
 `rho^tri` edges and the witness-free `rho^T` channel, and show that their
 owner-resolved contribution matches the inactive/terminal endpoint states.
 
+The b-flipping part of `rho^T` also has a canonical, but different, routing
+container.  It is literally a subset of the T-cut `delta_T(B)`.  Since T is
+Eulerian, every T-component has an even number of B-crossings; cycle
+decomposition pairs them into two-ended T-segments exactly as in
+(73rnz_cjibkp).  Every such segment has K-price zero because T is contained
+in A and K is disjoint from A.  Therefore
+
+```text
+rho^tri b-flips attach to delta_P(B) through canonical 00 edges;
+rho^T   b-flips attach to delta_T(B) through zero-price T edges.          (73rnz_cjibkw)
+```
+
+Both flipping residual channels now possess occurrence-level endpoints and
+componentwise owner routing.  The only residual cross-matching atoms with no
+cut endpoint are the **same-side** edges, those with equal b-values at their
+two ends, in either `rho^tri` or `rho^T`.  Thus the final occurrence lift may
+be restricted to proving that these same-side atoms cancel ownerwise or are
+absorbed by the inactive source state; all b-flipping rho atoms are already
+geometrically attached.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
