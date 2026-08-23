@@ -2938,6 +2938,74 @@ theorem false_of_orderNine_order34_three_edge_owner_W_two_of_punctured_shores
     G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hloc
       S Z P W hpartition hPsub hWcard hownerW hTotalDefectS hZdegree
 
+/-- An owner-adjacent bin-one partner is not defect-adjacent to the owner.
+The partner has a high neighbor, and the universal bin-three owner is
+adjacent to every high vertex, so that high root is a common original
+neighbor of the pair. -/
+theorem orderNine_secondProfile_owner_partner_not_defectAdjacent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    {owner z : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hzB₁ : z ∈ squareOrderNineLowIncidenceBin G 1) :
+    ¬ (secondOrderDefectGraph G).Adj z owner := by
+  classical
+  let H := squareOrderHighVertices G 9
+  have hzCard : (G.neighborFinset z ∩ H).card = 1 :=
+    (Finset.mem_filter.mp hzB₁).2
+  obtain ⟨r, hr⟩ := Finset.card_pos.mp (by rw [hzCard]; omega)
+  have hrParts := Finset.mem_inter.mp hr
+  have hownerAll : G.neighborFinset owner ∩ H = H := by
+    apply Finset.eq_of_subset_of_card_le
+    · exact Finset.inter_subset_right
+    · have hownerCard : (G.neighborFinset owner ∩ H).card = 3 :=
+        (Finset.mem_filter.mp howner).2
+      rw [hownerCard, hhigh]
+  have hrOwner : G.Adj owner r := by
+    have : r ∈ G.neighborFinset owner ∩ H := by
+      rw [hownerAll]
+      exact hrParts.2
+    exact (G.mem_neighborFinset owner r).mp (Finset.mem_inter.mp this).1
+  have hzOwner : z ≠ owner := by
+    intro h
+    subst z
+    have hk3 := (Finset.mem_filter.mp howner).2
+    have hk1 := (Finset.mem_filter.mp hzB₁).2
+    omega
+  exact not_secondOrderDefect_adj_of_commonNeighbor
+    G hfree hzOwner
+      ((G.mem_neighborFinset z r).mp hrParts.1) hrOwner
+
+/-- Removing the sole deleted owner from a partner's punctured defect
+closure.  The preceding theorem rules out the owner itself as a defect
+neighbor, so containment in `{owner} ∪ U` sharpens to containment in `U`. -/
+theorem orderNine_secondProfile_owner_partner_defectNeighbors_subset_punctured
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    {owner z : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hzB₁ : z ∈ squareOrderNineLowIncidenceBin G 1)
+    (U : Finset V)
+    (hpunctured : (secondOrderDefectGraph G).neighborFinset z ⊆
+      insert owner U) :
+    (secondOrderDefectGraph G).neighborFinset z ⊆ U := by
+  intro y hy
+  rcases Finset.mem_insert.mp (hpunctured hy) with h | h
+  · subst y
+    have hAdj : (secondOrderDefectGraph G).Adj z owner :=
+      ((secondOrderDefectGraph G).mem_neighborFinset z owner).mp hy
+    exact (orderNine_secondProfile_owner_partner_not_defectAdjacent
+      G hfree hhigh howner hzB₁ hAdj).elim
+  · exact h
+
 end
 
 end Erdos85
