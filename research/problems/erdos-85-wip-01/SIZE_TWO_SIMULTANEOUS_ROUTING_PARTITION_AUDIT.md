@@ -17248,3 +17248,59 @@ not sufficient.  The off-incidence chain `L_D` must still realize the
 listed side boundaries using active paths in one color, and a same- or
 mixed-color realization must satisfy the holonomy interfaces of Section
 328.  Those four cases are the finite targets for the next exclusion.
+
+## 331. Every shortest reversal consumes three or five active path components
+
+The boundary signatures already impose a nontrivial integer cost on the
+six-edge graph `H_b^D`.  Let
+
+```text
+m:=|supp(L_D)|,
+N:=|P_b(D)|                                          (1109)
+```
+
+for a putative reversal in Section 330.  Every odd-degree root and selected
+port of `L_D` must be incident to a distinct support edge, so
+
+```text
+m>=max(|R_D|,|Z_D|).                                (1110)
+```
+
+This immediately gives `m>=3` in the `R_D=D` case and in either odd-arc
+case with `|Z_D|=3`; the full-shore case gives `m>=5`.  The only remaining
+possibility for `m=1` would be an endpoint-root signature, say
+`R_D={u}`, whose odd arc has one edge.  That edge is the core edge joining
+`x` to `u`; its selected port is therefore incident to `u`.  But every
+edge of `L_D` is off-incidence by (1090), so the unique pair required by
+a one-edge chain is forbidden.  Consequently
+
+```text
+m>=3 in every reversal signature,
+m>=5 if R_D={x} and Z_D=Z.                          (1111)
+```
+
+Each support edge of `L_D` needs at least one distinct crossing path
+occurrence, whence `m<=N`.  The crossing paths are distinct path components
+of `H_b^D`; here `|D|=3`, so (1082) gives only six factor edges in total.
+Finally `N` is odd by construction.  Thus
+
+```text
+3<=m<=N<=6,       N=1 mod 2,
+so N in {3,5};
+in the full-shore signature, N=5.                  (1112)
+```
+
+If `N=3` and `m=3`, the three terminal pairs are all distinct; no binary
+cancellation has occurred.  If `N=5`, at least five of the six active
+edges lie in different crossing path components.  In particular, in the
+full-shore case `H_b^D` has no cycle and has at most one adjacency between
+its six edges: it is five single-edge crossing components together with
+either one unused single edge, or four single-edge components and one
+two-edge crossing path.
+
+Therefore the shortest recurrence left by Section 327 is not a cheap
+parity reversal.  It must spend three or five disjoint active components
+of one six-edge root-restricted factor, and the full selected closure has
+the rigid near-matching normal form above.  The remaining label-holonomy
+test may now be performed separately on the three-path and five-path
+branches rather than on an arbitrary odd family.
