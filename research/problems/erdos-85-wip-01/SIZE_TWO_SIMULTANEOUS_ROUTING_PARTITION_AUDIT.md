@@ -20797,3 +20797,83 @@ rooted holonomy made entirely of ordinary `B/O` moves, and every one of its
 edges carries the exact coupled SRP tag profile of Sections 362--365.  The
 remaining small binary value is outside this inequality and must retain its
 separate finite treatment.  No order-specific enumeration enters (1367).
+
+## 392. Ordinary holonomy has linear transversal mass
+
+The existence theorem is robust under deletions.  First sharpen the
+PC-acyclic edge bound by one.  For an edge-colored graph `H`, form the
+directed transition graph whose vertices are oriented edges `(w,u)` and
+whose arcs are
+
+```text
+(w,u) -> (u,z)
+ iff uz!=uw and color(uw)!=color(uz).               (1368)
+```
+
+A directed cycle contains a shortest closed properly colored
+nonbacktracking subwalk; cutting at a repeated physical vertex shows that
+such a shortest subwalk is a simple properly colored cycle.  Hence if `H`
+has no properly colored cycle, its transition graph is acyclic.  When `H`
+has an edge, choose a sink `(w,u)`.  Every other edge at `u` then has the
+same color as `uw`.  In a subgraph of `M`, the monochromatic degree cap is
+two, so `deg_H(u)<=2`.
+
+The same argument applies to every nonempty subgraph of a PC-cycle-free
+subgraph of `M`.  Such a graph is therefore `2`-degenerate, and on `n>=2`
+vertices it has at most
+
+```text
+2n-3 edges.                                         (1369)
+```
+
+Let `X subset E(M)` meet every properly colored cycle.  Then `M-X` is
+PC-cycle-free, so (1355) and (1369) give
+
+```text
+|X| >= |E(M)|-(2|U|-3)
+     = (5q-25)-(4q-13)
+     = q-12.                                        (1370)
+```
+
+There is a fixed-mass version for vertex transversals.  Suppose
+`S subset U` meets every properly colored cycle and `|U setminus S|>=2`.
+Deleting `S` removes at most `sum_(u in S)deg_M(u)` edges.  Applying (1369)
+to `M-S`, then using (1356), yields
+
+```text
+5q-25-sum_(u in S)(5-m(u))
+ <=2(2q-5-|S|)-3,
+
+sum_(u in S)(3-m(u)) >= q-12.                      (1371)
+```
+
+If fewer than two vertices remain, the resulting cardinality bound below
+is automatic.  Since every summand in (1371) is at most three, every vertex
+transversal satisfies
+
+```text
+|S|>=ceil((q-12)/3).                               (1372)
+```
+
+The private set gives a stronger role-specific consequence.  Every
+`u in B` is artificially fixed by two roots, so `m(u)>=2` and
+
+```text
+sum_(u in B)(3-m(u))<=|B|=10.                       (1373)
+```
+
+For `q>22`, equations (1371)--(1373) show that `B` cannot meet every
+properly colored cycle.  Therefore
+
+```text
+q>=23 implies M[O] contains a properly colored cycle;
+in the binary range q>=32, there is a simple all-O ordinary holonomy.
+                                                        (1374)
+```
+
+Every edge of the cycle in (1374) is an `O--O` propagation row.  It
+therefore carries three selected tags, with the canonical non-`d` offset
+singleton of Sections 364, 365, and 367, and the cycle has no private-owner
+or strict-loop correction in (1314).  Equations (1370)--(1374) do not yet
+cancel those tags; they supply the linear support and the residual-only
+normal form that the remaining payer-reuse argument must exploit.
