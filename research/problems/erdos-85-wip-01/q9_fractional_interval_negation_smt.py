@@ -13,6 +13,11 @@ it refutes the full prospective assertion only if the emitted payload is then
 verified against the omitted full-admissibility constraints.  UNSAT is useful
 classification evidence but still needs a checked certificate or a uniform
 proof; UNKNOWN is only a computational boundary.
+
+``--lazy-rows`` is an exact CEGAR mode: it starts from the outer design and
+adds base-packing or fractional rows only after the current concrete payload
+violates them.  ``--full-outer`` retains the constraints omitted by the
+default outer abstraction, which is useful for rechecking a relaxed SAT model.
 """
 
 from __future__ import annotations
@@ -41,8 +46,13 @@ OUTER_ONLY_RELAX = {
 
 
 def add_fractional_interval_negation(branch: int, timeout_ms: int,
-                                     witness: dict | None = None):
-    outer, data = build(branch, timeout_ms, True, relax=OUTER_ONLY_RELAX)
+                                     witness: dict | None = None,
+                                     relax: set[str] | None = None,
+                                     lazy_rows: bool = False):
+    outer, data = build(
+        branch, timeout_ms, True,
+        relax=OUTER_ONLY_RELAX if relax is None else relax,
+    )
     solver = Solver()
     solver.set(timeout=timeout_ms)
     solver.add(*outer.assertions())
@@ -101,16 +111,32 @@ def add_fractional_interval_negation(branch: int, timeout_ms: int,
                 for v in range(N)
             ]) <= 1))
 
-    # The interval families are meaningful only after local feasibility.  A
-    # single demanded packing per row is cheap; reverse containing/avoiding
-    # witnesses are introduced lazily below.
-    for row in range(N):
+    # The interval families are meaningful only after local feasibility.
+    # In lazy mode these witnesses are added only for rows falsified by a
+    # concrete outer model; reverse containing/avoiding witnesses are still
+    # introduced separately below.
+    base_rows: set[int] = set()
+
+    def add_base_row(row: int) -> None:
+        if row in base_rows:
+            return
+        base_rows.add(row)
         base = {v: Bool(f"fi_base_{row}_{v}") for v in range(N)}
         constrain_integral_packing(row, base, True)
 
-    mass = {(u, w): Real(f"fi_mass_{u}_{w}")
-            for u in range(N) for w in range(N)}
-    for u in range(N):
+    if not lazy_rows:
+        for row in range(N):
+            add_base_row(row)
+
+    mass = {}
+    active_rows: set[int] = set()
+
+    def add_fractional_row(u: int) -> None:
+        if u in active_rows:
+            return
+        active_rows.add(u)
+        for w in range(N):
+            mass[u, w] = Real(f"fi_mass_{u}_{w}")
         solver.add(Sum([mass[u, w] for w in range(N)]) == demand(u))
         for w in range(N):
             solver.add(mass[u, w] >= 0, mass[u, w] <= 1)
@@ -122,6 +148,10 @@ def add_fractional_interval_negation(branch: int, timeout_ms: int,
                 If(incidence[w, point], mass[u, w], 0)
                 for w in range(N)
             ]) <= 1)
+
+    if not lazy_rows:
+        for u in range(N):
+            add_fractional_row(u)
 
     # With a fixed outer payload, compute the reverse interval exactly in
     # Python.  This is both much smaller and a useful soundness regression for
@@ -154,7 +184,8 @@ def add_fractional_interval_negation(branch: int, timeout_ms: int,
                         solver.add(mass[u, w] == 1)
                     if u not in possible[w]:
                         solver.add(mass[u, w] == 0)
-        return solver, mass, {"fixed": True}
+        return solver, mass, {"fixed": True, "active_rows": active_rows,
+                              "base_rows": base_rows}
 
     # Reverse witnesses make the interval conditions exact.  When x[u,w]>0,
     # u is possible at reverse row w; when x[u,w]<1, u is avoidable there.
@@ -163,6 +194,8 @@ def add_fractional_interval_negation(branch: int, timeout_ms: int,
     def add_reverse_pair(u: int, w: int) -> None:
         if (u, w) in added_pairs:
             return
+        if u not in active_rows:
+            raise RuntimeError(f"reverse pair requested for inactive row {u}")
         added_pairs.add((u, w))
         containing = {v: Bool(f"fi_contain_{u}_{w}_{v}") for v in range(N)}
         avoiding = {v: Bool(f"fi_avoid_{u}_{w}_{v}") for v in range(N)}
@@ -176,6 +209,10 @@ def add_fractional_interval_negation(branch: int, timeout_ms: int,
         "incidence": incidence,
         "k": k,
         "demand": demand,
+        "add_base_row": add_base_row,
+        "base_rows": base_rows,
+        "add_fractional_row": add_fractional_row,
+        "active_rows": active_rows,
         "add_reverse_pair": add_reverse_pair,
         "added_pairs": added_pairs,
     }
@@ -188,15 +225,29 @@ def main() -> int:
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--max-rounds", type=int, default=100)
     parser.add_argument("--witness", type=Path)
+    parser.add_argument(
+        "--full-outer", action="store_true",
+        help=("retain every outer-design constraint instead of the fast "
+              "relaxed abstraction"),
+    )
+    parser.add_argument(
+        "--lazy-rows", action="store_true",
+        help="add fractional rows only when a concrete outer model violates them",
+    )
     args = parser.parse_args()
 
     witness = json.loads(args.witness.read_text()) if args.witness else None
     solver, mass, data = add_fractional_interval_negation(
-        args.branch, args.timeout_seconds * 1000, witness)
+        args.branch, args.timeout_seconds * 1000, witness,
+        relax=set() if args.full_outer else None,
+        lazy_rows=args.lazy_rows and witness is None,
+    )
     solver.set(random_seed=args.random_seed)
     for round_number in range(1, args.max_rounds + 1):
         result = solver.check()
         print(f"round={round_number} result={result} "
+              f"base_rows={len(data.get('base_rows', ())) } "
+              f"fractional_rows={len(data.get('active_rows', ())) } "
               f"reverse_pairs={len(data.get('added_pairs', ())) }")
         if result != sat:
             if str(result) == "unknown":
@@ -231,12 +282,23 @@ def main() -> int:
                            for v, w in combinations(chosen, 2))]
                 for row in range(N)
             }
-            if any(not feasible[row] for row in range(N)):
-                raise RuntimeError("base packing constraint survived without packing")
+            infeasible_rows = [row for row in range(N) if not feasible[row]]
+            if infeasible_rows:
+                if not args.lazy_rows:
+                    raise RuntimeError(
+                        "base packing constraint survived without packing")
+                new_base_rows = [row for row in infeasible_rows
+                                 if row not in data["base_rows"]]
+                if not new_base_rows:
+                    raise RuntimeError(
+                        "base packing violation survived its exact constraint")
+                print(f"infeasible_base_rows={infeasible_rows}")
+                data["add_base_row"](new_base_rows[0])
+                continue
             forced = {row: set.intersection(*feasible[row]) for row in range(N)}
             possible = {row: set.union(*feasible[row]) for row in range(N)}
             violations = []
-            for u in range(N):
+            for u in data["active_rows"]:
                 for w in range(N):
                     value = model.eval(mass[u, w]).as_fraction()
                     if ((value > 0 and u not in possible[w]) or
@@ -251,15 +313,62 @@ def main() -> int:
                 for pair in new_pairs:
                     data["add_reverse_pair"](*pair)
                 continue
+
+            fixed_support = {}
+            if args.lazy_rows:
+                deficient_rows = []
+                for u in range(N):
+                    if u in data["active_rows"]:
+                        continue
+                    fixed = Solver()
+                    fixed.set(timeout=args.timeout_seconds * 1000)
+                    row_mass = [Real(f"fi_fixed_{round_number}_{u}_{w}")
+                                for w in range(N)]
+                    fixed.add(Sum(row_mass) == data["demand"](u))
+                    for w in range(N):
+                        fixed.add(row_mass[w] >= 0, row_mass[w] <= 1)
+                        if w not in candidates[u]:
+                            fixed.add(row_mass[w] == 0)
+                        if u in forced[w]:
+                            fixed.add(row_mass[w] == 1)
+                        if u not in possible[w]:
+                            fixed.add(row_mass[w] == 0)
+                    for point in range(N_U1):
+                        fixed.add(Sum([
+                            row_mass[w] if point in blocks[w] else 0
+                            for w in range(N)
+                        ]) <= 1)
+                    fixed_result = fixed.check()
+                    if fixed_result != sat:
+                        deficient_rows.append(u)
+                        continue
+                    fixed_model = fixed.model()
+                    fixed_support[u] = {
+                        w: fixed_model.eval(row_mass[w])
+                        for w in range(N)
+                        if fixed_model.eval(row_mass[w]).as_fraction() > 0
+                    }
+                print(f"inactive_deficient_rows={deficient_rows}")
+                if deficient_rows:
+                    data["add_fractional_row"](deficient_rows[0])
+                    continue
             print(f"branch={args.branch} result=sat "
                   "fractional_interval_negation="
-                  "SAT_IN_RELAXED_OUTER_ABSTRACTION")
-        support = {
-            str(u): {str(w): str(model.eval(mass[u, w]))
-                     for w in range(N)
-                     if model.eval(mass[u, w]).as_fraction() > 0}
-            for u in range(N)
-        }
+                  + ("SAT_IN_FULL_OUTER_MODEL" if args.full_outer
+                     else "SAT_IN_RELAXED_OUTER_ABSTRACTION"))
+        support = {}
+        for u in range(N):
+            if u in data.get("active_rows", set()):
+                support[str(u)] = {
+                    str(w): str(model.eval(mass[u, w]))
+                    for w in range(N)
+                    if model.eval(mass[u, w]).as_fraction() > 0
+                }
+            else:
+                support[str(u)] = {
+                    str(w): str(value)
+                    for w, value in fixed_support[u].items()
+                }
         print("fractional_interval_support=" +
               json.dumps(support, separators=(",", ":")))
         return 0
