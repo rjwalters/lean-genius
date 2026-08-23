@@ -25682,3 +25682,44 @@ No within-center equality of payer layers is asserted.  The point is that
 complementary saturation does not merely relabel the original turn: it
 creates a linear four-port family with a genuinely different local color
 and with the same cross-gadget payer separation as the primary family.
+
+## 487. Double saturation forces a 2+2+1 root-color partition
+
+Retain the `k>=ceil(t/6)` centers of Section 486 and denote the fifth root,
+outside the two fixed pairs `{r,s}` and `{u,w}`, by `x`.  Let `ell_a` be the
+color of the `x`-spoke at center `v_a`.  The primary color `h_a` already
+occurs on the `r,s` spokes and the secondary color `g_a` occurs on the
+`u,w` spokes.  Since every source color has local degree at most two,
+
+```text
+h_a!=g_a,       ell_a!=h_a,       ell_a!=g_a.                  (1725)
+```
+
+Thus the five root spokes at every retained center have the exact color
+multiplicity pattern
+
+```text
+(r,s;h_a), (u,w;g_a), (x;ell_a),              namely 2+2+1.    (1726)
+```
+
+The selected primary colors `h_a` are pairwise distinct by the separated
+packing in Section 477.  The `x`-spokes are distinct ordinary edges of one
+fixed root matching, and a source color occurs on at most two such edges.
+Together with the identical fixed-`u` argument for the secondary colors in
+(1722), this gives
+
+```text
+#{h_a:1<=a<=k}=k,
+#{g_a:1<=a<=k}>=ceil(k/2),
+#{ell_a:1<=a<=k}>=ceil(k/2).                                  (1727)
+```
+
+All five displayed spokes lie in the fully separated rooted-star gadgets.
+Hence their vertices, edges, and complete canonical payer-layer supports
+remain disjoint between different centers; in particular, each of the five
+fixed ports supplies `k` pairwise different payer layers across the family.
+Equations (1725)--(1727) assert local separation of the three color roles
+and the stated rolewise global counts.  They do not yet exclude a color
+used in one role at one center from occurring in a different role at
+another center.  The gain is an exact five-root local normal form, rather
+than only the two saturated turns recorded in Section 486.
