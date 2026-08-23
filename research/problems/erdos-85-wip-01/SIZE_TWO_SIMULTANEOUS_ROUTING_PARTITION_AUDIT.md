@@ -22802,3 +22802,44 @@ all but at most 180 full-root vertices lie in holonomy-containing
 components, uniformly in `q`.  Any remaining contradiction may therefore
 work componentwise on an almost-spanning sector; PC-cycle-free debris is
 entirely chargeable to the constant hole boundary.
+
+## 426. A closed full-root component is five-one-factor holonomy
+
+There is an exact description of components which spend none of the defect
+cut.  Let `C` be a connected component of `G_sh[O_5]` with no edge to
+`S`.  Then its rootwise boundary coordinates all vanish:
+
+```text
+b_i(C)=|partial_(G_i)C|=0       for i=0,...,4.     (1518)
+```
+
+Every vertex of `C` has exactly one incident edge from each root matching.
+Since none leaves `C`, each restriction `G_i[C]` is a perfect matching.
+In particular
+
+```text
+|C| is even,
+G_sh[C]=G_0[C] disjoint_union ... disjoint_union G_4[C]
+is a connected 5-regular graph with five named one-factors.       (1519)
+```
+
+The shadow graph is simple, so such a component has `|C|>=6`.  Its edge
+count is
+
+```text
+|E(C)|=5|C|/2>2|C|-3.                            (1520)
+```
+
+The sharpened properly-colored-cycle theorem therefore forces a simple PC
+cycle in `C`.  Equivalently,
+
+```text
+C has no PC holonomy -> C has a nonempty boundary to S;
+C has zero boundary  -> C is an even five-one-factor holonomy reservoir.
+                                                               (1521)
+```
+
+Thus closed full-root components are not part of the bounded debris in
+Section 425.  They retain all five root actions internally and necessarily
+carry holonomy; only components that pay into the constant defect sector
+can be properly-colored-cycle-free.
