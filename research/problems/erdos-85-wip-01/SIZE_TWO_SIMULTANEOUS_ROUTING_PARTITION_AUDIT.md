@@ -18634,3 +18634,54 @@ cycle branch now has two concrete outside witnesses at different selected
 ports, which can be fed into the inactive-label telescopes of Sections
 303--309 or compared against the simultaneous component profile of Section
 324.  They are no longer anonymous fifth-cell layer choices.
+
+## 354. The payer menu at each selected port is exact
+
+The inactive witnesses in Section 353 belong to an already enumerated cut
+sector, and that sector has a portwise rather than merely global census.
+Fix an exterior component `k` and a selected port `q in Z`.  Its two
+neighbors in `k` are distinct labels; call their set
+
+```text
+P_k(q):=N_k(q),             |P_k(q)|=2.             (1207)
+```
+
+Every `z in P_k(q)` has `j_z=1` by the pointwise port bound (785).  If it
+meets `C`, then Section 352 identifies it with the unique strict export at
+`q`; otherwise `i_z=0`, so it is literally an `N_01^k` port-only label.
+Let `epsilon_k(q)` be one exactly when the strict export at `q` lies in
+component `k`, and zero otherwise.  Then the two-element payer menu splits
+exactly as
+
+```text
+#{z in P_k(q):(i_z,j_z)=(1,1)}=epsilon_k(q),
+#{z in P_k(q):(i_z,j_z)=(0,1)}=2-epsilon_k(q).       (1208)
+```
+
+In particular the menu is `{strict, inactive}` when `k` receives the
+strict export at `q`, and `{inactive, inactive}` otherwise.  Summing the
+second identity over the five selected ports recovers, now label by label,
+
+```text
+sum_(q in Z)(2-epsilon_k(q))=10-k_k=N_01^k,         (1209)
+```
+
+because `sum_q epsilon_k(q)=k_k` is the number of strict exports received
+by `k`.  Thus there are no additional kinds of selected-port payer hidden
+inside the aggregate census (787).
+
+This makes equal-tag saturation completely explicit.  If two repeated
+propagation labels have common tag `(k,q)`, Section 350 says their distinct
+intermediates exhaust `P_k(q)`.  Hence their payer profile is forced to be
+
+```text
+(strict,inactive) if epsilon_k(q)=1,
+(inactive,inactive) if epsilon_k(q)=0.              (1210)
+```
+
+The same conclusion applies to either saturated endpoint-layer rectangle
+of Section 351.  Unequal tags still occupy separate two-element menus, but
+each menu carries the exact strict indicator (1208).  Consequently the
+remaining cycle-completion problem may be stated entirely as reuse of the
+finite `N_01` labels from (1209), rather than as an unspecified population
+of core-inactive intermediates.
