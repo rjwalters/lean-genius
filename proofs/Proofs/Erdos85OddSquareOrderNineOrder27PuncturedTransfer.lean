@@ -100,7 +100,74 @@ theorem orderNine_explicitPartition_five_48_erase_owner
   have hAcard : A.card = 48 := hpart.2
   omega
 
+/-- The punctured lower class consists of the old lower class together with
+the six ordinary neighbors whose target incidence drops from six to five. -/
+theorem orderNine_lowSet_five_erase_owner_eq_union_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h₁ h₂ h₃ owner : V) (R : Finset V)
+    (hownerR : owner ∈ R)
+    (hneighborsUpper : ∀ x ∈
+      (Finset.univ : Finset V) \ {h₁, h₂, h₃},
+      G.Adj x owner → (G.neighborFinset x ∩ R).card = 6) :
+    orderNineOrdinaryLowSet G h₁ h₂ h₃ (R.erase owner) 5 =
+      orderNineOrdinaryLowSet G h₁ h₂ h₃ R 5 ∪
+        (G.neighborFinset owner ∩
+          ((Finset.univ : Finset V) \ {h₁, h₂, h₃})) := by
+  classical
+  let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+  ext x
+  have herase :
+      G.neighborFinset x ∩ R.erase owner =
+        (G.neighborFinset x ∩ R).erase owner := by
+    ext y
+    simp [and_left_comm]
+  by_cases hxO : x ∈ O
+  · by_cases hx : G.Adj x owner
+    · have hu : (G.neighborFinset x ∩ R).card = 6 :=
+        hneighborsUpper x hxO hx
+      have hx' : G.Adj owner x := (G.adj_comm x owner).mp hx
+      have hm : owner ∈ G.neighborFinset x ∩ R :=
+        Finset.mem_inter.mpr ⟨(G.mem_neighborFinset x owner).mpr hx, hownerR⟩
+      have hnew : (G.neighborFinset x ∩ R.erase owner).card = 5 := by
+        rw [herase, Finset.card_erase_of_mem hm, hu]
+      simp [orderNineOrdinaryLowSet, O, hxO, hx', hu, hnew]
+    · have hm : owner ∉ G.neighborFinset x ∩ R := by
+        intro hm
+        exact hx ((G.mem_neighborFinset x owner).mp (Finset.mem_inter.mp hm).1)
+      have hsame : (G.neighborFinset x ∩ R.erase owner).card =
+          (G.neighborFinset x ∩ R).card := by
+        rw [herase, Finset.erase_eq_self.mpr hm]
+      have hx' : ¬ G.Adj owner x := fun h ↦ hx ((G.adj_comm owner x).mp h)
+      simp [orderNineOrdinaryLowSet, O, hxO, hx', hsame]
+  · simp [orderNineOrdinaryLowSet, O, hxO]
+
+/-- Consequently the corrected order-50-shore low set has cardinality 36,
+the number used in audit equation (20). -/
+theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ owner : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R 5 48)
+    (hownerR : owner ∈ R)
+    (hordinaryNeighbors :
+      (G.neighborFinset owner ∩
+        ((Finset.univ : Finset V) \ {h₁, h₂, h₃})).card = 6)
+    (hneighborsUpper : ∀ x ∈
+      (Finset.univ : Finset V) \ {h₁, h₂, h₃},
+      G.Adj x owner → (G.neighborFinset x ∩ R).card = 6) :
+    (orderNineOrdinaryLowSet G h₁ h₂ h₃ (R.erase owner) 5).card = 36 := by
+  have hnew := orderNine_explicitPartition_five_48_erase_owner
+    G h₁ h₂ h₃ owner R hpart hownerR hordinaryNeighbors hneighborsUpper
+  have hcardLow := orderNineOrdinaryLowSet_card G hcard
+    h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ (R.erase owner) 5 42 hnew
+  omega
+
 #print axioms orderNine_explicitPartition_five_48_erase_owner
+#print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
+#print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
 end
 
