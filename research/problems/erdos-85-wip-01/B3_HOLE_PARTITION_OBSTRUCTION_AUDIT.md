@@ -2333,6 +2333,57 @@ statement should quotient these singleton-union triangles and classify the
 residual kernel, rather than treating all null directions as opaque LP
 artifacts.
 
+The collision witness and its role pair can in fact be removed completely
+from the sampled capacity obstruction.  For an oriented eligible route
+`t -> u`, define the root--label half-atom boundary
+
+```text
+A(t,u)
+ = sum_(b in (B_u cap selected) minus B_t) e_(t,b)
+   - sum_(b in (B_t cap selected) minus B_u) e_(u,b).       (12rzm)
+```
+
+Definitionally `A(u,t)=-A(t,u)`.  Consequently every symmetric residual
+selection conserves every `(root,label)` coordinate of `(12rzm)`, without a
+collision expansion or any design hypothesis beyond route symmetry.  Mode
+`--audit-half-atom-primal` retains only row demands, the original private
+root--label capacity inequalities, and conservation of `(12rzm)`.  On all
+eleven restricted-Hall survivors in the 32-seed corpus this smaller primal
+is infeasible:
+
+```text
+(3,7,12): 452;  (3,12,01): 447; (3,21,12): 444;
+(4,1,01): 453;  (4,1,12): 451;  (4,3,01): 453;
+(4,4,02): 448;  (4,5,12): 444;  (4,10,01): 453;
+(4,15,01): 449; (4,15,02): 451 half-atom coordinates.       (12rzn)
+```
+
+Every solve returns HiGHS `Infeasible`.  As elsewhere, the compact label
+writes the branch, deterministic seed, and selected color pair.
+
+On the three survivors in the separately recorded eight-seed rank run, the
+half-atom column matrix has respectively ranks
+`365,355,358`, exactly the ranks of the unordered double-label flag matrices;
+their nullities are `20,21,18`.  This numerical rank equality is diagnostic,
+not a proved row-space identity.  The infeasible primal `(12rzn)` is the
+important reduction: the sampled terminal no longer needs the collision
+identity `(12rzg)`, role populations, or a classification of the
+symmetrized tensor-wedge kernel.  Its proof-facing target is now the direct
+root--label handshake:
+
+```text
+HALF-ATOM CAPACITY TRANSFER:
+no nonnegative degree-normalized route flow can simultaneously conserve
+A(t,u) and respect every private root--label capacity.          (12rzo)
+```
+
+This is still a sampled abstract-satisfiability no-go, not a uniform theorem.
+But it is stated entirely in the two objects already present in the original
+matching relaxation: selected-label transport and the private capacity of a
+root.  Any uniform proof of `(12rzo)` supersedes `(12rzi)`; the larger
+double-label ledger remains useful only if the half-atom inequality itself
+needs a collision-based derivation.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.

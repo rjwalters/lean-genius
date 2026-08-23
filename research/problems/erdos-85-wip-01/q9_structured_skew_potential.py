@@ -615,6 +615,44 @@ def double_label_flag_primal_audit(data: dict, mode: str = "full") -> tuple:
     return result.success, equalities.shape[0] - N, result.message
 
 
+def half_atom_primal_system(data: dict) -> tuple:
+    """Conserve the abstract (root, externally transported label) atoms."""
+    (base_equalities, equality_rhs, capacities, capacity_rhs, _,
+     capacity_names, variable_count) = full_bundle_primal_system(data)
+    variables = []
+    keys = set()
+    for t in range(N):
+        own_support = data["blocks"][t] & data["selected"]
+        for u in data["candidates"][t]:
+            boundary = Counter()
+            for b in (data["blocks"][u] & data["selected"]) - own_support:
+                boundary[(t, b)] += 1
+            for b in own_support - data["blocks"][u]:
+                boundary[(u, b)] -= 1
+            variables.append(boundary)
+            keys.update(boundary)
+    keys = sorted(keys)
+    key_index = {key: row for row, key in enumerate(keys)}
+    atom_rows = lil_matrix((len(keys), variable_count))
+    for column, boundary in enumerate(variables):
+        for key, value in boundary.items():
+            atom_rows[key_index[key], column] = value
+    equalities = vstack([base_equalities[:N], atom_rows], format='csr')
+    names = ([('row', t) for t in range(N)]
+             + [('half_atom', key) for key in keys])
+    return (equalities, np.r_[equality_rhs[:N], np.zeros(len(keys))],
+            capacities, capacity_rhs, names, capacity_names, variable_count)
+
+
+def half_atom_primal_audit(data: dict) -> tuple:
+    system = half_atom_primal_system(data)
+    equalities, equality_rhs, capacities, capacity_rhs, _, _, variable_count = system
+    result = linprog(
+        np.zeros(variable_count), A_ub=capacities, b_ub=capacity_rhs,
+        A_eq=equalities, b_eq=equality_rhs, bounds=(0, 1), method='highs')
+    return result.success, equalities.shape[0] - N, result.message
+
+
 def double_label_flag_private_audit(data: dict) -> tuple:
     """Check private unordered-flag rows after quotienting route reversal."""
     from scipy.linalg import qr, solve_triangular
@@ -697,9 +735,28 @@ def double_label_flag_private_audit(data: dict) -> tuple:
                         triangle_vectors.append(vector)
     triangle_rank = (int(np.linalg.matrix_rank(np.array(triangle_vectors)))
                      if triangle_vectors else 0)
+    atom_keys = set()
+    atom_columns = []
+    for _, (left, right) in selected:
+        left_support = data["blocks"][left] & data["selected"]
+        right_support = data["blocks"][right] & data["selected"]
+        column = Counter()
+        for label in right_support - left_support:
+            column[(left, label)] += 1
+        for label in left_support - right_support:
+            column[(right, label)] -= 1
+        atom_columns.append(column)
+        atom_keys.update(column)
+    atom_index = {key: row for row, key in enumerate(sorted(atom_keys))}
+    atom_matrix = np.zeros((len(atom_keys), len(selected)))
+    for column, values in enumerate(atom_columns):
+        for key, value in values.items():
+            atom_matrix[atom_index[key], column] = value
+    atom_rank = int(np.linalg.matrix_rank(atom_matrix))
     return (len(selected), rank, missing_reverse, without_private,
             duplicate_excess, duplicate_groups, fundamental_supports,
-            small_relations, len(triangle_vectors), triangle_rank)
+            small_relations, len(triangle_vectors), triangle_rank,
+            atom_rank)
 
 
 def collision_census_infeasible_core(data: dict) -> tuple:
@@ -1913,6 +1970,8 @@ def main() -> int:
                         help="test collision-witness flag conservation")
     parser.add_argument("--audit-double-label-flag-private", action="store_true",
                         help="check private rows in unordered flag boundaries")
+    parser.add_argument("--audit-half-atom-primal", action="store_true",
+                        help="test abstract root-label atom conservation")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -2287,7 +2346,7 @@ def main() -> int:
             (columns, rank, missing_reverse, without_private,
              duplicate_excess, duplicate_groups,
              fundamental_supports, small_relations,
-             triangle_count, triangle_rank) = (
+             triangle_count, triangle_rank, atom_rank) = (
                 double_label_flag_private_audit(candidate))
             branch, seed_number, colors = label
             signatures, _ = root_signature_censuses(candidate)
@@ -2311,8 +2370,22 @@ def main() -> int:
                   f"small_relations={small_relations} "
                   f"support_triangles={triangle_count} "
                   f"support_triangle_rank={triangle_rank} "
+                  f"atom_rank={atom_rank} "
+                  f"atom_nullity={columns - atom_rank} "
                   f"relation_profiles={relation_profiles} "
                   f"without_private={without_private[:20]}")
+    if args.audit_half_atom_primal:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            feasible, atom_count, message = half_atom_primal_audit(candidate)
+            branch, seed_number, colors = label
+            print(f"half_atom_primal branch={branch} seed={seed_number} "
+                  f"colors={colors} feasible={feasible} "
+                  f"atom_count={atom_count} message={message}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2398,6 +2471,7 @@ def main() -> int:
             or args.categorical_extra_triple
             or args.audit_double_label_flag_primal
             or args.audit_double_label_flag_private
+            or args.audit_half_atom_primal
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):
