@@ -6149,3 +6149,70 @@ the root and port matchings have the same one-dart marginals.  Sections 114
 and 115 make the H and S rows explicit; the V row is their negative.  Hence
 any new conserved/private invariant must refine the internal labels of the
 V--V block rather than introduce another unlabeled alphabet count.
+
+## 116. The V--V residual is a signed one-chain with explicit boundary
+
+Let `L` be the set of fully resolved V labels `ell=(d,y)`.  On a fixed dart
+cycle `Z`, form an integer one-chain in the free module on unordered pairs
+of distinct labels:
+
+```text
+C_V(Z)
+  := sum_(V_ell--V_m root pairs) [ell,m]
+     - sum_(V_ell--V_m port pairs) [ell,m].            (344)
+```
+
+The labels in a pair are distinct: two triangles through the same
+intermediate port would give the corresponding adjacent endpoint pair two
+common neighbors.  By Section 113, the coefficient of `[ell,m]` in (344) is
+exactly the private correlation coordinate
+`D_(F_ell,F_m)[Z]`.
+
+Give an unoriented label edge the incidence boundary
+
+```text
+partial[ell,m] := [ell]+[m].
+```
+
+For each label `ell`, let `h_ell(Z)` count root H--V_ell boundaries and let
+`s_ell(Z)` count port S--V_ell handoffs.  Count V_ell darts through the two
+matchings:
+
+```text
+deg_R^V(ell)+h_ell(Z)
+  = deg_P^V(ell)+s_ell(Z).
+```
+
+Therefore the V--V correlation chain has the exact boundary
+
+```text
+partial C_V(Z)
+  = sum_(ell in L) (s_ell(Z)-h_ell(Z))[ell].           (345)
+```
+
+Summing coordinates in (345) recovers the unlabeled marginal balances of
+Sections 114--115, but (345) retains every third color and intermediate
+port.  It shows that the V--V block is not an arbitrary family of private
+residues: it is a signed label flow whose only sources are switch handoffs
+and whose only sinks are marked-run boundaries.
+
+The gap-holonomy target can now be stated without an unspecified transfer.
+Construct a boundary-transfer chain `T(Z)` from the labeled non-H gaps such
+that
+
+```text
+partial T(Z)
+  = sum_ell (h_ell(Z)-s_ell(Z))[ell].                  (346)
+```
+
+Then `C_V(Z)+T(Z)` is a closed label-chain.  Route reversal negates `C_V`,
+and the desired `theta_j` are precisely the signs obtained by transporting
+along the components of this closed chain.  The remaining compatibility
+theorem must ensure that `T` is canonical and has trivial total holonomy;
+existence of some abstract chain with boundary (346) is not enough.
+
+Equations (344)--(346) combine the two halves of the live problem:
+intermediate-pair coordinates give private edges, while the H/S marginal
+identities give their exact conservation defect.  No additional unlabeled
+count can refine this boundary; the missing datum is the canonical
+root-marked routing of each labeled source to a labeled sink.
