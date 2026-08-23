@@ -17747,3 +17747,44 @@ same marked ticket.  This dichotomy is specific to same-color reversal;
 for a mixed-color second step the initial edge is not present in the new
 restricted factor and the interface must instead be enforced through the
 two color skeletons of Section 328.
+
+## 339. A same-color full-shore reversal preserves the initial edge
+
+The full-shore signature has no erase-or-double ambiguity.  Keep the
+same-color notation (1141), and let `e_1` be the other root-`x` edge of
+`H_b^{\{x\}}`.  Section 329 says that `e_0` is the unique crossing edge of
+this two-edge matching.  Hence `e_1` is noncrossing: its two endpoints are
+both in `O` or both outside `O`.
+
+Section 331 gives five crossing path components in the six-edge graph
+`H_b^D`.  Its near-matching classification leaves only two cases.  If all
+six edges are isolated, `e_0` remains its original one-edge crossing
+component.  Otherwise the graph has exactly five components: four isolated
+edges and one two-edge path.  All five components must then be crossing.
+
+The sole adjacency cannot meet `e_0`.  If it did, `e_1` would remain an
+isolated noncrossing component, leaving at most four crossing components,
+contrary to `N=5`.  In fact the adjacency must meet `e_1`; if it met neither
+root-`x` edge, the same noncrossing isolated component would remain.
+Consequently
+
+```text
+e_0 is an isolated crossing component of H_b^D.     (1145)
+```
+
+Its outside terminal is the same literal ticket `t` as in the singleton
+step, not merely another ticket with the same owner projection.  Therefore
+it contributes the terminal pair `(x,zeta)`.  Section 332 proved that a
+full-shore reversal has exactly one root-`x` occurrence, so
+
+```text
+the unique x-rooted channel in (1117) is the original edge e_0. (1146)
+```
+
+Thus a same-color full selected closure preserves the marked singleton
+edge rigidly while its other five factor edges arrange the two `u` and two
+`v` channels and at most one adjacency.  Any holonomy contradiction for
+the two full-shore patterns of Section 332 may treat `(x,zeta)` as a fixed
+literal terminal ticket, rather than only a binary root--port pair.  This
+strengthening is not asserted for a mixed-color reversal, where the second
+restricted factor does not contain `e_0`.
