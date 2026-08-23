@@ -19529,6 +19529,7 @@ nonstrict continuation are governed by Sections 360--363.  If it has size
 at most five, the residual-residual part of the cycle is now uniformly
 bounded.  Thus the cycle branch splits into a constant-size residual core
 or a quantitatively forced inactive expansion.
+
 ## 370. Every root has an odd residual boundary after its strict mate
 
 There is a rootwise parity law on the global propagation graph.  Fix a
@@ -19874,3 +19875,62 @@ coupled rows, each with its forced secondary/singleton geometry.  The moving
 and stationary branches of Section 374 are therefore both exposed to the
 same tag-reuse and inactive-payer mechanisms, through propagation rows in
 one case and strict rows in the other.
+## 376. Reflected holonomy has a finite rooted cyclic-word normal form
+
+The state-cycle formulation can be converted into one concrete cyclic word
+without mistaking strict reflection for an ordinary target edge.  Put
+
+```text
+U:=B disjoint_union O.
+```
+
+Form a rooted multigraph `H_ref` on `U`.  A rooted label `ell` whose two
+target endpoints lie in `U` contributes its ordinary target-factor edge.
+A strict label `s_i`, with target endpoints `{p_(i+2),v_i}`, contributes
+instead one loop at its outside mate `v_i`.  The loop records the excursion
+from `v_i` to the selected leaf and its forced reflection back; it is not an
+edge or loop of the original graph.
+
+A transition from state `(v,ell_in)` chooses a different-color rooted label
+`ell_out` at `v`.  In `H_ref`, it then traverses the edge indexed by
+`ell_out`: an ordinary edge reaches its other outside endpoint, while a loop
+returns to `v`.  Therefore, after cyclically indexing each chosen departure,
+a shortest directed state cycle from Section 372 gives a cyclic word
+
+```text
+v_0 --[ell_0]-- v_1 --[ell_1]-- ...
+    --[ell_(L-1)]-- v_0.                            (1301)
+```
+
+where the edge indexed by `ell_j` joins `v_j` to `v_(j+1)` in `H_ref`
+(indices modulo `L`).  The corresponding arrival state is
+`(v_(j+1),ell_j)`.  At every transition vertex, the arriving label
+`ell_(j-1)` and departing label `ell_j` have different component colors.
+They also have different core roots: the rooted word at a private or
+residual endpoint contains at most one label for each root.  Thus
+consecutive letters of the cyclic word change both color and root.
+
+Choose the state cycle with no repeated state before closure.  The total
+number of rooted arrival states on `U` is exactly
+
+```text
+3|B|+5|O|=30+5(2q-15)=10q-45.                      (1302)
+```
+
+Consequently
+
+```text
+2<=L<=10q-45.                                      (1303)
+```
+
+The stationary branch of Section 374 is precisely the case in which every
+letter of (1301) is a strict loop at one vertex.  The moving branch contains
+at least one ordinary rooted edge, and each such letter carries the selected
+tag profile of Sections 362--365.  Ordinary edges or underlying vertices
+may repeat later in the word, but the directed arrival states do not.
+
+Hence the remaining terminal is now an explicitly bounded cyclic word on
+rooted labels, with adjacent root/color changes, strict reflections marked
+as formal loops, and every physical move decorated by its exact SRP tag row.
+This is a normal form rather than an exclusion; its purpose is to give the
+cycle-wide tag identity a precise indexing object.
