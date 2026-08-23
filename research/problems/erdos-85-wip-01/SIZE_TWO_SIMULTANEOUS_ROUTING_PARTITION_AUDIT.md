@@ -24510,3 +24510,45 @@ from that necessary qualification, (1642) packages the entire remaining
 q-large saturation obstruction as a rainbow independent set of turns in
 one fixed two-root action, with disjoint payer support available for
 further avoidance.
+
+## 460. Unpinched two-root cycles have an exact mod-four syndrome
+
+The alternating factor itself has a sharp cycle dichotomy.  Fix roots
+`r!=s` and let `Q` be one cycle component of `G_r union G_s`.  Write
+
+```text
+|Q|=2 ell.                                         (1643)
+```
+
+The root labels alternate, so `Q` uses exactly `ell` edges of root `r`
+and `ell` edges of root `s`.  If no vertex of `Q` is a monochromatic
+exterior-color turn, consecutive cycle edges have different colors at
+every vertex.  Then `Q` is a simple properly colored base cycle, with
+root and selected-tag syndrome
+
+```text
+rootSyndrome(Q)=(ell mod 2)(e_r+e_s),
+tau(Q)=(ell mod 2)([T_r]+[T_s]).                  (1644)
+```
+
+Because the five selected tags form a basis, the second value is zero
+exactly when `ell` is even.  Consequently every unpinched factor cycle
+has the exact alternatives
+
+```text
+|Q|=0 mod 4 -> Q is a nondegenerate tag-even simple PC cycle;
+|Q|=2 mod 4 -> Q is a simple PC cycle with the nonzero
+               two-root syndrome e_r+e_s.         (1645)
+```
+
+Equivalently, every alternating two-root factor cycle is either pinched
+at some monochromatic turn or falls into one of the two precise PC-cycle
+classes in (1645).  This applies in particular to the factor supporting
+the rainbow independent set from Section 459.
+
+There is one essential avoidance qualification.  Section 459 controls
+the colors and payer layers of the two edges at each selected turn, but
+not every other edge of its factor cycle.  Thus a zero-syndrome cycle in
+(1645) is an unconditional nondegenerate PC cancellation; it is not yet
+an avoided cancellation unless its remaining edges also avoid the chosen
+forbidden supports.
