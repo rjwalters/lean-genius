@@ -3623,6 +3623,33 @@ when the two endpoints have the same type (both leaves or both ordinary).
 This reduces the activation gap from four endpoint decorations to two
 same-type branches.
 
+The syndrome packing bound (73rnz_bm) removes one of those branches and
+rigidifies the other.  Suppose first that both endpoints are leaves and that
+`kappa_F` has no off-pole support.  Then (73rnz_ch) says `kappa_F=h`.  Since
+`P_Fh=0`, the definition (73rnz_cg) becomes
+
+```text
+A(P_Fx)=h.
+```
+
+Every solution of this syndrome has support at least q by (73rnz_bm), while
+`supp(P_Fx)` is contained in X and `|X|=q`.  Hence X would consist entirely
+of full centers.  But this placement has only `q/2+2<q` full centers for
+`q>=8`, a contradiction.  Therefore the both-leaf branch also forces
+nonempty off-pole `kappa_F` support.
+
+The same argument in the both-ordinary branch says that if `kappa_M` has no
+off-pole support, then `A(P_Mx)=h`, so the packing equality forces
+
+```text
+X subset M, and in fact X=P_M X.                         (73rnz_ck)
+```
+
+Consequently every minimum two-pole support activates a nonprivate owner
+commutator unless both endpoints are ordinary and every point of X is
+ordinary.  The activation problem has collapsed to this single pure-ordinary
+two-pencil residue.
+
 The parallel SRP separator now identifies the exact topology such a terminal
 would need.  Its selected row--atom incidence graph is Eulerian; pairing at
 degree-four atoms is a gauge choice, while the pairing-independent constant
@@ -3638,9 +3665,9 @@ becomes relevant only after refining each endpoint parity into owner/mate
 occurrences.  The remaining precise task is therefore
 
 ```text
-couple the forced off-pole commutator support to the gauge ledger in the
-mixed-type branch, and exclude private payment in the two same-type branches.
-                                                               (73rnz_ck GAP)
+couple forced off-pole commutator support to the gauge ledger, and exclude
+the pure-ordinary two-pencil residue X subset M.
+                                                               (73rnz_cl GAP)
 ```
 
 Equivalently, one needs a noncommuting marked operator whose endpoint value
