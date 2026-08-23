@@ -1009,6 +1009,65 @@ theorem neighbor_inter_shore_card_eq_if_of_complementary_closed
       exact (Finset.disjoint_left.mp hdisj) hyParts.2 (hsub hyParts.1)
     rw [hempty, Finset.card_empty]
 
+/-- Owner-punctured variant of the closed-shore count.  The universe `U`
+omits one distinguished defect neighbor `owner`; all other defect neighbors
+stay in the point's shore.  Thus a degree-eight point adjacent to the owner
+has seven defect neighbors on its shore and none across. -/
+theorem neighbor_inter_shore_card_eq_if_of_complementary_closed_punctured_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (owner : V) (U S T : Finset V) (z : V)
+    (hownerNotU : owner ∉ U)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hzU : z ∈ U) (hzOwner : D.Adj z owner)
+    (hneighbors : ∀ x ∈ U, D.neighborFinset x ⊆ insert owner U)
+    (hSclosed : ∀ x ∈ S, D.neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T, D.neighborFinset x ∩ U ⊆ T)
+    (hzdegree : D.degree z = 8) :
+    (D.neighborFinset z ∩ S).card = if z ∈ S then 7 else 0 := by
+  classical
+  have hSsubU : S ⊆ U := by
+    intro x hx
+    have : x ∈ S ∪ T := Finset.mem_union_left _ hx
+    rw [hunion] at this
+    exact this
+  by_cases hzS : z ∈ S
+  · rw [if_pos hzS]
+    have hownerNotS : owner ∉ S := fun h ↦ hownerNotU (hSsubU h)
+    have heq : D.neighborFinset z ∩ S = (D.neighborFinset z).erase owner := by
+      ext y
+      constructor
+      · intro hy
+        have hyParts := Finset.mem_inter.mp hy
+        exact Finset.mem_erase.mpr ⟨fun h ↦ hownerNotS (h ▸ hyParts.2), hyParts.1⟩
+      · intro hy
+        have hyParts := Finset.mem_erase.mp hy
+        have hyInsert := hneighbors z hzU hyParts.2
+        have hyU : y ∈ U := by
+          rcases Finset.mem_insert.mp hyInsert with h | h
+          · exact (hyParts.1 h).elim
+          · exact h
+        exact Finset.mem_inter.mpr ⟨hyParts.2,
+          hSclosed z hzS (Finset.mem_inter.mpr ⟨hyParts.2, hyU⟩)⟩
+    have hownerMem : owner ∈ D.neighborFinset z :=
+      (D.mem_neighborFinset z owner).mpr hzOwner
+    rw [heq, Finset.card_erase_of_mem hownerMem,
+      D.card_neighborFinset_eq_degree, hzdegree]
+  · rw [if_neg hzS]
+    have hzT : z ∈ T := by
+      have hzUnion : z ∈ S ∪ T := by rw [hunion]; exact hzU
+      rcases Finset.mem_union.mp hzUnion with h | h
+      · exact (hzS h).elim
+      · exact h
+    have hempty : D.neighborFinset z ∩ S = ∅ := by
+      rw [Finset.eq_empty_iff_forall_notMem]
+      intro y hy
+      have hyParts := Finset.mem_inter.mp hy
+      have hyT := hTclosed z hzT (Finset.mem_inter.mpr
+        ⟨hyParts.1, hSsubU hyParts.2⟩)
+      exact (Finset.disjoint_left.mp hdisj) hyParts.2 hyT
+    rw [hempty, Finset.card_empty]
+
 /-- Second-profile specialization of the closed-shore count: a bin-one
 vertex has defect degree seven, hence seven defect neighbors on the shore
 containing it and zero on the other. -/
@@ -1074,6 +1133,40 @@ theorem orderNine_binZero_defect_neighbor_inter_shore_card_eq_if
   exact neighbor_inter_shore_card_eq_if_of_complementary_closed
     (secondOrderDefectGraph G) U S T z hunion hdisj hzU
       hneighborsU hSclosed hTclosed hzdegree
+
+/-- Corrected exceptional-bin-zero evaluation of audit equation (23) on
+owner-punctured shores.  An exceptional point has seven defect neighbors on
+the order-34 shore and none on the other shore, so its low-set degree is one
+on the order-34 side and two on the order-43 side. -/
+theorem orderNine_order34_exceptional_binZero_lowSet_degree_eq_if
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (h₁ h₂ h₃ z : V) (R : Finset V)
+    (hRcard : R.card = 34)
+    (hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ R 3 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 4)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 4)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 4)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hzOrd : z ∉ ({h₁, h₂, h₃} : Finset V))
+    (hdefectShore :
+      ((secondOrderDefectGraph G).neighborFinset z ∩ R).card =
+        if z ∈ R then 7 else 0) :
+    (G.neighborFinset z ∩
+      orderNineOrdinaryLowSet G h₁ h₂ h₃ R 3).card =
+        if z ∈ R then 1 else 2 := by
+  classical
+  have hv := orderNineOrdinaryExplicitPartition_defect_lowSet_eq_nearRegular
+    G hfree h₁ h₂ h₃ R 3 60 hpart hhigh₁ hhigh₂ hhigh₃
+      hRH hdegOrd hdegHigh z
+  rw [hRcard, hdefectShore] at hv
+  simp [hzOrd] at hv
+  by_cases hzR : z ∈ R <;> simp [hzR] at hv ⊢ <;> omega
 
 /-- An owner-adjacent bin-one point has no original neighbors in any subset
 of the bin-one class; this is the zero-`P` input to audit equation (25). -/
@@ -1933,11 +2026,13 @@ theorem false_of_orderNine_order34_owner_W_two
       ((G.adj_comm owner e).mp ((G.mem_neighborFinset owner e).mp heU.1))
       Z P W hpartition hPsub hWzero (hZdegree e heParts.1)
 
-/-- Global-to-local order-34 assembly.  Complementary defect-closed shores
+/-- Conditional global-to-local order-34 assembly.  Complementary fully
+defect-closed shores
 turn every bin-zero owner-neighbor's defect degree eight into the exact
 `8/0` shore count; equation (23) then gives `Z`-degree two.  The sharp owner
 split is either `(2,2)` or `(3,1)`, dispatched respectively to the two local
-capstones above. -/
+capstones above.  The actual articulation shores omit the owner and therefore
+require the punctured `7/0` transfer, not this full-closure interface. -/
 theorem false_of_orderNine_order34_owner_W_dichotomy_of_closed_shores
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -2005,12 +2100,15 @@ theorem false_of_orderNine_order34_owner_W_dichotomy_of_closed_shores
       G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
         Z P W hpartition hPsub hWsub hWcard hone hZdegree
 
-/-- **Audit equation (28), sharp-data capstone.**  The order-34 explicit
+/-- Conditional sharp-data wrapper for the full-closure interface above.
+The order-34 explicit
 partition and its 18-point low set determine
 `Z = {owner} ∪ (Z∩B₁) ∪ (Z∩B₀)`, with two bin-zero points.  The owner-degree
 calculation gives exactly the `(2,2)`/`(3,1)` dichotomy, while defect-closed
 shores provide the bin-zero `Z`-degree input.  The preceding master theorem
-then eliminates both alternatives. -/
+then eliminates both alternatives.  This is not the actual owner-punctured
+articulation capstone: its `hneighborsU` hypothesis fails for exceptional
+points adjacent to the deleted owner. -/
 theorem false_of_orderNine_order34_sharp_lowSet_of_closed_shores
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
