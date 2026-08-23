@@ -980,8 +980,8 @@ theorem neighbor_inter_shore_card_eq_if_of_complementary_closed
     (hneighborsU : ∀ x ∈ U, D.neighborFinset x ⊆ U)
     (hSclosed : ∀ x ∈ S, D.neighborFinset x ∩ U ⊆ S)
     (hTclosed : ∀ x ∈ T, D.neighborFinset x ∩ U ⊆ T)
-    (hzdegree : D.degree z = 7) :
-    (D.neighborFinset z ∩ S).card = if z ∈ S then 7 else 0 := by
+    {k : ℕ} (hzdegree : D.degree z = k) :
+    (D.neighborFinset z ∩ S).card = if z ∈ S then k else 0 := by
   classical
   by_cases hzS : z ∈ S
   · rw [if_pos hzS]
@@ -1037,6 +1037,39 @@ theorem orderNine_binOne_defect_neighbor_inter_shore_card_eq_if
     G hfree hmin hcover hcard hzB₁
   dsimp only at hledger
   have hzdegree : (secondOrderDefectGraph G).degree z = 7 := by
+    omega
+  exact neighbor_inter_shore_card_eq_if_of_complementary_closed
+    (secondOrderDefectGraph G) U S T z hunion hdisj hzU
+      hneighborsU hSclosed hTclosed hzdegree
+
+/-- Bin-zero specialization of the closed-shore count.  A second-profile
+bin-zero point has defect degree eight, hence all eight defect neighbors lie
+on its own shore and none lie across. -/
+theorem orderNine_binZero_defect_neighbor_inter_shore_card_eq_if
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (U S T : Finset V) (z : V)
+    (hzB₀ : z ∈ squareOrderNineLowIncidenceBin G 0)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hzU : z ∈ U)
+    (hneighborsU : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T) :
+    ((secondOrderDefectGraph G).neighborFinset z ∩ S).card =
+      if z ∈ S then 8 else 0 := by
+  have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+    G hfree hmin hcover hcard hzB₀
+  dsimp only at hledger
+  have hzdegree : (secondOrderDefectGraph G).degree z = 8 := by
     omega
   exact neighbor_inter_shore_card_eq_if_of_complementary_closed
     (secondOrderDefectGraph G) U S T z hunion hdisj hzU
