@@ -4621,24 +4621,36 @@ packing statement that some incident `(t,h)` has this maximum strictly below
 independent row-feasibility systems in only one transparent inequality per
 common eligible neighbor.
 
-There is also a still simpler integral endpoint beneath (13ar).  A strict
-fixed-cover certificate rules out even a pair of disjoint full local
-packings at `t` and `h`.  Conversely, the two actual residual neighborhoods
-would be such local packings, and they must be disjoint because the shared
-point makes `W t h`: a common residual neighbor would violate the Gram law.
+There is also a still simpler integral endpoint suggested by (13ar).
+The two actual residual neighborhoods are full local packings at `t` and
+`h`, and they must be disjoint because the shared point makes `W t h`: a
+common residual neighbor would violate the Gram law.
 The Lean theorem `false_of_no_disjointLocalGramPackingPair` packages exactly
 this contradiction with no prices and no forced-neighbor hypothesis.  Thus a
-potentially easier but weaker selector target is:
+potentially easier selector target is:
 
 ```text
 some incident regular/exceptional pair admits no disjoint pair of local
 Gram packings of cardinalities 5 and 6.                         (13as)
 ```
 
-The fractional-not-forced regression does not refute (13as): it only shows
-that intersecting the neighbors forced in *each row separately* is
-insufficient.  Joint packing infeasibility can hold without either row
-having a neighbor forced on its own.
+The fixed fractional certificate does **not** formally imply (13as).  Its
+primal has the cross-edge reciprocity equation `h in X` iff `t in Y`, whereas
+two arbitrary local packings need not obey that equation.  Direct MILP audit
+is therefore required rather than inference from (13ar).  The scanner mode
+`--scan-disjoint-exceptional-regular-packings` searches every incident pair
+for two disjoint block-packings of sizes five and six, exactly rechecks every
+returned witness, and classifies MILP-infeasible pairs.  All seven durable
+branch-4 regressions and fresh outer designs at seeds 0--32, 47, and 81--92
+have at least one obstructed pair.  The fresh counts range from 7 to 30.  The
+fractional-not-forced durable regression is much sharper: it has exactly one,
+again `{regular 10, exceptional 24}`.
+
+Thus (13as) survives evidence independently of (13ar), but neither selector
+currently subsumes the other pair by pair.  The fractional-not-forced model
+also confirms why separate forced-neighbor intersections were too crude:
+joint packing infeasibility can hold without either row having a neighbor
+forced on its own.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer

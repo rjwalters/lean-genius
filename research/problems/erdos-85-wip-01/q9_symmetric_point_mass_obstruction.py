@@ -378,6 +378,77 @@ def fixed_two_row_shared_point_certificate(
     }
 
 
+def disjoint_local_packing_pair(system: dict, regular: int, hole: int):
+    """Find disjoint integral block-packings of sizes five and six.
+
+    This deliberately omits cross-edge reciprocity between the two rows, so
+    infeasibility proves the stronger hypothesis consumed by
+    ``false_of_no_disjointLocalGramPackingPair``.  A returned witness is
+    rechecked combinatorially rather than trusted to floating-point MILP.
+    """
+    edge_set = set(system["edges"])
+    regular_neighbors = {
+        v for edge in edge_set if regular in edge
+        for v in edge if v != regular
+    }
+    hole_neighbors = {
+        v for edge in edge_set if hole in edge
+        for v in edge if v != hole
+    }
+    variable_count = 2 * N
+    matrix = []
+    lower = []
+    upper = []
+    for offset, target in ((0, 5), (N, 6)):
+        row = np.zeros(variable_count)
+        row[offset:offset + N] = 1
+        matrix.append(row)
+        lower.append(target)
+        upper.append(target)
+        for point in range(N_U1):
+            row = np.zeros(variable_count)
+            for v in range(N):
+                if point in system["blocks"][v]:
+                    row[offset + v] = 1
+            matrix.append(row)
+            lower.append(-np.inf)
+            upper.append(1)
+    for v in range(N):
+        row = np.zeros(variable_count)
+        row[v] = row[N + v] = 1
+        matrix.append(row)
+        lower.append(-np.inf)
+        upper.append(1)
+    variable_upper = np.array(
+        [int(v in regular_neighbors) for v in range(N)]
+        + [int(v in hole_neighbors) for v in range(N)]
+    )
+    result = milp(
+        np.zeros(variable_count), integrality=np.ones(variable_count),
+        bounds=Bounds(np.zeros(variable_count), variable_upper),
+        constraints=LinearConstraint(
+            np.array(matrix), np.array(lower), np.array(upper)
+        ),
+    )
+    if result.status == 2:
+        return None
+    if not result.success:
+        raise RuntimeError("joint local-packing MILP failed: " + result.message)
+    first = {v for v in range(N) if result.x[v] > 0.5}
+    second = {v for v in range(N) if result.x[N + v] > 0.5}
+    valid = (
+        len(first) == 5 and len(second) == 6 and first.isdisjoint(second)
+        and first <= regular_neighbors and second <= hole_neighbors
+        and all(
+            sum(point in system["blocks"][v] for v in selected) <= 1
+            for selected in (first, second) for point in range(N_U1)
+        )
+    )
+    if not valid:
+        raise RuntimeError("joint local-packing witness failed exact audit")
+    return {"regular_packing": sorted(first), "hole_packing": sorted(second)}
+
+
 def unit_nondiagonal_fiber_optimum(
         system: dict, point: int, include_diagonal: bool = False
         ) -> dict | None:
@@ -605,6 +676,11 @@ def main() -> None:
         help=("branch 4: test the fixed (regular,hole)=(1,2) row-price "
               "templates with prices restricted to the two rows and their "
               "unique shared point"),
+    )
+    parser.add_argument(
+        "--scan-disjoint-exceptional-regular-packings", action="store_true",
+        help=("branch 4: test every incident regular/exceptional pair for "
+              "disjoint integral local block-packings of sizes five and six"),
     )
     parser.add_argument(
         "--scan-exceptional-three-row-supports", action="store_true",
@@ -1003,6 +1079,40 @@ def main() -> None:
             "exists_certificate": bool(certificates),
             "template_counts": template_counts,
             "certificates": certificates,
+        }, separators=(",", ":")))
+    if args.scan_disjoint_exceptional_regular_packings:
+        if system["branch"] != 4:
+            parser.error(
+                "--scan-disjoint-exceptional-regular-packings requires branch 4"
+            )
+        holes_begin = N_TRIPLE - 4
+        records = []
+        for regular in range(holes_begin):
+            for hole in range(holes_begin, N_TRIPLE):
+                intersection = sorted(
+                    system["blocks"][regular] & system["blocks"][hole]
+                )
+                if len(intersection) != 1:
+                    continue
+                witness = disjoint_local_packing_pair(system, regular, hole)
+                records.append({
+                    "regular": regular,
+                    "hole": hole,
+                    "shared_point": intersection[0],
+                    "has_disjoint_pair": witness is not None,
+                    "witness": witness,
+                })
+        obstructed = [record for record in records
+                      if not record["has_disjoint_pair"]]
+        print("disjoint_exceptional_regular_packings=" + json.dumps({
+            "incident_pair_count": len(records),
+            "obstructed_pair_count": len(obstructed),
+            "exists_obstructed_pair": bool(obstructed),
+            "obstructed_pairs": [
+                [record["regular"], record["hole"]]
+                for record in obstructed
+            ],
+            "records": records,
         }, separators=(",", ":")))
     if args.scan_exceptional_three_row_supports:
         if system["branch"] != 3:
