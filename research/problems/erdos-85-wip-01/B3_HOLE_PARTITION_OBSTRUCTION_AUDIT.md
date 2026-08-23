@@ -3976,6 +3976,38 @@ or a special diagonal/pair configuration supplies the price certificate.
 The fiber successes and the `13f` exception are still fixed-model evidence,
 not a proved classification.
 
+There is now one exact reduced template covering all four serious survivors.
+Allow the four non-diagonal rows through `p` together with at most one
+arbitrary auxiliary row to carry nonnegative row prices.  Restrict ordered
+point prices to those outgoing from the at most five allowed rows or incoming
+at the single common point `p`.  The verifier
+`q9_fiber_plus_aux_price_corpus.py` solves this restricted dual and then
+rechecks every inequality and the strict margin over `Fraction`.  The three
+models already covered by (13ag) retain pure-fiber certificates.  The `13f`
+exception becomes a genuine fiber-plus-one-auxiliary certificate, for example
+at `p=12` with fiber `{12,22,30,41}`, auxiliary row 4, actual priced rows
+`{4,12,22,41}`, and exact margin 1.  Equally, the previously isolated
+diagonal/pair mechanics occur at `p=14`, auxiliary row 7, with actual priced
+rows `{7,13,16,29}`.  Thus the prospective outer theorem can be stated as a
+single five-row horn rather than a disjunction between unrelated price
+languages:
+
+```text
+some p and a admit a strict reduced price certificate supported on
+({u : p in B_u} minus {p % 8}) union {a}.                     (13ah)
+```
+
+Independent integral-core evidence points to the same bounded shape without
+proving (13ah).  Across seeds 0--4 in both branches, exact minimized residual
+degree cores (with residual C4 ablated) have sizes
+`[2,5,2,5,2]` in branch 3 and `[1,2,1,5,1]` in branch 4.  Every five-row core
+is a dense four-row common-point cluster plus one auxiliary row.  This is a
+useful structural target, but it must not be conflated with the dual result:
+the core corpus includes locally infeasible random outers, while (13ah) has
+so far been checked only on the four stored locally feasible survivors.
+Deriving existence of `p,a` and the reduced prices from the outer equations
+remains the decisive uniform gap.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
