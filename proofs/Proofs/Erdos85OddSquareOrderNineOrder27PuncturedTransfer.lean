@@ -423,6 +423,79 @@ theorem orderNine_order27_lowSet_composition
   rw [hZcard, hP, hB1card] at hcardSplit
   omega
 
+/-- Set-theoretic form of audit (21), separating the owner, bin-one, and
+bin-zero contributions to a bin-zero point's low-set degree. -/
+theorem orderNine_binZero_W_degree_of_lowSet_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner y : V) (Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hownerP : owner ∉ P) (hownerW : owner ∉ W)
+    (hPW : Disjoint P W)
+    (hPdegree : (G.neighborFinset y ∩ P).card =
+      if G.Adj y owner then 0 else 3) :
+    (G.neighborFinset y ∩ Z).card =
+      (G.neighborFinset y ∩ W).card +
+        if G.Adj y owner then 1 else 3 := by
+  classical
+  by_cases hadj : G.Adj y owner
+  · have hPempty : G.neighborFinset y ∩ P = ∅ := by
+      rw [← Finset.card_eq_zero, hPdegree, if_pos hadj]
+    have hset : G.neighborFinset y ∩ Z =
+        insert owner (G.neighborFinset y ∩ W) := by
+      ext x
+      simp only [hpartition, Finset.mem_inter, Finset.mem_insert,
+        Finset.mem_union]
+      constructor
+      · rintro ⟨hxy, rfl | hxP | hxW⟩
+        · exact Or.inl rfl
+        · have hm : x ∈ G.neighborFinset y ∩ P :=
+            Finset.mem_inter.mpr ⟨hxy, hxP⟩
+          rw [hPempty] at hm
+          exact (Finset.notMem_empty x hm).elim
+        · exact Or.inr ⟨hxy, hxW⟩
+      · intro hu
+        rcases hu with huo | huW
+        · subst x
+          exact ⟨(G.mem_neighborFinset y owner).mpr hadj, Or.inl rfl⟩
+        · exact ⟨huW.1, Or.inr (Or.inr huW.2)⟩
+    have hnot : owner ∉ G.neighborFinset y ∩ W := by
+      intro hm
+      exact hownerW (Finset.mem_inter.mp hm).2
+    rw [hset, Finset.card_insert_of_notMem hnot, if_pos hadj]
+  · have hownerNotNeighbor : owner ∉ G.neighborFinset y := by
+      simpa using hadj
+    have hset : G.neighborFinset y ∩ Z =
+        (G.neighborFinset y ∩ P) ∪ (G.neighborFinset y ∩ W) := by
+      ext x
+      constructor
+      · intro hx
+        have hp := Finset.mem_inter.mp hx
+        rw [hpartition] at hp
+        rcases Finset.mem_insert.mp hp.2 with hxo | hxPW
+        · subst x
+          exact (hownerNotNeighbor hp.1).elim
+        · rcases Finset.mem_union.mp hxPW with hxP | hxW
+          · exact Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨hp.1, hxP⟩)
+          · exact Finset.mem_union_right _ (Finset.mem_inter.mpr ⟨hp.1, hxW⟩)
+      · intro hx
+        rcases Finset.mem_union.mp hx with hxP | hxW
+        · exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hxP).1, by
+            rw [hpartition]
+            exact Finset.mem_insert_of_mem
+              (Finset.mem_union_left _ (Finset.mem_inter.mp hxP).2)⟩
+        · exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hxW).1, by
+            rw [hpartition]
+            exact Finset.mem_insert_of_mem
+              (Finset.mem_union_right _ (Finset.mem_inter.mp hxW).2)⟩
+    have hd : Disjoint (G.neighborFinset y ∩ P)
+        (G.neighborFinset y ∩ W) :=
+      Finset.disjoint_of_subset_right Finset.inter_subset_right
+        (Finset.disjoint_of_subset_left Finset.inter_subset_right hPW)
+    rw [hset, Finset.card_union_of_disjoint hd, hPdegree]
+    simp [hadj]
+    omega
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -589,6 +662,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_highRoot_neighbors_subset_lowSet
 #print axioms orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
 #print axioms orderNine_order27_lowSet_composition
+#print axioms orderNine_binZero_W_degree_of_lowSet_partition
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
