@@ -4337,3 +4337,48 @@ odd interface.  The remaining local question is now whether the rooted
 budgets and transpose routing force this interface size even; neither the
 coincident-root nor shared-outward-port branch can carry the desired odd
 obstruction.
+
+## 79. An odd outward residue propagates through the owner two-factor
+
+In the four-distinct-port branch of Section 78, put
+
+```text
+P := {p_-,p_+},    Q := {q_-,q_+},
+O := e \ (P union Q).
+```
+
+The pair `P` is independent in `A_e` by (200), and every `A_e` degree is
+two.  Summing degrees over `P` gives
+
+```text
+4 = e_(A_e)(P,Q) + e_(A_e)(P,O).
+```
+
+Summing over `Q` allows the possible internal edge `q_-q_+` and gives
+
+```text
+4 = e_(A_e)(P,Q) + 2 e_(A_e)(Q) + e_(A_e)(Q,O).
+```
+
+Together with (259), reduction modulo two yields the exact port-current law
+
+```text
+epsilon_e
+  == e_(A_e)(P,Q)
+  == e_(A_e)(P,O)
+  == e_(A_e)(Q,O)                    (mod 2).          (260)
+```
+
+Thus an odd residue in (255) cannot terminate on the four displayed ports:
+an odd number of owner-factor edges exits `P` and an odd number exits `Q`.
+Conversely, either even exit count forces even `epsilon_e`.  This is a
+genuine propagation statement supplied solely by the two-regularity of
+`A_e`; no assumption about the individual four-bit pattern is needed.
+
+Equation (260) converts the remaining local obstruction into a port-side
+current.  Following its exit edges along the `A_e` cycles cannot create an
+endpoint, so any odd one-edge residue must continue to another marked
+interface or close through unmarked ports.  The missing global step is now
+sharply stated: show that the alternating `B_ec` boundary phase of Section
+76 pairs these `A_e` current handoffs.  If so, odd currents occur in pairs,
+and (255) supplies the required even boundary contribution.
