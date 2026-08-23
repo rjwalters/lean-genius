@@ -14424,7 +14424,7 @@ O = disjoint_union_s (V(R_s) intersect O)
     disjoint_union disjoint_union_(Q an untouched cycle) V(Q).    (887)
 ```
 
-Since `|O|=2q-15` is odd, reducing (884) modulo two gives
+Since `|O|=2q-15` is odd, reducing (887) modulo two gives
 
 ```text
 sum_(s=1)^5 lambda_s
