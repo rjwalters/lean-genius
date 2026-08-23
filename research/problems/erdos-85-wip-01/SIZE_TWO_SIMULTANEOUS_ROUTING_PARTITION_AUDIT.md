@@ -9942,4 +9942,6 @@ or the ambient labeled boundary equations coupling this run to its gaps. (596)
 This leaves the finite rows useful but correctly scoped: they classify the
 active secondary channel surrounding a target-even owner; they do not price
 that owner's two-port unit by themselves.  The ambient silent-footprint
-transport remains the only proved carrier that includes the missing unit.
+transport is a candidate mechanism with the right inactive character, but
+no proved identity yet attaches the boundary owner's two-port unit to that
+ledger.
