@@ -15398,3 +15398,45 @@ located shore and out across its specified inactive edge.  The earlier
 warning about the raw occurrence walk remains correct; edge simplicity is
 obtained only after mod-two reduction and path decomposition of the
 resulting factor subgraph.
+
+## 301. The unmatched label error has an exact root-factor boundary
+
+The second error term in (955) is not an abstract label vector.  Its label
+chain `R_x=Lambda_x+Y_x` has a completely explicit boundary in the root
+owner factor.  Let `g_x^0,g_x^1` be the other `c`-endpoints of the two
+root-star edges indexed by `r_x^0,r_x^1`.  Both lie outside `C`, since an
+exterior label meets at most one root of `C`, and they are distinct: if
+they coincided, that root and `x` would have the two common `a`-neighbors
+`r_x^0,r_x^1`, forming a four-cycle.  Put
+
+```text
+G_x:={g_x^0,g_x^1} subset c\C,
+partial Y_x=G_x.                                    (966)
+```
+
+The root `x` cancels twice in the boundary of the complete two-edge star.
+Combining (942), (951), and (966) now gives
+
+```text
+partial R_x
+ =(1_{x in X_I}){x} triangle T_x triangle G_x.      (967)
+```
+
+There is an equivalent private-label statement at the core root.  The only
+`a`-labels adjacent to `x` are `r_x^0,r_x^1`.  Every occurrence contributing
+to `Lambda_x` supplies exactly one of them, namely its active label `y_w`,
+while `Y_x` toggles both.  Hence
+
+```text
+|supp(R_x) intersect {r_x^0,r_x^1}|
+ =|W_I(x)|=1_{x in X_I} mod 2.                      (968)
+```
+
+Thus for `x in X_I`, the unmatched chain retains exactly one of the two
+root-star labels modulo two and has boundary `{x} triangle T_x triangle
+G_x`.  For `x` outside `X_I`, it retains either zero or both star labels and
+has only the outside boundary `T_x triangle G_x`.  This locates the
+`E(R_x)` term of (955) on an actual subchain of `F_a[c]`; it cannot be
+treated as an anonymous even correction.  What remains is to compare its
+`e`-endpoint profile with the port-factor chain obtained by expanding the
+Section 289 occurrence walk.
