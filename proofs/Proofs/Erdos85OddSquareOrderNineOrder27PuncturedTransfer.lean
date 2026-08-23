@@ -314,6 +314,147 @@ theorem orderNine_order27_highRoot_neighbors_subset_lowSet
     Finset.inter_subset_left (by omega :
       (G.neighborFinset h).card ≤ (G.neighborFinset h ∩ Z).card))
 
+/-- Equation (20) at the deleted articulation owner.  The owner is outside
+the actual large shore and outside the high triple, while its defect boundary
+into that shore has size two; consequently exactly six of its original
+neighbors lie in the low set. -/
+theorem orderNine_order27_owner_lowSet_degree_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner : V) (B Z H : Finset V)
+    (hownerB : owner ∉ B) (hownerH : owner ∉ H)
+    (hdefectB :
+      ((secondOrderDefectGraph G).neighborFinset owner ∩ B).card = 2)
+    (heq20 : ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+        8 * (if x ∈ B then 1 else 0) - 4 -
+          6 * (if x ∈ H then 1 else 0) +
+          ((G.neighborFinset x ∩ Z).card : ℤ)) :
+    (G.neighborFinset owner ∩ Z).card = 6 := by
+  have h := heq20 owner
+  rw [hdefectB] at h
+  simp [hownerB, hownerH] at h
+  omega
+
+/-- Cardinal saturation behind the repaired placement argument: if a
+six-point set is contained in the union of two disjoint three-point sets and
+already contains the first one, it contains the second one as well. -/
+theorem six_set_contains_other_three_of_partition
+    {V : Type*} [DecidableEq V]
+    (S K U : Finset V)
+    (hS : S.card = 6) (hK : K.card = 3) (hU : U.card = 3)
+    (hdisj : Disjoint K U) (hSsub : S ⊆ K ∪ U) :
+    U ⊆ S := by
+  have hKU : (K ∪ U).card = 6 := by
+    rw [Finset.card_union_of_disjoint hdisj, hK, hU]
+  have hSeq : S = K ∪ U :=
+    Finset.eq_of_subset_of_card_le hSsub (by omega)
+  rw [hSeq]
+  exact Finset.subset_union_right
+
+/-- Repaired graph-facing placement omitted in the prose before (21).
+Evaluating (20) at the deleted owner gives six low-set neighbors.  The
+second profile partitions its six ordinary neighbors into three bin-one and
+three bin-zero points, so every original bin-zero neighbor belongs to `W`. -/
+theorem orderNine_order27_owner_binZero_neighbors_subset_W
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hownerDegree : G.degree owner = 9)
+    (B Z : Finset V)
+    (hownerB : owner ∉ B)
+    (hdefectB :
+      ((secondOrderDefectGraph G).neighborFinset owner ∩ B).card = 2)
+    (hZsub : Z ⊆
+      (Finset.univ : Finset V) \ squareOrderHighVertices G 9)
+    (heq20 : ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+        8 * (if x ∈ B then 1 else 0) - 4 -
+          6 * (if x ∈ squareOrderHighVertices G 9 then 1 else 0) +
+          ((G.neighborFinset x ∩ Z).card : ℤ)) :
+    G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ⊆
+      Z ∩ squareOrderNineLowIncidenceBin G 0 := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let O := (Finset.univ : Finset V) \ H
+  let S := G.neighborFinset owner ∩ Z
+  let K := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1
+  let U := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0
+  have hownerH : owner ∉ H := by
+    intro ho
+    have hd10 := (Finset.mem_filter.mp ho).2
+    omega
+  have hScard : S.card = 6 :=
+    orderNine_order27_owner_lowSet_degree_eq_six
+      G owner B Z H hownerB hownerH hdefectB (by simpa [H] using heq20)
+  have hKcard : K.card = 3 := by
+    simpa [K] using
+      squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner
+  have hordinaryErase :=
+    orderNine_binThree_owner_ordinary_erase_neighbor_card_eq_six
+      G owner hownerDegree howner
+  have hordinary : (G.neighborFinset owner ∩ O).card = 6 := by
+    have heq : G.neighborFinset owner ∩ O.erase owner =
+        G.neighborFinset owner ∩ O := by
+      ext z
+      simp only [Finset.mem_inter, Finset.mem_erase]
+      constructor
+      · exact fun hz ↦ ⟨hz.1, hz.2.2⟩
+      · intro hz
+        refine ⟨hz.1, ?_, hz.2⟩
+        intro hzo
+        subst z
+        exact G.loopless.irrefl owner
+          ((G.mem_neighborFinset owner owner).mp hz.1)
+    simpa [O, H, heq] using hordinaryErase
+  have hpart :=
+    orderNine_secondProfile_owner_neighbor_inter_ordinary_shore_bin_partition
+      G hp hhigh hc2 hc3 howner O (by intro z hz; exact hz)
+  have hKsubO : K ⊆ O := by
+    intro z hz
+    exact (Finset.mem_filter.mp (Finset.mem_inter.mp hz).2).1
+  have hUsubO : U ⊆ O := by
+    intro z hz
+    exact (Finset.mem_filter.mp (Finset.mem_inter.mp hz).2).1
+  have hKO : K ∩ O = K := Finset.inter_eq_left.mpr hKsubO
+  have hUO : U ∩ O = U := Finset.inter_eq_left.mpr hUsubO
+  have hKU : K ∪ U = G.neighborFinset owner ∩ O := by
+    change G.neighborFinset owner ∩ O = (U ∩ O) ∪ (K ∩ O) at hpart
+    rw [hUO, hKO] at hpart
+    simpa [Finset.union_comm] using hpart.symm
+  have hdisj : Disjoint K U := by
+    rw [Finset.disjoint_left]
+    intro z hzK hzU
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzK).2).2
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzU).2).2
+    omega
+  have hUcard : U.card = 3 := by
+    have hc := Finset.card_union_of_disjoint hdisj
+    rw [hKU, hordinary, hKcard] at hc
+    omega
+  have hSsub : S ⊆ K ∪ U := by
+    intro z hzS
+    have hz := Finset.mem_inter.mp hzS
+    have hzO : z ∈ O := hZsub hz.2
+    rw [hKU]
+    exact Finset.mem_inter.mpr ⟨hz.1, hzO⟩
+  have hUsubS := six_set_contains_other_three_of_partition
+    S K U hScard hKcard hUcard hdisj hSsub
+  intro z hzU
+  exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp (hUsubS hzU)).2,
+    (Finset.mem_inter.mp hzU).2⟩
+
 /-- Any positive high-incidence bin lies in a set containing every high
 root's neighborhood. -/
 theorem orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
@@ -883,6 +1024,9 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_explicitPartition_of_large_boundary
 #print axioms orderNine_order27_largeShore_profile_package
 #print axioms orderNine_order27_highRoot_neighbors_subset_lowSet
+#print axioms orderNine_order27_owner_lowSet_degree_eq_six
+#print axioms six_set_contains_other_three_of_partition
+#print axioms orderNine_order27_owner_binZero_neighbors_subset_W
 #print axioms orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
 #print axioms orderNine_order27_lowSet_composition
 #print axioms orderNine_binZero_W_degree_of_lowSet_partition
