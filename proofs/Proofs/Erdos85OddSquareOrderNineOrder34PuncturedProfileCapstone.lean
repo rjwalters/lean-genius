@@ -48,6 +48,42 @@ theorem orderNine_defect_neighbors_subset_insert_owner_ordinary_erase
   · exact Finset.mem_insert.mpr (Or.inl hyo)
   · exact Finset.mem_insert.mpr (Or.inr (Finset.mem_erase.mpr ⟨hyo, hyO⟩))
 
+/-- Normalize the unordered `(34,43)` articulation output.  A `FullType`
+shore can only have one of the classified small orders, so in this pair it
+must be the 34-point shore. -/
+theorem orderNine_order34_orient_articulation_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E : Finset V) (h₁ h₂ h₃ : V)
+    (U S T : Finset V)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (horders : (S.card = 34 ∧ T.card = 43) ∨
+      (S.card = 43 ∧ T.card = 34))
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ S ∨
+      orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ T)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T) :
+    ∃ A B : Finset V,
+      A ∪ B = U ∧ Disjoint A B ∧ A.card = 34 ∧ B.card = 43 ∧
+      orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ A ∧
+      (∀ x ∈ A, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ A) ∧
+      (∀ x ∈ B, (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ B) := by
+  rcases horders with hST | hTS
+  · rcases hfull with hfullS | hfullT
+    · exact ⟨S, T, hunion, hdisj, hST.1, hST.2, hfullS,
+        hSclosed, hTclosed⟩
+    · have hbad := hfullT.1
+      unfold orderNineArticulationSmallShoreBetaType at hbad
+      omega
+  · rcases hfull with hfullS | hfullT
+    · have hbad := hfullS.1
+      unfold orderNineArticulationSmallShoreBetaType at hbad
+      omega
+    · exact ⟨T, S, by simpa [Finset.union_comm] using hunion,
+        hdisj.symm, hTS.2, hTS.1, hfullT, hTclosed, hSclosed⟩
+
 /-- The four corrected local terminals, assembled behind the two profile
 dichotomies. -/
 theorem false_of_orderNine_order34_local_profile_of_corrected_punctured_data
