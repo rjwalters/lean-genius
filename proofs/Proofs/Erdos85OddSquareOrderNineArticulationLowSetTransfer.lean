@@ -1165,6 +1165,64 @@ theorem false_of_distinct_owner_neighbors_share_second
   exact hfree (containsC4_of_two_common hab how
     haOwner.symm hbOwner.symm haw.symm hbw.symm)
 
+/-- Terminal for the sole placement left by audit (26).  A bin-zero neighbor
+of the universal owner has no original neighbor in the bin-one part `P`.
+If the placement also leaves it with no neighbor in the two-point part `W`,
+then its only neighbor in `Z = {owner} ∪ P ∪ W` is the owner, contradicting
+the `Z`-degree two forced by equation (23). -/
+theorem false_of_orderNine_order34_owner_neighbor_outside_low_parts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (owner y : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hyB₀ : y ∈ squareOrderNineLowIncidenceBin G 0)
+    (hyOwner : G.Adj y owner)
+    (Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWzero : (G.neighborFinset y ∩ W).card = 0)
+    (hZtwo : (G.neighborFinset y ∩ Z).card = 2) : False := by
+  classical
+  have hPzero : (G.neighborFinset y ∩ P).card = 0 := by
+    apply Finset.card_eq_zero.mpr
+    rw [Finset.eq_empty_iff_forall_notMem]
+    intro p hp
+    have hpParts := Finset.mem_inter.mp hp
+    exact (squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+      G hfree hhigh howner hyB₀ (hPsub hpParts.2) hyOwner.symm)
+        ((G.mem_neighborFinset y p).mp hpParts.1)
+  have hPempty : G.neighborFinset y ∩ P = ∅ := Finset.card_eq_zero.mp hPzero
+  have hWempty : G.neighborFinset y ∩ W = ∅ := Finset.card_eq_zero.mp hWzero
+  have hset : G.neighborFinset y ∩ Z = {owner} := by
+    ext u
+    constructor
+    · intro hu
+      have huParts := Finset.mem_inter.mp hu
+      rw [hpartition] at huParts
+      rcases Finset.mem_insert.mp huParts.2 with huOwner | huPW
+      · simp [huOwner]
+      · rcases Finset.mem_union.mp huPW with huP | huW
+        · have huEmpty : u ∈ (∅ : Finset V) := by
+            rw [← hPempty]
+            exact Finset.mem_inter.mpr ⟨huParts.1, huP⟩
+          simp at huEmpty
+        · have huEmpty : u ∈ (∅ : Finset V) := by
+            rw [← hWempty]
+            exact Finset.mem_inter.mpr ⟨huParts.1, huW⟩
+          simp at huEmpty
+    · intro hu
+      have huOwner : u = owner := Finset.mem_singleton.mp hu
+      subst u
+      exact Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset y owner).mpr hyOwner,
+        by rw [hpartition]; exact Finset.mem_insert_self owner _⟩
+  rw [hset, Finset.card_singleton] at hZtwo
+  omega
+
 /-- Local package used in audit (26).  For the three original bin-zero
 neighbors of the universal bin-three owner, either the three-edge branch has
 no nondefect neighbor, or the four-edge branch has exactly two.  In the
