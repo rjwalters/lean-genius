@@ -1049,6 +1049,20 @@ theorem binarySquare_crossRoute_candidate_exclusive
   rintro ⟨hpz₁, hz₂w⟩
   exact hz₁w (hunique z₁ w hpz₁ howner.symm hrouteTarget hz₂w)
 
+/-- The three binary flags of a crossed route have exactly four states:
+owner bend, mark bend, defect stop, or fresh continuation. -/
+theorem binarySquare_crossRoute_four_states
+    (ownerBend markBend defectStop : ℕ)
+    (howner : ownerBend ≤ 1) (hmark : markBend ≤ 1)
+    (hdefect : defectStop ≤ 1)
+    (hexclusive : ownerBend + markBend ≤ 1)
+    (hcontinue : ownerBend + markBend = 1 → defectStop = 0) :
+    (ownerBend = 1 ∧ markBend = 0 ∧ defectStop = 0) ∨
+    (ownerBend = 0 ∧ markBend = 1 ∧ defectStop = 0) ∨
+    (ownerBend = 0 ∧ markBend = 0 ∧ defectStop = 1) ∨
+    (ownerBend = 0 ∧ markBend = 0 ∧ defectStop = 0) := by
+  omega
+
 end
 
 end Erdos85
@@ -1094,3 +1108,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_twoPort_signedBoundary_integral
 #print axioms Erdos85.binarySquare_coincident_mark_no_active
 #print axioms Erdos85.binarySquare_crossRoute_candidate_exclusive
+#print axioms Erdos85.binarySquare_crossRoute_four_states
