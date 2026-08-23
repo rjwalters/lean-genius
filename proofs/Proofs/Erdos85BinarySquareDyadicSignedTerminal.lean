@@ -1036,6 +1036,19 @@ theorem binarySquare_coincident_mark_no_active
   · intro hactive₂
     exact hmarkNoCommon₁ z₂ howner hactive₂.symm
 
+/-- Along a crossed two-step route, the owner endpoint and the marked target
+cannot both continue the same route edge when common neighbors are unique. -/
+theorem binarySquare_crossRoute_candidate_exclusive
+    {V : Type*} (G : SimpleGraph V) {z₁ z₂ w p : V}
+    (hz₁w : z₁ ≠ w)
+    (howner : G.Adj z₁ z₂)
+    (hrouteTarget : G.Adj p w)
+    (hunique : ∀ x y,
+      G.Adj p x → G.Adj z₂ x → G.Adj p y → G.Adj z₂ y → x = y) :
+    ¬ (G.Adj p z₁ ∧ G.Adj z₂ w) := by
+  rintro ⟨hpz₁, hz₂w⟩
+  exact hz₁w (hunique z₁ w hpz₁ howner.symm hrouteTarget hz₂w)
+
 end
 
 end Erdos85
@@ -1080,3 +1093,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_twoPort_phase_agreement
 #print axioms Erdos85.binarySquare_twoPort_signedBoundary_integral
 #print axioms Erdos85.binarySquare_coincident_mark_no_active
+#print axioms Erdos85.binarySquare_crossRoute_candidate_exclusive
