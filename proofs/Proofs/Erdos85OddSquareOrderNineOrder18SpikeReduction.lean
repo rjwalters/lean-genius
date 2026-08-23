@@ -561,6 +561,61 @@ theorem orderNine_order18_spike_defect_equation_of_global_shore_equation
     ring_nf at htransferS ⊢
     exact htransferS
 
+/-- Low-spike owner evaluation, audit equation (32).  The owner is deleted
+from the shore partition, while FullType puts exactly two of its defect
+neighbors in the order-eighteen component. -/
+theorem orderNine_order18_lowSpike_owner_equation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (S H Z : Finset V) (owner c : V)
+    (hownerS : owner ∉ S) (hownerH : owner ∉ H)
+    (hownerD : (D.neighborFinset owner ∩ S).card = 2)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ S).card : ℤ) =
+        8 * (if v ∈ S then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v c then 1 else 0)) :
+    (G.neighborFinset owner ∩ Z).card =
+      if G.Adj owner c then 0 else 1 := by
+  have heq := heq31 owner
+  rw [hownerD] at heq
+  simp [hownerS, hownerH] at heq
+  by_cases hadj : G.Adj owner c
+  · norm_num [hadj] at heq
+    have hz : ((G.neighborFinset owner ∩ Z).card : ℤ) = 0 := by linarith
+    rw [if_pos hadj]
+    exact_mod_cast hz
+  · norm_num [hadj] at heq
+    have hz : ((G.neighborFinset owner ∩ Z).card : ℤ) = 1 := by linarith
+    rw [if_neg hadj]
+    exact_mod_cast hz
+
+/-- High-spike owner evaluation.  With the opposite sign in (31), the same
+two owner-defect neighbors give `deg_Z(owner)=1+1_[owner~c]`, hence the
+two-neighbor cap used by the three-partner contradiction. -/
+theorem orderNine_order18_highSpike_owner_lowSet_degree_le_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (S H Z : Finset V) (owner c : V)
+    (hownerS : owner ∉ S) (hownerH : owner ∉ H)
+    (hownerD : (D.neighborFinset owner ∩ S).card = 2)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ S).card : ℤ) =
+        8 * (if v ∈ S then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) +
+          (if G.Adj v c then 1 else 0)) :
+    (G.neighborFinset owner ∩ Z).card ≤ 2 := by
+  have heq := heq31 owner
+  rw [hownerD] at heq
+  simp [hownerS, hownerH] at heq
+  by_cases hadj : G.Adj owner c
+  · norm_num [hadj] at heq
+    omega
+  · norm_num [hadj] at heq
+    omega
+
 /-- Evaluation of the high-spike form of audit equation (31) at a high
 root.  Defect-high isolation makes the left side zero, while the high root
 lies in neither ordinary shore. -/
@@ -719,6 +774,8 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 #print axioms Erdos85.orderNine_order18_lowSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_highSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_spike_defect_equation_of_global_shore_equation
+#print axioms Erdos85.orderNine_order18_lowSpike_owner_equation
+#print axioms Erdos85.orderNine_order18_highSpike_owner_lowSet_degree_le_two
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
