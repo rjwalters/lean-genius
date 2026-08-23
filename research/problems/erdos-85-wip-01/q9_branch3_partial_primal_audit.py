@@ -107,12 +107,44 @@ def audit(system: dict) -> dict:
     }
 
 
+def first_infeasible_partial(system: dict) -> dict | None:
+    """Return one failing three-row projection, without solving any duals."""
+    for hole in (24, 25):
+        for first, second in combinations(range(24), 2):
+            support = {hole, first, second}
+            if not partial_primal(system, support).success:
+                return {"hole": hole, "regular_rows": [first, second]}
+    return None
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("payload", type=Path, nargs="?")
     parser.add_argument("--random-seed", type=int)
+    parser.add_argument("--scan-start", type=int)
+    parser.add_argument("--scan-count", type=int, default=1)
     parser.add_argument("--timeout-seconds", type=int, default=30)
     args = parser.parse_args()
+    if args.scan_start is not None:
+        for seed in range(args.scan_start, args.scan_start + args.scan_count):
+            payload = random_outer(3, seed, args.timeout_seconds)
+            system = fixed_system(payload)
+            globally_feasible = primal(system).success
+            witness = first_infeasible_partial(system)
+            canonical = json.dumps(
+                payload, sort_keys=True, separators=(",", ":")
+            ).encode()
+            print(json.dumps({
+                "seed": seed,
+                "payload_sha256": hashlib.sha256(canonical).hexdigest(),
+                "global_primal_feasible": globally_feasible,
+                "first_infeasible_partial": witness,
+                "selector_counterexample":
+                    not globally_feasible and witness is None,
+            }, separators=(",", ":")), flush=True)
+            if not globally_feasible and witness is None:
+                break
+        return
     if args.payload is None:
         if args.random_seed is None:
             parser.error("provide a payload or --random-seed")

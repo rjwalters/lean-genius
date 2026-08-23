@@ -758,6 +758,16 @@ are feasible, then the full 47-row symmetric packing system is feasible.**
 Unlike the retracted local-packing reductions, each partial system retains
 the cross-row reciprocity that the real obstruction needs.
 
+The same tool has a fast `--scan-start/--scan-count` falsification mode: it
+checks global feasibility and stops at the first infeasible three-row partial
+primal, without spending time constructing all 552 dual certificates.  Fresh
+seeds 117 through 132 produced sixteen more globally infeasible systems and
+each had such a partial obstruction (seeds 117--121 were fully audited; seeds
+122--132 used the early-stop scan).  This is additional evidence only, not a
+proof of the local-to-global statement.  The mode reports the payload hash and
+the first failing support so any future zero-obstruction result is immediately
+identifiable and can be promoted as a durable counterexample.
+
 The separating normals observed on all six durable branch-3 fixtures are
 nonnegative.  Across their 216 infeasible partial systems, exact audit finds
 zero negative row prices; the nonzero row-support histograms are respectively
