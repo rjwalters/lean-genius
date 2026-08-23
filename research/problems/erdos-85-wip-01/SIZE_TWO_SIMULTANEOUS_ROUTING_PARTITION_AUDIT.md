@@ -25307,3 +25307,45 @@ gadgets with one common saturated root pair under
 `q>1172+627000(t-1)`.  The coefficient is intentionally coarse; the new
 content is simultaneous control of the complete color trace and all three
 unused-root spokes, the companion geometry absent from Section 473.
+
+## 478. Fully separated stars form a distance-three center code
+
+Use the fixed-root specialization after (1697), and let its `t` rooted-star
+gadgets have centers `v_1,...,v_t` and common primary root pair `{r,s}`.
+Each gadget contains all five `H`-edges incident with its center and hence
+contains the closed neighborhood `N_H[v_i]`.  Gadget vertex-disjointness
+therefore gives
+
+```text
+N_H[v_i] intersect N_H[v_j]=emptyset for i!=j,
+dist_H(v_i,v_j)>=3,
+6t<=|O_5|.                                        (1698)
+```
+
+The other three root edges at a center are its unused-root spokes.  Across
+all `t` gadgets these give `3t`
+distinct physical edges, and the payer-layer sets of spokes from different
+gadgets are disjoint by (1697).
+
+Every source color has at most ten ordinary edges in `H`, so the combined
+spoke family uses at least
+
+```text
+ceil(3t/10) distinct source colors.               (1699)
+```
+
+After discarding `{d} union Gamma`, at least
+`max(0,ceil(3t/10)-6)` of these colors remain allowed.  More sharply in
+each individual unused root `u`, there are `t` distinct spoke edges and
+the rootwise color cap is two, hence
+
+```text
+each unused root uses at least ceil(t/2) spoke colors.           (1700)
+```
+
+At center `v_i`, none of its three spoke edges has the selected saturated
+color `h_i`, because the primary two-edge turn already exhausts the
+degree-two `h_i` capacity.  Thus (1698)--(1700) turn the q-large obstruction
+into a packing of mutually remote centers with three genuinely populated
+cross-root color frontiers and separated payer support, rather than merely
+a repeated two-root pinch.
