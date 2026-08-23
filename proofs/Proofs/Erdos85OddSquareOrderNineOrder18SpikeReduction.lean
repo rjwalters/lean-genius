@@ -788,6 +788,41 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
     have htwo := hbinOne hc1
     omega
 
+/-- The audit's `3-k(c)` partner count in finite-set form.  Once missing
+owner partners inject into the high roots adjacent to the spike center,
+bin-zero centers lose none of the three partners and bin-one centers lose
+at most one. -/
+theorem orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner c : V) (H K Z B₀ B₁ : Finset V)
+    (hKcard : K.card = 3)
+    (hKowner : K ⊆ G.neighborFinset owner)
+    (hcases : c = owner ∨ c ∈ B₀ ∨ c ∈ B₁)
+    (hbinZeroIncidence : c ∈ B₀ → (G.neighborFinset c ∩ H).card = 0)
+    (hbinOneIncidence : c ∈ B₁ → (G.neighborFinset c ∩ H).card = 1)
+    (hmissing : (K \ Z).card ≤ (G.neighborFinset c ∩ H).card)
+    (heq32 : (G.neighborFinset owner ∩ Z).card =
+      if G.Adj owner c then 0 else 1) :
+    c = owner := by
+  apply orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
+    G owner c K Z B₀ B₁ hKcard hKowner hcases
+  · intro hc0
+    have hzero : (K \ Z).card = 0 := by
+      have := hbinZeroIncidence hc0
+      omega
+    rw [Finset.card_eq_zero] at hzero
+    exact Finset.sdiff_eq_empty_iff_subset.mp hzero
+  · intro hc1
+    have hle : (K \ Z).card ≤ 1 := by
+      rw [hbinOneIncidence hc1] at hmissing
+      exact hmissing
+    have hsplit : (K ∩ Z).card + (K \ Z).card = K.card := by
+      have hs := Finset.card_sdiff_add_card_inter K Z
+      omega
+    omega
+  · exact heq32
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_excessTwo_incidence_count_classification
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_moments
@@ -806,6 +841,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 #print axioms Erdos85.false_of_orderNine_order18_highSpike_three_partners
 #print axioms Erdos85.false_of_orderNine_order18_highSpike_of_highRoot_equations
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
+#print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
 
 end
 
