@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from collections import Counter
+from fractions import Fraction
 from itertools import combinations
 from pathlib import Path
 
@@ -81,6 +83,11 @@ def audit(system: dict) -> dict:
     globally_feasible = primal(system).success
     infeasible = [record for record in records
                   if not record["partial_primal_feasible"]]
+    row_prices = [
+        Fraction(value)
+        for record in infeasible
+        for _, value in record["row_prices"]
+    ]
     return {
         "global_primal_feasible": globally_feasible,
         "support_count": len(records),
@@ -90,6 +97,12 @@ def audit(system: dict) -> dict:
         ),
         "farkas_mismatch_count": len(mismatches),
         "farkas_mismatches": mismatches,
+        "negative_row_price_count": sum(value < 0 for value in row_prices),
+        "all_strict_duals_have_nonnegative_row_prices":
+            all(value >= 0 for value in row_prices),
+        "nonzero_row_support_histogram": dict(sorted(Counter(
+            len(record["row_prices"]) for record in infeasible
+        ).items())),
         "infeasible_supports": infeasible,
     }
 

@@ -758,6 +758,16 @@ are feasible, then the full 47-row symmetric packing system is feasible.**
 Unlike the retracted local-packing reductions, each partial system retains
 the cross-row reciprocity that the real obstruction needs.
 
+The separating normals observed on all six durable branch-3 fixtures are
+nonnegative.  Across their 216 infeasible partial systems, exact audit finds
+zero negative row prices; the nonzero row-support histograms are respectively
+`{2:66,3:4}`, `{2:25,3:2}`, `{3:2}`, `{1:46,2:42,3:2}`,
+`{2:23,3:3}`, and `{3:1}`.  The partial-primal tool reports these sign and
+support diagnostics explicitly.  Nonnegativity may simplify a facet proof,
+but it is not promoted to a theorem: symmetric edge variables couple degree
+coordinates, so coordinatewise downward closure of the projection still
+requires justification.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy
