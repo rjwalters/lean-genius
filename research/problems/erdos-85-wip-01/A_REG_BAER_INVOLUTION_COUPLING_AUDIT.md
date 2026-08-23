@@ -3281,6 +3281,29 @@ genuinely joint-label data, not a scalar coloring of the four quotient
 vertices -- the exact finite analogue of the SRP transition commutator and
 the failure of additive B3 census potentials.
 
+Three joint edge characters are sufficient and necessary for the simple
+shadow.  Fix any spanning tree R of `K_4` on the four leaves and let
+`e_1,e_2,e_3` be its complementary chords.  For Q put
+
+```text
+q_j = multiplicity_Q(e_j)                         (mod 2). (73rnz_bg)
+```
+
+Because `bar Q` is Eulerian, its values on the three chords determine its
+tree-edge values uniquely: the boundary equations solve successively along
+the tree.  Therefore
+
+```text
+(q_1,q_2,q_3)=(0,0,0)  iff  bar Q is empty.             (73rnz_bh)
+```
+
+This is the minimal linear holonomy target: the cycle space has dimension
+three, so no smaller family of F2 characters separates all seven nonzero
+shadows.  The three chord weights depend jointly on the unordered leaf pair
+and hence escape (73rnz_bf).  They still ignore even parallel-pair
+corrections; those require the pivot/route labels retained in the full
+ledger.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
