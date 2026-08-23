@@ -21673,3 +21673,49 @@ may pair the two payers from one port or from different ports.  Its gain is
 to replace the large-parameter common-layer branch by a fixed ten-terminal
 path system coupled to the ten ordinary rooted `h`-edges and the companion
 color-deletion law of (1399).
+
+## 405. The saturated five-port boundary has an odd pairing component
+
+The five paths in (1433) have a finite quotient which retains their port
+incidence.  For each payer terminal, record the unique selected port in
+`Z` which was deleted next to it.  Contract every one of the five
+vertex-disjoint paths to an edge joining the recorded ports of its two
+terminals.  If both terminals came from one port, retain the resulting
+loop; if two paths join the same pair, retain parallel edges.  Call the
+resulting multigraph `P_h` on the five selected ports.
+
+Every selected port has exactly two `h`-payer terminals, and every terminal
+is the endpoint of exactly one path.  With loops counted twice in degree,
+
+```text
+deg_(P_h)(p)=2 for every p in Z,
+|E(P_h)|=|Z|=5.                                    (1434)
+```
+
+Thus `P_h` is a two-regular multigraph: its connected components are
+cycles, allowing a one-vertex loop and a two-vertex parallel-edge cycle.
+The component orders sum to five, so at least one component has odd order.
+Equivalently,
+
+```text
+P_h has a cycle component on 1, 3, or 5 ports.     (1435)
+```
+
+This quotient has a literal interpretation before deletion.  The path
+components obtained from one original cycle of the two-regular `h--e`
+factor contract to one cycle component of `P_h`; conversely reinserting
+the selected ports expands that quotient component back to the original
+factor cycle.  Therefore (1435) says
+
+```text
+some cycle of the h--e factor meets Z in exactly 1, 3, or 5 vertices.
+                                                        (1436)
+```
+
+The statement is deliberately parity-exact without excluding loops or
+parallel pairings: those are real possibilities left open by (1433), and a
+loop is precisely a factor cycle containing only one selected port.  At
+`q>=128`, the common saturated layer therefore cannot pair its ten inactive
+boundary labels by an entirely even port pattern.  Any terminal argument
+may split into the three finite odd cases in (1436), while all other
+boundary-free `h--e` cycles remain irrelevant to this five-port quotient.
