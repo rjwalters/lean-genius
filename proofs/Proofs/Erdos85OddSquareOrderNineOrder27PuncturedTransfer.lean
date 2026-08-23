@@ -784,6 +784,83 @@ theorem orderNine_order27_complement_W_degree_sum_le_five
     _ ≤ ∑ _y ∈ C, 1 := Finset.sum_le_sum fun y hy ↦ hone y hy
     _ = 5 := by simp [hCcard]
 
+/-- Three-edge left-hand arithmetic: among three owner-neighbors, two on
+the large shore have `W`-degree two and the remaining point has degree
+three. -/
+theorem orderNine_order27_threeEdge_W_degree_sum_eq_seven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (U B W : Finset V)
+    (hUcard : U.card = 3) (hUBcard : (U ∩ B).card = 2)
+    (hdegree : ∀ u ∈ U,
+      (G.neighborFinset u ∩ W).card = if u ∈ B then 2 else 3) :
+    (∑ u ∈ U, (G.neighborFinset u ∩ W).card) = 7 := by
+  classical
+  let L := U ∩ B
+  let C := U \ B
+  have hLC : Disjoint L C := by
+    rw [Finset.disjoint_left]
+    intro u huL huC
+    exact (Finset.mem_sdiff.mp huC).2 (Finset.mem_inter.mp huL).2
+  have hcover : L ∪ C = U := by
+    ext u
+    simp only [L, C, Finset.mem_union, Finset.mem_inter,
+      Finset.mem_sdiff]
+    constructor
+    · rintro (hu | hu) <;> exact hu.1
+    · intro hu
+      by_cases huB : u ∈ B
+      · exact Or.inl ⟨hu, huB⟩
+      · exact Or.inr ⟨hu, huB⟩
+  have hCcard : C.card = 1 := by
+    have hs := Finset.card_sdiff_add_card_inter U B
+    change C.card + L.card = U.card at hs
+    rw [hUcard, show L.card = 2 by simpa [L] using hUBcard] at hs
+    omega
+  rw [← hcover, Finset.sum_union hLC]
+  have hLsum : (∑ u ∈ L, (G.neighborFinset u ∩ W).card) = 4 := by
+    calc
+      (∑ u ∈ L, (G.neighborFinset u ∩ W).card) = ∑ _u ∈ L, 2 := by
+        apply Finset.sum_congr rfl
+        intro u hu
+        rw [hdegree u (Finset.mem_inter.mp hu).1,
+          if_pos (Finset.mem_inter.mp hu).2]
+      _ = 4 := by simp [show L.card = 2 by simpa [L] using hUBcard]
+  have hCsum : (∑ u ∈ C, (G.neighborFinset u ∩ W).card) = 3 := by
+    calc
+      (∑ u ∈ C, (G.neighborFinset u ∩ W).card) = ∑ _u ∈ C, 3 := by
+        apply Finset.sum_congr rfl
+        intro u hu
+        rw [hdegree u (Finset.mem_sdiff.mp hu).1,
+          if_neg (Finset.mem_sdiff.mp hu).2]
+      _ = 3 := by simp [hCcard]
+  omega
+
+/-- Four-edge left-hand arithmetic: the exceptional point contributes at
+least two `W`-incidences and the two regular points contribute three each. -/
+theorem orderNine_order27_fourEdge_W_degree_sum_ge_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E R U W : Finset V)
+    (hEcard : E.card = 1) (hRcard : R.card = 2)
+    (hdisj : Disjoint E R) (hU : U = E ∪ R)
+    (hEdegree : ∀ e ∈ E, 2 ≤ (G.neighborFinset e ∩ W).card)
+    (hRdegree : ∀ r ∈ R, (G.neighborFinset r ∩ W).card = 3) :
+    8 ≤ ∑ u ∈ U, (G.neighborFinset u ∩ W).card := by
+  rw [hU, Finset.sum_union hdisj]
+  have hEsum : 2 ≤ ∑ e ∈ E, (G.neighborFinset e ∩ W).card := by
+    calc
+      2 = ∑ _e ∈ E, 2 := by simp [hEcard]
+      _ ≤ ∑ e ∈ E, (G.neighborFinset e ∩ W).card :=
+        Finset.sum_le_sum fun e he ↦ hEdegree e he
+  have hRsum : (∑ r ∈ R, (G.neighborFinset r ∩ W).card) = 6 := by
+    calc
+      (∑ r ∈ R, (G.neighborFinset r ∩ W).card) = ∑ _r ∈ R, 3 := by
+        apply Finset.sum_congr rfl
+        exact fun r hr ↦ hRdegree r hr
+      _ = 6 := by simp [hRcard]
+  omega
+
 /-- Cross-incidence handshake, proved by swapping the two endpoints. -/
 theorem sum_neighbor_inter_card_comm
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -1120,6 +1197,8 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_binZero_W_degree_of_lowSet_partition
 #print axioms orderNine_order27_binZero_W_degree_equation
 #print axioms orderNine_order27_complement_W_degree_sum_le_five
+#print axioms orderNine_order27_threeEdge_W_degree_sum_eq_seven
+#print axioms orderNine_order27_fourEdge_W_degree_sum_ge_eight
 #print axioms sum_neighbor_inter_card_comm
 #print axioms sum_neighbor_inter_card_le_complement_of_independent
 #print axioms false_of_orderNine_order27_threeEdge_handshake
