@@ -4411,6 +4411,30 @@ fifty.  The CLI now always computes all exact one-row optima and reports
 `all_rows_fractionally_feasible`, avoiding the former asymmetry where rows
 were scanned only after descent failed.
 
+The hard locus can now be generated directly rather than found accidentally.
+`q9_branch4_row_feasible_outer.py` adds dual row-packing witnesses to the
+branch-4 outer SMT model.  Its fast mode asks the four exceptional rows for
+six pairwise point-capacity-compatible eligible candidates (denominator one),
+then independently runs the exact rational one-row LP audit on every one of
+the 47 realized rows.  The durable output
+`q9_branch4_row_feasible_selector_witness.json` passes that full rescan: it
+has zero strict one-row covers.  Its positive-special points, recorded as
+`(point, L, C, target)`, are
+
+```text
+(0,79,134/5,28), (7,80,28,28), (10,83,28,28),
+(14,67,171/7,28), (17,78,1942/75,28), (18,81,111/4,28).
+```
+
+Thus the unique minimum-load point is `p=14`, and it is strictly good by the
+large exact margin `171/7 < 28`.  An independent second generated hard-locus
+model (seed 55) is also all-row feasible and has a strict unique minimum.
+This upgrades the conditional descent horn from one inherited regression to
+three genuinely row-feasible examples.  It is still evidence, not a theorem;
+the generator deliberately prints the independent all-row verdict because
+imposing feasibility only on the four exceptional rows does not always make
+the remaining 43 rows feasible.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

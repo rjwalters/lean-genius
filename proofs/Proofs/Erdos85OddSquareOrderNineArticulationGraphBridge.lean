@@ -208,10 +208,62 @@ theorem articulation_binZero_internal_handshake
   · omega
   · omega
 
+/-- A disconnected nonempty induced graph supplies two nonempty complementary
+shores, each relatively closed inside the inducing vertex set. -/
+theorem exists_two_nonempty_complementary_relativeClosedShores_of_induce_not_connected
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (U : Finset V) (hU : U.Nonempty)
+    (hnot : ¬ (D.induce (↑U : Set V)).Connected) :
+    ∃ S T : Finset V,
+      S.Nonempty ∧ T.Nonempty ∧ S ∪ T = U ∧ Disjoint S T ∧
+      (∀ x ∈ S, D.neighborFinset x ∩ U ⊆ S) ∧
+      (∀ x ∈ T, D.neighborFinset x ∩ U ⊆ T) := by
+  classical
+  let owner : {x // x ∈ U} := ⟨hU.choose, hU.choose_spec⟩
+  obtain ⟨S, hSpos, hSlt, -, hSU, hSclosed⟩ :=
+    exists_nonempty_proper_nonowner_relativeClosedShore_of_induce_not_connected
+      D U owner hnot
+  let T := U \ S
+  have hTpos : 0 < T.card := by
+    dsimp [T]
+    rw [Finset.card_sdiff_of_subset hSU]
+    omega
+  have hUnion : S ∪ T = U := by
+    ext x
+    simp only [T, Finset.mem_union, Finset.mem_sdiff]
+    constructor
+    · rintro (hxS | ⟨hxU, -⟩)
+      · exact hSU hxS
+      · exact hxU
+    · intro hxU
+      by_cases hxS : x ∈ S
+      · exact Or.inl hxS
+      · exact Or.inr ⟨hxU, hxS⟩
+  have hDisjoint : Disjoint S T := by
+    rw [Finset.disjoint_left]
+    intro x hxS hxT
+    exact (Finset.mem_sdiff.mp hxT).2 hxS
+  have hTclosed : ∀ x ∈ T, D.neighborFinset x ∩ U ⊆ T := by
+    intro x hxT y hy
+    have hxParts := Finset.mem_sdiff.mp hxT
+    have hyParts := Finset.mem_inter.mp hy
+    refine Finset.mem_sdiff.mpr ⟨hyParts.2, ?_⟩
+    intro hyS
+    have hxS : x ∈ S := hSclosed y hyS
+      (Finset.mem_inter.mpr ⟨
+        (D.mem_neighborFinset y x).mpr
+          ((D.adj_comm x y).mp ((D.mem_neighborFinset x y).mp hyParts.1)),
+        hxParts.1⟩)
+    exact hxParts.2 hxS
+  exact ⟨S, T, Finset.card_pos.mp hSpos, Finset.card_pos.mp hTpos,
+    hUnion, hDisjoint, hSclosed, hTclosed⟩
+
 #print axioms sum_boundary_eq_card_exceptional_of_erase_owner_closed
 #print axioms three_mul_regular_eq_five_mul_binOne_of_erase_owner_closed
 #print axioms exists_articulation_scale_of_three_mul_regular_eq_five_mul_binOne
 #print axioms articulation_binZero_internal_handshake
+#print axioms exists_two_nonempty_complementary_relativeClosedShores_of_induce_not_connected
 
 end
 
