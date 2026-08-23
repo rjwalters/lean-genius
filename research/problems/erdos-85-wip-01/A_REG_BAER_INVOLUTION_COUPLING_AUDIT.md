@@ -3297,12 +3297,44 @@ the tree.  Therefore
 (q_1,q_2,q_3)=(0,0,0)  iff  bar Q is empty.             (73rnz_bh)
 ```
 
-This is the minimal linear holonomy target: the cycle space has dimension
-three, so no smaller family of F2 characters separates all seven nonzero
-shadows.  The three chord weights depend jointly on the unordered leaf pair
-and hence escape (73rnz_bf).  They still ignore even parallel-pair
-corrections; those require the pivot/route labels retained in the full
-ledger.
+For a fixed choice of the degree-four pivot pairings, this is the minimal
+linear holonomy target: the cycle space has dimension three, so no smaller
+family of F2 characters separates all seven nonzero shadows.  The three
+chord weights depend jointly on the unordered leaf pair and hence escape
+(73rnz_bf).  They still ignore even parallel-pair corrections; those require
+the pivot/route labels retained in the full ledger.
+
+The degree-four pairing choice has an exact gauge.  The three pairings of
+four incident leaves are the three perfect matchings of `K_4`; changing from
+one to another changes P, hence Q, by the symmetric difference of two perfect
+matchings, a Hamilton four-cycle.  The three Hamilton four-cycles span a
+two-dimensional subspace H of the three-dimensional cycle space (their sum
+is zero).  Therefore, if a degree-four pivot is present, the chord vector in
+(73rnz_bg) is defined only modulo H.  Its sole pairing-invariant linear bit is
+
+```text
+omega_Q := |E(Q)|
+         = |N| + |E(P)|
+         = |N| + |E(J)|/2                         (mod 2), (73rnz_bi)
+```
+
+where the two sibling edges cancel modulo two and pairing J-edges gives
+`|E(P)|=|E(J)|/2`.  Equivalently, `omega_Q` is `|N|` plus the parity of the
+number of degree-two residual centers (a degree-four center contributes two
+P-edges).  It distinguishes the triangle coset from the empty/four-cycle
+coset: triangles have odd size, while the empty graph and Hamilton cycles
+have even size.
+
+Hence the canonical topology splits once more:
+
+```text
+no degree-four pivot:  the full three-bit chord holonomy is intrinsic;
+degree-four pivot:     only omega_Q survives pairing gauge.     (73rnz_bj)
+```
+
+The lost two bits are not absent from the uncontracted geometry; they are
+stored in the chosen pairing/mate decoration at G.  Any proof needing them
+must retain that decoration, exactly as the SRP ledger retains its mate tag.
 
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
