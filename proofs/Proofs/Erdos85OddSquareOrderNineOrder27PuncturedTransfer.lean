@@ -184,6 +184,110 @@ theorem orderNine_order27_explicitPartition_of_large_boundary
   · omega
   · norm_num
 
+/-- Complete equation-(20) package on oriented actual articulation shores. -/
+theorem orderNine_order27_largeShore_profile_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (owner : V) (E A B : Finset V)
+    (hunion : A ∪ B =
+      ((Finset.univ : Finset V) \ {h₁, h₂, h₃}).erase owner)
+    (hdisj : Disjoint A B)
+    (hEsub : E ⊆
+      ((Finset.univ : Finset V) \ {h₁, h₂, h₃}).erase owner)
+    (hEcard : E.card = 5)
+    (hAcard : A.card = 27) (hBcard : B.card = 50)
+    (hownerO : owner ∈
+      (Finset.univ : Finset V) \ {h₁, h₂, h₃})
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ A)
+    (hBboundary : (∑ x ∈ B,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ B)).card) = (E ∩ B).card)
+    (hownerAdj₁ : G.Adj h₁ owner)
+    (hownerAdj₂ : G.Adj h₂ owner)
+    (hownerAdj₃ : G.Adj h₃ owner)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10)
+    (hhighIndependent : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      Disjoint (G.neighborFinset h) ({h₁, h₂, h₃} : Finset V)) :
+    let Z := orderNineOrdinaryLowSet G h₁ h₂ h₃ B 5
+    orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ B 5 42 ∧
+      Z.card = 36 ∧
+      ∀ x : V,
+        (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+          8 * (if x ∈ B then 1 else 0) - 4 -
+            6 * (if x ∈ ({h₁, h₂, h₃} : Finset V) then 1 else 0) +
+            ((G.neighborFinset x ∩ Z).card : ℤ) := by
+  classical
+  dsimp only
+  let H : Finset V := {h₁, h₂, h₃}
+  let U := ((Finset.univ : Finset V) \ H).erase owner
+  let Z := orderNineOrdinaryLowSet G h₁ h₂ h₃ B 5
+  have hBsubU : B ⊆ U := by
+    intro x hx
+    rw [← show A ∪ B = U by simpa [U, H] using hunion]
+    exact Finset.mem_union_right A hx
+  have hBsub : B ⊆ (Finset.univ : Finset V) \ H := by
+    intro x hx
+    exact (Finset.mem_erase.mp (hBsubU hx)).2
+  have hsmall :
+      (G.neighborFinset h₁ ∩ A).card = 3 ∧
+      (G.neighborFinset h₂ ∩ A).card = 3 ∧
+      (G.neighborFinset h₃ ∩ A).card = 3 := by
+    have hb := hfull.1
+    unfold orderNineArticulationSmallShoreBetaType at hb
+    rcases hb with hb | hb | hb
+    · omega
+    · exact ⟨hb.2.1, hb.2.2.1, hb.2.2.2⟩
+    · omega
+  have hE2 : (E ∩ B).card = 2 :=
+    orderNine_order27_exceptional_inter_large_card_eq_two
+      G E A B U h₁ h₂ h₃ (by simpa [U, H] using hunion) hdisj
+        (by simpa [U, H] using hEsub) hEcard hAcard hfull
+  have hboundary : (∑ x ∈ B,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ B)).card) = 2 := hBboundary.trans hE2
+  have hb₁ : (G.neighborFinset h₁ ∩ B).card = 6 :=
+    orderNine_order27_high_neighbor_large_card_eq_six
+      G H A B owner h₁ (by simpa [H] using hunion) hdisj
+        (by simpa [H] using hownerO)
+        hownerAdj₁ (hdegHigh h₁ (by simp [H]))
+        (hhighIndependent h₁ (by simp [H])) hsmall.1
+  have hb₂ : (G.neighborFinset h₂ ∩ B).card = 6 :=
+    orderNine_order27_high_neighbor_large_card_eq_six
+      G H A B owner h₂ (by simpa [H] using hunion) hdisj
+        (by simpa [H] using hownerO)
+        hownerAdj₂ (hdegHigh h₂ (by simp [H]))
+        (hhighIndependent h₂ (by simp [H])) hsmall.2.1
+  have hb₃ : (G.neighborFinset h₃ ∩ B).card = 6 :=
+    orderNine_order27_high_neighbor_large_card_eq_six
+      G H A B owner h₃ (by simpa [H] using hunion) hdisj
+        (by simpa [H] using hownerO)
+        hownerAdj₃ (hdegHigh h₃ (by simp [H]))
+        (hhighIndependent h₃ (by simp [H])) hsmall.2.2
+  have hpart := orderNine_order27_explicitPartition_of_large_boundary
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ B hBcard
+      (by simpa [H] using hBsub) hboundary hb₁ hb₂ hb₃ hdegOrd hdegHigh
+  have hZcard := orderNineOrdinaryLowSet_card G hcard
+    h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ B 5 42 hpart
+  have hBH : Disjoint B H := by
+    rw [Finset.disjoint_left]
+    intro x hxB hxH
+    exact (Finset.mem_sdiff.mp (hBsub hxB)).2 hxH
+  have heq := orderNineOrdinaryExplicitPartition_defect_lowSet_eq_nearRegular
+    G hfree h₁ h₂ h₃ B 5 42 hpart hb₁ hb₂ hb₃
+      (by simpa [H] using hBH) hdegOrd hdegHigh
+  refine ⟨hpart, by simpa [Z] using hZcard, ?_⟩
+  intro x
+  have hx := heq x
+  dsimp [Z] at hx ⊢
+  rw [hBcard] at hx
+  norm_num at hx ⊢
+  convert hx using 1 <;> ring
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -346,6 +450,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_exceptional_inter_large_card_eq_two
 #print axioms orderNine_order27_high_neighbor_large_card_eq_six
 #print axioms orderNine_order27_explicitPartition_of_large_boundary
+#print axioms orderNine_order27_largeShore_profile_package
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
