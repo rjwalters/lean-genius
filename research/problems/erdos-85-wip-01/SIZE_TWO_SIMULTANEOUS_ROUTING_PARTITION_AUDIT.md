@@ -14146,3 +14146,40 @@ single `a`-role in an already classified ticket.  This is not yet a
 contradiction: the next composition must compare that terminal role with
 the target-owner return pairing `nu_e` when `w in B`, or with the residual
 five-root word when `w in O`.
+
+## 276. The color-factor path boundaries cover every port oddly
+
+The tickets of Sections 268--269 are exactly the local degrees in the
+owner-factor subgraphs.  For an outside port `w` and exterior color `a`,
+each occurrence of color `a` in the root word of `w` is one edge of
+`H_a^C` incident to `w`.  Hence
+
+```text
+deg_(H_a^C)(w)
+ =|{i in Z/5: the cell (x_i,w) has color a}|.         (871)
+```
+
+At a private owner endpoint `w in B`, a ticket of type `2+1` therefore
+makes `w` an internal degree-two vertex in the doubled color and a path
+endpoint in the singleton color.  A ticket of type `1+1+1` makes it a path
+endpoint in three colors.  At a residual port `w in O`, the three patterns
+in (849) make it a path endpoint in respectively one, three, or five
+exterior colors.  In every case the number of color-factor boundaries
+containing `w` is odd.
+
+The same holds on `Z`: each selected port supports exactly one strict
+exterior cell by (777), so it is a degree-one vertex of exactly one
+`H_a^C`.  Writing `partial H_a^C` for the mod-two degree boundary on the
+port vertex set, the pointwise statement over the whole target fiber is
+
+```text
+sum_(a != c,e) partial H_a^C = 1_e.                  (872)
+```
+
+The right side has even weight `2q`, consistently with every graph
+boundary having even weight.  Equation (872) is not a scalar contradiction;
+it is an exact boundary cover by the canonical path systems of (864).  It
+ties the local ticket roles to those path pairings without retaining an
+arbitrary label name: every actual port must be paired as an endpoint in an
+odd number of exterior owner factors, while doubled ticket colors pass
+through it internally.
