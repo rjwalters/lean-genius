@@ -2781,6 +2781,30 @@ singleton population at each star is also fixed by the number of occupied
 cross cells, while non-permutation of the cross matrix certifies that at
 least two ports must enter the simultaneous residual transport.
 
+The complete singleton-routing table follows directly from the four margin
+parities in (73rnz_ab).  A leaf has an odd (hence nonzero) singleton bundle
+exactly when its corresponding row or column of N has even sum.  Up to
+permuting the two leaves at either star:
+
+```text
+shape of N                 forced odd singleton leaves        minimum
+zero matrix                all four leaves                       4
+one occupied cell          opposite leaf at each star            2
+two, permutation           none (all singleton counts even)       0
+two, same row              both leaves of star 1                  2
+two, same column           both leaves of star 2                  2
+three occupied cells       one leaf at each star                   2
+all four cells             all four leaves                         4. (73rnz_ae)
+```
+
+For one occupied cell the forced leaves are the row and column not meeting
+that cell.  For three occupied cells they are the row and column of sum two
+(equivalently, the row and column opposite the missing cell).  Thus every
+non-permutation state not only has external ports: their star/leaf locations
+and parities are fixed by N.  The permutation state is the sole state with no
+forced external leaf and is exactly the state carrying the 8-cycle
+(73rnz_ac).
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
