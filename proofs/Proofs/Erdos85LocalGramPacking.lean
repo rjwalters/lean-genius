@@ -227,6 +227,198 @@ theorem totalMass_le_totalPointWeight
           mul_le_mul_of_nonneg_left (hcapacity p) (hweight p)
         _ = weight p := by ring
 
+/-- A symmetric fractional residual relation with exact row degrees and the
+ordered point capacities forced by the Gram law.  Unlike the one-row
+canonical relaxation, the same mass variable is shared by both orientations
+of every residual edge. -/
+def IsSymmetricFractionalPointPacking
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (mass : V → V → ℚ) : Prop :=
+  (∀ u v, 0 ≤ mass u v) ∧
+  (∀ u, (∑ v : V, mass u v) = d u) ∧
+  (∀ u v, 0 < mass u v → H u v) ∧
+  (∀ u p,
+    (∑ v ∈ Finset.univ.filter fun w => p ∈ B w, mass u v) ≤ 1) ∧
+  ∀ u v, mass u v = mass v u
+
+/-- Global row/point-price weak duality for a symmetric fractional residual
+packing.  This is the exact Farkas consumer exposed by the q=9 B.3 symmetric
+point-mass probe. -/
+theorem weightedDegree_le_totalPointPrice_of_symmetricFractionalPacking
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (mass : V → V → ℚ) (rowPrice : V → ℚ)
+    (pointPrice : V → P → ℚ)
+    (hmass : IsSymmetricFractionalPointPacking H d B mass)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      rowPrice u + rowPrice v ≤
+        (∑ p ∈ B v, pointPrice u p) +
+        ∑ p ∈ B u, pointPrice v p) :
+    (∑ u : V, (d u : ℚ) * rowPrice u) ≤
+      ∑ u : V, ∑ p : P, pointPrice u p := by
+  classical
+  rcases hmass with ⟨hnonneg, hdegree, hsupport, hcapacity, hsymm⟩
+  have hcolumn (v : V) : (∑ u : V, mass u v) = d v := by
+    calc
+      (∑ u : V, mass u v) = ∑ u : V, mass v u := by
+        apply Finset.sum_congr rfl
+        intro u _
+        exact hsymm u v
+      _ = d v := hdegree v
+  have hedgeWeighted (u v : V) :
+      mass u v * (rowPrice u + rowPrice v) ≤
+        mass u v * ((∑ p ∈ B v, pointPrice u p) +
+          ∑ p ∈ B u, pointPrice v p) := by
+    by_cases hzero : mass u v = 0
+    · simp [hzero]
+    · have hpos : 0 < mass u v :=
+        lt_of_le_of_ne (hnonneg u v) (Ne.symm hzero)
+      exact mul_le_mul_of_nonneg_left (hedge u v (hsupport u v hpos))
+        (hnonneg u v)
+  have hweightedEdge :
+      (∑ u : V, ∑ v : V, mass u v * (rowPrice u + rowPrice v)) ≤
+        ∑ u : V, ∑ v : V,
+          mass u v * ((∑ p ∈ B v, pointPrice u p) +
+            ∑ p ∈ B u, pointPrice v p) := by
+    apply Finset.sum_le_sum
+    intro u _
+    apply Finset.sum_le_sum
+    intro v _
+    exact hedgeWeighted u v
+  have hleft :
+      (∑ u : V, ∑ v : V, mass u v * (rowPrice u + rowPrice v)) =
+        2 * ∑ u : V, (d u : ℚ) * rowPrice u := by
+    calc
+      (∑ u : V, ∑ v : V, mass u v * (rowPrice u + rowPrice v)) =
+          (∑ u : V, rowPrice u * ∑ v : V, mass u v) +
+          ∑ v : V, rowPrice v * ∑ u : V, mass u v := by
+        simp_rw [mul_add, Finset.sum_add_distrib]
+        congr 1
+        · apply Finset.sum_congr rfl
+          intro u _
+          rw [Finset.mul_sum]
+          apply Finset.sum_congr rfl
+          intro v _
+          ring
+        · rw [Finset.sum_comm]
+          apply Finset.sum_congr rfl
+          intro v _
+          rw [Finset.mul_sum]
+          apply Finset.sum_congr rfl
+          intro u _
+          ring
+      _ = (∑ u : V, rowPrice u * d u) +
+          ∑ v : V, rowPrice v * d v := by
+        simp_rw [hdegree, hcolumn]
+      _ = 2 * ∑ u : V, (d u : ℚ) * rowPrice u := by
+        simp_rw [mul_comm (rowPrice _) (d _ : ℚ)]
+        ring
+  have hright :
+      (∑ u : V, ∑ v : V,
+        mass u v * ((∑ p ∈ B v, pointPrice u p) +
+          ∑ p ∈ B u, pointPrice v p)) ≤
+        2 * ∑ u : V, ∑ p : P, pointPrice u p := by
+    have hfirst :
+        (∑ u : V, ∑ v : V,
+          mass u v * ∑ p ∈ B v, pointPrice u p) ≤
+          ∑ u : V, ∑ p : P, pointPrice u p := by
+      apply Finset.sum_le_sum
+      intro u _
+      calc
+        (∑ v : V, mass u v * ∑ p ∈ B v, pointPrice u p) =
+            ∑ p : P, pointPrice u p *
+              (∑ v ∈ Finset.univ.filter fun w => p ∈ B w, mass u v) := by
+          calc
+            (∑ v : V, mass u v * ∑ p ∈ B v, pointPrice u p) =
+                ∑ v : V, ∑ p : P,
+                  if p ∈ B v then mass u v * pointPrice u p else 0 := by
+              apply Finset.sum_congr rfl
+              intro v _
+              rw [Finset.mul_sum]
+              rw [← Finset.sum_filter]
+              simp only [Finset.filter_mem_eq_inter, Finset.univ_inter]
+            _ = ∑ p : P, ∑ v : V,
+                  if p ∈ B v then mass u v * pointPrice u p else 0 := by
+              exact Finset.sum_comm
+            _ = ∑ p : P, pointPrice u p *
+                  (∑ v ∈ Finset.univ.filter fun w => p ∈ B w,
+                    mass u v) := by
+              apply Finset.sum_congr rfl
+              intro p _
+              rw [Finset.mul_sum]
+              rw [← Finset.sum_filter]
+              apply Finset.sum_congr rfl
+              intro v _
+              by_cases hp : p ∈ B v <;> simp [mul_comm]
+        _ ≤ ∑ p : P, pointPrice u p := by
+          apply Finset.sum_le_sum
+          intro p _
+          calc
+            pointPrice u p *
+                (∑ v ∈ Finset.univ.filter fun w => p ∈ B w, mass u v)
+                ≤ pointPrice u p * 1 :=
+              mul_le_mul_of_nonneg_left (hcapacity u p) (hpointPrice u p)
+            _ = pointPrice u p := by ring
+    have hsecond :
+        (∑ u : V, ∑ v : V,
+          mass u v * ∑ p ∈ B u, pointPrice v p) ≤
+          ∑ u : V, ∑ p : P, pointPrice u p := by
+      calc
+        (∑ u : V, ∑ v : V,
+          mass u v * ∑ p ∈ B u, pointPrice v p) =
+            ∑ u : V, ∑ v : V,
+              mass u v * ∑ p ∈ B v, pointPrice u p := by
+          rw [Finset.sum_comm]
+          apply Finset.sum_congr rfl
+          intro u _
+          apply Finset.sum_congr rfl
+          intro v _
+          rw [hsymm v u]
+        _ ≤ ∑ u : V, ∑ p : P, pointPrice u p := hfirst
+    calc
+      (∑ u : V, ∑ v : V,
+        mass u v * ((∑ p ∈ B v, pointPrice u p) +
+          ∑ p ∈ B u, pointPrice v p)) =
+          (∑ u : V, ∑ v : V,
+            mass u v * ∑ p ∈ B v, pointPrice u p) +
+          ∑ u : V, ∑ v : V,
+            mass u v * ∑ p ∈ B u, pointPrice v p := by
+        simp_rw [mul_add, Finset.sum_add_distrib]
+      _ ≤
+          (∑ u : V, ∑ p : P, pointPrice u p) +
+          ∑ u : V, ∑ p : P, pointPrice u p :=
+        add_le_add hfirst hsecond
+      _ = 2 * ∑ u : V, ∑ p : P, pointPrice u p := by ring
+  rw [hleft] at hweightedEdge
+  have htwice :
+      2 * (∑ u : V, (d u : ℚ) * rowPrice u) ≤
+        2 * ∑ u : V, ∑ p : P, pointPrice u p :=
+    hweightedEdge.trans hright
+  linarith
+
+/-- A strict global row/point price certificate excludes every symmetric
+fractional point packing. -/
+theorem no_symmetricFractionalPointPacking_of_rowPointPrices
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (rowPrice : V → ℚ) (pointPrice : V → P → ℚ)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      rowPrice u + rowPrice v ≤
+        (∑ p ∈ B v, pointPrice u p) +
+        ∑ p ∈ B u, pointPrice v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, pointPrice u p) <
+        ∑ u : V, (d u : ℚ) * rowPrice u) :
+    ¬ ∃ mass, IsSymmetricFractionalPointPacking H d B mass := by
+  rintro ⟨mass, hmass⟩
+  have hdual :=
+    weightedDegree_le_totalPointPrice_of_symmetricFractionalPacking
+      H d B mass rowPrice pointPrice hmass hpointPrice hedge
+  exact (not_lt_of_ge hdual) hstrict
+
 /-- Any strict point cover of every positive-mass-eligible block rules out a
 full-demand canonical fractional interval extension.  This is the direct
 dual-side consumer complementary to the forced-shared-point obstruction. -/
@@ -1171,6 +1363,69 @@ theorem relationIndicator_pointCapacity_of_sharedPoint
       simp [T, S]]
   exact_mod_cast hcard
 
+/-- The characteristic matrix of an actual symmetric residual relation is a
+symmetric fractional point packing. -/
+theorem relationIndicator_isSymmetricFractionalPointPacking
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hpointCapacity : ∀ u p,
+      (∑ w ∈ Finset.univ.filter fun z => p ∈ B z,
+        if A u w then (1 : ℚ) else 0) ≤ 1) :
+    IsSymmetricFractionalPointPacking H d B
+      (fun u v => if A u v then 1 else 0) := by
+  refine ⟨?_, ?_, ?_, hpointCapacity, ?_⟩
+  · intro u v
+    by_cases huv : A u v <;> simp [huv]
+  · intro u
+    rw [show (∑ v : V, if A u v then (1 : ℚ) else 0) =
+        ((relationNeighborFinset A u).card : ℚ) by
+          simp [relationNeighborFinset]]
+    simp [hdegree u]
+  · intro u v huv
+    by_cases hA : A u v
+    · exact hsupport u v hA
+    · simp [hA] at huv
+  · intro u v
+    by_cases huv : A u v
+    · simp [huv, hsymm.symm u v huv]
+    · have hvu : ¬ A v u := by
+        intro hvu
+        exact huv (hsymm.symm v u hvu)
+      simp [huv, hvu]
+
+/-- End-to-end global price consumer for an actual symmetric residual
+relation obeying the shared-point Gram law. -/
+theorem false_of_symmetricRowPointPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (rowPrice : V → ℚ) (pointPrice : V → P → ℚ)
+    (hpointPrice : ∀ u p, 0 ≤ pointPrice u p)
+    (hedge : ∀ u v, H u v →
+      rowPrice u + rowPrice v ≤
+        (∑ p ∈ B v, pointPrice u p) +
+        ∑ p ∈ B u, pointPrice v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, pointPrice u p) <
+        ∑ u : V, (d u : ℚ) * rowPrice u) :
+    False := by
+  apply no_symmetricFractionalPointPacking_of_rowPointPrices
+    H d B rowPrice pointPrice hpointPrice hedge hstrict
+  refine ⟨fun u v => if A u v then 1 else 0, ?_⟩
+  apply relationIndicator_isSymmetricFractionalPointPacking
+    A H d B hsymm hdegree hsupport
+  exact relationIndicator_pointCapacity_of_sharedPoint
+    A W B hsymm hgram hshared
+
 /-- The characteristic function of an actual symmetric neighborhood is a
 canonical fractional interval extension.  The point-capacity hypothesis is
 the numeric form of the Gram disjointness law for the block model. -/
@@ -1534,6 +1789,10 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms reverseIntervalRankDeficit_of_scaledPointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_forced_sharedPoint
 #print axioms totalMass_le_totalPointWeight
+#print axioms weightedDegree_le_totalPointPrice_of_symmetricFractionalPacking
+#print axioms no_symmetricFractionalPointPacking_of_rowPointPrices
+#print axioms relationIndicator_isSymmetricFractionalPointPacking
+#print axioms false_of_symmetricRowPointPriceCertificate
 #print axioms no_canonicalFractionalIntervalExtension_of_pointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_contractedPointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_scaledContractedPointCover
