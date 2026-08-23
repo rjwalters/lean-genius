@@ -19024,3 +19024,75 @@ forces an injective three- or five-way rooted fan with an explicit forbidden
 back edge and a large color-changing subfan.  The remaining propagation
 argument may now count distinct far endpoints, rather than choosing one
 restart and losing the other rooted incidences.
+
+## 361. The inactive payer row has an exact selected restart partition
+
+The companion geometry can also be read from the simultaneous partition
+whose source is the payer component itself.  Fix an inactive payer as in
+(1211):
+
+```text
+z in k,       N_e(z)={q,o},       q in Z,       o in B disjoint_union O.
+```
+
+Apply `SRP(k,e)` to the row indexed by `z` and restrict its columns to
+`Z`.  The routing layer through the original core color vanishes:
+
+```text
+supp((R_kc R_ce)[z,-]) intersect Z=emptyset.        (1237)
+```
+
+Indeed core-inactivity says that neither `c`-neighbor of `z` belongs to
+`C`, while `(C,Z)` is a whole component of the cross factor `R_ce`; a
+`c`-vertex outside `C` has no `e`-neighbor in `Z`.
+
+The target endpoint layer is equally explicit.  The selected port `q` has
+no `A_e`-neighbor in `Z` because `e_e(Z)=0`.  If `o in O`, it has no
+`A_e`-neighbor in `Z` by the definition of the residual set.  If `o in B`,
+its unique selected `A_e`-neighbor is its owner `p(o)`.  Consequently
+
+```text
+supp((R_ke A_e)[z,-]) intersect Z
+ = emptyset                 if o in O,
+ = {p(o)}                   if o in B.              (1238)
+```
+
+For every exterior component `h notin {k,e,c}`, put
+
+```text
+S_h(z):=supp((R_kh R_he)[z,-]) intersect Z,
+S_k(z):=supp((A_k R_ke)[z,-]) intersect Z.          (1239)
+```
+
+All terms of the integer identity `SRP(k,e)` are nonnegative and sum
+entrywise to `J`.  Equations (1237)--(1238) therefore give the exact
+disjoint support partition
+
+```text
+o in O: Z = S_k(z) disjoint_union
+              disjoint_union_(h notin {k,e,c}) S_h(z),
+
+o in B: Z = {p(o)} disjoint_union S_k(z) disjoint_union
+              disjoint_union_(h notin {k,e,c}) S_h(z).            (1240)
+```
+
+In particular the inactive payer row forces five selected cells in the
+residual branch and four beyond the already located owner cell in the
+private branch:
+
+```text
+sum_h |S_h(z)|=5 if o in O,       =4 if o in B,     (1241)
+```
+
+where the sum includes the self layer `h=k` as defined in (1239).  Each
+occupied cell has a unique actual intermediate in its displayed product,
+since its nonnegative entry is one.
+
+Thus an inactive fifth-cell payer does more than open the rooted fan at its
+outside endpoint.  Its own coupled SRP row simultaneously opens a complete
+selected-column restart: either all five selected ports must be paid by
+self/other exterior layers, or exactly the private owner port is paid by
+the endpoint layer and the other four are paid elsewhere.  No contribution
+can be hidden in the original core color or reassigned across layers.  This
+is an exact support law, not yet a claim that the four or five payment
+intermediates are globally new.
