@@ -23246,3 +23246,59 @@ This does not yet make the symmetric difference itself one simple PC
 cycle.  It does show that the remaining simplification problem has bounded
 PC-cycle complexity: at most six clean colored circuits already realize
 complete root and selected-column parity cancellation.
+
+## 434. Avoidance survives the root-parity cover
+
+The robust clause (1547) can impose all previously isolated avoidance
+conditions on a genuinely color-ordered tag-even walk.  Let `F` be an edge
+set, put `H_F:=H-F`, and write
+
+```text
+D_F:=|E(H_F)|-(2|O_5|-3).
+```
+
+The root-parity cover of `H_F` has surplus
+
+```text
+32D_F-93=32(D_F-3)+3.                             (1552)
+```
+
+Hence `D_F>=3` forces a simple properly colored cycle upstairs and thus a
+properly colored closed walk downstairs which avoids `F` and has zero
+root and selected-tag parity.
+
+Take `F` to contain every edge whose source color is `d`, every edge whose
+source color lies in the strict-export support `Gamma`, and every edge
+whose canonical payer layer lies in a set `P`.  The three global weights
+are at most ten, forty-five, and `10|P|`, respectively.  Overlap can only
+reduce the deletion cost, so
+
+```text
+D_F>=R_5-55-10|P|
+    >=q-172-10|P|.                                (1553)
+```
+
+Combining (1552)--(1553) gives the uniform criterion
+
+```text
+q>=175+10|P|
+ -> H contains a properly exterior-colored closed walk W
+    with every root and selected tag column even,
+    whose source colors avoid {d} union Gamma
+    and whose payer layers avoid P.                (1554)
+```
+
+In particular,
+
+```text
+binary q>=256 and |P|<=8
+ -> such an all-O_5 unsheltered tag-even PC closed walk exists.  (1555)
+```
+
+Indeed the worst-case residual base surplus there is
+`256-172-80=4`, safely above the three-unit cover threshold.  Thus source-
+color avoidance, payer-layer avoidance, literal tag cancellation, and
+proper color ordering can all be achieved by one finite-state holonomy
+object.  As in Section 432, the remaining qualification is only that its
+base projection may repeat vertices or edges; no simple base-cycle claim
+is made here.
