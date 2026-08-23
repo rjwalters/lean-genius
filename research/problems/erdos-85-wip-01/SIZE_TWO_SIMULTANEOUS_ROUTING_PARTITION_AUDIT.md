@@ -15583,7 +15583,8 @@ target escape satisfies
 length_(F_a[e])(w--o_w)>=2.                          (981)
 ```
 
-Conversely, a one-edge target escape would make `z(w)` incident to `w`.
+Conversely, if the particular terminal-`z(w)` path extracted from
+`Theta_w` is a single edge, then `z(w)` is incident to `w`.
 The only two `a`-labels incident to `w` are the active label `y_w` and its
 inactive companion `y'_w`; since `z(w)` is inactive and cannot equal
 `y_w`, this forces `z(w)=y'_w`.  The companion supports in (974) are
@@ -15593,8 +15594,10 @@ edge `x--u`.
 Thus the occurrence-level dual route has an exact alternative.  Either
 the root route and target escape share the terminal private label, in which
 case `C_4`-freeness separates its target edge from the starting active edge
-and charges at least two target-factor steps, or a one-step target escape
-can occur only in the completely local, nonshared root-route case.
+and charges at least two target-factor steps, or the terminal-`z(w)` path
+extracted from `Theta_w` is one step only in the completely local,
+nonshared root-route case.  Other first-exit paths on the same factor cycle
+are not bounded by this converse.
 
 ## 305. The dual routes can always share their active source label
 
