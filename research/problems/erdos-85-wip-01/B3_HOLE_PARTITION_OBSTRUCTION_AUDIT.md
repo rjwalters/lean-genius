@@ -4808,6 +4808,24 @@ fractional-collision-not-forced model realizes only the second.  Thus both
 horns are genuinely necessary on the durable corpus.  Any future refinement
 must be tested against these two opposite sharp regressions before promotion.
 
+The CLI mode `--audit-local-or-two-row-price` is now the authoritative
+executable audit of (13av).  It enumerates the sound block-disjoint relaxation
+of every row's local packing family, reports deficit rows and every pair of
+shared-block rows with a common forced neighbor, and only when that local horn
+is absent solves the global minimum-row-support MILP and independently
+rationalizes a support-at-most-two price certificate.  It does not infer one
+horn from the other.
+
+All ten durable branch-4 payloads pass the unified audit.  The
+fractional-collision-not-forced regression has no local horn and exact minimum
+price support `{24,45}`; the two-row-price-selector counterexample has the
+forced collision `(16,25; common 32)` and does not run the price fallback.
+Across the twenty additional SAT all-row-feasible models generated in the
+110--141 seed batches, nineteen close locally and seed 138 alone uses exact
+two-row price support `{18,22}`.  There are zero unclosed models in this
+expanded batch.  This remains evidence, but unlike the refuted refinements it
+now tests exactly the formal disjunction consumed by the Lean capstone.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

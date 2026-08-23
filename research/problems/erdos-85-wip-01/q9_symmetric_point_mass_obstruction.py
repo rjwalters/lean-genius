@@ -689,6 +689,12 @@ def main() -> None:
               "disjoint integral local block-packings of sizes five and six"),
     )
     parser.add_argument(
+        "--audit-local-or-two-row-price", action="store_true",
+        help=("audit the honest branch-4 (13av) disjunction: a sound local "
+              "packing deficit/shared-block forced collision, or an exact "
+              "global price certificate with row support at most two"),
+    )
+    parser.add_argument(
         "--scan-exceptional-three-row-supports", action="store_true",
         help=("branch 3: scan supports with one exceptional row and two "
               "regular triple rows"),
@@ -1168,6 +1174,51 @@ def main() -> None:
                 for record in obstructed
             ],
             "records": records,
+        }, separators=(",", ":")))
+    if args.audit_local_or_two_row_price:
+        local = {
+            row: forced_local_packing_neighbors(system, row)
+            for row in range(N)
+        }
+        deficit_rows = [
+            row for row in range(N) if local[row]["packing_count"] == 0
+        ]
+        forced_collisions = []
+        for u, v in combinations(range(N), 2):
+            intersection = sorted(system["blocks"][u] & system["blocks"][v])
+            if not intersection:
+                continue
+            common = sorted(
+                set(local[u]["forced_neighbors"])
+                & set(local[v]["forced_neighbors"])
+            )
+            if common:
+                forced_collisions.append({
+                    "first": u,
+                    "second": v,
+                    "block_intersection": intersection,
+                    "common_forced_neighbors": common,
+                    "first_packing_count": local[u]["packing_count"],
+                    "second_packing_count": local[v]["packing_count"],
+                })
+        has_local_obstruction = bool(deficit_rows or forced_collisions)
+        row_support = None
+        price_certificate = None
+        if not has_local_obstruction and not result.success:
+            row_support = sorted(minimum_row_support(system))
+            if len(row_support) <= 2:
+                price_result = dual(system, set(row_support))
+                if price_result.success:
+                    price_certificate = exact_certificate(system, price_result)
+        print("local_or_two_row_price=" + json.dumps({
+            "global_fractional_packing_feasible": bool(result.success),
+            "deficit_rows": deficit_rows,
+            "forced_collisions": forced_collisions,
+            "has_local_obstruction": has_local_obstruction,
+            "minimum_row_support": row_support,
+            "has_exact_two_row_price": price_certificate is not None,
+            "price_certificate": price_certificate,
+            "valid": has_local_obstruction or price_certificate is not None,
         }, separators=(",", ":")))
     if args.scan_exceptional_three_row_supports:
         if system["branch"] != 3:
