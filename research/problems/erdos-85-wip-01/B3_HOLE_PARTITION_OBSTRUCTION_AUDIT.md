@@ -4166,6 +4166,24 @@ seconds.  Hence existence of a multi-special hole row remains corpus-only,
 and the valid branch-4 target is still the joint choice among all
 special-positive hole incidences.
 
+For branch 4, even the requirement that the selected point lie in a hole is
+unnecessary.  Each punctured seven-row rainbow class misses exactly one point
+of each color, so six puncture-miss occurrences exist by immediate counting.
+Every such point has target `D_p=27+special(p)>=28`.  In all tracked branch-4
+payloads, at least one of these global special points has a strict full-fiber
+cover (indeed the tracked special points happen also to be hole points, but
+that coincidence is not used).  The cleaner branch-4 target is therefore
+
+```text
+among the six puncture-miss occurrences, some p satisfies
+  C_p < 27 + special(p).                                    (13ak)
+```
+
+This bypasses the computational hole-special incidence lemma entirely for
+point existence.  It also separates the campaigns honestly: branch 4 is the
+six-special-point choice (13ak), while the exact exceptional-hole partition
+(13aj) is primarily needed for branch 3, where every target remains 27.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
