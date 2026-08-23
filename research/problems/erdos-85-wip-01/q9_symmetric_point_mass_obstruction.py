@@ -840,12 +840,42 @@ def main() -> None:
                 certificate = exact_certificate(system, result)
                 if certificate is None:
                     continue
+                incident_point = None
+                collision_certificate = None
+                if first < 8 and 8 <= second < 16:
+                    intersection = (
+                        system["blocks"][hole]
+                        & system["blocks"][second]
+                    )
+                    if len(intersection) == 1:
+                        incident_point = next(iter(intersection))
+                        collision_result = dual(
+                            system, {hole, first, second},
+                            external_point=incident_point,
+                        )
+                        if collision_result.success:
+                            collision_certificate = exact_certificate(
+                                system, collision_result
+                            )
                 certificates.append({
                     "hole": hole,
                     "regular_rows": [first, second],
                     "margin": certificate["margin"],
                     "row_prices": certificate["row_prices"],
                     "point_price_count": len(certificate["point_prices"]),
+                    "incident_point": incident_point,
+                    "has_incident_point_collision_certificate":
+                        collision_certificate is not None,
+                    "incident_point_collision_certificate": (
+                        None if collision_certificate is None else {
+                            "margin": collision_certificate["margin"],
+                            "row_prices":
+                                collision_certificate["row_prices"],
+                            "point_price_count": len(
+                                collision_certificate["point_prices"]
+                            ),
+                        }
+                    ),
                 })
         print("exceptional_three_row_supports=" + json.dumps({
             "count": len(certificates),
@@ -872,6 +902,14 @@ def main() -> None:
                     and 8 <= certificate["regular_rows"][1] < 16
                     and not system["blocks"][certificate["hole"]].isdisjoint(
                         system["blocks"][certificate["regular_rows"][1]]))
+            ],
+            "incident_point_collision_count": sum(
+                certificate["has_incident_point_collision_certificate"]
+                for certificate in certificates
+            ),
+            "incident_point_collision_certificates": [
+                certificate for certificate in certificates
+                if certificate["has_incident_point_collision_certificate"]
             ],
             "certificates": certificates,
         }, separators=(",", ":")))

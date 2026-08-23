@@ -554,6 +554,19 @@ of the overlap partition reduces the 48 shapes uniformly; the remaining
 selector has to use the outer-design incidence itself rather than an
 overlap-point convention.
 
+The surviving incidence nevertheless supplies a useful price normal form.
+For each candidate support, rerun the exact dual while requiring every point
+price outside its three supported rows to lie at the unique intersection of
+the exceptional row and the incident class-1 row.  This restricted dual is
+strict for `11,8,2,10,3` candidates in the five hard payloads and for
+`7,7,34,11,26` candidates in fresh seeds zero through four.  Hence all ten
+models retain at least one certificate of this form.  The scanner reports
+`incident_point_collision_count` and rechecks each displayed certificate
+over exact rationals.  The prospective selector can therefore target three
+row weights plus one distinguished external point, rather than unrestricted
+point prices across the outer design.  This is the branch-3 analogue of the
+shared-point fractional-collision normal form used in branch 4.
+
 The legacy alternative is to prove, from the outer design plus the exact
 exceptional-hole DTB complement partition, that a tight overlap fiber has a
 strict joint partner and then denominator-clear its two-fiber cover.  The
