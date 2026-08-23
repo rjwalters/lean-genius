@@ -20678,3 +20678,67 @@ many cycles.  Its purpose is to replace ten separate pair graphs by one
 linear-size cycle space to which a properly-colored-cycle or forbidden-
 transition theorem can be applied.  Strict reflections remain outside `M`
 and must be reattached through Sections 385 and 388.
+
+## 390. Every matching-union component has an exact fixed-mass rank
+
+The global cycle rank localizes to every cut.  For `A subset U`, let
+`e_M(A)` be the number of `M`-edges with both endpoints in `A`, let
+`partial_M(A)` be the number with exactly one endpoint in `A`, and put
+
+```text
+mu(A):=sum_(u in A)m(u).
+```
+
+For one root matching, each vertex of `A` is either fixed, lies on an
+internal matching edge, or lies on a cut edge.  Counting vertices in these
+three roles and then summing over the five roots gives
+
+```text
+5|A|=mu(A)+2e_M(A)+partial_M(A).                    (1359)
+```
+
+In particular
+
+```text
+partial_M(A)=5|A|-mu(A)-2e_M(A),
+partial_M(A)=|A|-mu(A) mod 2.                       (1360)
+```
+
+If `K` is a connected component of `M`, its cut is empty.  Writing
+`rho(K):=e_M(K)-|K|+1` for its cycle rank, (1359) becomes the exact local
+identity
+
+```text
+rho(K)=(3|K|-mu(K)+2)/2,
+mu(K)=3|K|+2-2rho(K).                               (1361)
+```
+
+Summing (1361) over the components recovers (1357), but (1361) retains
+where the twenty-five fixed incidences occur.  It also interfaces directly
+with the stationary alternative.  At a residual vertex `u in O`, fixed-set
+membership is precisely strict-mate membership, so `m(u)=|S(u)|`.  At a
+private vertex `u in B`, exactly the two roots incident to its owner port
+count `u` artificially in their endpoint blocks; the remaining fixed-set
+memberships are its strict mates.  Hence
+
+```text
+u in O: m(u)=|S(u)|;
+u in B: m(u)=2+|S(u)|.                              (1362)
+```
+
+If there is no stationary holonomy, (1353), (1356), and (1362) imply
+
+```text
+u in O: deg_M(u)>=3;
+u in B: deg_M(u)>=1,
+and deg_M(u)=1 only if |S(u)|=2.                    (1363)
+```
+
+Thus `M` has no isolated vertex in the no-stationary branch.  Every leaf is
+a private endpoint carrying a monochromatic strict-mate pair, and every
+tree component has at least two such leaves.  Since `|B|=10`, there are at
+most five tree components.  This does not yet force a properly colored
+cycle, but it sharply localizes any low-degree terminal of a cycle-
+elimination argument: it cannot lie in the residual set, and at a leaf it
+must spend one of the finitely many repeated strict-mate fibers from
+Section 388.
