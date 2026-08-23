@@ -704,6 +704,24 @@ theorem false_of_localGramPackingOneRowCompatibilityObstruction
     (not_symmetricLocalGramPackingSelection_of_oneRowCompatibilityObstruction
       H W d hbad)
 
+/-- **Contracted residual-deficit consumer.**  Once the outer-design
+argument produces one row with no contracted extension, the actual symmetric
+residual relation is impossible. -/
+theorem false_of_localGramPackingContractedExtensionDeficit
+    (A H W : V → V → Prop) [DecidableEq V] [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hdeficit : ∃ u, ∀ Y : Finset V,
+      ¬ IsReverseIntervalContractedExtension H W d u Y) :
+    False :=
+  false_of_localGramPackingOneRowCompatibilityObstruction
+    A H W d hsymm hdegree hsupport hgram
+    ((hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_contractedExtension
+      H W d).2 hdeficit)
+
 /-- **Forced hitting-set reciprocity consumer.**  If a finite set of
 reverse-impossible candidates meets every demanded packing at one row, no
 symmetric supported Gram-compatible residual relation exists. -/
@@ -776,6 +794,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms hittingSetReciprocityObstruction_of_reciprocityObstruction
 #print axioms oneRowCompatibilityObstruction_of_hittingSetReciprocityObstruction
 #print axioms false_of_localGramPackingOneRowCompatibilityObstruction
+#print axioms false_of_localGramPackingContractedExtensionDeficit
 #print axioms false_of_localGramPackingHittingSetReciprocityObstruction
 #print axioms false_of_forcedLocalGramNeighbor_not_reverse
 #print axioms not_hasLocalGramPackingReciprocityObstruction_iff
