@@ -4854,3 +4854,49 @@ rectangles occur among the isolated marks.  Establishing that occurrence
 and weight pairing is part of simultaneous self-indexing; once it is
 available, only the transpose-even diagonal channel must be propagated
 along `B_ec`.
+
+## 90. Diagonal labels are actual rooted transition edges
+
+The diagonal channel has more structure than an arbitrary labeled matrix
+entry.  For either sign `i in {-,+}`, the private port `p_i` lies in the
+fiber `Y_e(a_i)`, so `a_i p_i` is an ambient cross edge.  If the diagonal
+cell `K_(ii)=1`, Section 88 supplies its unique path
+
+```text
+a_i -- y_(ii) -- p_i,
+```
+
+of color pattern `c--d_(ii)--e`.  Together with `p_i--a_i`, this is an
+actual rooted triangle at `a_i`.  Equivalently, the diagonal label `d_(ii)`
+is a neighbor of `e` in the rooted exterior-color graph at `a_i`, and the
+triangle uses the specific `e`-port `p_i`.
+
+This also follows numerically from (274):
+
+```text
+K_(--)=1-s_-,    K_(++)=1-s_+,
+```
+
+where `s_i=b_(a_i,e)` is the `A_e` fiber-switch bit.  The diagonal route is
+present exactly when that specific same-side endpoint layer is absent; SRP
+then assigns the unit to its unique third-color triangle.
+
+Consequently `alpha_d` from (277) has the intrinsic interpretation
+
+```text
+alpha_d
+  = [the p_- rooted transition at a_- has color d]
+  - [the p_+ rooted transition at a_+ has color d].    (280)
+```
+
+The sole transpose-even obstruction (279) is therefore a signed difference
+of **rooted transition endpoints**, not an unconstrained color label.  This
+reconnects the boundary functional calculus to Sections 43 and 62: the
+label can be followed along the canonical rooted color path and its actual
+port lift.  A global alternating-phase proof may now pair endpoint tokens
+through those lifted paths rather than attempting to pair arbitrary matrix
+entries.
+
+No analogous triangle interpretation is asserted for a crossed cell:
+`a_-p_+` and `a_+p_-` are absent in the four-distinct branch, which is why
+the crossed channel instead closes by transpose antisymmetry.
