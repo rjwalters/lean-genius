@@ -1574,6 +1574,40 @@ theorem relationNeighborFinset_isLocalGramPacking
     have huy : A u y := (Finset.mem_filter.mp hy).2
     exact hgram x y u hW (hsymm.symm u x hux) (hsymm.symm u y huy)
 
+/-- Two conflicting rows in an actual residual relation have disjoint local
+neighborhood packings.  Hence a proof that no such disjoint pair of local
+packings exists is already an end-to-end contradiction; no forced neighbor
+or fractional price certificate is needed at the consumer boundary. -/
+theorem false_of_no_disjointLocalGramPackingPair
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (s t : V) (hst : W s t)
+    (hnone : ∀ X Y,
+      IsLocalGramPacking H W d s X →
+      IsLocalGramPacking H W d t Y →
+      ¬ Disjoint X Y) :
+    False := by
+  classical
+  let X := relationNeighborFinset A s
+  let Y := relationNeighborFinset A t
+  have hX : IsLocalGramPacking H W d s X := by
+    exact relationNeighborFinset_isLocalGramPacking
+      A H W d hsymm hdegree hsupport hgram s
+  have hY : IsLocalGramPacking H W d t Y := by
+    exact relationNeighborFinset_isLocalGramPacking
+      A H W d hsymm hdegree hsupport hgram t
+  have hdisjoint : Disjoint X Y := by
+    apply Finset.disjoint_left.mpr
+    intro v hvX hvY
+    have hsv : A s v := (Finset.mem_filter.mp hvX).2
+    have htv : A t v := (Finset.mem_filter.mp hvY).2
+    exact hgram s t v hst hsv htv
+  exact (hnone X Y hX hY) hdisjoint
+
 /-- The Gram law and the fact that a shared block point creates a conflict
 imply the numeric point-capacity condition for characteristic neighborhood
 masses. -/
@@ -2402,6 +2436,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
     exact hgram u v w huv huwA hvwA
 
 #print axioms relationNeighborFinset_isLocalGramPacking
+#print axioms false_of_no_disjointLocalGramPackingPair
 #print axioms sum_card_relationNeighborFinset_inter_fiber_eq_relationFiberLoad
 #print axioms relationIndicator_pointCapacity_of_sharedPoint
 #print axioms relationIndicator_isCanonicalFractionalIntervalExtension
