@@ -7558,3 +7558,59 @@ has even total mass.  The remaining geometric input must show that either
 the dependency in (435) yields a capacity-compatible conserved ledger or
 the test in (434) can be supported/priced on the private boundary cells.
 No such support bound is asserted here.
+
+## 143. A saturated boundary unit has four-port localized curvature
+
+Suppose the active atom `u` supports its private saturated H--V cell from
+Section 137.  Use the notation of Section 136: the exposed target port is
+`r`, its opposite root is `b_1`, the center is `x`, and the unexposed port
+`z` has opposite root `b_2`.  Let `s` be the other e-neighbor of `b_1` and
+let `t` be the other e-neighbor of `b_2`.  In the shadow cycle `Z`,
+
+```text
+s--r--z--t                                             (437)
+```
+
+is a four-vertex path: the three edges come respectively from the roots
+`b_1,x,b_2`.  Its vertices are distinct because the two root-pair supports
+in (426) are disjoint.
+
+For this atom, both `E_(b_1)` and `E_(b_2)` lie in `Z`, and `r` belongs to
+the first.  Formula (426) therefore becomes
+
+```text
+Q_u|_Z=(e_s+e_r)+(e_z+e_t)+e_r=e_s+e_z+e_t.          (438)
+```
+
+In particular every saturated atom has support exactly three; neither the
+one-point nor the five-point column type of Section 141 can carry a
+saturated boundary cell.
+
+Assume first `|Z|>=7`.  Let `a` be the other cycle neighbor of `s` and `v`
+the other cycle neighbor of `t`.  These are distinct from the path (437)
+and from each other.  Applying the cycle adjacency to (438) gives
+
+```text
+C_(d,j)e_u=P_Z Q_u=e_a+e_z+e_t+e_v.                 (439)
+```
+
+Indeed the two contributions at `r` cancel, while the support at `s,z,t`
+propagates only to the four displayed positions.  Thus the curvature of a
+private saturated unit has support **exactly four**, not merely the general
+upper bound ten from (429).
+
+On a five-cycle, `a=v` and those two contributions cancel, leaving
+
+```text
+C_(d,j)e_u=e_z+e_t.                                  (440)
+```
+
+A three-cycle cannot contain the four distinct ports in (437).  Therefore
+the saturated curvature is always nonzero and is localized on two ports for
+`|Z|=5` or four ports for `|Z|>=7`.
+
+This is the SRP identity-plus-localized-exception form: away from the short
+neighborhood (439), the saturated column is flat, and its exceptional
+support is canonically labeled by the private atom `u` and its forced H--V
+cell.  Cancellation with other columns is still possible; no independence
+of these curvature supports is claimed.
