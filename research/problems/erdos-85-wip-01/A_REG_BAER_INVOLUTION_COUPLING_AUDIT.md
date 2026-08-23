@@ -1885,6 +1885,34 @@ h=a=(q-2r)/2.                                            (73rnc)
 This removes one entire side of the saturated low-support dichotomy and is
 q-generic; no order-specific endpoint is involved.
 
+The surviving `h=a` side has a uniform exceptional T-normal form as well.
+Let `s_E=|E intersect S|`.  The routing rule gives every inside empty center
+exactly two A-neighbors among the outside full centers, and gives every
+outside empty center no exceptional A-neighbor.  Since every empty center's
+D-degree is exhausted on `F union (E setminus {E_i})`, these are exactly its
+T-neighbors:
+
+```text
+E_i in S      => deg_T(E_i)=2,
+E_i outside S => deg_T(E_i)=0.                            (73rnd)
+```
+
+The two full leaves belonging to distinct inside empty centers are all
+distinct.  Indeed two empty centers are D-adjacent in the minority clique,
+so they have no common A-neighbor; a shared full leaf would contradict that
+codegree-zero condition.  Thus `A[C]` contains `s_E` vertex-disjoint
+two-edge T-stars on the empty-center side (together with the majority core
+and other allowed majority edges).
+
+For each such star, Eulerianity of T places its two incident edges on a
+common simple T-cycle, just as in (73rs)--(73rt).  Removing the empty center
+gives a T-path coupling its two distinct outside-full leaves.  Consequently
+the saturated mixed problem has now reduced uniformly to the single
+placement `h=a`, with a family of disjoint paired exceptional T-ports plus
+the partial-Baer majority core and the residual M incidence.  When `s_E=0`
+there is no exceptional T-port and the obstruction lies entirely in the
+core/residual coupling.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
