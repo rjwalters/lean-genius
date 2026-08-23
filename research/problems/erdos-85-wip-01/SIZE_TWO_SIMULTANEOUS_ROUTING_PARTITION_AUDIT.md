@@ -8989,3 +8989,46 @@ This supplies a finite owner-sensitive template for the last `zeta` state.
 Any collision with another label must reuse one of the five explicit ports
 or roots in (539), where C4 and the two-fiber capacities apply directly.
 No contradiction is asserted yet.
+
+## 172. The constant-channel branch has eight short witness templates
+
+Encode the target-port witness `r_u` by `P`.  Encode a port witnessed by the
+root `b_i` by `B_i`; each symbol `B_i` has capacity two, and using both
+copies forces the adjacent block `B_i B_i` by Section 171.  Symbols cannot
+otherwise repeat.
+
+Up to reversal of the H-run and exchange of `b_1,b_2`, the constant-one
+templates of odd length are exactly
+
+```text
+length 1:
+  P,                     B_1;
+
+length 3:
+  P B_1 B_2,             B_1 P B_2,
+  P B_1 B_1,             B_1 B_1 B_2;
+
+length 5:
+  P | B_1 B_1 | B_2 B_2,
+  B_1 B_1 | P | B_2 B_2.                             (540)
+```
+
+For length three, if `P` and one port from each root are used, `P` is either
+at an end or in the middle, giving the first two templates.  If one root
+contributes both ports, its block must be adjacent; the third witness is
+either `P` or one port of the other root, giving the last two.  For length
+five all capacities are exhausted, and the singleton block `P` lies either
+at an end or between the two forced root blocks.
+
+This is a list of necessary incidence-order templates, not a claim that
+every row is globally realizable.  Actual root identities, the two V
+boundary decorations, and collisions with other labels refine the rows.
+But there is no remaining unenumerated `zeta` word: the entire constant
+branch consists of the eight rows (540).
+
+The finite terminal can now attach owner data to these rows directly.  In
+particular, the equal-boundary-label singleton from (509) brings one
+saturated two-port actual owner, while (540) records whether the secondary
+constant channel uses its target port, a full root block, or both.  Any
+capacity collision is visible in this joint row rather than hidden in an
+arbitrary run word.
