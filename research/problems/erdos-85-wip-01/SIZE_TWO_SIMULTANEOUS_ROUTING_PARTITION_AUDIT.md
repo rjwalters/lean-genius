@@ -20033,6 +20033,7 @@ inside the reflected state cycle itself; its mandatory coupled-SRP
 completion immediately leaves the center.  The full holonomy obstruction
 may consequently be sought in the moving, companion-expanded geometry even
 when the minimal reflected cycle has no ordinary target edge.
+
 ## 379. Private-owner terms cancel from the cycle-wide tag parity
 
 The cyclic word (1301) has a selected-column invariant which is independent
@@ -20087,3 +20088,72 @@ or cancellation theorem for the actual payment tags can now be compared
 against a five-dimensional root expression with one explicitly located
 strict-owner correction, instead of against the full sequence of private
 and residual endpoints.
+
+## 380. Each root induces an odd involution with five fixed points
+
+The reflected normal form has a common-domain permutation model.  Put
+
+```text
+U:=B disjoint_union O,       |U|=10+(2q-15)=2q-5.   (1315)
+```
+
+Fix a root `x_i`.  Every residual vertex in `O` has exactly one
+`x_i`-rooted active label.  Among the private tickets, exactly the four
+vertices
+
+```text
+B_(x_i)=T_(i-1) disjoint_union T_i                 (1316)
+```
+
+belong to the endpoint layer and have no exterior rooted letter at `x_i`;
+the other six have exactly one.  The rooted target-factor edges pair all
+active vertices in `U`, except that the unique strict label joins its
+outside mate `v_i` to the selected port `p_(i+2)`.
+
+Define `sigma_i:U->U` by pairing the two outside endpoints of each ordinary
+`x_i`-rooted label, fixing `v_i` to encode strict reflection, and fixing
+the four inactive vertices of `B_(x_i)`.  The factor edges are disjoint, so
+this is an involution.  Its fixed set is exactly
+
+```text
+Fix(sigma_i)=B_(x_i) disjoint_union {v_i},
+|Fix(sigma_i)|=5.                                  (1317)
+```
+
+The union is disjoint: `v_i` carries the rooted strict label at `x_i`, so
+if it is private it cannot lie in the endpoint-layer set `B_(x_i)`.
+Consequently `sigma_i` has
+
+```text
+(|U|-5)/2=q-5                                      (1318)
+```
+
+transpositions.  Since the binary parameter `q` is even,
+
+```text
+sign(sigma_i)=(-1)^(q-5)=-1.                       (1319)
+```
+
+Thus the five core roots produce five odd involutions on the same odd set
+`U`, each with five explicitly located fixed points.
+
+The cyclic word (1301) is an admissible word in these involutions.  If the
+letter `ell_j` has root `x_(r_j)`, then
+
+```text
+v_(j+1)=sigma_(r_j)(v_j).                          (1320)
+```
+
+An ordinary label is a transposition step and a strict reflection is the
+fixed point `v_(r_j)`.  The four artificial fixed points in `B_(x_(r_j))`
+are never chosen as steps, because those tickets have no rooted letter at
+that root.  Consecutive indices `r_j` differ: the rooted word at a target
+vertex has only one letter per core root, while consecutive transition
+labels are distinct (indeed have different colors).
+
+This recasts the remaining obstruction as a colored reduced cyclic word in
+five common-domain odd involutions, with the forbidden fixed points and all
+SRP tag decorations retained.  It is not yet a sign contradiction--an odd
+permutation may have fixed points--but it is the precise bridge from the
+ticket propagation audit to the Baer-involution/coupling formulation of the
+q-generic A-REG-NONBIP lane.
