@@ -50,6 +50,17 @@ fiber.  Even with `--residual-type-ledger`, the seed-free instance remained
 `UNKNOWN` after 120 seconds.  This is a well-scoped candidate horn, not yet a
 solver certificate or proof.
 
+The kernel theorem
+`squareOrderNine_threeHigh_secondProfile_exceptional_unmarked_exact_center`
+now proves the missing exceptional-row equation.  The probe option
+`--exact-hole-partition` imposes it literally on each selected partial mass:
+the residual block multiplicity at `q` is zero on the hole's U1-core support
+and one off that support.  Fixed `13f`/hole 24 is `UNSAT` in 0.3 seconds, but
+the unrestricted one-hole branch-3 instance with both the exact partition and
+residual type ledger remains `UNKNOWN` after 120 seconds.  The theorem is now
+consumed faithfully; solver search, not omission of (13aj), is the remaining
+computational limitation.
+
 For branch 4, every multi-special hole row in the six tracked models has a
 strict special point even though singleton-special rows can fail.  This is a
 conditional corpus horn only: global special mass six does **not** imply that

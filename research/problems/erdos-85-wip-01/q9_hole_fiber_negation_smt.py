@@ -19,6 +19,12 @@ actual residual row.  It is no longer the exact LP negation, but it remains a
 necessary relaxation of an actual relation and can be used as a smaller
 direct contradiction probe.
 
+``--exact-hole-partition`` adds the kernel-proved exceptional-row equation:
+for every U1 point, the selected hole has residual block multiplicity one
+exactly off its U1-core support, and zero on that support.  Like the residual
+type ledger, this is a necessary actual-relation strengthening rather than an
+exact abstract LP negation.
+
 ``--shared-hole-point-only`` is the branch-3 intersecting-hole horn.  It
 forces the two exceptional triples to meet and asserts the negation only for
 their shared point, rather than simultaneously for all six hole incidences.
@@ -82,6 +88,11 @@ def main() -> int:
         help=("branch 4 only: test all global puncture-miss point fibers, "
               "without requiring hole incidence"),
     )
+    parser.add_argument(
+        "--exact-hole-partition", action="store_true",
+        help=("impose residual multiplicity 1 off, and 0 on, the core of "
+              "each selected exceptional hole row"),
+    )
     args = parser.parse_args()
     if args.shared_hole_point_only and args.branch != 3:
         parser.error("--shared-hole-point-only requires --branch 3")
@@ -98,6 +109,8 @@ def main() -> int:
             and (args.hole_row is not None or args.shared_hole_point_only
                  or args.multispecial_hole_row is not None)):
         parser.error("--global-special-only cannot be combined with other selectors")
+    if args.global_special_only and args.exact_hole_partition:
+        parser.error("--exact-hole-partition needs a hole-based selector")
 
     outer_seed = (
         None if args.witness is None
@@ -221,6 +234,23 @@ def main() -> int:
                     if args.global_special_only
                     else incidence[hole, point]
                 )
+                if args.exact_hole_partition:
+                    partition_holes = (
+                        shared_holes if args.shared_hole_point_only else (hole,)
+                    )
+                    for partition_hole in partition_holes:
+                        for q in range(N_U1):
+                            residual_multiplicity = Sum([
+                                If(incidence[v, q],
+                                   edge_mass(partition_hole, v), 0)
+                                for v in range(N) if v != partition_hole
+                            ])
+                            solver.add(Implies(
+                                selected,
+                                If(core[partition_hole, q],
+                                   residual_multiplicity == 0,
+                                   residual_multiplicity == 1),
+                            ))
                 # Only edges touching the selected five-root fiber can carry
                 # mass, and every positive edge is mutually trace eligible.
                 for u, v in edge_pairs:
@@ -281,7 +311,8 @@ def main() -> int:
         f"residual_type_ledger={args.residual_type_ledger} "
         f"shared_hole_point_only={args.shared_hole_point_only} "
         f"multispecial_hole_row={args.multispecial_hole_row} "
-        f"global_special_only={args.global_special_only}"
+        f"global_special_only={args.global_special_only} "
+        f"exact_hole_partition={args.exact_hole_partition}"
     )
     started = time.monotonic()
     result = solver.check()
