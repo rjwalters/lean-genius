@@ -13684,3 +13684,59 @@ may now seek incompatibility between this owner-return involution and the
 private exterior-label paths `u_i--z_i--v_i`.  The present section does not
 assert that every 2-regular pseudograph in (838) is impossible or that the
 pairing already respects the receiving colors.
+
+## 267. Every private owner endpoint carries a three-root routing word
+
+The exact partition (835) determines how the ten vertices in (836) are
+seen from all five roots.  Write
+
+```text
+T_h:=N_(A_e)(p_h),          |T_h|=2.
+```
+
+Since the selected port `p_h` is incident in `R_ce` to exactly the two
+roots `x_h,x_(h+1)`, an endpoint `w in T_h` belongs to
+
+```text
+B_(x_h) and B_(x_(h+1)).                              (839)
+```
+
+At those two root--port pairs the unique intermediate layer in integer SRP
+is the endpoint color `e`.  For every other root, `w` is absent from its
+four-element owner set `B_x`; equation (835) therefore puts it in exactly
+one exterior routing set.  In symbols, there are unique exterior colors
+`a_i(w)` for
+
+```text
+i notin {h,h+1}
+```
+
+such that
+
+```text
+w in D_(x_i)^(a_i(w)).                               (840)
+```
+
+Thus every private owner endpoint has a canonical three-root exterior-color
+word supported on
+
+```text
+C\{x_h,x_(h+1)}.                                     (841)
+```
+
+This is an actual routing word, not a component parity: each letter records
+the unique intermediate component of the root--port pair `(x_i,w)`.
+Equivalently, at a fixed root `x_i`, its owner block
+`B_(x_i)=T_(i-1) disjoint_union T_i` contains four of the ten private
+endpoints, while the other six occur in uniquely colored exterior sets
+`D_(x_i)^a`:
+
+```text
+|B\B_(x_i)|=6.                                       (842)
+```
+
+The return involution `nu_e` from (837) now pairs ten such three-letter
+words along five concrete outside `A_e` paths.  Any terminal compatibility
+test can therefore compare the exterior colors at their six routed root
+occurrences before projecting to `delta` or `beta`; neither endpoint
+identity nor the owner-return pairing has to be reconstructed from parity.
