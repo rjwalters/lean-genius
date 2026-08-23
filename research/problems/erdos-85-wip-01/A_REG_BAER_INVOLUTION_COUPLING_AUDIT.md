@@ -5321,6 +5321,27 @@ both endpoint label sets.  Therefore a proof of its conservation must use a
 genuine port/V/S route relation (or a cross-port quotient relation); endpoint
 incidence telescoping alone cannot consume it.
 
+Privacy imposes a second necessary condition on that relation.  The
+unordered pair `q=N_d(p)` pins the physical port `p`: another port with both
+labels as neighbors would form a C4.  The port involution has only one H--H
+pair at `p`.  Hence the fully refined coordinate
+
+```text
+(channel=port-secondary, q, physical P_d activity/roles)
+```
+
+has exactly one marked H occurrence, not a second occurrence available for
+same-channel cancellation.  Therefore a quotient that keeps this entire
+coordinate as an isolated summand cannot make its coefficient even.  The
+required relation must be **channel-changing**: it must send the port-pair
+unit to occurrences of the labels `y_1,y_2` in root, V, S, or owner-route
+roles (or forget enough of those roles while keeping the marked character
+injective).  Merely seeking another H port with the identical `P_d` label is
+impossible by privacy.  This is the port-pair version of the correction to
+literal private reversal-orbit cancellation: exact identities are needed to
+construct the occurrence map, but the terminal relation must compare
+different realized channels.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
