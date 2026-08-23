@@ -4996,6 +4996,45 @@ total owner-compatible defect in (73rnz_cjibkzu) vanishes (or is absorbed by
 the inactive owner cells).  This formulation also handles multiple anchors
 without making a noncanonical choice.
 
+The existing untagged commutator does not by itself evaluate this defect.
+Let `M_H^same` denote the actual marked same-side H matching (as an edge set,
+not its symmetric adjacency matrix).  With `ell=e_1+e_2` and
+`r=A r_R`, (73rnz_cjibkzu) is
+
+```text
+epsilon_H
+ :=sum_({x,x'} in M_H^same)
+     (1+ell(x)r(x')+ell(x')r(x)).                     (73rnz_cjibkzv)
+```
+
+The bilinear part is the restriction of the two-shore determinant to the
+**marked-H selector**.  By contrast, (73rnz_cjibky)--(73rnz_cjibkza) sum
+over the full cross-neighborhood matching selected by A and the b-word; they
+contain no indicator of membership in `M_H^same`.  Substituting those
+commutator identities into (73rnz_cjibkzv) would therefore require a new
+H-tagged incidence identity, not merely another rearrangement of A.
+
+This selector cannot be recovered from the separate endpoint shore
+marginals.  Consider four endpoint occurrences with shore states
+
+```text
+10, 01, 00, 00.
+```
+
+Pairing `10--01` and `00--00` has determinant sum one, whereas pairing
+`10--00` and `01--00` has determinant sum zero.  The endpoint multiset and
+all separate `ell/r` marginals are identical.  (The two constant edge units
+in (73rnz_cjibkzv) cancel on both sides.)  Thus the four-state defect fails a
+pairing switch identity on the abstract state table.
+
+Consequently the remaining seven-cell parity cannot follow from endpoint
+marginals or the untagged commutator alone.  A valid closure must use a
+relation that fixes the realized horizontal-owner pairing -- equivalently,
+an H-tagged version of the `rho` commutator -- or show that the displayed
+state switch is geometrically unrealizable for marked H occurrences.  This
+is the exact selector obstruction; it does not reopen any Baer pairing gauge,
+which was already closed by (73rnz_cjibkzo).
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
