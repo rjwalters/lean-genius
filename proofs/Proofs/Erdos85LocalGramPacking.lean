@@ -213,6 +213,22 @@ theorem oneRowCompatibilityObstruction_of_reciprocityObstruction
   exact ⟨w, Or.inl ⟨hforced X hX, hreverse⟩⟩
 
 omit [Fintype V] in
+/-- The original reciprocity obstruction is precisely the singleton case of
+the reverse-impossible hitting-set obstruction. -/
+theorem hittingSetReciprocityObstruction_of_reciprocityObstruction
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ)
+    (hbad : HasLocalGramPackingReciprocityObstruction H W d) :
+    HasLocalGramPackingHittingSetReciprocityObstruction H W d := by
+  obtain ⟨u, w, hforced, hreverse⟩ := hbad
+  refine ⟨u, {w}, ?_, ?_⟩
+  · intro X hX
+    exact ⟨w, by simp, hforced X hX⟩
+  · intro v hv
+    have hvw : v = w := Finset.mem_singleton.mp hv
+    subst v
+    exact hreverse
+
+omit [Fintype V] in
 /-- A reverse-impossible hitting set is a selected-bit instance of the
 one-row compatibility obstruction. -/
 theorem oneRowCompatibilityObstruction_of_hittingSetReciprocityObstruction
@@ -547,6 +563,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_hasLocalGramPackingOneRowCompatibilityObstruction_iff
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
 #print axioms hasLocalGramPackingHittingSetReciprocityObstruction_iff
+#print axioms hittingSetReciprocityObstruction_of_reciprocityObstruction
 #print axioms oneRowCompatibilityObstruction_of_hittingSetReciprocityObstruction
 #print axioms false_of_localGramPackingOneRowCompatibilityObstruction
 #print axioms false_of_localGramPackingHittingSetReciprocityObstruction
