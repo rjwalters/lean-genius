@@ -1672,6 +1672,36 @@ theorem false_of_scaledUnitSupportPointPriceCertificate
   exact relationIndicator_pointCapacity_of_sharedPoint
     A W B hsymm hgram hshared
 
+/-- Full-fiber specialization of the denominator-cleared actual-relation
+consumer.  The unit row support is inferred from a common block point rather
+than supplied as a separate finset, matching the q=9 hole-fiber certificates
+without an additional support-identification obligation. -/
+theorem false_of_scaledCommonPointFiberPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (point : P) (weight : V → P → ℕ) (scale : ℕ)
+    (hscale : 0 < scale)
+    (hedge : ∀ u v, H u v →
+      scale * ((if point ∈ B u then 1 else 0) +
+        (if point ∈ B v then 1 else 0)) ≤
+        (∑ p ∈ B v, weight u p) + ∑ p ∈ B u, weight v p)
+    (hstrict :
+      (∑ u : V, ∑ p : P, weight u p) <
+        scale * ∑ u ∈ Finset.univ.filter (point ∈ B ·), d u) :
+    False := by
+  apply false_of_scaledUnitSupportPointPriceCertificate
+    A H W d B hsymm hdegree hsupport hgram hshared
+    (Finset.univ.filter (point ∈ B ·)) weight scale hscale
+  · intro u v huv
+    simpa using hedge u v huv
+  · exact hstrict
+
 /-- The characteristic function of an actual symmetric neighborhood is a
 canonical fractional interval extension.  The point-capacity hypothesis is
 the numeric form of the Gram disjointness law for the block model. -/
@@ -2045,6 +2075,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_symmetricRowPointPriceCertificate
 #print axioms false_of_unitSupportPointPriceCertificate
 #print axioms false_of_scaledUnitSupportPointPriceCertificate
+#print axioms false_of_scaledCommonPointFiberPriceCertificate
 #print axioms no_canonicalFractionalIntervalExtension_of_pointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_contractedPointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_scaledContractedPointCover
