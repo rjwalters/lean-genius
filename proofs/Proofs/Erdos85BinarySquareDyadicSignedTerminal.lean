@@ -965,6 +965,22 @@ theorem binarySquare_saturatedR2_hEqF_impossible
   exact binarySquare_saturatedR1_hEqF_impossible
     G hfree hqEven hreg minorityCenter hunique
 
+/-- Uniform terminal for every saturated mixed `h = f` layer.  The geometric
+routing argument supplies a minority centre of triangle-free degree one;
+even ambient degree then gives the contradiction independently of `r`. -/
+theorem binarySquare_saturatedMixed_hEqF_impossible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hqEven : Even q) (hreg : ∀ x, G.degree x = q)
+    (minorityCenter : V)
+    (hunique : (triangleFreeEdgeGraph G).degree minorityCenter = 1) :
+    False := by
+  exact binarySquare_saturatedR1_hEqF_impossible
+    G hfree hqEven hreg minorityCenter hunique
+
 end
 
 end Erdos85
@@ -1004,3 +1020,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedPrivateOwner_card_odd
 #print axioms Erdos85.binarySquare_saturatedR1_hEqF_impossible
 #print axioms Erdos85.binarySquare_saturatedR2_hEqF_impossible
+#print axioms Erdos85.binarySquare_saturatedMixed_hEqF_impossible

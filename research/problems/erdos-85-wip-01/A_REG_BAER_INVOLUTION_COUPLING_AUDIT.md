@@ -1849,6 +1849,42 @@ tested first at an empty center: its D-degree is exhausted on the exceptional
 core, so a unique routed A-edge immediately becomes a forbidden odd
 T-degree.
 
+In fact this closes `h=f` uniformly, not only in the first two layers.  Let
+`r=u>=1` be arbitrary at saturation and put
+
+```text
+s_E = |E intersect S| = |F setminus S|.
+```
+
+Every minority center has D-neighborhood exactly
+`F union (E setminus {E_i})`, of size `(q-r)+(r-1)=q-1`.  If `s_E>0`, choose
+`E_i in E intersect S`.  Its empty line has no A-neighbor in S, and the
+`h=f` routing gives it exactly one A-neighbor in `F setminus S`; the type
+rule excludes A-edges to outside minority centers.  Since its D-degree is
+already exhausted on C, this matched full center is its unique T-neighbor.
+If `s_E=0`, then all minority centers lie outside S and all full centers lie
+inside S.  The outside-minority induced graph is a perfect matching by
+(73h); its edges lie in the minority D-clique, while the empty-line and shore
+routing exclude every other D-neighbor from A.  Again each endpoint has
+T-degree one.  Therefore
+
+```text
+s_E>0 or s_E=0  implies  some E_i has deg_T(E_i)=1,       (73rnb)
+```
+
+contradicting even T-degree in all cases.  The uniform final composition is
+Lean-checked by `binarySquare_saturatedMixed_hEqF_impossible`.
+
+Hence **every saturated mixed `h=f` branch is impossible for every r**.  The
+only placement surviving (73g) is
+
+```text
+h=a=(q-2r)/2.                                            (73rnc)
+```
+
+This removes one entire side of the saturated low-support dichotomy and is
+q-generic; no order-specific endpoint is involved.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
