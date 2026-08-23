@@ -3404,6 +3404,27 @@ local problem has exactly the residual rank in (13o); this supplies a
 canonical smaller matching instance for a transversal or alternating-path
 proof of kernel intersection.
 
+The contraction in (13o) is canonical at the level of the complete matching
+family.  Removing `F(t)` from a demanded matching leaves a maximum matching
+of `mathcal H_t-P_t`.  Conversely, adjoining the disjoint blocks `F(t)` to
+any maximum matching of the point-deleted hypergraph gives a demanded
+matching of `mathcal H_t`.  These operations are inverse, so
+
+```text
+{d(t)-matchings of mathcal H_t}
+  bijects with
+{(d(t)-|F(t)|)-matchings of mathcal H_t-P_t}.                  (13p)
+```
+
+Moreover the matching family on the right has empty essential-edge kernel.
+If one of its blocks occurred in every residual maximum matching, (13p)
+would put that block in every demanded matching of `mathcal H_t`, hence in
+`F(t)`; but every block of `F(t)` meets `P_t` and was deleted.  Thus every
+tight row decomposes uniquely into its forced matching and a tight
+kernel-free residual matching problem.  The remaining content of (13f) is
+to show that the forced matchings of all intersecting tight rows cannot have
+pairwise empty intersections as sets of block rows.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
