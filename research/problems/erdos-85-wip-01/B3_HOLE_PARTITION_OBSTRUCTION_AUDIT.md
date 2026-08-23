@@ -3277,6 +3277,52 @@ is parameter-free, compiles with no `sorry`, and uses only the standard
 `propext` and `Quot.sound` axioms.  The sole B.3 gap at this interface is now
 the outer-design statement (13f) itself.
 
+There is an exact proof-facing simplification of the eligibility relation in
+that remaining statement.  Write `B_t` for the two- or three-point U1 block
+of row `t`, let `K` be the undirected cubic U1 graph, and put
+
+```text
+Gamma_K(B_t):=union_{b in B_t} N_K(b).
+```
+
+The implementation defines `core(t)=Gamma_K(B_t)` and excludes a candidate
+`u` when either
+
+```text
+B_u intersects Gamma_K(B_t), or
+B_t intersects Gamma_K(B_u).                              (13h)
+```
+
+These two conditions are equivalent, not independent.  Indeed either one
+says that some `a in B_t` and `b in B_u` satisfy `a--b` in `K`; reversing
+the edge proves the other because `K` is undirected.  Therefore the exact
+eligible neighborhood is simply
+
+```text
+N_H(t)={u!=t : B_u intersect Gamma_K(B_t)=empty}.          (13i)
+```
+
+The Gram conflict relation is block intersection.  Consequently a local
+packing at `t` is exactly a `d(t)`-edge matching in the linear 2/3-uniform
+block hypergraph obtained by deleting row `t` and every block meeting the
+single forbidden point set `Gamma_K(B_t)`.  Its forced set `F(t)` is the
+set of hyperedges contained in every such `d(t)`-matching.  Thus (13f) is
+equivalently the seed-free matching-kernel alternative
+
+```text
+some row t has matching number below d(t); or
+some intersecting blocks B_u,B_v have a block B_w
+contained in every d(u)-matching at u and every d(v)-matching at v.       (13j)
+```
+
+The sampled role reduction (13f''') suggests the stronger version in which
+`t,u,v` may all be restricted to triple centers, but that restriction remains
+conjectural.  Equations (13h)--(13j) without that restriction are identities
+valid for every admissible outer design.  They remove one redundant trace-
+orthogonality predicate from a seed-free encoding and expose the remaining
+target as a statement about essential edges in matchings after one canonical
+neighborhood deletion.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
