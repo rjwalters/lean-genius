@@ -3797,6 +3797,22 @@ UNKNOWN at its first 90-second solve.  This is a computational boundary, not
 a proof; any future SAT payload from the relaxed build must still be checked
 against the full outer constraints.
 
+The proof-facing interface for (13ab) is now kernel checked end to end.
+`IsCanonicalFractionalIntervalExtension` is the primal predicate;
+`no_canonicalFractionalIntervalExtension_of_forced_sharedPoint` handles the
+collision case; and `totalMass_le_totalPointWeight` is fractional weak
+duality.  More precisely,
+`no_canonicalFractionalIntervalExtension_of_contractedPointCover` consumes
+exactly the residual certificate shape emitted above: unit mass on `F_u`,
+zero mass on `I_u`, point capacity, a nonnegative cover of every remaining
+block disjoint from `F_u`, and `|F_u|+totalWeight<d(u)`.  On the graph side,
+`exists_canonicalFractionalIntervalExtension_of_symmetricSelection` supplies
+the characteristic zero-one mass of every actual symmetric selection, and
+`false_of_no_canonicalFractionalIntervalExtension` closes the contradiction.
+All compile without `sorry` and print only standard axioms.  Consequently the
+sole mathematical B.3 leaf in this route is no longer a consumer lemma: it is
+the outer-design assertion (13ab) itself.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
