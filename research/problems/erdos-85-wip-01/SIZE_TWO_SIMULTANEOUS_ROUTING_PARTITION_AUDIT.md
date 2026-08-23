@@ -21530,3 +21530,81 @@ private correction), while (1423) identifies the precise finite geometry
 that a `q=16` argument must analyze: few private strict mates and `B--B`
 ordinary edges relative to the sheltered residual count.  No residual
 endpoint or payer-layer variable remains in that small-value density gap.
+
+## 403. Near-total payer coverage forces linear triple companion reuse
+
+The offset-payer map is also injective after passing to companions at one
+fixed port.  For root `i`, let
+
+```text
+I_i:=z(E_i(G_sh)),
+C_i:=the set of outside companions of labels in I_i.
+```
+
+Two distinct labels in `I_i` both meet the selected offset port
+`p_(i+2)`.  They cannot also have the same outside companion `o`, since
+then `p_(i+2)` and `o` would have those two labels as common neighbors and
+would form a four-cycle.  Hence the companion map is injective on `I_i` and
+
+```text
+|C_i|=|I_i|
+     =q-7-delta_i
+     >=q-12.                                       (1424)
+```
+
+This is a portwise linear companion bound, much stronger than applying the
+mixed-layer capacity estimate to the five ports only in aggregate.  Reuse
+is possible only across different ports.  For `o in U`, define
+
+```text
+m(o):=#{i:o in C_i}.
+```
+
+Portwise injectivity gives `0<=m(o)<=5`.  Payers belonging to different
+ports are themselves distinct, and (1419), (1394) give the exact incidence
+mass
+
+```text
+sum_(o in U)m(o)
+ =sum_i|I_i|
+ =|E(G_sh)|
+ =5q-35-Delta.                                    (1425)
+```
+
+Only `|U|=2q-5` outside vertices are available.  Splitting every
+multiplicity into its first two slots and its excess therefore yields
+
+```text
+sum_(o in U) max(m(o)-2,0)
+ >=(5q-35-Delta)-2(2q-5)
+ =q-25-Delta
+ >=q-50.                                          (1426)
+```
+
+Let `H_3:={o:m(o)>=3}`.  Since `m(o)<=5`, one vertex contributes at most
+three units to the left side of (1426).  Consequently
+
+```text
+|H_3|>=ceil(max(q-25-Delta,0)/3)
+     >=ceil(max(q-50,0)/3).                        (1427)
+```
+
+In particular binary `q>=64` forces at least five outside vertices which
+simultaneously receive inactive offset payers from three or more distinct
+selected ports; at `q>=128` it forces at least twenty-six.
+
+These high-multiplicity endpoints retain the color cost of Section 371.
+At an endpoint with multiplicity `m`, no payer layer can occur more than
+twice, so at least `ceil(m/2)` distinct arrival layers are present, and the
+rooted-word deficit satisfies
+
+```text
+sum_k(2-t_k(o))>=m(o).                             (1428)
+```
+
+Thus the near-bijection cannot realize its linear payer population by
+keeping the five port families essentially disjoint.  It forces a linear
+set of literal cross-port collision endpoints, each with multi-layer
+arrival data and at least three units of missing rooted capacity.  The
+remaining terminal may now focus on these named triple-reuse vertices
+rather than on arbitrary companion merging.
