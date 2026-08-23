@@ -9510,3 +9510,49 @@ simultaneous route reversal makes every orbit
 Equation (573) is not proved here.  If established with the shadow/run
 boundary payments of Sections 177--179 attached, it contradicts (572)
 immediately and completes the mixed-cycle kernel theorem.
+
+## 183. Center states form a directed root-state path with private edge labels
+
+For a root `x`, define its secondary activity state
+
+```text
+R_d(x):=(N_d(x), (t_y)_(y in N_d(x))).                (574)
+```
+
+For a port `z`, define the analogous port state `P_d(z)`.  The oriented
+center state (570) factors exactly as
+
+```text
+tau(z)=(R_d(x_-), P_d(z), R_d(x_+)),                  (575)
+```
+
+where `x_-,x_+` are the ordered roots of the H port.  The middle state
+contains the private port-label pair, while the two endpoint states are the
+root-role parts of `Sigma,T`.
+
+Successive H port pairs in one run meet at a common root.  Therefore the
+target root state of one directed edge (575) is literally the source root
+state of the next.  If `C_A` is the sum of the directed center edges of a
+run, its coarse incidence boundary telescopes:
+
+```text
+partial_R C_A=[R_d(x_exit)]-[R_d(x_entry)].           (576)
+```
+
+Over `F_2` the sign is immaterial, but retaining the orientation identifies
+which endpoint is which.  All internal 64-state occurrences cancel at the
+root-state boundary level, with their private port states retained on the
+edges.
+
+The non-H port pairs in the intervening gaps also connect consecutive roots
+of the same auxiliary dart cycle.  Forgetting their V/S decorations and
+keeping only endpoint root states makes the full directed port-edge flow
+closed.  Hence the coarse endpoint conservation needed for (573) is
+automatic; the only possible obstruction is a directed cycle holonomy in
+the private edge labels `P_d(z)` and the V/S gap decorations.
+
+This also shows why (573) is stronger than ordinary flow conservation.  A
+closed directed cycle can use every private edge only in one orientation.
+The terminal theorem must price or cancel that labeled holonomy using the
+simultaneous route-reversal data of the non-H gaps; endpoint telescoping
+alone cannot make reversal-orbit occupancies even.
