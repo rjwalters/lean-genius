@@ -20569,3 +20569,54 @@ of whether those paired orbit lengths are odd or even.  Thus (1350) makes
 no false cross-type matching assertion; it isolates precisely the balanced
 same-side obstruction that prevents the five distinguished product orbits
 from all having odd cardinality.
+
+## 388. No stationary holonomy forces three distinct strict mates
+
+The stationary classification has a useful endpoint-spread contrapositive.
+For `v in U` and an exterior component color `a`, put
+
+```text
+r_a(v):=|{i in S(v):gamma_i=a}|.
+```
+
+Every strict label counted here is one of the rooted labels at `v`.  If
+`v in B`, the private ticket bound (844) applies; if `v in O`, the residual
+rooted-word bound (1229) applies.  In both cases
+
+```text
+r_a(v)<=2 for every v in U and every color a.       (1351)
+```
+
+By (1341), two roots in one strict-mate fiber with different colors already
+give the stationary two-letter word.  Conversely, if `S(v)` is
+monochromatic, no cyclic ordering of two or more of its roots can change
+color at every transition.  Thus
+
+```text
+there is no stationary holonomy cycle
+ iff every nonempty S(v) is monochromatic.          (1352)
+```
+
+Combining (1351)--(1352), absence of stationary holonomy forces
+
+```text
+|S(v)|<=2 for every v in U.                         (1353)
+```
+
+The five root indices occur in exactly one strict-mate fiber each, so their
+nonzero fiber sizes form a partition of five.  Under (1353) the only
+possibilities are
+
+```text
+2+2+1,       2+1+1+1,       or 1+1+1+1+1.          (1354)
+```
+
+In particular the five strict mates occupy at least three distinct outside
+vertices.  Equivalently, the reflected dynamics has the sharp dichotomy:
+either two roots already close a stationary color-changing cycle at a
+common mate, or the strict exports spread over at least three outside
+endpoints with every repeated endpoint carrying one monochromatic pair.
+This conclusion is uniform in the binary parameter and uses no order-64
+enumeration.  It turns the stationary branch into a literal finite spread
+condition that can be combined with the inactive-companion bounds of
+Sections 369 and 373; the remaining holonomy problem is then moving.
