@@ -3973,6 +3973,29 @@ labels; the remaining owner-free completion choice does not erase them.  The
 final task is now to exclude the cut potential on R or price one explicit odd
 owner-labeled holonomy cycle.
 
+The owner-free completion choice cannot hide another mechanism.  Consider a
+four-switch (73rnz_cjibc) using only non-special-leaf broken-T endpoints at
+one witness.  It preserves every prescribed owner relay.  If the K-weights
+of the two pairings differ, the two legal completions have opposite values of
+`|E(R) intersect E(K)|`; hence one completion has odd total K-price, and the
+Eulerian decomposition of R contains an odd-K labeled cycle.
+
+If no owner-free four-switch changes the K-price, the cocycle classification
+(73rnz_cjibe) applies on that fiber: its K-weight is an endpoint potential
+plus a constant, and its perfect-pairing contribution depends only on the
+fixed nonleaf subtype margins.  Therefore
+
+```text
+owner-free completion = localized odd holonomy
+                     or additive fixed-margin bookkeeping.   (73rnz_cjibj)
+```
+
+In particular the unresolved nonleaf `F/E/M` and mate pairing from the scope
+correction cannot privately absorb an owner demand.  Either it produces the
+desired odd relay cycle immediately, or it can be summed away without losing
+capacity information.  The genuinely nonadditive residue is confined to the
+already fixed owner-bearing edges of R.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
