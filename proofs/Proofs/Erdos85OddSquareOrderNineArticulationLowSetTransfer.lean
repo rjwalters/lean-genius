@@ -2204,6 +2204,97 @@ theorem false_of_orderNine_order34_sharp_lowSet_of_closed_shores
       hownerB₀U hownerB₀Ord Z P W hZ hpartition
       hPsub hWsub hWcard hownerWAlt
 
+/-- Corrected owner-punctured elimination of the three-edge `(2,2)` branch.
+All three local exceptional/original bin-zero neighbors avoid both points of
+`W`, because owner-W degree two makes every point of `W` an owner-neighbor.
+An exceptional point off `S` would have `Z`-degree two but only the owner as
+a `Z`-neighbor, so all three lie on `S`.  They form a subset of the total
+five-point defect neighborhood, whose FullType shore intersection has card
+two, a contradiction. -/
+theorem false_of_orderNine_order34_three_edge_owner_W_two_punctured
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner : V}
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hloc : (G.induce (G.neighborSet owner)).edgeFinset.card = 3)
+    (S Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hPsub : P ⊆ squareOrderNineLowIncidenceBin G 1)
+    (hWcard : W.card = 2)
+    (hownerW : (G.neighborFinset owner ∩ W).card = 2)
+    (hTotalDefectS :
+      (((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) ∩ S).card = 2)
+    (hZdegree : ∀ y ∈
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+        (secondOrderDefectGraph G).neighborFinset owner),
+      (G.neighborFinset y ∩ Z).card = if y ∈ S then 1 else 2) : False := by
+  classical
+  let E := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+    (secondOrderDefectGraph G).neighborFinset owner
+  let F := (secondOrderDefectGraph G).neighborFinset owner ∩
+    squareOrderNineLowIncidenceBin G 0
+  have heq :=
+    squareOrderNine_threeHigh_secondProfile_binThree_original_binZero_defect_eq_tf
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  have hprofile :=
+    squareOrderNine_threeHigh_secondProfile_binThree_localTriangleProfile
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  have hEcard : E.card = 3 := by
+    have hEtf : E = triangleFreeNeighbors G owner := by simpa [E] using heq
+    rw [hEtf]
+    rcases hprofile with hthree | hfour
+    · exact hthree.2.1
+    · omega
+  have hWinter : G.neighborFinset owner ∩ W = W := by
+    apply Finset.eq_of_subset_of_card_le
+    · exact Finset.inter_subset_right
+    · rw [hWcard, hownerW]
+  have hESub : E ⊆ F ∩ S := by
+    intro y hy
+    have hyParts := Finset.mem_inter.mp hy
+    have hyU := Finset.mem_inter.mp hyParts.1
+    have hyF : y ∈ F := Finset.mem_inter.mpr ⟨hyParts.2, hyU.2⟩
+    have hyS : y ∈ S := by
+      by_contra hyNotS
+      have hyZtwo : (G.neighborFinset y ∩ Z).card = 2 := by
+        simpa [hyNotS] using hZdegree y (by simpa [E] using hy)
+      have hWzero : (G.neighborFinset y ∩ W).card = 0 := by
+        apply Finset.card_eq_zero.mpr
+        rw [Finset.eq_empty_iff_forall_notMem]
+        intro w hw
+        have hwParts := Finset.mem_inter.mp hw
+        have hwOwnerMem : w ∈ G.neighborFinset owner := by
+          have : w ∈ G.neighborFinset owner ∩ W := by
+            rw [hWinter]
+            exact hwParts.2
+          exact (Finset.mem_inter.mp this).1
+        exact (orderNine_secondProfile_owner_defect_binZero_avoids_owner_neighbors
+          G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+            (by simpa [E] using hy)
+            ((G.mem_neighborFinset owner w).mp hwOwnerMem))
+              ((G.mem_neighborFinset y w).mp hwParts.1)
+      exact false_of_orderNine_order34_owner_neighbor_outside_low_parts
+        G hfree hhigh owner y howner hyU.2
+          ((G.adj_comm owner y).mp ((G.mem_neighborFinset owner y).mp hyU.1))
+          Z P W hpartition hPsub hWzero hyZtwo
+    exact Finset.mem_inter.mpr ⟨hyF, hyS⟩
+  have hcardLe := Finset.card_le_card hESub
+  change (F ∩ S).card = 2 at hTotalDefectS
+  rw [hEcard, hTotalDefectS] at hcardLe
+  omega
+
 end
 
 end Erdos85
