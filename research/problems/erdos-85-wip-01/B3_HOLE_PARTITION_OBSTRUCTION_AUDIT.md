@@ -3705,6 +3705,23 @@ branch 4 includes the clean row-40 contraction with `|F_u|=3` and no upper
 deletion.  Neither the one-unit deficit nor these support bounds are proved
 universally.  Equation (13y) is a falsifiable row-class target, not a theorem.
 
+The clean branch-4 lower-contraction prototype is durable.  The stored
+`q9_branch4_row40_interval_witness.json` pins the unrestricted outer model,
+and its independent verifier obtains `F_40={1,9,24}`, demand 6, and no upper
+deletion.  After contracting `F_40`, exactly five residual block rows remain:
+
+```text
+17:{6,8,21}, 23:{5,14,19}, 32:{8,19},
+35:{6,19},   42:{2,8}.                                      (13z)
+```
+
+Every residual block meets the two-label transversal `{8,19}`, so at most
+two residual rows can be pairwise disjoint; compatible pairs exist, proving
+the residual rank is exactly 2.  Three residual rows are required to extend
+`|F_40|=3` to demand 6, hence the interval capacity is exactly 5.  This is a
+human-sized Hall certificate for one proof model, not yet a uniform
+transversal theorem.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
