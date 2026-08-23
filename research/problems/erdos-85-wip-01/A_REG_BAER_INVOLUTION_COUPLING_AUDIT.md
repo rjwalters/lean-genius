@@ -4916,14 +4916,18 @@ For fixed empty pole `E_i` and residual full center G, this H edge is a
 literal atom of `rho^tri_(E_i,G)` exactly when, up to reversing x and x',
 
 ```text
-x in N_A(E_i) and x' in N_A(G).                       (73rnz_cjibkzr)
+x in N_A(E_i), x' in N_A(G), and xx' survives the
+leaf-111 switch-edge removal defining rho.             (73rnz_cjibkzr)
 ```
 
 Indeed (73rnz_cjibkzr) puts `xx'` in the
 `N_A(E_i)`--`N_A(G)` cross matching, while its triangle witness p makes its
 middle T-bit zero; (73rnz_cjibku) then identifies the same canonical `00`
 P-edge.  Conversely every `rho^tri` identification supplies precisely these
-two shore incidences.
+two shore incidences and the survival condition.  For an H mate the final
+clause is automatic but is retained for correct typing: every removed switch
+edge is the middle edge of a leaf-111 route and hence lies in T, whereas the
+triangle edge `xx'` lies outside T by Section 207 of the SRP audit.
 
 Condition (73rnz_cjibkzr) is not contained in the currently retained H state
 `Xi_H=(x,x',p,00,b-word,subtypes,roles c,c,e)`.  The component roles say
