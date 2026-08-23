@@ -2965,6 +2965,35 @@ with the other-port deletion profiles identified after (73rnz_am), or prove
 an occurrence-level balance for those profiles.  The local star supplies
 the required private column, but not yet its conserved coefficient.
 
+The bare endpoint-deletion census has one canonical two-local scalar.  Write
+`d_L=deg_J(L)` and `d_G=deg_J(G)`.  From an oriented switch occurrence, the
+number of other switches available at its leaf endpoint is `d_L-1`, and the
+number at its residual-center endpoint is `d_G-1`.  Summing over occurrences
+and dividing the ordered pair count by two gives
+
+```text
+Delta_J
+ := sum_L C(d_L,2) - sum_G C(d_G,2)
+  = (1/2) sum_(e=(L,G) in E(J)) ((d_L-1)-(d_G-1)).       (73rnz_ao)
+```
+
+Equivalently, if X is the binary leaf-by-center incidence matrix of J, the
+two terms are its row-degree and column-degree collision masses (the
+off-diagonal parts of the corresponding degree-Gram expansion).  A pair
+of distinct switch edges cannot share both endpoints because J is simple;
+therefore every nonzero coordinate of this difference has a unique
+leaf-sharing or center-sharing witness, never both.  Reversing the two shores
+negates `Delta_J`.  This is the first genuinely two-local, reversal-odd
+statistic carried by the other-port deletion profiles.
+
+But (73rnz_ao) is an identity, not a vanishing theorem.  Handshaking fixes
+the one-edge marginals and says nothing about the difference of the two
+wedge counts; even imposing `d_L=b_L` and even `d_G` from the charge-free
+abstract model does not determine either binomial sum modulo two.  Thus the
+endpoint census supplies the correct private row/column-Gram defect, while
+an SRP-derived occurrence balance is still needed to conserve it or cancel
+it against the ordinary-exit/defect census.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
