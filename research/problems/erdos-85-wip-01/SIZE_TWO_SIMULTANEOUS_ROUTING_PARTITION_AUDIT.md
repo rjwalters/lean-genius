@@ -14492,3 +14492,48 @@ of the five private root matchings crosses oddly, while its genuine
 attachment.  Equation (892) is the recursive export datum available for a
 terminal price: the new shore simultaneously retains root identity,
 actual port identity, and the return-holonomy branch.
+
+## 283. The residual matching cuts have an odd color-resolved export
+
+The five odd cuts in (892) can be resolved simultaneously by exterior
+color.  For every root and exterior color define
+
+```text
+chi_i^a:=|delta_(M_i intersect H_a^C)(S)| mod 2.     (893)
+```
+
+The exterior-color edge classes partition the matching `M_i`.  Therefore
+(892) gives an odd row sum at every root:
+
+```text
+sum_(a != c,e) chi_i^a=1,          i in Z/5.         (894)
+```
+
+Summing the five rows shows that the total number of marked matrix entries
+is odd.  Hence an odd number of exterior-color columns have odd sum.  For a
+fixed color, its root-labeled edge classes partition `H_a^C`, so the column
+sum is exactly its factor cut:
+
+```text
+sum_(i mod 5) chi_i^a
+ =|delta_(H_a^C)(S)| mod 2.                         (895)
+```
+
+Consequently there exists an exterior color `a` with
+
+```text
+|delta_(H_a^C)(S)|=1 mod 2,                         (896)
+```
+
+and the root-index set
+
+```text
+J_a:={i:chi_i^a=1}
+```
+
+is nonempty and odd.  Thus the new residual shore does not export only an
+uncolored five-fold parity.  At least one actual exterior owner factor has
+an odd cut across it, supported on an explicit odd subset of the five root
+matchings.  This is the color-resolved recursive analogue of the strict
+export that initiated the five-port analysis, now located entirely on
+actual ports in `O` and tied to the holonomy shore from Section 282.
