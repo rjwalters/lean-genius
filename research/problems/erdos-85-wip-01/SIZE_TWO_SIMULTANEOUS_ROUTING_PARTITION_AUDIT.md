@@ -24313,3 +24313,37 @@ The common source color at `v` need not equal the common source color at
 same alternating cycle.  Subject to exactly those qualifications, the
 remaining q-large saturation terminal is now a pair of monochromatic
 turns in one fixed two-root cycle factor.
+
+## 455. One root pair carries an unbounded multicolor fan
+
+Retain the fixed root pair and the `t` target witnesses supplied by
+(1628).  They were selected from the pairwise payer-layer-disjoint
+matching of Section 451.  Hence their `2t` factor edges and canonical
+payers are all distinct, as are the `t` targets.  Color each target by
+the common exterior source color of its two incident factor edges.
+
+Section 447 gives every allowed source color an exact ten-edge fiber.
+Because each saturated target consumes two distinct edges of that fiber,
+one source color can occur at no more than five of the selected targets.
+Therefore
+
+```text
+q>1172+2200(t-1) and no avoided nondegenerate cancellation
+ -> one fixed root pair has monochromatic saturated turns at
+    t distinct targets, using 2t distinct edges and payers and
+    at least ceil(t/5) distinct allowed exterior source colors. (1631)
+```
+
+In particular, for every integer `c>=1`, take `t=5(c-1)+1`.  Then
+
+```text
+q>1172+11000(c-1) and no avoided nondegenerate cancellation
+ -> one alternating two-root factor has saturated turns in at least
+    c distinct exterior source colors.                          (1632)
+```
+
+The turns may still lie on different cycles of the alternating factor;
+no same-cycle conclusion is asserted.  What is now forced uniformly is
+a single pair of root actions coupled, at distinct targets and through
+disjoint payer support, to an arbitrarily large set of exterior source
+colors as `q` grows.
