@@ -8129,3 +8129,91 @@ whether the mate/owner projection already suffices; if it does not, the
 required enlargement must retain still finer source-occurrence data such as
 the full cross-tag `(ell,tau,u)` of (373).  No assertion that (481) always
 holds is made here.
+
+## 153. A two-projection operator realizes the full H--V cross-tag
+
+Section 152 still puts every H-end contribution into the single `tau=H`
+column.  The V decoration of its root mate supplies the missing source tag.
+Let `P_ell` project onto V darts with resolved route decoration `ell`, and
+retain `P_H` for H darts.  Define two root-pair-constant channels
+
+```text
+K_(ell,u;V):=(I+M_R)P_ell q_u,
+K_(ell,u;H):=(I+M_R)P_ell M_R P_H q_u.                (484)
+```
+
+The order of the factors in the second operator is essential.  First
+`P_H q_u` retains the H-end census, `M_R` transports it to its V mate,
+`P_ell` tests the mate's actual route decoration, and `I+M_R` copies the
+tagged value back across the root pair.  Thus, on an H--V boundary
+`E={o_H,o_V}` whose V dart has decoration `ell(E)`,
+
+```text
+K_(ell,u;V)(E)=[ell(E)=ell] q_u(o_V),
+K_(ell,u;H)(E)=[ell(E)=ell] q_u(o_H).                 (485)
+```
+
+The H channel is the literal `(ell,H,u)` cross-term of (373) on this root
+pair.  The V channel retains the complementary same-end secondary value
+with the same route tag.  Together they give the complete route-tagged
+endpoint split of the old H--V difference, written as noncommuting
+projection words; only the H channel was present in the strictly
+cross-endpoint definition (373).
+
+Let `bar B_Z` have the columns `(d,ell,u;s)` for `s in {H,V}` given by
+(485).  Every H--V boundary has exactly one V route decoration, so
+
+```text
+sum_(ell,s in {H,V}) bar B_Z(E,(d,ell,u;s))
+ =q_u(o_H)+q_u(o_V)
+ =B_Z(E,(d,u)).                                       (486)
+```
+
+Moreover the `V` columns in (485) are exactly the `tau=ell` columns of
+`widehat B_Z`, while
+
+```text
+sum_ell bar B_Z(-,(d,ell,u;H))
+ =widehat B_Z(-,(d,u,H)).                             (487)
+```
+
+Therefore
+
+```text
+im B_Z subseteq im widehat B_Z subseteq im bar B_Z.  (488)
+```
+
+The second inclusion is the formal benefit of retaining the source route
+on the H-side mate payment: two H contributions with different V owners can
+no longer cancel inside one column.
+
+Write `A_(ell,u;s)` for the mass of the corresponding `bar B_Z` column.
+The fully cross-tagged activation target is
+
+```text
+alpha_Z=bar B_Z beta_bar+partial_H gamma.             (489)
+```
+
+If (489) holds, summing rows gives
+
+```text
+omega_M(Z)
+ =sum_(d,ell,u,s) beta_bar_(d,ell,u;s) A_(ell,u;s).   (490)
+```
+
+Hence odd grading forces a nonzero source-route/mate-side-resolved atom.
+The exact obstruction is
+
+```text
+partial_H^T lambda=0,
+bar B_Z^T lambda=0,
+<lambda,alpha_Z>=1.                                  (491)
+```
+
+By (488), any obstruction (491) survives every coarser alphabet already
+tested.  Conversely, failure of an obstruction from (474) or (483) after
+the two-projection split identifies cancellation between distinct V-owner
+tags as the whole reason the coarser activation failed.  No claim that
+(489) always holds is made; (484)--(491) identify the finest pair-local
+route/side cross-tag available from the existing local atom `q_u` before
+introducing new features.
