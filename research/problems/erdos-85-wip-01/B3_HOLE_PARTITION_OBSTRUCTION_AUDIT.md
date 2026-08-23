@@ -5065,6 +5065,17 @@ generated models have now exercised all three refinement types—deficit,
 no-disjoint, and reciprocity—and the exact third-horn encoding is integrated
 into the search rather than only fixed-template tested.
 
+Continuing that reciprocity-aware frontier for five 180-second iterations
+remained SAT throughout.  The solver successively exposed reciprocity
+`(25,24)`, no-disjoint `{1,25}`, then reciprocity `(12,16)`, `(12,0)`, and
+`(2,38)`.  The live ledger therefore contains disjoint pairs `{4,8}` and
+`{1,25}` plus reciprocity pairs `(8,16)`, `(18,24)`, `(25,24)`, `(12,16)`,
+`(12,0)`, `(2,38)`, on top of the twelve integral rows.  This is still only
+a SAT refinement sequence, not a counterexample: every emitted model has a
+new sound horn.  The diversity of ordered pairs indicates that a proof of
+(13ay) likely needs a structural invariant of the forced-incidence digraph,
+not a finite exceptional-row list.
+
 A more promising structural invariant comes from the local-family sizes.
 Call a row *rigid* when it has one or two full integral local packings, and
 join two rigid rows when their blocks conflict.  The unified audit now emits
