@@ -3922,6 +3922,12 @@ prices already exist on stored payloads, but their uniform derivation from
 the outer incidence/K equations remains open.  In light of the fourteen
 successful LP tests, (13af) is presently a cleaner uniform B.3 target than
 either the integral four-row classification or the reverse-interval route.
+The complete consumer is kernel checked:
+`weightedDegree_le_totalPointPrice_of_symmetricFractionalPacking` proves the
+global weak-duality inequality, and
+`false_of_symmetricRowPointPriceCertificate` instantiates the characteristic
+matrix of the actual residual relation and closes the contradiction.  Both
+compile without `sorry` and use only standard axioms.
 
 The dual support is usually much smaller than this global formulation
 suggests.  Among the ten fresh outer payloads, eight admit an exact dual with
