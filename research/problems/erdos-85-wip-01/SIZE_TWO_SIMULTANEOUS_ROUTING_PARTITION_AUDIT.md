@@ -25606,3 +25606,40 @@ new fixed-root-pair saturation family on roots disjoint from `{r,s}`, not
 merely a repetition of the original selected color.  This exposes a
 five-root alternative complementary to the companion-reuse terminal of
 Sections 481--482.
+
+## 485. A smaller kernel has cross-companion disjoint coordinates
+
+There is also an untagged refinement, taken directly from the width-`K`
+kernel of Section 482.  Join two companion vertices when any source color
+on one of the three arms at the first occurs on any arm at the second, or
+when the analogous event holds for a canonical payer layer.
+
+Across three fixed root matchings, one source color occurs on at most six
+arm edges, two per root.  Thus each one of a companion's three source-color
+coordinates conflicts with at most five other arm occurrences, for at most
+fifteen neighboring companions.  Likewise one payer layer has capacity at
+most two at each of the three ports, so the three layer coordinates create
+at most fifteen further neighbors.  The conflict graph has maximum degree
+at most thirty and hence an independent set of size
+
+```text
+M>=ceil(K/31)>=ceil(ceil(t/10)/31).               (1720)
+```
+
+Restricting the subdivided kernel to these `M` companions makes the
+three-element source-color sets of different companions disjoint, and
+likewise makes their payer-layer sets disjoint across companions.  Equality
+between two arms at the same companion is still allowed.
+
+Every companion contributes at least one source color.  Moreover no payer
+layer can occur on all three arriving payers at one companion, by the
+at-most-two arrival bound in Section 403.  Therefore the restricted kernel
+uses at least
+
+```text
+M distinct source colors and 2M distinct payer layers.          (1721)
+```
+
+This is a block-rainbow rather than edge-rainbow conclusion: coordinate
+sets are separated between literal collision endpoints, which is the form
+needed for any subsequent endpoint-by-endpoint rooted-deficit argument.
