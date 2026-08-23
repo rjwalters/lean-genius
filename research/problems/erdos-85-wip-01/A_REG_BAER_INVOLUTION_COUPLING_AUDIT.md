@@ -5342,6 +5342,29 @@ literal private reversal-orbit cancellation: exact identities are needed to
 construct the occurrence map, but the terminal relation must compare
 different realized channels.
 
+This also rules out the most direct port-side S-coboundary.  For the fixed
+pair `q`, define the one-hot port phase
+
+```text
+g_q(P_d(z))=1[N_d(z)=q].                              (73rnz_cjibkzzn)
+```
+
+Because `q` pins `p`, this phase is supported only at the physical port
+`p`.  But an H port has an H--H port pair, whereas an S dart occurs only at
+an unmarked port and participates in an S--S root switch or an S--V port
+handoff.  Thus `p` is not an endpoint of any S transition, and
+
+```text
+g_q(P_d(z))+g_q(P_d(z'))=0
+```
+
+on every S switch or S handoff.  Hence evaluating the exact-pair one-hot
+phase along the S subgraph cannot pay the marked H unit either.  This does
+not rule out S transport altogether: it proves that such a transport must
+split the pair into the individual labels `y_1,y_2`, or recombine them with
+different port pairs/role data.  The full unordered pair cannot move through
+S merely by equality of `P_d` states.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
