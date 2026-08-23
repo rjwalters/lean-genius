@@ -23117,3 +23117,71 @@ problem.  It shows that neither exceptional source colors nor bounded
 payer layers can destroy literal tag cancellation before the remaining
 color-ordering step is imposed; for any fixed `P`, (1540) holds throughout
 all sufficiently large binary parameters.
+
+## 432. The root-parity cover forces a tag-even properly colored closed walk
+
+The color-ordering step can be imposed after passing to a finite voltage
+cover.  Let `A:=F_2^5`, with basis vectors `e_0,...,e_4`, and form the
+root-parity cover `H_tilde` with
+
+```text
+V(H_tilde):=O_5 times A.
+```
+
+For every base edge `uv` in root matching `G_i` and every `a in A`, put a
+lifted edge
+
+```text
+(u,a)--(v,a+e_i),                                 (1542)
+```
+
+carrying the same exterior color as `uv`.  Each base edge has thirty-two
+lifts and every lifted vertex has the same colored incident-edge profile
+as its base vertex.  Writing `n:=|O_5|` and `e:=|E(H)|`,
+
+```text
+|V(H_tilde)|=32n,       |E(H_tilde)|=32e.          (1543)
+```
+
+Let `R_H:=e-(2n-3)`, so `R_H>=R_5>=q-117`.  The surplus of the cover over
+the sharpened PC-cycle-free ceiling is
+
+```text
+|E(H_tilde)|-(2|V(H_tilde)|-3)
+ =32R_H-93
+ >=32(q-117)-93.                                  (1544)
+```
+
+This is positive for every binary `q>=128`.  Hence `H_tilde` contains a
+simple properly exterior-colored cycle.  Project it to `H`.  The result is
+a properly exterior-colored closed walk `W`; it may repeat base vertices
+or edges, but it has no immediate backtrack because two traversals of one
+base edge would repeat its exterior color.  Closure in the same sheet of
+the cover gives
+
+```text
+sum_(y traversed by W) e_(rho(y))=0 in F_2^5.      (1545)
+```
+
+Thus every root occurs evenly in `W`.  By the tag-basis identity (1530),
+
+```text
+tau(W)=0:
+every literal selected tag column occurs evenly along W.         (1546)
+```
+
+The construction is robust under edge deletion.  If `H-F` has surplus
+`R_F` over `2n-3`, then its parity cover has surplus `32R_F-93`; therefore
+
+```text
+R_F>=3
+ -> H-F contains a properly colored closed walk
+    with zero root parity and zero selected-tag parity.           (1547)
+```
+
+Consequently the large branch contains a genuinely color-ordered,
+tag-even holonomy object, not merely an uncolored Eulerian kernel element.
+The remaining gap is now sharply localized: the projected object is a
+closed walk rather than necessarily a simple base cycle.  Any terminal
+may either work directly with this finite-state holonomy or prove a
+parity-preserving simplification theorem for its repeated base states.
