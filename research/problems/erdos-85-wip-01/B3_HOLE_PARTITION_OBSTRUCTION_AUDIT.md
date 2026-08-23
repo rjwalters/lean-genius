@@ -1504,6 +1504,26 @@ one-transition obstruction: several nonzero bundle boundaries may still
 balance in a fractional matching flow.  Hence the global problem remains a
 signed hypergraph-circulation theorem, not a graph-cycle theorem.
 
+The bundle boundary has one exact involutive character.  Candidate
+eligibility is symmetric, and route reversal `T:(t,u)->(u,t)` exchanges the
+two signed multisets definitionally:
+
+```text
+B^+(u,t)=B^-(t,u),  B^-(u,t)=B^+(t,u),
+Delta(u,t)=-Delta(t,u),                               (12rd)
+```
+
+where `Delta` includes both the bundle feature-count difference and the
+alpha root-signature boundary.  Consequently any transition flow whose
+occurrence weights satisfy `x_tu=x_ut` cancels exactly.  Formal availability
+of the reverse arc does **not** imply that equality—the fractional row
+matchings choose oriented occurrences independently—so (12rd) locates the
+remaining issue as flow reversibility.  Unlike the simultaneous owner-run
+lane, B3 currently has no second canonical orientation involution: swapping
+the two selected colors only permutes bundle states.  Thus the entire B3
+boundary is route-odd, and an equivariant closing lemma must construct an
+equal-weight occurrence pairing rather than merely reverse the formal arc.
+
 A simple parity sign on the horizontal part of (12qt) is also unavailable.
 The sampled own-touching transition graphs contain many regular-to-regular
 edges, so root role is not a bipartition.  More strongly, quotient the
