@@ -14084,3 +14084,65 @@ and the local table (858): those data remember how many occurrences have
 each role, but not that the two occurrences of one root can never meet at a
 port.  The endpoint pairing (864) must therefore be realizable by properly
 colored path words with prescribed strict endpoint letters.
+
+## 275. Every odd receiving color has a strict-to-outside owner path
+
+The endpoint pairing in Section 273 forces an actual escape whenever the
+strict-export population is odd.  For a fixed exterior color `a`, classify
+the path components of `H_a^C` by the locations of their two endpoints.
+Let
+
+```text
+n_ZZ^a,       n_Zo^a,       n_oo^a
+```
+
+count selected--selected, selected--outside, and outside--outside paths,
+respectively.  Counting the selected and outside degree-one endpoints gives
+
+```text
+k_a   =2n_ZZ^a+n_Zo^a,
+m_1^a =2n_oo^a+n_Zo^a.                              (867)
+```
+
+Consequently
+
+```text
+n_Zo^a = k_a = m_1^a mod 2.                         (868)
+```
+
+In particular, if `k_a` is odd, then `n_Zo^a` is odd and nonzero.  At least
+one canonical path in the actual owner factor `F_a[e]` starts at a strict
+selected port and ends at an outside degree-one stub.
+
+This occurs in every five-port distribution.  The nonzero populations
+`k_a` sum to five, so at least one receiving color has odd `k_a`.  In the
+monochromatic branch that unique color has `k_a=5`; although its active
+boundary `partial H_a` closes by (800), its owner-factor subgraph has an odd
+number of selected--outside paths:
+
+```text
+there exists a receiving color a and an H_a^C path
+p_(i+2) -- ... -- w,       p_(i+2) in Z, w in e\Z.   (869)
+```
+
+The first edge of this path is indexed by the strict label `z_i`: it is the
+unique edge of `H_a^C` incident to the selected endpoint `p_(i+2)`.  The
+last edge is indexed by the unique `a`-label meeting `C` at the outside
+degree-one port `w`.
+
+The terminal port `w` belongs either to `B` or to `O`.  In the first case it
+has the three-root ticket of Section 267; in the second it has the five-root
+word of Section 269.  Because its degree in `H_a^C` is one, color `a` occurs
+exactly once in that word:
+
+```text
+|{h:a_h(w)=a}|=1.                                   (870)
+```
+
+Thus the odd destination profile of Section 260 no longer escapes into an
+anonymous component.  At least one strict occurrence continues through a
+finite, private-label path in `F_a[e]` to a located outside port carrying a
+single `a`-role in an already classified ticket.  This is not yet a
+contradiction: the next composition must compare that terminal role with
+the target-owner return pairing `nu_e` when `w in B`, or with the residual
+five-root word when `w in O`.
