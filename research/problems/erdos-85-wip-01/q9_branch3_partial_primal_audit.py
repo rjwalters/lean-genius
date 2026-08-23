@@ -144,6 +144,8 @@ def audit(system: dict) -> dict:
         "row_stratum_feasibility": row_stratum_feasibility,
         "support_count": len(records),
         "partial_primal_infeasible_count": len(infeasible),
+        "exceptional_three_row_selector_counterexample":
+            not globally_feasible and not infeasible,
         "covering_partial_primal_infeasible_count": sum(
             not record["covering_partial_primal_feasible"]
             for record in records

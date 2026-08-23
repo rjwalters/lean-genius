@@ -489,15 +489,19 @@ minimum supports `{3,24}`, `{6}`, `{24}`, `{9,24}`, `{24}`.  All rational
 certificates have positive exact margin (normalized to 1) and are consumed
 directly by `false_of_symmetricRowPointPriceCertificate`.
 
-Thus a stronger and cleaner prospective theorem is: every normalized
-branch-3 outer design admits a global symmetric row/point-price certificate
-supported on at most three rows.  This would close the actual residual
-relation without choosing an overlap point, tight fiber, or joint partner at
-all.  The observed supports are not uniformly hole-based—the hard fixtures
-include ordinary-only supports—so the proof must classify small global row
-supports rather than merely select an exceptional row.  The former
-tight-partner statement remains valid evidence and a fallback, but is no
-longer the preferred proof interface.
+This initially suggested that every normalized branch-3 outer design might
+admit a global symmetric row/point-price certificate supported on at most
+three rows.  That unconditional formulation is false: the later exhaustive
+552-support audit finds zero exceptional-plus-two-regular certificates in
+both `q9_13f_counterexample.json` and `q9_13t_counterexample.json`.  Those two
+payloads are instead closed by the maximum-load full-fiber certificates in
+the table above (`26 < 27` at `p=4`, and `161 < 162` at scale six and `p=13`).
+The correct interface is therefore disjunctive: a maximum-load full-fiber
+certificate, or—under its negation and the resulting exact-partition
+structure—a sparse global row/point-price certificate.  The observed sparse
+supports are not uniformly hole-based—the hard no-strict fixtures include
+ordinary-only supports—so the second horn must classify small global row
+supports rather than merely select an exceptional row.
 
 The row-type pattern sharpens this to a finite geometric selector.  The new
 `--scan-exceptional-three-row-supports` exhausts all supports consisting of
@@ -506,12 +510,13 @@ exact rational verification.  The five hard payloads have respectively
 `70,27,2,90,26` such certificates; the uniquely difficult anchor-pair
 counterexample has exactly the two supports `{25,0,9}` and `{25,2,9}`.  Five
 fresh branch-3 outers have `98,54,322,80,279` candidates.  Therefore the
-sharp current target is: **some exceptional row and at most two regular
-triple rows support a strict global symmetric price certificate**.  Zero
-row prices allow one- and two-row certificates to sit inside this uniform
-three-row template.  This is the branch-3 analogue of branch 4's exceptional
-plus one regular row target, and reduces the search to `2 * choose(24,2)`
-explicit support shapes rather than arbitrary triples among 47 rows.
+sharp second-horn target, conditional on failure of the maximum-load
+full-fiber horn, is: **some exceptional row and at most two regular triple
+rows support a strict global symmetric price certificate**.  Zero row prices
+allow one- and two-row certificates to sit inside this uniform three-row
+template.  This is the branch-3 analogue of branch 4's exceptional plus one
+regular row target, and reduces the search to `2 * choose(24,2)` explicit
+support shapes rather than arbitrary triples among 47 rows.
 The two regular rows cannot additionally be required to meet the exceptional
 row in one common block point: the first four hard payloads have respectively
 `8,4,1,5` certificates with a nonempty three-way block intersection, but
@@ -738,9 +743,10 @@ and cross-row reciprocity constraints.  The earlier claim that
 `false_of_threeConcurrentRowsCoupledPackingBound` is therefore also
 retracted.  Both Lean consumers remain correct conditional theorems, but are
 not universal selector endpoints.  After this correction, the only robust
-branch-3 target is again the full 552-shape statement: some exceptional row
-and arbitrary two regular rows support a strict **global** symmetric price
-certificate, with all reciprocity retained.
+target for the **second horn** is again the full 552-shape statement: some
+exceptional row and arbitrary two regular rows support a strict **global**
+symmetric price certificate, with all reciprocity retained.  It is not
+asserted for outers already closed by the maximum-load full-fiber horn.
 
 `q9_branch3_partial_primal_audit.py` gives the correct reciprocity-preserving
 primal formulation.  For a proposed support `{h,r,s}`, keep the single global
@@ -752,7 +758,8 @@ finds zero mismatches: the five hard payloads have respectively
 `70,27,2,90,26` infeasible partial primals, matching their certificate counts.
 The durable seed-116 counterexample has global primal infeasible and exactly
 one infeasible partial primal, `{25,0,21}`.  Hence the missing 552-shape
-selector is equivalently the following clean local-to-global theorem:
+second-horn selector is equivalently the following clean conditional
+local-to-global theorem within the no-full-fiber/exact-partition subclass:
 **if all 552 exceptional-plus-two-regular partial symmetric packing systems
 are feasible, then the full 47-row symmetric packing system is feasible.**
 Unlike the retracted local-packing reductions, each partial system retains
