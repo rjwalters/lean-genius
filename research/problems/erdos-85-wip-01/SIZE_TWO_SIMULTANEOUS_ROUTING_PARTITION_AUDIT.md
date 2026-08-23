@@ -7097,3 +7097,49 @@ before any cancellation or privacy claim.  The remaining primary problem
 is now finite and explicit: classify the nonzero `(H--H root,u)` cells of
 (402), then match their sum and the two endpoint wedge values against the
 joint run transfer in (403).
+
+## 134. C4 reduces an internal connection cell to twelve raw states
+
+Retain the notation of Section 133.  The two distinct ports `z_1,z_2`
+already have the common neighbor `x`.  Therefore `u` cannot be adjacent to
+both of them: otherwise `x,u` would be two common neighbors of the port
+pair, producing a four-cycle.  Hence
+
+```text
+R_ed(z_1,u)+R_ed(z_2,u) is represented by at most one
+actual port exposure.                                 (404)
+```
+
+Separate the four-incidence atom into
+
+```text
+rho_u(E):=R_cd(x_1,u)+R_cd(x_2,u),
+pi_u(E) :=R_ed(z_1,u)+R_ed(z_2,u).
+```
+
+Here `pi_u(E)` is not merely a parity: by (404), when it is one it has a
+unique side `1` or `2`.  Equation (402) becomes
+
+```text
+eta_u(E)=t_u(rho_u(E)+pi_u(E)).                       (405)
+```
+
+Before using any further incidence restrictions, the full cell is therefore
+encoded by
+
+```text
+( R_cd(x_1,u), R_cd(x_2,u), port-state ),
+port-state in {none, z_1, z_2}.                       (406)
+```
+
+There are at most `4*3=12` raw states, and only the states with
+`t_u=1` and `rho_u(E) != pi_u(E)` contribute to the connection parity.
+This is an upper-bound classification, not a realizability assertion: some
+of the twelve states may be excluded by the owner/H geometry or by further
+C4 constraints.
+
+The important point is that the primary H-run correction now has the same
+finite joint-label form as the other residual ledgers.  Its state records
+two opposite-root incidences together with a uniquely sided port exposure;
+forgetting the side collapses information in exactly the way that scalar
+aggregation collapses the Baer pivot pairing and the B3 joint potential.
