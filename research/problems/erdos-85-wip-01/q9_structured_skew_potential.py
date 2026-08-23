@@ -910,6 +910,7 @@ def projected_half_atom_dual(data: dict, mode: str) -> tuple:
         signature_profiles[b] = tuple(sorted(Counter(
             (signatures[t], censuses[t][b],
              int(b in data["blocks"][t])) for t in range(N)).items()))
+    load_total = sum(load_moments[b][0] for b in data["selected"])
 
     def root_key(t: int):
         if mode.startswith("root-"):
@@ -942,6 +943,15 @@ def projected_half_atom_dual(data: dict, mode: str) -> tuple:
             result = load_moments[b][0]
         elif suffix == "loadsquare":
             result = load_moments[b][1]
+        elif suffix == "loadparity":
+            result = load_moments[b][0] % 2
+        elif suffix == "loadsign":
+            centered = len(data["selected"]) * load_moments[b][0] - load_total
+            result = (centered > 0) - (centered < 0)
+        elif suffix == "loadsignparity":
+            centered = len(data["selected"]) * load_moments[b][0] - load_total
+            result = ((centered > 0) - (centered < 0),
+                      load_moments[b][0] % 2)
         elif suffix == "momentprofile":
             result = moment_profiles[b]
         else:
@@ -1006,7 +1016,7 @@ def projected_half_atom_dual(data: dict, mode: str) -> tuple:
 
 
 def label_load_formula_audit(data: dict) -> tuple[bool, dict[int, int]]:
-    """Audit L(b)=sum_{u in F_b} deg_H(u)=sum_t sum_r rho_r(t,b)."""
+    """Audit the fiber-load Fubini formula and its total-load identity."""
     _, censuses = root_signature_censuses(data)
     loads = {}
     valid = True
@@ -1016,6 +1026,12 @@ def label_load_formula_audit(data: dict) -> tuple[bool, dict[int, int]]:
                                if b in data["blocks"][u])
         valid &= census_sum == fiber_degree_sum
         loads[b] = fiber_degree_sum
+    selected = set(data["selected"])
+    multiplicity_total = sum(
+        len(data["candidates"][u])
+        * len(selected.intersection(data["blocks"][u]))
+        for u in range(N))
+    valid &= sum(loads.values()) == multiplicity_total
     return valid, loads
 
 
@@ -2605,7 +2621,8 @@ def main() -> int:
         modes = ("type-color", "signature-color", "census-color",
                  "root-color", "type-label", "signature-label",
                  "census-label", "signature-loadsum", "root-loadsum",
-                 "census-loadsum")
+                 "census-loadsum", "census-loadparity",
+                 "census-loadsign", "census-loadsignparity")
         for label, candidate in all_data:
             if dual_seed_filter and label[1] not in dual_seed_filter:
                 continue

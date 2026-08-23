@@ -2533,6 +2533,37 @@ construction can now be sought as a fiber-degree/occupancy inequality.  It
 does not need arbitrary label names, a new collision tensor, or information
 outside `H` and `Q`.
 
+The magnitude of this scalar cannot be replaced by only a coarse load bit.
+There are sixteen selected labels, so define the integral centered load
+
+```text
+C(b)=16L(b)-sum_(c selected)L(c).                           (12rzx)
+```
+
+The total in `(12rzx)` is itself fixed by the root degrees.  A root belongs
+to two selected fibers in the triple, hole, and pair-other roles, and to one
+selected fiber in the pair-low and pair-high roles.  Hence
+
+```text
+sum_b L(b)
+ =sum_u g(u)n(u)
+ =2sum_u n(u)-sum_(u of pair-low or pair-high type)n(u),    (12rzy)
+```
+
+where `g(u)` is that selected-fiber multiplicity.  Thus both the parity of
+`L(b)` and the sign of `C(b)` are canonical consequences of the same
+degree/fiber data, with no named-label information.
+
+Nevertheless, after retaining the full local census `rho(t,b)`, projected
+prices indexed by load parity succeed on only `7/11` corpus survivors;
+prices indexed by `sign(C(b))` also succeed on only `7/11`; and their joint
+index succeeds on only `8/11`.  Exact `L(b)` succeeds on all eleven as above.
+Mode `--audit-half-atom-projections` includes all three coarse projections.
+Therefore the observed interface needs more than above/below-average and
+parity information: on three survivors even their combination loses a
+separation that the exact fiber load restores.  This is again a sampled
+no-go for those projection classes, not a universal minimality theorem.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
