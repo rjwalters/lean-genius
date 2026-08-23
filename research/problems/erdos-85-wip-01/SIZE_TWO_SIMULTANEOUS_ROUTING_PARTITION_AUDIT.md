@@ -20329,6 +20329,7 @@ and all one-sided strict corrections, contribute to the group action but
 can never by themselves realize the shortest stationary holonomy.  Any
 two-letter obstruction is concentrated at equality of two explicitly
 located strict outside mates together with their color separation.
+
 ## 384. Every two-root product has five unpaired orbit components
 
 The fixed-set law has an exact orbit-level refinement.  Fix distinct roots
@@ -20391,3 +20392,54 @@ the five path/fixed orbits may have arbitrary lengths.  Their value is that
 any longer holonomy or character argument may treat all closed alternating
 components in paired blocks and isolate a bounded set of exactly five
 unpaired two-root orbits.
+## 385. Stationary holonomy is a common-mate color-cycle test
+
+The same admissibility distinction classifies every stationary word, not
+only length two.  For an outside vertex `v in U`, define
+
+```text
+S(v):={i:v_i=v},       gamma_i:=col(s_i).            (1340)
+```
+
+A stationary state cycle at `v` uses distinct strict labels by Section 374.
+Hence its root indices are distinct elements of `S(v)`.  Conversely every
+chosen strict label with index in `S(v)` reflects from its selected port
+back to `v`, so the only transition condition between consecutive chosen
+indices is change of component color.  Therefore
+
+```text
+stationary words at v
+ <-> cyclic orderings of distinct indices in S(v)
+     whose adjacent gamma-colors differ.            (1341)
+```
+
+Fix a subset `R subset S(v)` of size `L>=2`, and let `m_a(R)` be the number
+of its strict labels in exterior component `a`.  Such a cyclic ordering
+exists exactly when
+
+```text
+max_a m_a(R)<=floor(L/2).                           (1342)
+```
+
+Necessity follows because occurrences of a most frequent color require at
+least as many separating positions of other colors around the circle.  For
+`L<=5`, which is the only range allowed by (1293), sufficiency is the
+following exhaustive list of multiplicity partitions:
+
+```text
+L=2: 1+1;
+L=3: 1+1+1;
+L=4: 2+2, 2+1+1, or 1+1+1+1;
+L=5: 2+2+1, 2+1+1+1, or 1+1+1+1+1.                (1343)
+```
+
+Each displayed partition has an immediate cyclic ordering with the repeated
+colors separated, while every omitted partition violates (1342).
+
+Thus the stationary branch is completely finite.  Length two is precisely
+the common-mate/different-color criterion (1336); length three requires
+three pairwise different strict colors; and lengths four or five permit no
+color more than twice.  All roots in the word share the one explicit
+outside mate `v`, and Sections 377--378 then force their inactive companions
+away from that center.  No group-product fixed point which is artificial
+for one of the roots enters this classification.
