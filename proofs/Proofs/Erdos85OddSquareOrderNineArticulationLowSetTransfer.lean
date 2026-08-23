@@ -1132,6 +1132,70 @@ theorem false_of_distinct_owner_neighbors_share_second
   exact hfree (containsC4_of_two_common hab how
     haOwner.symm hbOwner.symm haw.symm hbw.symm)
 
+/-- Local package used in audit (26).  For the three original bin-zero
+neighbors of the universal bin-three owner, either the three-edge branch has
+no nondefect neighbor, or the four-edge branch has exactly two.  In the
+latter branch those two vertices are adjacent, have the regular defect type
+`(B₀,B₁,B₃)=(5,3,0)`, and have no original bin-one neighbor. -/
+theorem orderNine_secondProfile_owner_binZero_local_type_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    {owner : V} (howner : owner ∈ squareOrderNineLowIncidenceBin G 3) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let R := (G.neighborFinset owner ∩ B 0) \ D.neighborFinset owner
+    ((G.induce (G.neighborSet owner)).edgeFinset.card = 3 ∧ R.card = 0) ∨
+      ((G.induce (G.neighborSet owner)).edgeFinset.card = 4 ∧ R.card = 2 ∧
+        ∀ y ∈ R,
+          ((D.neighborFinset y ∩ B 0).card = 5 ∧
+            (D.neighborFinset y ∩ B 1).card = 3 ∧
+            (D.neighborFinset y ∩ B 3).card = 0) ∧
+          (∀ z ∈ R, y ≠ z → G.Adj y z) ∧
+          (∀ p ∈ B 1, ¬ G.Adj y p)) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let R := (G.neighborFinset owner ∩ B 0) \ D.neighborFinset owner
+  have hsplit :=
+    squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hsplit
+  rcases hsplit with hthree | hfour
+  · exact Or.inl hthree
+  · right
+    refine ⟨hfour.1, hfour.2, ?_⟩
+    intro y hyR
+    have hyRegular :=
+      squareOrderNine_threeHigh_secondProfile_nondefect_binZero_is_regular
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hyR
+    dsimp only at hyRegular
+    refine ⟨hyRegular, ?_, ?_⟩
+    · intro z hzR hyz
+      exact
+        squareOrderNine_threeHigh_secondProfile_binThree_nondefect_binZero_pair_adjacent
+          G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+            hyR hzR hyz hfour.1
+    · intro p hpB
+      have hyB : y ∈ B 0 :=
+        (Finset.mem_inter.mp (Finset.mem_sdiff.mp hyR).1).2
+      have hOwnerY : G.Adj owner y :=
+        (G.mem_neighborFinset owner y).mp
+          (Finset.mem_inter.mp (Finset.mem_sdiff.mp hyR).1).1
+      exact squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+        G hfree hhigh howner hyB hpB hOwnerY
+
 end
 
 end Erdos85
