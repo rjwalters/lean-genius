@@ -84,6 +84,61 @@ theorem orderNine_order34_orient_articulation_shores
     · exact ⟨T, S, by simpa [Finset.union_comm] using hunion,
         hdisj.symm, hTS.2, hTS.1, hfullT, hTclosed, hSclosed⟩
 
+/-- On a 34-point FullType shore, the sharp partition is necessarily the
+`(3,60)` self-shore partition, with high incidences `(4,4,4)`. -/
+theorem orderNine_order34_explicitPartition_of_full_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (E S : Finset V)
+    (hScard : S.card = 34)
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ S)
+    (hSsub : S ⊆ (Finset.univ : Finset V) \ {h₁, h₂, h₃})
+    (hboundary : (∑ x ∈ S, ((secondOrderDefectGraph G).neighborFinset x ∩
+      (Finset.univ \ S)).card) = (E ∩ S).card)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ x ∈ ({h₁, h₂, h₃} : Finset V), G.degree x = 10) :
+    orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60 ∧
+      (G.neighborFinset h₁ ∩ S).card = 4 ∧
+      (G.neighborFinset h₂ ∩ S).card = 4 ∧
+      (G.neighborFinset h₃ ∩ S).card = 4 := by
+  classical
+  have hself := orderNineArticulationSmallShoreBetaType_sharp_dichotomy
+    G h₁ h₂ h₃ S hfull.1
+  rcases hself with h18 | h18 | h27 | h34
+  · omega
+  · omega
+  · omega
+  · have hSH : Disjoint S ({h₁, h₂, h₃} : Finset V) := by
+      rw [Finset.disjoint_left]
+      intro x hxS hxH
+      exact (Finset.mem_sdiff.mp (hSsub hxS)).2 hxH
+    have he : (E ∩ S).card = 2 := hfull.2.2.2 hScard
+    have hsharp := orderNineOrdinarySharpPartition_of_boundary
+      G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S hSH hdegOrd hdegHigh 2
+        (hboundary.trans he) h34.2
+    have hpart : orderNineOrdinaryExplicitPartition G h₁ h₂ h₃ S 3 60 := by
+      apply orderNineOrdinaryExplicitPartition_of_sharp
+        G h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ S 3 60 hSH hdegOrd hsharp
+      · have hbeta := hfull.1
+        unfold orderNineArticulationSmallShoreBetaType at hbeta
+        rcases hbeta with ⟨hs, hb⟩ | ⟨hs, hb₁, hb₂, hb₃⟩ |
+            ⟨hs, hb₁, hb₂, hb₃⟩
+        · omega
+        · omega
+        · simp [hs, hb₁, hb₂, hb₃]
+      · norm_num
+    have hbeta := hfull.1
+    unfold orderNineArticulationSmallShoreBetaType at hbeta
+    rcases hbeta with ⟨hs, hb⟩ | ⟨hs, hb₁, hb₂, hb₃⟩ |
+        ⟨hs, hb₁, hb₂, hb₃⟩
+    · omega
+    · omega
+    · exact ⟨hpart, hb₁, hb₂, hb₃⟩
+
 /-- The four corrected local terminals, assembled behind the two profile
 dichotomies. -/
 theorem false_of_orderNine_order34_local_profile_of_corrected_punctured_data
