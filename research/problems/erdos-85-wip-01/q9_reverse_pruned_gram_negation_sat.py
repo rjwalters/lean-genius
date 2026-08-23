@@ -135,6 +135,7 @@ def main() -> int:
         print(
             f"round={round_number + 1} collisions={len(collisions)} "
             f"new_collisions={len(new_collisions)} "
+            f"collision_pairs={collisions} "
             f"pruned_bad_rows={pruned_bad_rows} "
             f"new_pruned_rows={new_pruned_rows}"
         )
