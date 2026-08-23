@@ -833,6 +833,71 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
     have htwo := hbinOne hc1
     omega
 
+/-- The missing-partner inequality behind `3-k(c)`.  Every partner has one
+high root.  At a high root, the low-spike equation says that its complement
+of `Z` has size zero or one according as the root is nonadjacent or adjacent
+to `c`.  Swapping the partner/root incidence sum gives
+`|K \ Z| ≤ |N(c) ∩ H|`. -/
+theorem orderNine_order18_lowSpike_missing_partners_le_center_highIncidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (c : V) (H K Z : Finset V)
+    (hpartnerRoot : ∀ y ∈ K,
+      (G.neighborFinset y ∩ H).card = 1)
+    (hdegHigh : ∀ h ∈ H, G.degree h = 10)
+    (hrootEq : ∀ h ∈ H,
+      (G.neighborFinset h ∩ Z).card +
+        (if G.Adj h c then 1 else 0) = 10) :
+    (K \ Z).card ≤ (G.neighborFinset c ∩ H).card := by
+  classical
+  have hmissingAtRoot : ∀ h ∈ H,
+      (G.neighborFinset h ∩ (K \ Z)).card ≤
+        if G.Adj h c then 1 else 0 := by
+    intro h hhH
+    have hsub : G.neighborFinset h ∩ (K \ Z) ⊆
+        G.neighborFinset h \ Z := by
+      intro y hy
+      have hy' := Finset.mem_inter.mp hy
+      exact Finset.mem_sdiff.mpr ⟨hy'.1, (Finset.mem_sdiff.mp hy'.2).2⟩
+    have hle := Finset.card_le_card hsub
+    have hsplit := Finset.card_sdiff_add_card_inter (G.neighborFinset h) Z
+    rw [G.card_neighborFinset_eq_degree, hdegHigh h hhH] at hsplit
+    have heq := hrootEq h hhH
+    have hmiss : (G.neighborFinset h \ Z).card =
+        if G.Adj h c then 1 else 0 := by
+      by_cases hadj : G.Adj h c
+      · rw [if_pos hadj]
+        simp [hadj] at heq
+        omega
+      · rw [if_neg hadj]
+        simp [hadj] at heq
+        omega
+    exact le_trans hle (Nat.le_of_eq hmiss)
+  have hleft :
+      (∑ y ∈ K \ Z, (G.neighborFinset y ∩ H).card) = (K \ Z).card := by
+    calc
+      (∑ y ∈ K \ Z, (G.neighborFinset y ∩ H).card) =
+          ∑ _y ∈ K \ Z, 1 := by
+            apply Finset.sum_congr rfl
+            intro y hy
+            exact hpartnerRoot y (Finset.mem_sdiff.mp hy).1
+      _ = (K \ Z).card := by simp
+  have hswap := sum_card_neighborFinset_inter_comm G (K \ Z) H
+  have hsumLe :
+      (∑ h ∈ H, (G.neighborFinset h ∩ (K \ Z)).card) ≤
+        ∑ h ∈ H, if G.Adj h c then 1 else 0 := by
+    exact Finset.sum_le_sum fun h hhH ↦ hmissingAtRoot h hhH
+  have hright :
+      (∑ h ∈ H, if G.Adj h c then 1 else 0) =
+        (G.neighborFinset c ∩ H).card := by
+    have hset : H.filter (fun h ↦ G.Adj h c) = G.neighborFinset c ∩ H := by
+      ext h
+      simp [G.mem_neighborFinset, G.adj_comm, and_comm]
+    simpa [hset]
+  rw [hleft] at hswap
+  rw [← hswap, hright] at hsumLe
+  exact hsumLe
+
 /-- The audit's `3-k(c)` partner count in finite-set form.  Once missing
 owner partners inject into the high roots adjacent to the spike center,
 bin-zero centers lose none of the three partners and bin-one centers lose
@@ -887,6 +952,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
 #print axioms Erdos85.false_of_orderNine_order18_highSpike_three_partners
 #print axioms Erdos85.false_of_orderNine_order18_highSpike_of_highRoot_equations
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
+#print axioms Erdos85.orderNine_order18_lowSpike_missing_partners_le_center_highIncidence
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
 
 end
