@@ -121,6 +121,59 @@ def HasReverseIntervalRankDeficitAt
   ∀ X : Finset V, IsLocalGramPrepacking H W u X →
     F ⊆ X → Disjoint X I → X.card < d u
 
+/-- The canonical fractional relaxation of a reverse-interval packing.
+The mass has full demanded size, is supported on eligible rows, obeys every
+point capacity, equals one on the reverse-forced lower fiber, and vanishes on
+the reverse-impossible upper fiber. -/
+def IsCanonicalFractionalIntervalExtension
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H W : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (u : V) (mass : V → ℚ) : Prop :=
+  (∀ w, 0 ≤ mass w ∧ mass w ≤ 1) ∧
+  (∑ w : V, mass w) = d u ∧
+  (∀ w, 0 < mass w → H u w) ∧
+  (∀ p, (∑ w ∈ Finset.univ.filter fun z => p ∈ B z, mass w) ≤ 1) ∧
+  (∀ w, IsForcedLocalGramNeighbor H W d w u → mass w = 1) ∧
+  ∀ w, (∀ Y : Finset V, IsLocalGramPacking H W d w Y → u ∉ Y) →
+    mass w = 0
+
+/-- A collision inside the canonical reverse-forced lower fiber already
+makes a full fractional interval extension impossible: the two forced unit
+masses violate the capacity of their shared point. -/
+theorem no_canonicalFractionalIntervalExtension_of_forced_sharedPoint
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H W : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (u x y : V) (p : P) (hxy : x ≠ y)
+    (hpx : p ∈ B x) (hpy : p ∈ B y)
+    (hx : IsForcedLocalGramNeighbor H W d x u)
+    (hy : IsForcedLocalGramNeighbor H W d y u) :
+    ¬ ∃ mass, IsCanonicalFractionalIntervalExtension H W d B u mass := by
+  rintro ⟨mass, hmass⟩
+  rcases hmass with ⟨hnonneg, _, _, hcapacity, hforced, _⟩
+  have hxmass : mass x = 1 := hforced x hx
+  have hymass : mass y = 1 := hforced y hy
+  let S := Finset.univ.filter fun z => p ∈ B z
+  have hxS : x ∈ S := by simp [S, hpx]
+  have hyS : y ∈ S := by simp [S, hpy]
+  have hpairSubset : ({x, y} : Finset V) ⊆ S := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact hxS
+    · exact hyS
+  have hpairLe : mass x + mass y ≤ ∑ z ∈ S, mass z := by
+    calc
+      mass x + mass y = ∑ z ∈ ({x, y} : Finset V), mass z := by
+        simp [hxy]
+      _ ≤ ∑ z ∈ S, mass z := by
+        exact Finset.sum_le_sum_of_subset_of_nonneg hpairSubset
+          (fun z _ _ => hnonneg z |>.1)
+  have hcap : (∑ z ∈ S, mass z) ≤ 1 := by
+    simpa [S] using hcapacity p
+  rw [hxmass, hymass] at hpairLe
+  norm_num at hpairLe hcap
+  exact (not_le_of_gt (show (1 : ℚ) < 2 by norm_num)) (hpairLe.trans hcap)
+
 omit [Fintype V] in
 /-- **Fractional point-cover counting engine.**  If the point sets attached
 to selected rows are pairwise disjoint and each receives weight at least one,
@@ -1028,6 +1081,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms card_mul_le_totalWeight_of_pairwiseDisjointPointCover
 #print axioms reverseIntervalRankDeficit_of_fractionalPointCover
 #print axioms reverseIntervalRankDeficit_of_scaledPointCover
+#print axioms no_canonicalFractionalIntervalExtension_of_forced_sharedPoint
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
