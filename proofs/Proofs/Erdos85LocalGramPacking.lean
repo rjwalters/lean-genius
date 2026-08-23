@@ -2033,6 +2033,44 @@ def HasTwoRowSupportPointPriceCertificate
     (∑ u : V, ∑ p : P, pointPrice u p) <
       (d s : ℚ) * a + (d t : ℚ) * b
 
+/-- Exact existential interface for the corrected branch-4 `(13at)` target:
+one degree-five row and one degree-six row, with fixed row prices one and two.
+No incidence or conflict relation between the two rows is assumed. -/
+def HasRegularExceptionalFixedPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V]
+    (H : V → V → Prop) (d : V → ℕ) (B : V → Finset P) : Prop :=
+  ∃ regular exceptional : V, ∃ pointPrice : V → P → ℚ,
+    d regular = 5 ∧ d exceptional = 6 ∧
+    (∀ u p, 0 ≤ pointPrice u p) ∧
+    (∀ u v, H u v →
+      ((if u = regular then 1 else 0) +
+          (if u = exceptional then 2 else 0)) +
+        ((if v = regular then 1 else 0) +
+          (if v = exceptional then 2 else 0)) ≤
+        (∑ p ∈ B v, pointPrice u p) +
+          ∑ p ∈ B u, pointPrice v p) ∧
+    (∑ u : V, ∑ p : P, pointPrice u p) < 17
+
+/-- End-to-end consumer for the exact branch-4 `(13at)` selector interface. -/
+theorem false_of_hasRegularExceptionalFixedPriceCertificate
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hcertificate : HasRegularExceptionalFixedPriceCertificate H d B) :
+    False := by
+  rcases hcertificate with
+    ⟨regular, exceptional, pointPrice, hregular, hexceptional,
+      hnonneg, hedge, hstrict⟩
+  exact false_of_regularExceptionalFixedPriceCertificate
+    A H W d B hsymm hdegree hsupport hgram hshared
+    regular exceptional hregular hexceptional pointPrice
+    hnonneg hedge hstrict
+
 /-- A strict weighted coupled-packing bound on three distinct rows through a
 common block point. -/
 def HasConcurrentThreeRowCoupledPackingBound
@@ -2680,6 +2718,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_no_canonicalFractionalIntervalExtension
 #print axioms false_of_twoRowSupportPointPriceCertificate
 #print axioms false_of_regularExceptionalFixedPriceCertificate
+#print axioms false_of_hasRegularExceptionalFixedPriceCertificate
 #print axioms false_of_regularExceptionalCoupledPackingBound
 #print axioms false_of_threeConcurrentRowsCoupledPackingBound
 #print axioms false_of_twoRowPrice_or_concurrentThreeRowPacking
