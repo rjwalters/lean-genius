@@ -4826,6 +4826,19 @@ two-row price support `{18,22}`.  There are zero unclosed models in this
 expanded batch.  This remains evidence, but unlike the refuted refinements it
 now tests exactly the formal disjunction consumed by the Lean capstone.
 
+The price horn also has an exact partial-primal formulation.  Given selected
+rows `S`, retain one global symmetric edge mass and all rooted point
+capacities, but impose degree equalities only on `S`.  Its infeasibility is
+equivalent by LP duality to a strict price certificate whose row support lies
+in `S`.  The unified audit now resolves its cardinality-minimal support,
+solves that partial primal independently, and verifies that every proper
+singleton projection is feasible.  On the three price-only test cases the
+selected two-row partial primals are infeasible while both singleton
+projections are feasible: supports `{24,45}`, `{19,25}`, and fresh seed138's
+`{18,22}`.  Thus the remaining outer theorem can be stated without prices:
+under negation of the local horn, some two-coordinate projection of the
+global degree vector is already outside the symmetric packing polytope.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 

@@ -127,6 +127,30 @@ def primal(system: dict):
     )
 
 
+def partial_primal(system: dict, selected_rows: set[int]):
+    """Global symmetric packing with degree equations only at selected rows."""
+    edges = system["edges"]
+    caps = system["caps"]
+    blocks = system["blocks"]
+    ordered_rows = sorted(selected_rows)
+    matrix_eq = np.zeros((len(ordered_rows), len(edges)))
+    for row_index, selected in enumerate(ordered_rows):
+        for column, edge in enumerate(edges):
+            matrix_eq[row_index, column] = int(selected in edge)
+    matrix_cap = np.zeros((len(caps), len(edges)))
+    for row, (u, point) in enumerate(caps):
+        for column, edge in enumerate(edges):
+            if u in edge:
+                other = edge[1] if edge[0] == u else edge[0]
+                matrix_cap[row, column] = int(point in blocks[other])
+    return linprog(
+        np.zeros(len(edges)), A_ub=matrix_cap, b_ub=np.ones(len(caps)),
+        A_eq=matrix_eq,
+        b_eq=np.array([system["degree"][row] for row in ordered_rows]),
+        bounds=(0, None), method="highs",
+    )
+
+
 def dual(system: dict, row_support: set[int] | None,
          external_point: int | None = None):
     blocks = system["blocks"]
@@ -1204,8 +1228,18 @@ def main() -> None:
         has_local_obstruction = bool(deficit_rows or forced_collisions)
         row_support = None
         price_certificate = None
+        selected_partial_primal_feasible = None
+        proper_subset_partial_primals_feasible = None
         if not has_local_obstruction and not result.success:
             row_support = sorted(minimum_row_support(system))
+            selected_partial_primal_feasible = bool(
+                partial_primal(system, set(row_support)).success
+            )
+            proper_subset_partial_primals_feasible = (
+                True if len(row_support) <= 1 else
+                all(partial_primal(system, {row}).success
+                    for row in row_support)
+            )
             if len(row_support) <= 2:
                 price_result = dual(system, set(row_support))
                 if price_result.success:
@@ -1216,6 +1250,10 @@ def main() -> None:
             "forced_collisions": forced_collisions,
             "has_local_obstruction": has_local_obstruction,
             "minimum_row_support": row_support,
+            "selected_partial_primal_feasible":
+                selected_partial_primal_feasible,
+            "proper_subset_partial_primals_feasible":
+                proper_subset_partial_primals_feasible,
             "has_exact_two_row_price": price_certificate is not None,
             "price_certificate": price_certificate,
             "valid": has_local_obstruction or price_certificate is not None,
