@@ -5734,3 +5734,61 @@ root/port correlation equality (319).  In B3 language, (317) is exactly the
 new information created by cross-tagging a target bundle with its source
 signature: the two endpoint marginals balance, while the source--consumed-
 fiber correlation need not.
+
+## 108. Universal correlation conservation collapses to two-periodicity
+
+There is one more sharp distinction inside (319).  Let `M_R,M_P` be the
+permutation matrices of the root and port involutions on one dart cycle and
+put
+
+```text
+K := M_R-M_P.
+```
+
+For dart functions `f,g`, the polarized defect (318) is exactly
+
+```text
+D_(f,g)=f^T K g.                                      (320)
+```
+
+Indeed each matching edge `{a,b}` contributes `f_a g_b+f_b g_a` to the
+corresponding matrix product.
+
+The right kernel of `K` is elementary.  Number the darts cyclically so the
+`R` and `P` edges alternate.  Then `Kg=0` says at every dart that the values
+of `g` on its two cycle neighbors agree:
+
+```text
+g_(i-1)=g_(i+1).
+```
+
+Hence
+
+```text
+ker K = {functions constant on each parity class of the dart cycle}.     (321)
+```
+
+In particular, if conservation is demanded in the overly strong form
+
+```text
+D_(f,g)=0 for every dart test f,
+```
+
+then `g` is only two-periodic.  Such a `g` cannot distinguish the many
+rooted transition labels or supply private rows for (309).  This recovers,
+at the correlation level, the alternating one-mode collapse of Section 76.
+
+Therefore the desired SRP theorem cannot prove that one tagged observable
+is orthogonal to **all** dart functions.  It must prove a restricted
+bilinear identity
+
+```text
+f^T K g=0 only for jointly SRP-generated pairs (f,g),                  (322)
+```
+
+while leaving enough independent correlations to separate transition
+classes.  Equations (320)--(322) turn the remaining compatibility problem
+into a concrete isotropy question for `K`: construct a sufficiently rich
+SRP-generated subspace that is totally isotropic for the root-minus-port
+matching form, without forcing that subspace into the two-dimensional
+kernel (321).
