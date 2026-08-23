@@ -3571,6 +3571,33 @@ example by inserting an owner/mate diagonal projection between adjacency
 steps.  This matches the independent SRP activation gap: its primary odd bit
 also does not currently imply a nonzero secondary-resolved source defect.
 
+The smallest such decorated operator already recovers the endpoint owner
+type.  For a type class `C in {F,E,M}`, let `P_C` be its diagonal indicator
+and put, in characteristic two,
+
+```text
+kappa_C=(A P_C+P_C A)x.                                  (73rnz_cg)
+```
+
+This is the commutator of adjacency with the owner projection.  At a pole
+`E_i`, the first term counts C-type points of X on its line, while the second
+term is `1[E_i in C]` because `Ax=h`.  The two-pencil equality says the line
+meets X only at `p_i`, and (73rnz_bt) says that endpoint is leaf or ordinary,
+never empty.  Hence
+
+```text
+kappa_F(E_i)=1[p_i is a leaf],
+kappa_M(E_i)=1[p_i is ordinary],
+kappa_E(E_i)=1.                                          (73rnz_ch)
+```
+
+Their sum is zero, as it must be because `P_F+P_E+P_M=I` and the commutator
+with I vanishes.  Thus the noncommuting activation is not hypothetical: its
+pole restriction is exactly the leaf/split-pair binary transfer cell
+(73rnz_bu)--(73rnz_bv), expressed as an owner-marked commutator.  What is not
+yet controlled is the support of `kappa_C` away from the poles, or a global
+identity forcing its marked endpoint units into the SRP/Baer gauge class.
+
 The parallel SRP separator now identifies the exact topology such a terminal
 would need.  Its selected row--atom incidence graph is Eulerian; pairing at
 degree-four atoms is a gauge choice, while the pairing-independent constant
@@ -3586,9 +3613,9 @@ becomes relevant only after refining each endpoint parity into owner/mate
 occurrences.  The remaining precise task is therefore
 
 ```text
-refine the equal endpoint mu bits by owner/mate labels and prove that a
-primary odd gauge class activates a non-private endpoint occurrence.
-                                                               (73rnz_cg GAP)
+control the off-pole support of the owner commutators kappa_C and prove that
+a primary odd gauge class activates a non-private endpoint occurrence.
+                                                               (73rnz_ci GAP)
 ```
 
 Equivalently, one needs a noncommuting marked operator whose endpoint value
