@@ -8217,3 +8217,60 @@ tags as the whole reason the coarser activation failed.  No claim that
 (489) always holds is made; (484)--(491) identify the finest pair-local
 route/side cross-tag available from the existing local atom `q_u` before
 introducing new features.
+
+## 154. The fully tagged dual is an odd-length selected-run census
+
+The obstruction (491) has a direct combinatorial form.  Every H--V boundary
+is an endpoint of a unique maximal H-run.  The equation
+`partial_H^T lambda=0` therefore says that there is one bit `epsilon_A` for
+each H-run `A` such that
+
+```text
+lambda(E)=epsilon_A for both endpoints E of A.         (492)
+```
+
+For a boundary `E={o_H,o_V}`, write
+
+```text
+q_u^H(E):=q_u(o_H),       q_u^V(E):=q_u(o_V),
+ell(E):=the resolved route decoration of o_V.          (493)
+```
+
+Substituting (485) and (492), the equations
+`bar B_Z^T lambda=0` become the completely separated census laws
+
+```text
+for every (d,ell,u,s), s in {H,V}:
+sum_(H-run endpoints E with ell(E)=ell)
+  epsilon_(A(E)) q_u^s(E)=0.                           (494)
+```
+
+Finally, `lambda` has the same value at the entry and exit of each run, so
+the definition (464) gives
+
+```text
+<lambda,alpha_Z>
+ =sum_(H-runs A) epsilon_A (ell(A) mod 2).             (495)
+```
+
+Consequently the fully tagged activation statement (489) is equivalent to
+the following parity assertion:
+
+```text
+Every selection of H-runs whose total selected length is odd has, for
+some route ell, secondary atom u, and side s, an odd number of selected
+ell-boundary endpoints exposing q_u on side s.         (496)
+```
+
+Equivalently, a counterexample is exactly a selected family of H-runs of
+odd total length for which **all** route/atom/side endpoint censuses are
+even.  There is no remaining linear-algebra ambiguity in this formulation:
+the run variables are `epsilon_A`, (494) is the full cross-tag parity
+ledger, and (495) is the marked grading it must detect.
+
+Statement (496) is not proved.  It is, however, strictly sharper than the
+old scalar activation request: it identifies the only possible private
+payment after both endpoint orientation and owner/mate cancellation have
+been quotiented out.  A uniform proof must show that an odd-length selected
+run family cannot close all the censuses (494); a finite falsifier need only
+find such a family.
