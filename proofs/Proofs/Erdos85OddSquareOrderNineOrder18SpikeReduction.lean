@@ -716,6 +716,30 @@ theorem false_of_orderNine_order18_highSpike_three_partners
   have := Finset.card_le_card hsub
   omega
 
+/-- High-spike terminal directly from the high-root equations and the fact
+that every owner partner is attached to a high root. -/
+theorem false_of_orderNine_order18_highSpike_of_highRoot_equations
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner c : V) (H K Z : Finset V)
+    (hKcard : K.card = 3)
+    (hKowner : K ⊆ G.neighborFinset owner)
+    (hKroot : ∀ y ∈ K, ∃ h ∈ H, y ∈ G.neighborFinset h)
+    (hdegHigh : ∀ h ∈ H, G.degree h = 10)
+    (hrootEq : ∀ h ∈ H,
+      (G.neighborFinset h ∩ Z).card =
+        10 + if G.Adj h c then 1 else 0)
+    (hownerZ : (G.neighborFinset owner ∩ Z).card ≤ 2) :
+    False := by
+  have hKZ : K ⊆ Z := by
+    intro y hyK
+    obtain ⟨h, hhH, hyh⟩ := hKroot y hyK
+    have hrootSub := orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
+      G Z (hdegHigh h hhH) (hrootEq h hhH)
+    exact hrootSub hyh
+  exact false_of_orderNine_order18_highSpike_three_partners
+    G owner K Z hKcard hKowner hKZ hownerZ
+
 /-- Equation (32) always bounds the owner's low-set degree by one. -/
 theorem orderNine_order18_lowSpike_owner_lowSet_degree_le_one
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -780,6 +804,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.false_of_orderNine_order18_highSpike_three_partners
+#print axioms Erdos85.false_of_orderNine_order18_highSpike_of_highRoot_equations
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 
 end
