@@ -561,13 +561,18 @@ deg_A(e,Z)=1 for e in the order-34 shore S,
 deg_A(e,Z)=2 for e in the complementary shore.
 ```
 
-The sharp full-type ledger has `|E ∩ S|=2`.  In the three-local-edge branch
-`|E|=3`, so the exceptional degrees split `1,1,2`; in the four-edge branch
-`|E|=1`, already incompatible with `|E ∩ S|=2`.  The subsequent `(2,2)` and
-`(3,1)` eliminations invoke uniform exceptional `Z`-degree two and therefore
-do not establish (28) as written.  Their regular/nondefect degree-two inputs
-remain valid.  A corrected proof must use the `1,1,2` exceptional split (and
-may discard the four-edge branch immediately); until then the `(34,43)`
+Here two defect sets must be distinguished.  The full-type ledger has
+`|F ∩ S|=2` for the total five-point set
+`F = N_D(x) ∩ B0`, whereas the local profile counts only the original
+exceptional set `E = N_A(x) ∩ F`: `|E|=3` in the three-local-edge branch and
+`|E|=1` in the four-edge branch.  Thus the full-type count does not by itself
+discard the four-edge branch.  In the three-edge `(2,2)` branch, however,
+every point of `E` off `S` would have `Z`-degree two but only the owner as a
+`Z`-neighbor; hence `E ⊆ F ∩ S`, contradicting `3 ≤ 2`.  This corrected
+subcase is now formalized.  The subsequent prose eliminations still invoke
+uniform exceptional `Z`-degree two and do not establish the remaining
+four-edge placements or all of `(3,1)`.  Their regular/nondefect degree-two
+inputs remain valid; until those placements are rebuilt, the `(34,43)`
 branch is open.
 
 Suppose first that `(p,q)=(2,2)`.  In the three-edge branch the two points
