@@ -26,6 +26,7 @@ import argparse
 import json
 from fractions import Fraction
 from itertools import combinations
+from pathlib import Path
 
 import numpy as np
 from scipy.optimize import Bounds, LinearConstraint, linprog, milp
@@ -256,11 +257,12 @@ def one_model(
             edge for edge in marked
             if missing_color not in {color(edge[0]), color(edge[1])}
         ])
-    system = fixed_system({
+    outer_payload = {
         "branch": 3,
-        "blocks": blocks,
-        "k_edges": chosen(data["k"]),
-    })
+        "blocks": [list(block) for block in blocks],
+        "k_edges": [list(edge) for edge in chosen(data["k"])],
+    }
+    system = fixed_system(outer_payload)
     covers = []
     for triples, pairs in zip(
             data["sixpack_triple_neighbors"],
@@ -296,6 +298,7 @@ def one_model(
                     answer["genuine_pair_count"] = len(genuine_pairs)
                     answer["strict_single_points"] = strict_single_points
                 if details:
+                    answer["outer_payload"] = outer_payload
                     answer["joint_optimum"] = exact_joint_optimum(system, p, q)
                     answer["single_fiber_optima"] = [
                         single_optima[point] for point in (p, q)
@@ -311,8 +314,54 @@ def one_model(
     return answer
 
 
+def fixed_payload_model(payload: dict, max_scale: int, details: bool,
+                        genuine_only: bool) -> dict:
+    """Scan a stored outer payload with an explicit exceptional-cover overlap."""
+    system = fixed_system(payload)
+    overlap = sorted(payload["overlap_points"])
+    single_optima = {
+        point: unit_nondiagonal_fiber_optimum(
+            system, point, include_diagonal=True)
+        for point in overlap
+    }
+    strict_single_points = [
+        point for point in overlap if single_optima[point]["strict"]
+    ]
+    genuine_pairs = [
+        pair for pair in combinations(overlap, 2)
+        if not single_optima[pair[0]]["strict"]
+        and not single_optima[pair[1]]["strict"]
+    ]
+    for scale in range(1, max_scale + 1):
+        for p, q in combinations(overlap, 2):
+            if genuine_only and (
+                    single_optima[p]["strict"] or single_optima[q]["strict"]):
+                continue
+            if (certificate := scaled_joint_cover(
+                    system, p, q, scale, details=details)):
+                answer = {
+                    "overlap_card": len(overlap),
+                    "certificate": certificate,
+                    "genuine_pair_count": len(genuine_pairs),
+                    "strict_single_points": strict_single_points,
+                }
+                if details:
+                    answer["joint_optimum"] = exact_joint_optimum(system, p, q)
+                    answer["overlap_single_fiber_optima"] = [
+                        single_optima[point] for point in overlap
+                    ]
+                return answer
+    return {
+        "overlap_card": len(overlap),
+        "certificate": None,
+        "genuine_pair_count": len(genuine_pairs),
+        "strict_single_points": strict_single_points,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--payload", type=Path)
     parser.add_argument("--samples", type=int, default=1)
     parser.add_argument("--seed-start", type=int, default=0)
     parser.add_argument("--max-scale", type=int, default=6)
@@ -341,15 +390,22 @@ def main() -> int:
             args.diagonal_rows or args.all_regular_classes
             or args.regular_class is not None):
         parser.error("--stage-all-regular-classes is a standalone scope")
-    results = [
-        one_model(
-            args.timeout_seconds * 1000, seed, args.max_scale, args.details,
-            args.genuine_only, args.diagonal_rows, args.all_regular_classes,
-            (tuple(args.regular_class)
-             if args.regular_class is not None else None),
-            args.stage_all_regular_classes)
-        for seed in range(args.seed_start, args.seed_start + args.samples)
-    ]
+    if args.payload is not None:
+        if args.samples != 1:
+            parser.error("--payload requires --samples 1")
+        results = [fixed_payload_model(
+            json.loads(args.payload.read_text()), args.max_scale,
+            args.details, args.genuine_only)]
+    else:
+        results = [
+            one_model(
+                args.timeout_seconds * 1000, seed, args.max_scale, args.details,
+                args.genuine_only, args.diagonal_rows, args.all_regular_classes,
+                (tuple(args.regular_class)
+                 if args.regular_class is not None else None),
+                args.stage_all_regular_classes)
+            for seed in range(args.seed_start, args.seed_start + args.samples)
+        ]
     print(json.dumps(results, separators=(",", ":"), default=str))
     passed = sum(result["certificate"] is not None for result in results)
     print(f"joint_overlap_price_selector={passed}/{len(results)}")

@@ -229,6 +229,20 @@ at solver seeds 1 and 2 remained `UNKNOWN` after 120 and 180 seconds, so the
 strict-single horn currently has one full-strength regression rather than a
 widened corpus.
 
+The genuine-joint horn is indispensable already at exact-hole scope.  Seed
+5 reproducibly has eight overlap points and no strict single fiber.  Their
+exact optima (with matching rational dual lower bounds) are `649/24`,
+`677/25`, `27`, `28`, `958/35`, `3955/143`, `113/4`, and `28`, all at least
+27.  Nevertheless `p=1,q=9` has an integer scale-two joint certificate
+`107 < 108`.  The same seed reproduced across separate Python processes,
+replacing the earlier nondurable 9-of-10 observation with a named hard
+regression.  Thus no proof may collapse the disjunction to strict-single
+existence before deriving additional full relation agreement.
+The complete outer is stored as
+`q9_joint_no_strict_overlap_counterexample.json`; the joint probe's
+`--payload` mode rechecks all eight exact single optima and the scale-two
+joint certificate without regenerating a Z3 model.
+
 The next retention rung localizes the remaining relation agreement.  On the
 same full two-regular-class outer, exact typed packs for all 21 pair-center
 rows extend in about one second, and they coexist with hole reciprocity plus
