@@ -10671,8 +10671,48 @@ edgewise.  In particular, a marked H--H port pair contributes one to
 marked occurrence from an unmarked canonical triangle pair.
 
 This proves that (628) cannot mean direct equality between the marked H/S
-grading and the visible `lambda`-pair prices.  Any valid attachment must add
-the nonlinear/private decorations retained by the activation ledger
-(silent footprints, active wedge states, or an equivalent broken-T
-secondary atom).  The purely additive Baer potential is exhausted as a
-direct SRP invariant: it removes pairing gauges but carries no marked-H unit.
+grading and the pure `lambda`-pair prices.  Any valid attachment must add at
+least the affine constant channel of Section 166 or a nonlinear/private
+decoration retained by the activation ledger.  The endpoint potential alone
+is exhausted as a direct SRP invariant: it removes pairing gauges but carries
+no marked-H unit.
+
+## 209. The affine constant channel can carry the marked unit
+
+The complete gauge-independent pair form from Section 166 is affine rather
+than purely potential:
+
+```text
+w(a,b)=lambda(a)+lambda(b)+c.                         (644)
+```
+
+On a canonical H or S mate pair, (643) reduces this to `w=c`.  Thus choosing
+`c=1` supplies exactly the unit missing from a marked H--H pair.
+
+This constant does not spoil scalar perfect-matching invariance.  For a
+perfect matching `M` of a q-point star,
+
+```text
+sum_({a,b} in M) w(a,b)
+ =sum_(a in U)lambda(a)+c(q/2)
+ =sum_(a in U)lambda(a),                              (645)
+```
+
+because `8 divides q`, so `q/2` is even.  The constant channel is invisible
+on the full star but can remain visible on the selected H submatching.
+
+A uniform `c=1` on every realized pair is not the answer: it would also
+charge S and V pairs.  The exact remaining scalar datum is therefore a
+**decoration-dependent affine constant**
+
+```text
+c_H=1,       c_S and c_V chosen so that the full
+H/V/S matching has zero total constant price.         (646)
+```
+
+Equation (646) is a target.  It reframes the H/S side of (628) more sharply:
+the endpoint-potential and completion parts already cancel, so the marked
+grading lives entirely in the constant/type channel.  The H/V/S marginal
+identities (339), (343), and the canonical transfer chains are precisely the
+available constraints on that type-dependent constant.  Nonlinear activity
+states are needed only if those constraints cannot determine `c_S,c_V`.
