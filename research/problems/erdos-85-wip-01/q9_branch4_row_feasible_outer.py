@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import json
 from functools import cache
+from itertools import combinations
 from pathlib import Path
 
 from z3 import And, Bool, If, Implies, Int, Not, Or, Sum, is_true, sat
@@ -37,6 +38,7 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                        rows: list[int], shared_integral_relation: bool,
                        exclude_single_special_hole: bool,
                        all_incident_disjoint_packings: bool,
+                       all_conflicting_disjoint_packings: bool,
                        fixed_template_primal_denominator: int | None,
                        template: dict | None = None):
     solver, data = build(
@@ -131,46 +133,54 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                     for edge, value in weight.items()
                 ]) >= 17 * scale)
 
+    disjoint_pairs = set()
     if all_incident_disjoint_packings:
-        for regular in range(22):
-            for hole in range(22, 26):
-                incident = Or([
-                    And(incidence[regular, point], incidence[hole, point])
-                    for point in range(N_U1)
-                ])
-                first = {
-                    v: Bool(f"joint_pack_regular_{regular}_{hole}_{v}")
-                    for v in range(N)
-                }
-                second = {
-                    v: Bool(f"joint_pack_hole_{regular}_{hole}_{v}")
-                    for v in range(N)
-                }
-                solver.add(Implies(
-                    incident, Sum([If(first[v], 1, 0) for v in range(N)]) == 5
-                ))
-                solver.add(Implies(
-                    incident, Sum([If(second[v], 1, 0) for v in range(N)]) == 6
-                ))
-                for v in range(N):
-                    solver.add(Implies(first[v], And(
-                        incident, regular != v,
-                        eligible(regular, v), eligible(v, regular),
-                    )))
-                    solver.add(Implies(second[v], And(
-                        incident, hole != v,
-                        eligible(hole, v), eligible(v, hole),
-                    )))
-                    solver.add(Not(And(first[v], second[v])))
-                for point in range(N_U1):
-                    solver.add(Implies(incident, Sum([
-                        If(And(first[v], incidence[v, point]), 1, 0)
-                        for v in range(N)
-                    ]) <= 1))
-                    solver.add(Implies(incident, Sum([
-                        If(And(second[v], incidence[v, point]), 1, 0)
-                        for v in range(N)
-                    ]) <= 1))
+        disjoint_pairs.update(
+            (regular, hole)
+            for regular in range(22) for hole in range(22, 26)
+        )
+    if all_conflicting_disjoint_packings:
+        disjoint_pairs.update(combinations(range(N), 2))
+    for regular, hole in sorted(disjoint_pairs):
+        incident = Or([
+            And(incidence[regular, point], incidence[hole, point])
+            for point in range(N_U1)
+        ])
+        first = {
+            v: Bool(f"joint_pack_regular_{regular}_{hole}_{v}")
+            for v in range(N)
+        }
+        second = {
+            v: Bool(f"joint_pack_hole_{regular}_{hole}_{v}")
+            for v in range(N)
+        }
+        solver.add(Implies(
+            incident, Sum([If(first[v], 1, 0) for v in range(N)]) ==
+                (6 if regular >= N_TRIPLE - 4 else 5)
+        ))
+        solver.add(Implies(
+            incident, Sum([If(second[v], 1, 0) for v in range(N)]) ==
+                (6 if hole >= N_TRIPLE - 4 else 5)
+        ))
+        for v in range(N):
+            solver.add(Implies(first[v], And(
+                incident, regular != v,
+                eligible(regular, v), eligible(v, regular),
+            )))
+            solver.add(Implies(second[v], And(
+                incident, hole != v,
+                eligible(hole, v), eligible(v, hole),
+            )))
+            solver.add(Not(And(first[v], second[v])))
+        for point in range(N_U1):
+            solver.add(Implies(incident, Sum([
+                If(And(first[v], incidence[v, point]), 1, 0)
+                for v in range(N)
+            ]) <= 1))
+            solver.add(Implies(incident, Sum([
+                If(And(second[v], incidence[v, point]), 1, 0)
+                for v in range(N)
+            ]) <= 1))
 
     if shared_integral_relation:
         relation = {
@@ -261,6 +271,11 @@ def main() -> None:
               "block-packings of sizes five and six"),
     )
     parser.add_argument(
+        "--all-conflicting-disjoint-packings", action="store_true",
+        help=("require every block-intersecting row pair to admit disjoint "
+              "integral local packings of its actual demanded sizes"),
+    )
+    parser.add_argument(
         "--all-pairs-fixed-template-primal-denominator", type=int,
         help=("attempt to refute (13at): for every exceptional/regular pair, "
               "require a bounded-denominator dual packing of weighted value "
@@ -284,6 +299,7 @@ def main() -> None:
         args.timeout_seconds, args.denominator, rows,
         args.shared_integral_relation, args.exclude_single_special_hole,
         args.all_incident_disjoint_packings,
+        args.all_conflicting_disjoint_packings,
         args.all_pairs_fixed_template_primal_denominator,
         template=template
     )

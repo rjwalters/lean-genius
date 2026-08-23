@@ -4992,6 +4992,18 @@ glue to one symmetric global selection in an abstract packing system.  The
 missing (13ay) proof must use branch-4 outer-design structure rather than a
 generic pairwise-to-global compactness principle.
 
+The symbolic outer generator now has
+`--all-conflicting-disjoint-packings`, which requires every
+block-intersecting pair among all 47 rows to carry disjoint integral local
+packings of the rows' actual demanded sizes.  Fixed-template regression is
+exact: it is SAT on the fixed-and-joint payload (which has no such
+obstruction) and UNSAT on seed 142 (which has the known pairs `{1,14}` and
+`{17,23}`).  A fresh all-row seed-162 run with the new condition returned
+`unknown` after 120 seconds.  Hence the encoding is ready for targeted
+counterexample search against the first two horns of (13ay), but this run
+adds no positive or negative mathematical evidence about the universal
+selector.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
