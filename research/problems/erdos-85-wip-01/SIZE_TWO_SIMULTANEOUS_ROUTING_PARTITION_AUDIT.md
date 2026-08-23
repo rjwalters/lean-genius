@@ -19434,3 +19434,51 @@ changing both target endpoints: the core root alone fixes a canonical
 non-secondary singleton column on every `O--O` row.  Further repetition of
 one root may therefore be counted against the finite two-slot fibers at its
 offset port.
+
+## 368. Repeated residual roots force inactive offset companions
+
+The canonical offset payer in (1265) has the strict/inactive dichotomy of
+Section 352.  If `z(y)` meets `C`, then its selected incidence at
+`p_(i+2)` is the unique strict cell in that column.  The rigid permutation
+(777) identifies its root as `x_i`; hence
+
+```text
+z(y)=s_i, the strict-export label in (x_i,p_(i+2)).  (1269)
+```
+
+Otherwise `z(y)` is core-inactive.  Since it has exactly one selected
+`e`-neighbor, it has a unique outside companion
+
+```text
+N_e(z(y))={p_(i+2),o(y)},       o(y) in B disjoint_union O,       (1270)
+```
+
+and Sections 357--363 apply to that located companion.  Thus every `O--O`
+propagation row has the exact alternative
+
+```text
+its offset tag is paid by s_i, or it opens an inactive outside companion.
+                                                               (1271)
+```
+
+This becomes a counting statement for repeated roots.  Let `Y_i` be any
+set of distinct `O--O` propagation labels rooted at `x_i`.  Equation (1266)
+applies pairwise, so their offset payers are all distinct.  But only the
+single label `s_i` can be strict at `p_(i+2)`.  Therefore
+
+```text
+#{y in Y_i:z(y) is core-inactive}>=|Y_i|-1.          (1272)
+```
+
+In particular two residual edges with the same core root force at least
+one literal inactive companion, independently of whether their layer tags
+agree or split in (1267).  More generally every repetition beyond the first
+pays another distinct inactive offset label.  The outside endpoints in
+(1270) may still collide, but Section 358 then imposes the corresponding
+arrival-color capacity, while distinct endpoints retain separate restart
+fans.
+
+Hence the exceptional secondary layer does not shield repeated residual
+propagation.  It can absorb two of the three tagged columns, but the fixed
+offset column still yields either the one already-accounted strict export
+or a quantitatively growing family of inactive companions.
