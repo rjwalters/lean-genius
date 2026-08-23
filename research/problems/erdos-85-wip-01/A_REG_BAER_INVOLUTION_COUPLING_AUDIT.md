@@ -2613,6 +2613,46 @@ and then prove conservation for that enriched tag.  This is exactly the
 genuinely two-local gap isolated by the shared SRP/B3 analysis, now verified
 inside the concrete pilot graph rather than inferred abstractly.
 
+The first reversal-sensitive two-local tag has an exact complementary-slack
+identity, rather than standalone conservation.  For an H-edge labelled by z
+with endpoints `p_+ in U_+`, `p_- in U_-`, retain the ordered bits
+
+```text
+theta_+(p_+,z)=1[p_+z in D],
+theta_-(p_-,z)=1[p_-z in D].
+```
+
+These are precisely the cross-shore T-incidences at the support points,
+because every outside A-neighbor of `U_+ union U_-` is active and represented
+in H.  Put `Theta_+`, `Theta_-` for their total sums over H.  Also let
+`N_+`, `N_-` count the outside D-incidences at the two support sides that
+are **not** A-edges.
+
+Each side has exactly `q/2` replication-two points (the matched endpoints of
+`P_F`) and `q/2-1-epsilon` private points.  By (73r), their outside D-degrees
+are respectively `q-2` and `r=q/2-2`.  Hence the total outside D-incidence
+on either side is the same number
+
+```text
+C_D=(q/2)(q-2)+(q/2-1-epsilon)r,
+Theta_+ + N_+ = C_D = Theta_- + N_-.                    (73rnz_w)
+```
+
+Therefore
+
+```text
+Theta_+-Theta_- = -(N_+-N_-).                            (73rnz_x)
+```
+
+So the ordered H-edge defect tag is genuinely reversal-sensitive, but it is
+not conserved by the current companion budgets: its residue is exactly the
+opposite signed imbalance of non-A outside defect incidences.  The test does
+not fail vaguely; it names the missing layer.  A viable enriched `Phi` must
+either retain those non-A D-incidences as secondary-fiber/deletion data or
+prove their signed imbalance vanishes by an additional simultaneous
+identity.  This is the `a=2` incarnation of the SRP lane's conclusion that
+per-layer route data must be kept before aggregate cancellation.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
