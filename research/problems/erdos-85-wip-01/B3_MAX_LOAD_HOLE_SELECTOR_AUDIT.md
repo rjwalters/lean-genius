@@ -61,6 +61,16 @@ residual type ledger remains `UNKNOWN` after 120 seconds.  The theorem is now
 consumed faithfully; solver search, not omission of (13aj), is the remaining
 computational limitation.
 
+The formal exceptional-cardinality package further gives exactly six
+residual rows per hole, split into three marked-pair and three ordinary-triple
+centers.  `q9_exceptional_hole_sixpack_sat.py --hole-reciprocity` couples the
+two branch-3 six-packs by symmetric hole-to-hole adjacency; the resulting
+outer system is still `SAT` in 9.6 seconds.  The stronger
+`--hole-pair-reciprocity` mode couples both holes to all 21 marked-pair rows;
+that sharply scoped system is `UNKNOWN` after 120 seconds.  Thus local
+six-packs plus hole reciprocity are insufficient, while the first unresolved
+agreement boundary is symmetry against the pair rows.
+
 For branch 4, every multi-special hole row in the six tracked models has a
 strict special point even though singleton-special rows can fail.  This is a
 conditional corpus horn only: global special mass six does **not** imply that

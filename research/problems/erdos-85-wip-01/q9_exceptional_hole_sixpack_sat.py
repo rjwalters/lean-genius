@@ -15,6 +15,14 @@ pair-to-pair symmetry.  This separates local row feasibility from the first
 genuinely global agreement constraint without restoring the full residual
 graph.
 
+``--hole-reciprocity`` couples the exceptional packs themselves: one selected
+hole block occurs among the other's residual triple neighbors exactly when
+the reverse occurrence holds.  This is the smallest symmetry consequence
+linking the two branch-3 complement partitions.
+
+``--hole-pair-reciprocity`` additionally couples every exceptional row to
+all 21 marked-pair rows.  It requires ``--all-holes --all-pair-rows``.
+
 Exploratory only: UNSAT still requires an independently checked certificate
 or a kernel proof.
 """
@@ -22,6 +30,7 @@ or a kernel proof.
 from __future__ import annotations
 
 import argparse
+from itertools import combinations
 import time
 from pathlib import Path
 import sys
@@ -38,12 +47,16 @@ def exactly_one(xs):
 
 def build(branch: int, timeout_ms: int, all_holes: bool,
           diagonal_rows: bool = False, all_regular_classes: bool = False,
-          all_pair_rows: bool = False, pair_reciprocity: bool = False):
+          all_pair_rows: bool = False, pair_reciprocity: bool = False,
+          hole_reciprocity: bool = False,
+          hole_pair_reciprocity: bool = False):
     solver, data = outer.build(branch, timeout_ms)
     triples = data["triples"]
     pairs = list(data["marked_pairs"])
     pack_count = (2 if branch == 3 else 4) if all_holes else 1
     anchors = []
+    hole_triple_neighbors = []
+    hole_pair_neighbors = []
     for r in range(pack_count):
         anchor = {t: Bool(f"sixpack_{r}_anchor_{t[0]}_{t[1]}_{t[2]}")
                   for t in triples}
@@ -54,6 +67,8 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
             e: Bool(f"sixpack_{r}_pair_{e[0]}_{e[1]}") for e in pairs
         }
         anchors.append(anchor)
+        hole_triple_neighbors.append(triple_neighbor)
+        hole_pair_neighbors.append(pair_neighbor)
         solver.add(exactly_one(anchor.values()))
         for t in triples:
             solver.add(Implies(anchor[t], data["holes"][t]))
@@ -89,6 +104,19 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
         for t in triples:
             solver.add(Sum([If(anchor[t], 1, 0) for anchor in anchors]) ==
                        If(data["holes"][t], 1, 0))
+        if hole_reciprocity:
+            for r, s in combinations(range(pack_count), 2):
+                r_to_s = Or([
+                    And(anchors[s][t], hole_triple_neighbors[r][t])
+                    for t in triples
+                ])
+                s_to_r = Or([
+                    And(anchors[r][t], hole_triple_neighbors[s][t])
+                    for t in triples
+                ])
+                solver.add(r_to_s == s_to_r)
+    elif hole_reciprocity:
+        raise ValueError("hole reciprocity requires all holes")
     if diagonal_rows:
         for r in range(8):
             anchor_block = {r, 8 + r, 16 + r}
@@ -203,7 +231,9 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
                     e: Bool(f"pairrow_{anchor_group}_{r}_pair_{e[0]}_{e[1]}")
                     for e in pairs
                 }
-                pair_pack_data[anchor_group].append((anchor, pair_neighbor))
+                pair_pack_data[anchor_group].append(
+                    (anchor, triple_neighbor, pair_neighbor)
+                )
                 for e in group_pairs:
                     solver.add(Implies(anchor[e], data["marked_pairs"][e]))
                 for t in triples:
@@ -255,13 +285,30 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
 
             def directed(e, f):
                 return Or([And(anchor[e], neighbors[f])
-                           for anchor, neighbors in pair_pack_data[pair_group(e)]])
+                           for anchor, _, neighbors
+                           in pair_pack_data[pair_group(e)]])
 
             for i, e in enumerate(pairs):
                 for f in pairs[i + 1:]:
                     solver.add(directed(e, f) == directed(f, e))
     elif pair_reciprocity:
         raise ValueError("pair reciprocity requires all pair rows")
+    if hole_pair_reciprocity:
+        if not all_holes or not all_pair_rows:
+            raise ValueError(
+                "hole-pair reciprocity requires all holes and all pair rows"
+            )
+        for r in range(pack_count):
+            for group_packs in pair_pack_data:
+                for pair_anchor, pair_triples, _ in group_packs:
+                    hole_to_pair = Or([
+                        And(pair_anchor[e], hole_pair_neighbors[r][e])
+                        for e in pair_anchor
+                    ])
+                    pair_to_hole = Or([
+                        And(anchors[r][t], pair_triples[t]) for t in triples
+                    ])
+                    solver.add(hole_to_pair == pair_to_hole)
     return solver, data
 
 
@@ -274,10 +321,13 @@ def main() -> int:
     parser.add_argument("--all-regular-classes", action="store_true")
     parser.add_argument("--all-pair-rows", action="store_true")
     parser.add_argument("--pair-reciprocity", action="store_true")
+    parser.add_argument("--hole-reciprocity", action="store_true")
+    parser.add_argument("--hole-pair-reciprocity", action="store_true")
     args = parser.parse_args()
     solver, _ = build(args.branch, args.timeout_seconds * 1000, args.all_holes,
                       args.diagonal_rows, args.all_regular_classes,
-                      args.all_pair_rows, args.pair_reciprocity)
+                      args.all_pair_rows, args.pair_reciprocity,
+                      args.hole_reciprocity, args.hole_pair_reciprocity)
     started = time.time()
     result = solver.check()
     elapsed = time.time() - started
