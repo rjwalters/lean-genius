@@ -207,13 +207,15 @@ def exact_joint_optimum(system: dict, p: int, q: int) -> dict:
 def one_model(
         timeout_ms: int, random_seed: int, max_scale: int,
         details: bool = False, genuine_only: bool = False,
-        diagonal_rows: bool = False, all_regular_classes: bool = False):
+        diagonal_rows: bool = False, all_regular_classes: bool = False,
+        regular_class_indices: tuple[int, ...] | None = None):
     solver, data = build(
         3, timeout_ms, True,
         diagonal_rows=diagonal_rows,
         all_regular_classes=all_regular_classes,
         hole_reciprocity=True,
         hole_full_pack_overlap_cap=True,
+        regular_class_indices=regular_class_indices,
     )
     solver.set(random_seed=random_seed)
     if solver.check() != sat:
@@ -299,13 +301,20 @@ def main() -> int:
     )
     parser.add_argument("--diagonal-rows", action="store_true")
     parser.add_argument("--all-regular-classes", action="store_true")
+    parser.add_argument(
+        "--regular-class", action="append", type=int, choices=(1, 2),
+    )
     args = parser.parse_args()
     if args.samples <= 0 or args.max_scale <= 0:
         parser.error("--samples and --max-scale must be positive")
+    if args.all_regular_classes and args.regular_class is not None:
+        parser.error("use either --all-regular-classes or --regular-class")
     results = [
         one_model(
             args.timeout_seconds * 1000, seed, args.max_scale, args.details,
-            args.genuine_only, args.diagonal_rows, args.all_regular_classes)
+            args.genuine_only, args.diagonal_rows, args.all_regular_classes,
+            (tuple(args.regular_class)
+             if args.regular_class is not None else None))
         for seed in range(args.seed_start, args.seed_start + args.samples)
     ]
     print(json.dumps(results, separators=(",", ":"), default=str))

@@ -59,7 +59,8 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
           hole_reciprocity: bool = False,
           hole_pair_reciprocity: bool = False,
           hole_pair_choice_overlap_cap: bool = False,
-          hole_full_pack_overlap_cap: bool = False):
+          hole_full_pack_overlap_cap: bool = False,
+          regular_class_indices: tuple[int, ...] | None = None):
     solver, data = outer.build(branch, timeout_ms)
     triples = data["triples"]
     pairs = list(data["marked_pairs"])
@@ -186,8 +187,14 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
                     if a != b:
                         solver.add(Implies(data["k"][outer.edge_key(a, b)],
                                            Not(neighbor_point[b])))
-    if all_regular_classes:
-        for class_index in (1, 2):
+    requested_regular_classes = (
+        regular_class_indices if regular_class_indices is not None
+        else (1, 2) if all_regular_classes else ()
+    )
+    if any(class_index not in (1, 2)
+           for class_index in requested_regular_classes):
+        raise ValueError("regular class indices must be 1 or 2")
+    for class_index in requested_regular_classes:
             slot_count = 8 if branch == 3 else 7
             class_anchors = []
             for r in range(slot_count):
@@ -353,6 +360,10 @@ def main() -> int:
     parser.add_argument("--all-holes", action="store_true")
     parser.add_argument("--diagonal-rows", action="store_true")
     parser.add_argument("--all-regular-classes", action="store_true")
+    parser.add_argument(
+        "--regular-class", action="append", type=int, choices=(1, 2),
+        help="impose exact packs only for this non-diagonal regular class",
+    )
     parser.add_argument("--all-pair-rows", action="store_true")
     parser.add_argument("--pair-reciprocity", action="store_true")
     parser.add_argument("--hole-reciprocity", action="store_true")
@@ -368,6 +379,8 @@ def main() -> int:
         help="on SAT, print the selected exceptional blocks and six-packs",
     )
     args = parser.parse_args()
+    if args.all_regular_classes and args.regular_class is not None:
+        parser.error("use either --all-regular-classes or --regular-class")
     solver, data = build(
         args.branch, args.timeout_seconds * 1000, args.all_holes,
         args.diagonal_rows, args.all_regular_classes,
@@ -375,6 +388,7 @@ def main() -> int:
         args.hole_reciprocity, args.hole_pair_reciprocity,
         args.hole_pair_choice_overlap_cap,
         args.hole_full_pack_overlap_cap,
+        tuple(args.regular_class) if args.regular_class is not None else None,
     )
     started = time.time()
     result = solver.check()

@@ -141,6 +141,19 @@ certificate.  Thus diagonal agreement alone does not explain strictness;
 the first unresolved structural boundary is simultaneous agreement across
 all triple-center rows.
 
+Per-class staging shows why the combined search is hard rather than
+immediately contradictory.  `q9_exceptional_hole_sixpack_sat.py
+--regular-class 1` (and symmetrically class 2) can impose just one
+non-diagonal regular class.  Ten independently generated exact-hole outers
+all failed this extension after being fixed, each in under half a second,
+so extendible outers are rare.  Nevertheless the seed-free system with one
+class is SAT: with both hole reciprocity and the full-pack cap it solved in
+about 98 seconds, while either cross-hole ingredient separately solved in
+51--59 seconds.  The class-1 model has a scale-one joint witness `53 < 54`;
+the symmetric class-2 run has a scale-two witness `107 < 108`.
+Thus one full regular class sharpens the model but does not close branch 3;
+the still-unresolved boundary genuinely couples both non-diagonal classes.
+
 Minimum exact eligibility load does not rescue branch 3 at this local scope.
 Among ten independent exact-two-sixpack/full-pack-cap models, restricting to
 the global argmin of `L(p)=sum_{u in F_p} deg_H(u)` produced a strict scaled
