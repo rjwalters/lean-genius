@@ -9208,3 +9208,42 @@ silent centers combine by the linear operator `I+A_(G_d^e)`.  What remains
 is to attach the odd footprint `p_s` to the existing route/owner capacity
 ledger without contracting away its edge labels.  At the unlabeled port
 level, odd silent parity is already activated exactly by (551).
+
+## 177. The companion ledger is a uniquely labeled shadow-cut boundary
+
+Let `partial_G` be the vertex-edge incidence matrix of `G=G_d^e`, and let
+`delta_G s` be the edge cut whose value on `zr` is `s(z)+s(r)`.  Because
+every vertex of `G` has degree two, over `F_2`
+
+```text
+partial_G(delta_G s)=A_G s.                           (552)
+```
+
+Indeed, at a vertex `z` the left side is the sum over its two neighbors
+`r` of `s(z)+s(r)`; the two copies of `s(z)` cancel and the remaining sum is
+`(A_Gs)(z)`.
+
+Combining (550) and (552) gives the exact cut normal form
+
+```text
+p_s=s+partial_G(delta_G s).                           (553)
+```
+
+Every edge of `G` carries its unique intermediate label `y in d`, inherited
+from the two-factor `R_de`.  Thus the boundary term in (553) is already a
+label-preserving chain: only shadow edges crossing between silent and
+nonsilent centers survive, and each comes with its actual inactive owner
+label.  Edges between two silent centers occur twice and cancel with their
+labels intact.
+
+On each shadow-cycle component, the cut has even order; its crossing edges
+come in cyclic order and each retains its unique label.  If `s` contains a
+whole shadow cycle, its cut vanishes and (553) reduces to `p_s=s` on that
+component; otherwise every companion payment is transported to the
+boundary of the silent region by actual `y`-labeled crossing edges.
+
+Therefore label aggregation is no longer an obstruction for the companion
+part.  The only non-boundary term is the original silent-center indicator
+`s`, whose mass is the marked silent parity.  A final owner identity must
+attach those H centers to the V boundary decorations of their silent gaps;
+all intervening companion transport is now an explicit labeled cut chain.
