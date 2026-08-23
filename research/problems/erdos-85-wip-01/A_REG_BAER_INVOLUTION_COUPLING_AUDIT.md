@@ -3191,6 +3191,38 @@ lines (the potential itself need not be unique).  The joint-state terminal
 may therefore split cleanly into a kernel-separator transport branch and a
 two-pole potential branch, rather than assuming a star character exists.
 
+The charge-free hypothesis also has an exact pivot-pairing normal form.
+Because every residual center G then has even J-degree, pair its incident
+switch edges arbitrarily (degree zero, two, or four).  A paired pair
+`(L,p,G)` and `(L',p',G)` supplies the T-path
+
+```text
+L-p-G-p'-L'.                                             (73rnz_bb)
+```
+
+Contract all such paths to edges of a labeled multigraph P on the four
+leaves.  Every switch occurrence is used once, so
+
+```text
+deg_P(L)=deg_J(L)=b_L                              (mod 2). (73rnz_bc)
+```
+
+Thus the odd-degree set of P is exactly the forced charge vector b from
+(73rnz_ak).  An edge of P joining sibling leaves closes with their two star
+edges to give exactly the T 6-cycle (73rnz_ap).  An edge joining leaves of
+different stars extends with the two star edges to a six-edge T-path from
+`E_1` to `E_2`.  Hence every abstract charge-free switch realization is a
+finite system of pivot-labeled same-star cycles and cross-star transports,
+plus an even cycle space on four leaves.
+
+This is the Baer dictionary for the pivot/relay skeleton of the B3 capacity
+certificates: charged leaves are demand roots, a residual center G is the
+pivot label pairing two or four demands, and the unused `rho` plus right-hand
+`nu/mu` atoms in (73rnz_aw) are the relay ledger that must pay for that
+pivot.  The pairing at a degree-four center is not canonical, so the normal
+form is an existence statement; a proof must either choose weights invariant
+under its three pairings or retain G as the uncontracted joint label.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
