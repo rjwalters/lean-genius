@@ -18744,3 +18744,51 @@ the completion acquires an inactive incidence at a named private ticket,
 which must coexist with that ticket's three rooted active letters and its
 owner return.  The remaining price may therefore split on (1213), rather
 than treating the inactive payer as an isolated cut label.
+## 356. Each payer menu is a canonical blue owner pair
+
+The two labels in `P_k(q)` are not merely a capacity set.  The pointwise
+bound `j_z<=1` makes `Z` independent in the target owner factor `F_k[e]`.
+Consequently the maximal `Z`-run containing `q` is the singleton `{q}`,
+and its two boundary labels are exactly the two labels incident to `q`:
+
+```text
+P_k(q)={z,mu_Z(z)}.                                 (1215)
+```
+
+Thus `P_k(q)` is the canonical blue edge at `q` in the alternating graph
+`P_k(C,Z)` of Section 241.  The strict indicator of Section 354 determines
+the whole alternating component containing this edge.
+
+If `epsilon_k(q)=1`, let `s_q` be the strict export at `q`.  Its other blue
+endpoint is the canonical port-only mate `v_q` of Section 255, and the red
+mate `u_q` of `s_q` is root-only.  Hence
+
+```text
+u_q --red-- s_q --blue-- v_q,
+P_k(q)={s_q,v_q},                                   (1216)
+```
+
+the isolated `10--11--01` path (795).  If `epsilon_k(q)=0`, both vertices
+of `P_k(q)` are port-only.  They have no red incidences, so their blue edge
+is itself an isolated alternating component:
+
+```text
+P_k(q) is an isolated N_01--N_01 blue edge.         (1217)
+```
+
+Now take an equal-tag repeated transition at `(k,q)`.  Its two distinct
+payers exhaust `P_k(q)` by Section 350.  Equations (1216)--(1217) therefore
+upgrade the two capacity profiles in (1210) to an exact owner-run statement:
+
+```text
+epsilon_k(q)=1: the transition uses the strict export and its blue mate;
+epsilon_k(q)=0: the transition uses both ends of one isolated blue edge.
+                                                               (1218)
+```
+
+In particular there is no freedom to choose two unrelated inactive labels
+when a repeated signature keeps one layer tag.  It consumes one complete
+canonical target-run boundary component, and in the strict case it also
+selects the root-only mate `u_q` through (1216).  Unequal layer tags remain
+split between different blue pairs; the statement deliberately makes no
+claim that those pairs lie in a common alternating component.
