@@ -711,6 +711,18 @@ Thus the integral selector mirrors the fractional support-two-or-concurrent
 split on the durable corpus and exposes strictly more elementary finite data
 for the concurrent horn.
 
+The integral concurrent selector is stronger in fresh stress tests than the
+fractional concurrent selector.  Every independently generated fresh outer
+at seeds zero through 95 has at least one obstructed packing triple (counts
+range from 1 to 18), including seeds 47 and 81 where no strict concurrent
+fractional certificate existed.  On the durable corpus, only replay seed 17
+has zero integral concurrent obstructions, and it has the exact two-row price
+support `{1,12}`.  The sharpest current target is consequently:
+**either a two-row global price certificate exists, or one of the 18
+concurrent shapes admits no pairwise-disjoint triple of full local
+packings**.  The second horn is finite and integral, and its Lean consumer
+uses only the Gram conflict law.
+
 The point-price cover cannot in turn be assumed integral.  The fixed-weight
 scanner also solves the same cover with every point price constrained to an
 integer and audits the result exactly.  Integer balanced/exceptional-heavy

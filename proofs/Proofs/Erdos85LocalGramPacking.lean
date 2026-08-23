@@ -2055,6 +2055,18 @@ def HasConcurrentThreeRowCoupledPackingBound
       α * ∑ v, x v + β * ∑ v, y v + γ * ∑ v, z v <
         α * d r + β * d s + γ * d t
 
+/-- Three pairwise-conflicting rows whose full local packing families admit
+no pairwise-disjoint transversal. -/
+def HasPairwiseConflictLocalPackingTripleObstruction
+    (H W : V → V → Prop) (d : V → ℕ) : Prop :=
+  ∃ r s t : V,
+    W r s ∧ W r t ∧ W s t ∧
+    ∀ X Y Z,
+      IsLocalGramPacking H W d r X →
+      IsLocalGramPacking H W d s Y →
+      IsLocalGramPacking H W d t Z →
+      ¬ (Disjoint X Y ∧ Disjoint X Z ∧ Disjoint Y Z)
+
 /-- End-to-end consumer for the branch-3 selector interface: either a
 two-row global price obstruction, or a concurrent three-row coupled-packing
 obstruction. -/
@@ -2080,6 +2092,30 @@ theorem false_of_twoRowPrice_or_concurrentThreeRowPacking
     exact false_of_threeConcurrentRowsCoupledPackingBound
       A H W d B hsymm hdegree hsupport hgram hshared
       r s t p hrs hrt hst hpr hps hpt α β γ hbound
+
+/-- End-to-end consumer for the sharper integral branch-3 selector: either a
+two-row global price obstruction, or a pairwise-conflicting triple with no
+pairwise-disjoint choice of full local packings. -/
+theorem false_of_twoRowPrice_or_localPackingTripleObstruction
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (B : V → Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hbad : HasTwoRowSupportPointPriceCertificate H d B ∨
+      HasPairwiseConflictLocalPackingTripleObstruction H W d) :
+    False := by
+  rcases hbad with hprice | htriple
+  · rcases hprice with ⟨s, t, a, b, pointPrice, hnonneg, hedge, hstrict⟩
+    exact false_of_twoRowSupportPointPriceCertificate
+      A H W d B hsymm hdegree hsupport hgram hshared
+      s t a b pointPrice hnonneg hedge hstrict
+  · rcases htriple with ⟨r, s, t, hrs, hrt, hst, hnone⟩
+    exact false_of_no_pairwiseDisjointLocalGramPackingTriple
+      A H W d hsymm hdegree hsupport hgram r s t hrs hrt hst hnone
 
 /-- End-to-end actual-relation consumer with unit row prices on `S`. -/
 theorem false_of_unitSupportPointPriceCertificate
@@ -2647,6 +2683,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms false_of_regularExceptionalCoupledPackingBound
 #print axioms false_of_threeConcurrentRowsCoupledPackingBound
 #print axioms false_of_twoRowPrice_or_concurrentThreeRowPacking
+#print axioms false_of_twoRowPrice_or_localPackingTripleObstruction
 #print axioms false_of_threeRowSupportPointPriceCertificate
 #print axioms false_of_twoUnitSupportsPointPriceCertificate
 #print axioms false_of_scaledTwoUnitSupportsPointPriceCertificate
