@@ -11,6 +11,99 @@ The near-regular cut classification excludes every such proper order.
 
 namespace Erdos85
 
+/-- A disconnected nonempty graph has a connected component different from
+the component containing any prescribed owner vertex.  Its support is
+nonempty and omits the owner, hence is a proper shore.  This is the generic
+selection step used to choose the non-owner ordinary-defect component. -/
+theorem exists_nonowner_connectedComponent_of_not_connected
+    {V : Type*} [Nonempty V] (D : SimpleGraph V) (owner : V)
+    (hnot : ¬ D.Connected) :
+    ∃ c : D.ConnectedComponent,
+      c ≠ D.connectedComponentMk owner ∧
+      c.supp.Nonempty ∧ owner ∉ c.supp ∧ c.supp ≠ Set.univ := by
+  have hnotPreconnected : ¬ D.Preconnected := by
+    intro hpre
+    exact hnot ⟨hpre⟩
+  simp only [SimpleGraph.Preconnected] at hnotPreconnected
+  push Not at hnotPreconnected
+  obtain ⟨u, v, huv⟩ := hnotPreconnected
+  have huvComponent : D.connectedComponentMk u ≠ D.connectedComponentMk v := by
+    intro huvEq
+    exact huv (SimpleGraph.ConnectedComponent.exact huvEq)
+  obtain ⟨c, hc⟩ :
+      ∃ c : D.ConnectedComponent, c ≠ D.connectedComponentMk owner := by
+    by_cases hu : D.connectedComponentMk u ≠ D.connectedComponentMk owner
+    · exact ⟨D.connectedComponentMk u, hu⟩
+    · have huOwner : D.connectedComponentMk u = D.connectedComponentMk owner :=
+        Classical.not_not.mp hu
+      have hv : D.connectedComponentMk v ≠ D.connectedComponentMk owner := by
+        intro hvOwner
+        exact huvComponent (huOwner.trans hvOwner.symm)
+      exact ⟨D.connectedComponentMk v, hv⟩
+  have howner : owner ∉ c.supp := by
+    intro hmem
+    have hm := (SimpleGraph.ConnectedComponent.mem_supp_iff c owner).mp hmem
+    exact hc hm.symm
+  refine ⟨c, hc, c.nonempty_supp, howner, ?_⟩
+  intro hsupp
+  exact howner (hsupp ▸ Set.mem_univ owner)
+
+/-- Neighbor closure of a finite shore is exactly the vanishing oriented cut
+sum used by the C4-free defect cut identity. -/
+theorem sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (S : Finset V)
+    (hclosed : ∀ u ∈ S, D.neighborFinset u ⊆ S) :
+    ∑ u ∈ S, (D.neighborFinset u ∩ (Finset.univ \ S)).card = 0 := by
+  apply Finset.sum_eq_zero
+  intro u hu
+  rw [Finset.card_eq_zero]
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro v hv
+  have hvParts := Finset.mem_inter.mp hv
+  have hvOutside := (Finset.mem_sdiff.mp hvParts.2).2
+  exact hvOutside (hclosed u hu hvParts.1)
+
+/-- Finite call-site form of the non-owner selection lemma.  The returned
+shore is nonempty, has cardinality strictly below the ambient order, omits
+the owner, and is closed under every graph neighbor; equivalently its graph
+edge boundary is zero. -/
+theorem exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (owner : V)
+    (hnot : ¬ D.Connected) :
+    ∃ S : Finset V,
+      0 < S.card ∧ S.card < Fintype.card V ∧ owner ∉ S ∧
+      ∀ u ∈ S, D.neighborFinset u ⊆ S := by
+  letI : Nonempty V := ⟨owner⟩
+  obtain ⟨c, _, hcNonempty, howner, _⟩ :=
+    exists_nonowner_connectedComponent_of_not_connected D owner hnot
+  let S := Finset.univ.filter fun v => v ∈ c.supp
+  have hSpos : 0 < S.card := by
+    rw [Finset.card_pos]
+    obtain ⟨v, hv⟩ := hcNonempty
+    exact ⟨v, Finset.mem_filter.mpr ⟨Finset.mem_univ v, hv⟩⟩
+  have hSsubset : S ⊆ Finset.univ := Finset.subset_univ S
+  have hSne : S ≠ Finset.univ := by
+    intro hEq
+    have hownerS : owner ∈ S := by
+      rw [hEq]
+      exact Finset.mem_univ owner
+    exact howner (Finset.mem_filter.mp hownerS).2
+  have hScard : S.card < Fintype.card V := by
+    rw [← Finset.card_univ]
+    exact Finset.card_lt_card (Finset.ssubset_iff_subset_ne.mpr ⟨hSsubset, hSne⟩)
+  have hownerS : owner ∉ S := by
+    intro hmem
+    exact howner (Finset.mem_filter.mp hmem).2
+  refine ⟨S, hSpos, hScard, hownerS, ?_⟩
+  intro u hu v hv
+  have huSupp : u ∈ c.supp := (Finset.mem_filter.mp hu).2
+  have huv : D.Adj u v := by simpa using hv
+  have hvSupp : v ∈ c.supp :=
+    SimpleGraph.ConnectedComponent.mem_supp_of_adj_mem_supp c huSupp huv
+  exact Finset.mem_filter.mpr ⟨Finset.mem_univ v, hvSupp⟩
+
 /-- The exact `3 n₀ = 5 n₁` component balance forces the total component
 order to be divisible by eight. -/
 theorem eight_dvd_of_three_mul_eq_five_mul
@@ -72,6 +165,9 @@ theorem false_of_orderNine_nearRegular_component_handshake_and_balance
   · exact hbalance
 
 #print axioms eight_dvd_of_three_mul_eq_five_mul
+#print axioms exists_nonowner_connectedComponent_of_not_connected
+#print axioms sum_neighbor_inter_compl_eq_zero_of_neighborFinset_subset
+#print axioms exists_nonempty_proper_nonowner_zeroBoundaryShore_of_not_connected
 #print axioms orderNine_component_colour_sum_even_of_handshake
 #print axioms false_of_orderNine_nearRegular_proper_component_balance
 #print axioms false_of_orderNine_nearRegular_component_handshake_and_balance
