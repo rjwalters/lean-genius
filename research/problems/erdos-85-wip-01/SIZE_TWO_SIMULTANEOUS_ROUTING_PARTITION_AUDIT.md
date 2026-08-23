@@ -13618,6 +13618,7 @@ channel and all exterior routing colors do not merely balance: they divide
 the entire outside target fiber into uniquely assigned ports.  Any final
 price may therefore be evaluated on this canonical labeled partition,
 where reassignment of `gamma_i` to an arbitrary color is no longer allowed.
+
 ## 266. The target-owner payment has ten private ports and five return paths
 
 The actual endpoints hidden by the binary profiles `beta_i` satisfy a much
