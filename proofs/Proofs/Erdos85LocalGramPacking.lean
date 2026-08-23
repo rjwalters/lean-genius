@@ -174,6 +174,79 @@ theorem no_canonicalFractionalIntervalExtension_of_forced_sharedPoint
   norm_num at hpairLe hcap
   exact (not_le_of_gt (show (1 : ℚ) < 2 by norm_num)) (hpairLe.trans hcap)
 
+/-- Fractional hypergraph weak duality in the exact point-capacity form used
+by the canonical interval relaxation. -/
+theorem totalMass_le_totalPointWeight
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (B : V → Finset P) (mass : V → ℚ) (weight : P → ℚ)
+    (hmass : ∀ w, 0 ≤ mass w)
+    (hweight : ∀ p, 0 ≤ weight p)
+    (hcapacity : ∀ p,
+      (∑ w ∈ Finset.univ.filter fun z => p ∈ B z, mass w) ≤ 1)
+    (hcover : ∀ w, 0 < mass w → 1 ≤ ∑ p ∈ B w, weight p) :
+    (∑ w : V, mass w) ≤ ∑ p : P, weight p := by
+  classical
+  calc
+    (∑ w : V, mass w) ≤
+        ∑ w : V, mass w * (∑ p ∈ B w, weight p) := by
+      apply Finset.sum_le_sum
+      intro w _
+      by_cases hzero : mass w = 0
+      · simp [hzero]
+      · have hpos : 0 < mass w := lt_of_le_of_ne (hmass w) (Ne.symm hzero)
+        exact (le_mul_iff_one_le_right hpos).2 (hcover w hpos)
+    _ = ∑ p : P, weight p *
+        (∑ w ∈ Finset.univ.filter fun z => p ∈ B z, mass w) := by
+      calc
+        (∑ w : V, mass w * (∑ p ∈ B w, weight p)) =
+            ∑ w : V, ∑ p : P,
+              if p ∈ B w then mass w * weight p else 0 := by
+          apply Finset.sum_congr rfl
+          intro w _
+          rw [Finset.mul_sum]
+          rw [← Finset.sum_filter]
+          simp only [Finset.filter_mem_eq_inter, Finset.univ_inter]
+        _ = ∑ p : P, ∑ w : V,
+              if p ∈ B w then mass w * weight p else 0 := by
+          exact Finset.sum_comm
+        _ = ∑ p : P, weight p *
+            (∑ w ∈ Finset.univ.filter fun z => p ∈ B z, mass w) := by
+          apply Finset.sum_congr rfl
+          intro p _
+          rw [Finset.mul_sum]
+          rw [← Finset.sum_filter]
+          apply Finset.sum_congr rfl
+          intro w _
+          by_cases hp : p ∈ B w <;> simp [mul_comm]
+    _ ≤ ∑ p : P, weight p := by
+      apply Finset.sum_le_sum
+      intro p _
+      calc
+        weight p * (∑ w ∈ Finset.univ.filter fun z => p ∈ B z, mass w)
+            ≤ weight p * 1 :=
+          mul_le_mul_of_nonneg_left (hcapacity p) (hweight p)
+        _ = weight p := by ring
+
+/-- Any strict point cover of every positive-mass-eligible block rules out a
+full-demand canonical fractional interval extension.  This is the direct
+dual-side consumer complementary to the forced-shared-point obstruction. -/
+theorem no_canonicalFractionalIntervalExtension_of_pointCover
+    {P : Type*} [Fintype P] [DecidableEq V] [DecidableEq P]
+    (H W : V → V → Prop) (d : V → ℕ) (B : V → Finset P)
+    (u : V) (weight : P → ℚ)
+    (hweight : ∀ p, 0 ≤ weight p)
+    (hcover : ∀ w, H u w → 1 ≤ ∑ p ∈ B w, weight p)
+    (htotal : (∑ p : P, weight p) < d u) :
+    ¬ ∃ mass, IsCanonicalFractionalIntervalExtension H W d B u mass := by
+  rintro ⟨mass, hmass⟩
+  rcases hmass with ⟨hbounds, hdemand, heligible, hcapacity, _, _⟩
+  have hdual : (∑ w : V, mass w) ≤ ∑ p : P, weight p :=
+    totalMass_le_totalPointWeight B mass weight
+      (fun w => (hbounds w).1) hweight hcapacity
+      (fun w hw => hcover w (heligible w hw))
+  rw [hdemand] at hdual
+  exact (not_lt_of_ge hdual) htotal
+
 omit [Fintype V] in
 /-- **Fractional point-cover counting engine.**  If the point sets attached
 to selected rows are pairwise disjoint and each receives weight at least one,
@@ -1082,6 +1155,8 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms reverseIntervalRankDeficit_of_fractionalPointCover
 #print axioms reverseIntervalRankDeficit_of_scaledPointCover
 #print axioms no_canonicalFractionalIntervalExtension_of_forced_sharedPoint
+#print axioms totalMass_le_totalPointWeight
+#print axioms no_canonicalFractionalIntervalExtension_of_pointCover
 #print axioms reverseForcedLocalGramNeighborFinset_isPrepacking
 #print axioms reverseForcedLocalGramNeighborFinset_disjoint_reverseImpossible
 #print axioms oneRowCompatibilityObstruction_of_reciprocityObstruction
