@@ -3871,6 +3871,27 @@ isolated by (73rnz_an)--(73rnz_ap).  With (73rnz_cjibaa) and
 (73rnz_cjibba), every witness star has a fixed special-leaf/T-word profile,
 independent of q; only the finer nonleaf subtype pairing remains.
 
+For witnesses that actually carry a special-leaf owner, even that finer
+subtype is fixed by the earlier switch classification.  With two cross-star
+leaves, those two full-center incidences exhaust the replication-two cap, so
+every remaining broken-T endpoint is ordinary; pair the leaves together and
+then pair ordinary endpoints.  With one leaf, there is at most one additional
+full-center T-neighbor G.  Its presence is exactly the switch bit `eta_y` of
+(73rnz_af): choose
+
+```text
+eta_y=1: pair the leaf with the unique residual full center G;
+eta_y=0: pair the leaf with one ordinary T-neighbor.       (73rnz_cjibbb)
+```
+
+In the second case an ordinary neighbor exists because (73rnz_af) gives an
+odd nonempty ordinary exit bundle; in the first case the remaining ordinary
+bundle is even.  Thus after the prescribed owner relay, all remaining broken
+endpoints are ordinary and pair among themselves.  Every owner-bearing 11
+relay now has a fixed endpoint subtype, T-word, and switch/exit label.  The
+unresolved nonleaf subtype pairing occurs only in witness stars carrying no
+special-leaf owner, so it cannot privately absorb a star demand.
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
