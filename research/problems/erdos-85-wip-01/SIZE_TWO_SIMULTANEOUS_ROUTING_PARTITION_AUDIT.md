@@ -14823,6 +14823,47 @@ reverse-tag singleton terminals to actual cut edges indexed by
 `C`-inactive labels.  Expanding the two pairing edges along such a path
 gives a private-label chain through the located shore `S`; active cut
 occurrences are internal transition states and no arbitrary bijection is
-chosen.  This composes the reverse export of Section 284 with the inactive
+chosen.  This is an occurrence-level walk: the two pairing expansions may
+reuse an underlying factor edge, so edge-simplicity is not asserted.  This
+composes the reverse export of Section 284 with the inactive
 payment of Section 285 and removes the non-bijection caveat left after
 Section 287.
+
+## 290. The mixed occurrence paths transport a nonzero reverse tag
+
+Let `W_I` be the set of `W_a(S)` endpoints belonging to the `W--I`
+components of the overlay in Section 289.  Each such component has exactly
+one `W` endpoint, so (918) gives
+
+```text
+|W_I|=N_WI=1 mod 2.                                 (919)
+```
+
+Every endpoint `w in W_I` retains its component-resolved reverse tag
+`rho_w^a` from (899), of augmentation one.  Therefore the tag restricted
+to the terminals which actually reach inactive payments is still nonzero:
+
+```text
+Rho_I:=sum_(w in W_I) rho_w^a,
+aug(Rho_I)=|W_I|=1,
+Rho_I!=0.                                           (920)
+```
+
+The overlay component containing `w` has a unique other endpoint, an
+inactive cut-edge occurrence.  Hence the `W--I` components give a canonical
+bijection between `W_I` and an odd set of distinct cut edges indexed by
+`a`-labels with no neighbor in `C`.  No tag is assigned to an anonymous
+aggregate edge: each `rho_w^a` travels along its specified occurrence walk
+to one specified inactive label.
+
+Equivalently, the symmetric difference
+
+```text
+T_I:=triangle_(w in W_I) E_w^a subset c\C           (921)
+```
+
+is an actual odd root shore whose component profile is `Rho_I`, exactly as
+in (905)--(907), but now every contributing triple is paired with an
+inactive payment occurrence.  Thus the nonzero reverse destination tag
+survives the full active/inactive composition rather than being carried
+only by terminals which might close among themselves.
