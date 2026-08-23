@@ -2744,6 +2744,7 @@ equations give
 ```text
 s_(1,a)+n_(a,0)+n_(a,1) = 1                       (mod 2),
 s_(2,b)+n_(0,b)+n_(1,b) = 1                       (mod 2),
+sum_a s_(1,a) = sum_(a,b)n_(a,b) = sum_b s_(2,b) (mod 2),
 sum_(i,a) s_(i,a) = 0                             (mod 2). (73rnz_ab)
 ```
 
@@ -2752,10 +2753,8 @@ is at least two; at each such point the unique incident leaf T-edge leaves
 an odd number of further T-edges to the rest of the graph, because the total
 T-degree is even.  These are genuine external routing ports.
 
-If there is no singleton port, every row and column of N has odd sum.  A
-binary 2-by-2 matrix with this property is a permutation matrix.  The two
-occupied cells give distinct ordinary points `p_0,p_1`, and the forced edges
-form the simple T-cycle
+If N is a permutation matrix, its two occupied cells give distinct ordinary
+points `p_0,p_1`, and the forced edges form the simple T-cycle
 
 ```text
 E_1-F_(1,0)-p_0-F_(2,sigma(0))-E_2
@@ -2763,17 +2762,24 @@ E_1-F_(1,0)-p_0-F_(2,sigma(0))-E_2
 ```
 
 where sigma is the corresponding permutation.  (The `p_i` may have further
-T-edges, so this is a contained cycle, not necessarily a whole component.)
-Therefore the `s=2` placement has the exact dichotomy
+T-edges, and even singleton ports may also be present, so this is a contained
+cycle, not necessarily a whole component.)  Conversely, if N is not a
+permutation matrix, the singleton total cannot be zero: zero would make all
+four row/column margins odd and the binary 2-by-2 classification would force
+N to be a permutation matrix.  Hence a non-permutation N forces at least two
+external singleton ports.  The `s=2` placement therefore has the exhaustive
+matrix-level alternative
 
 ```text
-an explicit star-to-star T 8-cycle,
-or an even positive family of external singleton T-ports. (73rnz_ad)
+N permutation:     an explicit star-to-star T 8-cycle;
+N non-permutation: an even positive family of at least two
+                   external singleton T-ports.           (73rnz_ad)
 ```
 
-This removes the vague “four odd bundles” description: either they close
-inside the two-star interface in the unique 2-by-2 manner, or at least two
-ports must enter the simultaneous residual transport.
+This removes the vague “four odd bundles” description.  The parity of the
+singleton population at each star is also fixed by the number of occupied
+cross cells, while non-permutation of the cross matrix certifies that at
+least two ports must enter the simultaneous residual transport.
 
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
