@@ -3819,12 +3819,13 @@ must therefore use the endpoint owner labels of broken T-neighbors, not a
 00/11 pairing artifact.
 
 Only the 11 fiber retains an owner pairing state.  A non-T special leaf lies
-in the canonical `iota_y` domain and has no pairing choice.  Every neighbor
-of an outside full leaf lies in the occupied shore, where the replication-two
-bound lets a witness y have at most two T-neighbors among the four star
-leaves.  It cannot have two sibling leaves: then y and their empty center
-would have those two leaves as common A-neighbors, violating C4-freeness.
-Consequently the broken-T pairing possibilities are
+in the canonical `iota_y` domain and has no pairing choice.  First suppose
+`y notin {E_1,E_2}`.  Every neighbor of an outside full leaf lies in the
+occupied shore, where the replication-two bound lets y have at most two
+T-neighbors among the four star leaves.  It cannot have two sibling leaves:
+then y and their empty center would have those two leaves as common
+A-neighbors, violating C4-freeness.  Consequently the non-pole broken-T
+pairing possibilities are
 
 ```text
 0 T-leaf neighbors: no owner-marked 11 relay;
@@ -3832,6 +3833,17 @@ Consequently the broken-T pairing possibilities are
 2 T-leaf neighbors: the leaves are cross-star, and either pair together
                     or launch two separate leaf--nonleaf 11 relays.       (73rnz_cjibb)
 ```
+
+There is one separate pole-witness row.  Since `X intersect N_A(E_i)={p_i}`,
+
+```text
+s(E_i)=(A(t x))(E_i)=t(p_i).
+```
+
+Thus `E_i` is active exactly when `t(p_i)=1`.  Its broken-T set is precisely
+its two sibling leaves by (73rnd), so those leaves form one forced sibling-11
+relay through `E_i`.  This case has no pairing choice and contributes no new
+gauge bit; it is the fixed sibling edge already used in the quotient Q.
 
 Thus the owner refinement has no unbounded pairing ambiguity.  The one-leaf
 state forces a unique odd owner exit, while the two-leaf state has one binary
