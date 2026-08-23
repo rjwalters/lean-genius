@@ -4183,6 +4183,14 @@ This bypasses the computational hole-special incidence lemma entirely for
 point existence.  It also separates the campaigns honestly: branch 4 is the
 six-special-point choice (13ak), while the exact exceptional-hole partition
 (13aj) is primarily needed for branch 3, where every target remains 27.
+The existence/high-target half is now kernel checked.  The theorem
+`squareOrderNine_threeHigh_secondProfile_exists_positive_specialDefect`
+extracts a positive-special U1 point from the already-proved total mass six,
+and
+`squareOrderNine_threeHigh_secondProfile_exists_residualRows_card_ge_twentyEight`
+composes it with the mixed-column law to return a point with at least 28
+ordinary residual-resolved rows.  These theorems do not assert the price
+alternative; (13ak) remains exactly the missing branch-4 cover statement.
 
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
