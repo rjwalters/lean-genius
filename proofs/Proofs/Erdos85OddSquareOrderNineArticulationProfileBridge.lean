@@ -1,6 +1,7 @@
 import Proofs.Erdos85OddSquareOrderNineArticulationGraphBridge
 import Proofs.Erdos85OddSquareOrderNineThreeHighSecondProfileBinZeroDefectTypes
 import Proofs.Erdos85BranchDeficitSymmetry
+import Proofs.Erdos85OddSquareOrderNineArticulationArithmetic
 
 /-! # Actual-profile inputs for the q = 9 articulation bridge
 
@@ -516,6 +517,158 @@ theorem squareOrderNine_threeHigh_secondProfile_shore_binZero_handshake
   rw [hB0card] at height
   exact height
 
+/-- Composition of all profile-local articulation inputs.  Once the graph
+moment layer supplies the two cut inequalities and their elementary bounds,
+the shore has a scale `k`, order `e+8k`, and one of the eleven classified
+parameter types. -/
+theorem squareOrderNine_threeHigh_secondProfile_shore_parameter_type_of_cut_bounds
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    {owner : V} (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (S : Finset V)
+    (hSsub : S ⊆ (((Finset.univ : Finset V) \
+      squareOrderHighVertices G 9).erase owner))
+    (hSproper : S.card < 78)
+    (hclosed : ∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩
+      (((Finset.univ : Finset V) \ squareOrderHighVertices G 9).erase owner) ⊆ S)
+    (hEmeet : (((secondOrderDefectGraph G).neighborFinset owner ∩
+      squareOrderNineLowIncidenceBin G 0) ∩ S).Nonempty)
+    (hb₁ : (G.neighborFinset h₁ ∩ S).card ≤ 9)
+    (hb₂ : (G.neighborFinset h₂ ∩ S).card ≤ 9)
+    (hb₃ : (G.neighborFinset h₃ ∩ S).card ≤ 9)
+    (hcut : orderNineNearRegularCutLower S.card
+      (G.neighborFinset h₁ ∩ S).card
+      (G.neighborFinset h₂ ∩ S).card
+      (G.neighborFinset h₃ ∩ S).card ≤
+      (((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) ∩ S).card)
+    (hcutCompl : orderNineNearRegularCutLower (78 - S.card)
+      (10 - (G.neighborFinset h₁ ∩ S).card)
+      (10 - (G.neighborFinset h₂ ∩ S).card)
+      (10 - (G.neighborFinset h₃ ∩ S).card) ≤
+      (((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) ∩ S).card) :
+    let D := secondOrderDefectGraph G
+    let B := squareOrderNineLowIncidenceBin G
+    let E := D.neighborFinset owner ∩ B 0
+    ∃ k : ℕ, S.card = (E ∩ S).card + 8 * k ∧
+      orderNineArticulationSideParameterType (E ∩ S).card k := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let B := squareOrderNineLowIncidenceBin G
+  let O := (Finset.univ : Finset V) \ squareOrderHighVertices G 9
+  let E := D.neighborFinset owner ∩ B 0
+  let R := B 0 \ E
+  let e := (E ∩ S).card
+  let r := (R ∩ S).card
+  let n₁ := (B 1 ∩ S).card
+  change (E ∩ S).Nonempty at hEmeet
+  change orderNineNearRegularCutLower S.card
+    (G.neighborFinset h₁ ∩ S).card
+    (G.neighborFinset h₂ ∩ S).card
+    (G.neighborFinset h₃ ∩ S).card ≤ e at hcut
+  change orderNineNearRegularCutLower (78 - S.card)
+    (10 - (G.neighborFinset h₁ ∩ S).card)
+    (10 - (G.neighborFinset h₂ ∩ S).card)
+    (10 - (G.neighborFinset h₃ ∩ S).card) ≤ e at hcutCompl
+  have hcross := squareOrderNine_threeHigh_secondProfile_articulation_cross_degrees
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hcross
+  have hRsub : R ⊆ O.erase owner := by
+    intro x hxR
+    have hxB0 := (Finset.mem_sdiff.mp hxR).1
+    have hxO := (Finset.mem_filter.mp hxB0).1
+    have hxo : x ≠ owner := by
+      intro hxo
+      subst x
+      have hk0 := (Finset.mem_filter.mp hxB0).2
+      have hk3 := (Finset.mem_filter.mp howner).2
+      omega
+    exact Finset.mem_erase.mpr ⟨hxo, hxO⟩
+  have hB1sub : B 1 ⊆ O.erase owner := by
+    intro x hxB1
+    have hxO := (Finset.mem_filter.mp hxB1).1
+    have hxo : x ≠ owner := by
+      intro hxo
+      subst x
+      have hk1 := (Finset.mem_filter.mp hxB1).2
+      have hk3 := (Finset.mem_filter.mp howner).2
+      omega
+    exact Finset.mem_erase.mpr ⟨hxo, hxO⟩
+  have hbalance : 3 * r = 5 * n₁ := by
+    exact three_mul_regular_eq_five_mul_binOne_of_erase_owner_closed
+      D O S R (B 1) owner hRsub hB1sub hclosed
+        (fun x hx => (hcross.1 x hx).2) hcross.2
+  have hpartition :=
+    squareOrderNine_threeHigh_secondProfile_deleted_owner_shore_partition
+      G hp hhigh hc2 hc3 howner S hSsub
+  dsimp only at hpartition
+  change S.card = e + r + n₁ at hpartition
+  have hscale := exists_articulation_scale_of_three_mul_regular_eq_five_mul_binOne
+    e r n₁ S.card hbalance hpartition
+  obtain ⟨k, hr, hn₁, horder⟩ := hscale
+  have hhand := squareOrderNine_threeHigh_secondProfile_shore_binZero_handshake
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner S hclosed
+  dsimp only at hhand
+  change (7 * e + 5 * r) % 2 = 0 ∧
+    7 * e + 5 * r ≤ (e + r) * (e + r - 1) ∧
+    ((E ∩ S).Nonempty → 8 ≤ e + r) at hhand
+  have hparity : (7 * e + 25 * k) % 2 = 0 := by omega
+  have hsimple : 7 * e + 25 * k ≤
+      (e + 5 * k) * (e + 5 * k - 1) := by
+    have hs := hhand.2.1
+    rw [hr] at hs
+    calc
+      7 * e + 25 * k = 7 * e + 5 * (5 * k) := by ring
+      _ ≤ (e + 5 * k) * (e + 5 * k - 1) := hs
+  have hn₀ : 8 ≤ e + 5 * k := by
+    rw [← hr]
+    exact hhand.2.2 hEmeet
+  have he : e ≠ 0 := Finset.card_ne_zero.mpr hEmeet
+  have hEcard := squareOrderNine_threeHigh_secondProfile_owner_defect_neighbors
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hEcard
+  have heBound : e ≤ 5 := by
+    exact (Finset.card_le_card Finset.inter_subset_left).trans_eq hEcard.1
+  have hB1card :=
+    squareOrderNine_threeHigh_secondProfile_marked_core_cardinalities
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hB1card
+  have hkBound : k ≤ 9 := by
+    have hn₁le : n₁ ≤ 27 := by
+      exact (Finset.card_le_card Finset.inter_subset_left).trans_eq hB1card.1
+    omega
+  have hbeta0 :=
+    squareOrderNine_threeHigh_secondProfile_deleted_owner_beta_sum
+      G hp hhigh hc2 hc3 h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ hH howner S hSsub
+  have hbeta : (G.neighborFinset h₁ ∩ S).card +
+      (G.neighborFinset h₂ ∩ S).card +
+      (G.neighborFinset h₃ ∩ S).card = 3 * k := by
+    exact hbeta0.trans hn₁
+  have htype := orderNine_articulation_side_parameter_classification_nat
+    e k (G.neighborFinset h₁ ∩ S).card
+      (G.neighborFinset h₂ ∩ S).card (G.neighborFinset h₃ ∩ S).card
+      he heBound hkBound hb₁ hb₂ hb₃ hn₀ hparity hsimple
+      (by omega) hbeta (by simpa [horder] using hcut)
+      (by simpa [horder] using hcutCompl)
+  refine ⟨k, horder, ?_⟩
+  change orderNineArticulationSideParameterType e k
+  simpa [orderNineArticulationSideParameterType] using htype
+
 end
 
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_owner_defect_neighbors
@@ -523,5 +676,6 @@ end
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_deleted_owner_shore_partition
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_deleted_owner_beta_sum
 #print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_shore_binZero_handshake
+#print axioms Erdos85.squareOrderNine_threeHigh_secondProfile_shore_parameter_type_of_cut_bounds
 
 end Erdos85
