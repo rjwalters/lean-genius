@@ -143,6 +143,17 @@ strict hypothesis), then find a partner whose joint uncrossing gain exceeds
 that partner's single-fiber excess.  Any averaging or uncrossing lemma must be
 tested beyond these two genuine models before promotion.
 
+The probe now reports `strict_joint_pairs`,
+`all_strict_joint_pairs_hit_tight`, and the deliberately sharp
+`tight_hub_counterexample` flag (no strict single and no tight single with a
+strict partner).  A fresh process sweep produced one further no-single-strict
+exact model: its tight points were `{3,12,22}`, it had seven strict joint
+pairs, every one met that tight set, and `tight_hub_counterexample=false`.
+The other seven completed models in the sweep already had one or more strict
+single fibers.  Thus the candidate has survived a third genuine model, but
+the no-single-strict locus remains rare and the statement is still evidence,
+not a theorem.
+
 The exact continuous optimum in the preceding generated `p=9,q=21` model is
 `747/14 < 54`.
 `--details` now reconstructs both the primal point prices and the LP-dual

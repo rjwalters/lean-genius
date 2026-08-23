@@ -421,7 +421,22 @@ def add_exact_joint_scan(answer: dict, system: dict, genuine_pairs,
     answer["tight_strict_partners"] = {
         str(point): values for point, values in partners.items()
     }
-    answer["exists_tight_strict_partner"] = any(partners.values())
+    strict_pairs = [
+        optimum["points"] for optimum in joint_optima
+        if Fraction(optimum["target_gap"]) > 0
+    ]
+    exists_tight_partner = any(partners.values())
+    no_strict_single = not any(
+        optimum["strict"] for optimum in single_optima.values()
+    )
+    answer["strict_joint_pairs"] = strict_pairs
+    answer["exists_tight_strict_partner"] = exists_tight_partner
+    answer["all_strict_joint_pairs_hit_tight"] = all(
+        p in tight or q in tight for p, q in strict_pairs
+    )
+    answer["tight_hub_counterexample"] = (
+        no_strict_single and not exists_tight_partner
+    )
 
 
 def one_model(
