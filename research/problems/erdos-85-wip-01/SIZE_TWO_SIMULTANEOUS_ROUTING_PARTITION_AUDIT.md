@@ -4382,3 +4382,42 @@ interface or close through unmarked ports.  The missing global step is now
 sharply stated: show that the alternating `B_ec` boundary phase of Section
 76 pairs these `A_e` current handoffs.  If so, odd currents occur in pairs,
 and (255) supplies the required even boundary contribution.
+
+## 80. Radius-two C4 constraints do not kill the odd interfaces
+
+The finite local check suggested after (259) has a sharp negative answer.
+Take the nine distinct vertices
+
+```text
+x_-, x_+, a_-, a_+, p, p_-, p_+, q_-, q_+
+```
+
+and include exactly the forced run edge and `c`--`e` incidences used in
+Sections 74 and 77.  Exhaust the four optional `A_e` interface edges from
+(254), rejecting a pattern whenever two vertices acquire two common
+neighbors.  Of the sixteen patterns, exactly fifteen remain `C4`-free on
+this known local skeleton.  The sole rejection is `1111`, witnessed by the
+four-cycle in Section 78.  In particular, all eight odd-size patterns
+survive.
+
+The exhaustive reproducer is
+
+```text
+python3 research/problems/erdos-85-wip-01/verify_one_edge_outward_interface.py
+```
+
+and reports
+
+```text
+excluded=1111 witness=('p-', 'p+', ['q-', 'q+'])
+admissible=15 odd_admissible=8
+```
+
+This is deliberately a local-profile no-go, not an ambient realization of
+the full simultaneous routing system.  It proves that the already recorded
+radius-two adjacencies plus `C4`-freeness cannot force the interface parity
+in (259).  Any successful evenness proof must use information absent from
+that skeleton: the rooted budgets, third-color transpose coupling, or the
+global `A_e` current continuation (260).  Thus Section 79 is not optional
+bookkeeping; it is the first surviving route beyond the complete local
+pattern audit.
