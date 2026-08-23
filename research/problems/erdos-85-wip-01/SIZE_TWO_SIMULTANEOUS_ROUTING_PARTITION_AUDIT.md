@@ -12749,3 +12749,42 @@ intermediate colors or owner prices.  It reduces the minimal curl terminal
 to three exact edge budgets on which the global labeled-atom handshake must
 act; any proposed completion with a larger internal edge count is already
 ruled out by integer SRP.
+
+## 250. The horizontal five-cycle is induced
+
+The exact mass formula becomes rigid in the minimum case of Section 238.
+Assume `ell=5`.  The five horizontal root-projection edges form a `C_5`
+inside `A_c[C]`.  Any additional `A_c` edge on these five vertices joins two
+nonconsecutive cycle vertices.  One of the two cycle arcs between its
+endpoints has length three, so that chord together with the three arc edges
+is a four-cycle.  C4-freeness therefore forces the horizontal `C_5` to be
+induced and
+
+```text
+e_c(C)=5.                                             (772)
+```
+
+This argument is special to length five; for a longer odd cycle a chord need
+not have a complementary three-edge arc, so no general chord-free assertion
+is made.
+
+Substituting (772) into the already sharpened five-port budget (769) gives
+
+```text
+sum_(a != c,e) O_a(C,Z)=25-20-4e_e(Z)=5-4e_e(Z).     (773)
+```
+
+The left side is a nonnegative census.  Hence `e_e(Z)<=1`, and integrality
+leaves exactly
+
+```text
+(e_e(Z), sum_a O_a(C,Z)) in {(0,5),(1,1)}.           (774)
+```
+
+Thus C4-freeness removes the `(6,0,1)` case from (771).  The explicit
+five-port incidence core of Section 238 has only two possible regular
+completions at the level of the integer routing mass: five
+off-incidence exterior atoms when the port set is internally `A_e`-empty, or
+one atom when it contains a unique `A_e` edge.  Excluding the minimal curl
+now requires ruling out these two sharply bounded owner-resolved cases, not
+an unbounded connection ledger.
