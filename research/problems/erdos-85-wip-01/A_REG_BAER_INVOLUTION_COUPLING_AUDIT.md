@@ -1821,6 +1821,30 @@ surviving transport object.  The `r=1` work that remains is solely the other
 placement from (73g), namely `h=(q-2)/2`; no argument should continue to
 spend transport machinery on `h=f`.
 
+The remaining `r=1` placement has a compact two-case normal form.  Put
+`h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
+
+- If `E_0 in S`, then `|R|=q/2-2` and `|F setminus S|=q/2+1`.
+  The `h=a` routing gives `E_0` exactly two A-neighbors among those outside
+  full centers.  Both edges lie in T by the complete F--E defect core.
+  No other A-edge joins these exceptional types, so outside `A[R]` the graph
+  `A[C]` is one two-edge T-star centered at `E_0`, plus isolated vertices.
+- If `E_0 outside S`, then `|R|=q/2-1` and `|F setminus S|=q/2`.
+  Routing (60) leaves `E_0` and every outside full center isolated in
+  `A[C]`; hence its only nontrivial part is the path--cycle graph `A[R]`.
+
+In both cases the defect graph on the exceptional support is exactly
+
+```text
+D[C] = K_(1,q-1),                                        (73ro)
+```
+
+with center `E_0`, because `D[F]` is empty and the F--E core is complete.
+Thus the live `r=1` problem is no longer the earlier `F_0` boundary system:
+it is a path--cycle partial-Baer core of order `q/2-2` or `q/2-1`, decorated
+in the first placement by one forced two-edge T-star, and coupled through
+the residual M block to the fixed exceptional D-star (73ro).
+
 Two exact consumers of the Gram identity make its extra content explicit.
 Put `n=n_1=|P|` and recall that the column sum of R at `w in M` is
 `p_w=r+deg_D(w,F)`.  Pairing (73p) with the all-ones vector gives
