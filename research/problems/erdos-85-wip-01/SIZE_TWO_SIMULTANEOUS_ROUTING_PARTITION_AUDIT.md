@@ -16965,3 +16965,79 @@ Their incidence union nevertheless has only ten label vertices and at most
 twenty endpoint occurrences, retains label identity, and is the appropriate
 constant-size holonomy object for the next price.  Merely iterating
 anonymous odd root shores would discard this extra structure.
+
+## 327. The odd-defect return map sends every singleton to a triple
+
+The final paragraph of Section 325 can be made into an exact finite-state
+transition.  Start with any odd shore `D subset C`, choose a color `b` for
+which `S_b(D)` is odd, and let `P_b(D)` be the odd crossing-path family in
+(1085).  At the terminal `t(P)` of each path, the unique incident edge of
+`H_b^D` has a root color
+
+```text
+r_D(P) in D.                                        (1089)
+```
+
+As before, put `zeta_D(P)=t(P)` for a `Z` terminal and
+`zeta_D(P)=p(t(P))` for a `B` terminal.  The pair
+`(r_D(P),zeta_D(P))` is off-incidence.  In the direct case it is the
+strict cell at the selected port; in the owner case Section 267 excludes
+the two roots incident to that port.  Form the binary terminal chain
+
+```text
+L_D:=sum_(P in P_b(D)) [(r_D(P),zeta_D(P))]
+   in F_2^((C times Z)\E(R_ce[C,Z])).               (1090)
+```
+
+Its occurrence count is odd.  Therefore its support is odd and nonempty.
+Let `R_D subset C` and `Z_D subset Z` be its two side boundaries.  The
+same bipartite handshake used in (1065) gives
+
+```text
+partial L_D=R_D disjoint_union Z_D,
+|R_D|=|Z_D|=1 mod 2,
+R_D subset D.                                       (1091)
+```
+
+Charge the selected boundary by its core edges and define
+
+```text
+K_D:=sum_(p_i in Z_D)[E_i],
+Phi(D):=R_D triangle partial K_D.                   (1092)
+```
+
+Since `R_D` is odd and every graph boundary is even, `Phi(D)` is another
+odd nonempty shore of `C`.  Thus (1092), together with the choices of an
+odd color shore and crossing family, is the set-valued return transition
+implicit in Section 325.
+
+It has a strict expansion law at the smallest state.  Suppose
+`D={x}`.  Then the odd subset `R_D subset D` in (1091) is forced to be
+`{x}`.  Every edge of `L_D` lies in the off-incidence neighborhood of
+`x`, which consists of the three selected ports whose core edges do not
+meet `x`.  Hence
+
+```text
+Z_D is an odd subset of those three ports,
+|Z_D| in {1,3}.                                     (1093)
+```
+
+If `|Z_D|=1`, `K_D` is one core edge avoiding `x`, so its boundary is its
+two other endpoints.  If `|Z_D|=3`, `K_D` is the three-edge path obtained
+from `C_5` by deleting the two edges incident to `x`; its boundary again
+has two vertices and avoids `x`.  In both cases
+
+```text
+|partial K_D|=2,
+x notin partial K_D,
+|Phi({x})|=3.                                       (1094)
+```
+
+Thus no singleton defect is a fixed point of the recursive SRP return, and
+no one-step application beginning at a singleton can close at a singleton.
+The first possible short recurrence is instead a `1 -> 3 -> 1` reversal;
+the abstract off-incidence transition permits such reversals, so excluding
+them requires the factor-label holonomy retained in Section 326 rather
+than shore parity alone.  Equation (1094) isolates the shortest possible
+loss of expansion: a monotonicity proof must in particular price a return
+from a realized triple back to one of its singleton predecessors.
