@@ -14051,3 +14051,36 @@ the parity `m_1^a=k_a mod 2`.  Together with the target-owner return pairing
 `nu_e` on the ten ports `B`, it supplies two concrete pairing systems on the
 same ticket data: one follows `A_e` outside paths, while the other follows
 the color-`a` factor `F_a[e]` through the ten labels meeting `C`.
+
+## 274. The owner-factor paths have a proper five-root edge coloring
+
+The private root labels on `H_a^C` obey a pointwise separation law.  Let
+`y_i^0,y_i^1` be the two `a`-neighbors of a fixed root `x_i`; these index
+the two edges of `H_a^C` colored by `x_i`.  Their port-neighborhoods are
+disjoint.  Indeed, a shared port `p` would make `x_i` and `p` have the two
+common neighbors `y_i^0,y_i^1`, contrary to `C_4`-freeness.  Therefore
+
+```text
+N_e(y_i^0) intersect N_e(y_i^1)=emptyset.            (865)
+```
+
+Consequently the two occurrences of every root color are nonadjacent edges
+of `H_a^C`.  At any degree-two port, the two incident edges carry distinct
+root colors.  Thus the ten-edge path/cycle system has a proper edge coloring
+by the five roots in which every color occurs exactly twice:
+
+```text
+each x_i colors two nonadjacent edges of H_a^C.       (866)
+```
+
+In particular every path and cycle component of (862) has a root word with
+no equal consecutive letters, while the concatenation over all components
+uses each of the five letters twice.  For `i in I_a`, one of the two
+`x_i`-colored edges is the strict edge incident to its selected port and
+the other lies wholly outside `Z`; (865) keeps their port supports private.
+
+This is a finite realizability constraint absent from both the load scalar
+and the local table (858): those data remember how many occurrences have
+each role, but not that the two occurrences of one root can never meet at a
+port.  The endpoint pairing (864) must therefore be realizable by properly
+colored path words with prescribed strict endpoint letters.
