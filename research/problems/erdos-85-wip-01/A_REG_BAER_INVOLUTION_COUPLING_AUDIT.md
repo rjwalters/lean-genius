@@ -4344,6 +4344,30 @@ the cut (73rnz_cjibko): route the two marked pole channels through its
 non-pole 00/11 edges while retaining their owner labels and matching prices.
 Eulerian cut parity alone cannot choose that refinement.
 
+It does give an exact owner-flow alternative componentwise.  For every
+connected component C of P,
+
+```text
+|delta_P(B) intersect E(C)|=0 mod 2.                   (73rnz_cjibkp)
+```
+
+Decompose C into cycles and pair successive B-crossings on each cycle.  This
+pairs all flip edges by two-ended segments lying alternately inside B and
+outside B, while retaining every witness/transition label on the segment.
+Start such a pairing at each marked pole flip from (73rnz_cjibkm).  If the
+two pole flips pair with one another, they form a cross-owner through.  If
+they do not, each pairs with a non-pole flip and launches an owner-labeled
+exit.  Equivalently, a P-component containing an odd number of marked pole
+flips contains an odd number of non-pole flips.
+
+Thus the pole owner cannot terminate at an otherwise empty component of the
+global flip cut: it either meets the other owner or reaches a non-pole
+transition cell.  This proves the unpriced, owner-labeled **routing** half of
+the downstream statement.  It still does not prove (73rnz_cjibkd), because
+different cycle decompositions may attach the owner to different non-pole
+cells and the required `mu/rho` price must be invariant under that gauge (or
+produce an odd holonomy by (73rnz_cjibd)).
+
 Moreover the entire pairing gauge is generated locally.  Any two perfect
 pairings of an even star are connected by four-endpoint switches
 
