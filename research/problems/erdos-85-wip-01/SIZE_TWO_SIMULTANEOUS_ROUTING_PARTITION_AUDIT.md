@@ -11487,3 +11487,53 @@ make the single- or double-label sums odd automatically.  Branch (b) is the
 honest interface already indicated by the full state cycle (577).  Thus the
 sole unexpanded class has now been localized further to a precise zero-state
 obstruction rather than an undifferentiated `00` population.
+
+## 226. The required non-shore generator is already `P_d(p)`
+
+Branch (694b) needs no new alphabet.  For every marked H edge `e=xx'` with
+port witness `p`, the full edge state (577) retains
+
+```text
+P_d(p)=(N_d(p),(t_y)_(y in N_d(p))).                  (695)
+```
+
+The set `N_d(p)` has two labels and pins `p` uniquely: a second port adjacent
+to both labels would form a C4, as proved in Sections 181 and 184.  Hence the
+one-hot flag
+
+```text
+gamma_q(e):=1[P_d(p)=q]                               (696)
+```
+
+is private, and for every occurrence, including the fully shore-empty cell
+(692),
+
+```text
+sum_q gamma_q(e)=1.                                   (697)
+```
+
+Thus the augmentation obstruction in Section 225 forces use of a non-shore
+coordinate but does not require inventing one: `P_d(p)` is exactly that
+coordinate.  At owner resolution the flag carries the diagonal tag `(1,1)`.
+It is also already present on the closed root-state flow, so transporting it
+does not require an occurrence map from the SRP alphabet to Baer shores.
+
+Reversal fixes the middle port state and exchanges the two root states:
+
+```text
+(R_d(x),H,P_d(p),H,R_d(x'))
+ <-> (R_d(x'),H,P_d(p),H,R_d(x)).                     (698)
+```
+
+The orbit has no fixed member because the two root-label sets are disjoint
+and nonempty.  After the reductions above, the remaining `00` theorem is
+therefore precisely even occupancy of the reversal orbits (698), restricted
+to marked shore-`00` H edges and corrected by the inactive owner cells.
+
+This is a strict narrowing of the original target (573): `11` is paid
+pointwise, `10` is an opposite-pole boundary, `01` has the double-residual
+flag expansion, and `00` has the private `P_d(p)` reversal flag.  The latter
+is the only class with no shore-incidence carrier; it is not the only class
+whose carrier still needs transport.  Equation (697) locates its unit.  The
+still-unproved input is the joint V/S owner-route relation that transports
+the `10` endpoints and `01` flags and pairs the two orientations in (698).
