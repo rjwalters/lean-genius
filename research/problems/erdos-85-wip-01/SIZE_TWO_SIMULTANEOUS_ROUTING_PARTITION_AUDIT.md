@@ -5895,11 +5895,66 @@ sum_(c != e) D_(F_(d,y),F_(f,z))^(c,e) = 0            (328)
 whenever the labels `d,f` are retained under the reversal (with terms absent
 when a label is an endpoint component).
 
-This is the first nonseparable conserved correlation in the SRP lane.  Its
-scope is also exact: (328) pairs the `(c,e)` ledger with the reversed
+This is the first nonseparable conserved correlation on the **doubled
+ordered-component ledger** in the SRP lane.  Its scope is also exact: (328)
+pairs the `(c,e)` ledger with the reversed
 `(e,c)` ledger globally.  The marked-parity target is localized to one fixed
 owner pair and one projected cycle, so global antisymmetry alone may cancel
 the desired residue against a different component-pair ledger.  The next
 localization problem is to refine (325)--(328) by the root-marked primitive
 or target-incidence component so that the reversed term is forced back into
 the same realized reversal class rather than merely another ordered pair.
+
+## 111. Triangle-correlation conservation is dart-cyclewise dual
+
+The localization loss in (328) is smaller than it first appears.  A cycle
+`Z` of the two involutions on `D_ce` is a connected component of the
+incidence support `R_ce`.  Transposition sends each dart `(x,p)` to `(p,x)`
+and identifies it with a cycle `Z^T` in `D_ec`; under this identification the
+root and port matchings exchange:
+
+```text
+R_(ec)|_(Z^T) = P_(ce)|_Z,
+P_(ec)|_(Z^T) = R_(ce)|_Z.                             (329)
+```
+
+Restrict the triangle indicators (326) and their row/column degree profiles
+to one such component.  The proof of (325) is componentwise, so (327)
+sharpens to
+
+```text
+D_(F_(d,y),F_(f,z))^(e,c)[Z^T]
+  = -D_(F_(d,y),F_(f,z))^(c,e)[Z].                    (330)
+```
+
+Both sides are available in the same ambient routing partition: they are the
+two shore descriptions of one physical incidence cycle, not unrelated
+matrices.  Thus the doubled resolved triangle-correlation ledger has exact
+**cyclewise dual conservation**.  As in Section 109, this dual
+re-description alone does not impose an equation on either one-sided
+ledger.
+
+What (330) does not prove is one-sided vanishing.  Contracting `R` describes
+the `c`-root owner cycle `F_e[c]`, while contracting `P` describes its
+port-shadow cycle in `B_ec` (equivalently the dual `e`-root description
+after transposition).  The original parity target grades marked `P`-pairs
+as edges of the first contraction; transposition turns them into marked
+`R`-pairs in the second.
+Their residues may be equal and opposite without either being zero.
+
+The remaining localization theorem is therefore a self-duality statement,
+not a search for a second occurrence:
+
+```text
+on each dart cycle Z, identify the marked-grading correlation extracted
+from the R-contraction with the corresponding correlation extracted from
+the P-contraction.                                      (331)
+```
+
+Combining (331) with the sign reversal (330) over a field of characteristic
+not two would force that correlation to vanish.  The cross-color compatible
+root-marked primitives are now needed precisely to prove (331): they must
+show that the two contractions assign the same resolved triangle-census
+value to the physical cycle.  This is strictly narrower than constructing
+an arbitrary conserved `Phi` and avoids the circular occurrence-pairing
+problem of Section 109.
