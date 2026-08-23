@@ -18048,3 +18048,58 @@ Equation (1164) is the first genuine two-color propagation constraint on
 the countermodel of Section 340.  A remaining completion must either spend
 one of the five strict exports in the new color or propagate into a new
 port role where the global matching and component ledgers can charge it.
+
+## 344. A private reversal ticket has a singleton escape or a side-color path
+
+The exact-reuse matching locates the color multiplicities at the private
+ticket more sharply.  Retain `w` and its terminal root `r` from (1157).
+In the six-edge matching `H_b^D` of Section 340, the terminal `w` has degree
+one.  Therefore no other ticket root which lies in `D` can carry color `b`:
+
+```text
+rho in (C\Ends(E_p)) intersect D, rho!=r
+implies the letter at (rho,w) has color different from b.  (1165)
+```
+
+If the third ticket root `w_p` lies outside `D`, it may still carry a
+second color-`b` letter; (1165) is deliberately restricted to the roots
+seen by the reversing factor.
+
+Now inspect the three colors on `tau(w)`.  At least one is `b`, and the
+ticket is nonmonochromatic.  Exactly one of the following alternatives
+holds.
+
+* Some side color `a!=b` occurs exactly once on the ticket.  Its active
+  factor has degree one at `w`, so its edge is a genuine singleton side
+  edge and obeys the strict-absorption/owner-fiber-escape dichotomy (1164).
+* No non-`b` color occurs once.  Then `b` occurs exactly once and the two
+  other ticket letters have one common color `a!=b`.
+
+In the second case let their distinct labels be `y_1,y_2`, rooted at the
+two non-`b` ticket roots.  They give two incident edges of `H_a^C` and hence
+an actual two-edge path
+
+```text
+q_1 --[y_1]-- w --[y_2]-- q_2.                    (1166)
+```
+
+The far endpoints are distinct.  If `q_1=q_2`, the two labels `y_1,y_2`
+would have the two common `e`-neighbors `w,q_1`, producing a four-cycle.
+Thus
+
+```text
+q_1!=q_2,                                          (1167)
+```
+
+and the forced second color transports through `w` rather than terminating
+there.
+
+Consequently the freedom left in Section 342 is not an arbitrary coloring
+of two unused ticket letters.  Every private exact-reuse terminal exposes
+either a degree-one cross-color edge to which Section 343 applies, or a
+proper two-edge path in one side color joining two distinct target ports.
+When `w_p=x`, all three ticket roots lie in `D`, so (1165) forces `b` to
+occur exactly once; the two remaining roots are both non-`b` and fall
+directly into this dichotomy.  This singleton-or-path normal form is the
+next interface for coupling the reversal to `SRP(a,e)` and the self factor
+`A_a`.
