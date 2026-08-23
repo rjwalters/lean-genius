@@ -3697,7 +3697,8 @@ nu_interval(u) = d(u)-1.                                      (13y)
 ```
 
 This holds for all ten noncollision branch-3 profiles from the durable
-witness and random seeds 0,1,2, and for the three genuine branch-4 profiles.
+witness and random seeds 0,1,2, and for ten genuine branch-4 profiles from
+random seeds 0,1.
 The observed mechanisms are small upper deletions and small consistent lower
 contractions.  Branch 3 has `|F_u|, |I_u intersect H_u| <= 2` in these runs;
 branch 4 includes the clean row-40 contraction with `|F_u|=3` and no upper
