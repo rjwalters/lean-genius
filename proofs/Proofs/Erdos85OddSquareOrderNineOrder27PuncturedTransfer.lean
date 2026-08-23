@@ -651,6 +651,74 @@ theorem false_of_orderNine_order27_threeEdge_handshake
     G U W hUsub hind
   omega
 
+/-- General complement handshake with the twice-counted internal incidence
+term left explicit. -/
+theorem sum_neighbor_inter_card_le_internal_add_complement
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (U W : Finset V) (hUsub : U ⊆ W) :
+    (∑ u ∈ U, (G.neighborFinset u ∩ W).card) ≤
+      (∑ u ∈ U, (G.neighborFinset u ∩ U).card) +
+        ∑ w ∈ W \ U, (G.neighborFinset w ∩ W).card := by
+  classical
+  let C := W \ U
+  have hsplit : (∑ u ∈ U, (G.neighborFinset u ∩ W).card) =
+      (∑ u ∈ U, (G.neighborFinset u ∩ U).card) +
+        ∑ u ∈ U, (G.neighborFinset u ∩ C).card := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro u hu
+    have hset : G.neighborFinset u ∩ W =
+        (G.neighborFinset u ∩ U) ∪ (G.neighborFinset u ∩ C) := by
+      ext x
+      constructor
+      · intro hx
+        have hp := Finset.mem_inter.mp hx
+        by_cases hxU : x ∈ U
+        · exact Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨hp.1, hxU⟩)
+        · exact Finset.mem_union_right _ (Finset.mem_inter.mpr ⟨hp.1,
+            Finset.mem_sdiff.mpr ⟨hp.2, hxU⟩⟩)
+      · intro hx
+        rcases Finset.mem_union.mp hx with hxU | hxC
+        · exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hxU).1,
+            hUsub (Finset.mem_inter.mp hxU).2⟩
+        · exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hxC).1,
+            (Finset.mem_sdiff.mp (Finset.mem_inter.mp hxC).2).1⟩
+    have hd : Disjoint (G.neighborFinset u ∩ U)
+        (G.neighborFinset u ∩ C) := by
+      rw [Finset.disjoint_left]
+      intro x hxU hxC
+      exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hxC).2).2
+        (Finset.mem_inter.mp hxU).2
+    rw [hset, Finset.card_union_of_disjoint hd]
+  have hcross := sum_neighbor_inter_card_comm G U C
+  have hcrossLe : (∑ u ∈ U, (G.neighborFinset u ∩ C).card) ≤
+      ∑ w ∈ C, (G.neighborFinset w ∩ W).card := by
+    rw [hcross]
+    apply Finset.sum_le_sum
+    intro w hw
+    exact Finset.card_le_card (by
+      intro x hx
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hx).1,
+        hUsub (Finset.mem_inter.mp hx).2⟩)
+  rw [hsplit]
+  exact Nat.add_le_add_left hcrossLe _
+
+/-- Four-edge arithmetic terminal in (22): one internal edge contributes
+two incidences, so total degree at least eight forces at least six crossing
+incidences, exceeding the complement budget five. -/
+theorem false_of_orderNine_order27_fourEdge_handshake
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (U W : Finset V) (hUsub : U ⊆ W)
+    (hleft : 8 ≤ ∑ u ∈ U, (G.neighborFinset u ∩ W).card)
+    (hinternal : (∑ u ∈ U, (G.neighborFinset u ∩ U).card) = 2)
+    (hright : (∑ w ∈ W \ U, (G.neighborFinset w ∩ W).card) ≤ 5) :
+    False := by
+  have hle := sum_neighbor_inter_card_le_internal_add_complement
+    G U W hUsub
+  omega
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -822,6 +890,8 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms sum_neighbor_inter_card_comm
 #print axioms sum_neighbor_inter_card_le_complement_of_independent
 #print axioms false_of_orderNine_order27_threeEdge_handshake
+#print axioms sum_neighbor_inter_card_le_internal_add_complement
+#print axioms false_of_orderNine_order27_fourEdge_handshake
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
