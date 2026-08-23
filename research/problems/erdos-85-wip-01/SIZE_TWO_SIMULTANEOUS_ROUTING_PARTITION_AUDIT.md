@@ -22843,3 +22843,64 @@ Thus closed full-root components are not part of the bounded debris in
 Section 425.  They retain all five root actions internally and necessarily
 carry holonomy; only components that pay into the constant defect sector
 can be properly-colored-cycle-free.
+## 427. Full-root holonomy has linear disjoint packing mass
+
+The induced-core surplus also survives passage from one cycle to a maximal
+packing.  Put
+
+```text
+H:=G_sh[O_5],       n:=|O_5|,
+R_5:=q-7+Delta-3s.
+```
+
+By (1465), `|E(H)|-(2n-3)>=R_5`.  Let `X subseteq O_5` meet every properly
+colored cycle of `H`.  If at least two vertices remain, then `H-X` is
+PC-cycle-free, and deleting `X` removes at most `5|X|` edges.  The
+sharpened Yeo bound therefore gives
+
+```text
+|E(H)|-5|X| <= 2(n-|X|)-3,
+3|X| >= |E(H)|-(2n-3) >= R_5.                    (1522)
+```
+
+If fewer than two vertices remain, the same cardinality conclusion is
+automatic in the binary range `q>=128`: then `|X|>=n-1`, while the
+five-regular degree ceiling gives
+`R_5<=|E(H)|-(2n-3)<=n/2+3`.  Thus every vertex transversal of the clean
+holonomies satisfies
+
+```text
+|X|>=ceil(R_5/3)>=ceil((q-117)/3).                (1523)
+```
+
+Now take a maximal family of pairwise vertex-disjoint properly colored
+cycles in `H`.  The union of their vertex sets meets every properly colored
+cycle, since a disjoint one could otherwise be added.  Applying (1519)
+shows that
+
+```text
+some vertex-disjoint family of clean holonomies covers at least
+ceil(R_5/3) full-root vertices.                   (1524)
+```
+
+There is a parallel edge statement.  The union `F` of a maximal family of
+pairwise edge-disjoint properly colored cycles is an edge transversal.
+Deleting it leaves a PC-cycle-free graph, so directly comparing with the
+same ceiling yields
+
+```text
+|F|>=R_5.
+```
+
+Because the chosen cycles are edge-disjoint, `|F|` is their total cycle
+length.  Hence
+
+```text
+some edge-disjoint family of clean holonomies has total length
+at least R_5>=q-117.                              (1525)
+```
+
+Consequently the `q>=128` branch cannot concentrate holonomy in one
+exceptional circuit or a bounded vertex set.  It carries linear disjoint
+cycle mass entirely inside the no-hole, all-five-root sector, in addition
+to the almost-spanning component mass of Section 425.
