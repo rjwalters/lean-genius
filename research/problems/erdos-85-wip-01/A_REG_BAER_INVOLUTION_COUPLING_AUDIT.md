@@ -2510,6 +2510,46 @@ even for `k>=3`, its factors may be paired into cycle covers.  Any final
 labelled obstruction in this placement must survive those genuine closed
 cycles; closure itself is no longer a gap.
 
+The occurrence graph has a canonical partial matching of private labels.
+Label each edge of H by the outside vertex that was contracted to it.  Every
+outside full center is active: it is non-D to X and Y by cross-D exhaustion,
+and it cannot use the common point v in the `epsilon=1` case because v already
+has majority replication two at X,Y.  There are exactly `q/2` such centers.
+Their H-edges form a matching.  Indeed a point of `U_+` already lies on the
+full line X, so two additional outside-full neighbors would give majority
+replication at least three; the same holds on `U_-`.  Consequently
+
+```text
+P_F := {H-edges labelled by F setminus S} is a matching,
+|P_F|=q/2.                                                (73rnz_r)
+```
+
+Its matched endpoints are exactly the points of majority replication two
+(the intersections with an outside full line), while the unmatched endpoints
+are private points of X or Y.  Each side therefore contains
+
+```text
+q/2 matched points and q/2-1-epsilon private points.      (73rnz_s)
+```
+
+The inactive outside set is equally explicit.  Its cardinality is ambient
+outside size minus `|E(H)|`:
+
+```text
+q^2/2-2 - (q/2)(q-1-epsilon)
+  = q/2-2 + epsilon(q/2) = r+epsilon(q/2).               (73rnz_t)
+```
+
+For `epsilon=0` these are precisely the r outside empty centers.  For
+`epsilon=1` they are those centers together with the `q/2` outside ordinary
+neighbors of v; the latter are exactly the r covered points from (73rnz_l)
+and its two uncovered shared-transversal points.  Thus H retains every
+outside occurrence except the geometrically forced zero-current set, and
+its distinguished F-matching records the private/intersection status at
+both endpoints.  This supplies an exact private feature layer on top of the
+conserved occurrence graph, in the format required by the shared tagged-
+bundle rigidity program.
+
 The remaining `r=1` placement has a compact two-case normal form.  Put
 `h=(q-2)/2=q/2-1` and retain `E_0` for the unique empty center.
 
