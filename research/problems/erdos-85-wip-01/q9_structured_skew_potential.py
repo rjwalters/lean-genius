@@ -655,9 +655,12 @@ def polynomial_collision_census_dual(data: dict, degree: int = 2) -> tuple:
     return True, result.message, coefficients
 
 
-def categorical_collision_census_dual(data: dict, order: int = 2) -> tuple:
+def categorical_collision_census_dual(
+        data: dict, order: int = 2,
+        extra_coordinate_sets: tuple[tuple[int, ...], ...] = ()) -> tuple:
     """Test additive one- or two-coordinate tables on seven-state rows."""
     from itertools import combinations
+    from scipy.linalg import qr
     from scipy.sparse import hstack
 
     if order not in (1, 2):
@@ -668,6 +671,7 @@ def categorical_collision_census_dual(data: dict, order: int = 2) -> tuple:
     coordinate_sets = [(coordinate,) for coordinate in range(7)]
     if order == 2:
         coordinate_sets += list(combinations(range(7), 2))
+    coordinate_sets += list(extra_coordinate_sets)
     basis_keys = []
     for coordinates in coordinate_sets:
         values = sorted({tuple(state[c] for c in coordinates)
@@ -683,9 +687,24 @@ def categorical_collision_census_dual(data: dict, order: int = 2) -> tuple:
         for coordinates in coordinate_sets:
             value = tuple(state[c] for c in coordinates)
             projection[row, N + basis_index[(coordinates, value)]] = 1
+    # Lookup tables have many gauge dependencies (constants and lower-order
+    # marginals repeat across tables).  Pivot a numerical basis of their exact
+    # state-evaluation span before presenting the dual to HiGHS.
+    state_features = projection[N:, N:].toarray()
+    _, triangular, pivots = qr(state_features, mode='economic', pivoting=True)
+    diagonal = np.abs(np.diag(triangular))
+    tolerance = (max(state_features.shape) * np.finfo(float).eps
+                 * (diagonal[0] if len(diagonal) else 0.0))
+    rank = int(np.sum(diagonal > tolerance))
+    selected = sorted(int(pivot) for pivot in pivots[:rank])
+    reduced = lil_matrix((equalities.shape[0], N + rank))
+    reduced[:N, :N] = projection[:N, :N]
+    reduced[N:, N:] = projection[N:, N + np.array(selected)]
+    projection = reduced
+    latent_count = N + rank
     columns = equalities.T @ projection.tocsr()
     inequalities = hstack([-columns, -capacities.T], format='csr')
-    latent_rhs = np.r_[equality_rhs[:N], np.zeros(len(basis_keys))]
+    latent_rhs = np.r_[equality_rhs[:N], np.zeros(rank)]
     scalar = np.r_[latent_rhs, capacity_rhs].reshape(1, -1)
     result = linprog(
         np.zeros(latent_count + capacities.shape[0]),
@@ -693,7 +712,7 @@ def categorical_collision_census_dual(data: dict, order: int = 2) -> tuple:
         A_eq=scalar, b_eq=[-1],
         bounds=[(None, None)] * latent_count
         + [(0, None)] * capacities.shape[0], method='highs')
-    return result.success, result.message, len(basis_keys)
+    return result.success, result.message, rank
 
 
 def integer_full_bundle_dual(data: dict, time_limit: float = 60) -> tuple:
@@ -1728,6 +1747,11 @@ def main() -> int:
     parser.add_argument("--audit-categorical-collision-census-dual",
                         action="store_true",
                         help="test one-/two-coordinate state lookup tables")
+    parser.add_argument("--audit-triple-categorical-augmentations",
+                        action="store_true",
+                        help="add each coordinate triple to pairwise tables")
+    parser.add_argument("--categorical-extra-triple", default="",
+                        help="comma-separated coordinates for one triple table")
     parser.add_argument("--print-full-dual", action="store_true",
                         help="do not truncate fractional dual diagnostics")
     parser.add_argument("--audit-integer-bundle-dual", action="store_true",
@@ -2028,6 +2052,54 @@ def main() -> int:
                       f"seed={seed_number} colors={colors} order={order} "
                       f"success={success} basis_count={basis_count} "
                       f"message={message}")
+    if args.audit_triple_categorical_augmentations:
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            branch, seed_number, colors = label
+            successful = []
+            infeasible = []
+            indeterminate = []
+            for coordinates in combinations(range(7), 3):
+                success, message, basis_count = categorical_collision_census_dual(
+                    candidate, 2, (coordinates,))
+                if success:
+                    successful.append((coordinates, basis_count))
+                elif "model_status is Infeasible" in message:
+                    infeasible.append(coordinates)
+                else:
+                    indeterminate.append((coordinates, message))
+            print(f"triple_categorical_augmentations branch={branch} "
+                  f"seed={seed_number} colors={colors} "
+                  f"successful={successful} infeasible={infeasible} "
+                  f"indeterminate={indeterminate}")
+    if args.categorical_extra_triple:
+        try:
+            coordinates = tuple(int(value) for value in
+                                args.categorical_extra_triple.split(','))
+        except ValueError:
+            parser.error("--categorical-extra-triple requires integers")
+        if len(coordinates) != 3 or len(set(coordinates)) != 3 or not all(
+                0 <= coordinate < 7 for coordinate in coordinates):
+            parser.error("--categorical-extra-triple requires three distinct "
+                         "coordinates in 0,...,6")
+        coordinates = tuple(sorted(coordinates))
+        for label, candidate in all_data:
+            if dual_seed_filter and label[1] not in dual_seed_filter:
+                continue
+            _, bad_rows = zero_loss_restricted_hall_audit(candidate)
+            if bad_rows:
+                continue
+            success, message, basis_count = categorical_collision_census_dual(
+                candidate, 2, (coordinates,))
+            branch, seed_number, colors = label
+            print(f"fixed_triple_categorical_dual branch={branch} "
+                  f"seed={seed_number} colors={colors} "
+                  f"coordinates={coordinates} success={success} "
+                  f"basis_count={basis_count} message={message}")
     if args.audit_integer_bundle_dual:
         integer_labels = []
         for label, candidate in all_data:
@@ -2109,6 +2181,8 @@ def main() -> int:
             or args.audit_collision_census_core
             or args.audit_polynomial_collision_census_dual
             or args.audit_categorical_collision_census_dual
+            or args.audit_triple_categorical_augmentations
+            or args.categorical_extra_triple
             or args.audit_integer_bundle_dual
             or args.audit_bounded_bundle_dual
             or args.audit_linear_bundle_dual):

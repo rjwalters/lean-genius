@@ -2123,6 +2123,34 @@ redundant.  Blindly adding third-order tables would merely approach an
 overparameterized encoding of the original arbitrary state potential and is
 not a structural reduction.
 
+A bounded third-order checkpoint identifies what the easier pairwise failure
+was missing without pretending to solve the hard model.  Number the state
+coordinates as
+
+```text
+0=kappa_sel, 1=kappa_all, 2=n_0, 3=n_1, 4=n_2, 5=n_3, 6=n_4.
+```
+
+On `(4,5,(1,2))`, adding just one arbitrary triple table atop all pairwise
+tables succeeds for exactly the ten tested triples
+
+```text
+(kappa, n_0, n_r), r=1,2,3,4, for either collision scalar kappa;
+(kappa, n_2, n_4),            for either collision scalar kappa. (12rzf)
+```
+
+Thus the first genuine interaction is collision-conditioned coupling between
+two role populations, not an unstructured cubic moment.  But `(12rzf)` is not
+uniform: on hard survivor `(3,21,(1,2))` none of the 35 single-triple
+augmentations produces a feasible dual after removing lookup-table gauge
+dependencies.  Ten are reported cleanly infeasible and 25 remain numerically
+indeterminate.  Accordingly no single-triple no-go is claimed for the hard
+model, and no fixed triple is promoted as a theorem target.  The useful
+conclusion is narrower: the easy branch-4 obstruction exposes a concrete
+collision/two-role interaction, while the hard obstruction still requires a
+richer joint private ledger.  This is the stopping point for categorical
+feature escalation.
+
 The sampled rank has a combinatorial certificate much simpler than a
 determinant.  In all 476 columns, at least one nonzero tagged **bundle**
 feature occurs in **no other unordered transition column** of that instance.
