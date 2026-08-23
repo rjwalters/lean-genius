@@ -4666,6 +4666,16 @@ rows, both return UNKNOWN at 180 seconds.  Hence there is no synthesized
 counterexample, but also no computational closure claim: the current result
 is a reproducible falsification harness and a sharply stated theorem target.
 
+The unique obstruction in the sharp durable model has a useful
+cross-intersection normal form.  Regular row 10 has 41 full local packings;
+exceptional row 24 has the unique packing
+`{27,28,30,36,37,45}`.  Every regular packing meets that six-set: 25 meet it
+once and 16 twice.  Nevertheless row 10 has no individually forced neighbor;
+only rows 30 and 45 participate in these intersections, occurring in 26 and
+31 of its 41 packings.  This pinpoints why the old common-forced-neighbor horn
+failed and (13as) survives: the invariant is cross-intersection of two
+packing families, not intersection of their separate forced cores.
+
 Finally, combining the corrected core-edge contraction (5) with the
 incidence-masked identity (9) gives the exact transfer
 
