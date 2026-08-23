@@ -23628,3 +23628,50 @@ simple cycle twice.  All avoidance conditions pass to `Q`.  Thus the
 large-parameter selection problem is reduced to excluding a local
 saturated-color pinch or this exact doubled-cycle square; arbitrary
 repeated-state walks no longer remain.
+
+## 441. The avoided large branch has three explicit terminal forms
+
+The minimum-walk normal form can be specialized to the simultaneous
+avoidance regime.  Fix binary `q>=256` and any canonical payer-layer set
+`P` with `|P|<=8`.  Section 434 supplies a tag-even PC closed walk in the
+edge-deleted graph avoiding source colors `{d} union Gamma` and payer
+layers `P`.  Choose a shortest such walk `W`.  Every vertex and edge of
+`W` remains in the all-five-root unsheltered graph `H`.
+
+Applying (1580) inside this same deleted graph gives exactly the terminal
+list
+
+```text
+(I)  a simple all-O_5 PC cycle with zero root/tag syndrome;
+
+(II) two distinct incident physical edges of W have one common
+     exterior source color h, saturating its degree-two capacity;
+
+(III) W=Q Q for one simple all-O_5 PC cycle Q with nonzero
+      root/tag syndrome p.                         (1581)
+```
+
+All three terminals inherit the avoidance conditions.  In particular, in
+case (II),
+
+```text
+h notin {d} union Gamma,
+and the canonical payer layers of both saturated edges avoid P.         (1582)
+```
+
+In case (III), every source color of `Q` avoids `{d} union Gamma` and every
+canonical payer layer of `Q` avoids `P`.
+
+The third terminal is explicitly parity-degenerate as a binary base edge
+chain:
+
+```text
+[E(Q Q)]=[E(Q)]+[E(Q)]=0 in F_2^{E(H)}.           (1583)
+```
+
+Thus it must not be confused with the nonzero tag-even element in the
+PC-cycle span guaranteed by Section 433.  The remaining bridge is now
+precise: either exploit the named nonexceptional saturated source fiber in
+(II), or color-order a nonzero PC-generated cancellation so that it cannot
+collapse to the doubled-cycle artifact (III).  This section is a terminal
+interface, not yet an exclusion of those two branches.
