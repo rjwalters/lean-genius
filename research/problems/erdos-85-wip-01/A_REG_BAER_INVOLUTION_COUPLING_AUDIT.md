@@ -3715,6 +3715,25 @@ possibility: it asks whether a T-component-constant two-coloring satisfying
 (73rnz_cjf) can have the owner-restricted `At` parity forced by activation.
 The holonomy branch instead supplies the explicit odd-K D-cycle (73rnz_cjd).
 
+That holonomy already lies in the common matching alphabet.  A T-edge has
+K-value zero.  On a non-A D-edge `uv`, the codegree term `A^2_(u,v)` is zero,
+and (17) gives
+
+```text
+1[uv in K]=(A^3)_(u,v)=mu_(u,v).
+```
+
+Therefore an odd-holonomy cycle Z satisfies
+
+```text
+sum_(uv in E(Z) setminus T) mu_(u,v)=1.                 (73rnz_cjh)
+```
+
+Each summand is the parity of a C4-linear cross-neighborhood matching.  The
+cycle exit thus needs no further atomization; it is already an odd closed
+matching ledger.  Only the cut-potential exit still lacks a contradiction or
+a transport into the owner/T-word capacity system.
+
 The syndrome packing bound (73rnz_bm) removes one of those branches and
 rigidifies the other.  Suppose first that both endpoints are leaves and that
 `kappa_F` has no off-pole support.  Then (73rnz_ch) says `kappa_F=h`.  Since
