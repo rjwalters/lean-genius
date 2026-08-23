@@ -4968,8 +4968,9 @@ Every summand is exactly one oriented shore-anchor tuple from
 (73rnz_cjibkzr); survival is automatic for H edges as just noted.  Thus
 `alpha_i(H)` is the owner-i multiplicity with which H maps into the
 `rho^tri` census.  The two orientations for a fixed `(E_i,G)` cannot both
-occur, because `N_A(E_i)` and `N_A(G)` lie on opposite shores and are
-disjoint.  Equivalently, if
+occur: they would put both x and x' in
+`N_A(E_i) intersect N_A(G)`, giving the nonadjacent pair `E_i,G` two common
+neighbors and hence a C4.  Equivalently, if
 
 ```text
 e_i(v)=A_(E_i,v),       r(v)=sum_(G in R) A_(G,v),
