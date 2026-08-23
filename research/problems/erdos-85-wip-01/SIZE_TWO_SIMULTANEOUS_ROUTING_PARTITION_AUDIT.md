@@ -11303,3 +11303,57 @@ endpoint populations alone cannot pay it.  A closing identity must use the
 vertical triangle connections of the root--color state two-factor, or an
 equivalent H-tagged owner route, to pair the odd runs and odd closed cycles.
 No inference from a nonexistent global H matching is valid.
+
+## 222. The final anchor defect is owner-vector valued, not the scalar determinant
+
+Sections 218--221 deliberately analyze the scalar sum
+`alpha=alpha_1+alpha_2`.  That sum is a useful selector diagnostic, but it
+cannot be the final owner transport: it annihilates the diagonal class
+`(1,1)` which (73rnz_cjibkzd) and (73rnz_cjibkd) must preserve.
+
+A marked H unit is scalar before the pole choice, so at the owner interface
+it must be compared with both pole characters, i.e. with the diagonal vector
+`(1,1)`.  The exact owner-resolved defect of a marked same-side edge is
+
+```text
+u_vec(e):=(1+alpha_1(e),1+alpha_2(e)).                 (685)
+```
+
+Thus `1+det=1+alpha_1+alpha_2` from (677) is neither coordinate of (685)
+nor their sum (whose two constant units cancel).  Equations (677)--(684)
+remain correct scalar identities and locate selector/run holonomy, but they
+do not by themselves prove the required diagonal owner conservation.
+
+C4-freeness sharpens (685).  The two roots of an H edge already share their
+port witness, so they cannot both be adjacent to the same pole or to the
+same residual center.  Applying the ownerwise anchor formula (670) gives on
+the four equal scalar shore-state cells
+
+```text
+state cell     (alpha_1,alpha_2)       u_vec
+00--00         (0,0)                   (1,1)
+10--10         (0,0)                   (1,1)
+11--11         (1,1)                   (0,0)
+01--01         (1,1) if one root meets both poles,
+                (0,0) otherwise        (0,0) or (1,1). (686)
+```
+
+For `11--11`, odd pole parity makes each root meet exactly one pole and the
+shared-witness C4 exclusion forces the poles to be different; odd residual
+parity then gives one anchor for each owner.  For `01--01`, pole parity zero
+means zero or two pole neighbors, and at most one root can be the double-pole
+root.
+
+Consequently the `11--11` diagonal cell is paid pointwise at full owner
+resolution even though its scalar determinant is zero.  The genuine
+diagonal owner residue is supported only on
+
+```text
+00--00, 10--10, and the non-double-pole part of 01--01. (687)
+```
+
+This owner-vector correction supersedes treating the four diagonal terms of
+(682) as equally unresolved.  The remaining theorem is to pair the odd
+monochromatic runs in the three classes (687), together with the transported
+`n_00` margin and inactive owner cells, against the diagonal source
+`(73rnz_cjibkd)`.
