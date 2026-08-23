@@ -20942,3 +20942,78 @@ frequency parity encoded by (1377).  This sharpens the qualitative tag
 decoration after (1367), but it is still not a cancellation theorem: the
 next step must use the offset-payer distinctness and shelter bound of
 Sections 367--369 to convert these cells into new geometry.
+
+## 394. Large residual holonomy can avoid every strict shelter
+
+The residual-only cycle can be chosen so that every canonical offset tag
+opens new geometry.  Call an `O--O` edge `y` rooted at `x_i` **sheltered**
+when its offset payer from (1265) is the strict export `s_i`, rather than a
+core-inactive label.  Offset payers of distinct `O--O` edges with the same
+root are distinct by (1266), so at most one edge per root is sheltered.
+Thus the global sheltered set `S_sh` satisfies
+
+```text
+|S_sh|<=5.                                          (1380)
+```
+
+Delete the ten private vertices and then the edges in `S_sh`.  The first
+operation removes at most
+
+```text
+sum_(u in B)deg_M(u)=50-mu(B)<=30                  (1381)
+```
+
+edges, because every private vertex has the two artificial fixed
+memberships in (1362), so `mu(B)>=20`.  Double-counting an edge internal to
+`B` only makes (1381) a safer upper bound.  Therefore the residual graph
+
+```text
+G_sh:=M[O]-S_sh
+```
+
+has
+
+```text
+|V(G_sh)|=2q-15,
+|E(G_sh)|>=5q-25-30-5=5q-60.                      (1382)
+```
+
+If `G_sh` had no properly colored cycle, the sharpened Yeo bound (1369)
+would give
+
+```text
+5q-60<=2(2q-15)-3=4q-33,
+```
+
+and hence `q<=27`.  Consequently
+
+```text
+q>=28 implies G_sh has a simple properly colored cycle;
+in the binary range this holds for every q>=32.     (1383)
+```
+
+Let `Q` be the cycle in (1383), of length `L`.  Every one of its edges is
+`O--O` and unsheltered.  By (1271), its canonical offset payer is therefore
+core-inactive.  The distinctness argument of (1274) applies without the
+usual one-per-root loss: same-root payers are distinct by (1266), and
+different-root payers occupy different selected offset ports while having
+selected incidence one.  Hence
+
+```text
+Q forces exactly L distinct core-inactive offset payers.        (1384)
+```
+
+Each payer in (1384) has its unique outside companion in `B union O`.
+If `Comp_B(Q),Comp_O(Q)` denote the distinct companion endpoints by role,
+the global collision capacity (1290) specializes to
+
+```text
+L<=(q-7)|Comp_B(Q)|+(q-9)|Comp_O(Q)|.              (1385)
+```
+
+Thus the `q>=32` large binary branch no longer merely has an all-residual
+three-tag cycle.  It has one whose every edge contributes a different
+literal inactive payer and whose companion collisions retain the exact
+capacity price (1385).  The only unresolved merging is now at those named
+outside companions; none of the cycle's offset obligations can be absorbed
+by the five already-accounted strict exports.
