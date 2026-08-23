@@ -3285,6 +3285,24 @@ of `L setminus {p,r}` has odd D-incidence into X and every point outside
 a completely explicit D-boundary parity profile, suitable for the same
 source/defect cross-tag ledger as (73rnz_aw).
 
+The canonical K-transport extends to this syndrome with an explicit source.
+Recall `H=A^2(A+I)` and `K=H+T` over F2.  From `Ax=h` and
+`A^2x=Ah=1_L`,
+
+```text
+K x = T x + A^2 h + A h
+    = T x + D h + h + 1_L.                              (73rnz_bq)
+```
+
+The second equality uses `A^2h=Dh+h`, since h has even weight and
+`D=A^2+J+I`.  Thus (73rnz_bq) is the inhomogeneous two-pole analogue of the
+kernel-shore transport (19): K-incidence into X equals T-incidence into X,
+corrected only by adjacency in D to the two poles, the pole indicators, and
+the two empty lines.  In the minimum branch every one of those correction
+classes is already resolved by (73rnz_bo)--(73rnz_bp).  This supplies the
+promised K-coupling input for pricing the two-pencil defect units; it does not
+yet prove that their total contribution vanishes.
+
 The charge-free hypothesis also has an exact pivot-pairing normal form.
 Because every residual center G then has even J-degree, pair its incident
 switch edges arbitrarily (degree zero, two, or four).  A paired pair
