@@ -9123,3 +9123,45 @@ identity showing that the sums of the `rho` bits are paid by the actual V
 owner decorations at the run boundaries.  Without that identity the gap
 bits are honest residual degrees of freedom; with it, the singleton
 activation obstruction is eliminated.
+
+## 175. A totally silent H port forces two companion target ports
+
+Let an H port `z in V_j` have roots `x,x'`.  For the fixed secondary color
+`d`, the three two-element neighbor sets
+
+```text
+N_d(x), N_d(x'), N_d(z)                               (547)
+```
+
+are pairwise disjoint.  A common label between the two root sets is
+forbidden because `z` is already a common neighbor of `x,x'`; a common
+label between a root and the port would form a rooted V triangle through
+an H dart, forbidden by Section 160.  Thus the H wedge has exactly six
+distinct secondary incidences.
+
+Suppose the port state is silent for **every** target-active label:
+
+```text
+q_u(h)=0 for all u with t_u=1.                         (548)
+```
+
+By (511), none of the six labels in (547) can be active.  In particular,
+let `y_1,y_2` be the two `d`-neighbors of the port `z`.  Then `t_(y_k)=0`.
+Each `y_k` has exactly two `e`-neighbors and one is `z in V_j`; target
+evenness therefore forces its other neighbor `r_k` to lie in `V_j` too.
+
+The two companion ports are distinct.  If `r_1=r_2`, the pair `z,r_1`
+would have the two common neighbors `y_1,y_2`, a C4.  Hence
+
+```text
+z silent for all active u
+implies distinct r_1,r_2 in V_j with
+N_e(y_k)={z,r_k}.                                     (549)
+```
+
+So a totally silent H port cannot hide without spending capacity: it owns
+a canonical three-port target footprint `{z,r_1,r_2}`, with two distinct
+secondary labels joining the center port to its companions.  Footprints of
+different silent ports may overlap, so no global packing bound is claimed
+yet.  Their overlap graph is now the exact object whose parity must pay the
+positive silent-gap bits of Section 174.
