@@ -15653,3 +15653,70 @@ between different occurrences.  It replaces the arbitrary target escape
 choice in (972) by a canonical direction distinguished by the active
 source label, while retaining the complementary inactive-start direction
 as a second available escape.
+
+## 306. The overlay-selected escape starts at the inactive companion
+
+The particular mod-two escape `Theta_w` from Section 300 chooses the other
+direction at its initial port.  Let `A_w` be the active-pairing connection
+from the `W` stub at `w` to the first active cut occurrence on its `W--I`
+overlay component.  If this connection is nonzero, its internal path in
+`H_a^C[S]` starts with the active edge indexed by `y_w`.
+
+Consider the factor-pairing interval attached at the other end of `A_w`.
+At that active cut occurrence, the cut edge is missing from the induced
+factor on `S`, so the interval's unique internal edge is the last edge of
+`A_w`.  It therefore retraces `A_w`: every internal vertex of the active
+path has both factor edges in `H_a^C[S]`, forcing the continuation, until
+it reaches `w`.  There the active graph has degree one and the full factor
+has degree two, so the interval continues through the other edge, indexed
+by the inactive companion `y'_w`.  If `A_w` is zero-length, the same
+conclusion holds immediately at `w`.  Thus the duplicated active segment
+cancels in the symmetric difference defining `Theta_w^S`, leaving
+
+```text
+the unique Theta_w edge incident to w is E_e(y'_w). (986)
+```
+
+At the other boundary vertex `o_w`, the unique incident edge is the added
+terminal edge `E_e(z(w))`.  Hence the unique path component of `Theta_w`
+with boundary `{w,o_w}` has a canonically indexed label chain `Pi_w`
+satisfying
+
+```text
+w --[y'_w]-- ... --[z(w)]-- o_w.                    (987)
+```
+
+This identifies the two private endpoint labels of the actual overlay
+escape, not merely the direction of an arbitrary first-exit arc from
+Section 305.  When `z(w)=y'_w`, (987) is the single terminal edge, in
+agreement with the local case of Sections 303--304.
+
+For distinct inactive endpoint labels, let `Pi_w^int` be the label chain
+obtained from `Pi_w` by deleting its first and last labels.  The pointwise
+root chain from (969) is
+
+```text
+Lambda_w=[y_w]+[y'_w]+[z(w)].
+```
+
+Therefore the two inactive endpoint labels cancel in the cross-factor
+comparison:
+
+```text
+z(w)!=y'_w  implies
+Lambda_w+Pi_w=[y_w]+Pi_w^int.                        (988)
+```
+
+In the equal-label local case the two inactive occurrences already cancel
+inside `Lambda_w`, so instead
+
+```text
+z(w)=y'_w  implies  Lambda_w=[y_w],
+                         Pi_w=[y'_w].                (989)
+```
+
+Equations (988)--(989) are the first exact label-level telescope between
+the realized root and target routes.  Outside the completely local case,
+the discrepancy is reduced to the single active source label plus the
+strictly internal labels of the overlay-selected target path; no inactive
+endpoint label remains unmatched.
