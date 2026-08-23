@@ -1752,7 +1752,8 @@ normalization replaces the first term by `sum a_t d_t`, bundle conservation
 kills the second, and the unit label capacities bound the last term above by
 `sum c_tb`, contradicting the second line.  Thus the remaining uniform B.3
 task has a precise combinatorial form: construct the `(12ro)` weights from
-the three equality-pattern types without solving an instance-specific MILP.
+the restricted-Hall equality patterns without solving an instance-specific
+MILP.
 
 For the certificates in `(12rn)`, `(12ro)` has an equivalent and more local
 form.  Since every used feature has `iota=0`, define `p_t(b)` to be its integer
@@ -1788,7 +1789,8 @@ uniform ansatz: the state potential must distinguish joint signature/census
 patterns nonlinearly (or be constructed by a combinatorial propagation rule)
 rather than by a single additive score.
 
-The sparse integer ledgers nevertheless have a simple label-level skeleton.
+The sparse integer ledgers in the original eight-seed run nevertheless have a
+simple label-level skeleton.
 The integer audit now computes the minimum selected-label hitting sets of the
 negative demand roots' own supports.  They are unique:
 
@@ -1801,31 +1803,38 @@ branch 4, demand roots {6,7,11,14,18,22}: pivots {22,23}.      (12rr)
 Every positive capacity outside a demand root is priced at a pivot label,
 except the single slot `(root 27,label 7)` in the last pattern.  That exception
 is a one-step relay: label 7 is the nonpivot member of demand root 14's own
-support `{7,22}`.  Thus the three equality certificates are respectively a
+support `{7,22}`.  Thus those three equality certificates are respectively a
 one-pivot star, a two-pivot network, and a two-pivot network with one secondary
-relay.  This is a substantially smaller classification target than arbitrary
-joint state potentials: prove that every restricted-Hall equality pattern has
-one of these pivot/relay skeletons, then propagate the state multipliers along
-that skeleton to obtain `(12ro)`.
+relay.  This suggested a substantially smaller classification target than
+arbitrary joint state potentials, but the exact three-item taxonomy is
+run-local.
 
-There is also a root-free description of every displayed demand set.  In all
-three cases it is exactly
+A fresh twenty-seed run is the required correction.  The outer Z3 model
+enumeration is not canonical across processes; that run had only two
+restricted-Hall survivors, the old `(3,7,(1,2))` pattern and a new branch-3
+pattern `(3,12,(0,1))`.  The latter has a much smaller exact certificate:
+13 nonzeros, two unit demand rows, two signed external bundle states, and nine
+unit capacities, again with scalar `-1`.  Its unique pivot is label 2.
+
+This new pattern **refutes** the equality asserted in the former `(12rs)`.
+Pivot 2 occurs at roots `{2,10,18,35,42}`; roots `{2,10,18}` are on the B0
+side, but only `{2,10}` carry negative demand weight.  The surviving sampled
+statement is the strict localization
 
 ```text
-{ t : type(t) in {triple,hole} and B_t meets the pivot set }.   (12rs)
+every negative demand root is a triple/hole root whose own support meets
+the certificate's pivot set; equality need not hold.          (12rs*)
 ```
 
-For example, pivot 11 occurs in roots `{3,8,17,25,28}` in the branch-3
-survivor; the first four are precisely its triple/hole roots and root 28 is a
-pair-side root.  The two branch-4 pivot pairs behave identically.  The profile
-audit now checks `(12rs)` directly.  Hence both the pivot labels and the
-support of the negative demand weights have a design-theoretic description;
-only their multiplicities, the capacity slots, and the state-potential
-propagation remain to be classified.
+The profile audit now reports both this inclusion and whether equality happens
+in a particular certificate.  The pivot/relay language survives, but the
+demand subset must itself be part of the propagated state, not inferred from
+pivot incidence alone.
 
 The coefficient-two demand weights in the branch-4 ledgers are the cost of
 this canonical small skeleton, not an absolute necessity.  Constraining the
-`(12rs)` demand set to unit weights makes both branch-4 integer duals
+original run's pivot-incident demand set to unit weights makes both branch-4
+integer duals
 infeasible.  If arbitrary unit-weight demand rows are allowed instead, exact
 certificates reappear, but grow from 53/51 to 96/100 nonzeros, require three
 or four pivot labels, and include pair-side demand roots.  The compact
@@ -1849,7 +1858,13 @@ pivot/relay network, then verify nonnegativity on a bounded exceptional-route
 alphabet.  Trying to guess dozens of unrelated capacity prices obscures this
 near-equality structure.
 
-The 22 exceptions are localized as well.  Every exceptional source root has
+The new 13-term survivor strengthens rather than weakens `(12rt)`: 773 of its
+778 columns are tight and the other five have slack one.  All five exceptional
+sources are pivot-incidence roots.  Hence the robust observation is not the
+original numbered-root list but the flat-connection phenomenon itself.
+
+The original 22 exceptions are localized as well.  Every exceptional source
+root has
 an own support meeting the pivot set, except branch 4's single source root 46,
 whose support is the relay label `{7}` from `(12rr)`.  Thus no route starting
 outside the pivot/relay incidence neighborhood has positive slack.  The
@@ -1865,8 +1880,9 @@ a_t + sum_{b in B_u cap selected} q_t(b)
     - sum_{b in B_t cap selected} p_u(b) = epsilon(t,u),       (12ru)
 ```
 
-with `epsilon=0` on the 2252 tight columns and positive only on the 22 routes
-listed by `(12rt)`.  Thus the certificate is a flat root-to-port transport
+with `epsilon=0` on the tight columns and positive only on the exceptional
+routes listed by the audit.  Thus the certificate is a flat root-to-port
+transport
 connection away from a pivot-supported curvature set.  The scalar
 contradiction is its one-unit capacity defect after summing the flat transport
 against a normalized matching flow.  This is also the closest B.3 dictionary

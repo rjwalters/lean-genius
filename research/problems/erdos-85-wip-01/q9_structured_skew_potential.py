@@ -514,12 +514,14 @@ def integer_dual_pivot_profile(data: dict, nonzero: list[tuple]) -> tuple:
     predicted_demands = tuple(t for t in range(N)
                               if data['types'][t] in (0, 1)
                               and data['blocks'][t] & pivots)
+    demand_tuple = tuple(sorted(demand_roots))
     relay_capacities = [(name[1], name[2], value) for name, value in nonzero
                         if name[0] == 'capacity'
                         and name[1] not in demand_roots
                         and name[2] not in pivots]
-    return (tuple(sorted(demand_roots)), tuple(pivot_covers), pivot_occurrences,
-            predicted_demands == tuple(sorted(demand_roots)),
+    return (demand_tuple, tuple(pivot_covers), pivot_occurrences,
+            set(demand_tuple) <= set(predicted_demands),
+            predicted_demands == demand_tuple,
             tuple(relay_capacities))
 
 
