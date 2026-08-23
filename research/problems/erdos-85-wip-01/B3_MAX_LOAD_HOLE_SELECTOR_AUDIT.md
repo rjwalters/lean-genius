@@ -79,6 +79,17 @@ intersecting-hole negation with one shared relation, both exact partitions,
 and residual type ledgers remains `UNKNOWN` after 120 seconds.  Thus the cap
 is real new structure but does not by itself yield a solver terminal.
 
+The stronger proved cap bounds the intersection of the two full six-row
+residual packs by one.  `--hole-full-pack-overlap-cap` consumes it; the local
+system remains `SAT` in 1.9 seconds.  Since both residual block unions have
+cardinality 15 inside 24 points, their point-set intersection has cardinality
+at least six.  Such a point is covered uniquely by a residual neighbor of
+each hole, making it a natural double-saturation price candidate.  This
+selector passes 9 of 10 independent exact-sixpack models but is refuted by
+the tenth: its cover intersection has ten points and none has a strict scaled
+cover through denominator six.  Therefore the 15/9 overlap arithmetic plus
+the full-pack cap still needs exceptional-to-pair/full-relation agreement.
+
 The diagnostic option `--print-hole-packs` prints the selected blocks in a
 SAT model.  In one hole-reciprocal branch-3 model, an exact denominator-six
 scan found a strict cover at only one of the six hole incidences (scale 2,

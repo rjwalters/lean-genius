@@ -27,6 +27,10 @@ all 21 marked-pair rows.  It requires ``--all-holes --all-pair-rows``.
 distinct exceptional rows can select the same marked-pair center in at most
 one of the three supports.
 
+``--hole-full-pack-overlap-cap`` applies the stronger C4-free law to the
+entire six-row residual packs: two distinct holes share at most one residual
+center total, across both triple and pair rows.
+
 Exploratory only: UNSAT still requires an independently checked certificate
 or a kernel proof.
 """
@@ -54,7 +58,8 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
           all_pair_rows: bool = False, pair_reciprocity: bool = False,
           hole_reciprocity: bool = False,
           hole_pair_reciprocity: bool = False,
-          hole_pair_choice_overlap_cap: bool = False):
+          hole_pair_choice_overlap_cap: bool = False,
+          hole_full_pack_overlap_cap: bool = False):
     solver, data = outer.build(branch, timeout_ms)
     triples = data["triples"]
     pairs = list(data["marked_pairs"])
@@ -131,6 +136,18 @@ def build(branch: int, timeout_ms: int, all_holes: bool,
                        hole_pair_neighbors[s][e]), 1, 0)
                 for e in pairs
             ]) <= 1)
+    if hole_full_pack_overlap_cap:
+        if not all_holes:
+            raise ValueError("hole full-pack overlap cap requires all holes")
+        for r, s in combinations(range(pack_count), 2):
+            solver.add(Sum(
+                [If(And(hole_triple_neighbors[r][t],
+                        hole_triple_neighbors[s][t]), 1, 0)
+                 for t in triples]
+                + [If(And(hole_pair_neighbors[r][e],
+                          hole_pair_neighbors[s][e]), 1, 0)
+                   for e in pairs]
+            ) <= 1)
     if diagonal_rows:
         for r in range(8):
             anchor_block = {r, 8 + r, 16 + r}
@@ -344,6 +361,9 @@ def main() -> int:
         "--hole-pair-choice-overlap-cap", action="store_true",
     )
     parser.add_argument(
+        "--hole-full-pack-overlap-cap", action="store_true",
+    )
+    parser.add_argument(
         "--print-hole-packs", action="store_true",
         help="on SAT, print the selected exceptional blocks and six-packs",
     )
@@ -354,6 +374,7 @@ def main() -> int:
         args.all_pair_rows, args.pair_reciprocity,
         args.hole_reciprocity, args.hole_pair_reciprocity,
         args.hole_pair_choice_overlap_cap,
+        args.hole_full_pack_overlap_cap,
     )
     started = time.time()
     result = solver.check()
