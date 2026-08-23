@@ -31,6 +31,11 @@ def HasLocalGramPackingAvoiding (H W : V → V → Prop) (d : V → ℕ)
     (u w : V) : Prop :=
   ∃ X : Finset V, IsLocalGramPacking H W d u X ∧ w ∉ X
 
+/-- A demanded local packing at `u` which contains the candidate `w`. -/
+def HasLocalGramPackingContaining (H W : V → V → Prop) (d : V → ℕ)
+    (u w : V) : Prop :=
+  ∃ X : Finset V, IsLocalGramPacking H W d u X ∧ w ∈ X
+
 /-- The exact local alternative consumed by the Gram obstruction theorem. -/
 def HasLocalGramPackingObstruction (H W : V → V → Prop)
     (d : V → ℕ) : Prop :=
@@ -38,6 +43,13 @@ def HasLocalGramPackingObstruction (H W : V → V → Prop)
   ∃ u v w, W u v ∧
     IsForcedLocalGramNeighbor H W d u w ∧
     IsForcedLocalGramNeighbor H W d v w
+
+/-- A forced incidence whose reverse orientation is absent from every
+demanded local packing. -/
+def HasLocalGramPackingReciprocityObstruction
+    (H W : V → V → Prop) (d : V → ℕ) : Prop :=
+  ∃ u w, IsForcedLocalGramNeighbor H W d u w ∧
+    ∀ Y : Finset V, IsLocalGramPacking H W d w Y → u ∉ Y
 
 /-- A simultaneous choice of demanded local packings whose membership
 relation is symmetric.  This is the exact global compatibility retained by
@@ -60,6 +72,34 @@ theorem isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
   · intro havoid X hX
     by_contra hw
     exact havoid ⟨X, hX, hw⟩
+
+omit [Fintype V] in
+/-- **Existential negation interface for the reciprocity horn.**  Avoiding a
+forced-forward/impossible-reverse obstruction means that every ordered pair
+admits either a forward omitting packing or a reverse containing packing. -/
+theorem not_hasLocalGramPackingReciprocityObstruction_iff
+    [DecidableEq V] (H W : V → V → Prop) (d : V → ℕ) :
+    ¬ HasLocalGramPackingReciprocityObstruction H W d ↔
+      ∀ u w,
+        HasLocalGramPackingAvoiding H W d u w ∨
+        HasLocalGramPackingContaining H W d w u := by
+  constructor
+  · intro hno u w
+    by_cases havoid : HasLocalGramPackingAvoiding H W d u w
+    · exact Or.inl havoid
+    · right
+      by_contra hcontain
+      apply hno
+      refine ⟨u, w,
+        (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+          H W d u w).2 havoid, ?_⟩
+      intro Y hY huY
+      exact hcontain ⟨Y, hY, huY⟩
+  · intro halt ⟨u, w, huw, hreverse⟩
+    rcases halt u w with havoid | ⟨Y, hY, huY⟩
+    · exact (isForcedLocalGramNeighbor_iff_not_hasLocalGramPackingAvoiding
+        H W d u w).1 huw havoid
+    · exact hreverse Y hY huY
 
 omit [Fintype V] in
 /-- **Existential negation interface for the outer-design problem.**  The
@@ -271,6 +311,20 @@ theorem false_of_forcedLocalGramNeighbor_not_reverse
     (not_symmetricLocalGramPackingSelection_of_forced_not_reverse
       H W d u w huw hreverse)
 
+/-- Bundled consumer for the reciprocity obstruction. -/
+theorem false_of_localGramPackingReciprocityObstruction
+    (A H W : V → V → Prop) [DecidableEq V] [DecidableRel A]
+    (d : V → ℕ)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ u, (relationNeighborFinset A u).card = d u)
+    (hsupport : ∀ u v, A u v → H u v)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hbad : HasLocalGramPackingReciprocityObstruction H W d) :
+    False := by
+  rcases hbad with ⟨u, w, huw, hreverse⟩
+  exact false_of_forcedLocalGramNeighbor_not_reverse
+    A H W d hsymm hdegree hsupport hgram u w huw hreverse
+
 /-- **Capacity-deficit / forced-collision consumer.**  If the eligible local
 packing system has either no demanded packing at one row, or two
 `W`-conflicting rows force the same neighbor, then no symmetric residual
@@ -316,5 +370,7 @@ theorem false_of_localGramPacking_deficit_or_forced_collision
 #print axioms not_hasLocalGramPackingObstruction_of_symmetricSelection
 #print axioms not_symmetricLocalGramPackingSelection_of_forced_not_reverse
 #print axioms false_of_forcedLocalGramNeighbor_not_reverse
+#print axioms not_hasLocalGramPackingReciprocityObstruction_iff
+#print axioms false_of_localGramPackingReciprocityObstruction
 
 end Erdos85
