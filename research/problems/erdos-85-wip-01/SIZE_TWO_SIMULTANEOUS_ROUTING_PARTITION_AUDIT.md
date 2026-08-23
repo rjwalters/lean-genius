@@ -19322,3 +19322,62 @@ Thus secondary reuse is not only a parity alternative.  In the residual
 row it selects one fixed diagonal of the nonincident triple, and in the
 mixed row it is available only at one of the three possible private-owner
 positions.  All other tagged columns retain literal payer distinctness.
+
+## 366. The exceptional mixed owner creates a strict-offset five-cycle
+
+The owner position singled out by (1259) has an ambient geometric meaning.
+Let a `B--O` propagation label `y` have root `x_i`, private endpoint `w`,
+residual endpoint `o`, and suppose
+
+```text
+p(w)=p_(i+2).                                       (1260)
+```
+
+Let `s_i` be the unique strict-export label in the rigid cell
+`(x_i,p_(i+2))` from (777).  Then the five actual graph edges
+
+```text
+x_i--y,       y--w,       w--p_(i+2),
+p_(i+2)--s_i,             s_i--x_i                (1261)
+```
+
+form the cycle
+
+```text
+x_i -- y -- w -- p_(i+2) -- s_i -- x_i.           (1262)
+```
+
+The vertices are distinct.  In particular `y!=s_i`: the propagation edge
+of `y` has both endpoints outside `Z`, whereas the strict label `s_i` has
+the selected endpoint `p_(i+2)`.  Thus every `B--O` secondary double-payer
+allowed by Section 365 sits on a completely located strict-offset
+five-cycle.  The same cycle is present whenever the mixed owner has the
+offset position, even if its two tags choose non-`d` singleton payers.
+
+There is also a forced endpoint disjointness.  The two labels `y,s_i`
+already share the core neighbor `x_i`.  If their target neighborhoods met,
+that common target would be a second common neighbor and create a four-cycle.
+Hence
+
+```text
+N_e(y) intersect N_e(s_i)=emptyset.                (1263)
+```
+
+Write `N_e(s_i)={p_(i+2),v_i}`.  Since
+`N_e(y)={w,o}`, (1263) gives
+
+```text
+v_i notin {w,o}.                                   (1264)
+```
+
+Thus the exceptional mixed geometry does not recycle either propagation
+endpoint as the outside endpoint of the strict export.  It simultaneously
+uses the private owner edge in (1262) and forces the strict label to a third
+outside target role `v_i` distinct from both `w` and `o`.
+
+This remains a located cost rather than a contradiction: five-cycles are
+allowed.  But the only owner position at which a distinguished double-payer
+can occur is now coupled to a named strict export and an endpoint-disjoint
+outside mate.  A global holonomy completion must account for that strict
+mate in addition to the double-payer support (1256), rather than treating
+the offset owner as a purely columnwise coincidence.
