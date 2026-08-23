@@ -473,6 +473,94 @@ theorem orderNine_order18_highSpike_global_shore_equation
       · simp [hxc, hxZ] at hparts ⊢
         omega
 
+/-- Equation (31) with a sign parameter.  Applying the defect-transfer
+identity to the defect-isolated high set first evaluates the nested
+`A 1_H` sum in equation (30); applying it again to the order-eighteen shore
+then gives the advertised `8,3,7` coefficients.  Taking `σ=1` is the
+low-spike formula and `σ=-1` the high-spike formula. -/
+theorem orderNine_order18_spike_defect_equation_of_global_shore_equation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (H S Z : Finset V) (c : V) (σ : ℤ)
+    (hHcard : H.card = 3) (hScard : S.card = 18)
+    (hSH : Disjoint S H)
+    (hdegOrd : ∀ x ∉ H, G.degree x = 9)
+    (hdegHigh : ∀ h ∈ H, G.degree h = 10)
+    (hdefectHighIsolated : ∀ h ∈ H,
+      (secondOrderDefectGraph G).neighborFinset h = ∅)
+    (hglobal : ∀ x : V,
+      ((G.neighborFinset x ∩ S).card : ℤ) =
+        2 + (if x ∈ Z then 1 else 0) + σ * (if x = c then 1 else 0) -
+          ((G.neighborFinset x ∩ H).card : ℤ)) :
+    ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ S).card : ℤ) =
+        8 * (if x ∈ S then 1 else 0) + 3 +
+          7 * (if x ∈ H then 1 else 0) -
+          ((G.neighborFinset x ∩ Z).card : ℤ) -
+          σ * (if G.Adj x c then 1 else 0) := by
+  classical
+  let D := secondOrderDefectGraph G
+  intro x
+  have hDHzero : (D.neighborFinset x ∩ H).card = 0 := by
+    rw [Finset.card_eq_zero]
+    ext y
+    simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+    intro hyD hyH
+    have hxy : D.Adj x y := (D.mem_neighborFinset x y).mp hyD
+    have hyx : x ∈ D.neighborFinset y :=
+      (D.mem_neighborFinset y x).mpr ((D.adj_comm x y).mp hxy)
+    rw [hdefectHighIsolated y hyH] at hyx
+    simp at hyx
+  have htransferH := c4Free_secondOrderDefect_neighbor_inter_card_eq
+    G hfree H x
+  rw [hDHzero, hHcard] at htransferH
+  have hsumH :
+      (∑ y ∈ G.neighborFinset x,
+        ((G.neighborFinset y ∩ H).card : ℤ)) =
+      ((G.degree x : ℤ) - 1) * (if x ∈ H then 1 else 0) + 3 := by
+    omega
+  have hsumGlobal :
+      (∑ y ∈ G.neighborFinset x,
+        ((G.neighborFinset y ∩ S).card : ℤ)) =
+      2 * (G.degree x : ℤ) +
+        ((G.neighborFinset x ∩ Z).card : ℤ) +
+        σ * (if G.Adj x c then 1 else 0) -
+        (∑ y ∈ G.neighborFinset x,
+          ((G.neighborFinset y ∩ H).card : ℤ)) := by
+    calc
+      (∑ y ∈ G.neighborFinset x,
+        ((G.neighborFinset y ∩ S).card : ℤ)) =
+          ∑ y ∈ G.neighborFinset x,
+            (2 + (if y ∈ Z then 1 else 0) +
+              σ * (if y = c then 1 else 0) -
+              ((G.neighborFinset y ∩ H).card : ℤ)) := by
+                apply Finset.sum_congr rfl
+                intro y _
+                exact hglobal y
+      _ = 2 * (G.degree x : ℤ) +
+          ((G.neighborFinset x ∩ Z).card : ℤ) +
+          σ * (if G.Adj x c then 1 else 0) -
+          (∑ y ∈ G.neighborFinset x,
+            ((G.neighborFinset y ∩ H).card : ℤ)) := by
+              simp [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+                G.card_neighborFinset_eq_degree, G.mem_neighborFinset,
+                mul_comm]
+  have htransferS := c4Free_secondOrderDefect_neighbor_inter_card_eq
+    G hfree S x
+  rw [hScard, hsumGlobal, hsumH] at htransferS
+  by_cases hxH : x ∈ H
+  · have hxS : x ∉ S := fun hxS ↦ Finset.disjoint_left.mp hSH hxS hxH
+    rw [hdegHigh x hxH] at htransferS
+    simp [hxH, hxS] at htransferS ⊢
+    ring_nf at htransferS ⊢
+    exact htransferS
+  · rw [hdegOrd x hxH] at htransferS
+    simp [hxH] at htransferS ⊢
+    ring_nf at htransferS ⊢
+    exact htransferS
+
 /-- Evaluation of the high-spike form of audit equation (31) at a high
 root.  Defect-high isolation makes the left side zero, while the high root
 lies in neither ordinary shore. -/
@@ -630,6 +718,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_partner_bounds
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_unique_spike
 #print axioms Erdos85.orderNine_order18_lowSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_highSpike_global_shore_equation
+#print axioms Erdos85.orderNine_order18_spike_defect_equation_of_global_shore_equation
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
