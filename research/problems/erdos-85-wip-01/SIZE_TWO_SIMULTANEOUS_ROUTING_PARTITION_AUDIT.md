@@ -14733,3 +14733,43 @@ degree-one vertex of `H_a^C`; therefore the reverse tags of Section 284 are
 not claimed to pair bijectively with these intervals.  The next price must
 couple the odd root-indexed family (908) to the nonzero aggregate reverse
 tag (901).
+
+## 288. Reverse-tag terminals connect oddly to active cut occurrences
+
+There is nevertheless a canonical parity bridge inside the active subgraph.
+Let
+
+```text
+C_a(S):={w in S:
+         the number of H_a^C cut edges incident to w is odd}.      (912)
+```
+
+Every cut edge has exactly one endpoint in `S`, so (896) gives
+`|C_a(S)|=1 mod 2`.  The reverse-tag terminal set `W_a(S)` is odd by
+(897).  Split the degree of `H_a^C` at a vertex of `S` into its internal
+and cut parts.  Modulo two this gives the exact boundary identity
+
+```text
+partial(H_a^C[S])=W_a(S) triangle C_a(S).            (913)
+```
+
+The noncycle components of `H_a^C[S]` pair the vertices on the right side
+by their unique internal paths.  Put `I:=W_a(S) intersect C_a(S)` and pair
+each vertex of `I` to itself by a zero-length connection.  Among the
+remaining internal paths let `p_WC` count those with one endpoint in
+`W_a(S)\C_a(S)` and one in `C_a(S)\W_a(S)`.  Counting the former endpoint
+set gives
+
+```text
+|W_a(S)\C_a(S)|=2p_WW+p_WC,
+|I|+p_WC=1 mod 2.                                   (914)
+```
+
+Thus an odd number of the resulting connections join a reverse-tag
+singleton terminal to an active cut occurrence, allowing a zero-length
+join when the two roles occur at the same port.  In particular at least one
+actual `w in W_a(S)` is connected inside `H_a^C[S]` to a port supporting
+one active cut edge.  This closes the scope gap noted after (911) at the
+level of parity: the reverse tags and the active ends of the residual cut
+ledger are not bijective, but an odd nonempty family of canonical internal
+connections links the two occurrence systems.
