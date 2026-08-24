@@ -84,6 +84,57 @@ theorem SizeTwoCyclicRoutingData.agreementAtShift_of_agreementAt
   intro x
   exact hagreement x d hd
 
+/-- Agreement mass at an involutive nonzero separation is even.  In
+particular, at an even modulus this applies to the antipodal shift `q/2`:
+base translation by that shift freely pairs agreement witnesses with equal
+cardinality. -/
+theorem sizeTwoCrossShiftedPermutationAgreement_antipodal_sum_even
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (d : ZMod q) (hd : d ≠ 0) (horder : d + d = 0)
+    (t : sizeTwoAllowedDifference q a) :
+    Even (∑ x : ZMod q,
+      Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P x d t t)) := by
+  classical
+  let sigma : ZMod q → ZMod q := fun x => x + d
+  let weight : ZMod q → ZMod 2 := fun x =>
+    Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+      q a P x d t t)
+  have hpair (x : ZMod q) : weight x + weight (sigma x) = 0 := by
+    have hs := sizeTwoCrossShiftedPermutationAgreement_card_neg_shift
+      P x d t
+    have hneg : -d = d := by
+      apply add_left_cancel (a := d)
+      simpa using horder.symm
+    rw [hneg] at hs
+    change ((Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+      q a P x d t t) : ℕ) : ZMod 2) +
+      Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P (x + d) d t t) = 0
+    rw [← hs]
+    exact CharTwo.add_self_eq_zero _
+  have hsum : (∑ x : ZMod q, weight x) = 0 := by
+    apply Finset.sum_ninvolution sigma
+    · intro x
+      exact hpair x
+    · intro x _ hfix
+      apply hd
+      have h := congrArg (fun z : ZMod q => z - x) hfix
+      simpa [sigma, sub_eq_add_neg, add_assoc] using h
+    · intro x
+      exact Finset.mem_univ _
+    · intro x
+      dsimp [sigma]
+      rw [add_assoc, horder, add_zero]
+  have hcast :
+      (((∑ x : ZMod q,
+        Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+          q a P x d t t)) : ℕ) : ZMod 2) = 0 := by
+    rw [Nat.cast_sum]
+    exact hsum
+  exact ZMod.natCast_eq_zero_iff_even.mp hcast
+
 end
 
 end Erdos85
@@ -91,3 +142,5 @@ end Erdos85
 #print axioms
   Erdos85.sizeTwoCrossShiftedPermutationAgreement_card_neg_shift
 #print axioms Erdos85.SizeTwoCyclicRoutingData.agreementAtShift_neg_iff
+#print axioms
+  Erdos85.sizeTwoCrossShiftedPermutationAgreement_antipodal_sum_even
