@@ -23,7 +23,7 @@ the shore and incidence identities forces an injective private-neighbor
 matching.  The hypotheses `hout` and `hrepUpper` are exactly the two graph
 facts supplied by the full-line final-layer construction: exceptional lines
 live wholly on the shore, and shore replication is at most three. -/
-theorem pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatching
+theorem pureEndpoint_fourClass_exactReplicationProfile_and_privateMatching
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -34,6 +34,12 @@ theorem pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatch
     (hshore : 2 * S.card = q * q + q)
     (hout : ∀ p ∉ S, (G.neighborFinset p ∩ C).card = 0)
     (hrepUpper : ∀ p ∈ S, (G.neighborFinset p ∩ C).card ≤ 3) :
+    (∀ x, x ∈ S ↔
+      (G.neighborFinset x ∩ C).card = 1 ∨
+      (G.neighborFinset x ∩ C).card = 2) ∧
+    (S.filter fun x => (G.neighborFinset x ∩ C).card = 1).card = q ∧
+    2 * (S.filter fun x => (G.neighborFinset x ∩ C).card = 2).card =
+      q * (q - 1) ∧
     (∀ i ∈ C, ∀ j ∈ C, i ≠ j →
       ¬(secondOrderDefectGraph G).Adj i j) ∧
     (∀ x, (G.neighborFinset x ∩ C).card ≤ 2) ∧
@@ -192,7 +198,7 @@ theorem pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatch
       exact hcherryRestrict
     rw [hCcard] at hle
     nlinarith [two_mul_choose_two q]
-  obtain ⟨_hn₀, _hn₁, hn₃, _hn₂, hpairsEq⟩ :=
+  obtain ⟨hn₀, hn₁, hn₃, hn₂, hpairsEq⟩ :=
     binarySquare_pureExceptional_fourClass_endpoint_profile
       hshore hclasses hincidence hpairs
   have hcherryEq : (∑ p : V, (rep p).choose 2) = C.card.choose 2 := by
@@ -269,9 +275,60 @@ theorem pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatch
     have hpos : 0 < ((G.neighborFinset x ∩ C).card).choose 3 :=
       Nat.choose_pos hthree
     omega
-  exact ⟨hDindependent, hcap,
+  have hsupport : ∀ x, x ∈ S ↔ rep x = 1 ∨ rep x = 2 := by
+    intro x
+    constructor
+    · intro hxS
+      rcases hcases x hxS with hx0 | hx1 | hx2 | hx3
+      · have hxN₀ : x ∈ N₀ := Finset.mem_filter.mpr ⟨hxS, hx0⟩
+        have : 0 < N₀.card := Finset.card_pos.mpr ⟨x, hxN₀⟩
+        omega
+      · exact Or.inl hx1
+      · exact Or.inr hx2
+      · have hxN₃ : x ∈ N₃ := Finset.mem_filter.mpr ⟨hxS, hx3⟩
+        have : 0 < N₃.card := Finset.card_pos.mpr ⟨x, hxN₃⟩
+        omega
+    · intro hxRep
+      by_contra hxS
+      have houtx := hout x hxS
+      change rep x = 0 at houtx
+      omega
+  have hsupport' : ∀ x, x ∈ S ↔
+      (G.neighborFinset x ∩ C).card = 1 ∨
+      (G.neighborFinset x ∩ C).card = 2 := by
+    simpa [rep] using hsupport
+  have hn₁' :
+      (S.filter fun x => (G.neighborFinset x ∩ C).card = 1).card = q := by
+    simpa [N₁, rep] using hn₁
+  have hn₂' :
+      2 * (S.filter fun x => (G.neighborFinset x ∩ C).card = 2).card =
+        q * (q - 1) := by
+    simpa [N₂, rep] using hn₂
+  exact ⟨hsupport', hn₁', hn₂', hDindependent, hcap,
     exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
       G hfree C hCcard hline hDindependent htripleZero⟩
+
+/-- Compatibility projection exposing defect independence, the replication
+cap, and the private matching. -/
+theorem pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatching
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (C S : Finset V) (hCcard : C.card = q)
+    (hline : ∀ i ∈ C, G.degree i = q)
+    (hshore : 2 * S.card = q * q + q)
+    (hout : ∀ p ∉ S, (G.neighborFinset p ∩ C).card = 0)
+    (hrepUpper : ∀ p ∈ S, (G.neighborFinset p ∩ C).card ≤ 3) :
+    (∀ i ∈ C, ∀ j ∈ C, i ≠ j →
+      ¬(secondOrderDefectGraph G).Adj i j) ∧
+    (∀ x, (G.neighborFinset x ∩ C).card ≤ 2) ∧
+      ∃ p : {i // i ∈ C} → V, Function.Injective p ∧
+        ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ C = {i.1} := by
+  have h := pureEndpoint_fourClass_exactReplicationProfile_and_privateMatching
+    G hfree C S hCcard hline hshore hout hrepUpper
+  exact ⟨h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2⟩
 
 /-- Compatibility projection retaining the original endpoint structure API. -/
 theorem pureEndpoint_fourClass_defectIndependent_and_privateMatching
@@ -315,6 +372,8 @@ end
 end Erdos85
 
 #print axioms Erdos85.exists_injective_privateNeighbor_of_pureEndpoint_fourClass
+#print axioms
+  Erdos85.pureEndpoint_fourClass_exactReplicationProfile_and_privateMatching
 #print axioms
   Erdos85.pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatching
 #print axioms
