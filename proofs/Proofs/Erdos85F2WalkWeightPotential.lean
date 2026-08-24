@@ -113,6 +113,30 @@ theorem exists_vertexPotential_of_f2WalkWeight_closed_eq_zero
   exact fun p q => f2WalkWeight_pathIndependent_of_closed_eq_zero
     k hsymm hclosed p q
 
+/-- **Odd holonomy or additive potential.**  On a connected graph, a
+symmetric binary edge price either has a closed walk of odd total price, or
+is the coboundary of a vertex potential.  This is the exact global
+cycle-gauge dichotomy in `(73rnz_cjibkq)`. -/
+theorem exists_closedWalk_weight_one_or_exists_vertexPotential
+    {V : Type*} {G : SimpleGraph V} (k : V → V → ZMod 2)
+    (hsymm : ∀ u v, k u v = k v u)
+    (root : V) (hconn : ∀ v, Nonempty (G.Walk root v)) :
+    (∃ (u : V) (p : G.Walk u u), f2WalkWeight k p = 1) ∨
+      ∃ lam : V → ZMod 2, ∀ {u v}, G.Adj u v →
+        k u v = lam u + lam v := by
+  by_cases hzero : ∀ {u} (p : G.Walk u u), f2WalkWeight k p = 0
+  · right
+    exact exists_vertexPotential_of_f2WalkWeight_closed_eq_zero
+      k hsymm root hconn hzero
+  · left
+    obtain ⟨u, hu⟩ := not_forall.mp hzero
+    obtain ⟨p, hp⟩ := not_forall.mp hu
+    refine ⟨u, p, ?_⟩
+    have hbinary : ∀ z : ZMod 2, z = 0 ∨ z = 1 := by decide
+    rcases hbinary (f2WalkWeight k p) with hz | hone
+    · exact (hp hz).elim
+    · exact hone
+
 end
 
 end Erdos85
@@ -120,3 +144,4 @@ end Erdos85
 #print axioms Erdos85.f2WalkWeight_append
 #print axioms Erdos85.exists_vertexPotential_of_f2WalkWeight_pathIndependent
 #print axioms Erdos85.exists_vertexPotential_of_f2WalkWeight_closed_eq_zero
+#print axioms Erdos85.exists_closedWalk_weight_one_or_exists_vertexPotential
