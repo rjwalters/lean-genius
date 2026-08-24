@@ -42,6 +42,12 @@ def main() -> None:
         help="shrink reciprocity blocks and cap fibre/separation groups")
     parser.add_argument("--dump-internal-profile", action="store_true",
         help="on SAT, print internal edges and occupied bases in each fibre")
+    parser.add_argument("--dump-collision-separations", action="store_true",
+        help="on SAT, summarize same-fibre common targets by base separation")
+    parser.add_argument("--minimize-cap-excess", action="store_true",
+        help="in --no-caps mode, minimize total common-target excess over one")
+    parser.add_argument("--max-cap-excess", type=int,
+        help="in --no-caps mode, bound total common-target excess over one")
     parser.add_argument("--require-internal-fibres", action="store_true",
         help="require at least one internal edge or arc in every allowed fibre")
     parser.add_argument("--require-internal-full-support", action="store_true",
@@ -68,6 +74,18 @@ def main() -> None:
         parser.error("core modes cannot be combined with --dimacs")
     if args.no_caps and args.only_cap_pair is not None:
         parser.error("--no-caps and --only-cap-pair are incompatible")
+    if args.minimize_cap_excess and not args.no_caps:
+        parser.error("--minimize-cap-excess requires --no-caps")
+    if args.max_cap_excess is not None and not args.no_caps:
+        parser.error("--max-cap-excess requires --no-caps")
+    if args.max_cap_excess is not None and args.max_cap_excess < 0:
+        parser.error("--max-cap-excess must be nonnegative")
+    if (args.minimize_cap_excess or args.max_cap_excess is not None) and \
+            args.dimacs is not None:
+        parser.error("cap-excess diagnostics currently require native Z3")
+    if args.minimize_cap_excess and (args.reciprocity_core or
+            args.joint_group_core or args.joint_separation_core):
+        parser.error("--minimize-cap-excess is incompatible with core modes")
 
     q = args.q
     holes = {args.a % q, (-1 - args.a) % q}
@@ -88,7 +106,7 @@ def main() -> None:
             variables[key] = z3.Bool(f"e_{x}_{t}_{y}_{u}")
         return variables[key]
 
-    solver = z3.Solver()
+    solver = z3.Optimize() if args.minimize_cap_excess else z3.Solver()
     reciprocity_assumptions: list[z3.BoolRef] = []
     cap_assumptions: dict[object, z3.BoolRef] = {}
 
@@ -273,6 +291,23 @@ def main() -> None:
             parser.error("forced two-path needs an allowed fibre and distinct bases")
         solver.add(edge((x, t), (y, t)), edge((y, t), (z, t)))
 
+    cap_excess_objective = None
+    if args.minimize_cap_excess or args.max_cap_excess is not None:
+        excess_terms = []
+        for t in differences:
+            for x, z in combinations(range(q), 2):
+                common = z3.Sum([
+                    z3.If(z3.And(edge((x, t), target),
+                                 edge((z, t), target)), 1, 0)
+                    for target in vertices
+                ])
+                excess_terms.append(z3.If(common > 1, common - 1, 0))
+        cap_excess_objective = z3.Sum(excess_terms)
+        if args.max_cap_excess is not None:
+            solver.add(cap_excess_objective <= args.max_cap_excess)
+        if args.minimize_cap_excess:
+            solver.minimize(cap_excess_objective)
+
     if args.dimacs is not None:
         goal = z3.Goal()
         goal.add(*solver.assertions())
@@ -328,6 +363,29 @@ def main() -> None:
                 print(f"  internal fibre={t} edges={len(internal)} "
                       f"occupied_bases={len(occupied)} bases={occupied} "
                       f"degrees={degrees}")
+    if result == z3.sat and args.dump_collision_separations:
+        model = solver.model()
+        if cap_excess_objective is not None:
+            print("  minimum_cap_excess=" +
+                  str(model.eval(cap_excess_objective).as_long()))
+        for t in differences:
+            summary: dict[int, list[int]] = {}
+            for x, z in combinations(range(q), 2):
+                common = sum(z3.is_true(model.eval(
+                    z3.And(edge((x, t), target), edge((z, t), target)),
+                    model_completion=True)) for target in vertices)
+                raw = (z - x) % q
+                separation = min(raw, (-raw) % q)
+                data = summary.setdefault(separation, [0, 0, 0, 0])
+                data[0] += 1
+                data[1] += common
+                data[2] += common > 0
+                data[3] += max(0, common - 1)
+            for separation, (pairs, mass, occupied, excess) in sorted(
+                    summary.items()):
+                print(f"  collision fibre={t} separation={separation} "
+                      f"pairs={pairs} mass={mass} occupied={occupied} "
+                      f"cap_excess={excess}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:
