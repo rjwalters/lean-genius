@@ -1991,6 +1991,101 @@ theorem orderNine_order18_owner_neighbor_shore_split
       (Finset.disjoint_of_subset_right Finset.inter_subset_left hdisj)
   rw [← hshore, ← hinter, Finset.card_union_of_disjoint hinterDisj]
 
+/-- Low-spike composition of the 29-point set.  Nine `Z`-neighbors at each
+high root give high-incidence mass 27; after the unique bin-three owner
+contributes three, exactly 24 bin-one points remain, leaving four bin-zero
+points. -/
+theorem orderNine_order18_lowSpike_lowSet_composition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (Z : Finset V)
+    (hZsub : Z ⊆ (Finset.univ : Finset V) \ squareOrderHighVertices G 9)
+    (hZcard : Z.card = 29) (hownerZ : owner ∈ Z)
+    (hrootDegree : ∀ h ∈ squareOrderHighVertices G 9,
+      (G.neighborFinset h ∩ Z).card = 9) :
+    let P := Z ∩ squareOrderNineLowIncidenceBin G 1
+    let W := Z ∩ squareOrderNineLowIncidenceBin G 0
+    P.card = 24 ∧ W.card = 4 ∧ Z = insert owner (P ∪ W) := by
+  classical
+  dsimp only
+  let k := squareOrderHighIncidenceCount G 9
+  let P := Z ∩ squareOrderNineLowIncidenceBin G 1
+  let W := Z ∩ squareOrderNineLowIncidenceBin G 0
+  have hcap : ∀ z ∈ Z, z ≠ owner → k z ≤ 1 := by
+    intro z hz hne
+    exact orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+      G hp hhigh hc2 hc3 owner z howner (hZsub hz) hne
+  have hpartition0 := lowSet_eq_insert_incidence_one_union_zero
+    owner Z k hownerZ hcap
+  have hfilter (i : ℕ) : Z.filter (fun z ↦ k z = i) =
+      Z ∩ squareOrderNineLowIncidenceBin G i := by
+    ext z
+    simp only [Finset.mem_filter, Finset.mem_inter]
+    constructor
+    · rintro ⟨hz, hk⟩
+      exact ⟨hz, Finset.mem_filter.mpr ⟨hZsub hz, hk⟩⟩
+    · rintro ⟨hz, hzB⟩
+      exact ⟨hz, (Finset.mem_filter.mp hzB).2⟩
+  rw [hfilter 1, hfilter 0] at hpartition0
+  change Z = insert owner (P ∪ W) at hpartition0
+  have hownerNotP : owner ∉ P := by
+    intro ho
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp ho).2).2
+    have hk3 := (Finset.mem_filter.mp howner).2
+    omega
+  have hownerNotW : owner ∉ W := by
+    intro ho
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp ho).2).2
+    have hk3 := (Finset.mem_filter.mp howner).2
+    omega
+  have hPW : Disjoint P W := by
+    rw [Finset.disjoint_left]
+    intro z hzP hzW
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzP).2).2
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp hzW).2).2
+    omega
+  have hmass : (∑ z ∈ Z, k z) = 27 := by
+    have hswap := sum_card_neighborFinset_inter_comm G Z
+      (squareOrderHighVertices G 9)
+    change (∑ z ∈ Z, k z) = ∑ h ∈ squareOrderHighVertices G 9,
+      (G.neighborFinset h ∩ Z).card at hswap
+    rw [hswap]
+    calc
+      (∑ h ∈ squareOrderHighVertices G 9,
+        (G.neighborFinset h ∩ Z).card) =
+          ∑ _h ∈ squareOrderHighVertices G 9, 9 := by
+            apply Finset.sum_congr rfl
+            intro h hh
+            exact hrootDegree h hh
+      _ = 27 := by simp [hhigh]
+  have hPsum : (∑ z ∈ P, k z) = P.card := by
+    rw [Finset.card_eq_sum_ones]
+    apply Finset.sum_congr rfl
+    intro z hz
+    exact (Finset.mem_filter.mp (Finset.mem_inter.mp hz).2).2
+  have hWsum : (∑ z ∈ W, k z) = 0 := by
+    apply Finset.sum_eq_zero
+    intro z hz
+    exact (Finset.mem_filter.mp (Finset.mem_inter.mp hz).2).2
+  have hownerK : k owner = 3 := (Finset.mem_filter.mp howner).2
+  have hownerNotPW : owner ∉ P ∪ W := by simp [hownerNotP, hownerNotW]
+  have hmassSplit : (∑ z ∈ Z, k z) = 3 + P.card := by
+    rw [hpartition0, Finset.sum_insert hownerNotPW,
+      Finset.sum_union hPW, hPsum, hWsum, hownerK]
+    omega
+  have hPcard : P.card = 24 := by omega
+  have hcardSplit : Z.card = 1 + P.card + W.card := by
+    rw [hpartition0, Finset.card_insert_of_notMem hownerNotPW,
+      Finset.card_union_of_disjoint hPW]
+    omega
+  have hWcard : W.card = 4 := by omega
+  exact ⟨hPcard, hWcard, hpartition0⟩
+
 /-- Bin-zero analogue of the composed partner provider.  An exceptional
 bin-zero owner-neighbor loses the deleted owner from its degree-eight defect
 neighborhood, giving defect shore count `7/0`; a regular one has `8/0`.
@@ -2195,6 +2290,7 @@ theorem false_of_orderNine_order18_lowOwner_of_pointwise_target_profiles
 #print axioms Erdos85.orderNine_order18_partner_W_degree_of_lowSet_partition
 #print axioms Erdos85.orderNine_order18_lowSpike_partner_W_degree_eq_if
 #print axioms Erdos85.orderNine_order18_owner_neighbor_shore_split
+#print axioms Erdos85.orderNine_order18_lowSpike_lowSet_composition
 #print axioms Erdos85.orderNine_order18_lowSpike_binZero_W_degree
 #print axioms Erdos85.orderNine_order18_lowSpike_binZero_W_degree_positive
 #print axioms Erdos85.exists_source_target_in_sdiff_of_inter_card_le_one
