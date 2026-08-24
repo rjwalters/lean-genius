@@ -63,4 +63,63 @@ theorem exists_pairGroups_of_collisionGraph_perfectMatching
 
 #print axioms exists_pairGroups_of_collisionGraph_perfectMatching
 
+/-- A perfect matching has exactly half as many edges as vertices.  This is the
+cardinality identity needed to turn the matching groups into the numerical
+budget used by the local Gram-packing contradiction. -/
+theorem twice_card_edges_eq_card_of_isPerfectMatching
+    {G : SimpleGraph V} [Fintype V] [DecidableEq V]
+    (M : G.Subgraph)
+    (hM : M.IsPerfectMatching) :
+    2 * M.spanningCoe.edgeSet.ncard = Fintype.card V := by
+  classical
+  letI : Fintype M.spanningCoe.edgeSet := M.spanningCoe.fintypeEdgeSet
+  have hedgeCard : M.spanningCoe.edgeFinset.card =
+      M.spanningCoe.edgeSet.ncard := by
+    rw [M.spanningCoe.edgeFinset_card]
+    exact Set.fintypeCard_eq_ncard _
+  calc
+    2 * M.spanningCoe.edgeSet.ncard =
+        2 * M.spanningCoe.edgeFinset.card := by
+      rw [hedgeCard]
+    _ = ∑ v, M.spanningCoe.degree v :=
+      M.spanningCoe.sum_degrees_eq_twice_card_edges.symm
+    _ = ∑ v, M.degree v := by
+      apply Finset.sum_congr rfl
+      intro v _
+      exact M.degree_spanningCoe v
+    _ = ∑ _v : V, 1 := by
+      apply Finset.sum_congr rfl
+      intro v _
+      exact (SimpleGraph.Subgraph.isPerfectMatching_iff_forall_degree.mp hM v)
+    _ = Fintype.card V := by simp
+
+/-- Tutte's condition on the collision graph directly supplies pair groups
+covering every row, with twice the group count bounded by the number of rows. -/
+theorem exists_pairGroups_of_collisionGraph_of_noTutteViolator
+    [Fintype V] [DecidableEq V] [Fintype P] [DecidableEq P]
+    (B : V → Finset P)
+    (hTutte : ∀ u : Set V, ¬(blockCollisionGraph B).IsTutteViolator u) :
+    ∃ groups : Finset (Finset V),
+      2 * groups.card ≤ Fintype.card V ∧
+      (∀ S ∈ groups, ∃ p, ∀ x ∈ S, p ∈ B x) ∧
+      ∀ x, ∃ S ∈ groups, x ∈ S := by
+  classical
+  obtain ⟨M, hM⟩ := SimpleGraph.tutte.mpr hTutte
+  letI : Fintype M.spanningCoe.edgeSet := M.spanningCoe.edgeSet.toFinite.fintype
+  obtain ⟨groups, hgroupsCard, hgroupsPoint, hgroupsCover⟩ :=
+    exists_pairGroups_of_collisionGraph_perfectMatching B M hM
+  have hedgeCard : M.spanningCoe.edgeFinset.card =
+      M.spanningCoe.edgeSet.ncard := by
+    rw [M.spanningCoe.edgeFinset_card]
+    exact Set.fintypeCard_eq_ncard _
+  refine ⟨groups, ?_, hgroupsPoint, hgroupsCover⟩
+  calc
+    2 * groups.card ≤ 2 * M.spanningCoe.edgeFinset.card :=
+      Nat.mul_le_mul_left 2 hgroupsCard
+    _ = 2 * M.spanningCoe.edgeSet.ncard := congrArg (2 * ·) hedgeCard
+    _ = Fintype.card V := twice_card_edges_eq_card_of_isPerfectMatching M hM
+
+#print axioms twice_card_edges_eq_card_of_isPerfectMatching
+#print axioms exists_pairGroups_of_collisionGraph_of_noTutteViolator
+
 end Erdos85
