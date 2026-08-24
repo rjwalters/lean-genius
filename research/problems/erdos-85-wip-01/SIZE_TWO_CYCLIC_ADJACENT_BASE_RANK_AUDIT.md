@@ -217,3 +217,16 @@ next falsifier is to sample other rank-70 witnesses and ask whether every
 one has a period-two boundary backbone with defects charged to neighboring
 `E`; a counterexample would cut the boundary-matching route without
 affecting PMR itself.
+
+That falsifier was run immediately with Z3 seeds 1 through 5.  Every seed
+again produced a rank-at-most-70 witness, but the exact alternating backbone
+and unique exceptional layer did **not** persist: some witnesses repeat one
+layer on consecutive bases, and others contain the first witness's `C`-type
+layer at two or three bases.  Thus the one-defect monodromy picture is cut.
+
+A weaker low-complexity observation survives only as a lead: each sampled
+witness used three adjacent-layer maps, with long repeated stretches.  This
+may reflect the order-two Fourier charge, but five solver samples do not
+establish a component bound.  Any boundary-layer proof must therefore use a
+quantitative charge over a sequence of partial bijections; it cannot assume
+an alternating normal form or a unique closure defect.

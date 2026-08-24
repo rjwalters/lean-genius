@@ -91,6 +91,8 @@ def main() -> None:
     parser.add_argument("--cap-fibres", type=int, nargs="+",
         help="impose full pair caps only in the listed endpoint fibres")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
+    parser.add_argument("--random-seed", type=int, default=0,
+        help="Z3 random seed for reproducible witness sampling")
     parser.add_argument("--dimacs")
     args = parser.parse_args()
 
@@ -477,6 +479,7 @@ def main() -> None:
         return
 
     solver.set(timeout=args.timeout_ms)
+    solver.set(random_seed=args.random_seed)
     active_assumptions = reciprocity_assumptions + list(cap_assumptions.values())
     result = solver.check(*active_assumptions)
     print(f"q={q} a={args.a % q} vertices={len(vertices)} "
