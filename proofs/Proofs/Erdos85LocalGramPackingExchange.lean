@@ -99,9 +99,39 @@ theorem exists_joint_of_exchangeCoupledAt_of_forced
       ((not_isForcedLocalGramNeighbor_of_singleSwap
         H W d x u v huv C huC hvC hu hv).1 hforced)
 
+/-- Conflicting candidates cannot occupy the joint horn of exchange coupling;
+the coupling therefore supplies an actual one-row swap. -/
+theorem exists_singleSwap_of_exchangeCoupledAt_of_conflict
+    (H W : V → V → Prop) (d : V → ℕ) (x u v : V)
+    (huv : u ≠ v) (huvW : W u v)
+    (hcoupled : AreLocalGramPackingExchangeCoupledAt H W d x u v) :
+    ∃ C : Finset V,
+      u ∉ C ∧ v ∉ C ∧
+      IsLocalGramPacking H W d x (insert u C) ∧
+      IsLocalGramPacking H W d x (insert v C) := by
+  rcases hcoupled with ⟨X, hX, hu, hv⟩ | hswap
+  · exact False.elim (hX.2.2 u hu v hv huv huvW)
+  · exact hswap
+
+/-- Hence exchange-coupled conflicting candidates are both non-forced at the
+source. -/
+theorem not_forced_pair_of_exchangeCoupledAt_of_conflict
+    (H W : V → V → Prop) (d : V → ℕ) (x u v : V)
+    (huv : u ≠ v) (huvW : W u v)
+    (hcoupled : AreLocalGramPackingExchangeCoupledAt H W d x u v) :
+    ¬ IsForcedLocalGramNeighbor H W d x u ∧
+      ¬ IsForcedLocalGramNeighbor H W d x v := by
+  obtain ⟨C, huC, hvC, hu, hv⟩ :=
+    exists_singleSwap_of_exchangeCoupledAt_of_conflict
+      H W d x u v huv huvW hcoupled
+  exact not_isForcedLocalGramNeighbor_of_singleSwap
+    H W d x u v huv C huC hvC hu hv
+
 #print axioms areLocalGramPackingExchangeCoupledAt_symm
 #print axioms areLocalGramPackingExchangeCoupledAt_containing
 #print axioms not_isForcedLocalGramNeighbor_of_singleSwap
 #print axioms exists_joint_of_exchangeCoupledAt_of_forced
+#print axioms exists_singleSwap_of_exchangeCoupledAt_of_conflict
+#print axioms not_forced_pair_of_exchangeCoupledAt_of_conflict
 
 end Erdos85
