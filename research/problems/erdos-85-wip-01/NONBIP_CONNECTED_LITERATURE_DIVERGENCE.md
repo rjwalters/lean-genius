@@ -516,3 +516,24 @@ shown nonconstant inside coarse `A/D` relations by the q=4 control.  Candidate
 refinement is stopped by the same computation.  Any surviving sunflower
 argument must retain individual matching edges or higher incidence labels;
 aggregating a pair of stars loses the nonlinear data immediately.
+
+### Induced-matching/Bollobas probe: stopped by scale
+
+This candidate cannot become terminal even under the strongest possible
+matching hypothesis.  An induced matching in `D` gives set-pairs
+`(X_i,Y_i)` of disjoint q-blocks with the required cross-intersections.  But
+it has at most `q^2/2` edges simply because `D` has `q^2` vertices.  The
+uniform Bollobas bound for q-sets is
+
+```text
+m <= binom(2q,q),
+```
+
+and even after deleting one distinguished point from both sides the relevant
+bound is `binom(2q-2,q-1)`.  Both exceed `q^2/2` already for `q>=4` (the
+values are respectively `70>8` and `20>8` at q=4), and the gap then grows
+exponentially.
+Hence neither a generic induced-matching lower bound nor the impossible best
+case of a perfect induced matching can contradict the set-pairs inequality.
+Candidate 2 is **stopped by scale**; proving stronger matching structure in
+`D` for this purpose would not advance the node.
