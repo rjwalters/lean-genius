@@ -80,9 +80,97 @@ theorem activeWitnessRelayGraph_degree_cast_eq_adjMatrix_mulVec
   simp [f2PotentialSupport, SimpleGraph.mem_neighborFinset, A.adj_comm,
     and_comm]
 
+/-- The audit's broken-only relay `R_s`: only active witnesses and endpoints
+joined to them by triangle-free edges participate. -/
+def activeBrokenWitnessRelayGraph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A : SimpleGraph V) [DecidableRel A.Adj]
+    (active : V → Prop) (mate : V → V → V)
+    (hclosed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      (triangleFreeEdgeGraph A).Adj w (mate w v))
+    (hinvol : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w (mate w v) = v)
+    (hfixed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w v ≠ v) : SimpleGraph V :=
+  activeWitnessRelayGraph (triangleFreeEdgeGraph A) active mate
+    hclosed hinvol hfixed
+
+instance activeBrokenWitnessRelayGraph_decidableAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A : SimpleGraph V) [DecidableRel A.Adj]
+    [DecidableRel (triangleFreeEdgeGraph A).Adj]
+    (active : V → Prop) [DecidablePred active]
+    (mate : V → V → V)
+    (hclosed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      (triangleFreeEdgeGraph A).Adj w (mate w v))
+    (hinvol : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w (mate w v) = v)
+    (hfixed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w v ≠ v) :
+    DecidableRel (activeBrokenWitnessRelayGraph A active mate
+      hclosed hinvol hfixed).Adj := by
+  dsimp only [activeBrokenWitnessRelayGraph]
+  infer_instance
+
+/-- Exact broken-relay degree: the number of active triangle-free witnesses
+incident to the endpoint. -/
+theorem activeBrokenWitnessRelayGraph_degree_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A : SimpleGraph V) [DecidableRel A.Adj]
+    [DecidableRel (triangleFreeEdgeGraph A).Adj]
+    (hfree : ¬ containsC4 V A)
+    (active : V → Prop) [DecidablePred active]
+    (mate : V → V → V)
+    (hclosed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      (triangleFreeEdgeGraph A).Adj w (mate w v))
+    (hinvol : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w (mate w v) = v)
+    (hfixed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w v ≠ v) (v : V) :
+    (activeBrokenWitnessRelayGraph A active mate
+      hclosed hinvol hfixed).degree v =
+      (Finset.univ.filter fun w =>
+        active w ∧ (triangleFreeEdgeGraph A).Adj w v).card := by
+  have hsub : triangleFreeEdgeGraph A ≤ A := by
+    intro u w huw
+    exact ((mem_triangleFreeNeighbors A u w).mp huw).1
+  have hfreeT : ¬ containsC4 V (triangleFreeEdgeGraph A) := by
+    intro hc
+    exact hfree (containsC4_mono hsub hc)
+  exact activeWitnessRelayGraph_degree_eq (triangleFreeEdgeGraph A)
+    hfreeT active mate hclosed hinvol hfixed v
+
+/-- Correct broken-only form of `(73rnz_cjibbh)`: the F2 degree syndrome of
+`R_s` is the triangle-free-edge adjacency action `T x`. -/
+theorem activeBrokenWitnessRelayGraph_degree_cast_eq_adjMatrix_mulVec
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A : SimpleGraph V) [DecidableRel A.Adj]
+    [DecidableRel (triangleFreeEdgeGraph A).Adj]
+    (hfree : ¬ containsC4 V A) (x : V → ZMod 2)
+    (mate : V → V → V)
+    (hclosed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      (triangleFreeEdgeGraph A).Adj w (mate w v))
+    (hinvol : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w (mate w v) = v)
+    (hfixed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w v ≠ v) (v : V) :
+    ((activeBrokenWitnessRelayGraph A (fun w => x w = 1) mate
+      hclosed hinvol hfixed).degree v : ZMod 2) =
+      ((triangleFreeEdgeGraph A).adjMatrix (ZMod 2)).mulVec x v := by
+  have hsub : triangleFreeEdgeGraph A ≤ A := by
+    intro u w huw
+    exact ((mem_triangleFreeNeighbors A u w).mp huw).1
+  have hfreeT : ¬ containsC4 V (triangleFreeEdgeGraph A) := by
+    intro hc
+    exact hfree (containsC4_mono hsub hc)
+  exact activeWitnessRelayGraph_degree_cast_eq_adjMatrix_mulVec
+    (triangleFreeEdgeGraph A) hfreeT x mate hclosed hinvol hfixed v
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.activeWitnessRelayGraph_degree_eq
 #print axioms Erdos85.activeWitnessRelayGraph_degree_cast_eq_adjMatrix_mulVec
+#print axioms Erdos85.activeBrokenWitnessRelayGraph_degree_eq
+#print axioms Erdos85.activeBrokenWitnessRelayGraph_degree_cast_eq_adjMatrix_mulVec
