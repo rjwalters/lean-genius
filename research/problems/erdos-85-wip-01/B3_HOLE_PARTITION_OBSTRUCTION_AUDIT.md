@@ -5368,34 +5368,37 @@ bipartite matching rank fits the remaining slack.  The corpus remains finite
 evidence rather than a proof, but (13az) separates the selector into a simple
 three-way incidence count and a small alternating-path bound.
 
-There is a precise reason not to promote (13az) to a theorem about arbitrary
-linear three-partite hypergraphs.  The four parity triples
+There is a precise—and smaller than first recorded—reason not to promote
+(13az) to a theorem about arbitrary linear three-partite hypergraphs.  The
+three triples
 
 ```text
-(a0,b0,c0), (a0,b1,c1), (a1,b0,c1), (a1,b1,c0)
+(a0,b0,c0), (a0,b1,c1), (a1,b0,c1)
 ```
 
-form the `2 x 2 x 2` Pasch configuration.  They are pairwise intersecting, so
-their matching number is one, but every two-color projection is a four-cycle
-with cover number two.  At demand two there is a genuine matching deficit and
-no strict two-color cover.  The executable
-`q9_two_color_selector_pasch_counterexample.py` checks these facts by complete
-enumeration.  Hence a generic ``rank deficit implies two-color cover deficit``
-lemma is false.
+form a loose triangle.  They are pairwise intersecting at three different
+points, so their matching number is one, while every two-color projection has
+cover number two.  At demand two there is a genuine matching deficit and no
+strict two-color cover.  Adding `(a1,b1,c0)` gives the previously recorded
+four-triple Pasch, but the Pasch is not minimal and Pasch-freeness does not
+help.  The corrected executable
+`q9_two_color_selector_matching_counterexamples.py` checks both families by
+complete enumeration.  Hence a generic ``rank deficit implies two-color
+cover deficit`` lemma is false even after forbidding Pasches.
 
-The good news is that `--audit-min-singleton-color-selector` now also searches
-for Pasch configurations inside every contracted reverse-compatible triple
-family.  None occurs at any audited row in any of the ten row-feasible durable
-payloads.  Two payloads do contain a Pasch among their *global* triple blocks,
-so plain outer linearity does not forbid it; reverse compatibility removes at
-least one of its four rows.  This locates the next honest structural leaf:
-prove that the forced/possible reverse interval cannot retain a Pasch, and
-then determine whether Pasch-freeness plus the q=9 row counts yields (13az),
-or add the next minimal matching-critical configuration as a separate horn.
+This correction also kills the proposed ``exclude the residual Pasch`` route.
+Loose triangles occur abundantly in contracted reverse-compatible families
+throughout all ten row-feasible payloads, including the three surviving rows
+`{7,9,16}` at target 24 in `row_feasible_selector_counterexample`.  Yet the
+full family still has the strict colored cover promised by (13az), because
+pair blocks create mandatory singleton points and delete edges from the
+residual projection.  The next structural leaf must therefore use the joint
+pair/triple incidence counts `s(w,c), r(w,c)`; forbidding a small triple-only
+configuration is not a viable mechanism.
 
-The two observed global Pasches are removed at different layers, so the Lean
-statement must mention the whole reverse interval rather than only trace
-eligibility.  In `fractional_collision_not_forced`, the Pasch rows
+For completeness, the Pasch audit remains a useful regression rather than a
+candidate theorem.  The two observed global Pasches are removed at different
+layers.  In `fractional_collision_not_forced`, the Pasch rows
 `{5,12,20,23}` have at most two mutually trace-eligible members at every
 target.  In `row_feasible_selector_counterexample`, all four rows
 `{7,9,16,22}` are mutually trace-eligible with target 24, but row 22 cannot
@@ -5403,4 +5406,5 @@ contain 24 in any demanded local packing; the possible-neighbor filter leaves
 only `{7,9,16}`.  Thus one fixture is killed by the static core/K relation and
 the other only by the reverse local-packing interval.  The audit emits both
 the global and contracted Pasch lists so this distinction remains regression
-tested.
+tested, while also emitting the residual loose-triangle count to prevent the
+stronger false inference from returning.

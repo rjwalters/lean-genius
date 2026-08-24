@@ -486,6 +486,45 @@ def pasch_configurations(system: dict, rows) -> list[list[int]]:
     return configurations
 
 
+def loose_triangle_configurations(system: dict, rows) -> list[list[int]]:
+    """Find three triples intersecting pairwise in three distinct points."""
+    triples = [
+        row for row in rows if len(system["blocks"][row]) == 3
+    ]
+    configurations = []
+    for selected in combinations(triples, 3):
+        blocks = [system["blocks"][row] for row in selected]
+        intersections = [
+            first & second for first, second in combinations(blocks, 2)
+        ]
+        if (all(len(intersection) == 1 for intersection in intersections)
+                and len(set().union(*intersections)) == 3):
+            configurations.append(list(selected))
+    return configurations
+
+
+def contracted_residual_rows(
+        system: dict, target: int, local: dict[int, dict]) -> list[int]:
+    """Rows retained after the forced/possible reverse contraction."""
+    forced = {
+        source for source in range(N)
+        if target in local[source]["forced_neighbors"]
+    }
+    possible = {
+        source for source in range(N)
+        if target in local[source]["possible_neighbors"]
+    }
+    edge_set = set(system["edges"])
+    return [
+        source for source in range(N)
+        if tuple(sorted((source, target))) in edge_set
+        and source in possible and source not in forced
+        and all(not (system["blocks"][source]
+                     & system["blocks"][forced_source])
+                for forced_source in forced)
+    ]
+
+
 def contracted_residual_pasch_configurations(
         system: dict, target: int, local: dict[int, dict]) -> list[list[int]]:
     """Find 2x2x2 parity/Pasch configurations among residual triples."""
@@ -2015,6 +2054,7 @@ def main() -> None:
             )
             if compatible or forced_conflict or not local[target]["packing_count"]:
                 continue
+            residual_rows = contracted_residual_rows(system, target, local)
             profiles = contracted_two_color_matching_profiles(
                 system, target, local
             )
@@ -2032,6 +2072,11 @@ def main() -> None:
                     contracted_residual_pasch_configurations(
                         system, target, local
                     ),
+                "residual_loose_triangle_count": len(
+                    loose_triangle_configurations(
+                        system, residual_rows
+                    )
+                ),
                 "minimum_mandatory_card": minimum_mandatory,
                 "minimum_mandatory_selector_closes": any(
                     profile["score"] < profile["demand"]
@@ -2044,6 +2089,13 @@ def main() -> None:
             ),
             "global_pasch_configurations":
                 pasch_configurations(system, range(N)),
+            "reverse_residual_loose_triangle_rows": [
+                [target, len(configurations)]
+                for target in range(N)
+                if (configurations := loose_triangle_configurations(
+                    system, contracted_residual_rows(system, target, local)
+                ))
+            ],
             "records": records,
             "exists_closing_minimum_mandatory_selector": any(
                 record["minimum_mandatory_selector_closes"]
