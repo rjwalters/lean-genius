@@ -36,6 +36,8 @@ def main() -> None:
         help="require at least this many sources to have a 0,2,1,... block profile")
     parser.add_argument("--max-total-defect-rank", type=int,
         help="bound the total number of zero source-to-fibre loads")
+    parser.add_argument("--global-route-sign", choices=("even", "odd"),
+        help="require the product sign of all local row-to-column permutations")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and use one variable per ordered pair")
     parser.add_argument("--reciprocity-core", action="store_true",
@@ -86,6 +88,9 @@ def main() -> None:
         parser.error("--no-caps and --only-cap-pair are incompatible")
     if args.drop_row_hits and args.drop_column_hits:
         parser.error("cannot drop both exact-hit families")
+    if args.global_route_sign is not None and (
+            args.drop_row_hits or args.drop_column_hits):
+        parser.error("--global-route-sign requires both exact-hit families")
     if args.no_caps and args.cap_fibres is not None:
         parser.error("--no-caps and --cap-fibres are incompatible")
     if args.only_cap_pair is not None and args.cap_fibres is not None:
@@ -161,6 +166,39 @@ def main() -> None:
                 assert all(target in vertex_set for target in targets)
                 solver.add(z3.PbEq(
                     [(edge(source, target), 1) for target in targets], wanted))
+
+    # Row and column offsets both lie in R=Z/q\{0,1}.  In normal-form
+    # coordinates the target of labels (r,s) is
+    # ((x+t+r), -t-r-s).  The XOR of all inversions s_i>s_j is the sign bit
+    # of the local permutation; XOR over every source is its product sign.
+    if args.global_route_sign is not None:
+        labels = list(range(2, q))
+        inversions = []
+        for source in vertices:
+            x, t = source
+            for left_index, r_left in enumerate(labels):
+                for r_right in labels[left_index + 1:]:
+                    for s_left in labels:
+                        for s_right in labels:
+                            if s_left <= s_right:
+                                continue
+                            u_left = (-t - r_left - s_left) % q
+                            u_right = (-t - r_right - s_right) % q
+                            if (u_left not in differences or
+                                    u_right not in differences):
+                                continue
+                            target_left = ((x + t + r_left) % q, u_left)
+                            target_right = ((x + t + r_right) % q, u_right)
+                            inversions.append(z3.And(
+                                edge(source, target_left),
+                                edge(source, target_right)))
+        while len(inversions) > 1:
+            inversions = [
+                z3.Xor(inversions[index], inversions[index + 1])
+                if index + 1 < len(inversions) else inversions[index]
+                for index in range(0, len(inversions), 2)
+            ]
+        solver.add(inversions[0] == (args.global_route_sign == "odd"))
 
     # Equality case of the labelled collision-load bound.  For a fixed
     # source fibre t, its q vertices send q(q-2) incidences into exactly

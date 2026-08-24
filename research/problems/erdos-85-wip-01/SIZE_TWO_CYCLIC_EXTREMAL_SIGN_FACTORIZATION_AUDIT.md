@@ -113,3 +113,38 @@ choice between the two opposite local repairs.  Equation (5) alone is an
 identity, not a contradiction; replacing the translated coupling by
 independent base slices is a sound falsifier and is already SAT.
 
+## Global route sign at the q8 minimum-rank endpoint
+
+The full Boolean probe now exposes `--global-route-sign even|odd`.  It
+constructs each local permutation directly from the exact-hit edge
+variables: for row and column labels `r,s in Z/q \\ {0,1}`, the target cell
+is
+
+```text
+(x+t+r, -t-r-s),
+```
+
+and an XOR of all pairs `r_i<r_j`, `s_i>s_j` is its inversion parity.  The
+XOR over all sources is the sign of the first product in (5).
+
+At the cap-free minimum-rank endpoint the exact q8 verdict is
+
+```text
+a=1, sum r<=64: global route sign even SAT, odd UNSAT;
+a=2, sum r<=64: global route sign even SAT, odd UNSAT.
+```
+
+Both odd-sign exclusions were independently exported through the validated
+pure-Boolean DIMACS path and proved by Kissat.  Dropping reciprocity makes
+the q8 a1 odd-sign query SAT immediately, so the restriction is not generic
+permutation bookkeeping.  By contrast, the reciprocal odd-sign query with
+no rank bound remained UNKNOWN at 120 seconds; the present evidence fixes
+the sign only on the rank-64 endpoint and must not be stated for every
+reciprocal routing.
+
+This refines rather than closes the sign route.  The endpoint models of both
+hole types already realize the required even sign, so scalar parity alone
+does not contradict them.  A cap terminal must show that selecting a
+cap-respecting endpoint in each reflection orbit forces the opposite sign,
+or that any cap-preserving descent changes the conserved trade component.
+The new diagnostic makes those two prospective claims directly falsifiable.
