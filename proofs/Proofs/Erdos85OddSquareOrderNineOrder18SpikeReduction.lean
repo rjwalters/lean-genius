@@ -2108,6 +2108,48 @@ theorem exists_source_target_in_sdiff_of_inter_card_le_one
     exact ⟨u, huS, ⟨z, Finset.mem_inter.mpr
       ⟨hzu, Finset.mem_sdiff.mpr ⟨hzW, hzNotS⟩⟩⟩⟩
 
+/-- Direct order-eighteen terminal after the pointwise providers.  Equation
+(33) bounds `b=|U∩A|` by one, so equation (34) gives at least three partner
+targets.  The three bin-zero owner-neighbors each have a target.  C4
+freeness makes both occupied target families internally injective and
+mutually disjoint, impossible inside the four-point set `W`.  This subsumes
+the separate `(p,q)` capacity cases once their common pointwise laws have
+been established. -/
+theorem false_of_orderNine_order18_lowOwner_of_pointwise_target_profiles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (owner : V)
+    (partners binZeroNeighbors A W : Finset V)
+    (hpartnerCard : partners.card = 3)
+    (hbinZeroCard : binZeroNeighbors.card = 3)
+    (hWcard : W.card = 4) (hownerW : owner ∉ W)
+    (hpartnersOwner : partners ⊆ G.neighborFinset owner)
+    (hbinZeroOwner : binZeroNeighbors ⊆ G.neighborFinset owner)
+    (hsourceDisj : Disjoint partners binZeroNeighbors)
+    (hshoreSplit : (partners ∩ A).card +
+      (binZeroNeighbors ∩ A).card = 1)
+    (hpartnerDegree : ∀ y ∈ partners,
+      (G.neighborFinset y ∩ W).card = if y ∈ A then 2 else 1)
+    (hbinZeroPositive : ∀ u ∈ binZeroNeighbors,
+      1 ≤ (G.neighborFinset u ∩ W).card) : False := by
+  let b := (binZeroNeighbors ∩ A).card
+  have hb : b ≤ 1 := by
+    dsimp [b]
+    omega
+  have hpartnerSum : 3 ≤ ∑ y ∈ partners,
+      (G.neighborFinset y ∩ W).card := by
+    have heq := orderNine_order18_partner_target_degree_sum_eq_four_sub
+      G partners A W b hpartnerCard hshoreSplit hpartnerDegree
+    rw [heq]
+    omega
+  have hbinZeroSum : 3 ≤ ∑ u ∈ binZeroNeighbors,
+      (G.neighborFinset u ∩ W).card :=
+    orderNine_order18_three_source_target_degree_sum_ge_three
+      G binZeroNeighbors W hbinZeroCard hbinZeroPositive
+  exact false_of_orderNine_order18_lowOwner_case_one_zero_of_targetDegreeSums
+    G hfree owner partners binZeroNeighbors W hWcard hownerW
+      hpartnersOwner hbinZeroOwner hsourceDisj hpartnerSum hbinZeroSum
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -2156,6 +2198,7 @@ theorem exists_source_target_in_sdiff_of_inter_card_le_one
 #print axioms Erdos85.orderNine_order18_lowSpike_binZero_W_degree
 #print axioms Erdos85.orderNine_order18_lowSpike_binZero_W_degree_positive
 #print axioms Erdos85.exists_source_target_in_sdiff_of_inter_card_le_one
+#print axioms Erdos85.false_of_orderNine_order18_lowOwner_of_pointwise_target_profiles
 
 end
 
