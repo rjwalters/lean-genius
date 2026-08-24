@@ -136,6 +136,23 @@ Thus the smallest observed cap target is the empty middle fibre `4` together
 with its adjacent fibre `3`; the obstruction is directional, not merely
 "empty fibre plus any partner".
 
+Rerunning greedy transpose-core extraction with *only* those cap families
+changes the sufficient core to
+
+```text
+(3,3), (3,6), (3,7), (4,6), (4,7), (6,6), (6,7), (7,7).
+```
+
+Its non-loop block graph is `K4` on `{3,4,6,7}` with `(3,4)` removed: two
+triangles `(3,6,7)` and `(4,6,7)` share `(6,7)`.  It also uses self-transpose
+constraints on the auxiliary fibres `3,6,7`; the empty self-block `(4,4)` is
+already fixed to zero and needs no transpose assumption.  Therefore the
+earlier all-cap two-triangle core is not canonical.  What persists across
+both deletion experiments is a pair of colored transpose triangles on the
+same four fibres, but the shared edge moves when unused cap families are
+removed.  Any proposed triangle identity must be checked against the
+minimized-cap core, including its self-block symmetries.
+
 This two-fibre statement is binary-specific in the bounded controls.  At
 `q=12,a=1` with fibre `6` empty, each of the following is SAT:
 
