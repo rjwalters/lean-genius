@@ -2,6 +2,7 @@ import Proofs.Erdos85MinimumDefectCutNearMantel
 import Proofs.Erdos85TwoSeparatorPolesNonadjacent
 import Proofs.Erdos85TwoSeparatorLowSetEdgeUpper
 import Proofs.Erdos85TwoSeparatorMantelComposition
+import Proofs.Erdos85TwoSeparatorShoreExtraction
 
 /-! # The Mantel contradiction for an explicit two-vertex separator -/
 
@@ -206,8 +207,76 @@ theorem false_of_binarySquare_connected_twoSeparator_partition
     exact ⟨P.card, Q.card, hsum, by simpa [e, D] using hedge⟩
   · simpa [pow_two, e, D] using hlower
 
+/-- Three-vertex-connectivity conclusion in deletion form: removing any
+two vertices from a connected binary-square defect graph leaves it connected. -/
+theorem binarySquare_connected_secondOrderDefect_delete_two_connected
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q r : ℕ}
+    (hq8 : 8 ≤ q) (hr : 2 ≤ r) (hq : q = 2 * (r + 1))
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hconn : (secondOrderDefectGraph G).Connected) :
+    ∀ W : Finset V, W.card = 2 →
+      ((secondOrderDefectGraph G).induce
+        (↑(Finset.univ \ W) : Set V)).Connected := by
+  intro W hWcard
+  let D := secondOrderDefectGraph G
+  let U := Finset.univ \ W
+  let H := D.induce (↑U : Set V)
+  have hUcard : U.card = q * q - 2 := by
+    dsimp only [U]
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ W),
+      Finset.card_univ, hcard, hWcard]
+  have hsq : 2 < q * q := by nlinarith
+  have hUne : U.Nonempty := Finset.card_pos.mp (by rw [hUcard]; omega)
+  letI : Nonempty {z : V // z ∈ (↑U : Set V)} := by
+    obtain ⟨z, hz⟩ := hUne
+    exact ⟨⟨z, hz⟩⟩
+  refine ⟨?_⟩
+  by_contra hnot
+  obtain ⟨S, T, hSne, hTne, hcover, hST, hSW, hTW, hno⟩ :=
+    exists_ambient_shores_of_induce_sdiff_not_preconnected
+      D W (by simpa [H, U] using hnot)
+  obtain ⟨x, y, hxy, hW⟩ := Finset.card_eq_two.mp hWcard
+  have hdisjUnion : Disjoint (S ∪ T) W := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hSW, hTW⟩
+  have hcardCover := congrArg Finset.card hcover
+  rw [Finset.card_union_of_disjoint hdisjUnion,
+    Finset.card_union_of_disjoint hST, Finset.card_univ, hcard, hWcard]
+      at hcardCover
+  have hcards : S.card + T.card = q * q - 2 := by omega
+  have hxS : x ∉ S := by
+    intro hx
+    exact Finset.disjoint_left.mp hSW hx (by rw [hW]; simp)
+  have hyS : y ∉ S := by
+    intro hy
+    exact Finset.disjoint_left.mp hSW hy (by rw [hW]; simp)
+  have hxT : x ∉ T := by
+    intro hx
+    exact Finset.disjoint_left.mp hTW hx (by rw [hW]; simp)
+  have hyT : y ∉ T := by
+    intro hy
+    exact Finset.disjoint_left.mp hTW hy (by rw [hW]; simp)
+  apply false_of_binarySquare_connected_twoSeparator_partition
+    G hfree hq8 hr hq hreg hcard hconn S T x y hxy
+  · simpa [hW] using hcover
+  · exact hST
+  · exact hxS
+  · exact hyS
+  · exact hxT
+  · exact hyT
+  · simpa [D] using hno
+  · exact hSne
+  · exact hTne
+  · exact hcards
+
 #print axioms binarySquare_predResidue_lowSet_nearMantel_lower
 #print axioms false_of_binarySquare_connected_twoSeparator_partition
+#print axioms binarySquare_connected_secondOrderDefect_delete_two_connected
 
 end
 
