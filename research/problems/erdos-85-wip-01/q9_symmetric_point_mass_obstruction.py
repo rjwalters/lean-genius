@@ -2386,6 +2386,21 @@ def main() -> None:
                         source for source in residual
                         if tuple(sorted((source, row))) in relation_edges
                     ),
+                    "residual_relation_load": sum(
+                        tuple(sorted((source, row))) in relation_edges
+                        for source in residual
+                    ),
+                    "residual_possible_neighbors": sorted(
+                        source for source in residual
+                        if row in local[source]["possible_neighbors"]
+                    ),
+                    "residual_joint_packing_neighbors": sorted(
+                        source for source in residual
+                        if any(
+                            record["target"] in packing and row in packing
+                            for packing in local_packing_family(system, source)
+                        )
+                    ),
                 }
                 for row in range(N)
                 if not local[row]["packing_count"]
@@ -2399,6 +2414,82 @@ def main() -> None:
                 if (candidate["candidate_count"], -candidate["forced_card"])
                 < (record["candidate_count"], -record["forced_card"])
             ]
+            residual_relation_neighborhood = {
+                row for row in range(N)
+                if any(
+                    row != source
+                    and tuple(sorted((source, row))) in relation_edges
+                    for source in residual
+                )
+            }
+            obstructed_targets = {
+                candidate["target"] for candidate in records
+            }
+            better_targets = {
+                candidate["target"] for candidate in better_records
+            }
+            infeasible_targets = {
+                row for row in range(N)
+                if not local[row]["packing_count"]
+            }
+            residual_relation_load = {
+                row: sum(
+                    row != source
+                    and tuple(sorted((source, row))) in relation_edges
+                    for source in residual
+                )
+                for row in range(N)
+            }
+            maximum_residual_relation_load = max(
+                residual_relation_load.values(), default=0
+            )
+            maximum_other_residual_relation_load = max(
+                (
+                    load for row, load in residual_relation_load.items()
+                    if row != record["target"]
+                ),
+                default=0,
+            )
+            record["residual_relation_neighborhood_profile"] = {
+                "card": len(residual_relation_neighborhood),
+                "locally_infeasible": sorted(
+                    residual_relation_neighborhood & infeasible_targets
+                ),
+                "better_obstructed": sorted(
+                    residual_relation_neighborhood & better_targets
+                ),
+                "other_obstructed": sorted(
+                    residual_relation_neighborhood
+                    & (obstructed_targets - better_targets)
+                ),
+                "locally_feasible_nonobstructed": sorted(
+                    residual_relation_neighborhood
+                    - infeasible_targets - obstructed_targets
+                ),
+                "maximum_load": maximum_residual_relation_load,
+                "maximum_load_rows": sorted(
+                    row for row, load in residual_relation_load.items()
+                    if load == maximum_residual_relation_load
+                ),
+                "infeasible_or_better_maximum_load_rows": sorted(
+                    row for row, load in residual_relation_load.items()
+                    if load == maximum_residual_relation_load
+                    and row in (infeasible_targets | better_targets)
+                ),
+                "maximum_other_load":
+                    maximum_other_residual_relation_load,
+                "maximum_other_load_rows": sorted(
+                    row for row, load in residual_relation_load.items()
+                    if row != record["target"]
+                    and load == maximum_other_residual_relation_load
+                ),
+                "infeasible_or_better_maximum_other_load_rows": sorted(
+                    row for row, load in residual_relation_load.items()
+                    if row != record["target"]
+                    and load == maximum_other_residual_relation_load
+                    and row in (infeasible_targets | better_targets)
+                ),
+            }
             record["lex_better_target_relations"] = [{
                 "target": candidate["target"],
                 "candidate_count": candidate["candidate_count"],
@@ -2413,6 +2504,22 @@ def main() -> None:
                     source for source in residual
                     if tuple(sorted((source, candidate["target"])))
                     in relation_edges
+                ),
+                "residual_relation_load": residual_relation_load[
+                    candidate["target"]
+                ],
+                "residual_possible_neighbors": sorted(
+                    source for source in residual
+                    if candidate["target"]
+                    in local[source]["possible_neighbors"]
+                ),
+                "residual_joint_packing_neighbors": sorted(
+                    source for source in residual
+                    if any(
+                        record["target"] in packing
+                        and candidate["target"] in packing
+                        for packing in local_packing_family(system, source)
+                    )
                 ),
                 "reverse_contains_target": record["target"] in set(
                     contracted_residual_rows(
@@ -2500,6 +2607,41 @@ def main() -> None:
                     for candidate in record["lex_better_target_relations"]
                 )
                 for record in records
+            ),
+            "all_dual_terminal_failures_have_possible_exchange": all(
+                record["all_lexicographic_color_selectors_close"]
+                or record["forced_card"]
+                    + record["collision_star_matching_cover"]["cover_card"]
+                    < record["profiles"][0]["demand"]
+                or any(
+                    item["residual_possible_neighbors"]
+                    for item in record[
+                        "locally_infeasible_residual_neighbors"
+                    ]
+                )
+                or any(
+                    candidate["residual_possible_neighbors"]
+                    for candidate in record["lex_better_target_relations"]
+                )
+                for record in records
+            ),
+            "dual_terminal_failures_without_joint_exchange_count": sum(
+                1
+                for record in records
+                if not record["all_lexicographic_color_selectors_close"]
+                and record["forced_card"]
+                    + record["collision_star_matching_cover"]["cover_card"]
+                    >= record["profiles"][0]["demand"]
+                and not any(
+                    item["residual_joint_packing_neighbors"]
+                    for item in record[
+                        "locally_infeasible_residual_neighbors"
+                    ]
+                )
+                and not any(
+                    candidate["residual_joint_packing_neighbors"]
+                    for candidate in record["lex_better_target_relations"]
+                )
             ),
             "all_pair_singleton_projections_injective": all(
                 profile["pair_singleton_projection_injective"]

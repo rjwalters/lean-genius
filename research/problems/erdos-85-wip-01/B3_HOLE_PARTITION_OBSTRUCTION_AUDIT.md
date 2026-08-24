@@ -5766,6 +5766,41 @@ alternating exchange starting from the local packing at `x` which contains
 `w`; the output row `z` is either where augmentation stops (no packing) or
 the improved reverse obstruction.  This remains an audited conjecture.
 
+Mere `H`-adjacency is not the substantive content of (13bl''').  In the
+nineteen durable failures the union `N_H(R(w))` contains between 40 and 47 of
+the 48 rows.  Nor can `x` always be chosen as an unmatched collision row
+(thirteen failures have no suitable unmatched endpoint), and the witness
+`z` almost never maximizes the load `|N_H(z)∩R(w)|` (eighteen of nineteen
+fail).  These diagnostics rule out both a trivial expansion proof and a
+maximum-load averaging proof.                                          (13bl'''a)
+
+The genuinely sharp refinement is that `z` is **possible at the same source
+`x`**: there exists a full local packing at `x` containing `z`.  Since
+`x∈R(w)` already asserts existence of a full local packing at `x` containing
+`w`, the two-step witness consists of two actual packings at one source:
+
+```text
+x in R(w),  exists X_w packing at x with w in X_w,
+             exists X_z packing at x with z in X_z,                    (13bl'''b)
+```
+
+where `z` is bad or lex-better as in (13bl''').  This stronger statement
+holds in all nineteen durable failures and every random failure at seeds
+0 through 15.  In eighteen durable cases one may even take a single packing
+containing both `w` and `z`.  The sole exception is row-feasible-selector
+target 36: better target 23 is possible at residual source 27 (also at 37
+and 46), but no local packing at those sources contains 36 and 23 together.
+That exception is valuable: the proof needs connectivity/augmentation of the
+local-packing exchange graph, not merely selection of one joint packing.
+
+Accordingly, the remaining proof problem is now a recognizable basis-exchange
+claim for the finite family of disjoint block packings at one source.  Starting
+from `X_w` and `X_z`, an alternating sequence of block replacements must either
+expose a row with no full packing or transport the reverse-obstruction data to
+the lex-better row `z`.  The already-banked
+`exists_terminal_of_lexicographic_exchange_descent` handles the minimality
+endgame once this packing-family exchange is proved.
+
 A direct one-step descent along a barrier is also false.  The auditor now
 classifies every lexicographically better obstructed target by four most
 obvious relations to the failing target: membership in its residual family,
