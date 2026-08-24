@@ -163,3 +163,43 @@ theorem must additionally consume the simultaneous one-per-row and
 one-per-column structure, reciprocity, and the three designated difference
 fibres.  In design language it must be a bound for partial permutation arrays
 or cyclic difference matrices, not an ordinary constant-weight code bound.
+
+## Permutation-array bounds: scope audit
+
+Each source neighbourhood is a partial permutation matrix with `q-2` ones:
+one hit in every permitted row and column, with two prescribed missing rows
+and columns.  The same-fibre common-neighbour cap says that the `q` partial
+permutations in a designated source fibre agree in at most one retained cell.
+This invites the Hamming permutation-array bound.
+
+For full permutations of length `q`, agreement at most one is distance at
+least `q-1`.  When `q` is a prime power the sharp value is
+
+```text
+M(q,q-1) = q(q-1),
+```
+
+realized by a sharply two-transitive affine family.  The elementary general
+upper bound is the same `q(q-1)`.  Our capped family has only `q` members in
+one difference fibre.  Even the fictional strengthening that completed and
+simultaneously capped all `q(q-2)` source neighbourhoods remains below the
+generic maximum by `q`.
+
+The actual comparison is weaker in two further ways: the cap is imposed only
+within selected difference fibres, and completing the two holes may introduce
+new agreements not controlled by the routing cap.  Therefore ordinary
+permutation-array bounds cannot contradict these parameters.  A useful
+theorem would have to classify a near-maximal *union of translated
+two-punctured arrays* with reciprocity linking the arrays and with caps on
+specified fibres.  That is substantially more structured than an
+`(n,n-1)` permutation code; no such classification was found in this pass.
+
+Primary scale reference: the standard sharp result `M(q,q-1)=q(q-1)` for
+prime-power `q`, via Latin squares/affine permutations; see Bereg--Levy--
+Sudborough, *Constructing Permutation Arrays from Groups*, Des. Codes
+Cryptogr. 87 (2019), 2105--2128, and its summary of the Deza--Frankl bound.
+
+This stops the generic permutation-array shortcut.  The phrase “partial
+permutation array” remains useful vocabulary, but the missing theorem must
+consume the translation-labelled hole pattern and reciprocity, not only
+Hamming distance and family size.
