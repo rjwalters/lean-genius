@@ -461,6 +461,40 @@ theorem card_zeros_eq_sum_sub_one_of_sum_eq_card
         simp
   omega
 
+/-- A balanced two-color cut decomposes into its rigid sharp baseline and
+its nonsharp surplus.  This is the abstract arithmetic identity behind the
+parity-selected missing-rank reduction: `z` is selected missing mass, `p`
+is selected positive-excess mass, and a sharp row contributes exactly one
+unit between them. -/
+theorem two_mul_sum_eq_card_sharp_add_sum_nonsharp_of_balanced
+    {ι : Type*} [Fintype ι] (z p : ι → ℕ) (sharp : ι → Prop)
+    [DecidablePred sharp]
+    (hbalance : (∑ i : ι, z i) = ∑ i : ι, p i)
+    (hsharp : ∀ i, sharp i → z i + p i = 1) :
+    2 * (∑ i : ι, z i) =
+      ((Finset.univ : Finset ι).filter sharp).card +
+        ∑ i ∈ (Finset.univ : Finset ι).filter (fun i => ¬ sharp i),
+          (z i + p i) := by
+  classical
+  calc
+    2 * (∑ i : ι, z i) =
+        (∑ i : ι, z i) + ∑ i : ι, p i := by omega
+    _ = ∑ i : ι, (z i + p i) := by rw [Finset.sum_add_distrib]
+    _ = (∑ i ∈ (Finset.univ : Finset ι).filter sharp,
+          (z i + p i)) +
+        ∑ i ∈ (Finset.univ : Finset ι).filter (fun i => ¬ sharp i),
+          (z i + p i) := by
+      rw [← Finset.sum_filter_add_sum_filter_not
+        (Finset.univ : Finset ι) sharp (fun i => z i + p i)]
+    _ = ((Finset.univ : Finset ι).filter sharp).card +
+        ∑ i ∈ (Finset.univ : Finset ι).filter (fun i => ¬ sharp i),
+          (z i + p i) := by
+      congr 1
+      rw [Finset.card_eq_sum_ones]
+      apply Finset.sum_congr rfl
+      intro i hi
+      exact hsharp i (Finset.mem_filter.mp hi).2
+
 /-- If every entry of a finite rank vector is positive and at least two
 entries have rank at least two, its total rank exceeds the all-one baseline
 by at least two.  This remains a useful sufficient condition, although the
@@ -935,6 +969,8 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicUniformIncidenceFibers_card_le_two
 #print axioms Erdos85.sizeTwoCyclicNonuniformIncidenceSources_card_ge
 #print axioms Erdos85.card_zeros_eq_sum_sub_one_of_sum_eq_card
+#print axioms
+  Erdos85.two_mul_sum_eq_card_sharp_add_sum_nonsharp_of_balanced
 #print axioms Erdos85.card_add_two_le_sum_of_two_nonstrict
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_two_nonstrict_each
 #print axioms Erdos85.two_mul_card_le_sum_of_four_le_adjacent
