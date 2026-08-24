@@ -1,4 +1,4 @@
-import Mathlib
+import Proofs.Erdos85EvenFinsetInvolutionPairing
 
 /-!
 # Extending a partial pairing by one prescribed pair
@@ -66,6 +66,53 @@ theorem prescribePair_spec
       simp [hab]
     simpa [prescribePair, hxa, hxb] using hfree x hxS hxa hxb
 
+/-- Every even finite set admits a fixed-point-free involution containing any
+prescribed pair of distinct members. -/
+theorem exists_mate_of_even_finset_with_prescribed_pair
+    [Fintype V] (S : Finset V) (a b : V)
+    (heven : Even S.card) (hab : a ≠ b) (haS : a ∈ S) (hbS : b ∈ S) :
+    ∃ mate : V → V,
+      mate a = b ∧ mate b = a ∧
+      (∀ x, x ∈ S → mate x ∈ S) ∧
+      (∀ x, x ∈ S → mate (mate x) = x) ∧
+      (∀ x, x ∈ S → mate x ≠ x) ∧
+      ∀ x, x ∉ S → mate x = x := by
+  let R := (S.erase a).erase b
+  have hbR : b ∈ S.erase a := Finset.mem_erase.mpr ⟨hab.symm, hbS⟩
+  have hcardA : (S.erase a).card = S.card - 1 :=
+    Finset.card_erase_of_mem haS
+  have hcardB : R.card = (S.erase a).card - 1 := by
+    exact Finset.card_erase_of_mem hbR
+  obtain ⟨k, hk⟩ := heven
+  have hevenR : Even R.card := by
+    refine ⟨k - 1, ?_⟩
+    omega
+  obtain ⟨base, hbaseClosed, hbaseInvol, hbaseFree, hbaseOutside⟩ :=
+    exists_mate_of_even_finset R hevenR
+  have hclosed : ∀ x ∈ S, x ≠ a → x ≠ b →
+      base x ∈ S ∧ base x ≠ a ∧ base x ≠ b := by
+    intro x hxS hxa hxb
+    have hxR : x ∈ R := by simp [R, hxS, hxa, hxb]
+    have hmR := hbaseClosed x hxR
+    have hm := Finset.mem_erase.mp hmR
+    have hm' := Finset.mem_erase.mp hm.2
+    exact ⟨hm'.2, hm'.1, hm.1⟩
+  have hspec := prescribePair_spec S base a b hab haS hbS hclosed
+    (fun x hxS hxa hxb =>
+      hbaseInvol x (by simp [R, hxS, hxa, hxb]))
+    (fun x hxS hxa hxb =>
+      hbaseFree x (by simp [R, hxS, hxa, hxb]))
+  refine ⟨prescribePair base a b, hspec.1, hspec.2.1,
+    hspec.2.2.1, hspec.2.2.2.1, hspec.2.2.2.2, ?_⟩
+  intro x hxS
+  have hxa : x ≠ a := fun h => hxS (h ▸ haS)
+  have hxb : x ≠ b := fun h => hxS (h ▸ hbS)
+  have hxR : x ∉ R := by
+    intro hxR
+    exact hxS (Finset.mem_of_mem_erase (Finset.mem_of_mem_erase hxR))
+  simp [prescribePair, hxa, hxb, hbaseOutside x hxR]
+
 #print axioms prescribePair_spec
+#print axioms exists_mate_of_even_finset_with_prescribed_pair
 
 end Erdos85
