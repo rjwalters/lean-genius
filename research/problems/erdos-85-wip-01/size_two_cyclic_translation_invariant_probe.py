@@ -25,6 +25,8 @@ def main() -> None:
         help="forbid every internal edge in this difference fiber")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     parser.add_argument("--random-seed", type=int, default=0)
+    parser.add_argument("--dimacs",
+        help="write an equisatisfiable bit-blasted DIMACS instance and exit")
     args = parser.parse_args()
 
     q = args.q
@@ -85,6 +87,21 @@ def main() -> None:
             parser.error(f"empty fiber {t} is forbidden by the two holes")
         for r in range(q):
             solver.add(z3.Not(edge(t, t, r)))
+
+    if args.dimacs is not None:
+        goal = z3.Goal()
+        goal.add(*solver.assertions())
+        transformed = z3.Then(
+            "simplify", "card2bv", "bit-blast", "tseitin-cnf")(goal)
+        if len(transformed) != 1:
+            raise RuntimeError("CNF conversion unexpectedly produced subgoals")
+        cnf_solver = z3.Solver()
+        cnf_solver.add(*transformed[0])
+        with open(args.dimacs, "w", encoding="ascii") as output:
+            output.write(cnf_solver.dimacs())
+        print(f"q={q} a={args.a % q} orbit_variables={len(variables)}: "
+              f"wrote {args.dimacs}")
+        return
 
     solver.set(timeout=args.timeout_ms, random_seed=args.random_seed)
     result = solver.check()
