@@ -77,3 +77,22 @@ geometries: `a=1` has adjacent nonsharp counts `2+2`, while an `a=2`
 minimum witness alternates `3+1`.  A proof must use the base translation in
 route reversal; a single-base near-orthomorphism or reflection-parity
 argument is already refuted above.
+
+## Global route sign does not explain the localization
+
+The fact that every q8 minimum-rank model has even global route sign suggests
+a tempting two-step proof: show that an adjacent-rank violation forces odd
+sign, then exclude it in the low-rank stratum.  The exceptional `a=2`
+geometry refutes the first step.  The queries
+
+```text
+R(0)+R(1) <= 15, global route sign even:                 SAT;
+R(0)+R(1) <= 15, total rank <= 70, global sign even:     SAT.
+```
+
+The second witness is at the first feasible global threshold: rank at most
+69 is UNSAT even without a sign condition.  Thus the adjacent defect costs
+six global rank units while remaining in the even component.  Global route
+orientation cannot be the missing charge; a proof of the exact tradeoff
+must retain more local sign/repair data or a genuinely quantitative
+shifted-base potential.
