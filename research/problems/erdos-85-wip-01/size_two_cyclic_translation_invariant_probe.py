@@ -36,6 +36,8 @@ def main() -> None:
         help="print each fixed source pair's precise common-target support")
     parser.add_argument("--dump-relative-completions", action="store_true",
         help="audit cycle types of the four two-hole permutation completions")
+    parser.add_argument("--directed", action="store_true",
+        help="drop reciprocity and give every directed route its own variable")
     args = parser.parse_args()
 
     q = args.q
@@ -45,6 +47,8 @@ def main() -> None:
 
     def edge_key(t: int, u: int, r: int) -> tuple[int, int, int]:
         forward = (t, u, r % q)
+        if args.directed:
+            return forward
         reverse = (u, t, (-r) % q)
         return min(forward, reverse)
 
