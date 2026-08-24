@@ -139,3 +139,30 @@ degree-3/4 identities at q10/q12 using grouped or lazy constraints.  A proof
 must keep the closed color word;
 augmenting over intermediate fibres collapses back to the scalar identities
 already cut.
+
+## q10 scalability control
+
+The direct q10 analogue did not decide within the bounded run.  At `q=10,
+a=1`, put every nonzero-separation cap on every allowed fibre
+`{0,2,3,4,5,6,7,9}`, make fibre `5` empty, drop entrywise reciprocity, and
+impose every `T3` and `T4` reversal identity.  Z3 returned `unknown` after a
+ten-minute solver allowance (and roughly twelve minutes wall time including
+constraint construction):
+
+```text
+python3 size_two_cyclic_translation_invariant_probe.py 10 --a 1 \
+  [--cap t:d for t in {0,2,3,4,5,6,7,9}, d in {1,...,9}] \
+  --empty-fiber 5 \
+  --impose-triangle-reversal --impose-four-cycle-reversal \
+  --timeout-ms 600000
+
+q=10 a=1 orbit_variables=640: unknown
+```
+
+The matching no-empty run was stopped after about five minutes and likewise
+reported `unknown`.  These are **scalability failures, not SAT models and not
+UNSAT certificates**.  They rule out treating the fast q8 solve as evidence
+that the same brute-force formulation scales.  A further bounded test should
+use lazy/grouped trace constraints or a CNF backend; algebraically, the route
+still needs a direct mixed trace identity or inequality before it is a
+q-generic theorem candidate.
