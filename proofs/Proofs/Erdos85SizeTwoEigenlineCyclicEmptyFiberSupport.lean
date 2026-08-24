@@ -241,6 +241,56 @@ theorem two_mul_q_le_sizeTwoCyclicAgreement_sum_of_noAdj
       two_mul_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_sum_eq_agreement_shifts
         code t
 
+/-- With the full agreement cap, the collision pressure from an empty fibre
+is supported on at least `2q` ordered pairs of distinct source bases.  After
+identifying a pair with its reversal, this is the `q`-edge lower bound for
+the owner-pair graph used by the collision-cycle route. -/
+theorem two_mul_q_le_sizeTwoCyclicAgreement_support_card_of_noAdj
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (hq : 3 ≤ q)
+    (code : SizeTwoCyclicFullPermutationCode q a)
+    (hloop : code.toReciprocalCode.Loopless)
+    (ha : a ≠ -1 - a) (hq1 : (1 : ZMod q) ≠ 0)
+    (t : sizeTwoAllowedDifference q a)
+    (hno : ∀ x y : ZMod q,
+      ¬ (sizeTwoCyclicSelectedFiberGraph code.toReciprocalCode t).Adj x y) :
+    2 * q ≤
+      ((Finset.univ : Finset (SizeTwoCyclicBaseNonzeroShift q)).filter
+        fun xd => 0 < Fintype.card
+          (SizeTwoCrossShiftedPermutationAgreement q a
+            code.toReciprocalCode.toPermutationCode.perm
+            xd.1 xd.2.1 t t)).card := by
+  classical
+  have hlower := two_mul_q_le_sizeTwoCyclicAgreement_sum_of_noAdj
+    hq code hloop ha hq1 t hno
+  have hsum :
+      (∑ xd : SizeTwoCyclicBaseNonzeroShift q,
+        Fintype.card (SizeTwoCrossShiftedPermutationAgreement q a
+          code.toReciprocalCode.toPermutationCode.perm
+          xd.1 xd.2.1 t t)) =
+      ((Finset.univ : Finset (SizeTwoCyclicBaseNonzeroShift q)).filter
+        fun xd => 0 < Fintype.card
+          (SizeTwoCrossShiftedPermutationAgreement q a
+            code.toReciprocalCode.toPermutationCode.perm
+            xd.1 xd.2.1 t t)).card := by
+    rw [Finset.card_filter]
+    apply Finset.sum_congr rfl
+    intro xd _hxd
+    have hcap : Fintype.card
+        (SizeTwoCrossShiftedPermutationAgreement q a
+          code.toReciprocalCode.toPermutationCode.perm
+          xd.1 xd.2.1 t t) ≤ 1 :=
+      code.cross_agreement_le_one xd.1 xd.2.1 t t (Or.inl xd.2.2)
+    by_cases hpos : 0 < Fintype.card
+        (SizeTwoCrossShiftedPermutationAgreement q a
+          code.toReciprocalCode.toPermutationCode.perm
+          xd.1 xd.2.1 t t)
+    · rw [if_pos hpos]
+      omega
+    · rw [if_neg hpos]
+      omega
+  rwa [hsum] at hlower
+
 /-- At the calibrated `q=8` parameter, an empty selected fiber forces at
 least eight unordered repeated-target incidences in that fiber. -/
 theorem eight_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
@@ -268,5 +318,7 @@ end Erdos85
 #print axioms
   Erdos85.q_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
 #print axioms Erdos85.two_mul_q_le_sizeTwoCyclicAgreement_sum_of_noAdj
+#print axioms
+  Erdos85.two_mul_q_le_sizeTwoCyclicAgreement_support_card_of_noAdj
 #print axioms
   Erdos85.eight_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
