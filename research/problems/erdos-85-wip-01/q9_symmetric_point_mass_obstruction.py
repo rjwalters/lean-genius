@@ -572,6 +572,22 @@ def finite_graph_distance(
     return None
 
 
+def has_local_packing_single_swap(
+        system: dict, source: int, first: int, second: int) -> bool:
+    """Two full source packings differ by replacing first with second."""
+    family = local_packing_family(system, source)
+    first_cores = {
+        frozenset(packing - {first})
+        for packing in family
+        if first in packing and second not in packing
+    }
+    return any(
+        second in packing and first not in packing
+        and frozenset(packing - {second}) in first_cores
+        for packing in family
+    )
+
+
 def contracted_collision_star_matching_cover(
         system: dict, target: int, local: dict[int, dict]) -> dict:
     """Cover residual blocks by pairs plus at most one three-block star."""
@@ -2401,6 +2417,12 @@ def main() -> None:
                             for packing in local_packing_family(system, source)
                         )
                     ),
+                    "residual_single_swap_neighbors": sorted(
+                        source for source in residual
+                        if has_local_packing_single_swap(
+                            system, source, record["target"], row
+                        )
+                    ),
                 }
                 for row in range(N)
                 if not local[row]["packing_count"]
@@ -2519,6 +2541,13 @@ def main() -> None:
                         record["target"] in packing
                         and candidate["target"] in packing
                         for packing in local_packing_family(system, source)
+                    )
+                ),
+                "residual_single_swap_neighbors": sorted(
+                    source for source in residual
+                    if has_local_packing_single_swap(
+                        system, source, record["target"],
+                        candidate["target"]
                     )
                 ),
                 "reverse_contains_target": record["target"] in set(
@@ -2640,6 +2669,43 @@ def main() -> None:
                 )
                 and not any(
                     candidate["residual_joint_packing_neighbors"]
+                    for candidate in record["lex_better_target_relations"]
+                )
+            ),
+            "all_dual_terminal_failures_have_joint_or_single_swap_exchange": all(
+                record["all_lexicographic_color_selectors_close"]
+                or record["forced_card"]
+                    + record["collision_star_matching_cover"]["cover_card"]
+                    < record["profiles"][0]["demand"]
+                or any(
+                    item["residual_joint_packing_neighbors"]
+                    or item["residual_single_swap_neighbors"]
+                    for item in record[
+                        "locally_infeasible_residual_neighbors"
+                    ]
+                )
+                or any(
+                    candidate["residual_joint_packing_neighbors"]
+                    or candidate["residual_single_swap_neighbors"]
+                    for candidate in record["lex_better_target_relations"]
+                )
+                for record in records
+            ),
+            "dual_terminal_failures_without_single_swap_exchange_count": sum(
+                1
+                for record in records
+                if not record["all_lexicographic_color_selectors_close"]
+                and record["forced_card"]
+                    + record["collision_star_matching_cover"]["cover_card"]
+                    >= record["profiles"][0]["demand"]
+                and not any(
+                    item["residual_single_swap_neighbors"]
+                    for item in record[
+                        "locally_infeasible_residual_neighbors"
+                    ]
+                )
+                and not any(
+                    candidate["residual_single_swap_neighbors"]
                     for candidate in record["lex_better_target_relations"]
                 )
             ),

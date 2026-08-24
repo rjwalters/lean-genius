@@ -5793,11 +5793,22 @@ and 46), but no local packing at those sources contains 36 and 23 together.
 That exception is valuable: the proof needs connectivity/augmentation of the
 local-packing exchange graph, not merely selection of one joint packing.
 
-Accordingly, the remaining proof problem is now a recognizable basis-exchange
-claim for the finite family of disjoint block packings at one source.  Starting
-from `X_w` and `X_z`, an alternating sequence of block replacements must either
-expose a row with no full packing or transport the reverse-obstruction data to
-the lex-better row `z`.  The already-banked
+A sharper exhaustive check shows that no long exchange path is needed.  In
+the sole no-joint exception, the two packings already differ by one row: at
+each of sources 27, 37, and 46, deleting 36 from one full packing leaves the
+same core as deleting 23 from another.  Across all nineteen durable failures,
+the bad-or-better witness therefore has, at some residual source, either a
+joint packing with the selected row or two packings related by exactly one
+replacement.  Single-swap alone misses two failures, both supplied by the
+joint-packing horn.  The auditor records this exact disjunction as
+`all_dual_terminal_failures_have_joint_or_single_swap_exchange`.
+
+Accordingly, the remaining proof problem is the sharper joint-or-one-swap
+exchange claim for the finite family of disjoint block packings at one source.
+The Lean interface `AreLocalGramPackingExchangeCoupledAt` records exactly
+these two horns.  One must derive that coupling from the outer design and use
+it either to expose a row with no full packing or transport the
+reverse-obstruction data to the lex-better row `z`.  The already-banked
 `exists_terminal_of_lexicographic_exchange_descent` handles the minimality
 endgame once this packing-family exchange is proved.
 
