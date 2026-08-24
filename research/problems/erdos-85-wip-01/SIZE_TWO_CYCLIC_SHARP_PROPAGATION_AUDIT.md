@@ -95,6 +95,37 @@ while at q=6 even one sharp source is impossible although the unrestricted
 cap-free system is satisfiable.  The proposed statement is intentionally
 restricted to binary q at least 8.
 
+## Near-orthomorphism literature cut
+
+For fixed `p=(x,t)`, the normal form sends a dart label `r` to
+
+```text
+u = -t-r-psi_p(r),
+```
+
+where `psi_p` is a permutation of the two-hole label set.  Thus a sharp
+source is a two-hole near orthomorphism: the sum map has one repeated and
+one missing value.  This is the quantitative neighbourhood of the
+Hall--Paige complete-mapping obstruction, not an unrelated Latin-square
+phenomenon.
+
+The classical literature also closes the purely local route.  Cheng-De
+Wang, *On Special Near Orthomorphisms*, JCMCC 21 (1996), proves existence of
+special near orthomorphisms for abelian groups with cyclic Sylow 2-subgroup
+of order greater than 6 and gives an explicit `Z_8` example:
+
+```text
+https://combinatorialpress.com/article/jcmcc/Volume%20021/vol-21-paper%2013.pdf
+```
+
+The paper's canonical deleted pair is not automatically identical to every
+pair of holes in this packing problem, but its existence theorem agrees with
+our exhaustive local q8 enumeration: near-complete-mapping theory supplies
+individual sharp rows rather than excluding them.  The missing theorem is
+therefore a *coupled* near-orthomorphism result for the affine reciprocal
+involution across all bases.  Standard Hall--Paige or local
+near-orthomorphism nonexistence cannot yield (RANK-q2).
+
 ## What the statement would and would not prove
 
 (RANK-q2) is a real amplification over the pointwise first-moment bound
