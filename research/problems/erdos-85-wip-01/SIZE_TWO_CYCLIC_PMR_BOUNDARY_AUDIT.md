@@ -305,6 +305,20 @@ distinguished diagonal hole to `i+q/2`; the remaining task is to use the
 local odd half-block moment to propagate the other missing/excess token and
 thereby prove `W_(i+q/2)=1` and the strict two-rank cost.
 
+For comparison, the rank-64 equality stratum has no higher-order local
+tokens.  The direct query
+
+```text
+sum R <= 64, some source rank >= 3
+```
+
+is UNSAT.  Since all 48 q8/a2 sources have rank at least one, every equality
+model therefore has exactly 32 rank-one rows and 16 rank-two rows.  In the
+half-block language, each rank-two row carries one indivisible token and no
+row carries two.  This confirms that the equality target `W_x=2` is a sparse
+unit-token cycle-cover problem; it cannot hide concentrated higher-rank
+sources.  The repeatable option is `--min-maximum-source-defect-rank`.
+
 ## Aggregate transpose symmetry is insufficient
 
 Full reciprocity implies the aggregate transpose law

@@ -38,6 +38,8 @@ def main() -> None:
         help="require at least this many sources to have a 0,2,1,... block profile")
     parser.add_argument("--max-total-defect-rank", type=int,
         help="bound the total number of zero source-to-fibre loads")
+    parser.add_argument("--min-maximum-source-defect-rank", type=int,
+        help="require at least one source to have this many zero fibre loads")
     parser.add_argument("--require-reflection-rank-imbalance", type=int,
         nargs=2, metavar=("X", "T"),
         help="require unequal zero-load counts at (x,t) and (x,-1-t)")
@@ -342,6 +344,15 @@ def main() -> None:
 
     def source_is_sharp_expr(source: tuple[int, int]) -> z3.BoolRef:
         return source_defect_rank_expr(source) == 1
+
+    if args.min_maximum_source_defect_rank is not None:
+        minimum = args.min_maximum_source_defect_rank
+        if not 0 <= minimum <= len(differences):
+            parser.error("the source defect-rank lower bound is outside its range")
+        solver.add(z3.Or([
+            source_defect_rank_expr(source) >= minimum
+            for source in vertices
+        ]))
 
     if args.require_reflection_rank_imbalance is not None:
         x, t = (value % q for value in
