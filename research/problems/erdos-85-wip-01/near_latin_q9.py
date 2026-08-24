@@ -206,7 +206,78 @@ def decompose_two_regular(rows: list[list[int]]) -> list[list[int]]:
     return [first, second]
 
 
-def sat_search(q: int, timeout: int, paired_cycles: list[str] | None = None
+def perfect_matchings(points: tuple[int, ...]):
+    """Generate perfect matchings, in a canonical tuple representation."""
+    if not points:
+        yield ()
+        return
+    x = points[0]
+    for index in range(1, len(points)):
+        y = points[index]
+        remaining = points[1:index] + points[index + 1:]
+        for matching in perfect_matchings(remaining):
+            yield tuple(sorted(((min(x, y), max(x, y)),) + matching))
+
+
+def doubled_cycle_left_actions(parts: list[int]) -> list[tuple[int, ...]]:
+    """Left-side actions induced by color-preserving doubled-cycle automorphisms.
+
+    A component with ``n`` left vertices is a bipartite cycle of length
+    ``2*n``.  Its color-preserving action on the left shore is dihedral.  Equal
+    components may additionally be permuted.  The q=9 cycle types have at
+    most two components, so this explicit product/wreath construction is
+    enough and keeps the exact scout dependency-free.
+    """
+    offsets = []
+    start = 0
+    for length in parts:
+        offsets.append(start)
+        start += length
+    local_actions = []
+    for length in parts:
+        actions = []
+        for shift in range(length):
+            actions.append(tuple((x + shift) % length for x in range(length)))
+            actions.append(tuple((shift - x) % length for x in range(length)))
+        local_actions.append(sorted(set(actions)))
+    actions = set()
+    for choices in itertools.product(*local_actions):
+        permutation = list(range(start))
+        for offset, action in zip(offsets, choices):
+            for x, image in enumerate(action):
+                permutation[offset + x] = offset + image
+        actions.add(tuple(permutation))
+        if len(parts) == 2 and parts[0] == parts[1]:
+            length = parts[0]
+            swapped = list(permutation)
+            for x in range(length):
+                swapped[x] = length + choices[0][x]
+                swapped[length + x] = choices[1][x]
+            actions.add(tuple(swapped))
+    return sorted(actions)
+
+
+def within_matching_orbit_representatives(parts: list[int]
+                                          ) -> list[tuple[tuple[int, int], ...]]:
+    """Canonical representatives modulo the residual doubled-cycle gauge."""
+    size = sum(parts)
+    actions = doubled_cycle_left_actions(parts)
+    unseen = set(perfect_matchings(tuple(range(size))))
+    representatives = []
+    while unseen:
+        representative = min(unseen)
+        orbit = {
+            tuple(sorted((min(action[x], action[y]), max(action[x], action[y]))
+                         for x, y in representative))
+            for action in actions
+        }
+        unseen.difference_update(orbit)
+        representatives.append(representative)
+    return representatives
+
+
+def sat_search(q: int, timeout: int, paired_cycles: list[str] | None = None,
+               first_within_orbit: int | None = None
                ) -> tuple[str, Datum | None, dict[str, int]]:
     """Exact CNF model of the lift class, solved by Kissat."""
     m, r = q - 1, q + 1
@@ -318,6 +389,22 @@ def sat_search(q: int, timeout: int, paired_cycles: list[str] | None = None
                         emit([variable if y in (x, successor[x]) else -variable])
                         stats["gauge_clauses"] += 1
 
+            if first_within_orbit is not None:
+                parts = [int(x) // 2 for x in paired_cycles[0].split("+")]
+                representatives = within_matching_orbit_representatives(parts)
+                stats["first_within_orbit_count"] = len(representatives)
+                if not 0 <= first_within_orbit < len(representatives):
+                    raise ValueError(
+                        f"first within-matching orbit must be in "
+                        f"[0, {len(representatives)})"
+                    )
+                fixed = set(representatives[first_within_orbit])
+                for x in range(r):
+                    for y in range(x + 1, r):
+                        variable = int(edge(x, y))
+                        emit([variable if (x, y) in fixed else -variable])
+                        stats["gauge_clauses"] += 1
+
         # Three possible undirected 4-cycles on every four-point set.
         def negated_edge(e: bool | int) -> bool | int:
             # bool is a subclass of int in Python, so test it first.
@@ -414,6 +501,11 @@ def main() -> None:
         help="run all 35 symmetry-reduced q=9 mixed cycle-type multisets",
     )
     parser.add_argument(
+        "--first-within-orbit", type=int,
+        help=("with fixed paired cycles, quotient the residual gauge by "
+              "fixing fiber 0's within matching to this zero-based orbit"),
+    )
+    parser.add_argument(
         "--multiset-start", type=int, default=0,
         help="zero-based first multiset representative to run",
     )
@@ -429,6 +521,13 @@ def main() -> None:
         parser.error("use at most one of --paired-cycle and --paired-cycles")
     if args.enumerate_cycle_multisets and (args.paired_cycle or args.paired_cycles):
         parser.error("cycle multiset enumeration cannot be combined with a fixed type")
+    if args.first_within_orbit is not None:
+        if args.first_within_orbit < 0:
+            parser.error("--first-within-orbit must be nonnegative")
+        if not (args.paired_cycle or args.paired_cycles):
+            parser.error("--first-within-orbit requires fixed paired cycles")
+        if args.enumerate_cycle_multisets:
+            parser.error("use --first-within-orbit with one fixed cycle tuple")
     if args.enumerate_cycle_multisets:
         if args.q != 9 or args.method != "sat":
             parser.error("cycle multiset enumeration is an exact q=9 SAT scout")
@@ -471,7 +570,9 @@ def main() -> None:
             paired_cycles = args.paired_cycles.split(",")
             if any(cycle not in cycle_types for cycle in paired_cycles):
                 parser.error(f"cycle types must be chosen from {cycle_types}")
-        status, datum, stats = sat_search(args.q, args.timeout, paired_cycles)
+        status, datum, stats = sat_search(
+            args.q, args.timeout, paired_cycles, args.first_within_orbit
+        )
         result = {"q": args.q, "status": status, "stats": stats}
         if datum is not None:
             result |= serializable(datum) | {"C4_count": 0}

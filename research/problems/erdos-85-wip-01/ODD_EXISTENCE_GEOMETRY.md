@@ -346,6 +346,35 @@ Kissat scout of the maximally heterogeneous representative
 3,160-variable, 4,780,580-clause encoding. This shows that mixed types are not
 immediately easier; it is still not evidence against existence.
 
+There is a further exact symmetry reduction below each cycle-type tuple.
+After the doubled graph between fibers 0 and 1 is put in canonical form, its
+color-preserving automorphism group remains available as a gauge action on
+the variable within-fiber matching of fiber 0. The 945 perfect matchings on
+ten points split into the following orbit counts:
+
+| doubled cycle type | residual group order | matching orbits |
+|---|---:|---:|
+| `20` | 20 | 79 |
+| `6+14` | 84 | 23 |
+| `8+12` | 96 | 34 |
+| `10+10` | 200 | 16 |
+
+Here the residual groups are respectively a dihedral group, products of two
+dihedral groups, and the wreath product for two equal components.
+`near_latin_q9.py` constructs these actions and their matching orbits directly,
+without a graph-isomorphism dependency. For example,
+
+```text
+python3 near_latin_q9.py \
+  --paired-cycles '10+10,10+10,10+10,10+10' \
+  --first-within-orbit 0 --timeout 300
+```
+
+selects one of the 16 exhaustive residual-gauge shards for the first doubled
+pair. This does not decide any shard by itself, but it replaces redundant
+solver exploration by a mathematically complete case split and is the next
+appropriate level for the bounded q=9 existence test.
+
 ### 5.1 Every plane-minus-two existence witness is necessarily nonbipartite
 
 There is a uniform extremal obstruction which should constrain every algebraic
