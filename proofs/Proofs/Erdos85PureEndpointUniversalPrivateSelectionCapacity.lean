@@ -41,12 +41,17 @@ theorem c4Free_binarySquare_pureEndpoint_universal_privateSelection_capacity
     let O := {i : V // i ∈ F ∧ i ∉ S}
     ∃ p : C → V, ∃ φ : I → V, ∃ σ : O → I,
       Function.Injective p ∧ Function.Injective φ ∧
+      (∀ e : I, φ e ∈ S) ∧
       (∀ i : O, i.1 ∈ (σ i).1) ∧
       (∀ i : O, G.Adj (p ⟨i.1, i.2.1⟩) (φ (σ i))) ∧
-      ∀ w : V,
+      (∀ w : V,
+          let A := (Finset.univ : Finset O).filter fun i =>
+            G.Adj (p ⟨i.1, i.2.1⟩) w
+          A.card ≤ (A.image σ).card + 1) ∧
+      ∀ w : V, w ∉ S →
         let A := (Finset.univ : Finset O).filter fun i =>
           G.Adj (p ⟨i.1, i.2.1⟩) w
-        A.card ≤ (A.image σ).card + 1 := by
+        A.card = (A.image σ).card := by
   classical
   dsimp only
   let F := fullLineCenters G S q
@@ -56,7 +61,7 @@ theorem c4Free_binarySquare_pureEndpoint_universal_privateSelection_capacity
   obtain ⟨p, hpInj, hp, hpSurj⟩ :=
     c4Free_binarySquare_pureEndpoint_privatePoint_bijection
       G hfree hq hqm hreg hcard S hempty hCcard hshore htri
-  obtain ⟨φ, hφInj, _hφ, _hφSurj, σ, hσ⟩ :=
+  obtain ⟨φ, hφInj, hφ, _hφSurj, σ, hσ⟩ :=
     c4Free_binarySquare_pureEndpoint_offShore_pairSelection
       G hfree hq hqm hreg hcard S hempty hCcard hshore htri
   have halign : ∀ i : O,
@@ -77,38 +82,56 @@ theorem c4Free_binarySquare_pureEndpoint_universal_privateSelection_capacity
       simpa using Finset.singleton_inj.mp hsingle
     rw [← hji, hj]
     exact hrφ
-  refine ⟨p, φ, σ, hpInj, hφInj, (fun i => (hσ i).1), halign, ?_⟩
-  intro w
-  let A := (Finset.univ : Finset O).filter fun i =>
-    G.Adj (p ⟨i.1, i.2.1⟩) w
-  have hfiber : ∀ e : I, (A.filter fun i => σ i = e).card ≤ 2 := by
-    intro e
-    have hsub : A.filter (fun i => σ i = e) ⊆
-        (Finset.univ : Finset O).filter fun i => σ i = e := by
-      intro i hi
-      exact Finset.mem_filter.mpr
-        ⟨Finset.mem_univ i, (Finset.mem_filter.mp hi).2⟩
-    apply (Finset.card_le_card hsub).trans
-    apply incident_twoSubset_selection_fiber_card_le_two
-      (val := fun i : O => i.1) (edge := fun e : I => e.1)
-      (σ := σ) (e := e)
-    · exact Subtype.val_injective
-    · intro a
-      exact (Finset.mem_powersetCard.1 a.2).2
-    · exact fun i => (hσ i).1
-  apply card_le_card_image_add_one_of_unique_exceptional_collision
-    A σ φ w hφInj hfiber
-  intro i hiA j hjA hij hσij
-  apply c4Free_injective_privateSelection_collision_eq_base
-    G hfree hpInj (show (⟨i.1, i.2.1⟩ : C) ≠ ⟨j.1, j.2.1⟩ by
-      intro h
-      apply hij
-      exact Subtype.ext (congrArg (fun x : C => x.1) h))
-  · exact (Finset.mem_filter.mp hiA).2
-  · exact (Finset.mem_filter.mp hjA).2
-  · exact halign i
-  · rw [hσij]
-    exact halign j
+  refine ⟨p, φ, σ, hpInj, hφInj, (fun e => (hφ e).1),
+    (fun i => (hσ i).1), halign, ?_, ?_⟩
+  · intro w
+    let A := (Finset.univ : Finset O).filter fun i =>
+      G.Adj (p ⟨i.1, i.2.1⟩) w
+    have hfiber : ∀ e : I, (A.filter fun i => σ i = e).card ≤ 2 := by
+      intro e
+      have hsub : A.filter (fun i => σ i = e) ⊆
+          (Finset.univ : Finset O).filter fun i => σ i = e := by
+        intro i hi
+        exact Finset.mem_filter.mpr
+          ⟨Finset.mem_univ i, (Finset.mem_filter.mp hi).2⟩
+      apply (Finset.card_le_card hsub).trans
+      apply incident_twoSubset_selection_fiber_card_le_two
+        (val := fun i : O => i.1) (edge := fun e : I => e.1)
+        (σ := σ) (e := e)
+      · exact Subtype.val_injective
+      · intro a
+        exact (Finset.mem_powersetCard.1 a.2).2
+      · exact fun i => (hσ i).1
+    apply card_le_card_image_add_one_of_unique_exceptional_collision
+      A σ φ w hφInj hfiber
+    intro i hiA j hjA hij hσij
+    apply c4Free_injective_privateSelection_collision_eq_base
+      G hfree hpInj (show (⟨i.1, i.2.1⟩ : C) ≠ ⟨j.1, j.2.1⟩ by
+        intro h
+        apply hij
+        exact Subtype.ext (congrArg (fun x : C => x.1) h))
+    · exact (Finset.mem_filter.mp hiA).2
+    · exact (Finset.mem_filter.mp hjA).2
+    · exact halign i
+    · rw [hσij]
+      exact halign j
+  · intro w hwS
+    let A := (Finset.univ : Finset O).filter fun i =>
+      G.Adj (p ⟨i.1, i.2.1⟩) w
+    have hinj : Set.InjOn σ (A : Set O) := by
+      intro i hiA j hjA hσij
+      by_contra hij
+      have hφw := c4Free_injective_privateSelection_collision_eq_base
+        G hfree hpInj
+        (show (⟨i.1, i.2.1⟩ : C) ≠ ⟨j.1, j.2.1⟩ by
+          intro h
+          apply hij
+          exact Subtype.ext (congrArg (fun x : C => x.1) h))
+        (Finset.mem_filter.mp hiA).2
+        (Finset.mem_filter.mp hjA).2
+        (halign i) (by rw [hσij]; exact halign j)
+      exact hwS (hφw ▸ (hφ (σ i)).1)
+    exact (Finset.card_image_of_injOn hinj).symm
 
 end
 
