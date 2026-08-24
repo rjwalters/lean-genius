@@ -110,9 +110,84 @@ theorem exists_binaryVertexCutGraph_twoPole_walk
   rw [binaryVertexCutGraph_degree_odd_iff G X u (heven u)]
   exact hsyndrome u
 
+/-- Support of a binary potential, represented by its one-coordinates. -/
+def f2PotentialSupport
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (x : V → ZMod 2) : Finset V :=
+  Finset.univ.filter fun v => x v = 1
+
+private theorem sum_f2_eq_card_filter_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (s : Finset V) (x : V → ZMod 2) :
+    (∑ v ∈ s, x v) = ((s.filter fun v => x v = 1).card : ZMod 2) := by
+  have hz : ∀ y : ZMod 2, y = 0 ∨ y = 1 := by decide
+  calc
+    (∑ v ∈ s, x v) = ∑ v ∈ s, if x v = 1 then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro v _
+      rcases hz (x v) with hv | hv
+      · simp [hv]
+      · simp [hv]
+    _ = ((s.filter fun v => x v = 1).card : ZMod 2) := by
+      simp
+
+/-- The adjacency action of a binary potential is the parity of the number
+of neighbors in its support. -/
+theorem f2Potential_neighborSupport_card_cast
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (x : V → ZMod 2) (u : V) :
+    ((G.neighborFinset u ∩ f2PotentialSupport x).card : ZMod 2) =
+      (G.adjMatrix (ZMod 2)).mulVec x u := by
+  rw [SimpleGraph.adjMatrix_mulVec_apply,
+    sum_f2_eq_card_filter_one]
+  congr 2
+  ext v
+  simp [f2PotentialSupport]
+
+/-- A two-pole binary adjacency equation gives exactly the odd-neighbor
+syndrome required by the cut-route theorem. -/
+theorem f2Potential_twoPole_odd_neighborSupport_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (x : V → ZMod 2) (pole₁ pole₂ : V) (hpoles : pole₁ ≠ pole₂)
+    (hpotential : (G.adjMatrix (ZMod 2)).mulVec x =
+      f2EndpointSwitch pole₁ pole₂) (u : V) :
+    Odd ((G.neighborFinset u ∩ f2PotentialSupport x).card) ↔
+      u = pole₁ ∨ u = pole₂ := by
+  rw [← ZMod.natCast_eq_one_iff_odd,
+    f2Potential_neighborSupport_card_cast, hpotential]
+  simp only [f2EndpointSwitch, Pi.add_apply, Pi.single_apply]
+  by_cases hu₁ : u = pole₁
+  · subst u
+    simp [hpoles]
+  · by_cases hu₂ : u = pole₂
+    · subst u
+      simp [hu₁]
+    · simp [hu₁, hu₂]
+
+/-- **Binary adjacency potential capstone.**  In an even-valent graph, an
+equation `A x = e_pole₁ + e_pole₂` produces an actual walk between the two
+poles inside the support cut, with the correct F₂ endpoint boundary. -/
+theorem exists_binaryVertexCutGraph_twoPole_walk_of_adjMatrix_mulVec
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (x : V → ZMod 2) (pole₁ pole₂ : V) (hpoles : pole₁ ≠ pole₂)
+    (heven : ∀ u, Even (G.degree u))
+    (hpotential : (G.adjMatrix (ZMod 2)).mulVec x =
+      f2EndpointSwitch pole₁ pole₂) :
+    ∃ p : (binaryVertexCutGraph G (f2PotentialSupport x)).Walk pole₁ pole₂,
+      f2WalkEdgeBoundary p = f2EndpointSwitch pole₁ pole₂ := by
+  apply exists_binaryVertexCutGraph_twoPole_walk G
+    (f2PotentialSupport x) pole₁ pole₂ heven
+  exact f2Potential_twoPole_odd_neighborSupport_iff
+    G x pole₁ pole₂ hpoles hpotential
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.binaryVertexCutGraph_degree_odd_iff
 #print axioms Erdos85.exists_binaryVertexCutGraph_twoPole_walk
+#print axioms Erdos85.f2Potential_neighborSupport_card_cast
+#print axioms Erdos85.exists_binaryVertexCutGraph_twoPole_walk_of_adjMatrix_mulVec
