@@ -510,6 +510,36 @@ theorem card_mul_le_sum_of_two_mul_le_adjacent
   rw [hleft] at hsum
   omega
 
+/-- Reindexing the opposite-parity part along a cyclic successor shows that
+parity-selected adjacent windows partition the total missing mass. -/
+theorem sum_same_add_shiftedOpposite_eq_sum_same_add_opposite
+    {β : Type*} [Fintype β] (next : β ≃ β)
+    (same opposite : β → ℕ) :
+    (∑ x : β, (same x + opposite (next x))) =
+      ∑ x : β, (same x + opposite x) := by
+  rw [Finset.sum_add_distrib, Finset.sum_add_distrib,
+    Equiv.sum_comp next opposite]
+
+/-- Arithmetic consumer for the parity-selected missing-rank (`PMR`)
+interface.  If each window `same(x) + opposite(next x)` has mass at least a
+threshold, then the total missing mass has at least threshold times the
+number of bases. -/
+theorem card_mul_le_sum_same_add_opposite_of_le_paritySelected
+    {β : Type*} [Fintype β] (next : β ≃ β)
+    (same opposite : β → ℕ) (threshold : ℕ)
+    (hselected : ∀ x, threshold ≤ same x + opposite (next x)) :
+    Fintype.card β * threshold ≤
+      ∑ x : β, (same x + opposite x) := by
+  calc
+    Fintype.card β * threshold = ∑ _x : β, threshold := by simp
+    _ ≤ ∑ x : β, (same x + opposite (next x)) := by
+      apply Finset.sum_le_sum
+      intro x hx
+      exact hselected x
+    _ = ∑ x : β, (same x + opposite x) :=
+      sum_same_add_shiftedOpposite_eq_sum_same_add_opposite
+        next same opposite
+
 /-- The distribution-free consumer for `(RANK-q2)`: if the total number of
 rank-at-least-two entries is at least twice the number of bases, the global
 rank exceeds the all-one baseline by at least that amount.  In particular,
@@ -875,6 +905,8 @@ end Erdos85
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_two_nonstrict_each
 #print axioms Erdos85.two_mul_card_le_sum_of_four_le_adjacent
 #print axioms Erdos85.card_mul_le_sum_of_two_mul_le_adjacent
+#print axioms Erdos85.sum_same_add_shiftedOpposite_eq_sum_same_add_opposite
+#print axioms Erdos85.card_mul_le_sum_same_add_opposite_of_le_paritySelected
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_global_nonstrict_count
 #print axioms Erdos85.card_zeros_le_sum_choose_two_of_sum_eq_card
 #print axioms Erdos85.sizeTwoCyclicIncidenceDefectRank_le_collisionMass
