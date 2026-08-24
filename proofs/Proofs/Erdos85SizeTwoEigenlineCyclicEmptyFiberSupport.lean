@@ -192,6 +192,27 @@ theorem sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_emptyFiber_lower
         ∑ e : SizeTwoCyclicAbsoluteGridEdge q,
           (sizeTwoCyclicMatchingOrbitMultiplicity code t e).choose 2 := rfl
 
+/-- Once `q ≥ 3`, the division-free support inequality says directly that an
+empty selected fiber forces at least `q` unordered repeated-target
+incidences.  This is the q-generic collision-pressure entry point for any
+subsequent binary valuation-layer transport argument. -/
+theorem q_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (hq : 3 ≤ q)
+    (code : SizeTwoCyclicFullPermutationCode q a)
+    (hloop : code.toReciprocalCode.Loopless)
+    (ha : a ≠ -1 - a) (hq1 : (1 : ZMod q) ≠ 0)
+    (t : sizeTwoAllowedDifference q a)
+    (hno : ∀ x y : ZMod q,
+      ¬ (sizeTwoCyclicSelectedFiberGraph code.toReciprocalCode t).Adj x y) :
+    q ≤ ∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+      (sizeTwoCyclicMatchingOrbitMultiplicity code t e).choose 2 := by
+  have h := sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_emptyFiber_lower
+    code hloop ha hq1 t hno
+  have hsub : q - 2 = (q - 3) + 1 := by omega
+  rw [hsub, Nat.mul_add] at h
+  omega
+
 /-- At the calibrated `q=8` parameter, an empty selected fiber forces at
 least eight unordered repeated-target incidences in that fiber. -/
 theorem eight_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
@@ -204,10 +225,8 @@ theorem eight_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
       ¬ (sizeTwoCyclicSelectedFiberGraph code.toReciprocalCode t).Adj x y) :
     8 ≤ ∑ e : SizeTwoCyclicAbsoluteGridEdge 8,
       (sizeTwoCyclicMatchingOrbitMultiplicity code t e).choose 2 := by
-  have h := sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_emptyFiber_lower
-    code hloop ha (by decide) t hno
-  norm_num at h
-  omega
+  exact q_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
+    (by norm_num) code hloop ha (by decide) t hno
 
 end
 
@@ -218,5 +237,7 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicMatchingOrbitSupport_card_le_of_noAdj
 #print axioms
   Erdos85.sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_emptyFiber_lower
+#print axioms
+  Erdos85.q_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
 #print axioms
   Erdos85.eight_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
