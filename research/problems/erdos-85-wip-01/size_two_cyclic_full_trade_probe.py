@@ -16,6 +16,8 @@ def main() -> None:
     parser.add_argument("--a", type=int, required=True)
     parser.add_argument("--caps", action="store_true",
                         help="impose every same-fibre cap in both codes")
+    parser.add_argument("--cap-fibres", type=int, nargs="+",
+                        help="impose caps only in the listed endpoint fibres")
     parser.add_argument("--max-old-rank", type=int,
                         help="upper-bound the defect rank of the first code")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
@@ -59,8 +61,12 @@ def main() -> None:
                     for u in differences
                 ], wanted))
 
-        if args.caps:
+        if args.caps or args.cap_fibres is not None:
+            capped = (set(differences) if args.caps else
+                      {value % q for value in args.cap_fibres})
             for t in differences:
+                if t not in capped:
+                    continue
                 for x, z in combinations(range(q), 2):
                     solver.add(z3.PbLe([
                         (z3.And(edge((x, t), target),
@@ -95,8 +101,11 @@ def main() -> None:
         solver.add(zero_totals[0] <= args.max_old_rank)
 
     result = solver.check()
+    cap_scope = ("all" if args.caps else
+                 sorted({value % q for value in args.cap_fibres})
+                 if args.cap_fibres is not None else "none")
     print(f"q={q} a={args.a % q} support={args.support} "
-          f"caps={args.caps}: {result}")
+          f"cap_fibres={cap_scope}: {result}")
     if result != z3.sat:
         return
     model = solver.model()

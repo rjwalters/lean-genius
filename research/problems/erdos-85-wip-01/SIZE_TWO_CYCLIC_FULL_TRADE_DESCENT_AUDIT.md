@@ -74,3 +74,29 @@ model.  A proof must use caps to guarantee or obstruct closure before the
 already-dead minimum stratum, likely through the reflection-orbit collision
 charge rather than generic trade connectivity.
 
+## Selective caps isolate the reflection obstruction
+
+`--cap-fibres` imposes every pair cap in selected endpoint fibres in both
+full codes.  At unbounded old rank, support-eight descent has the following
+exact q8 pattern under `j(t)=-1-t`:
+
+```text
+a=0: orbit {1,6} capped together: SAT
+     fibres 2 and 5 separately: SAT, but orbit {2,5} together: UNSAT
+     fibres 3 and 4 separately: UNSAT
+
+a=1: orbit {0,7} capped together: SAT
+     fibres 2,3,4,5 separately: UNSAT
+
+a=2: orbit {1,6} capped together: SAT
+     fibres 0,3,4,7 separately: UNSAT
+
+a=3: every singleton cap fibre: UNSAT.
+```
+
+Thus a minimum-support full-code descent can preserve caps on at most one
+complete reflection orbit.  Obstruction is genuinely orbitwise: at a0 the
+two caps in `{2,5}` are harmless separately but fatal together.  This is
+direct bounded evidence that the q-generic reflected deviation charge is
+the correct interface between caps and descent, rather than merely a
+convenient grouping of endpoint fibres.
