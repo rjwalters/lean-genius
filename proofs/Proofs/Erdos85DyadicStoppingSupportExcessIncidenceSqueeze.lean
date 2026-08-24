@@ -35,9 +35,30 @@ theorem choose_two_add_mul_le_choose_two_add_mul
       rw [hrec, hmul]
       omega
 
+/-- The next discrete-convex layer: after the first incidence above `L`,
+each further incidence creates at least one additional pair beyond the
+linear `m`-charge. -/
+theorem choose_two_add_mul_add_tail_le
+    {m L d : ℕ} (hm : m ≤ L) (hLd : L ≤ d) :
+    L.choose 2 + m * d + (d - L - 1) ≤ d.choose 2 + m * L := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hLd
+  clear hLd
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      have hrec : (L + (k + 1)).choose 2 =
+          (L + k) + (L + k).choose 2 := by
+        rw [show L + (k + 1) = (L + k) + 1 by omega,
+          Nat.choose_succ_succ]
+        simp
+      have hmul : m * (L + (k + 1)) = m * (L + k) + m := by ring
+      rw [hrec, hmul]
+      omega
+
 /-- Generic excess-incidence cherry consumer for two disjoint center
 populations.  The exact total `R` strengthens the baseline pair cost by
-`m` times every incidence above baseline. -/
+`m` times every incidence above baseline, and discrete convexity charges
+one more pair for every excess incidence beyond the first at each center. -/
 theorem c4Free_disjoint_subset_service_excessIncidence_cherry_le
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -53,54 +74,63 @@ theorem c4Free_disjoint_subset_service_excessIncidence_cherry_le
       (∑ p ∈ S, (G.neighborFinset p ∩ B).card) +
         (∑ p ∈ T, (G.neighborFinset p ∩ B).card) = R) :
     S.card * L.choose 2 + T.card * M.choose 2 +
-        m * (R - (S.card * L + T.card * M)) ≤
+        m * (R - (S.card * L + T.card * M)) +
+        ((R - (S.card * L + T.card * M)) - (S.card + T.card)) ≤
       B.card.choose 2 - F.card := by
   let d : V → ℕ := fun p => (G.neighborFinset p ∩ B).card
   have hS : S.card * L.choose 2 +
-      m * (∑ p ∈ S, d p) ≤
+      m * (∑ p ∈ S, d p) + ∑ p ∈ S, (d p - L - 1) ≤
       (∑ p ∈ S, (d p).choose 2) + m * (S.card * L) := by
     calc
-      S.card * L.choose 2 + m * (∑ p ∈ S, d p) =
-          ∑ p ∈ S, (L.choose 2 + m * d p) := by
-        rw [Finset.sum_add_distrib, Finset.mul_sum]
+      S.card * L.choose 2 + m * (∑ p ∈ S, d p) +
+          ∑ p ∈ S, (d p - L - 1) =
+          ∑ p ∈ S, (L.choose 2 + m * d p + (d p - L - 1)) := by
+        rw [Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.mul_sum]
         simp
       _ ≤ ∑ p ∈ S, ((d p).choose 2 + m * L) := by
         apply Finset.sum_le_sum
         intro p hp
-        exact choose_two_add_mul_le_choose_two_add_mul
+        exact choose_two_add_mul_add_tail_le
           hmL (hserviceS p hp)
       _ = (∑ p ∈ S, (d p).choose 2) + m * (S.card * L) := by
         rw [Finset.sum_add_distrib]
         simp
         ring
   have hT : T.card * M.choose 2 +
-      m * (∑ p ∈ T, d p) ≤
+      m * (∑ p ∈ T, d p) + ∑ p ∈ T, (d p - M - 1) ≤
       (∑ p ∈ T, (d p).choose 2) + m * (T.card * M) := by
     calc
-      T.card * M.choose 2 + m * (∑ p ∈ T, d p) =
-          ∑ p ∈ T, (M.choose 2 + m * d p) := by
-        rw [Finset.sum_add_distrib, Finset.mul_sum]
+      T.card * M.choose 2 + m * (∑ p ∈ T, d p) +
+          ∑ p ∈ T, (d p - M - 1) =
+          ∑ p ∈ T, (M.choose 2 + m * d p + (d p - M - 1)) := by
+        rw [Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.mul_sum]
         simp
       _ ≤ ∑ p ∈ T, ((d p).choose 2 + m * M) := by
         apply Finset.sum_le_sum
         intro p hp
-        exact choose_two_add_mul_le_choose_two_add_mul
+        exact choose_two_add_mul_add_tail_le
           hmM (hserviceT p hp)
       _ = (∑ p ∈ T, (d p).choose 2) + m * (T.card * M) := by
         rw [Finset.sum_add_distrib]
         simp
         ring
   have hLower :
-      S.card * L.choose 2 + T.card * M.choose 2 + m * R ≤
+      S.card * L.choose 2 + T.card * M.choose 2 + m * R +
+          ((∑ p ∈ S, (d p - L - 1)) +
+            ∑ p ∈ T, (d p - M - 1)) ≤
         ((∑ p ∈ S, (d p).choose 2) +
           ∑ p ∈ T, (d p).choose 2) +
         m * (S.card * L + T.card * M) := by
     rw [← htotal]
     calc
       S.card * L.choose 2 + T.card * M.choose 2 +
-          m * ((∑ p ∈ S, d p) + ∑ p ∈ T, d p) =
-        (S.card * L.choose 2 + m * (∑ p ∈ S, d p)) +
-          (T.card * M.choose 2 + m * (∑ p ∈ T, d p)) := by ring
+          m * ((∑ p ∈ S, d p) + ∑ p ∈ T, d p) +
+          ((∑ p ∈ S, (d p - L - 1)) +
+            ∑ p ∈ T, (d p - M - 1)) =
+        (S.card * L.choose 2 + m * (∑ p ∈ S, d p) +
+          ∑ p ∈ S, (d p - L - 1)) +
+          (T.card * M.choose 2 + m * (∑ p ∈ T, d p) +
+            ∑ p ∈ T, (d p - M - 1)) := by ring
       _ ≤ ((∑ p ∈ S, (d p).choose 2) + m * (S.card * L)) +
           ((∑ p ∈ T, (d p).choose 2) + m * (T.card * M)) :=
         Nat.add_le_add hS hT
@@ -127,9 +157,47 @@ theorem c4Free_disjoint_subset_service_excessIncidence_cherry_le
         m * (R - (S.card * L + T.card * M)) := by
     rw [← Nat.mul_add, Nat.add_sub_of_le hbase]
   rw [hexpand] at hLower
+  have hTailS :
+      (∑ p ∈ S, d p) ≤
+        S.card * L + S.card + ∑ p ∈ S, (d p - L - 1) := by
+    calc
+      (∑ p ∈ S, d p) ≤
+          ∑ p ∈ S, (L + 1 + (d p - L - 1)) := by
+        apply Finset.sum_le_sum
+        intro p hp
+        have := hserviceS p hp
+        omega
+      _ = S.card * L + S.card + ∑ p ∈ S, (d p - L - 1) := by
+        rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+        simp
+  have hTailT :
+      (∑ p ∈ T, d p) ≤
+        T.card * M + T.card + ∑ p ∈ T, (d p - M - 1) := by
+    calc
+      (∑ p ∈ T, d p) ≤
+          ∑ p ∈ T, (M + 1 + (d p - M - 1)) := by
+        apply Finset.sum_le_sum
+        intro p hp
+        have := hserviceT p hp
+        omega
+      _ = T.card * M + T.card + ∑ p ∈ T, (d p - M - 1) := by
+        rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+        simp
+  have hTail :
+      (R - (S.card * L + T.card * M)) - (S.card + T.card) ≤
+        (∑ p ∈ S, (d p - L - 1)) +
+          ∑ p ∈ T, (d p - M - 1) := by
+    have hsum := Nat.add_le_add hTailS hTailT
+    rw [htotal] at hsum
+    have hRexpand : R = (S.card * L + T.card * M) +
+        (R - (S.card * L + T.card * M)) :=
+      (Nat.add_sub_of_le hbase).symm
+    rw [hRexpand] at hsum
+    omega
   have hlocal :
       S.card * L.choose 2 + T.card * M.choose 2 +
-          m * (R - (S.card * L + T.card * M)) ≤
+          m * (R - (S.card * L + T.card * M)) +
+          ((R - (S.card * L + T.card * M)) - (S.card + T.card)) ≤
         (∑ p ∈ S, (d p).choose 2) +
           ∑ p ∈ T, (d p).choose 2 := by
     omega
@@ -147,7 +215,8 @@ theorem c4Free_disjoint_subset_service_excessIncidence_cherry_le
 
 /-- **Nonuniform dyadic squeeze.**  In addition to the two baseline service
 costs, every incidence required by the exact identity `q|B|` above those
-baselines costs at least their smaller value in the pair budget. -/
+baselines costs at least their smaller value in the pair budget.  Excess
+beyond one incidence per ambient center pays an additional unit. -/
 theorem c4Free_dyadicStoppingSupport_twoShore_excessIncidence_cherry_squeeze
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -163,7 +232,9 @@ theorem c4Free_dyadicStoppingSupport_twoShore_excessIncidence_cherry_squeeze
     let B := dyadicOccupancySupport G S j
     S.card * L.choose 2 + (Sᶜ : Finset V).card * M.choose 2 +
         min L M *
-          (q * B.card - (S.card * L + (Sᶜ : Finset V).card * M)) ≤
+          (q * B.card - (S.card * L + (Sᶜ : Finset V).card * M)) +
+        ((q * B.card - (S.card * L + (Sᶜ : Finset V).card * M)) -
+          Fintype.card V) ≤
       B.card.choose 2 - (zeroCommonNeighborPairs G B).card := by
   dsimp only
   rw [← secondOrderDefectPairs_eq_zeroCommonNeighborPairs G hfree]
@@ -178,6 +249,10 @@ theorem c4Free_dyadicStoppingSupport_twoShore_excessIncidence_cherry_squeeze
   have hsupport : dyadicOccupancySupport G (Sᶜ : Finset V) j =
       dyadicOccupancySupport G S j :=
     dyadicOccupancySupport_compl G hreg S j hdiv hqdiv
+  have hcardPartition : S.card + (Sᶜ : Finset V).card = Fintype.card V := by
+    rw [Finset.card_compl]
+    exact Nat.add_sub_of_le (Finset.card_le_univ S)
+  rw [← hcardPartition]
   apply c4Free_disjoint_subset_service_excessIncidence_cherry_le
     G hfree S (Sᶜ : Finset V) (dyadicOccupancySupport G S j)
     (secondOrderDefectPairs G (dyadicOccupancySupport G S j))
@@ -210,4 +285,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.choose_two_add_mul_le_choose_two_add_mul
+#print axioms Erdos85.choose_two_add_mul_add_tail_le
 #print axioms Erdos85.c4Free_dyadicStoppingSupport_twoShore_excessIncidence_cherry_squeeze
