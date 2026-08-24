@@ -1,12 +1,12 @@
-import Proofs.Erdos85ExceptionalSupportDefectCapacity
-import Proofs.Erdos85FinalDyadicExceptionalProfile
+import Proofs.Erdos85ExceptionalEmptyCliqueIncidenceCapacity
 
 /-!
-# Incidence capacity forced by an exceptional empty clique
+# Intrinsic final-dyadic form of exceptional empty incidence capacity
 
-A defect clique has pairwise disjoint ambient neighborhoods.  Consequently
-no point can lie on two canonical empty lines, and the empty-line incidences
-fit injectively into the shore complement.
+The structural incidence provider is proved in
+`Erdos85ExceptionalEmptyCliqueIncidenceCapacity`.  Here the final dyadic mass
+identity eliminates the shore size, expressing its consequence purely in
+the two exceptional population counts.
 -/
 
 open Finset SimpleGraph
@@ -14,53 +14,6 @@ open Finset SimpleGraph
 namespace Erdos85
 
 noncomputable section
-
-/-- Defect-clique structure of the canonical empty family automatically
-implies the point-replication-at-most-one condition. -/
-theorem emptyLineCenters_replicationAtMostOne_of_defectClique
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    (hfree : ¬ containsC4 V G) (S : Finset V)
-    (hemptyClique : ∀ ⦃u v⦄,
-      u ∈ emptyLineCenters G S → v ∈ emptyLineCenters G S → u ≠ v →
-        (secondOrderDefectGraph G).Adj u v) :
-    ∀ x, (G.neighborFinset x ∩ emptyLineCenters G S).card ≤ 1 := by
-  intro x
-  apply Finset.card_le_one.mpr
-  intro u hu v hv
-  have hu' := Finset.mem_inter.mp hu
-  have hv' := Finset.mem_inter.mp hv
-  by_contra huv
-  exact (not_secondOrderDefect_adj_of_commonNeighbor
-    G hfree huv
-      ((G.mem_neighborFinset x u).mp hu'.1).symm
-      ((G.mem_neighborFinset x v).mp hv'.1).symm)
-    (hemptyClique hu'.2 hv'.2 huv)
-
-/-- The `q` incidences of every empty line are disjoint and all land outside
-the shore. -/
-theorem binarySquare_emptyLineCenters_incidence_capacity_of_defectClique
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    (hfree : ¬ containsC4 V G) {q : ℕ}
-    (hreg : ∀ v, G.degree v = q)
-    (hcard : Fintype.card V = q * q)
-    (S : Finset V)
-    (hemptyClique : ∀ ⦃u v⦄,
-      u ∈ emptyLineCenters G S → v ∈ emptyLineCenters G S → u ≠ v →
-        (secondOrderDefectGraph G).Adj u v) :
-    q * (emptyLineCenters G S).card ≤ q * q - S.card := by
-  have hcap := emptyLineCenters_replicationAtMostOne_of_defectClique
-    G hfree S hemptyClique
-  have hinc := regular_emptyLines_mul_card_le_complement_card
-    G hreg S (emptyLineCenters G S)
-      (fun e he => (mem_emptyLineCenters G S e).mp he)
-      (fun v _ => hcap v)
-  rwa [hcard] at hinc
 
 /-- Intrinsic final-scale population form of the empty-incidence capacity:
 `(2q-1)e+f ≤ q²`. -/
@@ -81,7 +34,8 @@ theorem binarySquare_finalDyadic_exceptionalPopulation_capacity_of_emptyClique
     (2 * (q : ℤ) - 1) * ((emptyLineCenters G S).card : ℤ) +
         ((fullLineCenters G S q).card : ℤ) ≤
       (q : ℤ) * q := by
-  have hinc := binarySquare_emptyLineCenters_incidence_capacity_of_defectClique
+  have hinc :=
+    binarySquare_emptyLineCenters_mul_degree_le_complement_card_of_clique
     G hfree hreg hcard S hemptyClique
   have hsle : S.card ≤ q * q := by
     rw [← hcard]
@@ -104,8 +58,5 @@ end
 
 end Erdos85
 
-#print axioms Erdos85.emptyLineCenters_replicationAtMostOne_of_defectClique
-#print axioms
-  Erdos85.binarySquare_emptyLineCenters_incidence_capacity_of_defectClique
 #print axioms
   Erdos85.binarySquare_finalDyadic_exceptionalPopulation_capacity_of_emptyClique
