@@ -473,6 +473,22 @@ theorem card_mul_card_add_two_le_double_sum_of_two_nonstrict_each
       exact card_add_two_le_sum_of_two_nonstrict
         (r b) (hpositive b) (htwo b)
 
+/-- If every adjacent pair under a permutation contains at least four
+exceptional objects, double-counting the pairs gives at least twice as many
+exceptions as indices.  For cyclic bases, `next` is translation by one. -/
+theorem two_mul_card_le_sum_of_four_le_adjacent
+    {β : Type*} [Fintype β] (next : β ≃ β) (exceptional : β → ℕ)
+    (hadjacent : ∀ b, 4 ≤ exceptional b + exceptional (next b)) :
+    2 * Fintype.card β ≤ ∑ b : β, exceptional b := by
+  have hsum : (∑ _b : β, 4) ≤
+      ∑ b : β, (exceptional b + exceptional (next b)) := by
+    apply Finset.sum_le_sum
+    intro b hb
+    exact hadjacent b
+  rw [Finset.sum_add_distrib, Equiv.sum_comp next exceptional] at hsum
+  simp only [Finset.sum_const, Finset.card_univ, smul_eq_mul] at hsum
+  omega
+
 /-- The distribution-free consumer for `(RANK-q2)`: if the total number of
 rank-at-least-two entries is at least twice the number of bases, the global
 rank exceeds the all-one baseline by at least that amount.  In particular,
@@ -836,6 +852,7 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicNonuniformIncidenceSources_card_ge
 #print axioms Erdos85.card_add_two_le_sum_of_two_nonstrict
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_two_nonstrict_each
+#print axioms Erdos85.two_mul_card_le_sum_of_four_le_adjacent
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_global_nonstrict_count
 #print axioms Erdos85.card_zeros_le_sum_choose_two_of_sum_eq_card
 #print axioms Erdos85.sizeTwoCyclicIncidenceDefectRank_le_collisionMass
