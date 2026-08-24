@@ -68,6 +68,8 @@ def main() -> None:
         help="on SAT, also resolve collision summaries by common-target fibre")
     parser.add_argument("--dump-sharp-edge-census", action="store_true",
         help="on SAT, summarize edges and sharp-neighbour degrees by source profile")
+    parser.add_argument("--dump-adjacent-boundary-layers", action="store_true",
+        help="on SAT, print routes from every base x to target base x+1")
     parser.add_argument("--minimize-cap-excess", action="store_true",
         help="in --no-caps mode, minimize total common-target excess over one")
     parser.add_argument("--max-cap-excess", type=int,
@@ -596,6 +598,21 @@ def main() -> None:
                 component_sizes.append(size)
             print(f"  source_class={'sharp' if is_sharp else 'nonsharp'} "
                   f"component_sizes={sorted(component_sizes, reverse=True)}")
+    if result == z3.sat and args.dump_adjacent_boundary_layers:
+        model = solver.model()
+        for x in range(q):
+            target_base = (x + 1) % q
+            layer = []
+            for t in differences:
+                hits = [u for u in differences if z3.is_true(model.eval(
+                    edge((x, t), (target_base, u)),
+                    model_completion=True))]
+                if len(hits) > 1:
+                    raise RuntimeError(
+                        f"adjacent boundary row {(x, t)} has {len(hits)} hits")
+                if hits:
+                    layer.append((t, hits[0]))
+            print(f"  adjacent_boundary={x}->{target_base} routes={layer}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:

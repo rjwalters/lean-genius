@@ -185,3 +185,35 @@ six global rank units while remaining in the even component.  Global route
 orientation cannot be the missing charge; a proof of the exact tradeoff
 must retain more local sign/repair data or a genuinely quantitative
 shifted-base potential.
+
+## Adjacent boundary layer in the sharp rank-70 witness
+
+The probe option `--dump-adjacent-boundary-layers` prints the reciprocal
+routes from base `x` to base `x+1`.  For the q8 `a=2` witness with total
+rank at most 70 and `R(0)+R(1)<=15`, the base-rank vector is
+
+```text
+R = (8,7,9,7,9,11,11,8),
+E = R-6 = (2,1,3,1,3,5,5,2).
+```
+
+The four-route boundary layers have a striking period-two backbone:
+
+```text
+A = [(3,1),(4,3),(6,0),(7,4)]       at x = 0,2,4;
+B = [(3,1),(4,3),(6,4),(7,0)]       at x = 1,3,5,7;
+C = [(3,0),(4,3),(6,4),(7,1)]       at x = 6 only.
+```
+
+Thus seven of the eight layers lie on an alternating `A/B` orbit and the
+only boundary-layer defect is `C` at base 6.  The two largest excesses occur
+at bases 5 and 6, immediately around that defect.  This is direct evidence
+for the divergence round's token/monodromy mechanism: a local adjacent dip
+coexists with a nearly deterministic period-two transport, while closing
+the one exceptional layer is paid by concentrated global excess.
+
+This is evidence from one solver witness, not a uniqueness statement.  The
+next falsifier is to sample other rank-70 witnesses and ask whether every
+one has a period-two boundary backbone with defects charged to neighboring
+`E`; a counterexample would cut the boundary-matching route without
+affecting PMR itself.
