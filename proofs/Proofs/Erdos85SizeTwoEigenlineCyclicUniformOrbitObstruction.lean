@@ -461,6 +461,46 @@ theorem card_zeros_le_sum_choose_two_of_sum_eq_card
   change Z.card ≤ _
   omega
 
+private theorem choose_two_add_nonzeroIndicator_le_value_of_le_two
+    (n : ℕ) (hn : n ≤ 2) :
+    n.choose 2 + (if n = 0 then 0 else 1) ≤ n := by
+  interval_cases n <;> decide
+
+/-- At the `0/1/2` endpoint, defect rank and choose-two collision mass agree
+exactly: every missing slot is paired with one doubled slot. -/
+theorem card_zeros_eq_sum_choose_two_of_sum_eq_card_of_le_two
+    {ι : Type*} [Fintype ι] (m : ι → ℕ)
+    (hsum : (∑ i : ι, m i) = Fintype.card ι)
+    (hleTwo : ∀ i, m i ≤ 2) :
+    ((Finset.univ : Finset ι).filter fun i => m i = 0).card =
+      ∑ i : ι, (m i).choose 2 := by
+  classical
+  apply Nat.le_antisymm
+  · exact card_zeros_le_sum_choose_two_of_sum_eq_card m hsum
+  · let Z := (Finset.univ : Finset ι).filter fun i => m i = 0
+    let P := (Finset.univ : Finset ι).filter fun i => m i ≠ 0
+    have hpart : Z.card + P.card = Fintype.card ι := by
+      simpa [Z, P] using
+        Finset.card_filter_add_card_filter_not
+          (s := (Finset.univ : Finset ι)) (fun i => m i = 0)
+    have hP : P.card = ∑ i : ι, if m i = 0 then 0 else 1 := by
+      rw [Finset.card_filter]
+      apply Finset.sum_congr rfl
+      intro i hi
+      by_cases hz : m i = 0 <;> simp [hz]
+    have hle : (∑ i : ι, (m i).choose 2) + P.card ≤
+        ∑ i : ι, m i := by
+      rw [hP, ← Finset.sum_add_distrib]
+      apply Finset.sum_le_sum
+      intro i hi
+      by_cases hz : m i = 0
+      · simp [hz]
+      · simpa [hz] using
+          choose_two_add_nonzeroIndicator_le_value_of_le_two
+            (m i) (hleTwo i)
+    change _ ≤ Z.card
+    omega
+
 /-- Total missing-fibre mass of the incident multiplicity words.  Because
 each row has as much mass as it has allowed fibres, this is also its total
 positive excess mass. -/
@@ -504,6 +544,33 @@ theorem sizeTwoCyclicIncidenceDefectRank_le_collisionMass
   unfold sizeTwoCyclicSelectedOrbitMultiplicity at hfull
   rw [sizeTwoAllowedDifference_card q a ha]
   simpa using hfull
+
+/-- If every incident-fibre load is at most two, the code-level defect rank
+is exactly its incidence collision mass. -/
+theorem sizeTwoCyclicIncidenceDefectRank_eq_collisionMass_of_le_two
+    {q : ℕ} [NeZero q] (hq : 2 ≤ q) {a : ZMod q}
+    (ha : a ≠ -1 - a) (code : SizeTwoCyclicFullPermutationCode q a)
+    (hleTwo : ∀ (target : SizeTwoCyclicMatchingSource q a)
+      (u : sizeTwoAllowedDifference q a),
+      sizeTwoCyclicMatchingOrbitMultiplicity code u
+        (sizeTwoCyclicMatchingSourceCell target) ≤ 2) :
+    sizeTwoCyclicIncidenceDefectRank code =
+      sizeTwoCyclicIncidenceCollisionMass code := by
+  classical
+  unfold sizeTwoCyclicIncidenceDefectRank
+    sizeTwoCyclicIncidenceCollisionMass
+  apply Finset.sum_congr rfl
+  intro target htarget
+  apply card_zeros_eq_sum_choose_two_of_sum_eq_card_of_le_two
+  · have hq1 : (1 : ZMod q) ≠ 0 := by
+      letI : Fact (1 < q) := ⟨hq⟩
+      exact one_ne_zero
+    have hfull := sizeTwoCyclicFullOrbitMultiplicity_sourceCell_eq_sub_two
+      code hq1 target
+    unfold sizeTwoCyclicSelectedOrbitMultiplicity at hfull
+    rw [sizeTwoAllowedDifference_card q a ha]
+    simpa using hfull
+  · exact hleTwo target
 
 theorem one_le_sizeTwoCyclicIncidenceCollisionRow_of_nonuniform
     {q : ℕ} [NeZero q] (hq : 2 ≤ q) {a : ZMod q}
@@ -677,6 +744,8 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicNonuniformIncidenceSources_card_ge
 #print axioms Erdos85.card_zeros_le_sum_choose_two_of_sum_eq_card
 #print axioms Erdos85.sizeTwoCyclicIncidenceDefectRank_le_collisionMass
+#print axioms Erdos85.card_zeros_eq_sum_choose_two_of_sum_eq_card_of_le_two
+#print axioms Erdos85.sizeTwoCyclicIncidenceDefectRank_eq_collisionMass_of_le_two
 #print axioms Erdos85.sizeTwoCyclicWithinOrbitCollisionMass_ge
 #print axioms Erdos85.not_sizeTwoCyclicUniformIncidenceAt_of_four_dvd
 #print axioms Erdos85.sizeTwoCyclicWithinOrbitCollisionMass_ge_of_four_dvd
