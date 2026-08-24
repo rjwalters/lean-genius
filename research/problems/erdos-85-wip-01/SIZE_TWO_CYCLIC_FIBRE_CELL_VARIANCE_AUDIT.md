@@ -97,6 +97,52 @@ parity attack.
 Full internal support is compatible with this branch: it only asserts
 `n_t(x,t)>=1` on the diagonal entries, which become exactly one when `V=0`.
 
+## Zero variance is impossible at the target orders
+
+The rigid permutation family has an elementary labelled sum obstruction.
+Fix a source cell `(x,t)`.  For each allowed target fibre `u in D`, let
+`y_u` be the unique target base selected by block `A_tu`.  The exact target-
+row law says
+
+```text
+{y_u : u in D} = Z/q \ {x+t, x+t+1},
+```
+
+while the exact absolute-column law says
+
+```text
+{y_u+u : u in D} = Z/q \ {x, x-1}.
+```
+
+These are equalities of multisets because both sides have `q-2` elements and
+the hit multiplicities are exactly one.  Let `Sigma` be the sum of all
+elements of `Z/q`.  Summing the two displays in `Z/q` and subtracting gives
+
+```text
+sum_(u in D) u
+  = (Sigma - x - (x-1))
+      - (Sigma - (x+t) - (x+t+1))
+  = 2(t+1).                                            (3)
+```
+
+The left side is independent of `t`.  Therefore any two allowed fibres
+`t,s in D` satisfy
+
+```text
+2(t-s)=0 in Z/q.                                       (4)
+```
+
+When `q` is even, the kernel of multiplication by two on `Z/q` has exactly
+two elements, `0` and `q/2`.  Equation (4) confines all allowed differences
+to one antipodal pair, so `|D|<=2`.  But `|D|=q-2`; hence the zero-variance
+family is impossible for every even `q>=6`, in particular every binary
+target `q=2^k`, `k>=3`.
+
+This proof does not use the value of `sum_(u in D)u`, the hole parameter
+`a`, or the cap after zero variance has been reached.  It uses both labelled
+affine hit partitions essentially.  It also explains why a scalar or
+unlabelled permutation-array bound missed the terminal.
+
 ## Missing amplification
 
 Equations (1)--(2) do not contradict a positive `V`.  Integrality alone gives
@@ -104,11 +150,12 @@ only `V>=2` after the first deviation, while the cap permits variance of
 order `q^3`.  The mean-one row/column laws balance zeros against positive
 excess but do not make that excess multiply.
 
-Consequently the no-empty terminal has a sharper exhaustive target:
+Consequently the no-empty terminal has a sharper remaining target:
 
-1. classify and exclude the `V=0` self-dual two-hole permutation family for
-   `q=2^k`, `k>=3`; and
-2. prove a **variance amplification** theorem saying any nonzero deviation,
+1. the `V=0` self-dual two-hole permutation family is excluded by (3)--(4);
+   and
+2. it remains to prove a **variance amplification** theorem saying any
+   nonzero deviation,
    under reciprocity and the two simultaneous affine partitions, exceeds the
    cap upper bound in (2), or else reduces to the rigid family by a
    cap-preserving switch.
