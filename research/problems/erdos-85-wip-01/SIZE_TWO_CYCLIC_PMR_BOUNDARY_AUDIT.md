@@ -59,10 +59,19 @@ boundary-monodromy cycle types alternate
 5+1,  4+2,  5+1,  4+2, ... .
 ```
 
-The observed cycle types come from individual witnesses, so they are not
-yet invariant classifications.  They do refute the aggregate-DM proposal
-and identify a sharper falsifiable target: a PMR violation should force at
-least two fixed points of `P_x` and a long complementary boundary cycle;
-route reversal must then charge the closure of that cycle to the global
-missing-rank excess.
+The observed cycle types come from individual witnesses.  Sampling the
+rank-70 query with Z3 seeds 1 through 8 falsifies their invariance: the bad
+pair realizes cycle types
 
+```text
+1+1+4,  1+2+3,  and  2+4.
+```
+
+In particular neither two fixed fibres nor one prescribed long cycle is
+forced.  The boundary permutations are canonical data, but their ordinary
+cycle type is not the propagating invariant.  What survives this audit is
+only the negative conclusion: neither aggregate Hall/DM components,
+parity-zero components, nor unweighted boundary-monodromy cycles explain
+PMR.  A viable boundary argument must retain labels/weights (missing and
+positive-excess tokens, or the parity charge `Q`) rather than just support
+connectivity.
