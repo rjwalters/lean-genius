@@ -147,6 +147,21 @@ shows that any improvement beyond eight must use the moving-hole/cyclic
 labels, caps, or extendability outside the trade, rather than margin parity
 alone.
 
+Even the local cyclic admissibility conditions do not improve the bound.
+The checker `size_two_cyclic_trade_support_probe.py` additionally requires
+every vertex to be an allowed q8 cell and every signed edge to avoid the two
+forbidden target rows and columns at both endpoints.  It returns SAT at
+support eight for all four hole representatives `a=0,1,2,3`, for example:
+
+```text
+python3 size_two_cyclic_trade_support_probe.py 8 8 --a 1
+```
+
+The checker deliberately does not require either sign pattern to extend to
+a full code and does not impose caps.  Thus the surviving discriminator is
+global extendability, cap preservation, or strict defect-rank change, not
+merely allowed-fibre or endpoint-admissibility checks.
+
 ## Consequence for local cycle descent
 
 A source-local transposition or three-cycle from the q8 descent census is
