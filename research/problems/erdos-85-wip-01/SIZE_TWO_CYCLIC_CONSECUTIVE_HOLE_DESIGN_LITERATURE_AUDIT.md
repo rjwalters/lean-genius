@@ -64,6 +64,48 @@ of this diagram.  `Z`-cyclic Room-square results preserve development by a
 cyclic group, but again concern construction/existence and do not impose the
 moving two-hole/transpose compatibility above.
 
+## Near-complete mappings name the sharp local profile, not its coupling
+
+There is a second, closer vocabulary for the new defect-rank endpoint.
+Paige's **proper near complete mappings** (equivalently, near
+orthomorphisms or maximal near transversals of a group table) are the
+standard replacement for complete mappings when the Sylow `2`-subgroup is
+nontrivial cyclic.  See the summary and references in Bowtell--Montgomery,
+[Latin squares with maximal partial transversals of many
+lengths](https://doi.org/10.1016/j.jcta.2021.105403), Section 5.  Bedford's
+**quasi-complete mappings** are another one-defect relaxation, introduced
+to construct quasi-orthogonal Latin squares; see
+[Quasi-Orthogonal Latin Squares and Related
+Designs](https://combinatorialpress.com/jcmcc-articles/volume-026/quasi-orthogonal-latin-squares-and-related-designs/).
+
+These names are relevant because, in the extremal permutation coordinates,
+each source has a permutation `psi : R -> R` and its block defect is the
+failure of
+
+```text
+r |-> -t-r-psi(r)
+```
+
+to permute the target-fibre set.  A rank-one source has exactly the familiar
+one-missing/one-repeated near-complete profile.  But the published objects
+do not retain our fixed two-puncture domain `R = Z/q \\ {0,1}`, nor do they
+couple a family of such maps by the shifted-base involution
+
+```text
+psi_(x+t+r,u)(s) = r,       u = -t-r-s.
+```
+
+This distinction is substantive rather than terminological.  Wang's
+[On Special Near Orthomorphisms](https://combinatorialpress.com/article/jcmcc/Volume%20021/vol-21-paper%2013.pdf)
+constructs special near orthomorphisms for broad even-order abelian groups
+with cyclic Sylow `2`-subgroup (and gives an explicit `Z/8` example).
+Thus local near-orthomorphisms are plentiful in precisely the binary cyclic
+regime where the full reciprocal family is obstructed.  The q8 bound
+`sum_p r(p) >= q^2` therefore cannot follow from a stronger prohibition on
+one local permutation: it is genuinely a theorem, still absent from the
+literature located here, about the total defect of a *coupled family* of
+near-complete mappings.
+
 ## Verdict and usable residue
 
 The generic Howell/Room-frame literature route remains **cut**.  The more
