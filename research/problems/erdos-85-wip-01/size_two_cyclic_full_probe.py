@@ -82,6 +82,8 @@ def main() -> None:
         help="on SAT, decompose PMR at bases x,x+1 by source")
     parser.add_argument("--dump-parity-charge", action="store_true",
         help="on SAT, print per-base rank, parity charge, and all PMR surpluses")
+    parser.add_argument("--dump-slot-cuts", action="store_true",
+        help="on SAT, print internal/boundary and defect counts for every PMR slot cut")
     parser.add_argument("--minimize-cap-excess", action="store_true",
         help="in --no-caps mode, minimize total common-target excess over one")
     parser.add_argument("--max-cap-excess", type=int,
@@ -123,6 +125,9 @@ def main() -> None:
         parser.error("cannot drop both exact-hit families")
     if args.dump_route_table and args.drop_row_hits:
         parser.error("--dump-route-table requires exact target-row hits")
+    if args.dump_slot_cuts and (args.directed or args.reciprocity_core or
+            args.joint_group_core or args.joint_separation_core):
+        parser.error("--dump-slot-cuts requires the reciprocal undirected model")
     if args.global_route_sign is not None and (
             args.drop_row_hits or args.drop_column_hits):
         parser.error("--global-route-sign requires both exact-hit families")
@@ -721,6 +726,47 @@ def main() -> None:
         print(f"  parity_charge ranks={ranks} same={same} "
               f"opposite={opposite} charge={charge} "
               f"selected={selected} surplus={surplus}")
+    if result == z3.sat and args.dump_slot_cuts:
+        model = solver.model()
+        loads = {}
+        for source in vertices:
+            for u in differences:
+                loads[(source, u)] = sum(z3.is_true(model.eval(
+                    edge(source, (y, u)), model_completion=True))
+                    for y in range(q))
+        selected_edges = [
+            (left, right) for left, right in combinations(vertices, 2)
+            if z3.is_true(model.eval(edge(left, right),
+                                     model_completion=True))
+        ]
+        for x in range(q):
+            bases = {x, (x + 1) % q}
+            parity = x % 2
+
+            def in_cut(source, target_fibre):
+                return source[0] in bases and target_fibre % 2 == parity
+
+            internal_edges = []
+            boundary = 0
+            for left, right in selected_edges:
+                left_in = in_cut(left, right[1])
+                right_in = in_cut(right, left[1])
+                if left_in and right_in:
+                    internal_edges.append((left, right))
+                boundary += left_in != right_in
+            cut_loads = [load for (source, u), load in loads.items()
+                         if in_cut(source, u)]
+            isolated = sum(load == 0 for load in cut_loads)
+            occupied = sum(load > 0 for load in cut_loads)
+            excess = sum(max(0, load - 1) for load in cut_loads)
+            degree_sum = sum(cut_loads)
+            diagonal_internal = sum(left[1] == right[1]
+                                    for left, right in internal_edges)
+            print(f"  slot_cut={x} internal={len(internal_edges)} "
+                  f"diagonal_internal={diagonal_internal} "
+                  f"internal_edges={internal_edges} boundary={boundary} "
+                  f"isolated={isolated} occupied={occupied} excess={excess} "
+                  f"degree_sum={degree_sum}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:
