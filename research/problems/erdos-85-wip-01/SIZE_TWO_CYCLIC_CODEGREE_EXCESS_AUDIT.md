@@ -84,6 +84,43 @@ Sharp q=8 models with `X_4=2` were inspected.  The two surviving 4-cycles do
 not form an obvious translation pair uniformly across solver seeds, so no
 involution-pairing theorem is claimed.
 
-This audit stops further collision-total sampling.  Progress requires a
-structural reason that at least one opposite-fiber 4-cycle exists, not more
-finite distributions.
+This audit stops further collision-total sampling in the loopless model.  A
+loopless successor would require a structural reason that at least one
+opposite-fiber 4-cycle exists, not more finite distributions.  The correction
+below explains why that is not the reduced-code target.
+
+## Scope correction: the positive lower bound uses Loopless
+
+The preceding q=8 minimum is a theorem only of the stronger, default
+**loopless** exact-graph encoding.  The actual reduced-code target
+`SizeTwoCyclicPackingExclusion` deliberately drops Loopless, so diagonal
+symmetric-relation variables must be retained.  With that target scope the
+positive lower bound is false.  On the same integration code:
+
+```text
+python3 size_two_cyclic_exact_graph_probe.py 8 --a 1 --no-c4 \
+  --allow-loops --codegree-profile-difference 4 \
+  --codegree-excess-cap 0 --quiet-model
+```
+
+returns `sat`.  The reported half-fibre profile is
+
+```text
+separation 4: distribution={0: 2, 1: 2}, sum=2, excess=0,
+all separations: total codegree sum=16, total excess=0.
+```
+
+This independently reproduces the earlier loop-permitting CNF fact that the
+singleton `t=4` cap is satisfiable.  Consequently
+
+```text
+X_(q/2) > 0
+```
+
+is **not** an honest q-generic successor for
+`BinarySizeTwoCyclicPackingBound`; it can be retained only as a Loopless
+corollary/diagnostic.  The reduced-code obstruction remains simultaneous:
+singletons and pairs of the core fibres are satisfiable with loops, while the
+triple is not.  Any terminal must use cross-fibre compatibility or first
+derive Loopless from the full triple hypotheses; it cannot derive the packing
+bound from half-fibre C4 positivity alone.
