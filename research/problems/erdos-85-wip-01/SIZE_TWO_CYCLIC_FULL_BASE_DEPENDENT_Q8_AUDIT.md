@@ -68,3 +68,28 @@ from this full model.  The translation-invariant T3/T4 trace separator is a
 candidate guide, but its cyclic convolution formulas cannot simply be
 assumed for arbitrary blocks.  Any formal lift must use the general matrix
 identities `A_tu=A_ut^T` and exact base-resolved row/column partitions.
+
+## Base-dependent transpose core
+
+The option `--reciprocity-core` switches to directed variables, groups the
+equations `A_tu=A_ut^T` by unordered fibre pair, and greedily deletes groups.
+Deletion checks have a five-second bound; `unknown` conservatively retains a
+group, so the output is a sufficient but not necessarily irredundant core.
+
+With empty fibre `4`, the full arbitrary-base q8 contradiction needs only
+
+```text
+14, 16, 33, 34, 36, 37, 46, 47, 67.
+```
+
+The `3/4/6/7` triangle complex from the translation-invariant audits remains
+visible, but the full model also uses transpose blocks `14`, `16`, and the
+self-block `33`.  This is the first theorem-shaped block support for the
+non-translation-invariant target.
+
+Without the empty-fibre condition the bounded shrink retains 20 of the 21
+possible block groups.  Some may remain only because a directed deletion
+timed out, but the contrast is still useful: selecting `A_44=0` exposes a
+much smaller nine-block reciprocal subsystem.  This agrees with the colored
+trace audit, where removing emptiness restored SAT even after all degree-3/4
+trace reversal identities were imposed.
