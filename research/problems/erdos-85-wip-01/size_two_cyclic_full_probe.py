@@ -32,6 +32,8 @@ def main() -> None:
         help="give each source one zero, one double, and otherwise one target per fibre")
     parser.add_argument("--dump-fibre-loads", action="store_true",
         help="on SAT, print target-fibre degree profiles for every source")
+    parser.add_argument("--dump-route-table", action="store_true",
+        help="on SAT, print each source's exact target-base to fibre routes")
     parser.add_argument("--min-sharp-sources", type=int,
         help="require at least this many sources to have a 0,2,1,... block profile")
     parser.add_argument("--max-total-defect-rank", type=int,
@@ -108,6 +110,8 @@ def main() -> None:
         parser.error("--no-caps and --only-cap-pair are incompatible")
     if args.drop_row_hits and args.drop_column_hits:
         parser.error("cannot drop both exact-hit families")
+    if args.dump_route_table and args.drop_row_hits:
+        parser.error("--dump-route-table requires exact target-row hits")
     if args.global_route_sign is not None and (
             args.drop_row_hits or args.drop_column_hits):
         parser.error("--global-route-sign requires both exact-hit families")
@@ -659,6 +663,18 @@ def main() -> None:
                 edge(source, (y, u)), model_completion=True))
                 for y in range(q)) for u in differences]
             print(f"  source={source} loads={dict(zip(differences, loads))}")
+    if result == z3.sat and args.dump_route_table:
+        model = solver.model()
+        for source in vertices:
+            routes = {
+                y: next(u for u in differences if z3.is_true(model.eval(
+                    edge(source, (y, u)), model_completion=True)))
+                for y in range(q)
+                if any(z3.is_true(model.eval(edge(source, (y, u)),
+                                             model_completion=True))
+                       for u in differences)
+            }
+            print(f"  source={source} routes={routes}")
     if result == z3.unsat and (args.reciprocity_core or args.joint_group_core or
                                args.joint_separation_core):
         core = list(solver.unsat_core())
