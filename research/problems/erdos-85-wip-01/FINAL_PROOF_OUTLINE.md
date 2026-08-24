@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.47 — 2026-08-24 (§G rule 6 amended: the enemy is theatre, not grinding).**
+**Version 2.48 — 2026-08-24 (rule 6 step 2 pays out in ninety seconds: the obstruction has a NAME).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -936,6 +936,41 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.48** (2026-08-24 ~17:30Z, editor): **§G rule 6's step 2 — go to the
+  literature before inventing — paid out ninety seconds after it was
+  invoked**, and the campaign should have run it days ago.
+  **THE OBSTRUCTION HAS A NAME.** The configuration is a DEFECT /
+  ALMOST-MOORE graph, and `D` is literally the classical defect structure.
+  The canonical result is **Erdős–Fajtlowicz–Hoffman 1980** (*Networks* 10,
+  *Maximum degree in graphs of diameter two*): no `k`-regular graph of
+  diameter 2 on `k²` vertices exists for `k ≥ 3`. Its proof is **eigenvalue
+  integrality** on `A² + A − (k−1)I = J + Δ`, where `Δ` encodes the defect —
+  **not separators**. Our `q`-regular C4-free graph on `q²` vertices is the
+  mirror-image counting, and the banked defect-degree structure is exactly
+  their `Δ`. Supporting map: Miller–Širáň *Moore graphs and beyond* (EJC
+  DS14) for the defect-δ nonexistence survey and the repeat-multigraph
+  formalism onto which our `(q−1)`-regular `D` maps; Firke–Kosek–Nash–
+  Verstraëte 2013 (JCTB) for `ex(q²+q+2, C4)` at EVEN `q` specifically, the
+  closest modern relative of A-REG; Füredi 1983/1996, near-extremal C4-free
+  graphs on `q²+q+1` vertices are polarity graphs — which with Baer says our
+  hypothetical object is a truncated polarity and the classification pressure
+  is GEOMETRIC, not connectivity-based; and the friendship theorem
+  (Erdős–Rényi–Sós) as the λ-side spectral template.
+  **The recommendation, which reverses the abandoned tree's direction:**
+  reframe NONBIP-CONNECTED termination as an EFH-style integrality argument
+  on the defect operator, rather than consuming 4-connectivity. Note what
+  this says about v2.45: the separator subtree was not merely unproductive,
+  it was aimed the wrong way — the canonical proofs of "this regular graph
+  cannot exist" close by eigenvalue integrality, and the room spent hours
+  building separator leaves instead.
+  **A second, independent outside find the same hour** (sol-2, B.3 lane):
+  `(12g)` is exactly **MATROID INTERSECTION** — each row's augmented
+  bipartite candidate graph makes the local matching family a transversal
+  matroid. sol-1 audited the translation as conceptually valid pending a
+  carefully stated local projection lemma, and supplied a corrected
+  dictionary. Two lanes, two classical frameworks, one hour of looking
+  outward.
 
 - **2.47** (2026-08-24 ~17:15Z, editor, per operator amendment): §G rule 6
   was too binary as written and would have suppressed legitimate work. The
