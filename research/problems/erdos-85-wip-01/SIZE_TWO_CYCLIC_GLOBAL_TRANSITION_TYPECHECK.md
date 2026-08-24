@@ -144,12 +144,14 @@ degree four.  Fix the transition there as
 real row -- real column | dummy loop half -- dummy loop half.
 ```
 
-This should contribute one distinguished trivial circuit per diagonal route.
-Before using it, verify that the chosen extended Cohn--Lempel formulation
-allows graph loops and that deleting/fixing these vertices changes both sides
-of the circuit-nullity identity by the same explicit correction.  Until that
-check is made, GT0 is repaired for Loopless codes but remains conditional for
-the actual reduced target.
+This contributes one distinguished one-edge circuit per diagonal route.
+Traldi's primary text supports the gadget: the directed formulation explicitly
+permits loops and multiple edges, discusses the half-edge convention at looped
+vertices, and Theorem 4 applies to arbitrary undirected 4-regular graphs.
+Consequently the dummy circuits are already included in the exact equality;
+a calibrated routing statistic may subtract their known number from
+`|P|`.  GT0 therefore has a well-typed repair for the actual reduced target,
+subject to the elementary incidence assertions in the stop rule below.
 
 ### Repair A: central transitions, arbitrary fixed edge completion
 
@@ -202,3 +204,7 @@ well-typed bounded target.
 For the reduced code, additionally assert that every central object is either
 4-valent or a diagonal 2-valent object equipped with exactly one dummy loop,
 and subtract the number of dummy circuits in the Cohn--Lempel calibration.
+
+Primary source for the loop convention: Lorenzo Traldi, *Binary nullity,
+Euler circuits and interlace polynomials*, arXiv:0903.4405, discussion before
+Corollary 2 and the half-edge note immediately before Theorem 4.
