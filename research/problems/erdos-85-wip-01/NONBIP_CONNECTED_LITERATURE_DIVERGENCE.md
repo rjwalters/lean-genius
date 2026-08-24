@@ -190,3 +190,19 @@ bypassing the unknown spectrum entirely.
 
 The separator lane remains stopped.  The next mathematical work should be one
 of these bounded probes, not another connectivity leaf.
+
+## Probe-2 result
+
+The first half survives uniformly.  The checked theorem
+`binarySquare_defect_laplacian_cofactor_isSquare` proves at every `q >= 3`
+that each principal integral defect-Laplacian cofactor is a square.  Its proof
+uses the exact graph identity and the rank-one Laplacian determinant formula;
+it is not an order-64 enumeration and does not require dyadicity or
+connectedness.  Under connectedness the cofactor is the spanning-tree count.
+
+This is a genuine new global necessary condition, but not yet a terminal:
+connected regular graphs can have square tree count.  The bounded probe now
+has exactly one remaining question: do the already-banked closed-star or
+dyadic constraints force the tree count to have a nonsquare prime valuation?
+If they do not, stop this probe rather than manufacture more determinant
+wrappers.
