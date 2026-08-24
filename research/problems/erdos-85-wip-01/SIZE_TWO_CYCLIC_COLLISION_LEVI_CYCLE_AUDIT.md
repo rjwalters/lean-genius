@@ -136,9 +136,23 @@ increments are
 whose minimum 2-adic valuation occurs twice, exactly satisfying the binary
 cycle parity law.
 
-Therefore the hoped-for chord cannot follow from the cycle valuation and
-the consecutive moving holes, even with the local permutation law.  A
-revival must use global reciprocal completion through the three target
-fibres (or additional designated caps), and must be tested before any Levi
-graph formalization.  The cycle/parity observation remains correct but is
-not currently a route to the terminal.
+The specified fragment is also closed under local route reversal.  Reversing
+an incidence from source `(x,0)` with relative row `r` to target `(Y,u)`
+prescribes, in the target source permutation `(Y,u)`, the assignment
+
+```text
+-r -> -r
+```
+
+back to `(x,0)`.  At the three target sources `(4,1)`, `(5,1)`, and `(6,6)`,
+the two resulting reverse rows/columns are respectively `{4,5}`, `{4,5}`,
+and `{2,4}`.  They avoid the appropriate consecutive row holes and fixed
+column holes and are pairwise distinct within each source, so these reverse
+partial assignments also extend to local bijections without conflict.
+
+Therefore the hoped-for chord cannot follow from the cycle valuation,
+consecutive moving holes, and reciprocity restricted to the cycle fragment.
+A revival must use constraints from a *global* reciprocal completion through
+the other routes (or additional designated caps), and must be tested before
+any Levi graph formalization.  The cycle/parity observation remains correct
+but is not currently a route to the terminal.
