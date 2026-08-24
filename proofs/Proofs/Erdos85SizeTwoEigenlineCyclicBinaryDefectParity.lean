@@ -59,6 +59,36 @@ theorem existsUnique_paritySelectedAdjacentBase
     · rw [hshift]
       ring
 
+/-- Canonical color of a base/target-fibre slot in the PMR partition: the
+unique adjacent-window left endpoint whose parity agrees with the target
+fibre. -/
+noncomputable def sizeTwoCyclicParitySlotColor
+    {q : ℕ} [NeZero q] (h2q : 2 ∣ q) (b u : ZMod q) : ZMod q :=
+  Classical.choose (existsUnique_paritySelectedAdjacentBase h2q b u)
+
+/-- The canonical slot color selects an adjacent window and has the target
+fibre's mod-two parity. -/
+theorem sizeTwoCyclicParitySlotColor_spec
+    {q : ℕ} [NeZero q] (h2q : 2 ∣ q) (b u : ZMod q) :
+    (b = sizeTwoCyclicParitySlotColor h2q b u ∨
+      b = sizeTwoCyclicParitySlotColor h2q b u + 1) ∧
+    ZMod.castHom h2q (ZMod 2) u =
+      ZMod.castHom h2q (ZMod 2)
+        (sizeTwoCyclicParitySlotColor h2q b u) :=
+  (Classical.choose_spec
+    (existsUnique_paritySelectedAdjacentBase h2q b u)).1
+
+/-- Any adjacent-window endpoint satisfying the parity rule is the
+canonical slot color. -/
+theorem sizeTwoCyclicParitySlotColor_eq_of_spec
+    {q : ℕ} [NeZero q] (h2q : 2 ∣ q) (b u x : ZMod q)
+    (hx : (b = x ∨ b = x + 1) ∧
+      ZMod.castHom h2q (ZMod 2) u =
+        ZMod.castHom h2q (ZMod 2) x) :
+    sizeTwoCyclicParitySlotColor h2q b u = x := by
+  exact (existsUnique_paritySelectedAdjacentBase h2q b u).unique
+    (sizeTwoCyclicParitySlotColor_spec h2q b u) hx
+
 /-- The duplicate and missing fibers of a sharp row have different mod-two
 projections whenever `4 ∣ q`. -/
 theorem sizeTwoCyclic_singleDuplicateMissing_parity_ne
@@ -165,5 +195,7 @@ end Erdos85
 #print axioms
   Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_deviation_parity_eq_one
 #print axioms Erdos85.existsUnique_paritySelectedAdjacentBase
+#print axioms Erdos85.sizeTwoCyclicParitySlotColor_spec
+#print axioms Erdos85.sizeTwoCyclicParitySlotColor_eq_of_spec
 #print axioms
   Erdos85.exists_paritySeparated_duplicateMissing_of_collision_eq_one
