@@ -68,6 +68,23 @@ four short caps
   => middle antipodal rectangle.
 ```
 
+The two implications have different minimal cap cores.  Requiring the middle
+internal graph to be empty is already UNSAT under the three caps
+
+```text
+(left,d₁), (left,d₂), (middle,d₁).
+```
+
+The `(right,d₂)` cap is unnecessary for nonemptiness, while deleting any one
+of those three makes an empty middle graph SAT.  In contrast, the local
+four-lift packet law needs all four caps: after deleting any one cap, a model
+with a partial occupied folded slot is SAT; with all four it is UNSAT.
+
+Accordingly, the generic proof should split into a three-cell
+left-to-middle nonemptiness or mass-transfer lemma and a genuinely ternary
+four-cell cocycle lemma in which `(right,d₂)` upgrades an occupied middle slot
+to all four lifts.
+
 The q-generic proof target is now this local four-lift packet law together
 with nonemptiness.  A 2-lift cocycle or a fibre-graded group-ring identity is
 compatible with the evidence; raw excess parity and global density are not.
