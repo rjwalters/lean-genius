@@ -5646,3 +5646,72 @@ the optional singleton `L`, and the optional star `Q` are precisely the group
 family consumed by `false_of_localGramPackingGroupedPointCover`.  Equations
 (13bi)--(13bj) are the recommended formal statement of the remaining
 Branch-4 outer lemma.
+
+The executable audit now checks (13bi) literally rather than inferring it
+from the matching cardinality.  After choosing the optimal optional star it
+removes one unmatched row exactly when the remainder is odd, enumerates every
+subset `U` of the at-most-ten-row remainder, computes the odd connected
+components after deleting `U`, and records every strict Tutte violator.  Thus
+the new Boolean
+
+```text
+tutte_remainder_has_no_violator                              (13bk)
+```
+
+is the exact Mathlib predicate in (13bi), checked by exhaustive finite graph
+enumeration.  It holds at every lex-selected target in all ten durable
+all-row-feasible payloads.  Three further models generated independently by
+
+```text
+q9_branch4_row_feasible_outer.py --all-rows --denominator 1
+```
+
+at seeds 17, 18, and 20 also satisfy (13bk) and the strict star-cover budget.
+These additional models impose an integral local packing at every row, so
+they test a stronger locus than the fractional row-feasible hypothesis.
+
+The nonselected failures sharpen the target-minimality problem.  Across the
+durable all-row-feasible corpus exactly five targets fail (13bk).  Every one
+has matching deficiency exactly two.  Four already have the empty-set Tutte
+barrier (two odd components); the exceptional-price target 23 has the
+two-row barrier `{10,19}`, leaving four odd components.  This is precisely
+the barrier list previously obtained from maximum matching, now recomputed
+directly from the definition of `IsTutteViolator`.
+
+All-row feasibility is an essential premise of the prospective theorem, not
+background noise.  Ordinary unconstrained branch-4 random models at seeds 4
+and 9 have lex-selected targets with four residual rows whose collision graph
+has matching number one: an isolated row plus an odd three-row component.
+Both have `all_rows_locally_feasible=false`.  Hence the bare outer-design
+axioms plus lex minimization do **not** imply (13bi): the proof must spend the
+full local-packing hypothesis at the other rows.                         (13bl)
+
+A direct one-step descent along a barrier is also false.  The auditor now
+classifies every lexicographically better obstructed target by four most
+obvious relations to the failing target: membership in its residual family,
+reverse membership, relation adjacency, and block intersection.  In the
+fixed-weight durable fixture, failing target 20 has a unique better target
+30, and all four relations are false.  In the sparse two-row-selector fixture,
+failing target 21 and the selected target 26 likewise satisfy none of the
+four.  Therefore no proof can simply choose a barrier vertex, neighbor, or
+intersecting block and invoke lex minimality.                            (13bm)
+
+The surviving sharp outer conjecture should consequently state the global
+mechanism explicitly:
+
+```text
+if every row admits a full local packing and w lex-minimizes
+  (residual candidate count, negative forced count)
+among reverse-obstructed rows, then after an optional common-point triple
+and the parity singleton, the residual collision graph has no Tutte
+violator, and the strict budget (13bj) holds.                            (13bn)
+```
+
+The consumer side of this exact statement is now kernel-complete in
+`Erdos85LocalGramPackingTuttePointCover.lean` and
+`Erdos85LocalGramPackingTutteAssembly.lean`.  In particular,
+`false_of_localGramPacking_optionalStar_tuttePointCover` accepts precisely
+the sets `R,Q,L,E`, the no-violator hypothesis, and (13bj), and returns the
+contradiction.  The only remaining mathematics is (13bn); the negative
+audits (13bl)--(13bm) show that it must be a global double-count or exchange
+argument using all-row local packings.

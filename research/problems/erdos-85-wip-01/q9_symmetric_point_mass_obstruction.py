@@ -663,6 +663,54 @@ def contracted_collision_star_matching_cover(
         >= certificate["remaining_after_star_count"] - 1
     )
     certificate["cover_card"] = len(certificate["cover_points"])
+    # Canonical (13bi) remainder: remove the chosen star and, when necessary,
+    # the least unmatched row as the optional singleton.  Enumerate every
+    # Tutte violator; residual graphs here have at most ten vertices.
+    leftover = (
+        certificate["singleton_rows"][:1]
+        if certificate["remaining_after_star_count"] % 2 else []
+    )
+    tutte_rows = sorted(
+        set(rows)
+        - (set() if certificate["triple_star"] is None
+           else set(certificate["triple_star"][1]))
+        - set(leftover)
+    )
+    adjacency = {
+        row: {
+            other for other in tutte_rows if other != row
+            and system["blocks"][row] & system["blocks"][other]
+        }
+        for row in tutte_rows
+    }
+    violators = []
+    for size in range(len(tutte_rows) + 1):
+        for removed_tuple in combinations(tutte_rows, size):
+            removed = set(removed_tuple)
+            unseen = set(tutte_rows) - removed
+            odd_components = []
+            while unseen:
+                component = {min(unseen)}
+                frontier = list(component)
+                unseen -= component
+                while frontier:
+                    row = frontier.pop()
+                    new = (adjacency[row] - removed) & unseen
+                    unseen -= new
+                    component |= new
+                    frontier.extend(new)
+                if len(component) % 2:
+                    odd_components.append(sorted(component))
+            if len(odd_components) > len(removed):
+                violators.append({
+                    "removed": sorted(removed),
+                    "odd_components": odd_components,
+                    "deficiency": len(odd_components) - len(removed),
+                })
+    certificate["tutte_singleton_leftover"] = leftover
+    certificate["tutte_remainder_rows"] = tutte_rows
+    certificate["tutte_violators"] = violators
+    certificate["tutte_remainder_has_no_violator"] = not violators
     return certificate
 
 
@@ -2256,6 +2304,33 @@ def main() -> None:
             record for record in minimum_candidate_records
             if record["forced_card"] == maximum_forced_at_minimum_candidate
         ]
+        for record in records:
+            better_records = [
+                candidate for candidate in records
+                if (candidate["candidate_count"], -candidate["forced_card"])
+                < (record["candidate_count"], -record["forced_card"])
+            ]
+            residual = set(contracted_residual_rows(
+                system, record["target"], local
+            ))
+            record["lex_better_target_relations"] = [{
+                "target": candidate["target"],
+                "candidate_count": candidate["candidate_count"],
+                "forced_card": candidate["forced_card"],
+                "is_residual_row": candidate["target"] in residual,
+                "reverse_contains_target": record["target"] in set(
+                    contracted_residual_rows(
+                        system, candidate["target"], local
+                    )
+                ),
+                "blocks_intersect": bool(
+                    system["blocks"][record["target"]]
+                    & system["blocks"][candidate["target"]]
+                ),
+                "relation_edge": tuple(sorted((
+                    record["target"], candidate["target"]
+                ))) in set(system["edges"]),
+            } for candidate in better_records]
         print("min_singleton_color_selector=" + json.dumps({
             "all_rows_locally_feasible": all(
                 local[row]["packing_count"] for row in range(N)
@@ -2293,6 +2368,12 @@ def main() -> None:
                 bool(lexicographic_target_records) and all(
                     record["collision_star_matching_cover"]
                     ["remaining_matching_is_near_perfect"]
+                for record in lexicographic_target_records
+            ),
+            "all_lexicographic_targets_have_no_tutte_violator":
+                bool(lexicographic_target_records) and all(
+                    record["collision_star_matching_cover"]
+                    ["tutte_remainder_has_no_violator"]
                     for record in lexicographic_target_records
                 ),
             "all_lexicographic_targets_greedy_match_near_perfectly":
