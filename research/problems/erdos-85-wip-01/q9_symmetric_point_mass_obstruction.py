@@ -2313,6 +2313,19 @@ def main() -> None:
             if record["forced_card"] == maximum_forced_at_minimum_candidate
         ]
         for record in records:
+            record["locally_infeasible_block_intersections"] = [
+                {
+                    "row": row,
+                    "points": sorted(
+                        system["blocks"][record["target"]]
+                        & system["blocks"][row]
+                    ),
+                }
+                for row in range(N)
+                if not local[row]["packing_count"]
+                and (system["blocks"][record["target"]]
+                     & system["blocks"][row])
+            ]
             better_records = [
                 candidate for candidate in records
                 if (candidate["candidate_count"], -candidate["forced_card"])
@@ -2343,6 +2356,10 @@ def main() -> None:
             "all_rows_locally_feasible": all(
                 local[row]["packing_count"] for row in range(N)
             ),
+            "locally_infeasible_rows": [
+                row for row in range(N)
+                if not local[row]["packing_count"]
+            ],
             "global_pasch_configurations":
                 pasch_configurations(system, range(N)),
             "reverse_residual_loose_triangle_rows": [
