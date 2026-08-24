@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Incremental counterexample search against the pure-local target (13ay).
+"""Incremental counterexample search against the reverse-interval target.
 
-Every refinement added here is necessary for any genuine counterexample:
-an obstructed conflicting pair is required to admit disjoint full packings,
-or a forced-forward/impossible-reverse ordered pair is required to admit an
-avoiding/containing witness.  Thus SAT with no audited horn is a
-counterexample, UNSAT proves the accumulated necessary conditions impossible,
-and UNKNOWN is explicitly inconclusive.
+The default refinement is the exact negation of Lean's
+``HasLocalGramPackingOneRowCompatibilityObstruction`` at an audited bad row:
+one target packing together with reverse local packings realizing every one
+of its membership bits.  The older pairwise (13ay) refinement remains
+available with ``--legacy-pairwise`` for regression comparison.  Thus SAT
+with no audited reverse-interval obstruction is a counterexample to the
+outer selector, UNSAT rules out every counterexample satisfying the
+accumulated exact row witnesses, and UNKNOWN is explicitly inconclusive.
 """
 
 from __future__ import annotations
@@ -23,6 +25,7 @@ from q9_symmetric_point_mass_obstruction import (
     disjoint_local_packing_pair,
     fixed_system,
     forced_local_packing_neighbors,
+    local_packing_family,
 )
 
 
@@ -60,10 +63,28 @@ def all_horns(payload: dict) -> dict:
                 continue
             if disjoint_local_packing_pair(system, u, v) is None:
                 disjoint.append((u, v))
+    reverse_interval = []
+    for target in range(N):
+        forced_incoming = {
+            source for source in range(N)
+            if target in local[source]["forced_neighbors"]
+        }
+        impossible_incoming = {
+            source for source in range(N)
+            if local[source]["packing_count"]
+            and target not in local[source]["possible_neighbors"]
+        }
+        if not any(
+            forced_incoming.issubset(packing)
+            and packing.isdisjoint(impossible_incoming)
+            for packing in local_packing_family(system, target)
+        ):
+            reverse_interval.append(target)
     return {
         "deficit": deficit,
         "reciprocity": reciprocity,
         "disjoint": disjoint,
+        "reverse_interval": reverse_interval,
     }
 
 
@@ -73,6 +94,10 @@ def main() -> None:
     parser.add_argument("--timeout-seconds", type=int, default=120)
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--threads", type=int, default=1)
+    parser.add_argument(
+        "--legacy-pairwise", action="store_true",
+        help="use the older deficit/disjoint/reciprocity refinements",
+    )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--integral-row", type=int, action="append", default=[])
     parser.add_argument(
@@ -92,6 +117,7 @@ def main() -> None:
     reciprocity_pairs = list(dict.fromkeys(
         tuple(pair) for pair in args.reciprocity_pair
     ))
+    reverse_interval_rows = []
     if any(u < 0 or u >= N for u in integral_rows):
         parser.error("--integral-row entries must lie in 0..46")
     if any(u < 0 or u >= N or v < 0 or v >= N or u == v
@@ -102,7 +128,7 @@ def main() -> None:
         solver, data = build_row_feasible(
             args.timeout_seconds, 12, [], False, False,
             False, False, disjoint_pairs, False, reciprocity_pairs,
-            integral_rows, None,
+            reverse_interval_rows, integral_rows, None,
         )
         solver.set(random_seed=args.random_seed + iteration)
         solver.set(threads=args.threads)
@@ -113,6 +139,7 @@ def main() -> None:
             "disjoint_pairs": [list(pair) for pair in disjoint_pairs],
             "reciprocity_pairs": [list(pair) for pair in reciprocity_pairs],
             "integral_rows": integral_rows.copy(),
+            "reverse_interval_rows": reverse_interval_rows.copy(),
         }
         trace.append(record)
         print(json.dumps(record, separators=(",", ":")), flush=True)
@@ -132,27 +159,46 @@ def main() -> None:
             pair for pair in horns["reciprocity"]
             if pair not in reciprocity_pairs
         ]
+        new_reverse_interval = [
+            target for target in horns["reverse_interval"]
+            if target not in reverse_interval_rows
+        ][:1] if not new_integral else []
         record["horns"] = {
             "deficit": horns["deficit"],
             "disjoint": [list(pair) for pair in horns["disjoint"]],
             "reciprocity": [list(pair) for pair in horns["reciprocity"]],
+            "reverse_interval": horns["reverse_interval"],
         }
         print(json.dumps({
             "iteration": iteration,
             "new_integral_rows": new_integral,
             "new_disjoint_pairs": [list(pair) for pair in new_disjoint],
             "new_reciprocity_pairs": [list(pair) for pair in new_reciprocity],
+            "new_reverse_interval_rows": new_reverse_interval,
         }, separators=(",", ":")), flush=True)
-        if not any(horns.values()):
+        selected_horns = (
+            horns["deficit"] or horns["disjoint"] or horns["reciprocity"]
+            if args.legacy_pairwise else horns["reverse_interval"]
+        )
+        if not selected_horns:
             print("pure_local_cegar=counterexample")
             if args.output:
                 args.output.write_text(json.dumps(payload, separators=(",", ":")))
             break
-        if not (new_integral or new_disjoint or new_reciprocity):
+        new_selected = (
+            new_integral or new_disjoint or new_reciprocity
+            if args.legacy_pairwise else
+            (new_integral or new_reverse_interval)
+        )
+        if not new_selected:
             raise RuntimeError("audited horns produced no new refinement")
-        integral_rows.extend(new_integral)
-        disjoint_pairs.extend(new_disjoint)
-        reciprocity_pairs.extend(new_reciprocity)
+        if args.legacy_pairwise:
+            integral_rows.extend(new_integral)
+            disjoint_pairs.extend(new_disjoint)
+            reciprocity_pairs.extend(new_reciprocity)
+        else:
+            integral_rows.extend(new_integral)
+            reverse_interval_rows.extend(new_reverse_interval)
     else:
         print("pure_local_cegar=iteration_limit")
     if args.output:

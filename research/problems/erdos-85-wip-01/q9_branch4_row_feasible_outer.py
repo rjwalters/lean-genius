@@ -42,6 +42,7 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                        requested_disjoint_pairs: list[tuple[int, int]],
                        all_reciprocity_compatible_packings: bool,
                        reciprocity_pairs: list[tuple[int, int]],
+                       reverse_interval_rows: list[int],
                        requested_integral_rows: list[int],
                        fixed_template_primal_denominator: int | None,
                        template: dict | None = None):
@@ -228,6 +229,56 @@ def build_row_feasible(timeout_seconds: int, denominator: int,
                 for v in range(N)
             ]) <= 1))
 
+    # A reverse-interval witness at `target` is the exact negation of the
+    # one-row compatibility obstruction used by the Lean consumer.  Select
+    # one full packing X at target.  For every other source u, select a full
+    # local packing Y_u whose target-membership bit agrees with u ∈ X.
+    # This simultaneously realizes the whole reverse-forced lower bundle and
+    # avoids the reverse-impossible upper bundle; unlike pairwise reciprocity,
+    # all bits must agree with one common target packing.
+    for target in sorted(set(reverse_interval_rows)):
+        target_selected = {
+            v: Bool(f"reverse_interval_target_{target}_{v}")
+            for v in range(N) if v != target
+        }
+        target_degree = 6 if target >= N_TRIPLE - 4 else 5
+        solver.add(Sum([
+            If(target_selected[v], 1, 0) for v in target_selected
+        ]) == target_degree)
+        for v, selected in target_selected.items():
+            solver.add(Implies(selected, And(
+                eligible(target, v), eligible(v, target),
+            )))
+        for point in range(N_U1):
+            solver.add(Sum([
+                If(And(target_selected[v], incidence[v, point]), 1, 0)
+                for v in target_selected
+            ]) <= 1)
+
+        for source in range(N):
+            if source == target:
+                continue
+            reverse = {
+                v: Bool(
+                    f"reverse_interval_source_{target}_{source}_{v}"
+                )
+                for v in range(N) if v != source
+            }
+            source_degree = 6 if source >= N_TRIPLE - 4 else 5
+            solver.add(Sum([
+                If(reverse[v], 1, 0) for v in reverse
+            ]) == source_degree)
+            solver.add(reverse[target] == target_selected[source])
+            for v, selected in reverse.items():
+                solver.add(Implies(selected, And(
+                    eligible(source, v), eligible(v, source),
+                )))
+            for point in range(N_U1):
+                solver.add(Sum([
+                    If(And(reverse[v], incidence[v, point]), 1, 0)
+                    for v in reverse
+                ]) <= 1)
+
     for u in sorted(set(requested_integral_rows)):
         selected = {
             v: Bool(f"integral_row_pack_{u}_{v}") for v in range(N)
@@ -354,6 +405,11 @@ def main() -> None:
         help="impose the reciprocity-compatible disjunction only at (u,w)",
     )
     parser.add_argument(
+        "--reverse-interval-row", type=int, action="append", default=[],
+        help=("require one target packing whose membership bits are all "
+              "realizable by corresponding reverse local packings"),
+    )
+    parser.add_argument(
         "--integral-row", type=int, action="append", default=[],
         help="require one full integral local packing at the named row",
     )
@@ -386,6 +442,8 @@ def main() -> None:
         parser.error("--reciprocity-pair requires distinct rows in 0..46")
     if any(u < 0 or u >= N for u in args.integral_row):
         parser.error("--integral-row entries must lie in 0..46")
+    if any(u < 0 or u >= N for u in args.reverse_interval_row):
+        parser.error("--reverse-interval-row entries must lie in 0..46")
     template = json.loads(args.template.read_text()) if args.template else None
     solver, data = build_row_feasible(
         args.timeout_seconds, args.denominator, rows,
@@ -395,6 +453,7 @@ def main() -> None:
         disjoint_pairs,
         args.all_reciprocity_compatible_packings,
         reciprocity_pairs,
+        args.reverse_interval_row,
         args.integral_row,
         args.all_pairs_fixed_template_primal_denominator,
         template=template

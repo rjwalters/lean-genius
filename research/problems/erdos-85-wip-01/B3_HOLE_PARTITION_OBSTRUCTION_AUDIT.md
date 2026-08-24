@@ -5220,3 +5220,21 @@ the case missed by the rigid-forest and singleton-reciprocity views.  The
 remaining universal branch-4 target should now be stated as the existence of
 one reverse-interval deficit, with the exact CEGAR witness encoding providing
 its negation.
+
+The symbolic outer generator now accepts `--reverse-interval-row W`.  Its
+constraint is exact: it selects one full local packing `X` at `W`, and for
+every other source `u` selects a full local packing whose `W`-membership bit
+equals the `u`-membership bit of `X`.  On the fixed seed-129 payload, target
+32 is UNSAT while the unobstructed control target 0 is SAT, matching the
+independent enumerator.  This is strictly stronger than adding isolated
+reciprocity-pair disjunctions because all reverse bits share one target
+packing.
+
+`q9_branch4_pure_local_cegar.py` uses this exact row witness by default and
+retains the older three-horn loop under `--legacy-pairwise`.  It first repairs
+literal deficit rows with the cheaper one-packing constraint; only after all
+rows are feasible does it add one audited reverse-interval row.  A two-step
+seed-230 smoke run remained SAT while repairing deficit rows `{5,23}` and
+then `{24}`.  An intentionally premature direct target-row refinement timed
+out, confirming that the deficit-first hierarchy is operationally necessary;
+this timeout is not mathematical evidence.
