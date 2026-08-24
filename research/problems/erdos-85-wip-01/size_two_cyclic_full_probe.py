@@ -44,6 +44,9 @@ def main() -> None:
     parser.add_argument("--max-nonsharp-at-adjacent-bases", type=int, nargs=2,
         metavar=("X", "N"),
         help="bound rank-at-least-two sources at bases x and x+1")
+    parser.add_argument("--max-defect-rank-at-adjacent-bases", type=int,
+        nargs=2, metavar=("X", "N"),
+        help="bound total zero-load count at bases x and x+1")
     parser.add_argument("--global-route-sign", choices=("even", "odd"),
         help="require the product sign of all local row-to-column permutations")
     parser.add_argument("--directed", action="store_true",
@@ -311,6 +314,19 @@ def main() -> None:
         solver.add(z3.PbLe([
             (z3.Not(source_is_sharp_expr((base, t))), 1)
             for base in (x, (x + 1) % q) for t in differences
+        ], maximum))
+
+    if args.max_defect_rank_at_adjacent_bases is not None:
+        x, maximum = args.max_defect_rank_at_adjacent_bases
+        x %= q
+        if not 0 <= maximum <= 2 * len(differences) ** 2:
+            parser.error("adjacent-base defect-rank bound is outside its range")
+        solver.add(z3.PbLe([
+            (z3.Sum([
+                z3.If(edge((base, t), (y, u)), 1, 0)
+                for y in range(q)]) == 0, 1)
+            for base in (x, (x + 1) % q)
+            for t in differences for u in differences
         ], maximum))
 
     # Full same-difference cap: any two distinct bases in one fibre have at
