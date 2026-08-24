@@ -1,4 +1,4 @@
-import Proofs.Erdos85CrossNeighborhoodFlipDefectExpansion
+import Proofs.Erdos85SizeTwoFiberOneInOneOut
 
 /-!
 # Localization of exported overlap in the active wedge ledger
@@ -21,48 +21,23 @@ theorem sizeTwoFiber_exists_unique_inside_outside_of_cast_inter_card_eq_one
     ∃ xIn xOut,
       fiber ∩ shore = {xIn} ∧ fiber \ shore = {xOut} ∧
         xIn ≠ xOut ∧ fiber = {xIn, xOut} := by
-  have hinterLe : (fiber ∩ shore).card ≤ 2 := by
-    rw [← hcard]
-    exact Finset.card_le_card (Finset.inter_subset_left)
-  have hinterZero : (fiber ∩ shore).card ≠ 0 := by
-    intro hz
-    rw [hz] at hparity
-    norm_num at hparity
-  have hinterTwo : (fiber ∩ shore).card ≠ 2 := by
-    intro hz
-    rw [hz] at hparity
-    exact (by decide : (2 : ZMod 2) ≠ 1) hparity
-  have hinterCard : (fiber ∩ shore).card = 1 := by omega
-  obtain ⟨xIn, hxIn⟩ := Finset.card_eq_one.mp hinterCard
-  have hdiffCard : (fiber \ shore).card = 1 := by
-    rw [Finset.card_sdiff, Finset.inter_comm shore fiber, hinterCard, hcard]
-  obtain ⟨xOut, hxOut⟩ := Finset.card_eq_one.mp hdiffCard
-  have hxInMem : xIn ∈ fiber ∩ shore := by simp [hxIn]
-  have hxOutMem : xOut ∈ fiber \ shore := by simp [hxOut]
-  have hxInParts := Finset.mem_inter.mp hxInMem
-  have hxOutParts := Finset.mem_sdiff.mp hxOutMem
-  have hne : xIn ≠ xOut := by
-    intro heq
-    subst xOut
-    exact hxOutParts.2 hxInParts.2
+  obtain ⟨xIn, xOut, hxIn, hxOut, hxInFiber, _hxInShore,
+      hxOutFiber, _hxOutShore, hne⟩ :=
+    exists_unique_inside_outside_of_sizeTwoFiber_parity_one
+      fiber shore hcard hparity
   have hcover : fiber = {xIn, xOut} := by
-    ext x
-    constructor
-    · intro hx
+    apply Finset.eq_of_subset_of_card_le
+    · intro x hx
       by_cases hs : x ∈ shore
-      · have : x ∈ fiber ∩ shore := Finset.mem_inter.mpr ⟨hx, hs⟩
-        rw [hxIn] at this
-        simp only [Finset.mem_singleton] at this
-        simp [this]
-      · have : x ∈ fiber \ shore := Finset.mem_sdiff.mpr ⟨hx, hs⟩
-        rw [hxOut] at this
-        simp only [Finset.mem_singleton] at this
-        simp [this]
-    · intro hx
-      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
-      rcases hx with rfl | rfl
-      · exact hxInParts.1
-      · exact hxOutParts.1
+      · have hxi : x ∈ fiber ∩ shore := Finset.mem_inter.mpr ⟨hx, hs⟩
+        rw [hxIn] at hxi
+        have hxeq : x = xIn := Finset.mem_singleton.mp hxi
+        simp [hxeq]
+      · have hxo : x ∈ fiber \ shore := Finset.mem_sdiff.mpr ⟨hx, hs⟩
+        rw [hxOut] at hxo
+        have hxeq : x = xOut := Finset.mem_singleton.mp hxo
+        simp [hxeq]
+    · simpa [hne] using hcard.ge
   exact ⟨xIn, xOut, hxIn, hxOut, hne, hcover⟩
 
 /-- The three active positions attached to an exported overlap label. -/
