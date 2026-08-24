@@ -73,6 +73,34 @@ theorem sizeTwoCyclicTargetDifferenceMultiplicity_weighted_sum
       sizeTwoCyclicPermutation_targetDifference_sum hq
         code.toPermutationCode.perm x t
 
+/-- Forced displacement from the missing target fibre to the duplicated
+target fibre in a sharp local multiplicity profile. -/
+def sizeTwoCyclicSharpDefectDisplacement
+    (q : ℕ) [NeZero q] (t : ZMod q) : ZMod q :=
+  2 * (t + 1) - (((q * (q - 1) / 2 : ℕ) : ZMod q) + 1)
+
+/-- Forced sharp-defect displacements are reversed by the allowed-fibre
+reflection `t ↦ -1-t`. -/
+theorem sizeTwoCyclicSharpDefectDisplacement_reflection
+    (q : ℕ) [NeZero q] (t : ZMod q) :
+    sizeTwoCyclicSharpDefectDisplacement q (-1 - t) =
+      -sizeTwoCyclicSharpDefectDisplacement q t := by
+  have htriNat :
+      2 * (q * (q - 1) / 2) = q * (q - 1) :=
+    Nat.two_mul_div_two_of_even (Nat.even_mul_pred_self q)
+  have htri :
+      (2 : ZMod q) * ((q * (q - 1) / 2 : ℕ) : ZMod q) = 0 := by
+    calc
+      (2 : ZMod q) * ((q * (q - 1) / 2 : ℕ) : ZMod q) =
+          ((2 * (q * (q - 1) / 2) : ℕ) : ZMod q) := by norm_num
+      _ = ((q * (q - 1) : ℕ) : ZMod q) := by rw [htriNat]
+      _ = 0 := by simp
+  unfold sizeTwoCyclicSharpDefectDisplacement
+  have htri' :
+      ((q * (q - 1) / 2 : ℕ) : ZMod q) * 2 = 0 := by
+    simpa [mul_comm] using htri
+  linear_combination -htri'
+
 /-- The exact affine moment of the deviation from the all-ones profile.
 For a minimum-collision profile (one duplicated fiber and one missing fiber),
 the left side reduces to `duplicate - missing`; this is the positional
@@ -194,6 +222,7 @@ end Erdos85
 
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_sum
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_weighted_sum
+#print axioms Erdos85.sizeTwoCyclicSharpDefectDisplacement_reflection
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_reflectionPair_deviation_sum
 #print axioms Erdos85.sizeTwoCyclic_singleDuplicateMissing_displacement
