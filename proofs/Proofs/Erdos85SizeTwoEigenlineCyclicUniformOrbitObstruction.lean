@@ -489,6 +489,27 @@ theorem two_mul_card_le_sum_of_four_le_adjacent
   simp only [Finset.sum_const, Finset.card_univ, smul_eq_mul] at hsum
   omega
 
+/-- Direct adjacent-rank consumer.  If every adjacent pair under a
+permutation has rank at least twice a threshold, then the total rank is at
+least the threshold times the number of indices.  For cyclic bases, taking
+the threshold to be `q` is exactly the final arithmetic step of `(RANK-q2)`. -/
+theorem card_mul_le_sum_of_two_mul_le_adjacent
+    {β : Type*} [Fintype β] (next : β ≃ β) (rank : β → ℕ) (threshold : ℕ)
+    (hadjacent : ∀ b, 2 * threshold ≤ rank b + rank (next b)) :
+    Fintype.card β * threshold ≤ ∑ b : β, rank b := by
+  have hsum : (∑ _b : β, 2 * threshold) ≤
+      ∑ b : β, (rank b + rank (next b)) := by
+    apply Finset.sum_le_sum
+    intro b hb
+    exact hadjacent b
+  rw [Finset.sum_add_distrib, Equiv.sum_comp next rank] at hsum
+  simp only [Finset.sum_const, Finset.card_univ, smul_eq_mul] at hsum
+  have hleft : Fintype.card β * (2 * threshold) =
+      2 * (Fintype.card β * threshold) := by
+    ac_rfl
+  rw [hleft] at hsum
+  omega
+
 /-- The distribution-free consumer for `(RANK-q2)`: if the total number of
 rank-at-least-two entries is at least twice the number of bases, the global
 rank exceeds the all-one baseline by at least that amount.  In particular,
@@ -853,6 +874,7 @@ end Erdos85
 #print axioms Erdos85.card_add_two_le_sum_of_two_nonstrict
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_two_nonstrict_each
 #print axioms Erdos85.two_mul_card_le_sum_of_four_le_adjacent
+#print axioms Erdos85.card_mul_le_sum_of_two_mul_le_adjacent
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_global_nonstrict_count
 #print axioms Erdos85.card_zeros_le_sum_choose_two_of_sum_eq_card
 #print axioms Erdos85.sizeTwoCyclicIncidenceDefectRank_le_collisionMass
