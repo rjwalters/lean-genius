@@ -223,3 +223,41 @@ nonsharp cells form a separator, independent set, feedback set, or uniform
 boundary of the reciprocal graph.  A surviving cocycle proof would need
 edge labels/orientations from the actual near-orthomorphism repairs: the
 unlabelled sharp/nonsharp adjacency graph does not carry the charge.
+
+## Adjacent-base rank localization
+
+Pointwise reflection symmetry and per-base sharp parity are both cut.  A
+q8 `a=1` unrestricted model has reflected source ranks one and two, and a
+q8 `a=2` rank-64 model has an odd number of sharp sources at one base.  The
+correct equality geometries can distribute their `2q` exceptional sources
+as `2+2` or alternating `3+1` across adjacent bases.
+
+The surviving direct statement is instead
+
+```text
+if sum_x R(x) <= q^2, then 2q <= R(x) + R(x+1) for every x,
+R(x) = sum_t r(x,t).
+```
+
+At q8, asking for `R(0)+R(1)<=15` is UNSAT for every hole representative
+under the global rank-64 bound.  For `a=0,1,3` the local query is already
+UNSAT without that global bound; `a=2` is the unique geometry needing the
+global-to-local hypothesis.  Summing the displayed adjacent inequalities
+counts each `R(x)` twice and gives `(RANK-q2)` immediately.  This arithmetic
+consumer is formalized as
+`card_mul_le_sum_of_two_mul_le_adjacent`.
+
+Constraint ablation shows that the local inequality is genuinely a coupled
+normal-form phenomenon.  For both `a=1` and `a=2`, under total rank at most
+64 and adjacent rank at most 15:
+
+```text
+drop exact target-row hits:       SAT;
+drop exact absolute-column hits:  SAT.
+```
+
+Thus neither projection family plus reciprocity suffices.  A proof must use
+the interaction of the row and column permutations, not merely one family
+with a reflected-rank or sign argument.  Dropping reciprocity in the same
+tight query was UNKNOWN at the bounded solver budget, so this audit makes
+no claim that reciprocity is independently necessary.
