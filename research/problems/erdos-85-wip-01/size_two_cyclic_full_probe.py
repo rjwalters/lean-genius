@@ -23,6 +23,8 @@ def main() -> None:
     parser.add_argument("--no-caps", action="store_true")
     parser.add_argument("--uniform-fibre-loads", action="store_true",
         help="require every target to have exactly one neighbour in each source fibre")
+    parser.add_argument("--minimal-block-variance", action="store_true",
+        help="give each source one zero, one double, and otherwise one target per fibre")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and use one variable per ordered pair")
     parser.add_argument("--reciprocity-core", action="store_true",
@@ -128,6 +130,22 @@ def main() -> None:
                 solver.add(z3.PbEq([
                     (edge((x, t), target), 1) for x in range(q)
                 ], 1))
+
+    # Smallest positive block-load variance compatible with total degree:
+    # one target fibre is missed, one is hit twice, and all others once.
+    if args.minimal_block_variance:
+        for source in vertices:
+            loads = []
+            for u in differences:
+                load = z3.Int(f"load_{source[0]}_{source[1]}_{u}")
+                solver.add(load == z3.Sum([
+                    z3.If(edge(source, (y, u)), 1, 0)
+                    for y in range(q)
+                ]))
+                solver.add(load >= 0, load <= 2)
+                loads.append(load)
+            solver.add(z3.PbEq([(load == 0, 1) for load in loads], 1))
+            solver.add(z3.PbEq([(load == 2, 1) for load in loads], 1))
 
     # Full same-difference cap: any two distinct bases in one fibre have at
     # most one precise common target cell.
