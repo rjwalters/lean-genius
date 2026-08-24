@@ -2394,6 +2394,201 @@ theorem orderNine_order18_ordinary_center_cases
     · exact Or.inl (Finset.mem_filter.mpr ⟨hcOrd, hk⟩)
     · exact Or.inr (Finset.mem_filter.mpr ⟨hcOrd, hk⟩)
 
+/-- Actual-profile owner-centered low-spike capstone.  The only shore inputs
+are the owner-punctured cover/closure data, the already-derived spike
+equation, its 29-point low set, and the one-neighbor owner shore count.
+All partner/bin-zero census, defect degrees, `P`-zero laws, and equation
+(33) are derived internally. -/
+theorem false_of_orderNine_order18_lowSpike_owner_of_punctured_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (A B Z : Finset V)
+    (hunion : A ∪ B = ((Finset.univ : Finset V) \
+      squareOrderHighVertices G 9).erase owner)
+    (hdisj : Disjoint A B)
+    (hAclosed : ∀ x ∈ A, (secondOrderDefectGraph G).neighborFinset x ∩
+      ((Finset.univ : Finset V) \
+        squareOrderHighVertices G 9).erase owner ⊆ A)
+    (hBclosed : ∀ x ∈ B, (secondOrderDefectGraph G).neighborFinset x ∩
+      ((Finset.univ : Finset V) \
+        squareOrderHighVertices G 9).erase owner ⊆ B)
+    (hneighbors : ∀ x ∈ ((Finset.univ : Finset V) \
+        squareOrderHighVertices G 9).erase owner,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner
+        (((Finset.univ : Finset V) \
+          squareOrderHighVertices G 9).erase owner))
+    (hZsub : Z ⊆ (Finset.univ : Finset V) \
+      squareOrderHighVertices G 9)
+    (hZcard : Z.card = 29) (hownerZ : owner ∈ Z)
+    (hrootDegree : ∀ h ∈ squareOrderHighVertices G 9,
+      (G.neighborFinset h ∩ Z).card = 9)
+    (hownerShore : (G.neighborFinset owner ∩ A).card = 1)
+    (heq31 : ∀ v : V,
+      (((secondOrderDefectGraph G).neighborFinset v ∩ A).card : ℤ) =
+        8 * (if v ∈ A then 1 else 0) + 3 +
+          7 * (if v ∈ squareOrderHighVertices G 9 then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v owner then 1 else 0)) : False := by
+  classical
+  let H := squareOrderHighVertices G 9
+  let O := (Finset.univ : Finset V) \ H
+  let U := O.erase owner
+  let K := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1
+  let L := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0
+  let P := Z ∩ squareOrderNineLowIncidenceBin G 1
+  let W := Z ∩ squareOrderNineLowIncidenceBin G 0
+  have hcomp := orderNine_order18_lowSpike_lowSet_composition
+    G hp hhigh hc2 hc3 owner howner Z hZsub hZcard hownerZ hrootDegree
+  change P.card = 24 ∧ W.card = 4 ∧ Z = insert owner (P ∪ W) at hcomp
+  have hKcard : K.card = 3 := by
+    simpa [K] using
+      squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner
+  have hLcard : L.card = 3 := by
+    simpa [L] using
+      (squareOrderNine_threeHigh_secondProfile_binThree_original_neighborhood_census
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner).2.2
+  have hKowner : K ⊆ G.neighborFinset owner := Finset.inter_subset_left
+  have hLowner : L ⊆ G.neighborFinset owner := Finset.inter_subset_left
+  have hKL : Disjoint K L := by
+    rw [Finset.disjoint_left]
+    intro x hxK hxL
+    have hk1 := (Finset.mem_filter.mp (Finset.mem_inter.mp hxK).2).2
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp hxL).2).2
+    omega
+  have hownerNotU : owner ∉ U := Finset.notMem_erase owner O
+  have hsourceU (x : V) (hxN : x ∈ G.neighborFinset owner)
+      (hxO : x ∈ (Finset.univ : Finset V) \
+        squareOrderHighVertices G 9) : x ∈ U := by
+    have hne : x ≠ owner := by
+      intro hxo
+      subst x
+      exact G.loopless.irrefl owner
+        ((G.mem_neighborFinset owner owner).mp hxN)
+    exact Finset.mem_erase.mpr ⟨hne, by simpa [O, H] using hxO⟩
+  have hKU : K ⊆ U := by
+    intro x hx
+    exact hsourceU x (Finset.mem_inter.mp hx).1
+      (Finset.mem_filter.mp (Finset.mem_inter.mp hx).2).1
+  have hLU : L ⊆ U := by
+    intro x hx
+    exact hsourceU x (Finset.mem_inter.mp hx).1
+      (Finset.mem_filter.mp (Finset.mem_inter.mp hx).2).1
+  have hOsub : O ⊆ (Finset.univ : Finset V) \
+      squareOrderHighVertices G 9 := by simpa [O, H]
+  have hownerPartition :=
+    orderNine_secondProfile_owner_neighbor_inter_ordinary_shore_bin_partition
+      G hp hhigh hc2 hc3 howner O hOsub
+  have hKO : K ∩ O = K := Finset.inter_eq_left.mpr (fun x hx ↦ by
+    simpa [O, H] using
+      (Finset.mem_filter.mp (Finset.mem_inter.mp hx).2).1)
+  have hLO : L ∩ O = L := Finset.inter_eq_left.mpr (fun x hx ↦ by
+    simpa [O, H] using
+      (Finset.mem_filter.mp (Finset.mem_inter.mp hx).2).1)
+  have hKLU : K ∪ L = G.neighborFinset owner ∩ O := by
+    change K ∪ L = G.neighborFinset owner ∩ O
+    change G.neighborFinset owner ∩ O = L ∩ O ∪ K ∩ O at hownerPartition
+    rw [hKO, hLO] at hownerPartition
+    simpa [Finset.union_comm] using hownerPartition.symm
+  have hAU : A ⊆ U := by
+    intro x hx
+    rw [← show A ∪ B = U by simpa [U, O, H] using hunion]
+    exact Finset.mem_union_left B hx
+  have hshoreSplit := orderNine_order18_owner_neighbor_shore_split
+    (G.neighborFinset owner) O A K L hKLU hKL (by
+      have hAO : G.neighborFinset owner ∩ O ∩ A =
+          G.neighborFinset owner ∩ A := by
+        ext x
+        simp only [Finset.mem_inter]
+        constructor
+        · exact fun hx ↦ ⟨hx.1.1, hx.2⟩
+        · intro hx
+          exact ⟨⟨hx.1, (Finset.mem_erase.mp (hAU hx.2)).2⟩, hx.2⟩
+      rw [hAO, hownerShore])
+  have hownerNotW : owner ∉ W := by
+    intro ho
+    have hk0 := (Finset.mem_filter.mp (Finset.mem_inter.mp ho).2).2
+    have hk3 := (Finset.mem_filter.mp howner).2
+    omega
+  have hKH : ∀ y ∈ K, y ∉ H := by
+    intro y hy
+    exact (Finset.mem_sdiff.mp
+      (Finset.mem_filter.mp (Finset.mem_inter.mp hy).2).1).2
+  have hLH : ∀ y ∈ L, y ∉ H := by
+    intro y hy
+    exact (Finset.mem_sdiff.mp
+      (Finset.mem_filter.mp (Finset.mem_inter.mp hy).2).1).2
+  have hKdefect : ∀ y ∈ K,
+      ((secondOrderDefectGraph G).neighborFinset y ∩ A).card =
+        if y ∈ A then 7 else 0 := by
+    intro y hy
+    have hyB1 := (Finset.mem_inter.mp hy).2
+    have hyDeg := (squareOrderNine_lowIncidenceBin_pointwise_ledger
+      G hfree hmin hcover hcard hyB1).1
+    exact degreeSeven_neighbor_inter_shore_card_eq_if_of_punctured_closure
+      (secondOrderDefectGraph G) owner U A B y
+        (by simpa [U, O, H] using hunion) hdisj (hKU hy)
+        (orderNine_secondProfile_owner_partner_not_defectAdjacent
+          G hfree hhigh howner hyB1)
+        (by simpa [U, O, H] using hneighbors)
+        (by simpa [U, O, H] using hAclosed)
+        (by simpa [U, O, H] using hBclosed) hyDeg
+  have hLprofiles : ∀ y ∈ L,
+      (((secondOrderDefectGraph G).Adj y owner →
+        ((secondOrderDefectGraph G).neighborFinset y ∩ A).card =
+          if y ∈ A then 7 else 0) ∧
+       (¬ (secondOrderDefectGraph G).Adj y owner →
+        ((secondOrderDefectGraph G).neighborFinset y ∩ A).card =
+          if y ∈ A then 8 else 0)) := by
+    intro y hy
+    have hyB0 := (Finset.mem_inter.mp hy).2
+    have hyDeg := (squareOrderNine_lowIncidenceBin_pointwise_ledger
+      G hfree hmin hcover hcard hyB0).1
+    exact degreeEight_neighbor_inter_shore_profiles_of_punctured_closure
+      (secondOrderDefectGraph G) owner U A B y hownerNotU
+        (by simpa [U, O, H] using hunion) hdisj (hLU hy)
+        (by simpa [U, O, H] using hneighbors)
+        (by simpa [U, O, H] using hAclosed)
+        (by simpa [U, O, H] using hBclosed) hyDeg
+  have hKPzero : ∀ y ∈ K, (G.neighborFinset y ∩ P).card = 0 := by
+    intro y hy
+    exact orderNine_secondProfile_owner_partner_neighbor_inter_binOneSubset_eq_zero
+      G hfree hmin hcard hp hhigh hc2 hc3 hc4 owner y howner
+        (Finset.mem_inter.mp hy).2
+        ((G.adj_comm owner y).mp
+          ((G.mem_neighborFinset owner y).mp (Finset.mem_inter.mp hy).1))
+        P Finset.inter_subset_right
+  have hLPzero : ∀ y ∈ L, (G.neighborFinset y ∩ P).card = 0 := by
+    intro y hy
+    rw [Finset.card_eq_zero]
+    ext p
+    simp only [Finset.mem_inter, Finset.notMem_empty, iff_false, not_and]
+    intro hyp hpP
+    exact squareOrderNine_threeHigh_binThree_binZero_neighbor_not_binOneAdjacent
+      G hfree hhigh howner (Finset.mem_inter.mp hy).2
+        (Finset.inter_subset_right hpP)
+        ((G.mem_neighborFinset owner y).mp (Finset.mem_inter.mp hy).1)
+        ((G.mem_neighborFinset y p).mp hyp)
+  exact false_of_orderNine_order18_lowSpike_of_local_profiles
+    G (secondOrderDefectGraph G) hfree owner A H Z P W K L
+      hKcard hLcard hcomp.2.1 hownerNotW hKowner hLowner hKL
+      hshoreSplit hcomp.2.2 hKH hLH hKdefect
+      (fun u hu ↦ (hLprofiles u hu).1)
+      (fun u hu ↦ (hLprofiles u hu).2) hKPzero hLPzero
+      (by simpa [H] using heq31)
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -2449,6 +2644,7 @@ theorem orderNine_order18_ordinary_center_cases
 #print axioms Erdos85.degreeSeven_neighbor_inter_shore_card_eq_if_of_punctured_closure
 #print axioms Erdos85.degreeEight_neighbor_inter_shore_profiles_of_punctured_closure
 #print axioms Erdos85.orderNine_order18_ordinary_center_cases
+#print axioms Erdos85.false_of_orderNine_order18_lowSpike_owner_of_punctured_shores
 
 end
 
