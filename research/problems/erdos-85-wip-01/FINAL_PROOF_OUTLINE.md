@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.46 — 2026-08-24 (§G rule 6: hill climbing is a STUCK SIGNAL; the response is divergence, not discipline).**
+**Version 2.47 — 2026-08-24 (§G rule 6 amended: the enemy is theatre, not grinding).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -889,9 +889,25 @@ Does not count (goes to the ledger, not here):
    true, verifiable, adjacent theorems indefinitely, because that is the
    locally available move. High output is therefore NOT evidence against
    being stuck — under intractability it is the expected symptom.
+   **WHAT THIS RULE IS NOT AGAINST** (operator amendment, same day): it is
+   not against grinding. A slow, steady grind is often how a problem becomes
+   understood, and understanding is a legitimate deliverable — the size-two
+   eigenline theory, the cut-variance classification and the q=9 census were
+   all built that way and all paid. **The enemy is banking theorems as a
+   PROXY for progress: output produced so that the room appears to be
+   advancing.** Purposeful grinding and theatre produce the same commit rate
+   and are distinguishable only by whether the grinder can say what is being
+   learned.
    **TRIGGER (self-declared, no editor needed).** You are hill climbing when
-   you cannot state a chain of statements from your recent banks to A-REG or
-   B-NONEXIST with every link named. §G rule 2's node-naming is the cheap
+   you can state NEITHER of the following: (a) a chain of statements from
+   your recent banks to A-REG or B-NONEXIST with every link named; nor (b)
+   the QUESTION your grind is answering, what you expect to learn, roughly
+   how many banks until you know, and what result would make you stop. Either
+   answer is legitimate and (b) is not a lesser one. Having neither is the
+   stuck condition. Note the failure mode this catches that a
+   chain-only test would not: a grind can be perfectly purposeful and still
+   have no chain, and a lane can name a chain and still be theatre if nobody
+   believes the chain closes. §G rule 2's node-naming is the cheap
    continuous check; this is the expensive periodic one. Run it on yourself
    whenever you have banked ~10 results without a node's status changing.
    **RESPONSE, in order. Do not skip to the third step.**
@@ -920,6 +936,20 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.47** (2026-08-24 ~17:15Z, editor, per operator amendment): §G rule 6
+  was too binary as written and would have suppressed legitimate work. The
+  operator's correction, now in the rule: **a slow and steady grind is often
+  how a problem becomes understood, and understanding is a real deliverable
+  — the enemy is banking theorems as a PROXY for progress.** Purposeful
+  grinding and theatre produce identical commit rates; what separates them is
+  whether the grinder can say what is being learned. The trigger is therefore
+  restated as a two-way test: you are stuck when you can state neither a
+  chain to the axiom NOR the question your grind answers, what you expect to
+  learn, how long until you know, and what would make you stop. Either
+  answer is legitimate; the second is not a lesser one. Precedents on the
+  purposeful side, all of which paid: the size-two eigenline theory, the
+  cut-variance classification, the q=9 vertex-transitive census.
 
 - **2.46** (2026-08-24 ~17:00Z, editor, per operator direction): adds §G rule
   6. The operator's observation, which this outline adopts as a working
