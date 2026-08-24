@@ -119,6 +119,7 @@ theorem c4Free_binarySquare_pureEndpoint_exists_parallelClass_residualDegree
     ∃ w ∉ F,
       let B := G.neighborFinset w ∩ S
       B.card = m ∧
+      (∀ y ∈ B, (owner y).card = 2) ∧
       ∀ x ∈ S \ B,
         ((owner x).card = 1 →
           m ≤ ((secondOrderDefectGraph G).neighborFinset x ∩ (S \ B)).card) ∧
@@ -145,7 +146,9 @@ theorem c4Free_binarySquare_pureEndpoint_exists_parallelClass_residualDegree
   have hDprofile := c4Free_binarySquare_pureEndpoint_defect_biregular_decomposition
     G hfree hq hqm hreg hcard S hempty hCcard hshore htri
   have hm : 4 ≤ m := by omega
-  refine ⟨w, hwF, hBcard, ?_⟩
+  refine ⟨w, hwF, hBcard, ?_, ?_⟩
+  · intro y hyB
+    exact hownerTwo y (by simpa [B, owner, F] using hyB)
   intro x hxOut
   have hxS : x ∈ S := (mem_sdiff.mp hxOut).1
   have hxNotB : x ∉ B := (mem_sdiff.mp hxOut).2
