@@ -55,6 +55,312 @@ theorem choose_two_add_mul_add_tail_le
       rw [hrec, hmul]
       omega
 
+/-- The two adjacent triangular numbers sum to a square. -/
+theorem choose_two_add_choose_succ_two (n : ℕ) :
+    n.choose 2 + (n + 1).choose 2 = n * n := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      have hrec1 : (n + 1).choose 2 = n + n.choose 2 := by
+        rw [Nat.choose_succ_succ]
+        simp
+      have hrec2 : (n + 1 + 1).choose 2 =
+          (n + 1) + (n + 1).choose 2 := by
+        rw [Nat.choose_succ_succ]
+        simp
+      rw [hrec1, hrec2, hrec1]
+      rw [show (n + 1) * (n + 1) = n * n + 2 * n + 1 by ring]
+      omega
+
+/-- Every tangent line to the triangular numbers lies below them:
+`h*e ≤ C(e,2)+C(h+1,2)`. -/
+theorem mul_le_choose_two_add_choose_succ_two (h e : ℕ) :
+    h * e ≤ e.choose 2 + (h + 1).choose 2 := by
+  rcases le_total h e with hle | hle
+  · obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hle
+    induction k with
+    | zero =>
+        rw [choose_two_add_choose_succ_two]
+        simp
+    | succ k ih =>
+        have hrec : (h + (k + 1)).choose 2 =
+            (h + k) + (h + k).choose 2 := by
+          rw [show h + (k + 1) = (h + k) + 1 by omega,
+            Nat.choose_succ_succ]
+          simp
+        have hmul : h * (h + (k + 1)) = h * (h + k) + h := by ring
+        rw [hrec, hmul]
+        omega
+  · obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hle
+    induction k with
+    | zero =>
+        rw [choose_two_add_choose_succ_two]
+        simp
+    | succ k ih =>
+        have hrec : (e + (k + 1) + 1).choose 2 =
+            (e + k + 1) + (e + k + 1).choose 2 := by
+          rw [show e + (k + 1) + 1 = (e + k + 1) + 1 by omega,
+            Nat.choose_succ_succ]
+          simp
+        have hmul : (e + (k + 1)) * e = (e + k) * e + e := by ring
+        rw [hrec, hmul]
+        omega
+
+/-- Pointwise arbitrary-tangent form of the excess-incidence charge. -/
+theorem choose_two_add_mul_add_excess_choose_le
+    {m L e : ℕ} (hm : m ≤ L) :
+    L.choose 2 + m * (L + e) + e.choose 2 ≤
+      (L + e).choose 2 + m * L := by
+  induction e with
+  | zero => simp
+  | succ e ih =>
+      have hrecD : (L + (e + 1)).choose 2 =
+          (L + e) + (L + e).choose 2 := by
+        rw [show L + (e + 1) = (L + e) + 1 by omega,
+          Nat.choose_succ_succ]
+        simp
+      have hrecE : (e + 1).choose 2 = e + e.choose 2 := by
+        rw [Nat.choose_succ_succ]
+        simp
+      have hmul : m * (L + (e + 1)) = m * (L + e) + m := by ring
+      rw [hrecD, hrecE, hmul]
+      omega
+
+/-- Pointwise arbitrary-tangent form of the excess-incidence charge. -/
+theorem choose_two_add_mul_add_tangent_le
+    {m L d : ℕ} (h : ℕ) (hm : m ≤ L) (hLd : L ≤ d) :
+    L.choose 2 + m * d + h * (d - L) ≤
+      d.choose 2 + m * L + (h + 1).choose 2 := by
+  obtain ⟨e, rfl⟩ := Nat.exists_eq_add_of_le hLd
+  have htangent := mul_le_choose_two_add_choose_succ_two h e
+  have hexact := choose_two_add_mul_add_excess_choose_le
+    (m := m) (L := L) (e := e) hm
+  simp only [Nat.add_sub_cancel_left]
+  omega
+
+theorem choose_two_add_sum_mul_tangent_le
+    {m L d : ℕ} (h : ℕ) (hm : m ≤ L) (hLd : L ≤ d) :
+    L.choose 2 + (m + h) * d ≤
+      d.choose 2 + (m + h) * L + (h + 1).choose 2 := by
+  have ht := choose_two_add_mul_add_tangent_le h hm hLd
+  have hsplitD : (m + h) * d = m * d + h * d := by ring
+  have hsplitL : (m + h) * L = m * L + h * L := by ring
+  have hsplitH : h * d = h * L + h * (d - L) := by
+    rw [← Nat.mul_add, Nat.add_sub_of_le hLd]
+  rw [hsplitD, hsplitL, hsplitH]
+  omega
+
+/-- Arbitrary tangent strengthening of the generic excess-incidence
+consumer.  Choosing `h` near the average excess per center recovers the
+balanced convex lower bound without divisions or remainders. -/
+theorem c4Free_disjoint_subset_service_convexTangent_cherry_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (S T B : Finset V) (F : Finset (Finset V)) (L M m R h : ℕ)
+    (hmL : m ≤ L) (hmM : m ≤ M)
+    (hF : F ⊆ B.powersetCard 2)
+    (hforbid : ∀ U ∈ F, ∀ x : V, ¬ U ⊆ G.neighborFinset x)
+    (hdisj : Disjoint S T)
+    (hserviceS : ∀ p ∈ S, L ≤ (G.neighborFinset p ∩ B).card)
+    (hserviceT : ∀ p ∈ T, M ≤ (G.neighborFinset p ∩ B).card)
+    (htotal :
+      (∑ p ∈ S, (G.neighborFinset p ∩ B).card) +
+        (∑ p ∈ T, (G.neighborFinset p ∩ B).card) = R) :
+    S.card * L.choose 2 + T.card * M.choose 2 +
+        m * (R - (S.card * L + T.card * M)) +
+        (h * (R - (S.card * L + T.card * M)) -
+          (S.card + T.card) * (h + 1).choose 2) ≤
+      B.card.choose 2 - F.card := by
+  let d : V → ℕ := fun p => (G.neighborFinset p ∩ B).card
+  have hS : S.card * L.choose 2 + (m + h) * (∑ p ∈ S, d p) ≤
+      (∑ p ∈ S, (d p).choose 2) +
+        (m + h) * (S.card * L) + S.card * (h + 1).choose 2 := by
+    calc
+      S.card * L.choose 2 + (m + h) * (∑ p ∈ S, d p) =
+          ∑ p ∈ S, (L.choose 2 + (m + h) * d p) := by
+        rw [Finset.sum_add_distrib, Finset.mul_sum]
+        simp
+      _ ≤ ∑ p ∈ S,
+          ((d p).choose 2 + (m + h) * L + (h + 1).choose 2) := by
+        apply Finset.sum_le_sum
+        intro p hp
+        exact choose_two_add_sum_mul_tangent_le h hmL (hserviceS p hp)
+      _ = (∑ p ∈ S, (d p).choose 2) +
+          (m + h) * (S.card * L) + S.card * (h + 1).choose 2 := by
+        rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+        simp
+        ring
+  have hT : T.card * M.choose 2 + (m + h) * (∑ p ∈ T, d p) ≤
+      (∑ p ∈ T, (d p).choose 2) +
+        (m + h) * (T.card * M) + T.card * (h + 1).choose 2 := by
+    calc
+      T.card * M.choose 2 + (m + h) * (∑ p ∈ T, d p) =
+          ∑ p ∈ T, (M.choose 2 + (m + h) * d p) := by
+        rw [Finset.sum_add_distrib, Finset.mul_sum]
+        simp
+      _ ≤ ∑ p ∈ T,
+          ((d p).choose 2 + (m + h) * M + (h + 1).choose 2) := by
+        apply Finset.sum_le_sum
+        intro p hp
+        exact choose_two_add_sum_mul_tangent_le h hmM (hserviceT p hp)
+      _ = (∑ p ∈ T, (d p).choose 2) +
+          (m + h) * (T.card * M) + T.card * (h + 1).choose 2 := by
+        rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+        simp
+        ring
+  have hbase : S.card * L + T.card * M ≤ R := by
+    rw [← htotal]
+    apply Nat.add_le_add
+    · calc
+        S.card * L = ∑ _p ∈ S, L := by simp
+        _ ≤ ∑ p ∈ S, d p := by
+          apply Finset.sum_le_sum
+          intro p hp
+          exact hserviceS p hp
+    · calc
+        T.card * M = ∑ _p ∈ T, M := by simp
+        _ ≤ ∑ p ∈ T, d p := by
+          apply Finset.sum_le_sum
+          intro p hp
+          exact hserviceT p hp
+  have hLower :
+      S.card * L.choose 2 + T.card * M.choose 2 + (m + h) * R ≤
+        ((∑ p ∈ S, (d p).choose 2) + ∑ p ∈ T, (d p).choose 2) +
+          (m + h) * (S.card * L + T.card * M) +
+          (S.card + T.card) * (h + 1).choose 2 := by
+    rw [← htotal]
+    calc
+      S.card * L.choose 2 + T.card * M.choose 2 +
+          (m + h) * ((∑ p ∈ S, d p) + ∑ p ∈ T, d p) =
+        (S.card * L.choose 2 + (m + h) * (∑ p ∈ S, d p)) +
+          (T.card * M.choose 2 + (m + h) * (∑ p ∈ T, d p)) := by ring
+      _ ≤ ((∑ p ∈ S, (d p).choose 2) +
+          (m + h) * (S.card * L) + S.card * (h + 1).choose 2) +
+        ((∑ p ∈ T, (d p).choose 2) +
+          (m + h) * (T.card * M) + T.card * (h + 1).choose 2) :=
+        Nat.add_le_add hS hT
+      _ = ((∑ p ∈ S, (d p).choose 2) + ∑ p ∈ T, (d p).choose 2) +
+          (m + h) * (S.card * L + T.card * M) +
+          (S.card + T.card) * (h + 1).choose 2 := by ring
+  have hExpand : (m + h) * R =
+      (m + h) * (S.card * L + T.card * M) +
+        m * (R - (S.card * L + T.card * M)) +
+        h * (R - (S.card * L + T.card * M)) := by
+    calc
+      (m + h) * R = (m + h) * ((S.card * L + T.card * M) +
+          (R - (S.card * L + T.card * M))) := by
+        rw [Nat.add_sub_of_le hbase]
+      _ = (m + h) * (S.card * L + T.card * M) +
+          m * (R - (S.card * L + T.card * M)) +
+          h * (R - (S.card * L + T.card * M)) := by ring
+  have hBaseMul : (m + h) * (S.card * L + T.card * M) =
+      m * (S.card * L + T.card * M) +
+        h * (S.card * L + T.card * M) := by ring
+  rw [hExpand, hBaseMul] at hLower
+  ring_nf at hLower
+  have hS0 : S.card * L.choose 2 + m * (∑ p ∈ S, d p) ≤
+      (∑ p ∈ S, (d p).choose 2) + m * (S.card * L) := by
+    calc
+      S.card * L.choose 2 + m * (∑ p ∈ S, d p) =
+          ∑ p ∈ S, (L.choose 2 + m * d p) := by
+        rw [Finset.sum_add_distrib, Finset.mul_sum]
+        simp
+      _ ≤ ∑ p ∈ S, ((d p).choose 2 + m * L) := by
+        apply Finset.sum_le_sum
+        intro p hp
+        exact choose_two_add_mul_le_choose_two_add_mul hmL (hserviceS p hp)
+      _ = (∑ p ∈ S, (d p).choose 2) + m * (S.card * L) := by
+        rw [Finset.sum_add_distrib]
+        simp
+        ring
+  have hT0 : T.card * M.choose 2 + m * (∑ p ∈ T, d p) ≤
+      (∑ p ∈ T, (d p).choose 2) + m * (T.card * M) := by
+    calc
+      T.card * M.choose 2 + m * (∑ p ∈ T, d p) =
+          ∑ p ∈ T, (M.choose 2 + m * d p) := by
+        rw [Finset.sum_add_distrib, Finset.mul_sum]
+        simp
+      _ ≤ ∑ p ∈ T, ((d p).choose 2 + m * M) := by
+        apply Finset.sum_le_sum
+        intro p hp
+        exact choose_two_add_mul_le_choose_two_add_mul hmM (hserviceT p hp)
+      _ = (∑ p ∈ T, (d p).choose 2) + m * (T.card * M) := by
+        rw [Finset.sum_add_distrib]
+        simp
+        ring
+  have hlocal0 :
+      S.card * L.choose 2 + T.card * M.choose 2 +
+          m * (R - (S.card * L + T.card * M)) ≤
+        (∑ p ∈ S, (d p).choose 2) + ∑ p ∈ T, (d p).choose 2 := by
+    have hz := Nat.add_le_add hS0 hT0
+    have hmExpand : m * R = m * (S.card * L + T.card * M) +
+        m * (R - (S.card * L + T.card * M)) := by
+      rw [← Nat.mul_add, Nat.add_sub_of_le hbase]
+    have hmTotal : m * (∑ p ∈ S, d p) + m * (∑ p ∈ T, d p) =
+        m * R := by
+      rw [← Nat.mul_add]
+      exact congrArg (m * ·) htotal
+    ring_nf at hz hmTotal hmExpand
+    omega
+  have hlocal :
+      S.card * L.choose 2 + T.card * M.choose 2 +
+          m * (R - (S.card * L + T.card * M)) +
+          (h * (R - (S.card * L + T.card * M)) -
+            (S.card + T.card) * (h + 1).choose 2) ≤
+        (∑ p ∈ S, (d p).choose 2) + ∑ p ∈ T, (d p).choose 2 := by
+    simp only [Nat.add_comm h 1]
+    by_cases hc : (S.card + T.card) * (1 + h).choose 2 ≤
+        h * (R - (S.card * L + T.card * M))
+    · have hC : (S.card + T.card) * (1 + h).choose 2 =
+          S.card * (1 + h).choose 2 + T.card * (1 + h).choose 2 := by ring
+      have hc' : S.card * (1 + h).choose 2 + T.card * (1 + h).choose 2 ≤
+          h * (R - (S.card * L + T.card * M)) := by rwa [← hC]
+      have heq :
+          (h * (R - (S.card * L + T.card * M)) -
+              (S.card * (1 + h).choose 2 + T.card * (1 + h).choose 2)) +
+            (S.card * (1 + h).choose 2 + T.card * (1 + h).choose 2) =
+          h * (R - (S.card * L + T.card * M)) := Nat.sub_add_cancel hc'
+      rw [hC]
+      let K := m * (S.card * L + T.card * M) +
+        h * (S.card * L + T.card * M) +
+        (S.card * (1 + h).choose 2 + T.card * (1 + h).choose 2)
+      have hRearr :
+          (S.card * L.choose 2 + T.card * M.choose 2 +
+              m * (R - (S.card * L + T.card * M)) +
+              (h * (R - (S.card * L + T.card * M)) -
+                (S.card * (1 + h).choose 2 + T.card * (1 + h).choose 2))) + K ≤
+            ((∑ p ∈ S, (d p).choose 2) + ∑ p ∈ T, (d p).choose 2) + K := by
+        calc
+          _ = S.card * L.choose 2 + T.card * M.choose 2 +
+              m * (S.card * L + T.card * M) +
+              h * (S.card * L + T.card * M) +
+              m * (R - (S.card * L + T.card * M)) +
+              h * (R - (S.card * L + T.card * M)) := by
+                dsimp [K]
+                omega
+          _ ≤ (m * (S.card * L + T.card * M) +
+              h * (S.card * L + T.card * M) +
+              (S.card * (1 + h).choose 2 + T.card * (1 + h).choose 2)) +
+              ((∑ p ∈ S, (d p).choose 2) + ∑ p ∈ T, (d p).choose 2) := by
+                convert hLower using 1 <;> ring
+          _ = _ := by dsimp [K]; ring
+      exact Nat.le_of_add_le_add_right hRearr
+    · have hzero : h * (R - (S.card * L + T.card * M)) -
+          (S.card + T.card) * (1 + h).choose 2 = 0 := Nat.sub_eq_zero_of_le (by omega)
+      rw [hzero]
+      simpa using hlocal0
+  refine hlocal.trans ?_
+  calc
+    (∑ p ∈ S, (d p).choose 2) + ∑ p ∈ T, (d p).choose 2 =
+      ∑ p ∈ S ∪ T, (d p).choose 2 := by rw [sum_union hdisj]
+    _ ≤ ∑ p : V, (d p).choose 2 :=
+      Finset.sum_le_univ_sum_of_nonneg fun _ => Nat.zero_le _
+    _ ≤ B.card.choose 2 - F.card := by
+      dsimp [d]
+      exact sum_choose_card_neighbor_inter_le_choose_card_sub_forbidden
+        G hfree B F hF hforbid
+
 /-- Generic excess-incidence cherry consumer for two disjoint center
 populations.  The exact total `R` strengthens the baseline pair cost by
 `m` times every incidence above baseline, and discrete convexity charges
@@ -280,10 +586,74 @@ theorem c4Free_dyadicStoppingSupport_twoShore_excessIncidence_cherry_squeeze
   · exact regular_shore_compl_incidence_sum G hreg S
       (dyadicOccupancySupport G S j)
 
+/-- Arbitrary convex-tangent dyadic specialization.  The parameter `h` can
+be optimized arithmetically after the graph has supplied `|B|`. -/
+theorem c4Free_dyadicStoppingSupport_twoShore_convexTangent_cherry_squeeze
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hreg : ∀ v, G.degree v = q)
+    (S : Finset V) (j h : ℕ)
+    (hdiv : ∀ v, 2 ^ j ∣ (G.neighborFinset v ∩ S).card)
+    (hqdiv : 2 ^ (j + 1) ∣ q) :
+    let L := dyadicStoppingServiceMinimum q S.card j
+    let M := dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j
+    let B := dyadicOccupancySupport G S j
+    let E := q * B.card - (S.card * L + (Sᶜ : Finset V).card * M)
+    S.card * L.choose 2 + (Sᶜ : Finset V).card * M.choose 2 +
+        min L M * E + (h * E - Fintype.card V * (h + 1).choose 2) ≤
+      B.card.choose 2 - (zeroCommonNeighborPairs G B).card := by
+  dsimp only
+  rw [← secondOrderDefectPairs_eq_zeroCommonNeighborPairs G hfree]
+  have hajq : 2 ^ j ∣ q := by
+    obtain ⟨u, hu⟩ := hqdiv
+    refine ⟨2 * u, ?_⟩
+    rw [hu, pow_succ]
+    ring
+  have hdivc : ∀ v, 2 ^ j ∣
+      (G.neighborFinset v ∩ (Sᶜ : Finset V)).card :=
+    dvd_complement_occupancy G hreg S (by positivity) hajq hdiv
+  have hsupport : dyadicOccupancySupport G (Sᶜ : Finset V) j =
+      dyadicOccupancySupport G S j :=
+    dyadicOccupancySupport_compl G hreg S j hdiv hqdiv
+  have hcardPartition : S.card + (Sᶜ : Finset V).card = Fintype.card V := by
+    rw [Finset.card_compl]
+    exact Nat.add_sub_of_le (Finset.card_le_univ S)
+  rw [← hcardPartition]
+  apply c4Free_disjoint_subset_service_convexTangent_cherry_le
+    G hfree S (Sᶜ : Finset V) (dyadicOccupancySupport G S j)
+    (secondOrderDefectPairs G (dyadicOccupancySupport G S j))
+    (dyadicStoppingServiceMinimum q S.card j)
+    (dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)
+    (min (dyadicStoppingServiceMinimum q S.card j)
+      (dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j))
+    (q * (dyadicOccupancySupport G S j).card) h
+    (min_le_left _ _) (min_le_right _ _)
+    (secondOrderDefectPairs_subset_powersetCard G
+      (dyadicOccupancySupport G S j))
+    (secondOrderDefectPairs_forbidden_commonNeighbor G hfree
+      (dyadicOccupancySupport G S j))
+    (by
+      rw [Finset.disjoint_left]
+      intro x hxS hxSc
+      exact (Finset.mem_compl.mp hxSc) hxS)
+  · intro p hp
+    exact c4Free_dyadicStoppingSupport_degree_ge_serviceMinimum
+      G hfree hreg S j hdiv p hp
+  · intro p hp
+    rw [← hsupport]
+    exact c4Free_dyadicStoppingSupport_degree_ge_serviceMinimum
+      G hfree hreg (Sᶜ : Finset V) j hdivc p hp
+  · exact regular_shore_compl_incidence_sum G hreg S
+      (dyadicOccupancySupport G S j)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.choose_two_add_mul_le_choose_two_add_mul
 #print axioms Erdos85.choose_two_add_mul_add_tail_le
+#print axioms Erdos85.c4Free_dyadicStoppingSupport_twoShore_convexTangent_cherry_squeeze
 #print axioms Erdos85.c4Free_dyadicStoppingSupport_twoShore_excessIncidence_cherry_squeeze
