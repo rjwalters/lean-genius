@@ -275,6 +275,66 @@ theorem nearRegularCutLower_nonpos_of_moments
   simpa using nearRegularCutLower_le_of_moments
     ordinaryCount q hcount hcard f s 0 b hsum (by simpa using hsq)
 
+/-- Square-order algebraic cut identity.  Ordinary vertices have degree `q`
+and each indexed high root has degree `q+1`; a boundary of size `δ` therefore
+gives the exact moment equation consumed by `nearRegularCutLower`. -/
+theorem nearRegular_square_moment_of_cut
+    {O ι : Type*} [Fintype O] [DecidableEq O]
+    [Fintype ι] [DecidableEq ι]
+    (q : ℕ) (f : O → ℕ) (s δ : ℕ) (b : ι → ℕ)
+    (hfle : ∀ x, f x ≤ q)
+    (hble : ∀ i, b i ≤ q + 1)
+    (hs : s ≤ q * q)
+    (hbsum : (∑ i, b i) ≤ q * s)
+    (hsum : (∑ x, f x) = q * s - ∑ i, b i)
+    (hcut : δ + (∑ x, f x * (q - f x)) +
+      (∑ i, b i * (q + 1 - b i)) = s * (q * q - s)) :
+    (∑ x, (f x) ^ 2) + (∑ i, b i * (b i - 1)) =
+      s ^ 2 + δ := by
+  have hcutZ := congrArg (fun n : ℕ => (n : ℤ)) hcut
+  push_cast at hcutZ
+  simp_rw [Nat.cast_sub (hfle _)] at hcutZ
+  simp_rw [Nat.cast_sub (hble _)] at hcutZ
+  rw [Nat.cast_sub hs] at hcutZ
+  have hsumZ : (∑ x, (f x : ℤ)) =
+      q * (s : ℤ) - ∑ i, (b i : ℤ) := by
+    exact_mod_cast hsum
+  have hordAlg : (∑ x, (f x : ℤ) * (q - f x)) =
+      q * (∑ x, (f x : ℤ)) - ∑ x, (f x : ℤ) ^ 2 := by
+    simp_rw [mul_sub, mul_comm (f _ : ℤ) q]
+    rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
+    simp [pow_two]
+  have hhighAlg :
+      (∑ i, (b i : ℤ) * (((q + 1 : ℕ) : ℤ) - b i)) =
+      ((q + 1 : ℕ) : ℤ) * (∑ i, (b i : ℤ)) -
+        ∑ i, (b i : ℤ) ^ 2 := by
+    simp_rw [mul_sub, mul_comm (b _ : ℤ) (((q + 1 : ℕ) : ℤ))]
+    rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
+    simp [pow_two]
+  have hcoll : ∀ a : ℕ,
+      (a : ℤ) * ((a - 1 : ℕ) : ℤ) = (a : ℤ) * ((a : ℤ) - 1) := by
+    intro a
+    by_cases ha : a = 0
+    · simp [ha]
+    · rw [Nat.cast_sub (Nat.one_le_iff_ne_zero.mpr ha)]
+      norm_num
+  have hcollSum :
+      (∑ i, (b i : ℤ) * ((b i - 1 : ℕ) : ℤ)) =
+        (∑ i, (b i : ℤ) ^ 2) - ∑ i, (b i : ℤ) := by
+    simp_rw [hcoll, mul_sub]
+    rw [Finset.sum_sub_distrib]
+    simp [pow_two]
+  rw [hordAlg, hhighAlg, hsumZ] at hcutZ
+  push_cast at hcutZ
+  have hgoalZ : ((∑ x, f x ^ 2 : ℕ) : ℤ) +
+      ((∑ i, b i * (b i - 1) : ℕ) : ℤ) =
+        ((s ^ 2 + δ : ℕ) : ℤ) := by
+    push_cast
+    rw [hcollSum]
+    ring_nf at hcutZ ⊢
+    linarith
+  exact_mod_cast hgoalZ
+
 /-- Attainment of the parametric cut lower bound forces equality in the
 ordinary balanced-square estimate. -/
 theorem nearRegularBalancedSquare_eq_of_cutLower_eq
@@ -359,6 +419,7 @@ theorem nearRegularComponentAdmissible_orderNine_threeHigh
 #print axioms Erdos85.nearRegularBalancedSquare_eq_upper_card
 #print axioms Erdos85.nearRegularCutLower_le_of_moments
 #print axioms Erdos85.nearRegularCutLower_nonpos_of_moments
+#print axioms Erdos85.nearRegular_square_moment_of_cut
 #print axioms Erdos85.nearRegularBalancedSquare_eq_of_cutLower_eq
 #print axioms Erdos85.nearRegular_partition_of_cutLower_eq
 #print axioms Erdos85.nearRegularCutLower_orderNine_threeHigh
