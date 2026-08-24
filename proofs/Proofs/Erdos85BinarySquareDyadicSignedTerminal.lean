@@ -241,6 +241,36 @@ theorem binarySquare_pureExceptional_defect_triple_identity
         _ = c * c := by rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hc)]
   nlinarith
 
+/-- Quantized form of the pure exceptional defect identity.  The square on
+the right of `2(e+n₃)=(q-c)²` forces the support deficit `q-c` to be even;
+after writing it as `2r`, the entire defect/triple budget is exactly
+`2r²`.  Thus the surviving pure Baer-support interval has only every other
+cardinality, with a prescribed quadratic budget at each one. -/
+theorem binarySquare_pureExceptional_defect_quantization
+    {q c e n₃ : ℕ} (hcq : c ≤ q)
+    (hdefect : 2 * (e + n₃) = (q - c) * (q - c)) :
+    ∃ r : ℕ, q = c + 2 * r ∧ e + n₃ = 2 * r * r := by
+  have htwoSquare : 2 ∣ (q - c) * (q - c) := by
+    use e + n₃
+    omega
+  have htwoDeficit : 2 ∣ q - c := by
+    apply Nat.prime_two.dvd_of_dvd_pow (n := 2)
+    simpa [pow_two] using htwoSquare
+  obtain ⟨r, hr⟩ := htwoDeficit
+  refine ⟨r, ?_, ?_⟩
+  · omega
+  · nlinarith
+
+/-- At the endpoint `c=q`, the pure exceptional support has neither an
+internal defect edge nor a triple point. -/
+theorem binarySquare_pureExceptional_endpoint_rigid
+    {q c e n₃ : ℕ} (hc : c = q)
+    (hdefect : 2 * (e + n₃) = (q - c) * (q - c)) :
+    e = 0 ∧ n₃ = 0 := by
+  subst c
+  simp only [Nat.sub_self, zero_mul] at hdefect
+  omega
+
 /-- Exact mixed analogue of the pure defect identity.  The majority family
 has size `f = u + 2a`; if its shore replication is one or two, eliminating
 the two replication classes yields `2e + u = (q-f)²`. -/
@@ -1117,6 +1147,8 @@ end Erdos85
 #print axioms Erdos85.binarySquare_pureLargeExceptional_impossible
 #print axioms Erdos85.binarySquare_pureExceptional_halfDegree_lt_card
 #print axioms Erdos85.binarySquare_pureExceptional_defect_triple_identity
+#print axioms Erdos85.binarySquare_pureExceptional_defect_quantization
+#print axioms Erdos85.binarySquare_pureExceptional_endpoint_rigid
 #print axioms Erdos85.binarySquare_mixedMajority_defect_identity
 #print axioms Erdos85.binarySquare_mixedMajority_first_defect_layers
 #print axioms Erdos85.binarySquare_mixedMajority_replication_profile
