@@ -2,10 +2,13 @@
 
 ## Target and scope
 
-The exterior-graph consumer already supplies `Loopless`.  It is therefore
-enough to exclude, for each binary-relevant `q`, a reciprocal two-hole code
-with `AgreementAt t` for one suitably chosen allowed difference `t`.  This is
-strictly weaker than the loop-permitting `BinarySizeTwoCyclicPackingBound`.
+The exterior-graph consumer already supplies `Loopless`.  It would therefore
+be enough to exclude, for each binary-relevant `q` and every graph-relevant
+`a`, a reciprocal two-hole code with `AgreementAt t` for one suitably chosen
+allowed difference `t`.  This proposed shortcut is strictly weaker than the
+loop-permitting `BinarySizeTwoCyclicPackingBound`, but the parameter sweep
+below shows that it is still false as currently quantified over all
+`a != 0,-1`.
 
 The finite data do **not** support exclusion for every allowed `t`.  Using
 `size_two_cyclic_exact_graph_probe.py` with exact row/column laws, symmetry,
@@ -17,6 +20,8 @@ fiber gives:
 | `4`, `1` | none | `0,2` |
 | `6`, `1` | `0,2,3` | `4` |
 | `8`, `1` | `3,4` | `0,2,5,7` |
+| `8`, `2` | none | `0,1,3,4,6,7` |
+| `8`, `3` | none | `0,1,2,5,6,7` |
 
 For example:
 
@@ -30,9 +35,22 @@ python3 size_two_cyclic_exact_graph_probe.py 8 --a 1 \
 # sat
 ```
 
-The `q=4` exception is compatible with a theorem beginning at `q>=8`.  Two
-`q=10` controls (`t=4,5`) returned `unknown` at 120 seconds and provide no
-evidence either way.  No extrapolation from the small table is claimed.
+The `q=4` exception alone would be compatible with a theorem beginning at
+`q>=8`, but the `q=8,a=2,3` rows are direct countermodels to
+`BinarySizeTwoCyclicLooplessSingleFiberBound` as stated: for each parameter,
+every allowed choice of `t` is satisfiable.  This leaves two possibilities:
+the graph-facing pipeline proves an additional normalization on `a` that has
+not been included in the bound, or the consumer must retain caps from more
+than one fiber.  Two `q=10` controls (`a=1,t=4,5`) returned `unknown` at 120
+seconds and provide no evidence either way.
+
+The first possibility is not currently available.  The authoritative bridge
+`exists_nonempty_sizeTwoCyclicExactPermutationCode_of_connectedInternal`
+returns only `exists a, a != -1`—it supplies no `a=1`, oddness, or unit
+normalization, and does not even prove `a != 0`.  Thus `a=2,3` lie within the
+current graph-facing scope.  Conversely, the `a != 0` premise in
+`BinarySizeTwoCyclicLooplessSingleFiberBound` would fail to consume a package
+whose witness happens to have `a=0`.
 
 ## Literature gate
 
@@ -70,7 +88,7 @@ identities.  Existing countermodels or banked results cut three immediately:
 * Hall--Paige cannot be invoked because target-difference injectivity is
   false in every fiber.
 
-The two honest successors are therefore:
+Before the parameter countermodels, the two candidate successors were:
 
 1. **Fiber selection.** Prove that reciprocity makes the forced duplicate
    target difference visit a distinguished allowed fiber `t` (the small data
@@ -78,6 +96,10 @@ The two honest successors are therefore:
 2. **Reversal-local collision.** On that fiber, combine the fixed-point-free
    route-reversal involution with `AgreementAt t` to force two translated
    source matchings to share two targets.
+
+The first candidate is now false under the current `forall a` scope.  The
+second can survive only after identifying a genuinely graph-forced class of
+parameters/fibers, or after restoring a multi-fiber hypothesis.
 
 The banked parity theorem
 `sizeTwoCyclicTargetDifferenceMultiplicity_diagonal_sum_even` is a necessary
@@ -88,7 +110,8 @@ sum over all line labels.
 ## Stop result
 
 No standard complete-mapping, Costas-array, or partial-transversal theorem
-directly closes the loopless single-fiber target.  The finite target must be
-stated existentially in `t`, not universally.  Further useful work should
-attack fiber selection or a selected-fiber reversal invariant; another
-unlabelled collision total is not informative.
+directly closes the loopless single-fiber target.  More decisively, the
+existential-in-`t` target is itself false at `q=8,a=2,3`.  The next audit must
+check whether those `a` can occur in the exterior eigenline normalization.
+If they can, the single-fiber lane stops and the consumer must return to a
+multi-fiber cap.  Another unlabelled collision total is not informative.
