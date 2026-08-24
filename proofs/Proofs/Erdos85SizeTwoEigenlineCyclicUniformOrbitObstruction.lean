@@ -428,6 +428,39 @@ private theorem value_le_choose_two_add_nonzeroIndicator (n : ℕ) :
       rw [Nat.choose_succ_succ]
       simp
 
+/-- In a finite multiplicity vector whose mass equals its number of slots,
+the number of zero slots is exactly the total positive excess `m-1`.  Unlike
+the choose-two bound, this identity has no upper bound on the entries and
+can be applied separately to each parity class once column marginals are
+known. -/
+theorem card_zeros_eq_sum_sub_one_of_sum_eq_card
+    {ι : Type*} [Fintype ι] (m : ι → ℕ)
+    (hsum : (∑ i : ι, m i) = Fintype.card ι) :
+    ((Finset.univ : Finset ι).filter fun i => m i = 0).card =
+      ∑ i : ι, (m i - 1) := by
+  classical
+  have hbalance :
+      ((Finset.univ : Finset ι).filter fun i => m i = 0).card +
+          (∑ i : ι, m i) =
+        Fintype.card ι + ∑ i : ι, (m i - 1) := by
+    calc
+      ((Finset.univ : Finset ι).filter fun i => m i = 0).card +
+          (∑ i : ι, m i) =
+          (∑ i : ι, if m i = 0 then 1 else 0) + ∑ i : ι, m i := by
+        rw [Finset.card_filter]
+      _ = ∑ i : ι, ((if m i = 0 then 1 else 0) + m i) := by
+        rw [Finset.sum_add_distrib]
+      _ = ∑ i : ι, (1 + (m i - 1)) := by
+        apply Finset.sum_congr rfl
+        intro i hi
+        cases hmi : m i with
+        | zero => simp
+        | succ n => simp [Nat.add_comm]
+      _ = Fintype.card ι + ∑ i : ι, (m i - 1) := by
+        rw [Finset.sum_add_distrib]
+        simp
+  omega
+
 /-- If every entry of a finite rank vector is positive and at least two
 entries have rank at least two, its total rank exceeds the all-one baseline
 by at least two.  This remains a useful sufficient condition, although the
@@ -901,6 +934,7 @@ end Erdos85
 #print axioms Erdos85.not_binary_sizeTwoCyclic_uniformOrbitMultiplicity
 #print axioms Erdos85.sizeTwoCyclicUniformIncidenceFibers_card_le_two
 #print axioms Erdos85.sizeTwoCyclicNonuniformIncidenceSources_card_ge
+#print axioms Erdos85.card_zeros_eq_sum_sub_one_of_sum_eq_card
 #print axioms Erdos85.card_add_two_le_sum_of_two_nonstrict
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_two_nonstrict_each
 #print axioms Erdos85.two_mul_card_le_sum_of_four_le_adjacent
