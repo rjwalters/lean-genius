@@ -16,7 +16,8 @@ noncomputable section
 
 set_option maxHeartbeats 800000
 
-private def finsetIndicator
+/-- Integral indicator vector of a finite vertex set. -/
+def finsetIntIndicator
     {V : Type*} [Fintype V] [DecidableEq V] (S : Finset V) : V → ℤ :=
   fun v => if v ∈ S then 1 else 0
 
@@ -28,10 +29,10 @@ def finsetGraphCutIncidenceCount
     (D : SimpleGraph V) [DecidableRel D.Adj] (S : Finset V) : ℕ :=
   ∑ x ∈ S, (D.neighborFinset x \ S).card
 
-private theorem sum_finsetIndicator
+private theorem sum_finsetIntIndicator
     {V : Type*} [Fintype V] [DecidableEq V] (S : Finset V) :
-    ∑ v, finsetIndicator S v = (S.card : ℤ) := by
-  simp [finsetIndicator]
+    ∑ v, finsetIntIndicator S v = (S.card : ℤ) := by
+  simp [finsetIntIndicator]
 
 private theorem vecMul_eq_mulVec_of_transpose_eq
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -58,9 +59,9 @@ theorem incidenceError_sum_sq_eq_lapMatrix_quadratic
     (hreg : A.mulVec (1 : V → ℤ) = (q : ℤ) • (1 : V → ℤ))
     (hsq : A * A = D.lapMatrix ℤ + intOnesMatrix V)
     (S : Finset V) (hScard : S.card = q) :
-    ∑ y : V, (A.mulVec (finsetIndicator S) y - 1) ^ 2 =
-      finsetIndicator S ⬝ᵥ (D.lapMatrix ℤ).mulVec (finsetIndicator S) := by
-  let s := finsetIndicator S
+    ∑ y : V, (A.mulVec (finsetIntIndicator S) y - 1) ^ 2 =
+      finsetIntIndicator S ⬝ᵥ (D.lapMatrix ℤ).mulVec (finsetIntIndicator S) := by
+  let s := finsetIntIndicator S
   let v := A.mulVec s
   have hvv : v ⬝ᵥ v = s ⬝ᵥ (A * A).mulVec s := by
     calc
@@ -83,7 +84,7 @@ theorem incidenceError_sum_sq_eq_lapMatrix_quadratic
         simp only [dotProduct, Pi.smul_apply, Pi.one_apply, smul_eq_mul,
           mul_one]
         rw [← Finset.mul_sum, show (∑ x : V, s x) = (S.card : ℤ) by
-          simpa [s] using sum_finsetIndicator S, hScard]
+          simpa [s] using sum_finsetIntIndicator S, hScard]
   have hJs : (intOnesMatrix V).mulVec s =
       (q : ℤ) • (1 : V → ℤ) := by
     funext y
@@ -91,7 +92,7 @@ theorem incidenceError_sum_sq_eq_lapMatrix_quadratic
       Pi.smul_apply, Pi.one_apply, smul_eq_mul]
     simp only [one_mul]
     rw [show (∑ x : V, s x) = (S.card : ℤ) by
-      simpa [s] using sum_finsetIndicator S, hScard]
+      simpa [s] using sum_finsetIntIndicator S, hScard]
   calc
     (∑ y : V, (A.mulVec s y - 1) ^ 2) =
         v ⬝ᵥ v - 2 * (∑ y : V, v y) + Fintype.card V := by
@@ -129,21 +130,21 @@ theorem incidenceError_sum_sq_eq_lapMatrix_quadratic
           intro x _hx
           ring,
           show (∑ x : V, s x) = (S.card : ℤ) by
-            simpa [s] using sum_finsetIndicator S,
+            simpa [s] using sum_finsetIntIndicator S,
           hScard]
       rw [hsqsum]
       ring
 
 /-- The Laplacian quadratic form of a set indicator is its ordered cut
 incidence count. -/
-theorem finsetIndicator_dot_lapMatrix_eq_finsetCutIncidenceCount
+theorem finsetIntIndicator_dot_lapMatrix_eq_finsetCutIncidenceCount
     {V : Type*} [Fintype V] [DecidableEq V]
     (D : SimpleGraph V) [DecidableRel D.Adj] (S : Finset V) :
-    finsetIndicator S ⬝ᵥ (D.lapMatrix ℤ).mulVec (finsetIndicator S) =
+    finsetIntIndicator S ⬝ᵥ (D.lapMatrix ℤ).mulVec (finsetIntIndicator S) =
       (finsetGraphCutIncidenceCount D S : ℤ) := by
   have hpoint : ∀ x : V,
-      finsetIndicator S x * (D.lapMatrix ℤ).mulVec
-          (finsetIndicator S) x =
+      finsetIntIndicator S x * (D.lapMatrix ℤ).mulVec
+          (finsetIntIndicator S) x =
         if x ∈ S then ((D.neighborFinset x \ S).card : ℤ) else 0 := by
     intro x
     by_cases hx : x ∈ S
@@ -163,15 +164,15 @@ theorem finsetIndicator_dot_lapMatrix_eq_finsetCutIncidenceCount
         exact_mod_cast congrArg Finset.card hfin
       rw [SimpleGraph.lapMatrix, Matrix.sub_mulVec]
       simp only [Pi.sub_apply]
-      simp [finsetIndicator, hx, SimpleGraph.degMatrix, Matrix.mulVec,
+      simp [finsetIntIndicator, hx, SimpleGraph.degMatrix, Matrix.mulVec,
         dotProduct, Matrix.diagonal_apply,
         SimpleGraph.adjMatrix_mulVec_apply]
       rw [hinter]
       omega
     · rw [if_neg hx]
-      simp [finsetIndicator, hx]
+      simp [finsetIntIndicator, hx]
   calc
-    finsetIndicator S ⬝ᵥ (D.lapMatrix ℤ).mulVec (finsetIndicator S) =
+    finsetIntIndicator S ⬝ᵥ (D.lapMatrix ℤ).mulVec (finsetIntIndicator S) =
         ∑ x : V, if x ∈ S then
           ((D.neighborFinset x \ S).card : ℤ) else 0 := by
       simp only [dotProduct]
@@ -195,11 +196,11 @@ theorem incidenceError_sum_sq_eq_finsetCutIncidenceCount
     (hreg : A.mulVec (1 : V → ℤ) = (q : ℤ) • (1 : V → ℤ))
     (hsq : A * A = D.lapMatrix ℤ + intOnesMatrix V)
     (S : Finset V) (hScard : S.card = q) :
-    ∑ y : V, (A.mulVec (finsetIndicator S) y - 1) ^ 2 =
+    ∑ y : V, (A.mulVec (finsetIntIndicator S) y - 1) ^ 2 =
       (finsetGraphCutIncidenceCount D S : ℤ) := by
   rw [incidenceError_sum_sq_eq_lapMatrix_quadratic
     D A q hcard hA hreg hsq S hScard]
-  exact finsetIndicator_dot_lapMatrix_eq_finsetCutIncidenceCount D S
+  exact finsetIntIndicator_dot_lapMatrix_eq_finsetCutIncidenceCount D S
 
 /-- Square-order graph wrapper for an arbitrary `q`-set.  The explicit
 defect-regularity hypothesis is the exact structural input used by the
@@ -216,7 +217,7 @@ theorem binarySquare_regular_incidenceError_sum_sq_eq_finsetCut
     (hDreg : ∀ x, (secondOrderDefectGraph G).degree x = q - 1)
     (S : Finset V) (hScard : S.card = q) :
     ∑ y : V,
-        ((G.adjMatrix ℤ).mulVec (finsetIndicator S) y - 1) ^ 2 =
+        ((G.adjMatrix ℤ).mulVec (finsetIntIndicator S) y - 1) ^ 2 =
       (finsetGraphCutIncidenceCount (secondOrderDefectGraph G) S : ℤ) := by
   let A := G.adjMatrix ℤ
   let D := secondOrderDefectGraph G
@@ -264,7 +265,7 @@ theorem binarySquare_regular_closedDefectNeighborhood_incidenceError_energy
     (x : V) :
     let S := insert x ((secondOrderDefectGraph G).neighborFinset x)
     ∑ y : V,
-        ((G.adjMatrix ℤ).mulVec (finsetIndicator S) y - 1) ^ 2 =
+        ((G.adjMatrix ℤ).mulVec (finsetIntIndicator S) y - 1) ^ 2 =
       (finsetGraphCutIncidenceCount (secondOrderDefectGraph G) S : ℤ) := by
   dsimp only
   apply binarySquare_regular_incidenceError_sum_sq_eq_finsetCut
@@ -278,7 +279,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.incidenceError_sum_sq_eq_lapMatrix_quadratic
-#print axioms Erdos85.finsetIndicator_dot_lapMatrix_eq_finsetCutIncidenceCount
+#print axioms Erdos85.finsetIntIndicator_dot_lapMatrix_eq_finsetCutIncidenceCount
 #print axioms Erdos85.incidenceError_sum_sq_eq_finsetCutIncidenceCount
 #print axioms Erdos85.binarySquare_regular_incidenceError_sum_sq_eq_finsetCut
 #print axioms
