@@ -22,6 +22,7 @@ def build(q: int, a: int, *, rows: bool = True, columns: bool = True,
           c4_pair_mode: str = "all",
           c4_differences: set[int] | None = None,
           c4_separations: set[int] | None = None,
+          c4_fiber_separations: set[tuple[int, int]] | None = None,
           allow_loops: bool = False) -> tuple[z3.Solver, list[tuple[int, int]], dict[tuple[int, int], z3.BoolRef]]:
     holes = {a % q, (-1 - a) % q}
     vertices = [(x, y) for x in range(q) for y in range(q) if (y - x) % q not in holes]
@@ -70,6 +71,12 @@ def build(q: int, a: int, *, rows: bool = True, columns: bool = True,
             if c4_pair_mode == "same-difference" and c4_differences is not None and \
                     (vertices[i][1] - vertices[i][0]) % q not in c4_differences:
                 continue
+            if c4_fiber_separations is not None:
+                source_difference = (vertices[i][1] - vertices[i][0]) % q
+                undirected_separation = min(separation, (-separation) % q)
+                if (source_difference, undirected_separation) not in \
+                        c4_fiber_separations:
+                    continue
             common_neighbor_indices = (range(len(vertices)) if allow_loops else
                                        (k for k in range(len(vertices))
                                         if k not in {i, j}))
@@ -95,6 +102,9 @@ def main() -> None:
     parser.add_argument("--c4-separation", type=int, action="append",
         help=("retain common-neighbor caps only for these undirected "
               "first-coordinate separation orbits"))
+    parser.add_argument("--c4-fiber-separation", action="append",
+        help=("retain an individual same-difference cap group, written "
+              "DIFFERENCE:SEPARATION; may be repeated"))
     parser.add_argument("--quiet-model", action="store_true")
     parser.add_argument("--codegree-profile-difference", type=int,
         help=("report codegree/excess totals by undirected first-coordinate "
@@ -133,6 +143,19 @@ def main() -> None:
         parser.error("--loop-count-cap requires --allow-loops")
     if args.loop_profile and not args.allow_loops:
         parser.error("--loop-profile requires --allow-loops")
+    fiber_separations = None
+    if args.c4_fiber_separation is not None:
+        if args.c4_pair_mode != "same-difference":
+            parser.error("--c4-fiber-separation requires same-difference mode")
+        fiber_separations = set()
+        for spec in args.c4_fiber_separation:
+            try:
+                raw_difference, raw_separation = map(int, spec.split(":"))
+            except ValueError:
+                parser.error("--c4-fiber-separation must have form DIFFERENCE:SEPARATION")
+            separation = raw_separation % args.q
+            fiber_separations.add((raw_difference % args.q,
+                                   min(separation, (-separation) % args.q)))
     solver, vertices, edge = build(args.q, args.a,
         rows=not args.no_rows, columns=not args.no_columns,
         c4_pair_mode="none" if args.no_c4 else args.c4_pair_mode,
@@ -140,6 +163,7 @@ def main() -> None:
             {t % args.q for t in args.c4_difference},
         c4_separations=None if args.c4_separation is None else
             {d % args.q for d in args.c4_separation},
+        c4_fiber_separations=fiber_separations,
         allow_loops=args.allow_loops)
     if args.loop_count_cap is not None:
         solver.add(z3.PbLe([(edge[i, i], 1) for i in range(len(vertices))],

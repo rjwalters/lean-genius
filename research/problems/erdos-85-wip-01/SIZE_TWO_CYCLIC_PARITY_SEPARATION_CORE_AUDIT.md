@@ -46,6 +46,26 @@ python3 size_two_cyclic_exact_graph_probe.py 8 --a 2 \
 
 This returns UNSAT; deleting any one `--c4-separation` flag returns SAT.
 
+## Fibre-resolved minimal core at `a = 2`
+
+The probe also accepts individual cap groups as
+`--c4-fiber-separation t:d`.  Resolving the even parity obstruction into its
+nine fibre/separation groups produces the following five-group MUS:
+
+```text
+(t,d) = (0,1), (0,2), (4,1), (4,4), (6,2).
+```
+
+These five groups together are UNSAT, while deleting any one is SAT.  In
+particular, the antipodal cap is needed only in the middle fibre `t=4`, not
+throughout the parity class.  The reflected odd MUS is
+
+```text
+(t,d) = (7,1), (7,2), (3,1), (3,4), (1,2),
+```
+
+and again every one-group deletion is SAT.
+
 ## Consequence and stop
 
 The q8 parity target does not need full `AgreementAt` on all shifts.  It needs
@@ -54,6 +74,11 @@ the antipodal shift plus two short shifts, with a genuine parameter split:
 Therefore a proof that treats all nonzero translations symmetrically carries
 substantial slack, and a purported uniform three-shift proof must account for
 the `a=0` exception.
+
+At the harder `a=2` parameter the actual finite obstruction is smaller still:
+five cap groups arranged across three fibres, with the unique half-turn group
+at the reflected middle fibre.  This is now a concrete ternary interaction
+pattern rather than a generic parity-class extremal problem.
 
 This is exact finite evidence, not a q-generic theorem.  The promising formal
 refinement is a separation-resolved version of the parity block balance or
