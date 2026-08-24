@@ -63,3 +63,27 @@ The finite core shows that aggregate defect circulation is not enough: its
 banked count relaxation is SAT.  A proof of step 1 must retain base positions
 inside the reciprocal blocks, plausibly through the existing sharp-repair
 sign/checkerboard interface or a base-resolved near-transversal parity law.
+
+## Quantitative sharp-source census
+
+The probe option `--min-sharp-sources N` requires the sharp profile at at
+least `N` source cells and leaves every other source unrestricted.  At q=8,
+with exact hits and reciprocity but no caps, the exact threshold is
+
+```text
+a=1: N=32 SAT, N=33 UNSAT
+a=2: N=32 SAT, N=33 UNSAT.
+```
+
+Thus the all-sharp contradiction is not brittle: reciprocity forces at least
+16 of the 48 source cells above the minimum block-row variance.  At q=6,
+a=1, even `N=1` is UNSAT although the unrestricted instance is SAT; q=4
+allows all 8 sources to be sharp.  q10 threshold runs were inconclusive and
+stopped.
+
+For q8, any non-sharp positive deviation vector has squared energy at least
+4 instead of the sharp value 2.  The census therefore improves the cap-free
+block-row variance lower bound from 96 to at least 128.  This is still below
+the same-fibre cap ceiling 336, so it is an amplification datum rather than
+the terminal contradiction.  A q-generic proof must determine whether the
+16-source loss is a constant fraction or only a two-hole `2q` correction.

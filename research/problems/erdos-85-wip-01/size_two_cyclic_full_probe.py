@@ -28,6 +28,8 @@ def main() -> None:
         help="give each source one zero, one double, and otherwise one target per fibre")
     parser.add_argument("--dump-fibre-loads", action="store_true",
         help="on SAT, print target-fibre degree profiles for every source")
+    parser.add_argument("--min-sharp-sources", type=int,
+        help="require at least this many sources to have a 0,2,1,... block profile")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and use one variable per ordered pair")
     parser.add_argument("--reciprocity-core", action="store_true",
@@ -136,8 +138,11 @@ def main() -> None:
 
     # Smallest positive block-load variance compatible with total degree:
     # one target fibre is missed, one is hit twice, and all others once.
-    if args.minimal_block_variance:
+    if args.minimal_block_variance or args.min_sharp_sources is not None:
+        sharp_source_flags = []
         for source in vertices:
+            sharp = z3.Bool(f"sharp_source_{source[0]}_{source[1]}")
+            sharp_source_flags.append((sharp, 1))
             zero_flags = []
             double_flags = []
             for u in differences:
@@ -147,12 +152,23 @@ def main() -> None:
                 zero_flags.append((zero, 1))
                 double_flags.append((double, 1))
                 terms = [(edge(source, (y, u)), 1) for y in range(q)]
-                solver.add(z3.Implies(zero, z3.PbEq(terms, 0)))
-                solver.add(z3.Implies(double, z3.PbEq(terms, 2)))
-                solver.add(z3.Implies(z3.And(z3.Not(zero), z3.Not(double)),
-                                      z3.PbEq(terms, 1)))
+                solver.add(z3.Implies(zero,
+                                      z3.And(sharp, z3.PbEq(terms, 0))))
+                solver.add(z3.Implies(double,
+                                      z3.And(sharp, z3.PbEq(terms, 2))))
+                solver.add(z3.Implies(
+                    z3.And(sharp, z3.Not(zero), z3.Not(double)),
+                    z3.PbEq(terms, 1)))
                 solver.add(z3.Not(z3.And(zero, double)))
-            solver.add(z3.PbEq(zero_flags, 1), z3.PbEq(double_flags, 1))
+            solver.add(z3.Implies(sharp, z3.PbEq(zero_flags, 1)))
+            solver.add(z3.Implies(sharp, z3.PbEq(double_flags, 1)))
+        if args.minimal_block_variance:
+            solver.add(z3.PbEq(sharp_source_flags, len(vertices)))
+        if args.min_sharp_sources is not None:
+            if not 0 <= args.min_sharp_sources <= len(vertices):
+                parser.error("--min-sharp-sources is outside the source range")
+            solver.add(z3.PbGe(sharp_source_flags,
+                               args.min_sharp_sources))
 
     # Full same-difference cap: any two distinct bases in one fibre have at
     # most one precise common target cell.
