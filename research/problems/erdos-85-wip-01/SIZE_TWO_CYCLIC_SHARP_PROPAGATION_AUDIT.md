@@ -200,3 +200,26 @@ model would refute it even if the sharp-count bound survives.  The
 corresponding proof target is an orbit charge whose total is at least `2q`
 above the pointwise baseline and which is invariant under the two distinct
 q=8 equality geometries above.
+
+## Reciprocal-adjacency cocycle cut
+
+The probe option `--dump-sharp-edge-census` classifies reciprocal graph edges
+by whether their endpoints have rank one (sharp) or higher rank.  On q8
+`N=32` equality witnesses it gives:
+
+```text
+a=1: SS=64, SN=64, NN=16; sharp components 16+16
+a=2: SS=66, SN=60, NN=18; sharp component 32
+```
+
+In the a1 witness every nonsharp vertex has four sharp neighbours.  In the
+a2 witness the nonsharp-to-sharp degrees range from three to five, while
+sharp-to-sharp degrees range from two to six.  In both cases the nonsharp
+vertices themselves induce a connected graph; for a2 the 32 sharp vertices
+also induce one connected graph with many cycles.
+
+This cuts the simplest repair-frustration picture in which the `2q`
+nonsharp cells form a separator, independent set, feedback set, or uniform
+boundary of the reciprocal graph.  A surviving cocycle proof would need
+edge labels/orientations from the actual near-orthomorphism repairs: the
+unlabelled sharp/nonsharp adjacency graph does not carry the charge.

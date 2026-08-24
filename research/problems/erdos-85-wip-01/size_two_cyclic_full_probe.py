@@ -431,6 +431,7 @@ def main() -> None:
                              and all(load in {0, 1, 2} for load in loads))
         edge_counts = {"SS": 0, "SN": 0, "NN": 0}
         sharp_neighbour_degrees = {True: [], False: []}
+        same_status_adjacency = {source: set() for source in vertices}
         for source in vertices:
             sharp_neighbour_degrees[sharp[source]].append(sum(
                 z3.is_true(model.eval(edge(source, target),
@@ -443,12 +444,30 @@ def main() -> None:
             key = "SS" if sharp[left] and sharp[right] else (
                 "NN" if not sharp[left] and not sharp[right] else "SN")
             edge_counts[key] += 1
+            if sharp[left] == sharp[right]:
+                same_status_adjacency[left].add(right)
+                same_status_adjacency[right].add(left)
         print(f"  sharp_sources={sum(sharp.values())} edge_census={edge_counts}")
         for is_sharp, degrees in sharp_neighbour_degrees.items():
             histogram = {degree: degrees.count(degree)
                          for degree in sorted(set(degrees))}
             print(f"  source_class={'sharp' if is_sharp else 'nonsharp'} "
                   f"sharp_neighbour_degree_histogram={histogram}")
+            unseen = {source for source in vertices
+                      if sharp[source] == is_sharp}
+            component_sizes = []
+            while unseen:
+                stack = [unseen.pop()]
+                size = 0
+                while stack:
+                    source = stack.pop()
+                    size += 1
+                    fresh = same_status_adjacency[source] & unseen
+                    unseen.difference_update(fresh)
+                    stack.extend(fresh)
+                component_sizes.append(size)
+            print(f"  source_class={'sharp' if is_sharp else 'nonsharp'} "
+                  f"component_sizes={sorted(component_sizes, reverse=True)}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:
