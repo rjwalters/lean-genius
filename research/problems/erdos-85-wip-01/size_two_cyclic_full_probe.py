@@ -21,6 +21,10 @@ def main() -> None:
     parser.add_argument("--a", type=int, required=True)
     parser.add_argument("--empty-fiber", type=int)
     parser.add_argument("--no-caps", action="store_true")
+    parser.add_argument("--drop-row-hits", action="store_true",
+        help="diagnostic: omit exact target-row constraints")
+    parser.add_argument("--drop-column-hits", action="store_true",
+        help="diagnostic: omit exact absolute-column constraints")
     parser.add_argument("--uniform-fibre-loads", action="store_true",
         help="require every target to have exactly one neighbour in each source fibre")
     parser.add_argument("--minimal-block-variance", "--sharp-fibre-loads",
@@ -80,6 +84,8 @@ def main() -> None:
         parser.error("core modes cannot be combined with --dimacs")
     if args.no_caps and args.only_cap_pair is not None:
         parser.error("--no-caps and --only-cap-pair are incompatible")
+    if args.drop_row_hits and args.drop_column_hits:
+        parser.error("cannot drop both exact-hit families")
     if args.no_caps and args.cap_fibres is not None:
         parser.error("--no-caps and --cap-fibres are incompatible")
     if args.only_cap_pair is not None and args.cap_fibres is not None:
@@ -136,23 +142,25 @@ def main() -> None:
     # Exact target-row hits: the two neighbours of (x,t) on its own cyclic
     # component would lie in absolute rows x+t and x+t+1, so those rows are
     # holes and every other target row is hit once.
-    for source in vertices:
-        x, t = source
-        for y in range(q):
-            wanted = 0 if y in {(x + t) % q, (x + t + 1) % q} else 1
-            solver.add(z3.PbEq(
-                [(edge(source, (y, u)), 1) for u in differences], wanted))
+    if not args.drop_row_hits:
+        for source in vertices:
+            x, t = source
+            for y in range(q):
+                wanted = 0 if y in {(x + t) % q, (x + t + 1) % q} else 1
+                solver.add(z3.PbEq(
+                    [(edge(source, (y, u)), 1) for u in differences], wanted))
 
     # Exact target-column hits.  A cell (y,u) has absolute second coordinate
     # y+u.  Columns x and x-1 are the two component-neighbour holes.
-    for source in vertices:
-        x, _ = source
-        for c in range(q):
-            wanted = 0 if c in {x, (x - 1) % q} else 1
-            targets = [((c - u) % q, u) for u in differences]
-            assert all(target in vertex_set for target in targets)
-            solver.add(z3.PbEq(
-                [(edge(source, target), 1) for target in targets], wanted))
+    if not args.drop_column_hits:
+        for source in vertices:
+            x, _ = source
+            for c in range(q):
+                wanted = 0 if c in {x, (x - 1) % q} else 1
+                targets = [((c - u) % q, u) for u in differences]
+                assert all(target in vertex_set for target in targets)
+                solver.add(z3.PbEq(
+                    [(edge(source, target), 1) for target in targets], wanted))
 
     # Equality case of the labelled collision-load bound.  For a fixed
     # source fibre t, its q vertices send q(q-2) incidences into exactly
