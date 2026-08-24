@@ -155,9 +155,63 @@ theorem exists_complementary_shores_boundary_sum_eq_degree_of_erase_not_connecte
   · rw [hSboundary, hTboundary, hEcard]
     exact D.card_neighborFinset_eq_degree owner
 
+/-- Binary-square graph-facing form of the articulation cut budget.  The
+second-order defect graph is `(q-1)`-regular, so every deleted-owner
+disconnection splits the defect boundary into two positive parts summing to
+`q-1`.  Eliminating these splits is the remaining arithmetic task in a
+general-q lift of the order-nine two-connectivity argument. -/
+theorem binarySquare_regular_exists_punctured_shores_boundary_sum_eq_q_sub_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (owner : V)
+    (hconnected : (secondOrderDefectGraph G).Connected)
+    (hpuncturedNonempty :
+      ((Finset.univ : Finset V).erase owner).Nonempty)
+    (hnot : ¬ ((secondOrderDefectGraph G).induce
+      (↑((Finset.univ : Finset V).erase owner) : Set V)).Connected) :
+    ∃ S T : Finset V,
+      S.Nonempty ∧ T.Nonempty ∧
+      S ∪ T = (Finset.univ : Finset V).erase owner ∧ Disjoint S T ∧
+      (∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩
+        ((Finset.univ : Finset V).erase owner) ⊆ S) ∧
+      (∀ x ∈ T, (secondOrderDefectGraph G).neighborFinset x ∩
+        ((Finset.univ : Finset V).erase owner) ⊆ T) ∧
+      0 < (∑ x ∈ S, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card) ∧
+      0 < (∑ x ∈ T, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ T)).card) ∧
+      (∑ x ∈ S, ((secondOrderDefectGraph G).neighborFinset x ∩
+          (Finset.univ \ S)).card) +
+        (∑ x ∈ T, ((secondOrderDefectGraph G).neighborFinset x ∩
+          (Finset.univ \ T)).card) = q - 1 := by
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by
+        rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDdegree : (secondOrderDefectGraph G).degree owner = q - 1 := by
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus owner
+    change (secondOrderDefectGraph G).degree owner = (q - 3) + 2 at h
+    omega
+  obtain ⟨S, T, hS, hT, hunion, hdisj, hSclosed, hTclosed,
+      hSpos, hTpos, hsum⟩ :=
+    exists_complementary_shores_boundary_sum_eq_degree_of_erase_not_connected
+      (secondOrderDefectGraph G) owner hconnected hpuncturedNonempty hnot
+  exact ⟨S, T, hS, hT, hunion, hdisj, hSclosed, hTclosed,
+    hSpos, hTpos, hsum.trans hDdegree⟩
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.exists_deletedOwner_complementary_shores_with_exact_boundaries
 #print axioms Erdos85.exists_complementary_shores_boundary_sum_eq_degree_of_erase_not_connected
+#print axioms Erdos85.binarySquare_regular_exists_punctured_shores_boundary_sum_eq_q_sub_one
