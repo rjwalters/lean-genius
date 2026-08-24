@@ -20,6 +20,7 @@ import z3
 def build(q: int, a: int, *, rows: bool = True, columns: bool = True,
           c4_pair_mode: str = "all",
           c4_differences: set[int] | None = None,
+          c4_separations: set[int] | None = None,
           allow_loops: bool = False) -> tuple[z3.Solver, list[tuple[int, int]], dict[tuple[int, int], z3.BoolRef]]:
     holes = {a % q, (-1 - a) % q}
     vertices = [(x, y) for x in range(q) for y in range(q) if (y - x) % q not in holes]
@@ -52,6 +53,11 @@ def build(q: int, a: int, *, rows: bool = True, columns: bool = True,
     # C4-free is exactly: distinct vertices have at most one common neighbor.
     if c4_pair_mode != "none":
         for i, j in combinations(range(len(vertices)), 2):
+            separation = (vertices[j][0] - vertices[i][0]) % q
+            if c4_separations is not None and \
+                    separation not in c4_separations and \
+                    (-separation) % q not in c4_separations:
+                continue
             if c4_pair_mode == "same-row" and vertices[i][0] != vertices[j][0]:
                 continue
             if c4_pair_mode == "same-column" and vertices[i][1] != vertices[j][1]:
@@ -85,6 +91,9 @@ def main() -> None:
         default="all")
     parser.add_argument("--c4-difference", type=int, action="append",
         help="with same-difference mode, retain only these difference orbits")
+    parser.add_argument("--c4-separation", type=int, action="append",
+        help=("retain common-neighbor caps only for these undirected "
+              "first-coordinate separation orbits"))
     parser.add_argument("--quiet-model", action="store_true")
     parser.add_argument("--allow-loops", action="store_true",
         help=("model the reduced symmetric reciprocal relation, whose "
@@ -95,6 +104,8 @@ def main() -> None:
         c4_pair_mode="none" if args.no_c4 else args.c4_pair_mode,
         c4_differences=None if args.c4_difference is None else
             {t % args.q for t in args.c4_difference},
+        c4_separations=None if args.c4_separation is None else
+            {d % args.q for d in args.c4_separation},
         allow_loops=args.allow_loops)
     solver.set(timeout=args.timeout_ms)
     result = solver.check()
