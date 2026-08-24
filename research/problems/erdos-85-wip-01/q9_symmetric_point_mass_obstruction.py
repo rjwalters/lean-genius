@@ -390,6 +390,82 @@ def contracted_reverse_interval_two_color_cover(
     )
 
 
+def contracted_two_color_matching_profiles(
+        system: dict, target: int, local: dict[int, dict]) -> list[dict]:
+    """Exact three-color score profiles, without invoking an optimizer.
+
+    Besides the total cover score, expose its two structurally different
+    terms.  ``mandatory_card`` counts points forced by candidates whose pair
+    loses one endpoint when the named color is omitted; ``matching_card`` is
+    the maximum-matching rank of the surviving bipartite projection.
+    """
+    forced = {
+        source for source in range(N)
+        if target in local[source]["forced_neighbors"]
+    }
+    possible = {
+        source for source in range(N)
+        if target in local[source]["possible_neighbors"]
+    }
+    edge_set = set(system["edges"])
+    candidates = [
+        source for source in range(N)
+        if tuple(sorted((source, target))) in edge_set
+        and source in possible and source not in forced
+        and all(not (system["blocks"][source] & system["blocks"][f])
+                for f in forced)
+    ]
+    profiles = []
+    for omitted in range(3):
+        colors = [color for color in range(3) if color != omitted]
+        color_points = [
+            set(range(8 * color, 8 * color + 8)) for color in colors
+        ]
+        retained = color_points[0] | color_points[1]
+        projected = [system["blocks"][source] & retained
+                     for source in candidates]
+        mandatory = set().union(*(
+            block for block in projected if len(block) == 1
+        )) if projected else set()
+        residual_edges = set()
+        for block in projected:
+            if len(block) == 2 and not (block & mandatory):
+                left = next(iter(block & color_points[0]))
+                right = next(iter(block & color_points[1]))
+                residual_edges.add((left, right))
+        adjacency = {
+            left: [] for left in color_points[0] - mandatory
+        }
+        for left, right in sorted(residual_edges):
+            adjacency[left].append(right)
+        matched_right = {}
+
+        def augment(left: int, seen: set[int]) -> bool:
+            for right in adjacency[left]:
+                if right in seen:
+                    continue
+                seen.add(right)
+                if (right not in matched_right
+                        or augment(matched_right[right], seen)):
+                    matched_right[right] = left
+                    return True
+            return False
+
+        for left in sorted(adjacency):
+            augment(left, set())
+        profiles.append({
+            "omitted_color": omitted,
+            "forced_card": len(forced),
+            "candidate_count": len(candidates),
+            "mandatory_points": sorted(mandatory),
+            "mandatory_card": len(mandatory),
+            "matching_card": len(matched_right),
+            "score": len(forced) + len(mandatory) + len(matched_right),
+            "demand": system["degree"][target],
+        })
+    return profiles
+
+
 def dual(system: dict, row_support: set[int] | None,
          external_point: int | None = None):
     blocks = system["blocks"]
@@ -967,6 +1043,12 @@ def main() -> None:
         help=("audit the honest branch-4 (13av) disjunction: a sound local "
               "packing deficit/shared-block forced collision, or an exact "
               "global price certificate with row support at most two"),
+    )
+    parser.add_argument(
+        "--audit-min-singleton-color-selector", action="store_true",
+        help=("for every reverse-interval obstruction, report all three "
+              "exact two-color matching scores and test the sharper rule "
+              "that a minimum-mandatory-singleton color can close a row"),
     )
     parser.add_argument(
         "--scan-exceptional-three-row-supports", action="store_true",
@@ -1863,6 +1945,62 @@ def main() -> None:
             ),
             "certificates": certificates,
         }, separators=(",", ":")))
+    if args.audit_min_singleton_color_selector:
+        local = {
+            row: forced_local_packing_neighbors(system, row)
+            for row in range(N)
+        }
+        records = []
+        for target in range(N):
+            forced = {
+                source for source in range(N)
+                if target in local[source]["forced_neighbors"]
+            }
+            impossible = {
+                source for source in range(N)
+                if (local[source]["packing_count"]
+                    and target not in local[source]["possible_neighbors"])
+            }
+            compatible = any(
+                forced.issubset(packing)
+                and packing.isdisjoint(impossible)
+                for packing in local_packing_family(system, target)
+            )
+            forced_conflict = any(
+                system["blocks"][u] & system["blocks"][v]
+                for u, v in combinations(forced, 2)
+            )
+            if compatible or forced_conflict or not local[target]["packing_count"]:
+                continue
+            profiles = contracted_two_color_matching_profiles(
+                system, target, local
+            )
+            minimum_mandatory = min(
+                profile["mandatory_card"] for profile in profiles
+            )
+            minimizing = [
+                profile for profile in profiles
+                if profile["mandatory_card"] == minimum_mandatory
+            ]
+            records.append({
+                "target": target,
+                "profiles": profiles,
+                "minimum_mandatory_card": minimum_mandatory,
+                "minimum_mandatory_selector_closes": any(
+                    profile["score"] < profile["demand"]
+                    for profile in minimizing
+                ),
+            })
+        print("min_singleton_color_selector=" + json.dumps({
+            "all_rows_locally_feasible": all(
+                local[row]["packing_count"] for row in range(N)
+            ),
+            "records": records,
+            "exists_closing_minimum_mandatory_selector": any(
+                record["minimum_mandatory_selector_closes"]
+                for record in records
+            ),
+        }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support
             and not args.scan_nondiagonal_fibers
             and not args.scan_unit_nondiagonal_fibers
@@ -1870,7 +2008,8 @@ def main() -> None:
             and not args.scan_min_load_global_special_fibers
             and not args.audit_global_special_load_descent
             and not args.scan_exceptional_two_row_supports
-            and not args.scan_exceptional_three_row_supports):
+            and not args.scan_exceptional_three_row_supports
+            and not args.audit_min_singleton_color_selector):
         return
     if (args.scan_nondiagonal_fibers or args.scan_unit_nondiagonal_fibers
             or args.scan_unit_full_fibers
@@ -1878,6 +2017,7 @@ def main() -> None:
             or args.audit_global_special_load_descent
             or args.scan_exceptional_two_row_supports
             or args.scan_exceptional_three_row_supports
+            or args.audit_min_singleton_color_selector
             ) and not (args.dual or args.minimize_row_support):
         return
     row_support = (

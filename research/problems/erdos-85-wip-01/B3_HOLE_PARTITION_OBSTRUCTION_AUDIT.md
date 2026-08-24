@@ -5338,3 +5338,32 @@ Therefore the outer proof must select the omitted color from the colored
 incidence structure (or prove a weighted selector correlated with it), not
 apply a symmetric three-color pigeonhole.  This fixture should remain the
 mandatory regression for any proposed averaging lemma.
+
+The first selector statistic that survives that regression is the number of
+**mandatory singleton points**, not the total cover score averaged over
+colors.  For every reverse-compatible target `w` and omitted color `c`, write
+
+```text
+s(w,c) = |M(w,c)|,
+r(w,c) = matchingNumber(Gamma(w,c)).
+```
+
+Mode `--audit-min-singleton-color-selector` computes these integers directly
+by augmenting paths, without a MILP.  On all ten row-feasible durable
+payloads there is a target `w` and a color minimizing `s(w,-)` such that
+
+```text
+|F(w)| + s(w,c) + r(w,c) < d(w).                         (13az)
+```
+
+This is strictly more informative than the earlier existential choice of a
+color.  In the seed-129 regression at target 24 the profiles
+`(s,r)=(5,2),(6,1),(5,0)` explain the asymmetric scores `(7,7,5)`: colors zero
+and two tie for minimum singleton cost, and the residual matching rank breaks
+the tie.  Thus global point multiplicities (all three target points have
+multiplicity five) cannot select the color, while the local pair projection
+can.  The sharpened proof target is now: first choose a color of minimum
+singleton loss, then prove that at some reverse-obstructed row its residual
+bipartite matching rank fits the remaining slack.  The corpus remains finite
+evidence rather than a proof, but (13az) separates the selector into a simple
+three-way incidence count and a small alternating-path bound.
