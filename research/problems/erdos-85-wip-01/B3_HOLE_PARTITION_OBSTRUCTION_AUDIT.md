@@ -5802,6 +5802,18 @@ joint packing with the selected row or two packings related by exactly one
 replacement.  Single-swap alone misses two failures, both supplied by the
 joint-packing horn.  The auditor records this exact disjunction as
 `all_dual_terminal_failures_have_joint_or_single_swap_exchange`.
+The three exact certificates for the no-joint target `36 -> 23` are
+
+```text
+source 27: {10,29,32,37,44} + 36  <->  {10,29,32,37,44} + 23
+source 37: {3,26,27,31,40}  + 36  <->  {3,26,27,31,40}  + 23
+source 46: {7,10,20,27,34}  + 36  <->  {7,10,20,27,34}  + 23.
+```
+
+The JSON auditor now emits these named full packings and their `common_core`
+under `residual_single_swap_certificates`, so the regression evidence matches
+the erased-core Lean characterization literally rather than through a Boolean
+summary.
 
 Accordingly, the remaining proof problem is the sharper joint-or-one-swap
 exchange claim for the finite family of disjoint block packings at one source.

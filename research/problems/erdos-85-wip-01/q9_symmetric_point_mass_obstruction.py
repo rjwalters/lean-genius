@@ -572,20 +572,48 @@ def finite_graph_distance(
     return None
 
 
-def has_local_packing_single_swap(
-        system: dict, source: int, first: int, second: int) -> bool:
-    """Two full source packings differ by replacing first with second."""
+def local_packing_single_swap_witness(
+        system: dict, source: int, first: int,
+        second: int) -> tuple[set[int], set[int]] | None:
+    """Return two full packings differing by first/second, when they exist."""
     family = local_packing_family(system, source)
-    first_cores = {
-        frozenset(packing - {first})
+    first_by_core = {
+        frozenset(packing - {first}): packing
         for packing in family
         if first in packing and second not in packing
     }
-    return any(
-        second in packing and first not in packing
-        and frozenset(packing - {second}) in first_cores
-        for packing in family
+    for packing in family:
+        core = frozenset(packing - {second})
+        if (second in packing and first not in packing
+                and core in first_by_core):
+            return first_by_core[core], packing
+    return None
+
+
+def has_local_packing_single_swap(
+        system: dict, source: int, first: int, second: int) -> bool:
+    """Two full source packings differ by replacing first with second."""
+    return local_packing_single_swap_witness(
+        system, source, first, second
+    ) is not None
+
+
+def local_packing_single_swap_certificate(
+        system: dict, source: int, first: int,
+        second: int) -> dict | None:
+    """JSON-ready exact certificate for a one-row local-packing exchange."""
+    witness = local_packing_single_swap_witness(
+        system, source, first, second
     )
+    if witness is None:
+        return None
+    first_packing, second_packing = witness
+    return {
+        "source": source,
+        "first_packing": sorted(first_packing),
+        "second_packing": sorted(second_packing),
+        "common_core": sorted(first_packing - {first}),
+    }
 
 
 def contracted_collision_star_matching_cover(
@@ -2423,6 +2451,14 @@ def main() -> None:
                             system, source, record["target"], row
                         )
                     ),
+                    "residual_single_swap_certificates": [
+                        certificate
+                        for source in sorted(residual)
+                        if (certificate :=
+                            local_packing_single_swap_certificate(
+                                system, source, record["target"], row
+                            )) is not None
+                    ],
                 }
                 for row in range(N)
                 if not local[row]["packing_count"]
@@ -2550,6 +2586,15 @@ def main() -> None:
                         candidate["target"]
                     )
                 ),
+                "residual_single_swap_certificates": [
+                    certificate
+                    for source in sorted(residual)
+                    if (certificate :=
+                        local_packing_single_swap_certificate(
+                            system, source, record["target"],
+                            candidate["target"]
+                        )) is not None
+                ],
                 "reverse_contains_target": record["target"] in set(
                     contracted_residual_rows(
                         system, candidate["target"], local
