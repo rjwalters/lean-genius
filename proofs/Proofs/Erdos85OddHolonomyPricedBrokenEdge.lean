@@ -78,7 +78,51 @@ theorem activeBrokenRelay_exists_priced_brokenPair_of_odd_walk
     A hfree hq hreg (fun w => x w = 1) mate hclosed hinvol hfixed
     hQK.1).mp hQK.2
 
+/-- **Odd residual price to a concrete broken pair.** Odd total residual
+price first forces odd holonomy in some (not necessarily globally connected)
+component of `Q_s`, then exposes an active witnessed broken pair of cubic
+price zero on that closed walk. -/
+theorem activeBrokenRelay_exists_priced_brokenPair_of_odd_residual
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (A : SimpleGraph V) [DecidableRel A.Adj]
+    (hfree : ¬ containsC4 V A) {q : ℕ} (hq : Even q)
+    (hreg : ∀ v, A.degree v = q) (x : V → ZMod 2)
+    (mate : V → V → V)
+    (hclosed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      (triangleFreeEdgeGraph A).Adj w (mate w v))
+    (hinvol : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w (mate w v) = v)
+    (hfixed : ∀ w v, (triangleFreeEdgeGraph A).Adj w v →
+      mate w v ≠ v)
+    (hodd : Odd (((graphF2SymmetricDifference
+      (activeBrokenWitnessRelayGraph A (fun w => x w = 1) mate
+        hclosed hinvol hfixed)
+      (binaryVertexCutGraph (triangleFreeEdgeGraph A)
+        (f2PotentialSupport x))) ⊓
+      binaryTransportResidualGraph A hq hreg).edgeFinset.card)) :
+    ∃ (root : V)
+      (p : (graphF2SymmetricDifference
+        (activeBrokenWitnessRelayGraph A (fun w => x w = 1) mate
+          hclosed hinvol hfixed)
+        (binaryVertexCutGraph (triangleFreeEdgeGraph A)
+          (f2PotentialSupport x))).Walk root root)
+      (a b w : V),
+      x w = 1 ∧
+      (triangleFreeEdgeGraph A).Adj w a ∧
+      mate w a = b ∧
+      (A.adjMatrix (ZMod 2) * A.adjMatrix (ZMod 2) *
+        A.adjMatrix (ZMod 2)) a b = 0 ∧
+      s(a, b) ∈ p.edges := by
+  obtain ⟨root, p, hp⟩ :=
+    activeBrokenRelay_exists_closedWalk_odd_residual_global
+      A hfree hq hreg x mate hclosed hinvol hfixed hodd
+  obtain ⟨a, b, w, hwactive, hwa, hm, hcubic, hedge⟩ :=
+    activeBrokenRelay_exists_priced_brokenPair_of_odd_walk
+      A hfree hq hreg x mate hclosed hinvol hfixed p hp
+  exact ⟨root, p, a, b, w, hwactive, hwa, hm, hcubic, hedge⟩
+
 end Erdos85
 
 #print axioms Erdos85.exists_priceEdge_of_f2WalkWeight_graphEdgeIndicator_eq_one
 #print axioms Erdos85.activeBrokenRelay_exists_priced_brokenPair_of_odd_walk
+#print axioms Erdos85.activeBrokenRelay_exists_priced_brokenPair_of_odd_residual
