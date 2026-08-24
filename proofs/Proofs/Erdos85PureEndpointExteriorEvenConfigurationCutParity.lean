@@ -84,8 +84,131 @@ theorem linear_even_configuration_internal_meeting_add_uniform_even
     rw [hdouble, herase, hself, hother]
   simpa [meet, inter] using hEq ▸ hIeven
 
+/-- Endpoint form of the selected-row parity law: each selected exterior row
+meets, inside the configuration, a number of other selected rows congruent to
+`m` modulo two. -/
+theorem c4Free_binarySquare_pureEndpoint_exists_large_even_configuration_internalParity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V)
+    (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    let F := fullLineCenters G S q
+    let W := {w : V // w ∈ Fᶜ}
+    let P := {y : V // y ∈ S}
+    let row := fun w : W => G.neighborFinset w.1 ∩ S
+    ∃ T : Finset W, T.Nonempty ∧ m + 1 ≤ T.card ∧
+      (∀ y : P, Even ((T.filter fun w => G.Adj w.1 y.1).card)) ∧
+      ∀ w ∈ T, Even (m + ((T.erase w).filter fun u =>
+        (row w ∩ row u).Nonempty).card) := by
+  classical
+  dsimp only
+  let F := fullLineCenters G S q
+  let W := {w : V // w ∈ Fᶜ}
+  let P := {y : V // y ∈ S}
+  let row : W → Finset V := fun w => G.neighborFinset w.1 ∩ S
+  let Inc : W → P → Prop := fun w y => G.Adj w.1 y.1
+  obtain ⟨T, hT, hlarge, heven, _houtParity⟩ :=
+    c4Free_binarySquare_pureEndpoint_exists_large_even_configuration_meetingParity
+      G hfree hq hqm hreg hcard S hempty hCcard hshore htri
+  have hdesign := c4Free_binarySquare_pureEndpoint_exterior_blockDesign
+    G hfree hq hqm hreg hcard S hempty hCcard hshore htri
+  refine ⟨T, hT, hlarge, heven, ?_⟩
+  intro w hwT
+  have huniform : ((univ : Finset P).filter fun y => Inc w y).card = m := by
+    have himage : (((univ : Finset P).filter fun y => Inc w y).image
+        fun y => y.1) = row w := by
+      ext y
+      constructor
+      · intro hy
+        obtain ⟨yy, hyy, rfl⟩ := mem_image.mp hy
+        exact mem_inter.mpr ⟨
+          (G.mem_neighborFinset w.1 yy.1).mpr (mem_filter.mp hyy).2, yy.2⟩
+      · intro hy
+        let yy : P := ⟨y, (mem_inter.mp hy).2⟩
+        exact mem_image.mpr ⟨yy, mem_filter.mpr ⟨mem_univ _,
+          (G.mem_neighborFinset w.1 y).mp (mem_inter.mp hy).1⟩, rfl⟩
+    have hwF : w.1 ∉ F := mem_compl.mp w.2
+    calc
+      ((univ : Finset P).filter fun y => Inc w y).card =
+          ((((univ : Finset P).filter fun y => Inc w y).image
+            fun y => y.1).card) :=
+        (card_image_of_injective _ Subtype.val_injective).symm
+      _ = (row w).card := congrArg card himage
+      _ = m := hdesign.1 w.1 (by simpa [F, row] using hwF)
+  have hlinear : ∀ u ∈ T.erase w,
+      ((univ : Finset P).filter fun y => Inc w y ∧ Inc u y).card ≤ 1 := by
+    intro u hu
+    have hwu : w.1 ≠ u.1 := by
+      intro h
+      exact (ne_of_mem_erase hu) (Subtype.ext h).symm
+    have hwF : w.1 ∉ F := mem_compl.mp w.2
+    have huF : u.1 ∉ F := mem_compl.mp u.2
+    have hrow := hdesign.2.1 w.1 (by simpa [F] using hwF)
+      u.1 (by simpa [F] using huF) hwu
+    have himage : ((((univ : Finset P).filter fun y => Inc w y ∧ Inc u y).image
+        fun y => y.1)) = row w ∩ row u := by
+      ext y
+      constructor
+      · intro hy
+        obtain ⟨yy, hyy, rfl⟩ := mem_image.mp hy
+        have hyInc := (mem_filter.mp hyy).2
+        exact mem_inter.mpr ⟨mem_inter.mpr ⟨
+          (G.mem_neighborFinset w.1 yy.1).mpr hyInc.1, yy.2⟩,
+          mem_inter.mpr ⟨(G.mem_neighborFinset u.1 yy.1).mpr hyInc.2, yy.2⟩⟩
+      · intro hy
+        have hyData := mem_inter.mp hy
+        let yy : P := ⟨y, (mem_inter.mp hyData.1).2⟩
+        exact mem_image.mpr ⟨yy, mem_filter.mpr ⟨mem_univ _, ⟨
+          (G.mem_neighborFinset w.1 y).mp (mem_inter.mp hyData.1).1,
+          (G.mem_neighborFinset u.1 y).mp (mem_inter.mp hyData.2).1⟩⟩, rfl⟩
+    calc
+      ((univ : Finset P).filter fun y => Inc w y ∧ Inc u y).card =
+          ((((univ : Finset P).filter fun y => Inc w y ∧ Inc u y).image
+            fun y => y.1).card) :=
+        (card_image_of_injective _ Subtype.val_injective).symm
+      _ = (row w ∩ row u).card := congrArg card himage
+      _ ≤ 1 := by simpa [row] using hrow
+  have hinter := linear_even_configuration_internal_meeting_add_uniform_even
+    Inc T (univ : Finset P) w m hwT huniform
+    (by intro y _hy; exact heven y) hlinear
+  have hfilters : ((T.erase w).filter fun u =>
+      ((univ : Finset P).filter fun y => Inc w y ∧ Inc u y).Nonempty) =
+      (T.erase w).filter fun u => (row w ∩ row u).Nonempty := by
+    ext u
+    simp only [mem_filter]
+    apply and_congr_right
+    intro hu
+    constructor
+    · rintro ⟨y, hy⟩
+      have hyInc := (mem_filter.mp hy).2
+      exact ⟨y.1, mem_inter.mpr ⟨mem_inter.mpr ⟨
+        (G.mem_neighborFinset w.1 y.1).mpr hyInc.1, y.2⟩,
+        mem_inter.mpr ⟨(G.mem_neighborFinset u.1 y.1).mpr hyInc.2, y.2⟩⟩⟩
+    · rintro ⟨y, hy⟩
+      have hyData := mem_inter.mp hy
+      let yy : P := ⟨y, (mem_inter.mp hyData.1).2⟩
+      exact ⟨yy, mem_filter.mpr ⟨mem_univ _, ⟨
+        (G.mem_neighborFinset w.1 y).mp (mem_inter.mp hyData.1).1,
+        (G.mem_neighborFinset u.1 y).mp (mem_inter.mp hyData.2).1⟩⟩⟩
+  rw [← hfilters]
+  exact hinter
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.linear_even_configuration_internal_meeting_add_uniform_even
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_exists_large_even_configuration_internalParity
