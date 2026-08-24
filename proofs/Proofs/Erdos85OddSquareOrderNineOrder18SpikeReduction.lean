@@ -1,4 +1,5 @@
 import Proofs.Erdos85OddSquareOrderNineArticulationLowSetTransfer
+import Proofs.Erdos85OddSquareOrderNineOrder34PuncturedProfileCapstone
 
 /-!
 # The order-eighteen excess-two spike reduction
@@ -2589,6 +2590,186 @@ theorem false_of_orderNine_order18_lowSpike_owner_of_punctured_shores
       (fun u hu ↦ (hLprofiles u hu).2) hKPzero hLPzero
       (by simpa [H] using heq31)
 
+/-- The symmetric oriented `(18,59)` articulation is impossible.  The spike
+transfer package produces the high/low alternatives; the high alternative
+contradicts the three owner partners, while the low alternative forces its
+center to be the owner and is closed by the punctured-shore capstone. -/
+theorem false_of_orderNine_order18_symmetric_oriented_articulation_output
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (hH : squareOrderHighVertices G 9 = {h₁, h₂, h₃})
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (A B : Finset V)
+    (hunion : A ∪ B = ((Finset.univ : Finset V) \
+      squareOrderHighVertices G 9).erase owner)
+    (hdisj : Disjoint A B)
+    (hAcard : A.card = 18) (hBcard : B.card = 59)
+    (hfull : orderNineArticulationSmallShoreFullType G
+      ((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) h₁ h₂ h₃ A)
+    (hAclosed : ∀ x ∈ A, (secondOrderDefectGraph G).neighborFinset x ∩
+      ((Finset.univ : Finset V) \
+        squareOrderHighVertices G 9).erase owner ⊆ A)
+    (hBclosed : ∀ x ∈ B, (secondOrderDefectGraph G).neighborFinset x ∩
+      ((Finset.univ : Finset V) \
+        squareOrderHighVertices G 9).erase owner ⊆ B)
+    (hAboundary : (∑ x ∈ A,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ A)).card) =
+      (((secondOrderDefectGraph G).neighborFinset owner ∩
+        squareOrderNineLowIncidenceBin G 0) ∩ A).card)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hhighIndependent : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      Disjoint (G.neighborFinset h) ({h₁, h₂, h₃} : Finset V))
+    (hhighSmall : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (G.neighborFinset h ∩ A).card = 2)
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) : False := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let U := O.erase owner
+  let D := secondOrderDefectGraph G
+  let E := D.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0
+  let K := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 1
+  have hownerO : owner ∈ O := by
+    have ho := (Finset.mem_filter.mp howner).1
+    simpa [O, H, hH] using ho
+  have hAsubU : A ⊆ U := by
+    intro x hx
+    rw [← show A ∪ B = U by simpa [U, O, H, hH] using hunion]
+    exact Finset.mem_union_left B hx
+  have hownerA : owner ∉ A := fun ho ↦
+    (Finset.mem_erase.mp (hAsubU ho)).1 rfl
+  have hownerH : owner ∉ H := (Finset.mem_sdiff.mp hownerO).2
+  have hAH : Disjoint A H := by
+    rw [Finset.disjoint_left]
+    intro x hxA hxH
+    exact (Finset.mem_sdiff.mp (Finset.mem_erase.mp (hAsubU hxA)).2).2 hxH
+  have hEinfo := squareOrderNine_threeHigh_secondProfile_owner_defect_neighbors
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hEinfo
+  have hDE : D.neighborFinset owner = E := by simpa [D, E] using hEinfo.2.1
+  have hownerD : (D.neighborFinset owner ∩ A).card = 2 := by
+    rw [hDE]
+    exact hfull.2.1 hAcard
+  have hownerHighSet : G.neighborFinset owner ∩
+      squareOrderHighVertices G 9 = squareOrderHighVertices G 9 := by
+    apply Finset.eq_of_subset_of_card_le Finset.inter_subset_right
+    have hk3 := (Finset.mem_filter.mp howner).2
+    change (G.neighborFinset owner ∩ squareOrderHighVertices G 9).card = 3 at hk3
+    rw [hhigh, hk3]
+  have hownerAdj : ∀ h ∈ H, G.Adj h owner := by
+    intro h hh
+    have hhHigh : h ∈ squareOrderHighVertices G 9 := by simpa [H, hH] using hh
+    have hhN : h ∈ G.neighborFinset owner := by
+      have : h ∈ G.neighborFinset owner ∩ squareOrderHighVertices G 9 := by
+        rw [hownerHighSet]
+        exact hhHigh
+      exact (Finset.mem_inter.mp this).1
+    exact (G.adj_comm owner h).mp ((G.mem_neighborFinset owner h).mp hhN)
+  have hKcard : K.card = 3 := by
+    simpa [K] using
+      squareOrderNine_threeHigh_secondProfile_binThree_original_binOne_neighbors
+        G hfree hmin hcard hp hhigh hc2 hc3 hc4 howner
+  have hKowner : K ⊆ G.neighborFinset owner := Finset.inter_subset_left
+  have hKroot : ∀ y ∈ K, ∃ h ∈ H, y ∈ G.neighborFinset h := by
+    intro y hy
+    have hyB1 := (Finset.mem_inter.mp hy).2
+    have hcardOne : (G.neighborFinset y ∩ squareOrderHighVertices G 9).card = 1 :=
+      (Finset.mem_filter.mp hyB1).2
+    obtain ⟨h, hh⟩ := Finset.card_pos.mp (by rw [hcardOne]; omega)
+    exact ⟨h, by simpa [H, hH] using (Finset.mem_inter.mp hh).2,
+      (G.mem_neighborFinset h y).mpr ((G.adj_comm y h).mp
+        ((G.mem_neighborFinset y h).mp (Finset.mem_inter.mp hh).1))⟩
+  have hpartnerRoot : ∀ y ∈ K, (G.neighborFinset y ∩ H).card = 1 := by
+    intro y hy
+    have hk := (Finset.mem_filter.mp (Finset.mem_inter.mp hy).2).2
+    change (G.neighborFinset y ∩ squareOrderHighVertices G 9).card = 1 at hk
+    simpa [H, hH] using hk
+  have hDzero : ∀ h ∈ H, (D.neighborFinset h ∩ A).card = 0 := by
+    intro h hh
+    rw [hdefectHighIsolated h (by simpa [H] using hh)]
+    simp [D]
+  have hpunctured : ∀ x ∈ U, D.neighborFinset x ⊆ insert owner U := by
+    simpa [D, U, O, H, hH] using
+      (orderNine_defect_neighbors_subset_insert_owner_ordinary_erase
+        G h₁ h₂ h₃ owner hH hdefectHighIsolated)
+  have htransfer := orderNine_order18_oriented_spike_transfer_package
+    G hfree hcard E h₁ h₂ h₃ owner h₁₂ h₁₃ h₂₃ A B
+      (by simpa [O, H] using hownerO)
+      (by simpa [H, hH] using hunion) hdisj hAcard hBcard
+      (by simpa [D, E] using hfull) (by simpa [D, E] using hAboundary)
+      hdegOrd hdegHigh hhighIndependent hhighSmall hownerAdj
+      hdefectHighIsolated
+  dsimp only at htransfer
+  rcases htransfer with hlow | hhighSpike
+  · obtain ⟨c, Z, hcO, hZsub, hZcard, hownerInZ, _hlevel,
+        heq30, heq31⟩ := hlow
+    have hcases := orderNine_order18_ordinary_center_cases
+      G hp hhigh hc2 hc3 owner c howner (by simpa [O, H, hH] using hcO)
+    have hcOwner := orderNine_order18_lowSpike_center_eq_owner_of_transfer
+      G D owner c A H K Z (squareOrderNineLowIncidenceBin G 0)
+        (squareOrderNineLowIncidenceBin G 1) hAH hownerA hownerH hownerD
+        hKcard hKowner hpartnerRoot (by simpa [H] using hdegHigh) hDzero
+        hcases
+        (fun hc ↦ by
+          have hk := (Finset.mem_filter.mp hc).2
+          change (G.neighborFinset c ∩ squareOrderHighVertices G 9).card = 0 at hk
+          simpa [H, hH] using hk)
+        (fun hc ↦ by
+          have hk := (Finset.mem_filter.mp hc).2
+          change (G.neighborFinset c ∩ squareOrderHighVertices G 9).card = 1 at hk
+          simpa [H, hH] using hk)
+        (by simpa [D, H] using heq31)
+    subst c
+    have hrootDegree : ∀ h ∈ squareOrderHighVertices G 9,
+        (G.neighborFinset h ∩ Z).card = 9 := by
+      intro h hh
+      have hhH : h ∈ H := by simpa [H, hH] using hh
+      have heq := orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
+        G D A H Z owner h hhH
+          (fun hhA ↦ Finset.disjoint_left.mp hAH hhA hhH)
+          (hDzero h hhH) (by simpa [D, H] using heq31)
+      have hadj := hownerAdj h hhH
+      simp [hadj] at heq
+      omega
+    have hownerShore : (G.neighborFinset owner ∩ A).card = 1 := by
+      have heq := heq30 owner
+      have hownerHigh : (G.neighborFinset owner ∩ H).card = 3 := by
+        have hk := (Finset.mem_filter.mp howner).2
+        change (G.neighborFinset owner ∩ squareOrderHighVertices G 9).card = 3 at hk
+        simpa [H, hH] using hk
+      simp only [if_pos hownerInZ, if_pos rfl] at heq
+      rw [hownerHigh] at heq
+      norm_num at heq
+      omega
+    exact false_of_orderNine_order18_lowSpike_owner_of_punctured_shores
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 owner howner A B Z
+        hunion hdisj hAclosed hBclosed
+        (by simpa [D, U, O, H, hH] using hpunctured)
+        (by simpa [H, hH] using hZsub) hZcard hownerInZ hrootDegree
+        hownerShore (by simpa [D, H, hH] using heq31)
+  · obtain ⟨c, Z, _hcO, _hZsub, _hZcard, _hcZ, _hlevel,
+        _heq30, heq31⟩ := hhighSpike
+    exact false_of_orderNine_order18_highSpike_transfer
+      G D owner c A H K Z hAH hownerA hownerH hownerD hKcard hKowner
+        hKroot (by simpa [H] using hdegHigh) hDzero
+        (by simpa [D, H] using heq31)
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -2645,6 +2826,7 @@ theorem false_of_orderNine_order18_lowSpike_owner_of_punctured_shores
 #print axioms Erdos85.degreeEight_neighbor_inter_shore_profiles_of_punctured_closure
 #print axioms Erdos85.orderNine_order18_ordinary_center_cases
 #print axioms Erdos85.false_of_orderNine_order18_lowSpike_owner_of_punctured_shores
+#print axioms Erdos85.false_of_orderNine_order18_symmetric_oriented_articulation_output
 
 end
 
