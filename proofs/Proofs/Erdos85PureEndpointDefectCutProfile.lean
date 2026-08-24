@@ -163,9 +163,87 @@ theorem c4Free_binarySquare_pureEndpoint_defectCutDegree_profile
     have haZ : (a : ℤ) = (m : ℤ) := by linarith
     exact_mod_cast haZ
 
+/-- The endpoint defect graph is internally `(m-1)`-regular on pair points
+and off-shore vertices, while private points retain all `q-1` defect
+neighbors inside the shore.  Its cut is therefore supported precisely on
+the replication-two class and is `m`-regular on both sides. -/
+theorem c4Free_binarySquare_pureEndpoint_defect_biregular_decomposition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V)
+    (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    ∀ x,
+      ((G.neighborFinset x ∩ fullLineCenters G S q).card = 1 →
+        ((secondOrderDefectGraph G).neighborFinset x ∩ S).card = q - 1) ∧
+      ((G.neighborFinset x ∩ fullLineCenters G S q).card = 2 →
+        ((secondOrderDefectGraph G).neighborFinset x ∩ S).card = m - 1) ∧
+      (x ∉ S →
+        ((secondOrderDefectGraph G).neighborFinset x ∩
+          (Sᶜ : Finset V)).card = m - 1) := by
+  classical
+  let D := secondOrderDefectGraph G
+  have hcut := c4Free_binarySquare_pureEndpoint_defectCutDegree_profile
+    G hfree hq hqm hreg hcard S hempty hCcard hshore htri
+  have hsupport :=
+    (c4Free_binarySquare_pureEndpoint_fullLineCenters_exactReplicationProfile
+      G hfree hq hqm hreg hcard S hempty hCcard hshore htri).1
+  have hDdeg : ∀ x, D.degree x = q - 1 := by
+    intro x
+    exact binarySquare_regular_secondOrderDefect_degree_eq
+      G hfree (by omega) hreg hcard x
+  intro x
+  have hpartition := neighbor_inter_complement_card D S x
+  have hinLe : (D.neighborFinset x ∩ S).card ≤ q - 1 := by
+    calc
+      (D.neighborFinset x ∩ S).card ≤ (D.neighborFinset x).card :=
+        Finset.card_le_card Finset.inter_subset_left
+      _ = q - 1 := by rw [D.card_neighborFinset_eq_degree, hDdeg]
+  have hpartitionAdd :
+      (D.neighborFinset x ∩ S).card +
+          (D.neighborFinset x ∩ (Finset.univ \ S)).card = q - 1 := by
+    rw [hDdeg] at hpartition
+    omega
+  constructor
+  · intro hrOne
+    have hxS : x ∈ S := (hsupport x).2 (Or.inl hrOne)
+    have hzero := (hcut x).1 hxS hrOne
+    change (D.neighborFinset x ∩ S).card = q - 1
+    change (D.neighborFinset x ∩ (Finset.univ \ S)).card = 0 at hzero
+    rw [hzero] at hpartitionAdd
+    omega
+  constructor
+  · intro hrTwo
+    have hxS : x ∈ S := (hsupport x).2 (Or.inr hrTwo)
+    have hmCut := (hcut x).2.1 hxS hrTwo
+    change (D.neighborFinset x ∩ S).card = m - 1
+    change (D.neighborFinset x ∩ (Finset.univ \ S)).card = m at hmCut
+    rw [hmCut, hqm] at hpartitionAdd
+    omega
+  · intro hxOff
+    have hmCut := (hcut x).2.2 hxOff
+    change (D.neighborFinset x ∩ (Sᶜ : Finset V)).card = m - 1
+    change (D.neighborFinset x ∩ S).card = m at hmCut
+    rw [hmCut, hqm] at hpartitionAdd
+    change (D.neighborFinset x ∩ (Finset.univ \ S)).card = m - 1
+    omega
+
 end
 
 end Erdos85
 
 #print axioms
   Erdos85.c4Free_binarySquare_pureEndpoint_defectCutDegree_profile
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_defect_biregular_decomposition
