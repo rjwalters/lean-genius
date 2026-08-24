@@ -43,6 +43,8 @@ theorem c4Free_binarySquare_pureEndpoint_exists_halfOccupancy_coordinateNormalFo
       B.card = m ∧
       2 ≤ P.card ∧ K.card = P.card ∧
       Q.card + K.card = m ∧
+      (((B : Finset V) : Set V).PairwiseDisjoint owner) ∧
+      B.biUnion owner = F \ K ∧
       (((Q : Finset V) : Set V).PairwiseDisjoint owner) ∧
       (∀ y ∈ Q, (owner y).card = 2) ∧
       Q.biUnion owner = F \ (K ∪ P.biUnion owner) := by
@@ -138,6 +140,19 @@ theorem c4Free_binarySquare_pureEndpoint_exists_halfOccupancy_coordinateNormalFo
     change (∑ y ∈ B, (owner y).card) + P.card = 2 * B.card at hmass
     rw [hFcard, hBcard, ← hqm] at *
     omega
+  have hNearParallel : B.biUnion owner = F \ K := by
+    ext i
+    constructor
+    · intro hiUsed
+      have hiF := hUnionSub hiUsed
+      apply mem_sdiff.mpr
+      refine ⟨hiF, ?_⟩
+      intro hiK
+      exact (hKmem i).mp hiK |>.2 hiUsed
+    · intro hi
+      have hiData := mem_sdiff.mp hi
+      by_contra hiNotUsed
+      exact hiData.2 ((hKmem i).mpr ⟨hiData.1, hiNotUsed⟩)
   have hQplusK : Q.card + K.card = m := by
     have hcardSplit := card_union_of_disjoint hPQdisj
     rw [← hBsplit, hBcard] at hcardSplit
@@ -181,7 +196,8 @@ theorem c4Free_binarySquare_pureEndpoint_exists_halfOccupancy_coordinateNormalFo
         · exact (hyNotP hyP).elim
         · exact hyQ
       exact mem_biUnion.mpr ⟨y, hyQ, hiy⟩
-  refine ⟨w, hBcard, hPtwo, hKcard, hQplusK, hQpair, ?_, hcover⟩
+  refine ⟨w, hBcard, hPtwo, hKcard, hQplusK, hpairB,
+    hNearParallel, hQpair, ?_, hcover⟩
   intro y hy
   exact (mem_filter.mp hy).2
 
