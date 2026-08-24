@@ -132,6 +132,56 @@ theorem sizeTwoCyclicMatchingPair_commonTargets_card_eq_agreement
   exact sizeTwoCyclicSourceMatching_inter_card_eq_agreement
     code (x, t) (y, t)
 
+/-- Pairs of bases in one source-difference fibre that saturate the
+codegree-one matching-intersection cap. -/
+def sizeTwoCyclicSaturatedMatchingPairs
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicFullPermutationCode q a)
+    (t : sizeTwoAllowedDifference q a) : Finset (Finset (ZMod q)) :=
+  ((Finset.univ : Finset (ZMod q)).powersetCard 2).filter fun pair =>
+    ((Finset.univ : Finset (SizeTwoCyclicAbsoluteGridEdge q)).filter
+      fun e => pair ⊆
+        ((Finset.univ : Finset (ZMod q)).filter fun x =>
+          e ∈ sizeTwoCyclicSourceMatching code (x, t))).card = 1
+
+/-- Within one source fibre, collision mass counts saturated source pairs
+exactly.  Thus the quadratic cap obstruction can be treated as a finite set
+of blockers rather than only as a second-moment sum. -/
+theorem sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_sum_eq_saturated
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicFullPermutationCode q a)
+    (t : sizeTwoAllowedDifference q a) :
+    (∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+        (sizeTwoCyclicMatchingOrbitMultiplicity code t e).choose 2) =
+      (sizeTwoCyclicSaturatedMatchingPairs code t).card := by
+  classical
+  rw [sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_sum]
+  unfold sizeTwoCyclicSaturatedMatchingPairs
+  rw [Finset.card_filter]
+  apply Finset.sum_congr rfl
+  intro pair hpair
+  have hcard : pair.card = 2 := (Finset.mem_powersetCard.mp hpair).2
+  obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp hcard
+  let common :=
+    ((Finset.univ : Finset (SizeTwoCyclicAbsoluteGridEdge q)).filter
+      fun e => ({x, y} : Finset (ZMod q)) ⊆
+        ((Finset.univ : Finset (ZMod q)).filter fun z =>
+          e ∈ sizeTwoCyclicSourceMatching code (z, t))).card
+  have hcommon : common ≤ 1 := by
+    rw [show common =
+        (sizeTwoCyclicSourceMatching code (x, t) ∩
+          sizeTwoCyclicSourceMatching code (y, t)).card by
+      exact sizeTwoCyclicMatchingPair_commonTargets_card code t x y]
+    apply sizeTwoCyclicSourceMatching_inter_card_le_one
+    intro h
+    apply hxy
+    exact congrArg Prod.fst h
+  change common = if common = 1 then 1 else 0
+  by_cases hone : common = 1
+  · simp [hone]
+  · rw [if_neg hone]
+    omega
+
 end
 
 end Erdos85
@@ -139,3 +189,5 @@ end Erdos85
 #print axioms Erdos85.sum_choose_two_pointsOn_eq_sum_commonTargets
 #print axioms Erdos85.sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_sum
 #print axioms Erdos85.sizeTwoCyclicMatchingPair_commonTargets_card_eq_agreement
+#print axioms
+  Erdos85.sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_sum_eq_saturated
