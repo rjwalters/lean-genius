@@ -109,7 +109,15 @@ def main() -> None:
     parser.add_argument("--allow-loops", action="store_true",
         help=("model the reduced symmetric reciprocal relation, whose "
               "diagonal entries are not constrained by Loopless"))
+    parser.add_argument("--loop-count-cap", type=int,
+        help="bound the total number of chosen diagonal entries")
+    parser.add_argument("--loop-profile", action="store_true",
+        help="report chosen diagonal entries by difference fiber")
     args = parser.parse_args()
+    if args.loop_count_cap is not None and not args.allow_loops:
+        parser.error("--loop-count-cap requires --allow-loops")
+    if args.loop_profile and not args.allow_loops:
+        parser.error("--loop-profile requires --allow-loops")
     solver, vertices, edge = build(args.q, args.a,
         rows=not args.no_rows, columns=not args.no_columns,
         c4_pair_mode="none" if args.no_c4 else args.c4_pair_mode,
@@ -118,6 +126,9 @@ def main() -> None:
         c4_separations=None if args.c4_separation is None else
             {d % args.q for d in args.c4_separation},
         allow_loops=args.allow_loops)
+    if args.loop_count_cap is not None:
+        solver.add(z3.PbLe([(edge[i, i], 1) for i in range(len(vertices))],
+                           args.loop_count_cap))
     if (args.codegree_excess_cap is not None or
             args.uniform_profile_multiplicity):
         if args.codegree_profile_difference is None:
@@ -154,6 +165,13 @@ def main() -> None:
     solver.set(timeout=args.timeout_ms, random_seed=args.random_seed)
     result = solver.check()
     print(f"q={args.q} a={args.a % args.q} allow_loops={args.allow_loops}: {result}")
+    if result == z3.sat and args.loop_profile:
+        model = solver.model()
+        loops = [vertices[i] for i in range(len(vertices))
+                 if z3.is_true(model.eval(edge[i, i]))]
+        profile = Counter((y - x) % args.q for x, y in loops)
+        print(f"loop profile: total={len(loops)} "
+              f"by_difference={dict(sorted(profile.items()))}")
     if result == z3.sat and args.codegree_profile_difference is not None:
         model = solver.model()
         index = {vertex: i for i, vertex in enumerate(vertices)}
