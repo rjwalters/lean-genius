@@ -96,3 +96,49 @@ UNSAT verdict would support the smaller designated-cap subtree, while the
 full-cycle route needs either a full-cap bounded model or a theorem reducing
 its cycle separations to the designated set.  Until one of those exists,
 formalizing the graph interfaces would be premature.
+
+## Local chord mechanism is false
+
+Valuation parity plus consecutive-hole admissibility does not force the
+proposed chord.  At `q=8`, take `a=2`, selected fibre `t=0`, and three source
+bases
+
+```text
+x_0=0, x_1=1, x_2=2.
+```
+
+Use the following three absolute target cells, written as `(row,column)`:
+
+```text
+w_01=(4,5),  w_12=(5,6),  w_20=(6,4).
+```
+
+Their target differences are respectively `1,1,6`, all allowed at `a=2`.
+The incidences prescribe these relative row/column pairs:
+
+```text
+source 0: 4->5, 6->4
+source 1: 3->4, 4->5
+source 2: 3->4, 4->2.
+```
+
+For `t=0`, admissible rows exclude `0,1`; admissible columns exclude `0,7`.
+Every displayed pair is admissible, and each source uses distinct rows and
+columns, so its two assignments extend to a bijection between the six
+admissible rows and columns.  The resulting incidence pattern is a
+chordless six-cycle with no repeated target for a source pair.  Its source
+increments are
+
+```text
+1, 1, 6,
+```
+
+whose minimum 2-adic valuation occurs twice, exactly satisfying the binary
+cycle parity law.
+
+Therefore the hoped-for chord cannot follow from the cycle valuation and
+the consecutive moving holes, even with the local permutation law.  A
+revival must use global reciprocal completion through the three target
+fibres (or additional designated caps), and must be tested before any Levi
+graph formalization.  The cycle/parity observation remains correct but is
+not currently a route to the terminal.
