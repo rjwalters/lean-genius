@@ -1955,6 +1955,42 @@ theorem orderNine_order18_lowSpike_partner_W_degree_eq_if
   exact orderNine_order18_lowSpike_partner_lowSet_degree_eq_if
     G D A H Z owner y hyH hyOwner hdefect heq31
 
+/-- Audit equation (33).  If the three partners and three bin-zero points
+partition the owner's ordinary neighbors, the unique such neighbor on the
+order-eighteen shore splits between those two families. -/
+theorem orderNine_order18_owner_neighbor_shore_split
+    {V : Type*} [DecidableEq V]
+    (N O A partners binZeroNeighbors : Finset V)
+    (hcover : partners ∪ binZeroNeighbors = N ∩ O)
+    (hdisj : Disjoint partners binZeroNeighbors)
+    (hshore : ((N ∩ O) ∩ A).card = 1) :
+    (partners ∩ A).card + (binZeroNeighbors ∩ A).card = 1 := by
+  have hinter : (partners ∩ A) ∪ (binZeroNeighbors ∩ A) =
+      (N ∩ O) ∩ A := by
+    ext x
+    simp only [Finset.mem_union, Finset.mem_inter]
+    constructor
+    · rintro (⟨hxP, hxA⟩ | ⟨hxU, hxA⟩)
+      · have hxNO : x ∈ N ∩ O := by
+          rw [← hcover]
+          exact Finset.mem_union_left _ hxP
+        exact ⟨Finset.mem_inter.mp hxNO, hxA⟩
+      · have hxNO : x ∈ N ∩ O := by
+          rw [← hcover]
+          exact Finset.mem_union_right _ hxU
+        exact ⟨Finset.mem_inter.mp hxNO, hxA⟩
+    · rintro ⟨hxNO, hxA⟩
+      have hxUnion : x ∈ partners ∪ binZeroNeighbors := by
+        rw [hcover]
+        exact Finset.mem_inter.mpr hxNO
+      rcases Finset.mem_union.mp hxUnion with hxP | hxU
+      · exact Or.inl ⟨hxP, hxA⟩
+      · exact Or.inr ⟨hxU, hxA⟩
+  have hinterDisj : Disjoint (partners ∩ A) (binZeroNeighbors ∩ A) :=
+    Finset.disjoint_of_subset_left Finset.inter_subset_left
+      (Finset.disjoint_of_subset_right Finset.inter_subset_left hdisj)
+  rw [← hshore, ← hinter, Finset.card_union_of_disjoint hinterDisj]
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -1999,6 +2035,7 @@ theorem orderNine_order18_lowSpike_partner_W_degree_eq_if
 #print axioms Erdos85.orderNine_order18_lowSpike_partner_lowSet_degree_eq_if
 #print axioms Erdos85.orderNine_order18_partner_W_degree_of_lowSet_partition
 #print axioms Erdos85.orderNine_order18_lowSpike_partner_W_degree_eq_if
+#print axioms Erdos85.orderNine_order18_owner_neighbor_shore_split
 
 end
 
