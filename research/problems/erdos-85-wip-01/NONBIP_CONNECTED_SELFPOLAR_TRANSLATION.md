@@ -79,13 +79,32 @@ equivalently D is a subgraph of the ambient graph.
 This is much stronger than connectedness of `D`, but it is precise and admits a
 bounded audit against the existing owner, parity, and triangle identities.
 
+#### Bounded audit: the bridge is impossible at even `q`
+
+The repository already contains both ingredients of a decisive local audit:
+`binarySquare_regular_triangleFree_degree_even` and
+`binarySquare_regular_defect_degree`.  An ambient edge is an edge of `D`
+exactly when it is triangle-free.  Hence, at even `q`, the number of incident
+edges in `G ∩ D` is even at every vertex, whereas the degree in `D` itself is
+`q - 1`, which is odd.  It follows pointwise that
+
+```text
+for every vertex x, some D-neighbor of x is not adjacent to x in G.
+```
+
+In particular `D <= G` is not merely unproved: it contradicts the established
+local parity law.  The Moore defect-one theorem therefore cannot close this
+branch through the diameter-two bridge.  This falsifies that bounded probe and
+prevents further work on it.
+
 ## Verdict
 
 No ready-made theorem found in the searched configuration, polarity, or
 partial-plane literature rules out connected `D`.  The Moore defect-one route
-is a useful neighboring terminal, but its missing bridge is the strong graph
-inclusion `D <= G`.  Within the configuration literature, the most precise
-bounded structural question is instead whether our already-proved codegree
-identities imply either semipartial uniformity axiom.  Completion is useful
-mainly as a warning: the standard realizations exist, but their deficiency
-graph is maximally disconnected.
+is a useful neighboring terminal, but its necessary graph inclusion `D <= G`
+is refuted pointwise by the established even triangle-free-degree law.  Within
+the configuration literature, the most precise surviving bounded structural
+question is whether our already-proved codegree identities imply either
+semipartial uniformity axiom.  Completion is useful mainly as a warning: the
+standard realizations exist, but their deficiency graph is maximally
+disconnected.
