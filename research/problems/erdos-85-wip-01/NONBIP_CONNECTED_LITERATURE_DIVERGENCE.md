@@ -358,3 +358,32 @@ polarities); Biggs--Ito, *Graphs with even girth and small excess*, Math. Proc.
 Cambridge Philos. Soc. 88 (1980), 1--10; Filipovski, *On
 bipartite cages of excess 4*, Electron. J. Combin. 24 (2017), P1.40, Theorems
 1--2 (a convenient precise statement of the Biggs--Ito hypotheses).
+
+### Direct Baer-hole probe: stopped
+
+The promised one-calculation audit identifies the proposed correction with an
+already-banked object.  Fix a nonabsolute point `P`.  Baer's projective-plane
+map on the polar line sends `Y` to the intersection of `Y^perp` with
+`P^perp`.  In the partial configuration this intersection is defined exactly
+when `P,Y` have a common `A`-neighbour.  For `Y in N_A(P)` that means exactly
+`PY notin T=A intersect D`.  Where it is defined, uniqueness of common
+neighbours and polarity make the map the partial involution `iota_P` already
+used in the Baer audit; its holes are exactly `N_T(P)`.
+
+Consequently, for every shore `S`--including a least nonzero dyadic stopping
+shore--the parity of Baer holes in `S` is
+
+```text
+number of split iota_P pairs
+  = |N_T(P) intersect S|
+  = |N_K(P) intersect S|                         (mod 2).
+```
+
+This is equation `(20)` verbatim.  Passing to the least nonzero occupancy
+digit changes which shore is inserted but does not change the identity.  The
+direct Baer-hole correction therefore supplies neither transitivity of the
+hole relation nor a fixed point; it reduces to the canonical Eulerian
+transport already known to be compatible with the `q=4` control.  The second
+restart candidate is **stopped**.  The only surviving candidate from this
+round is cover-imprimitivity, whose first refinement must manufacture an
+equivalence relation rather than another parity equality.
