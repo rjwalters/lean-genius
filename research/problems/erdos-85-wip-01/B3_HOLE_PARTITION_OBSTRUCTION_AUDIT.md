@@ -5597,3 +5597,22 @@ Therefore component parity alone is insufficient, and (13bg)'s existential
 near-perfect matching remains the safe theorem statement.  A proof via (13bh)
 must either permit backtracking or use lex-target minimality to rule out every
 Tutte barrier, including nonempty barriers.
+
+Unlike the absent finite bipartite König API noted above, this Mathlib
+checkout **does** contain the full finite Tutte theorem in
+`Mathlib/Combinatorics/SimpleGraph/Tutte.lean`:
+
+```text
+SimpleGraph.tutte :
+  (exists M, M.IsPerfectMatching) iff
+  forall U, not G.IsTutteViolator U.
+```
+
+Therefore (13bg) can be formalized without developing general matching
+theory.  For an even residual collision graph apply `tutte` directly; for an
+odd graph, delete the intended unmatched vertex (or adjoin a universal dummy
+vertex) and apply the even theorem.  The actual new mathematics is precisely
+to show that lex-target minimality forbids every `IsTutteViolator`, possibly
+after deleting the optional common-point star.  The audited nonselected
+failures give mandatory regressions for that lemma: four empty barriers and
+the connected exceptional-price barrier `{10,19}`.
