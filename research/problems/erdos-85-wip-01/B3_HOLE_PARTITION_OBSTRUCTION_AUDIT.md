@@ -5550,3 +5550,20 @@ the lex-min/max-forced residual candidate family has either
 
 This is a finite graph-matching statement on at most ten candidate rows in
 the audited extremal cases, rather than a colored hypergraph cover theorem.
+
+The Lean consumer side of (13bg) is now complete in
+`Erdos85LocalGramPackingPointCoverFinset.lean`:
+
+* `exists_pointCoverFinset_of_grouped_commonPoint` chooses one common point
+  per pair/singleton/star group and proves the image cover has cardinality at
+  most the number of groups;
+* `reverseIntervalRankDeficit_of_groupedPointCover` turns group coverage and
+  `|F| + #groups < d(w)` into the reverse-interval rank deficit; and
+* `false_of_localGramPackingGroupedPointCover` is the direct graph-facing
+  contradiction consumer.
+
+All three are kernel-checked with standard axioms and no `sorry`.  Therefore
+the remaining outer lemma need not mention point weights, point-cover images,
+or rank deficits at all.  It should produce the target row and the finite
+group family described in (13bg), prove a shared block point for each group,
+and discharge the strict group count.
