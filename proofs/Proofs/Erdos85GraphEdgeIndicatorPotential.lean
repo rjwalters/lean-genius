@@ -54,9 +54,45 @@ theorem graphEdgeIndicator_adj_iff_potential_sum_eq_one
   rw [← graphEdgeIndicator_eq_one_iff]
   rw [hpotential huv]
 
+/-- A zero-price routing edge preserves the endpoint potential.  This is the
+`00` transition equation in `(73rnz_cjibkr)`. -/
+theorem endpointPotential_eq_of_not_priceEdge
+    {V : Type*} {P K : SimpleGraph V} {lam : V → ZMod 2}
+    (hpotential : ∀ {u v}, P.Adj u v →
+      graphEdgeIndicator K u v = lam u + lam v)
+    {u v : V} (huv : P.Adj u v) (hnotK : ¬ K.Adj u v) :
+    lam u = lam v := by
+  have hzero : lam u + lam v = 0 := by
+    rw [← hpotential huv]
+    simp [graphEdgeIndicator, hnotK]
+  have htwo : (2 : ZMod 2) = 0 := by decide
+  have hvsum : lam v + lam v = 0 := by
+    rw [← two_mul, htwo, zero_mul]
+  exact (eq_neg_of_add_eq_zero_left hzero).trans
+    (eq_neg_of_add_eq_zero_left hvsum).symm
+
+/-- A unit-price routing edge flips the endpoint potential.  This is the
+binary endpoint content of the `11` transition equation in
+`(73rnz_cjibkr)`. -/
+theorem endpointPotential_ne_of_priceEdge
+    {V : Type*} {P K : SimpleGraph V} {lam : V → ZMod 2}
+    (hpotential : ∀ {u v}, P.Adj u v →
+      graphEdgeIndicator K u v = lam u + lam v)
+    {u v : V} (huv : P.Adj u v) (hK : K.Adj u v) :
+    lam u ≠ lam v := by
+  intro heq
+  have hone : lam u + lam v = 1 :=
+    (graphEdgeIndicator_adj_iff_potential_sum_eq_one hpotential huv).mp hK
+  rw [heq, ← two_mul] at hone
+  have htwo : (2 : ZMod 2) = 0 := by decide
+  rw [htwo, zero_mul] at hone
+  exact zero_ne_one hone
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.exists_closedWalk_odd_graphEdgeIndicator_or_exists_vertexPotential
 #print axioms Erdos85.graphEdgeIndicator_adj_iff_potential_sum_eq_one
+#print axioms Erdos85.endpointPotential_eq_of_not_priceEdge
+#print axioms Erdos85.endpointPotential_ne_of_priceEdge
