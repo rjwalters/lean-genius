@@ -556,6 +556,56 @@ theorem orderNine_order27_binZero_lowSet_degree_four_of_punctured_shores
   exact orderNine_order27_regular_lowSet_degree_eq_four
     G y B Z H hyH hdefectB heq20
 
+/-- General exceptional counterpart: any bin-zero articulation vertex
+defect-adjacent to the deleted owner has seven remaining defect neighbors on
+its own shore and none on the other, so equation (20) gives `Z`-degree three
+or four. -/
+theorem orderNine_order27_binZero_lowSet_degree_eq_if_of_punctured_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (owner : V) (U S T B Z H : Finset V)
+    (hownerNotU : owner ∉ U)
+    (hunion : S ∪ T = U) (hdisj : Disjoint S T)
+    (hneighborsPunctured : ∀ x ∈ U,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner U)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ U ⊆ T)
+    (hB : B = S)
+    (heq20 : ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+        8 * (if x ∈ B then 1 else 0) - 4 -
+          6 * (if x ∈ H then 1 else 0) +
+          ((G.neighborFinset x ∩ Z).card : ℤ))
+    (y : V) (hyU : y ∈ U)
+    (hyB0 : y ∈ squareOrderNineLowIncidenceBin G 0)
+    (hyOwnerDefect : y ∈ (secondOrderDefectGraph G).neighborFinset owner)
+    (hyH : y ∉ H) :
+    (G.neighborFinset y ∩ Z).card = if y ∈ B then 3 else 4 := by
+  let D := secondOrderDefectGraph G
+  have hyDadj : D.Adj y owner := by
+    exact (D.adj_comm owner y).mp
+      ((D.mem_neighborFinset owner y).mp hyOwnerDefect)
+  have hledger := squareOrderNine_lowIncidenceBin_pointwise_ledger
+    G hfree hmin hcover hcard hyB0
+  have hyDegree : D.degree y = 8 := by
+    simpa [D] using hledger.1
+  have hdefectS :=
+    neighbor_inter_shore_card_eq_if_of_complementary_closed_punctured_owner
+      D owner U S T y hownerNotU hunion hdisj hyU hyDadj
+        hneighborsPunctured hSclosed hTclosed hyDegree
+  have hdefectB : (D.neighborFinset y ∩ B).card =
+      if y ∈ B then 7 else 0 := by simpa [hB] using hdefectS
+  exact orderNine_order27_exceptional_lowSet_degree_eq_if
+    G y B Z H hyH (by simpa [D] using hdefectB) heq20
+
 /-- Cardinal saturation behind the repaired placement argument: if a
 six-point set is contained in the union of two disjoint three-point sets and
 already contains the first one, it contains the second one as well. -/
@@ -959,6 +1009,76 @@ theorem orderNine_order27_complement_W_degree_sum_le_five
         ∑ y ∈ C, (G.neighborFinset y ∩ W).card := by rfl
     _ ≤ ∑ _y ∈ C, 1 := Finset.sum_le_sum fun y hy ↦ hone y hy
     _ = 5 := by simp [hCcard]
+
+/-- Graph-facing assembly of the common right-hand budget in (22).  Every
+point of `W \ U_owner` is bin zero and lies in the punctured articulation
+universe.  If it were defect-adjacent to the deleted owner, the second-profile
+identification of those defect neighbors with original triangle-free
+neighbors would put it back in `U_owner`, a contradiction.  The generalized
+punctured-shore provider therefore gives `Z`-degree four pointwise, and (21)
+leaves at most one `W`-incidence at each of the five points. -/
+theorem orderNine_order27_complement_W_degree_sum_le_five_of_punctured_shores
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (owner : V)
+    (A S T B Z W Uowner H : Finset V)
+    (hownerNotA : owner ∉ A)
+    (hunion : S ∪ T = A) (hdisj : Disjoint S T)
+    (hneighborsPunctured : ∀ x ∈ A,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner A)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ A ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ A ⊆ T)
+    (hB : B = S)
+    (heq20 : ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+        8 * (if x ∈ B then 1 else 0) - 4 -
+          6 * (if x ∈ H then 1 else 0) +
+          ((G.neighborFinset x ∩ Z).card : ℤ))
+    (hWsubA : W ⊆ A)
+    (hWsubB0 : W ⊆ squareOrderNineLowIncidenceBin G 0)
+    (hWH : Disjoint W H)
+    (hWcard : W.card = 8)
+    (hUowner : Uowner = G.neighborFinset owner ∩ W)
+    (hUcard : Uowner.card = 3)
+    (heq21 : ∀ y ∈ W,
+      (G.neighborFinset y ∩ Z).card =
+        (G.neighborFinset y ∩ W).card +
+          if G.Adj y owner then 1 else 3) :
+    (∑ y ∈ W \ Uowner, (G.neighborFinset y ∩ W).card) ≤ 5 := by
+  classical
+  have hZle : ∀ y ∈ W \ Uowner,
+      (G.neighborFinset y ∩ Z).card ≤ 4 := by
+    intro y hy
+    have hyW := (Finset.mem_sdiff.mp hy).1
+    have hyH : y ∉ H := fun hyH ↦
+      Finset.disjoint_left.mp hWH hyW hyH
+    by_cases hyDefect :
+        y ∈ (secondOrderDefectGraph G).neighborFinset owner
+    · have hyDegree :=
+        orderNine_order27_binZero_lowSet_degree_eq_if_of_punctured_owner
+          G hfree hmin hcover hcard owner A S T B Z H hownerNotA
+            hunion hdisj hneighborsPunctured hSclosed hTclosed hB heq20
+            y (hWsubA hyW) (hWsubB0 hyW) hyDefect hyH
+      by_cases hyB : y ∈ B <;> simp [hyB] at hyDegree ⊢ <;> omega
+    · have hyDegree :=
+        orderNine_order27_binZero_lowSet_degree_four_of_punctured_shores
+          G hfree hmin hcover hcard owner A S T B Z H hunion hdisj
+            hneighborsPunctured hSclosed hTclosed hB heq20 y (hWsubA hyW)
+            (hWsubB0 hyW) hyDefect hyH
+      omega
+  have hUsub : Uowner ⊆ W := by
+    rw [hUowner]
+    exact Finset.inter_subset_right
+  exact orderNine_order27_complement_W_degree_sum_le_five
+    G owner Z Uowner W hWcard hUcard hUsub hUowner heq21 hZle
 
 /-- In the three-edge branch all three original bin-zero owner-neighbors
 are exceptional (defect-adjacent to the owner).  Consequently the FullType
@@ -1492,6 +1612,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_order27_exceptional_owner_neighbors_lowSet_degree_eq_if_of_punctured_shores
 #print axioms orderNine_order27_regular_owner_neighbors_lowSet_degree_four_of_punctured_shores
 #print axioms orderNine_order27_binZero_lowSet_degree_four_of_punctured_shores
+#print axioms orderNine_order27_binZero_lowSet_degree_eq_if_of_punctured_owner
 #print axioms six_set_contains_other_three_of_partition
 #print axioms orderNine_order27_owner_binZero_neighbors_subset_W
 #print axioms orderNine_positiveIncidenceBin_subset_of_high_neighbors_subset
@@ -1499,6 +1620,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_binZero_W_degree_of_lowSet_partition
 #print axioms orderNine_order27_binZero_W_degree_equation
 #print axioms orderNine_order27_complement_W_degree_sum_le_five
+#print axioms orderNine_order27_complement_W_degree_sum_le_five_of_punctured_shores
 #print axioms orderNine_order27_threeEdge_owner_neighbors_large_card_eq_two
 #print axioms orderNine_order27_threeEdge_W_degree_sum_eq_seven
 #print axioms orderNine_order27_fourEdge_W_degree_sum_ge_eight
