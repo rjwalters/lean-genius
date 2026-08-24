@@ -53,6 +53,34 @@ theorem balancedLeakage_componentOrder_two_mul_le_of_coefficient_lt
     (Nat.lt_mul_iff_one_lt_right hq).mp hqm
   simpa [Nat.mul_comm] using Nat.mul_le_mul_left q hkTwo
 
+/-- The coefficient threshold in displacement coordinates.  Here
+`q - 2e` is the full-minus-empty imbalance and `c` is total exceptional
+support. -/
+theorem balancedLeakage_coefficient_lt_of_imbalance_mul_lt_support
+    {q e f c : ℕ}
+    (hq : 0 < q)
+    (hc : c = f + e)
+    (htwice : 2 * e ≤ q)
+    (hproper : c < q)
+    (himbalance : (q - 1) * (q - 2 * e) < c) :
+    q * q - q - f + e < 2 * q * e := by
+  have hqf : q + f ≤ q * q := by
+    nlinarith
+  have hleft : q * q - q - f + e + c = q * q - q + 2 * e := by
+    omega
+  have hright : 2 * q * e + (q - 1) * (q - 2 * e) =
+      q * q - q + 2 * e := by
+    obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le htwice
+    have hqone : 1 ≤ q := hq
+    obtain ⟨r, hr⟩ := Nat.exists_eq_add_of_le hqone
+    have hpred : q - 1 = r := by omega
+    have hdiff : q - 2 * e = d := by omega
+    have hqq : q * q - q = q * (q - 1) := by
+      simpa using (Nat.mul_sub_left_distrib q q 1).symm
+    rw [hpred, hdiff, hqq, hpred]
+    nlinarith
+  omega
+
 /-- Arithmetic core of the half-deficit component jump.  The coefficient
 `q*q-q-f+e` is the intrinsic form of the balanced outside capacity. -/
 theorem halfDeficit_balancedLeakage_componentOrder_two_mul_le
@@ -161,6 +189,48 @@ theorem binarySquare_finalDyadic_exceptionalComponent_two_mul_degree_le_of_coeff
   · exact binarySquare_regular_dvd_defectComponent_card
       G hfree hq hreg hcard component
 
+/-- Displacement-coordinate API for the component jump.  It applies directly
+to the natural profile data `e`, `f`, and `c=e+f`. -/
+theorem binarySquare_finalDyadic_exceptionalComponent_two_mul_degree_le_of_imbalance
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q j : ℕ} (hq : 3 ≤ q)
+    (hqa : q = 2 * 2 ^ j)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V)
+    (hdiv : ∀ v, 2 ^ j ∣ (G.neighborFinset v ∩ S).card)
+    (hemptyClique : ∀ ⦃u v⦄,
+      u ∈ emptyLineCenters G S → v ∈ emptyLineCenters G S → u ≠ v →
+        (secondOrderDefectGraph G).Adj u v)
+    (htwice : 2 * (emptyLineCenters G S).card ≤ q)
+    (hproper :
+      (fullLineCenters G S q ∪ emptyLineCenters G S).card < q)
+    (himbalance :
+      (q - 1) * (q - 2 * (emptyLineCenters G S).card) <
+        (fullLineCenters G S q ∪ emptyLineCenters G S).card)
+    (pole : V) (hpole : pole ∈ emptyLineCenters G S) :
+    2 * q ≤
+      ((secondOrderDefectGraph G).connectedComponentMk pole).supp.ncard := by
+  apply
+    binarySquare_finalDyadic_exceptionalComponent_two_mul_degree_le_of_coefficient_lt
+      G hfree hq hqa hreg hcard S hdiv hemptyClique hproper _ pole hpole
+  apply balancedLeakage_coefficient_lt_of_imbalance_mul_lt_support
+    (q := q) (e := (emptyLineCenters G S).card)
+    (f := (fullLineCenters G S q).card)
+    (c := (fullLineCenters G S q ∪ emptyLineCenters G S).card)
+  · omega
+  · exact Finset.card_union_of_disjoint
+      (fullLineCenters_disjoint_emptyLineCenters G S
+        (show 0 < q by omega))
+  · exact htwice
+  · exact hproper
+  · exact himbalance
+
 /-- At half exceptional deficit the coefficient threshold is automatic, so
 every empty pole lies in a defect component of normalized order at least two
 whenever the exceptional support is not saturated. -/
@@ -212,5 +282,7 @@ end Erdos85
 #print axioms Erdos85.halfDeficit_balancedLeakage_componentOrder_two_mul_le
 #print axioms
   Erdos85.binarySquare_finalDyadic_exceptionalComponent_two_mul_degree_le_of_coefficient_lt
+#print axioms
+  Erdos85.binarySquare_finalDyadic_exceptionalComponent_two_mul_degree_le_of_imbalance
 #print axioms
   Erdos85.binarySquare_finalDyadic_halfEmpty_exceptionalComponent_two_mul_degree_le
