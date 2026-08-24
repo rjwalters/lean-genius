@@ -38,7 +38,14 @@ def main() -> None:
         help="audit cycle types of the four two-hole permutation completions")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and give every directed route its own variable")
+    parser.add_argument("--reciprocity-core", action="store_true",
+        help="use directed variables and print an UNSAT core grouped by fibre pair")
     args = parser.parse_args()
+
+    if args.directed and args.reciprocity_core:
+        parser.error("--directed and --reciprocity-core are mutually exclusive")
+    if args.reciprocity_core and args.dimacs is not None:
+        parser.error("--reciprocity-core cannot be combined with --dimacs")
 
     q = args.q
     holes = {args.a % q, (-1 - args.a) % q}
@@ -47,7 +54,7 @@ def main() -> None:
 
     def edge_key(t: int, u: int, r: int) -> tuple[int, int, int]:
         forward = (t, u, r % q)
-        if args.directed:
+        if args.directed or args.reciprocity_core:
             return forward
         reverse = (u, t, (-r) % q)
         return min(forward, reverse)
@@ -59,6 +66,21 @@ def main() -> None:
         return variables[key]
 
     solver = z3.Solver()
+    reciprocity_assumptions: list[z3.BoolRef] = []
+
+    if args.reciprocity_core:
+        # Track reciprocity by unordered fibre pair.  All non-reciprocity
+        # constraints remain hard, so an UNSAT core identifies which block
+        # transpose relations participate in the contradiction.
+        for i, t in enumerate(differences):
+            for u in differences[i:]:
+                equations = [
+                    edge(t, u, r) == edge(u, t, -r)
+                    for r in range(q)
+                ]
+                label = z3.Bool(f"recip_{t}_{u}")
+                reciprocity_assumptions.append(label)
+                solver.add(z3.Implies(label, z3.And(equations)))
 
     # Looplessness.
     for t in differences:
@@ -117,8 +139,20 @@ def main() -> None:
         return
 
     solver.set(timeout=args.timeout_ms, random_seed=args.random_seed)
-    result = solver.check()
+    result = solver.check(*reciprocity_assumptions)
     print(f"q={q} a={args.a % q} orbit_variables={len(variables)}: {result}")
+
+    if result == z3.unsat and args.reciprocity_core:
+        core = list(solver.unsat_core())
+        # Greedily shrink the sufficient set.  This need not find a
+        # cardinality-minimum core, but every retained block is necessary
+        # relative to the final deletion order.
+        for label in list(core):
+            candidate = [other for other in core if not z3.eq(other, label)]
+            if solver.check(*candidate) == z3.unsat:
+                core = candidate
+        solver.check(*core)
+        print("  reciprocity_core=" + str(sorted(str(label) for label in core)))
 
     if result == z3.sat:
         model = solver.model()

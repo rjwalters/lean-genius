@@ -90,3 +90,51 @@ have one empty diagonal block while every within-fibre Gram off-diagonal is
 at most one.  This is nonlinear and coupled; no current rank identity proves
 it.  The q12 all-cap reciprocal solver is the bounded test of whether such a
 theorem may even be generic rather than binary.
+
+## Grouped reciprocity core and cap minimization
+
+The probe option `--reciprocity-core` uses directed variables, adds every
+unordered fibre-pair transpose law as a tracked assumption, and greedily
+shrinks a sufficient UNSAT core.  On the q8 all-cap empty-4 instance it finds
+the five-block irredundant core
+
+```text
+(3,4), (3,6), (3,7), (4,6), (4,7).
+```
+
+The exact core depends on deletion order, but this one is independently
+sufficient and every listed block is necessary relative to the final greedy
+set.  It contains no fibre `0` or `1` block, so the bounded contradiction is
+far smaller than the entire six-fibre transpose family.
+
+Cap-family deletion sharpens the subsystem further.  Retain reciprocity
+globally, keep fibre `4` empty, and impose all nonzero-separation caps only
+on the listed fibre sets.  At `q=8,a=2`:
+
+```text
+capped fibres {4,3}:     UNSAT
+capped fibres {4,6}:     SAT
+capped fibres {4,7}:     SAT
+capped fibres {4,6,7}:   SAT.
+```
+
+Thus the smallest observed cap target is the empty middle fibre `4` together
+with its adjacent fibre `3`; the obstruction is directional, not merely
+"empty fibre plus any partner".
+
+This two-fibre statement is binary-specific in the bounded controls.  At
+`q=12,a=1` with fibre `6` empty, each of the following is SAT:
+
+```text
+caps only on {6};
+caps only on {6,5};
+caps only on {6,7}.
+```
+
+The q16 analogue (empty `8`, caps on `{8,7}`) did not return within a bounded
+30-second Z3 probe and was stopped rather than promoted to another long
+solver lane.  The resulting theorem candidate is precise: explain why, in a
+cyclic binary reciprocal code, an empty fibre and the full cap families on
+that fibre and its predecessor are incompatible.  A proof still must use
+the small transpose-block core above; the directed countermodel rules out a
+two-fibre one-block argument that forgets reciprocity.
