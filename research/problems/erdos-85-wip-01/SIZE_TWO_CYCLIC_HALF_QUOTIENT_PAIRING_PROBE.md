@@ -231,3 +231,71 @@ bounded probe should retain one of:
 
 Merely counting the four odd vertices adds no coupling, but the connected
 pairing type is a real finite quotient which survives the bounded probe.
+
+## Exact q=8 pairing and voltage calibration
+
+The executable `size_two_cyclic_modular_group_algebra_probe.py` now has a
+`--encoding cnf` mode.  It imports the one-hot Boolean encoding from
+`size_two_cyclic_packing_probe.py`, keeps reciprocity, deliberately disables
+Loopless, and retains same-difference agreement caps only in the requested
+fibers.  From a kissat model it reconstructs every partial permutation,
+folds it modulo `q/2`, and reports both the canonical pairing and the XOR of
+the reverse-carry voltage along each boundary path.
+
+This distinction from the direct graph encoding matters.  The graph probe
+forbids loops and can declare some one- or two-fiber restrictions UNSAT;
+those are not counterexamples to the reduced-code claim.  The CNF mode is
+the authoritative calibration for `SizeTwoCyclicSameDifferenceCode`.
+
+For `q=8`, `a=1`, the three core fibers are `{0,2,4}`.  Exact results are
+
+```text
+agreement fibers {0}:     SAT
+agreement fibers {2}:     SAT
+agreement fibers {4}:     SAT
+agreement fibers {0,2}:   SAT
+agreement fibers {0,4}:   SAT
+agreement fibers {2,4}:   SAT
+agreement fibers {0,2,4}: UNSAT.
+```
+
+This reproduces the claimed genuine three-fiber core without Loopless.
+
+Every extracted path voltage agrees with the formulas above.  More
+importantly, the SAT controls refute a terminal based only on a forbidden
+per-block pairing/voltage signature:
+
+* the singleton controls collectively realize `RR|CC` and both cross
+  pairings;
+* the `{0,2}` model realizes, at all eight bases, swapped cross pairing in
+  fibers `0,2` and direct cross pairing in fiber `4`;
+* the `{2,4}` model realizes the same coarse pattern, with fiber `2` split
+  between swapped cross and `RR|CC` in the returned model;
+* the `{0,4}` model again realizes all three pairing types among its source
+  blocks.
+
+Thus the pairwise controls have overlapping coarse signature patterns while
+the triple is impossible.  The obstruction does not live in the multiset of
+pairing labels or their already-determined path-voltage XORs.  It must retain
+how individual lifted path fragments reverse into entry-dependent blocks and
+are matched there.  In cocycle language, the missing variable is the
+**fragment attachment map**, not the boundary voltage of a whole block.
+
+Reproduction examples:
+
+```bash
+python3 size_two_cyclic_modular_group_algebra_probe.py 8 --a 1 \
+  --encoding cnf --c4-difference 0 --c4-difference 2
+python3 size_two_cyclic_modular_group_algebra_probe.py 8 --a 1 \
+  --encoding cnf --c4-difference 0 --c4-difference 4
+python3 size_two_cyclic_modular_group_algebra_probe.py 8 --a 1 \
+  --encoding cnf --c4-difference 2 --c4-difference 4
+python3 size_two_cyclic_modular_group_algebra_probe.py 8 --a 1 \
+  --encoding cnf --c4-difference 0 --c4-difference 2 --c4-difference 4
+```
+
+The exact next statement is therefore narrower than blockwise pairing
+transport: three core fibers must make their reverse-fragment attachment
+maps incompatible.  Any proposed proof depending only on the three pairing
+types or the two path-voltage bits per block is refuted by these pairwise SAT
+controls.

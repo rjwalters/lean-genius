@@ -20,13 +20,86 @@ relaxations; adding 0,2,4 is UNSAT for a=1.
 from __future__ import annotations
 
 import argparse
-from collections import Counter
-from itertools import combinations
+from collections import Counter, defaultdict
+from itertools import combinations, product
 from math import comb
 
 import z3
 
 from size_two_cyclic_exact_graph_probe import build
+from size_two_cyclic_packing_probe import (
+    build_cnf as build_packing_cnf,
+    solve_with_kissat,
+)
+
+
+def allowed_differences(q: int, a: int) -> list[int]:
+    return [t for t in range(q) if t not in {a % q, (-1 - a) % q}]
+
+
+def admissible_rows(q: int, t: int) -> list[int]:
+    return [r for r in range(q) if t != r and t != (r - 1) % q]
+
+
+def build_reduced_code(
+    q: int, a: int, capped_differences: set[int] | None
+) -> tuple[
+    z3.Solver,
+    list[int],
+    dict[int, list[int]],
+    dict[tuple[int, int, int], z3.IntNumRef],
+]:
+    """Build the exact reduced reciprocal code, deliberately allowing loops."""
+    differences = allowed_differences(q, a)
+    columns = [column for column in range(q) if column not in {0, q - 1}]
+    rows = {t: admissible_rows(q, t) for t in differences}
+    solver = z3.Solver()
+    permutation: dict[tuple[int, int, int], z3.IntNumRef] = {}
+
+    for x, t in product(range(q), differences):
+        entries = []
+        for row in rows[t]:
+            value = z3.Int(f"p_{x}_{t}_{row}")
+            permutation[x, t, row] = value
+            solver.add(z3.Or([value == column for column in columns]))
+            entries.append(value)
+        solver.add(z3.Distinct(entries))
+
+    capped = set(differences) if capped_differences is None else capped_differences
+    for x, displacement, t in product(range(q), range(1, q), differences):
+        if t not in capped:
+            continue
+        agreements = []
+        for row in rows[t]:
+            shifted = (row - displacement) % q
+            if shifted in rows[t]:
+                agreements.append(z3.If(
+                    permutation[x, t, row] ==
+                    (displacement + permutation[
+                        (x + displacement) % q, t, shifted
+                    ]) % q,
+                    1,
+                    0,
+                ))
+        solver.add(z3.Sum(agreements) <= 1)
+
+    for x, t in product(range(q), differences):
+        for row in rows[t]:
+            column = permutation[x, t, row]
+            reverse_cases = []
+            for target_t in differences:
+                reverse_row = (-row) % q
+                if reverse_row not in rows[target_t]:
+                    continue
+                reverse_cases.append(z3.And(
+                    column == (row + target_t) % q,
+                    permutation[
+                        (x + row) % q, target_t, reverse_row
+                    ] == (t - row) % q,
+                ))
+            solver.add(z3.Or(reverse_cases))
+
+    return solver, differences, rows, permutation
 
 
 def augmentation_valuation(exponents: list[int], q: int) -> int:
@@ -137,12 +210,103 @@ def half_quotient_signature(
     return pairing, tuple(sorted(paths))
 
 
+def folded_pairing_signature(
+    routes: list[tuple[int, int]], source_t: int, q: int
+) -> tuple[str, tuple[tuple[str, int], ...]]:
+    """Classify the mod-q/2 boundary pairing and reverse path voltages.
+
+    ``routes`` contains relative (row, column) coordinates of one punctured
+    permutation.  Fold the two lifts of every coordinate modulo m=q/2 and
+    retain cells of odd multiplicity.  The resulting bipartite graph has
+    maximum degree two and four degree-one boundary vertices.
+    """
+    m = q // 2
+    surviving: dict[tuple[int, int], tuple[int, int]] = {}
+    for row, column in routes:
+        key = (row % m, column % m)
+        if key in surviving:
+            del surviving[key]
+        else:
+            surviving[key] = (row, column)
+
+    adjacency: dict[tuple[str, int], list[tuple[tuple[str, int], int]]] = defaultdict(list)
+    for (low_row, low_column), (row, _column) in surviving.items():
+        row_node = ("R", low_row)
+        column_node = ("C", low_column)
+        reverse_row = (-row) % q
+        reverse_column = (source_t - row) % q
+        reverse_voltage = (reverse_row // m) ^ (reverse_column // m)
+        adjacency[row_node].append((column_node, reverse_voltage))
+        adjacency[column_node].append((row_node, reverse_voltage))
+
+    assert all(len(neighbors) <= 2 for neighbors in adjacency.values())
+    boundary_labels = {
+        ("R", source_t % m): "R0",
+        ("R", (source_t + 1) % m): "R1",
+        ("C", 0): "C0",
+        ("C", m - 1): "C1",
+    }
+    degree_one = {node for node, neighbors in adjacency.items() if len(neighbors) == 1}
+    assert degree_one == set(boundary_labels), (source_t, degree_one, boundary_labels)
+
+    seen: set[tuple[str, int]] = set()
+    endpoint_paths: list[tuple[frozenset[str], int]] = []
+    for start in adjacency:
+        if start in seen:
+            continue
+        stack = [start]
+        component: set[tuple[str, int]] = set()
+        voltage = 0
+        while stack:
+            node = stack.pop()
+            if node in component:
+                continue
+            component.add(node)
+            seen.add(node)
+            for neighbor, edge_voltage in adjacency[node]:
+                # Count each undirected edge once.
+                if node < neighbor:
+                    voltage ^= edge_voltage
+                if neighbor not in component:
+                    stack.append(neighbor)
+        endpoints = [node for node in component if len(adjacency[node]) == 1]
+        if not endpoints:
+            assert voltage == 0, (source_t, component, voltage)
+            continue
+        assert len(endpoints) == 2
+        endpoint_paths.append((
+            frozenset(boundary_labels[node] for node in endpoints), voltage
+        ))
+
+    pairs = {pair for pair, _ in endpoint_paths}
+    rrcc = {frozenset({"R0", "R1"}), frozenset({"C0", "C1"})}
+    direct = {frozenset({"R0", "C0"}), frozenset({"R1", "C1"})}
+    swapped = {frozenset({"R0", "C1"}), frozenset({"R1", "C0"})}
+    if pairs == rrcc:
+        pairing = "RR|CC"
+    elif pairs == direct:
+        pairing = "R0C0|R1C1"
+    elif pairs == swapped:
+        pairing = "R0C1|R1C0"
+    else:
+        raise AssertionError((source_t, pairs))
+    path_signature = tuple(sorted(
+        ("".join(sorted(pair)), voltage) for pair, voltage in endpoint_paths
+    ))
+    return pairing, path_signature
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("q", type=int)
     parser.add_argument("--a", type=int, required=True)
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     parser.add_argument("--c4-difference", type=int, action="append")
+    parser.add_argument(
+        "--encoding", choices=["graph", "reduced", "cnf"], default="graph",
+        help=("graph is loopless; reduced/cnf are the exact code and permit "
+              "loops; cnf uses kissat"),
+    )
     args = parser.parse_args()
 
     q = args.q
@@ -150,28 +314,89 @@ def main() -> None:
     selected = None if args.c4_difference is None else {
         t % q for t in args.c4_difference
     }
-    solver, vertices, edge = build(
-        q,
-        args.a,
-        c4_pair_mode="same-difference",
-        c4_differences=selected,
+    cnf_positive: set[int] | None = None
+    cnf_ids: dict[tuple[int, int, int, int], int] | None = None
+    if args.encoding == "graph":
+        solver, vertices, edge = build(
+            q,
+            args.a,
+            c4_pair_mode="same-difference",
+            c4_differences=selected,
+        )
+        reduced_data = None
+    elif args.encoding == "reduced":
+        solver, differences, rows, permutation = build_reduced_code(
+            q, args.a, selected
+        )
+        vertices = [(x, (x + t) % q) for x in range(q) for t in differences]
+        edge = {}
+        reduced_data = (differences, rows, permutation)
+    else:
+        packing_cnf = build_packing_cnf(
+            q,
+            args.a,
+            cross_mode="same-t",
+            agreement_ts=selected,
+            reciprocity=True,
+            loopless=False,
+        )
+        result, cnf_positive = solve_with_kissat(packing_cnf)
+        cnf_ids = packing_cnf.ids
+        differences = allowed_differences(q, args.a)
+        rows = {t: admissible_rows(q, t) for t in differences}
+        vertices = [(x, (x + t) % q) for x in range(q) for t in differences]
+        edge = {}
+        reduced_data = None
+    if args.encoding != "cnf":
+        solver.set(timeout=args.timeout_ms)
+        result = solver.check()
+    print(
+        f"q={q} a={args.a % q} encoding={args.encoding} "
+        f"selected={selected}: {result}"
     )
-    solver.set(timeout=args.timeout_ms)
-    result = solver.check()
-    print(f"q={q} a={args.a % q} selected={selected}: {result}")
-    if result != z3.sat:
+    if str(result) != "sat":
         return
 
-    model = solver.model()
+    model = None if args.encoding == "cnf" else solver.model()
     index = {vertex: i for i, vertex in enumerate(vertices)}
-
-    def adjacent(u: tuple[int, int], v: tuple[int, int]) -> bool:
-        i, j = index[u], index[v]
-        if i == j:
-            return False
-        return z3.is_true(model.eval(edge[min(i, j), max(i, j)]))
-
     allowed = sorted({(y - x) % q for x, y in vertices})
+
+    source_routes: dict[tuple[int, int], list[tuple[int, int]]] = defaultdict(list)
+    if args.encoding == "cnf":
+        assert cnf_positive is not None and cnf_ids is not None
+        selected_keys = {
+            key for key, variable in cnf_ids.items() if variable in cnf_positive
+        }
+        for x, source_t in product(range(q), differences):
+            for row in rows[source_t]:
+                column = next(
+                    column for column in range(q)
+                    if (x, source_t, row, column) in selected_keys
+                )
+                source_routes[x, source_t].append((row, column))
+    elif reduced_data is None:
+        def adjacent(u: tuple[int, int], v: tuple[int, int]) -> bool:
+            i, j = index[u], index[v]
+            if i == j:
+                return False
+            return z3.is_true(model.eval(edge[min(i, j), max(i, j)]))
+
+        for x, y in vertices:
+            source_t = (y - x) % q
+            for target_x in range(q):
+                for target_t in allowed:
+                    target = (target_x, (target_x + target_t) % q)
+                    if adjacent((x, y), target):
+                        source_routes[x, source_t].append((
+                            (target_x - x) % q,
+                            (target[1] - x) % q,
+                        ))
+    else:
+        differences, rows, permutation = reduced_data
+        for x, source_t in product(range(q), differences):
+            for row in rows[source_t]:
+                column = model.eval(permutation[x, source_t, row]).as_long()
+                source_routes[x, source_t].append((row, column))
     part_valuations: Counter[tuple[int, int]] = Counter()
     collision_pair_levels: Counter[tuple[int, int]] = Counter()
     half_quotient_signatures: Counter[
@@ -179,20 +404,16 @@ def main() -> None:
     ] = Counter()
     collision_count = 0
 
-    for x, y in vertices:
-        source_t = (y - x) % q
+    for (x, source_t), routes in sorted(source_routes.items()):
         aggregate: list[int] = []
-        routes: list[tuple[int, int]] = []
         for target_s in allowed:
-            displacements = []
-            for target_x in range(q):
-                target = (target_x, (target_x + target_s) % q)
-                if target in index and adjacent((x, y), target):
-                    displacements.append((target_x - x) % q)
+            displacements = [
+                row for row, column in routes
+                if (column - row) % q == target_s
+            ]
             if not displacements:
                 continue
             aggregate.extend(displacements)
-            routes.extend((r, (r + target_s) % q) for r in displacements)
             valuation = augmentation_valuation(displacements, q)
             part_valuations[(len(displacements), valuation)] += 1
             for r, s in combinations(displacements, 2):
