@@ -85,8 +85,29 @@ left-to-middle nonemptiness or mass-transfer lemma and a genuinely ternary
 four-cell cocycle lemma in which `(right,d₂)` upgrades an occupied middle slot
 to all four lifts.
 
-The q-generic proof target is now this local four-lift packet law together
-with nonemptiness.  A 2-lift cocycle or a fibre-graded group-ring identity is
-compatible with the evidence; raw excess parity and global density are not.
+## q-generic support caveat
+
+The appealing q8 restatement “the middle graph is supported on `±d₂`” does
+not yet generalize.  A cap-deletion audit separates the reasons that the
+other q8 steps disappear:
+
+- middle separations `3` and `4` are impossible even with no agreement caps;
+  the route-admissibility holes of middle fibre `t=4` already exclude them;
+- the remaining competing separation `1` is excluded by exactly the two
+  caps `(left,d₂)` and `(right,d₂)`; deleting either makes such an edge SAT,
+  while the two `d₁` caps are unnecessary for this exclusion.
+
+Consequently q8 has only one admissible competing undirected step.  At a
+larger binary modulus there are many more admissible steps, and no current
+theorem eliminates them.  The order-four step-cycle consumer is therefore a
+correct factorization of the q8 obstruction, not yet a uniform architecture
+for general `q = 2^k`.  A generic proof needs either a new all-other-steps
+elimination theorem or a cycle argument that tolerates additional support.
+
+At q8 the proof target is this local four-lift packet law together with
+nonemptiness.  For general q, the first unresolved issue is whether any
+analogue can tolerate or eliminate the additional admissible steps.  A
+fibre-graded identity remains compatible with the evidence; raw excess
+parity, global density, and an unqualified order-four support claim are not.
 
 This file records exact finite evidence, not a proof at general `q`.
