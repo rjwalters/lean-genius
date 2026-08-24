@@ -16,6 +16,8 @@ def main() -> None:
     parser.add_argument("--a", type=int, required=True)
     parser.add_argument("--caps", action="store_true",
                         help="impose every same-fibre cap in both codes")
+    parser.add_argument("--old-caps", action="store_true",
+                        help="impose every same-fibre cap only in the old code")
     parser.add_argument("--cap-fibres", type=int, nargs="+",
                         help="impose caps only in the listed endpoint fibres")
     parser.add_argument("--max-old-rank", type=int,
@@ -61,8 +63,10 @@ def main() -> None:
                     for u in differences
                 ], wanted))
 
-        if args.caps or args.cap_fibres is not None:
+        if (args.caps or args.cap_fibres is not None or
+                (args.old_caps and code == 0)):
             capped = (set(differences) if args.caps else
+                      set(differences) if args.old_caps and code == 0 else
                       {value % q for value in args.cap_fibres})
             for t in differences:
                 if t not in capped:
@@ -101,7 +105,7 @@ def main() -> None:
         solver.add(zero_totals[0] <= args.max_old_rank)
 
     result = solver.check()
-    cap_scope = ("all" if args.caps else
+    cap_scope = ("all" if args.caps else "old-all" if args.old_caps else
                  sorted({value % q for value in args.cap_fibres})
                  if args.cap_fibres is not None else "none")
     print(f"q={q} a={args.a % q} support={args.support} "
@@ -121,6 +125,49 @@ def main() -> None:
           f"{model.eval(zero_totals[1])}")
     print(f"  support={support}")
     print(f"  changed_edges={changed_edges}")
+
+    # Audit exactly how an uncapped witness would break same-fibre caps.  A
+    # saturated-pair blocker has old collision 1 and new collision at least 2;
+    # a newly-created blocker starts at 0 and jumps to at least 2.  The latter
+    # is not counted by the saturated-pair census.
+    cap_violations = []
+    for t in differences:
+        for x, z in combinations(range(q), 2):
+            collisions = []
+            for code in range(2):
+                common = sum(
+                    z3.is_true(model.eval(z3.And(
+                        edge_for_code(edge_vars[code], index,
+                                      (x, t), target),
+                        edge_for_code(edge_vars[code], index,
+                                      (z, t), target))))
+                    for target in vertices
+                )
+                collisions.append(common)
+            if collisions[1] >= 2:
+                cap_violations.append((t, x, z, *collisions))
+    if cap_violations:
+        saturated = [entry for entry in cap_violations if entry[3] == 1]
+        created = [entry for entry in cap_violations if entry[3] == 0]
+        already_bad = [entry for entry in cap_violations if entry[3] >= 2]
+        print(f"  new_cap_violations={len(cap_violations)} "
+              f"old_saturated={len(saturated)} "
+              f"old_zero={len(created)} "
+              f"old_already_bad={len(already_bad)}")
+        print(f"  cap_violation_transitions={cap_violations}")
+
+
+def edge_for_code(
+    edges: dict[tuple[int, int], z3.BoolRef],
+    index: dict[tuple[int, int], int],
+    left: tuple[int, int],
+    right: tuple[int, int],
+) -> z3.BoolRef:
+    """Return an undirected edge variable, treating loops as absent."""
+    i, j = index[left], index[right]
+    if i == j:
+        return z3.BoolVal(False)
+    return edges[min(i, j), max(i, j)]
 
 
 if __name__ == "__main__":
