@@ -84,8 +84,80 @@ theorem exists_deletedOwner_complementary_shores_with_exact_boundaries
   exact ⟨S, T, hSnonempty, hTnonempty, hunion, hdisj,
     hSclosed, hTclosed, hSmeet, hTmeet, hSboundary, hTboundary⟩
 
+/-- Pure graph-theoretic specialization.  At an articulation vertex of a
+connected finite graph, two complementary component shores after deletion
+have positive ambient boundaries whose sum is exactly the degree of the
+deleted vertex.  This is the order-free cut budget behind the order-nine
+`e_S + e_T` calculation. -/
+theorem exists_complementary_shores_boundary_sum_eq_degree_of_erase_not_connected
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (owner : V)
+    (hconnected : D.Connected)
+    (hpuncturedNonempty : ((Finset.univ : Finset V).erase owner).Nonempty)
+    (hnot : ¬ (D.induce
+      (↑((Finset.univ : Finset V).erase owner) : Set V)).Connected) :
+    ∃ S T : Finset V,
+      S.Nonempty ∧ T.Nonempty ∧
+      S ∪ T = (Finset.univ : Finset V).erase owner ∧ Disjoint S T ∧
+      (∀ x ∈ S, D.neighborFinset x ∩
+        ((Finset.univ : Finset V).erase owner) ⊆ S) ∧
+      (∀ x ∈ T, D.neighborFinset x ∩
+        ((Finset.univ : Finset V).erase owner) ⊆ T) ∧
+      0 < (∑ x ∈ S,
+        (D.neighborFinset x ∩ (Finset.univ \ S)).card) ∧
+      0 < (∑ x ∈ T,
+        (D.neighborFinset x ∩ (Finset.univ \ T)).card) ∧
+      (∑ x ∈ S,
+          (D.neighborFinset x ∩ (Finset.univ \ S)).card) +
+        (∑ x ∈ T,
+          (D.neighborFinset x ∩ (Finset.univ \ T)).card) = D.degree owner := by
+  classical
+  let E := D.neighborFinset owner
+  have hownerAdj : ∀ u ∈ (Finset.univ : Finset V),
+      D.Adj u owner ↔ u ∈ E := by
+    intro u _
+    simp [E, SimpleGraph.mem_neighborFinset, D.adj_comm]
+  obtain ⟨S, T, hSnonempty, hTnonempty, hunion, hdisj,
+      hSclosed, hTclosed, hSmeet, hTmeet, hSboundary, hTboundary⟩ :=
+    exists_deletedOwner_complementary_shores_with_exact_boundaries
+      D Finset.univ E owner (Finset.mem_univ owner)
+      (by intro u _; exact Finset.subset_univ _)
+      hownerAdj (by
+        have hc : (D.induce Set.univ).Connected :=
+          (D.induceUnivIso.connected_iff).2 hconnected
+        rw [show (↑(Finset.univ : Finset V) : Set V) = Set.univ by
+          ext x
+          simp]
+        exact hc) hpuncturedNonempty hnot
+  have hEsub : E ⊆ (Finset.univ : Finset V).erase owner := by
+    intro x hx
+    exact Finset.mem_erase.mpr ⟨by
+      intro hxo
+      subst x
+      exact D.loopless.irrefl owner
+        ((D.mem_neighborFinset owner owner).mp hx), Finset.mem_univ x⟩
+  have hEunion : (E ∩ S) ∪ (E ∩ T) = E := by
+    rw [← Finset.inter_union_distrib_left, hunion]
+    exact Finset.inter_eq_left.mpr hEsub
+  have hEdisj : Disjoint (E ∩ S) (E ∩ T) := by
+    rw [Finset.disjoint_left]
+    intro x hxS hxT
+    exact Finset.disjoint_left.mp hdisj
+      (Finset.mem_inter.mp hxS).2 (Finset.mem_inter.mp hxT).2
+  have hEcard : (E ∩ S).card + (E ∩ T).card = E.card := by
+    rw [← Finset.card_union_of_disjoint hEdisj, hEunion]
+  refine ⟨S, T, hSnonempty, hTnonempty, hunion, hdisj,
+    hSclosed, hTclosed, ?_, ?_, ?_⟩
+  · rw [hSboundary]
+    exact Finset.card_pos.mpr hSmeet
+  · rw [hTboundary]
+    exact Finset.card_pos.mpr hTmeet
+  · rw [hSboundary, hTboundary, hEcard]
+    exact D.card_neighborFinset_eq_degree owner
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.exists_deletedOwner_complementary_shores_with_exact_boundaries
+#print axioms Erdos85.exists_complementary_shores_boundary_sum_eq_degree_of_erase_not_connected
