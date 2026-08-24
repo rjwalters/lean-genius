@@ -49,6 +49,19 @@ There are no cases stuck after three-cycles.  The checker recomputes the
 local minimum rather than assuming it, and prints the full nonminimum count
 for each fibre.
 
+## Nonbinary control
+
+The same exhaustive checker at q10, a1 cuts any arbitrary-even
+generalization.  Fibres 2 and 7 each have 108 nonminimum matchings stuck
+after every two- and three-cycle; fibres 4 and 5 each have eight.  Moreover
+the local minimum is zero in fibres 2 and 7, because the `4|q` odd weighted-
+moment obstruction is absent.
+
+Thus “three-cycles always suffice” is only established at q8 and should be
+investigated as a binary/2-adic statement, not stated for all even orders.
+The q10 failure is a mandatory control for any proposed proof that does not
+use the power-of-two hypothesis.
+
 ## What this proves and what it does not
 
 This is positive evidence for a q-generic local assignment lemma: a
@@ -69,4 +82,3 @@ Thus the remaining theorem has two separate parts:
 
 The first part is no longer speculative at q8.  The second is exactly where
 the reflection-orbit cap obstruction and global closure must enter.
-
