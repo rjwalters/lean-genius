@@ -148,3 +148,13 @@ does not contradict them.  A cap terminal must show that selecting a
 cap-respecting endpoint in each reflection orbit forces the opposite sign,
 or that any cap-preserving descent changes the conserved trade component.
 The new diagnostic makes those two prospective claims directly falsifiable.
+
+The grouped directed-variable cross-check also proves the a1 odd-sign
+endpoint UNSAT when all 21 block-transpose assumptions are enabled.  A
+bounded deletion pass retained **every** reciprocal block.  Since each
+deletion was allowed only five seconds, this is a sufficient, highly
+nonminimal core: a retained block may mean SAT or merely UNKNOWN after its
+removal.  It nevertheless supplies no evidence for a small reflection-pair
+localization of the even sign.  The observed parity is globally distributed
+across the transpose system at the present resolution, so the full family
+of shifted-base orientations remains the honest proof target.
