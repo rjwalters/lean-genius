@@ -258,6 +258,46 @@ zero, for total surplus four and `M(0)=8`.  In rank-70 adjacent-defect
 witnesses, the same window has three rank-two nonsharp sources and total
 surplus either two or four; correspondingly `M(0)` is seven or eight.
 
+## The rank-70 escape is a transported single token
+
+For the reproducible cap-free query
+
+```text
+q=8, a=2, seed=1, total rank <= 70,
+R(0)+R(1) <= 15, M(0) <= 7,
+```
+
+the violating window has exactly one positive-surplus nonsharp row:
+`(x,t)=(1,4)`, with surplus two.  Dumping all eight windows of the same
+model gives
+
+```text
+window rank:     15,16,15,16,20,22,20,16
+window surplus:   2, 4, 4, 4, 8,10, 8, 4.
+```
+
+The first line sums to twice the global rank, `140`; the second is forced
+from it by `S(x)=2M(x)-2(q-2)`.  Thus the exceptional branch is not an
+unstructured failure of PMR: one surplus-two token at the bad window is
+accompanied by a broad surplus mountain elsewhere, whose global cost is the
+observed `q-2=6` extra rank units.  The next theorem should therefore be a
+transport/area inequality, not a pointwise lower bound on every source row.
+
+There is a close classical analogue but no off-the-shelf theorem with the
+needed hypotheses.  A two-row cycle switch in a Latin square is a Latin
+bitrade and a prescribed local switch can force changes far away in the
+row cycle; see Cavenagh's survey, *The theory and application of latin
+bitrades* (Math. Slovaca 58 (2008), DOI 10.2478/s12175-008-0103-2), and the
+permutation representation in Cavenagh--Drápal--Hämäläinen,
+*Latin bitrades derived from groups* (arXiv:0704.1730).  Our fixed-base
+multiplicity matrix is likewise a sum of the admissible-column permutation
+matrices, and reciprocity supplies a moving-column inverse law.  However,
+the PMR token lives in deviations of this sum rather than in the difference
+of two Latin squares, so the bitrade results do not directly imply the
+`q-2` support bound.  A viable use of the analogy must first construct an
+actual alternating unit-token cycle and prove that its winding around the
+two deleted fibres is nonzero.
+
 Thus the PMR inequality is exactly a selected-parity surplus statement on
 nonsharp rows.  The sharp majority supplies only the rigid baseline.  A
 local moment observation gives the first pointwise constraint: for `4|q`,
