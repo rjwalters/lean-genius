@@ -52,6 +52,45 @@ adjacent pair.  Summing (ABR) cyclically counts every `R(x)` twice and gives
 
 which is exactly the desired `sum_x R(x) >= q^2` bound.
 
+## Parity-selected partition refinement
+
+There is a sharper version that removes the factor-two double count.  Let
+`M(x)` count only missing slots based at `x` or `x+1` whose missing target
+fibre `u` has the same mod-two parity as `x`.  The option
+`--max-parity-missing-at-adjacent-bases X N` tests this quantity.
+
+Under the global bound `sum_x R(x)<=64`, the q8 query `M(x)<=7` is UNSAT
+for all four hole placements and for representatives `x=0,1` of both base
+parities.  Translation by two covers every other base.  Without the global
+rank bound the same query is already UNSAT for `a=1,3`, but SAT for
+`a=0,2`; the extremal hypothesis is therefore essential in the latter
+geometries.
+
+Every missing slot `(b,t,u)` belongs to exactly one selected adjacent pair:
+choose `x=b` when `u` and `b` have the same parity, and choose `x=b-1`
+otherwise.  Hence
+
+```text
+sum_x M(x) = sum_x R(x).
+```
+
+The most resolved prospective lemma is consequently
+
+```text
+sum_x R(x) <= q^2  ==>  M(x) >= q for every x.         (PMR)
+```
+
+Summing (PMR) gives RANK-q2 directly.  Equivalently, if `Q(x)` is the
+signed number of missing target fibres weighted by `(-1)^(x+u)`, then PMR
+is the telescoping-potential inequality
+
+```text
+R(x)+R(x+1) - (Q(x+1)-Q(x)) >= 2q.
+```
+
+This formulation exposes the characteristic-two charge that the coupled
+row/column projections must control.
+
 ## Exact `a=2` tradeoff
 
 The exceptional hole placement has a sharper two-level behavior:
