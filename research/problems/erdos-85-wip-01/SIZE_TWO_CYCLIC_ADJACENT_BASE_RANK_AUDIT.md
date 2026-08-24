@@ -230,3 +230,38 @@ may reflect the order-two Fourier charge, but five solver samples do not
 establish a component bound.  Any boundary-layer proof must therefore use a
 quantitative charge over a sequence of partial bijections; it cannot assume
 an alternating normal form or a unique closure defect.
+
+## PMR surplus is carried by nonsharp rows
+
+For one parity-selected window, let `z_T(p)` be the number of missing target
+fibres of selected parity at source `p`, and let `e_T(p)` be the positive
+load excess in those fibres.  The fixed-base column marginal and the exact
+zero/positive-excess identity give
+
+```text
+sum_p z_T(p) = sum_p e_T(p),
+2 M(x) = sum_p (z_T(p)+e_T(p)).
+```
+
+For a sharp row, binary defect parity puts its unique missing and duplicated
+fibres in opposite parity classes, so `z_T+e_T=1`.  Hence
+
+```text
+2 M(x) - 2(q-2)
+  = sum_(p nonsharp in the two bases) (z_T(p)+e_T(p)-1).
+```
+
+The new `--dump-parity-window-surplus X` option prints this decomposition.
+In three sampled q8 `a=2` minimum-rank witnesses, window zero always has
+four rank-two nonsharp sources: two contribute surplus two and two contribute
+zero, for total surplus four and `M(0)=8`.  In rank-70 adjacent-defect
+witnesses, the same window has three rank-two nonsharp sources and total
+surplus either two or four; correspondingly `M(0)` is seven or eight.
+
+Thus the PMR inequality is exactly a selected-parity surplus statement on
+nonsharp rows.  The sharp majority supplies only the rigid baseline.  A
+local moment observation gives the first pointwise constraint: for `4|q`,
+the deviation of every row from the all-ones profile has odd order-two
+Fourier moment, so `z_T(p)+e_T(p)` cannot be zero.  The remaining global
+problem is to force at least two nonsharp rows in every selected window to
+take the positive surplus-two branch under total rank at most `q^2`.

@@ -70,6 +70,8 @@ def main() -> None:
         help="on SAT, summarize edges and sharp-neighbour degrees by source profile")
     parser.add_argument("--dump-adjacent-boundary-layers", action="store_true",
         help="on SAT, print routes from every base x to target base x+1")
+    parser.add_argument("--dump-parity-window-surplus", type=int, metavar="X",
+        help="on SAT, decompose PMR at bases x,x+1 by source")
     parser.add_argument("--minimize-cap-excess", action="store_true",
         help="in --no-caps mode, minimize total common-target excess over one")
     parser.add_argument("--max-cap-excess", type=int,
@@ -616,6 +618,40 @@ def main() -> None:
                 if hits:
                     layer.append((t, hits[0]))
             print(f"  adjacent_boundary={x}->{target_base} routes={layer}")
+    if result == z3.sat and args.dump_parity_window_surplus is not None:
+        model = solver.model()
+        x = args.dump_parity_window_surplus % q
+        selected = {u for u in differences if u % 2 == x % 2}
+        total_rank = 0
+        total_selected_zeros = 0
+        total_selected_excess = 0
+        total_surplus = 0
+        for base in (x, (x + 1) % q):
+            for t in differences:
+                loads = {u: sum(z3.is_true(model.eval(
+                    edge((base, t), (y, u)), model_completion=True))
+                    for y in range(q)) for u in differences}
+                rank = sum(load == 0 for load in loads.values())
+                selected_zeros = sum(loads[u] == 0 for u in selected)
+                selected_excess = sum(max(0, loads[u] - 1)
+                                      for u in selected)
+                sharp = (rank == 1 and list(loads.values()).count(2) == 1
+                         and all(load in {0, 1, 2}
+                                 for load in loads.values()))
+                surplus = selected_zeros + selected_excess - 1
+                total_rank += rank
+                total_selected_zeros += selected_zeros
+                total_selected_excess += selected_excess
+                total_surplus += surplus
+                print(f"  parity_window={x} source={(base, t)} "
+                      f"rank={rank} sharp={sharp} "
+                      f"selected_zeros={selected_zeros} "
+                      f"selected_excess={selected_excess} "
+                      f"surplus={surplus}")
+        print(f"  parity_window={x} total_rank={total_rank} "
+              f"selected_zeros={total_selected_zeros} "
+              f"selected_excess={total_selected_excess} "
+              f"surplus={total_surplus}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:
