@@ -119,3 +119,20 @@ integer, so (WSP) includes both possible bad values zero and two.  Under
 `sum R <= q^2`, the balanced partition identity gives total surplus at most
 `4q`; hence (WSP) forces every window surplus at least four and proves PMR.
 No classification or pairing of all positive rows is needed.
+
+At the sharp one-dip threshold `sum R <= 66`, eight seeded witnesses all
+acquire a second dip at the antipodal window `x+q/2`.  Their surplus
+sequences are period four, with observed forms
+
+```text
+[2,8,4,4,2,8,4,4],
+[2,6,4,6,2,6,4,6],
+[2,4,4,8,2,4,4,8].
+```
+
+The direct query `M(0)<=7`, `M(4)>=8` is UNSAT at rank bound 66 and SAT at
+67.  Hence antipodal propagation is a genuine equality-case law, not a
+universal invariant.  It is distinct from the refuted naive dyadic fold of
+the whole code: only the minimal weighted defect pattern folds, while the
+allowed-fibre interface still has the exceptional lifts documented in the
+dyadic-fold audit.

@@ -52,6 +52,9 @@ def main() -> None:
     parser.add_argument("--max-parity-missing-at-adjacent-bases", type=int,
         nargs=2, action="append", metavar=("X", "N"),
         help="bound zero loads into fibres u congruent to x mod 2 at x,x+1")
+    parser.add_argument("--min-parity-missing-at-adjacent-bases", type=int,
+        nargs=2, action="append", metavar=("X", "N"),
+        help="lower-bound parity-selected zero loads at x,x+1")
     parser.add_argument("--global-route-sign", choices=("even", "odd"),
         help="require the product sign of all local row-to-column permutations")
     parser.add_argument("--directed", action="store_true",
@@ -357,6 +360,22 @@ def main() -> None:
                 for base in (x, (x + 1) % q)
                 for t in differences for u in parity_fibres
             ], maximum))
+
+    if args.min_parity_missing_at_adjacent_bases is not None:
+        for x, minimum in args.min_parity_missing_at_adjacent_bases:
+            x %= q
+            parity_fibres = [u for u in differences if u % 2 == x % 2]
+            if q % 2 != 0:
+                parser.error("the parity-selected diagnostic requires even q")
+            if not 0 <= minimum <= 2 * len(differences) * len(parity_fibres):
+                parser.error("parity-selected missing bound is outside its range")
+            solver.add(z3.PbGe([
+                (z3.Sum([
+                    z3.If(edge((base, t), (y, u)), 1, 0)
+                    for y in range(q)]) == 0, 1)
+                for base in (x, (x + 1) % q)
+                for t in differences for u in parity_fibres
+            ], minimum))
 
     # Full same-difference cap: any two distinct bases in one fibre have at
     # most one precise common target cell.
