@@ -59,6 +59,17 @@ matroids.  The outside dictionary stops at the already-known bipartite
 matching LP dual and supplies no new global min--max theorem for transpose
 coupling.
 
+There is a precise corrected dictionary.  For one row, bipartite matching
+is the intersection of the two partition-matroid capacity systems given by
+the two label shores.  Imposing the transposed incoming constraints adds two
+more partition-matroid systems on the same candidate arcs.  Globally, (12g)
+is therefore a four-capacity-system problem, equivalently a four-resource
+hypergraph `b`-matching-style LP with exact tail/head degree faces.  Ordinary
+two-matroid intersection is exactly one intersection short.  This explains
+both the failed Edmonds reduction and why its one-cut certificate has no
+reason to exist; it also agrees with the audit's observed LP/integrality
+separation.
+
 No Lean wrapper or deficient-set script is opened.  Any renewed discrete
 route must retain both endpoints of every candidate edge, for example through
 the exact matching-cover prices already present in (12fb), rather than
