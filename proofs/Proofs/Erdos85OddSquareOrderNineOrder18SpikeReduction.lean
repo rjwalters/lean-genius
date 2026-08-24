@@ -1571,6 +1571,52 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_transfer
     G owner c H K Z B₀ B₁ hKcard hKowner hpartnerRoot hdegHigh
       hrootEq hcases hbinZeroIncidence hbinOneIncidence heq32
 
+/-- Capacity terminal for audit case `(p,q)=(1,0)`.  Partner targets and
+bin-zero-neighbor targets are disjoint subsets of the four-point set `W`,
+but each family requires at least three distinct targets. -/
+theorem false_of_orderNine_order18_lowOwner_case_one_zero_capacity
+    {V : Type*} [DecidableEq V]
+    (W partnerTargets binZeroTargets : Finset V)
+    (hWcard : W.card = 4)
+    (hpartnerSub : partnerTargets ⊆ W)
+    (hbinZeroSub : binZeroTargets ⊆ W)
+    (hdisj : Disjoint partnerTargets binZeroTargets)
+    (hpartnerCard : 3 ≤ partnerTargets.card)
+    (hbinZeroCard : 3 ≤ binZeroTargets.card) :
+    False := by
+  have hunionSub : partnerTargets ∪ binZeroTargets ⊆ W :=
+    Finset.union_subset hpartnerSub hbinZeroSub
+  have hunionCard := Finset.card_le_card hunionSub
+  rw [Finset.card_union_of_disjoint hdisj, hWcard] at hunionCard
+  omega
+
+/-- Saturation terminal for audit case `(p,q)=(0,1)`.  Equation (34) gives
+`4-b` distinct partner targets in the three-point complement `W\U`, with
+`b≤1`; hence `b=1` and the partners saturate the complement.  Any further
+bin-zero-neighbor target in that complement contradicts C4-forced
+disjointness. -/
+theorem false_of_orderNine_order18_lowOwner_case_zero_one_saturation
+    {V : Type*} [DecidableEq V]
+    (Wcompl partnerTargets binZeroTargets : Finset V) (b : ℕ)
+    (hWcard : Wcompl.card = 3)
+    (hb : b ≤ 1)
+    (hpartnerSub : partnerTargets ⊆ Wcompl)
+    (hpartnerCard : partnerTargets.card = 4 - b)
+    (hbinZeroSub : binZeroTargets ⊆ Wcompl)
+    (hbinZeroNonempty : binZeroTargets.Nonempty)
+    (hdisj : Disjoint partnerTargets binZeroTargets) :
+    False := by
+  have hpartnerLe := Finset.card_le_card hpartnerSub
+  rw [hpartnerCard, hWcard] at hpartnerLe
+  have hb1 : b = 1 := by omega
+  have hpartnerEq : partnerTargets = Wcompl := by
+    apply Finset.eq_of_subset_of_card_le hpartnerSub
+    rw [hpartnerCard, hb1, hWcard]
+  obtain ⟨x, hxBin⟩ := hbinZeroNonempty
+  have hxW := hbinZeroSub hxBin
+  have hxPartner : x ∈ partnerTargets := by simpa [hpartnerEq] using hxW
+  exact Finset.disjoint_left.mp hdisj hxPartner hxBin
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -1601,6 +1647,8 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
 #print axioms Erdos85.false_of_orderNine_order18_highSpike_transfer
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_transfer
+#print axioms Erdos85.false_of_orderNine_order18_lowOwner_case_one_zero_capacity
+#print axioms Erdos85.false_of_orderNine_order18_lowOwner_case_zero_one_saturation
 
 end
 
