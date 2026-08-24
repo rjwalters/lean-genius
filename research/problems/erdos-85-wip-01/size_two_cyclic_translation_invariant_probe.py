@@ -30,6 +30,8 @@ def main() -> None:
         help="write an equisatisfiable bit-blasted DIMACS instance and exit")
     parser.add_argument("--dump-defects", action="store_true",
         help="print repeated target-difference pairs by 2-adic row separation")
+    parser.add_argument("--dump-cross-products", action="store_true",
+        help="print normalized cross-fiber collision products and q(q-4) violations")
     args = parser.parse_args()
 
     q = args.q
@@ -142,6 +144,33 @@ def main() -> None:
                 print(f"  fiber {t}: repeated_targets={repeated_targets} "
                       f"excess={excess} defect_levels={dict(sorted(levels.items()))}")
             print(f"  all defect_levels={dict(sorted(level_totals.items()))}")
+        if args.dump_cross_products:
+            # In a translation-invariant model, the matching-orbit
+            # multiplicity at a precise target cell (y,u) is the number of
+            # selected displacements r from source fiber t to target fiber u.
+            # Hence the full cross-fiber collision sum is q times this dot
+            # product.  The sufficient Lean terminal asks for the normalized
+            # dot product to be at most q-4 for every distinct pair.
+            multiplicities = {
+                t: {
+                    u: sum(z3.is_true(model.eval(edge(t, u, r)))
+                           for r in range(q))
+                    for u in differences
+                }
+                for t in differences
+            }
+            violations = []
+            maximum = (0, None)
+            for i, t in enumerate(differences):
+                for v in differences[i + 1:]:
+                    product = sum(multiplicities[t][u] * multiplicities[v][u]
+                                  for u in differences)
+                    if product > maximum[0]:
+                        maximum = (product, (t, v))
+                    if product > q - 4:
+                        violations.append((t, v, product))
+            print(f"  cross_product_bound={q - 4} maximum={maximum[0]} "
+                  f"at={maximum[1]} violations={violations}")
 
 
 if __name__ == "__main__":
