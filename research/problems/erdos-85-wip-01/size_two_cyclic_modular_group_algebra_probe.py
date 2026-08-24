@@ -12,6 +12,11 @@ row.  In particular, a two-route collision at separation d has valuation
 2^v2(d); this tests whether reciprocity changes, raises, or merely preserves
 the proposed 2-adic collision level.
 
+With ``--pairing-profile``, it also folds every partial-permutation block
+modulo q/2, cancels double lifts over F2, and classifies the canonical pairing
+of its four odd boundary vertices.  Lift-voltage identities from
+``SIZE_TWO_CYCLIC_HALF_QUOTIENT_PAIRING_PROBE.md`` are checked exactly.
+
 The default q=4 run uses the full same-difference cap.  At q=8 one can pass
 ``--c4-difference`` twice to inspect the known satisfiable two-fiber
 relaxations; adding 0,2,4 is UNSAT for a=1.
@@ -49,7 +54,7 @@ def v2(n: int) -> int:
 
 def half_quotient_signature(
     routes: list[tuple[int, int]], source_t: int, q: int
-) -> tuple[str, tuple[tuple[str, int], ...]]:
+) -> tuple[str, tuple[tuple[str, int], ...], tuple[int, int]]:
     """Return the canonical boundary pairing and reverse-voltage signature.
 
     A route is ``(relative target row, relative target column)``.  Folding
@@ -89,6 +94,7 @@ def half_quotient_signature(
 
     visited_edges: set[tuple[int, int]] = set()
     paths: list[tuple[str, int]] = []
+    path_lengths: list[int] = []
     for start in sorted(odd):
         incident = [cell for _neighbor, cell in adjacency[start]
                     if cell not in visited_edges]
@@ -96,6 +102,7 @@ def half_quotient_signature(
             continue
         node = start
         voltage = 0
+        length = 0
         while True:
             choices = [(neighbor, cell) for neighbor, cell in adjacency[node]
                        if cell not in visited_edges]
@@ -105,10 +112,12 @@ def half_quotient_signature(
             neighbor, cell = choices[0]
             visited_edges.add(cell)
             voltage ^= reverse_voltage(cell)
+            length += 1
             node = neighbor
         assert node in odd and node != start
         endpoint_pair = "-".join(sorted((boundary_names[start], boundary_names[node])))
         paths.append((endpoint_pair, voltage))
+        path_lengths.append(length)
 
     # Every remaining component is a cycle and has zero reverse voltage.
     for first_cell in surviving:
@@ -134,7 +143,8 @@ def half_quotient_signature(
         pairing = "RR|CC"
     else:
         pairing = "|".join(pairs)
-    return pairing, tuple(sorted(paths))
+    assert sum(voltage for _pair, voltage in paths) % 2 == int(source_t % m != 0)
+    return pairing, tuple(sorted(paths)), tuple(sorted(path_lengths))
 
 
 def main() -> None:
@@ -142,11 +152,19 @@ def main() -> None:
     parser.add_argument("q", type=int)
     parser.add_argument("--a", type=int, required=True)
     parser.add_argument("--timeout-ms", type=int, default=300_000)
+    parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--c4-difference", type=int, action="append")
+    parser.add_argument("--pairing-profile", action="store_true")
+    parser.add_argument(
+        "--profile-difference", type=int, action="append",
+        help="differences whose pairing types are grouped jointly by base",
+    )
     args = parser.parse_args()
 
     q = args.q
     assert q >= 2 and q & (q - 1) == 0, "q must be a power of two"
+    if args.pairing_profile:
+        assert q >= 4, "the four-boundary pairing needs q/2 > 1"
     selected = None if args.c4_difference is None else {
         t % q for t in args.c4_difference
     }
@@ -156,7 +174,7 @@ def main() -> None:
         c4_pair_mode="same-difference",
         c4_differences=selected,
     )
-    solver.set(timeout=args.timeout_ms)
+    solver.set(timeout=args.timeout_ms, random_seed=args.random_seed)
     result = solver.check()
     print(f"q={q} a={args.a % q} selected={selected}: {result}")
     if result != z3.sat:
@@ -178,6 +196,9 @@ def main() -> None:
         tuple[int, str, tuple[tuple[str, int], ...]]
     ] = Counter()
     collision_count = 0
+    pairing_profiles: Counter[tuple[int, str]] = Counter()
+    pairing_path_lengths: Counter[tuple[int, str, tuple[int, int]]] = Counter()
+    pairing_by_block: dict[tuple[int, int], str] = {}
 
     for x, y in vertices:
         source_t = (y - x) % q
@@ -207,8 +228,14 @@ def main() -> None:
         assert sorted(aggregate) == expected
         assert augmentation_valuation(aggregate, q) == 1
         if q >= 4:
-            pairing, path_voltages = half_quotient_signature(routes, source_t, q)
+            pairing, path_voltages, path_lengths = half_quotient_signature(
+                routes, source_t, q
+            )
             half_quotient_signatures[(source_t, pairing, path_voltages)] += 1
+            if args.pairing_profile:
+                pairing_profiles[(source_t, pairing)] += 1
+                pairing_path_lengths[(source_t, pairing, path_lengths)] += 1
+                pairing_by_block[(x, source_t)] = pairing
 
     print(f"vertices={len(vertices)} allowed_differences={allowed}")
     print("target-part (cardinality, eps-valuation) distribution:")
@@ -222,6 +249,22 @@ def main() -> None:
         print("half-quotient (source_t, pairing, path reverse voltages) distribution:")
         for key, count in sorted(half_quotient_signatures.items()):
             print(f"  {key}: {count}")
+    if args.pairing_profile:
+        print("folded (difference, pairing) distribution:")
+        for key, count in sorted(pairing_profiles.items()):
+            print(f"  {key}: {count}")
+        print("folded (difference, pairing, boundary path lengths) distribution:")
+        for key, count in sorted(pairing_path_lengths.items()):
+            print(f"  {key}: {count}")
+        profiled = (allowed if args.profile_difference is None else
+            [t % q for t in args.profile_difference])
+        assert all(t in allowed for t in profiled)
+        joint: Counter[tuple[str, ...]] = Counter()
+        for x in range(q):
+            joint[tuple(pairing_by_block[x, t] for t in profiled)] += 1
+        print(f"joint pairing profiles for differences {profiled}:")
+        for profile, count in sorted(joint.items()):
+            print(f"  {profile}: {count}")
 
 
 if __name__ == "__main__":

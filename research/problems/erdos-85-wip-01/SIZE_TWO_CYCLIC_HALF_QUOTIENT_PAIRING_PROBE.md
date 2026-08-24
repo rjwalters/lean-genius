@@ -194,6 +194,50 @@ trivial because `q` is even.  A terminal must therefore weight by a base
 lift/carry, restrict a coherently closed family of fibers, or prove that
 reverse path fragments recombine blockwise.
 
+## Executable q=8 calibration and a scope correction
+
+`size_two_cyclic_modular_group_algebra_probe.py --pairing-profile` now
+constructs every folded parity graph from an exact SAT model, checks maximum
+degree two, all four boundary vertices, `(HQ1)`--`(HQ3)`, and reports pairing
+types and boundary-path lengths.  For `q=8,a=1`, retaining the same-difference
+common-neighbor cap only in fibers `0,2` gives a SAT model with the rigid
+profile
+
+```text
+t=0: RR|CC at all eight bases,
+t=2: RR|CC at all eight bases,
+t=4: Rt--C(-1) at all eight bases.
+```
+
+Sixteen solver seeds reproduced this profile.  This is evidence, not a
+classification theorem.
+
+More importantly, the direct graph probe shows
+
+```text
+q=8, a=1, same-difference cap only at t=0: SAT,
+q=8, a=1, same-difference cap only at t=2: SAT,
+q=8, a=1, same-difference cap only at t=4: UNSAT.
+```
+
+The last result was reproduced by the independent permutation-code CNF with
+`--agreement-t 4 --no-loopless`.  Therefore the outline's earlier phrase
+that tested one-fiber restrictions are SAT cannot include every fiber of
+this instance: the published `{0,2,4}` sufficient set contains a strictly
+smaller sufficient fiber `t=4`.  Across reflection parameters, the weaker
+same-difference-only `t=4` cap is UNSAT for `a=1,6` and SAT for `a=2,3,4,5`;
+the stronger permutation-code restriction `--agreement-t 4` is UNSAT for
+`a=1,2,5,6` and SAT only when `t=4` is one of the two forbidden differences
+(`a=3,4`).
+
+This does not prove a general one-fiber theorem, but it changes the bounded
+target.  For the q=8 `a=1` control, any proposed three-fiber mechanism must
+first explain why the half fiber `t=q/2` is already impossible by itself.
+In relaxed models without an effective cap, all sixteen tested seeds give
+the `Rt--C(-1)` pairing at every `t=4` block, while boundary-path lengths
+vary.  Hence pairing type alone is too coarse; the cap must interact with
+lifted path contents or agreements.
+
 ## Reciprocity does not repair the loss at first level
 
 For an original route
