@@ -162,6 +162,17 @@ a full code and does not impose caps.  Thus the surviving discriminator is
 global extendability, cap preservation, or strict defect-rank change, not
 merely allowed-fibre or endpoint-admissibility checks.
 
+The optional `--require-rank-drop` adds nonnegative unchanged fibre-loads at
+each affected vertex.  Old load equals unchanged load plus its minus darts;
+new load uses its plus darts.  It requires strictly fewer zero-load slots in
+the new pattern.  This is a relaxation of outside-code extendability, since
+the unchanged counts need not be realized by actual outside cells.  Support
+eight remains SAT for every q8 hole representative under this rank-drop
+condition.  Hence neither local cyclic geometry nor the scalar load ledger
+rules out a minimum-size descending trade.  The unresolved obstruction is
+the simultaneous realization of those unchanged loads, all reciprocal
+closures outside `W`, and the pair caps.
+
 ## Consequence for local cycle descent
 
 A source-local transposition or three-cycle from the q8 descent census is

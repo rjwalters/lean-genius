@@ -14,6 +14,8 @@ def main() -> None:
     parser.add_argument("q", type=int)
     parser.add_argument("support", type=int)
     parser.add_argument("--a", type=int, required=True)
+    parser.add_argument("--require-rank-drop", action="store_true",
+        help="add relaxed unchanged fibre loads and require fewer zero loads")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     args = parser.parse_args()
     q, n = args.q, args.support
@@ -55,12 +57,14 @@ def main() -> None:
              i: int, j: int) -> z3.BoolRef:
         return family[min(i, j), max(i, j)]
 
+    sign_degree: dict[int, z3.ArithRef] = {}
     for i in range(n):
         minus_degree = z3.Sum([
             z3.If(edge(minus, i, j), 1, 0) for j in range(n) if j != i])
         plus_degree = z3.Sum([
             z3.If(edge(plus, i, j), 1, 0) for j in range(n) if j != i])
         solver.add(minus_degree == plus_degree, minus_degree >= 2)
+        sign_degree[i] = minus_degree
         for value in range(q):
             solver.add(z3.Sum([
                 z3.If(z3.And(edge(minus, i, j), base[j] == value), 1, 0)
@@ -75,6 +79,32 @@ def main() -> None:
                              (base[j] + fibre[j]) % q == value), 1, 0)
                 for j in range(n) if j != i]))
 
+    old_zero_total = None
+    new_zero_total = None
+    if args.require_rank_drop:
+        old_zeros = []
+        new_zeros = []
+        for i in range(n):
+            unchanged = {
+                u: z3.Int(f"unchanged_{i}_{u}") for u in differences
+            }
+            for value in unchanged.values():
+                solver.add(value >= 0, value <= q)
+            solver.add(z3.Sum(list(unchanged.values())) ==
+                       (q - 2) - sign_degree[i])
+            for u in differences:
+                old_load = unchanged[u] + z3.Sum([
+                    z3.If(z3.And(edge(minus, i, j), fibre[j] == u), 1, 0)
+                    for j in range(n) if j != i])
+                new_load = unchanged[u] + z3.Sum([
+                    z3.If(z3.And(edge(plus, i, j), fibre[j] == u), 1, 0)
+                    for j in range(n) if j != i])
+                old_zeros.append(z3.If(old_load == 0, 1, 0))
+                new_zeros.append(z3.If(new_load == 0, 1, 0))
+        old_zero_total = z3.Sum(old_zeros)
+        new_zero_total = z3.Sum(new_zeros)
+        solver.add(new_zero_total < old_zero_total)
+
     result = solver.check()
     print(f"q={q} a={args.a % q} support={n}: {result}")
     if result != z3.sat:
@@ -83,6 +113,9 @@ def main() -> None:
     cells = [(model.eval(base[i]).as_long(), model.eval(fibre[i]).as_long())
              for i in range(n)]
     print(f"  cells={cells}")
+    if old_zero_total is not None and new_zero_total is not None:
+        print(f"  relaxed_rank={model.eval(old_zero_total)} -> "
+              f"{model.eval(new_zero_total)}")
     for name, family in (("minus", minus), ("plus", plus)):
         selected = [pair for pair, variable in family.items()
                     if z3.is_true(model.eval(variable))]
