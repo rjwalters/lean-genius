@@ -5238,3 +5238,32 @@ seed-230 smoke run remained SAT while repairing deficit rows `{5,23}` and
 then `{24}`.  An intentionally premature direct target-row refinement timed
 out, confirming that the deficit-first hierarchy is operationally necessary;
 this timeout is not mathematical evidence.
+
+The surviving extension failures have a still smaller certificate shape.
+After separating the rows whose forced lower bundle already contains a
+block conflict, 40 of the 41 audited failures admit a strict fractional point
+cover of the residual candidates after contracting the forced bundle and
+deleting the reverse-impossible rows.  Every one of the eleven durable
+payloads has at least one closing row of this type or a forced-bundle
+conflict; in fact the nominal deficit fixture also has a scaled-cover row.
+The lone non-fractional failure is not needed to close its payload because
+two other rows there have strict covers.
+
+This certificate is already a theorem interface, not a proposed axiom:
+`reverseIntervalRankDeficit_of_scaledPointCover` converts the
+denominator-cleared cover into `HasReverseIntervalRankDeficitAt`, and
+`false_of_localGramPackingReverseIntervalRankDeficit` consumes the resulting
+existential row.  The unified audit now emits exact integer numerators and a
+common positive scale, independently rechecks every block-cover inequality,
+and emits a certificate only when
+
+```text
+scale * |F(w)| + total numerator weight < scale * d(w).
+```
+
+For example, seed 129 closes at target 24 with the five unit point weights
+`{0,2,8,13,14}` against demand six.  The fixed-weight counterexample closes
+at target 18 with four unit points against demand five, or at target 30 with
+two unit points after three forced incidences.  The universal outer-design
+problem is therefore localized further: prove that some row has a conflicting
+forced bundle or one of these colored contracted point covers.

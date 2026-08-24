@@ -26,6 +26,7 @@ import argparse
 import json
 from fractions import Fraction
 from itertools import combinations
+from math import lcm
 from pathlib import Path
 
 import numpy as np
@@ -172,6 +173,72 @@ def pair_union_capacity(system: dict, first: int, second: int) -> float:
     if not result.success:
         raise RuntimeError("pair union-capacity LP failed: " + result.message)
     return -float(result.fun)
+
+
+def contracted_reverse_interval_point_cover(
+        system: dict, target: int, local: dict[int, dict]) -> dict | None:
+    """Exact scaled point cover after forcing/forbidding reverse incidences.
+
+    This is the executable certificate shape consumed by Lean's
+    ``reverseIntervalRankDeficit_of_scaledPointCover``.  It returns only after
+    rationalizing and independently checking every covering inequality and
+    the strict total-weight bound.
+    """
+    forced = {
+        source for source in range(N)
+        if target in local[source]["forced_neighbors"]
+    }
+    possible = {
+        source for source in range(N)
+        if target in local[source]["possible_neighbors"]
+    }
+    edges = set(system["edges"])
+    candidates = [
+        source for source in range(N)
+        if tuple(sorted((source, target))) in edges
+        and source in possible and source not in forced
+        and all(not (system["blocks"][source] & system["blocks"][f])
+                for f in forced)
+    ]
+    matrix = -np.array([
+        [int(point in system["blocks"][source]) for point in range(N_U1)]
+        for source in candidates
+    ], dtype=float)
+    result = linprog(
+        np.ones(N_U1), A_ub=matrix,
+        b_ub=-np.ones(len(candidates)), bounds=(0, None), method="highs",
+    ) if candidates else None
+    if candidates and (result is None or not result.success):
+        raise RuntimeError("contracted reverse-interval point-cover LP failed")
+    rational = (
+        [Fraction(float(value)).limit_denominator(10_000)
+         for value in result.x]
+        if result is not None else [Fraction(0) for _ in range(N_U1)]
+    )
+    scale = 1
+    for value in rational:
+        scale = lcm(scale, value.denominator)
+    weights = [int(value * scale) for value in rational]
+    if any(weight < 0 for weight in weights):
+        raise RuntimeError("rationalized point cover has negative weight")
+    if any(sum(weights[p] for p in system["blocks"][source]) < scale
+           for source in candidates):
+        raise RuntimeError("rationalized point cover misses a candidate")
+    total = sum(weights)
+    strict = len(forced) * scale + total < system["degree"][target] * scale
+    if not strict:
+        return None
+    return {
+        "target": target,
+        "forced_incoming": sorted(forced),
+        "candidate_count": len(candidates),
+        "scale": scale,
+        "weights": [[point, weight] for point, weight in enumerate(weights)
+                    if weight],
+        "scaled_total": total,
+        "scaled_demand_after_forced":
+            (system["degree"][target] - len(forced)) * scale,
+    }
 
 
 def dual(system: dict, row_support: set[int] | None,
@@ -1309,6 +1376,19 @@ def main() -> None:
             record for record in reverse_interval_records
             if record["compatible_packing_count"] == 0
         ]
+        contracted_point_cover_certificates = []
+        for record in reverse_interval_obstructions:
+            forced = record["forced_incoming"]
+            forced_conflict = any(
+                system["blocks"][u] & system["blocks"][v]
+                for u, v in combinations(forced, 2)
+            )
+            if record["packing_count"] and not forced_conflict:
+                certificate = contracted_reverse_interval_point_cover(
+                    system, record["target"], local
+                )
+                if certificate is not None:
+                    contracted_point_cover_certificates.append(certificate)
         rigid_rows = [
             u for u in range(N) if 0 < local[u]["packing_count"] <= 2
         ]
@@ -1434,6 +1514,8 @@ def main() -> None:
             "reverse_interval_obstructions": reverse_interval_obstructions,
             "has_one_row_compatibility_obstruction":
                 bool(reverse_interval_obstructions),
+            "contracted_reverse_interval_point_cover_certificates":
+                contracted_point_cover_certificates,
             "rigid_rows": [
                 [u, local[u]["packing_count"]] for u in rigid_rows
             ],
