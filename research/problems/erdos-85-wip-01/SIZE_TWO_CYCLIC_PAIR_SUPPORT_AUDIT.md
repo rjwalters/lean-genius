@@ -99,9 +99,31 @@ the q8 four/five-cell phenomenon is not the base case of a uniform
 power-of-two transport theorem.  In particular, intact doubling, coherent
 halving, or bad-lift elimination cannot prove the proposed reduced statement
 from those selected caps, regardless of how their tuple support is packaged.
-The saved assignment is being decoded into the precise pair-support census;
-that census is diagnostic, not needed for the logical refutation supplied by
-SAT itself.
+The exact invocation was
+
+```text
+python3 size_two_cyclic_translation_invariant_probe.py 16 --a 2 \
+  --cap 0:1 --cap 0:4 --cap 8:1 --cap 12:4 --empty-fiber 8
+```
+
+Decoding the saved assignment gives 99 true orbit variables and 23 supports
+of size at least two.  The middle fibre `8` is empty as constrained.  The
+model nevertheless contains the antipodal rectangle
+
+```text
+Support(4,8) = {(12,0),(12,8)}.
+```
+
+Thus the q8 rectangle pattern survives at q16 but moves off the selected
+middle fibre.  Other doubles are widely dispersed; for example
+`Support(1,2)` and `Support(1,14)` have size four, while several supports in
+fibres `6` and `10` have size three.  Internal antipodal steps also occur in
+fibres `5` and `15`, rather than the empty selected fibre.
+
+This is the tuple-level failure of intact designated-cap transport: doubling
+may preserve the existence of a double only after changing its fibre owner,
+so it does not land on the capped pair.  The census is diagnostic; SAT itself
+already logically refutes the reduced theorem.
 
 Conversely, the q12 translation-invariant instance with **every** nonzero
 same-fibre separation capped is **UNSAT**.  Kissat decided its 6,276-variable
