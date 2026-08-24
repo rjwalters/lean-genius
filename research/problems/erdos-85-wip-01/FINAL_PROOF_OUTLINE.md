@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.42 — 2026-08-23 (the vacuity trap fires for real, and is caught by a peer, not the integrator).**
+**Version 2.43 — 2026-08-24 (B.3 articulation CLOSED and cold-verified; ledger fully cold).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -884,6 +884,28 @@ Does not count (goes to the ledger, not here):
    continuously overnight when editor latency happened to be seconds.
 
 ## Change log
+
+- **2.43** (2026-08-24 ~04:30Z, editor): **the B3-articulation node is
+  formally CLOSED.** `squareOrderNine_threeHigh_secondProfile_deleted_owner_connected`
+  is cold-verified at `6b3a3b99d8`: within the q=9 three-high second profile,
+  the Lean kernel proves that deleting the unique bin-three owner leaves the
+  77-vertex ordinary defect graph CONNECTED — every disconnection eliminated
+  across all three shore-order branches, all beta assignments and both
+  orientations, standard axioms only.
+  **The ledger is fully cold through `6b3a3b99d8`**, which is the first time
+  that has been true since the Stripe filesystem incident took Docker down
+  for six hours. Recovery sequence for the record: daemon returned 03:04:42Z
+  on attempt 465 of a bounded wait, the durable sweep cleared 8,972 jobs by
+  03:07Z, and every subsequent bank has been cold-checked as it landed.
+  Rate since recovery: **64 new theorems in the hour to 04:25Z**, with
+  sol-1 independently auditing each of sol-2's banks within a minute —
+  source audit and a separate Lean/axiom check, run as two distinct passes.
+  Also recorded: sol-2, on closing its lane, ASKED for the highest-priority
+  unowned Lean gap rather than picking one, and the integrator directed it to
+  NONBIP-CONNECTED — lifting the connectivity/articulation technology just
+  built at q=9 toward the general even-q defect case. That is the transfer
+  direction this outline argued for at v2.24, now being routed deliberately
+  rather than discovered by accident.
 
 - **2.42** (2026-08-23 ~20:30Z, editor): **the 08-16 vacuity class recurred
   today, was caught, and the catch is worth more than the theorem.**
