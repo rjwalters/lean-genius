@@ -1,6 +1,6 @@
 import Proofs.Erdos85CanonicalSaturatedExceptionalTransport
 import Proofs.Erdos85TwoPoleKernelImageDichotomy
-import Proofs.Erdos85TwoPoleMinimumPotentialRoute
+import Proofs.Erdos85TwoPoleMinimumExceptionalTransportCollapse
 
 /-!
 # Canonical saturated two-pole dichotomy
@@ -55,11 +55,17 @@ theorem binarySquare_saturatedDeficit_emptyPole_transport_dichotomy
                 (Pi.single pole₁ 1 + Pi.single pole₂ 1) ∧
           q ≤ (f2PotentialSupport x).card ∧
           (q < (f2PotentialSupport x).card ∨
-            ∃ p y r,
-              p ∈ f2PotentialSupport x ∧
-              r ∈ f2PotentialSupport x ∧ p ≠ r ∧
-              G.Adj pole₁ p ∧ G.Adj p y ∧ G.Adj y r ∧
-              G.Adj r pole₂)) := by
+            ((∃ p y r,
+                p ∈ f2PotentialSupport x ∧
+                r ∈ f2PotentialSupport x ∧ p ≠ r ∧
+                G.Adj pole₁ p ∧ G.Adj p y ∧ G.Adj y r ∧
+                G.Adj r pole₂) ∧
+              ((binaryTransportResidualGraph G hqEven hreg).adjMatrix
+                    (ZMod 2)).mulVec x +
+                  ((secondOrderDefectGraph G).adjMatrix
+                    (ZMod 2)).mulVec x =
+                ((triangleFreeEdgeGraph G).adjMatrix
+                    (ZMod 2)).mulVec x + x))) := by
   obtain ⟨pole₁, pole₂, hpole₁, hpole₂, hpoles, htransport⟩ :=
     binarySquare_saturatedDeficit_exists_emptyPoles_exceptionalTransport
       G hfree hq hqEven hr hreg hcard S htri hemptyClique
@@ -79,16 +85,22 @@ theorem binarySquare_saturatedDeficit_emptyPole_transport_dichotomy
     have hpack := degree_le_card_f2PotentialSupport_of_twoPole
       G hfree hreg x pole₁ pole₂ hpoles hcommon hAx
     have hrefine : q < (f2PotentialSupport x).card ∨
-        ∃ p y r,
-          p ∈ f2PotentialSupport x ∧
-          r ∈ f2PotentialSupport x ∧ p ≠ r ∧
-          G.Adj pole₁ p ∧ G.Adj p y ∧ G.Adj y r ∧
-          G.Adj r pole₂ := by
+        ((∃ p y r,
+            p ∈ f2PotentialSupport x ∧
+            r ∈ f2PotentialSupport x ∧ p ≠ r ∧
+            G.Adj pole₁ p ∧ G.Adj p y ∧ G.Adj y r ∧
+            G.Adj r pole₂) ∧
+          ((binaryTransportResidualGraph G hqEven hreg).adjMatrix
+                (ZMod 2)).mulVec x +
+              ((secondOrderDefectGraph G).adjMatrix (ZMod 2)).mulVec x =
+            ((triangleFreeEdgeGraph G).adjMatrix (ZMod 2)).mulVec x + x) := by
       rcases lt_or_eq_of_le hpack with hlt | heq
       · exact Or.inl hlt
-      · exact Or.inr <|
-          exists_lengthFourRoute_of_twoPolePotentialSupport_card_eq
+      · refine Or.inr ⟨?_, ?_⟩
+        · exact exists_lengthFourRoute_of_twoPolePotentialSupport_card_eq
             G hfree hreg x pole₁ pole₂ hpoles hcommon hAx heq.symm
+        · exact minimumTwoPole_exceptionalTransport_collapse
+            G hfree hqEven hreg x pole₁ pole₂ hAx heq.symm (htransport x hAx)
     exact Or.inr ⟨x, hAx, htransport x hAx, hpack, hrefine⟩
 
 end Erdos85
