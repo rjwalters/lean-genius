@@ -252,6 +252,82 @@ theorem two_le_sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum
   obtain ⟨k, hk⟩ := heven
   omega
 
+/-- The undirected cap-violation mass at an involutive separation.  The raw
+sum is indexed by directed bases, so every unordered source pair `{x,x+d}`
+appears twice; division by two is the correctly normalized orbit count. -/
+def sizeTwoCrossShiftedPermutationAgreementAntipodalOrbitExcess
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (d : ZMod q) (t : sizeTwoAllowedDifference q a) : ℕ :=
+  (∑ x : ZMod q,
+    (Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+      q a P x d t t) - 1)) / 2
+
+/-- Exact directed-versus-unordered normalization for antipodal excess. -/
+theorem sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum_eq_two_mul_orbitExcess
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (d : ZMod q) (hd : d ≠ 0) (horder : d + d = 0)
+    (t : sizeTwoAllowedDifference q a) :
+    (∑ x : ZMod q,
+      (Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P x d t t) - 1)) =
+      2 * sizeTwoCrossShiftedPermutationAgreementAntipodalOrbitExcess
+        P d t := by
+  have heven :=
+    sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum_even
+      P d hd horder t
+  obtain ⟨k, hk⟩ := heven
+  simp only [sizeTwoCrossShiftedPermutationAgreementAntipodalOrbitExcess]
+  omega
+
+/-- The normalized antipodal excess is positive exactly when some unordered
+antipodal source pair violates the codegree-one cap. -/
+theorem sizeTwoCrossShiftedPermutationAgreement_antipodal_orbitExcess_pos_iff
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (d : ZMod q) (hd : d ≠ 0) (horder : d + d = 0)
+    (t : sizeTwoAllowedDifference q a) :
+    0 < sizeTwoCrossShiftedPermutationAgreementAntipodalOrbitExcess P d t ↔
+      ∃ x : ZMod q,
+        2 ≤ Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+          q a P x d t t) := by
+  classical
+  let excess : ZMod q → ℕ := fun x =>
+    Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+      q a P x d t t) - 1
+  have hnorm :=
+    sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum_eq_two_mul_orbitExcess
+      P d hd horder t
+  constructor
+  · intro hpos
+    by_contra hnone
+    push Not at hnone
+    have hzero : (∑ x : ZMod q, excess x) = 0 := by
+      apply Finset.sum_eq_zero
+      intro x hx
+      have hxlt := hnone x
+      dsimp [excess]
+      omega
+    have : 2 * sizeTwoCrossShiftedPermutationAgreementAntipodalOrbitExcess
+        P d t = 0 := by
+      rw [← hnorm]
+      simpa [excess] using hzero
+    omega
+  · rintro ⟨x, hx⟩
+    have hxpos : 0 < excess x := by
+      dsimp [excess]
+      omega
+    have hle : excess x ≤ ∑ y : ZMod q, excess y := by
+      exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ x)
+    have hsumpos : 0 < ∑ y : ZMod q, excess y := lt_of_lt_of_le hxpos hle
+    have hnorm' : (∑ y : ZMod q, excess y) =
+        2 * sizeTwoCrossShiftedPermutationAgreementAntipodalOrbitExcess
+          P d t := by
+      simpa [excess] using hnorm
+    rw [hnorm'] at hsumpos
+    omega
+
 end
 
 end Erdos85
@@ -265,3 +341,7 @@ end Erdos85
   Erdos85.SizeTwoCyclicRoutingData.agreementAtShift_antipodal_support_card_even
 #print axioms
   Erdos85.sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum_even
+#print axioms
+  Erdos85.sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum_eq_two_mul_orbitExcess
+#print axioms
+  Erdos85.sizeTwoCrossShiftedPermutationAgreement_antipodal_orbitExcess_pos_iff
