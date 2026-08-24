@@ -5452,3 +5452,27 @@ For seed 129 it chooses color two (`lambda=4`) over color zero (`lambda=2`).
 Thus (13ba) must be proved together with existence of the target row; it is
 not a universal local lemma.  This also isolates the remaining target-row
 selection problem from the now deterministic three-color choice.
+
+The target row also admits a corpus-wide deterministic selector.  Among the
+reverse-obstructed rows, first minimize the number `n(w)` of residual
+candidate blocks after forced contraction; among ties, maximize `|F(w)|`:
+
+```text
+w minimizes n(w), then maximizes |F(w)|;                         (13bc)
+c minimizes s(w,c), then maximizes lambda(w,c).                  (13bd)
+```
+
+Every row surviving (13bc), paired with every color surviving (13bd), closes
+in all ten row-feasible payloads.
+The only tie that exposed why the second target criterion is needed is the
+row-feasible no-single-special fixture: rows 3 and 22 both have seven residual
+candidates, but their forced counts are zero and one respectively; row 22 is
+the closing choice.  Other ties after both criteria (rows 40/43 in the
+exceptional-price fixture and 19/25 in fixed-and-joint) close on both rows.
+
+Thus the current sharp conjecture has no arbitrary target or color search:
+use the two finite lexicographic rules (13bc)–(13bd), then prove the resulting
+strict cover inequality.  The likely counting input for (13bc) is a global
+sum or average of reverse-compatible candidate incidences; (13bd) is the
+near-full matching deletion mechanism.  As before, this is exact corpus
+evidence, not yet a universal outer-design proof.

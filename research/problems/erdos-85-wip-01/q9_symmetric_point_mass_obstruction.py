@@ -2082,6 +2082,8 @@ def main() -> None:
             )
             records.append({
                 "target": target,
+                "candidate_count": profiles[0]["candidate_count"],
+                "forced_card": profiles[0]["forced_card"],
                 "profiles": profiles,
                 "residual_pasch_configurations":
                     contracted_residual_pasch_configurations(
@@ -2099,7 +2101,28 @@ def main() -> None:
                     profile["score"] < profile["demand"]
                     for profile in minimizing
                 ),
+                "all_lexicographic_color_selectors_close": all(
+                    profile["score"] < profile["demand"]
+                    for profile in minimizing
+                    if profile["matching_deletion_loss"]
+                    == maximum_deletion_loss
+                ),
             })
+        minimum_candidate_count = min(
+            (record["candidate_count"] for record in records), default=None
+        )
+        minimum_candidate_records = [
+            record for record in records
+            if record["candidate_count"] == minimum_candidate_count
+        ]
+        maximum_forced_at_minimum_candidate = max(
+            (record["forced_card"] for record in minimum_candidate_records),
+            default=None,
+        )
+        lexicographic_target_records = [
+            record for record in minimum_candidate_records
+            if record["forced_card"] == maximum_forced_at_minimum_candidate
+        ]
         print("min_singleton_color_selector=" + json.dumps({
             "all_rows_locally_feasible": all(
                 local[row]["packing_count"] for row in range(N)
@@ -2114,6 +2137,18 @@ def main() -> None:
                 ))
             ],
             "records": records,
+            "minimum_candidate_count": minimum_candidate_count,
+            "maximum_forced_at_minimum_candidate":
+                maximum_forced_at_minimum_candidate,
+            "lexicographic_target_rows": [
+                record["target"] for record in lexicographic_target_records
+            ],
+            "all_lexicographic_target_color_selectors_close": bool(
+                lexicographic_target_records
+            ) and all(
+                record["all_lexicographic_color_selectors_close"]
+                for record in lexicographic_target_records
+            ),
             "exists_closing_minimum_mandatory_selector": any(
                 record["minimum_mandatory_selector_closes"]
                 for record in records
