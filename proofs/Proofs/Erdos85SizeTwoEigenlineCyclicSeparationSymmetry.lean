@@ -135,6 +135,61 @@ theorem sizeTwoCrossShiftedPermutationAgreement_antipodal_sum_even
     exact hsum
   exact ZMod.natCast_eq_zero_iff_even.mp hcast
 
+/-- Under an agreement cap, the bases carrying an antipodal agreement occur
+in an even-sized support.  Thus any forced positive load at the middle
+five-cell MUS position automatically supplies at least two base witnesses. -/
+theorem SizeTwoCyclicRoutingData.agreementAtShift_antipodal_support_card_even
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (data : SizeTwoCyclicRoutingData q a)
+    (t : sizeTwoAllowedDifference q a)
+    (d : ZMod q) (hd : d ≠ 0) (horder : d + d = 0)
+    (hcap : data.AgreementAtShift t d) :
+    Even (((Finset.univ : Finset (ZMod q)).filter fun x =>
+      0 < Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a data.perm x d t t)).card) := by
+  classical
+  have heven := sizeTwoCrossShiftedPermutationAgreement_antipodal_sum_even
+    data.perm d hd horder t
+  have hsum :
+      (∑ x : ZMod q,
+        Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+          q a data.perm x d t t)) =
+      ((Finset.univ : Finset (ZMod q)).filter fun x =>
+        0 < Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+          q a data.perm x d t t)).card := by
+    rw [← Finset.sum_boole]
+    apply Finset.sum_congr rfl
+    intro x hx
+    have hle := hcap x
+    by_cases hpos : 0 < Fintype.card
+        (SizeTwoCrossShiftedPermutationAgreement q a data.perm x d t t)
+    · rw [if_pos hpos]
+      omega
+    · rw [if_neg hpos]
+      omega
+  rw [← hsum]
+  exact heven
+
+/-- A nonempty capped antipodal agreement support contains at least two
+bases. -/
+theorem SizeTwoCyclicRoutingData.two_le_agreementAtShift_antipodal_support
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (data : SizeTwoCyclicRoutingData q a)
+    (t : sizeTwoAllowedDifference q a)
+    (d : ZMod q) (hd : d ≠ 0) (horder : d + d = 0)
+    (hcap : data.AgreementAtShift t d)
+    (hne : ((Finset.univ : Finset (ZMod q)).filter fun x =>
+      0 < Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a data.perm x d t t)).Nonempty) :
+    2 ≤ ((Finset.univ : Finset (ZMod q)).filter fun x =>
+      0 < Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a data.perm x d t t)).card := by
+  have heven := data.agreementAtShift_antipodal_support_card_even
+    t d hd horder hcap
+  have hpos := Finset.card_pos.mpr hne
+  obtain ⟨k, hk⟩ := heven
+  omega
+
 end
 
 end Erdos85
@@ -144,3 +199,5 @@ end Erdos85
 #print axioms Erdos85.SizeTwoCyclicRoutingData.agreementAtShift_neg_iff
 #print axioms
   Erdos85.sizeTwoCrossShiftedPermutationAgreement_antipodal_sum_even
+#print axioms
+  Erdos85.SizeTwoCyclicRoutingData.agreementAtShift_antipodal_support_card_even
