@@ -68,6 +68,96 @@ theorem orderNine_order18_orient_articulation_shores
         hdisj.symm, hTS.2, hTS.1, hfullT, hTclosed, hSclosed,
         hTboundary, hSboundary⟩
 
+/-- Bookkeeping for the oriented `(18,59)` articulation.  Reinsert the
+deleted owner into the large shore.  The resulting sixty-point set is the
+ordinary complement of the small shore, is disjoint from the high triple,
+and has defect boundary two by cut symmetry and FullType. -/
+theorem orderNine_order18_largeOrdinaryShore_bookkeeping
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    (E : Finset V) (h₁ h₂ h₃ owner : V) (A B : Finset V)
+    (hownerO : owner ∈ (Finset.univ : Finset V) \ {h₁, h₂, h₃})
+    (hunion : A ∪ B =
+      ((Finset.univ : Finset V) \ {h₁, h₂, h₃}).erase owner)
+    (hdisj : Disjoint A B)
+    (hAcard : A.card = 18) (hBcard : B.card = 59)
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ A)
+    (hboundaryA : (∑ x ∈ A,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ A)).card) = (E ∩ A).card)
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) :
+    let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+    let R := insert owner B
+    R = O \ A ∧ R.card = 60 ∧ Disjoint R {h₁, h₂, h₃} ∧
+      (∑ x ∈ R, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ R)).card) = 2 := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let U := O.erase owner
+  let R := insert owner B
+  have hunion' : A ∪ B = U := by simpa [U, O, H] using hunion
+  have hAsubU : A ⊆ U := by
+    intro x hx
+    rw [← hunion']
+    exact Finset.mem_union_left B hx
+  have hBsubU : B ⊆ U := by
+    intro x hx
+    rw [← hunion']
+    exact Finset.mem_union_right A hx
+  have hAsubO : A ⊆ O := fun _ hx ↦ (Finset.mem_erase.mp (hAsubU hx)).2
+  have hBsubO : B ⊆ O := fun _ hx ↦ (Finset.mem_erase.mp (hBsubU hx)).2
+  have hownerB : owner ∉ B := by
+    intro hx
+    exact (Finset.mem_erase.mp (hBsubU hx)).1 rfl
+  have hRO : R ⊆ O := by
+    intro x hx
+    rcases Finset.mem_insert.mp hx with rfl | hxB
+    · exact hownerO
+    · exact hBsubO hxB
+  have hReq : R = O \ A := by
+    ext x
+    constructor
+    · intro hx
+      rcases Finset.mem_insert.mp hx with rfl | hxB
+      · refine Finset.mem_sdiff.mpr ⟨hownerO, ?_⟩
+        intro hownerA
+        exact (Finset.mem_erase.mp (hAsubU hownerA)).1 rfl
+      · exact Finset.mem_sdiff.mpr ⟨hBsubO hxB,
+          fun hxA ↦ Finset.disjoint_left.mp hdisj hxA hxB⟩
+    · intro hx
+      have hxO := (Finset.mem_sdiff.mp hx).1
+      have hxA := (Finset.mem_sdiff.mp hx).2
+      by_cases hxo : x = owner
+      · exact Finset.mem_insert.mpr (Or.inl hxo)
+      · have hxU : x ∈ U := Finset.mem_erase.mpr ⟨hxo, hxO⟩
+        rw [← hunion'] at hxU
+        rcases Finset.mem_union.mp hxU with hxA' | hxB
+        · exact (hxA hxA').elim
+        · exact Finset.mem_insert.mpr (Or.inr hxB)
+  have hRcard : R.card = 60 := by
+    dsimp [R]
+    rw [Finset.card_insert_of_notMem hownerB, hBcard]
+  have hRH : Disjoint R H := by
+    rw [Finset.disjoint_left]
+    intro x hxR hxH
+    exact (Finset.mem_sdiff.mp (hRO hxR)).2 hxH
+  have hsmallBoundary :
+      (∑ x ∈ A, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ A)).card) = 2 := by
+    rw [hboundaryA, hfull.2.1 hAcard]
+  have hcut := ordinary_complement_boundary_sum_eq
+    (secondOrderDefectGraph G) H A hAsubO hdefectHighIsolated
+  change (∑ x ∈ O \ A,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ (O \ A))).card) =
+    ∑ x ∈ A, ((secondOrderDefectGraph G).neighborFinset x ∩
+      (Finset.univ \ A)).card at hcut
+  rw [← hReq, hsmallBoundary] at hcut
+  exact ⟨hReq, hRcard, hRH, hcut⟩
+
 /-- In the oriented order-eighteen split, the sixty-point ordinary
 complement is `insert owner B`, and every high root has eight neighbors in
 it: two lie on the small shore, seven in `B`, and one is the owner. -/
@@ -1267,6 +1357,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
 
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
+#print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
 #print axioms Erdos85.orderNine_order18_high_neighbor_largeOrdinary_card_eq_eight
 #print axioms Erdos85.orderNine_order18_excessTwo_incidence_count_classification
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_moments
