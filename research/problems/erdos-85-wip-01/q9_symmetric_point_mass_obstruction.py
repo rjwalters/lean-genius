@@ -2404,6 +2404,16 @@ def main() -> None:
                 "candidate_count": candidate["candidate_count"],
                 "forced_card": candidate["forced_card"],
                 "is_residual_row": candidate["target"] in residual,
+                "has_residual_relation_neighbor": any(
+                    tuple(sorted((source, candidate["target"])))
+                    in relation_edges
+                    for source in residual
+                ),
+                "residual_relation_neighbors": sorted(
+                    source for source in residual
+                    if tuple(sorted((source, candidate["target"])))
+                    in relation_edges
+                ),
                 "reverse_contains_target": record["target"] in set(
                     contracted_residual_rows(
                         system, candidate["target"], local
@@ -2470,8 +2480,27 @@ def main() -> None:
                 bool(lexicographic_target_records) and all(
                     record["collision_star_matching_cover"]
                     ["minimum_degree_greedy_is_near_perfect"]
-                    for record in lexicographic_target_records
-                ),
+                for record in lexicographic_target_records
+            ),
+            "dual_terminal_failure_count": sum(
+                not record["all_lexicographic_color_selectors_close"]
+                and record["forced_card"]
+                    + record["collision_star_matching_cover"]["cover_card"]
+                    >= record["profiles"][0]["demand"]
+                for record in records
+            ),
+            "all_dual_terminal_failures_have_two_step_exchange": all(
+                record["all_lexicographic_color_selectors_close"]
+                or record["forced_card"]
+                    + record["collision_star_matching_cover"]["cover_card"]
+                    < record["profiles"][0]["demand"]
+                or record["locally_infeasible_residual_neighbors"]
+                or any(
+                    candidate["has_residual_relation_neighbor"]
+                    for candidate in record["lex_better_target_relations"]
+                )
+                for record in records
+            ),
             "all_pair_singleton_projections_injective": all(
                 profile["pair_singleton_projection_injective"]
                 for record in records for profile in record["profiles"]

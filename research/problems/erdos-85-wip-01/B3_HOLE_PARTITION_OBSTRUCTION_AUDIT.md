@@ -5738,6 +5738,34 @@ of `x`, and failure of that exchange is exactly nonexistence of a packing at
 Unlike (13bl'), (13bl'') is still only corpus-supported and must not be used
 as a theorem without the alternating-exchange proof.
 
+There is a stronger unified form which also explains every nonselected
+failure.  For a reverse-obstructed row `w` at which both strict terminals
+fail, the exhaustive audit finds `x in R(w)` and a row `z` with `H(x,z)` such
+that either
+
+```text
+z has no full local packing, or
+(n(z),-|F(z)|) <lex (n(w),-|F(w)|) and z is reverse-obstructed. (13bl''')
+```
+
+This holds for all nineteen dual-terminal failures in the durable payloads
+and for every failure in unconstrained random seeds 0 through 15.  It repairs
+the direct-descent failure (13bm) exactly: in the fixed-weight fixture,
+target 20 and its unique better target 30 have none of the four direct
+relations tested there, but target 30 is adjacent to residual rows
+`{26,35,37,44,45}` of target 20.  Likewise sparse failing target 21 reaches
+selected target 26 through residual rows `{16,40,44}`.  In the pinned
+selected countermodels no better target exists, and the same two-step
+relation instead reaches a locally infeasible row.
+
+Thus (13bl''') is the current preferred outer theorem.  At a lex-selected
+target on the all-row-feasible locus its two conclusions are both impossible,
+so it simultaneously proves the strict cover without separately establishing
+near-perfect matching or a global average.  Its proof should be sought as an
+alternating exchange starting from the local packing at `x` which contains
+`w`; the output row `z` is either where augmentation stops (no packing) or
+the improved reverse obstruction.  This remains an audited conjecture.
+
 A direct one-step descent along a barrier is also false.  The auditor now
 classifies every lexicographically better obstructed target by four most
 obvious relations to the failing target: membership in its residual family,
