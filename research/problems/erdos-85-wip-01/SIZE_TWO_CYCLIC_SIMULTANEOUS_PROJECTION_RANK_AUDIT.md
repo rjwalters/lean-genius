@@ -54,6 +54,19 @@ Every printed fixed-pair support has cardinality one, so all caps genuinely
 hold; fibre `4` has no internal step.  Since the exact hit equations are
 present, both rank-`7` projections are present as well.
 
+The otherwise identical reciprocal instance is UNSAT immediately: remove
+only `--directed` from the displayed command.  Thus the bounded A/B control
+changes exactly one family of equations and gives
+
+```text
+directed (no block transpose): SAT
+reciprocal block transpose:    UNSAT.
+```
+
+In the translation-invariant q8 class, reciprocity is therefore the entire
+observed feasibility separator after the projections, full caps, empty
+fibre, and looplessness have all been fixed.
+
 Thus no argument from the two projection ranks, their kernels, Cauchy--Binet
 minors of one block, the empty slab, and the full cap family can prove the
 merger.  Such data admit a countermodel even in the intended binary modulus.
