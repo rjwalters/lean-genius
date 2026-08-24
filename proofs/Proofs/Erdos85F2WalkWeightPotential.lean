@@ -48,6 +48,36 @@ theorem f2WalkWeight_reverse
       rw [SimpleGraph.Walk.reverse_cons, f2WalkWeight_append, ih]
       simp [hsymm, add_comm]
 
+/-- Additive edge prices telescope along every walk: only the two endpoint
+potentials remain. -/
+theorem f2WalkWeight_eq_endpointPotentialSum
+    {V : Type*} {G : SimpleGraph V} (k : V → V → ZMod 2)
+    (lam : V → ZMod 2)
+    (hpotential : ∀ {u v}, G.Adj u v → k u v = lam u + lam v)
+    {u v : V} (p : G.Walk u v) :
+    f2WalkWeight k p = lam u + lam v := by
+  induction p with
+  | nil =>
+      rw [f2WalkWeight_nil]
+      have hchar : (2 : ZMod 2) = 0 := by decide
+      rw [← two_mul, hchar, zero_mul]
+  | @cons u v w huv p ih =>
+      rw [f2WalkWeight_cons, hpotential huv, ih]
+      have hchar : (2 : ZMod 2) = 0 := by decide
+      rw [add_assoc, ← add_assoc (lam v), ← two_mul, hchar, zero_mul,
+        zero_add]
+
+/-- In particular, every closed walk has zero weight in the additive branch. -/
+theorem f2WalkWeight_closed_eq_zero_of_endpointPotential
+    {V : Type*} {G : SimpleGraph V} (k : V → V → ZMod 2)
+    (lam : V → ZMod 2)
+    (hpotential : ∀ {u v}, G.Adj u v → k u v = lam u + lam v)
+    {u : V} (p : G.Walk u u) :
+    f2WalkWeight k p = 0 := by
+  rw [f2WalkWeight_eq_endpointPotentialSum k lam hpotential p]
+  have hchar : (2 : ZMod 2) = 0 := by decide
+  rw [← two_mul, hchar, zero_mul]
+
 /-- Vanishing weight on every closed walk implies path independence. -/
 theorem f2WalkWeight_pathIndependent_of_closed_eq_zero
     {V : Type*} {G : SimpleGraph V} (k : V → V → ZMod 2)
@@ -145,3 +175,5 @@ end Erdos85
 #print axioms Erdos85.exists_vertexPotential_of_f2WalkWeight_pathIndependent
 #print axioms Erdos85.exists_vertexPotential_of_f2WalkWeight_closed_eq_zero
 #print axioms Erdos85.exists_closedWalk_weight_one_or_exists_vertexPotential
+#print axioms Erdos85.f2WalkWeight_eq_endpointPotentialSum
+#print axioms Erdos85.f2WalkWeight_closed_eq_zero_of_endpointPotential
