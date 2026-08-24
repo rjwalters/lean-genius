@@ -110,6 +110,33 @@ theorem sizeTwoCyclicColumnTargetDifference_reverse
   exact code.reverse_targetDifference x t
     ((code.toPermutationCode.perm x t).symm c)
 
+/-- Coordinate form of moving-column transport.  Reversal sends the route
+to relative column `t-r`, hence to absolute column `x+t`, and sends its
+target fibre back to `t`. -/
+theorem sizeTwoCyclicColumnTargetDifference_reverse_coordinates
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x : ZMod q) (c : SizeTwoAdmissibleTargetColumn q)
+    (t : sizeTwoAllowedDifference q a) :
+    let r : SizeTwoAdmissibleTargetRow q t.1 :=
+      (code.toPermutationCode.perm x t).symm c
+    let u := code.targetDifference x t r
+    let reverseRow : SizeTwoAdmissibleTargetRow q u.1 :=
+      ⟨-r.1, code.reverse_admissible x t r⟩
+    let reverseColumn : SizeTwoAdmissibleTargetColumn q :=
+      code.toPermutationCode.perm (x + r.1) u reverseRow
+    reverseColumn.1 = t.1 - r.1 ∧
+      (x + r.1) + reverseColumn.1 = x + t.1 ∧
+      sizeTwoCyclicColumnTargetDifference code (x + r.1)
+        reverseColumn u = t := by
+  dsimp only
+  have hcolumn := code.reciprocity x t
+    ((code.toPermutationCode.perm x t).symm c)
+  refine ⟨hcolumn, ?_, ?_⟩
+  · rw [hcolumn]
+    abel
+  · exact sizeTwoCyclicColumnTargetDifference_reverse code x c t
+
 /-- Relative monodromy between the fibre permutations on two admissible
 source-base/column slices.  For adjacent bases, choosing their two outer
 absolute columns gives the boundary monodromy from the PMR audit. -/
@@ -140,4 +167,6 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicColumnTargetDifference_injective
 #print axioms Erdos85.sizeTwoCyclicColumnTargetDifferenceEquiv
 #print axioms Erdos85.sizeTwoCyclicColumnTargetDifference_reverse
+#print axioms
+  Erdos85.sizeTwoCyclicColumnTargetDifference_reverse_coordinates
 #print axioms Erdos85.sizeTwoCyclicColumnMonodromy_symm
