@@ -211,3 +211,54 @@ reciprocity rather than following from the two exact-hit families alone.
 The hard low-rank case is consequently concentrated in the even hole phases:
 `a=0` already has cap-free minimum total rank 78, while `a=2` reaches rank
 `q^2=64` and is the sharp WSP phase studied above.
+
+## Aggregate transpose symmetry is insufficient
+
+Full reciprocity implies the aggregate transpose law
+
+```text
+sum_x m_x(t,u) = sum_x m_x(u,t),
+```
+
+formalized as `sizeTwoCyclicTargetDifferenceMultiplicity_sum_symm`.  It is
+tempting to combine this with the fixed-base doubly-stochastic margins and
+the exact affine row moments and discard the base-resolved route tensor.
+That relaxation is too weak.
+
+For q8/a2, put the allowed fibres in the order `[0,1,3,4,6,7]`.  A HiGHS
+integer-feasibility solve found four fixed-base multiplicity matrices,
+repeated with period four over the eight bases, satisfying:
+
+```text
+each row and column sum = 6;
+sum_u m_x(t,u) u = 2(t+1) mod 8;
+sum_x m_x(t,u) = sum_x m_x(u,t);
+total zero count over eight bases = 62;
+selected zero count in window 0 = 7.
+```
+
+The zero counts of the four matrices are `[7,8,8,8]`.  Thus the repeated
+relaxation has global rank `62 < q^2` while violating PMR.  The affine
+moments include their order-two reductions, so adding the all-row Fourier
+parity theorem does not remove this countermodel.
+
+One explicit certificate (rows and columns in the fibre order above) is:
+
+```text
+M0 = [[1,1,1,2,1,0], [2,1,0,0,2,1], [1,0,1,2,1,1],
+      [1,2,1,0,1,1], [1,1,1,1,0,2], [0,1,2,1,1,1]]
+M1 = [[0,2,2,1,1,0], [2,0,1,1,1,1], [2,0,0,1,1,2],
+      [2,1,0,1,1,1], [0,2,1,1,1,1], [0,1,2,1,1,1]]
+M2 = [[0,2,2,1,1,0], [2,0,1,1,1,1], [1,2,1,1,0,1],
+      [1,0,1,1,2,1], [1,0,0,1,2,2], [1,2,1,1,0,1]]
+M3 = [[2,1,0,1,1,1], [0,2,1,2,0,1], [1,1,1,0,1,2],
+      [1,1,2,1,0,1], [2,1,1,1,1,0], [0,0,1,1,3,1]]
+```
+
+Consequently WSP cannot be proved from fixed-base margins, all local
+moments, and aggregate transpose symmetry alone.  A successful invariant
+must retain the base-resolved reciprocity coordinates of the directed
+darts (or equivalent information stronger than the aggregate multiplicity
+matrix).  This is a positive scope cut for the group-ring approach: its
+coefficients must remember route displacement/base, not only source and
+target fibre labels.
