@@ -82,3 +82,26 @@ double supports are already antipodal.  The q12 model is a negative control
 for binary termination, not necessarily for one local doubling step.  A q16
 SAT witness with tuple supports is the first decisive test of the proposed
 local transport in the intended binary family.
+
+Two weaker controls sharpen the required hypotheses:
+
+- At `q=8,a=2` with only caps `(0,1)` and `(0,2)`, a SAT model has double
+  supports at separation `d=2` but no double support at `2d=4` in any fibre.
+  Thus even the weak statement "some double survives at doubled separation"
+  is false from binary arithmetic, reciprocity, and those two caps alone.
+  The third q8 cap `(4,1)` is essential: after adding it, the observed double
+  supports are all already antipodal.
+- In the q12 five-cap empty-middle model (random seed 7), double supports
+  occur globally along the separation chain
+
+  ```text
+  5 -> 10 -> 8 -> 4 -> 8.
+  ```
+
+  This does not verify intact target transport, but it exactly realizes the
+  nonterminating doubling dynamics predicted by the surviving odd factor.
+
+Hence a plausible local theorem must consume the full three/four-short cap
+pattern, not merely the two punctures and reciprocity.  Its q16 falsifier
+must compare actual target pairs and owner fibres, not only existence of a
+double somewhere at `2d`.
