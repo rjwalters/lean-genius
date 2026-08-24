@@ -1442,6 +1442,204 @@ theorem false_of_orderNine_order27_fourEdge_handshake
     G U W hUsub
   omega
 
+/-- Final graph-facing dispatcher for audit (22).  The punctured articulation
+data supplies the common five-point budget.  In the three-edge branch all
+three owner-neighbors are exceptional and independent, with shore split
+`2+1`, giving left mass seven.  In the four-edge branch the local set is one
+exceptional point plus an adjacent regular pair, giving left mass at least
+eight and internal mass exactly two.  Both contradict the common budget
+five. -/
+theorem false_of_orderNine_order27_handshake_of_punctured_articulation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (A S T B Z W H : Finset V)
+    (hownerNotA : owner ∉ A)
+    (hunion : S ∪ T = A) (hdisj : Disjoint S T)
+    (hneighborsPunctured : ∀ x ∈ A,
+      (secondOrderDefectGraph G).neighborFinset x ⊆ insert owner A)
+    (hSclosed : ∀ x ∈ S,
+      (secondOrderDefectGraph G).neighborFinset x ∩ A ⊆ S)
+    (hTclosed : ∀ x ∈ T,
+      (secondOrderDefectGraph G).neighborFinset x ∩ A ⊆ T)
+    (hB : B = S)
+    (heq20 : ∀ x : V,
+      (((secondOrderDefectGraph G).neighborFinset x ∩ B).card : ℤ) =
+        8 * (if x ∈ B then 1 else 0) - 4 -
+          6 * (if x ∈ H then 1 else 0) +
+          ((G.neighborFinset x ∩ Z).card : ℤ))
+    (hWsubA : W ⊆ A)
+    (hWsubB0 : W ⊆ squareOrderNineLowIncidenceBin G 0)
+    (hWH : Disjoint W H)
+    (hWcard : W.card = 8)
+    (hUeq : G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 =
+      G.neighborFinset owner ∩ W)
+    (hUcard :
+      (G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0).card = 3)
+    (heq21 : ∀ y ∈ W,
+      (G.neighborFinset y ∩ Z).card =
+        (G.neighborFinset y ∩ W).card +
+          if G.Adj y owner then 1 else 3)
+    (hExceptionalLarge :
+      (((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0) ∩
+        (secondOrderDefectGraph G).neighborFinset owner) ∩ B).card = 2)
+    (hlocAlt : (G.induce (G.neighborSet owner)).edgeFinset.card = 3 ∨
+      (G.induce (G.neighborSet owner)).edgeFinset.card = 4) : False := by
+  classical
+  let U := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0
+  let E := U ∩ (secondOrderDefectGraph G).neighborFinset owner
+  let R := U \ (secondOrderDefectGraph G).neighborFinset owner
+  have hright :
+      (∑ y ∈ W \ U, (G.neighborFinset y ∩ W).card) ≤ 5 := by
+    apply orderNine_order27_complement_W_degree_sum_le_five_of_punctured_shores
+      G hfree hmin hcover hcard owner A S T B Z W U H hownerNotA
+        hunion hdisj hneighborsPunctured hSclosed hTclosed hB heq20
+        hWsubA hWsubB0 hWH hWcard
+    · simpa [U] using hUeq
+    · simpa [U] using hUcard
+    · exact heq21
+  rcases hlocAlt with hthree | hfour
+  · have hUBcard : (U ∩ B).card = 2 := by
+      exact orderNine_order27_threeEdge_owner_neighbors_large_card_eq_two
+        G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 owner howner B
+          hthree (by simpa [U, E] using hExceptionalLarge)
+    have hpackage := orderNine_secondProfile_owner_binZero_local_type_package
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+    dsimp only at hpackage
+    have hRempty : R = ∅ := by
+      apply Finset.card_eq_zero.mp
+      rcases hpackage with hp3 | hp4
+      · simpa [R, U] using hp3.2
+      · omega
+    have hUsubD : U ⊆ (secondOrderDefectGraph G).neighborFinset owner := by
+      intro y hyU
+      by_contra hyD
+      have hyR : y ∈ R := Finset.mem_sdiff.mpr ⟨hyU, hyD⟩
+      rw [hRempty] at hyR
+      exact Finset.notMem_empty y hyR
+    have hdegree : ∀ u ∈ U,
+        (G.neighborFinset u ∩ W).card = if u ∈ B then 2 else 3 := by
+      intro u hu
+      have huW : u ∈ W := by
+        have hu' : u ∈ G.neighborFinset owner ∩ W := by
+          rw [← hUeq]
+          exact hu
+        exact (Finset.mem_inter.mp hu').2
+      have huZ :=
+        orderNine_order27_binZero_lowSet_degree_eq_if_of_punctured_owner
+          G hfree hmin hcover hcard owner A S T B Z H hownerNotA
+            hunion hdisj hneighborsPunctured hSclosed hTclosed hB heq20
+            u (hWsubA huW) (Finset.mem_inter.mp hu).2 (hUsubD hu)
+            (fun huH ↦ Finset.disjoint_left.mp hWH huW huH)
+      have h21 := heq21 u huW
+      have huAdj : G.Adj u owner := (G.adj_comm owner u).mp
+        ((G.mem_neighborFinset owner u).mp (Finset.mem_inter.mp hu).1)
+      by_cases huB : u ∈ B <;>
+        simp [huB, huAdj] at huZ h21 ⊢ <;> omega
+    have hind : ∀ u ∈ U, (G.neighborFinset u ∩ U).card = 0 := by
+      intro u hu
+      rw [Finset.card_eq_zero]
+      ext v
+      constructor
+      · intro hv
+        have hvp := Finset.mem_inter.mp hv
+        have huExceptional : u ∈
+            G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0 ∩
+              (secondOrderDefectGraph G).neighborFinset owner :=
+          Finset.mem_inter.mpr ⟨hu, hUsubD hu⟩
+        have hvOwner : G.Adj owner v :=
+          (G.mem_neighborFinset owner v).mp (Finset.mem_inter.mp hvp.2).1
+        exact (orderNine_secondProfile_owner_defect_binZero_avoids_owner_neighbors
+          G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+            huExceptional hvOwner
+              ((G.mem_neighborFinset u v).mp hvp.1)).elim
+      · simp
+    have hleft := orderNine_order27_threeEdge_W_degree_sum_eq_seven
+      G U B W (by simpa [U] using hUcard) hUBcard hdegree
+    have hUsubW : U ⊆ W := by
+      intro u hu
+      have : u ∈ G.neighborFinset owner ∩ W := by rw [← hUeq]; exact hu
+      exact (Finset.mem_inter.mp this).2
+    have hle := sum_neighbor_inter_card_le_complement_of_independent
+      G U W hUsubW hind
+    omega
+  · have hgeom := orderNine_secondProfile_owner_four_edge_binZero_partition
+      G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner hfour
+    dsimp only at hgeom
+    have hERdisj : Disjoint E R := by
+      rw [Finset.disjoint_left]
+      intro x hxE hxR
+      exact (Finset.mem_sdiff.mp hxR).2 (Finset.mem_inter.mp hxE).2
+    have hUunion : U = E ∪ R := by
+      ext x
+      constructor
+      · intro hx
+        by_cases hxd : x ∈ (secondOrderDefectGraph G).neighborFinset owner
+        · exact Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨hx, hxd⟩)
+        · exact Finset.mem_union_right _ (Finset.mem_sdiff.mpr ⟨hx, hxd⟩)
+      · intro hx
+        rcases Finset.mem_union.mp hx with hxE | hxR
+        · exact (Finset.mem_inter.mp hxE).1
+        · exact (Finset.mem_sdiff.mp hxR).1
+    have hEdegree : ∀ e ∈ E, 2 ≤ (G.neighborFinset e ∩ W).card := by
+      intro e he
+      have heU := (Finset.mem_inter.mp he).1
+      have heW : e ∈ W := by
+        have : e ∈ G.neighborFinset owner ∩ W := by rw [← hUeq]; exact heU
+        exact (Finset.mem_inter.mp this).2
+      have heZ :=
+        orderNine_order27_binZero_lowSet_degree_eq_if_of_punctured_owner
+          G hfree hmin hcover hcard owner A S T B Z H hownerNotA
+            hunion hdisj hneighborsPunctured hSclosed hTclosed hB heq20
+            e (hWsubA heW) (Finset.mem_inter.mp heU).2
+            (Finset.mem_inter.mp he).2
+            (fun heH ↦ Finset.disjoint_left.mp hWH heW heH)
+      have h21 := heq21 e heW
+      have heAdj : G.Adj e owner := (G.adj_comm owner e).mp
+        ((G.mem_neighborFinset owner e).mp (Finset.mem_inter.mp heU).1)
+      by_cases heB : e ∈ B <;> simp [heB, heAdj] at heZ h21 <;> omega
+    have hRdegree : ∀ r ∈ R, (G.neighborFinset r ∩ W).card = 3 := by
+      intro r hr
+      have hrU := (Finset.mem_sdiff.mp hr).1
+      have hrW : r ∈ W := by
+        have : r ∈ G.neighborFinset owner ∩ W := by rw [← hUeq]; exact hrU
+        exact (Finset.mem_inter.mp this).2
+      have hrZ := orderNine_order27_binZero_lowSet_degree_four_of_punctured_shores
+        G hfree hmin hcover hcard owner A S T B Z H hunion hdisj
+          hneighborsPunctured hSclosed hTclosed hB heq20 r (hWsubA hrW)
+          (Finset.mem_inter.mp hrU).2 (Finset.mem_sdiff.mp hr).2
+          (fun hrH ↦ Finset.disjoint_left.mp hWH hrW hrH)
+      have h21 := heq21 r hrW
+      have hrAdj : G.Adj r owner := (G.adj_comm owner r).mp
+        ((G.mem_neighborFinset owner r).mp (Finset.mem_inter.mp hrU).1)
+      simp [hrAdj] at h21
+      omega
+    have hleft := orderNine_order27_fourEdge_W_degree_sum_ge_eight
+      G E R U W (by simpa [E, U] using hgeom.1)
+        (by simpa [R, U] using hgeom.2.1) hERdisj hUunion hEdegree hRdegree
+    have hinternal := orderNine_order27_fourEdge_internal_degree_sum_eq_two
+      G E R U (by simpa [E, U] using hgeom.1)
+        (by simpa [R, U] using hgeom.2.1) hERdisj hUunion
+        (by simpa [E, R, U] using hgeom.2.2.1)
+        (by simpa [E, R, U] using hgeom.2.2.2)
+    have hUsubW : U ⊆ W := by
+      intro u hu
+      have : u ∈ G.neighborFinset owner ∩ W := by rw [← hUeq]; exact hu
+      exact (Finset.mem_inter.mp this).2
+    exact false_of_orderNine_order27_fourEdge_handshake
+      G U W hUsubW hleft hinternal hright
+
 /-- Erasing an ordinary owner from the target of a `5/6` partition changes
 exactly its six ordinary neighbors from the upper class to the lower class.
 This is the missing transfer between the 51-point unpunctured complement
@@ -1630,6 +1828,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms false_of_orderNine_order27_threeEdge_handshake
 #print axioms sum_neighbor_inter_card_le_internal_add_complement
 #print axioms false_of_orderNine_order27_fourEdge_handshake
+#print axioms false_of_orderNine_order27_handshake_of_punctured_articulation
 #print axioms orderNine_lowSet_five_erase_owner_eq_union_neighbors
 #print axioms orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 
