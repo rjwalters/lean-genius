@@ -75,3 +75,30 @@ parity-zero components, nor unweighted boundary-monodromy cycles explain
 PMR.  A viable boundary argument must retain labels/weights (missing and
 positive-excess tokens, or the parity charge `Q`) rather than just support
 connectivity.
+
+## Weighted PMR dips have a global rank cost
+
+The repeatable option `--max-parity-missing-at-adjacent-bases` allows
+several window bounds in one query.  Write a *dip* for `M(x) <= q-1`.
+At q8/a2 without caps, exact threshold queries give:
+
+| prescribed dip windows | largest UNSAT rank bound | first SAT rank bound |
+|---|---:|---:|
+| `{0}` | 65 | 66 |
+| `{0,2}` | 67 | 68 |
+| `{0,2,4}` | 67 | 68 |
+| `{0,2,4,6}` | 67 | 68 |
+| adjacent `{0,1}` | 70 | at most 72 |
+
+Thus dips need not be unique and four alternating dips are compatible with
+rank `q^2+4`; a linear independent cost per dip is false.  But every tested
+dip costs at least two ranks above `q^2`, and adjacency is substantially
+more expensive.  Across eight unconstrained rank-70 samples, the weighted
+window-surplus sequence has exactly one value `2`, all other values at least
+`4`, and total `44=2(sum R-q(q-2))` as forced by the balanced-cut identity.
+
+This leaves a sharper structural target than connectivity: prove that one
+window surplus `2` forces total surplus strictly above `4q` (parity then
+suggests the observed two-rank gap).  That implication alone proves PMR
+under `sum R <= q^2`; no classification or pairing of all positive rows is
+needed.
