@@ -90,6 +90,41 @@ theorem sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum
   rw [sizeTwoCyclicTargetDifferenceMultiplicity_weighted_sum hq code x t,
     sizeTwoAllowedDifference_sum q a ha]
 
+/-- At even order, the weighted deviations from the all-ones profiles on a
+reflected pair of source fibres are additive inverses.  This is the defect
+form of the constant reflection-pair displacement charge. -/
+theorem sizeTwoCyclicTargetDifferenceMultiplicity_reflectionPair_deviation_sum
+    {q : ℕ} [NeZero q] (hq : 2 ≤ q) {a : ZMod q}
+    (ha : a ≠ -1 - a)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x : ZMod q) (t : sizeTwoAllowedDifference q a) :
+    ((∑ u : sizeTwoAllowedDifference q a,
+        (sizeTwoCyclicTargetDifferenceMultiplicity code x t u : ZMod q) * u.1) -
+      (∑ u : sizeTwoAllowedDifference q a, u.1)) +
+    ((∑ u : sizeTwoAllowedDifference q a,
+        (sizeTwoCyclicTargetDifferenceMultiplicity code x
+          (sizeTwoAllowedDifferenceReflection q a t) u : ZMod q) * u.1) -
+      (∑ u : sizeTwoAllowedDifference q a, u.1)) = 0 := by
+  rw [sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum hq ha,
+    sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum hq ha,
+    sizeTwoAllowedDifferenceReflection_val]
+  have htriNat :
+      2 * (q * (q - 1) / 2) = q * (q - 1) :=
+    Nat.two_mul_div_two_of_even (Nat.even_mul_pred_self q)
+  have htri :
+      (2 : ZMod q) * ((q * (q - 1) / 2 : ℕ) : ZMod q) = 0 := by
+    calc
+      (2 : ZMod q) * ((q * (q - 1) / 2 : ℕ) : ZMod q) =
+          ((2 * (q * (q - 1) / 2) : ℕ) : ZMod q) := by norm_num
+      _ = ((q * (q - 1) : ℕ) : ZMod q) := by rw [htriNat]
+      _ = 0 := by simp
+  have htri' :
+      ((q * (q - 1) / 2 : ℕ) : ZMod q) * 2 = 0 := by
+    simpa [mul_comm] using htri
+  calc
+    _ = -(((q * (q - 1) / 2 : ℕ) : ZMod q) * 2) := by ring
+    _ = 0 := by rw [htri']; simp
+
 /-- In the sharp one-collision regime, a row has one duplicated target
 fiber and one missing target fiber.  Their cyclic displacement is forced by
 the source fiber.  This is the concrete positional datum that reciprocity
@@ -160,4 +195,5 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_sum
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_weighted_sum
 #print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum
+#print axioms Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_reflectionPair_deviation_sum
 #print axioms Erdos85.sizeTwoCyclic_singleDuplicateMissing_displacement
