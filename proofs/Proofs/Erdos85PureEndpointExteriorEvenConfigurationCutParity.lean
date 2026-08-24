@@ -205,6 +205,128 @@ theorem c4Free_binarySquare_pureEndpoint_exists_large_even_configuration_interna
   rw [← hfilters]
   exact hinter
 
+/-- Pointwise cut law for the extracted circuit: the number of exterior rows
+outside `T` meeting a selected row has the same parity as that row's number
+of full-center defect holes. -/
+theorem c4Free_binarySquare_pureEndpoint_exists_large_even_configuration_cutParity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V)
+    (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    let F := fullLineCenters G S q
+    let W := {w : V // w ∈ Fᶜ}
+    let P := {y : V // y ∈ S}
+    let row := fun w : W => G.neighborFinset w.1 ∩ S
+    ∃ T : Finset W, T.Nonempty ∧ m + 1 ≤ T.card ∧
+      (∀ y : P, Even ((T.filter fun w => G.Adj w.1 y.1).card)) ∧
+      ∀ w ∈ T,
+        Even (((secondOrderDefectGraph G).neighborFinset w.1 ∩ F).card +
+          (((univ : Finset W) \ T).filter fun u =>
+            (row w ∩ row u).Nonempty).card) := by
+  classical
+  dsimp only
+  let F := fullLineCenters G S q
+  let W := {w : V // w ∈ Fᶜ}
+  let P := {y : V // y ∈ S}
+  let row : W → Finset V := fun w => G.neighborFinset w.1 ∩ S
+  obtain ⟨T, hT, hlarge, heven, hinternal⟩ :=
+    c4Free_binarySquare_pureEndpoint_exists_large_even_configuration_internalParity
+      G hfree hq hqm hreg hcard S hempty hCcard hshore htri
+  have hdegree := c4Free_binarySquare_pureEndpoint_exterior_rowIntersection_degree
+    G hfree hq hqm hreg hcard S hempty hCcard hshore htri
+  refine ⟨T, hT, hlarge, heven, ?_⟩
+  intro w hwT
+  let I := (T.erase w).filter fun u => (row w ∩ row u).Nonempty
+  let C := ((univ : Finset W) \ T).filter fun u =>
+    (row w ∩ row u).Nonempty
+  let A := ((univ : Finset W).erase w).filter fun u =>
+    (row w ∩ row u).Nonempty
+  let H := ((secondOrderDefectGraph G).neighborFinset w.1 ∩ F).card
+  have hpart : A = I ∪ C := by
+    ext u
+    simp only [A, I, C, mem_filter, mem_erase, mem_univ, true_and,
+      mem_union, mem_sdiff]
+    constructor
+    · rintro ⟨huw, hmeet⟩
+      by_cases huT : u ∈ T
+      · exact Or.inl ⟨⟨huw.1, huT⟩, hmeet⟩
+      · exact Or.inr ⟨huT, hmeet⟩
+    · rintro (⟨⟨huw, _huT⟩, hmeet⟩ | ⟨_huNotT, hmeet⟩)
+      · exact ⟨⟨huw, trivial⟩, hmeet⟩
+      · exact ⟨⟨(fun huwEq => _huNotT (huwEq ▸ hwT)), trivial⟩, hmeet⟩
+  have hdis : Disjoint I C := by
+    rw [Finset.disjoint_left]
+    intro u huI huC
+    exact (mem_sdiff.mp (mem_filter.mp huC).1).2
+      (mem_erase.mp (mem_filter.mp huI).1).2
+  have hcardPart : A.card = I.card + C.card := by
+    rw [hpart, card_union_of_disjoint hdis]
+  have hAcard : A.card = m * (q - 3) + H := by
+    have hwR : w.1 ∈ (Fᶜ : Finset V) := by simpa [F] using w.2
+    have hdegData := hdegree w.1 hwR
+    let R := (Fᶜ : Finset V)
+    let B : V → Finset V := fun v => G.neighborFinset v ∩ S
+    let meetV := (R.erase w.1).filter fun v =>
+      ((B w.1) ∩ (B v)).Nonempty
+    have himage : A.image (fun u => u.1) = meetV := by
+      ext v
+      constructor
+      · intro hv
+        obtain ⟨u, huA, rfl⟩ := mem_image.mp hv
+        have huData := mem_filter.mp huA
+        have huwVal : u.1 ≠ w.1 := fun h =>
+          (mem_erase.mp huData.1).1 (Subtype.ext h)
+        exact mem_filter.mpr ⟨mem_erase.mpr ⟨huwVal, u.2⟩,
+          by simpa [row, B] using huData.2⟩
+      · intro hv
+        have hvData := mem_filter.mp hv
+        have hvR := (mem_erase.mp hvData.1).2
+        let u : W := ⟨v, hvR⟩
+        apply mem_image.mpr
+        refine ⟨u, mem_filter.mpr ⟨mem_erase.mpr ⟨?_, mem_univ _⟩, ?_⟩, rfl⟩
+        · intro huv
+          exact (mem_erase.mp hvData.1).1 (congrArg Subtype.val huv)
+        · simpa [row, B] using hvData.2
+    calc
+      A.card = (A.image fun u => u.1).card :=
+        (card_image_of_injective _ Subtype.val_injective).symm
+      _ = meetV.card := congrArg card himage
+      _ = m * (q - 3) + H := by
+        rw [hdegData.1, hdegData.2]
+  have hInternalEven : Even (m + I.card) := by
+    simpa [I, row] using hinternal w hwT
+  have hqEven : Even (q - 2) := by
+    refine ⟨m - 1, ?_⟩
+    omega
+  have hbaseEven : Even (m * (q - 3) + m) := by
+    have hbaseEq : m * (q - 3) + m = m * (q - 2) := by
+      have hsub : (q - 3) + 1 = q - 2 := by omega
+      calc
+        m * (q - 3) + m = m * ((q - 3) + 1) := by ring
+        _ = m * (q - 2) := by rw [hsub]
+    rw [hbaseEq]
+    exact hqEven.mul_left m
+  have hsumEven : Even ((H + C.card) + (m + I.card)) := by
+    have heq : (H + C.card) + (m + I.card) =
+        (H + H) + (m * (q - 3) + m) := by
+      omega
+    rw [heq]
+    exact (show Even (H + H) from ⟨H, rfl⟩).add hbaseEven
+  change Even (H + C.card)
+  exact (Nat.even_add.mp hsumEven).mpr hInternalEven
+
 end
 
 end Erdos85
@@ -212,3 +334,5 @@ end Erdos85
 #print axioms Erdos85.linear_even_configuration_internal_meeting_add_uniform_even
 #print axioms
   Erdos85.c4Free_binarySquare_pureEndpoint_exists_large_even_configuration_internalParity
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_exists_large_even_configuration_cutParity
