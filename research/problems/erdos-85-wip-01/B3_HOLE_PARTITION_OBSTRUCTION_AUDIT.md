@@ -5567,3 +5567,21 @@ the remaining outer lemma need not mention point weights, point-cover images,
 or rank deficits at all.  It should produce the target row and the finite
 group family described in (13bg), prove a shared block point for each group,
 and discharge the strict group count.
+
+The near-perfect matching also has a deterministic elimination certificate
+on the corpus.  After removing the optional star, repeatedly:
+
+```text
+choose a remaining row of minimum positive collision degree;
+match it to a neighbor of maximum remaining collision degree;
+delete the pair.                                               (13bh)
+```
+
+With row number only as an irrelevant tie-breaker, (13bh) leaves at most one
+unmatched row at every lexicographically selected target in all ten
+row-feasible payloads.  This includes the sparse and no-single-special graphs,
+which contain claws and therefore are not covered by a naive claw-free
+theorem.  The auditor emits and checks the entire greedy pairing.  This offers
+a constructive alternative to formalizing a general maximum-matching result:
+an outer proof may establish that the minimum-degree elimination cannot strand
+two isolated candidates, using the selected row's global minimality.

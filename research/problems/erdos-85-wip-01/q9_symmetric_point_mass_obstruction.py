@@ -619,6 +619,38 @@ def contracted_collision_star_matching_cover(
         for row in rows
     ):
         raise RuntimeError("collision-star matching cover misses a row")
+    greedy_remaining = set(
+        rows if certificate["triple_star"] is None
+        else [row for row in rows if row not in certificate["triple_star"][1]]
+    )
+    greedy_matching = []
+    while True:
+        adjacency = {
+            row: sorted(
+                other for other in greedy_remaining if other != row
+                and system["blocks"][row] & system["blocks"][other]
+            )
+            for row in greedy_remaining
+        }
+        positive = [row for row in greedy_remaining if adjacency[row]]
+        if not positive:
+            break
+        first = min(positive, key=lambda row: (len(adjacency[row]), row))
+        second = min(
+            adjacency[first],
+            key=lambda row: (-len(adjacency[row]), row),
+        )
+        point = min(system["blocks"][first] & system["blocks"][second])
+        greedy_matching.append([first, second, point])
+        greedy_remaining.remove(first)
+        greedy_remaining.remove(second)
+    certificate["minimum_degree_greedy_matching"] = greedy_matching
+    certificate["minimum_degree_greedy_unmatched_rows"] = sorted(
+        greedy_remaining
+    )
+    certificate["minimum_degree_greedy_is_near_perfect"] = (
+        len(greedy_remaining) <= 1
+    )
     certificate["candidate_count"] = len(rows)
     certificate["remaining_after_star_count"] = (
         len(rows) if certificate["triple_star"] is None else len(rows) - 3
@@ -2261,6 +2293,12 @@ def main() -> None:
                 bool(lexicographic_target_records) and all(
                     record["collision_star_matching_cover"]
                     ["remaining_matching_is_near_perfect"]
+                    for record in lexicographic_target_records
+                ),
+            "all_lexicographic_targets_greedy_match_near_perfectly":
+                bool(lexicographic_target_records) and all(
+                    record["collision_star_matching_cover"]
+                    ["minimum_degree_greedy_is_near_perfect"]
                     for record in lexicographic_target_records
                 ),
             "all_pair_singleton_projections_injective": all(
