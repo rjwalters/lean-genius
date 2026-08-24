@@ -13,6 +13,8 @@ namespace Erdos85
 
 noncomputable section
 
+open SimpleGraph
+
 /-- Points of line `i` which do not occur in its intersection with any other
 line of the family. -/
 def partialBaerPrivatePoints
@@ -105,9 +107,83 @@ theorem exists_injective_partialBaer_privatePoint
   by_contra hij
   exact (hp i).2 j (fun hji => hij hji.symm) (hpij ▸ (hp j).1)
 
+/-- Graph-facing endpoint form.  A family `E` of `q` vertices whose
+neighborhood lines have size `q`, meet pairwise once, and have point
+replication at most two admits an injective private-neighbor matching.
+Moreover the matched point of `i` has `i` as its unique neighbor in `E`. -/
+theorem exists_injective_privateNeighbor_of_endpointProfile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {q : ℕ} (E : Finset V) (hEcard : E.card = q)
+    (hline : ∀ i ∈ E, G.degree i = q)
+    (hpair : ∀ i ∈ E, ∀ j ∈ E, i ≠ j →
+      (G.neighborFinset i ∩ G.neighborFinset j).card = 1)
+    (hcap : ∀ x, (G.neighborFinset x ∩ E).card ≤ 2) :
+    ∃ p : {i // i ∈ E} → V, Function.Injective p ∧
+      ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ E = {i.1} := by
+  classical
+  let I := {i // i ∈ E}
+  let L : I → Finset V := fun i => G.neighborFinset i.1
+  have hindex : Fintype.card I = q := by
+    simpa [I] using hEcard
+  have hline' : ∀ i, (L i).card = q := by
+    intro i
+    rw [show L i = G.neighborFinset i.1 by rfl,
+      G.card_neighborFinset_eq_degree, hline i.1 i.2]
+  have hpair' : ∀ i j, i ≠ j → (L i ∩ L j).card = 1 := by
+    intro i j hij
+    exact hpair i.1 i.2 j.1 j.2 (fun h => hij (Subtype.ext h))
+  have htriple : ∀ x i j k, x ∈ L i → x ∈ L j → x ∈ L k →
+      i = j ∨ i = k ∨ j = k := by
+    intro x i j k hxi hxj hxk
+    by_contra h
+    push Not at h
+    have hsub : ({i.1, j.1, k.1} : Finset V) ⊆
+        G.neighborFinset x ∩ E := by
+      intro y hy
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+      rcases hy with rfl | rfl | rfl
+      · exact Finset.mem_inter.mpr ⟨by
+          simpa [L, SimpleGraph.mem_neighborFinset, G.adj_comm] using hxi, i.2⟩
+      · exact Finset.mem_inter.mpr ⟨by
+          simpa [L, SimpleGraph.mem_neighborFinset, G.adj_comm] using hxj, j.2⟩
+      · exact Finset.mem_inter.mpr ⟨by
+          simpa [L, SimpleGraph.mem_neighborFinset, G.adj_comm] using hxk, k.2⟩
+    have hdistinct : i.1 ≠ j.1 ∧ i.1 ≠ k.1 ∧ j.1 ≠ k.1 := by
+      exact ⟨fun hij => h.1 (Subtype.ext hij),
+        fun hik => h.2.1 (Subtype.ext hik),
+        fun hjk => h.2.2 (Subtype.ext hjk)⟩
+    have hthree : ({i.1, j.1, k.1} : Finset V).card = 3 := by
+      simp [hdistinct.1, hdistinct.2.1, hdistinct.2.2]
+    have := Finset.card_le_card hsub
+    rw [hthree] at this
+    have hcapx := hcap x
+    omega
+  obtain ⟨p, hpInjective, hp⟩ :=
+    exists_injective_partialBaer_privatePoint L hindex hline' hpair' htriple
+  refine ⟨p, hpInjective, ?_⟩
+  intro i
+  have hpi := hp i
+  constructor
+  · simpa [L, SimpleGraph.mem_neighborFinset] using hpi.1
+  · apply Finset.eq_singleton_iff_unique_mem.mpr
+    constructor
+    · exact Finset.mem_inter.mpr ⟨by
+        simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using
+          (show G.Adj i.1 (p i) by
+            simpa [L, SimpleGraph.mem_neighborFinset] using hpi.1), i.2⟩
+    · intro y hy
+      have hyE := (Finset.mem_inter.mp hy).2
+      by_contra hyi
+      have hpNot := hpi.2 ⟨y, hyE⟩ (fun h => hyi (congrArg Subtype.val h))
+      apply hpNot
+      have hyp := (Finset.mem_inter.mp hy).1
+      simpa [L, SimpleGraph.mem_neighborFinset, G.adj_comm] using hyp
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.partialBaer_privatePoints_card_eq_one
 #print axioms Erdos85.exists_injective_partialBaer_privatePoint
+#print axioms Erdos85.exists_injective_privateNeighbor_of_endpointProfile
