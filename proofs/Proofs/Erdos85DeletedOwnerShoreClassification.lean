@@ -300,6 +300,56 @@ theorem binarySquare_regular_exists_punctured_shores_boundary_sum_eq_q_sub_one
   exact ⟨S, T, hS, hT, hunion, hdisj, hSclosed, hTclosed,
     hSpos, hTpos, hsum.trans hDdegree⟩
 
+/-- Composite interface for a future uniform articulation split classifier.
+It names the two positive boundary budgets, records their total `q-1`, and
+simultaneously supplies the parametric cut-lower inequality on each shore. -/
+theorem binarySquare_regular_exists_punctured_shores_with_cutLower_budget
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (owner : V)
+    (hconnected : (secondOrderDefectGraph G).Connected)
+    (hpuncturedNonempty :
+      ((Finset.univ : Finset V).erase owner).Nonempty)
+    (hnot : ¬ ((secondOrderDefectGraph G).induce
+      (↑((Finset.univ : Finset V).erase owner) : Set V)).Connected) :
+    ∃ S T : Finset V, ∃ deltaS deltaT : ℕ,
+      S.Nonempty ∧ T.Nonempty ∧
+      S ∪ T = (Finset.univ : Finset V).erase owner ∧ Disjoint S T ∧
+      (∀ x ∈ S, (secondOrderDefectGraph G).neighborFinset x ∩
+        ((Finset.univ : Finset V).erase owner) ⊆ S) ∧
+      (∀ x ∈ T, (secondOrderDefectGraph G).neighborFinset x ∩
+        ((Finset.univ : Finset V).erase owner) ⊆ T) ∧
+      deltaS = (∑ x ∈ S,
+        ((secondOrderDefectGraph G).neighborFinset x ∩
+          (Finset.univ \ S)).card) ∧
+      deltaT = (∑ x ∈ T,
+        ((secondOrderDefectGraph G).neighborFinset x ∩
+          (Finset.univ \ T)).card) ∧
+      0 < deltaS ∧ 0 < deltaT ∧ deltaS + deltaT = q - 1 ∧
+      nearRegularCutLower (q * q) q S.card (fun _ : Fin 0 => 0) ≤ deltaS ∧
+      nearRegularCutLower (q * q) q T.card (fun _ : Fin 0 => 0) ≤ deltaT := by
+  obtain ⟨S, T, hS, hT, hunion, hdisj, hSclosed, hTclosed,
+      hSpos, hTpos, hsum⟩ :=
+    binarySquare_regular_exists_punctured_shores_boundary_sum_eq_q_sub_one
+      G hfree hq hreg hcard owner hconnected hpuncturedNonempty hnot
+  let deltaS := ∑ x ∈ S,
+    ((secondOrderDefectGraph G).neighborFinset x ∩
+      (Finset.univ \ S)).card
+  let deltaT := ∑ x ∈ T,
+    ((secondOrderDefectGraph G).neighborFinset x ∩
+      (Finset.univ \ T)).card
+  have hLowerS := binarySquare_regular_nearRegularCutLower_le_boundary
+    G hfree (by omega : 1 ≤ q) hreg hcard S
+  have hLowerT := binarySquare_regular_nearRegularCutLower_le_boundary
+    G hfree (by omega : 1 ≤ q) hreg hcard T
+  exact ⟨S, T, deltaS, deltaT, hS, hT, hunion, hdisj,
+    hSclosed, hTclosed, rfl, rfl, hSpos, hTpos, hsum, hLowerS, hLowerT⟩
+
 end
 
 end Erdos85
@@ -309,3 +359,4 @@ end Erdos85
 #print axioms Erdos85.binarySquare_regular_exists_punctured_shores_boundary_sum_eq_q_sub_one
 #print axioms Erdos85.regularSquare_square_moment_of_cut
 #print axioms Erdos85.binarySquare_regular_nearRegularCutLower_le_boundary
+#print axioms Erdos85.binarySquare_regular_exists_punctured_shores_with_cutLower_budget
