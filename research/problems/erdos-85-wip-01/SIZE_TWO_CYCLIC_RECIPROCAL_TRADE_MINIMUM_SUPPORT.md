@@ -93,14 +93,59 @@ differ, because its two minus neighbours have different columns.  This asks
 the three binary row-pair types to be pairwise different, which is
 impossible.  The 2-by-3 case is symmetric.
 
+Seven vertices are likewise impossible.  At a vertex the common plus/minus
+degree is either two or three.  If it is three, the two sign-neighbour sets
+partition all six other vertices, so deleting that vertex leaves every row
+and column multiplicity even.  Two degree-three vertices must consequently
+share both their row and their column, hence would be the same cell.  There
+is at most one.  But the sum of the common sign degrees is `14` plus the
+number of degree-three vertices and must be even.  Hence there are none.
+
+Both sign graphs are therefore 2-regular, their union is 4-regular, and its
+complement `F` is a 2-factor on seven vertices.  Encode a vertex's row class
+by its standard basis vector `a_p` over `F_2`.  At `p`, the changed
+neighbours are all vertices except `p` and its two `F`-neighbours.  Their row
+multiplicities are even, so on every cycle of `F`
+
+```text
+a_(i-1) + a_i + a_(i+1) = C,                          (4)
+```
+
+where `C` is the total row-parity vector of `W`.  Subtracting consecutive
+instances gives `a_(i+2)=a_(i-1)`: row classes are 3-periodic around every
+cycle.  The identical recurrence holds for column classes.
+
+The only 2-factor types on seven vertices are `C_7` and `C_3 disjoint C_4`.
+On `C_7`, period three makes all row classes equal and all column classes
+equal, repeating cells.  In the second type, period three makes all four
+vertices of the `C_4` share one row and, independently, one column, again
+repeating a cell.  Thus `|W|=7` is impossible.
+
 Consequently the sharp bound supplied by the two affine margins is
 
 ```text
-|W| >= 7,                                             (3)
+|W| >= 8.                                             (5)
 ```
 
-and a nontrivial closed trade changes at least seven old and seven new
-undirected edges, hence at least fourteen edge memberships in total.
+It changes at least eight old and eight new undirected edges, hence at least
+sixteen edge memberships in total.
+
+This support bound is sharp for the **abstract margin conditions**.  An
+eight-vertex witness, with cells listed as `(row,column)`, is
+
+```text
+0:(0,0)  1:(0,3)  2:(1,0)  3:(0,1)
+4:(3,1)  5:(0,5)  6:(3,5)  7:(1,3)
+
+minus = {04,05,13,16,23,26,47,57}
+plus  = {03,06,14,15,24,25,37,67}.
+```
+
+At every vertex the two sign-neighbour pairs have equal row and column
+multisets.  This witness is not asserted to extend to two cyclic codes; it
+shows that any improvement beyond eight must use the moving-hole/cyclic
+labels, caps, or extendability outside the trade, rather than margin parity
+alone.
 
 ## Consequence for local cycle descent
 
@@ -113,7 +158,7 @@ affected source has a complete local column cycle.  Thus:
 - an ordinary graph 2-switch is too small;
 - a single collision-edge orientation token is too small; and
 - the first meaningful bounded search is for a symmetric Latin bitrade on
-  at least seven cells and at least fourteen toggled edge memberships.
+  at least eight cells and at least sixteen toggled edge memberships.
 
 The theorem is q-generic and does not use caps or the power-of-two
 hypothesis.  Caps enter only when asking whether both endpoints `K,K'` of
