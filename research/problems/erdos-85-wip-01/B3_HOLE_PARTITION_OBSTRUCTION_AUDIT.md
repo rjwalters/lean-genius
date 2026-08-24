@@ -5180,3 +5180,43 @@ Thus (14) moves the collision parity between the internal-core description
 and the residual-fiber/cut description without the formerly double-counted
 marked-pair term.  By itself it is a transfer identity, not a parity
 terminal.
+
+### Forced-incoming bundles and the existing reverse-interval consumer
+
+The forced-incidence digraph has a stronger one-row consequence than the
+pairwise reciprocity diagnostic.  If every local packing at a source `u`
+contains a target `w`, symmetry makes `u` mandatory in the selected packing
+at `w`.  Hence the packing at `w` must contain the entire forced-incoming
+bundle
+
+```text
+F(w) = {u : every full local packing at u contains w}
+```
+
+simultaneously.  It must also avoid every `u` for which no full local packing
+at `u` contains `w`.  This is exactly the already-formalized predicate
+`HasLocalGramPackingOneRowCompatibilityObstruction`, not a new interface:
+`hasLocalGramPackingOneRowCompatibilityObstruction_iff_no_reverseInterval`
+identifies it with the nonexistence of a demanded packing between the
+reverse-forced lower set and reverse-impossible upper set, and
+`false_of_localGramPackingOneRowCompatibilityObstruction` is the end-to-end
+symmetric-relation contradiction.
+
+The unified `--audit-local-or-two-row-price` mode now enumerates these exact
+reverse-interval candidates.  Ten of the eleven durable branch-4 payloads
+have a target with zero compatible packings.  The remaining
+`q9_branch4_no_single_special_hole_witness.json` already has a deficit row,
+so the reverse-interval predicate also fails there (its target has no local
+packing at all).  Thus the existing one-row compatibility consumer closes
+all eleven durable payloads, without the price fallback and without a new
+Lean axiom.
+
+This is genuinely stronger than checking arcs one at a time.  In the
+seed-129 two-row-price-selector fixture there is no pairwise reciprocity
+obstruction, but target row 32 has forced incoming bundle `{16,25}` and none
+of its 94 full local packings contains both sources.  The obstruction is
+therefore a simultaneous reverse-capacity failure at a non-rigid row, exactly
+the case missed by the rigid-forest and singleton-reciprocity views.  The
+remaining universal branch-4 target should now be stated as the existence of
+one reverse-interval deficit, with the exact CEGAR witness encoding providing
+its negation.

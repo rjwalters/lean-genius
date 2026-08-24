@@ -1280,6 +1280,35 @@ def main() -> None:
             and local[w]["packing_count"]
             and u not in local[w]["possible_neighbors"]
         ]
+        reverse_interval_records = []
+        for target in range(N):
+            forced_incoming = sorted(
+                source for source in range(N)
+                if target in local[source]["forced_neighbors"]
+            )
+            impossible_incoming = sorted(
+                source for source in range(N)
+                if local[source]["packing_count"]
+                and target not in local[source]["possible_neighbors"]
+            )
+            forced_set = set(forced_incoming)
+            impossible_set = set(impossible_incoming)
+            compatible_count = sum(
+                forced_set.issubset(packing)
+                and packing.isdisjoint(impossible_set)
+                for packing in local_packing_family(system, target)
+            )
+            reverse_interval_records.append({
+                "target": target,
+                "forced_incoming": forced_incoming,
+                "impossible_incoming": impossible_incoming,
+                "packing_count": local[target]["packing_count"],
+                "compatible_packing_count": compatible_count,
+            })
+        reverse_interval_obstructions = [
+            record for record in reverse_interval_records
+            if record["compatible_packing_count"] == 0
+        ]
         rigid_rows = [
             u for u in range(N) if 0 < local[u]["packing_count"] <= 2
         ]
@@ -1402,6 +1431,9 @@ def main() -> None:
             "has_local_obstruction": has_local_obstruction,
             "disjoint_pair_obstructions": disjoint_pair_obstructions,
             "reciprocity_obstructions": reciprocity_obstructions,
+            "reverse_interval_obstructions": reverse_interval_obstructions,
+            "has_one_row_compatibility_obstruction":
+                bool(reverse_interval_obstructions),
             "rigid_rows": [
                 [u, local[u]["packing_count"]] for u in rigid_rows
             ],
