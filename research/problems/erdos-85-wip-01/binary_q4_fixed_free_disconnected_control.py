@@ -14,6 +14,7 @@ directly from the edge list.
 """
 
 from collections import deque
+from collections import Counter
 
 
 Q = 4
@@ -142,6 +143,29 @@ def main() -> None:
     assert len(k_edges & d_edges) == 8
     assert len(k_edges - d_edges) == 32
 
+    # Goal-#36 semipartial-geometry calibration.  One proposed completion
+    # route asks for a two-valued 0/t law for A^3 on nonincident point-line
+    # pairs.  The exact fixed-free q=4 control has three positive values
+    # there, so that law is not a generic consequence of self-polar regular
+    # C4-free incidence.  Any promotion to semipartial uniformity must use
+    # both connectedness and the standing k>=3 hypothesis essentially.
+    nonedges = {
+        (x, y)
+        for x in range(N)
+        for y in range(x + 1, N)
+        if y not in a[x]
+    }
+    nonedge_cubic_distribution = Counter(three_walks(x, y) for x, y in nonedges)
+    assert nonedge_cubic_distribution == Counter({3: 48, 2: 20, 4: 20})
+    assert len(nonedge_cubic_distribution) == 3
+
+    # The other proposed semipartial uniformity, constancy of D^2 on
+    # D-edges, happens to hold in this control (with value zero).  Hence the
+    # cubic 0/t law is the first condition genuinely separated by the model;
+    # the D^2 condition alone cannot be terminal.
+    defect_edge_codegrees = Counter(len(d[x] & d[y]) for x, y in d_edges)
+    assert defect_edge_codegrees == Counter({0: 24})
+
     # The two nonconstant F_2 adjacency-kernel shores are exactly the two D
     # components.  On each, K- and T-incidence agree vertexwise modulo two.
     kernel_shores = {
@@ -169,6 +193,7 @@ def main() -> None:
     print("trace(A) = 0; D components = [8, 8]; T is one C8")
     print("incidence bottleneck: row energies 6^16, total 96 > q^3=64")
     print("Baer transport: |Omega|=40, |H|=48, |K|=40; K degrees 4^8 6^8")
+    print("semipartial calibration: A^3 nonedge values 2^20 3^48 4^20; D^2=0 on D")
 
 
 if __name__ == "__main__":
