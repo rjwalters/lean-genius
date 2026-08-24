@@ -107,6 +107,20 @@ sufficient and every listed block is necessary relative to the final greedy
 set.  It contains no fibre `0` or `1` block, so the bounded contradiction is
 far smaller than the entire six-fibre transpose family.
 
+Its graph on fibre labels has additional structure: it is `K4` on
+`{3,4,6,7}` with the edge `(6,7)` removed.  Equivalently, it is exactly the
+union of two transpose triangles
+
+```text
+(3,4,6) and (3,4,7)
+```
+
+sharing the block `(3,4)`.  This makes a genuine three-colour block trace a
+plausible next diagnostic, but an unweighted triangle trace is still
+tautological under transpose.  A separating identity must compare the two
+triangles while retaining the different weighted-column shifts/fibre colors
+on their `6` and `7` closing blocks.
+
 Cap-family deletion sharpens the subsystem further.  Retain reciprocity
 globally, keep fibre `4` empty, and impose all nonzero-separation caps only
 on the listed fibre sets.  At `q=8,a=2`:
