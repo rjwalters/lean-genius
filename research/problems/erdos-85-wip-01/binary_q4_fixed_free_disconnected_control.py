@@ -86,6 +86,24 @@ def main() -> None:
         frozenset({3, 5, 6, 8, 9, 10, 11, 13}),
     ]
 
+    # Candidate-(vi) incidence-bottleneck calibration.  Entrywise,
+    # E = AD - (J-A).  Every row has energy six, so this exact ambient
+    # binary-incidence control violates the proposed cubic upper bound
+    # ||E||_F^2 <= q^3: its total is 96 rather than 64.  Since D is
+    # disconnected and q=4, a viable upper theorem must genuinely use both
+    # connectedness and the standing k>=3 hypothesis.
+    incidence_error = [
+        [
+            sum(1 for z in a[x] if y in d[z]) - (1 - int(y in a[x]))
+            for y in range(N)
+        ]
+        for x in range(N)
+    ]
+    row_energies = [sum(value * value for value in row) for row in incidence_error]
+    total_energy = sum(row_energies)
+    assert row_energies == [6] * N
+    assert total_energy == 96 > Q ** 3 == 64
+
     t_edges = A_EDGES & d_edges
     t = adjacency(t_edges)
     assert t_edges == {
@@ -149,6 +167,7 @@ def main() -> None:
 
     print("verified: symmetric loopless 4-regular C4-free A on 16 vertices")
     print("trace(A) = 0; D components = [8, 8]; T is one C8")
+    print("incidence bottleneck: row energies 6^16, total 96 > q^3=64")
     print("Baer transport: |Omega|=40, |H|=48, |K|=40; K degrees 4^8 6^8")
 
 
