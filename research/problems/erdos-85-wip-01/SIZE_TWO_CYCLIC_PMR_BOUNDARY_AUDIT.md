@@ -156,3 +156,32 @@ its translate by the unique order-two base shift `q/2`.  At q8 this paired
 local block already accounts for the strict `4q+4` total-surplus floor.
 Whether the antipodal implication persists for general binary `q` is the
 next bounded structural question; it is not yet claimed.
+
+## Opposite-parity dips are a separate, expensive sector
+
+The simultaneous cap-free q8/a2 query in the two adjacent, opposite-parity
+windows
+
+```text
+M(0) <= 7, M(1) <= 7
+```
+
+is UNSAT at every total-rank bound from 66 through 70 and first SAT at 71.
+This sharply contrasts with two same-parity antipodal dips, whose minimum
+remains 66.  Thus the weighted obstruction is not one global scalar charge:
+same-parity dips can share a quantized compensation event, while activating
+the other parity sector is substantially more expensive.
+
+A first rank-71 witness has
+
+```text
+R = [8,7,9,11,8,9,8,11],
+Q = [0,1,3,-1,0,-1,0,1],
+S = [2,2,12,6,6,4,6,8].
+```
+
+The two adjacent dips are followed by a surplus-12 spike.  This points to a
+two-sector or vector-valued invariant coupled at adjacent boundaries, rather
+than scalar winding.  Any q-generic WSP mechanism should preserve the parity
+class of the selected window and explain why cross-sector dips cannot share
+the cheap antipodal compensation available within one class.
