@@ -10,7 +10,15 @@ the whole NONBIP-CONNECTED node.  This file formalizes that final composition
 and thereby isolates the exact remaining GAP: prove the displayed upper
 bound from binary `0/1` realizability (or replace it by any stronger bound).
 
-No such upper bound is asserted here.
+No such upper bound is asserted here.  It is only a minimal sufficient
+AXIOM/GAP, not a currently supported conjecture: through the banked exact
+row-cut identity and connected lower bound, it would force every closed
+defect-neighborhood cut to attain its minimum `q`, whereas the strict-residue
+theorem says their total exceeds `q^3`.  Equivalently it asks for a strong
+defect-triangle lower bound, while the established connected theorem gives
+the opposite triangle upper bound.  The exact fixed-point-free `q=4` ambient
+control also has energy `96 > 4^3`; hence any possible proof must use both
+connectedness and the standing `k ≥ 3` hypothesis essentially.
 -/
 
 open Finset SimpleGraph
@@ -28,9 +36,10 @@ theorem false_of_cube_add_two_le_energy_le_cube
 
 /-- Conditional graph-facing terminal for `NONBIP-CONNECTED`.
 
-The only unproved input is `hupper`, the nonlinear binary-incidence energy
-upper bound.  All other hypotheses are the established connected square-order
-branch, and the strict lower bound is already banked. -/
+The only unproved input is `hupper`, the unsupported nonlinear
+binary-incidence energy upper bound described above.  All other hypotheses
+are the established connected square-order branch, and the strict lower
+bound is already banked. -/
 theorem false_of_connected_binarySquare_dyadic_incidenceBottleneck_energy_le_cube
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
