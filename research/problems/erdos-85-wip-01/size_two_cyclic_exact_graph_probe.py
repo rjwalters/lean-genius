@@ -105,6 +105,13 @@ def main() -> None:
     parser.add_argument("--uniform-profile-multiplicity", action="store_true",
         help=("require every vertex to have exactly one neighbor in the "
               "--codegree-profile-difference source fiber"))
+    parser.add_argument("--parity-block-profile", action="store_true",
+        help=("report oriented route mass by source/target difference parity, "
+              "splitting same-parity mass into diagonal and off-diagonal fibers"))
+    parser.add_argument("--parity-same-mass-cap", type=int,
+        help="upper-bound the oriented route mass in each same-parity block")
+    parser.add_argument("--parity-same-mass-floor", type=int,
+        help="lower-bound the oriented route mass in each same-parity block")
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--allow-loops", action="store_true",
         help=("model the reduced symmetric reciprocal relation, whose "
@@ -162,6 +169,19 @@ def main() -> None:
                     adj_expr(i, k), adj_expr(j, k),
                     adj_expr(i, ell), adj_expr(j, ell)), 1))
         solver.add(z3.PbLe(excess_terms, args.codegree_excess_cap))
+    if (args.parity_same_mass_cap is not None or
+            args.parity_same_mass_floor is not None):
+        for parity in (0, 1):
+            terms = []
+            for (i, j), var in edge.items():
+                source_difference = (vertices[i][1] - vertices[i][0]) % args.q
+                target_difference = (vertices[j][1] - vertices[j][0]) % args.q
+                if source_difference % 2 == parity and target_difference % 2 == parity:
+                    terms.append((var, 1 if i == j else 2))
+            if args.parity_same_mass_cap is not None:
+                solver.add(z3.PbLe(terms, args.parity_same_mass_cap))
+            if args.parity_same_mass_floor is not None:
+                solver.add(z3.PbGe(terms, args.parity_same_mass_floor))
     solver.set(timeout=args.timeout_ms, random_seed=args.random_seed)
     result = solver.check()
     print(f"q={args.q} a={args.a % args.q} allow_loops={args.allow_loops}: {result}")
@@ -207,6 +227,32 @@ def main() -> None:
             print(f"  {separation}: distribution={dict(sorted(distribution.items()))} "
                   f"sum={codegree_sum} excess={excess}")
         print(f"codegree totals: sum={total_codegree} excess={total_excess}")
+    if result == z3.sat and args.parity_block_profile:
+        model = solver.model()
+        block_mass = Counter()
+        diagonal_mass = Counter()
+        for (i, j), var in edge.items():
+            if not z3.is_true(model.eval(var)):
+                continue
+            source_difference = (vertices[i][1] - vertices[i][0]) % args.q
+            target_difference = (vertices[j][1] - vertices[j][0]) % args.q
+            source_parity = source_difference % 2
+            target_parity = target_difference % 2
+            block_mass[source_parity, target_parity] += 1
+            if source_difference == target_difference:
+                diagonal_mass[source_parity] += 1
+            if i != j:
+                block_mass[target_parity, source_parity] += 1
+                if source_difference == target_difference:
+                    diagonal_mass[target_parity] += 1
+        print("oriented parity route blocks: "
+              f"EE={block_mass[0, 0]} EO={block_mass[0, 1]} "
+              f"OE={block_mass[1, 0]} OO={block_mass[1, 1]}")
+        print("same-parity split: "
+              f"even diagonal={diagonal_mass[0]} "
+              f"off-diagonal={block_mass[0, 0] - diagonal_mass[0]}; "
+              f"odd diagonal={diagonal_mass[1]} "
+              f"off-diagonal={block_mass[1, 1] - diagonal_mass[1]}")
     if result == z3.sat and not args.quiet_model:
         model = solver.model()
         chosen = [(vertices[i], vertices[j]) for (i, j), var in edge.items()

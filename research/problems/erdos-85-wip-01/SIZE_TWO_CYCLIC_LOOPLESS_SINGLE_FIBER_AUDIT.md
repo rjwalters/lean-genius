@@ -143,3 +143,31 @@ duplicate/missing parity census.  The corrected q-generic target is therefore:
 `BinarySizeTwoCyclicLooplessParityFiberBound` and verifies its exact
 graph-facing consumer.  The exclusion remains the mathematical gap; the
 q=8 table is evidence for the statement, not a q-generic proof.
+
+## Parity-block absorption stop
+
+The probe option `--parity-block-profile` reports the oriented route-mass
+blocks `EE,EO,OE,OO` and splits each same-parity block into routes returning
+to the same difference fiber and routes between distinct fibers.  Optional
+same-parity mass floors/caps test the range of the balance invariant.
+
+In `q=8,a=2` SAT models with two of the three even fibers capped, the generic
+identity `EE=OO` holds, but the balanced block mass and its diagonal split are
+far from rigid.  Samples include
+
+```text
+EE=OO=64:  even diagonal=16, off-diagonal=48;
+           odd  diagonal=24, off-diagonal=40
+
+EE=OO=112: even diagonal=48, off-diagonal=64;
+           odd  diagonal=32, off-diagonal=80.
+```
+
+For caps `{0,4}`, same-parity mass cap `62` is UNSAT and floor `80` is UNSAT,
+with mass `64` observed.  For caps `{4,6}`, mass `110` and `112` are SAT while
+floor `114` is UNSAT.  These are bounded q=8 facts, not generic inequalities.
+They decisively show that parity-block balance alone does not force a
+near-extremal diagonal selected-fiber graph: distinct same-parity fibers can
+absorb a large and pair-dependent route mass.  A terminal needs an additional
+cross-fiber identity controlling that off-diagonal block, not another use of
+the equality `EE=OO`.
