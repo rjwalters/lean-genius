@@ -133,6 +133,9 @@ theorem isEmpty_sizeTwoCyclicLooplessFiveCellCode_of_fourShortForcing
   apply Finset.sum_eq_zero
   intro x hx
   have hle := five.middle_m x
+  change Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+    q a five.toFourShortCellCode.code.toPermutationCode.perm
+      x m middle middle) ≤ 1 at hle
   omega
 
 /-- The exact generic ternary target: find three distinct fibers, two short
