@@ -5267,3 +5267,28 @@ at target 18 with four unit points against demand five, or at target 30 with
 two unit points after three forced incidences.  The universal outer-design
 problem is therefore localized further: prove that some row has a conflicting
 forced bundle or one of these colored contracted point covers.
+
+On the genuinely row-feasible corpus the statement sharpens twice.  Every
+one of the ten payloads with a full local packing at every row has either a
+conflicting forced bundle or a **scale-one** contracted cover: fractional
+weights are needed only in the old no-single-special fixture, which already
+has literal deficit rows.  Moreover the integral cover can always be chosen
+inside two of the three eight-point core colors.  The omitted color varies,
+so no fixed-color claim survives, but the universal target has only three
+color cases:
+
+```text
+all rows feasible and no forced-bundle conflict
+  implies there exist w and an omitted color c and a point set C outside c
+  such that C meets every reverse-compatible residual block at w and
+  |F(w)| + |C| < d(w).
+```
+
+The audit now solves the three restricted binary hitting-set problems,
+emits the minimum exact two-color certificate, and independently checks its
+coverage and strict cardinality.  The sparse selector fixture is the useful
+regression: its unconstrained minimum cover used all three colors, but target
+26 has a valid two-color cover `{15,16,21}` after two forced incidences, so
+the existential two-color statement is strictly subtler than inspecting one
+optimizer output.  This finite color-case conjecture is the current sharp
+outer-design leaf; the durable corpus is evidence, not a proof.

@@ -241,6 +241,74 @@ def contracted_reverse_interval_point_cover(
     }
 
 
+def contracted_reverse_interval_two_color_cover(
+        system: dict, target: int, local: dict[int, dict]) -> dict | None:
+    """Minimum strict integral cover supported on at most two core colors."""
+    forced = {
+        source for source in range(N)
+        if target in local[source]["forced_neighbors"]
+    }
+    possible = {
+        source for source in range(N)
+        if target in local[source]["possible_neighbors"]
+    }
+    edges = set(system["edges"])
+    candidates = [
+        source for source in range(N)
+        if tuple(sorted((source, target))) in edges
+        and source in possible and source not in forced
+        and all(not (system["blocks"][source] & system["blocks"][f])
+                for f in forced)
+    ]
+    certificates = []
+    for colors in combinations(range(3), 2):
+        points = [
+            point for color in colors
+            for point in range(8 * color, 8 * color + 8)
+        ]
+        matrix = np.array([
+            [int(point in system["blocks"][source]) for point in points]
+            for source in candidates
+        ], dtype=float)
+        if candidates and any(not row.any() for row in matrix):
+            continue
+        result = milp(
+            np.ones(len(points)), integrality=np.ones(len(points)),
+            bounds=Bounds(np.zeros(len(points)), np.ones(len(points))),
+            constraints=LinearConstraint(
+                matrix, np.ones(len(candidates)), np.full(len(candidates), np.inf)
+            ),
+        ) if candidates else None
+        if candidates and (result is None or not result.success):
+            continue
+        selected = (
+            [point for point, value in zip(points, result.x) if value > 0.5]
+            if result is not None else []
+        )
+        if any(not (set(selected) & system["blocks"][source])
+               for source in candidates):
+            raise RuntimeError("integral two-color cover misses a candidate")
+        if len(forced) + len(selected) >= system["degree"][target]:
+            continue
+        certificates.append({
+            "target": target,
+            "forced_incoming": sorted(forced),
+            "candidate_count": len(candidates),
+            "colors": list(colors),
+            "omitted_color": next(color for color in range(3)
+                                  if color not in colors),
+            "points": selected,
+            "cover_card": len(selected),
+            "demand_after_forced": system["degree"][target] - len(forced),
+        })
+    return min(
+        certificates,
+        key=lambda certificate: (certificate["cover_card"],
+                                 certificate["colors"]),
+        default=None,
+    )
+
+
 def dual(system: dict, row_support: set[int] | None,
          external_point: int | None = None):
     blocks = system["blocks"]
@@ -1377,6 +1445,7 @@ def main() -> None:
             if record["compatible_packing_count"] == 0
         ]
         contracted_point_cover_certificates = []
+        contracted_two_color_cover_certificates = []
         for record in reverse_interval_obstructions:
             forced = record["forced_incoming"]
             forced_conflict = any(
@@ -1389,6 +1458,11 @@ def main() -> None:
                 )
                 if certificate is not None:
                     contracted_point_cover_certificates.append(certificate)
+                two_color = contracted_reverse_interval_two_color_cover(
+                    system, record["target"], local
+                )
+                if two_color is not None:
+                    contracted_two_color_cover_certificates.append(two_color)
         rigid_rows = [
             u for u in range(N) if 0 < local[u]["packing_count"] <= 2
         ]
@@ -1516,6 +1590,8 @@ def main() -> None:
                 bool(reverse_interval_obstructions),
             "contracted_reverse_interval_point_cover_certificates":
                 contracted_point_cover_certificates,
+            "contracted_reverse_interval_two_color_cover_certificates":
+                contracted_two_color_cover_certificates,
             "rigid_rows": [
                 [u, local[u]["packing_count"]] for u in rigid_rows
             ],
