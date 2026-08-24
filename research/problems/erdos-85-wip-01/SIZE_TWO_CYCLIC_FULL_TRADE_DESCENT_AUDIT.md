@@ -100,3 +100,39 @@ two caps in `{2,5}` are harmless separately but fatal together.  This is
 direct bounded evidence that the q-generic reflected deviation charge is
 the correct interface between caps and descent, rather than merely a
 convenient grouping of endpoint fibres.
+
+## Larger support can escape a blocked singleton cap
+
+The support-eight obstruction is not always a connected-component
+invariant.  Repeating the exact full-code query at every support from 9
+through 16 leaves four representative blocked patterns UNSAT:
+
+```text
+a=0, capped orbit {2,5};
+a=1, capped fibre 2;
+a=2, capped fibre 0;
+a=3, capped fibre 0.
+```
+
+But at support 24 the a1/fibre-2 query is SAT, with an explicit full-code
+rank drop
+
+```text
+144 -> 104.
+```
+
+The support-17 through support-23 queries timed out at 120 seconds, so the
+least escaping support is known only to lie in `[17,24]`.  Exact-support
+queries 25--28 also timed out and are not inferred from the support-24
+witness.
+
+For comparison, the a0/orbit-`{2,5}` and a3/fibre-0 queries are UNSAT at
+every exact support 8--28, the entire possible support range.  The a2/fibre-0
+query is UNSAT through support 16 and unknown above it at the same timeout.
+
+Therefore reflection-organized caps can force a genuinely nonlocal trade,
+but they do not uniformly separate the reciprocal realization space.  A
+cap-preserving descent proof must count or construct larger closures; it
+cannot restrict without loss to the sharp eight-cell trades.  The two
+full-range UNSAT patterns remain evidence for a stronger component
+obstruction in some hole/cap configurations, but not a universal one.
