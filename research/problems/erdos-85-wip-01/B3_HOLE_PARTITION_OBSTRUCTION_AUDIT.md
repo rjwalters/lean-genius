@@ -5523,3 +5523,30 @@ theorem directly.  No bipartite König theorem, omitted-color selection, or
 arbitrary hitting-set optimizer is needed.  The remaining global problem is
 to prove that the lexicographically minimal target admits this very small
 star-matching cover.
+
+The conflict matching in every selected certificate is near-perfect after
+removing the optional star: it leaves at most one candidate unmatched.  Hence
+the cover-cardinality calculation has the uniform closed form
+
+```text
+no star:   coverCard <= ceil(n(w) / 2),
+one star:  coverCard <= 1 + ceil((n(w) - 3) / 2).          (13bf)
+```
+
+The seed-129 star restores the missing perfect-pairing unit: its ten-row
+collision graph has matching number four, but after deleting the star the
+seven remaining rows have a three-edge near-perfect matching, giving five
+cover points.  In the row-40 fixture, the five-row collision graph already
+has a two-edge near-perfect matching, but deleting the star leaves one pair
+and improves the cover from three points to two, supplying the needed strict
+unit.  Thus the preferred global conjecture is now especially small:
+
+```text
+the lex-min/max-forced residual candidate family has either
+  a near-perfect collision matching satisfying the no-star bound, or
+  a common-point triple whose deletion has a near-perfect collision matching
+  satisfying the one-star bound.                              (13bg)
+```
+
+This is a finite graph-matching statement on at most ten candidate rows in
+the audited extremal cases, rather than a colored hypergraph cover theorem.

@@ -620,6 +620,16 @@ def contracted_collision_star_matching_cover(
     ):
         raise RuntimeError("collision-star matching cover misses a row")
     certificate["candidate_count"] = len(rows)
+    certificate["remaining_after_star_count"] = (
+        len(rows) if certificate["triple_star"] is None else len(rows) - 3
+    )
+    certificate["conflict_matching_card"] = len(
+        certificate["conflict_matching"]
+    )
+    certificate["remaining_matching_is_near_perfect"] = (
+        2 * certificate["conflict_matching_card"]
+        >= certificate["remaining_after_star_count"] - 1
+    )
     certificate["cover_card"] = len(certificate["cover_points"])
     return certificate
 
@@ -2245,6 +2255,12 @@ def main() -> None:
                     record["forced_card"]
                     + record["collision_star_matching_cover"]["cover_card"]
                     < record["profiles"][0]["demand"]
+                    for record in lexicographic_target_records
+                ),
+            "all_lexicographic_targets_have_near_perfect_remaining_matching":
+                bool(lexicographic_target_records) and all(
+                    record["collision_star_matching_cover"]
+                    ["remaining_matching_is_near_perfect"]
                     for record in lexicographic_target_records
                 ),
             "all_pair_singleton_projections_injective": all(
