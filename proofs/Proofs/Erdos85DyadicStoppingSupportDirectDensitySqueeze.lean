@@ -37,7 +37,8 @@ theorem c4Free_binarySquare_dyadicStoppingSupport_directDensity_squeeze
     let serviceCost :=
       S.card * L.choose 2 + (Sᶜ : Finset V).card * M.choose 2 +
         min L M *
-          (q * B.card - (S.card * L + (Sᶜ : Finset V).card * M))
+          (q * B.card - (S.card * L + (Sᶜ : Finset V).card * M)) +
+        ((q * B.card - (S.card * L + (Sᶜ : Finset V).card * M)) - q * q)
     2 * serviceCost + (q - 1) * B.card ≤
       2 * B.card.choose 2 + (q - 1) * (q * q - B.card) := by
   dsimp only
@@ -46,6 +47,7 @@ theorem c4Free_binarySquare_dyadicStoppingSupport_directDensity_squeeze
   have hservice :=
     c4Free_dyadicStoppingSupport_twoShore_excessIncidence_cherry_squeeze
       G hfree hreg S j hdiv hqdiv
+  rw [hcard] at hservice
   have hdensity := binarySquare_secondOrderDefectPairs_support_density
     G hcard (binarySquare_regular_secondOrderDefect_degree_eq
       G hfree hq hreg hcard) B
@@ -67,7 +69,12 @@ theorem c4Free_binarySquare_dyadicStoppingSupport_directDensity_squeeze
             (q * B.card -
               (S.card * dyadicStoppingServiceMinimum q S.card j +
                 (Sᶜ : Finset V).card *
-                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) ≤
+                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) +
+          ((q * B.card -
+              (S.card * dyadicStoppingServiceMinimum q S.card j +
+                (Sᶜ : Finset V).card *
+                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) -
+            q * q) ≤
         B.card.choose 2 - Z.card at hservice
   change
     2 * (S.card * (dyadicStoppingServiceMinimum q S.card j).choose 2 +
@@ -78,7 +85,12 @@ theorem c4Free_binarySquare_dyadicStoppingSupport_directDensity_squeeze
             (q * B.card -
               (S.card * dyadicStoppingServiceMinimum q S.card j +
                 (Sᶜ : Finset V).card *
-                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j))) +
+                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) +
+          ((q * B.card -
+              (S.card * dyadicStoppingServiceMinimum q S.card j +
+                (Sᶜ : Finset V).card *
+                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) -
+            q * q)) +
         (q - 1) * B.card ≤
       2 * B.card.choose 2 + (q - 1) * (q * q - B.card)
   omega
