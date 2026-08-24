@@ -136,6 +136,69 @@ the augmentation filtration is multiplicative for products and exact for
 equalities, but is not monotone under coefficientwise integer inequalities
 after reduction modulo two.
 
+## Collision levels and their preservation
+
+The filtration nevertheless gives an exact label to every forced collision.
+Suppose two distinct admissible rows `r1,r2` in one routing block have the
+same target difference, and put `d=r2-r1` in `Z/q`, represented in
+`{1,...,q-1}`.  Their binary row polynomial factors as
+
+```text
+z^r1 + z^r2 = z^r1 (1+z^d).
+```
+
+Write `d=2^j m` with `m` odd.  In characteristic two,
+
+```text
+1 + (1+epsilon)^d
+  = (1 + (1+epsilon)^m)^(2^j).
+```
+
+The inner factor has augmentation valuation one, so
+
+```text
+valuation_epsilon(z^r1 + z^r2) = 2^j = 2^(v2(d)).       (AF1)
+```
+
+Thus the augmentation level is exactly the lowest nonzero binary digit of
+the collision separation.  Reciprocity reverses the two darts through rows
+`-r1,-r2` and moves their source bases to `x+r1,x+r2`.  Both new separations
+are `-d` or `d`, so
+
+```text
+collision level j  --reciprocity-->  common-neighbor pair of level j.  (AF2)
+```
+
+In particular reciprocity alone preserves the filtration level; it does not
+provide the strict descent needed for an induction on `k`.  A viable descent
+must show that agreement caps in three fibers force a *new* collision of
+smaller level (or a second owner of the same pair), not merely reverse the
+original collision.
+
+The executable calibration
+`size_two_cyclic_modular_group_algebra_probe.py` imports the direct SAT graph
+probe and verifies (AF1) on every extracted collision pair.  Its exact runs
+give:
+
+```text
+q=4, a=1, full same-difference cap:
+  8 collision pairs, all (v2(d), valuation) = (0,1).
+
+q=8, a=1, capped fibers {0,2}:
+  64 collision pairs, all (v2(d), valuation) = (1,2)
+  in the returned satisfiable two-fiber model.
+
+q=8 reciprocal row/column control, no effective agreement cap:
+  collision levels (0,1), (1,2), and (2,4) all occur.
+```
+
+The last control proves that exact holes plus reciprocity permit the entire
+binary filtration.  The two-fiber concentration at level one is therefore a
+possible clue for a three-cap theorem, not a group-algebra consequence.  The
+direct graph encoding is loopless; two-fiber selections which it declares
+UNSAT must not be promoted to claims about the reduced code, whose q=6/q=8
+UNSAT evidence deliberately omits Loopless.
+
 ## Outside-literature boundary
 
 Classical augmentation-ideal and group-ring methods are strongest for
@@ -156,6 +219,12 @@ first derived independently:
 1. a three-fiber closed-walk identity with a prescribed right-hand side;
 2. a `q -> q/2` descent in which the odd-lift cocycle has an exact boundary;
 3. a binary incidence-rank identity for the collision partial linear space.
+
+Equivalently, the collision-filtration route may be reopened by a proved
+**three-cap valuation-change lemma**: three appropriately related capped
+fibers force either strict decrease of `v2(d)` under collision transport or
+two distinct common-neighbor owners at one separation.  The former cannot
+iterate below level zero; the latter violates agreement at most one.
 
 Absent one of these, taking more powers, more augmentation coefficients, or
 more formal consequences of the one-block valuation is the same one-fiber
