@@ -95,9 +95,88 @@ theorem c4Free_binarySquare_dyadicStoppingSupport_directDensity_squeeze
       2 * B.card.choose 2 + (q - 1) * (q * q - B.card)
   omega
 
+/-- Arbitrary convex-tangent form of the direct density squeeze.  Consumers
+may optimize `h` arithmetically without reintroducing the zero-pair count. -/
+theorem c4Free_binarySquare_dyadicStoppingSupport_convexTangent_directDensity_squeeze
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hq : 3 ≤ q)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V) (j h : ℕ)
+    (hdiv : ∀ v, 2 ^ j ∣ (G.neighborFinset v ∩ S).card)
+    (hqdiv : 2 ^ (j + 1) ∣ q) :
+    let L := dyadicStoppingServiceMinimum q S.card j
+    let M := dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j
+    let B := dyadicOccupancySupport G S j
+    let E := q * B.card - (S.card * L + (Sᶜ : Finset V).card * M)
+    let serviceCost :=
+      S.card * L.choose 2 + (Sᶜ : Finset V).card * M.choose 2 +
+        min L M * E + (h * E - q * q * (h + 1).choose 2)
+    2 * serviceCost + (q - 1) * B.card ≤
+      2 * B.card.choose 2 + (q - 1) * (q * q - B.card) := by
+  dsimp only
+  let B := dyadicOccupancySupport G S j
+  let Z := zeroCommonNeighborPairs G B
+  have hservice :=
+    c4Free_dyadicStoppingSupport_twoShore_convexTangent_cherry_squeeze
+      G hfree hreg S j h hdiv hqdiv
+  rw [hcard] at hservice
+  have hdensity := binarySquare_secondOrderDefectPairs_support_density
+    G hcard (binarySquare_regular_secondOrderDefect_degree_eq
+      G hfree hq hreg hcard) B
+  have hpairEq := secondOrderDefectPairs_eq_zeroCommonNeighborPairs G hfree B
+  change secondOrderDefectPairs G B = Z at hpairEq
+  have hZle : Z.card ≤ B.card.choose 2 := by
+    rw [← hpairEq]
+    calc
+      (secondOrderDefectPairs G B).card ≤ (B.powersetCard 2).card :=
+        Finset.card_le_card (secondOrderDefectPairs_subset_powersetCard G B)
+      _ = B.card.choose 2 := by simp
+  rw [hpairEq] at hdensity
+  change
+    S.card * (dyadicStoppingServiceMinimum q S.card j).choose 2 +
+          (Sᶜ : Finset V).card *
+            (dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j).choose 2 +
+          min (dyadicStoppingServiceMinimum q S.card j)
+              (dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j) *
+            (q * B.card -
+              (S.card * dyadicStoppingServiceMinimum q S.card j +
+                (Sᶜ : Finset V).card *
+                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) +
+          (h * (q * B.card -
+              (S.card * dyadicStoppingServiceMinimum q S.card j +
+                (Sᶜ : Finset V).card *
+                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) -
+            q * q * (h + 1).choose 2) ≤
+        B.card.choose 2 - Z.card at hservice
+  change
+    2 * (S.card * (dyadicStoppingServiceMinimum q S.card j).choose 2 +
+          (Sᶜ : Finset V).card *
+            (dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j).choose 2 +
+          min (dyadicStoppingServiceMinimum q S.card j)
+              (dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j) *
+            (q * B.card -
+              (S.card * dyadicStoppingServiceMinimum q S.card j +
+                (Sᶜ : Finset V).card *
+                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) +
+          (h * (q * B.card -
+              (S.card * dyadicStoppingServiceMinimum q S.card j +
+                (Sᶜ : Finset V).card *
+                  dyadicStoppingServiceMinimum q (Sᶜ : Finset V).card j)) -
+            q * q * (h + 1).choose 2)) +
+        (q - 1) * B.card ≤
+      2 * B.card.choose 2 + (q - 1) * (q * q - B.card)
+  omega
+
 end
 
 end Erdos85
 
 #print axioms
   Erdos85.c4Free_binarySquare_dyadicStoppingSupport_directDensity_squeeze
+#print axioms
+  Erdos85.c4Free_binarySquare_dyadicStoppingSupport_convexTangent_directDensity_squeeze
