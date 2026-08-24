@@ -33,6 +33,8 @@ def main() -> None:
         help="on SAT, print internal edges and occupied bases in each fibre")
     parser.add_argument("--require-internal-fibres", action="store_true",
         help="require at least one internal edge or arc in every allowed fibre")
+    parser.add_argument("--require-internal-full-support", action="store_true",
+        help="require every base to have an internal neighbour in its fibre")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     parser.add_argument("--dimacs")
     args = parser.parse_args()
@@ -146,6 +148,13 @@ def main() -> None:
                 candidates = [edge((x, t), (z, t))
                               for x, z in combinations(range(q), 2)]
             solver.add(z3.Or(candidates))
+
+    if args.require_internal_full_support:
+        for t in differences:
+            for x in range(q):
+                solver.add(z3.Or([
+                    edge((x, t), (z, t)) for z in range(q) if z != x
+                ]))
 
     if args.dimacs is not None:
         goal = z3.Goal()

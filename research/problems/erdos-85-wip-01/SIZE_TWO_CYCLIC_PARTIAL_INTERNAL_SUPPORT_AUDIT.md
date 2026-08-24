@@ -91,6 +91,33 @@ alone do not control `s_t`.  Full caps must either force some `s_t<q` strongly
 enough for (2), or the full-support branch must be classified via internal
 edge covers/matchings and binary parity.
 
+## Full-support calibration
+
+The arbitrary-base probe also supports
+`--require-internal-full-support`, requiring every base in every allowed
+fibre to have an internal neighbour.  At `q=8,a=2`, exact reciprocal hits
+without caps remain SAT under this stronger condition.  One model has
+internal edge counts
+
+```text
+8, 4, 6, 6, 4, 8
+```
+
+on fibres `0,1,3,4,6,7`.  Fibres `1` and `6` are perfect matchings, but the
+others are not; fibre `0`, for example, has degree profile
+
+```text
+4,1,2,2,1,3,1,2.
+```
+
+Therefore full internal support plus exact hits and reciprocity does not
+force a matching/involution.  Any matching reduction in the `s_t=q` branch
+must use the **full** cap family, including common targets outside the
+internal block.  Merely pruning an arbitrary full-support graph to an edge
+cover also does not produce a perfect matching (a star is the elementary
+counterexample).  The missing theorem must be a cap-controlled Hall
+condition or a collision alternative, not graph pruning alone.
+
 ## Formalization gate
 
 The proof of (1)--(3) is a direct modification of the banked Lean chain and
