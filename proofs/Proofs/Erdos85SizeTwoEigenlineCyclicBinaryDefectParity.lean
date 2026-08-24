@@ -88,6 +88,51 @@ theorem sizeTwoCyclic_singleDuplicateMissing_parity_ne
   rw [zero_sub, hnegOne] at h
   exact zero_ne_one h
 
+/-- For every source row, not only a sharp one, the deviation of its
+target-difference multiplicity word from the all-ones profile has nonzero
+order-two Fourier moment.  This is the local parity input for PMR. -/
+theorem sizeTwoCyclicTargetDifferenceMultiplicity_deviation_parity_eq_one
+    {q : ℕ} [NeZero q] (h4q : 4 ∣ q) {a : ZMod q}
+    (ha : a ≠ -1 - a)
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x : ZMod q) (t : sizeTwoAllowedDifference q a) :
+    let φ : ZMod q →+* ZMod 2 :=
+      ZMod.castHom (dvd_trans (by norm_num : 2 ∣ 4) h4q) (ZMod 2)
+    φ ((∑ u : sizeTwoAllowedDifference q a,
+        (sizeTwoCyclicTargetDifferenceMultiplicity code x t u : ZMod q) *
+          u.1) -
+      (∑ u : sizeTwoAllowedDifference q a, u.1)) = 1 := by
+  let h2q : 2 ∣ q := dvd_trans (by norm_num : 2 ∣ 4) h4q
+  let φ : ZMod q →+* ZMod 2 := ZMod.castHom h2q (ZMod 2)
+  change φ ((∑ u : sizeTwoAllowedDifference q a,
+      (sizeTwoCyclicTargetDifferenceMultiplicity code x t u : ZMod q) *
+        u.1) -
+    (∑ u : sizeTwoAllowedDifference q a, u.1)) = 1
+  have hq : 2 ≤ q := by
+    obtain ⟨k, hk⟩ := h4q
+    have hk0 : k ≠ 0 := by
+      intro hkzero
+      subst k
+      simp at hk
+      exact NeZero.ne q hk
+    omega
+  rw [sizeTwoCyclicTargetDifferenceMultiplicity_deviation_sum
+    hq ha code x t]
+  have heven := triangular_even_of_four_dvd q h4q
+  have htri : φ (((q * (q - 1) / 2 : ℕ) : ZMod q)) = 0 := by
+    obtain ⟨k, hk⟩ := heven
+    rw [hk, Nat.cast_add, map_add]
+    have htwo : (2 : ZMod 2) = 0 := by decide
+    calc
+      φ (k : ZMod q) + φ (k : ZMod q) =
+          2 * φ (k : ZMod q) := (two_mul _).symm
+      _ = 0 := by rw [htwo, zero_mul]
+  have htwoMap : φ (2 : ZMod q) = 0 := by
+    simpa only [map_ofNat] using (show (2 : ZMod 2) = 0 by decide)
+  rw [map_sub, map_mul, htwoMap, zero_mul, map_add, htri,
+    map_one, zero_add, zero_sub]
+  decide
+
 /-- Direct cyclic-code form: collision mass one produces a duplicate/missing
 pair crossing the parity partition. -/
 theorem exists_paritySeparated_duplicateMissing_of_collision_eq_one
@@ -117,6 +162,8 @@ end
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCyclic_singleDuplicateMissing_parity_ne
+#print axioms
+  Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_deviation_parity_eq_one
 #print axioms Erdos85.existsUnique_paritySelectedAdjacentBase
 #print axioms
   Erdos85.exists_paritySeparated_duplicateMissing_of_collision_eq_one
