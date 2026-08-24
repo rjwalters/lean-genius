@@ -115,3 +115,35 @@ Thus the first labelled moment supplies only order `q^2` pressure against an
 order `q^3` cap budget.  Higher pair-rooted correlations or a normalization
 that decreases `V` are genuinely necessary; Cauchy--Schwarz applied to (3)
 cannot close the terminal.
+
+## Block-degree relaxation countermodel
+
+The failure is stronger than the order comparison.  Keep one integer
+`b_tu(x)` for every source base and pair of fibre labels, and impose all of
+the information visible at block-degree level:
+
+- the degree and weighted identities (3)--(4);
+- `b_tt(x)>=1` (full internal support);
+- symmetric total edge counts between blocks, as required by reciprocity;
+- even total diagonal degree in every internal undirected block; and
+- the exact per-fibre collision/variance ceiling supplied by the cap.
+
+This relaxation is satisfiable at `q=8,a=1`, even after requiring the degree
+vectors to be independent of `x` and the resulting matrix to be symmetric.
+In allowed-fibre order `D=[0,2,3,4,5,7]`, one countermodel is
+
+```
+1 1 1 0 0 3
+1 2 2 1 0 0
+1 2 1 1 1 0
+0 1 1 1 2 1
+0 0 1 2 2 1
+3 0 0 1 1 1
+```
+
+Every row sums to six, the diagonal is positive, the affine weighted
+congruences hold, and each column's collision energy fits the q8 cap budget.
+Thus no argument expressed only through labelled block degrees, their first
+moments, symmetry of block totals, and cap variance can prove exclusion.
+The missing amplification must retain the entry positions inside `A_tu` and
+the full entrywise transpose equation `A_ut=A_tu^T`.
