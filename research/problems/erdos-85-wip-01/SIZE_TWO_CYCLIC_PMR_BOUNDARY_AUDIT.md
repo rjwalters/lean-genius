@@ -256,6 +256,30 @@ that a bad window at minimum total defect forces (CT), then use the two exact
 route factorizations to turn antipodal transition equality into the required
 second defect and strict global surplus cost.
 
+The half-block token description makes the q8 equality case still more
+rigid.  When `sum R<=66` and `M(0)<=7`, color zero has weight one, hence
+exactly one of its twelve source half-blocks has defect mass `z+e=3`; all
+others have mass one.  Across seeds 1 through 8, that exceptional source is
+always in difference fibre `t=4=q/2`, at base zero or one, and has
+`(z,e)=(2,1)`.  This support statement has an exact negation test: the option
+
+```text
+--max-parity-defect-mass-at-window-fibre 0 4 2
+```
+
+forces the two `t=4` half-blocks in color zero both to remain minimal.  With
+the rank-66 dip query it is UNSAT.  At rank 67, while also forbidding the
+antipodal dip, the same exclusion is SAT; a witness moves the unique
+mass-three half-block to `t=0` with `(z,e)=(1,2)`.
+
+Thus `t=q/2` is another minimum-escape feature, not a universal support law.
+Unlike the raw transition tensor, it points directly at same-fibre
+reciprocity: the q8 ablation audit already shows that diagonal reciprocal
+blocks are indispensable.  A promising equality proof can therefore focus
+on the diagonal load slots in the antipodal difference fibre and show that
+a weight-one color must spend its sole token there, after which route
+reversal transports the corresponding source to the antipodal base window.
+
 ## Aggregate transpose symmetry is insufficient
 
 Full reciprocity implies the aggregate transpose law

@@ -55,6 +55,9 @@ def main() -> None:
     parser.add_argument("--min-parity-missing-at-adjacent-bases", type=int,
         nargs=2, action="append", metavar=("X", "N"),
         help="lower-bound parity-selected zero loads at x,x+1")
+    parser.add_argument("--max-parity-defect-mass-at-window-fibre", type=int,
+        nargs=3, action="append", metavar=("X", "T", "N"),
+        help="bound z+e in the selected parity half-blocks at (x,t),(x+1,t)")
     parser.add_argument("--global-route-sign", choices=("even", "odd"),
         help="require the product sign of all local row-to-column permutations")
     parser.add_argument("--directed", action="store_true",
@@ -406,6 +409,28 @@ def main() -> None:
                 for base in (x, (x + 1) % q)
                 for t in differences for u in parity_fibres
             ], minimum))
+
+    if args.max_parity_defect_mass_at_window_fibre is not None:
+        for x, t, maximum in args.max_parity_defect_mass_at_window_fibre:
+            x %= q
+            t %= q
+            if q % 2 != 0:
+                parser.error("the parity half-block diagnostic requires even q")
+            if t not in differences:
+                parser.error("the parity half-block fibre is a hole")
+            if maximum < 0:
+                parser.error("the parity half-block mass bound is negative")
+            parity_fibres = [u for u in differences if u % 2 == x % 2]
+            masses = []
+            for base in (x, (x + 1) % q):
+                for u in parity_fibres:
+                    load = z3.Sum([
+                        z3.If(edge((base, t), (y, u)), 1, 0)
+                        for y in range(q)
+                    ])
+                    masses.append(z3.If(load == 0, 1,
+                        z3.If(load > 1, load - 1, 0)))
+            solver.add(z3.Sum(masses) <= maximum)
 
     # Full same-difference cap: any two distinct bases in one fibre have at
     # most one precise common target cell.
