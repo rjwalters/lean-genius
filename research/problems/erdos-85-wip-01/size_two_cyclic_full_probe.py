@@ -34,6 +34,10 @@ def main() -> None:
         help="on SAT, print target-fibre degree profiles for every source")
     parser.add_argument("--dump-route-table", action="store_true",
         help="on SAT, print each source's exact target-base to fibre routes")
+    parser.add_argument("--dump-forbidden-switches", action="store_true",
+        help="on SAT, print partial-dart statistics for the two forbidden diagonals")
+    parser.add_argument("--require-forbidden-composition-boundary", type=int,
+        help="require this many undefined darts for the sorted-hole switch composition")
     parser.add_argument("--min-sharp-sources", type=int,
         help="require at least this many sources to have a 0,2,1,... block profile")
     parser.add_argument("--max-total-defect-rank", type=int,
@@ -155,6 +159,14 @@ def main() -> None:
             args.directed or args.reciprocity_core or args.joint_group_core or
             args.joint_separation_core):
         parser.error("labelled internal cycles require undirected reciprocity")
+    if args.dump_forbidden_switches and (args.drop_row_hits or
+                                         args.drop_column_hits):
+        parser.error("--dump-forbidden-switches requires both exact-hit families")
+    if args.require_forbidden_composition_boundary is not None and (
+            args.drop_row_hits or args.drop_column_hits or args.directed or
+            args.reciprocity_core or args.joint_group_core or
+            args.joint_separation_core):
+        parser.error("forbidden composition boundary requires the reciprocal exact-hit model")
     if args.dump_slot_cuts and (args.directed or args.reciprocity_core or
             args.joint_group_core or args.joint_separation_core):
         parser.error("--dump-slot-cuts requires the reciprocal undirected model")
@@ -278,6 +290,40 @@ def main() -> None:
                 for index in range(0, len(inversions), 2)
             ]
         solver.add(inversions[0] == (args.global_route_sign == "odd"))
+
+    if args.require_forbidden_composition_boundary is not None:
+        labels = list(range(2, q))
+        first, second = sorted(holes)
+
+        def route_at_labels(source: tuple[int, int], r: int, s: int):
+            x, t = source
+            u = (-t - r - s) % q
+            if u not in differences:
+                return z3.BoolVal(False)
+            return edge(source, ((x + t + r) % q, u))
+
+        composition_defined = []
+        for source in vertices:
+            _, t = source
+            for r in labels:
+                witnesses = []
+                for s1 in labels:
+                    middle_r = (-t - first - s1) % q
+                    if middle_r not in labels:
+                        continue
+                    for s2 in labels:
+                        final_r = (-t - second - s2) % q
+                        if final_r not in labels:
+                            continue
+                        witnesses.append(z3.And(
+                            route_at_labels(source, r, s1),
+                            route_at_labels(source, middle_r, s2)))
+                composition_defined.append(z3.Or(witnesses))
+        wanted_boundary = args.require_forbidden_composition_boundary
+        if not 0 <= wanted_boundary <= len(composition_defined):
+            parser.error("forbidden composition boundary is outside the dart range")
+        solver.add(z3.PbEq([(z3.Not(flag), 1)
+                            for flag in composition_defined], wanted_boundary))
 
     # Equality case of the labelled collision-load bound.  For a fixed
     # source fibre t, its q vertices send q(q-2) incidences into exactly
@@ -1118,6 +1164,73 @@ def main() -> None:
                        for u in differences)
             }
             print(f"  source={source} routes={routes}")
+    if result == z3.sat and args.dump_forbidden_switches:
+        model = solver.model()
+        labels = list(range(2, q))
+
+        # An oriented route dart is determined by its source and relative
+        # target-row label r.  Its relative target-column label is s, where
+        # the target fibre satisfies u = -t-r-s.  Reflection in either
+        # forbidden anti-diagonal r+s = -t-h sends s to the prospective row
+        # r' = -t-h-s.  This is generally a partial operation: r'=0 or 1 is
+        # an ambient puncture.  The boundary/cycle census is the cheapest
+        # canonical test of the colored forbidden-switch hypermap proposed
+        # in divergence round 22.
+        route_s: dict[tuple[tuple[int, int], int], int] = {}
+        for source in vertices:
+            x, t = source
+            for r in labels:
+                y = (x + t + r) % q
+                matches = []
+                for u in differences:
+                    if z3.is_true(model.eval(
+                            edge(source, (y, u)), model_completion=True)):
+                        matches.append((-t - r - u) % q)
+                assert len(matches) == 1
+                route_s[(source, r)] = matches[0]
+
+        def forbidden_switch(dart: tuple[tuple[int, int], int], h: int):
+            source, r = dart
+            _, t = source
+            s = route_s[(source, r)]
+            next_r = (-t - h - s) % q
+            return None if next_r not in labels else (source, next_r)
+
+        darts = [(source, r) for source in vertices for r in labels]
+        forbidden = sorted(holes)
+        for h in forbidden:
+            image = {dart: forbidden_switch(dart, h) for dart in darts}
+            boundary = sum(target is None for target in image.values())
+            fixed = sum(target == dart for dart, target in image.items())
+            mutual = sum(target is not None and image.get(target) == dart and
+                         target != dart for dart, target in image.items()) // 2
+            print(f"  forbidden_switch={h} boundary={boundary} "
+                  f"fixed={fixed} mutual_pairs={mutual}")
+
+        for first, second in (forbidden, forbidden[::-1]):
+            composition = {}
+            for dart in darts:
+                middle = forbidden_switch(dart, first)
+                composition[dart] = (None if middle is None else
+                                     forbidden_switch(middle, second))
+            boundary = sum(target is None for target in composition.values())
+            fixed = sum(target == dart for dart, target in composition.items())
+            cycles = []
+            seen = set()
+            for dart in darts:
+                if dart in seen:
+                    continue
+                path_index = {}
+                current = dart
+                while (current is not None and current not in seen and
+                       current not in path_index):
+                    path_index[current] = len(path_index)
+                    current = composition[current]
+                if current in path_index:
+                    cycles.append(len(path_index) - path_index[current])
+                seen.update(path_index)
+            print(f"  forbidden_composition={first},{second} "
+                  f"boundary={boundary} fixed={fixed} cycles={sorted(cycles)}")
     if result == z3.unsat and (args.reciprocity_core or args.joint_group_core or
                                args.joint_separation_core):
         core = list(solver.unsat_core())
