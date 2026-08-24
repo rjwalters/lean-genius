@@ -89,7 +89,8 @@ show that the symmetric completion of all high-rank projection blocks cannot
 have one empty diagonal block while every within-fibre Gram off-diagonal is
 at most one.  This is nonlinear and coupled; no current rank identity proves
 it.  The q12 all-cap reciprocal solver is the bounded test of whether such a
-theorem may even be generic rather than binary.
+global transpose obstruction exists in the translation-invariant subclass;
+that run did not impose an empty fibre.
 
 ## Grouped reciprocity core and cap minimization
 
@@ -170,7 +171,7 @@ only caps `(5,1)`, `(6,1)`, `(6,5)`, the reciprocal system is SAT.  Its empty
 fibre has a six-target support at antipodal shift `6`, while the three named
 caps remain respected.  Thus this exact three-cap terminal is q8 calibration
 only; it must not replace the full-cap uniform-even target supported by the
-q8/q10/q12 all-cap UNSAT controls.
+q8/q10/q12 translation-invariant all-cap UNSAT controls.
 
 This two-fibre statement is binary-specific in the bounded controls.  At
 `q=12,a=1` with fibre `6` empty, each of the following is SAT:
@@ -188,3 +189,27 @@ cyclic binary reciprocal code, an empty fibre and the full cap families on
 that fibre and its predecessor are incompatible.  A proof still must use
 the small transpose-block core above; the directed countermodel rules out a
 two-fibre one-block argument that forgets reciprocity.
+
+## Scope correction: full-cap controls did not require emptiness
+
+The q10 and q12 all-cap UNSAT controls were run with every same-fibre cap but
+**without** an empty-fibre constraint.  The analogous q8 all-cap reciprocal
+instance is also UNSAT without emptiness; one greedy sufficient core is
+
+```text
+(3,4), (3,6), (3,7), (4,6), (4,7), (6,7), (7,7).
+```
+
+Therefore those three controls support the stronger but narrower statement
+that no *translation-invariant* reciprocal full-cap code exists at q8, q10,
+or q12.  They do not isolate the empty-fibre merger mechanism and do not by
+themselves prove anything about a general non-translation-invariant code.
+
+The empty-4 core and cap-minimization experiments in this audit remain valid
+bounded statements, but emptiness is not the reason the fully capped q8 TI
+system is inconsistent.  Future theorem statements must keep the two scopes
+separate:
+
+1. TI full-cap exclusion, empirically independent of an empty fibre; and
+2. general full-code empty-fibre merger, entered through the banked owner-edge
+   lower bound and still lacking a global labeled proof.
