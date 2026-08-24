@@ -124,9 +124,39 @@ theorem false_of_localGramPackingPointCoverFinset
   exact ⟨u, reverseIntervalRankDeficit_of_pointCoverFinset
     H W d u B C hshared hcover htotal⟩
 
+/-- Direct graph-facing consumer for grouped common-point certificates.  The
+groups may be the pairs/singletons of a collision matching together with an
+optional three-row point-star. -/
+theorem false_of_localGramPackingGroupedPointCover
+    {P : Type*} [Fintype P] [DecidableEq P] [DecidableEq V]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (u : V) (B : V → Finset P)
+    (groups : Finset (Finset V))
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ v, (relationNeighborFinset A v).card = d v)
+    (hsupport : ∀ v w, A v w → H v w)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hcommon : ∀ S ∈ groups, ∃ p, ∀ x ∈ S, p ∈ B x)
+    (hgroup : ∀ x, H u x →
+      x ∉ reverseForcedLocalGramNeighborFinset H W d u →
+      x ∉ reverseImpossibleLocalGramNeighborFinset H W d u →
+      (∀ f ∈ reverseForcedLocalGramNeighborFinset H W d u,
+        f ≠ x → ¬ W f x) →
+      ∃ S ∈ groups, x ∈ S)
+    (htotal :
+      (reverseForcedLocalGramNeighborFinset H W d u).card +
+        groups.card < d u) :
+    False := by
+  apply false_of_localGramPackingReverseIntervalRankDeficit
+      A H W d hsymm hdegree hsupport hgram
+  exact ⟨u, reverseIntervalRankDeficit_of_groupedPointCover
+    H W d u B groups hshared hcommon hgroup htotal⟩
+
 #print axioms reverseIntervalRankDeficit_of_pointCoverFinset
 #print axioms exists_pointCoverFinset_of_grouped_commonPoint
 #print axioms reverseIntervalRankDeficit_of_groupedPointCover
 #print axioms false_of_localGramPackingPointCoverFinset
+#print axioms false_of_localGramPackingGroupedPointCover
 
 end Erdos85
