@@ -43,7 +43,9 @@ theorem c4Free_binarySquare_pureEndpoint_offShore_privateTriangle
         p i ∈ S ∧
         ((secondOrderDefectGraph G).neighborFinset (p i) ∩
           (Sᶜ : Finset V)).card = 0 ∧
-        (i.1 ∉ S → ∃ z ∈ S, G.Adj i.1 z ∧ G.Adj (p i) z) := by
+        (i.1 ∉ S →
+          (G.neighborFinset (p i) ∩ G.neighborFinset i.1).card = 1 ∧
+          ∃ z ∈ S, G.Adj i.1 z ∧ G.Adj (p i) z) := by
   classical
   obtain ⟨p, hpInj, hp⟩ :=
     c4Free_binarySquare_pureEndpoint_privateMatching_defectClosed
@@ -79,6 +81,12 @@ theorem c4Free_binarySquare_pureEndpoint_offShore_privateTriangle
   have hcommonPos :
       0 < (G.neighborFinset (p i) ∩ G.neighborFinset i.1).card :=
     Nat.pos_of_ne_zero hcommonNe
+  have hcommonLe :
+      (G.neighborFinset (p i) ∩ G.neighborFinset i.1).card ≤ 1 :=
+    common_le_one_of_not_containsC4 hfree (p i) i.1 hipNe
+  have hcommonEq :
+      (G.neighborFinset (p i) ∩ G.neighborFinset i.1).card = 1 := by
+    omega
   obtain ⟨z, hz⟩ := Finset.card_pos.mp hcommonPos
   have hzp : G.Adj (p i) z :=
     (G.mem_neighborFinset (p i) z).mp (Finset.mem_inter.mp hz).1
@@ -95,7 +103,7 @@ theorem c4Free_binarySquare_pureEndpoint_offShore_privateTriangle
       rw [hiNeighbors]
       exact hzN
     exact (Finset.mem_inter.mp this).2
-  exact ⟨z, hzS, hzi, hzp⟩
+  exact ⟨hcommonEq, z, hzS, hzi, hzp⟩
 
 end
 
