@@ -1368,7 +1368,7 @@ theorem false_of_orderNine_order27_threeEdge_handshake
     (U W : Finset V) (hUsub : U ⊆ W)
     (hind : ∀ u ∈ U, (G.neighborFinset u ∩ U).card = 0)
     (hleft : (∑ u ∈ U, (G.neighborFinset u ∩ W).card) = 7)
-    (hright : (∑ w ∈ W \ U, (G.neighborFinset w ∩ W).card) = 5) :
+    (hright : (∑ w ∈ W \ U, (G.neighborFinset w ∩ W).card) ≤ 5) :
     False := by
   have hle := sum_neighbor_inter_card_le_complement_of_independent
     G U W hUsub hind
