@@ -43,6 +43,32 @@ theorem reverseIntervalRankDeficit_of_pointCoverFinset
           (fun q _hq => Nat.zero_le (weight q)) hpB
   · simpa [weight] using htotal
 
+/-- Direct graph-facing consumer for a strict scale-one contracted point
+cover.  This is the final interface a collision-star certificate needs. -/
+theorem false_of_localGramPackingPointCoverFinset
+    {P : Type*} [Fintype P] [DecidableEq P] [DecidableEq V]
+    (A H W : V → V → Prop) [DecidableRel A]
+    (d : V → ℕ) (u : V) (B : V → Finset P) (C : Finset P)
+    (hsymm : Std.Symm A)
+    (hdegree : ∀ v, (relationNeighborFinset A v).card = d v)
+    (hsupport : ∀ v w, A v w → H v w)
+    (hgram : ∀ x y w, W x y → A x w → A y w → False)
+    (hshared : ∀ x y, x ≠ y → ¬ Disjoint (B x) (B y) → W x y)
+    (hcover : ∀ x, H u x →
+      x ∉ reverseForcedLocalGramNeighborFinset H W d u →
+      x ∉ reverseImpossibleLocalGramNeighborFinset H W d u →
+      (∀ f ∈ reverseForcedLocalGramNeighborFinset H W d u,
+        f ≠ x → ¬ W f x) →
+      ¬ Disjoint C (B x))
+    (htotal :
+      (reverseForcedLocalGramNeighborFinset H W d u).card + C.card < d u) :
+    False := by
+  apply false_of_localGramPackingReverseIntervalRankDeficit
+      A H W d hsymm hdegree hsupport hgram
+  exact ⟨u, reverseIntervalRankDeficit_of_pointCoverFinset
+    H W d u B C hshared hcover htotal⟩
+
 #print axioms reverseIntervalRankDeficit_of_pointCoverFinset
+#print axioms false_of_localGramPackingPointCoverFinset
 
 end Erdos85
