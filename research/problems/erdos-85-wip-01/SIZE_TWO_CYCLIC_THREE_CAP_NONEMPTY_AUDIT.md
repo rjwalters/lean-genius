@@ -26,9 +26,13 @@ The first manageable larger control was `q=12, a=1`, with
 `left=0`, `middle=6`, `right=9`, `d1=1`, and `d2=3`.  The exact graph probe
 with the three caps and an empty middle graph returned `unknown` at 300
 seconds.  Dropping either all row laws or all column laws returned SAT
-immediately.  Therefore this run neither verifies nor refutes a generic
-nonemptiness theorem, but confirms that both positional marginal systems are
-essential.
+immediately.
+
+A subsequent translation-invariant exact-subclass probe returned SAT in less
+than one second, both for the three caps and after adding the fourth cap
+`(right,d2)`.  Because this is a subclass of the full exact model, it is a
+countermodel to the arbitrary-even-`q` nonemptiness theorem.  The q8 mechanism
+is genuinely small-order; at most a binary-specific generalization remains.
 
 ## Target-fibre localization at `q=8`
 
@@ -66,8 +70,8 @@ complement of the middle target fibre.  A proof confined to the left-middle
 cross-incidence block, or to any fixed proper subset of the remaining target
 fibres, cannot establish the q8 claim.
 
-The viable generic shape is consequently an all-target-fibre capacity sum:
-under an empty middle block, bound the common-target budget contributed by
-each of the `q-3` remaining target fibres and show the exact row/column totals
-exceed their combined capacity.  The present computation identifies that
-shape but does not supply the required q-generic inequality.
+For q8, the viable proof shape is consequently an all-target-fibre capacity
+sum: under an empty middle block, bound the common-target budget contributed
+by each of the five remaining target fibres and show the exact row/column
+totals exceed their combined capacity.  The q12 countermodel shows that the
+same inequality cannot hold at arbitrary even q under only these caps.
