@@ -77,3 +77,41 @@ or descent theorem: from any nonuniform labelled load family satisfying all
 caps, produce either a forbidden second common target or a new code with
 smaller total collision energy.  The equality endpoint of such a descent is
 now rigorously impossible by (1)--(2).
+
+## Positive-variance first moment
+
+There is a useful identity before taking the equality case.  Let
+`b_tu(x)` be the number of neighbours from source `(x,t)` into target fibre
+`u`.  Subtracting the sums of the exact target-row and absolute-column
+multisets gives, for every source,
+
+```
+sum_(u in D) u * b_tu(x) = 2(t+1)                 in Z/q. (3)
+```
+
+Also `sum_u b_tu(x)=d`.  If `e_tu(x)=b_tu(x)-1`, then
+
+```
+sum_u e_tu(x) = 0,
+sum_u u*e_tu(x) = 2(t+1) - sum_(u in D)u.                 (4)
+```
+
+Reciprocity identifies these block-row deviations with the target-load
+deviations counted by `V`.  However, (4) alone is quantitatively too weak.
+Exact integer dynamic programming, including `b_tt(x)>=1` from full internal
+support, gives minimum squared deviation two for essentially every `(x,t)`
+(and sometimes zero at q=10).  The resulting global lower bounds versus the
+cap upper bound are
+
+```
+q=6:   48 <= V <= 120
+q=8:   96 <= V <= 336
+q=10: 120 <= V <= 720
+q=12: 240 <= V <= 1320
+q=16: 448 <= V <= 3360.
+```
+
+Thus the first labelled moment supplies only order `q^2` pressure against an
+order `q^3` cap budget.  Higher pair-rooted correlations or a normalization
+that decreases `V` are genuinely necessary; Cauchy--Schwarz applied to (3)
+cannot close the terminal.
