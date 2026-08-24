@@ -283,6 +283,31 @@ theorem binarySquare_pureExceptional_endpoint_rigid
   simp only [Nat.sub_self, zero_mul] at hdefect
   omega
 
+/-- Full replication profile at the endpoint `c=q`.  Besides having no
+internal defect edge and no triple point, the endpoint partial-Baer design
+has exactly `q` private points and one pair point for every unordered pair
+of exceptional lines (expressed division-free as `2n₂=q(q-1)`). -/
+theorem binarySquare_pureExceptional_endpoint_profile
+    {q c s n₁ n₂ n₃ e : ℕ} (hc : c = q)
+    (hshore : 2 * s = q * q + c)
+    (hclasses : n₁ + n₂ + n₃ = s)
+    (hincidence : n₁ + 2 * n₂ + 3 * n₃ = q * c)
+    (hpairs : 2 * n₂ + 6 * n₃ + 2 * e = c * (c - 1)) :
+    e = 0 ∧ n₃ = 0 ∧ n₁ = q ∧ 2 * n₂ = q * (q - 1) := by
+  subst c
+  have hdefect := binarySquare_pureExceptional_defect_triple_identity
+    (q := q) (c := q) (s := s) (n₁ := n₁) (n₂ := n₂)
+    (n₃ := n₃) (e := e) (le_refl q) hshore hclasses hincidence hpairs
+  have hrigid := binarySquare_pureExceptional_endpoint_rigid
+    (q := q) (c := q) (e := e) (n₃ := n₃) rfl hdefect
+  rcases hrigid with ⟨rfl, rfl⟩
+  simp only [add_zero, mul_zero] at hclasses hincidence hpairs
+  constructor
+  · rfl
+  constructor
+  · rfl
+  constructor <;> omega
+
 /-- Exact mixed analogue of the pure defect identity.  The majority family
 has size `f = u + 2a`; if its shore replication is one or two, eliminating
 the two replication classes yields `2e + u = (q-f)²`. -/
@@ -1162,6 +1187,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_pureExceptional_defect_quantization
 #print axioms Erdos85.binarySquare_pureExceptional_layer_normalForm
 #print axioms Erdos85.binarySquare_pureExceptional_endpoint_rigid
+#print axioms Erdos85.binarySquare_pureExceptional_endpoint_profile
 #print axioms Erdos85.binarySquare_mixedMajority_defect_identity
 #print axioms Erdos85.binarySquare_mixedMajority_first_defect_layers
 #print axioms Erdos85.binarySquare_mixedMajority_replication_profile
