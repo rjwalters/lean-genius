@@ -67,7 +67,41 @@ theorem areLocalGramPackingExchangeCoupledAt_containing
   · exact ⟨⟨X, hX, hu⟩, ⟨X, hX, hv⟩⟩
   · exact ⟨⟨insert u C, hu, by simp⟩, ⟨insert v C, hv, by simp⟩⟩
 
+/-- A genuine one-row swap witnesses that neither exchanged row is forced at
+the source: the packing using the other row omits it. -/
+theorem not_isForcedLocalGramNeighbor_of_singleSwap
+    (H W : V → V → Prop) (d : V → ℕ) (x u v : V)
+    (huv : u ≠ v) (C : Finset V) (huC : u ∉ C) (hvC : v ∉ C)
+    (hu : IsLocalGramPacking H W d x (insert u C))
+    (hv : IsLocalGramPacking H W d x (insert v C)) :
+    ¬ IsForcedLocalGramNeighbor H W d x u ∧
+      ¬ IsForcedLocalGramNeighbor H W d x v := by
+  constructor
+  · intro hforced
+    have humem := hforced (insert v C) hv
+    simp [huv, huC] at humem
+  · intro hforced
+    have hvmem := hforced (insert u C) hu
+    have hvu : v = u := by simpa [hvC] using hvmem
+    exact huv hvu.symm
+
+/-- If one candidate is forced, exchange coupling cannot use the one-swap
+horn, so the two candidates actually occur in one full packing. -/
+theorem exists_joint_of_exchangeCoupledAt_of_forced
+    (H W : V → V → Prop) (d : V → ℕ) (x u v : V)
+    (huv : u ≠ v) (hforced : IsForcedLocalGramNeighbor H W d x u)
+    (hcoupled : AreLocalGramPackingExchangeCoupledAt H W d x u v) :
+    ∃ X : Finset V,
+      IsLocalGramPacking H W d x X ∧ u ∈ X ∧ v ∈ X := by
+  rcases hcoupled with hjoint | ⟨C, huC, hvC, hu, hv⟩
+  · exact hjoint
+  · exact False.elim
+      ((not_isForcedLocalGramNeighbor_of_singleSwap
+        H W d x u v huv C huC hvC hu hv).1 hforced)
+
 #print axioms areLocalGramPackingExchangeCoupledAt_symm
 #print axioms areLocalGramPackingExchangeCoupledAt_containing
+#print axioms not_isForcedLocalGramNeighbor_of_singleSwap
+#print axioms exists_joint_of_exchangeCoupledAt_of_forced
 
 end Erdos85
