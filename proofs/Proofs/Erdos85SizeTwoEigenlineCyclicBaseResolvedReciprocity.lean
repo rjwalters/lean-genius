@@ -227,6 +227,46 @@ theorem sizeTwoCyclicBaseResolvedRoute_card_sum_sourceDifferences
     _ = _ :=
       sizeTwoCyclicBaseResolvedRoute_card_sum_targetDifferences code y x u
 
+/-- At each fixed source base, the target-difference multiplicity matrix has
+constant column sum `q - 2`.  Together with the local degree law, it is an
+integer doubly-stochastic matrix. -/
+theorem sizeTwoCyclicTargetDifferenceMultiplicity_base_column_sum
+    {q : ℕ} [NeZero q] (hq1 : (1 : ZMod q) ≠ 0) {a : ZMod q}
+    (code : SizeTwoCyclicReciprocalPermutationCode q a)
+    (x : ZMod q) (u : sizeTwoAllowedDifference q a) :
+    (∑ t : sizeTwoAllowedDifference q a,
+      sizeTwoCyclicTargetDifferenceMultiplicity code x t u) = q - 2 := by
+  classical
+  let AdmissibleBases := {y : ZMod q //
+    u.1 ≠ x - y ∧ u.1 ≠ (x - y) - 1}
+  let e : AdmissibleBases ≃ SizeTwoAdmissibleTargetRow q u.1 := {
+    toFun := fun y => ⟨x - y.1, y.2⟩
+    invFun := fun r => ⟨x - r.1, by simpa using r.2⟩
+    left_inv := fun y => by apply Subtype.ext; simp
+    right_inv := fun r => by apply Subtype.ext; simp }
+  calc
+    (∑ t : sizeTwoAllowedDifference q a,
+      sizeTwoCyclicTargetDifferenceMultiplicity code x t u) =
+        ∑ t : sizeTwoAllowedDifference q a, ∑ y : ZMod q,
+          Fintype.card (SizeTwoCyclicBaseResolvedRoute code x t y u) := by
+      apply Finset.sum_congr rfl
+      intro t ht
+      exact (sizeTwoCyclicBaseResolvedRoute_card_sum code x t u).symm
+    _ = ∑ y : ZMod q, ∑ t : sizeTwoAllowedDifference q a,
+          Fintype.card (SizeTwoCyclicBaseResolvedRoute code x t y u) :=
+      Finset.sum_comm
+    _ = ∑ y : ZMod q,
+        if u.1 ≠ x - y ∧ u.1 ≠ (x - y) - 1 then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro y hy
+      exact sizeTwoCyclicBaseResolvedRoute_card_sum_sourceDifferences
+        code x y u
+    _ = Fintype.card AdmissibleBases := by
+      rw [Fintype.card_subtype, Finset.card_filter]
+    _ = Fintype.card (SizeTwoAdmissibleTargetRow q u.1) :=
+      Fintype.card_congr e
+    _ = q - 2 := sizeTwoAdmissibleTargetRow_card q u.1 hq1
+
 end
 
 end Erdos85
@@ -239,3 +279,5 @@ end Erdos85
   Erdos85.sizeTwoCyclicBaseResolvedRoute_card_sum_targetDifferences
 #print axioms
   Erdos85.sizeTwoCyclicBaseResolvedRoute_card_sum_sourceDifferences
+#print axioms
+  Erdos85.sizeTwoCyclicTargetDifferenceMultiplicity_base_column_sum
