@@ -49,6 +49,31 @@ There are no cases stuck after three-cycles.  The checker recomputes the
 local minimum rather than assuming it, and prints the full nonminimum count
 for each fibre.
 
+## Parity-preserving refinement
+
+Cycle switching in one-factorizations can preserve a parity component, so
+the same exhaustive local space was also checked with the sign of `psi`
+fixed.  Every q8 nonminimum valid matching has a strictly lower-rank valid
+matching of the **same permutation parity**.  Hence the standard switching
+parity obstruction does not separate a local routing from all local rank
+minimizers.
+
+Almost always the sign-preserving descent changes at most four assignments:
+a three-cycle or two disjoint transpositions suffice.  There are exactly two
+exceptional local matchings (with `R` ordered as `2,3,4,5,6,7`):
+
+```text
+a=1, t=3: (7,3,4,6,5,2), rank 2;
+a=1, t=4: (7,4,3,5,6,2), rank 2.
+```
+
+Their shortest sign-preserving strict descent has support five, hence is a
+five-cycle; both descend to rank one.  This matters for the global trade
+problem: restricting to rectangles, pairs of rectangles, or three-cycles
+can create a spurious parity barrier even at q8.  Allowing an arbitrary
+odd cycle removes the local barrier, but still says nothing about reciprocal
+closure or cap preservation.
+
 ## Nonbinary control
 
 The same exhaustive checker at q10, a1 cuts any arbitrary-even

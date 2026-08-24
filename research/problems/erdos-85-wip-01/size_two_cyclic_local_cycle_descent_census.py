@@ -34,14 +34,30 @@ def main() -> None:
             def rank(values: tuple[int, ...] | list[int]) -> int:
                 return len(differences - set(colors(t, values)))
 
+            def parity(values: tuple[int, ...] | list[int]) -> int:
+                return sum(values[i] > values[j]
+                           for i in range(len(values))
+                           for j in range(i + 1, len(values))) % 2
+
             local = [(values, rank(values)) for values in permutations(residues)
                      if valid(values)]
             minimum = min(value for _, value in local)
-            nonminimum = need_three = stuck = 0
+            nonminimum = need_three = stuck = same_parity_stuck = 0
+            max_same_parity_support = 0
             for values, old_rank in local:
                 if old_rank <= minimum:
                     continue
                 nonminimum += 1
+                same_parity_supports = [
+                    sum(left != right for left, right in zip(values, target))
+                    for target, target_rank in local
+                    if target_rank < old_rank and parity(target) == parity(values)
+                ]
+                if same_parity_supports:
+                    max_same_parity_support = max(
+                        max_same_parity_support, min(same_parity_supports))
+                else:
+                    same_parity_stuck += 1
                 descends = False
                 for i, j in combinations(range(len(residues)), 2):
                     changed = list(values)
@@ -65,7 +81,9 @@ def main() -> None:
                 if not descends:
                     stuck += 1
             print(f"  t={t} minimum={minimum} nonminimum={nonminimum} "
-                  f"need_three={need_three} stuck_after_three={stuck}")
+                  f"need_three={need_three} stuck_after_three={stuck} "
+                  f"same_parity_stuck={same_parity_stuck} "
+                  f"max_same_parity_support={max_same_parity_support}")
 
 
 if __name__ == "__main__":
