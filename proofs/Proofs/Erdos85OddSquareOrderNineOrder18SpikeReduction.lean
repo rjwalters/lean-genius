@@ -1496,6 +1496,81 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
     G owner c H K Z B₀ B₁ hKcard hKowner hcases
       hbinZeroIncidence hbinOneIncidence hmissing heq32
 
+/-- Graph-facing high-spike reducer.  Equation (31), evaluated at the
+owner and the high roots, supplies exactly the two inputs of the banked
+three-partner contradiction. -/
+theorem false_of_orderNine_order18_highSpike_transfer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (owner c : V) (A H K Z : Finset V)
+    (hAH : Disjoint A H)
+    (hownerA : owner ∉ A) (hownerH : owner ∉ H)
+    (hownerD : (D.neighborFinset owner ∩ A).card = 2)
+    (hKcard : K.card = 3)
+    (hKowner : K ⊆ G.neighborFinset owner)
+    (hKroot : ∀ y ∈ K, ∃ h ∈ H, y ∈ G.neighborFinset h)
+    (hdegHigh : ∀ h ∈ H, G.degree h = 10)
+    (hDzero : ∀ h ∈ H, (D.neighborFinset h ∩ A).card = 0)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ A).card : ℤ) =
+        8 * (if v ∈ A then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) +
+          (if G.Adj v c then 1 else 0)) :
+    False := by
+  have hownerZ := orderNine_order18_highSpike_owner_lowSet_degree_le_two
+    G D A H Z owner c hownerA hownerH hownerD heq31
+  have hrootEq : ∀ h ∈ H,
+      (G.neighborFinset h ∩ Z).card =
+        10 + if G.Adj h c then 1 else 0 := by
+    intro h hhH
+    exact orderNine_order18_highSpike_highRoot_equation_of_defect_transfer
+      G D A H Z c h hhH
+        (fun hhA ↦ Finset.disjoint_left.mp hAH hhA hhH)
+        (hDzero h hhH) heq31
+  exact false_of_orderNine_order18_highSpike_of_highRoot_equations
+    G owner c H K Z hKcard hKowner hKroot hdegHigh hrootEq hownerZ
+
+/-- Graph-facing low-spike reducer.  Equation (31) gives the high-root
+missing-partner bounds and equation (32) at the owner; together they force
+the unique degree-five center to be the deleted owner. -/
+theorem orderNine_order18_lowSpike_center_eq_owner_of_transfer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (owner c : V) (A H K Z B₀ B₁ : Finset V)
+    (hAH : Disjoint A H)
+    (hownerA : owner ∉ A) (hownerH : owner ∉ H)
+    (hownerD : (D.neighborFinset owner ∩ A).card = 2)
+    (hKcard : K.card = 3)
+    (hKowner : K ⊆ G.neighborFinset owner)
+    (hpartnerRoot : ∀ y ∈ K,
+      (G.neighborFinset y ∩ H).card = 1)
+    (hdegHigh : ∀ h ∈ H, G.degree h = 10)
+    (hDzero : ∀ h ∈ H, (D.neighborFinset h ∩ A).card = 0)
+    (hcases : c = owner ∨ c ∈ B₀ ∨ c ∈ B₁)
+    (hbinZeroIncidence : c ∈ B₀ → (G.neighborFinset c ∩ H).card = 0)
+    (hbinOneIncidence : c ∈ B₁ → (G.neighborFinset c ∩ H).card = 1)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ A).card : ℤ) =
+        8 * (if v ∈ A then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v c then 1 else 0)) :
+    c = owner := by
+  have heq32 := orderNine_order18_lowSpike_owner_equation
+    G D A H Z owner c hownerA hownerH hownerD heq31
+  have hrootEq : ∀ h ∈ H,
+      (G.neighborFinset h ∩ Z).card +
+        (if G.Adj h c then 1 else 0) = 10 := by
+    intro h hhH
+    exact orderNine_order18_lowSpike_highRoot_equation_of_defect_transfer
+      G D A H Z c h hhH
+        (fun hhA ↦ Finset.disjoint_left.mp hAH hhA hhH)
+        (hDzero h hhH) heq31
+  exact orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
+    G owner c H K Z B₀ B₁ hKcard hKowner hpartnerRoot hdegHigh
+      hrootEq hcases hbinZeroIncidence hbinOneIncidence heq32
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -1524,6 +1599,8 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
 #print axioms Erdos85.orderNine_order18_lowSpike_missing_partners_le_center_highIncidence
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_missing_partner_bound
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
+#print axioms Erdos85.false_of_orderNine_order18_highSpike_transfer
+#print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_transfer
 
 end
 
