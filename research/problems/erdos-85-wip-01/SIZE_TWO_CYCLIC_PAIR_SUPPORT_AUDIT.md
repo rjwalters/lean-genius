@@ -64,6 +64,18 @@ and cannot close the desired cap.  The transport must force two targets for a
 particular capped pair, or inject an already accumulated support into a lower
 2-adic level without changing its source-pair owner.
 
+Adding the selected fifth antipodal cap `(middle,6)` is still SAT, but the
+tuple data explains the escape precisely: `Support(6,6)` is empty, while
+`Support(6,5)` and `Support(6,7)` each contain three targets.  The model exports
+the forbidden double support to unselected neighboring separations.
+
+Therefore this is a countermodel to the five-cell reduction, **not** a full
+same-difference-code countermodel.  Imposing the cap at every same-fibre
+separation returned `unknown` at 120 seconds in the 610-orbit-variable q12
+translation-invariant model.  A theorem that uses all separations remains
+logically live and need not be binary-specific; the present evidence only
+refutes terminals that retain the selected short/antipodal caps.
+
 ## Reproduction
 
 ```text
