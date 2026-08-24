@@ -99,6 +99,101 @@ another maximum-degree-two folded permutation.  Thus the pairing is genuine
 additional information carried by the projected support, not a consequence
 of the four holes alone.
 
+## The lift-voltage cocycle
+
+Every surviving folded edge comes from a unique original edge.  Write its
+row and column coordinates as
+
+```text
+r = i + alpha*m,
+p = j + beta*m,          alpha,beta in F_2,
+```
+
+and label the folded edge by the lift voltage
+
+```text
+v = alpha + beta.
+```
+
+This voltage telescopes exactly along each path.  At an internal projected
+row vertex, the two incident surviving edges use its two distinct row lifts,
+so their `alpha` bits sum to one.  The analogous statement holds for the two
+`beta` bits at an internal column vertex.  At a boundary vertex, the active
+lift bit is the complement of the missing-hole lift bit.  Therefore, for a
+path with `L` edges,
+
+```text
+sum_edges v
+  = activeLift(left endpoint) + activeLift(right endpoint) + (L-1 mod 2).
+```
+
+A same-shore path has even `L` and a cross-shore path has odd `L`.  Hence
+each boundary-path voltage is determined by its paired endpoints and one
+extra bit precisely for a same-shore pair; it is independent of the internal
+path geometry.  A cyclic component has voltage zero, since it has equally
+many row and column vertices and every one contributes one.
+
+In the relative coordinates used above, the missing column lifts at `0,-1`
+are respectively `0,1`, so their active lifts are `1,0`.  If `hi(u)` denotes
+the high lift bit of `u in Z/(2m)`, the xor of all edge voltages in a block is
+
+```text
+hi(t) + hi(t+1) + 1.                                  (HQ1)
+```
+
+This formula is coordinate-sensitive.  In absolute coordinates the raw
+boundary xor is instead
+
+```text
+hi(x+t) + hi(x+t+1) + hi(x) + hi(x-1),                (HQ1-abs)
+```
+
+and the carry bits in translating by `x` reconcile `(HQ1)` with
+`(HQ1-abs)`.  One must not move lift bits between relative and absolute
+coordinates without those carries.
+
+## Exact voltage of scattered reverse darts
+
+The affine carry in reversal is particularly simple.  Write
+
+```text
+r = i + alpha*m,
+t = j + tau*m,          0 <= i,j < m.
+```
+
+The reverse edge has relative row and column coordinates `-r,t-r` in its
+new block.  A direct binary-carry calculation gives
+
+```text
+hi(-r) + hi(t-r) = tau + 1_{1 <= i <= j}.              (HQ2)
+```
+
+The original lift `alpha` and the original column disappear.  Summing
+`(HQ2)` along a folded path again cancels every internal projected row,
+because it occurs on two edges.  Consequently the xor of the **reverse-edge
+voltages**, even though those reverse edges scatter into different blocks,
+is:
+
+```text
+column--column boundary path:  0,
+row--row boundary path:         1_{j != 0},
+the two cross paths:            tau and tau + 1_{j != 0}
+                                (assignment depends on the pairing).
+```
+
+Cyclic components contribute zero.  In particular the total reverse-edge
+voltage of all darts leaving any one block `(x,t)` is the geometry-free bit
+
+```text
+1_{low(t) != 0}.                                      (HQ3)
+```
+
+This is the first exact identity which survives the scattering under
+reciprocity.  The unweighted xor of `(HQ3)` over all `q` base values is
+trivial because `q` is even.  A terminal must therefore weight by a base
+lift/carry, restrict a coherently closed family of fibers, or prove that
+reverse path fragments recombine blockwise.
+
 ## Reciprocity does not repair the loss at first level
 
 For an original route
