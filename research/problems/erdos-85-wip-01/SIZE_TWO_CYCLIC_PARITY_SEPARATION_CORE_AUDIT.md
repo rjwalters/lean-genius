@@ -84,6 +84,13 @@ the two antipodal pairs already seen at `(4,4)`.  Consequently the five-cell
 terminal is not merely forcing one repeated target label; its local defects
 come in the rigid orbit sizes `8,8,4,2,4`.
 
+By `CollisionDuplicateDuality`, the same excess counts repeated target labels
+inside reverse routing blocks.  Hence every four-cell deletion forces positive
+reverse-duplicate load in precisely the missing cell.  This is a covering
+profile, but the unequal orbit sizes do not themselves give a uniform
+five-cell conservation identity: the generic exclusion still needs an
+inequality forcing at least one of those five duplicate patterns twice.
+
 ## Consequence and stop
 
 The q8 parity target does not need full `AgreementAt` on all shifts.  It needs
