@@ -77,6 +77,8 @@ def main() -> None:
         help="on SAT, print internal edges and occupied bases in each fibre")
     parser.add_argument("--dump-labelled-internal-cycles", type=int, metavar="T",
         help="on SAT, print cycle, displacement, and route-sign data in fibre t")
+    parser.add_argument("--dump-fibre-trace-ledger", action="store_true",
+        help="on SAT, print rooted triangle/four-walk and internal-block traces")
     parser.add_argument("--dump-collision-separations", action="store_true",
         help="on SAT, summarize same-fibre common targets by base separation")
     parser.add_argument("--dump-collision-owner-fibres", action="store_true",
@@ -739,6 +741,54 @@ def main() -> None:
                   f"deltas={deltas} row_offsets={row_offsets} "
                   f"half_delta_sum={sum(half_deltas) % (q // 2) if half_deltas else None} "
                   f"route_sign_product={sign_product}")
+    if result == z3.sat and args.dump_fibre_trace_ledger:
+        model = solver.model()
+        neighbours = {source: set() for source in vertices}
+        for left, right in combinations(vertices, 2):
+            if z3.is_true(model.eval(edge(left, right),
+                                     model_completion=True)):
+                neighbours[left].add(right)
+                neighbours[right].add(left)
+        total_rooted_triangle = 0
+        total_rooted_four = 0
+        total_internal_trace_four = 0
+        total_same_fibre_excess = 0
+        for t in differences:
+            sources = [(x, t) for x in range(q)]
+            rooted_triangle = sum(
+                sum(len(neighbours[source] & neighbours[target])
+                    for target in neighbours[source])
+                for source in sources
+            )
+            rooted_four = sum(
+                sum(len(neighbours[source] & neighbours[target]) ** 2
+                    for target in vertices)
+                for source in sources
+            )
+            internal_trace_four = 0
+            for left in sources:
+                left_internal = neighbours[left] & set(sources)
+                for right in sources:
+                    right_internal = neighbours[right] & set(sources)
+                    internal_trace_four += len(left_internal & right_internal) ** 2
+            same_fibre_excess = sum(
+                max(0, len(neighbours[left] & neighbours[right]) - 1)
+                for left, right in combinations(sources, 2)
+            )
+            total_rooted_triangle += rooted_triangle
+            total_rooted_four += rooted_four
+            total_internal_trace_four += internal_trace_four
+            total_same_fibre_excess += same_fibre_excess
+            print(f"  fibre_trace={t} rooted_triangle={rooted_triangle} "
+                  f"rooted_four={rooted_four} "
+                  f"internal_trace_four={internal_trace_four} "
+                  f"cross_four={rooted_four - internal_trace_four} "
+                  f"same_fibre_codegree_excess={same_fibre_excess}")
+        print(f"  fibre_trace_total rooted_triangle={total_rooted_triangle} "
+              f"rooted_four={total_rooted_four} "
+              f"internal_trace_four={total_internal_trace_four} "
+              f"cross_four={total_rooted_four - total_internal_trace_four} "
+              f"same_fibre_codegree_excess={total_same_fibre_excess}")
     if result == z3.sat and args.dump_collision_separations:
         model = solver.model()
         if cap_excess_objective is not None:

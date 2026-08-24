@@ -401,3 +401,36 @@ Any surviving labelled-cycle proof must couple the diagonal cycle to labels
 in other difference fibres (for example a cross-fibre fourth-moment budget)
 or use a non-telescoping puncture correction.  The internal cycle by itself
 contains no charge distinguishing rank 64 from the rank-66 escape.
+
+## A full fibre trace ledger is not yet a PMR inequality
+
+The repeatable option `--dump-fibre-trace-ledger` decomposes the full
+adjacency fourth moment by rooted fibre.  For each allowed difference fibre
+it prints rooted triangles, rooted closed four-walks, the contribution wholly
+inside that fibre, the complementary cross-fibre contribution, and the
+same-fibre codegree excess.  It also prints their totals.
+
+This is strictly more information than a selected-fibre trace, but the
+cheapest scalar version does not close WSP.  Eight q8/a2 cap-free rank-64
+equality samples had total rooted-four values
+
+```text
+4064, 4272, 4272, 4272, 4272, 4360, 4272, 4272.
+```
+
+Thus the global trace is not fixed by equality.  In contrast, eight samples
+of the sharp minimum-dip query `sum R <= 66, M(0) <= 7` all gave
+
+```text
+(rooted_four, internal_trace_four, same_fibre_excess) = (4400,128,14).
+```
+
+At rank 67 the same dip query already realizes both `(4400,128,14)` and
+`(4408,160,16)`.  The rank-66 ledger rigidity is therefore a genuine
+boundary phenomenon, but sampling supplies neither a lower bound on every
+equality trace nor a route from the observed gap to the global defect budget.
+The selected-fibre term is the known collision token, while the remaining
+cross-fibre walks can redistribute.  This lane stops at the explicit missing
+statement: a q-generic puncture-labelled lower bound for the cross-fibre
+four-walk term.  Unweighted scalar trace refinements are not evidence for
+that statement.
