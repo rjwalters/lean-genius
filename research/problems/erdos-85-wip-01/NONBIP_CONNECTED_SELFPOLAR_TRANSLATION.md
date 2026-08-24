@@ -98,6 +98,30 @@ two formulas isolate the exact promotion gap and make it independently
 checkable.  Any future semipartial route must prove at least one genuinely new
 entrywise uniformity statement rather than another moment identity.
 
+#### Terminal audit: promotion alone is insufficient
+
+There is a second, more serious hypothesis gap after promotion.  The absolute
+point bound in Debroey--Thas Theorem 3.2 explicitly begins with the assumption
+that the polarity has a nonzero number of absolute points.  Our polarity is
+defined by the symmetric incidence matrix `A`, whose diagonal is identically
+zero, so its absolute-point count is exactly zero.
+
+This is not a removable technicality.  Debroey and Thas's Example 2.1 starts
+from a Moore graph of valency `r` and girth five on `1+r²` vertices and takes
+the neighborhood sets as lines.  The resulting incidence matrix is the
+loopless graph adjacency matrix itself.  It therefore gives a symmetric
+semipartial geometry with a natural polarity having no absolute points; the
+pentagon, Petersen graph, and Hoffman--Singleton graph supply concrete
+examples.
+
+Accordingly, even proofs of both entrywise uniformity statements above would
+not by themselves contradict our zero diagonal.  The route becomes terminal
+only if supplemented by a new, parameter-specific theorem forcing an absolute
+point for a `(q²)_q` semipartial geometry (or otherwise ruling out the
+zero-absolute branch).  No such theorem was found in the cited paper.  The
+semipartial-promotion probe should therefore be cut as a direct endgame rather
+than promoted to a standing axiom.
+
 ### Extension to a projective plane
 
 Partial-plane extension results, including Stephen Dow's
@@ -151,9 +175,11 @@ prevents further work on it.
 No ready-made theorem found in the searched configuration, polarity, or
 partial-plane literature rules out connected `D`.  The Moore defect-one route
 is a useful neighboring terminal, but its necessary graph inclusion `D <= G`
-is refuted pointwise by the established even triangle-free-degree law.  Within
-the configuration literature, the most precise surviving bounded structural
-question is whether our already-proved codegree identities imply either
-semipartial uniformity axiom.  Completion is useful mainly as a warning: the
-standard realizations exist, but their deficiency graph is maximally
-disconnected.
+is refuted pointwise by the established even triangle-free-degree law.
+Semipartial promotion also fails the terminal audit: classical fixed-point-free
+semipartial polarities exist, and the available absolute-point bound assumes
+the nonzero conclusion it would need to prove here.  Completion is useful
+mainly as a warning: the standard realizations exist, but their deficiency
+graph is maximally disconnected.  A viable configuration-theoretic endgame
+must therefore use the special `(q²)_q` parameters and self-polar labeling more
+strongly than either generic completion or generic semipartial theory does.
