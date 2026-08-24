@@ -139,10 +139,26 @@ pure-Boolean DIMACS path and proved by Kissat.  Dropping reciprocity makes
 the q8 a1 odd-sign query SAT immediately, so the restriction is not generic
 permutation bookkeeping.  By contrast, the reciprocal odd-sign query with
 no rank bound remained UNKNOWN at 120 seconds; the present evidence fixes
-the sign only on the rank-64 endpoint and must not be stated for every
+the sign only on minimum-rank endpoints and must not be stated for every
 reciprocal routing.
 
-This refines rather than closes the sign route.  The endpoint models of both
+The same test at the true cap-free minima of the two boundary hole phases
+gives
+
+```text
+a=0, sum r<=78: global route sign even SAT, odd UNSAT;
+a=3, sum r<=88: global route sign even SAT, odd UNSAT.
+```
+
+The odd exclusions again have independent validated DIMACS/Kissat proofs.
+Consequently **every q8 hole placement has even global route sign throughout
+its minimum-defect-rank stratum**, despite the minima `78,64,64,88` and their
+load geometries being quite different.  This is substantially more stable
+than an equality-at-`q^2` observation and suggests a q-generic minimum-
+stratum orientation theorem.  It remains bounded evidence: neither the
+minimum rank nor this sign law is yet known at general binary order.
+
+This refines rather than closes the sign route.  The endpoint models of all
 hole types already realize the required even sign, so scalar parity alone
 does not contradict them.  A cap terminal must show that selecting a
 cap-respecting endpoint in each reflection orbit forces the opposite sign,
