@@ -515,6 +515,74 @@ theorem orderNine_order18_excessTwo_function_level_sets
             have h9 := hne 9 hH.2.2.2.2.2.2.2.2.2
             omega
           simp [hxc, hxZ, hf7]
+
+/-- Lift the subtype-valued level law back to ambient vertices.  This is the
+interface used by the graph-facing shore equations, whose low set is a
+`Finset V` rather than a finset of ordinary-vertex subtypes. -/
+theorem orderNine_order18_excessTwo_subtype_level_sets
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (O : Finset V) (f : ↥(↑O : Set V) → ℕ) (hbound : ∀ x, f x ≤ 9)
+    (hprofile :
+      let n := fun i : ℕ ↦
+        ((Finset.univ : Finset ↥(↑O : Set V)).filter fun x ↦ f x = i).card
+      (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+        n 5 = 1 ∧ n 6 = 28 ∧ n 7 = 49 ∧ n 8 = 0 ∧ n 9 = 0) ∨
+      (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+        n 5 = 0 ∧ n 6 = 31 ∧ n 7 = 46 ∧ n 8 = 1 ∧ n 9 = 0)) :
+    (∃ (c : V) (Z : Finset V), c ∈ O ∧ Z ⊆ O ∧ Z.card = 28 ∧ c ∉ Z ∧
+      ∀ x, (hx : x ∈ O) →
+        f ⟨x, hx⟩ = if x = c then 5 else if x ∈ Z then 6 else 7) ∨
+    (∃ (c : V) (Z : Finset V), c ∈ O ∧ Z ⊆ O ∧ Z.card = 31 ∧ c ∉ Z ∧
+      ∀ x, (hx : x ∈ O) →
+        f ⟨x, hx⟩ = if x = c then 8 else if x ∈ Z then 6 else 7) := by
+  classical
+  let e : ↥(↑O : Set V) ↪ V := ⟨Subtype.val, Subtype.val_injective⟩
+  rcases orderNine_order18_excessTwo_function_level_sets f hbound hprofile with
+    hL | hH
+  · obtain ⟨c, Z, hZcard, hcZ, hlevels⟩ := hL
+    left
+    refine ⟨c.1, Z.map e, c.2, ?_, by simpa using hZcard, ?_, ?_⟩
+    · intro x hx
+      obtain ⟨y, hyZ, rfl⟩ := Finset.mem_map.mp hx
+      exact y.2
+    · intro hcMap
+      obtain ⟨y, hyZ, hyc⟩ := Finset.mem_map.mp hcMap
+      apply hcZ
+      have : y = c := Subtype.val_injective hyc
+      simpa [this] using hyZ
+    · intro x hxO
+      have hlevel := hlevels ⟨x, hxO⟩
+      have hxZ : x ∈ Z.map e ↔ (⟨x, hxO⟩ : ↥(↑O : Set V)) ∈ Z := by
+        constructor
+        · intro hx
+          obtain ⟨y, hyZ, hyx⟩ := Finset.mem_map.mp hx
+          have : y = ⟨x, hxO⟩ := Subtype.val_injective hyx
+          simpa [this] using hyZ
+        · intro hx
+          exact Finset.mem_map.mpr ⟨⟨x, hxO⟩, hx, rfl⟩
+      simpa [Subtype.ext_iff, hxZ] using hlevel
+  · obtain ⟨c, Z, hZcard, hcZ, hlevels⟩ := hH
+    right
+    refine ⟨c.1, Z.map e, c.2, ?_, by simpa using hZcard, ?_, ?_⟩
+    · intro x hx
+      obtain ⟨y, hyZ, rfl⟩ := Finset.mem_map.mp hx
+      exact y.2
+    · intro hcMap
+      obtain ⟨y, hyZ, hyc⟩ := Finset.mem_map.mp hcMap
+      apply hcZ
+      have : y = c := Subtype.val_injective hyc
+      simpa [this] using hyZ
+    · intro x hxO
+      have hlevel := hlevels ⟨x, hxO⟩
+      have hxZ : x ∈ Z.map e ↔ (⟨x, hxO⟩ : ↥(↑O : Set V)) ∈ Z := by
+        constructor
+        · intro hx
+          obtain ⟨y, hyZ, hyx⟩ := Finset.mem_map.mp hx
+          have : y = ⟨x, hxO⟩ := Subtype.val_injective hyx
+          simpa [this] using hyZ
+        · intro hx
+          exact Finset.mem_map.mpr ⟨⟨x, hxO⟩, hx, rfl⟩
+      simpa [Subtype.ext_iff, hxZ] using hlevel
 /-- Graph-facing unique-center form of (29), on the 78 ordinary centers. -/
 theorem orderNine_order18_largeOrdinaryShore_unique_spike
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -550,6 +618,51 @@ theorem orderNine_order18_largeOrdinaryShore_unique_spike
     G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hRcard
       hhigh₁ hhigh₂ hhigh₃ hdegOrd hdegHigh hboundary
   exact orderNine_order18_excessTwo_function_unique_spike f hp
+
+/-- Graph-facing ambient-vertex level law for the symmetric order-eighteen
+shore.  This composes the moment/profile theorem with the subtype lift, so
+equations (30)--(32) receive an actual low set `Z : Finset V`. -/
+theorem orderNine_order18_largeOrdinaryShore_level_sets
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (h₁ h₂ h₃ : V) (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃)
+    (h₂₃ : h₂ ≠ h₃) (R : Finset V)
+    (hRH : Disjoint R {h₁, h₂, h₃})
+    (hRcard : R.card = 60)
+    (hhigh₁ : (G.neighborFinset h₁ ∩ R).card = 8)
+    (hhigh₂ : (G.neighborFinset h₂ ∩ R).card = 8)
+    (hhigh₃ : (G.neighborFinset h₃ ∩ R).card = 8)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hboundary : (∑ x ∈ R,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ R)).card) = 2) :
+    let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
+    let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+    (∃ (c : V) (Z : Finset V), c ∈ O ∧ Z ⊆ O ∧ Z.card = 28 ∧ c ∉ Z ∧
+      ∀ x, (hx : x ∈ O) →
+        f ⟨x, hx⟩ = if x = c then 5 else if x ∈ Z then 6 else 7) ∨
+    (∃ (c : V) (Z : Finset V), c ∈ O ∧ Z ⊆ O ∧ Z.card = 31 ∧ c ∉ Z ∧
+      ∀ x, (hx : x ∈ O) →
+        f ⟨x, hx⟩ = if x = c then 8 else if x ∈ Z then 6 else 7) := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
+  have hp := orderNine_order18_largeOrdinaryShore_incidence_profile
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hRH hRcard
+      hhigh₁ hhigh₂ hhigh₃ hdegOrd hdegHigh hboundary
+  have hbound : ∀ x, f x ≤ 9 := by
+    intro x
+    have hle := Finset.card_le_card (Finset.inter_subset_left :
+      G.neighborFinset x.1 ∩ R ⊆ G.neighborFinset x.1)
+    rw [G.card_neighborFinset_eq_degree,
+      hdegOrd x.1 (Finset.mem_sdiff.mp x.2).2] at hle
+    exact hle
+  exact orderNine_order18_excessTwo_subtype_level_sets O f hbound hp
 
 /-- Cardinal decomposition across three pairwise-disjoint parts. -/
 theorem card_inter_add_inter_add_inter_of_three_part_partition
@@ -1145,7 +1258,9 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_profile
 #print axioms Erdos85.orderNine_order18_excessTwo_function_unique_spike
 #print axioms Erdos85.orderNine_order18_excessTwo_function_level_sets
+#print axioms Erdos85.orderNine_order18_excessTwo_subtype_level_sets
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_unique_spike
+#print axioms Erdos85.orderNine_order18_largeOrdinaryShore_level_sets
 #print axioms Erdos85.orderNine_order18_lowSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_highSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_spike_defect_equation_of_global_shore_equation
