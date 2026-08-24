@@ -47,6 +47,96 @@ def v2(n: int) -> int:
     return value
 
 
+def half_quotient_signature(
+    routes: list[tuple[int, int]], source_t: int, q: int
+) -> tuple[str, tuple[tuple[str, int], ...]]:
+    """Return the canonical boundary pairing and reverse-voltage signature.
+
+    A route is ``(relative target row, relative target column)``.  Folding
+    modulo ``q/2`` and cancelling cells with even multiplicity gives a
+    bipartite graph of maximum degree two with four prescribed odd vertices.
+    The two path components pair those vertices.  Each surviving edge is
+    labelled by the high-bit xor of its reversed relative coordinates
+    ``(-r, source_t-r)``.
+    """
+    m = q // 2
+    cells: dict[tuple[int, int], list[tuple[int, int]]] = {}
+    for row, column in routes:
+        cells.setdefault((row % m, column % m), []).append((row, column))
+    surviving = {cell: lifts for cell, lifts in cells.items() if len(lifts) % 2}
+    assert all(len(lifts) == 1 for lifts in surviving.values())
+
+    adjacency: dict[tuple[str, int], list[tuple[tuple[str, int], tuple[int, int]]]] = {}
+    for cell in surviving:
+        row_node = ("R", cell[0])
+        col_node = ("C", cell[1])
+        adjacency.setdefault(row_node, []).append((col_node, cell))
+        adjacency.setdefault(col_node, []).append((row_node, cell))
+    assert all(len(edges) <= 2 for edges in adjacency.values())
+
+    boundary_names = {
+        ("R", source_t % m): "R0",
+        ("R", (source_t + 1) % m): "R1",
+        ("C", 0): "C0",
+        ("C", (-1) % m): "C1",
+    }
+    odd = {node for node, edges in adjacency.items() if len(edges) % 2}
+    assert odd == set(boundary_names), (source_t, odd, set(boundary_names))
+
+    def reverse_voltage(cell: tuple[int, int]) -> int:
+        row, _column = surviving[cell][0]
+        return (((-row) % q) // m) ^ (((source_t - row) % q) // m)
+
+    visited_edges: set[tuple[int, int]] = set()
+    paths: list[tuple[str, int]] = []
+    for start in sorted(odd):
+        incident = [cell for _neighbor, cell in adjacency[start]
+                    if cell not in visited_edges]
+        if not incident:
+            continue
+        node = start
+        voltage = 0
+        while True:
+            choices = [(neighbor, cell) for neighbor, cell in adjacency[node]
+                       if cell not in visited_edges]
+            if not choices:
+                break
+            assert len(choices) == 1
+            neighbor, cell = choices[0]
+            visited_edges.add(cell)
+            voltage ^= reverse_voltage(cell)
+            node = neighbor
+        assert node in odd and node != start
+        endpoint_pair = "-".join(sorted((boundary_names[start], boundary_names[node])))
+        paths.append((endpoint_pair, voltage))
+
+    # Every remaining component is a cycle and has zero reverse voltage.
+    for first_cell in surviving:
+        if first_cell in visited_edges:
+            continue
+        node = ("R", first_cell[0])
+        cycle_voltage = 0
+        while True:
+            choices = [(neighbor, cell) for neighbor, cell in adjacency[node]
+                       if cell not in visited_edges]
+            if not choices:
+                break
+            neighbor, cell = choices[0]
+            visited_edges.add(cell)
+            cycle_voltage ^= reverse_voltage(cell)
+            node = neighbor
+        assert cycle_voltage == 0
+    assert len(visited_edges) == len(surviving)
+    assert len(paths) == 2
+
+    pairs = sorted(pair for pair, _voltage in paths)
+    if all(pair[0] == pair[3] for pair in pairs):
+        pairing = "RR|CC"
+    else:
+        pairing = "|".join(pairs)
+    return pairing, tuple(sorted(paths))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("q", type=int)
@@ -84,11 +174,15 @@ def main() -> None:
     allowed = sorted({(y - x) % q for x, y in vertices})
     part_valuations: Counter[tuple[int, int]] = Counter()
     collision_pair_levels: Counter[tuple[int, int]] = Counter()
+    half_quotient_signatures: Counter[
+        tuple[int, str, tuple[tuple[str, int], ...]]
+    ] = Counter()
     collision_count = 0
 
     for x, y in vertices:
         source_t = (y - x) % q
         aggregate: list[int] = []
+        routes: list[tuple[int, int]] = []
         for target_s in allowed:
             displacements = []
             for target_x in range(q):
@@ -98,6 +192,7 @@ def main() -> None:
             if not displacements:
                 continue
             aggregate.extend(displacements)
+            routes.extend((r, (r + target_s) % q) for r in displacements)
             valuation = augmentation_valuation(displacements, q)
             part_valuations[(len(displacements), valuation)] += 1
             for r, s in combinations(displacements, 2):
@@ -111,6 +206,9 @@ def main() -> None:
         expected = [r for r in range(q) if r not in {source_t, (source_t + 1) % q}]
         assert sorted(aggregate) == expected
         assert augmentation_valuation(aggregate, q) == 1
+        if q >= 4:
+            pairing, path_voltages = half_quotient_signature(routes, source_t, q)
+            half_quotient_signatures[(source_t, pairing, path_voltages)] += 1
 
     print(f"vertices={len(vertices)} allowed_differences={allowed}")
     print("target-part (cardinality, eps-valuation) distribution:")
@@ -120,6 +218,10 @@ def main() -> None:
     print("collision (v2(separation), eps-valuation) distribution:")
     for key, count in sorted(collision_pair_levels.items()):
         print(f"  {key}: {count}")
+    if q >= 4:
+        print("half-quotient (source_t, pairing, path reverse voltages) distribution:")
+        for key, count in sorted(half_quotient_signatures.items()):
+            print(f"  {key}: {count}")
 
 
 if __name__ == "__main__":
