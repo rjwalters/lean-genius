@@ -66,6 +66,24 @@ throughout the parity class.  The reflected odd MUS is
 
 and again every one-group deletion is SAT.
 
+Minimizing the excess in the deleted group gives an exact defect vector for
+the even MUS:
+
+| deleted group `(t,d)` | minimum separation-`d` excess in fibre `t` |
+|---|---:|
+| `(0,1)` | `8` |
+| `(0,2)` | `8` |
+| `(4,1)` | `4` |
+| `(4,4)` | `2` |
+| `(6,2)` | `4` |
+
+Each value is certified by SAT at the displayed cap and UNSAT one below.
+Minimum witnesses consist of whole reversal orbits of codegree-two source
+pairs: eight pairs for the first two groups, four for the next and last, and
+the two antipodal pairs already seen at `(4,4)`.  Consequently the five-cell
+terminal is not merely forcing one repeated target label; its local defects
+come in the rigid orbit sizes `8,8,4,2,4`.
+
 ## Consequence and stop
 
 The q8 parity target does not need full `AgreementAt` on all shifts.  It needs

@@ -112,6 +112,9 @@ def main() -> None:
     parser.add_argument("--codegree-excess-cap", type=int,
         help=("bound the total number of common-neighbor pairs for the "
               "--codegree-profile-difference source fiber"))
+    parser.add_argument("--codegree-profile-separation", type=int,
+        help=("restrict the codegree profile and excess cap to one "
+              "undirected source-separation orbit"))
     parser.add_argument("--uniform-profile-multiplicity", action="store_true",
         help=("require every vertex to have exactly one neighbor in the "
               "--codegree-profile-difference source fiber"))
@@ -143,6 +146,10 @@ def main() -> None:
         parser.error("--loop-count-cap requires --allow-loops")
     if args.loop_profile and not args.allow_loops:
         parser.error("--loop-profile requires --allow-loops")
+    if (args.codegree_profile_separation is not None and
+            args.codegree_profile_difference is None):
+        parser.error("--codegree-profile-separation requires "
+                     "--codegree-profile-difference")
     fiber_separations = None
     if args.c4_fiber_separation is not None:
         if args.c4_pair_mode != "same-difference":
@@ -192,6 +199,12 @@ def main() -> None:
     if args.codegree_excess_cap is not None:
         excess_terms = []
         for i, j in combinations(source, 2):
+            raw_separation = (vertices[j][0] - vertices[i][0]) % args.q
+            if args.codegree_profile_separation is not None and \
+                    raw_separation not in {
+                        args.codegree_profile_separation % args.q,
+                        (-args.codegree_profile_separation) % args.q}:
+                continue
             common_neighbor_indices = (list(range(len(vertices)))
                                        if args.allow_loops else
                                        [k for k in range(len(vertices))
@@ -263,6 +276,11 @@ def main() -> None:
         profile: dict[int, Counter[int]] = {}
         for i, j in combinations(source, 2):
             raw_separation = (vertices[j][0] - vertices[i][0]) % args.q
+            if args.codegree_profile_separation is not None and \
+                    raw_separation not in {
+                        args.codegree_profile_separation % args.q,
+                        (-args.codegree_profile_separation) % args.q}:
+                continue
             separation = min(raw_separation, (-raw_separation) % args.q)
             common_neighbor_indices = (range(len(vertices)) if args.allow_loops
                                        else (k for k in range(len(vertices))
