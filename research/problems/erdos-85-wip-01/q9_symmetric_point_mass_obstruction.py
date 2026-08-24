@@ -416,6 +416,10 @@ def contracted_two_color_matching_profiles(
                 for f in forced)
     ]
     profiles = []
+    pair_candidates = [
+        source for source in candidates
+        if len(system["blocks"][source]) == 2
+    ]
     for omitted in range(3):
         colors = [color for color in range(3) if color != omitted]
         color_points = [
@@ -427,6 +431,12 @@ def contracted_two_color_matching_profiles(
         mandatory = set().union(*(
             block for block in projected if len(block) == 1
         )) if projected else set()
+        pair_missing_omitted = sum(
+            all(not (8 * omitted <= point < 8 * omitted + 8)
+                for point in system["blocks"][source])
+            for source in pair_candidates
+        )
+        incident_pair_count = len(pair_candidates) - pair_missing_omitted
         raw_edges = set()
         residual_edges = set()
         for block in projected:
@@ -466,8 +476,13 @@ def contracted_two_color_matching_profiles(
             "omitted_color": omitted,
             "forced_card": len(forced),
             "candidate_count": len(candidates),
+            "pair_candidate_count": len(pair_candidates),
+            "pair_missing_omitted_color_count": pair_missing_omitted,
+            "incident_pair_count": incident_pair_count,
             "mandatory_points": sorted(mandatory),
             "mandatory_card": len(mandatory),
+            "pair_singleton_projection_injective":
+                len(mandatory) == incident_pair_count,
             "raw_matching_card": raw_matching_card,
             "matching_card": residual_matching_card,
             "matching_deletion_loss":
@@ -2149,6 +2164,23 @@ def main() -> None:
                 record["all_lexicographic_color_selectors_close"]
                 for record in lexicographic_target_records
             ),
+            "all_pair_singleton_projections_injective": all(
+                profile["pair_singleton_projection_injective"]
+                for record in records for profile in record["profiles"]
+            ),
+            "minimum_singleton_colors_equal_maximum_retained_pair_colors":
+                all(
+                    (profile["mandatory_card"]
+                     == record["minimum_mandatory_card"])
+                    == (profile["pair_missing_omitted_color_count"]
+                        == max(
+                            candidate[
+                                "pair_missing_omitted_color_count"
+                            ]
+                            for candidate in record["profiles"]
+                        ))
+                    for record in records for profile in record["profiles"]
+                ),
             "exists_closing_minimum_mandatory_selector": any(
                 record["minimum_mandatory_selector_closes"]
                 for record in records

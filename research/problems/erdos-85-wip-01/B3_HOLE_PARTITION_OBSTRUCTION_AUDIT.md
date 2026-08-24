@@ -5476,3 +5476,22 @@ strict cover inequality.  The likely counting input for (13bc) is a global
 sum or average of reverse-compatible candidate incidences; (13bd) is the
 near-full matching deletion mechanism.  As before, this is exact corpus
 evidence, not yet a universal outer-design proof.
+
+The first color criterion has an exact outer-design interpretation.  Let
+`P(w)` be the residual pair blocks and let `p_c(w)` count those pairs missing
+color `c` (and hence retained as ordinary bipartite edges when `c` is
+omitted).  In every audited reverse-obstructed row, not merely the selected
+ones, pair blocks incident to `c` project to distinct singleton points.  Thus
+
+```text
+s(w,c) = |P(w)| - p_c(w).                                  (13be)
+```
+
+The auditor checks the projection injectivity point by point and verifies
+(13be) on every row/color in all ten payloads.  Consequently ``minimize s``
+in (13bd) is exactly ``maximize p_c``: retain as many pair blocks as edges as
+possible.  This is a substantial simplification because the first color
+choice no longer mentions a hitting set or matching.  Its likely Lean source
+is the global pair-fiber geometry (globally, for each omitted color, the pair
+blocks incident to that color already have distinct opposite endpoints).
+Only the deletion-loss tie-break remains genuinely alternating-path based.
