@@ -124,3 +124,62 @@ singletons and pairs of the core fibres are satisfiable with loops, while the
 triple is not.  Any terminal must use cross-fibre compatibility or first
 derive Loopless from the full triple hypotheses; it cannot derive the packing
 bound from half-fibre C4 positivity alone.
+
+## Uniform-multiplicity gate and hypothesis isolation
+
+The new option `--uniform-profile-multiplicity` requires every allowed cell
+to have exactly one neighbor in the profiled source fiber.  At `q=8,a=1`,
+the opposite fiber cannot have this perfectly uniform incidence profile in
+either the loopless model or the loop-permitting reduced-code model:
+
+```text
+python3 size_two_cyclic_exact_graph_probe.py 8 --a 1 --no-c4 \
+  --codegree-profile-difference 4 --uniform-profile-multiplicity \
+  --quiet-model --timeout-ms 60000
+# UNSAT
+
+python3 size_two_cyclic_exact_graph_probe.py 8 --a 1 --no-c4 \
+  --allow-loops --codegree-profile-difference 4 \
+  --uniform-profile-multiplicity --quiet-model --timeout-ms 60000
+# UNSAT
+```
+
+This does not restore the positive-excess theorem: as the scope correction
+above records, the loop-permitting model has `X_4=0` solutions.  Those
+solutions therefore realize a linear incidence hypergraph, but only with a
+nonuniform point-multiplicity profile.  The uniform gate identifies a valid
+reduced-code fact: any solution has nonzero incidence deviation.
+
+Write
+
+```text
+n(B) = |N(B) intersect S_(q/2)|.
+```
+
+Exact row and column hits give sum `q-2` over every target row and every
+target column, each of which contains `q-2` allowed cells.  Hence
+`delta(B)=n(B)-1` is an integer circulation on the allowed row-column
+bipartite graph.  If it is nonzero, its smallest possible support has two
+positive and two negative cells; correspondingly
+`sum_B binom(n(B),2) >= 2`.  This explains the scale of the q=8 minimum, but
+does not yet prove `X_(q/2)>0`: the latter requires the same source pair to
+collide at two different cells.
+
+In the stronger loopless model, the q=8 `X_4=0` contradiction genuinely uses
+all three structural inputs.
+With symmetry retained, the exact probe is SAT after dropping either family
+of marginals:
+
+```text
+--no-columns  # rows only: SAT at X_4=0
+--no-rows     # columns only: SAT at X_4=0
+```
+
+With both partial-permutation marginals retained but reciprocity disabled,
+the independent permutation encoding is also SAT with the full `t=4` cap.
+Thus a one-sided packing theorem, a marginal-only inequality, or reciprocity
+alone cannot prove the loopless positive excess.  For the reduced target,
+the honest local conclusion is only that `delta` is a nonzero integer
+circulation while `X_(q/2)` may still vanish.  Any terminal argument must
+couple that circulation to the other core fibers and triple caps, or first
+derive Loopless from the full triple hypotheses.

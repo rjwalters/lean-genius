@@ -102,6 +102,9 @@ def main() -> None:
     parser.add_argument("--codegree-excess-cap", type=int,
         help=("bound the total number of common-neighbor pairs for the "
               "--codegree-profile-difference source fiber"))
+    parser.add_argument("--uniform-profile-multiplicity", action="store_true",
+        help=("require every vertex to have exactly one neighbor in the "
+              "--codegree-profile-difference source fiber"))
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--allow-loops", action="store_true",
         help=("model the reduced symmetric reciprocal relation, whose "
@@ -115,19 +118,28 @@ def main() -> None:
         c4_separations=None if args.c4_separation is None else
             {d % args.q for d in args.c4_separation},
         allow_loops=args.allow_loops)
-    if args.codegree_excess_cap is not None:
+    if (args.codegree_excess_cap is not None or
+            args.uniform_profile_multiplicity):
         if args.codegree_profile_difference is None:
-            parser.error("--codegree-excess-cap requires --codegree-profile-difference")
+            parser.error("codegree constraints require "
+                         "--codegree-profile-difference")
         index = {vertex: i for i, vertex in enumerate(vertices)}
         source = [index[vertex] for vertex in vertices
                   if (vertex[1] - vertex[0]) % args.q ==
                   args.codegree_profile_difference % args.q]
+        if not source:
+            parser.error("profile difference is one of the forbidden fibers")
 
         def adj_expr(i: int, j: int) -> z3.BoolRef:
             if i == j and not args.allow_loops:
                 return z3.BoolVal(False)
             return edge[min(i, j), max(i, j)]
 
+    if args.uniform_profile_multiplicity:
+        for j in range(len(vertices)):
+            solver.add(z3.PbEq([(adj_expr(i, j), 1) for i in source], 1))
+
+    if args.codegree_excess_cap is not None:
         excess_terms = []
         for i, j in combinations(source, 2):
             common_neighbor_indices = (list(range(len(vertices)))
