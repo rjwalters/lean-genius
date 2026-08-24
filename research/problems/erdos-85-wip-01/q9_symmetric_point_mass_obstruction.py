@@ -466,6 +466,26 @@ def contracted_two_color_matching_profiles(
     return profiles
 
 
+def pasch_configurations(system: dict, rows) -> list[list[int]]:
+    """Find 2x2x2 parity/Pasch configurations among the named rows."""
+    triples = [
+        row for row in rows if len(system["blocks"][row]) == 3
+    ]
+    configurations = []
+    for selected in combinations(triples, 4):
+        blocks = [system["blocks"][row] for row in selected]
+        if not all(len(first & second) == 1
+                   for first, second in combinations(blocks, 2)):
+            continue
+        multiplicities = {
+            point: sum(point in block for block in blocks)
+            for point in set().union(*blocks)
+        }
+        if len(multiplicities) == 6 and set(multiplicities.values()) == {2}:
+            configurations.append(list(selected))
+    return configurations
+
+
 def contracted_residual_pasch_configurations(
         system: dict, target: int, local: dict[int, dict]) -> list[list[int]]:
     """Find 2x2x2 parity/Pasch configurations among residual triples."""
@@ -486,19 +506,7 @@ def contracted_residual_pasch_configurations(
         and all(not (system["blocks"][source] & system["blocks"][f])
                 for f in forced)
     ]
-    configurations = []
-    for rows in combinations(triples, 4):
-        blocks = [system["blocks"][row] for row in rows]
-        if not all(len(first & second) == 1
-                   for first, second in combinations(blocks, 2)):
-            continue
-        multiplicities = {
-            point: sum(point in block for block in blocks)
-            for point in set().union(*blocks)
-        }
-        if len(multiplicities) == 6 and set(multiplicities.values()) == {2}:
-            configurations.append(list(rows))
-    return configurations
+    return pasch_configurations(system, triples)
 
 
 def dual(system: dict, row_support: set[int] | None,
@@ -2034,6 +2042,8 @@ def main() -> None:
             "all_rows_locally_feasible": all(
                 local[row]["packing_count"] for row in range(N)
             ),
+            "global_pasch_configurations":
+                pasch_configurations(system, range(N)),
             "records": records,
             "exists_closing_minimum_mandatory_selector": any(
                 record["minimum_mandatory_selector_closes"]

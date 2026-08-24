@@ -5392,3 +5392,15 @@ least one of its four rows.  This locates the next honest structural leaf:
 prove that the forced/possible reverse interval cannot retain a Pasch, and
 then determine whether Pasch-freeness plus the q=9 row counts yields (13az),
 or add the next minimal matching-critical configuration as a separate horn.
+
+The two observed global Pasches are removed at different layers, so the Lean
+statement must mention the whole reverse interval rather than only trace
+eligibility.  In `fractional_collision_not_forced`, the Pasch rows
+`{5,12,20,23}` have at most two mutually trace-eligible members at every
+target.  In `row_feasible_selector_counterexample`, all four rows
+`{7,9,16,22}` are mutually trace-eligible with target 24, but row 22 cannot
+contain 24 in any demanded local packing; the possible-neighbor filter leaves
+only `{7,9,16}`.  Thus one fixture is killed by the static core/K relation and
+the other only by the reverse local-packing interval.  The audit emits both
+the global and contracted Pasch lists so this distinction remains regression
+tested.
