@@ -2304,6 +2304,69 @@ theorem false_of_orderNine_order18_lowSpike_of_local_profiles
       hWcard hownerW hpartnersOwner hbinZeroOwner hsourceDisj hshoreSplit
       hpartnerDegree hbinZeroPositive
 
+/-- If a punctured-neighborhood containment permits only one deleted point,
+nonadjacency to that point upgrades it to an unpunctured containment. -/
+theorem neighborFinset_subset_of_insert_owner_of_not_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (owner z : V) (U : Finset V)
+    (hzOwner : ¬ D.Adj z owner)
+    (hpunctured : D.neighborFinset z ⊆ insert owner U) :
+    D.neighborFinset z ⊆ U := by
+  intro y hy
+  rcases Finset.mem_insert.mp (hpunctured hy) with hyo | hyU
+  · subst y
+    exact (hzOwner ((D.mem_neighborFinset z owner).mp hy)).elim
+  · exact hyU
+
+/-- Closed-shore count for a degree-seven source in an owner-punctured
+articulation, provided it is not defect-adjacent to the deleted owner. -/
+theorem degreeSeven_neighbor_inter_shore_card_eq_if_of_punctured_closure
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (owner : V) (U A B : Finset V) (z : V)
+    (hunion : A ∪ B = U) (hdisj : Disjoint A B)
+    (hzU : z ∈ U) (hzOwner : ¬ D.Adj z owner)
+    (hneighbors : ∀ x ∈ U, D.neighborFinset x ⊆ insert owner U)
+    (hAclosed : ∀ x ∈ A, D.neighborFinset x ∩ U ⊆ A)
+    (hBclosed : ∀ x ∈ B, D.neighborFinset x ∩ U ⊆ B)
+    (hzdegree : D.degree z = 7) :
+    (D.neighborFinset z ∩ A).card = if z ∈ A then 7 else 0 := by
+  exact neighbor_inter_shore_card_eq_if_of_complementary_closed
+    D U A B z hunion hdisj hzU
+      (neighborFinset_subset_of_insert_owner_of_not_adj
+        D owner z U hzOwner (hneighbors z hzU))
+      hAclosed hBclosed hzdegree
+
+/-- The two exact degree-eight shore counts needed for a bin-zero source:
+`7/0` if the deleted owner is a defect neighbor, and `8/0` otherwise. -/
+theorem degreeEight_neighbor_inter_shore_profiles_of_punctured_closure
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (owner : V) (U A B : Finset V) (z : V)
+    (hownerNotU : owner ∉ U)
+    (hunion : A ∪ B = U) (hdisj : Disjoint A B)
+    (hzU : z ∈ U)
+    (hneighbors : ∀ x ∈ U, D.neighborFinset x ⊆ insert owner U)
+    (hAclosed : ∀ x ∈ A, D.neighborFinset x ∩ U ⊆ A)
+    (hBclosed : ∀ x ∈ B, D.neighborFinset x ∩ U ⊆ B)
+    (hzdegree : D.degree z = 8) :
+    (D.Adj z owner →
+      (D.neighborFinset z ∩ A).card = if z ∈ A then 7 else 0) ∧
+    (¬ D.Adj z owner →
+      (D.neighborFinset z ∩ A).card = if z ∈ A then 8 else 0) := by
+  constructor
+  · intro hzOwner
+    exact neighbor_inter_shore_card_eq_if_of_complementary_closed_punctured_owner
+      D owner U A B z hownerNotU hunion hdisj hzU hzOwner
+        hneighbors hAclosed hBclosed hzdegree
+  · intro hzOwner
+    exact neighbor_inter_shore_card_eq_if_of_complementary_closed
+      D U A B z hunion hdisj hzU
+        (neighborFinset_subset_of_insert_owner_of_not_adj
+          D owner z U hzOwner (hneighbors z hzU))
+        hAclosed hBclosed hzdegree
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -2355,6 +2418,9 @@ theorem false_of_orderNine_order18_lowSpike_of_local_profiles
 #print axioms Erdos85.exists_source_target_in_sdiff_of_inter_card_le_one
 #print axioms Erdos85.false_of_orderNine_order18_lowOwner_of_pointwise_target_profiles
 #print axioms Erdos85.false_of_orderNine_order18_lowSpike_of_local_profiles
+#print axioms Erdos85.neighborFinset_subset_of_insert_owner_of_not_adj
+#print axioms Erdos85.degreeSeven_neighbor_inter_shore_card_eq_if_of_punctured_closure
+#print axioms Erdos85.degreeEight_neighbor_inter_shore_profiles_of_punctured_closure
 
 end
 
