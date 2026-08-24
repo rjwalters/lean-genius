@@ -80,3 +80,32 @@ labels does not preserve the simultaneous source-row and absolute-column
 hole equations without changing other labels, so it is not a valid symmetry
 of this fixed cyclic routing problem.
 
+## Caps at the true minimum rank
+
+The selective flag `--cap-fibres` tests the cap terminal at the actual a0/a3
+minimum rather than at the unattainable rank 64.
+
+At `a=0`, `sum r<=78`, every one of the six singleton cap-fibre queries is
+UNSAT.  Hence every minimum-rank model violates the cap in every endpoint
+fibre.
+
+At `a=3`, `sum r<=88`, singleton cap fibres 0,2,5,7 are UNSAT, while 1 and 6
+are SAT.  Imposing both cap fibres `{1,6}` remains SAT.  Under the reflection
+
+```text
+j(t) = -1-t,
+```
+
+the orbits are `{0,7}`, `{1,6}`, `{2,5}`.  Thus every minimum-rank model is
+cap-bad at both members of the two outer reflection orbits; the middle orbit
+can be wholly cap-good.
+
+Together with the a1/a2 exact-rank cap discriminator, all four q8 hole
+placements support one uniform minimum-stratum terminal:
+
+> Every cap-free minimum-defect-rank model violates both cap families in at
+> least one full reflection orbit `{t,j(t)}`.
+
+This is bounded evidence, not a classification theorem.  It materially
+widens the reflection-orbit target beyond the `sum r=q^2` equality cases:
+the same shape persists when the cap-free minimum is 78 or 88.
