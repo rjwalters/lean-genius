@@ -1,5 +1,6 @@
 import Proofs.Erdos85CanonicalSaturatedExceptionalTransport
 import Proofs.Erdos85TwoPoleKernelImageDichotomy
+import Proofs.Erdos85TwoPolePotentialSupportPacking
 
 /-!
 # Canonical saturated two-pole dichotomy
@@ -51,7 +52,8 @@ theorem binarySquare_saturatedDeficit_emptyPole_transport_dichotomy
               (ZMod 2)).mulVec x =
             ((triangleFreeEdgeGraph G).adjMatrix (ZMod 2)).mulVec x +
               (G.adjMatrix (ZMod 2)).mulVec
-                (Pi.single pole₁ 1 + Pi.single pole₂ 1)) := by
+                (Pi.single pole₁ 1 + Pi.single pole₂ 1) ∧
+          q ≤ (f2PotentialSupport x).card) := by
   obtain ⟨pole₁, pole₂, hpole₁, hpole₂, hpoles, htransport⟩ :=
     binarySquare_saturatedDeficit_exists_emptyPoles_exceptionalTransport
       G hfree hq hqEven hr hreg hcard S htri hemptyClique
@@ -60,7 +62,17 @@ theorem binarySquare_saturatedDeficit_emptyPole_transport_dichotomy
   rcases exists_starDistinguishing_residualTransport_or_exists_adjPotential
       G hqEven hreg pole₁ pole₂ with hsep | ⟨x, hAx⟩
   · exact Or.inl hsep
-  · exact Or.inr ⟨x, hAx, htransport x hAx⟩
+  · have hDadj : (secondOrderDefectGraph G).Adj pole₁ pole₂ :=
+      hemptyClique hpole₁ hpole₂ hpoles
+    have hcommonCard :
+        (G.neighborFinset pole₁ ∩ G.neighborFinset pole₂).card = 0 :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+        G hfree hpoles).mp hDadj
+    have hcommon : G.neighborFinset pole₁ ∩ G.neighborFinset pole₂ = ∅ :=
+      Finset.card_eq_zero.mp hcommonCard
+    have hpack := degree_le_card_f2PotentialSupport_of_twoPole
+      G hfree hreg x pole₁ pole₂ hpoles hcommon hAx
+    exact Or.inr ⟨x, hAx, htransport x hAx, hpack⟩
 
 end Erdos85
 
