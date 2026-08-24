@@ -39,12 +39,132 @@ def nearRegularComponentAdmissible {ι : Type*} [Fintype ι]
     nearRegularCutLower ordinaryCount q (ordinaryCount - s)
       (fun i => highDegree i - b i) ≤ 0
 
+/-- Empty-high-root specialization relevant to a regular graph of square
+order. -/
+def regularSquareCutLower (q s : ℕ) : ℤ :=
+  (nearRegularBalancedSquareSum (q * q) (q * s) : ℤ) - s ^ 2
+
 instance {ι : Type*} [Fintype ι] [DecidableEq ι]
     (ordinaryCount q : ℕ) (highDegree : ι → ℕ)
     (s : ℕ) (b : ι → ℕ) :
     Decidable (nearRegularComponentAdmissible ordinaryCount q highDegree s b) := by
   unfold nearRegularComponentAdmissible
   infer_instance
+
+/-- Closed form of the regular square cut lower bound. -/
+theorem regularSquareCutLower_eq_mod_product
+    (q s : ℕ) (hq : 0 < q) :
+    regularSquareCutLower q s =
+      (((s % q) * (q - s % q) : ℕ) : ℤ) := by
+  let a := s / q
+  let r := s % q
+  have hs : s = q * a + r := by
+    dsimp only [a, r]
+    exact (Nat.div_add_mod s q).symm
+  have hr : r < q := by
+    dsimp only [r]
+    exact Nat.mod_lt _ hq
+  have hdiv : q * s / (q * q) = a := by
+    dsimp only [a]
+    exact Nat.mul_div_mul_left s q hq
+  have hmod : q * s % (q * q) = q * r := by
+    dsimp only [r]
+    exact Nat.mul_mod_mul_left q s q
+  have hqr : q * r ≤ q * q := Nat.mul_le_mul_left q (Nat.le_of_lt hr)
+  change regularSquareCutLower q s = ((r * (q - r) : ℕ) : ℤ)
+  unfold regularSquareCutLower nearRegularBalancedSquareSum
+  rw [hdiv, hmod]
+  push_cast [Nat.cast_sub hqr, Nat.cast_sub (Nat.le_of_lt hr)]
+  have hsZ : (s : ℤ) = q * (a : ℤ) + r := by exact_mod_cast hs
+  rw [hsZ]
+  ring
+
+private theorem mod_product_ge_sub_one
+    (q r : ℕ) (hrpos : 0 < r) (hrlt : r < q) :
+    q - 1 ≤ r * (q - r) := by
+  have hqr : 1 ≤ q - r := by omega
+  have hmul : r - 1 ≤ (r - 1) * (q - r) := by
+    calc
+      r - 1 = (r - 1) * 1 := by simp
+      _ ≤ (r - 1) * (q - r) := Nat.mul_le_mul_left _ hqr
+  have hrdecomp : r = 1 + (r - 1) := by omega
+  have hid : r * (q - r) = (q - r) + (r - 1) * (q - r) := by
+    calc
+      r * (q - r) = (1 + (r - 1)) * (q - r) := by rw [← hrdecomp]
+      _ = (q - r) + (r - 1) * (q - r) := by ring
+  rw [hid]
+  omega
+
+/-- Uniform arithmetic obstruction to a positive punctured boundary split.
+Once the two shore residues add to `q-1`, their regular-square cut lower
+bounds cannot fit inside positive boundary sizes totaling `q-1`. -/
+theorem false_of_regularSquare_positive_punctured_cut_split
+    (q s t δS δT : ℕ) (hq : 2 ≤ q)
+    (hres : s % q + t % q = q - 1)
+    (hδSpos : 0 < δS) (hδTpos : 0 < δT)
+    (hδsum : δS + δT = q - 1)
+    (hcutS : regularSquareCutLower q s ≤ δS)
+    (hcutT : regularSquareCutLower q t ≤ δT) : False := by
+  let r := s % q
+  let u := t % q
+  have hqpos : 0 < q := by omega
+  have hrlt : r < q := Nat.mod_lt _ hqpos
+  have hult : u < q := Nat.mod_lt _ hqpos
+  have hSr : r * (q - r) ≤ δS := by
+    rw [regularSquareCutLower_eq_mod_product q s hqpos] at hcutS
+    exact_mod_cast hcutS
+  have hTu : u * (q - u) ≤ δT := by
+    rw [regularSquareCutLower_eq_mod_product q t hqpos] at hcutT
+    exact_mod_cast hcutT
+  have hres' : r + u = q - 1 := by simpa [r, u] using hres
+  by_cases hrzero : r = 0
+  · have hu : u = q - 1 := by omega
+    rw [hu, show q - (q - 1) = 1 by omega, mul_one] at hTu
+    omega
+  by_cases huzero : u = 0
+  · have hr : r = q - 1 := by omega
+    rw [hr, show q - (q - 1) = 1 by omega, mul_one] at hSr
+    omega
+  have hrmin := mod_product_ge_sub_one q r (Nat.pos_of_ne_zero hrzero) hrlt
+  have humin := mod_product_ge_sub_one q u (Nat.pos_of_ne_zero huzero) hult
+  omega
+
+/-- Complementary shores of a punctured square have residues summing to
+`q-1`. -/
+theorem regularSquare_punctured_residue_sum
+    (q s t : ℕ) (hq : 2 ≤ q) (hcards : s + t = q * q - 1) :
+    s % q + t % q = q - 1 := by
+  have hqpos : 0 < q := by omega
+  have hslt : s % q < q := Nat.mod_lt _ hqpos
+  have htlt : t % q < q := Nat.mod_lt _ hqpos
+  have hqqle : q ≤ q * q := by nlinarith
+  have hmul : q * (q - 1) = q * q - q :=
+    by simpa using Nat.mul_sub_left_distrib q q 1
+  have hdecomp : q * q - 1 = q * (q - 1) + (q - 1) := by
+    rw [hmul]
+    omega
+  have hm := congrArg (fun n : ℕ => n % q) hcards
+  rw [Nat.add_mod, hdecomp] at hm
+  simp [Nat.add_mod, Nat.mod_eq_of_lt (by omega : q - 1 < q)] at hm
+  rw [Nat.mod_eq_of_lt hslt, Nat.mod_eq_of_lt htlt] at hm
+  by_cases hlt : s % q + t % q < q
+  · rwa [Nat.mod_eq_of_lt hlt] at hm
+  · have hqle : q ≤ s % q + t % q := by omega
+    have hsubLt : s % q + t % q - q < q := by omega
+    rw [Nat.mod_eq_sub_mod hqle, Nat.mod_eq_of_lt hsubLt] at hm
+    omega
+
+/-- Card-sum form of the uniform punctured cut obstruction. -/
+theorem false_of_regularSquare_positive_punctured_cut_split_of_cards
+    (q s t δS δT : ℕ) (hq : 2 ≤ q)
+    (hcards : s + t = q * q - 1)
+    (hδSpos : 0 < δS) (hδTpos : 0 < δT)
+    (hδsum : δS + δT = q - 1)
+    (hcutS : regularSquareCutLower q s ≤ δS)
+    (hcutT : regularSquareCutLower q t ≤ δT) : False :=
+  false_of_regularSquare_positive_punctured_cut_split q s t δS δT hq
+    (regularSquare_punctured_residue_sum q s t hq hcards)
+    hδSpos hδTpos hδsum hcutS hcutT
 
 private theorem nearRegular_balancedSquare_point (a x : ℕ) :
     ((2 * a + 1 : ℕ) : ℤ) * x ≤
@@ -415,6 +535,8 @@ theorem nearRegularComponentAdmissible_orderNine_threeHigh
     Fin.sum_univ_three]
 
 #print axioms Erdos85.nearRegularBalancedSquareSum_le_sum_sq
+#print axioms Erdos85.regularSquareCutLower_eq_mod_product
+#print axioms Erdos85.false_of_regularSquare_positive_punctured_cut_split_of_cards
 #print axioms Erdos85.nearRegularBalancedSquare_eq_pointwise
 #print axioms Erdos85.nearRegularBalancedSquare_eq_upper_card
 #print axioms Erdos85.nearRegularCutLower_le_of_moments
