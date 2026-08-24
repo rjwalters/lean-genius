@@ -115,3 +115,31 @@ existential-in-`t` target is itself false at `q=8,a=2,3`.  The next audit must
 check whether those `a` can occur in the exterior eigenline normalization.
 If they can, the single-fiber lane stops and the consumer must return to a
 multi-fiber cap.  Another unlabelled collision total is not informative.
+
+## Parity-class replacement
+
+A bounded two-/three-fiber sweep identifies a parameter-uniform replacement.
+At `q=8,a=2`, all fifteen two-fiber subsets are SAT, so no all-parameter pair
+target can work.  Several triples are UNSAT; in particular the three allowed
+even fibers `{0,4,6}` are UNSAT.  For the four representatives of the
+unordered hole pair `a ~ -1-a`, both parity classes give:
+
+| `a` | allowed even fibers | result | allowed odd fibers | result |
+|---|---|---|---|---|
+| `0` | `{2,4,6}` | UNSAT | `{1,3,5}` | UNSAT |
+| `1` | `{0,2,4}` | UNSAT | `{3,5,7}` | UNSAT |
+| `2` | `{0,4,6}` | UNSAT | `{1,3,7}` | UNSAT |
+| `3` | `{0,2,6}` | UNSAT | `{1,5,7}` | UNSAT |
+
+Every class has `q/2-1` fibers because the two reflection holes have opposite
+parity.  This is exactly the partition already used by the banked binary
+duplicate/missing parity census.  The corrected q-generic target is therefore:
+
+> for every binary `q>=8` and every `a`, one mod-two class of allowed source
+> differences, with `AgreementAt` retained on every fiber in that class,
+> excludes a globally reciprocal loopless code.
+
+`Erdos85SizeTwoEigenlineCyclicLooplessParityFiberBound.lean` states this as
+`BinarySizeTwoCyclicLooplessParityFiberBound` and verifies its exact
+graph-facing consumer.  The exclusion remains the mathematical gap; the
+q=8 table is evidence for the statement, not a q-generic proof.
