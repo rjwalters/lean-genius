@@ -35,6 +35,54 @@ theorem sizeTwoReflection_shifts_ne_of_even
   rw [hzero] at htwo
   norm_num at htwo
 
+/-- Reflection in `-1/2` preserves the allowed difference fibres. -/
+def sizeTwoAllowedDifferenceReflection
+    (q : ℕ) [NeZero q] (a : ZMod q) :
+    sizeTwoAllowedDifference q a ≃ sizeTwoAllowedDifference q a where
+  toFun t := ⟨-1 - t.1, by
+    constructor
+    · intro h
+      apply t.2.2
+      calc
+        t.1 = -1 - (-1 - t.1) := by abel
+        _ = -1 - a := by rw [h]
+    · intro h
+      apply t.2.1
+      calc
+        t.1 = -1 - (-1 - t.1) := by abel
+        _ = -1 - (-1 - a) := by rw [h]
+        _ = a := by abel⟩
+  invFun t := ⟨-1 - t.1, by
+    constructor
+    · intro h
+      apply t.2.2
+      calc
+        t.1 = -1 - (-1 - t.1) := by abel
+        _ = -1 - a := by rw [h]
+    · intro h
+      apply t.2.1
+      calc
+        t.1 = -1 - (-1 - t.1) := by abel
+        _ = -1 - (-1 - a) := by rw [h]
+        _ = a := by abel⟩
+  left_inv t := by apply Subtype.ext; dsimp; abel
+  right_inv t := by apply Subtype.ext; dsimp; abel
+
+@[simp] theorem sizeTwoAllowedDifferenceReflection_val
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (t : sizeTwoAllowedDifference q a) :
+    (sizeTwoAllowedDifferenceReflection q a t).1 = -1 - t.1 := rfl
+
+/-- At even order the allowed-fibre reflection has no fixed point, so its
+orbits are genuine pairs. -/
+theorem sizeTwoAllowedDifferenceReflection_ne_of_even
+    {q : ℕ} [NeZero q] (hqEven : Even q) {a : ZMod q}
+    (t : sizeTwoAllowedDifference q a) :
+    sizeTwoAllowedDifferenceReflection q a t ≠ t := by
+  intro h
+  have hval := congrArg Subtype.val h
+  exact sizeTwoReflection_shifts_ne_of_even hqEven t.1 hval.symm
+
 /-- At even order there are exactly `q-2` allowed difference fibers. -/
 theorem sizeTwoAllowedDifference_card_of_even
     (q : ℕ) [NeZero q] (hqEven : Even q) (a : ZMod q) :
@@ -55,5 +103,6 @@ end
 end Erdos85
 
 #print axioms Erdos85.sizeTwoReflection_shifts_ne_of_even
+#print axioms Erdos85.sizeTwoAllowedDifferenceReflection_ne_of_even
 #print axioms Erdos85.sizeTwoAllowedDifference_card_of_even
 #print axioms Erdos85.sizeTwoCyclicExteriorCell_card_of_even
