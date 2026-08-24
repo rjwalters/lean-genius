@@ -132,6 +132,43 @@ classical way would produce parallel classes and force `D = q K_q`, directly
 contradicting the connected branch.  Thus a theorem of the form “connected
 implies completion” would be unexpectedly strong; I found no such theorem.
 
+### Levi graph as a girth-six graph of excess `2(q - 1)`
+
+The bipartite Levi graph has adjacency matrix
+
+```text
+[ 0  A ]
+[ A  0 ],
+```
+
+so it is `q`-regular, has `2q²` vertices, and has girth at least six.  The
+girth-six Moore bound at degree `q` is `2(q² - q + 1)`, making its cage-theory
+excess exactly `2(q - 1)`.  From a point root, the `q - 1` same-side vertices
+not reached within distance two are precisely its neighbors in `D`; the same
+holds on the line side because `A` is symmetric.  Therefore the standard
+near-Moore excess graph is
+
+```text
+D disjoint-union D,
+```
+
+and the polarity exchanges the two copies.
+
+This makes the cage literature conceptually relevant but not directly
+terminal.  Results such as Filipovski--Ramos Rivera--Jajcay's
+[On biregular bipartite graphs of small
+excess](https://doi.org/10.1016/j.disc.2019.04.004) treat excess at most four;
+other standard even-girth excess theorems assume excess at most `q - 2`.
+Our excess `2q - 2` lies outside both regimes.  Moreover, projective-plane
+constructions give `q`-regular bipartite girth-six graphs on
+`2(q² - 1)` vertices, fewer than ours, so an order or cage bound cannot rule
+out the Levi graph.
+
+The near-Moore translation is nevertheless diagnostic: its excess operator is
+not a new invariant but exactly the already-studied `D`.  A transferable cage
+argument would have to exploit the part-swapping fixed-free polarity, rather
+than only regularity, girth, order, or the excess graph spectrum.
+
 ### Moore defect one
 
 The cleanest classical terminal found is the nonexistence of diameter-two
