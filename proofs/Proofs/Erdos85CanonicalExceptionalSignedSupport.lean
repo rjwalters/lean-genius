@@ -67,6 +67,23 @@ theorem exceptionalSignedSupport_card_eq_iff
       (fullLineCenters G S q ∪ emptyLineCenters G S).card = c := by
   rw [exceptionalSignedSupport_eq_full_union_empty]
 
+/-- Named form of the dyadic sparse adjacency equation.  This identifies
+the vector produced from the shore sign with the vector whose finite support
+is `exceptionalSignedSupport`. -/
+theorem cutSign_adjMatrix_mulVec_eq_exceptionalOccupancySign
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {q : ℕ} (hq : 0 < q) (hreg : ∀ v, G.degree v = q)
+    (S : Finset V)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      2 * (G.neighborFinset v ∩ S).card = q ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    (G.adjMatrix ℤ).mulVec (fun w => if w ∈ S then (1 : ℤ) else -1) =
+      (q : ℤ) • exceptionalOccupancySign G S q := by
+  rw [cutSign_adjMatrix_mulVec_eq_sparseSigned G hq hreg S htri]
+  congr 1
+
 /-- Audit-facing fixed-vector capstone with the saturated endpoint stated as
 the sparse signed support equation `card = q`. -/
 theorem binarySquare_exceptionalSignedSupport_emptyCenters_mulVec_eq_self
@@ -99,4 +116,5 @@ theorem binarySquare_exceptionalSignedSupport_emptyCenters_mulVec_eq_self
 end Erdos85
 
 #print axioms Erdos85.exceptionalSignedSupport_eq_full_union_empty
+#print axioms Erdos85.cutSign_adjMatrix_mulVec_eq_exceptionalOccupancySign
 #print axioms Erdos85.binarySquare_exceptionalSignedSupport_emptyCenters_mulVec_eq_self
