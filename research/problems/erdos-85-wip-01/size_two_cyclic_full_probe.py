@@ -101,6 +101,14 @@ def main() -> None:
         help="on SAT, print internal/boundary and defect counts for every PMR slot cut")
     parser.add_argument("--dump-pmr-color-transition", action="store_true",
         help="on SAT, print the reciprocal slot graph between PMR window colors")
+    parser.add_argument("--dump-dart-ribbon", action="store_true",
+        help="on SAT, print row/column ribbon faces and their Petrie comparison walk")
+    parser.add_argument("--require-dart-face-walk-fixed-count", type=int,
+        nargs=2, metavar=("POWER", "COUNT"),
+        help="require exactly COUNT darts fixed by the POWER-th Petrie-walk power")
+    parser.add_argument("--require-dart-face-walk-fixed-count-ne", type=int,
+        nargs=2, metavar=("POWER", "COUNT"),
+        help="require the POWER-th Petrie-walk power not to fix exactly COUNT darts")
     parser.add_argument("--require-pmr-color-transition-imbalance", type=int,
         nargs=2, metavar=("C", "D"),
         help="require one PMR color-transition entry to differ from its antipode")
@@ -182,6 +190,15 @@ def main() -> None:
     if args.global_route_sign is not None and (
             args.drop_row_hits or args.drop_column_hits):
         parser.error("--global-route-sign requires both exact-hit families")
+    if (args.require_dart_face_walk_fixed_count is not None and
+            args.require_dart_face_walk_fixed_count_ne is not None):
+        parser.error("choose equality or inequality for the dart fixed count")
+    if ((args.require_dart_face_walk_fixed_count is not None or
+            args.require_dart_face_walk_fixed_count_ne is not None) and (
+            args.directed or args.reciprocity_core or args.joint_group_core or
+            args.joint_separation_core or args.drop_row_hits or
+            args.drop_column_hits or args.dimacs is not None)):
+        parser.error("dart fixed-count constraints require exact undirected native Z3")
     if args.no_caps and args.cap_fibres is not None:
         parser.error("--no-caps and --cap-fibres are incompatible")
     if args.only_cap_pair is not None and args.cap_fibres is not None:
@@ -324,6 +341,92 @@ def main() -> None:
             parser.error("forbidden composition boundary is outside the dart range")
         solver.add(z3.PbEq([(z3.Not(flag), 1)
                             for flag in composition_defined], wanted_boundary))
+    dart_fixed_count_constraint = (
+        args.require_dart_face_walk_fixed_count or
+        args.require_dart_face_walk_fixed_count_ne)
+    if dart_fixed_count_constraint is not None:
+        power, count = dart_fixed_count_constraint
+        if power <= 0:
+            parser.error("dart face-walk power must be positive")
+        abstract_darts = []
+        for source in vertices:
+            x, t = source
+            for row in range(q):
+                if row not in {t, (t + 1) % q}:
+                    abstract_darts.append((source, row))
+        abstract_dart_index = {
+            dart: index for index, dart in enumerate(abstract_darts)
+        }
+        dart_count = len(abstract_darts)
+        if not 0 <= count <= dart_count:
+            parser.error("dart fixed count is outside the dart range")
+
+        def previous_outside(value: int, forbidden: set[int]) -> int:
+            candidate = (value - 1) % q
+            while candidate in forbidden:
+                candidate = (candidate - 1) % q
+            return candidate
+
+        reverse_array = z3.Array("dart_reverse", z3.IntSort(), z3.IntSort())
+        row_array = z3.Array("dart_row_rotation", z3.IntSort(), z3.IntSort())
+        column_inverse_array = z3.Array(
+            "dart_column_inverse", z3.IntSort(), z3.IntSort())
+        face_walk_array = z3.Array(
+            "dart_face_walk", z3.IntSort(), z3.IntSort())
+
+        for index, (source, row) in enumerate(abstract_darts):
+            x, t = source
+            target_base = (x + row) % q
+            reverse_terms = []
+            column_inverse_terms = []
+            next_row = (row + 1) % q
+            while next_row in {t, (t + 1) % q}:
+                next_row = (next_row + 1) % q
+            solver.add(z3.Select(row_array, index) ==
+                       abstract_dart_index[(source, next_row)])
+            for u in differences:
+                selected = edge(source, (target_base, u))
+                reverse_dart = ((target_base, u), (-row) % q)
+                if reverse_dart in abstract_dart_index:
+                    reverse_terms.append(z3.If(
+                        selected, abstract_dart_index[reverse_dart], 0))
+                column = (row + u) % q
+                previous_column = previous_outside(column, {0, q - 1})
+                for previous_row in range(q):
+                    if previous_row in {t, (t + 1) % q}:
+                        continue
+                    previous_u = (previous_column - previous_row) % q
+                    if previous_u not in differences:
+                        continue
+                    previous_target = ((x + previous_row) % q, previous_u)
+                    previous_index = abstract_dart_index[
+                        (source, previous_row)]
+                    column_inverse_terms.append(z3.If(z3.And(
+                        selected, edge(source, previous_target)),
+                        previous_index, 0))
+            solver.add(z3.Select(reverse_array, index) ==
+                       z3.Sum(reverse_terms))
+            solver.add(z3.Select(column_inverse_array, index) ==
+                       z3.Sum(column_inverse_terms))
+
+        for index in range(dart_count):
+            image = z3.Select(reverse_array,
+                z3.Select(row_array,
+                    z3.Select(reverse_array,
+                        z3.Select(column_inverse_array, index))))
+            solver.add(z3.Select(face_walk_array, index) == image)
+
+        fixed_flags = []
+        for index in range(dart_count):
+            image = z3.IntVal(index)
+            for _ in range(power):
+                image = z3.Select(face_walk_array, image)
+            fixed_flags.append(z3.If(image == index, 1, 0))
+        fixed_count = z3.Sum(fixed_flags)
+        if args.require_dart_face_walk_fixed_count is not None:
+            solver.add(fixed_count == count)
+        else:
+            solver.add(fixed_count != count)
 
     # Equality case of the labelled collision-load bound.  For a fixed
     # source fibre t, its q vertices send q(q-2) incidences into exactly
@@ -1145,6 +1248,85 @@ def main() -> None:
         signatures.sort()
         print(f"  forbidden_flag_graph components={len(signatures)} "
               f"signatures={signatures}")
+    if result == z3.sat and args.dump_dart_ribbon:
+        if (args.directed or args.reciprocity_core or args.joint_group_core or
+                args.joint_separation_core):
+            parser.error("--dump-dart-ribbon requires undirected reciprocity")
+        model = solver.model()
+        darts = [
+            (source, target) for source in vertices for target in vertices
+            if source != target and z3.is_true(model.eval(
+                edge(source, target), model_completion=True))
+        ]
+        dart_index = {dart: index for index, dart in enumerate(darts)}
+
+        def next_outside(value: int, forbidden: set[int]) -> int:
+            candidate = (value + 1) % q
+            while candidate in forbidden:
+                candidate = (candidate + 1) % q
+            return candidate
+
+        row_lookup = {}
+        column_lookup = {}
+        for index, (source, target) in enumerate(darts):
+            x, t = source
+            y, u = target
+            row_lookup[(source, (y - x) % q)] = index
+            column_lookup[(source, (y + u - x) % q)] = index
+
+        row_rotation = []
+        column_rotation = []
+        reversal = []
+        for source, target in darts:
+            x, t = source
+            y, u = target
+            row = (y - x) % q
+            column = (y + u - x) % q
+            row_rotation.append(row_lookup[(
+                source, next_outside(row, {t, (t + 1) % q}))])
+            column_rotation.append(column_lookup[(
+                source, next_outside(column, {0, q - 1}))])
+            reversal.append(dart_index[(target, source)])
+
+        def inverse(permutation: list[int]) -> list[int]:
+            result = [0] * len(permutation)
+            for source, target in enumerate(permutation):
+                result[target] = source
+            return result
+
+        def compose(left: list[int], right: list[int]) -> list[int]:
+            return [left[right[index]] for index in range(len(right))]
+
+        def cycle_lengths(permutation: list[int]) -> list[int]:
+            unseen = set(range(len(permutation)))
+            lengths = []
+            while unseen:
+                start = unseen.pop()
+                current = permutation[start]
+                length = 1
+                while current != start:
+                    unseen.remove(current)
+                    current = permutation[current]
+                    length += 1
+                lengths.append(length)
+            return sorted(lengths, reverse=True)
+
+        row_faces = cycle_lengths(compose(row_rotation, reversal))
+        column_faces = cycle_lengths(compose(column_rotation, reversal))
+        face_walk = compose(reversal, compose(row_rotation, compose(
+            reversal, inverse(column_rotation))))
+        face_walk_cycles = cycle_lengths(face_walk)
+        vertex_count = len(vertices)
+        edge_count = len(darts) // 2
+        row_euler = vertex_count - edge_count + len(row_faces)
+        column_euler = vertex_count - edge_count + len(column_faces)
+        print(f"  dart_ribbon darts={len(darts)} vertices={vertex_count} "
+              f"edges={edge_count} row_faces={len(row_faces)} "
+              f"row_euler={row_euler} column_faces={len(column_faces)} "
+              f"column_euler={column_euler}")
+        print(f"  dart_ribbon row_face_lengths={row_faces}")
+        print(f"  dart_ribbon column_face_lengths={column_faces}")
+        print(f"  dart_ribbon face_walk_lengths={face_walk_cycles}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:

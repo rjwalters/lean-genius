@@ -471,3 +471,63 @@ Hence connectivity, Euler characteristic, total ramification, and the two
 unsigned boundary degrees do not carry the PMR token.  A surviving ribbon or
 relative-homology version must use cyclic order or signed intersection data;
 the abstract three-coloured flag graph alone is too coarse.
+## A full-dart Petrie comparison walk separates the sampled sharp dip
+
+The repeatable option `--dump-dart-ribbon` retains the simultaneous routing
+family and the moving punctures.  Its state set is the set of directed routed
+darts.  Three canonical permutations act on it:
+
+```text
+R = rotate the target row at a fixed source, skipping rows t,t+1;
+C = rotate the relative absolute column, skipping columns 0,-1;
+J = reverse the routed edge.
+```
+
+Thus `R J` and `C J` are the face permutations of the two ribbon maps
+obtained from the moving-row and fixed-column cyclic orders.  The diagnostic
+also prints the cycle type of `P = J R J C^-1`.  Here each rotation acts at
+the source of its current dart: after `C^-1` and `J`, the subsequent `R`
+therefore rotates at the reversed dart's new source.  Consequently `P` is not
+a local-permutation commutator (and the identity `J R J = C` from a fixed
+source board does not apply).  It is a zigzag/Petrie comparison walk between
+the two rotation systems on the reciprocal dart graph.  It uses every source
+matching at once, retains both puncture pairs, and includes the shifted-base
+reciprocal involution.
+
+At q8/a2, eight cap-free equality samples with total defect rank at most 64
+had three face-walk types:
+
+```text
+72^4;
+120^2 24^2;
+72^2 24^6.
+```
+
+Eight samples of the sharp dip query `sum R <= 66, M(0) <= 7` all had the
+single disjoint type
+
+```text
+120 48^2 24^3.
+```
+
+Their row/column face multisets were likewise fixed up to swapping `R` and
+`C`.  A rank-67 dip escape still had the same face-walk type, while the
+rank-70 adjacent-rank witness had type `96^2 48^2`.  The a1 rank-64 control
+had type `72^2 24^6`, already realized by an a2 equality model.
+
+The exact symbolic-array option
+`--require-dart-face-walk-fixed-count POWER COUNT` encodes a weaker
+consequence.  In the samples, `Fix(P^24)` is in `{0,48,144}` at rank 64 and is
+exactly 72 for the sharp dip.  The positive sharp-dip constraint
+`Fix(P^24)=72` is SAT (26 seconds), validating the encoding against a known
+witness.  However both decisive negations — rank at most 64 with fixed count
+72, and rank at most 66 plus `M(0) <= 7` with fixed count not 72 — returned
+UNKNOWN at 300 seconds.
+
+This is therefore a sampled discriminator, not a theorem or an exact
+classification.  The rank-67 control also shows that the type detects dip
+geometry, not its exact global cost.  Standard ribbon-map Euler identities do
+not supply the missing link because `P` compares two rotation systems and no
+bounded-genus embedding is known.  A proof would require a new graph-specific
+inequality relating this face-walk statistic to defect rank; absent that link,
+the diagnostic does not justify a q-generic ribbon argument.
