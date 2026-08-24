@@ -155,6 +155,35 @@ Edmonds witness with the existing direction-sensitive reciprocity language:
 the only free decision on an unordered allowed pair is its direction or its
 omission.
 
+There is also a complement-free dual form.  For an oriented `A`, write
+`O_t` for its arcs with tail `t`, and write `I_t` for the reversals of its
+arcs with head `t`; thus `I_t subset E_t` and
+
+```text
+sum_t |O_t| = sum_t |I_t| = |A|.
+```
+
+Let `r_t` be the rank function of `M_t` and `r_tDual` that of its dual.
+The standard dual-rank identity gives
+
+```text
+r_t(E_t ∖ I_t) = d_t - |I_t| + r_tDual(I_t).
+```
+
+Substituting this into the oriented inequality cancels `R=sum_t d_t` and
+shows that deficiency is exactly
+
+```text
+sum_t r_t(O_t) + sum_t r_tDual(I_t) < |A|.                 (MI-oriented)
+```
+
+So the large complementary set in `(MI)` is unnecessary: a failed instance
+has a sparse oriented arc set whose total tail-transversal rank plus total
+head-cotransversal rank is smaller than its number of arcs.  Conversely any
+oriented `A` satisfying `(MI-oriented)` reconstructs a deficient Edmonds
+cut.  This is the most local form of the certificate: every term belongs to
+one tail or one head, and the only global operation is summing them.
+
 ## Why this is sharper than the previous literature dictionary
 
 The earlier separation theorem says only that some antisymmetric functional
