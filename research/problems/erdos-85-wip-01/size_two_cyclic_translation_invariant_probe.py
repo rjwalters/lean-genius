@@ -32,6 +32,8 @@ def main() -> None:
         help="print repeated target-difference pairs by 2-adic row separation")
     parser.add_argument("--dump-cross-products", action="store_true",
         help="print normalized cross-fiber collision products and q(q-4) violations")
+    parser.add_argument("--dump-pair-supports", action="store_true",
+        help="print each fixed source pair's precise common-target support")
     args = parser.parse_args()
 
     q = args.q
@@ -171,6 +173,32 @@ def main() -> None:
                         violations.append((t, v, product))
             print(f"  cross_product_bound={q - 4} maximum={maximum[0]} "
                   f"at={maximum[1]} violations={violations}")
+        if args.dump_pair_supports:
+            # Translation invariance normalizes the first source base to 0.
+            # For the pair of source cells (0,t) and (d,t), a common target
+            # cell has absolute coordinates (r,r+u): the first route uses
+            # displacement r and the second uses displacement r-d.
+            supports = []
+            level_counts: Counter[int] = Counter()
+            for t in differences:
+                for d in range(1, q):
+                    support = [
+                        (u, r)
+                        for u in differences for r in range(q)
+                        if z3.is_true(model.eval(edge(t, u, r)))
+                        and z3.is_true(model.eval(edge(t, u, r - d)))
+                    ]
+                    if not support:
+                        continue
+                    level = (d & -d).bit_length() - 1
+                    level_counts[level] += len(support)
+                    supports.append((len(support), t, d, level, support))
+            supports.sort(key=lambda item: (-item[0], item[1], item[2]))
+            print(f"  pair_support_level_mass={dict(sorted(level_counts.items()))} "
+                  f"nonempty_pairs={len(supports)}")
+            for size, t, d, level, support in supports:
+                print(f"  pair fiber={t} shift={d} v2={level} "
+                      f"count={size} targets={support}")
 
 
 if __name__ == "__main__":
