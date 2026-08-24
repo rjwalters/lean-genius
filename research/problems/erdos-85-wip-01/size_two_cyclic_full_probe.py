@@ -105,6 +105,9 @@ def main() -> None:
         help="require every base to have an internal neighbour in its fibre")
     parser.add_argument("--require-internal-perfect-matching", action="store_true",
         help="require every base to have exactly one internal neighbour")
+    parser.add_argument("--require-internal-alternating-02-failure", type=int,
+        metavar="T",
+        help="exclude both alternating internal-degree patterns 0,2,0,2,...")
     parser.add_argument("--max-internal-edges", type=int,
         help="bound the total number of undirected internal-fibre edges")
     parser.add_argument("--force-internal-two-path", type=int, nargs=4,
@@ -132,6 +135,10 @@ def main() -> None:
         parser.error("--reciprocity-fibre-pair requires --reciprocity-core")
     if args.no_caps and args.only_cap_pair is not None:
         parser.error("--no-caps and --only-cap-pair are incompatible")
+    if args.require_internal_alternating_02_failure is not None and (
+            args.directed or args.reciprocity_core or args.joint_group_core or
+            args.joint_separation_core):
+        parser.error("alternating internal degrees require undirected reciprocity")
     if args.drop_row_hits and args.drop_column_hits:
         parser.error("cannot drop both exact-hit families")
     if args.dump_route_table and args.drop_row_hits:
@@ -500,6 +507,24 @@ def main() -> None:
                     (edge((x, t), (z, t)), 1)
                     for z in range(q) if z != x
                 ], 1))
+
+    if args.require_internal_alternating_02_failure is not None:
+        t = args.require_internal_alternating_02_failure % q
+        if t not in differences:
+            parser.error("the alternating internal-degree fibre is a hole")
+        internal_degrees = [z3.Sum([
+            z3.If(edge((x, t), (z, t)), 1, 0)
+            for z in range(q) if z != x
+        ]) for x in range(q)]
+        even_zero = z3.And([
+            internal_degrees[x] == (0 if x % 2 == 0 else 2)
+            for x in range(q)
+        ])
+        odd_zero = z3.And([
+            internal_degrees[x] == (2 if x % 2 == 0 else 0)
+            for x in range(q)
+        ])
+        solver.add(z3.Not(z3.Or(even_zero, odd_zero)))
 
     if (args.require_pmr_color_transition_imbalance is not None or
             args.require_any_pmr_color_transition_imbalance):

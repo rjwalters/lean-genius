@@ -280,6 +280,31 @@ on the diagonal load slots in the antipodal difference fibre and show that
 a weight-one color must spend its sole token there, after which route
 reversal transports the corresponding source to the antipodal base window.
 
+That diagonal structure is completely rigid at the tested minimum.  Under
+the same rank-66 dip query, the internal graph in fibre `t=4` has degree
+vector exactly one of
+
+```text
+[0,2,0,2,0,2,0,2],
+[2,0,2,0,2,0,2,0].
+```
+
+The option `--require-internal-alternating-02-failure 4` excludes both
+patterns in one query and is UNSAT.  At rank 67, with `M(4)>=8`, the
+exclusion is SAT.  Thus the minimum escape forces all bases of one parity to
+miss the diagonal `t=4` slot, while the opposite-parity bases induce a
+2-regular internal graph (at q8 necessarily a four-cycle).  The parity with
+zero diagonal degree contains the exceptional source base, hence also its
+antipodal translate.
+
+This supplies an explicit candidate for the general transport lemma:
+`W_i=1` at minimum total defect should force the internal graph of the
+order-two-shifted difference fibre to be zero on one base parity and
+2-regular on the other.  The zero-degree side already propagates the
+distinguished diagonal hole to `i+q/2`; the remaining task is to use the
+local odd half-block moment to propagate the other missing/excess token and
+thereby prove `W_(i+q/2)=1` and the strict two-rank cost.
+
 ## Aggregate transpose symmetry is insufficient
 
 Full reciprocity implies the aggregate transpose law
