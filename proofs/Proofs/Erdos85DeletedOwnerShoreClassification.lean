@@ -1,4 +1,6 @@
 import Proofs.Erdos85OddSquareOrderNineArticulationGraphBridge
+import Proofs.Erdos85NearRegularCutLowerParametric
+import Proofs.Erdos85C4FreeDefectCutIdentity
 
 /-!
 # Generic deleted-owner shore classification
@@ -20,6 +22,96 @@ open Finset SimpleGraph
 namespace Erdos85
 
 noncomputable section
+
+/-- Algebraic regular-square cut conversion.  With total incidence `q*s`,
+the exact defect cut identity is equivalent to the square moment
+`sum f² = s² + delta`. -/
+theorem regularSquare_square_moment_of_cut
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (f : O → ℕ) (q s delta : ℕ)
+    (hfle : ∀ x, f x ≤ q)
+    (hs : s ≤ q * q)
+    (hsum : (∑ x, f x) = q * s)
+    (hcut : delta + (∑ x, f x * (q - f x)) =
+      s * (q * q - s)) :
+    (∑ x, (f x) ^ 2) = s ^ 2 + delta := by
+  have hcutZ := congrArg (fun n : ℕ => (n : ℤ)) hcut
+  push_cast at hcutZ
+  simp_rw [Nat.cast_sub (hfle _)] at hcutZ
+  rw [Nat.cast_sub hs] at hcutZ
+  have hsumZ : (∑ x, (f x : ℤ)) = (q : ℤ) * s := by
+    exact_mod_cast hsum
+  have hincidenceAlg : (∑ x, (f x : ℤ) * (q - f x)) =
+      (q : ℤ) * (∑ x, (f x : ℤ)) -
+        ∑ x, (f x : ℤ) ^ 2 := by
+    simp_rw [mul_sub, mul_comm (f _ : ℤ) q]
+    rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
+    simp [pow_two]
+  rw [hincidenceAlg, hsumZ] at hcutZ
+  have hgoalZ : ((∑ x, f x ^ 2 : ℕ) : ℤ) =
+      ((s ^ 2 + delta : ℕ) : ℤ) := by
+    push_cast
+    norm_num [pow_two] at hcutZ ⊢
+    ring_nf at hcutZ ⊢
+    linarith
+  exact_mod_cast hgoalZ
+
+/-- Graph-facing meeting point between the exact C4-free defect cut identity
+and the parametric near-regular arithmetic engine.  At regular square order,
+every shore realizes the empty-exceptional-root moment package, so its
+parametric cut lower expression is bounded by its actual defect boundary. -/
+theorem binarySquare_regular_nearRegularCutLower_le_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 1 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V) :
+    nearRegularCutLower (q * q) q S.card (fun _ : Fin 0 => 0) ≤
+      ∑ x ∈ S, ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ S)).card := by
+  classical
+  let f : V → ℕ := fun x => (G.neighborFinset x ∩ S).card
+  let delta := ∑ x ∈ S,
+    ((secondOrderDefectGraph G).neighborFinset x ∩
+      (Finset.univ \ S)).card
+  have hfle : ∀ x, f x ≤ q := by
+    intro x
+    calc
+      f x ≤ (G.neighborFinset x).card :=
+        Finset.card_le_card Finset.inter_subset_left
+      _ = G.degree x := G.card_neighborFinset_eq_degree x
+      _ = q := hreg x
+  have hs : S.card ≤ q * q := by
+    rw [← hcard, ← Finset.card_univ]
+    exact Finset.card_le_card (Finset.subset_univ S)
+  have hsum : (∑ x, f x) = q * S.card := by
+    calc
+      ∑ x, f x = ∑ x ∈ (Finset.univ : Finset V),
+          (G.neighborFinset x ∩ S).card := by simp [f]
+      _ = ∑ y ∈ S, (G.neighborFinset y ∩ Finset.univ).card :=
+        sum_card_neighbor_inter_comm G Finset.univ S
+      _ = ∑ _y ∈ S, q := by
+        apply Finset.sum_congr rfl
+        intro y _
+        simp [G.card_neighborFinset_eq_degree, hreg y]
+      _ = q * S.card := by simp [mul_comm]
+  have hcut : delta + (∑ x, f x * (q - f x)) =
+      S.card * (q * q - S.card) := by
+    have hc := c4Free_defect_cut_add_degree_product_eq_complete_cut
+      G hfree S
+    dsimp only at hc
+    rw [hcard] at hc
+    simpa only [delta, f, hreg] using hc
+  have hmoment : (∑ x, (f x) ^ 2) = S.card ^ 2 + delta :=
+    regularSquare_square_moment_of_cut f q S.card delta hfle hs hsum hcut
+  have hlower := nearRegularCutLower_le_of_moments
+    (O := V) (ι := Fin 0) (q * q) q (by positivity) hcard
+      f S.card delta (fun _ => 0) (by simpa using hsum) (by
+        simpa using hmoment.le)
+  simpa [delta] using hlower
 
 /-- A connected induced graph whose owner deletion disconnects admits two
 nonempty complementary punctured shores.  Each shore is closed in the
@@ -215,3 +307,5 @@ end Erdos85
 #print axioms Erdos85.exists_deletedOwner_complementary_shores_with_exact_boundaries
 #print axioms Erdos85.exists_complementary_shores_boundary_sum_eq_degree_of_erase_not_connected
 #print axioms Erdos85.binarySquare_regular_exists_punctured_shores_boundary_sum_eq_q_sub_one
+#print axioms Erdos85.regularSquare_square_moment_of_cut
+#print axioms Erdos85.binarySquare_regular_nearRegularCutLower_le_boundary
