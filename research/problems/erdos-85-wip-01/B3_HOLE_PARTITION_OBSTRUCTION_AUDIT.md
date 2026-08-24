@@ -5616,3 +5616,33 @@ to show that lex-target minimality forbids every `IsTutteViolator`, possibly
 after deleting the optional common-point star.  The audited nonselected
 failures give mandatory regressions for that lemma: four empty barriers and
 the connected exceptional-price barrier `{10,19}`.
+
+In the exact Mathlib vocabulary, the preferred outer theorem can now be
+stated without ambiguity.  For the lexicographically selected obstructed row
+`w`, let `R(w)` be its contracted candidate rows and let `Gamma_w` be the
+simple graph on `R(w)` whose adjacency is block intersection.  Prove that
+there exist:
+
+* `sigma ∈ {0,1}` and a set `Q ⊆ R(w)` with `|Q|=3 sigma`, empty when
+  `sigma=0`, and with one common block point when `sigma=1`;
+* `epsilon ∈ {0,1}` and an optional leftover set `L ⊆ R(w)\Q` with
+  `|L|=epsilon`;
+* an even remainder `E=R(w)\(Q∪L)` such that the induced collision graph
+  has no Tutte violator:
+
+```text
+forall U : Set E,
+  not ((Gamma_w.induce E).IsTutteViolator U);                 (13bi)
+```
+
+and the exact strict arithmetic bound
+
+```text
+|F(w)| + sigma + |E|/2 + epsilon < d(w).                     (13bj)
+```
+
+Then `SimpleGraph.tutte` supplies a perfect matching of `E`; its edges,
+the optional singleton `L`, and the optional star `Q` are precisely the group
+family consumed by `false_of_localGramPackingGroupedPointCover`.  Equations
+(13bi)--(13bj) are the recommended formal statement of the remaining
+Branch-4 outer lemma.
