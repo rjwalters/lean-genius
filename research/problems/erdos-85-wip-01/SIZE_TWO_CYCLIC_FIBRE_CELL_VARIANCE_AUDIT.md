@@ -163,3 +163,38 @@ Consequently the no-empty terminal has a sharper remaining target:
 The second statement is not currently proved and is the first missing link.
 Formalizing (1)--(2) alone would be adjacent infrastructure, so this audit
 records the target without opening a Lean lane.
+
+## Pair-local second moment and its falsifier
+
+The square sums of the two exact affine partitions give a stronger labelled
+identity for every source `(x,t)`.  If its neighbours are the cells `(y,u)`,
+then
+
+```text
+sum_edges ((y+u)^2-y^2)
+  = sum_edges (2yu+u^2)
+  = 2(t+1)(2x+t)                    in Z/q.          (5)
+```
+
+Indeed, the absolute target columns are all residues except `x,x-1`, while
+the target rows are all residues except `x+t,x+t+1`; subtracting their square
+sums gives the last expression.  For two bases `x,z` in the same fibre, (5)
+fixes the difference of these weighted neighbour sums to
+`4(t+1)(x-z)`.
+
+This still does not interact strongly enough with one pair cap.  A direct q8
+local matching probe used `a=2`, allowed fibres `{0,1,3,4,6,7}`, and for each
+
+```text
+t in {0,1,3,4,6,7},  z-x in {1,...,7}
+```
+
+asked for two route sets satisfying their exact moving row and absolute-
+column partitions with at most one common precise target cell.  All `6*7=42`
+instances are SAT.  Identity (5) is automatic in every one of those models.
+
+Therefore no identity obtained from the individual row/column moments of two
+sources can by itself contradict a capped pair, even at the first target
+order.  A valid positive-variance amplification theorem must use reciprocity
+and consistency across at least three sources/fibres; a two-source local
+moment inequality is cut.
