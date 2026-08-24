@@ -2245,6 +2245,65 @@ theorem false_of_orderNine_order18_lowOwner_of_pointwise_target_profiles
     G hfree owner partners binZeroNeighbors W hWcard hownerW
       hpartnersOwner hbinZeroOwner hsourceDisj hpartnerSum hbinZeroSum
 
+/-- Low-spike graph-facing assembly after the local census and closed-shore
+counts have been supplied.  Equation (31) creates the partner `2/1` target
+profile and the positive bin-zero target profile; the direct capacity
+terminal then closes the branch. -/
+theorem false_of_orderNine_order18_lowSpike_of_local_profiles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (hfree : ¬ containsC4 V G) (owner : V)
+    (A H Z P W partners binZeroNeighbors : Finset V)
+    (hpartnerCard : partners.card = 3)
+    (hbinZeroCard : binZeroNeighbors.card = 3)
+    (hWcard : W.card = 4) (hownerW : owner ∉ W)
+    (hpartnersOwner : partners ⊆ G.neighborFinset owner)
+    (hbinZeroOwner : binZeroNeighbors ⊆ G.neighborFinset owner)
+    (hsourceDisj : Disjoint partners binZeroNeighbors)
+    (hshoreSplit : (partners ∩ A).card +
+      (binZeroNeighbors ∩ A).card = 1)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hpartnerH : ∀ y ∈ partners, y ∉ H)
+    (hbinZeroH : ∀ u ∈ binZeroNeighbors, u ∉ H)
+    (hpartnerDefect : ∀ y ∈ partners,
+      (D.neighborFinset y ∩ A).card = if y ∈ A then 7 else 0)
+    (hbinZeroDefectExceptional : ∀ u ∈ binZeroNeighbors,
+      D.Adj u owner →
+        (D.neighborFinset u ∩ A).card = if u ∈ A then 7 else 0)
+    (hbinZeroDefectRegular : ∀ u ∈ binZeroNeighbors,
+      ¬ D.Adj u owner →
+        (D.neighborFinset u ∩ A).card = if u ∈ A then 8 else 0)
+    (hpartnerPzero : ∀ y ∈ partners,
+      (G.neighborFinset y ∩ P).card = 0)
+    (hbinZeroPzero : ∀ u ∈ binZeroNeighbors,
+      (G.neighborFinset u ∩ P).card = 0)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ A).card : ℤ) =
+        8 * (if v ∈ A then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v owner then 1 else 0)) : False := by
+  have hpartnerDegree : ∀ y ∈ partners,
+      (G.neighborFinset y ∩ W).card = if y ∈ A then 2 else 1 := by
+    intro y hy
+    exact orderNine_order18_lowSpike_partner_W_degree_eq_if
+      G D A H Z P W owner y (hpartnerH y hy)
+        ((G.mem_neighborFinset owner y).mp (hpartnersOwner hy) |>.symm)
+        (hpartnerDefect y hy) heq31 hpartition hownerW
+        (hpartnerPzero y hy)
+  have hbinZeroPositive : ∀ u ∈ binZeroNeighbors,
+      1 ≤ (G.neighborFinset u ∩ W).card := by
+    intro u hu
+    exact orderNine_order18_lowSpike_binZero_W_degree_positive
+      G D A H Z P W owner u (hbinZeroH u hu)
+        ((G.mem_neighborFinset owner u).mp (hbinZeroOwner hu) |>.symm)
+        (hbinZeroDefectExceptional u hu) (hbinZeroDefectRegular u hu)
+        heq31 hpartition hownerW (hbinZeroPzero u hu)
+  exact false_of_orderNine_order18_lowOwner_of_pointwise_target_profiles
+    G hfree owner partners binZeroNeighbors A W hpartnerCard hbinZeroCard
+      hWcard hownerW hpartnersOwner hbinZeroOwner hsourceDisj hshoreSplit
+      hpartnerDegree hbinZeroPositive
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -2295,6 +2354,7 @@ theorem false_of_orderNine_order18_lowOwner_of_pointwise_target_profiles
 #print axioms Erdos85.orderNine_order18_lowSpike_binZero_W_degree_positive
 #print axioms Erdos85.exists_source_target_in_sdiff_of_inter_card_le_one
 #print axioms Erdos85.false_of_orderNine_order18_lowOwner_of_pointwise_target_profiles
+#print axioms Erdos85.false_of_orderNine_order18_lowSpike_of_local_profiles
 
 end
 
