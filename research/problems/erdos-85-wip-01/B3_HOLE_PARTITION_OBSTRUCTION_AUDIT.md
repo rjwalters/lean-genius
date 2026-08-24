@@ -5322,3 +5322,19 @@ mandatory singleton and matching number two, so `2+1+2<6`.  This matching
 inequality is the preferred statement for a proof from the colored ledger:
 it replaces an arbitrary point-set existential with an eight-by-eight
 bipartite matching bound.
+
+An unweighted average over the three omitted colors does **not** prove this
+leaf.  Nine row-feasible payloads do have a target whose three cover scores
+average below the residual demand, but the seed-129 two-row-price-selector
+fixture is a sharp counterexample.  Its only non-conflicting closing target
+is row 24, with residual demand six and omitted-color scores
+
+```text
+(7, 7, 5).
+```
+
+Only the third color may be omitted; the average score is `19/3 > 6`.
+Therefore the outer proof must select the omitted color from the colored
+incidence structure (or prove a weighted selector correlated with it), not
+apply a symmetric three-color pigeonhole.  This fixture should remain the
+mandatory regression for any proposed averaging lemma.
