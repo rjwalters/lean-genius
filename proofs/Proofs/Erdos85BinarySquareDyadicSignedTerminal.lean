@@ -261,6 +261,18 @@ theorem binarySquare_pureExceptional_defect_quantization
   · omega
   · nlinarith
 
+/-- Complete arithmetic normal form for the surviving pure partial-Baer
+support.  Combining the strict half-degree squeeze `q < 2c` with defect
+quantization writes every survivor as `c=q-2r`, with the sharper range
+`4r<q` and exact budget `e+n₃=2r²`. -/
+theorem binarySquare_pureExceptional_layer_normalForm
+    {q c e n₃ : ℕ} (hcq : c ≤ q) (hhalf : q < 2 * c)
+    (hdefect : 2 * (e + n₃) = (q - c) * (q - c)) :
+    ∃ r : ℕ, q = c + 2 * r ∧ 4 * r < q ∧ e + n₃ = 2 * r * r := by
+  obtain ⟨r, hqr, hbudget⟩ :=
+    binarySquare_pureExceptional_defect_quantization hcq hdefect
+  exact ⟨r, hqr, by omega, hbudget⟩
+
 /-- At the endpoint `c=q`, the pure exceptional support has neither an
 internal defect edge nor a triple point. -/
 theorem binarySquare_pureExceptional_endpoint_rigid
@@ -1148,6 +1160,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_pureExceptional_halfDegree_lt_card
 #print axioms Erdos85.binarySquare_pureExceptional_defect_triple_identity
 #print axioms Erdos85.binarySquare_pureExceptional_defect_quantization
+#print axioms Erdos85.binarySquare_pureExceptional_layer_normalForm
 #print axioms Erdos85.binarySquare_pureExceptional_endpoint_rigid
 #print axioms Erdos85.binarySquare_mixedMajority_defect_identity
 #print axioms Erdos85.binarySquare_mixedMajority_first_defect_layers
