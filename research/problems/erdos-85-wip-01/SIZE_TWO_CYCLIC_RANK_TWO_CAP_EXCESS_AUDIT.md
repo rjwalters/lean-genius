@@ -122,3 +122,32 @@ hole placement, but no uniform one-fibre theorem is possible.  Already at
 the same order a different hole placement requires genuinely coupled caps
 from two endpoint fibres.  This is a sharper proof-design constraint than a
 timeout-dependent multi-cap core.
+
+## Reflection-orbit pattern in the two-colour obstruction
+
+The a2 pair list is not unstructured.  The canonical fibre reflection
+
+```text
+j(t) = -1-t
+```
+
+partitions the allowed `a=2` fibres as
+
+```text
+{0,7}, {1,6}, {3,4}.
+```
+
+The five inconsistent pairs are precisely all four cross-pairs between the
+reflection orbits `{0,7}` and `{3,4}`, together with the internal pair
+`{0,7}`.  The other internal pair `{3,4}` remains SAT.  This makes a
+reflection-orbit coupling the first cap-sensitive q-generic candidate that
+fits both hole placements: at `a=1` the obstruction can localize in a single
+colour (`3` or `4`), whereas at `a=2` it is exposed only after choosing
+colours from the relevant paired orbits.
+
+This pattern is bounded evidence, not yet an orbit theorem.  A usable next
+statement should assert that in the minimum-rank reciprocal stratum some
+one or two `j`-orbits carry positive owner-support excess.  It must not
+assert that every reflection orbit, every singleton colour, or both members
+of one orbit are individually obstructed; the SAT entries above refute all
+three strengthenings.
