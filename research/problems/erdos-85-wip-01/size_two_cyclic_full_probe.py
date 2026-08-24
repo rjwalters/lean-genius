@@ -21,6 +21,8 @@ def main() -> None:
     parser.add_argument("--a", type=int, required=True)
     parser.add_argument("--empty-fiber", type=int)
     parser.add_argument("--no-caps", action="store_true")
+    parser.add_argument("--uniform-fibre-loads", action="store_true",
+        help="require every target to have exactly one neighbour in each source fibre")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and use one variable per ordered pair")
     parser.add_argument("--reciprocity-core", action="store_true",
@@ -104,6 +106,18 @@ def main() -> None:
             assert all(target in vertex_set for target in targets)
             solver.add(z3.PbEq(
                 [(edge(source, target), 1) for target in targets], wanted))
+
+    # Equality case of the labelled collision-load bound.  For a fixed
+    # source fibre t, its q vertices send q(q-2) incidences into exactly
+    # q(q-2) targets.  Requiring every target load to be one is equivalent
+    # to zero same-fibre collision energy, and in particular gives full
+    # internal support.
+    if args.uniform_fibre_loads:
+        for t in differences:
+            for target in vertices:
+                solver.add(z3.PbEq([
+                    (edge((x, t), target), 1) for x in range(q)
+                ], 1))
 
     # Full same-difference cap: any two distinct bases in one fibre have at
     # most one precise common target cell.
