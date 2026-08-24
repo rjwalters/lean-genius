@@ -72,6 +72,24 @@ or
 R(x)+R(x+1) = 2q-1 and total rank >= q^2+q-2.
 ```
 
+Equivalently, put `E(x)=R(x)-(q-2)`, the excess above the rank-one
+baseline for the `q-2` sources at base `x`.  The exceptional q8 witness has
+
+```text
+E(0)+E(1)=3,       sum_x E(x)=22=3q-2.
+```
+
+So the second branch asks for a propagation theorem: losing one unit from
+the desired adjacent excess four forces global excess at least `3q-2`, not
+merely the `2q` needed for the rank-`q^2` floor.  This formulation isolates
+the missing combinatorial charge without triangular-number bookkeeping.
+
+As a nonbinary calibration, the cap-free q6 query
+`R(0)+R(1) <= 11 = 2q-1` is unconditionally UNSAT for all three hole
+representatives `a=0,1,2`, even with no global-rank bound.  Thus the
+exceptional equality branch is not a generic feature of every even order;
+it first appears in the tested data at binary q8/a2.
+
 This is genuinely shifted-base information.  It survives both q8 equality
 geometries: `a=1` has adjacent nonsharp counts `2+2`, while an `a=2`
 minimum witness alternates `3+1`.  A proof must use the base translation in
