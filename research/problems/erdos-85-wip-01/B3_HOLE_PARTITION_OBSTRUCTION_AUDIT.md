@@ -5495,3 +5495,31 @@ choice no longer mentions a hitting set or matching.  Its likely Lean source
 is the global pair-fiber geometry (globally, for each omitted color, the pair
 blocks incident to that color already have distinct opposite endpoints).
 Only the deletion-loss tie-break remains genuinely alternating-path based.
+
+In fact the selected-row cover has a second, substantially simpler
+description that avoids the colored projection altogether.  Form the
+**collision graph** on residual candidate blocks, joining two blocks when
+they share a point.  Pair the candidates along a matching and cover each pair
+by its shared point; cover unmatched candidates by any one of their points.
+Allow, in addition, at most one three-candidate star whose blocks share a
+single point.  The resulting cover has
+
+```text
+1_(triple star) + number of matched pairs + number of unmatched rows
+```
+
+points.  The exact `collision_star_matching_cover` audit enumerates the
+optional star, constructs a maximum conflict matching on the remainder, and
+checks the cover directly.  Every lexicographically selected target closes
+by this certificate in all ten row-feasible payloads.  Eight payloads need
+only the conflict matching.  The seed-129 target 24 uses the star at point 0
+on rows `{18,36,41}` plus three collision pairs, giving five points for
+demand six.  The row-40 interval fixture uses the star at point 8 on
+`{17,32,42}` plus one pair, giving two points after three forced incidences.
+
+This may be the preferable Lean terminal: it requires only finite disjoint
+pair/triple-star data and feeds the existing integral scaled-point-cover
+theorem directly.  No bipartite König theorem, omitted-color selection, or
+arbitrary hitting-set optimizer is needed.  The remaining global problem is
+to prove that the lexicographically minimal target admits this very small
+star-matching cover.

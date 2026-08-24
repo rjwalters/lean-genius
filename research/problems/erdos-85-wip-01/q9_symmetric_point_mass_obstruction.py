@@ -552,6 +552,78 @@ def contracted_residual_rows(
     ]
 
 
+def contracted_collision_star_matching_cover(
+        system: dict, target: int, local: dict[int, dict]) -> dict:
+    """Cover residual blocks by pairs plus at most one three-block star."""
+    rows = contracted_residual_rows(system, target, local)
+
+    def maximum_conflict_matching(available: list[int]):
+        best = []
+
+        def search(remaining: list[int], chosen: list[list[int]]) -> None:
+            nonlocal best
+            if len(chosen) > len(best):
+                best = [edge[:] for edge in chosen]
+            if len(remaining) < 2:
+                return
+            first = remaining[0]
+            search(remaining[1:], chosen)
+            for index, second in enumerate(remaining[1:]):
+                intersection = (
+                    system["blocks"][first] & system["blocks"][second]
+                )
+                if intersection:
+                    point = min(intersection)
+                    search(
+                        remaining[1:index + 1] + remaining[index + 2:],
+                        chosen + [[first, second, point]],
+                    )
+
+        search(sorted(available), [])
+        return best
+
+    choices = []
+    stars = [None]
+    for point in range(N_U1):
+        incident = [row for row in rows if point in system["blocks"][row]]
+        stars.extend(
+            [point, list(selected)]
+            for selected in combinations(incident, 3)
+        )
+    for star in stars:
+        star_rows = set() if star is None else set(star[1])
+        remaining = [row for row in rows if row not in star_rows]
+        matching = maximum_conflict_matching(remaining)
+        matched_rows = {
+            row for first, second, _point in matching for row in (first, second)
+        }
+        singleton_rows = [row for row in remaining if row not in matched_rows]
+        cover = ([] if star is None else [star[0]]) + [
+            point for _first, _second, point in matching
+        ] + [min(system["blocks"][row]) for row in singleton_rows]
+        choices.append({
+            "target": target,
+            "triple_star": star,
+            "conflict_matching": matching,
+            "singleton_rows": singleton_rows,
+            "cover_points": cover,
+        })
+    certificate = min(
+        choices,
+        key=lambda choice: (len(choice["cover_points"]),
+                            choice["triple_star"] is not None,
+                            choice["cover_points"]),
+    )
+    if any(
+        not (set(certificate["cover_points"]) & system["blocks"][row])
+        for row in rows
+    ):
+        raise RuntimeError("collision-star matching cover misses a row")
+    certificate["candidate_count"] = len(rows)
+    certificate["cover_card"] = len(certificate["cover_points"])
+    return certificate
+
+
 def contracted_residual_pasch_configurations(
         system: dict, target: int, local: dict[int, dict]) -> list[list[int]]:
     """Find 2x2x2 parity/Pasch configurations among residual triples."""
@@ -2122,6 +2194,10 @@ def main() -> None:
                     if profile["matching_deletion_loss"]
                     == maximum_deletion_loss
                 ),
+                "collision_star_matching_cover":
+                    contracted_collision_star_matching_cover(
+                        system, target, local
+                    ),
             })
         minimum_candidate_count = min(
             (record["candidate_count"] for record in records), default=None
@@ -2164,6 +2240,13 @@ def main() -> None:
                 record["all_lexicographic_color_selectors_close"]
                 for record in lexicographic_target_records
             ),
+            "all_lexicographic_targets_close_by_collision_star_matching":
+                bool(lexicographic_target_records) and all(
+                    record["forced_card"]
+                    + record["collision_star_matching_cover"]["cover_card"]
+                    < record["profiles"][0]["demand"]
+                    for record in lexicographic_target_records
+                ),
             "all_pair_singleton_projections_injective": all(
                 profile["pair_singleton_projection_injective"]
                 for record in records for profile in record["profiles"]
