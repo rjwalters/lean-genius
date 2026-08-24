@@ -160,6 +160,36 @@ coordinate.  The equality witnesses suggest that this charge can be
 periodic (period one for `a=1`, period two for `a=2`), which rules out an
 argument based only on aperiodicity.
 
+## First cap-sensitive equality core
+
+The rank interface composes with the existing grouped cap/reciprocity core
+mode.  At `q=8`, `a=1`, imposing `sum r <= 64` together with every cap and
+every reciprocal block is UNSAT.  A bounded deletion pass retained the
+sufficient subsystem
+
+```text
+cap fibres: 2,3,4,5
+reciprocity blocks:
+  22,23,24,25,27,
+  33,34,35,37,
+  44,45,47,
+  55,57.
+```
+
+Thus the displayed core drops every reciprocal block involving fibre `0`,
+drops `77`, and uses only four of the six cap colours.  As in the earlier
+core audits, UNKNOWN during a five-second deletion retains an assumption;
+the list is sufficient and order-dependent, not minimum.
+
+The useful conclusion is consequently modest but cap-sensitive.  The sharp
+rank equality stratum is already incompatible with a proper subsystem of
+the full packing laws, but this deletion did not expose a one-cap-fibre
+contradiction.  The next bounded discriminator is to retain all reciprocal
+blocks and explicitly test each singleton cap fibre, followed by cap-fibre
+subsets.  If every singleton is SAT, the first cap amplification lemma must
+couple collision graphs from multiple source fibres; if one is UNSAT, its
+single-colour collision graph is the right equality object to classify.
+
 ## Next falsifiable interface
 
 At the next orders the bounded probe should not merely extend the sharp
