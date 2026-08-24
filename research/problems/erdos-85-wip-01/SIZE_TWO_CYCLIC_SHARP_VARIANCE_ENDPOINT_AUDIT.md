@@ -39,6 +39,15 @@ deletion-order-dependent q8 reciprocity core is
 The q4 exception is mandatory calibration: the endpoint is not a tautological
 inconsistency of the local sharp profile.
 
+The first DIMACS encoding of this flag used auxiliary integer load variables.
+Z3's Boolean CNF exporter treated the surviving arithmetic equalities as
+independent propositional atoms, producing a spurious q8 SAT verdict under
+kissat.  The probe now encodes the profile entirely with pseudo-Boolean
+implications and rejects any non-Boolean theory atom left after CNF
+conversion.  With the repaired encoding, native Z3 and kissat both return
+UNSAT at q8 a=1.  Earlier sharp-profile DIMACS verdicts are invalid; the
+native Z3 verdicts listed above are unaffected.
+
 ## Consequence
 
 The proposed use of same-fibre caps to kill the sharp endpoint is unnecessary

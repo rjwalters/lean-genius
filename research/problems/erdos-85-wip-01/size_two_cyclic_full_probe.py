@@ -138,17 +138,21 @@ def main() -> None:
     # one target fibre is missed, one is hit twice, and all others once.
     if args.minimal_block_variance:
         for source in vertices:
-            loads = []
+            zero_flags = []
+            double_flags = []
             for u in differences:
-                load = z3.Int(f"load_{source[0]}_{source[1]}_{u}")
-                solver.add(load == z3.Sum([
-                    z3.If(edge(source, (y, u)), 1, 0)
-                    for y in range(q)
-                ]))
-                solver.add(load >= 0, load <= 2)
-                loads.append(load)
-            solver.add(z3.PbEq([(load == 0, 1) for load in loads], 1))
-            solver.add(z3.PbEq([(load == 2, 1) for load in loads], 1))
+                zero = z3.Bool(f"sharp_zero_{source[0]}_{source[1]}_{u}")
+                double = z3.Bool(
+                    f"sharp_double_{source[0]}_{source[1]}_{u}")
+                zero_flags.append((zero, 1))
+                double_flags.append((double, 1))
+                terms = [(edge(source, (y, u)), 1) for y in range(q)]
+                solver.add(z3.Implies(zero, z3.PbEq(terms, 0)))
+                solver.add(z3.Implies(double, z3.PbEq(terms, 2)))
+                solver.add(z3.Implies(z3.And(z3.Not(zero), z3.Not(double)),
+                                      z3.PbEq(terms, 1)))
+                solver.add(z3.Not(z3.And(zero, double)))
+            solver.add(z3.PbEq(zero_flags, 1), z3.PbEq(double_flags, 1))
 
     # Full same-difference cap: any two distinct bases in one fibre have at
     # most one precise common target cell.
@@ -238,6 +242,16 @@ def main() -> None:
             "simplify", "card2bv", "bit-blast", "tseitin-cnf")(goal)
         if len(transformed) != 1:
             raise RuntimeError("CNF conversion unexpectedly produced subgoals")
+        for clause in transformed[0]:
+            literals = clause.children() if z3.is_or(clause) else [clause]
+            for literal in literals:
+                atom = literal.arg(0) if z3.is_not(literal) else literal
+                if (z3.is_true(atom) or z3.is_false(atom) or
+                        (z3.is_const(atom) and atom.sort() == z3.BoolSort() and
+                         atom.decl().kind() == z3.Z3_OP_UNINTERPRETED)):
+                    continue
+                raise RuntimeError(
+                    f"CNF conversion left an opaque theory atom: {atom}")
         cnf_solver = z3.Solver()
         cnf_solver.add(*transformed[0])
         with open(args.dimacs, "w", encoding="ascii") as output:
