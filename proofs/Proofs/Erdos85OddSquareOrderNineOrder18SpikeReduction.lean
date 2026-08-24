@@ -1571,6 +1571,94 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_transfer
     G owner c H K Z B₀ B₁ hKcard hKowner hpartnerRoot hdegHigh
       hrootEq hcases hbinZeroIncidence hbinOneIncidence heq32
 
+/-- Distinct neighbors of one owner cannot share a second neighbor in a
+C4-free graph.  This is the graph-theoretic injectivity behind the final
+order-eighteen target packing. -/
+theorem c4Free_distinct_ownerNeighbors_no_shared_otherNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {owner s t z : V}
+    (hsOwner : G.Adj owner s) (htOwner : G.Adj owner t)
+    (hst : s ≠ t) (hsz : G.Adj s z) (htz : G.Adj t z)
+    (hzOwner : z ≠ owner) :
+    False := by
+  have hle := common_le_one_of_not_containsC4 hfree s t hst
+  have hownerCommon : owner ∈ G.neighborFinset s ∩ G.neighborFinset t :=
+    Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset s owner).mpr ((G.adj_comm owner s).mp hsOwner),
+      (G.mem_neighborFinset t owner).mpr ((G.adj_comm owner t).mp htOwner)⟩
+  have hzCommon : z ∈ G.neighborFinset s ∩ G.neighborFinset t :=
+    Finset.mem_inter.mpr ⟨(G.mem_neighborFinset s z).mpr hsz,
+      (G.mem_neighborFinset t z).mpr htz⟩
+  have : owner = z := Finset.card_le_one.mp hle owner hownerCommon z hzCommon
+  exact hzOwner this.symm
+
+/-- The target blocks of distinct vertices in a set of owner-neighbors are
+pairwise disjoint after restricting to a target set that excludes owner. -/
+theorem c4Free_ownerNeighbor_targetBlocks_pairwiseDisjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (owner : V) (S W : Finset V)
+    (hSowner : S ⊆ G.neighborFinset owner) (hownerW : owner ∉ W) :
+    ∀ s ∈ S, ∀ t ∈ S, s ≠ t →
+      Disjoint (G.neighborFinset s ∩ W) (G.neighborFinset t ∩ W) := by
+  intro s hsS t htS hst
+  rw [Finset.disjoint_left]
+  intro z hzs hzt
+  have hzs' := Finset.mem_inter.mp hzs
+  have hzt' := Finset.mem_inter.mp hzt
+  exact c4Free_distinct_ownerNeighbors_no_shared_otherNeighbor
+    G hfree
+      ((G.mem_neighborFinset owner s).mp (hSowner hsS))
+      ((G.mem_neighborFinset owner t).mp (hSowner htS)) hst
+      ((G.mem_neighborFinset s z).mp hzs'.1)
+      ((G.mem_neighborFinset t z).mp hzt'.1)
+      (fun hzo ↦ hownerW (hzo ▸ hzs'.2))
+
+/-- Therefore the number of occupied targets is the sum of the restricted
+target degrees of the owner-neighbor sources. -/
+theorem card_ownerNeighbor_occupiedTargets_eq_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (owner : V) (S W : Finset V)
+    (hSowner : S ⊆ G.neighborFinset owner) (hownerW : owner ∉ W) :
+    (S.biUnion fun s ↦ G.neighborFinset s ∩ W).card =
+      ∑ s ∈ S, (G.neighborFinset s ∩ W).card := by
+  exact Finset.card_biUnion
+    (c4Free_ownerNeighbor_targetBlocks_pairwiseDisjoint
+      G hfree owner S W hSowner hownerW)
+
+/-- Two disjoint families of owner-neighbors occupy disjoint target sets.
+This supplies the cross-family hypothesis of both final capacity terminals. -/
+theorem c4Free_disjoint_ownerNeighborFamilies_occupiedTargets_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (owner : V) (S T W : Finset V)
+    (hSowner : S ⊆ G.neighborFinset owner)
+    (hTowner : T ⊆ G.neighborFinset owner)
+    (hST : Disjoint S T) (hownerW : owner ∉ W) :
+    Disjoint
+      (S.biUnion fun s ↦ G.neighborFinset s ∩ W)
+      (T.biUnion fun t ↦ G.neighborFinset t ∩ W) := by
+  rw [Finset.disjoint_left]
+  intro z hzS hzT
+  obtain ⟨s, hsS, hzs⟩ := Finset.mem_biUnion.mp hzS
+  obtain ⟨t, htT, hzt⟩ := Finset.mem_biUnion.mp hzT
+  have hst : s ≠ t := by
+    intro h
+    subst t
+    exact Finset.disjoint_left.mp hST hsS htT
+  have hzs' := Finset.mem_inter.mp hzs
+  have hzt' := Finset.mem_inter.mp hzt
+  exact c4Free_distinct_ownerNeighbors_no_shared_otherNeighbor
+    G hfree
+      ((G.mem_neighborFinset owner s).mp (hSowner hsS))
+      ((G.mem_neighborFinset owner t).mp (hTowner htT)) hst
+      ((G.mem_neighborFinset s z).mp hzs'.1)
+      ((G.mem_neighborFinset t z).mp hzt'.1)
+      (fun hzo ↦ hownerW (hzo ▸ hzs'.2))
+
 /-- Capacity terminal for audit case `(p,q)=(1,0)`.  Partner targets and
 bin-zero-neighbor targets are disjoint subsets of the four-point set `W`,
 but each family requires at least three distinct targets. -/
@@ -1617,6 +1705,93 @@ theorem false_of_orderNine_order18_lowOwner_case_zero_one_saturation
   have hxPartner : x ∈ partnerTargets := by simpa [hpartnerEq] using hxW
   exact Finset.disjoint_left.mp hdisj hxPartner hxBin
 
+/-- Graph-facing `(p,q)=(1,0)` terminal.  C4-freeness converts the two
+restricted degree sums into cardinalities of disjoint occupied-target
+sets, so the abstract four-point capacity contradiction applies. -/
+theorem false_of_orderNine_order18_lowOwner_case_one_zero_of_targetDegreeSums
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (owner : V)
+    (partners binZeroNeighbors W : Finset V)
+    (hWcard : W.card = 4) (hownerW : owner ∉ W)
+    (hpartnersOwner : partners ⊆ G.neighborFinset owner)
+    (hbinZeroOwner : binZeroNeighbors ⊆ G.neighborFinset owner)
+    (hsourceDisj : Disjoint partners binZeroNeighbors)
+    (hpartnerSum : 3 ≤ ∑ y ∈ partners, (G.neighborFinset y ∩ W).card)
+    (hbinZeroSum : 3 ≤ ∑ u ∈ binZeroNeighbors,
+      (G.neighborFinset u ∩ W).card) :
+    False := by
+  let partnerTargets := partners.biUnion fun y ↦ G.neighborFinset y ∩ W
+  let binZeroTargets := binZeroNeighbors.biUnion fun u ↦ G.neighborFinset u ∩ W
+  have hpartnerSub : partnerTargets ⊆ W := by
+    intro z hz
+    obtain ⟨y, _, hzy⟩ := Finset.mem_biUnion.mp hz
+    exact (Finset.mem_inter.mp hzy).2
+  have hbinZeroSub : binZeroTargets ⊆ W := by
+    intro z hz
+    obtain ⟨u, _, hzu⟩ := Finset.mem_biUnion.mp hz
+    exact (Finset.mem_inter.mp hzu).2
+  have hpartnerCard : 3 ≤ partnerTargets.card := by
+    rw [card_ownerNeighbor_occupiedTargets_eq_sum
+      G hfree owner partners W hpartnersOwner hownerW]
+    exact hpartnerSum
+  have hbinZeroCard : 3 ≤ binZeroTargets.card := by
+    rw [card_ownerNeighbor_occupiedTargets_eq_sum
+      G hfree owner binZeroNeighbors W hbinZeroOwner hownerW]
+    exact hbinZeroSum
+  have htargetDisj : Disjoint partnerTargets binZeroTargets :=
+    c4Free_disjoint_ownerNeighborFamilies_occupiedTargets_disjoint
+      G hfree owner partners binZeroNeighbors W hpartnersOwner
+        hbinZeroOwner hsourceDisj hownerW
+  exact false_of_orderNine_order18_lowOwner_case_one_zero_capacity
+    W partnerTargets binZeroTargets hWcard hpartnerSub hbinZeroSub
+      htargetDisj hpartnerCard hbinZeroCard
+
+/-- Graph-facing `(p,q)=(0,1)` terminal.  Equation (34) supplies the exact
+partner degree sum `4-b`; one required bin-zero incidence supplies a
+nonempty second target family.  C4-freeness makes both occupied families
+internally injective and mutually disjoint. -/
+theorem false_of_orderNine_order18_lowOwner_case_zero_one_of_targetDegreeSum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (owner : V)
+    (partners binZeroNeighbors Wcompl : Finset V) (b : ℕ)
+    (hWcard : Wcompl.card = 3) (hb : b ≤ 1)
+    (hownerW : owner ∉ Wcompl)
+    (hpartnersOwner : partners ⊆ G.neighborFinset owner)
+    (hbinZeroOwner : binZeroNeighbors ⊆ G.neighborFinset owner)
+    (hsourceDisj : Disjoint partners binZeroNeighbors)
+    (hpartnerSum : (∑ y ∈ partners,
+      (G.neighborFinset y ∩ Wcompl).card) = 4 - b)
+    (hbinZeroTarget : ∃ u ∈ binZeroNeighbors,
+      (G.neighborFinset u ∩ Wcompl).Nonempty) :
+    False := by
+  let partnerTargets := partners.biUnion fun y ↦ G.neighborFinset y ∩ Wcompl
+  let binZeroTargets := binZeroNeighbors.biUnion fun u ↦
+    G.neighborFinset u ∩ Wcompl
+  have hpartnerSub : partnerTargets ⊆ Wcompl := by
+    intro z hz
+    obtain ⟨y, _, hzy⟩ := Finset.mem_biUnion.mp hz
+    exact (Finset.mem_inter.mp hzy).2
+  have hbinZeroSub : binZeroTargets ⊆ Wcompl := by
+    intro z hz
+    obtain ⟨u, _, hzu⟩ := Finset.mem_biUnion.mp hz
+    exact (Finset.mem_inter.mp hzu).2
+  have hpartnerCard : partnerTargets.card = 4 - b := by
+    rw [card_ownerNeighbor_occupiedTargets_eq_sum
+      G hfree owner partners Wcompl hpartnersOwner hownerW]
+    exact hpartnerSum
+  have hbinZeroNonempty : binZeroTargets.Nonempty := by
+    obtain ⟨u, hu, z, hz⟩ := hbinZeroTarget
+    exact ⟨z, Finset.mem_biUnion.mpr ⟨u, hu, hz⟩⟩
+  have htargetDisj : Disjoint partnerTargets binZeroTargets :=
+    c4Free_disjoint_ownerNeighborFamilies_occupiedTargets_disjoint
+      G hfree owner partners binZeroNeighbors Wcompl hpartnersOwner
+        hbinZeroOwner hsourceDisj hownerW
+  exact false_of_orderNine_order18_lowOwner_case_zero_one_saturation
+    Wcompl partnerTargets binZeroTargets b hWcard hb hpartnerSub hpartnerCard
+      hbinZeroSub hbinZeroNonempty htargetDisj
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -1649,6 +1824,12 @@ theorem false_of_orderNine_order18_lowOwner_case_zero_one_saturation
 #print axioms Erdos85.orderNine_order18_lowSpike_center_eq_owner_of_transfer
 #print axioms Erdos85.false_of_orderNine_order18_lowOwner_case_one_zero_capacity
 #print axioms Erdos85.false_of_orderNine_order18_lowOwner_case_zero_one_saturation
+#print axioms Erdos85.c4Free_distinct_ownerNeighbors_no_shared_otherNeighbor
+#print axioms Erdos85.c4Free_ownerNeighbor_targetBlocks_pairwiseDisjoint
+#print axioms Erdos85.card_ownerNeighbor_occupiedTargets_eq_sum
+#print axioms Erdos85.c4Free_disjoint_ownerNeighborFamilies_occupiedTargets_disjoint
+#print axioms Erdos85.false_of_orderNine_order18_lowOwner_case_one_zero_of_targetDegreeSums
+#print axioms Erdos85.false_of_orderNine_order18_lowOwner_case_zero_one_of_targetDegreeSum
 
 end
 
