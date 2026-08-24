@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict
+from fractions import Fraction
 
 import z3
 
@@ -44,6 +45,8 @@ def main() -> None:
         help="print directed edge disagreement with block transpose")
     parser.add_argument("--minimize-transpose-defect", action="store_true",
         help="minimize failed unordered block-transpose equations")
+    parser.add_argument("--dump-completed-square", action="store_true",
+        help="print norms/cross term for skew K and skew K-squared")
     parser.add_argument("--impose-triangle-reversal", action="store_true",
         help="drop edge reciprocity but impose every colored triangle-trace reversal")
     parser.add_argument("--impose-four-cycle-reversal", action="store_true",
@@ -375,6 +378,66 @@ def main() -> None:
             print(f"  transpose_defect_directed={len(directed_defect)} "
                   f"unordered={len(directed_defect) // 2} "
                   f"by_fiber_pair={dict(sorted(by_pair.items()))}")
+        if args.dump_completed_square:
+            vertices = [(t, x) for t in differences for x in range(q)]
+            vertex_index = {vertex: i for i, vertex in enumerate(vertices)}
+            order = len(vertices)
+            adjacency = [[0] * order for _ in range(order)]
+            for t, x in vertices:
+                source = vertex_index[t, x]
+                for u in differences:
+                    for r in range(q):
+                        if z3.is_true(model.eval(edge(t, u, r))):
+                            target = vertex_index[u, (x + r) % q]
+                            adjacency[source][target] = 1
+
+            def transpose(matrix: list[list[int]]) -> list[list[int]]:
+                return [list(column) for column in zip(*matrix)]
+
+            def multiply(left: list[list[int]], right: list[list[int]]) -> list[list[int]]:
+                right_t = transpose(right)
+                return [[sum(a * b for a, b in zip(row, column))
+                         for column in right_t] for row in left]
+
+            adjacency_t = transpose(adjacency)
+            square = multiply(adjacency, adjacency)
+            square_t = transpose(square)
+            defect = [[adjacency[i][j] - adjacency_t[i][j]
+                       for j in range(order)] for i in range(order)]
+            two_step_defect = [[square[i][j] - square_t[i][j]
+                                for j in range(order)] for i in range(order)]
+            defect_norm = sum(value * value for row in defect for value in row)
+            two_step_norm = sum(value * value
+                                for row in two_step_defect for value in row)
+            cross = sum(defect[i][j] * two_step_defect[i][j]
+                        for i in range(order) for j in range(order))
+            residuals = {
+                lam: two_step_norm - 2 * lam * cross + lam * lam * defect_norm
+                for lam in (1, 2)
+            }
+            if defect_norm == 0:
+                optimum = "0 (transpose defect vanishes)"
+            else:
+                optimum_lambda = Fraction(cross, defect_norm)
+                optimum_residual = (Fraction(two_step_norm) -
+                                    Fraction(cross * cross, defect_norm))
+                optimum = f"lambda={optimum_lambda} residual={optimum_residual}"
+            print(f"  completed_square defect_norm={defect_norm} "
+                  f"two_step_norm={two_step_norm} cross={cross} "
+                  f"residuals={residuals} optimum={optimum}")
+            by_start = {}
+            for t in differences:
+                rows = [vertex_index[t, x] for x in range(q)]
+                local_defect_norm = sum(defect[i][j] * defect[i][j]
+                                        for i in rows for j in range(order))
+                local_two_step_norm = sum(
+                    two_step_defect[i][j] * two_step_defect[i][j]
+                    for i in rows for j in range(order))
+                local_cross = sum(defect[i][j] * two_step_defect[i][j]
+                                  for i in rows for j in range(order))
+                by_start[t] = (local_defect_norm, local_two_step_norm,
+                               local_cross)
+            print(f"  completed_square_by_start={by_start}")
         for t in differences:
             internal_steps = [r for r in range(1, q)
                 if z3.is_true(model.eval(edge(t, t, r)))]
