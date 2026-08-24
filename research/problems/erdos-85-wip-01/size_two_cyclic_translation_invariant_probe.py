@@ -44,6 +44,8 @@ def main() -> None:
         help="drop edge reciprocity but impose every colored four-cycle trace reversal")
     parser.add_argument("--trace-reversal-core", action="store_true",
         help="impose degree-3/4 trace reversal and print a tracked UNSAT core")
+    parser.add_argument("--trace-reversal-group-core", action="store_true",
+        help="greedily shrink degree/start-fibre trace-reversal groups")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and give every directed route its own variable")
     parser.add_argument("--reciprocity-core", action="store_true",
@@ -53,15 +55,21 @@ def main() -> None:
     if args.directed and (args.reciprocity_core or
                           args.impose_triangle_reversal or
                           args.impose_four_cycle_reversal or
-                          args.trace_reversal_core):
+                          args.trace_reversal_core or
+                          args.trace_reversal_group_core):
         parser.error("--directed cannot be combined with a directed constraint mode")
     if args.reciprocity_core and (args.impose_triangle_reversal or
                                   args.impose_four_cycle_reversal or
-                                  args.trace_reversal_core):
+                                  args.trace_reversal_core or
+                                  args.trace_reversal_group_core):
         parser.error("--reciprocity-core cannot be combined with trace reversal")
     if args.trace_reversal_core and (args.impose_triangle_reversal or
                                      args.impose_four_cycle_reversal):
         parser.error("--trace-reversal-core already imposes both trace families")
+    if args.trace_reversal_group_core and (args.impose_triangle_reversal or
+                                           args.impose_four_cycle_reversal or
+                                           args.trace_reversal_core):
+        parser.error("--trace-reversal-group-core is a standalone trace mode")
     if args.reciprocity_core and args.dimacs is not None:
         parser.error("--reciprocity-core cannot be combined with --dimacs")
 
@@ -75,7 +83,8 @@ def main() -> None:
         if (args.directed or args.reciprocity_core or
                 args.impose_triangle_reversal or
                 args.impose_four_cycle_reversal or
-                args.trace_reversal_core):
+                args.trace_reversal_core or
+                args.trace_reversal_group_core):
             return forward
         reverse = (u, t, (-r) % q)
         return min(forward, reverse)
@@ -88,6 +97,13 @@ def main() -> None:
 
     solver = z3.Solver()
     reciprocity_assumptions: list[z3.BoolRef] = []
+    trace_group_assumptions: dict[tuple[str, int], z3.BoolRef] = {}
+
+    if args.trace_reversal_group_core:
+        for degree in ("tri", "quad"):
+            for t in differences:
+                trace_group_assumptions[degree, t] = z3.Bool(
+                    f"{degree}_start_{t}")
 
     if args.reciprocity_core:
         # Track reciprocity by unordered fibre pair.  All non-reciprocity
@@ -144,7 +160,8 @@ def main() -> None:
         for r in range(q):
             solver.add(z3.Not(edge(t, t, r)))
 
-    if args.impose_triangle_reversal or args.trace_reversal_core:
+    if (args.impose_triangle_reversal or args.trace_reversal_core or
+            args.trace_reversal_group_core):
         # Reciprocity A_tu=A_ut^T implies equality between every colored
         # triangle trace and its reversed color word.  Retain only these
         # necessary cubic consequences, using otherwise directed blocks.
@@ -166,10 +183,14 @@ def main() -> None:
                     if args.trace_reversal_core:
                         solver.assert_and_track(
                             constraint, z3.Bool(f"tri_{t}_{u}_{v}"))
+                    elif args.trace_reversal_group_core:
+                        solver.add(z3.Implies(
+                            trace_group_assumptions["tri", t], constraint))
                     else:
                         solver.add(constraint)
 
-    if args.impose_four_cycle_reversal or args.trace_reversal_core:
+    if (args.impose_four_cycle_reversal or args.trace_reversal_core or
+            args.trace_reversal_group_core):
         # The analogous necessary consequence for a closed color word
         # t,u,v,w,t.  This retains all four block colors but is still much
         # weaker than entrywise transpose reciprocity.
@@ -193,6 +214,9 @@ def main() -> None:
                         if args.trace_reversal_core:
                             solver.assert_and_track(
                                 constraint, z3.Bool(f"quad_{t}_{u}_{v}_{w}"))
+                        elif args.trace_reversal_group_core:
+                            solver.add(z3.Implies(
+                                trace_group_assumptions["quad", t], constraint))
                         else:
                             solver.add(constraint)
 
@@ -212,7 +236,9 @@ def main() -> None:
         return
 
     solver.set(timeout=args.timeout_ms, random_seed=args.random_seed)
-    result = solver.check(*reciprocity_assumptions)
+    active_assumptions = (reciprocity_assumptions or
+                          list(trace_group_assumptions.values()))
+    result = solver.check(*active_assumptions)
     print(f"q={q} a={args.a % q} orbit_variables={len(variables)}: {result}")
 
     if result == z3.unsat and args.reciprocity_core:
@@ -229,6 +255,15 @@ def main() -> None:
     if result == z3.unsat and args.trace_reversal_core:
         core = sorted(str(label) for label in solver.unsat_core())
         print("  trace_reversal_core=" + str(core))
+    if result == z3.unsat and args.trace_reversal_group_core:
+        core = list(solver.unsat_core())
+        for label in list(core):
+            candidate = [other for other in core if not z3.eq(other, label)]
+            if solver.check(*candidate) == z3.unsat:
+                core = candidate
+        solver.check(*core)
+        print("  trace_reversal_group_core=" +
+              str(sorted(str(label) for label in core)))
 
     if result == z3.sat:
         model = solver.model()

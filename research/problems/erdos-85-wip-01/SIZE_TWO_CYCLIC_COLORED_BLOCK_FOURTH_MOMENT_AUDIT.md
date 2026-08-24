@@ -63,7 +63,9 @@ The probe now supports:
   `T3` reversal equalities;
 - `--impose-four-cycle-reversal`, similarly for all `T4` equalities; and
 - `--trace-reversal-core`, which imposes both families and prints the tracked
-  core when they are inconsistent.
+  core when they are inconsistent; and
+- `--trace-reversal-group-core`, which greedily shrinks the identities after
+  grouping them by degree and starting fibre.
 
 ## Decisive q8 A/B refinement
 
@@ -93,6 +95,25 @@ tracked core is large, so this is not yet a small certificate, but it is the
 first tested condition strictly weaker than entrywise reciprocity that still
 separates the all-cap empty-fibre system from the directed control.
 
+Grouping by degree and starting fibre gives the much smaller greedy
+irredundant core
+
+```text
+all T4 reversals based at fibre 3,
+all T4 reversals based at fibre 4,
+all T3 reversals based at fibre 6.
+```
+
+Removing any one of these three families restores SAT relative to the final
+deletion order.  This is theorem-shaped: empty fibre `4`, capped predecessor
+`3`, and partner fibre `6` carry the low-degree trace obstruction, although
+the individual color words have not yet been minimized.
+
+The trace mechanism still consumes the **full cap family**.  Replacing all
+caps by the exact q8 three-cap MUS `(3,1),(4,1),(4,3)`, while retaining every
+degree-three/four reversal identity, is SAT.  Thus this separator belongs to
+the corrected full-cap branch and does not revive the selected-cap subtree.
+
 ## Consequence and next theorem
 
 Colored low-degree trace reversal is therefore a live mechanism, while any
@@ -104,9 +125,9 @@ single fourth-moment inequality.  It is an interaction theorem of the form:
 > reversal identities induced by a self-transpose block family.
 
 The q8 result is only a translation-invariant bounded certificate.  Before
-formalization at general `q`, the next bounded tasks are (1) shrink the trace
-constraints by color-orbit groups, especially around the five-block
-transpose core, and (2) test the combined degree-3/4 identities at q10/q12
-using grouped or lazy constraints.  A proof must keep the closed color word;
+formalization at general `q`, the next bounded tasks are (1) shrink the three
+surviving groups to individual color words and (2) test the combined
+degree-3/4 identities at q10/q12 using grouped or lazy constraints.  A proof
+must keep the closed color word;
 augmenting over intermediate fibres collapses back to the scalar identities
 already cut.
