@@ -423,3 +423,96 @@ coarsening, so doing that ad hoc would simply rename the missing partition
 theorem.  Both bounded candidates from the goal-36 Baer restart are now cut;
 the restart produces a reliable map/no-go result but does not change the
 status of NONBIP-CONNECTED.
+
+## Almost-intersecting hypergraph literature: exact scope
+
+There is a standard name for the unpolarized half of the object.  Regard the
+rows of `A` as a `q`-uniform hypergraph on `q^2` points.  Every edge is
+disjoint from exactly `q-1` others, so it is a `(q-1)`-almost-intersecting
+hypergraph in the terminology of Scott--Wilmer, *Hypergraphs of bounded
+disjointness*, SIAM J. Discrete Math. 28 (2014), 372--384,
+doi:10.1137/130925670.
+
+Their main classification does not apply in the diagonal regime needed here.
+For each fixed uniformity `k` it assumes the disjointness parameter
+`s>s_0(k)`; the proof's stated threshold comes from a sunflower argument and
+has order `2^(O(k^2))`.  Our parameters move together as
+
+```text
+k=q,     s=q-1.
+```
+
+Moreover their extremal theorem controls only the number of edges and the
+disjointness graph.  It does not use linearity, point-regularity, equality of
+the point and block sets, or a fixed-point-free polarity.  Applying its
+general upper bounds here is far too weak to compare `|F|=q^2` with anything
+sharp.  The paper itself leaves lowering the threshold to polynomial size as
+an open direction.  Thus “almost intersecting” is useful search vocabulary,
+but the existing theorem is **nonterminal by both hypothesis and scale**.
+
+The literature does suggest the right nonlinear units.  Our point-stars are
+already exact sunflowers: the `q` blocks through a point share that singleton
+core, and linearity makes their petals disjoint.  Any useful adaptation must
+compare *two such canonical sunflowers* while retaining the polarity that
+identifies their cores with blocks.  A one-sunflower bound cannot see
+connectedness of `D`.
+
+### Wide candidates from the sunflower/disjointness dictionary
+
+1. **Polarized two-sunflower inequality.**  For points `p,r`, count disjoint
+   pairs between the two `q`-block stars and express the count through the
+   cross-neighbour matching in `(21)`.  Seek a strict inequality unless the
+   two stars belong to one affine parallel fibre.
+2. **Bollobas set-pairs on an induced defect matching.**  Pair disjoint blocks
+   and use cross-intersection to invoke the skew set-pairs theorem.  This is
+   viable only if the special square-root structure forces a large *induced*
+   matching in `D`; an ordinary matching is insufficient.
+3. **Canonical sunflower quotient.**  Treat singleton cores as the first
+   quotient objects and ask whether polarity sends the intersection pattern
+   of two stars to the same pattern on their labelled blocks.  Success would
+   turn the cross-matchings into a coherent configuration; the q=4
+   one-layer counterexample is the mandatory falsification control.
+4. **Fractional transversal equality.**  Neumann--Praeger's tactical-
+   configuration inequality classifies the pairwise-intersecting equality
+   case as a projective plane.  Apply it only to a maximal clique of the
+   complement of `D`, then use regular disjointness to sum the clique
+   deficits.  A scalar clique bound alone is nonterminal; success requires
+   equality propagation along connected `D`.
+
+The cut criteria are immediate.  Candidate 2 stops unless an induced matching
+larger than the generic `n/O(Delta^2)` bound is forced.  Candidate 3 stops if
+the first star-intersection refinement is nonconstant inside one coarse
+`A/D` relation in the q=4 control.  Candidates 1 and 4 survive only if their
+first double count contains a polarity-dependent term absent from the
+standard almost-intersecting inequalities.
+
+### Polarized two-sunflower probe: stopped
+
+The first double count can be evaluated exactly and contains no new term.
+Let `Star(p)=N_A(p)` be the `q` blocks through point `p`.  The number of
+ordered disjoint block pairs between `Star(p)` and `Star(r)` is
+
+```text
+(A D A)_(p,r).
+```
+
+Because `A` and `D` commute and `A^2=(q-1)I+J-D`, regularity of `D` gives
+
+```text
+A D A = D A^2 = (q-1)D + (q-1)J - D^2.             (SW1)
+```
+
+Thus for distinct `p,r` the count is
+
+```text
+(q-1)(1+D_(p,r)) - (D^2)_(p,r).
+```
+
+The polarity is needed to label both stars by the same matrix, but after the
+count it contributes no invariant beyond the defect adjacency and defect
+codegree.  This is exactly the one-layer coherent-closure statistic already
+shown nonconstant inside coarse `A/D` relations by the q=4 control.  Candidate
+1 is therefore **stopped**, and candidate 3's proposed first star-intersection
+refinement is stopped by the same computation.  Any surviving sunflower
+argument must retain individual matching edges or higher incidence labels;
+aggregating a pair of stars loses the nonlinear data immediately.
