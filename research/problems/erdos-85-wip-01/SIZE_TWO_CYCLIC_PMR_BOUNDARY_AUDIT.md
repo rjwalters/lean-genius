@@ -369,3 +369,35 @@ darts (or equivalent information stronger than the aggregate multiplicity
 matrix).  This is a positive scope cut for the group-ring approach: its
 coefficients must remember route displacement/base, not only source and
 target fibre labels.
+
+## Bare labels and cycle signs do not distinguish the dip
+
+The option `--dump-labelled-internal-cycles t` reconstructs the internal
+graph of fibre `t`, orients every 2-regular component, prints its base
+increments and row offsets, and computes the signs of all local
+row-to-column route permutations in that fibre.
+
+For the forced q8/a2 minimum-dip fibre `t=4`, every sampled alternating
+four-cycle has
+
+```text
+cycle increments  = [2,2,2,2],
+row offsets        = [6,6,6,6],
+halved winding     = 0 in Z/4,
+local route signs  = -1 at all eight bases,
+cycle sign product = +1.
+```
+
+These quantities do not separate the low-rank equality geometry from the
+rank-66 escape.  Rank-64 witnesses realize the identical alternating
+four-cycle on either parity coset, sometimes both cosets; one witness
+instead has the full consecutive eight-cycle, but still has local route
+sign `-1` at every base and total sign `+1`.  The halved sum of oriented
+base increments is zero for the formal reason that it telescopes around a
+cycle.  Thus bare displacement winding and the product of local permutation
+signs are cut as explanations of WSP.
+
+Any surviving labelled-cycle proof must couple the diagonal cycle to labels
+in other difference fibres (for example a cross-fibre fourth-moment budget)
+or use a non-telescoping puncture correction.  The internal cycle by itself
+contains no charge distinguishing rank 64 from the rank-66 escape.

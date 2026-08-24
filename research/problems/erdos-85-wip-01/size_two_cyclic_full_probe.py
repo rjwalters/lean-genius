@@ -75,6 +75,8 @@ def main() -> None:
         help="shrink reciprocity blocks and cap fibre/separation groups")
     parser.add_argument("--dump-internal-profile", action="store_true",
         help="on SAT, print internal edges and occupied bases in each fibre")
+    parser.add_argument("--dump-labelled-internal-cycles", type=int, metavar="T",
+        help="on SAT, print cycle, displacement, and route-sign data in fibre t")
     parser.add_argument("--dump-collision-separations", action="store_true",
         help="on SAT, summarize same-fibre common targets by base separation")
     parser.add_argument("--dump-collision-owner-fibres", action="store_true",
@@ -145,6 +147,10 @@ def main() -> None:
         parser.error("cannot drop both exact-hit families")
     if args.dump_route_table and args.drop_row_hits:
         parser.error("--dump-route-table requires exact target-row hits")
+    if args.dump_labelled_internal_cycles is not None and (
+            args.directed or args.reciprocity_core or args.joint_group_core or
+            args.joint_separation_core):
+        parser.error("labelled internal cycles require undirected reciprocity")
     if args.dump_slot_cuts and (args.directed or args.reciprocity_core or
             args.joint_group_core or args.joint_separation_core):
         parser.error("--dump-slot-cuts requires the reciprocal undirected model")
@@ -666,6 +672,73 @@ def main() -> None:
                 print(f"  internal fibre={t} edges={len(internal)} "
                       f"occupied_bases={len(occupied)} bases={occupied} "
                       f"degrees={degrees}")
+    if result == z3.sat and args.dump_labelled_internal_cycles is not None:
+        model = solver.model()
+        t = args.dump_labelled_internal_cycles % q
+        if t not in differences:
+            parser.error("the labelled internal-cycle fibre is a hole")
+        internal = [
+            (x, y) for x, y in combinations(range(q), 2)
+            if z3.is_true(model.eval(edge((x, t), (y, t)),
+                                         model_completion=True))
+        ]
+        adjacency = {x: [] for x in range(q)}
+        for x, y in internal:
+            adjacency[x].append(y)
+            adjacency[y].append(x)
+        route_signs = {}
+        labels = list(range(2, q))
+        for x in range(q):
+            image = []
+            for r in labels:
+                target_base = (x + t + r) % q
+                target_fibre = next(u for u in differences
+                    if z3.is_true(model.eval(
+                        edge((x, t), (target_base, u)),
+                        model_completion=True)))
+                image.append((-t - r - target_fibre) % q)
+            inversions = sum(image[i] > image[j]
+                for i in range(len(image)) for j in range(i + 1, len(image)))
+            route_signs[x] = -1 if inversions % 2 else 1
+        unseen = {x for x in range(q) if adjacency[x]}
+        components = []
+        while unseen:
+            start = min(unseen)
+            stack = [start]
+            component = set()
+            while stack:
+                x = stack.pop()
+                if x in component:
+                    continue
+                component.add(x)
+                stack.extend(adjacency[x])
+            unseen.difference_update(component)
+            components.append(sorted(component))
+        print(f"  labelled_internal fibre={t} edges={internal} "
+              f"route_signs={route_signs}")
+        for component in components:
+            cycle = []
+            if all(len(adjacency[x]) == 2 for x in component):
+                start = min(component)
+                previous = None
+                current = start
+                while not cycle or current != start:
+                    cycle.append(current)
+                    candidates = [y for y in adjacency[current] if y != previous]
+                    following = min(candidates) if previous is None else candidates[0]
+                    previous, current = current, following
+            deltas = [((cycle[(i + 1) % len(cycle)] - cycle[i]) % q)
+                      for i in range(len(cycle))] if cycle else []
+            row_offsets = [((delta - t) % q) for delta in deltas]
+            half_deltas = [(delta // 2) % (q // 2) for delta in deltas
+                           if delta % 2 == 0]
+            sign_product = 1
+            for x in component:
+                sign_product *= route_signs[x]
+            print(f"  labelled_component vertices={component} cycle={cycle} "
+                  f"deltas={deltas} row_offsets={row_offsets} "
+                  f"half_delta_sum={sum(half_deltas) % (q // 2) if half_deltas else None} "
+                  f"route_sign_product={sign_product}")
     if result == z3.sat and args.dump_collision_separations:
         model = solver.model()
         if cap_excess_objective is not None:
