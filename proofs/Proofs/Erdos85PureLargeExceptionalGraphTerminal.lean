@@ -17,6 +17,47 @@ namespace Erdos85
 
 noncomputable section
 
+set_option maxHeartbeats 800000 in
+/-- Four-class strengthening of the pure-large arithmetic terminal.  Unlike
+the earlier form, this permits shore points of exceptional replication zero
+or one. -/
+theorem binarySquare_pureLargeExceptional_fourClass_impossible
+    {q c s n₀ n₁ n₂ n₃ : ℕ} (hq : 8 ≤ q) (hqEven : Even q)
+    (hqc : q < c)
+    (hc : c ≤ 2 * q - 2)
+    (hshore : 2 * s = q * q + c)
+    (hclasses : n₀ + n₁ + n₂ + n₃ = s)
+    (hincidence : n₁ + 2 * n₂ + 3 * n₃ = q * c)
+    (hpairs : 2 * n₂ + 6 * n₃ ≤ c * (c - 1)) : False := by
+  have hcpos : 1 ≤ c := by omega
+  have hcprod : c * (c - 1) + c = c * c := by
+    calc
+      c * (c - 1) + c = c * ((c - 1) + 1) := by ring
+      _ = c * c := by rw [Nat.sub_add_cancel hcpos]
+  have hweighted : 4 * (q * c) ≤
+      6 * s + (2 * n₂ + 6 * n₃) := by omega
+  have hpoly : 4 * q * c ≤ 3 * q * q + c * c + 2 * c := by
+    nlinarith
+  obtain ⟨qhalf, hqhalf⟩ := hqEven
+  let r := c - q
+  have hcr : c = q + r := by
+    dsimp [r]
+    omega
+  have hrupper : r ≤ q - 2 := by omega
+  have hr : 2 ≤ r := by
+    have hcEven : Even c := by
+      have hqSq : q * q = 2 * (qhalf * q) := by
+        rw [hqhalf]
+        ring
+      refine ⟨s - qhalf * q, ?_⟩
+      omega
+    obtain ⟨chalf, hchalf⟩ := hcEven
+    dsimp [r]
+    omega
+  rw [hcr] at hpoly
+  nlinarith [mul_nonneg (show (0 : ℤ) ≤ r - 2 by omega)
+    (show (0 : ℤ) ≤ q - r - 2 by omega)]
+
 /-- A pure full exceptional family of size strictly between `q` and
 `2q-2` is impossible once every shore point has replication at least two. -/
 theorem c4Free_binarySquare_pureLarge_fullLineCenters_impossible
@@ -213,3 +254,4 @@ end
 end Erdos85
 
 #print axioms Erdos85.c4Free_binarySquare_pureLarge_fullLineCenters_impossible
+#print axioms Erdos85.binarySquare_pureLargeExceptional_fourClass_impossible
