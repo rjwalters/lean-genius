@@ -93,6 +93,42 @@ theorem f2WalkFamilyBoundary_eq_poleSwitch
       f2EndpointSwitch pole₁ pole₂ := by
   rw [f2WalkFamilyBoundary_eq_sum_endpointSwitch, hsource]
 
+/-- Evaluating a routed walk boundary on a witness set sees only whether
+its two endpoints lie in that set. -/
+theorem sum_f2WalkEdgeBoundary_over_finset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} (R : Finset V)
+    {u v : V} (p : G.Walk u v) :
+    (∑ x ∈ R, f2WalkEdgeBoundary p x) =
+      f2FinsetIndicator R u + f2FinsetIndicator R v := by
+  rw [f2WalkEdgeBoundary_eq_endpointSwitch]
+  exact sum_f2EndpointSwitch_over_finset R u v
+
+/-- In particular a route whose two endpoints are outside the residual
+witness set has zero residual character. -/
+theorem sum_f2WalkEdgeBoundary_eq_zero_of_endpoints_notMem
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} (R : Finset V)
+    {u v : V} (p : G.Walk u v) (hu : u ∉ R) (hv : v ∉ R) :
+    (∑ x ∈ R, f2WalkEdgeBoundary p x) = 0 := by
+  rw [sum_f2WalkEdgeBoundary_over_finset]
+  simp [f2FinsetIndicator, hu, hv]
+
+/-- A whole owner-route family with two-pole total boundary has zero
+residual character when neither pole is residual. -/
+theorem sum_f2WalkFamilyBoundary_eq_zero_of_poles_notMem
+    {I V : Type*} [Fintype I] [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} (R : Finset V) (start finish : I → V)
+    (route : ∀ i, G.Walk (start i) (finish i)) (pole₁ pole₂ : V)
+    (hsource : (∑ i, f2EndpointSwitch (start i) (finish i)) =
+      f2EndpointSwitch pole₁ pole₂)
+    (hpole₁ : pole₁ ∉ R) (hpole₂ : pole₂ ∉ R) :
+    (∑ x ∈ R, f2WalkFamilyBoundary start finish route x) = 0 := by
+  rw [f2WalkFamilyBoundary_eq_poleSwitch start finish route pole₁ pole₂
+      hsource,
+    sum_f2EndpointSwitch_over_finset]
+  simp [f2FinsetIndicator, hpole₁, hpole₂]
+
 end
 
 end Erdos85
@@ -100,3 +136,5 @@ end Erdos85
 #print axioms Erdos85.f2WalkEdgeBoundary_eq_endpointSwitch
 #print axioms Erdos85.f2WalkFamilyBoundary_eq_sum_endpointSwitch
 #print axioms Erdos85.f2WalkFamilyBoundary_eq_poleSwitch
+#print axioms Erdos85.sum_f2WalkEdgeBoundary_eq_zero_of_endpoints_notMem
+#print axioms Erdos85.sum_f2WalkFamilyBoundary_eq_zero_of_poles_notMem
