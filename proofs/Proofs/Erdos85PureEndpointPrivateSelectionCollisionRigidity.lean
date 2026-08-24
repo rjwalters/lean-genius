@@ -61,6 +61,7 @@ theorem c4Free_binarySquare_pureEndpoint_privateSelection_collisionRigidity
       Function.Injective p ∧ Function.Injective φ ∧
       (G.neighborFinset w ∩ S).card = m ∧
       (∃ i j : C, i ≠ j ∧ G.Adj (p i) w ∧ G.Adj (p j) w) ∧
+      (∀ i : O, i.1 ∈ (σ i).1) ∧
       (∀ i : O, G.Adj (p ⟨i.1, i.2.1⟩) (φ (σ i))) ∧
       ∀ i j : O, i ≠ j →
         G.Adj (p ⟨i.1, i.2.1⟩) w →
@@ -110,7 +111,7 @@ theorem c4Free_binarySquare_pureEndpoint_privateSelection_collisionRigidity
       _ = p ix' := by rw [h]
       _ = x' := hix'
   refine ⟨p, φ, σ, w, hpInj, hφInj, hwCard,
-    ⟨ix, ix', hixNe, ?_, ?_⟩, halign, ?_⟩
+    ⟨ix, ix', hixNe, ?_, ?_⟩, (fun i => (hσ i).1), halign, ?_⟩
   · simpa [hix] using hxw
   · simpa [hix'] using hx'w
   · intro i j hij hiw hjw hσij
