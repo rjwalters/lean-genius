@@ -8,6 +8,15 @@ For that smaller family, the earlier `q(q-4)` cross-fiber estimate is not
 arithmetically strong enough.  Saving six target rows per ordered distinct
 fiber pair is exactly sufficient: a uniform `q(q-6)` bound contradicts the
 selected-orbit Cauchy pressure for every even `q >= 8`.
+
+This file records a valid conditional consumer, not a proposed proof of its
+hypothesis.  Exact q=8 adversarial controls show that each two-cap even pair
+at `a=2` forces cross-collision mass at least `40`, while this consumer would
+require at most `8*(8-6)=16`.  Thus the bound cannot follow pairwise from the
+two named agreement laws; using it after assuming the inconsistent full
+three-fiber package would risk a circular or vacuous argument.  The live
+parity-class route must instead exploit its genuinely ternary separation
+core.
 -/
 
 namespace Erdos85
