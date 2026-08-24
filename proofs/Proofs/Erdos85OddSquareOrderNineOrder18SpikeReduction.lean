@@ -1850,6 +1850,111 @@ theorem exists_source_with_nonempty_targetBlock
   exact ⟨u, hu, Finset.card_pos.mp (lt_of_lt_of_le Nat.zero_lt_one
     (hpositive u hu))⟩
 
+/-- Equation (31) evaluated at an ordinary neighbor of the low-spike
+center.  Defect closure gives defect degree seven on the small shore and
+zero off it, hence low-set degree three and two respectively. -/
+theorem orderNine_order18_lowSpike_partner_lowSet_degree_eq_if
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (A H Z : Finset V) (owner y : V)
+    (hyH : y ∉ H) (hyOwner : G.Adj y owner)
+    (hdefect : (D.neighborFinset y ∩ A).card =
+      if y ∈ A then 7 else 0)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ A).card : ℤ) =
+        8 * (if v ∈ A then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v owner then 1 else 0)) :
+    (G.neighborFinset y ∩ Z).card = if y ∈ A then 3 else 2 := by
+  have heq := heq31 y
+  rw [hdefect] at heq
+  by_cases hyA : y ∈ A
+  · simp [hyA, hyH, hyOwner] at heq ⊢
+    omega
+  · simp [hyA, hyH, hyOwner] at heq ⊢
+    omega
+
+/-- Peel the owner and the zero-contribution bin-one part from the
+order-eighteen low set.  A `3/2` low-set profile becomes the `2/1`
+target profile required by equation (34). -/
+theorem orderNine_order18_partner_W_degree_of_lowSet_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (owner y : V) (A Z P W : Finset V)
+    (hpartition : Z = insert owner (P ∪ W))
+    (hownerW : owner ∉ W) (hyOwner : G.Adj y owner)
+    (hPzero : (G.neighborFinset y ∩ P).card = 0)
+    (hZdegree : (G.neighborFinset y ∩ Z).card =
+      if y ∈ A then 3 else 2) :
+    (G.neighborFinset y ∩ W).card = if y ∈ A then 2 else 1 := by
+  classical
+  have hPempty : G.neighborFinset y ∩ P = ∅ :=
+    Finset.card_eq_zero.mp hPzero
+  have hset : G.neighborFinset y ∩ Z =
+      insert owner (G.neighborFinset y ∩ W) := by
+    ext u
+    constructor
+    · intro hu
+      have huParts := Finset.mem_inter.mp hu
+      rw [hpartition] at huParts
+      rcases Finset.mem_insert.mp huParts.2 with huo | huPW
+      · exact Finset.mem_insert.mpr (Or.inl huo)
+      · rcases Finset.mem_union.mp huPW with huP | huW
+        · have : u ∈ G.neighborFinset y ∩ P :=
+            Finset.mem_inter.mpr ⟨huParts.1, huP⟩
+          rw [hPempty] at this
+          exact (Finset.notMem_empty u this).elim
+        · exact Finset.mem_insert.mpr (Or.inr
+            (Finset.mem_inter.mpr ⟨huParts.1, huW⟩))
+    · intro hu
+      rcases Finset.mem_insert.mp hu with huo | huW
+      · subst u
+        exact Finset.mem_inter.mpr
+          ⟨(G.mem_neighborFinset y owner).mpr hyOwner,
+            by rw [hpartition]; exact Finset.mem_insert_self owner _⟩
+      · have huParts := Finset.mem_inter.mp huW
+        exact Finset.mem_inter.mpr ⟨huParts.1, by
+          rw [hpartition]
+          exact Finset.mem_insert_of_mem
+            (Finset.mem_union_right _ huParts.2)⟩
+  have hownerNot : owner ∉ G.neighborFinset y ∩ W := by
+    intro h
+    exact hownerW (Finset.mem_inter.mp h).2
+  have hcard : (G.neighborFinset y ∩ Z).card =
+      (G.neighborFinset y ∩ W).card + 1 := by
+    rw [hset, Finset.card_insert_of_notMem hownerNot]
+  by_cases hyA : y ∈ A
+  · rw [if_pos hyA] at hZdegree ⊢
+    omega
+  · rw [if_neg hyA] at hZdegree ⊢
+    omega
+
+/-- Composed pointwise equation-(34) provider: equation (31), own-shore
+defect closure, and the second-profile zero contribution of `P` produce
+the partner target degree `2/1` directly. -/
+theorem orderNine_order18_lowSpike_partner_W_degree_eq_if
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (A H Z P W : Finset V) (owner y : V)
+    (hyH : y ∉ H) (hyOwner : G.Adj y owner)
+    (hdefect : (D.neighborFinset y ∩ A).card =
+      if y ∈ A then 7 else 0)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ A).card : ℤ) =
+        8 * (if v ∈ A then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v owner then 1 else 0))
+    (hpartition : Z = insert owner (P ∪ W))
+    (hownerW : owner ∉ W)
+    (hPzero : (G.neighborFinset y ∩ P).card = 0) :
+    (G.neighborFinset y ∩ W).card = if y ∈ A then 2 else 1 := by
+  apply orderNine_order18_partner_W_degree_of_lowSet_partition
+    G owner y A Z P W hpartition hownerW hyOwner hPzero
+  exact orderNine_order18_lowSpike_partner_lowSet_degree_eq_if
+    G D A H Z owner y hyH hyOwner hdefect heq31
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -1891,6 +1996,9 @@ theorem exists_source_with_nonempty_targetBlock
 #print axioms Erdos85.orderNine_order18_partner_target_degree_sum_eq_four_sub
 #print axioms Erdos85.orderNine_order18_three_source_target_degree_sum_ge_three
 #print axioms Erdos85.exists_source_with_nonempty_targetBlock
+#print axioms Erdos85.orderNine_order18_lowSpike_partner_lowSet_degree_eq_if
+#print axioms Erdos85.orderNine_order18_partner_W_degree_of_lowSet_partition
+#print axioms Erdos85.orderNine_order18_lowSpike_partner_W_degree_eq_if
 
 end
 
