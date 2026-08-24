@@ -51,9 +51,23 @@ python3 size_two_cyclic_full_probe.py 8 --a 3 --no-caps \
   --max-total-defect-rank 88        # sat
 ```
 
-The a1/a2 threshold 64 was independently cross-checked through the sound
-pure-Boolean DIMACS path and Kissat in the propagation audit.  The new a0/a3
-values are native-Z3 bounded evidence.
+All four thresholds were independently cross-checked through the sound
+pure-Boolean DIMACS path and Kissat.  In particular, the a0 bounds 77/78 and
+the a3 bounds 87/88 returned exit codes 20/10 respectively, agreeing with
+native Z3.  The CNF validator found no opaque theory atoms.
+
+One a3 rank-88 witness is periodic by base parity.  At every base its six
+source fibres have ranks
+
+```text
+{1,1,2,2,2,3},
+```
+
+so each base contributes 11.  Globally there are 16 rank-one, 24 rank-two,
+and eight rank-three sources.  Loads of three occur, and the rank-three
+source fibre changes with base parity.  Thus the a3 minimum is not the
+rank-64 geometry with a few isolated exceptional sources; it is a distinct
+base-resolved reciprocal stratum.
 
 ## Consequences for the proof split
 
