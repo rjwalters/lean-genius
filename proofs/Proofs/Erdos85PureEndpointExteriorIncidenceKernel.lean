@@ -83,6 +83,101 @@ theorem c4Free_binarySquare_pureEndpoint_exterior_incidenceKernel
   have hy : M.mulVec x y = 0 := congrFun hMx y
   simpa only [M, Matrix.mulVec, dotProduct, ite_mul, one_mul, zero_mul] using hy
 
+/-- Combinatorial form of the binary kernel: there is a nonempty collection
+of exterior rows in which every shore point has even incidence. -/
+theorem c4Free_binarySquare_pureEndpoint_exists_even_exteriorRowConfiguration
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V)
+    (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    let F := fullLineCenters G S q
+    let W := {w : V // w ∈ Fᶜ}
+    let P := {y : V // y ∈ S}
+    ∃ T : Finset W, T.Nonempty ∧
+      ∀ y : P, Even ((T.filter fun w => G.Adj w.1 y.1).card) := by
+  classical
+  dsimp only
+  let F := fullLineCenters G S q
+  let W := {w : V // w ∈ Fᶜ}
+  let P := {y : V // y ∈ S}
+  change ∃ T : Finset W, T.Nonempty ∧
+    ∀ y : P, Even ((T.filter fun w => G.Adj w.1 y.1).card)
+  obtain ⟨x, hx, hzero⟩ :=
+    c4Free_binarySquare_pureEndpoint_exterior_incidenceKernel
+      G hfree hq hqm hreg hcard S hempty hCcard hshore htri
+  let T := (Finset.univ : Finset W).filter fun w => x w = 1
+  have hbinary : ∀ z : ZMod 2, z = 0 ∨ z = 1 := by decide
+  have hval : ∀ w : W, x w = if w ∈ T then 1 else 0 := by
+    intro w
+    rcases hbinary (x w) with hw0 | hw1
+    · simp [T, hw0]
+    · simp [T, hw1]
+  have hT : T.Nonempty := by
+    by_contra hTempty
+    apply hx
+    funext w
+    have hwNot : w ∉ T := by
+      simp [Finset.not_nonempty_iff_eq_empty.mp hTempty]
+    simp [hval w, hwNot]
+  refine ⟨T, hT, ?_⟩
+  intro y
+  have hy := hzero y
+  simp_rw [hval] at hy
+  have hcast :
+      (((T.filter fun w => G.Adj w.1 y.1).card : ℕ) : ZMod 2) = 0 := by
+    have hy' : (∑ w : W,
+        if w ∈ T then
+          (if G.Adj w.1 y.1 then (1 : ZMod 2) else 0) else 0) = 0 := by
+      calc
+        (∑ w : W,
+            if w ∈ T then
+              (if G.Adj w.1 y.1 then (1 : ZMod 2) else 0) else 0) =
+            ∑ w : W,
+              if G.Adj w.1 y.1 then
+                (if w ∈ T then (1 : ZMod 2) else 0) else 0 := by
+          apply Finset.sum_congr rfl
+          intro w _hw
+          by_cases hwT : w ∈ T <;>
+            by_cases hwy : G.Adj w.1 y.1 <;> simp [hwT, hwy]
+        _ = 0 := hy
+    calc
+      (((T.filter fun w => G.Adj w.1 y.1).card : ℕ) : ZMod 2) =
+          ∑ w ∈ (T.filter fun w => G.Adj w.1 y.1), (1 : ZMod 2) := by
+        simp
+      _ = ∑ w ∈ T,
+          if G.Adj w.1 y.1 then (1 : ZMod 2) else 0 := by
+        rw [Finset.sum_filter]
+      _ = ∑ w : W,
+          if w ∈ T then
+            (if G.Adj w.1 y.1 then (1 : ZMod 2) else 0) else 0 := by
+        calc
+          (∑ w ∈ T, if G.Adj w.1 y.1 then (1 : ZMod 2) else 0) =
+              ∑ w ∈ T, if w ∈ T then
+                (if G.Adj w.1 y.1 then (1 : ZMod 2) else 0) else 0 := by
+            apply Finset.sum_congr rfl
+            intro w hwT
+            simp [hwT]
+          _ = ∑ w ∈ (Finset.univ : Finset W), if w ∈ T then
+                (if G.Adj w.1 y.1 then (1 : ZMod 2) else 0) else 0 := by
+            apply Finset.sum_subset (Finset.subset_univ T)
+            intro w _hwUniv hwT
+            simp [hwT]
+          _ = _ := by rfl
+      _ = 0 := hy'
+  exact ZMod.natCast_eq_zero_iff_even.mp hcast
+
 end
 
 end Erdos85
@@ -90,3 +185,5 @@ end Erdos85
 #print axioms Erdos85.exists_ne_zero_mulVec_eq_zero_of_card_lt
 #print axioms
   Erdos85.c4Free_binarySquare_pureEndpoint_exterior_incidenceKernel
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_exists_even_exteriorRowConfiguration
