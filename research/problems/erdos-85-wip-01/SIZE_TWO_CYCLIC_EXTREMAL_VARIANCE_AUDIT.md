@@ -11,8 +11,8 @@ one b_tu(x)=0, one b_tv(x)=2, and every other block load equal to 1.
 ```
 
 It has squared deviation two, the smallest value above the already excluded
-zero-variance profile.  The audit also imposes full internal support, so the
-missing fibre is never `t`.
+zero-variance profile.  Both the full-internal-support branch and the
+unrestricted-support interface were tested.
 
 ## Fixed-difference law
 
@@ -39,14 +39,18 @@ an exact q-generic description of every source's block-load defect.
 
 ## Solver calibration
 
-At q8 the entire extremal stratum is already impossible under exact hits,
-full internal support, and reciprocity, with **no cap constraints**:
+At q8 the entire extremal stratum is already impossible under exact hits and
+reciprocity, with **no cap constraints and no internal-support assumption**:
 
 ```
 q8 a=1: reciprocal/no-caps UNSAT; directed/no-caps SAT
 q8 a=2: reciprocal/no-caps UNSAT
 q8 a=3: reciprocal/no-caps UNSAT
 ```
+
+The a=1 and a=2 unrestricted-support queries were rerun explicitly after a
+scope audit.  Adding full internal support remains UNSAT, but is unnecessary
+for the q8 endpoint.
 
 The q8 a=1 grouped reciprocity shrink retains the sufficient,
 order-dependent block set
@@ -89,8 +93,8 @@ consistency around several blocks (or a global symmetric-trade argument).
 
 The terminal-sized route is now:
 
-1. prove any full-support capped code can be normalized, without increasing
-   cap collisions, until every source has the extremal profile; and
+1. prove any capped code can be normalized, without increasing cap
+   collisions, until every source has the extremal profile; and
 2. prove q-generically for `4|q` that (1), the two affine matching laws, and
    entrywise block transpose admit no simultaneous realization.
 
