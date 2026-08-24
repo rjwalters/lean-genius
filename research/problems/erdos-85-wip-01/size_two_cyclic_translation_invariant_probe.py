@@ -40,6 +40,10 @@ def main() -> None:
         help="audit cycle types of the four two-hole permutation completions")
     parser.add_argument("--dump-triangle-reversal", action="store_true",
         help="print colored triangle-trace asymmetry under block reversal")
+    parser.add_argument("--dump-transpose-defect", action="store_true",
+        help="print directed edge disagreement with block transpose")
+    parser.add_argument("--minimize-transpose-defect", action="store_true",
+        help="minimize failed unordered block-transpose equations")
     parser.add_argument("--impose-triangle-reversal", action="store_true",
         help="drop edge reciprocity but impose every colored triangle-trace reversal")
     parser.add_argument("--impose-four-cycle-reversal", action="store_true",
@@ -320,6 +324,57 @@ def main() -> None:
 
     if result == z3.sat:
         model = solver.model()
+        if args.minimize_transpose_defect:
+            mismatch_terms = []
+            for t in differences:
+                for u in differences:
+                    for r in range(q):
+                        forward_key = (t, u, r)
+                        reverse_key = (u, t, (-r) % q)
+                        if forward_key < reverse_key:
+                            mismatch_terms.append(z3.Xor(
+                                edge(t, u, r), edge(u, t, -r)))
+            low, high = 0, len(mismatch_terms)
+            best_model = model
+            while low < high:
+                middle = (low + high) // 2
+                solver.push()
+                solver.add(z3.PbLe([(term, 1) for term in mismatch_terms],
+                                   middle))
+                bounded_result = solver.check(*active_assumptions)
+                if bounded_result == z3.sat:
+                    high = middle
+                    best_model = solver.model()
+                elif bounded_result == z3.unsat:
+                    low = middle + 1
+                else:
+                    solver.pop()
+                    raise RuntimeError(
+                        "transpose-defect minimization returned unknown")
+                solver.pop()
+            solver.push()
+            solver.add(z3.PbLe([(term, 1) for term in mismatch_terms], low))
+            if solver.check(*active_assumptions) == z3.sat:
+                best_model = solver.model()
+            solver.pop()
+            model = best_model
+            print(f"  minimum_transpose_defect_unordered={low}")
+        if args.dump_transpose_defect:
+            directed_defect = []
+            for t in differences:
+                for u in differences:
+                    for r in range(q):
+                        forward = z3.is_true(model.eval(edge(t, u, r)))
+                        reverse = z3.is_true(model.eval(edge(u, t, -r)))
+                        if forward != reverse:
+                            directed_defect.append((t, u, r))
+            # Every unordered failed transpose equation occurs in both
+            # orientations in a directed model.
+            by_pair: Counter[tuple[int, int]] = Counter(
+                tuple(sorted((t, u))) for t, u, _ in directed_defect)
+            print(f"  transpose_defect_directed={len(directed_defect)} "
+                  f"unordered={len(directed_defect) // 2} "
+                  f"by_fiber_pair={dict(sorted(by_pair.items()))}")
         for t in differences:
             internal_steps = [r for r in range(1, q)
                 if z3.is_true(model.eval(edge(t, t, r)))]
