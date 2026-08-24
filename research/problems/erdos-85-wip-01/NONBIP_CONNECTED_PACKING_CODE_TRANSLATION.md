@@ -134,6 +134,33 @@ The bounded cut is:
    form.  Stop if it yields merely the already-known lower valuation of
    `det A`, rather than a polarity-sensitive upper obstruction.
 
+### Bounded lattice probe: stopped
+
+Because `A` is symmetric with zero diagonal, it is the Gram matrix of an
+even integral bilinear form whenever it is nonsingular.  The standard
+signature congruence for an even lattice does not depend only on the order of
+its discriminant group.  Its input is the full finite quadratic form
+
+```text
+q_A : Z^(q^2) / A Z^(q^2) -> Q / 2Z,
+q_A([x]) = x^T A^(-1) x.                              (P3)
+```
+
+The square-root and matrix-tree identities determine the group order
+`|det A| = q^2 sqrt(tau(D))` and hence its 2-adic valuation.  They do not
+determine (P3): evaluating it requires `A^(-1)`, equivalently the full
+coordinate-level square root rather than the spectrum, determinant, or leave
+degree data.  Even the underlying abelian group is not fixed by its order;
+the earlier nonsplitting Smith audit exhibits the same obstruction.
+
+Therefore a Brown/Milgram or discriminant-form calculation cannot currently
+produce a signature restriction without assuming information at least as
+strong as the unknown integral square root.  The probe reaches its declared
+stop condition: at the available interface it reduces to the already-banked
+determinant valuation, with no polarity-sensitive upper bound.  No lattice
+formalization should be opened unless a future theorem first determines a
+nontrivial primary component of (P3) from entrywise incidence.
+
 The main lesson is negative but decision-relevant: the natural coding and
 packing projections erase exactly the connected-vs-parallel-class datum.
 Any successful theorem must retain the self-polar coordinate labels or the
