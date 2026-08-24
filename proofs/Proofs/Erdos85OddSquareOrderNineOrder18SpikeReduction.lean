@@ -393,6 +393,128 @@ theorem orderNine_order18_excessTwo_function_unique_spike
       rw [hc] at hyMem
       simpa using hyMem
 
+/-- Turn the order-eighteen histogram into the pointwise level law needed by
+the defect-transfer equations.  In the low branch `Z` is the 28-point
+degree-six level; in the high branch it is the 31-point degree-six level. -/
+theorem orderNine_order18_excessTwo_function_level_sets
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (f : X → ℕ) (hbound : ∀ x, f x ≤ 9)
+    (hprofile :
+      let n := fun i : ℕ ↦ ((Finset.univ : Finset X).filter fun x ↦ f x = i).card
+      (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+        n 5 = 1 ∧ n 6 = 28 ∧ n 7 = 49 ∧ n 8 = 0 ∧ n 9 = 0) ∨
+      (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+        n 5 = 0 ∧ n 6 = 31 ∧ n 7 = 46 ∧ n 8 = 1 ∧ n 9 = 0)) :
+    (∃ (c : X) (Z : Finset X), Z.card = 28 ∧ c ∉ Z ∧
+      ∀ x, f x = if x = c then 5 else if x ∈ Z then 6 else 7) ∨
+    (∃ (c : X) (Z : Finset X), Z.card = 31 ∧ c ∉ Z ∧
+      ∀ x, f x = if x = c then 8 else if x ∈ Z then 6 else 7) := by
+  classical
+  let n := fun i : ℕ ↦ ((Finset.univ : Finset X).filter fun x ↦ f x = i).card
+  change
+    (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+      n 5 = 1 ∧ n 6 = 28 ∧ n 7 = 49 ∧ n 8 = 0 ∧ n 9 = 0) ∨
+    (n 0 = 0 ∧ n 1 = 0 ∧ n 2 = 0 ∧ n 3 = 0 ∧ n 4 = 0 ∧
+      n 5 = 0 ∧ n 6 = 31 ∧ n 7 = 46 ∧ n 8 = 1 ∧ n 9 = 0) at hprofile
+  rcases hprofile with hL | hH
+  · obtain ⟨c, hc⟩ := Finset.card_eq_one.mp hL.2.2.2.2.2.1
+    let Z := (Finset.univ : Finset X).filter fun x ↦ f x = 6
+    left
+    refine ⟨c, Z, hL.2.2.2.2.2.2.1, ?_, ?_⟩
+    · intro hcZ
+      have hfc6 : f c = 6 := (Finset.mem_filter.mp hcZ).2
+      have hc5 : f c = 5 := by
+        have : c ∈ (Finset.univ : Finset X).filter (fun x ↦ f x = 5) := by
+          rw [hc]
+          simp
+        exact (Finset.mem_filter.mp this).2
+      omega
+    · intro x
+      by_cases hxc : x = c
+      · subst x
+        have : c ∈ (Finset.univ : Finset X).filter (fun y ↦ f y = 5) := by
+          rw [hc]
+          simp
+        simp [(Finset.mem_filter.mp this).2]
+      · by_cases hxZ : x ∈ Z
+        · simp [hxc, hxZ, (Finset.mem_filter.mp hxZ).2]
+        · have hne (i : ℕ) (hi : n i = 0) : f x ≠ i := by
+            intro hfi
+            have hx : x ∈ (Finset.univ : Finset X).filter (fun y ↦ f y = i) :=
+              Finset.mem_filter.mpr ⟨by simp, hfi⟩
+            have : ((Finset.univ : Finset X).filter (fun y ↦ f y = i)) = ∅ :=
+              Finset.card_eq_zero.mp hi
+            rw [this] at hx
+            simp at hx
+          have hf5 : f x ≠ 5 := by
+            intro hfx
+            have hx : x ∈ (Finset.univ : Finset X).filter (fun y ↦ f y = 5) :=
+              Finset.mem_filter.mpr ⟨by simp, hfx⟩
+            rw [hc] at hx
+            exact hxc (by simpa using hx)
+          have hf6 : f x ≠ 6 := by
+            intro hfx
+            exact hxZ (Finset.mem_filter.mpr ⟨by simp, hfx⟩)
+          have hf7 : f x = 7 := by
+            have := hbound x
+            have h0 := hne 0 hL.1
+            have h1 := hne 1 hL.2.1
+            have h2 := hne 2 hL.2.2.1
+            have h3 := hne 3 hL.2.2.2.1
+            have h4 := hne 4 hL.2.2.2.2.1
+            have h8 := hne 8 hL.2.2.2.2.2.2.2.2.1
+            have h9 := hne 9 hL.2.2.2.2.2.2.2.2.2
+            omega
+          simp [hxc, hxZ, hf7]
+  · obtain ⟨c, hc⟩ := Finset.card_eq_one.mp hH.2.2.2.2.2.2.2.2.1
+    let Z := (Finset.univ : Finset X).filter fun x ↦ f x = 6
+    right
+    refine ⟨c, Z, hH.2.2.2.2.2.2.1, ?_, ?_⟩
+    · intro hcZ
+      have hfc6 : f c = 6 := (Finset.mem_filter.mp hcZ).2
+      have hc8 : f c = 8 := by
+        have : c ∈ (Finset.univ : Finset X).filter (fun x ↦ f x = 8) := by
+          rw [hc]
+          simp
+        exact (Finset.mem_filter.mp this).2
+      omega
+    · intro x
+      by_cases hxc : x = c
+      · subst x
+        have : c ∈ (Finset.univ : Finset X).filter (fun y ↦ f y = 8) := by
+          rw [hc]
+          simp
+        simp [(Finset.mem_filter.mp this).2]
+      · by_cases hxZ : x ∈ Z
+        · simp [hxc, hxZ, (Finset.mem_filter.mp hxZ).2]
+        · have hne (i : ℕ) (hi : n i = 0) : f x ≠ i := by
+            intro hfi
+            have hx : x ∈ (Finset.univ : Finset X).filter (fun y ↦ f y = i) :=
+              Finset.mem_filter.mpr ⟨by simp, hfi⟩
+            have : ((Finset.univ : Finset X).filter (fun y ↦ f y = i)) = ∅ :=
+              Finset.card_eq_zero.mp hi
+            rw [this] at hx
+            simp at hx
+          have hf6 : f x ≠ 6 := by
+            intro hfx
+            exact hxZ (Finset.mem_filter.mpr ⟨by simp, hfx⟩)
+          have hf8 : f x ≠ 8 := by
+            intro hfx
+            have hx : x ∈ (Finset.univ : Finset X).filter (fun y ↦ f y = 8) :=
+              Finset.mem_filter.mpr ⟨by simp, hfx⟩
+            rw [hc] at hx
+            exact hxc (by simpa using hx)
+          have hf7 : f x = 7 := by
+            have := hbound x
+            have h0 := hne 0 hH.1
+            have h1 := hne 1 hH.2.1
+            have h2 := hne 2 hH.2.2.1
+            have h3 := hne 3 hH.2.2.2.1
+            have h4 := hne 4 hH.2.2.2.2.1
+            have h5 := hne 5 hH.2.2.2.2.2.1
+            have h9 := hne 9 hH.2.2.2.2.2.2.2.2.2
+            omega
+          simp [hxc, hxZ, hf7]
 /-- Graph-facing unique-center form of (29), on the 78 ordinary centers. -/
 theorem orderNine_order18_largeOrdinaryShore_unique_spike
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -1022,6 +1144,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
 #print axioms Erdos85.orderNine_order18_excessTwo_function_profile
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_incidence_profile
 #print axioms Erdos85.orderNine_order18_excessTwo_function_unique_spike
+#print axioms Erdos85.orderNine_order18_excessTwo_function_level_sets
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_unique_spike
 #print axioms Erdos85.orderNine_order18_lowSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_highSpike_global_shore_equation
