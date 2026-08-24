@@ -25,14 +25,20 @@ def main() -> None:
         help="drop reciprocity and use one variable per ordered pair")
     parser.add_argument("--reciprocity-core", action="store_true",
         help="use directed variables and shrink reciprocity by fibre-pair groups")
+    parser.add_argument("--joint-group-core", action="store_true",
+        help="shrink reciprocity blocks and full-cap families together")
+    parser.add_argument("--joint-separation-core", action="store_true",
+        help="shrink reciprocity blocks and cap fibre/separation groups")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     parser.add_argument("--dimacs")
     args = parser.parse_args()
 
-    if args.directed and args.reciprocity_core:
-        parser.error("--directed and --reciprocity-core are mutually exclusive")
-    if args.reciprocity_core and args.dimacs is not None:
-        parser.error("--reciprocity-core cannot be combined with --dimacs")
+    if sum((args.directed, args.reciprocity_core, args.joint_group_core,
+            args.joint_separation_core)) > 1:
+        parser.error("directed/core modes are mutually exclusive")
+    if (args.reciprocity_core or args.joint_group_core or
+            args.joint_separation_core) and args.dimacs is not None:
+        parser.error("core modes cannot be combined with --dimacs")
 
     q = args.q
     holes = {args.a % q, (-1 - args.a) % q}
@@ -44,7 +50,9 @@ def main() -> None:
     def edge(left: tuple[int, int], right: tuple[int, int]) -> z3.BoolRef:
         if left == right:
             return z3.BoolVal(False)
-        key = ((left, right) if args.directed or args.reciprocity_core
+        key = ((left, right) if (args.directed or args.reciprocity_core or
+                                 args.joint_group_core or
+                                 args.joint_separation_core)
                else tuple(sorted((left, right))))
         if key not in variables:
             (x, t), (y, u) = key
@@ -53,8 +61,10 @@ def main() -> None:
 
     solver = z3.Solver()
     reciprocity_assumptions: list[z3.BoolRef] = []
+    cap_assumptions: dict[object, z3.BoolRef] = {}
 
-    if args.reciprocity_core:
+    if (args.reciprocity_core or args.joint_group_core or
+            args.joint_separation_core):
         for i, t in enumerate(differences):
             for u in differences[i:]:
                 label = z3.Bool(f"recip_{t}_{u}")
@@ -91,19 +101,34 @@ def main() -> None:
     # most one precise common target cell.
     if not args.no_caps:
         for t in differences:
+            if args.joint_group_core:
+                cap_assumptions[t] = z3.Bool(f"caps_{t}")
             for x, z in combinations(range(q), 2):
                 left, right = (x, t), (z, t)
-                solver.add(z3.PbLe([
+                constraint = z3.PbLe([
                     (z3.And(edge(left, target), edge(right, target)), 1)
                     for target in vertices
-                ], 1))
+                ], 1)
+                if args.joint_group_core or args.joint_separation_core:
+                    if args.joint_group_core:
+                        key: object = t
+                    else:
+                        raw = (z - x) % q
+                        key = (t, min(raw, (-raw) % q))
+                        if key not in cap_assumptions:
+                            cap_assumptions[key] = z3.Bool(
+                                f"cap_{key[0]}_{key[1]}")
+                    solver.add(z3.Implies(cap_assumptions[key], constraint))
+                else:
+                    solver.add(constraint)
 
     if args.empty_fiber is not None:
         t = args.empty_fiber % q
         if t not in differences:
             parser.error(f"empty fibre {t} is forbidden by the two holes")
         base_pairs = ((x, z) for x in range(q) for z in range(q) if x != z)
-        if not args.directed and not args.reciprocity_core:
+        if not (args.directed or args.reciprocity_core or
+                args.joint_group_core or args.joint_separation_core):
             base_pairs = combinations(range(q), 2)
         for x, z in base_pairs:
             solver.add(z3.Not(edge((x, t), (z, t))))
@@ -124,22 +149,37 @@ def main() -> None:
         return
 
     solver.set(timeout=args.timeout_ms)
-    result = solver.check(*reciprocity_assumptions)
+    active_assumptions = reciprocity_assumptions + list(cap_assumptions.values())
+    result = solver.check(*active_assumptions)
     print(f"q={q} a={args.a % q} vertices={len(vertices)} "
           f"edge_variables={len(variables)}: {result}")
-    if result == z3.unsat and args.reciprocity_core:
+    if result == z3.unsat and (args.reciprocity_core or args.joint_group_core or
+                               args.joint_separation_core):
         core = list(solver.unsat_core())
         # Directed relaxations encountered while deleting a block can be
         # substantially harder than the reciprocal instance.  UNKNOWN keeps
         # the block, so this bound preserves a sufficient (if nonminimal)
         # core and prevents one diagnostic from becoming a solver campaign.
         solver.set(timeout=5_000)
+        if args.joint_separation_core:
+            # First delete whole cap fibres.  Removing their separation
+            # labels one at a time can turn an easy group deletion into a
+            # hard near-feasible query and obscure the smaller fibre core.
+            for t in differences:
+                prefix = f"cap_{t}_"
+                candidate = [item for item in core
+                             if not str(item).startswith(prefix)]
+                if solver.check(*candidate) == z3.unsat:
+                    core = candidate
         for label in list(core):
             candidate = [other for other in core if not z3.eq(other, label)]
             if solver.check(*candidate) == z3.unsat:
                 core = candidate
         solver.check(*core)
-        print("  reciprocity_core=" + str(sorted(str(label) for label in core)))
+        label = ("joint_group_core" if args.joint_group_core else
+                 "joint_separation_core" if args.joint_separation_core else
+                 "reciprocity_core")
+        print(f"  {label}=" + str(sorted(str(item) for item in core)))
 
 
 if __name__ == "__main__":

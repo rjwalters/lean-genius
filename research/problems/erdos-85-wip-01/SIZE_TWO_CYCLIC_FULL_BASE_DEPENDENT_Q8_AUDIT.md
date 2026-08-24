@@ -93,3 +93,33 @@ timed out, but the contrast is still useful: selecting `A_44=0` exposes a
 much smaller nine-block reciprocal subsystem.  This agrees with the colored
 trace audit, where removing emptiness restored SAT even after all degree-3/4
 trace reversal identities were imposed.
+
+## Joint cap/transpose cores
+
+`--joint-group-core` also makes each full cap family an assumption.  One
+bounded deletion order gives the sufficient subsystem
+
+```text
+cap fibres: 1,3,4,6
+transpose blocks: 14,16,33,34,36,37,46,47,67,77.
+```
+
+Thus cap colours `0` and `7` can be removed entirely if the displayed ten
+transpose blocks are kept.
+
+`--joint-separation-core` first deletes cap families as units and then splits
+the survivors by cyclic base separation.  A different sufficient tradeoff is
+
+```text
+caps: fibre 3 at separations 1,2,3,4;
+      fibre 7 at separations 1,2,3;
+transpose blocks:
+  04,07,13,14,16,17,33,34,36,37,46,47,66,67,77.
+```
+
+These cores are order- and timeout-dependent and are not claimed minimum.
+Their value is structural: the full arbitrary-base q8 contradiction does not
+merely replay the three selected TI caps, and there is a tradeoff between how
+many cap colours and how many transpose blocks are retained.  A uniform proof
+should therefore use the complete cap family and global block transpose,
+rather than promote either finite core literally.
