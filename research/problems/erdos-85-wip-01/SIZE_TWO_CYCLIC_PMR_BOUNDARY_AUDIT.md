@@ -97,8 +97,25 @@ more expensive.  Across eight unconstrained rank-70 samples, the weighted
 window-surplus sequence has exactly one value `2`, all other values at least
 `4`, and total `44=2(sum R-q(q-2))` as forced by the balanced-cut identity.
 
-This leaves a sharper structural target than connectivity: prove that one
-window surplus `2` forces total surplus strictly above `4q` (parity then
-suggests the observed two-rank gap).  That implication alone proves PMR
-under `sum R <= q^2`; no classification or pairing of all positive rows is
-needed.
+The zero-surplus case must also be retained.  The cap-free q8/a2 query
+`M(0) <= 6` is SAT without a rank bound, so an unconditional local lower
+bound of surplus two is false.  Its exact tested rank threshold is much
+higher:
+
+```text
+M(0) <= 6: UNSAT at total-rank bounds 64,66,68,70; SAT at 72.
+```
+
+Thus surplus zero first appears with total surplus
+`2(72-8(8-2))=48`, while `4q=32`.  The clean structural target covering
+every PMR failure is therefore
+
+```text
+window surplus < 4  ==>  total surplus > 4q.             (WSP)
+```
+
+All-row binary deviation parity makes window surplus an even nonnegative
+integer, so (WSP) includes both possible bad values zero and two.  Under
+`sum R <= q^2`, the balanced partition identity gives total surplus at most
+`4q`; hence (WSP) forces every window surplus at least four and proves PMR.
+No classification or pairing of all positive rows is needed.
