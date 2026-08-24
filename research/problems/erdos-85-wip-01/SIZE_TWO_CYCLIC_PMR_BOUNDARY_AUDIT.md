@@ -212,6 +212,50 @@ The hard low-rank case is consequently concentrated in the even hole phases:
 `a=0` already has cap-free minimum total rank 78, while `a=2` reaches rank
 `q^2=64` and is the sharp WSP phase studied above.
 
+## A weighted slot quotient detects the minimum escape
+
+Regard every load slot `(b,t,u)` as a vertex of degree
+`m(b,t,u)`.  A reciprocal route edge `(b,t)--(y,u)` joins the two slots
+`(b,t,u)` and `(y,u,t)`.  Color a slot by its unique PMR window,
+
+```text
+chi(b,u) = b       if b and u have the same parity,
+           b-1     otherwise.
+```
+
+The color classes partition all slots, and the isolated vertices of color
+`x` are exactly `M(x)`.  The option `--dump-pmr-color-transition` prints the
+symmetric matrix `T`, where `T(x,y)` is the number of reciprocal slot-edge
+incidences between colors `x,y` (a same-color edge contributes two).
+
+This weighted quotient detects more than the scalar charge.  In the q8/a2
+minimum one-dip escape,
+
+```text
+sum R <= 66, M(0) <= 7,
+```
+
+the single disjunctive query `--require-any-pmr-color-transition-imbalance`
+is UNSAT: every entry satisfies
+
+```text
+T(x,y) = T(x+4,y+4).                              (CT)
+```
+
+This is not a universal identity.  Without the rank/dip constraints, a
+specified nontrivial entry can be forced to violate (CT).  More sharply, at
+rank 67 the simultaneous conditions `M(0)<=7`, `M(4)>=8`, and failure of
+(CT) are SAT.  Thus the full weighted color-transition tensor folds exactly
+in the minimum escape stratum and can break at the same first rank at which
+the antipodal scalar dip can break.
+
+The quotient does not by itself bound isolated vertices: every color has
+fixed total degree `(q-2)^2`, so its unweighted cut equation is tautological.
+Its value is as an equality-case carrier.  A q-generic proof may aim to show
+that a bad window at minimum total defect forces (CT), then use the two exact
+route factorizations to turn antipodal transition equality into the required
+second defect and strict global surplus cost.
+
 ## Aggregate transpose symmetry is insufficient
 
 Full reciprocity implies the aggregate transpose law

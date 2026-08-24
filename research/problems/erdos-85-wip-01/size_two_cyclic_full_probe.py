@@ -84,6 +84,14 @@ def main() -> None:
         help="on SAT, print per-base rank, parity charge, and all PMR surpluses")
     parser.add_argument("--dump-slot-cuts", action="store_true",
         help="on SAT, print internal/boundary and defect counts for every PMR slot cut")
+    parser.add_argument("--dump-pmr-color-transition", action="store_true",
+        help="on SAT, print the reciprocal slot graph between PMR window colors")
+    parser.add_argument("--require-pmr-color-transition-imbalance", type=int,
+        nargs=2, metavar=("C", "D"),
+        help="require one PMR color-transition entry to differ from its antipode")
+    parser.add_argument("--require-any-pmr-color-transition-imbalance",
+        action="store_true",
+        help="require the PMR color-transition matrix not to be antipodal")
     parser.add_argument("--minimize-cap-excess", action="store_true",
         help="in --no-caps mode, minimize total common-target excess over one")
     parser.add_argument("--max-cap-excess", type=int,
@@ -128,6 +136,15 @@ def main() -> None:
     if args.dump_slot_cuts and (args.directed or args.reciprocity_core or
             args.joint_group_core or args.joint_separation_core):
         parser.error("--dump-slot-cuts requires the reciprocal undirected model")
+    if (args.dump_pmr_color_transition or
+            args.require_pmr_color_transition_imbalance is not None or
+            args.require_any_pmr_color_transition_imbalance) and (
+            args.directed or args.reciprocity_core or args.joint_group_core or
+            args.joint_separation_core):
+        parser.error("PMR color-transition diagnostics require undirected reciprocity")
+    if (args.require_pmr_color_transition_imbalance is not None and
+            args.require_any_pmr_color_transition_imbalance):
+        parser.error("choose a specific or any PMR color-transition imbalance")
     if args.global_route_sign is not None and (
             args.drop_row_hits or args.drop_column_hits):
         parser.error("--global-route-sign requires both exact-hit families")
@@ -459,6 +476,36 @@ def main() -> None:
                     for z in range(q) if z != x
                 ], 1))
 
+    if (args.require_pmr_color_transition_imbalance is not None or
+            args.require_any_pmr_color_transition_imbalance):
+        half = q // 2
+
+        def color(base: int, target_fibre: int) -> int:
+            return base if base % 2 == target_fibre % 2 else (base - 1) % q
+
+        def transition_expr(left_color: int, right_color: int) -> z3.ArithRef:
+            terms = []
+            for left, right in combinations(vertices, 2):
+                (x, t), (y, u) = left, right
+                lc, rc = color(x, u), color(y, t)
+                coefficient = int(lc == left_color and rc == right_color)
+                coefficient += int(rc == left_color and lc == right_color)
+                if coefficient:
+                    terms.append(z3.If(edge(left, right), coefficient, 0))
+            return z3.Sum(terms)
+
+        if args.require_pmr_color_transition_imbalance is not None:
+            c, d = (value % q for value in
+                    args.require_pmr_color_transition_imbalance)
+            solver.add(transition_expr(c, d) != transition_expr(
+                (c + half) % q, (d + half) % q))
+        else:
+            solver.add(z3.Or([
+                transition_expr(c, d) != transition_expr(
+                    (c + half) % q, (d + half) % q)
+                for c in range(half) for d in range(q)
+            ]))
+
     if args.max_internal_edges is not None:
         if (args.directed or args.reciprocity_core or args.joint_group_core or
                 args.joint_separation_core):
@@ -767,6 +814,44 @@ def main() -> None:
                   f"internal_edges={internal_edges} boundary={boundary} "
                   f"isolated={isolated} occupied={occupied} excess={excess} "
                   f"degree_sum={degree_sum}")
+    if result == z3.sat and args.dump_pmr_color_transition:
+        model = solver.model()
+
+        def pmr_color(base: int, target_fibre: int) -> int:
+            return base if base % 2 == target_fibre % 2 else (base - 1) % q
+
+        transition = [[0 for _ in range(q)] for _ in range(q)]
+        for left, right in combinations(vertices, 2):
+            if not z3.is_true(model.eval(edge(left, right),
+                                         model_completion=True)):
+                continue
+            (x, t), (y, u) = left, right
+            left_color = pmr_color(x, u)
+            right_color = pmr_color(y, t)
+            transition[left_color][right_color] += 1
+            transition[right_color][left_color] += 1
+
+        histograms = []
+        for color in range(q):
+            degrees = []
+            for base, t in vertices:
+                for u in differences:
+                    if pmr_color(base, u) != color:
+                        continue
+                    degrees.append(sum(z3.is_true(model.eval(
+                        edge((base, t), (y, u)), model_completion=True))
+                        for y in range(q)))
+            histogram = {degree: degrees.count(degree)
+                         for degree in sorted(set(degrees))}
+            histograms.append(histogram)
+        half = q // 2
+        antipodal = all(
+            transition[x][y] == transition[(x + half) % q][(y + half) % q]
+            for x in range(q) for y in range(q))
+        print(f"  pmr_color_transition antipodal={antipodal}")
+        for color in range(q):
+            print(f"  pmr_color={color} transition={transition[color]} "
+                  f"degree_histogram={histograms[color]}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:
