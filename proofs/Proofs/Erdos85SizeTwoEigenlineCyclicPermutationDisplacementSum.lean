@@ -1,4 +1,5 @@
 import Proofs.Erdos85SizeTwoEigenlineCyclicPermutationCode
+import Proofs.Erdos85SizeTwoEigenlineCyclicEvenReflection
 
 /-!
 # The punctured-permutation displacement sum
@@ -131,6 +132,24 @@ theorem sizeTwoCyclicPermutation_targetDifference_sum
   rw [admissibleTargetColumn_sum hq, admissibleTargetRow_sum hq]
   ring
 
+/-- The two routing lines in a reflected allowed-fibre pair carry constant
+total displacement charge `2`, independently of the fibre and routing
+permutations. -/
+theorem sizeTwoCyclicPermutation_reflectionPair_targetDifference_sum
+    {q : ℕ} [NeZero q] (hq : 2 ≤ q) {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (x : ZMod q) (t : sizeTwoAllowedDifference q a) :
+    (∑ r : SizeTwoAdmissibleTargetRow q t.1,
+        ((P x t r : SizeTwoAdmissibleTargetColumn q).1 - r.1)) +
+      (∑ r : SizeTwoAdmissibleTargetRow q
+          (sizeTwoAllowedDifferenceReflection q a t).1,
+        ((P x (sizeTwoAllowedDifferenceReflection q a t) r :
+            SizeTwoAdmissibleTargetColumn q).1 - r.1)) = 2 := by
+  rw [sizeTwoCyclicPermutation_targetDifference_sum hq,
+    sizeTwoCyclicPermutation_targetDifference_sum hq,
+    sizeTwoAllowedDifferenceReflection_val]
+  ring
+
 /-- For even `q`, every routing permutation contains an even total parity of
 target-difference labels.  This is the characteristic-two shadow of the exact
 displacement-sum identity. -/
@@ -163,4 +182,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCyclicPermutation_targetDifference_sum
+#print axioms Erdos85.sizeTwoCyclicPermutation_reflectionPair_targetDifference_sum
 #print axioms Erdos85.sizeTwoCyclicPermutation_targetDifference_parity_sum
