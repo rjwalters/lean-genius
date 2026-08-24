@@ -36,14 +36,32 @@ def main() -> None:
         help="print each fixed source pair's precise common-target support")
     parser.add_argument("--dump-relative-completions", action="store_true",
         help="audit cycle types of the four two-hole permutation completions")
+    parser.add_argument("--dump-triangle-reversal", action="store_true",
+        help="print colored triangle-trace asymmetry under block reversal")
+    parser.add_argument("--impose-triangle-reversal", action="store_true",
+        help="drop edge reciprocity but impose every colored triangle-trace reversal")
+    parser.add_argument("--impose-four-cycle-reversal", action="store_true",
+        help="drop edge reciprocity but impose every colored four-cycle trace reversal")
+    parser.add_argument("--trace-reversal-core", action="store_true",
+        help="impose degree-3/4 trace reversal and print a tracked UNSAT core")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and give every directed route its own variable")
     parser.add_argument("--reciprocity-core", action="store_true",
         help="use directed variables and print an UNSAT core grouped by fibre pair")
     args = parser.parse_args()
 
-    if args.directed and args.reciprocity_core:
-        parser.error("--directed and --reciprocity-core are mutually exclusive")
+    if args.directed and (args.reciprocity_core or
+                          args.impose_triangle_reversal or
+                          args.impose_four_cycle_reversal or
+                          args.trace_reversal_core):
+        parser.error("--directed cannot be combined with a directed constraint mode")
+    if args.reciprocity_core and (args.impose_triangle_reversal or
+                                  args.impose_four_cycle_reversal or
+                                  args.trace_reversal_core):
+        parser.error("--reciprocity-core cannot be combined with trace reversal")
+    if args.trace_reversal_core and (args.impose_triangle_reversal or
+                                     args.impose_four_cycle_reversal):
+        parser.error("--trace-reversal-core already imposes both trace families")
     if args.reciprocity_core and args.dimacs is not None:
         parser.error("--reciprocity-core cannot be combined with --dimacs")
 
@@ -54,7 +72,10 @@ def main() -> None:
 
     def edge_key(t: int, u: int, r: int) -> tuple[int, int, int]:
         forward = (t, u, r % q)
-        if args.directed or args.reciprocity_core:
+        if (args.directed or args.reciprocity_core or
+                args.impose_triangle_reversal or
+                args.impose_four_cycle_reversal or
+                args.trace_reversal_core):
             return forward
         reverse = (u, t, (-r) % q)
         return min(forward, reverse)
@@ -123,6 +144,58 @@ def main() -> None:
         for r in range(q):
             solver.add(z3.Not(edge(t, t, r)))
 
+    if args.impose_triangle_reversal or args.trace_reversal_core:
+        # Reciprocity A_tu=A_ut^T implies equality between every colored
+        # triangle trace and its reversed color word.  Retain only these
+        # necessary cubic consequences, using otherwise directed blocks.
+        def triangle_terms(t: int, u: int, v: int) -> list[z3.BoolRef]:
+            return [
+                z3.And(edge(t, u, r), edge(u, v, s),
+                       edge(v, t, -r - s))
+                for r in range(q) for s in range(q)
+            ]
+
+        for t in differences:
+            for i, u in enumerate(differences):
+                for v in differences[i + 1:]:
+                    forward = triangle_terms(t, u, v)
+                    reverse = triangle_terms(t, v, u)
+                    constraint = z3.PbEq(
+                        [(term, 1) for term in forward] +
+                        [(term, -1) for term in reverse], 0)
+                    if args.trace_reversal_core:
+                        solver.assert_and_track(
+                            constraint, z3.Bool(f"tri_{t}_{u}_{v}"))
+                    else:
+                        solver.add(constraint)
+
+    if args.impose_four_cycle_reversal or args.trace_reversal_core:
+        # The analogous necessary consequence for a closed color word
+        # t,u,v,w,t.  This retains all four block colors but is still much
+        # weaker than entrywise transpose reciprocity.
+        def four_cycle_terms(
+                t: int, u: int, v: int, w: int) -> list[z3.BoolRef]:
+            return [
+                z3.And(edge(t, u, r), edge(u, v, s), edge(v, w, h),
+                       edge(w, t, -r - s - h))
+                for r in range(q) for s in range(q) for h in range(q)
+            ]
+
+        for t in differences:
+            for i, u in enumerate(differences):
+                for w in differences[i + 1:]:
+                    for v in differences:
+                        forward = four_cycle_terms(t, u, v, w)
+                        reverse = four_cycle_terms(t, w, v, u)
+                        constraint = z3.PbEq(
+                            [(term, 1) for term in forward] +
+                            [(term, -1) for term in reverse], 0)
+                        if args.trace_reversal_core:
+                            solver.assert_and_track(
+                                constraint, z3.Bool(f"quad_{t}_{u}_{v}_{w}"))
+                        else:
+                            solver.add(constraint)
+
     if args.dimacs is not None:
         goal = z3.Goal()
         goal.add(*solver.assertions())
@@ -153,6 +226,9 @@ def main() -> None:
                 core = candidate
         solver.check(*core)
         print("  reciprocity_core=" + str(sorted(str(label) for label in core)))
+    if result == z3.unsat and args.trace_reversal_core:
+        core = sorted(str(label) for label in solver.unsat_core())
+        print("  trace_reversal_core=" + str(core))
 
     if result == z3.sat:
         model = solver.model()
@@ -312,6 +388,40 @@ def main() -> None:
                 if genuine >= 1:
                     print(f"  relative fiber={t} shift={d} genuine={genuine} "
                           f"fixed={fixed} signs={signs} cycle_types={types}")
+        if args.dump_triangle_reversal:
+            # With A_tu[x,y] = E(t,u,y-x), the normalized colored triangle
+            # trace tr(A_tu A_uv A_vt)/q is the cyclic convolution below.
+            # Block-transpose reciprocity forces T(t,u,v)=T(t,v,u).  A
+            # directed model need not satisfy this, so the nonzero entries
+            # identify genuinely reciprocity-sensitive colored words.
+            selected = {
+                (t, u, r): z3.is_true(model.eval(edge(t, u, r)))
+                for t in differences for u in differences for r in range(q)
+            }
+
+            def triangle_trace(t: int, u: int, v: int) -> int:
+                return sum(
+                    selected[t, u, r]
+                    and selected[u, v, s]
+                    and selected[v, t, (-r - s) % q]
+                    for r in range(q) for s in range(q)
+                )
+
+            asymmetries = []
+            for t in differences:
+                for i, u in enumerate(differences):
+                    for v in differences[i + 1:]:
+                        forward = triangle_trace(t, u, v)
+                        reverse = triangle_trace(t, v, u)
+                        if forward != reverse:
+                            asymmetries.append(
+                                (abs(forward - reverse), t, u, v,
+                                 forward, reverse))
+            asymmetries.sort(reverse=True)
+            print(f"  triangle_reversal_asymmetries={len(asymmetries)}")
+            for _, t, u, v, forward, reverse in asymmetries:
+                print(f"  triangle t={t} u={u} v={v} "
+                      f"forward={forward} reverse={reverse}")
 
 
 if __name__ == "__main__":
