@@ -221,6 +221,59 @@ theorem exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
   exact exists_injective_privateNeighbor_of_endpointProfile
     G E hEcard hline hpair hcap
 
+/-- End-to-end pure-endpoint consumer.  The four replication moment
+equations at `c=q`, together with the definitions of internal defect mass
+and triple mass, force the zero-mass hypotheses and hence the private
+matching.  This is the graph-facing form of equation (78) at its endpoint. -/
+theorem exists_injective_privateNeighbor_of_pureEndpointEquations
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {q s n₁ n₂ n₃ e : ℕ} (E : Finset V) (hEcard : E.card = q)
+    (hline : ∀ i ∈ E, G.degree i = q)
+    (hshore : 2 * s = q * q + q)
+    (hclasses : n₁ + n₂ + n₃ = s)
+    (hincidence : n₁ + 2 * n₂ + 3 * n₃ = q * q)
+    (hpairs : 2 * n₂ + 6 * n₃ + 2 * e = q * (q - 1))
+    (hdefectMass :
+      (∑ i ∈ E,
+        ((secondOrderDefectGraph G).neighborFinset i ∩ E).card) = 2 * e)
+    (htripleMass :
+      n₃ = ∑ x : V, ((G.neighborFinset x ∩ E).card).choose 3) :
+    ∃ p : {i // i ∈ E} → V, Function.Injective p ∧
+      ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ E = {i.1} := by
+  classical
+  have hprofile := binarySquare_pureExceptional_endpoint_profile
+    (q := q) (c := q) (s := s) (n₁ := n₁) (n₂ := n₂)
+    (n₃ := n₃) (e := e) rfl hshore hclasses hincidence hpairs
+  rcases hprofile with ⟨he, hn₃, _hn₁, _hn₂⟩
+  have hDsum :
+      (∑ i ∈ E,
+        ((secondOrderDefectGraph G).neighborFinset i ∩ E).card) = 0 := by
+    rw [hdefectMass, he]
+  have hDindependent : ∀ i ∈ E, ∀ j ∈ E, i ≠ j →
+      ¬(secondOrderDefectGraph G).Adj i j := by
+    intro i hi j hj _hij hDij
+    have hterm :
+        ((secondOrderDefectGraph G).neighborFinset i ∩ E).card = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => Nat.zero_le _)).mp
+        hDsum i hi
+    have hjmem : j ∈
+        (secondOrderDefectGraph G).neighborFinset i ∩ E :=
+      Finset.mem_inter.mpr ⟨by
+        simpa [SimpleGraph.mem_neighborFinset] using hDij, hj⟩
+    have : 0 <
+        ((secondOrderDefectGraph G).neighborFinset i ∩ E).card :=
+      Finset.card_pos.mpr ⟨j, hjmem⟩
+    omega
+  have htripleZero :
+      (∑ x : V, ((G.neighborFinset x ∩ E).card).choose 3) = 0 := by
+    rw [← htripleMass, hn₃]
+  exact exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
+    G hfree E hEcard hline hDindependent htripleZero
+
 end
 
 end Erdos85
@@ -229,3 +282,4 @@ end Erdos85
 #print axioms Erdos85.exists_injective_partialBaer_privatePoint
 #print axioms Erdos85.exists_injective_privateNeighbor_of_endpointProfile
 #print axioms Erdos85.exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
+#print axioms Erdos85.exists_injective_privateNeighbor_of_pureEndpointEquations
