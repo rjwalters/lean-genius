@@ -23,7 +23,9 @@ theorem induce_sdiff_connected_of_no_twoSeparator_partition
     (hobstruct : ∀ (S T W : Finset V),
       S.Nonempty → T.Nonempty →
       S ∪ T ∪ W = Finset.univ → Disjoint S T →
-      (∀ s ∈ S, ∀ t ∈ T, ¬ D.Adj s t) → W.card = 2 → False) :
+      Disjoint S W → Disjoint T W →
+      (∀ s ∈ S, ∀ t ∈ T, ¬ D.Adj s t) → W.card = 2 →
+      S.card + T.card = Fintype.card V - 2 → False) :
     ∀ W : Finset V, W.card = 2 →
       (D.induce (↑(Finset.univ \ W) : Set V)).Connected := by
   intro W hWcard
@@ -39,10 +41,10 @@ theorem induce_sdiff_connected_of_no_twoSeparator_partition
     exact ⟨⟨z, hz⟩⟩
   have hpre : H.Preconnected := by
     by_contra hnot
-    obtain ⟨S, T, hSne, hTne, hcover, hST, hno, _hcards⟩ :=
+    obtain ⟨S, T, hSne, hTne, hcover, hST, hSW, hTW, hno, _hcards⟩ :=
       exists_ambient_shores_card_sum_of_two_vertex_deletion D W hWcard
         (by simpa [H, U] using hnot)
-    exact hobstruct S T W hSne hTne hcover hST hno hWcard
+    exact hobstruct S T W hSne hTne hcover hST hSW hTW hno hWcard _hcards
   letI : Nonempty {z : V // z ∈ (↑U : Set V)} := hnonempty
   exact ⟨hpre⟩
 

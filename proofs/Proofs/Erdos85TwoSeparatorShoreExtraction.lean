@@ -88,6 +88,7 @@ theorem exists_ambient_shores_card_sum_of_two_vertex_deletion
     ∃ S T : Finset V,
       S.Nonempty ∧ T.Nonempty ∧
       S ∪ T ∪ W = Finset.univ ∧ Disjoint S T ∧
+      Disjoint S W ∧ Disjoint T W ∧
       (∀ s ∈ S, ∀ t ∈ T, ¬ D.Adj s t) ∧
       S.card + T.card = Fintype.card V - 2 := by
   obtain ⟨S, T, hSne, hTne, hcover, hST, hSW, hTW, hno⟩ :=
@@ -98,7 +99,7 @@ theorem exists_ambient_shores_card_sum_of_two_vertex_deletion
   have hcardCover := congrArg Finset.card hcover
   rw [Finset.card_union_of_disjoint hdisjUnion,
     Finset.card_union_of_disjoint hST, Finset.card_univ, hWcard] at hcardCover
-  exact ⟨S, T, hSne, hTne, hcover, hST, hno, by omega⟩
+  exact ⟨S, T, hSne, hTne, hcover, hST, hSW, hTW, hno, by omega⟩
 
 end
 
