@@ -290,3 +290,71 @@ between the already-known support/spectral conditions and the required
 binary coordinate classification.  Reviving it would require a new theorem
 specifically about dense regular symmetric `0/1` roots, which is the original
 incidence problem under another name.
+
+## Goal-36 restart: polarized graphs and even-girth excess
+
+The Baer transport package subsequently produced a canonical Eulerian graph
+`K` of nonincident pairs and a finite dyadic stopping layer.  It did not
+produce a named implication from either object to an absolute point or a
+component cut.  Under goal #36 this triggered a fresh outside-literature
+pass, rather than another transport lemma.
+
+Two nearby literature slogans do **not** supply the missing implication.
+
+1. De Bruyn--Van Maldeghem's polarized-graph dictionary identifies a
+   fixed-point-free polarity of any rank-two geometry with a loopless graph
+   whose neighbourhood geometry is the original incidence structure.  This
+   is an equivalence, not an absolute-point theorem.  In particular it warns
+   that fixed-point-free polarities are plentiful once the projective-plane
+   intersection axiom is dropped.  A terminal must use the special
+   `(q^2_q)` parameters and the defect identity, not self-polarity alone.
+2. Biggs--Ito's even-girth excess theory is often summarized as turning a
+   small excess `2(eta-1)` into a covering of a symmetric design.  The
+   applicable theorem is genuinely a *small-excess/cage* theorem: its general
+   bipartiteness conclusion assumes `e <= degree-2`, and the design-cover
+   classification quoted in modern surveys is the excess-two case.  Our Levi
+   graph has degree `q` and
+
+   ```text
+   e = 2q^2 - 2(q^2-q+1) = 2(q-1) > q-2.
+   ```
+
+   It is also not known to be a cage.  Therefore citing Biggs--Ito as a
+   completion or covering theorem here would be invalid.
+
+The pass nevertheless isolates one bounded candidate that has exactly the
+right success state.  The canonical affine control is a fibre cover: its
+missing-pair graph is `q K_q`.  Test whether the *extra part-swapping
+fixed-free polarity*, together with the last nonconstant dyadic occupancy
+digit, forces an equitable quotient of the Levi graph with `q` fibres of size
+`q`.  Equivalently, seek a `q`-class imprimitivity system whose same-class
+pairs are precisely `D`-pairs.  Success immediately gives
+
+```text
+D = q K_q,
+```
+
+contradicting NONBIP-CONNECTED; failure should be witnessed by a polarized
+girth-six model satisfying the same stopping-layer data but having no such
+fibre system.  This is a **cover-imprimitivity probe**, not an assertion that
+the Biggs--Ito theorem applies.  Its stop rule is strict: if the dyadic layer
+does not define a canonical equivalence relation after one quotient/refinement
+step, record the countermodel and cut the route.
+
+The other surviving bounded candidate is the direct Baer-proof correction.
+On a projective-plane polar line the intersection operation is a total
+involution; in the `(q^2_q)` configuration it is partial, and its undefined
+pairs are exactly defect incidences.  Compute the parity of these holes after
+transport by `K` at the *least nonzero dyadic level*.  Success means the hole
+relation is forced transitive (again producing `q K_q`) or has an odd fixed
+point (an absolute point).  Stop if the correction reduces to the already
+banked Eulerian cut identity `(19)--(20)`.  This probe is preferable to a new
+local parity lemma because it tests, in one calculation, whether Baer's actual
+proof mechanism gains anything from `k>=3`.
+
+Sources for this restart: De Bruyn--Van Maldeghem, *Slim and Bislim
+Geometries*, Proposition 2.1 (polarized graphs and fixed-point-free
+polarities); Biggs--Ito, *Graphs with even girth and small excess*, Math. Proc.
+Cambridge Philos. Soc. 88 (1980), 1--10; Filipovski, *On
+bipartite cages of excess 4*, Electron. J. Combin. 24 (2017), P1.40, Theorems
+1--2 (a convenient precise statement of the Biggs--Ito hypotheses).
