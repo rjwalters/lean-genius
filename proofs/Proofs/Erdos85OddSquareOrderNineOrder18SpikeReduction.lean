@@ -2367,6 +2367,33 @@ theorem degreeEight_neighbor_inter_shore_profiles_of_punctured_closure
           D owner z U hzOwner (hneighbors z hzU))
         hAclosed hBclosed hzdegree
 
+/-- Every ordinary low-spike center is either the unique bin-three owner or
+lies in the bin-zero/bin-one classes.  Histogram-zero excludes incidence
+two, while uniqueness of the bin-three class identifies its sole member. -/
+theorem orderNine_order18_ordinary_center_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (owner c : V)
+    (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (hcOrd : c ∈ (Finset.univ : Finset V) \ squareOrderHighVertices G 9) :
+    c = owner ∨ c ∈ squareOrderNineLowIncidenceBin G 0 ∨
+      c ∈ squareOrderNineLowIncidenceBin G 1 := by
+  classical
+  by_cases hco : c = owner
+  · exact Or.inl hco
+  · right
+    have hle := orderNine_secondProfile_nonowner_ordinary_highIncidence_le_one
+      G hp hhigh hc2 hc3 owner c howner hcOrd hco
+    have hk : squareOrderHighIncidenceCount G 9 c = 0 ∨
+        squareOrderHighIncidenceCount G 9 c = 1 := by omega
+    rcases hk with hk | hk
+    · exact Or.inl (Finset.mem_filter.mpr ⟨hcOrd, hk⟩)
+    · exact Or.inr (Finset.mem_filter.mpr ⟨hcOrd, hk⟩)
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -2421,6 +2448,7 @@ theorem degreeEight_neighbor_inter_shore_profiles_of_punctured_closure
 #print axioms Erdos85.neighborFinset_subset_of_insert_owner_of_not_adj
 #print axioms Erdos85.degreeSeven_neighbor_inter_shore_card_eq_if_of_punctured_closure
 #print axioms Erdos85.degreeEight_neighbor_inter_shore_profiles_of_punctured_closure
+#print axioms Erdos85.orderNine_order18_ordinary_center_cases
 
 end
 
