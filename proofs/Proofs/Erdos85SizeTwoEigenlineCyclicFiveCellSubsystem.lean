@@ -72,6 +72,69 @@ def SizeTwoCyclicExactPermutationCode.toFiveCellCode
     exact exact.toFullCode.cross_agreement_le_one
       x d₂ right right (Or.inl hd₂)
 
+/-- The four short-separation cells obtained by deleting the middle
+involutive cap from the five-cell subsystem. -/
+structure SizeTwoCyclicLooplessFourShortCellCode
+    (q : ℕ) [NeZero q] (a : ZMod q)
+    (left middle right : sizeTwoAllowedDifference q a)
+    (d₁ d₂ : ZMod q) where
+  code : SizeTwoCyclicReciprocalPermutationCode q a
+  loopless : code.Loopless
+  left_d₁ : ∀ x, Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+    q a code.toPermutationCode.perm x d₁ left left) ≤ 1
+  left_d₂ : ∀ x, Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+    q a code.toPermutationCode.perm x d₂ left left) ≤ 1
+  middle_d₁ : ∀ x, Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+    q a code.toPermutationCode.perm x d₁ middle middle) ≤ 1
+  right_d₂ : ∀ x, Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+    q a code.toPermutationCode.perm x d₂ right right) ≤ 1
+
+/-- Forget the middle involutive cap. -/
+def SizeTwoCyclicLooplessFiveCellCode.toFourShortCellCode
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    {left middle right : sizeTwoAllowedDifference q a}
+    {d₁ d₂ m : ZMod q}
+    (five : SizeTwoCyclicLooplessFiveCellCode q a
+      left middle right d₁ d₂ m) :
+    SizeTwoCyclicLooplessFourShortCellCode q a
+      left middle right d₁ d₂ where
+  code := five.code
+  loopless := five.loopless
+  left_d₁ := five.left_d₁
+  left_d₂ := five.left_d₂
+  middle_d₁ := five.middle_d₁
+  right_d₂ := five.right_d₂
+
+/-- The precise live covering lemma: the four short caps force a violation
+of the omitted middle cap at separation `m`. -/
+def SizeTwoCyclicFourShortForcesMiddleExcess
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (left middle right : sizeTwoAllowedDifference q a)
+    (d₁ d₂ m : ZMod q) : Prop :=
+  ∀ four : SizeTwoCyclicLooplessFourShortCellCode q a
+      left middle right d₁ d₂,
+    (∑ x : ZMod q,
+      (Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a four.code.toPermutationCode.perm x m middle middle) - 1)) ≠ 0
+
+/-- Four-short forcing immediately excludes the corresponding five-cell
+subsystem: its retained middle cap makes every local excess zero. -/
+theorem isEmpty_sizeTwoCyclicLooplessFiveCellCode_of_fourShortForcing
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    {left middle right : sizeTwoAllowedDifference q a}
+    {d₁ d₂ m : ZMod q}
+    (hforce : SizeTwoCyclicFourShortForcesMiddleExcess
+      left middle right d₁ d₂ m) :
+    IsEmpty (SizeTwoCyclicLooplessFiveCellCode q a
+      left middle right d₁ d₂ m) := by
+  constructor
+  intro five
+  apply hforce five.toFourShortCellCode
+  apply Finset.sum_eq_zero
+  intro x hx
+  have hle := five.middle_m x
+  omega
+
 /-- The exact generic ternary target: find three distinct fibers, two short
 nonzero shifts, and one nonzero involutive shift for which the five-cell
 subsystem is empty. -/
@@ -102,3 +165,5 @@ end Erdos85
 
 #print axioms
   Erdos85.isEmpty_sizeTwoCyclicExactPermutationCode_of_fiveCellExclusion
+#print axioms
+  Erdos85.isEmpty_sizeTwoCyclicLooplessFiveCellCode_of_fourShortForcing
