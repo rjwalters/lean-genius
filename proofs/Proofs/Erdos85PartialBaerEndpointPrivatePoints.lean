@@ -180,6 +180,47 @@ theorem exists_injective_privateNeighbor_of_endpointProfile
       have hyp := (Finset.mem_inter.mp hy).1
       simpa [L, SimpleGraph.mem_neighborFinset, G.adj_comm] using hyp
 
+/-- Zero-mass form of the graph-facing endpoint theorem.  In a C4-free
+graph, absence of defect edges inside `E` makes every two neighborhood lines
+meet exactly once.  Vanishing total triple-incidence mass makes every point
+lie on at most two of those lines.  These are precisely the two pointwise
+hypotheses needed for the private-neighbor matching. -/
+theorem exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {q : ℕ} (E : Finset V) (hEcard : E.card = q)
+    (hline : ∀ i ∈ E, G.degree i = q)
+    (hDindependent : ∀ i ∈ E, ∀ j ∈ E, i ≠ j →
+      ¬(secondOrderDefectGraph G).Adj i j)
+    (htripleMass :
+      (∑ x : V, ((G.neighborFinset x ∩ E).card).choose 3) = 0) :
+    ∃ p : {i // i ∈ E} → V, Function.Injective p ∧
+      ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ E = {i.1} := by
+  classical
+  have hpair : ∀ i ∈ E, ∀ j ∈ E, i ≠ j →
+      (G.neighborFinset i ∩ G.neighborFinset j).card = 1 := by
+    intro i hi j hj hij
+    have hnotMem : j ∉ (secondOrderDefectGraph G).neighborFinset i := by
+      simpa [SimpleGraph.mem_neighborFinset] using hDindependent i hi j hj hij
+    have hcommon := card_common_eq_if_secondOrderDefect G hfree i j hij
+    rw [if_neg hnotMem] at hcommon
+    exact hcommon
+  have hcap : ∀ x, (G.neighborFinset x ∩ E).card ≤ 2 := by
+    intro x
+    have hterm : ((G.neighborFinset x ∩ E).card).choose 3 = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => Nat.zero_le _)).mp
+        htripleMass x (Finset.mem_univ x)
+    by_contra h
+    have hthree : 3 ≤ (G.neighborFinset x ∩ E).card := by omega
+    have hpos : 0 < ((G.neighborFinset x ∩ E).card).choose 3 :=
+      Nat.choose_pos hthree
+    omega
+  exact exists_injective_privateNeighbor_of_endpointProfile
+    G E hEcard hline hpair hcap
+
 end
 
 end Erdos85
@@ -187,3 +228,4 @@ end Erdos85
 #print axioms Erdos85.partialBaer_privatePoints_card_eq_one
 #print axioms Erdos85.exists_injective_partialBaer_privatePoint
 #print axioms Erdos85.exists_injective_privateNeighbor_of_endpointProfile
+#print axioms Erdos85.exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
