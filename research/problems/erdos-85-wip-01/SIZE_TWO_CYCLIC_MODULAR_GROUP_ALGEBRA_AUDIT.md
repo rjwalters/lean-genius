@@ -119,3 +119,47 @@ only a relaxation already known to admit models.  Revive the algebra route
 only with a named correlation/difference-family theorem or a bounded probe
 showing that the three core caps force an impossible epsilon-adic support
 profile.
+
+## Standard constant-weight correlation bounds: scale audit
+
+Optical orthogonal codes and frequency-hopping sequences supply named bounds
+for constant-weight families with correlation at most one.  The ordinary
+Johnson bound still cannot be the missing terminal, even after strengthening
+our hypotheses substantially.
+
+Ignore the fact that the actual packing theorem caps only designated
+same-fibre source pairs, and instead impose the common-neighbour cap on every
+pair.  The neighbourhood vectors would then form a constant-weight binary
+code with
+
+```text
+length N = q(q-2),
+weight w = q-2,
+family size M = q(q-2),
+pairwise intersection <= 1.
+```
+
+For correlation one the Johnson packing bound is
+
+```text
+M <= floor(N/w * floor((N-1)/(w-1))).              (GA2)
+```
+
+At these parameters, `N/w=q` and, for `q>=8`,
+
+```text
+floor((N-1)/(w-1))
+  = floor((q^2-2q-1)/(q-3))
+  = q+1.
+```
+
+Thus `(GA2)` permits `q(q+1)` codewords, whereas the routing family has only
+`q(q-2)`.  The gap is `3q`, in the wrong direction.  The actual partial cap is
+weaker still, so neither the Johnson bound nor a bound depending only on
+`(N,w,lambda,M)` can contradict the routing parameters.
+
+This stops the generic optical-orthogonal-code shortcut.  A usable correlation
+theorem must additionally consume the simultaneous one-per-row and
+one-per-column structure, reciprocity, and the three designated difference
+fibres.  In design language it must be a bound for partial permutation arrays
+or cyclic difference matrices, not an ordinary constant-weight code bound.
