@@ -153,6 +153,25 @@ same four fibres, but the shared edge moves when unused cap families are
 removed.  Any proposed triangle identity must be checked against the
 minimized-cap core, including its self-block symmetries.
 
+At the cap-cell level, translation invariance identifies the caps at `d` and
+`-d`, so only shifts `1,2,3,4` need be tested at q8.  Greedy deletion and a
+final necessity check reduce the q8 empty-4 UNSAT instance to exactly
+
+```text
+cap (3,1), cap (4,1), cap (4,3).
+```
+
+Removing any one of these three caps makes the instance SAT.  This explains
+why the transpose core is organized around one capped predecessor fibre and
+the empty fibre rather than all six allowed fibres.
+
+The natural q12 analogue is not uniform: with `a=1`, fibre `6` empty, and
+only caps `(5,1)`, `(6,1)`, `(6,5)`, the reciprocal system is SAT.  Its empty
+fibre has a six-target support at antipodal shift `6`, while the three named
+caps remain respected.  Thus this exact three-cap terminal is q8 calibration
+only; it must not replace the full-cap uniform-even target supported by the
+q8/q10/q12 all-cap UNSAT controls.
+
 This two-fibre statement is binary-specific in the bounded controls.  At
 `q=12,a=1` with fibre `6` empty, each of the following is SAT:
 
