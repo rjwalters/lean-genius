@@ -434,3 +434,40 @@ cross-fibre walks can redistribute.  This lane stops at the explicit missing
 statement: a q-generic puncture-labelled lower bound for the cross-fibre
 four-walk term.  Unweighted scalar trace refinements are not evidence for
 that statement.
+
+## The cheapest forbidden-diagonal flag topology collapses
+
+For a local route permutation `pi : R -> R`, with
+`R = Z/q \\ {0,1}`, and either forbidden difference fibre `h`, the map
+
+```text
+F_h(r) = pi^{-1}(-t-r-h)
+```
+
+is a canonical partial permutation.  Its two undefined values are exactly
+where the forbidden diagonal meets the two ambient punctures.  On global
+route flags `(x,t,r)`, route reversal is the canonical involution
+
+```text
+J(x,t,r) = (y,u,s).
+```
+
+Thus `J,F_a,F_{-1-a}` give a resolver-free three-coloured flag graph which
+retains both forbidden diagonals and the full base-resolved reciprocal
+family.  The option `--dump-forbidden-flag-graph` prints each component's
+vertex and coloured-edge counts, the two puncture-boundary counts, and its
+ordinary cycle rank.
+
+The cheapest topological interpretation is nevertheless cut at q8/a2.  All
+sampled rank-64 equality, sharp rank-66 dip, and rank-67 escape witnesses
+give one connected component on 288 flags with 144 reversal edges and
+boundary counts `(80,80)`.  The ordinary cycle rank already overlaps:
+rank-64 equality and the sharp dip both realize 193.  The separate forbidden
+colour edge counts vary widely among equality witnesses (including
+`(200,200)`, `(192,208)`, `(208,192)`, `(204,204)`, and `(206,206)`), while
+the sampled sharp dip gives `(206,194)` and rank 67 can retain it exactly.
+
+Hence connectivity, Euler characteristic, total ramification, and the two
+unsigned boundary degrees do not carry the PMR token.  A surviving ribbon or
+relative-homology version must use cyclic order or signed intersection data;
+the abstract three-coloured flag graph alone is too coarse.

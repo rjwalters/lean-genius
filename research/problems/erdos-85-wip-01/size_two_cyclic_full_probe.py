@@ -79,6 +79,8 @@ def main() -> None:
         help="on SAT, print cycle, displacement, and route-sign data in fibre t")
     parser.add_argument("--dump-fibre-trace-ledger", action="store_true",
         help="on SAT, print rooted triangle/four-walk and internal-block traces")
+    parser.add_argument("--dump-forbidden-flag-graph", action="store_true",
+        help="on SAT, print the global reversal/forbidden-diagonal flag graph")
     parser.add_argument("--dump-collision-separations", action="store_true",
         help="on SAT, summarize same-fibre common targets by base separation")
     parser.add_argument("--dump-collision-owner-fibres", action="store_true",
@@ -1036,6 +1038,67 @@ def main() -> None:
         for color in range(q):
             print(f"  pmr_color={color} transition={transition[color]} "
                   f"degree_histogram={histograms[color]}")
+    if result == z3.sat and args.dump_forbidden_flag_graph:
+        model = solver.model()
+        labels = list(range(2, q))
+        flags = [(x, t, r) for x, t in vertices for r in labels]
+        route = {}
+        local_inverse = {}
+        for x, t, r in flags:
+            y = (x + t + r) % q
+            u = next(u for u in differences if z3.is_true(model.eval(
+                edge((x, t), (y, u)), model_completion=True)))
+            s = (-t - r - u) % q
+            route[(x, t, r)] = (y, u, s)
+            local_inverse[(x, t, s)] = r
+
+        holes_ordered = [args.a % q, (-1 - args.a) % q]
+        colored_edges = {"J": set(), "A": set(), "B": set()}
+        boundary = {"A": set(), "B": set()}
+        for flag in flags:
+            colored_edges["J"].add(tuple(sorted((flag, route[flag]))))
+            x, t, r = flag
+            for color, hole in zip(("A", "B"), holes_ordered):
+                forbidden_s = (-t - r - hole) % q
+                if forbidden_s not in labels:
+                    boundary[color].add(flag)
+                    continue
+                following = (x, t, local_inverse[(x, t, forbidden_s)])
+                colored_edges[color].add(tuple(sorted((flag, following))))
+
+        adjacency = {flag: set() for flag in flags}
+        for edges in colored_edges.values():
+            for left, right in edges:
+                adjacency[left].add(right)
+                adjacency[right].add(left)
+        unseen = set(flags)
+        signatures = []
+        while unseen:
+            todo = [min(unseen)]
+            component = set()
+            while todo:
+                flag = todo.pop()
+                if flag in component:
+                    continue
+                component.add(flag)
+                todo.extend(adjacency[flag] - component)
+            unseen -= component
+            edge_counts = {
+                color: sum(left in component and right in component
+                           for left, right in edges)
+                for color, edges in colored_edges.items()
+            }
+            all_edges = set().union(*colored_edges.values())
+            total_edges = sum(left in component and right in component
+                              for left, right in all_edges)
+            signatures.append((len(component), edge_counts["J"],
+                edge_counts["A"], edge_counts["B"],
+                len(boundary["A"] & component),
+                len(boundary["B"] & component),
+                total_edges - len(component) + 1))
+        signatures.sort()
+        print(f"  forbidden_flag_graph components={len(signatures)} "
+              f"signatures={signatures}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:
