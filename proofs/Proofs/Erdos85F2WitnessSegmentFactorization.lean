@@ -88,6 +88,38 @@ theorem f2SegmentResidualCharacter_eq_sum_fiberAggregation
   rw [f2SegmentResidualCharacter_eq_sum_incidence,
     ← f2WitnessFiberSum_segmentIncidence]
 
+/-- A two-pole witness source outside the residual set has zero residual
+character.  This is the direct terminal once owner routes supply their
+endpoint-incidence identity. -/
+theorem f2SegmentResidualCharacter_eq_zero_of_incidence_eq_poleSwitch
+    {E Y : Type*} [Fintype E] [Fintype Y]
+    [DecidableEq Y]
+    (R : Finset Y) (left right : E → Y) (z : E → ZMod 2)
+    (pole₁ pole₂ : Y) (hpole₁ : pole₁ ∉ R) (hpole₂ : pole₂ ∉ R)
+    (hsource : f2SegmentIncidence left right z =
+      f2EndpointSwitch pole₁ pole₂) :
+    f2SegmentResidualCharacter R left right z = 0 := by
+  rw [f2SegmentResidualCharacter_eq_sum_incidence, hsource,
+    sum_f2EndpointSwitch_over_finset]
+  simp [f2FinsetIndicator, hpole₁, hpole₂]
+
+/-- Full occurrence-level two-pole terminal.  It is enough to prove that
+the witness aggregation of the routed occurrence incidence is the switch
+of two poles outside `R`; the residual character then vanishes. -/
+theorem f2SegmentResidualCharacter_eq_zero_of_fiberAggregation_eq_poleSwitch
+    {E O Y : Type*} [Fintype E] [Fintype O] [Fintype Y]
+    [DecidableEq O] [DecidableEq Y]
+    (R : Finset Y) (label : O → Y)
+    (left right : E → O) (z : E → ZMod 2)
+    (pole₁ pole₂ : Y) (hpole₁ : pole₁ ∉ R) (hpole₂ : pole₂ ∉ R)
+    (hsource : f2WitnessFiberSum label
+      (f2SegmentIncidence left right z) =
+        f2EndpointSwitch pole₁ pole₂) :
+    f2SegmentResidualCharacter R (label ∘ left) (label ∘ right) z = 0 := by
+  rw [f2SegmentResidualCharacter_eq_sum_fiberAggregation, hsource,
+    sum_f2EndpointSwitch_over_finset]
+  simp [f2FinsetIndicator, hpole₁, hpole₂]
+
 end
 
 end Erdos85
@@ -95,3 +127,5 @@ end Erdos85
 #print axioms Erdos85.f2WitnessFiberSum_endpointSwitch
 #print axioms Erdos85.f2WitnessFiberSum_segmentIncidence
 #print axioms Erdos85.f2SegmentResidualCharacter_eq_sum_fiberAggregation
+#print axioms Erdos85.f2SegmentResidualCharacter_eq_zero_of_incidence_eq_poleSwitch
+#print axioms Erdos85.f2SegmentResidualCharacter_eq_zero_of_fiberAggregation_eq_poleSwitch
