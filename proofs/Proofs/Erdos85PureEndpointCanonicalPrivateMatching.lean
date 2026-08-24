@@ -23,7 +23,7 @@ the shore and incidence identities forces an injective private-neighbor
 matching.  The hypotheses `hout` and `hrepUpper` are exactly the two graph
 facts supplied by the full-line final-layer construction: exceptional lines
 live wholly on the shore, and shore replication is at most three. -/
-theorem pureEndpoint_fourClass_defectIndependent_and_privateMatching
+theorem pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatching
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -36,8 +36,9 @@ theorem pureEndpoint_fourClass_defectIndependent_and_privateMatching
     (hrepUpper : ∀ p ∈ S, (G.neighborFinset p ∩ C).card ≤ 3) :
     (∀ i ∈ C, ∀ j ∈ C, i ≠ j →
       ¬(secondOrderDefectGraph G).Adj i j) ∧
-    ∃ p : {i // i ∈ C} → V, Function.Injective p ∧
-      ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ C = {i.1} := by
+    (∀ x, (G.neighborFinset x ∩ C).card ≤ 2) ∧
+      ∃ p : {i // i ∈ C} → V, Function.Injective p ∧
+        ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ C = {i.1} := by
   classical
   let rep : V → ℕ := fun p => (G.neighborFinset p ∩ C).card
   let N₀ := S.filter fun p => rep p = 0
@@ -258,9 +259,39 @@ theorem pureEndpoint_fourClass_defectIndependent_and_privateMatching
       interval_cases rep x <;> decide
     · rw [hout x hxS]
       decide
-  exact ⟨hDindependent,
+  have hcap : ∀ x, (G.neighborFinset x ∩ C).card ≤ 2 := by
+    intro x
+    have hterm : ((G.neighborFinset x ∩ C).card).choose 3 = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => Nat.zero_le _)).mp
+        htripleZero x (Finset.mem_univ x)
+    by_contra hx
+    have hthree : 3 ≤ (G.neighborFinset x ∩ C).card := by omega
+    have hpos : 0 < ((G.neighborFinset x ∩ C).card).choose 3 :=
+      Nat.choose_pos hthree
+    omega
+  exact ⟨hDindependent, hcap,
     exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
       G hfree C hCcard hline hDindependent htripleZero⟩
+
+/-- Compatibility projection retaining the original endpoint structure API. -/
+theorem pureEndpoint_fourClass_defectIndependent_and_privateMatching
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (C S : Finset V) (hCcard : C.card = q)
+    (hline : ∀ i ∈ C, G.degree i = q)
+    (hshore : 2 * S.card = q * q + q)
+    (hout : ∀ p ∉ S, (G.neighborFinset p ∩ C).card = 0)
+    (hrepUpper : ∀ p ∈ S, (G.neighborFinset p ∩ C).card ≤ 3) :
+    (∀ i ∈ C, ∀ j ∈ C, i ≠ j →
+      ¬(secondOrderDefectGraph G).Adj i j) ∧
+    ∃ p : {i // i ∈ C} → V, Function.Injective p ∧
+      ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ C = {i.1} := by
+  have h := pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatching
+    G hfree C S hCcard hline hshore hout hrepUpper
+  exact ⟨h.1, h.2.2⟩
 
 /-- Matching-only projection of the full pure-endpoint structure theorem. -/
 theorem exists_injective_privateNeighbor_of_pureEndpoint_fourClass
@@ -284,5 +315,7 @@ end
 end Erdos85
 
 #print axioms Erdos85.exists_injective_privateNeighbor_of_pureEndpoint_fourClass
+#print axioms
+  Erdos85.pureEndpoint_fourClass_defectIndependent_replicationCap_and_privateMatching
 #print axioms
   Erdos85.pureEndpoint_fourClass_defectIndependent_and_privateMatching
