@@ -85,8 +85,14 @@ source pair (hence a 4-cycle / cap violation).
 ```
 
 This is a sharper target than a free-floating valuation-flow identity.  Its
-bounded falsifier is the tuple-level `--dump-pair-supports` output augmented
-with the incidence graph and its shortest cycles.  A q16 SAT model can test
-the chord claim directly; q16 UNSAT would justify formalizing the cycle
-existence and minimum-valuation parity interfaces.  Until that verdict,
-those Lean interfaces would be premature.
+bounded diagnostic is the tuple-level `--dump-pair-supports` output augmented
+with the incidence graph and its shortest cycles, but there is an important
+scope restriction.  The current reduced q16 control imposes only the four or
+five designated caps; the proof above excludes *all* Levi 4-cycles using the
+full same-fibre cap family.  Thus a reduced q16 SAT model directly refutes the
+chord claim only for cycles all of whose required pair separations are among
+the imposed caps.  An uncapped 4-cycle in that model is irrelevant.  A q16
+UNSAT verdict would support the smaller designated-cap subtree, while the
+full-cycle route needs either a full-cap bounded model or a theorem reducing
+its cycle separations to the designated set.  Until one of those exists,
+formalizing the graph interfaces would be premature.
