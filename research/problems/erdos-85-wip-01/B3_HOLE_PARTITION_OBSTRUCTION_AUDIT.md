@@ -5292,3 +5292,33 @@ regression: its unconstrained minimum cover used all three colors, but target
 the existential two-color statement is strictly subtler than inspecting one
 optimizer output.  This finite color-case conjecture is the current sharp
 outer-design leaf; the durable corpus is evidence, not a proof.
+
+The two-color hitting set has an exact matching formulation.  After omitting
+color `c`, every compatible triple projects to an edge between the other two
+colors, every pair contained in those colors is another such edge, and every
+pair meeting `c` projects to a singleton.  Let `M(w,c)` be the mandatory set
+of these singleton points.  Delete all projected edges already incident to
+`M(w,c)` and call the remaining bipartite graph `Gamma(w,c)`.  König's theorem
+then gives
+
+```text
+minimum two-color cover size = |M(w,c)| + matchingNumber(Gamma(w,c)).
+```
+
+Consequently the sharp corpus-supported leaf is the finite counting claim
+
+```text
+exists w,c,
+  |F(w)| + |M(w,c)| + matchingNumber(Gamma(w,c)) < d(w),
+```
+
+unless `F(w)` already contains a conflicting pair.  The auditor now builds a
+maximum matching by augmenting paths, constructs the corresponding König
+cover by alternating reachability, verifies that it covers every projected
+block, and cross-checks its cardinality against the independent binary MILP.
+All ten row-feasible payloads pass both computations exactly.  For the sparse
+regression at target 26, `|F|=2`, the omitted-color projection has one
+mandatory singleton and matching number two, so `2+1+2<6`.  This matching
+inequality is the preferred statement for a proof from the colored ledger:
+it replaces an arbitrary point-set existential with an eight-by-eight
+bipartite matching bound.

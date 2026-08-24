@@ -272,6 +272,80 @@ def contracted_reverse_interval_two_color_cover(
         ], dtype=float)
         if candidates and any(not row.any() for row in matrix):
             continue
+
+        # Projected triples and retained-color pairs are bipartite edges.
+        # Pairs meeting the omitted color project to singletons, which are
+        # mandatory in every cover.  After deleting edges incident to those
+        # points, König's theorem gives the remaining minimum cover from a
+        # maximum matching.  We construct both explicitly and cross-check the
+        # independent binary MILP below.
+        projected = [
+            set(points) & system["blocks"][source] for source in candidates
+        ]
+        mandatory = set().union(*(
+            block for block in projected if len(block) == 1
+        )) if projected else set()
+        left_color, right_color = colors
+        left_points = set(range(8 * left_color, 8 * left_color + 8))
+        right_points = set(range(8 * right_color, 8 * right_color + 8))
+        edges = set()
+        valid_projection = True
+        for block in projected:
+            if len(block) == 1:
+                continue
+            if (len(block) != 2 or len(block & left_points) != 1
+                    or len(block & right_points) != 1):
+                valid_projection = False
+                break
+            left = next(iter(block & left_points))
+            right = next(iter(block & right_points))
+            if left not in mandatory and right not in mandatory:
+                edges.add((left, right))
+        if not valid_projection:
+            continue
+        adjacency = {left: [] for left in left_points - mandatory}
+        for left, right in sorted(edges):
+            adjacency[left].append(right)
+        matched_right = {}
+
+        def augment(left: int, seen: set[int]) -> bool:
+            for right in adjacency[left]:
+                if right in seen:
+                    continue
+                seen.add(right)
+                if (right not in matched_right
+                        or augment(matched_right[right], seen)):
+                    matched_right[right] = left
+                    return True
+            return False
+
+        for left in sorted(adjacency):
+            augment(left, set())
+        matched_left = {left: right for right, left in matched_right.items()}
+        reachable_left = {
+            left for left in adjacency if left not in matched_left
+        }
+        reachable_right = set()
+        frontier = list(reachable_left)
+        while frontier:
+            left = frontier.pop()
+            for right in adjacency[left]:
+                if matched_left.get(left) == right or right in reachable_right:
+                    continue
+                reachable_right.add(right)
+                if right in matched_right and matched_right[right] not in reachable_left:
+                    reachable_left.add(matched_right[right])
+                    frontier.append(matched_right[right])
+        konig_cover = (
+            mandatory
+            | ((left_points - mandatory) - reachable_left)
+            | reachable_right
+        )
+        if any(not (konig_cover & block) for block in projected):
+            raise RuntimeError("constructed Konig cover misses a projection")
+        expected_cover_card = len(mandatory) + len(matched_right)
+        if len(konig_cover) != expected_cover_card:
+            raise RuntimeError("Konig cover/matching cardinalities disagree")
         result = milp(
             np.ones(len(points)), integrality=np.ones(len(points)),
             bounds=Bounds(np.zeros(len(points)), np.ones(len(points))),
@@ -288,6 +362,9 @@ def contracted_reverse_interval_two_color_cover(
         if any(not (set(selected) & system["blocks"][source])
                for source in candidates):
             raise RuntimeError("integral two-color cover misses a candidate")
+        if len(selected) != len(konig_cover):
+            raise RuntimeError("MILP and Konig cover optima disagree")
+        selected = sorted(konig_cover)
         if len(forced) + len(selected) >= system["degree"][target]:
             continue
         certificates.append({
@@ -298,6 +375,10 @@ def contracted_reverse_interval_two_color_cover(
             "omitted_color": next(color for color in range(3)
                                   if color not in colors),
             "points": selected,
+            "mandatory_singleton_points": sorted(mandatory),
+            "maximum_matching": [
+                [left, right] for right, left in sorted(matched_right.items())
+            ],
             "cover_card": len(selected),
             "demand_after_forced": system["degree"][target] - len(forced),
         })
