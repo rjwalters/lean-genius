@@ -1000,6 +1000,147 @@ theorem orderNine_order18_spike_defect_equation_of_global_shore_equation
     ring_nf at htransferS ⊢
     exact htransferS
 
+/-- Composition package for the symmetric `(18,59)` articulation through
+audit equations (30) and (31).  All moment inputs are derived from the
+oriented shores; the conclusion exposes only the two spike branches with
+their ambient low set and transfer equations. -/
+theorem orderNine_order18_oriented_spike_transfer_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hcard : Fintype.card V = 81)
+    (E : Finset V) (h₁ h₂ h₃ owner : V)
+    (h₁₂ : h₁ ≠ h₂) (h₁₃ : h₁ ≠ h₃) (h₂₃ : h₂ ≠ h₃)
+    (A B : Finset V)
+    (hownerO : owner ∈ (Finset.univ : Finset V) \ {h₁, h₂, h₃})
+    (hunion : A ∪ B =
+      ((Finset.univ : Finset V) \ {h₁, h₂, h₃}).erase owner)
+    (hdisj : Disjoint A B)
+    (hAcard : A.card = 18) (hBcard : B.card = 59)
+    (hfull : orderNineArticulationSmallShoreFullType G E h₁ h₂ h₃ A)
+    (hboundaryA : (∑ x ∈ A,
+      ((secondOrderDefectGraph G).neighborFinset x ∩
+        (Finset.univ \ A)).card) = (E ∩ A).card)
+    (hdegOrd : ∀ x ∉ ({h₁, h₂, h₃} : Finset V), G.degree x = 9)
+    (hdegHigh : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.degree h = 10)
+    (hhighIndependent : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      Disjoint (G.neighborFinset h) {h₁, h₂, h₃})
+    (hhighSmall : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (G.neighborFinset h ∩ A).card = 2)
+    (hownerAdj : ∀ h ∈ ({h₁, h₂, h₃} : Finset V), G.Adj h owner)
+    (hdefectHighIsolated : ∀ h ∈ ({h₁, h₂, h₃} : Finset V),
+      (secondOrderDefectGraph G).neighborFinset h = ∅) :
+    let H : Finset V := {h₁, h₂, h₃}
+    let O := (Finset.univ : Finset V) \ H
+    let R := insert owner B
+    let D := secondOrderDefectGraph G
+    (∃ (c : V) (Z : Finset V),
+      c ∈ O ∧ Z ⊆ O ∧ Z.card = 29 ∧ c ∈ Z ∧
+      (∀ x, (hx : x ∈ O) →
+        (G.neighborFinset x ∩ R).card =
+          if x = c then 5 else if x ∈ Z then 6 else 7) ∧
+      (∀ x : V, ((G.neighborFinset x ∩ A).card : ℤ) =
+        2 + (if x ∈ Z then 1 else 0) + (if x = c then 1 else 0) -
+          ((G.neighborFinset x ∩ H).card : ℤ)) ∧
+      (∀ x : V, ((D.neighborFinset x ∩ A).card : ℤ) =
+        8 * (if x ∈ A then 1 else 0) + 3 +
+          7 * (if x ∈ H then 1 else 0) -
+          ((G.neighborFinset x ∩ Z).card : ℤ) -
+          (if G.Adj x c then 1 else 0))) ∨
+    (∃ (c : V) (Z : Finset V),
+      c ∈ O ∧ Z ⊆ O ∧ Z.card = 31 ∧ c ∉ Z ∧
+      (∀ x, (hx : x ∈ O) →
+        (G.neighborFinset x ∩ R).card =
+          if x = c then 8 else if x ∈ Z then 6 else 7) ∧
+      (∀ x : V, ((G.neighborFinset x ∩ A).card : ℤ) =
+        2 + (if x ∈ Z then 1 else 0) - (if x = c then 1 else 0) -
+          ((G.neighborFinset x ∩ H).card : ℤ)) ∧
+      (∀ x : V, ((D.neighborFinset x ∩ A).card : ℤ) =
+        8 * (if x ∈ A then 1 else 0) + 3 +
+          7 * (if x ∈ H then 1 else 0) -
+          ((G.neighborFinset x ∩ Z).card : ℤ) +
+          (if G.Adj x c then 1 else 0))) := by
+  classical
+  let H : Finset V := {h₁, h₂, h₃}
+  let O := (Finset.univ : Finset V) \ H
+  let R := insert owner B
+  let D := secondOrderDefectGraph G
+  have hbook := orderNine_order18_largeOrdinaryShore_bookkeeping
+    G E h₁ h₂ h₃ owner A B hownerO hunion hdisj hAcard hBcard
+      hfull hboundaryA hdefectHighIsolated
+  change R = O \ A ∧ R.card = 60 ∧ Disjoint R H ∧
+    (∑ x ∈ R, (D.neighborFinset x ∩ (Finset.univ \ R)).card) = 2 at hbook
+  have hAsubO : A ⊆ O := by
+    intro x hxA
+    have hxU : x ∈ O.erase owner := by
+      rw [← show A ∪ B = O.erase owner by simpa [O, H] using hunion]
+      exact Finset.mem_union_left B hxA
+    exact (Finset.mem_erase.mp hxU).2
+  have hRsubO : R ⊆ O := by
+    rw [hbook.1]
+    exact Finset.sdiff_subset
+  have hAR : A ∪ R = O := by
+    rw [hbook.1]
+    exact Finset.union_sdiff_of_subset hAsubO
+  have hdisjAR : Disjoint A R := by
+    rw [hbook.1, Finset.disjoint_left]
+    exact fun _ hxA hx ↦ (Finset.mem_sdiff.mp hx).2 hxA
+  have hAH : Disjoint A H := by
+    rw [Finset.disjoint_left]
+    intro x hxA hxH
+    exact (Finset.mem_sdiff.mp (hAsubO hxA)).2 hxH
+  have hHcard : H.card = 3 := by simp [H, h₁₂, h₁₃, h₂₃]
+  have hh₁ : h₁ ∈ H := by simp [H]
+  have hh₂ : h₂ ∈ H := by simp [H]
+  have hh₃ : h₃ ∈ H := by simp [H]
+  have hhigh₁ := orderNine_order18_high_neighbor_largeOrdinary_card_eq_eight
+    G H A B owner h₁ (by simpa [O, H] using hunion) hdisj hownerO
+      (hownerAdj h₁ hh₁) (hdegHigh h₁ hh₁)
+      (hhighIndependent h₁ hh₁) (hhighSmall h₁ hh₁)
+  have hhigh₂ := orderNine_order18_high_neighbor_largeOrdinary_card_eq_eight
+    G H A B owner h₂ (by simpa [O, H] using hunion) hdisj hownerO
+      (hownerAdj h₂ hh₂) (hdegHigh h₂ hh₂)
+      (hhighIndependent h₂ hh₂) (hhighSmall h₂ hh₂)
+  have hhigh₃ := orderNine_order18_high_neighbor_largeOrdinary_card_eq_eight
+    G H A B owner h₃ (by simpa [O, H] using hunion) hdisj hownerO
+      (hownerAdj h₃ hh₃) (hdegHigh h₃ hh₃)
+      (hhighIndependent h₃ hh₃) (hhighSmall h₃ hh₃)
+  have hlevels := orderNine_order18_largeOrdinaryShore_level_sets
+    G hfree hcard h₁ h₂ h₃ h₁₂ h₁₃ h₂₃ R hbook.2.2.1 hbook.2.1
+      hhigh₁ hhigh₂ hhigh₃ hdegOrd hdegHigh hbook.2.2.2
+  have hdegOrdO : ∀ x ∈ O, G.degree x = 9 := by
+    intro x hxO
+    exact hdegOrd x (Finset.mem_sdiff.mp hxO).2
+  rcases hlevels with hL | hHigh
+  · obtain ⟨c, Z, hcO, hZsub, hZcard, hcZ, hlevel⟩ := hL
+    have heq30 := orderNine_order18_lowSpike_global_shore_equation
+      G H O A R Z c rfl hAR hdisjAR hAsubO hRsubO hZsub hcO hcZ
+        hdegOrdO hhighIndependent hhighSmall hlevel
+    have heq31 := orderNine_order18_spike_defect_equation_of_global_shore_equation
+      G hfree H A Z c 1 hHcard hAcard
+        hAH hdegOrd hdegHigh
+        hdefectHighIsolated (by simpa using heq30)
+    exact Or.inl ⟨c, Z, hcO, hZsub, hZcard, hcZ, hlevel, heq30,
+      by simpa [H] using heq31⟩
+  · obtain ⟨c, Z, hcO, hZsub, hZcard, hcZ, hlevel⟩ := hHigh
+    have heq30 := orderNine_order18_highSpike_global_shore_equation
+      G H O A R Z c rfl hAR hdisjAR hAsubO hRsubO hZsub hcO hcZ
+        hdegOrdO hhighIndependent hhighSmall hlevel
+    have heq31 := orderNine_order18_spike_defect_equation_of_global_shore_equation
+      G hfree H A Z c (-1) hHcard hAcard
+        hAH hdegOrd hdegHigh
+        hdefectHighIsolated (by
+          intro x
+          have hx := heq30 x
+          by_cases hxc : x = c <;> simp [hxc] at hx ⊢ <;> linarith)
+    exact Or.inr ⟨c, Z, hcO, hZsub, hZcard, hcZ, hlevel, heq30,
+      by
+        intro x
+        have hx := heq31 x
+        by_cases hadj : G.Adj x c <;> simp [H, hadj] at hx ⊢ <;> linarith⟩
+
+
 /-- Low-spike owner evaluation, audit equation (32).  The owner is deleted
 from the shore partition, while FullType puts exactly two of its defect
 neighbors in the order-eighteen component. -/
@@ -1371,6 +1512,7 @@ theorem orderNine_order18_lowSpike_center_eq_owner_of_highRoot_equations
 #print axioms Erdos85.orderNine_order18_lowSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_highSpike_global_shore_equation
 #print axioms Erdos85.orderNine_order18_spike_defect_equation_of_global_shore_equation
+#print axioms Erdos85.orderNine_order18_oriented_spike_transfer_package
 #print axioms Erdos85.orderNine_order18_lowSpike_owner_equation
 #print axioms Erdos85.orderNine_order18_highSpike_owner_lowSet_degree_le_two
 #print axioms Erdos85.orderNine_order18_highSpike_highRoot_neighbors_subset_lowSet
