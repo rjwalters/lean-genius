@@ -90,6 +90,36 @@ python3 size_two_cyclic_translation_invariant_probe.py 12 --a 1 \
   --dump-pair-supports
 ```
 
-The q16 SAT/UNSAT control remains decisive.  If SAT, rerun it with
-`--dump-pair-supports`; the result tests the corrected tuple-level terminal
-directly rather than a marginal proxy.
+## Decisive long-run verdicts
+
+The q16 reduced four-short plus empty-middle DIMACS instance is **SAT**.
+Kissat decided the 2,880-variable / 49,343-clause instance after about 22
+minutes.  This kills the designated-cap subtree at the next binary order:
+the q8 four/five-cell phenomenon is not the base case of a uniform
+power-of-two transport theorem.  In particular, intact doubling, coherent
+halving, or bad-lift elimination cannot prove the proposed reduced statement
+from those selected caps, regardless of how their tuple support is packaged.
+The saved assignment is being decoded into the precise pair-support census;
+that census is diagnostic, not needed for the logical refutation supplied by
+SAT itself.
+
+Conversely, the q12 translation-invariant instance with **every** nonzero
+same-fibre separation capped is **UNSAT**.  Kissat decided its 6,276-variable
+/ 166,900-clause CNF after about five minutes.  Thus the earlier q12 escapes
+were entirely consequences of selecting only four or five caps.  They are
+not evidence against the full same-difference-code theorem.
+
+Together with the q8 A/B control—full caps plus empty fibre are SAT after
+dropping reciprocity and UNSAT when block-transpose reciprocity is restored—
+the correct target changes scope:
+
+```text
+full same-fibre caps + empty fibre + global block transpose
+  -> contradiction,
+```
+
+plausibly for every even `q`, rather than specifically for `q=2^k`.  The
+banked distinct-support theorem supplies at least `q` edges in the simple
+owner-pair collision graph.  The missing theorem must now use the full
+self-transpose block family to merge labels; no selected-cap valuation
+transport remains on the critical path.
