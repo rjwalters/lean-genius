@@ -81,10 +81,23 @@ language.
 For a 4-regular graph with an Euler system, the extended Cohn--Lempel equality
 expresses the number of circuits in a circuit partition as the nullity over
 `F_2` of a modified interlacement matrix (up to the component correction).
+No canonical Euler system is required: choose one Euler circuit in every
+connected component.  Relative to this choice, each circuit-partition
+transition has one of three exact matrix operations: delete its row and
+column if it follows the Euler circuit, retain them unchanged for the other
+orientation-consistent transition, or retain them and flip the diagonal for
+the orientation-inconsistent transition.  Traldi's Theorem 4 states
+
+```text
+number of partition circuits = nullity(I_P) + components(G).
+```
+
 The transition-matroid formulation packages the three local transitions at
 each 4-valent vertex, while the touch-graph formulation identifies the
 resulting nullspace with a cycle space.  Useful primary references are:
 
+- Lorenzo Traldi, *Binary nullity, Euler circuits and interlace polynomials*,
+  arXiv:0903.4405, Theorem 4.
 - Lorenzo Traldi, *The transition matroid of a 4-regular graph: an
   introduction*, arXiv:1307.8097.
 - Lorenzo Traldi, *Circuit partitions and signed interlacement in 4-regular
@@ -96,6 +109,12 @@ These results do not themselves give the Erdős-85 contradiction.  They give
 the correct linear-algebraic consumer once the routing cap is stated as a
 transition restriction.
 
+The 4-valent vertices in this application are reciprocal dart pairs, not
+folded cells.  Uncancelled folded coordinate nodes supply the transitions
+between them.  This distinction is essential: a coincident folded cell gives
+parallel row and column transitions, whereas mod-two cancellation would erase
+both and destroy the four-valent graph before the theorem can be applied.
+
 ## Candidate chain to `A-REG-NONBIP`
 
 The intended chain is:
@@ -104,7 +123,8 @@ The intended chain is:
 two-hole routing + reciprocity
   -> global 4-regular transition system                 [construction above]
   -> same-fiber cap forbids a specified transition minor [GAP GT1]
-  -> interlacement/touch-graph nullity forces that minor  [GAP GT2]
+  -> cap restriction stated as allowed matrix operations [GAP GT1b]
+  -> interlacement/touch-graph nullity forces a violation [GAP GT2]
   -> contradiction for q = 2^k                           [GAP GT3]
   -> BinarySizeTwoCyclicPackingBound
   -> A-REG-NONBIP size-two branch
