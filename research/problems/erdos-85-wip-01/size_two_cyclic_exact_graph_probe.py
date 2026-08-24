@@ -12,6 +12,7 @@ smaller than the permutation encoding.
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 from itertools import combinations, combinations_with_replacement
 
 import z3
@@ -95,6 +96,13 @@ def main() -> None:
         help=("retain common-neighbor caps only for these undirected "
               "first-coordinate separation orbits"))
     parser.add_argument("--quiet-model", action="store_true")
+    parser.add_argument("--codegree-profile-difference", type=int,
+        help=("report codegree/excess totals by undirected first-coordinate "
+              "separation for source vertices in this difference fiber"))
+    parser.add_argument("--codegree-excess-cap", type=int,
+        help=("bound the total number of common-neighbor pairs for the "
+              "--codegree-profile-difference source fiber"))
+    parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--allow-loops", action="store_true",
         help=("model the reduced symmetric reciprocal relation, whose "
               "diagonal entries are not constrained by Loopless"))
@@ -107,9 +115,68 @@ def main() -> None:
         c4_separations=None if args.c4_separation is None else
             {d % args.q for d in args.c4_separation},
         allow_loops=args.allow_loops)
-    solver.set(timeout=args.timeout_ms)
+    if args.codegree_excess_cap is not None:
+        if args.codegree_profile_difference is None:
+            parser.error("--codegree-excess-cap requires --codegree-profile-difference")
+        index = {vertex: i for i, vertex in enumerate(vertices)}
+        source = [index[vertex] for vertex in vertices
+                  if (vertex[1] - vertex[0]) % args.q ==
+                  args.codegree_profile_difference % args.q]
+
+        def adj_expr(i: int, j: int) -> z3.BoolRef:
+            if i == j and not args.allow_loops:
+                return z3.BoolVal(False)
+            return edge[min(i, j), max(i, j)]
+
+        excess_terms = []
+        for i, j in combinations(source, 2):
+            common_neighbor_indices = (list(range(len(vertices)))
+                                       if args.allow_loops else
+                                       [k for k in range(len(vertices))
+                                        if k not in {i, j}])
+            for k, ell in combinations(common_neighbor_indices, 2):
+                excess_terms.append((z3.And(
+                    adj_expr(i, k), adj_expr(j, k),
+                    adj_expr(i, ell), adj_expr(j, ell)), 1))
+        solver.add(z3.PbLe(excess_terms, args.codegree_excess_cap))
+    solver.set(timeout=args.timeout_ms, random_seed=args.random_seed)
     result = solver.check()
     print(f"q={args.q} a={args.a % args.q} allow_loops={args.allow_loops}: {result}")
+    if result == z3.sat and args.codegree_profile_difference is not None:
+        model = solver.model()
+        index = {vertex: i for i, vertex in enumerate(vertices)}
+
+        def chosen_adj(i: int, j: int) -> bool:
+            if i == j and not args.allow_loops:
+                return False
+            return z3.is_true(model.eval(edge[min(i, j), max(i, j)]))
+
+        source = [index[vertex] for vertex in vertices
+                  if (vertex[1] - vertex[0]) % args.q ==
+                  args.codegree_profile_difference % args.q]
+        profile: dict[int, Counter[int]] = {}
+        for i, j in combinations(source, 2):
+            raw_separation = (vertices[j][0] - vertices[i][0]) % args.q
+            separation = min(raw_separation, (-raw_separation) % args.q)
+            common_neighbor_indices = (range(len(vertices)) if args.allow_loops
+                                       else (k for k in range(len(vertices))
+                                             if k not in {i, j}))
+            codegree = sum(chosen_adj(i, k) and chosen_adj(j, k)
+                           for k in common_neighbor_indices)
+            profile.setdefault(separation, Counter())[codegree] += 1
+        print("codegree profile by source separation:")
+        total_codegree = 0
+        total_excess = 0
+        for separation, distribution in sorted(profile.items()):
+            codegree_sum = sum(value * count
+                               for value, count in distribution.items())
+            excess = sum(value * (value - 1) // 2 * count
+                         for value, count in distribution.items())
+            total_codegree += codegree_sum
+            total_excess += excess
+            print(f"  {separation}: distribution={dict(sorted(distribution.items()))} "
+                  f"sum={codegree_sum} excess={excess}")
+        print(f"codegree totals: sum={total_codegree} excess={total_excess}")
     if result == z3.sat and not args.quiet_model:
         model = solver.model()
         chosen = [(vertices[i], vertices[j]) for (i, j), var in edge.items()
