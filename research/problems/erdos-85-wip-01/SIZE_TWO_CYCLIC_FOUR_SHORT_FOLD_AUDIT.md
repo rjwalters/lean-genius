@@ -119,6 +119,22 @@ symmetric translation-invariant subclass and is produced by
 any surviving uniform theorem must use a specifically binary property; the
 natural order-four selector relations alone are insufficient.
 
+The stronger five-cap control is also SAT.  Adding the omitted involutive
+middle cap `(middle,6)` while retaining the empty middle graph gives a model
+in about one second:
+
+```text
+python3 size_two_cyclic_translation_invariant_probe.py 12 --a 1 \
+  --cap 0:1 --cap 0:3 --cap 6:1 --cap 6:6 --cap 9:3 \
+  --empty-fiber 6 --timeout-ms 300000
+```
+
+Thus at q12 not only four-short nonemptiness but the entire five-cell
+exclusion is false: all five local agreement caps, exact row/column hits,
+looplessness, reciprocity, and an empty selected middle fibre coexist.  The
+q8 five-cell MUS is genuinely binary/small-order; it cannot be promoted to
+arbitrary even q by changing only the final antipodal terminal.
+
 At q8 the proof target is this local four-lift packet law together with
 nonemptiness.  For general q, the first unresolved issue is whether any
 analogue can tolerate or eliminate the additional admissible steps.  A
