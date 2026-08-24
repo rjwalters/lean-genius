@@ -135,6 +135,51 @@ theorem c4Free_binarySquare_pureEndpoint_parallel_evenConfiguration_eq_succ_forc
   refine ⟨k - 1, ?_⟩
   omega
 
+/-- In the dyadic-relevant case `m` even, an equality-size exterior even
+configuration must contain a row with a positive defect-hole count. -/
+theorem c4Free_binarySquare_pureEndpoint_evenConfiguration_eq_succ_exists_hole
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m) (hmEven : Even m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V)
+    (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    let F := fullLineCenters G S q
+    let W := {w : V // w ∈ Fᶜ}
+    let P := {y : V // y ∈ S}
+    ∀ T : Finset W,
+      (∀ y : P, Even ((T.filter fun w => G.Adj w.1 y.1).card)) →
+      T.card = m + 1 →
+      ∃ w ∈ T,
+        0 < ((secondOrderDefectGraph G).neighborFinset w.1 ∩ F).card := by
+  classical
+  dsimp only
+  intro T heven hTcard
+  by_contra hnone
+  simp only [not_exists, not_and, not_lt] at hnone
+  have hall : ∀ w ∈ T,
+      ((secondOrderDefectGraph G).neighborFinset w.1 ∩
+        fullLineCenters G S q).card = 0 := by
+    intro w hw
+    exact Nat.eq_zero_of_le_zero (hnone w hw)
+  have hodd :=
+    c4Free_binarySquare_pureEndpoint_parallel_evenConfiguration_eq_succ_forces_odd
+      G hfree hq hqm hreg hcard S hempty hCcard hshore htri
+      T heven hTcard hall
+  rcases hmEven with ⟨a, ha⟩
+  rcases hodd with ⟨b, hb⟩
+  omega
+
 end
 
 end Erdos85
@@ -142,3 +187,5 @@ end Erdos85
 #print axioms Erdos85.even_card_of_unique_labeled_incidence
 #print axioms
   Erdos85.c4Free_binarySquare_pureEndpoint_parallel_evenConfiguration_eq_succ_forces_odd
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_evenConfiguration_eq_succ_exists_hole
