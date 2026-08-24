@@ -127,6 +127,41 @@ theorem f2SegmentIncidence_one_eq_crossingCard
           (left e ∉ R ∧ right e ∈ R)).card : ZMod 2) := by
       simp
 
+/-- The residual crossing character as a linear functional on weighted
+segment occurrences. -/
+def f2SegmentResidualCharacter
+    {E W : Type*} [Fintype E] [DecidableEq W]
+    (R : Finset W) (left right : E → W) :
+    (E → ZMod 2) →ₗ[ZMod 2] ZMod 2 where
+  toFun z := ∑ e, z e *
+    (f2FinsetIndicator R (left e) + f2FinsetIndicator R (right e))
+  map_add' z z' := by
+    simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
+  map_smul' a z := by
+    simp only [Pi.smul_apply, smul_eq_mul, mul_assoc, Finset.mul_sum,
+      RingHom.id_apply]
+
+/-- The residual character factors through the endpoint-incidence vector. -/
+theorem f2SegmentResidualCharacter_eq_sum_incidence
+    {E W : Type*} [Fintype E] [Fintype W]
+    [DecidableEq W]
+    (R : Finset W) (left right : E → W) (z : E → ZMod 2) :
+    f2SegmentResidualCharacter R left right z =
+      ∑ w ∈ R, f2SegmentIncidence left right z w := by
+  exact (f2SegmentIncidence_residualCharacter R left right z).symm
+
+/-- Consequently every relation with zero witness-endpoint incidence lies
+in the kernel of the residual character.  This is the precise statement
+that the character descends to the cross-witness quotient. -/
+theorem f2SegmentResidualCharacter_eq_zero_of_incidence_eq_zero
+    {E W : Type*} [Fintype E] [Fintype W]
+    [DecidableEq W]
+    (R : Finset W) (left right : E → W) (z : E → ZMod 2)
+    (hz : f2SegmentIncidence left right z = 0) :
+    f2SegmentResidualCharacter R left right z = 0 := by
+  rw [f2SegmentResidualCharacter_eq_sum_incidence, hz]
+  simp
+
 end
 
 end Erdos85
@@ -135,3 +170,5 @@ end Erdos85
 #print axioms Erdos85.f2SegmentIncidence_residualCharacter
 #print axioms Erdos85.f2SegmentIncidence_one_residualCharacter
 #print axioms Erdos85.f2SegmentIncidence_one_eq_crossingCard
+#print axioms Erdos85.f2SegmentResidualCharacter_eq_sum_incidence
+#print axioms Erdos85.f2SegmentResidualCharacter_eq_zero_of_incidence_eq_zero
