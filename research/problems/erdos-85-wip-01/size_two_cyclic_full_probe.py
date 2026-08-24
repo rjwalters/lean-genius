@@ -23,8 +23,11 @@ def main() -> None:
     parser.add_argument("--no-caps", action="store_true")
     parser.add_argument("--uniform-fibre-loads", action="store_true",
         help="require every target to have exactly one neighbour in each source fibre")
-    parser.add_argument("--minimal-block-variance", action="store_true",
+    parser.add_argument("--minimal-block-variance", "--sharp-fibre-loads",
+        dest="minimal_block_variance", action="store_true",
         help="give each source one zero, one double, and otherwise one target per fibre")
+    parser.add_argument("--dump-fibre-loads", action="store_true",
+        help="on SAT, print target-fibre degree profiles for every source")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and use one variable per ordered pair")
     parser.add_argument("--reciprocity-core", action="store_true",
@@ -273,6 +276,13 @@ def main() -> None:
                 print(f"  internal fibre={t} edges={len(internal)} "
                       f"occupied_bases={len(occupied)} bases={occupied} "
                       f"degrees={degrees}")
+    if result == z3.sat and args.dump_fibre_loads:
+        model = solver.model()
+        for source in vertices:
+            loads = [sum(z3.is_true(model.eval(
+                edge(source, (y, u)), model_completion=True))
+                for y in range(q)) for u in differences]
+            print(f"  source={source} loads={dict(zip(differences, loads))}")
     if result == z3.unsat and (args.reciprocity_core or args.joint_group_core or
                                args.joint_separation_core):
         core = list(solver.unsat_core())
