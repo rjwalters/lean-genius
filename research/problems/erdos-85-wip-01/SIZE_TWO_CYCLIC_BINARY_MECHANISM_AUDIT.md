@@ -101,10 +101,14 @@ minimal missing statement is not another conservation law but a
 empty middle fibre forces either
 
 1. a collision/common-target pair at strictly smaller `v2` separation, or
-2. two distinct owners of one precise target cell at the same separation.
+2. the same pair of source rows owning two distinct precise target cells at
+   the same separation.
 
 The first alternative can descend only finitely in a cyclic 2-group; the
-second contradicts the row-inner-product cap.  No currently proved tensor
+second makes the row inner product at least two and contradicts the cap.
+Two source rows owning only one common target cell is allowed (it gives the
+extremal inner product one), so any descent invariant must retain accumulated
+common-target support for a fixed row pair.  No currently proved tensor
 identity supplies either alternative.  In particular, aggregating `K` to
 the displacement tensor loses exactly the correlations on which the
 quadratic cap acts, while applying any linear `F2` weight directly to `K`
