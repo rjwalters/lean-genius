@@ -1,6 +1,7 @@
 import Proofs.Erdos85SizeTwoEigenlineCyclicSelectedFiberGraph
 import Proofs.Erdos85SizeTwoEigenlineCyclicSelectedOrbitSupport
 import Proofs.Erdos85SizeTwoEigenlineCyclicMatchingReplication
+import Proofs.Erdos85SizeTwoEigenlineCyclicOrderedPairSecondMoment
 
 /-!
 # Collision pressure from an empty selected fiber
@@ -213,6 +214,33 @@ theorem q_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
   rw [hsub, Nat.mul_add] at h
   omega
 
+/-- Base-resolved nonlinear form of the empty-fibre pressure: the total
+same-fibre shifted-agreement mass over all bases and nonzero shifts is at
+least `2q`.  Unlike a valuation-only aggregate, this is exactly the quantity
+on which the code's positional agreement caps act. -/
+theorem two_mul_q_le_sizeTwoCyclicAgreement_sum_of_noAdj
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (hq : 3 ≤ q)
+    (code : SizeTwoCyclicFullPermutationCode q a)
+    (hloop : code.toReciprocalCode.Loopless)
+    (ha : a ≠ -1 - a) (hq1 : (1 : ZMod q) ≠ 0)
+    (t : sizeTwoAllowedDifference q a)
+    (hno : ∀ x y : ZMod q,
+      ¬ (sizeTwoCyclicSelectedFiberGraph code.toReciprocalCode t).Adj x y) :
+    2 * q ≤ ∑ xd : SizeTwoCyclicBaseNonzeroShift q,
+      Fintype.card (SizeTwoCrossShiftedPermutationAgreement q a
+        code.toReciprocalCode.toPermutationCode.perm
+        xd.1 xd.2.1 t t) := by
+  calc
+    2 * q ≤ 2 * ∑ e : SizeTwoCyclicAbsoluteGridEdge q,
+        (sizeTwoCyclicMatchingOrbitMultiplicity code t e).choose 2 :=
+      Nat.mul_le_mul_left 2
+        (q_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
+          hq code hloop ha hq1 t hno)
+    _ = _ :=
+      two_mul_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_sum_eq_agreement_shifts
+        code t
+
 /-- At the calibrated `q=8` parameter, an empty selected fiber forces at
 least eight unordered repeated-target incidences in that fiber. -/
 theorem eight_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
@@ -239,5 +267,6 @@ end Erdos85
   Erdos85.sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_emptyFiber_lower
 #print axioms
   Erdos85.q_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
+#print axioms Erdos85.two_mul_q_le_sizeTwoCyclicAgreement_sum_of_noAdj
 #print axioms
   Erdos85.eight_le_sizeTwoCyclicMatchingOrbitMultiplicity_choose_two_of_noAdj
