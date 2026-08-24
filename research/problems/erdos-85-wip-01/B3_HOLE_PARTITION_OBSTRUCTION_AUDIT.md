@@ -5693,23 +5693,27 @@ minimization imply neither the no-violator statement nor the strict budget:
 the proof must spend the full local-packing hypothesis at the other rows.
                                                                        (13bl)
 
-The pinned failure also suggests where that hypothesis enters.  Its only
-rows without full local packings are `22,23,25`; rows 22 and 23 both meet the
+The first pinned failure suggested a tempting localization: its only rows
+without full local packings are `22,23,25`, and rows 22 and 23 both meet the
 selected target block `B_14={6,15,21}` at point 15.  The auditor therefore
 records, for every obstructed target, all locally infeasible rows meeting its
-block and the exact intersection points.  The next exchange target is the
-localized contrapositive
+block and the exact intersection points.  The proposed localized
+contrapositive was
 
 ```text
 failure of both strict cover terminals at the lex-selected target
   ==> some row in a selected point fiber has no full local packing.      (13bl')
 ```
 
-Unlike a direct barrier-to-better-target descent, (13bl') is compatible with
-the durable counterexamples in (13bm): it may use an arbitrary row in a
-selected point fiber and concludes failure of local feasibility, precisely
-the contradiction available on the all-row-feasible locus.  At present it
-is a proof candidate supported by the pinned terminal failure, not a theorem.
+This is false.  The durable regression
+`q9_branch4_localized_exchange_counterexample.json` has selected target 20,
+`|R|=7`, `|F|=1`, demand five, all three colored scores equal five, and best
+star-cover cost four.  Thus both terminals are non-strict.  Its unique
+locally infeasible row is 23, but `B_20={6,8,18}` and
+`B_23={4,15,17}` are disjoint.  The post-star remainder again has no Tutte
+violator.  Therefore even the use of all-row feasibility cannot be localized
+to the selected point fibers; the required exchange is genuinely nonlocal.
+Equation (13bl') is retained only as a refuted regression boundary.
 
 A direct one-step descent along a barrier is also false.  The auditor now
 classifies every lexicographically better obstructed target by four most
