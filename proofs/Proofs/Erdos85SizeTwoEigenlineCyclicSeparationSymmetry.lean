@@ -157,7 +157,7 @@ theorem SizeTwoCyclicRoutingData.agreementAtShift_antipodal_support_card_even
       ((Finset.univ : Finset (ZMod q)).filter fun x =>
         0 < Fintype.card (SizeTwoCrossShiftedPermutationAgreement
           q a data.perm x d t t)).card := by
-    rw [← Finset.sum_boole]
+    rw [Finset.card_filter]
     apply Finset.sum_congr rfl
     intro x hx
     have hle := hcap x
@@ -190,6 +190,68 @@ theorem SizeTwoCyclicRoutingData.two_le_agreementAtShift_antipodal_support
   obtain ⟨k, hk⟩ := heven
   omega
 
+/-- The true cap-violation mass at an involutive separation is even.  Here
+`card - 1` is zero for an allowed local agreement count and positive exactly
+when the per-base `AgreementAtShift` cap is violated. -/
+theorem sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum_even
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (d : ZMod q) (hd : d ≠ 0) (horder : d + d = 0)
+    (t : sizeTwoAllowedDifference q a) :
+    Even (∑ x : ZMod q,
+      (Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P x d t t) - 1)) := by
+  classical
+  let sigma : ZMod q → ZMod q := fun x => x + d
+  let excess : ZMod q → ℕ := fun x =>
+    Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+      q a P x d t t) - 1
+  have hexcess (x : ZMod q) : excess (sigma x) = excess x := by
+    have hs := sizeTwoCrossShiftedPermutationAgreement_card_neg_shift
+      P x d t
+    have hneg : -d = d := by
+      apply add_left_cancel (a := d)
+      simpa using horder.symm
+    rw [hneg] at hs
+    dsimp [excess, sigma]
+    exact congrArg (fun n : ℕ => n - 1) hs.symm
+  have hsum : (∑ x : ZMod q, (excess x : ZMod 2)) = 0 := by
+    apply Finset.sum_ninvolution sigma
+    · intro x
+      rw [hexcess x]
+      exact CharTwo.add_self_eq_zero _
+    · intro x _ hfix
+      apply hd
+      have h := congrArg (fun z : ZMod q => z - x) hfix
+      simpa [sigma, sub_eq_add_neg, add_assoc] using h
+    · intro x
+      exact Finset.mem_univ _
+    · intro x
+      dsimp [sigma]
+      rw [add_assoc, horder, add_zero]
+  have hcast : (((∑ x : ZMod q, excess x) : ℕ) : ZMod 2) = 0 := by
+    rw [Nat.cast_sum]
+    exact hsum
+  simpa [excess] using ZMod.natCast_eq_zero_iff_even.mp hcast
+
+/-- Any nonzero antipodal cap-violation mass is at least two. -/
+theorem two_le_sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (P : SizeTwoCyclicPermutationFamily q a)
+    (d : ZMod q) (hd : d ≠ 0) (horder : d + d = 0)
+    (t : sizeTwoAllowedDifference q a)
+    (hne : (∑ x : ZMod q,
+      (Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P x d t t) - 1)) ≠ 0) :
+    2 ≤ ∑ x : ZMod q,
+      (Fintype.card (SizeTwoCrossShiftedPermutationAgreement
+        q a P x d t t) - 1) := by
+  have heven :=
+    sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum_even
+      P d hd horder t
+  obtain ⟨k, hk⟩ := heven
+  omega
+
 end
 
 end Erdos85
@@ -201,3 +263,5 @@ end Erdos85
   Erdos85.sizeTwoCrossShiftedPermutationAgreement_antipodal_sum_even
 #print axioms
   Erdos85.SizeTwoCyclicRoutingData.agreementAtShift_antipodal_support_card_even
+#print axioms
+  Erdos85.sizeTwoCrossShiftedPermutationAgreement_antipodal_excess_sum_even
