@@ -91,6 +91,16 @@ profile, but the unequal orbit sizes do not themselves give a uniform
 five-cell conservation identity: the generic exclusion still needs an
 inequality forcing at least one of those five duplicate patterns twice.
 
+There is a normalization distinction at the antipodal cell.  The probe
+iterates over unordered source pairs, so its minimum `(4,4)` excess `2`
+counts the two antipodal pairs once each.  The formal sum
+`∑ x, (AgreementCard x 4 - 1)` ranges over every base and therefore counts
+each antipodal pair twice; the same witness has formal excess `4`, not `2`.
+This preserves the proved evenness theorem but rules out interpreting it as
+sharp at the probe's displayed threshold.  Indeed unconstrained four-short
+models realize unordered excesses `2` and `4`, hence directed formal excesses
+`4` and `8`; a proposed directed congruence `≡ 2 (mod 4)` is false.
+
 ## Consequence and stop
 
 The q8 parity target does not need full `AgreementAt` on all shifts.  It needs
