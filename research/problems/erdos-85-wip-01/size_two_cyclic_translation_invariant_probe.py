@@ -34,6 +34,8 @@ def main() -> None:
         help="print normalized cross-fiber collision products and q(q-4) violations")
     parser.add_argument("--dump-pair-supports", action="store_true",
         help="print each fixed source pair's precise common-target support")
+    parser.add_argument("--dump-relative-completions", action="store_true",
+        help="audit cycle types of the four two-hole permutation completions")
     args = parser.parse_args()
 
     q = args.q
@@ -199,6 +201,79 @@ def main() -> None:
             for size, t, d, level, support in supports:
                 print(f"  pair fiber={t} shift={d} v2={level} "
                       f"count={size} targets={support}")
+        if args.dump_relative_completions:
+            # A source cell (x,x+t) routes every target row except
+            # x+t,x+t+1 to exactly one target column except x,x-1.  Complete
+            # this partial bijection in the two possible ways.  Fixed points
+            # of Q_d^{-1} Q_0 are common target cells of the two completed
+            # routes; those outside either hole pair are genuine supports.
+            def completion(t: int, x: int, crossed: bool) -> list[int]:
+                route = [-1] * q
+                for y in range(q):
+                    r = (y - x) % q
+                    if r in {t, (t + 1) % q}:
+                        continue
+                    hits = [u for u in differences
+                            if z3.is_true(model.eval(edge(t, u, r)))]
+                    if len(hits) != 1:
+                        raise RuntimeError("row-hit law missing in model")
+                    route[y] = (x + r + hits[0]) % q
+                source_holes = [(x + t) % q, (x + t + 1) % q]
+                target_holes = [(x - 1) % q, x % q]
+                if crossed:
+                    target_holes.reverse()
+                for y, c in zip(source_holes, target_holes):
+                    route[y] = c
+                if sorted(route) != list(range(q)):
+                    raise RuntimeError("column-hit law missing in completion")
+                return route
+
+            def relative_cycles(left: list[int], right: list[int]) -> list[list[int]]:
+                inverse_right = [0] * q
+                for y, c in enumerate(right):
+                    inverse_right[c] = y
+                permutation = [inverse_right[left[y]] for y in range(q)]
+                seen: set[int] = set()
+                cycles: list[list[int]] = []
+                for start in range(q):
+                    if start in seen:
+                        continue
+                    cycle = []
+                    y = start
+                    while y not in seen:
+                        seen.add(y)
+                        cycle.append(y)
+                        y = permutation[y]
+                    cycles.append(cycle)
+                return cycles
+
+            completion_rows = []
+            for t in differences:
+                base = [completion(t, 0, crossed) for crossed in (False, True)]
+                for d in range(1, q):
+                    shifted = [completion(t, d, crossed)
+                               for crossed in (False, True)]
+                    genuine_rows = set(range(q)) - {
+                        t % q, (t + 1) % q,
+                        (d + t) % q, (d + t + 1) % q,
+                    }
+                    genuine = sum(base[0][y] == shifted[0][y]
+                                  for y in genuine_rows)
+                    types = []
+                    fixed = []
+                    signs = []
+                    for left in base:
+                        for right in shifted:
+                            cycles = relative_cycles(left, right)
+                            types.append(tuple(sorted(map(len, cycles))))
+                            fixed.append(sum(len(cycle) == 1 for cycle in cycles))
+                            signs.append((q - len(cycles)) % 2)
+                    completion_rows.append((genuine, t, d, types, fixed, signs))
+            completion_rows.sort(key=lambda item: (-item[0], item[1], item[2]))
+            for genuine, t, d, types, fixed, signs in completion_rows:
+                if genuine >= 1:
+                    print(f"  relative fiber={t} shift={d} genuine={genuine} "
+                          f"fixed={fixed} signs={signs} cycle_types={types}")
 
 
 if __name__ == "__main__":
