@@ -29,6 +29,10 @@ def main() -> None:
         help="shrink reciprocity blocks and full-cap families together")
     parser.add_argument("--joint-separation-core", action="store_true",
         help="shrink reciprocity blocks and cap fibre/separation groups")
+    parser.add_argument("--dump-internal-profile", action="store_true",
+        help="on SAT, print internal edges and occupied bases in each fibre")
+    parser.add_argument("--require-internal-fibres", action="store_true",
+        help="require at least one internal edge or arc in every allowed fibre")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     parser.add_argument("--dimacs")
     args = parser.parse_args()
@@ -133,6 +137,16 @@ def main() -> None:
         for x, z in base_pairs:
             solver.add(z3.Not(edge((x, t), (z, t))))
 
+    if args.require_internal_fibres:
+        for t in differences:
+            if args.directed:
+                candidates = [edge((x, t), (z, t))
+                              for x in range(q) for z in range(q) if x != z]
+            else:
+                candidates = [edge((x, t), (z, t))
+                              for x, z in combinations(range(q), 2)]
+            solver.add(z3.Or(candidates))
+
     if args.dimacs is not None:
         goal = z3.Goal()
         goal.add(*solver.assertions())
@@ -153,6 +167,31 @@ def main() -> None:
     result = solver.check(*active_assumptions)
     print(f"q={q} a={args.a % q} vertices={len(vertices)} "
           f"edge_variables={len(variables)}: {result}")
+    if result == z3.sat and args.dump_internal_profile:
+        model = solver.model()
+        for t in differences:
+            if args.directed:
+                internal = [
+                    (x, z) for x in range(q) for z in range(q) if x != z
+                    if z3.is_true(model.eval(
+                        edge((x, t), (z, t)), model_completion=True))
+                ]
+                occupied = sorted({x for x, _ in internal})
+                print(f"  internal fibre={t} arcs={len(internal)} "
+                      f"occupied_sources={len(occupied)} "
+                      f"source_bases={occupied}")
+            else:
+                internal = [
+                    (x, z) for x, z in combinations(range(q), 2)
+                    if z3.is_true(model.eval(
+                        edge((x, t), (z, t)), model_completion=True))
+                ]
+                occupied = sorted({base for pair in internal for base in pair})
+                degrees = [sum(base in pair for pair in internal)
+                           for base in range(q)]
+                print(f"  internal fibre={t} edges={len(internal)} "
+                      f"occupied_bases={len(occupied)} bases={occupied} "
+                      f"degrees={degrees}")
     if result == z3.unsat and (args.reciprocity_core or args.joint_group_core or
                                args.joint_separation_core):
         core = list(solver.unsat_core())
