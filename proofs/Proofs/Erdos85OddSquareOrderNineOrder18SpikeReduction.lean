@@ -1792,6 +1792,64 @@ theorem false_of_orderNine_order18_lowOwner_case_zero_one_of_targetDegreeSum
     Wcompl partnerTargets binZeroTargets b hWcard hb hpartnerSub hpartnerCard
       hbinZeroSub hbinZeroNonempty htargetDisj
 
+/-- Audit equation (34) from its pointwise local form.  Each of the three
+partners has one target, plus one extra exactly when it lies on the small
+shore `A`.  If `a=|partners∩A|` and `a+b=1`, the total is `4-b`. -/
+theorem orderNine_order18_partner_target_degree_sum_eq_four_sub
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (partners A W : Finset V) (b : ℕ)
+    (hpartnerCard : partners.card = 3)
+    (hshoreSplit : (partners ∩ A).card + b = 1)
+    (hdegree : ∀ y ∈ partners,
+      (G.neighborFinset y ∩ W).card = if y ∈ A then 2 else 1) :
+    (∑ y ∈ partners, (G.neighborFinset y ∩ W).card) = 4 - b := by
+  have hindicator : (∑ y ∈ partners, if y ∈ A then 1 else 0) =
+      (partners ∩ A).card := by
+    rw [← Finset.card_filter]
+    congr 1
+  have hsum : (∑ y ∈ partners, (G.neighborFinset y ∩ W).card) =
+      partners.card + (partners ∩ A).card := by
+    calc
+      (∑ y ∈ partners, (G.neighborFinset y ∩ W).card) =
+          ∑ y ∈ partners, (1 + if y ∈ A then 1 else 0) := by
+            apply Finset.sum_congr rfl
+            intro y hy
+            rw [hdegree y hy]
+            split <;> omega
+      _ = partners.card + (partners ∩ A).card := by
+        rw [Finset.sum_add_distrib, hindicator]
+        simp
+  rw [hsum, hpartnerCard]
+  omega
+
+/-- Three sources with at least one restricted target each contribute a
+total restricted degree of at least three. -/
+theorem orderNine_order18_three_source_target_degree_sum_ge_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (sources W : Finset V)
+    (hsourceCard : sources.card = 3)
+    (hpositive : ∀ u ∈ sources, 1 ≤ (G.neighborFinset u ∩ W).card) :
+    3 ≤ ∑ u ∈ sources, (G.neighborFinset u ∩ W).card := by
+  have hle : (∑ _u ∈ sources, 1) ≤
+      ∑ u ∈ sources, (G.neighborFinset u ∩ W).card :=
+    Finset.sum_le_sum fun u hu ↦ hpositive u hu
+  simpa [hsourceCard] using hle
+
+/-- A nonempty source family with positive restricted target degree has a
+source with a nonempty target block. -/
+theorem exists_source_with_nonempty_targetBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (sources W : Finset V)
+    (hsources : sources.Nonempty)
+    (hpositive : ∀ u ∈ sources, 1 ≤ (G.neighborFinset u ∩ W).card) :
+    ∃ u ∈ sources, (G.neighborFinset u ∩ W).Nonempty := by
+  obtain ⟨u, hu⟩ := hsources
+  exact ⟨u, hu, Finset.card_pos.mp (lt_of_lt_of_le Nat.zero_lt_one
+    (hpositive u hu))⟩
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -1830,6 +1888,9 @@ theorem false_of_orderNine_order18_lowOwner_case_zero_one_of_targetDegreeSum
 #print axioms Erdos85.c4Free_disjoint_ownerNeighborFamilies_occupiedTargets_disjoint
 #print axioms Erdos85.false_of_orderNine_order18_lowOwner_case_one_zero_of_targetDegreeSums
 #print axioms Erdos85.false_of_orderNine_order18_lowOwner_case_zero_one_of_targetDegreeSum
+#print axioms Erdos85.orderNine_order18_partner_target_degree_sum_eq_four_sub
+#print axioms Erdos85.orderNine_order18_three_source_target_degree_sum_ge_three
+#print axioms Erdos85.exists_source_with_nonempty_targetBlock
 
 end
 
