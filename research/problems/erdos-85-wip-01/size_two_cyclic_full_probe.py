@@ -77,6 +77,8 @@ def main() -> None:
         help="on SAT, print routes from every base x to target base x+1")
     parser.add_argument("--dump-parity-window-surplus", type=int, metavar="X",
         help="on SAT, decompose PMR at bases x,x+1 by source")
+    parser.add_argument("--dump-parity-charge", action="store_true",
+        help="on SAT, print per-base rank, parity charge, and all PMR surpluses")
     parser.add_argument("--minimize-cap-excess", action="store_true",
         help="in --no-caps mode, minimize total common-target excess over one")
     parser.add_argument("--max-cap-excess", type=int,
@@ -675,6 +677,33 @@ def main() -> None:
               f"selected_zeros={total_selected_zeros} "
               f"selected_excess={total_selected_excess} "
               f"surplus={total_surplus}")
+    if result == z3.sat and args.dump_parity_charge:
+        model = solver.model()
+        ranks = []
+        same = []
+        opposite = []
+        for base in range(q):
+            rank = 0
+            same_missing = 0
+            opposite_missing = 0
+            for t in differences:
+                loads = {u: sum(z3.is_true(model.eval(
+                    edge((base, t), (y, u)), model_completion=True))
+                    for y in range(q)) for u in differences}
+                missing = [u for u in differences if loads[u] == 0]
+                rank += len(missing)
+                same_missing += sum(u % 2 == base % 2 for u in missing)
+                opposite_missing += sum(u % 2 != base % 2 for u in missing)
+            ranks.append(rank)
+            same.append(same_missing)
+            opposite.append(opposite_missing)
+        charge = [same[x] - opposite[x] for x in range(q)]
+        selected = [same[x] + opposite[(x + 1) % q]
+                    for x in range(q)]
+        surplus = [2 * selected[x] - 2 * (q - 2) for x in range(q)]
+        print(f"  parity_charge ranks={ranks} same={same} "
+              f"opposite={opposite} charge={charge} "
+              f"selected={selected} surplus={surplus}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:

@@ -120,7 +120,11 @@ integer, so (WSP) includes both possible bad values zero and two.  Under
 `4q`; hence (WSP) forces every window surplus at least four and proves PMR.
 No classification or pairing of all positive rows is needed.
 
-At the sharp one-dip threshold `sum R <= 66`, eight seeded witnesses all
+## Minimum-rank dips are antipodally paired at q8/a2
+
+The option `--dump-parity-charge` prints the complete per-base vectors
+`R,A,B,Q=A-B,M,S`.  At the sharp one-dip threshold `sum R <= 66`, twelve
+seeded witnesses all
 acquire a second dip at the antipodal window `x+q/2`.  Their surplus
 sequences are period four, with observed forms
 
@@ -136,3 +140,19 @@ universal invariant.  It is distinct from the refuted naive dyadic fold of
 the whole code: only the minimal weighted defect pattern folds, while the
 allowed-fibre interface still has the exceptional lifts documented in the
 dyadic-fold audit.
+
+One representative has
+
+```text
+R = [8,9,8,8,8,9,8,8],
+Q = [0,3,0,0,0,3,0,0],
+S = [2,8,4,4,2,8,4,4].
+```
+
+The charge compensation is concentrated in one base after each dip, so a
+gradual Green-function/winding slope is false.  The surviving candidate is
+instead characteristic-two quantization: a bad weighted window may force
+its translate by the unique order-two base shift `q/2`.  At q8 this paired
+local block already accounts for the strict `4q+4` total-surplus floor.
+Whether the antipodal implication persists for general binary `q` is the
+next bounded structural question; it is not yet claimed.
