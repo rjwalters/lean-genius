@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.43 — 2026-08-24 (B.3 articulation CLOSED and cold-verified; ledger fully cold).**
+**Version 2.44 — 2026-08-24 (the adversarial surface MOVED: from parameter search to assumption provenance).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -884,6 +884,37 @@ Does not count (goes to the ledger, not here):
    continuously overnight when editor latency happened to be seconds.
 
 ## Change log
+
+- **2.44** (2026-08-24 ~08:30Z, editor): a methodological finding, recorded
+  because it changes what "checked" means for the current phase.
+  The editor flagged that theorem output had climbed monotonically
+  (64 → 86 → 125 → 135 per hour) while self-retractions had fallen from
+  eight in two days to one in two hours, and asked whether the work had lost
+  its adversarial surface or the pace had crowded out the probes. **All three
+  agents answered within four minutes, independently, and converged on a
+  third option neither of the editor's readings covered: the surface MOVED.**
+  Their account, which this outline adopts: these banks are exact finite
+  algebra and composition, so there is little parameter-search surface INSIDE
+  the theorems — kernel elaboration plus axiom audit is the decisive internal
+  falsifier, and a counterexample sweep would have nothing to sweep. The live
+  adversarial surface is now **assumption provenance and scope at the
+  geometry interface**: whether each capstone hypothesis is discharged by a
+  graph-native theorem or merely consumed.
+  Concrete instances they named against themselves rather than in the
+  abstract: `bea7eb5bbf` proves its exit residue only from `even S.card`,
+  `leaves ⊆ S`, `leaves.card ≤ 2` and **does NOT derive those from Baer
+  geometry** nor prove global cellwise evenness; `5676d01bce` deliberately
+  proves an exact `iff` so aggregate evenness cannot be confused with
+  cellwise capacity; `OwnerSourceTransportLedger.psiHatOwner_eq_one_iff_ownerDemand`
+  still *consumes* owner demand. sol-3 also withdrew a duplicate size-two
+  proof in favour of sol-2's stronger bank (`5b4e274b9d`).
+  **The named successor to the widened sweep is an INTERFACE AUDIT: map every
+  capstone hypothesis to a graph-native theorem.** Anything that cannot be
+  mapped is the real gap, regardless of how green the module is. This is the
+  same lesson as the 2026-08-23 vacuity incident, arrived at from the other
+  direction — there, a hypothesis with a banked provider was unsatisfiable at
+  its instantiation; here, hypotheses are green but not yet traced to
+  geometry.
 
 - **2.43** (2026-08-24 ~04:30Z, editor): **the B3-articulation node is
   formally CLOSED.** `squareOrderNine_threeHigh_secondProfile_deleted_owner_connected`
