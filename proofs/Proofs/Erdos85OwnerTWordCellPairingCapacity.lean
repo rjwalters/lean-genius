@@ -1,4 +1,5 @@
 import Proofs.Erdos85EvenFinsetInvolutionPairing
+import Proofs.Erdos85EvenFinsetPairing
 
 /-!
 # Owner/T-word cell pairing capacity
@@ -60,9 +61,36 @@ theorem exists_augmented_labelPreserving_freeInvolution_of_even_fibers
   exists_labelPreserving_freeInvolution_of_even_fibers
     (Sum.elim occurrenceLabel ownerLabel) heven
 
+/-- **Exact capacity criterion (`73rnz_cm`).**  A global pairing preserves
+the full label exactly when every label cell has even cardinality. -/
+theorem exists_labelPreserving_freeInvolution_iff_even_fibers
+    {O L : Type*} [Fintype O] [Fintype L]
+    [DecidableEq O] [DecidableEq L]
+    (label : O → L) :
+    (∃ mate : O → O,
+      (∀ o, label (mate o) = label o) ∧
+      Function.Involutive mate ∧
+      (∀ o, mate o ≠ o)) ↔
+    ∀ l, Even ((Finset.univ.filter fun o => label o = l).card) := by
+  constructor
+  · rintro ⟨mate, hlabel, hinvol, hfree⟩ l
+    let S := Finset.univ.filter fun o => label o = l
+    apply (even_card_iff_exists_closed_fixedPointFree_involution S).2
+    refine ⟨mate, ?_, ?_, ?_⟩
+    · intro o ho
+      have holabel : label o = l := (Finset.mem_filter.mp ho).2
+      apply Finset.mem_filter.mpr
+      exact ⟨Finset.mem_univ _, (hlabel o).trans holabel⟩
+    · intro o _ho
+      exact hinvol o
+    · intro o _ho
+      exact hfree o
+  · exact exists_labelPreserving_freeInvolution_of_even_fibers label
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.exists_labelPreserving_freeInvolution_of_even_fibers
 #print axioms Erdos85.exists_augmented_labelPreserving_freeInvolution_of_even_fibers
+#print axioms Erdos85.exists_labelPreserving_freeInvolution_iff_even_fibers
