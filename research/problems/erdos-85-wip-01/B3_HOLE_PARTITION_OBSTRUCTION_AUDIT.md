@@ -5434,3 +5434,21 @@ color two, `s=5`, `r0=4`, `r=0`, so `lambda=4=s-1`.  The sparse selector has
 the near-full deletion alternative (13ba), after which only the raw matching
 rank and the one-unit slack remain to be counted.  This is still a
 corpus-supported conjecture, not a theorem.
+
+The quantifiers in (13ba) matter.  Near-full deletion is not true for every
+minimum-singleton color at every obstructed row.  For example, seed 129's
+other minimum-singleton choice at target 24 has `s=5` and `lambda=2`, and its
+score seven does not close demand six.  The exact deterministic tie-breaker
+that survives all ten payloads is lexicographic:
+
+```text
+at a chosen target w,
+  first minimize s(w,c),
+  then maximize lambda(w,c) among the minimizing colors.             (13bb)
+```
+
+Some color selected by (13bb) closes in every row-feasible durable payload.
+For seed 129 it chooses color two (`lambda=4`) over color zero (`lambda=2`).
+Thus (13ba) must be proved together with existence of the target row; it is
+not a universal local lemma.  This also isolates the remaining target-row
+selection problem from the now deterministic three-color choice.

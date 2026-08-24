@@ -2077,6 +2077,9 @@ def main() -> None:
                 profile for profile in profiles
                 if profile["mandatory_card"] == minimum_mandatory
             ]
+            maximum_deletion_loss = max(
+                profile["matching_deletion_loss"] for profile in minimizing
+            )
             records.append({
                 "target": target,
                 "profiles": profiles,
@@ -2090,6 +2093,8 @@ def main() -> None:
                     )
                 ),
                 "minimum_mandatory_card": minimum_mandatory,
+                "maximum_deletion_loss_among_minimum_mandatory":
+                    maximum_deletion_loss,
                 "minimum_mandatory_selector_closes": any(
                     profile["score"] < profile["demand"]
                     for profile in minimizing
@@ -2122,6 +2127,16 @@ def main() -> None:
                     >= profile["mandatory_card"] - 1
                     for record in records for profile in record["profiles"]
                 ),
+            "exists_closing_lexicographic_singleton_deletion_selector": any(
+                profile["mandatory_card"]
+                == record["minimum_mandatory_card"]
+                and profile["matching_deletion_loss"]
+                == record[
+                    "maximum_deletion_loss_among_minimum_mandatory"
+                ]
+                and profile["score"] < profile["demand"]
+                for record in records for profile in record["profiles"]
+            ),
         }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support
             and not args.scan_nondiagonal_fibers
