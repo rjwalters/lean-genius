@@ -185,3 +185,29 @@ two-sector or vector-valued invariant coupled at adjacent boundaries, rather
 than scalar winding.  Any q-generic WSP mechanism should preserve the parity
 class of the selected window and explain why cross-sector dips cannot share
 the cheap antipodal compensation available within one class.
+
+## Scope across small orders and hole phases
+
+The same cap-free reciprocal query clarifies the scope of any generic WSP
+lemma.  At `q=4,a=0`, WSP is false already at total rank eight: every one of
+the eight sources is sharp, the two target-fibre loads alternate between
+`(0,2)` and `(2,0)`, and `M(0)=2<4`.  Thus the binary theorem must retain its
+actual `q>=8` (equivalently `k>=3`) hypothesis; the order-four case is not a
+harmless induction base.
+
+Order six does not provide a non-binary counterexample: for both inequivalent
+hole choices `a=0,1`, the query `M(0)<=5` is UNSAT even with no total-rank
+bound.  At order eight there is a useful phase separation:
+
+```text
+a=0: M(0)<=7 SAT without a rank bound;
+a=1: M(0)<=7 UNSAT without a rank bound;
+a=2: M(0)<=7 SAT without a rank bound;
+a=3: M(0)<=7 UNSAT without a rank bound.
+```
+
+The `a=1,3` directed controls are SAT, so their unconditional PMR still uses
+reciprocity rather than following from the two exact-hit families alone.
+The hard low-rank case is consequently concentrated in the even hole phases:
+`a=0` already has cap-free minimum total rank 78, while `a=2` reaches rank
+`q^2=64` and is the sharp WSP phase studied above.
