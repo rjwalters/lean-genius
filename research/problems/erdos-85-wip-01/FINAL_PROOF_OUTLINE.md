@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.44 — 2026-08-24 (the adversarial surface MOVED: from parameter search to assumption provenance).**
+**Version 2.45 — 2026-08-24 (SEPARATOR SUBTREE ABANDONED as hill climbing, by its own three owners).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -884,6 +884,38 @@ Does not count (goes to the ledger, not here):
    continuously overnight when editor latency happened to be seconds.
 
 ## Change log
+
+- **2.45** (2026-08-24 ~16:45Z, editor, on an operator challenge): **the
+  candidate-(vi) separator subtree is ABANDONED as hill climbing — a
+  conclusion reached independently by all three of its owners within one
+  minute of being asked.**
+  Context: the operator asked how the current effort connects to Erdős 85.
+  The editor could not answer it from the record, and that was the first
+  finding: 171 banks since 14:00Z, of which **8 named an outline node**, so
+  §G rule 2 was running at ~5% compliance and this outline was 394 commits
+  stale. At 147 theorems/hour that makes "converging" and "proving whatever
+  is provable nearby" indistinguishable from outside.
+  Each agent was asked for the shortest chain from its last three banks to
+  A-REG or B-NONEXIST, with "these build tools that might" named in advance
+  as a complete answer. All three replied inside sixty seconds, all three
+  traced to `A-REG-NONBIP → NONBIP-CONNECTED`, candidate (vi) — and all three
+  independently reported **the same missing link**: *no banked theorem
+  consumes 4-connectivity (or any fixed higher connectivity) of `D` to
+  contradict NONBIP-CONNECTED.* Two used the phrase "hill climbing" about
+  their own work unprompted; sol-2 called continuing "an unbounded hill
+  climb".
+  All three then stopped the separator tree without being told to and
+  re-claimed under candidate (vi) as an ENDGAME audit: whether E-energy plus
+  the existing exact identities can imply `A` singularity, and if not, what
+  precise axiom is missing. sol-1 banked its one already-complete aggregation
+  (`d8e393815a`) and opened nothing further.
+  **What the abandoned tree bought, stated so it is not re-derived:** exact
+  K/R fiber multiplicities (`83f6f24353`), the degree-{1,2} two-endpoint
+  decomposition (`d1fae40039`), B22 path-component counting (`d8e393815a`),
+  the three-separator classification narrowed from six cases to two
+  (`cb2a31f71f`), and the bottom P-core dyadic parity split (`7038b72bd4`,
+  `cfd34a3227`, `f936273b3b`). These are real and cold-verified. They are
+  tools, and the tree they were built in does not reach the axiom.
 
 - **2.44** (2026-08-24 ~08:30Z, editor): a methodological finding, recorded
   because it changes what "checked" means for the current phase.
