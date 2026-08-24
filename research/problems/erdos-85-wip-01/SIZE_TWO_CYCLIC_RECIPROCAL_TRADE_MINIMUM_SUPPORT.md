@@ -66,14 +66,41 @@ vertices would lie in one row.  In one row a cell is uniquely determined by
 its absolute column; equality of the two disjoint two-element column
 multisets at any `p` is then impossible.
 
+The six-vertex case is also impossible.  If `|W|=6`, disjointness of the two
+sign-neighbour sets and equality of their degrees force both sign degrees to
+be exactly two at every vertex.  Their union is 4-regular, so its complement
+in `K_6` is a perfect matching `mu`.
+
+For every matched pair `{p,mu(p)}`, the other four vertices are precisely the
+two plus and two minus neighbours of `p`; hence all their row multiplicities
+and all their column multiplicities are even.  Modulo two, every `mu`-pair
+therefore has the same row-incidence vector.  Either all three pairs lie
+within rows, or all three join the same two rows.  The identical dichotomy
+holds for columns.
+
+The within-row and within-column alternatives cannot both hold, since a
+matched pair would then repeat one cell.  The two cross alternatives cannot
+both hold, since six distinct cells cannot lie in a 2-by-2 grid.  Up to
+interchanging rows and columns, `W` must therefore be the full 3-by-2 grid,
+with `mu` pairing the two cells in each row.
+
+Consider only the minus graph.  Between each pair of two-cell rows its edges
+form a perfect matching: at every vertex the two minus neighbours must lie
+in the two other rows, and their columns must be different.  A perfect
+matching between two two-cell rows has a binary type, parallel or crossed.
+At each of the three rows, the types on its two incident row-pairs must
+differ, because its two minus neighbours have different columns.  This asks
+the three binary row-pair types to be pairwise different, which is
+impossible.  The 2-by-3 case is symmetric.
+
 Consequently the sharp bound supplied by the two affine margins is
 
 ```text
-|W| >= 6,                                             (3)
+|W| >= 7,                                             (3)
 ```
 
-and a nontrivial closed trade changes at least six old and six new
-undirected edges, hence at least twelve edge memberships in total.
+and a nontrivial closed trade changes at least seven old and seven new
+undirected edges, hence at least fourteen edge memberships in total.
 
 ## Consequence for local cycle descent
 
@@ -86,7 +113,7 @@ affected source has a complete local column cycle.  Thus:
 - an ordinary graph 2-switch is too small;
 - a single collision-edge orientation token is too small; and
 - the first meaningful bounded search is for a symmetric Latin bitrade on
-  at least six cells and at least twelve toggled edge memberships.
+  at least seven cells and at least fourteen toggled edge memberships.
 
 The theorem is q-generic and does not use caps or the power-of-two
 hypothesis.  Caps enter only when asking whether both endpoints `K,K'` of
