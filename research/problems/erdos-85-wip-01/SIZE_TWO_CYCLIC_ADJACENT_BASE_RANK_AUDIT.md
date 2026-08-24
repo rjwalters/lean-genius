@@ -91,6 +91,38 @@ R(x)+R(x+1) - (Q(x+1)-Q(x)) >= 2q.
 This formulation exposes the characteristic-two charge that the coupled
 row/column projections must control.
 
+## PMR is cap-free but reciprocity-dependent at q8
+
+The same PMR-violation query was rerun after deleting every same-difference
+common-target cap (`--no-caps`).  For each hole representative
+`a=0,1,2,3`,
+
+```text
+total rank <= 64, M(0) <= 7, no caps: UNSAT.
+```
+
+Thus the q8 PMR phenomenon does not use collision caps at all.  This sharply
+narrows the generic proof target: exact target-row hits, exact absolute-column
+hits, and route reciprocity already suffice in the tested order.  Conversely,
+with reciprocity removed (`--directed --no-caps`), the same query is SAT for
+both a nonexceptional and exceptional representative (`a=1,2`).  Earlier
+ablations also make it SAT when either exact projection family is removed.
+Without the global rank bound, the cap-free query is SAT for `a=0,2` and
+UNSAT for `a=1,3`, exactly matching the full-cap separation; the extremal
+hypothesis, rather than the caps, supplies the missing force in the
+exceptional geometries.
+The minimal experimental core is therefore precisely
+
+```text
+exact row hits + exact column hits + reciprocity + total rank <= q^2.
+```
+
+This cuts off the blocker/trade route for PMR itself.  The appropriate
+q-generic object is the symmetric base-resolved `0/1` route tensor: its fixed
+source-base fibre matrix has constant row and column margins, and its
+order-two target character is the potential `Q`.  What remains is a
+quantitative adjacent-charge inequality for that symmetric tensor.
+
 ## Exact `a=2` tradeoff
 
 The exceptional hole placement has a sharper two-level behavior:
