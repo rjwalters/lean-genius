@@ -23,7 +23,7 @@ the shore and incidence identities forces an injective private-neighbor
 matching.  The hypotheses `hout` and `hrepUpper` are exactly the two graph
 facts supplied by the full-line final-layer construction: exceptional lines
 live wholly on the shore, and shore replication is at most three. -/
-theorem exists_injective_privateNeighbor_of_pureEndpoint_fourClass
+theorem pureEndpoint_fourClass_defectIndependent_and_privateMatching
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -34,6 +34,8 @@ theorem exists_injective_privateNeighbor_of_pureEndpoint_fourClass
     (hshore : 2 * S.card = q * q + q)
     (hout : ∀ p ∉ S, (G.neighborFinset p ∩ C).card = 0)
     (hrepUpper : ∀ p ∈ S, (G.neighborFinset p ∩ C).card ≤ 3) :
+    (∀ i ∈ C, ∀ j ∈ C, i ≠ j →
+      ¬(secondOrderDefectGraph G).Adj i j) ∧
     ∃ p : {i // i ∈ C} → V, Function.Injective p ∧
       ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ C = {i.1} := by
   classical
@@ -256,11 +258,31 @@ theorem exists_injective_privateNeighbor_of_pureEndpoint_fourClass
       interval_cases rep x <;> decide
     · rw [hout x hxS]
       decide
-  exact exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
-    G hfree C hCcard hline hDindependent htripleZero
+  exact ⟨hDindependent,
+    exists_injective_privateNeighbor_of_noDefectEdges_noTripleMass
+      G hfree C hCcard hline hDindependent htripleZero⟩
+
+/-- Matching-only projection of the full pure-endpoint structure theorem. -/
+theorem exists_injective_privateNeighbor_of_pureEndpoint_fourClass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (C S : Finset V) (hCcard : C.card = q)
+    (hline : ∀ i ∈ C, G.degree i = q)
+    (hshore : 2 * S.card = q * q + q)
+    (hout : ∀ p ∉ S, (G.neighborFinset p ∩ C).card = 0)
+    (hrepUpper : ∀ p ∈ S, (G.neighborFinset p ∩ C).card ≤ 3) :
+    ∃ p : {i // i ∈ C} → V, Function.Injective p ∧
+      ∀ i, G.Adj i.1 (p i) ∧ G.neighborFinset (p i) ∩ C = {i.1} :=
+  (pureEndpoint_fourClass_defectIndependent_and_privateMatching
+    G hfree C S hCcard hline hshore hout hrepUpper).2
 
 end
 
 end Erdos85
 
 #print axioms Erdos85.exists_injective_privateNeighbor_of_pureEndpoint_fourClass
+#print axioms
+  Erdos85.pureEndpoint_fourClass_defectIndependent_and_privateMatching

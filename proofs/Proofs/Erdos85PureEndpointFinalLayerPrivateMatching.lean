@@ -20,7 +20,7 @@ noncomputable section
 graph, if the final layer is pure full and has exactly `q` exceptional
 centers, those centers admit an injective matching to private neighbors.
 The matched vertex of each center has it as its unique exceptional neighbor. -/
-theorem c4Free_binarySquare_pureEndpoint_fullLineCenters_privateMatching
+theorem c4Free_binarySquare_pureEndpoint_fullLineCenters_structure
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -37,6 +37,9 @@ theorem c4Free_binarySquare_pureEndpoint_fullLineCenters_privateMatching
       (G.neighborFinset v ∩ S).card = 0 ∨
       (G.neighborFinset v ∩ S).card = m ∨
       (G.neighborFinset v ∩ S).card = q) :
+    (∀ i ∈ fullLineCenters G S q,
+      ∀ j ∈ fullLineCenters G S q, i ≠ j →
+        ¬(secondOrderDefectGraph G).Adj i j) ∧
     ∃ p : {i // i ∈ fullLineCenters G S q} → V,
       Function.Injective p ∧
       ∀ i, G.Adj i.1 (p i) ∧
@@ -108,8 +111,33 @@ theorem c4Free_binarySquare_pureEndpoint_fullLineCenters_privateMatching
   have hline : ∀ i ∈ C, G.degree i = q := by
     intro i _
     exact hreg i
-  exact exists_injective_privateNeighbor_of_pureEndpoint_fourClass
+  exact pureEndpoint_fourClass_defectIndependent_and_privateMatching
     G hfree C S (by simpa [C] using hCcard) hline hshore hout hrepUpper
+
+/-- Matching-only projection of the pure final-layer structure theorem. -/
+theorem c4Free_binarySquare_pureEndpoint_fullLineCenters_privateMatching
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V)
+    (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    ∃ p : {i // i ∈ fullLineCenters G S q} → V,
+      Function.Injective p ∧
+      ∀ i, G.Adj i.1 (p i) ∧
+        G.neighborFinset (p i) ∩ fullLineCenters G S q = {i.1} :=
+  (c4Free_binarySquare_pureEndpoint_fullLineCenters_structure
+    G hfree hq hqm hreg hcard S hempty hCcard hshore htri).2
 
 end
 
@@ -117,3 +145,5 @@ end Erdos85
 
 #print axioms
   Erdos85.c4Free_binarySquare_pureEndpoint_fullLineCenters_privateMatching
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_fullLineCenters_structure
