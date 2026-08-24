@@ -387,3 +387,39 @@ transport already known to be compatible with the `q=4` control.  The second
 restart candidate is **stopped**.  The only surviving candidate from this
 round is cover-imprimitivity, whose first refinement must manufacture an
 equivalence relation rather than another parity equality.
+
+### Cover-imprimitivity first refinement: stopped
+
+The natural first refinement is not merely noncanonical; it points in the
+opposite direction.  At the last dyadic stopping level let `B` be the
+half-occupied lines and `C=V setminus B` the full-or-empty lines.  The banked
+last-level localization proves
+
+```text
+deg_A(P,C) <= 3
+```
+
+for every point `P`.  Hence `|N_A(P) intersect B| >= q-3`.  For `q>=8` this
+is at least five.  If two distinct points `P,Q` had the same incidence
+signature on `B`, they would therefore have at least five common
+`A`-neighbours, contradicting C4-freeness (which permits at most one).
+Consequently
+
+```text
+P |-> N_A(P) intersect B
+```
+
+is injective.  Equality of stopping-layer incidence signatures gives the
+discrete partition into `q^2` singleton classes, not `q` classes of size
+`q`.  Refining further by the high/low defect-degree bit from `(53)` can only
+keep the partition discrete.
+
+Thus the proposed one-step route from the dyadic layer to a covering fibre
+system is **stopped** by the same sharp local information that made it seem
+promising.  Any future imprimitivity theorem would have to *forget* most of
+the `B`-incidence signature and then prove that the resulting quotient is
+canonical.  No literature theorem or existing identity selects such a
+coarsening, so doing that ad hoc would simply rename the missing partition
+theorem.  Both bounded candidates from the goal-36 Baer restart are now cut;
+the restart produces a reliable map/no-go result but does not change the
+status of NONBIP-CONNECTED.
