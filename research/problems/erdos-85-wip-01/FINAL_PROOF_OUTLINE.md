@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.45 — 2026-08-24 (SEPARATOR SUBTREE ABANDONED as hill climbing, by its own three owners).**
+**Version 2.46 — 2026-08-24 (§G rule 6: hill climbing is a STUCK SIGNAL; the response is divergence, not discipline).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -882,8 +882,59 @@ Does not count (goes to the ledger, not here):
    on editor approval that arrived 53 seconds and 6 minutes later, costing
    most of a working day, while the same four agents had run eight hours
    continuously overnight when editor latency happened to be seconds.
+6. **HILL CLIMBING IS A STUCK SIGNAL — ANSWER IT WITH DIVERGENCE, NOT
+   DISCIPLINE** (operator, 2026-08-24). The observation this rule encodes:
+   *hill climbing becomes more likely as the problem becomes more
+   intractable.* A lane that cannot reach its terminal will keep producing
+   true, verifiable, adjacent theorems indefinitely, because that is the
+   locally available move. High output is therefore NOT evidence against
+   being stuck — under intractability it is the expected symptom.
+   **TRIGGER (self-declared, no editor needed).** You are hill climbing when
+   you cannot state a chain of statements from your recent banks to A-REG or
+   B-NONEXIST with every link named. §G rule 2's node-naming is the cheap
+   continuous check; this is the expensive periodic one. Run it on yourself
+   whenever you have banked ~10 results without a node's status changing.
+   **RESPONSE, in order. Do not skip to the third step.**
+   1. **STOP the lane and say so in the room**, naming the missing link.
+      Banking one already-complete result first is fine; opening another leaf
+      is not.
+   2. **GO OUTSIDE.** Search the literature for the shape of your obstruction
+      before inventing a new one. The precedent is Baer's absolute-point
+      theorem: the campaign spent a day proving `tr A = 0` had no available
+      mechanism, and the answer was a classical theorem about polarities that
+      nobody in the room would have derived. External research is CHEAPER
+      than a new mechanism and this room has under-used it.
+   3. **BRAINSTORM WIDE, THEN CUT.** Open a divergence round and generate
+      deliberately — including implausible entries. Quantity first, no
+      filtering while generating: a wild-card that survives contact is worth
+      more than a safe idea that was always going to fail. THEN reduce, on
+      stated criteria, to the two or three worth a bounded probe. The
+      divergence mechanism already exists and has run twice, both times
+      producing convergent results neither agent had alone.
+   4. **PROBE BOUNDED, REPORT EITHER WAY.** A refuted wild card with a
+      countermodel is a result and goes in the map.
+   *Why this is in the map:* on 2026-08-24 the candidate-(vi) separator
+   subtree ran for hours at ~147 theorems/hour, every theorem true and
+   cold-verified, while no chain to the axiom existed. All three owners
+   recognised it inside sixty seconds once asked — but nobody asked for
+   hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.46** (2026-08-24 ~17:00Z, editor, per operator direction): adds §G rule
+  6. The operator's observation, which this outline adopts as a working
+  principle: **hill climbing becomes more likely as the problem becomes more
+  intractable**, so high output is not evidence against being stuck — it is
+  the expected symptom. The rule gives the condition a self-declared trigger
+  (you cannot name the chain to the axiom), and answers it with a mode
+  switch rather than more discipline: stop and say so, go to the LITERATURE
+  before inventing, then brainstorm deliberately wide — wild cards included,
+  no filtering while generating — and only then reduce to two or three
+  bounded probes. Precedent for step 2 is Baer: a day spent proving no
+  mechanism was available, answered by a classical theorem about polarities
+  the room would not have derived. Step 3 uses the divergence mechanism,
+  which has run twice and produced convergent results neither agent held
+  alone.
 
 - **2.45** (2026-08-24 ~16:45Z, editor, on an operator challenge): **the
   candidate-(vi) separator subtree is ABANDONED as hill climbing — a
