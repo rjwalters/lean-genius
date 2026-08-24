@@ -27,6 +27,38 @@ private theorem triangular_even_of_four_dvd
       Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)
     _ = k * (4 * k - 1) + k * (4 * k - 1) := by ring
 
+/-- Every base/target-fibre pair belongs to a unique adjacent base pair whose
+left endpoint has the target fibre's mod-two parity.  This is the exact
+partition behind the parity-selected missing-rank sum. -/
+theorem existsUnique_paritySelectedAdjacentBase
+    {q : ℕ} [NeZero q] (h2q : 2 ∣ q) (b u : ZMod q) :
+    ∃! x : ZMod q,
+      (b = x ∨ b = x + 1) ∧
+        ZMod.castHom h2q (ZMod 2) u =
+          ZMod.castHom h2q (ZMod 2) x := by
+  let φ : ZMod q →+* ZMod 2 := ZMod.castHom h2q (ZMod 2)
+  by_cases hsame : φ u = φ b
+  · refine ⟨b, ⟨Or.inl rfl, hsame⟩, ?_⟩
+    intro x hx
+    rcases hx.1 with rfl | hshift
+    · rfl
+    · have hmap := congrArg φ hshift
+      rw [map_add, map_one] at hmap
+      have hpar : φ b = φ x := hsame.symm.trans hx.2
+      have hzeroOne : (0 : ZMod 2) = 1 := by
+        linear_combination hmap - hpar
+      exact (zero_ne_one hzeroOne).elim
+  · have hpar : φ u = φ (b - 1) := by
+      rw [map_sub, map_one]
+      exact (show ∀ x y : ZMod 2, x ≠ y → x = y - 1 by decide) _ _ hsame
+    refine ⟨b - 1, ⟨Or.inr (by abel), hpar⟩, ?_⟩
+    intro x hx
+    rcases hx.1 with hbase | hshift
+    · have hux : φ u = φ b := by rw [hbase]; exact hx.2
+      exact (hsame hux).elim
+    · rw [hshift]
+      ring
+
 /-- The duplicate and missing fibers of a sharp row have different mod-two
 projections whenever `4 ∣ q`. -/
 theorem sizeTwoCyclic_singleDuplicateMissing_parity_ne
@@ -85,5 +117,6 @@ end
 end Erdos85
 
 #print axioms Erdos85.sizeTwoCyclic_singleDuplicateMissing_parity_ne
+#print axioms Erdos85.existsUnique_paritySelectedAdjacentBase
 #print axioms
   Erdos85.exists_paritySeparated_duplicateMissing_of_collision_eq_one
