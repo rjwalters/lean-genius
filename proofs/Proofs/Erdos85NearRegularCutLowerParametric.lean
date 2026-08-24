@@ -29,6 +29,23 @@ def nearRegularCutLower {ι : Type*} [Fintype ι]
       (q * s - ∑ i, b i) : ℤ) - s ^ 2 +
     (∑ i, b i * (b i - 1) : ℕ)
 
+/-- Two-sided necessary cut condition for a component shore and its ordinary
+complement.  `highDegree` records the total ordinary degree of each high
+root, so the complementary incidence vector is `highDegree - b`. -/
+def nearRegularComponentAdmissible {ι : Type*} [Fintype ι]
+    (ordinaryCount q : ℕ) (highDegree : ι → ℕ)
+    (s : ℕ) (b : ι → ℕ) : Prop :=
+  nearRegularCutLower ordinaryCount q s b ≤ 0 ∧
+    nearRegularCutLower ordinaryCount q (ordinaryCount - s)
+      (fun i => highDegree i - b i) ≤ 0
+
+instance {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (ordinaryCount q : ℕ) (highDegree : ι → ℕ)
+    (s : ℕ) (b : ι → ℕ) :
+    Decidable (nearRegularComponentAdmissible ordinaryCount q highDegree s b) := by
+  unfold nearRegularComponentAdmissible
+  infer_instance
+
 private theorem nearRegular_balancedSquare_point (a x : ℕ) :
     ((2 * a + 1 : ℕ) : ℤ) * x ≤
       (x : ℤ) ^ 2 + (a : ℤ) * (a + 1) := by
@@ -325,6 +342,18 @@ theorem nearRegularCutLower_orderNine_threeHigh
   simp [nearRegularCutLower, orderNineNearRegularCutLower,
     nearRegularBalancedSquareSum_orderNine, Fin.sum_univ_three]
 
+/-- The generic two-sided admissibility predicate likewise specializes to
+the existing q=9 predicate. -/
+theorem nearRegularComponentAdmissible_orderNine_threeHigh
+    (s b₁ b₂ b₃ : ℕ) :
+    nearRegularComponentAdmissible 78 9 (fun _ : Fin 3 => 10) s
+      ![b₁, b₂, b₃] ↔
+      orderNineNearRegularComponentAdmissible s b₁ b₂ b₃ := by
+  simp [nearRegularComponentAdmissible,
+    orderNineNearRegularComponentAdmissible, nearRegularCutLower,
+    orderNineNearRegularCutLower, nearRegularBalancedSquareSum_orderNine,
+    Fin.sum_univ_three]
+
 #print axioms Erdos85.nearRegularBalancedSquareSum_le_sum_sq
 #print axioms Erdos85.nearRegularBalancedSquare_eq_pointwise
 #print axioms Erdos85.nearRegularBalancedSquare_eq_upper_card
@@ -333,5 +362,6 @@ theorem nearRegularCutLower_orderNine_threeHigh
 #print axioms Erdos85.nearRegularBalancedSquare_eq_of_cutLower_eq
 #print axioms Erdos85.nearRegular_partition_of_cutLower_eq
 #print axioms Erdos85.nearRegularCutLower_orderNine_threeHigh
+#print axioms Erdos85.nearRegularComponentAdmissible_orderNine_threeHigh
 
 end Erdos85
