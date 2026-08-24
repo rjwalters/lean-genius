@@ -49,6 +49,55 @@ Consequently, promotion of our configuration to a semipartial geometry is a
 real missing structural lemma, not a change of vocabulary.  If such promotion
 were obtained, the classical polarity machinery would become relevant.
 
+#### Exact matrix form of the missing semipartial axioms
+
+Let `C` be the collinearity graph on points.  The square-order defect identity
+gives
+
+```text
+A² = qI + C,                 C = J - I - D.
+```
+
+Since `D` is `(q - 1)`-regular on `q²` vertices, direct expansion gives
+
+```text
+C² = q(q - 2)J + I + 2D + D².
+```
+
+For a noncollinear pair `x,y` (that is, a `D`-edge), the number of points
+collinear with both is therefore
+
+```text
+(C²)_{xy} = q(q - 2) + 2 + (D²)_{xy}.
+```
+
+Thus the first semipartial uniformity axiom is exactly constancy of the defect
+codegree `(D²)_{xy}` over all `D`-edges.  Connectedness and regularity alone do
+not imply this; the existing development controls sums and moments of these
+entries, but contains no edgewise-constancy theorem.
+
+For the second axiom, take a point `x` and a line indexed by `y`.  The number
+of points on that line collinear with `x` is
+
+```text
+(CA)_{xy} = (A³ - qA)_{xy}.
+```
+
+When `x` is not incident with the line (`A_{xy}=0`), this is simply
+`(A³)_{xy}`.  Hence the required `0`-or-`t` law is precisely the existence of a
+single integer `t` such that
+
+```text
+A_{xy}=0  implies  (A³)_{xy} in {0,t}.
+```
+
+The banked cubic bounds, histograms, and binary transport equations do not
+establish this two-valued conclusion: in particular the transport results see
+parity or aggregate mass, not equality of all positive cubic entries.  These
+two formulas isolate the exact promotion gap and make it independently
+checkable.  Any future semipartial route must prove at least one genuinely new
+entrywise uniformity statement rather than another moment identity.
+
 ### Extension to a projective plane
 
 Partial-plane extension results, including Stephen Dow's
