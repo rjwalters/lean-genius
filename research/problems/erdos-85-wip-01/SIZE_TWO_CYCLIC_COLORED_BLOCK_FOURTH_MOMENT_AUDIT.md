@@ -114,6 +114,14 @@ caps by the exact q8 three-cap MUS `(3,1),(4,1),(4,3)`, while retaining every
 degree-three/four reversal identity, is SAT.  Thus this separator belongs to
 the corrected full-cap branch and does not revive the selected-cap subtree.
 
+It also uses the **empty fibre essentially**.  With all q8 cap families and
+all `T3`/`T4` reversal identities still imposed, deleting only
+`--empty-fiber 4` restores SAT.  This distinguishes the trace mechanism from
+the stronger translation-invariant observation that entrywise reciprocity
+plus all caps is already UNSAT without an empty fibre.  The low-degree trace
+subsystem is therefore aligned with the actual non-translation-invariant
+merger target: it combines full caps with the selected zero diagonal block.
+
 ## Consequence and next theorem
 
 Colored low-degree trace reversal is therefore a live mechanism, while any
