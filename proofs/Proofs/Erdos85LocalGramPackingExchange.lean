@@ -127,11 +127,49 @@ theorem not_forced_pair_of_exchangeCoupledAt_of_conflict
   exact not_isForcedLocalGramNeighbor_of_singleSwap
     H W d x u v huv C huC hvC hu hv
 
+/-- Erased-core form of exchange coupling.  This is often the convenient
+outer-design interface: construct two named full packings, and prove that
+deleting their exchanged rows leaves the same finset. -/
+theorem areLocalGramPackingExchangeCoupledAt_iff_joint_or_erase_eq
+    (H W : V → V → Prop) (d : V → ℕ) (x u v : V) (huv : u ≠ v) :
+    AreLocalGramPackingExchangeCoupledAt H W d x u v ↔
+      (∃ X : Finset V,
+        IsLocalGramPacking H W d x X ∧ u ∈ X ∧ v ∈ X) ∨
+      ∃ Xu Xv : Finset V,
+        IsLocalGramPacking H W d x Xu ∧
+        IsLocalGramPacking H W d x Xv ∧
+        u ∈ Xu ∧ v ∉ Xu ∧ v ∈ Xv ∧ u ∉ Xv ∧
+        Xu.erase u = Xv.erase v := by
+  constructor
+  · rintro (hjoint | ⟨C, huC, hvC, hu, hv⟩)
+    · exact Or.inl hjoint
+    · refine Or.inr ⟨insert u C, insert v C, hu, hv, ?_, ?_, ?_, ?_, ?_⟩
+      · simp
+      · intro h
+        rcases Finset.mem_insert.mp h with hvu | hvC'
+        · exact huv hvu.symm
+        · exact hvC hvC'
+      · simp
+      · intro h
+        rcases Finset.mem_insert.mp h with huv' | huC'
+        · exact huv huv'
+        · exact huC huC'
+      · simp [huC, hvC]
+  · rintro (hjoint | ⟨Xu, Xv, hXu, hXv, hu, hvXu, hv, huXv, hcore⟩)
+    · exact Or.inl hjoint
+    · refine Or.inr ⟨Xu.erase u, by simp, ?_, ?_, ?_⟩
+      · simp [hvXu]
+      · simpa [Finset.insert_erase hu] using hXu
+      · have hXv_eq : insert v (Xu.erase u) = Xv := by
+          rw [hcore, Finset.insert_erase hv]
+        simpa [hXv_eq] using hXv
+
 #print axioms areLocalGramPackingExchangeCoupledAt_symm
 #print axioms areLocalGramPackingExchangeCoupledAt_containing
 #print axioms not_isForcedLocalGramNeighbor_of_singleSwap
 #print axioms exists_joint_of_exchangeCoupledAt_of_forced
 #print axioms exists_singleSwap_of_exchangeCoupledAt_of_conflict
 #print axioms not_forced_pair_of_exchangeCoupledAt_of_conflict
+#print axioms areLocalGramPackingExchangeCoupledAt_iff_joint_or_erase_eq
 
 end Erdos85
