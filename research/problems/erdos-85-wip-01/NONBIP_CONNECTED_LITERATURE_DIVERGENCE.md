@@ -252,3 +252,41 @@ parameter.  Probe 2 is **stopped as a connectivity/regularity terminal**.
 It can be revived only with a concrete extra valuation consequence of the
 prescribed integral square root `A` or of the nonlinear transport law; the
 square tree count alone does not justify more determinant wrappers.
+
+## Nonnegative square-root literature: exact scope verdict
+
+The surviving identity suggests asking for a classification of nonnegative
+square roots of
+
+```text
+B = L_D + J = A^2,
+```
+
+where the desired root `A` is symmetric, binary, loopless and regular.  The
+primary modern reference is Tam--Huang, *Nonnegative square roots of
+matrices*, Linear Algebra Appl. 498 (2016), 404--440,
+[doi:10.1016/j.laa.2015.11.011](https://doi.org/10.1016/j.laa.2015.11.011).
+
+Their graph-theoretic necessary condition says that the support digraph of a
+nonnegative matrix must itself have a digraph square root.  In our setting
+this condition is tautological rather than restrictive: the off-diagonal
+support of `B` is exactly the set of pairs having an `A`-common neighbour,
+and its missing pairs are how `D` was defined.  The root support is the
+ambient graph `A` itself.
+
+The general spectral/Jordan conditions also add nothing in the connected
+nonbipartite branch.  There `B=A^2` is positive definite, so it has no zero or
+negative eigenvalues.  The even-multiplicity conditions for negative
+eigenvalues and the singular-Jordan restrictions are therefore vacuous.
+The paper's effective classifications concern order two and special sparse
+support types (permutation digraphs, paths/circuits, monomial, rank-one and
+index-two nilpotent matrices); it explicitly presents the general theory as
+an initial study and gives no forbidden-subgraph classification.  Our dense
+reflexive complement-of-`D` support lies outside those classes.
+
+Thus the nonnegative-square-root probe is **stopped at the literature
+interface**.  It translates the problem faithfully but supplies no theorem
+between the already-known support/spectral conditions and the required
+binary coordinate classification.  Reviving it would require a new theorem
+specifically about dense regular symmetric `0/1` roots, which is the original
+incidence problem under another name.
