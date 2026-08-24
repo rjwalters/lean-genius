@@ -61,6 +61,9 @@ def main() -> None:
         help="drop reciprocity and use one variable per ordered pair")
     parser.add_argument("--reciprocity-core", action="store_true",
         help="use directed variables and shrink reciprocity by fibre-pair groups")
+    parser.add_argument("--reciprocity-fibre-pair", type=int, nargs=2,
+        action="append", metavar=("T", "U"),
+        help="with --reciprocity-core, activate only the listed fibre pairs")
     parser.add_argument("--joint-group-core", action="store_true",
         help="shrink reciprocity blocks and full-cap families together")
     parser.add_argument("--joint-separation-core", action="store_true",
@@ -111,6 +114,9 @@ def main() -> None:
     if (args.reciprocity_core or args.joint_group_core or
             args.joint_separation_core) and args.dimacs is not None:
         parser.error("core modes cannot be combined with --dimacs")
+    if (args.reciprocity_fibre_pair is not None and
+            not args.reciprocity_core):
+        parser.error("--reciprocity-fibre-pair requires --reciprocity-core")
     if args.no_caps and args.only_cap_pair is not None:
         parser.error("--no-caps and --only-cap-pair are incompatible")
     if args.drop_row_hits and args.drop_column_hits:
@@ -508,6 +514,17 @@ def main() -> None:
     solver.set(timeout=args.timeout_ms)
     solver.set(random_seed=args.random_seed)
     active_assumptions = reciprocity_assumptions + list(cap_assumptions.values())
+    if args.reciprocity_fibre_pair is not None:
+        selected_pairs = {
+            tuple(sorted((t % q, u % q)))
+            for t, u in args.reciprocity_fibre_pair
+        }
+        if any(t not in differences or u not in differences
+               for pair in selected_pairs for t, u in [pair]):
+            parser.error("selected reciprocity pair contains a hole fibre")
+        selected_labels = {f"recip_{t}_{u}" for t, u in selected_pairs}
+        active_assumptions = [label for label in active_assumptions
+                              if str(label) in selected_labels]
     result = solver.check(*active_assumptions)
     print(f"q={q} a={args.a % q} vertices={len(vertices)} "
           f"edge_variables={len(variables)}: {result}")
