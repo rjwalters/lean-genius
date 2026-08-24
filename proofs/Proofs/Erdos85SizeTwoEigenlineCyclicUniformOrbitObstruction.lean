@@ -430,8 +430,8 @@ private theorem value_le_choose_two_add_nonzeroIndicator (n : ℕ) :
 
 /-- If every entry of a finite rank vector is positive and at least two
 entries have rank at least two, its total rank exceeds the all-one baseline
-by at least two.  This is the arithmetic consumer for the proposed
-per-base sharp-parity obstruction. -/
+by at least two.  This remains a useful sufficient condition, although the
+q8 `a=2` equality model refutes its application separately at every base. -/
 theorem card_add_two_le_sum_of_two_nonstrict
     {ι : Type*} [Fintype ι] (r : ι → ℕ)
     (hpositive : ∀ i, 1 ≤ r i)
@@ -472,6 +472,53 @@ theorem card_mul_card_add_two_le_double_sum_of_two_nonstrict_each
       intro b hb
       exact card_add_two_le_sum_of_two_nonstrict
         (r b) (hpositive b) (htwo b)
+
+/-- The distribution-free consumer for `(RANK-q2)`: if the total number of
+rank-at-least-two entries is at least twice the number of bases, the global
+rank exceeds the all-one baseline by at least that amount.  In particular,
+an adjacent-base lower bound can feed this theorem after its elementary
+double-counting step, without requiring two exceptional sources in each
+individual base. -/
+theorem card_mul_card_add_two_le_double_sum_of_global_nonstrict_count
+    {β ι : Type*} [Fintype β] [Fintype ι] (r : β → ι → ℕ)
+    (hpositive : ∀ b i, 1 ≤ r b i)
+    (hglobal : 2 * Fintype.card β ≤
+      ∑ b : β,
+        ((Finset.univ : Finset ι).filter fun i => 2 ≤ r b i).card) :
+    Fintype.card β * (Fintype.card ι + 2) ≤
+      ∑ b : β, ∑ i : ι, r b i := by
+  classical
+  calc
+    Fintype.card β * (Fintype.card ι + 2) =
+        Fintype.card β * Fintype.card ι + 2 * Fintype.card β := by
+      rw [Nat.mul_add]
+      omega
+    _ ≤ Fintype.card β * Fintype.card ι +
+        ∑ b : β,
+          ((Finset.univ : Finset ι).filter fun i => 2 ≤ r b i).card :=
+      Nat.add_le_add_left hglobal _
+    _ = ∑ b : β, (Fintype.card ι +
+        ((Finset.univ : Finset ι).filter fun i => 2 ≤ r b i).card) := by
+      rw [Finset.sum_add_distrib]
+      simp
+    _ ≤ ∑ b : β, ∑ i : ι, r b i := by
+      apply Finset.sum_le_sum
+      intro b hb
+      calc
+        Fintype.card ι +
+            ((Finset.univ : Finset ι).filter fun i => 2 ≤ r b i).card =
+            ∑ i : ι, (1 + if 2 ≤ r b i then 1 else 0) := by
+          rw [Finset.sum_add_distrib]
+          congr 1
+          · simp
+          · rw [Finset.card_filter]
+        _ ≤ ∑ i : ι, r b i := by
+          apply Finset.sum_le_sum
+          intro i hi
+          by_cases hri : 2 ≤ r b i
+          · simp [hri]
+          · simp [hri]
+            exact hpositive b i
 
 /-- If a finite multiplicity vector has total mass equal to its number of
 slots, every zero slot must be paid for by at least one choose-two collision.
@@ -789,6 +836,7 @@ end Erdos85
 #print axioms Erdos85.sizeTwoCyclicNonuniformIncidenceSources_card_ge
 #print axioms Erdos85.card_add_two_le_sum_of_two_nonstrict
 #print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_two_nonstrict_each
+#print axioms Erdos85.card_mul_card_add_two_le_double_sum_of_global_nonstrict_count
 #print axioms Erdos85.card_zeros_le_sum_choose_two_of_sum_eq_card
 #print axioms Erdos85.sizeTwoCyclicIncidenceDefectRank_le_collisionMass
 #print axioms Erdos85.card_zeros_eq_sum_choose_two_of_sum_eq_card_of_le_two
