@@ -35,6 +35,8 @@ def main() -> None:
         help="require at least one internal edge or arc in every allowed fibre")
     parser.add_argument("--require-internal-full-support", action="store_true",
         help="require every base to have an internal neighbour in its fibre")
+    parser.add_argument("--require-internal-perfect-matching", action="store_true",
+        help="require every base to have exactly one internal neighbour")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     parser.add_argument("--dimacs")
     args = parser.parse_args()
@@ -155,6 +157,14 @@ def main() -> None:
                 solver.add(z3.Or([
                     edge((x, t), (z, t)) for z in range(q) if z != x
                 ]))
+
+    if args.require_internal_perfect_matching:
+        for t in differences:
+            for x in range(q):
+                solver.add(z3.PbEq([
+                    (edge((x, t), (z, t)), 1)
+                    for z in range(q) if z != x
+                ], 1))
 
     if args.dimacs is not None:
         goal = z3.Goal()
