@@ -1991,6 +1991,123 @@ theorem orderNine_order18_owner_neighbor_shore_split
       (Finset.disjoint_of_subset_right Finset.inter_subset_left hdisj)
   rw [← hshore, ← hinter, Finset.card_union_of_disjoint hinterDisj]
 
+/-- Bin-zero analogue of the composed partner provider.  An exceptional
+bin-zero owner-neighbor loses the deleted owner from its degree-eight defect
+neighborhood, giving defect shore count `7/0`; a regular one has `8/0`.
+Equation (31) and the low-set partition therefore give `W`-degree two only
+for an exceptional point on `A`, and degree one in every other case. -/
+theorem orderNine_order18_lowSpike_binZero_W_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (A H Z P W : Finset V) (owner u : V)
+    (huH : u ∉ H) (huOwner : G.Adj u owner)
+    (hdefectExceptional : D.Adj u owner →
+      (D.neighborFinset u ∩ A).card = if u ∈ A then 7 else 0)
+    (hdefectRegular : ¬ D.Adj u owner →
+      (D.neighborFinset u ∩ A).card = if u ∈ A then 8 else 0)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ A).card : ℤ) =
+        8 * (if v ∈ A then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v owner then 1 else 0))
+    (hpartition : Z = insert owner (P ∪ W))
+    (hownerW : owner ∉ W)
+    (hPzero : (G.neighborFinset u ∩ P).card = 0) :
+    (G.neighborFinset u ∩ W).card =
+      if u ∈ A ∧ D.Adj u owner then 2 else 1 := by
+  classical
+  by_cases huD : D.Adj u owner
+  · have hZdegree : (G.neighborFinset u ∩ Z).card =
+        if u ∈ A then 3 else 2 := by
+      have heq := heq31 u
+      rw [hdefectExceptional huD] at heq
+      by_cases huA : u ∈ A
+      · simp [huA, huH, huOwner] at heq ⊢
+        omega
+      · simp [huA, huH, huOwner] at heq ⊢
+        omega
+    have hWdegree := orderNine_order18_partner_W_degree_of_lowSet_partition
+      G owner u A Z P W hpartition hownerW huOwner hPzero hZdegree
+    simpa [huD] using hWdegree
+  · have hZdegree : (G.neighborFinset u ∩ Z).card = 2 := by
+      have heq := heq31 u
+      rw [hdefectRegular huD] at heq
+      by_cases huA : u ∈ A
+      · simp [huA, huH, huOwner] at heq
+        omega
+      · simp [huA, huH, huOwner] at heq
+        omega
+    have hWdegree := orderNine_order18_partner_W_degree_of_lowSet_partition
+      G owner u ∅ Z P W hpartition hownerW huOwner hPzero (by
+        simpa using hZdegree)
+    simpa [huD] using hWdegree
+
+/-- Every bin-zero owner-neighbor covered by the preceding profile has a
+nonempty restricted target block in `W`. -/
+theorem orderNine_order18_lowSpike_binZero_W_degree_positive
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (A H Z P W : Finset V) (owner u : V)
+    (huH : u ∉ H) (huOwner : G.Adj u owner)
+    (hdefectExceptional : D.Adj u owner →
+      (D.neighborFinset u ∩ A).card = if u ∈ A then 7 else 0)
+    (hdefectRegular : ¬ D.Adj u owner →
+      (D.neighborFinset u ∩ A).card = if u ∈ A then 8 else 0)
+    (heq31 : ∀ v : V,
+      ((D.neighborFinset v ∩ A).card : ℤ) =
+        8 * (if v ∈ A then 1 else 0) + 3 +
+          7 * (if v ∈ H then 1 else 0) -
+          ((G.neighborFinset v ∩ Z).card : ℤ) -
+          (if G.Adj v owner then 1 else 0))
+    (hpartition : Z = insert owner (P ∪ W))
+    (hownerW : owner ∉ W)
+    (hPzero : (G.neighborFinset u ∩ P).card = 0) :
+    1 ≤ (G.neighborFinset u ∩ W).card := by
+  rw [orderNine_order18_lowSpike_binZero_W_degree
+    G D A H Z P W owner u huH huOwner hdefectExceptional hdefectRegular
+      heq31 hpartition hownerW hPzero]
+  split <;> omega
+
+/-- If at most one source lies in the target shore, positive target degree
+forces some source to hit outside the source family.  In the singleton
+case choose that shore source; looplessness prevents its only possible
+in-family shore target from being used. -/
+theorem exists_source_target_in_sdiff_of_inter_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (sources A W : Finset V)
+    (hsources : sources.Nonempty)
+    (hshore : W ⊆ A)
+    (hinter : (sources ∩ A).card ≤ 1)
+    (hpositive : ∀ u ∈ sources,
+      (G.neighborFinset u ∩ W).Nonempty) :
+    ∃ u ∈ sources, (G.neighborFinset u ∩ (W \ sources)).Nonempty := by
+  classical
+  by_cases hsourceA : (sources ∩ A).Nonempty
+  · obtain ⟨u, huSA⟩ := hsourceA
+    have ⟨huS, huA⟩ := Finset.mem_inter.mp huSA
+    obtain ⟨z, hzuW⟩ := hpositive u huS
+    have ⟨hzu, hzW⟩ := Finset.mem_inter.mp hzuW
+    have hzNotS : z ∉ sources := by
+      intro hzS
+      have hzA := hshore hzW
+      have hzuEq : z = u := Finset.card_le_one.mp hinter z
+        (Finset.mem_inter.mpr ⟨hzS, hzA⟩) u
+        (Finset.mem_inter.mpr ⟨huS, huA⟩)
+      subst z
+      exact G.loopless.irrefl u ((G.mem_neighborFinset u u).mp hzu)
+    exact ⟨u, huS, ⟨z, Finset.mem_inter.mpr
+      ⟨hzu, Finset.mem_sdiff.mpr ⟨hzW, hzNotS⟩⟩⟩⟩
+  · obtain ⟨u, huS⟩ := hsources
+    obtain ⟨z, hzuW⟩ := hpositive u huS
+    have ⟨hzu, hzW⟩ := Finset.mem_inter.mp hzuW
+    have hzNotS : z ∉ sources := by
+      intro hzS
+      exact hsourceA ⟨z, Finset.mem_inter.mpr ⟨hzS, hshore hzW⟩⟩
+    exact ⟨u, huS, ⟨z, Finset.mem_inter.mpr
+      ⟨hzu, Finset.mem_sdiff.mpr ⟨hzW, hzNotS⟩⟩⟩⟩
+
 #print axioms Erdos85.orderNine_order18_highSpike_center_not_adjacent_highRoot
 #print axioms Erdos85.orderNine_order18_orient_articulation_shores
 #print axioms Erdos85.orderNine_order18_largeOrdinaryShore_bookkeeping
@@ -2036,6 +2153,9 @@ theorem orderNine_order18_owner_neighbor_shore_split
 #print axioms Erdos85.orderNine_order18_partner_W_degree_of_lowSet_partition
 #print axioms Erdos85.orderNine_order18_lowSpike_partner_W_degree_eq_if
 #print axioms Erdos85.orderNine_order18_owner_neighbor_shore_split
+#print axioms Erdos85.orderNine_order18_lowSpike_binZero_W_degree
+#print axioms Erdos85.orderNine_order18_lowSpike_binZero_W_degree_positive
+#print axioms Erdos85.exists_source_target_in_sdiff_of_inter_card_le_one
 
 end
 
