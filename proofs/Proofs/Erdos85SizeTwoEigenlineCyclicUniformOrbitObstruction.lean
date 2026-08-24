@@ -419,6 +419,59 @@ private theorem one_le_sum_choose_two_of_sum_eq_card_of_not_all_one
     Fintype.card_pos_iff.mpr ⟨i⟩
   omega
 
+private theorem value_le_choose_two_add_nonzeroIndicator (n : ℕ) :
+    n ≤ n.choose 2 + if n = 0 then 0 else 1 := by
+  cases n with
+  | zero => simp
+  | succ k =>
+      simp only [Nat.succ_ne_zero, ↓reduceIte]
+      rw [Nat.choose_succ_succ]
+      simp
+
+/-- If a finite multiplicity vector has total mass equal to its number of
+slots, every zero slot must be paid for by at least one choose-two collision.
+This is the arithmetic bridge from defect rank to collision mass. -/
+theorem card_zeros_le_sum_choose_two_of_sum_eq_card
+    {ι : Type*} [Fintype ι] (m : ι → ℕ)
+    (hsum : (∑ i : ι, m i) = Fintype.card ι) :
+    ((Finset.univ : Finset ι).filter fun i => m i = 0).card ≤
+      ∑ i : ι, (m i).choose 2 := by
+  classical
+  let Z := (Finset.univ : Finset ι).filter fun i => m i = 0
+  let P := (Finset.univ : Finset ι).filter fun i => m i ≠ 0
+  have hpart : Z.card + P.card = Fintype.card ι := by
+    simpa [Z, P] using
+      Finset.card_filter_add_card_filter_not
+        (s := (Finset.univ : Finset ι)) (fun i => m i = 0)
+  have hle : (∑ i : ι, m i) ≤
+      (∑ i : ι, (m i).choose 2) + P.card := by
+    calc
+      (∑ i : ι, m i) ≤
+          ∑ i : ι, ((m i).choose 2 + if m i = 0 then 0 else 1) := by
+        apply Finset.sum_le_sum
+        intro i hi
+        exact value_le_choose_two_add_nonzeroIndicator (m i)
+      _ = (∑ i : ι, (m i).choose 2) + P.card := by
+        rw [Finset.sum_add_distrib]
+        congr 1
+        rw [Finset.card_filter]
+        apply Finset.sum_congr rfl
+        intro i hi
+        by_cases hz : m i = 0 <;> simp [hz]
+  change Z.card ≤ _
+  omega
+
+/-- Total missing-fibre mass of the incident multiplicity words.  Because
+each row has as much mass as it has allowed fibres, this is also its total
+positive excess mass. -/
+def sizeTwoCyclicIncidenceDefectRank
+    {q : ℕ} [NeZero q] {a : ZMod q}
+    (code : SizeTwoCyclicFullPermutationCode q a) : ℕ :=
+  ∑ target : SizeTwoCyclicMatchingSource q a,
+    ((Finset.univ : Finset (sizeTwoAllowedDifference q a)).filter fun u =>
+      sizeTwoCyclicMatchingOrbitMultiplicity code u
+        (sizeTwoCyclicMatchingSourceCell target) = 0).card
+
 /-- Collision mass of the incident-fiber multiplicity vector, summed over
 all source rows.  By incidence transpose this is the within-orbit collision
 mass restricted to allowed absolute cells. -/
@@ -429,6 +482,28 @@ def sizeTwoCyclicIncidenceCollisionMass
     ∑ u : sizeTwoAllowedDifference q a,
       (sizeTwoCyclicMatchingOrbitMultiplicity code u
         (sizeTwoCyclicMatchingSourceCell target)).choose 2
+
+/-- Every missing incident-fibre slot is paid for by collision mass in the
+same source row. -/
+theorem sizeTwoCyclicIncidenceDefectRank_le_collisionMass
+    {q : ℕ} [NeZero q] (hq : 2 ≤ q) {a : ZMod q}
+    (ha : a ≠ -1 - a) (code : SizeTwoCyclicFullPermutationCode q a) :
+    sizeTwoCyclicIncidenceDefectRank code ≤
+      sizeTwoCyclicIncidenceCollisionMass code := by
+  classical
+  unfold sizeTwoCyclicIncidenceDefectRank
+    sizeTwoCyclicIncidenceCollisionMass
+  apply Finset.sum_le_sum
+  intro target htarget
+  apply card_zeros_le_sum_choose_two_of_sum_eq_card
+  have hq1 : (1 : ZMod q) ≠ 0 := by
+    letI : Fact (1 < q) := ⟨hq⟩
+    exact one_ne_zero
+  have hfull := sizeTwoCyclicFullOrbitMultiplicity_sourceCell_eq_sub_two
+    code hq1 target
+  unfold sizeTwoCyclicSelectedOrbitMultiplicity at hfull
+  rw [sizeTwoAllowedDifference_card q a ha]
+  simpa using hfull
 
 theorem one_le_sizeTwoCyclicIncidenceCollisionRow_of_nonuniform
     {q : ℕ} [NeZero q] (hq : 2 ≤ q) {a : ZMod q}
@@ -600,6 +675,8 @@ end Erdos85
 #print axioms Erdos85.not_binary_sizeTwoCyclic_uniformOrbitMultiplicity
 #print axioms Erdos85.sizeTwoCyclicUniformIncidenceFibers_card_le_two
 #print axioms Erdos85.sizeTwoCyclicNonuniformIncidenceSources_card_ge
+#print axioms Erdos85.card_zeros_le_sum_choose_two_of_sum_eq_card
+#print axioms Erdos85.sizeTwoCyclicIncidenceDefectRank_le_collisionMass
 #print axioms Erdos85.sizeTwoCyclicWithinOrbitCollisionMass_ge
 #print axioms Erdos85.not_sizeTwoCyclicUniformIncidenceAt_of_four_dvd
 #print axioms Erdos85.sizeTwoCyclicWithinOrbitCollisionMass_ge_of_four_dvd
