@@ -44,6 +44,10 @@ def main() -> None:
         help="on SAT, print internal edges and occupied bases in each fibre")
     parser.add_argument("--dump-collision-separations", action="store_true",
         help="on SAT, summarize same-fibre common targets by base separation")
+    parser.add_argument("--dump-collision-owner-fibres", action="store_true",
+        help="on SAT, also resolve collision summaries by common-target fibre")
+    parser.add_argument("--dump-sharp-edge-census", action="store_true",
+        help="on SAT, summarize edges and sharp-neighbour degrees by source profile")
     parser.add_argument("--minimize-cap-excess", action="store_true",
         help="in --no-caps mode, minimize total common-target excess over one")
     parser.add_argument("--max-cap-excess", type=int,
@@ -62,6 +66,8 @@ def main() -> None:
     parser.add_argument("--only-cap-pair", type=int, nargs=3,
         metavar=("T", "X", "Z"),
         help="impose only the common-target cap for bases x,z in fibre t")
+    parser.add_argument("--cap-fibres", type=int, nargs="+",
+        help="impose full pair caps only in the listed endpoint fibres")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     parser.add_argument("--dimacs")
     args = parser.parse_args()
@@ -74,6 +80,10 @@ def main() -> None:
         parser.error("core modes cannot be combined with --dimacs")
     if args.no_caps and args.only_cap_pair is not None:
         parser.error("--no-caps and --only-cap-pair are incompatible")
+    if args.no_caps and args.cap_fibres is not None:
+        parser.error("--no-caps and --cap-fibres are incompatible")
+    if args.only_cap_pair is not None and args.cap_fibres is not None:
+        parser.error("--only-cap-pair and --cap-fibres are incompatible")
     if args.minimize_cap_excess and not args.no_caps:
         parser.error("--minimize-cap-excess requires --no-caps")
     if args.max_cap_excess is not None and not args.no_caps:
@@ -214,6 +224,9 @@ def main() -> None:
     # most one precise common target cell.
     if not args.no_caps:
         for t in differences:
+            if (args.cap_fibres is not None and
+                    t not in {value % q for value in args.cap_fibres}):
+                continue
             if args.joint_group_core:
                 cap_assumptions[t] = z3.Bool(f"caps_{t}")
             for x, z in combinations(range(q), 2):
@@ -386,6 +399,56 @@ def main() -> None:
                 print(f"  collision fibre={t} separation={separation} "
                       f"pairs={pairs} mass={mass} occupied={occupied} "
                       f"cap_excess={excess}")
+    if result == z3.sat and args.dump_collision_owner_fibres:
+        model = solver.model()
+        for t in differences:
+            summary: dict[tuple[int, int], list[int]] = {}
+            for x, z in combinations(range(q), 2):
+                raw = (z - x) % q
+                separation = min(raw, (-raw) % q)
+                for u in differences:
+                    common = sum(z3.is_true(model.eval(z3.And(
+                        edge((x, t), (y, u)), edge((z, t), (y, u))),
+                        model_completion=True)) for y in range(q))
+                    data = summary.setdefault((u, separation), [0, 0, 0])
+                    data[0] += common
+                    data[1] += common > 0
+                    data[2] += max(0, common - 1)
+            for (u, separation), (mass, occupied, excess) in sorted(
+                    summary.items()):
+                if mass:
+                    print(f"  collision endpoint_fibre={t} owner_fibre={u} "
+                          f"separation={separation} mass={mass} "
+                          f"occupied={occupied} within_owner_excess={excess}")
+    if result == z3.sat and args.dump_sharp_edge_census:
+        model = solver.model()
+        sharp: dict[tuple[int, int], bool] = {}
+        for source in vertices:
+            loads = [sum(z3.is_true(model.eval(
+                edge(source, (y, u)), model_completion=True))
+                for y in range(q)) for u in differences]
+            sharp[source] = (loads.count(0) == 1 and loads.count(2) == 1
+                             and all(load in {0, 1, 2} for load in loads))
+        edge_counts = {"SS": 0, "SN": 0, "NN": 0}
+        sharp_neighbour_degrees = {True: [], False: []}
+        for source in vertices:
+            sharp_neighbour_degrees[sharp[source]].append(sum(
+                z3.is_true(model.eval(edge(source, target),
+                                      model_completion=True)) and sharp[target]
+                for target in vertices if target != source))
+        for left, right in combinations(vertices, 2):
+            if not z3.is_true(model.eval(edge(left, right),
+                                         model_completion=True)):
+                continue
+            key = "SS" if sharp[left] and sharp[right] else (
+                "NN" if not sharp[left] and not sharp[right] else "SN")
+            edge_counts[key] += 1
+        print(f"  sharp_sources={sum(sharp.values())} edge_census={edge_counts}")
+        for is_sharp, degrees in sharp_neighbour_degrees.items():
+            histogram = {degree: degrees.count(degree)
+                         for degree in sorted(set(degrees))}
+            print(f"  source_class={'sharp' if is_sharp else 'nonsharp'} "
+                  f"sharp_neighbour_degree_histogram={histogram}")
     if result == z3.sat and args.dump_fibre_loads:
         model = solver.model()
         for source in vertices:
