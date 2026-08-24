@@ -3,10 +3,41 @@ import Proofs.Erdos85DefectCutLaplacianSupport
 import Proofs.Erdos85IntegerZeroSumSupportBounds
 import Proofs.Erdos85DefectCutSupportArithmetic
 import Proofs.Erdos85UniqueNeighborMulVecSupportInt
+import Proofs.Erdos85NearRegularCutLowerParametric
 
 open SimpleGraph
 namespace Erdos85
 noncomputable section
+
+/-- A regular-square cut below `q - 1` must have a `q`-divisible shore.
+This is the arithmetic residue step needed before centering the shore. -/
+theorem dvd_card_of_regularSquareCutLower_le_of_cut_le_sub_two
+    (q s delta : ℕ) (hq : 3 ≤ q)
+    (hlower : regularSquareCutLower q s ≤ delta)
+    (hsmall : delta ≤ q - 2) : q ∣ s := by
+  have hqpos : 0 < q := by omega
+  rw [regularSquareCutLower_eq_mod_product q s hqpos] at hlower
+  have hprod : (s % q) * (q - s % q) ≤ delta := by
+    exact_mod_cast hlower
+  rw [Nat.dvd_iff_mod_eq_zero]
+  by_contra hrne
+  have hrpos : 0 < s % q := Nat.pos_of_ne_zero hrne
+  have hrlt : s % q < q := Nat.mod_lt _ hqpos
+  have hright : 1 ≤ q - s % q := by omega
+  have hmul : s % q - 1 ≤ (s % q - 1) * (q - s % q) := by
+    calc
+      s % q - 1 = (s % q - 1) * 1 := by simp
+      _ ≤ (s % q - 1) * (q - s % q) :=
+        Nat.mul_le_mul_left _ hright
+  have hdecomp : s % q = 1 + (s % q - 1) := by omega
+  have hid : (s % q) * (q - s % q) =
+      (q - s % q) + (s % q - 1) * (q - s % q) := by
+    calc
+      (s % q) * (q - s % q) =
+          (1 + (s % q - 1)) * (q - s % q) := by rw [← hdecomp]
+      _ = (q - s % q) + (s % q - 1) * (q - s % q) := by ring
+  rw [hid] at hprod
+  omega
 
 set_option maxHeartbeats 800000 in
 theorem false_of_binarySquare_small_defectCut_of_centered_energy
@@ -91,7 +122,7 @@ theorem false_of_binarySquare_small_defectCut_of_centered_energy
     hbounds.1 hbounds.2 hcutSmall (hlower.trans hupper)
 
 #print axioms false_of_binarySquare_small_defectCut_of_centered_energy
+#print axioms dvd_card_of_regularSquareCutLower_le_of_cut_le_sub_two
 
 end
 end Erdos85
-
