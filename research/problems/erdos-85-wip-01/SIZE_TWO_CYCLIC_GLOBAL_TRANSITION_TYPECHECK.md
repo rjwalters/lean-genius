@@ -29,6 +29,13 @@ below remains load-bearing: without the hubs, changing a block completion
 changes graph edges and cannot be represented by an interlacement-matrix
 state change.
 
+There is a second GT0 condition at the reduced-code interface.  Loopless is
+not assumed in `SizeTwoCyclicPackingExclusion`.  A self-reciprocal diagonal
+route has only one endpoint view and hence gives a degree-two, not degree-four,
+central object.  The q=8 relaxed controls contain many such routes.  The hub
+graph is therefore 4-regular only after a loop-inflation gadget is supplied,
+or after looplessness is derived from the capped hypotheses.
+
 ## Incidence bookkeeping
 
 Fix `q=2m`.  A reciprocal pair of routing darts is a central object `e`.
@@ -104,6 +111,46 @@ translated as forbidding two such shared-neighbor digons for one lifted
 source pair.  That translation is not yet proved, but it is now a statement
 about transitions of one fixed graph.
 
+### Loop inflation required by the reduced code
+
+The description above is literally 4-regular for non-diagonal reciprocal
+dart pairs.  If a route is diagonal, reversal fixes it.  The symmetric
+relation and the exact row/column laws count that route once, so its central
+object has only its row and column incidences.  Duplicating the endpoint view
+would alter those exact degrees and is not valid.
+
+This occurs throughout the executable controls.  Using the exact permutation
+CNF at `q=8,a=1`, with `cross_mode=same-t` and `loopless=False`, one returned
+model for each cap set has:
+
+```text
+cap {0}:    22 diagonal routes
+cap {2}:    24 diagonal routes
+cap {4}:    20 diagonal routes
+cap {0,2}:  32 diagonal routes
+cap {0,4}:   8 diagonal routes
+cap {2,4}:  16 diagonal routes
+cap {0,2,4}: UNSAT
+```
+
+Thus deleting Loopless is not a harmless relaxation for the transition
+construction; every displayed SAT comparator has 2-valent central objects.
+
+A canonical candidate repair is to attach one artificial graph loop to each
+2-valent central object.  A graph loop contributes two incidences, restoring
+degree four.  Fix the transition there as
+
+```text
+real row -- real column | dummy loop half -- dummy loop half.
+```
+
+This should contribute one distinguished trivial circuit per diagonal route.
+Before using it, verify that the chosen extended Cohn--Lempel formulation
+allows graph loops and that deleting/fixing these vertices changes both sides
+of the circuit-nullity identity by the same explicit correction.  Until that
+check is made, GT0 is repaired for Loopless codes but remains conditional for
+the actual reduced target.
+
 ### Repair A: central transitions, arbitrary fixed edge completion
 
 Choose one boundary completion in every block once and for all, producing a
@@ -151,3 +198,7 @@ not compare the states through one interlacement matrix and this formulation
 stops.  If Repair B is used instead, assert that every alternating component
 has exactly two boundary ends.  Only after these checks pass is GT1 a
 well-typed bounded target.
+
+For the reduced code, additionally assert that every central object is either
+4-valent or a diagonal 2-valent object equipped with exactly one dummy loop,
+and subtract the number of dummy circuits in the Cohn--Lempel calibration.
