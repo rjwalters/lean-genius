@@ -132,6 +132,11 @@ this selects three of the six allowed difference fibres at every base and
 has size `q(q-2)/2 = 24`.  This exposes a concrete candidate for the
 q-generic large closure that a cap-preserving descent construction should
 study, rather than treating support 24 as an unstructured solver witness.
+The probe's `--support-parity odd` option now prescribes this half-space
+exactly.  It reproduces the q8 witness in about one second.  The direct q10
+analogue (`a=1`, cap fibre 2, support 40) is `unknown` after 300 seconds, so
+there is not yet computational evidence that the rank-lowering realization
+extends beyond q8.
 
 The support-17 through support-23 queries timed out at 120 seconds, so the
 least escaping support is known only to lie in `[17,24]`.  Exact-support

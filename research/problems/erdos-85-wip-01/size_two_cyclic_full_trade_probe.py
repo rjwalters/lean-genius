@@ -22,6 +22,8 @@ def main() -> None:
                         help="impose caps only in the listed endpoint fibres")
     parser.add_argument("--max-old-rank", type=int,
                         help="upper-bound the defect rank of the first code")
+    parser.add_argument("--support-parity", choices=("even", "odd"),
+                        help="prescribe support by the parity of x+t")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     args = parser.parse_args()
     q = args.q
@@ -99,6 +101,10 @@ def main() -> None:
         incident_changes[j].append(changed)
     for i in range(len(vertices)):
         solver.add(selected[i] == z3.Or(incident_changes[i]))
+        if args.support_parity is not None:
+            x, t = vertices[i]
+            wanted = (x + t) % 2 == (1 if args.support_parity == "odd" else 0)
+            solver.add(selected[i] == wanted)
     solver.add(z3.PbEq([(value, 1) for value in selected], args.support))
     solver.add(zero_totals[1] < zero_totals[0])
     if args.max_old_rank is not None:
