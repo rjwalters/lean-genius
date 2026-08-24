@@ -171,3 +171,25 @@ near-extremal diagonal selected-fiber graph: distinct same-parity fibers can
 absorb a large and pair-dependent route mass.  A terminal needs an additional
 cross-fiber identity controlling that off-diagonal block, not another use of
 the equality `EE=OO`.
+
+The stronger proposed cross-collision ceiling has the wrong local direction.
+The options `--cross-collision-profile`, `--cross-collision-pair T U`, and
+`--cross-collision-cap N` measure and bound
+
+```text
+sum_B n_t(B) n_u(B).
+```
+
+At `q=8,a=2`, retain exactly the two same-fiber caps for any one of the three
+even pairs `{0,4}`, `{0,6}`, or `{4,6}`.  For every pair, cross-collision cap
+`39` is UNSAT and cap `40` is SAT.  Thus the exact minimum is `40`, whereas
+the arithmetic consumer
+`false_of_binary_sizeTwoCyclic_parityClass_crossFiberCollision_le` requires
+the ceiling `q(q-6)=16` for every pair.  Such a ceiling cannot be derived
+pairwise from the two caps it concerns.  It would require an enormous
+genuinely ternary effect from the third cap, collapsing a quantity locally
+forced to be at least `40` down to at most `16` for all three pairs.  Since
+the full triple is already inconsistent, that formulation risks packaging
+the desired contradiction rather than exposing its mechanism.  The
+`q(q-6)` theorem is a correct arithmetic consumer, but not presently a
+plausible standalone successor lemma.

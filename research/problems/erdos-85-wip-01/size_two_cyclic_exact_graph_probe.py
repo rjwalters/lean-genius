@@ -112,6 +112,14 @@ def main() -> None:
         help="upper-bound the oriented route mass in each same-parity block")
     parser.add_argument("--parity-same-mass-floor", type=int,
         help="lower-bound the oriented route mass in each same-parity block")
+    parser.add_argument("--cross-collision-profile", action="store_true",
+        help=("report cross-fiber incidence products sum_B n_t(B)n_u(B) "
+              "for every pair of allowed difference fibers"))
+    parser.add_argument("--cross-collision-pair", type=int, nargs=2,
+        metavar=("T", "U"),
+        help="select two source-difference fibers for a cross-collision bound")
+    parser.add_argument("--cross-collision-cap", type=int,
+        help="upper-bound the product sum for --cross-collision-pair")
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--allow-loops", action="store_true",
         help=("model the reduced symmetric reciprocal relation, whose "
@@ -182,6 +190,30 @@ def main() -> None:
                 solver.add(z3.PbLe(terms, args.parity_same_mass_cap))
             if args.parity_same_mass_floor is not None:
                 solver.add(z3.PbGe(terms, args.parity_same_mass_floor))
+    if args.cross_collision_cap is not None:
+        if args.cross_collision_pair is None:
+            parser.error("--cross-collision-cap requires --cross-collision-pair")
+        index = {vertex: i for i, vertex in enumerate(vertices)}
+        t, u = (value % args.q for value in args.cross_collision_pair)
+        source_t = [index[v] for v in vertices
+                    if (v[1] - v[0]) % args.q == t]
+        source_u = [index[v] for v in vertices
+                    if (v[1] - v[0]) % args.q == u]
+        if not source_t or not source_u:
+            parser.error("cross-collision pair contains a forbidden fiber")
+
+        def bounded_adj(i: int, j: int) -> z3.BoolRef:
+            if i == j and not args.allow_loops:
+                return z3.BoolVal(False)
+            return edge[min(i, j), max(i, j)]
+
+        terms = []
+        for target in range(len(vertices)):
+            for i in source_t:
+                for j in source_u:
+                    terms.append((z3.And(
+                        bounded_adj(i, target), bounded_adj(j, target)), 1))
+        solver.add(z3.PbLe(terms, args.cross_collision_cap))
     solver.set(timeout=args.timeout_ms, random_seed=args.random_seed)
     result = solver.check()
     print(f"q={args.q} a={args.a % args.q} allow_loops={args.allow_loops}: {result}")
@@ -253,6 +285,29 @@ def main() -> None:
               f"off-diagonal={block_mass[0, 0] - diagonal_mass[0]}; "
               f"odd diagonal={diagonal_mass[1]} "
               f"off-diagonal={block_mass[1, 1] - diagonal_mass[1]}")
+    if result == z3.sat and args.cross_collision_profile:
+        model = solver.model()
+        index = {vertex: i for i, vertex in enumerate(vertices)}
+
+        def chosen_adj(i: int, j: int) -> bool:
+            if i == j and not args.allow_loops:
+                return False
+            return z3.is_true(model.eval(edge[min(i, j), max(i, j)]))
+
+        differences = sorted({(y - x) % args.q for x, y in vertices})
+        fibers = {
+            t: [index[v] for v in vertices if (v[1] - v[0]) % args.q == t]
+            for t in differences
+        }
+        incidence = {
+            t: [sum(chosen_adj(i, j) for i in fibers[t])
+                for j in range(len(vertices))]
+            for t in differences
+        }
+        print("cross-fiber collision products:")
+        for t, u in combinations(differences, 2):
+            collision = sum(a * b for a, b in zip(incidence[t], incidence[u]))
+            print(f"  {t},{u}: {collision}")
     if result == z3.sat and not args.quiet_model:
         model = solver.model()
         chosen = [(vertices[i], vertices[j]) for (i, j), var in edge.items()
