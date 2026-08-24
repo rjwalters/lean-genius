@@ -5585,3 +5585,15 @@ theorem.  The auditor emits and checks the entire greedy pairing.  This offers
 a constructive alternative to formalizing a general maximum-matching result:
 an outer proof may establish that the minimum-degree elimination cannot strand
 two isolated candidates, using the selected row's global minimality.
+
+The greedy rule is a certificate, not a universally safe algorithm.  It
+strands two rows at six nonselected reverse-obstructed targets.  Five of those
+failures have genuine matching deficiency two: four already have two odd
+connected components (`S=empty` in Tutte's condition), while exceptional-price
+target 23 is connected and even but deleting the two-row barrier `{10,19}`
+leaves four odd components.  The sixth failure, no-single-special target 18,
+has a perfect matching and only the deterministic greedy choices are bad.
+Therefore component parity alone is insufficient, and (13bg)'s existential
+near-perfect matching remains the safe theorem statement.  A proof via (13bh)
+must either permit backtracking or use lex-target minimality to rule out every
+Tutte barrier, including nonempty barriers.
