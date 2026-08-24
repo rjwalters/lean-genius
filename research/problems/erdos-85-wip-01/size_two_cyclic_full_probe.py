@@ -30,6 +30,8 @@ def main() -> None:
         help="on SAT, print target-fibre degree profiles for every source")
     parser.add_argument("--min-sharp-sources", type=int,
         help="require at least this many sources to have a 0,2,1,... block profile")
+    parser.add_argument("--max-total-defect-rank", type=int,
+        help="bound the total number of zero source-to-fibre loads")
     parser.add_argument("--directed", action="store_true",
         help="drop reciprocity and use one variable per ordered pair")
     parser.add_argument("--reciprocity-core", action="store_true",
@@ -169,6 +171,26 @@ def main() -> None:
                 parser.error("--min-sharp-sources is outside the source range")
             solver.add(z3.PbGe(sharp_source_flags,
                                args.min_sharp_sources))
+
+    # For a source p, put e_p(u)=b_p(u)-1.  Since every b_p(u) is
+    # nonnegative and sum_u e_p(u)=0, its total positive defect mass equals
+    # its total negative defect mass, which is exactly the number of fibres
+    # with b_p(u)=0.  This Boolean encoding therefore measures
+    # sum_p sum_u max(e_p(u),0) without auxiliary arithmetic variables.
+    if args.max_total_defect_rank is not None:
+        total_slots = len(vertices) * len(differences)
+        if not 0 <= args.max_total_defect_rank <= total_slots:
+            parser.error("--max-total-defect-rank is outside the slot range")
+        defect_zero_flags = []
+        for source in vertices:
+            for u in differences:
+                zero = z3.Bool(
+                    f"defect_zero_{source[0]}_{source[1]}_{u}")
+                terms = [(edge(source, (y, u)), 1) for y in range(q)]
+                solver.add(zero == z3.PbEq(terms, 0))
+                defect_zero_flags.append((zero, 1))
+        solver.add(z3.PbLe(defect_zero_flags,
+                           args.max_total_defect_rank))
 
     # Full same-difference cap: any two distinct bases in one fibre have at
     # most one precise common target cell.

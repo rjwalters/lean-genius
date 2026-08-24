@@ -1,0 +1,141 @@
+# Size-two cyclic sharp-source propagation audit
+
+## Scope
+
+This note isolates the quantitative statement suggested by the cap-free
+sharp-source census.  It is a prospective intermediate lemma for
+`BinarySizeTwoCyclicPackingBound`, not a finite-order replacement for that
+theorem.
+
+For a source cell `p=(x,t)`, write
+
+```text
+b_p(u) = number of neighbours of p in target fibre u,
+e_p(u) = b_p(u)-1,
+r(p)   = sum_u max(e_p(u),0).
+```
+
+The exact degree law gives `sum_u e_p(u)=0`, so `r(p)` is also the total
+missing mass.  The uniform stratum has `r=0`; it is already impossible.  A
+sharp source has `r=1`, equivalently one zero, one double, and all other
+loads one.  Every nonuniform nonsharp source has `r>=2`.
+
+## Candidate q-generic amplification lemma
+
+For binary `q=2^k`, `k>=3`, exact row/absolute-column hits and loopless
+reciprocity should imply
+
+```text
+sum_p r(p) >= q^2.                                      (RANK-q2)
+```
+
+The stronger sharp-count conjecture says that at most
+
+```text
+q(q-2)-2q = q(q-4)
+```
+
+sources can be sharp.  It implies (RANK-q2), because each sharp source has
+rank one and each other nonuniform source has rank at least two.  The
+converse is false: rank excess may concentrate at a few high-rank sources.
+Thus (RANK-q2) is the weaker but more additive prospective invariant, and
+the sharp-threshold data alone do not yet verify it.
+
+The block-row variance satisfies the exact identity
+
+```text
+V = sum_p,u e_p(u)^2 = 2 * sum_p,u choose(b_p(u),2).
+```
+
+Since `e^2 >= |e|` for integer `e`, (RANK-q2) would give `V>=2q^2`.
+Equality forces every load to lie in `{0,1,2}`.  Thus the equality case is
+an especially rigid defect-circulation stratum: every source has `r=1` or
+`r=2`, and exactly `2q` units of rank lie above the sharp baseline.
+
+## Verified bounded evidence
+
+The sound pure-Boolean encoding in `size_two_cyclic_full_probe.py` gives:
+
+```text
+q=8, a=1: 32 sharp SAT, 33 sharp UNSAT
+q=8, a=2: 32 sharp SAT, 33 sharp UNSAT
+q=10,a=1: 61 sharp UNSAT; the equality-side 60 query is pending
+```
+
+The additive statement has also been tested directly, rather than inferred
+from the sharp census:
+
+```text
+q=8, a=1: sum r <= 63 UNSAT; sum r <= 64 SAT
+q=8, a=2: sum r <= 63 UNSAT
+```
+
+Here `r(p)` is encoded as the number of zero-load fibres at `p`.  This is
+exactly the defect rank because `sum_u (b_p(u)-1)=0`; it uses only Boolean
+pseudo-cardinality constraints.  The DIMACS theory-atom validator accepts
+the generated CNFs, and Kissat proves both rank-63 instances UNSAT.  Thus
+q8 genuinely verifies (RANK-q2), including its sharp equality, rather than
+only the stronger-looking but logically different sharp-count threshold.
+
+At q=8 both SAT witnesses attain `sum r=64=q^2` and `V=128=2q^2`.
+They have genuinely different exceptional-set geometries:
+
+* for `a=1`, the sharp set is `all x × {0,2,5,7}` and the two remaining
+  source fibres are wholly rank two;
+* for `a=2`, fibres 4 and 6 are wholly sharp, while fibres 0, 1, 3 and 7
+  split by base parity and have four sharp and four rank-two sources each.
+
+Therefore no proof of (RANK-q2) may assume that exceptional sources contain
+whole fibres, meet every fibre, or have a uniform number per base.  The two
+q=8 witnesses also show that `V>=2q^2`, if true, is sharp before the
+same-difference common-target caps are imposed.
+
+The calibration orders remain important: q=4 permits every source sharp,
+while at q=6 even one sharp source is impossible although the unrestricted
+cap-free system is satisfiable.  The proposed statement is intentionally
+restricted to binary q at least 8.
+
+## What the statement would and would not prove
+
+(RANK-q2) is a real amplification over the pointwise first-moment bound
+`r(p)>=1`, but it is not the packing contradiction: the cap ceiling
+
+```text
+V <= q(q-1)(q-2)
+```
+
+is much larger than `2q^2`.  A scalar variance comparison therefore cannot
+finish the theorem.  The useful prospective chain is instead:
+
+1. prove (RANK-q2) from the shifted-base reciprocal involution;
+2. classify or descend its equality stratum, where all loads are at most 2;
+3. show that the same-difference caps force additional rank/variance in a
+   new orbit whenever an equality-stratum defect is repaired;
+4. iterate a cap-preserving amplification, rather than spending all caps in
+   one global upper bound.
+
+Aggregate defect flow cannot prove step 1: the previously banked sharp-flow
+relaxation is satisfiable.  Single-base row/column permutation parity cannot
+prove it either: the full base-slice relaxation is satisfiable at q=8.  The
+remaining information is exactly the shifted-base law
+
+```text
+psi_(x+t+r,u)(s) = r,
+u = -t-r-s,
+```
+
+so a proof must charge rank along orbits that actually change the base
+coordinate.  The equality witnesses suggest that this charge can be
+periodic (period one for `a=1`, period two for `a=2`), which rules out an
+argument based only on aperiodicity.
+
+## Next falsifiable interface
+
+At the next orders the bounded probe should not merely extend the sharp
+threshold.  It should ask whether `sum r <= q^2-1` is inconsistent directly,
+leaving all individual source ranks unrestricted.  A negative verdict at
+q10 would give the first cross-order evidence for the rank formulation; a
+model would refute it even if the sharp-count bound survives.  The
+corresponding proof target is an orbit charge whose total is at least `2q`
+above the pointwise baseline and which is invariant under the two distinct
+q=8 equality geometries above.
