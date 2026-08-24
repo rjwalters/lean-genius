@@ -784,6 +784,56 @@ theorem orderNine_order27_complement_W_degree_sum_le_five
     _ ≤ ∑ _y ∈ C, 1 := Finset.sum_le_sum fun y hy ↦ hone y hy
     _ = 5 := by simp [hCcard]
 
+/-- In the three-edge branch all three original bin-zero owner-neighbors
+are exceptional (defect-adjacent to the owner).  Consequently the FullType
+split placing two exceptional points on the large shore places exactly two
+of those three owner-neighbors there.  This is the graph-facing shore
+placement needed by the left side of audit equation (22). -/
+theorem orderNine_order27_threeEdge_owner_neighbors_large_card_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ z : V, 9 ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 9 ∨ G.degree v = 9)
+    (hcard : Fintype.card V = 81)
+    (hp : SquareOrderNonregularSectorProfile G 9)
+    (hhigh : (squareOrderHighVertices G 9).card = 3)
+    (hc2 : squareOrderNineHighIncidenceHistogram G 2 = 0)
+    (hc3 : squareOrderNineHighIncidenceHistogram G 3 = 1)
+    (hc4 : squareOrderNineHighIncidenceHistogram G 4 = 0)
+    (owner : V) (howner : owner ∈ squareOrderNineLowIncidenceBin G 3)
+    (B : Finset V)
+    (hloc : (G.induce (G.neighborSet owner)).edgeFinset.card = 3)
+    (hExceptionalLarge :
+      (((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0) ∩
+        (secondOrderDefectGraph G).neighborFinset owner) ∩ B).card = 2) :
+    ((G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0) ∩ B).card = 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := G.neighborFinset owner ∩ squareOrderNineLowIncidenceBin G 0
+  let E := U ∩ D.neighborFinset owner
+  let R := U \ D.neighborFinset owner
+  have hpackage := orderNine_secondProfile_owner_binZero_local_type_package
+    G hfree hmin hcover hcard hp hhigh hc2 hc3 hc4 howner
+  dsimp only at hpackage
+  have hRcard : R.card = 0 := by
+    rcases hpackage with hthree | hfour
+    · exact hthree.2
+    · omega
+  have hRempty : R = ∅ := Finset.card_eq_zero.mp hRcard
+  have hUsubD : U ⊆ D.neighborFinset owner := by
+    intro y hyU
+    by_contra hyD
+    have hyR : y ∈ R := Finset.mem_sdiff.mpr ⟨hyU, hyD⟩
+    rw [hRempty] at hyR
+    exact Finset.notMem_empty y hyR
+  have hEU : E = U := Finset.inter_eq_left.mpr hUsubD
+  change (U ∩ B).card = 2
+  change (E ∩ B).card = 2 at hExceptionalLarge
+  simpa [hEU] using hExceptionalLarge
+
 /-- Three-edge left-hand arithmetic: among three owner-neighbors, two on
 the large shore have `W`-degree two and the remaining point has degree
 three. -/
@@ -1270,6 +1320,7 @@ theorem orderNine_lowSet_card_eq_thirtySix_after_owner_puncture
 #print axioms orderNine_binZero_W_degree_of_lowSet_partition
 #print axioms orderNine_order27_binZero_W_degree_equation
 #print axioms orderNine_order27_complement_W_degree_sum_le_five
+#print axioms orderNine_order27_threeEdge_owner_neighbors_large_card_eq_two
 #print axioms orderNine_order27_threeEdge_W_degree_sum_eq_seven
 #print axioms orderNine_order27_fourEdge_W_degree_sum_ge_eight
 #print axioms orderNine_order27_fourEdge_internal_degree_sum_eq_two
