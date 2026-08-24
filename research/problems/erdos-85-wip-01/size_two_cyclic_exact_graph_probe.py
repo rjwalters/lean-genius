@@ -2,30 +2,34 @@
 """Direct SAT probe for the graph-free SIZE-TWO-EIGENLINE(q) object.
 
 Vertices are the allowed cells (x,y), with y-x outside the two holes
-{a,-1-a}.  We ask directly for a simple graph satisfying the exact row and
-column hit laws and the common-neighbour cap.  By the reconstruction theorems
-this is equivalent to an exact reciprocal permutation code, but the Boolean
-edge encoding is substantially smaller than the permutation encoding.
+{a,-1-a}.  By default we ask directly for a simple graph satisfying the exact
+row and column hit laws and the common-neighbour cap.  ``--allow-loops`` keeps
+the diagonal of the symmetric relation, modelling the reduced reciprocal code
+before Loopless is imposed.  The Boolean edge encoding is substantially
+smaller than the permutation encoding.
 """
 
 from __future__ import annotations
 
 import argparse
-from itertools import combinations
+from itertools import combinations, combinations_with_replacement
 
 import z3
 
 
 def build(q: int, a: int, *, rows: bool = True, columns: bool = True,
           c4_pair_mode: str = "all",
-          c4_differences: set[int] | None = None) -> tuple[z3.Solver, list[tuple[int, int]], dict[tuple[int, int], z3.BoolRef]]:
+          c4_differences: set[int] | None = None,
+          allow_loops: bool = False) -> tuple[z3.Solver, list[tuple[int, int]], dict[tuple[int, int], z3.BoolRef]]:
     holes = {a % q, (-1 - a) % q}
     vertices = [(x, y) for x in range(q) for y in range(q) if (y - x) % q not in holes]
     index = {v: i for i, v in enumerate(vertices)}
-    edge = {(i, j): z3.Bool(f"e_{i}_{j}") for i, j in combinations(range(len(vertices)), 2)}
+    edge_indices = (combinations_with_replacement(range(len(vertices)), 2)
+                    if allow_loops else combinations(range(len(vertices)), 2))
+    edge = {(i, j): z3.Bool(f"e_{i}_{j}") for i, j in edge_indices}
 
     def adj(i: int, j: int) -> z3.BoolRef:
-        if i == j:
+        if i == j and not allow_loops:
             return z3.BoolVal(False)
         return edge[min(i, j), max(i, j)]
 
@@ -59,8 +63,11 @@ def build(q: int, a: int, *, rows: bool = True, columns: bool = True,
             if c4_pair_mode == "same-difference" and c4_differences is not None and \
                     (vertices[i][1] - vertices[i][0]) % q not in c4_differences:
                 continue
+            common_neighbor_indices = (range(len(vertices)) if allow_loops else
+                                       (k for k in range(len(vertices))
+                                        if k not in {i, j}))
             solver.add(z3.PbLe([(z3.And(adj(i, k), adj(j, k)), 1)
-                                for k in range(len(vertices)) if k not in {i, j}], 1))
+                                for k in common_neighbor_indices], 1))
 
     return solver, vertices, edge
 
@@ -79,15 +86,19 @@ def main() -> None:
     parser.add_argument("--c4-difference", type=int, action="append",
         help="with same-difference mode, retain only these difference orbits")
     parser.add_argument("--quiet-model", action="store_true")
+    parser.add_argument("--allow-loops", action="store_true",
+        help=("model the reduced symmetric reciprocal relation, whose "
+              "diagonal entries are not constrained by Loopless"))
     args = parser.parse_args()
     solver, vertices, edge = build(args.q, args.a,
         rows=not args.no_rows, columns=not args.no_columns,
         c4_pair_mode="none" if args.no_c4 else args.c4_pair_mode,
         c4_differences=None if args.c4_difference is None else
-            {t % args.q for t in args.c4_difference})
+            {t % args.q for t in args.c4_difference},
+        allow_loops=args.allow_loops)
     solver.set(timeout=args.timeout_ms)
     result = solver.check()
-    print(f"q={args.q} a={args.a % args.q}: {result}")
+    print(f"q={args.q} a={args.a % args.q} allow_loops={args.allow_loops}: {result}")
     if result == z3.sat and not args.quiet_model:
         model = solver.model()
         chosen = [(vertices[i], vertices[j]) for (i, j), var in edge.items()
