@@ -70,6 +70,25 @@ a real entrywise-transpose obstruction, stronger than a cap collision.  A
 descent theorem reaching this stratum would therefore finish without a
 second owner-cap argument at the endpoint.
 
+### Encoding audit
+
+The first implementation introduced auxiliary unbounded integer variables
+for block loads.  Direct Z3 handled them correctly, but the probe's DIMACS
+tactic pipeline is intended for Boolean pseudo-Boolean formulas and produced
+a spurious SAT CNF by losing integer semantics.  The implementation now uses
+only Boolean cardinality constraints: at most two edges into every target
+fibre, exactly one zero-load predicate, and exactly one cardinality-two
+predicate.  After this correction, independent solvers agree:
+
+```
+q8 a=1 reciprocal/no-caps: Z3 UNSAT, Kissat UNSAT
+q8 a=1 directed/no-caps:   Z3 SAT
+q4 a=1 reciprocal/no-caps: Z3 SAT
+```
+
+The q4 exception and directed q8 control are therefore genuine, and the q8
+reciprocal verdict is not an artifact of the original integer encoding.
+
 ## The proposed second pin does not pin locally
 
 The square-sum identity
