@@ -203,3 +203,38 @@ This stops the generic permutation-array shortcut.  The phrase “partial
 permutation array” remains useful vocabulary, but the missing theorem must
 consume the translation-labelled hole pattern and reciprocity, not only
 Hamming distance and family size.
+
+## Packing-array bounds: orientation and scale audit
+
+Stevens--Mendelsohn, *Packing Arrays*, Theoret. Comput. Sci. 321 (2004),
+125--148, doi:10.1016/j.tcs.2003.06.004, is the closest named design-theory
+framework found in the outside search.  A packing array has `b` rows and `k`
+columns over a `g`-symbol alphabet, with every ordered symbol pair appearing
+at most once in every pair of columns.  The paper also studies disjoint rows
+and translates the objects to matchings and resolvable pairwise balanced
+designs.
+
+The orientation needed here gives no useful bound.  In one capped source
+fibre, the `q` partial permutations become at most
+
+```text
+b = q,  k = q-2,  g ≈ q-2.
+```
+
+Even the elementary two-column packing ceiling `b ≤ g²` is then enormously
+slack: `q ≤ (q-2)²` for `q ≥ 4`.  Stronger disjoint-row bounds from the same
+framework control the number of common fixed columns, not the reciprocal
+moving-hole pattern.
+
+Trying to place all `q(q-2)` source blocks into one packing array is invalid:
+their two deleted row positions and two deleted column positions translate
+with the source base and difference fibre, so there is no single common set
+of `q-2` columns or one fixed alphabet on which the packing-array axiom holds.
+Padding the holes restores common columns but introduces uncontrolled symbol
+agreements, exactly the completion problem already noted above.
+
+Thus the named packing-array theory does not supply the required nonlinear
+three-cap inequality.  A usable result would need to be a *cyclic moving-hole
+packing array with reciprocal block transpose*, which is strictly more
+structured than the published packing-array parameter bounds.  The outside
+search found no theorem of that form.
