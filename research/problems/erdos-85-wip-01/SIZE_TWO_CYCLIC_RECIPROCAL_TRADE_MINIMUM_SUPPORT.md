@@ -45,18 +45,35 @@ simple graph,
 2|W| <= choose(|W|,2),
 ```
 
-so every nontrivial reciprocal trade has
+so initially every nontrivial reciprocal trade has
 
 ```text
 |W| >= 5.                                             (2)
 ```
 
-It also changes at least `|W|` old and `|W|` new undirected edges, hence at
-least ten edge memberships in total.  Equality in (2) would require a
-decomposition of `K_5` into two 5-cycles, one of each sign.  This is possible
-as an uncoloured graph, but the row/column labels impose additional
-rectangle conditions at every vertex; no claim is made here that an affine
-five-vertex trade exists.
+The affine margins exclude equality in (2).  If `|W|=5`, both sign graphs
+have exactly five edges and degree two everywhere, so they are two 5-cycles
+whose union is `K_5`.  At each `p in W`, its two minus neighbours and two
+plus neighbours partition `W\{p}` and have equal row multisets.  Therefore,
+after deleting any `p`, every target-row multiplicity among the other four
+vertices is even.
+
+Let `c_y` be the number of vertices of `W` in row `y`.  Deleting a vertex in
+row `y` says `c_y` is odd and every other occupied row count is even.  If two
+rows `y,z` are occupied, deleting a vertex first in `y` and then in `z` says
+that `c_z` is respectively even and odd, a contradiction.  Hence all five
+vertices would lie in one row.  In one row a cell is uniquely determined by
+its absolute column; equality of the two disjoint two-element column
+multisets at any `p` is then impossible.
+
+Consequently the sharp bound supplied by the two affine margins is
+
+```text
+|W| >= 6,                                             (3)
+```
+
+and a nontrivial closed trade changes at least six old and six new
+undirected edges, hence at least twelve edge memberships in total.
 
 ## Consequence for local cycle descent
 
@@ -69,10 +86,9 @@ affected source has a complete local column cycle.  Thus:
 - an ordinary graph 2-switch is too small;
 - a single collision-edge orientation token is too small; and
 - the first meaningful bounded search is for a symmetric Latin bitrade on
-  at least five cells and at least ten toggled edge memberships.
+  at least six cells and at least twelve toggled edge memberships.
 
 The theorem is q-generic and does not use caps or the power-of-two
 hypothesis.  Caps enter only when asking whether both endpoints `K,K'` of
 such a closed trade remain packing codes and whether the trade lowers total
 defect rank.
-
