@@ -39,6 +39,14 @@ def main() -> None:
         help="require every base to have an internal neighbour in its fibre")
     parser.add_argument("--require-internal-perfect-matching", action="store_true",
         help="require every base to have exactly one internal neighbour")
+    parser.add_argument("--max-internal-edges", type=int,
+        help="bound the total number of undirected internal-fibre edges")
+    parser.add_argument("--force-internal-two-path", type=int, nargs=4,
+        metavar=("T", "X", "Y", "Z"),
+        help="force the internal edges x-y and y-z in fibre t")
+    parser.add_argument("--only-cap-pair", type=int, nargs=3,
+        metavar=("T", "X", "Z"),
+        help="impose only the common-target cap for bases x,z in fibre t")
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     parser.add_argument("--dimacs")
     args = parser.parse_args()
@@ -49,6 +57,8 @@ def main() -> None:
     if (args.reciprocity_core or args.joint_group_core or
             args.joint_separation_core) and args.dimacs is not None:
         parser.error("core modes cannot be combined with --dimacs")
+    if args.no_caps and args.only_cap_pair is not None:
+        parser.error("--no-caps and --only-cap-pair are incompatible")
 
     q = args.q
     holes = {args.a % q, (-1 - args.a) % q}
@@ -126,6 +136,11 @@ def main() -> None:
             if args.joint_group_core:
                 cap_assumptions[t] = z3.Bool(f"caps_{t}")
             for x, z in combinations(range(q), 2):
+                if args.only_cap_pair is not None:
+                    selected = tuple(value % q for value in args.only_cap_pair)
+                    if (t, x, z) != (selected[0], min(selected[1:]),
+                                     max(selected[1:])):
+                        continue
                 left, right = (x, t), (z, t)
                 constraint = z3.PbLe([
                     (z3.And(edge(left, target), edge(right, target)), 1)
@@ -179,6 +194,21 @@ def main() -> None:
                     (edge((x, t), (z, t)), 1)
                     for z in range(q) if z != x
                 ], 1))
+
+    if args.max_internal_edges is not None:
+        if (args.directed or args.reciprocity_core or args.joint_group_core or
+                args.joint_separation_core):
+            parser.error("--max-internal-edges requires undirected mode")
+        solver.add(z3.PbLe([
+            (edge((x, t), (z, t)), 1)
+            for t in differences for x, z in combinations(range(q), 2)
+        ], args.max_internal_edges))
+
+    if args.force_internal_two_path is not None:
+        t, x, y, z = (value % q for value in args.force_internal_two_path)
+        if t not in differences or len({x, y, z}) != 3:
+            parser.error("forced two-path needs an allowed fibre and distinct bases")
+        solver.add(edge((x, t), (y, t)), edge((y, t), (z, t)))
 
     if args.dimacs is not None:
         goal = z3.Goal()

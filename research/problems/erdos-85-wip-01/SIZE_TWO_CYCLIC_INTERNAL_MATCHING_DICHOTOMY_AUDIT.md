@@ -54,3 +54,19 @@ moments cannot express that overlap; the endpoint labels must be retained.
 
 The bounded result is evidence for a q-generic reciprocity parity lemma, not
 permission to replace it with an enumeration.
+
+## Local two-path charging is false
+
+The probe also supports `--force-internal-two-path T X Y Z` together with
+`--only-cap-pair T X Z`.  This forces the internal common neighbour `Y` of
+the endpoint sources and retains only their one common-target cap.  At q=8,
+a=2, all admissible representatives tested are SAT, including
+
+```text
+(t,x,y,z) = (3,0,1,2), (3,0,1,3), (3,0,2,4), (4,0,1,2).
+```
+
+Thus one internal two-path does not make exact hits and reciprocity force a
+second common target for the same endpoints.  The remaining positive-
+variance theorem must aggregate many labelled endpoint pairs; a local
+two-path-to-cap-violation lemma is false.
