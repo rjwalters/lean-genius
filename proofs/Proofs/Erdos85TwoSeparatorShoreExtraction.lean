@@ -22,6 +22,7 @@ theorem exists_ambient_shores_of_induce_sdiff_not_preconnected
     ∃ S T : Finset V,
       S.Nonempty ∧ T.Nonempty ∧
       S ∪ T ∪ W = Finset.univ ∧ Disjoint S T ∧
+      Disjoint S W ∧ Disjoint T W ∧
       (∀ s ∈ S, ∀ t ∈ T, ¬ D.Adj s t) := by
   let U : Finset V := Finset.univ \ W
   let H := D.induce (↑U : Set V)
@@ -61,10 +62,47 @@ theorem exists_ambient_shores_of_induce_sdiff_not_preconnected
       change D.Adj a.1 b.1
       simpa [has, hbt] using hst
     exact hno₀ a haS b hbT hab
-  exact ⟨S, T, hSne, hTne, hcover, hdisj, hno⟩
+  have hSW : Disjoint S W := by
+    rw [Finset.disjoint_left]
+    intro z hzS hzW
+    obtain ⟨a, _haS, haz⟩ := Finset.mem_image.mp hzS
+    have haU : a.1 ∈ Finset.univ \ W := by simpa [U] using a.2
+    have : a.1 ∉ W := (Finset.mem_sdiff.mp haU).2
+    exact this (haz ▸ hzW)
+  have hTW : Disjoint T W := by
+    rw [Finset.disjoint_left]
+    intro z hzT hzW
+    obtain ⟨a, _haT, haz⟩ := Finset.mem_image.mp hzT
+    have haU : a.1 ∈ Finset.univ \ W := by simpa [U] using a.2
+    have : a.1 ∉ W := (Finset.mem_sdiff.mp haU).2
+    exact this (haz ▸ hzW)
+  exact ⟨S, T, hSne, hTne, hcover, hdisj, hSW, hTW, hno⟩
+
+/-- With a two-vertex deleted set, the extracted shores contain exactly
+`|V|-2` vertices in total. -/
+theorem exists_ambient_shores_card_sum_of_two_vertex_deletion
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hWcard : W.card = 2)
+    (hnot : ¬ (D.induce (↑(Finset.univ \ W) : Set V)).Preconnected) :
+    ∃ S T : Finset V,
+      S.Nonempty ∧ T.Nonempty ∧
+      S ∪ T ∪ W = Finset.univ ∧ Disjoint S T ∧
+      (∀ s ∈ S, ∀ t ∈ T, ¬ D.Adj s t) ∧
+      S.card + T.card = Fintype.card V - 2 := by
+  obtain ⟨S, T, hSne, hTne, hcover, hST, hSW, hTW, hno⟩ :=
+    exists_ambient_shores_of_induce_sdiff_not_preconnected D W hnot
+  have hdisjUnion : Disjoint (S ∪ T) W := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hSW, hTW⟩
+  have hcardCover := congrArg Finset.card hcover
+  rw [Finset.card_union_of_disjoint hdisjUnion,
+    Finset.card_union_of_disjoint hST, Finset.card_univ, hWcard] at hcardCover
+  exact ⟨S, T, hSne, hTne, hcover, hST, hno, by omega⟩
 
 end
 
 end Erdos85
 
 #print axioms Erdos85.exists_ambient_shores_of_induce_sdiff_not_preconnected
+#print axioms Erdos85.exists_ambient_shores_card_sum_of_two_vertex_deletion
