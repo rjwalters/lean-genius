@@ -642,7 +642,7 @@ theorem orderNine_order18_largeOrdinaryShore_level_sets
         (Finset.univ \ R)).card) = 2) :
     let O := (Finset.univ : Finset V) \ {h₁, h₂, h₃}
     let f := fun x : ↥(↑O : Set V) ↦ (G.neighborFinset x.1 ∩ R).card
-    (∃ (c : V) (Z : Finset V), c ∈ O ∧ Z ⊆ O ∧ Z.card = 28 ∧ c ∉ Z ∧
+    (∃ (c : V) (Z : Finset V), c ∈ O ∧ Z ⊆ O ∧ Z.card = 29 ∧ c ∈ Z ∧
       ∀ x, (hx : x ∈ O) →
         f ⟨x, hx⟩ = if x = c then 5 else if x ∈ Z then 6 else 7) ∨
     (∃ (c : V) (Z : Finset V), c ∈ O ∧ Z ⊆ O ∧ Z.card = 31 ∧ c ∉ Z ∧
@@ -662,7 +662,23 @@ theorem orderNine_order18_largeOrdinaryShore_level_sets
     rw [G.card_neighborFinset_eq_degree,
       hdegOrd x.1 (Finset.mem_sdiff.mp x.2).2] at hle
     exact hle
-  exact orderNine_order18_excessTwo_subtype_level_sets O f hbound hp
+  rcases orderNine_order18_excessTwo_subtype_level_sets O f hbound hp with
+    hL | hH
+  · obtain ⟨c, Z, hcO, hZsub, hZcard, hcZ, hlevels⟩ := hL
+    left
+    refine ⟨c, insert c Z, hcO, ?_, ?_, Finset.mem_insert_self c Z, ?_⟩
+    · intro x hx
+      rcases Finset.mem_insert.mp hx with rfl | hxZ
+      · exact hcO
+      · exact hZsub hxZ
+    · rw [Finset.card_insert_of_notMem hcZ, hZcard]
+    · intro x hxO
+      have hlevel := hlevels x hxO
+      by_cases hxc : x = c
+      · subst x
+        simpa [f] using hlevel
+      · simpa [f, hxc] using hlevel
+  · exact Or.inr hH
 
 /-- Cardinal decomposition across three pairwise-disjoint parts. -/
 theorem card_inter_add_inter_add_inter_of_three_part_partition
