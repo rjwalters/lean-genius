@@ -11,6 +11,7 @@ impose selected same-fiber codegree caps without constructing the full
 from __future__ import annotations
 
 import argparse
+from collections import Counter, defaultdict
 
 import z3
 
@@ -27,6 +28,8 @@ def main() -> None:
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--dimacs",
         help="write an equisatisfiable bit-blasted DIMACS instance and exit")
+    parser.add_argument("--dump-defects", action="store_true",
+        help="print repeated target-difference pairs by 2-adic row separation")
     args = parser.parse_args()
 
     q = args.q
@@ -114,6 +117,31 @@ def main() -> None:
                 if z3.is_true(model.eval(edge(t, t, r)))]
             if internal_steps:
                 print(f"  fiber {t}: internal_steps={internal_steps}")
+        if args.dump_defects:
+            level_totals: Counter[int] = Counter()
+            for t in differences:
+                rows_by_target: dict[int, list[int]] = defaultdict(list)
+                for r in range(q):
+                    for u in differences:
+                        if z3.is_true(model.eval(edge(t, u, r))):
+                            rows_by_target[u].append(r)
+                levels: Counter[int] = Counter()
+                repeated_targets = 0
+                excess = 0
+                for rows in rows_by_target.values():
+                    if len(rows) < 2:
+                        continue
+                    repeated_targets += 1
+                    excess += len(rows) - 1
+                    for i, r in enumerate(rows):
+                        for s in rows[i + 1:]:
+                            separation = (s - r) % q
+                            level = (separation & -separation).bit_length() - 1
+                            levels[level] += 1
+                            level_totals[level] += 1
+                print(f"  fiber {t}: repeated_targets={repeated_targets} "
+                      f"excess={excess} defect_levels={dict(sorted(levels.items()))}")
+            print(f"  all defect_levels={dict(sorted(level_totals.items()))}")
 
 
 if __name__ == "__main__":
