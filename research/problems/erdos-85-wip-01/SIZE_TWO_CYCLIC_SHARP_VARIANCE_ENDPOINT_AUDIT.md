@@ -87,3 +87,13 @@ block-row variance lower bound from 96 to at least 128.  This is still below
 the same-fibre cap ceiling 336, so it is an amplification datum rather than
 the terminal contradiction.  A q-generic proof must determine whether the
 16-source loss is a constant fraction or only a two-hole `2q` correction.
+
+An extremal `N=32` witness shows the lower bound 128 is attained.  For a=1,
+four whole source fibres are sharp and the other two whole fibres have
+profile `0,0,1,1,2,2`; for a=2, two fibres are wholly sharp and four fibres
+split four sharp/four double-defect bases.  In both cases every exceptional
+source has exactly two missing and two doubled target fibres, hence energy
+4.  The obstruction is therefore global across source fibres rather than a
+uniform per-fibre prohibition.  Under reciprocity block-row variance equals
+the labelled target-load variance by transposing every block, so this is an
+actual attainable cap-free `V=128` stratum, not merely a relaxation.
