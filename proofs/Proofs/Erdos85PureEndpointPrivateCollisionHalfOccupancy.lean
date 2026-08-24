@@ -42,6 +42,7 @@ theorem c4Free_binarySquare_pureEndpoint_exists_private_halfOccupancy_collision
       (G.neighborFinset x ∩ fullLineCenters G S q).card = 1 ∧
       (G.neighborFinset x' ∩ fullLineCenters G S q).card = 1 ∧
       G.Adj x w ∧ G.Adj x' w ∧
+      (G.neighborFinset x ∩ G.neighborFinset x').card = 1 ∧
       (G.neighborFinset w ∩ S).card = m := by
   classical
   obtain ⟨x, hxR₁, x', hx'R₁, hxx', w, hxw, hx'w⟩ :=
@@ -89,8 +90,18 @@ theorem c4Free_binarySquare_pureEndpoint_exists_private_halfOccupancy_collision
           _ = p j := congrArg p hij
           _ = x' := hj
       exact (hxx' this).elim
+  have hcommonOne :
+      (G.neighborFinset x ∩ G.neighborFinset x').card = 1 := by
+    have hle := common_le_one_of_not_containsC4 hfree x x' hxx'
+    have hwMem : w ∈ G.neighborFinset x ∩ G.neighborFinset x' :=
+      Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset x w).mpr hxw,
+         (G.mem_neighborFinset x' w).mpr hx'w⟩
+    have hpos : 0 < (G.neighborFinset x ∩ G.neighborFinset x').card :=
+      Finset.card_pos.mpr ⟨w, hwMem⟩
+    omega
   exact ⟨x, x', w, hxData.1, hx'Data.1, hxx',
-    hxData.2, hx'Data.2, hxw, hx'w, hocc⟩
+    hxData.2, hx'Data.2, hxw, hx'w, hcommonOne, hocc⟩
 
 end
 
