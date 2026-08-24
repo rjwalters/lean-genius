@@ -28,7 +28,6 @@ theorem connected_binarySquare_regular_incidenceBottleneck_energy_ge_cube
     (hqeven : Even q)
     (hreg : ∀ x, G.degree x = q)
     (hcard : Fintype.card V = q * q)
-    (hDreg : ∀ x, (secondOrderDefectGraph G).degree x = q - 1)
     (hDconn : (secondOrderDefectGraph G).Connected) :
     let A := G.adjMatrix ℤ
     let D := (secondOrderDefectGraph G).adjMatrix ℤ
@@ -36,6 +35,19 @@ theorem connected_binarySquare_regular_incidenceBottleneck_energy_ge_cube
     let E := A * D - (J - A)
     ((q * q * q : ℕ) : ℤ) ≤ ∑ x : V, ∑ y : V, (E x y) ^ 2 := by
   let D := secondOrderDefectGraph G
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by
+        rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDreg : ∀ x, D.degree x = q - 1 := by
+    intro x
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus x
+    change D.degree x = (q - 3) + 2 at h
+    omega
   have hcut : ∀ x,
       q - 1 ≤ finsetGraphCutIncidenceCount D
         (insert x (D.neighborFinset x)) := by
