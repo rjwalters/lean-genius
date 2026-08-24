@@ -36,6 +36,11 @@ def main() -> None:
         help="require at least this many sources to have a 0,2,1,... block profile")
     parser.add_argument("--max-total-defect-rank", type=int,
         help="bound the total number of zero source-to-fibre loads")
+    parser.add_argument("--require-reflection-rank-imbalance", type=int,
+        nargs=2, metavar=("X", "T"),
+        help="require unequal zero-load counts at (x,t) and (x,-1-t)")
+    parser.add_argument("--require-odd-sharp-count-at-base", type=int,
+        metavar="X", help="require an odd number of rank-one sources at base x")
     parser.add_argument("--global-route-sign", choices=("even", "odd"),
         help="require the product sign of all local row-to-column permutations")
     parser.add_argument("--directed", action="store_true",
@@ -265,6 +270,40 @@ def main() -> None:
                 defect_zero_flags.append((zero, 1))
         solver.add(z3.PbLe(defect_zero_flags,
                            args.max_total_defect_rank))
+
+    if args.require_reflection_rank_imbalance is not None:
+        x, t = (value % q for value in
+                args.require_reflection_rank_imbalance)
+        reflected_t = (-1 - t) % q
+        if t not in differences or reflected_t not in differences:
+            parser.error("the requested fibre or its reflection is a hole")
+
+        def source_defect_rank(source: tuple[int, int]) -> z3.ArithRef:
+            return z3.Sum([
+                z3.If(z3.Sum([
+                    z3.If(edge(source, (y, u)), 1, 0)
+                    for y in range(q)]) == 0, 1, 0)
+                for u in differences])
+
+        solver.add(source_defect_rank((x, t)) !=
+                   source_defect_rank((x, reflected_t)))
+
+    if args.require_odd_sharp_count_at_base is not None:
+        x = args.require_odd_sharp_count_at_base % q
+
+        def source_is_sharp(source: tuple[int, int]) -> z3.BoolRef:
+            zero_count = z3.Sum([
+                z3.If(z3.Sum([
+                    z3.If(edge(source, (y, u)), 1, 0)
+                    for y in range(q)]) == 0, 1, 0)
+                for u in differences])
+            return zero_count == 1
+
+        sharp_parity = z3.BoolVal(False)
+        for t in differences:
+            sharp_parity = z3.Xor(sharp_parity,
+                                  source_is_sharp((x, t)))
+        solver.add(sharp_parity)
 
     # Full same-difference cap: any two distinct bases in one fibre have at
     # most one precise common target cell.
