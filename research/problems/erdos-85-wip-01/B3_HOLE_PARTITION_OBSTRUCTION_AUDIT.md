@@ -5367,3 +5367,28 @@ singleton loss, then prove that at some reverse-obstructed row its residual
 bipartite matching rank fits the remaining slack.  The corpus remains finite
 evidence rather than a proof, but (13az) separates the selector into a simple
 three-way incidence count and a small alternating-path bound.
+
+There is a precise reason not to promote (13az) to a theorem about arbitrary
+linear three-partite hypergraphs.  The four parity triples
+
+```text
+(a0,b0,c0), (a0,b1,c1), (a1,b0,c1), (a1,b1,c0)
+```
+
+form the `2 x 2 x 2` Pasch configuration.  They are pairwise intersecting, so
+their matching number is one, but every two-color projection is a four-cycle
+with cover number two.  At demand two there is a genuine matching deficit and
+no strict two-color cover.  The executable
+`q9_two_color_selector_pasch_counterexample.py` checks these facts by complete
+enumeration.  Hence a generic ``rank deficit implies two-color cover deficit``
+lemma is false.
+
+The good news is that `--audit-min-singleton-color-selector` now also searches
+for Pasch configurations inside every contracted reverse-compatible triple
+family.  None occurs at any audited row in any of the ten row-feasible durable
+payloads.  Two payloads do contain a Pasch among their *global* triple blocks,
+so plain outer linearity does not forbid it; reverse compatibility removes at
+least one of its four rows.  This locates the next honest structural leaf:
+prove that the forced/possible reverse interval cannot retain a Pasch, and
+then determine whether Pasch-freeness plus the q=9 row counts yields (13az),
+or add the next minimal matching-critical configuration as a separate horn.

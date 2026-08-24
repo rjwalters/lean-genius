@@ -466,6 +466,41 @@ def contracted_two_color_matching_profiles(
     return profiles
 
 
+def contracted_residual_pasch_configurations(
+        system: dict, target: int, local: dict[int, dict]) -> list[list[int]]:
+    """Find 2x2x2 parity/Pasch configurations among residual triples."""
+    forced = {
+        source for source in range(N)
+        if target in local[source]["forced_neighbors"]
+    }
+    possible = {
+        source for source in range(N)
+        if target in local[source]["possible_neighbors"]
+    }
+    edge_set = set(system["edges"])
+    triples = [
+        source for source in range(N)
+        if len(system["blocks"][source]) == 3
+        and tuple(sorted((source, target))) in edge_set
+        and source in possible and source not in forced
+        and all(not (system["blocks"][source] & system["blocks"][f])
+                for f in forced)
+    ]
+    configurations = []
+    for rows in combinations(triples, 4):
+        blocks = [system["blocks"][row] for row in rows]
+        if not all(len(first & second) == 1
+                   for first, second in combinations(blocks, 2)):
+            continue
+        multiplicities = {
+            point: sum(point in block for block in blocks)
+            for point in set().union(*blocks)
+        }
+        if len(multiplicities) == 6 and set(multiplicities.values()) == {2}:
+            configurations.append(list(rows))
+    return configurations
+
+
 def dual(system: dict, row_support: set[int] | None,
          external_point: int | None = None):
     blocks = system["blocks"]
@@ -1985,6 +2020,10 @@ def main() -> None:
             records.append({
                 "target": target,
                 "profiles": profiles,
+                "residual_pasch_configurations":
+                    contracted_residual_pasch_configurations(
+                        system, target, local
+                    ),
                 "minimum_mandatory_card": minimum_mandatory,
                 "minimum_mandatory_selector_closes": any(
                     profile["score"] < profile["demand"]
