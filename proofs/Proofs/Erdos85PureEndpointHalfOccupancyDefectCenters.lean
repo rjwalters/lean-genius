@@ -1,4 +1,5 @@
 import Proofs.Erdos85PureEndpointNeighborOwnerDeficit
+import Proofs.Erdos85PureEndpointHalfOccupancyDefectOwners
 
 /-!
 # Full-center defect neighbors of the forced half-occupancy vertex
@@ -54,31 +55,14 @@ theorem c4Free_binarySquare_pureEndpoint_exists_halfOccupancy_two_defectCenters
       (secondOrderDefectGraph G).neighborFinset w ∩ F := by
     intro i hi
     have hiData := mem_sdiff.mp hi
-    have hwi : w ≠ i := fun h => hwNotFull (h ▸ hiData.1)
-    apply mem_inter.mpr
-    refine ⟨((secondOrderDefectGraph G).mem_neighborFinset w i).mpr ?_, hiData.1⟩
-    apply (secondOrderDefectGraph_adj_iff_card_common_eq_zero
-      G hfree hwi).mpr
-    apply card_eq_zero.mpr
-    apply not_nonempty_iff_eq_empty.mp
-    rintro ⟨z, hz⟩
-    have hzData := mem_inter.mp hz
-    have hiFull := (mem_fullLineCenters G S q i).mp hiData.1
-    have hiNeighbors : G.neighborFinset i ∩ S = G.neighborFinset i := by
-      apply eq_of_subset_of_card_le inter_subset_left
-      rw [hiFull, G.card_neighborFinset_eq_degree, hreg]
-    have hzS : z ∈ S := by
-      have : z ∈ G.neighborFinset i ∩ S := by
-        rw [hiNeighbors]
-        exact hzData.2
-      exact (mem_inter.mp this).2
+    rw [c4Free_fullCenter_defectNeighbors_eq_unusedOwners
+      G hfree S hreg hwNotFull]
+    apply mem_filter.mpr
+    refine ⟨hiData.1, ?_⟩
+    intro y hy hiOwner
     apply hiData.2
     apply mem_biUnion.mpr
-    refine ⟨z, ?_, ?_⟩
-    · exact mem_inter.mpr ⟨hzData.1, hzS⟩
-    · exact mem_inter.mpr
-        ⟨by simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using hzData.2,
-          hiData.1⟩
+    exact ⟨y, hy, mem_inter.mpr ⟨hiOwner, hiData.1⟩⟩
   have htwo : 2 ≤
       ((secondOrderDefectGraph G).neighborFinset w ∩ F).card :=
     le_trans hUnused (card_le_card hsub)
