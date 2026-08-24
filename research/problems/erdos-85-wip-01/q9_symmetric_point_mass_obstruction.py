@@ -1273,6 +1273,10 @@ def main() -> None:
     parser.add_argument("--branch", type=int, choices=(3, 4))
     parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--timeout-seconds", type=int, default=60)
+    parser.add_argument(
+        "--output-payload", type=Path,
+        help="write the loaded or generated outer payload for regression",
+    )
     parser.add_argument("--dual", action="store_true")
     parser.add_argument("--row-support", type=int, nargs="*")
     parser.add_argument("--minimize-row-support", action="store_true")
@@ -1339,6 +1343,10 @@ def main() -> None:
             if args.branch is None:
                 parser.error("payload without branch requires --branch")
             payload["branch"] = args.branch
+    if args.output_payload is not None:
+        args.output_payload.write_text(
+            json.dumps(payload, indent=2, sort_keys=True) + "\n"
+        )
     system = fixed_system(payload)
     result = primal(system)
     print(

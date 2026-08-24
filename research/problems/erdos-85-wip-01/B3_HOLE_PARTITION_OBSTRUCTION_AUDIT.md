@@ -5679,12 +5679,19 @@ the barrier list previously obtained from maximum matching, now recomputed
 directly from the definition of `IsTutteViolator`.
 
 All-row feasibility is an essential premise of the prospective theorem, not
-background noise.  Ordinary unconstrained branch-4 random models at seeds 4
-and 9 have lex-selected targets with four residual rows whose collision graph
-has matching number one: an isolated row plus an odd three-row component.
-Both have `all_rows_locally_feasible=false`.  Hence the bare outer-design
-axioms plus lex minimization do **not** imply (13bi): the proof must spend the
-full local-packing hypothesis at the other rows.                         (13bl)
+background noise.  Ordinary unconstrained branch-4 random models include
+lex-selected targets with four residual rows whose collision graph has
+matching number one: an isolated row plus an odd three-row component.  More
+decisively, the durable payload
+`q9_branch4_outer_terminal_all_rows_infeasible_counterexample.json` has
+selected target 14 with `|R|=11`, `|F|=0`, demand five, and all three colored
+scores equal to six.  Its best star cover has cost five, also non-strict.
+The post-star even remainder does have a perfect matching, so (13bi) holds;
+it is (13bj) that fails.  The payload has
+`all_rows_locally_feasible=false`.  Hence bare outer-design axioms plus lex
+minimization imply neither the no-violator statement nor the strict budget:
+the proof must spend the full local-packing hypothesis at the other rows.
+                                                                       (13bl)
 
 A direct one-step descent along a barrier is also false.  The auditor now
 classifies every lexicographically better obstructed target by four most
