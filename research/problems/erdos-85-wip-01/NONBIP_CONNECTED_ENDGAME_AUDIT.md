@@ -91,6 +91,13 @@ it gives no global upper bound on repeated occupancy.  A viable proof must
 add a global packing constraint on those repeated occupancies.  Higher
 vertex-connectivity does not provide that constraint by itself.
 
+There is already a decisive calibration against overgeneralizing it.  In the
+exact `q=4` fixed-free ambient control, every E-row has energy six, so
+`||E||_F^2=96>64=q^3`; its defect graph is the disconnected `[8,8]` case.
+Consequently the cube upper is false as a generic binary-incidence theorem.
+Any viable version must genuinely use both connectedness and the intended
+`k>=3` range, rather than merely carry those hypotheses unused.
+
 ## The `mu=-1` blind spot, split by exponent parity
 
 On a simultaneous adjacency/defect eigenvector, `E` acts by
