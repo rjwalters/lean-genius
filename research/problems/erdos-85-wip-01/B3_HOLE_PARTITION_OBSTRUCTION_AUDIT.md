@@ -5408,3 +5408,29 @@ the other only by the reverse local-packing interval.  The audit emits both
 the global and contracted Pasch lists so this distinction remains regression
 tested, while also emitting the residual loose-triangle count to prevent the
 stronger false inference from returning.
+
+The useful interaction statistic is instead the **matching deletion loss**.
+Let `r0(w,c)` be the matching number before deleting edges incident to the
+mandatory singleton set, and put
+
+```text
+lambda(w,c) = r0(w,c) - r(w,c).
+```
+
+The enhanced selector audit computes both ranks by independent augmenting
+paths.  All ten row-feasible payloads have a closing minimum-singleton color
+for which
+
+```text
+lambda(w,c) >= s(w,c) - 1.                              (13ba)
+```
+
+Thus the singleton set destroys one unit of raw matching rank per mandatory
+point, with at most one exception.  This is the first corpus-wide statement
+that directly couples the pair rows to the triple obstruction instead of
+trying to forbid loose triangles.  Seed 129 is again sharp: at target 24 and
+color two, `s=5`, `r0=4`, `r=0`, so `lambda=4=s-1`.  The sparse selector has
+`s=1`, `r0=3`, `r=2`, hence `lambda=s`.  A structural proof can now aim for
+the near-full deletion alternative (13ba), after which only the raw matching
+rank and the one-unit slack remain to be counted.  This is still a
+corpus-supported conjecture, not a theorem.

@@ -427,40 +427,52 @@ def contracted_two_color_matching_profiles(
         mandatory = set().union(*(
             block for block in projected if len(block) == 1
         )) if projected else set()
+        raw_edges = set()
         residual_edges = set()
         for block in projected:
-            if len(block) == 2 and not (block & mandatory):
+            if len(block) == 2:
                 left = next(iter(block & color_points[0]))
                 right = next(iter(block & color_points[1]))
-                residual_edges.add((left, right))
-        adjacency = {
-            left: [] for left in color_points[0] - mandatory
-        }
-        for left, right in sorted(residual_edges):
-            adjacency[left].append(right)
-        matched_right = {}
+                raw_edges.add((left, right))
+                if not (block & mandatory):
+                    residual_edges.add((left, right))
 
-        def augment(left: int, seen: set[int]) -> bool:
-            for right in adjacency[left]:
-                if right in seen:
-                    continue
-                seen.add(right)
-                if (right not in matched_right
-                        or augment(matched_right[right], seen)):
-                    matched_right[right] = left
-                    return True
-            return False
+        def matching_card(edges, left_vertices) -> int:
+            adjacency = {left: [] for left in left_vertices}
+            for left, right in sorted(edges):
+                adjacency[left].append(right)
+            matched_right = {}
 
-        for left in sorted(adjacency):
-            augment(left, set())
+            def augment(left: int, seen: set[int]) -> bool:
+                for right in adjacency[left]:
+                    if right in seen:
+                        continue
+                    seen.add(right)
+                    if (right not in matched_right
+                            or augment(matched_right[right], seen)):
+                        matched_right[right] = left
+                        return True
+                return False
+
+            for left in sorted(adjacency):
+                augment(left, set())
+            return len(matched_right)
+
+        raw_matching_card = matching_card(raw_edges, color_points[0])
+        residual_matching_card = matching_card(
+            residual_edges, color_points[0] - mandatory
+        )
         profiles.append({
             "omitted_color": omitted,
             "forced_card": len(forced),
             "candidate_count": len(candidates),
             "mandatory_points": sorted(mandatory),
             "mandatory_card": len(mandatory),
-            "matching_card": len(matched_right),
-            "score": len(forced) + len(mandatory) + len(matched_right),
+            "raw_matching_card": raw_matching_card,
+            "matching_card": residual_matching_card,
+            "matching_deletion_loss":
+                raw_matching_card - residual_matching_card,
+            "score": len(forced) + len(mandatory) + residual_matching_card,
             "demand": system["degree"][target],
         })
     return profiles
@@ -2101,6 +2113,15 @@ def main() -> None:
                 record["minimum_mandatory_selector_closes"]
                 for record in records
             ),
+            "exists_closing_minimum_mandatory_near_full_deletion_selector":
+                any(
+                    profile["mandatory_card"]
+                    == record["minimum_mandatory_card"]
+                    and profile["score"] < profile["demand"]
+                    and profile["matching_deletion_loss"]
+                    >= profile["mandatory_card"] - 1
+                    for record in records for profile in record["profiles"]
+                ),
         }, separators=(",", ":")))
     if (not args.dual and not args.minimize_row_support
             and not args.scan_nondiagonal_fibers
