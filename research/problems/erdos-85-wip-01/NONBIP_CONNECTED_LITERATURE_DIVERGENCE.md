@@ -206,3 +206,27 @@ has exactly one remaining question: do the already-banked closed-star or
 dyadic constraints force the tree count to have a nonsquare prime valuation?
 If they do not, stop this probe rather than manufacture more determinant
 wrappers.
+
+That stop test fails already at the `D`-only level.  The graph on vertices
+`0,...,15` with edges
+
+```text
+(0,10) (0,13) (0,15) (1,6)  (1,11) (1,12)
+(2,5)  (2,6)  (2,12) (3,5)  (3,13) (3,15)
+(4,7)  (4,13) (4,14) (5,7)  (6,8)  (7,9)
+(8,9)  (8,12) (9,11) (10,14) (10,15) (11,14)
+```
+
+is cubic on 16 vertices, connected, nonbipartite, and has both vertex and
+edge connectivity three (the maximum possible).  Its Laplacian cofactor is
+
+```text
+tau = 136161 = 369^2.
+```
+
+Thus degree, connectedness, nonbipartiteness, and maximal connectivity are
+all compatible with the new square-cofactor condition at the smallest square
+parameter.  Probe 2 is **stopped as a connectivity/regularity terminal**.
+It can be revived only with a concrete extra valuation consequence of the
+prescribed integral square root `A` or of the nonlinear transport law; the
+square tree count alone does not justify more determinant wrappers.
