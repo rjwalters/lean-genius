@@ -50,8 +50,54 @@ theorem exists_mate_with_unique_leaf_owner_exit
   exact ⟨b, hbS, hba, hbLeaf, mate, hab, hba',
     hclosed, hinvol, hfixed, houtside⟩
 
+/-- In the two-leaf state, pair the two leaves together.  Every remaining
+pair then consists entirely of nonleaves. -/
+theorem exists_mate_with_two_leaf_owner_through
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (S : Finset V) (leaf : V → Prop) (a b : V)
+    (heven : Even S.card) (hab : a ≠ b)
+    (haS : a ∈ S) (hbS : b ∈ S)
+    (_haLeaf : leaf a) (_hbLeaf : leaf b)
+    (hleaves : ∀ x ∈ S, leaf x → x = a ∨ x = b) :
+    ∃ mate : V → V,
+      mate a = b ∧ mate b = a ∧
+      (∀ x, x ∈ S → mate x ∈ S) ∧
+      (∀ x, x ∈ S → mate (mate x) = x) ∧
+      (∀ x, x ∈ S → mate x ≠ x) ∧
+      (∀ x, x ∉ S → mate x = x) ∧
+      ∀ x ∈ S, x ≠ a → x ≠ b →
+        ¬ leaf x ∧ ¬ leaf (mate x) := by
+  obtain ⟨mate, hma, hmb, hclosed, hinvol, hfixed, houtside⟩ :=
+    exists_mate_of_even_finset_with_prescribed_pair
+      S a b heven hab haS hbS
+  refine ⟨mate, hma, hmb, hclosed, hinvol, hfixed, houtside, ?_⟩
+  intro x hxS hxa hxb
+  have hxNonleaf : ¬ leaf x := by
+    intro hxLeaf
+    rcases hleaves x hxS hxLeaf with h | h
+    · exact hxa h
+    · exact hxb h
+  have hmS := hclosed x hxS
+  have hma' : mate x ≠ a := by
+    intro h
+    have hh := congrArg mate h
+    rw [hinvol x hxS, hma] at hh
+    exact hxb hh
+  have hmb' : mate x ≠ b := by
+    intro h
+    have hh := congrArg mate h
+    rw [hinvol x hxS, hmb] at hh
+    exact hxa hh
+  have hmNonleaf : ¬ leaf (mate x) := by
+    intro hmLeaf
+    rcases hleaves (mate x) hmS hmLeaf with h | h
+    · exact hma' h
+    · exact hmb' h
+  exact ⟨hxNonleaf, hmNonleaf⟩
+
 #print axioms exists_nonleaf_of_even_of_unique_leaf
 #print axioms exists_mate_with_unique_leaf_owner_exit
+#print axioms exists_mate_with_two_leaf_owner_through
 
 end
 
