@@ -552,6 +552,26 @@ def contracted_residual_rows(
     ]
 
 
+def finite_graph_distance(
+        vertices: range, edges: set[tuple[int, int]], source: int,
+        target: int) -> int | None:
+    """Shortest undirected path length in a small explicitly given graph."""
+    frontier = {source}
+    seen = set(frontier)
+    distance = 0
+    while frontier:
+        if target in frontier:
+            return distance
+        frontier = {
+            other for vertex in frontier for other in vertices
+            if other not in seen and other != vertex
+            and tuple(sorted((vertex, other))) in edges
+        }
+        seen |= frontier
+        distance += 1
+    return None
+
+
 def contracted_collision_star_matching_cover(
         system: dict, target: int, local: dict[int, dict]) -> dict:
     """Cover residual blocks by pairs plus at most one three-block star."""
@@ -2313,6 +2333,39 @@ def main() -> None:
             if record["forced_card"] == maximum_forced_at_minimum_candidate
         ]
         for record in records:
+            relation_edges = set(system["edges"])
+            residual = set(contracted_residual_rows(
+                system, record["target"], local
+            ))
+            block_intersection_edges = {
+                (u, v) for u in range(N) for v in range(u + 1, N)
+                if system["blocks"][u] & system["blocks"][v]
+            }
+            record["locally_infeasible_relations"] = [{
+                "row": row,
+                "blocks_intersect": bool(
+                    system["blocks"][record["target"]]
+                    & system["blocks"][row]
+                ),
+                "relation_edge": tuple(sorted((
+                    record["target"], row
+                ))) in relation_edges,
+                "relation_distance": finite_graph_distance(
+                    range(N), relation_edges, record["target"], row
+                ),
+                "block_intersection_distance": finite_graph_distance(
+                    range(N), block_intersection_edges,
+                    record["target"], row
+                ),
+                "target_in_row_forced":
+                    record["target"] in local[row]["forced_neighbors"],
+                "target_in_row_possible":
+                    record["target"] in local[row]["possible_neighbors"],
+                "row_in_target_forced":
+                    row in local[record["target"]]["forced_neighbors"],
+                "row_in_target_possible":
+                    row in local[record["target"]]["possible_neighbors"],
+            } for row in range(N) if not local[row]["packing_count"]]
             record["locally_infeasible_block_intersections"] = [
                 {
                     "row": row,
@@ -2326,14 +2379,26 @@ def main() -> None:
                 and (system["blocks"][record["target"]]
                      & system["blocks"][row])
             ]
+            record["locally_infeasible_residual_neighbors"] = [
+                {
+                    "row": row,
+                    "residual_neighbors": sorted(
+                        source for source in residual
+                        if tuple(sorted((source, row))) in relation_edges
+                    ),
+                }
+                for row in range(N)
+                if not local[row]["packing_count"]
+                and any(
+                    tuple(sorted((source, row))) in relation_edges
+                    for source in residual
+                )
+            ]
             better_records = [
                 candidate for candidate in records
                 if (candidate["candidate_count"], -candidate["forced_card"])
                 < (record["candidate_count"], -record["forced_card"])
             ]
-            residual = set(contracted_residual_rows(
-                system, record["target"], local
-            ))
             record["lex_better_target_relations"] = [{
                 "target": candidate["target"],
                 "candidate_count": candidate["candidate_count"],
@@ -2350,7 +2415,7 @@ def main() -> None:
                 ),
                 "relation_edge": tuple(sorted((
                     record["target"], candidate["target"]
-                ))) in set(system["edges"]),
+                ))) in relation_edges,
             } for candidate in better_records]
         print("min_singleton_color_selector=" + json.dumps({
             "all_rows_locally_feasible": all(

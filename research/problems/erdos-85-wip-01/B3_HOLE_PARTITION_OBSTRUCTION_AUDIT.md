@@ -5715,6 +5715,29 @@ violator.  Therefore even the use of all-row feasibility cannot be localized
 to the selected point fibers; the required exchange is genuinely nonlocal.
 Equation (13bl') is retained only as a refuted regression boundary.
 
+The next larger localization has survived the exact tests so far.  Let
+`R(w)` be the contracted residual family.  In both pinned strict-terminal
+failures, every locally infeasible row has an `H`-neighbor in `R(w)`.  For the
+localized-exchange counterexample, the unique bad row 23 is disjoint and
+nonadjacent to target 20 itself, but is adjacent to residual rows
+`{1,4,16,42}`.  A 48-seed unconstrained sweep found two additional strict
+terminal failures (seeds 36 and 39); both again have at least one bad row
+adjacent to a residual candidate.  This leaves the two-step contrapositive
+
+```text
+failure of both strict terminals at selected w
+  ==> exists x in R(w), exists z, H(x,z) and z has no full local packing.
+                                                                       (13bl'')
+```
+
+as the smallest surviving exchange target.  It has a direct prospective
+mechanism: by definition of `R(w)`, row `x` admits a local packing containing
+`w`; a failed cover should expose an alternating exchange at a neighbor `z`
+of `x`, and failure of that exchange is exactly nonexistence of a packing at
+`z`.  On the all-row-feasible locus this is an immediate contradiction.
+Unlike (13bl'), (13bl'') is still only corpus-supported and must not be used
+as a theorem without the alternating-exchange proof.
+
 A direct one-step descent along a barrier is also false.  The auditor now
 classifies every lexicographically better obstructed target by four most
 obvious relations to the failing target: membership in its residual family,
