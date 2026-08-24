@@ -97,6 +97,64 @@ derived in (12fa).  Therefore `(MI)` turns the global obstruction into one
 two-sided collection of ordinary label covers.  It is the discrete min--max
 normal form behind the continuous skew-potential form (12h)--(12n).
 
+## Oriented-cut uncrossing
+
+The deficient set in `(MI)` may be assumed to contain at most one
+orientation of every allowed unordered pair.  This is an exact normal form,
+not a heuristic choice of a sparse certificate.
+
+Let `rho` reverse every directed arc and abbreviate
+
+```text
+r(S) = rank_out(S),
+S*   = rho(E ∖ S),
+g(S) = r(S) + r(S*).
+```
+
+Because `M_in` is the reversal pullback of `M_out`, `g(S)` is the left side
+of `(MI)`.  Reversal-complement is an involution and
+
+```text
+g(S*) = g(S).
+```
+
+The function `g` is submodular: its first summand is a matroid rank
+function, while its second is a matroid rank function composed with
+complement and reversal (the submodular inequality merely exchanges union
+and intersection in that summand).  Put
+
+```text
+A = S intersect S*,
+B = S union S*.
+```
+
+Then `A* = B`, so `g(A)=g(B)`.  Submodularity and the displayed symmetry give
+
+```text
+2 g(A) = g(A) + g(B)
+       <= g(S) + g(S*)
+        = 2 g(S).
+```
+
+Thus `g(A) <= g(S)`: if `S` is deficient, then so is `A`.  Finally
+`A intersect rho(A)=empty`, since `A subset S` while `rho(A) subset E ∖ S`.
+Therefore every failure of (12g) has a certificate `A` which is literally an
+orientation of a subgraph of the symmetric allowed support.  By applying
+`*`, one may equivalently use the co-oriented certificate `E ∖ rho(A)`.
+
+This removes all bidirected and absent/present ambiguity from the next
+classification problem.  The remaining rank inequality for an oriented
+arc set is
+
+```text
+r(A) + r(E ∖ rho(A)) < R,       A intersect rho(A) = empty.
+```
+
+It does not yet force a local deficit or collision, but it aligns the
+Edmonds witness with the existing direction-sensitive reciprocity language:
+the only free decision on an unordered allowed pair is its direction or its
+omission.
+
 ## Why this is sharper than the previous literature dictionary
 
 The earlier separation theorem says only that some antisymmetric functional
