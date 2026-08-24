@@ -104,6 +104,21 @@ correct factorization of the q8 obstruction, not yet a uniform architecture
 for general `q = 2^k`.  A generic proof needs either a new all-other-steps
 elimination theorem or a cycle argument that tolerates additional support.
 
+The analogous statement is outright false for general even modulus.  The
+translation-invariant exact reciprocal model at
+
+```text
+q=12, a=1, left=0, middle=6, right=9, d₁=1, d₂=3
+```
+
+has a SAT realization with an empty middle induced graph under the three
+caps `(left,d₁)`, `(left,d₂)`, `(middle,d₁)`.  It remains SAT after adding the
+fourth cap `(right,d₂)`.  This explicit countermodel lies inside the highly
+symmetric translation-invariant subclass and is produced by
+`size_two_cyclic_translation_invariant_probe.py` in under one second.  Hence
+any surviving uniform theorem must use a specifically binary property; the
+natural order-four selector relations alone are insufficient.
+
 At q8 the proof target is this local four-lift packet law together with
 nonemptiness.  For general q, the first unresolved issue is whether any
 analogue can tolerate or eliminate the additional admissible steps.  A
