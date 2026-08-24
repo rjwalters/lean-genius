@@ -121,6 +121,18 @@ rank drop
 144 -> 104.
 ```
 
+Its support is not accidental: it is exactly the parity half-space
+
+```text
+{(x,t) : x+t is odd}
+```
+
+inside the 48 allowed q8 cells.  Since the a1 holes have opposite parity,
+this selects three of the six allowed difference fibres at every base and
+has size `q(q-2)/2 = 24`.  This exposes a concrete candidate for the
+q-generic large closure that a cap-preserving descent construction should
+study, rather than treating support 24 as an unstructured solver witness.
+
 The support-17 through support-23 queries timed out at 120 seconds, so the
 least escaping support is known only to lie in `[17,24]`.  Exact-support
 queries 25--28 also timed out and are not inferred from the support-24
