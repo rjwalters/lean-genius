@@ -13,6 +13,8 @@ Expected result:
     compensated: SAT u=3 Fedge=False
       A0=[1, 6, 10, 13] A1=[0, 1, 9, 11]
       removed=[(1, 11), (9, 13)]
+    compensated with Fedge: UNSAT
+    compensated with degree slack: UNSAT
 
 Thus survivor-edge deletion is a genuine resource, not something that can
 always be uncrossed into selector pruning.
@@ -24,7 +26,7 @@ the two selectors are the balanced safe-colour classes determined by that
 matching (with their one shared neighbour counted in both classes).
 """
 
-from z3 import And, Bool, If, Implies, Solver, Sum, is_true, sat
+from z3 import And, Bool, If, Implies, Or, Solver, Sum, is_true, sat
 
 
 EDGES = {
@@ -42,13 +44,15 @@ EDGES = {
 }
 
 
-def solve(mode: str):
+def solve(mode: str, *, require_gadget_edge=False, require_degree_slack=False):
     """Return the first model in ``mode``, or ``None`` if none exists."""
     assert mode in {"deletion-only", "compensated"}
     for deleted in range(15):
         old = [v for v in range(15) if v != deleted]
         vertices = old + [15, 16]
         for gadget_edge in (False, True):
+            if require_gadget_edge and not gadget_edge:
+                continue
             solver = Solver()
             edge_vars = {}
             for i, a in enumerate(vertices):
@@ -68,10 +72,16 @@ def solve(mode: str):
                 return edge_vars[tuple(sorted((a, b)))]
 
             # Minimum degree four.
+            degrees = {}
             for a in vertices:
-                solver.add(
-                    Sum([If(edge(a, b), 1, 0) for b in vertices if b != a]) >= 4
+                degrees[a] = Sum(
+                    [If(edge(a, b), 1, 0) for b in vertices if b != a]
                 )
+                solver.add(
+                    degrees[a] >= 4
+                )
+            if require_degree_slack:
+                solver.add(Or([degrees[a] >= 5 for a in vertices]))
 
             # C4-free iff each distinct pair has at most one common neighbor.
             for i, a in enumerate(vertices):
@@ -167,6 +177,14 @@ def main() -> None:
             if mode == "compensated":
                 verify_matching_normal_form(result)
                 print("  matching-normal-form: VERIFIED")
+
+    refinements = (
+        ("compensated with Fedge", {"require_gadget_edge": True}),
+        ("compensated with degree slack", {"require_degree_slack": True}),
+    )
+    for label, options in refinements:
+        result = solve("compensated", **options)
+        print(f"{label}: {'SAT' if result is not None else 'UNSAT'}")
 
 
 if __name__ == "__main__":
