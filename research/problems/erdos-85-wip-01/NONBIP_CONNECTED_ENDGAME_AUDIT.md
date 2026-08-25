@@ -420,7 +420,8 @@ h3(x^2) = -g3(x)g3(-x).
 ```
 
 The three roots of `h3` are the positive squares of the three nonzero real
-roots of `g3`.  Use the main quadratic half `g(x)^(q/2)`, the cubic `g3`
+roots of `g3`; in fact they lie in `(0,4)`, hence in the required
+adjacency-square window for every `q >= 8`.  Use the main quadratic half `g(x)^(q/2)`, the cubic `g3`
 once, and paired residual factors above defect roots `-2,-1,2,0` with half
 multiplicities
 
@@ -432,7 +433,8 @@ c = (q^2-3q-16)/12,
 ```
 
 respectively.  For every power of two `q >= 8`, these are nonnegative
-integers.  The cubic contributes zero adjacency trace, so the main quadratic
+integers: `4 | q`, while powers of two alternate modulo `12` between `8`
+and `4`, which directly clears the denominators `4,6,12`.  The cubic contributes zero adjacency trace, so the main quadratic
 half alone pays `-q`.  Symbolic expansion again gives dimension `q^2`,
 `tr D=0`, and `tr D^2=q^2(q-1)`.  The verifier checks both this uniform
 completion and the independent rational-root completion above.  The cubic

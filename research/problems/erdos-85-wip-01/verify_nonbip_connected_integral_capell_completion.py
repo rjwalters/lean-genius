@@ -85,7 +85,7 @@ def verify_uniform_cubic_completion() -> None:
     h3 = sp.Poly(sp.symbols("y") ** 3 - 6 * sp.symbols("y") ** 2
                  + 9 * sp.symbols("y") - 1)
     assert sp.Poly(g3, x).is_irreducible and h3.is_irreducible
-    assert all(abs(complex(root).imag) < 1e-10 and complex(root).real > 0
+    assert all(abs(complex(root).imag) < 1e-10 and 0 < complex(root).real < 4
                for root in h3.nroots())
 
     # Its three M-roots sum to 6 and have square-sum 18, hence the
@@ -103,11 +103,18 @@ def verify_uniform_cubic_completion() -> None:
         - q**2 * (q - 1)
     ) == 0
 
-    for Q in (8, 16, 32, 64, 128, 256):
-        counts = [int(value.subs(q, Q)) for value in (a, b, c)]
+    # A finite modular cycle proves integrality for every q=2^k, k>=3:
+    # modulo 12, these powers alternate between 8 and 4.
+    assert [pow(2, k, 12) for k in range(3, 11)] == [8, 4] * 4
+    for k in range(3, 21):
+        Q = 2**k
+        exact_counts = [sp.factor(value.subs(q, Q)) for value in (a, b, c)]
+        assert all(value.q == 1 for value in exact_counts)
+        counts = [int(value) for value in exact_counts]
         assert all(value >= 0 for value in counts)
         assert Q + (Q // 2) * (-2) == 0
-        print(f"q={Q} cubic_completion_half_counts={counts}")
+        if k <= 8:
+            print(f"q={Q} cubic_completion_half_counts={counts}")
 
 
 if __name__ == "__main__":
