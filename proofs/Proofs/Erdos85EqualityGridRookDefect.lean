@@ -99,6 +99,37 @@ theorem equalityGrid_compl_cross_free
     Finset.card_le_one.mp hcommonLe x hxFull y hyFull
   exact hyQ (hxy ▸ hxData.1)
 
+/-- The complement of an equality grid is polarized: every outside vertex
+has no neighbors on at least one of the two coordinate sides. -/
+theorem equalityGrid_compl_side_degree_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (Q Z P : Finset V) (hZP : Disjoint Z P)
+    (hpair : ∀ z ∈ Z, ∀ p ∈ P,
+      (Q.filter fun x => G.Adj z x ∧ G.Adj p x).card = 1) :
+    ∀ y ∉ Q,
+      (Z.filter fun z => G.Adj z y).card = 0 ∨
+        (P.filter fun p => G.Adj p y).card = 0 := by
+  intro y hyQ
+  by_cases hZzero : (Z.filter fun z => G.Adj z y).card = 0
+  · exact Or.inl hZzero
+  · right
+    apply Finset.card_eq_zero.mpr
+    rw [Finset.eq_empty_iff_forall_notMem]
+    intro p hpData
+    have hp := Finset.mem_filter.mp hpData
+    have hZpos : 0 < (Z.filter fun z => G.Adj z y).card :=
+      Nat.pos_of_ne_zero hZzero
+    obtain ⟨z, hzData⟩ := Finset.card_pos.mp hZpos
+    have hz := Finset.mem_filter.mp hzData
+    have hzp : z ≠ p := by
+      intro h
+      subst p
+      exact Finset.disjoint_left.mp hZP hz.1 hp.1
+    exact equalityGrid_compl_cross_free G hfree Q Z P hpair
+      z hz.1 p hp.1 hzp y hyQ ⟨hz.2, hp.2⟩
+
 end
 
 end Erdos85
@@ -106,3 +137,4 @@ end Erdos85
 #print axioms Erdos85.equalityGrid_same_left_not_secondOrderDefect_adj
 #print axioms Erdos85.equalityGrid_same_right_not_secondOrderDefect_adj
 #print axioms Erdos85.equalityGrid_compl_cross_free
+#print axioms Erdos85.equalityGrid_compl_side_degree_dichotomy
