@@ -642,3 +642,110 @@ only on `n`, `q`, and whether `A` is bipartite.  They contain no information
 about `D`, its connectivity, or its odd cycles.  The neighborhood-nerve route
 is therefore **stopped**: it repackages the ambient incidence graph but cannot
 distinguish NONBIP-CONNECTED from the admissible controls.
+
+### Hamada p-rank and even-set probe: stopped at geometric completion
+
+The neighborhood rows form a self-polar `q`-uniform, `q`-regular partial
+linear space: two points lie on zero or one neighborhood blocks.  This is not
+the incidence structure to which the classical sharp p-rank results apply.
+Smith's formula for points and hyperplanes in `PG(t,p^e)` and Hamada's
+projective/affine formulas use the ambient finite-field subspaces; Hamada's
+minimum-rank theorem is for BIB designs.  The orthogonal-space variants again
+start with an actual quadric or polar space.  Likewise, projective even-set
+theorems concern the kernel of the incidence matrix of *all* projective
+lines, where every point pair has a line.
+
+Our missing pairs are exactly the edges of `D`, so supplying constant
+`lambda` or an ambient projective completion would already supply the
+resolution structure being sought.  The general semilinear-space rank bounds
+do not repair this: the Bruen--Ott Steinberg-module estimate is only of
+square-root scale.  With `v=q^2` and line size `q`, it gives rank on the order
+of `q^(3/2)`, far below the `q^2`-scale kernel discriminator and compatible
+with the affine controls.
+
+References used for the hypothesis check are K. J. C. Smith, JCT 7 (1969),
+doi `10.1016/S0021-9800(69)80046-3`; A. A. Bruen and U. Ott, JCTA 60
+(1992), doi `10.1016/0097-3165(92)90043-T`; and A. Blokhuis--G. E.
+Moorhouse, J. Algebraic Combin. 4 (1995), doi
+`10.1023/A:1022477715988`.  The p-rank/even-set route is **stopped**: sharp
+results assume precisely the geometric completion we do not have, while the
+available partial-linear-space estimate is quantitatively slack.
+
+### Entropy/Shearer probe on three size-two owners: stopped by the affine OA
+
+The coherent affine ODC countermodel has an exact information-theoretic
+description.  For a uniform affine point `P` and six distinct directions,
+let `X_i` be the line in direction `i` through `P`.  Every pair of coordinate
+variables is uniform on `K^2`.  Hence the six columns form an index-one
+strength-two orthogonal array
+
+```text
+OA(q^2, 6, q, 2),
+H(X_i)=log q,
+H(X_i,X_j)=2 log q  (i != j),
+H(X_1,...,X_6)=2 log q.                                (ENT1)
+```
+
+Pairing the directions into three selector roots gives exactly the
+star-to-perfect-matching laws.  Thus every Shannon or Shearer inequality and
+its pairwise-independence equality case is already saturated by a surviving
+affine model.  The same entropy vector is linear/representable, so
+non-Shannon linear-rank inequalities cannot contradict it either.
+
+The graph-specific information is not an entropy of the six star
+coordinates.  It is the distinguished-label event `P in C_i` together with
+the diagonal identity
+
+```text
+B_i[C_i,C_i] = Adj(the restricted Hamilton cycle).       (ENT2)
+```
+
+Forgetting the full joint incidence makes these events arbitrary decoration;
+retaining it restates the self-indexed ODC problem.  Entropy is therefore
+**stopped at (ENT1)**.  It cannot force affine structure as a contradiction,
+because affine structure is the countermodel.
+
+### Rectangular partial-polarity Gram probe: PSD is asymptotically feasible
+
+Concatenate three row-oriented owner incidence matrices into
+`B : q^2 by 6q`.  Restrict to the `6q` distinguished self-indexed rows and
+write
+
+```text
+B = [M; U].
+```
+
+Here `M` is symmetric, loopless and 6-regular; its diagonal blocks are the
+restricted two-factors and its off-diagonal blocks are 2-regular.  The exact
+Gram identity is
+
+```text
+U^T U = B^T B - M^2,                                    (PSD1)
+```
+
+where `B^T B` has diagonal blocks `q I + A(S_i)` and every off-diagonal
+block is `J`.  Its trace and constant-space consequences are tautological:
+
+```text
+tr(U^T U)=6q(q-6).
+```
+
+On the three-dimensional space of block constants, `(PSD1)` has eigenvalue
+`6(q-6)` on the global constant and the two forced zero eigenvalues coming
+from `B(1_i-1_j)=0`.
+
+There is no asymptotic PSD obstruction on the orthogonal complement.  Choose
+nonbipartite `q`-regular selector graphs on `2q` vertices containing the
+required diagonal Hamilton cycles and satisfying
+`lambda_min(S_i)>-q+36` (dense expander choices have nontrivial eigenvalues
+of order `sqrt(q)`), and choose arbitrary symmetric cross 2-factors for
+`M`.  Since `norm(M^2)<=36`, the right side of `(PSD1)` is positive there.
+For `q>=12`, the row allowance `q^2-6q` is also at least the column count
+`6q`, so rank gives no contradiction beyond the two forced relations.
+
+What remains is a `0/1` factorization of `(PSD1)` with every row of `U` of
+weight six.  That is the original fixed-profile design completion, not a
+spectral consequence.  The rectangular partial-polarity/Schur-complement
+route is therefore **stopped at integrality**; ordinary symmetric-subdesign
+and polarity bounds additionally require a square incidence matrix and
+constant Gram, neither of which is present here.
