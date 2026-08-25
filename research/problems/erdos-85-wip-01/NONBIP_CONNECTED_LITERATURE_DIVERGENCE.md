@@ -1138,3 +1138,87 @@ the rectangular version of the already-known generic alternating-adjacency
 radical: a continuation must retain the actual zero-one row factorization
 of `U` or a self-indexed placement condition, rather than kernel dimension
 alone.
+
+## Divergence round 68: post-inverse reset
+
+After the inverse-potential P8 terminal was retracted and its strongest
+replacement (fractional-cover integrality) was refuted at the faithful
+`q=6,r=1` partial interface, squad divergence round 68 generated ten fresh
+mechanism classes.  The round explicitly excluded determinant-only,
+spectrum-only, generic packing LP, uniform sign separation, partial-cover
+integrality, and finite order-64 census arguments.
+
+The candidates were:
+
+1. Levi nonbacktracking/Ihara excess polynomials with the fixed-free polarity;
+2. symmetric minimum-rank completion of the forced partial rows;
+3. exterior-algebra/Pluecker cancellation of located minors;
+4. even delta-matroid/pivot obstructions for principal adjacency minors;
+5. Hall--Tutte obstruction to completing the q=6 fractional cover;
+6. diagonal switching of `A^{-1}` to an inverse M-matrix;
+7. coherent closure under ordinary and Hadamard multiplication;
+8. a characteristic-two polynomial/evaluation rank bound;
+9. Lefschetz torsion of the polarity action on the Levi flag complex;
+10. a Pfaffian/hafnian sign-reversing involution on perfect 2-matchings.
+
+The independent submission supplied one especially concrete conditional
+chain.  If the connected defect graph satisfied
+
+```text
+mu_min(D) >= -2,                                      (E1)
+```
+
+the Cameron--Goethals--Seidel--Shult classification
+([doi:10.1016/0021-8693(76)90162-9](https://doi.org/10.1016/0021-8693(76)90162-9))
+would make a sufficiently large connected `D` a generalized line graph,
+apart from the finite exceptional root-system family.  In the pure line
+graph case `D=L(H)`, regularity gives
+
+```text
+deg_H(u)+deg_H(v)=q+1 for every uv in E(H).
+```
+
+Because `q` is a power of two and `|E(H)|=q^2`, a connected nonregular `H`
+would be bipartite biregular with both degrees dividing `q^2`; the only two
+powers of two summing to `q+1` are `1` and `q`.  Hence `H` is a union of
+`q`-edge stars and `D` is a union of `K_q` components.  This closes the pure
+line-graph subcase conditionally on (E1).  Cocktail-party attachments in a
+generalized line graph would still require separate degree bookkeeping, so
+(E1) is not by itself a fully checked terminal.
+
+There is no available bridge to (E1).  It already fails on the exact q=4
+fixed-free incidence control.  The weaker Woo--Neumaier threshold
+`-1-sqrt(2)`
+([doi:10.1016/0024-3795(95)00245-M](https://doi.org/10.1016/0024-3795(95)00245-M))
+also has no incidence derivation.  More decisively, the banked connected
+defect spectral controls have the following directly recomputed least
+eigenvalues:
+
+```text
+q=4:  mu_min(D_q) = -2.847759...
+q=8:  mu_min(D_q) = -4.506726...
+q=16: mu_min(D_q) = -6.637044...
+```
+
+Thus neither threshold follows from connected regularity, corrected
+determinant squareness, or the paired characteristic polynomial.  An
+incidence-specific proof of a Ramanujan-strength bound would be a new main
+theorem, not a known consequence to import.  The least-eigenvalue route is
+therefore **CUT at its premise**; even beyond that premise, only its pure
+line-graph subcase has been checked to the terminal.
+
+The other candidates reduce as follows.  Ihara factorization splits into
+the `+A` and `-A` polarity sectors and reproduces the known spectral pairing.
+Exterior, delta-matroid, evaluation-rank, Lefschetz, and Pfaffian proposals
+see the alternating mod-two adjacency and its determinant valuation but do
+not lift modular nullity to rational singularity.  Inverse switching is
+incompatible with the forced mixed-sign defect-neighbor blocks.  Coherent
+closure has no theorem forcing Hadamard closure to remain low-dimensional.
+Minimum-rank and Hall--Tutte completion become nontrivial only when every
+unselected row is completed to the same symmetric regular C4-free matrix;
+at that point their hypothesis is the original ambient completion gap.
+
+**Round-68 verdict: NO SURVIVOR.**  Full-row completion is the exact missing
+link, but naming it does not create a smaller theorem.  The inverse lane is
+stopped, and none of the new literature-backed mechanisms supplies a chain
+to NONBIP-CONNECTED from the currently banked hypotheses.
