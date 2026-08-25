@@ -136,6 +136,33 @@ connectivity estimate.  The sixth-moment restatement is algebraically the
 same demand, since `(E-triangle)` already eliminates the repeated-occupancy
 variables exactly.
 
+Nor can bounded-degree clique stability finish after producing this
+near-clique conclusion.  There is a uniform connected defect-only control at
+exactly the permitted scale.  Begin with `q` disjoint copies of `K_q`, choose
+a tree on the copies, and for each of its `q-1` edges perform a
+degree-preserving two-switch: delete one internal edge in each endpoint
+clique and replace the pair by two cross edges.  Internal edges can be chosen
+so that all switches are legal; the quotient on the original cliques
+contains the chosen tree.  The resulting graph is connected,
+`(q-1)`-regular, and nonbipartite.
+
+Each deleted clique edge belongs to `q-2` triangles.  New cross triangles or
+overlap among destroyed triangles only improve the estimate, so its triangle
+deficit is at most
+
+```text
+2 (q-1)(q-2).
+```
+
+By `(E-triangle)`, its closed-star cut sum is therefore at most
+`12(q-1)(q-2)`, which is at most `q^3` for every `q>=8`.  Thus connected
+regular nonbipartite graphs satisfying the proposed numerical cube upper are
+abundant even after a sharp stability theorem has identified the near-clique
+shape.  The construction is only a defect-graph control: it is not asserted
+to admit a symmetric zero-one square root `A` with `A^2=L_D+J`.  Precisely
+that integral square-root/self-indexing condition is now the sole possible
+source of a contradiction on this route.
+
 ## The `mu=-1` blind spot, split by exponent parity
 
 On a simultaneous adjacency/defect eigenvector, `E` acts by
