@@ -87,6 +87,58 @@ def main() -> None:
         frozenset({3, 5, 6, 8, 9, 10, 11, 13}),
     ]
 
+    # Size-two-owner calibration.  For either defect component, every
+    # ambient row selects two component vertices.  Their 16 distinct
+    # selectors form a 4-regular graph on eight vertices.  Both selector
+    # graphs have a perfectly balanced mix of open and closed wedges, so the
+    # corresponding owner edges split evenly between codegrees q-2 and q-1.
+    # The centered owner identity transfers the same split, in reverse, to
+    # owner-then-defect route counts.  Thus no trace, parity, or whole-family
+    # averaging argument can forbid the variation without using k >= 3 and
+    # structure absent from this exact q=4 control.
+    owner_variation_profiles = []
+    for component in d_components:
+        selectors = [a[x] & set(component) for x in range(N)]
+        assert all(len(selector) == 2 for selector in selectors)
+        selector_edges = {tuple(sorted(selector)) for selector in selectors}
+        assert len(selector_edges) == N
+        selector_adjacency = {u: set() for u in component}
+        for u, v in selector_edges:
+            selector_adjacency[u].add(v)
+            selector_adjacency[v].add(u)
+        assert all(len(selector_adjacency[u]) == Q for u in component)
+        selector_triangles = sum(
+            1 for u in component for v in selector_adjacency[u]
+            for w in selector_adjacency[u] & selector_adjacency[v]
+            if u < v < w
+        )
+        selector_wedges = sum(
+            len(selector_adjacency[u]) * (len(selector_adjacency[u]) - 1) // 2
+            for u in component
+        )
+        open_wedges = selector_wedges - 3 * selector_triangles
+        owner_edges = {
+            (x, y) for x in range(N) for y in range(x + 1, N)
+            if selectors[x] & selectors[y]
+        }
+        owner = adjacency(owner_edges)
+        owner_edge_codegrees = Counter(
+            len(owner[x] & owner[y]) for x, y in owner_edges
+        )
+        owner_defect_routes = Counter(
+            sum(1 for z in owner[x] if y in d[z]) for x, y in owner_edges
+        )
+        profile = (
+            selector_triangles, open_wedges,
+            owner_edge_codegrees, owner_defect_routes,
+        )
+        assert profile == (
+            8, 24, Counter({Q - 2: 24, Q - 1: 24}),
+            Counter({1: 24, 0: 24}),
+        )
+        owner_variation_profiles.append(profile)
+    assert owner_variation_profiles[0] == owner_variation_profiles[1]
+
     # Candidate-(vi) incidence-bottleneck calibration.  Entrywise,
     # E = AD - (J-A).  Every row has energy six, so this exact ambient
     # binary-incidence control violates the proposed cubic upper bound
@@ -191,6 +243,8 @@ def main() -> None:
 
     print("verified: symmetric loopless 4-regular C4-free A on 16 vertices")
     print("trace(A) = 0; D components = [8, 8]; T is one C8")
+    print("size-two owners: selector triangles/open wedges = 8/24 each; "
+          "edge codegrees 2^24 3^24; owner-defect routes 0^24 1^24")
     print("incidence bottleneck: row energies 6^16, total 96 > q^3=64")
     print("Baer transport: |Omega|=40, |H|=48, |K|=40; K degrees 4^8 6^8")
     print("semipartial calibration: A^3 nonedge values 2^20 3^48 4^20; D^2=0 on D")
