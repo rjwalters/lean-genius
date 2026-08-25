@@ -33,6 +33,14 @@ the positive-excess band for a purely numerical reason.  The strict
 conflict-independence bound of a plateau core is automatic there, not a
 promising terminal.
 
+This warning was already formalized before this audit:
+`degree_commonNeighborConflict_of_regular_c4Free` and
+`indepNum_commonNeighborConflict_le_excess` are in
+`Erdos85ConflictRegular.lean`, while
+`commonNeighborIndependent_card_lt_degree_of_excess_band` in
+`Erdos85ConflictDefectDuality.lean` is the exact positive-excess-band
+consumer.  It should be reused, not re-proved as a new endpoint.
+
 ## Closest literature
 
 The closest exact match found is the attachment parameter used by the
