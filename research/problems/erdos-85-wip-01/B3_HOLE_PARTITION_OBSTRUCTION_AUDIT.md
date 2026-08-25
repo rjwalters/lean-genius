@@ -5875,3 +5875,44 @@ a genuine back-charge conservation law through feasible nonbetter rows, or
 prove that a better row carries the required component multiplicity.  The
 auditor field `tutte_bad_or_better_hall_diagnostic` records this regression.
                                                                     (13bna)
+
+The most natural multiplicity repair is also false on the durable locus.
+Give a lex-better row `z` capacity equal to the drop in residual-candidate
+count (or, when that count is tied, the gain in forced count).  This does
+repair the displayed target-20 barrier: row 30 improves the score from
+`(8,1)` to `(4,3)`, so its first-coordinate capacity is four.  But in
+`q9_branch4_exceptional_price_support_counterexample.json`, all rows are
+locally feasible and target 39 has score `(4,3)`, with better rows 40 and 43
+both of score `(3,3)`.  Its minimum `U = {}` Tutte violator has components
+
+```text
+{26,38,40}, {28},
+bad-or-better neighborhoods = {40,43}, {}.
+```
+
+The singleton component has no bad-or-better neighbor at all, so no choice
+of capacities on better rows can match every component.  Weighted Hall is
+therefore not the missing global double count.  This does not refute
+(13bn): its observed joint-or-one-swap mechanism needs only one component to
+produce one strict descent witness, not a charge for every odd component.
+                                                                    (13bna')
+
+Nor does generic bounded exchange for set packing supply that witness.  A
+linear 3-uniform packing system is 3-extendible: inserting one triple may
+require deletion of as many as three disjoint triples.  Equal maximum size
+does not improve this to the required joint-or-one-swap conclusion.  For an
+exact abstract countermodel, take conflict graph
+
+```text
+K_{3,3} - wz, with shores {w,a,b} and {z,c,d}.
+```
+
+Realize it as the intersection graph of linear triples by assigning a
+private point `p_uv` to each conflict edge `uv` and padding the degree-two
+vertices `w,z` with private points.  The maximum packings are exactly the two
+shores.  Thus the disjoint distinguished triples `w,z` each occur in a
+maximum packing, but no maximum packing contains both and the two maximum
+packings share no one-swap core.  Any proof of (13bn) must consequently use
+the outer `H`-eligibility, reverse-obstruction, and lex-minimality data; rank
+three, linearity, and saturation of one local packing family are
+insufficient.                                                       (13bna'')
