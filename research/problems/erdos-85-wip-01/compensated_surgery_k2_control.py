@@ -24,7 +24,7 @@ def original_edge(a: int, b: int) -> bool:
     return tuple(sorted((a, b))) in EDGES
 
 
-def candidate_deleted_pairs():
+def candidate_deleted_pairs(require_common_root: bool):
     for a, b in combinations(range(15), 2):
         if original_edge(a, b):
             continue
@@ -32,13 +32,13 @@ def candidate_deleted_pairs():
             r for r in range(15)
             if r not in (a, b) and original_edge(a, r) and original_edge(b, r)
         ]
-        if common:
-            yield (a, b), common[0]
+        if bool(common) == require_common_root:
+            yield (a, b), (common[0] if common else None)
 
 
-def solve(gadget_edges: int):
+def solve(gadget_edges: int, require_common_root: bool):
     assert gadget_edges in (0, 1)
-    for deleted, root in candidate_deleted_pairs():
+    for deleted, root in candidate_deleted_pairs(require_common_root):
         deleted_set = set(deleted)
         old = [v for v in range(15) if v not in deleted_set]
         new = [15, 16, 17]
@@ -117,20 +117,22 @@ def verify(gadget_edges: int, result) -> None:
 
 
 def main() -> None:
-    pair_count = sum(1 for _ in candidate_deleted_pairs())
-    print(f"independent common-root deletion pairs: {pair_count}")
-    for gadget_edges in (0, 1):
-        result = solve(gadget_edges)
-        label = f"k=2 compensated |E(F)|={gadget_edges}"
-        if result is None:
-            print(f"{label}: UNSAT")
-            continue
-        deleted, root, attachments, removed = result
-        verify(gadget_edges, result)
-        print(f"{label}: SAT D={deleted} common_root={root}")
-        print(f"  attachments={attachments}")
-        print(f"  removed={removed}")
-        print("  direct-verification: VERIFIED")
+    for require_common_root in (True, False):
+        pair_count = sum(1 for _ in candidate_deleted_pairs(require_common_root))
+        pair_class = "common-root" if require_common_root else "no-common-root"
+        print(f"independent {pair_class} deletion pairs: {pair_count}")
+        for gadget_edges in (0, 1):
+            result = solve(gadget_edges, require_common_root)
+            label = f"k=2 compensated |E(F)|={gadget_edges}"
+            if result is None:
+                print(f"{label}: UNSAT")
+                continue
+            deleted, root, attachments, removed = result
+            verify(gadget_edges, result)
+            print(f"{label}: SAT D={deleted} common_root={root}")
+            print(f"  attachments={attachments}")
+            print(f"  removed={removed}")
+            print("  direct-verification: VERIFIED")
 
 
 if __name__ == "__main__":
