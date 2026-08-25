@@ -16,6 +16,12 @@ Expected result:
 
 Thus survivor-edge deletion is a genuine resource, not something that can
 always be uncrossed into selector pruning.
+
+The compensated model also realizes the tight matching normal form from
+Science Card #15: the removed survivor edges are a two-edge matching, at
+most one matching endpoint lies in the deleted vertex's neighbourhood, and
+the two selectors are the balanced safe-colour classes determined by that
+matching (with their one shared neighbour counted in both classes).
 """
 
 from z3 import And, Bool, If, Implies, Solver, Sum, is_true, sat
@@ -99,6 +105,55 @@ def solve(mode: str):
     return None
 
 
+def verify_matching_normal_form(result) -> None:
+    """Check the exact tight Card #15 certificate carried by the SAT model."""
+    deleted, gadget_edge, attachments, removed = result
+    assert not gadget_edge
+    assert len(attachments[0]) == len(attachments[1]) == 4
+    assert len(removed) == 2
+
+    deleted_neighbors = {
+        v for v in range(15) if tuple(sorted((deleted, v))) in EDGES
+    }
+    assert len(deleted_neighbors) == 4
+    assert deleted_neighbors <= set(attachments[0]) | set(attachments[1])
+
+    removed_degree = {v: 0 for v in range(15) if v != deleted}
+    for a, b in removed:
+        removed_degree[a] += 1
+        removed_degree[b] += 1
+    assert all(value <= 1 for value in removed_degree.values())
+    matching_endpoints = {v for edge in removed for v in edge}
+    assert len(matching_endpoints) == 4
+    assert len(matching_endpoints & deleted_neighbors) <= 1
+
+    # Pointwise equality in the compensated degree budget:
+    # attachment multiplicity = deleted-neighbour loss + matching loss.
+    for v in removed_degree:
+        multiplicity = sum(v in selector for selector in attachments)
+        deleted_loss = int(v in deleted_neighbors)
+        assert multiplicity == deleted_loss + removed_degree[v]
+
+    # With K = G-u-M, each selector is independent in K's
+    # common-neighbour conflict graph.  This simultaneously checks the
+    # old-old and mixed C4 budgets for an edgeless two-vertex gadget.
+    kept_old = {
+        edge for edge in EDGES if deleted not in edge and edge not in removed
+    }
+    old = [v for v in range(15) if v != deleted]
+
+    def old_edge(a, b):
+        return tuple(sorted((a, b))) in kept_old
+
+    for selector in attachments:
+        for i, a in enumerate(selector):
+            for b in selector[i + 1 :]:
+                common = [z for z in old if z not in (a, b)
+                          and old_edge(a, z) and old_edge(b, z)]
+                assert not common
+    assert len(set(attachments[0]) & set(attachments[1])) <= 1
+
+
 def main() -> None:
     for mode in ("deletion-only", "compensated"):
         result = solve(mode)
@@ -109,6 +164,9 @@ def main() -> None:
             print(f"{mode}: SAT u={deleted} Fedge={gadget_edge}")
             print(f"  A0={attachments[0]} A1={attachments[1]}")
             print(f"  removed={removed}")
+            if mode == "compensated":
+                verify_matching_normal_form(result)
+                print("  matching-normal-form: VERIFIED")
 
 
 if __name__ == "__main__":
