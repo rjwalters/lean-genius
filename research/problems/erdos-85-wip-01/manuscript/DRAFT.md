@@ -417,8 +417,9 @@ strict drop.  The graph-normalization consumer is
 
 Those hypotheses have **not all landed**, so this is not yet a decided
 drop.  Under operator goal #39, the local host is running the thirteen-cell
-campaign: five one-high cells, four three-high scout cells, three five-high
-cells, and the remaining seven-high t0 cell (room msgs 31965–31966).  Tier A
+campaign: four three-high scout cells, three five-high cells, and six cubes
+of the remaining seven-high t0 case; the one-high exclusion is already
+banked (room msgs 31965–31966 and the pre-fire manifest, msg 31994).  Tier A
 expands the seven h3/h5 cells into 406 checked cube jobs.  Because those
 checks produce base-CNF `Unsat` values while the older final socket accepts
 monolithic `LRAT.check` witnesses, the room identified and claimed a narrow
