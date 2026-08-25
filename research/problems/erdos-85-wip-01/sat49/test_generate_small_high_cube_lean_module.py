@@ -50,6 +50,16 @@ class GenerateCubeLeanModuleTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "seven checked cells"):
                 MOD.load_and_validate(path, root)
 
+    def test_worker_job_layout_is_accepted(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            job = root / "h3_b1.cube-0-0"
+            job.mkdir()
+            payload = job / "job.lrat"
+            payload.write_text("0\n")
+            self.assertEqual(
+                MOD.payload_path(root, "h3_b1.cube-0-0"), payload.resolve())
+
 
 if __name__ == "__main__":
     unittest.main()

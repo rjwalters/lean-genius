@@ -2,7 +2,10 @@
 """Generate the Lean certificate module for the seven small-high cube grids.
 
 The input is the exact manifest emitted by ``generate_small_high_cube_jobs``.
-Each job must have a corresponding compact text LRAT named ``<job id>.lrat``.
+Each job must have a corresponding *decompressed* compact text LRAT, either
+named ``<job id>.lrat`` or stored under the worker's ``<job id>/job.lrat``
+layout.  Lean's ``include_str`` cannot consume the uploaded ``.lrat.gz``
+directly.
 The generated module checks every payload and assembles the 406 results into
 seven ``OrderFortyNineSmallHighCheckedCubeGrid`` values.
 """
@@ -48,6 +51,7 @@ def lean_stem(job_id: str) -> str:
 def payload_path(certificate_dir: Path, job_id: str) -> Path:
     """Accept either the upload's flat layout or the worker's job directory."""
     candidates = [certificate_dir / f"{job_id}.lrat",
+                  certificate_dir / job_id / "job.lrat",
                   certificate_dir / job_id / "proof.lrat"]
     for candidate in candidates:
         if candidate.is_file():
