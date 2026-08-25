@@ -1,5 +1,7 @@
 import Proofs.Erdos85MuNegThreeZeroFiveCorrectOwnerCnf
 import Proofs.Erdos85MuNegThreeZeroFiveCorrectAdmissibility
+import Proofs.Erdos85MuNegThreeZeroFiveOwnerCnfSemantics
+import Proofs.Erdos85MuNegOneOneFourFiniteSemantics
 
 /-!
 # Finite semantics for the corrected h305 owner CNF
@@ -721,6 +723,237 @@ theorem muNegThreeZeroFiveCorrectC4Clauses_satisfied
     · exact ⟨-xag, by rw [hcl']; simp,
         h305Correct_dimacsLitValue_neg_of_pos hp1 hb1⟩
 
+private theorem h305Correct_exactlyTwo_of_countP
+    {uTri vTri : Bool} {D X : Nat → Nat → Bool}
+    (Dv : Nat → Bool) (f : Nat → Nat)
+    (hf : ∀ x y, f x = f y → x = y) (hfpos : ∀ j, 0 < f j)
+    (js : List Nat) (hnd : js.Nodup)
+    (hval : ∀ j ∈ js,
+      muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X (f j) = Dv j)
+    (hcount : (js.countP fun j => Dv j) = 2) :
+    MuNegOneExactlyTwoSemantics
+      (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X)
+      (js.map fun j => Int.ofNat (f j)) := by
+  apply muNegOneExactlyTwoSemantics_of_two
+  · exact hnd.map fun x y h => hf x y (Int.ofNat.inj h)
+  · intro lit hlit
+    obtain ⟨j, _, rfl⟩ := List.mem_map.mp hlit
+    exact Int.natCast_pos.mpr (hfpos j)
+  · rw [List.countP_map, ← hcount]
+    apply List.countP_congr
+    intro j hj
+    simp only [Function.comp_apply]
+    have hp : 0 < Int.ofNat (f j) := Int.natCast_pos.mpr (hfpos j)
+    simp only [dimacsLitValue, if_pos hp]
+    change muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X (f j) =
+      true ↔ Dv j = true
+    rw [hval j hj]
+
+set_option maxHeartbeats 0 in
+private theorem h305Correct_exactlyThree_of_countP
+    {uTri vTri : Bool} {D X : Nat → Nat → Bool}
+    (Dv : Nat → Bool) (f : Nat → Nat) (hfpos : ∀ j, 0 < f j)
+    (js : List Nat) (hlen : js.length = 4)
+    (hval : ∀ j ∈ js,
+      muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X (f j) = Dv j)
+    (hcount : (js.countP fun j => Dv j) = 3) :
+    MuNegThreeExactlyThreeSemantics
+      (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X)
+      (js.map fun j => Int.ofNat (f j)) := by
+  have hsemantic : ∀ {val : DimacsValuation} {lits : List Int},
+      lits.length = 4 →
+      (∀ lit ∈ lits, 0 < lit) →
+      (lits.countP fun lit => dimacsLitValue val lit) = 3 →
+      MuNegThreeExactlyThreeSemantics val lits := by
+    intro val lits hlen' hpos' hcount'
+    obtain ⟨a, b, c, d, rfl⟩ := List.length_eq_four.mp hlen'
+    have ha : 0 < a := hpos' a (by simp)
+    have hb : 0 < b := hpos' b (by simp)
+    have hc : 0 < c := hpos' c (by simp)
+    have hd : 0 < d := hpos' d (by simp)
+    constructor
+    intro clause hclause
+    norm_num [muNegThreeExactlyThree] at hclause
+    rcases hclause with hpairs | hneg
+    · obtain ⟨i, hi, j, ⟨hj, hij⟩, rfl⟩ := hpairs
+      interval_cases i <;> interval_cases j <;> norm_num at hij ⊢ <;>
+        simp only [List.countP_cons, List.countP_nil] at hcount' <;>
+        simp only [dimacsClauseSatisfied, List.mem_cons, List.mem_singleton] <;>
+        by_cases hva : dimacsLitValue val a = true <;>
+        by_cases hvb : dimacsLitValue val b = true <;>
+        by_cases hvc : dimacsLitValue val c = true <;>
+        by_cases hvd : dimacsLitValue val d = true <;>
+        simp_all [dimacsLitValue, ha, hb, hc, hd] <;> omega
+    · subst clause
+      simp only [List.countP_cons, List.countP_nil] at hcount'
+      simp only [dimacsClauseSatisfied, List.mem_cons, List.mem_singleton]
+      by_cases hva : dimacsLitValue val a = true <;>
+      by_cases hvb : dimacsLitValue val b = true <;>
+      by_cases hvc : dimacsLitValue val c = true <;>
+      by_cases hvd : dimacsLitValue val d = true <;>
+      simp_all [dimacsLitValue, ha, hb, hc, hd] <;> omega
+  apply hsemantic
+  · simpa using hlen
+  · intro lit hlit
+    obtain ⟨j, _, rfl⟩ := List.mem_map.mp hlit
+    exact Int.natCast_pos.mpr (hfpos j)
+  · rw [List.countP_map, ← hcount]
+    apply List.countP_congr
+    intro j hj
+    simp only [Function.comp_apply]
+    have hp : 0 < Int.ofNat (f j) := Int.natCast_pos.mpr (hfpos j)
+    simp only [dimacsLitValue, if_pos hp]
+    change muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X (f j) =
+      true ↔ Dv j = true
+    rw [hval j hj]
+
+private theorem h305Correct_same_filter_length_four
+    (sigma : Bool) (i : Nat) (hi : i < 8) :
+    ((List.range 8).filter fun j =>
+      muNegOneSign sigma i == muNegOneSign sigma (8 + j)).length = 4 := by
+  interval_cases i <;> cases sigma <;> decide
+
+private theorem h305Correct_opp_filter_length_four
+    (sigma : Bool) (i : Nat) (hi : i < 8) :
+    ((List.range 8).filter fun j =>
+      !(muNegOneSign sigma i == muNegOneSign sigma (8 + j))).length = 4 := by
+  interval_cases i <;> cases sigma <;> decide
+
+private theorem h305Correct_opp_col_filter_length_four
+    (sigma : Bool) (j : Nat) (hj : j < 8) :
+    ((List.range 8).filter fun i =>
+      !(muNegOneSign sigma i == muNegOneSign sigma (8 + j))).length = 4 := by
+  interval_cases j <;> cases sigma <;> decide
+
+theorem muNegThreeZeroFiveCorrectCrossRowClauses_satisfied
+    {uTri vTri sigma : Bool} {D X : Nat → Nat → Bool}
+    (hsame : ∀ i, i < 8 →
+      (((List.range 8).filter fun j =>
+        muNegOneSign sigma i == muNegOneSign sigma (8 + j)).countP
+          fun j => D i j) = 2)
+    (hopp : ∀ i, i < 8 →
+      (((List.range 8).filter fun j =>
+        !(muNegOneSign sigma i == muNegOneSign sigma (8 + j))).countP
+          fun j => D i j) = 3) :
+    ∀ clause ∈ muNegThreeZeroFiveCrossRowClauses sigma,
+      dimacsClauseSatisfied
+        (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) clause := by
+  apply muNegThreeZeroFiveCrossRowClauses_satisfied
+  · intro i hi
+    refine h305Correct_exactlyTwo_of_countP (Dv := fun j => D i j)
+      (fun j => muNegOneDVar i j) (fun x y h => ?_) (fun j => ?_)
+      _ (List.nodup_range.filter _) (fun j hj => ?_) (hsame i hi)
+    · unfold muNegOneDVar at h; omega
+    · unfold muNegOneDVar; omega
+    · exact muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X hi
+        (List.mem_range.mp (List.mem_of_mem_filter hj))
+  · intro i hi
+    refine h305Correct_exactlyThree_of_countP (Dv := fun j => D i j)
+      (fun j => muNegOneDVar i j) (fun j => ?_) _
+      (h305Correct_opp_filter_length_four sigma i hi) (fun j hj => ?_)
+      (hopp i hi)
+    · unfold muNegOneDVar; omega
+    · exact muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X hi
+        (List.mem_range.mp (List.mem_of_mem_filter hj))
+
+theorem muNegThreeZeroFiveCorrectCrossColClauses_satisfied
+    {uTri vTri sigma : Bool} {D X : Nat → Nat → Bool}
+    (hsame : ∀ j, j < 8 →
+      (((List.range 8).filter fun i =>
+        muNegOneSign sigma i == muNegOneSign sigma (8 + j)).countP
+          fun i => D i j) = 2)
+    (hopp : ∀ j, j < 8 →
+      (((List.range 8).filter fun i =>
+        !(muNegOneSign sigma i == muNegOneSign sigma (8 + j))).countP
+          fun i => D i j) = 3) :
+    ∀ clause ∈ muNegThreeZeroFiveCrossColClauses sigma,
+      dimacsClauseSatisfied
+        (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) clause := by
+  apply muNegThreeZeroFiveCrossColClauses_satisfied
+  · intro j hj
+    refine h305Correct_exactlyTwo_of_countP (Dv := fun i => D i j)
+      (fun i => muNegOneDVar i j) (fun x y h => ?_) (fun i => ?_)
+      _ (List.nodup_range.filter _) (fun i hi => ?_) (hsame j hj)
+    · unfold muNegOneDVar at h; omega
+    · unfold muNegOneDVar; omega
+    · exact muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X
+        (List.mem_range.mp (List.mem_of_mem_filter hi)) hj
+  · intro j hj
+    refine h305Correct_exactlyThree_of_countP (Dv := fun i => D i j)
+      (fun i => muNegOneDVar i j) (fun i => ?_) _
+      (h305Correct_opp_col_filter_length_four sigma j hj) (fun i hi => ?_)
+      (hopp j hj)
+    · unfold muNegOneDVar; omega
+    · exact muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X
+        (List.mem_range.mp (List.mem_of_mem_filter hi)) hj
+
+theorem muNegThreeZeroFiveCorrectIntertwineClauses_satisfied
+    {uTri vTri sigma : Bool} {D X : Nat → Nat → Bool}
+    (hsem : MuNegThreeZeroFiveCorrectNonCrossSemantics
+      uTri vTri sigma D X) :
+    ∀ clause ∈ muNegOneIntertwineClauses,
+      dimacsClauseSatisfied
+        (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) clause := by
+  apply muNegOneIntertwineClauses_satisfied
+  intro i j hi hj
+  have h7 : (i + 7) % 8 < 8 := Nat.mod_lt _ (by omega)
+  have h1 : (i + 1) % 8 < 8 := Nat.mod_lt _ (by omega)
+  have hj1 : (j + 1) % 8 < 8 := Nat.mod_lt _ (by omega)
+  have hj7 : (j + 7) % 8 < 8 := Nat.mod_lt _ (by omega)
+  apply muNegOneSumEq_satisfied
+  · unfold muNegOneDVar; omega
+  · unfold muNegOneDVar; omega
+  · unfold muNegOneDVar; omega
+  · unfold muNegOneDVar; omega
+  · rw [muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X h7 hj,
+      muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X h1 hj,
+      muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X hi hj1,
+      muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X hi hj7]
+    exact hsem.intertwine i j hi hj
+
+theorem muNegThreeZeroFiveCorrectOwnerDimacsClauses_satisfied
+    {uTri vTri sigma : Bool} {D X : Nat → Nat → Bool}
+    (hrowSame : ∀ i, i < 8 →
+      (((List.range 8).filter fun j =>
+        muNegOneSign sigma i == muNegOneSign sigma (8 + j)).countP
+          fun j => D i j) = 2)
+    (hrowOpp : ∀ i, i < 8 →
+      (((List.range 8).filter fun j =>
+        !(muNegOneSign sigma i == muNegOneSign sigma (8 + j))).countP
+          fun j => D i j) = 3)
+    (hcolSame : ∀ j, j < 8 →
+      (((List.range 8).filter fun i =>
+        muNegOneSign sigma i == muNegOneSign sigma (8 + j)).countP
+          fun i => D i j) = 2)
+    (hcolOpp : ∀ j, j < 8 →
+      (((List.range 8).filter fun i =>
+        !(muNegOneSign sigma i == muNegOneSign sigma (8 + j))).countP
+          fun i => D i j) = 3)
+    (hsem : MuNegThreeZeroFiveCorrectNonCrossSemantics
+      uTri vTri sigma D X) :
+    dimacsFormulaSatisfied
+      (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X)
+      (muNegThreeZeroFiveCorrectOwnerDimacsClauses uTri vTri sigma) := by
+  intro clause hclause
+  simp only [muNegThreeZeroFiveCorrectOwnerDimacsClauses,
+    List.mem_toArray] at hclause
+  rcases List.mem_append.mp hclause with hclause | hclause
+  · rcases List.mem_append.mp hclause with hclause | hclause
+    · rcases List.mem_append.mp hclause with hclause | hclause
+      · rcases List.mem_append.mp hclause with hclause | hclause
+        · rcases List.mem_append.mp hclause with hrows | hcols
+          · exact muNegThreeZeroFiveCorrectCrossRowClauses_satisfied
+              hrowSame hrowOpp clause hrows
+          · exact muNegThreeZeroFiveCorrectCrossColClauses_satisfied
+              hcolSame hcolOpp clause hcols
+        · exact muNegThreeZeroFiveCorrectIntertwineClauses_satisfied
+            hsem clause hclause
+      · exact muNegThreeZeroFiveCorrectHitActivityClauses_satisfied
+          hsem clause hclause
+    · exact muNegThreeZeroFiveCorrectServiceClauses_satisfied
+        hsem clause hclause
+  · exact muNegThreeZeroFiveCorrectC4Clauses_satisfied hsem clause hclause
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeZeroFiveCorrectValOfRelations_dvar
@@ -728,3 +961,4 @@ end Erdos85
 #print axioms Erdos85.muNegThreeZeroFiveCorrectHitActivityClauses_satisfied
 #print axioms Erdos85.muNegThreeZeroFiveCorrectServiceClauses_satisfied
 #print axioms Erdos85.muNegThreeZeroFiveCorrectC4Clauses_satisfied
+#print axioms Erdos85.muNegThreeZeroFiveCorrectOwnerDimacsClauses_satisfied
