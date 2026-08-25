@@ -14,13 +14,15 @@ impossible.
 namespace Erdos85
 
 /-- A compatible refinement contains the same off-diagonal key in two
-distinct source rows which are not a standard mate pair. -/
+distinct source rows which are not a standard mate pair; the two key
+endpoints are not a standard mate pair either. -/
 def OneHighRefinementHasSeparatedRepeatedKey
     (refinement : List (List OneHighLabelPair)) : Prop :=
   ∃ i j : Fin 8,
     i ≠ j ∧ j ≠ oneHighStandardMate i ∧
       ∃ key : OneHighLabelPair,
         key.1 < key.2 ∧
+        key.2 ≠ oneHighStandardMate key.1 ∧
         key ∈ refinement.getD i.val [] ∧
         key ∈ refinement.getD j.val []
 
@@ -31,7 +33,8 @@ instance (refinement : List (List OneHighLabelPair)) :
     infer_instance
 
 /-- No profile-one capacity row has an all-even compatible refinement whose
-repeated off-diagonal keys are confined to one owner or a root-mate pair. -/
+repeated off-diagonal keys are confined to one owner, a root-mate owner pair,
+or a standard-mate key. -/
 theorem oneHigh_profileOne_allEven_has_separatedRepeatedKey :
     ∀ table ∈ oneHighCapacityInventoryTables 1,
       ∀ refinement ∈ oneHighPairingRefinements 1
@@ -40,7 +43,7 @@ theorem oneHigh_profileOne_allEven_has_separatedRepeatedKey :
           OneHighRefinementHasSeparatedRepeatedKey refinement := by
   native_decide
 
-/-- Profile three has the same strongest-owner-sector conclusion. -/
+/-- Profile three has the same four-mate-pair transversal conclusion. -/
 theorem oneHigh_profileThree_allEven_has_separatedRepeatedKey :
     ∀ table ∈ oneHighCapacityInventoryTables 3,
       ∀ refinement ∈ oneHighPairingRefinements 3
@@ -149,6 +152,7 @@ theorem oneHigh_oddProfile_exists_separatedRepeatedLocalEdges
       s ≠ t ∧ t ≠ p.mate s ∧
       ∃ key : OneHighLabelPair,
         key.1 < key.2 ∧
+        key.2 ≠ oneHighStandardMate key.1 ∧
         ∃ x ∈ matchingEdgeSources (oneHighInternalMate G hfree v s),
           (min (p.branchLabel (oneHighMatchedMissLabel G hfree hv
               p.external_empty p.outer_degree p.mate p.mate_adj s x))
@@ -171,7 +175,7 @@ theorem oneHigh_oddProfile_exists_separatedRepeatedLocalEdges
               (p.branchLabel (oneHighMatchedMissLabel G hfree hv
                 p.external_empty p.outer_degree p.mate p.mate_adj t
                   (oneHighInternalMate G hfree v t y)))) = key := by
-  obtain ⟨i, j, hij, hjmate, key, hkeylt, hkeyi, hkeyj⟩ :=
+  obtain ⟨i, j, hij, hjmate, key, hkeylt, hkeyNonmate, hkeyi, hkeyj⟩ :=
     oneHigh_oddProfile_graphPairing_has_separatedRepeatedKey
       G hfree hv p hprofile heven stored hstored hagree
   have hgeti : (oneHighGraphPairingRefinement G hfree hv p).getD i.val [] =
@@ -207,6 +211,7 @@ theorem oneHigh_oddProfile_exists_separatedRepeatedLocalEdges
     exists_matchingEdgeSource_of_mem_matchingPairingListSorted _ _ hkeyi'
   obtain ⟨y, hy, hykey⟩ :=
     exists_matchingEdgeSource_of_mem_matchingPairingListSorted _ _ hkeyj'
-  exact ⟨s, t, hst, htMate, key, hkeylt, x, hx, hxkey, y, hy, hykey⟩
+  exact ⟨s, t, hst, htMate, key, hkeylt, hkeyNonmate,
+    x, hx, hxkey, y, hy, hykey⟩
 
 end Erdos85
