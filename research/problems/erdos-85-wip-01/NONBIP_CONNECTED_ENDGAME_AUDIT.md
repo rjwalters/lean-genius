@@ -272,3 +272,51 @@ Otherwise the load-bearing targets beneath `NONBIP-CONNECTED` are the
 incidence-energy upper bound above or the designated-dimension upper bound.
 Within the latter, odd `k` has no `mu=-1` trace escape; even `k` additionally
 requires BLIND-TRACE-ZERO or a sharp bound on its signed root imbalance.
+
+## Round 66: scalar odd moments do not bound the designated sector
+
+An outside-first search for integral symmetric adjacency-square
+classification found no theorem beyond the already-banked orbit interface.
+Round 66 therefore tested whether the Galois-orbit sign ledger becomes
+terminal after adjoining all odd closed-walk inequalities.  It does not.
+
+The verifier
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_nonbip_connected_odd_moment_orbit_countermodel.py
+```
+
+constructs a uniform real spectral ledger for every `4 | q`, `q >= 8`.
+The defect spectrum has the principal root `q-1`, a designated root `q-2`
+of multiplicity `q`, one further root `q-5`, and two residual real roots of
+even multiplicities `2` and `q^2-q-4`.  The residual roots are chosen to make
+
+```text
+tr D = 0,                 tr D^2 = q^2(q-1)
+```
+
+exactly.  Their existence reduces to the positive variance numerator
+
+```text
+7q^3 - 24q^2 + 10q + 16.
+```
+
+On the adjacency-square side, assign the `q-2` sector the roots `+1,-1`
+with signed multiplicity imbalance `2-q`, assign root `-2` above `q-5`,
+and pair every residual square root with its negative.  Then
+
+```text
+tr A = q + (2-q) - 2 = 0,
+tr A^(2j+1) = q^(2j+1) - q + 2 - 2^(2j+1) > 0   (j >= 1).
+```
+
+Thus even the entire infinite family of scalar nonnegative odd-walk moments
+is compatible with a designated sector of dimension `q` whose signed trace
+cancels the principal root.  The construction also has the exact defect
+first two moments, hence the corresponding exact adjacency second and fourth
+moments forced by the square identity.  It is an abstract real spectral
+control, not a graph and not a rational/Galois factorization.  Its scope is
+nevertheless decisive for round-66 P3: higher scalar odd moments cannot give
+the missing upper bound.  A viable factor proof must use arithmetic beyond
+real orbit signs, vertexwise projector data, or entrywise zero-one incidence.
