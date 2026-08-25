@@ -9,6 +9,7 @@ from pathlib import Path
 from q9_symmetric_point_mass_obstruction import (
     N,
     contracted_collision_star_matching_cover,
+    contracted_reverse_interval_point_cover,
     contracted_residual_rows,
     fixed_system,
     local_packing_family,
@@ -33,6 +34,8 @@ def main():
     witnesses = []
     payload_count = 0
     canonical_better_count = 0
+    canonical_point_cover_count = 0
+    canonical_point_cover_deficits = []
     pattern = "research/problems/erdos-85-wip-01/q9_branch4*.json"
     for filename in sorted(glob.glob(pattern)):
         with open(filename, encoding="utf-8") as stream:
@@ -95,6 +98,18 @@ def main():
                 if obstructed[better]["score"] == canonical_score
             ]
             canonical_better_count += len(canonical_betters)
+            for better in canonical_betters:
+                point_cover = contracted_reverse_interval_point_cover(
+                    system, better, local
+                )
+                assert point_cover is not None, (
+                    filename, target, better, obstructed[better]
+                )
+                canonical_point_cover_count += 1
+                canonical_point_cover_deficits.append(
+                    point_cover["scaled_demand_after_forced"]
+                    - point_cover["scaled_total"]
+                )
             candidates = []
             for better, better_record in obstructed.items():
                 if better not in canonical_betters:
@@ -132,6 +147,7 @@ def main():
 
     assert payload_count == 10
     assert len(witnesses) == 17
+    assert canonical_point_cover_count == canonical_better_count == 19
     forced_count = sum(item["boundary"] == "forced" for _, item in witnesses)
     impossible_count = len(witnesses) - forced_count
     print(f"verified: {payload_count} all-row-feasible stored payloads")
@@ -140,6 +156,12 @@ def main():
     print(
         "verified: every minimum-score boundary row is exchange-coupled "
         f"({canonical_better_count} rows)"
+    )
+    print(
+        "verified: every minimum-score boundary row has a strict "
+        "fractional point-cover certificate "
+        f"(scaled deficits {min(canonical_point_cover_deficits)}"
+        f"..{max(canonical_point_cover_deficits)})"
     )
     print(f"selected boundary types: forced={forced_count}, impossible={impossible_count}")
     for filename, witness in witnesses:
