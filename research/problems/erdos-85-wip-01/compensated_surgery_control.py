@@ -15,6 +15,7 @@ Expected result:
       removed=[(1, 11), (9, 13)]
     compensated with Fedge: UNSAT
     compensated with degree slack: UNSAT
+    compensated with external matching: UNSAT
 
 Thus survivor-edge deletion is a genuine resource, not something that can
 always be uncrossed into selector pruning.
@@ -44,7 +45,13 @@ EDGES = {
 }
 
 
-def solve(mode: str, *, require_gadget_edge=False, require_degree_slack=False):
+def solve(
+    mode: str,
+    *,
+    require_gadget_edge=False,
+    require_degree_slack=False,
+    require_external_deletions=False,
+):
     """Return the first model in ``mode``, or ``None`` if none exists."""
     assert mode in {"deletion-only", "compensated"}
     for deleted in range(15):
@@ -82,6 +89,16 @@ def solve(mode: str, *, require_gadget_edge=False, require_degree_slack=False):
                 )
             if require_degree_slack:
                 solver.add(Or([degrees[a] >= 5 for a in vertices]))
+            if require_external_deletions:
+                deleted_neighbors = {
+                    v for v in old if tuple(sorted((deleted, v))) in EDGES
+                }
+                # Keep every survivor edge incident to N_G(deleted).  Thus
+                # every removed survivor edge lies wholly in the
+                # distance-at-least-two reservoir.
+                for pair in EDGES:
+                    if deleted not in pair and deleted_neighbors.intersection(pair):
+                        solver.add(edge(*pair))
 
             # C4-free iff each distinct pair has at most one common neighbor.
             for i, a in enumerate(vertices):
@@ -181,6 +198,10 @@ def main() -> None:
     refinements = (
         ("compensated with Fedge", {"require_gadget_edge": True}),
         ("compensated with degree slack", {"require_degree_slack": True}),
+        (
+            "compensated with external matching",
+            {"require_external_deletions": True},
+        ),
     )
     for label, options in refinements:
         result = solve("compensated", **options)
