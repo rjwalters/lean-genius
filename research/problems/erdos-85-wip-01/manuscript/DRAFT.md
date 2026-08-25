@@ -362,77 +362,106 @@ any run whose window overlaps an engine restart.
   independent environment, unfiltered, with verbatim `#print axioms` on
   the public theorems. Adopted after the stale-cache incident; upgraded
   after the rg-mask incident.
-- **Certificate factory**: pysat encoders with SHA1-tagged instances;
-  kissat/cadical portfolios; DRAT verification; gzip + manifest on the
-  durable volume; resumable per-verdict queues; janitor processes and
-  200G root volumes after the deleted-open-file post-mortem (msg 1807).
+- **Certificate factory**: exact DIMACS emitters with input hashes;
+  kissat/cadical portfolios; DRAT/LRAT replay; compressed artifacts plus a
+  manifest on durable storage; and resumable per-verdict queues.  A SAT
+  result becomes mathematical evidence only after a semantic bridge proves
+  that every graph in the stated stratum satisfies the exact checked CNF.
+  The order-49 campaign currently uses the checked-grid interface
+  `orderFortyNineSmallHigh_unsat_of_checkedCubeGrid`; its 406 jobs are seven
+  7-by-8 positive-cube grids plus fourteen negative-cover checks, not five
+  monolithic LRAT files (room msgs 31965 and 31971).
 - **Census tooling**: exhaustive B&B sweeps over partition/atom spaces
   with every constraint tied to a named Lean lemma (loads, budgets,
   balance integrality, the equal-LCM law, oriented-cover kernels).
 
-## Completed unconditional results (as of this draft)
+## Results: what is decided, and what is not
 
-1. **f(48) = 8 descent rung and the strict gap** s(s−1)+4 ≤ d — core
-   theorems and certificates verified; the top-level Lean wrapper
-   assembling them is pending at time of writing, so this is labeled
-   certificate-verified, not fully formalized.
-2. **d=16, s=4 branch closed**: `false_of_degree_sixteen_fourLayer` —
-   census 36/36 partitions, eliminations 36/36, single dispatcher.
-3. **d=16, s=2 branch closed**: `false_of_degree_sixteen_twoLayer` —
-   orphan alphabet reduction, owner concentration, count census kills
-   (counts 2,3,4,7,12,14,19,24), count9 residual-contact terminal,
-   count8 three-config pricing; axioms: foundational only.
-4. **Boundary reduction**: `degree_sixteen_remaining_zeroLayer` — the
-   exact d=16 boundary now has s=0 as its only open branch (axioms:
-   foundational + 9 disclosed certificate axioms).
-5. **Zero-layer structural package** (in progress, all cold-verified):
-   D1–D3 design lemmas, exact load-12, Gram = 12I + M, tripartite M,
-   oriented-cover kernels, equal-LCM law, A-atom elimination, cherry
-   bounds; census: 57 partitions dead by arithmetic (formal engines
-   named), survivor map under active reduction.
-6. **Graph-facing partition deaths** (each a certified theorem, all
-   foundational-pure): {8,2⁴}, {5,5,2³}, {12,2,2}, {10,2,2,2} (via the
-   minimum-even-orphan parity interface after the residual census was
-   *refuted* by formal countermodel — see §4), and {12,4} — the last
-   closed by a new pipeline: equal-order quotient-3 phase rigidity
-   (ambient commutator ⇒ circulant), Sidon-from-C4, class exclusions
-   (defect ±1, child-cover mod 3), and a kernel-`decide` finite endpoint
-   (no 3-set in Z₁₂ has ordered difference set {2,4,5,7,8,10}).
+The formal root is conditional, not a solution claim.  The implications
+from an unbounded family of plane-order drops to the negation of Erdős 85
+are proved as `erdos85Negation_iff_not_question`,
+`PlaneOrderDropWitness.strict_drop`, and
+`not_erdos85Question_of_cofinalPlaneOrderDropFamily`.  On the binary branch,
+the existence jaw, tight-core reduction, and even-order regularity are also
+proved (`Polarity.c4FreeMinDegreeWitness_even_delete_absolute_nucleus`,
+`binarySquareOrderTightCoreExclusion_iff`, and
+`squareOrder_regular_of_even`).  The unresolved hypothesis is exactly
+`BinarySquareRegularExclusion` (A-REG): no `2^k`-regular C4-free graph on
+`4^k` vertices for every `k ≥ 3`.  Thus Erdős 85 is **not solved** by the
+present repository; `not_erdos85Question_of_binarySquareRegularExclusion`
+states the honest conditional capstone (outline v2.64, §0–A).
 
-### The antipodal law and the collapse of s=0 (in progress)
+The strongest unconditional uniform reduction beneath A-REG is already
+substantial.  The defect operator satisfies
+`A² = (q−1)I + J − D` and commutes with `A`
+(`adjMatrix_sq_eq_sub_secondOrderDefect_of_regular` and
+`adjMatrix_comm_secondOrderDefect_of_regular`).  Its components have orders
+`q m_c`, with `Σm_c=q`; unit parts are impossible; and no component is
+bipartite when `4 ∣ q`
+(`binarySquare_regular_exists_defectComponent_partition`,
+`binarySquare_regular_no_sizeQ_defectComponent_of_even`, and
+`binarySquare_regular_no_bipartite_defectComponent`).  What remains is the
+all-non-bipartite connected-or-mixed node A-REG-NONBIP; the post-inverse
+divergence found no surviving terminal (room msgs 31962–31964).
 
-The campaign's endgame arrived not as a bigger census but as a single
-structural invariant. Every component of the second-order defect
-structure is a labeled cycle; for a cycle of even order n, the
-*antipodal* pairs (v, v + n/2) are never defect-adjacent, so the
-exactly-one-common law applies to them with no escape — adjacency does
-not exempt a pair from needing a third-vertex witness (an early
-"antipodal matching" escape proposed in-room was refuted within the
-hour by the global form of the law: a reminder that the red-team
-discipline cuts both ways).
+### The 48-to-49 campaign: one conditional finite drop
 
-The invariant: a Chebyshev-style intertwiner identity forces
-*antipodal covariance* on any block between labeled cycles — a witness
-row for both antipodes at position x forces a second witness row at
-x + n/2 — so a witness component of order r can see an antipodal pair
-of a component of order 2h only if r divides h (formally:
-`component_antipodal_commonSource_forces_order_dvd`, proved with no
-affine or phase assumptions, uniformly over equal, larger, smaller,
-and intra-component witnesses, any quotient). The only structures that
-pass the filter are even-fiber covers — and the child component c₀ is
-the unique mod-3 cover in the zero-layer economy, which orphans by
-definition never touch.
+The existence and lower-bound jaws are checked, and Lean already contains
+the complete final socket.  Given exclusion of the one-high and seven-high
+strata and five canonical h3/h5 LRAT checks,
+`minDegreeForC4_fortyEight_fortyNine_exact_of_smallHighLratChecks` proves
+`f(48)=8 ∧ f(49)=7`; its corollary
+`minDegreeForC4_fortyNine_lt_fortyEight_of_smallHighLratChecks` proves the
+strict drop.  The graph-normalization consumer is
+`not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks`.
 
-Consequence: every orphan atom needs a leg with 2k | m, and the eight
-remaining zero-layer partitions all fail the resulting economy filter —
-five have no admissible atoms at all, three die by a single linear
-combination of load equations (integer Farkas certificates, verified
-independently of the solver that found them). The dual-track texture is
-worth recording: {8,8} was killed twice in one afternoon, once by an
-offset-tiling obstruction that reduced to a displacement-sum invariant
-Σ 2sᵢ ≡ 2 mod 8 (a one-line `Equiv.sum_comp` argument replacing a
-12-case finite enumeration), and once by the antipodal filter — two
-independent proofs, both foundational-pure, neither trusting a solver.
+Those hypotheses have **not all landed**, so this is not yet a decided
+drop.  Under operator goal #39, the local host is running the thirteen-cell
+campaign: five one-high cells, four three-high scout cells, three five-high
+cells, and the remaining seven-high t0 cell (room msgs 31965–31966).  Tier A
+expands the seven h3/h5 cells into 406 checked cube jobs.  Because those
+checks produce base-CNF `Unsat` values while the older final socket accepts
+monolithic `LRAT.check` witnesses, the room identified and claimed a narrow
+cube-grid-to-semantic terminal before reporting any solver verdict as a
+drop (room msgs 31971–31974).
+
+### The 63-to-64 campaign: useful finite evidence, still open
+
+At `q=8`, the possible defect-component partitions are
+`[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`, `[4,4]`, `[5,3]`, `[6,2]`, and `[8]`.
+They are not all excluded.  The size-two `μ=3` sector is closed on honest
+regular hypotheses by `orderSixtyFour_regular_sizeTwoEigenline_false`.
+The complete negative signed-joint size-two subtree, including the corrected
+`μ=-3,(0,5)` endpoint, is closed by
+`orderSixtyFour_regular_sizeTwo_signedJoint_false_of_connected`.  But
+`[3,3,2]`, `[4,2,2]`, and `[6,2]` retain non-bipartite cases; `[4,4]` and
+`[5,3]` have only partial owner-nullity information; and the connected `[8]`
+case remains a gap.  The eleven `[2,2,2,2]` assembly targets are external
+UNSAT verdicts without certificates.  Therefore `63→64` is **not a decided
+drop**, and none of these order-64 enumerations proves the uniform A-REG
+statement (outline v2.64, §A.5.2).
+
+### Certificate case study: the h305 80-owner error and 88-owner repair
+
+The `μ=-3,(0,5)` endpoint is a compact example of why hypothesis fidelity
+matters more than an UNSAT line.  The first encoding silently reused the
+h114 shore table: eight fixed owners per shore and 80 candidate owners.  The
+actual h305 shore modes contain antipodal offsets as well, giving twelve
+fixed edges per shore and an 88-owner universe.  Consequently the original
+80-owner UNSAT result excluded only a strengthened, wrong problem (room msgs
+31664, 31674, and 31697; outline v2.64 change entry 2.61).
+
+The repair rebuilt the whole chain around the honest table.  Six canonical
+88-owner CNFs were emitted independently and agreed byte-for-byte; all six
+were UNSAT, and their LRAT payloads are checked by the six `h305Owner88*_check`
+theorems in `Erdos85MuNegThreeZeroFiveCorrectOwnerCertificate`.  The graph
+semantics culminate in `muNegThreeZeroFiveCorrect_graph_false_of_exterior`,
+the source/transport endpoint in `false_of_h305_source_or_transported`, and
+the callback-free order-64 consumer above.  The six checked payloads are the
+only new `Lean.ofReduceBool`-class assumptions in this corrected endpoint;
+all structural bridge modules use standard axioms.  The result is genuinely
+`PROVEN-AT-64 CERT`, but only for that endpoint—not for the full order-64
+nonexistence theorem (room msgs 31845–31846 and outline v2.64 entry 2.61).
 
 ## 8. Headline theorem — STUB
 
