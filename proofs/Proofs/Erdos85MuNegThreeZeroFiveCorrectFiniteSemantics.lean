@@ -555,9 +555,176 @@ theorem muNegThreeZeroFiveCorrectServiceClauses_satisfied
           muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X
             hgdata.1 (by omega), hDtrue]
 
+private theorem h305Correct_xlit_props
+    {uTri vTri : Bool} {D X : Nat → Nat → Bool}
+    {o1 o2 : Nat} {lit : Int}
+    (h : muNegThreeZeroFiveCorrectXLit?
+      (muNegThreeZeroFiveCorrectHitPairs uTri vTri) o1 o2 = some lit) :
+    0 < lit ∧
+    dimacsLitValue
+        (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) lit =
+      X (min o1 o2) (max o1 o2) ∧
+    (min o1 o2, max o1 o2) ∈
+      muNegThreeZeroFiveCorrectHitPairs uTri vTri := by
+  obtain ⟨x, hx, rfl⟩ := h305Correct_xlit_eq_some h
+  have hb := muNegThreeZeroFiveCorrectXVar?_bounds hx
+  refine ⟨by show (0 : Int) < (x : Int); exact_mod_cast by omega, ?_,
+    muNegThreeZeroFiveCorrectXVar?_key_mem hx⟩
+  rw [h305Correct_dimacsLitValue_ofNat (by omega),
+    muNegThreeZeroFiveCorrectValOfRelations_xvar uTri vTri D X hx]
+
+private theorem h305Correct_option_bind_inv {alpha beta : Type}
+    {o : Option alpha} {f : alpha → Option beta} {c : beta}
+    (h : (o >>= f) = some c) : ∃ x, o = some x ∧ f x = some c := by
+  cases o with
+  | none => simp at h
+  | some x => exact ⟨x, rfl, h⟩
+
+/-- Both corrected owner-C4 clause families are satisfied by the semantic
+intersecting and disjoint C4 laws. -/
+theorem muNegThreeZeroFiveCorrectC4Clauses_satisfied
+    {uTri vTri sigma : Bool} {D X : Nat → Nat → Bool}
+    (hsem : MuNegThreeZeroFiveCorrectNonCrossSemantics
+      uTri vTri sigma D X) :
+    let os := muNegThreeZeroFiveCorrectOwners uTri vTri
+    let pairs := muNegThreeZeroFiveCorrectHitPairs uTri vTri
+    ∀ clause ∈ muNegThreeZeroFiveCorrectC4Clauses os pairs,
+      dimacsClauseSatisfied
+        (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) clause := by
+  dsimp only
+  intro clause hclause
+  simp only [muNegThreeZeroFiveCorrectC4Clauses, List.mem_flatMap,
+    List.mem_range, List.mem_filter] at hclause
+  obtain ⟨a, ha, b, ⟨hb, hab⟩, hcl⟩ := hclause
+  rw [muNegThreeZeroFiveCorrectOwners_length] at ha hb
+  have hab' : a < b := of_decide_eq_true hab
+  split at hcl
+  · next hshare =>
+    rw [List.mem_filterMap] at hcl
+    obtain ⟨g, hgmem, hf⟩ := hcl
+    rw [List.mem_filter, List.mem_range,
+      muNegThreeZeroFiveCorrectOwners_length] at hgmem
+    obtain ⟨hg88, hgcond⟩ := hgmem
+    simp only [Bool.and_eq_true, bne_iff_ne] at hgcond
+    obtain ⟨⟨⟨hga, hgb⟩, _⟩, _⟩ := hgcond
+    obtain ⟨x, hxeq, hf⟩ := h305Correct_option_bind_inv hf
+    obtain ⟨y, hyeq, hf⟩ := h305Correct_option_bind_inv hf
+    have hcl' : clause = [-x, -y] := (Option.some.inj hf).symm
+    obtain ⟨hxpos, hxval, hxkey⟩ :=
+      h305Correct_xlit_props (D := D) (X := X) hxeq
+    obtain ⟨hypos, hyval, hykey⟩ :=
+      h305Correct_xlit_props (D := D) (X := X) hyeq
+    by_cases hvx : dimacsLitValue
+        (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) x = true
+    · by_cases hvy : dimacsLitValue
+          (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) y = true
+      · exact absurd (hsem.c4_intersecting a b g hab' hb hg88 hga hgb
+          hshare hxkey hykey (by rw [← hxval]; exact hvx)
+          (by rw [← hyval]; exact hvy)) not_false
+      · exact ⟨-y, by rw [hcl']; simp,
+          h305Correct_dimacsLitValue_neg_of_pos hypos hvy⟩
+    · exact ⟨-x, by rw [hcl']; simp,
+        h305Correct_dimacsLitValue_neg_of_pos hxpos hvx⟩
+  · next hnshare =>
+    have hshare_f : muNegOneShare
+        ((muNegThreeZeroFiveCorrectOwners uTri vTri)[a]!)
+        ((muNegThreeZeroFiveCorrectOwners uTri vTri)[b]!) = false :=
+      Bool.eq_false_iff.mpr hnshare
+    set ks :=
+      (List.range (muNegThreeZeroFiveCorrectOwners uTri vTri).length).filter
+        (fun g => g != a && g != b &&
+          (muNegThreeZeroFiveCorrectXVar?
+            (muNegThreeZeroFiveCorrectHitPairs uTri vTri) a g).isSome &&
+          (muNegThreeZeroFiveCorrectXVar?
+            (muNegThreeZeroFiveCorrectHitPairs uTri vTri) b g).isSome)
+      with hks
+    rw [List.mem_flatMap] at hcl
+    obtain ⟨gi, hgi, hcl⟩ := hcl
+    rw [List.mem_range] at hgi
+    rw [List.mem_filterMap] at hcl
+    obtain ⟨hi, hhim, hf⟩ := hcl
+    rw [List.mem_filter, List.mem_range] at hhim
+    obtain ⟨hhi, hgihi⟩ := hhim
+    have hgihi' : gi < hi := of_decide_eq_true hgihi
+    obtain ⟨xag, hxag, hf⟩ := h305Correct_option_bind_inv hf
+    obtain ⟨xbg, hxbg, hf⟩ := h305Correct_option_bind_inv hf
+    obtain ⟨xah, hxah, hf⟩ := h305Correct_option_bind_inv hf
+    obtain ⟨xbh, hxbh, hf⟩ := h305Correct_option_bind_inv hf
+    have hcl' : clause = [-xag, -xbg, -xah, -xbh] :=
+      (Option.some.inj hf).symm
+    have hgmem : ks[gi]! ∈ ks := by
+      rw [getElem!_pos ks gi hgi]
+      exact List.getElem_mem _
+    have hhmem : ks[hi]! ∈ ks := by
+      rw [getElem!_pos ks hi hhi]
+      exact List.getElem_mem _
+    have hgmemf : ks[gi]! ∈
+        (List.range
+          (muNegThreeZeroFiveCorrectOwners uTri vTri).length).filter
+          (fun g => g != a && g != b &&
+            (muNegThreeZeroFiveCorrectXVar?
+              (muNegThreeZeroFiveCorrectHitPairs uTri vTri) a g).isSome &&
+            (muNegThreeZeroFiveCorrectXVar?
+              (muNegThreeZeroFiveCorrectHitPairs uTri vTri) b g).isSome) := by
+      rw [← hks]
+      exact hgmem
+    have hhmemf : ks[hi]! ∈
+        (List.range
+          (muNegThreeZeroFiveCorrectOwners uTri vTri).length).filter
+          (fun g => g != a && g != b &&
+            (muNegThreeZeroFiveCorrectXVar?
+              (muNegThreeZeroFiveCorrectHitPairs uTri vTri) a g).isSome &&
+            (muNegThreeZeroFiveCorrectXVar?
+              (muNegThreeZeroFiveCorrectHitPairs uTri vTri) b g).isSome) := by
+      rw [← hks]
+      exact hhmem
+    have hksnd : ks.Nodup := by
+      rw [hks]
+      exact List.nodup_range.filter _
+    have hgh : ks[gi]! ≠ ks[hi]! := by
+      rw [getElem!_pos ks gi hgi, getElem!_pos ks hi hhi]
+      exact fun h =>
+        absurd ((List.Nodup.getElem_inj_iff hksnd).mp h) (by omega)
+    obtain ⟨hgr, hgcond⟩ := List.mem_filter.mp hgmemf
+    obtain ⟨hhr, hhcond⟩ := List.mem_filter.mp hhmemf
+    rw [List.mem_range, muNegThreeZeroFiveCorrectOwners_length] at hgr hhr
+    simp only [Bool.and_eq_true, bne_iff_ne] at hgcond hhcond
+    obtain ⟨⟨⟨hga, hgb⟩, _⟩, _⟩ := hgcond
+    obtain ⟨⟨⟨hha, hhb⟩, _⟩, _⟩ := hhcond
+    obtain ⟨hp1, hv1, hk1⟩ :=
+      h305Correct_xlit_props (D := D) (X := X) hxag
+    obtain ⟨hp2, hv2, hk2⟩ :=
+      h305Correct_xlit_props (D := D) (X := X) hxbg
+    obtain ⟨hp3, hv3, hk3⟩ :=
+      h305Correct_xlit_props (D := D) (X := X) hxah
+    obtain ⟨hp4, hv4, hk4⟩ :=
+      h305Correct_xlit_props (D := D) (X := X) hxbh
+    by_cases hb1 : dimacsLitValue
+        (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) xag = true
+    · by_cases hb2 : dimacsLitValue
+          (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) xbg = true
+      · by_cases hb3 : dimacsLitValue
+            (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) xah = true
+        · by_cases hb4 : dimacsLitValue
+              (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) xbh = true
+          · exact absurd (hsem.c4_no_two a b ks[gi]! ks[hi]! hab' hb
+              hgr hhr hgh hga hgb hha hhb hshare_f hk1 hk2 hk3 hk4
+              (by rw [← hv1]; exact hb1) (by rw [← hv2]; exact hb2)
+              (by rw [← hv3]; exact hb3) (by rw [← hv4]; exact hb4))
+              not_false
+          · exact ⟨-xbh, by rw [hcl']; simp,
+              h305Correct_dimacsLitValue_neg_of_pos hp4 hb4⟩
+        · exact ⟨-xah, by rw [hcl']; simp,
+            h305Correct_dimacsLitValue_neg_of_pos hp3 hb3⟩
+      · exact ⟨-xbg, by rw [hcl']; simp,
+          h305Correct_dimacsLitValue_neg_of_pos hp2 hb2⟩
+    · exact ⟨-xag, by rw [hcl']; simp,
+        h305Correct_dimacsLitValue_neg_of_pos hp1 hb1⟩
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeZeroFiveCorrectValOfRelations_dvar
 #print axioms Erdos85.muNegThreeZeroFiveCorrectValOfRelations_xvar
 #print axioms Erdos85.muNegThreeZeroFiveCorrectHitActivityClauses_satisfied
 #print axioms Erdos85.muNegThreeZeroFiveCorrectServiceClauses_satisfied
+#print axioms Erdos85.muNegThreeZeroFiveCorrectC4Clauses_satisfied
