@@ -5815,6 +5815,24 @@ under `residual_single_swap_certificates`, so the regression evidence matches
 the erased-core Lean characterization literally rather than through a Boolean
 summary.
 
+The two horns split even more cleanly in the durable data.  The sole case
+without a joint witness, `36 -> 23`, has intersecting distinguished blocks
+(`blocks_intersect=true`), so no disjoint local packing could contain both;
+the three displayed one-swaps are exactly the only possible horn.  Every
+other durable failure has a joint witness.  Thus a sharper proof target,
+still only audited evidence, is
+
+```text
+W(w,z)      -> a one-row swap at some residual source,
+not W(w,z)  -> a joint packing at some residual source.              (13bl'''c)
+```
+
+The first implication is already extracted from exchange coupling by
+`exists_singleSwap_of_exchangeCoupledAt_of_conflict`.  The second is not a
+formal consequence of abstract exchange coupling: its one-swap horn can
+hold for nonconflicting rows.  It is additional outer-design content, but it
+may be easier to prove directly than an undifferentiated disjunction.
+
 Accordingly, the remaining proof problem is the sharper joint-or-one-swap
 exchange claim for the finite family of disjoint block packings at one source.
 The Lean interface `AreLocalGramPackingExchangeCoupledAt` records exactly
