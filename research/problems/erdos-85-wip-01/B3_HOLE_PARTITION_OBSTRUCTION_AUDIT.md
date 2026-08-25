@@ -6029,3 +6029,34 @@ outer pair-cover equations forbid the conflict pattern itself.  The first
 uncut statement is now narrower still: the `K`-zero-support eligibility of
 one source must contain an alternating core of the relevant demanded size.
                                                                     (13bna'''b)
+
+That same-source statement is false even in the retained outer `Q,K` layer.
+A second pinned branch-3 model has pair-row source `26`, block `{10,20}`,
+and two disjoint candidate triples
+
+```text
+row 8  = {3,12,22},       row 16 = {5,15,19}.
+```
+
+Both are `K`-zero-support eligible at source 26.  Exact enumeration of the
+source's 22 eligible rows gives 56 full conflict-free packings of demanded
+size six.  Row 8 occurs in four and row 16 in fourteen, but no full packing
+contains both and no two full packings have a common five-row core differing
+only by `8 <-> 16`.  Thus `AreLocalGramPackingExchangeCoupledAt` fails
+literally for two individually possible, nonconflicting rows at one source.
+
+The dependency-free enumeration plus pinned outer-solver check is
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_q9_b3_common_source_qk_exchange_countermodel.py
+```
+
+The model retains all incidence/column/parallel-class/cubic-`K` equations
+listed in (13bna'''b); it still relaxes the residual-`A` clauses and does not
+assert that rows 8 and 16 are bad or lex-better for a reverse-obstructed
+target.  Therefore it does not refute (13bn).  It decisively refutes every
+proof of (13bn) based only on same-source 3-partite exchange plus the full
+outer `Q,K` incidence geometry.  The **bad-or-lex-better selection and
+reverse-obstruction data are now provably indispensable**, not merely
+cautious extra hypotheses.                                           (13bna'''c)
