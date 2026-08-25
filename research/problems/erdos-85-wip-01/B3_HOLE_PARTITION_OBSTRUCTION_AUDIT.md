@@ -6175,9 +6175,14 @@ returned `unknown` at 60 seconds.
 Therefore residual incidence does exclude this *particular* outer exchange
 countermodel before any C4 clause is used, and the first verified exclusion
 uses the coupling between exact B0 degrees and defect/common-neighbor
-orthogonality.  It does not prove that every common-source alternating core
-is excluded, and it does not advance past `(13bo)`: the same pinned payload
+orthogonality.  Semantically, those clauses require every residual
+`A`-neighborhood to realize its exact-degree eligible point-cap packing, while
+this payload already has the four infeasible rows `{2,4,5,25}`.  The UNSAT
+may therefore be witnessed entirely by any one of those bad rows; it does
+**not** show that residual incidence excludes the alternating pair `8,16`
+itself.  It does not prove that every common-source alternating core is
+excluded, and it does not advance past `(13bo)`: the same pinned payload
 already has the bad-row reverse descent in `(13bna'''d)`.  The useful scope
-boundary is that a future all-row-feasible countermodel cannot be certified
-from the outer `Q,K` layer alone; it must extend through this degree/common-
-neighbor interaction.                                                (13bna'''f)
+boundary is only that a future all-row-feasible countermodel cannot be
+certified from the outer `Q,K` layer alone; it must extend through this
+degree/common-neighbor interaction.                                  (13bna'''f)
