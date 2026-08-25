@@ -18,6 +18,12 @@ three (rather than two) multiplicity-two survivors, and the selector-pair
 incidence graph need not be P3 or complement the gadget edge.  The exact
 surviving invariant is only linearity (each selector pair has at most one
 shared survivor).
+
+A final positive query verifies the scalable ``star-slot`` specialization:
+for a common-root deleted pair and an edgeless gadget, the two removed edges
+each join a distinct root-petal vertex to an external vertex, and all three
+selector-pair slots are occupied exactly once.  The common root labels the
+pair of root selectors; the two petal endpoints label the remaining star.
 """
 
 from itertools import combinations
@@ -104,6 +110,26 @@ def solve(gadget_edges: int, require_common_root, refinement=None):
                     ~shared(15, 17),
                     ~shared(16, 17),
                 ))
+        elif refinement == "star_slot_design":
+            assert gadget_edges == 0 and root is not None
+            cut_loss = {
+                v: sum(original_edge(v, x) for x in deleted) for v in old
+            }
+            # Every removed survivor edge must join a one-deficit petal
+            # vertex to a zero-deficit external vertex.
+            for a, b in EDGES:
+                if a in deleted_set or b in deleted_set:
+                    continue
+                is_cross = {cut_loss[a], cut_loss[b]} == {0, 1}
+                if not is_cross:
+                    solver.add(edge(a, b))
+
+            # Saturate the three selector-pair slots with one shared old
+            # vertex each.  Compatibility already supplies the upper bound.
+            for w, z in combinations(new, 2):
+                solver.add(Sum([
+                    If(And(edge(v, w), edge(v, z)), 1, 0) for v in old
+                ]) == 1)
 
         if solver.check() != sat:
             continue
@@ -153,6 +179,36 @@ def verify(gadget_edges: int, result) -> None:
     )
 
 
+def verify_star_slot(result) -> None:
+    """Verify the labels in the canonical common-root star-slot model."""
+    deleted, root, attachments, removed = result
+    assert root is not None
+    cut_loss = {
+        v: sum(original_edge(v, x) for x in deleted)
+        for v in range(15) if v not in deleted
+    }
+    assert cut_loss[root] == 2
+    assert all({cut_loss[a], cut_loss[b]} == {0, 1} for a, b in removed)
+    assert len({v for edge in removed for v in edge}) == 4
+
+    membership = {
+        v: {w for w, selector in attachments.items() if v in selector}
+        for v in cut_loss
+    }
+    assert len(membership[root]) == 2
+    cross_endpoints = [
+        v for edge in removed for v in edge if cut_loss[v] == 1
+    ]
+    assert len(cross_endpoints) == 2
+    assert all(len(membership[v]) == 2 for v in cross_endpoints)
+    labels = {
+        frozenset(ws): v
+        for v, ws in membership.items() if len(ws) == 2
+    }
+    assert set(labels) == {frozenset(pair) for pair in combinations((15, 16, 17), 2)}
+    assert set(labels.values()) == {root, *cross_endpoints}
+
+
 def main() -> None:
     for require_common_root in (True, False):
         pair_count = sum(1 for _ in candidate_deleted_pairs(require_common_root))
@@ -183,6 +239,17 @@ def main() -> None:
                 print(f"    D={deleted} common_root={root}")
                 print(f"    attachments={attachments}")
                 print(f"    removed={removed}")
+
+    star_slot = solve(0, True, "star_slot_design")
+    assert star_slot is not None
+    verify(0, star_slot)
+    verify_star_slot(star_slot)
+    deleted, root, attachments, removed = star_slot
+    print("canonical common-root star-slot: SAT")
+    print(f"  D={deleted} common_root={root}")
+    print(f"  attachments={attachments}")
+    print(f"  removed={removed}")
+    print("  star-slot-verification: VERIFIED")
 
 
 if __name__ == "__main__":
