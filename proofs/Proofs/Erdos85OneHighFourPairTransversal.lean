@@ -38,4 +38,27 @@ theorem oneHighRootPair_eq_one_of_four_of_pairwise_ne
     (oneHighRootPair c) (oneHighRootPair d)
     (oneHighRootPair z) hab hac had hbc hbd hcd
 
+/-- The exact form of four-pair exhaustion produced by a separated repeated
+key: the two owner labels are distinct non-mates, the key endpoints are
+distinct non-mates, and both endpoints are far from both owner pairs. -/
+theorem oneHighRootPair_eq_owner_or_key_of_separated
+    (s t a b z : Fin 8)
+    (hst : s ≠ t) (htm : t ≠ oneHighStandardMate s)
+    (hab : a ≠ b) (hbm : b ≠ oneHighStandardMate a)
+    (haS : a ≠ s ∧ a ≠ oneHighStandardMate s)
+    (hbS : b ≠ s ∧ b ≠ oneHighStandardMate s)
+    (haT : a ≠ t ∧ a ≠ oneHighStandardMate t)
+    (hbT : b ≠ t ∧ b ≠ oneHighStandardMate t) :
+    oneHighRootPair z = oneHighRootPair s ∨
+      oneHighRootPair z = oneHighRootPair t ∨
+      oneHighRootPair z = oneHighRootPair a ∨
+      oneHighRootPair z = oneHighRootPair b := by
+  apply oneHighRootPair_eq_one_of_four_of_pairwise_ne s t a b z
+  · exact (oneHighRootPair_ne_of_ne_of_ne_standardMate hst.symm htm).symm
+  · exact (oneHighRootPair_ne_of_ne_of_ne_standardMate haS.1 haS.2).symm
+  · exact (oneHighRootPair_ne_of_ne_of_ne_standardMate hbS.1 hbS.2).symm
+  · exact (oneHighRootPair_ne_of_ne_of_ne_standardMate haT.1 haT.2).symm
+  · exact (oneHighRootPair_ne_of_ne_of_ne_standardMate hbT.1 hbT.2).symm
+  · exact (oneHighRootPair_ne_of_ne_of_ne_standardMate hab.symm hbm).symm
+
 end Erdos85
