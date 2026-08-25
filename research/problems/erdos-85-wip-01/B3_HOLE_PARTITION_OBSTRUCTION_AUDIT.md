@@ -6330,3 +6330,29 @@ induced three-vertex paths.  Thus any future uncrossing argument must first
 prove a genuinely new laminar or otherwise restricted family theorem for the
 particular reverse intervals; arbitrary packing rank has no such property.
                                                                (13boc')
+
+The most literal boundary-composition conjecture from divergence round 64 is
+also false.  The diagnostic
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_q9_13boc_boundary_composition.py
+```
+
+computes, for each strict terminal row `w`, the exact largest partial packing
+that contains `F_w` and avoids `I_w`.  It compares the missing packing rank
+with the number of reverse-obstructed rows on `F_w union I_w`.  Every one of
+the seventeen terminals has exact rank deficit one, while its obstructed
+boundary has cardinality between four and nine.  Hence the proposed identity
+
+```text
+partial-packing deficit at w
+  = number of reverse-obstructed rows on the boundary of w
+```
+
+fails in all seventeen cases.  Boundary witnesses overlap heavily and cannot
+be composed or charged independently.  A future composition argument needs a
+canonical *single* essential boundary coordinate, not the cardinality of all
+obstructed boundary rows.  This is a bounded negative result for P3 of round
+64; after `(13boc')`, only the transposed-dual probe remains live from the
+three-way cut.                                                    (13bod)
