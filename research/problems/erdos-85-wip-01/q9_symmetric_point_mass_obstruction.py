@@ -778,6 +778,54 @@ def contracted_collision_star_matching_cover(
     return certificate
 
 
+def tutte_bad_or_better_hall_diagnostic(
+        certificate: dict, local: dict[int, dict],
+        bad_or_better: set[int]) -> list[dict]:
+    """Test the un-back-charged core of the proposed (13bn) Hall charge.
+
+    Each odd component of a Tutte violator may use a row ``z`` when some
+    source in the component has a full local packing containing ``z``.  The
+    diagnostic asks whether distinct components can be assigned distinct
+    locally-infeasible or lex-better rows.  It deliberately does not encode
+    the conjectural back-charge through nonbetter rows.
+    """
+    diagnostics = []
+    for violator in certificate["tutte_violators"]:
+        neighborhoods = []
+        for component in violator["odd_components"]:
+            neighborhoods.append(sorted(
+                z for z in bad_or_better
+                if any(z in local[x]["possible_neighbors"]
+                       for x in component)
+            ))
+
+        matched_row_to_component: dict[int, int] = {}
+
+        def augment(component_index: int, seen: set[int]) -> bool:
+            for row in neighborhoods[component_index]:
+                if row in seen:
+                    continue
+                seen.add(row)
+                previous = matched_row_to_component.get(row)
+                if previous is None or augment(previous, seen):
+                    matched_row_to_component[row] = component_index
+                    return True
+            return False
+
+        matched = sum(
+            augment(component_index, set())
+            for component_index in range(len(neighborhoods))
+        )
+        diagnostics.append({
+            "removed": violator["removed"],
+            "odd_components": violator["odd_components"],
+            "bad_or_better_neighborhoods": neighborhoods,
+            "matched_component_count": matched,
+            "all_components_matched": matched == len(neighborhoods),
+        })
+    return diagnostics
+
+
 def contracted_residual_pasch_configurations(
         system: dict, target: int, local: dict[int, dict]) -> list[list[int]]:
     """Find 2x2x2 parity/Pasch configurations among residual triples."""
@@ -2490,6 +2538,12 @@ def main() -> None:
                 row for row in range(N)
                 if not local[row]["packing_count"]
             }
+            record["tutte_bad_or_better_hall_diagnostic"] = (
+                tutte_bad_or_better_hall_diagnostic(
+                    record["collision_star_matching_cover"], local,
+                    infeasible_targets | better_targets,
+                )
+            )
             residual_relation_load = {
                 row: sum(
                     row != source

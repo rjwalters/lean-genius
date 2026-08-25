@@ -5853,3 +5853,25 @@ the sets `R,Q,L,E`, the no-violator hypothesis, and (13bj), and returns the
 contradiction.  The only remaining mathematics is (13bn); the negative
 audits (13bl)--(13bm) show that it must be a global double-count or exchange
 argument using all-row local packings.
+
+A subsequent cross-source Hall probe isolates another necessary piece of
+that double count.  For each odd component of a minimum Tutte violator, join
+it to a locally infeasible or lex-better row whenever some source in the
+component has a full local packing containing that row.  This component-to-row
+graph need not satisfy Hall even under all-row feasibility.  In
+`q9_branch4_fixed_weight_counterexample.json`, failing target `20` has the
+minimum violator
+
+```text
+U = {},
+odd components = {10,28,37,38,45}, {26,35,44},
+bad-or-better neighborhoods = {30}, {30}.
+```
+
+Thus both odd components compete for the unique better row `30`; the maximum
+capacity-one matching has size one.  Mere cross-source reachability cannot
+discharge the Tutte deficit.  Any Hall-charge proof of (13bn) must establish
+a genuine back-charge conservation law through feasible nonbetter rows, or
+prove that a better row carries the required component multiplicity.  The
+auditor field `tutte_bad_or_better_hall_diagnostic` records this regression.
+                                                                    (13bna)
