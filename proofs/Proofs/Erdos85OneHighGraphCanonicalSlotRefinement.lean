@@ -309,9 +309,48 @@ theorem oneHighGraphCanonicalSlotPinSemanticsFin
         (oneHighGraphCanonicalSlotLabel_atomValue
           G hfree hv p source 3 hm3)
 
+/-- The actual eight-row graph slot refinement satisfies the generic semantic
+payload consumed by the refinement-pinned CNF soundness theorem. -/
+theorem oneHighGraphCanonicalSlotRefinement_pinSemantics
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) :
+    OneHighRefinementPinSemantics
+      (oneHighRelabeledLeafGraph G v
+        (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+      (oneHighGraphCanonicalSlotRefinement G hfree p) := by
+  intro source edge hedge
+  by_cases hsource : source < 8
+  · let sourceFin : Fin 8 := ⟨source, hsource⟩
+    have hrow :
+        (oneHighGraphCanonicalSlotRefinement G hfree p).getD source [] =
+          oneHighGraphCanonicalSlotRow G hfree p sourceFin := by
+      have hlength : source <
+          (oneHighGraphCanonicalSlotRefinement G hfree p).length := by
+        simpa using hsource
+      rw [List.getD_eq_getElem
+        (l := oneHighGraphCanonicalSlotRefinement G hfree p)
+        (d := []) hlength]
+      change (List.ofFn fun c : Fin 8 =>
+        oneHighGraphCanonicalSlotRow G hfree p c).get
+          ⟨source, by simpa using hsource⟩ = _
+      rw [List.get_ofFn]
+      congr
+    have hfin := oneHighGraphCanonicalSlotPinSemanticsFin
+      G hfree hv p sourceFin edge
+    rw [hrow] at hedge ⊢
+    simpa [sourceFin] using hfin hedge
+  · have hrow :
+        (oneHighGraphCanonicalSlotRefinement G hfree p).getD source [] = [] := by
+      simp [oneHighGraphCanonicalSlotRefinement, hsource]
+    rw [hrow] at hedge
+    simp at hedge
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.oneHighGraphCanonicalSlotRow_length
 #print axioms Erdos85.oneHighGraphCanonicalSlotPinSemanticsFin
+#print axioms Erdos85.oneHighGraphCanonicalSlotRefinement_pinSemantics
