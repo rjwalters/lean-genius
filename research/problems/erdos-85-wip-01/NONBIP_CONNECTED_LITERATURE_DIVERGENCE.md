@@ -848,3 +848,43 @@ spectral consequence.  The rectangular partial-polarity/Schur-complement
 route is therefore **stopped at integrality**; ordinary symmetric-subdesign
 and polarity bounds additionally require a square incidence matrix and
 constant Gram, neither of which is present here.
+
+### Exterior-power/compound-matrix probe: functorial but information-neutral
+
+Wild card 8 proposed applying exterior powers to the integral square-root
+identity.  For the `k`th compound matrix `C_k`, Cauchy--Binet gives exactly
+
+```text
+C_k(A^2) = C_k(A)^2.                                    (EXT1)
+```
+
+Moreover `C_k(A)` is again integral and symmetric.  Thus every compound
+square-root condition is automatically witnessed by the exterior power of
+the square root already present in the hypotheses; it does not create an
+independent integrality constraint on `D`.
+
+The apparent determinant refinement also collapses.  If the ambient order
+is `n`, then
+
+```text
+det(C_k(A^2)) = det(A)^(2 * binom(n-1,k-1)),             (EXT2)
+```
+
+so its being a square follows from the ordinary determinant identity before
+any defect structure is used.  Locally at each prime, diagonalising the
+Smith map over the DVR makes the compound elementary-divisor valuations the
+`k`-fold subset sums of the ordinary valuations; this is again inherited
+data.  At the spectral level, the eigenvalues of `C_k(A)` are the products
+`theta_{i_1}...theta_{i_k}`; Galois invariance and sign pairing are inherited
+from the same rational characteristic polynomial of `A`.  Passing to
+products can repackage the designated-factor parity constraints, but cannot
+strengthen them without a new bound selecting a special exterior sector.
+
+Principal minors of `A^2` do yield sums of squares of minors of `A`, rather
+than individual squares, again by Cauchy--Binet.  A representation-number
+obstruction for one such sum would therefore be a genuinely new input, but
+no exterior-power theorem supplies it, and finding it is the original
+zero-one square-root problem in minor coordinates.  Consequently exterior
+powers are **stopped at (EXT1)**: functoriality preserves all existing
+arithmetic information but supplies no polarity-sensitive upper bound or
+new obstruction.
