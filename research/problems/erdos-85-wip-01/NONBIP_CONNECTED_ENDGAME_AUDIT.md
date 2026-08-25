@@ -47,6 +47,40 @@ B48 paired wing profiles
 This is genuine classification progress, but it is not currently an
 endgame.
 
+## Geometric meaning of the incidence bottleneck
+
+The flag-diagonal symmetric-configuration terminology gives `E` an exact
+classical interpretation.  Under the self-polar identification, fix a point
+`p` and a line label `z`.  Then
+
+```text
+(AD)_(p,z)
+```
+
+counts lines `y` through `p` which are parallel (nonconcurrent) to line `z`.
+Indeed `A_(p,y)=1` is incidence and `D_(y,z)=1` says that the two labelled
+lines have no common point.  If `p` lies on `z`, this count is zero.  If
+`(p,z)` is an anti-flag, then
+
+```text
+E_(p,z) = number of lines through p parallel to z - 1.       (E-parallel)
+```
+
+Consequently `E=0` is precisely the type-C elliptic-semiplane parallel
+axiom on this symmetric configuration: every anti-flag has exactly one
+parallel through its point.  Even the usual “at most one” formulation forces
+equality here.  All incident entries of `E` are zero, every anti-flag entry
+would be nonpositive, and each row sum of `E` is zero because both `AD` and
+`J-A` have row sum `q(q-1)`.
+
+This also explains the connected nonvanishing theorem geometrically.  A
+connected hypothetical candidate is not merely “not yet recognized” as an
+elliptic semiplane: every point-row must violate the parallel axiom, balancing
+anti-flags with no parallel (`E=-1`) against anti-flags with at least two
+parallels (`E>=1`).  Thus the flag-diagonal completion target is exactly the
+existing incidence-bottleneck target, not an independent missing theorem.
+The energy `||E||_F^2` measures the total squared parallel-axiom defect.
+
 ## The missing arrow
 
 No checked theorem or stated conjecture in the outline consumes
