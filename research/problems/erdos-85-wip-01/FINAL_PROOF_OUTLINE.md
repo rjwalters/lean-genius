@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.51 — 2026-08-25 ~05:35Z (v2.50 + the graph-facing size-two terminal restored beside the reduced code).**
+**Version 2.52 — 2026-08-25 ~06:30Z (v2.51 + the Goal #7 compensated-surgery boundary recorded).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -942,6 +942,56 @@ Exact second-order boundary theory (`d(d−1)+3`) and plateau-core theory are
 proven, useful, and at the wrong order. Bridge to square order: `GAP
 C-TO-SQUARE`. They stay in the ledger.
 
+**GOAL #7 PLATEAU-TO-BOUNDARY — COMPENSATED-SURGERY BOUNDARY (card #15,
+rounds #58–#60, 25 Aug 05:40–06:20Z, sols 1–3 + Fable; prose + Python
+controls only, no Lean).** The plateau-core interface is `C4PlateauCore m d`
+with `conflict_indepNum_lt`. `PROVEN` (banked earlier,
+`Erdos85ConflictDefectDuality`): in a regular positive-excess component
+`m = d(d−1)+3+e`, `0 ≤ e ≤ d−4`, the common-neighbour conflict graph is
+exactly `d(d−1)`-regular (triangles cancel: `|N₂(v)| + 2t(v)`), so its
+complement — the *safe* graph — is `(e+2)`-regular and a safe `d`-set never
+exists: `conflict_indepNum_lt` is AUTOMATIC throughout the band, and the
+plateau-to-boundary arrow can only come from delete-`k`/add-`(k+1)`
+surgery with survivor-edge deletion (`Erdos85BoundedReplacementObstruction`
+already kills deletion-only gadgets). What the window established, all on
+the two `d = 4` controls (repository `fifteenRegular`,
+`Erdos85Problem.lean:3588`, and Fable's distinct 15-vertex graph) plus
+exact counting: (i) *Capacity law* (Fable, #60): in every tight surgery
+`2|R| = d − 2|E(F)| + 2·e(D)` — survivor-edge deletions number `d/2`
+independently of `k`; selectors are determined as multisets by
+`⊎A_w = N(D) ⊎ V(R)`, and the selector-intersection graph on the new
+vertices has exactly one edge per deficit-2 survivor (a linear hypergraph).
+(ii) *Positive controls*: `k = 1` one-cross-endpoint (`|V(R) ∩ N(x)| = 1`)
+SAT on both graphs (`acc88a151e`, `3238c755fb`); `k = 2` SAT with common
+root and without (`7d7ecc103d`, `39466fe697`), star-slot repartition
+(`133719cd1f`). (iii) *Negative controls, exhaustive*: `k = 0` matching
+extension (delete a `d/2`-matching, attach one vertex to its endpoints)
+UNSAT on both graphs; `k = 1` deletion-only UNSAT; `k = 1` external matching
+UNSAT (`3229a525c7`); `k = d−2` deletion-only sparse gadget UNSAT; the
+"`A_x = N(x)`" scaffold (evidence 105) is the `k = 0` form in disguise and is
+refuted (evidence 109). (iv) *Scaling bounds, q-generic, necessary only*
+(the C4-free orientation count: a selector's matching-endpoint part `T` has
+`indeg ≤ e+3`, so `|T| ≤ 3e+9`): `k = 0` needs `d ≤ 3e+10`; tight `k = 1`
+needs `d ≤ 6e+18` (sol-3, `544898300f`; one-cross-endpoint version sol-2);
+independent-`D` / `F`-empty / external-`M` class needs `k ≥ d − 4e − 11`
+(sol-2 `d ≤ (k+3)(e+3)`, sharpened by Fable: an endpoint has only `e+2`
+safe partners globally, `d799c6dee8`); one-for-one fibre swaps need
+`d ≤ e+4` (evidence 112). Hence at fixed low excess every local pattern
+seen at `d = 4` fails to scale, and the surviving question is a GLOBAL
+BLOCK REPARTITION across root fibres, for which no mechanism exists
+(evidence 113/114 is the first mixing inequality, under red-team). Outside
+literature (CFSZ attachment counts, C4–star Ramsey, Moore-excess/cage,
+Exoo excision — `684905746a`, `deafad28bd`) supplies no bridge.
+Sol-1's Lean matching-existence half (`2d1777b604`, cold-verified green,
+standard axioms) was self-reverted the same minute (`d51e7575b7`) because
+the external-matching class it serves is UNSAT on the controls — the
+anti-wrapper rule applied by its own author. **BOUNDARY, recorded 06:20Z
+per goal #36**: the local compensated family is at the same kind of wall as
+NONBIP-CONNECTED. Sol-2 proposed pivoting to B.2 odd-`q` non-VT existence;
+sols 1 and 3 objected that goal #34 explicitly declined that hunt, and
+sol-3 took instead the allowed A-REG sibling (the `k ≥ 3` location theorem
+for the non-`A` Eulerian transport `K`, §A.5). Not a ruling.
+
 **GENERIC SIXTH-MOMENT TOOLKIT** (goal #30 front (b); sols 1 and 3,
 2026-08-20) — `PROVEN`, uniform in degree `d`, order, and integer center
 `c`, for every d-regular C4-free graph; the week's order-64 spectral/moment
@@ -1099,6 +1149,14 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.52** (2026-08-25 ~06:30Z, claude-fable): recorded the Goal #7
+  compensated-surgery boundary under §C/D — automatic `conflict_indepNum_lt`,
+  the capacity law, the positive and exhaustive negative `d = 4` controls,
+  the four scaling bounds, the refuted `A_x = N(x)` scaffold, and the
+  surviving global-repartition question — per sol-2's boundary proposal
+  (31003) and the room's consent window. Lean tip unchanged `b95c8232e0`.
+  Prose-only.
 
 - **2.51** (2026-08-25 ~05:35Z, claude-fable): restored the graph-facing
   size-two terminal `ThreeSizeTwoViaTripleExclusionPrinciple` (+ consumer)
