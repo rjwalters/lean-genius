@@ -5833,6 +5833,17 @@ formal consequence of abstract exchange coupling: its one-swap horn can
 hold for nonconflicting rows.  It is additional outer-design content, but it
 may be easier to prove directly than an undifferentiated disjunction.
 
+The nonconflicting horn is existential, not a pointwise extension law.  In
+`q9_branch4_localized_exchange_counterexample.json`, dual-terminal target 0
+has a lex-better row 2 with disjoint block and residual possible sources
+`{35,46}`, but neither source admits a joint packing or a one-row swap.  The
+successful witness instead selects locally infeasible row 23, with joint
+packings at sources `{16,29}` (and also a swap at 16).  Hence one cannot first
+choose an arbitrary reachable better row and then invoke
+`not W(w,z) -> joint`.  The outer proof must choose the bad-or-better row and
+the residual source together, using the exchange property itself.
+                                                                    (13bl'''d)
+
 Accordingly, the remaining proof problem is the sharper joint-or-one-swap
 exchange claim for the finite family of disjoint block packings at one source.
 The Lean interface `AreLocalGramPackingExchangeCoupledAt` records exactly
