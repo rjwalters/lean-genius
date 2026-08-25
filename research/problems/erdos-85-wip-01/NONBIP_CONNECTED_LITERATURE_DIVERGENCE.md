@@ -888,3 +888,48 @@ zero-one square-root problem in minor coordinates.  Consequently exterior
 powers are **stopped at (EXT1)**: functoriality preserves all existing
 arithmetic information but supplies no polarity-sensitive upper bound or
 new obstruction.
+
+### Brooks coloring/intersecting-family probe: stopped at the exact threshold
+
+Connectedness does give one genuine global input through Brooks' theorem.
+The connected `(q-1)`-regular defect graph `D` is neither complete nor an odd
+cycle in the present range, so
+
+```text
+chi(D) <= q-1.
+```
+
+A color class is a pairwise-intersecting family of rows of `A`.  Since the
+`q^2` rows are split into `q-1` classes, some class has size at least
+
+```text
+ceil(q^2/(q-1)) = q+2.                                  (BR1)
+```
+
+This exceeds a point-star, which has exactly `q` rows.  Unfortunately the
+classical linear-intersecting bound is quadratic, not close to `(BR1)`.  If
+`F` is a non-star, linear, intersecting family of `q`-sets, choose `E in F`.
+Every other member meets `E` at exactly one point, and no point has family
+degree greater than `q`: for a point `x`, choose a member omitting `x`; the
+members through `x` must meet it in distinct points.  Therefore
+
+```text
+|F|-1 = sum_{x in E} (deg_F(x)-1) <= q(q-1),
+|F| <= q^2-q+1.                                         (BR2)
+```
+
+There is not even rigidity at the Brooks threshold.  For every `q>=3`, take
+`q` edges `E_1,...,E_q` through a common point `x`.  Add two transversal
+edges `f,g`: each meets every `E_i`, using distinct points except that
+`f,g,E_1` share their one common point.  Pad the `E_i` with private points to
+size `q`.  The resulting `q+2` edges are uniform, linear and pairwise
+intersecting, have no common point, and every point has degree at most `q`.
+Thus `(BR1)` is compatible with all local uniformity, linearity and point-
+degree constraints available here, far below the projective-plane equality
+scale in `(BR2)`.
+
+Brooks coloring therefore converts connectedness into a non-star
+intersecting family but supplies no contradiction or completion theorem.
+Any continuation would have to couple all color classes through the
+self-indexed square root; intersecting-family classification alone is
+**stopped at (BR1)**.
