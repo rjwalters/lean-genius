@@ -11,11 +11,18 @@ survivor edges.
 This is the smallest control combining the two features left alive after
 Science Card #15 divergence #60: a multi-vertex independent deletion set and
 genuine survivor-edge deletion.
+
+The final queries negate the first-model incidence conjectures over the full
+independent-pair space.  Both negations are satisfiable: solutions may have
+three (rather than two) multiplicity-two survivors, and the selector-pair
+incidence graph need not be P3 or complement the gadget edge.  The exact
+surviving invariant is only linearity (each selector pair has at most one
+shared survivor).
 """
 
 from itertools import combinations
 
-from z3 import And, Bool, If, Implies, Solver, Sum, is_true, sat
+from z3 import And, Bool, If, Implies, Or, Solver, Sum, is_true, sat
 
 from compensated_surgery_control import EDGES
 
@@ -24,7 +31,7 @@ def original_edge(a: int, b: int) -> bool:
     return tuple(sorted((a, b))) in EDGES
 
 
-def candidate_deleted_pairs(require_common_root: bool):
+def candidate_deleted_pairs(require_common_root):
     for a, b in combinations(range(15), 2):
         if original_edge(a, b):
             continue
@@ -32,11 +39,11 @@ def candidate_deleted_pairs(require_common_root: bool):
             r for r in range(15)
             if r not in (a, b) and original_edge(a, r) and original_edge(b, r)
         ]
-        if bool(common) == require_common_root:
+        if require_common_root is None or bool(common) == require_common_root:
             yield (a, b), (common[0] if common else None)
 
 
-def solve(gadget_edges: int, require_common_root: bool):
+def solve(gadget_edges: int, require_common_root, refinement=None):
     assert gadget_edges in (0, 1)
     for deleted, root in candidate_deleted_pairs(require_common_root):
         deleted_set = set(deleted)
@@ -67,6 +74,36 @@ def solve(gadget_edges: int, require_common_root: bool):
                     If(And(edge(a, c), edge(b, c)), 1, 0)
                     for c in vertices if c not in (a, b)
                 ]) <= 1)
+
+        multiplicities = {
+            v: Sum([If(edge(v, w), 1, 0) for w in new]) for v in old
+        }
+        if refinement == "non_path_multiplicities":
+            count_two = Sum([
+                If(multiplicities[v] == 2, 1, 0) for v in old
+            ])
+            solver.add(Or(
+                count_two != 2,
+                Or([multiplicities[v] >= 3 for v in old]),
+            ))
+        elif refinement == "noncanonical_pair_slots":
+            def shared(w, z):
+                return Or([And(edge(v, w), edge(v, z)) for v in old])
+
+            if gadget_edges == 0:
+                shared_count = Sum([
+                    If(shared(w, z), 1, 0) for w, z in combinations(new, 2)
+                ])
+                solver.add(shared_count != 2)
+            else:
+                # The fixed gadget edge is 15--16.  The observed canonical
+                # pattern uses the other two point-pairs as its two unique
+                # selector intersections.
+                solver.add(Or(
+                    shared(15, 16),
+                    ~shared(15, 17),
+                    ~shared(16, 17),
+                ))
 
         if solver.check() != sat:
             continue
@@ -133,6 +170,19 @@ def main() -> None:
             print(f"  attachments={attachments}")
             print(f"  removed={removed}")
             print("  direct-verification: VERIFIED")
+
+    print("full-space structural negations:")
+    for gadget_edges in (0, 1):
+        for refinement in ("non_path_multiplicities", "noncanonical_pair_slots"):
+            result = solve(gadget_edges, None, refinement)
+            verdict = "SAT" if result is not None else "UNSAT"
+            print(f"  |E(F)|={gadget_edges} {refinement}: {verdict}")
+            if result is not None:
+                deleted, root, attachments, removed = result
+                verify(gadget_edges, result)
+                print(f"    D={deleted} common_root={root}")
+                print(f"    attachments={attachments}")
+                print(f"    removed={removed}")
 
 
 if __name__ == "__main__":
