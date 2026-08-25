@@ -1,5 +1,4 @@
-import Proofs.Erdos85OneHighOddProfileSeparatedRepeat
-import Proofs.Erdos85FourPairPartitionGeometry
+import Proofs.Erdos85OneHighOwnerPartitionDecoder
 
 /-!
 # Coherent geometry of the three odd-profile transversal witnesses
@@ -27,33 +26,6 @@ def OneHighRefinementOwnerPairWitness
       OneHighKeyFarFromSource key j ∧
       key ∈ refinement.getD i.val [] ∧
       key ∈ refinement.getD j.val []
-
-/-- The owner edge of a code-zero witness belongs to the first perfect
-matching of the four canonical root mate-pairs. -/
-theorem oneHighOwnerPartitionCode_zero_edge
-    (i j : Fin 8) (hij : i ≠ j) (hjm : j ≠ oneHighStandardMate i)
-    (hcode : (oneHighOwnerPartitionCode i j == (0 : Fin 3)) = true) :
-    finFourEdge (oneHighRootPair i) (oneHighRootPair j) = finFourEdge 0 1 ∨
-      finFourEdge (oneHighRootPair i) (oneHighRootPair j) = finFourEdge 2 3 := by
-  decide +revert
-
-/-- The owner edge of a code-one witness belongs to the second perfect
-matching of the four canonical root mate-pairs. -/
-theorem oneHighOwnerPartitionCode_one_edge
-    (i j : Fin 8) (hij : i ≠ j) (hjm : j ≠ oneHighStandardMate i)
-    (hcode : (oneHighOwnerPartitionCode i j == (1 : Fin 3)) = true) :
-    finFourEdge (oneHighRootPair i) (oneHighRootPair j) = finFourEdge 0 2 ∨
-      finFourEdge (oneHighRootPair i) (oneHighRootPair j) = finFourEdge 1 3 := by
-  decide +revert
-
-/-- The owner edge of a code-two witness belongs to the third perfect
-matching of the four canonical root mate-pairs. -/
-theorem oneHighOwnerPartitionCode_two_edge
-    (i j : Fin 8) (hij : i ≠ j) (hjm : j ≠ oneHighStandardMate i)
-    (hcode : (oneHighOwnerPartitionCode i j == (2 : Fin 3)) = true) :
-    finFourEdge (oneHighRootPair i) (oneHighRootPair j) = finFourEdge 0 3 ∨
-      finFourEdge (oneHighRootPair i) (oneHighRootPair j) = finFourEdge 1 2 := by
-  decide +revert
 
 /-- The coherent star-or-triangle geometry carried by three transversal
 witnesses in one refinement. -/
@@ -122,8 +94,5 @@ theorem oneHigh_oddProfile_graphPairing_has_partitionGeometry
 
 end Erdos85
 
-#print axioms Erdos85.oneHighOwnerPartitionCode_zero_edge
-#print axioms Erdos85.oneHighOwnerPartitionCode_one_edge
-#print axioms Erdos85.oneHighOwnerPartitionCode_two_edge
 #print axioms Erdos85.oneHighRefinement_transversalPartitions_star_or_triangle
 #print axioms Erdos85.oneHigh_oddProfile_graphPairing_has_partitionGeometry
