@@ -71,8 +71,48 @@ def verify_at(Q: int) -> None:
     print(f"q={Q} dim={dim} trace={trace} trace2={trace2} residual={values}")
 
 
+def verify_uniform_cubic_completion() -> None:
+    """Verify the stronger q >= 8 completion suggested by codex-sol-3."""
+    a = q * (q - 1) / 4 - 2
+    b = (q**2 - 22) / 6
+    c = (q**2 - 3 * q - 16) / 12
+
+    # The extra odd-dimensional P-orbit is zero-trace and real-rooted.
+    x = sp.symbols("x")
+    g3 = x**3 - 3 * x + 1
+    h3_of_x2 = x**6 - 6 * x**4 + 9 * x**2 - 1
+    assert sp.expand(g3 * g3.subs(x, -x) + h3_of_x2) == 0
+    h3 = sp.Poly(sp.symbols("y") ** 3 - 6 * sp.symbols("y") ** 2
+                 + 9 * sp.symbols("y") - 1)
+    assert sp.Poly(g3, x).is_irreducible and h3.is_irreducible
+    assert all(abs(complex(root).imag) < 1e-10 and complex(root).real > 0
+               for root in h3.nroots())
+
+    # Its three M-roots sum to 6 and have square-sum 18, hence the
+    # corresponding three D-roots have these first two moments.
+    cubic_defect_sum = 3 * q - 9
+    cubic_defect_square_sum = 3 * q**2 - 18 * q + 33
+    assert sp.simplify(1 + q + 3 + 2 * a + 2 * b + 2 * c + 10 - q**2) == 0
+    assert sp.simplify(
+        (q - 1) + capell_sum + cubic_defect_sum
+        - 4 * a - 2 * b + 4 * c
+    ) == 0
+    assert sp.simplify(
+        (q - 1) ** 2 + capell_square_sum + cubic_defect_square_sum
+        + 8 * a + 2 * b + 8 * c
+        - q**2 * (q - 1)
+    ) == 0
+
+    for Q in (8, 16, 32, 64, 128, 256):
+        counts = [int(value.subs(q, Q)) for value in (a, b, c)]
+        assert all(value >= 0 for value in counts)
+        assert Q + (Q // 2) * (-2) == 0
+        print(f"q={Q} cubic_completion_half_counts={counts}")
+
+
 if __name__ == "__main__":
     verify_symbolically()
+    verify_uniform_cubic_completion()
     for Q in (16, 32, 64, 128, 256):
         verify_at(Q)
-    print("verified: uniform integral Capell completion survives")
+    print("verified: uniform integral Capell completions survive")

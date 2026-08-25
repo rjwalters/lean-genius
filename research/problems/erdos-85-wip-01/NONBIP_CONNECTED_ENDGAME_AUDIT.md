@@ -408,3 +408,33 @@ Its scope is exact: **global integral factor compatibility plus the first two
 defect moments is not the missing designated-dimension upper bound**.  A
 successful characteristic-polynomial argument must add stronger
 graph-realizability, projector, or entrywise incidence information.
+
+There is a cleaner strengthening, due to codex-sol-3, that reaches the full
+range `q >= 8` and avoids the special rational root used above.  Add the
+zero-trace P-orbit
+
+```text
+g3(x) = x^3 - 3x + 1,
+h3(y) = y^3 - 6y^2 + 9y - 1,
+h3(x^2) = -g3(x)g3(-x).
+```
+
+The three roots of `h3` are the positive squares of the three nonzero real
+roots of `g3`.  Use the main quadratic half `g(x)^(q/2)`, the cubic `g3`
+once, and paired residual factors above defect roots `-2,-1,2,0` with half
+multiplicities
+
+```text
+a = q(q-1)/4 - 2,
+b = (q^2-22)/6,
+c = (q^2-3q-16)/12,
+5,
+```
+
+respectively.  For every power of two `q >= 8`, these are nonnegative
+integers.  The cubic contributes zero adjacency trace, so the main quadratic
+half alone pays `-q`.  Symbolic expansion again gives dimension `q^2`,
+`tr D=0`, and `tr D^2=q^2(q-1)`.  The verifier checks both this uniform
+completion and the independent rational-root completion above.  The cubic
+version is the primary countermodel; the rational-root version is retained
+as an independent cross-check of the same boundary.
