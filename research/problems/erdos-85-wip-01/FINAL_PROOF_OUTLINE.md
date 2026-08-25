@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.57 — 2026-08-25 ~07:50Z (consolidation: B.3 frontier at (13bo)/(13boc), the #63–#65 sweep recorded, every named terminal at a documented boundary; seats holding for operator direction).**
+**Version 2.58 — 2026-08-25 ~07:55Z (v2.57 + the spectral-window-valid Capelli control) (consolidation: B.3 frontier at (13bo)/(13boc), the #63–#65 sweep recorded, every named terminal at a documented boundary; seats holding for operator direction).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -1020,7 +1020,7 @@ graph substitution/amalgamation and Du Preez isometric-cycle/equator
 routes; calibration only: the polarity-derived top-of-band graph
 `ER_q − (ℓ ∪ {N})` is one-step rigid at `q = 4` and its `k = 1` surgery
 reduces to the `k = 0` external-matching form (`15ce3707d2`, Fable/sol-2).
-Divergence #66 (designated-factor trace gap, 07:35–07:50Z): three probes, all cut — mod-4/8 alternating-lift sign invariant (sol-3, exact C6 square-root countermodel), odd-moment/local-PSD cone (sol-1), and the uniform real-spectral countermodel `f6ee2ed421` (sol-2: for every `4 | q`, `q ≥ 8`, a spectral model with the exact `D` and `A` even moments, `tr A = 0`, yet `tr A^p = q^p − q + 2 − 2^p > 0` for all odd `p ≥ 3`; verifier green at `q = 8, 16, 32`), which kills every scalar odd-moment inequality. Fable's Galois-orbit budget (`p_A(x)p_A(−x) = p_M(x²)`, sign freedom only per ℚ-irreducible orbit of `p_M`; on the `q = 4` control the whole `−q` is paid by the single rational-square orbit `y − 4`) is the correct bookkeeping and is NOT touched by the real-spectral countermodel, but it has no consumer: by Capelli (sol-1, 31579) an orbit splits exactly when its eigenvalue is a square in its eigenfield (`α = β²`, orbit trace `(a−b)·Tr β`, e.g. `y²+y+1` splits as `(x²+x+1)(x²−x+1)` with irrational roots), so the budget is precisely the audit's already-named "square-in-eigenfield designated factor" interface — it names the gap without a theorem forcing it. **State at 07:50Z:** 58 Lean banks cold-green since the restart (tip
+Divergence #66 (designated-factor trace gap, 07:35–07:50Z): three probes, all cut — mod-4/8 alternating-lift sign invariant (sol-3, exact C6 square-root countermodel), odd-moment/local-PSD cone (sol-1), and the uniform real-spectral countermodel `f6ee2ed421` (sol-2: for every `4 | q`, `q ≥ 8`, a spectral model with the exact `D` and `A` even moments, `tr A = 0`, yet `tr A^p = q^p − q + 2 − 2^p > 0` for all odd `p ≥ 3`; verifier green at `q = 8, 16, 32`), which kills every scalar odd-moment inequality. Fable's Galois-orbit budget (`p_A(x)p_A(−x) = p_M(x²)`, sign freedom only per ℚ-irreducible orbit of `p_M`; on the `q = 4` control the whole `−q` is paid by the single rational-square orbit `y − 4`) is the correct bookkeeping and is NOT touched by the real-spectral countermodel, but it has no consumer: by Capelli (sol-1, 31579) an orbit splits exactly when its eigenvalue is a square in its eigenfield (`α = β²`, orbit trace `(a−b)·Tr β`; the graph-spectral-window-valid control is sol-3's `a4fe9a0c9c`: `h(y) = y² − 6y + 1` with positive roots `3 ± 2√2` inside the symmetric-`M` window for every `q ≥ 4` splits as `h(x²) = (x²+2x−1)(x²−2x−1)`, split-half trace `−2`, irrational; sol-1's `y²+y+1 = (x²+x+1)(x²−x+1)` has nonreal `M`-roots and only refutes the bare algebraic inference), so the budget is precisely the audit's already-named "square-in-eigenfield designated factor" interface — it names the gap without a theorem forcing it. **State at 07:50Z:** 58 Lean banks cold-green since the restart (tip
 `b95c8232e0`); every named terminal on both branches sits at a documented
 boundary; no live mechanism; the seats are holding unclaimed pending
 operator direction rather than manufacturing a #66 (goal #36). Not a ruling.
@@ -1182,6 +1182,11 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.58** (2026-08-25 ~07:55Z, claude-fable): per sol-1 (31604), the Capelli
+  counterexample in the #66 paragraph now cites sol-3's spectral-window-valid
+  control `a4fe9a0c9c` (`y²−6y+1`, roots `3±2√2`) as primary, with the
+  cyclotomic example demoted to the bare algebraic case. Prose-only.
 
 - **2.57** (2026-08-25 ~07:45Z, claude-fable): consolidation. B.3 frontier
   advanced from (13bn) to (13bo)/(13bob)/(13boc) with the #64 and #65 cuts
