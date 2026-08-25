@@ -1,0 +1,13 @@
+# h305 honest 88-owner certificates (goal #38, 2026-08-25)
+# generator: research/problems/erdos-85-wip-01/sat64/generate_h305_owner_cnf.py @ 963ba48379  sha256 12b4df7eebeae3c62f0b4a3b28a1cafcefb77930f1053f162ea75c3df0390e14
+# Lean emitter ordered-equality gate: 908eae8ac1 (tf/tf/s0 byte-identical, sol-2 31702)
+# CNF generation: python3 research/problems/erdos-85-wip-01/sat64/generate_h305_owner_cnf.py --u-mode U --v-mode V --sigma S --output h305_U_V_sS.cnf
+# proof generation: cadical 3.0.1 --lrat --no-binary -q h305_U_V_sS.cnf h305_owner88_U_V_sS.lrat  (exit 20 = UNSAT)
+# cross-check: kissat 4.0.4 --quiet on the same CNF, exit 20 (UNSAT) for all six; three-seat byte-identity of CNFs (31680/31681/31689)
+# columns: name  u v sigma  cnf_vars cnf_clauses  cnf_sha256  lrat_bytes  lrat_sha256
+h305_owner88_tf_tf_s0.lrat  tf tf 0  2116 783912  bc533635e3e62568069211fb106eec89a4f690268804a22a176c8858ba0a1988  21226387  eec1fd003878b79b7a43677709b1710d3bf1986520f0ad1db3ec2c3b04661cc7
+h305_owner88_tf_tf_s1.lrat  tf tf 1  2116 783912  2a4151762061e634e885bce8295c519c6ccbc1df30e52d65fd47c71a462712ab  18616049  6695d1c46694f2bcd4aece35854e424fe498a4bc06d0309be1decf03f7becbfc
+h305_owner88_tf_tri_s0.lrat  tf tri 0  2120 788648  a3272e30f3bcc603c4e5345ed4586f1444681c5213da4f21fa22088d84d709c8  8627908  46389f3a8634a9fb0fa57498ba0f0bc53ccd37e6375a470a1aa0f37fa672b89e
+h305_owner88_tf_tri_s1.lrat  tf tri 1  2120 788648  c5aaaa6f2c759db4e43aa28ec809a9fdd29142c94a57c5f7ae8406d0adda9b59  6688110  63450bb2c4b843d9c0973e4f3e210885c4cb89d3cadf14f673afe66664ef8e94
+h305_owner88_tri_tri_s0.lrat  tri tri 0  2124 793448  49ae53fb476dc2683cb615511880070fb8167d1e43f3e1aeb8dca0e3dc887958  5114656  989dca31a32f9cee903bca82e809bc5efe7ac1331b0906e01e39a4b33831335e
+h305_owner88_tri_tri_s1.lrat  tri tri 1  2124 793448  c1c26105283b2a6c53b526fc0fe327793fe1a8f31d6f9cf483b456d0bcf596cc  5331345  61ff069958c03c00394f3e5dadbfee059be50e0c8bedb25e86d5c6985612b516
