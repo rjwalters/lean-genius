@@ -6356,3 +6356,45 @@ canonical *single* essential boundary coordinate, not the cardinality of all
 obstructed boundary rows.  This is a bounded negative result for P3 of round
 64; after `(13boc')`, only the transposed-dual probe remains live from the
 three-way cut.                                                    (13bod)
+
+The restricted reverse intervals do not rescue submodular uncrossing.  For a
+fixed packing family `Pack(z)`, define the upper-hit function and signed
+boundary satisfaction by
+
+```text
+h_z(I) = min_{P in Pack(z)} |P intersect I|,
+phi_z(L,I) = max_{P in Pack(z)} (|P intersect L| + |I setminus P|).
+```
+
+The diagnostic
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_q9_13bo_interval_uncrossing_counterexample.py
+```
+
+uses the all-row-feasible exceptional-price payload, source family `z=0`,
+and the *actual* reverse intervals of target rows `1` and `8`.  Both lower
+sets are empty and both upper sets have size 37.  Exact enumeration gives
+
+```text
+h_0(I_1)=3,       h_0(I_8)=3,
+h_0(I_1 cap I_8)=1,  h_0(I_1 cup I_8)=4.
+```
+
+Thus `3+3 > 1+4`: `h_0` is not supermodular even on the distinguished `I_w`
+sets.  Equivalently, componentwise meet and join of the signed intervals give
+
+```text
+phi_0(F_1,I_1) + phi_0(F_8,I_8) = 68
+  < 69
+  = phi_0(F_1 cap F_8, I_1 cap I_8)
+    + phi_0(F_1 cup F_8, I_1 cup I_8),
+```
+
+so signed satisfaction is not submodular on the reverse-interval family
+itself.  This strengthens `(13boc')` from a generic induced-path warning to
+an exact corpus counterexample at the proposed restricted domain.  P1 of
+divergence round 64 is therefore **cut at its first inequality**; any
+transport proof must use directed boundary incidence or the transposed dual,
+not lattice uncrossing of interval ranks.                            (13bod')
