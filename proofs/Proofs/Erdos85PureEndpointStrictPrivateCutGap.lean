@@ -4,6 +4,7 @@ import Proofs.Erdos85PureEndpointPairPointTrade
 import Proofs.Erdos85PureEndpointPrivateOccupancyMoments
 import Proofs.Erdos85DefectCutLaplacianSupport
 import Proofs.Erdos85PureEndpointStrictBoundarySaturation
+import Proofs.Erdos85LinearTradeStrictBoundaryRowCapacity
 
 /-!
 # A uniform strict-cut gap at the pure endpoint
@@ -109,7 +110,7 @@ theorem two_mul_sub_four_le_of_combinedShore_collision
 set_option maxHeartbeats 800000 in
 /-- At every preconnected pure endpoint, the canonical private-set defect
 cut is at least `2q - 4`; equality pins exactly `q - 2` zero-private rows. -/
-theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
+theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_rowProfile_and_saturation
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -136,7 +137,8 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
     let weight := fun b => r b - 1
     let cut := finsetGraphCutSize (secondOrderDefectGraph G) P
     2 * q - 4 ≤ cut ∧
-      (cut = 2 * q - 4 → Z.card = q - 2 ∧
+      (cut = 2 * q - 4 → Z.card = q - 2 ∧ H.card = q - 2 ∧
+        (∀ b ∈ H, r b = 2) ∧
         ∀ z ∈ Z, ∀ b ∈ H, 0 < weight b →
           (U.filter fun u => G.Adj z u ∧ G.Adj b u).card +
             (X.filter fun x => G.Adj z x ∧ G.Adj b x).card = 1) := by
@@ -493,11 +495,113 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
   intro hcutEq
   have hZcardEq := zero_card_eq_sub_two_of_strictCut_quadratic_eq
     hq hqm hzLower henergy hquad hcutEq
-  refine ⟨hZcardEq, ?_⟩
+  have hcutEq' : cut = 2 * q - 4 := by
+    simpa [cut, D, P, F] using hcutEq
+  have hmTwo : 2 ≤ m := by omega
+  have hcutTwoZ : cut = 2 * Z.card := by
+    rw [hcutEq', hZcardEq]
+    omega
+  have hmulSplit : (m - 2) * Z.card + 2 * Z.card = m * Z.card := by
+    rw [← Nat.add_mul, Nat.sub_add_cancel hmTwo]
+  have hloadEq : load = (m - 2) * Z.card := by omega
+  have hloadReindex : load =
+      ∑ b ∈ H, weight b * (X.filter fun x => G.Adj b x).card := by
+    simp only [load, Finset.sum_filter]
+    have hswap :
+        (∑ x ∈ X, ∑ b ∈ H, if G.Adj b x then weight b else 0) =
+          ∑ b ∈ H, ∑ x ∈ X, if G.Adj b x then weight b else 0 :=
+      Finset.sum_comm
+    rw [hswap]
+    apply Finset.sum_congr rfl
+    intro b _hb
+    rw [Finset.card_filter, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro x _hx
+    by_cases hbx : G.Adj b x <;> simp [hbx]
+  have hrowCapEq : ∀ b ∈ H, 0 < weight b →
+      (X.filter fun x => G.Adj b x).card = m - 2 := by
+    apply weighted_row_capacity_eq_of_sum_eq H weight
+      (fun b => (X.filter fun x => G.Adj b x).card)
+      (m - 2) Z.card hHrowX hweight
+    rw [← hloadReindex]
+    exact hloadEq
+  have hrowTwo : ∀ b ∈ H, r b = 2 := by
+    intro b hb
+    have hbB := (Finset.mem_filter.mp hb).1
+    have hbPos := (Finset.mem_filter.mp hb).2
+    have hbNotF : b ∉ F := by simpa [B] using hbB
+    have hmOcc :=
+      (c4Free_binarySquare_pureEndpoint_exterior_nearParallelDesign
+        G hfree hq hqm hreg hcard S hempty hCcard hshore htri b hbNotF).1
+    have hsplit : (G.neighborFinset b ∩ S).card =
+        (G.neighborFinset b ∩ P).card +
+          (G.neighborFinset b ∩ X).card := by
+      rw [hSX, Finset.inter_union_distrib_left,
+        Finset.card_union_of_disjoint]
+      exact hPXdisj.mono Finset.inter_subset_right Finset.inter_subset_right
+    have hfilter : X.filter (fun x => G.Adj b x) =
+        G.neighborFinset b ∩ X := by
+      ext x
+      simp [SimpleGraph.mem_neighborFinset, and_comm]
+    have hwPos : 0 < weight b := by
+      change 0 < r b - 1
+      omega
+    have hxEq := hrowCapEq b hb hwPos
+    rw [hfilter] at hxEq
+    change (G.neighborFinset b ∩ P).card = 2
+    omega
+  have hHcardEq : H.card = q - 2 := by
+    calc
+      H.card = ∑ _b ∈ H, 1 := by simp
+      _ = ∑ b ∈ H, weight b := by
+        apply Finset.sum_congr rfl
+        intro b hb
+        have hr := hrowTwo b hb
+        simp [weight, hr]
+      _ = Z.card := hweight
+      _ = q - 2 := hZcardEq
+  refine ⟨hZcardEq, hHcardEq, hrowTwo, ?_⟩
   exact linear_trade_combinedShore_codeg_eq_one_of_strictBoundary
-    G.Adj U X Z H weight q m cut hqm (by omega) hcutEq hZcardEq
+    G.Adj U X Z H weight q m cut hqm (by omega) hcutEq' hZcardEq
     (fun z hz => hrowU z (Finset.mem_filter.mp hz).1)
     hUbalance hXdom hpair hweight hmoment
+
+/-- Compatibility projection exposing the strict gap and pair saturation. -/
+theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (hconn : (secondOrderDefectGraph G).Preconnected)
+    (S : Finset V) (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v, (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    let F := fullLineCenters G S q
+    let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
+    let X := S.filter fun x => (G.neighborFinset x ∩ F).card = 2
+    let U := Sᶜ
+    let B := Fᶜ
+    let r := fun b => (G.neighborFinset b ∩ P).card
+    let Z := B.filter fun b => r b = 0
+    let H := B.filter fun b => 1 < r b
+    let weight := fun b => r b - 1
+    let cut := finsetGraphCutSize (secondOrderDefectGraph G) P
+    2 * q - 4 ≤ cut ∧
+      (cut = 2 * q - 4 → Z.card = q - 2 ∧
+        ∀ z ∈ Z, ∀ b ∈ H, 0 < weight b →
+          (U.filter fun u => G.Adj z u ∧ G.Adj b u).card +
+            (X.filter fun x => G.Adj z x ∧ G.Adj b x).card = 1) := by
+  have h :=
+    c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_rowProfile_and_saturation
+      G hfree hq hqm hreg hcard hconn S hempty hCcard hshore htri
+  exact ⟨h.1, fun hcut => ⟨(h.2 hcut).1, (h.2 hcut).2.2.2⟩⟩
 
 /-- The strict gap and zero-row boundary profile, projected from the stronger
 pointwise saturation theorem. -/
@@ -558,6 +662,8 @@ end Erdos85
 #print axioms Erdos85.sum_sub_one_positive_le_card_zeros_of_sum_le_card
 #print axioms Erdos85.sum_sub_one_positive_add_defect_eq_card_zeros
 #print axioms Erdos85.two_mul_sub_four_le_of_combinedShore_collision
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_rowProfile_and_saturation
 #print axioms
   Erdos85.c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
 #print axioms
