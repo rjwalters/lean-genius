@@ -127,230 +127,171 @@ conditional terminal from being mistaken for the uniform theorem.
 
 ## 1. Verification asymmetry
 
-The campaign's engine is the asymmetry between *proposing* mathematics and
-*verifying* it. Both collaborators propose freely — conjectures, census
-kills, structural identities — and both produced documented wrong
-conjectures (misfires include the |o| ≡ 3 (mod 5) congruence, an inverted
-quota direction, a C7-block nonexistence claim refuted by an explicit
-{i,i+1} circulant, and a "(4,4,4,4) DEAD" claim corrected within the hour
-by its own author; room msgs 1808/1818). The system tolerates these
-errors because nothing enters the record until it passes one of two
-verifiers: cold elaboration under the pinned Lean toolchain, or DRAT
-replay of a SAT certificate onto the durable volume — and because
-intermediate tooling is itself subject to adversarial audit before its
-outputs become evidence (see the domain-truncation incident below). The asymmetry is
-what makes high-variance proposing *safe*: bold wrong ideas cost hours,
-never correctness.
+The campaign separates the cost of proposing a claim from the cost of
+admitting it to the record.  Proposals may be fast and speculative; admission
+requires either source elaboration under the pinned Lean toolchain or replay
+of a checked certificate against the exact formal CNF.  The distinction is
+visible in the inverse-potential episode.  At 17:46, a root-summed identity
+was announced as `tr(A⁻¹)=q` (room msg 31890).  Five minutes later its
+author re-expanded the all-pairs term, found that it was `q·1ᵀA⁻¹1=q²`
+rather than `q·tr(A⁻¹)`, and withdrew the consequence (31895).  No Lean
+wrapper or outline node had been built, so the correction cost minutes and
+left no false theorem behind.
 
-The featured case study is the rg-mask incident (msgs 1767–1773): after
-the two-layer branch was declared closed, the independent verbatim
-`#print axioms` audit FAILED — the pushed file did not elaborate under the
-repo-pinned toolchain at all. At least ten source failures across four
-classes (nonexistent mathlib constants, wrong disjointness names,
-parser-scope bugs in large sums, a case-substitution error) sat inside
-the critical terminal wrappers. Root cause: the author's check pipeline filtered
-elaboration output through `rg`, and empty filtered output had been
-misread as success. The mathematics was sound; the *verification claim*
-was not. The repair took under an hour, the re-audit passed
-([propext, Classical.choice, Quot.sound] only), and the closure claim was
-retracted and restored in the same evening — with the independent-cold-
-audit rule upgraded from convention to hard gate. A system that cannot
-distinguish "the proof is right" from "the checker said yes" will
-eventually publish the difference.
+The same asymmetry governed the order-64 `h305` endpoint.  The first
+certificate family used 80 owners, but the graph semantics required 88: the
+missing eight were the antipodal shore pairs.  The mismatch was detected by
+comparing the formal shore modes with the certificate universe, before the
+endpoint was called proved (room msgs 31664, 31674, 31697; outline v2.64,
+§A.5.2).  The corrected chain ends in
+`false_of_h305_source_or_transported` and
+`muNegThreeZeroFiveEndpointCallback_false`; the integrator then rebuilt the
+full chain cold and printed the exact six Owner88 certificate axioms
+(31809, 31845, 31882).  High-variance search is safe here because a plausible
+certificate is evidence only after semantic identity and kernel replay.
 
 ## 2. Adversarial diversity
 
-Two models with different failure modes red-team each other in-room
-before anything is formalized. The record shows the pattern working in
-both directions: Sol caught Fable's quota-direction flip and supplied the
-correct forward-divisibility route; Fable caught the residual-sector
-contact term that closed n7/count9 after Sol's slack-4 analysis stalled
-(msgs 1739–1747), and the audit gate caught the toolchain drift. Neither
-agent audits its own claims as the system of record. The room protocol
-enforces this socially: every substantive claim is posted with its
-derivation sketch, and the counterpart's PASS/refutation is logged before
-the Lean wrapper is written. Where both agents agreed and both were wrong
-(the stale-cache incident that produced two false transport-parity
-kernels), the cold-elaboration gate caught it instead — diversity plus a
-mechanical verifier, not diversity alone.
+Different agents are useful only when they test different failure modes.
+Review #939 did not merely repeat the inverse-potential derivation: it
+re-derived P1–P7 and then inspected the exceptional root term.  That audit
+found that the proposed sign dichotomy could be satisfied by the root itself
+and forced the corrected domain `V \ (N(y) ∪ {y})` (31868–31874).  The
+author then attacked the corrected statement and proved that its P8 sign
+separation was itself impossible: a suitable defect-neighbour block has
+zero potential sum, so it cannot be strictly negative pointwise.  A second
+agent caught an overbroad sentence in that retraction—defect edges may also be
+triangle-free graph edges—and supplied the necessary choice from
+`N_D(y) \ N_A(y)` (31905, 31907, 31913).  The final correction is banked in
+`19f227dced` and `0ae7069f40`.
 
-The second featured case study is the domain-truncation incident
-(msgs 1925–1929). Fable's constraint model for a solution-space
-enumeration encoded a modular inequality on an integer lift with domain
-[−11, 11] when the true lift ranges over [−22, 22] — a silent
-truncation that produced a confidently wrong census (1,294 solutions,
-63 symmetry orbits, all internally consistent, all passing Fable's own
-validators). Sol's independent audit did not re-run the enumeration; it
-checked a property the artifact should have had — closure of the
-solution set under the claimed symmetry group — found a violation,
-and produced a concrete valid solution missing from the record. The
-corrected enumeration overflowed a 100,000-solution cap: the bug had
-hidden more than 98% of the space, and the strategy built on the small
-census was retired the same hour, before any fleet compute or
-certificate claim consumed it. The lesson generalizes: validators
-written by the same mind that wrote the generator inherit its blind
-spots; independent audits should test invariants the generator never
-considered.
-
-The third case study is a single afternoon's cascade (msgs 2299–2328)
-that shows the correction loop running at full speed in both
-directions. A scouting pass over the formal file found an unconsumed
-generic engine and sixty-two unconsumed arithmetic ledgers, all
-instantiating one unstated law; formalizing the law's per-row version
-took an hour and immediately strengthened the mechanical census — which
-then killed five surviving cases, including, apparently, the very case
-class two hundred solver-hours were grinding on. Twice in the next hour
-the strengthening itself was red-teamed down: first a self-adjacency
-term had been misattributed to the orphan ledger (the census was rerun
-with the corrected budget), then the self-term's value was found to be
-a two-valued dichotomy rather than a constant (the census was rerun
-again, sector-split). Each correction shrank the claimed kill list —
-from twelve, to seven, to three unconditional deaths — and the fourth
-correction reopened even the central class kill: the self-adjacency
-value, assumed two-valued from an odd-order theorem that did not apply
-to the even-order components at hand, admits a third value that
-exactly balances the identity, so the case class whose solver fleet
-had been stopped turned out to be alive after all and the fleet's
-target question reverted to open. A fifth revision closed the reopened hole
-with a genuinely new finite obstruction — and a sixth reopened the
-question once more from a different flank, when the aggregation work
-revealed that every version of the strengthened census, and the
-class-closure wrapper built on it, had silently assumed that
-excess between the labeled components themselves vanishes, an
-assumption the per-vertex degree budget flatly permits violating.
-The formal theorems all survive — what fell, each time, was the claim
-that their hypotheses describe every real configuration. Nothing was
-retracted publicly because nothing overstated had been published:
-each version's scope was stated conditionally, operational action was
-gated on the audits, and the solver artifacts — certificates, exact
-CNFs, manifests — had been kept durable precisely so that a reversed
-conclusion costs a relaunch, not a reconstruction. The pattern to
-notice is that the errors were found by the collaborators attacking
-their own results within minutes of stating them — the census re-runs
-cost seconds, the Lean re-checks minutes — so the cost of being wrong
-in-channel stayed negligible while the cost of being wrong in public
-would have been paid six times.
+Independent checking also corrected campaign accounting.  A manuscript
+audit initially described the thirteen order-49 inputs as five one-high
+cells plus one seven-high cell.  The host manifest listed the actual inputs:
+four H3 scouts, three H5 cells, and six H7-t0 cubes.  The author retracted
+that sentence within two minutes and corrected the draft (31989, 31994,
+31997).  The lesson is narrower than "use multiple models": the reviewer
+must inspect an independent invariant—the exact host manifest, a semantic
+universe, or a boundary term—rather than replay the author's narrative.
 
 ## 3. The structure–compute exchange rate
 
-The campaign continuously trades structural insight against raw solving.
-Documented exchange points:
+The order-49 campaign gives a current, measured exchange.  Structural
+normalization reduces seven H3/H5 monoliths to two checked cover formulas
+and a `7×8` grid per cell.  Lean proves the accounting—392 positive cubes
+plus fourteen covers—in
+`orderFortyNineSmallHigh_positiveCube_job_count`, and proves their exhaustive
+composition in `orderFortyNineSmallHigh_unsat_of_checkedCubeGrid`.  The host
+therefore runs 406 bounded jobs instead of trusting a solver-side cube list
+(31994).  When the campaign was fired, a separate audit found that these
+grid results did not fit the older five-monolithic-LRAT socket: the cube
+stack used the VariableHigh CNFs and returned `CNF.Unsat`, while the final
+socket expected canonical `LRAT.check`s.  The missing semantic path was
+formalized as
+`not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat`
+(`d0a17f358b`; room msg 32032) before the first verdict was needed.
 
-- The h=1 49-lab SAT family: the v2 "defect ledger" encoding (derived
-  analytically from exact product-counting identities) beat the base
-  encoding 4692s → 972s like-for-like (4.8×) with 3–6× smaller proofs —
-  a derivation-first speedup measured, not assumed.
-- The d=16 s=4 branch: a SAT-feasible (12⁴) witness localized the
-  obstruction that analysis then killed exactly (owner-bin collision),
-  closing the branch as one cold-verified theorem.
-- The s=2 branch: closed entirely analytically (orphan census, owner
-  concentration, budget/excess pricing) after early SAT scouting showed
-  the space was structured; total SAT time on the branch: zero.
-- The zero-layer campaign (current): the H² = 12I + J − S − D identity
-  compresses the 192-vertex orphan core to a 48-vertex point graph M;
-  spectral necessary conditions were then shown *satisfiable* by explicit
-  Cayley constructions (λ₂ = 3.25 < 5), proving the compression is a
-  filter, not a terminal — and redirecting effort to the H-lift before
-  any large SAT run was launched.
-
-- The counterpoint that calibrates the rule: injecting an *implied* unit
-  (a phase value already forced by gauge and row-distinctness) into a
-  cube produced state-for-state identical solver traces — the solver's
-  own parse-time propagation had already internalized it. Derived facts
-  inside the solver's propagation horizon are free; only structure
-  beyond that horizon (like the defect ledger) buys speed. The A/B was
-  run deliberately, twin against parent, before the technique was
-  adopted — and it was rejected on the evidence.
-
-The exchange rate is asymmetric in an instructive way: an hour of exact
-derivation has repeatedly saved days of solver time, while solver output
-(witnesses, UNSAT cores) has repeatedly told the derivation where to dig.
+The `h305` repair shows the reverse exchange.  Six honest 88-owner CNFs were
+all externally UNSAT in seconds, but the expensive work was not search; it
+was proving that the graph semantics map to those exact literals and modes.
+That chain runs through `h305_crossExteriorSplit_of_profile`,
+`muNegThreeZeroFiveCorrectFiniteSemantics_false`, and
+`false_of_h305_source_or_transported` (outline v2.64, §A.5.2; 31882).
+Compute locates a finite obstruction; structure determines whether the
+obstruction says anything about the graph.
 
 ## 4. Persistence and the shape of a long campaign
 
-The campaign persists through context loss, machine reclamation, and
-session restarts because its state lives outside any one context: the
-room transcript (the argument of record), the git branches (the
-mathematics of record), the durable volume (the certificates of record),
-and memory checkpoints (the operational lessons). Spot-instance
-reclamations destroyed worker fleets four times; the resumable
-per-verdict queue design meant every restart lost only in-flight solves.
-The rule that certificates only count once on the durable volume (rule 3)
-was enforced even when it cost ~8h of recompute after a disk purge — the
-alternative (trusting artifacts that exist only on a spot instance) is a
-verification claim without a verifier.
+The campaign state lives in four independent records: Lean sources and git
+commits, the room transcript, the proof outline, and durable certificate
+storage.  The outline is not a retrospective summary.  Operator goal #25
+made it the allocation instrument: every root-to-leaf node is labelled
+PROVEN, CERT, AXIOM, or GAP, and workers choose lanes against that tree
+(outline v2.64, §G; goal #25).  This prevented a long finite endpoint from
+silently becoming the whole project: order-64 `h305` was parked when its
+premise was underived, then reopened by goal #38 after the operator chose the
+endpoint audit.  The reopened audit discovered the 80/88 mismatch, rebuilt
+the honest universe, and closed the endpoint in one day at `802f6d79d3` and
+`778a2e1595` (31664–31682, 31849).  Persistence here means preserving enough
+state to restart from the actual boundary, not merely keeping a process
+alive.
+
+The same rule governs compute.  Goal #39 required a pre-fire manifest with
+all thirteen input hashes, tool hashes, job order, caps, storage exclusions,
+and deletion policy.  The posted manifest verified all thirteen SHA-256
+entries before launching a solver (31994).  A verdict without that durable
+provenance is not campaign progress, even if the process printed `UNSAT`.
 
 ## 5. Honest scoping
 
-Every claim in this document is scoped to what its verifier actually
-checked. The two-layer closure depends on foundational axioms only
-([propext, Classical.choice, Quot.sound], audited twice independently).
-The combined boundary reduction `degree_sixteen_remaining_zeroLayer`
-additionally inherits exactly nine per-block axioms of the form
-`<name>._native.native_decide.ax_1_1` (factorizationRangeOTT_block1–4,
-normCertificateRangeOTT_block1–5), as listed verbatim by
-`#print axioms` — the compiler-trust axioms that `native_decide`
-generates for the s=4 terminal's computational certificates. They are
-disclosed here and in the gallery metadata per the project's
-axiom-integrity policy, which counts native-code trust as an assumption,
-not a technicality. SAT verdicts are scoped
-to their encodings: the byte-exact equivalence proof between the
-generalized A-profile encoder and the audited BBBB encoder (clause-set
-SHA1 identity on the overlap family) is what licenses treating fleet
-verdicts as verdicts about the mathematical objects. Scout-lane results
-(proofs-off portfolio runs) are never merged into the certified ledger.
+Every status word names its scope.  The callback theorem
+`muNegThreeZeroFiveEndpointCallback_false` carries the foundational axioms
+plus exactly six disclosed Owner88 `native_decide` checks.  The broader
+`orderSixtyFour_regular_sizeTwo_signedJoint_false_of_connected` additionally
+inherits the older FullClosure certificate family; the integrator printed
+both lists separately rather than reporting the smaller list for the larger
+theorem (31845, 31846, 31882).  It closes the disconnected size-two subtree
+at order 64, not NONBIP-CONNECTED and not A-REG.
+
+Likewise, the order-49 theorem is presently conditional.  The checked
+witnesses and the sockets
+`minDegreeForC4_fortyEight_fortyNine_exact_of_smallHighLratChecks` and
+`not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat` exist,
+but their campaign hypotheses have not all landed (goal #39; 31965, 31994).
+The manuscript therefore says "campaign in flight," not "drop proved."
+The distinction is enforced by outline §F and operator goal #40.
 
 ## 6. The thin human role
 
-The operator's interventions are few and load-bearing: compute policy
-(volume sizes, fleet topology, spot budgets), priority calls (the
-mandate ordering derivation → A/B → cube-and-conquer → SAT lanes; the
-manuscript start), and the external gate (nothing publishes before human
-read-through). The operator's recorded role in this campaign was
-primarily operational — compute policy, prioritization, and external
-review; every mathematical step in the record passed through machine
-verification.
-The interesting datum for the working-model argument is not that the
-human role is small — it is that the campaign's correctness never
-depended on it being large.
+The human role is thin but decisive at branch points.  Goal #36 did not
+suggest a lemma; it imposed a stuck test: if workers cannot name every link
+from recent banks to the terminal, they must stop, search outside first,
+diverge widely, and report refutations as results.  That rule ended the
+inverse-potential lane after P8, fractional-cover integrality, and divergence
+#68 all failed (31951–31964).  Goal #38 separately chose to reopen the parked
+`h305` endpoint; goal #39 authorized the certificate campaign that closes the
+currently launched H3/H5/H7 finite cells but cannot decide 48/49 without a
+separate H1 closure; goal #40 commissioned this manuscript in parallel.
+These are portfolio and governance decisions.  The mathematical
+claims still pass through Lean or certificate replay, and nothing goes
+external before operator review (31965, 31970).
 
 ## 7. Why Erdős problems
 
-Erdős boundary problems are ideal stress tests for machine-collaborative
-mathematics: statements are elementary, the search spaces are enormous,
-partial progress is precisely certifiable (exact values, descent rungs,
-branch closures), and the literature furnishes sharp targets. Problem 85's
-exact even boundary d(d−1)+3 offered a descent tower whose rungs are
-individually machine-checkable theorems — a shape that rewards exactly
-the propose/verify/persist loop described above.
+Erdős 85 exposes several proof currencies at once: an elementary extremal
+statement, uniform finite-field witnesses, exact graph reductions, spectral
+and incidence structure, and finite certificate endpoints.  Each partial
+claim has a precise interface.  A-REG would close the uniform theorem through
+`not_erdos85Question_of_binarySquareRegularExclusion`; the order-49 campaign
+would close one finite drop through the small-high socket; and the order-64
+work can honestly report a closed signed-joint subtree while leaving the
+connected defect frontier open (outline v2.64, §0, §A.5, §B.1).  That
+granularity makes the problem a useful test of whether a machine
+collaboration can accumulate durable mathematics without confusing a large
+amount of verified local work with a solved root problem.
 
 ---
 
 ## Silence is not success (a recurring failure class)
 
-Three operationally distinct incidents in this campaign turn out to be
-one failure: a checker whose silence was read as approval. In the
-rg-mask incident, elaboration output was filtered through a pattern
-matcher and an empty result — which also occurs when elaboration never
-ran — was recorded as a pass. In the vacuous-gate incident, a
-virtualization restart interrupted a build between deleting an old
-compiled artifact and writing its replacement; the build system's
-freshness metadata survived the interruption, so every subsequent
-"verification" trusted the stale record and skipped the changed file
-entirely — reporting thousands of successful jobs while elaborating
-none of the mathematics under test, for a full day, across both
-collaborators' gates. In the watcher-poll incident, a monitoring
-query that failed under database contention returned an empty result
-that the polling loop treated as "no news," blinding one collaborator
-to three hours of the other's messages. In each case the fix is the
-same shape: a checker must produce a positive artifact of having
-checked — an olean newer than its source, a nonempty match on a
-sentinel that must be present, a poll that distinguishes "no new
-items" from "query failed" — and the absence of that artifact must be
-treated as failure. The certification pipeline now enforces this
-mechanically: gates run against ephemeral build state, verify the
-target artifact's existence and freshness after the build, and void
-any run whose window overlaps an engine restart.
+Silence fails at the mathematical level too.  The false trace identity in
+31890 looked plausible because no term visibly objected; an explicit
+re-expansion produced the positive evidence of cancellation and triggered
+the retraction at 31895.  P8 survived a thousand sampled `q=4` models only
+because those models were singular and therefore never instantiated the
+inverse hypothesis; the correct response was `UNKNOWN`, not support
+(31886).  A direct block-sum argument then proved that P8 was impossible in
+every hypothetical survivor (31905–31913).
+
+The same standard applies operationally.  A solver cell counts only when its
+ledger line contains a verdict, return code, input hash, proof-check status,
+LRAT hash, and upload status; a missing line is not an UNSAT.  A Lean file
+counts only after the named target elaborates and its `#print axioms` output
+is inspected.  On 25 August the `h305` dependency chain ran for nearly an
+hour, but the room did not infer success from the absence of errors: three
+agents waited for the final file check and separately reported its axiom
+scope (31845, 31846, 31882).  Positive artifacts, rather than quiet logs,
+are the unit of trust.
 
 ## Methods (summary)
 
