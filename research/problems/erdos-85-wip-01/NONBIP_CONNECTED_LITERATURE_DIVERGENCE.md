@@ -537,3 +537,46 @@ Hence neither a generic induced-matching lower bound nor the impossible best
 case of a perfect induced matching can contradict the set-pairs inequality.
 Candidate 2 is **stopped by scale**; proving stronger matching structure in
 `D` for this purpose would not advance the node.
+
+### Fractional-transversal equality probe: stopped before propagation
+
+Neumann--Praeger's theorem applies to a *tactical configuration*: all chosen
+blocks have one size and every point has one replication number.  A clique
+`C` of the complement of `D` supplies only the first condition.  Its blocks
+are pairwise intersecting (in exactly one point), but the restricted point
+degrees
+
+```text
+r_x = |{B in C : x in B}|
+```
+
+need not be constant.  Maximality of `C` does not repair this: it merely says
+that every block outside `C` is disjoint from at least one member of `C`.
+Counting those disjoint pairs and using `deg_D(B)=q-1` gives
+
+```text
+q^2-|C| <= |C|(q-1),  hence |C| >= q.               (SW2)
+```
+
+At equality, every outside block is disjoint from exactly one member of
+`C`; this still constrains block--block disjointness only and says nothing
+that equalizes the `r_x`.  In fact the affine-plane-minus-one-parallel-class
+control already has maximal intersecting transversals of size `q` with this
+exact one-disjoint-block property, while the restricted point replications
+are nonconstant.  Thus equality in (SW2) is not the equality hypothesis in
+the tactical-configuration theorem.
+
+Nor can positive fractional weights on `C` make the missing hypothesis on
+the full `q^2`-point set.  A constant positive point load would require the
+union of `C` to cover every point.  If `|C|=q`, the total incidence mass is
+only `q^2`, so such a cover makes every point occur exactly once and the
+chosen blocks pairwise disjoint, contradicting that `C` is intersecting.
+For `|C|>q`, neither maximality nor regularity of `D` supplies the needed
+linear relation among the point loads.
+
+Consequently there is no local equality statement to propagate along a
+defect edge.  Applying Neumann--Praeger after assuming constant restricted
+replication would assume precisely the new global design structure that the
+Baer lane is trying to derive.  Candidate 4 is therefore **stopped by a
+hypothesis gap**, not promoted to a terminal.  The four sunflower/
+almost-intersecting candidates from this divergence round are exhausted.
