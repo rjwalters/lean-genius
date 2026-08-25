@@ -20,8 +20,18 @@ The component bridge is already sharp at the level of bare order data.  A
 component below `d^2` is regular and has order
 `d(d-1)+3+e`, `0 <= e <= d-4`.  A proper component is itself one-step
 nonextendable.  Therefore an outside result is useful only if it either
-forces a safe `d`-set, compresses a nonextendable component to smaller
-excess, or classifies the whole positive-excess band.
+supports a multi-vertex repair, compresses a nonextendable component to
+smaller excess, or classifies the whole positive-excess band.
+
+There is an important exact warning in this regular band.  For a vertex
+`x`, the `d` sets `N(z) \ {x}`, `z in N(x)`, are pairwise disjoint by
+`C4`-freeness.  Hence `x` has exactly `d(d-1)` neighbours in the conflict
+graph.  Its complement is therefore `(e+2)`-regular.  A safe `d`-set would
+be a `K_d` in that complement, but `e+2 <= d-2`; such a clique is
+impossible.  Thus the canonical add-one-vertex attachment cannot work in
+the positive-excess band for a purely numerical reason.  The strict
+conflict-independence bound of a plateau core is automatic there, not a
+promising terminal.
 
 ## Closest literature
 
@@ -74,12 +84,11 @@ https://arxiv.org/abs/1010.5841
 ## Verdict and surviving target
 
 No outside theorem found supplies the missing plateau-to-boundary arrow.
-The attachment literature nevertheless identifies the right external
-language: this is a **lower bound/stability problem for independent sets in
-the common-neighbour graph**, under the additional edge-minimal cover and
-near-Moore hypotheses.  A useful new theorem would have to say that in this
-regime the conflict graph has an independent `d`-set, or else force a
-specific reducible configuration.  Generic container estimates, ordinary
+The attachment literature provides an exact dictionary but, after the
+degree calculation above, also confirms that the direct attachment route is
+the wrong target.  A useful new theorem must instead produce the compatible
+selectors for a delete-`k`/add-`k+1` repair, or force a specific reducible
+configuration/order compression.  Generic container estimates, ordinary
 `C4` saturation, star-critical Ramsey theory, and girth-five excess
 classification do not do this.
 
