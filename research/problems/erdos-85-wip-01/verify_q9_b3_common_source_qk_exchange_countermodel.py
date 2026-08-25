@@ -6,7 +6,14 @@ from itertools import combinations
 from z3 import sat
 
 from q9_b0_residual_defect_sat import build
-from q9_symmetric_point_mass_obstruction import OUTER_ONLY_RELAX
+from q9_symmetric_point_mass_obstruction import (
+    N,
+    OUTER_ONLY_RELAX,
+    contracted_residual_rows,
+    fixed_system,
+    forced_local_packing_neighbors,
+    local_packing_family,
+)
 
 
 BLOCKS = [
@@ -77,10 +84,50 @@ def main():
     assert len(second_packings) == 14
     assert not joint
     assert not swaps
+
+    system = fixed_system(payload)
+    local = {
+        row: forced_local_packing_neighbors(system, row)
+        for row in range(N)
+    }
+    infeasible = {
+        row for row in range(N) if not local[row]["packing_count"]
+    }
+    obstructed = []
+    for target in range(N):
+        forced = {
+            row for row in range(N)
+            if target in local[row]["forced_neighbors"]
+        }
+        impossible = {
+            row for row in range(N)
+            if local[row]["packing_count"]
+            and target not in local[row]["possible_neighbors"]
+        }
+        family = local_packing_family(system, target)
+        if family and not any(
+            forced <= packing and packing.isdisjoint(impossible)
+            for packing in family
+        ):
+            obstructed.append(target)
+    assert infeasible == {2, 4, 5, 25}
+    assert obstructed == [43]
+    assert contracted_residual_rows(system, 43, local) == [
+        7, 18, 28, 29, 34, 38, 44
+    ]
+
+    first_witness = frozenset((15, 26, 38, 43, 44))
+    second_witness = frozenset((5, 15, 26, 38, 44))
+    source_family = local_packing_family(system, 18)
+    assert first_witness in source_family
+    assert second_witness in source_family
+    assert first_witness - {43} == second_witness - {5}
     print("verified: pinned model satisfies retained branch-3 outer Q/K equations")
     print("verified: source 26 has 56 full size-six eligible packings")
     print("verified: rows 8 and 16 occur separately (4 and 14 packings)")
     print("verified: rows 8 and 16 have neither a joint packing nor one-swap core")
+    print("verified: row 43 is the unique reverse-obstructed target")
+    print("verified: source 18 swaps target 43 with infeasible row 5")
 
 
 if __name__ == "__main__":

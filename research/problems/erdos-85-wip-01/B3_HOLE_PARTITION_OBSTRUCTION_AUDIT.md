@@ -6060,3 +6060,32 @@ proof of (13bn) based only on same-source 3-partite exchange plus the full
 outer `Q,K` incidence geometry.  The **bad-or-lex-better selection and
 reverse-obstruction data are now provably indispensable**, not merely
 cautious extra hypotheses.                                           (13bna'''c)
+
+Those indispensable hypotheses repair the same pinned countermodel rather
+than merely excluding it syntactically.  Exhaustive local enumeration finds
+exactly four infeasible rows `{2,4,5,25}` and exactly one reverse-obstructed
+row, target `43`.  It is therefore automatically lex-minimal among the
+reverse-obstructed rows.  Its contracted residual sources are
+
+```text
+{7,18,28,29,34,38,44}.
+```
+
+Several sources exchange-couple target 43 to a bad row.  A literal named
+one-swap certificate is
+
+```text
+source 18:
+  {15,26,38,44} + 43  <->  {15,26,38,44} + 5,
+```
+
+where row 5 has no full local packing.  The extended verifier checks the
+infeasible set, uniqueness of the reverse-obstructed target, its residual
+set, and both full source packings.  Thus the first outer `Q,K` model built
+specifically to defeat local exchange already satisfies the sharp
+bad-or-better exchange conclusion once the reverse target is selected.  It
+is positive evidence rather than a proof of (13bn), but it is a strong
+mechanism discriminator: any new countermodel must simultaneously preserve
+the local alternating obstruction, make **every** row feasible, and arrange
+the lex-minimal reverse obstruction so that no residual source couples it to
+a better target.                                                     (13bna'''d)
