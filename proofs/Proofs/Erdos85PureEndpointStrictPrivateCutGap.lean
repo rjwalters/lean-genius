@@ -107,8 +107,8 @@ theorem two_mul_sub_four_le_of_combinedShore_collision
 
 set_option maxHeartbeats 800000 in
 /-- At every preconnected pure endpoint, the canonical private-set defect
-cut has a uniform gap: it is at least `2q - 4`. -/
-theorem c4Free_binarySquare_pureEndpoint_privateCut_two_mul_sub_four_le
+cut is at least `2q - 4`; equality pins exactly `q - 2` zero-private rows. -/
+theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -124,10 +124,15 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_two_mul_sub_four_le
     (htri : ∀ v, (G.neighborFinset v ∩ S).card = 0 ∨
       (G.neighborFinset v ∩ S).card = m ∨
       (G.neighborFinset v ∩ S).card = q) :
-    2 * q - 4 ≤ finsetGraphCutSize (secondOrderDefectGraph G)
-      (S.filter fun p =>
-        (G.neighborFinset p ∩ fullLineCenters G S q).card = 1) := by
+    let F := fullLineCenters G S q
+    let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
+    let B := Fᶜ
+    let r := fun b => (G.neighborFinset b ∩ P).card
+    let Z := B.filter fun b => r b = 0
+    let cut := finsetGraphCutSize (secondOrderDefectGraph G) P
+    2 * q - 4 ≤ cut ∧ (cut = 2 * q - 4 → Z.card = q - 2) := by
   classical
+  dsimp only
   let F := fullLineCenters G S q
   let B := Fᶜ
   let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
@@ -469,9 +474,39 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_two_mul_sub_four_le
     simpa [F, B, P, r, Z] using
       c4Free_binarySquare_pureEndpoint_zeroPrivateRows_card_ge
         G hfree hq hqm hreg hcard hconn S hempty hCcard hshore htri
-  change 2 * q - 4 ≤ cut
-  exact two_mul_sub_four_le_of_combinedShore_collision
+  have hbound : 2 * q - 4 ≤ cut :=
+    two_mul_sub_four_le_of_combinedShore_collision
     hq hqm hzLower henergy hcollision hmoment
+  have hquad : q * Z.card ≤ Z.card ^ 2 + cut := by
+    rw [hqm]
+    nlinarith
+  refine ⟨hbound, ?_⟩
+  intro hcutEq
+  exact zero_card_eq_sub_two_of_strictCut_quadratic_eq
+    hq hqm hzLower henergy hquad hcutEq
+
+/-- Compatibility projection of the strict private-cut gap. -/
+theorem c4Free_binarySquare_pureEndpoint_privateCut_two_mul_sub_four_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (hconn : (secondOrderDefectGraph G).Preconnected)
+    (S : Finset V) (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v, (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    2 * q - 4 ≤ finsetGraphCutSize (secondOrderDefectGraph G)
+      (S.filter fun p =>
+        (G.neighborFinset p ∩ fullLineCenters G S q).card = 1) := by
+  exact (c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card
+    G hfree hq hqm hreg hcard hconn S hempty hCcard hshore htri).1
 
 end
 
@@ -480,4 +515,6 @@ end Erdos85
 #print axioms Erdos85.sum_sub_one_positive_le_card_zeros_of_sum_le_card
 #print axioms Erdos85.sum_sub_one_positive_add_defect_eq_card_zeros
 #print axioms Erdos85.two_mul_sub_four_le_of_combinedShore_collision
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card
 #print axioms Erdos85.c4Free_binarySquare_pureEndpoint_privateCut_two_mul_sub_four_le
