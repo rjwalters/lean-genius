@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.61 — 2026-08-25 ~17:40Z (the honest h305 `(−3,0,5)` endpoint is closed at 64: six checked LRAT terminals, unconditional finite and graph terminals, all cold-green on the integration tip `778a2e1595`).**
+**Version 2.62 — 2026-08-25 ~18:05Z (inverse-potential sign terminal P8 RETRACTED as impossible; its faithful-control census and aggregate trace routes cut; the interface survives only as a forced mixed-sign block statement).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -1228,6 +1228,36 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.62** (2026-08-25 ~18:05Z, claude/integrator): **the inverse-potential
+  sign terminal is dead, and with it the "missing blade" of v2.61.** Within
+  ninety minutes of banking the interface sol-1 killed it three ways
+  (`8f4874cf66`, `60eb845575`, `f796e75e52`, `19f227dced`, docs only): (i)
+  the faithful q=4 probe found every sampled 4-regular C4-free loopless graph
+  on 16 vertices SINGULAR (rank 15 in 100/100 per branch; tri(y) = 0 is
+  graph-level UNSAT by the Moore count `1 + q + q(q−1) = q² + 1`), so q=4
+  offers no nonsingular control at all; (ii) summing P7 over all roots is a
+  tautology — with `C = (J−A)∘(qJ−A³)` the all-roots law is
+  `diag(C·A⁻¹) = 0` and its trace collapses to `0 ≡ 0` (Fable's
+  `tr(A⁻¹) = q` reading was wrong and is retracted, 31894/31895); `C` is
+  indefinite on the q=4 control, so the PSD/aggregate route is cut; (iii)
+  any faithful nonsingular control at binary `q ≥ 8` is itself a
+  NONBIP-CONNECTED counterexample, so escalating SAT "to validate P8" is a
+  disguised target census (odd `q` impossible outright: degree sum `q³`
+  odd); (iv) **P8 is impossible, not merely unproved**: pick
+  `z ∈ N_D(y)` with `z ∉ N_A(y)` — such `z` exists because
+  `|N_D(y) ∖ T(y)| = 2·tri(y) − 1 ≥ 1` (D contains the triangle-free
+  A-edges `T = A ∩ D`, so this choice must be explicit; the banked audit's
+  "defect edge ⇒ nonadjacent" needs that one-line patch) — then
+  `N_A(z) ⊂ R = V ∖ (S ∪ {y})` and P3 forces `Σ_{N_A(z)} x = 0`, so `x < 0`
+  on `R` cannot hold. Durable residue: every defect-neighbour block is
+  identically zero in `x` or carries both signs (for T-blocks in the form
+  `{y} ∪ (N_A(z) ∖ {y})`). The interface (P1)–(P7') stands as exact
+  bookkeeping with no terminal; any successor must use entrywise
+  square-root/incidence data and respect the forced mixed signs. Sol-1's
+  named next direction is a weighted diagonal/off-diagonal sign inequality
+  consuming incidence data. Lean tip unchanged at `778a2e1595` (85 banks);
+  q=8 configuration kissat runs at ~10 h, no verdict.
+
 - **2.61** (2026-08-25 ~17:40Z, claude/integrator): **the honest h305
   `(−3,0,5)` endpoint is closed at 64.** Within nine hours of goal #38,
   the three Sols built the entire corrected chain (CNF → emitter → Fin88
@@ -1270,7 +1300,8 @@ Does not count (goes to the ledger, not here):
   needs `x < 0` on `R` and `deg_T(y)·x_y ≤ 0`; a nonperfect sink in `R`
   exists since the total deficiency is `q(q−1) > q`. Banked as
   `NONBIP_CONNECTED_INVERSE_POTENTIAL_AUDIT.md` + exact P2-only control
-  `9575bb9dd5` (docs, no Lean). Round #67 closed. Per §F this is order-64 progress, not A-REG progress.
+  `9575bb9dd5` (docs, no Lean). Round #67 closed. **P8 RETRACTED at v2.62
+  — see the 2.62 entry: sign separation is impossible in every survivor.** Per §F this is order-64 progress, not A-REG progress.
   Fable's q=8 configuration-level kissat runs (cfg s=8/12/16, S-shore s=8)
   are still running uncapped at ~8.5 h with no verdict. Map fact (sol-3,
   `b411688764`, bounded probe): the square-root identity forces `Jac(D)`
