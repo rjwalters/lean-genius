@@ -89,6 +89,42 @@ Reference: M. A. Fiol, J. Gimbert and M. Miller, *On graphs with cyclic
 defect or excess*, Electronic Journal of Combinatorics 18 (2011), P161,
 https://arxiv.org/abs/1010.5841
 
+## The closest multi-edge excision
+
+A second, target-corrected search found a much closer operation after the
+direct attachment route was cut.  Exoo, Jajcay and Raiman systematically
+decrease the order of regular girth graphs by excision.  For even degree,
+their Construction 2.4 deletes one vertex, pairs its former neighbours, and
+adds the pairing edges.  A distance/cycle condition on every pair guarantees
+that regularity and girth are preserved.  For odd degree, Construction 2.1
+deletes an adjacent pair and repairs the two resulting even neighbour sets.
+These are genuine multi-edge versions of the surgery needed here, not
+one-vertex attachments.
+
+Reference: G. Exoo, R. Jajcay and T. Raiman, *On decreasing the orders of
+`(k,g)`-graphs*, Journal of Combinatorial Optimization 46 (2023), article
+26, Constructions 2.1 and 2.4:
+https://doi.org/10.1007/s10878-023-01092-9
+
+The match is structural but not yet a theorem for this project.  Their
+graphs have girth at least five, whereas a `C4`-free plateau core may have
+triangles.  In the present setting, after deleting `u`, adding one repair
+edge `ab` is safe only if there is no length-three `a`--`b` path; adding a
+whole matching also needs simultaneous mixed-cycle compatibility among the
+new edges.  The paper assumes a cycle-distance condition designed for the
+girth setting and does not prove that the required pairing exists in every
+non-cage; indeed it explicitly records graphs above cage order on which the
+excision cannot be applied.  Thus it supplies the right operation and the
+right compatibility question, but no universal existence theorem.
+
+This clarifies the next non-wrapper target: formulate the simultaneous-safe
+matching graph on the neighbours of one deleted tight vertex (or two in the
+odd-degree case), and derive a perfect/near-perfect matching from plateau
+structure.  Pairwise safety alone is insufficient until the mixed `C4`
+condition for two added repair edges is included.  This is a smaller and
+more concrete specialization of the repository's general
+delete-`k`/add-`k+1` gadget interface.
+
 ## Verdict and surviving target
 
 No outside theorem found supplies the missing plateau-to-boundary arrow.
@@ -98,6 +134,8 @@ the wrong target.  A useful new theorem must instead produce the compatible
 selectors for a delete-`k`/add-`k+1` repair, or force a specific reducible
 configuration/order compression.  Generic container estimates, ordinary
 `C4` saturation, star-critical Ramsey theory, and girth-five excess
-classification do not do this.
+classification do not do this.  The Exoo--Jajcay--Raiman excision is the
+closest known construction, but its universal pairing/existence step and
+its adaptation in the presence of triangles remain open here.
 
 No Lean wrapper is recommended from this audit.
