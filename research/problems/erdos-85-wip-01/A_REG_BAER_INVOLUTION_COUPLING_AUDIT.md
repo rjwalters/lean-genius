@@ -6298,6 +6298,20 @@ The division-free arithmetic consumer is
 interior no longer has a free trade between missing line-pairs and triple
 points: all quadratic defect is carried by actual edges of `D[F]`.
 
+The two remaining replication populations are also forced, layer by layer.
+Eliminating `s` from the shore-size and incidence equations gives
+
+```text
+n_1 = q+2r(q-1),
+2n_2+2r(2q-1)=q(q-1).                                  (80)
+```
+
+This division-free profile is Lean-checked by
+`binarySquare_pureExceptional_layer_population_noTriple`.  In particular
+there is no residual population parameter in the pure subtree: after choosing
+`r`, only the placement of the prescribed `2r^2` defect edges among the full
+lines and the completion of the resulting private/pair points remain.
+
 The unresolved signed-support terminal has therefore split into two strictly
 smaller regimes: mixed support `c<=q`, with the unbalanced case in the exact
 `(r,u)` normal form (73d)--(73h), or pure support in the quantized layers

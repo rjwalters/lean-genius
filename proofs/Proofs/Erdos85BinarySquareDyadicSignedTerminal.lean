@@ -311,6 +311,22 @@ theorem binarySquare_pureExceptional_layer_normalForm_noTriple
   simpa using (binarySquare_pureExceptional_layer_normalForm
     (q := q) (c := c) (e := e) (n₃ := 0) hcq hhalf (by simpa using hdefect))
 
+/-- Complete replication population profile in a triple-free pure layer.
+Writing `c=q-2r`, the shore-size and incidence equations force the private
+population `n₁` and pair-point population `n₂` exactly.  The second equality
+is kept division-free so it remains usable over naturals. -/
+theorem binarySquare_pureExceptional_layer_population_noTriple
+    {q c r s n₁ n₂ : ℕ} (hq : 1 ≤ q) (hqr : q = c + 2 * r)
+    (hshore : 2 * s = q * q + c)
+    (hclasses : n₁ + n₂ = s)
+    (hincidence : n₁ + 2 * n₂ = q * c) :
+    n₁ = q + 2 * r * (q - 1) ∧
+      2 * n₂ + 2 * r * (2 * q - 1) = q * (q - 1) := by
+  have hqpred : q - 1 + 1 = q := Nat.sub_add_cancel hq
+  have htwoq : 1 ≤ 2 * q := by omega
+  have htwoqpred : 2 * q - 1 + 1 = 2 * q := Nat.sub_add_cancel htwoq
+  constructor <;> nlinarith
+
 /-- At the endpoint `c=q`, the pure exceptional support has neither an
 internal defect edge nor a triple point. -/
 theorem binarySquare_pureExceptional_endpoint_rigid
@@ -1227,6 +1243,7 @@ end Erdos85
 #print axioms Erdos85.binarySquare_pureExceptional_defect_quantization
 #print axioms Erdos85.binarySquare_pureExceptional_layer_normalForm
 #print axioms Erdos85.binarySquare_pureExceptional_layer_normalForm_noTriple
+#print axioms Erdos85.binarySquare_pureExceptional_layer_population_noTriple
 #print axioms Erdos85.binarySquare_pureExceptional_endpoint_rigid
 #print axioms Erdos85.binarySquare_pureExceptional_endpoint_profile
 #print axioms Erdos85.binarySquare_mixedMajority_defect_identity
