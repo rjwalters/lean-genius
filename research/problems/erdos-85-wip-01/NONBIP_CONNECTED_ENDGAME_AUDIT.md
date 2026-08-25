@@ -320,3 +320,40 @@ control, not a graph and not a rational/Galois factorization.  Its scope is
 nevertheless decisive for round-66 P3: higher scalar odd moments cannot give
 the missing upper bound.  A viable factor proof must use arithmetic beyond
 real orbit signs, vertexwise projector data, or entrywise zero-one incidence.
+
+## A split orbit need not come from an integer-square eigenvalue
+
+The exact Galois-orbit ledger is useful bookkeeping, but one tempting
+strengthening of it is false.  A split factor `h(x^2)=g(x)g(-x)` can have
+nonzero trace even when neither root of `h` is rational.  Uniformly, set
+
+```text
+g(x) = x^2 + 2x - 1,
+h(y) = y^2 - 6y + 1.
+```
+
+Then
+
+```text
+h(x^2) = (x^2 + 2x - 1)(x^2 - 2x - 1) = g(x)g(-x).
+```
+
+Both quadratics are irreducible over `Q`: their discriminants are `8` and
+`32`.  The two roots of `h` are `3 +/- 2 sqrt(2)`, hence positive,
+nonrational, and at most `2q-2` for every `q >= 4`.  Equivalently, the
+corresponding formal defect eigenvalues `q-1-(3 +/- 2 sqrt(2))` lie in the
+allowed regular-graph spectral interval `[-(q-1),q-1]`.  Nevertheless the
+root sum of `g` is `-2`.  Giving this P-type orbit signed multiplicity
+imbalance `q/2` therefore pays the whole trace debt
+
+```text
+(q/2) * trace(g) = -q
+```
+
+for every even `q`, without a rational integer-square eigenvalue of `M`.
+This is only a factor-ledger control, not a complete defect spectrum or a
+graph.  It decisively rejects the inference that the integer part of
+`spec(M)` must carry the trace debt.  Any surviving arithmetic argument must
+use global compatibility among all irreducible factors (for example the
+exact defect moments, characteristic polynomial, or entrywise square-root
+constraints), rather than the split/non-split dichotomy alone.
