@@ -710,6 +710,38 @@ nonbipartite locus algebraically would first require a new bounded-degree
 encoding of precisely the missing global theorem.  Finite-field point
 counting is therefore **stopped at the degree boundary**.
 
+### Partial-operation coordinatization: stopped before the quasigroup law
+
+For a nondefect pair `x,y`, C4-freeness supplies a unique common
+`A`-neighbour.  It is tempting to define `x circle y` to be that neighbour
+and apply Steiner-quasigroup, Moufang, or ternary-ring coordinatization.  The
+temptation already fails in the exact loopless symmetric `q=4` fixed-free
+control `binary_q4_fixed_free_disconnected_control.py`.  Directly from its
+edge list,
+
+```text
+0 circle 3 = 2,
+0 circle 2 = 9,
+3 circle 2 = 7.
+```
+
+Thus even the partial Steiner inverse law
+`x circle (x circle y) = y` is false.  The reason is structural: if `z` is a
+common neighbour of `x,y`, then `z` is adjacent to each endpoint, but the
+endpoints need not be adjacent to one another.  Reapplying the operation
+therefore follows a different length-two wedge rather than rotating a
+Steiner triple.
+
+What remains is the original partial linear neighbourhood geometry.  The
+classical coordinatization theorems obtain a planar ternary ring only after a
+full affine/projective plane is available; Moufang, Veblen--Young,
+Desarguesian, or translation-plane conclusions require still stronger
+incidence or transitivity axioms.  In this problem a resolution/completion
+axiom strong enough to enter that theory would already construct the missing
+parallel classes and hence settle the defect graph.  The cross-neighbour
+parity law does not imply the failed inverse identity.  Consequently the
+partial-operation/Moufang route is **stopped at its entry law**.
+
 ### Hamada p-rank and even-set probe: stopped at geometric completion
 
 The neighborhood rows form a self-polar `q`-uniform, `q`-regular partial
