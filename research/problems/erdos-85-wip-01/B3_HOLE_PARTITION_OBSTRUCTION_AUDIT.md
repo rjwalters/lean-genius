@@ -6258,3 +6258,58 @@ boundaries: the final obstruction can be proved by a forced-bundle packing
 deficit or by an impossible-set transversal, separately.  The genuinely new
 transport statement is still the existence of such a boundary `z` coupled at
 a residual source; `(13bob)` is corpus evidence, not a universal theorem.
+
+The one-sided certificate is uniformly tiny on the same corpus.  The
+verifier now minimizes a lower certificate `S subset F_z` for which no
+packing contains `S`, or an upper certificate `S subset I_z` which meets
+every packing.  Every selected `z` has `|S| <= 2`.  The seventeen witnesses
+split as follows:
+
+```text
+11  singleton certificates (a pairwise reciprocity mismatch),
+ 4  two-source lower bundles which no packing at z contains,
+ 2  two-row upper sets which hit every packing at z.          (13boc)
+```
+
+A singleton lower certificate says that one source forces `z` while no
+packing at `z` contains that source; a singleton upper certificate is the
+opposite orientation.  Both are exactly the already-formalized pairwise
+reciprocity obstruction.  The other six witnesses require only a two-row
+compatibility failure, not the full reverse interval.
+
+Thus a still sharper proof target can replace arbitrary one-sided deficit in
+`(13bob)` by a certificate of order at most two.  This is significant for
+formalization: the existing reciprocity consumer handles eleven cases, and
+the residual target is a concrete two-source forced-bundle / two-row hitting
+lemma.  The size-two assertion remains empirical; the verifier establishes it
+only for the stored all-row-feasible corpus.
+
+There is also no additional integral obstruction to invent after the
+canonical boundary row has been located.  The strengthened
+`verify_q9_13bn_reverse_boundary_descent.py` runs the existing exact
+`contracted_reverse_interval_point_cover` routine on **every** minimum-score
+boundary row selected in `(13bob)`.  All nineteen rows have a strict
+fractional point cover after contracting their forced incoming rows and
+deleting their impossible incoming rows.  In the verifier's integral scaling,
+the cover misses the residual demand by between one and three units.
+
+This cuts the Aharoni--Haxell/Tutte branch of the brainstorm at the right
+place.  The local objects are matchings in a rank-three hypergraph, so an
+ordinary Tutte barrier or Gallai--Edmonds decomposition does not apply; the
+conflict graph asks for an independent set, not a graph matching.  The
+Aharoni--Haxell theorem is a genuine hypergraph Hall theorem, but here the
+selected `z` already has a stronger executable fractional-cover certificate.
+Consequently the missing theorem is not another proof that `z` is
+reverse-obstructed.  It is precisely the transport step
+
+```text
+strict terminal failure at w
+  -> a lower-score z in F_w union I_w with a strict contracted point cover
+  -> z and w are joint-or-one-swap coupled at some residual source x.
+                                                               (13boc)
+```
+
+The first arrow must use the exact outer row/column or residual symmetry; the
+second must use the same-source geometry.  Generic matching existence or
+exchange cannot supply either arrow.  As above, this nineteen-row audit is
+corpus evidence and does not assert the universal transport theorem.

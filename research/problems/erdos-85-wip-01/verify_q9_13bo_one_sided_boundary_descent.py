@@ -24,12 +24,26 @@ def local_summary(families, row):
     return forced, possible
 
 
+def least_one_sided_certificate(family, forced, impossible):
+    for size in (1, 2):
+        for certificate in combinations(sorted(forced), size):
+            if not any(set(certificate) <= packing for packing in family):
+                return "lower", certificate
+        for certificate in combinations(sorted(impossible), size):
+            if all(set(certificate) & packing for packing in family):
+                return "upper", certificate
+    return None
+
+
 def main():
     payload_count = 0
     failure_count = 0
     forced_deficit_count = 0
     impossible_deficit_count = 0
     overlap_count = 0
+    reciprocity_count = 0
+    lower_pair_count = 0
+    upper_pair_count = 0
     pattern = "research/problems/erdos-85-wip-01/q9_branch4*.json"
     for filename in sorted(glob.glob(pattern)):
         with open(filename, encoding="utf-8") as stream:
@@ -115,7 +129,7 @@ def main():
                     if joint or swap is not None:
                         candidates.append((better, source, better_record))
             assert candidates, (filename, target, record)
-            _, _, selected = min(
+            better, _, selected = min(
                 candidates, key=lambda item: (item[0], item[1])
             )
             if selected["forced_deficit"]:
@@ -127,12 +141,28 @@ def main():
                 and selected["impossible_deficit"]
             ):
                 overlap_count += 1
+            certificate = least_one_sided_certificate(
+                families[better],
+                selected["forced"],
+                selected["impossible"],
+            )
+            assert certificate is not None
+            side, rows = certificate
+            if len(rows) == 1:
+                reciprocity_count += 1
+            elif side == "lower":
+                lower_pair_count += 1
+            else:
+                upper_pair_count += 1
 
     assert payload_count == 10
     assert failure_count == 17
     assert forced_deficit_count == 14
     assert impossible_deficit_count == 9
     assert overlap_count == 6
+    assert reciprocity_count == 11
+    assert lower_pair_count == 4
+    assert upper_pair_count == 2
     print(f"verified: {payload_count} all-row-feasible stored payloads")
     print(f"verified: {failure_count} strict dual-terminal failures")
     print("verified: every failure has a one-sided reverse-boundary descent")
@@ -140,6 +170,11 @@ def main():
         "selected one-sided deficits: "
         f"forced={forced_deficit_count}, "
         f"impossible={impossible_deficit_count}, overlap={overlap_count}"
+    )
+    print(
+        "least certificates: "
+        f"reciprocity={reciprocity_count}, "
+        f"lower-pair={lower_pair_count}, upper-pair={upper_pair_count}"
     )
 
 
