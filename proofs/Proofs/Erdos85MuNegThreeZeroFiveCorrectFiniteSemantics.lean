@@ -1,4 +1,5 @@
 import Proofs.Erdos85MuNegThreeZeroFiveCorrectOwnerCnf
+import Proofs.Erdos85MuNegThreeZeroFiveCorrectAdmissibility
 
 /-!
 # Finite semantics for the corrected h305 owner CNF
@@ -210,7 +211,140 @@ structure MuNegThreeZeroFiveCorrectNonCrossSemantics
     X (min a h) (max a h) = true →
     X (min b h) (max b h) = true → False
 
+private theorem h305Correct_dimacsLitValue_neg_ofNat
+    {val : DimacsValuation} {n : Nat} (hn : 0 < n) :
+    dimacsLitValue val (-Int.ofNat n) = !val n := by
+  have hp : (0 : Int) < Int.ofNat n := Int.natCast_pos.mpr hn
+  rw [dimacsLitValue, if_neg (by omega), Int.natAbs_neg]
+  simp
+
+private theorem h305Correct_owner_get_eq (uTri vTri : Bool)
+    {a : Nat} (ha : a < 88) :
+    (muNegThreeZeroFiveCorrectOwners uTri vTri)[a]! =
+      muNegThreeZeroFiveCorrectOwnerAt uTri vTri ⟨a, ha⟩ := by
+  have hal : a < (muNegThreeZeroFiveCorrectOwners uTri vTri).length := by
+    rw [muNegThreeZeroFiveCorrectOwners_length]
+    exact ha
+  unfold muNegThreeZeroFiveCorrectOwnerAt
+  simpa only using
+    (getElem!_pos (muNegThreeZeroFiveCorrectOwners uTri vTri) a hal)
+
+/-- The corrected hit-activity clauses are satisfied by the induced
+valuation whenever semantic hits use active owners. -/
+theorem muNegThreeZeroFiveCorrectHitActivityClauses_satisfied
+    {uTri vTri sigma : Bool} {D X : Nat → Nat → Bool}
+    (hsem : MuNegThreeZeroFiveCorrectNonCrossSemantics
+      uTri vTri sigma D X) :
+    let os := muNegThreeZeroFiveCorrectOwners uTri vTri
+    let pairs := muNegThreeZeroFiveCorrectHitPairs uTri vTri
+    ∀ clause ∈ muNegThreeZeroFiveCorrectHitActivityClauses os pairs,
+      dimacsClauseSatisfied
+        (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X) clause := by
+  dsimp only
+  intro clause hclause
+  simp only [muNegThreeZeroFiveCorrectHitActivityClauses,
+    List.mem_flatMap] at hclause
+  obtain ⟨pr, hpr, hin⟩ := hclause
+  have hprb := (mem_muNegThreeZeroFiveCorrectHitPairs_iff
+    uTri vTri pr.1 pr.2).mp hpr
+  cases hx : muNegThreeZeroFiveCorrectXVar?
+      (muNegThreeZeroFiveCorrectHitPairs uTri vTri) pr.1 pr.2 with
+  | none => rw [hx] at hin; simp at hin
+  | some x =>
+    rw [hx] at hin
+    have hxpos : 0 < x := by
+      have := muNegThreeZeroFiveCorrectXVar?_bounds hx
+      omega
+    have hvalx : muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X x =
+        X pr.1 pr.2 := by
+      have h := muNegThreeZeroFiveCorrectValOfRelations_xvar
+        uTri vTri D X hx
+      rwa [Nat.min_eq_left (Nat.le_of_lt hprb.2.2.1),
+        Nat.max_eq_right (Nat.le_of_lt hprb.2.2.1)] at h
+    by_cases hX : X pr.1 pr.2 = true
+    · have hactive := hsem.hit_active pr.1 pr.2 hpr hX
+      have hguard : ∀ o : Nat, o < 88 →
+          muNegThreeZeroFiveCorrectOwnerActive uTri vTri D o = true →
+          ∀ g : Nat,
+            muNegThreeZeroFiveCorrectGuard?
+              (muNegThreeZeroFiveCorrectOwners uTri vTri) o = some g →
+            clause = [-Int.ofNat x, -Int.ofNat g] →
+            dimacsClauseSatisfied
+              (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X)
+              clause := by
+        intro o ho hact g hg hcl
+        let p := (muNegThreeZeroFiveCorrectOwners uTri vTri)[o]!
+        have hpBound := muNegThreeZeroFiveCorrectOwnerAt_lt_sixteen
+          uTri vTri ⟨o, ho⟩
+        have hp2lt : p.2 < 16 := by
+          change ((muNegThreeZeroFiveCorrectOwners uTri vTri)[o]!).2 < 16
+          rw [h305Correct_owner_get_eq uTri vTri ho]
+          exact hpBound.2
+        have hgdata : p.1 < 8 ∧ 8 ≤ p.2 ∧
+            g = muNegOneDVar p.1 (p.2 - 8) := by
+          unfold muNegThreeZeroFiveCorrectGuard? at hg
+          dsimp only at hg
+          split at hg
+          · next hcond =>
+            simp only [Bool.and_eq_true, decide_eq_true_eq] at hcond
+            exact ⟨hcond.1, hcond.2,
+              (Option.some.inj hg).symm⟩
+          · exact absurd hg (by simp)
+        have hDfalse : D p.1 (p.2 - 8) = false := by
+          unfold muNegThreeZeroFiveCorrectOwnerActive at hact
+          dsimp only at hact
+          rw [hg] at hact
+          change (!D p.1 (p.2 - 8)) = true at hact
+          simpa using hact
+        refine ⟨-Int.ofNat g, by rw [hcl]; simp, ?_⟩
+        rw [h305Correct_dimacsLitValue_neg_ofNat (by
+          rw [hgdata.2.2]; unfold muNegOneDVar; omega),
+          hgdata.2.2,
+          muNegThreeZeroFiveCorrectValOfRelations_dvar uTri vTri D X
+            hgdata.1 (by omega), hDfalse]
+        rfl
+      rcases List.mem_append.mp hin with hin1 | hin1
+      · cases hg : muNegThreeZeroFiveCorrectGuard?
+          (muNegThreeZeroFiveCorrectOwners uTri vTri) pr.1 with
+        | none => rw [hg] at hin1; simp at hin1
+        | some g =>
+          rw [hg] at hin1
+          simp only [List.mem_cons, List.not_mem_nil, or_false] at hin1
+          exact hguard pr.1 hprb.1 hactive.1 g hg hin1
+      · cases hg : muNegThreeZeroFiveCorrectGuard?
+          (muNegThreeZeroFiveCorrectOwners uTri vTri) pr.2 with
+        | none => rw [hg] at hin1; simp at hin1
+        | some g =>
+          rw [hg] at hin1
+          simp only [List.mem_cons, List.not_mem_nil, or_false] at hin1
+          exact hguard pr.2 hprb.2.1 hactive.2 g hg hin1
+    · have hneg : dimacsLitValue
+          (muNegThreeZeroFiveCorrectValOfRelations uTri vTri D X)
+          (-Int.ofNat x) = true := by
+        rw [h305Correct_dimacsLitValue_neg_ofNat hxpos, hvalx]
+        simpa using hX
+      have hhead : -Int.ofNat x ∈ clause := by
+        rcases List.mem_append.mp hin with hin1 | hin1
+        · cases hg : muNegThreeZeroFiveCorrectGuard?
+            (muNegThreeZeroFiveCorrectOwners uTri vTri) pr.1 with
+          | none => rw [hg] at hin1; simp at hin1
+          | some g =>
+            rw [hg] at hin1
+            simp only [List.mem_cons, List.not_mem_nil, or_false] at hin1
+            rw [hin1]
+            simp
+        · cases hg : muNegThreeZeroFiveCorrectGuard?
+            (muNegThreeZeroFiveCorrectOwners uTri vTri) pr.2 with
+          | none => rw [hg] at hin1; simp at hin1
+          | some g =>
+            rw [hg] at hin1
+            simp only [List.mem_cons, List.not_mem_nil, or_false] at hin1
+            rw [hin1]
+            simp
+      exact ⟨-Int.ofNat x, hhead, hneg⟩
+
 end Erdos85
 
 #print axioms Erdos85.muNegThreeZeroFiveCorrectValOfRelations_dvar
 #print axioms Erdos85.muNegThreeZeroFiveCorrectValOfRelations_xvar
+#print axioms Erdos85.muNegThreeZeroFiveCorrectHitActivityClauses_satisfied
