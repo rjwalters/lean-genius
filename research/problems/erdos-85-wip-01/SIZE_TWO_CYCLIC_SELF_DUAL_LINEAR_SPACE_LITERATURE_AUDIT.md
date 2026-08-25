@@ -120,3 +120,38 @@ A geometry revival must retain the full ambient polarity and prove a
 code-specific closure of the q-edge owner cycle under reversal.  Calling the
 induced hypergraph self-dual, or applying a scalar incidence-rank inequality,
 silently assumes that missing step.
+
+## Commuting Hamilton decompositions do not supply the missing step
+
+Akbari--Moazami--Mohammadian, *Commutativity of the adjacency matrices of
+graphs*, Discrete Mathematics 309 (2009), 595--600,
+doi:10.1016/j.disc.2008.09.006, classify decompositions of `K_(n,n)` into
+pairwise commuting perfect matchings and Hamilton cycles.  This looks close
+to the owner-cycle formulation, but the decisive hypothesis is absent here.
+
+Our simultaneous routing package says that the matrices
+
+```text
+R_cd R_de
+```
+
+are zero-one, have disjoint supports, and sum to the all-ones matrix for
+fixed endpoints `c,e`.  The self-indexed endpoint colours are
+`A_c R_ce` and `R_ce A_e`.  None of these statements says that the
+Hamilton-cycle adjacency matrices `A_c,A_e,...` commute, or that a single
+`K_(n,n)` is decomposed by commuting Hamilton cycles.  Support-disjointness
+of products is not matrix commutativity.  The coherent affine ODC control
+already satisfies the available composition laws, so commutativity cannot
+be inferred from coherence alone.
+
+Consequently the 2009 classification starts strictly after another missing
+promotion theorem:
+
+```text
+self-indexed simultaneous routing  ==>  pairwise commuting Hamilton factors.
+```
+
+No such promotion is presently available, and asserting it would repackage
+the ternary self-indexing obstruction rather than solve it.  The commuting
+Hamilton-decomposition route is therefore cut unless an entrywise argument
+derives commutativity from the endpoint-coloured routing identities.
