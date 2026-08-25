@@ -3,6 +3,7 @@ import Proofs.Erdos85LinearTradeCombinedShoreCollision
 import Proofs.Erdos85PureEndpointPairPointTrade
 import Proofs.Erdos85PureEndpointPrivateOccupancyMoments
 import Proofs.Erdos85DefectCutLaplacianSupport
+import Proofs.Erdos85PureEndpointStrictBoundarySaturation
 
 /-!
 # A uniform strict-cut gap at the pure endpoint
@@ -108,7 +109,7 @@ theorem two_mul_sub_four_le_of_combinedShore_collision
 set_option maxHeartbeats 800000 in
 /-- At every preconnected pure endpoint, the canonical private-set defect
 cut is at least `2q - 4`; equality pins exactly `q - 2` zero-private rows. -/
-theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card
+theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -126,11 +127,19 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card
       (G.neighborFinset v ∩ S).card = q) :
     let F := fullLineCenters G S q
     let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
+    let X := S.filter fun x => (G.neighborFinset x ∩ F).card = 2
+    let U := Sᶜ
     let B := Fᶜ
     let r := fun b => (G.neighborFinset b ∩ P).card
     let Z := B.filter fun b => r b = 0
+    let H := B.filter fun b => 1 < r b
+    let weight := fun b => r b - 1
     let cut := finsetGraphCutSize (secondOrderDefectGraph G) P
-    2 * q - 4 ≤ cut ∧ (cut = 2 * q - 4 → Z.card = q - 2) := by
+    2 * q - 4 ≤ cut ∧
+      (cut = 2 * q - 4 → Z.card = q - 2 ∧
+        ∀ z ∈ Z, ∀ b ∈ H, 0 < weight b →
+          (U.filter fun u => G.Adj z u ∧ G.Adj b u).card +
+            (X.filter fun x => G.Adj z x ∧ G.Adj b x).card = 1) := by
   classical
   dsimp only
   let F := fullLineCenters G S q
@@ -482,8 +491,42 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card
     nlinarith
   refine ⟨hbound, ?_⟩
   intro hcutEq
-  exact zero_card_eq_sub_two_of_strictCut_quadratic_eq
+  have hZcardEq := zero_card_eq_sub_two_of_strictCut_quadratic_eq
     hq hqm hzLower henergy hquad hcutEq
+  refine ⟨hZcardEq, ?_⟩
+  exact linear_trade_combinedShore_codeg_eq_one_of_strictBoundary
+    G.Adj U X Z H weight q m cut hqm (by omega) hcutEq hZcardEq
+    (fun z hz => hrowU z (Finset.mem_filter.mp hz).1)
+    hUbalance hXdom hpair hweight hmoment
+
+/-- The strict gap and zero-row boundary profile, projected from the stronger
+pointwise saturation theorem. -/
+theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (hconn : (secondOrderDefectGraph G).Preconnected)
+    (S : Finset V) (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v, (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    let F := fullLineCenters G S q
+    let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
+    let B := Fᶜ
+    let r := fun b => (G.neighborFinset b ∩ P).card
+    let Z := B.filter fun b => r b = 0
+    let cut := finsetGraphCutSize (secondOrderDefectGraph G) P
+    2 * q - 4 ≤ cut ∧ (cut = 2 * q - 4 → Z.card = q - 2) := by
+  have h := c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
+    G hfree hq hqm hreg hcard hconn S hempty hCcard hshore htri
+  exact ⟨h.1, fun hcut => (h.2 hcut).1⟩
 
 /-- Compatibility projection of the strict private-cut gap. -/
 theorem c4Free_binarySquare_pureEndpoint_privateCut_two_mul_sub_four_le
@@ -515,6 +558,8 @@ end Erdos85
 #print axioms Erdos85.sum_sub_one_positive_le_card_zeros_of_sum_le_card
 #print axioms Erdos85.sum_sub_one_positive_add_defect_eq_card_zeros
 #print axioms Erdos85.two_mul_sub_four_le_of_combinedShore_collision
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
 #print axioms
   Erdos85.c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card
 #print axioms Erdos85.c4Free_binarySquare_pureEndpoint_privateCut_two_mul_sub_four_le
