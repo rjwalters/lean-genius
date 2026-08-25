@@ -21,5 +21,9 @@ name = "v2cnf"
 root = "Proofs.Erdos85OneHighV2CnfEmit"
 
 [[lean_exe]]
+name = "refinementcnf"
+root = "Proofs.Erdos85OneHighRefinementCnfEmit"
+
+[[lean_exe]]
 name = "lratreplay"
 root = "Proofs.Erdos85LratRuntime"
