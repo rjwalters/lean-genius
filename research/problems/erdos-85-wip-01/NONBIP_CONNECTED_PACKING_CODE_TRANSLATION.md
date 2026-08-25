@@ -168,6 +168,56 @@ retain coordinate-labelled higher products (for example individual
 cross-neighbour matchings), not merely the row space, kernel, hull, or their
 dimensions.
 
+### Perfect-hypergraph-matching translation: exact terminal, no lower bound
+
+Regard the `q^2` row supports as the edges of a `q`-uniform, `q`-regular
+linear hypergraph on `q^2` points.  A hypergraph matching is exactly a clique
+in the defect graph `D`.  Therefore a perfect matching of `q` rows gives a
+`K_q` in the `(q-1)`-regular graph `D`; that clique is a whole connected
+component.  In the NONBIP-CONNECTED branch, proving a perfect matching would
+be terminal.
+
+There is a useful exact maximal-matching ledger.  Let `M` be a maximal
+matching of `t` rows, let `U` be their disjoint union, and for each row `B`
+outside `M` put
+
+```text
+a_B = |{E in M : E meets B}|.
+```
+
+Maximality and linearity give `1 <= a_B <= t`.  Counting incidences between
+the selected and unselected rows in two ways gives
+
+```text
+sum_(B outside M) a_B = t q(q-1),
+sum_(B outside M) (t-a_B) = t(q-t).                (PM1)
+```
+
+At the penultimate value `t=q-1`, the total deficit is only `q-1`.  The
+uncovered point set `W` has size `q`, and every unselected row meets `W`, with
+
+```text
+sum_(B outside M) (|B intersect W|-1) = q-1.        (PM2)
+```
+
+Thus `t=q-1` would reduce the branch to a `q`-point near-transversal with total
+excess `q-1`.  The missing step is not the terminal but any theorem forcing
+`t>=q-1`.
+
+The matching literature does not supply it.  Pippenger--Spencer and later
+linear-hypergraph results give nearly perfect matchings when uniformity is
+fixed and codegree is negligible relative to a growing degree, or under
+stronger minimum codegree hypotheses.  Here uniformity and degree are both
+`q`, and general regular linear hypergraphs need not have perfect matchings.
+The fixed-free `q=4` control already satisfies these same hypergraph
+parameters without a size-`q` matching.  Hence a usable lower bound must
+exploit the self-polar labelling beyond regularity and linearity; no such
+published theorem was located.
+
+The generic perfect-matching lane is therefore **stopped**.  `(PM1)--(PM2)`
+identify an honest future entry point only if a polarity-sensitive argument
+first reaches `t=q-1`; proving the ledger alone is not a chain to A-REG.
+
 ### Bounded lattice probe: stopped
 
 Because `A` is symmetric with zero diagonal, it is the Gram matrix of an
