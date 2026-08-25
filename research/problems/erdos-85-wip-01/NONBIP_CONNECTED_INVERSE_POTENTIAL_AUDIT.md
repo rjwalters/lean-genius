@@ -131,9 +131,11 @@ deg_T(y) x_y <= 0.                                    (P8)
 Indeed (P7') would then be nonpositive, and the guaranteed nonperfect
 off-diagonal sink would make it strictly negative.  However, (P8) is not
 merely unproved: it is incompatible with the original block-sum law (P3).
-Choose any `z in N_D(y)`, which exists because `D` has degree `q-1>0`.
-The definition of a defect edge says that `y` and `z` are nonadjacent and
-have no common A-neighbor.  Therefore
+The radius-two Moore count already proves that `y` lies in at least one
+triangle.  Since `D` has degree `q-1` and its A-edge part at `y` has degree
+`deg_T(y)=q-2 triangle_A(y)`, the set
+`N_D(y) minus N_A(y)` has size `2 triangle_A(y)-1>0`.  Choose `z` in that
+set.  Then `y` and `z` are nonadjacent and have no common A-neighbor, so
 
 ```text
 N_A(z) is a subset of R = V minus (S union {y}).       (P8-cut)
@@ -141,10 +143,12 @@ N_A(z) is a subset of R = V minus (S union {y}).       (P8-cut)
 
 But (P3) at `z != y` gives `sum_(u in N_A(z)) x_u=0`, whereas strict
 negativity on `R` would make this sum strictly negative.  Thus no survivor
-can satisfy (P8).  More generally, each defect-neighbor block is either
-identically zero in the potential or already contains both signs.  The
-mixed-sign horn is forced locally rather than being an exceptional case to
-eliminate by a maximum principle.
+can satisfy (P8).  More generally, each such non-A defect-neighbor block is
+either identically zero in the potential or already contains both signs.
+For a triangle-free A-edge `z in N_D(y) intersect S`, the same block-sum
+argument includes the root term instead.  The mixed-sign horn is forced
+locally rather than being an exceptional case to eliminate by a maximum
+principle.
 
 The diagonal sign is independently delicate: the Petersen graph, a nearby
 nonsingular C4-free control at different parameters, has
@@ -200,6 +204,59 @@ collar around S with all negative potential supported on `t_y(v)=q`. (P12)
 The only plausible continuation of this lane is therefore a theorem
 excluding the zero-collar/perfect-transport horn.  Uniform sink negativity
 is not a candidate.
+
+### Zero collar as a fractional transversal cover
+
+The remaining horn has an exact positive reformulation.  Let
+
+```text
+C_y = {z != y : (A^2)_{yz}=1}
+```
+
+be the collinearity layer of `y`.  It is the disjoint union, indexed by
+`s in S`, of the `q` cells `N_A(s) minus {y}`, each of size `q-1`; hence
+`|C_y|=q(q-1)`.  Under (P8w), let
+
+```text
+P_y^- = {p outside S : t_y(p)=q and x_p<0},
+w_p = -q x_p for p in P_y^-.
+```
+
+For `z in C_y`, exactly one source lies in `N_A(z)`.  Equation (P3), the
+zero collar (P11), and nonpositivity on `R` therefore give
+
+```text
+sum_(p in P_y^- intersect N_A(z)) w_p = 1.            (P13)
+```
+
+Conversely, `t_y(p)=q` says that the A-edges between `S` and `N_A(p)` form
+a perfect matching.  Thus `N_A(p)` is contained in `C_y` and contains
+exactly one point from every cell `N_A(s) minus {y}`.  It is a transversal
+of the q-cell partition.  C4-freeness says that two such transversal blocks
+intersect in at most one point.
+
+Double-counting (P13), and then evaluating it at a point of each block,
+gives the exact fractional-cover ledger
+
+```text
+sum_(p in P_y^-) w_p = q-1,
+0 < w_p <= 1.                                         (P14)
+```
+
+In particular `|P_y^-|>=q-1`, and the A-neighborhood of every one of the
+`q(q-1)` points in `C_y` contains a negative perfect-transport sink.  If
+the cover is
+integral, then it consists of exactly `q-1` weight-one blocks whose
+neighborhoods partition `C_y`.  Those `q-1` labels form a `K_(q-1)` in D,
+because their A-neighborhoods are pairwise disjoint.  This is close to, but
+not yet, a D-component: each clique vertex still has one D-neighbor outside
+the clique, and proving that the neighbor is always `y` is an additional
+location statement.
+
+The exact remaining interface is therefore not a sign theorem.  It is an
+integrality/location theorem for the self-polar fractional transversal cover
+(P13)--(P14).  Generic fractional matching theory cannot be cited as if it
+supplied integrality; the labels `p` and the blocks `N_A(p)` must enter.
 
 The latter warning has an exact bounded control in
 `nonbip_connected_inverse_potential_p2_control.py`.  A connected cubic graph
