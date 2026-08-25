@@ -221,6 +221,33 @@ incidence bottleneck already on the map.  The live content remains
 pointwise: control the signs in (P8), or exploit a nonscalar interaction of
 `C` with `A^{-1}`.  Further trace wrappers do not advance the node.
 
+## Faithful-control boundary
+
+The parameterized bounded falsifier
+`nonbip_connected_inverse_potential_control_sat.py` makes explicit why a
+larger example sweep is not a useful next lane.  It searches actual
+symmetric loopless `q`-regular C4-free graphs on `q^2` vertices, splits by
+the root matching, computes `A^{-1}e_y` exactly whenever `A` is nonsingular,
+and reports the first P8 violation.
+
+There are no odd-`q` controls: the degree sum `q^3` is odd.  The
+zero-root-triangle stratum is uniformly empty because the root and its first
+two distance layers would contain `1+q+q(q-1)=q^2+1` points.  Thus `q=3`
+and `q=5` are eliminated without a solver, while the first even parameter
+`q=4` is exactly the singular sampled regime recorded above.  At a binary
+parameter `q>=8`, a faithful nonsingular control would itself be a
+counterexample to NONBIP-CONNECTED, the theorem this lane is meant to prove.
+Consequently example-based validation of P8 is not logically cheaper than
+the target; escalating the labelled SAT search would be a disguised census.
+
+**Control verdict: CUT.**  Keep the script as a falsifier for any externally
+supplied nonbinary even control, but do not launch a larger graph census.
+The smallest potentially weaker sign target is an aggregate one that still
+contradicts (P7'), for example positivity of the root-weighted diagonal term
+combined with control of the negative off-diagonal contribution.  Any such
+claim must use entrywise square-root/incidence data; unweighted trace and
+generic connected-Laplacian information have already been eliminated.
+
 ## Verdict
 
 **NEW EXACT INTERFACE, NOT A TERMINAL.**  The next bounded question is
