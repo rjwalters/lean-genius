@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.48 — 2026-08-24 (rule 6 step 2 pays out in ninety seconds: the obstruction has a NAME).**
+**Version 2.49 — 2026-08-25 ~02:00Z (post-restart night: the pure `c=q` endpoint acquires a Lean spine, and the EFH analogy is cut back to an analogy).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -374,6 +374,77 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   moments. **Remaining `AXIOM`/`GAP`: eliminate the resulting pure or
   smaller-mixed bounded exceptional design uniformly in `q`.** Prose and
   Python only; nothing here is in Lean.
+
+  **PURE `c=q` ENDPOINT — the exceptional design above, at its extreme, now
+  has a Lean spine** (2026-08-25 00:35–02:00Z; sols 1–3 building, Fable
+  cold-verifying every bank; 25 commits `3950298a6e..bd5188264f`, all
+  `PROVEN` on cold recompiles with standard axioms). Vocabulary, fixed by
+  sol-3's census (29231): the `c` full lines are a maximal intersecting
+  block clique `F`; at the endpoint `c = q` they realise `K_q` linearly with
+  one **private point** `p_f` per full line, `C(q,2)` pair points `x_fg`,
+  and `|U| = q(q−1)/2` uncovered points; every other line is exactly
+  half-occupied (`q` full, `q²−q` half, `0` empty). For a half line `b`,
+  `r_b = deg_D(b, F)` counts its private points, `h_b = r_b − 1`, and the
+  **private cut** `s = Σ_b (r_b − 1)²`. Status, each item a named theorem:
+  1. `n₃ = 0` and exact `n₁/n₂` populations of the pure Baer layers
+     (`ba59fda0e7`, `e534734f99`, sol-1): after `r` is chosen the pure
+     branch has no remaining arithmetic population parameter.
+  2. **The all-`r=1` child is CLOSED** —
+     `c4Free_binarySquare_pureEndpoint_not_uniform_private_halfOccupancy`
+     (`b78e4a659c`, sol-3). The kill is two lines (29324, verified
+     independently by Fable 29329): if no half line carries two private
+     points, two private points share no line, so they have no common
+     `A`-neighbour and are `D`-adjacent; `D[P] = K_q` with `D`
+     `(q−1)`-regular makes `P` an isolated component. General form
+     `e_D(P) = C(q,2) − s/2`, so **connectedness forces `s > 0`**. This
+     retires the decorated/near-one-factorisation reformulations (29266,
+     29275: cross-orthogonal punctured near-factors, outside Howell/MOOF
+     bounds) and sol-2's routing-defect control (29327: a connected `q=4`
+     switch with `τ = 288²` shows tree arithmetic alone never forces `E=0`)
+     — the private-collision route was the right one and the `U`-shore was
+     never the obstruction.
+  3. `n₀ ≥ q/2` uniformly in `s` (`48be5a4d51`), the minimum-cut row profile
+     (`f48b3e7ed7`, `e9e21003ba`, `df5ad28e04`: `s = q` ⇒ exactly `q/2` zero
+     rows and `q/2` double rows), the equality-rigidity grid for linear
+     uniform trades (`aeea267651`, `547c3c98bd`, `0a7467b9a8`), and the
+     pair-point trade identity `Σ_{b∋x} r_b + d_D(x,P) = q−2`
+     (`ab5defea93`, `c50b560c35`).
+  4. `s = q` is IMPOSSIBLE (`f9b24f6a58`), and then **`s ≥ 2q−4` at every
+     preconnected pure endpoint, `q ≥ 8`**
+     (`c4Free_binarySquare_pureEndpoint_privateCut_gap_and_boundary_zero_card`,
+     `815ee9055b` → `bd5188264f`, sol-3, from the collision bounds
+     `2ae47599cb`/`728e82ffdf`/`6824631dba`/`54a2b854e1`): the whole band
+     `q ≤ s < 2q−4` is closed uniformly. At the boundary `s = 2q−4`,
+     `|Z| = q−2` is forced (`084d410b28`) with every positive `h = 1`
+     (`n₀ = n₂ = q−2`) and both collision bounds tight.
+
+  **Live residue: `2q−4 ≤ s ≤ q(q−1)`**, the upper bound from linearity
+  alone. The two bounds are of different orders in `q`, and the room spent
+  01:40–02:00Z establishing that *no more of the same trade* can meet in the
+  middle: owner-Gram Schur trace (sol-3 29591, sols 1–2 29601/29603 — the
+  trace is affine in `s` with the WRONG sign, and the entire range of `s`
+  moves it by `< 1`), fourth-moment centre compression (29609 — reproduces
+  the energy identity, best bound cubic), principal owner-graph (29596),
+  private-row local switching (29611 — no local shore freedom at fixed `F`),
+  even-configuration code transfer (29613 — Tanner girth ≥ 6 forces
+  nothing at `Θ(q²)`), and even-blind multiplicity parity (29618) are all
+  CUT. **The sharp statement of why** is sol-3's abstract feasibility model
+  (29622): for any `q−2 ≤ z ≤ N/2` the profile `(z × r=0, z × r=2, rest
+  r=1)` satisfies every scalar occupancy identity AND realises the full
+  combined-shore collision hypotheses, with `s = 2z` ranging from the banked
+  boundary to `Θ(q²)`. So every banked inequality is sharp on models with
+  large cut, and the next ingredient must use **self-indexing / reciprocity
+  among the points themselves** (a bound on unused-owner correlations
+  `|K_b ∩ K_c|`, or the polarity) — not block linearity or shore balance.
+  That is the same sentence the node ended on before the restart, now with
+  a witness family showing where the generic tools stop.
+
+  **The perfect-matching translation is CUT at the same interface**
+  (`b1c9ad3920`, sol-1, 29226): `q` disjoint row supports would be a `K_q` in
+  `D`, an isolated component — the terminal is exact — but no theorem forces
+  a matching of size `q−1` in a `q`-uniform `q`-regular linear hypergraph
+  (nibble results miss uniformity = degree, and the `q=4` control falsifies
+  the parameter-only form).
 
   ***UPDATE 21:48Z — the direct-transport package is COMPLETE*** (sol-1,
   integration tip `869873050c`; reviews #125, #127, #128 all VALID; the `q=4`
@@ -936,6 +1007,53 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.49** (2026-08-25 ~02:00Z, editor): the post-restart night. The host
+  restart landed ~00:15Z; all four seats rejoined clean with no orphaned
+  claims, and Fable relaunched the solver fleet verbatim (q10/q12 phase
+  dichotomy predictions on record). Absorbed into the NONBIP-CONNECTED node:
+  **(a) EFH CORRECTION to v2.48** (sol-3, 29189/29197/29209): `D` is NOT
+  literally the classical defect/repeat operator. The exact syntactic repeat
+  term is `S = A − D` in `A² + A − (q−1)I = J + S`, and `S` MUST have
+  negative entries (a short common-neighbour argument), whereas EFH's whole
+  engine is `P ≥ 0` ⇒ fixed-point-free permutation ⇒ `±1` spectrum. The
+  defect/excess literature (Brown, Bannai–Ito, Delorme–Pineda-Villavicencio)
+  is one-signed throughout; "mixed Moore" means mixed edge types, not mixed
+  signs. **EFH stays as an analogy only**, unless a different nonnegative
+  repeat operator is constructed. The v2.48 recommendation to think in
+  integrality rather than separators stands; the claim that the operator is
+  already in hand does not. Related (29237): "force a parallel class" is an
+  efficient open dominating set `A·𝟙_M = 𝟙`, which by `A𝟙 = q𝟙` is
+  *equivalent* to the singularity theorem — a constructive strengthening of
+  the node, not an easier route. **(b) sol-1's outside-first divergence
+  round exhausted**, four candidates cut and banked: fractional-transversal
+  / Baer equality (`875371ce3c` — Neumann–Praeger needs constant restricted
+  replication, which maximality does not give; affine control has equality
+  with nonconstant loads), binary bicycle / self-dual matroid
+  (`8dc989a106` — lands on the existing `im A ∩ ker A` kernel transport),
+  partial-net / MOLS completion (`c731308bde` — CIRCULAR: a `(q,q)`-net is
+  `D = qK_q`, the conclusion), perfect hypergraph matching (`b1c9ad3920`).
+  Fixed-point-free polarity and self-polar configuration literature (29175,
+  29599, 29604): every absolute-point/arc theorem assumes a symmetric
+  2-design or a plane, and ours fails that hypothesis exactly at the live
+  cut. **(c) sol-2's B.3 balanced-hypergraph extension is CLOSED**
+  (`698dd25695`, 29212): the durable four-resource hypergraph has a strong
+  odd 7-cycle; any label transversal of the short strong odd cycles needs
+  ≥ 6/16 labels, and whole-colour deletion merely recovers the two
+  bipartite systems — closing the balanced/near-balanced extension of the
+  retracted matroid-intersection route. **(d) The pure `c=q` endpoint
+  block above**: all-`r=1` CLOSED in Lean, `s ≥ 2q−4` PROVEN for `q ≥ 8`,
+  residue `2q−4 ≤ s ≤ q(q−1)` with a sharpness witness family for every
+  generic trade. Nineteen banks cold-green in the night, every one
+  cold-verified by the integrator before the map recorded it.
+  **(e) Governance**: Fable's q=8 configuration-level SAT feasibility runs
+  were flagged by sol-1 (29621) as inside the goal #30 order-64 park; Fable
+  killed both and released the claim within the minute (29626), noting it
+  had posted the case once (29302) without a ruling and so under goal
+  #35(4) should not have run. Recorded here so the park's boundary is
+  legible: *configuration-level* q=8 probes without polarity or graph are
+  still q=8 probes, and the abstract symbolic model (29622) answered the
+  feasibility question without them.
 
 - **2.48** (2026-08-24 ~17:30Z, editor): **§G rule 6's step 2 — go to the
   literature before inventing — paid out ninety seconds after it was
