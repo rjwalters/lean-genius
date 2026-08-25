@@ -79,6 +79,113 @@ theorem card_sub_one_sub_degree_le_sq_of_nonadj_commonNeighbors_pos
   rw [← hcardS, ← hcardT]
   exact Fintype.card_le_of_injective f hf
 
+/-- Pointwise Moore accounting: all but at most `k(k-1)` nonneighbours of a
+root have zero common neighbours with it. -/
+theorem card_sub_one_sub_degree_le_zeroCommon_add_mul_pred
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    {k : ℕ} (hreg : D.IsRegularOfDegree k) (u : V) :
+    Fintype.card V - 1 - k ≤
+      ((Finset.univ.filter fun y =>
+        y ≠ u ∧ ¬ D.Adj u y ∧
+          Fintype.card (D.commonNeighbors u y) = 0).card) + k * (k - 1) := by
+  classical
+  let S := {y : V // y ≠ u ∧ ¬ D.Adj u y ∧
+    Fintype.card (D.commonNeighbors u y) ≠ 0}
+  let T := Σ z : {z : V // D.Adj u z},
+    {y : V // D.Adj z.1 y ∧ y ≠ u}
+  let center : ∀ y : S, D.commonNeighbors u y.1 := fun y =>
+    Classical.choice (Fintype.card_pos_iff.mp (Nat.pos_of_ne_zero y.2.2.2))
+  have hcenterAdj (y : S) :
+      D.Adj u (center y).1 ∧ D.Adj y.1 (center y).1 := by
+    have hc := (center y).2
+    rw [SimpleGraph.mem_commonNeighbors] at hc
+    exact hc
+  let f : S → T := fun y =>
+    ⟨⟨(center y).1, (hcenterAdj y).1⟩,
+      ⟨y.1, (hcenterAdj y).2.symm, y.2.1⟩⟩
+  have hf : Function.Injective f := by
+    intro x y hxy
+    apply Subtype.ext
+    exact congrArg (fun p : T => p.2.1) hxy
+  have hcardT : Fintype.card T = k * (k - 1) := by
+    simp only [T, Fintype.card_sigma]
+    have houter : Fintype.card {z : V // D.Adj u z} = k := by
+      rw [Fintype.card_subtype]
+      have heq : Finset.univ.filter (fun z => D.Adj u z) = D.neighborFinset u := by
+        ext z
+        simp [D.mem_neighborFinset]
+      rw [heq, D.card_neighborFinset_eq_degree, hreg u]
+    have hfiber : ∀ z : {z : V // D.Adj u z},
+        Fintype.card {y : V // D.Adj z.1 y ∧ y ≠ u} = k - 1 := by
+      intro z
+      rw [Fintype.card_subtype]
+      have heq : Finset.univ.filter (fun y => D.Adj z.1 y ∧ y ≠ u) =
+          (D.neighborFinset z.1).erase u := by
+        ext y
+        simp [D.mem_neighborFinset, and_comm]
+      rw [heq, Finset.card_erase_of_mem]
+      · rw [D.card_neighborFinset_eq_degree, hreg z.1]
+      · exact (D.mem_neighborFinset z.1 u).mpr z.2.symm
+    simp_rw [hfiber]
+    simp [houter]
+  have hcardSle : Fintype.card S ≤ k * (k - 1) := by
+    rw [← hcardT]
+    exact Fintype.card_le_of_injective f hf
+  let U := Finset.univ.filter fun y => y ≠ u ∧ ¬ D.Adj u y
+  let Z := U.filter fun y => Fintype.card (D.commonNeighbors u y) = 0
+  let P := U.filter fun y => Fintype.card (D.commonNeighbors u y) ≠ 0
+  have hcardU : U.card = Fintype.card V - 1 - k := by
+    have hklt : k < Fintype.card V := by
+      simpa [hreg u] using D.degree_lt_card_verts u
+    have hpartition : U = Finset.univ \ insert u (D.neighborFinset u) := by
+      ext y
+      simp [U, D.mem_neighborFinset]
+    rw [hpartition, Finset.card_sdiff]
+    simp [D.card_neighborFinset_eq_degree, hreg u]
+    omega
+  have hcardP : P.card = Fintype.card S := by
+    rw [Fintype.card_subtype]
+    congr 1
+    ext y
+    simp [P, U, and_assoc]
+  have hsplit : U.card = Z.card + P.card := by
+    simpa [Z, P] using
+      (U.card_filter_add_card_filter_not
+        fun y => Fintype.card (D.commonNeighbors u y) = 0).symm
+  have hZeq : Z = Finset.univ.filter fun y =>
+      y ≠ u ∧ ¬ D.Adj u y ∧ Fintype.card (D.commonNeighbors u y) = 0 := by
+    ext y
+    simp [Z, U, and_assoc]
+  rw [hcardU] at hsplit
+  rw [hZeq, hcardP] at hsplit
+  omega
+
+/-- At square order, every root has at least `2q-2` nonneighbours with no
+common neighbour in the defect graph. -/
+theorem squareOrder_degree_pred_two_mul_pred_le_zeroCommon
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    {q : ℕ} (hq : 2 ≤ q) (hcard : Fintype.card V = q * q)
+    (hreg : D.IsRegularOfDegree (q - 1)) (u : V) :
+    2 * (q - 1) ≤
+      (Finset.univ.filter fun y =>
+        y ≠ u ∧ ¬ D.Adj u y ∧
+          Fintype.card (D.commonNeighbors u y) = 0).card := by
+  have hbound := card_sub_one_sub_degree_le_zeroCommon_add_mul_pred D hreg u
+  rw [hcard] at hbound
+  have hsub : q * q - 1 - (q - 1) = q * (q - 1) := by
+    rw [Nat.mul_sub_left_distrib]
+    omega
+  rw [hsub] at hbound
+  have hid : q * (q - 1) =
+      2 * (q - 1) + (q - 1) * (q - 1 - 1) := by
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, q = e + 2 := ⟨q - 2, by omega⟩
+    norm_num
+    ring
+  rw [hid] at hbound
+  omega
+
 /-- Zero common-neighbour count on nonedges makes adjacency transitive along
 every non-backtracking two-step walk. -/
 theorem adj_trans_of_nonadj_commonNeighbors_zero
@@ -174,6 +281,8 @@ theorem squareOrder_degree_pred_constant_nonadj_commonNeighbors_disconnected
   omega
 
 #print axioms card_sub_one_sub_degree_le_sq_of_nonadj_commonNeighbors_pos
+#print axioms card_sub_one_sub_degree_le_zeroCommon_add_mul_pred
+#print axioms squareOrder_degree_pred_two_mul_pred_le_zeroCommon
 #print axioms adj_trans_of_nonadj_commonNeighbors_zero
 #print axioms degree_eq_card_sub_one_of_connected_nonadj_commonNeighbors_zero
 #print axioms squareOrder_degree_pred_constant_nonadj_commonNeighbors_disconnected
