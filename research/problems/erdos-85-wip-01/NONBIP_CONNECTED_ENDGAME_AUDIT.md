@@ -98,6 +98,44 @@ Consequently the cube upper is false as a generic binary-incidence theorem.
 Any viable version must genuinely use both connectedness and the intended
 `k>=3` range, rather than merely carry those hypotheses unused.
 
+There is also an exact graph-theoretic reformulation which fixes the scale
+of the missing input.  Put `r=q-1`, and for `x in V(D)` let `t_x` be the
+number of edges induced by `N_D(x)` (equivalently, the number of triangles
+of `D` containing `x`).  Since `D` is `r`-regular and
+`S_x={x} union N_D(x)` has `q` vertices,
+
+```text
+delta_D(S_x) = r q - 2 e_D(S_x)
+             = (q-1)(q-2) - 2 t_x.
+```
+
+The row representation and `sum_x t_x = 3 tau(D)` therefore give the exact
+global identity
+
+```text
+||AD-(J-A)||_F^2 = q^2 (q-1)(q-2) - 6 tau(D),              (E-triangle)
+```
+
+where `tau(D)` is the number of (unordered) defect triangles.  Hence
+`INCIDENCE-BOTTLENECK-CUBE-UPPER` is equivalent to the very strong lower
+bound
+
+```text
+6 tau(D) >= q^2 (q^2 - 4q + 2).                            (triangle-lower)
+```
+
+Relative to the elementary maximum
+`tau(D) <= q^2 (q-1)(q-2)/6`, this says that the triangle deficit from a
+disjoint union of `K_q`'s is at most `q^3/6`.  Connectivity points in the
+opposite local direction: it makes every closed-star cut positive and, via
+the banked maximal-connectivity theorem, supplies the *lower* energy bound.
+It does not by itself make `D` sufficiently close to a union of cliques.
+Thus a proof of the cube upper must now be advertised honestly as a
+polarity/square-root-driven **triangle lower bound for `D`**, not as a cut or
+connectivity estimate.  The sixth-moment restatement is algebraically the
+same demand, since `(E-triangle)` already eliminates the repeated-occupancy
+variables exactly.
+
 ## The `mu=-1` blind spot, split by exponent parity
 
 On a simultaneous adjacency/defect eigenvector, `E` acts by
