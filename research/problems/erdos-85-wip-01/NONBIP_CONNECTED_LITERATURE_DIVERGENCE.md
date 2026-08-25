@@ -580,3 +580,35 @@ replication would assume precisely the new global design structure that the
 Baer lane is trying to derive.  Candidate 4 is therefore **stopped by a
 hypothesis gap**, not promoted to a terminal.  The four sunflower/
 almost-intersecting candidates from this divergence round are exhausted.
+
+### Partial-net/MOLS completion probe: circular at the entry gate
+
+A net of order `q` and degree `r` has `rq` lines partitioned into `r`
+parallel classes of `q` pairwise-disjoint lines, with every point on one line
+from each class.  Our configuration has exactly the matching parameters for
+`r=q`: `q^2` lines, line size `q`, and point degree `q`.  But it is a net only
+after proving that its disjointness graph is
+
+```text
+D = q K_q.                                               (NET1)
+```
+
+Indeed the parallel classes of the putative net are precisely the size-`q`
+cliques of `D`; conversely `(NET1)` supplies the required resolution.  Thus
+recognising our configuration as a net is equivalent to the disconnected-
+defect conclusion, not a weaker input from which that conclusion follows.
+
+The classical MOLS completion theorems do not bridge this gap.  They begin
+with a `(q,r)`-net, equivalently `r-2` mutually orthogonal Latin squares, and
+show extension when `r` is already close enough to `q+1` (for example the
+Bruck threshold corresponding to at least
+`q-1-(2q)^(1/4)` MOLS).  They preserve and extend supplied parallel classes;
+they do not manufacture the first resolution from a regular disjointness
+graph.  A maximal intersecting transversal also supplies no class: the count
+`|C|>=q` from `(SW2)` controls blocks meeting one another, whereas a parallel
+class requires `q` blocks disjoint from one another.
+
+Therefore the partial-net/MOLS route is **stopped as circular**.  It becomes
+relevant only after a new polarity-sensitive theorem has already produced a
+single full parallel class and propagated it through `D`; at that point the
+hard NONBIP-CONNECTED step is essentially complete.
