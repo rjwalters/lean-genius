@@ -6219,3 +6219,42 @@ already has the bad-row reverse descent in `(13bna'''d)`.  The useful scope
 boundary is only that a future all-row-feasible countermodel cannot be
 certified from the outer `Q,K` layer alone; it must extend through this
 degree/common-neighbor interaction.                                  (13bna'''f)
+
+The reverse-boundary descent admits a useful one-sided strengthening.  For
+an obstructed row `z`, its reverse interval can fail in three logically
+different ways:
+
+```text
+lower deficit: no packing at z contains all of F_z;
+upper deficit: no packing at z avoids all of I_z;
+mixed only:    each condition is separately feasible, but not together.
+```
+
+The exhaustive verifier
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_q9_13bo_one_sided_boundary_descent.py
+```
+
+recomputes the ten all-row-feasible payloads and all seventeen strict
+terminal failures.  In every case it can choose the exchange-coupled,
+reverse-boundary, lex-better row `z` from `(13bo)` so that `z` has a lower or
+upper deficit; the mixed-only case is never needed.  For deterministic least
+witnesses, fourteen have a lower deficit, nine have an upper deficit, and six
+have both.
+
+Thus the sharper empirical target is
+
+```text
+(13bo), with z chosen so that
+  (no P in Pack(z) contains F_z)
+  or (no P in Pack(z) is disjoint from I_z).               (13bob)
+```
+
+This is more proof-facing than merely asserting that `z` is reverse-
+obstructed.  It removes the compatibility interaction between the two
+boundaries: the final obstruction can be proved by a forced-bundle packing
+deficit or by an impossible-set transversal, separately.  The genuinely new
+transport statement is still the existence of such a boundary `z` coupled at
+a residual source; `(13bob)` is corpus evidence, not a universal theorem.
