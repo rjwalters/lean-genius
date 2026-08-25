@@ -313,6 +313,41 @@ linearity, self-polar placement plus the `q^2` point budget distinguishes the
 known fractional countermodel, so that is the precise surviving mechanism
 class to investigate.
 
+The broader script
+`inverse_potential_selfpolar_fractional_cover_q4_sat.py` quantifies over the
+transversal blocks and positive rational cover weights themselves.  Merely
+requiring labels to lie in `R` is still insufficient: it finds a six-block
+model with every weight `1/2`, distinct loopless labels, symmetric labelled
+incidence, and pairwise block intersection at most one.
+
+That witness exposes one further incidence-location law.  If a perfect sink
+`p` lies in the cell `N_A(s) minus {y}`, then `s in N_A(p)`.  Since
+`N_A(p) subset C_y`, the source `s` must itself belong to `C_y`; equivalently
+the root edge `ys` lies in a triangle.  At `q=4` with `deg_T(y)>0`, the root
+has exactly one triangle.  Hence, up to cell symmetries, a negative perfect
+sink has only five possible labels: the four nonsource points in the two
+triangle-supported cells, and the unique point of
+`R minus C_y = N_D(y) minus N_A(y)`.
+
+With precisely this faithful label set, every nonintegral support size is
+UNSAT: positive weights have total three, so a fractional cover needs four
+or five blocks, and the solver excludes both sizes.  Three blocks would have
+all weights one.  Thus the full partial-self-polar cover abstraction at the
+faithful positive-`deg_T` q=4 root forces integrality.  This remains bounded
+evidence, not a q-generic theorem and not an ambient graph classification,
+but it identifies a sharper candidate mechanism than self-polarity alone:
+
+```text
+self-polarity + perfect-transport label location + square-order budget
+    may force the zero-collar cover integral.          (P15 candidate)
+```
+
+At general root triangle count `r<q/2`, the same elementary location law
+leaves `2r(q-2)` candidate labels inside the triangle-supported cells and
+`2r-1` candidates in `R minus C_y`, for a total of
+`2r(q-1)-1`.  Cardinality alone is therefore not enough at larger q; a
+proof of (P15) must use symmetric incidence between those candidate labels.
+
 The latter warning has an exact bounded control in
 `nonbip_connected_inverse_potential_p2_control.py`.  A connected cubic graph
 on 16 vertices with `q=4` and a four-point source set has the normalization
