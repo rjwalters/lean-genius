@@ -357,3 +357,54 @@ graph.  It decisively rejects the inference that the integer part of
 use global compatibility among all irreducible factors (for example the
 exact defect moments, characteristic polynomial, or entrywise square-root
 constraints), rather than the split/non-split dichotomy alone.
+
+### Global integral factor compatibility still does not suffice
+
+The positive in-window Capell orbit can be embedded in a full monic integral
+spectral ledger with the exact defect first two moments.  For every power of
+two `q >= 16`, take the two conjugate defect roots
+
+```text
+q - 4 +/- 2 sqrt(2)
+```
+
+each with multiplicity `q/2`.  Give `g(x)=x^2+2x-1` multiplicity `q/2-1`
+and `g(-x)` multiplicity `1`, contributing adjacency trace `-q+4`.
+Complete the defect spectrum by
+
+```text
+mu       multiplicity
+q-17                 1
+q-2                  2
+-(q-2)               2
+-1       q^2-32q+270
+-2             15q-144
+0              16q-132.
+```
+
+The root `q-17` corresponds to adjacency square `16`; choosing its single
+adjacency root as `-4` completes the nonprincipal trace `-q`.  Every other
+rational nonsquare adjacency-square root has even multiplicity and can be
+paired with its negative.  All multiplicities are nonnegative for `q >= 16`,
+and the only defect root `q-1` is the principal one.  Direct simplification
+gives
+
+```text
+dimension = q^2,
+tr D      = 0,
+tr D^2    = q^2(q-1),
+tr A      = 0.
+```
+
+The symbolic verifier is
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_nonbip_connected_integral_capell_completion.py
+```
+
+This remains a spectral ledger, not a graph or realizable zero-one matrix.
+Its scope is exact: **global integral factor compatibility plus the first two
+defect moments is not the missing designated-dimension upper bound**.  A
+successful characteristic-polynomial argument must add stronger
+graph-realizability, projector, or entrywise incidence information.
