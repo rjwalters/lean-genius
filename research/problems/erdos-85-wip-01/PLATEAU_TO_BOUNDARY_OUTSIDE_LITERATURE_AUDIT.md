@@ -117,13 +117,23 @@ non-cage; indeed it explicitly records graphs above cage order on which the
 excision cannot be applied.  Thus it supplies the right operation and the
 right compatibility question, but no universal existence theorem.
 
-This clarifies the next non-wrapper target: formulate the simultaneous-safe
-matching graph on the neighbours of one deleted tight vertex (or two in the
-odd-degree case), and derive a perfect/near-perfect matching from plateau
-structure.  Pairwise safety alone is insufficient until the mixed `C4`
-condition for two added repair edges is included.  This is a smaller and
-more concrete specialization of the repository's general
-delete-`k`/add-`k+1` gadget interface.
+There is also a decisive terminal mismatch.  Excision deletes vertices and
+adds edges, so its output has order `m-1` (or smaller).  A plateau core only
+forbids a degree-`d` witness at order `m+1`; an order-decreased witness does
+not contradict that hypothesis.  Nor does it contradict
+`OrderMinimalC4PlateauCore`: minimality there ranges over smaller *plateau
+cores*, while the excised graph is merely a witness.  In fact the original
+order-`m` witness prevents the order-`m-1` witness from being a one-step
+plateau.  Excision would reach a terminal only with an additional invariant
+that permits iteration below the Moore bound, or transports nonextension to
+the smaller order.  Neither is supplied by the paper, and cage examples show
+that universal iteration is false.
+
+Consequently neighbour-pairing is not a specialization of the repository's
+delete-`k`/add-`k+1` gadget interface: that interface deletes `k` old vertices
+and adds `k+1` new vertices, producing the required order-`m+1` witness.
+Excision remains useful literature context for simultaneous `C4`-safe edge
+repair, but it is not a surviving Goal #7 mechanism by itself.
 
 ## Verdict and surviving target
 
@@ -135,7 +145,10 @@ selectors for a delete-`k`/add-`k+1` repair, or force a specific reducible
 configuration/order compression.  Generic container estimates, ordinary
 `C4` saturation, star-critical Ramsey theory, and girth-five excess
 classification do not do this.  The Exoo--Jajcay--Raiman excision is the
-closest known construction, but its universal pairing/existence step and
-its adaptation in the presence of triangles remain open here.
+closest order-decreasing analogue, but it is terminal-disconnected even
+before its universal pairing/existence step and its adaptation in the
+presence of triangles are considered.  The surviving construction target
+remains the genuinely order-increasing delete-`k`/add-`k+1` compatible-selector
+theorem already isolated in the repository.
 
 No Lean wrapper is recommended from this audit.
