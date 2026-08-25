@@ -6146,3 +6146,38 @@ statement.  Thus known generic matching exchange stops at the same
 rank-three boundary.  Any proof of `(13bl''')` must use the coupling of the
 source packings to reverse obstruction and lexicographic selection.
                                                                     (13bna'''e)
+
+The residual-`A` extension boundary of the pinned outer countermodel can be
+localized more sharply.  The diagnostic
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  probe_q9_b3_common_source_full_residual.py outer --pin-payload \
+    --restore-clause row-ledger --restore-clause dtb-common \
+    --restore-clause dtb-cap --timeout-seconds 60 --expect unsat
+```
+
+rebuilds the exact payload from `(13bna'''c)`, retains its six-row alternating
+core and common source, and restores only three relaxed residual families:
+the B0 row-degree ledger, the defect-to-block common-neighbor definition, and
+its orthogonality/cap consequences.  The result is `UNSAT` (reproducibly in
+about thirteen seconds).  All of `residual-c4`, `b0-c4`, `marked-miss`,
+`dtb-zero`, `dtb-rows`, and `dtb-columns` remain relaxed.
+
+This obstruction is genuinely an interaction.  Restoring each of the row
+ledger, common-neighbor package, `b0-c4`, or `dtb-zero` separately remains
+`SAT` for the pinned payload.  Restoring the row ledger with only
+`dtb-common`, or with only `dtb-cap`, did not decide within the 60-second
+bound; no smaller unsatisfiable package is claimed.  With the six core blocks
+fixed but all other outer coordinates free, the full residual model likewise
+returned `unknown` at 60 seconds.
+
+Therefore residual incidence does exclude this *particular* outer exchange
+countermodel before any C4 clause is used, and the first verified exclusion
+uses the coupling between exact B0 degrees and defect/common-neighbor
+orthogonality.  It does not prove that every common-source alternating core
+is excluded, and it does not advance past `(13bo)`: the same pinned payload
+already has the bad-row reverse descent in `(13bna'''d)`.  The useful scope
+boundary is that a future all-row-feasible countermodel cannot be certified
+from the outer `Q,K` layer alone; it must extend through this degree/common-
+neighbor interaction.                                                (13bna'''f)
