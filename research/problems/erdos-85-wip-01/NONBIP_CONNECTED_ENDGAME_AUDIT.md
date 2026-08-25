@@ -81,6 +81,22 @@ parallels (`E>=1`).  Thus the flag-diagonal completion target is exactly the
 existing incidence-bottleneck target, not an independent missing theorem.
 The energy `||E||_F^2` measures the total squared parallel-axiom defect.
 
+Equivalently, for a fixed line `z`, let `c_z` be the number of intersecting
+pairs among the `q-1` lines parallel to `z`.  Those lines have total
+incidence `q(q-1)` on the `q(q-1)` points outside `z`.  Linearity gives
+
+```text
+sum_p E_(p,z)^2 = 2 c_z.                                (E-almost-spread)
+```
+
+Thus each bottleneck column measures how far the parallel family is from a
+partial spread.  A pointwise bound `c_z <= q/2` would be a strong sufficient
+form of the proposed cube upper after summing over `z`.  Standard partial-
+spread deficiency theorems do not provide it: they assume the subspaces are
+already pairwise disjoint and lie in an ambient projective, polar, or
+translation geometry.  Here `c_z>0` and the absence of such an ambient
+completion are exactly the two difficulties to be overcome.
+
 ## The missing arrow
 
 No checked theorem or stated conjecture in the outline consumes
