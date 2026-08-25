@@ -222,6 +222,35 @@ theorem binarySquare_pureExceptional_halfDegree_lt_card
     q < 2 * c := by
   nlinarith
 
+/-- In the surviving pure exceptional range `c ≤ q`, the pointwise cut
+equation rules out replication three.  If a shore point has exceptional
+replication `t` and cross-shore defect degree `δ`, equation (74) is
+`q t = 2δ+c`.  The global defect-degree cap `δ ≤ q-1` then forces `t≤2`.
+This removes the triple-point term from every later pure-layer budget, not
+only from the endpoint `c=q`. -/
+theorem binarySquare_pureExceptional_replication_le_two
+    {q c t δ : ℕ} (hq : 1 ≤ q) (hcq : c ≤ q)
+    (hcut : q * t = 2 * δ + c) (hδ : δ ≤ q - 1) :
+    t ≤ 2 := by
+  by_contra ht
+  have hthree : 3 ≤ t := by omega
+  have hmul : 3 * q ≤ t * q := Nat.mul_le_mul_right q hthree
+  have hqt : t * q = 2 * δ + c := by simpa [Nat.mul_comm] using hcut
+  rw [hqt] at hmul
+  nlinarith [Nat.sub_add_cancel hq]
+
+/-- Family form of `binarySquare_pureExceptional_replication_le_two`: no
+shore point satisfying the pure cut equation can have replication three. -/
+theorem binarySquare_pureExceptional_no_replication_three
+    {P : Type*} {q c : ℕ} (hq : 1 ≤ q) (hcq : c ≤ q)
+    (t δ : P → ℕ) (hcut : ∀ p, q * t p = 2 * δ p + c)
+    (hδ : ∀ p, δ p ≤ q - 1) :
+    ∀ p, t p ≠ 3 := by
+  intro p hthree
+  have hle := binarySquare_pureExceptional_replication_le_two
+    hq hcq (hcut p) (hδ p)
+  omega
+
 /-- Exact inclusion--exclusion defect identity for the surviving pure
 branch.  Here `nᵢ` counts shore points of exceptional replication `i`, and
 `e` is the number of defect edges inside the pure exceptional support. -/
@@ -272,6 +301,15 @@ theorem binarySquare_pureExceptional_layer_normalForm
   obtain ⟨r, hqr, hbudget⟩ :=
     binarySquare_pureExceptional_defect_quantization hcq hdefect
   exact ⟨r, hqr, by omega, hbudget⟩
+
+/-- Sharpened pure-layer normal form after the pointwise cut equation removes
+all triple points: the internal defect budget itself is `2r²`. -/
+theorem binarySquare_pureExceptional_layer_normalForm_noTriple
+    {q c e : ℕ} (hcq : c ≤ q) (hhalf : q < 2 * c)
+    (hdefect : 2 * e = (q - c) * (q - c)) :
+    ∃ r : ℕ, q = c + 2 * r ∧ 4 * r < q ∧ e = 2 * r * r := by
+  simpa using (binarySquare_pureExceptional_layer_normalForm
+    (q := q) (c := c) (e := e) (n₃ := 0) hcq hhalf (by simpa using hdefect))
 
 /-- At the endpoint `c=q`, the pure exceptional support has neither an
 internal defect edge nor a triple point. -/
@@ -1183,9 +1221,12 @@ end Erdos85
 #print axioms Erdos85.binarySquare_mixedExceptional_card_le
 #print axioms Erdos85.binarySquare_pureLargeExceptional_impossible
 #print axioms Erdos85.binarySquare_pureExceptional_halfDegree_lt_card
+#print axioms Erdos85.binarySquare_pureExceptional_replication_le_two
+#print axioms Erdos85.binarySquare_pureExceptional_no_replication_three
 #print axioms Erdos85.binarySquare_pureExceptional_defect_triple_identity
 #print axioms Erdos85.binarySquare_pureExceptional_defect_quantization
 #print axioms Erdos85.binarySquare_pureExceptional_layer_normalForm
+#print axioms Erdos85.binarySquare_pureExceptional_layer_normalForm_noTriple
 #print axioms Erdos85.binarySquare_pureExceptional_endpoint_rigid
 #print axioms Erdos85.binarySquare_pureExceptional_endpoint_profile
 #print axioms Erdos85.binarySquare_mixedMajority_defect_identity

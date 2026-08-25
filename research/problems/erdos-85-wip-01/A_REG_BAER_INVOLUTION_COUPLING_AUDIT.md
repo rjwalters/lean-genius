@@ -6273,12 +6273,37 @@ no three meet, and their union consists of one point for each line-pair plus
 exactly one private point on each line.  More generally (78) quantifies the
 total failure of that endpoint design by the square distance from `c=q`.
 
+The triple term actually vanishes throughout the surviving interval, not
+only at the endpoint.  Equation (74) and defect regularity give, for every
+occupied-shore point,
+
+```text
+q t_P = 2 deg_D(P,V setminus S)+c,
+deg_D(P,V setminus S) <= q-1.
+```
+
+If `t_P=3` while `c<=q`, these inequalities would give
+`3q<=2(q-1)+q=3q-2`.  Hence `t_P<=2` everywhere and `n_3=0`.  This is
+Lean-checked pointwise and familywise by
+`binarySquare_pureExceptional_replication_le_two` and
+`binarySquare_pureExceptional_no_replication_three`.  Combining it with the
+quantized normal form sharpens every pure survivor to
+
+```text
+c=q-2r,        4r<q,        e_D(F)=2r^2.                (79)
+```
+
+The division-free arithmetic consumer is
+`binarySquare_pureExceptional_layer_normalForm_noTriple`.  Thus the strict
+interior no longer has a free trade between missing line-pairs and triple
+points: all quadratic defect is carried by actual edges of `D[F]`.
+
 The unresolved signed-support terminal has therefore split into two strictly
 smaller regimes: mixed support `c<=q`, with the unbalanced case in the exact
-`(r,u)` normal form (73d)--(73h), or pure support `q/2<c<=q`.  The latter
-still obeys (74), so every point of its occupied shore has positive
-exceptional replication.  Eliminating the pure partial-linear-space regime
-and the routed mixed low-r designs remains necessary.
+`(r,u)` normal form (73d)--(73h), or pure support in the quantized layers
+(79), including the endpoint `r=0`.  Eliminating the pure
+partial-linear-space layers and the routed mixed low-r designs remains
+necessary.
 
 Equations (7)--(78) are the first canonical cut detector manufactured from
 the partial Baer involutions and its first exact transport into `D`.  They
