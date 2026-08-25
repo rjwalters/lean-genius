@@ -381,9 +381,12 @@ does **not** force fractional-cover integrality uniformly in even `q`.
 Consequently P15 is **CUT** as a q-generic terminal.  A continuation would
 have to use completion of every unselected row to the same symmetric regular
 C4-free adjacency matrix, not merely another constraint internal to the
-fractional cover.  No q=8 version was launched: once the generic mechanism
-failed at q=6, a finite order-64 probe would fall under the standing park and
-would not repair the uniform proof gap.
+fractional cover.  No q=8 abstraction probe was launched: once the generic
+mechanism failed at q=6, a second finite parameter would not repair the
+uniform proof gap.  (The earlier order-64 park was lifted by goal #38; this
+is a mathematical stop condition, not a governance restriction.)  A
+faithful nonsingular ambient q=8 search would additionally be the target
+census itself, as explained in the faithful-control boundary above.
 
 The latter warning has an exact bounded control in
 `nonbip_connected_inverse_potential_p2_control.py`.  A connected cubic graph
