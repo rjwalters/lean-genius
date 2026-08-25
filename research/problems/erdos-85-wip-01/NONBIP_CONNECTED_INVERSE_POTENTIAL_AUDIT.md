@@ -207,7 +207,8 @@ is not a candidate.
 
 ### Zero collar as a fractional transversal cover
 
-The remaining horn has an exact positive reformulation.  Let
+For a root with `deg_T(y)>0`, the remaining horn has an exact positive
+reformulation.  (The zero-degree root correction is recorded below.)  Let
 
 ```text
 C_y = {z != y : (A^2)_{yz}=1}
@@ -218,12 +219,13 @@ be the collinearity layer of `y`.  It is the disjoint union, indexed by
 `|C_y|=q(q-1)`.  Under (P8w), let
 
 ```text
-P_y^- = {p outside S : t_y(p)=q and x_p<0},
+P_y^- = {p in R : t_y(p)=q and x_p<0},
 w_p = -q x_p for p in P_y^-.
 ```
 
 For `z in C_y`, exactly one source lies in `N_A(z)`.  Equation (P3), the
-zero collar (P11), and nonpositivity on `R` therefore give
+zero collar (P11), nonpositivity on `R`, and `x_y=0` (forced here by
+`deg_T(y)>0`) therefore give
 
 ```text
 sum_(p in P_y^- intersect N_A(z)) w_p = 1.            (P13)
@@ -258,6 +260,19 @@ integrality/location theorem for the self-polar fractional transversal cover
 (P13)--(P14).  Generic fractional matching theory cannot be cited as if it
 supplied integrality; the labels `p` and the blocks `N_A(p)` must enter.
 
+If `deg_T(y)=0`, every source belongs to `C_y` and (P11) does not determine
+`x_y`.  For `z in C_y minus S`, the right side of (P13) remains `1`; for
+`z in S`, the root is also in `N_A(z)` and the right side becomes
+`1+q x_y`.  Accordingly the total weight is
+
+```text
+sum_(p in P_y^-) w_p = q-1+q x_y.                    (P14-root)
+```
+
+Thus the clean unit cover and mass `q-1` must not be asserted in the
+all-triangular root case without first controlling the diagonal inverse
+entry `x_y`.  This is a separate horn, not a harmless normalization.
+
 There is a sharp abstract countermodel to integrality already at `q=4`.
 Take four cells indexed by the projective line
 `P^1(F_3)=F_3 union {infinity}`, each containing the three symbols of `F_3`.
@@ -277,6 +292,26 @@ still do not imply integrality.  Any successful continuation must use that
 the block `N_A(p)` is indexed by its own point `p` inside the same symmetric
 loopless incidence structure; dropping that self-polar placement makes the
 desired conclusion false.
+
+The bounded script
+`inverse_potential_fractional_cover_selfpolar_q4.py` restores the first
+piece of that placement data.  It assigns the nine projective blocks to
+distinct point labels, requires looplessness (`p notin B_p`), and requires
+symmetry between every pair of labelled blocks
+(`p in B_r` iff `r in B_p`).  There are twelve cell points and exactly four
+points outside `C_y`, matching the full `q^2=16` point budget.
+
+The exact finite query is UNSAT at four outside points.  It remains UNSAT
+with five, six, seven, or eight outside points, and becomes SAT with nine by
+placing every block label outside the cells.  Thus the explicit nonintegral
+cover above does **not** survive even the partial self-polar labelling law at
+the correct square-order budget.  This is bounded evidence, not a universal
+integrality theorem: the solver fixes one cover at `q=4`, and it does not
+complete the unlabelled rows to an ambient regular C4-free adjacency matrix.
+Its decision value is positive nonetheless.  Unlike generic transversal
+linearity, self-polar placement plus the `q^2` point budget distinguishes the
+known fractional countermodel, so that is the precise surviving mechanism
+class to investigate.
 
 The latter warning has an exact bounded control in
 `nonbip_connected_inverse_potential_p2_control.py`.  A connected cubic graph
