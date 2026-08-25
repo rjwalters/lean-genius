@@ -1023,3 +1023,73 @@ No cited theorem proves `(CFG1)`; assuming the elliptic-semiplane parallel
 axiom would assume its conclusion.  The configuration-language route is
 therefore **stopped at the parallel-axiom gate**, while providing useful
 search terminology for any future polarity-specific attack.
+
+### Three-block alternating radical: one extra vector, no extra equation
+
+The distinguished-row Gram decomposition above has a small characteristic-
+two consequence which initially appears to use all three size-two roots.
+Partition the coordinates of the symmetric loopless `6q by 6q` matrix `M`
+into the three `2q`-vertex root blocks and let `g_i` be their indicator
+vectors.  Every diagonal Hamilton block and every off-diagonal cross block
+has row sum two, so over `F_2`
+
+```text
+M g_1 = M g_2 = M g_3 = 0.                              (RAD1)
+```
+
+The three indicators are independent.  Since `M` is alternating and its
+order `6q` is even, its rank and nullity are even.  Hence `(RAD1)` forces
+
+```text
+nullity_F2(M) >= 4.                                     (RAD2)
+```
+
+Thus there is indeed a fourth radical vector outside the block-constant
+space.  It does not, however, survive the Gram identity as a new
+restriction.  Reducing `(PSD1)` modulo two gives
+
+```text
+U^T U = K + M^2,
+K = B^T B,
+```
+
+where `K` has zero diagonal: `q` is even, the diagonal blocks are adjacency
+matrices, and the off-diagonal `J` blocks occur in symmetric pairs.  Hence
+`K` is alternating.  For `h in ker(M)`, the only automatic scalar equation
+is
+
+```text
+h^T U^T U h = h^T K h = 0,                              (RAD3)
+```
+
+which merely says that `Uh` has even weight.  This holds for every `h`
+because `K` is alternating; it does not use `(RAD2)`.  The block constants
+themselves lie in `ker(B)` because every ambient row selects two vertices
+from each root, but there is no corresponding reason for the fourth vector
+to lie in `ker(B)` or `ker(U)`.
+
+The lower bound is also sharp within the exact local matrix profile.  A
+direct binary-rank check gives nullity four already at `q=4` for circulant
+Hamilton diagonal blocks and bipartite cross two-factors with shift pairs
+
+```text
+(7,3), (0,6), (1,4)  modulo 8,
+```
+
+and at `q=8` for shift pairs
+
+```text
+(3,5), (7,10), (8,10) modulo 16.
+```
+
+Here a shift pair `(a,b)` joins coordinate `i` in one block to `i+a` and
+`i+b` in the other; the transposed block supplies symmetry.  These are
+matrix-profile controls, not ambient incidence-square completions, but they
+show that Hamilton diagonals plus cross two-regularity impose no larger
+radical by themselves.
+
+The three-block radical route is therefore **stopped at `(RAD3)`**.  It is
+the rectangular version of the already-known generic alternating-adjacency
+radical: a continuation must retain the actual zero-one row factorization
+of `U` or a self-indexed placement condition, rather than kernel dimension
+alone.
