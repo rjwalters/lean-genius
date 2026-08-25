@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.62 — 2026-08-25 ~18:05Z (inverse-potential sign terminal P8 RETRACTED as impossible; its faithful-control census and aggregate trace routes cut; the interface survives only as a forced mixed-sign block statement).**
+**Version 2.63 — 2026-08-25 ~18:15Z (inverse-potential interface reduced to the zero-collar horn and a fractional transversal cover; abstract integrality cut by an exact countermodel; self-polar placement is the only remaining lever).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -1227,6 +1227,35 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.63** (2026-08-25 ~18:15Z, claude/integrator): **inverse-potential
+  lane, third hour — exact reductions, no terminal.** (i) Zero-collar horn
+  (sol-1 `a9dfc48878`, integrator-verified 31918): under the weak signs
+  `x ≤ 0` on `R = V ∖ (S ∪ {y})` and `deg_T(y)·x_y ≤ 0`, P2 on each
+  `s ∈ S` gives `Σ_{N_D(s)} x = (q−1)(x_s − 1/q) ≤ 0` (two S-points are
+  collinear via `y`, so `N_D(s) ⊂ R ∪ {y}`), hence `x_s = 1/q` on all of
+  `S` and `x ≡ 0` on `N_D(S)`; since `q − t_y(v) = |S ∩ N_D(v)| = (AD)_{yv}`,
+  every nonperfect sink lies in that zero collar and all negative mass sits
+  on perfect transports `t = q`. Honest trichotomy replacing P8: positive
+  root term, or a positive off-diagonal sink, or the zero-collar/perfect-
+  transport support. (ii) Fractional transversal cover (`0ae7069f40`,
+  `3155e1d685`, checked 31922/31929): with `w = −q·x` on the negative
+  perfect sinks `P⁻ ⊂ R`, `C_y = ⊔_{s∈S}(N(s)∖{y})` and every `z ∈ C_y ∖ S`
+  has `Σ_{P⁻∩N(z)} w = 1`, rows in `S` have `1 + q·x_y`, total
+  `q − 1 + q·x_y`; each `N(p)` is a `q`-transversal of the cells with
+  pairwise intersections `≤ 1` and `0 < w ≤ 1`; clean form assumes
+  `deg_T(y) > 0` (then `x_y = 0`). Integral `w` would give `q − 1`
+  disjoint transversals partitioning `C_y`, i.e. `P⁻` a `K_{q−1}` in `D`
+  with one external `D`-neighbour per label. (iii) Abstract integrality
+  CUT (`04409589b1`): cells `P¹(F₃)`, nine blocks `{(t, at+b)} ∪ {(∞,a)}`,
+  pairwise intersection exactly 1, uniform weight `1/3` exact-covers all
+  12 points with no integral 3-block cover — the cover alone forces nothing.
+  (iv) Bounded evidence, not theorem: placing that countermodel's blocks as
+  distinct loopless symmetric labels inside the `q² = 12 + 4` point budget
+  is UNSAT (SAT only with 9 external points), so self-polar placement plus
+  the square budget is the only lever left on this lane. Also this hour:
+  P8 witness in the banked audit corrected to `z ∈ N_D(y) ∖ N_A(y)`. Lean
+  tip unchanged at `778a2e1595` (85 banks); q=8 kissat runs at ~10.5 h.
 
 - **2.62** (2026-08-25 ~18:05Z, claude/integrator): **the inverse-potential
   sign terminal is dead, and with it the "missing blade" of v2.61.** Within
