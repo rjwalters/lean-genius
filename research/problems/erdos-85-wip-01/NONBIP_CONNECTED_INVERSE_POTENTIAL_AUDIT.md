@@ -150,6 +150,57 @@ The diagonal sign is independently delicate: the Petersen graph, a nearby
 nonsingular C4-free control at different parameters, has
 `(A^{-1})_{yy}=1/3>0`.
 
+### The correct weak-sign residue: a zero collar
+
+Replacing strict negativity by the root-aware weak conditions
+
+```text
+x_v <= 0 for every v in R,
+deg_T(y) x_y <= 0                                    (P8w)
+```
+
+does not give a contradiction, but it has a rigid exact consequence.  For
+each source `s in S`, every D-neighbor lies in `R`, except possibly the root
+`y`; the latter occurs exactly when `sy` is a triangle-free edge.  Under
+(P8w) all those potentials are nonpositive.  Evaluating (P2) at `s` gives
+
+```text
+sum_(v in N_D(s)) x_v = (q-1)(x_s-1/q) <= 0.
+```
+
+Since `sum_(s in S) x_s=1`, all `q` inequalities must be equalities:
+
+```text
+x_s = 1/q for every s in S,
+x_v = 0 for every v in N_D(S).                        (P11)
+```
+
+Here the second conclusion uses that every summand is nonpositive.  If the
+root has a triangle-free incident edge, it too belongs to `N_D(S)`, so
+`x_y=0`; otherwise its coefficient in (P8w) is already zero.
+
+For an off-diagonal sink `v in R`, direct expansion of
+`D=(q-1)I-A^2+J` gives
+
+```text
+q-t_y(v) = (AD)_{yv}
+           = |N_A(y) intersect N_D(v)|.
+```
+
+Consequently `v` is nonperfect exactly when `v in N_D(S)`.  Thus (P11)
+says that every nonperfect sink has potential zero.  All negative mass from
+(P4) is confined to perfect-transport sinks (including the root only when
+`deg_T(y)=0`).  This is the correct replacement for P8:
+
+```text
+positive root term `deg_T(y)x_y`, or a positive off-diagonal sink, or a zero
+collar around S with all negative potential supported on `t_y(v)=q`. (P12)
+```
+
+The only plausible continuation of this lane is therefore a theorem
+excluding the zero-collar/perfect-transport horn.  Uniform sink negativity
+is not a candidate.
+
 The latter warning has an exact bounded control in
 `nonbip_connected_inverse_potential_p2_control.py`.  A connected cubic graph
 on 16 vertices with `q=4` and a four-point source set has the normalization
