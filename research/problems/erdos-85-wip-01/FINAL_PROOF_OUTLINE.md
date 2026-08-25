@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.58 — 2026-08-25 ~07:55Z (v2.57 + the spectral-window-valid Capelli control) (consolidation: B.3 frontier at (13bo)/(13boc), the #63–#65 sweep recorded, every named terminal at a documented boundary; seats holding for operator direction).**
+**Version 2.59 — 2026-08-25 (v2.58 + Card #11 recorded: proper owners are uniformly NOT strongly regular, `PROVEN`; seats holding unclaimed for operator direction).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -806,6 +806,46 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     every nonprincipal internal mode either transports to the exterior or
     forces an alternating joint eigenline
     (`orderSixtyFour_seven_components_outside_transport_or_jointEigenline`).
+    - **PROPER OWNERS ARE UNIFORMLY NOT STRONGLY REGULAR — `PROVEN`**
+      (Card #11, 2026-08-25 04:19–04:50Z, sols 1–3 in a five-file relay,
+      red-teamed by Fable, cold-verified twice). For every `q ≥ 3` and every
+      normalised component of order `q·m` with `2 ≤ m < q`, the owner graph
+      `O_c = A P_c A − mI` (a genuine simple graph: diagonal `m` by
+      equitability, off-diagonal `|N(x)∩N(y)∩C_c| ∈ {0,1}` by C4-freeness,
+      degree `m(q−1)`, bottom root `−m`) admits no strongly-regular
+      parameter pair:
+      `false_of_binarySquare_regular_properOwner_srg` /
+      `binarySquare_regular_properOwner_not_exists_srg`
+      (`Erdos85BinarySquareProperOwnerNotStronglyRegularFinal`, `8b7292f8e1`,
+      sol-3). Chain: exact bottom kernel ⇒ nonzero `−m` eigenvector ⇒
+      `srg_bottom_root_equation` `m² = k − λm + μ(m−1)` (`2cd0fa3a1a`,
+      sol-1, generic) ⇒ `mλ − (m−1)μ = m(q−m−1)` (`f0f78627f8`, sol-2) ⇒
+      parameter solve `λ = q + m² − 3m`, `μ = m(m−1)` over ℤ
+      (`2f92917ae5`, sol-1) ⇒ `M = O + mI` satisfies `M² = qM + m(m−1)J`,
+      centred `K = qM − mJ` has `K² = q²K` (`1f78021dad`, sol-3) ⇒ banked
+      centred-owner rank `qm−1` against trace `q²m(q−1)` contradicts
+      `m ≥ 2` (`4bbabd9cf9`, `78f06ecd54`, sol-3). Companion generic
+      leaves: any `(q−1)`-regular graph on `q²` vertices with constant
+      nonedge codegree has `μ = 0` and is disconnected
+      (`squareOrder_degree_pred_constant_nonadj_commonNeighbors_disconnected`,
+      `d867b4f9c4`, sol-2; `a2688e196c`, sol-1), and pointwise
+      `z(u) ≥ 2(q−1)` zero-codegree nonneighbours (`1ecf8b401e`).
+      **Consumer interface** (`0b283ddf81`, sol-1): every proper owner
+      yields an explicit dichotomy — two owner edges with unequal codegree,
+      or two owner nonedges with unequal codegree
+      (`binarySquare_regular_properOwner_exists_codegree_irregularity`).
+      **Scope, per sol-1's own caution (30533): this does NOT close any
+      mixed partition family** — the `q=4` `[2,2]` control survives it.
+      `m = 2` support on the same night: triangle-free `q`-regular on `2q`
+      has complementary endpoint neighbourhoods (`06ea30e631`, sol-2);
+      every `q`-regular selector graph has an open wedge (`2366af495c`),
+      and the size-two structural endpoint — selector-star card `q`, exact
+      wedge classification, open/closed wedge codegrees `q−2`/`q−1`,
+      constant edge-codegree ⇒ selector triangle-free — is `b95c8232e0`
+      (sol-1); the durable `q=4` owner-variation falsifier
+      (`93186d9743`, sol-3) shows both size-two owners are indistinguishable
+      by trace/parity/whole-family data, so any `m=2` consumer must be
+      pointwise.
     - **h305 (μ=−3, `C8 ⊔ C8`) marked-graph lane — conditional** (20 Aug,
       sols 1–3). `PROVEN`: rowExcess ≥ 4 on all 40 nonantipodal service rows
       (`h305_cross_cubicResidualEdge_squareMass_ge_550_of_components`,
@@ -1182,6 +1222,18 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.59** (2026-08-25, editor): Card #11 recorded — sol-1's 30533 request
+  had been half-absorbed (the B.3 (13f) retraction went in at v2.53; the
+  Card #11 `PROVEN` did not). Added under `parts of size ≥ 3` with the full
+  five-file chain and the consumer dichotomy `0b283ddf81`, the companion
+  generic leaves, the `m=2` support banks, and sol-1's scope caution
+  verbatim. Thanks to Fable for v2.51–v2.58: the B.3 frontier, the Goal #7
+  boundary, the #63–#66 sweeps and the Capelli control are all recorded
+  correctly and were reviewed live by the seats; nothing there is
+  re-touched. The map's status line is unchanged: every named terminal at
+  a documented boundary, seats holding unclaimed, the next move is the
+  operator's.
 
 - **2.58** (2026-08-25 ~07:55Z, claude-fable): per sol-1 (31604), the Capelli
   counterexample in the #66 paragraph now cites sol-3's spectral-window-valid
