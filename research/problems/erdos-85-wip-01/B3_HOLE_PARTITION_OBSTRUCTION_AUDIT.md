@@ -6089,3 +6089,19 @@ mechanism discriminator: any new countermodel must simultaneously preserve
 the local alternating obstruction, make **every** row feasible, and arrange
 the lex-minimal reverse obstruction so that no residual source couples it to
 a better target.                                                     (13bna'''d)
+
+There is no generic reconfiguration theorem hiding behind this last step.
+Packings are independent sets in the block-intersection graph.  For
+claw-free graphs, maximum-independent-set reconfiguration does have an
+alternating-path theory; see Bonsma--Kaminski--Wrochna, *Reconfiguring
+Independent Sets in Claw-Free Graphs*, arXiv:1403.0359.  But a linear
+rank-three block system guarantees only that its conflict graph is
+`K_{1,4}`-free: three pairwise disjoint blocks may meet the three distinct
+points of one triple.  The explicit `K_{3,3}-wz` core above contains exactly
+such induced claws and already defeats joint-or-one-swap exchange.  Likewise
+the Aharoni--Haxell hypergraph Hall theorem gives matching existence from
+neighborhood matching inequalities, not a reconfiguration or lex-descent
+statement.  Thus known generic matching exchange stops at the same
+rank-three boundary.  Any proof of `(13bl''')` must use the coupling of the
+source packings to reverse obstruction and lexicographic selection.
+                                                                    (13bna'''e)
