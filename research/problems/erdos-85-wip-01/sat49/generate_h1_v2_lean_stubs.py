@@ -75,6 +75,8 @@ class TerminalTableTarget:
     module: str
     definition: str
     index: int
+    profile_indexed: bool = False
+    raw_inventory_table: bool = False
 
 
 def sha256(path: Path) -> str:
@@ -221,15 +223,25 @@ def lean_source(
     stem = f"h1V2P{row.profile}I{row.local_index:05d}"
     path_literal = json.dumps(str(payload))
     terminal_import = f"import {terminal.module}\n" if terminal else ""
+    terminal_table_expr = (
+        f"({terminal.definition} ({row.profile} : Fin 5))"
+        if terminal and terminal.profile_indexed
+        else terminal.definition if terminal else ""
+    )
     table_source = (
-        f"  {terminal.definition}.get\n"
+        f"  (oneHighInventoryTables ({row.profile} : Fin 5)).get\n"
+        f"    ⟨{row.local_index}, by native_decide⟩"
+        if terminal and terminal.raw_inventory_table else
+        f"  {terminal_table_expr}.get\n"
         f"    ⟨{terminal.index}, by native_decide⟩"
         if terminal
         else f"  (oneHighInventoryTables ({row.profile} : Fin 5)).get\n"
              f"    ⟨{row.local_index}, by native_decide⟩"
     )
     terminal_metadata = (
-        f"    terminal_table={terminal.definition} terminalIndex={terminal.index}\n"
+        f"    terminal_table={terminal.definition} terminalIndex={terminal.index}"
+        f" profileIndexed={str(terminal.profile_indexed).lower()}"
+        f" rawInventoryTable={str(terminal.raw_inventory_table).lower()}\n"
         if terminal else ""
     )
     return f'''import Proofs.Erdos85OneHighV2CertificateAggregation
@@ -254,6 +266,7 @@ namespace Erdos85
 
 open Std.Tactic.BVDecide
 
+set_option maxHeartbeats 0 in
 def {stem}Table : OneHighMissTable :=
 {table_source}
 
@@ -330,6 +343,11 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--orbit", action="append", default=[])
     parser.add_argument("--all", action="store_true")
+    parser.add_argument(
+        "--terminal-intersection",
+        action="store_true",
+        help="emit every indexed certificate whose orbit occurs in terminal jobs",
+    )
     parser.add_argument("--skip-payload-hash", action="store_true")
     parser.add_argument(
         "--terminal-jobs",
@@ -344,9 +362,29 @@ def main() -> int:
         "--terminal-table-def",
         help="qualified Lean name of the campaign terminal table list",
     )
+    parser.add_argument(
+        "--terminal-profile-indexed",
+        action="store_true",
+        help=(
+            "the terminal table definition takes `(profile : Fin 5)`; "
+            "compute terminal indices independently within each profile"
+        ),
+    )
+    parser.add_argument(
+        "--terminal-raw-inventory-table",
+        action="store_true",
+        help=(
+            "record terminal membership/index metadata but define the checked "
+            "table by its cheaper authoritative raw-inventory index"
+        ),
+    )
     args = parser.parse_args()
-    if args.all == bool(args.orbit):
-        parser.error("choose exactly one of --all or one/more --orbit arguments")
+    selection_modes = int(args.all) + int(bool(args.orbit)) + int(args.terminal_intersection)
+    if selection_modes != 1:
+        parser.error(
+            "choose exactly one of --all, --terminal-intersection, or "
+            "one/more --orbit arguments"
+        )
     if args.output_dir is None:
         parser.error("--output-dir is required")
     terminal_options = (
@@ -357,6 +395,12 @@ def main() -> int:
             "--terminal-jobs, --terminal-module, and --terminal-table-def "
             "must be supplied together"
         )
+    if args.terminal_profile_indexed and not all(terminal_options):
+        parser.error("--terminal-profile-indexed requires the three terminal options")
+    if args.terminal_intersection and not all(terminal_options):
+        parser.error("--terminal-intersection requires the three terminal options")
+    if args.terminal_raw_inventory_table and not all(terminal_options):
+        parser.error("--terminal-raw-inventory-table requires the three terminal options")
     lean_name = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*")
     if args.terminal_module and not lean_name.fullmatch(args.terminal_module):
         parser.error("--terminal-module is not a qualified Lean identifier")
@@ -366,28 +410,61 @@ def main() -> int:
     profiles = read_inventory(args.inventory)
     rows = read_index(args.index)
     selected = rows if args.all else [row for row in rows if row.orbit in args.orbit]
-    if not args.all and len(selected) != len(set(args.orbit)):
+    if not args.all and not args.terminal_intersection and len(selected) != len(set(args.orbit)):
         found = {row.orbit for row in selected}
         raise ValueError(f"requested orbit(s) absent from index: {sorted(set(args.orbit) - found)}")
 
     terminal_indices: dict[str, int] | None = None
+    terminal_profiles: dict[str, int] | None = None
     if args.terminal_jobs:
-        terminal_tags: list[str] = []
+        terminal_rows: list[tuple[str, int]] = []
         for line_number, line in enumerate(args.terminal_jobs.read_text().splitlines(), 1):
             fields = line.split("\t")
             if len(fields) != 7 or not re.fullmatch(r"[0-9a-f]{16}", fields[0]):
                 raise ValueError(
                     f"{args.terminal_jobs}:{line_number}: malformed seven-field job"
                 )
-            terminal_tags.append(fields[0])
+            try:
+                profile = int(fields[1])
+            except ValueError as error:
+                raise ValueError(
+                    f"{args.terminal_jobs}:{line_number}: invalid profile"
+                ) from error
+            if profile not in range(5):
+                raise ValueError(
+                    f"{args.terminal_jobs}:{line_number}: profile outside 0..4"
+                )
+            terminal_rows.append((fields[0], profile))
+        terminal_tags = [tag for tag, _ in terminal_rows]
         if len(terminal_tags) != len(set(terminal_tags)):
             raise ValueError(f"{args.terminal_jobs}: duplicate orbit tag")
-        terminal_indices = {tag: index for index, tag in enumerate(terminal_tags)}
+        if args.terminal_profile_indexed:
+            profile_counts = [0] * 5
+            terminal_indices = {}
+            for tag, profile in terminal_rows:
+                terminal_indices[tag] = profile_counts[profile]
+                profile_counts[profile] += 1
+        else:
+            terminal_indices = {
+                tag: index for index, tag in enumerate(terminal_tags)
+            }
+        terminal_profiles = dict(terminal_rows)
+        if args.terminal_intersection:
+            selected = [row for row in rows if row.orbit in terminal_indices]
         missing = {row.orbit for row in selected} - terminal_indices.keys()
         if missing:
             raise ValueError(
                 "selected certificate orbit(s) absent from terminal jobs: "
                 f"{sorted(missing)}"
+            )
+        mismatched = [
+            row.orbit for row in selected
+            if terminal_profiles[row.orbit] != row.profile
+        ]
+        if mismatched:
+            raise ValueError(
+                "selected certificate profile disagrees with terminal jobs: "
+                f"{sorted(mismatched)}"
             )
 
     for row in selected:
@@ -398,6 +475,8 @@ def main() -> int:
                 args.terminal_module,
                 args.terminal_table_def,
                 terminal_indices[row.orbit],
+                args.terminal_profile_indexed,
+                args.terminal_raw_inventory_table,
             )
             if terminal_indices is not None else None
         )
