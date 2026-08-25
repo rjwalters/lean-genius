@@ -889,6 +889,48 @@ powers are **stopped at (EXT1)**: functoriality preserves all existing
 arithmetic information but supplies no polarity-sensitive upper bound or
 new obstruction.
 
+### Seidel switching/equiangular-lines probe: full-rank tautology
+
+Wild card 15 starts from a genuine two-distance representation, but centering
+shows exactly what information it retains.  Let `n=q^2`, let `J` be the
+all-ones matrix, and center the incidence rows by
+
+```text
+B = A - J/q.
+```
+
+Regularity, `J^2=nJ`, and the square-root identity give
+
+```text
+B B^T = A^2-J = (q-1)I-D = L_D.                          (SEI1)
+```
+
+Thus the centered row vectors have norm squared `q-1`, inner product `-1`
+on a `D`-edge, and inner product zero otherwise; their sum is zero.  Adjoin
+one common orthogonal coordinate of squared norm `1/2`.  The new Gram matrix
+is
+
+```text
+L_D + J/2 = (q-1/2)I + (J-I-2D)/2.                       (SEI2)
+```
+
+It describes `n` equiangular lines with common absolute normalized inner
+product `1/(2q-1)`.  But when `D` is connected, `L_D` has rank `n-1` and the
+`J/2` summand fills precisely its constant kernel.  Hence `(SEI2)` has rank
+`n`: these are only `n` lines in `R^n`.  Both the absolute equiangular-line
+bound and the relative bound are therefore far from restrictive.
+
+More decisively, `(SEI1)`--`(SEI2)` exist for **every** connected
+`(q-1)`-regular graph `D`, without an incidence square root.  Realize `L_D`
+by the ordinary oriented edge-incidence vectors and then add the common
+coordinate.  Seidel switching merely changes signs of these lines (and
+switches the representing graph); it cannot recover that the original
+vectors were centered rows of one symmetric zero-one matrix whose row labels
+are also its column labels.  The route is therefore **stopped at full rank**.
+Any useful geometric bound would first need a lower-dimensional or tight
+subrepresentation forced specifically by self-indexing, which is exactly the
+missing designated-sector theorem rather than a consequence of switching.
+
 ### Brooks coloring/intersecting-family probe: stopped at the exact threshold
 
 Connectedness does give one genuine global input through Brooks' theorem.
