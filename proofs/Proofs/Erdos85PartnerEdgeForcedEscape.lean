@@ -35,6 +35,26 @@ theorem c4Free_partnerEdges_forces_target_escape
   · exact hcrossed ⟨hap, hbq⟩
   · exact hpq rfl
 
+/-- Disjunctive form of `c4Free_partnerEdges_forces_target_escape`: one of
+the two distinct cross-targets is genuinely outside the opposing edge. -/
+theorem c4Free_partnerEdges_exists_target_escape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {a b c d p q : V}
+    (hab : G.Adj a b) (hcd : G.Adj c d)
+    (had : a ≠ d) (hbc : b ≠ c) (hac : a ≠ c) (hbd : b ≠ d)
+    (hap : G.Adj a p) (hbq : G.Adj b q) (hpq : p ≠ q) :
+    (p ≠ c ∧ p ≠ d) ∨ (q ≠ c ∧ q ≠ d) := by
+  by_cases hp : p = c ∨ p = d
+  · by_cases hq : q = c ∨ q = d
+    · exact False.elim
+        (c4Free_partnerEdges_forces_target_escape
+          G hfree hab hcd had hbc hac hbd hap hbq hpq ⟨hp, hq⟩)
+    · exact Or.inr (not_or.mp hq)
+  · exact Or.inl (not_or.mp hp)
+
 end Erdos85
 
 #print axioms Erdos85.c4Free_partnerEdges_forces_target_escape
+#print axioms Erdos85.c4Free_partnerEdges_exists_target_escape
