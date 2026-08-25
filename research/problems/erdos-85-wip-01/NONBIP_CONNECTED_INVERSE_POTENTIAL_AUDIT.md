@@ -144,6 +144,28 @@ vertices 10 and 14.  This is not an ambient incidence countermodel: it
 isolates the fact that any proof of (P8) must consume (P3), rather than the
 Laplacian maximum principle alone.
 
+## Faithful q=4 falsifier probe
+
+`nonbip_connected_inverse_potential_q4_sat.py` restores the full incidence
+matrix: symmetric, loopless, 4-regular and C4-free on 16 vertices, with an
+exact rational column equation `A x=e_y`.  C4-freeness makes the graph
+induced on `N_A(y)` a matching, so the search splits exhaustively by zero,
+one or two triangles through `y`.
+
+The zero-triangle branch is UNSAT already at the graph layer (the usual
+radius-two Moore count).  In each of the one- and two-triangle branches, a
+bounded enumeration of 1,000 labelled graph models found every adjacency
+matrix singular; a repeated 100-model run gave rank histogram `{15: 100}`
+in each branch.  The direct mixed Boolean/rational sign-violation queries in
+the latter two branches returned `unknown` at 300 seconds, not UNSAT.
+
+This is evidence, not a classification: labelled model blocking does not
+prove that all q=4 configurations were enumerated.  Its useful verdict is
+that q=4 supplied no nonsingular incidence control on which (P8) could even
+be evaluated.  Thus the faithful bounded falsifier did not kill the route,
+but neither did it validate the sign condition; the first decisive test must
+use a nonsingular control at other parameters or a q-generic argument.
+
 ## Verdict
 
 **NEW EXACT INTERFACE, NOT A TERMINAL.**  The next bounded question is
