@@ -166,6 +166,61 @@ be evaluated.  Thus the faithful bounded falsifier did not kill the route,
 but neither did it validate the sign condition; the first decisive test must
 use a nonsingular control at other parameters or a q-generic argument.
 
+## Global aggregation: exact collapse to a weighted complement
+
+There is a compact matrix form of (P7), but summing it does not remove the
+root-sign problem.  Define the symmetric nonnegative matrix
+
+```text
+C = (J-A) hadamard (qJ-A^3).
+```
+
+The mask `J-A` includes the diagonal and excludes exactly the A-edges.  On
+its support, `(A^3)_{yv}` is a cross-neighborhood matching size, hence every
+entry of `C` is nonnegative.  Equations (P6a) and (P6b) say
+
+```text
+C 1 = q(q-1) 1,
+C_yy = deg_T(y).
+```
+
+For `X=A^{-1}`, the whole family (P7), for all roots at once, is precisely
+
+```text
+diag(CX) = 0.                                         (P9)
+```
+
+Consequently `trace(CX)=0`, while both `CX` and `XC` have row sum `q-1`.
+The symmetrization `(CX+XC)/2` is therefore a symmetric zero-diagonal signed
+matrix of row sum `q-1`.  This is a reformulation, not a positivity theorem:
+neither factor order preserves entrywise signs.
+
+The relation to the already-banked incidence bottleneck is exact.  For
+
+```text
+E = AD-(J-A) = qA-A^3+(q-1)J,
+```
+
+one has
+
+```text
+C = (J-A) hadamard (E+J).                             (P10)
+```
+
+Thus scalar Frobenius bounds on `E` do not control `trace(CX)` or the root
+term; (P9) says that trace is already zero.  A tempting PSD exit is also
+false at the ambient incidence level.  On the exact q=4 fixed-free control,
+`C` has constant row sum 12, while `C_00=C_44=0` and `C_04=1`.  Therefore
+`(e_0-e_4)^T C (e_0-e_4)=-2`, whereas `1^T C 1>0`.  Hence `C` is indefinite,
+so no argument of the form `C >= 0`, `X^2 > 0`, and trace positivity is
+available without a genuinely new q-dependent input.
+
+**Aggregate verdict: CUT.**  Unweighted summation gives only (P9), and the
+natural weighted-complement matrix is indefinite and is exactly the masked
+incidence bottleneck already on the map.  The live content remains
+pointwise: control the signs in (P8), or exploit a nonscalar interaction of
+`C` with `A^{-1}`.  Further trace wrappers do not advance the node.
+
 ## Verdict
 
 **NEW EXACT INTERFACE, NOT A TERMINAL.**  The next bounded question is
