@@ -120,8 +120,8 @@ coefficient in (P7), its strictly negative weighted contribution must be
 balanced by a positive term.
 
 This is a genuine inverse/connectedness formulation, not a determinant or
-Smith restatement.  A terminal would follow from the still-unproved
-root-aware sign conditions
+Smith restatement.  An initially proposed sufficient terminal was the
+root-aware sign condition
 
 ```text
 x_v < 0 for every v in R,
@@ -129,12 +129,26 @@ deg_T(y) x_y <= 0.                                    (P8)
 ```
 
 Indeed (P7') would then be nonpositive, and the guaranteed nonperfect
-off-diagonal sink would make it strictly negative.  Neither the maximum
-principle nor the present incidence ledger proves (P8): Poisson potentials
-on general connected graphs can have source and sink values on both sides of
-the chosen normalization.  The diagonal sign is independently delicate:
-the Petersen graph, a nearby nonsingular C4-free control at different
-parameters, has `(A^{-1})_{yy}=1/3>0`.
+off-diagonal sink would make it strictly negative.  However, (P8) is not
+merely unproved: it is incompatible with the original block-sum law (P3).
+Choose any `z in N_D(y)`, which exists because `D` has degree `q-1>0`.
+The definition of a defect edge says that `y` and `z` are nonadjacent and
+have no common A-neighbor.  Therefore
+
+```text
+N_A(z) is a subset of R = V minus (S union {y}).       (P8-cut)
+```
+
+But (P3) at `z != y` gives `sum_(u in N_A(z)) x_u=0`, whereas strict
+negativity on `R` would make this sum strictly negative.  Thus no survivor
+can satisfy (P8).  More generally, each defect-neighbor block is either
+identically zero in the potential or already contains both signs.  The
+mixed-sign horn is forced locally rather than being an exceptional case to
+eliminate by a maximum principle.
+
+The diagonal sign is independently delicate: the Petersen graph, a nearby
+nonsingular C4-free control at different parameters, has
+`(A^{-1})_{yy}=1/3>0`.
 
 The latter warning has an exact bounded control in
 `nonbip_connected_inverse_potential_p2_control.py`.  A connected cubic graph
@@ -162,9 +176,8 @@ the latter two branches returned `unknown` at 300 seconds, not UNSAT.
 This is evidence, not a classification: labelled model blocking does not
 prove that all q=4 configurations were enumerated.  Its useful verdict is
 that q=4 supplied no nonsingular incidence control on which (P8) could even
-be evaluated.  Thus the faithful bounded falsifier did not kill the route,
-but neither did it validate the sign condition; the first decisive test must
-use a nonsingular control at other parameters or a q-generic argument.
+be evaluated.  The exact (P8-cut) argument above does kill the proposed
+strict sign condition, so no further model search is needed to decide it.
 
 ## Global aggregation: exact collapse to a weighted complement
 
@@ -218,8 +231,9 @@ available without a genuinely new q-dependent input.
 **Aggregate verdict: CUT.**  Unweighted summation gives only (P9), and the
 natural weighted-complement matrix is indefinite and is exactly the masked
 incidence bottleneck already on the map.  The live content remains
-pointwise: control the signs in (P8), or exploit a nonscalar interaction of
-`C` with `A^{-1}`.  Further trace wrappers do not advance the node.
+pointwise but necessarily mixed-sign: exploit the forced sign changes inside
+defect-neighbor blocks, or a nonscalar interaction of `C` with `A^{-1}`.
+Further trace wrappers do not advance the node.
 
 ## Faithful-control boundary
 
@@ -242,17 +256,16 @@ the target; escalating the labelled SAT search would be a disguised census.
 
 **Control verdict: CUT.**  Keep the script as a falsifier for any externally
 supplied nonbinary even control, but do not launch a larger graph census.
-The smallest potentially weaker sign target is an aggregate one that still
-contradicts (P7'), for example positivity of the root-weighted diagonal term
-combined with control of the negative off-diagonal contribution.  Any such
-claim must use entrywise square-root/incidence data; unweighted trace and
-generic connected-Laplacian information have already been eliminated.
+The sign target must respect the forced mixed signs in (P8-cut).  Any useful
+replacement must use entrywise square-root/incidence data; unweighted trace
+and generic connected-Laplacian information have already been eliminated.
 
 ## Verdict
 
-**NEW EXACT INTERFACE, NOT A TERMINAL.**  The next bounded question is
-whether the self-indexed C4-free block sums (P3), beyond the Laplacian
-equation alone, force the off-diagonal sign condition and control the root
-term in (P8), or otherwise forbid the mixed-sign horn of (P7').  Formalizing
-(P1)--(P7') without such a sign/location theorem would be another wrapper
-and is not justified.
+**EXACT INTERFACE, PROPOSED SIGN TERMINAL RETRACTED.**  Equations (P1)--(P7')
+remain valid, but (P8) is false by the one-line defect-neighbor block
+argument (P8-cut).  The next bounded question, if this interface is pursued
+at all, must use the mixed signs that (P3) forces inside every nonzero
+defect-neighbor block; it cannot seek uniform negativity on `R` or a minor
+variant of that condition.  Formalizing (P1)--(P7') without a new
+mixed-sign/location theorem would be another wrapper and is not justified.
