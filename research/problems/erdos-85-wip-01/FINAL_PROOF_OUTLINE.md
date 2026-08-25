@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.63 — 2026-08-25 ~18:15Z (inverse-potential interface reduced to the zero-collar horn and a fractional transversal cover; abstract integrality cut by an exact countermodel; self-polar placement is the only remaining lever).**
+**Version 2.64 — 2026-08-25 ~18:30Z (inverse-potential lane STOPPED under goal #36: perfect-sink location forces integrality only at q=4, the uniform claim is refuted at q=6, and divergence #68 found no survivor).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -1227,6 +1227,44 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.64** (2026-08-25 ~18:30Z, claude/integrator): **inverse-potential
+  lane closed, divergence #68 empty.** (i) Location (sol-1 `d3090c8bb8`,
+  verified 31942): a perfect sink in cell `C_s` forces `s ∈ N(p) ⊂ C_y`, so
+  perfect sinks occupy only the `2r` triangle-supported cells (`r = tri(y)`,
+  `q−2` non-source points each) plus the `2r−1` points of
+  `N_D(y) ∖ N_A(y)`: `2r(q−1) − 1` candidate labels. At q=4 with
+  `deg_T(y) > 0` that is 5 labels for mass 3 with `w ≤ 1`, and fractional
+  supports `m ∈ {4,5}` are UNSAT — integrality forced in the faithful
+  abstraction at q=4 only (which has no nonsingular instance anyway).
+  (ii) Uniform claim REFUTED at q=6, r=1 (`e401f3034f`): supports
+  `m = 6,7,8` UNSAT but `m = 9` SAT — eight weights 1/2 and one weight 1
+  on all nine allowed labels, exact cover, loopless symmetric incidence,
+  transversal blocks, intersections ≤ 1. Not an ambient completion; the
+  only further input would be completing unselected rows to a common `A`,
+  i.e. the original gap. Governance note (`16ed5b6ac7`): q=8 abstraction
+  runs are allowed under #38; a faithful nonsingular q=8 search is skipped
+  because it is a target census, not because of the lifted park.
+  (iii) Divergence #68 (18:22–18:24Z, sol-1 + Fable; verdict `cf2243a6e8`,
+  `NONBIP_CONNECTED_LITERATURE_DIVERGENCE.md`): NO SURVIVOR. Sol-1 mapped
+  ten non-inverse mechanisms (Levi/Ihara with polarity eigenspaces,
+  zero-forcing/min-rank completion, Plücker pairing, delta-matroid pivots,
+  P15 full-row completion, Godsil inverse switching, coherent closure,
+  F₂ polynomial method, Lefschetz torsion, Pfaffian parity) — each
+  collapses to a cut class (spectral pairing, mod-2 valuation, forced mixed
+  signs, the full-row gap). Fable's chain: `μ_min(D) ≥ −2 ⟺ λ² ≤ q+1` on
+  `1^⊥`; then Cameron–Goethals–Seidel–Shult makes `D` a generalized line
+  graph, and in the connected pure-line-graph case `D = L(H)` the
+  edge-degree-sum `q+1` (odd) forces `H` connected bipartite biregular
+  `(a,b)`, `a+b = q+1`, `a,b | q²` ⇒ `{1,q}` ⇒ a single star with `q ≠ q²`
+  edges — an exact parity terminal — but the premise FAILS on every
+  control: q=4 incidence control `μ_min(D) = −1−√2` (Hoffman's limit point,
+  max `λ² = 5.414 > 5`), banked connected spectral `D_q` controls
+  `μ_min ≈ −2.848 / −4.507 / −6.637` at q = 4/8/16; the Woo–Neumaier
+  `−1−√2` threshold has no bridge either. Lane stopped per goal #36; the
+  connected frontier `(G.induce c.supp).Connected → False` stands as
+  recorded at 2.61. Lean tip `778a2e1595` (85 banks); q=8 kissat runs at
+  ~11 h, no verdict.
 
 - **2.63** (2026-08-25 ~18:15Z, claude/integrator): **inverse-potential
   lane, third hour — exact reductions, no terminal.** (i) Zero-collar horn
