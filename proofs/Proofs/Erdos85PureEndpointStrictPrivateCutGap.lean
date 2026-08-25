@@ -140,6 +140,8 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_rowProfile_and_
       (cut = 2 * q - 4 → Z.card = q - 2 ∧ H.card = q - 2 ∧
         (∀ b ∈ H, r b = 2) ∧
         (∀ u ∈ U, (Z.filter fun z => G.Adj z u).card ≤ 1) ∧
+        (∀ u ∈ U, (Z.filter fun z => G.Adj z u).card =
+          ∑ b ∈ H.filter (fun b => G.Adj b u), weight b) ∧
         (∀ x ∈ X, 0 < (∑ b ∈ H.filter (fun b => G.Adj b x), weight b) →
           (Z.filter fun z => G.Adj z x).card = 1 ∧
             (∑ b ∈ H.filter (fun b => G.Adj b x), weight b) = 1) ∧
@@ -568,7 +570,8 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_rowProfile_and_
     G.Adj U X Z H weight q m cut hqm (by omega) hcutEq' hZcardEq
     (fun z hz => hrowU z (Finset.mem_filter.mp hz).1)
     hUbalance hXdom hpair hweight hmoment
-  exact ⟨hZcardEq, hHcardEq, hrowTwo, hrig.2.1, hrig.2.2, hrig.1⟩
+  exact ⟨hZcardEq, hHcardEq, hrowTwo, hrig.2.1, hUbalance,
+    hrig.2.2, hrig.1⟩
 
 /-- Compatibility projection exposing the strict gap and pair saturation. -/
 theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
@@ -605,7 +608,7 @@ theorem c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_and_saturation
   have h :=
     c4Free_binarySquare_pureEndpoint_privateCut_gap_boundary_rowProfile_and_saturation
       G hfree hq hqm hreg hcard hconn S hempty hCcard hshore htri
-  exact ⟨h.1, fun hcut => ⟨(h.2 hcut).1, (h.2 hcut).2.2.2.2.2⟩⟩
+  exact ⟨h.1, fun hcut => ⟨(h.2 hcut).1, (h.2 hcut).2.2.2.2.2.2⟩⟩
 
 /-- The strict gap and zero-row boundary profile, projected from the stronger
 pointwise saturation theorem. -/
