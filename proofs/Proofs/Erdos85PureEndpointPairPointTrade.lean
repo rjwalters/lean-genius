@@ -28,6 +28,66 @@ private theorem pairPoint_commonNeighbor_card_le_one
     ((G.mem_neighborFinset x v).mp (Finset.mem_inter.mp hv).1).symm
     ((G.mem_neighborFinset y v).mp (Finset.mem_inter.mp hv).2).symm)
 
+/-- Every full center contains exactly one canonical private point. -/
+theorem c4Free_binarySquare_pureEndpoint_fullCenter_privateOccupancy_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (S : Finset V)
+    (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q) :
+    let F := fullLineCenters G S q
+    let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
+    ∀ f ∈ F, (G.neighborFinset f ∩ P).card = 1 := by
+  classical
+  dsimp only
+  let F := fullLineCenters G S q
+  let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
+  obtain ⟨sel, _hselInj, hsel, hselSurj⟩ :=
+    c4Free_binarySquare_pureEndpoint_privatePoint_bijection
+      G hfree hq hqm hreg hcard S hempty hCcard hshore htri
+  intro f hf
+  let fi : {i // i ∈ F} := ⟨f, hf⟩
+  have hEq : G.neighborFinset f ∩ P = {sel fi} := by
+    ext p
+    constructor
+    · intro hp
+      have hpAdj : G.Adj f p :=
+        (G.mem_neighborFinset f p).mp (Finset.mem_inter.mp hp).1
+      have hpP := Finset.mem_filter.mp (Finset.mem_inter.mp hp).2
+      obtain ⟨i, hi⟩ := hselSurj p hpP.1 (by simpa [F] using hpP.2)
+      have hfOwner : f ∈ G.neighborFinset (sel i) ∩ F :=
+        Finset.mem_inter.mpr ⟨(G.mem_neighborFinset (sel i) f).mpr
+          (by simpa [hi] using hpAdj.symm), hf⟩
+      rw [(hsel i).2.2] at hfOwner
+      have hfi : i = fi := by
+        apply Subtype.ext
+        exact (Finset.mem_singleton.mp hfOwner).symm
+      exact Finset.mem_singleton.mpr
+        (hi.symm.trans (congrArg sel hfi))
+    · intro hp
+      have hpEq : p = sel fi := Finset.mem_singleton.mp hp
+      subst p
+      have hs := hsel fi
+      have hmemP : sel fi ∈ P := by
+        apply Finset.mem_filter.mpr
+        simpa [P, F] using ⟨hs.1, by rw [hs.2.2]; simp⟩
+      have hadj : sel fi ∈ G.neighborFinset f := by
+        simpa [SimpleGraph.mem_neighborFinset] using hs.2.1
+      exact Finset.mem_inter.mpr ⟨hadj, hmemP⟩
+  rw [hEq]
+  simp
+
 /-- Exact local private-occupancy identity at every replication-two shore
 point of a pure endpoint. -/
 theorem c4Free_binarySquare_pureEndpoint_pairPoint_privateOccupancy_add_defect
@@ -62,45 +122,14 @@ theorem c4Free_binarySquare_pureEndpoint_pairPoint_privateOccupancy_add_defect
   let B := Fᶜ
   let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
   let X := S.filter fun x => (G.neighborFinset x ∩ F).card = 2
-  obtain ⟨sel, _hselInj, hsel, hselSurj⟩ :=
-    c4Free_binarySquare_pureEndpoint_privatePoint_bijection
-      G hfree hq hqm hreg hcard S hempty hCcard hshore htri
   have hPcard : P.card = q := by
     simpa [P, F] using
       (c4Free_binarySquare_pureEndpoint_fullLineCenters_exactReplicationProfile
         G hfree hq hqm hreg hcard S hempty hCcard hshore htri).2.1
   have hfullPrivate : ∀ f ∈ F, (G.neighborFinset f ∩ P).card = 1 := by
-    intro f hf
-    let fi : {i // i ∈ F} := ⟨f, hf⟩
-    have hEq : G.neighborFinset f ∩ P = {sel fi} := by
-      ext p
-      constructor
-      · intro hp
-        have hpAdj : G.Adj f p :=
-          (G.mem_neighborFinset f p).mp (Finset.mem_inter.mp hp).1
-        have hpP := Finset.mem_filter.mp (Finset.mem_inter.mp hp).2
-        obtain ⟨i, hi⟩ := hselSurj p hpP.1 (by simpa [F] using hpP.2)
-        have hfOwner : f ∈ G.neighborFinset (sel i) ∩ F :=
-          Finset.mem_inter.mpr ⟨(G.mem_neighborFinset (sel i) f).mpr
-            (by simpa [hi] using hpAdj.symm), hf⟩
-        rw [(hsel i).2.2] at hfOwner
-        have hfi : i = fi := by
-          apply Subtype.ext
-          exact (Finset.mem_singleton.mp hfOwner).symm
-        exact Finset.mem_singleton.mpr
-          (hi.symm.trans (congrArg sel hfi))
-      · intro hp
-        have hpEq : p = sel fi := Finset.mem_singleton.mp hp
-        subst p
-        have hs := hsel fi
-        have hmemP : sel fi ∈ P := by
-          apply Finset.mem_filter.mpr
-          simpa [P, F] using ⟨hs.1, by rw [hs.2.2]; simp⟩
-        have hadj : sel fi ∈ G.neighborFinset f := by
-          simpa [SimpleGraph.mem_neighborFinset] using hs.2.1
-        exact Finset.mem_inter.mpr ⟨hadj, hmemP⟩
-    rw [hEq]
-    simp
+    simpa [F, P] using
+      c4Free_binarySquare_pureEndpoint_fullCenter_privateOccupancy_one
+        G hfree hq hqm hreg hcard S hempty hCcard hshore htri
   intro x hx
   change
     (∑ b ∈ G.neighborFinset x ∩ B, (G.neighborFinset b ∩ P).card) +
@@ -191,5 +220,7 @@ end
 
 end Erdos85
 
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_fullCenter_privateOccupancy_one
 #print axioms
   Erdos85.c4Free_binarySquare_pureEndpoint_pairPoint_privateOccupancy_add_defect
