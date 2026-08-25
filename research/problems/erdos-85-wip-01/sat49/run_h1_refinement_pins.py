@@ -50,10 +50,15 @@ def accepted(manifest: Path) -> bool:
         data = json.loads(manifest.read_text())
     except (OSError, json.JSONDecodeError):
         return False
+    compact = manifest.with_name(
+        manifest.name.removesuffix(".manifest.json") + ".compact.lrat")
     return (data.get("state") == "LEAN_ACCEPTED" and
             data.get("drat_trim") == "s VERIFIED" and
             data.get("lrat_check") == "c VERIFIED" and
-            data.get("lean_replay") == "LRAT accepted: true")
+            data.get("lean_replay") == "LRAT accepted: true" and
+            compact.is_file() and
+            compact.stat().st_size == data.get("compact_bytes") and
+            sha256(compact) == data.get("compact_lrat_sha256"))
 
 
 def run_job(job) -> tuple[str, str]:
