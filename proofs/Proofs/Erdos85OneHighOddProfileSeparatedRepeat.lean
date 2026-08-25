@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighAllEvenCapacityInventory
+import Proofs.Erdos85OneHighFourPairTransversal
 
 /-! # Separated repeated keys in the odd one-high profiles
 
@@ -45,6 +46,46 @@ instance (refinement : List (List OneHighLabelPair)) :
     unfold OneHighRefinementHasSeparatedRepeatedKey
     infer_instance
 
+/-- The three ways to split four root mate-pairs into an unordered owner pair
+and its complementary key pair. -/
+def oneHighOwnerPartitionCode (i j : Fin 8) : Fin 3 :=
+  let a := min (oneHighRootPair i) (oneHighRootPair j)
+  let b := max (oneHighRootPair i) (oneHighRootPair j)
+  if (a = 0 ∧ b = 1) ∨ (a = 2 ∧ b = 3) then 0
+  else if (a = 0 ∧ b = 2) ∨ (a = 1 ∧ b = 3) then 1
+  else 2
+
+/-- A four-pair transversal realizing one prescribed complementary partition. -/
+def OneHighRefinementHasTransversalPartition
+    (refinement : List (List OneHighLabelPair)) (code : Fin 3) : Prop :=
+  ∃ i j : Fin 8,
+    i ≠ j ∧ j ≠ oneHighStandardMate i ∧
+      (oneHighOwnerPartitionCode i j == code) = true ∧
+      ∃ key : OneHighLabelPair,
+        key.1 < key.2 ∧
+        key.2 ≠ oneHighStandardMate key.1 ∧
+        OneHighKeyFarFromSource key i ∧
+        OneHighKeyFarFromSource key j ∧
+        key ∈ refinement.getD i.val [] ∧
+        key ∈ refinement.getD j.val []
+
+instance (refinement : List (List OneHighLabelPair)) (code : Fin 3) :
+    Decidable (OneHighRefinementHasTransversalPartition refinement code) := by
+  unfold OneHighRefinementHasTransversalPartition
+  letI : DecidablePred (fun i : Fin 8 =>
+      ∃ j : Fin 8,
+        i ≠ j ∧ j ≠ oneHighStandardMate i ∧
+          (oneHighOwnerPartitionCode i j == code) = true ∧
+          ∃ key : OneHighLabelPair,
+            key.1 < key.2 ∧
+            key.2 ≠ oneHighStandardMate key.1 ∧
+            OneHighKeyFarFromSource key i ∧
+            OneHighKeyFarFromSource key j ∧
+            key ∈ refinement.getD i.val [] ∧
+            key ∈ refinement.getD j.val []) := fun _ =>
+    Fintype.decidableExistsFintype
+  exact Fintype.decidableExistsFintype
+
 /-- No profile-one capacity row has an all-even compatible refinement whose
 repeated off-diagonal keys are confined to one owner, a root-mate owner pair,
 or a standard-mate key. -/
@@ -63,6 +104,27 @@ theorem oneHigh_profileThree_allEven_has_separatedRepeatedKey :
           (oneHighPairingTableRestrict table),
         oneHighRefinementAllOffDiagonalEven refinement = true →
           OneHighRefinementHasSeparatedRepeatedKey refinement := by
+  native_decide
+
+/-- Every profile-one all-even refinement realizes all three complementary
+partitions of the four canonical root mate-pairs. -/
+theorem oneHigh_profileOne_allEven_has_all_transversalPartitions :
+    ∀ table ∈ oneHighCapacityInventoryTables 1,
+      ∀ refinement ∈ oneHighPairingRefinements 1
+          (oneHighPairingTableRestrict table),
+        oneHighRefinementAllOffDiagonalEven refinement = true →
+          ∀ code : Fin 3,
+            OneHighRefinementHasTransversalPartition refinement code := by
+  native_decide
+
+/-- Profile three has the same simultaneous three-partition property. -/
+theorem oneHigh_profileThree_allEven_has_all_transversalPartitions :
+    ∀ table ∈ oneHighCapacityInventoryTables 3,
+      ∀ refinement ∈ oneHighPairingRefinements 3
+          (oneHighPairingTableRestrict table),
+        oneHighRefinementAllOffDiagonalEven refinement = true →
+          ∀ code : Fin 3,
+            OneHighRefinementHasTransversalPartition refinement code := by
   native_decide
 
 /-- Graph-facing form of the finite classification.  Once an odd-profile
@@ -121,6 +183,62 @@ theorem oneHigh_oddProfile_graphPairing_has_separatedRepeatedKey
       (by simpa [hprofile] using hstored)
       (oneHighGraphPairingRefinement G hfree hv p)
       (by simpa [hprofile] using hrefinementStored) hallEven
+
+/-- Graph-facing simultaneous form: the actual pairing refinement realizes
+each of the three complementary partitions. -/
+theorem oneHigh_oddProfile_graphPairing_has_all_transversalPartitions
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (hprofile : p.profile = 1 ∨ p.profile = 3)
+    (heven : ∀ key ∈ exchangedMissPairKeys (Fin 8),
+      Even (exchangedMissPairMultiplicity
+        (oneHighGlobalInternalMate G hfree v)
+        (fun x => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj x)) key))
+    (stored : OneHighMissTable)
+    (hstored : stored ∈ oneHighCapacityInventoryTables
+      ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩)
+    (hagree : OneHighTableRelevantAgree
+      (oneHighFamilyGraphTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) stored) :
+    ∀ code : Fin 3, OneHighRefinementHasTransversalPartition
+      (oneHighGraphPairingRefinement G hfree hv p) code := by
+  let table := oneHighGraphRelevantMissTable
+    (oneHighRelabeledLeafGraph G v
+      (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel)) p.profile
+  have htableRestrict : oneHighPairingTableRestrict table = table :=
+    oneHighTableRestrict_graphRelevantMissTable _ _
+  have hrel : OneHighTableRelevantAgree table stored :=
+    oneHighGraphRelevantMissTable_relevantAgree_of_graphTable _ _ hagree
+  have hrestrictEq : oneHighPairingTableRestrict table =
+      oneHighPairingTableRestrict stored :=
+    oneHighPairingTableRestrict_eq_of_relevantAgree hrel
+  have hrefinement : oneHighGraphPairingRefinement G hfree hv p ∈
+      oneHighPairingRefinements p.profile table :=
+    oneHighGraphPairingRefinement_mem G hfree hv p
+  have hrefinementStored : oneHighGraphPairingRefinement G hfree hv p ∈
+      oneHighPairingRefinements p.profile
+        (oneHighPairingTableRestrict stored) := by
+    rw [htableRestrict] at hrestrictEq
+    rwa [hrestrictEq] at hrefinement
+  have hallEven : oneHighRefinementAllOffDiagonalEven
+      (oneHighGraphPairingRefinement G hfree hv p) = true :=
+    oneHighGraphPairingRefinement_allOffDiagonalEven G hfree hv p heven
+  intro code
+  rcases hprofile with hprofile | hprofile
+  · exact oneHigh_profileOne_allEven_has_all_transversalPartitions stored
+      (by simpa [hprofile] using hstored)
+      (oneHighGraphPairingRefinement G hfree hv p)
+      (by simpa [hprofile] using hrefinementStored) hallEven code
+  · exact oneHigh_profileThree_allEven_has_all_transversalPartitions stored
+      (by simpa [hprofile] using hstored)
+      (oneHighGraphPairingRefinement G hfree hv p)
+      (by simpa [hprofile] using hrefinementStored) hallEven code
 
 /-- Invert membership in a sorted pairing list to the concrete locally
 oriented matching edge which contributed that key. -/
