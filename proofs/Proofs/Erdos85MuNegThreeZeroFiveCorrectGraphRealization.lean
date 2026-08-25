@@ -174,6 +174,100 @@ theorem muNegThreeZeroFiveCorrectOwner_R_adj_cross
   rw [muNegOneCodeSub, muNegOneCodeSub, if_pos h1, if_neg (by omega)]
   exact hR
 
+theorem muNegThreeZeroFiveCorrectOwner_endpoints_ne
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (e : Fin 88) :
+    muNegOneCodeVertex G c u v
+        (muNegThreeZeroFiveCorrectOwnerAt uTri vTri e).1 ≠
+      muNegOneCodeVertex G c u v
+        (muNegThreeZeroFiveCorrectOwnerAt uTri vTri e).2 := by
+  intro h
+  have hlt := muNegThreeZeroFiveCorrectOwnerAt_fst_lt_snd uTri vTri e
+  have hb := muNegThreeZeroFiveCorrectOwnerAt_lt_sixteen uTri vTri e
+  have heq := muNegOneCodeVertex_inj G c a b u v hab huinj hvinj
+    hurange hvrange _ hb.1 _ hb.2 h
+  omega
+
+theorem muNegThreeZeroFiveCorrectOwnerVertex_unique
+    (hfree : ¬ containsC4 V G)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    (e : Fin 88) {t t' : V}
+    (ht : MuNegThreeZeroFiveCorrectOwnerVertex G c u v uTri vTri e t)
+    (ht' : MuNegThreeZeroFiveCorrectOwnerVertex G c u v uTri vTri e t') :
+    t = t' :=
+  commonServer_unique G hfree
+    (muNegThreeZeroFiveCorrectOwner_endpoints_ne G c u v uTri vTri
+      a b hab huinj hvinj hurange hvrange e)
+    ht.2.1 ht.2.2 ht'.2.1 ht'.2.2
+
+theorem muNegThreeZeroFiveCorrectOwnerVertex_inj
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q) (hcard : Fintype.card V = q * q)
+    (hsize : c.supp.ncard = q * 2)
+    (a b : (G.induce c.supp).ConnectedComponent) (hab : a ≠ b)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hurange : Set.range u = a.supp) (hvrange : Set.range v = b.supp)
+    {e f : Fin 88} {t : V}
+    (ht : MuNegThreeZeroFiveCorrectOwnerVertex G c u v uTri vTri e t)
+    (ht' : MuNegThreeZeroFiveCorrectOwnerVertex G c u v uTri vTri f t) :
+    e = f := by
+  have hbE := muNegThreeZeroFiveCorrectOwnerAt_lt_sixteen uTri vTri e
+  have hbF := muNegThreeZeroFiveCorrectOwnerAt_lt_sixteen uTri vTri f
+  have hpair := ownerVertex_pair_eq G hfree hq hreg hcard c hsize
+    (muNegThreeZeroFiveCorrectOwner_endpoints_ne G c u v uTri vTri
+      a b hab huinj hvinj hurange hvrange e)
+    (muNegThreeZeroFiveCorrectOwner_endpoints_ne G c u v uTri vTri
+      a b hab huinj hvinj hurange hvrange f)
+    (muNegOneCodeVertex_mem_supp G c u v _)
+    (muNegOneCodeVertex_mem_supp G c u v _)
+    (muNegOneCodeVertex_mem_supp G c u v _)
+    (muNegOneCodeVertex_mem_supp G c u v _)
+    ht.2.1.symm ht.2.2.symm ht'.2.1.symm ht'.2.2.symm
+  have hltE := muNegThreeZeroFiveCorrectOwnerAt_fst_lt_snd uTri vTri e
+  have hltF := muNegThreeZeroFiveCorrectOwnerAt_fst_lt_snd uTri vTri f
+  have hinj := muNegOneCodeVertex_inj G c a b u v hab huinj hvinj
+    hurange hvrange
+  have hf1 : muNegOneCodeVertex G c u v
+        (muNegThreeZeroFiveCorrectOwnerAt uTri vTri f).1 ∈
+      ({muNegOneCodeVertex G c u v
+          (muNegThreeZeroFiveCorrectOwnerAt uTri vTri e).1,
+        muNegOneCodeVertex G c u v
+          (muNegThreeZeroFiveCorrectOwnerAt uTri vTri e).2} : Finset V) := by
+    rw [hpair]
+    exact Finset.mem_insert_self _ _
+  have hf2 : muNegOneCodeVertex G c u v
+        (muNegThreeZeroFiveCorrectOwnerAt uTri vTri f).2 ∈
+      ({muNegOneCodeVertex G c u v
+          (muNegThreeZeroFiveCorrectOwnerAt uTri vTri e).1,
+        muNegOneCodeVertex G c u v
+          (muNegThreeZeroFiveCorrectOwnerAt uTri vTri e).2} : Finset V) := by
+    rw [hpair]
+    exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self _))
+  have hf1' := Finset.mem_insert.mp hf1
+  have hf2' := Finset.mem_insert.mp hf2
+  rw [Finset.mem_singleton] at hf1' hf2'
+  have hpairs :
+      (muNegThreeZeroFiveCorrectOwnerAt uTri vTri e).1 =
+          (muNegThreeZeroFiveCorrectOwnerAt uTri vTri f).1 ∧
+      (muNegThreeZeroFiveCorrectOwnerAt uTri vTri e).2 =
+          (muNegThreeZeroFiveCorrectOwnerAt uTri vTri f).2 := by
+    rcases hf1' with h1 | h1 <;> rcases hf2' with h2 | h2
+    · have hff := hinj _ hbF.1 _ hbF.2 (h1.trans h2.symm)
+      omega
+    · exact ⟨(hinj _ hbF.1 _ hbE.1 h1).symm,
+        (hinj _ hbF.2 _ hbE.2 h2).symm⟩
+    · have e1 := hinj _ hbF.1 _ hbE.2 h1
+      have e2 := hinj _ hbF.2 _ hbE.1 h2
+      omega
+    · have hff := hinj _ hbF.1 _ hbF.2 (h1.trans h2.symm)
+      omega
+  exact muNegThreeZeroFiveCorrectOwnerAt_injective uTri vTri e f
+    (Prod.ext hpairs.1 hpairs.2)
+
 end Realization
 
 end
@@ -183,3 +277,4 @@ end Erdos85
 #print axioms Erdos85.muNegThreeZeroFiveCorrectOwnerVertex_of_R_adj
 #print axioms Erdos85.muNegThreeZeroFiveCorrectOwner_R_adj_left
 #print axioms Erdos85.muNegThreeZeroFiveCorrectOwner_R_adj_right
+#print axioms Erdos85.muNegThreeZeroFiveCorrectOwnerVertex_inj
