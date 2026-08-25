@@ -50,3 +50,6 @@ theorem exists_diagonal_eq_zero_of_symmetricDifference
   exact hsurj 0
 
 end Erdos85
+
+#print axioms Erdos85.symmetricDifference_diagonal_injective
+#print axioms Erdos85.exists_diagonal_eq_zero_of_symmetricDifference
