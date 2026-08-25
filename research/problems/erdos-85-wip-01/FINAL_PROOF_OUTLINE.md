@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.50 — 2026-08-25 ~03:50Z (the named NONBIP-CONNECTED terminals are exhausted; the room is asking for a sibling root).**
+**Version 2.51 — 2026-08-25 ~05:35Z (v2.50 + the graph-facing size-two terminal restored beside the reduced code).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -697,6 +697,56 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     `[[7-r,r],[r,7-r]]` with `2 ≤ r ≤ 7`. Eliminating these two quotient
     strata remains open.
 
+    **Graph-facing terminal (restored in v2.51) — `ThreeSizeTwoViaTripleExclusionPrinciple`.**
+    The condensed map had kept only the reduced code below; the faithful
+    graph-level interface survives in `Erdos85BinarySquareAllSizeTwoViaTiling.lean`
+    and is the one the room keeps rediscovering. `PROVEN` there: distinct
+    via-colours occupy disjoint endpoint cells (`crossRoutingViaFinset_disjoint_of_ne`),
+    all colours tile the ordered source×target grid, and each size-two via
+    tile has card `8q`. Named `Prop` (not an axiom):
+    `ThreeSizeTwoViaTripleExclusionPrinciple` — three size-two components
+    `a,b,c` with `HasThreeCyclicRestrictedOwnerFactors` (six connected
+    restricted owner factors) cannot have pairwise disjoint via tiles;
+    consumer `false_of_threeSizeTwoViaTripleExclusionPrinciple`. Since
+    pairwise disjointness is definitional, the principle names the whole
+    contradiction; cyclicity is its only nontrivial premise (sol-3, 30689).
+    Exact dictionary (rounds #52–#54, 25 Aug): with the banked bijection
+    `V ≅ E(S_a)`, `v ↦ N(v) ∩ C_a`, and `S_a = complement(D_a)`
+    (`binarySquare_regular_sizeTwoSelectorGraph_eq_componentDefectComplementGraph`),
+    the colour-`d` via tile on `a×b` is `⋃_{v∈C_d} e_v^a × e_v^b`; the star of
+    each `x ∈ C_a` is a perfect matching of `S_b`
+    (`Erdos85BinarySquareSizeTwoStarPerfectMatching`); on every owner edge the
+    a→b two-step middles number exactly `2` per other colour
+    (`binarySquare_regular_ownerEdge_coloredTwoStepMiddles_card`,
+    `Erdos85BinarySquareTwoOwnerPointwiseClosings`), summing to `q−2`
+    (`Erdos85BinarySquareSizeTwoOwnerEdgeRegularity`, `b95c8232e0`). The pair
+    level is spectrally empty (`N_aN_aᵀ = qI + A(S_a)`, `N_aᵀN_a = 2I + A(L(S_a))`
+    is the banked owner line graph), and the edge bijections are coherently
+    vertex-labelled, so `ψ_bc ∘ ψ_ab = ψ_ac` definitionally — no composition,
+    sign, F₂-rank or holonomy invariant exists (all CUT, #53/#54). Honest
+    theorem shape (sol-2, 30710): NONEXISTENCE of three `q`-regular graphs
+    `S_a, S_b, S_c` on `2q` vertices each, over one common `q²`-element
+    edge-label set `V`, such that each graph's `2q` stars are perfect
+    matchings in both other graphs, each `S_a` is the complement of a
+    `(q−1)`-regular `D_a`, plus the self-polar inner `2q`-cycle labels. The
+    `q=4` control (`binary_q4_fixed_free_disconnected_control.py`, two colours
+    `8+8`, `93186d9743`) is the mandatory sanity model: it satisfies every
+    pairwise law, so any proof must be genuinely ternary. Closest literature:
+    orthogonal double covers / Burgess–Cavenagh–Pike mutually orthogonal
+    factorizations (sol-1 30682/30691, sol-2 30685) — none applies with the
+    self-polar labels. **Coherent ODC composition alone is CUT** (sol-1,
+    `8a5506c77c`, `SIZE_TWO_COHERENT_ODC_AFFINE_COUNTERMODEL.md`): label the
+    `q²` points of `AG(2,q)` and pair six parallel-class directions into three
+    roots `S_i ≅ K_{q,q}`; every star maps to a perfect matching in the other
+    two and `ψ_jk∘ψ_ij = ψ_ik` — so the principle can only use the
+    self-indexed placement of each `2q`-component inside the labels and the
+    Hamilton-cycle restricted factors (equivalently, sol-3 30712: a linear
+    `(2,2,2)` group-divisible design on three `2q`-groups with `q²` blocks
+    whose three block colours project to Hamilton cycles). **The reduced code
+    below is strictly stronger than this principle** (it forgets the cross-owner incidences; sol-3, 30670); attacks
+    should target the principle or a multi-owner weakening, not the reduced
+    code alone.
+
     **Refutation GAP — `BinarySizeTwoCyclicPackingBound`.** The precise
     candidate says that for `q = 2^k`, `k ≥ 3`, and
     `a ∉ {0,-1}`, even the reduced same-difference reciprocal code is empty
@@ -931,7 +981,8 @@ CLOSED for this toolkit; further atomization goes to the ledger.
                 ├── SIZE-TWO-EIGENLINE(q)
                 │   ├── all-triangle graph → circulant grid [PROVEN, general q]
                 │   ├── sector refinement / C_2q normalization [GAP general q]
-                │   └── BinarySizeTwoCyclicPackingBound [GAP; EXTERNAL q=6,8]
+                │   ├── ThreeSizeTwoViaTripleExclusionPrinciple [GAP; graph-facing, faithful]
+                │   └── BinarySizeTwoCyclicPackingBound [GAP; EXTERNAL q=6,8; strictly stronger]
                 └── other parts / other μ             [GAP]
             (q = 8 instances: see A.5.2; not the path)
 Branch B (parked): B-EXIST [GAP] ∧ B-NONEXIST [AXIOM] ⇒ B-COFINAL [AXIOM]
@@ -1048,6 +1099,16 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.51** (2026-08-25 ~05:35Z, claude-fable): restored the graph-facing
+  size-two terminal `ThreeSizeTwoViaTripleExclusionPrinciple` (+ consumer)
+  beside `BinarySizeTwoCyclicPackingBound`, per sol-2's stewardship note
+  (30693); recorded the #52–#54 dictionary (selector = complement, via tile
+  = block union, ODC/perfect-matching stars, per-colour 2-closure ⇒ `q−2`),
+  the cuts (composition/sign/F₂/holonomy all vacuous), sol-2's honest
+  theorem shape, and that the reduced code is strictly stronger. Lean tip
+  `b95c8232e0` (58 single-module banks cold-green since the restart).
+  Prose-only.
 
 - **2.50** (2026-08-25 ~03:50Z, editor): attribution in the pure `c=q`
   block corrected per Fable's cold-verify log (29644) — I had credited the
