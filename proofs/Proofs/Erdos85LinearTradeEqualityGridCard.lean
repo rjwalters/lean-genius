@@ -14,16 +14,22 @@ namespace Erdos85
 
 noncomputable section
 
-/-- Pairwise codegree one plus zero-one point degrees makes the used shore an
-exact cardinal grid. -/
-theorem equalityGrid_used_card_eq_mul
+/-- Pairwise codegree one plus zero-one degrees at every point used by both
+sides makes the used shore an exact cardinal grid. -/
+theorem equalityGrid_used_card_eq_mul_of_used_degree
     {α β : Type*} [DecidableEq α] [DecidableEq β]
     (Inc : β → α → Prop) [DecidableRel Inc]
     (Q : Finset α) (Z P : Finset β)
     (hpair : ∀ z ∈ Z, ∀ p ∈ P,
       (Q.filter fun x => Inc z x ∧ Inc p x).card = 1)
-    (hZdeg : ∀ x ∈ Q, (Z.filter fun z => Inc z x).card ≤ 1)
-    (hPdeg : ∀ x ∈ Q, (P.filter fun p => Inc p x).card ≤ 1) :
+    (hZdeg : ∀ x ∈ Q,
+      0 < (Z.filter fun z => Inc z x).card →
+      0 < (P.filter fun p => Inc p x).card →
+      (Z.filter fun z => Inc z x).card ≤ 1)
+    (hPdeg : ∀ x ∈ Q,
+      0 < (Z.filter fun z => Inc z x).card →
+      0 < (P.filter fun p => Inc p x).card →
+      (P.filter fun p => Inc p x).card ≤ 1) :
     (Q.filter fun x =>
       0 < (Z.filter fun z => Inc z x).card ∧
       0 < (P.filter fun p => Inc p x).card).card = Z.card * P.card := by
@@ -53,13 +59,13 @@ theorem equalityGrid_used_card_eq_mul
   have hpoint : ∀ x ∈ Q,
       a x * b x = if 0 < a x ∧ 0 < b x then 1 else 0 := by
     intro x hx
-    have ha := hZdeg x hx
-    have hb := hPdeg x hx
-    change a x ≤ 1 at ha
-    change b x ≤ 1 at hb
     by_cases hapos : 0 < a x
     · by_cases hbpos : 0 < b x
       · simp [hapos, hbpos]
+        have ha := hZdeg x hx hapos hbpos
+        have hb := hPdeg x hx hapos hbpos
+        change a x ≤ 1 at ha
+        change b x ≤ 1 at hb
         omega
       · have hbzero : b x = 0 := by omega
         simp [hbzero]
@@ -76,8 +82,28 @@ theorem equalityGrid_used_card_eq_mul
       rw [hpoint x hx]
     _ = Z.card * P.card := hsum
 
+/-- Pairwise codegree one plus zero-one point degrees makes the used shore an
+exact cardinal grid. -/
+theorem equalityGrid_used_card_eq_mul
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (Inc : β → α → Prop) [DecidableRel Inc]
+    (Q : Finset α) (Z P : Finset β)
+    (hpair : ∀ z ∈ Z, ∀ p ∈ P,
+      (Q.filter fun x => Inc z x ∧ Inc p x).card = 1)
+    (hZdeg : ∀ x ∈ Q, (Z.filter fun z => Inc z x).card ≤ 1)
+    (hPdeg : ∀ x ∈ Q, (P.filter fun p => Inc p x).card ≤ 1) :
+    (Q.filter fun x =>
+      0 < (Z.filter fun z => Inc z x).card ∧
+      0 < (P.filter fun p => Inc p x).card).card = Z.card * P.card := by
+  apply equalityGrid_used_card_eq_mul_of_used_degree Inc Q Z P hpair
+  · intro x hx _ _
+    exact hZdeg x hx
+  · intro x hx _ _
+    exact hPdeg x hx
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.equalityGrid_used_card_eq_mul
+#print axioms Erdos85.equalityGrid_used_card_eq_mul_of_used_degree
