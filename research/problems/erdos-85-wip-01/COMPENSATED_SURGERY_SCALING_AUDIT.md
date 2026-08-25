@@ -184,24 +184,42 @@ survivor-edge deletion is a matching with `d` endpoints, and those endpoints
 lie outside every deleted neighbourhood.  (Independence makes the deleted
 cut incidence exactly `kd`, leaving exactly `d` attachment incidences to pay
 for matching loss.)  Exact degree compensation then distributes the `d`
-matching endpoints among the `k+1` selectors.  For the endpoint subset `T_i` in each
-selector, deletion of `D` cannot relieve an endpoint pair, so the predecessor
-argument above still gives
+matching endpoints among the `k+1` selectors.  For the endpoint subset `T_i`
+in each selector, deletion of `D` cannot relieve an endpoint pair, so the
+predecessor argument above still gives
 
 ```text
 |T_i| <= 3e + 9.
 ```
 
-Summing over the selectors yields the necessary condition
+There is a stronger per-selector constraint.  Fix an endpoint `a in T_i` and
+a deleted root `x in D`.  A same-selector cut incidence `y in N_G(x)` is
+either one of the at most `e+2` original defect-safe partners of `a`, or its
+conflict with `a` is relieved by the matching edge at `a`.  The latter case
+requires
 
 ```text
-d <= (k+1)(3e+9),
+y in N_G(x) intersect N_G(mate(a)),
+```
+
+which contributes at most one vertex by `C4`-freeness.  Assign every
+nonendpoint selector occurrence to a deleted root that caused its degree
+loss.  If `t=|T_i|`, the remaining `d-t` occurrences therefore satisfy
+
+```text
+d - t <= k(e+3).
+```
+
+Combining this with `t <= 3(e+3)` gives the sharper necessary condition
+
+```text
+d <= (k+3)(e+3),
 ```
 
 or equivalently
 
 ```text
-k+1 >= ceil(d/(3e+9)).
+k >= ceil(d/(e+3)) - 3.
 ```
 
 This does not construct the selectors, and allowing matching endpoints in
@@ -209,7 +227,7 @@ deleted neighbourhoods changes the relief graph.  It does identify the first
 credible scaling regime: bounded `k` cannot handle fixed excess, while a
 deletion set growing linearly with `d` can evade the orientation obstruction.
 At exact boundary excess `e=0`, the canonical compensated program should
-therefore expect at least about `d/9` new selector fibres, rather than another
+therefore expect at least about `d/3` deleted pivots, rather than another
 delete-one refinement.  The connected compact normal form already provides
 large tight deletion reservoirs; the missing theorem is a simultaneous
 selector allocation for such a growing family.
