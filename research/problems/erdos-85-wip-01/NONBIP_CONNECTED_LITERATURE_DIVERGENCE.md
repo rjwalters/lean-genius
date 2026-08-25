@@ -677,6 +677,39 @@ before sparse limits could help, and that reconstruction is the missing
 NONBIP-CONNECTED theorem itself.  The flag/local-limit route is therefore
 **stopped at normalization**.
 
+### Finite-field point-count probe: stopped at the degree boundary
+
+Write `N=binom(n,2)`.  If the upper-triangular entries of both `A` and `D`
+are variables over `F_2`, the `N` off-diagonal square-root equations
+
+```text
+D_xy + (A^2)_xy + 1 = 0
+```
+
+already have total degree `2N`, exactly equal to the total number `2N` of
+variables.  Chevalley--Warning requires the strict inequality “sum of
+degrees < number of variables”.  Adding even the `2n` linear parity versions
+of regularity puts the system strictly on the wrong side of that boundary,
+before C4-freeness is imposed.  The Ax--Katz refinement consequently supplies
+no positive point-count valuation here.
+
+Eliminating `D` does not create slack: it merely turns the displayed
+equations into the definition of `D` and leaves the hard Boolean conditions.
+Row parity does not express exact row weight `q`; exact weight requires
+high-degree binary-weight data.  C4-freeness contributes quartic monomial
+constraints for pairs of possible common neighbours.  Connectivity of `D`
+and existence of a `D`-odd cycle are still worse from this viewpoint: the
+direct Boolean encodings quantify over all cuts or all candidate odd cycles,
+using exponentially many or unbounded-degree disjunctions.
+
+Frobenius or relabelling actions can therefore prove at most divisibility of
+the number of points on a much coarser variety.  They cannot exclude a single
+orbit, and the affine/disconnected controls already provide rational points
+on every such coarse square-root variety.  Isolating the connected
+nonbipartite locus algebraically would first require a new bounded-degree
+encoding of precisely the missing global theorem.  Finite-field point
+counting is therefore **stopped at the degree boundary**.
+
 ### Hamada p-rank and even-set probe: stopped at geometric completion
 
 The neighborhood rows form a self-polar `q`-uniform, `q`-regular partial
