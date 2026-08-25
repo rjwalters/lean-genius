@@ -6003,3 +6003,29 @@ made ineligible at the chosen source while satisfying the global `QKQ^T`
 column equations.  Consequently **profile plus multiplicity is decisively
 closed**, and `K`-coupled eligibility is the first remaining discriminator.
                                                                     (13bna'''a)
+
+Even the retained outer `Q,K` column equations allow the alternating core.
+Place its two independent shores in two distinct branch-3 triple parallel
+classes and let the solver choose their coordinates.  There is a complete
+outer model satisfying the normalized diagonal class, all three special
+parallel classes, the 26/21 block profile, degree-five point columns, the
+cubic `K` law (one neighbor in each color), and the zero-slack U1 pair-cover
+equations, with rows `8,9,10 | 16,17,18` inducing `K_{3,3}-wz`.
+
+The pinned-model verifier is
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_q9_b3_k33_outer_qk_completion.py
+```
+
+It reconstructs the existing full-incidence branch-3 solver with only the
+documented residual-`A` clauses relaxed, pins all 47 blocks and all 36 `K`
+edges, checks `SAT`, and independently checks the induced core.  Scope is
+important: in this particular completion no row is `K`-eligible to **all
+six** core blocks.  Thus the model does not yet reproduce the same-source
+packing obstruction.  It proves that neither the exact columns nor the
+outer pair-cover equations forbid the conflict pattern itself.  The first
+uncut statement is now narrower still: the `K`-zero-support eligibility of
+one source must contain an alternating core of the relevant demanded size.
+                                                                    (13bna'''b)
