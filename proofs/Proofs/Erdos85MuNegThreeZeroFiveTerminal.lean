@@ -1,6 +1,10 @@
 import Proofs.Erdos85MuNegThreeZeroFiveCorrectShoreGeometry
+import Proofs.Erdos85MuNegThreeZeroFiveCorrectCrossProfile
+import Proofs.Erdos85MuNegThreeZeroFiveCorrectGraphTerminal
+import Proofs.Erdos85MuNegThreeZeroFiveOwnerProfile
 import Proofs.Erdos85MuNegThreeExplicitParameters
 import Proofs.Erdos85MuNegOneOneFourGraphC4Intertwine
+import Proofs.Erdos85NegativeOrbitAssembly
 import Proofs.Erdos85SizeTwoMuNegThreeEightEightSectorParameterGrid
 import Proofs.Erdos85SizeTwoMuNegOneCycleDefectSectorUniformity
 
@@ -298,7 +302,6 @@ theorem h305_ledger_correct_shore_modes
       exact (hall0 0).2 (by simpa [N, K, SimpleGraph.adjMatrix_apply] using hone.2)
     · exact exteriorOfOne (exactOne hall1)
 
-/-
 /-- The remaining `(-3,0,5)` direct-or-transported endpoint is impossible.
 The exact orbit ledger supplies the uniform cross profile; the two cycle
 entry bits select the corresponding graph shore modes. -/
@@ -354,12 +357,12 @@ theorem false_of_h305_source_or_transported
   have hcross := h305_crossExteriorSplit_of_profile
     G hfree c a b hab u v hurange hvrange
       (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) hprofile.2
-  have humode := h305_shore_modes G hfree hreg hcard c hc a u huinj
+  have humode := h305_ledger_correct_shore_modes G hfree hreg hcard c hc a u huinj
     hurange hu M₁ (fun i ↦ s (u i).1) (fun j ↦ s (v j).1) L₁
-  have hvmode := h305_shore_modes G hfree hreg hcard c hc b v hvinj
+  have hvmode := h305_ledger_correct_shore_modes G hfree hreg hcard c hc b v hvinj
     hvrange hv M₂ (fun j ↦ s (v j).1) (fun i ↦ s (u i).1) L₂
   rcases hprofile.1 with hzero | hmixed | hone
-  · exact muNegThreeZeroFive_graph_false_of_exterior
+  · exact muNegThreeZeroFiveCorrect_graph_false_of_exterior
       G c hfree hreg hcard hc a b hab u v huinj hvinj hurange hvrange hu hv
         (fun i ↦ s (u i).1) (fun j ↦ s (v j).1)
         L₁.f_sign L₂.f_sign L₁.f_flip L₂.f_flip hcross true true
@@ -373,17 +376,17 @@ theorem false_of_h305_source_or_transported
       have hcross' := h305_crossExteriorSplit_of_profile
         G hfree c b a (Ne.symm hab) v u hvrange hurange
           (fun j ↦ s (v j).1) (fun i ↦ s (u i).1) hprofile'
-      exact muNegThreeZeroFive_graph_false_of_exterior
+      exact muNegThreeZeroFiveCorrect_graph_false_of_exterior
         G c hfree hreg hcard hc b a (Ne.symm hab) v u hvinj huinj
           hvrange hurange hv hu (fun j ↦ s (v j).1) (fun i ↦ s (u i).1)
           L₂.f_sign L₁.f_sign L₂.f_flip L₁.f_flip hcross' false true
           (Or.inr (Or.inl ⟨rfl, rfl⟩)) (hvmode.2 huv.2) (humode.1 huv.1)
-    · exact muNegThreeZeroFive_graph_false_of_exterior
+    · exact muNegThreeZeroFiveCorrect_graph_false_of_exterior
         G c hfree hreg hcard hc a b hab u v huinj hvinj hurange hvrange hu hv
           (fun i ↦ s (u i).1) (fun j ↦ s (v j).1)
           L₁.f_sign L₂.f_sign L₁.f_flip L₂.f_flip hcross false true
           (Or.inr (Or.inl ⟨rfl, rfl⟩)) (humode.2 hvu.1) (hvmode.1 hvu.2)
-  · exact muNegThreeZeroFive_graph_false_of_exterior
+  · exact muNegThreeZeroFiveCorrect_graph_false_of_exterior
       G c hfree hreg hcard hc a b hab u v huinj hvinj hurange hvrange hu hv
         (fun i ↦ s (u i).1) (fun j ↦ s (v j).1)
         L₁.f_sign L₂.f_sign L₁.f_flip L₂.f_flip hcross false false
@@ -393,6 +396,5 @@ end
 
 end Erdos85
 
--/
-
 #print axioms Erdos85.h305_ledger_correct_shore_modes
+#print axioms Erdos85.false_of_h305_source_or_transported
