@@ -418,8 +418,12 @@ strict drop.  The graph-normalization consumer is
 Those hypotheses have **not all landed**, so this is not yet a decided
 drop.  Under operator goal #39, the local host is running the thirteen-cell
 campaign: four three-high scout cells, three five-high cells, and six cubes
-of the remaining seven-high t0 case; the one-high exclusion is already
-banked (room msgs 31965–31966 and the pre-fire manifest, msg 31994).  Tier A
+of the remaining seven-high t0 case (room msgs 31965–31966 and the pre-fire
+manifest, msg 31994).  These thirteen cells do not include the one-high
+exclusion: the final H1 aggregation still requires all 13,351 capacity rows,
+of which only 493 have Lean-accepted certificates and 12,858 remain pending
+(independent audits, room msgs 32010 and 32016).  Thus this spend cannot by
+itself decide the drop unless H1 is closed separately.  Tier A
 expands the seven h3/h5 cells into 406 checked cube jobs.  Because those
 checks produce base-CNF `Unsat` values while the older final socket accepts
 monolithic `LRAT.check` witnesses, the room identified and claimed a narrow
