@@ -19,6 +19,112 @@ certificates stored on a durable volume.
 
 ---
 
+## 0. Mathematical status: one uniform axiom remains
+
+Let `f(n) = minDegreeForC4 n`, the largest minimum degree of a simple
+`C₄`-free graph on `n` vertices.  Erdős Problem 85 asks whether `f` is
+eventually nondecreasing.  The formal reduction is complete: the negation is
+equivalent to the existence of arbitrarily late strict drops
+(`erdos85Negation_iff_not_question`), and a `q`-regular witness on `q²−1`
+vertices together with nonexistence at `(q²,q)` produces such a drop
+(`PlaneOrderDropWitness.strict_drop`).  Cofinally many such pincers therefore
+refute the problem (`not_erdos85Question_of_cofinalPlaneOrderDropFamily`).
+
+For `q = 2^k`, `k ≥ 3`, the existence jaw is already uniform: delete the
+absolute nucleus from the even-characteristic polarity graph
+(`Polarity.c4FreeMinDegreeWitness_even_delete_absolute_nucleus`), and the
+resulting orders are cofinal
+(`cofinalEvenFieldSquareExclusion_of_binary`).  On the nonexistence jaw, the
+normalized square-order reduction is an equivalence
+(`squareOrderTightCoreExists_iff_witness`,
+`binarySquareOrderTightCoreExclusion_iff`), while parity forces every such
+tight core to be regular (`squareOrder_regular_of_even`).  Consequently the
+whole infinite theorem follows from one proposition:
+
+> **A-REG (`BinarySquareRegularExclusion`).** For every `k ≥ 3`, there is no
+> simple `C₄`-free `2^k`-regular graph on `2^k · 2^k = 4^k` vertices.
+
+This is not shorthand for several hidden assumptions.  Lean proves directly
+that A-REG implies the normalized tight-core exclusion
+(`binarySquareOrderTightCoreExclusion_of_regularExclusion`) and hence the
+negation of Erdős 85
+(`not_erdos85Question_of_binarySquareRegularExclusion`).  Thus every arrow
+from A-REG to the headline theorem is cold-green; A-REG itself remains an
+axiom/conjecture, not a proved result (outline v2.64, §A.5; room msg 31964).
+
+The defect operator makes the residue precise.  For a hypothetical regular
+graph with adjacency matrix `A`,
+
+`A² = (q−1)I + J − D`,
+
+and `A` commutes with `D`
+(`adjMatrix_sq_eq_sub_secondOrderDefect_of_regular`,
+`adjMatrix_comm_secondOrderDefect_of_regular`).  Its defect components have
+orders `q m_c`, with `Σ_c m_c = q`
+(`binarySquare_regular_exists_defectComponent_partition`), and every vertex
+has exactly `m_c` graph-neighbours in component `c`
+(`binarySquare_regular_mul_componentNeighborCard_eq_componentCard`).  Unit
+parts are impossible for even `q`
+(`binarySquare_regular_no_sizeQ_defectComponent_of_even`), as are bipartite
+defect components when `4 ∣ q`
+(`binarySquare_regular_no_bipartite_defectComponent`).  What remains is
+therefore exactly **A-REG-NONBIP**: all partitions `q = Σ m_c` with
+`m_c ≥ 2` and every defect component non-bipartite.
+
+The one-part subcase has an especially sharp equivalent formulation:
+
+> **NONBIP-CONNECTED.** For binary `q ≥ 8`, every loopless `q`-regular
+> `C₄`-free adjacency matrix `A` of order `q²` is singular.  Equivalently,
+> its defect graph `D` is not connected, since
+> `dim ker(A) = numberOfComponents(D) − 1` (outline v2.64, §A.5.3(x)).
+
+This formulation includes all graph hypotheses; proving singularity from
+generic regularity or spectrum alone would not suffice.  The campaign's
+current mathematical frontier is the implication from the full symmetric
+`C₄`-free incidence completion to that singularity statement.  Mixed
+non-bipartite partitions remain a sibling subcase, not a consequence of the
+connected case (outline v2.64, §E).
+
+### Negative map: discarded routes are part of the result
+
+The search did not merely fail to finish several familiar approaches; it
+produced exact countermodels or reductions showing why they do not close the
+remaining node.
+
+- Determinant and Smith-normal-form arguments collapse to
+  `det(A)² = q⁴ τ(D)`.  They show that the spanning-tree count of connected
+  `D` is a square but do not force singularity; the uniform elimination is
+  recorded at outline §A.5.3(i), commit `0ed91c72d6`.
+- Spectrum-only and scalar moment inequalities are compatible with exact
+  real spectral controls.  The uniform countermodel preserves the required
+  even moments while allowing every odd trace obstruction to fail
+  (outline §C/D, commit `f6ee2ed421`; divergence #66).
+- Generic packing, Hall, code-LP and fractional-transversal statements omit
+  the completion of all rows to one symmetric adjacency matrix.  The
+  strongest faithful self-polar partial interface already has an exact
+  half-integral survivor at `q=6`, so integrality does not follow from those
+  hypotheses (`e401f3034f`; room msg 31951).
+- The proposed P8 inverse-sign separation is impossible: exact product-sign
+  identities force both signs among the relevant inverse entries.  The false
+  terminal was retracted, not weakened (`19f227dced`; outline v2.62,
+  room msgs 31962–31963).
+- Pfaffian/mod-2 valuation, Ihara, exterior-power and Lefschetz variants
+  reduce to the same determinant or spectral data.  Coherent-configuration,
+  projective-completion and line-graph thresholds lack the required bridge;
+  the latter premise already fails the `q=4` incidence control and connected
+  spectral controls.  The ten-route audit and its no-survivor verdict are
+  banked in `NONBIP_CONNECTED_LITERATURE_DIVERGENCE.md` at `cf2243a6e8`
+  (room msgs 31957 and 31962).
+
+These are scope statements, not impossibility theorems about every future
+variant.  They say exactly which advertised hypotheses were too weak and
+identify the missing input: a new invariant that uses the simultaneous
+completion of *all* rows to a symmetric `q`-regular `C₄`-free `A`.  Recording
+that boundary prevents a finite census, a partial incidence model, or a
+conditional terminal from being mistaken for the uniform theorem.
+
+---
+
 ## 1. Verification asymmetry
 
 The campaign's engine is the asymmetry between *proposing* mathematics and
