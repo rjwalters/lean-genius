@@ -188,6 +188,51 @@ requirements already in the `q=4` control.  This is high-risk but tests the
 one literature mechanism (near-extremal polarity completion) capable of
 bypassing the unknown spectrum entirely.
 
+The local equations already identify the exact circularity, without a
+finite solve.  Write the rows of a hypothetical projective-plane completion
+corresponding to the old `q^2` points as
+
+```text
+[ A | X ],
+```
+
+where `X` records incidence with the `q+1` new lines.  Each old row has
+weight `q` in `A` and must have weight `q+1` after completion, so every row
+of `X` has weight one.  The projective-plane row Gram matrix is `qI+J`,
+whereas the square-order identity gives
+
+```text
+A A^T = (q-1)I + J - D.
+```
+
+Consequently the old-row principal block of the completion equation is
+
+```text
+X X^T = I + D.                                         (COMP1)
+```
+
+For weight-one binary rows, `(XX^T)_{uv}=1` precisely when rows `u,v`
+choose the same new line.  Thus `(COMP1)` says that adjacency in `D` is
+equality of the unique new-line label.  It follows immediately that every
+component of `D` is a clique; since `D` is `(q-1)`-regular, necessarily
+
+```text
+D = q K_q.                                             (COMP2)
+```
+
+In particular no connected instance at `q>=2` can even pass the first local
+completion equation.  This is not evidence that a completion theorem will
+kill the connected branch: it shows that the existence of the completion
+already *contains* the desired imprimitivity conclusion.  Conversely,
+`(COMP1)` only solves the old-row Gram block when `(COMP2)` holds; it does
+not by itself construct the remaining new rows and columns.
+
+Probe 3 is therefore **stopped at `(COMP1)`**.  Any argument that first
+extends the configuration to a projective plane must prove a statement at
+least as strong as `D=qK_q` before the projective-plane classification can
+be invoked.  The proposed local-consistency test is the conclusion in
+one-hot factorization form, not an independent route to it.
+
 The separator lane remains stopped.  The next mathematical work should be one
 of these bounded probes, not another connectivity leaf.
 
