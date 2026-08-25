@@ -6313,3 +6313,20 @@ The first arrow must use the exact outer row/column or residual symmetry; the
 second must use the same-source geometry.  Generic matching existence or
 exchange cannot supply either arrow.  As above, this nineteen-row audit is
 corpus evidence and does not assert the universal transport theorem.
+
+Nor can the first arrow be obtained by generic submodular-rank uncrossing.
+For a fixed source, packing rank on a candidate set `S` is
+`r(S)=alpha(G[S])`, where `G` is the block-intersection graph.  If
+`a-b-c` is an induced three-vertex path, take `X={a,b}` and `Y={b,c}`.
+Then
+
+```text
+r(X)=r(Y)=1,  r(X union Y)=2,  r(X intersect Y)=1,
+```
+
+which violates the submodular inequality.  Stable-set rank is matroidal only
+for cluster graphs, whereas the explicit `K_{3,3}-wz` core already contains
+induced three-vertex paths.  Thus any future uncrossing argument must first
+prove a genuinely new laminar or otherwise restricted family theorem for the
+particular reverse intervals; arbitrary packing rank has no such property.
+                                                               (13boc')
