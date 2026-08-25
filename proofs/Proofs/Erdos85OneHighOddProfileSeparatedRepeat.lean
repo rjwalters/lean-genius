@@ -13,6 +13,17 @@ impossible.
 
 namespace Erdos85
 
+/-- Both endpoints of a key lie outside one source root and its mate. -/
+def OneHighKeyFarFromSource (key : OneHighLabelPair) (source : Fin 8) : Prop :=
+  key.1 ≠ source ∧ key.2 ≠ source ∧
+    key.1 ≠ oneHighStandardMate source ∧
+    key.2 ≠ oneHighStandardMate source
+
+instance (key : OneHighLabelPair) (source : Fin 8) :
+    Decidable (OneHighKeyFarFromSource key source) := by
+  unfold OneHighKeyFarFromSource
+  infer_instance
+
 /-- A compatible refinement contains the same off-diagonal key in two
 distinct source rows which are not a standard mate pair; the two key
 endpoints are not a standard mate pair either. -/
@@ -23,6 +34,8 @@ def OneHighRefinementHasSeparatedRepeatedKey
       ∃ key : OneHighLabelPair,
         key.1 < key.2 ∧
         key.2 ≠ oneHighStandardMate key.1 ∧
+        OneHighKeyFarFromSource key i ∧
+        OneHighKeyFarFromSource key j ∧
         key ∈ refinement.getD i.val [] ∧
         key ∈ refinement.getD j.val []
 
@@ -153,6 +166,8 @@ theorem oneHigh_oddProfile_exists_separatedRepeatedLocalEdges
       ∃ key : OneHighLabelPair,
         key.1 < key.2 ∧
         key.2 ≠ oneHighStandardMate key.1 ∧
+        OneHighKeyFarFromSource key (p.branchLabel s) ∧
+        OneHighKeyFarFromSource key (p.branchLabel t) ∧
         ∃ x ∈ matchingEdgeSources (oneHighInternalMate G hfree v s),
           (min (p.branchLabel (oneHighMatchedMissLabel G hfree hv
               p.external_empty p.outer_degree p.mate p.mate_adj s x))
@@ -175,7 +190,8 @@ theorem oneHigh_oddProfile_exists_separatedRepeatedLocalEdges
               (p.branchLabel (oneHighMatchedMissLabel G hfree hv
                 p.external_empty p.outer_degree p.mate p.mate_adj t
                   (oneHighInternalMate G hfree v t y)))) = key := by
-  obtain ⟨i, j, hij, hjmate, key, hkeylt, hkeyNonmate, hkeyi, hkeyj⟩ :=
+  obtain ⟨i, j, hij, hjmate, key, hkeylt, hkeyNonmate,
+    hkeyFarI, hkeyFarJ, hkeyi, hkeyj⟩ :=
     oneHigh_oddProfile_graphPairing_has_separatedRepeatedKey
       G hfree hv p hprofile heven stored hstored hagree
   have hgeti : (oneHighGraphPairingRefinement G hfree hv p).getD i.val [] =
@@ -211,7 +227,12 @@ theorem oneHigh_oddProfile_exists_separatedRepeatedLocalEdges
     exists_matchingEdgeSource_of_mem_matchingPairingListSorted _ _ hkeyi'
   obtain ⟨y, hy, hykey⟩ :=
     exists_matchingEdgeSource_of_mem_matchingPairingListSorted _ _ hkeyj'
+  have hkeyFarS : OneHighKeyFarFromSource key (p.branchLabel s) := by
+    simpa [s] using hkeyFarI
+  have hkeyFarT : OneHighKeyFarFromSource key (p.branchLabel t) := by
+    simpa [t] using hkeyFarJ
   exact ⟨s, t, hst, htMate, key, hkeylt, hkeyNonmate,
+    hkeyFarS, hkeyFarT,
     x, hx, hxkey, y, hy, hykey⟩
 
 end Erdos85
