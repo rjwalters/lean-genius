@@ -5945,3 +5945,34 @@ packings share no one-swap core.  Any proof of (13bn) must consequently use
 the outer `H`-eligibility, reverse-obstruction, and lex-minimality data; rank
 three, linearity, and saturation of one local packing family are
 insufficient.                                                       (13bna'')
+
+Global point regularity by itself does not repair this countermodel.  The
+rainbow realization displayed above is a partial Latin square.  With color
+groups written as coordinates, its six triples are
+
+```text
+w=(wc,wd,wp),   a=(az,ac,ad),   b=(bd,bz,bc),
+z=(az,bz,zp),   c=(wc,ac,bc),   d=(bd,wd,ad).
+```
+
+No two triples agree in two coordinates, so after padding the first two
+coordinate sets from three labels to four it is a partial Latin square of
+order four.  Smetaniuk's proof of the Evans conjecture embeds every partial
+Latin square of order `n` in a Latin square of order `2n`; here it therefore
+embeds in order eight.  Equivalently, the six-block alternating core sits
+inside a full `TD(3,8)`, where every point has the same degree eight and all
+blocks remain rainbow and linear.  (References: T. Evans, *Embedding
+Incomplete Latin Squares*, Amer. Math. Monthly 67 (1960), 958--961,
+doi:10.1080/00029890.1960.11992032; B. Smetaniuk, *A new construction for
+Latin squares I. A proof of the Evans conjecture*, Ars Combin. 11 (1981),
+155--172.)
+
+The completion adds many blocks, so it does not assert that the **eligible
+family at the chosen source** is the whole transversal design: eligibility
+may still select exactly the six old blocks and retain the two-shore packing
+obstruction.  Nor does the 64-block completion satisfy the exact 47-row B.3
+column ledger.  What it decisively cuts is the proposed discriminator
+"linear rainbow triples plus regular global point degrees."  Any proof of
+(13bn) must use the exact truncated 47-row column equations together with
+`H/K` eligibility (or reverse/lex data); generic regular completion and
+three-partite matching theory still permit `K_{3,3}-wz`.                (13bna''')
