@@ -5976,3 +5976,30 @@ column ledger.  What it decisively cuts is the proposed discriminator
 (13bn) must use the exact truncated 47-row column equations together with
 `H/K` eligibility (or reverse/lex data); generic regular completion and
 three-partite matching theory still permit `K_{3,3}-wz`.                (13bna''')
+
+The exact B.3 profile is also completable.  A bounded Boolean solve produced
+an explicit family on the actual three groups of eight with
+
+```text
+26 rainbow triples, 21 cross-group pairs, 47 blocks total,
+every one of the 24 points in exactly five blocks,
+every two blocks intersecting in at most one point,
+```
+
+and containing the six displayed triples as an induced
+`K_{3,3}-wz` conflict core.  The dependency-free verifier
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_q9_b3_k33_regular_completion.py
+```
+
+checks the complete 47-block list, all point degrees, linearity, the induced
+conflict graph, and that the core's only maximum packings are its two shores
+(with `{w,z}` maximal of size two).  This strengthens (13bna''') from a Latin
+square completion at the wrong block count to the exact B.3 profile census.
+It still does not assign the outer cubic `K` graph: filler blocks must be
+made ineligible at the chosen source while satisfying the global `QKQ^T`
+column equations.  Consequently **profile plus multiplicity is decisively
+closed**, and `K`-coupled eligibility is the first remaining discriminator.
+                                                                    (13bna'''a)
