@@ -67,9 +67,42 @@ theorem equalityGrid_same_right_not_secondOrderDefect_adj
     exact hzz' (Finset.card_le_one.mp (hZdeg x hxQ) z hzMem z' hz'Mem)
   exact not_secondOrderDefect_adj_of_commonNeighbor G hfree hxy hpx.symm hpy.symm
 
+/-- Once a `Z`--`P` pair has its unique common neighbor inside the equality
+grid, the complement of the grid contains no further common neighbor. -/
+theorem equalityGrid_compl_cross_free
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (Q Z P : Finset V)
+    (hpair : ∀ z ∈ Z, ∀ p ∈ P,
+      (Q.filter fun x => G.Adj z x ∧ G.Adj p x).card = 1) :
+    ∀ z ∈ Z, ∀ p ∈ P, z ≠ p → ∀ y ∉ Q,
+      ¬ (G.Adj z y ∧ G.Adj p y) := by
+  intro z hz p hp hzp y hyQ hy
+  let C := Q.filter fun x => G.Adj z x ∧ G.Adj p x
+  have hCcard : C.card = 1 := hpair z hz p hp
+  have hCpos : 0 < C.card := by omega
+  obtain ⟨x, hxC⟩ := Finset.card_pos.mp hCpos
+  have hxData := Finset.mem_filter.mp hxC
+  have hxFull : x ∈ G.neighborFinset z ∩ G.neighborFinset p :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z x).mpr hxData.2.1,
+        (G.mem_neighborFinset p x).mpr hxData.2.2⟩
+  have hyFull : y ∈ G.neighborFinset z ∩ G.neighborFinset p :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y).mpr hy.1,
+        (G.mem_neighborFinset p y).mpr hy.2⟩
+  have hcommonLe :
+      (G.neighborFinset z ∩ G.neighborFinset p).card ≤ 1 :=
+    card_inter_neighborFinset_le_one hfree hzp
+  have hxy : x = y :=
+    Finset.card_le_one.mp hcommonLe x hxFull y hyFull
+  exact hyQ (hxy ▸ hxData.1)
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.equalityGrid_same_left_not_secondOrderDefect_adj
 #print axioms Erdos85.equalityGrid_same_right_not_secondOrderDefect_adj
+#print axioms Erdos85.equalityGrid_compl_cross_free
