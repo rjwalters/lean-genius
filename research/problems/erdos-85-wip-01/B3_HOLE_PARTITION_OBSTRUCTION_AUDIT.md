@@ -6090,6 +6090,47 @@ the local alternating obstruction, make **every** row feasible, and arrange
 the lex-minimal reverse obstruction so that no residual source couples it to
 a better target.                                                     (13bna'''d)
 
+On the all-row-feasible locus, the better target can be chosen from the
+reverse boundary of the failing row itself.  For target `w`, recall
+
+```text
+F_w = {z : every full packing at z contains w},
+I_w = {z : no full packing at z contains w}.
+```
+
+The exhaustive verifier
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_q9_13bn_reverse_boundary_descent.py
+```
+
+recomputes all local packing families in the ten stored all-row-feasible
+branch-4 payloads.  For each reverse-obstructed row it reconstructs `F_w`,
+`I_w`, the contracted residual family, the optional-star collision cover,
+and the lex score.  Across all 17 strict dual-terminal failures it finds a
+lex-better reverse-obstructed row `z` and a residual source `x` such that
+
+```text
+z in F_w union I_w,
+and w,z are joint-or-one-swap exchange-coupled at x.          (13bo)
+```
+
+For the deterministic least witnesses, two use `z in F_w` and fifteen use
+`z in I_w`.  This is strictly sharper than (13bn)'s arbitrary better-row
+conclusion.  It says the descent can propagate through a row already on the
+lower or upper boundary whose incompatibility defines the reverse interval;
+no unrelated reachability or Hall assignment is needed.
+
+Equation (13bo) remains corpus evidence, not a theorem.  Its preferred proof
+shape is now clear, however: assume the strict point-cover/Tutte terminal
+fails at `w`, choose a reverse-boundary violation, and use the outer
+incidence equations to move that **same boundary row** into an
+exchange-coupled residual source.  Then show it is reverse-obstructed with a
+strictly smaller `(candidate count, -forced count)` score.  The last two
+steps are the only new mathematics; the banked exchange and lex-descent
+consumers already finish.                                             (13boa)
+
 There is no generic reconfiguration theorem hiding behind this last step.
 Packings are independent sets in the block-intersection graph.  For
 claw-free graphs, maximum-independent-set reconfiguration does have an
