@@ -1,0 +1,86 @@
+# Plateau-to-boundary: outside-literature audit
+
+Node: Goal #7, plateau-to-boundary localization.
+
+Status: negative routing audit, 25 August 2026.  This does not close the
+node.
+
+## Exact repository interface
+
+A `C4PlateauCore m d` is a `C4`-free graph on `m` vertices with minimum
+degree `d`, whose degree-`d` vertices cover every edge, and for which no
+`C4`-free graph on `m+1` vertices has minimum degree at least `d`.
+`C4PlateauCore.conflict_indepNum_lt` says that its common-neighbour conflict
+graph has independence number less than `d`.  Thus the direct one-vertex
+extension problem is exactly:
+
+> find `d` vertices no two of which already have a common neighbour.
+
+The component bridge is already sharp at the level of bare order data.  A
+component below `d^2` is regular and has order
+`d(d-1)+3+e`, `0 <= e <= d-4`.  A proper component is itself one-step
+nonextendable.  Therefore an outside result is useful only if it either
+forces a safe `d`-set, compresses a nonextendable component to smaller
+excess, or classifies the whole positive-excess band.
+
+## Closest literature
+
+The closest exact match found is the attachment parameter used by the
+modern regularity/container theory of `C4`-free graphs.  Conlon, Fox,
+Sudakov and Zhao define `g_n(d)` as the maximum number of ways to attach a
+new degree-`d` vertex to an `n`-vertex `C4`-free graph of minimum degree at
+least `d-1` while preserving `C4`-freeness.  Their proof passes to the graph
+in which two old vertices are adjacent when they have a common neighbour.
+Consequently their admissible attachment sets are exactly independent sets
+in our `commonNeighborConflict G`.
+
+This is a genuine dictionary, but the direction is wrong for Goal #7.  The
+published result bounds the **number** of admissible attachments from above
+(`g_n(d) <= exp(O(sqrt n))`, with a sharper asymptotic in the sparse regime).
+A plateau core asserts that this number is zero.  An upper bound cannot
+prove the required nonemptiness, and the container proof has no stability
+conclusion distinguishing zero from a small positive number.  Its auxiliary
+edge lower bound is the same Moore-scale counting already present in the
+repository.
+
+Reference: D. Conlon, J. Fox, B. Sudakov and Y. Zhao, *The regularity method
+for graphs with few 4-cycles*, Appendix C, especially Lemmas C.4--C.5:
+https://people.math.ethz.ch/~sudakovb/sparse-regularity.pdf
+
+The classical `C4`--star Ramsey literature is also adjacent but does not
+supply localization.  The known comparison
+`R(C4,K_{1,n+1}) <= R(C4,K_{1,n})+2` controls threshold movement by two; it
+does not give the one-step monotonicity or an order-compression operation on
+critical graphs.  Star-critical Ramsey numbers concern deleting a star from
+the complete host at a fixed Ramsey threshold, whereas the present surgery
+must add a vertex to the `C4`-free color while maintaining a minimum-degree
+constraint.
+
+Reference: Y. Chen, *A result on C4-star Ramsey numbers*, Discrete
+Mathematics 163 (1997), 121--125,
+https://doi.org/10.1016/0012-365X(95)00340-3
+
+The Moore-excess/cage literature is not directly applicable.  It assumes
+girth at least five, hence forbids triangles as well as `C4`; plateau cores
+may contain triangles.  Its polynomial identities arise from unique short
+paths and fail once adjacent vertices may have common neighbours.  Results
+on cyclic excess therefore apply only after an additional triangle-free or
+uniform-defect reduction, neither of which is banked for Goal #7.
+
+Reference: M. A. Fiol, J. Gimbert and M. Miller, *On graphs with cyclic
+defect or excess*, Electronic Journal of Combinatorics 18 (2011), P161,
+https://arxiv.org/abs/1010.5841
+
+## Verdict and surviving target
+
+No outside theorem found supplies the missing plateau-to-boundary arrow.
+The attachment literature nevertheless identifies the right external
+language: this is a **lower bound/stability problem for independent sets in
+the common-neighbour graph**, under the additional edge-minimal cover and
+near-Moore hypotheses.  A useful new theorem would have to say that in this
+regime the conflict graph has an independent `d`-set, or else force a
+specific reducible configuration.  Generic container estimates, ordinary
+`C4` saturation, star-critical Ramsey theory, and girth-five excess
+classification do not do this.
+
+No Lean wrapper is recommended from this audit.
