@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.59 — 2026-08-25 (v2.58 + Card #11 recorded: proper owners are uniformly NOT strongly regular, `PROVEN`; seats holding unclaimed for operator direction).**
+**Version 2.60 — 2026-08-25 ~15:50Z (goal #38 lifts the order-64 park; the parked h305 `(−3,0,5)` artifacts are found to model the wrong owner universe, and the honest 88-owner payload is UNSAT in all six modes with certificates banked).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -109,10 +109,15 @@ whole of what remains:
 The names `A-REG-EXTENSION`, `A-REG-UNIT`, `A-REG-MIXED-PARTITION` in v1 are
 restatements of this same node, not sub-nodes. They are retired here.
 
-### A.5.2 What is proven at `q = 8` only (order 64; not on the critical path) — **PARKED (goal #30, 2026-08-20)**
+### A.5.2 What is proven at `q = 8` only (order 64; not on the critical path) — **REOPENED (goal #38, 2026-08-25; parked under goal #30 from 2026-08-20)**
 
-**No new lane below this heading without an explicit operator go.** The §F
-"does not count" list is a claim-time gate as of goal #30, not advice.
+**Goal #38 (operator, 2026-08-25 ~08:15Z) rescinds goal #30's park.** Lanes
+below this heading are self-service again under goal #35. Still in force:
+goal #34's gate on the non-VT q=9 hunt, goal #36's two-way stuck test, the
+honest-hypotheses rule (no seven-component wrappers, no callback
+hypotheses), and byte-identity certificate banking with a manifest. The §F
+"does not count" list remains the honest accounting of what order-64 work
+is worth on the critical path: nothing here is uniform in `k`.
 
 **Reproducibility caveat (integrator sweep #18, 2026-08-20):** 37 modules
 load LRAT payloads via `include_str` with absolute host paths under
@@ -133,7 +138,7 @@ The seven partitions of 8 into parts ≥ 2: `[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`,
 | `[2,2,2,2]` | `EXTERNAL` — 11 assembly targets UNSAT | kissat, no certificates; the finite reduction to 11 targets is Lean/q-generic in parts (via-tiling law); the size-two μ=3 CERT kill below also applies here |
 | size-two block carrying a signed joint eigenline with `μ = 3` | `PROVEN-AT-64 CERT` | `false_of_orderSixtyFour_mu3_jointEigenline_native_without_hA_out` (2026-08-18 14:21Z; K-law + enumeration + 22 LRAT certificates; residual = the eigenline hypothesis `hs_in, hs_out, hsum, hDs, hA_in`) — kills that block in every stratum containing a size-two part |
 | size-two `μ = 3` block, certificate-free re-derivation | `PROVEN-AT-64 CERT` (honest hypotheses) | connected: `false_of_sizeTwoEigenline_connectedInternal_eight` (`PROVEN`, every reflection parameter). Disconnected: internal cycles are 6+10 or 8+8 with exact quotients; every sub-branch has a terminal — hand kills for 8+8 r∈{2,3,5} and 6+10 long-all-triangle low, checked owner-CNF LRAT terminals for 6+10 mixed / 6+10 all-TF / 8+8 low / mixed / both-triangle / r=6 (640–1,160 vars each, byte-identity-verified). Re-assembled 2026-08-20 on honest hypotheses: `orderSixtyFour_regular_sizeTwoEigenline_false` (f74647dd49) is the no-callback closure from hfree + hreg + component + eigenline only — no component-count hypothesis. The six deprecated seven-component wrappers are DELETED (eeaa44c4fe, per goal #30 item 3); the regular counterparts are the only assembly |
-| size-two block, `μ ∈ {−7,−5,−3,−1}` or no alternating eigenline | classification complete at 64; terminals partial | signed dispatcher `orderSixtyFour_sizeTwo_signedJoint_false_of_negative_cases` exposes exactly `μ ∈ {−7,−5,−3,−1}`; all three negative-mode 6+10 strata killed certificate-free (eigenline-commutation constancy vs census totals); C8+C8 collapsed to shared `k ≤ 1` (midpoint kill of higher diagonal shapes); shore-switch law `sizeTwoMuSwitchTarget` (μ′ = μ − 2(7+μ−2k−r), Lean-checked table + involutivity) routes every surviving `(μ,k,r)` cell to a closed lane except four self cells + pair representatives; self cells (−1,0,6) and (−3,0,4) closed certificate-free, (−3,1,2) has 8 checked LRAT terminals + constraint semantics, (−1,1,4) certificates embedded through the finite-relation socket, graph bridge in flight. μ=−7 killed companion-free, uniform in 4∣q (`c2449db105`). Assembly: the non-recursive `NegativeSwitchOrbit` eliminator (`negativeSwitchOrbits_false_of_canonical_endpoints`) exposes the HONEST remaining subtree per the 2026-08-20 endpoint audit — seven obligations: five cross-orbit canonical terminals (−5,0,3)/(−5,0,4)/(−5,1,2)/(−3,0,5)/(−3,1,3), the (−3,1,2) graph bridge, the active (−1,1,4) bridge, plus one unconditional switched-μ=3 callback. This is new terminal work, not mere wiring. No-eigenline case: transport-or-eigenline reduction unchanged. **Endpoint status at park (2026-08-20 goal #30):** of the seven obligations, six are closed on the spine — (−5,0,3), (−5,0,4), (−5,1,2), (−3,1,3) canonical terminals, the (−1,1,4) bridge, and the (−3,1,2) bridge (structurally removed from the global list, `09c127e2c6`). The last, (−3,0,5), is OPEN: all three shore-mode certificate/router packages banked, then a real cross-R-degree interface gap found (room 14585, 14647); parked with the gap documented. Its marked-graph lane is recorded conditional on AXIOM H305-EXCESS-CEILING (v2.9), which the room's own spectral audit says has no present derivation — pressure, not a kill |
+| size-two block, `μ ∈ {−7,−5,−3,−1}` or no alternating eigenline | classification complete at 64; terminals partial | signed dispatcher `orderSixtyFour_sizeTwo_signedJoint_false_of_negative_cases` exposes exactly `μ ∈ {−7,−5,−3,−1}`; all three negative-mode 6+10 strata killed certificate-free (eigenline-commutation constancy vs census totals); C8+C8 collapsed to shared `k ≤ 1` (midpoint kill of higher diagonal shapes); shore-switch law `sizeTwoMuSwitchTarget` (μ′ = μ − 2(7+μ−2k−r), Lean-checked table + involutivity) routes every surviving `(μ,k,r)` cell to a closed lane except four self cells + pair representatives; self cells (−1,0,6) and (−3,0,4) closed certificate-free, (−3,1,2) has 8 checked LRAT terminals + constraint semantics, (−1,1,4) certificates embedded through the finite-relation socket, graph bridge in flight. μ=−7 killed companion-free, uniform in 4∣q (`c2449db105`). Assembly: the non-recursive `NegativeSwitchOrbit` eliminator (`negativeSwitchOrbits_false_of_canonical_endpoints`) exposes the HONEST remaining subtree per the 2026-08-20 endpoint audit — seven obligations: five cross-orbit canonical terminals (−5,0,3)/(−5,0,4)/(−5,1,2)/(−3,0,5)/(−3,1,3), the (−3,1,2) graph bridge, the active (−1,1,4) bridge, plus one unconditional switched-μ=3 callback. This is new terminal work, not mere wiring. No-eigenline case: transport-or-eigenline reduction unchanged. **Endpoint status at park (2026-08-20 goal #30):** of the seven obligations, six are closed on the spine — (−5,0,3), (−5,0,4), (−5,1,2), (−3,1,3) canonical terminals, the (−1,1,4) bridge, and the (−3,1,2) bridge (structurally removed from the global list, `09c127e2c6`). The last, (−3,0,5), is OPEN: all three shore-mode certificate/router packages banked, then a real cross-R-degree interface gap found (room 14585, 14647); parked with the gap documented. Its marked-graph lane is recorded conditional on AXIOM H305-EXCESS-CEILING (v2.9), which the room's own spectral audit says has no present derivation — pressure, not a kill **REOPENED 2026-08-25 (goal #38), and the first thing found was that the parked artifacts model the wrong problem** (sols 1–3 converging within 25 min of the ack, 31664/31674/31697; Fable's compile verdict 31676): `Erdos85MuNegThreeZeroFiveOwnerCnf` reuses the h114 owner families — 8 fixed owners per shore at offset ±1 or ±3, 80 candidates — whereas the banked `h305_ledger_correct_shore_modes` gives R-shore offsets `{±1,4}` / `{±3,4}`, i.e. 12 fixed edges per shore and an **88-owner** universe with the antipodal `(i,i+4)` pairs. So the existing 80-owner UNSAT says only "no realization after deleting both antipodal shore matchings", not "no honest h305 realization", and the commented Terminal consumer is typed against the wrong modes. **Honest payload, same hour** (sol-2, `963ba48379`, `sat64/generate_h305_owner_cnf.py`): six canonical instances `(u ∈ {tf,tri}) × (v ∈ {tf,tri} up to symmetry) × (σ ∈ {0,1})` with the exact 12+12 fixed shore edges, 64 `D`-guarded cross owners with the h305 2/3 profile and intertwining, owner activity/hit, endpoint service and C4 clauses — **all six UNSAT** (kissat, < 15 s each), regenerated byte-identically by sol-1 (31681) and on the host by Fable (31689), and by a Lean emitter `908eae8ac1` whose tf/tf/s0 output is byte-equal to the Python payload. Certificates banked with a full manifest (`3fa832651a` → `87cdfd9db4`, cadical 3.0.1 text LRAT, kissat cross-check): `Proofs/Certificates/muneg3_zerofive_honest_{tf_tf,tf_tri,tri_tri}_s{0,1}.lrat`. Lean side in flight: corrected CNF definitions `b279f3eb44`, 88-owner typed table / geometry / realization `5ed3a9483c` → `e36d53dac2` → `852c422376` → `966d60ffc0` (sol-3, all cold-green, standard axioms), `LRAT.check` terminals pending (sol-2; these will carry `Lean.ofReduceBool` and must be labelled `CERT`). **Status: `EXTERNAL` for the endpoint, moving to `PROVEN-AT-64 CERT` once the checked-LRAT theorems and the graph-realization transport land and the six-way mode split is wired to the source-or-transported terminal.** No H305-EXCESS-CEILING and no wrapper hypothesis is involved — this is the first version of the endpoint that is honest, and it is the reason the park was worth lifting. |
 | `[3,3,2]`, `[4,2,2]`, `[6,2]` | `GAP` | non-bipartite blocks; only size-two/`μ=3` inputs above |
 | `[4,4]`, `[5,3]` | `GAP` | exact owner nullities only |
 | `[8]` (connected defect) | `GAP` | determinant/Matrix–Tree package only |
@@ -1222,6 +1227,22 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.60** (2026-08-25 ~15:50Z, editor): **goal #38 (operator): the order-64
+  park is LIFTED.** Chosen over holding unclaimed (Fable's recommendation),
+  the non-VT q=9 hunt, and a q=11/13 census, after all four seats reported
+  every named terminal at a documented boundary. A.5.2 heading and gate
+  rewritten; goal #34 and #36 unchanged. The seats were idle at their
+  prompts from 07:54 to 14:59Z and did not see the ruling until the
+  operator woke them; in that window Fable ran the q=8 configuration-level
+  fleet under a sha256 ledger (z3 PB UNKNOWN at 30 min on six profiles,
+  S-shore UNKNOWN at 60 min, three uncapped kissat runs still going at
+  ~6 h). On waking, all three Sols took the `(−3,0,5)` endpoint and found
+  the parked artifacts unsound for the honest problem within 25 minutes —
+  recorded in the A.5.2 row above with the honest 88-owner payload, six
+  UNSAT verdicts, three independent byte-identical regenerations, banked
+  certificates, and the Lean modules in flight. Lean tip `966d60ffc0`, 62+
+  modules cold-green since the restart.
 
 - **2.59** (2026-08-25, editor): Card #11 recorded — sol-1's 30533 request
   had been half-absorbed (the B.3 (13f) retraction went in at v2.53; the
