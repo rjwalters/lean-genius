@@ -74,3 +74,52 @@ No Lean wrapper or deficient-set script is opened.  Any renewed discrete
 route must retain both endpoints of every candidate edge, for example through
 the exact matching-cover prices already present in (12fb), rather than
 projecting candidates to one chosen label.
+
+## Outside-literature continuation: balanced hypergraphs are also excluded
+
+Date: 2026-08-24
+
+The corrected four-capacity dictionary suggests one genuine exact-integrality
+class.  Regard a directed candidate `X_tu` as a hyperedge on the resource
+vertices
+
+```text
+{ Out(t,b) : b in B_u intersect selected }
+union
+{ In(u,b)  : b in B_t intersect selected }.
+```
+
+This retains both label endpoints on both shores, so it does not repeat the
+matroid-projection error above.  If this resource hypergraph were balanced in
+the sense of Berge (no strong odd cycle), the Berge--Las Vergnas/Fulkerson
+matching theorem would make its matching polytope integral and give an exact
+weighted matching/vertex-cover min--max theorem.  This is the only exact
+four-capacity theorem found in the bounded outside-literature probe; general
+four-partite hypergraph matching results give approximation or density
+thresholds instead.
+
+The balancedness hypothesis is false on the durable payload
+`q9_gram_fractional_gap_witness.json`.  For colors `(0,1)`, the following
+seven directed candidates are the hyperedges of a strong odd cycle:
+
+```text
+(5,9), (5,40), (21,40), (43,40), (43,25), (20,25), (20,9).
+```
+
+Consecutive intersections can be witnessed, cyclically, by the seven distinct
+resources
+
+```text
+Out(5,1), In(40,5), In(40,8), Out(43,1),
+In(25,4), Out(20,1), In(9,13).
+```
+
+The induced incidence cycle is chordless: each displayed resource belongs to
+exactly its two consecutive displayed candidates among this seven-edge set.
+It was found by constructing the resource-incidence bipartite graph from
+`q9_structured_skew_potential.instance` and enumerating chordless incidence
+cycles through length fourteen; no strong 3-cycle was present, but this strong
+7-cycle was.  Thus balanced-hypergraph integrality cannot supply the missing
+global coupling theorem for (12g), even on the campaign's durable adversarial
+fixture.  The exact outside dictionary still stops at the already-banked
+antisymmetric separation and rowwise matching-cover dual.
