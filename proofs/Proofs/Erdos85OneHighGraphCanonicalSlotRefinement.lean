@@ -167,6 +167,44 @@ theorem oneHighGraphCanonicalSlotLabel_missesBlock
     oneHighFamilyMissesBlock_of_original_zero
       G hfree p.branchLabel p.leafLabel s u offset hzero
 
+/-- A matched canonical slot's selected missing label is genuinely far from
+its source block and the source's standard mate block. -/
+theorem oneHighGraphCanonicalSlotLabel_far
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (source : Fin 8) (offset : Fin 5)
+    (hmatched : oneHighFamilyVertexMatched p.profile
+      (oneHighFamilyVertex source offset).val = true) :
+    oneHighGraphCanonicalSlotLabel G hfree p source offset ≠ source ∧
+      oneHighGraphCanonicalSlotLabel G hfree p source offset ≠
+        oneHighStandardMate source := by
+  let s := p.branchLabel.symm source
+  let x := ((p.leafLabel s).symm offset).1
+  let u := oneHighMissingBranch G v p.mate s x
+  have hxMatched : (G.neighborFinset x ∩
+      secondLayerBranch G v s).card = 1 := by
+    simpa [s, x] using card_oneHighCanonicalSlot_internal_eq_one
+      G hfree p source offset hmatched
+  have hu := oneHighMissingBranch_mem_of_matched
+    G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj
+      s x ((p.leafLabel s).symm offset).2 hxMatched
+  have huBase := (Finset.mem_filter.mp hu).1
+  have hum : u ≠ p.mate s := (Finset.mem_erase.mp huBase).1
+  have hus : u ≠ s := (Finset.mem_erase.mp
+    (Finset.mem_erase.mp huBase).2).1
+  constructor
+  · intro h
+    apply hus
+    apply p.branchLabel.injective
+    simpa [oneHighGraphCanonicalSlotLabel, s, x, u] using h
+  · intro h
+    apply hum
+    apply p.branchLabel.injective
+    rw [p.branch_mate s]
+    simpa [oneHighGraphCanonicalSlotLabel, s, x, u] using h
+
 /-- Boolean named-atom form of the preceding graph miss fact. -/
 theorem oneHighGraphCanonicalSlotLabel_atomValue
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
@@ -185,6 +223,112 @@ theorem oneHighGraphCanonicalSlotLabel_atomValue
   have hmiss := oneHighGraphCanonicalSlotLabel_missesBlock
     G hfree hv p source offset hmatched
   simp [oneHighFamilyAtomValue, hmiss]
+
+theorem oneHighGraphCanonicalSlotLabel_zero_le_one
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8) :
+    oneHighGraphCanonicalSlotLabel G hfree p source 0 ≤
+      oneHighGraphCanonicalSlotLabel G hfree p source 1 := by
+  let R := oneHighRelabeledLeafGraph G v
+    (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel)
+  let l0 := oneHighGraphCanonicalSlotLabel G hfree p source 0
+  let l1 := oneHighGraphCanonicalSlotLabel G hfree p source 1
+  have hm0 : oneHighFamilyVertexMatched p.profile
+      (oneHighFamilyVertex source 0).val = true := by
+    simp [oneHighFamilyVertexMatched, oneHighFamilyVertex_val]
+  have hm1 : oneHighFamilyVertexMatched p.profile
+      (oneHighFamilyVertex source 1).val = true := by
+    simp [oneHighFamilyVertexMatched, oneHighFamilyVertex_val]
+  have hf0 := oneHighGraphCanonicalSlotLabel_far
+    G hfree hv p source 0 hm0
+  have hf1 := oneHighGraphCanonicalSlotLabel_far
+    G hfree hv p source 1 hm1
+  have hmiss0 := oneHighGraphCanonicalSlotLabel_missesBlock
+    G hfree hv p source 0 hm0
+  have hmiss1 := oneHighGraphCanonicalSlotLabel_missesBlock
+    G hfree hv p source 1 hm1
+  by_contra hle
+  have hgt : l0.val > l1.val := by omega
+  have hlex := p.constraints.lex source l0 l1
+    hf0.1 hf0.2 hf1.1 hf1.2 hgt
+  exact hlex.1 ⟨hmiss0, hmiss1⟩
+
+theorem oneHighGraphCanonicalSlotLabel_two_le_three
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8)
+    (htwo : oneHighFamilyInternalEdges p.profile source = 2) :
+    oneHighGraphCanonicalSlotLabel G hfree p source 2 ≤
+      oneHighGraphCanonicalSlotLabel G hfree p source 3 := by
+  let l2 := oneHighGraphCanonicalSlotLabel G hfree p source 2
+  let l3 := oneHighGraphCanonicalSlotLabel G hfree p source 3
+  have hcond : source.val % 2 = 1 ∨ p.profile ≤ source.val / 2 := by
+    unfold oneHighFamilyInternalEdges at htwo
+    split at htwo
+    · omega
+    · have hmod := Nat.mod_lt source.val (by omega : 0 < 2)
+      omega
+  have hm2 : oneHighFamilyVertexMatched p.profile
+      (oneHighFamilyVertex source 2).val = true := by
+    simp [oneHighFamilyVertexMatched, oneHighFamilyVertex_val]
+    omega
+  have hm3 : oneHighFamilyVertexMatched p.profile
+      (oneHighFamilyVertex source 3).val = true := by
+    simp [oneHighFamilyVertexMatched, oneHighFamilyVertex_val]
+    omega
+  have hf2 := oneHighGraphCanonicalSlotLabel_far
+    G hfree hv p source 2 hm2
+  have hf3 := oneHighGraphCanonicalSlotLabel_far
+    G hfree hv p source 3 hm3
+  have hmiss2 := oneHighGraphCanonicalSlotLabel_missesBlock
+    G hfree hv p source 2 hm2
+  have hmiss3 := oneHighGraphCanonicalSlotLabel_missesBlock
+    G hfree hv p source 3 hm3
+  by_contra hle
+  have hgt : l2.val > l3.val := by omega
+  have hlex := p.constraints.lex source l2 l3
+    hf2.1 hf2.2 hf3.1 hf3.2 hgt
+  exact (hlex.2 htwo).1 ⟨hmiss2, hmiss3⟩
+
+theorem oneHighGraphCanonicalSlotLabel_zero_le_two
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8)
+    (htwo : oneHighFamilyInternalEdges p.profile source = 2) :
+    oneHighGraphCanonicalSlotLabel G hfree p source 0 ≤
+      oneHighGraphCanonicalSlotLabel G hfree p source 2 := by
+  let l0 := oneHighGraphCanonicalSlotLabel G hfree p source 0
+  let l2 := oneHighGraphCanonicalSlotLabel G hfree p source 2
+  have hcond : source.val % 2 = 1 ∨ p.profile ≤ source.val / 2 := by
+    unfold oneHighFamilyInternalEdges at htwo
+    split at htwo
+    · omega
+    · have hmod := Nat.mod_lt source.val (by omega : 0 < 2)
+      omega
+  have hm0 : oneHighFamilyVertexMatched p.profile
+      (oneHighFamilyVertex source 0).val = true := by
+    simp [oneHighFamilyVertexMatched, oneHighFamilyVertex_val]
+  have hm2 : oneHighFamilyVertexMatched p.profile
+      (oneHighFamilyVertex source 2).val = true := by
+    simp [oneHighFamilyVertexMatched, oneHighFamilyVertex_val]
+    omega
+  have hf0 := oneHighGraphCanonicalSlotLabel_far
+    G hfree hv p source 0 hm0
+  have hf2 := oneHighGraphCanonicalSlotLabel_far
+    G hfree hv p source 2 hm2
+  have hmiss0 := oneHighGraphCanonicalSlotLabel_missesBlock
+    G hfree hv p source 0 hm0
+  have hmiss2 := oneHighGraphCanonicalSlotLabel_missesBlock
+    G hfree hv p source 2 hm2
+  by_contra hle
+  have hgt : l0.val > l2.val := by omega
+  have hlex := p.constraints.lex source l0 l2
+    hf0.1 hf0.2 hf2.1 hf2.2 hgt
+  exact (hlex.2 htwo).2 ⟨hmiss0, hmiss2⟩
 
 /-- Miss-label pairs in the literal canonical matching-edge order. -/
 def oneHighGraphCanonicalSlotRow
