@@ -134,6 +134,40 @@ The bounded cut is:
    form.  Stop if it yields merely the already-known lower valuation of
    `det A`, rather than a polarity-sensitive upper obstruction.
 
+### Binary bicycle/matroid probe: stopped at the existing kernel interface
+
+Let `C = row_F2(A)`.  Since `A` is symmetric,
+
+```text
+C^perp = ker_F2(A),
+C intersect C^perp = im_F2(A) intersect ker_F2(A).       (P3a)
+```
+
+The latter is exactly the bicycle (code-hull) space.  The standard binary
+matroid circuit--cocircuit theorem says that every circuit meets every
+cocircuit evenly; in matrix language this is only the defining orthogonality
+between `C` and `C^perp`.  The standard bicycle tripartition likewise depends
+only on membership in the two spaces in (P3a).
+
+Reducing the square identity modulo two (for even `q`) gives
+
+```text
+A^2 = I + J + D.                                        (P3b)
+```
+
+Consequently a bicycle word is precisely a vector `A y` for which
+`(I+J+D)y=0`.  This is not a new constraint: it is the same binary-kernel
+shore and one-step `A` transport already used in the Baer involution audit.
+Conversely, the abstract matroid forgets the integer row weight `q`, the
+exact `0/1` common-neighbour counts, and the location of the defect edges;
+its circuit--cocircuit parity therefore cannot distinguish the disconnected
+affine control from a connected candidate without adding those data back.
+
+The bicycle/matroid candidate is **stopped**.  A useful code invariant must
+retain coordinate-labelled higher products (for example individual
+cross-neighbour matchings), not merely the row space, kernel, hull, or their
+dimensions.
+
 ### Bounded lattice probe: stopped
 
 Because `A` is symmetric with zero diagonal, it is the Gram matrix of an
