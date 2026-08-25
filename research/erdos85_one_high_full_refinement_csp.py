@@ -129,7 +129,8 @@ def validate(refinement: list[list[list[int]]]) -> None:
             raise ValueError(f"row {i} pairing edges are not lex sorted")
 
 
-def solve_refinement(refinement: list[list[list[int]]], timeout_ms: int):
+def solve_refinement(refinement: list[list[list[int]]], timeout_ms: int,
+                     include_f2: bool = True):
     validate(refinement)
     cnf = Cnf()
 
@@ -213,19 +214,21 @@ def solve_refinement(refinement: list[list[list[int]]], timeout_ms: int):
     # F2 paired-common ledger.  The preceding C4 constraints make each
     # Boolean below equivalent to "this ordered mate-block pair has exactly
     # one common leaf neighbor".
-    for i in range(BRANCHES):
-        j = standard_mate(i)
-        indicators = []
-        for a in range(WIDTH):
-            for b in range(WIDTH):
-                u, v = vertex(i, a), vertex(j, b)
-                witnesses = []
-                for w in range(n):
-                    auw, avw = adj(u, w), adj(v, w)
-                    witnesses.append(conjunction(cnf, [auw, avw]))
-                indicators.append(disjunction(cnf, witnesses))
-        target = 30 - 2 * len(refinement[i]) - 2 * len(refinement[j])
-        exact_cardinality(cnf, indicators, target)
+    if include_f2:
+        # The equations for i and mate(i) count the same unordered pairs.
+        for i in range(0, BRANCHES, 2):
+            j = standard_mate(i)
+            indicators = []
+            for a in range(WIDTH):
+                for b in range(WIDTH):
+                    u, v = vertex(i, a), vertex(j, b)
+                    witnesses = []
+                    for w in range(n):
+                        auw, avw = adj(u, w), adj(v, w)
+                        witnesses.append(conjunction(cnf, [auw, avw]))
+                    indicators.append(disjunction(cnf, witnesses))
+            target = 30 - 2 * len(refinement[i]) - 2 * len(refinement[j])
+            exact_cardinality(cnf, indicators, target)
 
     with tempfile.TemporaryDirectory(prefix="erdos85-h1-csp-") as directory:
         dimacs = Path(directory) / "instance.cnf"
@@ -261,6 +264,8 @@ def main() -> None:
     parser.add_argument("--models", action="store_true")
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--indices", help="comma-separated original indices")
+    parser.add_argument("--no-f2", action="store_true",
+                        help="omit paired-common equalities (lex-prefix test)")
     args = parser.parse_args()
     data = json.loads(args.input.read_text())
     refinements = data if (data and isinstance(data[0][0][0], list)) else [data]
@@ -276,13 +281,15 @@ def main() -> None:
         parser.error("--jobs must be positive")
     if args.jobs == 1:
         results = map(lambda refinement:
-                      solve_refinement(refinement, args.timeout_ms),
+                      solve_refinement(refinement, args.timeout_ms,
+                                       not args.no_f2),
                       [refinement for _, refinement in selected])
     else:
         executor = ProcessPoolExecutor(max_workers=args.jobs)
         results = executor.map(solve_refinement,
                                [refinement for _, refinement in selected],
-                               [args.timeout_ms] * len(selected))
+                               [args.timeout_ms] * len(selected),
+                               [not args.no_f2] * len(selected))
     for (index, _), (status, model) in zip(selected, results):
         summary[status] += 1
         record = {"index": index, "status": status}
