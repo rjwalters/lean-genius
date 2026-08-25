@@ -152,6 +152,7 @@ import Proofs.Erdos85H1V2CertP0I01495
 import Proofs.Erdos85H1V2CertP0I01524
 import Proofs.Erdos85OneHighProfileOneAllEvenReciprocalCertificateBank
 import Proofs.Erdos85OneHighAllEvenCapacityInventory
+import Proofs.Erdos85OneHighAllEvenCapacityCheckedResidual
 import Proofs.Erdos85H1V2CertP2I00101
 import Proofs.Erdos85H1V2CertP2I00132
 import Proofs.Erdos85H1V2CertP2I00341
@@ -352,6 +353,20 @@ def oneHighAllEvenCapacityKnownCheckedTables (profile : Fin 5) :
   | 3 => []
   | 4 => oneHighFamilyV2CheckedBankTables oneHighAllEvenCapacityCheckedBankP4
 
+def oneHighAllEvenCapacityKnownInventoryIndices (profile : Fin 5) : List Nat :=
+  match profile with
+  | 0 => [16, 17, 19, 21, 24, 25, 28, 29, 33, 34, 38, 39, 44, 45, 46, 54, 59, 60, 62, 66, 72, 75, 77, 80, 85, 88, 90, 92, 113, 115, 116, 119, 121, 122, 124, 126, 127, 131, 133, 134, 137, 139, 140, 148, 150, 157, 161, 173, 177, 180, 182, 186, 198, 199, 201, 202, 203, 204, 206, 216, 217, 218, 220, 221, 222, 225, 227, 229, 231, 236, 244, 257, 260, 262, 266, 267, 286, 292, 295, 296, 300, 302, 303, 304, 312, 316, 319, 330, 331, 336, 339, 348, 359, 362, 367, 368, 369, 370, 373, 374, 385, 390, 391, 398, 402, 412, 417, 418, 425, 431, 434, 436, 438, 446, 447, 456, 464, 467, 469, 471, 477, 488, 494, 495, 496, 507, 520, 521, 524, 526, 535, 538, 541, 543, 545, 549, 551, 557, 559, 560, 563, 567, 577, 578, 584, 585, 587, 588, 589, 591, 594, 607]
+  | 1 => [3, 4, 8, 9, 15]
+  | 2 => [25, 35, 107, 168, 177, 203, 205, 224, 295, 344]
+  | 3 => []
+  | 4 => [239, 274]
+
+def oneHighAllEvenCapacityResidualTables (profile : Fin 5) :
+    List OneHighMissTable :=
+  oneHighTablesAtIndices (oneHighAllEvenCapacityInventoryTables profile)
+    (oneHighResidualIndices (oneHighAllEvenCapacityInventoryTables profile)
+      (oneHighAllEvenCapacityKnownInventoryIndices profile))
+
 theorem oneHighAllEvenCapacityKnownCheckedTables_profile_lengths :
     (List.ofFn (fun profile : Fin 5 =>
       (oneHighAllEvenCapacityKnownCheckedTables profile).length)) =
@@ -364,8 +379,7 @@ theorem oneHighAllEvenCapacityKnownCheckedTables_total_length :
   native_decide
 
 def oneHighMissTableFullCode (table : OneHighMissTable) : List Nat :=
-  (List.ofFn fun source : Fin 8 =>
-    List.ofFn fun label : Fin 8 => table source label).flatten
+  oneHighFamilyTablePairs.map fun pair => table pair.1 pair.2
 
 private theorem nodup_of_map_nodup
     {α β : Type*} (f : α → β) (xs : List α)
@@ -398,6 +412,39 @@ theorem oneHighAllEvenCapacityKnownCheckedTaggedCodes_length :
     oneHighAllEvenCapacityKnownCheckedTaggedCodes.length = 169 := by
   native_decide
 
+private theorem oneHighTableRelevantAgree_of_fullCode_eq
+    {left right : OneHighMissTable}
+    (hcode : oneHighMissTableFullCode left =
+      oneHighMissTableFullCode right) :
+    OneHighTableRelevantAgree left right := by
+  unfold oneHighMissTableFullCode at hcode
+  intro pair hpair
+  exact List.map_inj_left.mp hcode pair hpair
+
+set_option maxHeartbeats 0 in
+theorem oneHighAllEvenCapacityKnownCheckedCodes_eq_indices
+    (profile : Fin 5) :
+    (oneHighAllEvenCapacityKnownCheckedTables profile).map
+        oneHighMissTableFullCode =
+      (oneHighTablesAtIndices (oneHighAllEvenCapacityInventoryTables profile)
+        (oneHighAllEvenCapacityKnownInventoryIndices profile)).map
+          oneHighMissTableFullCode := by
+  fin_cases profile <;> native_decide
+
+set_option maxHeartbeats 0 in
+theorem oneHighAllEvenCapacityResidualTables_profile_lengths :
+    (List.ofFn fun profile : Fin 5 =>
+      (oneHighAllEvenCapacityResidualTables profile).length) =
+      [457, 11, 1577, 6, 283] := by
+  native_decide
+
+theorem oneHighAllEvenCapacityResidualTables_total_length :
+    (List.ofFn fun profile : Fin 5 =>
+      (oneHighAllEvenCapacityResidualTables profile).length).sum =
+      2334 := by
+  rw [oneHighAllEvenCapacityResidualTables_profile_lengths]
+  decide
+
 theorem oneHighAllEvenCapacityKnownChecked
     (profile : Fin 5) (table : OneHighMissTable)
     (hmem : table ∈ oneHighAllEvenCapacityKnownCheckedTables profile) :
@@ -412,5 +459,24 @@ theorem oneHighAllEvenCapacityKnownChecked
   · simp [oneHighAllEvenCapacityKnownCheckedTables] at hmem
   · exact oneHighFamilyV2Checked_of_mem_bank
       oneHighAllEvenCapacityCheckedBankP4 hmem
+
+theorem oneHighAllEvenCapacityInventory_checked_of_residual
+    (hresidual : ∀ profile table,
+      table ∈ oneHighAllEvenCapacityResidualTables profile →
+        OneHighFamilyV2CheckedUnsat profile.val table) :
+    ∀ profile table, table ∈ oneHighAllEvenCapacityInventoryTables profile →
+      OneHighFamilyV2CheckedUnsat profile.val table := by
+  intro profile
+  apply oneHigh_checked_of_index_bank_and_residual
+  · intro table htable
+    have hcode : oneHighMissTableFullCode table ∈
+        (oneHighAllEvenCapacityKnownCheckedTables profile).map
+          oneHighMissTableFullCode := by
+      rw [oneHighAllEvenCapacityKnownCheckedCodes_eq_indices]
+      exact List.mem_map.mpr ⟨table, htable, rfl⟩
+    obtain ⟨known, hknown, hcodeEq⟩ := List.mem_map.mp hcode
+    exact (oneHighAllEvenCapacityKnownChecked profile known hknown).transport
+      (oneHighTableRelevantAgree_of_fullCode_eq hcodeEq)
+  · exact hresidual profile
 
 end Erdos85

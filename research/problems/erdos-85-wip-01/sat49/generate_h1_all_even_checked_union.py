@@ -26,8 +26,8 @@ def cert_indices(proof_dir: Path, profile: int) -> list[int]:
     return sorted(result)
 
 
-def all_even_tags(inventory: Path, profile: int) -> set[str]:
-    result = set()
+def all_even_tag_indices(inventory: Path, profile: int) -> dict[str, int]:
+    result = {}
     for line_number, raw in enumerate(inventory.read_text().splitlines(), 1):
         fields = raw.split()
         if not fields:
@@ -38,8 +38,18 @@ def all_even_tags(inventory: Path, profile: int) -> set[str]:
             raise ValueError(f"{inventory}:{line_number}: malformed row")
         if (row_profile == profile and has_cross_miss_capacity(values)
                 and has_all_even_pairing(profile, values)):
-            result.add(worker_tag(values))
+            result[worker_tag(values)] = len(result)
     return result
+
+
+def source_orbit(path: Path) -> str:
+    match = re.search(r"^\s*orbit=([0-9a-f]{16})$", path.read_text(), re.MULTILINE)
+    if match:
+        return match.group(1)
+    filename_match = re.search(r"([0-9a-f]{16})\.lean$", path.name)
+    if filename_match:
+        return filename_match.group(1)
+    raise ValueError(f"missing orbit metadata: {path}")
 
 
 def intersecting_cert_indices(
@@ -89,13 +99,28 @@ def main() -> None:
     p0 = cert_indices(proof_dir, 0)
     p4 = cert_indices(proof_dir, 4)
     inventory = proof_dir / "Certificates/h1_orbit_inventory.compact"
-    p2 = intersecting_cert_indices(proof_dir, 2, all_even_tags(inventory, 2))
+    tag_indices = [all_even_tag_indices(inventory, profile) for profile in range(5)]
+    p2 = intersecting_cert_indices(proof_dir, 2, set(tag_indices[2]))
     if (len(p0), len(p4)) != (152, 2):
         raise ValueError(f"expected cert-root split (152, 2), found {(len(p0), len(p4))}")
     if len(p2) != 10:
         raise ValueError(f"expected ten profile-2 checked rows, found {len(p2)}")
     if args.smoke:
         p0, p2, p4 = [752], [], []
+
+    profile_modules = {
+        0: [proof_dir / f"Erdos85H1V2CertP0I{index:05d}.lean" for index in p0],
+        1: sorted(proof_dir.glob(
+            "Erdos85OneHighProfileOneAllEvenReciprocalCertificate????????????????.lean"
+        )),
+        2: [proof_dir / f"Erdos85H1V2CertP2I{index:05d}.lean" for index in p2],
+        3: [],
+        4: [proof_dir / f"Erdos85H1V2CertP4I{index:05d}.lean" for index in p4],
+    }
+    known_indices = [
+        sorted(tag_indices[profile][source_orbit(path)] for path in profile_modules[profile])
+        for profile in range(5)
+    ]
 
     bank_counts = (len(p0), 5, len(p2), 0, len(p4))
     total_checked = sum(bank_counts)
@@ -104,6 +129,7 @@ def main() -> None:
     imports += [
         "Proofs.Erdos85OneHighProfileOneAllEvenReciprocalCertificateBank",
         "Proofs.Erdos85OneHighAllEvenCapacityInventory",
+        "Proofs.Erdos85OneHighAllEvenCapacityCheckedResidual",
     ]
     imports += [module(2, index) for index in p2]
     imports += [module(4, index) for index in p4]
@@ -139,6 +165,20 @@ def oneHighAllEvenCapacityKnownCheckedTables (profile : Fin 5) :
   | 3 => []
   | 4 => oneHighFamilyV2CheckedBankTables oneHighAllEvenCapacityCheckedBankP4
 
+def oneHighAllEvenCapacityKnownInventoryIndices (profile : Fin 5) : List Nat :=
+  match profile with
+  | 0 => {known_indices[0]}
+  | 1 => {known_indices[1]}
+  | 2 => {known_indices[2]}
+  | 3 => []
+  | 4 => {known_indices[4]}
+
+def oneHighAllEvenCapacityResidualTables (profile : Fin 5) :
+    List OneHighMissTable :=
+  oneHighTablesAtIndices (oneHighAllEvenCapacityInventoryTables profile)
+    (oneHighResidualIndices (oneHighAllEvenCapacityInventoryTables profile)
+      (oneHighAllEvenCapacityKnownInventoryIndices profile))
+
 theorem oneHighAllEvenCapacityKnownCheckedTables_profile_lengths :
     (List.ofFn (fun profile : Fin 5 =>
       (oneHighAllEvenCapacityKnownCheckedTables profile).length)) =
@@ -151,8 +191,7 @@ theorem oneHighAllEvenCapacityKnownCheckedTables_total_length :
   native_decide
 
 def oneHighMissTableFullCode (table : OneHighMissTable) : List Nat :=
-  (List.ofFn fun source : Fin 8 =>
-    List.ofFn fun label : Fin 8 => table source label).flatten
+  oneHighFamilyTablePairs.map fun pair => table pair.1 pair.2
 
 private theorem nodup_of_map_nodup
     {{α β : Type*}} (f : α → β) (xs : List α)
@@ -185,6 +224,39 @@ theorem oneHighAllEvenCapacityKnownCheckedTaggedCodes_length :
     oneHighAllEvenCapacityKnownCheckedTaggedCodes.length = {total_checked} := by
   native_decide
 
+private theorem oneHighTableRelevantAgree_of_fullCode_eq
+    {{left right : OneHighMissTable}}
+    (hcode : oneHighMissTableFullCode left =
+      oneHighMissTableFullCode right) :
+    OneHighTableRelevantAgree left right := by
+  unfold oneHighMissTableFullCode at hcode
+  intro pair hpair
+  exact List.map_inj_left.mp hcode pair hpair
+
+set_option maxHeartbeats 0 in
+theorem oneHighAllEvenCapacityKnownCheckedCodes_eq_indices
+    (profile : Fin 5) :
+    (oneHighAllEvenCapacityKnownCheckedTables profile).map
+        oneHighMissTableFullCode =
+      (oneHighTablesAtIndices (oneHighAllEvenCapacityInventoryTables profile)
+        (oneHighAllEvenCapacityKnownInventoryIndices profile)).map
+          oneHighMissTableFullCode := by
+  fin_cases profile <;> native_decide
+
+set_option maxHeartbeats 0 in
+theorem oneHighAllEvenCapacityResidualTables_profile_lengths :
+    (List.ofFn fun profile : Fin 5 =>
+      (oneHighAllEvenCapacityResidualTables profile).length) =
+      {[609 - bank_counts[0], 16 - bank_counts[1], 1587 - bank_counts[2], 6, 285 - bank_counts[4]]} := by
+  native_decide
+
+theorem oneHighAllEvenCapacityResidualTables_total_length :
+    (List.ofFn fun profile : Fin 5 =>
+      (oneHighAllEvenCapacityResidualTables profile).length).sum =
+      {2503 - total_checked} := by
+  rw [oneHighAllEvenCapacityResidualTables_profile_lengths]
+  decide
+
 theorem oneHighAllEvenCapacityKnownChecked
     (profile : Fin 5) (table : OneHighMissTable)
     (hmem : table ∈ oneHighAllEvenCapacityKnownCheckedTables profile) :
@@ -199,6 +271,25 @@ theorem oneHighAllEvenCapacityKnownChecked
   · simp [oneHighAllEvenCapacityKnownCheckedTables] at hmem
   · exact oneHighFamilyV2Checked_of_mem_bank
       oneHighAllEvenCapacityCheckedBankP4 hmem
+
+theorem oneHighAllEvenCapacityInventory_checked_of_residual
+    (hresidual : ∀ profile table,
+      table ∈ oneHighAllEvenCapacityResidualTables profile →
+        OneHighFamilyV2CheckedUnsat profile.val table) :
+    ∀ profile table, table ∈ oneHighAllEvenCapacityInventoryTables profile →
+      OneHighFamilyV2CheckedUnsat profile.val table := by
+  intro profile
+  apply oneHigh_checked_of_index_bank_and_residual
+  · intro table htable
+    have hcode : oneHighMissTableFullCode table ∈
+        (oneHighAllEvenCapacityKnownCheckedTables profile).map
+          oneHighMissTableFullCode := by
+      rw [oneHighAllEvenCapacityKnownCheckedCodes_eq_indices]
+      exact List.mem_map.mpr ⟨table, htable, rfl⟩
+    obtain ⟨known, hknown, hcodeEq⟩ := List.mem_map.mp hcode
+    exact (oneHighAllEvenCapacityKnownChecked profile known hknown).transport
+      (oneHighTableRelevantAgree_of_fullCode_eq hcodeEq)
+  · exact hresidual profile
 
 end Erdos85
 '''
