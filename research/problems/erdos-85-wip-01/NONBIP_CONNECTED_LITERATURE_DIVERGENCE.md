@@ -643,6 +643,40 @@ about `D`, its connectivity, or its odd cycles.  The neighborhood-nerve route
 is therefore **stopped**: it repackages the ambient incidence graph but cannot
 distinguish NONBIP-CONNECTED from the admissible controls.
 
+### Sparse flag-algebra/local-limit probe: stopped at normalization
+
+Here `n=q^2`, while `A` has `q^3/2` edges and `D` has
+`q^2(q-1)/2` edges.  In the ordinary
+dense normalization, every fixed flag containing an `A`- or `D`-edge has
+density `O(1/q)`, so the joint two-coloured limit is the empty graph.
+Benjamini--Schramm convergence does not repair this loss: the root degrees
+are `q -> infinity`, hence the sequence is not tight in the locally finite
+rooted-graph space used by local weak convergence.
+
+The `L^p` sparse-graphon normalization `rho=1/q` can retain `A` and `D`
+separately, but not their load-bearing pointwise coupling.  The equation
+
+```text
+codeg_A(x,y) = 1 - D(x,y)
+```
+
+differs from the generic value only on the `D`-edge set, whose ambient pair
+measure is `rho`.  That exceptional set vanishes in unrooted cut/`L^p`
+convergence; rescaling its indicator makes the mixed quadratic product an
+unbounded, non-continuous observable.  Edge-rooted coloured flags can retain
+the conditional statement `D-edge => A-codegree zero`, but retaining all of
+the necessary rooted identities simply restates the original exact incidence
+system.  Existing sparse counting lemmas for C4-free graphs transfer selected
+subgraph counts, not connectedness of `D` or exclusion of its prescribed
+integral square root.
+
+In particular, connected defect graphs and the admissible `q K_q` controls
+are indistinguishable by the relevant fixed-radius/asymptotic densities.  A
+stability-and-rounding theorem reconstructing `D` globally would be needed
+before sparse limits could help, and that reconstruction is the missing
+NONBIP-CONNECTED theorem itself.  The flag/local-limit route is therefore
+**stopped at normalization**.
+
 ### Hamada p-rank and even-set probe: stopped at geometric completion
 
 The neighborhood rows form a self-polar `q`-uniform, `q`-regular partial
