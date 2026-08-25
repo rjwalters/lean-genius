@@ -348,6 +348,43 @@ leaves `2r(q-2)` candidate labels inside the triangle-supported cells and
 `2r(q-1)-1`.  Cardinality alone is therefore not enough at larger q; a
 proof of (P15) must use symmetric incidence between those candidate labels.
 
+#### P15 is false at the next even parameter
+
+`inverse_potential_selfpolar_fractional_cover_generic_sat.py` implements the
+same faithful abstraction for any even `q` and root triangle count
+`0<r<q/2`.  At `q=6`, `r=1`, the candidate label set has size nine.  After
+the sound symmetry break that orders the distinct block labels, the complete
+support-size verdict is
+
+```text
+m=6: UNSAT
+m=7: UNSAT
+m=8: UNSAT
+m=9: SAT
+```
+
+The `m=9` witness uses all nine allowed labels, eight weights `1/2`, and one
+weight `1`.  The script independently checks exact rational unit coverage,
+looplessness, symmetric incidence between all labelled blocks, transversal
+support, and pairwise block intersection at most one.  Thus it is a faithful
+countermodel to P15 at its stated partial interface.
+
+This does not construct an ambient `6`-regular C4-free graph on 36 vertices:
+the rows indexed by points outside the nine negative perfect sinks remain
+unfilled.  It does prove that
+
+```text
+self-polarity + perfect-transport label location + q^2 point budget
+```
+
+does **not** force fractional-cover integrality uniformly in even `q`.
+Consequently P15 is **CUT** as a q-generic terminal.  A continuation would
+have to use completion of every unselected row to the same symmetric regular
+C4-free adjacency matrix, not merely another constraint internal to the
+fractional cover.  No q=8 version was launched: once the generic mechanism
+failed at q=6, a finite order-64 probe would fall under the standing park and
+would not repair the uniform proof gap.
+
 The latter warning has an exact bounded control in
 `nonbip_connected_inverse_potential_p2_control.py`.  A connected cubic graph
 on 16 vertices with `q=4` and a four-point source set has the normalization
