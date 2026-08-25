@@ -2724,6 +2724,17 @@ theorem sevenHighT0CubeRunner_semanticSound
   exact sevenHighT0CubeFinalUnitsVal_semanticSound adj cube
     hsPartition h.cubeUnits
 
+/-- Projection of the runner soundness theorem used by downstream DIMACS
+bridges.  Keeping the projection next to the construction prevents clients
+from re-elaborating the enormous generated runner state merely to select its
+`satisfied` field. -/
+theorem sevenHighT0CubeRunner_formulaSatisfied
+    (edges : BitVec 1176) (cube : Nat)
+    (h : SevenHighT0CubeRunnerPremises edges cube) :
+    dimacsFormulaSatisfied (sevenHighT0CubeRunner edges cube).2
+      (sevenHighT0CubeRunner edges cube).1.clauses :=
+  (sevenHighT0CubeRunner_semanticSound edges cube h).satisfied
+
 theorem sevenHighT0CubeRunnerN1_state (edges : BitVec 1176) :
     (sevenHighT0CubeRunnerN1 edges).1 = sevenHighT0CubeNormalizeN1 := by
   exact sevenHighT0CubeNormalizeN1Val_state
@@ -2762,5 +2773,14 @@ theorem sevenHighT0CubeRunner_state
     (orderFortyNineBitAdj edges) cube
     (sevenHighT0CubeRunnerBeforeFinal edges)
     (sevenHighT0CubeRunnerBeforeFinal_state edges)
+
+/-- The runner valuation satisfies the exact final-state DIMACS formula. -/
+theorem sevenHighT0CubeRunner_finalFormulaSatisfied
+    (edges : BitVec 1176) (cube : Nat)
+    (h : SevenHighT0CubeRunnerPremises edges cube) :
+    dimacsFormulaSatisfied (sevenHighT0CubeRunner edges cube).2
+      (sevenHighT0CubeFinalState cube).clauses := by
+  rw [← sevenHighT0CubeRunner_state edges cube]
+  exact sevenHighT0CubeRunner_formulaSatisfied edges cube h
 
 end Erdos85
