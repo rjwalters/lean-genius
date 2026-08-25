@@ -975,3 +975,51 @@ intersecting family but supplies no contradiction or completion theorem.
 Any continuation would have to couple all color classes through the
 self-indexed square root; intersecting-family classification alone is
 **stopped at (BR1)**.
+
+### Flag-diagonal symmetric-configuration literature: exact name, missing axiom
+
+There is an exact classical name for the unpolarized incidence structure.
+A symmetric configuration `v_k` has deficiency
+
+```text
+delta = v-k^2+k-1.
+```
+
+Thus our `v=q^2`, `k=q` object has `delta=q-1` and lies on the
+**flag diagonal** of the parameter spectrum.  Type-C elliptic semiplanes are
+the standard infinite family there: delete from a projective plane of order
+`q` a flag, the pencil through its point, and all points on its line.  The
+result has type `(q^2)_q`.  A modern reference is Abreu--Funk--Labbate--
+Napolitano, *Deletions, extensions, and reductions of elliptic semiplanes*,
+Innovations in Incidence Geometry 11 (2010), 139--169,
+doi:10.2140/iig.2010.11.139.
+
+This identification does not classify our object.  An elliptic semiplane is
+defined by an additional parallel axiom: for every nonincident point--line
+pair there is at most one parallel line through the point and at most one
+parallel point on the line.  That axiom supplies precisely the global
+resolution/deficiency structure which NONBIP-CONNECTED is trying to derive.
+The general `v_k` literature treats the flag diagonal as an existence
+spectrum and gives deletion, extension and reduction constructions; it does
+not prove that every configuration on the diagonal is type C.
+
+The other nearby deficiency-graph literature also assumes extra geometry.
+Pentagonal and generalized pentagonal geometries require the noncollinear
+set of each point to support a line or Steiner system.  Here that set has
+size `q-1`, while a line has size `q`, and no such axiom is available.
+Searches for self-polar configurations locate the right remaining
+hypotheses--the symmetric incidence matrix is a polarity and its zero
+diagonal means no absolute points--but only definitions and small-parameter
+classifications, not a uniform flag-diagonal theorem.
+
+Consequently the precise outside-the-literature target is now visible:
+
+```text
+absolute-point-free self-polar flag-diagonal configuration
+  -> type-C/resolvable deficiency structure.                       (CFG1)
+```
+
+No cited theorem proves `(CFG1)`; assuming the elliptic-semiplane parallel
+axiom would assume its conclusion.  The configuration-language route is
+therefore **stopped at the parallel-axiom gate**, while providing useful
+search terminology for any future polarity-specific attack.
