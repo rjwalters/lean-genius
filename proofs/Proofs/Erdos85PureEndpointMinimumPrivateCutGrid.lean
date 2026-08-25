@@ -30,7 +30,7 @@ private theorem commonNeighbor_card_le_one
 
 /-- A minimum private cut produces the complete zero/positive intersection
 grid on the complementary shore. -/
-theorem c4Free_binarySquare_pureEndpoint_minimumPrivateCut_grid
+theorem c4Free_binarySquare_pureEndpoint_minimumPrivateCut_grid_and_exists_positive
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -57,8 +57,9 @@ theorem c4Free_binarySquare_pureEndpoint_minimumPrivateCut_grid
     let U := Sᶜ
     let r := fun b => (G.neighborFinset b ∩ P).card
     let Z := B.filter fun b => r b = 0
-    ∀ z ∈ Z, ∀ w ∈ B, 1 < r w →
-      (U.filter fun u => G.Adj z u ∧ G.Adj w u).card = 1 := by
+    (∀ z ∈ Z, ∀ w ∈ B, 1 < r w →
+      (U.filter fun u => G.Adj z u ∧ G.Adj w u).card = 1) ∧
+    ∃ w ∈ B, 1 < r w := by
   classical
   dsimp only
   let F := fullLineCenters G S q
@@ -228,11 +229,63 @@ theorem c4Free_binarySquare_pureEndpoint_minimumPrivateCut_grid
     G.Adj U Z B (fun b => r b - 1) m
     (fun z hz => hrow z (Finset.mem_filter.mp hz).1)
     hbalance hlinear hweight hZeq
-  intro z hz w hw hrw
-  exact hgrid z hz w hw (Nat.sub_pos_of_lt hrw)
+  constructor
+  · intro z hz w hw hrw
+    exact hgrid z hz w hw (Nat.sub_pos_of_lt hrw)
+  · have hZnonempty : Z.Nonempty := by
+      apply Finset.card_pos.mp
+      rw [← hZeq]
+      omega
+    obtain ⟨z, hz⟩ := hZnonempty
+    by_contra hnone
+    push Not at hnone
+    have hstrict : (∑ b ∈ B, r b) < ∑ _b ∈ B, 1 := by
+      apply Finset.sum_lt_sum
+      · intro b hb
+        exact hnone b hb
+      · refine ⟨z, (Finset.mem_filter.mp hz).1, ?_⟩
+        have hzZero := (Finset.mem_filter.mp hz).2
+        omega
+    rw [hsumB] at hstrict
+    simp at hstrict
+
+/-- Compatibility projection of the equality-grid theorem. -/
+theorem c4Free_binarySquare_pureEndpoint_minimumPrivateCut_grid
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q m : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m) (hfour : 4 ∣ q)
+    (hreg : ∀ v, G.degree v = q)
+    (hcard : Fintype.card V = q * q)
+    (hconn : (secondOrderDefectGraph G).Preconnected)
+    (S : Finset V)
+    (hempty : emptyLineCenters G S = ∅)
+    (hCcard : (fullLineCenters G S q).card = q)
+    (hshore : 2 * S.card = q * q + q)
+    (htri : ∀ v,
+      (G.neighborFinset v ∩ S).card = 0 ∨
+      (G.neighborFinset v ∩ S).card = m ∨
+      (G.neighborFinset v ∩ S).card = q)
+    (hcut : finsetGraphCutSize (secondOrderDefectGraph G)
+      (S.filter fun x =>
+        (G.neighborFinset x ∩ fullLineCenters G S q).card = 1) = q) :
+    let F := fullLineCenters G S q
+    let B := Fᶜ
+    let P := S.filter fun p => (G.neighborFinset p ∩ F).card = 1
+    let U := Sᶜ
+    let r := fun b => (G.neighborFinset b ∩ P).card
+    let Z := B.filter fun b => r b = 0
+    ∀ z ∈ Z, ∀ w ∈ B, 1 < r w →
+      (U.filter fun u => G.Adj z u ∧ G.Adj w u).card = 1 := by
+  exact (c4Free_binarySquare_pureEndpoint_minimumPrivateCut_grid_and_exists_positive
+    G hfree hq hqm hfour hreg hcard hconn S hempty hCcard hshore htri hcut).1
 
 end
 
 end Erdos85
 
+#print axioms
+  Erdos85.c4Free_binarySquare_pureEndpoint_minimumPrivateCut_grid_and_exists_positive
 #print axioms Erdos85.c4Free_binarySquare_pureEndpoint_minimumPrivateCut_grid
