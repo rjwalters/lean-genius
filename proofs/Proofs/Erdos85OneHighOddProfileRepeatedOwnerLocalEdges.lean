@@ -13,6 +13,41 @@ same actual branch.
 
 namespace Erdos85
 
+/-- The complementary-partition code is insensitive to owner orientation. -/
+theorem oneHighOwnerPartitionCode_comm (i j : Fin 8) :
+    oneHighOwnerPartitionCode i j = oneHighOwnerPartitionCode j i := by
+  decide +revert
+
+/-- Reverse the two owner branches of a concrete local-edge witness.  This
+allows a selected shared owner to be placed consistently in the target slot
+before applying the escape theorem. -/
+theorem OneHighPartitionLocalEdgeWitness.exists_swap
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v} {code : Fin 3}
+    (q : OneHighPartitionLocalEdgeWitness G hfree hv p code) :
+    ∃ q' : OneHighPartitionLocalEdgeWitness G hfree hv p code,
+      q'.s = q.t ∧ q'.t = q.s := by
+  have hsourceNe : q.t ≠ q.s := q.source_ne.symm
+  have htargetNeMate : q.s ≠ p.mate q.t := by
+    intro h
+    apply q.target_ne_mate
+    have hm := congrArg p.mate h
+    simpa [p.mate_involutive q.t] using hm.symm
+  have hcode :
+      (oneHighOwnerPartitionCode (p.branchLabel q.t) (p.branchLabel q.s) ==
+        code) = true := by
+    rw [← oneHighOwnerPartitionCode_comm]
+    exact q.code_eq
+  rcases q.edge_data with ⟨key, hkeylt, hkeyNonmate, hfarS, hfarT,
+    x, hx, hxkey, y, hy, hykey⟩
+  let q' : OneHighPartitionLocalEdgeWitness G hfree hv p code :=
+    ⟨q.t, q.s, hsourceNe, htargetNeMate, hcode,
+      key, hkeylt, hkeyNonmate, hfarT, hfarS,
+      y, hy, hykey, x, hx, hxkey⟩
+  exact ⟨q', rfl, rfl⟩
+
 /-- Invert one specified graph-refinement owner witness to its concrete pair
 of internal matching edges, preserving both exact owner labels. -/
 theorem oneHigh_graphOwnerPairWitness_to_partitionLocalEdgeWitness
@@ -75,4 +110,6 @@ theorem oneHigh_graphOwnerPairWitness_to_partitionLocalEdgeWitness
 
 end Erdos85
 
+#print axioms Erdos85.oneHighOwnerPartitionCode_comm
+#print axioms Erdos85.OneHighPartitionLocalEdgeWitness.exists_swap
 #print axioms Erdos85.oneHigh_graphOwnerPairWitness_to_partitionLocalEdgeWitness
