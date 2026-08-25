@@ -45,7 +45,37 @@ theorem two_mul_sub_four_le_of_strictCut_quadratic
     hqI hqmI hzLowerI hzUpperI hquadI
   omega
 
+/-- Equality in the strict-cut lower bound pins the zero-row count. -/
+theorem zero_card_eq_sub_two_of_strictCut_quadratic_eq
+    {q m z s : ℕ}
+    (hq : 8 ≤ q) (hqm : q = 2 * m)
+    (hzLower : m ≤ z) (hzUpper : 2 * z ≤ s)
+    (hquad : q * z ≤ z ^ 2 + s)
+    (hs : s = 2 * q - 4) :
+    z = q - 2 := by
+  have hzLe : z ≤ q - 2 := by omega
+  by_contra hne
+  have hzLt : z < q - 2 := Nat.lt_of_le_of_ne hzLe hne
+  have hzStrong : z ≤ q - 3 := by omega
+  have hqmI : (q : ℤ) = 2 * m := by exact_mod_cast hqm
+  have hzLowerI : (m : ℤ) ≤ z := by exact_mod_cast hzLower
+  have hzStrongI' : (z : ℤ) ≤ ((q - 3 : ℕ) : ℤ) := by
+    exact_mod_cast hzStrong
+  have hqSubI : ((q - 3 : ℕ) : ℤ) = (q : ℤ) - 3 := by omega
+  have hzStrongI : (z : ℤ) ≤ (q : ℤ) - 3 := by
+    rwa [hqSubI] at hzStrongI'
+  have hquadI : (q : ℤ) * z ≤ (z : ℤ) ^ 2 + s := by exact_mod_cast hquad
+  have hsI : (s : ℤ) = 2 * q - 4 := by
+    rw [hs]
+    omega
+  have hbetween :
+      ((z : ℤ) - m) * ((z : ℤ) - ((q : ℤ) - 3)) ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos
+      (sub_nonneg.mpr hzLowerI) (sub_nonpos.mpr hzStrongI)
+  nlinarith
+
 end Erdos85
 
 #print axioms Erdos85.two_mul_sub_four_le_of_strictCut_quadratic_int
 #print axioms Erdos85.two_mul_sub_four_le_of_strictCut_quadratic
+#print axioms Erdos85.zero_card_eq_sub_two_of_strictCut_quadratic_eq
