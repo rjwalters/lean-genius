@@ -111,7 +111,7 @@ def standard_mate(branch: int) -> int:
     return branch ^ 1
 
 
-def validate(refinement: list[list[list[int]]]) -> None:
+def validate(refinement: list[list[list[int]]], require_sorted: bool = True) -> None:
     if len(refinement) != BRANCHES:
         raise ValueError("a refinement must have eight rows")
     profile = sum(len(refinement[i]) == 1 for i in range(0, BRANCHES, 2))
@@ -125,13 +125,16 @@ def validate(refinement: list[list[list[int]]]) -> None:
             if pair[0] > pair[1]:
                 raise ValueError(f"noncanonical label pair in row {i}: {pair}")
         codes = [8 * pair[0] + pair[1] for pair in row]
-        if codes != sorted(codes):
+        if require_sorted and codes != sorted(codes):
             raise ValueError(f"row {i} pairing edges are not lex sorted")
+        if not require_sorted and len(row) == 2 and row[0][0] > row[1][0]:
+            raise ValueError(f"row {i} violates canonical slot-low lex order")
 
 
 def solve_refinement(refinement: list[list[list[int]]], timeout_ms: int,
-                     include_f2: bool = True):
-    validate(refinement)
+                     include_f2: bool = True,
+                     slot_assignments: bool = False):
+    validate(refinement, require_sorted=not slot_assignments)
     cnf = Cnf()
 
     def active(i: int, slot: int, other: int):
@@ -266,6 +269,8 @@ def main() -> None:
     parser.add_argument("--indices", help="comma-separated original indices")
     parser.add_argument("--no-f2", action="store_true",
                         help="omit paired-common equalities (lex-prefix test)")
+    parser.add_argument("--slot-assignments", action="store_true",
+                        help="accept canonical-slot rows with tied-low swaps")
     args = parser.parse_args()
     data = json.loads(args.input.read_text())
     refinements = data if (data and isinstance(data[0][0][0], list)) else [data]
@@ -282,14 +287,15 @@ def main() -> None:
     if args.jobs == 1:
         results = map(lambda refinement:
                       solve_refinement(refinement, args.timeout_ms,
-                                       not args.no_f2),
+                                       not args.no_f2, args.slot_assignments),
                       [refinement for _, refinement in selected])
     else:
         executor = ProcessPoolExecutor(max_workers=args.jobs)
         results = executor.map(solve_refinement,
                                [refinement for _, refinement in selected],
                                [args.timeout_ms] * len(selected),
-                               [not args.no_f2] * len(selected))
+                               [not args.no_f2] * len(selected),
+                               [args.slot_assignments] * len(selected))
     for (index, _), (status, model) in zip(selected, results):
         summary[status] += 1
         record = {"index": index, "status": status}
