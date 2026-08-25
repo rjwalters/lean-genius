@@ -57,6 +57,24 @@ theorem weighted_commonPoint_collision_reindex
   by_cases hzx : Inc z x <;> by_cases hpx : Inc p x <;>
     simp [hzx, hpx]
 
+/-- A balanced positive weight has energy at least twice its mass after the
+equal negative mass is included. -/
+theorem two_mul_card_le_card_add_sum_sq_of_weight_sum
+    {β : Type*} [DecidableEq β]
+    (Z P : Finset β) (weight : β → ℕ)
+    (hweight : ∑ p ∈ P, weight p = Z.card) :
+    2 * Z.card ≤ Z.card + ∑ p ∈ P, (weight p) ^ 2 := by
+  have hpoint : ∀ p ∈ P, weight p ≤ (weight p) ^ 2 := by
+    intro p _hp
+    cases hw : weight p with
+    | zero => simp
+    | succ n =>
+        simpa [hw, pow_two] using
+          (Nat.le_mul_of_pos_left (n + 1) (Nat.succ_pos n))
+  have hsum := Finset.sum_le_sum hpoint
+  rw [hweight] at hsum
+  omega
+
 /-- Combined-shore capacity bound.  The `U`-shore is exactly balanced, the
 `X`-shore has at least as many negative incidences as weighted positive
 incidences, and each negative-positive pair has total codegree at most one. -/
@@ -148,4 +166,5 @@ end
 end Erdos85
 
 #print axioms Erdos85.weighted_commonPoint_collision_reindex
+#print axioms Erdos85.two_mul_card_le_card_add_sum_sq_of_weight_sum
 #print axioms Erdos85.linear_trade_combinedShore_collision_le
