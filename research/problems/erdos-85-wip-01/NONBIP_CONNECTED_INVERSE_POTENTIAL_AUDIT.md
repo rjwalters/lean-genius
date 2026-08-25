@@ -258,6 +258,26 @@ integrality/location theorem for the self-polar fractional transversal cover
 (P13)--(P14).  Generic fractional matching theory cannot be cited as if it
 supplied integrality; the labels `p` and the blocks `N_A(p)` must enter.
 
+There is a sharp abstract countermodel to integrality already at `q=4`.
+Take four cells indexed by the projective line
+`P^1(F_3)=F_3 union {infinity}`, each containing the three symbols of `F_3`.
+For `(a,b) in F_3^2`, take the transversal
+
+```text
+B_(a,b) = {(t, at+b) : t in F_3} union {(infinity,a)}.
+```
+
+Two distinct blocks meet in exactly one point: the difference of their two
+linear forms has exactly one projective zero.  Each of the twelve points
+lies in exactly three of the nine blocks.  Assigning weight `1/3` to every
+block therefore satisfies (P13)--(P14), while no two blocks are disjoint,
+so an integral three-block cover is impossible.  Hence cell transversality,
+linearity, pairwise intersection at most one, and the exact fractional mass
+still do not imply integrality.  Any successful continuation must use that
+the block `N_A(p)` is indexed by its own point `p` inside the same symmetric
+loopless incidence structure; dropping that self-polar placement makes the
+desired conclusion false.
+
 The latter warning has an exact bounded control in
 `nonbip_connected_inverse_potential_p2_control.py`.  A connected cubic graph
 on 16 vertices with `q=4` and a four-point source set has the normalization
