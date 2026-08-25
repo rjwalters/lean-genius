@@ -6131,6 +6131,39 @@ strictly smaller `(candidate count, -forced count)` score.  The last two
 steps are the only new mathematics; the banked exchange and lex-descent
 consumers already finish.                                             (13boa)
 
+The choice of the better boundary row does not need to be coordinated with
+the source.  Strengthen the verifier as follows.  Among reverse-obstructed
+rows in `F_w union I_w` with score strictly below the failing target's score,
+first minimize the score
+
+```text
+(candidate count, -forced count),
+```
+
+without inspecting any local source packing.  Then **every** boundary row
+at that minimum score is exchange-coupled to `w` at some residual source.
+There are 19 such minimum-score rows across the 17 failures (two failures
+have a tie), and all 19 pass.  Selecting the least row only as a deterministic
+tie-break yields one reverse-forced and sixteen reverse-impossible witnesses.
+
+This canonicalization removes an important quantifier hazard exposed by
+(13bl'''d): there one could not select an arbitrary reachable better row and
+then hope for coupling.  In (13bo), one may instead select the
+**score-minimal better row already on the reverse boundary**, independently
+of the source, and only then prove existence of the joint/one-swap packing.
+The narrowed theorem target is therefore
+
+```text
+terminal failure at w
+  -> the better reverse boundary is nonempty;
+let z be any minimum-score row in that boundary;
+  -> z is exchange-coupled to w at some x in R(w).             (13bob)
+```
+
+As before, (13bob) is exhaustive evidence, not a theorem.  It separates the
+remaining proof into a score/interval lemma and a same-source coupling lemma,
+rather than requiring one existential choice to satisfy both at once.
+
 There is no generic reconfiguration theorem hiding behind this last step.
 Packings are independent sets in the block-intersection graph.  For
 claw-free graphs, maximum-independent-set reconfiguration does have an

@@ -32,6 +32,7 @@ def local_summary(families, row):
 def main():
     witnesses = []
     payload_count = 0
+    canonical_better_count = 0
     pattern = "research/problems/erdos-85-wip-01/q9_branch4*.json"
     for filename in sorted(glob.glob(pattern)):
         with open(filename, encoding="utf-8") as stream:
@@ -80,9 +81,23 @@ def main():
         for target, record in obstructed.items():
             if not record["strict_terminal_fails"]:
                 continue
+            boundary_better = [
+                better for better, better_record in obstructed.items()
+                if better_record["score"] < record["score"]
+                and better in record["forced"] | record["impossible"]
+            ]
+            assert boundary_better, (filename, target, record)
+            canonical_score = min(
+                obstructed[better]["score"] for better in boundary_better
+            )
+            canonical_betters = [
+                better for better in boundary_better
+                if obstructed[better]["score"] == canonical_score
+            ]
+            canonical_better_count += len(canonical_betters)
             candidates = []
             for better, better_record in obstructed.items():
-                if better_record["score"] >= record["score"]:
+                if better not in canonical_betters:
                     continue
                 if better not in record["forced"] | record["impossible"]:
                     continue
@@ -107,6 +122,9 @@ def main():
                             "single_swap": swap is not None,
                         })
             assert candidates, (filename, target, record)
+            assert {item["better"] for item in candidates} == set(
+                canonical_betters
+            ), (filename, target, canonical_betters, candidates)
             witnesses.append((Path(filename).name, min(
                 candidates,
                 key=lambda item: (item["better"], item["source"]),
@@ -119,6 +137,10 @@ def main():
     print(f"verified: {payload_count} all-row-feasible stored payloads")
     print(f"verified: {len(witnesses)} strict dual-terminal failures")
     print("verified: every failure has a reverse-boundary lex descent")
+    print(
+        "verified: every minimum-score boundary row is exchange-coupled "
+        f"({canonical_better_count} rows)"
+    )
     print(f"selected boundary types: forced={forced_count}, impossible={impossible_count}")
     for filename, witness in witnesses:
         print(filename, witness)
