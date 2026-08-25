@@ -11,6 +11,7 @@ eight-row product, and retain precisely the globally even refinements.
 from __future__ import annotations
 
 import argparse
+from itertools import product
 import json
 import sys
 from pathlib import Path
@@ -96,6 +97,24 @@ def even_refinements(profile: int, values: tuple[int, ...]) -> tuple[Refinement,
     return tuple(results)
 
 
+def slot_assignment_variants(refinement: Refinement) -> tuple[Refinement, ...]:
+    """Canonical-edge slot orders allowed by the actual lex constraints.
+
+    Within each edge low/high orientation is fixed.  For two edges, lex fixes
+    edge order when their low labels differ; when the lows tie, either edge
+    may occupy canonical slots 01 versus 23.  Duplicate equal keys contribute
+    only one variant.
+    """
+    row_choices: list[tuple[Row, ...]] = []
+    for row in refinement:
+        if (len(row) == 2 and row[0][0] == row[1][0]
+                and row[0] != row[1]):
+            row_choices.append((row, (row[1], row[0])))
+        else:
+            row_choices.append((row,))
+    return tuple(tuple(rows) for rows in product(*row_choices))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -105,6 +124,11 @@ def main() -> None:
     )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--manifest", type=Path)
+    parser.add_argument(
+        "--slot-output", type=Path,
+        help="also emit all canonical edge-slot variants (122 instances)",
+    )
+    parser.add_argument("--slot-manifest", type=Path)
     args = parser.parse_args()
 
     selected_tables = {profile: 0 for profile in ODD_PROFILES}
@@ -151,10 +175,43 @@ def main() -> None:
                        separators=(",", ":")) + "\n"
             for record in records
         ))
+    slot_records: list[dict[str, object]] = []
+    if args.slot_output or args.slot_manifest:
+        for refinement_index, record in enumerate(records):
+            for slot_index, variant in enumerate(
+                    slot_assignment_variants(record["refinement"])):
+                slot_records.append({
+                    "profile": record["profile"],
+                    "table_tag": record["table_tag"],
+                    "refinement_index": refinement_index,
+                    "slot_index": slot_index,
+                    "refinement": variant,
+                })
+        if len(slot_records) != 122:
+            raise ValueError(
+                f"expected 122 canonical slot variants, found {len(slot_records)}"
+            )
+    if args.slot_output:
+        args.slot_output.parent.mkdir(parents=True, exist_ok=True)
+        args.slot_output.write_text(
+            json.dumps([r["refinement"] for r in slot_records]) + "\n"
+        )
+    if args.slot_manifest:
+        args.slot_manifest.parent.mkdir(parents=True, exist_ok=True)
+        args.slot_manifest.write_text("".join(
+            json.dumps({k: v for k, v in record.items() if k != "refinement"},
+                       separators=(",", ":")) + "\n"
+            for record in slot_records
+        ))
     counts = {profile: sum(r["profile"] == profile for r in records)
               for profile in ODD_PROFILES}
-    print(json.dumps({"tables": selected_tables, "refinements": counts},
-                     separators=(",", ":")))
+    summary: dict[str, object] = {
+        "tables": selected_tables,
+        "refinements": counts,
+    }
+    if slot_records:
+        summary["slot_variants"] = len(slot_records)
+    print(json.dumps(summary, separators=(",", ":")))
 
 
 if __name__ == "__main__":
