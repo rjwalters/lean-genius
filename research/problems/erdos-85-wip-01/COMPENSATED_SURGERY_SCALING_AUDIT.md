@@ -98,6 +98,73 @@ imbalances that cannot be flipped to total color-class sizes `d,d`.  A future
 argument must control those two phenomena by choosing `M`; merely producing a
 large matching, or counting available relieved pairs, is insufficient.
 
-The `d = 4` controls in `compensated_surgery_control.py` verify that the target
-can hold and that survivor-edge deletion is essential.  They do not establish
-the target uniformly.
+## A low-excess scaling obstruction
+
+In the positive-excess band write
+
+```text
+|V(G)| = d(d-1) + 3 + e.
+```
+
+The original safe graph (the complement of the common-neighbour conflict
+graph) is the second-order defect graph and is `(e+2)`-regular.  This gives a
+necessary inequality for the external-matching target.
+
+Fix one proposed selector and put `T = A_i intersect V(M)`, `t = |T|`.  For a
+matching endpoint `a`, write `mate(a)` for its partner in `M`.  If distinct
+`a,b in T` were not already a safe pair in `G`, their unique common-neighbour
+path must have been destroyed by deleting `M`.  Since `M` is disjoint from
+`N_G(x)`, deletion of `x` cannot help this pair.  Thus exactly one of
+
+```text
+mate(a) adjacent to b,    mate(b) adjacent to a
+```
+
+holds.  At least one holds because the pair is safe after deleting `M`; both
+cannot hold because those two cross edges and the two matching edges form a
+four-cycle.  Orient the pair `a -> b` in the first case.
+
+For a fixed `c in T`, its predecessors form a clique in the original defect
+graph.  Indeed, if `a -> c`, `b -> c`, and (say) `a -> b`, then `mate(a)` and
+`mate(b)` have the two common neighbours `b` and `c`, again a four-cycle.
+The reverse orientation is symmetric.  Consequently a pair of predecessors
+must instead be an original safe pair, and
+
+```text
+indegree(c) <= e + 3.
+```
+
+There are at least
+
+```text
+choose(t,2) - t(e+2)/2
+```
+
+non-defect pairs to orient, while the sum of the indegrees is at most
+`t(e+3)`.  Multiplying by two and cancelling `t` (the `t=0` case is trivial)
+gives
+
+```text
+t <= 3e + 9.
+```
+
+The two selectors partition all `d` endpoints of the external matching, so
+their endpoint counts sum to `d`.  Applying the bound to both selectors
+yields the necessary condition
+
+```text
+d <= 6e + 18.
+```
+
+Therefore the tight `k=1`, empty-gadget, external-matching construction is
+not a uniform Goal #7 mechanism: it is impossible at fixed excess once `d`
+is large, and more generally whenever `d > 6e+18`.  A uniform compensated
+surgery must use selector slack, a nonmatching survivor-edge deletion graph,
+or a deletion set whose size grows with `d`.  The matching lemma remains a
+useful reduction, but bipartiteness is not merely a choice issue that can be
+expected to hold throughout the band.
+
+The `d = 4` controls in `compensated_surgery_control.py` verify that the tight
+matching normal form can hold and that survivor-edge deletion is essential.
+They are consistent with `d <= 6e+18`, but do not establish the target
+uniformly.
