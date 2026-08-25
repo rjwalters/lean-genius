@@ -103,6 +103,66 @@ def exact_cardinality(cnf: Cnf, literals: list, target: int) -> None:
         cnf.add(chosen)
 
 
+def verify_model(refinement, cuts, include_f2: bool) -> None:
+    """Recheck a SAT assignment directly against the graph semantics."""
+    cross = {tuple(edge) for edge in cuts}
+
+    def active(i: int, slot: int, other: int) -> bool:
+        edge = slot // 2
+        if edge >= len(refinement[i]):
+            return True
+        return refinement[i][edge][slot % 2] != other
+
+    def adjacent(u: int, v: int) -> bool:
+        if u == v:
+            return False
+        if u > v:
+            u, v = v, u
+        i, a = divmod(u, WIDTH)
+        j, b = divmod(v, WIDTH)
+        if i == j:
+            return a // 2 == b // 2 and a < 2 * len(refinement[i])
+        if j == standard_mate(i):
+            return False
+        return (i, a, j, b) in cross
+
+    for i in range(BRANCHES):
+        for j in range(i + 1, BRANCHES):
+            if j == standard_mate(i):
+                continue
+            for a in range(WIDTH):
+                degree = sum(adjacent(vertex(i, a), vertex(j, b))
+                             for b in range(WIDTH))
+                if degree != int(active(i, a, j)):
+                    raise RuntimeError("SAT model violates active cut row")
+            for b in range(WIDTH):
+                degree = sum(adjacent(vertex(i, a), vertex(j, b))
+                             for a in range(WIDTH))
+                if degree != int(active(j, b, i)):
+                    raise RuntimeError("SAT model violates active cut column")
+
+    n = BRANCHES * WIDTH
+    for u in range(n):
+        for v in range(u + 1, n):
+            common = sum(adjacent(u, w) and adjacent(v, w)
+                         for w in range(n))
+            if common > 1:
+                raise RuntimeError("SAT model contains a C4")
+            if u // WIDTH == v // WIDTH and common != 0:
+                raise RuntimeError("SAT model violates same-branch common zero")
+
+    if include_f2:
+        for i in range(0, BRANCHES, 2):
+            j = standard_mate(i)
+            count = sum(
+                any(adjacent(vertex(i, a), w) and
+                    adjacent(vertex(j, b), w) for w in range(n))
+                for a in range(WIDTH) for b in range(WIDTH))
+            target = 30 - 2 * len(refinement[i]) - 2 * len(refinement[j])
+            if count != target:
+                raise RuntimeError("SAT model violates F2 paired-common ledger")
+
+
 def vertex(branch: int, slot: int) -> int:
     return WIDTH * branch + slot
 
@@ -257,6 +317,7 @@ def solve_refinement(refinement: list[list[list[int]]], timeout_ms: int,
     for (i, a, j, b), variable in cross.items():
         if variable in assignment:
             cuts.append([i, a, j, b])
+    verify_model(refinement, cuts, include_f2)
     return "sat", {"cross_edges": cuts}
 
 
