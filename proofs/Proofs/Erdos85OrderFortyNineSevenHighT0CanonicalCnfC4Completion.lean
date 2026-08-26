@@ -168,7 +168,135 @@ theorem sevenHighT0CanonicalC4Step_satisfied
       statuses, hfalse, Bool.false_eq_true, ↓reduceIte]
     exact dimacsFormulaSatisfied_push hsat hclause
 
+theorem sevenHighT0CanonicalNatPairs_mem
+    {xs : List Nat} {pair : Nat × Nat}
+    (hpair : pair ∈ sevenHighT0CanonicalNatPairs xs) :
+    pair.1 ∈ xs ∧ pair.2 ∈ xs ∧ pair.1 < pair.2 := by
+  unfold sevenHighT0CanonicalNatPairs at hpair
+  obtain ⟨left, hleft, hpair⟩ := List.mem_flatMap.mp hpair
+  obtain ⟨right, hright, rfl⟩ := List.mem_map.mp hpair
+  simp only [List.mem_filter] at hright
+  exact ⟨hleft, hright.1, of_decide_eq_true hright.2⟩
+
+theorem sevenHighT0CanonicalC4Step_satisfied_nat
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (val : DimacsValuation)
+    (hagree : ∀ id, id ≤ 861 → val id = sevenHighT0CanonicalEdgeVal H id)
+    (endpoints witnesses : Nat × Nat)
+    (he0 : endpoints.1 < 49) (he1 : endpoints.2 < 49)
+    (hw0 : witnesses.1 < 49) (hw1 : witnesses.2 < 49)
+    (hendpoints : endpoints.1 ≠ endpoints.2)
+    (hwitnesses : witnesses.1 ≠ witnesses.2)
+    (st : SevenHighT0CanonicalCnfState)
+    (hsat : dimacsFormulaSatisfied val st.clauses) :
+    dimacsFormulaSatisfied val
+      (sevenHighT0CanonicalC4Step endpoints witnesses st).clauses := by
+  exact sevenHighT0CanonicalC4Step_satisfied H semantics val hagree
+    (⟨⟨endpoints.1, he0⟩, ⟨endpoints.2, he1⟩⟩)
+    (⟨⟨witnesses.1, hw0⟩, ⟨witnesses.2, hw1⟩⟩)
+    (fun h => hendpoints (congrArg Fin.val h))
+    (fun h => hwitnesses (congrArg Fin.val h)) st hsat
+
+theorem sevenHighT0CanonicalC4WitnessFold_satisfied
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (val : DimacsValuation)
+    (hagree : ∀ id, id ≤ 861 → val id = sevenHighT0CanonicalEdgeVal H id)
+    (endpoints : Nat × Nat)
+    (he0 : endpoints.1 < 49) (he1 : endpoints.2 < 49)
+    (hendpoints : endpoints.1 ≠ endpoints.2)
+    (witnessPairs : List (Nat × Nat))
+    (hwitnesses : ∀ pair ∈ witnessPairs,
+      pair.1 < 49 ∧ pair.2 < 49 ∧ pair.1 ≠ pair.2)
+    (st : SevenHighT0CanonicalCnfState)
+    (hsat : dimacsFormulaSatisfied val st.clauses) :
+    dimacsFormulaSatisfied val
+      (witnessPairs.foldl
+        (fun st witnesses => sevenHighT0CanonicalC4Step endpoints witnesses st)
+        st).clauses := by
+  induction witnessPairs generalizing st with
+  | nil => exact hsat
+  | cons witnesses rest ih =>
+      simp only [List.foldl_cons]
+      have hw := hwitnesses witnesses (by simp)
+      apply ih
+      · intro pair hpair
+        exact hwitnesses pair (List.mem_cons_of_mem _ hpair)
+      · exact sevenHighT0CanonicalC4Step_satisfied_nat H semantics val hagree
+          endpoints witnesses he0 he1 hw.1 hw.2.1 hendpoints hw.2.2 st hsat
+
+theorem sevenHighT0CanonicalC4EndpointStep_satisfied
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (val : DimacsValuation)
+    (hagree : ∀ id, id ≤ 861 → val id = sevenHighT0CanonicalEdgeVal H id)
+    (endpoints : Nat × Nat)
+    (hendpointMem : endpoints ∈
+      sevenHighT0CanonicalNatPairs sevenHighT0CanonicalVertices)
+    (st : SevenHighT0CanonicalCnfState)
+    (hsat : dimacsFormulaSatisfied val st.clauses) :
+    dimacsFormulaSatisfied val
+      (sevenHighT0CanonicalC4EndpointStep endpoints st).clauses := by
+  have he := sevenHighT0CanonicalNatPairs_mem hendpointMem
+  have he0 : endpoints.1 < 49 := by
+    simpa [sevenHighT0CanonicalVertices] using he.1
+  have he1 : endpoints.2 < 49 := by
+    simpa [sevenHighT0CanonicalVertices] using he.2.1
+  let candidates := sevenHighT0CanonicalVertices.filter fun vertex =>
+    vertex ≠ endpoints.1 && vertex ≠ endpoints.2
+  apply sevenHighT0CanonicalC4WitnessFold_satisfied H semantics val hagree
+    endpoints he0 he1 (by omega) (sevenHighT0CanonicalNatPairs candidates)
+  · intro pair hpair
+    have hw := sevenHighT0CanonicalNatPairs_mem hpair
+    have hw0mem : pair.1 ∈ sevenHighT0CanonicalVertices :=
+      (List.mem_filter.mp hw.1).1
+    have hw1mem : pair.2 ∈ sevenHighT0CanonicalVertices :=
+      (List.mem_filter.mp hw.2.1).1
+    exact ⟨by simpa [sevenHighT0CanonicalVertices] using hw0mem,
+      by simpa [sevenHighT0CanonicalVertices] using hw1mem, by omega⟩
+  · exact hsat
+
+theorem sevenHighT0CanonicalC4EndpointFold_satisfied
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (val : DimacsValuation)
+    (hagree : ∀ id, id ≤ 861 → val id = sevenHighT0CanonicalEdgeVal H id)
+    (endpointPairs : List (Nat × Nat))
+    (hendpoints : ∀ pair ∈ endpointPairs,
+      pair ∈ sevenHighT0CanonicalNatPairs sevenHighT0CanonicalVertices)
+    (st : SevenHighT0CanonicalCnfState)
+    (hsat : dimacsFormulaSatisfied val st.clauses) :
+    dimacsFormulaSatisfied val
+      (endpointPairs.foldl
+        (fun st endpoints => sevenHighT0CanonicalC4EndpointStep endpoints st)
+        st).clauses := by
+  induction endpointPairs generalizing st with
+  | nil => exact hsat
+  | cons endpoints rest ih =>
+      simp only [List.foldl_cons]
+      apply ih
+      · intro pair hpair
+        exact hendpoints pair (List.mem_cons_of_mem _ hpair)
+      · exact sevenHighT0CanonicalC4EndpointStep_satisfied H semantics val hagree
+          endpoints (hendpoints endpoints (by simp)) st hsat
+
+theorem sevenHighT0CanonicalFinalState_satisfied
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H) :
+    dimacsFormulaSatisfied (sevenHighT0CanonicalDegreeStateVal H).2
+      sevenHighT0CanonicalFinalState.clauses := by
+  let degreeSound := sevenHighT0CanonicalDegreeStateVal_semanticSound H semantics
+  rw [sevenHighT0CanonicalFinalState]
+  rw [← sevenHighT0CanonicalDegreeStateVal_state H]
+  apply sevenHighT0CanonicalC4EndpointFold_satisfied H semantics
+    (sevenHighT0CanonicalDegreeStateVal H).2 degreeSound.edge_agree
+  · intro pair hpair
+    exact hpair
+  · exact degreeSound.satisfied
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalEdgeStatus_variable_le
 #print axioms Erdos85.sevenHighT0CanonicalC4Step_satisfied
+#print axioms Erdos85.sevenHighT0CanonicalFinalState_satisfied
