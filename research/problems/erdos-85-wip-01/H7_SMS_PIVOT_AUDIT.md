@@ -59,17 +59,16 @@ shrinks further to the automorphism group of that mask.  A normal SMS initial
 partition would allow arbitrary, independent permutations inside its blocks;
 that group is strictly larger and could learn invalid blocking clauses.
 
-## Two bounded probes
+## Bounded probes
 
 ### P1: CaDiCaL control
 
-Before changing the encoding, run stock CaDiCaL for 60 seconds on the best and
-worst depth-three F6/t2 leaves.  Compare verdict, conflicts, propagations, and
-resident memory with the recorded Kissat signal.  If neither terminates but
-CaDiCaL is materially faster, extend the time on one leaf only.  If there is
-no qualitative gain, cut this control.
+Stock CaDiCaL was run for 60 seconds on the lowest- and highest-conflict
+depth-three F6/t2 leaves.  Both remained unknown.  It processed more conflicts
+and propagations than Kissat, but produced no qualitative gain, so this control
+is cut without a longer run.
 
-### P2: template-automorphism SMS
+### P2: template-automorphism SMS (source-audited NO-GO)
 
 Represent the semantic low-vertex roles as a fixed auxiliary relational
 template whose automorphism group is precisely the permitted simultaneous
@@ -82,12 +81,51 @@ implementation candidates deserve a tiny-instance test:
    incidences present as fixed structure, while only low-low edges remain
    free.
 
+Inspection of SMS's `minimalityCheck.cpp`, multiple-adjacency-matrix checker,
+and `--initial-partition` implementation closes this proposal as stated.  The
+multigraph checker simultaneously permutes all layers, but fixing one labeled
+template with CNF unit clauses does not restrict the checker to automorphisms
+of that template.  A permutation can produce a lexicographically smaller
+template labeling that violates those unit clauses, and SMS may then prune the
+only CNF-allowed labeling.  The property given to the symmetry propagator is
+not permutation invariant, so that use would be unsound.
+
+`--initial-partition` does not repair the issue.  Its source semantics is a
+sequence of blocks and the checker considers arbitrary permutations preserving
+block membership.  It cannot express that one permutation of seven labels must
+act diagonally and simultaneously on empty, singleton-copy, and pair indices.
+
+A direct SMS run is therefore a no-go unless the entire encoding is rebuilt so
+that every labeling of the relational template is accepted, or the minimality
+checker is extended to accept the exact permitted permutation group.
+
+### P3: residual stabilizer lex leaders
+
+There is a smaller sound symmetry target that does not require generic SMS.
+For each pinned seven-vertex empty mask:
+
+1. enumerate its stabilizer inside the 5040 permutations of `Fin 7`;
+2. induce each stabilizer element on all 42 canonical low indices using the
+   already formalized `sevenHighT0LowIndexPerm` action;
+3. add lex-leader constraints on the first 861 low-edge variables only for
+   that stabilizer;
+4. run CaDiCaL on the strengthened cube.
+
+Every permutation used here is a genuine symmetry of that exact cube, unlike
+the coarse SMS partition.  Proof production still requires one of two sound
+bridges:
+
+* verify the generated dominance clauses using LeanSMS's
+  `verifyDominationFull`; or
+* prove an H7-specific orbit-minimal representative theorem and show its edge
+  valuation satisfies the emitted lex constraints.
+
 The probe passes only if all of the following are demonstrated on a small
 instance before H7 is attempted:
 
-1. the template automorphism group equals the intended simultaneous label
-   action (no extra within-block permutations);
-2. each SMS symmetry clause is either verified through LeanSMS or translated
+1. every emitted permutation fixes the parent empty mask and agrees with the
+   formal low-index action;
+2. each symmetry clause is either verified through LeanSMS or translated
    into a separately checked dominance certificate;
 3. adding the verified clauses preserves the existing compact CNF's SAT
    semantics and exact cube units;
@@ -96,7 +134,9 @@ instance before H7 is attempted:
 
 ## Decision
 
-Blind adaptive splitting is cut at depth three.  P1 is the immediate bounded
-control.  P2 is the preferred structural experiment if P1 does not close a
-leaf.  A direct SMS run with only `-v 42` or a coarse initial partition is
+Blind adaptive splitting is cut at depth three.  P1 showed no qualitative
+gain: two 60-second CaDiCaL leaves remained unknown despite somewhat higher
+conflict/propagation throughput than Kissat.  P2 is source-audited no-go.  P3
+is the remaining bounded structural experiment.  A direct SMS run with only
+`-v 42`, a coarse initial partition, or fixed multigraph-template units is
 explicitly forbidden because its symmetry group is unsound for this encoding.
