@@ -36,30 +36,61 @@ def third_jobs(parent_id: str) -> list[dict[str, object]]:
     return result
 
 
-def selected_nested_cubes(parent: dict) -> list[tuple[dict, dict]]:
-    selected = []
+def read_hard_jobs(path: Path) -> list[str]:
+    text = path.read_text()
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError:
+        parsed = [line.strip() for line in text.splitlines()
+                  if line.strip() and not line.lstrip().startswith("#")]
+    if not isinstance(parsed, list) or any(not isinstance(item, str)
+                                           for item in parsed):
+        raise ValueError("hard-job file must be a JSON string list or one id per line")
+    if len(set(parsed)) != len(parsed):
+        raise ValueError("hard-job file contains duplicate ids")
+    return parsed
+
+
+def selected_nested_cubes(parent: dict, hard_ids: list[str] | None
+                          ) -> list[tuple[dict, dict]]:
+    lookup = {}
     for leaf in parent.get("leaves", {}).values():
         if leaf.get("cell") not in SUPPORTED_CELLS:
             continue
         for job in leaf.get("jobs", []):
             if job.get("kind") == "cube":
-                selected.append((leaf, job))
-    return selected
+                job_id = job.get("id")
+                if not isinstance(job_id, str) or job_id in lookup:
+                    raise ValueError(f"invalid or duplicate nested job id: {job_id}")
+                lookup[job_id] = (leaf, job)
+    if hard_ids is None:
+        return list(lookup.values())
+    unknown = [job_id for job_id in hard_ids if job_id not in lookup]
+    if unknown:
+        raise ValueError(f"unknown, non-cube, or unsupported hard jobs: {unknown}")
+    return [lookup[job_id] for job_id in hard_ids]
 
 
-def write_manifest(parent_path: Path, output: Path) -> None:
+def write_manifest(parent_path: Path, hard_path: Path | None,
+                   output: Path) -> None:
     parent = json.loads(parent_path.read_text())
     if parent.get("schema") != "erdos85-small-high-nested-cube-jobs-v1":
         raise ValueError(f"unsupported parent schema: {parent_path}")
+    hard_ids = read_hard_jobs(hard_path) if hard_path is not None else None
     leaves = {}
-    for parent_leaf, parent_job in selected_nested_cubes(parent):
+    validated_bases = set()
+    for parent_leaf, parent_job in selected_nested_cubes(parent, hard_ids):
         base = Path(parent_leaf["base"])
-        if sha256(base) != parent_leaf["base_sha256"]:
-            raise ValueError(f"base CNF hash mismatch: {base}")
-        variables, clauses = inspect_dimacs(base)
-        if (variables, clauses) != (parent_leaf["variables"],
-                                    parent_leaf["base_clauses"]):
-            raise ValueError(f"base CNF metadata mismatch: {base}")
+        if base not in validated_bases:
+            if sha256(base) != parent_leaf["base_sha256"]:
+                raise ValueError(f"base CNF hash mismatch: {base}")
+            variables, clauses = inspect_dimacs(base)
+            if (variables, clauses) != (parent_leaf["variables"],
+                                        parent_leaf["base_clauses"]):
+                raise ValueError(f"base CNF metadata mismatch: {base}")
+            validated_bases.add(base)
+        variables = parent_leaf["variables"]
+        clauses = parent_leaf["base_clauses"]
         if max(LEFT + RIGHT) > variables:
             raise ValueError("third-level selector exceeds variable header")
         parent_id = parent_job["id"]
@@ -80,6 +111,8 @@ def write_manifest(parent_path: Path, output: Path) -> None:
         "identifier_convention": "one-based DIMACS",
         "parent_manifest": str(parent_path.resolve()),
         "parent_manifest_sha256": sha256(parent_path),
+        "hard_jobs": str(hard_path.resolve()) if hard_path is not None else None,
+        "hard_jobs_sha256": sha256(hard_path) if hard_path is not None else None,
         "hard_nested_cube_jobs": len(leaves),
         "positive_cube_jobs": len(leaves) * len(LEFT) * len(RIGHT),
         "negative_cover_jobs": len(leaves) * 2,
@@ -106,6 +139,10 @@ def materialize(manifest_path: Path, job_id: str, output: Path) -> None:
     parent_path = Path(manifest["parent_manifest"])
     if sha256(parent_path) != manifest["parent_manifest_sha256"]:
         raise ValueError(f"parent manifest hash mismatch: {parent_path}")
+    if manifest.get("hard_jobs") is not None:
+        hard_path = Path(manifest["hard_jobs"])
+        if sha256(hard_path) != manifest["hard_jobs_sha256"]:
+            raise ValueError(f"hard-job file hash mismatch: {hard_path}")
     leaf, job = find_job(manifest, job_id)
     base = Path(leaf["base"])
     if sha256(base) != leaf["base_sha256"]:
@@ -144,6 +181,7 @@ def main() -> int:
     subparsers = parser.add_subparsers(dest="command", required=True)
     manifest_parser = subparsers.add_parser("manifest")
     manifest_parser.add_argument("--parent-manifest", type=Path, required=True)
+    manifest_parser.add_argument("--hard-jobs", type=Path)
     manifest_parser.add_argument("--output", type=Path, required=True)
     materialize_parser = subparsers.add_parser("materialize")
     materialize_parser.add_argument("--manifest", type=Path, required=True)
@@ -151,7 +189,9 @@ def main() -> int:
     materialize_parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "manifest":
-        write_manifest(args.parent_manifest.resolve(), args.output.resolve())
+        write_manifest(args.parent_manifest.resolve(),
+                       args.hard_jobs.resolve() if args.hard_jobs else None,
+                       args.output.resolve())
     else:
         materialize(args.manifest.resolve(), args.job, args.output.resolve())
     print(f"WROTE {args.output.resolve()}")
