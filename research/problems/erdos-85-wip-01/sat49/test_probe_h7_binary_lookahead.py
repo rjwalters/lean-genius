@@ -33,6 +33,13 @@ class BinaryLookaheadTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "clause count"):
                 MOD.read_dimacs(path)
 
+    def test_explicit_compact_candidate_range(self):
+        clauses = [(1, 2, 3, 4, 5, 6, 7, 8), (-9, -10)]
+        self.assertEqual(MOD.split_candidates(clauses, None), set(range(1, 9)))
+        self.assertEqual(MOD.split_candidates(clauses, 10), set(range(1, 11)))
+        with self.assertRaisesRegex(ValueError, "positive"):
+            MOD.split_candidates(clauses, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

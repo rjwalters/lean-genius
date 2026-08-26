@@ -70,26 +70,40 @@ def propagate(clauses: list[tuple[int, ...]], occurrence: dict[int, list[int]],
     return True, assignment
 
 
+def split_candidates(clauses: list[tuple[int, ...]],
+                     candidate_max: int | None) -> set[int]:
+    if candidate_max is not None:
+        if candidate_max <= 0:
+            raise ValueError("candidate maximum must be positive")
+        return set(range(1, candidate_max + 1))
+    result = set()
+    for clause in clauses:
+        if len(clause) == 8 and all(literal > 0 for literal in clause):
+            result.update(clause)
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("base", type=Path)
     parser.add_argument("--parent-units", type=int, nargs="+", required=True)
     parser.add_argument("--limit", type=int, default=32)
+    parser.add_argument(
+        "--candidate-max", type=int,
+        help="rank all variables 1..N (use 861 for compact H7 edge variables)")
     args = parser.parse_args()
     if args.limit <= 0:
         parser.error("--limit must be positive")
 
     variables, clauses = read_dimacs(args.base)
     occurrence: dict[int, list[int]] = defaultdict(list)
-    candidate_variables = set()
+    candidate_variables = split_candidates(clauses, args.candidate_max)
     initial = list(args.parent_units)
     for clause_index, clause in enumerate(clauses):
         for literal in clause:
             occurrence[literal].append(clause_index)
         if len(clause) == 1:
             initial.append(clause[0])
-        if len(clause) == 8 and all(literal > 0 for literal in clause):
-            candidate_variables.update(clause)
     consistent, baseline = propagate(clauses, occurrence, tuple(initial))
     if not consistent:
         raise ValueError("base plus parent units is already unit-inconsistent")
