@@ -1063,13 +1063,13 @@ theorem oneHighFamilyBaseUnitsVal_semanticSound
   simp only [List.mem_cons, List.not_mem_nil, or_false] at hb
   rcases hb with rfl | rfl | rfl | rfl
   · exact oneHighFamilyMateBlockStepVal_semanticSound a R hc hacc
-      (b := 0) (by omega) (by native_decide)
+      (b := 0) (by omega) (by decide)
   · exact oneHighFamilyMateBlockStepVal_semanticSound a R hc hacc
-      (b := 2) (by omega) (by native_decide)
+      (b := 2) (by omega) (by decide)
   · exact oneHighFamilyMateBlockStepVal_semanticSound a R hc hacc
-      (b := 4) (by omega) (by native_decide)
+      (b := 4) (by omega) (by decide)
   · exact oneHighFamilyMateBlockStepVal_semanticSound a R hc hacc
-      (b := 6) (by omega) (by native_decide)
+      (b := 6) (by omega) (by decide)
 
 theorem oneHighFamilyBaseUnitsVal_state
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
