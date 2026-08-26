@@ -72,7 +72,30 @@ triangle_counts={8: 256}
 T1_universal_on_sample=true
 T2_universal_on_sample=true
 affine_certificate_universal_on_sample=true
+triangle_degree_constant_on_defect_edges=true
 ```
+
+## Stronger defect-child propagation candidate
+
+The same exhaustive run tests a stronger local pattern: whenever two
+vertices have zero common neighbors (that is, they are adjacent in the
+second-order defect graph `D`), their triangle degrees are equal.  This also
+holds in all 256 controls.  In the q=4 profile it says that `t`, equivalently
+`deg_K=q-2t`, is constant on each of the two defect components.
+
+This suggests the q-generic Deza-child statement
+
+```text
+D.Adj u v -> t_u=t_v.
+```
+
+It would turn connectedness of `D` into global uniformity of triangle degree.
+That conclusion is **not yet a terminal**: uniform `t` or `deg_K` alone does
+not determine its value and does not imply the weighted-neighbor identity
+`A deg_K=((q^2-4)/3)1`.  A successful use therefore still needs either an
+independent arithmetic pin on the common degree or a structural exclusion
+of the resulting uniform Deza graph.  The bounded observation must not be
+cited as providing either missing step.
 
 ## Scope
 
