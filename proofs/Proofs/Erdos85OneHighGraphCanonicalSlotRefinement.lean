@@ -538,6 +538,101 @@ theorem oneHighGraphCanonicalSlotRow_mem_variants_of_internalEdges_eq_one
   simp [oneHighGraphCanonicalSlotRow, hone,
     oneHighPairingRowSlotVariants, pair]
 
+theorem oneHighGraphSourcePairing_pairwise_code
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8) :
+    (oneHighGraphSourcePairing G hfree hv p source).Pairwise fun a b =>
+      oneHighLabelPairCode a ≤ oneHighLabelPairCode b := by
+  unfold oneHighGraphSourcePairing
+  exact matchingPairingListSorted_pairwise_code _ _
+
+theorem pairingRow_self_mem_slotVariants (first second : OneHighLabelPair) :
+    [first, second] ∈ oneHighPairingRowSlotVariants [first, second] := by
+  simp [oneHighPairingRowSlotVariants]
+  split <;> simp
+
+theorem pairingRow_swap_mem_slotVariants
+    {first second : OneHighLabelPair}
+    (hlow : first.1 = second.1) (hne : first ≠ second) :
+    [first, second] ∈ oneHighPairingRowSlotVariants [second, first] := by
+  simp [oneHighPairingRowSlotVariants, hlow.symm, hne.symm]
+
+/-- Two distinct literal edge pairs determine both entries of a two-edge
+sorted row.  If the sorted order reverses them, slot lex forces tied lows,
+which is exactly the extra swap admitted by the 122-variant expansion. -/
+theorem oneHighGraphCanonicalSlotRow_mem_variants_of_two_distinct
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8)
+    (htwo : oneHighFamilyInternalEdges p.profile source = 2)
+    (hdistinct :
+      (oneHighGraphCanonicalSlotLabel G hfree p source 0,
+        oneHighGraphCanonicalSlotLabel G hfree p source 1) ≠
+      (oneHighGraphCanonicalSlotLabel G hfree p source 2,
+        oneHighGraphCanonicalSlotLabel G hfree p source 3)) :
+    oneHighGraphCanonicalSlotRow G hfree p source ∈
+      oneHighPairingRowSlotVariants
+        (oneHighGraphSourcePairing G hfree hv p source) := by
+  let first : OneHighLabelPair :=
+    (oneHighGraphCanonicalSlotLabel G hfree p source 0,
+      oneHighGraphCanonicalSlotLabel G hfree p source 1)
+  let second : OneHighLabelPair :=
+    (oneHighGraphCanonicalSlotLabel G hfree p source 2,
+      oneHighGraphCanonicalSlotLabel G hfree p source 3)
+  have hlen := oneHighGraphSourcePairing_length G hfree hv p source
+  rw [htwo] at hlen
+  obtain ⟨a, b, hstored⟩ := List.length_eq_two.mp hlen
+  have hfirst := oneHighGraphCanonicalSlotPair_zero_one_mem_sourcePairing
+    G hfree hv p source
+  have hsecond := oneHighGraphCanonicalSlotPair_two_three_mem_sourcePairing
+    G hfree hv p source htwo
+  rw [hstored] at hfirst hsecond
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hfirst hsecond
+  have horders : (a = first ∧ b = second) ∨
+      (a = second ∧ b = first) := by
+    rcases hfirst with hfa | hfb <;> rcases hsecond with hsa | hsb
+    · exfalso
+      apply hdistinct
+      simpa [first, second] using hfa.trans hsa.symm
+    · exact Or.inl ⟨hfa.symm, hsb.symm⟩
+    · exact Or.inr ⟨hsa.symm, hfb.symm⟩
+    · exfalso
+      apply hdistinct
+      simpa [first, second] using hfb.trans hsb.symm
+  rcases horders with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · rw [hstored]
+    have hrow : oneHighGraphCanonicalSlotRow G hfree p source =
+        [first, second] := by
+      simp [oneHighGraphCanonicalSlotRow, htwo, first, second]
+    rw [hrow]
+    exact pairingRow_self_mem_slotVariants first second
+  · have hcodes := oneHighGraphSourcePairing_pairwise_code
+      G hfree hv p source
+    rw [hstored] at hcodes
+    have hcode : oneHighLabelPairCode second ≤
+        oneHighLabelPairCode first := by simpa using hcodes
+    have hlow := oneHighGraphCanonicalSlotLabel_zero_le_two
+      G hfree hv p source htwo
+    have hlowEq : first.1 = second.1 := by
+      apply Fin.ext
+      by_contra hne
+      have hlt : first.1.val < second.1.val := by
+        have hlowVal : first.1.val ≤ second.1.val := hlow
+        omega
+      have hfirstHi : first.2.val < 8 := first.2.isLt
+      have hsecondHi : second.2.val < 8 := second.2.isLt
+      unfold oneHighLabelPairCode at hcode
+      omega
+    rw [hstored]
+    have hrow : oneHighGraphCanonicalSlotRow G hfree p source =
+        [first, second] := by
+      simp [oneHighGraphCanonicalSlotRow, htwo, first, second]
+    rw [hrow]
+    exact pairingRow_swap_mem_slotVariants hlowEq hdistinct
+
 @[simp] theorem oneHighGraphCanonicalSlotRefinement_length
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
