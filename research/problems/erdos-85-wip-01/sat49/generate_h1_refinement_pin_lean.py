@@ -118,6 +118,49 @@ end Erdos85
 '''
 
 
+def bank_branch(records: list[tuple[int, dict, Path, list]], profile: int) -> str:
+    selected = [index for index, data, _, _ in records
+                if int(data["profile"]) == profile]
+    refinements = ",\n        ".join(
+        f"h1RefinementPinI{index:03d}Refinement" for index in selected)
+    alternatives = " | ".join("rfl" for _ in selected)
+    conclusions = "\n".join(
+        f"    · exact h1RefinementPinI{index:03d}Checked" for index in selected)
+    return f'''  · have huniverse :
+        (oneHighAllEvenCapacityInventoryRefinements ({profile} : Fin 5)).flatMap
+          oneHighRefinementSlotVariants =
+      [ {refinements} ] := by
+      native_decide
+    rw [huniverse] at hmem
+    simp only [List.mem_cons, List.mem_singleton] at hmem
+    rcases hmem with {alternatives}
+{conclusions}'''
+
+
+def bank_text(records: list[tuple[int, dict, Path, list]]) -> str:
+    imports = "\n".join(
+        f"import Proofs.Erdos85H1RefinementPinCertI{index:03d}"
+        for index, _, _, _ in records)
+    return f'''import Proofs.Erdos85OneHighOddProfileRefinementPinTerminal
+{imports}
+
+/-! GENERATED complete checked bank for all 122 odd-profile slot variants. -/
+
+namespace Erdos85
+
+theorem h1OddProfileRefinementPinBank :
+    OneHighOddProfileRefinementPinBank := by
+  intro profile hprofile refinement hmem
+  rcases hprofile with rfl | rfl
+{bank_branch(records, 1)}
+{bank_branch(records, 3)}
+
+end Erdos85
+
+#print axioms Erdos85.h1OddProfileRefinementPinBank
+'''
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest_dir", type=Path)
@@ -132,6 +175,12 @@ def main() -> None:
                 args.slot_manifest.read_text().splitlines() if line.strip()]
     if len(variants) != 122 or len(metadata) != 122:
         raise ValueError("authoritative variant and manifest inputs must each have 122 records")
+    profile_counts = {profile: sum(int(record["profile"]) == profile
+                                   for record in metadata)
+                      for profile in (1, 3)}
+    if profile_counts != {1: 103, 3: 19} or any(
+            int(record["profile"]) not in (1, 3) for record in metadata):
+        raise ValueError(f"unexpected authoritative profile split: {profile_counts}")
     expected_tags = [job_tag(record) for record in metadata]
     if len(set(expected_tags)) != len(expected_tags):
         raise ValueError("authoritative slot manifest has duplicate tags")
@@ -171,6 +220,10 @@ def main() -> None:
         module = args.output_dir / f"Erdos85H1RefinementPinCertI{index:03d}.lean"
         module.write_text(module_text(index, data, compact, refinement))
         print(module)
+    if not args.allow_partial:
+        bank = args.output_dir / "Erdos85H1RefinementPinCertificateBank.lean"
+        bank.write_text(bank_text(records))
+        print(bank)
 
 
 if __name__ == "__main__":
