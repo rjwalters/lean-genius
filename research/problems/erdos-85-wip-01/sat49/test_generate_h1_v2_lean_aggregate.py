@@ -41,13 +41,20 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
         self.assertIn("· exact h1V2P3I00000Checked", rendered)
         self.assertEqual(rendered.count("_checkedAt"), 10)
         self.assertNotIn("native_decide", rendered)
-        self.assertEqual(rendered.count("  fin_cases i"), 5)
-        self.assertEqual(rendered.count("set_option maxHeartbeats 0 in"), 5)
-        self.assertEqual(rendered.count("set_option maxRecDepth 1000000 in"), 5)
+        self.assertEqual(rendered.count("  interval_cases i"), 5)
+        self.assertEqual(rendered.count("set_option maxHeartbeats 0 in"), 10)
+        self.assertEqual(rendered.count("set_option maxRecDepth 1000000 in"), 10)
         self.assertIn(
             "orderFortyNineStratumExcluded_one_of_completeV2Certificates",
             rendered)
         self.assertIn("· exact h1V2InventoryProfile4_checked", rendered)
+
+    def test_render_chunks_use_nested_boundary_dispatch(self):
+        rows = [replace(ROW, local_index=index) for index in range(5)]
+        rendered = MOD.aggregate_source(rows, "Proofs.Generated.H1", 2)
+        self.assertIn("by_cases h : i < 2", rendered)
+        self.assertIn("  · by_cases h : i < 4", rendered)
+        self.assertIn("    · exact h1V2InventoryProfile0Chunk002", rendered)
 
     def test_stub_sources_must_exist_with_exact_entry(self):
         with tempfile.TemporaryDirectory() as raw:
