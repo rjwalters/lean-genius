@@ -133,7 +133,7 @@ def bank_branch(records: list[tuple[int, dict, Path, list]], profile: int) -> st
       [ {refinements} ] := by
       native_decide
     rw [huniverse] at hmem
-    simp only [List.mem_cons, List.mem_singleton] at hmem
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hmem
     rcases hmem with {alternatives}
 {conclusions}'''
 
@@ -149,6 +149,8 @@ def bank_text(records: list[tuple[int, dict, Path, list]]) -> str:
 
 namespace Erdos85
 
+set_option maxHeartbeats 0 in
+set_option maxRecDepth 1000000 in
 theorem h1OddProfileRefinementPinBank :
     OneHighOddProfileRefinementPinBank := by
   intro profile hprofile refinement hmem
