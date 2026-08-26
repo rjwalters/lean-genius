@@ -17,6 +17,13 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def job_tag(metadata: dict) -> str:
+    return (f"p{int(metadata['profile'])}-"
+            f"r{int(metadata['refinement_index']):03d}-"
+            f"s{int(metadata['slot_index']):02d}-"
+            f"{metadata['table_tag']}")
+
+
 def lean_refinement(rows: list) -> str:
     if len(rows) != 8:
         raise ValueError(f"refinement must have eight rows, got {len(rows)}")
@@ -114,28 +121,54 @@ end Erdos85
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest_dir", type=Path)
+    parser.add_argument("variants", type=Path)
+    parser.add_argument("slot_manifest", type=Path)
     parser.add_argument("output_dir", type=Path)
     parser.add_argument("--require-count", type=int, default=122)
     parser.add_argument("--allow-partial", action="store_true")
     args = parser.parse_args()
 
+    variants = json.loads(args.variants.read_text())
+    metadata = [json.loads(line) for line in
+                args.slot_manifest.read_text().splitlines() if line.strip()]
+    if len(variants) != args.require_count or len(metadata) != len(variants):
+        raise ValueError("authoritative variant/manifest count mismatch")
+    expected_tags = [job_tag(record) for record in metadata]
+    if len(set(expected_tags)) != len(expected_tags):
+        raise ValueError("authoritative slot manifest has duplicate tags")
+
     manifests = sorted(args.manifest_dir.glob("*.manifest.json"))
-    if not args.allow_partial and len(manifests) != args.require_count:
-        raise ValueError(f"expected {args.require_count} manifests, got {len(manifests)}")
-    records = [accepted_record(path) for path in manifests]
-    tags = [record[0]["tag"] for record in records]
-    if len(set(tags)) != len(tags):
-        raise ValueError("duplicate certificate tags")
-    keys = [(int(record[0]["profile"]), int(record[0]["refinement_index"]),
-             int(record[0]["slot_index"])) for record in records]
-    if len(set(keys)) != len(keys):
-        raise ValueError("duplicate profile/refinement/slot keys")
-    records.sort(key=lambda record: (
-        int(record[0]["profile"]), int(record[0]["refinement_index"]),
-        int(record[0]["slot_index"]), record[0]["tag"]))
+    if not args.allow_partial and len(manifests) != len(variants):
+        raise ValueError(f"expected {len(variants)} manifests, got {len(manifests)}")
+    by_tag = {}
+    for path in manifests:
+        data, compact, refinement = accepted_record(path)
+        tag = data["tag"]
+        if tag in by_tag:
+            raise ValueError(f"duplicate certificate tag: {tag}")
+        by_tag[tag] = (data, compact, refinement)
+    unexpected = set(by_tag) - set(expected_tags)
+    if unexpected:
+        raise ValueError(f"unexpected certificate tags: {sorted(unexpected)}")
+
+    records = []
+    identity_fields = ("profile", "refinement_index", "slot_index", "table_tag")
+    for index, (expected_tag, expected_meta, expected_refinement) in enumerate(
+            zip(expected_tags, metadata, variants)):
+        if expected_tag not in by_tag:
+            if args.allow_partial:
+                continue
+            raise ValueError(f"missing certificate for variant {index}: {expected_tag}")
+        data, compact, refinement = by_tag[expected_tag]
+        if any(data.get(field) != expected_meta.get(field)
+               for field in identity_fields):
+            raise ValueError(f"ledger metadata mismatch at variant {index}")
+        if refinement != expected_refinement:
+            raise ValueError(f"refinement payload mismatch at variant {index}")
+        records.append((index, data, compact, refinement))
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    for index, (data, compact, refinement) in enumerate(records):
+    for index, data, compact, refinement in records:
         module = args.output_dir / f"Erdos85H1RefinementPinCertI{index:03d}.lean"
         module.write_text(module_text(index, data, compact, refinement))
         print(module)
