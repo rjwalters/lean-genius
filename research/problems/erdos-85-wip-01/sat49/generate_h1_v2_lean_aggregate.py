@@ -115,6 +115,7 @@ def aggregate_source(rows: list[IndexRow], stub_module_prefix: str,
             f"    OneHighFamilyV2CheckedUnsat {profile}",
             f"      ((oneHighInventoryTables ({profile} : Fin 5)).get i) := by",
             "  rcases i with ⟨i, hi⟩",
+            f"  rw [oneHighInventoryTables_length_{PROFILE_WORDS[profile]}] at hi",
         ])
         if len(chunks) == 1:
             lines.append(

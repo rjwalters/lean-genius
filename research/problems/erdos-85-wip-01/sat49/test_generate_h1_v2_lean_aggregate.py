@@ -44,6 +44,7 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
         self.assertEqual(rendered.count("  interval_cases i"), 5)
         self.assertEqual(rendered.count("set_option maxHeartbeats 0 in"), 10)
         self.assertEqual(rendered.count("set_option maxRecDepth 1000000 in"), 10)
+        self.assertEqual(rendered.count(" at hi"), 5)
         self.assertIn(
             "orderFortyNineStratumExcluded_one_of_completeV2Certificates",
             rendered)
