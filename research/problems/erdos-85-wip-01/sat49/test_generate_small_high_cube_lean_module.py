@@ -47,6 +47,11 @@ class GenerateCubeLeanModuleTest(unittest.TestCase):
             self.assertIn(
                 "orderFortyNineStratumExcluded_five_of_cubeCertificates",
                 rendered)
+            self.assertIn(
+                "orderFortyNineGeneratedVariableHighSatCnf (5 : Fin 50) "
+                "orderFortyNineFiveHighT0Masks",
+                rendered)
+            self.assertNotIn("orderFortyNineGeneratedH5SatCnf", rendered)
             self.assertNotIn(str(root), rendered)
             self.assertIn('(include_str "h3_b1.cover-left.lrat")', rendered)
 
