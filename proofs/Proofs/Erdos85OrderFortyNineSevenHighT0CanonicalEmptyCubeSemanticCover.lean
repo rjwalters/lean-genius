@@ -1,6 +1,7 @@
 import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalEmptySemanticOrbitCover
 import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSatisfaction
 import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeTerminal
+import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalCnfTerminal
 
 /-! # Assemble the canonical H7 empty-cube semantic cover -/
 
@@ -32,6 +33,13 @@ theorem sevenHighT0CanonicalEmptyCubeSemanticCover_of_baseSat
     (sevenHighT0CanonicalRelabel σ H) val edgeCount typeIndex
     hbaseSat hedgeAgree hmask
 
+/-- Unconditional semantic coverage of the 43 checked H7 empty cubes. -/
+theorem sevenHighT0CanonicalEmptyCubeSemanticCover :
+    SevenHighT0CanonicalEmptyCubeSemanticCover :=
+  sevenHighT0CanonicalEmptyCubeSemanticCover_of_baseSat
+    sevenHighT0CanonicalBaseSat
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalEmptyCubeSemanticCover_of_baseSat
+#print axioms Erdos85.sevenHighT0CanonicalEmptyCubeSemanticCover
