@@ -34,12 +34,21 @@ theorem sevenHighT0CanonicalEdgeVal_emptyPair
 
 set_option maxHeartbeats 800000 in
 set_option maxRecDepth 100000 in
+theorem sevenHighT0CanonicalEmptyPairEdgeId_le
+    (index : Fin 21) :
+    sevenHighT0CanonicalLowEdgeId
+      (7 + (sevenHighT0CanonicalPairNat index).1)
+      (7 + (sevenHighT0CanonicalPairNat index).2) ≤ 861 := by
+  fin_cases index <;> decide
+
+set_option maxHeartbeats 800000 in
+set_option maxRecDepth 100000 in
 theorem sevenHighT0CanonicalEmptyMaskUnits_get
     (mask : Nat) (index : Fin 21) :
     (sevenHighT0CanonicalEmptyMaskUnits mask)[index.1] =
       (sevenHighT0CanonicalLowEdgeId
         (7 + (sevenHighT0CanonicalPairNat index).1)
-        (7 + (sevenHighT0CanonicalPairNat index).2),
+        (7 + (sevenHighT0CanonicalPairNat index).2) - 1,
        mask.testBit index.1) := by
   have hpairs : sevenHighT0CanonicalLabelPairs.length = 21 := by decide
   have hindex : index.1 < sevenHighT0CanonicalLabelPairs.length := by
@@ -53,7 +62,7 @@ theorem sevenHighT0CanonicalEmptyMaskUnits_get
   unfold sevenHighT0CanonicalEmptyMaskUnits
   change (sevenHighT0CanonicalLabelPairs.zipIdx.map fun indexedPair =>
     (sevenHighT0CanonicalLowEdgeId
-      (7 + indexedPair.1.1) (7 + indexedPair.1.2),
+      (7 + indexedPair.1.1) (7 + indexedPair.1.2) - 1,
      sevenHighT0CanonicalEmptyMaskEdge mask indexedPair.2)
     )[index.1] = _
   rw [List.getElem_map, List.getElem_zipIdx, hpair]
@@ -64,13 +73,16 @@ set_option maxRecDepth 100000 in
 pinning its own empty-sector mask. -/
 theorem sevenHighT0CanonicalEmptyMask_sat
     (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (val : DimacsValuation)
     (mask : Nat)
     (hbase : orderFortyNineSevenHighT0CanonicalSatCnf.Sat
-      (sevenHighT0CanonicalEdgeVal H))
+      (satAssignmentOfDimacs val))
+    (hagree : ∀ id, id ≤ 861 →
+      val id = sevenHighT0CanonicalEdgeVal H id)
     (hmask : sevenHighT0CanonicalEmptySemanticMask H = mask) :
     (cnfWithUnits orderFortyNineSevenHighT0CanonicalSatCnf
       (sevenHighT0CanonicalEmptyMaskUnits mask)).Sat
-        (sevenHighT0CanonicalEdgeVal H) := by
+        (satAssignmentOfDimacs val) := by
   apply (sat_cnfWithUnits_iff _ _ _).2
   refine ⟨hbase, ?_⟩
   intro index hindex
@@ -82,22 +94,35 @@ theorem sevenHighT0CanonicalEmptyMask_sat
   rw [show (sevenHighT0CanonicalEmptyMaskUnits mask)[index] =
       (sevenHighT0CanonicalLowEdgeId
         (7 + (sevenHighT0CanonicalPairNat i).1)
-        (7 + (sevenHighT0CanonicalPairNat i).2),
+        (7 + (sevenHighT0CanonicalPairNat i).2) - 1,
        mask.testBit i.1) from
     sevenHighT0CanonicalEmptyMaskUnits_get mask i]
-  rw [sevenHighT0CanonicalEdgeVal_emptyPair H i, hmask]
+  change (val (sevenHighT0CanonicalLowEdgeId
+      (7 + (sevenHighT0CanonicalPairNat i).1)
+      (7 + (sevenHighT0CanonicalPairNat i).2) - 1 + 1) ==
+    mask.testBit i.1) = true
+  have hpos : 0 < sevenHighT0CanonicalLowEdgeId
+      (7 + (sevenHighT0CanonicalPairNat i).1)
+      (7 + (sevenHighT0CanonicalPairNat i).2) := by
+    simp [sevenHighT0CanonicalLowEdgeId]
+  rw [Nat.sub_add_cancel hpos]
+  rw [hagree _ (sevenHighT0CanonicalEmptyPairEdgeId_le i),
+    sevenHighT0CanonicalEdgeVal_emptyPair H i, hmask]
   simp
 
 theorem sevenHighT0CanonicalEmptyRepresentativeCube_sat
     (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (val : DimacsValuation)
     (edgeCount typeIndex : Nat)
     (hbase : orderFortyNineSevenHighT0CanonicalSatCnf.Sat
-      (sevenHighT0CanonicalEdgeVal H))
+      (satAssignmentOfDimacs val))
+    (hagree : ∀ id, id ≤ 861 →
+      val id = sevenHighT0CanonicalEdgeVal H id)
     (hmask : sevenHighT0CanonicalEmptySemanticMask H =
       sevenHighT0CanonicalEmptyRepresentativeMask edgeCount typeIndex) :
     (orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf
-      edgeCount typeIndex).Sat (sevenHighT0CanonicalEdgeVal H) := by
-  exact sevenHighT0CanonicalEmptyMask_sat H _ hbase hmask
+      edgeCount typeIndex).Sat (satAssignmentOfDimacs val) := by
+  exact sevenHighT0CanonicalEmptyMask_sat H val _ hbase hagree hmask
 
 end Erdos85
 

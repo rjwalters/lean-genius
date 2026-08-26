@@ -48,7 +48,7 @@ def sevenHighT0CanonicalEmptyMaskUnits (mask : Nat) : Array (Literal Nat) :=
   (sevenHighT0CanonicalLabelPairs.zipIdx.map fun indexedPair =>
     let pair := indexedPair.1
     let index := indexedPair.2
-    (sevenHighT0CanonicalLowEdgeId (7 + pair.1) (7 + pair.2),
+    (sevenHighT0CanonicalLowEdgeId (7 + pair.1) (7 + pair.2) - 1,
       sevenHighT0CanonicalEmptyMaskEdge mask index)).toArray
 
 def orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf
@@ -96,11 +96,11 @@ set_option maxHeartbeats 0 in
 theorem sevenHighT0CanonicalEmptyMaskUnits_f6_type0 :
     sevenHighT0CanonicalEmptyMaskUnits
       (sevenHighT0CanonicalEmptyRepresentativeMask 6 0) =
-      #[(1, true), (2, true), (3, true), (4, false), (5, false),
-        (6, false), (42, true), (43, false), (44, true), (45, false),
-        (46, false), (82, false), (83, false), (84, true), (85, false),
-        (121, false), (122, false), (123, false), (159, false),
-        (160, false), (196, false)] := by
+      #[(0, true), (1, true), (2, true), (3, false), (4, false),
+        (5, false), (41, true), (42, false), (43, true), (44, false),
+        (45, false), (81, false), (82, false), (83, true), (84, false),
+        (120, false), (121, false), (122, false), (158, false),
+        (159, false), (195, false)] := by
   native_decide
 
 end Erdos85
