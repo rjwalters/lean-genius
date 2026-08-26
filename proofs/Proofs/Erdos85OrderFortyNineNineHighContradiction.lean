@@ -29,7 +29,7 @@ theorem orderFortyNineT2_member_cases
     (hrep : rep ∈ orderFortyNineH9T2Systems) :
     rep = orderFortyNineH9T2Systems[0]! ∨
       rep = orderFortyNineH9T2Systems[1]! := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineT3_member_cases
     (rep : OrderFortyNineH9System)
@@ -39,7 +39,7 @@ theorem orderFortyNineT3_member_cases
       rep = orderFortyNineH9T3Systems[2]! ∨
       rep = orderFortyNineH9T3Systems[3]! ∨
       rep = orderFortyNineH9T3Systems[4]! := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineT4_member_cases
     (rep : OrderFortyNineH9System)
@@ -55,7 +55,7 @@ theorem orderFortyNineT4_member_cases
       rep = orderFortyNineH9T4Systems[8]! ∨
       rep = orderFortyNineH9T4Systems[9]! ∨
       rep = orderFortyNineH9T4Systems[10]! := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineT2_lratChecks :
     ∀ rep ∈ orderFortyNineH9T2Systems,
