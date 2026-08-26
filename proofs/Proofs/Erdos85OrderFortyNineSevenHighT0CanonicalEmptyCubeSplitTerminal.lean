@@ -67,6 +67,10 @@ inductive SevenHighT0CanonicalEmptyCubeLratEvidence
       (trueChecked : LRAT.check trueProof
         (orderFortyNineSevenHighT0CanonicalEmptyCubeSplitSatCnf
           edgeCount typeIndex splitVariable true))
+  | binaryTree
+      (tree : CnfBinaryCheckedTree
+        (orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf
+          edgeCount typeIndex))
 
 /-- Either form of campaign evidence proves its canonical parent cube UNSAT. -/
 theorem SevenHighT0CanonicalEmptyCubeLratEvidence.unsat
@@ -83,6 +87,8 @@ theorem SevenHighT0CanonicalEmptyCubeLratEvidence.unsat
         splitVariable
         (LRAT.check_sound falseProof _ falseChecked)
         (LRAT.check_sound trueProof _ trueChecked)
+  | binaryTree tree =>
+      exact tree.unsat
 
 /-- A heterogeneous manifest containing direct certificates for completed
 parents and binary-split certificates for the remaining parents supplies the
