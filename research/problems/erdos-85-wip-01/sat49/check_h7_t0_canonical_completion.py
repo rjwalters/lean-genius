@@ -35,6 +35,7 @@ PAIR = tuple(range(28, 49))
 LOW = EMPTY + SINGLETON + PAIR
 VERTICES = HIGH + LOW
 LABEL_PAIRS = tuple(itertools.combinations(range(7), 2))
+EXPECTED_SHA256 = "31a550a04f2369b4f0e8d70a9ac3d0be448017505b80db1e58a983bc8a4228a9"
 
 
 def normalized_edge(left: int, right: int) -> tuple[int, int]:
@@ -184,6 +185,7 @@ def main() -> None:
         path = Path(temporary.name) / "canonical.cnf"
     cnf.write(path)
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    assert digest == EXPECTED_SHA256
     print(f"edge_variables={len(edge_variables)}")
     print(f"variables={cnf.variable_count}")
     print(f"clauses={len(cnf.clauses)}")
