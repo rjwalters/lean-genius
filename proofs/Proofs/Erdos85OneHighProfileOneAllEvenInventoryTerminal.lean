@@ -30,7 +30,7 @@ theorem oneHighPairingTableRestrict_eq_of_relevantAgree
   · have hmem : (min c j, max c j) ∈ oneHighFamilyTablePairs := by
       rcases h with ⟨hc, hj, hne, hmate⟩
       interval_cases c <;> interval_cases j <;>
-        simp_all <;> native_decide
+        simp_all <;> decide
     change (if c < 8 ∧ j < 8 ∧ c ≠ j ∧ j ≠ c ^^^ 1 then
         oneHighFamilyTableGet left c j else 0) =
       (if c < 8 ∧ j < 8 ∧ c ≠ j ∧ j ≠ c ^^^ 1 then

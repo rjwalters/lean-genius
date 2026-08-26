@@ -14,7 +14,7 @@ theorem oneHighFamilyTablePairs_mem_bounds
     {pair : Nat × Nat} (h : pair ∈ oneHighFamilyTablePairs) :
     pair.1 < 8 ∧ pair.2 < 8 ∧ pair.1 < pair.2 ∧
       pair.2 ≠ (pair.1 ^^^ 1) := by
-  native_decide +revert
+  decide +revert
 
 theorem oneHighFamilyV2PartnerVertex_lt
     {a x : Nat} (hx : x < 40)
