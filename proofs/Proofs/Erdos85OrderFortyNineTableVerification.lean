@@ -14,9 +14,8 @@ representative selected by its rep index (as sets of 3-sets), with the
 permutation verified to be a genuine permutation of {0..8} and the rep index
 in bounds (via `Array.get?` matching `some`).
 
-The finite checks are discharged with `native_decide` (921-row table); the
-`Lean.ofReduceBool` axiom is therefore part of this file's audit, consistent
-with the already-disclosed certificate-terminal axioms.
+The finite checks are discharged by kernel reduction with `decide`, including
+the 921-row table. Their declarations therefore remain on standard axioms.
 -/
 
 namespace Erdos85
@@ -70,13 +69,13 @@ def rawT4 : List (List (List Nat)) :=
           else none
 
 /-- L2 (t = 2). -/
-theorem rawT2_eq_table : rawT2 = tableT2.map (·.1) := by native_decide
+theorem rawT2_eq_table : rawT2 = tableT2.map (·.1) := by decide
 
 /-- L2 (t = 3). -/
-theorem rawT3_eq_table : rawT3 = tableT3.map (·.1) := by native_decide
+theorem rawT3_eq_table : rawT3 = tableT3.map (·.1) := by decide
 
 /-- L2 (t = 4). -/
-theorem rawT4_eq_table : rawT4 = tableT4.map (·.1) := by native_decide
+theorem rawT4_eq_table : rawT4 = tableT4.map (·.1) := by decide
 
 /-- Apply a witness permutation (given as its image list) to one triple. -/
 def applyPermTriple (p : List Nat) (T : List Nat) : List Nat :=
@@ -109,15 +108,15 @@ def rowValid (reps : Array OrderFortyNineH9System) (row : Row) : Bool :=
 
 /-- L3 (t = 2). -/
 theorem tableT2_valid :
-    tableT2.all (rowValid orderFortyNineH9T2Systems) = true := by native_decide
+    tableT2.all (rowValid orderFortyNineH9T2Systems) = true := by decide
 
 /-- L3 (t = 3). -/
 theorem tableT3_valid :
-    tableT3.all (rowValid orderFortyNineH9T3Systems) = true := by native_decide
+    tableT3.all (rowValid orderFortyNineH9T3Systems) = true := by decide
 
 /-- L3 (t = 4). -/
 theorem tableT4_valid :
-    tableT4.all (rowValid orderFortyNineH9T4Systems) = true := by native_decide
+    tableT4.all (rowValid orderFortyNineH9T4Systems) = true := by decide
 
 /-- Per-row extraction of validity from the table-level checks. -/
 theorem rowValid_of_mem_tableT2 {row : Row} (h : row ∈ tableT2) :
