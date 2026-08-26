@@ -246,6 +246,20 @@ def validate_assignment(
             ) <= 1
             assert not (left_pairs & right_pairs)
 
+    # Check the graph-global directed quotient equations now formalized in
+    # `sevenHigh_t0_directed_quotient_one_parameter`.  The relaxation
+    # constructs only E-E, E-S, and E-P incidences; the remaining values below
+    # are completion targets, not constructed P-P/P-S/S-S edge sets.
+    directed_d = sum(degrees)
+    pair_to_empty = sum(degrees)
+    singleton_to_empty = sum(7 - 2 * degree for degree in degrees)
+    assert pair_to_empty == directed_d
+    assert singleton_to_empty + 2 * directed_d == 49
+    assert directed_d + 42 >= 0  # I22 target
+    assert 63 - 2 * directed_d >= 0  # I21 target
+    assert 4 * directed_d - 28 >= 0  # I11 target
+    assert 11 <= directed_d <= 21
+
 
 def run_search() -> SearchResult:
     tested = 0
@@ -281,6 +295,19 @@ def main() -> None:
     print(f"edge_indices={result.edge_indices}")
     print(f"edges={tuple(EDGES[i] for i in result.edge_indices or ())}")
     print(f"option_indices={result.assignment}")
+    directed_d = 2 * result.edge_count
+    print(
+        "directed_targets="
+        + repr(
+            {
+                "I00=I20=I02": directed_d,
+                "I22": directed_d + 42,
+                "I01=I10": 49 - 2 * directed_d,
+                "I21": 63 - 2 * directed_d,
+                "I11": 4 * directed_d - 28,
+            }
+        )
+    )
     for vertex, option_index in enumerate(result.assignment):
         degree = sum(vertex in edge for edge in tuple(
             EDGES[i] for i in result.edge_indices or ()
