@@ -56,7 +56,13 @@ def validate_stub_sources(rows: list[IndexRow], stub_dir: Path) -> None:
             raise ValueError(f"missing generated Lean stub: {path}")
         source = path.read_text()
         stem = stub_stem(row)
+        raw_table_definition = (
+            f"def {stem}Table : OneHighMissTable :=\n"
+            f"  (oneHighInventoryTables ({row.profile} : Fin 5)).get\n"
+            f"    ⟨{row.local_index}, by native_decide⟩"
+        )
         declarations = (
+            raw_table_definition,
             f"theorem {stem}Checked :",
             f"def {stem}Entry : OneHighFamilyV2CheckedEntry {row.profile}",
         )

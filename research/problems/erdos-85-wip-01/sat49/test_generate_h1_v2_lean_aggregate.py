@@ -59,10 +59,26 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "wrong declarations"):
                 MOD.validate_stub_sources([ROW], root)
             path.write_text(
+                "def h1V2P0I00000Table : OneHighMissTable :=\n"
+                "  (oneHighInventoryTables (0 : Fin 5)).get\n"
+                "    ⟨0, by native_decide⟩\n"
                 "theorem h1V2P0I00000Checked : True := True.intro\n"
                 "def h1V2P0I00000Entry : OneHighFamilyV2CheckedEntry 0 := x\n"
             )
             MOD.validate_stub_sources([ROW], root)
+
+    def test_terminal_table_stub_is_rejected(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            path = root / "Erdos85H1V2CertP0I00000.lean"
+            path.write_text(
+                "def h1V2P0I00000Table : OneHighMissTable :=\n"
+                "  terminalTables.get ⟨0, by native_decide⟩\n"
+                "theorem h1V2P0I00000Checked : True := True.intro\n"
+                "def h1V2P0I00000Entry : OneHighFamilyV2CheckedEntry 0 := x\n"
+            )
+            with self.assertRaisesRegex(ValueError, "wrong declarations"):
+                MOD.validate_stub_sources([ROW], root)
 
 
 if __name__ == "__main__":
