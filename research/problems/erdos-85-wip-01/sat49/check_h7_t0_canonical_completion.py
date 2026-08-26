@@ -98,8 +98,8 @@ class Cnf:
                 handle.write(" ".join(map(str, clause)) + " 0\n")
 
 
-def build_cnf() -> tuple[Cnf, dict[tuple[int, int], int], int]:
-    cnf = Cnf()
+def build_cnf(cnf_factory=Cnf) -> tuple[Cnf, dict[tuple[int, int], int], int]:
+    cnf = cnf_factory()
     edge_variables = {
         edge: cnf.variable() for edge in itertools.combinations(LOW, 2)
     }
