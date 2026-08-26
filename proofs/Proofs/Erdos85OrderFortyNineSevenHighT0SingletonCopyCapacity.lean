@@ -74,8 +74,34 @@ theorem sevenHighT0SingletonVertex_lowEmptyNeighbor_bound
   exact sevenHigh_t0_singletonRoot_lowEmptyNeighbor_bound
     G hfree hmin hHigh hzero hs7 hsSupport
 
+/-- For a fixed high label, its two actual singleton copies have total
+empty-low incidence at most four. -/
+theorem sevenHighT0SingletonLabel_lowEmptyIncidence_le_four
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (w : Fin 7) :
+    (∑ copy : Fin 2,
+      (((G.neighborFinset (sevenHighT0SingletonVertex
+        G hfree hmin hHigh hzero e w copy)).filter fun x =>
+          (orderFortyNineHighSupport G x).card = 0).filter fun x =>
+            x ∉ orderFortyNineHighVertices G).card) ≤ 4 := by
+  calc
+    _ ≤ ∑ _copy : Fin 2, 2 := by
+      apply Finset.sum_le_sum
+      intro copy _
+      exact sevenHighT0SingletonVertex_lowEmptyNeighbor_bound
+        G hfree hmin hHigh hzero e w copy
+    _ = 4 := by decide
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0SingletonVertex_lowEmptyNeighbor_bound
+#print axioms Erdos85.sevenHighT0SingletonLabel_lowEmptyIncidence_le_four
