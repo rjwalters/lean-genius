@@ -371,13 +371,13 @@ theorem orderFortyNine_exists_tableT3_row_of_intersecting_prefix
     intro h
     rw [h] at hR1
     have hc : (({0, 1, 2} : Finset (Fin 9)) ∩ {0, 1, 2}).card = 3 := by
-      native_decide
+      decide
     omega
   have hRne2 : R ≠ {0, 3, 4} := by
     intro h
     rw [h] at hR2
     have hc : (({0, 3, 4} : Finset (Fin 9)) ∩ {0, 3, 4}).card = 3 := by
-      native_decide
+      decide
     omega
   have hraw := OrderFortyNineWitnessTable.mem_rawT3_of_intersectingPrefix
     hR hR1 hR2 hRne1 hRne2
@@ -600,25 +600,25 @@ theorem orderFortyNine_exists_tableT4_row_of_intersecting_prefix
     intro h
     rw [h] at hR1
     have hc : (({0, 1, 2} : Finset (Fin 9)) ∩ {0, 1, 2}).card = 3 := by
-      native_decide
+      decide
     omega
   have hRne2 : R ≠ {0, 3, 4} := by
     intro h
     rw [h] at hR2
     have hc : (({0, 3, 4} : Finset (Fin 9)) ∩ {0, 3, 4}).card = 3 := by
-      native_decide
+      decide
     omega
   have hSne1 : S ≠ {0, 1, 2} := by
     intro h
     rw [h] at hS1
     have hc : (({0, 1, 2} : Finset (Fin 9)) ∩ {0, 1, 2}).card = 3 := by
-      native_decide
+      decide
     omega
   have hSne2 : S ≠ {0, 3, 4} := by
     intro h
     rw [h] at hS2
     have hc : (({0, 3, 4} : Finset (Fin 9)) ∩ {0, 3, 4}).card = 3 := by
-      native_decide
+      decide
     omega
   have hRneS : R ≠ S := by
     intro h
