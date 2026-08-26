@@ -10,6 +10,10 @@ intersection a singleton, so (At)_x = 2 t_x + B_x and
 
 The uniform target needed by the selected divergence-75 route is only
 (Ak)_x = 4 mod 8, equivalently (At)_x = 2 mod 4.
+
+The extended profile also records the remote layer R_x (vertices outside
+the closed two-ball), its internal edge count, and its edge count into the
+second layer.  This searches for a pairing invariant behind the residue.
 """
 
 from __future__ import annotations
@@ -26,7 +30,7 @@ N = Q * Q
 ROOT_NEIGHBORS = set(range(1, Q + 1))
 
 
-def profile(edges: list[tuple[int, int]]) -> list[tuple[int, int, int, int, int]]:
+def profile(edges: list[tuple[int, int]]) -> list[tuple[int, ...]]:
     adjacency = [[False] * N for _ in range(N)]
     for left, right in edges:
         adjacency[left][right] = adjacency[right][left] = True
@@ -52,9 +56,33 @@ def profile(edges: list[tuple[int, int]]) -> list[tuple[int, int, int, int, int]
         external = sum(root not in triple and len(neighborhood.intersection(triple)) == 1 for triple in triangles)
         at = sum(triangle_degree[vertex] for vertex in neighborhood)
         ak = sum(k_degree[vertex] for vertex in neighborhood)
+        second_layer = {
+            vertex
+            for vertex in range(N)
+            if vertex != root and vertex not in neighborhood and common[root][vertex] == 1
+        }
+        remote = set(range(N)) - {root} - neighborhood - second_layer
+        remote_edges = sum(
+            adjacency[left][right] for left, right in itertools.combinations(remote, 2)
+        )
+        remote_second_edges = sum(
+            adjacency[left][right] for left in remote for right in second_layer
+        )
         assert at == 2 * triangle_degree[root] + external
         assert ak == Q * Q - 2 * at
-        answer.append((triangle_degree[root], external, at, k_degree[root], ak))
+        assert len(remote) == 2 * triangle_degree[root] - 1
+        answer.append(
+            (
+                triangle_degree[root],
+                external,
+                at,
+                k_degree[root],
+                ak,
+                len(remote),
+                remote_edges,
+                remote_second_edges,
+            )
+        )
     return answer
 
 
@@ -90,7 +118,7 @@ def main() -> None:
             ]) <= 1
         )
 
-    joint_profiles: Counter[tuple[int, int, int, int, int]] = Counter()
+    joint_profiles: Counter[tuple[int, ...]] = Counter()
     external_by_t: dict[int, Counter[int]] = defaultdict(Counter)
     for index in range(args.models):
         result = solver.check()
@@ -101,20 +129,27 @@ def main() -> None:
         edges = [pair for pair, variable in variables.items() if is_true(model.eval(variable))]
         vertex_profiles = profile(edges)
         for entry in vertex_profiles:
-            t, external, at, _k, ak = entry
+            t, external, at, _k, ak, _remote, _remote_edges, _remote_second_edges = entry
             joint_profiles[entry] += 1
             external_by_t[t][external] += 1
             if ak % 8 != 4 or at % 4 != 2 or (external + 2 * t) % 4 != 2:
                 print(f"residue_falsifier_model={index}; profile={entry}; edges={edges}")
                 raise SystemExit(1)
+            if external + _remote_edges != Q:
+                print(f"remote_edge_identity_falsifier_model={index}; profile={entry}; edges={edges}")
+                raise SystemExit(3)
         solver.add(Or([variable != model.eval(variable) for variable in variables.values()]))
 
     print(f"bounded_models={args.models}")
-    print(f"joint_profiles(t,B,At,k,Ak)={dict(sorted(joint_profiles.items()))}")
+    print(
+        "joint_profiles(t,B,At,k,Ak,|R|,e(R),e(R,S))="
+        f"{dict(sorted(joint_profiles.items()))}"
+    )
     print(f"external_by_t={dict(sorted((t, dict(sorted(counts.items()))) for t, counts in external_by_t.items()))}")
     print("Ak_mod_8_eq_4_universal_on_sample=true")
     print("At_mod_4_eq_2_universal_on_sample=true")
     print("external_plus_2t_mod_4_eq_2_universal_on_sample=true")
+    print("external_plus_remote_edges_eq_q_universal_on_sample=true")
 
 
 if __name__ == "__main__":
