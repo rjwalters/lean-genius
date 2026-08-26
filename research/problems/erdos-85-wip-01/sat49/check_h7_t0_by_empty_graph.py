@@ -19,6 +19,7 @@ import tempfile
 from pathlib import Path
 
 import check_h7_t0_canonical_completion as canonical
+import check_h7_t0_canonical_compact as compact
 import check_h7_t0_copy_quotient as quotient
 import probe_h7_t0_quotient_scale as scale
 
@@ -56,6 +57,11 @@ def main() -> None:
     parser.add_argument("--time", type=int, default=1800)
     parser.add_argument("--keep-cnf", type=Path)
     parser.add_argument("--emit-only", action="store_true")
+    parser.add_argument(
+        "--compact",
+        action="store_true",
+        help="cube the formally reified compact canonical instance",
+    )
     args = parser.parse_args()
 
     representatives = graph_representatives(args.edge_count)
@@ -66,10 +72,11 @@ def main() -> None:
         edge for index, edge in enumerate(quotient.EDGES) if (empty_mask >> index) & 1
     )
 
-    cnf, edge_variables, c4_clauses = canonical.build_cnf()
+    cnf_factory = compact.CompactCnf if args.compact else canonical.Cnf
+    cnf, edge_variables, c4_clauses = canonical.build_cnf(cnf_factory)
     add_empty_cube(cnf, edge_variables, empty_mask)
-    assert cnf.variable_count == 71463
-    assert len(cnf.clauses) == 830123
+    assert cnf.variable_count == (17633 if args.compact else 71463)
+    assert len(cnf.clauses) == (720825 if args.compact else 830123)
     if args.keep_cnf:
         path = args.keep_cnf
         temporary = None
@@ -80,6 +87,7 @@ def main() -> None:
     print(f"F={args.edge_count}")
     print(f"type_index={args.type_index}/{len(representatives)}")
     print(f"empty_edges={empty_edges}")
+    print(f"encoding={'compact' if args.compact else 'baseline'}")
     print(f"variables={cnf.variable_count}")
     print(f"clauses={len(cnf.clauses)}")
     print(f"c4_clauses={c4_clauses}")
