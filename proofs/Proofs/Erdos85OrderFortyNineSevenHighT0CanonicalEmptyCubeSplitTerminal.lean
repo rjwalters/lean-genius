@@ -50,6 +50,55 @@ theorem sevenHighT0CanonicalEmptyCubeCheckedProvider_of_binarySplitLratChecks
     (splitVariable edgeCount typeIndex)
     (branchUnsat false) (branchUnsat true)
 
+/-- Per-parent certificate evidence for the mixed campaign: already completed
+parents retain their direct LRAT, while hard parents may instead provide the
+two leaves of one exhaustive binary split. -/
+inductive SevenHighT0CanonicalEmptyCubeLratEvidence
+    (edgeCount typeIndex : Nat) : Prop where
+  | direct (proof : Array LRAT.IntAction)
+      (checked : LRAT.check proof
+        (orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf
+          edgeCount typeIndex))
+  | binarySplit (splitVariable : Nat)
+      (falseProof trueProof : Array LRAT.IntAction)
+      (falseChecked : LRAT.check falseProof
+        (orderFortyNineSevenHighT0CanonicalEmptyCubeSplitSatCnf
+          edgeCount typeIndex splitVariable false))
+      (trueChecked : LRAT.check trueProof
+        (orderFortyNineSevenHighT0CanonicalEmptyCubeSplitSatCnf
+          edgeCount typeIndex splitVariable true))
+
+/-- Either form of campaign evidence proves its canonical parent cube UNSAT. -/
+theorem SevenHighT0CanonicalEmptyCubeLratEvidence.unsat
+    {edgeCount typeIndex : Nat}
+    (evidence : SevenHighT0CanonicalEmptyCubeLratEvidence
+      edgeCount typeIndex) :
+    SevenHighT0CanonicalEmptyCubeChecked edgeCount typeIndex := by
+  cases evidence with
+  | direct proof checked =>
+      exact LRAT.check_sound proof _ checked
+  | binarySplit splitVariable falseProof trueProof falseChecked trueChecked =>
+      exact cnf_unsat_of_binaryUnitSplit
+        (orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf edgeCount typeIndex)
+        splitVariable
+        (LRAT.check_sound falseProof _ falseChecked)
+        (LRAT.check_sound trueProof _ trueChecked)
+
+/-- A heterogeneous manifest containing direct certificates for completed
+parents and binary-split certificates for the remaining parents supplies the
+same bounded checked provider. -/
+theorem sevenHighT0CanonicalEmptyCubeCheckedProvider_of_lratEvidence
+    (evidence : ∀ edgeCount, 6 ≤ edgeCount → edgeCount ≤ 9 →
+      ∀ typeIndex,
+        typeIndex <
+          (sevenHighT0CanonicalEmptyRepresentativeMasks edgeCount).length →
+        SevenHighT0CanonicalEmptyCubeLratEvidence edgeCount typeIndex) :
+    SevenHighT0CanonicalEmptyCubeCheckedProvider := by
+  intro edgeCount hlow hhigh typeIndex hindex
+  exact (evidence edgeCount hlow hhigh typeIndex hindex).unsat
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalEmptyCubeCheckedProvider_of_binarySplitLratChecks
+#print axioms Erdos85.SevenHighT0CanonicalEmptyCubeLratEvidence.unsat
+#print axioms Erdos85.sevenHighT0CanonicalEmptyCubeCheckedProvider_of_lratEvidence
