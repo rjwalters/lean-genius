@@ -33,13 +33,16 @@ class GenerateCubeLeanModuleTest(unittest.TestCase):
             path.write_text(json.dumps({
                 "schema": "erdos85-small-high-cube-jobs-v1", "cells": cells}))
             manifest = MOD.load_and_validate(path, root)
-            rendered = MOD.render(manifest, root)
+            rendered = MOD.render(
+                manifest, root, root, root / "Generated.lean")
             # Two theorems per job, then one grid and one base theorem per cell.
             self.assertEqual(rendered.count("theorem smallHighH"), 826)
             self.assertEqual(rendered.count("native_decide"), 406)
             self.assertEqual(rendered.count("CheckedCubeGrid"), 7)
             self.assertIn("smallHighH3B1Cube00_unsat", rendered)
             self.assertIn("smallHighH5T2Base_unsat", rendered)
+            self.assertNotIn(str(root), rendered)
+            self.assertIn('(include_str "h3_b1.cover-left.lrat")', rendered)
 
     def test_missing_payload_is_rejected(self):
         with tempfile.TemporaryDirectory() as raw:
