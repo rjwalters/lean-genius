@@ -71,6 +71,42 @@ when `M` is singular and CORE-TRIANGLE-CANCELLATION when it is invertible
 would close NONBIP-CONNECTED directly.  Neither statement is currently
 proved.
 
+### Integer cofactor form
+
+The invertible-core target has a denominator-free form that is better suited
+to combinatorial cancellation.  Put
+
+```text
+c = adj(M) 1 in Z^V.
+```
+
+Since `M^(-1)=adj(M)/det(M)`, CORE-TRIANGLE-CANCELLATION is exactly
+
+```text
+H^T c = 0.                                            (5)
+```
+
+In words: for every A-triangle, the three corresponding row sums of
+`adj(M)` add to zero.  If (5) holds, the explicit integral vector
+
+```text
+X = -adj(M)t
+```
+
+is killed by `A`.  Equation (2) also gives the useful identity
+
+```text
+3X = det(M) 1 - q c.                                  (6)
+```
+
+This exposes a concrete bridge to the signed-matching mechanism: entries of
+`adj(M)` are signed cofactors, hence signed sums of near-perfect cycle-cover
+terms in the looped triangle-free core.  A sign-reversing cancellation of
+the three cofactor families owned by each triangle would prove (5) directly.
+No such involution is currently known, and the coarse parity of triangle/K
+edges has already been refuted as its selector; actual owner placement must
+enter.
+
 ## Faithful q=4 calibration
 
 `nonbip_connected_triangle_schur_q4_probe.py` enumerates actual symmetric

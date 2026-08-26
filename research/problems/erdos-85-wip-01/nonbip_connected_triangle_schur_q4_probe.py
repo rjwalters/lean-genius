@@ -43,8 +43,23 @@ def triangle_schur_profile(edges: list[tuple[int, int]]) -> tuple[int, ...]:
     rank_core = core.rank()
     if rank_core < N:
         return (len(triangles), rank_adjacency, rank_core, -1, -1)
-    schur = sympy.eye(len(triangles)) + incidence.T * core.inv() * incidence
+    core_inverse = core.inv()
+    schur = sympy.eye(len(triangles)) + incidence.T * core_inverse * incidence
     ones = sympy.ones(len(triangles), 1)
+    vertex_ones = sympy.ones(N, 1)
+    determinant = core.det()
+    cofactor_row_sums = determinant * core_inverse * vertex_ones
+    triangle_degrees_vector = sympy.Matrix(triangle_degrees)
+    integral_kernel = -(determinant * core_inverse) * triangle_degrees_vector
+    assert all(value.q == 1 for value in cofactor_row_sums)
+    assert all(value.q == 1 for value in integral_kernel)
+    if schur * ones == sympy.zeros(len(triangles), 1):
+        assert incidence.T * cofactor_row_sums == sympy.zeros(len(triangles), 1)
+        assert adjacency * integral_kernel == sympy.zeros(N, 1)
+        assert (
+            3 * integral_kernel
+            == determinant * vertex_ones - Q * cofactor_row_sums
+        )
     return (
         len(triangles),
         rank_adjacency,
