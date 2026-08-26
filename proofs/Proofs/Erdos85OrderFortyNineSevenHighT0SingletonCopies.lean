@@ -104,6 +104,59 @@ theorem sevenHighT0SingletonVertex_injective
   cases hcopy
   rfl
 
+def sevenHighT0CommonSingletonCopies
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (x y : Fin 49) : Finset (Fin 7 × Fin 2) :=
+  Finset.univ.filter fun q =>
+    G.Adj x (sevenHighT0SingletonVertex
+      G hfree hmin hHigh hzero e q.1 q.2) ∧
+    G.Adj y (sevenHighT0SingletonVertex
+      G hfree hmin hHigh hzero e q.1 q.2)
+
+/-- Two distinct vertices share at most one of the fourteen actual singleton
+copies.  This is the sound copy-indexed form of the `C₄` compatibility rule. -/
+theorem sevenHighT0CommonSingletonCopies_card_le_one
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    {x y : Fin 49} (hxy : x ≠ y) :
+    (sevenHighT0CommonSingletonCopies
+      G hfree hmin hHigh hzero e x y).card ≤ 1 := by
+  let actual := (G.neighborFinset x ∩ G.neighborFinset y).filter fun z =>
+    (orderFortyNineHighSupport G z).card = 1
+  let vertex := fun q : Fin 7 × Fin 2 =>
+    sevenHighT0SingletonVertex G hfree hmin hHigh hzero e q.1 q.2
+  have hmap : ∀ q ∈ sevenHighT0CommonSingletonCopies
+      G hfree hmin hHigh hzero e x y, vertex q ∈ actual := by
+    intro q hq
+    have hq' := (Finset.mem_filter.mp hq).2
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_inter.mpr ?_, ?_⟩
+    · simpa [SimpleGraph.mem_neighborFinset, vertex] using hq'
+    · rw [← sevenHighLabeledSupport_card G e]
+      rw [sevenHighT0SingletonVertex_support]
+      simp
+  have hinj : Set.InjOn vertex
+      (sevenHighT0CommonSingletonCopies
+        G hfree hmin hHigh hzero e x y : Set (Fin 7 × Fin 2)) :=
+    (sevenHighT0SingletonVertex_injective
+      G hfree hmin hHigh hzero e).injOn
+  have hcard := Finset.card_le_card_of_injOn vertex hmap hinj
+  exact hcard.trans
+    (sevenHigh_t0_actualSingleton_commonNeighbor_card_le_one G hfree hxy)
+
 end
 
 end Erdos85
@@ -111,3 +164,4 @@ end Erdos85
 #print axioms Erdos85.sevenHighT0SingletonVertex_support
 #print axioms Erdos85.sevenHighT0SingletonVertex_injective_copy
 #print axioms Erdos85.sevenHighT0SingletonVertex_injective
+#print axioms Erdos85.sevenHighT0CommonSingletonCopies_card_le_one
