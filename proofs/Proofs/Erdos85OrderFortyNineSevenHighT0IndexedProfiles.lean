@@ -192,6 +192,30 @@ theorem sevenHighT0LowGraph_degree_add_supportCard_eq_seven
   rw [SimpleGraph.card_neighborFinset_eq_degree, hdegree] at hsplit
   omega
 
+/-- C4-freeness transports to the complete indexed low graph. -/
+theorem sevenHighT0LowGraph_not_containsC4
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7) :
+    ¬ containsC4 SevenHighT0LowIndex
+      (sevenHighT0LowGraph G hfree hmin hHigh hzero e) := by
+  rintro ⟨f, hf, hadj⟩
+  apply hfree
+  refine ⟨fun k => (sevenHighT0LowVertex
+    G hfree hmin hHigh hzero e (f k)).1, ?_, ?_⟩
+  · intro i j hij
+    apply hf
+    apply sevenHighT0LowVertex_injective
+      G hfree hmin hHigh hzero e
+    exact Subtype.ext hij
+  · intro i j hij
+    exact hadj i j hij
+
 end
 
 
@@ -201,3 +225,4 @@ end Erdos85
 #print axioms Erdos85.sevenHighT0LowVertex_degree_eq_seven
 #print axioms Erdos85.sevenHighT0LowGraph_adj_iff
 #print axioms Erdos85.sevenHighT0LowGraph_degree_add_supportCard_eq_seven
+#print axioms Erdos85.sevenHighT0LowGraph_not_containsC4
