@@ -21,6 +21,8 @@ CERT_RE = re.compile(
     r"compactcube F=(\d+) type=(\d+) UNSAT_CERT .*?"
     r"cnf_sha=([0-9a-f]{64}) .*?lrat_gz_sha=([0-9a-f]{64}) "
     r"lrat_gz_bytes=(\d+)$")
+RECEIPT_TSV_RE = re.compile(
+    r"cube_F(\d+)_t(\d+)\s+([0-9a-f]{64})\s+([0-9a-f]{64})\s+(\d+)$")
 
 
 def sha256(path: Path) -> str:
@@ -65,6 +67,10 @@ def accepted_receipts(path: Path) -> dict[tuple[int, int], dict[str, object]]:
     receipts: dict[tuple[int, int], dict[str, object]] = {}
     for line in path.read_text().splitlines():
         match = CERT_RE.search(line)
+        if match is None:
+            match = RECEIPT_TSV_RE.fullmatch(line.strip())
+        if match is None and line.lstrip().startswith("cube_F"):
+            raise ValueError(f"malformed canonical receipt row: {line!r}")
         if match is None:
             continue
         edge_count, type_index, cnf_hash, proof_hash, proof_bytes = match.groups()

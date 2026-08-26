@@ -34,6 +34,27 @@ class H7EmptyCubeManifestTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "conflicting"):
                 manifest.accepted_receipts(ledger)
 
+    def test_canonical_tsv_receipt_is_consumable(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            receipts = Path(directory) / "receipts.tsv"
+            receipts.write_text(
+                "# id cnf_sha256 lrat_gz_sha256 lrat_gz_bytes\n"
+                f"cube_F7_t1 {'1' * 64} {'2' * 64} 456\n")
+            self.assertEqual(manifest.accepted_receipts(receipts), {
+                (7, 1): {
+                    "cnf_sha256": "1" * 64,
+                    "lrat_gz_sha256": "2" * 64,
+                    "lrat_gz_bytes": 456,
+                }
+            })
+
+    def test_malformed_canonical_tsv_receipt_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            receipts = Path(directory) / "receipts.tsv"
+            receipts.write_text("cube_F7_t1 truncated\n")
+            with self.assertRaisesRegex(ValueError, "malformed"):
+                manifest.accepted_receipts(receipts)
+
     def test_cube_identity_is_header_plus_units(self) -> None:
         base = b"p cnf 4 2\n1 0\n"
         prefix = hashlib.sha256(base)
