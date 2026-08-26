@@ -14,6 +14,7 @@ import argparse
 import concurrent.futures as futures
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -176,6 +177,8 @@ def main() -> None:
     parser.add_argument("--lrat-replay", type=Path, required=True)
     parser.add_argument("--kissat", type=Path, default=Path("/opt/homebrew/bin/kissat"))
     parser.add_argument("--workers", type=int, default=2)
+    parser.add_argument("--nice", type=int, default=10,
+                        help="lower runner/child CPU priority (default: 10)")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--keep-intermediates", action="store_true")
@@ -188,6 +191,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.workers < 1:
         parser.error("--workers must be positive")
+    if not 0 <= args.nice <= 19:
+        parser.error("--nice must be between 0 and 19")
     if args.limit is not None and args.limit < 1:
         parser.error("--limit must be positive")
     args.emitter = checked_tool(args.emitter, "Lean refinement emitter")
@@ -196,6 +201,8 @@ def main() -> None:
     args.compactor = checked_tool(args.compactor, "LRAT compactor")
     args.lrat_replay = checked_tool(args.lrat_replay, "Lean LRAT replay")
     args.kissat = checked_tool(args.kissat, "Kissat")
+    if args.nice:
+        os.nice(args.nice)
 
     variants = json.loads(args.variants.read_text())
     metadata = [json.loads(line) for line in
