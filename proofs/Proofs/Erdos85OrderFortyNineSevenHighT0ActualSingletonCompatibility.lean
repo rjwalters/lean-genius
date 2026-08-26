@@ -51,9 +51,33 @@ theorem sevenHigh_t0_actualSingleton_commonNeighbor_eq_empty_of_common_nonSingle
   have hwz : w = z := Finset.card_le_one.mp hcard w hwCommon z hzCommon
   exact hzNotSingleton (hwz ▸ hwSingleton)
 
+/-- Aggregate arithmetic for the `P/S/E` quotient.  Here `pp`, `ps`, ...
+count edges between the pair-, singleton-, and empty-support classes.  The
+first three hypotheses are the sums of the pointwise law `#P = #E + k` over
+the three root classes; the final two are the singleton and empty class stub
+counts.  Thus every quotient is controlled by the single parameter `ee`.
+
+The subtraction-free conclusions are convenient for both Lean and finite
+checkers and are equivalent to
+`PP=21+F, PS=63-4F, PE=2F, SS=4F-14, SE=49-4F, EE=F`. -/
+theorem sevenHigh_t0_quotient_edge_counts_one_parameter
+    {pp ps pe ss se ee : Nat}
+    (hPairBalance : 2 * pp = pe + 42)
+    (hSingletonBalance : ps = se + 14)
+    (hEmptyBalance : pe = 2 * ee)
+    (hSingletonStubs : ps + 2 * ss + se = 84)
+    (hEmptyStubs : pe + se + 2 * ee = 49) :
+    pp = 21 + ee ∧
+    pe = 2 * ee ∧
+    ps + 4 * ee = 63 ∧
+    ss + 14 = 4 * ee ∧
+    se + 4 * ee = 49 := by
+  omega
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.sevenHigh_t0_actualSingleton_commonNeighbor_card_le_one
 #print axioms Erdos85.sevenHigh_t0_actualSingleton_commonNeighbor_eq_empty_of_common_nonSingleton
+#print axioms Erdos85.sevenHigh_t0_quotient_edge_counts_one_parameter
