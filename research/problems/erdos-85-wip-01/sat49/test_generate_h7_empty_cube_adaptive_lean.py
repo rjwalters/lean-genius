@@ -1,10 +1,12 @@
 import importlib.util
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
 SPEC = importlib.util.spec_from_file_location(
     "h7_empty_adaptive_lean",
     HERE / "generate_h7_empty_cube_adaptive_lean.py")
@@ -38,9 +40,9 @@ class GenerateH7EmptyCubeAdaptiveLeanTest(unittest.TestCase):
         rendered = MOD.render(manifest, nodes, leaves, includes)
         self.assertEqual(rendered.count("native_decide"), 4)
         self.assertIn("cnfWithSignedUnit (cnfWithSignedUnit", rendered)
-        self.assertIn(".node 40", rendered)
-        self.assertIn(".node 39", rendered)
-        self.assertIn(".node 35", rendered)
+        self.assertIn(".split 40", rendered)
+        self.assertIn(".split 39", rendered)
+        self.assertIn(".split 35", rendered)
         self.assertEqual(rendered.count(".leaf (LRAT.check_sound"), 4)
         self.assertIn(".binaryTree", rendered)
         self.assertIn("h7EmptyAdaptiveEvidenceF6T2", rendered)

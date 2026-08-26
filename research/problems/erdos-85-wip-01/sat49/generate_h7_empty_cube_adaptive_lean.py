@@ -89,7 +89,7 @@ def _tree_expr(parent_id: str, path: str, nodes: dict[str, int]) -> str:
     if path not in nodes:
         stem = mixed.lean_stem(f"{parent_id}.adaptive.leaf-{path}")
         return f".leaf (LRAT.check_sound {stem}Proof _ {stem}Check)"
-    return (f".node {nodes[path] - 1} "
+    return (f".split {nodes[path] - 1} "
             f"({_tree_expr(parent_id, path + '0', nodes)}) "
             f"({_tree_expr(parent_id, path + '1', nodes)})")
 
