@@ -124,15 +124,14 @@ def main() -> None:
     parser.add_argument("variants", type=Path)
     parser.add_argument("slot_manifest", type=Path)
     parser.add_argument("output_dir", type=Path)
-    parser.add_argument("--require-count", type=int, default=122)
     parser.add_argument("--allow-partial", action="store_true")
     args = parser.parse_args()
 
     variants = json.loads(args.variants.read_text())
     metadata = [json.loads(line) for line in
                 args.slot_manifest.read_text().splitlines() if line.strip()]
-    if len(variants) != args.require_count or len(metadata) != len(variants):
-        raise ValueError("authoritative variant/manifest count mismatch")
+    if len(variants) != 122 or len(metadata) != 122:
+        raise ValueError("authoritative variant and manifest inputs must each have 122 records")
     expected_tags = [job_tag(record) for record in metadata]
     if len(set(expected_tags)) != len(expected_tags):
         raise ValueError("authoritative slot manifest has duplicate tags")
