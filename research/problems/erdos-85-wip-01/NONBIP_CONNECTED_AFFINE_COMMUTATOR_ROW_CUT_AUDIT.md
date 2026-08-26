@@ -112,6 +112,29 @@ the degree moments, not either required equality.  Passing from the full
 energy to the affine moment would require a new sharp off-diagonal identity
 or equality case; the diagonal formula alone is not a bridge.
 
+There is nevertheless an exact diagonal reformulation of the newer direct
+kernel target.  Since `diag(E)=k-1` and `A1=q1`,
+
+```text
+A k = ((q^2-4)/3) 1
+```
+
+is equivalent to
+
+```text
+A diag(E) = ((q-4)(q+1)/3) 1.               (E-diagonal target)
+```
+
+Also `E=qA+(q-1)J-A^3`, so `E` commutes with `A` and has zero row sums at
+square order.  Those facts do not by themselves imply the displayed
+diagonal target: matrix commutation controls rows and eigenspaces, not the
+operation of extracting a diagonal.  The special `q=4` calibration makes
+the right side zero, explaining why its varying odd diagonal is itself an
+adjacency-kernel vector.  At connected binary square order `q>=8`, proving
+the same formula with its nonzero constant is exactly the missing
+combinatorial content, not a consequence currently present in the
+incidence-energy ledger.
+
 ## Verdict
 
 **CUT for the unweighted row-sum route.**  The banked commutator theorem is
