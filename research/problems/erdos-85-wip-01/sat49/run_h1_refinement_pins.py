@@ -62,12 +62,17 @@ def accepted(manifest: Path) -> bool:
             sha256(compact) == data.get("compact_lrat_sha256"))
 
 
+def job_tag(metadata: dict) -> str:
+    return (f"p{int(metadata['profile'])}-"
+            f"r{int(metadata['refinement_index']):03d}-"
+            f"s{int(metadata['slot_index']):02d}-"
+            f"{metadata['table_tag']}")
+
+
 def run_job(job) -> tuple[str, str]:
     index, refinement, metadata, args = job
     profile = int(metadata["profile"])
-    tag = (f"p{profile}-r{int(metadata['refinement_index']):03d}-"
-           f"s{int(metadata['slot_index']):02d}-"
-           f"{metadata['table_tag']}")
+    tag = job_tag(metadata)
     root = args.outdir / tag
     result = root.with_suffix(".manifest.json")
     if accepted(result):
@@ -121,10 +126,8 @@ def run_job(job) -> tuple[str, str]:
         [str(args.lrat_check), str(cnf), str(raw_lrat)],
         capture_output=True, text=True, timeout=args.check_timeout)
     check_log.write_text(checked_lrat.stdout + checked_lrat.stderr)
-    verdicts = [line for line in checked_lrat.stdout.splitlines()
-                if "VERIFIED" in line]
-    if (checked_lrat.returncode or not verdicts or
-            "NOT VERIFIED" in verdicts[-1]):
+    verdicts = [line.strip() for line in checked_lrat.stdout.splitlines()]
+    if checked_lrat.returncode or "c VERIFIED" not in verdicts:
         raise RuntimeError(f"{tag}: lrat-check rejected proof")
 
     compacted = subprocess.run(
@@ -211,15 +214,16 @@ def main() -> None:
         raise ValueError("variant and manifest counts differ")
     if len(variants) != 122:
         raise ValueError(f"expected 122 canonical-slot variants, got {len(variants)}")
+    tags = [job_tag(record) for record in metadata]
+    if len(set(tags)) != len(tags):
+        raise ValueError("slot manifest produces duplicate artifact tags")
     jobs = [(index, refinement, metadata[index], args)
             for index, refinement in enumerate(variants)]
     if args.limit is not None:
         jobs = jobs[:args.limit]
     args.outdir.mkdir(parents=True, exist_ok=True)
     pending = sum(not accepted(
-        args.outdir /
-        (f"p{int(meta['profile'])}-r{int(meta['refinement_index']):03d}-"
-         f"s{int(meta['slot_index']):02d}-{meta['table_tag']}.manifest.json"))
+        args.outdir / f"{job_tag(meta)}.manifest.json")
         for _, _, meta, _ in jobs)
     print(f"jobs={len(jobs)} pending={pending} workers={args.workers}", flush=True)
     if args.dry_run:
