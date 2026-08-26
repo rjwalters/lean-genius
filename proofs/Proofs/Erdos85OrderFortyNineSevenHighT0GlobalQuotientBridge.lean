@@ -439,6 +439,41 @@ theorem sevenHigh_t0_directedIncidence_profile_equations
   simp [hcardZero] at hempty
   exact ⟨hpair, hsingleton, hempty⟩
 
+/-- Complete directed quotient parameterization.  Taking `D = I₀₀` avoids
+halving self-incidences: every directed class incidence is affine in `D`, and
+the graph capacities force `11 ≤ D ≤ 21`. -/
+theorem sevenHigh_t0_directed_quotient_one_parameter
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0) :
+    let D := sevenHighT0DirectedIncidence G 0 0
+    sevenHighT0DirectedIncidence G 2 0 = D ∧
+      sevenHighT0DirectedIncidence G 0 2 = D ∧
+      sevenHighT0DirectedIncidence G 2 2 = D + 42 ∧
+      sevenHighT0DirectedIncidence G 0 1 + 2 * D = 49 ∧
+      sevenHighT0DirectedIncidence G 1 0 =
+        sevenHighT0DirectedIncidence G 0 1 ∧
+      sevenHighT0DirectedIncidence G 2 1 + 2 * D = 63 ∧
+      sevenHighT0DirectedIncidence G 1 1 + 28 = 4 * D ∧
+      11 ≤ D ∧ D ≤ 21 := by
+  dsimp only
+  obtain ⟨hbPair, hbSingleton, hbEmpty⟩ :=
+    sevenHigh_t0_directedIncidence_global_balances
+      G hfree hmin hHigh hzero
+  obtain ⟨hpPair, hpSingleton, hpEmpty⟩ :=
+    sevenHigh_t0_directedIncidence_profile_equations
+      G hfree hmin hHigh hzero
+  obtain ⟨hcPair, hcSingleton, hcEmpty⟩ :=
+    sevenHigh_t0_directedIncidence_empty_capacity_bounds
+      G hfree hmin hHigh hzero
+  have hcomm20 := sevenHighT0DirectedIncidence_comm G 2 0
+  have hcomm10 := sevenHighT0DirectedIncidence_comm G 1 0
+  omega
+
 end
 
 end Erdos85
@@ -451,3 +486,4 @@ end Erdos85
 #print axioms Erdos85.sevenHigh_t0_directedIncidence_global_balances
 #print axioms Erdos85.sevenHigh_t0_directedIncidence_empty_capacity_bounds
 #print axioms Erdos85.sevenHigh_t0_directedIncidence_profile_equations
+#print axioms Erdos85.sevenHigh_t0_directed_quotient_one_parameter
