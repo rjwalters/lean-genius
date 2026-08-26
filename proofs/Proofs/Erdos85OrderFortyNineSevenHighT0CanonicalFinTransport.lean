@@ -189,6 +189,80 @@ theorem SevenHighT0CanonicalCompletionSemantics.finGraph_emptyRoot_bound
   exact sevenHigh_t0_emptyRoot_lowEmptyNeighbor_bound
     G hfree hmin hHigh hzero hy
 
+theorem SevenHighT0CanonicalCompletionSemantics.mem_finGraph_emptyFiber_iff
+    {H : SimpleGraph SevenHighT0CanonicalIndex} [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (i : Fin 49) :
+    i ∈ sevenHighT0LowSupportFiber (sevenHighT0CanonicalFinGraph H) 0 ↔
+      ∃ w : Fin 7,
+        sevenHighT0CanonicalIndexEquiv i = Sum.inr (Sum.inl w) := by
+  rw [sevenHighT0LowSupportFiber, Finset.mem_filter]
+  simp only [orderFortyNineLowVertices, Finset.mem_sdiff, Finset.mem_univ,
+    true_and]
+  rw [sevenHighT0CanonicalFinGraph_mem_highVertices_iff,
+    sevenHighT0CanonicalFinGraph_highSupport_card]
+  generalize hx : sevenHighT0CanonicalIndexEquiv i = x
+  rcases x with w | j
+  · simp [semantics.mem_highVertices_iff]
+  · rw [semantics.low_highSupport_card]
+    rcases j with w | j
+    · simp [sevenHighT0LowIndexSupportCard,
+        semantics.mem_highVertices_iff]
+    · rcases j with j | j
+      · simp [sevenHighT0LowIndexSupportCard,
+          semantics.mem_highVertices_iff]
+      · simp [sevenHighT0LowIndexSupportCard,
+          semantics.mem_highVertices_iff]
+
+noncomputable def SevenHighT0CanonicalCompletionSemantics.finGraphEmptyFiberEquiv
+    {H : SimpleGraph SevenHighT0CanonicalIndex} [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H) :
+    Fin 7 ≃ {i : Fin 49 //
+      i ∈ sevenHighT0LowSupportFiber (sevenHighT0CanonicalFinGraph H) 0} where
+  toFun w := ⟨sevenHighT0CanonicalIndexEquiv.symm (Sum.inr (Sum.inl w)),
+    semantics.mem_finGraph_emptyFiber_iff _ |>.2 ⟨w, by simp⟩⟩
+  invFun i := Classical.choose
+    ((semantics.mem_finGraph_emptyFiber_iff i.1).1 i.2)
+  left_inv w := by
+    have hw := Classical.choose_spec
+      ((semantics.mem_finGraph_emptyFiber_iff
+        (sevenHighT0CanonicalIndexEquiv.symm
+          (Sum.inr (Sum.inl w)))).1
+        (semantics.mem_finGraph_emptyFiber_iff _ |>.2 ⟨w, by simp⟩))
+    simp only [Equiv.apply_symm_apply, Sum.inr.injEq, Sum.inl.injEq] at hw
+    exact hw.symm
+  right_inv i := by
+    apply Subtype.ext
+    have hw := Classical.choose_spec
+      ((semantics.mem_finGraph_emptyFiber_iff i.1).1 i.2)
+    simpa using congrArg sevenHighT0CanonicalIndexEquiv.symm hw.symm
+
+noncomputable def SevenHighT0CanonicalCompletionSemantics.finGraphEmptyFiberIso
+    {H : SimpleGraph SevenHighT0CanonicalIndex} [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H) :
+    H.comap (fun w : Fin 7 => Sum.inr (Sum.inl w)) ≃g
+      (sevenHighT0CanonicalFinGraph H).induce
+        (↑(sevenHighT0LowSupportFiber
+          (sevenHighT0CanonicalFinGraph H) 0) : Set (Fin 49)) where
+  toEquiv := semantics.finGraphEmptyFiberEquiv
+  map_rel_iff' := by
+    intro a b
+    change H.Adj
+        (sevenHighT0CanonicalIndexEquiv
+          (sevenHighT0CanonicalIndexEquiv.symm (Sum.inr (Sum.inl a))))
+        (sevenHighT0CanonicalIndexEquiv
+          (sevenHighT0CanonicalIndexEquiv.symm (Sum.inr (Sum.inl b)))) ↔
+      H.Adj (Sum.inr (Sum.inl a)) (Sum.inr (Sum.inl b))
+    simp
+
+theorem SevenHighT0CanonicalCompletionSemantics.finGraph_internalEmptyEdgeCount_eq
+    {H : SimpleGraph SevenHighT0CanonicalIndex} [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H) :
+    sevenHighT0InternalEdgeCount (sevenHighT0CanonicalFinGraph H) 0 =
+      (H.comap (fun w : Fin 7 => Sum.inr (Sum.inl w))).edgeFinset.card := by
+  rw [sevenHighT0InternalEdgeCount]
+  exact semantics.finGraphEmptyFiberIso.card_edgeFinset_eq.symm
+
 end
 
 end Erdos85
