@@ -42,6 +42,34 @@ def OneHighCapacitySectorRefinementPinBank
     refinement ∈ oneHighCapacitySectorSlotVariants accept profile →
       OneHighRefinementCheckedUnsat profile.val refinement
 
+/-- A bank for a wider executable sector supplies a bank for any Boolean
+subsector.  This is useful for certifying the union of overlapping odd-support
+sectors only once. -/
+theorem oneHighCapacitySectorRefinementPinBank_of_imp
+    {accept wider : List (List OneHighLabelPair) → Bool}
+    (himp : ∀ refinement, accept refinement = true →
+      wider refinement = true)
+    (hbank : OneHighCapacitySectorRefinementPinBank wider) :
+    OneHighCapacitySectorRefinementPinBank accept := by
+  intro profile refinement hrefinement
+  rw [oneHighCapacitySectorSlotVariants, List.mem_flatMap] at hrefinement
+  obtain ⟨sorted, hsorted, hrefinement⟩ := hrefinement
+  have hsortedWide : sorted ∈
+      (oneHighCapacityInventoryRefinements profile).filter wider := by
+    rw [List.mem_filter] at hsorted ⊢
+    exact ⟨hsorted.1, himp sorted hsorted.2⟩
+  apply hbank profile refinement
+  rw [oneHighCapacitySectorSlotVariants, List.mem_flatMap]
+  exact ⟨sorted, hsortedWide, hrefinement⟩
+
+/-- Union of the three non-even parity sectors.  Using one union bank avoids
+duplicating certificates for refinements satisfying more than one sector. -/
+def oneHighRefinementHasAnyOddSupport
+    (refinement : List (List OneHighLabelPair)) : Bool :=
+  oneHighRefinementHasOddMateKey refinement ||
+    oneHighRefinementHasOddThreePairTurn refinement ||
+    oneHighRefinementHasOddCrossBlock refinement
+
 /-- The exact finite target for the odd standard-mate-key sector. -/
 def oneHighOddMateKeyCapacitySlotVariants (profile : Fin 5) :=
   oneHighCapacitySectorSlotVariants
@@ -57,6 +85,10 @@ def oneHighCrossBlockCapacitySlotVariants (profile : Fin 5) :=
   oneHighCapacitySectorSlotVariants
     oneHighRefinementHasOddCrossBlock profile
 
+def oneHighAnyOddSupportCapacitySlotVariants (profile : Fin 5) :=
+  oneHighCapacitySectorSlotVariants
+    oneHighRefinementHasAnyOddSupport profile
+
 def OneHighThreePairTurnRefinementPinBank : Prop :=
   OneHighCapacitySectorRefinementPinBank
     oneHighRefinementHasOddThreePairTurn
@@ -68,6 +100,10 @@ def OneHighOddMateKeyRefinementPinBank : Prop :=
 def OneHighCrossBlockRefinementPinBank : Prop :=
   OneHighCapacitySectorRefinementPinBank
     oneHighRefinementHasOddCrossBlock
+
+def OneHighAnyOddSupportRefinementPinBank : Prop :=
+  OneHighCapacitySectorRefinementPinBank
+    oneHighRefinementHasAnyOddSupport
 
 /-- The graph's sorted pairing refinement belongs to the unfiltered capacity
 refinement universe of any stored orbit representative agreeing on the
@@ -371,14 +407,40 @@ theorem orderFortyNineStratumExcluded_one_of_allCapacityRefinementPinBanks
   · exact false_of_oneHigh_crossBlock_refinementPinBank
       hcrossBank G hfree hv p stored hstored hagree hcross
 
+/-- Cost-reduced certificate assembly: certify the union of the three
+overlapping odd-support sectors once, rather than maintaining three banks
+whose inventories may contain the same refinement. -/
+theorem orderFortyNineStratumExcluded_one_of_evenAndAnyOddRefinementPinBanks
+    (hcheckedEven : ∀ (profile : Fin 5) table,
+      table ∈ oneHighAllEvenCapacityInventoryTables profile →
+        OneHighFamilyV2CheckedUnsat profile.val table)
+    (hoddBank : OneHighAnyOddSupportRefinementPinBank) :
+    OrderFortyNineStratumExcluded 1 := by
+  have hmateBank : OneHighOddMateKeyRefinementPinBank :=
+    oneHighCapacitySectorRefinementPinBank_of_imp
+      (fun refinement h => by
+        simp [oneHighRefinementHasAnyOddSupport, h]) hoddBank
+  have hturnBank : OneHighThreePairTurnRefinementPinBank :=
+    oneHighCapacitySectorRefinementPinBank_of_imp
+      (fun refinement h => by
+        simp [oneHighRefinementHasAnyOddSupport, h]) hoddBank
+  have hcrossBank : OneHighCrossBlockRefinementPinBank :=
+    oneHighCapacitySectorRefinementPinBank_of_imp
+      (fun refinement h => by
+        simp [oneHighRefinementHasAnyOddSupport, h]) hoddBank
+  exact orderFortyNineStratumExcluded_one_of_allCapacityRefinementPinBanks
+    hcheckedEven hmateBank hturnBank hcrossBank
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.oneHighGraphPairingRefinement_mem_capacityInventoryRefinements
 #print axioms Erdos85.false_of_oneHigh_capacitySector_refinementPinBank
+#print axioms Erdos85.oneHighCapacitySectorRefinementPinBank_of_imp
 #print axioms Erdos85.false_of_oneHigh_oddMateKey_refinementPinBank
 #print axioms Erdos85.false_of_oneHigh_threePairTurn_refinementPinBank
 #print axioms Erdos85.false_of_oneHigh_crossBlock_refinementPinBank
 #print axioms Erdos85.orderFortyNineStratumExcluded_one_of_capacitySectorRefinementPinBanks
 #print axioms Erdos85.orderFortyNineStratumExcluded_one_of_allCapacityRefinementPinBanks
+#print axioms Erdos85.orderFortyNineStratumExcluded_one_of_evenAndAnyOddRefinementPinBanks
