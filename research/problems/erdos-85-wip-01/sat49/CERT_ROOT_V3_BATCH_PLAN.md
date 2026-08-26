@@ -63,6 +63,13 @@ and byte count, emitted Lean path, and emitted Lean source hash.  Independent
 workers therefore generate disjoint deterministic batches without rescanning
 or hashing payloads outside their batch.
 
+For tracked, cold-verifiable sources, also pass a normalized relative
+`--include-prefix`, for example `Certificates/h1-v2-cert-root`.  The generator
+then emits `include_str` path composition below that prefix plus the payload's
+content-addressed path relative to cert-root; absolute host paths never enter
+the source.  Restore tooling must place the object under the same prefix before
+replay.  The receipt records both the prefix and exact emitted path expression.
+
 ## Parallelism and expected throughput
 
 Packing is I/O-heavy and may run independently of solving.  Lean LRAT replay

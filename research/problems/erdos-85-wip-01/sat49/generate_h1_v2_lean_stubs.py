@@ -218,10 +218,11 @@ def validate_row(
 
 
 def lean_source(
-    row: IndexRow, payload: Path, terminal: TerminalTableTarget | None = None
+    row: IndexRow, payload: Path, terminal: TerminalTableTarget | None = None,
+    include_path_expr: str | None = None,
 ) -> str:
     stem = f"h1V2P{row.profile}I{row.local_index:05d}"
-    path_literal = json.dumps(str(payload))
+    path_expr = include_path_expr or json.dumps(str(payload))
     terminal_import = f"import {terminal.module}\n" if terminal else ""
     terminal_table_expr = (
         f"({terminal.definition} ({row.profile} : Fin 5))"
@@ -271,7 +272,7 @@ def {stem}Table : OneHighMissTable :=
 {table_source}
 
 private def {stem}ProofText : String :=
-  include_str {path_literal}
+  include_str {path_expr}
 
 private def {stem}RawProof : Array LRAT.IntAction :=
   parsePackedLz4OrderFortyNineLratProof {stem}ProofText
@@ -356,6 +357,14 @@ def main() -> int:
         type=Path,
         help="atomically write a JSON receipt describing the emitted batch",
     )
+    parser.add_argument(
+        "--include-prefix",
+        type=Path,
+        help=(
+            "emit portable include_str paths below this relative Lean source "
+            "prefix, followed by each payload's path relative to --cert-root"
+        ),
+    )
     parser.add_argument("--orbit", action="append", default=[])
     parser.add_argument("--all", action="store_true")
     parser.add_argument(
@@ -408,6 +417,12 @@ def main() -> int:
         parser.error("--batch-size must be positive")
     if args.batch_index is not None and args.batch_index < 0:
         parser.error("--batch-index must be nonnegative")
+    if args.include_prefix is not None and (
+        args.include_prefix.is_absolute() or
+        not args.include_prefix.parts or
+        any(part in ("", ".", "..") for part in args.include_prefix.parts)
+    ):
+        parser.error("--include-prefix must be a nonempty normalized relative path")
     terminal_options = (
         args.terminal_jobs, args.terminal_module, args.terminal_table_def
     )
@@ -505,6 +520,16 @@ def main() -> int:
     emitted = []
     for row in selected:
         payload = validate_row(row, profiles, args.cert_root, not args.skip_payload_hash)
+        include_path_expr = None
+        if args.include_prefix is not None:
+            try:
+                payload_relative = payload.relative_to(args.cert_root.resolve())
+            except ValueError as error:
+                raise ValueError(
+                    f"payload is outside --cert-root: {payload}"
+                ) from error
+            include_parts = args.include_prefix.parts + payload_relative.parts
+            include_path_expr = " / ".join(json.dumps(part) for part in include_parts)
         destination = args.output_dir / f"Erdos85H1V2CertP{row.profile}I{row.local_index:05d}.lean"
         terminal = (
             TerminalTableTarget(
@@ -516,7 +541,10 @@ def main() -> int:
             )
             if terminal_indices is not None else None
         )
-        atomic_write(destination, lean_source(row, payload, terminal))
+        atomic_write(
+            destination,
+            lean_source(row, payload, terminal, include_path_expr),
+        )
         terminal_field = f"\tterminalIndex={terminal.index}" if terminal else ""
         print(
             f"{row.orbit}\tprofile={row.profile}\tlocalIndex={row.local_index}"
@@ -529,6 +557,7 @@ def main() -> int:
             "packed_lz4_sha256": row.packed_sha,
             "packed_lz4_bytes": row.packed_bytes,
             "payload": str(payload),
+            "include_path_expr": include_path_expr or json.dumps(str(payload)),
             "lean_source": str(destination.resolve()),
             "lean_source_sha256": sha256(destination),
             **(
@@ -542,6 +571,9 @@ def main() -> int:
             "index": str(args.index.resolve()),
             "index_sha256": sha256(args.index),
             "cert_root": str(args.cert_root.resolve()),
+            "include_prefix": (
+                str(args.include_prefix) if args.include_prefix is not None else None
+            ),
             "selected_total": selected_total,
             "batch_size": args.batch_size,
             "batch_index": args.batch_index,
