@@ -105,6 +105,10 @@ noncomputable def sevenHighT0CanonicalLowIndexEquiv :
       ⟨sevenHighT0CanonicalLowIndexOfFin_injective, by
         simp [SevenHighT0LowIndex, sevenHighT0PairIndex_card]⟩)
 
+@[simp] theorem sevenHighT0CanonicalLowIndexEquiv_apply (vertex : Fin 42) :
+    sevenHighT0CanonicalLowIndexEquiv vertex =
+      sevenHighT0CanonicalLowIndexOfFin vertex := rfl
+
 set_option maxHeartbeats 0 in
 theorem sevenHighT0CanonicalIndexOfFin_low (vertex : Fin 42) :
     sevenHighT0CanonicalIndexOfFin ⟨vertex.1 + 7, by omega⟩ =
@@ -169,6 +173,147 @@ theorem sevenHighT0CanonicalEdgeVal_edge
         exact H.adj_comm _ _
     · omega
   · omega
+
+def sevenHighT0CanonicalNumericLowGraph
+    (H : SimpleGraph SevenHighT0CanonicalIndex) : SimpleGraph (Fin 42) :=
+  (H.comap Sum.inr).comap sevenHighT0CanonicalLowIndexOfFin
+
+@[reducible] def sevenHighT0CanonicalNumericLowGraphDecRel
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    DecidableRel (sevenHighT0CanonicalNumericLowGraph H).Adj := fun left right =>
+  inferInstanceAs (Decidable (H.Adj
+    (Sum.inr (sevenHighT0CanonicalLowIndexOfFin left))
+    (Sum.inr (sevenHighT0CanonicalLowIndexOfFin right))))
+
+instance sevenHighT0CanonicalNumericLowGraph.instDecidableRel
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    DecidableRel (sevenHighT0CanonicalNumericLowGraph H).Adj :=
+  sevenHighT0CanonicalNumericLowGraphDecRel H
+
+def sevenHighT0CanonicalOtherLow (center : Fin 42) (index : Fin 41) : Fin 42 :=
+  if index.1 < center.1 then ⟨index.1, by omega⟩
+  else ⟨index.1 + 1, by omega⟩
+
+theorem sevenHighT0CanonicalOtherLow_ne (center : Fin 42) (index : Fin 41) :
+    sevenHighT0CanonicalOtherLow center index ≠ center := by
+  intro h
+  have hv := congrArg Fin.val h
+  by_cases hi : index.1 < center.1
+  · simp [sevenHighT0CanonicalOtherLow, hi] at hv
+    omega
+  · simp [sevenHighT0CanonicalOtherLow, hi] at hv
+    omega
+
+theorem sevenHighT0CanonicalOtherLow_injective (center : Fin 42) :
+    Function.Injective (sevenHighT0CanonicalOtherLow center) := by
+  intro left right h
+  have hv := congrArg Fin.val h
+  by_cases hl : left.1 < center.1 <;>
+    by_cases hr : right.1 < center.1 <;>
+    simp [sevenHighT0CanonicalOtherLow, hl, hr] at hv
+  · exact Fin.ext hv
+  · omega
+  · omega
+  · exact Fin.ext (by omega)
+
+theorem sevenHighT0CanonicalOtherLow_surjective_away
+    (center other : Fin 42) (hne : other ≠ center) :
+    ∃ index : Fin 41, sevenHighT0CanonicalOtherLow center index = other := by
+  by_cases hlt : other.1 < center.1
+  · refine ⟨⟨other.1, by omega⟩, ?_⟩
+    apply Fin.ext
+    simp [sevenHighT0CanonicalOtherLow, hlt]
+  · have hgt : center.1 < other.1 := by
+      have hv : other.1 ≠ center.1 := fun h => hne (Fin.ext h)
+      omega
+    let index : Fin 41 := ⟨other.1 - 1, by omega⟩
+    have hi : ¬index.1 < center.1 := by
+      dsimp [index]
+      omega
+    refine ⟨index, ?_⟩
+    apply Fin.ext
+    simp [sevenHighT0CanonicalOtherLow, hi, index]
+    omega
+
+def sevenHighT0CanonicalDegreeVars (center : Fin 42) : Array Int :=
+  Array.ofFn fun index : Fin 41 =>
+    (sevenHighT0CanonicalLowEdgeId (center.1 + 7)
+      ((sevenHighT0CanonicalOtherLow center index).1 + 7) : Nat)
+
+def sevenHighT0CanonicalDegreeRow
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (center : Fin 42) : Fin 41 → Bool := fun index =>
+  decide (H.Adj
+    (Sum.inr (sevenHighT0CanonicalLowIndexOfFin center))
+    (Sum.inr (sevenHighT0CanonicalLowIndexOfFin
+      (sevenHighT0CanonicalOtherLow center index))))
+
+theorem sevenHighT0CanonicalDegreeRow_count
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (center : Fin 42) :
+    seqPrefixTrue (sevenHighT0CanonicalDegreeRow H center) 41 =
+      (sevenHighT0CanonicalNumericLowGraph H).degree center := by
+  rw [seqPrefixTrue_full_eq_filter_card]
+  rw [← (sevenHighT0CanonicalNumericLowGraph H).card_neighborFinset_eq_degree]
+  apply Finset.card_bij
+    (fun index _ => sevenHighT0CanonicalOtherLow center index)
+  · intro index hi
+    apply ((sevenHighT0CanonicalNumericLowGraph H).mem_neighborFinset
+      center (sevenHighT0CanonicalOtherLow center index)).mpr
+    change H.Adj
+      (Sum.inr (sevenHighT0CanonicalLowIndexOfFin center))
+      (Sum.inr (sevenHighT0CanonicalLowIndexOfFin
+        (sevenHighT0CanonicalOtherLow center index)))
+    simpa [sevenHighT0CanonicalDegreeRow] using hi
+  · intro left hleft right hright heq
+    exact sevenHighT0CanonicalOtherLow_injective center heq
+  · intro other hother
+    have hadj : (sevenHighT0CanonicalNumericLowGraph H).Adj center other :=
+      ((sevenHighT0CanonicalNumericLowGraph H).mem_neighborFinset center other).mp hother
+    have hne : other ≠ center := by
+      intro h
+      subst other
+      exact (sevenHighT0CanonicalNumericLowGraph H).loopless.irrefl center hadj
+    obtain ⟨index, rfl⟩ :=
+      sevenHighT0CanonicalOtherLow_surjective_away center other hne
+    refine ⟨index, ?_, rfl⟩
+    change H.Adj
+      (Sum.inr (sevenHighT0CanonicalLowIndexOfFin center))
+      (Sum.inr (sevenHighT0CanonicalLowIndexOfFin
+        (sevenHighT0CanonicalOtherLow center index))) at hadj
+    simpa [sevenHighT0CanonicalDegreeRow] using hadj
+
+theorem sevenHighT0CanonicalNumericLowGraph_degree
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (center : Fin 42) :
+    (sevenHighT0CanonicalNumericLowGraph H).degree center +
+      sevenHighT0LowIndexSupportCard
+        (sevenHighT0CanonicalLowIndexOfFin center) = 7 := by
+  have hdegree := semantics.low_degree
+    (sevenHighT0CanonicalLowIndexOfFin center)
+  have htransport :
+      (sevenHighT0CanonicalNumericLowGraph H).degree center =
+        (H.comap Sum.inr).degree
+          (sevenHighT0CanonicalLowIndexOfFin center) := by
+    have raw :=
+      ((SimpleGraph.Iso.comap sevenHighT0CanonicalLowIndexEquiv
+        (H.comap Sum.inr)).degree_eq center |>.symm)
+    have hcenter :
+        (SimpleGraph.Iso.comap sevenHighT0CanonicalLowIndexEquiv
+          (H.comap Sum.inr)) center =
+            sevenHighT0CanonicalLowIndexOfFin center := by
+      change sevenHighT0CanonicalLowIndexEquiv center = _
+      exact sevenHighT0CanonicalLowIndexEquiv_apply center
+    rw [hcenter] at raw
+    change ((H.comap Sum.inr).comap
+      (fun vertex => sevenHighT0CanonicalLowIndexEquiv vertex)).degree center = _ at raw
+    simp only [sevenHighT0CanonicalLowIndexEquiv_apply] at raw
+    change ((H.comap Sum.inr).comap
+      sevenHighT0CanonicalLowIndexOfFin).degree center = _
+    exact raw
+  rw [htransport]
+  exact hdegree
 
 end Erdos85
 
