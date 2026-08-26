@@ -69,6 +69,39 @@ def _unpack(payload: Path, destination: Path) -> None:
     os.replace(temporary, destination)
 
 
+def index_split_records(records: object, missing: set[str],
+                        variable_max: int) -> dict[str, dict]:
+    if not isinstance(records, list) or len(records) != len(missing):
+        raise ValueError("split manifest must cover exactly the missing parents")
+    indexed = {}
+    for record in records:
+        if not isinstance(record, dict) or not isinstance(record.get("parent_id"), str):
+            raise ValueError("malformed split record")
+        parent_id = record["parent_id"]
+        if parent_id in indexed:
+            raise ValueError(f"duplicate split parent: {parent_id}")
+        variable = record.get("split_variable")
+        if (type(variable) is not int or variable < 1 or
+                variable > variable_max):
+            raise ValueError(f"invalid one-based split variable: {parent_id}")
+        leaves = record.get("leaves")
+        if not isinstance(leaves, list) or len(leaves) != 2:
+            raise ValueError(f"non-exhaustive split leaves: {parent_id}")
+        leaf_index = {leaf.get("id"): leaf for leaf in leaves
+                      if isinstance(leaf, dict)}
+        expected = {f"{parent_id}.split-0", f"{parent_id}.split-1"}
+        if set(leaf_index) != expected or len(leaf_index) != len(leaves):
+            raise ValueError(f"non-exhaustive split leaves: {parent_id}")
+        for bit in (0, 1):
+            value = leaf_index[f"{parent_id}.split-{bit}"].get("value")
+            if type(value) is not bool or value is not bool(bit):
+                raise ValueError(f"split leaf value/suffix mismatch: {parent_id}")
+        indexed[parent_id] = record
+    if set(indexed) != missing:
+        raise ValueError("split manifest must cover exactly the missing parents")
+    return indexed
+
+
 def validate_and_unpack(parent_manifest: dict, split_manifest: dict,
                         split_receipts: dict[str, dict[str, object]],
                         base: Path,
@@ -93,10 +126,8 @@ def validate_and_unpack(parent_manifest: dict, split_manifest: dict,
     missing = {job["id"]: job for job in jobs if job.get("status") == "missing"}
     if len(direct) + len(missing) != 43:
         raise ValueError("parent status must be certified or missing")
-    split_records = split_manifest.get("splits")
-    if not isinstance(split_records, list) or {
-            record.get("parent_id") for record in split_records} != set(missing):
-        raise ValueError("split manifest must cover exactly the missing parents")
+    split_records = index_split_records(
+        split_manifest.get("splits"), set(missing), parent_manifest["variables"])
 
     evidence = []
     payloads = {}
@@ -109,10 +140,8 @@ def validate_and_unpack(parent_manifest: dict, split_manifest: dict,
             payloads[job_id] = unpacked.resolve()
             evidence.append({**job, "kind": "direct"})
             continue
-        record = next(item for item in split_records if item["parent_id"] == job_id)
+        record = split_records[job_id]
         variable = record.get("split_variable")
-        if not isinstance(variable, int) or variable <= 0:
-            raise ValueError(f"invalid one-based split variable: {job_id}")
         leaves = record.get("leaves")
         expected_leaf_ids = {f"{job_id}.split-0", f"{job_id}.split-1"}
         if (not isinstance(leaves, list) or
@@ -123,7 +152,7 @@ def validate_and_unpack(parent_manifest: dict, split_manifest: dict,
             receipt = split_receipts.get(leaf_id)
             if receipt is None:
                 raise ValueError(f"missing accepted split receipt: {leaf_id}")
-            value = int(bool(leaf.get("value")))
+            value = int(leaf["value"])
             if (receipt["edge_count"] != job["edge_count"] or
                     receipt["type_index"] != job["type_index"]):
                 raise ValueError(f"split receipt parent mismatch: {leaf_id}")

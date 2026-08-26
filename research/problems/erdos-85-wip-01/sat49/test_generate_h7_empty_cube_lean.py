@@ -74,6 +74,22 @@ class GenerateH7EmptyCubeLeanTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "identity mismatch"):
                 MOD._gzip_payload(root, "cube_F6_t0", metadata)
 
+    def test_split_index_rejects_duplicates_values_and_variable_range(self):
+        def record(parent="cube_F6_t2", variable=41, false=False, true=True):
+            return {"parent_id": parent, "split_variable": variable, "leaves": [
+                {"id": f"{parent}.split-0", "value": false},
+                {"id": f"{parent}.split-1", "value": true},
+            ]}
+        missing = {"cube_F6_t2"}
+        self.assertIn("cube_F6_t2", MOD.index_split_records(
+            [record()], missing, 17633))
+        with self.assertRaisesRegex(ValueError, "exactly the missing"):
+            MOD.index_split_records([record(), record()], missing, 17633)
+        with self.assertRaisesRegex(ValueError, "value/suffix"):
+            MOD.index_split_records([record(false=0)], missing, 17633)
+        with self.assertRaisesRegex(ValueError, "split variable"):
+            MOD.index_split_records([record(variable=17634)], missing, 17633)
+
 
 if __name__ == "__main__":
     unittest.main()
