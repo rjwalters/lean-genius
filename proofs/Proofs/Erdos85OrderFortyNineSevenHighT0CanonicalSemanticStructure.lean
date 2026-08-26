@@ -176,6 +176,58 @@ theorem SevenHighT0CanonicalCompletionSemantics.highVertices_card
     obtain ⟨w, rfl⟩ := (hH.mem_highVertices_iff x).1 hx
     exact ⟨w, Finset.mem_univ w, rfl⟩
 
+/-- The ordinary high support of a canonical low vertex is precisely its
+fixed support in the canonical indexing. -/
+theorem SevenHighT0CanonicalCompletionSemantics.low_highSupport_card
+    {H : SimpleGraph SevenHighT0CanonicalIndex} [DecidableRel H.Adj]
+    (hH : SevenHighT0CanonicalCompletionSemantics H)
+    (i : SevenHighT0LowIndex) :
+    (orderFortyNineHighSupport H (Sum.inr i)).card =
+      sevenHighT0LowIndexSupportCard i := by
+  rw [← sevenHighT0CanonicalLowIndexSupport_card]
+  apply Eq.symm
+  apply Finset.card_bij (fun w _ => Sum.inl w)
+  · intro w hw
+    rw [orderFortyNineHighSupport, Finset.mem_inter]
+    exact ⟨(H.mem_neighborFinset _ _).mpr
+      ((H.adj_comm _ _).mpr
+        ((hH.high_low_adj_iff_mem_support w i).2 hw)),
+      (hH.mem_highVertices_iff (Sum.inl w)).2 ⟨w, rfl⟩⟩
+  · intro a _ b _ hab
+    exact Sum.inl.inj hab
+  · intro x hx
+    rw [orderFortyNineHighSupport, Finset.mem_inter] at hx
+    obtain ⟨w, rfl⟩ := (hH.mem_highVertices_iff x).1 hx.2
+    refine ⟨w, (hH.high_low_adj_iff_mem_support w i).1 ?_, rfl⟩
+    exact (H.adj_comm _ _).mp ((H.mem_neighborFinset _ _).mp hx.1)
+
+/-- No canonical low vertex meets three high vertices, so the recovered
+ambient graph genuinely lies in the `t = 0` incidence stratum. -/
+theorem SevenHighT0CanonicalCompletionSemantics.highIncidenceCount_three
+    {H : SimpleGraph SevenHighT0CanonicalIndex} [DecidableRel H.Adj]
+    (hH : SevenHighT0CanonicalCompletionSemantics H) :
+    orderFortyNineHighIncidenceCount H 3 = 0 := by
+  rw [orderFortyNineHighIncidenceCount, Finset.card_eq_zero]
+  ext x
+  constructor
+  · intro hx
+    exfalso
+    rw [Finset.mem_filter] at hx
+    have hxnot : x ∉ orderFortyNineHighVertices H :=
+      (Finset.mem_sdiff.mp hx.1).2
+    rcases x with w | i
+    · exact hxnot ((hH.mem_highVertices_iff (Sum.inl w)).2 ⟨w, rfl⟩)
+    · have hcard : sevenHighT0LowIndexSupportCard i = 3 := by
+        rw [← hH.low_highSupport_card i]
+        exact hx.2
+      rcases i with i | i
+      · simp [sevenHighT0LowIndexSupportCard] at hcard
+      · rcases i with i | i
+        · simp [sevenHighT0LowIndexSupportCard] at hcard
+        · simp [sevenHighT0LowIndexSupportCard] at hcard
+  · intro hx
+    simp at hx
+
 end
 
 
@@ -184,3 +236,4 @@ end Erdos85
 #print axioms Erdos85.SevenHighT0CanonicalCompletionSemantics.low_degree_full
 #print axioms Erdos85.SevenHighT0CanonicalCompletionSemantics.high_degree_full
 #print axioms Erdos85.SevenHighT0CanonicalCompletionSemantics.highVertices_card
+#print axioms Erdos85.SevenHighT0CanonicalCompletionSemantics.highIncidenceCount_three
