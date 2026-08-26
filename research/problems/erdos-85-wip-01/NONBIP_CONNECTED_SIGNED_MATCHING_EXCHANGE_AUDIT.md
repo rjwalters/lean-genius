@@ -72,6 +72,24 @@ that every matching has one sign-changing neighbor does not: local
 availability need not imply a perfect matching.  The q=4 computation checks
 both conditions and deliberately records that distinction.
 
+There is a close but insufficient theorem in the flip-graph literature.
+Naddef and Pulleyblank prove that the full flip graph of the vertices of a
+0/1 polytope is Hamilton-connected or a hypercube; for the perfect-matching
+polytope its edges are all single alternating-cycle flips.  Our graph deletes
+every flip whose cycle has odd half-length, because those flips preserve
+permutation sign.  In particular the 6-cycle flips supplied by triangles do
+not cross the determinant-sign shores.  The theorem therefore does not give
+Hall expansion for the required subgraph.  A q=4 sample also shows that the
+sign-changing exchange graph is far from regular (observed degrees
+`2592..5078`), so the regular-bipartite perfect-matching corollary is not
+available either.
+
+References: D. J. Naddef and W. R. Pulleyblank, *Hamiltonicity and
+combinatorial polyhedra*, JCTB 31 (1981), 297--312; and *Hamiltonicity in
+(0-1)-polyhedra*, JCTB 37 (1984), 41--52.  A modern survey states the
+perfect-matching specialization in Section 9.2:
+<https://www.combinatorics.org/ojs/index.php/eljc/article/download/ds26/pdf>.
+
 The next proof search should target a q-generic Hall expansion or a
 transpose-compatible canonical switch using the self-indexed triangle/
 Eulerian-remainder decomposition from the other round-73 submission.  No
