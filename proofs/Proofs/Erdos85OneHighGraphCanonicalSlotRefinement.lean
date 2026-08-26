@@ -28,6 +28,29 @@ def oneHighGraphCanonicalSlotLabel
   p.branchLabel (oneHighMissingBranch G v p.mate s
     ((p.leafLabel s).symm offset).1)
 
+/-- Miss-label pairs in the literal canonical matching-edge order. -/
+def oneHighGraphCanonicalSlotRow
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (p : OneHighRawV2Presentation G hfree v)
+    (source : Fin 8) : List OneHighLabelPair :=
+  let label := oneHighGraphCanonicalSlotLabel G hfree p source
+  if oneHighFamilyInternalEdges p.profile source = 1 then
+    [(label 0, label 1)]
+  else
+    [(label 0, label 1), (label 2, label 3)]
+
+/-- The eight canonical-slot rows that the refinement-pinned CNF sees. -/
+def oneHighGraphCanonicalSlotRefinement
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (p : OneHighRawV2Presentation G hfree v) :
+    List (List OneHighLabelPair) :=
+  List.ofFn fun source : Fin 8 =>
+    oneHighGraphCanonicalSlotRow G hfree p source
+
 /-- Reverse transport for miss literals: a zero original neighbor intersection
 with branch `u` gives the corresponding true relabeled miss predicate. -/
 theorem oneHighFamilyMissesBlock_of_original_zero
@@ -489,28 +512,31 @@ theorem oneHighGraphCanonicalSlotPair_two_three_mem_sourcePairing
       (oneHighGraphCanonicalSlotLabel_two_le_three
         G hfree hv p source htwo)
 
-/-- Miss-label pairs in the literal canonical matching-edge order. -/
-def oneHighGraphCanonicalSlotRow
+/-- A one-edge graph row is already the unique sorted inventory row and hence
+its sole canonical-slot variant. -/
+theorem oneHighGraphCanonicalSlotRow_mem_variants_of_internalEdges_eq_one
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hfree : ¬ containsC4 V G) {v : V}
-    (p : OneHighRawV2Presentation G hfree v)
-    (source : Fin 8) : List OneHighLabelPair :=
-  let label := oneHighGraphCanonicalSlotLabel G hfree p source
-  if oneHighFamilyInternalEdges p.profile source = 1 then
-    [(label 0, label 1)]
-  else
-    [(label 0, label 1), (label 2, label 3)]
-
-/-- The eight canonical-slot rows that the refinement-pinned CNF sees. -/
-def oneHighGraphCanonicalSlotRefinement
-    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hfree : ¬ containsC4 V G) {v : V}
-    (p : OneHighRawV2Presentation G hfree v) :
-    List (List OneHighLabelPair) :=
-  List.ofFn fun source : Fin 8 =>
-    oneHighGraphCanonicalSlotRow G hfree p source
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8)
+    (hone : oneHighFamilyInternalEdges p.profile source = 1) :
+    oneHighGraphCanonicalSlotRow G hfree p source ∈
+      oneHighPairingRowSlotVariants
+        (oneHighGraphSourcePairing G hfree hv p source) := by
+  let pair : OneHighLabelPair :=
+    (oneHighGraphCanonicalSlotLabel G hfree p source 0,
+      oneHighGraphCanonicalSlotLabel G hfree p source 1)
+  have hlen := oneHighGraphSourcePairing_length G hfree hv p source
+  rw [hone] at hlen
+  obtain ⟨stored, hstored⟩ := List.length_eq_one_iff.mp hlen
+  have hmem := oneHighGraphCanonicalSlotPair_zero_one_mem_sourcePairing
+    G hfree hv p source
+  rw [hstored] at hmem
+  have heq : stored = pair := (by simpa [pair] using hmem : pair = stored).symm
+  subst stored
+  rw [hstored]
+  simp [oneHighGraphCanonicalSlotRow, hone,
+    oneHighPairingRowSlotVariants, pair]
 
 @[simp] theorem oneHighGraphCanonicalSlotRefinement_length
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
