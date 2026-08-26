@@ -12,6 +12,32 @@ namespace Erdos85
 
 open SimpleGraph
 
+/-- Boolean meaning of one generator edge status under the graph-induced
+low-edge valuation. -/
+def sevenHighT0CanonicalEdgeStatusValue
+    (val : DimacsValuation) : SevenHighT0CanonicalEdgeStatus → Bool
+  | .fixedFalse => false
+  | .fixedTrue => true
+  | .variable id => val id
+
+/-- On two low numeric vertices, the generator's variable status evaluates
+to exactly the corresponding canonical graph adjacency. -/
+theorem sevenHighT0CanonicalEdgeStatusValue_low_low
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (a b : Fin 49) (ha : 7 ≤ a.1) (hb : 7 ≤ b.1) :
+    sevenHighT0CanonicalEdgeStatusValue (sevenHighT0CanonicalEdgeVal H)
+        (sevenHighT0CanonicalEdgeStatus a.1 b.1) =
+      sevenHighT0CanonicalAdjBool H a b := by
+  by_cases hab : a = b
+  · subst b
+    simp [sevenHighT0CanonicalEdgeStatus,
+      sevenHighT0CanonicalEdgeStatusValue,
+      sevenHighT0CanonicalAdjBool]
+  · rw [sevenHighT0CanonicalEdgeStatus]
+    simp only [show a.1 ≠ b.1 from fun h => hab (Fin.ext h), if_false,
+      ha, hb, and_self, if_true, sevenHighT0CanonicalEdgeStatusValue]
+    exact sevenHighT0CanonicalEdgeVal_edge H a b ha hb hab
+
 /-- In a C4-free graph, two distinct endpoints and two distinct witnesses
 cannot carry all four cross adjacencies. -/
 theorem sevenHighT0Canonical_fourCross_not_all_adj
@@ -63,4 +89,5 @@ theorem SevenHighT0CanonicalCompletionSemantics.exists_missing_cross_edge
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0Canonical_fourCross_not_all_adj
+#print axioms Erdos85.sevenHighT0CanonicalEdgeStatusValue_low_low
 #print axioms Erdos85.SevenHighT0CanonicalCompletionSemantics.exists_missing_cross_edge
