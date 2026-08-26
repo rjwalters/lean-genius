@@ -63,7 +63,7 @@ theorem orderFortyNineLowVertex_ne_highVertex (y : Fin 40) (w : Fin 9) :
 
 theorem orderFortyNineHighPairs_ne (ab : Fin 9 × Fin 9)
     (hab : ab ∈ orderFortyNineHighPairs) : ab.1 ≠ ab.2 := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineHighHighFixedClauses_satisfied
     (edges : BitVec 1176)
