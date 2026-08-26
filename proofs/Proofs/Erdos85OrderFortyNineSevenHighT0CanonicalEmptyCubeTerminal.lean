@@ -12,6 +12,7 @@ the checked provider supplies an UNSAT proof for each such CNF.
 namespace Erdos85
 
 open Std Sat
+open Std.Tactic.BVDecide
 
 /-- Every canonical completion reaches one of the bounded `F=6..9` stable
 empty-sector cube CNFs.  The relabeling/orbit theorem and compact-CNF
@@ -26,6 +27,24 @@ def SevenHighT0CanonicalEmptyCubeSemanticCover : Prop :=
           ∃ assignment : Nat → Bool,
             (orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf
               edgeCount typeIndex).Sat assignment
+
+/-- Raw checked LRAT witnesses supply the bounded UNSAT provider expected by
+the composition terminal. -/
+theorem sevenHighT0CanonicalEmptyCubeCheckedProvider_of_lratChecks
+    (hchecks : ∀ edgeCount, 6 ≤ edgeCount → edgeCount ≤ 9 →
+      ∀ typeIndex,
+        typeIndex <
+          (sevenHighT0CanonicalEmptyRepresentativeMasks edgeCount).length →
+        ∃ proof : Array LRAT.IntAction,
+          LRAT.check proof
+            (orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf
+              edgeCount typeIndex)) :
+    SevenHighT0CanonicalEmptyCubeCheckedProvider := by
+  intro edgeCount hlow hhigh typeIndex hindex
+  obtain ⟨proof, hcheck⟩ := hchecks edgeCount hlow hhigh typeIndex hindex
+  exact LRAT.check_sound proof
+    (orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf edgeCount typeIndex)
+    hcheck
 
 /-- Exhaustive semantic coverage plus the bounded checked provider excludes
 every canonical completion. -/
@@ -53,4 +72,5 @@ theorem orderFortyNineStratumExcluded_seven_of_emptyCubeChecks
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalCompletionExcluded_of_emptyCubeChecks
+#print axioms Erdos85.sevenHighT0CanonicalEmptyCubeCheckedProvider_of_lratChecks
 #print axioms Erdos85.orderFortyNineStratumExcluded_seven_of_emptyCubeChecks
