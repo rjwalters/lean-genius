@@ -229,8 +229,7 @@ noncomputable def SevenHighT0CanonicalCompletionSemantics.finGraphEmptyFiberEqui
         (sevenHighT0CanonicalIndexEquiv.symm
           (Sum.inr (Sum.inl w)))).1
         (semantics.mem_finGraph_emptyFiber_iff _ |>.2 ⟨w, by simp⟩))
-    simp only [Equiv.apply_symm_apply, Sum.inr.injEq, Sum.inl.injEq] at hw
-    exact hw.symm
+    simpa using hw.symm
   right_inv i := by
     apply Subtype.ext
     have hw := Classical.choose_spec
