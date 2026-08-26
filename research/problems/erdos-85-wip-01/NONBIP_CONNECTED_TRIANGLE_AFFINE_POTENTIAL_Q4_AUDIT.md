@@ -23,6 +23,33 @@ and the candidate identities
 `K t = t^2 - (q+1)t + (q^2+2)/3`,
 `sum_{x in tau} t_x = q+1`.
 
+## Global arithmetic terminal
+
+The two local identities together have a stronger global consequence.  Put
+`S1 = sum_x t_x`, `S2 = sum_x t_x^2`, and let `T` be the number of
+triangles.  Summing the first identity over vertices and using
+`deg_K(x)=q-2t_x` gives
+
+```text
+(2q+1) S1 - 3 S2 = q^2(q^2+2)/3.
+```
+
+Summing the second identity over triangles gives `S2=(q+1)T`, while
+double-counting vertex-triangle incidences gives `S1=3T`.  Substitution
+therefore forces
+
+```text
+T = q(q^2+2)/9.
+```
+
+For binary `q=2^k`, divisibility by nine holds exactly when
+`q mod 9` is `4` or `5`, equivalently `k mod 6` is `2` or `5`.  The first
+class begins with the genuine exceptional control `q=4`; among the intended
+`k>=3` cases, proving both identities would immediately close four of the
+six exponent classes, leaving only `k = 5 (mod 6)` (and later members of
+`k = 2 (mod 6)`) for a further terminal.  Thus the affine route is not by
+itself yet a uniform proof even if both identities are established.
+
 ## Bounded verification
 
 Run:
