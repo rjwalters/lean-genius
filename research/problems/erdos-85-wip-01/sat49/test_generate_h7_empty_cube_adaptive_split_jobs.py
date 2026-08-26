@@ -16,7 +16,7 @@ SPEC.loader.exec_module(MOD)
 
 
 class GenerateH7EmptyCubeAdaptiveSplitJobsTest(unittest.TestCase):
-    def test_four_leaf_shape_matches_bounded_f6_t2_signal(self):
+    def test_eight_leaf_shape_matches_bounded_f6_t2_signal(self):
         spec = json.loads((HERE / "h7-empty-cube-F6-t2-adaptive-spec.json").read_text())
         self.assertEqual(spec["schema"], MOD.SPEC_SCHEMA)
         self.assertEqual(spec["parent_id"], "cube_F6_t2")
@@ -25,11 +25,14 @@ class GenerateH7EmptyCubeAdaptiveSplitJobsTest(unittest.TestCase):
         leaves = MOD.trees.expected_leaves(
             "cube_F6_t2", nodes, list(range(1, 22)))
         self.assertEqual([leaf["path"] for leaf in leaves],
-                         ["00", "01", "10", "11"])
-        self.assertEqual(leaves[0]["path_units"], [-41, -40])
-        self.assertEqual(leaves[1]["path_units"], [-41, 40])
-        self.assertEqual(leaves[2]["path_units"], [41, -36])
-        self.assertEqual(leaves[3]["path_units"], [41, 36])
+                         ["000", "001", "010", "011",
+                          "100", "101", "110", "111"])
+        self.assertEqual(
+            [leaf["path_units"] for leaf in leaves],
+            [[-41, -40, -81], [-41, -40, 81],
+             [-41, 40, -37], [-41, 40, 37],
+             [41, -36, -33], [41, -36, 33],
+             [41, 36, -27], [41, 36, 27]])
 
     def test_rejects_parent_fixed_or_repeated_split(self):
         with self.assertRaisesRegex(ValueError, "already fixed"):
