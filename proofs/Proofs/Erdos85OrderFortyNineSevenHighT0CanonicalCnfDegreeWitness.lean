@@ -293,6 +293,84 @@ theorem sevenHighT0CanonicalDegreeStepVal_semanticSound
     exact (seqCounterEqualsVal_input acc.2 acc.1.top vars row target id
       (hid.trans h.top_bound)).trans (h.edge_agree id hid)
 
+def sevenHighT0CanonicalDegreeNatStepVal
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (center : Nat) (acc : SevenHighT0CanonicalDegreeValState) :
+    SevenHighT0CanonicalDegreeValState :=
+  if hc : center < 42 then
+    sevenHighT0CanonicalDegreeStepVal H ⟨center, hc⟩ acc
+  else acc
+
+def sevenHighT0CanonicalDegreeStateVal
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    SevenHighT0CanonicalDegreeValState :=
+  (List.range 42).foldl
+    (fun acc center => sevenHighT0CanonicalDegreeNatStepVal H center acc)
+    (({} : SevenHighT0CanonicalCnfState), sevenHighT0CanonicalEdgeVal H)
+
+theorem sevenHighT0CanonicalDegreeNatStepVal_semanticSound
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (center : Nat) {acc : SevenHighT0CanonicalDegreeValState}
+    (h : SevenHighT0CanonicalDegreeSemanticSound H acc) :
+    SevenHighT0CanonicalDegreeSemanticSound H
+      (sevenHighT0CanonicalDegreeNatStepVal H center acc) := by
+  by_cases hc : center < 42
+  · simpa [sevenHighT0CanonicalDegreeNatStepVal, hc] using
+      sevenHighT0CanonicalDegreeStepVal_semanticSound
+        H semantics ⟨center, hc⟩ h
+  · simpa [sevenHighT0CanonicalDegreeNatStepVal, hc] using h
+
+theorem sevenHighT0CanonicalDegreeFoldVal_semanticSound
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (centers : List Nat) {acc : SevenHighT0CanonicalDegreeValState}
+    (h : SevenHighT0CanonicalDegreeSemanticSound H acc) :
+    SevenHighT0CanonicalDegreeSemanticSound H
+      (centers.foldl
+        (fun acc center => sevenHighT0CanonicalDegreeNatStepVal H center acc)
+        acc) := by
+  induction centers generalizing acc with
+  | nil => exact h
+  | cons center centers ih =>
+      exact ih (sevenHighT0CanonicalDegreeNatStepVal_semanticSound
+        H semantics center h)
+
+theorem sevenHighT0CanonicalDegreeStateVal_semanticSound
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H) :
+    SevenHighT0CanonicalDegreeSemanticSound H
+      (sevenHighT0CanonicalDegreeStateVal H) := by
+  exact sevenHighT0CanonicalDegreeFoldVal_semanticSound H semantics _
+    (sevenHighT0CanonicalDegreeSemanticSound_initial H)
+
+theorem sevenHighT0CanonicalDegreeFoldVal_state
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (centers : List Nat) (hcenters : ∀ center ∈ centers, center < 42)
+    (acc : SevenHighT0CanonicalDegreeValState) :
+    (centers.foldl
+        (fun acc center => sevenHighT0CanonicalDegreeNatStepVal H center acc)
+        acc).1 =
+      centers.foldl
+        (fun st center => sevenHighT0CanonicalDegreeStep (center + 7) st)
+        acc.1 := by
+  induction centers generalizing acc with
+  | nil => rfl
+  | cons center centers ih =>
+      simp only [List.foldl_cons]
+      rw [ih (fun candidate hmem => hcenters candidate (List.mem_cons_of_mem _ hmem))]
+      have hc := hcenters center (by simp)
+      simp [sevenHighT0CanonicalDegreeNatStepVal, hc]
+
+@[simp] theorem sevenHighT0CanonicalDegreeStateVal_state
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    (sevenHighT0CanonicalDegreeStateVal H).1 =
+      sevenHighT0CanonicalDegreeState := by
+  rw [sevenHighT0CanonicalDegreeStateVal,
+    sevenHighT0CanonicalDegreeFoldVal_state H (List.range 42) (by simp)]
+  rw [sevenHighT0CanonicalDegreeState, sevenHighT0CanonicalLows,
+    List.foldl_map]
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalDegreeVarId_bounds
@@ -300,3 +378,4 @@ end Erdos85
 #print axioms Erdos85.sevenHighT0CanonicalDegreeRow_target
 #print axioms Erdos85.sevenHighT0CanonicalDegreeVars_eq_generator
 #print axioms Erdos85.sevenHighT0CanonicalDegreeStepVal_semanticSound
+#print axioms Erdos85.sevenHighT0CanonicalDegreeStateVal_semanticSound
