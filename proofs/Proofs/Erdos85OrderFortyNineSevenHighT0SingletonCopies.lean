@@ -157,6 +157,41 @@ theorem sevenHighT0CommonSingletonCopies_card_le_one
   exact hcard.trans
     (sevenHigh_t0_actualSingleton_commonNeighbor_card_le_one G hfree hxy)
 
+/-- If the two roots already share a non-singleton actual neighbor, their
+copy-indexed common-singleton set is empty. -/
+theorem sevenHighT0CommonSingletonCopies_eq_empty_of_common_nonSingleton
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    {x y z : Fin 49} (hxy : x ≠ y)
+    (hzx : G.Adj z x) (hzy : G.Adj z y)
+    (hzNotSingleton : (orderFortyNineHighSupport G z).card ≠ 1) :
+    sevenHighT0CommonSingletonCopies
+      G hfree hmin hHigh hzero e x y = ∅ := by
+  have hempty :=
+    sevenHigh_t0_actualSingleton_commonNeighbor_eq_empty_of_common_nonSingleton
+      G hfree hxy hzx hzy hzNotSingleton
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro q hq
+  have hq' := (Finset.mem_filter.mp hq).2
+  have hactual :
+      sevenHighT0SingletonVertex G hfree hmin hHigh hzero e q.1 q.2 ∈
+        (G.neighborFinset x ∩ G.neighborFinset y).filter fun w =>
+          (orderFortyNineHighSupport G w).card = 1 := by
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_inter.mpr ?_, ?_⟩
+    · simpa [SimpleGraph.mem_neighborFinset] using hq'
+    · rw [← sevenHighLabeledSupport_card G e]
+      rw [sevenHighT0SingletonVertex_support]
+      simp
+  rw [hempty] at hactual
+  simp at hactual
+
 end
 
 end Erdos85
@@ -165,3 +200,4 @@ end Erdos85
 #print axioms Erdos85.sevenHighT0SingletonVertex_injective_copy
 #print axioms Erdos85.sevenHighT0SingletonVertex_injective
 #print axioms Erdos85.sevenHighT0CommonSingletonCopies_card_le_one
+#print axioms Erdos85.sevenHighT0CommonSingletonCopies_eq_empty_of_common_nonSingleton
