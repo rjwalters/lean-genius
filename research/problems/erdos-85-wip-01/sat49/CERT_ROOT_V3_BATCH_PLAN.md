@@ -55,6 +55,14 @@ receipt remains eligible for restaging even if its packed object was already
 uploaded.  No global index lock is held during compression or Lean replay;
 only the short deterministic fragment merge is serialized.
 
+`generate_h1_v2_lean_stubs.py` supports this schedule directly with
+`--batch-size N --batch-index K --manifest-output receipt.json`.  Selection is
+performed first and then split in the index's authoritative sorted order.  The
+atomic receipt binds the source index hash, batch geometry, every payload hash
+and byte count, emitted Lean path, and emitted Lean source hash.  Independent
+workers therefore generate disjoint deterministic batches without rescanning
+or hashing payloads outside their batch.
+
 ## Parallelism and expected throughput
 
 Packing is I/O-heavy and may run independently of solving.  Lean LRAT replay
@@ -89,4 +97,3 @@ Completion is not the existence of 13,000 uploaded objects.  It requires:
 - aggregate checked-bank modules consume exactly those entries;
 - a clean checkout can restore the content-addressed payloads and rebuild the
   full dependency cone with no `sorry`, `sorryAx`, or unexpected axioms.
-

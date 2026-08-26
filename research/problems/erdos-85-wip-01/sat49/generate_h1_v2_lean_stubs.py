@@ -341,6 +341,21 @@ def main() -> int:
         default=repo / "proofs/Proofs/Certificates/h1_orbit_inventory.compact",
     )
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        help="emit one deterministic contiguous batch of this many selected rows",
+    )
+    parser.add_argument(
+        "--batch-index",
+        type=int,
+        help="zero-based batch to emit; requires --batch-size",
+    )
+    parser.add_argument(
+        "--manifest-output",
+        type=Path,
+        help="atomically write a JSON receipt describing the emitted batch",
+    )
     parser.add_argument("--orbit", action="append", default=[])
     parser.add_argument("--all", action="store_true")
     parser.add_argument(
@@ -387,6 +402,12 @@ def main() -> int:
         )
     if args.output_dir is None:
         parser.error("--output-dir is required")
+    if (args.batch_size is None) != (args.batch_index is None):
+        parser.error("--batch-size and --batch-index must be supplied together")
+    if args.batch_size is not None and args.batch_size <= 0:
+        parser.error("--batch-size must be positive")
+    if args.batch_index is not None and args.batch_index < 0:
+        parser.error("--batch-index must be nonnegative")
     terminal_options = (
         args.terminal_jobs, args.terminal_module, args.terminal_table_def
     )
@@ -467,6 +488,21 @@ def main() -> int:
                 f"{sorted(mismatched)}"
             )
 
+    selected_total = len(selected)
+    batch_count = 1
+    if args.batch_size is not None:
+        batch_count = (
+            selected_total + args.batch_size - 1
+        ) // args.batch_size
+        if args.batch_index >= batch_count:
+            raise ValueError(
+                f"--batch-index {args.batch_index} is outside 0..{batch_count - 1} "
+                f"for {selected_total} selected rows"
+            )
+        start = args.batch_index * args.batch_size
+        selected = selected[start : start + args.batch_size]
+
+    emitted = []
     for row in selected:
         payload = validate_row(row, profiles, args.cert_root, not args.skip_payload_hash)
         destination = args.output_dir / f"Erdos85H1V2CertP{row.profile}I{row.local_index:05d}.lean"
@@ -485,6 +521,36 @@ def main() -> int:
         print(
             f"{row.orbit}\tprofile={row.profile}\tlocalIndex={row.local_index}"
             f"{terminal_field}\t{destination}"
+        )
+        emitted.append({
+            "orbit": row.orbit,
+            "profile": row.profile,
+            "local_index": row.local_index,
+            "packed_lz4_sha256": row.packed_sha,
+            "packed_lz4_bytes": row.packed_bytes,
+            "payload": str(payload),
+            "lean_source": str(destination.resolve()),
+            "lean_source_sha256": sha256(destination),
+            **(
+                {"terminal_index": terminal.index}
+                if terminal is not None else {}
+            ),
+        })
+    if args.manifest_output is not None:
+        receipt = {
+            "schema": "erdos85-h1-v2-lean-stub-batch-v1",
+            "index": str(args.index.resolve()),
+            "index_sha256": sha256(args.index),
+            "cert_root": str(args.cert_root.resolve()),
+            "selected_total": selected_total,
+            "batch_size": args.batch_size,
+            "batch_index": args.batch_index,
+            "batch_count": batch_count,
+            "entries": emitted,
+        }
+        atomic_write(
+            args.manifest_output,
+            json.dumps(receipt, indent=2, sort_keys=True) + "\n",
         )
     return 0
 
