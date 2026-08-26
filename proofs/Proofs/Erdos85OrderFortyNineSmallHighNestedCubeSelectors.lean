@@ -14,13 +14,27 @@ namespace Erdos85
 
 def orderFortyNineThreeHighNestedCubeLeftVariables
     (masks : Array Nat) : Array Nat :=
-  orderFortyNineSmallHighPartitionCubeVariables
-    (3 : Fin 50) masks (2 : Fin 46) (2 : Fin 3)
+  if masks = orderFortyNineThreeHighDistTwoMasks then
+    orderFortyNineSmallHighPartitionCubeVariables
+      (3 : Fin 50) masks (2 : Fin 46) (1 : Fin 3)
+  else if masks = orderFortyNineThreeHighDistOneC2Masks then
+    orderFortyNineSmallHighPartitionCubeVariables
+      (3 : Fin 50) masks (8 : Fin 46) (0 : Fin 3)
+  else
+    orderFortyNineSmallHighPartitionCubeVariables
+      (3 : Fin 50) masks (21 : Fin 46) (0 : Fin 3)
 
 def orderFortyNineThreeHighNestedCubeRightVariables
     (masks : Array Nat) : Array Nat :=
-  orderFortyNineSmallHighPartitionCubeVariables
-    (3 : Fin 50) masks (3 : Fin 46) (0 : Fin 3)
+  if masks = orderFortyNineThreeHighDistTwoMasks then
+    orderFortyNineSmallHighPartitionCubeVariables
+      (3 : Fin 50) masks (2 : Fin 46) (2 : Fin 3)
+  else if masks = orderFortyNineThreeHighDistOneC2Masks then
+    orderFortyNineSmallHighPartitionCubeVariables
+      (3 : Fin 50) masks (21 : Fin 46) (0 : Fin 3)
+  else
+    orderFortyNineSmallHighPartitionCubeVariables
+      (3 : Fin 50) masks (22 : Fin 46) (0 : Fin 3)
 
 def orderFortyNineFiveHighNestedCubeLeftVariables
     (masks : Array Nat) : Array Nat :=
