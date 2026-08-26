@@ -76,7 +76,7 @@ def aggregate_source(rows: list[IndexRow], stub_module_prefix: str) -> str:
         for row in rows
     ]
     lines = imports + [
-        "", "/-! GENERATED complete exact-v2 H1 checked-certificate banks. -/", "",
+        "", "/-! GENERATED complete exact-v2 H1 checked-certificate dispatch. -/", "",
         "namespace Erdos85", "",
     ]
     by_profile = [[], [], [], [], []]
@@ -84,27 +84,23 @@ def aggregate_source(rows: list[IndexRow], stub_module_prefix: str) -> str:
         by_profile[row.profile].append(row)
     for profile, profile_rows in enumerate(by_profile):
         lines.extend([
-            f"def h1V2CheckedBank{profile} :",
-            f"    List (OneHighFamilyV2CheckedEntry {profile}) := [",
-        ])
-        for index, row in enumerate(profile_rows):
-            comma = "," if index + 1 < len(profile_rows) else ""
-            lines.append(f"  {stub_stem(row)}Entry{comma}")
-        lines.extend([
-            "]", "",
             "set_option maxHeartbeats 0 in",
             "set_option maxRecDepth 1000000 in",
-            f"theorem h1V2CheckedBank{profile}_covers :",
-            "    oneHighFamilyV2CheckedBankTables "
-            f"h1V2CheckedBank{profile} =",
-            f"      oneHighInventoryTables ({profile} : Fin 5) := by",
-            "  rfl", "",
+            f"theorem h1V2InventoryProfile{profile}_checkedAt",
+            f"    (i : Fin (oneHighInventoryTables ({profile} : Fin 5)).length) :",
+            f"    OneHighFamilyV2CheckedUnsat {profile}",
+            f"      ((oneHighInventoryTables ({profile} : Fin 5)).get i) := by",
+            "  fin_cases i",
+        ])
+        for row in profile_rows:
+            lines.append(f"  · exact {stub_stem(row)}Checked")
+        lines.extend([
+            "",
             f"theorem h1V2InventoryProfile{profile}_checked :",
             f"    ∀ table ∈ oneHighInventoryTables ({profile} : Fin 5),",
             f"      OneHighFamilyV2CheckedUnsat {profile} table :=",
-            "  oneHighFamilyV2Checked_of_bank_tables_eq_inventory",
-            f"    ({profile} : Fin 5) h1V2CheckedBank{profile} "
-            f"h1V2CheckedBank{profile}_covers", "",
+            "  oneHighFamilyV2Checked_of_inventory_get",
+            f"    ({profile} : Fin 5) h1V2InventoryProfile{profile}_checkedAt", "",
         ])
     lines.extend([
         "theorem orderFortyNineStratumExcluded_one_of_completeV2Certificates :",

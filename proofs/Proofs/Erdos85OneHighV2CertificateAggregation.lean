@@ -54,6 +54,21 @@ theorem oneHighFamilyV2Checked_of_bank_tables_eq_inventory
   rw [hcover]
   exact htable
 
+/-- Indexed checked evidence for every position in an inventory list supplies
+the same universal interface without requiring decidable equality on miss
+tables.  This is the scalable socket for generated certificate dispatchers. -/
+theorem oneHighFamilyV2Checked_of_inventory_get
+    (profile : Fin 5)
+    (hchecked : ∀ i : Fin (oneHighInventoryTables profile).length,
+      OneHighFamilyV2CheckedUnsat profile.val
+        ((oneHighInventoryTables profile).get i)) :
+    ∀ table ∈ oneHighInventoryTables profile,
+      OneHighFamilyV2CheckedUnsat profile.val table := by
+  intro table htable
+  obtain ⟨i, hi⟩ := List.get_of_mem htable
+  rw [← hi]
+  exact hchecked i
+
 /-- Five ordered certificate banks close the exact-v2 one-high stratum.
 
 This is the aggregation socket for generated per-orbit LRAT modules.  The

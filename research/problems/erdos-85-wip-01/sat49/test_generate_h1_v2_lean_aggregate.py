@@ -34,14 +34,14 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "not stub_ready"):
             MOD.validate_complete([replace(rows[0], stub_ready=False)] + rows[1:], profiles)
 
-    def test_render_has_ordered_banks_and_final_h1_endpoint(self):
+    def test_render_has_ordered_dispatch_and_final_h1_endpoint(self):
         rows = [replace(ROW, profile=profile) for profile in range(5)]
         rendered = MOD.aggregate_source(rows, "Proofs.Generated.H1")
         self.assertEqual(rendered.count("import Proofs.Generated.H1."), 5)
-        self.assertIn("h1V2P3I00000Entry", rendered)
-        self.assertEqual(rendered.count("_covers :"), 5)
+        self.assertIn("· exact h1V2P3I00000Checked", rendered)
+        self.assertEqual(rendered.count("_checkedAt"), 10)
         self.assertNotIn("native_decide", rendered)
-        self.assertEqual(rendered.count("  rfl\n"), 5)
+        self.assertEqual(rendered.count("  fin_cases i"), 5)
         self.assertEqual(rendered.count("set_option maxHeartbeats 0 in"), 5)
         self.assertEqual(rendered.count("set_option maxRecDepth 1000000 in"), 5)
         self.assertIn(
