@@ -1,4 +1,4 @@
-import Proofs.Erdos85OrderFortyNineSevenHighT0LocalQuotientBridge
+import Proofs.Erdos85OrderFortyNineSevenHighT0LocalQuotientCapacity
 
 /-!
 # Global quotient sums in the seven-high empty-triple case
@@ -271,6 +271,64 @@ theorem sevenHigh_t0_directedIncidence_global_balances
   rw [sevenHighT0DirectedIncidence_comm G 0 2] at hempty
   exact ⟨hpair, hsingleton, hempty⟩
 
+/-- Summing the graph-local empty-neighbor capacities over the three low
+support fibers gives the global directed bounds used by the quotient model. -/
+theorem sevenHigh_t0_directedIncidence_empty_capacity_bounds
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0) :
+    sevenHighT0DirectedIncidence G 2 0 ≤ 21 ∧
+      sevenHighT0DirectedIncidence G 1 0 ≤ 28 ∧
+      sevenHighT0DirectedIncidence G 0 0 ≤ 21 := by
+  have hcensus := sevenHigh_t0_global_incidence G hfree hmin hHigh hzero
+  have hcardTwo : (sevenHighT0LowSupportFiber G 2).card = 21 := by
+    simpa [sevenHighT0LowSupportFiber, orderFortyNineHighSupport,
+      orderFortyNineHighIncidenceCount] using hcensus.2.2
+  have hcardOne : (sevenHighT0LowSupportFiber G 1).card = 14 := by
+    simpa [sevenHighT0LowSupportFiber, orderFortyNineHighSupport,
+      orderFortyNineHighIncidenceCount] using hcensus.2.1
+  have hcardZero : (sevenHighT0LowSupportFiber G 0).card = 7 := by
+    simpa [sevenHighT0LowSupportFiber, orderFortyNineHighSupport,
+      orderFortyNineHighIncidenceCount] using hcensus.1
+  have htwo : (∑ y ∈ sevenHighT0LowSupportFiber G 2,
+      sevenHighT0LowEmptyNeighborCount G y) ≤
+      ∑ _y ∈ sevenHighT0LowSupportFiber G 2, 1 := by
+    apply Finset.sum_le_sum
+    intro y hy
+    exact sevenHigh_t0_pairRoot_lowEmptyNeighbor_bound
+      G hfree hmin hHigh hzero
+        (degree_eq_seven_of_mem_lowSupportFiber G hfree hmin hy)
+        (Finset.mem_filter.mp hy).2
+  have hone : (∑ y ∈ sevenHighT0LowSupportFiber G 1,
+      sevenHighT0LowEmptyNeighborCount G y) ≤
+      ∑ _y ∈ sevenHighT0LowSupportFiber G 1, 2 := by
+    apply Finset.sum_le_sum
+    intro y hy
+    exact sevenHigh_t0_singletonRoot_lowEmptyNeighbor_bound
+      G hfree hmin hHigh hzero
+        (degree_eq_seven_of_mem_lowSupportFiber G hfree hmin hy)
+        (Finset.mem_filter.mp hy).2
+  have hzeroFiber : (∑ y ∈ sevenHighT0LowSupportFiber G 0,
+      sevenHighT0LowEmptyNeighborCount G y) ≤
+      ∑ _y ∈ sevenHighT0LowSupportFiber G 0, 3 := by
+    apply Finset.sum_le_sum
+    intro y hy
+    exact sevenHigh_t0_emptyRoot_lowEmptyNeighbor_bound
+      G hfree hmin hHigh hzero
+        (degree_eq_seven_of_mem_lowSupportFiber G hfree hmin hy)
+  simp_rw [lowEmptyNeighborCount_eq_fiberIncidence] at htwo hone hzeroFiber
+  change sevenHighT0DirectedIncidence G 2 0 ≤ _ at htwo
+  change sevenHighT0DirectedIncidence G 1 0 ≤ _ at hone
+  change sevenHighT0DirectedIncidence G 0 0 ≤ _ at hzeroFiber
+  simp [hcardTwo] at htwo
+  simp [hcardOne] at hone
+  simp [hcardZero] at hzeroFiber
+  exact ⟨htwo, hone, hzeroFiber⟩
+
 end
 
 end Erdos85
@@ -281,3 +339,4 @@ end Erdos85
 #print axioms Erdos85.sevenHigh_t0_emptyFiber_global_balance
 #print axioms Erdos85.sevenHighT0DirectedIncidence_comm
 #print axioms Erdos85.sevenHigh_t0_directedIncidence_global_balances
+#print axioms Erdos85.sevenHigh_t0_directedIncidence_empty_capacity_bounds
