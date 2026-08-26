@@ -33,6 +33,56 @@ def orderFortyNineEdgeIndex (i j : Fin 49) : Nat :=
   let b := max i.val j.val
   1176 - ((49 - a) * (48 - a) / 2) + (b - a) - 1
 
+private def orderFortyNineEdgeRowStart (a : Nat) : Nat :=
+  1176 - ((49 - a) * (48 - a) / 2)
+
+private theorem orderFortyNineEdgeIndex_row_bounds
+    (i j : Fin 49) (hij : i.val < j.val) :
+    orderFortyNineEdgeRowStart i.val ≤ orderFortyNineEdgeIndex i j ∧
+      orderFortyNineEdgeIndex i j <
+        orderFortyNineEdgeRowStart i.val + (48 - i.val) := by
+  have hle : i.val ≤ j.val := Nat.le_of_lt hij
+  simp only [orderFortyNineEdgeIndex, Nat.min_eq_left hle,
+    Nat.max_eq_right hle]
+  let s := orderFortyNineEdgeRowStart i.val
+  change s ≤ s + (j.val - i.val) - 1 ∧
+    s + (j.val - i.val) - 1 < s + (48 - i.val)
+  have hj : j.val ≤ 48 := by omega
+  omega
+
+private theorem orderFortyNineEdgeRow_disjoint
+    (i k : Fin 49) (hik : i.val < k.val) :
+    orderFortyNineEdgeRowStart i.val + (48 - i.val) ≤
+      orderFortyNineEdgeRowStart k.val := by
+  decide +revert
+
+private theorem orderFortyNineEdgeRow_upper_le (i : Fin 49) :
+    orderFortyNineEdgeRowStart i.val + (48 - i.val) ≤ 1176 := by
+  decide +revert
+
+private theorem orderFortyNineEdgeIndex_ordered_injective
+    (i j k l : Fin 49) (hij : i.val < j.val) (hkl : k.val < l.val)
+    (heq : orderFortyNineEdgeIndex i j = orderFortyNineEdgeIndex k l) :
+    i = k ∧ j = l := by
+  have hijBounds := orderFortyNineEdgeIndex_row_bounds i j hij
+  have hklBounds := orderFortyNineEdgeIndex_row_bounds k l hkl
+  have hik : i.val = k.val := by
+    by_contra hne
+    rcases lt_or_gt_of_ne hne with hik | hki
+    · have hsep := orderFortyNineEdgeRow_disjoint i k hik
+      omega
+    · have hsep := orderFortyNineEdgeRow_disjoint k i hki
+      omega
+  have hikFin : i = k := Fin.ext hik
+  subst k
+  have hjl : j.val = l.val := by
+    simp [orderFortyNineEdgeIndex, Nat.min_eq_left (Nat.le_of_lt hij),
+      Nat.max_eq_right (Nat.le_of_lt hij),
+      Nat.min_eq_left (Nat.le_of_lt hkl),
+      Nat.max_eq_right (Nat.le_of_lt hkl)] at heq
+    omega
+  exact ⟨rfl, Fin.ext hjl⟩
+
 /-- Symmetric loopless adjacency read from the 1176 unordered edge bits. -/
 def orderFortyNineBitAdj (edges : BitVec 1176) (i j : Fin 49) : Bool :=
   if i = j then false else edges.getLsbD (orderFortyNineEdgeIndex i j)
@@ -41,14 +91,50 @@ def orderFortyNineBitAdj (edges : BitVec 1176) (i j : Fin 49) : Bool :=
 arithmetic fact is checked once and then used by every graph encoding. -/
 theorem orderFortyNineEdgeIndex_lt
     (i j : Fin 49) (hij : i ≠ j) : orderFortyNineEdgeIndex i j < 1176 := by
-  native_decide +revert
+  have hv : i.val ≠ j.val := fun h => hij (Fin.ext h)
+  rcases lt_or_gt_of_ne hv with hlt | hgt
+  · have hb := orderFortyNineEdgeIndex_row_bounds i j hlt
+    have hu := orderFortyNineEdgeRow_upper_le i
+    omega
+  · have hb := orderFortyNineEdgeIndex_row_bounds j i hgt
+    have hu := orderFortyNineEdgeRow_upper_le j
+    simpa [orderFortyNineEdgeIndex, Nat.min_comm, Nat.max_comm] using
+      (show orderFortyNineEdgeIndex j i < 1176 by omega)
 
 /-- Equality of edge indices is precisely equality of unordered pairs. -/
 theorem orderFortyNineEdgeIndex_eq_iff
     (i j k l : Fin 49) (hij : i ≠ j) (hkl : k ≠ l) :
     orderFortyNineEdgeIndex i j = orderFortyNineEdgeIndex k l ↔
       (i = k ∧ j = l) ∨ (i = l ∧ j = k) := by
-  native_decide +revert
+  constructor
+  · intro heq
+    have hijv : i.val ≠ j.val := fun h => hij (Fin.ext h)
+    have hklv : k.val ≠ l.val := fun h => hkl (Fin.ext h)
+    rcases lt_or_gt_of_ne hijv with hijlt | hjilt <;>
+      rcases lt_or_gt_of_ne hklv with hkllt | hlklt
+    · exact Or.inl (orderFortyNineEdgeIndex_ordered_injective
+        i j k l hijlt hkllt heq)
+    · have heq' : orderFortyNineEdgeIndex i j =
+          orderFortyNineEdgeIndex l k := by
+        simpa [orderFortyNineEdgeIndex, Nat.min_comm, Nat.max_comm] using heq
+      have h := orderFortyNineEdgeIndex_ordered_injective
+        i j l k hijlt hlklt heq'
+      exact Or.inr ⟨h.1, h.2⟩
+    · have heq' : orderFortyNineEdgeIndex j i =
+          orderFortyNineEdgeIndex k l := by
+        simpa [orderFortyNineEdgeIndex, Nat.min_comm, Nat.max_comm] using heq
+      have h := orderFortyNineEdgeIndex_ordered_injective
+        j i k l hjilt hkllt heq'
+      exact Or.inr ⟨h.2, h.1⟩
+    · have heq' : orderFortyNineEdgeIndex j i =
+          orderFortyNineEdgeIndex l k := by
+        simpa [orderFortyNineEdgeIndex, Nat.min_comm, Nat.max_comm] using heq
+      have h := orderFortyNineEdgeIndex_ordered_injective
+        j i l k hjilt hlklt heq'
+      exact Or.inl ⟨h.2, h.1⟩
+  · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
+    · rfl
+    · simp [orderFortyNineEdgeIndex, Nat.min_comm, Nat.max_comm]
 
 /-- Encode a labeled simple graph using exactly one bit per unordered pair. -/
 def orderFortyNineGraphEdges
