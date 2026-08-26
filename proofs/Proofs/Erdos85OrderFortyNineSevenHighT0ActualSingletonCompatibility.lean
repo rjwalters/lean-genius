@@ -74,6 +74,17 @@ theorem sevenHigh_t0_quotient_edge_counts_one_parameter
     se + 4 * ee = 49 := by
   omega
 
+/-- The pointwise empty-neighbor capacities (`P≤1`, `S≤2`) cut the quotient
+parameter down to the five values `6 ≤ F ≤ 10`. -/
+theorem sevenHigh_t0_quotient_parameter_bounds
+    {pe se ee : Nat}
+    (hPE : pe = 2 * ee)
+    (hSE : se + 4 * ee = 49)
+    (hPairEmptyCapacity : pe ≤ 21)
+    (hSingletonEmptyCapacity : se ≤ 28) :
+    6 ≤ ee ∧ ee ≤ 10 := by
+  omega
+
 end
 
 end Erdos85
@@ -81,3 +92,4 @@ end Erdos85
 #print axioms Erdos85.sevenHigh_t0_actualSingleton_commonNeighbor_card_le_one
 #print axioms Erdos85.sevenHigh_t0_actualSingleton_commonNeighbor_eq_empty_of_common_nonSingleton
 #print axioms Erdos85.sevenHigh_t0_quotient_edge_counts_one_parameter
+#print axioms Erdos85.sevenHigh_t0_quotient_parameter_bounds
