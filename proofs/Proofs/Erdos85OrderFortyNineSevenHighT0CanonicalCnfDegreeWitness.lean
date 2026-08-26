@@ -88,8 +88,80 @@ theorem sevenHighT0CanonicalDegreeRow_target
   rw [← sevenHighT0CanonicalLowSupport_target center]
   omega
 
+theorem List.filter_ne_eq_erase_of_nodup {α : Type} [DecidableEq α]
+    (a : α) {xs : List α} (hxs : xs.Nodup) :
+    xs.filter (fun x => x ≠ a) = xs.erase a := by
+  induction xs with
+  | nil => simp
+  | cons x xs ih =>
+      simp only [List.nodup_cons] at hxs
+      by_cases hxa : x = a
+      · subst x
+        simp only [List.erase_cons_head]
+        rw [List.filter_cons, if_neg (by simp)]
+        apply List.filter_eq_self.mpr
+        intro y hy
+        simp only [decide_eq_true_eq]
+        intro hya
+        subst y
+        exact hxs.1 hy
+      · rw [List.filter_cons, if_pos (by simp [hxa])]
+        rw [List.erase_cons_tail (by simpa using hxa)]
+        rw [ih hxs.2]
+
+theorem sevenHighT0CanonicalFilteredLowIndices (center : Fin 42) :
+    (List.range 42).filter (fun other => other ≠ center.1) =
+      List.range center.1 ++ List.range' (center.1 + 1) (41 - center.1) := by
+  rw [List.filter_ne_eq_erase_of_nodup center.1 List.nodup_range,
+    List.erase_range]
+  congr 1
+  · rw [Nat.min_eq_right]
+    omega
+  · rw [show 42 - (center.1 + 1) = 41 - center.1 by omega]
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CanonicalDegreeVars_eq_generator (center : Fin 42) :
+    sevenHighT0CanonicalDegreeVars center =
+      ((sevenHighT0CanonicalLows.filter fun other =>
+        other ≠ center.1 + 7).toArray.map fun other =>
+          (sevenHighT0CanonicalLowEdgeId (center.1 + 7) other : Int)) := by
+  have hlow :
+      sevenHighT0CanonicalLows.filter (fun other => other ≠ center.1 + 7) =
+        (List.range center.1 ++
+          List.range' (center.1 + 1) (41 - center.1)).map (fun x => x + 7) := by
+    rw [sevenHighT0CanonicalLows, List.filter_map]
+    have hpred :
+        (List.range 42).filter
+            ((fun other => decide (other ≠ center.1 + 7)) ∘ fun x => x + 7) =
+          (List.range 42).filter (fun x => x ≠ center.1) := by
+      apply List.filter_congr
+      intro x hx
+      simp
+    rw [hpred, sevenHighT0CanonicalFilteredLowIndices]
+  rw [hlow]
+  apply Array.ext
+  · simp [sevenHighT0CanonicalDegreeVars]
+    omega
+  · intro i hleft hright
+    rw [Array.getElem_eq_getD 0,
+      sevenHighT0CanonicalDegreeVars_getD center i (by
+        simpa using hleft)]
+    rw [Array.getElem_map]
+    simp only [List.getElem_toArray, List.getElem_map]
+    by_cases hi : i < center.1
+    · rw [List.getElem_append_left (by simpa using hi), List.getElem_range]
+      simp [sevenHighT0CanonicalOtherLow, hi]
+    · rw [List.getElem_append_right (by simpa using Nat.le_of_not_gt hi),
+        List.getElem_range']
+      have heq : center.1 + 1 + (i - center.1) + 7 = i + 1 + 7 := by
+        omega
+      simp only [List.length_range, one_mul]
+      rw [heq]
+      simp [sevenHighT0CanonicalOtherLow, hi]
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalDegreeVarId_bounds
 #print axioms Erdos85.sevenHighT0CanonicalDegreeInputReifies
 #print axioms Erdos85.sevenHighT0CanonicalDegreeRow_target
+#print axioms Erdos85.sevenHighT0CanonicalDegreeVars_eq_generator
