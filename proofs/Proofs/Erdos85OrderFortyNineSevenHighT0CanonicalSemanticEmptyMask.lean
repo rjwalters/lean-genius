@@ -119,6 +119,35 @@ theorem sevenHighT0CanonicalEmptySemanticMask_countP_testBit
     sevenHighT0CanonicalEmptySemanticMask,
     sevenHighT0CanonicalBoolsToNat_countP_testBit]
 
+private theorem sevenHighT0CanonicalLabelPairs_nodup :
+    sevenHighT0CanonicalLabelPairs.Nodup := by
+  decide
+
+def sevenHighT0CanonicalEmptySemanticEdgePairs
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    Finset (Nat × Nat) :=
+  sevenHighT0CanonicalLabelPairs.toFinset.filter fun pair =>
+    H.Adj
+      (Sum.inr (Sum.inl (Fin.ofNat 7 pair.1)))
+      (Sum.inr (Sum.inl (Fin.ofNat 7 pair.2)))
+
+theorem sevenHighT0CanonicalEmptySemanticBits_countP_eq_edgePairs_card
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    (sevenHighT0CanonicalEmptySemanticBits H).countP id =
+      (sevenHighT0CanonicalEmptySemanticEdgePairs H).card := by
+  rw [sevenHighT0CanonicalEmptySemanticBits,
+    List.countP_eq_length_filter]
+  rw [List.filter_map]
+  simp only [List.length_map]
+  change (sevenHighT0CanonicalLabelPairs.filter fun pair => decide
+      (H.Adj
+        (Sum.inr (Sum.inl (Fin.ofNat 7 pair.1)))
+        (Sum.inr (Sum.inl (Fin.ofNat 7 pair.2))))).length = _
+  rw [← List.toFinset_card_of_nodup
+    (sevenHighT0CanonicalLabelPairs_nodup.filter _)]
+  rw [sevenHighT0CanonicalEmptySemanticEdgePairs, List.toFinset_filter]
+  simp only [decide_eq_true_eq]
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalEmptySemanticMask_testBit
