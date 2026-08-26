@@ -20,6 +20,8 @@ class GenerateOrder49DropLeanModuleTest(unittest.TestCase):
             ("Proofs.Generated.H7", "h7Done"),
         ])
         self.assertEqual(rendered.count("import Proofs.Generated.SmallHigh\n"), 1)
+        self.assertIn(
+            "import Proofs.Erdos85OrderFortyNineStrataCapstone\n", rendered)
         self.assertIn("h1Done h3Done h5Done h7Done", rendered)
         self.assertIn(
             "not_c4FreeMinDegreeWitness_fortyNine_seven_of_generatedCertificates",

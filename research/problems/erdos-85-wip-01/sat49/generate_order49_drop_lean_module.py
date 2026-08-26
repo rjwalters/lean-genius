@@ -19,6 +19,7 @@ def render(inputs: list[tuple[str, str]]) -> str:
     h1, h3, h5, h7 = (theorem for _, theorem in inputs)
     lines = [f"import {module}" for module in modules]
     lines.extend([
+        "import Proofs.Erdos85OrderFortyNineStrataCapstone",
         "import Proofs.Erdos85FiniteDropWitnesses", "",
         "/-! GENERATED checked order-48/order-49 strict-drop endpoint. -/", "",
         "namespace Erdos85", "",
