@@ -487,17 +487,17 @@ theorem OrderFortyNineCanonicalTripleSystemSpec.card_alignedVertexKeyFiber_eq_mu
 theorem orderFortyNineH9T2_rep_length
     {rep : OrderFortyNineH9System} (hrep : rep ∈ orderFortyNineH9T2Systems) :
     rep.length = 2 := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineH9T3_rep_length
     {rep : OrderFortyNineH9System} (hrep : rep ∈ orderFortyNineH9T3Systems) :
     rep.length = 3 := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineH9T4_rep_length
     {rep : OrderFortyNineH9System} (hrep : rep ∈ orderFortyNineH9T4Systems) :
     rep.length = 4 := by
-  native_decide +revert
+  decide +revert
 
 /-- Fiberwise equality of the enriched vertex keys produces a full labeling
 that simultaneously preserves the high stratum and every support. -/
