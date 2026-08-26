@@ -207,6 +207,18 @@ def render(parent: dict, nested: dict, certificate_dir: Path,
             f"theorem {cell_stem}Base_unsat : ({base}).Unsat :=",
             f"  orderFortyNineSmallHigh_unsat_of_checkedCubeGrid {cell_stem}Grid", "",
         ])
+    lines.extend([
+        "theorem orderFortyNineStratumExcluded_three_of_mixedCubeCertificates :",
+        "    OrderFortyNineStratumExcluded 3 :=",
+        "  orderFortyNineStratumExcluded_three_of_cubeBaseUnsat",
+        "    smallHighH3B1Base_unsat smallHighH3C1Base_unsat",
+        "    smallHighH3C2Base_unsat smallHighH3Dist2Base_unsat", "",
+        "theorem orderFortyNineStratumExcluded_five_of_mixedCubeCertificates :",
+        "    OrderFortyNineStratumExcluded 5 :=",
+        "  orderFortyNineStratumExcluded_five_of_cubeBaseUnsat",
+        "    smallHighH5T0Base_unsat smallHighH5T1Base_unsat",
+        "    smallHighH5T2Base_unsat", "",
+    ])
     lines.extend(["end Erdos85", ""])
     return "\n".join(lines)
 

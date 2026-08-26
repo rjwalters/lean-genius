@@ -33,13 +33,13 @@ CELL_LEAN = {
         "orderFortyNineGeneratedThreeHighDistTwoScoutCnf",
         "orderFortyNineThreeHighDistTwoMasks", "three"),
     "h5_t0": (
-        "orderFortyNineGeneratedH5SatCnf (fiveHighRepresentativeMasks 0)",
+        "orderFortyNineGeneratedVariableHighSatCnf (5 : Fin 50) orderFortyNineFiveHighT0Masks",
         "orderFortyNineFiveHighT0Masks", "five"),
     "h5_t1": (
-        "orderFortyNineGeneratedH5SatCnf (fiveHighRepresentativeMasks 1)",
+        "orderFortyNineGeneratedVariableHighSatCnf (5 : Fin 50) orderFortyNineFiveHighT1Masks",
         "orderFortyNineFiveHighT1Masks", "five"),
     "h5_t2": (
-        "orderFortyNineGeneratedH5SatCnf (fiveHighRepresentativeMasks 2)",
+        "orderFortyNineGeneratedVariableHighSatCnf (5 : Fin 50) orderFortyNineFiveHighT2Masks",
         "orderFortyNineFiveHighT2Masks", "five"),
 }
 
@@ -162,6 +162,18 @@ def render(manifest: dict, certificate_dir: Path,
         lines.extend(["", f"theorem {cell_stem}Base_unsat : ({base}).Unsat :=",
                       "  orderFortyNineSmallHigh_unsat_of_checkedCubeGrid "
                       f"{cell_stem}Grid", ""])
+    lines.extend([
+        "theorem orderFortyNineStratumExcluded_three_of_cubeCertificates :",
+        "    OrderFortyNineStratumExcluded 3 :=",
+        "  orderFortyNineStratumExcluded_three_of_cubeBaseUnsat",
+        "    smallHighH3B1Base_unsat smallHighH3C1Base_unsat",
+        "    smallHighH3C2Base_unsat smallHighH3Dist2Base_unsat", "",
+        "theorem orderFortyNineStratumExcluded_five_of_cubeCertificates :",
+        "    OrderFortyNineStratumExcluded 5 :=",
+        "  orderFortyNineStratumExcluded_five_of_cubeBaseUnsat",
+        "    smallHighH5T0Base_unsat smallHighH5T1Base_unsat",
+        "    smallHighH5T2Base_unsat", "",
+    ])
     lines.extend(["end Erdos85", ""])
     return "\n".join(lines)
 

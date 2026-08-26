@@ -41,6 +41,12 @@ class GenerateCubeLeanModuleTest(unittest.TestCase):
             self.assertEqual(rendered.count("CheckedCubeGrid"), 7)
             self.assertIn("smallHighH3B1Cube00_unsat", rendered)
             self.assertIn("smallHighH5T2Base_unsat", rendered)
+            self.assertIn(
+                "orderFortyNineStratumExcluded_three_of_cubeCertificates",
+                rendered)
+            self.assertIn(
+                "orderFortyNineStratumExcluded_five_of_cubeCertificates",
+                rendered)
             self.assertNotIn(str(root), rendered)
             self.assertIn('(include_str "h3_b1.cover-left.lrat")', rendered)
 
