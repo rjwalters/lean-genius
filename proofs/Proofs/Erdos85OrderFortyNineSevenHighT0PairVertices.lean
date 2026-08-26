@@ -17,6 +17,9 @@ noncomputable section
 abbrev SevenHighT0PairIndex :=
   {p : Fin 7 × Fin 7 // p.1 < p.2}
 
+theorem sevenHighT0PairIndex_card :
+    Fintype.card SevenHighT0PairIndex = 21 := by decide
+
 noncomputable def sevenHighT0PairVertexEquiv
     (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -93,3 +96,4 @@ end Erdos85
 
 #print axioms Erdos85.sevenHighT0PairVertex_support
 #print axioms Erdos85.sevenHighT0PairVertex_injective
+#print axioms Erdos85.sevenHighT0PairIndex_card
