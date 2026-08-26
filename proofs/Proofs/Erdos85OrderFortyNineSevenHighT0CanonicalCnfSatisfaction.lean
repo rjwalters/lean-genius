@@ -80,6 +80,38 @@ noncomputable def sevenHighT0CanonicalIndexEquiv :
         simp [SevenHighT0CanonicalIndex, SevenHighT0LowIndex,
           sevenHighT0PairIndex_card]⟩)
 
+def sevenHighT0CanonicalLowIndexOfFin (vertex : Fin 42) :
+    SevenHighT0LowIndex :=
+  if hEmpty : vertex.1 < 7 then
+    Sum.inl ⟨vertex.1, hEmpty⟩
+  else if hSingleton : vertex.1 < 21 then
+    Sum.inr (Sum.inl
+      (⟨(vertex.1 - 7) / 2, by omega⟩,
+       ⟨(vertex.1 - 7) % 2, Nat.mod_lt _ (by omega)⟩))
+  else
+    Sum.inr (Sum.inr
+      (sevenHighT0CanonicalPairKey ⟨vertex.1 - 21, by omega⟩))
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CanonicalLowIndexOfFin_injective :
+    Function.Injective sevenHighT0CanonicalLowIndexOfFin := by
+  decide
+
+noncomputable def sevenHighT0CanonicalLowIndexEquiv :
+    Fin 42 ≃ SevenHighT0LowIndex :=
+  Equiv.ofBijective sevenHighT0CanonicalLowIndexOfFin
+    ((Fintype.bijective_iff_injective_and_card
+      sevenHighT0CanonicalLowIndexOfFin).2
+      ⟨sevenHighT0CanonicalLowIndexOfFin_injective, by
+        simp [SevenHighT0LowIndex, sevenHighT0PairIndex_card]⟩)
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CanonicalIndexOfFin_low (vertex : Fin 42) :
+    sevenHighT0CanonicalIndexOfFin ⟨vertex.1 + 7, by omega⟩ =
+      Sum.inr (sevenHighT0CanonicalLowIndexOfFin vertex) := by
+  revert vertex
+  decide
+
 def sevenHighT0CanonicalAdjBool
     (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
     (a b : Fin 49) : Bool :=
