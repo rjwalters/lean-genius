@@ -56,7 +56,9 @@ def read_adaptive_overrides(path: Path | None) -> dict[str, dict[str, str]]:
     if path is None:
         return {}
     raw = json.loads(path.read_text())
-    records = raw.get("overrides") if isinstance(raw, dict) else None
+    if not isinstance(raw, dict):
+        raise ValueError("unsupported adaptive override manifest")
+    records = raw.get("overrides")
     if raw.get("schema") != OVERRIDE_SCHEMA or not isinstance(records, list):
         raise ValueError("unsupported adaptive override manifest")
     result = {}

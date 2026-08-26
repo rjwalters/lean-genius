@@ -91,6 +91,9 @@ class GenerateH7EmptyCubeLeanTest(unittest.TestCase):
                                         "overrides": [{"parent_id": "bad"}]}))
             with self.assertRaisesRegex(ValueError, "malformed adaptive override"):
                 MOD.read_adaptive_overrides(path)
+            path.write_text("[]")
+            with self.assertRaisesRegex(ValueError, "unsupported adaptive override"):
+                MOD.read_adaptive_overrides(path)
 
     def test_compressed_payload_gate_and_unpack(self):
         with tempfile.TemporaryDirectory() as directory:
