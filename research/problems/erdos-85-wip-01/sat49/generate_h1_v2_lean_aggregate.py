@@ -92,7 +92,7 @@ def aggregate_source(rows: list[IndexRow], stub_module_prefix: str) -> str:
             "    oneHighFamilyV2CheckedBankTables "
             f"h1V2CheckedBank{profile} =",
             f"      oneHighInventoryTables ({profile} : Fin 5) := by",
-            "  native_decide", "",
+            "  rfl", "",
             f"theorem h1V2InventoryProfile{profile}_checked :",
             f"    ∀ table ∈ oneHighInventoryTables ({profile} : Fin 5),",
             f"      OneHighFamilyV2CheckedUnsat {profile} table :=",

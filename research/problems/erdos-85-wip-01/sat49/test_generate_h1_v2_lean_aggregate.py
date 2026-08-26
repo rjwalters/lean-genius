@@ -40,7 +40,8 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
         self.assertEqual(rendered.count("import Proofs.Generated.H1."), 5)
         self.assertIn("h1V2P3I00000Entry", rendered)
         self.assertEqual(rendered.count("_covers :"), 5)
-        self.assertEqual(rendered.count("native_decide"), 5)
+        self.assertNotIn("native_decide", rendered)
+        self.assertEqual(rendered.count("  rfl\n"), 5)
         self.assertEqual(rendered.count("set_option maxHeartbeats 0 in"), 5)
         self.assertEqual(rendered.count("set_option maxRecDepth 1000000 in"), 5)
         self.assertIn(
