@@ -1,0 +1,21 @@
+{
+  "schema": "erdos85-h1-odd-support-census-v1",
+  "universe_commit": "5aeb0cfdba",
+  "universe": "oneHighCapacityInventoryTables(profile) flatMap oneHighPairingRefinements(profile, oneHighPairingTableRestrict(table))",
+  "slot_expansion": "oneHighRefinementSlotVariants",
+  "union_predicate": "oneHighRefinementHasOddMateKey || oneHighRefinementHasOddThreePairTurn || oneHighRefinementHasOddCrossBlock",
+  "method": "native Lean executable; one traversal per profile; each refinement classified once",
+  "native_runtime_seconds": 135,
+  "profiles": [
+    {"profile": 0, "mate_refinements": 563687, "turn_refinements": 612863, "cross_refinements": 51306, "union_refinements": 653955, "mate_slots": 1326394, "turn_slots": 1453010, "cross_slots": 138066, "union_slots": 1557733},
+    {"profile": 1, "mate_refinements": 561220, "turn_refinements": 659923, "cross_refinements": 23814, "union_refinements": 664146, "mate_slots": 1106824, "turn_slots": 1303844, "cross_slots": 51607, "union_slots": 1311140},
+    {"profile": 2, "mate_refinements": 322559, "turn_refinements": 356528, "cross_refinements": 18673, "union_refinements": 388076, "mate_slots": 567442, "turn_slots": 626326, "cross_slots": 37908, "union_slots": 686344},
+    {"profile": 3, "mate_refinements": 85831, "turn_refinements": 106359, "cross_refinements": 1581, "union_refinements": 107227, "mate_slots": 137117, "turn_slots": 170834, "cross_slots": 2651, "union_slots": 172234},
+    {"profile": 4, "mate_refinements": 11927, "turn_refinements": 13045, "cross_refinements": 516, "union_refinements": 15155, "mate_slots": 19656, "turn_slots": 21924, "cross_slots": 997, "union_slots": 25663}
+  ],
+  "totals": {
+    "union_refinements": 1828559,
+    "union_slots": 3753114
+  },
+  "decision": "DO_NOT_LAUNCH_CERTIFICATES; require a structural or stronger orbit cut before generating an odd-support bank"
+}
