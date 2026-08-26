@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 
 
@@ -61,7 +62,7 @@ def accepted_record(manifest: Path) -> tuple[dict, Path, list]:
     return data, compact, refinement
 
 
-def module_text(index: int, data: dict, compact: Path, refinement: list) -> str:
+def module_text(index: int, data: dict, include_path: str, refinement: list) -> str:
     stem = f"h1RefinementPinI{index:03d}"
     profile = int(data["profile"])
     return f'''import Proofs.Erdos85OneHighRefinementPinnedExclusion
@@ -84,7 +85,7 @@ def {stem}Refinement : List (List OneHighLabelPair) :=
 
 private def {stem}Proof : Array LRAT.IntAction :=
   parseOrderFortyNineLratProof
-    (include_str "{compact}")
+    (include_str {json.dumps(include_path)})
 
 private theorem {stem}Nonzero :
     ∀ clause ∈
@@ -168,7 +169,16 @@ def main() -> None:
     parser.add_argument("slot_manifest", type=Path)
     parser.add_argument("output_dir", type=Path)
     parser.add_argument("--allow-partial", action="store_true")
+    parser.add_argument(
+        "--include-root", type=Path,
+        help=("portable certificate root containing <tag>.compact.lrat; "
+              "required for a complete bank"))
     args = parser.parse_args()
+
+    output_dir = args.output_dir.resolve()
+    include_root = args.include_root.resolve() if args.include_root else None
+    if not args.allow_partial and include_root is None:
+        raise ValueError("a complete bank requires --include-root")
 
     variants = json.loads(args.variants.read_text())
     metadata = [json.loads(line) for line in
@@ -215,13 +225,21 @@ def main() -> None:
             raise ValueError(f"refinement payload mismatch at variant {index}")
         records.append((index, data, compact, refinement))
 
-    args.output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     for index, data, compact, refinement in records:
-        module = args.output_dir / f"Erdos85H1RefinementPinCertI{index:03d}.lean"
-        module.write_text(module_text(index, data, compact, refinement))
+        module = output_dir / f"Erdos85H1RefinementPinCertI{index:03d}.lean"
+        payload = compact
+        if include_root is not None:
+            payload = include_root / compact.name
+            if (not payload.is_file() or
+                    payload.stat().st_size != data["compact_bytes"] or
+                    sha256(payload) != data["compact_lrat_sha256"]):
+                raise ValueError(f"portable compact artifact mismatch: {payload}")
+        include_path = os.path.relpath(payload, module.parent)
+        module.write_text(module_text(index, data, include_path, refinement))
         print(module)
     if not args.allow_partial:
-        bank = args.output_dir / "Erdos85H1RefinementPinCertificateBank.lean"
+        bank = output_dir / "Erdos85H1RefinementPinCertificateBank.lean"
         bank.write_text(bank_text(records))
         print(bank)
 
