@@ -13,14 +13,15 @@ of `orderFortyNineH9ProfileMasks rep`:
 * triple: exactly one entry if it is a rep triple, none otherwise;
 * supports of size ≥ 4: none.
 
-The census is packaged as a single `native_decide` over all 18 representatives
-and all 512 subsets of `Fin 9` (the `Lean.ofReduceBool` axiom is disclosed, as
-for the other certificate-terminal checks), together with a bridge to the
+The census is split into kernel-checked chunks, one for each of the 18
+representatives and all 512 subsets of `Fin 9`, together with a bridge to the
 `Fintype.card` form consumed by
 `exists_orderFortyNine_vertexLabeling_of_supportFiberCardEq`.
 -/
 
 namespace Erdos85
+
+set_option maxRecDepth 100000
 
 /-- Fiber size of a support among the 49 canonical mask entries. -/
 def orderFortyNineMaskFiberCount (masks : Array Nat) (S : Finset (Fin 9)) :
@@ -49,12 +50,199 @@ def orderFortyNineAllH9Reps : List OrderFortyNineH9System :=
   orderFortyNineH9T2Systems.toList ++ orderFortyNineH9T3Systems.toList ++
     orderFortyNineH9T4Systems.toList
 
+private theorem orderFortyNineMaskFiberCount_eq_expected_t2_rep0
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T2Systems[0]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T2Systems[0]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t2_rep1
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T2Systems[1]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T2Systems[1]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t3_rep0
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T3Systems[0]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T3Systems[0]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t3_rep1
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T3Systems[1]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T3Systems[1]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t3_rep2
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T3Systems[2]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T3Systems[2]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t3_rep3
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T3Systems[3]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T3Systems[3]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t3_rep4
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T3Systems[4]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T3Systems[4]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep0
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[0]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[0]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep1
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[1]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[1]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep2
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[2]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[2]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep3
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[3]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[3]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep4
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[4]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[4]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep5
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[5]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[5]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep6
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[6]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[6]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep7
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[7]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[7]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep8
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[8]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[8]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep9
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[9]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[9]! S := by
+  decide +revert
+
+private theorem orderFortyNineMaskFiberCount_eq_expected_t4_rep10
+    (S : Finset (Fin 9)) :
+    orderFortyNineMaskFiberCount
+        (orderFortyNineH9ProfileMasks orderFortyNineH9T4Systems[10]!) S =
+      orderFortyNineExpectedFiber orderFortyNineH9T4Systems[10]! S := by
+  decide +revert
+
+private theorem orderFortyNineAllH9Reps_cases
+    (sys : OrderFortyNineH9System) (hsys : sys ∈ orderFortyNineAllH9Reps) :
+    sys = orderFortyNineH9T2Systems[0]! ∨
+      sys = orderFortyNineH9T2Systems[1]! ∨
+      sys = orderFortyNineH9T3Systems[0]! ∨
+      sys = orderFortyNineH9T3Systems[1]! ∨
+      sys = orderFortyNineH9T3Systems[2]! ∨
+      sys = orderFortyNineH9T3Systems[3]! ∨
+      sys = orderFortyNineH9T3Systems[4]! ∨
+      sys = orderFortyNineH9T4Systems[0]! ∨
+      sys = orderFortyNineH9T4Systems[1]! ∨
+      sys = orderFortyNineH9T4Systems[2]! ∨
+      sys = orderFortyNineH9T4Systems[3]! ∨
+      sys = orderFortyNineH9T4Systems[4]! ∨
+      sys = orderFortyNineH9T4Systems[5]! ∨
+      sys = orderFortyNineH9T4Systems[6]! ∨
+      sys = orderFortyNineH9T4Systems[7]! ∨
+      sys = orderFortyNineH9T4Systems[8]! ∨
+      sys = orderFortyNineH9T4Systems[9]! ∨
+      sys = orderFortyNineH9T4Systems[10]! := by
+  decide +revert
+
 /-- Master census: the canonical mask fibers realize the predicted counts for
 every representative and every support. -/
 theorem orderFortyNineMaskFiberCount_eq_expected :
     ∀ sys ∈ orderFortyNineAllH9Reps, ∀ S : Finset (Fin 9),
       orderFortyNineMaskFiberCount (orderFortyNineH9ProfileMasks sys) S =
-        orderFortyNineExpectedFiber sys S := by native_decide
+        orderFortyNineExpectedFiber sys S := by
+  intro sys hsys S
+  rcases orderFortyNineAllH9Reps_cases sys hsys with h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t2_rep0 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t2_rep1 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t3_rep0 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t3_rep1 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t3_rep2 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t3_rep3 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t3_rep4 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep0 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep1 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep2 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep3 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep4 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep5 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep6 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep7 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep8 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep9 S
+  · subst sys
+    exact orderFortyNineMaskFiberCount_eq_expected_t4_rep10 S
+
 
 /-- Bridge to the subtype-cardinality form used by the vertex-labeling
 constructor. -/
