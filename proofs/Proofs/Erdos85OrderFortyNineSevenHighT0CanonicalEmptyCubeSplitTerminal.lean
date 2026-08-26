@@ -97,8 +97,36 @@ theorem sevenHighT0CanonicalEmptyCubeCheckedProvider_of_lratEvidence
   intro edgeCount hlow hhigh typeIndex hindex
   exact (evidence edgeCount hlow hhigh typeIndex hindex).unsat
 
+/-- The certificate generator's exact `19/15/7/2` inventory, exposed without
+requiring generated code to repeat arithmetic dispatch over bounded naturals. -/
+theorem sevenHighT0CanonicalEmptyCubeCheckedProvider_of_evidenceVectors
+    (e6 : ∀ i : Fin 19,
+      SevenHighT0CanonicalEmptyCubeLratEvidence 6 i)
+    (e7 : ∀ i : Fin 15,
+      SevenHighT0CanonicalEmptyCubeLratEvidence 7 i)
+    (e8 : ∀ i : Fin 7,
+      SevenHighT0CanonicalEmptyCubeLratEvidence 8 i)
+    (e9 : ∀ i : Fin 2,
+      SevenHighT0CanonicalEmptyCubeLratEvidence 9 i) :
+    SevenHighT0CanonicalEmptyCubeCheckedProvider := by
+  intro edgeCount hlow hhigh typeIndex hindex
+  interval_cases edgeCount
+  · have hcount :
+        (sevenHighT0CanonicalEmptyRepresentativeMasks 6).length = 19 := by rfl
+    exact (e6 ⟨typeIndex, by omega⟩).unsat
+  · have hcount :
+        (sevenHighT0CanonicalEmptyRepresentativeMasks 7).length = 15 := by rfl
+    exact (e7 ⟨typeIndex, by omega⟩).unsat
+  · have hcount :
+        (sevenHighT0CanonicalEmptyRepresentativeMasks 8).length = 7 := by rfl
+    exact (e8 ⟨typeIndex, by omega⟩).unsat
+  · have hcount :
+        (sevenHighT0CanonicalEmptyRepresentativeMasks 9).length = 2 := by rfl
+    exact (e9 ⟨typeIndex, by omega⟩).unsat
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalEmptyCubeCheckedProvider_of_binarySplitLratChecks
 #print axioms Erdos85.SevenHighT0CanonicalEmptyCubeLratEvidence.unsat
 #print axioms Erdos85.sevenHighT0CanonicalEmptyCubeCheckedProvider_of_lratEvidence
+#print axioms Erdos85.sevenHighT0CanonicalEmptyCubeCheckedProvider_of_evidenceVectors
