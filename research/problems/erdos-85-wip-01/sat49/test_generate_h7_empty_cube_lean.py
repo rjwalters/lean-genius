@@ -1,6 +1,7 @@
 import importlib.util
 import gzip
 import hashlib
+import json
 import sys
 import tempfile
 import unittest
@@ -55,6 +56,41 @@ class GenerateH7EmptyCubeLeanTest(unittest.TestCase):
         self.assertIn("of_evidenceVectors", rendered)
         self.assertIn("Fin 19", rendered)
         self.assertIn("Fin 2", rendered)
+
+    def test_adaptive_override_is_imported_and_used_in_vector(self):
+        evidence = []
+        includes = {}
+        for edge_count, count in MOD.COUNTS.items():
+            for index in range(count):
+                job_id = f"cube_F{edge_count}_t{index}"
+                job = {"id": job_id, "edge_count": edge_count,
+                       "type_index": index, "kind": "direct"}
+                if (edge_count, index) == (6, 2):
+                    job.update(kind="adaptive", lean_import="Proofs.H7F6T2",
+                               evidence="h7EmptyAdaptiveEvidenceF6T2")
+                else:
+                    includes[job_id] = f"proofs/{job_id}.lrat"
+                evidence.append(job)
+        rendered = MOD.render(evidence, includes)
+        self.assertIn("import Proofs.H7F6T2", rendered)
+        self.assertIn("exact h7EmptyAdaptiveEvidenceF6T2", rendered)
+        self.assertEqual(rendered.count("native_decide"), 42)
+
+    def test_adaptive_override_manifest_is_strict(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "overrides.json"
+            path.write_text(json.dumps({
+                "schema": MOD.OVERRIDE_SCHEMA,
+                "overrides": [{"parent_id": "cube_F6_t2",
+                               "lean_import": "Proofs.H7F6T2",
+                               "evidence": "h7EmptyAdaptiveEvidenceF6T2"}],
+            }))
+            rows = MOD.read_adaptive_overrides(path)
+            self.assertEqual(rows["cube_F6_t2"]["lean_import"], "Proofs.H7F6T2")
+            path.write_text(json.dumps({"schema": MOD.OVERRIDE_SCHEMA,
+                                        "overrides": [{"parent_id": "bad"}]}))
+            with self.assertRaisesRegex(ValueError, "malformed adaptive override"):
+                MOD.read_adaptive_overrides(path)
 
     def test_compressed_payload_gate_and_unpack(self):
         with tempfile.TemporaryDirectory() as directory:

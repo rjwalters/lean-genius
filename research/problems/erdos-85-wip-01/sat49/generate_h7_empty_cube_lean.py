@@ -19,6 +19,8 @@ RECEIPT_RE = re.compile(
     r"(cube_F(\d+)_t(\d+)\.split-([01]))\s+"
     r"([0-9a-f]{64})\s+([0-9a-f]{64})\s+(\d+)$")
 COUNTS = {6: 19, 7: 15, 8: 7, 9: 2}
+OVERRIDE_SCHEMA = "erdos85-h7-canonical-empty-cube-adaptive-overrides-v1"
+LEAN_NAME_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_'.]*(?:\.[A-Za-z_][A-Za-z0-9_']*)*")
 
 
 def sha256(path: Path) -> str:
@@ -47,6 +49,33 @@ def read_split_receipts(path: Path) -> dict[str, dict[str, object]]:
         if job_id in result:
             raise ValueError(f"duplicate split receipt: {job_id}")
         result[job_id] = record
+    return result
+
+
+def read_adaptive_overrides(path: Path | None) -> dict[str, dict[str, str]]:
+    if path is None:
+        return {}
+    raw = json.loads(path.read_text())
+    records = raw.get("overrides") if isinstance(raw, dict) else None
+    if raw.get("schema") != OVERRIDE_SCHEMA or not isinstance(records, list):
+        raise ValueError("unsupported adaptive override manifest")
+    result = {}
+    for record in records:
+        if not isinstance(record, dict):
+            raise ValueError("malformed adaptive override")
+        parent_id = record.get("parent_id")
+        lean_import = record.get("lean_import")
+        evidence = record.get("evidence")
+        if (not isinstance(parent_id, str) or
+                re.fullmatch(r"cube_F[6-9]_t\d+", parent_id) is None or
+                not isinstance(lean_import, str) or
+                LEAN_NAME_RE.fullmatch(lean_import) is None or
+                not isinstance(evidence, str) or
+                LEAN_NAME_RE.fullmatch(evidence) is None):
+            raise ValueError("malformed adaptive override")
+        if parent_id in result:
+            raise ValueError(f"duplicate adaptive override: {parent_id}")
+        result[parent_id] = {"lean_import": lean_import, "evidence": evidence}
     return result
 
 
@@ -106,7 +135,10 @@ def validate_and_unpack(parent_manifest: dict, split_manifest: dict,
                         split_receipts: dict[str, dict[str, object]],
                         base: Path,
                         direct_dir: Path, split_dir: Path,
-                        proof_dir: Path) -> tuple[list[dict], dict[str, Path]]:
+                        proof_dir: Path,
+                        adaptive_overrides: dict[str, dict[str, str]] | None = None
+                        ) -> tuple[list[dict], dict[str, Path]]:
+    adaptive_overrides = adaptive_overrides or {}
     if parent_manifest.get("schema") != parents.SCHEMA:
         raise ValueError("unsupported parent manifest schema")
     if split_manifest.get("schema") != splits.SCHEMA:
@@ -128,6 +160,8 @@ def validate_and_unpack(parent_manifest: dict, split_manifest: dict,
         raise ValueError("parent status must be certified or missing")
     split_records = index_split_records(
         split_manifest.get("splits"), set(missing), parent_manifest["variables"])
+    if not set(adaptive_overrides) <= set(missing):
+        raise ValueError("adaptive overrides must name missing canonical parents")
 
     evidence = []
     payloads = {}
@@ -139,6 +173,10 @@ def validate_and_unpack(parent_manifest: dict, split_manifest: dict,
             _unpack(payload, unpacked)
             payloads[job_id] = unpacked.resolve()
             evidence.append({**job, "kind": "direct"})
+            continue
+        if job_id in adaptive_overrides:
+            evidence.append({**job, "kind": "adaptive",
+                             **adaptive_overrides[job_id]})
             continue
         record = split_records[job_id]
         variable = record.get("split_variable")
@@ -167,7 +205,8 @@ def validate_and_unpack(parent_manifest: dict, split_manifest: dict,
             _unpack(payload, unpacked)
             payloads[leaf_id] = unpacked.resolve()
         evidence.append({**job, "kind": "binarySplit", "split_variable": variable})
-    if set(split_receipts) != {leaf_id for job_id in missing
+    binary_ids = set(missing) - set(adaptive_overrides)
+    if set(split_receipts) != {leaf_id for job_id in binary_ids
                               for leaf_id in (f"{job_id}.split-0",
                                               f"{job_id}.split-1")}:
         raise ValueError("split receipt inventory has missing or surplus leaves")
@@ -199,13 +238,18 @@ def lean_stem(job_id: str) -> str:
 
 
 def render(evidence: list[dict], includes: dict[str, str]) -> str:
+    adaptive_imports = sorted({job["lean_import"] for job in evidence
+                               if job["kind"] == "adaptive"})
     lines = [
         "import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSplitTerminal",
         "import Proofs.Erdos85OrderFortyNineLratCertificateBase", "",
         "/-! GENERATED checked evidence for all 43 canonical H7 empty cubes. -/", "",
         "namespace Erdos85", "", "open Std Sat Std.Tactic.BVDecide", "",
     ]
+    lines[2:2] = [f"import {name}" for name in adaptive_imports]
     for job in evidence:
+        if job["kind"] == "adaptive":
+            continue
         ids = ([job["id"]] if job["kind"] == "direct" else
                [f'{job["id"]}.split-0', f'{job["id"]}.split-1'])
         for proof_id in ids:
@@ -236,13 +280,15 @@ def render(evidence: list[dict], includes: dict[str, str]) -> str:
             if job["kind"] == "direct":
                 stem = lean_stem(job["id"])
                 lines.append(f"  · exact .direct {stem}Proof {stem}Check")
-            else:
+            elif job["kind"] == "binarySplit":
                 false_stem = lean_stem(f'{job["id"]}.split-0')
                 true_stem = lean_stem(f'{job["id"]}.split-1')
                 lines.append(
                     f"  · exact .binarySplit {job['split_variable'] - 1} "
                     f"{false_stem}Proof {true_stem}Proof "
                     f"{false_stem}Check {true_stem}Check")
+            else:
+                lines.append(f"  · exact {job['evidence']}")
         lines.append("")
     lines += [
         "theorem sevenHighT0CanonicalEmptyCubeCheckedProvider :",
@@ -264,6 +310,7 @@ def main() -> None:
     parser.add_argument("--direct-certificate-dir", type=Path, required=True)
     parser.add_argument("--split-certificate-dir", type=Path, required=True)
     parser.add_argument("--proof-output-dir", type=Path, required=True)
+    parser.add_argument("--adaptive-overrides", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     parent = json.loads(args.parent_manifest.read_text())
@@ -273,7 +320,7 @@ def main() -> None:
     evidence, payloads = validate_and_unpack(
         parent, split, read_split_receipts(args.split_receipts), args.base,
         args.direct_certificate_dir, args.split_certificate_dir,
-        args.proof_output_dir)
+        args.proof_output_dir, read_adaptive_overrides(args.adaptive_overrides))
     includes = {key: os.path.relpath(path, args.output.resolve().parent)
                 for key, path in payloads.items()}
     args.output.parent.mkdir(parents=True, exist_ok=True)
