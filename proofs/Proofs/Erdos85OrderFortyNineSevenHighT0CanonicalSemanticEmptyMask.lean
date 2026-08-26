@@ -284,8 +284,46 @@ theorem SevenHighT0CanonicalCompletionSemantics.semanticMask_edge_bounds
     semantics]
   exact semantics.finGraph_internalEmptyEdge_bounds
 
+def sevenHighT0CanonicalEmptySemanticMaskAdj
+    (mask left right : Nat) : Bool :=
+  left != right && mask.testBit
+    (sevenHighT0CanonicalLabelPairs.idxOf
+      (min left right, max left right))
+
+set_option maxHeartbeats 800000 in
+theorem sevenHighT0CanonicalEmptySemanticMaskAdj_eq
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (left right : Fin 7) :
+    sevenHighT0CanonicalEmptySemanticMaskAdj
+        (sevenHighT0CanonicalEmptySemanticMask H) left.1 right.1 =
+      decide ((H.comap
+        (fun w : Fin 7 => Sum.inr (Sum.inl w))).Adj left right) := by
+  by_cases hlr : left = right
+  · subst right
+    simp [sevenHighT0CanonicalEmptySemanticMaskAdj]
+  · let index := sevenHighT0CanonicalLabelPairs.idxOf
+      (min left.1 right.1, max left.1 right.1)
+    have hindex : index < 21 := by
+      fin_cases left <;> fin_cases right <;>
+        simp_all <;> decide
+    have hpair : sevenHighT0CanonicalPairNat (⟨index, hindex⟩ : Fin 21) =
+        (min left.1 right.1, max left.1 right.1) := by
+      fin_cases left <;> fin_cases right <;>
+        decide +revert
+    rw [sevenHighT0CanonicalEmptySemanticMaskAdj]
+    have hval : left.1 ≠ right.1 := fun h => hlr (Fin.ext h)
+    have hbne : (left.1 != right.1) = true := by simp [hval]
+    rw [hbne]
+    simp only [Bool.true_and]
+    change (sevenHighT0CanonicalEmptySemanticMask H).testBit index = _
+    rw [sevenHighT0CanonicalEmptySemanticMask_testBit H ⟨index, hindex⟩,
+      hpair]
+    fin_cases left <;> fin_cases right <;>
+      simp_all [Fin.ofNat, H.adj_comm]
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalEmptySemanticMask_testBit
 #print axioms Erdos85.sevenHighT0CanonicalEmptySemanticMask_countP_testBit
 #print axioms Erdos85.SevenHighT0CanonicalCompletionSemantics.semanticMask_edge_bounds
+#print axioms Erdos85.sevenHighT0CanonicalEmptySemanticMaskAdj_eq
