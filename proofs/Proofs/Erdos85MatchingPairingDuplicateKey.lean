@@ -6,6 +6,56 @@ namespace Erdos85
 
 noncomputable section
 
+/-- The smaller endpoint is the oriented source used by
+`matchingEdgeSources`. -/
+def matchingEdgeSource
+    {X : Type*} [LinearOrder X] (mate : X → X) (x : X) : X :=
+  min x (mate x)
+
+theorem matchingEdgeSource_mem
+    {X : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
+    (mate : X → X) (hinv : Function.Involutive mate)
+    (hfree : ∀ x, mate x ≠ x) (x : X) :
+    matchingEdgeSource mate x ∈ matchingEdgeSources mate := by
+  rcases lt_or_gt_of_ne (hfree x).symm with hlt | hgt
+  · rw [matchingEdgeSource, min_eq_left hlt.le]
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hlt⟩
+  · rw [matchingEdgeSource, min_eq_right hgt.le]
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simpa [hinv x] using hgt⟩
+
+theorem matchingEdgeSource_canonicalPair
+    {X L : Type*} [LinearOrder X] [LinearOrder L]
+    (mate : X → X) (hinv : Function.Involutive mate)
+    (label : X → L) (x : X) :
+    (min (label (matchingEdgeSource mate x))
+        (label (mate (matchingEdgeSource mate x))),
+      max (label (matchingEdgeSource mate x))
+        (label (mate (matchingEdgeSource mate x)))) =
+      (min (label x) (label (mate x)),
+        max (label x) (label (mate x))) := by
+  rcases le_total x (mate x) with hle | hge
+  · simp [matchingEdgeSource, min_eq_left hle]
+  · rw [matchingEdgeSource, min_eq_right hge, hinv x]
+    simp [min_comm, max_comm]
+
+theorem matchingEdgeSource_ne_of_orbits_disjoint
+    {X : Type*} [LinearOrder X]
+    (mate : X → X) (x y : X)
+    (hxy : x ≠ y) (hxm_y : mate x ≠ y)
+    (hx_my : x ≠ mate y) (hxm_my : mate x ≠ mate y) :
+    matchingEdgeSource mate x ≠ matchingEdgeSource mate y := by
+  unfold matchingEdgeSource
+  rcases le_total x (mate x) with hx | hx <;>
+    rcases le_total y (mate y) with hy | hy
+  · rw [min_eq_left hx, min_eq_left hy]
+    exact hxy
+  · rw [min_eq_left hx, min_eq_right hy]
+    exact hx_my
+  · rw [min_eq_right hx, min_eq_left hy]
+    exact hxm_y
+  · rw [min_eq_right hx, min_eq_right hy]
+    exact hxm_my
+
 /-- If the two oriented edges of a matching carry the same canonical key,
 then sorting its pairing list leaves exactly two copies of that key. -/
 theorem matchingPairingListSorted_eq_duplicate_of_two_sources
@@ -66,4 +116,7 @@ end
 
 end Erdos85
 
+#print axioms Erdos85.matchingEdgeSource_mem
+#print axioms Erdos85.matchingEdgeSource_canonicalPair
+#print axioms Erdos85.matchingEdgeSource_ne_of_orbits_disjoint
 #print axioms Erdos85.matchingPairingListSorted_eq_duplicate_of_two_sources
