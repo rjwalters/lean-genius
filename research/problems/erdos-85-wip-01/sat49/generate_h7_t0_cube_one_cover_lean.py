@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 
@@ -65,6 +66,22 @@ def payload_path(certificate_dir: Path, job_id: str) -> Path:
         if candidate.is_file():
             return candidate.resolve()
     raise ValueError(f"missing decompressed LRAT for {job_id}: tried {candidates}")
+
+
+def portable_include_paths(payloads: dict[str, Path], include_root: Path,
+                           output: Path) -> dict[str, str]:
+    """Return output-relative includes, rejecting payloads outside the bank root."""
+    root = include_root.resolve()
+    result = {}
+    for job_id, payload in payloads.items():
+        resolved = payload.resolve()
+        try:
+            resolved.relative_to(root)
+        except ValueError as error:
+            raise ValueError(
+                f"LRAT payload is outside --include-root: {resolved}") from error
+        result[job_id] = os.path.relpath(resolved, output.resolve().parent)
+    return result
 
 
 def read_accepted_ledger(path: Path) -> dict[str, dict[str, str]]:
@@ -185,7 +202,7 @@ def cnf_expression(job: dict) -> str:
             f"sevenHighT0CubeOneRightVariables[{right}]")
 
 
-def render(manifest: dict, payloads: dict[str, Path]) -> str:
+def render(manifest: dict, payloads: dict[str, str]) -> str:
     lines = [
         "import Proofs.Erdos85OrderFortyNineSevenHighT0CubeOneCover",
         "import Proofs.Erdos85OrderFortyNineLratCertificateBase", "",
@@ -199,7 +216,7 @@ def render(manifest: dict, payloads: dict[str, Path]) -> str:
         lines.extend([
             f"private def {stem}Proof : Array LRAT.IntAction :=",
             "  parseOrderFortyNineLratProof",
-            f"    (include_str \"{payloads[job_id]}\")", "",
+            f"    (include_str {json.dumps(payloads[job_id])})", "",
             "set_option maxHeartbeats 0 in",
             "set_option maxRecDepth 1000000 in",
             f"private theorem {stem}Check : LRAT.check {stem}Proof ({cnf}) := by",
@@ -236,12 +253,16 @@ def main() -> int:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--ledger", type=Path, required=True)
     parser.add_argument("--certificate-dir", type=Path, required=True)
+    parser.add_argument(
+        "--include-root", type=Path, required=True,
+        help="portable certificate root that must contain every LRAT payload")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     manifest, payloads = load_and_validate(
         args.manifest, args.ledger, args.certificate_dir)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(render(manifest, payloads))
+    includes = portable_include_paths(payloads, args.include_root, args.output)
+    args.output.write_text(render(manifest, includes))
     print(f"WROTE {args.output}")
     return 0
 

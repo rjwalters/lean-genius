@@ -17,6 +17,7 @@ from generate_h7_t0_cube_one_cover_lean import (
     lean_stem,
     materialized_identity,
     payload_path,
+    portable_include_paths,
     read_accepted_ledger,
     sha256,
 )
@@ -199,12 +200,12 @@ def nested_cnf_expression(parent_job: dict, child: dict) -> str:
             f"sevenHighT0CubeOneNestedRightVariables[{ri}]")
 
 
-def render_check(lines: list[str], job_id: str, cnf: str, payload: Path) -> None:
+def render_check(lines: list[str], job_id: str, cnf: str, payload: str) -> None:
     stem = lean_stem(job_id)
     lines.extend([
         f"private def {stem}Proof : Array LRAT.IntAction :=",
         "  parseOrderFortyNineLratProof",
-        f"    (include_str \"{payload}\")", "",
+        f"    (include_str {json.dumps(payload)})", "",
         "set_option maxHeartbeats 0 in",
         "set_option maxRecDepth 1000000 in",
         f"private theorem {stem}Check : LRAT.check {stem}Proof ({cnf}) := by",
@@ -214,8 +215,8 @@ def render_check(lines: list[str], job_id: str, cnf: str, payload: Path) -> None
     ])
 
 
-def render(parent: dict, nested: dict, direct: dict[str, Path],
-           nested_payloads: dict[str, Path]) -> str:
+def render(parent: dict, nested: dict, direct: dict[str, str],
+           nested_payloads: dict[str, str]) -> str:
     lines = [
         "import Proofs.Erdos85OrderFortyNineSevenHighT0CubeOneNestedCover",
         "import Proofs.Erdos85OrderFortyNineLratCertificateBase", "",
@@ -282,6 +283,9 @@ def main() -> int:
     parser.add_argument("--nested-ledger", type=Path, required=True)
     parser.add_argument("--direct-certificate-dir", type=Path, required=True)
     parser.add_argument("--nested-certificate-dir", type=Path, required=True)
+    parser.add_argument(
+        "--include-root", type=Path, required=True,
+        help="portable certificate root that must contain all direct and nested LRATs")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     parent, nested, direct, nested_payloads = load_and_validate(
@@ -289,7 +293,10 @@ def main() -> int:
         args.direct_ledger.resolve(), args.nested_ledger.resolve(),
         args.direct_certificate_dir.resolve(), args.nested_certificate_dir.resolve())
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(render(parent, nested, direct, nested_payloads))
+    direct_includes = portable_include_paths(direct, args.include_root, args.output)
+    nested_includes = portable_include_paths(
+        nested_payloads, args.include_root, args.output)
+    args.output.write_text(render(parent, nested, direct_includes, nested_includes))
     print(f"WROTE {args.output.resolve()}")
     return 0
 
