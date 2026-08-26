@@ -32,6 +32,16 @@ def sevenHighT0CanonicalEmptyRepresentativeMask
     (edgeCount typeIndex : Nat) : Nat :=
   (sevenHighT0CanonicalEmptyRepresentativeMasks edgeCount)[typeIndex]?.getD 0
 
+/-- The single ordered 43-mask inventory used by orbit-cover consumers. -/
+def sevenHighT0CanonicalEmptyAllRepresentativeMasks : List Nat :=
+  (List.range 4).flatMap fun offset =>
+    sevenHighT0CanonicalEmptyRepresentativeMasks (offset + 6)
+
+/-- Edge predicate of a 21-bit empty-sector mask in lexicographic E-pair
+order. -/
+def sevenHighT0CanonicalEmptyMaskEdge (mask edgeIndex : Nat) : Bool :=
+  mask.testBit edgeIndex
+
 /-- The 21 E--E literals, in the same lexicographic pair order as the Python
 cuber and the canonical CNF's low-edge numbering. -/
 def sevenHighT0CanonicalEmptyMaskUnits (mask : Nat) : Array (Literal Nat) :=
@@ -39,7 +49,7 @@ def sevenHighT0CanonicalEmptyMaskUnits (mask : Nat) : Array (Literal Nat) :=
     let pair := indexedPair.1
     let index := indexedPair.2
     (sevenHighT0CanonicalLowEdgeId (7 + pair.1) (7 + pair.2),
-      mask.testBit index)).toArray
+      sevenHighT0CanonicalEmptyMaskEdge mask index)).toArray
 
 def orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf
     (edgeCount typeIndex : Nat) : CNF Nat :=
@@ -68,6 +78,11 @@ theorem sevenHighT0CanonicalEmptyRepresentativeCounts :
     (sevenHighT0CanonicalEmptyRepresentativeMasks 7).length = 15 ∧
     (sevenHighT0CanonicalEmptyRepresentativeMasks 8).length = 7 ∧
     (sevenHighT0CanonicalEmptyRepresentativeMasks 9).length = 2 := by
+  native_decide
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CanonicalEmptyAllRepresentativeMasks_length :
+    sevenHighT0CanonicalEmptyAllRepresentativeMasks.length = 43 := by
   native_decide
 
 set_option maxHeartbeats 0 in
