@@ -1,5 +1,6 @@
 import Std.Tactic.BVDecide.LRAT
 import Proofs.Erdos85OrderFortyNineCnfSegments
+import Proofs.Erdos85OrderFortyNineDegreeBlocksNonzero
 
 /-!
 # Semantic bridge from the order-49 DIMACS clauses to `Std.Sat.CNF`
@@ -125,22 +126,10 @@ theorem orderFortyNineC4Clauses_nonzero :
   rcases hlit with rfl | rfl | rfl | rfl <;>
     simp [orderFortyNineEdgeLiteral] <;> omega
 
-set_option maxRecDepth 100000 in
-set_option maxHeartbeats 2000000 in
 theorem orderFortyNineDegreeBlocks_nonzero :
     ∀ clause ∈ (orderFortyNineDegreeBlocks 9).clauses,
       DimacsClauseNonzero clause := by
-  have hcheck :
-      (orderFortyNineDegreeBlocks 9).clauses.all fun clause =>
-        clause.all fun lit => lit != 0 := by
-    native_decide
-  simp only [Array.all_eq_true] at hcheck
-  intro clause hclause lit hlit
-  obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hclause
-  have hclauseCheck := hcheck i hi
-  simp only [List.all_eq_true] at hclauseCheck
-  have hlitCheck := hclauseCheck lit hlit
-  simpa using hlitCheck
+  exact orderFortyNineDegreeBlocks_nonzero_all 9
 
 theorem orderFortyNinePartitionClauses_nonzero (masks : Array Nat) :
     ∀ clause ∈ orderFortyNinePartitionClauses masks,
