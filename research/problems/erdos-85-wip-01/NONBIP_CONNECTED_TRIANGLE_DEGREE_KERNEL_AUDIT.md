@@ -48,6 +48,21 @@ Consequently (1) alone closes `NONBIP-CONNECTED` uniformly.  It needs no
 invertibility assumption on the triangle core `M`, no Schur case split, and
 no mod-nine residue terminal.
 
+There is an equivalent form which displays the connectedness hypothesis
+directly.  From `A^2=L_D+J`, equation (1) gives
+
+```text
+L_D t = (q(q^2+2)/3 - sum_x t_x) 1.
+```
+
+Every Laplacian row sum is zero, so summing coordinates forces the scalar on
+the right to vanish.  If `D` is connected, `ker L_D` consists of the constant
+vectors, hence `t` is constant.  Its forced value
+`(q^2+2)/(3q)` is not integral because `q` does not divide 2.  This is the
+same contradiction as the explicit A-kernel argument, but it explains
+exactly where connected deficiency enters: (1) makes the triangle-degree
+vector D-harmonic.
+
 ## Triangle-free-degree form
 
 Write `k_x=deg_K(x)`.  C4-freeness and q-regularity give
