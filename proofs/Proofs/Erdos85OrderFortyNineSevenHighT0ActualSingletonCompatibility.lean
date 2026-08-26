@@ -1,5 +1,4 @@
 import Proofs.Erdos85OrderFortyNineSevenHighT0EmptyQuotient
-import Proofs.Erdos85GadgetExtension
 
 /-!
 # Actual-singleton compatibility in the seven-high empty-triple case
